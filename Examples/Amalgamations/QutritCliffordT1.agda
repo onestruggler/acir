@@ -35,7 +35,7 @@ open import Notations
 
 module Examples.Amalgamations.QutritCliffordT1 where
 
-module M0 where
+module Sζ where
   Pζ : WRel Cyclic.X
   Pζ = Cyclic.rel 9
 
@@ -63,17 +63,17 @@ module M0 where
     S-cr : C
     SS-cr : C
 
-  open PB Pζ renaming (Alphabet to M0 ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
+  open PB Pζ renaming (Alphabet to Sζ ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
   open NormalFormWithoutInverse (Cyclic.nfp 9) using (by-equal-nf)
 
-  open PB _===_ renaming (Alphabet to M) using (_≈_)
+  open PB _===_ renaming (Alphabet to SXζ) using (_≈_)
 
   open _≈_
 
-  f : M0 → Word M
+  f : Sζ → Word SXζ
   f tt = ζ
 
-  h : C → M → Word M0 × C
+  h : C → SXζ → Word Sζ × C
   h ε-cr S-gen = ε , S-cr
   h ε-cr ζ-gen = ζ0 , ε-cr
   h S-cr S-gen = ε , SS-cr
@@ -106,7 +106,7 @@ module M0 where
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
   f-wd-ax {w} {v} Cyclic.order = _≈_.trans (by-assoc Eq.refl) (_≈_.axiom order-ζ) 
 
-  [_] : C → Word M
+  [_] : C → Word SXζ
   [ SS-cr ] = S ^ 2
   [ S-cr ] = S
   [ ε-cr ] = ε
@@ -152,7 +152,7 @@ module M0 where
   open aat using (nfp ; nfp') public
 
 
-module M where
+module SXζ where
   data Gen : Set where
     X-gen : Gen
     S-gen : Gen
@@ -190,19 +190,19 @@ module M where
     XSXX-cr : C
     XXSXX-cr : C
 
-  open PB (M0._===_) renaming (Alphabet to M0 ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (M0.nfp (Cyclic.nfp 9)) using (by-equal-nf)
-  open M0 renaming (S to S' ; ζ to ζ') using ()
+  open PB (Sζ._===_) renaming (Alphabet to Sζ ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
+  open NormalFormWithoutInverse (Sζ.nfp (Cyclic.nfp 9)) using (by-equal-nf)
+  open Sζ renaming (S to S' ; ζ to ζ') using ()
 
-  open PB _===_ renaming (Alphabet to M) using (_≈_)
+  open PB _===_ renaming (Alphabet to SXζ) using (_≈_)
 
   open _≈_
 
-  f : M0 → Word M
-  f M0.S-gen = S
-  f M0.ζ-gen = ζ
+  f : Sζ → Word SXζ
+  f Sζ.S-gen = S
+  f Sζ.ζ-gen = ζ
 
-  h : C → M → Word M0 × C
+  h : C → SXζ → Word Sζ × C
   h ε-cr ζ-gen = ζ' , ε-cr
   h X-cr ζ-gen = ζ' , X-cr
   h XX-cr ζ-gen = ζ' , XX-cr
@@ -235,8 +235,8 @@ module M where
   _~_ = Pointwise _≈₀_ (_≡_ {A = C})
 
   h=⁻¹f-gen : ∀ x → ([ x ]ʷ , ε-cr) ~ ((h **) ε-cr (f x)) 
-  h=⁻¹f-gen M0.S-gen = _≈₀_.refl , Eq.refl
-  h=⁻¹f-gen M0.ζ-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen Sζ.S-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen Sζ.ζ-gen = _≈₀_.refl , Eq.refl
 
   h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
   h-wd-ax ε-cr {u} {t} order-ζ = by-equal-nf Eq.refl , Eq.refl
@@ -314,12 +314,12 @@ module M where
   open PP _===_
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
-  f-wd-ax {w} {v} M0.order-ζ = axiom order-ζ
-  f-wd-ax {w} {v} M0.order-S = axiom order-S
-  f-wd-ax {w} {v} (M0.comm {M0.S-gen}) = axiom comm
-  f-wd-ax {w} {v} (M0.comm {M0.ζ-gen}) = refl
+  f-wd-ax {w} {v} Sζ.order-ζ = axiom order-ζ
+  f-wd-ax {w} {v} Sζ.order-S = axiom order-S
+  f-wd-ax {w} {v} (Sζ.comm {Sζ.S-gen}) = axiom comm
+  f-wd-ax {w} {v} (Sζ.comm {Sζ.ζ-gen}) = refl
 
-  [_] : C → Word M
+  [_] : C → Word SXζ
   [ ε-cr ] = ε
   [ X-cr ] = X
   [ XX-cr ] = X • X
@@ -556,16 +556,16 @@ module M where
   h-hyp XXSXX-cr S-gen = lemma-XXSXXS
   h-hyp XXSXX-cr ζ-gen = lemma-ζ [ XXSXX-cr ]
   
-  module ca = CA.SingleLevel M0._===_ _===_ C ε-cr f h [_]
+  module ca = CA.SingleLevel Sζ._===_ _===_ C ε-cr f h [_]
   module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
 
-  module MM = NFBase.NormalFormWithoutInverse (nfp (M0.nfp (Cyclic.nfp 9)))
+  module MM = NFBase.NormalFormWithoutInverse (nfp (Sζ.nfp (Cyclic.nfp 9)))
 
   lemma-order-Z : Z ^ 3 ≈ ε
   lemma-order-Z = MM.by-equal-nf Eq.refl
 
-module M2 where
+module SXζHH where
   data Gen : Set where
     HH-gen : Gen
     X-gen : Gen
@@ -603,20 +603,20 @@ module M2 where
     ε-cr : C
     HH-cr : C
 
-  open PB (M._===_) renaming (Alphabet to M ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (M.nfp (M0.nfp (Cyclic.nfp 9))) using (by-equal-nf)
-  open M renaming (S to S' ; ζ to ζ' ; X to X') using ()
+  open PB (SXζ._===_) renaming (Alphabet to SXζ ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
+  open NormalFormWithoutInverse (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))) using (by-equal-nf)
+  open SXζ renaming (S to S' ; ζ to ζ' ; X to X') using ()
 
-  open PB _===_ renaming (Alphabet to M2) using (_≈_)
+  open PB _===_ renaming (Alphabet to SXζHH) using (_≈_)
 
   open _≈_
 
-  f : M.Gen → Word M2
-  f M.X-gen = X
-  f M.S-gen = S
-  f M.ζ-gen = ζ
+  f : SXζ.Gen → Word SXζHH
+  f SXζ.X-gen = X
+  f SXζ.S-gen = S
+  f SXζ.ζ-gen = ζ
 
-  h : C → Gen → Word M × C
+  h : C → Gen → Word SXζ × C
   h ε-cr ζ-gen = ζ' , ε-cr
   h HH-cr ζ-gen = ζ' , HH-cr
   h ε-cr S-gen = S' , ε-cr
@@ -658,19 +658,19 @@ module M2 where
   open PP _===_
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
-  f-wd-ax {w} {v} M.order-ζ = axiom order-ζ
-  f-wd-ax {w} {v} M.order-S = axiom order-S
-  f-wd-ax {w} {v} M.order-X = axiom order-X
-  f-wd-ax {w} {v} M.order-SX = axiom order-SX
-  f-wd-ax {w} {v} M.comm-XS-SX = axiom comm-XS-SX
-  f-wd-ax {w} {v} (M.comm {M.X-gen}) = axiom comm
-  f-wd-ax {w} {v} (M.comm {M.S-gen}) = axiom comm
-  f-wd-ax {w} {v} (M.comm {M.ζ-gen}) = refl
+  f-wd-ax {w} {v} SXζ.order-ζ = axiom order-ζ
+  f-wd-ax {w} {v} SXζ.order-S = axiom order-S
+  f-wd-ax {w} {v} SXζ.order-X = axiom order-X
+  f-wd-ax {w} {v} SXζ.order-SX = axiom order-SX
+  f-wd-ax {w} {v} SXζ.comm-XS-SX = axiom comm-XS-SX
+  f-wd-ax {w} {v} (SXζ.comm {SXζ.X-gen}) = axiom comm
+  f-wd-ax {w} {v} (SXζ.comm {SXζ.S-gen}) = axiom comm
+  f-wd-ax {w} {v} (SXζ.comm {SXζ.ζ-gen}) = refl
 
   by-sub-nf : ∀ {w v} → w ≈₀ v → (f *) w ≈ (f *) v
-  by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong M._===_ _===_ f f-wd-ax eq 
+  by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong SXζ._===_ _===_ f f-wd-ax eq 
 
-  [_] : C → Word M2
+  [_] : C → Word SXζHH
   [ ε-cr ] = ε
   [ HH-cr ] = HH
 
@@ -723,21 +723,21 @@ module M2 where
   h-hyp HH-cr ζ-gen = sym (axiom comm)
 
   h=⁻¹f-gen : ∀ x → ([ x ]ʷ , ε-cr) ~ ((h **) ε-cr (f x)) 
-  h=⁻¹f-gen M.S-gen = _≈₀_.refl , Eq.refl
-  h=⁻¹f-gen M.X-gen = _≈₀_.refl , Eq.refl
-  h=⁻¹f-gen M.ζ-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen SXζ.S-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen SXζ.X-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen SXζ.ζ-gen = _≈₀_.refl , Eq.refl
 
-  module ca = CA.SingleLevel M._===_ _===_ C ε-cr f h [_]
+  module ca = CA.SingleLevel SXζ._===_ _===_ C ε-cr f h [_]
   module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
 
-  module MM = NFBase.NormalFormWithoutInverse (nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))
+  module MM = NFBase.NormalFormWithoutInverse (nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))
 
   lemma-order-Z : Z ^ 3 ≈ ε
   lemma-order-Z = MM.by-equal-nf Eq.refl
 
 -- Julien's normal form
-module MA where
+module CliffordTHH where
   data Gen : Set where
     T-gen : Gen
     HH-gen : Gen
@@ -760,14 +760,14 @@ module MA where
   ζ : Word Gen
   ζ = [ ζ-gen ]ʷ
 
-  f : M2.Gen → Word Gen
-  f M2.HH-gen = HH
-  f M2.X-gen = X
-  f M2.S-gen = S
-  f M2.ζ-gen = ζ
+  f : SXζHH.Gen → Word Gen
+  f SXζHH.HH-gen = HH
+  f SXζHH.X-gen = X
+  f SXζHH.S-gen = S
+  f SXζHH.ζ-gen = ζ
 
   Z : Word Gen
-  Z = (f *) M2.Z
+  Z = (f *) SXζHH.Z
 
   infix 4 _===_
   data _===_ : WRel Gen where
@@ -787,10 +787,10 @@ module MA where
     comm : ∀ {gen} → ζ • [ gen ]ʷ === [ gen ]ʷ • ζ
 
 
-  open PB (M2._===_) renaming (Alphabet to M ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9)) )) using (by-equal-nf)
-  open PB _===_ renaming (Alphabet to MA) using (_≈_)
-  open M2 renaming (ζ to ζ' ; S to S' ; X to X' ; Z to Z' ; HH to HH') using ()
+  open PB (SXζHH._===_) renaming (Alphabet to SXζ ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
+  open NormalFormWithoutInverse (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9)) )) using (by-equal-nf)
+  open PB _===_ renaming (Alphabet to CliffordTHH) using (_≈_)
+  open SXζHH renaming (ζ to ζ' ; S to S' ; X to X' ; Z to Z' ; HH to HH') using ()
   
   open _≈_
 
@@ -804,7 +804,7 @@ module MA where
   ε-cr : CT
   ε-cr = inj₂ tt
 
-  h : CT → MA → Word M × CT
+  h : CT → CliffordTHH → Word SXζ × CT
   h (inj₂ tt) ζ-gen = ζ' , inj₂ tt
   h (inj₁ T-cr) ζ-gen = ζ' , inj₁ T-cr
   h (inj₁ THH-cr) ζ-gen = ζ' , inj₁ THH-cr
@@ -825,10 +825,10 @@ module MA where
   _~_ = Pointwise _≈₀_ (_≡_ {A = CT})
 
   h=⁻¹f-gen : ∀ x → ([ x ]ʷ , (inj₂ tt)) ~ ((h **) (inj₂ tt) (f x)) 
-  h=⁻¹f-gen M2.HH-gen = _≈₀_.refl , Eq.refl
-  h=⁻¹f-gen M2.X-gen = _≈₀_.refl , Eq.refl
-  h=⁻¹f-gen M2.S-gen = _≈₀_.refl , Eq.refl
-  h=⁻¹f-gen M2.ζ-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen SXζHH.HH-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen SXζHH.X-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen SXζHH.S-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen SXζHH.ζ-gen = _≈₀_.refl , Eq.refl
 
 -- by-equal-nf Eq.refl , Eq.refl
   h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
@@ -888,24 +888,24 @@ module MA where
   open PP _===_
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
-  f-wd-ax {w} {v} M2.order-ζ = axiom order-ζ
-  f-wd-ax {w} {v} M2.order-S = axiom order-S
-  f-wd-ax {w} {v} M2.order-X = axiom order-X
-  f-wd-ax {w} {v} M2.order-SX = axiom order-SX
-  f-wd-ax {w} {v} M2.comm-XS-SX = axiom comm-XS-SX
-  f-wd-ax {w} {v} (M2.comm {M2.X-gen}) = axiom comm
-  f-wd-ax {w} {v} (M2.comm {M2.S-gen}) = axiom comm
-  f-wd-ax {w} {v} (M2.comm {M2.ζ-gen}) = refl
-  f-wd-ax M2.order-HH = axiom order-HH
-  f-wd-ax M2.comm-HH-X = axiom comm-HH-X
-  f-wd-ax M2.comm-HH-S = axiom comm-HH-S
-  f-wd-ax (M2.comm {M2.HH-gen}) = axiom comm
+  f-wd-ax {w} {v} SXζHH.order-ζ = axiom order-ζ
+  f-wd-ax {w} {v} SXζHH.order-S = axiom order-S
+  f-wd-ax {w} {v} SXζHH.order-X = axiom order-X
+  f-wd-ax {w} {v} SXζHH.order-SX = axiom order-SX
+  f-wd-ax {w} {v} SXζHH.comm-XS-SX = axiom comm-XS-SX
+  f-wd-ax {w} {v} (SXζHH.comm {SXζHH.X-gen}) = axiom comm
+  f-wd-ax {w} {v} (SXζHH.comm {SXζHH.S-gen}) = axiom comm
+  f-wd-ax {w} {v} (SXζHH.comm {SXζHH.ζ-gen}) = refl
+  f-wd-ax SXζHH.order-HH = axiom order-HH
+  f-wd-ax SXζHH.comm-HH-X = axiom comm-HH-X
+  f-wd-ax SXζHH.comm-HH-S = axiom comm-HH-S
+  f-wd-ax (SXζHH.comm {SXζHH.HH-gen}) = axiom comm
 
   by-sub-nf : ∀ {w v} → w ≈₀ v → (f *) w ≈ (f *) v
-  by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong M2._===_ _===_ f f-wd-ax eq 
+  by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong SXζHH._===_ _===_ f f-wd-ax eq 
 
   lemma-order-Z : Z ^ 3 ≈ ε
-  lemma-order-Z = RS.Star-Congruence.lemma-f*-cong M2._===_ _===_ f f-wd-ax M2.lemma-order-Z 
+  lemma-order-Z = RS.Star-Congruence.lemma-f*-cong SXζHH._===_ _===_ f f-wd-ax SXζHH.lemma-order-Z 
 
   lemma-ζ : ∀ w → w • ζ ≈ ζ • w
   lemma-ζ [ x ]ʷ = sym (axiom comm)
@@ -957,7 +957,7 @@ module MA where
     (ζ ^ 3 • S ^ 2 • X • ζ ^ 3) • (S • S) • (T • X) • T • T • X ≈⟨ cong refl (cong refl (cong (axiom comm-TX) refl)) ⟩
     (ζ ^ 3 • S ^ 2 • X • ζ ^ 3) • (S • S) • (ζ ^ 3 • S ^ 2 • X • T) • T • T • X ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 3 • S ^ 2 • X • ζ ^ 3 • S • S • ζ ^ 3 • S ^ 2 • X) • (T • T • T) • X ≈⟨ cong refl (cong (axiom order-T) refl) ⟩
-    (ζ ^ 3 • S ^ 2 • X • ζ ^ 3 • S • S • ζ ^ 3 • S ^ 2 • X) • Z • X ≈⟨ by-sub-nf {(ζ' ^ 3 • S' ^ 2 • X' • ζ' ^ 3 • S' • S' • ζ' ^ 3 • S' ^ 2 • X') • Z' • X'} {ε} (M2.MM.by-equal-nf Eq.refl) ⟩
+    (ζ ^ 3 • S ^ 2 • X • ζ ^ 3 • S • S • ζ ^ 3 • S ^ 2 • X) • Z • X ≈⟨ by-sub-nf {(ζ' ^ 3 • S' ^ 2 • X' • ζ' ^ 3 • S' • S' • ζ' ^ 3 • S' ^ 2 • X') • Z' • X'} {ε} (SXζHH.MM.by-equal-nf Eq.refl) ⟩
     ε ∎
 
   lemma-XT : (X • T) ^ 3 ≈ ε
@@ -1029,15 +1029,15 @@ module MA where
     ((ζ ^ 3 • S ^ 2) • T) • X • T ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 3 • S ^ 2) • (T • X) • T ≈⟨ cong refl (cong (axiom comm-TX) refl) ⟩
     (ζ ^ 3 • S ^ 2) • (ζ ^ 3 • S ^ 2 • X • T) • T ≈⟨ by-assoc Eq.refl ⟩
-    (ζ ^ 3 • S ^ 2 • ζ ^ 3 • S ^ 2 • X) • T • T ≈⟨ cong (by-sub-nf {ζ' ^ 3 • S' ^ 2 • ζ' ^ 3 • S' ^ 2 • X'} {ζ' ^ 3 • S' • X'} (M2.MM.by-equal-nf Eq.refl)) refl ⟩
+    (ζ ^ 3 • S ^ 2 • ζ ^ 3 • S ^ 2 • X) • T • T ≈⟨ cong (by-sub-nf {ζ' ^ 3 • S' ^ 2 • ζ' ^ 3 • S' ^ 2 • X'} {ζ' ^ 3 • S' • X'} (SXζHH.MM.by-equal-nf Eq.refl)) refl ⟩
     (ζ ^ 3 • S • X) • T ^ 2 ∎
 
 
-  [_]ₒ : C → Word MA
+  [_]ₒ : C → Word CliffordTHH
   [ T-cr ]ₒ = T
   [ THH-cr ]ₒ = T • HH
 
-  [_] : C ⊎ ⊤ → Word MA
+  [_] : C ⊎ ⊤ → Word CliffordTHH
   [_] = [_,_] [_]ₒ (λ v → ε)
 
   lemma-TTHH : T ^ 2 • HH ≈ (Z • HH) • T
@@ -1045,7 +1045,7 @@ module MA where
     T ^ 2 • HH ≈⟨ assoc ⟩
     T • T • HH ≈⟨ cong refl (axiom comm-THH) ⟩
     T • Z • HH • T • T ≈⟨ by-assoc Eq.refl ⟩
-    T • (Z • HH) • T • T ≈⟨ cong refl (cong (by-sub-nf {Z' • HH'} {HH' • Z' ^ 2} (M2.MM.by-equal-nf Eq.refl)) refl) ⟩
+    T • (Z • HH) • T • T ≈⟨ cong refl (cong (by-sub-nf {Z' • HH'} {HH' • Z' ^ 2} (SXζHH.MM.by-equal-nf Eq.refl)) refl) ⟩
     T • (HH • Z ^ 2) • T • T ≈⟨ by-assoc Eq.refl ⟩
     (T • HH) • Z ^ 2 • T • T ≈⟨ cong (axiom comm-THH) refl ⟩
     (Z • HH • T • T) • Z ^ 2 • T • T ≈⟨ cong refl (cong (sym (cong (axiom order-T) (axiom order-T))) refl) ⟩
@@ -1084,7 +1084,7 @@ module MA where
     (ζ ^ 3 • S ^ 2 • X • T) • X • HH ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 3 • S ^ 2 • X) • (T • X) • HH ≈⟨ cong refl (cong (axiom comm-TX) refl) ⟩
     (ζ ^ 3 • S ^ 2 • X) • (ζ ^ 3 • S ^ 2 • X • T) • HH ≈⟨ by-assoc Eq.refl ⟩
-    ((ζ ^ 3 • S ^ 2 • X) • (ζ ^ 3 • S ^ 2 • X)) • T • HH ≈⟨ cong  (by-sub-nf {(ζ' ^ 3 • S' ^ 2 • X') • (ζ' ^ 3 • S' ^ 2 • X')} {(X' • X' • S')} (M2.MM.by-equal-nf Eq.refl)) refl ⟩
+    ((ζ ^ 3 • S ^ 2 • X) • (ζ ^ 3 • S ^ 2 • X)) • T • HH ≈⟨ cong  (by-sub-nf {(ζ' ^ 3 • S' ^ 2 • X') • (ζ' ^ 3 • S' ^ 2 • X')} {(X' • X' • S')} (SXζHH.MM.by-equal-nf Eq.refl)) refl ⟩
     (f *) (X' • X' • S') • [ inj₁ THH-cr ] ∎
 
   lemma-THHS : [ inj₁ THH-cr ] • [ S-gen ]ʷ ≈ (f *) (X' • X' • S' • X') • [ inj₁ THH-cr ]
@@ -1096,7 +1096,7 @@ module MA where
     (S • T) • T ^ 3 • HH ≈⟨ by-assoc Eq.refl ⟩
     S • T ^ 3 • T • HH ≈⟨ cong refl (cong (axiom order-T) refl) ⟩
     S • Z • T • HH ≈⟨ sym assoc ⟩
-    (S • Z) • T • HH ≈⟨ cong (by-sub-nf {S' • Z'} {X' • X' • S' • X'} (M2.MM.by-equal-nf Eq.refl)) refl ⟩
+    (S • Z) • T • HH ≈⟨ cong (by-sub-nf {S' • Z'} {X' • X' • S' • X'} (SXζHH.MM.by-equal-nf Eq.refl)) refl ⟩
     (f *) (X' • X' • S' • X') • [ inj₁ THH-cr ] ∎
 
   h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f *) (h c b .proj₁) • [ h c b .proj₂ ]
@@ -1116,51 +1116,51 @@ module MA where
   h-hyp (inj₂ tt) S-gen = trans left-unit (sym right-unit)
   h-hyp (inj₂ tt) ζ-gen = trans left-unit (sym right-unit)
 
-  module ca = CA.SingleLevel (M2._===_) _===_ CT (inj₂ tt) f h [_]
+  module ca = CA.SingleLevel (SXζHH._===_) _===_ CT (inj₂ tt) f h [_]
   module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
   
-  open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
+  open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
 
   I : CT
   I = inj₂ tt
 
   hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h **) (inj₁ c) (f m)) ≡ (w , inj₁ c')
-  hcme T-cr M2.HH-gen = ε , THH-cr , Eq.refl
-  hcme T-cr M2.X-gen = ζ' ^ 3 • S' ^ 2 • X' , T-cr , Eq.refl
-  hcme T-cr M2.S-gen = S' , T-cr , Eq.refl
-  hcme T-cr M2.ζ-gen = ζ' , T-cr , Eq.refl
-  hcme THH-cr M2.HH-gen = ε , T-cr , Eq.refl
-  hcme THH-cr M2.X-gen = X' • X' • S' , THH-cr , Eq.refl
-  hcme THH-cr M2.S-gen = X' • X' • S' • X' , THH-cr , Eq.refl
-  hcme THH-cr M2.ζ-gen = ζ' , THH-cr , Eq.refl
+  hcme T-cr SXζHH.HH-gen = ε , THH-cr , Eq.refl
+  hcme T-cr SXζHH.X-gen = ζ' ^ 3 • S' ^ 2 • X' , T-cr , Eq.refl
+  hcme T-cr SXζHH.S-gen = S' , T-cr , Eq.refl
+  hcme T-cr SXζHH.ζ-gen = ζ' , T-cr , Eq.refl
+  hcme THH-cr SXζHH.HH-gen = ε , T-cr , Eq.refl
+  hcme THH-cr SXζHH.X-gen = X' • X' • S' , THH-cr , Eq.refl
+  hcme THH-cr SXζHH.S-gen = X' • X' • S' • X' , THH-cr , Eq.refl
+  hcme THH-cr SXζHH.ζ-gen = ζ' , THH-cr , Eq.refl
   
   htme : ∀ m → ((h **) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
-  htme M2.X-gen = Eq.refl
-  htme M2.S-gen = Eq.refl
-  htme M2.ζ-gen = Eq.refl
-  htme M2.HH-gen = Eq.refl
+  htme SXζHH.X-gen = Eq.refl
+  htme SXζHH.S-gen = Eq.refl
+  htme SXζHH.ζ-gen = Eq.refl
+  htme SXζHH.HH-gen = Eq.refl
   
-  htme~ : ∀ (m : M) → ([ m ]ʷ , I) ~ ((h **) I (f m))
-  htme~ M2.X-gen = _≈₀_.refl , Eq.refl
-  htme~ M2.S-gen = _≈₀_.refl , Eq.refl
-  htme~ M2.ζ-gen = _≈₀_.refl , Eq.refl
-  htme~ M2.HH-gen = _≈₀_.refl , Eq.refl
+  htme~ : ∀ (m : SXζ) → ([ m ]ʷ , I) ~ ((h **) I (f m))
+  htme~ SXζHH.X-gen = _≈₀_.refl , Eq.refl
+  htme~ SXζHH.S-gen = _≈₀_.refl , Eq.refl
+  htme~ SXζHH.ζ-gen = _≈₀_.refl , Eq.refl
+  htme~ SXζHH.HH-gen = _≈₀_.refl , Eq.refl
 
   [_]ₓ = f *
 
-  hcme~ : ∀ (c : C) (m : M) → let (w' , c' , p) = hcme c m in ([ c ]ₒ • f m) ≈ ([ w' ]ₓ • [ c' ]ₒ)
-  hcme~ T-cr M2.HH-gen = sym left-unit
-  hcme~ T-cr M2.X-gen = by-nf Eq.refl
-  hcme~ T-cr M2.S-gen = axiom comm-TS
-  hcme~ T-cr M2.ζ-gen = sym (axiom comm)
-  hcme~ THH-cr M2.HH-gen = by-nf Eq.refl
-  hcme~ THH-cr M2.X-gen = by-nf Eq.refl
-  hcme~ THH-cr M2.S-gen = by-nf Eq.refl
-  hcme~ THH-cr M2.ζ-gen = by-nf Eq.refl
+  hcme~ : ∀ (c : C) (m : SXζ) → let (w' , c' , p) = hcme c m in ([ c ]ₒ • f m) ≈ ([ w' ]ₓ • [ c' ]ₒ)
+  hcme~ T-cr SXζHH.HH-gen = sym left-unit
+  hcme~ T-cr SXζHH.X-gen = by-nf Eq.refl
+  hcme~ T-cr SXζHH.S-gen = axiom comm-TS
+  hcme~ T-cr SXζHH.ζ-gen = sym (axiom comm)
+  hcme~ THH-cr SXζHH.HH-gen = by-nf Eq.refl
+  hcme~ THH-cr SXζHH.X-gen = by-nf Eq.refl
+  hcme~ THH-cr SXζHH.S-gen = by-nf Eq.refl
+  hcme~ THH-cr SXζHH.ζ-gen = by-nf Eq.refl
   
 
-  ca' : PackedCosetTable M2._===_ _===_
+  ca' : PackedCosetTable SXζHH._===_ _===_
   ca' = record
           { C = C
           ; f = f
@@ -1177,7 +1177,7 @@ module MA where
 
 
 -- India normal form
-module MA' where
+module CliffordTT where
   data Gen : Set where
     T-gen : Gen
     HH-gen : Gen
@@ -1200,14 +1200,14 @@ module MA' where
   ζ : Word Gen
   ζ = [ ζ-gen ]ʷ
 
-  f : M2.Gen → Word Gen
-  f M2.HH-gen = HH
-  f M2.X-gen = X
-  f M2.S-gen = S
-  f M2.ζ-gen = ζ
+  f : SXζHH.Gen → Word Gen
+  f SXζHH.HH-gen = HH
+  f SXζHH.X-gen = X
+  f SXζHH.S-gen = S
+  f SXζHH.ζ-gen = ζ
 
   Z : Word Gen
-  Z = (f *) M2.Z
+  Z = (f *) SXζHH.Z
 
   infix 4 _===_
   data _===_ : WRel Gen where
@@ -1227,10 +1227,10 @@ module MA' where
     comm : ∀ {gen} → ζ • [ gen ]ʷ === [ gen ]ʷ • ζ
 
 
-  open PB (M2._===_) renaming (Alphabet to M ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9)) )) using (by-equal-nf)
-  open PB _===_ renaming (Alphabet to MA) using (_≈_)
-  open M2 renaming (ζ to ζ' ; S to S' ; X to X' ; Z to Z' ; HH to HH') using ()
+  open PB (SXζHH._===_) renaming (Alphabet to SXζ ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
+  open NormalFormWithoutInverse (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9)) )) using (by-equal-nf)
+  open PB _===_ renaming (Alphabet to CliffordTHH) using (_≈_)
+  open SXζHH renaming (ζ to ζ' ; S to S' ; X to X' ; Z to Z' ; HH to HH') using ()
   
   open _≈_
 
@@ -1244,7 +1244,7 @@ module MA' where
   ε-cr : CT
   ε-cr = inj₂ tt
 
-  h : CT → MA → Word M × CT
+  h : CT → CliffordTHH → Word SXζ × CT
   h (inj₂ tt) ζ-gen = ζ' , ε-cr
   h (inj₁ T-cr) ζ-gen = ζ' , inj₁ T-cr
   h (inj₁ TT-cr) ζ-gen = ζ' , inj₁ TT-cr
@@ -1265,10 +1265,10 @@ module MA' where
   _~_ = Pointwise _≈₀_ (_≡_ {A = CT})
 
   h=⁻¹f-gen : ∀ x → ([ x ]ʷ , (inj₂ tt)) ~ ((h **) (inj₂ tt) (f x)) 
-  h=⁻¹f-gen M2.HH-gen = _≈₀_.refl , Eq.refl
-  h=⁻¹f-gen M2.X-gen = _≈₀_.refl , Eq.refl
-  h=⁻¹f-gen M2.S-gen = _≈₀_.refl , Eq.refl
-  h=⁻¹f-gen M2.ζ-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen SXζHH.HH-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen SXζHH.X-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen SXζHH.S-gen = _≈₀_.refl , Eq.refl
+  h=⁻¹f-gen SXζHH.ζ-gen = _≈₀_.refl , Eq.refl
 
   h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
   h-wd-ax (inj₁ T-cr) order-ζ = by-equal-nf Eq.refl , Eq.refl
@@ -1326,24 +1326,24 @@ module MA' where
   open PP _===_
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
-  f-wd-ax {w} {v} M2.order-ζ = axiom order-ζ
-  f-wd-ax {w} {v} M2.order-S = axiom order-S
-  f-wd-ax {w} {v} M2.order-X = axiom order-X
-  f-wd-ax {w} {v} M2.order-SX = axiom order-SX
-  f-wd-ax {w} {v} M2.comm-XS-SX = axiom comm-XS-SX
-  f-wd-ax {w} {v} (M2.comm {M2.X-gen}) = axiom comm
-  f-wd-ax {w} {v} (M2.comm {M2.S-gen}) = axiom comm
-  f-wd-ax {w} {v} (M2.comm {M2.ζ-gen}) = refl
-  f-wd-ax M2.order-HH = axiom order-HH
-  f-wd-ax M2.comm-HH-X = axiom comm-HH-X
-  f-wd-ax M2.comm-HH-S = axiom comm-HH-S
-  f-wd-ax (M2.comm {M2.HH-gen}) = axiom comm
+  f-wd-ax {w} {v} SXζHH.order-ζ = axiom order-ζ
+  f-wd-ax {w} {v} SXζHH.order-S = axiom order-S
+  f-wd-ax {w} {v} SXζHH.order-X = axiom order-X
+  f-wd-ax {w} {v} SXζHH.order-SX = axiom order-SX
+  f-wd-ax {w} {v} SXζHH.comm-XS-SX = axiom comm-XS-SX
+  f-wd-ax {w} {v} (SXζHH.comm {SXζHH.X-gen}) = axiom comm
+  f-wd-ax {w} {v} (SXζHH.comm {SXζHH.S-gen}) = axiom comm
+  f-wd-ax {w} {v} (SXζHH.comm {SXζHH.ζ-gen}) = refl
+  f-wd-ax SXζHH.order-HH = axiom order-HH
+  f-wd-ax SXζHH.comm-HH-X = axiom comm-HH-X
+  f-wd-ax SXζHH.comm-HH-S = axiom comm-HH-S
+  f-wd-ax (SXζHH.comm {SXζHH.HH-gen}) = axiom comm
 
   by-sub-nf : ∀ {w v} → w ≈₀ v → (f *) w ≈ (f *) v
-  by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong M2._===_ _===_ f f-wd-ax eq 
+  by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong SXζHH._===_ _===_ f f-wd-ax eq 
 
   lemma-order-Z : Z ^ 3 ≈ ε
-  lemma-order-Z = RS.Star-Congruence.lemma-f*-cong M2._===_ _===_ f f-wd-ax M2.lemma-order-Z 
+  lemma-order-Z = RS.Star-Congruence.lemma-f*-cong SXζHH._===_ _===_ f f-wd-ax SXζHH.lemma-order-Z 
 
   lemma-ζ : ∀ w → w • ζ ≈ ζ • w
   lemma-ζ [ x ]ʷ = sym (axiom comm)
@@ -1395,7 +1395,7 @@ module MA' where
     (ζ ^ 3 • S ^ 2 • X • ζ ^ 3) • (S • S) • (T • X) • T • T • X ≈⟨ cong refl (cong refl (cong (axiom comm-TX) refl)) ⟩
     (ζ ^ 3 • S ^ 2 • X • ζ ^ 3) • (S • S) • (ζ ^ 3 • S ^ 2 • X • T) • T • T • X ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 3 • S ^ 2 • X • ζ ^ 3 • S • S • ζ ^ 3 • S ^ 2 • X) • (T • T • T) • X ≈⟨ cong refl (cong (axiom order-T) refl) ⟩
-    (ζ ^ 3 • S ^ 2 • X • ζ ^ 3 • S • S • ζ ^ 3 • S ^ 2 • X) • Z • X ≈⟨ by-sub-nf {(ζ' ^ 3 • S' ^ 2 • X' • ζ' ^ 3 • S' • S' • ζ' ^ 3 • S' ^ 2 • X') • Z' • X'} {ε} (M2.MM.by-equal-nf Eq.refl) ⟩
+    (ζ ^ 3 • S ^ 2 • X • ζ ^ 3 • S • S • ζ ^ 3 • S ^ 2 • X) • Z • X ≈⟨ by-sub-nf {(ζ' ^ 3 • S' ^ 2 • X' • ζ' ^ 3 • S' • S' • ζ' ^ 3 • S' ^ 2 • X') • Z' • X'} {ε} (SXζHH.MM.by-equal-nf Eq.refl) ⟩
     ε ∎
 
   lemma-XT : (X • T) ^ 3 ≈ ε
@@ -1468,16 +1468,16 @@ module MA' where
     ((ζ ^ 3 • S ^ 2) • T) • X • T ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 3 • S ^ 2) • (T • X) • T ≈⟨ cong refl (cong (axiom comm-TX) refl) ⟩
     (ζ ^ 3 • S ^ 2) • (ζ ^ 3 • S ^ 2 • X • T) • T ≈⟨ by-assoc Eq.refl ⟩
-    (ζ ^ 3 • S ^ 2 • ζ ^ 3 • S ^ 2 • X) • T • T ≈⟨ cong (by-sub-nf {ζ' ^ 3 • S' ^ 2 • ζ' ^ 3 • S' ^ 2 • X'} {ζ' ^ 3 • S' • X'} (M2.MM.by-equal-nf Eq.refl)) refl ⟩
+    (ζ ^ 3 • S ^ 2 • ζ ^ 3 • S ^ 2 • X) • T • T ≈⟨ cong (by-sub-nf {ζ' ^ 3 • S' ^ 2 • ζ' ^ 3 • S' ^ 2 • X'} {ζ' ^ 3 • S' • X'} (SXζHH.MM.by-equal-nf Eq.refl)) refl ⟩
     (ζ ^ 3 • S • X) • T ^ 2 ∎
 
 
 
-  [_]ₒ : C → Word MA
+  [_]ₒ : C → Word CliffordTHH
   [ T-cr ]ₒ = T
   [ TT-cr ]ₒ = T ^ 2
 
-  [_] : C ⊎ ⊤ → Word MA
+  [_] : C ⊎ ⊤ → Word CliffordTHH
   [_] = [_,_] [_]ₒ (λ v → ε)
 
   lemma-TTHH : T ^ 2 • HH ≈ (Z • HH) • T
@@ -1485,7 +1485,7 @@ module MA' where
     T ^ 2 • HH ≈⟨ assoc ⟩
     T • T • HH ≈⟨ cong refl (axiom comm-THH) ⟩
     T • Z • HH • T • T ≈⟨ by-assoc Eq.refl ⟩
-    T • (Z • HH) • T • T ≈⟨ cong refl (cong (by-sub-nf {Z' • HH'} {HH' • Z' ^ 2} (M2.MM.by-equal-nf Eq.refl)) refl) ⟩
+    T • (Z • HH) • T • T ≈⟨ cong refl (cong (by-sub-nf {Z' • HH'} {HH' • Z' ^ 2} (SXζHH.MM.by-equal-nf Eq.refl)) refl) ⟩
     T • (HH • Z ^ 2) • T • T ≈⟨ by-assoc Eq.refl ⟩
     (T • HH) • Z ^ 2 • T • T ≈⟨ cong (axiom comm-THH) refl ⟩
     (Z • HH • T • T) • Z ^ 2 • T • T ≈⟨ cong refl (cong (sym (cong (axiom order-T) (axiom order-T))) refl) ⟩
@@ -1513,50 +1513,50 @@ module MA' where
 
 
 
-  module ca = CA.SingleLevel (M2._===_) _===_ CT (inj₂ tt) f h [_]
+  module ca = CA.SingleLevel (SXζHH._===_) _===_ CT (inj₂ tt) f h [_]
   module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
   
-  open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
+  open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
 
   I : CT
   I = inj₂ tt
 
   hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h **) (inj₁ c) (f m)) ≡ (w , inj₁ c')
-  hcme T-cr M2.X-gen = ζ' ^ 3 • S' ^ 2 • X' , T-cr , Eq.refl
-  hcme T-cr M2.S-gen = S' , T-cr , Eq.refl
-  hcme T-cr M2.ζ-gen = ζ' , T-cr , Eq.refl
-  hcme TT-cr M2.X-gen = ζ' ^ 3 • S' • X' , TT-cr , Eq.refl
-  hcme TT-cr M2.S-gen = S' , TT-cr , Eq.refl
-  hcme TT-cr M2.ζ-gen = ζ' , TT-cr , Eq.refl
-  hcme T-cr M2.HH-gen = Z' • HH' , TT-cr , Eq.refl
-  hcme TT-cr M2.HH-gen = Z' • HH' , T-cr , Eq.refl
+  hcme T-cr SXζHH.X-gen = ζ' ^ 3 • S' ^ 2 • X' , T-cr , Eq.refl
+  hcme T-cr SXζHH.S-gen = S' , T-cr , Eq.refl
+  hcme T-cr SXζHH.ζ-gen = ζ' , T-cr , Eq.refl
+  hcme TT-cr SXζHH.X-gen = ζ' ^ 3 • S' • X' , TT-cr , Eq.refl
+  hcme TT-cr SXζHH.S-gen = S' , TT-cr , Eq.refl
+  hcme TT-cr SXζHH.ζ-gen = ζ' , TT-cr , Eq.refl
+  hcme T-cr SXζHH.HH-gen = Z' • HH' , TT-cr , Eq.refl
+  hcme TT-cr SXζHH.HH-gen = Z' • HH' , T-cr , Eq.refl
   
   htme : ∀ m → ((h **) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
-  htme M2.X-gen = Eq.refl
-  htme M2.S-gen = Eq.refl
-  htme M2.ζ-gen = Eq.refl
-  htme M2.HH-gen = Eq.refl
+  htme SXζHH.X-gen = Eq.refl
+  htme SXζHH.S-gen = Eq.refl
+  htme SXζHH.ζ-gen = Eq.refl
+  htme SXζHH.HH-gen = Eq.refl
   
-  htme~ : ∀ (m : M) → ([ m ]ʷ , I) ~ ((h **) I (f m))
-  htme~ M2.X-gen = _≈₀_.refl , Eq.refl
-  htme~ M2.S-gen = _≈₀_.refl , Eq.refl
-  htme~ M2.ζ-gen = _≈₀_.refl , Eq.refl
-  htme~ M2.HH-gen = _≈₀_.refl , Eq.refl
+  htme~ : ∀ (m : SXζ) → ([ m ]ʷ , I) ~ ((h **) I (f m))
+  htme~ SXζHH.X-gen = _≈₀_.refl , Eq.refl
+  htme~ SXζHH.S-gen = _≈₀_.refl , Eq.refl
+  htme~ SXζHH.ζ-gen = _≈₀_.refl , Eq.refl
+  htme~ SXζHH.HH-gen = _≈₀_.refl , Eq.refl
   
   [_]ₓ = f *
 
-  hcme~ : ∀ (c : C) (m : M) → let (w' , c' , p) = hcme c m in ([ c ]ₒ • f m) ≈ ([ w' ]ₓ • [ c' ]ₒ)
-  hcme~ T-cr M2.X-gen = by-nf Eq.refl
-  hcme~ T-cr M2.S-gen = by-nf Eq.refl
-  hcme~ T-cr M2.ζ-gen = by-nf Eq.refl
-  hcme~ TT-cr M2.X-gen = by-nf Eq.refl
-  hcme~ TT-cr M2.S-gen = by-nf Eq.refl
-  hcme~ TT-cr M2.ζ-gen = by-nf Eq.refl
-  hcme~ T-cr M2.HH-gen = by-nf Eq.refl
-  hcme~ TT-cr M2.HH-gen = by-nf Eq.refl
+  hcme~ : ∀ (c : C) (m : SXζ) → let (w' , c' , p) = hcme c m in ([ c ]ₒ • f m) ≈ ([ w' ]ₓ • [ c' ]ₒ)
+  hcme~ T-cr SXζHH.X-gen = by-nf Eq.refl
+  hcme~ T-cr SXζHH.S-gen = by-nf Eq.refl
+  hcme~ T-cr SXζHH.ζ-gen = by-nf Eq.refl
+  hcme~ TT-cr SXζHH.X-gen = by-nf Eq.refl
+  hcme~ TT-cr SXζHH.S-gen = by-nf Eq.refl
+  hcme~ TT-cr SXζHH.ζ-gen = by-nf Eq.refl
+  hcme~ T-cr SXζHH.HH-gen = by-nf Eq.refl
+  hcme~ TT-cr SXζHH.HH-gen = by-nf Eq.refl
   
-  ca' : PackedCosetTable M2._===_ _===_
+  ca' : PackedCosetTable SXζHH._===_ _===_
   ca' = record
           { C = C
           ; f = f
@@ -1571,7 +1571,7 @@ module MA' where
           ; h=ract = h-hyp
           }
 
-module MB where
+module CliffordH where
   data Gen : Set where
     H-gen : Gen
     HH-gen : Gen
@@ -1594,14 +1594,14 @@ module MB where
   X : Word Gen
   X = [ X-gen ]ʷ
 
-  f : M2.Gen → Word Gen
-  f M2.HH-gen = HH
-  f M2.X-gen = X
-  f M2.S-gen = S
-  f M2.ζ-gen = ζ
+  f : SXζHH.Gen → Word Gen
+  f SXζHH.HH-gen = HH
+  f SXζHH.X-gen = X
+  f SXζHH.S-gen = S
+  f SXζHH.ζ-gen = ζ
 
   Z : Word Gen
-  Z = (f *) M2.Z
+  Z = (f *) SXζHH.Z
 
   infix 4 _===_
   data _===_ : WRel Gen where
@@ -1618,10 +1618,10 @@ module MB where
     comm-XS-SX : (X • S) • (S • X) === ζ ^ 6 • (S • X) • (X • S)
     comm : ∀ {gen} → ζ • [ gen ]ʷ === [ gen ]ʷ • ζ
 
-  open PB (M2._===_) renaming (Alphabet to M ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9)))) using (by-equal-nf)
-  open PB _===_ renaming (Alphabet to MB) using (_≈_)
-  open M2 renaming (ζ to ζ' ; S to S' ; X to X' ; Z to Z' ; HH to HH') using ()
+  open PB (SXζHH._===_) renaming (Alphabet to SXζ ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
+  open NormalFormWithoutInverse (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9)))) using (by-equal-nf)
+  open PB _===_ renaming (Alphabet to CliffordH) using (_≈_)
+  open SXζHH renaming (ζ to ζ' ; S to S' ; X to X' ; Z to Z' ; HH to HH') using ()
 
 
   open _≈_
@@ -1636,7 +1636,7 @@ module MB where
   I : CT
   I = inj₂ tt
 
-  h : CT → MB → Word M × CT
+  h : CT → CliffordH → Word SXζ × CT
   h (inj₂ tt) ζ-gen = ζ' , (inj₂ tt)
   h (inj₁ H-cr) ζ-gen = ζ' , (inj₁ H-cr)
   h (inj₁ HS-cr) ζ-gen = ζ' , (inj₁ HS-cr)
@@ -1662,10 +1662,10 @@ module MB where
   _~_ = Pointwise _≈₀_ (_≡_ {A = CT})
 
   h=⁻¹f-gen : ∀ x → ([ x ]ʷ , I) ~ ((h **) I (f x)) 
-  h=⁻¹f-gen M2.HH-gen = (by-equal-nf Eq.refl) , Eq.refl
-  h=⁻¹f-gen M2.X-gen = (by-equal-nf Eq.refl) , Eq.refl
-  h=⁻¹f-gen M2.S-gen = (by-equal-nf Eq.refl) , Eq.refl
-  h=⁻¹f-gen M2.ζ-gen = (by-equal-nf Eq.refl) , Eq.refl
+  h=⁻¹f-gen SXζHH.HH-gen = (by-equal-nf Eq.refl) , Eq.refl
+  h=⁻¹f-gen SXζHH.X-gen = (by-equal-nf Eq.refl) , Eq.refl
+  h=⁻¹f-gen SXζHH.S-gen = (by-equal-nf Eq.refl) , Eq.refl
+  h=⁻¹f-gen SXζHH.ζ-gen = (by-equal-nf Eq.refl) , Eq.refl
 
   h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
   h-wd-ax (inj₁ HSS-cr) order-ζ = by-equal-nf Eq.refl , Eq.refl
@@ -1768,21 +1768,21 @@ module MB where
   
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
-  f-wd-ax M2.order-ζ = axiom order-ζ
-  f-wd-ax M2.order-S = axiom order-S
-  f-wd-ax M2.order-X = axiom order-X
-  f-wd-ax M2.order-HH = lemma-order-HH
-  f-wd-ax M2.comm-HH-X = axiom comm-HH-X
-  f-wd-ax M2.comm-HH-S = axiom comm-HH-S
-  f-wd-ax M2.order-SX = axiom order-SX
-  f-wd-ax M2.comm-XS-SX = axiom comm-XS-SX
-  f-wd-ax (M2.comm {M2.HH-gen}) = sym (lemma-ζ (wconcat (wmap f [ M2.HH-gen ]ʷ)))
-  f-wd-ax (M2.comm {M2.X-gen}) = axiom comm
-  f-wd-ax (M2.comm {M2.S-gen}) = axiom comm
-  f-wd-ax (M2.comm {M2.ζ-gen}) = refl
+  f-wd-ax SXζHH.order-ζ = axiom order-ζ
+  f-wd-ax SXζHH.order-S = axiom order-S
+  f-wd-ax SXζHH.order-X = axiom order-X
+  f-wd-ax SXζHH.order-HH = lemma-order-HH
+  f-wd-ax SXζHH.comm-HH-X = axiom comm-HH-X
+  f-wd-ax SXζHH.comm-HH-S = axiom comm-HH-S
+  f-wd-ax SXζHH.order-SX = axiom order-SX
+  f-wd-ax SXζHH.comm-XS-SX = axiom comm-XS-SX
+  f-wd-ax (SXζHH.comm {SXζHH.HH-gen}) = sym (lemma-ζ (wconcat (wmap f [ SXζHH.HH-gen ]ʷ)))
+  f-wd-ax (SXζHH.comm {SXζHH.X-gen}) = axiom comm
+  f-wd-ax (SXζHH.comm {SXζHH.S-gen}) = axiom comm
+  f-wd-ax (SXζHH.comm {SXζHH.ζ-gen}) = refl
 
   by-sub-nf : ∀ {w v} → w ≈₀ v → (f *) w ≈ (f *) v
-  by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong M2._===_ _===_ f f-wd-ax eq 
+  by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong SXζHH._===_ _===_ f f-wd-ax eq 
 
 
   lemma-def-X : X ≈ H ^ 3 • Z • H
@@ -1799,17 +1799,17 @@ module MB where
     (H ^ 3 • Z • H) ^ 3 ≈⟨ by-assoc Eq.refl ⟩
     (H ^ 3 • Z) • (H ^ 4) • Z • (H ^ 4) • Z • H ≈⟨ cong refl (cong (axiom order-H) (cong refl (cong (axiom order-H) refl))) ⟩
     (H ^ 3 • Z) • ε • Z • ε • Z • H ≈⟨ by-assoc Eq.refl ⟩
-    H ^ 3 • Z ^ 3 • H ≈⟨ cong refl (cong (by-sub-nf {Z' ^ 3} {ε} (M2.MM.by-equal-nf Eq.refl)) refl) ⟩
+    H ^ 3 • Z ^ 3 • H ≈⟨ cong refl (cong (by-sub-nf {Z' ^ 3} {ε} (SXζHH.MM.by-equal-nf Eq.refl)) refl) ⟩
     H ^ 3 • ε • H ≈⟨ by-assoc Eq.refl ⟩
     H ^ 4 ≈⟨ axiom order-H ⟩
     ε ∎
 
-  [_]ₒ : C → Word MB
+  [_]ₒ : C → Word CliffordH
   [ HSS-cr ]ₒ = H • S • S
   [ HS-cr ]ₒ = H • S
   [ H-cr ]ₒ = H
 
-  [_] : C ⊎ ⊤ → Word MB
+  [_] : C ⊎ ⊤ → Word CliffordH
   [_] = [_,_] [_]ₒ (λ v → ε)
 
   lemma-HX : H • X ≈ Z • H
@@ -1835,16 +1835,16 @@ module MB where
   
   lemma-HSH : (H • S) • H ≈ (f *) ((ζ' ^ 6) • S' • S' • HH') • [ inj₁ HSS-cr ]
   lemma-HSH = begin
-    (H • S) • H ≈⟨ cong refl (trans (sym right-unit) (cong refl (by-sub-nf {ε} {S' ^ 9} (M2.MM.by-equal-nf Eq.refl)))) ⟩
+    (H • S) • H ≈⟨ cong refl (trans (sym right-unit) (cong refl (by-sub-nf {ε} {S' ^ 9} (SXζHH.MM.by-equal-nf Eq.refl)))) ⟩
     (H • S) • H • S ^ 9 ≈⟨ assoc ⟩
-    (H • S • H • S ^ 9) ≈⟨ trans (sym left-unit) (cong (by-sub-nf {ε} {S' ^ 9} (M2.MM.by-equal-nf Eq.refl)) refl) ⟩
+    (H • S • H • S ^ 9) ≈⟨ trans (sym left-unit) (cong (by-sub-nf {ε} {S' ^ 9} (SXζHH.MM.by-equal-nf Eq.refl)) refl) ⟩
     S ^ 9 • (H • S • H • S ^ 9) ≈⟨ by-assoc Eq.refl ⟩
     S ^ 8 • (S • H • S • H • S) • S ^ 8 ≈⟨ cong refl (cong lemma-SHSHS refl) ⟩
-    S ^ 8 • (H ^ 3) • S ^ 8 ≈⟨ cong (by-sub-nf {S' ^ 8} {ζ' ^ 3 • S' ^ 2} (M2.MM.by-equal-nf Eq.refl)) (cong refl (by-sub-nf {S' ^ 8} {ζ' ^ 3 • S' ^ 2} (M2.MM.by-equal-nf Eq.refl))) ⟩
+    S ^ 8 • (H ^ 3) • S ^ 8 ≈⟨ cong (by-sub-nf {S' ^ 8} {ζ' ^ 3 • S' ^ 2} (SXζHH.MM.by-equal-nf Eq.refl)) (cong refl (by-sub-nf {S' ^ 8} {ζ' ^ 3 • S' ^ 2} (SXζHH.MM.by-equal-nf Eq.refl))) ⟩
     (ζ ^ 3 • S ^ 2) • (H ^ 3) • (ζ ^ 3 • S ^ 2) ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 3 • S ^ 2) • (H ^ 3 • ζ ^ 3) • S ^ 2 ≈⟨ cong refl (cong (lemma-ζ^n 3 (H ^ 3)) refl) ⟩
     (ζ ^ 3 • S ^ 2) • (ζ ^ 3 • H ^ 3) • S ^ 2 ≈⟨ by-assoc Eq.refl ⟩
-    (ζ ^ 3 • S ^ 2 • ζ ^ 3) • H ^ 3 • S ^ 2 ≈⟨ cong (by-sub-nf {ζ' ^ 3 • S' ^ 2 • ζ' ^ 3} {ζ' ^ 6 • S' ^ 2} (M2.MM.by-equal-nf Eq.refl)) refl  ⟩
+    (ζ ^ 3 • S ^ 2 • ζ ^ 3) • H ^ 3 • S ^ 2 ≈⟨ cong (by-sub-nf {ζ' ^ 3 • S' ^ 2 • ζ' ^ 3} {ζ' ^ 6 • S' ^ 2} (SXζHH.MM.by-equal-nf Eq.refl)) refl  ⟩
     (ζ ^ 6 • S ^ 2) • H ^ 3 • S ^ 2 ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 6 • S ^ 2) • H ^ 2 • H • S ^ 2 ≈⟨ cong refl (cong (sym (axiom def-HH)) refl)  ⟩
     (ζ ^ 6 • S ^ 2) • HH • H • S ^ 2 ≈⟨ by-assoc Eq.refl ⟩
@@ -1852,7 +1852,7 @@ module MB where
 
   lemma-HSHS : H • S • H • S ≈ S ^ 8 • H ^ 3
   lemma-HSHS = begin
-    H • S • H • S ≈⟨ trans (sym left-unit) (cong (by-sub-nf {ε} {S' ^ 9} (M2.MM.by-equal-nf Eq.refl)) refl) ⟩
+    H • S • H • S ≈⟨ trans (sym left-unit) (cong (by-sub-nf {ε} {S' ^ 9} (SXζHH.MM.by-equal-nf Eq.refl)) refl) ⟩
     S ^ 9 • H • S • H • S ≈⟨ by-assoc Eq.refl ⟩
     S ^ 8 • S • H • S • H • S ≈⟨ cong refl lemma-SHSHS ⟩
     S ^ 8 • H ^ 3 ∎
@@ -1861,7 +1861,7 @@ module MB where
   lemma-HSSH : [ inj₁ HSS-cr ] • [ H-gen ]ʷ ≈ (f *) ((ζ' ^ 6) • X' • X' • S') • [ inj₁ HS-cr ]
   lemma-HSSH = begin
     [ inj₁ HSS-cr ] • [ H-gen ]ʷ ≈⟨ assoc ⟩
-    H • (S • S) • H ≈⟨ cong refl (cong (by-sub-nf {S' • S'} {ζ' ^ 6 • HH' • Z' • Z' • S' ^ 8 • HH'} (M2.MM.by-equal-nf Eq.refl)) refl) ⟩
+    H • (S • S) • H ≈⟨ cong refl (cong (by-sub-nf {S' • S'} {ζ' ^ 6 • HH' • Z' • Z' • S' ^ 8 • HH'} (SXζHH.MM.by-equal-nf Eq.refl)) refl) ⟩
     H • (ζ ^ 6 • HH • Z • Z • S ^ 8 • HH) • H ≈⟨ by-assoc Eq.refl ⟩
     H • (ζ ^ 6 • HH • Z • Z • S ^ 8) • HH • H ≈⟨ cong refl (cong refl (cong (axiom def-HH) refl)) ⟩
     H • (ζ ^ 6 • HH • Z • Z • S ^ 8) • H ^ 2 • H ≈⟨ by-assoc Eq.refl ⟩
@@ -1878,7 +1878,7 @@ module MB where
   lemma-HSSX : [ inj₁ HSS-cr ] • [ X-gen ]ʷ ≈ (f *) (Z' • X') • [ inj₁ HSS-cr ]
   lemma-HSSX = begin
     [ inj₁ HSS-cr ] • [ X-gen ]ʷ ≈⟨ trans assoc (cong refl assoc) ⟩
-    H • S • S • X ≈⟨ cong refl (by-sub-nf {S' • S' • X'} { X' • HH' • Z' • HH' • S' • S'} (M2.MM.by-equal-nf Eq.refl)) ⟩
+    H • S • S • X ≈⟨ cong refl (by-sub-nf {S' • S' • X'} { X' • HH' • Z' • HH' • S' • S'} (SXζHH.MM.by-equal-nf Eq.refl)) ⟩
     H • X • HH • Z • HH • S • S ≈⟨ by-assoc Eq.refl ⟩
     (H • X • HH • Z) • HH • S • S ≈⟨ cong refl (cong (axiom def-HH) refl) ⟩
     (H • X • HH • Z) • H ^ 2 • S • S ≈⟨ by-assoc Eq.refl ⟩
@@ -1906,7 +1906,7 @@ module MB where
     Z • S ^ 8 • (H ^ 3 • X) ≈⟨ cong refl (cong refl lemma-HHHX) ⟩
     Z • S ^ 8 • (H ^ 2 • Z • H) ≈⟨ cong refl (cong refl (cong (sym (axiom def-HH)) refl)) ⟩
     Z • S ^ 8 • (HH • Z • H) ≈⟨ by-assoc Eq.refl ⟩
-    (Z • S ^ 8 • HH • Z) • H ≈⟨ cong (by-sub-nf {Z' • S' ^ 8 • HH' • Z'} {S' ^ 8 • HH'} (M2.MM.by-equal-nf Eq.refl)) refl  ⟩
+    (Z • S ^ 8 • HH • Z) • H ≈⟨ cong (by-sub-nf {Z' • S' ^ 8 • HH' • Z'} {S' ^ 8 • HH'} (SXζHH.MM.by-equal-nf Eq.refl)) refl  ⟩
     (S ^ 8 • HH) • H ≈⟨ cong (cong refl (axiom def-HH)) refl  ⟩
     (S ^ 8 • H ^ 2) • H ≈⟨ by-assoc Eq.refl ⟩
     S ^ 8 • H ^ 3 ≈⟨ sym lemma-HSHS ⟩
@@ -1926,13 +1926,13 @@ module MB where
   lemma-HSX : [ inj₁ HS-cr ] • [ X-gen ]ʷ ≈ (f *) ((ζ' • ζ' • ζ') • (S' • S') • X' • X' • S') • [ inj₁ HS-cr ]
   lemma-HSX = begin
     [ inj₁ HS-cr ] • [ X-gen ]ʷ ≈⟨ assoc ⟩
-    H • S • X ≈⟨ trans (sym left-unit) ((cong (by-sub-nf {ε} {S' ^ 9} (M2.MM.by-equal-nf Eq.refl)) refl)) ⟩
+    H • S • X ≈⟨ trans (sym left-unit) ((cong (by-sub-nf {ε} {S' ^ 9} (SXζHH.MM.by-equal-nf Eq.refl)) refl)) ⟩
     S ^ 9 • H • S • X ≈⟨ by-assoc Eq.refl ⟩
-    S ^ 8 • S • H • S • X ≈⟨ cong refl (trans (sym left-unit) ((cong (by-sub-nf {ε} {X' ^ 3} (M2.MM.by-equal-nf Eq.refl)) refl))) ⟩
+    S ^ 8 • S • H • S • X ≈⟨ cong refl (trans (sym left-unit) ((cong (by-sub-nf {ε} {X' ^ 3} (SXζHH.MM.by-equal-nf Eq.refl)) refl))) ⟩
     S ^ 8 • X ^ 3 • S • H • S • X ≈⟨ by-assoc Eq.refl ⟩
     S ^ 8 • X ^ 2 • X • S • H • S • X ≈⟨ cong refl (cong refl lemma-XSHSX) ⟩
     S ^ 8 • X ^ 2 • S • H • S ≈⟨ by-assoc Eq.refl ⟩
-    (S ^ 8 • X ^ 2 • S) • H • S ≈⟨ cong (by-sub-nf {S' ^ 8 • X' ^ 2 • S'} {ζ' ^ 3 • S' ^ 2 • X' • X' • S'} (M2.MM.by-equal-nf Eq.refl)) refl ⟩
+    (S ^ 8 • X ^ 2 • S) • H • S ≈⟨ cong (by-sub-nf {S' ^ 8 • X' ^ 2 • S'} {ζ' ^ 3 • S' ^ 2 • X' • X' • S'} (SXζHH.MM.by-equal-nf Eq.refl)) refl ⟩
     (ζ ^ 3 • S ^ 2 • X • X • S) • H • S ≈⟨ refl ⟩
     (f *) ((ζ' • ζ' • ζ') • (S' • S') • X' • X' • S') • [ inj₁ HS-cr ] ∎
 
@@ -1951,7 +1951,7 @@ module MB where
     ((f *) ((ζ' ^ 6) • S' • S' • HH') • [ inj₁ HSS-cr ]) • H ≈⟨ assoc ⟩
     ((f *) ((ζ' ^ 6) • S' • S' • HH')) • ([ inj₁ HSS-cr ] • H) ≈⟨ cong refl lemma-HSSH ⟩
     ((f *) ((ζ' ^ 6) • S' • S' • HH')) • ((f *) ((ζ' ^ 6) • X' • X' • S') • [ inj₁ HS-cr ]) ≈⟨ sym assoc ⟩
-    ((f *) (((ζ' ^ 6) • S' • S' • HH') • (ζ' ^ 6) • X' • X' • S')) • [ inj₁ HS-cr ] ≈⟨ cong (by-sub-nf {(((ζ' ^ 6) • S' • S' • HH') • (ζ' ^ 6) • X' • X' • S')} {X' • HH'} (M2.MM.by-equal-nf Eq.refl))  refl ⟩
+    ((f *) (((ζ' ^ 6) • S' • S' • HH') • (ζ' ^ 6) • X' • X' • S')) • [ inj₁ HS-cr ] ≈⟨ cong (by-sub-nf {(((ζ' ^ 6) • S' • S' • HH') • (ζ' ^ 6) • X' • X' • S')} {X' • HH'} (SXζHH.MM.by-equal-nf Eq.refl))  refl ⟩
     (X • HH) • H • S ∎
 
   lemma-HSSHH : (H • S • S) • HH ≈ (X • X • HH) • H • S • S
@@ -1963,7 +1963,7 @@ module MB where
     ((f *) ((ζ' ^ 6) • X' • X' • S')) • [ inj₁ HS-cr ] • H ≈⟨ cong refl lemma-HSH ⟩
     ((f *) ((ζ' ^ 6) • X' • X' • S')) • (f *) ((ζ' ^ 6) • S' • S' • HH') • [ inj₁ HSS-cr ] ≈⟨ sym assoc ⟩
     (((f *) ((ζ' ^ 6) • X' • X' • S')) • (f *) ((ζ' ^ 6) • S' • S' • HH')) • [ inj₁ HSS-cr ] ≈⟨ refl ⟩
-    ((f *) (((ζ' ^ 6) • X' • X' • S') • ((ζ' ^ 6) • S' • S' • HH'))) • [ inj₁ HSS-cr ] ≈⟨ cong (by-sub-nf {(((ζ' ^ 6) • X' • X' • S') • ((ζ' ^ 6) • S' • S' • HH'))} {X' • X' • HH'} (M2.MM.by-equal-nf Eq.refl)) refl ⟩
+    ((f *) (((ζ' ^ 6) • X' • X' • S') • ((ζ' ^ 6) • S' • S' • HH'))) • [ inj₁ HSS-cr ] ≈⟨ cong (by-sub-nf {(((ζ' ^ 6) • X' • X' • S') • ((ζ' ^ 6) • S' • S' • HH'))} {X' • X' • HH'} (SXζHH.MM.by-equal-nf Eq.refl)) refl ⟩
     (X • X • HH) • H • S • S ∎
 
 
@@ -1989,57 +1989,57 @@ module MB where
   h-hyp (inj₁ H-cr) HH-gen = lemma-HHH
   h-hyp (inj₂ tt) HH-gen = trans left-unit (sym right-unit)
 
-  module ca = CA.SingleLevel (M2._===_) _===_ CT (inj₂ tt) f h [_]
+  module ca = CA.SingleLevel (SXζHH._===_) _===_ CT (inj₂ tt) f h [_]
   module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
   
-  open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9) )))) renaming (by-equal-nf to by-nf) using ()
+  open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9) )))) renaming (by-equal-nf to by-nf) using ()
 
   hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h **) (inj₁ c) (f m)) ≡ (w , inj₁ c')
-  hcme HSS-cr M2.HH-gen = X' • X' • HH' , HSS-cr , Eq.refl
-  hcme HSS-cr M2.X-gen = Z' • X' , HSS-cr , Eq.refl
-  hcme HSS-cr M2.S-gen = ζ' ^ 6 , H-cr , Eq.refl
-  hcme HSS-cr M2.ζ-gen = ζ' , HSS-cr , Eq.refl
-  hcme HS-cr M2.HH-gen = X' • HH' , HS-cr , Eq.refl
-  hcme HS-cr M2.X-gen = ζ' ^ 3 • S' ^ 2 • X' • X' • S' , HS-cr , Eq.refl
-  hcme HS-cr M2.S-gen = ε , HSS-cr , Eq.refl
-  hcme HS-cr M2.ζ-gen = ζ' , HS-cr , Eq.refl
-  hcme H-cr M2.HH-gen = HH' , H-cr , Eq.refl
-  hcme H-cr M2.X-gen = Z' , H-cr , Eq.refl
-  hcme H-cr M2.S-gen = ε , HS-cr , Eq.refl
-  hcme H-cr M2.ζ-gen = ζ' , H-cr , Eq.refl
+  hcme HSS-cr SXζHH.HH-gen = X' • X' • HH' , HSS-cr , Eq.refl
+  hcme HSS-cr SXζHH.X-gen = Z' • X' , HSS-cr , Eq.refl
+  hcme HSS-cr SXζHH.S-gen = ζ' ^ 6 , H-cr , Eq.refl
+  hcme HSS-cr SXζHH.ζ-gen = ζ' , HSS-cr , Eq.refl
+  hcme HS-cr SXζHH.HH-gen = X' • HH' , HS-cr , Eq.refl
+  hcme HS-cr SXζHH.X-gen = ζ' ^ 3 • S' ^ 2 • X' • X' • S' , HS-cr , Eq.refl
+  hcme HS-cr SXζHH.S-gen = ε , HSS-cr , Eq.refl
+  hcme HS-cr SXζHH.ζ-gen = ζ' , HS-cr , Eq.refl
+  hcme H-cr SXζHH.HH-gen = HH' , H-cr , Eq.refl
+  hcme H-cr SXζHH.X-gen = Z' , H-cr , Eq.refl
+  hcme H-cr SXζHH.S-gen = ε , HS-cr , Eq.refl
+  hcme H-cr SXζHH.ζ-gen = ζ' , H-cr , Eq.refl
   
   htme : ∀ m → ((h **) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
-  htme M2.HH-gen = Eq.refl
-  htme M2.X-gen = Eq.refl
-  htme M2.S-gen = Eq.refl
-  htme M2.ζ-gen = Eq.refl
+  htme SXζHH.HH-gen = Eq.refl
+  htme SXζHH.X-gen = Eq.refl
+  htme SXζHH.S-gen = Eq.refl
+  htme SXζHH.ζ-gen = Eq.refl
 
 
 
-  htme~ : ∀ (m : M) → ([ m ]ʷ , I) ~ ((h **) I (f m))
-  htme~ M2.X-gen = _≈₀_.refl , Eq.refl
-  htme~ M2.S-gen = _≈₀_.refl , Eq.refl
-  htme~ M2.ζ-gen = _≈₀_.refl , Eq.refl
-  htme~ M2.HH-gen = _≈₀_.refl , Eq.refl
+  htme~ : ∀ (m : SXζ) → ([ m ]ʷ , I) ~ ((h **) I (f m))
+  htme~ SXζHH.X-gen = _≈₀_.refl , Eq.refl
+  htme~ SXζHH.S-gen = _≈₀_.refl , Eq.refl
+  htme~ SXζHH.ζ-gen = _≈₀_.refl , Eq.refl
+  htme~ SXζHH.HH-gen = _≈₀_.refl , Eq.refl
   
   [_]ₓ = f *
 
-  hcme~ : ∀ (c : C) (m : M) → let (w' , c' , p) = hcme c m in ([ c ]ₒ • f m) ≈ ([ w' ]ₓ • [ c' ]ₒ)
-  hcme~ HS-cr M2.X-gen = by-nf Eq.refl
-  hcme~ HS-cr M2.S-gen = by-nf Eq.refl
-  hcme~ HS-cr M2.ζ-gen = by-nf Eq.refl
-  hcme~ H-cr M2.X-gen = by-nf Eq.refl
-  hcme~ H-cr M2.S-gen = by-nf Eq.refl
-  hcme~ H-cr M2.ζ-gen = by-nf Eq.refl
-  hcme~ HSS-cr M2.X-gen = by-nf Eq.refl
-  hcme~ HSS-cr M2.S-gen = by-nf Eq.refl
-  hcme~ HSS-cr M2.ζ-gen = by-nf Eq.refl
-  hcme~ HSS-cr M2.HH-gen = by-nf Eq.refl
-  hcme~ HS-cr M2.HH-gen = by-nf Eq.refl
-  hcme~ H-cr M2.HH-gen = by-nf Eq.refl
+  hcme~ : ∀ (c : C) (m : SXζ) → let (w' , c' , p) = hcme c m in ([ c ]ₒ • f m) ≈ ([ w' ]ₓ • [ c' ]ₒ)
+  hcme~ HS-cr SXζHH.X-gen = by-nf Eq.refl
+  hcme~ HS-cr SXζHH.S-gen = by-nf Eq.refl
+  hcme~ HS-cr SXζHH.ζ-gen = by-nf Eq.refl
+  hcme~ H-cr SXζHH.X-gen = by-nf Eq.refl
+  hcme~ H-cr SXζHH.S-gen = by-nf Eq.refl
+  hcme~ H-cr SXζHH.ζ-gen = by-nf Eq.refl
+  hcme~ HSS-cr SXζHH.X-gen = by-nf Eq.refl
+  hcme~ HSS-cr SXζHH.S-gen = by-nf Eq.refl
+  hcme~ HSS-cr SXζHH.ζ-gen = by-nf Eq.refl
+  hcme~ HSS-cr SXζHH.HH-gen = by-nf Eq.refl
+  hcme~ HS-cr SXζHH.HH-gen = by-nf Eq.refl
+  hcme~ H-cr SXζHH.HH-gen = by-nf Eq.refl
 
-  ca' : PackedCosetTable M2._===_ _===_
+  ca' : PackedCosetTable SXζHH._===_ _===_
   ca' = record
           { C = C
           ; f = f
@@ -2139,45 +2139,45 @@ module CliffordT1 where
     H ^ 3 • Z • H ∎
 
 
-  f₁ = PackedCosetTable.f MA.ca'
-  f₂ = PackedCosetTable.f MB.ca'
-  mypres = MA._===_ * MB._===_ ⋆ f₁ ⋆ f₂
+  f₁ = PackedCosetTable.f CliffordTHH.ca'
+  f₂ = PackedCosetTable.f CliffordH.ca'
+  mypres = CliffordTHH._===_ * CliffordH._===_ ⋆ f₁ ⋆ f₂
 
 
-  amalt1 : AmalDataNF M2.Gen MA._===_ MB._===_
-  amalt1 = record { P₀ = M2._===_ ;
-    CA₁ = MA.ca' ;
-    CA₂ = MB.ca' }
+  amalt1 : AmalDataNF SXζHH.Gen CliffordTHH._===_ CliffordH._===_
+  amalt1 = record { P₀ = SXζHH._===_ ;
+    CA₁ = CliffordTHH.ca' ;
+    CA₂ = CliffordH.ca' }
 
-  open ANF MA._===_  MB._===_ amalt1 using (nfp ; nfp') public
+  open ANF CliffordTHH._===_  CliffordH._===_ amalt1 using (nfp ; nfp') public
 
 --  open PB _===_ renaming (_===_ to _===₁_ ; _≈_ to _≈_) using ()
   open PB mypres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 
   
-  open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
+  open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
 
   open import Algebra.Bundles using (Monoid)
   open import Algebra.Morphism.Structures using (module MonoidMorphisms)
 
-  f : Gen → Word (MA.Gen ⊎ MB.Gen)
-  f T-gen = [ MA.T ]ₗ
-  f X-gen = [ MA.X ]ₗ
-  f H-gen = [ MB.H ]ᵣ
-  f S-gen = [ MA.S ]ₗ
-  f ζ-gen = [ MA.ζ ]ₗ
+  f : Gen → Word (CliffordTHH.Gen ⊎ CliffordH.Gen)
+  f T-gen = [ CliffordTHH.T ]ₗ
+  f X-gen = [ CliffordTHH.X ]ₗ
+  f H-gen = [ CliffordH.H ]ᵣ
+  f S-gen = [ CliffordTHH.S ]ₗ
+  f ζ-gen = [ CliffordTHH.ζ ]ₗ
 
-  g : (MA.Gen ⊎ MB.Gen) → Word Gen
-  g (inj₁ MA.T-gen) = T
-  g (inj₁ MA.X-gen) = X
-  g (inj₁ MA.S-gen) = S
-  g (inj₁ MA.ζ-gen) = ζ
-  g (inj₂ MB.H-gen) = H
-  g (inj₂ MB.X-gen) = X
-  g (inj₂ MB.S-gen) = S
-  g (inj₂ MB.ζ-gen) = ζ
-  g (inj₁ MA.HH-gen) = HH
-  g (inj₂ MB.HH-gen) = HH
+  g : (CliffordTHH.Gen ⊎ CliffordH.Gen) → Word Gen
+  g (inj₁ CliffordTHH.T-gen) = T
+  g (inj₁ CliffordTHH.X-gen) = X
+  g (inj₁ CliffordTHH.S-gen) = S
+  g (inj₁ CliffordTHH.ζ-gen) = ζ
+  g (inj₂ CliffordH.H-gen) = H
+  g (inj₂ CliffordH.X-gen) = X
+  g (inj₂ CliffordH.S-gen) = S
+  g (inj₂ CliffordH.ζ-gen) = ζ
+  g (inj₁ CliffordTHH.HH-gen) = HH
+  g (inj₂ CliffordH.HH-gen) = HH
 
   open import Presentation.Morphism
 
@@ -2188,78 +2188,78 @@ module CliffordT1 where
 
 
   f-well-defined : ∀ {w v} → w === v → (f *) w ≈₂ (f *) v
-  f-well-defined order-ζ = _≈₂_.axiom (left MA.order-ζ)
-  f-well-defined order-S = _≈₂_.axiom (left MA.order-S)
-  f-well-defined order-X = _≈₂_.axiom (left MA.order-X)
-  f-well-defined order-H = _≈₂_.axiom (right MB.order-H)
-  f-well-defined order-T = _≈₂_.axiom (left MA.order-T)
-  f-well-defined order-SX = _≈₂_.axiom (left MA.order-SX)
+  f-well-defined order-ζ = _≈₂_.axiom (left CliffordTHH.order-ζ)
+  f-well-defined order-S = _≈₂_.axiom (left CliffordTHH.order-S)
+  f-well-defined order-X = _≈₂_.axiom (left CliffordTHH.order-X)
+  f-well-defined order-H = _≈₂_.axiom (right CliffordH.order-H)
+  f-well-defined order-T = _≈₂_.axiom (left CliffordTHH.order-T)
+  f-well-defined order-SX = _≈₂_.axiom (left CliffordTHH.order-SX)
   f-well-defined order-SH = by-equal-nf Eq.refl
-  f-well-defined comm-XS-SX = _≈₂_.axiom (left MA.comm-XS-SX)
-  f-well-defined comm-TS = _≈₂_.axiom (left MA.comm-TS)
-  f-well-defined comm-TX = _≈₂_.axiom (left MA.comm-TX)
+  f-well-defined comm-XS-SX = _≈₂_.axiom (left CliffordTHH.comm-XS-SX)
+  f-well-defined comm-TS = _≈₂_.axiom (left CliffordTHH.comm-TS)
+  f-well-defined comm-TX = _≈₂_.axiom (left CliffordTHH.comm-TX)
   f-well-defined comm-THH = by-equal-nf Eq.refl
   f-well-defined comm-HX = by-equal-nf Eq.refl
   f-well-defined comm-HH-X = by-equal-nf Eq.refl
   f-well-defined comm-HH-S = by-equal-nf Eq.refl
-  f-well-defined (comm {T-gen}) = _≈₂_.axiom (left MA.comm)
-  f-well-defined (comm {X-gen}) = _≈₂_.axiom (left MA.comm)
+  f-well-defined (comm {T-gen}) = _≈₂_.axiom (left CliffordTHH.comm)
+  f-well-defined (comm {X-gen}) = _≈₂_.axiom (left CliffordTHH.comm)
   f-well-defined (comm {H-gen}) = by-equal-nf Eq.refl
-  f-well-defined (comm {S-gen}) = _≈₂_.axiom (left MA.comm)
+  f-well-defined (comm {S-gen}) = _≈₂_.axiom (left CliffordTHH.comm)
   f-well-defined (comm {ζ-gen}) = _≈₂_.refl
   
   g-well-defined : ∀ {w v} → w ===₂ v → (g *) w ≈ (g *) v
-  g-well-defined (left MA.order-ζ) = axiom order-ζ
-  g-well-defined (left MA.order-S) = axiom order-S
-  g-well-defined (left MA.order-X) = _≈_.axiom order-X
-  g-well-defined (left MA.order-HH) = lemma-order-HH
-  g-well-defined (left MA.order-SX) = axiom order-SX
-  g-well-defined (left MA.comm-XS-SX) = _≈_.axiom comm-XS-SX
-  g-well-defined (left MA.comm-HH-X) = _≈_.axiom comm-HH-X
-  g-well-defined (left MA.comm-HH-S) = _≈_.axiom comm-HH-S
-  g-well-defined (left MA.order-T) = _≈_.axiom order-T
-  g-well-defined (left MA.comm-TS) = _≈_.axiom comm-TS
-  g-well-defined (left MA.comm-TX) = _≈_.axiom comm-TX
-  g-well-defined (left MA.comm-THH) = _≈_.axiom comm-THH
-  g-well-defined (left (MA.comm {MA.T-gen})) = _≈_.axiom comm
-  g-well-defined (left (MA.comm {MA.X-gen})) = _≈_.axiom comm
-  g-well-defined (left (MA.comm {MA.S-gen})) = _≈_.axiom comm
-  g-well-defined (left (MA.comm {MA.ζ-gen})) = _≈_.refl
-  g-well-defined (left (MA.comm {MA.HH-gen})) = _≈_.sym (lemma-ζ (wconcat (wmap g (wmap inj₁ [ MA.HH-gen ]ʷ))))
+  g-well-defined (left CliffordTHH.order-ζ) = axiom order-ζ
+  g-well-defined (left CliffordTHH.order-S) = axiom order-S
+  g-well-defined (left CliffordTHH.order-X) = _≈_.axiom order-X
+  g-well-defined (left CliffordTHH.order-HH) = lemma-order-HH
+  g-well-defined (left CliffordTHH.order-SX) = axiom order-SX
+  g-well-defined (left CliffordTHH.comm-XS-SX) = _≈_.axiom comm-XS-SX
+  g-well-defined (left CliffordTHH.comm-HH-X) = _≈_.axiom comm-HH-X
+  g-well-defined (left CliffordTHH.comm-HH-S) = _≈_.axiom comm-HH-S
+  g-well-defined (left CliffordTHH.order-T) = _≈_.axiom order-T
+  g-well-defined (left CliffordTHH.comm-TS) = _≈_.axiom comm-TS
+  g-well-defined (left CliffordTHH.comm-TX) = _≈_.axiom comm-TX
+  g-well-defined (left CliffordTHH.comm-THH) = _≈_.axiom comm-THH
+  g-well-defined (left (CliffordTHH.comm {CliffordTHH.T-gen})) = _≈_.axiom comm
+  g-well-defined (left (CliffordTHH.comm {CliffordTHH.X-gen})) = _≈_.axiom comm
+  g-well-defined (left (CliffordTHH.comm {CliffordTHH.S-gen})) = _≈_.axiom comm
+  g-well-defined (left (CliffordTHH.comm {CliffordTHH.ζ-gen})) = _≈_.refl
+  g-well-defined (left (CliffordTHH.comm {CliffordTHH.HH-gen})) = _≈_.sym (lemma-ζ (wconcat (wmap g (wmap inj₁ [ CliffordTHH.HH-gen ]ʷ))))
 
-  g-well-defined (right MB.order-ζ) = _≈_.axiom order-ζ
-  g-well-defined (right MB.order-S) = _≈_.axiom order-S
-  g-well-defined (right MB.order-X) = _≈_.axiom order-X
-  g-well-defined (right MB.order-H) = _≈_.axiom order-H
-  g-well-defined (right MB.def-HH) = _≈_.refl
-  g-well-defined (right MB.order-SH) = _≈_.axiom order-SH
-  g-well-defined (right MB.comm-HH-X) = _≈_.axiom comm-HH-X
-  g-well-defined (right MB.comm-HH-S) = _≈_.axiom comm-HH-S
-  g-well-defined (right MB.HXH^3=Z) = lemma-HXH^3=Z
-  g-well-defined (right MB.order-SX) = axiom order-SX
-  g-well-defined (right MB.comm-XS-SX) = _≈_.axiom comm-XS-SX
-  g-well-defined (right (MB.comm {MB.H-gen})) = _≈_.axiom comm
-  g-well-defined (right (MB.comm {MB.X-gen})) = _≈_.axiom comm
-  g-well-defined (right (MB.comm {MB.S-gen})) = _≈_.axiom comm
-  g-well-defined (right (MB.comm {MB.ζ-gen})) = _≈_.refl
-  g-well-defined (right (MB.comm {MB.HH-gen})) = _≈_.sym (lemma-ζ (wconcat (wmap g (wmap inj₂ [ MB.HH-gen ]ʷ))))
+  g-well-defined (right CliffordH.order-ζ) = _≈_.axiom order-ζ
+  g-well-defined (right CliffordH.order-S) = _≈_.axiom order-S
+  g-well-defined (right CliffordH.order-X) = _≈_.axiom order-X
+  g-well-defined (right CliffordH.order-H) = _≈_.axiom order-H
+  g-well-defined (right CliffordH.def-HH) = _≈_.refl
+  g-well-defined (right CliffordH.order-SH) = _≈_.axiom order-SH
+  g-well-defined (right CliffordH.comm-HH-X) = _≈_.axiom comm-HH-X
+  g-well-defined (right CliffordH.comm-HH-S) = _≈_.axiom comm-HH-S
+  g-well-defined (right CliffordH.HXH^3=Z) = lemma-HXH^3=Z
+  g-well-defined (right CliffordH.order-SX) = axiom order-SX
+  g-well-defined (right CliffordH.comm-XS-SX) = _≈_.axiom comm-XS-SX
+  g-well-defined (right (CliffordH.comm {CliffordH.H-gen})) = _≈_.axiom comm
+  g-well-defined (right (CliffordH.comm {CliffordH.X-gen})) = _≈_.axiom comm
+  g-well-defined (right (CliffordH.comm {CliffordH.S-gen})) = _≈_.axiom comm
+  g-well-defined (right (CliffordH.comm {CliffordH.ζ-gen})) = _≈_.refl
+  g-well-defined (right (CliffordH.comm {CliffordH.HH-gen})) = _≈_.sym (lemma-ζ (wconcat (wmap g (wmap inj₂ [ CliffordH.HH-gen ]ʷ))))
   
-  g-well-defined (mid (amal {M2.HH-gen})) = _≈_.refl
-  g-well-defined (mid (amal {M2.X-gen})) = _≈_.refl
-  g-well-defined (mid (amal {M2.S-gen})) = _≈_.refl
-  g-well-defined (mid (amal {M2.ζ-gen})) = _≈_.refl
+  g-well-defined (mid (amal {SXζHH.HH-gen})) = _≈_.refl
+  g-well-defined (mid (amal {SXζHH.X-gen})) = _≈_.refl
+  g-well-defined (mid (amal {SXζHH.S-gen})) = _≈_.refl
+  g-well-defined (mid (amal {SXζHH.ζ-gen})) = _≈_.refl
 
   f-left-inv-gen : ∀ x → [ x ]ʷ ≈₂ (f *) (g x)
-  f-left-inv-gen (inj₁ MA.T-gen) = _≈₂_.refl
-  f-left-inv-gen (inj₁ MA.X-gen) = by-equal-nf Eq.refl
-  f-left-inv-gen (inj₁ MA.S-gen) = _≈₂_.refl
-  f-left-inv-gen (inj₁ MA.ζ-gen) = _≈₂_.refl
-  f-left-inv-gen (inj₂ MB.H-gen) = _≈₂_.refl
-  f-left-inv-gen (inj₂ MB.X-gen) = by-equal-nf Eq.refl
-  f-left-inv-gen (inj₂ MB.S-gen) = by-equal-nf Eq.refl
-  f-left-inv-gen (inj₂ MB.ζ-gen) = by-equal-nf Eq.refl
-  f-left-inv-gen (inj₁ MA.HH-gen) = by-equal-nf Eq.refl
-  f-left-inv-gen (inj₂ MB.HH-gen) = by-equal-nf Eq.refl
+  f-left-inv-gen (inj₁ CliffordTHH.T-gen) = _≈₂_.refl
+  f-left-inv-gen (inj₁ CliffordTHH.X-gen) = by-equal-nf Eq.refl
+  f-left-inv-gen (inj₁ CliffordTHH.S-gen) = _≈₂_.refl
+  f-left-inv-gen (inj₁ CliffordTHH.ζ-gen) = _≈₂_.refl
+  f-left-inv-gen (inj₂ CliffordH.H-gen) = _≈₂_.refl
+  f-left-inv-gen (inj₂ CliffordH.X-gen) = by-equal-nf Eq.refl
+  f-left-inv-gen (inj₂ CliffordH.S-gen) = by-equal-nf Eq.refl
+  f-left-inv-gen (inj₂ CliffordH.ζ-gen) = by-equal-nf Eq.refl
+  f-left-inv-gen (inj₁ CliffordTHH.HH-gen) = by-equal-nf Eq.refl
+  f-left-inv-gen (inj₂ CliffordH.HH-gen) = by-equal-nf Eq.refl
 
   g-left-inv-gen : ∀ x → [ x ]ʷ ≈ (g *) (f x)
   g-left-inv-gen T-gen = _≈_.refl
@@ -2650,47 +2650,47 @@ module CliffordT1-Simplified where
     Z ∎
 
 
-  f₁ = PackedCosetTable.f MA.ca'
-  f₂ = PackedCosetTable.f MB.ca'
-  mypres = MA._===_ * MB._===_ ⋆ f₁ ⋆ f₂
+  f₁ = PackedCosetTable.f CliffordTHH.ca'
+  f₂ = PackedCosetTable.f CliffordH.ca'
+  mypres = CliffordTHH._===_ * CliffordH._===_ ⋆ f₁ ⋆ f₂
 
 
-  amalt1 : AmalDataNF M2.Gen MA._===_ MB._===_
-  amalt1 = record { P₀ = M2._===_ ;
-    CA₁ = MA.ca' ;
-    CA₂ = MB.ca' }
+  amalt1 : AmalDataNF SXζHH.Gen CliffordTHH._===_ CliffordH._===_
+  amalt1 = record { P₀ = SXζHH._===_ ;
+    CA₁ = CliffordTHH.ca' ;
+    CA₂ = CliffordH.ca' }
 
-  open ANF MA._===_  MB._===_ amalt1 using (nfp ; nfp') public
+  open ANF CliffordTHH._===_  CliffordH._===_ amalt1 using (nfp ; nfp') public
 
 --  open PB _===_ renaming (_===_ to _===₁_ ; _≈_ to _≈_) using ()
 
   
-  open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
+  open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
 
   open import Algebra.Bundles using (Monoid)
   open import Algebra.Morphism.Structures using (module MonoidMorphisms)
 
-  f : Gen → Word (MA.Gen ⊎ MB.Gen)
-  f T-gen = [ MA.T ]ₗ
-  f H-gen = [ MB.H ]ᵣ
-  f S-gen = [ MA.S ]ₗ
-  f ζ-gen = [ MA.ζ ]ₗ
+  f : Gen → Word (CliffordTHH.Gen ⊎ CliffordH.Gen)
+  f T-gen = [ CliffordTHH.T ]ₗ
+  f H-gen = [ CliffordH.H ]ᵣ
+  f S-gen = [ CliffordTHH.S ]ₗ
+  f ζ-gen = [ CliffordTHH.ζ ]ₗ
 
-  g : (MA.Gen ⊎ MB.Gen) → Word Gen
-  g (inj₁ MA.T-gen) = T
-  g (inj₁ MA.X-gen) = X
-  g (inj₁ MA.S-gen) = S
-  g (inj₁ MA.ζ-gen) = ζ
-  g (inj₂ MB.H-gen) = H
-  g (inj₂ MB.X-gen) = X
-  g (inj₂ MB.S-gen) = S
-  g (inj₂ MB.ζ-gen) = ζ
-  g (inj₁ MA.HH-gen) = H ^ 2
-  g (inj₂ MB.HH-gen) = H ^ 2
+  g : (CliffordTHH.Gen ⊎ CliffordH.Gen) → Word Gen
+  g (inj₁ CliffordTHH.T-gen) = T
+  g (inj₁ CliffordTHH.X-gen) = X
+  g (inj₁ CliffordTHH.S-gen) = S
+  g (inj₁ CliffordTHH.ζ-gen) = ζ
+  g (inj₂ CliffordH.H-gen) = H
+  g (inj₂ CliffordH.X-gen) = X
+  g (inj₂ CliffordH.S-gen) = S
+  g (inj₂ CliffordH.ζ-gen) = ζ
+  g (inj₁ CliffordTHH.HH-gen) = H ^ 2
+  g (inj₂ CliffordH.HH-gen) = H ^ 2
 
-  lemma-Z : (g *) [ MA.Z ]ₗ ≈ Z
+  lemma-Z : (g *) [ CliffordTHH.Z ]ₗ ≈ Z
   lemma-Z = begin
-    (g *) [ MA.Z ]ₗ ≈⟨ _≈_.refl ⟩
+    (g *) [ CliffordTHH.Z ]ₗ ≈⟨ _≈_.refl ⟩
     ζ ^ 3 • S ^ 2 • X ^ 2 • S • X ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 3 • S ^ 2 • ζ ^ 3 • H • S • H • H • S • S • H) • ζ ^ 3 • (H • S • H) • (H • S • S • H) • S • X ≈⟨ cong refl (sym (lemma-ζ^n 3 ((H • S • H) • (H • S • S • H) • S • X))) ⟩
     (ζ ^ 3 • S ^ 2 • ζ ^ 3 • H • S • H • H • S • S • H) • ((H • S • H) • (H • S • S • H) • S • X) • ζ ^ 3 ≈⟨ by-assoc Eq.refl ⟩
@@ -2717,11 +2717,11 @@ module CliffordT1-Simplified where
     (ζ ^ 3 • S ^ 2 • H ^ 2 • S • H • H) • (ε) ^ 2 ≈⟨ trans (cong refl left-unit) right-unit ⟩
     Z ∎
 
-  lemma-comm-HH-S' : H ^ 2 • S ≈ (S • (g *) [ MA.Z ]ₗ) • H ^ 2
+  lemma-comm-HH-S' : H ^ 2 • S ≈ (S • (g *) [ CliffordTHH.Z ]ₗ) • H ^ 2
   lemma-comm-HH-S' = begin
     H ^ 2 • S ≈⟨ lemma-comm-HH-S ⟩
     (S • Z) • H ^ 2 ≈⟨ cong (cong refl (sym lemma-Z)) refl ⟩
-    (S • (g *) [ MA.Z ]ₗ) • H ^ 2 ∎
+    (S • (g *) [ CliffordTHH.Z ]ₗ) • H ^ 2 ∎
 
 
   lemma-THHT : T • H ^ 2 • T ≈ Z • H ^ 2 • Z
@@ -2788,72 +2788,72 @@ module CliffordT1-Simplified where
 
 
   f-well-defined : ∀ {w v} → w === v → (f *) w ≈₂ (f *) v
-  f-well-defined order-ζ = _≈₂_.axiom (left MA.order-ζ)
-  f-well-defined order-S = _≈₂_.axiom (left MA.order-S)
-  f-well-defined order-H = _≈₂_.axiom (right MB.order-H)
+  f-well-defined order-ζ = _≈₂_.axiom (left CliffordTHH.order-ζ)
+  f-well-defined order-S = _≈₂_.axiom (left CliffordTHH.order-S)
+  f-well-defined order-H = _≈₂_.axiom (right CliffordH.order-H)
   f-well-defined order-T = by-equal-nf Eq.refl
   f-well-defined order-SH = by-equal-nf Eq.refl
-  f-well-defined comm-TS = _≈₂_.axiom (left MA.comm-TS)
+  f-well-defined comm-TS = _≈₂_.axiom (left CliffordTHH.comm-TS)
   f-well-defined comm-TX = by-equal-nf Eq.refl
-  f-well-defined (comm {T-gen}) = _≈₂_.axiom (left MA.comm)
+  f-well-defined (comm {T-gen}) = _≈₂_.axiom (left CliffordTHH.comm)
   f-well-defined (comm {H-gen}) = by-equal-nf Eq.refl
-  f-well-defined (comm {S-gen}) = _≈₂_.axiom (left MA.comm)
+  f-well-defined (comm {S-gen}) = _≈₂_.axiom (left CliffordTHH.comm)
   f-well-defined (comm {ζ-gen}) = _≈₂_.refl
   f-well-defined comm-HHSHHS = by-equal-nf Eq.refl
   f-well-defined order-THH = by-equal-nf Eq.refl
   
   g-well-defined : ∀ {w v} → w ===₂ v → (g *) w ≈ (g *) v
-  g-well-defined (left MA.order-ζ) = axiom order-ζ
-  g-well-defined (left MA.order-S) = axiom order-S
-  g-well-defined (left MA.order-X) = lemma-order-X
-  g-well-defined (left MA.order-HH) = lemma-order-HH
-  g-well-defined (left MA.comm-XS-SX) = lemma-comm-XS-SX
-  g-well-defined (left MA.comm-HH-X) = lemma-comm-HH-X
-  g-well-defined (left MA.comm-HH-S) = lemma-comm-HH-S'
-  g-well-defined (left MA.order-T) = trans (axiom order-T) (sym lemma-Z)
-  g-well-defined (left MA.comm-TS) = _≈_.axiom comm-TS
-  g-well-defined (left MA.comm-TX) = _≈_.axiom comm-TX
-  g-well-defined (left MA.comm-THH) = trans (lemma-comm-THH) (cong (sym lemma-Z) refl)
-  g-well-defined (left (MA.comm {MA.T-gen})) = _≈_.axiom comm
-  g-well-defined (left (MA.comm {MA.X-gen})) = _≈_.sym (lemma-ζ (wconcat (wmap g (wmap inj₁ [ MA.X-gen ]ʷ))))
-  g-well-defined (left (MA.comm {MA.S-gen})) = _≈_.axiom comm
-  g-well-defined (left (MA.comm {MA.ζ-gen})) = _≈_.refl
-  g-well-defined (left (MA.comm {MA.HH-gen})) = _≈_.sym (lemma-ζ (wconcat (wmap g (wmap inj₁ [ MA.HH-gen ]ʷ))))
-  g-well-defined (left MA.order-SX) = lemma-order-SX
+  g-well-defined (left CliffordTHH.order-ζ) = axiom order-ζ
+  g-well-defined (left CliffordTHH.order-S) = axiom order-S
+  g-well-defined (left CliffordTHH.order-X) = lemma-order-X
+  g-well-defined (left CliffordTHH.order-HH) = lemma-order-HH
+  g-well-defined (left CliffordTHH.comm-XS-SX) = lemma-comm-XS-SX
+  g-well-defined (left CliffordTHH.comm-HH-X) = lemma-comm-HH-X
+  g-well-defined (left CliffordTHH.comm-HH-S) = lemma-comm-HH-S'
+  g-well-defined (left CliffordTHH.order-T) = trans (axiom order-T) (sym lemma-Z)
+  g-well-defined (left CliffordTHH.comm-TS) = _≈_.axiom comm-TS
+  g-well-defined (left CliffordTHH.comm-TX) = _≈_.axiom comm-TX
+  g-well-defined (left CliffordTHH.comm-THH) = trans (lemma-comm-THH) (cong (sym lemma-Z) refl)
+  g-well-defined (left (CliffordTHH.comm {CliffordTHH.T-gen})) = _≈_.axiom comm
+  g-well-defined (left (CliffordTHH.comm {CliffordTHH.X-gen})) = _≈_.sym (lemma-ζ (wconcat (wmap g (wmap inj₁ [ CliffordTHH.X-gen ]ʷ))))
+  g-well-defined (left (CliffordTHH.comm {CliffordTHH.S-gen})) = _≈_.axiom comm
+  g-well-defined (left (CliffordTHH.comm {CliffordTHH.ζ-gen})) = _≈_.refl
+  g-well-defined (left (CliffordTHH.comm {CliffordTHH.HH-gen})) = _≈_.sym (lemma-ζ (wconcat (wmap g (wmap inj₁ [ CliffordTHH.HH-gen ]ʷ))))
+  g-well-defined (left CliffordTHH.order-SX) = lemma-order-SX
 
-  g-well-defined (right MB.order-ζ) = _≈_.axiom order-ζ
-  g-well-defined (right MB.order-S) = _≈_.axiom order-S
-  g-well-defined (right MB.order-X) = lemma-order-X
-  g-well-defined (right MB.order-H) = _≈_.axiom order-H
-  g-well-defined (right MB.def-HH) = _≈_.refl
-  g-well-defined (right MB.order-SH) = _≈_.axiom order-SH
-  g-well-defined (right MB.comm-HH-X) = lemma-comm-HH-X
-  g-well-defined (right MB.HXH^3=Z) = trans lemma-HXH^3=Z (trans (sym lemma-Z) refl)
-  g-well-defined (right MB.order-SX) = lemma-order-SX
-  g-well-defined (right MB.comm-XS-SX) = lemma-comm-XS-SX
-  g-well-defined (right (MB.comm {MB.H-gen})) = _≈_.axiom comm
-  g-well-defined (right (MB.comm {MB.X-gen})) = _≈_.sym (lemma-ζ (wconcat (wmap g (wmap inj₂ [ MB.X-gen ]ʷ))))
-  g-well-defined (right (MB.comm {MB.S-gen})) = _≈_.axiom comm
-  g-well-defined (right (MB.comm {MB.ζ-gen})) = _≈_.refl
-  g-well-defined (right (MB.comm {MB.HH-gen})) = _≈_.sym (lemma-ζ (wconcat (wmap g (wmap inj₂ [ MB.HH-gen ]ʷ))))
-  g-well-defined (right MB.comm-HH-S) = trans lemma-comm-HH-S (cong (cong refl (sym lemma-Z)) refl)
+  g-well-defined (right CliffordH.order-ζ) = _≈_.axiom order-ζ
+  g-well-defined (right CliffordH.order-S) = _≈_.axiom order-S
+  g-well-defined (right CliffordH.order-X) = lemma-order-X
+  g-well-defined (right CliffordH.order-H) = _≈_.axiom order-H
+  g-well-defined (right CliffordH.def-HH) = _≈_.refl
+  g-well-defined (right CliffordH.order-SH) = _≈_.axiom order-SH
+  g-well-defined (right CliffordH.comm-HH-X) = lemma-comm-HH-X
+  g-well-defined (right CliffordH.HXH^3=Z) = trans lemma-HXH^3=Z (trans (sym lemma-Z) refl)
+  g-well-defined (right CliffordH.order-SX) = lemma-order-SX
+  g-well-defined (right CliffordH.comm-XS-SX) = lemma-comm-XS-SX
+  g-well-defined (right (CliffordH.comm {CliffordH.H-gen})) = _≈_.axiom comm
+  g-well-defined (right (CliffordH.comm {CliffordH.X-gen})) = _≈_.sym (lemma-ζ (wconcat (wmap g (wmap inj₂ [ CliffordH.X-gen ]ʷ))))
+  g-well-defined (right (CliffordH.comm {CliffordH.S-gen})) = _≈_.axiom comm
+  g-well-defined (right (CliffordH.comm {CliffordH.ζ-gen})) = _≈_.refl
+  g-well-defined (right (CliffordH.comm {CliffordH.HH-gen})) = _≈_.sym (lemma-ζ (wconcat (wmap g (wmap inj₂ [ CliffordH.HH-gen ]ʷ))))
+  g-well-defined (right CliffordH.comm-HH-S) = trans lemma-comm-HH-S (cong (cong refl (sym lemma-Z)) refl)
   
-  g-well-defined (mid (amal {M2.HH-gen})) = _≈_.refl
-  g-well-defined (mid (amal {M2.X-gen})) = _≈_.refl
-  g-well-defined (mid (amal {M2.S-gen})) = _≈_.refl
-  g-well-defined (mid (amal {M2.ζ-gen})) = _≈_.refl
+  g-well-defined (mid (amal {SXζHH.HH-gen})) = _≈_.refl
+  g-well-defined (mid (amal {SXζHH.X-gen})) = _≈_.refl
+  g-well-defined (mid (amal {SXζHH.S-gen})) = _≈_.refl
+  g-well-defined (mid (amal {SXζHH.ζ-gen})) = _≈_.refl
 
   f-left-inv-gen : ∀ x → [ x ]ʷ ≈₂ (f *) (g x)
-  f-left-inv-gen (inj₁ MA.T-gen) = _≈₂_.refl
-  f-left-inv-gen (inj₁ MA.X-gen) = by-equal-nf Eq.refl
-  f-left-inv-gen (inj₁ MA.S-gen) = _≈₂_.refl
-  f-left-inv-gen (inj₁ MA.ζ-gen) = _≈₂_.refl
-  f-left-inv-gen (inj₂ MB.H-gen) = _≈₂_.refl
-  f-left-inv-gen (inj₂ MB.X-gen) = by-equal-nf Eq.refl
-  f-left-inv-gen (inj₂ MB.S-gen) = by-equal-nf Eq.refl
-  f-left-inv-gen (inj₂ MB.ζ-gen) = by-equal-nf Eq.refl
-  f-left-inv-gen (inj₁ MA.HH-gen) = by-equal-nf Eq.refl
-  f-left-inv-gen (inj₂ MB.HH-gen) = by-equal-nf Eq.refl
+  f-left-inv-gen (inj₁ CliffordTHH.T-gen) = _≈₂_.refl
+  f-left-inv-gen (inj₁ CliffordTHH.X-gen) = by-equal-nf Eq.refl
+  f-left-inv-gen (inj₁ CliffordTHH.S-gen) = _≈₂_.refl
+  f-left-inv-gen (inj₁ CliffordTHH.ζ-gen) = _≈₂_.refl
+  f-left-inv-gen (inj₂ CliffordH.H-gen) = _≈₂_.refl
+  f-left-inv-gen (inj₂ CliffordH.X-gen) = by-equal-nf Eq.refl
+  f-left-inv-gen (inj₂ CliffordH.S-gen) = by-equal-nf Eq.refl
+  f-left-inv-gen (inj₂ CliffordH.ζ-gen) = by-equal-nf Eq.refl
+  f-left-inv-gen (inj₁ CliffordTHH.HH-gen) = by-equal-nf Eq.refl
+  f-left-inv-gen (inj₂ CliffordH.HH-gen) = by-equal-nf Eq.refl
 
   g-left-inv-gen : ∀ x → [ x ]ʷ ≈ (g *) (f x)
   g-left-inv-gen T-gen = _≈_.refl
