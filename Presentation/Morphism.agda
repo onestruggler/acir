@@ -230,23 +230,17 @@ module GroupMorphs
     inv-homo : ∀ x → (f *) (x ⁻¹₁) ≈₂ ((f *) x) ⁻¹₂
     inv-homo [ x ]ʷ =
       begin
-        (f *) ([ x ]ʷ ⁻¹₁)
-          ≈⟨ inverseˡ-unique₂
-               {g = (f *) [ x ]ʷ} {h = (f *) ([ x ]ʷ ⁻¹₁)}
-               (lemma-f*-cong (group-like₁ x .proj₂)) ⟩
+        (f *) ([ x ]ʷ ⁻¹₁) ≈⟨ inverseˡ-unique₂ {g = (f *) [ x ]ʷ}
+              {h = (f *) ([ x ]ʷ ⁻¹₁)} (lemma-f*-cong (group-like₁ x .proj₂)) ⟩
         (f *) [ x ]ʷ ⁻¹₂ ∎
       where open SR setoid₂
     inv-homo ε = refl₂
     inv-homo (x • y) =
       begin
-        (f *) ((x • y) ⁻¹₁)
-          ≈⟨ lemma-f*-cong {(x • y) ⁻¹₁} {y ⁻¹₁ • x ⁻¹₁} refl₁ ⟩
-        (f *) (y ⁻¹₁ • x ⁻¹₁)
-          ≈⟨ refl₂ ⟩
-        (f *) (y ⁻¹₁) • (f *) (x ⁻¹₁)
-          ≈⟨ cong₂ (inv-homo y) (inv-homo x) ⟩
-        ((f *) y) ⁻¹₂ • ((f *) x) ⁻¹₂
-          ≈⟨ refl₂ ⟩
+        (f *) ((x • y) ⁻¹₁)           ≈⟨ lemma-f*-cong {(x • y) ⁻¹₁} {y ⁻¹₁ • x ⁻¹₁} refl₁ ⟩
+        (f *) (y ⁻¹₁ • x ⁻¹₁)         ≈⟨ refl₂ ⟩
+        (f *) (y ⁻¹₁) • (f *) (x ⁻¹₁) ≈⟨ cong₂ (inv-homo y) (inv-homo x) ⟩
+        ((f *) y) ⁻¹₂ • ((f *) x) ⁻¹₂ ≈⟨ refl₂ ⟩
         (f *) (x • y) ⁻¹₂ ∎
       where open SR setoid₂
 
@@ -269,27 +263,21 @@ module GroupMorphs
     open RawGroup (Group.rawGroup •-ε-group₂) renaming (_⁻¹ to _⁻¹₂)
 
     -- wmap f maps inverses to inverses.
-    inv-homo : ∀ x → (f*) (x ⁻¹₁) ≈₂ ((f*) x) ⁻¹₂
+    inv-homo : ∀ x → f* (x ⁻¹₁) ≈₂ (f* x) ⁻¹₂
     inv-homo [ x ]ʷ =
       begin
-        (f*) ([ x ]ʷ ⁻¹₁)
-          ≈⟨ inverseˡ-unique₂
-               {g = (f*) [ x ]ʷ} {h = (f*) ([ x ]ʷ ⁻¹₁)}
-               (lemma-f*-cong (group-like₁ x .proj₂)) ⟩
-        (f*) [ x ]ʷ ⁻¹₂ ∎
+        f* ([ x ]ʷ ⁻¹₁) ≈⟨ inverseˡ-unique₂ {g = f* [ x ]ʷ}
+             {h = f* ([ x ]ʷ ⁻¹₁)} (lemma-f*-cong (group-like₁ x .proj₂)) ⟩
+        f* [ x ]ʷ ⁻¹₂ ∎
       where open SR setoid₂
     inv-homo ε = refl₂
     inv-homo (x • y) =
       begin
-        (f*) ((x • y) ⁻¹₁)
-          ≈⟨ lemma-f*-cong {(x • y) ⁻¹₁} {y ⁻¹₁ • x ⁻¹₁} refl₁ ⟩
-        (f*) (y ⁻¹₁ • x ⁻¹₁)
-          ≈⟨ refl₂ ⟩
-        (f*) (y ⁻¹₁) • (f*) (x ⁻¹₁)
-          ≈⟨ cong₂ (inv-homo y) (inv-homo x) ⟩
-        ((f*) y) ⁻¹₂ • ((f*) x) ⁻¹₂
-          ≈⟨ refl₂ ⟩
-        (f*) (x • y) ⁻¹₂ ∎
+        f* ((x • y) ⁻¹₁)        ≈⟨ lemma-f*-cong {(x • y) ⁻¹₁} {y ⁻¹₁ • x ⁻¹₁} refl₁ ⟩
+        f* (y ⁻¹₁ • x ⁻¹₁)      ≈⟨ refl₂ ⟩
+        f* (y ⁻¹₁) • f* (x ⁻¹₁) ≈⟨ cong₂ (inv-homo y) (inv-homo x) ⟩
+        (f* y) ⁻¹₂ • (f* x) ⁻¹₂ ≈⟨ refl₂ ⟩
+        f* (x • y) ⁻¹₂ ∎
       where open SR setoid₂
 
     -- wmap f is a group homomorphism.
