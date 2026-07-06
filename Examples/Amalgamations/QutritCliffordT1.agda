@@ -147,9 +147,9 @@ module Sζ where
   h-hyp SS-cr S-gen = trans (trans assoc (axiom order-S)) (sym right-unit)
   h-hyp SS-cr ζ-gen = lemma-ζ^n 1 [ SS-cr ]
 
-  module ca = CA.SingleLevel Pζ _===_ C ε-cr f h [_]
-  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
-  open aat using (nfp ; nfp') public
+  module cosetData = CA.SingleLevel Pζ _===_ C ε-cr f h [_]
+  module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  open cosetTheorems using (nfp ; nfp') public
 
 
 module SXζ where
@@ -556,9 +556,9 @@ module SXζ where
   h-hyp XXSXX-cr S-gen = lemma-XXSXXS
   h-hyp XXSXX-cr ζ-gen = lemma-ζ [ XXSXX-cr ]
   
-  module ca = CA.SingleLevel Sζ._===_ _===_ C ε-cr f h [_]
-  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
-  open aat using (nfp ; nfp') public
+  module cosetData = CA.SingleLevel Sζ._===_ _===_ C ε-cr f h [_]
+  module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  open cosetTheorems using (nfp ; nfp') public
 
   module MM = NFBase.NormalFormWithoutInverse (nfp (Sζ.nfp (Cyclic.nfp 9)))
 
@@ -727,9 +727,9 @@ module SXζHH where
   h=⁻¹f-gen SXζ.X-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen SXζ.ζ-gen = _≈₀_.refl , Eq.refl
 
-  module ca = CA.SingleLevel SXζ._===_ _===_ C ε-cr f h [_]
-  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
-  open aat using (nfp ; nfp') public
+  module cosetData = CA.SingleLevel SXζ._===_ _===_ C ε-cr f h [_]
+  module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  open cosetTheorems using (nfp ; nfp') public
 
   module MM = NFBase.NormalFormWithoutInverse (nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))
 
@@ -1116,9 +1116,9 @@ module CliffordTHH where
   h-hyp (inj₂ tt) S-gen = trans left-unit (sym right-unit)
   h-hyp (inj₂ tt) ζ-gen = trans left-unit (sym right-unit)
 
-  module ca = CA.SingleLevel (SXζHH._===_) _===_ CT (inj₂ tt) f h [_]
-  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
-  open aat using (nfp ; nfp') public
+  module cosetData = CA.SingleLevel (SXζHH._===_) _===_ CT (inj₂ tt) f h [_]
+  module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  open cosetTheorems using (nfp ; nfp') public
   
   open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
 
@@ -1160,8 +1160,8 @@ module CliffordTHH where
   hcme~ THH-cr SXζHH.ζ-gen = by-nf Eq.refl
   
 
-  ca' : PackedCosetTable SXζHH._===_ _===_
-  ca' = record
+  packedTable : PackedCosetTable SXζHH._===_ _===_
+  packedTable = record
           { C = C
           ; f = f
           ; h = h
@@ -1513,9 +1513,9 @@ module CliffordTT where
 
 
 
-  module ca = CA.SingleLevel (SXζHH._===_) _===_ CT (inj₂ tt) f h [_]
-  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
-  open aat using (nfp ; nfp') public
+  module cosetData = CA.SingleLevel (SXζHH._===_) _===_ CT (inj₂ tt) f h [_]
+  module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  open cosetTheorems using (nfp ; nfp') public
   
   open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
 
@@ -1556,8 +1556,8 @@ module CliffordTT where
   hcme~ T-cr SXζHH.HH-gen = by-nf Eq.refl
   hcme~ TT-cr SXζHH.HH-gen = by-nf Eq.refl
   
-  ca' : PackedCosetTable SXζHH._===_ _===_
-  ca' = record
+  packedTable : PackedCosetTable SXζHH._===_ _===_
+  packedTable = record
           { C = C
           ; f = f
           ; h = h
@@ -1989,9 +1989,9 @@ module CliffordH where
   h-hyp (inj₁ H-cr) HH-gen = lemma-HHH
   h-hyp (inj₂ tt) HH-gen = trans left-unit (sym right-unit)
 
-  module ca = CA.SingleLevel (SXζHH._===_) _===_ CT (inj₂ tt) f h [_]
-  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
-  open aat using (nfp ; nfp') public
+  module cosetData = CA.SingleLevel (SXζHH._===_) _===_ CT (inj₂ tt) f h [_]
+  module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  open cosetTheorems using (nfp ; nfp') public
   
   open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9) )))) renaming (by-equal-nf to by-nf) using ()
 
@@ -2039,8 +2039,8 @@ module CliffordH where
   hcme~ HS-cr SXζHH.HH-gen = by-nf Eq.refl
   hcme~ H-cr SXζHH.HH-gen = by-nf Eq.refl
 
-  ca' : PackedCosetTable SXζHH._===_ _===_
-  ca' = record
+  packedTable : PackedCosetTable SXζHH._===_ _===_
+  packedTable = record
           { C = C
           ; f = f
           ; h = h
@@ -2139,20 +2139,20 @@ module CliffordT1 where
     H ^ 3 • Z • H ∎
 
 
-  f₁ = PackedCosetTable.f CliffordTHH.ca'
-  f₂ = PackedCosetTable.f CliffordH.ca'
-  mypres = CliffordTHH._===_ * CliffordH._===_ ⋆ f₁ ⋆ f₂
+  f₁ = PackedCosetTable.f CliffordTHH.packedTable
+  f₂ = PackedCosetTable.f CliffordH.packedTable
+  amalPres = CliffordTHH._===_ * CliffordH._===_ ⋆ f₁ ⋆ f₂
 
 
-  amalt1 : AmalDataNF SXζHH.Gen CliffordTHH._===_ CliffordH._===_
-  amalt1 = record { P₀ = SXζHH._===_ ;
-    CA₁ = CliffordTHH.ca' ;
-    CA₂ = CliffordH.ca' }
+  amalData : AmalDataNF SXζHH.Gen CliffordTHH._===_ CliffordH._===_
+  amalData = record { P₀ = SXζHH._===_ ;
+    CA₁ = CliffordTHH.packedTable ;
+    CA₂ = CliffordH.packedTable }
 
-  open ANF CliffordTHH._===_  CliffordH._===_ amalt1 using (nfp ; nfp') public
+  open ANF CliffordTHH._===_  CliffordH._===_ amalData using (nfp ; nfp') public
 
 --  open PB _===_ renaming (_===_ to _===₁_ ; _≈_ to _≈_) using ()
-  open PB mypres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
+  open PB amalPres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 
   
   open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
@@ -2269,11 +2269,11 @@ module CliffordT1 where
   g-left-inv-gen X-gen = _≈_.refl
 
   open MonoidMorphisms 
-  open PP mypres renaming (•-ε-monoid to m₂)
+  open PP amalPres renaming (•-ε-monoid to m₂)
 
 
   CliffordT1-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid mo) (Monoid.rawMonoid m₂) (f *)
-  CliffordT1-isomorphism = StarIsomorphism.isMonoidIsomorphism _===_ mypres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen
+  CliffordT1-isomorphism = StarIsomorphism.isMonoidIsomorphism _===_ amalPres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen
 
 
 module CliffordT1-Simplified where
@@ -2650,17 +2650,17 @@ module CliffordT1-Simplified where
     Z ∎
 
 
-  f₁ = PackedCosetTable.f CliffordTHH.ca'
-  f₂ = PackedCosetTable.f CliffordH.ca'
-  mypres = CliffordTHH._===_ * CliffordH._===_ ⋆ f₁ ⋆ f₂
+  f₁ = PackedCosetTable.f CliffordTHH.packedTable
+  f₂ = PackedCosetTable.f CliffordH.packedTable
+  amalPres = CliffordTHH._===_ * CliffordH._===_ ⋆ f₁ ⋆ f₂
 
 
-  amalt1 : AmalDataNF SXζHH.Gen CliffordTHH._===_ CliffordH._===_
-  amalt1 = record { P₀ = SXζHH._===_ ;
-    CA₁ = CliffordTHH.ca' ;
-    CA₂ = CliffordH.ca' }
+  amalData : AmalDataNF SXζHH.Gen CliffordTHH._===_ CliffordH._===_
+  amalData = record { P₀ = SXζHH._===_ ;
+    CA₁ = CliffordTHH.packedTable ;
+    CA₂ = CliffordH.packedTable }
 
-  open ANF CliffordTHH._===_  CliffordH._===_ amalt1 using (nfp ; nfp') public
+  open ANF CliffordTHH._===_  CliffordH._===_ amalData using (nfp ; nfp') public
 
 --  open PB _===_ renaming (_===_ to _===₁_ ; _≈_ to _≈_) using ()
 
@@ -2784,7 +2784,7 @@ module CliffordT1-Simplified where
 
 
   open import Presentation.Morphism
-  open PB mypres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
+  open PB amalPres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 
 
   f-well-defined : ∀ {w v} → w === v → (f *) w ≈₂ (f *) v
@@ -2862,9 +2862,9 @@ module CliffordT1-Simplified where
   g-left-inv-gen ζ-gen = _≈_.refl
 
   open MonoidMorphisms 
-  open PP mypres renaming (•-ε-monoid to m₂)
+  open PP amalPres renaming (•-ε-monoid to m₂)
 
 
   CliffordT1-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid mo) (Monoid.rawMonoid m₂) (f *)
-  CliffordT1-isomorphism = StarIsomorphism.isMonoidIsomorphism _===_ mypres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen
+  CliffordT1-isomorphism = StarIsomorphism.isMonoidIsomorphism _===_ amalPres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen
 
