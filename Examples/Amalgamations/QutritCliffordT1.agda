@@ -1,4 +1,4 @@
-﻿------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Examples
 --
 -- Completeness proof for the qutrit Clifford+T gate set.
@@ -22,7 +22,7 @@ import Presentation.Base as PB
 import Presentation.Properties as PP
 open PP using (NormalFormWithoutInverse ; NormalForm)
 import Normalization.CosetNF as CA
-open CA using (CosetNF-CT-Assumptions-And-Theorems-Packed)
+open CA using (PackedCosetTable)
 import Presentation.Reidemeister-Schreier as RS
 
 import Presentation.Groups.Sn as Sn
@@ -1160,7 +1160,7 @@ module MA where
   hcme~ THH-cr M2.ζ-gen = by-nf Eq.refl
   
 
-  ca' : CosetNF-CT-Assumptions-And-Theorems-Packed M2._===_ _===_
+  ca' : PackedCosetTable M2._===_ _===_
   ca' = record
           { C = C
           ; f = f
@@ -1556,7 +1556,7 @@ module MA' where
   hcme~ T-cr M2.HH-gen = by-nf Eq.refl
   hcme~ TT-cr M2.HH-gen = by-nf Eq.refl
   
-  ca' : CosetNF-CT-Assumptions-And-Theorems-Packed M2._===_ _===_
+  ca' : PackedCosetTable M2._===_ _===_
   ca' = record
           { C = C
           ; f = f
@@ -2039,7 +2039,7 @@ module MB where
   hcme~ HS-cr M2.HH-gen = by-nf Eq.refl
   hcme~ H-cr M2.HH-gen = by-nf Eq.refl
 
-  ca' : CosetNF-CT-Assumptions-And-Theorems-Packed M2._===_ _===_
+  ca' : PackedCosetTable M2._===_ _===_
   ca' = record
           { C = C
           ; f = f
@@ -2139,8 +2139,8 @@ module CliffordT1 where
     H ^ 3 • Z • H ∎
 
 
-  f₁ = CosetNF-CT-Assumptions-And-Theorems-Packed.f MA.ca'
-  f₂ = CosetNF-CT-Assumptions-And-Theorems-Packed.f MB.ca'
+  f₁ = PackedCosetTable.f MA.ca'
+  f₂ = PackedCosetTable.f MB.ca'
   mypres = MA._===_ * MB._===_ ⋆ f₁ ⋆ f₂
 
 
@@ -2650,8 +2650,8 @@ module CliffordT1-Simplified where
     Z ∎
 
 
-  f₁ = CosetNF-CT-Assumptions-And-Theorems-Packed.f MA.ca'
-  f₂ = CosetNF-CT-Assumptions-And-Theorems-Packed.f MB.ca'
+  f₁ = PackedCosetTable.f MA.ca'
+  f₂ = PackedCosetTable.f MB.ca'
   mypres = MA._===_ * MB._===_ ⋆ f₁ ⋆ f₂
 
 

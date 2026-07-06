@@ -1,4 +1,4 @@
-﻿------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Presentations of groups
 --
 -- Symmetric groups Sₙ and their normal form via coset enumeration

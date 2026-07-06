@@ -45,46 +45,6 @@ open import Data.List hiding ([_])
 
 
 
-lemma-**-act3 :
-  {Y X D : Set}
-  (py : WRel Y) (_⊕_ : D → X → Word X × D) ([_] : D → Word Y) (f : X → Word Y) →
-  let
-      open PB py using (_≈_)
-  in
-  (hyp : (c : D) (x : X) → ([ c ] • f x) ≈ (f *) ((c ⊕ x) .proj₁) • [ (c ⊕ x) .proj₂ ])
-  → -- -------------------------------------------------------------------------------------
-  ∀ (c : D) (w : Word X) → let _⊕'_ = _⊕_ ** in [ c ] • (f *) w ≈ (f *) ((c ⊕' w) .proj₁) • [ (c ⊕' w) .proj₂ ]
-lemma-**-act3 {Y} {X} {D} py _⊕_ [_] f hyp c [ x ]ʷ = hyp c x
-lemma-**-act3 {Y} {X} {D} py _⊕_ [_] f hyp c ε = _≈_.trans _≈_.right-unit (_≈_.sym _≈_.left-unit)
-  where
-    open PB py
-lemma-**-act3 {Y} {X} {D} py _⊕_ [_] f hyp c (w • v)  with (_⊕_ **) c w | inspect (((_⊕_) **) c) w
-... | (w' , c') | [ Eq.refl ]' with (_⊕_ **) c' v | inspect ((_⊕_ **) c') v
-... | (v' , c'') | [ Eq.refl ]' = claim
-  where
-    open PB py
-    open PP py renaming (word-setoid to ws) using ()
-
-    -- eval : Word X × D → Word X
-    -- eval wc = (wc .proj₁) • [ wc .proj₂ ]
-    infix 4 _⊕'_ 
-    _⊕'_ = _⊕_ **
-
-    [_]ₓ' = f *
-
-    open SR ws
-
-    claim : [ c ] • [ w • v ]ₓ' ≈ [ w' • v' ]ₓ' • [ c'' ]
-    claim = begin
-      [ c ] • [ w • v ]ₓ' ≈⟨ _≈_.sym _≈_.assoc ⟩
-      ([ c ] • [ w ]ₓ') • [ v ]ₓ' ≈⟨ _≈_.cong (lemma-**-act3 py _⊕_ [_] f hyp c w) _≈_.refl ⟩
-      ([ w' ]ₓ' • [ c' ]) • [ v ]ₓ' ≈⟨ _≈_.assoc ⟩
-      [ w' ]ₓ' • [ c' ] • [ v ]ₓ' ≈⟨ _≈_.cong _≈_.refl (lemma-**-act3 py _⊕_ [_] f hyp c' v) ⟩
-      [ w' ]ₓ' • [ v' ]ₓ' • [ c'' ] ≈⟨ _≈_.sym _≈_.assoc ⟩
-      [ w' • v' ]ₓ' • [ c'' ] ∎
-
-
-
 -- C (D) is the set of non-trivial coset representatives.
 amalNFC : (C D : Set) → Set
 amalNFC C D = (D ⊎ ⊤) × List (C × D) × (C ⊎ ⊤)
@@ -92,8 +52,8 @@ amalNFC C D = (D ⊎ ⊤) × List (C × D) × (C ⊎ ⊤)
 record AmalDataNF {A B : Set} (M : Set) (P1 : WRel A) (P2 : WRel B) : Set₁ where
   field
     P₀ : WRel M
-    CA₁ : CosetNF-CT-Assumptions-And-Theorems-Packed P₀ P1
-    CA₂ : CosetNF-CT-Assumptions-And-Theorems-Packed P₀ P2
+    CA₁ : PackedCosetTable P₀ P1
+    CA₂ : PackedCosetTable P₀ P2
 
 -- Amalgamation product with NF property.
 module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P₁ P₂) where
@@ -104,9 +64,9 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   open AmalDataNF anf using (CA₁ ; CA₂ ; P₀) using () public
   open PB P₀ renaming ( _===_ to _===₀_ ; _≈_ to _≈₀_ ; refl' to refl'₀) using () public
   open PP P₀ renaming (word-setoid to ws₀) using () public
-  open CosetNF-CT-Assumptions-And-Theorems-Packed CA₁ renaming ([_]ₒ to [_]ₒ₁ ; [_]ₓ to [_]ₓ₁ ; [_] to [_]₁ ; f to f₁ ; f-wd-ax to f-wd-ax₁ ; f*-injective to f*-injective₁ ; [I]≡ε to [I]≡ε₁
+  open PackedCosetTable CA₁ renaming ([_]ₒ to [_]ₒ₁ ; [_]ₓ to [_]ₓ₁ ; [_] to [_]₁ ; f to f₁ ; f-wd-ax to f-wd-ax₁ ; f*-injective to f*-injective₁ ; [I]≡ε to [I]≡ε₁
     ; h to h₁ ; nfx to nfx₁ ; h=ract to h₁-hyp ; _~_ to _~₁_ ; I to I₁) using (C ; hcm ; hcm' ; hcmw ; hca ; hcmw-hyp ; hcmw'-hyp ; hcm-hyp ; hcm'-hyp ; hca-hyp) public
-  open CosetNF-CT-Assumptions-And-Theorems-Packed CA₂ renaming (h to h₂ ; [_]ₒ to [_]ₒ₂ ; [_]ₓ to [_]ₓ₂ ; [_] to [_]₂ ; f to f₂ ; f-wd-ax to f-wd-ax₂ ; f*-injective to f*-injective₂ ; [I]≡ε to [I]≡ε₂
+  open PackedCosetTable CA₂ renaming (h to h₂ ; [_]ₒ to [_]ₒ₂ ; [_]ₓ to [_]ₓ₂ ; [_] to [_]₂ ; f to f₂ ; f-wd-ax to f-wd-ax₂ ; f*-injective to f*-injective₂ ; [I]≡ε to [I]≡ε₂
     ; nfx to nfx₂ ; h=ract to h₂-hyp ; _~_ to _~₂_ ; I to I₂ ; hcm to hdm ; hca to hdb ; hcmw-hyp to hdmw-hyp ; hcmw'-hyp to hdmw'-hyp ; hcm'-hyp to hdm'-hyp ; hcm-hyp to hdm-hyp ; hca-hyp to hdb-hyp ; hcm' to hdm' ; hcmw to hdmw ; hcmw' to hdmw' ; C to D) using () public
 
 
@@ -320,7 +280,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
 
   lemma-hcdw : ∀ cd wm → let (wm' , cd') = hcdw cd wm in [ cd ]ᵢ • [ wm ]ₓ ≈₃ [ wm' ]ₓ • [ cd' ]ᵢ
-  lemma-hcdw cd wm = lemma-**-act3 _===₃_ hcd [_]ᵢ ([_]ₗ ∘ f₁) aux-hh3' cd wm
+  lemma-hcdw cd wm = lemma-**-act _===₃_ hcd [_]ᵢ ([_]ₗ ∘ f₁) aux-hh3' cd wm
   
 
   lemma-hcdws : ∀ cds wm → let (wm' , cds') = hcdws cds wm in semcds cds • [ wm ]ₓ ≈₃ [ wm' ]ₓ • semcds cds'
@@ -723,8 +683,8 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
       open SR ws₃
 
 
-  open CosetNF-CT-Assumptions-And-Theorems-Packed CA₁ renaming (h-wd-ax to h-wd-ax₁ ; h-wd to h-wd₁ ; f-wd to f-wd₁ ; h-wd-m to h-wd-m₁) using (hcmw' ; lemma-h**=hcmw' ; lemma-h**=hcmw ; hcmw-cong ; hcmw-cong2 ; hcmw-cong' ; hcmw-cong'2 ; htme ; hcme) public
-  open CosetNF-CT-Assumptions-And-Theorems-Packed CA₂ renaming (h-wd-ax to h-wd-ax₂ ; h-wd to h-wd₂ ; f-wd to f-wd₂ ; h-wd-m to h-wd-m₂ ; hcmw-cong to hdmw-cong ; hcmw-cong2 to hdmw-cong2 ; hcmw-cong' to hdmw-cong' ; hcmw-cong'2 to hdmw-cong'2 ; lemma-h**=hcmw' to lemma-h**=hdmw' ; htme to htme₂ ; hcme to hdme) using () public
+  open PackedCosetTable CA₁ renaming (h-wd-ax to h-wd-ax₁ ; h-wd to h-wd₁ ; f-wd to f-wd₁ ; h-wd-m to h-wd-m₁) using (hcmw' ; lemma-h**=hcmw' ; lemma-h**=hcmw ; hcmw-cong ; hcmw-cong2 ; hcmw-cong' ; hcmw-cong'2 ; htme ; hcme) public
+  open PackedCosetTable CA₂ renaming (h-wd-ax to h-wd-ax₂ ; h-wd to h-wd₂ ; f-wd to f-wd₂ ; h-wd-m to h-wd-m₂ ; hcmw-cong to hdmw-cong ; hcmw-cong2 to hdmw-cong2 ; hcmw-cong' to hdmw-cong' ; hcmw-cong'2 to hdmw-cong'2 ; lemma-h**=hcmw' to lemma-h**=hdmw' ; htme to htme₂ ; hcme to hdme) using () public
 
 
 

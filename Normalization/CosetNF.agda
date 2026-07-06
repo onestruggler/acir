@@ -14,7 +14,7 @@
 --   * Data-CT    — the same for a "coset table" carrying a
 --                  distinguished identity coset, indexing by C ⊎ ⊤,
 --                  together with the packed record
---                  CosetNF-CT-Assumptions-And-Theorems-Packed;
+--                  PackedCosetTable;
 --   * CosetTower — iterating Data up an ℕ-indexed family of
 --                  presentations to build a normal form at every level.
 ------------------------------------------------------------------------
@@ -48,6 +48,45 @@ import Normalization.Base as NFBase
 open NFBase using (NormalFormWithoutInverse ; NormalForm)
 
 module Normalization.CosetNF where
+
+------------------------------------------------------------------------
+-- Extension of an action law from letters to words
+--
+-- If sliding one letter x past a coset c satisfies the section/action
+-- compatibility law  [ c ] • f x ≈ (f *) w' • [ c' ]  (where (w' , c')
+-- = c ⊕ x), then sliding a whole word (f *) w does too, with (_⊕_ **)
+-- threading the coset.
+
+lemma-**-act :
+  {Y X D : Set}
+  (py : WRel Y) (_⊕_ : D → X → Word X × D) ([_] : D → Word Y) (f : X → Word Y) →
+  let open PB py using (_≈_) in
+  (hyp : (c : D) (x : X) → ([ c ] • f x) ≈ (f *) ((c ⊕ x) .proj₁) • [ (c ⊕ x) .proj₂ ]) →
+  ∀ (c : D) (w : Word X) → let _⊕'_ = _⊕_ ** in
+  [ c ] • (f *) w ≈ (f *) ((c ⊕' w) .proj₁) • [ (c ⊕' w) .proj₂ ]
+lemma-**-act py _⊕_ [_] f hyp c [ x ]ʷ = hyp c x
+lemma-**-act py _⊕_ [_] f hyp c ε = _≈_.trans _≈_.right-unit (_≈_.sym _≈_.left-unit)
+  where
+  open PB py
+lemma-**-act py _⊕_ [_] f hyp c (w • v) with (_⊕_ **) c w | inspect (((_⊕_) **) c) w
+... | (w' , c') | [ Eq.refl ]' with (_⊕_ **) c' v | inspect ((_⊕_ **) c') v
+... | (v' , c'') | [ Eq.refl ]' = claim
+  where
+  open PB py
+  open PP py renaming (word-setoid to ws) using ()
+
+  [_]ₓ' = f *
+
+  open SR ws
+
+  claim : [ c ] • [ w • v ]ₓ' ≈ [ w' • v' ]ₓ' • [ c'' ]
+  claim = begin
+    [ c ] • [ w • v ]ₓ' ≈⟨ _≈_.sym _≈_.assoc ⟩
+    ([ c ] • [ w ]ₓ') • [ v ]ₓ' ≈⟨ _≈_.cong (lemma-**-act py _⊕_ [_] f hyp c w) _≈_.refl ⟩
+    ([ w' ]ₓ' • [ c' ]) • [ v ]ₓ' ≈⟨ _≈_.assoc ⟩
+    [ w' ]ₓ' • [ c' ] • [ v ]ₓ' ≈⟨ _≈_.cong _≈_.refl (lemma-**-act py _⊕_ [_] f hyp c' v) ⟩
+    [ w' ]ₓ' • [ v' ]ₓ' • [ c'' ] ≈⟨ _≈_.sym _≈_.assoc ⟩
+    [ w' • v' ]ₓ' • [ c'' ] ∎
 
 ------------------------------------------------------------------------
 -- Single-level coset extension (Reidemeister–Schreier transfer)
@@ -338,53 +377,14 @@ module Data-CT
     hca-hyp c a = h=ract (inj₁ c) a
 
 
-    lemma-**-act3 :
-      {Y X D : Set}
-      (py : WRel Y) (_⊕_ : D → X → Word X × D) ([_] : D → Word Y) (f : X → Word Y) →
-      let
-          open PB py using (_≈_)
-      in
-      (hyp : (c : D) (x : X) → ([ c ] • f x) ≈ (f *) ((c ⊕ x) .proj₁) • [ (c ⊕ x) .proj₂ ])
-      → -- -------------------------------------------------------------------------------------
-      ∀ (c : D) (w : Word X) → let _⊕'_ = _⊕_ ** in [ c ] • (f *) w ≈ (f *) ((c ⊕' w) .proj₁) • [ (c ⊕' w) .proj₂ ]
-    lemma-**-act3 {Y} {X} {D} py _⊕_ [_] f hyp c [ x ]ʷ = hyp c x
-    lemma-**-act3 {Y} {X} {D} py _⊕_ [_] f hyp c ε = _≈_.trans _≈_.right-unit (_≈_.sym _≈_.left-unit)
-      where
-        open PB py
-    lemma-**-act3 {Y} {X} {D} py _⊕_ [_] f hyp c (w • v)  with (_⊕_ **) c w | inspect (((_⊕_) **) c) w
-    ... | (w' , c') | [ Eq.refl ]' with (_⊕_ **) c' v | inspect ((_⊕_ **) c') v
-    ... | (v' , c'') | [ Eq.refl ]' = claim
-      where
-        open PB py
-        open PP py renaming (word-setoid to ws) using ()
-
-        -- eval : Word X × D → Word X
-        -- eval wc = (wc .proj₁) • [ wc .proj₂ ]
-        infix 4 _⊕'_ 
-        _⊕'_ = _⊕_ **
-
-        [_]ₓ' = f *
-
-        open SR ws
-
-        claim : [ c ] • [ w • v ]ₓ' ≈ [ w' • v' ]ₓ' • [ c'' ]
-        claim = begin
-          [ c ] • [ w • v ]ₓ' ≈⟨ _≈_.sym _≈_.assoc ⟩
-          ([ c ] • [ w ]ₓ') • [ v ]ₓ' ≈⟨ _≈_.cong (lemma-**-act3 py _⊕_ [_] f hyp c w) _≈_.refl ⟩
-          ([ w' ]ₓ' • [ c' ]) • [ v ]ₓ' ≈⟨ _≈_.assoc ⟩
-          [ w' ]ₓ' • [ c' ] • [ v ]ₓ' ≈⟨ _≈_.cong _≈_.refl (lemma-**-act3 py _⊕_ [_] f hyp c' v) ⟩
-          [ w' ]ₓ' • [ v' ]ₓ' • [ c'' ] ≈⟨ _≈_.sym _≈_.assoc ⟩
-          [ w' • v' ]ₓ' • [ c'' ] ∎
-
-
 
     hcmw-hyp :  ∀ c m → let (m' , c') = hcmw c m in
        [ c ]ₒ • [ m ]ₓ ≈₂ [ m' ]ₓ • [ c' ]ₒ
-    hcmw-hyp c m = lemma-**-act3 P₂ hcm [_]ₒ f hcm-hyp c m
+    hcmw-hyp c m = lemma-**-act P₂ hcm [_]ₒ f hcm-hyp c m
 
     hcmw'-hyp :  ∀ c m → let (m' , c') = hcmw' c m in
        [ c ] • [ m ]ₓ ≈₂ [ m' ]ₓ • [ c' ]
-    hcmw'-hyp c m = lemma-**-act3 P₂ hcm' [_] f hcm'-hyp c m
+    hcmw'-hyp c m = lemma-**-act P₂ hcm' [_] f hcm'-hyp c m
 
 
     [I]≡ε : [ inj₂ tt ] ≡ ε
@@ -393,9 +393,9 @@ module Data-CT
     [I]≈ε : [ I ] ≈₂ ε
     [I]≈ε rewrite [I]≡ε = _≈₂_.refl
 
-    module myData = Data P₁ P₂ (C ⊎ ⊤) (inj₂ tt) f h [_]
+    module asData = Data P₁ P₂ (C ⊎ ⊤) (inj₂ tt) f h [_]
 
-    open myData.Assumptions-And-Theorems htme~ h-wd-ax f-wd-ax [I]≈ε h=ract using (f*-injective ; nfx ; h-wd ; f-wd ; nfp') public 
+    open asData.Assumptions-And-Theorems htme~ h-wd-ax f-wd-ax [I]≈ε h=ract using (f*-injective ; nfx ; h-wd ; f-wd ; nfp') public 
 
 
     lemma-h**=hcmw : ∀ c w → let (w' , c') = hcmw c w in
@@ -482,7 +482,7 @@ module Data-CT
 -- caller can hand over the whole transfer as one value.  Opening it
 -- re-exports every theorem of Data-CT.Assumptions-And-Theorems.
 
-record CosetNF-CT-Assumptions-And-Theorems-Packed
+record PackedCosetTable
   {M A : Set}
   (P₁ : WRel M)
   (P₂ : WRel A) : Set₁
@@ -530,8 +530,8 @@ record CosetNF-CT-Assumptions-And-Theorems-Packed
      [ c ] • [ y ]ʷ ≈₂ [ m' ]ₓ • [ c' ]
 
 
-  module myData2 = Data-CT P₁ P₂ C f h [_]ₒ
-  open myData2.Assumptions-And-Theorems hcme htme htme~ hcme~ h-wd-ax f-wd-ax h=ract public
+  module asDataCT = Data-CT P₁ P₂ C f h [_]ₒ
+  open asDataCT.Assumptions-And-Theorems hcme htme htme~ hcme~ h-wd-ax f-wd-ax h=ract public
 
 
 ------------------------------------------------------------------------

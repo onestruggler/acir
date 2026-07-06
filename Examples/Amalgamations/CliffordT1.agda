@@ -1,4 +1,4 @@
-﻿------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Examples
 --
 -- Completeness proof for the qubit Clifford+T gate set.
@@ -22,7 +22,7 @@ import Presentation.Base as PB
 import Presentation.Properties as PP
 open PP using (NormalFormWithoutInverse ; NormalForm)
 import Normalization.CosetNF as CA
-open CA using (CosetNF-CT-Assumptions-And-Theorems-Packed)
+open CA using (PackedCosetTable)
 import Presentation.Reidemeister-Schreier as RS
 
 import Presentation.Groups.Sn as Sn
@@ -507,7 +507,7 @@ module MA where
   hcme~ H-cr M.S-gen = by-nf Eq.refl
   hcme~ H-cr M.ω-gen = by-nf Eq.refl
 
-  ca' : CosetNF-CT-Assumptions-And-Theorems-Packed M._===_ _===_
+  ca' : PackedCosetTable M._===_ _===_
   ca' = record
           { C = C
           ; f = f
@@ -751,7 +751,7 @@ module MB where
   hcme~ T-cr M.S-gen = by-nf Eq.refl
   hcme~ T-cr M.ω-gen = by-nf Eq.refl
 
-  ca' : CosetNF-CT-Assumptions-And-Theorems-Packed M._===_ _===_
+  ca' : PackedCosetTable M._===_ _===_
   ca' = record
           { C = C
           ; f = f
@@ -823,7 +823,7 @@ module CliffordT1 where
   g (inj₂ MA.S-gen) = S
   g (inj₂ MA.ω-gen) = ω
 
-  mypres = MB._===_ * MA._===_ ⋆ CosetNF-CT-Assumptions-And-Theorems-Packed.f MB.ca' ⋆ CosetNF-CT-Assumptions-And-Theorems-Packed.f MA.ca'
+  mypres = MB._===_ * MA._===_ ⋆ PackedCosetTable.f MB.ca' ⋆ PackedCosetTable.f MA.ca'
   
   open PB _===_ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
   open PP _===_ using (by-assoc)
@@ -906,9 +906,9 @@ module CliffordT1 where
 
   g-well-defined {.([ MA.ω • [ MA.S-gen ]ʷ ]ᵣ)} {.([ [ MA.S-gen ]ʷ • MA.ω ]ᵣ)} (right {.(MA.ω • [ MA.S-gen ]ʷ)} {.([ MA.S-gen ]ʷ • MA.ω)} (MA.comm {MA.S-gen})) = _≈₁_.axiom comm
   g-well-defined {.([ MA.ω • [ MA.ω-gen ]ʷ ]ᵣ)} {.([ [ MA.ω-gen ]ʷ • MA.ω ]ᵣ)} (right {.(MA.ω • [ MA.ω-gen ]ʷ)} {.([ MA.ω-gen ]ʷ • MA.ω)} (MA.comm {MA.ω-gen})) = _≈₁_.refl
-  g-well-defined {.([ CosetNF-CT-Assumptions-And-Theorems-Packed.f (AmalDataNF.CA₁ amalt1) M.X-gen ]ₗ)} {.([ CosetNF-CT-Assumptions-And-Theorems-Packed.f (AmalDataNF.CA₂ amalt1) M.X-gen ]ᵣ)} (mid (amal {M.X-gen})) = _≈₁_.refl
-  g-well-defined {.([ CosetNF-CT-Assumptions-And-Theorems-Packed.f (AmalDataNF.CA₁ amalt1) M.S-gen ]ₗ)} {.([ CosetNF-CT-Assumptions-And-Theorems-Packed.f (AmalDataNF.CA₂ amalt1) M.S-gen ]ᵣ)} (mid (amal {M.S-gen})) = _≈₁_.refl
-  g-well-defined {.([ CosetNF-CT-Assumptions-And-Theorems-Packed.f (AmalDataNF.CA₁ amalt1) M.ω-gen ]ₗ)} {.([ CosetNF-CT-Assumptions-And-Theorems-Packed.f (AmalDataNF.CA₂ amalt1) M.ω-gen ]ᵣ)} (mid (amal {M.ω-gen})) = _≈₁_.refl
+  g-well-defined {.([ PackedCosetTable.f (AmalDataNF.CA₁ amalt1) M.X-gen ]ₗ)} {.([ PackedCosetTable.f (AmalDataNF.CA₂ amalt1) M.X-gen ]ᵣ)} (mid (amal {M.X-gen})) = _≈₁_.refl
+  g-well-defined {.([ PackedCosetTable.f (AmalDataNF.CA₁ amalt1) M.S-gen ]ₗ)} {.([ PackedCosetTable.f (AmalDataNF.CA₂ amalt1) M.S-gen ]ᵣ)} (mid (amal {M.S-gen})) = _≈₁_.refl
+  g-well-defined {.([ PackedCosetTable.f (AmalDataNF.CA₁ amalt1) M.ω-gen ]ₗ)} {.([ PackedCosetTable.f (AmalDataNF.CA₂ amalt1) M.ω-gen ]ᵣ)} (mid (amal {M.ω-gen})) = _≈₁_.refl
 
   f-left-inv-gen : ∀ x → [ x ]ʷ ≈₂ (f *) (g x)
   f-left-inv-gen (inj₁ MB.T-gen) = _≈₂_.refl
