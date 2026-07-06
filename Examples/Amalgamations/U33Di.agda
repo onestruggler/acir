@@ -279,7 +279,7 @@ module TwoLevel-Simplified-Amal where
     [ K01I0I0 ] = K₀₁ • i₀ • i₀
     [ KIIK ] = K₀₁ • i₀ • i₀ • K₀₁
 
-    import Presentation.CosetNF as CNF
+    import Normalization.CosetNF as CNF
     pres-KD = (_===_)
     
     module DD = CNF.Data pres-D pres-KD C I f ract [_]

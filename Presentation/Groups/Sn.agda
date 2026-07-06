@@ -33,7 +33,7 @@ import Presentation.Base as PB
 import Presentation.Properties as PP
 open PP using (NormalFormWithoutInverse ; NormalForm)
 
-import Presentation.CosetNF as CA
+import Normalization.CosetNF as CA
 import Presentation.Reidemeister-Schreier as RS
 open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full

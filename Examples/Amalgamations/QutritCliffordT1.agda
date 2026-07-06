@@ -21,7 +21,7 @@ open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open PP using (NormalFormWithoutInverse ; NormalForm)
-import Presentation.CosetNF as CA
+import Normalization.CosetNF as CA
 open CA using (CosetNF-CT-Assumptions-And-Theorems-Packed)
 import Presentation.Reidemeister-Schreier as RS
 

@@ -22,7 +22,7 @@ open import Word.Base
 open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open import Presentation.CosetNF
+open import Normalization.CosetNF
 
 open import Presentation.Reidemeister-Schreier
 

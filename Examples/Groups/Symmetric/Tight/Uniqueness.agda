@@ -56,8 +56,9 @@ private
 ------------------------------------------------------------------------
 -- Unique normal form for the tight semantics
 
-unique-nf-tight : let open PP (n VRel,_===_) in
-  UniqueNormalForm (Group.setoid (Permutation′-group n)) (TightSem.⟦_⟧ {n})
+unique-nf-tight :
+  PP.UniqueNormalForm (_VRel,_===_ n)
+    (Group.setoid (Permutation′-group n)) (TightSem.⟦_⟧ {n})
 unique-nf-tight {n = n} = record
   { normalForm = UniqueNormalForm.normalForm (unique-nf n)
   ; unique = λ {u} {v} eq →

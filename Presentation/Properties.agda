@@ -1,36 +1,33 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Basic algebraic structures and normal-form records for presented monoids
+-- Basic algebraic structures and proof tools for presented monoids
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}
 
-open import Level using (0ℓ ; _⊔_) renaming (suc to lsuc)
-open import Function using (_∘_)
-open import Relation.Binary using (IsEquivalence ; Setoid)
-open import Data.Product using (_,_ ; proj₁ ; proj₂)
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-import Relation.Binary.Reasoning.Setoid as SR
-
 open import Word.Base
-open import Notations
 
 module Presentation.Properties {X : Set} (Γ : WRel X) where
 
+open import Data.List using (List ; [] ; _∷_ ; _++_)
+open import Data.Nat as Nat using (ℕ ; zero ; suc)
+import Data.Nat.Properties as NP
+open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
+import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
+open import Level using (0ℓ)
+open import Relation.Binary using (IsEquivalence ; Setoid)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+import Relation.Binary.Reasoning.Setoid as SR
+
+open import Notations
+
+import Normalization.Base as NFBase
 import Presentation.Base as PB
 open import Presentation.Base Γ
 
-open import Relation.Binary.Definitions using (DecidableEquality ; Decidable)
-open import Relation.Binary.PropositionalEquality using (setoid)
-open import Relation.Nullary.Decidable using (via-injection)
-open import Function.Bundles using (Injection)
-open import Data.Nat as Nat using (ℕ ; zero ; suc)
-import Data.Nat.Properties as NP
-import Relation.Binary.Reasoning.Setoid as Eqv
-open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
-open import Data.Product using (_×_ ; ∃)
-open import Data.List using (_++_ ; [] ; _∷_ ; List)
+open import Algebra.Structures {A = Word X} _≈_
+open import Algebra.Bundles using (Magma ; Semigroup ; Monoid)
 
 ------------------------------------------------------------------------
 -- Algebraic structures
@@ -48,8 +45,6 @@ word-setoid = record
   ; _≈_           = _≈_
   ; isEquivalence = ≈-isEquivalence
   }
-
-open import Algebra.Structures {A = Word X} _≈_
 
 •-isMagma : IsMagma _•_
 •-isMagma = record
@@ -71,8 +66,6 @@ open import Algebra.Structures {A = Word X} _≈_
 
 ------------------------------------------------------------------------
 -- Algebraic bundles
-
-open import Algebra.Bundles
 
 •-magma : Magma 0ℓ 0ℓ
 •-magma = record { isMagma = •-isMagma }
@@ -115,133 +108,28 @@ lemma-from-to {ε}        = refl
 lemma-from-to {w • w₁}  with lemma-from-to {w} | lemma-from-to {w₁}
 ... | ih1 | ih2 = trans (from-list-homo (to-list w) (to-list w₁)) (cong ih1 ih2)
 
+-- Normalise a word up to associativity and units.
 mod-assoc : ∀ w → Word X
 mod-assoc w = from-list (to-list w)
 
+-- Prove w ≈ v by comparing flattened generator lists (typically by
+-- refl).
 by-assoc : ∀ {w} {v} → to-list w ≡ to-list v → w ≈ v
 by-assoc {w} {v} eq =
   trans (sym lemma-from-to) (trans (refl' (Eq.cong from-list eq)) lemma-from-to)
 
+-- Chain a known equation a ≈ b with associativity steps on both sides.
 by-assoc-and : ∀ {w} {v} {a} {b} →
   a ≈ b → to-list w ≡ to-list a → to-list b ≡ to-list v → w ≈ v
 by-assoc-and {w} {v} {a} {b} eq eq1 eq2 =
   trans (by-assoc eq1) (trans eq (by-assoc eq2))
-
--- Translate w₁ • w₂ • … • wₙ to the list [w₁, w₂, …, wₙ] without
--- flattening inner words.
-to-list2 : ∀ {X} → Word X → List (Word X)
-to-list2 ([ x ]ʷ) = [ x ]ʷ ∷ []
-to-list2 ε         = ε ∷ []
-to-list2 (u • w)   = u ∷ to-list2 w
-
-from-list2 : ∀ {X} → List (Word X) → Word X
-from-list2 []           = ε
-from-list2 (u ∷ [])     = u
-from-list2 (u ∷ v ∷ us) = u • from-list2 (v ∷ us)
-
-lemma-from-to2 : ∀ {X} → (u : Word X) → from-list2 (to-list2 u) ≡ u
-lemma-from-to2 ([ x ]ʷ)   = Eq.refl
-lemma-from-to2 ε            = Eq.refl
-lemma-from-to2 (u • [ x ]ʷ) = Eq.refl
-lemma-from-to2 (u • ε)     = Eq.refl
-lemma-from-to2 (u • (w • v)) = Eq.cong (λ □ → u • □) (lemma-from-to2 (w • v))
-
-split : ∀ {l} {X : Set l} → ℕ → List X → List X × List X
-split n       []       = [] , []
-split zero    (x ∷ xs) = [] , x ∷ xs
-split (₁₊ n) (x ∷ xs) with split n xs
-... | xs1 , xs2 = x ∷ xs1 , xs2
-
-lemma-split : ∀ {l} {X : Set l} → (n : ℕ) → (xs : List X) →
-  ∀ {ys zs} → split n xs ≡ (ys , zs) → ys ++ zs ≡ xs
-lemma-split n       []       Eq.refl = Eq.refl
-lemma-split zero    (x ∷ xs) Eq.refl = Eq.refl
-lemma-split (₁₊ n) (x ∷ xs) eq with split n xs | lemma-split n xs
-lemma-split (₁₊ n) (x ∷ xs) Eq.refl | xs1 , xs2 | ih =
-  begin (x ∷ xs1) ++ xs2
-      ≡⟨ Eq.refl ⟩
-    x ∷ (xs1 ++ xs2)
-      ≡⟨ Eq.cong (λ □ → x ∷ □) (ih Eq.refl) ⟩
-    x ∷ xs ∎
-  where open Eq.≡-Reasoning
-
-split3 : ∀ {l} {X : Set l} → ℕ → ℕ → List X → List X × List X × List X
-split3 n m xs with split n xs
-... | x , ys with split m ys
-... | y , z = x , y , z
-
-lemma-split3 : ∀ {l} {X : Set l} → (n m : ℕ) → (xs : List X) →
-  ∀ {x y z} → split3 n m xs ≡ (x , y , z) → x ++ y ++ z ≡ xs
-lemma-split3 n m xs hyp with split n xs | Eq.inspect (split n) xs
-lemma-split3 n m xs hyp | x , ys | Eq.[ eq1 ] with split m ys | Eq.inspect (split m) ys
-lemma-split3 n m xs Eq.refl | x , ys | Eq.[ eq1 ] | y , z | Eq.[ eq2 ] =
-  begin x ++ y ++ z
-      ≡⟨ Eq.cong (λ □ → x ++ □) hyp2 ⟩
-    x ++ ys
-      ≡⟨ hyp1 ⟩
-    xs ∎
-  where
-    open Eq.≡-Reasoning
-    hyp1 : x ++ ys ≡ xs
-    hyp1 = lemma-split n xs eq1
-    hyp2 : y ++ z ≡ ys
-    hyp2 = lemma-split m ys eq2
-
-mysplit : ∀ {X : Set} → ℕ → ℕ → List (Word X) → List X × Word X × List X
-mysplit n m us with split3 n m us
-... | xs , ys , zs = to-list (from-list2 xs) , from-list2 ys , to-list (from-list2 zs)
-
-lemma-append2 : ∀ (us ws : List (Word X)) →
-  from-list2 us • from-list2 ws ≈ from-list2 (us ++ ws)
-lemma-append2 []           ws = left-unit
-lemma-append2 (u ∷ [])     [] = right-unit
-lemma-append2 (u ∷ [])     (w ∷ ws) = refl
-lemma-append2 (u ∷ u' ∷ us) ws =
-  begin (u • from-list2 (u' ∷ us)) • from-list2 ws
-      ≈⟨ assoc ⟩
-    u • (from-list2 (u' ∷ us) • from-list2 ws)
-      ≈⟨ cright lemma-append2 (u' ∷ us) ws ⟩
-    u • from-list2 (u' ∷ (us ++ ws)) ∎
-  where open SR word-setoid
-
-lemma-mysplit : ∀ n m us {x y z} →
-  mysplit n m us ≡ (x , y , z) →
-  from-list x • y • from-list z ≈ from-list2 us
-lemma-mysplit n m us {x} {y} {z} hyp with split3 n m us | Eq.inspect (split3 n m) us
-... | xs , ys , zs | Eq.[ eq ]
-  rewrite Eq.cong proj₁ eq
-        | Eq.cong proj₁ (Eq.cong proj₂ eq)
-        | Eq.cong proj₂ (Eq.cong proj₂ eq) =
-  let hyp1 = Eq.cong proj₁ hyp
-      hyp2 = Eq.cong proj₁ (Eq.cong proj₂ hyp)
-      hyp3 = Eq.cong proj₂ (Eq.cong proj₂ hyp)
-  in
-  begin from-list x • y • from-list z
-      ≈⟨ cleft refl' (Eq.cong from-list hyp1) reversed ⟩
-    from-list (to-list (from-list2 xs)) • y • from-list z
-      ≈⟨ cleft lemma-from-to {from-list2 xs} ⟩
-    from-list2 xs • y • from-list z
-      ≈⟨ cright cright refl' (Eq.cong from-list hyp3) reversed ⟩
-    from-list2 xs • y • from-list (to-list (from-list2 zs))
-      ≈⟨ cright cright lemma-from-to {from-list2 zs} ⟩
-    from-list2 xs • y • from-list2 zs
-      ≈⟨ cright cleft refl' hyp2 reversed ⟩
-    from-list2 xs • from-list2 ys • from-list2 zs
-      ≈⟨ cright lemma-append2 ys zs ⟩
-    from-list2 xs • from-list2 (ys ++ zs)
-      ≈⟨ lemma-append2 xs (ys ++ zs) ⟩
-    from-list2 (xs ++ ys ++ zs)
-      ≈⟨ refl' (Eq.cong from-list2 (lemma-split3 n m us eq)) ⟩
-    from-list2 us ∎
-  where open SR word-setoid
 
 ------------------------------------------------------------------------
 -- Pattern-guided associativity solver
 
 module Pattern-Assoc where
 
-  open import Data.Unit
-  import Relation.Binary.Reasoning.Setoid as SR
+  open import Data.Unit using (⊤ ; tt)
 
   -- Placeholder symbol for use in pattern words, e.g. (□ • □) • □.
   □ : Word ⊤
@@ -263,6 +151,7 @@ module Pattern-Assoc where
   flatten-word ε         = ε
   flatten-word (w • v)   = flatten-word w • flatten-word v
 
+  -- The empty relation: words of words up to associativity only.
   data ∅ {X : Set} : WRel X where
 
   lemma-flatten-word : ∀ {xs ys : Word (Word X)} →
@@ -375,7 +264,7 @@ word-comm {w} {v} (₂₊ a) (₂₊ b) eq =
     w • (w ^ ₁₊ n) • w           ≈⟨ cong refl (cong (sym (^'=^ {n = ₁₊ n})) refl) ⟩
     w • (w ^' ₁₊ n) • w          ≈⟨ cong refl (^'=^ {n = ₂₊ n}) ⟩
     w • (w • (w ^ ₁₊ n)) ∎
-  where open Eqv word-setoid
+  where open SR word-setoid
 
 lemma-^-suc : ∀ (w : Word X) a → w ^ ₁₊ a ≈ w • w ^ a
 lemma-^-suc w zero    = sym right-unit
@@ -390,7 +279,7 @@ lemma-^-+ w (₂₊ a) b =
     w • w ^ (₁₊ a Nat.+ b)             ≈⟨ cong refl (lemma-^-+ w (₁₊ a) b) ⟩
     w • w ^ ₁₊ a • w ^ b              ≈⟨ sym assoc ⟩
     w ^ ₂₊ a • w ^ b ∎
-  where open Eqv word-setoid
+  where open SR word-setoid
 
 lemma-^-• : ∀ (w v : Word X) a → w • v ≈ v • w → (w • v) ^ a ≈ w ^ a • v ^ a
 lemma-^-• w v zero    eq = sym left-unit
@@ -409,7 +298,7 @@ lemma-^-• w v (₂₊ a) eq =
     ((w • w ^ ₁₊ a) • v) • v ^ ₁₊ a
       ≈⟨ assoc ⟩
     (w • w ^ ₁₊ a) • v • v ^ ₁₊ a ∎
-  where open Eqv word-setoid
+  where open SR word-setoid
 
 lemma-comm-wᵃwᵇ : ∀ (w : Word X) a b → w ^ a • w ^ b ≈ w ^ b • w ^ a
 lemma-comm-wᵃwᵇ w zero    zero    = refl
@@ -420,12 +309,12 @@ lemma-comm-wᵃwᵇ w (₁₊ zero) (₂₊ b) =
   begin w • w • w ^ ₁₊ b                ≈⟨ cong refl (lemma-comm-wᵃwᵇ w 1 (₁₊ b)) ⟩
     w • w ^ ₁₊ b • w                     ≈⟨ sym assoc ⟩
     (w • w ^ ₁₊ b) • w ∎
-  where open Eqv word-setoid
+  where open SR word-setoid
 lemma-comm-wᵃwᵇ w (₂₊ a) (₁₊ zero) =
   begin (w • w ^ ₁₊ a) • w              ≈⟨ assoc ⟩
     w • w ^ ₁₊ a • w                     ≈⟨ cong refl (lemma-comm-wᵃwᵇ w (₁₊ a) 1) ⟩
     w • w • w ^ ₁₊ a ∎
-  where open Eqv word-setoid
+  where open SR word-setoid
 lemma-comm-wᵃwᵇ w (₂₊ a) (₂₊ b) =
   begin (w • w ^ ₁₊ a) • w • w ^ ₁₊ b
       ≈⟨ sym assoc ⟩
@@ -450,7 +339,7 @@ lemma-comm-wᵃwᵇ w (₂₊ a) (₂₊ b) =
     ((w • w ^ ₁₊ b) • w) • w ^ ₁₊ a
       ≈⟨ assoc ⟩
     (w • w ^ ₁₊ b) • w • w ^ ₁₊ a ∎
-  where open Eqv word-setoid
+  where open SR word-setoid
 
 lemma-^^ : ∀ (w : Word X) a b → (w ^ a) ^ b ≈ w ^ (a Nat.* b)
 lemma-^^ w zero    zero    = refl
@@ -465,7 +354,7 @@ lemma-^^ w (₂₊ a) b =
     w ^ b • w ^ (₁₊ a Nat.* b)
       ≈⟨ sym (lemma-^-+ w b (₁₊ a Nat.* b)) ⟩
     w ^ (b Nat.+ (b Nat.+ a Nat.* b)) ∎
-  where open Eqv word-setoid
+  where open SR word-setoid
 
 lemma-^^' : ∀ (w : Word X) a b → (w ^ a) ^ b ≈ (w ^ b) ^ a
 lemma-^^' w a b =
@@ -473,7 +362,7 @@ lemma-^^' w a b =
     w ^ (a Nat.* b)     ≡⟨ Eq.cong (w ^_) (NP.*-comm a b) ⟩
     w ^ (b Nat.* a)     ≈⟨ sym (lemma-^^ w b a) ⟩
     (w ^ b) ^ a ∎
-  where open Eqv word-setoid
+  where open SR word-setoid
 
 lemma-^-cong : ∀ (w v : Word X) a → w ≈ v → w ^ a ≈ v ^ a
 lemma-^-cong w v 0         eq = refl
@@ -483,7 +372,7 @@ lemma-^-cong w v (₂₊ a) eq =
     w • w ^ ₁₊ a          ≈⟨ cong eq (lemma-^-cong w v (₁₊ a) eq) ⟩
     v • v ^ ₁₊ a          ≈⟨ refl ⟩
     v ^ ₂₊ a ∎
-  where open Eqv word-setoid
+  where open SR word-setoid
 
 lemma-ε^k=ε : ∀ k → ε ^ k ≈ ε
 lemma-ε^k=ε zero        = refl
@@ -550,123 +439,13 @@ lemma-⋆⋆ {Y} {X} {C} {_⊕_} RX RC rx-cong rx-ε hyp w {c1} {c2} r = fact1
     fact1 = fact w r'
 
 ------------------------------------------------------------------------
--- Normal-form witnesses
-
-private
-  variable
-    w v : Word X
-
--- A normal-form function: maps each word to a canonical representative.
-record NormalFormWithoutInverse : Set₁ where
-  field
-    NF           : Set
-    nf           : Word X → NF
-    nf-cong      : w ≈ v → nf w ≡ nf v
-    nf-injective : nf w ≡ nf v → w ≈ v
-
-  by-equal-nf : nf w ≡ nf v → w ≈ v
-  by-equal-nf = nf-injective
-
-  nf-injection : Injection word-setoid (setoid NF)
-  nf-injection = record { to = nf ; cong = nf-cong ; injective = nf-injective }
-
-  dec-word : DecidableEquality NF → Decidable _≈_
-  dec-word deceq = via-injection nf-injection deceq
-
--- Like NormalFormWithoutInverse, but the normal-form function has a section.
-record NormalForm : Set₁ where
-  field
-    NF           : Set
-    nf           : Word X → NF
-    nf-cong      : w ≈ v → nf w ≡ nf v
-    inv-nf       : NF → Word X
-    inv-nf∘nf=id : inv-nf (nf w) ≈ w
-
-  normalize : Word X -> Word X
-  normalize = inv-nf ∘ nf
-
-  lemma-fgf : ∀ x -> nf (inv-nf (nf x)) ≡ nf x
-  lemma-fgf x = nf-cong inv-nf∘nf=id
-
-  normalize-idempotent : ∀ x -> normalize (normalize x) ≡ normalize x
-  normalize-idempotent x = Eq.cong inv-nf (lemma-fgf x)
-  
-  nf-injective : nf w ≡ nf v → w ≈ v
-  nf-injective x =
-    trans (sym inv-nf∘nf=id) (trans (refl' (Eq.cong inv-nf x)) inv-nf∘nf=id)
-
-  hasNormalFormWithoutInverse : NormalFormWithoutInverse
-  hasNormalFormWithoutInverse = record
-    { NF = NF ; nf = nf ; nf-cong = nf-cong ; nf-injective = nf-injective }
-
-  open NormalFormWithoutInverse hasNormalFormWithoutInverse using (by-equal-nf) public
-
--- Like NormalFormWithoutInverse but also surjective: every normal form is realised.
-record BijectiveNormalForm : Set₁ where
-  field
-    NF            : Set
-    nf            : Word X → NF
-    nf-cong       : w ≈ v → nf w ≡ nf v
-    nf-injective  : nf w ≡ nf v → w ≈ v
-    nf-surjective : ∀ y → ∃ λ w → ∀ {v} → v ≈ w → nf v ≡ y
-
-  inv-nf : NF → Word X
-  inv-nf y = nf-surjective y .proj₁
-
-  inv-nf∘nf=id : ∀ {w} → inv-nf (nf w) ≈ w
-  inv-nf∘nf=id {w} with nf-surjective (nf w)
-  ... | w' , hyp = nf-injective (hyp refl)
-
-  hasNormalForm : NormalForm
-  hasNormalForm = record
-    { NF = NF ; nf = nf ; nf-cong = nf-cong
-    ; inv-nf = inv-nf ; inv-nf∘nf=id = inv-nf∘nf=id
-    }
-
-  open NormalForm hasNormalForm
-
--- A weaker normal-form witness: no canonicity, only injectivity.
-record WeakNormalForm : Set₁ where
-  field
-    ANF          : Set
-    anf          : Word X → ANF
-    anf-injective : anf w ≡ anf v → w ≈ v
-
-  by-equal-anf : anf w ≡ anf v → w ≈ v
-  by-equal-anf = anf-injective
-
-
+-- Re-exports
 ------------------------------------------------------------------------
--- Unique normal form and completeness by normalization
---
--- The syntactic setoid is word-setoid (the words of Γ modulo ≈).  ⟦_⟧
--- is the semantics into some setoid Sem.
+-- The normal-form machinery lives in Normalization.Base.  It is
+-- re-exported here (unapplied, so the signatures still start with the
+-- presentation) for compatibility with qualified uses such as
+-- Presentation.Properties.UniqueNormalForm.
 
-module _ {c d} (Sem : Setoid c d)
-  (let open Setoid Sem using () renaming (Carrier to Cₛ ; _≈_ to _≈₂_ ; sym to sym₂))
-  (⟦_⟧ : Word X → Cₛ)
-  where
-
-  open import Presentation.Semantics word-setoid Sem
-
-  -- A normal form with inverse whose section is separated by the
-  -- semantics ⟦_⟧: normal forms with equal denotations are equal.
-  record UniqueNormalForm : Set (lsuc 0ℓ ⊔ c ⊔ d) where
-    field
-      normalForm : NormalForm
-    open NormalForm normalForm public
-    field
-      unique : ∀ {u v : NF} → ⟦ inv-nf u ⟧ ≈₂ ⟦ inv-nf v ⟧ → u ≡ v
-
-  -- Soundness together with a unique normal form gives completeness.
-  by-normalization : UniqueNormalForm → Soundness ⟦_⟧ → Completeness ⟦_⟧
-  by-normalization uni sound {x} {y} eq = nf-injective (unique claim)
-    where
-    open UniqueNormalForm uni
-    claim : ⟦ inv-nf (nf x) ⟧ ≈₂ ⟦ inv-nf (nf y) ⟧
-    claim = begin
-      ⟦ inv-nf (nf x) ⟧ ≈⟨ sound inv-nf∘nf=id ⟩
-      ⟦ x ⟧             ≈⟨ eq ⟩
-      ⟦ y ⟧             ≈⟨ sym₂ (sound inv-nf∘nf=id) ⟩
-      ⟦ inv-nf (nf y) ⟧ ∎
-      where open SR Sem
+open NFBase public
+  using ( NormalFormWithoutInverse ; NormalForm ; BijectiveNormalForm
+        ; WeakNormalForm ; UniqueNormalForm ; by-normalization )

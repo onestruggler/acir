@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
--- The Agda standard library
+-- Presentations of groups
 --
--- Completeness and Soundness.
+-- Soundness and completeness of a semantics between two setoids
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

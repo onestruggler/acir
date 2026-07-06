@@ -31,7 +31,7 @@ open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open PP using (NormalFormWithoutInverse ; NormalForm)
-import Presentation.CosetNF as CA
+import Normalization.CosetNF as CA
 import Presentation.Reidemeister-Schreier as RS
 open import Data.Fin.Properties using (suc-injective ; toℕ-inject₁ ; toℕ-fromℕ)
 import Data.Nat.Properties as NP

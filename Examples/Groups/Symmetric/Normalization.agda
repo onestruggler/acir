@@ -31,7 +31,7 @@ import Presentation.Base as PB
 import Presentation.Properties as PP
 open PP using (NormalFormWithoutInverse ; NormalForm)
 
-import Presentation.CosetNF as CA
+import Normalization.CosetNF as CA
 import Presentation.Reidemeister-Schreier as RS
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 open import Presentation.GroupLike
@@ -365,7 +365,7 @@ lemma-ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
   = lemma-cong↑ _ _ wv , Eq.cong σ•_ eq0
 
 ------------------------------------------------------------------------
--- Tower instantiation (via Presentation.CosetNF.CosetTower)
+-- Tower instantiation (via Normalization.CosetNF.CosetTower)
 --
 -- Sₙ is built by iterating the single-level coset extension: level
 -- (₂₊ k) extends level (₁₊ k) by the cosets C (₁₊ k), with right

@@ -44,9 +44,10 @@ open import Presentation.Reidemeister-Schreier
 
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open PP using (NormalFormWithoutInverse ; NormalForm)
+import Normalization.Base as NFBase
+open NFBase using (NormalFormWithoutInverse ; NormalForm)
 
-module Presentation.CosetNF where
+module Normalization.CosetNF where
 
 ------------------------------------------------------------------------
 -- Single-level coset extension (Reidemeister–Schreier transfer)
