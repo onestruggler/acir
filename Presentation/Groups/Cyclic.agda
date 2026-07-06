@@ -100,33 +100,33 @@ wfoldl {N} succ c (w • w₁) = wfoldl {N} succ (wfoldl {N} succ c w) w₁
 f : ∀ {N} → Word X → NF N
 f {N} = wfoldl {N} succ z
 
-lemma-wfoldl : ∀ {N} → let _≈_ = PB._≈_ (pres N) in
+wfoldl-sound : ∀ {N} → let _≈_ = PB._≈_ (pres N) in
   ∀ (succ : NF N → NF N)
-    (lemma-succ :  ∀ c → ([ c ] • T) ≈ [ succ c ])
+    (succ-sound :  ∀ c → ([ c ] • T) ≈ [ succ c ])
     (c : NF N) (w : Word X)
     →
     [ wfoldl succ c w ] ≈ ([ c ] • w)
-lemma-wfoldl {N} succ lemma-succ c [ x ]ʷ = PB._≈_.sym (lemma-succ c)
-lemma-wfoldl {N} succ lemma-succ c ε = PB._≈_.sym PB._≈_.right-unit
-lemma-wfoldl {N} succ lemma-succ c (w • v) = _≈_.sym claim
+wfoldl-sound {N} succ succ-sound c [ x ]ʷ = PB._≈_.sym (succ-sound c)
+wfoldl-sound {N} succ succ-sound c ε = PB._≈_.sym PB._≈_.right-unit
+wfoldl-sound {N} succ succ-sound c (w • v) = _≈_.sym claim
   where
   open PB (pres N)
-  open PP (pres N) hiding (lemma-wfoldl)
+  open PP (pres N) hiding (wfoldl-sound)
   open SR word-setoid  
 
   claim : [ c ] • (w • v) ≈ [ wfoldl succ c (w • v) ]
   claim = begin
     [ c ] • (w • v) ≈⟨ sym assoc ⟩
-    ([ c ] • w) • v ≈⟨ cong (sym (lemma-wfoldl {N} succ lemma-succ c w)) refl ⟩
-    ([ wfoldl succ c w ]) • v ≈⟨ sym (lemma-wfoldl {N} succ lemma-succ (wfoldl succ c w) v) ⟩
+    ([ c ] • w) • v ≈⟨ cong (sym (wfoldl-sound {N} succ succ-sound c w)) refl ⟩
+    ([ wfoldl succ c w ]) • v ≈⟨ sym (wfoldl-sound {N} succ succ-sound (wfoldl succ c w) v) ⟩
     [ wfoldl succ (wfoldl succ c w) v ] ≈⟨ _≈_.refl ⟩
     [ wfoldl succ c (w • v) ] ∎
 
-lemma-wfoldl-succ : ∀ {N} (c : Fin (₁₊ N)) w → wfoldl succ (succ c) w ≡ succ (wfoldl succ c w)
-lemma-wfoldl-succ c [ x ]ʷ = Eq.refl
-lemma-wfoldl-succ c ε = Eq.refl
-lemma-wfoldl-succ c (w • w₁) with lemma-wfoldl-succ c w
-... | ih with lemma-wfoldl-succ ( (wfoldl sucN c w)) w₁
+wfoldl-succ-comm : ∀ {N} (c : Fin (₁₊ N)) w → wfoldl succ (succ c) w ≡ succ (wfoldl succ c w)
+wfoldl-succ-comm c [ x ]ʷ = Eq.refl
+wfoldl-succ-comm c ε = Eq.refl
+wfoldl-succ-comm c (w • w₁) with wfoldl-succ-comm c w
+... | ih with wfoldl-succ-comm ( (wfoldl sucN c w)) w₁
 ... | ih2 = Eq.trans (Eq.cong (\xx → wfoldl sucN xx w₁) ih) ih2
 
 
@@ -158,13 +158,13 @@ aux-sx=0 {₁₊ N} (₁₊ x) hyp with aux-sx=0 {N} x
 ... | ih with ih (NP.suc-injective hyp)
 ... | ih' rewrite ih' = Eq.refl
 
-lemma-succ : ∀ {N} → let _≈_ = PB._≈_ (pres N) in
+succ-sound : ∀ {N} → let _≈_ = PB._≈_ (pres N) in
   ∀ c → ([ c ] • T) ≈ [ succ {N} c ]
-lemma-succ {zero} zero = PB._≈_.left-unit
-lemma-succ {zero} (₁₊ c) = PB._≈_.refl
-lemma-succ {₁₊ zero} zero = PB._≈_.trans PB._≈_.left-unit (PB._≈_.axiom order)
-lemma-succ {₂₊ N} zero = PB._≈_.left-unit
-lemma-succ {₂₊ N} (₁₊ c) with succ c | inspect succ c
+succ-sound {zero} zero = PB._≈_.left-unit
+succ-sound {zero} (₁₊ c) = PB._≈_.refl
+succ-sound {₁₊ zero} zero = PB._≈_.trans PB._≈_.left-unit (PB._≈_.axiom order)
+succ-sound {₂₊ N} zero = PB._≈_.left-unit
+succ-sound {₂₊ N} (₁₊ c) with succ c | inspect succ c
 ... | zero | [ eqc ]' rewrite aux-x=N c eqc = PB._≈_.axiom order
 ... | ₁₊ hyp | [ eqc ]' rewrite aux-x=h c hyp eqc = PB._≈_.refl
 
@@ -172,17 +172,17 @@ lemma-succ {₂₊ N} (₁₊ c) with succ c | inspect succ c
 g : ∀ {N} → NF N → Word X
 g = [_]
 
-lemma-gf=id : ∀ {N} → let _≈_ = PB._≈_ (pres N) in
+g∘f≈id : ∀ {N} → let _≈_ = PB._≈_ (pres N) in
   ∀ {w} → g {N} (f {N} w) ≈ w
-lemma-gf=id {N} {w} = begin
+g∘f≈id {N} {w} = begin
   g {N} (f {N} w) ≈⟨ _≈_.refl ⟩
-  g {N} (wfoldl succ z w) ≈⟨ lemma-wfoldl succ lemma-succ z w ⟩
+  g {N} (wfoldl succ z w) ≈⟨ wfoldl-sound succ succ-sound z w ⟩
   g {N} z • w ≈⟨ cong (refl' ([z]=ε {N})) refl ⟩
   ε • w ≈⟨ _≈_.left-unit ⟩
   w ∎
   where
   open PB (pres N)
-  open PP (pres N) hiding (lemma-wfoldl)
+  open PP (pres N) hiding (wfoldl-sound)
   open SR word-setoid  
 
 
@@ -212,28 +212,28 @@ fg=id {N@(₁₊ N')} = <-weakInduction
     c3 = Eq.trans (Eq.sym (sucN-inject₁ i )) eqi
 
 
-lemma-f2 : ∀ {N} (x : Fin (₁₊ N)) → toℕ x ≡ N → sucN (f {₁₊ N} ([ x ])) ≡ zero
-lemma-f2 {N} x eq = aux-sx=0 ((f {₁₊ N} ([ x ]))) (Eq.trans (Eq.cong toℕ (fg=id x)) eq)
+sucN-f≡zero : ∀ {N} (x : Fin (₁₊ N)) → toℕ x ≡ N → sucN (f {₁₊ N} ([ x ])) ≡ zero
+sucN-f≡zero {N} x eq = aux-sx=0 ((f {₁₊ N} ([ x ]))) (Eq.trans (Eq.cong toℕ (fg=id x)) eq)
 
-lemma-f : ∀ {N} → f {₁₊ N} (T ^' (₁₊ N)) ≡ zero
-lemma-f {N} = Eq.trans (c1 N) (lemma-f2 (fromℕ N) (toℕ-fromℕ N))
+f-order : ∀ {N} → f {₁₊ N} (T ^' (₁₊ N)) ≡ zero
+f-order {N} = Eq.trans (c1 N) (sucN-f≡zero (fromℕ N) (toℕ-fromℕ N))
   where
   c1 : ∀ N → f {₁₊ N} (T ^' (₁₊ N)) ≡ sucN (f {₁₊ N} [ fromℕ N ])
   c1 zero = Eq.refl
   c1 (₁₊ N) rewrite toℕ-fromℕ N = Eq.refl
 
 
-lemma-f3' : ∀ {N} (c : Fin (₁₊ N)) → wfoldl sucN c (T ^' (₁₊ N)) ≡ c
-lemma-f3' {N} = <-weakInduction
+wfoldl-order : ∀ {N} (c : Fin (₁₊ N)) → wfoldl sucN c (T ^' (₁₊ N)) ≡ c
+wfoldl-order {N} = <-weakInduction
   (\ (c : Fin (₁₊ N)) → wfoldl sucN c (T ^' (₁₊ N)) ≡ c)
-  lemma-f
+  f-order
   (c1 N)
   where
   c1 : ∀ N → (i : Fin N) → wfoldl sucN (inject₁ i) (T ^' ₁₊ N) ≡ inject₁ i →
     wfoldl sucN (₁₊ i) (T ^' ₁₊ N) ≡ ₁₊ i
   c1 N i ih = begin
     wfoldl sucN (₁₊ i) (T ^' ₁₊ N) ≡⟨ Eq.cong (λ xx → wfoldl sucN xx (T ^' ₁₊ N)) (Eq.sym (sucN-inject₁ i)) ⟩
-    wfoldl sucN (sucN (inject₁ i)) (T ^' ₁₊ N) ≡⟨ lemma-wfoldl-succ (inject₁ i) (T ^' ₁₊ N) ⟩
+    wfoldl sucN (sucN (inject₁ i)) (T ^' ₁₊ N) ≡⟨ wfoldl-succ-comm (inject₁ i) (T ^' ₁₊ N) ⟩
     sucN (wfoldl sucN ( (inject₁ i)) (T ^' ₁₊ N)) ≡⟨ Eq.cong sucN ih ⟩
     sucN (inject₁ i) ≡⟨ sucN-inject₁ i ⟩
     ₁₊ i ∎
@@ -253,7 +253,7 @@ wfoldl-cong {N} {w} {v} c PB.assoc = Eq.refl
 wfoldl-cong {N} {w} {v} c PB.left-unit = Eq.refl
 wfoldl-cong {N} {w} {v} c PB.right-unit = Eq.refl
 wfoldl-cong {zero} {w} {v} c (PB.axiom order) = Eq.refl
-wfoldl-cong {₁₊ N} {w} {v} c (PB.axiom order) = lemma-f3' c
+wfoldl-cong {₁₊ N} {w} {v} c (PB.axiom order) = wfoldl-order c
 
 
 f-cong : ∀ {N} → let _≈_ = PB._≈_ (pres (N)) in
@@ -265,7 +265,7 @@ f-cong {N} {w} {v} = wfoldl-cong z
 
 nfp' : (n : ℕ) → NormalForm (pres n)
 nfp' n = record
-           { NF = NF n ; nf = f ; nf-cong = f-cong ; inv-nf = g ; inv-nf∘nf=id = lemma-gf=id }
+           { NF = NF n ; nf = f ; nf-cong = f-cong ; inv-nf = g ; inv-nf∘nf=id = g∘f≈id }
 
 nfp : (n : ℕ) → NormalFormWithoutInverse (pres n)
 nfp n = NormalForm.hasNormalFormWithoutInverse (nfp' n)

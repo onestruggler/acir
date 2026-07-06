@@ -45,7 +45,7 @@ private variable
 
 -- The right action of a generator on a coset: ract c b returns the
 -- residual circuit b' and the coset c' reached from c by b, so that
--- [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ (see lemma-ract below).
+-- [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ (see ract-sound below).
 ract : C (₁₊ n) → Gen (₂₊ n) → Circuit (₁₊ n) × C (₁₊ n)
 ract {n}     ε         σ-gen       = ε , σ• ε
 ract {n}     (σ• ε)    σ-gen       = ε , ε
@@ -63,9 +63,9 @@ racts {n} = ract {n} **
 ------------------------------------------------------------------------
 -- Soundness of the coset action
 
--- lemma-ract certifies the coset-table transition: for
+-- ract-sound certifies the coset-table transition: for
 -- (b' , c') = ract c b we have [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ.
-lemma-ract : ∀ {n} c b →
+ract-sound : ∀ {n} c b →
   let
     open PB ((₂₊ n) VRel,_===_)
     (b' , c') = ract {n} c b
@@ -73,23 +73,23 @@ lemma-ract : ∀ {n} c b →
 
     [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ
 
-lemma-ract {n} ε σ-gen = cong refl (sym right-unit)
+ract-sound {n} ε σ-gen = cong refl (sym right-unit)
   where
   P = _VRel,_===_ (₂₊ n)
   open PB P
-lemma-ract {n} (σ• ε) σ-gen =
+ract-sound {n} (σ• ε) σ-gen =
   trans (cong right-unit refl)
         (trans (axiom (srel order)) (sym right-unit))
   where
   P = _VRel,_===_ (₂₊ n)
   open PB P
   open PP P
-lemma-ract {n} ε (g ↥) =
+ract-sound {n} ε (g ↥) =
   trans left-unit (sym right-unit)
   where
   P = _VRel,_===_ (₂₊ n)
   open PB P
-lemma-ract {₁₊ n} (σ• σ• c) σ-gen = begin
+ract-sound {₁₊ n} (σ• σ• c) σ-gen = begin
   [ σ• σ• c ]ᶜ • σ ≈⟨ assoc ⟩
   σ • [ σ• c ]ᶜ ↑ • σ ≡⟨ Eq.refl ⟩
   σ • (σ ↑ • [ c ]ᶜ ↑ ↑) • σ ≈⟨ cong refl assoc ⟩
@@ -105,9 +105,9 @@ lemma-ract {₁₊ n} (σ• σ• c) σ-gen = begin
   open PB P
   open PP P
   open SR word-setoid
-lemma-ract {0} (σ• c) ((gate₁ ()) ↥)
-lemma-ract {0} (σ• c) (((() ↥)) ↥)
-lemma-ract {₁₊ n} (σ• ε) (b@σ-gen ↥) = begin
+ract-sound {0} (σ• c) ((gate₁ ()) ↥)
+ract-sound {0} (σ• c) (((() ↥)) ↥)
+ract-sound {₁₊ n} (σ• ε) (b@σ-gen ↥) = begin
   [ σ• ε ]ᶜ • [ b ↥ ]ʷ ≈⟨ assoc ⟩
   σ • (ε • [ b ]ʷ) ↑ ≈⟨ cright (lemma-cong↑ (ε • [ b ]ʷ) (b0 ↑ • [ c0 ]ᶜ) ih) ⟩
   σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
@@ -122,8 +122,8 @@ lemma-ract {₁₊ n} (σ• ε) (b@σ-gen ↥) = begin
   open SR word-setoid
   b0 = proj₁ (ract {n} ε b)
   c0 = proj₂ (ract {n} ε b)
-  ih = lemma-ract {n} ε b
-lemma-ract {₁₊ n} (σ• ε) (b@(b' ↥) ↥) = begin
+  ih = ract-sound {n} ε b
+ract-sound {₁₊ n} (σ• ε) (b@(b' ↥) ↥) = begin
   [ σ• ε ]ᶜ • [ b ↥ ]ʷ ≈⟨ assoc ⟩
   σ • (ε • [ b ]ʷ) ↑ ≈⟨ cong refl (lemma-cong↑ (ε • [ b ]ʷ) (b0 ↑ • [ c0 ]ᶜ) ih) ⟩
   σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
@@ -138,9 +138,9 @@ lemma-ract {₁₊ n} (σ• ε) (b@(b' ↥) ↥) = begin
   open SR word-setoid
   b0 = proj₁ (ract {n} ε b)
   c0 = proj₂ (ract {n} ε b)
-  ih = lemma-ract {n} ε b
+  ih = ract-sound {n} ε b
 
-lemma-ract {₁₊ n} (σ• σ• c) (b@σ-gen ↥) = begin
+ract-sound {₁₊ n} (σ• σ• c) (b@σ-gen ↥) = begin
   [ σ• σ• c ]ᶜ • [ b ↥ ]ʷ ≈⟨ assoc ⟩
   σ • ([ σ• c ]ᶜ • [ b ]ʷ) ↑ ≈⟨ cong refl (lemma-cong↑ _ _ ih) ⟩
   σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
@@ -155,8 +155,8 @@ lemma-ract {₁₊ n} (σ• σ• c) (b@σ-gen ↥) = begin
   open SR word-setoid
   b0 = proj₁ (ract {n} (σ• c) b)
   c0 = proj₂ (ract {n} (σ• c) b)
-  ih = lemma-ract {n} (σ• c) b
-lemma-ract {₁₊ n} (σ• σ• c) (b@(bb ↥) ↥) = begin
+  ih = ract-sound {n} (σ• c) b
+ract-sound {₁₊ n} (σ• σ• c) (b@(bb ↥) ↥) = begin
   [ σ• σ• c ]ᶜ • [ b ↥ ]ʷ ≈⟨ assoc ⟩
   σ • ([ σ• c ]ᶜ • [ b ]ʷ) ↑ ≈⟨ cong refl (lemma-cong↑ _ _ ih) ⟩
   σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
@@ -171,26 +171,26 @@ lemma-ract {₁₊ n} (σ• σ• c) (b@(bb ↥) ↥) = begin
   open SR word-setoid
   b0 = proj₁ (ract {n} (σ• c) b)
   c0 = proj₂ (ract {n} (σ• c) b)
-  ih = lemma-ract {n} (σ• c) b
+  ih = ract-sound {n} (σ• c) b
 
 ------------------------------------------------------------------------
 -- Soundness of the coset action on words
 
--- lemma-racts extends lemma-ract from generators to circuits.
-lemma-racts : ∀ {n} c bs →
+-- racts-sound extends ract-sound from generators to circuits.
+racts-sound : ∀ {n} c bs →
   let
     open PB ((₂₊ n) VRel,_===_)
     (bs' , c') = racts {n} c bs
   in
     [ c ]ᶜ • bs ≈ bs' ↑ • [ c' ]ᶜ
 
-lemma-racts {n} c [ x ]ʷ = lemma-ract c x
-lemma-racts {n} c ε = trans right-unit (sym left-unit)
+racts-sound {n} c [ x ]ʷ = ract-sound c x
+racts-sound {n} c ε = trans right-unit (sym left-unit)
   where
   P = _VRel,_===_ (₂₊ n)
   open PB P
-lemma-racts {n} c (bs • as) with racts c bs | lemma-racts c bs
-... | (bs' , c') | ih1 with racts c' as | lemma-racts c' as
+racts-sound {n} c (bs • as) with racts c bs | racts-sound c bs
+... | (bs' , c') | ih1 with racts c' as | racts-sound c' as
 ... | (as' , c'') | ih2 = begin
   [ c ]ᶜ • (bs • as) ≈⟨ sym assoc ⟩
   ([ c ]ᶜ • bs) • as ≈⟨ cong ih1 refl ⟩
@@ -228,11 +228,11 @@ _≋_ {n} = let _≈₀_ = PB._≈_ ((₁₊ n) VRel,_===_)
 
 -- Acting on the trivial coset by a lifted circuit strips one lift and
 -- leaves the coset fixed.
-lemma-ract-suc' : ∀ {n} w → (ract {n} **) ε (w ↑) ≡ (w , ε)
-lemma-ract-suc' {n} [ x ]ʷ = Eq.refl
-lemma-ract-suc' {n} ε       = Eq.refl
-lemma-ract-suc' {n} (w • v) with lemma-ract-suc' {n} w
-... | ih with lemma-ract-suc' {n} v
+ract-suc' : ∀ {n} w → (ract {n} **) ε (w ↑) ≡ (w , ε)
+ract-suc' {n} [ x ]ʷ = Eq.refl
+ract-suc' {n} ε       = Eq.refl
+ract-suc' {n} (w • v) with ract-suc' {n} w
+... | ih with ract-suc' {n} v
 ... | ih' with racts ε (w ↑)
 ... | (w' , ew) rewrite Eq.cong proj₁ ih | Eq.cong proj₂ ih
                        | Eq.cong proj₁ ih' | Eq.cong proj₂ ih'
@@ -245,12 +245,12 @@ lemma-ract-suc' {n} (w • v) with lemma-ract-suc' {n} w
 -- racts ε (w ↑ ↑) rather than racts ε (w ↑): on a coset σ• c the
 -- action peels only the outermost lift before recursing, so each
 -- generator still carries two lifts when it reaches the trivial coset.
-lemma-ract-suc''' : ∀ {n} (w : Circuit n) →
+ract-suc''' : ∀ {n} (w : Circuit n) →
   (ract {₁₊ n} **) (σ• ε) (w ↑ ↑ ↑) ≡ (w ↑ ↑ , σ• ε)
-lemma-ract-suc''' {n} [ x ]ʷ = Eq.refl
-lemma-ract-suc''' {n} ε       = Eq.refl
-lemma-ract-suc''' {n} (w • v) with lemma-ract-suc''' {n} w
-... | ih with lemma-ract-suc''' {n} v
+ract-suc''' {n} [ x ]ʷ = Eq.refl
+ract-suc''' {n} ε       = Eq.refl
+ract-suc''' {n} (w • v) with ract-suc''' {n} w
+... | ih with ract-suc''' {n} v
 ... | ih' with racts ε (w ↑ ↑)
 ... | (w'' , ew) rewrite Eq.cong proj₁ ih | Eq.cong proj₂ ih
                         | Eq.cong proj₁ ih' | Eq.cong proj₂ ih'
@@ -260,40 +260,40 @@ lemma-ract-suc''' {n} (w • v) with lemma-ract-suc''' {n} w
 
 -- The generator σ passes through any coset of the form σ• σ• c
 -- unchanged, leaving the coset fixed.
-lemma-ract-σ•σ•σ : ∀ {n} (c : C n) →
+ract-σ•σ•σ : ∀ {n} (c : C n) →
   racts (σ• σ• c) σ ≡ (σ , σ• σ• c)
-lemma-ract-σ•σ•σ {n} c = Eq.refl
+ract-σ•σ•σ {n} c = Eq.refl
 
 -- Acting on σ• c by a lifted generator lifts the result of acting on
 -- c by the generator itself.
-lemma-ract-σ•1 : ∀ {n} (c : C (₁₊ n)) (g : Gen (₂₊ n)) →
+ract-σ•1 : ∀ {n} (c : C (₁₊ n)) (g : Gen (₂₊ n)) →
   let (b' , c') = ract {n} c g
   in ract (σ• c) (g ↥) ≡ (b' ↑ , σ• c')
-lemma-ract-σ•1 {n} ε       σ-gen   = Eq.refl
-lemma-ract-σ•1 {n} ε       (g' ↥)  = Eq.refl
-lemma-ract-σ•1 {n} (σ• c') σ-gen   = Eq.refl
-lemma-ract-σ•1 {n} (σ• c') (g' ↥)  = Eq.refl
+ract-σ•1 {n} ε       σ-gen   = Eq.refl
+ract-σ•1 {n} ε       (g' ↥)  = Eq.refl
+ract-σ•1 {n} (σ• c') σ-gen   = Eq.refl
+ract-σ•1 {n} (σ• c') (g' ↥)  = Eq.refl
 
--- Word version of lemma-ract-σ•1: acting on σ• c by a lifted circuit
+-- Word version of ract-σ•1: acting on σ• c by a lifted circuit
 -- lifts the result of acting on c.
-lemma-ract-σ•1s : ∀ {n} (c : C (₁₊ n)) w →
+ract-σ•1s : ∀ {n} (c : C (₁₊ n)) w →
   let (w' , c') = (ract {n} **) c w
   in (ract {₁₊ n} **) (σ• c) (w ↑) ≡ (w' ↑ , σ• c')
-lemma-ract-σ•1s {n} c [ x ]ʷ = lemma-ract-σ•1 c x
-lemma-ract-σ•1s {n} c ε       = Eq.refl
-lemma-ract-σ•1s {n} c (w • v)
-  with lemma-ract-σ•1s c w | (ract **) c w | inspect ((ract **) c) w
+ract-σ•1s {n} c [ x ]ʷ = ract-σ•1 c x
+ract-σ•1s {n} c ε       = Eq.refl
+ract-σ•1s {n} c (w • v)
+  with ract-σ•1s c w | (ract **) c w | inspect ((ract **) c) w
 ... | ih1 | w' , c0 | [ eq1 ]ₑ rewrite ih1 | eq1
-  with lemma-ract-σ•1s c0 v | (ract **) c0 v | inspect ((ract **) c0) v
+  with ract-σ•1s c0 v | (ract **) c0 v | inspect ((ract **) c0) v
 ... | ih2 | v' , c1 | [ eq2 ]ₑ rewrite eq2 | Eq.cong proj₁ ih2 | Eq.cong proj₂ ih2 = Eq.refl
 
 -- A doubly lifted generator passes through the coset σ• ε unchanged.
 -- The n = 0 case is vacuous since Gen 0 is empty; for n ≥ 1 the
 -- equation holds by definition.
-lemma-ract-σ•ε-gg↥ : ∀ {n} (g : Gen n) →
+ract-σ•ε-gg↥ : ∀ {n} (g : Gen n) →
   ract {n} (σ• ε) (g ↥ ↥) ≡ ([ g ↥ ]ʷ , σ• ε)
-lemma-ract-σ•ε-gg↥ {zero}  ()
-lemma-ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
+ract-σ•ε-gg↥ {zero}  ()
+ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
 
 ------------------------------------------------------------------------
 -- Well-definedness of the coset action
@@ -311,7 +311,7 @@ lemma-ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
 ⁻¹[⇑]-wd'' {n} ε (srel order)
   = PB.left-unit , Eq.refl
 ⁻¹[⇑]-wd'' {n} ε (comm₂ σ-gate g)
-  rewrite lemma-ract-σ•ε-gg↥ g
+  rewrite ract-σ•ε-gg↥ g
   = PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
 ⁻¹[⇑]-wd'' {n} ε (srel yang-baxter)
   = PB.trans PB.left-unit
@@ -320,21 +320,21 @@ lemma-ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
           (PB.cong PB.refl (PB.sym PB.left-unit))))
   , Eq.refl
 ⁻¹[⇑]-wd'' {n} ε (cong↑ {w = w} {v} eq)
-  rewrite lemma-ract-suc' {n} w | lemma-ract-suc' {n} v
+  rewrite ract-suc' {n} w | ract-suc' {n} v
   = PB.axiom eq , Eq.refl
 
 -- σ• ε coset
 ⁻¹[⇑]-wd'' {n} (σ• ε) (srel order)
   = PB.left-unit , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (comm₂ σ-gate g)
-  rewrite lemma-ract-σ•ε-gg↥ g
+  rewrite ract-σ•ε-gg↥ g
   = PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (srel yang-baxter)
   = PB.refl , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (srel order))
   = PB.left-unit , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (comm₂ σ-gate g))
-  rewrite lemma-ract-σ•ε-gg↥ g
+  rewrite ract-σ•ε-gg↥ g
   = PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (srel yang-baxter))
   = PB.trans PB.left-unit
@@ -343,15 +343,15 @@ lemma-ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
           (PB.cong PB.refl (PB.sym PB.left-unit))))
   , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (srel order)))
-  rewrite lemma-ract-σ•1 {₁₊ n} ε σ-gen
+  rewrite ract-σ•1 {₁₊ n} ε σ-gen
   = PB.axiom (cong↑ (srel order)) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (comm₂ σ-gate g)))
   = PB.axiom (cong↑ (comm₂ σ-gate g)) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (srel yang-baxter)))
-  rewrite lemma-ract-σ•1 {₁₊ n} ε σ-gen
+  rewrite ract-σ•1 {₁₊ n} ε σ-gen
   = PB.axiom (cong↑ (srel yang-baxter)) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (cong↑ {w = w} {v} eq)))
-  rewrite lemma-ract-suc''' w | lemma-ract-suc''' v
+  rewrite ract-suc''' w | ract-suc''' v
   = PB.axiom (cong↑ (cong↑ eq)) , Eq.refl
 
 -- σ• σ• c coset
@@ -368,12 +368,12 @@ lemma-ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (gate₁ ()))
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (() ↥))
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {₁₊ m} c) (comm₂ σ-gate g)
-  rewrite lemma-ract-σ•σ•σ c | lemma-ract-σ•1 (σ• c) (g ↥) | lemma-ract-σ•1 c g
+  rewrite ract-σ•σ•σ c | ract-σ•1 (σ• c) (g ↥) | ract-σ•1 c g
   = lemma-comm (proj₁ (ract c g)) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} c) (cong↑ {w = w} {v} eq)
   with ⁻¹[⇑]-wd'' (σ• c) eq
 ... | (wv , eq0)
-  rewrite lemma-ract-σ•1s (σ• c) w | lemma-ract-σ•1s (σ• c) v
+  rewrite ract-σ•1s (σ• c) w | ract-σ•1s (σ• c) v
   = lemma-cong↑ _ _ wv , Eq.cong σ•_ eq0
 
 ------------------------------------------------------------------------
@@ -401,7 +401,7 @@ ext k = record
   ; h=ract    = λ c b →
       Eq.subst (λ x → _≈_ ([ c ]ᶜ • [ b ]ʷ) (x • [ ract c b .proj₂ ]ᶜ))
                (Eq.sym (wconcatmap-[f]ʷ (ract c b .proj₁)))
-               (lemma-ract c b)
+               (ract-sound c b)
   }
   where
   open PB (_VRel,_===_ (₂₊ k))
@@ -467,13 +467,13 @@ inv-nf {n} = NormalForm.inv-nf (nfp'-t n)
 nfp : (n : ℕ) → NormalFormWithoutInverse (_VRel,_===_ n)
 nfp n = NormalForm.hasNormalFormWithoutInverse (nfp'-t n)
 
-lemma-nf-cong : ∀ {n} → let _≈_ = PB._≈_ (_VRel,_===_ n) in
+nf-cong : ∀ {n} → let _≈_ = PB._≈_ (_VRel,_===_ n) in
   Homomorphic₂ _≈_ _≡_ (nf-of {n})
-lemma-nf-cong {n} = NormalForm.nf-cong (nfp'-t n)
+nf-cong {n} = NormalForm.nf-cong (nfp'-t n)
 
-lemma-inv-nf : (n : ℕ) → let _≈_ = PB._≈_ (_VRel,_===_ n) in {w : Circuit n} →
+inv-nf∘nf≈id : (n : ℕ) → let _≈_ = PB._≈_ (_VRel,_===_ n) in {w : Circuit n} →
   inv-nf {n} (nf-of w) ≈ w
-lemma-inv-nf n = NormalForm.inv-nf∘nf=id (nfp'-t n)
+inv-nf∘nf≈id n = NormalForm.inv-nf∘nf=id (nfp'-t n)
 
 ------------------------------------------------------------------------
 -- Decidable equality on normal forms

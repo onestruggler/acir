@@ -19,7 +19,7 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Examples.Groups.Symmetric.Cosets
 open import Examples.Groups.Symmetric.Loose.Semantics
 open import Examples.Groups.Symmetric.Normalization
-  using (nf-of ; NF ; inv-nf ; lemma-nf-cong ; lemma-inv-nf)
+  using (nf-of ; NF ; inv-nf ; nf-cong ; inv-nf∘nf≈id)
 open import Examples.Groups.Symmetric.Syntactics
 open import Notations
 import Normalization.Base as NFBase
@@ -148,7 +148,7 @@ unique-nf : ∀ n →
   NFBase.UniqueNormalForm (_VRel,_===_ n) (Endo-setoid n) (⟦_⟧ {n})
 unique-nf n = record
   { normalForm = record
-      { NF = NF n ; nf = nf-of ; nf-cong = lemma-nf-cong
-      ; inv-nf = inv-nf ; inv-nf∘nf=id = lemma-inv-nf n }
+      { NF = NF n ; nf = nf-of ; nf-cong = nf-cong
+      ; inv-nf = inv-nf ; inv-nf∘nf=id = inv-nf∘nf≈id n }
   ; unique = ⟦inv-nf⟧-injective n
   }

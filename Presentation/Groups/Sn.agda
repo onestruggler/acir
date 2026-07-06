@@ -130,17 +130,17 @@ ract {₁₊ n} (swap• c) (b ₛ) = let ih = ract {n} c b in [ proj₁ ih ⇑]
 racts : ∀ {n} → C (₁₊ n) → Word (X (₁₊ n)) → Word (X n) × C (₁₊ n)
 racts {n} = ract {n} **
 
-lemma-comm : ∀ {n} w → 
+⇑²-swap-comm : ∀ {n} w → 
   let P : WRel (X (2+ n))
       P = rel (2+ n)
   in PB._≈_ P ([ [ w ⇑] ⇑] • [ swap ]ʷ) ([ swap ]ʷ • [ [ w ⇑] ⇑])
-lemma-comm {n} ε = trans left-unit (sym right-unit)
+⇑²-swap-comm {n} ε = trans left-unit (sym right-unit)
   where
   P = rel (2+ n)
   open PB P
   open PP P
   open SR word-setoid
-lemma-comm {n} [ x ]ʷ = begin
+⇑²-swap-comm {n} [ x ]ʷ = begin
   ([ [ [ x ]ʷ ⇑] ⇑] • [ swap ]ʷ) ≈⟨ _≈_.sym (_≈_.axiom comm) ⟩
   ([ swap ]ʷ • [ [ [ x ]ʷ ⇑] ⇑]) ∎
   where
@@ -148,7 +148,7 @@ lemma-comm {n} [ x ]ʷ = begin
   open PB P
   open PP P
   open SR word-setoid
-lemma-comm {n} (w • v) with lemma-comm {n} w | lemma-comm {n} v
+⇑²-swap-comm {n} (w • v) with ⇑²-swap-comm {n} w | ⇑²-swap-comm {n} v
 ... | h1 | h2 = begin
   ([ [ w • v ⇑] ⇑] • [ swap ]ʷ) ≡⟨ Eq.refl ⟩
   ([ [ w  ⇑] ⇑] • [ [ v ⇑] ⇑]) • [ swap ]ʷ ≈⟨ _≈_.assoc ⟩ 
@@ -164,26 +164,26 @@ lemma-comm {n} (w • v) with lemma-comm {n} w | lemma-comm {n} v
   open SR word-setoid
 
 
-lemma-ract : ∀ {n} c b →
+ract-sound : ∀ {n} c b →
   let P = rel (₁₊ n)
   in let (b' , c') = ract {n} c b in PB._≈_ P ([ c ] • [ b ]ʷ) ([ b' ⇑] • [ c' ])
-lemma-ract {n} ε swap = _≈_.cong _≈_.refl (_≈_.sym _≈_.right-unit)
+ract-sound {n} ε swap = _≈_.cong _≈_.refl (_≈_.sym _≈_.right-unit)
   where
   P = rel (₁₊ n)
   open PB P
-lemma-ract {n} (swap• ε) swap = _≈_.trans (_≈_.cong right-unit refl) (trans (axiom order) (sym right-unit))
+ract-sound {n} (swap• ε) swap = _≈_.trans (_≈_.cong right-unit refl) (trans (axiom order) (sym right-unit))
   where
   P = rel (₁₊ n)
   open PB P
-lemma-ract {₁₊ n} ε (b ₛ) = _≈_.trans _≈_.left-unit (_≈_.sym _≈_.right-unit)
+ract-sound {₁₊ n} ε (b ₛ) = _≈_.trans _≈_.left-unit (_≈_.sym _≈_.right-unit)
   where
   P = rel (2+ n)
   open PB P
-lemma-ract {₁₊ n} (swap• swap• c) swap = begin
+ract-sound {₁₊ n} (swap• swap• c) swap = begin
   ([ swap ]ʷ • [ [ swap ]ʷ • [ [ c ] ⇑] ⇑]) • [ swap ]ʷ ≈⟨ _≈_.assoc ⟩
   [ swap ]ʷ • [ [ swap ]ʷ • [ [ c ] ⇑] ⇑] • [ swap ]ʷ ≡⟨ Eq.refl ⟩
   [ swap ]ʷ • ([ [ swap ]ʷ ⇑] • [ [ [ c ] ⇑] ⇑]) • [ swap ]ʷ ≈⟨ _≈_.cong _≈_.refl _≈_.assoc ⟩
-  [ swap ]ʷ • [ [ swap ]ʷ ⇑] • [ [ [ c ] ⇑] ⇑] • [ swap ]ʷ ≈⟨ cong refl (cong refl (lemma-comm [ c ])) ⟩
+  [ swap ]ʷ • [ [ swap ]ʷ ⇑] • [ [ [ c ] ⇑] ⇑] • [ swap ]ʷ ≈⟨ cong refl (cong refl (⇑²-swap-comm [ c ])) ⟩
   [ swap ]ʷ • [ [ swap ]ʷ ⇑] • [ swap ]ʷ • [ [ [ c ] ⇑] ⇑] ≈⟨ _≈_.sym (_≈_.cong _≈_.refl _≈_.assoc) ⟩
   [ swap ]ʷ • ([ [ swap ]ʷ ⇑] • [ swap ]ʷ) • [ [ [ c ] ⇑] ⇑] ≈⟨ _≈_.sym _≈_.assoc ⟩
   ([ swap ]ʷ • [ [ swap ]ʷ ⇑] • [ swap ]ʷ) • [ [ [ c ] ⇑] ⇑] ≈⟨ cong (_≈_.axiom yang-baxter) refl ⟩
@@ -195,14 +195,14 @@ lemma-ract {₁₊ n} (swap• swap• c) swap = begin
   open PP P
   open SR word-setoid
 
-lemma-ract {0} (swap• c) (() ₛ)
-lemma-ract {₁₊ n} (swap• ε) (b@swap ₛ) with lemma-ract {n} ε b
+ract-sound {0} (swap• c) (() ₛ)
+ract-sound {₁₊ n} (swap• ε) (b@swap ₛ) with ract-sound {n} ε b
 ... | ih = begin
   [ swap• ε ] • [ b ₛ ]ʷ ≈⟨ _≈_.assoc ⟩
   [ swap ]ʷ • [ ε • [ b ]ʷ ⇑] ≈⟨ cong refl ([⇑]-cong (ε • [ b ]ʷ) ([ b0 ⇑] • [ c0 ]) ih) ⟩
   [ swap ]ʷ • [ [ b0 ⇑] • [ c0 ] ⇑] ≈⟨ _≈_.refl ⟩
   [ swap ]ʷ • [ [ b0 ⇑] ⇑] • [ [ c0 ] ⇑] ≈⟨ _≈_.sym _≈_.assoc ⟩
-  ([ swap ]ʷ • [ [ b0 ⇑] ⇑]) • [ [ c0 ] ⇑] ≈⟨ cong (sym (lemma-comm (proj₁ (ract ε b)))) refl ⟩
+  ([ swap ]ʷ • [ [ b0 ⇑] ⇑]) • [ [ c0 ] ⇑] ≈⟨ cong (sym (⇑²-swap-comm (proj₁ (ract ε b)))) refl ⟩
   ([ [ b0 ⇑] ⇑] • [ swap ]ʷ) • [ [ c0 ] ⇑] ≈⟨ _≈_.assoc ⟩
   [ [ b0 ⇑] ⇑] • [ swap• c0 ] ∎
   where
@@ -212,13 +212,13 @@ lemma-ract {₁₊ n} (swap• ε) (b@swap ₛ) with lemma-ract {n} ε b
   open SR word-setoid
   b0 = proj₁ (ract {n} ε b)
   c0 = proj₂ (ract {n} ε b)
-lemma-ract {₁₊ n} (swap• ε) (b@(b' ₛ) ₛ) with lemma-ract {n} ε b
+ract-sound {₁₊ n} (swap• ε) (b@(b' ₛ) ₛ) with ract-sound {n} ε b
 ... | ih = begin
   [ swap• ε ] • [ b ₛ ]ʷ ≈⟨ _≈_.assoc ⟩
   [ swap ]ʷ • [ ε • [ b ]ʷ ⇑] ≈⟨ cong refl ([⇑]-cong (ε • [ b ]ʷ) ([ b0 ⇑] • [ c0 ]) ih) ⟩
   [ swap ]ʷ • [ [ b0 ⇑] • [ c0 ] ⇑] ≈⟨ _≈_.refl ⟩
   [ swap ]ʷ • [ [ b0 ⇑] ⇑] • [ [ c0 ] ⇑] ≈⟨ _≈_.sym _≈_.assoc ⟩
-  ([ swap ]ʷ • [ [ b0 ⇑] ⇑]) • [ [ c0 ] ⇑] ≈⟨ cong (sym (lemma-comm (proj₁ (ract ε b)))) refl ⟩
+  ([ swap ]ʷ • [ [ b0 ⇑] ⇑]) • [ [ c0 ] ⇑] ≈⟨ cong (sym (⇑²-swap-comm (proj₁ (ract ε b)))) refl ⟩
   ([ [ b0 ⇑] ⇑] • [ swap ]ʷ) • [ [ c0 ] ⇑] ≈⟨ _≈_.assoc ⟩
   [ [ b0 ⇑] ⇑] • [ swap• c0 ] ∎
   where
@@ -229,13 +229,13 @@ lemma-ract {₁₊ n} (swap• ε) (b@(b' ₛ) ₛ) with lemma-ract {n} ε b
   open SR word-setoid
   b0 = proj₁ (ract {n} ε b)
   c0 = proj₂ (ract {n} ε b)
-lemma-ract {₁₊ n} (swap• swap• c) (b@swap ₛ) with lemma-ract {n} (swap• c) b
+ract-sound {₁₊ n} (swap• swap• c) (b@swap ₛ) with ract-sound {n} (swap• c) b
 ... | ih = begin
   [ swap• swap• c ] • [ b ₛ ]ʷ ≈⟨ _≈_.assoc ⟩
   [ swap ]ʷ • [ [ swap• c ] • [ b ]ʷ ⇑] ≈⟨ cong refl ([⇑]-cong ([ swap• c ] • [ b ]ʷ) ([ b0 ⇑] • [ c0 ]) ih) ⟩
   [ swap ]ʷ • [ [ b0 ⇑] • [ c0 ] ⇑] ≈⟨ _≈_.refl ⟩
   [ swap ]ʷ • [ [ b0 ⇑] ⇑] • [ [ c0 ] ⇑] ≈⟨ _≈_.sym _≈_.assoc ⟩
-  ([ swap ]ʷ • [ [ b0 ⇑] ⇑]) • [ [ c0 ] ⇑] ≈⟨ cong (sym (lemma-comm (proj₁ (ract (swap• c) b)))) refl ⟩
+  ([ swap ]ʷ • [ [ b0 ⇑] ⇑]) • [ [ c0 ] ⇑] ≈⟨ cong (sym (⇑²-swap-comm (proj₁ (ract (swap• c) b)))) refl ⟩
   ([ [ b0 ⇑] ⇑] • [ swap ]ʷ) • [ [ c0 ] ⇑] ≈⟨ _≈_.assoc ⟩
   [ [ b0 ⇑] ⇑] • [ swap• c0 ] ∎
   where
@@ -246,13 +246,13 @@ lemma-ract {₁₊ n} (swap• swap• c) (b@swap ₛ) with lemma-ract {n} (swap
   b0 = proj₁ (ract {n} (swap• c) b)
   c0 = proj₂ (ract {n} (swap• c) b)
 
-lemma-ract {₁₊ n} (swap• swap• c) (b@(bb' ₛ) ₛ) with lemma-ract {n} (swap• c) b
+ract-sound {₁₊ n} (swap• swap• c) (b@(bb' ₛ) ₛ) with ract-sound {n} (swap• c) b
 ... | ih = begin
   [ swap• swap• c ] • [ b ₛ ]ʷ ≈⟨ _≈_.assoc ⟩
   [ swap ]ʷ • [ [ swap• c ] • [ b ]ʷ ⇑] ≈⟨ cong refl ([⇑]-cong ([ swap• c ] • [ b ]ʷ) ([ b0 ⇑] • [ c0 ]) ih) ⟩
   [ swap ]ʷ • [ [ b0 ⇑] • [ c0 ] ⇑] ≈⟨ _≈_.refl ⟩
   [ swap ]ʷ • [ [ b0 ⇑] ⇑] • [ [ c0 ] ⇑] ≈⟨ _≈_.sym _≈_.assoc ⟩
-  ([ swap ]ʷ • [ [ b0 ⇑] ⇑]) • [ [ c0 ] ⇑] ≈⟨ cong (sym (lemma-comm (proj₁ (ract (swap• c) b)))) refl ⟩
+  ([ swap ]ʷ • [ [ b0 ⇑] ⇑]) • [ [ c0 ] ⇑] ≈⟨ cong (sym (⇑²-swap-comm (proj₁ (ract (swap• c) b)))) refl ⟩
   ([ [ b0 ⇑] ⇑] • [ swap ]ʷ) • [ [ c0 ] ⇑] ≈⟨ _≈_.assoc ⟩
   [ [ b0 ⇑] ⇑] • [ swap• c0 ] ∎
   where
@@ -263,18 +263,18 @@ lemma-ract {₁₊ n} (swap• swap• c) (b@(bb' ₛ) ₛ) with lemma-ract {n} 
   b0 = proj₁ (ract {n} (swap• c) b)
   c0 = proj₂ (ract {n} (swap• c) b)
 
-lemma-racts : ∀ {n} c bs →
+racts-sound : ∀ {n} c bs →
   let P : WRel (X _)
       P = rel (₁₊ n)
   in let (bs' , c') = racts {n} c bs in PB._≈_ P ([ c ] • bs) ([ bs' ⇑] • [ c' ])
-lemma-racts {n} c [ x ]ʷ = lemma-ract c x
-lemma-racts {n} c ε = _≈_.trans _≈_.right-unit (_≈_.sym _≈_.left-unit)
+racts-sound {n} c [ x ]ʷ = ract-sound c x
+racts-sound {n} c ε = _≈_.trans _≈_.right-unit (_≈_.sym _≈_.left-unit)
   where
   P : WRel (X _)
   P = rel (₁₊ n) 
   open PB P
-lemma-racts {n} c (bs • as) with racts c bs | inspect (racts c) bs | lemma-racts c bs
-... | (bs' , c') | [ eq1 ]ₑ | ih1 with racts c' as | inspect (racts c') as | lemma-racts c' as
+racts-sound {n} c (bs • as) with racts c bs | inspect (racts c) bs | racts-sound c bs
+... | (bs' , c') | [ eq1 ]ₑ | ih1 with racts c' as | inspect (racts c') as | racts-sound c' as
 ... | (as' , c'') | [ eq2 ]ₑ | ih2 = begin
   [ c ] • (bs • as) ≈⟨ _≈_.sym _≈_.assoc ⟩
   ([ c ] • bs) • as ≈⟨ _≈_.cong ih1 _≈_.refl ⟩
@@ -305,11 +305,11 @@ _≋_ {n} = let _≈₀_ = PB._≈_ (pres n) in Pointwise _≈₀_ (_≡_ {A = C
 ⁻¹[⇑]-gen' {n} swap = PB._≈_.refl , Eq.refl
 ⁻¹[⇑]-gen' {n} (x ₛ) = PB._≈_.refl , Eq.refl
 
-lemma-ract-suc' : ∀ {n} w → ((ract {n}) **) ε [ w ⇑] ≡ (w , ε)
-lemma-ract-suc' {n} [ x ]ʷ = Eq.refl
-lemma-ract-suc' {n} ε = Eq.refl
-lemma-ract-suc' {n} (w • v) with lemma-ract-suc' {n} w
-... | ih with lemma-ract-suc' {n} v
+ract-suc' : ∀ {n} w → ((ract {n}) **) ε [ w ⇑] ≡ (w , ε)
+ract-suc' {n} [ x ]ʷ = Eq.refl
+ract-suc' {n} ε = Eq.refl
+ract-suc' {n} (w • v) with ract-suc' {n} w
+... | ih with ract-suc' {n} v
 ... | ih' with racts ε [ w ⇑]
 ... | (w' , ew) rewrite Eq.cong proj₁ ih | Eq.cong proj₂ ih | Eq.cong proj₁ ih' | Eq.cong proj₂ ih' with racts ε [ v ⇑]
 ... | (v' , ev) = begin
@@ -318,11 +318,11 @@ lemma-ract-suc' {n} (w • v) with lemma-ract-suc' {n} w
   where
   open ≡-Reasoning
 
-lemma-ract-suc'' : ∀ {n} w → ((ract {2+ n}) **) (swap• ε) [ [ [ w ⇑] ⇑] ⇑] ≡ ([ [ w ⇑] ⇑] , swap• ε)
-lemma-ract-suc'' {n} [ x ]ʷ = Eq.refl
-lemma-ract-suc'' {n} ε = Eq.refl
-lemma-ract-suc'' {n} (w • v) with lemma-ract-suc'' {n} w
-... | ih with lemma-ract-suc'' {n} v
+ract-suc'' : ∀ {n} w → ((ract {2+ n}) **) (swap• ε) [ [ [ w ⇑] ⇑] ⇑] ≡ ([ [ w ⇑] ⇑] , swap• ε)
+ract-suc'' {n} [ x ]ʷ = Eq.refl
+ract-suc'' {n} ε = Eq.refl
+ract-suc'' {n} (w • v) with ract-suc'' {n} w
+... | ih with ract-suc'' {n} v
 ... | ih' with racts ε [ w ⇑]
 ... | (w' , ew) rewrite Eq.cong proj₁ ih | Eq.cong proj₂ ih | Eq.cong proj₁ ih' | Eq.cong proj₂ ih' with racts ε [ v ⇑]
 ... | (v' , ev) = begin
@@ -331,24 +331,24 @@ lemma-ract-suc'' {n} (w • v) with lemma-ract-suc'' {n} w
   where
   open ≡-Reasoning
 
-lemma-ract-swap•swap• : ∀ {n} (c : C n) → racts (swap• swap• c) [ swap ]ʷ ≡ ([ swap ]ʷ , swap• swap• c)
-lemma-ract-swap•swap• {n} c = Eq.refl
+ract-swap•swap• : ∀ {n} (c : C n) → racts (swap• swap• c) [ swap ]ʷ ≡ ([ swap ]ʷ , swap• swap• c)
+ract-swap•swap• {n} c = Eq.refl
   where
   open ≡-Reasoning
 
-lemma-ract-swap•swap•1 : ∀ {n} c b → let (b' , c') = ract {n} c b in ract (swap• c) (b ₛ) ≡ ([ b' ⇑] , swap• c')
-lemma-ract-swap•swap•1 {n} ε swap = Eq.refl
-lemma-ract-swap•swap•1 {n} ε (b ₛ) = Eq.refl
-lemma-ract-swap•swap•1 {n} (swap• c) swap = Eq.refl
-lemma-ract-swap•swap•1 {n} (swap• c) (b ₛ) = Eq.refl
+ract-swap•swap•1 : ∀ {n} c b → let (b' , c') = ract {n} c b in ract (swap• c) (b ₛ) ≡ ([ b' ⇑] , swap• c')
+ract-swap•swap•1 {n} ε swap = Eq.refl
+ract-swap•swap•1 {n} ε (b ₛ) = Eq.refl
+ract-swap•swap•1 {n} (swap• c) swap = Eq.refl
+ract-swap•swap•1 {n} (swap• c) (b ₛ) = Eq.refl
   where
   open ≡-Reasoning
 
-lemma-ract-swap•swap•1s : ∀ {n} c w → let (w' , c') = (ract {n} **) c w in (ract **) (swap• c) [ w ⇑] ≡ ([ w' ⇑] , swap• c')
-lemma-ract-swap•swap•1s {n} c [ x ]ʷ = lemma-ract-swap•swap•1 c x
-lemma-ract-swap•swap•1s {n} c ε = Eq.refl
-lemma-ract-swap•swap•1s {n} c (w • v) with lemma-ract-swap•swap•1s c w | (ract **) c w | inspect ((ract **) (c)) w
-... | ih1 | w' , c0 | [ eq1 ]ₑ rewrite ih1 | eq1 with lemma-ract-swap•swap•1s c0 v | (ract **) (c0) v | inspect ((ract **) (c0)) v
+ract-swap•swap•1s : ∀ {n} c w → let (w' , c') = (ract {n} **) c w in (ract **) (swap• c) [ w ⇑] ≡ ([ w' ⇑] , swap• c')
+ract-swap•swap•1s {n} c [ x ]ʷ = ract-swap•swap•1 c x
+ract-swap•swap•1s {n} c ε = Eq.refl
+ract-swap•swap•1s {n} c (w • v) with ract-swap•swap•1s c w | (ract **) c w | inspect ((ract **) (c)) w
+... | ih1 | w' , c0 | [ eq1 ]ₑ rewrite ih1 | eq1 with ract-swap•swap•1s c0 v | (ract **) (c0) v | inspect ((ract **) (c0)) v
 ... | ih2 | v' , c1 | [ eq2 ]ₑ rewrite eq2 | Eq.cong proj₁ ih2 | Eq.cong proj₂ ih2 = Eq.refl
   where
   open ≡-Reasoning
@@ -360,12 +360,12 @@ lemma-ract-swap•swap•1s {n} c (w • v) with lemma-ract-swap•swap•1s c w
 ⁻¹[⇑]-wd'' {n} ε {u} {t} order = PB._≈_.left-unit , Eq.refl
 ⁻¹[⇑]-wd'' {n} ε {u} {t} comm = PB._≈_.trans PB._≈_.left-unit (PB._≈_.sym PB._≈_.right-unit) , Eq.refl
 ⁻¹[⇑]-wd'' {n} ε {u} {t} yang-baxter = PB._≈_.trans PB._≈_.left-unit (PB._≈_.trans PB._≈_.left-unit (PB._≈_.trans (PB._≈_.sym (PB._≈_.right-unit)) (PB._≈_.cong PB._≈_.refl (PB._≈_.sym PB._≈_.left-unit)))) , Eq.refl
-⁻¹[⇑]-wd'' {₁₊ n} ε {u} {t} (congₛ {w = w} {v} eq) rewrite lemma-ract-suc' {(₁₊ n)} w | lemma-ract-suc' {(₁₊ n)} v = PB._≈_.axiom eq , Eq.refl
+⁻¹[⇑]-wd'' {₁₊ n} ε {u} {t} (congₛ {w = w} {v} eq) rewrite ract-suc' {(₁₊ n)} w | ract-suc' {(₁₊ n)} v = PB._≈_.axiom eq , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} order = PB._≈_.left-unit , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• swap• c) {u} {t} order = PB._≈_.axiom order , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} comm = PB._≈_.trans PB._≈_.left-unit (PB._≈_.sym PB._≈_.right-unit) , Eq.refl
-⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} c) {u} {t} (comm {a = swap}) rewrite lemma-ract-swap•swap• c | lemma-ract-swap•swap•1 c swap = PB._≈_.sym (lemma-comm ( ract c swap .proj₁)) , Eq.refl
-⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} c) {u} {t} (comm {a = a ₛ}) rewrite lemma-ract-swap•swap• c | lemma-ract-swap•swap•1 c (a ₛ) = PB._≈_.sym (lemma-comm ( ract c (a ₛ) .proj₁)) , Eq.refl
+⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} c) {u} {t} (comm {a = swap}) rewrite ract-swap•swap• c | ract-swap•swap•1 c swap = PB._≈_.sym (⇑²-swap-comm ( ract c swap .proj₁)) , Eq.refl
+⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} c) {u} {t} (comm {a = a ₛ}) rewrite ract-swap•swap• c | ract-swap•swap•1 c (a ₛ) = PB._≈_.sym (⇑²-swap-comm ( ract c (a ₛ) .proj₁)) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} yang-baxter = PB._≈_.refl , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} ε) {u} {t} yang-baxter = PB._≈_.trans (PB._≈_.cong PB._≈_.refl PB._≈_.right-unit) (PB._≈_.trans PB._≈_.right-unit (PB._≈_.trans (PB._≈_.sym PB._≈_.left-unit) (PB._≈_.cong PB._≈_.refl (PB._≈_.sym PB._≈_.left-unit)))) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} (swap• c)) {u} {t} yang-baxter = PB._≈_.axiom yang-baxter , Eq.refl
@@ -374,19 +374,19 @@ lemma-ract-swap•swap•1s {n} c (w • v) with lemma-ract-swap•swap•1s c w
                                                   (PB._≈_.sym PB._≈_.right-unit)
                                                   , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (yang-baxter {n₁})) = PB._≈_.trans PB._≈_.left-unit (PB._≈_.trans PB._≈_.left-unit (PB._≈_.trans (PB._≈_.sym PB._≈_.right-unit) (PB._≈_.cong PB._≈_.refl (PB._≈_.sym PB._≈_.left-unit)))) , Eq.refl
-⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (order {n₁}))) rewrite lemma-ract-swap•swap•1 {₁₊ n₁} ε (swap ₛ) = PB._≈_.axiom (congₛ order) , Eq.refl
-⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (comm {n₁} {a}))) rewrite lemma-ract-swap•swap•1 {₁₊ n₁} ε ((a ₛ) ₛ) = PB._≈_.axiom (congₛ comm) , Eq.refl
-⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (yang-baxter {n₁}))) rewrite lemma-ract-swap•swap•1 {₁₊ n₁} ε (swap ₛ) = PB._≈_.axiom (congₛ yang-baxter) , Eq.refl
-⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (congₛ {n₁} {w} {v} eq))) rewrite lemma-ract-suc'' w | lemma-ract-suc'' v = PB._≈_.axiom (congₛ (congₛ eq)) , Eq.refl
+⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (order {n₁}))) rewrite ract-swap•swap•1 {₁₊ n₁} ε (swap ₛ) = PB._≈_.axiom (congₛ order) , Eq.refl
+⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (comm {n₁} {a}))) rewrite ract-swap•swap•1 {₁₊ n₁} ε ((a ₛ) ₛ) = PB._≈_.axiom (congₛ comm) , Eq.refl
+⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (yang-baxter {n₁}))) rewrite ract-swap•swap•1 {₁₊ n₁} ε (swap ₛ) = PB._≈_.axiom (congₛ yang-baxter) , Eq.refl
+⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (congₛ {n₁} {w} {v} eq))) rewrite ract-suc'' w | ract-suc'' v = PB._≈_.axiom (congₛ (congₛ eq)) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} c) {u} {t} (congₛ {w = w} {v} eq) with ⁻¹[⇑]-wd'' (swap• c) eq
-... | (wv , eq0) rewrite lemma-ract-swap•swap•1s (swap• c) w | lemma-ract-swap•swap•1s (swap• c) v = [⇑]-cong _ _ wv , Eq.cong swap•_ eq0
+... | (wv , eq0) rewrite ract-swap•swap•1s (swap• c) w | ract-swap•swap•1s (swap• c) v = [⇑]-cong _ _ wv , Eq.cong swap•_ eq0
 
 mutual
 
-  lemma-nf-inj : ∀ {n} →
+  nf-injective : ∀ {n} →
     let _≈_ = PB._≈_ (pres n) in
     Injective _≈_ _≡_ (nf-of {n}) 
-  lemma-nf-inj {zero} = f-inj
+  nf-injective {zero} = f-inj
     where
     open PB (pres 0)
 
@@ -407,7 +407,7 @@ mutual
       ε ≈⟨ sym singleton ⟩
       b ∎
 
-  lemma-nf-inj {₁₊ n} with lemma-nf-inj {n}
+  nf-injective {₁₊ n} with nf-injective {n}
   ... | ih = f-inj
     where
     open PB (pres (₁₊ n))
@@ -415,14 +415,14 @@ mutual
     f = nf-of {₁₊ n}
 
     p0 : NormalFormWithoutInverse (pres n)
-    p0 = record { NF = NF n ; nf = nf-of ; nf-cong = lemma-nf-cong ; nf-injective = lemma-nf-inj }
+    p0 = record { NF = NF n ; nf = nf-of ; nf-cong = nf-cong ; nf-injective = nf-injective }
 
     open PB (pres n) renaming (_≈_ to _≈₀_) using ()
     
     module M = CA.SingleLevel (pres n) (pres (₁₊ n)) (C (₁₊ n)) ε ([_]ʷ ∘ _ₛ) ract [_]
 
     nfp-1 : NormalFormWithoutInverse (pres (₁₊ n))
-    nfp-1 = M.Transfer.nfp (λ x₁ → _≈₀_.refl , Eq.refl) ⁻¹[⇑]-wd'' ((λ x₁ → axiom (congₛ x₁))) _≈_.refl lemma-ract p0
+    nfp-1 = M.Transfer.nfp (λ x₁ → _≈₀_.refl , Eq.refl) ⁻¹[⇑]-wd'' ((λ x₁ → axiom (congₛ x₁))) _≈_.refl ract-sound p0
 
     open PP (pres (₁₊ n))
     open SR word-setoid
@@ -430,10 +430,10 @@ mutual
     f-inj :  ∀ {a b} → f a ≡ f b → a ≈ b
     f-inj {a} {b} = NormalFormWithoutInverse.nf-injective nfp-1 
   
-  lemma-nf-cong : ∀ {n} →
+  nf-cong : ∀ {n} →
     let _≈_ = PB._≈_ (pres n) in
     Homomorphic₂ _≈_ _≡_ (nf-of {n})
-  lemma-nf-cong {zero} = f-cong
+  nf-cong {zero} = f-cong
     where
     open PB (pres 0) renaming (_≈_ to _≈₁_)
 
@@ -441,17 +441,17 @@ mutual
     f-cong : ∀ {a b} → a ≈₁ b → f a ≡ f b
     f-cong {a} {b} eq = Eq.refl
 
-  lemma-nf-cong {₁₊ n} {x} {y} eq with lemma-nf-cong2 {n} eq
-  ... | fst , snd with  lemma-nf-cong {n}
+  nf-cong {₁₊ n} {x} {y} eq with coset-nf-cong {n} eq
+  ... | fst , snd with  nf-cong {n}
   ... | ih = ≡×≡⇒≡ (ih fst , snd)
 
   
-  lemma-nf-cong2 : ∀ {n} →
+  coset-nf-cong : ∀ {n} →
     let _≈_ = PB._≈_ (pres (₁₊ n)) in
     let _≈₀_ = PB._≈_ (pres (n)) in
     let _~_ = Pointwise _≈₀_ (_≡_ {A = C (₁₊ n)}) in
     Homomorphic₂ _≈_ _~_ (nf-of2 {n}) 
-  lemma-nf-cong2 {zero} = f-cong2
+  coset-nf-cong {zero} = f-cong2
     where
     open PB (pres 0) renaming (_≈_ to _≈₀_) using ()
     open PB (pres 1) using (_≈_)
@@ -463,7 +463,7 @@ mutual
     f-cong2 : ∀ {a b} → a ≈ b → f a ~ f b
     f-cong2 {a} {b} eq = RSA.lemma-hypB (λ ()) ract (λ ()) ⁻¹[⇑]-wd'' ε _ _ eq
 
-  lemma-nf-cong2 {n@(₁₊ n')} = f-cong2
+  coset-nf-cong {n@(₁₊ n')} = f-cong2
     where
     open PB (pres n) renaming (_≈_ to _≈₀_) using ()
     open PB (pres (₁₊ n)) using (_≈_)
@@ -476,22 +476,22 @@ mutual
     f-cong2 {a} {b} eq = RSA.lemma-hypB ([_]ʷ ∘ _ₛ) ract ⁻¹[⇑]-gen'  ⁻¹[⇑]-wd'' ε _ _ eq
 
 nfp : (n : ℕ) → NormalFormWithoutInverse (pres n)
-nfp n = record { NF = NF n ; nf = nf-of ; nf-cong = lemma-nf-cong ; nf-injective = lemma-nf-inj }
+nfp n = record { NF = NF n ; nf = nf-of ; nf-cong = nf-cong ; nf-injective = nf-injective }
 
 inv-f : (n : ℕ) → NF n → Word (X n)
 inv-f zero = λ z → ε
 inv-f (₁₊ n) (l , r) = [ inv-f n l ⇑] • [ r ]
 
 
-lemma-inv-f : (n : ℕ) → let _≈_ = PB._≈_ (pres n) in {w : Word (X n)} → inv-f n (nf-of w) ≈ w
-lemma-inv-f zero {ε} = PB._≈_.refl
-lemma-inv-f zero {w • w₁} with lemma-inv-f zero {w} | lemma-inv-f zero {w₁}
+inv-f∘nf-of≈id : (n : ℕ) → let _≈_ = PB._≈_ (pres n) in {w : Word (X n)} → inv-f n (nf-of w) ≈ w
+inv-f∘nf-of≈id zero {ε} = PB._≈_.refl
+inv-f∘nf-of≈id zero {w • w₁} with inv-f∘nf-of≈id zero {w} | inv-f∘nf-of≈id zero {w₁}
 ... | ih1 | ih2 = PB._≈_.trans (PB._≈_.sym PB._≈_.left-unit) (PB._≈_.cong ih1 ih2)
-lemma-inv-f (₁₊ n) {w} = let (l , r) = racts ε w in begin
+inv-f∘nf-of≈id (₁₊ n) {w} = let (l , r) = racts ε w in begin
   inv-f (₁₊ n) (nf-of w) ≈⟨ _≈_.refl ⟩
   inv-f (₁₊ n) (nf-of l , r) ≈⟨ _≈_.refl ⟩
-  [ inv-f n (nf-of l) ⇑] • [ r ] ≈⟨ cong ([⇑]-cong (inv-f n (nf-of l)) l (lemma-inv-f n {l})) _≈_.refl ⟩
-  [ l ⇑] • [ r ] ≈⟨ sym (lemma-racts ε w) ⟩
+  [ inv-f n (nf-of l) ⇑] • [ r ] ≈⟨ cong ([⇑]-cong (inv-f n (nf-of l)) l (inv-f∘nf-of≈id n {l})) _≈_.refl ⟩
+  [ l ⇑] • [ r ] ≈⟨ sym (racts-sound ε w) ⟩
   ε • w ≈⟨ _≈_.left-unit ⟩
   w ∎
     where
@@ -502,4 +502,4 @@ lemma-inv-f (₁₊ n) {w} = let (l , r) = racts ε w in begin
 
 nfp' : (n : ℕ) → NormalForm (pres n)
 nfp' n = record
-              { NF = NF n ; nf = nf-of ; nf-cong = lemma-nf-cong ; inv-nf = inv-f n ; inv-nf∘nf=id = lemma-inv-f n }
+              { NF = NF n ; nf = nf-of ; nf-cong = nf-cong ; inv-nf = inv-f n ; inv-nf∘nf=id = inv-f∘nf-of≈id n }
