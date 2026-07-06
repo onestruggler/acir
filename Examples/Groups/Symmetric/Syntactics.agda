@@ -15,7 +15,7 @@ import Relation.Binary.Reasoning.Setoid as SR
 open import Word.Base
 open import Notations
 open import Presentation.GroupLike
-import Presentation.Vertical-Syntactics
+import Circuit.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
 
@@ -33,7 +33,7 @@ data Gate : ℕ → Set where
 ------------------------------------------------------------------------
 -- Syntactics framework
 
-private module SC = Presentation.Vertical-Syntactics Gate
+private module SC = Circuit.Base Gate
 open SC using (Gen ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_; Circuit) public
 
 pattern σ-gen = gate₂ σ-gate

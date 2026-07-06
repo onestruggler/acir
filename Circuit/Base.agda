@@ -1,24 +1,25 @@
 ------------------------------------------------------------------------
--- The Agda standard library
+-- Presentations of groups
 --
 -- Inductively defined circuits with structural congruence rules
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}
 
-open import Data.Nat
-open import Level using (0ℓ ; _⊔_)
+open import Data.Nat using (ℕ ; zero ; suc ; _+_)
+
+module Circuit.Base (Gate : ℕ → Set) where
+
+open import Level using (0ℓ)
 open import Relation.Binary using (Rel)
 
-open import Word.Base
 open import Notations
+open import Word.Base
 import Presentation.Base as PB
-
-module Presentation.Vertical-Syntactics (Gate : ℕ → Set) where
 
 private
   variable
-    n m k : ℕ
+    n k : ℕ
 
 ------------------------------------------------------------------------
 -- Generators and circuits

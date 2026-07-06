@@ -7,19 +7,16 @@
 
 {-# OPTIONS --safe #-}
 
-open import Data.Product using (proj₂)
-open import Relation.Binary.PropositionalEquality using (_≡_)
-import Relation.Binary.PropositionalEquality as Eq
-import Relation.Binary.Reasoning.Setoid as SR
-
-open import Algebra.Morphism.Structures
-  using (module MonoidMorphisms ; module GroupMorphisms)
-open import Function.Definitions using (Surjective)
 open import Algebra.Bundles using (Monoid ; Group)
 open import Algebra.Bundles.Raw using (RawGroup)
+open import Algebra.Morphism.Structures
+  using (module MonoidMorphisms ; module GroupMorphisms)
+open import Data.Product using (proj₂)
+open import Function.Definitions using (Surjective)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+import Relation.Binary.Reasoning.Setoid as SR
 
 open import Word.Base
-open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open import Presentation.Reidemeister-Schreier hiding (module Star-Congruence)

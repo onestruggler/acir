@@ -1,21 +1,20 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Group structure: inverses, cancellation, basis change
+-- Group-like presentations: inverses, cancellation, and the group of
+-- words modulo the congruence
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}
 
+module Presentation.GroupLike where
+
+open import Algebra.Bundles using (Group)
+open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
 open import Level using (0ℓ)
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 import Relation.Binary.Reasoning.Setoid as SR
 
-open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
-open import Algebra.Bundles using (Group)
-
 open import Word.Base
-
-module Presentation.GroupLike where
 
 import Presentation.Base as PB
 import Presentation.Properties as PP
@@ -44,6 +43,8 @@ module Group-Lemmas
   open PB Γ
   open SR word-setoid
 
+  -- Syntactic inverse: invert generators via the group-like structure
+  -- and reverse products.
   _⁻¹ : Word Y → Word Y
   [ x ]ʷ ⁻¹  = proj₁ (group-like x)
   ε ⁻¹        = ε
@@ -226,6 +227,7 @@ module Group-Lemmas
         ≈⟨ left-unit ⟩
       u ∎
 
+  -- The group of words modulo the congruence.
   •-ε-group : Group 0ℓ 0ℓ
   •-ε-group = record
     { Carrier  = Word Y
@@ -239,82 +241,3 @@ module Group-Lemmas
       ; ⁻¹-cong  = lemma-cong-inv
       }
     }
-
-------------------------------------------------------------------------
--- Basis-change cancellation
-
-module Basis-Change
-  (Y : Set)
-  (Γ : WRel Y)
-  (group-like : Grouplike Γ)
-  where
-
-  open PB Γ
-  open PP Γ
-  open Group-Lemmas Y Γ group-like
-  open SR word-setoid
-
-  by-basis-change : ∀ {u v} b c d e →
-    d • b ≈ ε → c • e ≈ ε → b • u • c ≈ b • v • c → u ≈ v
-  by-basis-change {u} {v} b c d e h1 h2 eq =
-    begin u
-        ≈⟨ sym (trans left-unit right-unit) ⟩
-      ε • u • ε
-        ≈⟨ cong (sym h1) (cong refl (sym h2)) ⟩
-      (d • b) • u • (c • e)
-        ≈⟨ special-assoc (□ ^ 2 • □ • □ ^ 2) (□ • □ ^ 3 • □) Eq.refl ⟩
-      d • (b • u • c) • e
-        ≈⟨ cong refl (cong eq refl) ⟩
-      d • (b • v • c) • e
-        ≈⟨ special-assoc (□ • □ ^ 3 • □) (□ ^ 2 • □ • □ ^ 2) Eq.refl ⟩
-      (d • b) • v • (c • e)
-        ≈⟨ cong h1 (cong refl h2) ⟩
-      ε • v • ε
-        ≈⟨ trans left-unit right-unit ⟩
-      v ∎
-    where open Pattern-Assoc
-
-  bbc : ∀ {u v} b c → b • u • c ≈ b • v • c → u ≈ v
-  bbc {u} {v} b c eq =
-    by-basis-change b c (b ⁻¹) (c ⁻¹) lemma-left-inverse lemma-right-inverse eq
-
-  bbc-and : ∀ {u v x y} b c →
-    b • u • c ≈ x → b • v • c ≈ y → u ≈ v → x ≈ y
-  bbc-and {u} {v} {x} {y} b c equ eqv uv =
-    begin x    ≈⟨ sym equ ⟩
-      b • u • c  ≈⟨ cong refl (cong uv refl) ⟩
-      b • v • c  ≈⟨ eqv ⟩
-      y ∎
-
-------------------------------------------------------------------------
--- Group actions
-
-word-act : ∀ {C Y : Set} → (Y → C → C) → Word Y → C → C
-word-act act1 [ x ]ʷ   c = act1 x c
-word-act act1 ε         c = c
-word-act act1 (w • w₁) c = word-act act1 w (word-act act1 w₁ c)
-
-module Group-Action
-  (C Y : Set)
-  (Γ : WRel Y)
-  (group-like : Grouplike Γ)
-  (act1 : Y → C → C)
-  (let act = word-act act1)
-  (let open PB Γ)
-  (hyp : ∀ {w v} → Γ w v → ∀ c → act w c ≡ act v c)
-  where
-
-  open PP Γ
-  open Group-Lemmas Y Γ group-like
-  open SR word-setoid
-
-  act-cong : ∀ w v c → w ≈ v → act w c ≡ act v c
-  act-cong w v c PB.refl                        = Eq.refl
-  act-cong w v c (PB.sym eq)                    = Eq.sym (act-cong v w c eq)
-  act-cong w v c (PB.trans eq eq₁)              = Eq.trans (act-cong _ _ c eq) (act-cong _ _ c eq₁)
-  act-cong w v c (PB.cong {w'} {w''} {v'} {v''} eq eq₁)
-    rewrite act-cong _ _ c eq₁                  = act-cong _ _ (word-act act1 v'' c) eq
-  act-cong w v c PB.assoc                       = Eq.refl
-  act-cong w v c PB.left-unit                   = Eq.refl
-  act-cong w v c PB.right-unit                  = Eq.refl
-  act-cong w v c (PB.axiom x)                   = hyp x c

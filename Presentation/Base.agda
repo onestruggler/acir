@@ -14,7 +14,7 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 private
   variable
-    w v u w' v' u' : Word X
+    w v u w' v' : Word X
 
 ------------------------------------------------------------------------
 -- Syntax of a presented monoid

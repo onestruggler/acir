@@ -37,7 +37,6 @@ module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 open import Presentation.GroupLike
 
 open import Notations
-import Presentation.Vertical-Syntactics
 
 module Examples.Groups.Symmetric.Normalization where
 
