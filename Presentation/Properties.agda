@@ -75,6 +75,52 @@ word-setoid = record
 •-ε-monoid = record { isMonoid = •-ε-isMonoid }
 
 ------------------------------------------------------------------------
+-- Congruence of the induced maps
+--
+-- If f respects the raw relations of Γ, then its free extension (f *)
+-- — or the generator lift wmap f — respects the whole congruence ≈,
+-- sending the source presentation Γ into a target presentation Δ.
+
+module StarCongruence {B : Set} (Δ : WRel B)
+  (f : X → Word B)
+  (f-well-defined : let open PB Δ renaming (_≈_ to _≈₂_) in
+                    ∀ {w v} → Γ w v → (f *) w ≈₂ (f *) v)
+  where
+
+  open PB Δ using () renaming (_≈_ to _≈₂_)
+
+  f*-cong : ∀ {w v : Word X} → w ≈ v → (f *) w ≈₂ (f *) v
+  f*-cong refl        = _≈₂_.refl
+  f*-cong (sym h)     = _≈₂_.sym (f*-cong h)
+  f*-cong (trans h k) = _≈₂_.trans (f*-cong h) (f*-cong k)
+  f*-cong (cong h k)  = _≈₂_.cong (f*-cong h) (f*-cong k)
+  f*-cong assoc       = _≈₂_.assoc
+  f*-cong left-unit   = _≈₂_.left-unit
+  f*-cong right-unit  = _≈₂_.right-unit
+  f*-cong (axiom a)   = f-well-defined a
+
+
+module GenCongruence {B : Set} (Δ : WRel B)
+  (f : X → B)
+  (f-well-defined : let f* = wmap f; open PB Δ renaming (_≈_ to _≈₂_) in
+                    ∀ {w v} → Γ w v → f* w ≈₂ f* v)
+  where
+
+  open PB Δ using () renaming (_≈_ to _≈₂_)
+
+  f* = wmap f
+
+  f*-cong : ∀ {w v : Word X} → w ≈ v → f* w ≈₂ f* v
+  f*-cong refl        = _≈₂_.refl
+  f*-cong (sym h)     = _≈₂_.sym (f*-cong h)
+  f*-cong (trans h k) = _≈₂_.trans (f*-cong h) (f*-cong k)
+  f*-cong (cong h k)  = _≈₂_.cong (f*-cong h) (f*-cong k)
+  f*-cong assoc       = _≈₂_.assoc
+  f*-cong left-unit   = _≈₂_.left-unit
+  f*-cong right-unit  = _≈₂_.right-unit
+  f*-cong (axiom a)   = f-well-defined a
+
+------------------------------------------------------------------------
 -- Associativity solver
 --
 -- Converts a word to a flat list of generators, then compares the lists

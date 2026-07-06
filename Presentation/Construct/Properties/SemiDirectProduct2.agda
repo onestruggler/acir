@@ -378,7 +378,7 @@ module _
 
     f*-cong : ∀ {w v} → w ≈₁ v → (f *) w ≈₃ (f *) v
     f*-cong {w} {v} eq =
-      Star-Congruence.lemma-f*-cong Γ (Γ ⋄ Δ ⋄ ConjRelʷ conj) f
+      PP.StarCongruence.f*-cong Γ (Γ ⋄ Δ ⋄ ConjRelʷ conj) f
         f-well-defined eq
 
     -- gg is a left inverse of nf, up to ≈₃.

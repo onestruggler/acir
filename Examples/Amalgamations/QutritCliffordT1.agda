@@ -668,7 +668,7 @@ module SXζHH where
   f-wd-ax {w} {v} (SXζ.comm {SXζ.ζ-gen}) = refl
 
   by-sub-nf : ∀ {w v} → w ≈₀ v → (f *) w ≈ (f *) v
-  by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong SXζ._===_ _===_ f f-wd-ax eq 
+  by-sub-nf {w} {v} eq = PP.StarCongruence.f*-cong SXζ._===_ _===_ f f-wd-ax eq 
 
   [_] : C → Word SXζHH
   [ ε-cr ] = ε
@@ -902,10 +902,10 @@ module CliffordTHH where
   f-wd-ax (SXζHH.comm {SXζHH.HH-gen}) = axiom comm
 
   by-sub-nf : ∀ {w v} → w ≈₀ v → (f *) w ≈ (f *) v
-  by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong SXζHH._===_ _===_ f f-wd-ax eq 
+  by-sub-nf {w} {v} eq = PP.StarCongruence.f*-cong SXζHH._===_ _===_ f f-wd-ax eq 
 
   lemma-order-Z : Z ^ 3 ≈ ε
-  lemma-order-Z = RS.Star-Congruence.lemma-f*-cong SXζHH._===_ _===_ f f-wd-ax SXζHH.lemma-order-Z 
+  lemma-order-Z = PP.StarCongruence.f*-cong SXζHH._===_ _===_ f f-wd-ax SXζHH.lemma-order-Z 
 
   lemma-ζ : ∀ w → w • ζ ≈ ζ • w
   lemma-ζ [ x ]ʷ = sym (axiom comm)
@@ -1340,10 +1340,10 @@ module CliffordTT where
   f-wd-ax (SXζHH.comm {SXζHH.HH-gen}) = axiom comm
 
   by-sub-nf : ∀ {w v} → w ≈₀ v → (f *) w ≈ (f *) v
-  by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong SXζHH._===_ _===_ f f-wd-ax eq 
+  by-sub-nf {w} {v} eq = PP.StarCongruence.f*-cong SXζHH._===_ _===_ f f-wd-ax eq 
 
   lemma-order-Z : Z ^ 3 ≈ ε
-  lemma-order-Z = RS.Star-Congruence.lemma-f*-cong SXζHH._===_ _===_ f f-wd-ax SXζHH.lemma-order-Z 
+  lemma-order-Z = PP.StarCongruence.f*-cong SXζHH._===_ _===_ f f-wd-ax SXζHH.lemma-order-Z 
 
   lemma-ζ : ∀ w → w • ζ ≈ ζ • w
   lemma-ζ [ x ]ʷ = sym (axiom comm)
@@ -1782,7 +1782,7 @@ module CliffordH where
   f-wd-ax (SXζHH.comm {SXζHH.ζ-gen}) = refl
 
   by-sub-nf : ∀ {w v} → w ≈₀ v → (f *) w ≈ (f *) v
-  by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong SXζHH._===_ _===_ f f-wd-ax eq 
+  by-sub-nf {w} {v} eq = PP.StarCongruence.f*-cong SXζHH._===_ _===_ f f-wd-ax eq 
 
 
   lemma-def-X : X ≈ H ^ 3 • Z • H

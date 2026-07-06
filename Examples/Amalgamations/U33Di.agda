@@ -185,7 +185,7 @@ module TwoLevel-Simplified-Amal where
         where open SR word-setoid
     
     by-sub-nf : ∀ {w v} -> w ≈₀ v -> (g *) w ≈ (g *) v
-    by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong _===₀_ _===_ g g-wd-ax eq
+    by-sub-nf {w} {v} eq = PP.StarCongruence.f*-cong _===₀_ _===_ g g-wd-ax eq
 
     sub-nfp : NFBase.NormalFormWithoutInverse _===₀_
     sub-nfp = NDP.nfp (Cyclic.pres 4) 3 (Cyclic.nfp 4)
@@ -376,7 +376,7 @@ module TwoLevel-Simplified-Amal where
     open SR ws₂
 
     by-sub-nf : ∀ {w v} -> w ≈₁ v -> (f *) w ≈₂ (f *) v
-    by-sub-nf {w} {v} eq = RS.Star-Congruence.lemma-f*-cong _===₁_ _===₂_ f f-wd-ax eq 
+    by-sub-nf {w} {v} eq = PP.StarCongruence.f*-cong _===₁_ _===₂_ f f-wd-ax eq 
 
 
     lemma-K01^2 : K₀₁ ^ 2 ≈₂ i₀ ^ 3 • i₁ ^ 3

@@ -300,7 +300,7 @@ module NFP'
   -- The extension of f respects Γ-equivalence.
   f*-cong : ∀ {w v} → w ≈₁ v → (f *) w ≈₃ (f *) v
   f*-cong {w} {v} eq =
-    Star-Congruence.lemma-f*-cong Γ (Γ ⋄ Δ ⋄ CommRel) f f-well-defined eq
+    PP.StarCongruence.f*-cong Γ (Γ ⋄ Δ ⋄ CommRel) f f-well-defined eq
 
   -- gg is a left inverse of the pair normal form.
   ggnf=id : {w : Word Y} → gg (nf w) ≈₃ w

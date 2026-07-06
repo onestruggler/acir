@@ -37,46 +37,11 @@ open PP Δ renaming (•-ε-monoid to monoid₂ ; word-setoid to setoid₂)
 open PB
 
 ------------------------------------------------------------------------
--- GenCongruence: (f *) and wmap f preserve _≈_
-
--- GenCongruence for the extension (f *) of a map f : A → Word B.
-module StarCongruence
-  (f : A → Word B)
-  (f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
-  where
-
-  -- Extend well-definedness on the axioms to the whole congruence.
-  f*-cong : ∀ {w v : Word A} → w ≈₁ v → (f *) w ≈₂ (f *) v
-  f*-cong _≈₁_.refl      = _≈₂_.refl
-  f*-cong (sym h)        = _≈₂_.sym (f*-cong h)
-  f*-cong (trans h h₁)   = _≈₂_.trans (f*-cong h) (f*-cong h₁)
-  f*-cong (cong h h₁)    = _≈₂_.cong (f*-cong h) (f*-cong h₁)
-  f*-cong assoc          = _≈₂_.assoc
-  f*-cong left-unit      = _≈₂_.left-unit
-  f*-cong right-unit     = _≈₂_.right-unit
-  f*-cong (axiom a)      = f-well-defined a
-
--- GenCongruence for the lift wmap f of a generator map f : A → B.
-module GenCongruence
-  (f : A → B)
-  (f-well-defined : let f* = wmap f in ∀ {w v} → w ===₁ v → (f*) w ≈₂ (f*) v)
-  where
-
-  f* = wmap f
-
-  -- Extend well-definedness on the axioms to the whole congruence.
-  f*-cong : ∀ {w v : Word A} → w ≈₁ v → (f*) w ≈₂ (f*) v
-  f*-cong _≈₁_.refl      = _≈₂_.refl
-  f*-cong (sym h)        = _≈₂_.sym (f*-cong h)
-  f*-cong (trans h h₁)   = _≈₂_.trans (f*-cong h) (f*-cong h₁)
-  f*-cong (cong h h₁)    = _≈₂_.cong (f*-cong h) (f*-cong h₁)
-  f*-cong assoc          = _≈₂_.assoc
-  f*-cong left-unit      = _≈₂_.left-unit
-  f*-cong right-unit     = _≈₂_.right-unit
-  f*-cong (axiom a)      = f-well-defined a
-
-------------------------------------------------------------------------
 -- Monoid morphisms
+--
+-- The congruence lemmas "(f *) / wmap f preserve ≈" live in
+-- Presentation.Properties (modules StarCongruence and GenCongruence);
+-- the builders below open them at (Γ , Δ).
 
 open MonoidMorphisms
   (Monoid.rawMonoid monoid₁) (Monoid.rawMonoid monoid₂)
@@ -103,7 +68,7 @@ module StarHomomorphism
       }
     ; ε-homo = _≈₂_.refl
     }
-    where open StarCongruence
+    where open PP.StarCongruence Γ Δ
 
 -- Build a monoid homomorphism from wmap f.
 module GenHomomorphism
@@ -121,7 +86,7 @@ module GenHomomorphism
       }
     ; ε-homo = _≈₂_.refl
     }
-    where open GenCongruence
+    where open PP.GenCongruence Γ Δ using (f*-cong)
 
 -- Build a monoid monomorphism from (f *), using Reidemeister-Schreier.
 module StarMonomorphism
@@ -171,7 +136,7 @@ module WeakNormalFormTransfer
   (f-well-defined : let f* = wmap f in ∀ {w v} → w ===₁ v → (f*) w ≈₂ (f*) v)
   where
 
-  open GenCongruence f f-well-defined
+  open PP.GenCongruence Γ Δ f f-well-defined
 
   -- Precomposing a normal form on Γ with wmap g yields a weak normal
   -- form on Δ.
@@ -221,7 +186,7 @@ module GroupMorphism
     (f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
     where
 
-    open StarCongruence f f-well-defined
+    open PP.StarCongruence Γ Δ f f-well-defined
     open StarHomomorphism f f-well-defined
     open RawGroup (Group.rawGroup •-ε-group₁) renaming (_⁻¹ to _⁻¹₁)
     open RawGroup (Group.rawGroup •-ε-group₂) renaming (_⁻¹ to _⁻¹₂)
@@ -257,7 +222,7 @@ module GroupMorphism
     (f-well-defined : let f* = wmap f in ∀ {w v} → w ===₁ v → (f*) w ≈₂ (f*) v)
     where
 
-    open GenCongruence f f-well-defined
+    open PP.GenCongruence Γ Δ f f-well-defined
     open GenHomomorphism f f-well-defined hiding (f*)
     open RawGroup (Group.rawGroup •-ε-group₁) renaming (_⁻¹ to _⁻¹₁)
     open RawGroup (Group.rawGroup •-ε-group₂) renaming (_⁻¹ to _⁻¹₂)

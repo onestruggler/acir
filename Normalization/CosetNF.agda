@@ -157,7 +157,7 @@ module SingleLevel
 
     -- f * is a congruence for the full congruence ≈ of Γ.
     f*-cong : ∀ {w v} → w ≈₁ v → (f *) w ≈₂ (f *) v
-    f*-cong = Star-Congruence.lemma-f*-cong Γ Δ f f-wd-ax
+    f*-cong = PP.StarCongruence.f*-cong Γ Δ f f-wd-ax
 
     -- The normal-form map: run the coset action from the identity coset.
     nf : Word Y → Word X × C

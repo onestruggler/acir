@@ -88,7 +88,7 @@ module _
   to-right-wd {w} {v} (mid (desugar {m})) rewrite lemma-to-right-r (f m) = _≈₂_.refl
 
   -- Desugaring is a congruence for the full congruence closure.
-  to-right*-cong = Star-Congruence.lemma-f*-cong (Γ ⋄ Δ ⋄ SugarRel f) Δ to-right to-right-wd
+  to-right*-cong = PP.StarCongruence.f*-cong (Γ ⋄ Δ ⋄ SugarRel f) Δ to-right to-right-wd
 
   private module LR = LeftRightCongruence Γ Δ (SugarRel f)
 

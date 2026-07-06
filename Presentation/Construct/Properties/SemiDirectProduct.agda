@@ -389,7 +389,7 @@ module _
     h**-hyp c b = Star-Injective-Full.RightAction.lemma-⊛ Γ (Γ ⋄ Δ ⋄ ConjRel conj) C I f h f-well-defined [_] [I]≈ε lemma-ract c b
 
     f*-cong : ∀ {w v} → w ≈₁ v → (f *) w ≈₃ (f *) v
-    f*-cong {w} {v} eq = Star-Congruence.lemma-f*-cong Γ (Γ ⋄ Δ ⋄ ConjRel conj) f f-well-defined eq
+    f*-cong {w} {v} eq = PP.StarCongruence.f*-cong Γ (Γ ⋄ Δ ⋄ ConjRel conj) f f-well-defined eq
 
 
     ggnf=id : {w : Word Y} → gg (nf w) ≈₃ w

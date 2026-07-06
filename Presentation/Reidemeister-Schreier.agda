@@ -13,10 +13,11 @@
 -- table"): h c y slides the letter y past coset c, recording the piece
 -- of H peeled off and the coset landed in; (h **) extends it to words.
 --
+-- The congruence lemma "(f *) preserves ≈" lives in
+-- Presentation.Properties (module StarCongruence).
+--
 -- Modules, in increasing generality:
 --
---   Star-Congruence            extend a relation-respecting f to a
---                              congruence (f *) for the full ≈.
 --   Star-Injective-Simplified  injectivity of (f *) when a section
 --                              g : Y → Word X is already available.
 --   Star-Injective-Full        the coset-enumeration version, with a
@@ -46,36 +47,6 @@ import Presentation.Base as PB
 import Presentation.Properties as PP
 
 module Presentation.Reidemeister-Schreier where
-
-------------------------------------------------------------------------
--- Congruence of the induced map
---
--- If f : A → Word B sends every raw relation of Γ to a ≈-equality of Δ,
--- then (f *) is a congruence: it sends the whole congruence closure ≈₁
--- to ≈₂.  Proof by induction on the derivation of w ≈₁ v.
-
-module Star-Congruence {A B : Set} (Γ : WRel A) (Δ : WRel B) where
-
-  open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_)
-  open PP Γ renaming (•-ε-monoid to m₁)
-  open PB Δ renaming (_===_ to _===₂_ ; _≈_ to _≈₂_)
-  open PP Δ renaming (•-ε-monoid to m₂)
-
-  module _
-    (f : A → Word B)
-    (f-well-defined  : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
-    where
-
-    lemma-f*-cong : ∀ {w v : Word A} → w ≈₁ v → (f *) w ≈₂ (f *) v
-    lemma-f*-cong {w} {v} _≈₁_.refl = _≈₂_.refl
-    lemma-f*-cong {w} {v} (sym h) = _≈₂_.sym (lemma-f*-cong h)
-    lemma-f*-cong {w} {v} (trans h h₁) = _≈₂_.trans (lemma-f*-cong h) (lemma-f*-cong h₁)
-    lemma-f*-cong {w} {v} (cong h h₁) = _≈₂_.cong (lemma-f*-cong h) (lemma-f*-cong h₁)
-    lemma-f*-cong {w} {v} assoc = _≈₂_.assoc
-    lemma-f*-cong {w} {v} left-unit = _≈₂_.left-unit
-    lemma-f*-cong {w} {v} right-unit = _≈₂_.right-unit
-    lemma-f*-cong {w} {v} (axiom a) = f-well-defined a
-
 
 ------------------------------------------------------------------------
 -- Injectivity from an explicit section
@@ -110,9 +81,9 @@ module Star-Injective-Simplified {X Y : Set} (Γ : WRel X) (Δ : WRel Y) where
     left-inv (w • v) = _≈₁_.cong (left-inv w) (left-inv v)
 
     lemma-b : ∀ {u t : Word Y} → u ≈₂ t → (g *) u ≈₁ (g *) t
-    lemma-b = isStar-Congruence.lemma-f*-cong g well-defined
+    lemma-b = isStarCongruence.f*-cong g well-defined
       where
-      module isStar-Congruence = Star-Congruence Δ Γ
+      module isStarCongruence = PP.StarCongruence Δ Γ
 
     g*-surj : Surjective _≈₂_ _≈₁_ (g *)
     g*-surj y = (f *) y , λ x → _≈₁_.trans (lemma-b x) (_≈₁_.sym (left-inv y))
@@ -333,7 +304,7 @@ module Star-Injective-Full
       [_]ₓ = f *
 
       []ₓ-wd : ∀ {w v} → w ≈₁ v → [ w ]ₓ ≈₂ [ v ]ₓ
-      []ₓ-wd {w} {v} eqv = Star-Congruence.lemma-f*-cong Γ Δ f f-well-defined eqv
+      []ₓ-wd {w} {v} eqv = PP.StarCongruence.f*-cong Γ Δ f f-well-defined eqv
   
       infixl 4 _⊛_
       _⊛_ : C → Word Y → Word X × C
@@ -369,13 +340,13 @@ module Star-Injective-Full
         x ≈⟨ _≈₂_.sym ⁻¹nf-nf=id ⟩
         ⁻¹nf (nf x) ≈⟨ _≈₂_.refl ⟩
         [ a ]ₓ • [ c ] ≡⟨ Eq.cong (\ □ → [ a ]ₓ • [ □ ]) eqc ⟩
-        [ a ]ₓ • [ c' ] ≈⟨ _≈₂_.cong (lemma-f*-cong f f-well-defined eqa) _≈₂_.refl ⟩
+        [ a ]ₓ • [ c' ] ≈⟨ _≈₂_.cong (f*-cong f f-well-defined eqa) _≈₂_.refl ⟩
         [ a' ]ₓ • [ c' ] ≡⟨ Eq.refl ⟩
         ⁻¹nf (nf y) ≈⟨ ⁻¹nf-nf=id ⟩
         y ∎
           where
             open SR word-setoid₂
-            open Star-Congruence Γ Δ
+            open PP.StarCongruence Γ Δ
 
       ⁻¹nf-wd : ∀ {u t : Word X × C} → u ~ t → ⁻¹nf u ≈₂ ⁻¹nf t
       ⁻¹nf-wd {u} {t} (_≈₁_.refl , Eq.refl) = _≈₂_.refl
@@ -448,13 +419,13 @@ module Star-Injective-Full
         x ≈⟨ _≈₂_.sym ⁻¹nfl-nfl=id ⟩
         ⁻¹nfl (nfl x) ≈⟨ _≈₂_.refl ⟩
         [ c ] • [ a ]ₓ ≡⟨ Eq.cong (\ □ → [ □ ] • [ a ]ₓ) eqc ⟩
-        [ c' ] • [ a ]ₓ ≈⟨ _≈₂_.cong _≈₂_.refl (lemma-f*-cong f f-well-defined eqa) ⟩
+        [ c' ] • [ a ]ₓ ≈⟨ _≈₂_.cong _≈₂_.refl (f*-cong f f-well-defined eqa) ⟩
         [ c' ] • [ a' ]ₓ ≡⟨ Eq.refl ⟩
         ⁻¹nfl (nfl y) ≈⟨ ⁻¹nfl-nfl=id ⟩
         y ∎
           where
             open SR word-setoid₂
-            open Star-Congruence Γ Δ
+            open PP.StarCongruence Γ Δ
 
 
 
@@ -709,13 +680,13 @@ module Star-Injective-Full-Setoid
         x ≈⟨ _≈₂_.sym ⁻¹nf-nf=id ⟩
         ⁻¹nf (nf x) ≈⟨ _≈₂_.refl ⟩
         [ a ]ₓ • [ c ] ≡⟨ Eq.cong (\ □ → [ a ]ₓ • [ □ ]) eqc ⟩
-        [ a ]ₓ • [ c' ] ≈⟨ _≈₂_.cong (lemma-f*-cong f f-well-defined eqa) _≈₂_.refl ⟩
+        [ a ]ₓ • [ c' ] ≈⟨ _≈₂_.cong (f*-cong f f-well-defined eqa) _≈₂_.refl ⟩
         [ a' ]ₓ • [ c' ] ≡⟨ Eq.refl ⟩
         ⁻¹nf (nf y) ≈⟨ ⁻¹nf-nf=id ⟩
         y ∎
           where
             open SR word-setoid₂
-            open Star-Congruence Γ Δ
+            open PP.StarCongruence Γ Δ
 
 
       nf-isInjective' : Injective _≈₂_ (PW.Pointwise _≈₁_ _≈ₛ_) nf
@@ -724,13 +695,13 @@ module Star-Injective-Full-Setoid
         x ≈⟨ _≈₂_.sym ⁻¹nf-nf=id ⟩
         ⁻¹nf (nf x) ≈⟨ _≈₂_.refl ⟩
         [ a ]ₓ • [ c ] ≈⟨ _≈₂_.cong _≈₂_.refl ([]-cong eqc) ⟩
-        [ a ]ₓ • [ c' ] ≈⟨ _≈₂_.cong (lemma-f*-cong f f-well-defined eqa) _≈₂_.refl ⟩
+        [ a ]ₓ • [ c' ] ≈⟨ _≈₂_.cong (f*-cong f f-well-defined eqa) _≈₂_.refl ⟩
         [ a' ]ₓ • [ c' ] ≡⟨ Eq.refl ⟩
         ⁻¹nf (nf y) ≈⟨ ⁻¹nf-nf=id ⟩
         y ∎
           where
             open SR word-setoid₂
-            open Star-Congruence Γ Δ
+            open PP.StarCongruence Γ Δ
 
 
 
@@ -787,13 +758,13 @@ module Star-Injective-Full-Setoid
         x ≈⟨ _≈₂_.sym ⁻¹nfl-nfl=id ⟩
         ⁻¹nfl (nfl x) ≈⟨ _≈₂_.refl ⟩
         [ c ] • [ a ]ₓ ≡⟨ Eq.cong (\ □ → [ □ ] • [ a ]ₓ) eqc ⟩
-        [ c' ] • [ a ]ₓ ≈⟨ _≈₂_.cong _≈₂_.refl (lemma-f*-cong f f-well-defined eqa) ⟩
+        [ c' ] • [ a ]ₓ ≈⟨ _≈₂_.cong _≈₂_.refl (f*-cong f f-well-defined eqa) ⟩
         [ c' ] • [ a' ]ₓ ≡⟨ Eq.refl ⟩
         ⁻¹nfl (nfl y) ≈⟨ ⁻¹nfl-nfl=id ⟩
         y ∎
           where
             open SR word-setoid₂
-            open Star-Congruence Γ Δ
+            open PP.StarCongruence Γ Δ
 
       nfl-isInjective' : Injective _≈₂_ (PW.Pointwise _≈ₛ_ _≈₁_) nfl
       nfl-isInjective' {x} {y} (eqc , eqa) with nfl x | inspect nfl x | nfl y | inspect nfl y
@@ -801,11 +772,11 @@ module Star-Injective-Full-Setoid
         x ≈⟨ _≈₂_.sym ⁻¹nfl-nfl=id ⟩
         ⁻¹nfl (nfl x) ≈⟨ _≈₂_.refl ⟩
         [ c ] • [ a ]ₓ ≈⟨ _≈₂_.cong ([]-cong eqc) _≈₂_.refl ⟩
-        [ c' ] • [ a ]ₓ ≈⟨ _≈₂_.cong _≈₂_.refl (lemma-f*-cong f f-well-defined eqa) ⟩
+        [ c' ] • [ a ]ₓ ≈⟨ _≈₂_.cong _≈₂_.refl (f*-cong f f-well-defined eqa) ⟩
         [ c' ] • [ a' ]ₓ ≡⟨ Eq.refl ⟩
         ⁻¹nfl (nfl y) ≈⟨ ⁻¹nfl-nfl=id ⟩
         y ∎
           where
             open SR word-setoid₂
-            open Star-Congruence Γ Δ
+            open PP.StarCongruence Γ Δ
 
