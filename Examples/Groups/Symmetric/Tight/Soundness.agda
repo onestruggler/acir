@@ -8,14 +8,12 @@
 
 {-# OPTIONS --safe #-}
 
-open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Fin using (Fin ; zero ; suc)
 open import Data.Fin.Permutation
   using ( _⟨$⟩ʳ_ ; _∘ₚ_ ; lift₀-cong )
   renaming (id to idP)
 
-import Relation.Binary.PropositionalEquality as Eq
-open Eq using (_≡_ ; refl)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl)
 
 open import Word.Base
 import Presentation.Base as PB

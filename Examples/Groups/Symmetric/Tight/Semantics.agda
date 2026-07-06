@@ -20,7 +20,7 @@ import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; refl ; cong ; sym ; trans)
 
 open import Data.Product.Base using (_,_ ; proj₁ ; proj₂)
-open import Algebra.Structures using (IsMagma ; IsSemigroup ; IsMonoid ; IsGroup)
+open import Algebra.Structures using (IsMonoid ; IsGroup)
 open import Algebra.Bundles using (Group)
 open import Relation.Binary.Structures using (IsEquivalence)
 import Function.Endo.Propositional as Endo

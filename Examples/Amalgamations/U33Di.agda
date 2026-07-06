@@ -1,3 +1,11 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- U₃(ℤ[½,i]) presented as a two-level amalgamated free product,
+-- ending in a monoid isomorphism (U33Di-isomorphism)
+------------------------------------------------------------------------
+
+{-# OPTIONS --safe #-}
 
 import Relation.Binary.Reasoning.Setoid as SR
 

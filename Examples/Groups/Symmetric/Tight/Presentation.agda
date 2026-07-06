@@ -77,7 +77,7 @@ module _ (n : ℕ) where
 
   presentation : let open PP (n VRel,_===_) in
     (n VRel,_===_) IsPresentationOf (Permutation′-group n)
-  presentation  = record
+  presentation = record
     { gl  = grouplike
     ; ⟦_⟧ = ⟦_⟧
     ; iso = record

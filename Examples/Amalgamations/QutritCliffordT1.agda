@@ -1,7 +1,9 @@
 ------------------------------------------------------------------------
--- Examples
+-- Presentations of groups
 --
--- Completeness proof for the qutrit Clifford+T gate set.
+-- Completeness of the qutrit Clifford+T gate set, via a tower of
+-- Reidemeister-Schreier coset normal forms and an amalgamated free
+-- product (CliffordT1-isomorphism)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}

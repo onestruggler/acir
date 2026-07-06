@@ -1,7 +1,9 @@
 ------------------------------------------------------------------------
--- Examples
+-- Presentations of groups
 --
--- Completeness proof for the qubit Clifford+T gate set.
+-- Completeness of the qubit Clifford+T gate set, built as an
+-- amalgamated free product of coset normal forms and ending in a
+-- monoid isomorphism (CliffordT1-isomorphism)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}
