@@ -86,8 +86,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   [_]ᵢ : (C × D) → Word (A ⊎ B)
   [_]ᵢ (c , d) = [ [ c ]ₒ₁ ]ₗ • [ [ d ]ₒ₂ ]ᵣ
 
-  eval-cd = [_]ᵢ
-  
   semcds : List (C × D) → Word (A ⊎ B)
   semcds [] = ε
   semcds ((c , d) ∷ xs) = semcds xs • [ (c , d) ]ᵢ
@@ -408,32 +406,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     [ w' ]ₓ • [ cdw ] • [ v ]ₓ ≈⟨ cong refl (lemma-cd-wm cdw v) ⟩
     [ w' ]ₓ • [ v' ]ₓ • [ cdv ] ≈⟨ sym assoc ⟩
     [ m' ]ₓ • [ cd' ] ∎
-    where
-    open SR ws₃
-
-
-  hh-cd-b' : C × D → B → Word M × C × (D ⊎ ⊤)
-  hh-cd-b' (c , d) b with hdb d b
-  hh-cd-b' (c , d) b | wm , dt with hcmw c wm
-  hh-cd-b' (c , d) b | wm , dt | (wm' , c') = (wm' , c' , dt)
-
-  eval-cdb' : Word M × C × (D ⊎ ⊤) → Word Y
-  eval-cdb' ((wm , c , dt)) = [ wm ]ₓ • [ [ inj₁ c ]₁ ]ₗ • [ [ dt ]₂ ]ᵣ
-
-  lemma-hh-cd-b' : ∀ c d b → eval-cdb' (hh-cd-b' (c , d) b) ≈₃ eval-cd (c , d) • [ [ b ]ʷ ]ᵣ
-  lemma-hh-cd-b' c d b =
-    let (wm , d') = hdb d b in
-    let (wm' , c') = hcmw c wm in
-    begin
-    eval-cdb' ( (wm' , c' , d')) ≈⟨ sym assoc ⟩
-    ([ wm' ]ₓ • [ [ c' ]ₒ₁ ]ₗ) • [ [ d' ]₂ ]ᵣ ≈⟨ cong (cong (refl'₃ (Eq.sym (aux-f₁ wm'))) refl) refl ⟩
-    ([ [ wm' ]ₓ₁ • [ c' ]ₒ₁ ]ₗ) • [ [ d' ]₂ ]ᵣ ≈⟨ cong (sym (AB.lefts (hcmw-hyp c wm))) refl ⟩
-    ([ [ c ]ₒ₁ • [ wm ]ₓ₁ ]ₗ) • [ [ d' ]₂ ]ᵣ ≈⟨ cong (cong refl (refl'₃ (Eq.cong [_]ₗ (Eq.refl)))) refl ⟩
-    ([ [ c ]ₒ₁ • [ wm ]ₓ₁ ]ₗ) • [ [ d' ]₂ ]ᵣ ≈⟨ assoc ⟩
-    [ [ c ]ₒ₁ ]ₗ • [ [ wm ]ₓ₁ ]ₗ • [ [ d' ]₂ ]ᵣ ≈⟨ cong refl (cong (lemma-amal' wm) refl) ⟩
-    [ [ c ]ₒ₁ ]ₗ • [ (f₂ *) wm • [ d' ]₂ ]ᵣ ≈⟨ cong refl (sym (AB.rights (hdb-hyp d b))) ⟩
-    [ [ c ]ₒ₁ ]ₗ • [ [ d ]ₒ₂ ]ᵣ • [ [ b ]ʷ ]ᵣ  ≈⟨ sym assoc ⟩
-    ([ [ c ]ₒ₁ ]ₗ • [ [ d ]ₒ₂ ]ᵣ) • [ [ b ]ʷ ]ᵣ ∎
     where
     open SR ws₃
 
@@ -813,9 +785,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     where
       open Eq.≡-Reasoning
 
-  lemma-hcm'2 : ∀ m → hcm' (inj₂ tt) m ≡ ([ m ]ʷ , inj₂ tt)
-  lemma-hcm'2 m = Eq.refl
-
   lemma-hcdmw-q2 : ∀ d cds wm → 
     hcdmw (d , cds , inj₂ tt) wm ≡ hcdws-m-hdmw' d cds wm
   lemma-hcdmw-q2 d cds [ x ]ʷ = Eq.refl
@@ -945,13 +914,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     w1` • v2` , d2` , cds2` , c3 ≡⟨ Eq.refl ⟩
     (wm1 • wm2 , cd2) ∎
     where open Eq.≡-Reasoning
-
-  lemma-hcxd1-mb'4 : ∀ c d w v →
-    let (w' , c' , d') = hcxd1-mb' (c , d) w in
-    let (v' , d'') = (h₂ **) d' v in
-    let (v'' , c'') = hcmw c' v' in
-    hcxd1-mb' (c , d) (w • v) ≡ (w' • v'' , c'' , d'' )
-  lemma-hcxd1-mb'4 c d w v = Eq.refl
 
 
   lemma-hcxd1-m : ∀ cd w v →
