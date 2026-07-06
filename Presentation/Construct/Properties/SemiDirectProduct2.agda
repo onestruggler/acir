@@ -33,6 +33,7 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Presentation.Base as PB
 open import Presentation.Construct.Base
 open import Presentation.Properties as PP
+open import Normalization.Base using (NormalForm ; NormalFormWithoutInverse)
 open import Presentation.Reidemeister-Schreier
 open import Word.Properties
 

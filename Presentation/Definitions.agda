@@ -1,9 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The notion "Γ presents G", in several strengths.  Formalizing the
--- semantic side can be delicate, so different levels of presentation
--- (completeness) are provided:
+-- The notion "Γ presents G", in two strengths:
 --
 -- 1) Standard presentation (_IsPresentationOf_): _===_ presents the
 --    group G iff G is isomorphic, as a group, to the free group on
@@ -12,8 +10,8 @@
 -- 2) Monoid presentation (_IsMonoidPresentationOf_): the analogous
 --    notion for monoids.
 --
--- 3) Relative soundness and completeness of a semantics between a
---    syntactic and a semantic setoid (module Relative).
+-- (Relative soundness and completeness of a semantics live in
+-- Presentation.Semantics.)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}
@@ -29,7 +27,6 @@ open import Word.Base using (WRel ; Word)
 
 open import Presentation.GroupLike
 import Presentation.Properties as PP
-import Presentation.Semantics
 
 private variable
   a ℓ : Level
@@ -63,10 +60,3 @@ record _IsMonoidPresentationOf_ (_===_ : WRel X) (M : Monoid a ℓ) : Set (a ⊔
     ⟦_⟧ : Word X → Monoid.Carrier M
     iso : IsMonoidIsomorphism ⟦_⟧
 
-
-------------------------------------------------------------------------
--- Relative soundness and completeness
-
--- Soundness and completeness of a semantics ⟦_⟧ between a syntactic
--- and a semantic setoid (alias of Presentation.Semantics).
-module Relative = Presentation.Semantics

@@ -22,7 +22,8 @@ open import Word.Base
 open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open PP using (NormalFormWithoutInverse ; NormalForm)
+import Normalization.Base as NFBase
+open NFBase using (NormalFormWithoutInverse ; NormalForm)
 import Normalization.CosetNF as CA
 open CA using (PackedCosetTable)
 import Presentation.Reidemeister-Schreier as RS
@@ -479,7 +480,7 @@ module MA where
   module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
 
-  open PP.NormalFormWithoutInverse (nfp (M.nfp M0.nfp)) renaming (by-equal-nf to by-nf) using ()
+  open NFBase.NormalFormWithoutInverse (nfp (M.nfp M0.nfp)) renaming (by-equal-nf to by-nf) using ()
 
   hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h **) (inj₁ c) (f m)) ≡ (w , inj₁ c')
   hcme HS-cr M.X-gen = M.ω ^ 2 • M.S ^ 2 • M.X , HS-cr , Eq.refl
@@ -726,7 +727,7 @@ module MB where
   module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
 
-  open PP.NormalFormWithoutInverse (nfp (M.nfp M0.nfp)) renaming (by-equal-nf to by-nf) using ()
+  open NFBase.NormalFormWithoutInverse (nfp (M.nfp M0.nfp)) renaming (by-equal-nf to by-nf) using ()
 
   I : CT
   I = inj₂ tt

@@ -21,7 +21,6 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 open import Notations
 
-import Normalization.Base as NFBase
 import Presentation.Base as PB
 open import Presentation.Base Γ
 
@@ -404,15 +403,3 @@ lemma-wfoldl {_⊕_ = _⊕_} R hyp (w • w₁) eq
   with lemma-wfoldl R hyp w eq
 ... | ih with (let _⊕'_ = wfoldl _⊕_ in lemma-wfoldl R hyp w₁ {_ ⊕' w} {_ ⊕' w})
 ... | ih2 = ih2 ih
-
-------------------------------------------------------------------------
--- Re-exports
-------------------------------------------------------------------------
--- The normal-form machinery lives in Normalization.Base.  It is
--- re-exported here (unapplied, so the signatures still start with the
--- presentation) for compatibility with qualified uses such as
--- Presentation.Properties.UniqueNormalForm.
-
-open NFBase public
-  using ( NormalFormWithoutInverse ; NormalForm ; BijectiveNormalForm
-        ; WeakNormalForm ; UniqueNormalForm ; by-normalization )

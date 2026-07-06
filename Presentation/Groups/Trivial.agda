@@ -20,7 +20,8 @@ import Presentation.Base as PB
 open import Presentation.Construct.Base using (Γₑ ; Γᵤ ; alleq)
 open import Presentation.Morphism
 import Presentation.Properties as PP
-open PP using (NormalFormWithoutInverse ; NormalForm)
+import Normalization.Base as NFBase
+open NFBase using (NormalFormWithoutInverse ; NormalForm)
 
 ------------------------------------------------------------------------
 -- The trivial group over the empty alphabet

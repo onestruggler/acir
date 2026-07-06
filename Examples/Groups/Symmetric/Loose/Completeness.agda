@@ -9,8 +9,9 @@
 
 open import Data.Nat using (ℕ)
 
+import Normalization.Base as NFBase
 import Presentation.Properties as PP
-open import Presentation.Definitions
+open import Presentation.Semantics
 
 module Examples.Groups.Symmetric.Loose.Completeness where
 
@@ -19,7 +20,6 @@ open import Examples.Groups.Symmetric.Loose.Semantics using (Endo-setoid ; ⟦_�
 open import Examples.Groups.Symmetric.Loose.Soundness using (sound)
 import Examples.Groups.Symmetric.Loose.Uniqueness as LU
 
-open Relative
 
 ------------------------------------------------------------------------
 -- Completeness of the loose semantics
@@ -32,5 +32,5 @@ completeness : ∀ n →
   in
   Completeness Syn Sem ⟦_⟧
 completeness n =
-  PP.by-normalization (_VRel,_===_ n) (Endo-setoid n) (⟦_⟧ {n})
+  NFBase.by-normalization (_VRel,_===_ n) (Endo-setoid n) (⟦_⟧ {n})
     (LU.unique-nf n) sound

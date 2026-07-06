@@ -34,9 +34,9 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 
 ### Layer 2 — Group presentations (`Presentation/`)
 - **`Base.agda`**: parameterised by `Γ : WRel X`. `_===_` is the raw relation; `_≈_` its congruence closure (refl/sym/trans/cong/assoc/left-unit/right-unit/axiom); `refl'` lifts `_≡_`; combinators `cleft_`, `cright_`, `_reversed`; `Alphabet = X`.
-- **`Properties.agda`**: `≈-isEquivalence`, `word-setoid`, magma/semigroup/monoid structures and bundles; the associativity solvers (`to-list`/`from-list`, `mod-assoc`, `by-assoc`, `by-assoc-and`, and the pattern-guided `Pattern-Assoc.special-assoc`); word-power lemmas (`lemma-^-+`, `lemma-^^`, `word-comm`, …); `wfoldr`/`wfoldl` congruence lemmas. Also re-exports the normal-form records from `Normalization.Base` for compatibility.
+- **`Properties.agda`**: `≈-isEquivalence`, `word-setoid`, magma/semigroup/monoid structures and bundles; the associativity solvers (`to-list`/`from-list`, `mod-assoc`, `by-assoc`, `by-assoc-and`, and the pattern-guided `Pattern-Assoc.special-assoc`); word-power lemmas (`lemma-^-+`, `lemma-^^`, `word-comm`, …); `wfoldr`/`wfoldl` congruence lemmas.
 - **`Semantics.agda`**: `Soundness` and `Completeness` of a semantics between two setoids.
-- **`Definitions.agda`**: `_IsPresentationOf_` (group), `_IsMonoidPresentationOf_`, and `module Relative` (alias of `Presentation.Semantics`).
+- **`Definitions.agda`**: `_IsPresentationOf_` (group) and `_IsMonoidPresentationOf_`.
 - **`GroupLike.agda`**: `Grouplike` (every generator has a left inverse) and `Group-Lemmas` (`_⁻¹`, cancellation, uniqueness of inverses, the group `•-ε-group`).
 - **`Morphism.agda`**: parameterised by presentations `Γ`, `Δ`. Builders turning generator-level data into `IsMonoidHomomorphism`/`Monomorphism`/`Isomorphism` and the group versions, for both `(f *)` and `wmap f`.
 - **`Reidemeister-Schreier.agda`**: the injectivity/surjectivity engine. `Star-Injective-Simplified` proves `(f *)` injective given a left inverse on generators; `Star-Injective-Full` (and its setoid variant) does coset enumeration and provides the Schreier section, right/left normal forms.

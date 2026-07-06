@@ -7,9 +7,10 @@
 {-# OPTIONS --safe #-}
 
 open import Algebra.Bundles using (Group)
-open import Relation.Binary using (Setoid)
 
 open import Presentation.Definitions
+open import Presentation.Semantics
+import Normalization.Base as NFBase
 import Presentation.Properties as PP
 
 module Examples.Groups.Symmetric.Theorems where
@@ -17,8 +18,6 @@ module Examples.Groups.Symmetric.Theorems where
 open import Examples.Groups.Symmetric.Cosets
 open import Examples.Groups.Symmetric.Normalization using (nf-of ; NF ; inv-nf)
 open import Examples.Groups.Symmetric.Syntactics
-
-open Relative
 
 ------------------------------------------------------------------------
 -- Unique normal form, soundness, completeness and presentation
@@ -31,7 +30,7 @@ module Loose where
   import Examples.Groups.Symmetric.Loose.Uniqueness as LU
 
   unique-nf : ∀ n →
-    PP.UniqueNormalForm (_VRel,_===_ n) (Endo-setoid n) (⟦_⟧ {n})
+    NFBase.UniqueNormalForm (_VRel,_===_ n) (Endo-setoid n) (⟦_⟧ {n})
   unique-nf = LU.unique-nf
 
   soundness : ∀ n →
@@ -40,9 +39,9 @@ module Loose where
     Syn        = PPV.word-setoid
     Sem        = Endo-setoid n
     in
-    
+
     Soundness Syn Sem ⟦_⟧
-    
+
   soundness n = LS.sound
 
   completeness : ∀ n →
@@ -51,13 +50,13 @@ module Loose where
     Syn        = PPV.word-setoid
     Sem        = Endo-setoid n
     in
-    
+
     Completeness Syn Sem ⟦_⟧
-    
+
   completeness = LC.completeness
 
 
-module Semantics-Tight where
+module Tight where
 
   open import Examples.Groups.Symmetric.Tight.Semantics as SS
   import Examples.Groups.Symmetric.Tight.Soundness as TS
@@ -66,7 +65,7 @@ module Semantics-Tight where
   import Examples.Groups.Symmetric.Tight.Presentation as TP
 
   unique-nf : ∀ n →
-    PP.UniqueNormalForm (_VRel,_===_ n) (Group.setoid (Permutation′-group n)) (⟦_⟧ {n})
+    NFBase.UniqueNormalForm (_VRel,_===_ n) (Group.setoid (Permutation′-group n)) (⟦_⟧ {n})
   unique-nf n = TU.unique-nf-tight {n}
 
   soundness : ∀ n →
@@ -75,9 +74,9 @@ module Semantics-Tight where
     Syn        = PPV.word-setoid
     Sem        = Group.setoid (Permutation′-group n)
     in
-    
+
     Soundness Syn Sem ⟦_⟧
-    
+
   soundness n = TS.sound
 
   completeness : ∀ n →
@@ -86,10 +85,10 @@ module Semantics-Tight where
     Syn        = PPV.word-setoid
     Sem        = Group.setoid (Permutation′-group n)
     in
-    
+
     Completeness Syn Sem ⟦_⟧
-    
-  completeness n = TC.completeness {n} 
+
+  completeness n = TC.completeness {n}
 
 
   presentation : ∀ n → (n VRel,_===_) IsPresentationOf (Permutation′-group n)

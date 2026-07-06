@@ -14,7 +14,7 @@ open import Data.Fin.Permutation
   using ( Permutation′ ; _⟨$⟩ʳ_ ; _∘ₚ_ )
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; refl)
-import Presentation.Properties as PP
+import Normalization.Base as NFBase
 open import Algebra.Bundles using (Group)
 import Examples.Groups.Symmetric.Tight.Semantics as TightSem
 open TightSem using (Permutation′-group)
@@ -57,7 +57,7 @@ private
 -- Unique normal form for the tight semantics
 
 unique-nf-tight :
-  PP.UniqueNormalForm (_VRel,_===_ n)
+  NFBase.UniqueNormalForm (_VRel,_===_ n)
     (Group.setoid (Permutation′-group n)) (TightSem.⟦_⟧ {n})
 unique-nf-tight {n = n} = record
   { normalForm = UniqueNormalForm.normalForm (unique-nf n)
@@ -66,4 +66,4 @@ unique-nf-tight {n = n} = record
         (λ k → Eq.trans (Eq.sym (⟦⟧-agree (inv-nf {n} u) k))
                (Eq.trans (eq k) (⟦⟧-agree (inv-nf {n} v) k)))
   }
-  where open PP (n VRel,_===_)
+  where open NFBase using (UniqueNormalForm)

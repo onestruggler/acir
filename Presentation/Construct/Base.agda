@@ -22,6 +22,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_)
 
 open import Notations
 import Presentation.Base as PB
+import Normalization.Base as NFBase
 import Presentation.Properties as PP
 open import Word.Base
 
@@ -212,66 +213,66 @@ module LeftRightCongruence-∪
 
 -- A normal form for Γ gives a weak normal form for the union Γ ∪ Δ.
 anfpₗ : ∀ {A} {Γ Δ : WRel A} →
-        PP.NormalFormWithoutInverse Γ → PP.WeakNormalForm (Γ ∪ Δ)
+        NFBase.NormalFormWithoutInverse Γ → NFBase.WeakNormalForm (Γ ∪ Δ)
 anfpₗ {A} {Γ} {Δ} nfp = record
   { ANF = NF
   ; anf = nf
   ; anf-injective = λ x → lefts (nf-injective x)
   }
   where
-  open PP.NormalFormWithoutInverse nfp
+  open NFBase.NormalFormWithoutInverse nfp
   open LeftRightCongruence-∪ Γ Δ
 
 -- A weak normal form for Γ gives one for the union Γ ∪ Δ.
 anfpₗ' : ∀ {A} {Γ Δ : WRel A} →
-         PP.WeakNormalForm Γ → PP.WeakNormalForm (Γ ∪ Δ)
+         NFBase.WeakNormalForm Γ → NFBase.WeakNormalForm (Γ ∪ Δ)
 anfpₗ' {A} {Γ} {Δ} anfp = record
   { ANF = ANF
   ; anf = anf
   ; anf-injective = λ x → lefts (anf-injective x)
   }
   where
-  open PP.WeakNormalForm anfp
+  open NFBase.WeakNormalForm anfp
   open LeftRightCongruence-∪ Γ Δ
 
 -- A normal form for Δ gives a weak normal form for the union Γ ∪ Δ.
 anfpᵣ : ∀ {A} {Γ Δ : WRel A} →
-        PP.NormalFormWithoutInverse Δ → PP.WeakNormalForm (Γ ∪ Δ)
+        NFBase.NormalFormWithoutInverse Δ → NFBase.WeakNormalForm (Γ ∪ Δ)
 anfpᵣ {A} {Γ} {Δ} nfp = record
   { ANF = NF
   ; anf = nf
   ; anf-injective = λ x → rights (nf-injective x)
   }
   where
-  open PP.NormalFormWithoutInverse nfp
+  open NFBase.NormalFormWithoutInverse nfp
   open LeftRightCongruence-∪ Γ Δ
 
 -- A weak normal form for Δ gives one for the union Γ ∪ Δ.
 anfpᵣ' : ∀ {A} {Γ Δ : WRel A} →
-         PP.WeakNormalForm Δ → PP.WeakNormalForm (Γ ∪ Δ)
+         NFBase.WeakNormalForm Δ → NFBase.WeakNormalForm (Γ ∪ Δ)
 anfpᵣ' {A} {Γ} {Δ} anfp = record
   { ANF = ANF
   ; anf = anf
   ; anf-injective = λ x → rights (anf-injective x)
   }
   where
-  open PP.WeakNormalForm anfp
+  open NFBase.WeakNormalForm anfp
   open LeftRightCongruence-∪ Γ Δ
 
 -- Pull a weak normal form back along a monoid monomorphism between
 -- the presented monoids.
 mono-anfp : ∀ {A B} {Γ : WRel A} {Δ : WRel B} →
-  PP.WeakNormalForm Δ → (f : Word A → Word B) →
+  NFBase.WeakNormalForm Δ → (f : Word A → Word B) →
   let open PP Γ renaming (•-ε-monoid to m₁) in
   let open PP Δ renaming (•-ε-monoid to m₂) in
   MonoidMorphisms.IsMonoidMonomorphism (Monoid.rawMonoid m₁)
-    ((Monoid.rawMonoid m₂)) f → PP.WeakNormalForm (Γ)
+    ((Monoid.rawMonoid m₂)) f → NFBase.WeakNormalForm (Γ)
 mono-anfp {A} {B} {Γ} {Δ} anfp f mono = record
   { ANF = ANF ; anf = anf ∘ f ; anf-injective = inj }
   where
   open PB Γ renaming (_≈_ to _≈₁_)
   open PB Δ renaming (_≈_ to _≈₂_)
-  open PP.WeakNormalForm anfp
+  open NFBase.WeakNormalForm anfp
   open MonoidMorphisms.IsMonoidMonomorphism mono
     renaming (injective to f-inj)
   inj : {w v : Word A} → anf (f w) ≡ anf (f v) → w ≈₁ v
@@ -280,17 +281,17 @@ mono-anfp {A} {B} {Γ} {Δ} anfp f mono = record
 -- Pull a normal form (without inverse) back along a monoid
 -- monomorphism between the presented monoids.
 mono-nfp : ∀ {A B} {Γ : WRel A} {Δ : WRel B} →
-  PP.NormalFormWithoutInverse Δ → (f : Word A → Word B) →
+  NFBase.NormalFormWithoutInverse Δ → (f : Word A → Word B) →
   let open PP Γ renaming (•-ε-monoid to m₁) in
   let open PP Δ renaming (•-ε-monoid to m₂) in
   MonoidMorphisms.IsMonoidMonomorphism (Monoid.rawMonoid m₁)
-    ((Monoid.rawMonoid m₂)) f → PP.NormalFormWithoutInverse (Γ)
+    ((Monoid.rawMonoid m₂)) f → NFBase.NormalFormWithoutInverse (Γ)
 mono-nfp {A} {B} {Γ} {Δ} nfp f mono = record
   { NF = NF ; nf = nf ∘ f ; nf-cong = nf∘f-cong ; nf-injective = inj }
   where
   open PB Γ renaming (_≈_ to _≈₁_)
   open PB Δ renaming (_≈_ to _≈₂_)
-  open PP.NormalFormWithoutInverse nfp
+  open NFBase.NormalFormWithoutInverse nfp
   open MonoidMorphisms.IsMonoidMonomorphism mono
     renaming (injective to f-inj)
   inj : {w v : Word A} → nf (f w) ≡ nf (f v) → w ≈₁ v
@@ -302,11 +303,11 @@ mono-nfp {A} {B} {Γ} {Δ} nfp f mono = record
 -- Pull a normal form back along a monoid isomorphism between the
 -- presented monoids.
 iso-nfp' : ∀ {A B} {Γ : WRel A} {Δ : WRel B} →
-  PP.NormalForm Δ → (f : Word A → Word B) →
+  NFBase.NormalForm Δ → (f : Word A → Word B) →
   let open PP Γ renaming (•-ε-monoid to m₁) in
   let open PP Δ renaming (•-ε-monoid to m₂) in
   MonoidMorphisms.IsMonoidIsomorphism (Monoid.rawMonoid m₁)
-    ((Monoid.rawMonoid m₂)) f → PP.NormalForm (Γ)
+    ((Monoid.rawMonoid m₂)) f → NFBase.NormalForm (Γ)
 iso-nfp' {A} {B} {Γ} {Δ} nfp f iso = record
   { NF = NF
   ; nf = nf ∘ f
@@ -317,7 +318,7 @@ iso-nfp' {A} {B} {Γ} {Δ} nfp f iso = record
   where
   open PB Γ renaming (_≈_ to _≈₁_ ; refl to refl₁)
   open PB Δ renaming (_≈_ to _≈₂_ ; trans to trans₂)
-  open PP.NormalForm nfp
+  open NFBase.NormalForm nfp
   open MonoidMorphisms.IsMonoidIsomorphism iso
     renaming (injective to f-inj ; surjective to f-surj)
 

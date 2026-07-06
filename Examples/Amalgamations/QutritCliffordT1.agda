@@ -22,7 +22,8 @@ open import Word.Base
 open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open PP using (NormalFormWithoutInverse ; NormalForm)
+import Normalization.Base as NFBase
+open NFBase using (NormalFormWithoutInverse ; NormalForm)
 import Normalization.CosetNF as CA
 open CA using (PackedCosetTable)
 import Presentation.Reidemeister-Schreier as RS
@@ -562,7 +563,7 @@ module M where
   module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
 
-  module MM = PP.NormalFormWithoutInverse (nfp (M0.nfp (Cyclic.nfp 9)))
+  module MM = NFBase.NormalFormWithoutInverse (nfp (M0.nfp (Cyclic.nfp 9)))
 
   lemma-order-Z : Z ^ 3 ≈ ε
   lemma-order-Z = MM.by-equal-nf Eq.refl
@@ -733,7 +734,7 @@ module M2 where
   module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
 
-  module MM = PP.NormalFormWithoutInverse (nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))
+  module MM = NFBase.NormalFormWithoutInverse (nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))
 
   lemma-order-Z : Z ^ 3 ≈ ε
   lemma-order-Z = MM.by-equal-nf Eq.refl
@@ -1122,7 +1123,7 @@ module MA where
   module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
   
-  open PP.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
+  open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
 
   I : CT
   I = inj₂ tt
@@ -1519,7 +1520,7 @@ module MA' where
   module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
   
-  open PP.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
+  open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
 
   I : CT
   I = inj₂ tt
@@ -1995,7 +1996,7 @@ module MB where
   module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
   
-  open PP.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9) )))) renaming (by-equal-nf to by-nf) using ()
+  open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9) )))) renaming (by-equal-nf to by-nf) using ()
 
   hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h **) (inj₁ c) (f m)) ≡ (w , inj₁ c')
   hcme HSS-cr M2.HH-gen = X' • X' • HH' , HSS-cr , Eq.refl
@@ -2157,7 +2158,7 @@ module CliffordT1 where
   open PB mypres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 
   
-  open PP.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
+  open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
 
   open import Algebra.Bundles using (Monoid)
   open import Algebra.Morphism.Structures using (module MonoidMorphisms)
@@ -2667,7 +2668,7 @@ module CliffordT1-Simplified where
 --  open PB _===_ renaming (_===_ to _===₁_ ; _≈_ to _≈_) using ()
 
   
-  open PP.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
+  open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
 
   open import Algebra.Bundles using (Monoid)
   open import Algebra.Morphism.Structures using (module MonoidMorphisms)

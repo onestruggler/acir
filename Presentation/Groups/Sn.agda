@@ -28,7 +28,8 @@ open import Data.Unit using (⊤ ; tt)
 open import Word.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open PP using (NormalFormWithoutInverse ; NormalForm)
+import Normalization.Base as NFBase
+open NFBase using (NormalFormWithoutInverse ; NormalForm)
 
 import Normalization.CosetNF as CA
 import Presentation.Reidemeister-Schreier as RS

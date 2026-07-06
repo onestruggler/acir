@@ -22,7 +22,7 @@ open import Examples.Groups.Symmetric.Normalization
   using (nf-of ; NF ; inv-nf ; lemma-nf-cong ; lemma-inv-nf)
 open import Examples.Groups.Symmetric.Syntactics
 open import Notations
-import Presentation.Properties as PP
+import Normalization.Base as NFBase
 open import Word.Base using (_•_)
 open import Word.Properties using (wconcatmap-[f]ʷ)
 
@@ -145,7 +145,7 @@ private
 -- the endofunction semantics: the NormalForm witness is packaged together
 -- with uniqueness, given by ⟦inv-nf⟧-injective.
 unique-nf : ∀ n →
-  PP.UniqueNormalForm (_VRel,_===_ n) (Endo-setoid n) (⟦_⟧ {n})
+  NFBase.UniqueNormalForm (_VRel,_===_ n) (Endo-setoid n) (⟦_⟧ {n})
 unique-nf n = record
   { normalForm = record
       { NF = NF n ; nf = nf-of ; nf-cong = lemma-nf-cong

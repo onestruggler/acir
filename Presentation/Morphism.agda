@@ -24,6 +24,7 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 import Presentation.Base as PB
 open import Presentation.GroupLike
+import Normalization.Base as NFBase
 import Presentation.Properties as PP
 open import Presentation.Reidemeister-Schreier hiding (module Star-Congruence)
 
@@ -174,10 +175,10 @@ module HomomorphismANF
 
   -- Precomposing a normal form on Γ with wmap g yields a weak normal
   -- form on Δ.
-  homo-anf : PP.NormalFormWithoutInverse Γ → PP.WeakNormalForm Δ
+  homo-anf : NFBase.NormalFormWithoutInverse Γ → NFBase.WeakNormalForm Δ
   homo-anf gp = record { ANF = NF ; anf = anf ; anf-injective = inj }
     where
-    open PP.NormalFormWithoutInverse gp
+    open NFBase.NormalFormWithoutInverse gp
     anf = nf ∘ wmap g
     open SR setoid₂
     g* = wmap g

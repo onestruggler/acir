@@ -26,7 +26,7 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open import Presentation.Properties using (NormalFormWithoutInverse ; NormalForm)
+open import Normalization.Base using (NormalFormWithoutInverse ; NormalForm)
 open import Presentation.Reidemeister-Schreier
 open import Presentation.Construct.Base
 

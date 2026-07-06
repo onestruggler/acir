@@ -10,8 +10,9 @@
 open import Algebra.Bundles using (Group)
 open import Data.Nat using (ℕ)
 
+import Normalization.Base as NFBase
 import Presentation.Properties as PP
-open import Presentation.Definitions
+open import Presentation.Semantics
 
 module Examples.Groups.Symmetric.Tight.Completeness where
 
@@ -20,7 +21,6 @@ open import Examples.Groups.Symmetric.Tight.Semantics using (⟦_⟧ ; Permutati
 open import Examples.Groups.Symmetric.Tight.Soundness using (sound)
 import Examples.Groups.Symmetric.Tight.Uniqueness as TU
 
-open Relative
 
 private variable n : ℕ
 
@@ -30,5 +30,5 @@ private variable n : ℕ
 completeness : let open PP (n VRel,_===_) in
   Completeness word-setoid (Group.setoid (Permutation′-group n)) ⟦_⟧
 completeness {n} =
-  PP.by-normalization (_VRel,_===_ n) (Group.setoid (Permutation′-group n)) (⟦_⟧ {n})
+  NFBase.by-normalization (_VRel,_===_ n) (Group.setoid (Permutation′-group n)) (⟦_⟧ {n})
     TU.unique-nf-tight (sound {n})

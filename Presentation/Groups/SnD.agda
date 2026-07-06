@@ -18,7 +18,7 @@ open import Notations
 open import Word.Base
 
 import Presentation.Base as PB
-open import Presentation.Properties using (NormalFormWithoutInverse ; NormalForm)
+open import Normalization.Base using (NormalFormWithoutInverse ; NormalForm)
 open import Presentation.Construct.Base
 import Presentation.Construct.Properties.NDirectProduct as NDP
 import Presentation.Construct.Properties.SemiDirectProduct as SDP0
