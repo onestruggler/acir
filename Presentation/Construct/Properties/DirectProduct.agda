@@ -323,26 +323,3 @@ module NFP'
   nfp' = record
            { NF = NF ; nf = nf ; nf-cong = nf-cong ; inv-nf = gg ; inv-nf∘nf=id = ggnf=id }
 
-------------------------------------------------------------------------
--- Lifting bijective normal forms (unfinished)
---
--- The lift of BijectiveNormalForm is not yet complete: the
--- surjectivity proof has not been written, so this module does not
--- yet export a witness for the product.
-
-module SNFP
-  (nfp-Γ : BijectiveNormalForm Γ)
-  (nfp-Δ : BijectiveNormalForm Δ)
-  where
-
-  open BijectiveNormalForm nfp-Γ renaming
-    (hasNormalForm to nfp-Γ' ; NF to NF₁ ; nf to nf₁ ;
-     nf-injective to nf₁-inj ; nf-cong to nf₁-cong ;
-     inv-nf to inv-nf₁ ; inv-nf∘nf=id to inv-nf₁∘nf₁=id) using ()
-  open BijectiveNormalForm nfp-Δ renaming
-    (hasNormalForm to nfp-Δ' ; NF to NF₂ ; nf to nf₂ ;
-     nf-injective to nf₂-inj ; nf-cong to nf₂-cong ;
-     inv-nf to inv-nf₂ ; inv-nf∘nf=id to inv-nf₂∘nf₂=id) using ()
-
-  open NFP' nfp-Γ' nfp-Δ' using (nfp' ; gg)
-  open NormalForm nfp'

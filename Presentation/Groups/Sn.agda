@@ -11,9 +11,8 @@ open import Level using (0ℓ)
 open import Relation.Binary using (Rel)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.Morphism.Definitions using (Homomorphic₂)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]ₑ)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]ₑ)
 import Relation.Binary.Reasoning.Setoid as SR
-import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Nullary.Decidable using (yes ; no)
 
 
@@ -22,13 +21,11 @@ open import Function.Definitions using (Injective)
 
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; map₁)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡ ; Pointwise ; ≡⇒≡×≡)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 open import Data.Nat using (ℕ ; zero ; suc ; 2+)
 open import Data.Unit using (⊤ ; tt)
 
 
 open import Word.Base
-open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open PP using (NormalFormWithoutInverse ; NormalForm)
@@ -36,10 +33,11 @@ open PP using (NormalFormWithoutInverse ; NormalForm)
 import Normalization.CosetNF as CA
 import Presentation.Reidemeister-Schreier as RS
 open import Notations
-module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 open import Presentation.GroupLike
 
 module Presentation.Groups.Sn where
+
+private module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
 infix 9 _ₛ
 -- iso to Fin
@@ -49,14 +47,6 @@ data X : ℕ → Set where
 
 [_⇑] : ∀ {n} → Word (X n) → Word (X (₁₊ n))
 [_⇑] {n} = ([_]ʷ ∘ _ₛ) *
-
-[_⇑]' : ∀ {n} → Word (X n) → Word (X (₁₊ n))
-[_⇑]' {n} = wmap _ₛ
-
-lemma-[⇑]=[⇑]' : ∀ {n} (w : Word (X n)) → [ w ⇑] ≡ [ w ⇑]'
-lemma-[⇑]=[⇑]' {n} [ x ]ʷ = Eq.refl
-lemma-[⇑]=[⇑]' {n} ε = Eq.refl
-lemma-[⇑]=[⇑]' {n} (w • w₁) = Eq.cong₂ _•_ (lemma-[⇑]=[⇑]' w) (lemma-[⇑]=[⇑]' w₁)
 
 data rel : (n : ℕ) → Rel (Word (X n)) 0ℓ where
   order : ∀ {n} →
@@ -81,8 +71,8 @@ NF : ℕ → Set
 NF zero = ⊤
 NF (₁₊ n) = NF n × C (₁₊ n)
 
-lemma-daux : ∀ {n} x y → swap•_ {n} x ≡ swap• y → x ≡ y
-lemma-daux {n} x y Eq.refl = Eq.refl
+swap•-injective : ∀ {n} x y → swap•_ {n} x ≡ swap• y → x ≡ y
+swap•-injective {n} x y Eq.refl = Eq.refl
 
 deceqC : ∀ {n} → DecidableEquality (C n)
 deceqC {zero} ε ε = yes Eq.refl
@@ -91,7 +81,7 @@ deceqC {₁₊ n} ε (swap• y) = no (λ ())
 deceqC {₁₊ n} (swap• x) ε = no (λ ())
 deceqC {₁₊ n} (swap• x) (swap• y) with deceqC x y
 ... | yes p = yes (Eq.cong swap•_ p)
-... | no np = no (λ {x₁ → np (lemma-daux _ _ x₁)})
+... | no np = no (λ {x₁ → np (swap•-injective _ _ x₁)})
 
 deceq : ∀ {n} → DecidableEquality (NF n)
 deceq {zero} tt tt = yes Eq.refl
@@ -215,7 +205,6 @@ lemma-ract {₁₊ n} (swap• ε) (b@swap ₛ) with lemma-ract {n} ε b
   ([ [ b0 ⇑] ⇑] • [ swap ]ʷ) • [ [ c0 ] ⇑] ≈⟨ _≈_.assoc ⟩
   [ [ b0 ⇑] ⇑] • [ swap• c0 ] ∎
   where
-  P0 = rel (suc ( n))
   P = rel (2+ n)
   open PB P
   open PP P
@@ -232,7 +221,6 @@ lemma-ract {₁₊ n} (swap• ε) (b@(b' ₛ) ₛ) with lemma-ract {n} ε b
   ([ [ b0 ⇑] ⇑] • [ swap ]ʷ) • [ [ c0 ] ⇑] ≈⟨ _≈_.assoc ⟩
   [ [ b0 ⇑] ⇑] • [ swap• c0 ] ∎
   where
-  P0 = rel (suc (n))
   P : WRel (X _)
   P = rel (2+ n)
   open PB P
@@ -250,7 +238,6 @@ lemma-ract {₁₊ n} (swap• swap• c) (b@swap ₛ) with lemma-ract {n} (swap
   ([ [ b0 ⇑] ⇑] • [ swap ]ʷ) • [ [ c0 ] ⇑] ≈⟨ _≈_.assoc ⟩
   [ [ b0 ⇑] ⇑] • [ swap• c0 ] ∎
   where
-  P0 = rel (suc ( n))
   P = rel (2+ n) 
   open PB P
   open PP P
@@ -268,7 +255,6 @@ lemma-ract {₁₊ n} (swap• swap• c) (b@(bb' ₛ) ₛ) with lemma-ract {n} 
   ([ [ b0 ⇑] ⇑] • [ swap ]ʷ) • [ [ c0 ] ⇑] ≈⟨ _≈_.assoc ⟩
   [ [ b0 ⇑] ⇑] • [ swap• c0 ] ∎
   where
-  P0 = rel (suc ( n)) 
   P = rel (2+ n) 
   open PB P
   open PP P
@@ -318,38 +304,6 @@ _≋_ {n} = let _≈₀_ = PB._≈_ (pres n) in Pointwise _≈₀_ (_≡_ {A = C
 ⁻¹[⇑]-gen' {n} swap = PB._≈_.refl , Eq.refl
 ⁻¹[⇑]-gen' {n} (x ₛ) = PB._≈_.refl , Eq.refl
 
-succ : ∀ {n} → (Word (X n) × C (₁₊ n)) → (Word (X (₁₊ n)) × C (2+ n))
-succ {n} (w , c) = [ w ⇑] • [ c ] , ε
-
-succ-cong : ∀ {n} {w v} → _≋_ {n} w v → _≋_ {₁₊ n} (succ w) (succ v)
-succ-cong {n} {w@(a , c)} {v@(b , d)} eq@(l , r) = claim , Eq.refl
-  where
-    open PB (pres (₁₊ n))
-    open PP (pres (₁₊ n))
-    open SR word-setoid
-    claim : succ w .proj₁ ≈ succ v .proj₁
-    claim = begin
-      succ w .proj₁ ≈⟨ _≈_.refl ⟩
-      [ a ⇑] • [ c ] ≡⟨ Eq.cong ([ a ⇑] •_) (Eq.cong [_] r) ⟩
-      [ a ⇑] • [ d ] ≈⟨ cong ([⇑]-cong a b l) refl ⟩
-      [ b ⇑] • [ d ] ≈⟨ _≈_.refl ⟩
-      succ v .proj₁ ∎
-
-module CA0 n = CA.Data (pres n) (pres (₁₊ n)) (C (₁₊ n)) ε
-
-lemma-ract-suc : ∀ {n} w → racts {n} ε [ w ⇑] ≡ (w , ε)
-lemma-ract-suc {n} [ x ]ʷ = Eq.refl
-lemma-ract-suc {n} ε = Eq.refl
-lemma-ract-suc {n} (w • v) with lemma-ract-suc {n} w
-... | ih with lemma-ract-suc {n} v
-... | ih' with racts ε [ w ⇑]
-... | (w' , ew) rewrite Eq.cong proj₁ ih | Eq.cong proj₂ ih | Eq.cong proj₁ ih' | Eq.cong proj₂ ih' with racts ε [ v ⇑]
-... | (v' , ev) = begin
-  w • v , ε ≡⟨ Eq.refl ⟩
-  (w • v , ε) ∎
-  where
-  open ≡-Reasoning
-
 lemma-ract-suc' : ∀ {n} w → ((ract {n}) **) ε [ w ⇑] ≡ (w , ε)
 lemma-ract-suc' {n} [ x ]ʷ = Eq.refl
 lemma-ract-suc' {n} ε = Eq.refl
@@ -378,14 +332,6 @@ lemma-ract-suc'' {n} (w • v) with lemma-ract-suc'' {n} w
 
 lemma-ract-swap•swap• : ∀ {n} (c : C n) → racts (swap• swap• c) [ swap ]ʷ ≡ ([ swap ]ʷ , swap• swap• c)
 lemma-ract-swap•swap• {n} c = Eq.refl
-  where
-  open ≡-Reasoning
-
-lemma-ract-swap•swap•2 : ∀ {n} c b → let (b' , c') = ract {n} c b in ract (swap• swap• c) ((b ₛ) ₛ) ≡ ([ [ b' ⇑] ⇑] , swap• swap• c')
-lemma-ract-swap•swap•2 {n} ε swap = Eq.refl
-lemma-ract-swap•swap•2 {n} ε (b ₛ) = Eq.refl
-lemma-ract-swap•swap•2 {n} (swap• c) swap = Eq.refl
-lemma-ract-swap•swap•2 {n} (swap• c) (b ₛ) = Eq.refl
   where
   open ≡-Reasoning
 
@@ -463,7 +409,7 @@ mutual
   lemma-nf-inj {₁₊ n} with lemma-nf-inj {n}
   ... | ih = f-inj
     where
-    open PB (pres (₁₊ n)) renaming ( Alphabet to B)
+    open PB (pres (₁₊ n))
 
     f = nf-of {₁₊ n}
 
@@ -479,11 +425,6 @@ mutual
 
     open PP (pres (₁₊ n))
     open SR word-setoid
-
-    module RSA = RSF (pres n) (pres (₁₊ n)) (C (₁₊ n)) ε 
-
-    infix 4 _~_
-    _~_ = Pointwise _≈₀_ (_≡_ {A = C (₁₊ n)})
 
     f-inj :  ∀ {a b} → f a ≡ f b → a ≈ b
     f-inj {a} {b} = NormalFormWithoutInverse.nf-injective nfp-1 
@@ -502,16 +443,6 @@ mutual
   lemma-nf-cong {₁₊ n} {x} {y} eq with lemma-nf-cong2 {n} eq
   ... | fst , snd with  lemma-nf-cong {n}
   ... | ih = ≡×≡⇒≡ (ih fst , snd)
-    where
-    open PB (pres n) renaming (_≈_ to _≈₀_) using ()
-    open PB (pres (₁₊ n)) using (_≈_)
-    _~_ = Pointwise _≈₀_ (_≡_ {A = C ((₁₊ n))})
-
-    module RSA = RSF (pres n) (pres (₁₊ n)) (C (₁₊ n)) ε
-    
-    f = nf-of2 {n}
-    f-cong2 : ∀ {a b} → a ≈ b → f a ~ f b
-    f-cong2 {a} {b} eq = RSA.lemma-hypB ([_]ʷ ∘ _ₛ) ract ⁻¹[⇑]-gen'  ⁻¹[⇑]-wd'' ε _ _ eq
 
   
   lemma-nf-cong2 : ∀ {n} →
