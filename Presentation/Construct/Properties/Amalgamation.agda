@@ -1529,5 +1529,5 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     ([ x ]ʷ , I) ∎)
     where open SR mcdₛ
 
-  module myData3 = Data P₀ mypres CD I f hh [_]
-  open myData3.Assumptions-And-Theorems h=⁻¹f-gen hhh-wd-ax f-wd-ax (trans left-unit left-unit) hh-hyp hiding ([_]ₓ) public
+  module myData3 = SingleLevel P₀ mypres CD I f hh [_]
+  open myData3.Transfer h=⁻¹f-gen hhh-wd-ax f-wd-ax (trans left-unit left-unit) hh-hyp hiding ([_]ₓ) public

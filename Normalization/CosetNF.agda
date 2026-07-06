@@ -9,14 +9,13 @@
 -- well-defined, and transports a normal form for Γ to one for Δ.
 --
 -- This file provides three layers:
---   * Data       — one level of the construction, for an explicit
---                  coset index set C;
---   * Data-CT    — the same for a "coset table" carrying a
---                  distinguished identity coset, indexing by C ⊎ ⊤,
---                  together with the packed record
---                  PackedCosetTable;
---   * CosetTower — iterating Data up an ℕ-indexed family of
---                  presentations to build a normal form at every level.
+--   * SingleLevel — one level of the construction, for an explicit
+--                   coset index set C;
+--   * CosetTable  — the same for a "coset table" carrying a
+--                   distinguished identity coset, indexing by C ⊎ ⊤,
+--                   together with the packed record PackedCosetTable;
+--   * CosetTower  — iterating SingleLevel up an ℕ-indexed family of
+--                   presentations to build a normal form at every level.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}
@@ -109,7 +108,7 @@ lemma-**-act py _⊕_ [_] f hyp c (w • v) with (_⊕_ **) c w | inspect (((_�
 -- [ c ].  Consequently a normal form for Γ transports to one for Δ
 -- (nfp, nfp').
 
-module Data
+module SingleLevel
   {X Y : Set}
   (Γ   : WRel X)               -- subgroup presentation  (letters X)
   (Δ   : WRel Y)               -- group presentation     (letters Y)
@@ -131,7 +130,7 @@ module Data
   _~_ = PW.Pointwise _≈₁_ (_≡_ {A = C})
 
   -- The five hypotheses that make the data a genuine coset presentation.
-  module Assumptions-And-Theorems
+  module Transfer
     -- (1) h inverts f on the identity coset: pushing f x through I
     --     recovers the letter x and returns to coset I.
     (h=⁻¹f-gen : ∀ (x : X) → ([ x ]ʷ , I) ~ ((h **) I (f x)))
@@ -267,13 +266,13 @@ module Data
 ------------------------------------------------------------------------
 -- Coset table with a distinguished identity coset
 --
--- A variant of Data for the common case where the coset index comes
+-- A variant of SingleLevel for the common case where the coset index comes
 -- with a separate identity coset.  Here the cosets are C ⊎ ⊤, with the
 -- identity coset I = inj₂ tt represented by the empty word, and the
 -- user supplies the action h and section [_]ₒ on the "proper" cosets C
--- only.  The theorems are obtained by specialising Data at C ⊎ ⊤.
+-- only.  The theorems are obtained by specialising SingleLevel at C ⊎ ⊤.
 
-module Data-CT
+module CosetTable
   {M A : Set}
   (P₁   : WRel M)                        -- subgroup presentation
   (P₂   : WRel A)                        -- group presentation
@@ -304,7 +303,7 @@ module Data-CT
   [_] : C ⊎ ⊤ → Word A
   [_] = [_,_] [_]ₒ (λ v → ε)
 
-  module Assumptions-And-Theorems
+  module Transfer
     -- Action on an embedded generator f m: from a proper coset it stays
     -- proper (hcme); from the identity coset it returns the single
     -- letter m and stays in the identity coset (htme).
@@ -313,7 +312,7 @@ module Data-CT
     -- ≈-level counterparts of htme / hcme.
     (htme~ : ∀ (m : M) → ([ m ]ʷ , I) ~ ((h **) I (f m)))
     (hcme~ : ∀ (c : C) (m : M) → let (w' , c' , p) = hcme c m in [ c ]ₒ • f m ≈₂ [ w' ]ₓ • [ c' ]ₒ)
-    -- The same well-definedness and compatibility axioms as in Data.
+    -- The same well-definedness and compatibility axioms as in SingleLevel.
     (h-wd-ax : ∀ (c : C ⊎ ⊤){u t : Word A} → u ===₂ t → ((h **) c u) ~ ((h **) c t))
     (f-wd-ax : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
     (h=ract :  ∀ c y → let (m' , c') = h c y in
@@ -393,9 +392,9 @@ module Data-CT
     [I]≈ε : [ I ] ≈₂ ε
     [I]≈ε rewrite [I]≡ε = _≈₂_.refl
 
-    module asData = Data P₁ P₂ (C ⊎ ⊤) (inj₂ tt) f h [_]
+    module asData = SingleLevel P₁ P₂ (C ⊎ ⊤) (inj₂ tt) f h [_]
 
-    open asData.Assumptions-And-Theorems htme~ h-wd-ax f-wd-ax [I]≈ε h=ract using (f*-injective ; nfx ; h-wd ; f-wd ; nfp') public 
+    open asData.Transfer htme~ h-wd-ax f-wd-ax [I]≈ε h=ract using (f*-injective ; nfx ; h-wd ; f-wd ; nfp') public 
 
 
     lemma-h**=hcmw : ∀ c w → let (w' , c') = hcmw c w in
@@ -478,9 +477,9 @@ module Data-CT
 ------------------------------------------------------------------------
 -- Packaged coset-table assumptions
 --
--- Bundles the data and hypotheses of Data-CT into a single record, so a
+-- Bundles the data and hypotheses of CosetTable into a single record, so a
 -- caller can hand over the whole transfer as one value.  Opening it
--- re-exports every theorem of Data-CT.Assumptions-And-Theorems.
+-- re-exports every theorem of CosetTable.Transfer.
 
 record PackedCosetTable
   {M A : Set}
@@ -516,7 +515,7 @@ record PackedCosetTable
   [_] = [_,_] [_]ₒ (λ v → ε)
 
   field
-    -- Action on embedded generators (see Data-CT for the meaning).
+    -- Action on embedded generators (see CosetTable for the meaning).
     hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h **) (inj₁ c) (f m)) ≡ (w , inj₁ c')
     htme : ∀ m → ((h **) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
     
@@ -530,14 +529,14 @@ record PackedCosetTable
      [ c ] • [ y ]ʷ ≈₂ [ m' ]ₓ • [ c' ]
 
 
-  module asDataCT = Data-CT P₁ P₂ C f h [_]ₒ
-  open asDataCT.Assumptions-And-Theorems hcme htme htme~ hcme~ h-wd-ax f-wd-ax h=ract public
+  module asDataCT = CosetTable P₁ P₂ C f h [_]ₒ
+  open asDataCT.Transfer hcme htme htme~ hcme~ h-wd-ax f-wd-ax h=ract public
 
 
 ------------------------------------------------------------------------
 -- Coset tower
 --
--- Iterating the single-level coset extension (module Data) up an
+-- Iterating the single-level coset extension (module SingleLevel) up an
 -- ℕ-indexed family of presentations.  Given
 --   * a family of presentations  P : ∀ n → WRel (X n),
 --   * a family of coset types     Cᶜ : ℕ → Set,
@@ -576,8 +575,8 @@ module CosetTower
       h=ract    : ∀ c b → let (b' , c') = h c b in
                   [ c ] • [ b ]ʷ ≈₂ (f *) b' • [ c' ]
 
-    module D = Data (P n) (P (suc n)) (Cᶜ n) I f h [_]
-    open D.Assumptions-And-Theorems
+    module D = SingleLevel (P n) (P (suc n)) (Cᶜ n) I f h [_]
+    open D.Transfer
       h=⁻¹f-gen h-wd-ax f-wd-ax [I]≈ε h=ract public
       using (nfp ; nfp')
 

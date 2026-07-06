@@ -419,10 +419,10 @@ mutual
 
     open PB (pres n) renaming (_≈_ to _≈₀_) using ()
     
-    module M = CA.Data (pres n) (pres (₁₊ n)) (C (₁₊ n)) ε ([_]ʷ ∘ _ₛ) ract [_]
+    module M = CA.SingleLevel (pres n) (pres (₁₊ n)) (C (₁₊ n)) ε ([_]ʷ ∘ _ₛ) ract [_]
 
     nfp-1 : NormalFormWithoutInverse (pres (₁₊ n))
-    nfp-1 = M.Assumptions-And-Theorems.nfp (λ x₁ → _≈₀_.refl , Eq.refl) ⁻¹[⇑]-wd'' ((λ x₁ → axiom (congₛ x₁))) _≈_.refl lemma-ract p0
+    nfp-1 = M.Transfer.nfp (λ x₁ → _≈₀_.refl , Eq.refl) ⁻¹[⇑]-wd'' ((λ x₁ → axiom (congₛ x₁))) _≈_.refl lemma-ract p0
 
     open PP (pres (₁₊ n))
     open SR word-setoid

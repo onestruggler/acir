@@ -190,8 +190,8 @@ module M where
   h-hyp ε-cr S-gen = trans left-unit (sym right-unit)
   h-hyp ε-cr ω-gen = trans left-unit (sym right-unit)
 
-  module ca = CA.Data (Pω ⊕ PS) _===_ C ε-cr f h [_]
-  module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  module ca = CA.SingleLevel (Pω ⊕ PS) _===_ C ε-cr f h [_]
+  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
 
 
@@ -473,8 +473,8 @@ module MA where
   h-hyp (inj₁ H-cr) X-gen = lemma-HX
   h-hyp (inj₂ tt) X-gen = trans left-unit (sym right-unit)
 
-  module ca = CA.Data (M._===_) _===_ CT (inj₂ tt) f h [_]
-  module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  module ca = CA.SingleLevel (M._===_) _===_ CT (inj₂ tt) f h [_]
+  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
 
   open NFBase.NormalFormWithoutInverse (nfp (M.nfp M0.nfp)) renaming (by-equal-nf to by-nf) using ()
@@ -720,8 +720,8 @@ module MB where
   h-hyp (inj₂ tt) S-gen = trans left-unit (sym right-unit)
   h-hyp (inj₂ tt) ω-gen = trans left-unit (sym right-unit)
 
-  module ca = CA.Data (M._===_) _===_ CT (inj₂ tt) f h [_]
-  module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  module ca = CA.SingleLevel (M._===_) _===_ CT (inj₂ tt) f h [_]
+  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
 
   open NFBase.NormalFormWithoutInverse (nfp (M.nfp M0.nfp)) renaming (by-equal-nf to by-nf) using ()

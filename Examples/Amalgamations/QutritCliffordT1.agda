@@ -147,8 +147,8 @@ module M0 where
   h-hyp SS-cr S-gen = trans (trans assoc (axiom order-S)) (sym right-unit)
   h-hyp SS-cr ζ-gen = lemma-ζ^n 1 [ SS-cr ]
 
-  module ca = CA.Data Pζ _===_ C ε-cr f h [_]
-  module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  module ca = CA.SingleLevel Pζ _===_ C ε-cr f h [_]
+  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
 
 
@@ -556,8 +556,8 @@ module M where
   h-hyp XXSXX-cr S-gen = lemma-XXSXXS
   h-hyp XXSXX-cr ζ-gen = lemma-ζ [ XXSXX-cr ]
   
-  module ca = CA.Data M0._===_ _===_ C ε-cr f h [_]
-  module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  module ca = CA.SingleLevel M0._===_ _===_ C ε-cr f h [_]
+  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
 
   module MM = NFBase.NormalFormWithoutInverse (nfp (M0.nfp (Cyclic.nfp 9)))
@@ -727,8 +727,8 @@ module M2 where
   h=⁻¹f-gen M.X-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen M.ζ-gen = _≈₀_.refl , Eq.refl
 
-  module ca = CA.Data M._===_ _===_ C ε-cr f h [_]
-  module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  module ca = CA.SingleLevel M._===_ _===_ C ε-cr f h [_]
+  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
 
   module MM = NFBase.NormalFormWithoutInverse (nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))
@@ -1116,8 +1116,8 @@ module MA where
   h-hyp (inj₂ tt) S-gen = trans left-unit (sym right-unit)
   h-hyp (inj₂ tt) ζ-gen = trans left-unit (sym right-unit)
 
-  module ca = CA.Data (M2._===_) _===_ CT (inj₂ tt) f h [_]
-  module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  module ca = CA.SingleLevel (M2._===_) _===_ CT (inj₂ tt) f h [_]
+  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
   
   open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
@@ -1513,8 +1513,8 @@ module MA' where
 
 
 
-  module ca = CA.Data (M2._===_) _===_ CT (inj₂ tt) f h [_]
-  module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  module ca = CA.SingleLevel (M2._===_) _===_ CT (inj₂ tt) f h [_]
+  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
   
   open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
@@ -1989,8 +1989,8 @@ module MB where
   h-hyp (inj₁ H-cr) HH-gen = lemma-HHH
   h-hyp (inj₂ tt) HH-gen = trans left-unit (sym right-unit)
 
-  module ca = CA.Data (M2._===_) _===_ CT (inj₂ tt) f h [_]
-  module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
+  module ca = CA.SingleLevel (M2._===_) _===_ CT (inj₂ tt) f h [_]
+  module aat = ca.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
   
   open NFBase.NormalFormWithoutInverse (nfp (M2.nfp (M.nfp (M0.nfp (Cyclic.nfp 9) )))) renaming (by-equal-nf to by-nf) using ()

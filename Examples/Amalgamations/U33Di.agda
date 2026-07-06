@@ -291,7 +291,7 @@ module TwoLevel-Simplified-Amal where
     import Normalization.CosetNF as CNF
     pres-KD = (_===_)
     
-    module DD = CNF.Data pres-D pres-KD C I f ract [_]
+    module DD = CNF.SingleLevel pres-D pres-KD C I f ract [_]
     open DD using (_~_)
     open NFBase.NormalFormWithoutInverse (pres-D-nfp) renaming (by-equal-nf to bef) using ()
     open PB pres-KD renaming (_===_ to _===₂_ ; _≈_ to _≈₂_ ; refl' to refl'₂) using ()
@@ -517,7 +517,7 @@ module TwoLevel-Simplified-Amal where
       i₀ • K₀₁ • i₀ • i₀ • K₀₁ ∎
 
 
-    module AAT = DD.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax (refl'₂ Eq.refl) h=ract
+    module AAT = DD.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax (refl'₂ Eq.refl) h=ract
 
     -- pres-KD works on indices ₀ and ₁, the next component is i₂.
     pres-KI = pres-KD ⊕ (Cyclic.pres 4)
