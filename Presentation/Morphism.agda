@@ -205,12 +205,12 @@ module GroupMorphs
   (group-like₂ : Grouplike _===₂_)
   where
 
-  open Group-Lemmas A _===₁_ group-like₁
+  open Group-Lemmas _===₁_ group-like₁
     renaming (•-ε-group to •-ε-group₁)
-  open Group-Lemmas B _===₂_ group-like₂
+  open Group-Lemmas _===₂_ group-like₂
     renaming ( •-ε-group              to •-ε-group₂
-             ; lemma-left-inverse-unique to lemma-left-inverse-unique₂
-             ; lemma-cong-inv          to lemma-cong-inv₂
+             ; inverseˡ-unique to inverseˡ-unique₂
+             ; ⁻¹-cong          to ⁻¹-cong₂
              )
 
   open GroupMorphisms (Group.rawGroup •-ε-group₁) (Group.rawGroup •-ε-group₂)
@@ -231,7 +231,7 @@ module GroupMorphs
     inv-homo [ x ]ʷ =
       begin
         (f *) ([ x ]ʷ ⁻¹₁)
-          ≈⟨ lemma-left-inverse-unique₂
+          ≈⟨ inverseˡ-unique₂
                {g = (f *) [ x ]ʷ} {h = (f *) ([ x ]ʷ ⁻¹₁)}
                (lemma-f*-cong (group-like₁ x .proj₂)) ⟩
         (f *) [ x ]ʷ ⁻¹₂ ∎
@@ -273,7 +273,7 @@ module GroupMorphs
     inv-homo [ x ]ʷ =
       begin
         (f*) ([ x ]ʷ ⁻¹₁)
-          ≈⟨ lemma-left-inverse-unique₂
+          ≈⟨ inverseˡ-unique₂
                {g = (f*) [ x ]ʷ} {h = (f*) ([ x ]ʷ ⁻¹₁)}
                (lemma-f*-cong (group-like₁ x .proj₂)) ⟩
         (f*) [ x ]ʷ ⁻¹₂ ∎

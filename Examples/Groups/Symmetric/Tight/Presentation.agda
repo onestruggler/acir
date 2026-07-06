@@ -31,7 +31,7 @@ open import Word.Base
 module _ (n : ℕ) where
 
   private
-    module GL = Group-Lemmas (Gen n) (_VRel,_===_ n) (grouplike {n})
+    module GL = Group-Lemmas (_VRel,_===_ n) (grouplike {n})
 
   open GroupMorphisms (Group.rawGroup GL.•-ε-group) (Group.rawGroup (Permutation′-group n))
 
@@ -46,7 +46,7 @@ module _ (n : ℕ) where
       }
     ; ⁻¹-homo = λ w k →
         trans (sym (inverseˡ (ST.⟦ w ⟧)))
-              (cong (ST.⟦ w ⟧ ⟨$⟩ˡ_) (STS.sound (GL.lemma-left-inverse {g = w}) k))
+              (cong (ST.⟦ w ⟧ ⟨$⟩ˡ_) (STS.sound (GL.inverseˡ {g = w}) k))
     }
 
   ⟦⟧-groupHom : GroupHomomorphism (Group.rawGroup GL.•-ε-group) (Group.rawGroup (Permutation′-group n))

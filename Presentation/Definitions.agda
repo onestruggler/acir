@@ -49,7 +49,7 @@ infix 4 _IsPresentationOf_
 record _IsPresentationOf_ (_===_ : WRel X) (G : Group a ℓ) : Set (a ⊔ ℓ) where
   field
     gl : Grouplike _===_
-  module GL = Group-Lemmas X _===_ gl
+  module GL = Group-Lemmas _===_ gl
   open GroupMorphisms (Group.rawGroup GL.•-ε-group) (Group.rawGroup G)
   field
     ⟦_⟧ : Word X → Group.Carrier G
