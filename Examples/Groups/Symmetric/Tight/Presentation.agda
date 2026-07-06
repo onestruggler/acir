@@ -60,7 +60,6 @@ module _ (n : ℕ) where
 
   open import Examples.Groups.Symmetric.Tight.Semantics
   open import Examples.Groups.Symmetric.Tight.Soundness
-  import Examples.Groups.Symmetric.Loose.Semantics as LooseSem
   open import Data.Fin.Permutation
     using ( Permutation′ ; _⟨$⟩ʳ_ ; _⟨$⟩ˡ_ ; _∘ₚ_ ; flip
           ; inverseˡ ; inverseʳ ; lift₀ ; lift₀-cong ; remove ; lift₀-remove)

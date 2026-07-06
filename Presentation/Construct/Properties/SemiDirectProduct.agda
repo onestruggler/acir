@@ -352,8 +352,6 @@ module _
     nf = map nf₁ nf₂ ∘ nf0
 
     import Function.Construct.Composition as FCC
-    import Data.Product.Function.NonDependent.Setoid as FS
-    open import Function.Bundles using (Injection)
     open import Function.Definitions using (Injective)
 
 

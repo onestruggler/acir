@@ -7,7 +7,6 @@
 
 {-# OPTIONS --safe #-}
 
-open import Data.Nat using (ℕ)
 
 import Normalization.Base as NFBase
 import Presentation.Properties as PP

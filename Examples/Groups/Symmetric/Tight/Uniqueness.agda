@@ -25,7 +25,6 @@ open import Notations
 module Examples.Groups.Symmetric.Tight.Uniqueness where
 
 open import Examples.Groups.Symmetric.Syntactics
-open import Examples.Groups.Symmetric.Cosets
 open import Examples.Groups.Symmetric.Normalization using (nf-of ; NF ; inv-nf)
 open import Examples.Groups.Symmetric.Loose.Semantics
 open import Examples.Groups.Symmetric.Loose.Uniqueness using (unique-nf)

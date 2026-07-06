@@ -19,16 +19,13 @@ open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_])
 open import Data.Unit using (⊤ ; tt)
 
 open import Word.Base
-open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Normalization.Base as NFBase
 open NFBase using (NormalFormWithoutInverse ; NormalForm)
 import Normalization.CosetNF as CA
 open CA using (PackedCosetTable)
-import Presentation.Reidemeister-Schreier as RS
 
-import Presentation.Groups.Sn as Sn
 import Presentation.Groups.Cyclic as Cyclic
 open import Presentation.Construct.Base
 open import Presentation.Construct.Properties.Amalgamation

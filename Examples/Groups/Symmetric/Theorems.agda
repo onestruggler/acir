@@ -15,8 +15,6 @@ import Presentation.Properties as PP
 
 module Examples.Groups.Symmetric.Theorems where
 
-open import Examples.Groups.Symmetric.Cosets
-open import Examples.Groups.Symmetric.Normalization using (nf-of ; NF ; inv-nf)
 open import Examples.Groups.Symmetric.Syntactics
 
 ------------------------------------------------------------------------
@@ -24,13 +22,15 @@ open import Examples.Groups.Symmetric.Syntactics
 
 module Loose where
 
-  open import Examples.Groups.Symmetric.Loose.Semantics as SS
+  open import Examples.Groups.Symmetric.Loose.Semantics
   import Examples.Groups.Symmetric.Loose.Soundness as LS
   import Examples.Groups.Symmetric.Loose.Completeness as LC
   import Examples.Groups.Symmetric.Loose.Uniqueness as LU
 
   unique-nf : ∀ n →
-    NFBase.UniqueNormalForm (_VRel,_===_ n) (Endo-setoid n) (⟦_⟧ {n})
+  
+    NFBase.UniqueNormalForm (n VRel,_===_) (Endo-setoid n) (⟦_⟧ {n})
+    
   unique-nf = LU.unique-nf
 
   soundness : ∀ n →
@@ -58,14 +58,16 @@ module Loose where
 
 module Tight where
 
-  open import Examples.Groups.Symmetric.Tight.Semantics as SS
+  open import Examples.Groups.Symmetric.Tight.Semantics
   import Examples.Groups.Symmetric.Tight.Soundness as TS
   import Examples.Groups.Symmetric.Tight.Completeness as TC
   import Examples.Groups.Symmetric.Tight.Uniqueness as TU
   import Examples.Groups.Symmetric.Tight.Presentation as TP
 
   unique-nf : ∀ n →
-    NFBase.UniqueNormalForm (_VRel,_===_ n) (Group.setoid (Permutation′-group n)) (⟦_⟧ {n})
+  
+    NFBase.UniqueNormalForm (n VRel,_===_) (Group.setoid (Permutation′-group n)) (⟦_⟧ {n})
+    
   unique-nf n = TU.unique-nf-tight {n}
 
   soundness : ∀ n →
