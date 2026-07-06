@@ -26,7 +26,7 @@ import Presentation.Base as PB
 open import Presentation.GroupLike
 import Normalization.Base as NFBase
 import Presentation.Properties as PP
-open import Presentation.Reidemeister-Schreier hiding (module Star-Congruence)
+open import Presentation.Reidemeister-Schreier
 
 open PB Γ renaming
   (_===_ to _===₁_ ; _≈_ to _≈₁_ ; refl to refl₁ ; cong to cong₁ ; sym to sym₁)
@@ -37,27 +37,27 @@ open PP Δ renaming (•-ε-monoid to monoid₂ ; word-setoid to setoid₂)
 open PB
 
 ------------------------------------------------------------------------
--- Congruence: (f *) and wmap f preserve _≈_
+-- GenCongruence: (f *) and wmap f preserve _≈_
 
--- Congruence for the extension (f *) of a map f : A → Word B.
-module Star-Congruence
+-- GenCongruence for the extension (f *) of a map f : A → Word B.
+module StarCongruence
   (f : A → Word B)
   (f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
   where
 
   -- Extend well-definedness on the axioms to the whole congruence.
-  lemma-f*-cong : ∀ {w v : Word A} → w ≈₁ v → (f *) w ≈₂ (f *) v
-  lemma-f*-cong _≈₁_.refl      = _≈₂_.refl
-  lemma-f*-cong (sym h)        = _≈₂_.sym (lemma-f*-cong h)
-  lemma-f*-cong (trans h h₁)   = _≈₂_.trans (lemma-f*-cong h) (lemma-f*-cong h₁)
-  lemma-f*-cong (cong h h₁)    = _≈₂_.cong (lemma-f*-cong h) (lemma-f*-cong h₁)
-  lemma-f*-cong assoc          = _≈₂_.assoc
-  lemma-f*-cong left-unit      = _≈₂_.left-unit
-  lemma-f*-cong right-unit     = _≈₂_.right-unit
-  lemma-f*-cong (axiom a)      = f-well-defined a
+  f*-cong : ∀ {w v : Word A} → w ≈₁ v → (f *) w ≈₂ (f *) v
+  f*-cong _≈₁_.refl      = _≈₂_.refl
+  f*-cong (sym h)        = _≈₂_.sym (f*-cong h)
+  f*-cong (trans h h₁)   = _≈₂_.trans (f*-cong h) (f*-cong h₁)
+  f*-cong (cong h h₁)    = _≈₂_.cong (f*-cong h) (f*-cong h₁)
+  f*-cong assoc          = _≈₂_.assoc
+  f*-cong left-unit      = _≈₂_.left-unit
+  f*-cong right-unit     = _≈₂_.right-unit
+  f*-cong (axiom a)      = f-well-defined a
 
--- Congruence for the lift wmap f of a generator map f : A → B.
-module Congruence
+-- GenCongruence for the lift wmap f of a generator map f : A → B.
+module GenCongruence
   (f : A → B)
   (f-well-defined : let f* = wmap f in ∀ {w v} → w ===₁ v → (f*) w ≈₂ (f*) v)
   where
@@ -65,15 +65,15 @@ module Congruence
   f* = wmap f
 
   -- Extend well-definedness on the axioms to the whole congruence.
-  lemma-f*-cong : ∀ {w v : Word A} → w ≈₁ v → (f*) w ≈₂ (f*) v
-  lemma-f*-cong _≈₁_.refl      = _≈₂_.refl
-  lemma-f*-cong (sym h)        = _≈₂_.sym (lemma-f*-cong h)
-  lemma-f*-cong (trans h h₁)   = _≈₂_.trans (lemma-f*-cong h) (lemma-f*-cong h₁)
-  lemma-f*-cong (cong h h₁)    = _≈₂_.cong (lemma-f*-cong h) (lemma-f*-cong h₁)
-  lemma-f*-cong assoc          = _≈₂_.assoc
-  lemma-f*-cong left-unit      = _≈₂_.left-unit
-  lemma-f*-cong right-unit     = _≈₂_.right-unit
-  lemma-f*-cong (axiom a)      = f-well-defined a
+  f*-cong : ∀ {w v : Word A} → w ≈₁ v → (f*) w ≈₂ (f*) v
+  f*-cong _≈₁_.refl      = _≈₂_.refl
+  f*-cong (sym h)        = _≈₂_.sym (f*-cong h)
+  f*-cong (trans h h₁)   = _≈₂_.trans (f*-cong h) (f*-cong h₁)
+  f*-cong (cong h h₁)    = _≈₂_.cong (f*-cong h) (f*-cong h₁)
+  f*-cong assoc          = _≈₂_.assoc
+  f*-cong left-unit      = _≈₂_.left-unit
+  f*-cong right-unit     = _≈₂_.right-unit
+  f*-cong (axiom a)      = f-well-defined a
 
 ------------------------------------------------------------------------
 -- Monoid morphisms
@@ -98,12 +98,12 @@ module StarHomomorphism
   isMonoidHomomorphism : IsMonoidHomomorphism (f *)
   isMonoidHomomorphism = record
     { isMagmaHomomorphism = record
-      { isRelHomomorphism = record { cong = lemma-f*-cong f f-well-defined }
+      { isRelHomomorphism = record { cong = f*-cong f f-well-defined }
       ; homo = λ x y → _≈₂_.refl
       }
     ; ε-homo = _≈₂_.refl
     }
-    where open Star-Congruence
+    where open StarCongruence
 
 -- Build a monoid homomorphism from wmap f.
 module GenHomomorphism
@@ -116,12 +116,12 @@ module GenHomomorphism
   isMonoidHomomorphism : IsMonoidHomomorphism (f*)
   isMonoidHomomorphism = record
     { isMagmaHomomorphism = record
-      { isRelHomomorphism = record { cong = lemma-f*-cong f f-well-defined }
+      { isRelHomomorphism = record { cong = f*-cong f f-well-defined }
       ; homo = λ x y → _≈₂_.refl
       }
     ; ε-homo = _≈₂_.refl
     }
-    where open Congruence
+    where open GenCongruence
 
 -- Build a monoid monomorphism from (f *), using Reidemeister-Schreier.
 module StarMonomorphism
@@ -164,19 +164,19 @@ module StarIsomorphism
     }
 
 -- Transfer a normal-form witness along a generator bijection.
-module HomomorphismANF
+module WeakNormalFormTransfer
   (f : A → B)
   (g : B → A)
-  (fg=id : ∀ x → f (g x) ≡ x)
+  (f∘g≗id : ∀ x → f (g x) ≡ x)
   (f-well-defined : let f* = wmap f in ∀ {w v} → w ===₁ v → (f*) w ≈₂ (f*) v)
   where
 
-  open Congruence f f-well-defined
+  open GenCongruence f f-well-defined
 
   -- Precomposing a normal form on Γ with wmap g yields a weak normal
   -- form on Δ.
-  homo-anf : NFBase.NormalFormWithoutInverse Γ → NFBase.WeakNormalForm Δ
-  homo-anf gp = record { ANF = NF ; anf = anf ; anf-injective = inj }
+  weakNormalForm : NFBase.NormalFormWithoutInverse Γ → NFBase.WeakNormalForm Δ
+  weakNormalForm gp = record { ANF = NF ; anf = anf ; anf-injective = inj }
     where
     open NFBase.NormalFormWithoutInverse gp
     anf = nf ∘ wmap g
@@ -184,14 +184,14 @@ module HomomorphismANF
     g* = wmap g
 
     f*∘g*≗id : ∀ w → f* (g* w) ≡ w
-    f*∘g*≗id [ x ]ʷ   rewrite fg=id x = Eq.refl
+    f*∘g*≗id [ x ]ʷ   rewrite f∘g≗id x = Eq.refl
     f*∘g*≗id ε        = Eq.refl
     f*∘g*≗id (w • w₁) rewrite f*∘g*≗id w | f*∘g*≗id w₁ = Eq.refl
 
     inj : {w v : Word B} → nf (wmap g w) ≡ nf (wmap g v) → w ≈₂ v
     inj {w} {v} eq =
       begin w          ≡⟨ Eq.sym (f*∘g*≗id w) ⟩
-        f* (g* w)      ≈⟨ lemma-f*-cong (nf-injective eq) ⟩
+        f* (g* w)      ≈⟨ f*-cong (nf-injective eq) ⟩
         f* (g* v)      ≡⟨ f*∘g*≗id v ⟩
         v ∎
 
@@ -200,7 +200,7 @@ module HomomorphismANF
 
 -- Upgrade the monoid morphism builders to group morphisms, given
 -- Grouplike witnesses for both presentations.
-module GroupMorphs
+module GroupMorphism
   (group-like₁ : Grouplike _===₁_)
   (group-like₂ : Grouplike _===₂_)
   where
@@ -221,25 +221,25 @@ module GroupMorphs
     (f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
     where
 
-    open Star-Congruence f f-well-defined
+    open StarCongruence f f-well-defined
     open StarHomomorphism f f-well-defined
     open RawGroup (Group.rawGroup •-ε-group₁) renaming (_⁻¹ to _⁻¹₁)
     open RawGroup (Group.rawGroup •-ε-group₂) renaming (_⁻¹ to _⁻¹₂)
 
     -- (f *) maps inverses to inverses.
-    inv-homo : ∀ x → (f *) (x ⁻¹₁) ≈₂ ((f *) x) ⁻¹₂
-    inv-homo [ x ]ʷ =
+    ⁻¹-homo : ∀ x → (f *) (x ⁻¹₁) ≈₂ ((f *) x) ⁻¹₂
+    ⁻¹-homo [ x ]ʷ =
       begin
         (f *) ([ x ]ʷ ⁻¹₁) ≈⟨ inverseˡ-unique₂ {g = (f *) [ x ]ʷ}
-              {h = (f *) ([ x ]ʷ ⁻¹₁)} (lemma-f*-cong (group-like₁ x .proj₂)) ⟩
+              {h = (f *) ([ x ]ʷ ⁻¹₁)} (f*-cong (group-like₁ x .proj₂)) ⟩
         (f *) [ x ]ʷ ⁻¹₂ ∎
       where open SR setoid₂
-    inv-homo ε = refl₂
-    inv-homo (x • y) =
+    ⁻¹-homo ε = refl₂
+    ⁻¹-homo (x • y) =
       begin
-        (f *) ((x • y) ⁻¹₁)           ≈⟨ lemma-f*-cong {(x • y) ⁻¹₁} {y ⁻¹₁ • x ⁻¹₁} refl₁ ⟩
+        (f *) ((x • y) ⁻¹₁) ≈⟨ f*-cong {(x • y) ⁻¹₁} {y ⁻¹₁ • x ⁻¹₁} refl₁ ⟩
         (f *) (y ⁻¹₁ • x ⁻¹₁)         ≈⟨ refl₂ ⟩
-        (f *) (y ⁻¹₁) • (f *) (x ⁻¹₁) ≈⟨ cong₂ (inv-homo y) (inv-homo x) ⟩
+        (f *) (y ⁻¹₁) • (f *) (x ⁻¹₁) ≈⟨ cong₂ (⁻¹-homo y) (⁻¹-homo x) ⟩
         ((f *) y) ⁻¹₂ • ((f *) x) ⁻¹₂ ≈⟨ refl₂ ⟩
         (f *) (x • y) ⁻¹₂ ∎
       where open SR setoid₂
@@ -248,7 +248,7 @@ module GroupMorphs
     isGroupHomomorphism : IsGroupHomomorphism (f *)
     isGroupHomomorphism = record
       { isMonoidHomomorphism = isMonoidHomomorphism
-      ; ⁻¹-homo = inv-homo
+      ; ⁻¹-homo = ⁻¹-homo
       }
 
   -- Build a group homomorphism from wmap f.
@@ -257,25 +257,25 @@ module GroupMorphs
     (f-well-defined : let f* = wmap f in ∀ {w v} → w ===₁ v → (f*) w ≈₂ (f*) v)
     where
 
-    open Congruence f f-well-defined
+    open GenCongruence f f-well-defined
     open GenHomomorphism f f-well-defined hiding (f*)
     open RawGroup (Group.rawGroup •-ε-group₁) renaming (_⁻¹ to _⁻¹₁)
     open RawGroup (Group.rawGroup •-ε-group₂) renaming (_⁻¹ to _⁻¹₂)
 
     -- wmap f maps inverses to inverses.
-    inv-homo : ∀ x → f* (x ⁻¹₁) ≈₂ (f* x) ⁻¹₂
-    inv-homo [ x ]ʷ =
+    ⁻¹-homo : ∀ x → f* (x ⁻¹₁) ≈₂ (f* x) ⁻¹₂
+    ⁻¹-homo [ x ]ʷ =
       begin
         f* ([ x ]ʷ ⁻¹₁) ≈⟨ inverseˡ-unique₂ {g = f* [ x ]ʷ}
-             {h = f* ([ x ]ʷ ⁻¹₁)} (lemma-f*-cong (group-like₁ x .proj₂)) ⟩
+             {h = f* ([ x ]ʷ ⁻¹₁)} (f*-cong (group-like₁ x .proj₂)) ⟩
         f* [ x ]ʷ ⁻¹₂ ∎
       where open SR setoid₂
-    inv-homo ε = refl₂
-    inv-homo (x • y) =
+    ⁻¹-homo ε = refl₂
+    ⁻¹-homo (x • y) =
       begin
-        f* ((x • y) ⁻¹₁)        ≈⟨ lemma-f*-cong {(x • y) ⁻¹₁} {y ⁻¹₁ • x ⁻¹₁} refl₁ ⟩
+        f* ((x • y) ⁻¹₁)        ≈⟨ f*-cong {(x • y) ⁻¹₁} {y ⁻¹₁ • x ⁻¹₁} refl₁ ⟩
         f* (y ⁻¹₁ • x ⁻¹₁)      ≈⟨ refl₂ ⟩
-        f* (y ⁻¹₁) • f* (x ⁻¹₁) ≈⟨ cong₂ (inv-homo y) (inv-homo x) ⟩
+        f* (y ⁻¹₁) • f* (x ⁻¹₁) ≈⟨ cong₂ (⁻¹-homo y) (⁻¹-homo x) ⟩
         (f* y) ⁻¹₂ • (f* x) ⁻¹₂ ≈⟨ refl₂ ⟩
         f* (x • y) ⁻¹₂ ∎
       where open SR setoid₂
@@ -284,7 +284,7 @@ module GroupMorphs
     isGroupHomomorphism : IsGroupHomomorphism (f*)
     isGroupHomomorphism = record
       { isMonoidHomomorphism = isMonoidHomomorphism
-      ; ⁻¹-homo = inv-homo
+      ; ⁻¹-homo = ⁻¹-homo
       }
 
   -- Build a group monomorphism from (f *) via Reidemeister-Schreier.
