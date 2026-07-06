@@ -34,7 +34,7 @@ data _≈_ : WRel X where
   assoc      : (w • v) • u ≈ w • (v • u)
   left-unit  : ε • w ≈ w
   right-unit : w • ε ≈ w
-  axiom      : Γ w v → w ≈ v
+  axiom      : w === v → w ≈ v
 
 -- Lift propositional equality into the congruence.
 refl' : w ≡ v → w ≈ v

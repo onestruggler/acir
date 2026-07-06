@@ -9,13 +9,14 @@
 open import Algebra.Bundles using (Group)
 
 open import Presentation.Definitions
-open import Presentation.Semantics
 import Normalization.Base as NFBase
 import Presentation.Properties as PP
 
 module Examples.Groups.Symmetric.Theorems where
 
 open import Examples.Groups.Symmetric.Syntactics
+
+open Relative
 
 ------------------------------------------------------------------------
 -- Unique normal form, soundness, completeness and presentation

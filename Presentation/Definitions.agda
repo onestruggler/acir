@@ -10,8 +10,6 @@
 -- 2) Monoid presentation (_IsMonoidPresentationOf_): the analogous
 --    notion for monoids.
 --
--- (Relative soundness and completeness of a semantics live in
--- Presentation.Semantics.)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}
@@ -22,6 +20,7 @@ open import Algebra.Bundles using (Group ; Monoid)
 open import Algebra.Morphism.Structures
   using (module GroupMorphisms ; module MonoidMorphisms)
 open import Level using (Level ; _⊔_)
+open import Relation.Binary using (Setoid)
 
 open import Word.Base using (WRel ; Word)
 
@@ -60,3 +59,16 @@ record _IsMonoidPresentationOf_ (_===_ : WRel X) (M : Monoid a ℓ) : Set (a ⊔
     ⟦_⟧ : Word X → Monoid.Carrier M
     iso : IsMonoidIsomorphism ⟦_⟧
 
+module Relative {a b ℓ₁ ℓ₂}
+  (Syn : Setoid a ℓ₁)
+  (Sem : Setoid b ℓ₂)
+  where
+
+  open Setoid Syn using () renaming (Carrier to A; _≈_ to _≈₁_)
+  open Setoid Sem using () renaming (Carrier to B; _≈_ to _≈₂_)
+
+  Soundness : (⟦_⟧ : A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  Soundness ⟦_⟧ = ∀ {x y : A} → x ≈₁ y → ⟦ x ⟧ ≈₂ ⟦ y ⟧
+
+  Completeness : (⟦_⟧ : A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  Completeness ⟦_⟧ = ∀ {x y : A} → ⟦ x ⟧ ≈₂ ⟦ y ⟧ → x ≈₁ y

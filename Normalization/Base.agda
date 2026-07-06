@@ -22,7 +22,7 @@ open import Relation.Nullary.Decidable using (via-injection)
 import Relation.Binary.Reasoning.Setoid as SR
 
 open import Presentation.Base Γ
-import Presentation.Semantics
+import Presentation.Definitions
 
 private
   variable
@@ -148,7 +148,7 @@ module _ {c d} (Sem : Setoid c d)
   (⟦_⟧ : Word X → Cₛ)
   where
 
-  open Presentation.Semantics word-setoid Sem
+  open Presentation.Definitions.Relative word-setoid Sem
 
   -- A normal form with inverse whose section is separated by the
   -- semantics ⟦_⟧: normal forms with equal denotations are equal.
