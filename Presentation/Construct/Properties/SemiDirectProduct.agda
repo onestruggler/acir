@@ -11,7 +11,7 @@ open import Word.Base
 -- Γ presents the normal factor (over generators N), Δ the acting
 -- factor (over generators H), and conj is the generator-level action
 -- of H on N; the semi-direct product they generate is presented by
--- Γ ⸲ Δ ⸲ Γⱼ conj.
+-- Γ ⋄ Δ ⋄ ConjRel conj.
 module Presentation.Construct.Properties.SemiDirectProduct
   {N H : Set}
   (Γ : WRel N)
@@ -42,8 +42,8 @@ open PP Γ renaming (•-ε-monoid to m₁ ; word-setoid to word-setoid₁) usin
 open PB Δ renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 open PP Δ renaming (•-ε-monoid to m₂ ; word-setoid to word-setoid₂) using ()
 
-open PB (Γ ⸲ Δ ⸲ Γⱼ conj) renaming (_===_ to _===₃_ ; _≈_ to _≈₃_) using ()
-open PP (Γ ⸲ Δ ⸲ Γⱼ conj) renaming (•-ε-monoid to m₃ ; word-setoid to word-setoid₃) using ()
+open PB (Γ ⋄ Δ ⋄ ConjRel conj) renaming (_===_ to _===₃_ ; _≈_ to _≈₃_) using ()
+open PP (Γ ⋄ Δ ⋄ ConjRel conj) renaming (•-ε-monoid to m₃ ; word-setoid to word-setoid₃) using ()
 
 open _≈₃_
 
@@ -54,7 +54,7 @@ I = ε
 
 Y = N ⊎ H
 
-open Star-Injective-Full-Setoid Γ (Γ ⸲ Δ ⸲ Γⱼ conj) Cₛ I renaming (nf to anf)
+open Star-Injective-Full-Setoid Γ (Γ ⋄ Δ ⋄ ConjRel conj) Cₛ I renaming (nf to anf)
 
 [_] : C → Word Y
 [_] = [_]ᵣ
@@ -323,7 +323,7 @@ module _
   lemma-ract c (inj₁ x₁) = lemma-comm' [ x₁ ]ʷ c
   lemma-ract c (inj₂ y) = _≈₃_.sym _≈₃_.left-unit
 
-  open LeftRightCongruence Γ Δ Γₓ
+  open LeftRightCongruence Γ Δ CommRel
 
   []-cong : ∀ {c d} → c ≈ₛ d → [ c ] ≈₃ [ d ]
   []-cong {c} {d} refl = _≈₃_.refl
@@ -367,7 +367,7 @@ module _
     nf-cong : ∀ {w v} → w ≈₃ v → nf w ≡ nf v
     nf-cong {w} {v} eq = PW.≡×≡⇒≡ (FCC.congruent _≈₃_ _~_ (PW.Pointwise _≡_ _≡_) nf0-cong (map nf₁-cong nf₂-cong) eq)
 
-    nfp : NormalFormWithoutInverse (Γ ⸲ Δ ⸲ Γⱼ conj)
+    nfp : NormalFormWithoutInverse (Γ ⋄ Δ ⋄ ConjRel conj)
     nfp = record { NF = NF₁ × NF₂ ; nf = nf ; nf-cong = nf-cong ; nf-injective = nf-inj }
 
   module NFP'
@@ -386,10 +386,10 @@ module _
 
     h**-hyp : ∀ c b → let (b' , c') = (ract **) c b in
         [ c ] • b ≈₃ [ b' ]ₓ • [ c' ]
-    h**-hyp c b = Star-Injective-Full.RightAction.lemma-⊛ Γ (Γ ⸲ Δ ⸲ Γⱼ conj) C I f h f-well-defined [_] [I]≈ε lemma-ract c b
+    h**-hyp c b = Star-Injective-Full.RightAction.lemma-⊛ Γ (Γ ⋄ Δ ⋄ ConjRel conj) C I f h f-well-defined [_] [I]≈ε lemma-ract c b
 
     f*-cong : ∀ {w v} → w ≈₁ v → (f *) w ≈₃ (f *) v
-    f*-cong {w} {v} eq = Star-Congruence.lemma-f*-cong Γ (Γ ⸲ Δ ⸲ Γⱼ conj) f f-well-defined eq
+    f*-cong {w} {v} eq = Star-Congruence.lemma-f*-cong Γ (Γ ⋄ Δ ⋄ ConjRel conj) f f-well-defined eq
 
 
     ggnf=id : {w : Word Y} → gg (nf w) ≈₃ w
@@ -409,6 +409,6 @@ module _
       where
         open SR word-setoid₃
 
-    nfp' : NormalForm (Γ ⸲ Δ ⸲ Γⱼ conj)
+    nfp' : NormalForm (Γ ⋄ Δ ⋄ ConjRel conj)
     nfp' = record
              { NF = NF ; nf = nf ; nf-cong = nf-cong ; inv-nf = gg ; inv-nf∘nf=id = ggnf=id }

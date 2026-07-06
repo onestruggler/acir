@@ -127,7 +127,7 @@ conj-hypn (₂₊ k) X.swap {w} {v} (right {u} {v₁} (right {u₁} {v₂} x)) r
 conj-hypn (₂₊ k) X.swap {w} {v} (right {u} {v₁} (mid (comm a b))) = PB.axiom (mid (comm tt (inj₂ b)))
 conj-hypn (₂₊ k) (c ₛ) {w} {v} (right {w'} {v'} x) with conj-hypn (₁₊ k) c x
 ... | ih rewrite aux-conj0 (k) c w' | aux-conj0 (k) c v' = rights ih
-  where open LeftRightCongruence (C^n 1) (C^n (₂₊ k)) Γₓ
+  where open LeftRightCongruence (C^n 1) (C^n (₂₊ k)) CommRel
 conj-hypn (₁₊ zero) X.swap {w} {v} (mid (comm a b)) = PB.sym (PB.axiom (mid (comm tt tt)))
 conj-hypn (₂₊ k) X.swap {w} {v} (mid (comm tt (inj₁ x))) = PB.sym (PB.axiom (mid (comm tt (inj₁ tt))))
 conj-hypn (₂₊ k) X.swap {w} {v} (mid (comm tt (inj₂ y))) = PB.axiom (right (mid (comm tt y)))

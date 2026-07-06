@@ -3,7 +3,7 @@
 --
 -- Normal-form properties for semi-direct products, via the setoid
 -- variant of Reidemeister-Schreier: cosets are words over H up to
--- ≈, and the H-action on N is word-valued (the relation Γⱼ' conj).
+-- ≈, and the H-action on N is word-valued (the relation ConjRelʷ conj).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}
@@ -50,10 +50,10 @@ open PB Δ renaming
   using ()
 open PP Δ renaming (word-setoid to word-setoid₂) using ()
 
-open PB (Γ ⸲ Δ ⸲ Γⱼ' conj) renaming
+open PB (Γ ⋄ Δ ⋄ ConjRelʷ conj) renaming
   (_===_ to _===₃_ ; _≈_ to _≈₃_ ; refl' to refl'₃)
   using ()
-open PP (Γ ⸲ Δ ⸲ Γⱼ' conj) renaming (word-setoid to word-setoid₃) using ()
+open PP (Γ ⋄ Δ ⋄ ConjRelʷ conj) renaming (word-setoid to word-setoid₃) using ()
 
 open _≈₃_
 
@@ -70,7 +70,7 @@ I = ε
 -- The generators of the semi-direct product.
 Y = N ⊎ H
 
-open Star-Injective-Full-Setoid Γ (Γ ⸲ Δ ⸲ Γⱼ' conj) Cₛ I renaming (nf to anf)
+open Star-Injective-Full-Setoid Γ (Γ ⋄ Δ ⋄ ConjRelʷ conj) Cₛ I renaming (nf to anf)
 
 -- The section embedding a coset back into the product.
 [_] : C → Word Y
@@ -341,7 +341,7 @@ module _
 
     -- The headline export: a normal form (without inverse) for the
     -- semi-direct product.
-    nfp : NormalFormWithoutInverse (Γ ⸲ Δ ⸲ Γⱼ' conj)
+    nfp : NormalFormWithoutInverse (Γ ⋄ Δ ⋄ ConjRelʷ conj)
     nfp = record { NF = NF₁ × NF₂ ; nf = nf ; nf-cong = nf-cong ; nf-injective = nf-inj }
 
   -- Builds a NormalForm (with inverse) for the semi-direct product
@@ -373,12 +373,12 @@ module _
     h**-hyp : ∀ c b → let (b' , c') = (ract **) c b in
         [ c ] • b ≈₃ [ b' ]ₓ • [ c' ]
     h**-hyp c b =
-      Star-Injective-Full.RightAction.lemma-⊛ Γ (Γ ⸲ Δ ⸲ Γⱼ' conj) C I
+      Star-Injective-Full.RightAction.lemma-⊛ Γ (Γ ⋄ Δ ⋄ ConjRelʷ conj) C I
         f h f-well-defined [_] [I]≈ε lemma-ract c b
 
     f*-cong : ∀ {w v} → w ≈₁ v → (f *) w ≈₃ (f *) v
     f*-cong {w} {v} eq =
-      Star-Congruence.lemma-f*-cong Γ (Γ ⸲ Δ ⸲ Γⱼ' conj) f
+      Star-Congruence.lemma-f*-cong Γ (Γ ⋄ Δ ⋄ ConjRelʷ conj) f
         f-well-defined eq
 
     -- gg is a left inverse of nf, up to ≈₃.
@@ -401,7 +401,7 @@ module _
 
     -- The headline export: a normal form (with inverse) for the
     -- semi-direct product.
-    nfp' : NormalForm (Γ ⸲ Δ ⸲ Γⱼ' conj)
+    nfp' : NormalForm (Γ ⋄ Δ ⋄ ConjRelʷ conj)
     nfp' = record
              { NF = NF ; nf = nf ; nf-cong = nf-cong ; inv-nf = gg ; inv-nf∘nf=id = ggnf=id }
 

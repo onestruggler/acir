@@ -36,8 +36,8 @@ open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
 open PP Γ renaming (•-ε-monoid to m₁ ; word-setoid to word-setoid₁) using ()
 open PB Δ renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 open PP Δ renaming (•-ε-monoid to m₂ ; word-setoid to word-setoid₂) using ()
-open PB (Γ ⸲ Δ ⸲ Γₓ) renaming (_===_ to _===₃_ ; _≈_ to _≈₃_) using ()
-open PP (Γ ⸲ Δ ⸲ Γₓ) renaming (•-ε-monoid to m₃ ; word-setoid to word-setoid₃) using ()
+open PB (Γ ⋄ Δ ⋄ CommRel) renaming (_===_ to _===₃_ ; _≈_ to _≈₃_) using ()
+open PP (Γ ⋄ Δ ⋄ CommRel) renaming (•-ε-monoid to m₃ ; word-setoid to word-setoid₃) using ()
 
 open _≈₃_
 
@@ -59,7 +59,7 @@ Y = A ⊎ B
 I : Word B
 I = ε
 
-open Star-Injective-Full-Setoid Γ (Γ ⸲ Δ ⸲ Γₓ) Cₛ I renaming (nf to coset-nf)
+open Star-Injective-Full-Setoid Γ (Γ ⋄ Δ ⋄ CommRel) Cₛ I renaming (nf to coset-nf)
 
 -- The section: embed a coset representative on the right.
 [_] : C → Word Y
@@ -197,7 +197,7 @@ lemma-ract c (inj₁ x₁)
   rewrite lemma-h**-left' c {[ x₁ ]ʷ} = lemma-comm [ x₁ ]ʷ c
 lemma-ract c (inj₂ y) = _≈₃_.sym _≈₃_.left-unit
 
-open LeftRightCongruence Γ Δ Γₓ
+open LeftRightCongruence Γ Δ CommRel
 
 -- The section respects the coset setoid.
 []-cong : ∀ {c d} → c ≈ₛ d → [ c ] ≈₃ [ d ]
@@ -251,7 +251,7 @@ module NFP
       (FCC.congruent _≈₃_ _~_ (PW.Pointwise _≡_ _≡_)
         nf0-cong (map nf₁-cong nf₂-cong) eq)
 
-  nfp : NormalFormWithoutInverse (Γ ⸲ Δ ⸲ Γₓ)
+  nfp : NormalFormWithoutInverse (Γ ⋄ Δ ⋄ CommRel)
   nfp = record
     { NF           = NF₁ × NF₂
     ; nf           = nf
@@ -295,12 +295,12 @@ module NFP'
       [ c ] • b ≈₃ [ b' ]ₓ • [ c' ]
   h**-hyp c b =
     Star-Injective-Full.RightAction.lemma-⊛
-      Γ (Γ ⸲ Δ ⸲ Γₓ) C I f h f-well-defined [_] [I]≈ε lemma-ract c b
+      Γ (Γ ⋄ Δ ⋄ CommRel) C I f h f-well-defined [_] [I]≈ε lemma-ract c b
 
   -- The extension of f respects Γ-equivalence.
   f*-cong : ∀ {w v} → w ≈₁ v → (f *) w ≈₃ (f *) v
   f*-cong {w} {v} eq =
-    Star-Congruence.lemma-f*-cong Γ (Γ ⸲ Δ ⸲ Γₓ) f f-well-defined eq
+    Star-Congruence.lemma-f*-cong Γ (Γ ⋄ Δ ⋄ CommRel) f f-well-defined eq
 
   -- gg is a left inverse of the pair normal form.
   ggnf=id : {w : Word Y} → gg (nf w) ≈₃ w
@@ -320,7 +320,7 @@ module NFP'
     where
       open SR word-setoid₃
 
-  nfp' : NormalForm (Γ ⸲ Δ ⸲ Γₓ)
+  nfp' : NormalForm (Γ ⋄ Δ ⋄ CommRel)
   nfp' = record
            { NF = NF ; nf = nf ; nf-cong = nf-cong ; inv-nf = gg ; inv-nf∘nf=id = ggnf=id }
 

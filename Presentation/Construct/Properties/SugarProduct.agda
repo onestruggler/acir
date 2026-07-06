@@ -3,7 +3,7 @@
 --
 -- Normal-form properties for sugar products of group presentations:
 -- every extra generator m is definable, via the desugaring axiom
--- [ m ]ʷ ≈ [ f m ]ᵣ, so normal forms transport from Δ to Γ ⸲ Δ ⸲ Γₛ f
+-- [ m ]ʷ ≈ [ f m ]ᵣ, so normal forms transport from Δ to Γ ⋄ Δ ⋄ SugarRel f
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}
@@ -34,8 +34,8 @@ open PB Γ renaming (_===_ to _===₁_) using ()
 open PB Δ renaming (_≈_ to _≈₂_) using ()
 open PP Δ renaming (word-setoid to word-setoid₂) using ()
 
-open PB (Γ ⸲ Δ ⸲ Γₛ f) using (_===_ ; _≈_)
-open PP (Γ ⸲ Δ ⸲ Γₛ f) renaming (word-setoid to ws) using ()
+open PB (Γ ⋄ Δ ⋄ SugarRel f) using (_===_ ; _≈_)
+open PP (Γ ⋄ Δ ⋄ SugarRel f) renaming (word-setoid to ws) using ()
 
 open _≈_
 
@@ -88,9 +88,9 @@ module _
   to-right-wd {w} {v} (mid (desugar {m})) rewrite lemma-to-right-r (f m) = _≈₂_.refl
 
   -- Desugaring is a congruence for the full congruence closure.
-  to-right*-cong = Star-Congruence.lemma-f*-cong (Γ ⸲ Δ ⸲ Γₛ f) Δ to-right to-right-wd
+  to-right*-cong = Star-Congruence.lemma-f*-cong (Γ ⋄ Δ ⋄ SugarRel f) Δ to-right to-right-wd
 
-  private module LR = LeftRightCongruence Γ Δ (Γₛ f)
+  private module LR = LeftRightCongruence Γ Δ (SugarRel f)
 
   -- Desugaring is injective: right-embedding is a congruence and
   -- inverts it up to ≈.
@@ -105,7 +105,7 @@ module _
 
   -- A normal form for Δ transports to the sugar product: normalise
   -- the desugaring.
-  nfp : NormalFormWithoutInverse Δ → NormalFormWithoutInverse (Γ ⸲ Δ ⸲ Γₛ f)
+  nfp : NormalFormWithoutInverse Δ → NormalFormWithoutInverse (Γ ⋄ Δ ⋄ SugarRel f)
   nfp p = record { NF = NF ; nf = nf ∘ (to-right *) ; nf-cong = nf'-cong ; nf-injective = nf'-inj }
     where
     open NormalFormWithoutInverse p
@@ -120,7 +120,7 @@ module _
 
   -- Like nfp, but also transporting the section: realise the normal
   -- form in Δ and right-embed it.
-  nfp' : NormalForm Δ → NormalForm (Γ ⸲ Δ ⸲ Γₛ f)
+  nfp' : NormalForm Δ → NormalForm (Γ ⋄ Δ ⋄ SugarRel f)
   nfp' p = record
              { NF = NF ; nf = nf' ; nf-cong = nf'-cong ; inv-nf = inv-nf' ; inv-nf∘nf=id = inv-nf'∘nf'=id }
     where

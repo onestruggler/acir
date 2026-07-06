@@ -531,7 +531,7 @@ module TwoLevel-Simplified-Amal where
     fs : ⊤ -> Word B
     fs tt = [ X₀₁ ]ₗ
 
-    pres' = (Cyclic.pres 2 ⸲ pres-KI ⸲ Γₛ fs)
+    pres' = (Cyclic.pres 2 ⋄ pres-KI ⋄ SugarRel fs)
 
     fs-wd-ax : {w v : Word Cyclic.X} → w ===₀ v → (fs *) w ≈₃ (fs *) v
     fs-wd-ax {.(Cyclic.T ^' 2)} {.ε} Cyclic.order = bef' Eq.refl

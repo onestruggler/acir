@@ -153,7 +153,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   open Setoid mcdₛ renaming (refl to reflₛ ; sym to symₛ ; trans to transₛ)
   
  
-  module AB = LeftRightCongruence P1 P2 (Γₐ f₁ f₂)
+  module AB = LeftRightCongruence P1 P2 (AmalgRel f₁ f₂)
 
  
   aux-f₁ : ∀ wm → [ (f₁ *) wm ]ₗ ≡ (f *) wm

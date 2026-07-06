@@ -17,7 +17,7 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 open import Word.Base
 import Presentation.Base as PB
-open import Presentation.Construct.Base using (Γₑ ; Γᵤ ; alleq)
+open import Presentation.Construct.Base using (EmptyRel ; TrivialRel ; ≈ε)
 open import Presentation.Morphism
 import Presentation.Properties as PP
 import Normalization.Base as NFBase
@@ -27,13 +27,13 @@ open NFBase using (NormalFormWithoutInverse ; NormalForm)
 -- The trivial group over the empty alphabet
 
 -- Presentation of the trivial group with the empty generator set ⊥
--- and the empty relation Γₑ.
+-- and the empty relation EmptyRel.
 module P1 where
   A = ⊥
 
   -- The empty relation over the empty alphabet.
   pres : WRel A
-  pres = Γₑ
+  pres = EmptyRel
 
   open PB pres using (_≈_)
   open PP pres using (•-ε-monoid ; word-setoid)
@@ -62,7 +62,7 @@ module P1 where
     b ∎
 
   -- Normal form: the one-element type ⊤.
-  nfp : NormalFormWithoutInverse Γₑ
+  nfp : NormalFormWithoutInverse EmptyRel
   nfp = record
     { NF           = ⊤
     ; nf           = f
@@ -71,7 +71,7 @@ module P1 where
     }
 
   -- Normal form with inverse: the unique normal form maps back to ε.
-  nfp' : NormalForm Γₑ
+  nfp' : NormalForm EmptyRel
   nfp' = record
     { NF           = ⊤
     ; nf           = f
@@ -84,12 +84,12 @@ module P1 where
 -- The trivial group via the universal relation
 
 -- Presentation of the trivial group over an arbitrary alphabet A,
--- using the universal relation Γᵤ equating every word with ε.
+-- using the universal relation TrivialRel equating every word with ε.
 module P2 (A : Set) where
 
   -- The universal relation over the alphabet A.
   pres : WRel A
-  pres = Γᵤ
+  pres = TrivialRel
 
   open PB pres using (_≈_)
   open PP pres using (•-ε-monoid ; word-setoid)
@@ -105,7 +105,7 @@ module P2 (A : Set) where
   -- Every word is ≈-equal to ε.
   singleton : ∀ {a} → a ≈ ε
   singleton {ε} = refl
-  singleton {[ x ]ʷ} = axiom alleq
+  singleton {[ x ]ʷ} = axiom ≈ε
   singleton {a • a₁} with singleton {a} | singleton {a₁}
   ... | ih₁ | ih₂ = trans (cong ih₁ ih₂) left-unit
 
@@ -119,7 +119,7 @@ module P2 (A : Set) where
     b ∎
 
   -- Normal form: the one-element type ⊤.
-  nfp : NormalFormWithoutInverse Γᵤ
+  nfp : NormalFormWithoutInverse TrivialRel
   nfp = record
     { NF           = ⊤
     ; nf           = f
@@ -128,7 +128,7 @@ module P2 (A : Set) where
     }
 
   -- Normal form with inverse: the unique normal form maps back to ε.
-  nfp' : NormalForm Γᵤ
+  nfp' : NormalForm TrivialRel
   nfp' = record
     { NF           = ⊤
     ; nf           = f
@@ -140,16 +140,16 @@ module P2 (A : Set) where
 ------------------------------------------------------------------------
 -- The two presentations are isomorphic
 
--- For any alphabet B, the presentations ⟨ ⊥ ∣ Γₑ ⟩ and ⟨ B ∣ Γᵤ ⟩
+-- For any alphabet B, the presentations ⟨ ⊥ ∣ EmptyRel ⟩ and ⟨ B ∣ TrivialRel ⟩
 -- yield isomorphic monoids.
 module P1IsoP2 (B : Set) where
 
   A = ⊥
 
-  open PB (Γₑ {A}) renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
-  open PB (Γᵤ {B}) renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
-  open PP (Γₑ {A}) renaming (•-ε-monoid to m₁)
-  open PP (Γᵤ {B}) renaming (•-ε-monoid to m₂)
+  open PB (EmptyRel {A}) renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
+  open PB (TrivialRel {B}) renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
+  open PP (EmptyRel {A}) renaming (•-ε-monoid to m₁)
+  open PP (TrivialRel {B}) renaming (•-ε-monoid to m₂)
 
   -- The generator map out of the empty alphabet.
   f : A → Word B
@@ -159,30 +159,30 @@ module P1IsoP2 (B : Set) where
   g : B → Word A
   g _ = ε
 
-  -- (f *) respects the empty relation Γₑ.
+  -- (f *) respects the empty relation EmptyRel.
   f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v
   f-well-defined {w} {v} eq =
-    _≈₂_.trans (_≈₂_.axiom alleq) (_≈₂_.sym (_≈₂_.axiom alleq))
+    _≈₂_.trans (_≈₂_.axiom ≈ε) (_≈₂_.sym (_≈₂_.axiom ≈ε))
 
   -- f is a left inverse of g on generators.
   f-left-inv-gen : ∀ (x : B) → [ x ]ʷ ≈₂ (f *) (g x)
-  f-left-inv-gen x = _≈₂_.axiom alleq
+  f-left-inv-gen x = _≈₂_.axiom ≈ε
 
-  -- (g *) respects the universal relation Γᵤ.
+  -- (g *) respects the universal relation TrivialRel.
   g-well-defined : ∀ {u t : Word B} → u ===₂ t → (g *) u ≈₁ (g *) t
-  g-well-defined {[ x ]ʷ} {t} alleq = _≈₁_.refl
-  g-well-defined {ε} {t} alleq = _≈₁_.refl
-  g-well-defined {u • u₁} {t} alleq =
+  g-well-defined {[ x ]ʷ} {t} ≈ε = _≈₁_.refl
+  g-well-defined {ε} {t} ≈ε = _≈₁_.refl
+  g-well-defined {u • u₁} {t} ≈ε =
     _≈₁_.trans
-      (_≈₁_.cong (g-well-defined {u = u} alleq)
-                 (g-well-defined {u = u₁} alleq))
+      (_≈₁_.cong (g-well-defined {u = u} ≈ε)
+                 (g-well-defined {u = u₁} ≈ε))
       _≈₁_.left-unit
 
   -- g is a left inverse of f on generators, vacuously.
   g-left-inv-gen : ∀ (x : A) → [ x ]ʷ ≈₁ (g *) (f x)
   g-left-inv-gen ()
 
-  module Iso = StarIsomorphism (Γₑ {A}) (Γᵤ {B}) f g
+  module Iso = StarIsomorphism (EmptyRel {A}) (TrivialRel {B}) f g
     f-well-defined f-left-inv-gen g-well-defined g-left-inv-gen
 
   -- The main theorem: (f *) is a monoid isomorphism between the two

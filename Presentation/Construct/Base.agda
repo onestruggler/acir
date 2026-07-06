@@ -39,17 +39,17 @@ open import Word.Base
 ------------------------------------------------------------------------
 -- Relation combinators
 
-infix 5 _⸲_⸲_
+infix 5 _⋄_⋄_
 infixr 5 _∪_
 
 -- Join a relation on Word A, a relation on Word B, and a mixed
 -- relation on Word (A ⊎ B) into one relation on Word (A ⊎ B).  The
 -- mixed component Γ₃ is what distinguishes the various products.
-data _⸲_⸲_ {A B} (Γ₁ : WRel A) (Γ₂ : WRel B) (Γ₃ : WRel (A ⊎ B))
+data _⋄_⋄_ {A B} (Γ₁ : WRel A) (Γ₂ : WRel B) (Γ₃ : WRel (A ⊎ B))
     : WRel (A ⊎ B) where
-  left  : ∀ {u v} → Γ₁ u v → (Γ₁ ⸲ Γ₂ ⸲ Γ₃) [ u ]ₗ [ v ]ₗ
-  right : ∀ {u v} → Γ₂ u v → (Γ₁ ⸲ Γ₂ ⸲ Γ₃) [ u ]ᵣ [ v ]ᵣ
-  mid   : ∀ {u v} → Γ₃ u v → (Γ₁ ⸲ Γ₂ ⸲ Γ₃) u v
+  left  : ∀ {u v} → Γ₁ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) [ u ]ₗ [ v ]ₗ
+  right : ∀ {u v} → Γ₂ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) [ u ]ᵣ [ v ]ᵣ
+  mid   : ∀ {u v} → Γ₃ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) u v
 
 -- Union of two relations over the same generating set.
 data _∪_ {A} (Γ₁ Γ₂ : WRel A) : WRel A where
@@ -60,41 +60,41 @@ data _∪_ {A} (Γ₁ Γ₂ : WRel A) : WRel A where
 -- Primitive relation families
 
 -- The empty relation: no axioms.
-data Γₑ {A} : WRel A where
+data EmptyRel {A} : WRel A where
 
 -- The coarsest relation: every word is identified with ε.
-data Γᵤ {A} : WRel A where
-  alleq : ∀ {w} → Γᵤ {A} w ε
+data TrivialRel {A} : WRel A where
+  ≈ε : ∀ {w} → TrivialRel {A} w ε
 
 -- Commutation: left generators commute with right generators.
-data Γₓ {A B} : WRel (A ⊎ B) where
+data CommRel {A B} : WRel (A ⊎ B) where
   comm : (a : A) (b : B) →
-         Γₓ ([ [ a ]ʷ ]ₗ • [ [ b ]ʷ ]ᵣ) ([ [ b ]ʷ ]ᵣ • [ [ a ]ʷ ]ₗ)
+         CommRel ([ [ a ]ʷ ]ₗ • [ [ b ]ʷ ]ᵣ) ([ [ b ]ʷ ]ᵣ • [ [ a ]ʷ ]ₗ)
 
 -- Conjugation: moving a right generator h past a left generator n
 -- replaces n by its conjugate, a single generator.
-data Γⱼ {N H} (conj : H → N → N) : WRel (N ⊎ H) where
+data ConjRel {N H} (conj : H → N → N) : WRel (N ⊎ H) where
   comm : (n : N) (h : H) →
-         Γⱼ conj ([ [ h ]ʷ ]ᵣ • [ [ n ]ʷ ]ₗ)
+         ConjRel conj ([ [ h ]ʷ ]ᵣ • [ [ n ]ʷ ]ₗ)
                  ([ [ conj h n ]ʷ ]ₗ • [ [ h ]ʷ ]ᵣ)
 
--- Conjugation, word-valued: as Γⱼ, but the conjugate of a generator
+-- Conjugation, word-valued: as ConjRel, but the conjugate of a generator
 -- may be an arbitrary word over N.
-data Γⱼ' {N H} (conj : H → N → Word N) : WRel (N ⊎ H) where
+data ConjRelʷ {N H} (conj : H → N → Word N) : WRel (N ⊎ H) where
   comm : (n : N) (h : H) →
-         Γⱼ' conj ([ [ h ]ʷ ]ᵣ • [ [ n ]ʷ ]ₗ)
+         ConjRelʷ conj ([ [ h ]ʷ ]ᵣ • [ [ n ]ʷ ]ₗ)
                   ([ conj h n ]ₗ • [ [ h ]ʷ ]ᵣ)
 
 -- Amalgamation: identify the two embedded images of a common
 -- generating set M.
-data Γₐ {M A B : Set} (f₁ : M → Word A) (f₂ : M → Word B)
+data AmalgRel {M A B : Set} (f₁ : M → Word A) (f₂ : M → Word B)
     : WRel (A ⊎ B) where
-  amal : ∀ {m} → Γₐ f₁ f₂ [ (f₁ m) ]ₗ [ (f₂ m) ]ᵣ
+  amal : ∀ {m} → AmalgRel f₁ f₂ [ (f₁ m) ]ₗ [ (f₂ m) ]ᵣ
 
 -- Sugar relation.  Each newly added generator m desugars to a word
 -- over A.
-data Γₛ {M A} (f : M → Word A) : WRel (M ⊎ A) where
-  desugar : ∀ {m} → Γₛ f [ inj₁ m ]ʷ [ f m ]ᵣ
+data SugarRel {M A} (f : M → Word A) : WRel (M ⊎ A) where
+  desugar : ∀ {m} → SugarRel f [ inj₁ m ]ʷ [ f m ]ᵣ
 
 ------------------------------------------------------------------------
 -- Product constructions
@@ -102,12 +102,12 @@ data Γₛ {M A} (f : M → Word A) : WRel (M ⊎ A) where
 -- Free product.
 infix 4 _*_
 _*_ : {A B : Set} → WRel A → WRel B → WRel (A ⊎ B)
-_*_  Γ Δ = Γ ⸲ Δ ⸲ Γₑ
+_*_  Γ Δ = Γ ⋄ Δ ⋄ EmptyRel
 
 -- Direct product.
 infix 4 _⊕_
 _⊕_ : {A B : Set} → WRel A → WRel B → WRel (A ⊎ B)
-_⊕_  Γ Δ = Γ ⸲ Δ ⸲ Γₓ
+_⊕_  Γ Δ = Γ ⋄ Δ ⋄ CommRel
 
 -- n-fold sum of generating sets.
 infix 4 _⊎^_
@@ -119,27 +119,27 @@ _⊎^_ A (₂₊ n) = A ⊎ (A ⊎^ (₁₊ n))
 -- n-fold direct product.
 infix 4 _⊕^_
 _⊕^_ : {A : Set} → WRel A → (n : ℕ) → WRel (A ⊎^ n)
-_⊕^_ {A} Γ zero = Γₑ
+_⊕^_ {A} Γ zero = EmptyRel
 _⊕^_ {A} Γ (₁₊ zero) = Γ
-_⊕^_ {A} Γ (₂₊ n) = Γ ⸲ Γ ⊕^ (₁₊ n) ⸲ Γₓ
+_⊕^_ {A} Γ (₂₊ n) = Γ ⋄ Γ ⊕^ (₁₊ n) ⋄ CommRel
 
 -- Semi-direct product.
 infix 4 _⋊_⋆_
 _⋊_⋆_ : {N H : Set} → WRel N → WRel H → (conj : H → N → N) →
         WRel (N ⊎ H)
-_⋊_⋆_  Γ Δ conj = Γ ⸲ Δ ⸲ Γⱼ conj
+_⋊_⋆_  Γ Δ conj = Γ ⋄ Δ ⋄ ConjRel conj
 
 -- Amalgamated product.
 infix 4 _*_⋆_⋆_
 _*_⋆_⋆_ : {M A B : Set} → WRel A → WRel B →
           (f₁ : M → Word A) → (f₂ : M → Word B) → WRel (A ⊎ B)
-_*_⋆_⋆_  Γ Δ f₁ f₂ = Γ ⸲ Δ ⸲ Γₐ f₁ f₂
+_*_⋆_⋆_  Γ Δ f₁ f₂ = Γ ⋄ Δ ⋄ AmalgRel f₁ f₂
 
 ------------------------------------------------------------------------
 -- Congruence lifting
 
 -- Equalities in the component presentations lift to equalities in
--- the join Γ ⸲ Δ ⸲ Λ, along the embeddings [_]ₗ and [_]ᵣ.
+-- the join Γ ⋄ Δ ⋄ Λ, along the embeddings [_]ₗ and [_]ᵣ.
 module LeftRightCongruence
   {A B : Set}
   (Γ : WRel A)
@@ -149,7 +149,7 @@ module LeftRightCongruence
 
   open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_)
   open PB Δ renaming (_===_ to _===₂_ ; _≈_ to _≈₂_)
-  open PB {A ⊎ B} (Γ ⸲ Δ ⸲ Λ) renaming (_===_ to _===₃_ ; _≈_ to _≈₃_)
+  open PB {A ⊎ B} (Γ ⋄ Δ ⋄ Λ) renaming (_===_ to _===₃_ ; _≈_ to _≈₃_)
 
   -- [_]ₗ maps the congruence of Γ into the congruence of the join.
   lefts :  ∀ {u v} → u ≈₁ v → [ u ]ₗ ≈₃ [ v ]ₗ
