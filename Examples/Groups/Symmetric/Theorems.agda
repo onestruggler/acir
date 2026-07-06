@@ -16,7 +16,7 @@ module Examples.Groups.Symmetric.Theorems where
 
 open import Examples.Groups.Symmetric.Syntactics
 
-open Relative
+open SubPresentation
 
 ------------------------------------------------------------------------
 -- Unique normal form, soundness, completeness and presentation

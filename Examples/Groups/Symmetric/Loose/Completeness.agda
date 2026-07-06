@@ -19,7 +19,7 @@ open import Examples.Groups.Symmetric.Loose.Semantics using (Endo-setoid ; ‚ü¶_‚
 open import Examples.Groups.Symmetric.Loose.Soundness using (sound)
 import Examples.Groups.Symmetric.Loose.Uniqueness as LU
 
-open Relative
+open SubPresentation
 
 
 ------------------------------------------------------------------------

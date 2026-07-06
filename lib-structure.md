@@ -10,7 +10,7 @@ Numeral and successor patterns shared by the whole library.
 ## Presentation
 - Base — the congruence closure `_≈_` of a raw relation `_===_`
 - Properties — setoid/monoid structure, associativity solvers, powers
-- Definitions — `_IsPresentationOf_` and friends; soundness / completeness between setoids (`module Relative`)
+- Definitions — `_IsPresentationOf_` and friends; soundness / completeness between setoids, i.e. presentation of a sub-setoid (`module SubPresentation`)
 - GroupLike — inverses and the group of words
 - Morphism — homo/mono/isomorphism builders for `(f *)`
 - Reidemeister-Schreier — the injectivity engine

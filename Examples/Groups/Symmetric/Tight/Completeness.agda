@@ -21,7 +21,7 @@ open import Examples.Groups.Symmetric.Tight.Semantics using (⟦_⟧ ; Permutati
 open import Examples.Groups.Symmetric.Tight.Soundness using (sound)
 import Examples.Groups.Symmetric.Tight.Uniqueness as TU
 
-open Relative
+open SubPresentation
 
 
 private variable n : ℕ

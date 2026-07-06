@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The notion "Γ presents G", in two strengths:
+-- The notion "Γ presents G", in several strengths:
 --
 -- 1) Standard presentation (_IsPresentationOf_): _===_ presents the
 --    group G iff G is isomorphic, as a group, to the free group on
@@ -10,6 +10,9 @@
 -- 2) Monoid presentation (_IsMonoidPresentationOf_): the analogous
 --    notion for monoids.
 --
+-- 3) Sub-setoid presentation (module SubPresentation): soundness and
+--    completeness of a semantics ⟦_⟧ : Syn → Sem, which together make
+--    ⟦_⟧ a setoid embedding — Syn is presented as a sub-setoid of Sem.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}
@@ -59,7 +62,15 @@ record _IsMonoidPresentationOf_ (_===_ : WRel X) (M : Monoid a ℓ) : Set (a ⊔
     ⟦_⟧ : Word X → Monoid.Carrier M
     iso : IsMonoidIsomorphism ⟦_⟧
 
-module Relative {a b ℓ₁ ℓ₂}
+------------------------------------------------------------------------
+-- Presentation of a sub-setoid
+--
+-- Soundness (⟦_⟧ preserves the equivalence) and completeness (⟦_⟧
+-- reflects it) together say that ⟦_⟧ : Syn → Sem is a setoid
+-- embedding: Syn is presented as the sub-setoid of Sem cut out by the
+-- image of ⟦_⟧.
+
+module SubPresentation {a b ℓ₁ ℓ₂}
   (Syn : Setoid a ℓ₁)
   (Sem : Setoid b ℓ₂)
   where

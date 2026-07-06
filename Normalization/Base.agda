@@ -28,9 +28,9 @@ private
   variable
     w v : Word X
 
-  -- The setoid of words modulo ≈.  (Duplicates
-  -- Presentation.Properties.word-setoid, which cannot be imported here
-  -- because Presentation.Properties re-exports this module.)
+  -- The setoid of words modulo ≈ (a local copy of
+  -- Presentation.Properties.word-setoid, kept here to avoid importing
+  -- all of Presentation.Properties just for it).
   word-setoid : Setoid 0ℓ 0ℓ
   word-setoid = record
     { Carrier       = Word X
@@ -148,7 +148,7 @@ module _ {c d} (Sem : Setoid c d)
   (⟦_⟧ : Word X → Cₛ)
   where
 
-  open Presentation.Definitions.Relative word-setoid Sem
+  open Presentation.Definitions.SubPresentation word-setoid Sem
 
   -- A normal form with inverse whose section is separated by the
   -- semantics ⟦_⟧: normal forms with equal denotations are equal.
