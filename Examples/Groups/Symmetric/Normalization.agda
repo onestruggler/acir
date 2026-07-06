@@ -7,50 +7,44 @@
 
 {-# OPTIONS --safe #-}
 
-open import Level using (0ℓ)
+module Examples.Groups.Symmetric.Normalization where
 
-open import Relation.Binary using (Rel ; Setoid)
+open import Data.Nat using (ℕ ; zero ; suc)
+open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Product.Relation.Binary.Pointwise.NonDependent
+  using (≡×≡⇒≡ ; Pointwise ; ≡⇒≡×≡)
+open import Data.Unit using (⊤ ; tt)
+open import Function using (_∘_)
+open import Level using (0ℓ)
+open import Relation.Binary using (Rel)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.Morphism.Definitions using (Homomorphic₂)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]ₑ)
-import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
+open Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]ₑ)
+import Relation.Binary.Reasoning.Setoid as SR
 open import Relation.Nullary.Decidable using (yes ; no)
-
-open import Function using (_∘_)
-
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡ ; Pointwise ; ≡⇒≡×≡)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
-open import Data.Nat using (ℕ ; zero ; suc)
-open import Data.Unit using (⊤ ; tt)
 
 open import Word.Base
 open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open PP using (NormalFormWithoutInverse ; NormalForm)
-
-import Normalization.CosetNF as CA
-import Presentation.Reidemeister-Schreier as RS
-module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
-open import Presentation.GroupLike
+import Normalization.CosetNF as CosetNF
 
 open import Notations
 
-module Examples.Groups.Symmetric.Normalization where
-
-private variable
-  n :  ℕ
-  
 open import Examples.Groups.Symmetric.Syntactics
 open import Examples.Groups.Symmetric.Cosets
 
+private variable
+  n : ℕ
+
 ------------------------------------------------------------------------
 -- Right coset action
---
--- ract : C (₁₊ n) → Gen (₂₊ n) → Circuit (₁₊ n) × C (₁₊ n)
 
+-- The right action of a generator on a coset: ract c b returns the
+-- residual circuit b' and the coset c' reached from c by b, so that
+-- [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ (see lemma-ract below).
 ract : C (₁₊ n) → Gen (₂₊ n) → Circuit (₁₊ n) × C (₁₊ n)
 ract {n}     ε         σ-gen       = ε , σ• ε
 ract {n}     (σ• ε)    σ-gen       = ε , ε
@@ -60,29 +54,40 @@ ract {0}     (σ• ε)    (gate₁ () ↥)
 ract {0}     (σ• ε)    ((() ↥) ↥)
 ract {₁₊ n}  (σ• c)    (g ↥)   = proj₁ (ract {n} c g) ↑ , σ• (proj₂ (ract {n} c g))
 
+-- Extension of ract to whole circuits: the stateful fold _** threads
+-- the coset through the word.
 racts : C (₁₊ n) → Circuit (₂₊ n) → Circuit (₁₊ n) × C (₁₊ n)
 racts {n} = ract {n} **
 
 ------------------------------------------------------------------------
--- lemma-ract: [c]ᶜ • [b]ʷ ≈ b' ↑ • [c']ᶜ  where (b', c') = ract c b
+-- Soundness of the coset action
 
+-- lemma-ract certifies the coset-table transition: for
+-- (b' , c') = ract c b we have [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ.
 lemma-ract : ∀ {n} c b →
   let
     open PB ((₂₊ n) VRel,_===_)
     (b' , c') = ract {n} c b
   in
-  
+
     [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ
-    
+
 lemma-ract {n} ε σ-gen = cong refl (sym right-unit)
-  where P = _VRel,_===_ (₂₊ n) ; open PB P
+  where
+  P = _VRel,_===_ (₂₊ n)
+  open PB P
 lemma-ract {n} (σ• ε) σ-gen =
   trans (cong right-unit refl)
-               (trans (axiom (srel order)) (sym right-unit))
-  where P = _VRel,_===_ (₂₊ n) ; open PB P ; open PP P
+        (trans (axiom (srel order)) (sym right-unit))
+  where
+  P = _VRel,_===_ (₂₊ n)
+  open PB P
+  open PP P
 lemma-ract {n} ε (g ↥) =
   trans left-unit (sym right-unit)
-  where P = _VRel,_===_ (₂₊ n) ; open PB P
+  where
+  P = _VRel,_===_ (₂₊ n)
+  open PB P
 lemma-ract {₁₊ n} (σ• σ• c) σ-gen = begin
   [ σ• σ• c ]ᶜ • σ ≈⟨ assoc ⟩
   σ • [ σ• c ]ᶜ ↑ • σ ≡⟨ Eq.refl ⟩
@@ -95,7 +100,7 @@ lemma-ract {₁₊ n} (σ• σ• c) σ-gen = begin
   σ ↑ • σ • σ ↑ • [ c ]ᶜ ↑ ↑ ≡⟨ Eq.refl ⟩
   σ ↑ • σ • [ σ• c ]ᶜ ↑ ∎
   where
-  P = (₃₊ n) VRel,_===_ 
+  P = (₃₊ n) VRel,_===_
   open PB P
   open PP P
   open SR word-setoid
@@ -110,7 +115,6 @@ lemma-ract {₁₊ n} (σ• ε) (b@σ-gen ↥) = begin
   (b0 ↑ ↑ • σ) • [ c0 ]ᶜ ↑ ≈⟨ assoc ⟩
   b0 ↑ ↑ • [ σ• c0 ]ᶜ ∎
   where
-  P0 = _VRel,_===_ (₂₊ n)
   P  = _VRel,_===_ (₃₊ n)
   open PB P
   open PP P
@@ -127,7 +131,6 @@ lemma-ract {₁₊ n} (σ• ε) (b@(b' ↥) ↥) = begin
   (b0 ↑ ↑ • σ) • [ c0 ]ᶜ ↑ ≈⟨ assoc ⟩
   b0 ↑ ↑ • [ σ• c0 ]ᶜ ∎
   where
-  P0 = _VRel,_===_ (₂₊ n)
   P  = _VRel,_===_ (₃₊ n)
   open PB P
   open PP P
@@ -135,7 +138,7 @@ lemma-ract {₁₊ n} (σ• ε) (b@(b' ↥) ↥) = begin
   b0 = proj₁ (ract {n} ε b)
   c0 = proj₂ (ract {n} ε b)
   ih = lemma-ract {n} ε b
-  
+
 lemma-ract {₁₊ n} (σ• σ• c) (b@σ-gen ↥) = begin
   [ σ• σ• c ]ᶜ • [ b ↥ ]ʷ ≈⟨ assoc ⟩
   σ • ([ σ• c ]ᶜ • [ b ]ʷ) ↑ ≈⟨ cong refl (lemma-cong↑ _ _ ih) ⟩
@@ -170,18 +173,21 @@ lemma-ract {₁₊ n} (σ• σ• c) (b@(bb ↥) ↥) = begin
   ih = lemma-ract {n} (σ• c) b
 
 ------------------------------------------------------------------------
--- lemma-racts: extends lemma-ract to words
+-- Soundness of the coset action on words
 
+-- lemma-racts extends lemma-ract from generators to circuits.
 lemma-racts : ∀ {n} c bs →
   let
     open PB ((₂₊ n) VRel,_===_)
     (bs' , c') = racts {n} c bs
   in
     [ c ]ᶜ • bs ≈ bs' ↑ • [ c' ]ᶜ
-    
+
 lemma-racts {n} c [ x ]ʷ = lemma-ract c x
 lemma-racts {n} c ε = trans right-unit (sym left-unit)
-  where P = _VRel,_===_ (₂₊ n) ; open PB P
+  where
+  P = _VRel,_===_ (₂₊ n)
+  open PB P
 lemma-racts {n} c (bs • as) with racts c bs | lemma-racts c bs
 ... | (bs' , c') | ih1 with racts c' as | lemma-racts c' as
 ... | (as' , c'') | ih2 = begin
@@ -197,36 +203,30 @@ lemma-racts {n} c (bs • as) with racts c bs | lemma-racts c bs
   open PP P
   open SR word-setoid
 
-
 ------------------------------------------------------------------------
--- ≋  : pointwise relation on (Circuit (₁₊ n) × C (₁₊ n))
+-- Pointwise relation on action results
 
+-- Presentation equivalence on the circuit component, propositional
+-- equality on the coset component.
 infix 4 _≋_
 _≋_ : Rel (Circuit (₁₊ n) × C (₁₊ n)) 0ℓ
-_≋_ {n} = let _≈₀_ = PB._≈_ ((₁₊ n) VRel,_===_) in Pointwise _≈₀_ (_≡_ {A = C (₁₊ n)})
+_≋_ {n} = let _≈₀_ = PB._≈_ ((₁₊ n) VRel,_===_)
+          in Pointwise _≈₀_ (_≡_ {A = C (₁₊ n)})
 
 ------------------------------------------------------------------------
--- ⁻¹[⇑]-gen': inverse of the generator embedding
+-- Inverse of the generator embedding
 
+-- Acting on the trivial coset by an embedded generator recovers the
+-- generator itself.
 ⁻¹[⇑]-gen' : let _⊛_ = ract ** in ∀ (x : Gen (₁₊ n)) →
   ([ x ]ʷ , ε) ≋ ε ⊛ [ x ↥ ]ʷ
 ⁻¹[⇑]-gen' {n} x = PB.refl , Eq.refl
 
 ------------------------------------------------------------------------
--- Auxiliary ract-computation lemmas (all Eq.refl by definition)
+-- Auxiliary computation lemmas for the coset action
 
-lemma-ract-suc : ∀ {n} w → racts {n} ε (w ↑) ≡ (w , ε)
-lemma-ract-suc {n} [ x ]ʷ = Eq.refl
-lemma-ract-suc {n} ε       = Eq.refl
-lemma-ract-suc {n} (w • v) with lemma-ract-suc {n} w
-... | ih with lemma-ract-suc {n} v
-... | ih' with racts ε (w ↑)
-... | (w' , ew) rewrite Eq.cong proj₁ ih | Eq.cong proj₂ ih
-                       | Eq.cong proj₁ ih' | Eq.cong proj₂ ih'
-              with racts ε (v ↑)
-... | (v' , ev) = begin w • v , ε ≡⟨ Eq.refl ⟩ (w • v , ε) ∎
-  where open ≡-Reasoning
-
+-- Acting on the trivial coset by a lifted circuit strips one lift and
+-- leaves the coset fixed.
 lemma-ract-suc' : ∀ {n} w → (ract {n} **) ε (w ↑) ≡ (w , ε)
 lemma-ract-suc' {n} [ x ]ʷ = Eq.refl
 lemma-ract-suc' {n} ε       = Eq.refl
@@ -239,10 +239,13 @@ lemma-ract-suc' {n} (w • v) with lemma-ract-suc' {n} w
 ... | (v' , ev) = begin w • v , ε ≡⟨ Eq.refl ⟩ (w • v , ε) ∎
   where open ≡-Reasoning
 
--- The auxiliary sub-computation is racts ε (w ↑ ↑) rather than racts ε
--- (w ↑) because case 7 contributes ract {n} ε (x ↥ ↥), not ract {n} ε
--- (x ↥), when the outer implicit is ₁₊ n.
-lemma-ract-suc''' : ∀ {n} (w : Circuit n) → (ract {₁₊ n} **) (σ• ε) (w ↑ ↑ ↑) ≡ (w ↑ ↑ , σ• ε)
+-- Acting on the coset σ• ε by a triply lifted circuit strips one lift
+-- and leaves the coset fixed.  The recursive sub-computation is
+-- racts ε (w ↑ ↑) rather than racts ε (w ↑): on a coset σ• c the
+-- action peels only the outermost lift before recursing, so each
+-- generator still carries two lifts when it reaches the trivial coset.
+lemma-ract-suc''' : ∀ {n} (w : Circuit n) →
+  (ract {₁₊ n} **) (σ• ε) (w ↑ ↑ ↑) ≡ (w ↑ ↑ , σ• ε)
 lemma-ract-suc''' {n} [ x ]ʷ = Eq.refl
 lemma-ract-suc''' {n} ε       = Eq.refl
 lemma-ract-suc''' {n} (w • v) with lemma-ract-suc''' {n} w
@@ -254,10 +257,14 @@ lemma-ract-suc''' {n} (w • v) with lemma-ract-suc''' {n} w
 ... | (v'' , ev) = begin w ↑ ↑ • v ↑ ↑ , σ• ε ≡⟨ Eq.refl ⟩ (w ↑ ↑ • v ↑ ↑ , σ• ε) ∎
   where open ≡-Reasoning
 
+-- The generator σ passes through any coset of the form σ• σ• c
+-- unchanged, leaving the coset fixed.
 lemma-ract-σ•σ•σ : ∀ {n} (c : C n) →
   racts (σ• σ• c) σ ≡ (σ , σ• σ• c)
 lemma-ract-σ•σ•σ {n} c = Eq.refl
 
+-- Acting on σ• c by a lifted generator lifts the result of acting on
+-- c by the generator itself.
 lemma-ract-σ•1 : ∀ {n} (c : C (₁₊ n)) (g : Gen (₂₊ n)) →
   let (b' , c') = ract {n} c g
   in ract (σ• c) (g ↥) ≡ (b' ↑ , σ• c')
@@ -266,6 +273,8 @@ lemma-ract-σ•1 {n} ε       (g' ↥)  = Eq.refl
 lemma-ract-σ•1 {n} (σ• c') σ-gen   = Eq.refl
 lemma-ract-σ•1 {n} (σ• c') (g' ↥)  = Eq.refl
 
+-- Word version of lemma-ract-σ•1: acting on σ• c by a lifted circuit
+-- lifts the result of acting on c.
 lemma-ract-σ•1s : ∀ {n} (c : C (₁₊ n)) w →
   let (w' , c') = (ract {n} **) c w
   in (ract {₁₊ n} **) (σ• c) (w ↑) ≡ (w' ↑ , σ• c')
@@ -276,22 +285,25 @@ lemma-ract-σ•1s {n} c (w • v)
 ... | ih1 | w' , c0 | [ eq1 ]ₑ rewrite ih1 | eq1
   with lemma-ract-σ•1s c0 v | (ract **) c0 v | inspect ((ract **) c0) v
 ... | ih2 | v' , c1 | [ eq2 ]ₑ rewrite eq2 | Eq.cong proj₁ ih2 | Eq.cong proj₂ ih2 = Eq.refl
-  where open ≡-Reasoning
 
--- ract {n} (σ• ε) ((g ↥) ↥) ≡ ([g ↥]ʷ , σ• ε)
--- Case 7 needs implicit ≥ 1; n=0 is vacuous since Gen 0 = ∅
-lemma-ract-σ•ε-gg↥ : ∀ {n} (g : Gen n) → ract {n} (σ• ε) (g ↥ ↥) ≡ ([ g ↥ ]ʷ , σ• ε)
+-- A doubly lifted generator passes through the coset σ• ε unchanged.
+-- The n = 0 case is vacuous since Gen 0 is empty; for n ≥ 1 the
+-- equation holds by definition.
+lemma-ract-σ•ε-gg↥ : ∀ {n} (g : Gen n) →
+  ract {n} (σ• ε) (g ↥ ↥) ≡ ([ g ↥ ]ʷ , σ• ε)
 lemma-ract-σ•ε-gg↥ {zero}  ()
 lemma-ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
 
 ------------------------------------------------------------------------
--- ⁻¹[⇑]-wd'': coset action respects raw relations
+-- Well-definedness of the coset action
 
+-- The coset action respects the raw relations: acting on a coset by
+-- two axiom-related circuits yields ≋-related results.
 ⁻¹[⇑]-wd'' : ∀ {n} →
   let _⊛_ = ract ** in
   let _===_ = (₂₊ n) VRel,_===_ in
   ∀ (c : C (₁₊ n)){u t : Circuit (₂₊ n)} →
-  
+
     u === t → c ⊛ u ≋ c ⊛ t
 
 -- ε coset
@@ -371,7 +383,8 @@ lemma-ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
 -- action ract.  Below we package that single-level data as an
 -- Extension and fold it up the tower.
 
-module T = CA.CosetTower (λ k → Gen (₁₊ k)) (λ k → _VRel,_===_ (₁₊ k)) (λ k → C (₁₊ k))
+module T = CosetNF.CosetTower
+  (λ k → Gen (₁₊ k)) (λ k → _VRel,_===_ (₁₊ k)) (λ k → C (₁₊ k))
 
 ext : ∀ k → T.Extension k
 ext k = record
@@ -393,6 +406,8 @@ ext k = record
   open PB (_VRel,_===_ (₂₊ k))
   open PP (_VRel,_===_ (₂₊ k))
 
+-- S₀ is trivial: Gen 0 is empty, so ⊤ is the normal form and
+-- singleton collapses every word to ε.
 base0' : NormalForm (_VRel,_===_ 0)
 base0' = record
   { NF           = ⊤
@@ -407,6 +422,8 @@ base0' = record
   singleton {ε}      = PB.refl
   singleton {a • a₁} = PB.trans (PB.cong singleton singleton) PB.left-unit
 
+-- S₁ is trivial as well: Gen 1 has no inhabitants, so every word
+-- again collapses to ε.
 base1' : NormalForm (_VRel,_===_ 1)
 base1' = record
   { NF           = ⊤
@@ -423,6 +440,9 @@ base1' = record
   singleton {ε}      = PB.refl
   singleton {a • a₁} = PB.trans (PB.cong singleton singleton) PB.left-unit
 
+-- The main construction: a normal form for every Sₙ, obtained by
+-- folding the Extension up the coset tower from the trivial base
+-- cases.
 nfp'-t : ∀ n → NormalForm (_VRel,_===_ n)
 nfp'-t 0       = base0'
 nfp'-t (suc k) = T.nfp'-tower ext base1' k

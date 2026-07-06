@@ -6,26 +6,23 @@
 
 {-# OPTIONS --safe #-}
 
-open import Level using (0ℓ)
-open import Relation.Binary using (Setoid)
-open import Data.Nat using (ℕ ; zero ; suc)
-open import Data.Fin using (Fin) renaming (zero to fzero ; suc to fsuc)
-import Data.Fin.Properties as FP
-import Relation.Binary.PropositionalEquality as Eq
-open Eq using (_≡_)
-open import Data.Unit using (⊤ ; tt)
-open import Data.Product using (_,_ ; proj₁ ; proj₂)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
-import Presentation.Properties as PP
-open import Notations
-
 module Examples.Groups.Symmetric.Loose.Uniqueness where
 
-open import Examples.Groups.Symmetric.Syntactics
+open import Data.Fin using (Fin) renaming (zero to fzero ; suc to fsuc)
+import Data.Fin.Properties as FP
+open import Data.Nat using (ℕ)
+open import Data.Product using (_,_)
+open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
+open import Data.Unit using (tt)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+
 open import Examples.Groups.Symmetric.Cosets
 open import Examples.Groups.Symmetric.Loose.Semantics
 open import Examples.Groups.Symmetric.Normalization
   using (nf-of ; NF ; inv-nf ; lemma-nf-cong ; lemma-inv-nf)
+open import Examples.Groups.Symmetric.Syntactics
+open import Notations
+import Presentation.Properties as PP
 open import Word.Base using (_•_)
 open import Word.Properties using (wconcatmap-[f]ʷ)
 
@@ -35,40 +32,44 @@ private variable n : ℕ
 -- Encoding coset descriptors as Fin indices
 
 private
+  -- Depth of a coset descriptor: the number of σ• layers, as a Fin index.
   depth : ∀ {n} → C n → Fin (₁₊ n)
   depth ε      = fzero
   depth (σ• c) = fsuc (depth c)
 
-  depth-inj : ∀ {n} {r r' : C n} → depth r ≡ depth r' → r ≡ r'
-  depth-inj {r = ε}    {r' = ε}     _  = Eq.refl
-  depth-inj {r = ε}    {r' = σ• _}  ()
-  depth-inj {r = σ• _} {r' = ε}     ()
-  depth-inj {r = σ• c} {r' = σ• c'} eq =
-    Eq.cong σ•_ (depth-inj (FP.suc-injective eq))
+  -- depth is injective, so it embeds C n into Fin (₁₊ n).
+  depth-injective : ∀ {n} {r r' : C n} → depth r ≡ depth r' → r ≡ r'
+  depth-injective {r = ε}    {r' = ε}     _  = Eq.refl
+  depth-injective {r = ε}    {r' = σ• _}  ()
+  depth-injective {r = σ• _} {r' = ε}     ()
+  depth-injective {r = σ• c} {r' = σ• c'} eq =
+    Eq.cong σ•_ (depth-injective (FP.suc-injective eq))
 
-  -- ⟦ [r]ᶜ ⟧ fzero ≡ depth r
-  lemma-⟦[r]ᶜ⟧-zero : ∀ {n} (r : C n) → ⟦ [ r ]ᶜ ⟧ fzero ≡ depth r
-  lemma-⟦[r]ᶜ⟧-zero ε      = Eq.refl
-  lemma-⟦[r]ᶜ⟧-zero (σ• c) =
+  -- Evaluating a coset representative at fzero recovers the depth of its
+  -- descriptor.
+  ⟦[]ᶜ⟧-zero : ∀ {n} (r : C n) → ⟦ [ r ]ᶜ ⟧ fzero ≡ depth r
+  ⟦[]ᶜ⟧-zero ε      = Eq.refl
+  ⟦[]ᶜ⟧-zero (σ• c) =
     Eq.trans (⟦↑⟧ ([ c ]ᶜ) (fsuc fzero))
-             (Eq.cong fsuc (lemma-⟦[r]ᶜ⟧-zero c))
+             (Eq.cong fsuc (⟦[]ᶜ⟧-zero c))
 
-  -- ⟦ [r]ᶜ ⟧ is injective on fsuc-values
-  lemma-[r]ᶜ-suc-inj : ∀ {n} (r : C n) {j₁ j₂ : Fin n}
+  -- A coset representative is injective on fsuc-values, so its action can
+  -- be cancelled there.
+  ⟦[]ᶜ⟧-suc-injective : ∀ {n} (r : C n) {j₁ j₂ : Fin n}
     → ⟦ [ r ]ᶜ ⟧ (fsuc j₁) ≡ ⟦ [ r ]ᶜ ⟧ (fsuc j₂) → j₁ ≡ j₂
-  lemma-[r]ᶜ-suc-inj ε {j₁} {j₂} eq with eq
+  ⟦[]ᶜ⟧-suc-injective ε {j₁} {j₂} eq with eq
   ... | Eq.refl = Eq.refl
-  lemma-[r]ᶜ-suc-inj (σ• c) {fzero}    {fzero}    _   = Eq.refl
-  lemma-[r]ᶜ-suc-inj (σ• c) {fzero}    {fsuc j₂'} eq
+  ⟦[]ᶜ⟧-suc-injective (σ• c) {fzero}    {fzero}    _   = Eq.refl
+  ⟦[]ᶜ⟧-suc-injective (σ• c) {fzero}    {fsuc j₂'} eq
     with Eq.trans (Eq.sym (⟦↑⟧ ([ c ]ᶜ) fzero))
                   (Eq.trans eq (⟦↑⟧ ([ c ]ᶜ) (fsuc (fsuc j₂'))))
   ... | ()
-  lemma-[r]ᶜ-suc-inj (σ• c) {fsuc j₁'} {fzero}    eq
+  ⟦[]ᶜ⟧-suc-injective (σ• c) {fsuc j₁'} {fzero}    eq
     with Eq.trans (Eq.trans (Eq.sym (⟦↑⟧ ([ c ]ᶜ) (fsuc (fsuc j₁')))) eq)
                   (⟦↑⟧ ([ c ]ᶜ) fzero)
   ... | ()
-  lemma-[r]ᶜ-suc-inj (σ• c) {fsuc j₁'} {fsuc j₂'} eq =
-    Eq.cong fsuc (lemma-[r]ᶜ-suc-inj c step)
+  ⟦[]ᶜ⟧-suc-injective (σ• c) {fsuc j₁'} {fsuc j₂'} eq =
+    Eq.cong fsuc (⟦[]ᶜ⟧-suc-injective c step)
     where
     step : ⟦ [ c ]ᶜ ⟧ (fsuc j₁') ≡ ⟦ [ c ]ᶜ ⟧ (fsuc j₂')
     step = FP.suc-injective
@@ -76,28 +77,32 @@ private
       (Eq.trans eq      (⟦↑⟧ ([ c ]ᶜ) (fsuc (fsuc j₂')))))
 
 ------------------------------------------------------------------------
--- Helpers for unique-impl
+-- Cancelling the coset factor of a normal form
 
 private
-  make-r≡r' : ∀ n (l l' : NF (₁₊ n)) (r r' : C (₁₊ n))
+  -- Equal denotations of inv-nf l ↑ • [ r ]ᶜ determine the coset
+  -- component: evaluate both sides at fzero and apply depth-injective.
+  coset-unique : ∀ n (l l' : NF (₁₊ n)) (r r' : C (₁₊ n))
     → (eq : ∀ k → ⟦ inv-nf {(₁₊ n)} l ↑ • [ r ]ᶜ ⟧ k ≡ ⟦ inv-nf {(₁₊ n)} l' ↑ • [ r' ]ᶜ ⟧ k)
     → r ≡ r'
-  make-r≡r' n l l' r r' eq =
-    depth-inj
-      (Eq.trans (Eq.sym (lemma-⟦[r]ᶜ⟧-zero r))
+  coset-unique n l l' r r' eq =
+    depth-injective
+      (Eq.trans (Eq.sym (⟦[]ᶜ⟧-zero r))
       (Eq.trans
         (Eq.trans
           (Eq.cong (⟦ [ r ]ᶜ ⟧) (Eq.sym (⟦↑⟧ (inv-nf {(₁₊ n)} l) fzero)))
           (Eq.trans (eq fzero)
           (Eq.cong (⟦ [ r' ]ᶜ ⟧) (⟦↑⟧ (inv-nf {(₁₊ n)} l') fzero))))
-        (lemma-⟦[r]ᶜ⟧-zero r')))
+        (⟦[]ᶜ⟧-zero r')))
 
-  make-eqj : ∀ n (l l' : NF (₁₊ n)) (r r' : C (₁₊ n))
+  -- Once r ≡ r' is known, the coset factor cancels, leaving pointwise
+  -- equality of the lifted inv-nf prefixes.
+  prefix-unique : ∀ n (l l' : NF (₁₊ n)) (r r' : C (₁₊ n))
     → r ≡ r'
     → (eq : ∀ k → ⟦ inv-nf {(₁₊ n)} l ↑ • [ r ]ᶜ ⟧ k ≡ ⟦ inv-nf {(₁₊ n)} l' ↑ • [ r' ]ᶜ ⟧ k)
     → ∀ j → ⟦ inv-nf {(₁₊ n)} l ⟧ j ≡ ⟦ inv-nf {(₁₊ n)} l' ⟧ j
-  make-eqj n l l' r r' r≡r' eq j =
-    lemma-[r]ᶜ-suc-inj r
+  prefix-unique n l l' r r' r≡r' eq j =
+    ⟦[]ᶜ⟧-suc-injective r
       (Eq.trans
         (Eq.cong (⟦ [ r ]ᶜ ⟧) (Eq.sym (⟦↑⟧ (inv-nf {(₁₊ n)} l) (fsuc j))))
         (Eq.trans
@@ -112,13 +117,17 @@ private
 -- Semantic injectivity of inv-nf: pointwise-equal denotations imply equal NFs
 
 private
-  unique-impl : ∀ n {u v : NF n}
+  -- By induction on the coset tower: the cases n = 0, 1 are trivial since
+  -- NF is ⊤ there; at ₂₊ n' the normal form splits as prefix × coset, the
+  -- coset components agree by coset-unique, and the prefixes agree by the
+  -- induction hypothesis via prefix-unique.
+  ⟦inv-nf⟧-injective : ∀ n {u v : NF n}
     → (∀ k → ⟦ inv-nf {n} u ⟧ k ≡ ⟦ inv-nf {n} v ⟧ k)
     → u ≡ v
-  unique-impl 0       {tt}     {tt}      _   = Eq.refl
-  unique-impl 1       {tt}     {tt}      _   = Eq.refl
-  unique-impl (₂₊ n') {l , r} {l' , r'} eq  =
-    ≡×≡⇒≡ (unique-impl (₁₊ n') (make-eqj n' l l' r r' r≡r' eq↑) , r≡r')
+  ⟦inv-nf⟧-injective 0       {tt}     {tt}      _   = Eq.refl
+  ⟦inv-nf⟧-injective 1       {tt}     {tt}      _   = Eq.refl
+  ⟦inv-nf⟧-injective (₂₊ n') {l , r} {l' , r'} eq  =
+    ≡×≡⇒≡ (⟦inv-nf⟧-injective (₁₊ n') (prefix-unique n' l l' r r' r≡r' eq↑) , r≡r')
     where
     -- inv-nf {₂₊ n'} (x , s) is (f *)(inv-nf x) • [ s ]ᶜ; bridge to the ↑ form
     to↑ : ∀ (x : NF (₁₊ n')) (s : C (₁₊ n')) k
@@ -127,16 +136,19 @@ private
     eq↑ : ∀ k → ⟦ inv-nf {(₁₊ n')} l ↑ • [ r ]ᶜ ⟧ k
               ≡ ⟦ inv-nf {(₁₊ n')} l' ↑ • [ r' ]ᶜ ⟧ k
     eq↑ k = Eq.trans (Eq.sym (to↑ l r k)) (Eq.trans (eq k) (to↑ l' r' k))
-    r≡r' = make-r≡r' n' l l' r r' eq↑
+    r≡r' = coset-unique n' l l' r r' eq↑
 
 ------------------------------------------------------------------------
 -- Unique normal form for the loose semantics
 
+-- The normal form of Examples.Groups.Symmetric.Normalization is unique for
+-- the endofunction semantics: the NormalForm witness is packaged together
+-- with uniqueness, given by ⟦inv-nf⟧-injective.
 unique-nf : ∀ n →
   PP.UniqueNormalForm (_VRel,_===_ n) (Endo-setoid n) (⟦_⟧ {n})
 unique-nf n = record
   { normalForm = record
       { NF = NF n ; nf = nf-of ; nf-cong = lemma-nf-cong
       ; inv-nf = inv-nf ; inv-nf∘nf=id = lemma-inv-nf n }
-  ; unique = unique-impl n
+  ; unique = ⟦inv-nf⟧-injective n
   }

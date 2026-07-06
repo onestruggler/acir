@@ -6,59 +6,51 @@
 
 {-# OPTIONS --safe #-}
 
-open import Level using (0ℓ)
+module Presentation.Groups.Cyclic where
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]')
-import Relation.Binary.Reasoning.Setoid as SR
-import Relation.Binary.PropositionalEquality as Eq
-open import Relation.Nullary.Decidable using (yes ; no)
-
-
-open import Function using (_∘_ ; id)
-
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; map₁)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡ ; Pointwise ; ≡⇒≡×≡)
-open import Data.Nat using (ℕ ; zero ; suc)
-import Data.Nat as Nat
-open import Data.Fin
-open import Data.Fin.Induction
-open import Data.Sum using (_⊎_)
-open import Data.Unit using (⊤ ; tt)
 open import Data.Empty using (⊥ ; ⊥-elim)
+open import Data.Fin using (Fin ; zero ; suc ; toℕ ; fromℕ ; inject₁)
+open import Data.Fin.Induction using (<-weakInduction)
+open import Data.Fin.Properties using (suc-injective ; toℕ-inject₁ ; toℕ-fromℕ)
+open import Data.Nat using (ℕ ; zero ; suc)
+import Data.Nat.Properties as NP
+open import Data.Unit using (⊤ ; tt)
+open import Function using (_∘_ ; id)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]')
+import Relation.Binary.Reasoning.Setoid as SR
 
-open import Word.Base hiding (wfoldl)
-open import Word.Properties
+open import Notations
+
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open PP using (NormalFormWithoutInverse ; NormalForm)
-import Normalization.CosetNF as CA
-import Presentation.Reidemeister-Schreier as RS
-open import Data.Fin.Properties using (suc-injective ; toℕ-inject₁ ; toℕ-fromℕ)
-import Data.Nat.Properties as NP
-open import Notations
+open import Word.Base hiding (wfoldl)
 
+------------------------------------------------------------------------
+-- Generators and relation
 
-module Presentation.Groups.Cyclic where
-
--- a generator of the cyclic group is tt, i.e., the generating set
--- is a singleton.
+-- The generating set is a singleton: the only generator is tt.
 X = ⊤
 
--- a particular word.
+-- The word consisting of the single generator.
 T : Word X
 T = [ tt ]ʷ
 
--- there is only one order relation for a cyclic group. rel is index
--- by the order of the cyclic group.
+-- There is only one relation for a cyclic group: the generator has
+-- order N. rel is indexed by the order of the cyclic group.
 data rel (N : ℕ) : WRel X where
   order :  rel N (T ^' N) ε
 
--- 0-th cyclic monoid is ℕ. The rest are iso to the additative group
--- of the integers modulo N ring.
+-- pres 0 presents the free monoid ℕ; for N > 0, pres N presents the
+-- additive group of the integers modulo N.
 pres : ℕ → WRel X
 pres N = rel N
 
--- successor modulo N.
+------------------------------------------------------------------------
+-- Successor modulo N
+
+-- Successor modulo N: the successor of the largest element wraps
+-- around to zero.
 sucN : ∀ {N} → Fin N → Fin N
 sucN {₁₊ zero} zero = zero
 sucN {₂₊ N} zero = ₁₊ zero
@@ -66,69 +58,40 @@ sucN {₂₊ N} (₁₊ f) with sucN {₁₊ N} f
 ... | zero = zero
 ... | ₁₊ ih = ₂₊ ih
 
--- successor function is injective.
-sucN-inj : ∀ {N} a b → sucN {N} a ≡ sucN b → a ≡ b
-sucN-inj {₁₊ zero} zero zero eq = eq
-sucN-inj {₂₊ N} zero zero eq = Eq.refl
-sucN-inj {₂₊ N} zero (₁₊ b) eq with sucN b
-sucN-inj {₁₊ N} zero (₁₊ b) () | zero
-sucN-inj {₁₊ N} zero (₁₊ b) () | ₁₊ h
-sucN-inj {₂₊ N} (₁₊ a) zero eq with sucN a
-sucN-inj {₁₊ N} (₁₊ a) zero () | zero
-sucN-inj {₁₊ N} (₁₊ a) zero () | ₁₊ h
-sucN-inj {₂₊ N} (₁₊ a) (₁₊ b) eq with sucN a | sucN b | inspect sucN a | inspect sucN b
-... | zero | zero | [ eqa ]' | [ eqb ]' = Eq.cong suc (sucN-inj a b (Eq.trans eqa (Eq.sym eqb)))
-sucN-inj {₁₊ N} (₁₊ a) (₁₊ b) Eq.refl | ₁₊ ha | ₁₊ hb | [ eqa ]' | [ eqb ]' = Eq.cong suc (sucN-inj a b (Eq.trans eqa (Eq.sym eqb)))
+------------------------------------------------------------------------
+-- Normal form
 
-
--- predecessor fuction is the inverse of sucN.
-predN : ∀ {N} → Fin N → Fin N
-predN {₁₊ zero} zero = zero
-predN {₂₊ N} zero = suc (predN {₁₊ N} zero)
-predN {₂₊ N} (₁₊ f) = inject₁ f
-
-aux-inject₁ : ∀ {N} x → sucN {₁₊ N} (inject₁ x) ≡ ₁₊ x
-aux-inject₁ {₁₊ zero} zero = Eq.refl
-aux-inject₁ {₂₊ N} zero = Eq.refl
-aux-inject₁ {₂₊ N} (₁₊ x) with aux-inject₁ {₁₊ N} x
-... | ih rewrite ih = Eq.refl
-
-lemma-suc-pred : ∀ {N} (x : Fin N) → sucN (predN x) ≡ x
-lemma-suc-pred {₁₊ zero} zero = Eq.refl
-lemma-suc-pred {₂₊ N} zero with lemma-suc-pred {₁₊ N} zero
-... | ih rewrite ih = Eq.refl
-lemma-suc-pred {₂₊ N} (₁₊ x) = aux-inject₁ x
-
--- 0-th Normal Form set NF is ℕ. order N cyclic group has normal
--- form set Fin N.
+-- The normal-form set: ℕ for the free monoid (N = 0), and Fin N for
+-- the cyclic group of order N.
 NF : ℕ → Set
 NF zero = ℕ
 NF (₁₊ N) = Fin (₁₊ N)
 
+-- Successor on normal forms.
 succ : ∀ {N} → NF N → NF N
 succ {zero} = suc
 succ {₁₊ N} = sucN
 
-
+-- The normal form of the empty word.
 z : ∀ {N} → NF N
 z {zero} = zero
 z {₁₊ N} = zero
 
+-- Interpret a normal form as a word: the generator raised to the
+-- corresponding power.
 [_] : ∀ {N} → NF N → Word X
 [_] {zero} nf = T ^' nf
 [_] {₁₊ N} nf = T ^' toℕ nf
 
+-- The zero normal form is interpreted as the empty word.
 [z]=ε : ∀ {N} → [_] {N} z ≡ ε
 [z]=ε {zero} = Eq.refl
 [z]=ε {₁₊ N} = Eq.refl
 
-
---   wfoldl : ∀ {N} (NF N → X → NF N) → (NF N → Word X → NF N)
--->  wfoldl : ∀ {N} (Word ⊥ × C N → X → Word ⊥ × C N) → (Word ⊥ × C N → Word X → Word ⊥ × C N)
--->  wfoldl : ∀ {N} → (C N → X → C N) → (C N → Word X → C N)
--->  wfoldl : ∀ {N} → (C N → C N) → (C N → Word X → C N)
--->  wfoldl : ∀ {N} → (NF N → NF N) → (NF N → Word X → NF N)
-
+-- Iterate a step function over a word, once per generator. This is a
+-- specialised left fold: since there is only one generator, the step
+-- function ignores which generator was read. It shadows
+-- Word.Base.wfoldl, which is hidden in the import above.
 wfoldl : ∀ {N} → (NF N → NF N) → (NF N → Word X → NF N)
 wfoldl {N} succ c [ x ]ʷ = succ c
 wfoldl {N} succ c ε = c

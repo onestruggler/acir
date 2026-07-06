@@ -6,29 +6,27 @@
 
 {-# OPTIONS --safe #-}
 
-open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Fin using (Fin ; zero ; suc)
-open import Data.Vec.Functional.Relation.Binary.Permutation
-open import Data.Vec.Functional.Relation.Binary.Permutation.Properties
-
-import Relation.Binary.PropositionalEquality as Eq
-open Eq using (_≡_ ; refl ; _≗_)
-open import Relation.Binary.Bundles using (Setoid)
+open import Data.Nat using (ℕ ; zero ; suc)
 open import Function using (_∘_ ; id)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl ; _≗_)
 
-open import Word.Base
-open import Notations
+open import Notations using (₁₊ ; ₂₊)
+open import Word.Base using (Word ; ε ; [_]ʷ ; _•_)
 
 module Examples.Groups.Symmetric.Loose.Semantics where
 
 open import Examples.Groups.Symmetric.Syntactics
 
 ------------------------------------------------------------------------
--- Permutation type
+-- Endofunctions on Fin n
 
+-- Endofunctions on Fin n: the loose semantic domain.
 Endo : ℕ → Set
 Endo n = Fin n → Fin n
 
+-- Endofunctions up to pointwise propositional equality.
 Endo-setoid : ℕ → Setoid _ _
 Endo-setoid n = record
   { Carrier       = Endo n
@@ -45,18 +43,19 @@ Endo-setoid n = record
 
 -- Swap positions 0 and 1: the denotation of σ-gate.
 swap01 : ∀ {n} → Endo (₂₊ n)
-swap01 zero          = ₁₊ zero
-swap01 (₁₊ zero)    = zero
-swap01 (₂₊ k) = ₂₊ k
+swap01 zero      = ₁₊ zero
+swap01 (₁₊ zero) = zero
+swap01 (₂₊ k)    = ₂₊ k
 
 -- Shift a permutation up by one wire: the action of _↥.
 shift : ∀ {n} → Endo n → Endo (₁₊ n)
-shift f zero    = zero
+shift f zero   = zero
 shift f (₁₊ k) = suc (f k)
 
 ------------------------------------------------------------------------
 -- Denotation of generators and words
 
+-- Denotation of a single generator.
 ⟦_⟧ᵍ : ∀ {n} → Gen n → Endo n
 ⟦ gate₁ () ⟧ᵍ
 ⟦ gate₂ σ-gate ⟧ᵍ = swap01
@@ -71,23 +70,27 @@ shift f (₁₊ k) = suc (f k)
 ------------------------------------------------------------------------
 -- Lemmas about shift
 
+-- shift preserves the identity.
 shift-id : ∀ {n} (k : Fin (₁₊ n)) → shift id k ≡ k
-shift-id zero    = refl
+shift-id zero   = refl
 shift-id (₁₊ k) = refl
 
+-- shift distributes over composition.
 shift-hom : ∀ {n} (f g : Endo n) (k : Fin (₁₊ n))
           → shift (f ∘ g) k ≡ (shift f ∘ shift g) k
-shift-hom f g zero    = refl
+shift-hom f g zero   = refl
 shift-hom f g (₁₊ k) = refl
 
+-- shift respects pointwise equality.
 shift-cong : ∀ {n} {f g : Endo n} → f ≗ g → shift f ≗ shift g
-shift-cong eq zero    = refl
+shift-cong eq zero   = refl
 shift-cong eq (₁₊ k) = Eq.cong suc (eq k)
 
 -- ⟦ w ↑ ⟧ agrees with shift ⟦ w ⟧ pointwise.
 ⟦↑⟧ : ∀ {n} (w : Word (Gen n)) → ⟦ w ↑ ⟧ ≗ shift ⟦ w ⟧
 ⟦↑⟧ ε       k = Eq.sym (shift-id k)
 ⟦↑⟧ [ g ]ʷ  k = refl
-⟦↑⟧ (w • v) k = Eq.trans (Eq.cong (⟦ v ↑ ⟧) (⟦↑⟧ w k))
-                           (Eq.trans (⟦↑⟧ v _) (Eq.sym (shift-hom _ _ k)))
+⟦↑⟧ (w • v) k =
+  Eq.trans (Eq.cong (⟦ v ↑ ⟧) (⟦↑⟧ w k))
+  (Eq.trans (⟦↑⟧ v _) (Eq.sym (shift-hom _ _ k)))
 

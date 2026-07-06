@@ -6,27 +6,12 @@
 
 {-# OPTIONS --safe #-}
 
-open import Relation.Binary using (Rel ; REL)
-
-open import Level using (0ℓ)
-open import Data.Product using (_,_ ; _×_ ; map ; proj₁ ; proj₂ ; Σ ; ∃ ; ∃-syntax)
-import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
-open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
-open import Function using (_∘_ ; _∘₂_)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; inspect ; setoid ; module ≡-Reasoning) renaming ([_] to [_]')
-import Relation.Binary.PropositionalEquality as Eq
-
-import Relation.Binary.Reasoning.Setoid as SR
-
 open import Word.Base
-open import Word.Properties
-import Presentation.Base as PB
-import Presentation.Properties as PP
-open import Presentation.Properties
 
-open import Presentation.Reidemeister-Schreier
-open import Presentation.Construct.Base
-
+-- Γ presents the normal factor (over generators N), Δ the acting
+-- factor (over generators H), and conj is the generator-level action
+-- of H on N; the semi-direct product they generate is presented by
+-- Γ ⸲ Δ ⸲ Γⱼ conj.
 module Presentation.Construct.Properties.SemiDirectProduct
   {N H : Set}
   (Γ : WRel N)
@@ -34,11 +19,27 @@ module Presentation.Construct.Properties.SemiDirectProduct
   (conj : H → N → N)
   where
 
+open import Data.Product using (_,_ ; _×_ ; map ; proj₁ ; proj₂)
+import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
+open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
+open import Function using (_∘_)
+import Function.Construct.Composition as FCC
+open import Function.Definitions using (Injective)
+open import Relation.Binary.PropositionalEquality as Eq renaming ([_] to [_]') using (_≡_ ; inspect)
+
+import Relation.Binary.Reasoning.Setoid as SR
+
+open import Word.Properties
+import Presentation.Base as PB
+open import Presentation.Properties as PP
+
+open import Presentation.Reidemeister-Schreier
+open import Presentation.Construct.Base
+
 open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_ ; refl' to refl'₁) using ()
 open PP Γ renaming (•-ε-monoid to m₁ ; word-setoid to word-setoid₁) using ()
 open PB Δ renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 open PP Δ renaming (•-ε-monoid to m₂ ; word-setoid to word-setoid₂) using ()
-
 
 open PB (Γ ⸲ Δ ⸲ Γⱼ conj) renaming (_===_ to _===₃_ ; _≈_ to _≈₃_) using ()
 open PP (Γ ⸲ Δ ⸲ Γⱼ conj) renaming (•-ε-monoid to m₃ ; word-setoid to word-setoid₃) using ()

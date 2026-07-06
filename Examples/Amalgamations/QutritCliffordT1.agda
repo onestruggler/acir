@@ -2272,8 +2272,8 @@ module CliffordT1 where
   open PP mypres renaming (•-ε-monoid to m₂)
 
 
-  Theorem-CliffordT1-iso-B*A⋆⋆ : IsMonoidIsomorphism (Monoid.rawMonoid mo) (Monoid.rawMonoid m₂) (f *)
-  Theorem-CliffordT1-iso-B*A⋆⋆ = StarIsomorphism.isMonoidIsomorphism _===_ mypres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen
+  CliffordT1-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid mo) (Monoid.rawMonoid m₂) (f *)
+  CliffordT1-isomorphism = StarIsomorphism.isMonoidIsomorphism _===_ mypres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen
 
 
 module CliffordT1-Simplified where
@@ -2865,35 +2865,6 @@ module CliffordT1-Simplified where
   open PP mypres renaming (•-ε-monoid to m₂)
 
 
-  Theorem-CliffordT1-iso-B*A⋆⋆ : IsMonoidIsomorphism (Monoid.rawMonoid mo) (Monoid.rawMonoid m₂) (f *)
-  Theorem-CliffordT1-iso-B*A⋆⋆ = StarIsomorphism.isMonoidIsomorphism _===_ mypres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen
-
-{-
-module Test where
-
-  open NormalForm (CliffordT1.nfp' (M2.nfp' (M.nfp' (M0.nfp' (Cyclic.nfp' 9))))) using (by-equal-nf ; nf ; inv-nf)
-  open PP CliffordT1.mypres
-  open PB CliffordT1.mypres
-
-  pattern H = [ inj₂ MB.H-gen ]ʷ
-  pattern HH = [ inj₁ MA.HH-gen ]ʷ
-  pattern T = [ inj₁ MA.T-gen ]ʷ
-  pattern S = [ inj₁ MA.S-gen ]ʷ
-  pattern S' = [ inj₂ MB.S-gen ]ʷ
-  pattern X = [ inj₁ MA.X-gen ]ʷ
-  pattern ζ = [ inj₁ MA.ζ-gen ]ʷ
-
-  Z : Word (MA.Gen ⊎ MB.Gen)
-  Z = ζ ^ 3 • S ^ 2 • X ^ 2 • S • X
-
-  t :  T • T • T ≈ Z
-  t = {!(mod-assoc ∘ inv-nf ∘ nf) (X • H • T • S • H • T • S • H • S • H • T)!}
-
-  t2 :  [ MA.T • MA.T ]ₗ ≈ [ MB.S • MB.X • MB.X • MB.H • MB.H ]ᵣ
-  t2 = by-equal-nf {!(mod-assoc ∘ inv-nf ∘ nf) (H • S • S • H • S • S • H • S • S • H   )!}
-
-  t3 :  T • T • T ≈ Z
-  t3 = by-equal-nf Eq.refl
-
--}
+  CliffordT1-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid mo) (Monoid.rawMonoid m₂) (f *)
+  CliffordT1-isomorphism = StarIsomorphism.isMonoidIsomorphism _===_ mypres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen
 

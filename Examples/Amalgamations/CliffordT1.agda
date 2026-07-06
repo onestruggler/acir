@@ -110,7 +110,7 @@ module M where
   infix 4 _~_
   _~_ = Pointwise _≈₀_ (_≡_ {A = C})
 
-  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , ε-cr) ~ ((h **) ε-cr (f x)) 
+  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , ε-cr) ~ ((h **) ε-cr (f x))
   h=⁻¹f-gen (inj₁ tt) = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen (inj₂ tt) = _≈₀_.refl , Eq.refl
 
@@ -133,7 +133,7 @@ module M where
   open PP _===_
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
-  f-wd-ax {w} {v} (left Cyclic.order) = _≈_.trans (by-assoc Eq.refl) (_≈_.axiom order-ω) 
+  f-wd-ax {w} {v} (left Cyclic.order) = _≈_.trans (by-assoc Eq.refl) (_≈_.axiom order-ω)
   f-wd-ax {w} {v} (right Cyclic.order) = _≈_.trans _≈_.assoc (_≈_.trans _≈_.assoc (_≈_.axiom order-S))
   f-wd-ax {w} {v} (mid (comm tt tt)) = _≈_.axiom comm
 
@@ -175,7 +175,7 @@ module M where
     X • S ≈⟨ trans (sym right-unit) (sym (cong refl (axiom order-X))) ⟩
    (X • S) • (X • X) ≈⟨ trans (sym left-unit) (sym (cong (axiom order-S) refl)) ⟩
    (S ^ 4) • (X • S) • (X • X) ≈⟨ by-assoc Eq.refl ⟩
-   (S ^ 3) • (S • X) ^ 2  • X ≈⟨ cong refl (cong (axiom order-SX) refl) ⟩ 
+   (S ^ 3) • (S • X) ^ 2  • X ≈⟨ cong refl (cong (axiom order-SX) refl) ⟩
    (S ^ 3) • ω ^ 2 • X ≈⟨ sym assoc ⟩
    (S ^ 3 • ω ^ 2) • X ≈⟨ cong (lemma-ω^n 2 (S ^ 3)) refl ⟩
    (ω ^ 2 • S ^ 3) • X ∎
@@ -193,7 +193,7 @@ module M where
   module ca = CA.Data (Pω ⊕ PS) _===_ C ε-cr f h [_]
   module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
-  
+
 
 module MA where
   data Gen : Set where
@@ -261,7 +261,7 @@ module MA where
   infix 4 _~_
   _~_ = Pointwise _≈₀_ (_≡_ {A = CT})
 
-  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , I) ~ ((h **) I (f x)) 
+  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , I) ~ ((h **) I (f x))
   h=⁻¹f-gen M.X-gen = (by-equal-nf Eq.refl) , Eq.refl
   h=⁻¹f-gen M.S-gen = (by-equal-nf Eq.refl) , Eq.refl
   h=⁻¹f-gen M.ω-gen = (by-equal-nf Eq.refl) , Eq.refl
@@ -294,7 +294,7 @@ module MA where
   h-wd-ax (inj₁ HS-cr) {u} {t} def-X = (by-equal-nf Eq.refl) , Eq.refl
   h-wd-ax (inj₁ H-cr) {u} {t} def-X = (by-equal-nf Eq.refl) , Eq.refl
   h-wd-ax (inj₂ tt) {u} {t} def-X = (by-equal-nf Eq.refl) , Eq.refl
-  
+
   open PP _===_
 
   lemma-ω : ∀ w → w • ω ≈ ω • w
@@ -476,7 +476,7 @@ module MA where
   module ca = CA.Data (M._===_) _===_ CT (inj₂ tt) f h [_]
   module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
-  
+
   open PP.NormalFormWithoutInverse (nfp (M.nfp M0.nfp)) renaming (by-equal-nf to by-nf) using ()
 
   hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h **) (inj₁ c) (f m)) ≡ (w , inj₁ c')
@@ -486,7 +486,7 @@ module MA where
   hcme H-cr M.X-gen = M.S • M.S , H-cr , Eq.refl
   hcme H-cr M.S-gen = ε , HS-cr , Eq.refl
   hcme H-cr M.ω-gen = M.ω , H-cr , Eq.refl
-  
+
   htme : ∀ m → ((h **) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
   htme M.X-gen = Eq.refl
   htme M.S-gen = Eq.refl
@@ -580,7 +580,7 @@ module MB where
   infix 4 _~_
   _~_ = Pointwise _≈₀_ (_≡_ {A = CT})
 
-  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , (inj₂ tt)) ~ ((h **) (inj₂ tt) (f x)) 
+  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , (inj₂ tt)) ~ ((h **) (inj₂ tt) (f x))
   h=⁻¹f-gen M.X-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen M.S-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen M.ω-gen = _≈₀_.refl , Eq.refl
@@ -723,7 +723,7 @@ module MB where
   module ca = CA.Data (M._===_) _===_ CT (inj₂ tt) f h [_]
   module aat = ca.Assumptions-And-Theorems h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open aat using (nfp ; nfp') public
-  
+
   open PP.NormalFormWithoutInverse (nfp (M.nfp M0.nfp)) renaming (by-equal-nf to by-nf) using ()
 
   I : CT
@@ -733,7 +733,7 @@ module MB where
   hcme T-cr M.X-gen = M.X • M.ω • M.S ^ 3 , T-cr , Eq.refl
   hcme T-cr M.S-gen = M.S , T-cr , Eq.refl
   hcme T-cr M.ω-gen = M.ω , T-cr , Eq.refl
-  
+
   htme : ∀ m → ((h **) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
   htme M.X-gen = Eq.refl
   htme M.S-gen = Eq.refl
@@ -743,7 +743,7 @@ module MB where
   htme~ M.X-gen = _≈₀_.refl , Eq.refl
   htme~ M.S-gen = _≈₀_.refl , Eq.refl
   htme~ M.ω-gen = _≈₀_.refl , Eq.refl
-  
+
   [_]ₓ = f *
 
   hcme~ : ∀ (c : C) (m : M) → let (w' , c' , p) = hcme c m in ([ c ]ₒ • f m) ≈ ([ w' ]ₓ • [ c' ]ₒ)
@@ -824,20 +824,20 @@ module CliffordT1 where
   g (inj₂ MA.ω-gen) = ω
 
   mypres = MB._===_ * MA._===_ ⋆ PackedCosetTable.f MB.ca' ⋆ PackedCosetTable.f MA.ca'
-  
+
   open PB _===_ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
   open PP _===_ using (by-assoc)
-  
+
   open PB mypres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 
-  
+
   open NormalFormWithoutInverse (nfp (M.nfp M0.nfp)) using (by-equal-nf)
 
   open import Algebra.Bundles using (Monoid)
   open import Algebra.Morphism.Structures using (module MonoidMorphisms)
   open PP _===_ renaming (•-ε-monoid to m₁ ; word-setoid to ws₁)
   open PP mypres renaming (•-ε-monoid to m₂)
-  
+
 
   open import Presentation.Morphism
 
@@ -881,7 +881,7 @@ module CliffordT1 where
   g-well-defined {.([ MB.ω • [ MB.X-gen ]ʷ ]ₗ)} {.([ [ MB.X-gen ]ʷ • MB.ω ]ₗ)} (left {.(MB.ω • [ MB.X-gen ]ʷ)} {.([ MB.X-gen ]ʷ • MB.ω)} (MB.comm {MB.X-gen})) = sym (lemma-ω X)
     where
       open _≈₁_
-    
+
       lemma-ω : ∀ w → w • ω ≈₁ ω • w
       lemma-ω [ x ]ʷ = sym (axiom comm)
       lemma-ω ε = trans left-unit (sym right-unit)
@@ -898,7 +898,7 @@ module CliffordT1 where
   g-well-defined {.([ MA.ω • [ MA.X-gen ]ʷ ]ᵣ)} {.([ [ MA.X-gen ]ʷ • MA.ω ]ᵣ)} (right {.(MA.ω • [ MA.X-gen ]ʷ)} {.([ MA.X-gen ]ʷ • MA.ω)} (MA.comm {MA.X-gen})) = sym (lemma-ω X)
     where
       open _≈₁_
-    
+
       lemma-ω : ∀ w → w • ω ≈₁ ω • w
       lemma-ω [ x ]ʷ = sym (axiom comm)
       lemma-ω ε = trans left-unit (sym right-unit)
@@ -926,32 +926,7 @@ module CliffordT1 where
   g-left-inv-gen S-gen = _≈₁_.refl
   g-left-inv-gen ω-gen = _≈₁_.refl
 
-  open MonoidMorphisms 
+  open MonoidMorphisms
 
-  Theorem-CliffordT1-iso-B*A⋆⋆ : IsMonoidIsomorphism (Monoid.rawMonoid m₁) (Monoid.rawMonoid m₂) (f *)
-  Theorem-CliffordT1-iso-B*A⋆⋆ = StarIsomorphism.isMonoidIsomorphism _===_ mypres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen
-  
-
-{-
-module Test where
-
-  open NormalForm (CliffordT1.nfp' (M.nfp' M0.nfp')) using (by-equal-nf ; nf ; inv-nf)
-  open PP CliffordT1.mypres
-  open PB CliffordT1.mypres
-
-  pattern H = [ inj₂ MA.H-gen ]ʷ
-  pattern T = [ inj₁ MB.T-gen ]ʷ
-  pattern S = [ inj₂ MA.S-gen ]ʷ
-  pattern S' = [ inj₁ MB.S-gen ]ʷ
-  pattern X = [ inj₁ MB.X-gen ]ʷ
-  pattern ω = [ inj₁ MB.ω-gen ]ʷ
-
-  t :  T • T ≈ S
-  t = {!(mod-assoc ∘ inv-nf ∘ nf) (X • H • T • S • H • T • S • H • S • H • T)!}
-
-  t2 :  [ MB.T • MB.T ]ₗ ≈ [ MA.S • MA.X • MA.X • MA.H • MA.H ]ᵣ
-  t2 = by-equal-nf {!(mod-assoc ∘ inv-nf ∘ nf) (H • S • H)!}
-
-  t3 :  T • T ≈ S
-  t3 = by-equal-nf Eq.refl
--}
+  CliffordT1-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid m₁) (Monoid.rawMonoid m₂) (f *)
+  CliffordT1-isomorphism = StarIsomorphism.isMonoidIsomorphism _===_ mypres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen

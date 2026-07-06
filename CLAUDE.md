@@ -9,60 +9,72 @@ This is the Agda formalisation accompanying the paper *"A Complete and Natural R
 ## Typechecking
 
 ```bash
-# Typecheck a single file via WSL (Agda 2.8, resolves dependencies automatically)
-wsl --exec /home/onest/.cabal/bin/agda Examples/CliffordT1.agda
-wsl --exec /home/onest/.cabal/bin/agda Examples/QutritCliffordT1.agda
-wsl --exec /home/onest/.cabal/bin/agda Zp/Mod-Lemmas.agda
+# Typecheck via WSL (Agda 2.8, resolves dependencies automatically).
+# These four roots cover the whole live library:
+wsl --exec /home/onest/.cabal/bin/agda Examples/Groups/Symmetric/Theorems.agda
+wsl --exec /home/onest/.cabal/bin/agda Examples/Amalgamations/CliffordT1.agda
+wsl --exec /home/onest/.cabal/bin/agda Examples/Amalgamations/QutritCliffordT1.agda
+wsl --exec /home/onest/.cabal/bin/agda Examples/Amalgamations/U33Di.agda
 ```
 
-Use WSL Agda 2.8 (`wsl --exec /home/onest/.cabal/bin/agda`) for all files. The Windows install (Agda 2.6.5 nightly at `C:\Users\onest\Downloads\Agda-nightly-win64\Agda-nightly\bin\agda.exe`) is outdated and cannot typecheck `Zp/` files because `Tactic.RingSolver` requires Agda 2.8.
+Use WSL Agda 2.8 (`wsl --exec /home/onest/.cabal/bin/agda`) for all files. The WSL install uses its own stdlib at `/home/onest/.agda/lib/agda-stdlib/`. The `.agda-lib` file (`qupit.agda-lib`) includes `.` and depends on `standard-library`.
 
-The WSL install uses its own stdlib at `/home/onest/.agda/lib/agda-stdlib/`. The `.agda-lib` file (`qupit.agda-lib`) includes `.` and depends on `standard-library`.
+**Always re-typecheck the four roots above after any edit to library files.** From PowerShell, invoke WSL directly (Git-Bash mangles the Linux path).
 
 ## Architecture
 
 The library is layered bottom-up:
 
-### Layer 1 — Free Monoid (`Word/`)
-- **`Word/Base.agda`**: The `Word X` type (free monoid over generators `X`): constructors `[_]ʷ`, `ε`, `_•_`. Also defines `wmap`, `wconcat`, `wfoldr`, `wfoldl`, `_*` (extend a function on generators to words), `_**`/`_⋆⋆` (stateful fold variants for coset enumeration), `WRel X = Rel (Word X) 0ℓ`.
-- **`Word/Properties.agda`**: `wmap`-fusion lemmas, `≡-dec` (decidable equality), `lemma-f*-w^n`, and deprecated aliases.
+### Layer 0 — Notations (`Notations.agda`)
+Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`₄₊` (overloaded over ℕ and Fin), and the `auto` pattern (= `Eq.refl`).
 
-### Layer 2 — Group Presentations (`Presentation/`)
-- **`Presentation/Base.agda`**: Parameterised by a relation `Γ : WRel X`. Defines `_≈_` as the congruence closure of `Γ` extended with monoid axioms (refl/sym/trans/cong/assoc/left-unit/right-unit/axiom). `Alphabet = X`. Also helper combinators `cleft_`, `cright_`, `_reversed`.
-- **`Presentation/Properties.agda`**: Proves `_≈_` is an `IsEquivalence`; builds `Setoid`, `Magma`, `Semigroup`, `Monoid` bundles. Contains the `mod-assoc`/`by-assoc` tactic (normalise associativity via list roundtrip), `NFProperty`/`NFProperty'`/`SNFProperty`/`AlmostNFProperty` records, and extensive word-power lemmas (`^`, `^'`, `lemma-^^`, `lemma-^-+`, etc.).
-- **`Presentation/Morphism.agda`**: Parameterised by two presentations `Γ`, `Δ`. Contains `Star-Congruence`, `Congruence`, `StarHomomorphism`, `GenHomomorphism`, `StarMonomorphism`, `StarIsomorphism`, `StarGroupHomomorphism` — all building `IsMonoidHomomorphism`/`IsMonoidMonomorphism`/`IsMonoidIsomorphism` witnesses from generator-level data.
-- **`Presentation/Reidemeister-Schreier.agda`**: The core injectivity/surjectivity engine. `Star-Injective-Simplified` proves `f*` is injective given a left inverse `g` on generators. `Star-Surjective` proves surjectivity.
-- **`Presentation/CosetNF.agda`**: Coset normal form construction. Given a right action `h : C → Y → Word X × C` (coset table) and a section `[_] : C → Word Y`, constructs an `NFProperty` for the larger presentation using Reidemeister–Schreier.
-- **`Presentation/GroupLike.agda`**: `Grouplike` record capturing group-like axioms (inverses), and `Group-Lemmas` proving uniqueness of inverses and congruence.
+### Layer 1 — Free monoid (`Word/`)
+- **`Word/Base.agda`**: the `Word X` type (free monoid over generators `X`): constructors `[_]ʷ`, `ε`, `_•_`; powers `_^_`/`_^'_`; `wmap`, `wconcat`, `wconcatmap` and its postfix notation `_*` (so `(f *)` extends `f : X → Word Y` to words); folds `wfoldr`/`wfoldl`; the stateful traversals `_**`/`_**'` that drive coset enumeration; conjugation helpers `_ʰ`/`_ⁿ`/`_ʰ'`/`_ⁿ'`; `WRel X = Rel (Word X) 0ℓ`.
+- **`Word/Properties.agda`**: `wmap`/`wconcat` fusion laws, `lemma-*-∘`, `lemma-f*-w^n`, and `≡-dec` (decidable equality of words).
+
+### Layer 2 — Group presentations (`Presentation/`)
+- **`Base.agda`**: parameterised by `Γ : WRel X`. `_===_` is the raw relation; `_≈_` its congruence closure (refl/sym/trans/cong/assoc/left-unit/right-unit/axiom); `refl'` lifts `_≡_`; combinators `cleft_`, `cright_`, `_reversed`; `Alphabet = X`.
+- **`Properties.agda`**: `≈-isEquivalence`, `word-setoid`, magma/semigroup/monoid structures and bundles; the associativity solvers (`to-list`/`from-list`, `mod-assoc`, `by-assoc`, `by-assoc-and`, and the pattern-guided `Pattern-Assoc.special-assoc`); word-power lemmas (`lemma-^-+`, `lemma-^^`, `word-comm`, …); `wfoldr`/`wfoldl` congruence lemmas. Also re-exports the normal-form records from `Normalization.Base` for compatibility.
+- **`Semantics.agda`**: `Soundness` and `Completeness` of a semantics between two setoids.
+- **`Definitions.agda`**: `_IsPresentationOf_` (group), `_IsMonoidPresentationOf_`, and `module Relative` (alias of `Presentation.Semantics`).
+- **`GroupLike.agda`**: `Grouplike` (every generator has a left inverse) and `Group-Lemmas` (`_⁻¹`, cancellation, uniqueness of inverses, the group `•-ε-group`).
+- **`Morphism.agda`**: parameterised by presentations `Γ`, `Δ`. Builders turning generator-level data into `IsMonoidHomomorphism`/`Monomorphism`/`Isomorphism` and the group versions, for both `(f *)` and `wmap f`.
+- **`Reidemeister-Schreier.agda`**: the injectivity/surjectivity engine. `Star-Injective-Simplified` proves `(f *)` injective given a left inverse on generators; `Star-Injective-Full` (and its setoid variant) does coset enumeration and provides the Schreier section, right/left normal forms.
 
 ### Layer 3 — Constructions (`Presentation/Construct/`)
-- **`Base.agda`**: Amalgamated product construction `_⊕_` on `WRel`.
-- **`Properties/DirectProduct.agda`**, **`SemiDirectProduct.agda`**, **`NDirectProduct.agda`**: Lifts `NFProperty` through products.
-- **`Properties/Amalgamation.agda`**: Amalgamated free product with coset NF.
+- **`Base.agda`**: amalgamated product `_⊕_` and related combinators on `WRel`.
+- **`Properties/DirectProduct.agda`**, **`SemiDirectProduct.agda`**, **`SemiDirectProduct2.agda`**, **`NDirectProduct.agda`**, **`SugarProduct.agda`**: lift normal-form witnesses through the constructions.
+- **`Properties/Amalgamation.agda`**: amalgamated free product with coset normal form (`AmalDataNF`, `ANF`).
 
-### Layer 4 — Specific Groups (`Presentation/Groups/`)
-- **`Cyclic.agda`**: Cyclic group ℤ/nℤ presentation and `NFProperty`.
-- **`Sn.agda`**: Symmetric group Sₙ via the Reidemeister–Schreier method inductively. Exports `pres n`, `nfp n`.
-- **`SnD.agda`**: Wreath-product / direct-product extensions of Sₙ.
-- **`Trivial.agda`**: Trivial group presentation.
-- **`Clifford1.agda`**, **`Clifford2.agda`**: Clifford group presentations (qubit case).
-- **`S16*.agda`**, **`Symplectic2-Lemmas.agda`**: Specialised presentations for the paper.
+### Layer — Circuits (`Circuit/`)
+- **`Base.agda`**: parameterised by `Gate : ℕ → Set`. Wire-indexed generators `Gen`, `Circuit n = Word (Gen n)`, shifts `_↑`/`_↥ᵏ_`, and `Lift-Relation` extending any gate relation with the structural rules `cong↑`, `comm₁`, `comm₂`.
+
+### Layer — Normalization (`Normalization/`)
+- **`Base.agda`**: parameterised by `Γ : WRel X`. The normal-form witnesses `NormalFormWithoutInverse`, `NormalForm`, `BijectiveNormalForm`, `WeakNormalForm`; `UniqueNormalForm` and `by-normalization` (soundness + unique NF ⇒ completeness).
+- **`CosetNF.agda`**: coset normal forms via Reidemeister–Schreier: `lemma-**-act` (letters-to-words action law), `module Data` (single level), `Data-CT` / `PackedCosetTable` (coset tables with a distinguished identity coset), `CosetTower` (iterate up an ℕ-indexed family).
+
+### Layer 4 — Specific groups (`Presentation/Groups/`)
+- **`Cyclic.agda`**: ℤ/nℤ presentation with `pres n`, `nfp n`, `nfp' n`.
+- **`Sn.agda`**: symmetric group Sₙ via inductive Reidemeister–Schreier; exports `pres n`, `rel n`, `nfp n`, `nfp' n`.
+- **`SnD.agda`**: the wreath product ℤ/4ℤ ≀ Sₙ as a semidirect product.
+- **`Trivial.agda`**: the trivial group (two presentations, proved isomorphic).
 
 ### Layer 5 — Examples (`Examples/`)
-- **`CliffordT1.agda`**: Proves completeness for the qubit Clifford+T gate set.
-- **`QutritCliffordT1.agda`**: Proves completeness for the qutrit Clifford+T gate set.
-- **`U33Di.agda`**: Proves the group U₃(ℤ[½,i]) is isomorphic to a given presentation. Requires the external `CliffordCCS` library (not in this repo).
+- **`Groups/Symmetric/`**: completeness of the circuit presentation of Sₙ. `Theorems.agda` collects the main results (unique normal form, soundness, completeness for the loose endofunction semantics and the tight permutation semantics, and `IsPresentationOf`). Support: `Syntactics`, `Cosets`, `Normalization`, `Loose/*`, `Tight/*`.
+- **`Amalgamations/CliffordT1.agda`**: the qubit Clifford+T gate set as an amalgamated product, ending in a monoid isomorphism.
+- **`Amalgamations/QutritCliffordT1.agda`**: the qutrit Clifford+T analogue.
+- **`Amalgamations/U33Di.agda`**: U₃(ℤ[½,i]) presented as a two-level amalgamated product.
 
-### Research files (`N/`)
-Large collection of in-progress files for the multi-qudit case. Not yet part of the clean library layer.
-
-## Key Conventions (existing codebase)
+## Key conventions
 
 - `_===_` always means the raw relation (the axioms); `_≈_` always means the congruence closure.
-- `[_]ʷ` injects a generator into `Word`. `[_]ₗ`/`[_]ᵣ` are used for left/right embeddings in products.
-- `(f *)` extends `f : X → Word Y` to `Word X → Word Y` via `wconcat ∘ wmap f`.
-- `nfp` is the standard name for an `NFProperty` witness.
-- `by-equal-nf` proves `w ≈ v` from `nf w ≡ nf v`; `by-assoc` proves `w ≈ v` from `to-list w ≡ to-list v`.
+- `[_]ʷ` injects a generator into `Word`. `[_]ₗ`/`[_]ᵣ` are left/right embeddings in products.
+- `(f *)` extends `f : X → Word Y` to `Word X → Word Y` (postfix `_*` = `wconcatmap`).
+- `(h **)` extends a coset action `h : C → Y → Word X × C` to words, threading the coset.
+- `nfp` (`NormalFormWithoutInverse`) and `nfp'` (`NormalForm`) are the standard names for normal-form witnesses.
+- `by-equal-nf` proves `w ≈ v` from `nf w ≡ nf v`; `by-assoc` proves `w ≈ v` from `to-list w ≡ to-list v`; `special-assoc` re-brackets guided by pattern words built from `□`.
+- Files follow the agda-stdlib style guide (see `style-guide.md`): 72-char banner headers with library line `-- Presentations of groups`, `{-# OPTIONS --safe #-}`, imports sorted with `using` lists, `private variable` blocks, sentence-case section separators.
+- `Examples/Groups/Symmetric/Theorems.agda` is the style exemplar: it re-states the main theorems with definitions imported openly and proofs imported qualified.
 
 ## Stdlib compatibility notes
 

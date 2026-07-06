@@ -1,37 +1,41 @@
-Presentation Lib
+# Presentation Lib — structure
 
+## Notations
+Numeral and successor patterns shared by the whole library.
 
-# Word
-## Base
-## Properties
+## Word
+- Base — the free monoid `Word X`, `(f *)`, `(h **)`
+- Properties — functor fusion laws, decidable equality
 
-# Presentation
-## Base
-## Properties
-## RS
+## Presentation
+- Base — the congruence closure `_≈_` of a raw relation `_===_`
+- Properties — setoid/monoid structure, associativity solvers, powers
+- Semantics — soundness / completeness between setoids
+- Definitions — `_IsPresentationOf_` and friends
+- GroupLike — inverses and the group of words
+- Morphism — homo/mono/isomorphism builders for `(f *)`
+- Reidemeister-Schreier — the injectivity engine
+- Construct — products: direct, semidirect, n-fold, sugar, amalgamated
+- Groups — concrete presentations: Cyclic, Sn, SnD, Trivial
 
-# Circuit
+## Circuit
+- Base — wire-indexed gates, circuits, and structural lifting rules
 
-# Normalization
-## Normal-Form
-## CosetNF
+## Normalization
+- Base — normal-form witnesses, `UniqueNormalForm`, `by-normalization`
+- CosetNF — coset normal forms, coset tables, coset towers
 
-# Examples
-## Groups
-### Symmetric
-#### Theorems
+## Examples
 
-     Thoerems collects main properties of the presentation. The
-     purpose of this file to 1) display major properties; 2) separate
-     statements from proofs. To acheieve 2) definitions that are used
-     in the statement are imported and opened, while the properties
-     used in the proofs are qualified imported but not
-     opened. Similarly for other files named Theorems.
-     
-## Amalgamation
+### Groups/Symmetric
+`Theorems.agda` collects the main properties of the presentation.  Its
+purpose is 1) to display the major properties and 2) to separate
+statements from proofs: definitions used in statements are imported
+and opened, while the properties used in the proofs are imported
+qualified but not opened.  Similarly for other files named Theorems.
 
-   Completeness relations helps the understanding of the group
-   structure. Here we give an example by showing a group is an
-   amalgatmated product of two of its subgroups using complete
-   relations.
-
+### Amalgamations
+Complete relation sets illuminate group structure.  These examples
+show a group is an amalgamated product of two of its subgroups using
+complete relations: the qubit and qutrit Clifford+T gate sets, and
+U₃(ℤ[½,i]).

@@ -1,47 +1,33 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Normal-form properties for amalgamated products of group presentations.
+-- Normal-form properties for amalgamated products of group
+-- presentations
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}
 
-open import Level using (0ℓ)
+module Presentation.Construct.Properties.Amalgamation where
 
-open import Relation.Binary.PropositionalEquality as Eq renaming ([_] to [_]') using ( _≡_ ; inspect)
-open import Relation.Binary using (IsEquivalence ; Setoid ; Rel)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
-open import Function.Definitions using (Injective ; Surjective)
+open import Data.List using (List ; [] ; _∷_ ; _++_)
 open import Data.Product using (_,_ ; _×_ ; proj₁ ; proj₂)
-open import Data.Sum.Properties using (inj₁-injective ; inj₂-injective)
-
+open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
+  using (≡×≡⇒≡)
+open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
+open import Data.Sum.Properties using (inj₁-injective)
+open import Data.Unit using (⊤ ; tt)
+open import Function using (_∘_ ; _∋_)
+open import Relation.Binary using (Setoid)
+open import Relation.Binary.PropositionalEquality as Eq
+  renaming ([_] to [_]') using (_≡_ ; inspect ; setoid)
 import Relation.Binary.Reasoning.Setoid as SR
-
 
 open import Word.Base
 open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open import Normalization.CosetNF
-
-open import Presentation.Reidemeister-Schreier
-
 open import Presentation.Construct.Base
-
-
-module Presentation.Construct.Properties.Amalgamation where
-
-open import Relation.Binary.Definitions using (DecidableEquality ; Decidable)
-open import Relation.Binary.Morphism.Structures using (IsRelMonomorphism)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; setoid)
-import Relation.Binary.PropositionalEquality as Eq
-open import Relation.Nullary.Decidable using (via-injection)
-open import Function.Definitions using (Injective)
-open import Function.Bundles using (Injection)
-open import Function using (_∘_ ; _∋_)
-open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
-open import Data.Unit using (⊤ ; tt)
-open import Data.List hiding ([_])
+open import Normalization.CosetNF
 
 
 

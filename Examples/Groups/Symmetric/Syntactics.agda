@@ -12,8 +12,9 @@ open import Data.Nat using (ℕ)
 open import Data.Product using (_,_)
 import Relation.Binary.Reasoning.Setoid as SR
 
-open import Word.Base
 open import Notations
+open import Word.Base
+
 open import Presentation.GroupLike
 import Circuit.Base
 import Presentation.Base as PB
@@ -22,27 +23,30 @@ import Presentation.Properties as PP
 module Examples.Groups.Symmetric.Syntactics where
 
 private variable
-  n :  ℕ
-  
+  n : ℕ
+
 ------------------------------------------------------------------------
 -- Gate type
 
+-- The one generating gate of Sₙ: the transposition of two adjacent
+-- wires.
 data Gate : ℕ → Set where
   σ-gate : Gate 2
 
 ------------------------------------------------------------------------
--- Syntactics framework
+-- Syntactic framework
 
 private module SC = Circuit.Base Gate
 open SC using (Gen ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_; Circuit) public
 
 pattern σ-gen = gate₂ σ-gate
 
+-- The transposition as a one-letter circuit.
 σ : Word (Gen (₂₊ n))
 σ = [ σ-gen ]ʷ
 
 ------------------------------------------------------------------------
--- Group-specific relation: order and braid only; no structural rules
+-- Group-specific relations: order and braid only; no structural rules
 
 infix 4 _SRel,_===_
 data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
@@ -65,12 +69,13 @@ grouplike {₁₊ n} (g ↥) with grouplike {n} g
 ... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf
 
 ------------------------------------------------------------------------
--- lemma-comm : w ↑ ↑ • [σ]ʷ ≈ [σ]ʷ • w ↑ ↑   (at _VRel,_===_ (₂₊ n))
+-- Doubly-shifted circuits commute with σ
 
+-- lemma-comm : w ↑ ↑ • σ ≈ σ • w ↑ ↑   (at _VRel,_===_ (₂₊ n))
 lemma-comm : let open PB ( (₂₊ n) VRel,_===_ ) in
 
   ∀ (w : Circuit n) → w ↑ ↑ • σ ≈ σ • w ↑ ↑
-  
+
 lemma-comm {n} ε = PB._≈_.trans PB._≈_.left-unit (PB._≈_.sym PB._≈_.right-unit)
   where P = _VRel,_===_ (₂₊ n) ; open PB P
 lemma-comm {n} [ g ]ʷ = PB._≈_.axiom (comm₂ σ-gate g)

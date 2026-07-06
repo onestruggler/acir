@@ -1377,7 +1377,7 @@ module TwoLevel-Simplified-Amal where
 
     open MonoidMorphisms 
 
-    Theorem-U33Di-iso-B*A⋆⋆ : IsMonoidIsomorphism (Monoid.rawMonoid m₂) (Monoid.rawMonoid m₁) (g *)
-    Theorem-U33Di-iso-B*A⋆⋆ = StarIsomorphism.isMonoidIsomorphism mypres _===₁_ g f g-well-defined g-left-inv-gen f-well-defined f-left-inv-gen
+    U33Di-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid m₂) (Monoid.rawMonoid m₁) (g *)
+    U33Di-isomorphism = StarIsomorphism.isMonoidIsomorphism mypres _===₁_ g f g-well-defined g-left-inv-gen f-well-defined f-left-inv-gen
 
 
