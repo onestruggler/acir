@@ -50,7 +50,7 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 
 ### Layer — Normalization (`Normalization/`)
 - **`Base.agda`**: parameterised by `Γ : WRel X`. The normal-form witnesses `NormalFormWithoutInverse`, `NormalForm`, `BijectiveNormalForm`, `WeakNormalForm`; `UniqueNormalForm` and `by-normalization` (soundness + unique NF ⇒ completeness).
-- **`CosetNF.agda`**: coset normal forms via Reidemeister–Schreier: `lemma-**-act` (letters-to-words action law), `module Data` (single level), `Data-CT` / `PackedCosetTable` (coset tables with a distinguished identity coset), `CosetTower` (iterate up an ℕ-indexed family).
+- **`CosetNF.agda`**: coset normal forms via Reidemeister–Schreier: `lemma-**-act` (letters-to-words action law), `module SingleLevel` (one level), `CosetTable` / `PackedCosetTable` (coset tables with a distinguished identity coset), `CosetTower` (iterate up an ℕ-indexed family).
 
 ### Layer 4 — Specific groups (`Presentation/Groups/`)
 - **`Cyclic.agda`**: ℤ/nℤ presentation with `pres n`, `nfp n`, `nfp' n`.
