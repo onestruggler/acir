@@ -27,7 +27,7 @@ open import Examples.Groups.Symmetric.Loose.Semantics
 open import Examples.Groups.Symmetric.Normalization
   using (nf-of ; NF ; inv-nf ; lemma-nf-cong ; lemma-inv-nf)
 open import Word.Base using (_•_)
-open import Word.Properties using (lemma-*)
+open import Word.Properties using (wconcatmap-[f]ʷ)
 
 private variable n : ℕ
 
@@ -123,7 +123,7 @@ private
     -- inv-nf {₂₊ n'} (x , s) is (f *)(inv-nf x) • [ s ]ᶜ; bridge to the ↑ form
     to↑ : ∀ (x : NF (₁₊ n')) (s : C (₁₊ n')) k
         → ⟦ inv-nf {(₂₊ n')} (x , s) ⟧ k ≡ ⟦ inv-nf {(₁₊ n')} x ↑ • [ s ]ᶜ ⟧ k
-    to↑ x s k = Eq.cong (λ z → ⟦ z • [ s ]ᶜ ⟧ k) (lemma-* (inv-nf {(₁₊ n')} x))
+    to↑ x s k = Eq.cong (λ z → ⟦ z • [ s ]ᶜ ⟧ k) (wconcatmap-[f]ʷ (inv-nf {(₁₊ n')} x))
     eq↑ : ∀ k → ⟦ inv-nf {(₁₊ n')} l ↑ • [ r ]ᶜ ⟧ k
               ≡ ⟦ inv-nf {(₁₊ n')} l' ↑ • [ r' ]ᶜ ⟧ k
     eq↑ k = Eq.trans (Eq.sym (to↑ l r k)) (Eq.trans (eq k) (to↑ l' r' k))

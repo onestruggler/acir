@@ -13,8 +13,7 @@ module Presentation.Properties {X : Set} (Γ : WRel X) where
 open import Data.List using (List ; [] ; _∷_ ; _++_)
 open import Data.Nat as Nat using (ℕ ; zero ; suc)
 import Data.Nat.Properties as NP
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
-import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
+open import Data.Product using (_,_)
 open import Level using (0ℓ)
 open import Relation.Binary using (IsEquivalence ; Setoid)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
@@ -380,7 +379,7 @@ lemma-ε^k=ε (₁₊ zero)  = refl
 lemma-ε^k=ε (₂₊ k) = trans left-unit (lemma-ε^k=ε (₁₊ k))
 
 ------------------------------------------------------------------------
--- Congruence lemmas for wfoldr / wfoldl / _⋆⋆
+-- Congruence lemmas for wfoldr / wfoldl
 
 lemma-wfoldr :
   {X Y : Set} {_⊕_ : X → Y → Y} (R : Y → Y → Set) →
@@ -405,38 +404,6 @@ lemma-wfoldl {_⊕_ = _⊕_} R hyp (w • w₁) eq
   with lemma-wfoldl R hyp w eq
 ... | ih with (let _⊕'_ = wfoldl _⊕_ in lemma-wfoldl R hyp w₁ {_ ⊕' w} {_ ⊕' w})
 ... | ih2 = ih2 ih
-
-lemma-⋆⋆ :
-  {Y X C : Set} {_⊕_ : C → Y → Word X × C}
-  (RX : Word X → Word X → Set)
-  (RC : C → C → Set) →
-  let R = PW.Pointwise RX RC in
-  (rx-cong : ∀ {w v w' v'} → RX w w' → RX v v' → RX (w • v) (w' • v')) →
-  (rx-ε : RX ε ε) →
-  (hyp : (y : Y) → ∀ {c1 c2} → RC c1 c2 → R (c1 ⊕ y) (c2 ⊕ y)) →
-  ∀ (w : Word Y) → ∀ {c1 c2} → RC c1 c2 →
-  let _⊕'_ = _⊕_ ⋆⋆ in R (c1 ⊕' w) (c2 ⊕' w)
-lemma-⋆⋆ {Y} {X} {C} {_⊕_} RX RC rx-cong rx-ε hyp w {c1} {c2} r = fact1
-  where
-    R = PW.Pointwise RX RC
-
-    _⊕'_ : Word X × C → Y → Word X × C
-    _⊕'_ (w , c) y with c ⊕ y
-    ... | v , c' = w • v , c'
-
-    _⊕''_ = wfoldl _⊕'_
-
-    hyp' : ∀ (y : Y) → ∀ {xc1 xc2} → R xc1 xc2 → R (xc1 ⊕' y) (xc2 ⊕' y)
-    hyp' y {x1 , c1} {x2 , c2} (rx , rc) =
-      rx-cong rx (hyp y rc .proj₁) , hyp y rc .proj₂
-
-    r' : R (ε , c1) (ε , c2)
-    r' = rx-ε , r
-
-    fact : ∀ (w : Word Y) → ∀ {xc1 xc2} → R xc1 xc2 → R (xc1 ⊕'' w) (xc2 ⊕'' w)
-    fact = lemma-wfoldl {_⊕_ = _⊕'_} R hyp'
-
-    fact1 = fact w r'
 
 ------------------------------------------------------------------------
 -- Re-exports

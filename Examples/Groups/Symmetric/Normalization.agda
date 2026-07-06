@@ -382,12 +382,12 @@ ext k = record
   ; [_]       = [_]ᶜ
   ; h=⁻¹f-gen = ⁻¹[⇑]-gen'
   ; h-wd-ax   = ⁻¹[⇑]-wd''
-  ; f-wd-ax   = λ x → Eq.subst₂ _≈_ (Eq.sym (lemma-* _)) (Eq.sym (lemma-* _))
+  ; f-wd-ax   = λ x → Eq.subst₂ _≈_ (Eq.sym (wconcatmap-[f]ʷ _)) (Eq.sym (wconcatmap-[f]ʷ _))
                                 (PB.axiom (cong↑ x))
   ; [I]≈ε     = _≈_.refl
   ; h=ract    = λ c b →
       Eq.subst (λ x → _≈_ ([ c ]ᶜ • [ b ]ʷ) (x • [ ract c b .proj₂ ]ᶜ))
-               (Eq.sym (lemma-* (ract c b .proj₁)))
+               (Eq.sym (wconcatmap-[f]ʷ (ract c b .proj₁)))
                (lemma-ract c b)
   }
   where
@@ -433,7 +433,7 @@ nfp'-t (suc k) = T.nfp'-tower ext base1' k
 --
 -- nf-of, inv-nf and NF are the coset tower's canonical normal-form
 -- data.  Note inv-nf uses the word-lift (f *) rather than _↑; the two
--- agree up to Word.Properties.lemma-*.
+-- agree up to Word.Properties.wconcatmap-[f]ʷ.
 
 NF : ℕ → Set
 NF n = NormalForm.NF (nfp'-t n)
