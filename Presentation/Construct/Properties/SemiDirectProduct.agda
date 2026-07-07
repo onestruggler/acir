@@ -90,7 +90,7 @@ module _
   conj-congN h {ns} {ns'} (axiom x) = conj-hypn h x
 
   conj-congNH : ∀ h {ns ns'} → ns ≈₁ ns' → conjss h ns ≈₁ conjss h ns'
-  conj-congNH = lemma-wfoldr _≈₁_ _≈₁_ conj-congN
+  conj-congNH = wfoldr-cong _≈₁_ _≈₁_ conj-congN
 
   lemma-conjss-on-ε : ∀ h → conjss h ε ≈₁ ε
   lemma-conjss-on-ε [ x ]ʷ = _≈₁_.refl

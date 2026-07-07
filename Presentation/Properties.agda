@@ -120,7 +120,7 @@ module GenCongruence {B : Set} (Δ : WRel B)
 -- Associativity solver
 --
 -- The solver lives in Presentation.Tactic.AssociativitySolver; imported
--- here (not re-exported) for word-comm's use of special-assoc.  Other
+-- here (not re-exported) for comm⇒pow-comm's use of special-assoc.  Other
 -- clients should import AssociativitySolver directly.
 
 open import Presentation.Tactic.AssociativitySolver Γ
@@ -128,41 +128,41 @@ open import Presentation.Tactic.AssociativitySolver Γ
 ------------------------------------------------------------------------
 -- Word power lemmas
 
-word-comm : ∀ {w} {v} a b →
+comm⇒pow-comm : ∀ {w} {v} a b →
   w • v ≈ v • w → w ^ a • v ^ b ≈ v ^ b • w ^ a
-word-comm {w} {v} zero    zero    eq = refl
-word-comm {w} {v} zero    (₁₊ b) eq = trans left-unit (sym right-unit)
-word-comm {w} {v} (₁₊ a) zero    eq = trans right-unit (sym left-unit)
-word-comm {w} {v} (₁₊ zero) (₁₊ b@(₁₊ b')) eq =
+comm⇒pow-comm {w} {v} zero    zero    eq = refl
+comm⇒pow-comm {w} {v} zero    (₁₊ b) eq = trans left-unit (sym right-unit)
+comm⇒pow-comm {w} {v} (₁₊ a) zero    eq = trans right-unit (sym left-unit)
+comm⇒pow-comm {w} {v} (₁₊ zero) (₁₊ b@(₁₊ b')) eq =
   begin w • v ^ ₁₊ b       ≈⟨ sym assoc ⟩
     (w • v) • v ^ b          ≈⟨ cong eq refl ⟩
     (v • w) • v ^ b          ≈⟨ assoc ⟩
-    v • w • v ^ b            ≈⟨ cong refl (word-comm 1 b eq) ⟩
+    v • w • v ^ b            ≈⟨ cong refl (comm⇒pow-comm 1 b eq) ⟩
     v • v ^ b • w            ≈⟨ sym assoc ⟩
     v ^ ₁₊ b • w ∎
   where open SR word-setoid
-word-comm {w} {v} (₁₊ a@(₁₊ a')) (₁₊ zero) eq =
+comm⇒pow-comm {w} {v} (₁₊ a@(₁₊ a')) (₁₊ zero) eq =
   begin (w • w ^ ₁₊ a') • v  ≈⟨ assoc ⟩
-    w • w ^ ₁₊ a' • v         ≈⟨ cong refl (word-comm a 1 eq) ⟩
+    w • w ^ ₁₊ a' • v         ≈⟨ cong refl (comm⇒pow-comm a 1 eq) ⟩
     w • v • w ^ ₁₊ a'         ≈⟨ sym assoc ⟩
     (w • v) • w ^ ₁₊ a'       ≈⟨ cong eq refl ⟩
     (v • w) • w ^ ₁₊ a'       ≈⟨ assoc ⟩
     v • w • w ^ ₁₊ a' ∎
   where open SR word-setoid
-word-comm (₁₊ zero)       (₁₊ zero)       eq = eq
-word-comm {w} {v} (₂₊ a) (₂₊ b) eq =
+comm⇒pow-comm (₁₊ zero)       (₁₊ zero)       eq = eq
+comm⇒pow-comm {w} {v} (₂₊ a) (₂₊ b) eq =
   begin w ^ ₂₊ a • v ^ ₂₊ b
       ≈⟨ special-assoc ((□ • □) • □ • □) (□ • (□ • □) • □) Eq.refl ⟩
     w • (w ^ (₁₊ a) • v) • v ^ (₁₊ b)
-      ≈⟨ cong refl (cong (word-comm (₁₊ a) 1 eq) refl) ⟩
+      ≈⟨ cong refl (cong (comm⇒pow-comm (₁₊ a) 1 eq) refl) ⟩
     w • (v • w ^ (₁₊ a)) • v ^ (₁₊ b)
       ≈⟨ special-assoc (□ • (□ • □) • □) (□ ^ 2 • □ ^ 2) Eq.refl ⟩
     (w • v) • (w ^ (₁₊ a) • v ^ (₁₊ b))
-      ≈⟨ cong eq (word-comm (₁₊ a) (₁₊ b) eq) ⟩
+      ≈⟨ cong eq (comm⇒pow-comm (₁₊ a) (₁₊ b) eq) ⟩
     (v • w) • (v ^ (₁₊ b) • w ^ (₁₊ a))
       ≈⟨ special-assoc (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) Eq.refl ⟩
     v • (w • v ^ (₁₊ b)) • w ^ (₁₊ a)
-      ≈⟨ cong refl (cong (word-comm 1 (₁₊ b) eq) refl) ⟩
+      ≈⟨ cong refl (cong (comm⇒pow-comm 1 (₁₊ b) eq) refl) ⟩
     v • (v ^ (₁₊ b) • w) • w ^ (₁₊ a)
       ≈⟨ special-assoc (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) Eq.refl ⟩
     v ^ ₂₊ b • w ^ ₂₊ a ∎
@@ -182,33 +182,33 @@ word-comm {w} {v} (₂₊ a) (₂₊ b) eq =
     w • (w • (w ^ ₁₊ n)) ∎
   where open SR word-setoid
 
-lemma-^-suc : ∀ (w : Word X) a → w ^ ₁₊ a ≈ w • w ^ a
-lemma-^-suc w zero    = sym right-unit
-lemma-^-suc w (₁₊ a) = refl
+^-suc : ∀ (w : Word X) a → w ^ ₁₊ a ≈ w • w ^ a
+^-suc w zero    = sym right-unit
+^-suc w (₁₊ a) = refl
 
-lemma-^-+ : ∀ (w : Word X) a b → w ^ (a Nat.+ b) ≈ w ^ a • w ^ b
-lemma-^-+ w zero          b       = sym left-unit
-lemma-^-+ w (₁₊ zero)    zero    = sym right-unit
-lemma-^-+ w (₁₊ zero)    (₁₊ b) = refl
-lemma-^-+ w (₂₊ a) b =
+^-+ : ∀ (w : Word X) a b → w ^ (a Nat.+ b) ≈ w ^ a • w ^ b
+^-+ w zero          b       = sym left-unit
+^-+ w (₁₊ zero)    zero    = sym right-unit
+^-+ w (₁₊ zero)    (₁₊ b) = refl
+^-+ w (₂₊ a) b =
   begin w ^ suc (₁₊ a Nat.+ b)        ≈⟨ refl ⟩
-    w • w ^ (₁₊ a Nat.+ b)             ≈⟨ cong refl (lemma-^-+ w (₁₊ a) b) ⟩
+    w • w ^ (₁₊ a Nat.+ b)             ≈⟨ cong refl (^-+ w (₁₊ a) b) ⟩
     w • w ^ ₁₊ a • w ^ b              ≈⟨ sym assoc ⟩
     w ^ ₂₊ a • w ^ b ∎
   where open SR word-setoid
 
-lemma-^-• : ∀ (w v : Word X) a → w • v ≈ v • w → (w • v) ^ a ≈ w ^ a • v ^ a
-lemma-^-• w v zero    eq = sym left-unit
-lemma-^-• w v (₁₊ zero) eq = refl
-lemma-^-• w v (₂₊ a) eq =
+^-• : ∀ (w v : Word X) a → w • v ≈ v • w → (w • v) ^ a ≈ w ^ a • v ^ a
+^-• w v zero    eq = sym left-unit
+^-• w v (₁₊ zero) eq = refl
+^-• w v (₂₊ a) eq =
   begin (w • v) • (w • v) ^ ₁₊ a
-      ≈⟨ cong refl (lemma-^-• w v (₁₊ a) eq) ⟩
+      ≈⟨ cong refl (^-• w v (₁₊ a) eq) ⟩
     (w • v) • w ^ ₁₊ a • v ^ ₁₊ a
       ≈⟨ sym assoc ⟩
     ((w • v) • w ^ ₁₊ a) • v ^ ₁₊ a
       ≈⟨ cong assoc refl ⟩
     (w • (v • w ^ ₁₊ a)) • v ^ ₁₊ a
-      ≈⟨ cong (cong refl (word-comm 1 (₁₊ a) (sym eq))) refl ⟩
+      ≈⟨ cong (cong refl (comm⇒pow-comm 1 (₁₊ a) (sym eq))) refl ⟩
     (w • (w ^ ₁₊ a • v)) • v ^ ₁₊ a
       ≈⟨ sym (cong assoc refl) ⟩
     ((w • w ^ ₁₊ a) • v) • v ^ ₁₊ a
@@ -216,38 +216,38 @@ lemma-^-• w v (₂₊ a) eq =
     (w • w ^ ₁₊ a) • v • v ^ ₁₊ a ∎
   where open SR word-setoid
 
-lemma-comm-wᵃwᵇ : ∀ (w : Word X) a b → w ^ a • w ^ b ≈ w ^ b • w ^ a
-lemma-comm-wᵃwᵇ w zero    zero    = refl
-lemma-comm-wᵃwᵇ w zero    (₁₊ b) = trans left-unit (sym right-unit)
-lemma-comm-wᵃwᵇ w (₁₊ a) zero    = trans right-unit (sym left-unit)
-lemma-comm-wᵃwᵇ w (₁₊ zero) (₁₊ zero) = refl
-lemma-comm-wᵃwᵇ w (₁₊ zero) (₂₊ b) =
-  begin w • w • w ^ ₁₊ b                ≈⟨ cong refl (lemma-comm-wᵃwᵇ w 1 (₁₊ b)) ⟩
+pow-comm : ∀ (w : Word X) a b → w ^ a • w ^ b ≈ w ^ b • w ^ a
+pow-comm w zero    zero    = refl
+pow-comm w zero    (₁₊ b) = trans left-unit (sym right-unit)
+pow-comm w (₁₊ a) zero    = trans right-unit (sym left-unit)
+pow-comm w (₁₊ zero) (₁₊ zero) = refl
+pow-comm w (₁₊ zero) (₂₊ b) =
+  begin w • w • w ^ ₁₊ b                ≈⟨ cong refl (pow-comm w 1 (₁₊ b)) ⟩
     w • w ^ ₁₊ b • w                     ≈⟨ sym assoc ⟩
     (w • w ^ ₁₊ b) • w ∎
   where open SR word-setoid
-lemma-comm-wᵃwᵇ w (₂₊ a) (₁₊ zero) =
+pow-comm w (₂₊ a) (₁₊ zero) =
   begin (w • w ^ ₁₊ a) • w              ≈⟨ assoc ⟩
-    w • w ^ ₁₊ a • w                     ≈⟨ cong refl (lemma-comm-wᵃwᵇ w (₁₊ a) 1) ⟩
+    w • w ^ ₁₊ a • w                     ≈⟨ cong refl (pow-comm w (₁₊ a) 1) ⟩
     w • w • w ^ ₁₊ a ∎
   where open SR word-setoid
-lemma-comm-wᵃwᵇ w (₂₊ a) (₂₊ b) =
+pow-comm w (₂₊ a) (₂₊ b) =
   begin (w • w ^ ₁₊ a) • w • w ^ ₁₊ b
       ≈⟨ sym assoc ⟩
     ((w • w ^ ₁₊ a) • w) • w ^ ₁₊ b
       ≈⟨ cong assoc refl ⟩
     (w • w ^ ₁₊ a • w) • w ^ ₁₊ b
-      ≈⟨ cong (cong refl (lemma-comm-wᵃwᵇ w (₁₊ a) 1)) refl ⟩
+      ≈⟨ cong (cong refl (pow-comm w (₁₊ a) 1)) refl ⟩
     (w • w • w ^ ₁₊ a) • w ^ ₁₊ b
       ≈⟨ assoc ⟩
     w • (w • w ^ ₁₊ a) • w ^ ₁₊ b
       ≈⟨ cong refl assoc ⟩
     w • w • w ^ ₁₊ a • w ^ ₁₊ b
-      ≈⟨ cong refl (cong refl (lemma-comm-wᵃwᵇ w (₁₊ a) (₁₊ b))) ⟩
+      ≈⟨ cong refl (cong refl (pow-comm w (₁₊ a) (₁₊ b))) ⟩
     w • w • w ^ ₁₊ b • w ^ ₁₊ a
       ≈⟨ cong refl (sym assoc) ⟩
     w • (w • w ^ ₁₊ b) • w ^ ₁₊ a
-      ≈⟨ cong refl (cong (lemma-comm-wᵃwᵇ w 1 (₁₊ b)) refl) ⟩
+      ≈⟨ cong refl (cong (pow-comm w 1 (₁₊ b)) refl) ⟩
     w • (w ^ ₁₊ b • w) • w ^ ₁₊ a
       ≈⟨ sym assoc ⟩
     (w • (w ^ ₁₊ b • w)) • w ^ ₁₊ a
@@ -257,67 +257,67 @@ lemma-comm-wᵃwᵇ w (₂₊ a) (₂₊ b) =
     (w • w ^ ₁₊ b) • w • w ^ ₁₊ a ∎
   where open SR word-setoid
 
-lemma-^^ : ∀ (w : Word X) a b → (w ^ a) ^ b ≈ w ^ (a Nat.* b)
-lemma-^^ w zero    zero    = refl
-lemma-^^ w zero    (₁₊ zero) = PB.refl
-lemma-^^ w zero    (₂₊ b) = trans left-unit (lemma-^^ w zero (₁₊ b))
-lemma-^^ w (₁₊ zero) b = refl' (Eq.cong (w ^_) (Eq.sym (NP.+-identityʳ b)))
-lemma-^^ w (₂₊ a) b =
+^^ : ∀ (w : Word X) a b → (w ^ a) ^ b ≈ w ^ (a Nat.* b)
+^^ w zero    zero    = refl
+^^ w zero    (₁₊ zero) = PB.refl
+^^ w zero    (₂₊ b) = trans left-unit (^^ w zero (₁₊ b))
+^^ w (₁₊ zero) b = refl' (Eq.cong (w ^_) (Eq.sym (NP.+-identityʳ b)))
+^^ w (₂₊ a) b =
   begin (w • w ^ ₁₊ a) ^ b
-      ≈⟨ lemma-^-• w (w ^ ₁₊ a) b (lemma-comm-wᵃwᵇ w 1 (₁₊ a)) ⟩
+      ≈⟨ ^-• w (w ^ ₁₊ a) b (pow-comm w 1 (₁₊ a)) ⟩
     w ^ b • (w ^ ₁₊ a) ^ b
-      ≈⟨ cong refl (lemma-^^ w (₁₊ a) b) ⟩
+      ≈⟨ cong refl (^^ w (₁₊ a) b) ⟩
     w ^ b • w ^ (₁₊ a Nat.* b)
-      ≈⟨ sym (lemma-^-+ w b (₁₊ a Nat.* b)) ⟩
+      ≈⟨ sym (^-+ w b (₁₊ a Nat.* b)) ⟩
     w ^ (b Nat.+ (b Nat.+ a Nat.* b)) ∎
   where open SR word-setoid
 
-lemma-^^' : ∀ (w : Word X) a b → (w ^ a) ^ b ≈ (w ^ b) ^ a
-lemma-^^' w a b =
-  begin (w ^ a) ^ b     ≈⟨ lemma-^^ w a b ⟩
+^^' : ∀ (w : Word X) a b → (w ^ a) ^ b ≈ (w ^ b) ^ a
+^^' w a b =
+  begin (w ^ a) ^ b     ≈⟨ ^^ w a b ⟩
     w ^ (a Nat.* b)     ≡⟨ Eq.cong (w ^_) (NP.*-comm a b) ⟩
-    w ^ (b Nat.* a)     ≈⟨ sym (lemma-^^ w b a) ⟩
+    w ^ (b Nat.* a)     ≈⟨ sym (^^ w b a) ⟩
     (w ^ b) ^ a ∎
   where open SR word-setoid
 
-lemma-^-cong : ∀ (w v : Word X) a → w ≈ v → w ^ a ≈ v ^ a
-lemma-^-cong w v 0         eq = refl
-lemma-^-cong w v 1         eq = eq
-lemma-^-cong w v (₂₊ a) eq =
+^-cong : ∀ (w v : Word X) a → w ≈ v → w ^ a ≈ v ^ a
+^-cong w v 0         eq = refl
+^-cong w v 1         eq = eq
+^-cong w v (₂₊ a) eq =
   begin w ^ ₂₊ a   ≈⟨ refl ⟩
-    w • w ^ ₁₊ a          ≈⟨ cong eq (lemma-^-cong w v (₁₊ a) eq) ⟩
+    w • w ^ ₁₊ a          ≈⟨ cong eq (^-cong w v (₁₊ a) eq) ⟩
     v • v ^ ₁₊ a          ≈⟨ refl ⟩
     v ^ ₂₊ a ∎
   where open SR word-setoid
 
-lemma-ε^k=ε : ∀ k → ε ^ k ≈ ε
-lemma-ε^k=ε zero        = refl
-lemma-ε^k=ε (₁₊ zero)  = refl
-lemma-ε^k=ε (₂₊ k) = trans left-unit (lemma-ε^k=ε (₁₊ k))
+ε^k=ε : ∀ k → ε ^ k ≈ ε
+ε^k=ε zero        = refl
+ε^k=ε (₁₊ zero)  = refl
+ε^k=ε (₂₊ k) = trans left-unit (ε^k=ε (₁₊ k))
 
 ------------------------------------------------------------------------
 -- Congruence lemmas for wfoldr / wfoldl
 
-lemma-wfoldr :
+wfoldr-cong :
   {X Y : Set} {_⊕_ : X → Y → Y} (R : Y → Y → Set) →
   (hyp : (a : X) → ∀ {b1 b2} → R b1 b2 → R (a ⊕ b1) (a ⊕ b2)) →
   ∀ (w : Word X) → ∀ {b1 b2} → R b1 b2 →
   let _⊕'_ = wfoldr _⊕_ in R (w ⊕' b1) (w ⊕' b2)
-lemma-wfoldr R hyp [ x ]ʷ  eq = hyp x eq
-lemma-wfoldr R hyp ε        eq = eq
-lemma-wfoldr {_⊕_ = _⊕_} R hyp (w • w₁) eq
-  with lemma-wfoldr R hyp w₁ eq
-... | ih with (let _⊕'_ = wfoldr _⊕_ in lemma-wfoldr R hyp w {w₁ ⊕' _} {w₁ ⊕' _})
+wfoldr-cong R hyp [ x ]ʷ  eq = hyp x eq
+wfoldr-cong R hyp ε        eq = eq
+wfoldr-cong {_⊕_ = _⊕_} R hyp (w • w₁) eq
+  with wfoldr-cong R hyp w₁ eq
+... | ih with (let _⊕'_ = wfoldr _⊕_ in wfoldr-cong R hyp w {w₁ ⊕' _} {w₁ ⊕' _})
 ... | ih2 = ih2 ih
 
-lemma-wfoldl :
+wfoldl-cong :
   {X Y : Set} {_⊕_ : Y → X → Y} (R : Y → Y → Set) →
   (hyp : (a : X) → ∀ {b1 b2} → R b1 b2 → R (b1 ⊕ a) (b2 ⊕ a)) →
   ∀ (w : Word X) → ∀ {b1 b2} → R b1 b2 →
   let _⊕'_ = wfoldl _⊕_ in R (b1 ⊕' w) (b2 ⊕' w)
-lemma-wfoldl R hyp [ x ]ʷ  eq = hyp x eq
-lemma-wfoldl R hyp ε        eq = eq
-lemma-wfoldl {_⊕_ = _⊕_} R hyp (w • w₁) eq
-  with lemma-wfoldl R hyp w eq
-... | ih with (let _⊕'_ = wfoldl _⊕_ in lemma-wfoldl R hyp w₁ {_ ⊕' w} {_ ⊕' w})
+wfoldl-cong R hyp [ x ]ʷ  eq = hyp x eq
+wfoldl-cong R hyp ε        eq = eq
+wfoldl-cong {_⊕_ = _⊕_} R hyp (w • w₁) eq
+  with wfoldl-cong R hyp w eq
+... | ih with (let _⊕'_ = wfoldl _⊕_ in wfoldl-cong R hyp w₁ {_ ⊕' w} {_ ⊕' w})
 ... | ih2 = ih2 ih
