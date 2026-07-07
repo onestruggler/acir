@@ -21,6 +21,7 @@ open import Data.Unit using (⊤ ; tt)
 open import Word.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
+import Presentation.Tactic.AssociativitySolver as AS
 import Normalization.Base as NFBase
 open NFBase using (NormalFormWithoutInverse ; NormalForm)
 import Normalization.CosetNF as CA
@@ -102,6 +103,7 @@ module Sζ where
   h-wd-ax SS-cr {u} {t} (comm {ζ-gen}) = by-equal-nf Eq.refl , Eq.refl
 
   open PP _===_
+  open AS _===_ using (by-assoc)
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
   f-wd-ax {w} {v} Cyclic.order = _≈_.trans (by-assoc Eq.refl) (_≈_.axiom order-ζ) 
@@ -312,6 +314,7 @@ module SXζ where
   h-wd-ax XSXX-cr comm-XS-SX = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax XXSXX-cr comm-XS-SX = by-equal-nf Eq.refl , Eq.refl
   open PP _===_
+  open AS _===_ using (by-assoc)
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
   f-wd-ax {w} {v} Sζ.order-ζ = axiom order-ζ
@@ -656,6 +659,7 @@ module SXζHH where
   h-wd-ax HH-cr comm-HH-S = by-equal-nf Eq.refl , Eq.refl
   
   open PP _===_
+  open AS _===_ using (by-assoc)
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
   f-wd-ax {w} {v} SXζ.order-ζ = axiom order-ζ
@@ -886,6 +890,7 @@ module CliffordTHH where
 
 
   open PP _===_
+  open AS _===_ using (by-assoc)
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
   f-wd-ax {w} {v} SXζHH.order-ζ = axiom order-ζ
@@ -1324,6 +1329,7 @@ module CliffordTT where
   h-wd-ax (inj₂ tt) comm-THH = by-equal-nf Eq.refl , Eq.refl
 
   open PP _===_
+  open AS _===_ using (by-assoc)
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
   f-wd-ax {w} {v} SXζHH.order-ζ = axiom order-ζ
@@ -1734,6 +1740,7 @@ module CliffordH where
   h-wd-ax (inj₂ tt) (comm {HH-gen}) = by-equal-nf Eq.refl , Eq.refl
 
   open PP _===_
+  open AS _===_ using (by-assoc)
   open SR word-setoid
   
   lemma-ζ : ∀ w → w • ζ ≈ ζ • w
@@ -2109,7 +2116,8 @@ module CliffordT1 where
     comm : ∀ {gen} → ζ • [ gen ]ʷ === [ gen ]ʷ • ζ
 
   open PB _===_ using (_≈_)
-  open PP _===_ renaming (word-setoid to ws ; •-ε-monoid to mo) 
+  open PP _===_ renaming (word-setoid to ws ; •-ε-monoid to mo)
+  open AS _===_ using (by-assoc)
 
   open SR ws
   open _≈_
@@ -2319,7 +2327,8 @@ module CliffordT1-Simplified where
     comm : ∀ {gen} → ζ • [ gen ]ʷ === [ gen ]ʷ • ζ
 
   open PB _===_ using (_≈_)
-  open PP _===_ renaming (word-setoid to ws ; •-ε-monoid to mo) 
+  open PP _===_ renaming (word-setoid to ws ; •-ε-monoid to mo)
+  open AS _===_ using (by-assoc)
 
   open SR ws
   open _≈_

@@ -26,6 +26,7 @@ open import Word.Base
 open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
+import Presentation.Tactic.AssociativitySolver as AS
 open import Presentation.Construct.Base
 open import Normalization.CosetNF
 
@@ -60,7 +61,8 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   CD = amalNFC C D
 
   mypres = ( P₁ * P₂ ⋆ f₁ ⋆ f₂)
-  open PP mypres renaming (word-setoid to ws₃ ; by-assoc to by-assoc₃) using () public
+  open PP mypres renaming (word-setoid to ws₃) using () public
+  open AS mypres renaming (by-assoc to by-assoc₃) using () public
   open PB mypres renaming (Alphabet to Y ; _===_ to _===₃_ ; _≈_ to _≈₃_ ; refl' to refl'₃) using () public
 
   open _≈₃_

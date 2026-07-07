@@ -119,10 +119,11 @@ module GenCongruence {B : Set} (Δ : WRel B)
 ------------------------------------------------------------------------
 -- Associativity solver
 --
--- The solver lives in Presentation.Tactic.AssociativitySolver; it is
--- re-exported here (by-assoc, special-assoc, …) and used by word-comm.
+-- The solver lives in Presentation.Tactic.AssociativitySolver; imported
+-- here (not re-exported) for word-comm's use of special-assoc.  Other
+-- clients should import AssociativitySolver directly.
 
-open import Presentation.Tactic.AssociativitySolver Γ public
+open import Presentation.Tactic.AssociativitySolver Γ
 
 ------------------------------------------------------------------------
 -- Word power lemmas

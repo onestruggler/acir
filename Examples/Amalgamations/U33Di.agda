@@ -23,6 +23,7 @@ open import Function using (_∘_)
 open import Word.Base
 import Normalization.Base as NFBase
 import Presentation.Properties as PP
+import Presentation.Tactic.AssociativitySolver as AS
 import Presentation.Base as PB
 
 import Presentation.Construct.Properties.DirectProduct as DP
@@ -105,6 +106,7 @@ module TwoLevel-Simplified-Amal where
 
     open PB _===_ hiding (_===_)
     open PP _===_
+    open AS _===_ using (by-assoc)
 
     open PB (Cyclic.pres 4 ⊕^ 3) renaming (_≈_ to _≈₀_ ; _===_ to _===₀_ ; Alphabet to M) using ()
 
@@ -296,7 +298,8 @@ module TwoLevel-Simplified-Amal where
     open NFBase.NormalFormWithoutInverse (pres-D-nfp) renaming (by-equal-nf to bef) using ()
     open PB pres-KD renaming (_===_ to _===₂_ ; _≈_ to _≈₂_ ; refl' to refl'₂) using ()
     open PB pres-D renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
-    open PP pres-KD renaming (word-setoid to ws₂ ; by-assoc to by-assoc₂) using ()
+    open PP pres-KD renaming (word-setoid to ws₂) using ()
+    open AS pres-KD renaming (by-assoc to by-assoc₂) using ()
     open PP pres-D renaming (word-setoid to ws₁) using ()
     open PB
 
@@ -1062,7 +1065,7 @@ module TwoLevel-Simplified-Amal where
     open PB mypres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
     
     open PB Sim._===_ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_)
-    open PP Sim._===_ renaming (by-assoc to by-assoc₁) using ()
+    open AS Sim._===_ renaming (by-assoc to by-assoc₁) using ()
 
 
     open import Algebra.Bundles using (Monoid)

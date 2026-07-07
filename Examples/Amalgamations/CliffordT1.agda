@@ -21,6 +21,7 @@ open import Data.Unit using (⊤ ; tt)
 open import Word.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
+import Presentation.Tactic.AssociativitySolver as AS
 import Normalization.Base as NFBase
 open NFBase using (NormalFormWithoutInverse ; NormalForm)
 import Normalization.CosetNF as CA
@@ -131,6 +132,7 @@ module XSω where
   h-wd-ax ε-cr {u} {t} (comm {ω-gen}) = (by-equal-nf Eq.refl) , Eq.refl
 
   open PP _===_
+  open AS _===_ using (by-assoc)
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
   f-wd-ax {w} {v} (left Cyclic.order) = _≈_.trans (by-assoc Eq.refl) (_≈_.axiom order-ω)
@@ -296,6 +298,7 @@ module Clifford where
   h-wd-ax (inj₂ tt) {u} {t} def-X = (by-equal-nf Eq.refl) , Eq.refl
 
   open PP _===_
+  open AS _===_ using (by-assoc)
 
   lemma-ω : ∀ w → w • ω ≈ ω • w
   lemma-ω [ x ]ʷ = sym (axiom comm)
@@ -606,6 +609,7 @@ module TXSω where
   h-wd-ax (inj₂ tt) {u} {t} (comm {ω-gen}) = (by-equal-nf Eq.refl) , Eq.refl
 
   open PP _===_
+  open AS _===_ using (by-assoc)
 
   lemma-ω : ∀ w → w • ω ≈ ω • w
   lemma-ω [ x ]ʷ = sym (axiom comm)
@@ -826,7 +830,7 @@ module CliffordT1 where
   amalPres = TXSω._===_ * Clifford._===_ ⋆ PackedCosetTable.f TXSω.packedTable ⋆ PackedCosetTable.f Clifford.packedTable
 
   open PB _===_ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
-  open PP _===_ using (by-assoc)
+  open AS _===_ using (by-assoc)
 
   open PB amalPres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 
@@ -861,7 +865,7 @@ module CliffordT1 where
   g-well-defined {.([ TXSω.X ^ 2 ]ₗ)} {.([ ε ]ₗ)} (left {.(TXSω.X ^ 2)} {.ε} TXSω.order-X) = lemma-X^2
     where
       open _≈₁_
-      open PP _===₁_ renaming (by-assoc to by-assoc₁)
+      open AS _===₁_ renaming (by-assoc to by-assoc₁)
       lemma-X^2 : X ^ 2 ≈₁ ε
       lemma-X^2 = begin
         X ^ 2 ≈⟨ _≈₁_.refl ⟩
