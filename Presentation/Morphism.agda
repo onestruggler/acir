@@ -158,10 +158,8 @@ module GroupMorphism
   (group-like₂ : Grouplike _===₂_)
   where
 
-  open Group-Lemmas _===₁_ group-like₁
-    renaming (•-ε-group to •-ε-group₁)
-  open Group-Lemmas _===₂_ group-like₂
-    renaming (•-ε-group to •-ε-group₂)
+  open Group-Lemmas _===₁_ group-like₁ renaming (•-ε-group to •-ε-group₁)
+  open Group-Lemmas _===₂_ group-like₂ renaming (•-ε-group to •-ε-group₂)
 
   open GroupMorphisms (Group.rawGroup •-ε-group₁) (Group.rawGroup •-ε-group₂)
 
