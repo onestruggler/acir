@@ -64,9 +64,9 @@ module StarHomomorphism
   isMonoidHomomorphism = record
     { isMagmaHomomorphism = record
       { isRelHomomorphism = record { cong = f*-cong f f-well-defined }
-      ; homo = λ x y → _≈₂_.refl
+      ; homo = λ x y → refl₂
       }
-    ; ε-homo = _≈₂_.refl
+    ; ε-homo = refl₂
     }
     where open PP.StarCongruence Γ Δ
 
@@ -82,9 +82,9 @@ module GenHomomorphism
   isMonoidHomomorphism = record
     { isMagmaHomomorphism = record
       { isRelHomomorphism = record { cong = f*-cong f f-well-defined }
-      ; homo = λ x y → _≈₂_.refl
+      ; homo = λ x y → refl₂
       }
-    ; ε-homo = _≈₂_.refl
+    ; ε-homo = refl₂
     }
     where open PP.GenCongruence Γ Δ using (f*-cong)
 
@@ -175,10 +175,41 @@ module GroupMorphism
   open Group-Lemmas _===₂_ group-like₂
     renaming ( •-ε-group       to •-ε-group₂
              ; inverseˡ-unique to inverseˡ-unique₂
-             ; ⁻¹-cong         to ⁻¹-cong₂
              )
 
   open GroupMorphisms (Group.rawGroup •-ε-group₁) (Group.rawGroup •-ε-group₂)
+
+  private
+    module GL₁ = Group-Lemmas _===₁_ group-like₁
+
+  -- A monoid homomorphism between the two grouplike presentations is
+  -- automatically a group homomorphism.  h (x ⁻¹) is a left inverse of
+  -- h x — h (x ⁻¹) • h x ≈ h (x ⁻¹ • x) ≈ h ε ≈ ε — and left inverses
+  -- are unique, so h (x ⁻¹) ≈ (h x) ⁻¹.  The standard library only
+  -- derives this in the deprecated Algebra.Morphism, so we state it
+  -- once here and reuse it for (f *) and wmap f below.
+  module MonoidHom⇒GroupHom
+    (h : Word A → Word B)
+    (mono : IsMonoidHomomorphism h)
+    where
+
+    open IsMonoidHomomorphism mono using (homo ; ⟦⟧-cong ; ε-homo)
+    open RawGroup (Group.rawGroup •-ε-group₁) using () renaming (_⁻¹ to _⁻¹₁)
+    open RawGroup (Group.rawGroup •-ε-group₂) using () renaming (_⁻¹ to _⁻¹₂)
+    open SR setoid₂
+
+    ⁻¹-homo : ∀ x → h (x ⁻¹₁) ≈₂ (h x) ⁻¹₂
+    ⁻¹-homo x = inverseˡ-unique₂ (begin
+      h (x ⁻¹₁) • h x  ≈⟨ sym₂ (homo (x ⁻¹₁) x) ⟩
+      h (x ⁻¹₁ • x)    ≈⟨ ⟦⟧-cong GL₁.inverseˡ ⟩
+      h ε              ≈⟨ ε-homo ⟩
+      ε ∎)
+
+    isGroupHomomorphism : IsGroupHomomorphism h
+    isGroupHomomorphism = record
+      { isMonoidHomomorphism = mono
+      ; ⁻¹-homo              = ⁻¹-homo
+      }
 
   -- Build a group homomorphism from (f *).
   module StarGroupHomomorphism
@@ -186,35 +217,9 @@ module GroupMorphism
     (f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
     where
 
-    open PP.StarCongruence Γ Δ f f-well-defined
-    open StarHomomorphism f f-well-defined
-    open RawGroup (Group.rawGroup •-ε-group₁) renaming (_⁻¹ to _⁻¹₁)
-    open RawGroup (Group.rawGroup •-ε-group₂) renaming (_⁻¹ to _⁻¹₂)
-
-    -- (f *) maps inverses to inverses.
-    ⁻¹-homo : ∀ x → (f *) (x ⁻¹₁) ≈₂ ((f *) x) ⁻¹₂
-    ⁻¹-homo [ x ]ʷ =
-      begin
-        (f *) ([ x ]ʷ ⁻¹₁) ≈⟨ inverseˡ-unique₂ {g = (f *) [ x ]ʷ}
-              {h = (f *) ([ x ]ʷ ⁻¹₁)} (f*-cong (group-like₁ x .proj₂)) ⟩
-        (f *) [ x ]ʷ ⁻¹₂ ∎
-      where open SR setoid₂
-    ⁻¹-homo ε = refl₂
-    ⁻¹-homo (x • y) =
-      begin
-        (f *) ((x • y) ⁻¹₁) ≈⟨ f*-cong {(x • y) ⁻¹₁} {y ⁻¹₁ • x ⁻¹₁} refl₁ ⟩
-        (f *) (y ⁻¹₁ • x ⁻¹₁)         ≈⟨ refl₂ ⟩
-        (f *) (y ⁻¹₁) • (f *) (x ⁻¹₁) ≈⟨ cong₂ (⁻¹-homo y) (⁻¹-homo x) ⟩
-        ((f *) y) ⁻¹₂ • ((f *) x) ⁻¹₂ ≈⟨ refl₂ ⟩
-        (f *) (x • y) ⁻¹₂ ∎
-      where open SR setoid₂
-
-    -- (f *) is a group homomorphism.
-    isGroupHomomorphism : IsGroupHomomorphism (f *)
-    isGroupHomomorphism = record
-      { isMonoidHomomorphism = isMonoidHomomorphism
-      ; ⁻¹-homo = ⁻¹-homo
-      }
+    open StarHomomorphism f f-well-defined using (isMonoidHomomorphism)
+    open MonoidHom⇒GroupHom (f *) isMonoidHomomorphism public
+      using (⁻¹-homo ; isGroupHomomorphism)
 
   -- Build a group homomorphism from wmap f.
   module GenGroupHomomorphism
@@ -222,35 +227,9 @@ module GroupMorphism
     (f-well-defined : let f* = wmap f in ∀ {w v} → w ===₁ v → (f*) w ≈₂ (f*) v)
     where
 
-    open PP.GenCongruence Γ Δ f f-well-defined
-    open GenHomomorphism f f-well-defined hiding (f*)
-    open RawGroup (Group.rawGroup •-ε-group₁) renaming (_⁻¹ to _⁻¹₁)
-    open RawGroup (Group.rawGroup •-ε-group₂) renaming (_⁻¹ to _⁻¹₂)
-
-    -- wmap f maps inverses to inverses.
-    ⁻¹-homo : ∀ x → f* (x ⁻¹₁) ≈₂ (f* x) ⁻¹₂
-    ⁻¹-homo [ x ]ʷ =
-      begin
-        f* ([ x ]ʷ ⁻¹₁) ≈⟨ inverseˡ-unique₂ {g = f* [ x ]ʷ}
-             {h = f* ([ x ]ʷ ⁻¹₁)} (f*-cong (group-like₁ x .proj₂)) ⟩
-        f* [ x ]ʷ ⁻¹₂ ∎
-      where open SR setoid₂
-    ⁻¹-homo ε = refl₂
-    ⁻¹-homo (x • y) =
-      begin
-        f* ((x • y) ⁻¹₁)        ≈⟨ f*-cong {(x • y) ⁻¹₁} {y ⁻¹₁ • x ⁻¹₁} refl₁ ⟩
-        f* (y ⁻¹₁ • x ⁻¹₁)      ≈⟨ refl₂ ⟩
-        f* (y ⁻¹₁) • f* (x ⁻¹₁) ≈⟨ cong₂ (⁻¹-homo y) (⁻¹-homo x) ⟩
-        (f* y) ⁻¹₂ • (f* x) ⁻¹₂ ≈⟨ refl₂ ⟩
-        f* (x • y) ⁻¹₂ ∎
-      where open SR setoid₂
-
-    -- wmap f is a group homomorphism.
-    isGroupHomomorphism : IsGroupHomomorphism (f*)
-    isGroupHomomorphism = record
-      { isMonoidHomomorphism = isMonoidHomomorphism
-      ; ⁻¹-homo = ⁻¹-homo
-      }
+    open GenHomomorphism f f-well-defined using (f* ; isMonoidHomomorphism)
+    open MonoidHom⇒GroupHom f* isMonoidHomomorphism public
+      using (⁻¹-homo ; isGroupHomomorphism)
 
   -- Build a group monomorphism from (f *) via Reidemeister-Schreier.
   module StarGroupMonomorphism
