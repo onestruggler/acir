@@ -5,7 +5,7 @@
 -- presentations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --safe #-}
 
 module Presentation.Construct.Properties.Amalgamation where
 
@@ -928,9 +928,9 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     let (v' , cds'') = hcxds-m cds' v in
     hcxds-m cds (w • v) ≡ (w' • v' , cds'')
   lemma-hcxds-m [] w v = Eq.refl
-  lemma-hcxds-m (x ∷ cds) w v with lemma-hcxd1-m x w v | hcxd1-m x w | inspect (hcxd1-m x) w
-  lemma-hcxds-m (x ∷ cds) w v | hx | (w' , cd') | [ Eq.refl ]' with hcxd1-m cd' v | inspect (hcxd1-m cd') v
-  lemma-hcxds-m (x ∷ cds) w v | hx | (w' , cd') | [ Eq.refl ]' | (v' , cd'') | [ Eq.refl ]' rewrite hx | lemma-hcxds-m cds w' v' = Eq.refl
+  lemma-hcxds-m (x ∷ cds) w v
+    rewrite lemma-hcxds-m cds (hcxd1-m x w .proj₁)
+              (hcxd1-m (hcxd1-m x w .proj₂) v .proj₁) = Eq.refl
 
   lemma-hcd-mb-• : ∀ cd w v →
     let (wm1 , cd1) = hcd-mb cd w in 
@@ -1023,7 +1023,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
 
   lemma-hh=hcd-ma : ∀ cd wa → (hh **) cd [ wa ]ₗ ≡ hcd-ma cd wa
-  lemma-hh=hcd-ma cd@(d , cds , c) [ a ]ʷ with h₁ c a | (h₁ **) c [ a ]ʷ | inspect (h₁ c) a | inspect ((h₁ **) c) [ a ]ʷ 
+  lemma-hh=hcd-ma cd@(d , cds , c) [ a ]ʷ with h₁ c a | (h₁ **) c [ a ]ʷ | inspect (h₁ c) a | inspect ((h₁ **) c) [ a ]ʷ
   lemma-hh=hcd-ma cd@(d , cds , c) [ a ]ʷ | (wm , c') | (wm1 , c1) | [ Eq.refl ]' | [ Eq.refl ]' with hcdws cds wm | hcxds-m cds wm1 | inspect (hcdws cds) wm | inspect (hcxds-m cds) wm1
   lemma-hh=hcd-ma cd@(d , cds , c) [ a ]ʷ | (wm , c') | (wm1 , c1) | [ Eq.refl ]' | [ Eq.refl ]' | (wm' , cds') | (wm2 , cds2) | [ Eq.refl ]' | [ Eq.refl ]' with hdmw' d wm' | hdmw' d wm2 | inspect (hdmw' d) wm' | inspect (hdmw' d) wm2
   lemma-hh=hcd-ma cd@(d , cds , c) [ a ]ʷ | (wm , c') | (wm1 , c1) | [ Eq.refl ]' | [ Eq.refl ]' | (wm' , cds') | (wm2 , cds2) | [ Eq.refl ]' | [ Eq.refl ]' | (wm'' , d') | (wm3 , d3) | [ Eq.refl ]' | [ Eq.refl ]'

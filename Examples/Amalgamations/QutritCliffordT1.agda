@@ -6,7 +6,7 @@
 -- product (CliffordT1-isomorphism)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --safe #-}
 
 open import Relation.Binary.PropositionalEquality using (_≡_)
 import Relation.Binary.Reasoning.Setoid as SR
