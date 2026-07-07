@@ -111,7 +111,7 @@ wfoldl-sound {N} succ succ-sound c ε = PB._≈_.sym PB._≈_.right-unit
 wfoldl-sound {N} succ succ-sound c (w • v) = _≈_.sym claim
   where
   open PB (pres N)
-  open PP (pres N) hiding (wfoldl-sound)
+  open PP (pres N)
   open SR word-setoid  
 
   claim : [ c ] • (w • v) ≈ [ wfoldl succ c (w • v) ]
@@ -182,7 +182,7 @@ g∘f≈id {N} {w} = begin
   w ∎
   where
   open PB (pres N)
-  open PP (pres N) hiding (wfoldl-sound)
+  open PP (pres N)
   open SR word-setoid  
 
 
