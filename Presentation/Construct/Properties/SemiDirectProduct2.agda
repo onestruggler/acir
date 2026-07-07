@@ -212,8 +212,7 @@ module _
     let (w1 , c1) = (h **) c ([ conj b a ]ₗ) in
     let (w2 , c2) = (h **) c1 [ inj₂ b ]ʷ in
     let (w3 , c3) = (h **) c [ inj₂ b ]ʷ in
-    let (eq1 , eq2) = lemma-h**-left c {(conj b a)} in
-    begin
+    let (eq1 , eq2) = lemma-h**-left c {(conj b a)} in begin
     (h **) c ([ inj₂ b ]ʷ • [ inj₁ a ]ʷ) ≈⟨ left-unit₁ , refl₂ ⟩
     (h **) (c • [ b ]ʷ) ([ inj₁ a ]ʷ) ≈⟨ lemma-h**-left (c • [ b ]ʷ) ⟩
     (conjss (c • [ b ]ʷ) [ a ]ʷ , c • [ b ]ʷ) ≈⟨ sym₁ right-unit₁ , refl₂ ⟩
@@ -384,8 +383,7 @@ module _
     -- gg is a left inverse of nf, up to ≈₃.
     ggnf=id : {w : Word Y} → gg (nf w) ≈₃ w
     ggnf=id {w} =
-      let (a , b) = nf0 w in
-      begin
+      let (a , b) = nf0 w in begin
       gg (nf w) ≈⟨ refl ⟩
       gg ((map nf₁ nf₂) (a , b)) ≈⟨ refl ⟩
       gg (nf₁ a , nf₂ b) ≈⟨ refl ⟩

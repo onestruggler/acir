@@ -272,8 +272,7 @@ module Star-Injective-Full
 
       -- Reidemeister-Schreier Theorem.
       reidemeister-schreier : (w v : Word X) → (f *) w ≈₂ (f *) v → w ≈₁ v
-      reidemeister-schreier w v hyp =
-        begin
+      reidemeister-schreier w v hyp = begin
           w ≈⟨ lemma-a w ⟩
           g ((f *) w) ≈⟨ lemma-b ((f *) w) ((f *) v) hyp ⟩
           g ((f *) v) ≈⟨ _≈₁_.sym (lemma-a v) ⟩
@@ -619,8 +618,7 @@ module Star-Injective-Full-Setoid
 
       -- Reidemeister-Schreier Theorem.
       reidemeister-schreier : (w v : Word X) → (f *) w ≈₂ (f *) v → w ≈₁ v
-      reidemeister-schreier w v hyp =
-        begin
+      reidemeister-schreier w v hyp = begin
           w ≈⟨ lemma-a w ⟩
           g ((f *) w) ≈⟨ lemma-b ((f *) w) ((f *) v) hyp ⟩
           g ((f *) v) ≈⟨ _≈₁_.sym (lemma-a v) ⟩

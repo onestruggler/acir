@@ -132,22 +132,16 @@ module Pattern-Assoc where
   lemma-to-list-special ([ x ]ʷ) (p • q)    = right-unit
   lemma-to-list-special ε         ε          = refl
   lemma-to-list-special ε         (p • q)    = refl
-  lemma-to-list-special (w • v)   ε =
-    begin flatten-word (from-list (to-list-special w ε ++ to-list-special v ε))
-        ≈⟨ lemma-flatten-word (from-list-homo (to-list-special w ε) (to-list-special v ε)) ⟩
-      flatten-word (from-list (to-list-special w ε) • from-list (to-list-special v ε))
-        ≈⟨ refl ⟩
-      flatten-word (from-list (to-list-special w ε)) • flatten-word (from-list (to-list-special v ε))
-        ≈⟨ cong (lemma-to-list-special w ε) (lemma-to-list-special v ε) ⟩
+  lemma-to-list-special (w • v)   ε = begin
+      flatten-word (from-list (to-list-special w ε ++ to-list-special v ε)) ≈⟨ lemma-flatten-word (from-list-homo (to-list-special w ε) (to-list-special v ε)) ⟩
+      flatten-word (from-list (to-list-special w ε) • from-list (to-list-special v ε)) ≈⟨ refl ⟩
+      flatten-word (from-list (to-list-special w ε)) • flatten-word (from-list (to-list-special v ε)) ≈⟨ cong (lemma-to-list-special w ε) (lemma-to-list-special v ε) ⟩
       w • v ∎
     where open SR word-setoid
-  lemma-to-list-special (w • v) (p • q) =
-    begin flatten-word (from-list (to-list-special w p ++ to-list-special v q))
-        ≈⟨ lemma-flatten-word (from-list-homo (to-list-special w p) (to-list-special v q)) ⟩
-      flatten-word (from-list (to-list-special w p) • from-list (to-list-special v q))
-        ≈⟨ refl ⟩
-      flatten-word (from-list (to-list-special w p)) • flatten-word (from-list (to-list-special v q))
-        ≈⟨ cong (lemma-to-list-special w p) (lemma-to-list-special v q) ⟩
+  lemma-to-list-special (w • v) (p • q) = begin
+      flatten-word (from-list (to-list-special w p ++ to-list-special v q)) ≈⟨ lemma-flatten-word (from-list-homo (to-list-special w p) (to-list-special v q)) ⟩
+      flatten-word (from-list (to-list-special w p) • from-list (to-list-special v q)) ≈⟨ refl ⟩
+      flatten-word (from-list (to-list-special w p)) • flatten-word (from-list (to-list-special v q)) ≈⟨ cong (lemma-to-list-special w p) (lemma-to-list-special v q) ⟩
       w • v ∎
     where open SR word-setoid
 
@@ -158,12 +152,9 @@ module Pattern-Assoc where
   --   special-assoc ((□ • □) • (□ • □)) (□ • (□ • □) • □) refl
   special-assoc : ∀ {w v : Word X} (p q : Word ⊤) →
     to-list-special w p ≡ to-list-special v q → w ≈ v
-  special-assoc {w = w} {v = v} p q hyp =
-    begin w
-        ≈⟨ sym (lemma-to-list-special w p) ⟩
-      flatten-word (from-list (to-list-special w p))
-        ≈⟨ refl' (Eq.cong (λ □ → flatten-word (from-list □)) hyp) ⟩
-      flatten-word (from-list (to-list-special v q))
-        ≈⟨ lemma-to-list-special v q ⟩
+  special-assoc {w = w} {v = v} p q hyp = begin
+      w ≈⟨ sym (lemma-to-list-special w p) ⟩
+      flatten-word (from-list (to-list-special w p)) ≈⟨ refl' (Eq.cong (λ □ → flatten-word (from-list □)) hyp) ⟩
+      flatten-word (from-list (to-list-special v q)) ≈⟨ lemma-to-list-special v q ⟩
       v ∎
     where open SR word-setoid

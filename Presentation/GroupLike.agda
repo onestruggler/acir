@@ -53,8 +53,8 @@ module Group-Lemmas
   inverseˡ : {g : Word Y} → g ⁻¹ • g ≈ ε
   inverseˡ {[ x ]ʷ} = proj₂ (group-like x)
   inverseˡ {ε}       = left-unit
-  inverseˡ {u • v}   =
-    begin (v ⁻¹ • u ⁻¹) • (u • v) ≈⟨ assoc ⟩
+  inverseˡ {u • v}   = begin
+      (v ⁻¹ • u ⁻¹) • (u • v)     ≈⟨ assoc ⟩
       v ⁻¹ • (u ⁻¹ • (u • v))     ≈⟨ cright assoc reversed ⟩
       v ⁻¹ • ((u ⁻¹ • u) • v)     ≈⟨ cright cleft inverseˡ ⟩
       v ⁻¹ • ε • v                ≈⟨ cright left-unit ⟩
@@ -63,8 +63,8 @@ module Group-Lemmas
 
   -- g ⁻¹ is a right inverse.
   inverseʳ : {g : Word Y} → g • g ⁻¹ ≈ ε
-  inverseʳ {g} =
-    begin g • (g ⁻¹)                    ≈⟨ left-unit reversed ⟩
+  inverseʳ {g} = begin
+      g • (g ⁻¹)                        ≈⟨ left-unit reversed ⟩
       ε • (g • (g ⁻¹))                  ≈⟨ cleft inverseˡ reversed ⟩
       ((g ⁻¹) ⁻¹ • g ⁻¹) • (g • (g ⁻¹)) ≈⟨ assoc ⟩
       (g ⁻¹) ⁻¹ • (g ⁻¹ • (g • (g ⁻¹))) ≈⟨ cright assoc reversed ⟩
@@ -75,8 +75,8 @@ module Group-Lemmas
 
   -- Left cancellation.
   •-cancelˡ : {g h h' : Word Y} → g • h ≈ g • h' → h ≈ h'
-  •-cancelˡ {g} {h} {h'} p =
-    begin h           ≈⟨ left-unit reversed ⟩
+  •-cancelˡ {g} {h} {h'} p = begin
+      h               ≈⟨ left-unit reversed ⟩
       ε • h           ≈⟨ cleft inverseˡ reversed ⟩
       (g ⁻¹ • g) • h  ≈⟨ assoc ⟩
       g ⁻¹ • (g • h)  ≈⟨ cright p ⟩
@@ -87,8 +87,8 @@ module Group-Lemmas
 
   -- Right cancellation.
   •-cancelʳ : {g g' h : Word Y} → g • h ≈ g' • h → g ≈ g'
-  •-cancelʳ {g} {g'} {h} p =
-    begin g           ≈⟨ right-unit reversed ⟩
+  •-cancelʳ {g} {g'} {h} p = begin
+      g               ≈⟨ right-unit reversed ⟩
       g • ε           ≈⟨ cright inverseʳ reversed ⟩
       g • (h • h ⁻¹)  ≈⟨ assoc reversed ⟩
       (g • h) • h ⁻¹  ≈⟨ cleft p ⟩
@@ -99,8 +99,8 @@ module Group-Lemmas
 
   -- Left inverses are unique.
   inverseˡ-unique : {g h : Word Y} → h • g ≈ ε → h ≈ g ⁻¹
-  inverseˡ-unique {g} {h} p =
-    begin h          ≈⟨ right-unit reversed ⟩
+  inverseˡ-unique {g} {h} p = begin
+      h              ≈⟨ right-unit reversed ⟩
       h • ε          ≈⟨ cright inverseʳ reversed ⟩
       h • (g • g ⁻¹) ≈⟨ assoc reversed ⟩
       (h • g) • g ⁻¹ ≈⟨ cleft p ⟩
@@ -109,8 +109,8 @@ module Group-Lemmas
 
   -- Right inverses are unique.
   inverseʳ-unique : {g h : Word Y} → g • h ≈ ε → h ≈ g ⁻¹
-  inverseʳ-unique {g} {h} p =
-    begin h          ≈⟨ left-unit reversed ⟩
+  inverseʳ-unique {g} {h} p = begin
+      h              ≈⟨ left-unit reversed ⟩
       ε • h          ≈⟨ cleft inverseˡ reversed ⟩
       (g ⁻¹ • g) • h ≈⟨ assoc ⟩
       g ⁻¹ • (g • h) ≈⟨ cright p ⟩
@@ -122,8 +122,8 @@ module Group-Lemmas
   ⁻¹-cong {g} {h} p = inverseʳ-unique claim
     where
     claim : h • g ⁻¹ ≈ ε
-    claim =
-      begin h • g ⁻¹ ≈⟨ cleft p reversed ⟩
+    claim = begin
+      h • g ⁻¹       ≈⟨ cleft p reversed ⟩
       g • g ⁻¹       ≈⟨ inverseʳ ⟩
       ε ∎
 
@@ -142,8 +142,8 @@ module Group-Lemmas
 
   -- Inverses reflect equality.
   ⁻¹-injective : ∀ {u v : Word Y} → u ⁻¹ ≈ v ⁻¹ → u ≈ v
-  ⁻¹-injective {u} {v} hyp =
-    begin u          ≈⟨ right-unit reversed ⟩
+  ⁻¹-injective {u} {v} hyp = begin
+      u              ≈⟨ right-unit reversed ⟩
       u • ε          ≈⟨ cright (inverseˡ reversed) ⟩
       u • (v ⁻¹ • v) ≈⟨ assoc reversed ⟩
       (u • v ⁻¹) • v ≈⟨ cleft (cright (hyp reversed)) ⟩
@@ -153,8 +153,8 @@ module Group-Lemmas
 
   -- Commutativity of inverses.
   comm-⁻¹ : ∀ {v v' w w'} → v • w ≈ w' • v' → v' • w ⁻¹ ≈ w' ⁻¹ • v
-  comm-⁻¹ {v} {v'} {w} {w'} hyp =
-    begin v' • w ⁻¹              ≈⟨ left-unit reversed ⟩
+  comm-⁻¹ {v} {v'} {w} {w'} hyp = begin
+      v' • w ⁻¹                  ≈⟨ left-unit reversed ⟩
       ε • (v' • w ⁻¹)            ≈⟨ cleft inverseˡ reversed ⟩
       (w' ⁻¹ • w') • (v' • w ⁻¹) ≈⟨ assoc ⟩
       w' ⁻¹ • (w' • (v' • w ⁻¹)) ≈⟨ cright assoc reversed ⟩
@@ -167,8 +167,8 @@ module Group-Lemmas
 
   -- Any equation can be reduced to a one-sided equation.
   one-sided : ∀ {w u} → w • u ⁻¹ ≈ ε → w ≈ u
-  one-sided {w} {u} hyp =
-    begin w          ≈⟨ right-unit reversed ⟩
+  one-sided {w} {u} hyp = begin
+      w              ≈⟨ right-unit reversed ⟩
       w • ε          ≈⟨ cright inverseˡ reversed ⟩
       w • (u ⁻¹ • u) ≈⟨ assoc reversed ⟩
       (w • u ⁻¹) • u ≈⟨ cleft hyp ⟩

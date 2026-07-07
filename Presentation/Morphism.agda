@@ -142,8 +142,8 @@ module WeakNormalFormTransfer
     f*∘g*≗id (w • w₁) rewrite f*∘g*≗id w | f*∘g*≗id w₁ = Eq.refl
 
     inj : {w v : Word B} → nf (wmap g w) ≡ nf (wmap g v) → w ≈₂ v
-    inj {w} {v} eq =
-      begin w          ≡⟨ Eq.sym (f*∘g*≗id w) ⟩
+    inj {w} {v} eq = begin
+        w              ≡⟨ Eq.sym (f*∘g*≗id w) ⟩
         f* (g* w)      ≈⟨ f*-cong (nf-injective eq) ⟩
         f* (g* v)      ≡⟨ f*∘g*≗id v ⟩
         v ∎

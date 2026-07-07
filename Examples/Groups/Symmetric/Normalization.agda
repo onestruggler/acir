@@ -237,7 +237,9 @@ ract-suc' {n} (w • v) with ract-suc' {n} w
 ... | (w' , ew) rewrite Eq.cong proj₁ ih | Eq.cong proj₂ ih
                        | Eq.cong proj₁ ih' | Eq.cong proj₂ ih'
               with racts ε (v ↑)
-... | (v' , ev) = begin w • v , ε ≡⟨ Eq.refl ⟩ (w • v , ε) ∎
+... | (v' , ev) = begin
+  w • v , ε   ≡⟨ Eq.refl ⟩
+  (w • v , ε) ∎
   where open ≡-Reasoning
 
 -- Acting on the coset σ• ε by a triply lifted circuit strips one lift
@@ -255,7 +257,9 @@ ract-suc''' {n} (w • v) with ract-suc''' {n} w
 ... | (w'' , ew) rewrite Eq.cong proj₁ ih | Eq.cong proj₂ ih
                         | Eq.cong proj₁ ih' | Eq.cong proj₂ ih'
                with racts ε (v ↑ ↑)
-... | (v'' , ev) = begin w ↑ ↑ • v ↑ ↑ , σ• ε ≡⟨ Eq.refl ⟩ (w ↑ ↑ • v ↑ ↑ , σ• ε) ∎
+... | (v'' , ev) = begin
+  w ↑ ↑ • v ↑ ↑ , σ• ε   ≡⟨ Eq.refl ⟩
+  (w ↑ ↑ • v ↑ ↑ , σ• ε) ∎
   where open ≡-Reasoning
 
 -- The generator σ passes through any coset of the form σ• σ• c

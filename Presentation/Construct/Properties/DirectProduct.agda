@@ -302,8 +302,7 @@ module NFP'
   -- gg is a left inverse of the pair normal form.
   ggnf=id : {w : Word Y} → gg (nf w) ≈₃ w
   ggnf=id {w} =
-    let (a , b) = nf0 w in
-    begin
+    let (a , b) = nf0 w in begin
     gg (nf w) ≈⟨ refl ⟩
     gg ((map nf₁ nf₂) (a , b)) ≈⟨ refl ⟩
     gg (nf₁ a , nf₂ b) ≈⟨ refl ⟩

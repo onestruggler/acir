@@ -248,8 +248,7 @@ module SingleLevel
 
         ggnf'=id : {w : Word Y} → gg (nf' w) ≈₂ w
         ggnf'=id  {w} =
-          let (w' , c) = nf w in
-          begin
+          let (w' , c) = nf w in begin
           gg (nf' w) ≈⟨ _≈₂_.refl ⟩
           gg ((map f₁ id)(nf w)) ≈⟨ _≈₂_.refl ⟩
           gg ((map f₁ id)(w' , c)) ≈⟨ _≈₂_.refl ⟩
@@ -347,8 +346,7 @@ module CosetTable
     h**-hyp c (w • v) =
       let (wv' , c2) = (h **) c (w • v) in
       let (w' , c') = (h **) c w in
-      let (v' , c'') = (h **) c' v in
-      begin
+      let (v' , c'') = (h **) c' v in begin
       [ c ] • (w • v) ≈⟨ sym assoc ⟩
       ([ c ] • w) • v ≈⟨ cong (h**-hyp c w) refl ⟩
       ([ w' ]ₓ • [ c' ]) • v ≈⟨ assoc ⟩
@@ -405,8 +403,7 @@ module CosetTable
     lemma-h**=hcmw c (w • w₁) rewrite lemma-h**=hcmw c w | lemma-h**=hcmw (hcmw c w .proj₂) w₁ = Eq.refl
 
     hcmw-cong : ∀ c w v → w ≈₁ v → hcmw c w .proj₁ ≈₁ hcmw c v .proj₁
-    hcmw-cong c w v eq =
-      begin
+    hcmw-cong c w v eq = begin
       hcmw c w .proj₁ ≡⟨ Eq.sym ( Eq.cong proj₁ (lemma-h**=hcmw c w)) ⟩
       (h **) (inj₁ c) [ w ]ₓ .proj₁ ≈⟨ proj₁ (h-wd (inj₁ c) (f-wd eq)) ⟩
       (h **) (inj₁ c) [ v ]ₓ .proj₁ ≡⟨ Eq.cong proj₁ (lemma-h**=hcmw c v) ⟩
@@ -415,8 +412,7 @@ module CosetTable
       open SR word-setoid₁
 
     hcmw-cong2 : ∀ c w v → w ≈₁ v → hcmw c w .proj₂ ≡ hcmw c v .proj₂
-    hcmw-cong2 c w v eq = inj₁-injective ( 
-      begin
+    hcmw-cong2 c w v eq = inj₁-injective (begin
       inj₁ (hcmw c w .proj₂) ≡⟨ Eq.sym ( Eq.cong proj₂ (lemma-h**=hcmw c w)) ⟩
       (h **) (inj₁ c) [ w ]ₓ .proj₂ ≡⟨ proj₂ (h-wd (inj₁ c) (f-wd eq)) ⟩
       (h **) (inj₁ c) [ v ]ₓ .proj₂ ≡⟨ Eq.cong proj₂ (lemma-h**=hcmw c v) ⟩
@@ -436,8 +432,7 @@ module CosetTable
 
 
     hcmw-cong' : ∀ c w v → w ≈₁ v → hcmw' c w .proj₁ ≈₁ hcmw' c v .proj₁
-    hcmw-cong' c w v eq =
-      begin
+    hcmw-cong' c w v eq = begin
       hcmw' c w .proj₁ ≡⟨ Eq.sym ( Eq.cong proj₁ (lemma-h**=hcmw' c w)) ⟩
       (h **) ( c) [ w ]ₓ .proj₁ ≈⟨ proj₁ (h-wd ( c) (f-wd eq)) ⟩
       (h **) ( c) [ v ]ₓ .proj₁ ≡⟨ Eq.cong proj₁ (lemma-h**=hcmw' c v) ⟩
@@ -447,8 +442,7 @@ module CosetTable
 
 
     hcmw-cong'2 : ∀ c w v → w ≈₁ v → hcmw' c w .proj₂ ≡ hcmw' c v .proj₂
-    hcmw-cong'2 c w v eq = 
-      begin
+    hcmw-cong'2 c w v eq = begin
       hcmw' c w .proj₂ ≡⟨ Eq.sym ( Eq.cong proj₂ (lemma-h**=hcmw' c w)) ⟩
       (h **) ( c) [ w ]ₓ .proj₂ ≡⟨ proj₂ (h-wd ( c) (f-wd eq)) ⟩
       (h **) ( c) [ v ]ₓ .proj₂ ≡⟨ Eq.cong proj₂ (lemma-h**=hcmw' c v) ⟩
@@ -463,8 +457,7 @@ module CosetTable
       (w' , inj₁ c') ~ (w'' , inj₁ c'')
     h-wd-m c {u} {t} eqax =
       let (w' , c') = hcmw c u in
-      let (w'' , c'') = hcmw c t in
-      begin
+      let (w'' , c'') = hcmw c t in begin
       (w' , inj₁ c') ≡⟨ Eq.sym (lemma-h**=hcmw c u) ⟩
       ((h **) (inj₁ c) [ u ]ₓ) ≈⟨ h-wd (inj₁ c) (f-wd ( eqax)) ⟩
       ((h **) (inj₁ c) [ t ]ₓ) ≡⟨ (lemma-h**=hcmw c t) ⟩ 
