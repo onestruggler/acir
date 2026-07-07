@@ -6,7 +6,7 @@
 -- ⟦_⟧ : Word (Gen n) → Endo n.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Fin using (Fin ; zero ; suc)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl ; _≗_)

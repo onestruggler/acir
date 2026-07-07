@@ -4,7 +4,7 @@
 -- Basic algebraic structures and proof tools for presented monoids
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Word.Base
 

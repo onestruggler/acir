@@ -4,7 +4,7 @@
 -- Congruence closure of a word relation (the presented monoid)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Word.Base using (WRel ; Word ; [_]ʷ ; ε ; _•_)
 

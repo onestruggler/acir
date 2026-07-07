@@ -6,7 +6,7 @@
 -- Syntactic framework only; no coset enumeration or normal form.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ)
 open import Data.Product using (_,_)

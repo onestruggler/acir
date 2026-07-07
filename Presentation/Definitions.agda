@@ -15,7 +15,7 @@
 --    ⟦_⟧ a setoid embedding — Syn is presented as a sub-setoid of Sem.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Presentation.Definitions where
 

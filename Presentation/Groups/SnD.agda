@@ -5,7 +5,7 @@
 -- its normal-form property.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Presentation.Groups.SnD where
 

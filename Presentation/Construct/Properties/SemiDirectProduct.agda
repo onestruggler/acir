@@ -4,7 +4,7 @@
 -- Normal-form properties for semi-direct products of group presentations.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Word.Base
 

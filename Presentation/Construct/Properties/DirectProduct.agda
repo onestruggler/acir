@@ -4,7 +4,7 @@
 -- Normal-form properties for direct products of group presentations.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Word.Base using (WRel)
 
@@ -113,9 +113,7 @@ lemma-h**-right c {w • w₁}
 
 -- The coset table respects the coset setoid.
 h-congₛ-gen : ∀ {c d} y → c ≈ₛ d → h c y ~ h d y
-h-congₛ-gen {c} {d} (inj₁ x) eq
-  rewrite lemma-h**-left' c {[ x ]ʷ} | lemma-h**-left' d {[ x ]ʷ}
-  = _≈₁_.refl , eq
+h-congₛ-gen {c} {d} (inj₁ x) eq = _≈₁_.refl , eq
 h-congₛ-gen {c} {d} (inj₂ y) eq =
   trans~ (lemma-h**-right c {[ y ]ʷ})
     (trans~ (_≈₁_.refl , _≈₂_.cong eq (_≈₂_.refl))
@@ -193,8 +191,7 @@ lemma-comm w (v • v₁) with lemma-comm w v | lemma-comm w v₁
 -- The coset table is sound: acting by a generator agrees with
 -- multiplication in the product.
 lemma-ract : ∀ c y → let (y' , c') = ract c y in [ c ] • [ y ]ʷ ≈₃ [ y' ]ₓ • [ c' ]
-lemma-ract c (inj₁ x₁)
-  rewrite lemma-h**-left' c {[ x₁ ]ʷ} = lemma-comm [ x₁ ]ʷ c
+lemma-ract c (inj₁ x₁) = lemma-comm [ x₁ ]ʷ c
 lemma-ract c (inj₂ y) = _≈₃_.sym _≈₃_.left-unit
 
 open LeftRightCongruence Γ Δ CommRel

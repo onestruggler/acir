@@ -5,7 +5,7 @@
 -- presentations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Presentation.Construct.Properties.Amalgamation where
 
@@ -828,17 +828,17 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   lemma-101 : ∀ cds → hcxds-m cds ε ≡ (ε , cds) 
   lemma-101 [] = Eq.refl
-  lemma-101 (x ∷ cds) rewrite lemma-100 x | lemma-101 cds = Eq.refl
+  lemma-101 (x ∷ cds) rewrite lemma-101 cds = Eq.refl
 
   lemma-hcd-ma-ε : ∀ d cds c → hcd-ma (d , cds , c) ε ≡ (ε , d , cds , c)
-  lemma-hcd-ma-ε d cds c rewrite lemma-h**=hcmw' c ε | lemma-101 cds = Eq.refl
+  lemma-hcd-ma-ε d cds c rewrite lemma-101 cds = Eq.refl
 
   lemma-hcxd1-m-ε : ∀ cd → hcxd1-m cd ε ≡ (ε , cd)
   lemma-hcxd1-m-ε cd = Eq.refl
 
   lemma-hcxds-m-ε : ∀ cds → hcxds-m cds ε ≡ (ε , cds)
   lemma-hcxds-m-ε [] = Eq.refl
-  lemma-hcxds-m-ε (x ∷ cds) rewrite lemma-hcxd1-m-ε x | lemma-hcxds-m-ε cds = Eq.refl
+  lemma-hcxds-m-ε (x ∷ cds) rewrite lemma-hcxds-m-ε cds = Eq.refl
 
   lemma-hcd-mb-ε : ∀ d cds c → hcd-mb (d , cds , c) ε ≡ (ε , d , cds , c)
   lemma-hcd-mb-ε d cds c@(inj₁ c') rewrite lemma-101 cds  = Eq.refl

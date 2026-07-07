@@ -4,7 +4,7 @@
 -- Semantics of the symmetric group: permutations of Fin n.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Fin using (Fin ; zero ; suc)
 open import Data.Nat using (ℕ ; zero ; suc)

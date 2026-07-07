@@ -5,7 +5,7 @@
 -- to the permutation group Permutation′ n, via the tight semantics.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Symmetric.Tight.Presentation where
 

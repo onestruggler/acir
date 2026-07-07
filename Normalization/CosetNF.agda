@@ -18,7 +18,7 @@
 --                   presentations to build a normal form at every level.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.PropositionalEquality as Eq renaming ([_] to [_]') using ( _≡_ ; inspect)
 open import Relation.Binary using (IsEquivalence ; Setoid)

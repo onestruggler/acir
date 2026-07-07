@@ -4,7 +4,7 @@
 -- Cyclic groups Z/NZ and their normal form
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Presentation.Groups.Cyclic where
 
@@ -203,10 +203,10 @@ fg=id {N@(₁₊ N')} = <-weakInduction
   claim (₁₊ zero) zero hyp = Eq.refl
   claim (₂₊ N) zero hyp = Eq.refl
   claim (₂₊ N) (₁₊ i) hyp with claim (₁₊ N) i (fg=id (inject₁ i))
-  claim (₂₊ N) (₁₊ i) hyp | ih with sucN (inject₁ i) | inspect sucN (inject₁ i)
-  claim (₂₊ N) (₁₊ i) hyp | ih | zero | [ eqi ]' rewrite toℕ-inject₁ i | hyp | eqi | comm-suc-inject₁ i  with (Eq.trans (Eq.sym (sucN-inject₁ i )) eqi)
+  claim (₂₊ N) (₁₊ i) hyp | ih with sucN (inject₁ i) in eqi
+  claim (₂₊ N) (₁₊ i) hyp | ih | zero rewrite toℕ-inject₁ i | hyp | eqi  with (Eq.trans (Eq.sym (sucN-inject₁ i )) eqi)
   ... | ()
-  claim (₂₊ N) (₁₊ i) hyp | ih | ₁₊ ii | [ eqi ]' rewrite toℕ-inject₁ i | hyp | eqi | comm-suc-inject₁ i = (Eq.sym (Eq.cong ₁₊ c3))
+  claim (₂₊ N) (₁₊ i) hyp | ih | ₁₊ ii rewrite toℕ-inject₁ i | hyp | eqi = (Eq.sym (Eq.cong ₁₊ c3))
     where
     c3 : (₁₊ i) ≡ (₁₊ ii)
     c3 = Eq.trans (Eq.sym (sucN-inject₁ i )) eqi

@@ -4,7 +4,7 @@
 -- Unique normal form for the loose (endofunction) semantics of Sₙ.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Symmetric.Loose.Uniqueness where
 

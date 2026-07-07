@@ -4,7 +4,7 @@
 -- This file collects main theorems for convenience.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Group)
 

@@ -4,7 +4,7 @@
 -- Trivial group presentations (empty generator set, universal relation)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Presentation.Groups.Trivial where
 

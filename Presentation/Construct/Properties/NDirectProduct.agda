@@ -5,7 +5,7 @@
 -- presentations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Word.Base using (WRel)
 

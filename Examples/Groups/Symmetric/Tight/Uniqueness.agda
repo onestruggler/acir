@@ -5,7 +5,7 @@
 -- derived from the loose uniqueness via a pointwise agreement lemma.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Fin using (Fin ; zero ; suc)

@@ -5,7 +5,7 @@
 -- with equal denotations are congruent, by normalization
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Group)
 open import Data.Nat using (ℕ)

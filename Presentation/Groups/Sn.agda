@@ -4,7 +4,7 @@
 -- Symmetric groups Sₙ and their normal form via coset enumeration
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (0ℓ)
 
@@ -364,8 +364,8 @@ ract-swap•swap•1s {n} c (w • v) with ract-swap•swap•1s c w | (ract **)
 ⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} order = PB._≈_.left-unit , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• swap• c) {u} {t} order = PB._≈_.axiom order , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} comm = PB._≈_.trans PB._≈_.left-unit (PB._≈_.sym PB._≈_.right-unit) , Eq.refl
-⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} c) {u} {t} (comm {a = swap}) rewrite ract-swap•swap• c | ract-swap•swap•1 c swap = PB._≈_.sym (⇑²-swap-comm ( ract c swap .proj₁)) , Eq.refl
-⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} c) {u} {t} (comm {a = a ₛ}) rewrite ract-swap•swap• c | ract-swap•swap•1 c (a ₛ) = PB._≈_.sym (⇑²-swap-comm ( ract c (a ₛ) .proj₁)) , Eq.refl
+⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} c) {u} {t} (comm {a = swap}) rewrite ract-swap•swap•1 c swap = PB._≈_.sym (⇑²-swap-comm ( ract c swap .proj₁)) , Eq.refl
+⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} c) {u} {t} (comm {a = a ₛ}) rewrite ract-swap•swap•1 c (a ₛ) = PB._≈_.sym (⇑²-swap-comm ( ract c (a ₛ) .proj₁)) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} yang-baxter = PB._≈_.refl , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} ε) {u} {t} yang-baxter = PB._≈_.trans (PB._≈_.cong PB._≈_.refl PB._≈_.right-unit) (PB._≈_.trans PB._≈_.right-unit (PB._≈_.trans (PB._≈_.sym PB._≈_.left-unit) (PB._≈_.cong PB._≈_.refl (PB._≈_.sym PB._≈_.left-unit)))) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} (swap• c)) {u} {t} yang-baxter = PB._≈_.axiom yang-baxter , Eq.refl
@@ -374,9 +374,9 @@ ract-swap•swap•1s {n} c (w • v) with ract-swap•swap•1s c w | (ract **)
                                                   (PB._≈_.sym PB._≈_.right-unit)
                                                   , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (yang-baxter {n₁})) = PB._≈_.trans PB._≈_.left-unit (PB._≈_.trans PB._≈_.left-unit (PB._≈_.trans (PB._≈_.sym PB._≈_.right-unit) (PB._≈_.cong PB._≈_.refl (PB._≈_.sym PB._≈_.left-unit)))) , Eq.refl
-⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (order {n₁}))) rewrite ract-swap•swap•1 {₁₊ n₁} ε (swap ₛ) = PB._≈_.axiom (congₛ order) , Eq.refl
-⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (comm {n₁} {a}))) rewrite ract-swap•swap•1 {₁₊ n₁} ε ((a ₛ) ₛ) = PB._≈_.axiom (congₛ comm) , Eq.refl
-⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (yang-baxter {n₁}))) rewrite ract-swap•swap•1 {₁₊ n₁} ε (swap ₛ) = PB._≈_.axiom (congₛ yang-baxter) , Eq.refl
+⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (order {n₁}))) = PB._≈_.axiom (congₛ order) , Eq.refl
+⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (comm {n₁} {a}))) = PB._≈_.axiom (congₛ comm) , Eq.refl
+⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (yang-baxter {n₁}))) = PB._≈_.axiom (congₛ yang-baxter) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• ε) {u} {t} (congₛ (congₛ (congₛ {n₁} {w} {v} eq))) rewrite ract-suc'' w | ract-suc'' v = PB._≈_.axiom (congₛ (congₛ eq)) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (swap• swap•_ {n₁} c) {u} {t} (congₛ {w = w} {v} eq) with ⁻¹[⇑]-wd'' (swap• c) eq
 ... | (wv , eq0) rewrite ract-swap•swap•1s (swap• c) w | ract-swap•swap•1s (swap• c) v = [⇑]-cong _ _ wv , Eq.cong swap•_ eq0

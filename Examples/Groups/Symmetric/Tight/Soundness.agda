@@ -6,7 +6,7 @@
 -- ⟦_⟧ : Word (Gen n) → Perm n.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Fin using (Fin ; zero ; suc)
 open import Data.Fin.Permutation

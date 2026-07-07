@@ -4,7 +4,7 @@
 -- Properties of the free-monoid functor (wmap, wconcat, wconcatmap)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Word.Properties where
 

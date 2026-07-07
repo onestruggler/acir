@@ -6,7 +6,7 @@
 -- ≈, and the H-action on N is word-valued (the relation ConjRelʷ conj).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Word.Base
 
@@ -274,7 +274,7 @@ module _
               (_≈₃_.sym _≈₃_.assoc)) ) ))
 
   lemma-ract : ∀ c y → let (y' , c') = ract c y in [ c ] • [ y ]ʷ ≈₃ [ y' ]ₓ • [ c' ]
-  lemma-ract c y@(inj₁ x₁) rewrite lemma-h**-left' c {[ x₁ ]ʷ} = begin
+  lemma-ract c y@(inj₁ x₁) = begin
     [ c ]ᵣ • [ y ]ʷ ≈⟨ lemma-comm [ x₁ ]ʷ c ⟩
     [ conjss c [ x₁ ]ʷ ]ₗ • [ c ]ᵣ ≈⟨ cong (refl'₃ (Eq.sym (aux-f*' {conjss c [ x₁ ]ʷ}))) refl ⟩
     [ conjss c [ x₁ ]ʷ ]ₓ • [ c ] ∎

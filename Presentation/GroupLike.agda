@@ -5,7 +5,7 @@
 -- words modulo the congruence
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Presentation.GroupLike where
 

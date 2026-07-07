@@ -6,7 +6,7 @@
 -- [ m ]ʷ ≈ [ f m ]ᵣ, so normal forms transport from Δ to Γ ⋄ Δ ⋄ SugarRel f
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Word.Base
 

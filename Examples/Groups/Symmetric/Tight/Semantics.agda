@@ -7,7 +7,7 @@
 -- definition lives in ForStdlib.Data.Fin.Permutation.Properties).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Fin using (Fin ; zero ; suc)

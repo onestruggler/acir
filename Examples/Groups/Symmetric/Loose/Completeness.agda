@@ -5,7 +5,7 @@
 -- with equal denotations are congruent, by normalization
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 
 import Normalization.Base as NFBase

@@ -6,7 +6,7 @@
 -- normal forms along monoid monomorphisms
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Presentation.Construct.Base where
 

@@ -4,7 +4,7 @@
 -- Inductively defined circuits with structural congruence rules
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ ; zero ; suc ; _+_)
 

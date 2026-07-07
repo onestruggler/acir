@@ -29,7 +29,7 @@
 --                              special case Cₛ = (C, ≡).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Level using (0ℓ)
 

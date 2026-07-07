@@ -5,7 +5,7 @@
 -- Adapted to the Circuit / Lift-Relation framework
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Symmetric.Normalization where
 
@@ -368,7 +368,7 @@ ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (gate₁ ()))
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (() ↥))
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {₁₊ m} c) (comm₂ σ-gate g)
-  rewrite ract-σ•σ•σ c | ract-σ•1 (σ• c) (g ↥) | ract-σ•1 c g
+  rewrite ract-σ•1 c g
   = lemma-comm (proj₁ (ract c g)) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} c) (cong↑ {w = w} {v} eq)
   with ⁻¹[⇑]-wd'' (σ• c) eq

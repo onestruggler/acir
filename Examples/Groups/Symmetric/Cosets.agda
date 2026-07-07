@@ -6,7 +6,7 @@
 -- Examples.Groups.Symmetric.Normalization.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ ; zero ; suc)
 open import Relation.Binary.Definitions using (DecidableEquality)

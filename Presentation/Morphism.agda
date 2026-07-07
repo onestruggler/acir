@@ -6,7 +6,7 @@
 -- of normal forms along a generator retraction
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Word.Base
 

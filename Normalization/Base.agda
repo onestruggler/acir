@@ -5,7 +5,7 @@
 -- functions, their sections, and completeness by normalization
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Word.Base using (WRel ; Word)
 
