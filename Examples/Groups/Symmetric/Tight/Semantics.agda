@@ -82,7 +82,9 @@ shift = lift₀
 -- Group structure on Permutation′ n
 
 -- The symmetric group Sₙ is a generic carrier: its construction lives
--- in the standard-library supplement.  It is re-exported here so that
--- this module remains the single home for "the tight semantics".
+-- in the standard-library supplement (under the idiomatic name
+-- ∘ₚ-id-group).  Re-exported here as Permutation′-group so that the
+-- tight semantics keeps a single, readable home for "the meaning of
+-- the syntax".
 open import ForStdlib.Data.Fin.Permutation.Properties
-  using (Permutation′-group) public
+  using () renaming (∘ₚ-id-group to Permutation′-group) public
