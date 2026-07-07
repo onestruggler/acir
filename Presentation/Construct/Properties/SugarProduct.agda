@@ -40,7 +40,7 @@ open PP (Γ ⋄ Δ ⋄ SugarRel f) renaming (word-setoid to ws) using ()
 open _≈_
 
 module _
-  (f-wd-ax : ∀ {w v} → w ===₁ v → ((f *) w) ≈₂ ((f *) v))
+  (f-wd-ax : ∀ {w v} → w ===₁ v → ((f ʷ) w) ≈₂ ((f ʷ) v))
   where
 
   X = M ⊎ A
@@ -57,48 +57,48 @@ module _
   to-right-right (inj₂ y) = refl
 
   -- Every word is congruent to its desugaring.
-  to-right*-right : ∀ w → w ≈ [ (to-right *) w ]ᵣ
-  to-right*-right [ x ]ʷ = to-right-right x
-  to-right*-right ε = _≈_.refl
-  to-right*-right (w • w₁) with to-right*-right w | to-right*-right w₁
-  to-right*-right (w • w₁) | ih1 | ih2 = _≈_.cong ih1 ih2
+  to-rightʷ-right : ∀ w → w ≈ [ (to-right ʷ) w ]ᵣ
+  to-rightʷ-right [ x ]ʷ = to-right-right x
+  to-rightʷ-right ε = _≈_.refl
+  to-rightʷ-right (w • w₁) with to-rightʷ-right w | to-rightʷ-right w₁
+  to-rightʷ-right (w • w₁) | ih1 | ih2 = _≈_.cong ih1 ih2
 
   -- Desugaring is the identity on right-embedded words.
-  lemma-to-right-r : ∀ w → (to-right *) [ w ]ᵣ ≡ w
+  lemma-to-right-r : ∀ w → (to-right ʷ) [ w ]ᵣ ≡ w
   lemma-to-right-r [ x ]ʷ = Eq.refl
   lemma-to-right-r ε = Eq.refl
   lemma-to-right-r (w • w₁) rewrite lemma-to-right-r w | lemma-to-right-r w₁  = Eq.refl
 
   -- Desugaring a left-embedded word is embedding via f.
-  lemma-to-right-l : ∀ w → (to-right *) [ w ]ₗ ≡ (f *) w
+  lemma-to-right-l : ∀ w → (to-right ʷ) [ w ]ₗ ≡ (f ʷ) w
   lemma-to-right-l [ x ]ʷ = Eq.refl
   lemma-to-right-l ε = Eq.refl
   lemma-to-right-l (w • w₁) rewrite lemma-to-right-l w | lemma-to-right-l w₁ = Eq.refl
 
   -- Desugaring respects the axioms of the sugar product.
-  to-right-wd :  ∀ {w v} → w === v → (to-right *) w ≈₂ (to-right *) v
+  to-right-wd :  ∀ {w v} → w === v → (to-right ʷ) w ≈₂ (to-right ʷ) v
   to-right-wd {w} {v} (left {u} {v₁} x) = begin
-    (to-right *) [ u ]ₗ ≡⟨ lemma-to-right-l u ⟩
-    (f *) u ≈⟨ f-wd-ax x ⟩
-    (f *) v₁ ≡⟨ Eq.sym (lemma-to-right-l v₁) ⟩
-    (to-right *) [ v₁ ]ₗ ∎
+    (to-right ʷ) [ u ]ₗ ≡⟨ lemma-to-right-l u ⟩
+    (f ʷ) u ≈⟨ f-wd-ax x ⟩
+    (f ʷ) v₁ ≡⟨ Eq.sym (lemma-to-right-l v₁) ⟩
+    (to-right ʷ) [ v₁ ]ₗ ∎
     where
     open SR word-setoid₂
   to-right-wd {w} {v} (right {u} {v₁} x) rewrite lemma-to-right-r u | lemma-to-right-r v₁ = _≈₂_.axiom x
   to-right-wd {w} {v} (mid (desugar {m})) rewrite lemma-to-right-r (f m) = _≈₂_.refl
 
   -- Desugaring is a congruence for the full congruence closure.
-  to-right*-cong = PP.StarCongruence.f*-cong (Γ ⋄ Δ ⋄ SugarRel f) Δ to-right to-right-wd
+  to-rightʷ-cong = PP.StarCongruence.fʷ-cong (Γ ⋄ Δ ⋄ SugarRel f) Δ to-right to-right-wd
 
   private module LR = LeftRightCongruence Γ Δ (SugarRel f)
 
   -- Desugaring is injective: right-embedding is a congruence and
   -- inverts it up to ≈.
-  to-right*-inj : Injective _≈_ _≈₂_ (to-right *)
-  to-right*-inj {x} {y} eq = begin
-    x ≈⟨ to-right*-right x ⟩
-    [ (to-right *) x ]ᵣ ≈⟨ LR.rights eq ⟩
-    [ (to-right *) y ]ᵣ ≈⟨ sym (to-right*-right y) ⟩
+  to-rightʷ-inj : Injective _≈_ _≈₂_ (to-right ʷ)
+  to-rightʷ-inj {x} {y} eq = begin
+    x ≈⟨ to-rightʷ-right x ⟩
+    [ (to-right ʷ) x ]ᵣ ≈⟨ LR.rights eq ⟩
+    [ (to-right ʷ) y ]ᵣ ≈⟨ sym (to-rightʷ-right y) ⟩
     y ∎
     where
     open SR ws
@@ -106,17 +106,17 @@ module _
   -- A normal form for Δ transports to the sugar product: normalise
   -- the desugaring.
   nfp : NormalFormWithoutInverse Δ → NormalFormWithoutInverse (Γ ⋄ Δ ⋄ SugarRel f)
-  nfp p = record { NF = NF ; nf = nf ∘ (to-right *) ; nf-cong = nf'-cong ; nf-injective = nf'-inj }
+  nfp p = record { NF = NF ; nf = nf ∘ (to-right ʷ) ; nf-cong = nf'-cong ; nf-injective = nf'-inj }
     where
     open NormalFormWithoutInverse p
 
-    nf' = nf ∘ (to-right *)
+    nf' = nf ∘ (to-right ʷ)
 
     nf'-cong : Congruent _≈_ _≡_ nf'
-    nf'-cong = FCC.congruent _≈_ _≈₂_ _≡_ to-right*-cong nf-cong
+    nf'-cong = FCC.congruent _≈_ _≈₂_ _≡_ to-rightʷ-cong nf-cong
 
     nf'-inj : Injective _≈_ _≡_ nf'
-    nf'-inj = FCC.injective _≈_ _≈₂_ _≡_ to-right*-inj nf-injective
+    nf'-inj = FCC.injective _≈_ _≈₂_ _≡_ to-rightʷ-inj nf-injective
 
   -- Like nfp, but also transporting the section: realise the normal
   -- form in Δ and right-embed it.
@@ -126,19 +126,19 @@ module _
     where
     open NormalForm p
 
-    nf' = nf ∘ (to-right *)
+    nf' = nf ∘ (to-right ʷ)
 
     inv-nf' : NF → Word X
     inv-nf' = [_]ᵣ ∘ inv-nf
 
     nf'-cong : Congruent _≈_ _≡_ nf'
-    nf'-cong = FCC.congruent _≈_ _≈₂_ _≡_ to-right*-cong nf-cong
+    nf'-cong = FCC.congruent _≈_ _≈₂_ _≡_ to-rightʷ-cong nf-cong
 
     inv-nf'∘nf'=id : {w : Word (M ⊎ A)} → inv-nf' (nf' w) ≈ w
     inv-nf'∘nf'=id {w} = begin
       inv-nf' (nf' w) ≈⟨ refl ⟩
-      ([_]ᵣ ∘ inv-nf ∘ nf ∘ (to-right *)) (w) ≈⟨ LR.rights inv-nf∘nf=id ⟩
-      ([_]ᵣ ∘ (to-right *)) (w) ≈⟨ sym (to-right*-right w) ⟩
+      ([_]ᵣ ∘ inv-nf ∘ nf ∘ (to-right ʷ)) (w) ≈⟨ LR.rights inv-nf∘nf=id ⟩
+      ([_]ᵣ ∘ (to-right ʷ)) (w) ≈⟨ sym (to-rightʷ-right w) ⟩
       w ∎
       where
       open SR ws

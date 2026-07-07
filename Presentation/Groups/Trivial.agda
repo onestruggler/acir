@@ -159,17 +159,17 @@ module P1IsoP2 (B : Set) where
   g : B → Word A
   g _ = ε
 
-  -- (f *) respects the empty relation EmptyRel.
-  f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v
+  -- (f ʷ) respects the empty relation EmptyRel.
+  f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v
   f-well-defined {w} {v} eq =
     _≈₂_.trans (_≈₂_.axiom ≈ε) (_≈₂_.sym (_≈₂_.axiom ≈ε))
 
   -- f is a left inverse of g on generators.
-  f-left-inv-gen : ∀ (x : B) → [ x ]ʷ ≈₂ (f *) (g x)
+  f-left-inv-gen : ∀ (x : B) → [ x ]ʷ ≈₂ (f ʷ) (g x)
   f-left-inv-gen x = _≈₂_.axiom ≈ε
 
-  -- (g *) respects the universal relation TrivialRel.
-  g-well-defined : ∀ {u t : Word B} → u ===₂ t → (g *) u ≈₁ (g *) t
+  -- (g ʷ) respects the universal relation TrivialRel.
+  g-well-defined : ∀ {u t : Word B} → u ===₂ t → (g ʷ) u ≈₁ (g ʷ) t
   g-well-defined {[ x ]ʷ} {t} ≈ε = _≈₁_.refl
   g-well-defined {ε} {t} ≈ε = _≈₁_.refl
   g-well-defined {u • u₁} {t} ≈ε =
@@ -179,14 +179,14 @@ module P1IsoP2 (B : Set) where
       _≈₁_.left-unit
 
   -- g is a left inverse of f on generators, vacuously.
-  g-left-inv-gen : ∀ (x : A) → [ x ]ʷ ≈₁ (g *) (f x)
+  g-left-inv-gen : ∀ (x : A) → [ x ]ʷ ≈₁ (g ʷ) (f x)
   g-left-inv-gen ()
 
   module Iso = StarIsomorphism (EmptyRel {A}) (TrivialRel {B}) f g
     f-well-defined f-left-inv-gen g-well-defined g-left-inv-gen
 
-  -- The main theorem: (f *) is a monoid isomorphism between the two
+  -- The main theorem: (f ʷ) is a monoid isomorphism between the two
   -- presented monoids.
   iso : MonoidMorphisms.IsMonoidIsomorphism
-          (Monoid.rawMonoid m₁) (Monoid.rawMonoid m₂) (f *)
+          (Monoid.rawMonoid m₁) (Monoid.rawMonoid m₂) (f ʷ)
   iso = Iso.isMonoidIsomorphism

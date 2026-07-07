@@ -111,11 +111,11 @@ module XSω where
   infix 4 _~_
   _~_ = Pointwise _≈₀_ (_≡_ {A = C})
 
-  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , ε-cr) ~ ((h **) ε-cr (f x))
+  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , ε-cr) ~ ((h ᵗ) ε-cr (f x))
   h=⁻¹f-gen (inj₁ tt) = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen (inj₂ tt) = _≈₀_.refl , Eq.refl
 
-  h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
+  h-wd-ax : ∀ c {u t} → u === t → (h ᵗ) c u ~ (h ᵗ) c t
   h-wd-ax X-cr {u} {t} order-ω = (by-equal-nf Eq.refl) , Eq.refl
   h-wd-ax X-cr {u} {t} order-S = (by-equal-nf Eq.refl) , Eq.refl
   h-wd-ax X-cr {u} {t} order-X = (by-equal-nf Eq.refl) , Eq.refl
@@ -132,9 +132,9 @@ module XSω where
   h-wd-ax ε-cr {u} {t} (comm {ω-gen}) = (by-equal-nf Eq.refl) , Eq.refl
 
   open PP _===_
-  open AS _===_ using (by-assoc)
+  open AS.Assoc _===_ using (by-assoc)
 
-  f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
+  f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} (left Cyclic.order) = _≈_.trans (by-assoc Eq.refl) (_≈_.axiom order-ω)
   f-wd-ax {w} {v} (right Cyclic.order) = _≈_.trans _≈_.assoc (_≈_.trans _≈_.assoc (_≈_.axiom order-S))
   f-wd-ax {w} {v} (mid (comm tt tt)) = _≈_.axiom comm
@@ -184,7 +184,7 @@ module XSω where
     where
     open SR word-setoid
 
-  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f *) (h c b .proj₁) • [ h c b .proj₂ ]
+  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f ʷ) (h c b .proj₁) • [ h c b .proj₂ ]
   h-hyp X-cr X-gen = _≈_.trans (axiom order-X) (_≈_.sym _≈_.left-unit)
   h-hyp X-cr S-gen = lemma-XS
   h-hyp X-cr ω-gen = sym (axiom comm)
@@ -263,12 +263,12 @@ module Clifford where
   infix 4 _~_
   _~_ = Pointwise _≈₀_ (_≡_ {A = CT})
 
-  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , I) ~ ((h **) I (f x))
+  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , I) ~ ((h ᵗ) I (f x))
   h=⁻¹f-gen XSω.X-gen = (by-equal-nf Eq.refl) , Eq.refl
   h=⁻¹f-gen XSω.S-gen = (by-equal-nf Eq.refl) , Eq.refl
   h=⁻¹f-gen XSω.ω-gen = (by-equal-nf Eq.refl) , Eq.refl
 
-  h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
+  h-wd-ax : ∀ c {u t} → u === t → (h ᵗ) c u ~ (h ᵗ) c t
   h-wd-ax (inj₁ HS-cr) {u} {t} order-ω = (by-equal-nf Eq.refl) , Eq.refl
   h-wd-ax (inj₁ HS-cr) {u} {t} order-S = (by-equal-nf Eq.refl) , Eq.refl
   h-wd-ax (inj₁ HS-cr) {u} {t} order-H = (by-equal-nf Eq.refl) , Eq.refl
@@ -298,7 +298,7 @@ module Clifford where
   h-wd-ax (inj₂ tt) {u} {t} def-X = (by-equal-nf Eq.refl) , Eq.refl
 
   open PP _===_
-  open AS _===_ using (by-assoc)
+  open AS.Assoc _===_ using (by-assoc)
 
   lemma-ω : ∀ w → w • ω ≈ ω • w
   lemma-ω [ x ]ʷ = sym (axiom comm)
@@ -357,7 +357,7 @@ module Clifford where
     where
     open SR word-setoid
 
-  f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
+  f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} XSω.order-ω = axiom order-ω
   f-wd-ax {w} {v} XSω.order-S = axiom order-S
   f-wd-ax {w} {v} XSω.order-X = lemma-X^2
@@ -462,7 +462,7 @@ module Clifford where
     where
     open SR word-setoid
 
-  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f *) (h c b .proj₁) • [ h c b .proj₂ ]
+  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f ʷ) (h c b .proj₁) • [ h c b .proj₂ ]
   h-hyp (inj₁ HS-cr) H-gen = lemma-HSH'
   h-hyp (inj₁ HS-cr) S-gen = lemma-HSS
   h-hyp (inj₁ HS-cr) ω-gen = lemma-ω [ inj₁ HS-cr ]
@@ -482,7 +482,7 @@ module Clifford where
 
   open NFBase.NormalFormWithoutInverse (nfp (XSω.nfp Sω.nfp)) renaming (by-equal-nf to by-nf) using ()
 
-  hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h **) (inj₁ c) (f m)) ≡ (w , inj₁ c')
+  hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h ᵗ) (inj₁ c) (f m)) ≡ (w , inj₁ c')
   hcme HS-cr XSω.X-gen = XSω.ω ^ 2 • XSω.S ^ 2 • XSω.X , HS-cr , Eq.refl
   hcme HS-cr XSω.S-gen = XSω.X , H-cr , Eq.refl
   hcme HS-cr XSω.ω-gen = XSω.ω , HS-cr , Eq.refl
@@ -490,17 +490,17 @@ module Clifford where
   hcme H-cr XSω.S-gen = ε , HS-cr , Eq.refl
   hcme H-cr XSω.ω-gen = XSω.ω , H-cr , Eq.refl
 
-  htme : ∀ m → ((h **) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
+  htme : ∀ m → ((h ᵗ) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
   htme XSω.X-gen = Eq.refl
   htme XSω.S-gen = Eq.refl
   htme XSω.ω-gen = Eq.refl
 
-  htme~ : ∀ (m : XSω) → ([ m ]ʷ , I) ~ ((h **) I (f m))
+  htme~ : ∀ (m : XSω) → ([ m ]ʷ , I) ~ ((h ᵗ) I (f m))
   htme~ XSω.X-gen = _≈₀_.refl , Eq.refl
   htme~ XSω.S-gen = _≈₀_.refl , Eq.refl
   htme~ XSω.ω-gen = _≈₀_.refl , Eq.refl
 
-  [_]ₓ = f *
+  [_]ₓ = f ʷ
 
   hcme~ : ∀ (c : C) (m : XSω) → let (w' , c' , p) = hcme c m in ([ c ]ₒ • f m) ≈ ([ w' ]ₓ • [ c' ]ₒ)
   hcme~ HS-cr XSω.X-gen = by-nf Eq.refl
@@ -583,12 +583,12 @@ module TXSω where
   infix 4 _~_
   _~_ = Pointwise _≈₀_ (_≡_ {A = CT})
 
-  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , (inj₂ tt)) ~ ((h **) (inj₂ tt) (f x))
+  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , (inj₂ tt)) ~ ((h ᵗ) (inj₂ tt) (f x))
   h=⁻¹f-gen XSω.X-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen XSω.S-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen XSω.ω-gen = _≈₀_.refl , Eq.refl
 
-  h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
+  h-wd-ax : ∀ c {u t} → u === t → (h ᵗ) c u ~ (h ᵗ) c t
   h-wd-ax (inj₁ T-cr) {u} {t} order-ω = (by-equal-nf Eq.refl) , Eq.refl
   h-wd-ax (inj₁ T-cr) {u} {t} order-T = (by-equal-nf Eq.refl) , Eq.refl
   h-wd-ax (inj₁ T-cr) {u} {t} order-S = (by-equal-nf Eq.refl) , Eq.refl
@@ -609,7 +609,7 @@ module TXSω where
   h-wd-ax (inj₂ tt) {u} {t} (comm {ω-gen}) = (by-equal-nf Eq.refl) , Eq.refl
 
   open PP _===_
-  open AS _===_ using (by-assoc)
+  open AS.Assoc _===_ using (by-assoc)
 
   lemma-ω : ∀ w → w • ω ≈ ω • w
   lemma-ω [ x ]ʷ = sym (axiom comm)
@@ -699,7 +699,7 @@ module TXSω where
     where
     open SR word-setoid
 
-  f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
+  f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} XSω.order-ω = axiom order-ω
   f-wd-ax {w} {v} XSω.order-S = axiom order-S
   f-wd-ax {w} {v} XSω.order-X = axiom order-X
@@ -714,7 +714,7 @@ module TXSω where
   [_] : C ⊎ ⊤ → Word Clifford
   [_] = [_,_] [_]ₒ (λ v → ε)
 
-  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f *) (h c b .proj₁) • [ h c b .proj₂ ]
+  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f ʷ) (h c b .proj₁) • [ h c b .proj₂ ]
   h-hyp (inj₁ T-cr) T-gen = trans (axiom order-T) (sym right-unit)
   h-hyp (inj₁ T-cr) X-gen = lemma-TX
   h-hyp (inj₁ T-cr) S-gen = lemma-TS
@@ -733,22 +733,22 @@ module TXSω where
   I : CT
   I = inj₂ tt
 
-  hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h **) (inj₁ c) (f m)) ≡ (w , inj₁ c')
+  hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h ᵗ) (inj₁ c) (f m)) ≡ (w , inj₁ c')
   hcme T-cr XSω.X-gen = XSω.X • XSω.ω • XSω.S ^ 3 , T-cr , Eq.refl
   hcme T-cr XSω.S-gen = XSω.S , T-cr , Eq.refl
   hcme T-cr XSω.ω-gen = XSω.ω , T-cr , Eq.refl
 
-  htme : ∀ m → ((h **) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
+  htme : ∀ m → ((h ᵗ) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
   htme XSω.X-gen = Eq.refl
   htme XSω.S-gen = Eq.refl
   htme XSω.ω-gen = Eq.refl
 
-  htme~ : ∀ (m : XSω) → ([ m ]ʷ , I) ~ ((h **) I (f m))
+  htme~ : ∀ (m : XSω) → ([ m ]ʷ , I) ~ ((h ᵗ) I (f m))
   htme~ XSω.X-gen = _≈₀_.refl , Eq.refl
   htme~ XSω.S-gen = _≈₀_.refl , Eq.refl
   htme~ XSω.ω-gen = _≈₀_.refl , Eq.refl
 
-  [_]ₓ = f *
+  [_]ₓ = f ʷ
 
   hcme~ : ∀ (c : C) (m : XSω) → let (w' , c' , p) = hcme c m in ([ c ]ₒ • f m) ≈ ([ w' ]ₓ • [ c' ]ₒ)
   hcme~ T-cr XSω.X-gen = by-nf Eq.refl
@@ -830,7 +830,7 @@ module CliffordT1 where
   amalPres = TXSω._===_ * Clifford._===_ ⋆ PackedCosetTable.f TXSω.packedTable ⋆ PackedCosetTable.f Clifford.packedTable
 
   open PB _===_ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
-  open AS _===_ using (by-assoc)
+  open AS.Assoc _===_ using (by-assoc)
 
   open PB amalPres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 
@@ -845,7 +845,7 @@ module CliffordT1 where
 
   open import Presentation.Morphism
 
-  f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v
+  f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v
   f-well-defined {.(ω ^ 8)} {.ε} order-ω = _≈₂_.axiom (left TXSω.order-ω)
   f-well-defined {.(T ^ 2)} {.S} order-T = _≈₂_.axiom (left TXSω.order-T)
   f-well-defined {.(S ^ 4)} {.ε} order-S = _≈₂_.axiom (left TXSω.order-S)
@@ -858,14 +858,14 @@ module CliffordT1 where
   f-well-defined {.(ω • [ ω-gen ]ʷ)} {.([ ω-gen ]ʷ • ω)} (comm {ω-gen}) = _≈₂_.refl
 
 
-  g-well-defined : ∀ {w v} → w ===₂ v → (g *) w ≈₁ (g *) v
+  g-well-defined : ∀ {w v} → w ===₂ v → (g ʷ) w ≈₁ (g ʷ) v
   g-well-defined {.([ TXSω.ω ^ 8 ]ₗ)} {.([ ε ]ₗ)} (left {.(TXSω.ω ^ 8)} {.ε} TXSω.order-ω) = _≈₁_.axiom order-ω
   g-well-defined {.([ TXSω.T ^ 2 ]ₗ)} {.([ TXSω.S ]ₗ)} (left {.(TXSω.T ^ 2)} {.TXSω.S} TXSω.order-T) = _≈₁_.axiom order-T
   g-well-defined {.([ TXSω.S ^ 4 ]ₗ)} {.([ ε ]ₗ)} (left {.(TXSω.S ^ 4)} {.ε} TXSω.order-S) = _≈₁_.axiom order-S
   g-well-defined {.([ TXSω.X ^ 2 ]ₗ)} {.([ ε ]ₗ)} (left {.(TXSω.X ^ 2)} {.ε} TXSω.order-X) = lemma-X^2
     where
       open _≈₁_
-      open AS _===₁_ renaming (by-assoc to by-assoc₁)
+      open AS.Assoc _===₁_ renaming (by-assoc to by-assoc₁)
       lemma-X^2 : X ^ 2 ≈₁ ε
       lemma-X^2 = begin
         X ^ 2 ≈⟨ _≈₁_.refl ⟩
@@ -914,7 +914,7 @@ module CliffordT1 where
   g-well-defined {.([ PackedCosetTable.f (AmalDataNF.CA₁ amalData) XSω.S-gen ]ₗ)} {.([ PackedCosetTable.f (AmalDataNF.CA₂ amalData) XSω.S-gen ]ᵣ)} (mid (amal {XSω.S-gen})) = _≈₁_.refl
   g-well-defined {.([ PackedCosetTable.f (AmalDataNF.CA₁ amalData) XSω.ω-gen ]ₗ)} {.([ PackedCosetTable.f (AmalDataNF.CA₂ amalData) XSω.ω-gen ]ᵣ)} (mid (amal {XSω.ω-gen})) = _≈₁_.refl
 
-  f-left-inv-gen : ∀ x → [ x ]ʷ ≈₂ (f *) (g x)
+  f-left-inv-gen : ∀ x → [ x ]ʷ ≈₂ (f ʷ) (g x)
   f-left-inv-gen (inj₁ TXSω.T-gen) = _≈₂_.refl
   f-left-inv-gen (inj₁ TXSω.X-gen) = by-equal-nf Eq.refl
   f-left-inv-gen (inj₁ TXSω.S-gen) = _≈₂_.refl
@@ -924,7 +924,7 @@ module CliffordT1 where
   f-left-inv-gen (inj₂ Clifford.S-gen) = by-equal-nf Eq.refl
   f-left-inv-gen (inj₂ Clifford.ω-gen) = by-equal-nf Eq.refl
 
-  g-left-inv-gen : ∀ x → [ x ]ʷ ≈₁ (g *) (f x)
+  g-left-inv-gen : ∀ x → [ x ]ʷ ≈₁ (g ʷ) (f x)
   g-left-inv-gen T-gen = _≈₁_.refl
   g-left-inv-gen H-gen = _≈₁_.refl
   g-left-inv-gen S-gen = _≈₁_.refl
@@ -932,5 +932,5 @@ module CliffordT1 where
 
   open MonoidMorphisms
 
-  CliffordT1-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid m₁) (Monoid.rawMonoid m₂) (f *)
+  CliffordT1-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid m₁) (Monoid.rawMonoid m₂) (f ʷ)
   CliffordT1-isomorphism = StarIsomorphism.isMonoidIsomorphism _===_ amalPres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen

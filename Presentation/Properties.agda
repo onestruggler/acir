@@ -11,7 +11,7 @@ open import Word.Base
 module Presentation.Properties {X : Set} (Γ : WRel X) where
 
 open import Data.List using (List ; [] ; _∷_ ; _++_)
-open import Data.Nat as Nat using (ℕ ; zero ; suc)
+open import Data.Nat using (ℕ ; zero ; suc ; _+_ ; _*_)
 import Data.Nat.Properties as NP
 open import Data.Product using (_,_)
 open import Level using (0ℓ)
@@ -77,25 +77,25 @@ word-setoid = record
 ------------------------------------------------------------------------
 -- Congruence of the induced maps
 --
--- If f respects the raw relations of Γ, then its free extension (f *)
+-- If f respects the raw relations of Γ, then its free extension (f ʷ)
 -- — or the generator lift wmap f — respects the whole congruence ≈,
 -- sending the source presentation Γ into a target presentation Δ.
 
 module StarCongruence {B : Set} (Δ : WRel B)
   (f : X → Word B)
   (let open PB Δ hiding (_===_) renaming (_≈_ to _≈₂_))
-  (f-well-defined : ∀ {w v} → w === v → (f *) w ≈₂ (f *) v)
+  (f-well-defined : ∀ {w v} → w === v → (f ʷ) w ≈₂ (f ʷ) v)
   where
 
-  f*-cong : ∀ {w v : Word X} → w ≈ v → (f *) w ≈₂ (f *) v
-  f*-cong refl        = _≈₂_.refl
-  f*-cong (sym h)     = _≈₂_.sym (f*-cong h)
-  f*-cong (trans h k) = _≈₂_.trans (f*-cong h) (f*-cong k)
-  f*-cong (cong h k)  = _≈₂_.cong (f*-cong h) (f*-cong k)
-  f*-cong assoc       = _≈₂_.assoc
-  f*-cong left-unit   = _≈₂_.left-unit
-  f*-cong right-unit  = _≈₂_.right-unit
-  f*-cong (axiom a)   = f-well-defined a
+  fʷ-cong : ∀ {w v : Word X} → w ≈ v → (f ʷ) w ≈₂ (f ʷ) v
+  fʷ-cong refl        = _≈₂_.refl
+  fʷ-cong (sym h)     = _≈₂_.sym (fʷ-cong h)
+  fʷ-cong (trans h k) = _≈₂_.trans (fʷ-cong h) (fʷ-cong k)
+  fʷ-cong (cong h k)  = _≈₂_.cong (fʷ-cong h) (fʷ-cong k)
+  fʷ-cong assoc       = _≈₂_.assoc
+  fʷ-cong left-unit   = _≈₂_.left-unit
+  fʷ-cong right-unit  = _≈₂_.right-unit
+  fʷ-cong (axiom a)   = f-well-defined a
 
 
 module GenCongruence {B : Set} (Δ : WRel B)
@@ -104,17 +104,17 @@ module GenCongruence {B : Set} (Δ : WRel B)
   (f-well-defined : ∀ {w v} → Γ w v → wmap f w ≈₂ wmap f v)
   where
 
-  f* = wmap f
+  fʷ = wmap f
 
-  f*-cong : ∀ {w v : Word X} → w ≈ v → f* w ≈₂ f* v
-  f*-cong refl        = _≈₂_.refl
-  f*-cong (sym h)     = _≈₂_.sym (f*-cong h)
-  f*-cong (trans h k) = _≈₂_.trans (f*-cong h) (f*-cong k)
-  f*-cong (cong h k)  = _≈₂_.cong (f*-cong h) (f*-cong k)
-  f*-cong assoc       = _≈₂_.assoc
-  f*-cong left-unit   = _≈₂_.left-unit
-  f*-cong right-unit  = _≈₂_.right-unit
-  f*-cong (axiom a)   = f-well-defined a
+  fʷ-cong : ∀ {w v : Word X} → w ≈ v → fʷ w ≈₂ fʷ v
+  fʷ-cong refl        = _≈₂_.refl
+  fʷ-cong (sym h)     = _≈₂_.sym (fʷ-cong h)
+  fʷ-cong (trans h k) = _≈₂_.trans (fʷ-cong h) (fʷ-cong k)
+  fʷ-cong (cong h k)  = _≈₂_.cong (fʷ-cong h) (fʷ-cong k)
+  fʷ-cong assoc       = _≈₂_.assoc
+  fʷ-cong left-unit   = _≈₂_.left-unit
+  fʷ-cong right-unit  = _≈₂_.right-unit
+  fʷ-cong (axiom a)   = f-well-defined a
 
 ------------------------------------------------------------------------
 -- Word power lemmas
@@ -125,11 +125,11 @@ comm⇒pow-comm {w} {v} zero    zero   eq = refl
 comm⇒pow-comm {w} {v} zero    (₁₊ b) eq = trans left-unit (sym right-unit)
 comm⇒pow-comm {w} {v} (₁₊ a) zero    eq = trans right-unit (sym left-unit)
 comm⇒pow-comm {w} {v} (₁₊ zero) (₁₊ b@(₁₊ b')) eq = begin
-    w • v ^ ₁₊ b     ≈⟨ sym assoc ⟩
-    (w • v) • v ^ b  ≈⟨ cong eq refl ⟩
-    (v • w) • v ^ b  ≈⟨ assoc ⟩
-    v • w • v ^ b    ≈⟨ cong refl (comm⇒pow-comm 1 b eq) ⟩
-    v • v ^ b • w    ≈⟨ sym assoc ⟩
+    w • v ^ ₁₊ b    ≈⟨ sym assoc ⟩
+    (w • v) • v ^ b ≈⟨ cong eq refl ⟩
+    (v • w) • v ^ b ≈⟨ assoc ⟩
+    v • w • v ^ b   ≈⟨ cong refl (comm⇒pow-comm 1 b eq) ⟩
+    v • v ^ b • w   ≈⟨ sym assoc ⟩
     v ^ ₁₊ b • w ∎
   where open SR word-setoid
 comm⇒pow-comm {w} {v} (₁₊ a@(₁₊ a')) (₁₊ zero) eq = begin
@@ -142,18 +142,18 @@ comm⇒pow-comm {w} {v} (₁₊ a@(₁₊ a')) (₁₊ zero) eq = begin
   where open SR word-setoid
 comm⇒pow-comm (₁₊ zero)  (₁₊ zero)  eq  = eq
 comm⇒pow-comm {w} {v} (₂₊ a) (₂₊ b) eq  = begin
-    w ^ ₂₊ a • v ^ ₂₊ b                 ≈⟨ special-assoc ((□ • □) • □ • □) (□ • (□ • □) • □) Eq.refl ⟩
+    w ^ ₂₊ a • v ^ ₂₊ b                 ≈⟨ by-passoc ((□ • □) • □ • □) (□ • (□ • □) • □) Eq.refl ⟩
     w • (w ^ (₁₊ a) • v) • v ^ (₁₊ b)   ≈⟨ cong refl (cong (comm⇒pow-comm (₁₊ a) 1 eq) refl) ⟩
-    w • (v • w ^ (₁₊ a)) • v ^ (₁₊ b)   ≈⟨ special-assoc (□ • (□ • □) • □) (□ ^ 2 • □ ^ 2) Eq.refl ⟩
+    w • (v • w ^ (₁₊ a)) • v ^ (₁₊ b)   ≈⟨ by-passoc (□ • (□ • □) • □) (□ ^ 2 • □ ^ 2) Eq.refl ⟩
     (w • v) • (w ^ (₁₊ a) • v ^ (₁₊ b)) ≈⟨ cong eq (comm⇒pow-comm (₁₊ a) (₁₊ b) eq) ⟩
-    (v • w) • (v ^ (₁₊ b) • w ^ (₁₊ a)) ≈⟨ special-assoc (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) Eq.refl ⟩
+    (v • w) • (v ^ (₁₊ b) • w ^ (₁₊ a)) ≈⟨ by-passoc (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) Eq.refl ⟩
     v • (w • v ^ (₁₊ b)) • w ^ (₁₊ a)   ≈⟨ cong refl (cong (comm⇒pow-comm 1 (₁₊ b) eq) refl) ⟩
-    v • (v ^ (₁₊ b) • w) • w ^ (₁₊ a)   ≈⟨ special-assoc (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) Eq.refl ⟩
+    v • (v ^ (₁₊ b) • w) • w ^ (₁₊ a)   ≈⟨ by-passoc (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) Eq.refl ⟩
     v ^ ₂₊ b • w ^ ₂₊ a ∎
   where
     open SR word-setoid
-    open import Presentation.Tactic.AssociativitySolver Γ
-    open Pattern-Assoc
+    open import Presentation.Tactic.AssociativitySolver
+    open Pattern-Assoc Γ
 
 -- Different powers of a word commute: a special case of comm⇒pow-comm
 -- (a word commutes with itself, so the hypothesis is refl).
@@ -176,14 +176,14 @@ pow-comm w a b = comm⇒pow-comm {w} {w} a b refl
 ^-suc w zero   = sym right-unit
 ^-suc w (₁₊ a) = refl
 
-^-+ : ∀ (w : Word X) a b → w ^ (a Nat.+ b) ≈ w ^ a • w ^ b
+^-+ : ∀ (w : Word X) a b → w ^ (a + b) ≈ w ^ a • w ^ b
 ^-+ w zero          b      = sym left-unit
 ^-+ w (₁₊ zero)    zero    = sym right-unit
 ^-+ w (₁₊ zero)    (₁₊ b)  = refl
 ^-+ w (₂₊ a)        b      = begin
-    w ^ suc (₁₊ a Nat.+ b) ≈⟨ refl ⟩
-    w • w ^ (₁₊ a Nat.+ b) ≈⟨ cong refl (^-+ w (₁₊ a) b) ⟩
-    w • w ^ ₁₊ a • w ^ b   ≈⟨ sym assoc ⟩
+    w ^ suc (₁₊ a + b)   ≈⟨ refl ⟩
+    w • w ^ (₁₊ a + b)   ≈⟨ cong refl (^-+ w (₁₊ a) b) ⟩
+    w • w ^ ₁₊ a • w ^ b ≈⟨ sym assoc ⟩
     w ^ ₂₊ a • w ^ b ∎
   where open SR word-setoid
 
@@ -201,23 +201,23 @@ pow-comm w a b = comm⇒pow-comm {w} {w} a b refl
   where open SR word-setoid
 
 
-^^ : ∀ (w : Word X) a b → (w ^ a) ^ b ≈ w ^ (a Nat.* b)
+^^ : ∀ (w : Word X) a b → (w ^ a) ^ b ≈ w ^ (a * b)
 ^^ w zero    zero      = refl
 ^^ w zero    (₁₊ zero) = PB.refl
 ^^ w zero    (₂₊ b)    = trans left-unit (^^ w zero (₁₊ b))
 ^^ w (₁₊ zero) b       = refl' (Eq.cong (w ^_) (Eq.sym (NP.+-identityʳ b)))
 ^^ w (₂₊ a) b = begin
-    (w • w ^ ₁₊ a) ^ b         ≈⟨ ^-• w (w ^ ₁₊ a) b (pow-comm w 1 (₁₊ a)) ⟩
-    w ^ b • (w ^ ₁₊ a) ^ b     ≈⟨ cong refl (^^ w (₁₊ a) b) ⟩
-    w ^ b • w ^ (₁₊ a Nat.* b) ≈⟨ sym (^-+ w b (₁₊ a Nat.* b)) ⟩
-    w ^ (b Nat.+ (b Nat.+ a Nat.* b)) ∎
+    (w • w ^ ₁₊ a) ^ b     ≈⟨ ^-• w (w ^ ₁₊ a) b (pow-comm w 1 (₁₊ a)) ⟩
+    w ^ b • (w ^ ₁₊ a) ^ b ≈⟨ cong refl (^^ w (₁₊ a) b) ⟩
+    w ^ b • w ^ (₁₊ a * b) ≈⟨ sym (^-+ w b (₁₊ a * b)) ⟩
+    w ^ (b + (b + a * b)) ∎
   where open SR word-setoid
 
 ^^' : ∀ (w : Word X) a b → (w ^ a) ^ b ≈ (w ^ b) ^ a
 ^^' w a b = begin
-    (w ^ a) ^ b     ≈⟨ ^^ w a b ⟩
-    w ^ (a Nat.* b) ≡⟨ Eq.cong (w ^_) (NP.*-comm a b) ⟩
-    w ^ (b Nat.* a) ≈⟨ sym (^^ w b a) ⟩
+    (w ^ a) ^ b ≈⟨ ^^ w a b ⟩
+    w ^ (a * b) ≡⟨ Eq.cong (w ^_) (NP.*-comm a b) ⟩
+    w ^ (b * a) ≈⟨ sym (^^ w b a) ⟩
     (w ^ b) ^ a ∎
   where open SR word-setoid
 
@@ -235,30 +235,3 @@ pow-comm w a b = comm⇒pow-comm {w} {w} a b refl
 ε^k=ε zero      = refl
 ε^k=ε (₁₊ zero) = refl
 ε^k=ε (₂₊ k)    = trans left-unit (ε^k=ε (₁₊ k))
-
-------------------------------------------------------------------------
--- Congruence lemmas for wfoldr / wfoldl
-
-wfoldr-cong :
-  {X Y : Set} {_⊕_ : X → Y → Y} (R : Y → Y → Set) →
-  (hyp : (a : X) → ∀ {b1 b2} → R b1 b2 → R (a ⊕ b1) (a ⊕ b2)) →
-  ∀ (w : Word X) → ∀ {b1 b2} → R b1 b2 →
-  let _⊕'_ = wfoldr _⊕_ in R (w ⊕' b1) (w ⊕' b2)
-wfoldr-cong R hyp [ x ]ʷ  eq = hyp x eq
-wfoldr-cong R hyp ε        eq = eq
-wfoldr-cong {_⊕_ = _⊕_} R hyp (w • w₁) eq
-  with wfoldr-cong R hyp w₁ eq
-... | ih with (let _⊕'_ = wfoldr _⊕_ in wfoldr-cong R hyp w {w₁ ⊕' _} {w₁ ⊕' _})
-... | ih2 = ih2 ih
-
-wfoldl-cong :
-  {X Y : Set} {_⊕_ : Y → X → Y} (R : Y → Y → Set) →
-  (hyp : (a : X) → ∀ {b1 b2} → R b1 b2 → R (b1 ⊕ a) (b2 ⊕ a)) →
-  ∀ (w : Word X) → ∀ {b1 b2} → R b1 b2 →
-  let _⊕'_ = wfoldl _⊕_ in R (b1 ⊕' w) (b2 ⊕' w)
-wfoldl-cong R hyp [ x ]ʷ  eq = hyp x eq
-wfoldl-cong R hyp ε        eq = eq
-wfoldl-cong {_⊕_ = _⊕_} R hyp (w • w₁) eq
-  with wfoldl-cong R hyp w eq
-... | ih with (let _⊕'_ = wfoldl _⊕_ in wfoldl-cong R hyp w₁ {_ ⊕' w} {_ ⊕' w})
-... | ih2 = ih2 ih

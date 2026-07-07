@@ -51,9 +51,9 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   open AmalDataNF anf using (CA₁ ; CA₂ ; P₀) using () public
   open PB P₀ renaming ( _===_ to _===₀_ ; _≈_ to _≈₀_ ; refl' to refl'₀) using () public
   open PP P₀ renaming (word-setoid to ws₀) using () public
-  open PackedCosetTable CA₁ renaming ([_]ₒ to [_]ₒ₁ ; [_]ₓ to [_]ₓ₁ ; [_] to [_]₁ ; f to f₁ ; f-wd-ax to f-wd-ax₁ ; f*-injective to f*-injective₁ ; [I]≡ε to [I]≡ε₁
+  open PackedCosetTable CA₁ renaming ([_]ₒ to [_]ₒ₁ ; [_]ₓ to [_]ₓ₁ ; [_] to [_]₁ ; f to f₁ ; f-wd-ax to f-wd-ax₁ ; fʷ-injective to fʷ-injective₁ ; [I]≡ε to [I]≡ε₁
     ; h to h₁ ; nfx to nfx₁ ; h=ract to h₁-hyp ; _~_ to _~₁_ ; I to I₁) using (C ; hcm ; hcm' ; hcmw ; hca ; hcmw-hyp ; hcmw'-hyp ; hcm-hyp ; hcm'-hyp ; hca-hyp) public
-  open PackedCosetTable CA₂ renaming (h to h₂ ; [_]ₒ to [_]ₒ₂ ; [_]ₓ to [_]ₓ₂ ; [_] to [_]₂ ; f to f₂ ; f-wd-ax to f-wd-ax₂ ; f*-injective to f*-injective₂ ; [I]≡ε to [I]≡ε₂
+  open PackedCosetTable CA₂ renaming (h to h₂ ; [_]ₒ to [_]ₒ₂ ; [_]ₓ to [_]ₓ₂ ; [_] to [_]₂ ; f to f₂ ; f-wd-ax to f-wd-ax₂ ; fʷ-injective to fʷ-injective₂ ; [I]≡ε to [I]≡ε₂
     ; nfx to nfx₂ ; h=ract to h₂-hyp ; _~_ to _~₂_ ; I to I₂ ; hcm to hdm ; hca to hdb ; hcmw-hyp to hdmw-hyp ; hcmw'-hyp to hdmw'-hyp ; hcm'-hyp to hdm'-hyp ; hcm-hyp to hdm-hyp ; hca-hyp to hdb-hyp ; hcm' to hdm' ; hcmw to hdmw ; hcmw' to hdmw' ; C to D) using () public
 
 
@@ -62,7 +62,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   mypres = ( P₁ * P₂ ⋆ f₁ ⋆ f₂)
   open PP mypres renaming (word-setoid to ws₃) using () public
-  open AS mypres renaming (by-assoc to by-assoc₃) using () public
+  open AS.Assoc mypres renaming (by-assoc to by-assoc₃) using () public
   open PB mypres renaming (Alphabet to Y ; _===_ to _===₃_ ; _≈_ to _≈₃_ ; refl' to refl'₃) using () public
 
   open _≈₃_
@@ -76,9 +76,9 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   f' : M → Word Y
   f' = [_]ᵣ ∘ f₂
 
-  [_]ₓ = f *
+  [_]ₓ = f ʷ
 
-  [_]ₓ' = f' *
+  [_]ₓ' = f' ʷ
 
   lemma-amal : ∀ w → [ w ]ₓ ≈₃ [ w ]ₓ'
   lemma-amal [ x ]ʷ = axiom (mid amal)
@@ -112,7 +112,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   ... | (wm' , c') = wm' , c' , d'
 
   hcdw : C × D → Word M → Word M × (C × D)
-  hcdw = hcd **
+  hcdw = hcd ᵗ
 
   hcdws : List (C × D) → Word M → Word M × List (C × D)
   hcdws [] wm = wm , []
@@ -142,7 +142,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   ... | (wm' , cds') with hdmw' d wm'
   ... | (wm'' , d') = wm'' , d' , cds' , c'
 
-  hmaw = hma **
+  hmaw = hma ᵗ
 
   infix 4 _~_
   _~_ = PW.Pointwise _≈₀_ (_≡_ {A = CD})
@@ -156,21 +156,21 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   module AB = LeftRightCongruence P1 P2 (AmalgRel f₁ f₂)
 
  
-  aux-f₁ : ∀ wm → [ (f₁ *) wm ]ₗ ≡ (f *) wm
+  aux-f₁ : ∀ wm → [ (f₁ ʷ) wm ]ₗ ≡ (f ʷ) wm
   aux-f₁ wm = begin
-    [ (f₁ *) wm ]ₗ ≡⟨ Eq.sym (lemma-*-∘ f₁ inj₁ wm) ⟩
-    (f *) wm ∎
+    [ (f₁ ʷ) wm ]ₗ ≡⟨ Eq.sym (lemma-ʷ-∘ f₁ inj₁ wm) ⟩
+    (f ʷ) wm ∎
     where open Eq.≡-Reasoning
 
-  aux-f₁' : ∀ wm → [ (f₁ *) wm ]ₗ ≈₃ (f *) wm
+  aux-f₁' : ∀ wm → [ (f₁ ʷ) wm ]ₗ ≈₃ (f ʷ) wm
   aux-f₁' wm rewrite aux-f₁ wm = refl
 
 
-  aux-f₂ : ∀ wm → [ (f₂ *) wm ]ᵣ ≈₃ (f *) wm
+  aux-f₂ : ∀ wm → [ (f₂ ʷ) wm ]ᵣ ≈₃ (f ʷ) wm
   aux-f₂ wm = begin
-    [ (f₂ *) wm ]ᵣ ≡⟨ Eq.sym (lemma-*-∘ f₂ inj₂ wm) ⟩
+    [ (f₂ ʷ) wm ]ᵣ ≡⟨ Eq.sym (lemma-ʷ-∘ f₂ inj₂ wm) ⟩
     [ wm ]ₓ' ≈⟨ sym (lemma-amal wm) ⟩
-    (f *) wm ∎
+    (f ʷ) wm ∎
     where open SR ws₃
 
   lemma-amal' : ∀ w → [ [ w ]ₓ₁ ]ₗ ≈₃ [ [ w ]ₓ₂ ]ᵣ
@@ -181,12 +181,12 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     where
     open SR ws₃
 
-  f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈₃ (f *) v
+  f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈₃ (f ʷ) v
   f-wd-ax {w} {v} eqx = begin
-    (f *) w ≡⟨ Eq.sym (aux-f₁ w) ⟩
-    [ ((f₁)*) w ]ₗ ≈⟨ AB.lefts (f-wd-ax₁ eqx) ⟩
-    [ ((f₁)*) v ]ₗ ≡⟨ aux-f₁ v ⟩
-    (f *) v ∎
+    (f ʷ) w ≡⟨ Eq.sym (aux-f₁ w) ⟩
+    [ ((f₁)ʷ) w ]ₗ ≈⟨ AB.lefts (f-wd-ax₁ eqx) ⟩
+    [ ((f₁)ʷ) v ]ₗ ≡⟨ aux-f₁ v ⟩
+    (f ʷ) v ∎
     where open SR ws₃
 
 
@@ -264,7 +264,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
 
   lemma-hcdw : ∀ cd wm → let (wm' , cd') = hcdw cd wm in [ cd ]ᵢ • [ wm ]ₓ ≈₃ [ wm' ]ₓ • [ cd' ]ᵢ
-  lemma-hcdw cd wm = lemma-**-act _===₃_ hcd [_]ᵢ ([_]ₗ ∘ f₁) aux-hh3' cd wm
+  lemma-hcdw cd wm = lemma-ᵗ-act _===₃_ hcd [_]ᵢ ([_]ₗ ∘ f₁) aux-hh3' cd wm
   
 
   lemma-hcdws : ∀ cds wm → let (wm' , cds') = hcdws cds wm in semcds cds • [ wm ]ₓ ≈₃ [ wm' ]ₓ • semcds cds'
@@ -282,31 +282,31 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     [ wm2 ]ₓ • semcds cds2 ∎
     where open SR ws₃
 
-  lemma-hdmw'1 : ∀ d wm → let (wm' , d') = hdmw' d wm in [ [ d ]₂ ]ᵣ • (f *) wm ≈₃ (f *) wm' • [ [ d' ]₂ ]ᵣ 
+  lemma-hdmw'1 : ∀ d wm → let (wm' , d') = hdmw' d wm in [ [ d ]₂ ]ᵣ • (f ʷ) wm ≈₃ (f ʷ) wm' • [ [ d' ]₂ ]ᵣ 
   lemma-hdmw'1 d wm = let (wm' , d') = hdmw' d wm in begin
-    [ [ d ]₂ ]ᵣ • (f *) wm ≈⟨ _≈₃_.cong _≈₃_.refl ( _≈₃_.sym (aux-f₂ wm)) ⟩
-    [ [ d ]₂  • (f₂ *) wm ]ᵣ ≈⟨ AB.rights (hdmw'-hyp d wm) ⟩
-    [ (f₂ *) wm' • [ d' ]₂ ]ᵣ  ≈⟨ cong (aux-f₂ wm') refl ⟩
-    (f *) wm' • [ [ d' ]₂ ]ᵣ ∎
+    [ [ d ]₂ ]ᵣ • (f ʷ) wm ≈⟨ _≈₃_.cong _≈₃_.refl ( _≈₃_.sym (aux-f₂ wm)) ⟩
+    [ [ d ]₂  • (f₂ ʷ) wm ]ᵣ ≈⟨ AB.rights (hdmw'-hyp d wm) ⟩
+    [ (f₂ ʷ) wm' • [ d' ]₂ ]ᵣ  ≈⟨ cong (aux-f₂ wm') refl ⟩
+    (f ʷ) wm' • [ [ d' ]₂ ]ᵣ ∎
     where open SR ws₃
 
 
 
-  lemma-hdmw1 : ∀ d wm → let (wm' , d') = hdmw d wm in [ [ d ]ₒ₂ ]ᵣ • (f *) wm ≈₃ (f *) wm' • [ [ d' ]ₒ₂ ]ᵣ 
+  lemma-hdmw1 : ∀ d wm → let (wm' , d') = hdmw d wm in [ [ d ]ₒ₂ ]ᵣ • (f ʷ) wm ≈₃ (f ʷ) wm' • [ [ d' ]ₒ₂ ]ᵣ 
   lemma-hdmw1 d wm = let (wm' , d') = hdmw d wm in begin
-    [ [ d ]ₒ₂ ]ᵣ • (f *) wm ≈⟨ _≈₃_.cong _≈₃_.refl ( _≈₃_.sym (aux-f₂ wm)) ⟩
-    [ [ d ]ₒ₂  • (f₂ *) wm ]ᵣ ≈⟨ AB.rights (hdmw-hyp d wm) ⟩
-    [ (f₂ *) wm' • [ d' ]ₒ₂ ]ᵣ  ≈⟨ cong (aux-f₂ wm') refl ⟩
-    (f *) wm' • [ [ d' ]ₒ₂ ]ᵣ ∎
+    [ [ d ]ₒ₂ ]ᵣ • (f ʷ) wm ≈⟨ _≈₃_.cong _≈₃_.refl ( _≈₃_.sym (aux-f₂ wm)) ⟩
+    [ [ d ]ₒ₂  • (f₂ ʷ) wm ]ᵣ ≈⟨ AB.rights (hdmw-hyp d wm) ⟩
+    [ (f₂ ʷ) wm' • [ d' ]ₒ₂ ]ᵣ  ≈⟨ cong (aux-f₂ wm') refl ⟩
+    (f ʷ) wm' • [ [ d' ]ₒ₂ ]ᵣ ∎
     where open SR ws₃
 
 
-  lemma-hcmw1 : ∀ d wm → let (wm' , d') = hcmw d wm in [ [ d ]ₒ₁ ]ₗ • (f *) wm ≈₃ (f *) wm' • [ [ d' ]ₒ₁ ]ₗ 
+  lemma-hcmw1 : ∀ d wm → let (wm' , d') = hcmw d wm in [ [ d ]ₒ₁ ]ₗ • (f ʷ) wm ≈₃ (f ʷ) wm' • [ [ d' ]ₒ₁ ]ₗ 
   lemma-hcmw1 d wm = let (wm' , d') = hcmw d wm in begin
-    [ [ d ]ₒ₁ ]ₗ • (f *) wm ≈⟨ _≈₃_.cong _≈₃_.refl ( _≈₃_.sym (refl'₃ (aux-f₁ wm))) ⟩
-    [ [ d ]ₒ₁  • (f₁ *) wm ]ₗ ≈⟨ AB.lefts (hcmw-hyp d wm) ⟩
-    [ (f₁ *) wm' • [ d' ]ₒ₁ ]ₗ  ≈⟨ cong (refl'₃ (aux-f₁ wm')) refl ⟩
-    (f *) wm' • [ [ d' ]ₒ₁ ]ₗ ∎
+    [ [ d ]ₒ₁ ]ₗ • (f ʷ) wm ≈⟨ _≈₃_.cong _≈₃_.refl ( _≈₃_.sym (refl'₃ (aux-f₁ wm))) ⟩
+    [ [ d ]ₒ₁  • (f₁ ʷ) wm ]ₗ ≈⟨ AB.lefts (hcmw-hyp d wm) ⟩
+    [ (f₁ ʷ) wm' • [ d' ]ₒ₁ ]ₗ  ≈⟨ cong (refl'₃ (aux-f₁ wm')) refl ⟩
+    (f ʷ) wm' • [ [ d' ]ₒ₁ ]ₗ ∎
     where open SR ws₃
 
   lemma-cdε-m : ∀ m → [ (inj₂ tt , [] , inj₂ tt) ] • [ [ m ]ₓ₁ ]ₗ ≈₃ [ [ m ]ₓ₁ ]ₗ • [ (inj₂ tt , [] , inj₂ tt) ]
@@ -324,30 +324,30 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   ... | (wm' , cds') with hdmw' d wm'
   ... | (wm'' , d') = wm'' , d' , cds' , c'
 
-  hcdmw = hcdm **
+  hcdmw = hcdm ᵗ
 
   lemma-hcdm : ∀ d cds m → let (wm' , d' , cds' , c') = hcdm (d , cds , inj₂ tt) m
     in c' ≡ inj₂ tt
   lemma-hcdm d cds m = Eq.refl
 
-  lemma-hcdmw : ∀ d cds c → c ≡ inj₂ tt → ∀ wm → let (wm' , d' , cds' , c') = (hcdm **) (d , cds , inj₂ tt) wm
+  lemma-hcdmw : ∀ d cds c → c ≡ inj₂ tt → ∀ wm → let (wm' , d' , cds' , c') = (hcdm ᵗ) (d , cds , inj₂ tt) wm
     in c' ≡ inj₂ tt
   lemma-hcdmw d cds c eq [ x ]ʷ = Eq.refl
   lemma-hcdmw d cds c eq ε = Eq.refl
-  lemma-hcdmw d cds c eq (wm • wm₁) with (hcdm **) (d , cds , inj₂ tt) wm | inspect ((hcdm **) (d , cds , inj₂ tt)) wm
+  lemma-hcdmw d cds c eq (wm • wm₁) with (hcdm ᵗ) (d , cds , inj₂ tt) wm | inspect ((hcdm ᵗ) (d , cds , inj₂ tt)) wm
   ... | (wm' , (d' , cds' , c')) | [ Eq.refl ]' with lemma-hcdmw d cds c eq wm | lemma-hcdmw d' cds' c' (lemma-hcdmw d cds c eq wm) wm₁
   ... | ih1 | ih2 =
     let cd : CD
         cd = (d , cds , inj₂ tt)
     in
-    let (wm' , d' , cds' , c') = (hcdm **) (d , cds , inj₂ tt) (wm • wm₁) in
-    let (wm1 , d1 , cds1 , c1) = (hcdm **) (d , cds , inj₂ tt) wm in
+    let (wm' , d' , cds' , c') = (hcdm ᵗ) (d , cds , inj₂ tt) (wm • wm₁) in
+    let (wm1 , d1 , cds1 , c1) = (hcdm ᵗ) (d , cds , inj₂ tt) wm in
     let cd'  = (d' , cds' , c') in begin
     c' ≡⟨ Eq.refl ⟩
-    (hcdm **) cd (wm • wm₁) .proj₂ .proj₂ .proj₂ ≡⟨ Eq.refl ⟩
-    (hcdm **) ((hcdm **) cd wm .proj₂) wm₁ .proj₂ .proj₂ .proj₂ ≡⟨ Eq.refl ⟩
-    (hcdm **) (d1 , cds1 , c1) wm₁ .proj₂ .proj₂ .proj₂ ≡⟨ Eq.cong (\xx → (hcdm **) (d1 , cds1 , xx) wm₁ .proj₂ .proj₂ .proj₂) (lemma-hcdmw d cds c eq wm) ⟩
-    (hcdm **) (d1 , cds1 , inj₂ tt) wm₁ .proj₂ .proj₂ .proj₂ ≡⟨ lemma-hcdmw d1 cds1 (inj₂ tt) (Eq.refl) wm₁ ⟩
+    (hcdm ᵗ) cd (wm • wm₁) .proj₂ .proj₂ .proj₂ ≡⟨ Eq.refl ⟩
+    (hcdm ᵗ) ((hcdm ᵗ) cd wm .proj₂) wm₁ .proj₂ .proj₂ .proj₂ ≡⟨ Eq.refl ⟩
+    (hcdm ᵗ) (d1 , cds1 , c1) wm₁ .proj₂ .proj₂ .proj₂ ≡⟨ Eq.cong (\xx → (hcdm ᵗ) (d1 , cds1 , xx) wm₁ .proj₂ .proj₂ .proj₂) (lemma-hcdmw d cds c eq wm) ⟩
+    (hcdm ᵗ) (d1 , cds1 , inj₂ tt) wm₁ .proj₂ .proj₂ .proj₂ ≡⟨ lemma-hcdmw d1 cds1 (inj₂ tt) (Eq.refl) wm₁ ⟩
     inj₂ tt ∎
     where open Eq.≡-Reasoning
 
@@ -372,8 +372,8 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     (([ (d , [] , inj₂ tt) ] • [ [ wm2 ]ₓ₁ ]ₗ) • semcds cds') • [ [ c1 ]₁ ]ₗ ≈⟨ cong (cong (cong (aux-hhd d) refl) refl) refl ⟩
     ((([ (inj₂ tt , [] , inj₂ tt) ] • [ [ d ]₂ ]ᵣ) • [ [ wm2 ]ₓ₁ ]ₗ) • semcds cds') • [ [ c1 ]₁ ]ₗ ≈⟨ cong (cong assoc refl) refl ⟩
     (([ (inj₂ tt , [] , inj₂ tt) ] • [ [ d ]₂ ]ᵣ • [ [ wm2 ]ₓ₁ ]ₗ) • semcds cds') • [ [ c1 ]₁ ]ₗ ≈⟨ cong (cong (cong refl (cong refl (refl'₃ (aux-f₁ wm2)))) refl) refl ⟩
-    (([ (inj₂ tt , [] , inj₂ tt) ] • [ [ d ]₂ ]ᵣ • (f *) wm2 ) • semcds cds') • [ [ c1 ]₁ ]ₗ ≈⟨ cong (cong (cong refl (lemma-hdmw'1 d wm2)) refl) refl ⟩
-    (([ (inj₂ tt , [] , inj₂ tt) ] • (f *) wm3 • [ [  d3 ]₂ ]ᵣ) • semcds cds') • [ [ c1 ]₁ ]ₗ ≈⟨ cong (cong (cong refl (cong (sym (refl'₃ (aux-f₁ wm3))) refl)) refl) refl ⟩
+    (([ (inj₂ tt , [] , inj₂ tt) ] • [ [ d ]₂ ]ᵣ • (f ʷ) wm2 ) • semcds cds') • [ [ c1 ]₁ ]ₗ ≈⟨ cong (cong (cong refl (lemma-hdmw'1 d wm2)) refl) refl ⟩
+    (([ (inj₂ tt , [] , inj₂ tt) ] • (f ʷ) wm3 • [ [  d3 ]₂ ]ᵣ) • semcds cds') • [ [ c1 ]₁ ]ₗ ≈⟨ cong (cong (cong refl (cong (sym (refl'₃ (aux-f₁ wm3))) refl)) refl) refl ⟩
     (([ (inj₂ tt , [] , inj₂ tt) ] • [ [ wm3 ]ₓ₁ ]ₗ • [ [  d3 ]₂ ]ᵣ) • semcds cds') • [ [ c1 ]₁ ]ₗ ≈⟨ cong (cong (sym assoc) refl) refl ⟩
     ((([ (inj₂ tt , [] , inj₂ tt) ] • [ [ wm3 ]ₓ₁ ]ₗ) • [ [ d3 ]₂ ]ᵣ) • semcds cds') • [ [ c1 ]₁ ]ₗ ≈⟨ cong (cong (cong (lemma-cdε-m wm3) refl) refl) refl ⟩
     ((([ [ wm3 ]ₓ₁ ]ₗ • [ (inj₂ tt , [] , inj₂ tt) ]) • [ [  d3 ]₂ ]ᵣ) • semcds cds') • [ [ c1 ]₁ ]ₗ ≈⟨ cong (cong assoc refl) refl ⟩
@@ -383,19 +383,19 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     ([ [ wm3 ]ₓ₁ ]ₗ • [ (d3 , cds' , inj₂ tt) ]) • [ [ c1 ]₁ ]ₗ ≈⟨ assoc ⟩
     [ [ wm3 ]ₓ₁ ]ₗ • [ (d3 , cds' , inj₂ tt) ] • [ [ c1 ]₁ ]ₗ ≈⟨ cong refl (sym (aux-hh1 (d3) cds' c1)) ⟩
     [ [ wm3 ]ₓ₁ ]ₗ • [ (d3 , cds' , c1) ] ≈⟨ cong ( refl'₃ (aux-f₁ wm3)) refl ⟩
-    (f *) wm3 • [ (d3 , cds' , c1) ] ≈⟨ refl ⟩
+    (f ʷ) wm3 • [ (d3 , cds' , c1) ] ≈⟨ refl ⟩
     [ x' ]ₓ • [ c' ] ∎
     where
     open SR ws₃
 
-  lemma-cd-wm : ∀ cd m → let (x' , c') = (hcdm **) cd m in
+  lemma-cd-wm : ∀ cd m → let (x' , c') = (hcdm ᵗ) cd m in
     [ cd ] • [ m ]ₓ ≈₃ [ x' ]ₓ • [ c' ]
   lemma-cd-wm cd [ x ]ʷ = lemma-cd-m cd x
   lemma-cd-wm cd ε = trans right-unit (sym left-unit)
   lemma-cd-wm cd m@(w • v) =
-    let (m' , cd') = (hcdm **) cd m  in
-    let (w' , cdw) = (hcdm **) cd w  in
-    let (v' , cdv) = (hcdm **) cdw v in begin
+    let (m' , cd') = (hcdm ᵗ) cd m  in
+    let (w' , cdw) = (hcdm ᵗ) cd w  in
+    let (v' , cdv) = (hcdm ᵗ) cdw v in begin
     [ cd ] • [ w • v ]ₓ ≈⟨ refl ⟩
     [ cd ] • [ w ]ₓ • [ v ]ₓ ≈⟨ sym assoc ⟩
     ([ cd ] • [ w ]ₓ) • [ v ]ₓ ≈⟨ cong (lemma-cd-wm cd w) refl ⟩
@@ -437,10 +437,10 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   hh (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) with hdb d0 b
   hh (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₁ d1) with hcmw c0 wm
-  hh (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₁ d1) | (wm1 , c1) with (hcdm **) (d , tail , inj₂ tt) wm1
+  hh (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₁ d1) | (wm1 , c1) with (hcdm ᵗ) (d , tail , inj₂ tt) wm1
   hh (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₁ d1) | (wm1 , c1) | (wm3 , d3 , tail3 , c3) = wm3 ,  d3 , (c1 , d1) ∷ tail3 , inj₂ tt
   hh (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₂ tt) with hcmw c0 wm
-  hh (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₂ tt) | (wm1 , c1) with (hcdm **) (d , tail , inj₂ tt) wm1
+  hh (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₂ tt) | (wm1 , c1) with (hcdm ᵗ) (d , tail , inj₂ tt) wm1
   hh (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₂ tt) | (wm1 , c1) | (wm3 , d3 , tail3 , c3) = wm3 ,  d3 , tail3 , inj₁ c1
 
 
@@ -552,7 +552,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   hh-hyp (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) with hdb d0 b | inspect (hdb d0) b
   hh-hyp (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₁ d1) | [ eq1 ]' with hcmw c0 wm | inspect (hcmw c0) wm
-  hh-hyp (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₁ d1) | [ eq1 ]' | (wm1 , c1) | [ Eq.refl ]' with (hcdm **) (d , tail , inj₂ tt) wm1 | inspect ((hcdm **) (d , tail , inj₂ tt)) wm1
+  hh-hyp (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₁ d1) | [ eq1 ]' | (wm1 , c1) | [ Eq.refl ]' with (hcdm ᵗ) (d , tail , inj₂ tt) wm1 | inspect ((hcdm ᵗ) (d , tail , inj₂ tt)) wm1
   hh-hyp (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₁ d1) | [ eq1 ]' | (wm1 , c1) | [ Eq.refl ]' | (wm3 , d3 , tail3 , c3) | [ Eq.refl ]' = begin
     [ d , (c0 , d0) ∷ tail , inj₂ tt ] • [ inj₂ b ]ʷ ≈⟨ refl ⟩
     ([ [ d ]₂ ]ᵣ • semcds ((c0 , d0) ∷ tail) • ε) • [ inj₂ b ]ʷ ≈⟨ cong (cong refl right-unit) refl ⟩
@@ -585,7 +585,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
       claim = lemma-hcdmw d tail (inj₂ tt) Eq.refl wm1
 
   hh-hyp (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₂ tt) | [ eq1 ]' with hcmw c0 wm | inspect (hcmw c0) wm
-  hh-hyp (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₂ tt) | [ eq1 ]' | (wm1 , c1) | [ Eq.refl ]' with (hcdm **) (d , tail , inj₂ tt) wm1 | inspect ((hcdm **) (d , tail , inj₂ tt)) wm1
+  hh-hyp (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₂ tt) | [ eq1 ]' | (wm1 , c1) | [ Eq.refl ]' with (hcdm ᵗ) (d , tail , inj₂ tt) wm1 | inspect ((hcdm ᵗ) (d , tail , inj₂ tt)) wm1
   hh-hyp (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₂ tt) | [ eq1 ]' | (wm1 , c1) | [ Eq.refl ]' | (wm3 , d3 , tail3 , c3) | [ Eq.refl ]' = begin
     [ d , (c0 , d0) ∷ tail , inj₂ tt ] • [ inj₂ b ]ʷ ≈⟨ refl ⟩
     ([ [ d ]₂ ]ᵣ • semcds ((c0 , d0) ∷ tail) • ε) • [ inj₂ b ]ʷ ≈⟨ cong (cong refl right-unit) refl ⟩
@@ -620,12 +620,12 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
 
 
-  hh-hyp-w :  ∀ cd y → let (x' , c') = (hh **) cd y in
+  hh-hyp-w :  ∀ cd y → let (x' , c') = (hh ᵗ) cd y in
     [ cd ] • y ≈₃ [ x' ]ₓ • [ c' ]
   hh-hyp-w cd [ x ]ʷ = hh-hyp cd x
   hh-hyp-w cd ε = _≈₃_.trans _≈₃_.right-unit (_≈₃_.sym _≈₃_.left-unit)
-  hh-hyp-w cd (y • y₁) with (hh **) cd y | inspect ((hh **) cd) y | hh-hyp-w cd y
-  ... | (wm , cd') | [ Eq.refl ]' | ih with  (hh **) cd' y₁ | inspect ((hh **) cd') y₁ | hh-hyp-w cd' y₁
+  hh-hyp-w cd (y • y₁) with (hh ᵗ) cd y | inspect ((hh ᵗ) cd) y | hh-hyp-w cd y
+  ... | (wm , cd') | [ Eq.refl ]' | ih with  (hh ᵗ) cd' y₁ | inspect ((hh ᵗ) cd') y₁ | hh-hyp-w cd' y₁
   ... | (wm2 , cd2) | [ Eq.refl ]' | ih2 = begin
     [ cd ] • (y • y₁) ≈⟨ _≈₃_.sym _≈₃_.assoc ⟩
     ([ cd ] • y) • y₁ ≈⟨ cong ih refl ⟩
@@ -637,8 +637,8 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
       open SR ws₃
 
 
-  open PackedCosetTable CA₁ renaming (h-wd-ax to h-wd-ax₁ ; h-wd to h-wd₁ ; f-wd to f-wd₁ ; h-wd-m to h-wd-m₁) using (hcmw' ; lemma-h**=hcmw' ; lemma-h**=hcmw ; hcmw-cong ; hcmw-cong2 ; hcmw-cong' ; hcmw-cong'2 ; htme ; hcme) public
-  open PackedCosetTable CA₂ renaming (h-wd-ax to h-wd-ax₂ ; h-wd to h-wd₂ ; f-wd to f-wd₂ ; h-wd-m to h-wd-m₂ ; hcmw-cong to hdmw-cong ; hcmw-cong2 to hdmw-cong2 ; hcmw-cong' to hdmw-cong' ; hcmw-cong'2 to hdmw-cong'2 ; lemma-h**=hcmw' to lemma-h**=hdmw' ; htme to htme₂ ; hcme to hdme) using () public
+  open PackedCosetTable CA₁ renaming (h-wd-ax to h-wd-ax₁ ; h-wd to h-wd₁ ; f-wd to f-wd₁ ; h-wd-m to h-wd-m₁) using (hcmw' ; lemma-hᵗ=hcmw' ; lemma-hᵗ=hcmw ; hcmw-cong ; hcmw-cong2 ; hcmw-cong' ; hcmw-cong'2 ; htme ; hcme) public
+  open PackedCosetTable CA₂ renaming (h-wd-ax to h-wd-ax₂ ; h-wd to h-wd₂ ; f-wd to f-wd₂ ; h-wd-m to h-wd-m₂ ; hcmw-cong to hdmw-cong ; hcmw-cong2 to hdmw-cong2 ; hcmw-cong' to hdmw-cong' ; hcmw-cong'2 to hdmw-cong'2 ; lemma-hᵗ=hcmw' to lemma-hᵗ=hdmw' ; htme to htme₂ ; hcme to hdme) using () public
 
 
 
@@ -661,36 +661,36 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
 
   hcd-ma : CD → Word A → Word M × CD
-  hcd-ma (d , cds , c) w with (h₁ **) c w
+  hcd-ma (d , cds , c) w with (h₁ ᵗ) c w
   hcd-ma (d , cds , c) w | (wm1 , c1) with hcxds-m cds wm1
   hcd-ma (d , cds , c) w | (wm1 , c1) | (wm2 , cds2) with hdmw' d wm2
   hcd-ma (d , cds , c) w | (wm1 , c1) | (wm2 , cds2) | (wm3 , d3) = (wm3 , d3 , cds2 , c1)
 
 
   hcxd1-mb : C × D → Word B → Word M × C × D ⊎ Word M × C
-  hcxd1-mb (c , d) w with (h₂ **) (inj₁ d) w
+  hcxd1-mb (c , d) w with (h₂ ᵗ) (inj₁ d) w
   hcxd1-mb (c , d) w | wm1 , inj₁ d' with hcmw c wm1
   hcxd1-mb (c , d) w | wm1 , inj₁ d' | (wm2 , c2) = inj₁ (wm2 , c2 , d')
   hcxd1-mb (c , d) w | wm1 , inj₂ tt with hcmw c wm1
   hcxd1-mb (c , d) w | wm1 , inj₂ tt | (wm2 , c2) = inj₂ (wm2 , c2)
 
   hcxd1-mb' : C × D → Word B → Word M × (C × (D ⊎ ⊤))
-  hcxd1-mb' (c , d) w with (h₂ **) (inj₁ d) w
+  hcxd1-mb' (c , d) w with (h₂ ᵗ) (inj₁ d) w
   hcxd1-mb' (c , d) w | wm1 , dt1 with hcmw c wm1
   hcxd1-mb' (c , d) w | wm1 , dt1 | (wm2 , c2) = wm2 , c2 , dt1
 
 
-  aux-hcm'=h₁**2 : ∀ c m → hcm' c m ≡ hcmw' c [ m ]ʷ
-  aux-hcm'=h₁**2 (inj₁ x) m = Eq.refl
-  aux-hcm'=h₁**2 (inj₂ y) m = Eq.refl
+  aux-hcm'=h₁ᵗ2 : ∀ c m → hcm' c m ≡ hcmw' c [ m ]ʷ
+  aux-hcm'=h₁ᵗ2 (inj₁ x) m = Eq.refl
+  aux-hcm'=h₁ᵗ2 (inj₂ y) m = Eq.refl
 
-  aux-hdm=h₂**2 : ∀ d b → (h₂ **) (inj₁ d) [ b ]ʷ ≡ hdb d b
-  aux-hdm=h₂**2 d b = Eq.refl
+  aux-hdm=h₂ᵗ2 : ∀ d b → (h₂ ᵗ) (inj₁ d) [ b ]ʷ ≡ hdb d b
+  aux-hdm=h₂ᵗ2 d b = Eq.refl
 
 
-  aux-h₁=h₁** : ∀ c a → h₁ c a ≡ (h₁ **) c [ a ]ʷ
-  aux-h₁=h₁** (inj₁ x) a = Eq.refl
-  aux-h₁=h₁** (inj₂ y) a = Eq.refl
+  aux-h₁=h₁ᵗ : ∀ c a → h₁ c a ≡ (h₁ ᵗ) c [ a ]ʷ
+  aux-h₁=h₁ᵗ (inj₁ x) a = Eq.refl
+  aux-h₁=h₁ᵗ (inj₂ y) a = Eq.refl
 
 
   aux-hcdw=hcxd1-m : ∀ cd wm → hcdw cd wm ≡ hcxd1-m cd wm
@@ -711,7 +711,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   
 
   hcd-mb : CD → Word B → Word M × CD
-  hcd-mb (d , cds , inj₁ c) w with (h₂ **) (inj₂ tt) w
+  hcd-mb (d , cds , inj₁ c) w with (h₂ ᵗ) (inj₂ tt) w
   hcd-mb (d , cds , inj₁ c) w | wm1 , inj₁ d1 with hcmw c wm1
   hcd-mb (d , cds , inj₁ c) w | wm1 , inj₁ d1 | (wm1' , c1') with hcxds-m-hdmw' d cds wm1'
   hcd-mb (d , cds , inj₁ c) w | wm1 , inj₁ d1 | (wm1' , c1') | (wm2 , d2 , cds2 , _) = wm2 , d2 , (c1' , d1) ∷ cds2 , inj₂ tt
@@ -720,10 +720,10 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   hcd-mb (d , cds , inj₁ c) w | wm1 , inj₂ tt | (wm1' , c1') with hcxds-m-hdmw' d cds wm1'
   hcd-mb (d , cds , inj₁ c) w | wm1 , inj₂ tt | (wm1' , c1') | (wm2 , d2 , cds2 , _) = wm2 , d2 , cds2 , inj₁ c1'
   
-  hcd-mb (d , [] , inj₂ tt) w with (h₂ **) d w
+  hcd-mb (d , [] , inj₂ tt) w with (h₂ ᵗ) d w
   hcd-mb (d , [] , inj₂ tt) w | (wm1 , d1) = wm1 , d1 , [] , inj₂ tt
   
-  hcd-mb (d , (c0 , d0) ∷ cds , inj₂ tt) w with (h₂ **) (inj₁ d0) w
+  hcd-mb (d , (c0 , d0) ∷ cds , inj₂ tt) w with (h₂ ᵗ) (inj₁ d0) w
   hcd-mb (d , (c0 , d0) ∷ cds , inj₂ tt) w | (wm1 , inj₁ d1) with hcmw c0 wm1
   hcd-mb (d , (c0 , d0) ∷ cds , inj₂ tt) w | (wm1 , inj₁ d1) | wm1' , c1' with hcxds-m-hdmw' d cds wm1'
   hcd-mb (d , (c0 , d0) ∷ cds , inj₂ tt) w | (wm1 , inj₁ d1) | wm1' , c1' | (wm2 , d2 , cds2 , _) =  wm2 , d2 , (c1' , d1) ∷ cds2 , inj₂ tt
@@ -739,13 +739,13 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   aux-hcdws-• : ∀ cds w v → let (w' , cds') = hcdws cds w in let (v' , cds'') = hcdws cds' v in
     hcdws cds (w • v) .proj₁ ≡ w' • v'
   aux-hcdws-• [] w v = Eq.refl
-  aux-hcdws-• (x ∷ cds) w v = aux-hcdws-• cds ((hcd **) x w .proj₁)
-                                ((hcd **) ((hcd **) x w .proj₂) v .proj₁)
+  aux-hcdws-• (x ∷ cds) w v = aux-hcdws-• cds ((hcd ᵗ) x w .proj₁)
+                                ((hcd ᵗ) ((hcd ᵗ) x w .proj₂) v .proj₁)
 
   aux-hcdws-•2 : ∀ cds w v → let (w' , cds') = hcdws cds w in let (v' , cds'') = hcdws cds' v in
     hcdws cds (w • v) .proj₂ ≡ cds''
   aux-hcdws-•2 [] w v = Eq.refl
-  aux-hcdws-•2 (x ∷ cds) w v rewrite aux-hcdws-•2 cds ((hcd **) x w .proj₁) ((hcd **) ((hcd **) x w .proj₂) v .proj₁) = Eq.refl
+  aux-hcdws-•2 (x ∷ cds) w v rewrite aux-hcdws-•2 cds ((hcd ᵗ) x w .proj₁) ((hcd ᵗ) ((hcd ᵗ) x w .proj₂) v .proj₁) = Eq.refl
 
   
   hcdws-m-hdmw' : ∀ d cds wm → Word M × CD
@@ -888,10 +888,10 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     let (wm1 , cd1) = hcd-ma cd w in 
     let (wm2 , cd2) = hcd-ma cd1 v in
     
-    let (wm3 , c3) = (h₁ **) c (w • v) in
+    let (wm3 , c3) = (h₁ ᵗ) c (w • v) in
     let (wm4 , d4 , cds4 , c4) = hcxds-m-hdmw' d cds wm3 in
-    let (wm3a , c3a) = (h₁ **) c w in
-    let (wm3b , c3b) = (h₁ **) c3a v in
+    let (wm3a , c3a) = (h₁ ᵗ) c w in
+    let (wm3b , c3b) = (h₁ ᵗ) c3a v in
     let (wm4' , d4' , cds4' , c4') = hcxds-m-hdmw' d cds (wm3a • wm3b) in
 
     let (w1` , d1` , cds1` , c1`) = hcxds-m-hdmw' d cds wm3a in
@@ -929,10 +929,10 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     hcd-mb cd (w • v) ≡ (wm1 • wm2 , cd2)
   lemma-hcd-mb-• cd@(d , cds@[] , c@(inj₂ tt)) w v = Eq.refl
 
-  lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v with (h₂ **) (inj₁ d0) (w • v) | inspect ((h₂ **) (inj₁ d0)) (w • v) | (h₂ **) (inj₁ d0) w | inspect ((h₂ **) (inj₁ d0)) w
+  lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v with (h₂ ᵗ) (inj₁ d0) (w • v) | inspect ((h₂ ᵗ) (inj₁ d0)) (w • v) | (h₂ ᵗ) (inj₁ d0) w | inspect ((h₂ ᵗ) (inj₁ d0)) w
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' with hcmw c0 wv1 | inspect (hcmw c0) wv1 | hcmw c0 w1 | inspect (hcmw c0) w1 
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' with hcxds-m-hdmw' d cds wv1 | inspect (hcxds-m-hdmw' d cds) wv1 | hcxds-m-hdmw' d cds w2 | inspect (hcxds-m-hdmw' d cds) w2
-  lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ **) (inj₁ d1w) v | inspect ((h₂ **) (inj₁ d1w)) v
+  lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ ᵗ) (inj₁ d1w) v | inspect ((h₂ ᵗ) (inj₁ d1w)) v
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' with hcmw c2w v1 | inspect (hcmw c2w) v1
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' with hcxds-m-hdmw' d cds3w v2 | inspect (hcxds-m-hdmw' d cds3w) v2
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' | (v3 , d3v , cds3v , inj₂ tt) | [ Eq.refl ]' rewrite lemma-hcxds-m cds w2 v2 = Eq.refl
@@ -942,7 +942,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' with hcmw c0 wv1 | inspect (hcmw c0) wv1 | hcmw c0 w1 | inspect (hcmw c0) w1 
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' with hcxds-m-hdmw' d cds wv1 | inspect (hcxds-m-hdmw' d cds) wv1 | hcxds-m-hdmw' d cds w2 | inspect (hcxds-m-hdmw' d cds) w2
-  lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ **) (inj₁ d1w) v | inspect ((h₂ **) (inj₁ d1w)) v
+  lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ ᵗ) (inj₁ d1w) v | inspect ((h₂ ᵗ) (inj₁ d1w)) v
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' with hcmw c2w v1 | inspect (hcmw c2w) v1
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' with hcxds-m-hdmw' d cds3w v2 | inspect (hcxds-m-hdmw' d cds3w) v2
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' | (v3 , d3v , cds3v , inj₂ tt) | [ Eq.refl ]' rewrite lemma-hcxds-m cds w2 v2 = Eq.refl
@@ -952,7 +952,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' with hcmw c0 wv1 | inspect (hcmw c0) wv1 | hcmw c0 w1 | inspect (hcmw c0) w1 
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' with hcxds-m-hdmw' d cds wv1 | inspect (hcxds-m-hdmw' d cds) wv1 | hcxds-m-hdmw' d cds w2 | inspect (hcxds-m-hdmw' d cds) w2
-  lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ **) (inj₂ tt) v | inspect ((h₂ **) (inj₂ tt)) v
+  lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ ᵗ) (inj₂ tt) v | inspect ((h₂ ᵗ) (inj₂ tt)) v
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' with hcmw c2w v1 | inspect (hcmw c2w) v1
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' with hcxds-m-hdmw' d cds3w v2 | inspect (hcxds-m-hdmw' d cds3w) v2
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' | (v3 , d3v , cds3v , inj₂ tt) | [ Eq.refl ]' rewrite lemma-hcxds-m cds w2 v2 = Eq.refl
@@ -962,7 +962,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' with hcmw c0 wv1 | inspect (hcmw c0) wv1 | hcmw c0 w1 | inspect (hcmw c0) w1 
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' with hcxds-m-hdmw' d cds wv1 | inspect (hcxds-m-hdmw' d cds) wv1 | hcxds-m-hdmw' d cds w2 | inspect (hcxds-m-hdmw' d cds) w2
-  lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ **) (inj₂ tt) v | inspect ((h₂ **) (inj₂ tt)) v
+  lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ ᵗ) (inj₂ tt) v | inspect ((h₂ ᵗ) (inj₂ tt)) v
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' with hcmw c2w v1 | inspect (hcmw c2w) v1
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' with hcxds-m-hdmw' d cds3w v2 | inspect (hcxds-m-hdmw' d cds3w) v2
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' | (v3 , d3v , cds3v , inj₂ tt) | [ Eq.refl ]' rewrite lemma-hcxds-m cds w2 v2 = Eq.refl
@@ -970,10 +970,10 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₂ tt) | [ eqv ]'  | (v2 , c2v) | [ Eq.refl ]' with hcxds-m-hdmw' d cds3w v2 | inspect (hcxds-m-hdmw' d cds3w) v2
   lemma-hcd-mb-• cd@(d , (c0 , d0) ∷ cds , c@(inj₂ tt)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₂ tt) | [ eqv ]'  | (v2 , c2v) | [ Eq.refl ]' | (v3 , d3v , cds3v , inj₂ tt) | [ Eq.refl ]' rewrite lemma-hcxds-m cds w2 v2 = Eq.refl
 
-  lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v with (h₂ **) (inj₂ tt) (w • v) | inspect ((h₂ **) (inj₂ tt)) (w • v) | (h₂ **) (inj₂ tt) w | inspect ((h₂ **) (inj₂ tt)) w
+  lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v with (h₂ ᵗ) (inj₂ tt) (w • v) | inspect ((h₂ ᵗ) (inj₂ tt)) (w • v) | (h₂ ᵗ) (inj₂ tt) w | inspect ((h₂ ᵗ) (inj₂ tt)) w
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' with hcmw c0 wv1 | inspect (hcmw c0) wv1 | hcmw c0 w1 | inspect (hcmw c0) w1 
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' with hcxds-m-hdmw' d cds wv1 | inspect (hcxds-m-hdmw' d cds) wv1 | hcxds-m-hdmw' d cds w2 | inspect (hcxds-m-hdmw' d cds) w2
-  lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ **) (inj₁ d1w) v | inspect ((h₂ **) (inj₁ d1w)) v
+  lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ ᵗ) (inj₁ d1w) v | inspect ((h₂ ᵗ) (inj₁ d1w)) v
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' with hcmw c2w v1 | inspect (hcmw c2w) v1
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' with hcxds-m-hdmw' d cds3w v2 | inspect (hcxds-m-hdmw' d cds3w) v2
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' | (v3 , d3v , cds3v , inj₂ tt) | [ Eq.refl ]' rewrite lemma-hcxds-m cds w2 v2 = Eq.refl
@@ -983,7 +983,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' with hcmw c0 wv1 | inspect (hcmw c0) wv1 | hcmw c0 w1 | inspect (hcmw c0) w1 
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' with hcxds-m-hdmw' d cds wv1 | inspect (hcxds-m-hdmw' d cds) wv1 | hcxds-m-hdmw' d cds w2 | inspect (hcxds-m-hdmw' d cds) w2
-  lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ **) (inj₂ tt) v | inspect ((h₂ **) (inj₂ tt)) v
+  lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ ᵗ) (inj₂ tt) v | inspect ((h₂ ᵗ) (inj₂ tt)) v
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' with hcmw c2w v1 | inspect (hcmw c2w) v1
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' with hcxds-m-hdmw' d cds3w v2 | inspect (hcxds-m-hdmw' d cds3w) v2
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' | (v3 , d3v , cds3v , inj₂ tt) | [ Eq.refl ]' rewrite lemma-hcxds-m cds w2 v2 = Eq.refl
@@ -993,7 +993,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' with hcmw c0 wv1 | inspect (hcmw c0) wv1 | hcmw c0 w1 | inspect (hcmw c0) w1 
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' with hcxds-m-hdmw' d cds wv1 | inspect (hcxds-m-hdmw' d cds) wv1 | hcxds-m-hdmw' d cds w2 | inspect (hcxds-m-hdmw' d cds) w2
-  lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ **) (inj₂ tt) v | inspect ((h₂ **) (inj₂ tt)) v
+  lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ ᵗ) (inj₂ tt) v | inspect ((h₂ ᵗ) (inj₂ tt)) v
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' with hcmw c2w v1 | inspect (hcmw c2w) v1
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' with hcxds-m-hdmw' d cds3w v2 | inspect (hcxds-m-hdmw' d cds3w) v2
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₁ d1) | [ eq1 ]' | (w1 , inj₂ tt) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' | (v3 , d3v , cds3v , inj₂ tt) | [ Eq.refl ]' rewrite lemma-hcxds-m cds w2 v2 = Eq.refl
@@ -1004,7 +1004,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' with hcmw c0 wv1 | inspect (hcmw c0) wv1 | hcmw c0 w1 | inspect (hcmw c0) w1 
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' with hcxds-m-hdmw' d cds wv1 | inspect (hcxds-m-hdmw' d cds) wv1 | hcxds-m-hdmw' d cds w2 | inspect (hcxds-m-hdmw' d cds) w2
-  lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ **) (inj₁ d1w) v | inspect ((h₂ **) (inj₁ d1w)) v
+  lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' with (h₂ ᵗ) (inj₁ d1w) v | inspect ((h₂ ᵗ) (inj₁ d1w)) v
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' with hcmw c2w v1 | inspect (hcmw c2w) v1
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' with hcxds-m-hdmw' d cds3w v2 | inspect (hcxds-m-hdmw' d cds3w) v2
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₁ d1v) | [ eqv ]' | (v2 , c2v) | [ Eq.refl ]' | (v3 , d3v , cds3v , inj₂ tt) | [ Eq.refl ]' rewrite lemma-hcxds-m cds w2 v2 = Eq.refl
@@ -1013,8 +1013,8 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   lemma-hcd-mb-• cd@(d , cds , c@(inj₁ c0)) w v | (wv1 , inj₂ tt) | [ eq1 ]' | (w1 , inj₁ d1w) | [ eqw ]' | (wv2 , c2) | [ Eq.refl ]' | (w2 , c2w) | [ Eq.refl ]' | (wv3 , d3 , cds3 , inj₂ tt) | [ Eq.refl ]' | (w3 , d3w , cds3w , inj₂ tt) | [ Eq.refl ]' | (v1 , inj₂ tt) | [ eqv ]'  | (v2 , c2v) | [ Eq.refl ]' | (v3 , d3v , cds3v , inj₂ tt) | [ Eq.refl ]' rewrite lemma-hcxds-m cds w2 v2 = Eq.refl
 
 
-  lemma-hh=hcd-ma : ∀ cd wa → (hh **) cd [ wa ]ₗ ≡ hcd-ma cd wa
-  -- (hh **) cd [ a ]ₗ and hcd-ma cd [ a ]ʷ agree: both act by h₁ c a,
+  lemma-hh=hcd-ma : ∀ cd wa → (hh ᵗ) cd [ wa ]ₗ ≡ hcd-ma cd wa
+  -- (hh ᵗ) cd [ a ]ₗ and hcd-ma cd [ a ]ʷ agree: both act by h₁ c a,
   -- then fold the cosets and adjust d.  The only non-definitional step
   -- is hcdws = hcxds-m (aux-hcdws=hcxds-m).
   lemma-hh=hcd-ma cd@(d , cds , c) [ a ]ʷ with h₁ c a
@@ -1025,14 +1025,14 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     hcd-ma (d , cds , c) ε ∎
     where open Eq.≡-Reasoning
 
-  lemma-hh=hcd-ma cd@(d , cds , c) (wa • wa₁) with lemma-hh=hcd-ma cd wa | (hh **) cd [ wa ]ₗ | inspect ((hh **) cd) [ wa ]ₗ  
-  lemma-hh=hcd-ma cd@(d , cds , c) (wa • wa₁) | ih | (wm1 , cd1) | [ Eq.refl ]' with lemma-hh=hcd-ma cd1 wa₁ | (hh **) cd1 [ wa₁ ]ₗ | inspect ((hh **) cd1) [ wa₁ ]ₗ  
+  lemma-hh=hcd-ma cd@(d , cds , c) (wa • wa₁) with lemma-hh=hcd-ma cd wa | (hh ᵗ) cd [ wa ]ₗ | inspect ((hh ᵗ) cd) [ wa ]ₗ  
+  lemma-hh=hcd-ma cd@(d , cds , c) (wa • wa₁) | ih | (wm1 , cd1) | [ Eq.refl ]' with lemma-hh=hcd-ma cd1 wa₁ | (hh ᵗ) cd1 [ wa₁ ]ₗ | inspect ((hh ᵗ) cd1) [ wa₁ ]ₗ  
   lemma-hh=hcd-ma cd@(d , cds , c) (wa • wa₁) | ih | (wm1 , cd1) | [ Eq.refl ]' | ih2 | (wm2 , cd2) | [ Eq.refl ]'
     =
     let (wm1` , cd1`) = hcd-ma cd wa in 
     let (wm2` , cd2`) = hcd-ma cd1` wa₁ in 
     let (wm2`a , cd2`a) = hcd-ma cd1 wa₁ in begin
-    (hh **) cd [ wa • wa₁ ]ₗ ≡⟨ Eq.refl ⟩
+    (hh ᵗ) cd [ wa • wa₁ ]ₗ ≡⟨ Eq.refl ⟩
     wm1 • wm2 , cd2 ≡⟨ Eq.cong (λ xx → xx • wm2 , cd2) (Eq.cong proj₁ ih) ⟩
     wm1` • wm2 , cd2 ≡⟨ Eq.cong₂ (\ xx yy → wm1` • xx , yy) (Eq.cong proj₁ ih2) (Eq.cong proj₂ ih2) ⟩
     wm1` • wm2`a , cd2`a ≡⟨ Eq.cong₂ (\ xx yy → wm1` • xx , yy)
@@ -1043,16 +1043,16 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     hcd-ma cd (wa • wa₁) ∎
     where open Eq.≡-Reasoning
 
-  h₁-wd-h : ∀ c u t → u ===₁ t → ((h₁ **) c u) ~₁ ((h₁ **) c t)
+  h₁-wd-h : ∀ c u t → u ===₁ t → ((h₁ ᵗ) c u) ~₁ ((h₁ ᵗ) c t)
   h₁-wd-h c u t eq =  begin
-    ((h₁ **) c u) ≈⟨ h-wd-ax₁ c eq ⟩
-    ((h₁ **) c t) ∎
+    ((h₁ ᵗ) c u) ≈⟨ h-wd-ax₁ c eq ⟩
+    ((h₁ ᵗ) c t) ∎
     where open SR (PW.×-setoid ws₀ (setoid (C ⊎ ⊤)))
 
-  h₂-wd-h : ∀ c u t → u ===₂ t → ((h₂ **) c u) ~₂ ((h₂ **) c t)
+  h₂-wd-h : ∀ c u t → u ===₂ t → ((h₂ ᵗ) c u) ~₂ ((h₂ ᵗ) c t)
   h₂-wd-h c u t eq =  begin
-    ((h₂ **) c u) ≈⟨ h-wd-ax₂ c eq ⟩
-    ((h₂ **) c t) ∎
+    ((h₂ ᵗ) c u) ≈⟨ h-wd-ax₂ c eq ⟩
+    ((h₂ ᵗ) c t) ∎
     where open SR (PW.×-setoid ws₀ (setoid (D ⊎ ⊤)))
 
   hcxd1-m-congl : ∀ cd w v → w ≈₀ v → hcxd1-m cd w .proj₁ ≈₀ hcxd1-m cd v .proj₁
@@ -1096,17 +1096,17 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   hcxds-m-congr [] w v eq = Eq.refl
   hcxds-m-congr (x ∷ cds) w v eq rewrite hcxd1-m-congr x w v eq | hcxds-m-congr cds (hcxd1-m x w .proj₁) (hcxd1-m x v .proj₁) (hcxd1-m-congl x w v eq) = Eq.refl
 
-  lemma-hb : ∀ d b → h₂ d b ≡ (h₂ **) d [ b ]ʷ
+  lemma-hb : ∀ d b → h₂ d b ≡ (h₂ ᵗ) d [ b ]ʷ
   lemma-hb (inj₁ x) b = Eq.refl
   lemma-hb (inj₂ y) b = Eq.refl
 
-  lemma-hdb : ∀ d b → hdb d b ≡ (h₂ **) (inj₁ d) [ b ]ʷ
+  lemma-hdb : ∀ d b → hdb d b ≡ (h₂ ᵗ) (inj₁ d) [ b ]ʷ
   lemma-hdb d b = Eq.refl
 
   htb : ⊤ → B → Word M × (D ⊎ ⊤)
   htb tt b = h₂ (inj₂ tt) b
 
-  lemma-htb : ∀ b → htb tt b .proj₁ ≡ (h₂ **) (inj₂ tt) [ b ]ʷ .proj₁
+  lemma-htb : ∀ b → htb tt b .proj₁ ≡ (h₂ ᵗ) (inj₂ tt) [ b ]ʷ .proj₁
   lemma-htb b = Eq.refl
 
 
@@ -1119,17 +1119,17 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   lemma-hh=hcdmb1 (d , (c0 , d0) ∷ cds , inj₂ tt) b | (wm , inj₁ d1) rewrite aux-hcdmw=hcxds-m-hdmw'2 d cds (hcmw c0 wm .proj₁) = Eq.refl
   lemma-hh=hcdmb1 (d , (c0 , d0) ∷ cds , inj₂ tt) b | (wm , inj₂ tt) rewrite aux-hcdmw=hcxds-m-hdmw'2 d cds (hcmw c0 wm .proj₁) = Eq.refl
 
-  lemma-hh=hcd-mb : ∀ cd wb → (hh **) cd [ wb ]ᵣ ≡ hcd-mb cd wb
+  lemma-hh=hcd-mb : ∀ cd wb → (hh ᵗ) cd [ wb ]ᵣ ≡ hcd-mb cd wb
   lemma-hh=hcd-mb (d , cds , c) [ x ]ʷ = lemma-hh=hcdmb1 (d , cds , c) x
   lemma-hh=hcd-mb (d , cds , c) ε rewrite lemma-hcd-mb-ε d cds c = Eq.refl
   
-  lemma-hh=hcd-mb cd@(d , cds , c) (w • v) with lemma-hh=hcd-mb cd w | (hh **) cd [ w ]ᵣ | inspect ((hh **) cd) [ w ]ᵣ  
-  lemma-hh=hcd-mb cd@(d , cds , c) (w • v) | ih | (wm1 , cd1) | [ Eq.refl ]' with lemma-hh=hcd-mb cd1 v | (hh **) cd1 [ v ]ᵣ | inspect ((hh **) cd1) [ v ]ᵣ  
+  lemma-hh=hcd-mb cd@(d , cds , c) (w • v) with lemma-hh=hcd-mb cd w | (hh ᵗ) cd [ w ]ᵣ | inspect ((hh ᵗ) cd) [ w ]ᵣ  
+  lemma-hh=hcd-mb cd@(d , cds , c) (w • v) | ih | (wm1 , cd1) | [ Eq.refl ]' with lemma-hh=hcd-mb cd1 v | (hh ᵗ) cd1 [ v ]ᵣ | inspect ((hh ᵗ) cd1) [ v ]ᵣ  
   lemma-hh=hcd-mb cd@(d , cds , c) (w • v) | ih | (wm1 , cd1) | [ Eq.refl ]' | ih2 | (wm2 , cd2) | [ Eq.refl ]' =
     let (wm1b , cd1b) = hcd-mb cd w in 
     let (wm2b , cd2b) = hcd-mb cd1b v in 
     let (wm3b , cd3b) = hcd-mb cd1 v in begin
-    (hh **) cd [ w • v ]ᵣ ≡⟨ Eq.refl ⟩
+    (hh ᵗ) cd [ w • v ]ᵣ ≡⟨ Eq.refl ⟩
     (wm1 • wm2 , cd2) ≡⟨ Eq.cong (\xx → xx • wm2 , cd2) (Eq.cong proj₁ (lemma-hh=hcd-mb cd w)) ⟩
     (wm1b • wm2 , cd2) ≡⟨ Eq.cong₂ (\xx yy → wm1b • xx , yy) (Eq.cong proj₁ ih2) (Eq.cong proj₂ ih2) ⟩
     (wm1b • wm3b , cd3b) ≡⟨ Eq.cong₂ (\xx yy → wm1b • xx , yy)
@@ -1140,7 +1140,7 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     where open Eq.≡-Reasoning
 
   claim-s : ∀ d w v → w ===₂ v → hcd-mb (d , [] , inj₂ tt) w ~ hcd-mb (d , [] , inj₂ tt) v
-  claim-s d w v x with (h₂ **) d w | (h₂ **) d v | inspect ((h₂ **) d) w | inspect ((h₂ **) d) v | h₂-wd-h d w v x
+  claim-s d w v x with (h₂ ᵗ) d w | (h₂ ᵗ) d v | inspect ((h₂ ᵗ) d) w | inspect ((h₂ ᵗ) d) v | h₂-wd-h d w v x
   claim-s d w v x | (w1 , inj₁ d1) | (v1 , inj₂ tt) | [ eqw ]' | [ eqv ]' | (ee1 , eq1) with eq1
   ... | () 
   claim-s d w v x | (w1 , inj₂ tt) | (v1 , inj₁ d1') | [ eqw ]' | [ eqv ]' | (ee1 , eq1) with eq1
@@ -1183,18 +1183,18 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   hcxds-m-hdmw'-cong3 d cds w v eq | h1 | h2 = hcxds-m-congr cds w v eq
 
 
-  lemma-hcm'=h₁ : ∀ c m → hcm' c m ≡ (h₁ **) c (f₁ m)
+  lemma-hcm'=h₁ : ∀ c m → hcm' c m ≡ (h₁ ᵗ) c (f₁ m)
   lemma-hcm'=h₁ (inj₁ x) m with hcme x m
   lemma-hcm'=h₁ (inj₁ x) m | (w , c' , hyp) = Eq.sym hyp
   lemma-hcm'=h₁ (inj₂ tt) m rewrite htme m = Eq.refl
 
-  lemma-hdm'=h₂ : ∀ c m → hdm' c m ≡ (h₂ **) c (f₂ m)
+  lemma-hdm'=h₂ : ∀ c m → hdm' c m ≡ (h₂ ᵗ) c (f₂ m)
   lemma-hdm'=h₂ (inj₁ x) m with hdme x m
   lemma-hdm'=h₂ (inj₁ x) m | (w , c' , hyp) = Eq.sym hyp
   lemma-hdm'=h₂ (inj₂ tt) m rewrite htme₂ m = Eq.refl
 
   lemma-hcd-ma=hcdm : ∀ cd m → hcd-ma cd (f₁ m) ≡ hcdm cd m
-  lemma-hcd-ma=hcdm (d , cds , c) m rewrite lemma-hcm'=h₁ c m | aux-hcdws=hcxds-m cds ((h₁ **) c (f₁ m) .proj₁) = Eq.refl
+  lemma-hcd-ma=hcdm (d , cds , c) m rewrite lemma-hcm'=h₁ c m | aux-hcdws=hcxds-m cds ((h₁ ᵗ) c (f₁ m) .proj₁) = Eq.refl
     where
     open Eq.≡-Reasoning
 
@@ -1206,11 +1206,11 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     open Eq.≡-Reasoning
 
 
-  hhh-wd-ax : ∀ (c : CD){u t : Word Y} → u ===₃ t → ((hh **) c u) ~ ((hh **) c t)
+  hhh-wd-ax : ∀ (c : CD){u t : Word Y} → u ===₃ t → ((hh ᵗ) c u) ~ ((hh ᵗ) c t)
   hhh-wd-ax cd@(d , cds , c) {u} {t} (left {u₁} {v} x) = claim2
     where
     claim : hcd-ma cd u₁ ~ hcd-ma cd v
-    claim with (h₁ **) c u₁ | (h₁ **) c v | inspect ((h₁ **) c) u₁ | inspect ((h₁ **) c) v
+    claim with (h₁ ᵗ) c u₁ | (h₁ ᵗ) c v | inspect ((h₁ ᵗ) c) u₁ | inspect ((h₁ ᵗ) c) v
     claim | (wm1 , c1) | (wm1' , c1') | [ Eq.refl ]' | [ Eq.refl ]' with hcxds-m cds wm1 | hcxds-m cds wm1' | inspect (hcxds-m cds) wm1 | inspect (hcxds-m cds) wm1'
     claim | (wm1 , c1) | (wm1' , c1') | [ Eq.refl ]' | [ Eq.refl ]' | (wm2 , cds2) | (wm2' , cds2') | [ Eq.refl ]' | [ Eq.refl ]' with hdmw' d wm2 | hdmw' d wm2' | inspect (hdmw' d) wm2 | inspect (hdmw' d) wm2'
     claim | (wm1 , c1) | (wm1' , c1') | [ Eq.refl ]' | [ Eq.refl ]' | (wm2 , cds2) | (wm2' , cds2') | [ Eq.refl ]' | [ Eq.refl ]' | (wm3 , d3) | (wm3' , d3') | [ Eq.refl ]' | [ Eq.refl ]'
@@ -1238,12 +1238,12 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
       claim5 : (d3 , cds2 , c1) ≡ (d3' , cds2' , c1')
       claim5 = ≡×≡⇒≡ (claim4' , (≡×≡⇒≡ (claim3' , eq1)))
 
-    claim2 : ((hh **) cd u) ~ ((hh **) cd t)
+    claim2 : ((hh ᵗ) cd u) ~ ((hh ᵗ) cd t)
     claim2 = begin
-      ((hh **) cd u) ≡⟨ lemma-hh=hcd-ma (d , cds , c) u₁ ⟩
+      ((hh ᵗ) cd u) ≡⟨ lemma-hh=hcd-ma (d , cds , c) u₁ ⟩
       hcd-ma cd u₁ ≈⟨ claim ⟩
       hcd-ma cd v ≡⟨ Eq.sym (lemma-hh=hcd-ma (d , cds , c) v) ⟩
-      ((hh **) cd t) ∎
+      ((hh ᵗ) cd t) ∎
       where
       open SR mcdₛ
 
@@ -1253,18 +1253,18 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     claim1 : hcd-mb (d , [] , inj₂ tt) u₁ ~ hcd-mb (d , [] , inj₂ tt) v
     claim1 = claim-s d u₁ v x
 
-    claim2 : (hh **) (d , [] , inj₂ tt) [ u₁ ]ᵣ ~ (hh **) (d , [] , inj₂ tt) [ v ]ᵣ
+    claim2 : (hh ᵗ) (d , [] , inj₂ tt) [ u₁ ]ᵣ ~ (hh ᵗ) (d , [] , inj₂ tt) [ v ]ᵣ
     claim2 = begin
-      (hh **) (d , [] , inj₂ tt) [ u₁ ]ᵣ ≡⟨ lemma-hh=hcd-mb (d , [] , inj₂ tt) u₁ ⟩
+      (hh ᵗ) (d , [] , inj₂ tt) [ u₁ ]ᵣ ≡⟨ lemma-hh=hcd-mb (d , [] , inj₂ tt) u₁ ⟩
       (hcd-mb) (d , [] , inj₂ tt) u₁ ≈⟨ claim1 ⟩
       (hcd-mb) (d , [] , inj₂ tt) v ≡⟨ Eq.sym (lemma-hh=hcd-mb (d , [] , inj₂ tt) v) ⟩
-      (hh **) (d , [] , inj₂ tt) [ v ]ᵣ ∎
+      (hh ᵗ) (d , [] , inj₂ tt) [ v ]ᵣ ∎
      
     
   hhh-wd-ax cd@(d , cds@(he@(c0 , d0) ∷ ta) , c@(inj₂ tt)) {u} {t} (right {u₁} {v} px) = claim2ok
     where
     claim : hcd-mb cd u₁ ~ hcd-mb cd v
-    claim with (h₂ **) (inj₁ d0) u₁ | (h₂ **) (inj₁ d0) v | inspect ((h₂ **) (inj₁ d0)) u₁ | inspect ((h₂ **) (inj₁ d0)) v
+    claim with (h₂ ᵗ) (inj₁ d0) u₁ | (h₂ ᵗ) (inj₁ d0) v | inspect ((h₂ ᵗ) (inj₁ d0)) u₁ | inspect ((h₂ ᵗ) (inj₁ d0)) v
     
     claim | wm1 , inj₂ y | wm1' , inj₁ d0' | [ eq1 ]' | [ eq2 ]' with hcmw c0 wm1 | inspect (hcmw c0) wm1 | hcmw c0 wm1' | inspect (hcmw c0) wm1'
     claim | wm1 , inj₂ y | wm1' , inj₁ d0' | [ eq1 ]' | [ eq2 ]' | (wm2 , c2) | [ Eq.refl ]' | (wm2' , c2') | [ Eq.refl ]' with hcxds-m-hdmw' d ta wm2 | inspect (hcxds-m-hdmw' d ta) wm2 | hcxds-m-hdmw' d ta wm2' | inspect (hcxds-m-hdmw' d ta) wm2'
@@ -1347,19 +1347,19 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
         c2a : d0' ≡ d0'₁
         c2a = inj₁-injective cl2
 
-    claim2ok : ((hh **) cd u) ~ ((hh **) cd t)
+    claim2ok : ((hh ᵗ) cd u) ~ ((hh ᵗ) cd t)
     claim2ok = begin
-      ((hh **) cd u) ≡⟨ lemma-hh=hcd-mb (d , cds , c) u₁ ⟩
+      ((hh ᵗ) cd u) ≡⟨ lemma-hh=hcd-mb (d , cds , c) u₁ ⟩
       hcd-mb cd u₁ ≈⟨ claim ⟩
       hcd-mb cd v ≡⟨ Eq.sym (lemma-hh=hcd-mb (d , cds , c) v) ⟩
-      ((hh **) cd t) ∎
+      ((hh ᵗ) cd t) ∎
       where
       open SR mcdₛ
     
   hhh-wd-ax cd@(d , cds , c@(inj₁ c0)) {u} {t} (right {u₁} {v} px) = claim2ok
     where
     claim : hcd-mb cd u₁ ~ hcd-mb cd v
-    claim with (h₂ **) (inj₂ tt) u₁ | (h₂ **) (inj₂ tt) v | inspect ((h₂ **) (inj₂ tt)) u₁ | inspect ((h₂ **) (inj₂ tt)) v
+    claim with (h₂ ᵗ) (inj₂ tt) u₁ | (h₂ ᵗ) (inj₂ tt) v | inspect ((h₂ ᵗ) (inj₂ tt)) u₁ | inspect ((h₂ ᵗ) (inj₂ tt)) v
     
     claim | wm1 , inj₂ y | wm1' , inj₁ d0' | [ eq1 ]' | [ eq2 ]' with hcmw c0 wm1 | inspect (hcmw c0) wm1 | hcmw c0 wm1' | inspect (hcmw c0) wm1'
     claim | wm1 , inj₂ y | wm1' , inj₁ d0' | [ eq1 ]' | [ eq2 ]' | (wm2 , c2) | [ Eq.refl ]' | (wm2' , c2') | [ Eq.refl ]' with hcxds-m-hdmw' d cds wm2 | inspect (hcxds-m-hdmw' d cds) wm2 | hcxds-m-hdmw' d cds wm2' | inspect (hcxds-m-hdmw' d cds) wm2'
@@ -1443,12 +1443,12 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
         claim7a : c2 ≡ c2'
         claim7a = hcmw-cong2 c0 wm1 wm1' c1
 
-    claim2ok : ((hh **) cd u) ~ ((hh **) cd t)
+    claim2ok : ((hh ᵗ) cd u) ~ ((hh ᵗ) cd t)
     claim2ok = begin
-      ((hh **) cd u) ≡⟨ lemma-hh=hcd-mb (d , cds , c) u₁ ⟩
+      ((hh ᵗ) cd u) ≡⟨ lemma-hh=hcd-mb (d , cds , c) u₁ ⟩
       hcd-mb cd u₁ ≈⟨ claim ⟩
       hcd-mb cd v ≡⟨ Eq.sym (lemma-hh=hcd-mb (d , cds , c) v) ⟩
-      ((hh **) cd t) ∎
+      ((hh ᵗ) cd t) ∎
       where
       open SR mcdₛ
 
@@ -1456,19 +1456,19 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   hhh-wd-ax cd@(d , cds , c) {u} {t} (mid (amal {m})) = claim
     where
-    claim : (hh **) (d , cds , c) [ f₁ m ]ₗ ~ (hh **) (d , cds , c) [ f₂ m ]ᵣ
+    claim : (hh ᵗ) (d , cds , c) [ f₁ m ]ₗ ~ (hh ᵗ) (d , cds , c) [ f₂ m ]ᵣ
     claim = begin
-      (hh **) (d , cds , c) [ f₁ m ]ₗ ≡⟨ lemma-hh=hcd-ma (d , cds , c) (f₁ m) ⟩
+      (hh ᵗ) (d , cds , c) [ f₁ m ]ₗ ≡⟨ lemma-hh=hcd-ma (d , cds , c) (f₁ m) ⟩
       hcd-ma (d , cds , c) (f₁ m) ≡⟨ lemma-hcd-ma=hcdm (d , cds , c) m ⟩
       hcdm (d , cds , c) m ≡⟨ Eq.sym (lemma-hcd-mb=hcdm (d , cds , c) m) ⟩
       hcd-mb (d , cds , c) (f₂ m) ≡⟨ Eq.sym (lemma-hh=hcd-mb (d , cds , c) (f₂ m)) ⟩
-      (hh **) (d , cds , c) [ f₂ m ]ᵣ ∎
+      (hh ᵗ) (d , cds , c) [ f₂ m ]ᵣ ∎
       where
       open SR mcdₛ
 
-  h=⁻¹f-gen : ∀ (x : M) → ([ x ]ʷ , I) ~ (hh **) I (f x)
+  h=⁻¹f-gen : ∀ (x : M) → ([ x ]ʷ , I) ~ (hh ᵗ) I (f x)
   h=⁻¹f-gen x = symₛ (begin
-    (hh **) I (f x) ≡⟨ lemma-hh=hcd-ma I (f₁ x) ⟩
+    (hh ᵗ) I (f x) ≡⟨ lemma-hh=hcd-ma I (f₁ x) ⟩
     hcd-ma I (f₁ x) ≡⟨ lemma-hcd-ma=hcdm I x ⟩
     hcdm I x ≡⟨ Eq.refl ⟩
     ([ x ]ʷ , I) ∎)

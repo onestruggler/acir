@@ -47,7 +47,7 @@ data X : ℕ → Set where
   _ₛ : ∀ {n} → X n → X (₁₊ n)
 
 [_⇑] : ∀ {n} → Word (X n) → Word (X (₁₊ n))
-[_⇑] {n} = ([_]ʷ ∘ _ₛ) *
+[_⇑] {n} = ([_]ʷ ∘ _ₛ) ʷ
 
 data rel : (n : ℕ) → Rel (Word (X n)) 0ℓ where
   order : ∀ {n} →
@@ -128,7 +128,7 @@ ract {n} ε (b ₛ) = [ b ]ʷ , ε
 ract {₁₊ n} (swap• c) (b ₛ) = let ih = ract {n} c b in [ proj₁ ih ⇑] , swap• (proj₂ ih)
 
 racts : ∀ {n} → C (₁₊ n) → Word (X (₁₊ n)) → Word (X n) × C (₁₊ n)
-racts {n} = ract {n} **
+racts {n} = ract {n} ᵗ
 
 ⇑²-swap-comm : ∀ {n} w → 
   let P : WRel (X (2+ n))
@@ -301,11 +301,11 @@ infix 4 _≋_
 _≋_ : ∀ {n} → Rel (Word (X n) × C (₁₊ n)) 0ℓ
 _≋_ {n} = let _≈₀_ = PB._≈_ (pres n) in Pointwise _≈₀_ (_≡_ {A = C (₁₊ n)})
 
-⁻¹[⇑]-gen' : ∀ {n} → let _⊛_ = ract ** in ∀ (x : X n) → ([ x ]ʷ , ε) ≋ ε ⊛ [ x ₛ ]ʷ
+⁻¹[⇑]-gen' : ∀ {n} → let _⊛_ = ract ᵗ in ∀ (x : X n) → ([ x ]ʷ , ε) ≋ ε ⊛ [ x ₛ ]ʷ
 ⁻¹[⇑]-gen' {n} swap = PB._≈_.refl , Eq.refl
 ⁻¹[⇑]-gen' {n} (x ₛ) = PB._≈_.refl , Eq.refl
 
-ract-suc' : ∀ {n} w → ((ract {n}) **) ε [ w ⇑] ≡ (w , ε)
+ract-suc' : ∀ {n} w → ((ract {n}) ᵗ) ε [ w ⇑] ≡ (w , ε)
 ract-suc' {n} [ x ]ʷ = Eq.refl
 ract-suc' {n} ε = Eq.refl
 ract-suc' {n} (w • v) with ract-suc' {n} w
@@ -318,7 +318,7 @@ ract-suc' {n} (w • v) with ract-suc' {n} w
   where
   open ≡-Reasoning
 
-ract-suc'' : ∀ {n} w → ((ract {2+ n}) **) (swap• ε) [ [ [ w ⇑] ⇑] ⇑] ≡ ([ [ w ⇑] ⇑] , swap• ε)
+ract-suc'' : ∀ {n} w → ((ract {2+ n}) ᵗ) (swap• ε) [ [ [ w ⇑] ⇑] ⇑] ≡ ([ [ w ⇑] ⇑] , swap• ε)
 ract-suc'' {n} [ x ]ʷ = Eq.refl
 ract-suc'' {n} ε = Eq.refl
 ract-suc'' {n} (w • v) with ract-suc'' {n} w
@@ -344,17 +344,17 @@ ract-swap•swap•1 {n} (swap• c) (b ₛ) = Eq.refl
   where
   open ≡-Reasoning
 
-ract-swap•swap•1s : ∀ {n} c w → let (w' , c') = (ract {n} **) c w in (ract **) (swap• c) [ w ⇑] ≡ ([ w' ⇑] , swap• c')
+ract-swap•swap•1s : ∀ {n} c w → let (w' , c') = (ract {n} ᵗ) c w in (ract ᵗ) (swap• c) [ w ⇑] ≡ ([ w' ⇑] , swap• c')
 ract-swap•swap•1s {n} c [ x ]ʷ = ract-swap•swap•1 c x
 ract-swap•swap•1s {n} c ε = Eq.refl
-ract-swap•swap•1s {n} c (w • v) with ract-swap•swap•1s c w | (ract **) c w | inspect ((ract **) (c)) w
-... | ih1 | w' , c0 | [ eq1 ]ₑ rewrite ih1 | eq1 with ract-swap•swap•1s c0 v | (ract **) (c0) v | inspect ((ract **) (c0)) v
+ract-swap•swap•1s {n} c (w • v) with ract-swap•swap•1s c w | (ract ᵗ) c w | inspect ((ract ᵗ) (c)) w
+... | ih1 | w' , c0 | [ eq1 ]ₑ rewrite ih1 | eq1 with ract-swap•swap•1s c0 v | (ract ᵗ) (c0) v | inspect ((ract ᵗ) (c0)) v
 ... | ih2 | v' , c1 | [ eq2 ]ₑ rewrite eq2 | Eq.cong proj₁ ih2 | Eq.cong proj₂ ih2 = Eq.refl
   where
   open ≡-Reasoning
 
 ⁻¹[⇑]-wd'' : ∀ {n} →
-  let _⊛_ = ract ** in
+  let _⊛_ = ract ᵗ in
   let _===_ = PB._===_ (pres (₁₊ n)) in
   ∀ (c : C (₁₊ n)){u t : Word (X (₁₊ n))} → u === t → c ⊛ u ≋ c ⊛ t
 ⁻¹[⇑]-wd'' {n} ε {u} {t} order = PB._≈_.left-unit , Eq.refl

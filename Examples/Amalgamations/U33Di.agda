@@ -106,7 +106,7 @@ module TwoLevel-Simplified-Amal where
 
     open PB _===_ hiding (_===_)
     open PP _===_
-    open AS _===_ using (by-assoc)
+    open AS.Assoc _===_ using (by-assoc)
 
     open PB (Cyclic.pres 4 ⊕^ 3) renaming (_≈_ to _≈₀_ ; _===_ to _===₀_ ; Alphabet to M) using ()
 
@@ -115,7 +115,7 @@ module TwoLevel-Simplified-Amal where
     g (inj₂ (inj₁ tt)) = i₁
     g (inj₂ (inj₂ tt)) = i₂
 
-    g-wd-ax : ∀ {w v} -> w ===₀ v -> (g *) w ≈ (g *) v
+    g-wd-ax : ∀ {w v} -> w ===₀ v -> (g ʷ) w ≈ (g ʷ) v
     g-wd-ax {w} {v} (left Cyclic.order) = trans (trans assoc assoc) (axiom [S1])
     g-wd-ax {w} {v} (right (left Cyclic.order)) = claim
       where
@@ -186,8 +186,8 @@ module TwoLevel-Simplified-Amal where
         (i₂ • i₀) ∎
         where open SR word-setoid
     
-    by-sub-nf : ∀ {w v} -> w ≈₀ v -> (g *) w ≈ (g *) v
-    by-sub-nf {w} {v} eq = PP.StarCongruence.f*-cong _===₀_ _===_ g g-wd-ax eq
+    by-sub-nf : ∀ {w v} -> w ≈₀ v -> (g ʷ) w ≈ (g ʷ) v
+    by-sub-nf {w} {v} eq = PP.StarCongruence.fʷ-cong _===₀_ _===_ g g-wd-ax eq
 
     sub-nfp : NFBase.NormalFormWithoutInverse _===₀_
     sub-nfp = NDP.nfp (Cyclic.pres 4) 3 (Cyclic.nfp 4)
@@ -299,15 +299,15 @@ module TwoLevel-Simplified-Amal where
     open PB pres-KD renaming (_===_ to _===₂_ ; _≈_ to _≈₂_ ; refl' to refl'₂) using ()
     open PB pres-D renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
     open PP pres-KD renaming (word-setoid to ws₂) using ()
-    open AS pres-KD renaming (by-assoc to by-assoc₂) using ()
+    open AS.Assoc pres-KD renaming (by-assoc to by-assoc₂) using ()
     open PP pres-D renaming (word-setoid to ws₁) using ()
     open PB
 
-    h=⁻¹f-gen : ∀ (x : X) -> ([ x ]ʷ , I) ~ ((h **) I (f x))
+    h=⁻¹f-gen : ∀ (x : X) -> ([ x ]ʷ , I) ~ ((h ᵗ) I (f x))
     h=⁻¹f-gen (inj₁ x) = bef Eq.refl , Eq.refl
     h=⁻¹f-gen (inj₂ y) = bef Eq.refl , Eq.refl
 
-    h-wd-ax : ∀ (c : C){u t : Word Y} -> u ===₂ t -> ((h **) c u) ~ ((h **) c t)
+    h-wd-ax : ∀ (c : C){u t : Word Y} -> u ===₂ t -> ((h ᵗ) c u) ~ ((h ᵗ) c t)
     h-wd-ax I {.(i₀ ^ 4)} {.ε} [S2a] = bef Eq.refl , Eq.refl
     h-wd-ax I {.(i₁ ^ 4)} {.ε} [S2b] = bef Eq.refl , Eq.refl
     h-wd-ax I {.(i₁ • i₀)} {.(i₀ • i₁)} [S4a] = bef Eq.refl , Eq.refl
@@ -357,7 +357,7 @@ module TwoLevel-Simplified-Amal where
     h-wd-ax K01I0I0 [S10] = bef Eq.refl , Eq.refl
     h-wd-ax KIIK [S10] = bef Eq.refl , Eq.refl
   
-    f-wd-ax : ∀ {w v} -> w ===₁ v -> (f *) w ≈₂ (f *) v
+    f-wd-ax : ∀ {w v} -> w ===₁ v -> (f ʷ) w ≈₂ (f ʷ) v
     f-wd-ax {.([ Cyclic.T ^' 4 ]ₗ)} {.([ ε ]ₗ)} (left Cyclic.order) = begin
       i₀ ^' 4 ≈⟨ by-assoc₂ Eq.refl ⟩
       i₀ ^ 4 ≈⟨ _≈₂_.axiom [S2a] ⟩
@@ -378,8 +378,8 @@ module TwoLevel-Simplified-Amal where
 
     open SR ws₂
 
-    by-sub-nf : ∀ {w v} -> w ≈₁ v -> (f *) w ≈₂ (f *) v
-    by-sub-nf {w} {v} eq = PP.StarCongruence.f*-cong _===₁_ _===₂_ f f-wd-ax eq 
+    by-sub-nf : ∀ {w v} -> w ≈₁ v -> (f ʷ) w ≈₂ (f ʷ) v
+    by-sub-nf {w} {v} eq = PP.StarCongruence.fʷ-cong _===₁_ _===₂_ f f-wd-ax eq 
 
 
     lemma-K01^2 : K₀₁ ^ 2 ≈₂ i₀ ^ 3 • i₁ ^ 3
@@ -430,7 +430,7 @@ module TwoLevel-Simplified-Amal where
       K₀₁ • i₀ • i₀ • K₀₁ • i₀ ≈⟨ axiom [S10b] ⟩
       i₁ • K₀₁ • i₀ • i₀ • K₀₁ ∎
 
-    h=ract :  ∀ c b -> let (b' , c') = h c b in let [_]ₓ = f * in
+    h=ract :  ∀ c b -> let (b' , c') = h c b in let [_]ₓ = f ʷ in
       [ c ] • [ b ]ʷ ≈₂ [ b' ]ₓ • [ c' ]
     h=ract I K₀₁-gen = by-assoc₂ Eq.refl
     h=ract I i₀-gen = by-assoc₂ Eq.refl
@@ -536,7 +536,7 @@ module TwoLevel-Simplified-Amal where
 
     pres' = (Cyclic.pres 2 ⋄ pres-KI ⋄ SugarRel fs)
 
-    fs-wd-ax : {w v : Word Cyclic.X} → w ===₀ v → (fs *) w ≈₃ (fs *) v
+    fs-wd-ax : {w v : Word Cyclic.X} → w ===₀ v → (fs ʷ) w ≈₃ (fs ʷ) v
     fs-wd-ax {.(Cyclic.T ^' 2)} {.ε} Cyclic.order = bef' Eq.refl
     
     nfp-a : NFBase.NormalFormWithoutInverse pres'
@@ -647,7 +647,7 @@ module TwoLevel-Simplified-Amal where
       [ X12 ]ₒ = X₁₂
       [ X12X01 ]ₒ = X₁₂ • X₀₁
 
-      hcme : (c : C) (m : ((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤) → ∃ (λ w → ∃ (λ c' → (ract **) (inj₁ c) (f m) ≡ (w , inj₁ c')))
+      hcme : (c : C) (m : ((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤) → ∃ (λ w → ∃ (λ c' → (ract ᵗ) (inj₁ c) (f m) ≡ (w , inj₁ c')))
       hcme X12 (inj₁ (inj₁ (inj₁ tt))) = i₀' , (X12 , Eq.refl)
       hcme X12 (inj₁ (inj₁ (inj₂ tt))) = i₂' , (X12 , Eq.refl)
       hcme X12 (inj₁ (inj₂ Sn.swap)) = ε , (X12X01 , Eq.refl)
@@ -657,7 +657,7 @@ module TwoLevel-Simplified-Amal where
       hcme X12X01 (inj₁ (inj₂ Sn.swap)) = ε , (X12 , Eq.refl)
       hcme X12X01 (inj₂ tt) = i₁' , (X12X01 , Eq.refl)
 
-      htme : (m : ((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤) → (ract **) (inj₂ tt) (f m) ≡ ([ m ]ʷ , inj₂ tt)
+      htme : (m : ((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤) → (ract ᵗ) (inj₂ tt) (f m) ≡ ([ m ]ʷ , inj₂ tt)
       htme (inj₁ (inj₁ (inj₁ tt))) = Eq.refl
       htme (inj₁ (inj₁ (inj₂ tt))) = Eq.refl
       htme (inj₁ (inj₂ Sn.swap)) = Eq.refl
@@ -666,7 +666,7 @@ module TwoLevel-Simplified-Amal where
       infix 4 _~_
       _~_ = PW.Pointwise _≈₀_ (_≡_ {A = C ⊎ ⊤})
 
-      htme~ : (m : ((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤) → ([ m ]ʷ , inj₂ tt) ~ ((ract **) (inj₂ tt) (f m))
+      htme~ : (m : ((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤) → ([ m ]ʷ , inj₂ tt) ~ ((ract ᵗ) (inj₂ tt) (f m))
       htme~ (inj₁ (inj₁ (inj₁ tt))) = _≈₀_.refl , Eq.refl
       htme~ (inj₁ (inj₁ (inj₂ tt))) = _≈₀_.refl , Eq.refl
       htme~ (inj₁ (inj₂ Sn.swap)) = _≈₀_.refl , Eq.refl
@@ -676,7 +676,7 @@ module TwoLevel-Simplified-Amal where
       open NFBase.NormalFormWithoutInverse (PD.pres-nfp) using (by-equal-nf)
       open NFBase.NormalFormWithoutInverse (M.pres-M-nfp) renaming (by-equal-nf to bef) using ()
       
-      hcme~ : (c : C) (m : ((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤) → [ c ]ₒ • f m ≈₁ ((f *) (proj₁ (hcme c m)) • [ proj₁ (proj₂ (hcme c m)) ]ₒ)
+      hcme~ : (c : C) (m : ((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤) → [ c ]ₒ • f m ≈₁ ((f ʷ) (proj₁ (hcme c m)) • [ proj₁ (proj₂ (hcme c m)) ]ₒ)
       hcme~ X12 (inj₁ (inj₁ (inj₁ tt))) = by-equal-nf Eq.refl
       hcme~ X12 (inj₁ (inj₁ (inj₂ tt))) = by-equal-nf Eq.refl
       hcme~ X12 (inj₁ (inj₂ Sn.swap)) = _≈₁_.sym _≈₁_.left-unit
@@ -687,7 +687,7 @@ module TwoLevel-Simplified-Amal where
       hcme~ X12X01 (inj₂ tt) = by-equal-nf Eq.refl
 
 
-      h-wd-ax : (c : C ⊎ ⊤) {u t : Word ((⊤ ⊎ ⊤ ⊎ ⊤) ⊎ Sn.X 2)} → u ===₁ t → (ract **) c u ~ ((ract **) c t)
+      h-wd-ax : (c : C ⊎ ⊤) {u t : Word ((⊤ ⊎ ⊤ ⊎ ⊤) ⊎ Sn.X 2)} → u ===₁ t → (ract ᵗ) c u ~ ((ract ᵗ) c t)
       h-wd-ax (inj₂ tt) {.([ [ Cyclic.T ^' N ]ₗ ]ₗ)} {.([ [ ε ]ₗ ]ₗ)} (left (left Cyclic.order)) = bef Eq.refl , Eq.refl
       h-wd-ax (inj₂ tt) {.([ [ [ Cyclic.T ^' N ]ₗ ]ᵣ ]ₗ)} {.([ [ [ ε ]ₗ ]ᵣ ]ₗ)} (left (right (left Cyclic.order))) = (bef Eq.refl) , Eq.refl
       h-wd-ax (inj₂ tt) {.([ [ [ Cyclic.T ^' N ]ᵣ ]ᵣ ]ₗ)} {.([ [ [ ε ]ᵣ ]ᵣ ]ₗ)} (left (right (right Cyclic.order))) = bef Eq.refl , Eq.refl
@@ -737,7 +737,7 @@ module TwoLevel-Simplified-Amal where
       h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₁ x) ]ʷ ]ₗ)} {.([ [ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₁ x)) ]ʷ ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ x)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
       h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₂ y) ]ʷ ]ₗ)} {.([ [ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₂ y)) ]ʷ ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ y)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
 
-      f-wd-ax : {w v : Word (((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤)} → w ===₀ v → (f *) w ≈₁ (f *) v
+      f-wd-ax : {w v : Word (((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤)} → w ===₀ v → (f ʷ) w ≈₁ (f ʷ) v
       f-wd-ax {.([ [ [ Cyclic.T ^' N ]ₗ ]ₗ ]ₗ)} {.([ [ [ ε ]ₗ ]ₗ ]ₗ)} (left (left (left Cyclic.order))) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ [ Cyclic.T ^' N ]ᵣ ]ₗ ]ₗ)} {.([ [ [ ε ]ᵣ ]ₗ ]ₗ)} (left (left (right Cyclic.order))) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ [ [ tt ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ ]ₗ ]ₗ)} {.([ [ [ [ tt ]ʷ ]ᵣ • [ [ tt ]ʷ ]ₗ ]ₗ ]ₗ)} (left (left (mid (comm tt tt)))) = by-equal-nf Eq.refl
@@ -752,7 +752,7 @@ module TwoLevel-Simplified-Amal where
       [_] : C ⊎ ⊤ -> Word ((⊤ ⊎ ⊤ ⊎ ⊤) ⊎ Sn.X 2)
       [_] = [_,_] [_]ₒ (λ v → ε)
 
-      h=ract :  ∀ c y -> let (m' , c') = ract c y in let [_]ₓ  = (f *) in [ c ] • [ y ]ʷ ≈₁ [ m' ]ₓ • [ c' ]
+      h=ract :  ∀ c y -> let (m' , c') = ract c y in let [_]ₓ  = (f ʷ) in [ c ] • [ y ]ʷ ≈₁ [ m' ]ₓ • [ c' ]
       h=ract (inj₁ X12) (inj₁ (inj₁ tt)) = by-equal-nf Eq.refl
       h=ract (inj₁ X12) (inj₁ (inj₂ (inj₁ tt))) = by-equal-nf Eq.refl
       h=ract (inj₁ X12) (inj₁ (inj₂ (inj₂ tt))) = by-equal-nf Eq.refl
@@ -835,7 +835,7 @@ module TwoLevel-Simplified-Amal where
       [ K01I0 ]ₒ = K₀₁ • i₀
 
 
-      hcme : (c : C) (m : M) → ∃ (λ w → ∃ (λ c' → (ract **) (inj₁ c) (f m) ≡ (w , inj₁ c')))
+      hcme : (c : C) (m : M) → ∃ (λ w → ∃ (λ c' → (ract ᵗ) (inj₁ c) (f m) ≡ (w , inj₁ c')))
       hcme (K01) (inj₁ (inj₁ (inj₁ tt))) = ε , (K01I0 , Eq.refl)
       hcme (K01) (inj₁ (inj₁ (inj₂ tt))) = [ inj₁ (inj₂ Sn.swap) ]ʷ •
                                             [ inj₁ (inj₁ (inj₁ tt)) ]ʷ •
@@ -857,7 +857,7 @@ module TwoLevel-Simplified-Amal where
                                           [ inj₁ (inj₁ (inj₂ tt)) ]ʷ • [ inj₁ (inj₁ (inj₂ tt)) ]ʷ , (K01I0 , Eq.refl)
       hcme K01I0 I = [ inj₂ tt ]ʷ , (K01I0 , Eq.refl)
 
-      htme : (m : M) → (ract **) (inj₂ tt) (f m) ≡ ([ m ]ʷ , inj₂ tt)
+      htme : (m : M) → (ract ᵗ) (inj₂ tt) (f m) ≡ ([ m ]ʷ , inj₂ tt)
       htme (inj₁ (inj₁ (inj₁ tt))) = Eq.refl
       htme (inj₁ (inj₁ (inj₂ tt))) = Eq.refl
       htme (inj₁ (inj₂ Sn.swap)) = Eq.refl
@@ -867,7 +867,7 @@ module TwoLevel-Simplified-Amal where
       infix 4 _~_
       _~_ = PW.Pointwise _≈₀_ (_≡_ {A = C ⊎ ⊤})
 
-      htme~ : (m : M) → ([ m ]ʷ , inj₂ tt) ~ ((ract **) (inj₂ tt) (f m))
+      htme~ : (m : M) → ([ m ]ʷ , inj₂ tt) ~ ((ract ᵗ) (inj₂ tt) (f m))
       htme~ (inj₁ (inj₁ (inj₁ tt))) = _≈₀_.refl , Eq.refl
       htme~ (inj₁ (inj₁ (inj₂ tt))) = _≈₀_.refl , Eq.refl
       htme~ (inj₁ (inj₂ Sn.swap)) = _≈₀_.refl , Eq.refl
@@ -877,7 +877,7 @@ module TwoLevel-Simplified-Amal where
       open NFBase.NormalFormWithoutInverse (Ki.nfp-a) using (by-equal-nf)
       open NFBase.NormalFormWithoutInverse (M.pres-M-nfp) renaming (by-equal-nf to bef) using ()
       
-      hcme~ : (c : C) (m : M) → [ c ]ₒ • f m ≈₂ ((f *) (proj₁ (hcme c m)) • [ proj₁ (proj₂ (hcme c m)) ]ₒ)
+      hcme~ : (c : C) (m : M) → [ c ]ₒ • f m ≈₂ ((f ʷ) (proj₁ (hcme c m)) • [ proj₁ (proj₂ (hcme c m)) ]ₒ)
       hcme~ K01 (inj₁ (inj₁ (inj₁ tt))) = by-equal-nf Eq.refl
       hcme~ K01 (inj₁ (inj₁ (inj₂ tt))) = by-equal-nf Eq.refl
       hcme~ K01 (inj₁ (inj₂ Sn.swap)) = by-equal-nf Eq.refl
@@ -888,7 +888,7 @@ module TwoLevel-Simplified-Amal where
       hcme~ K01I0 (inj₂ tt) = by-equal-nf Eq.refl
       
 
-      h-wd-ax : (c : C ⊎ ⊤) {u t : Word B} → u ===₂ t → (ract **) c u ~ ((ract **) c t)
+      h-wd-ax : (c : C ⊎ ⊤) {u t : Word B} → u ===₂ t → (ract ᵗ) c u ~ ((ract ᵗ) c t)
       
       h-wd-ax (inj₁ K01I0) {.([ Cyclic.T ^' 2 ]ₗ)} {.([ ε ]ₗ)} (left Cyclic.order) = (bef Eq.refl) , Eq.refl
       h-wd-ax (inj₁ K01I0) {.([ [ Ki.i₀ ^ 4 ]ₗ ]ᵣ)} {.([ [ ε ]ₗ ]ᵣ)} (right (left Ki.[S2a])) = (bef Eq.refl) , Eq.refl
@@ -935,7 +935,7 @@ module TwoLevel-Simplified-Amal where
       h-wd-ax (inj₂ tt) {.([ [ [ Ki.i₁-gen ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ ]ᵣ)} {.([ [ [ tt ]ʷ ]ᵣ • [ [ Ki.i₁-gen ]ʷ ]ₗ ]ᵣ)} (right (mid (comm Ki.i₁-gen tt))) = (bef Eq.refl) , Eq.refl
       h-wd-ax (inj₂ tt) {.([ inj₁ _ ]ʷ)} {.([ Ki.fs _ ]ᵣ)} (mid desugar) = (bef Eq.refl) , Eq.refl
       
-      f-wd-ax : {w v : Word M} → w ===₀ v → (f *) w ≈₂ (f *) v
+      f-wd-ax : {w v : Word M} → w ===₀ v → (f ʷ) w ≈₂ (f ʷ) v
       f-wd-ax {.([ [ [ Cyclic.T ^' N ]ₗ ]ₗ ]ₗ)} {.([ [ [ ε ]ₗ ]ₗ ]ₗ)} (left (left (left Cyclic.order))) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ [ Cyclic.T ^' N ]ᵣ ]ₗ ]ₗ)} {.([ [ [ ε ]ᵣ ]ₗ ]ₗ)} (left (left (right Cyclic.order))) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ [ [ tt ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ ]ₗ ]ₗ)} {.([ [ [ [ tt ]ʷ ]ᵣ • [ [ tt ]ʷ ]ₗ ]ₗ ]ₗ)} (left (left (mid (comm tt tt)))) = by-equal-nf Eq.refl
@@ -950,7 +950,7 @@ module TwoLevel-Simplified-Amal where
       [_] : C ⊎ ⊤ -> Word B
       [_] = [_,_] [_]ₒ (λ v → ε)
 
-      h=ract :  ∀ c y -> let (m' , c') = ract c y in let [_]ₓ  = (f *) in [ c ] • [ y ]ʷ ≈₂ [ m' ]ₓ • [ c' ]
+      h=ract :  ∀ c y -> let (m' , c') = ract c y in let [_]ₓ  = (f ʷ) in [ c ] • [ y ]ʷ ≈₂ [ m' ]ₓ • [ c' ]
       h=ract (inj₂ tt) (inj₁ tt) = by-equal-nf Eq.refl
       h=ract (inj₂ tt) (inj₂ (inj₁ Ki.K₀₁-gen)) = by-equal-nf Eq.refl
       h=ract (inj₂ tt) (inj₂ (inj₁ Ki.i₀-gen)) = by-equal-nf Eq.refl
@@ -1065,7 +1065,7 @@ module TwoLevel-Simplified-Amal where
     open PB mypres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
     
     open PB Sim._===_ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_)
-    open AS Sim._===_ renaming (by-assoc to by-assoc₁) using ()
+    open AS.Assoc Sim._===_ renaming (by-assoc to by-assoc₁) using ()
 
 
     open import Algebra.Bundles using (Monoid)
@@ -1077,7 +1077,7 @@ module TwoLevel-Simplified-Amal where
     
     open import Presentation.Morphism
 
-    f-well-defined : ∀ {w v} -> w ===₁ v -> (f *) w ≈₂ (f *) v
+    f-well-defined : ∀ {w v} -> w ===₁ v -> (f ʷ) w ≈₂ (f ʷ) v
     f-well-defined {w} {v} Simplified.[S1] = by-equal-nf Eq.refl
     f-well-defined {w} {v} Simplified.[S3a] = by-equal-nf Eq.refl
     f-well-defined {w} {v} Simplified.[S3b] = by-equal-nf Eq.refl
@@ -1091,13 +1091,13 @@ module TwoLevel-Simplified-Amal where
     f-well-defined {w} {v} Simplified.[S4b] = by-equal-nf Eq.refl
     
 
-    g-well-defined : ∀ {w v} -> w ===₂ v -> (g *) w ≈₁ (g *) v
+    g-well-defined : ∀ {w v} -> w ===₂ v -> (g ʷ) w ≈₁ (g ʷ) v
     g-well-defined {w} {v} (left (left (left Cyclic.order))) = _≈₁_.trans (_≈₁_.trans _≈₁_.assoc _≈₁_.assoc) (_≈₁_.axiom Sim.[S1])
     g-well-defined {w} {v} (left (left (right (left Cyclic.order)))) = claim
       where
-      claim : (g *) (i₁ ^' 4) ≈₁ ε
+      claim : (g ʷ) (i₁ ^' 4) ≈₁ ε
       claim = begin
-        (g *) (i₁ ^' 4) ≈⟨ by-assoc₁ Eq.refl ⟩
+        (g ʷ) (i₁ ^' 4) ≈⟨ by-assoc₁ Eq.refl ⟩
         Sim.X₀₁ • Sim.i₀ • (Sim.X₀₁ • Sim.X₀₁) • Sim.i₀ • (Sim.X₀₁ • Sim.X₀₁) • Sim.i₀ • (Sim.X₀₁ • Sim.X₀₁) • Sim.i₀ • Sim.X₀₁ ≈⟨ cong refl (cong refl (cong (axiom Sim.[S3a]) (cong refl (cong (axiom Sim.[S3a]) (cong refl (cong (axiom Sim.[S3a]) refl)))))) ⟩
         Sim.X₀₁ • Sim.i₀ • (ε) • Sim.i₀ • (ε) • Sim.i₀ • (ε) • Sim.i₀ • Sim.X₀₁ ≈⟨ by-assoc₁ Eq.refl ⟩
         Sim.X₀₁ • (Sim.i₀ ^ 4) • Sim.X₀₁ ≈⟨ cong refl (cong (axiom Sim.[S1]) refl) ⟩
@@ -1108,12 +1108,12 @@ module TwoLevel-Simplified-Amal where
         
     g-well-defined {w} {v} (left (left (right (right Cyclic.order)))) = claim
       where
-      claim : (g *) (i₂ ^' 4) ≈₁ ε
+      claim : (g ʷ) (i₂ ^' 4) ≈₁ ε
       claim = begin
-        (g *) (i₂ ^' 4) ≈⟨ by-assoc₁ Eq.refl ⟩
+        (g ʷ) (i₂ ^' 4) ≈⟨ by-assoc₁ Eq.refl ⟩
         (Sim.X₁₂ • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • (Sim.X₁₂ • Sim.X₁₂) • (Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • (Sim.X₁₂ • Sim.X₁₂) • (Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • (Sim.X₁₂ • Sim.X₁₂) • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ ≈⟨ cong refl (cong (axiom Sim.[S3b]) (cong refl (cong (axiom Sim.[S3b]) (cong refl (cong (axiom Sim.[S3b]) refl))))) ⟩
         (Sim.X₁₂ • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • ε • (Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • ε • (Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • ε • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ ≈⟨ by-assoc₁ Eq.refl ⟩
-        Sim.X₁₂ • (g *) (i₁ ^' 4) • Sim.X₁₂ ≈⟨ cong refl (cong (g-well-defined (left (left (right (left Cyclic.order))))) refl) ⟩
+        Sim.X₁₂ • (g ʷ) (i₁ ^' 4) • Sim.X₁₂ ≈⟨ cong refl (cong (g-well-defined (left (left (right (left Cyclic.order))))) refl) ⟩
         Sim.X₁₂ • ε • Sim.X₁₂ ≈⟨ by-assoc₁ Eq.refl ⟩
         Sim.X₁₂ • Sim.X₁₂ ≈⟨ axiom Sim.[S3b] ⟩
         ε ∎
@@ -1121,9 +1121,9 @@ module TwoLevel-Simplified-Amal where
     
     g-well-defined {w} {v} (left (left (right (mid (comm tt tt))))) = claim
       where
-      claim : (g *) (i₁ • i₂) ≈₁ (g *) (i₂ • i₁)
+      claim : (g ʷ) (i₁ • i₂) ≈₁ (g ʷ) (i₂ • i₁)
       claim = begin
-        (g *) (i₁ • i₂) ≈⟨ by-assoc₁ Eq.refl ⟩
+        (g ʷ) (i₁ • i₂) ≈⟨ by-assoc₁ Eq.refl ⟩
         Sim.X₀₁ • Sim.i₀ • (Sim.X₀₁ • Sim.X₁₂ • Sim.X₀₁) • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ ≈⟨ cong refl (cong refl (cong (sym (axiom Sim.[S9a])) refl)) ⟩
         Sim.X₀₁ • Sim.i₀ • (Sim.X₁₂ • Sim.X₀₁ • Sim.X₁₂) • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ ≈⟨ cong refl (by-assoc₁ Eq.refl) ⟩
         Sim.X₀₁ • (Sim.i₀ • Sim.X₁₂) • Sim.X₀₁ • Sim.X₁₂ • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ ≈⟨ cong refl (cong (axiom Sim.[S5a]) refl) ⟩
@@ -1144,22 +1144,22 @@ module TwoLevel-Simplified-Amal where
         (Sim.X₁₂ • Sim.X₀₁ • Sim.i₀) • (Sim.X₁₂ • Sim.X₀₁ • Sim.X₁₂) • Sim.i₀ • Sim.X₀₁ ≈⟨ cong refl (cong (axiom Sim.[S9a]) refl) ⟩
         (Sim.X₁₂ • Sim.X₀₁ • Sim.i₀) • (Sim.X₀₁ • Sim.X₁₂ • Sim.X₀₁) • Sim.i₀ • Sim.X₀₁ ≈⟨ by-assoc₁ Eq.refl ⟩
         Sim.X₁₂ • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁ ≈⟨ by-assoc₁ Eq.refl ⟩
-        (g *) (i₂ • i₁) ∎
+        (g ʷ) (i₂ • i₁) ∎
         where open SR ws₁
         
     g-well-defined {w} {v} (left (left (mid (comm tt (inj₁ tt))))) = _≈₁_.sym (_≈₁_.axiom Sim.[S4a])
     g-well-defined {w} {v} (left (left (mid (comm tt (inj₂ tt))))) = claim
       where
-      claim : (g *) (i₀ • i₂) ≈₁ (g *) (i₂ • i₀)
+      claim : (g ʷ) (i₀ • i₂) ≈₁ (g ʷ) (i₂ • i₀)
       claim = begin
-        (g *) (i₀ • i₂) ≈⟨ by-assoc₁ Eq.refl ⟩
+        (g ʷ) (i₀ • i₂) ≈⟨ by-assoc₁ Eq.refl ⟩
         (Sim.i₀ • Sim.X₁₂) • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ ≈⟨ cong (axiom Sim.[S5a]) refl ⟩
         (Sim.X₁₂ • Sim.i₀) • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ ≈⟨ by-assoc₁ Eq.refl ⟩
         Sim.X₁₂ • (Sim.i₀ • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • Sim.X₁₂ ≈⟨ cong refl (cong (sym (axiom Sim.[S4a])) refl) ⟩
         Sim.X₁₂ • ((Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • Sim.i₀) • Sim.X₁₂ ≈⟨ by-assoc₁ Eq.refl ⟩
         (Sim.X₁₂ • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • Sim.i₀ • Sim.X₁₂ ≈⟨ cong refl (axiom Sim.[S5a]) ⟩
         (Sim.X₁₂ • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • Sim.X₁₂ • Sim.i₀ ≈⟨ by-assoc₁ Eq.refl ⟩
-        (g *) (i₂ • i₀) ∎
+        (g ʷ) (i₂ • i₀) ∎
         where open SR ws₁
         
     g-well-defined {w} {v} (left (right Sn.order)) = _≈₁_.axiom Sim.[S3a]
@@ -1169,19 +1169,19 @@ module TwoLevel-Simplified-Amal where
     g-well-defined {w} {v} (left (mid (comm (inj₁ tt) (Sn.swap Sn.ₛ)))) = _≈₁_.sym (_≈₁_.axiom Sim.[S5a])
     g-well-defined {w} {v} (left (mid (comm (inj₂ (inj₁ tt)) Sn.swap))) = claim
       where
-      claim : (g *) [ [ inj₂ Sn.swap ]ʷ • [ inj₁ (inj₂ ( inj₁ tt)) ]ʷ ]ₗ ≈₁ (g *) [ [ [ inj₁ tt ]ʷ ]ₗ • [ inj₂ Sn.swap ]ʷ ]ₗ
+      claim : (g ʷ) [ [ inj₂ Sn.swap ]ʷ • [ inj₁ (inj₂ ( inj₁ tt)) ]ʷ ]ₗ ≈₁ (g ʷ) [ [ [ inj₁ tt ]ʷ ]ₗ • [ inj₂ Sn.swap ]ʷ ]ₗ
       claim = begin
-        (g *) [ [ inj₂ Sn.swap ]ʷ • [ inj₁ (inj₂ ( inj₁ tt)) ]ʷ ]ₗ ≈⟨ sym assoc ⟩
+        (g ʷ) [ [ inj₂ Sn.swap ]ʷ • [ inj₁ (inj₂ ( inj₁ tt)) ]ʷ ]ₗ ≈⟨ sym assoc ⟩
         (Sim.X₀₁ • Sim.X₀₁) • Sim.i₀ • Sim.X₀₁ ≈⟨ cong (axiom Sim.[S3a]) refl ⟩
         ε • Sim.i₀ • Sim.X₀₁ ≈⟨ left-unit ⟩
-        (g *) [ [ [ inj₁ tt ]ʷ ]ₗ • [ inj₂ Sn.swap ]ʷ ]ₗ ∎
+        (g ʷ) [ [ [ inj₁ tt ]ʷ ]ₗ • [ inj₂ Sn.swap ]ʷ ]ₗ ∎
         where open SR ws₁
     
     g-well-defined {w} {v} (left (mid (comm (inj₂ (inj₂ tt)) Sn.swap))) = claim
       where
-      claim : (g *) [ [ inj₂ Sn.swap ]ʷ • [ inj₁ (inj₂ (inj₂ tt)) ]ʷ ]ₗ ≈₁ (g *) [ [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ • [ inj₂ Sn.swap ]ʷ ]ₗ
+      claim : (g ʷ) [ [ inj₂ Sn.swap ]ʷ • [ inj₁ (inj₂ (inj₂ tt)) ]ʷ ]ₗ ≈₁ (g ʷ) [ [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ • [ inj₂ Sn.swap ]ʷ ]ₗ
       claim = begin
-        (g *) [ [ inj₂ Sn.swap ]ʷ • [ inj₁ (inj₂ (inj₂ tt)) ]ʷ ]ₗ ≈⟨ by-assoc₁ Eq.refl ⟩
+        (g ʷ) [ [ inj₂ Sn.swap ]ʷ • [ inj₁ (inj₂ (inj₂ tt)) ]ʷ ]ₗ ≈⟨ by-assoc₁ Eq.refl ⟩
         (Sim.X₀₁ • Sim.X₁₂ • Sim.X₀₁) • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ ≈⟨ cong (sym (axiom Sim.[S9a])) refl ⟩
         (Sim.X₁₂ • Sim.X₀₁ • Sim.X₁₂) • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ ≈⟨ by-assoc₁ Eq.refl ⟩
         (Sim.X₁₂ • Sim.X₀₁) • (Sim.X₁₂ • Sim.i₀) • Sim.X₀₁ • Sim.X₁₂ ≈⟨ cong refl (sym (cong (axiom Sim.[S5a]) refl)) ⟩
@@ -1189,28 +1189,28 @@ module TwoLevel-Simplified-Amal where
         (Sim.X₁₂ • Sim.X₀₁ • Sim.i₀) • Sim.X₁₂ • Sim.X₀₁ • Sim.X₁₂ ≈⟨ cong refl (axiom Sim.[S9a]) ⟩
         (Sim.X₁₂ • Sim.X₀₁ • Sim.i₀) • Sim.X₀₁ • Sim.X₁₂ • Sim.X₀₁ ≈⟨ by-assoc₁ Eq.refl ⟩
         Sim.X₁₂ • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ • Sim.X₀₁ ≈⟨ by-assoc₁ Eq.refl ⟩
-        (g *) [ [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ • [ inj₂ Sn.swap ]ʷ ]ₗ ∎
+        (g ʷ) [ [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ • [ inj₂ Sn.swap ]ʷ ]ₗ ∎
         where open SR ws₁
         
     
     g-well-defined {w} {v} (left (mid (comm X₀₁-gen (Sn.swap Sn.ₛ)))) = claim
       where
-      claim : (g *) [ [ inj₂ (Sn.swap Sn.ₛ) ]ʷ • [ inj₁ X₀₁-gen ]ʷ ]ₗ ≈₁ (g *) [ [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ • [ inj₂ (Sn.swap Sn.ₛ) ]ʷ ]ₗ
+      claim : (g ʷ) [ [ inj₂ (Sn.swap Sn.ₛ) ]ʷ • [ inj₁ X₀₁-gen ]ʷ ]ₗ ≈₁ (g ʷ) [ [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ • [ inj₂ (Sn.swap Sn.ₛ) ]ʷ ]ₗ
       claim = begin
-        (g *) [ [ inj₂ (Sn.swap Sn.ₛ) ]ʷ • [ inj₁ X₀₁-gen ]ʷ ]ₗ ≈⟨ by-assoc₁ Eq.refl ⟩
+        (g ʷ) [ [ inj₂ (Sn.swap Sn.ₛ) ]ʷ • [ inj₁ X₀₁-gen ]ʷ ]ₗ ≈⟨ by-assoc₁ Eq.refl ⟩
         (Sim.X₁₂ • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • ε  ≈⟨ cong refl (sym (axiom Sim.[S3b])) ⟩
         (Sim.X₁₂ • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • Sim.X₁₂ • Sim.X₁₂  ≈⟨ by-assoc₁ Eq.refl ⟩
-        (g *) [ [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ • [ inj₂ (Sn.swap Sn.ₛ) ]ʷ ]ₗ ∎
+        (g ʷ) [ [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ • [ inj₂ (Sn.swap Sn.ₛ) ]ʷ ]ₗ ∎
         where open SR ws₁
         
     g-well-defined {w} {v} (left (mid (comm (inj₂ (inj₂ tt)) (Sn.swap Sn.ₛ)))) = claim
       where
-      claim : (g *) [ [ inj₂ (Sn.swap Sn.ₛ) ]ʷ • [ inj₁ (inj₂ (inj₂ tt)) ]ʷ ]ₗ ≈₁ (g *) [ [ X₀₁ ]ₗ • [ inj₂ (Sn.swap Sn.ₛ) ]ʷ ]ₗ
+      claim : (g ʷ) [ [ inj₂ (Sn.swap Sn.ₛ) ]ʷ • [ inj₁ (inj₂ (inj₂ tt)) ]ʷ ]ₗ ≈₁ (g ʷ) [ [ X₀₁ ]ₗ • [ inj₂ (Sn.swap Sn.ₛ) ]ʷ ]ₗ
       claim = begin
-        (g *) [ [ inj₂ (Sn.swap Sn.ₛ) ]ʷ • [ inj₁ (inj₂ (inj₂ tt)) ]ʷ ]ₗ ≈⟨ by-assoc₁ Eq.refl ⟩
+        (g ʷ) [ [ inj₂ (Sn.swap Sn.ₛ) ]ʷ • [ inj₁ (inj₂ (inj₂ tt)) ]ʷ ]ₗ ≈⟨ by-assoc₁ Eq.refl ⟩
         (Sim.X₁₂ • Sim.X₁₂) • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂  ≈⟨ cong (axiom Sim.[S3b]) refl ⟩
         ε • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂  ≈⟨ by-assoc₁ Eq.refl ⟩
-        (g *) [ [ X₀₁ ]ₗ • [ inj₂ (Sn.swap Sn.ₛ) ]ʷ ]ₗ ∎
+        (g ʷ) [ [ X₀₁ ]ₗ • [ inj₂ (Sn.swap Sn.ₛ) ]ʷ ]ₗ ∎
         where open SR ws₁
         
     g-well-defined {w} {v} (right (left Cyclic.order)) = _≈₁_.axiom Sim.[S3a]
@@ -1257,9 +1257,9 @@ module TwoLevel-Simplified-Amal where
         b • b ^ ₁₊ n • a ≈⟨ sym assoc ⟩
         (b • b ^ ₁₊ n) • a ∎
 
-      claim0 : (g *) [ [ [ Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ • Ki.i₁ ]ₗ ]ᵣ ]ᵣ ≈₁ (g *) [ [ [ Ki.i₀ • Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ ]ₗ ]ᵣ ]ᵣ
+      claim0 : (g ʷ) [ [ [ Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ • Ki.i₁ ]ₗ ]ᵣ ]ᵣ ≈₁ (g ʷ) [ [ [ Ki.i₀ • Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ ]ₗ ]ᵣ ]ᵣ
       claim0 = begin
-        (g *) [ [ [ Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ • Ki.i₁ ]ₗ ]ᵣ ]ᵣ ≈⟨ trans (sym right-unit) (cong refl (sym c1)) ⟩
+        (g ʷ) [ [ [ Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ • Ki.i₁ ]ₗ ]ᵣ ]ᵣ ≈⟨ trans (sym right-unit) (cong refl (sym c1)) ⟩
         (Sim.K₀₁ • Sim.i₀ • Sim.i₀ • Sim.K₀₁ • Sim.i₁) • (Sim.i₀ • Sim.i₁) ^ 4 ≈⟨ by-assoc₁ Eq.refl ⟩
         (Sim.K₀₁ • Sim.i₀ • Sim.i₀ • Sim.K₀₁) • Sim.i₁ • (Sim.i₀ • Sim.i₁) ^ 4 ≈⟨ cong refl (Sim.by-sub-nf {Sim.i₁' • (Sim.i₀' • Sim.i₁') ^ 4} {(Sim.i₀' • Sim.i₁') ^ 3 • Sim.i₀' • Sim.i₁' • Sim.i₁'} (Sim.by-equal-nf Eq.refl)) ⟩
         (Sim.K₀₁ • Sim.i₀ • Sim.i₀ • Sim.K₀₁) • (Sim.i₀ • Sim.i₁) ^ 3 • Sim.i₀ • Sim.i₁ • Sim.i₁ ≈⟨ by-assoc₁ Eq.refl ⟩
@@ -1274,7 +1274,7 @@ module TwoLevel-Simplified-Amal where
         (Sim.i₀ • Sim.K₀₁ • Sim.i₀ • Sim.i₀ • Sim.K₀₁) • ε ≈⟨ by-assoc₁ Eq.refl ⟩
 
 
-        (g *) [ [ [ Ki.i₀ • Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ ]ₗ ]ᵣ ]ᵣ ∎
+        (g ʷ) [ [ [ Ki.i₀ • Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ ]ₗ ]ᵣ ]ᵣ ∎
 
     g-well-defined {w} {v} (right (right (left Ki.[S10b]))) = claim0
       where
@@ -1316,9 +1316,9 @@ module TwoLevel-Simplified-Amal where
         b • b ^ ₁₊ n • a ≈⟨ sym assoc ⟩
         (b • b ^ ₁₊ n) • a ∎
 
-      claim0 : (g *) [ [ [ Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ • Ki.i₀ ]ₗ ]ᵣ ]ᵣ ≈₁ (g *) [ [ [ Ki.i₁ • Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ ]ₗ ]ᵣ ]ᵣ
+      claim0 : (g ʷ) [ [ [ Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ • Ki.i₀ ]ₗ ]ᵣ ]ᵣ ≈₁ (g ʷ) [ [ [ Ki.i₁ • Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ ]ₗ ]ᵣ ]ᵣ
       claim0 = begin
-        (g *) [ [ [ Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ • Ki.i₀ ]ₗ ]ᵣ ]ᵣ ≈⟨ trans (sym right-unit) (cong refl (sym c1)) ⟩
+        (g ʷ) [ [ [ Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ • Ki.i₀ ]ₗ ]ᵣ ]ᵣ ≈⟨ trans (sym right-unit) (cong refl (sym c1)) ⟩
         (Sim.K₀₁ • Sim.i₀ • Sim.i₀ • Sim.K₀₁ • Sim.i₀) • (Sim.i₀ • Sim.i₁) ^ 4 ≈⟨ by-assoc₁ Eq.refl ⟩
         (Sim.K₀₁ • Sim.i₀ • Sim.i₀ • Sim.K₀₁) • Sim.i₀ • (Sim.i₀ • Sim.i₁) ^ 4 ≈⟨ cong refl (Sim.by-sub-nf {Sim.i₀' • (Sim.i₀' • Sim.i₁') ^ 4} {(Sim.i₀' • Sim.i₁') ^ 3 • Sim.i₀' • Sim.i₀' • Sim.i₁'} (Sim.by-equal-nf Eq.refl)) ⟩
         (Sim.K₀₁ • Sim.i₀ • Sim.i₀ • Sim.K₀₁) • (Sim.i₀ • Sim.i₁) ^ 3 • Sim.i₀ • Sim.i₀ • Sim.i₁ ≈⟨ by-assoc₁ Eq.refl ⟩
@@ -1329,19 +1329,19 @@ module TwoLevel-Simplified-Amal where
         (Sim.i₁ • (Sim.K₀₁ • Sim.i₀ • Sim.i₀ • Sim.K₀₁ • (Sim.i₀ • Sim.i₁) ^ 3)) • Sim.i₀ • Sim.i₁ ≈⟨ by-assoc₁ Eq.refl ⟩
         (Sim.i₁ • Sim.K₀₁ • Sim.i₀ • Sim.i₀ • Sim.K₀₁) • (Sim.i₀ • Sim.i₁) ^ 4 ≈⟨ cong refl c1 ⟩
         (Sim.i₁ • Sim.K₀₁ • Sim.i₀ • Sim.i₀ • Sim.K₀₁) • ε ≈⟨ by-assoc₁ Eq.refl ⟩
-        (g *) [ [ [ Ki.i₁ • Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ ]ₗ ]ᵣ ]ᵣ ∎
+        (g ʷ) [ [ [ Ki.i₁ • Ki.K₀₁ • Ki.i₀ • Ki.i₀ • Ki.K₀₁ ]ₗ ]ᵣ ]ᵣ ∎
         
     g-well-defined {w} {v} (right (right (left Ki.[S11]))) = _≈₁_.axiom Sim.[S11]
     g-well-defined {w} {v} (right (right (left Ki.[S12]))) = _≈₁_.axiom Sim.[S12]
     g-well-defined {w} {v} (right (right (left Ki.[S14]))) = _≈₁_.axiom Sim.[S14]
     g-well-defined {w} {v} (right (right (right Cyclic.order))) = trans (by-assoc₁ Eq.refl) claim
       where
-      claim : (g *) (i₂ ^' 4) ≈₁ ε
+      claim : (g ʷ) (i₂ ^' 4) ≈₁ ε
       claim = begin
-        (g *) (i₂ ^' 4) ≈⟨ by-assoc₁ Eq.refl ⟩
+        (g ʷ) (i₂ ^' 4) ≈⟨ by-assoc₁ Eq.refl ⟩
         (Sim.X₁₂ • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • (Sim.X₁₂ • Sim.X₁₂) • (Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • (Sim.X₁₂ • Sim.X₁₂) • (Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • (Sim.X₁₂ • Sim.X₁₂) • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ ≈⟨ cong refl (cong (axiom Sim.[S3b]) (cong refl (cong (axiom Sim.[S3b]) (cong refl (cong (axiom Sim.[S3b]) refl))))) ⟩
         (Sim.X₁₂ • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • ε • (Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • ε • (Sim.X₀₁ • Sim.i₀ • Sim.X₀₁) • ε • Sim.X₀₁ • Sim.i₀ • Sim.X₀₁ • Sim.X₁₂ ≈⟨ by-assoc₁ Eq.refl ⟩
-        Sim.X₁₂ • (g *) (i₁ ^' 4) • Sim.X₁₂ ≈⟨ cong refl (cong (g-well-defined (left (left (right (left Cyclic.order))))) refl) ⟩
+        Sim.X₁₂ • (g ʷ) (i₁ ^' 4) • Sim.X₁₂ ≈⟨ cong refl (cong (g-well-defined (left (left (right (left Cyclic.order))))) refl) ⟩
         Sim.X₁₂ • ε • Sim.X₁₂ ≈⟨ by-assoc₁ Eq.refl ⟩
         Sim.X₁₂ • Sim.X₁₂ ≈⟨ axiom Sim.[S3b] ⟩
         ε ∎
@@ -1352,14 +1352,14 @@ module TwoLevel-Simplified-Amal where
     g-well-defined {w} {v} (right (right (mid (comm Ki.i₁-gen tt)))) = g-well-defined (left (left (right (mid (comm tt tt)))))
     g-well-defined {w} {v} (right (mid (desugar {tt}))) = claim
       where
-      claim : (g *) [ [ inj₁ tt ]ʷ ]ᵣ ≈₁ (g *) [ [ Ki.fs tt ]ᵣ ]ᵣ
+      claim : (g ʷ) [ [ inj₁ tt ]ʷ ]ᵣ ≈₁ (g ʷ) [ [ Ki.fs tt ]ᵣ ]ᵣ
       claim = begin
         Sim.X₀₁ ≈⟨ sym right-unit ⟩
         Sim.X₀₁ • ε ≈⟨ cong refl (sym (axiom Sim.[S14])) ⟩
         Sim.X₀₁ • Sim.K₀₁ ^ 2 • Sim.i₀ • Sim.i₁ ≈⟨ by-assoc₁ Eq.refl ⟩
         (Sim.X₀₁ • Sim.K₀₁) • Sim.K₀₁ • Sim.i₀ • Sim.i₁ ≈⟨ cong (sym (axiom Sim.[S10])) refl ⟩
         (Sim.K₀₁ • Sim.i₁ • Sim.i₁) • Sim.K₀₁ • Sim.i₀ • Sim.i₁ ≈⟨ by-assoc₁ Eq.refl ⟩
-        (g *) [ [ Ki.fs tt ]ᵣ ]ᵣ ∎
+        (g ʷ) [ [ Ki.fs tt ]ᵣ ]ᵣ ∎
         where open SR ws₁
         
     g-well-defined {w} {v} (mid (amal {i₀'-gen})) = _≈₁_.refl
@@ -1368,7 +1368,7 @@ module TwoLevel-Simplified-Amal where
     g-well-defined {w} {v} (mid (amal {inj₂ tt})) = _≈₁_.refl
 
 
-    f-left-inv-gen : ∀ x -> [ x ]ʷ ≈₂ (f *) (g x)
+    f-left-inv-gen : ∀ x -> [ x ]ʷ ≈₂ (f ʷ) (g x)
     f-left-inv-gen K₀₁-gen = _≈₂_.refl
     f-left-inv-gen X₀₁-gen = by-equal-nf Eq.refl
     f-left-inv-gen i₀-gen = by-equal-nf Eq.refl
@@ -1381,7 +1381,7 @@ module TwoLevel-Simplified-Amal where
     f-left-inv-gen i₁'-gen = by-equal-nf Eq.refl
     f-left-inv-gen i₂'-gen = by-equal-nf Eq.refl
 
-    g-left-inv-gen : ∀ x -> [ x ]ʷ ≈₁ (g *) (f x)
+    g-left-inv-gen : ∀ x -> [ x ]ʷ ≈₁ (g ʷ) (f x)
     g-left-inv-gen Simplified.i₀-gen = refl
     g-left-inv-gen Simplified.K₀₁-gen = refl
     g-left-inv-gen Simplified.X₀₁-gen = refl
@@ -1389,7 +1389,7 @@ module TwoLevel-Simplified-Amal where
 
     open MonoidMorphisms 
 
-    U33Di-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid m₂) (Monoid.rawMonoid m₁) (g *)
+    U33Di-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid m₂) (Monoid.rawMonoid m₁) (g ʷ)
     U33Di-isomorphism = StarIsomorphism.isMonoidIsomorphism mypres _===₁_ g f g-well-defined g-left-inv-gen f-well-defined f-left-inv-gen
 
 

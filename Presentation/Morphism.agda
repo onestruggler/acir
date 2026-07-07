@@ -2,7 +2,7 @@
 -- Presentations of groups
 --
 -- Monoid and group homomorphism / monomorphism / isomorphism builders
--- for the extension (f *) and the lift wmap f, together with transfer
+-- for the extension (f ʷ) and the lift wmap f, together with transfer
 -- of normal forms along a generator retraction
 ------------------------------------------------------------------------
 
@@ -35,23 +35,23 @@ open PP Δ renaming (•-ε-monoid to monoid₂ ; word-setoid to setoid₂)
 ------------------------------------------------------------------------
 -- Monoid morphisms
 --
--- The congruence lemmas "(f *) / wmap f preserve ≈" live in
+-- The congruence lemmas "(f ʷ) / wmap f preserve ≈" live in
 -- Presentation.Properties (modules StarCongruence and GenCongruence);
 -- the builders below open them at (Γ , Δ).
 
 open MonoidMorphisms
   (Monoid.rawMonoid monoid₁) (Monoid.rawMonoid monoid₂)
 
--- Build a monoid homomorphism from (f *).
+-- Build a monoid homomorphism from (f ʷ).
 module StarHomomorphism
   (f : A → Word B)
-  (f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
+  (f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)
   where
 
-  isMonoidHomomorphism : IsMonoidHomomorphism (f *)
+  isMonoidHomomorphism : IsMonoidHomomorphism (f ʷ)
   isMonoidHomomorphism = record
     { isMagmaHomomorphism = record
-      { isRelHomomorphism = record { cong = f*-cong f f-well-defined }
+      { isRelHomomorphism = record { cong = fʷ-cong f f-well-defined }
       ; homo = λ x y → refl₂
       }
     ; ε-homo = refl₂
@@ -61,59 +61,59 @@ module StarHomomorphism
 -- Build a monoid homomorphism from wmap f.
 module GenHomomorphism
   (f : A → B)
-  (f-well-defined : let f* = wmap f in ∀ {w v} → w ===₁ v → (f*) w ≈₂ (f*) v)
+  (f-well-defined : let fʷ = wmap f in ∀ {w v} → w ===₁ v → (fʷ) w ≈₂ (fʷ) v)
   where
 
-  f* = wmap f
+  fʷ = wmap f
 
-  isMonoidHomomorphism : IsMonoidHomomorphism (f*)
+  isMonoidHomomorphism : IsMonoidHomomorphism (fʷ)
   isMonoidHomomorphism = record
     { isMagmaHomomorphism = record
-      { isRelHomomorphism = record { cong = f*-cong f f-well-defined }
+      { isRelHomomorphism = record { cong = fʷ-cong f f-well-defined }
       ; homo = λ x y → refl₂
       }
     ; ε-homo = refl₂
     }
-    where open PP.GenCongruence Γ Δ using (f*-cong)
+    where open PP.GenCongruence Γ Δ using (fʷ-cong)
 
--- Build a monoid monomorphism from (f *), using Reidemeister-Schreier.
+-- Build a monoid monomorphism from (f ʷ), using Reidemeister-Schreier.
 module StarMonomorphism
   (f : A → Word B)
   (g : B → Word A)
-  (f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
-  (g-well-defined : ∀ {u t : Word B} → u ===₂ t → (g *) u ≈₁ (g *) t)
-  (g-left-inv-gen : ∀ (x : A) → [ x ]ʷ ≈₁ (g *) (f x))
+  (f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)
+  (g-well-defined : ∀ {u t : Word B} → u ===₂ t → (g ʷ) u ≈₁ (g ʷ) t)
+  (g-left-inv-gen : ∀ (x : A) → [ x ]ʷ ≈₁ (g ʷ) (f x))
   where
 
   open StarHomomorphism f f-well-defined
   open Star-Injective-Simplified Γ Δ
   open Reidemeister-Schreier-Simplified f g g-well-defined g-left-inv-gen
 
-  isMonoidMonomorphism : IsMonoidMonomorphism (f *)
+  isMonoidMonomorphism : IsMonoidMonomorphism (f ʷ)
   isMonoidMonomorphism = record
     { isMonoidHomomorphism = isMonoidHomomorphism
-    ; injective = f*-inj
+    ; injective = fʷ-inj
     }
 
--- Build a monoid isomorphism from (f *).
+-- Build a monoid isomorphism from (f ʷ).
 module StarIsomorphism
   (f : A → Word B)
   (g : B → Word A)
-  (f-well-defined  : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
-  (f-left-inv-gen  : ∀ (x : B) → [ x ]ʷ ≈₂ (f *) (g x))
-  (g-well-defined  : ∀ {u t : Word B} → u ===₂ t → (g *) u ≈₁ (g *) t)
-  (g-left-inv-gen  : ∀ (x : A) → [ x ]ʷ ≈₁ (g *) (f x))
+  (f-well-defined  : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)
+  (f-left-inv-gen  : ∀ (x : B) → [ x ]ʷ ≈₂ (f ʷ) (g x))
+  (g-well-defined  : ∀ {u t : Word B} → u ===₂ t → (g ʷ) u ≈₁ (g ʷ) t)
+  (g-left-inv-gen  : ∀ (x : A) → [ x ]ʷ ≈₁ (g ʷ) (f x))
   where
 
   open StarMonomorphism f g f-well-defined g-well-defined g-left-inv-gen
   open Star-Injective-Simplified Δ Γ
   open Reidemeister-Schreier-Simplified g f f-well-defined f-left-inv-gen
-    renaming (g*-surj to f*-surj)
+    renaming (gʷ-surj to fʷ-surj)
 
-  isMonoidIsomorphism : IsMonoidIsomorphism (f *)
+  isMonoidIsomorphism : IsMonoidIsomorphism (f ʷ)
   isMonoidIsomorphism = record
     { isMonoidMonomorphism = isMonoidMonomorphism
-    ; surjective = f*-surj
+    ; surjective = fʷ-surj
     }
 
 -- Transfer a normal-form witness along a generator bijection.
@@ -121,7 +121,7 @@ module WeakNormalFormTransfer
   (f : A → B)
   (g : B → A)
   (f∘g≗id : ∀ x → f (g x) ≡ x)
-  (f-well-defined : let f* = wmap f in ∀ {w v} → w ===₁ v → (f*) w ≈₂ (f*) v)
+  (f-well-defined : let fʷ = wmap f in ∀ {w v} → w ===₁ v → (fʷ) w ≈₂ (fʷ) v)
   where
 
   open PP.GenCongruence Γ Δ f f-well-defined
@@ -134,18 +134,18 @@ module WeakNormalFormTransfer
     open NFBase.NormalFormWithoutInverse gp
     anf = nf ∘ wmap g
     open SR setoid₂
-    g* = wmap g
+    gʷ = wmap g
 
-    f*∘g*≗id : ∀ w → f* (g* w) ≡ w
-    f*∘g*≗id [ x ]ʷ   rewrite f∘g≗id x = Eq.refl
-    f*∘g*≗id ε        = Eq.refl
-    f*∘g*≗id (w • w₁) rewrite f*∘g*≗id w | f*∘g*≗id w₁ = Eq.refl
+    fʷ∘gʷ≗id : ∀ w → fʷ (gʷ w) ≡ w
+    fʷ∘gʷ≗id [ x ]ʷ   rewrite f∘g≗id x = Eq.refl
+    fʷ∘gʷ≗id ε        = Eq.refl
+    fʷ∘gʷ≗id (w • w₁) rewrite fʷ∘gʷ≗id w | fʷ∘gʷ≗id w₁ = Eq.refl
 
     inj : {w v : Word B} → nf (wmap g w) ≡ nf (wmap g v) → w ≈₂ v
     inj {w} {v} eq = begin
-        w              ≡⟨ Eq.sym (f*∘g*≗id w) ⟩
-        f* (g* w)      ≈⟨ f*-cong (nf-injective eq) ⟩
-        f* (g* v)      ≡⟨ f*∘g*≗id v ⟩
+        w              ≡⟨ Eq.sym (fʷ∘gʷ≗id w) ⟩
+        fʷ (gʷ w)      ≈⟨ fʷ-cong (nf-injective eq) ⟩
+        fʷ (gʷ v)      ≡⟨ fʷ∘gʷ≗id v ⟩
         v ∎
 
 ------------------------------------------------------------------------
@@ -178,62 +178,62 @@ module GroupMorphism
 
     open IsGroupHomomorphism isGroupHomomorphism public using (⁻¹-homo)
 
-  -- Build a group homomorphism from (f *).
+  -- Build a group homomorphism from (f ʷ).
   module StarGroupHomomorphism
     (f : A → Word B)
-    (f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
+    (f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)
     where
 
     open StarHomomorphism f f-well-defined using (isMonoidHomomorphism)
-    open MonoidHom⇒GroupHom (f *) isMonoidHomomorphism public
+    open MonoidHom⇒GroupHom (f ʷ) isMonoidHomomorphism public
       using (⁻¹-homo ; isGroupHomomorphism)
 
   -- Build a group homomorphism from wmap f.
   module GenGroupHomomorphism
     (f : A → B)
-    (f-well-defined : let f* = wmap f in ∀ {w v} → w ===₁ v → (f*) w ≈₂ (f*) v)
+    (f-well-defined : let fʷ = wmap f in ∀ {w v} → w ===₁ v → (fʷ) w ≈₂ (fʷ) v)
     where
 
-    open GenHomomorphism f f-well-defined using (f* ; isMonoidHomomorphism)
-    open MonoidHom⇒GroupHom f* isMonoidHomomorphism public
+    open GenHomomorphism f f-well-defined using (fʷ ; isMonoidHomomorphism)
+    open MonoidHom⇒GroupHom fʷ isMonoidHomomorphism public
       using (⁻¹-homo ; isGroupHomomorphism)
 
-  -- Build a group monomorphism from (f *) via Reidemeister-Schreier.
+  -- Build a group monomorphism from (f ʷ) via Reidemeister-Schreier.
   module StarGroupMonomorphism
     (f : A → Word B)
     (g : B → Word A)
-    (f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
-    (g-well-defined : ∀ {u t : Word B} → u ===₂ t → (g *) u ≈₁ (g *) t)
-    (g-left-inv-gen : ∀ (x : A) → [ x ]ʷ ≈₁ (g *) (f x))
+    (f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)
+    (g-well-defined : ∀ {u t : Word B} → u ===₂ t → (g ʷ) u ≈₁ (g ʷ) t)
+    (g-left-inv-gen : ∀ (x : A) → [ x ]ʷ ≈₁ (g ʷ) (f x))
     where
 
     open StarGroupHomomorphism f f-well-defined
     open Star-Injective-Simplified Γ Δ
     open Reidemeister-Schreier-Simplified f g g-well-defined g-left-inv-gen
 
-    isGroupMonomorphism : IsGroupMonomorphism (f *)
+    isGroupMonomorphism : IsGroupMonomorphism (f ʷ)
     isGroupMonomorphism = record
       { isGroupHomomorphism = isGroupHomomorphism
-      ; injective = f*-inj
+      ; injective = fʷ-inj
       }
 
-  -- Build a group isomorphism from (f *).
+  -- Build a group isomorphism from (f ʷ).
   module StarGroupIsomorphism
     (f : A → Word B)
     (g : B → Word A)
-    (f-well-defined  : ∀ {w v} → w ===₁ v → (f *) w ≈₂ (f *) v)
-    (f-left-inv-gen  : ∀ (x : B) → [ x ]ʷ ≈₂ (f *) (g x))
-    (g-well-defined  : ∀ {u t : Word B} → u ===₂ t → (g *) u ≈₁ (g *) t)
-    (g-left-inv-gen  : ∀ (x : A) → [ x ]ʷ ≈₁ (g *) (f x))
+    (f-well-defined  : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)
+    (f-left-inv-gen  : ∀ (x : B) → [ x ]ʷ ≈₂ (f ʷ) (g x))
+    (g-well-defined  : ∀ {u t : Word B} → u ===₂ t → (g ʷ) u ≈₁ (g ʷ) t)
+    (g-left-inv-gen  : ∀ (x : A) → [ x ]ʷ ≈₁ (g ʷ) (f x))
     where
 
     open StarGroupMonomorphism f g f-well-defined g-well-defined g-left-inv-gen
     open Star-Injective-Simplified Δ Γ
     open Reidemeister-Schreier-Simplified g f f-well-defined f-left-inv-gen
-      renaming (g*-surj to f*-surj)
+      renaming (gʷ-surj to fʷ-surj)
 
-    isGroupIsomorphism : IsGroupIsomorphism (f *)
+    isGroupIsomorphism : IsGroupIsomorphism (f ʷ)
     isGroupIsomorphism = record
       { isGroupMonomorphism = isGroupMonomorphism
-      ; surjective = f*-surj
+      ; surjective = fʷ-surj
       }

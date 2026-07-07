@@ -85,10 +85,10 @@ module Sζ where
   infix 4 _~_
   _~_ = Pointwise _≈₀_ (_≡_ {A = C})
 
-  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , ε-cr) ~ ((h **) ε-cr (f x)) 
+  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , ε-cr) ~ ((h ᵗ) ε-cr (f x)) 
   h=⁻¹f-gen tt = _≈₀_.refl , Eq.refl
 
-  h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
+  h-wd-ax : ∀ c {u t} → u === t → (h ᵗ) c u ~ (h ᵗ) c t
   h-wd-ax ε-cr {u} {t} order-ζ = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax ε-cr {u} {t} order-S = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax ε-cr {u} {t} (comm {S-gen}) = by-equal-nf Eq.refl , Eq.refl
@@ -103,9 +103,9 @@ module Sζ where
   h-wd-ax SS-cr {u} {t} (comm {ζ-gen}) = by-equal-nf Eq.refl , Eq.refl
 
   open PP _===_
-  open AS _===_ using (by-assoc)
+  open AS.Assoc _===_ using (by-assoc)
 
-  f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
+  f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} Cyclic.order = _≈_.trans (by-assoc Eq.refl) (_≈_.axiom order-ζ) 
 
   [_] : C → Word SXζ
@@ -141,7 +141,7 @@ module Sζ where
     open SR word-setoid
 
 
-  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f *) (h c b .proj₁) • [ h c b .proj₂ ]
+  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f ʷ) (h c b .proj₁) • [ h c b .proj₂ ]
   h-hyp ε-cr S-gen = refl
   h-hyp ε-cr ζ-gen = trans left-unit (sym right-unit)
   h-hyp S-cr S-gen = sym left-unit
@@ -236,11 +236,11 @@ module SXζ where
   infix 4 _~_
   _~_ = Pointwise _≈₀_ (_≡_ {A = C})
 
-  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , ε-cr) ~ ((h **) ε-cr (f x)) 
+  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , ε-cr) ~ ((h ᵗ) ε-cr (f x)) 
   h=⁻¹f-gen Sζ.S-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen Sζ.ζ-gen = _≈₀_.refl , Eq.refl
 
-  h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
+  h-wd-ax : ∀ c {u t} → u === t → (h ᵗ) c u ~ (h ᵗ) c t
   h-wd-ax ε-cr {u} {t} order-ζ = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax ε-cr {u} {t} order-S = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax ε-cr {u} {t} order-X = by-equal-nf Eq.refl , Eq.refl
@@ -314,9 +314,9 @@ module SXζ where
   h-wd-ax XSXX-cr comm-XS-SX = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax XXSXX-cr comm-XS-SX = by-equal-nf Eq.refl , Eq.refl
   open PP _===_
-  open AS _===_ using (by-assoc)
+  open AS.Assoc _===_ using (by-assoc)
 
-  f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
+  f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} Sζ.order-ζ = axiom order-ζ
   f-wd-ax {w} {v} Sζ.order-S = axiom order-S
   f-wd-ax {w} {v} (Sζ.comm {Sζ.S-gen}) = axiom comm
@@ -361,23 +361,23 @@ module SXζ where
     where
     open SR word-setoid
 
-  lemma-XXSXXX : (X • X • S • X • X) • [ X-gen ]ʷ ≈ (f *) ε • X • X • S
+  lemma-XXSXXX : (X • X • S • X • X) • [ X-gen ]ʷ ≈ (f ʷ) ε • X • X • S
   lemma-XXSXXX = begin
     (X • X • S • X • X) • [ X-gen ]ʷ ≈⟨ by-assoc Eq.refl ⟩
     (X • X • S) • X ^ 3 ≈⟨ cong refl (axiom order-X) ⟩
     (X • X • S) • ε ≈⟨ right-unit ⟩
     (X • X • S) ≈⟨ sym left-unit ⟩
-    (f *) ε • X • X • S ∎
+    (f ʷ) ε • X • X • S ∎
     where
     open SR word-setoid
 
-  lemma-XSXXX : (X • S • X • X) • [ X-gen ]ʷ ≈ (f *) ε • X • S
+  lemma-XSXXX : (X • S • X • X) • [ X-gen ]ʷ ≈ (f ʷ) ε • X • S
   lemma-XSXXX = begin
     (X • S • X • X) • [ X-gen ]ʷ ≈⟨ by-assoc Eq.refl ⟩
     (X • S) • X ^ 3 ≈⟨ cong refl (axiom order-X) ⟩
     (X • S) • ε ≈⟨ right-unit ⟩
     (X • S) ≈⟨ sym left-unit ⟩
-    (f *) ε • X • S ∎
+    (f ʷ) ε • X • S ∎
     where
     open SR word-setoid
 
@@ -455,7 +455,7 @@ module SXζ where
     (ζ ^ 3 • X ^ 2) • S ^ 2 ≈⟨ assoc ⟩
     ζ ^ 3 • X ^ 2 • S ^ 2 ∎
 
-  lemma-XSS : (X • S) • [ S-gen ]ʷ ≈ (f *) (S' • S' • S' • S') • X • X • S • X • X
+  lemma-XSS : (X • S) • [ S-gen ]ʷ ≈ (f ʷ) (S' • S' • S' • S') • X • X • S • X • X
   lemma-XSS = begin
     (X • S) • S ≈⟨ refl ⟩
     (X • S) • S ≈⟨ trans (sym right-unit) (sym (cong refl (axiom order-X))) ⟩
@@ -476,7 +476,7 @@ module SXζ where
     X ^ 2 • S ^ 2 ≈⟨ by-assoc Eq.refl ⟩
     (X • X • S) • S ∎
 
-  lemma-XXSXXS : (X • X • S • X • X) • [ S-gen ]ʷ ≈ (f *) (S' • S' • S' • S' • S' • S' • S' • S') • X
+  lemma-XXSXXS : (X • X • S • X • X) • [ S-gen ]ʷ ≈ (f ʷ) (S' • S' • S' • S' • S' • S' • S' • S') • X
   lemma-XXSXXS = begin
     (X • X • S • X • X) • [ S-gen ]ʷ ≈⟨ by-assoc Eq.refl ⟩
     X • X • (S • X • X • S) ≈⟨ cong refl (cong refl (trans (sym left-unit) (sym (cong (axiom order-ζ) refl)))) ⟩
@@ -490,7 +490,7 @@ module SXζ where
     ζ ^ 3 • S • S • X ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 3 • S • S) • X ≈⟨ cong (sym lemma-S^8) refl ⟩
     S ^ 8 • X ≈⟨ refl ⟩
-    (f *) (S' • S' • S' • S' • S' • S' • S' • S') • X ∎
+    (f ʷ) (S' • S' • S' • S' • S' • S' • S' • S') • X ∎
 
   lemma-XSXXS : (X • S • X • X) • S ≈ S • X • S • X • X
   lemma-XSXXS = begin
@@ -506,7 +506,7 @@ module SXζ where
     (S • X • S • X) • X ≈⟨ by-assoc Eq.refl ⟩
     S • X • S • X • X ∎
 
-  lemma-XXSS : (X • X • S) • [ S-gen ]ʷ ≈ (f *) (S' • S' • S' • S') • X • S • X
+  lemma-XXSS : (X • X • S) • [ S-gen ]ʷ ≈ (f ʷ) (S' • S' • S' • S') • X • S • X
   lemma-XXSS = begin
     (X • X • S) • [ S-gen ]ʷ ≈⟨ by-assoc Eq.refl ⟩
     X ^ 2 • S ^ 2 ≈⟨ trans (sym left-unit) (sym (cong (axiom order-ζ) refl)) ⟩ 
@@ -514,9 +514,9 @@ module SXζ where
     ζ ^ 6 • ζ ^ 3 • X ^ 2 • S ^ 2 ≈⟨ cong refl (sym lemma-SXSX) ⟩
     ζ ^ 6 • S • X • S • X ≈⟨ sym assoc ⟩
     (ζ ^ 6 • S) • X • S • X ≈⟨ cong (sym lemma-S^4) refl ⟩
-    (f *) (S' • S' • S' • S') • X • S • X ∎
+    (f ʷ) (S' • S' • S' • S') • X • S • X ∎
 
-  lemma-XXSXS : (X • X • S • X) • [ S-gen ]ʷ ≈ (f *) S' • X • X • S • X
+  lemma-XXSXS : (X • X • S • X) • [ S-gen ]ʷ ≈ (f ʷ) S' • X • X • S • X
   lemma-XXSXS = begin
     (X • X • S • X) • [ S-gen ]ʷ ≈⟨ by-assoc Eq.refl ⟩
     X • (X • S • X) • S ≈⟨ cong refl lemma-XSXS ⟩
@@ -528,9 +528,9 @@ module SXζ where
     ζ ^ 3 • (ζ ^ 6 • (S • X) • (X • S)) • X ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 9) • (S • X) • (X • S) • X ≈⟨ trans (cong (axiom order-ζ) refl) left-unit ⟩
     (S • X) • (X • S) • X ≈⟨ by-assoc Eq.refl ⟩
-    (f *) S' • X • X • S • X ∎
+    (f ʷ) S' • X • X • S • X ∎
   
-  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f *) (h c b .proj₁) • [ h c b .proj₂ ]
+  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f ʷ) (h c b .proj₁) • [ h c b .proj₂ ]
   h-hyp ε-cr X-gen = refl
   h-hyp ε-cr S-gen = trans left-unit (sym right-unit)
   h-hyp ε-cr ζ-gen = trans left-unit (sym right-unit)
@@ -632,7 +632,7 @@ module SXζHH where
   infix 4 _~_
   _~_ = Pointwise _≈₀_ (_≡_ {A = C})
 
-  h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
+  h-wd-ax : ∀ c {u t} → u === t → (h ᵗ) c u ~ (h ᵗ) c t
   h-wd-ax ε-cr order-ζ = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax ε-cr order-S = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax ε-cr order-X = by-equal-nf Eq.refl , Eq.refl
@@ -659,9 +659,9 @@ module SXζHH where
   h-wd-ax HH-cr comm-HH-S = by-equal-nf Eq.refl , Eq.refl
   
   open PP _===_
-  open AS _===_ using (by-assoc)
+  open AS.Assoc _===_ using (by-assoc)
 
-  f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
+  f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} SXζ.order-ζ = axiom order-ζ
   f-wd-ax {w} {v} SXζ.order-S = axiom order-S
   f-wd-ax {w} {v} SXζ.order-X = axiom order-X
@@ -671,8 +671,8 @@ module SXζHH where
   f-wd-ax {w} {v} (SXζ.comm {SXζ.S-gen}) = axiom comm
   f-wd-ax {w} {v} (SXζ.comm {SXζ.ζ-gen}) = refl
 
-  by-sub-nf : ∀ {w v} → w ≈₀ v → (f *) w ≈ (f *) v
-  by-sub-nf {w} {v} eq = PP.StarCongruence.f*-cong SXζ._===_ _===_ f f-wd-ax eq 
+  by-sub-nf : ∀ {w v} → w ≈₀ v → (f ʷ) w ≈ (f ʷ) v
+  by-sub-nf {w} {v} eq = PP.StarCongruence.fʷ-cong SXζ._===_ _===_ f f-wd-ax eq 
 
   [_] : C → Word SXζHH
   [ ε-cr ] = ε
@@ -703,7 +703,7 @@ module SXζHH where
     (ζ • ζ ^ n) • w ≈⟨ refl ⟩
     ζ ^ ₁₊ n • w ∎
 
-  lemma-HHS : HH • [ S-gen ]ʷ ≈ (f *) (X' • X' • S' • X') • HH
+  lemma-HHS : HH • [ S-gen ]ʷ ≈ (f ʷ) (X' • X' • S' • X') • HH
   lemma-HHS = begin
     HH • [ S-gen ]ʷ ≈⟨ axiom comm-HH-S ⟩
     (S • Z) • HH ≈⟨ by-assoc Eq.refl ⟩
@@ -713,10 +713,10 @@ module SXζHH where
     (ζ ^ 3) • ζ ^ 6 • (X ^ 2 • S • X) • HH ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 9) • (X ^ 2 • S • X) • HH ≈⟨ trans (cong (axiom order-ζ) refl) left-unit ⟩
     (X ^ 2 • S • X) • HH ≈⟨ by-assoc Eq.refl ⟩
-    (f *) (X' • X' • S' • X') • HH ∎
+    (f ʷ) (X' • X' • S' • X') • HH ∎
 
 
-  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f *) (h c b .proj₁) • [ h c b .proj₂ ]
+  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f ʷ) (h c b .proj₁) • [ h c b .proj₂ ]
   h-hyp ε-cr HH-gen = refl
   h-hyp ε-cr X-gen = trans left-unit (sym right-unit)
   h-hyp ε-cr S-gen = trans left-unit (sym right-unit)
@@ -726,7 +726,7 @@ module SXζHH where
   h-hyp HH-cr S-gen = lemma-HHS
   h-hyp HH-cr ζ-gen = sym (axiom comm)
 
-  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , ε-cr) ~ ((h **) ε-cr (f x)) 
+  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , ε-cr) ~ ((h ᵗ) ε-cr (f x)) 
   h=⁻¹f-gen SXζ.S-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen SXζ.X-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen SXζ.ζ-gen = _≈₀_.refl , Eq.refl
@@ -771,7 +771,7 @@ module CliffordTHH where
   f SXζHH.ζ-gen = ζ
 
   Z : Word Gen
-  Z = (f *) SXζHH.Z
+  Z = (f ʷ) SXζHH.Z
 
   infix 4 _===_
   data _===_ : WRel Gen where
@@ -828,14 +828,14 @@ module CliffordTHH where
   infix 4 _~_
   _~_ = Pointwise _≈₀_ (_≡_ {A = CT})
 
-  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , (inj₂ tt)) ~ ((h **) (inj₂ tt) (f x)) 
+  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , (inj₂ tt)) ~ ((h ᵗ) (inj₂ tt) (f x)) 
   h=⁻¹f-gen SXζHH.HH-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen SXζHH.X-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen SXζHH.S-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen SXζHH.ζ-gen = _≈₀_.refl , Eq.refl
 
 -- by-equal-nf Eq.refl , Eq.refl
-  h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
+  h-wd-ax : ∀ c {u t} → u === t → (h ᵗ) c u ~ (h ᵗ) c t
   h-wd-ax (inj₁ T-cr) order-ζ = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax (inj₁ T-cr) order-S = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax (inj₁ T-cr) order-X = by-equal-nf Eq.refl , Eq.refl
@@ -890,9 +890,9 @@ module CliffordTHH where
 
 
   open PP _===_
-  open AS _===_ using (by-assoc)
+  open AS.Assoc _===_ using (by-assoc)
 
-  f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
+  f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} SXζHH.order-ζ = axiom order-ζ
   f-wd-ax {w} {v} SXζHH.order-S = axiom order-S
   f-wd-ax {w} {v} SXζHH.order-X = axiom order-X
@@ -906,11 +906,11 @@ module CliffordTHH where
   f-wd-ax SXζHH.comm-HH-S = axiom comm-HH-S
   f-wd-ax (SXζHH.comm {SXζHH.HH-gen}) = axiom comm
 
-  by-sub-nf : ∀ {w v} → w ≈₀ v → (f *) w ≈ (f *) v
-  by-sub-nf {w} {v} eq = PP.StarCongruence.f*-cong SXζHH._===_ _===_ f f-wd-ax eq 
+  by-sub-nf : ∀ {w v} → w ≈₀ v → (f ʷ) w ≈ (f ʷ) v
+  by-sub-nf {w} {v} eq = PP.StarCongruence.fʷ-cong SXζHH._===_ _===_ f f-wd-ax eq 
 
   lemma-order-Z : Z ^ 3 ≈ ε
-  lemma-order-Z = PP.StarCongruence.f*-cong SXζHH._===_ _===_ f f-wd-ax SXζHH.lemma-order-Z 
+  lemma-order-Z = PP.StarCongruence.fʷ-cong SXζHH._===_ _===_ f f-wd-ax SXζHH.lemma-order-Z 
 
   lemma-ζ : ∀ w → w • ζ ≈ ζ • w
   lemma-ζ [ x ]ʷ = sym (axiom comm)
@@ -1080,7 +1080,7 @@ module CliffordTHH where
      (T • ε • HH • T) • ε ≈⟨ by-assoc Eq.refl ⟩
     (T • HH) • T ∎
 
-  lemma-THHX : [ inj₁ THH-cr ] • [ X-gen ]ʷ ≈ (f *) (X' • X' • S') • [ inj₁ THH-cr ]
+  lemma-THHX : [ inj₁ THH-cr ] • [ X-gen ]ʷ ≈ (f ʷ) (X' • X' • S') • [ inj₁ THH-cr ]
   lemma-THHX = begin
     [ inj₁ THH-cr ] • [ X-gen ]ʷ ≈⟨ assoc ⟩
     T • HH • X ≈⟨ cong refl (trans (axiom comm-HH-X) assoc) ⟩
@@ -1090,9 +1090,9 @@ module CliffordTHH where
     (ζ ^ 3 • S ^ 2 • X) • (T • X) • HH ≈⟨ cong refl (cong (axiom comm-TX) refl) ⟩
     (ζ ^ 3 • S ^ 2 • X) • (ζ ^ 3 • S ^ 2 • X • T) • HH ≈⟨ by-assoc Eq.refl ⟩
     ((ζ ^ 3 • S ^ 2 • X) • (ζ ^ 3 • S ^ 2 • X)) • T • HH ≈⟨ cong  (by-sub-nf {(ζ' ^ 3 • S' ^ 2 • X') • (ζ' ^ 3 • S' ^ 2 • X')} {(X' • X' • S')} (SXζHH.MM.by-equal-nf Eq.refl)) refl ⟩
-    (f *) (X' • X' • S') • [ inj₁ THH-cr ] ∎
+    (f ʷ) (X' • X' • S') • [ inj₁ THH-cr ] ∎
 
-  lemma-THHS : [ inj₁ THH-cr ] • [ S-gen ]ʷ ≈ (f *) (X' • X' • S' • X') • [ inj₁ THH-cr ]
+  lemma-THHS : [ inj₁ THH-cr ] • [ S-gen ]ʷ ≈ (f ʷ) (X' • X' • S' • X') • [ inj₁ THH-cr ]
   lemma-THHS = begin
     [ inj₁ THH-cr ] • [ S-gen ]ʷ ≈⟨ assoc ⟩
     T • HH • S ≈⟨ cong refl (axiom comm-HH-S) ⟩
@@ -1102,9 +1102,9 @@ module CliffordTHH where
     S • T ^ 3 • T • HH ≈⟨ cong refl (cong (axiom order-T) refl) ⟩
     S • Z • T • HH ≈⟨ sym assoc ⟩
     (S • Z) • T • HH ≈⟨ cong (by-sub-nf {S' • Z'} {X' • X' • S' • X'} (SXζHH.MM.by-equal-nf Eq.refl)) refl ⟩
-    (f *) (X' • X' • S' • X') • [ inj₁ THH-cr ] ∎
+    (f ʷ) (X' • X' • S' • X') • [ inj₁ THH-cr ] ∎
 
-  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f *) (h c b .proj₁) • [ h c b .proj₂ ]
+  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f ʷ) (h c b .proj₁) • [ h c b .proj₂ ]
   h-hyp (inj₁ T-cr) T-gen = lemma-TT
   h-hyp (inj₁ T-cr) HH-gen = sym left-unit
   h-hyp (inj₁ T-cr) X-gen = trans (axiom comm-TX) (sym (trans assoc (cong refl assoc)))
@@ -1130,7 +1130,7 @@ module CliffordTHH where
   I : CT
   I = inj₂ tt
 
-  hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h **) (inj₁ c) (f m)) ≡ (w , inj₁ c')
+  hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h ᵗ) (inj₁ c) (f m)) ≡ (w , inj₁ c')
   hcme T-cr SXζHH.HH-gen = ε , THH-cr , Eq.refl
   hcme T-cr SXζHH.X-gen = ζ' ^ 3 • S' ^ 2 • X' , T-cr , Eq.refl
   hcme T-cr SXζHH.S-gen = S' , T-cr , Eq.refl
@@ -1140,19 +1140,19 @@ module CliffordTHH where
   hcme THH-cr SXζHH.S-gen = X' • X' • S' • X' , THH-cr , Eq.refl
   hcme THH-cr SXζHH.ζ-gen = ζ' , THH-cr , Eq.refl
   
-  htme : ∀ m → ((h **) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
+  htme : ∀ m → ((h ᵗ) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
   htme SXζHH.X-gen = Eq.refl
   htme SXζHH.S-gen = Eq.refl
   htme SXζHH.ζ-gen = Eq.refl
   htme SXζHH.HH-gen = Eq.refl
   
-  htme~ : ∀ (m : SXζ) → ([ m ]ʷ , I) ~ ((h **) I (f m))
+  htme~ : ∀ (m : SXζ) → ([ m ]ʷ , I) ~ ((h ᵗ) I (f m))
   htme~ SXζHH.X-gen = _≈₀_.refl , Eq.refl
   htme~ SXζHH.S-gen = _≈₀_.refl , Eq.refl
   htme~ SXζHH.ζ-gen = _≈₀_.refl , Eq.refl
   htme~ SXζHH.HH-gen = _≈₀_.refl , Eq.refl
 
-  [_]ₓ = f *
+  [_]ₓ = f ʷ
 
   hcme~ : ∀ (c : C) (m : SXζ) → let (w' , c' , p) = hcme c m in ([ c ]ₒ • f m) ≈ ([ w' ]ₓ • [ c' ]ₒ)
   hcme~ T-cr SXζHH.HH-gen = sym left-unit
@@ -1212,7 +1212,7 @@ module CliffordTT where
   f SXζHH.ζ-gen = ζ
 
   Z : Word Gen
-  Z = (f *) SXζHH.Z
+  Z = (f ʷ) SXζHH.Z
 
   infix 4 _===_
   data _===_ : WRel Gen where
@@ -1269,13 +1269,13 @@ module CliffordTT where
   infix 4 _~_
   _~_ = Pointwise _≈₀_ (_≡_ {A = CT})
 
-  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , (inj₂ tt)) ~ ((h **) (inj₂ tt) (f x)) 
+  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , (inj₂ tt)) ~ ((h ᵗ) (inj₂ tt) (f x)) 
   h=⁻¹f-gen SXζHH.HH-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen SXζHH.X-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen SXζHH.S-gen = _≈₀_.refl , Eq.refl
   h=⁻¹f-gen SXζHH.ζ-gen = _≈₀_.refl , Eq.refl
 
-  h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
+  h-wd-ax : ∀ c {u t} → u === t → (h ᵗ) c u ~ (h ᵗ) c t
   h-wd-ax (inj₁ T-cr) order-ζ = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax (inj₁ T-cr) order-S = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax (inj₁ T-cr) order-X = by-equal-nf Eq.refl , Eq.refl
@@ -1329,9 +1329,9 @@ module CliffordTT where
   h-wd-ax (inj₂ tt) comm-THH = by-equal-nf Eq.refl , Eq.refl
 
   open PP _===_
-  open AS _===_ using (by-assoc)
+  open AS.Assoc _===_ using (by-assoc)
 
-  f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
+  f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} SXζHH.order-ζ = axiom order-ζ
   f-wd-ax {w} {v} SXζHH.order-S = axiom order-S
   f-wd-ax {w} {v} SXζHH.order-X = axiom order-X
@@ -1345,11 +1345,11 @@ module CliffordTT where
   f-wd-ax SXζHH.comm-HH-S = axiom comm-HH-S
   f-wd-ax (SXζHH.comm {SXζHH.HH-gen}) = axiom comm
 
-  by-sub-nf : ∀ {w v} → w ≈₀ v → (f *) w ≈ (f *) v
-  by-sub-nf {w} {v} eq = PP.StarCongruence.f*-cong SXζHH._===_ _===_ f f-wd-ax eq 
+  by-sub-nf : ∀ {w v} → w ≈₀ v → (f ʷ) w ≈ (f ʷ) v
+  by-sub-nf {w} {v} eq = PP.StarCongruence.fʷ-cong SXζHH._===_ _===_ f f-wd-ax eq 
 
   lemma-order-Z : Z ^ 3 ≈ ε
-  lemma-order-Z = PP.StarCongruence.f*-cong SXζHH._===_ _===_ f f-wd-ax SXζHH.lemma-order-Z 
+  lemma-order-Z = PP.StarCongruence.fʷ-cong SXζHH._===_ _===_ f f-wd-ax SXζHH.lemma-order-Z 
 
   lemma-ζ : ∀ w → w • ζ ≈ ζ • w
   lemma-ζ [ x ]ʷ = sym (axiom comm)
@@ -1500,7 +1500,7 @@ module CliffordTT where
     ((Z • HH) • T) • T ^ 9 ≈⟨ trans (cong refl lemma-order-T) right-unit ⟩
     (Z • HH) • T ∎
 
-  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f *) (h c b .proj₁) • [ h c b .proj₂ ]
+  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f ʷ) (h c b .proj₁) • [ h c b .proj₂ ]
   h-hyp (inj₁ T-cr) T-gen = sym left-unit
   h-hyp (inj₁ T-cr) X-gen = trans (axiom comm-TX) (sym (trans assoc (cong refl assoc)))
   h-hyp (inj₁ T-cr) S-gen = axiom comm-TS
@@ -1528,7 +1528,7 @@ module CliffordTT where
   I : CT
   I = inj₂ tt
 
-  hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h **) (inj₁ c) (f m)) ≡ (w , inj₁ c')
+  hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h ᵗ) (inj₁ c) (f m)) ≡ (w , inj₁ c')
   hcme T-cr SXζHH.X-gen = ζ' ^ 3 • S' ^ 2 • X' , T-cr , Eq.refl
   hcme T-cr SXζHH.S-gen = S' , T-cr , Eq.refl
   hcme T-cr SXζHH.ζ-gen = ζ' , T-cr , Eq.refl
@@ -1538,19 +1538,19 @@ module CliffordTT where
   hcme T-cr SXζHH.HH-gen = Z' • HH' , TT-cr , Eq.refl
   hcme TT-cr SXζHH.HH-gen = Z' • HH' , T-cr , Eq.refl
   
-  htme : ∀ m → ((h **) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
+  htme : ∀ m → ((h ᵗ) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
   htme SXζHH.X-gen = Eq.refl
   htme SXζHH.S-gen = Eq.refl
   htme SXζHH.ζ-gen = Eq.refl
   htme SXζHH.HH-gen = Eq.refl
   
-  htme~ : ∀ (m : SXζ) → ([ m ]ʷ , I) ~ ((h **) I (f m))
+  htme~ : ∀ (m : SXζ) → ([ m ]ʷ , I) ~ ((h ᵗ) I (f m))
   htme~ SXζHH.X-gen = _≈₀_.refl , Eq.refl
   htme~ SXζHH.S-gen = _≈₀_.refl , Eq.refl
   htme~ SXζHH.ζ-gen = _≈₀_.refl , Eq.refl
   htme~ SXζHH.HH-gen = _≈₀_.refl , Eq.refl
   
-  [_]ₓ = f *
+  [_]ₓ = f ʷ
 
   hcme~ : ∀ (c : C) (m : SXζ) → let (w' , c' , p) = hcme c m in ([ c ]ₒ • f m) ≈ ([ w' ]ₓ • [ c' ]ₒ)
   hcme~ T-cr SXζHH.X-gen = by-nf Eq.refl
@@ -1607,7 +1607,7 @@ module CliffordH where
   f SXζHH.ζ-gen = ζ
 
   Z : Word Gen
-  Z = (f *) SXζHH.Z
+  Z = (f ʷ) SXζHH.Z
 
   infix 4 _===_
   data _===_ : WRel Gen where
@@ -1667,13 +1667,13 @@ module CliffordH where
   infix 4 _~_
   _~_ = Pointwise _≈₀_ (_≡_ {A = CT})
 
-  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , I) ~ ((h **) I (f x)) 
+  h=⁻¹f-gen : ∀ x → ([ x ]ʷ , I) ~ ((h ᵗ) I (f x)) 
   h=⁻¹f-gen SXζHH.HH-gen = (by-equal-nf Eq.refl) , Eq.refl
   h=⁻¹f-gen SXζHH.X-gen = (by-equal-nf Eq.refl) , Eq.refl
   h=⁻¹f-gen SXζHH.S-gen = (by-equal-nf Eq.refl) , Eq.refl
   h=⁻¹f-gen SXζHH.ζ-gen = (by-equal-nf Eq.refl) , Eq.refl
 
-  h-wd-ax : ∀ c {u t} → u === t → (h **) c u ~ (h **) c t
+  h-wd-ax : ∀ c {u t} → u === t → (h ᵗ) c u ~ (h ᵗ) c t
   h-wd-ax (inj₁ HSS-cr) order-ζ = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax (inj₁ HSS-cr) order-S = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax (inj₁ HSS-cr) order-X = by-equal-nf Eq.refl , Eq.refl
@@ -1740,7 +1740,7 @@ module CliffordH where
   h-wd-ax (inj₂ tt) (comm {HH-gen}) = by-equal-nf Eq.refl , Eq.refl
 
   open PP _===_
-  open AS _===_ using (by-assoc)
+  open AS.Assoc _===_ using (by-assoc)
   open SR word-setoid
   
   lemma-ζ : ∀ w → w • ζ ≈ ζ • w
@@ -1774,7 +1774,7 @@ module CliffordH where
     ε ∎
   
 
-  f-wd-ax : ∀ {w v} → w ===₀ v → (f *) w ≈ (f *) v
+  f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax SXζHH.order-ζ = axiom order-ζ
   f-wd-ax SXζHH.order-S = axiom order-S
   f-wd-ax SXζHH.order-X = axiom order-X
@@ -1788,8 +1788,8 @@ module CliffordH where
   f-wd-ax (SXζHH.comm {SXζHH.S-gen}) = axiom comm
   f-wd-ax (SXζHH.comm {SXζHH.ζ-gen}) = refl
 
-  by-sub-nf : ∀ {w v} → w ≈₀ v → (f *) w ≈ (f *) v
-  by-sub-nf {w} {v} eq = PP.StarCongruence.f*-cong SXζHH._===_ _===_ f f-wd-ax eq 
+  by-sub-nf : ∀ {w v} → w ≈₀ v → (f ʷ) w ≈ (f ʷ) v
+  by-sub-nf {w} {v} eq = PP.StarCongruence.fʷ-cong SXζHH._===_ _===_ f f-wd-ax eq 
 
 
   lemma-def-X : X ≈ H ^ 3 • Z • H
@@ -1840,7 +1840,7 @@ module CliffordH where
     (S • H) ^ 3 • H ^ 3 ≈⟨ trans (cong (axiom order-SH) refl) left-unit ⟩
     H ^ 3 ∎
   
-  lemma-HSH : (H • S) • H ≈ (f *) ((ζ' ^ 6) • S' • S' • HH') • [ inj₁ HSS-cr ]
+  lemma-HSH : (H • S) • H ≈ (f ʷ) ((ζ' ^ 6) • S' • S' • HH') • [ inj₁ HSS-cr ]
   lemma-HSH = begin
     (H • S) • H ≈⟨ cong refl (trans (sym right-unit) (cong refl (by-sub-nf {ε} {S' ^ 9} (SXζHH.MM.by-equal-nf Eq.refl)))) ⟩
     (H • S) • H • S ^ 9 ≈⟨ assoc ⟩
@@ -1855,7 +1855,7 @@ module CliffordH where
     (ζ ^ 6 • S ^ 2) • H ^ 3 • S ^ 2 ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 6 • S ^ 2) • H ^ 2 • H • S ^ 2 ≈⟨ cong refl (cong (sym (axiom def-HH)) refl)  ⟩
     (ζ ^ 6 • S ^ 2) • HH • H • S ^ 2 ≈⟨ by-assoc Eq.refl ⟩
-    (f *) ((ζ' ^ 6) • S' • S' • HH') • [ inj₁ HSS-cr ] ∎
+    (f ʷ) ((ζ' ^ 6) • S' • S' • HH') • [ inj₁ HSS-cr ] ∎
 
   lemma-HSHS : H • S • H • S ≈ S ^ 8 • H ^ 3
   lemma-HSHS = begin
@@ -1865,7 +1865,7 @@ module CliffordH where
     S ^ 8 • H ^ 3 ∎
   
 
-  lemma-HSSH : [ inj₁ HSS-cr ] • [ H-gen ]ʷ ≈ (f *) ((ζ' ^ 6) • X' • X' • S') • [ inj₁ HS-cr ]
+  lemma-HSSH : [ inj₁ HSS-cr ] • [ H-gen ]ʷ ≈ (f ʷ) ((ζ' ^ 6) • X' • X' • S') • [ inj₁ HS-cr ]
   lemma-HSSH = begin
     [ inj₁ HSS-cr ] • [ H-gen ]ʷ ≈⟨ assoc ⟩
     H • (S • S) • H ≈⟨ cong refl (cong (by-sub-nf {S' • S'} {ζ' ^ 6 • HH' • Z' • Z' • S' ^ 8 • HH'} (SXζHH.MM.by-equal-nf Eq.refl)) refl) ⟩
@@ -1879,10 +1879,10 @@ module CliffordH where
     (ζ ^ 6 • H) • (H ^ 2 • Z) • H ^ 4 • Z • (H • S • H • S) ≈⟨ by-assoc Eq.refl ⟩
     ζ ^ 6 • (H ^ 3 • Z • H) • (H ^ 3 • Z • H) • S • H • S ≈⟨ cong refl (cong (sym lemma-def-X) (cong (sym lemma-def-X) refl)) ⟩
     ζ ^ 6 • X • X • S • H • S ≈⟨ by-assoc Eq.refl ⟩
-    (f *) ((ζ' ^ 6) • X' • X' • S') • [ inj₁ HS-cr ] ∎
+    (f ʷ) ((ζ' ^ 6) • X' • X' • S') • [ inj₁ HS-cr ] ∎
 
 
-  lemma-HSSX : [ inj₁ HSS-cr ] • [ X-gen ]ʷ ≈ (f *) (Z' • X') • [ inj₁ HSS-cr ]
+  lemma-HSSX : [ inj₁ HSS-cr ] • [ X-gen ]ʷ ≈ (f ʷ) (Z' • X') • [ inj₁ HSS-cr ]
   lemma-HSSX = begin
     [ inj₁ HSS-cr ] • [ X-gen ]ʷ ≈⟨ trans assoc (cong refl assoc) ⟩
     H • S • S • X ≈⟨ cong refl (by-sub-nf {S' • S' • X'} { X' • HH' • Z' • HH' • S' • S'} (SXζHH.MM.by-equal-nf Eq.refl)) ⟩
@@ -1895,7 +1895,7 @@ module CliffordH where
     (Z • H ^ 3) • Z • H • H • S • S ≈⟨ by-assoc Eq.refl ⟩
     Z • (H ^ 3 • Z • H) • H • S • S ≈⟨ cong refl (cong (sym lemma-def-X) refl) ⟩
     Z • X • H • S • S ≈⟨ sym assoc ⟩
-    (f *) (Z' • X') • [ inj₁ HSS-cr ] ∎
+    (f ʷ) (Z' • X') • [ inj₁ HSS-cr ] ∎
 
   lemma-HHHX : H ^ 3 • X ≈ H ^ 2 • Z • H
   lemma-HHHX = begin
@@ -1930,7 +1930,7 @@ module CliffordH where
     S • H • S ∎
 
 
-  lemma-HSX : [ inj₁ HS-cr ] • [ X-gen ]ʷ ≈ (f *) ((ζ' • ζ' • ζ') • (S' • S') • X' • X' • S') • [ inj₁ HS-cr ]
+  lemma-HSX : [ inj₁ HS-cr ] • [ X-gen ]ʷ ≈ (f ʷ) ((ζ' • ζ' • ζ') • (S' • S') • X' • X' • S') • [ inj₁ HS-cr ]
   lemma-HSX = begin
     [ inj₁ HS-cr ] • [ X-gen ]ʷ ≈⟨ assoc ⟩
     H • S • X ≈⟨ trans (sym left-unit) ((cong (by-sub-nf {ε} {S' ^ 9} (SXζHH.MM.by-equal-nf Eq.refl)) refl)) ⟩
@@ -1941,7 +1941,7 @@ module CliffordH where
     S ^ 8 • X ^ 2 • S • H • S ≈⟨ by-assoc Eq.refl ⟩
     (S ^ 8 • X ^ 2 • S) • H • S ≈⟨ cong (by-sub-nf {S' ^ 8 • X' ^ 2 • S'} {ζ' ^ 3 • S' ^ 2 • X' • X' • S'} (SXζHH.MM.by-equal-nf Eq.refl)) refl ⟩
     (ζ ^ 3 • S ^ 2 • X • X • S) • H • S ≈⟨ refl ⟩
-    (f *) ((ζ' • ζ' • ζ') • (S' • S') • X' • X' • S') • [ inj₁ HS-cr ] ∎
+    (f ʷ) ((ζ' • ζ' • ζ') • (S' • S') • X' • X' • S') • [ inj₁ HS-cr ] ∎
 
   lemma-HHH : H • HH ≈ HH • H
   lemma-HHH = begin
@@ -1955,10 +1955,10 @@ module CliffordH where
     (H • S) • HH ≈⟨ cong refl (axiom def-HH) ⟩
     (H • S) • H ^ 2 ≈⟨ sym assoc ⟩
     ((H • S) • H) • H ≈⟨ cong lemma-HSH refl ⟩
-    ((f *) ((ζ' ^ 6) • S' • S' • HH') • [ inj₁ HSS-cr ]) • H ≈⟨ assoc ⟩
-    ((f *) ((ζ' ^ 6) • S' • S' • HH')) • ([ inj₁ HSS-cr ] • H) ≈⟨ cong refl lemma-HSSH ⟩
-    ((f *) ((ζ' ^ 6) • S' • S' • HH')) • ((f *) ((ζ' ^ 6) • X' • X' • S') • [ inj₁ HS-cr ]) ≈⟨ sym assoc ⟩
-    ((f *) (((ζ' ^ 6) • S' • S' • HH') • (ζ' ^ 6) • X' • X' • S')) • [ inj₁ HS-cr ] ≈⟨ cong (by-sub-nf {(((ζ' ^ 6) • S' • S' • HH') • (ζ' ^ 6) • X' • X' • S')} {X' • HH'} (SXζHH.MM.by-equal-nf Eq.refl))  refl ⟩
+    ((f ʷ) ((ζ' ^ 6) • S' • S' • HH') • [ inj₁ HSS-cr ]) • H ≈⟨ assoc ⟩
+    ((f ʷ) ((ζ' ^ 6) • S' • S' • HH')) • ([ inj₁ HSS-cr ] • H) ≈⟨ cong refl lemma-HSSH ⟩
+    ((f ʷ) ((ζ' ^ 6) • S' • S' • HH')) • ((f ʷ) ((ζ' ^ 6) • X' • X' • S') • [ inj₁ HS-cr ]) ≈⟨ sym assoc ⟩
+    ((f ʷ) (((ζ' ^ 6) • S' • S' • HH') • (ζ' ^ 6) • X' • X' • S')) • [ inj₁ HS-cr ] ≈⟨ cong (by-sub-nf {(((ζ' ^ 6) • S' • S' • HH') • (ζ' ^ 6) • X' • X' • S')} {X' • HH'} (SXζHH.MM.by-equal-nf Eq.refl))  refl ⟩
     (X • HH) • H • S ∎
 
   lemma-HSSHH : (H • S • S) • HH ≈ (X • X • HH) • H • S • S
@@ -1966,15 +1966,15 @@ module CliffordH where
     (H • S • S) • HH ≈⟨ cong refl (axiom def-HH) ⟩
     (H • S • S) • H ^ 2 ≈⟨ sym assoc ⟩
     ((H • S • S) • H) • H ≈⟨ cong lemma-HSSH refl ⟩
-    ((f *) ((ζ' ^ 6) • X' • X' • S') • [ inj₁ HS-cr ]) • H ≈⟨ assoc ⟩
-    ((f *) ((ζ' ^ 6) • X' • X' • S')) • [ inj₁ HS-cr ] • H ≈⟨ cong refl lemma-HSH ⟩
-    ((f *) ((ζ' ^ 6) • X' • X' • S')) • (f *) ((ζ' ^ 6) • S' • S' • HH') • [ inj₁ HSS-cr ] ≈⟨ sym assoc ⟩
-    (((f *) ((ζ' ^ 6) • X' • X' • S')) • (f *) ((ζ' ^ 6) • S' • S' • HH')) • [ inj₁ HSS-cr ] ≈⟨ refl ⟩
-    ((f *) (((ζ' ^ 6) • X' • X' • S') • ((ζ' ^ 6) • S' • S' • HH'))) • [ inj₁ HSS-cr ] ≈⟨ cong (by-sub-nf {(((ζ' ^ 6) • X' • X' • S') • ((ζ' ^ 6) • S' • S' • HH'))} {X' • X' • HH'} (SXζHH.MM.by-equal-nf Eq.refl)) refl ⟩
+    ((f ʷ) ((ζ' ^ 6) • X' • X' • S') • [ inj₁ HS-cr ]) • H ≈⟨ assoc ⟩
+    ((f ʷ) ((ζ' ^ 6) • X' • X' • S')) • [ inj₁ HS-cr ] • H ≈⟨ cong refl lemma-HSH ⟩
+    ((f ʷ) ((ζ' ^ 6) • X' • X' • S')) • (f ʷ) ((ζ' ^ 6) • S' • S' • HH') • [ inj₁ HSS-cr ] ≈⟨ sym assoc ⟩
+    (((f ʷ) ((ζ' ^ 6) • X' • X' • S')) • (f ʷ) ((ζ' ^ 6) • S' • S' • HH')) • [ inj₁ HSS-cr ] ≈⟨ refl ⟩
+    ((f ʷ) (((ζ' ^ 6) • X' • X' • S') • ((ζ' ^ 6) • S' • S' • HH'))) • [ inj₁ HSS-cr ] ≈⟨ cong (by-sub-nf {(((ζ' ^ 6) • X' • X' • S') • ((ζ' ^ 6) • S' • S' • HH'))} {X' • X' • HH'} (SXζHH.MM.by-equal-nf Eq.refl)) refl ⟩
     (X • X • HH) • H • S • S ∎
 
 
-  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f *) (h c b .proj₁) • [ h c b .proj₂ ]
+  h-hyp : ∀ c b → [ c ] • [ b ]ʷ ≈ (f ʷ) (h c b .proj₁) • [ h c b .proj₂ ]
   h-hyp (inj₁ HSS-cr) H-gen = lemma-HSSH
   h-hyp (inj₁ HSS-cr) X-gen = lemma-HSSX
   h-hyp (inj₁ HSS-cr) S-gen = lemma-HSSS
@@ -2002,7 +2002,7 @@ module CliffordH where
   
   open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9) )))) renaming (by-equal-nf to by-nf) using ()
 
-  hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h **) (inj₁ c) (f m)) ≡ (w , inj₁ c')
+  hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h ᵗ) (inj₁ c) (f m)) ≡ (w , inj₁ c')
   hcme HSS-cr SXζHH.HH-gen = X' • X' • HH' , HSS-cr , Eq.refl
   hcme HSS-cr SXζHH.X-gen = Z' • X' , HSS-cr , Eq.refl
   hcme HSS-cr SXζHH.S-gen = ζ' ^ 6 , H-cr , Eq.refl
@@ -2016,7 +2016,7 @@ module CliffordH where
   hcme H-cr SXζHH.S-gen = ε , HS-cr , Eq.refl
   hcme H-cr SXζHH.ζ-gen = ζ' , H-cr , Eq.refl
   
-  htme : ∀ m → ((h **) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
+  htme : ∀ m → ((h ᵗ) (inj₂ tt) (f m)) ≡ ([ m ]ʷ , inj₂ tt)
   htme SXζHH.HH-gen = Eq.refl
   htme SXζHH.X-gen = Eq.refl
   htme SXζHH.S-gen = Eq.refl
@@ -2024,13 +2024,13 @@ module CliffordH where
 
 
 
-  htme~ : ∀ (m : SXζ) → ([ m ]ʷ , I) ~ ((h **) I (f m))
+  htme~ : ∀ (m : SXζ) → ([ m ]ʷ , I) ~ ((h ᵗ) I (f m))
   htme~ SXζHH.X-gen = _≈₀_.refl , Eq.refl
   htme~ SXζHH.S-gen = _≈₀_.refl , Eq.refl
   htme~ SXζHH.ζ-gen = _≈₀_.refl , Eq.refl
   htme~ SXζHH.HH-gen = _≈₀_.refl , Eq.refl
   
-  [_]ₓ = f *
+  [_]ₓ = f ʷ
 
   hcme~ : ∀ (c : C) (m : SXζ) → let (w' , c' , p) = hcme c m in ([ c ]ₒ • f m) ≈ ([ w' ]ₓ • [ c' ]ₒ)
   hcme~ HS-cr SXζHH.X-gen = by-nf Eq.refl
@@ -2117,7 +2117,7 @@ module CliffordT1 where
 
   open PB _===_ using (_≈_)
   open PP _===_ renaming (word-setoid to ws ; •-ε-monoid to mo)
-  open AS _===_ using (by-assoc)
+  open AS.Assoc _===_ using (by-assoc)
 
   open SR ws
   open _≈_
@@ -2195,7 +2195,7 @@ module CliffordT1 where
   lemma-ζ (w • v) = trans assoc (trans (cong refl (lemma-ζ v)) (trans (sym assoc) (trans (cong (lemma-ζ w) refl) assoc)))
 
 
-  f-well-defined : ∀ {w v} → w === v → (f *) w ≈₂ (f *) v
+  f-well-defined : ∀ {w v} → w === v → (f ʷ) w ≈₂ (f ʷ) v
   f-well-defined order-ζ = _≈₂_.axiom (left CliffordTHH.order-ζ)
   f-well-defined order-S = _≈₂_.axiom (left CliffordTHH.order-S)
   f-well-defined order-X = _≈₂_.axiom (left CliffordTHH.order-X)
@@ -2216,7 +2216,7 @@ module CliffordT1 where
   f-well-defined (comm {S-gen}) = _≈₂_.axiom (left CliffordTHH.comm)
   f-well-defined (comm {ζ-gen}) = _≈₂_.refl
   
-  g-well-defined : ∀ {w v} → w ===₂ v → (g *) w ≈ (g *) v
+  g-well-defined : ∀ {w v} → w ===₂ v → (g ʷ) w ≈ (g ʷ) v
   g-well-defined (left CliffordTHH.order-ζ) = axiom order-ζ
   g-well-defined (left CliffordTHH.order-S) = axiom order-S
   g-well-defined (left CliffordTHH.order-X) = _≈_.axiom order-X
@@ -2257,7 +2257,7 @@ module CliffordT1 where
   g-well-defined (mid (amal {SXζHH.S-gen})) = _≈_.refl
   g-well-defined (mid (amal {SXζHH.ζ-gen})) = _≈_.refl
 
-  f-left-inv-gen : ∀ x → [ x ]ʷ ≈₂ (f *) (g x)
+  f-left-inv-gen : ∀ x → [ x ]ʷ ≈₂ (f ʷ) (g x)
   f-left-inv-gen (inj₁ CliffordTHH.T-gen) = _≈₂_.refl
   f-left-inv-gen (inj₁ CliffordTHH.X-gen) = by-equal-nf Eq.refl
   f-left-inv-gen (inj₁ CliffordTHH.S-gen) = _≈₂_.refl
@@ -2269,7 +2269,7 @@ module CliffordT1 where
   f-left-inv-gen (inj₁ CliffordTHH.HH-gen) = by-equal-nf Eq.refl
   f-left-inv-gen (inj₂ CliffordH.HH-gen) = by-equal-nf Eq.refl
 
-  g-left-inv-gen : ∀ x → [ x ]ʷ ≈ (g *) (f x)
+  g-left-inv-gen : ∀ x → [ x ]ʷ ≈ (g ʷ) (f x)
   g-left-inv-gen T-gen = _≈_.refl
   g-left-inv-gen H-gen = _≈_.refl
   g-left-inv-gen S-gen = _≈_.refl
@@ -2280,7 +2280,7 @@ module CliffordT1 where
   open PP amalPres renaming (•-ε-monoid to m₂)
 
 
-  CliffordT1-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid mo) (Monoid.rawMonoid m₂) (f *)
+  CliffordT1-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid mo) (Monoid.rawMonoid m₂) (f ʷ)
   CliffordT1-isomorphism = StarIsomorphism.isMonoidIsomorphism _===_ amalPres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen
 
 
@@ -2328,7 +2328,7 @@ module CliffordT1-Simplified where
 
   open PB _===_ using (_≈_)
   open PP _===_ renaming (word-setoid to ws ; •-ε-monoid to mo)
-  open AS _===_ using (by-assoc)
+  open AS.Assoc _===_ using (by-assoc)
 
   open SR ws
   open _≈_
@@ -2697,9 +2697,9 @@ module CliffordT1-Simplified where
   g (inj₁ CliffordTHH.HH-gen) = H ^ 2
   g (inj₂ CliffordH.HH-gen) = H ^ 2
 
-  lemma-Z : (g *) [ CliffordTHH.Z ]ₗ ≈ Z
+  lemma-Z : (g ʷ) [ CliffordTHH.Z ]ₗ ≈ Z
   lemma-Z = begin
-    (g *) [ CliffordTHH.Z ]ₗ ≈⟨ _≈_.refl ⟩
+    (g ʷ) [ CliffordTHH.Z ]ₗ ≈⟨ _≈_.refl ⟩
     ζ ^ 3 • S ^ 2 • X ^ 2 • S • X ≈⟨ by-assoc Eq.refl ⟩
     (ζ ^ 3 • S ^ 2 • ζ ^ 3 • H • S • H • H • S • S • H) • ζ ^ 3 • (H • S • H) • (H • S • S • H) • S • X ≈⟨ cong refl (sym (lemma-ζ^n 3 ((H • S • H) • (H • S • S • H) • S • X))) ⟩
     (ζ ^ 3 • S ^ 2 • ζ ^ 3 • H • S • H • H • S • S • H) • ((H • S • H) • (H • S • S • H) • S • X) • ζ ^ 3 ≈⟨ by-assoc Eq.refl ⟩
@@ -2726,11 +2726,11 @@ module CliffordT1-Simplified where
     (ζ ^ 3 • S ^ 2 • H ^ 2 • S • H • H) • (ε) ^ 2 ≈⟨ trans (cong refl left-unit) right-unit ⟩
     Z ∎
 
-  lemma-comm-HH-S' : H ^ 2 • S ≈ (S • (g *) [ CliffordTHH.Z ]ₗ) • H ^ 2
+  lemma-comm-HH-S' : H ^ 2 • S ≈ (S • (g ʷ) [ CliffordTHH.Z ]ₗ) • H ^ 2
   lemma-comm-HH-S' = begin
     H ^ 2 • S ≈⟨ lemma-comm-HH-S ⟩
     (S • Z) • H ^ 2 ≈⟨ cong (cong refl (sym lemma-Z)) refl ⟩
-    (S • (g *) [ CliffordTHH.Z ]ₗ) • H ^ 2 ∎
+    (S • (g ʷ) [ CliffordTHH.Z ]ₗ) • H ^ 2 ∎
 
 
   lemma-THHT : T • H ^ 2 • T ≈ Z • H ^ 2 • Z
@@ -2796,7 +2796,7 @@ module CliffordT1-Simplified where
   open PB amalPres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 
 
-  f-well-defined : ∀ {w v} → w === v → (f *) w ≈₂ (f *) v
+  f-well-defined : ∀ {w v} → w === v → (f ʷ) w ≈₂ (f ʷ) v
   f-well-defined order-ζ = _≈₂_.axiom (left CliffordTHH.order-ζ)
   f-well-defined order-S = _≈₂_.axiom (left CliffordTHH.order-S)
   f-well-defined order-H = _≈₂_.axiom (right CliffordH.order-H)
@@ -2811,7 +2811,7 @@ module CliffordT1-Simplified where
   f-well-defined comm-HHSHHS = by-equal-nf Eq.refl
   f-well-defined order-THH = by-equal-nf Eq.refl
   
-  g-well-defined : ∀ {w v} → w ===₂ v → (g *) w ≈ (g *) v
+  g-well-defined : ∀ {w v} → w ===₂ v → (g ʷ) w ≈ (g ʷ) v
   g-well-defined (left CliffordTHH.order-ζ) = axiom order-ζ
   g-well-defined (left CliffordTHH.order-S) = axiom order-S
   g-well-defined (left CliffordTHH.order-X) = lemma-order-X
@@ -2852,7 +2852,7 @@ module CliffordT1-Simplified where
   g-well-defined (mid (amal {SXζHH.S-gen})) = _≈_.refl
   g-well-defined (mid (amal {SXζHH.ζ-gen})) = _≈_.refl
 
-  f-left-inv-gen : ∀ x → [ x ]ʷ ≈₂ (f *) (g x)
+  f-left-inv-gen : ∀ x → [ x ]ʷ ≈₂ (f ʷ) (g x)
   f-left-inv-gen (inj₁ CliffordTHH.T-gen) = _≈₂_.refl
   f-left-inv-gen (inj₁ CliffordTHH.X-gen) = by-equal-nf Eq.refl
   f-left-inv-gen (inj₁ CliffordTHH.S-gen) = _≈₂_.refl
@@ -2864,7 +2864,7 @@ module CliffordT1-Simplified where
   f-left-inv-gen (inj₁ CliffordTHH.HH-gen) = by-equal-nf Eq.refl
   f-left-inv-gen (inj₂ CliffordH.HH-gen) = by-equal-nf Eq.refl
 
-  g-left-inv-gen : ∀ x → [ x ]ʷ ≈ (g *) (f x)
+  g-left-inv-gen : ∀ x → [ x ]ʷ ≈ (g ʷ) (f x)
   g-left-inv-gen T-gen = _≈_.refl
   g-left-inv-gen H-gen = _≈_.refl
   g-left-inv-gen S-gen = _≈_.refl
@@ -2874,6 +2874,6 @@ module CliffordT1-Simplified where
   open PP amalPres renaming (•-ε-monoid to m₂)
 
 
-  CliffordT1-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid mo) (Monoid.rawMonoid m₂) (f *)
+  CliffordT1-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid mo) (Monoid.rawMonoid m₂) (f ʷ)
   CliffordT1-isomorphism = StarIsomorphism.isMonoidIsomorphism _===_ amalPres f g f-well-defined  f-left-inv-gen g-well-defined  g-left-inv-gen
 

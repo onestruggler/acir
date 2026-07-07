@@ -25,7 +25,7 @@ private
 
 infix  8 _^_ _^'_
 infixr 7 _•_
-infixl 9 _* _** _**'
+infixl 9 _ʷ _ᵗ _ᵗ'
 infixl 9 _ʰ _ⁿ
 
 ------------------------------------------------------------------------
@@ -70,10 +70,10 @@ wconcat (ws • ws₁) = wconcat ws • wconcat ws₁
 wconcatmap : (f : A → Word B) → Word A → Word B
 wconcatmap f = wconcat ∘ wmap f
 
--- Postfix notation for wconcatmap: (f *) is the unique monoid
+-- Postfix notation for wconcatmap: (f ʷ) is the unique monoid
 -- homomorphism extending f, written this way throughout the library.
-_* : (X → Word Y) → (Word X → Word Y)
-_* = wconcatmap
+_ʷ : (X → Word Y) → (Word X → Word Y)
+_ʷ = wconcatmap
 
 ------------------------------------------------------------------------
 -- Fold operations
@@ -94,27 +94,27 @@ wfoldl _⊕_ b (w • w₁) = wfoldl _⊕_ (wfoldl _⊕_ b w) w₁
 -- Stateful traversals (coset enumeration)
 --
 -- A coset action h : C → Y → Word X × C consumes one letter of Y,
--- returning an output word of X and a successor state.  (h **) extends
+-- returning an output word of X and a successor state.  (h ᵗ) extends
 -- it to whole words, threading the state left-to-right and
--- concatenating the outputs; (h **') is the right-to-left mirror for
+-- concatenating the outputs; (h ᵗ') is the right-to-left mirror for
 -- left coset actions.  These drive the Reidemeister–Schreier method in
 -- Presentation.Reidemeister-Schreier and Normalization.CosetNF.
 
 -- Left-to-right stateful traversal.
-_** : (C → Y → Word X × C) → (C → Word Y → Word X × C)
-_** h c [ y ]ʷ = h c y
-_** h c ε      = ε , c
-_** h c (w • u) with (_** h) c w
-_** h c (w • u) | (w' , c') with (_** h) c' u
-_** h c (w • u) | (w' , c') | (u' , c'') = w' • u' , c''
+_ᵗ : (C → Y → Word X × C) → (C → Word Y → Word X × C)
+_ᵗ h c [ y ]ʷ = h c y
+_ᵗ h c ε      = ε , c
+_ᵗ h c (w • u) with (_ᵗ h) c w
+_ᵗ h c (w • u) | (w' , c') with (_ᵗ h) c' u
+_ᵗ h c (w • u) | (w' , c') | (u' , c'') = w' • u' , c''
 
 -- Right-to-left stateful traversal.
-_**' : (Y → C → C × Word X) → (Word Y → C → C × Word X)
-_**' h [ y ]ʷ c = h y c
-_**' h ε      c = c , ε
-_**' h (w • u) c with (_**' h) u c
-_**' h (w • u) c | (c' , u') with (_**' h) w c'
-_**' h (w • u) c | (c' , u') | (c'' , w') = c'' , w' • u'
+_ᵗ' : (Y → C → C × Word X) → (Word Y → C → C × Word X)
+_ᵗ' h [ y ]ʷ c = h y c
+_ᵗ' h ε      c = c , ε
+_ᵗ' h (w • u) c with (_ᵗ' h) u c
+_ᵗ' h (w • u) c | (c' , u') with (_ᵗ' h) w c'
+_ᵗ' h (w • u) c | (c' , u') | (c'' , w') = c'' , w' • u'
 
 ------------------------------------------------------------------------
 -- Conjugation helpers

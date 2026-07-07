@@ -55,10 +55,10 @@ ract {0}     (σ• ε)    (gate₁ () ↥)
 ract {0}     (σ• ε)    ((() ↥) ↥)
 ract {₁₊ n}  (σ• c)    (g ↥)   = proj₁ (ract {n} c g) ↑ , σ• (proj₂ (ract {n} c g))
 
--- Extension of ract to whole circuits: the stateful fold _** threads
+-- Extension of ract to whole circuits: the stateful fold _ᵗ threads
 -- the coset through the word.
 racts : C (₁₊ n) → Circuit (₂₊ n) → Circuit (₁₊ n) × C (₁₊ n)
-racts {n} = ract {n} **
+racts {n} = ract {n} ᵗ
 
 ------------------------------------------------------------------------
 -- Soundness of the coset action
@@ -219,7 +219,7 @@ _≋_ {n} = let _≈₀_ = PB._≈_ ((₁₊ n) VRel,_===_)
 
 -- Acting on the trivial coset by an embedded generator recovers the
 -- generator itself.
-⁻¹[⇑]-gen' : let _⊛_ = ract ** in ∀ (x : Gen (₁₊ n)) →
+⁻¹[⇑]-gen' : let _⊛_ = ract ᵗ in ∀ (x : Gen (₁₊ n)) →
   ([ x ]ʷ , ε) ≋ ε ⊛ [ x ↥ ]ʷ
 ⁻¹[⇑]-gen' {n} x = PB.refl , Eq.refl
 
@@ -228,7 +228,7 @@ _≋_ {n} = let _≈₀_ = PB._≈_ ((₁₊ n) VRel,_===_)
 
 -- Acting on the trivial coset by a lifted circuit strips one lift and
 -- leaves the coset fixed.
-ract-suc' : ∀ {n} w → (ract {n} **) ε (w ↑) ≡ (w , ε)
+ract-suc' : ∀ {n} w → (ract {n} ᵗ) ε (w ↑) ≡ (w , ε)
 ract-suc' {n} [ x ]ʷ = Eq.refl
 ract-suc' {n} ε       = Eq.refl
 ract-suc' {n} (w • v) with ract-suc' {n} w
@@ -248,7 +248,7 @@ ract-suc' {n} (w • v) with ract-suc' {n} w
 -- action peels only the outermost lift before recursing, so each
 -- generator still carries two lifts when it reaches the trivial coset.
 ract-suc''' : ∀ {n} (w : Circuit n) →
-  (ract {₁₊ n} **) (σ• ε) (w ↑ ↑ ↑) ≡ (w ↑ ↑ , σ• ε)
+  (ract {₁₊ n} ᵗ) (σ• ε) (w ↑ ↑ ↑) ≡ (w ↑ ↑ , σ• ε)
 ract-suc''' {n} [ x ]ʷ = Eq.refl
 ract-suc''' {n} ε       = Eq.refl
 ract-suc''' {n} (w • v) with ract-suc''' {n} w
@@ -281,14 +281,14 @@ ract-σ•1 {n} (σ• c') (g' ↥)  = Eq.refl
 -- Word version of ract-σ•1: acting on σ• c by a lifted circuit
 -- lifts the result of acting on c.
 ract-σ•1s : ∀ {n} (c : C (₁₊ n)) w →
-  let (w' , c') = (ract {n} **) c w
-  in (ract {₁₊ n} **) (σ• c) (w ↑) ≡ (w' ↑ , σ• c')
+  let (w' , c') = (ract {n} ᵗ) c w
+  in (ract {₁₊ n} ᵗ) (σ• c) (w ↑) ≡ (w' ↑ , σ• c')
 ract-σ•1s {n} c [ x ]ʷ = ract-σ•1 c x
 ract-σ•1s {n} c ε       = Eq.refl
 ract-σ•1s {n} c (w • v)
-  with ract-σ•1s c w | (ract **) c w | inspect ((ract **) c) w
+  with ract-σ•1s c w | (ract ᵗ) c w | inspect ((ract ᵗ) c) w
 ... | ih1 | w' , c0 | [ eq1 ]ₑ rewrite ih1 | eq1
-  with ract-σ•1s c0 v | (ract **) c0 v | inspect ((ract **) c0) v
+  with ract-σ•1s c0 v | (ract ᵗ) c0 v | inspect ((ract ᵗ) c0) v
 ... | ih2 | v' , c1 | [ eq2 ]ₑ rewrite eq2 | Eq.cong proj₁ ih2 | Eq.cong proj₂ ih2 = Eq.refl
 
 -- A doubly lifted generator passes through the coset σ• ε unchanged.
@@ -305,7 +305,7 @@ ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
 -- The coset action respects the raw relations: acting on a coset by
 -- two axiom-related circuits yields ≋-related results.
 ⁻¹[⇑]-wd'' : ∀ {n} →
-  let _⊛_ = ract ** in
+  let _⊛_ = ract ᵗ in
   let _===_ = (₂₊ n) VRel,_===_ in
   ∀ (c : C (₁₊ n)){u t : Circuit (₂₊ n)} →
 
@@ -456,7 +456,7 @@ nfp'-t (suc k) = T.nfp'-tower ext base1' k
 -- Normal form, its inverse, and the NormalFormWithoutInverse witnesses
 --
 -- nf-of, inv-nf and NF are the coset tower's canonical normal-form
--- data.  Note inv-nf uses the word-lift (f *) rather than _↑; the two
+-- data.  Note inv-nf uses the word-lift (f ʷ) rather than _↑; the two
 -- agree up to Word.Properties.wconcatmap-[f]ʷ.
 
 NF : ℕ → Set

@@ -75,37 +75,37 @@ h : C → Y → Word A × C
 h c (inj₁ x) = [ x ]ʷ , c
 h c (inj₂ y) = ε , (c • [ y ]ʷ)
 
--- The fold (h **) leaves a left-embedded word untouched.
-lemma-h**-left' : ∀ c {w} → (h **) c [ w ]ₗ ≡ (w , c)
-lemma-h**-left' c {[ x ]ʷ} = Eq.refl
-lemma-h**-left' c {ε} = Eq.refl
-lemma-h**-left' c {w • w₁}
-  rewrite lemma-h**-left' c {w} | lemma-h**-left' c {w₁} = Eq.refl
+-- The fold (h ᵗ) leaves a left-embedded word untouched.
+lemma-hᵗ-left' : ∀ c {w} → (h ᵗ) c [ w ]ₗ ≡ (w , c)
+lemma-hᵗ-left' c {[ x ]ʷ} = Eq.refl
+lemma-hᵗ-left' c {ε} = Eq.refl
+lemma-hᵗ-left' c {w • w₁}
+  rewrite lemma-hᵗ-left' c {w} | lemma-hᵗ-left' c {w₁} = Eq.refl
 
--- Setoid version of lemma-h**-left'.
-lemma-h**-left : ∀ c {w} → (h **) c [ w ]ₗ ~ (w , c)
-lemma-h**-left c {[ x ]ʷ} = _≈₁_.refl , _≈₂_.refl
-lemma-h**-left c {ε} = _≈₁_.refl , _≈₂_.refl
-lemma-h**-left c {w • w₁}
-  with (h **) c [ w ]ₗ | inspect ((h **) c) [ w ]ₗ
+-- Setoid version of lemma-hᵗ-left'.
+lemma-hᵗ-left : ∀ c {w} → (h ᵗ) c [ w ]ₗ ~ (w , c)
+lemma-hᵗ-left c {[ x ]ʷ} = _≈₁_.refl , _≈₂_.refl
+lemma-hᵗ-left c {ε} = _≈₁_.refl , _≈₂_.refl
+lemma-hᵗ-left c {w • w₁}
+  with (h ᵗ) c [ w ]ₗ | inspect ((h ᵗ) c) [ w ]ₗ
 ... | (w' , c') | [ eq1 ]'
-  with (h **) c' [ w₁ ]ₗ | inspect ((h **) c') [ w₁ ]ₗ
+  with (h ᵗ) c' [ w₁ ]ₗ | inspect ((h ᵗ) c') [ w₁ ]ₗ
 ... | (w₁' , c'') | [ eq2 ]'
-  with lemma-h**-left c {w} | lemma-h**-left c' {w₁}
+  with lemma-hᵗ-left c {w} | lemma-hᵗ-left c' {w₁}
 ... | ih1 | ih2 rewrite eq1 | eq2 =
   (_≈₁_.cong (ih1 .proj₁) (ih2 .proj₁)) ,
   _≈₂_.trans (ih2 .proj₂) (ih1 .proj₂)
 
--- The fold (h **) absorbs a right-embedded word into the coset.
-lemma-h**-right : ∀ c {w} → (h **) c [ w ]ᵣ ~ (ε , c • w)
-lemma-h**-right c {[ x ]ʷ} = _≈₁_.refl , _≈₂_.refl
-lemma-h**-right c {ε} = _≈₁_.refl , _≈₂_.sym _≈₂_.right-unit
-lemma-h**-right c {w • w₁}
-  with (h **) c [ w ]ᵣ | inspect ((h **) c) [ w ]ᵣ
+-- The fold (h ᵗ) absorbs a right-embedded word into the coset.
+lemma-hᵗ-right : ∀ c {w} → (h ᵗ) c [ w ]ᵣ ~ (ε , c • w)
+lemma-hᵗ-right c {[ x ]ʷ} = _≈₁_.refl , _≈₂_.refl
+lemma-hᵗ-right c {ε} = _≈₁_.refl , _≈₂_.sym _≈₂_.right-unit
+lemma-hᵗ-right c {w • w₁}
+  with (h ᵗ) c [ w ]ᵣ | inspect ((h ᵗ) c) [ w ]ᵣ
 ... | (w' , c') | [ eq1 ]'
-  with (h **) c' [ w₁ ]ᵣ | inspect ((h **) c') [ w₁ ]ᵣ
+  with (h ᵗ) c' [ w₁ ]ᵣ | inspect ((h ᵗ) c') [ w₁ ]ᵣ
 ... | (w₁' , c'') | [ eq2 ]'
-  with lemma-h**-right c {w} | lemma-h**-right c' {w₁}
+  with lemma-hᵗ-right c {w} | lemma-hᵗ-right c' {w₁}
 ... | ih1 | ih2 rewrite eq1 | eq2 =
   (_≈₁_.trans (_≈₁_.cong (ih1 .proj₁) (ih2 .proj₁)) _≈₁_.right-unit) ,
   _≈₂_.trans (ih2 .proj₂)
@@ -115,24 +115,24 @@ lemma-h**-right c {w • w₁}
 h-congₛ-gen : ∀ {c d} y → c ≈ₛ d → h c y ~ h d y
 h-congₛ-gen {c} {d} (inj₁ x) eq = _≈₁_.refl , eq
 h-congₛ-gen {c} {d} (inj₂ y) eq =
-  trans~ (lemma-h**-right c {[ y ]ʷ})
+  trans~ (lemma-hᵗ-right c {[ y ]ʷ})
     (trans~ (_≈₁_.refl , _≈₂_.cong eq (_≈₂_.refl))
-      (sym~ (lemma-h**-right d {[ y ]ʷ})))
+      (sym~ (lemma-hᵗ-right d {[ y ]ʷ})))
 
--- On generators, (h **) started at the initial coset inverts f.
-h=⁻¹f-gen : ∀ (x : A) → ([ x ]ʷ , I) ~ ((h **) I (f x))
+-- On generators, (h ᵗ) started at the initial coset inverts f.
+h=⁻¹f-gen : ∀ (x : A) → ([ x ]ʷ , I) ~ ((h ᵗ) I (f x))
 h=⁻¹f-gen x = refl~
 
--- (h **) is well defined on the axioms of the product; the mid case
+-- (h ᵗ) is well defined on the axioms of the product; the mid case
 -- is the commutation of left and right generators.
-h-wd : ∀ (c : C){u t : Word Y} → u ===₃ t → ((h **) c u) ~ ((h **) c t)
+h-wd : ∀ (c : C){u t : Word Y} → u ===₃ t → ((h ᵗ) c u) ~ ((h ᵗ) c t)
 h-wd c {u} {t} (left x) =
-  trans~ (lemma-h**-left c)
-    (trans~ ((_≈₁_.axiom x) , reflₛ) (sym~ (lemma-h**-left c)))
+  trans~ (lemma-hᵗ-left c)
+    (trans~ ((_≈₁_.axiom x) , reflₛ) (sym~ (lemma-hᵗ-left c)))
 h-wd c {u} {t} (right x) =
-  trans~ (lemma-h**-right c)
+  trans~ (lemma-hᵗ-right c)
     (trans~ (_≈₁_.refl , _≈₂_.cong _≈₂_.refl (_≈₂_.axiom x))
-      (sym~ (lemma-h**-right c)))
+      (sym~ (lemma-hᵗ-right c)))
 h-wd c {u} {t} (mid (comm a b)) =
   _≈₁_.trans _≈₁_.right-unit (_≈₁_.sym _≈₁_.left-unit) , reflₛ
 
@@ -143,15 +143,15 @@ open Reidemeister-Schreier-Full f h h-congₛ-gen h=⁻¹f-gen h-wd
 -- Commutation and coset lemmas
 
 -- The extension of f is the left embedding.
-aux-f* : ∀ {w} → (f *) w ≡ [ ([_]ʷ *) w ]ₗ
-aux-f* {[ x ]ʷ} = Eq.refl
-aux-f* {ε} = Eq.refl
-aux-f* {w • w₁} rewrite aux-f* {w} | aux-f* {w₁} = Eq.refl
+aux-fʷ : ∀ {w} → (f ʷ) w ≡ [ ([_]ʷ ʷ) w ]ₗ
+aux-fʷ {[ x ]ʷ} = Eq.refl
+aux-fʷ {ε} = Eq.refl
+aux-fʷ {w • w₁} rewrite aux-fʷ {w} | aux-fʷ {w₁} = Eq.refl
 
 -- f maps the axioms of Γ to equalities of the product.
-f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₃ (f *) v
+f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₃ (f ʷ) v
 f-well-defined {w} {v} ax
-  rewrite aux-f* {w} | aux-f* {v} | wconcatmap-[-]ʷ w | wconcatmap-[-]ʷ v
+  rewrite aux-fʷ {w} | aux-fʷ {v} | wconcatmap-[-]ʷ w | wconcatmap-[-]ʷ v
   = axiom (left ax)
 
 -- The initial coset is represented by the unit.
@@ -162,7 +162,7 @@ f-well-defined {w} {v} ax
 ract = h
 
 -- Embedding of the emitted word into the product.
-[_]ₓ = f *
+[_]ₓ = f ʷ
 
 -- A single right generator commutes with a left-embedded word.
 lemma-comm1 : ∀ x w → [ [ x ]ʷ ]ᵣ • [ w ]ₗ ≈₃ [ w ]ₗ • [ [ x ]ʷ ]ᵣ
@@ -288,16 +288,16 @@ module NFP'
   gg (a , b) = ([_]ₓ ∘ inv-nf₁) a • ([_] ∘ inv-nf₂) b
 
   -- Soundness of the iterated coset action.
-  h**-hyp : ∀ c b → let (b' , c') = (ract **) c b in
+  hᵗ-hyp : ∀ c b → let (b' , c') = (ract ᵗ) c b in
       [ c ] • b ≈₃ [ b' ]ₓ • [ c' ]
-  h**-hyp c b =
+  hᵗ-hyp c b =
     Star-Injective-Full.RightAction.lemma-⊛
       Γ (Γ ⋄ Δ ⋄ CommRel) C I f h f-well-defined [_] [I]≈ε lemma-ract c b
 
   -- The extension of f respects Γ-equivalence.
-  f*-cong : ∀ {w v} → w ≈₁ v → (f *) w ≈₃ (f *) v
-  f*-cong {w} {v} eq =
-    PP.StarCongruence.f*-cong Γ (Γ ⋄ Δ ⋄ CommRel) f f-well-defined eq
+  fʷ-cong : ∀ {w v} → w ≈₁ v → (f ʷ) w ≈₃ (f ʷ) v
+  fʷ-cong {w} {v} eq =
+    PP.StarCongruence.fʷ-cong Γ (Γ ⋄ Δ ⋄ CommRel) f f-well-defined eq
 
   -- gg is a left inverse of the pair normal form.
   ggnf=id : {w : Word Y} → gg (nf w) ≈₃ w
@@ -307,9 +307,9 @@ module NFP'
     gg ((map nf₁ nf₂) (a , b)) ≈⟨ refl ⟩
     gg (nf₁ a , nf₂ b) ≈⟨ refl ⟩
     ([_]ₓ ∘ inv-nf₁ ∘ nf₁) a • ([_] ∘ inv-nf₂ ∘ nf₂) b ≈⟨ refl ⟩
-    [ inv-nf₁ (nf₁ a)]ₓ • [ inv-nf₂ (nf₂ b) ] ≈⟨ cong (f*-cong inv-nf₁∘nf₁=id) refl ⟩
+    [ inv-nf₁ (nf₁ a)]ₓ • [ inv-nf₂ (nf₂ b) ] ≈⟨ cong (fʷ-cong inv-nf₁∘nf₁=id) refl ⟩
     [ a ]ₓ • [ inv-nf₂ (nf₂ b) ] ≈⟨ cong refl ([]-cong inv-nf₂∘nf₂=id) ⟩
-    [ a ]ₓ • [ b ] ≈⟨ sym (h**-hyp ε w) ⟩
+    [ a ]ₓ • [ b ] ≈⟨ sym (hᵗ-hyp ε w) ⟩
     [ I ] • w ≈⟨ refl ⟩
     ε • w ≈⟨ left-unit ⟩
     w ∎

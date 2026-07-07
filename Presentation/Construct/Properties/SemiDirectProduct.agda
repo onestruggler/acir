@@ -90,7 +90,7 @@ module _
   conj-congN h {ns} {ns'} (axiom x) = conj-hypn h x
 
   conj-congNH : ∀ h {ns ns'} → ns ≈₁ ns' → conjss h ns ≈₁ conjss h ns'
-  conj-congNH = wfoldr-cong _≈₁_ _≈₁_ conj-congN
+  conj-congNH = wfoldr-cong _≈₁_ conj-congN
 
   lemma-conjss-on-ε : ∀ h → conjss h ε ≈₁ ε
   lemma-conjss-on-ε [ x ]ʷ = _≈₁_.refl
@@ -236,30 +236,30 @@ module _
   h c (inj₁ x) = [ conjs' c x ]ʷ  , c
   h c (inj₂ y) = ε , (c • [ y ]ʷ)
 
-  ⁻¹f-gen : ∀ (x : N) → ([ x ]ʷ , I) ~ ((h **) I (f x))
+  ⁻¹f-gen : ∀ (x : N) → ([ x ]ʷ , I) ~ ((h ᵗ) I (f x))
   ⁻¹f-gen x = _≈₁_.refl , _≈₂_.refl
 
-  lemma-h**-left' : ∀ c {w} → (h **) c [ w ]ₗ ≡ (conjss c w , c)
-  lemma-h**-left' c {[ x ]ʷ} = PW.≡×≡⇒≡ ((Eq.sym (conjss=conjs' c x)) , Eq.refl)
-  lemma-h**-left' c {ε} = PW.≡×≡⇒≡ ((Eq.sym (conjss-c-ε=ε c)) , Eq.refl)
-  lemma-h**-left' c {w • w₁} rewrite lemma-h**-left' c {w} | lemma-h**-left' c {w₁} = PW.≡×≡⇒≡ ((Eq.sym (conjss-homo c w w₁)) , Eq.refl)
+  lemma-hᵗ-left' : ∀ c {w} → (h ᵗ) c [ w ]ₗ ≡ (conjss c w , c)
+  lemma-hᵗ-left' c {[ x ]ʷ} = PW.≡×≡⇒≡ ((Eq.sym (conjss=conjs' c x)) , Eq.refl)
+  lemma-hᵗ-left' c {ε} = PW.≡×≡⇒≡ ((Eq.sym (conjss-c-ε=ε c)) , Eq.refl)
+  lemma-hᵗ-left' c {w • w₁} rewrite lemma-hᵗ-left' c {w} | lemma-hᵗ-left' c {w₁} = PW.≡×≡⇒≡ ((Eq.sym (conjss-homo c w w₁)) , Eq.refl)
 
-  lemma-h**-left : ∀ c {w} → (h **) c [ w ]ₗ ~ (conjss c w , c)
-  lemma-h**-left c {w} with lemma-h**-left' c {w}
+  lemma-hᵗ-left : ∀ c {w} → (h ᵗ) c [ w ]ₗ ~ (conjss c w , c)
+  lemma-hᵗ-left c {w} with lemma-hᵗ-left' c {w}
   ... | ih rewrite ih = _≈₁_.refl , _≈₂_.refl 
 
-  lemma-h**-right : ∀ c {w} → (h **) c [ w ]ᵣ ~ (ε , c • w)
-  lemma-h**-right c {[ x ]ʷ} = _≈₁_.refl , _≈₂_.refl
-  lemma-h**-right c {ε} = _≈₁_.refl , _≈₂_.sym _≈₂_.right-unit
-  lemma-h**-right c {w • w₁} with (h **) c [ w ]ᵣ | inspect ((h **) c) [ w ]ᵣ
-  ... | (w' , c') | [ eq1 ]' with (h **) c' [ w₁ ]ᵣ | inspect ((h **) c') [ w₁ ]ᵣ
-  ... | (w₁' , c'') | [ eq2 ]' with lemma-h**-right c {w} | lemma-h**-right c' {w₁}
+  lemma-hᵗ-right : ∀ c {w} → (h ᵗ) c [ w ]ᵣ ~ (ε , c • w)
+  lemma-hᵗ-right c {[ x ]ʷ} = _≈₁_.refl , _≈₂_.refl
+  lemma-hᵗ-right c {ε} = _≈₁_.refl , _≈₂_.sym _≈₂_.right-unit
+  lemma-hᵗ-right c {w • w₁} with (h ᵗ) c [ w ]ᵣ | inspect ((h ᵗ) c) [ w ]ᵣ
+  ... | (w' , c') | [ eq1 ]' with (h ᵗ) c' [ w₁ ]ᵣ | inspect ((h ᵗ) c') [ w₁ ]ᵣ
+  ... | (w₁' , c'') | [ eq2 ]' with lemma-hᵗ-right c {w} | lemma-hᵗ-right c' {w₁}
   ... | ih1 | ih2 rewrite eq1 | eq2 = (_≈₁_.trans (_≈₁_.cong (ih1 .proj₁) (ih2 .proj₁)) _≈₁_.right-unit) , _≈₂_.trans (ih2 .proj₂) (_≈₂_.trans (_≈₂_.cong (ih1 .proj₂) _≈₂_.refl) _≈₂_.assoc )
 
 
   h-congₛ-gen-gen : ∀ {c d} y → c ===₂ d → h c y ~ h d y
   h-congₛ-gen-gen {c} {d} (inj₁ x) eq = refl'₁ (Eq.cong [_]ʷ (conj-hyph x eq)) , _≈₂_.axiom eq
-  h-congₛ-gen-gen {c} {d} (inj₂ y) eq = trans~ (lemma-h**-right c {[ y ]ʷ}) (trans~ (_≈₁_.refl , _≈₂_.cong (_≈₂_.axiom eq) (_≈₂_.refl)) (sym~ (lemma-h**-right d {[ y ]ʷ})))
+  h-congₛ-gen-gen {c} {d} (inj₂ y) eq = trans~ (lemma-hᵗ-right c {[ y ]ʷ}) (trans~ (_≈₁_.refl , _≈₂_.cong (_≈₂_.axiom eq) (_≈₂_.refl)) (sym~ (lemma-hᵗ-right d {[ y ]ʷ})))
 
 
   h-congₛ-gen : ∀ {c d} y → c ≈ₛ d → h c y ~ h d y
@@ -276,31 +276,31 @@ module _
   h-congₛ-gen {c} {d} (inj₂ y) right-unit = _≈₁_.refl ,  _≈₂_.cong  _≈₂_.right-unit  _≈₂_.refl
   h-congₛ-gen {c} {d} y (axiom x) = h-congₛ-gen-gen y x
 
-  h=⁻¹f-gen : ∀ (x : N) → ([ x ]ʷ , I) ~ ((h **) I (f x))
+  h=⁻¹f-gen : ∀ (x : N) → ([ x ]ʷ , I) ~ ((h ᵗ) I (f x))
   h=⁻¹f-gen x = refl~
 
-  h-wd : ∀ (c : C){u t : Word Y} → u ===₃ t → ((h **) c u) ~ ((h **) c t)
-  h-wd c {u} {t} (left {u₁} {v} x) rewrite lemma-h**-left' c {u₁} | lemma-h**-left' c {v} = conj-congNH c (_≈₁_.axiom x) , _≈₂_.refl
-  h-wd c {u} {t} (right {w} {v} x) = trans~ (lemma-h**-right c {w}) (trans~ (_≈₁_.refl , _≈₂_.cong _≈₂_.refl (_≈₂_.axiom x)) (sym~ (lemma-h**-right c {v})))
+  h-wd : ∀ (c : C){u t : Word Y} → u ===₃ t → ((h ᵗ) c u) ~ ((h ᵗ) c t)
+  h-wd c {u} {t} (left {u₁} {v} x) rewrite lemma-hᵗ-left' c {u₁} | lemma-hᵗ-left' c {v} = conj-congNH c (_≈₁_.axiom x) , _≈₂_.refl
+  h-wd c {u} {t} (right {w} {v} x) = trans~ (lemma-hᵗ-right c {w}) (trans~ (_≈₁_.refl , _≈₂_.cong _≈₂_.refl (_≈₂_.axiom x)) (sym~ (lemma-hᵗ-right c {v})))
   h-wd c {u} {t} (mid (comm a b)) = _≈₁_.trans _≈₁_.left-unit (_≈₁_.sym _≈₁_.right-unit) , _≈₂_.refl
 
   open Reidemeister-Schreier-Full f h h-congₛ-gen h=⁻¹f-gen h-wd
 
 
-  aux-f* : ∀ {w} → (f *) w ≡ [ ([_]ʷ *) w ]ₗ
-  aux-f* {[ x ]ʷ} = Eq.refl
-  aux-f* {ε} = Eq.refl
-  aux-f* {w • w₁} rewrite aux-f* {w} | aux-f* {w₁} = Eq.refl
+  aux-fʷ : ∀ {w} → (f ʷ) w ≡ [ ([_]ʷ ʷ) w ]ₗ
+  aux-fʷ {[ x ]ʷ} = Eq.refl
+  aux-fʷ {ε} = Eq.refl
+  aux-fʷ {w • w₁} rewrite aux-fʷ {w} | aux-fʷ {w₁} = Eq.refl
 
-  f-well-defined : ∀ {w v} → w ===₁ v → (f *) w ≈₃ (f *) v
-  f-well-defined {w} {v} ax rewrite aux-f* {w} | aux-f* {v} | wconcatmap-[-]ʷ w | wconcatmap-[-]ʷ v = _≈₃_.axiom (left ax)
+  f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₃ (f ʷ) v
+  f-well-defined {w} {v} ax rewrite aux-fʷ {w} | aux-fʷ {v} | wconcatmap-[-]ʷ w | wconcatmap-[-]ʷ v = _≈₃_.axiom (left ax)
 
   [I]≈ε : [ I ] ≈₃ ε
   [I]≈ε = _≈₃_.refl
 
   ract = h
 
-  [_]ₓ = f *
+  [_]ₓ = f ʷ
 
   lemma-comm1 : ∀ x w → [ [ x ]ʷ ]ᵣ • [ w ]ₗ ≈₃ [ conjs x w ]ₗ • [ [ x ]ʷ ]ᵣ 
   lemma-comm1 x [ x₁ ]ʷ = (_≈₃_.axiom (mid (comm x₁ x)))
@@ -384,12 +384,12 @@ module _
     gg : NF₁ × NF₂ → Word Y
     gg (a , b) = ([_]ₓ ∘ inv-nf₁) a • ([_] ∘ inv-nf₂) b
 
-    h**-hyp : ∀ c b → let (b' , c') = (ract **) c b in
+    hᵗ-hyp : ∀ c b → let (b' , c') = (ract ᵗ) c b in
         [ c ] • b ≈₃ [ b' ]ₓ • [ c' ]
-    h**-hyp c b = Star-Injective-Full.RightAction.lemma-⊛ Γ (Γ ⋄ Δ ⋄ ConjRel conj) C I f h f-well-defined [_] [I]≈ε lemma-ract c b
+    hᵗ-hyp c b = Star-Injective-Full.RightAction.lemma-⊛ Γ (Γ ⋄ Δ ⋄ ConjRel conj) C I f h f-well-defined [_] [I]≈ε lemma-ract c b
 
-    f*-cong : ∀ {w v} → w ≈₁ v → (f *) w ≈₃ (f *) v
-    f*-cong {w} {v} eq = PP.StarCongruence.f*-cong Γ (Γ ⋄ Δ ⋄ ConjRel conj) f f-well-defined eq
+    fʷ-cong : ∀ {w v} → w ≈₁ v → (f ʷ) w ≈₃ (f ʷ) v
+    fʷ-cong {w} {v} eq = PP.StarCongruence.fʷ-cong Γ (Γ ⋄ Δ ⋄ ConjRel conj) f f-well-defined eq
 
 
     ggnf=id : {w : Word Y} → gg (nf w) ≈₃ w
@@ -399,9 +399,9 @@ module _
       gg ((map nf₁ nf₂) (a , b)) ≈⟨ refl ⟩
       gg (nf₁ a , nf₂ b) ≈⟨ refl ⟩
       ([_]ₓ ∘ inv-nf₁ ∘ nf₁) a • ([_] ∘ inv-nf₂ ∘ nf₂) b ≈⟨ refl ⟩
-      [ inv-nf₁ (nf₁ a)]ₓ • [ inv-nf₂ (nf₂ b) ] ≈⟨ cong (f*-cong inv-nf₁∘nf₁=id) refl ⟩
+      [ inv-nf₁ (nf₁ a)]ₓ • [ inv-nf₂ (nf₂ b) ] ≈⟨ cong (fʷ-cong inv-nf₁∘nf₁=id) refl ⟩
       [ a ]ₓ • [ inv-nf₂ (nf₂ b) ] ≈⟨ cong refl ([]-cong inv-nf₂∘nf₂=id) ⟩
-      [ a ]ₓ • [ b ] ≈⟨ sym (h**-hyp ε w) ⟩
+      [ a ]ₓ • [ b ] ≈⟨ sym (hᵗ-hyp ε w) ⟩
       [ I ] • w ≈⟨ refl ⟩
       ε • w ≈⟨ left-unit ⟩
       w ∎

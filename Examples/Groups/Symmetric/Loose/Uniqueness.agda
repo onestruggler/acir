@@ -129,7 +129,7 @@ private
   ⟦inv-nf⟧-injective (₂₊ n') {l , r} {l' , r'} eq  =
     ≡×≡⇒≡ (⟦inv-nf⟧-injective (₁₊ n') (prefix-unique n' l l' r r' r≡r' eq↑) , r≡r')
     where
-    -- inv-nf {₂₊ n'} (x , s) is (f *)(inv-nf x) • [ s ]ᶜ; bridge to the ↑ form
+    -- inv-nf {₂₊ n'} (x , s) is (f ʷ)(inv-nf x) • [ s ]ᶜ; bridge to the ↑ form
     to↑ : ∀ (x : NF (₁₊ n')) (s : C (₁₊ n')) k
         → ⟦ inv-nf {(₂₊ n')} (x , s) ⟧ k ≡ ⟦ inv-nf {(₁₊ n')} x ↑ • [ s ]ᶜ ⟧ k
     to↑ x s k = Eq.cong (λ z → ⟦ z • [ s ]ᶜ ⟧ k) (wconcatmap-[f]ʷ (inv-nf {(₁₊ n')} x))

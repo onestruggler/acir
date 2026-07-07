@@ -51,19 +51,50 @@ wconcat-wmap ε          = Eq.refl
 wconcat-wmap (ws • ws₁) =
   Eq.cong₂ _•_ (wconcat-wmap ws) (wconcat-wmap ws₁)
 
--- (f *) distributes over word powers.
-lemma-f*-w^n : {f : A → Word B} {w : Word A} (n : ℕ) →
+-- (f ʷ) distributes over word powers.
+lemma-fʷ-w^n : {f : A → Word B} {w : Word A} (n : ℕ) →
                wconcatmap f (w ^ n) ≡ wconcatmap f w ^ n
-lemma-f*-w^n zero      = Eq.refl
-lemma-f*-w^n (₁₊ zero) = Eq.refl
-lemma-f*-w^n (₂₊ n)    = Eq.cong₂ _•_ Eq.refl (lemma-f*-w^n (₁₊ n))
+lemma-fʷ-w^n zero      = Eq.refl
+lemma-fʷ-w^n (₁₊ zero) = Eq.refl
+lemma-fʷ-w^n (₂₊ n)    = Eq.cong₂ _•_ Eq.refl (lemma-fʷ-w^n (₁₊ n))
 
 -- Post-composing the target of a wconcatmap with a map fuses.
-lemma-*-∘ : (f : A → Word B) → (g : B → C) → (w : Word A) →
+lemma-ʷ-∘ : (f : A → Word B) → (g : B → C) → (w : Word A) →
             wconcatmap (wmap g ∘ f) w ≡ (wmap g ∘ wconcatmap f) w
-lemma-*-∘ f g [ x ]ʷ   = Eq.refl
-lemma-*-∘ f g ε        = Eq.refl
-lemma-*-∘ f g (w • w₁) = Eq.cong₂ _•_ (lemma-*-∘ f g w) (lemma-*-∘ f g w₁)
+lemma-ʷ-∘ f g [ x ]ʷ   = Eq.refl
+lemma-ʷ-∘ f g ε        = Eq.refl
+lemma-ʷ-∘ f g (w • w₁) = Eq.cong₂ _•_ (lemma-ʷ-∘ f g w) (lemma-ʷ-∘ f g w₁)
+
+------------------------------------------------------------------------
+-- Congruence for wfoldr / wfoldl
+
+-- If ⊕ respects R in its accumulator argument, then folding ⊕ over a
+-- word does too.
+wfoldr-cong :
+  {_⊕_ : X → Y → Y} (R : Y → Y → Set) →
+  (hyp : (a : X) → ∀ {b1 b2} → R b1 b2 → R (a ⊕ b1) (a ⊕ b2)) →
+  ∀ (w : Word X) → ∀ {b1 b2} → R b1 b2 →
+  let _⊕'_ = wfoldr _⊕_ in R (w ⊕' b1) (w ⊕' b2)
+wfoldr-cong R hyp [ x ]ʷ  eq = hyp x eq
+wfoldr-cong R hyp ε        eq = eq
+wfoldr-cong {_⊕_ = _⊕_} R hyp (w • w₁) eq
+  with wfoldr-cong R hyp w₁ eq
+... | ih with (let _⊕'_ = wfoldr _⊕_ in wfoldr-cong R hyp w {w₁ ⊕' _} {w₁ ⊕' _})
+... | ih2 = ih2 ih
+
+-- If ⊕ respects R in its accumulator argument, then folding ⊕ over a
+-- word does too (left fold).
+wfoldl-cong :
+  {_⊕_ : Y → X → Y} (R : Y → Y → Set) →
+  (hyp : (a : X) → ∀ {b1 b2} → R b1 b2 → R (b1 ⊕ a) (b2 ⊕ a)) →
+  ∀ (w : Word X) → ∀ {b1 b2} → R b1 b2 →
+  let _⊕'_ = wfoldl _⊕_ in R (b1 ⊕' w) (b2 ⊕' w)
+wfoldl-cong R hyp [ x ]ʷ  eq = hyp x eq
+wfoldl-cong R hyp ε        eq = eq
+wfoldl-cong {_⊕_ = _⊕_} R hyp (w • w₁) eq
+  with wfoldl-cong R hyp w eq
+... | ih with (let _⊕'_ = wfoldl _⊕_ in wfoldl-cong R hyp w₁ {_ ⊕' w} {_ ⊕' w})
+... | ih2 = ih2 ih
 
 ------------------------------------------------------------------------
 -- Decidable equality
