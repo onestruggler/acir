@@ -5,7 +5,7 @@
 -- presentations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Presentation.Construct.Properties.Amalgamation where
 
@@ -1023,12 +1023,11 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
 
   lemma-hh=hcd-ma : ∀ cd wa → (hh **) cd [ wa ]ₗ ≡ hcd-ma cd wa
-  lemma-hh=hcd-ma cd@(d , cds , c) [ a ]ʷ with h₁ c a | (h₁ **) c [ a ]ʷ | inspect (h₁ c) a | inspect ((h₁ **) c) [ a ]ʷ
-  lemma-hh=hcd-ma cd@(d , cds , c) [ a ]ʷ | (wm , c') | (wm1 , c1) | [ Eq.refl ]' | [ Eq.refl ]' with hcdws cds wm | hcxds-m cds wm1 | inspect (hcdws cds) wm | inspect (hcxds-m cds) wm1
-  lemma-hh=hcd-ma cd@(d , cds , c) [ a ]ʷ | (wm , c') | (wm1 , c1) | [ Eq.refl ]' | [ Eq.refl ]' | (wm' , cds') | (wm2 , cds2) | [ Eq.refl ]' | [ Eq.refl ]' with hdmw' d wm' | hdmw' d wm2 | inspect (hdmw' d) wm' | inspect (hdmw' d) wm2
-  lemma-hh=hcd-ma cd@(d , cds , c) [ a ]ʷ | (wm , c') | (wm1 , c1) | [ Eq.refl ]' | [ Eq.refl ]' | (wm' , cds') | (wm2 , cds2) | [ Eq.refl ]' | [ Eq.refl ]' | (wm'' , d') | (wm3 , d3) | [ Eq.refl ]' | [ Eq.refl ]'
-    rewrite aux-hcdws=hcxds-m cds wm | aux-hcdws=hcxds-m cds wm1
-    = Eq.refl
+  -- (hh **) cd [ a ]ₗ and hcd-ma cd [ a ]ʷ agree: both act by h₁ c a,
+  -- then fold the cosets and adjust d.  The only non-definitional step
+  -- is hcdws = hcxds-m (aux-hcdws=hcxds-m).
+  lemma-hh=hcd-ma cd@(d , cds , c) [ a ]ʷ with h₁ c a
+  ... | (wm , c') rewrite aux-hcdws=hcxds-m cds wm = Eq.refl
     
   lemma-hh=hcd-ma cd@(d , cds , c) ε = begin
     (ε , d , cds , c) ≡⟨ Eq.sym (lemma-hcd-ma-ε d cds c) ⟩

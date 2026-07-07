@@ -5,7 +5,7 @@
 -- ending in a monoid isomorphism (U33Di-isomorphism)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 import Relation.Binary.Reasoning.Setoid as SR
 
