@@ -18,7 +18,6 @@ open import Algebra.Morphism.Structures
   using (module MonoidMorphisms ; module GroupMorphisms)
 open import Data.Product using (proj₂)
 open import Function using (_∘_)
-open import Function.Definitions using (Surjective)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 import Relation.Binary.Reasoning.Setoid as SR
 
@@ -27,6 +26,8 @@ open import Presentation.GroupLike
 import Normalization.Base as NFBase
 import Presentation.Properties as PP
 open import Presentation.Reidemeister-Schreier
+open import ForStdlib.Algebra.Morphism.Consequences
+  using (isMonoidHomomorphism⇒isGroupHomomorphism)
 
 open PB Γ renaming
   (_===_ to _===₁_ ; _≈_ to _≈₁_ ; refl to refl₁ ; cong to cong₁ ; sym to sym₁)
@@ -45,14 +46,6 @@ open PB
 
 open MonoidMorphisms
   (Monoid.rawMonoid monoid₁) (Monoid.rawMonoid monoid₂)
-
--- Epimorphisms are not in the standard library.
-record IsMonoidEpimorphism (f : Word A → Word B) : Set where
-  field
-    isMonoidHomomorphism : IsMonoidHomomorphism f
-    surjective           : Surjective _≈₁_ _≈₂_ f
-
-  open IsMonoidHomomorphism isMonoidHomomorphism public
 
 -- Build a monoid homomorphism from (f *).
 module StarHomomorphism
@@ -173,43 +166,24 @@ module GroupMorphism
   open Group-Lemmas _===₁_ group-like₁
     renaming (•-ε-group to •-ε-group₁)
   open Group-Lemmas _===₂_ group-like₂
-    renaming ( •-ε-group       to •-ε-group₂
-             ; inverseˡ-unique to inverseˡ-unique₂
-             )
+    renaming (•-ε-group to •-ε-group₂)
 
   open GroupMorphisms (Group.rawGroup •-ε-group₁) (Group.rawGroup •-ε-group₂)
 
-  private
-    module GL₁ = Group-Lemmas _===₁_ group-like₁
-
   -- A monoid homomorphism between the two grouplike presentations is
-  -- automatically a group homomorphism.  h (x ⁻¹) is a left inverse of
-  -- h x — h (x ⁻¹) • h x ≈ h (x ⁻¹ • x) ≈ h ε ≈ ε — and left inverses
-  -- are unique, so h (x ⁻¹) ≈ (h x) ⁻¹.  The standard library only
-  -- derives this in the deprecated Algebra.Morphism, so we state it
-  -- once here and reuse it for (f *) and wmap f below.
+  -- automatically a group homomorphism (see
+  -- ForStdlib.Algebra.Morphism.Consequences), instantiated at the two
+  -- word groups.
   module MonoidHom⇒GroupHom
     (h : Word A → Word B)
     (mono : IsMonoidHomomorphism h)
     where
 
-    open IsMonoidHomomorphism mono using (homo ; ⟦⟧-cong ; ε-homo)
-    open RawGroup (Group.rawGroup •-ε-group₁) using () renaming (_⁻¹ to _⁻¹₁)
-    open RawGroup (Group.rawGroup •-ε-group₂) using () renaming (_⁻¹ to _⁻¹₂)
-    open SR setoid₂
-
-    ⁻¹-homo : ∀ x → h (x ⁻¹₁) ≈₂ (h x) ⁻¹₂
-    ⁻¹-homo x = inverseˡ-unique₂ (begin
-      h (x ⁻¹₁) • h x  ≈⟨ sym₂ (homo (x ⁻¹₁) x) ⟩
-      h (x ⁻¹₁ • x)    ≈⟨ ⟦⟧-cong GL₁.inverseˡ ⟩
-      h ε              ≈⟨ ε-homo ⟩
-      ε ∎)
-
     isGroupHomomorphism : IsGroupHomomorphism h
-    isGroupHomomorphism = record
-      { isMonoidHomomorphism = mono
-      ; ⁻¹-homo              = ⁻¹-homo
-      }
+    isGroupHomomorphism =
+      isMonoidHomomorphism⇒isGroupHomomorphism •-ε-group₁ •-ε-group₂ mono
+
+    open IsGroupHomomorphism isGroupHomomorphism public using (⁻¹-homo)
 
   -- Build a group homomorphism from (f *).
   module StarGroupHomomorphism
