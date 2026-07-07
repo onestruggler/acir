@@ -216,46 +216,10 @@ comm⇒pow-comm {w} {v} (₂₊ a) (₂₊ b) eq =
     (w • w ^ ₁₊ a) • v • v ^ ₁₊ a ∎
   where open SR word-setoid
 
+-- Different powers of a word commute: the same-base special case of
+-- comm⇒pow-comm (a word commutes with itself, so the hypothesis is refl).
 pow-comm : ∀ (w : Word X) a b → w ^ a • w ^ b ≈ w ^ b • w ^ a
-pow-comm w zero    zero    = refl
-pow-comm w zero    (₁₊ b) = trans left-unit (sym right-unit)
-pow-comm w (₁₊ a) zero    = trans right-unit (sym left-unit)
-pow-comm w (₁₊ zero) (₁₊ zero) = refl
-pow-comm w (₁₊ zero) (₂₊ b) =
-  begin w • w • w ^ ₁₊ b                ≈⟨ cong refl (pow-comm w 1 (₁₊ b)) ⟩
-    w • w ^ ₁₊ b • w                     ≈⟨ sym assoc ⟩
-    (w • w ^ ₁₊ b) • w ∎
-  where open SR word-setoid
-pow-comm w (₂₊ a) (₁₊ zero) =
-  begin (w • w ^ ₁₊ a) • w              ≈⟨ assoc ⟩
-    w • w ^ ₁₊ a • w                     ≈⟨ cong refl (pow-comm w (₁₊ a) 1) ⟩
-    w • w • w ^ ₁₊ a ∎
-  where open SR word-setoid
-pow-comm w (₂₊ a) (₂₊ b) =
-  begin (w • w ^ ₁₊ a) • w • w ^ ₁₊ b
-      ≈⟨ sym assoc ⟩
-    ((w • w ^ ₁₊ a) • w) • w ^ ₁₊ b
-      ≈⟨ cong assoc refl ⟩
-    (w • w ^ ₁₊ a • w) • w ^ ₁₊ b
-      ≈⟨ cong (cong refl (pow-comm w (₁₊ a) 1)) refl ⟩
-    (w • w • w ^ ₁₊ a) • w ^ ₁₊ b
-      ≈⟨ assoc ⟩
-    w • (w • w ^ ₁₊ a) • w ^ ₁₊ b
-      ≈⟨ cong refl assoc ⟩
-    w • w • w ^ ₁₊ a • w ^ ₁₊ b
-      ≈⟨ cong refl (cong refl (pow-comm w (₁₊ a) (₁₊ b))) ⟩
-    w • w • w ^ ₁₊ b • w ^ ₁₊ a
-      ≈⟨ cong refl (sym assoc) ⟩
-    w • (w • w ^ ₁₊ b) • w ^ ₁₊ a
-      ≈⟨ cong refl (cong (pow-comm w 1 (₁₊ b)) refl) ⟩
-    w • (w ^ ₁₊ b • w) • w ^ ₁₊ a
-      ≈⟨ sym assoc ⟩
-    (w • (w ^ ₁₊ b • w)) • w ^ ₁₊ a
-      ≈⟨ sym (cong assoc refl) ⟩
-    ((w • w ^ ₁₊ b) • w) • w ^ ₁₊ a
-      ≈⟨ assoc ⟩
-    (w • w ^ ₁₊ b) • w • w ^ ₁₊ a ∎
-  where open SR word-setoid
+pow-comm w a b = comm⇒pow-comm {w} {w} a b refl
 
 ^^ : ∀ (w : Word X) a b → (w ^ a) ^ b ≈ w ^ (a Nat.* b)
 ^^ w zero    zero    = refl
