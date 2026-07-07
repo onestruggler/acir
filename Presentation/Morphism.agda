@@ -13,10 +13,8 @@ open import Word.Base
 module Presentation.Morphism {A B : Set} (Γ : WRel A) (Δ : WRel B) where
 
 open import Algebra.Bundles using (Monoid ; Group)
-open import Algebra.Bundles.Raw using (RawGroup)
 open import Algebra.Morphism.Structures
   using (module MonoidMorphisms ; module GroupMorphisms)
-open import Data.Product using (proj₂)
 open import Function using (_∘_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 import Relation.Binary.Reasoning.Setoid as SR
@@ -29,13 +27,10 @@ open import Presentation.Reidemeister-Schreier
 open import ForStdlib.Algebra.Morphism.Consequences
   using (isMonoidHomomorphism⇒isGroupHomomorphism)
 
-open PB Γ renaming
-  (_===_ to _===₁_ ; _≈_ to _≈₁_ ; refl to refl₁ ; cong to cong₁ ; sym to sym₁)
+open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_)
 open PP Γ renaming (•-ε-monoid to monoid₁)
-open PB Δ renaming
-  (_===_ to _===₂_ ; _≈_ to _≈₂_ ; refl to refl₂ ; cong to cong₂ ; sym to sym₂)
+open PB Δ renaming (_===_ to _===₂_ ; _≈_ to _≈₂_ ; refl to refl₂)
 open PP Δ renaming (•-ε-monoid to monoid₂ ; word-setoid to setoid₂)
-open PB
 
 ------------------------------------------------------------------------
 -- Monoid morphisms
