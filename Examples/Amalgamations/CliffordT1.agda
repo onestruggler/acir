@@ -21,7 +21,7 @@ open import Data.Unit using (⊤ ; tt)
 open import Word.Base
 import Word.Relation.Binary.MonoidCongruence as PB
 import Word.Relation.Binary.MonoidCongruence.Properties as PP
-import Word.Relation.Binary.MonoidCongruence.Solver as AS
+import Word.Relation.Binary.MonoidCongruence.Tactic.AssociativitySolver as AS
 import Normalization.NormalForm.Propositional as NFBase
 import Normalization.NormalForm.Setoid as SNF
 open NFBase using (NormalFormInjective ; NormalForm)
@@ -29,7 +29,9 @@ import Normalization.CosetNF as CA
 open CA using (PackedCosetTable)
 
 import Presentation.Groups.Cyclic as Cyclic
-open import Presentation.Construct.Base
+open import Word.Relation.Binary.Construct.Base
+open import Word.Relation.Binary.Construct.DirectProduct
+open import Word.Relation.Binary.Construct.FreeProduct
 open import Presentation.Construct.Properties.Amalgamation
 import Presentation.Construct.Properties.DirectProduct as DP
 open import Notations

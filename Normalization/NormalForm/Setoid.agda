@@ -32,7 +32,7 @@ open import Relation.Nullary.Decidable using (via-injection)
 import Relation.Binary.Reasoning.Setoid as SR
 
 open import Word.Relation.Binary.MonoidCongruence Γ
-open import Word.Relation.Binary.MonoidCongruence.Setoid Γ using (word-setoid)
+open import Word.Relation.Binary.MonoidCongruence.Core Γ using (word-setoid)
 import Presentation.Definitions
 
 private

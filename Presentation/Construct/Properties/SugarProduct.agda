@@ -29,7 +29,8 @@ import Word.Relation.Binary.MonoidCongruence.Properties as PP
 open import Normalization.NormalForm.Propositional using (NormalFormInjective ; NormalForm)
 import Normalization.NormalForm.Setoid as SNF
 open import Normalization.Reidemeister-Schreier
-open import Presentation.Construct.Base
+open import Word.Relation.Binary.Construct.Base
+open import Word.Relation.Binary.Construct.Sugar
 
 open PB Γ renaming (_===_ to _===₁_) using ()
 open PB Δ renaming (_≈_ to _≈₂_) using ()

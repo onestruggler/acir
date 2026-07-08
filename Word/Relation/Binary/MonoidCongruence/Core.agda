@@ -8,7 +8,7 @@
 
 open import Word.Base using (WRel ; Word)
 
-module Word.Relation.Binary.MonoidCongruence.Setoid {X : Set} (Γ : WRel X) where
+module Word.Relation.Binary.MonoidCongruence.Core {X : Set} (Γ : WRel X) where
 
 open import Level using (0ℓ)
 open import Relation.Binary using (Setoid)

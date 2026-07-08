@@ -31,7 +31,8 @@ open Eq using (_≡_ ; inspect) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 
 import Word.Relation.Binary.MonoidCongruence as PB
-open import Presentation.Construct.Base
+open import Word.Relation.Binary.Construct.Base
+open import Word.Relation.Binary.Construct.SemiDirectProduct
 open import Word.Relation.Binary.MonoidCongruence.Properties as PP
 open import Normalization.NormalForm.Propositional using (NormalForm ; NormalFormInjective)
 import Normalization.NormalForm.Setoid as SNF

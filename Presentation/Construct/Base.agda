@@ -1,9 +1,10 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Free, direct, semi-direct, and amalgamated products of presented
--- monoids, together with congruence lifting and the transport of
--- normal forms along monoid monomorphisms
+-- Transporting normal forms between presentations: adjoining a relation
+-- by a union, and pulling normal forms back along monoid mono/iso-
+-- morphisms.  The relation constructions themselves now live under
+-- Word.Relation.Binary.Construct.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -12,201 +13,16 @@ module Presentation.Construct.Base where
 
 open import Algebra.Bundles using (Monoid)
 open import Algebra.Morphism.Structures using (module MonoidMorphisms)
-open import Data.Empty using (⊥)
-open import Data.Nat using (ℕ ; zero)
 open import Data.Product using (_,_)
-open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 open import Function using (_∘_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
-open import Notations
 import Word.Relation.Binary.MonoidCongruence as PB
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
 import Normalization.NormalForm.Propositional as NFBase
 import Normalization.NormalForm.Setoid as SNF
-import Word.Relation.Binary.MonoidCongruence.Properties as PP
 open import Word.Base
-
-------------------------------------------------------------------------
--- Embeddings
-
--- Embed a word over A as a word over A ⊎ B.
-[_]ₗ : ∀ {A B} → Word A → Word (A ⊎ B)
-[_]ₗ {A} {B} = wmap inj₁
-
--- Embed a word over B as a word over A ⊎ B.
-[_]ᵣ : ∀ {A B} → Word B → Word (A ⊎ B)
-[_]ᵣ {A} {B} = wmap inj₂
-
-------------------------------------------------------------------------
--- Relation combinators
-
-infix 5 _⋄_⋄_
-infixr 5 _∪_
-
--- Join a relation on Word A, a relation on Word B, and a mixed
--- relation on Word (A ⊎ B) into one relation on Word (A ⊎ B).  The
--- mixed component Γ₃ is what distinguishes the various products.
-data _⋄_⋄_ {A B} (Γ₁ : WRel A) (Γ₂ : WRel B) (Γ₃ : WRel (A ⊎ B))
-    : WRel (A ⊎ B) where
-  left  : ∀ {u v} → Γ₁ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) [ u ]ₗ [ v ]ₗ
-  right : ∀ {u v} → Γ₂ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) [ u ]ᵣ [ v ]ᵣ
-  mid   : ∀ {u v} → Γ₃ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) u v
-
--- Union of two relations over the same generating set.
-data _∪_ {A} (Γ₁ Γ₂ : WRel A) : WRel A where
-  left  : ∀ {u v} → Γ₁ u v → (Γ₁ ∪ Γ₂) u v
-  right : ∀ {u v} → Γ₂ u v → (Γ₁ ∪ Γ₂) u v
-
-------------------------------------------------------------------------
--- Primitive relation families
-
--- The empty relation: no axioms.
-data EmptyRel {A} : WRel A where
-
--- The coarsest relation: every word is identified with ε.
-data TrivialRel {A} : WRel A where
-  ≈ε : ∀ {w} → TrivialRel {A} w ε
-
--- Commutation: left generators commute with right generators.
-data CommRel {A B} : WRel (A ⊎ B) where
-  comm : (a : A) (b : B) →
-         CommRel ([ [ a ]ʷ ]ₗ • [ [ b ]ʷ ]ᵣ) ([ [ b ]ʷ ]ᵣ • [ [ a ]ʷ ]ₗ)
-
--- Conjugation: moving a right generator h past a left generator n
--- replaces n by its conjugate, a single generator.
-data ConjRel {N H} (conj : H → N → N) : WRel (N ⊎ H) where
-  comm : (n : N) (h : H) →
-         ConjRel conj ([ [ h ]ʷ ]ᵣ • [ [ n ]ʷ ]ₗ)
-                 ([ [ conj h n ]ʷ ]ₗ • [ [ h ]ʷ ]ᵣ)
-
--- Conjugation, word-valued: as ConjRel, but the conjugate of a generator
--- may be an arbitrary word over N.
-data ConjRelʷ {N H} (conj : H → N → Word N) : WRel (N ⊎ H) where
-  comm : (n : N) (h : H) →
-         ConjRelʷ conj ([ [ h ]ʷ ]ᵣ • [ [ n ]ʷ ]ₗ)
-                  ([ conj h n ]ₗ • [ [ h ]ʷ ]ᵣ)
-
--- Amalgamation: identify the two embedded images of a common
--- generating set M.
-data AmalgRel {M A B : Set} (f₁ : M → Word A) (f₂ : M → Word B)
-    : WRel (A ⊎ B) where
-  amal : ∀ {m} → AmalgRel f₁ f₂ [ (f₁ m) ]ₗ [ (f₂ m) ]ᵣ
-
--- Sugar relation.  Each newly added generator m desugars to a word
--- over A.
-data SugarRel {M A} (f : M → Word A) : WRel (M ⊎ A) where
-  desugar : ∀ {m} → SugarRel f [ inj₁ m ]ʷ [ f m ]ᵣ
-
-------------------------------------------------------------------------
--- Product constructions
-
--- Free product.
-infix 4 _*_
-_*_ : {A B : Set} → WRel A → WRel B → WRel (A ⊎ B)
-_*_  Γ Δ = Γ ⋄ Δ ⋄ EmptyRel
-
--- Direct product.
-infix 4 _⊕_
-_⊕_ : {A B : Set} → WRel A → WRel B → WRel (A ⊎ B)
-_⊕_  Γ Δ = Γ ⋄ Δ ⋄ CommRel
-
--- n-fold sum of generating sets.
-infix 4 _⊎^_
-_⊎^_ : Set → ℕ → Set
-_⊎^_ A zero = ⊥
-_⊎^_ A (₁₊ zero) = A
-_⊎^_ A (₂₊ n) = A ⊎ (A ⊎^ (₁₊ n))
-
--- n-fold direct product.
-infix 4 _⊕^_
-_⊕^_ : {A : Set} → WRel A → (n : ℕ) → WRel (A ⊎^ n)
-_⊕^_ {A} Γ zero = EmptyRel
-_⊕^_ {A} Γ (₁₊ zero) = Γ
-_⊕^_ {A} Γ (₂₊ n) = Γ ⋄ Γ ⊕^ (₁₊ n) ⋄ CommRel
-
--- Semi-direct product.
-infix 4 _⋊_⋆_
-_⋊_⋆_ : {N H : Set} → WRel N → WRel H → (conj : H → N → N) →
-        WRel (N ⊎ H)
-_⋊_⋆_  Γ Δ conj = Γ ⋄ Δ ⋄ ConjRel conj
-
--- Amalgamated product.
-infix 4 _*_⋆_⋆_
-_*_⋆_⋆_ : {M A B : Set} → WRel A → WRel B →
-          (f₁ : M → Word A) → (f₂ : M → Word B) → WRel (A ⊎ B)
-_*_⋆_⋆_  Γ Δ f₁ f₂ = Γ ⋄ Δ ⋄ AmalgRel f₁ f₂
-
-------------------------------------------------------------------------
--- Congruence lifting
-
--- Equalities in the component presentations lift to equalities in
--- the join Γ ⋄ Δ ⋄ Λ, along the embeddings [_]ₗ and [_]ᵣ.
-module LeftRightCongruence
-  {A B : Set}
-  (Γ : WRel A)
-  (Δ : WRel B)
-  (Λ : WRel (A ⊎ B))
-  where
-
-  open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_)
-  open PB Δ renaming (_===_ to _===₂_ ; _≈_ to _≈₂_)
-  open PB {A ⊎ B} (Γ ⋄ Δ ⋄ Λ) renaming (_===_ to _===₃_ ; _≈_ to _≈₃_)
-
-  -- [_]ₗ maps the congruence of Γ into the congruence of the join.
-  lefts :  ∀ {u v} → u ≈₁ v → [ u ]ₗ ≈₃ [ v ]ₗ
-  lefts {u} {v} refl = _≈₃_.refl
-  lefts {u} {v} (sym h) = _≈₃_.sym (lefts h)
-  lefts {u} {v} (trans h h₁) = _≈₃_.trans (lefts h) (lefts h₁)
-  lefts {u} {v} (cong h h₁) = _≈₃_.cong (lefts h) (lefts h₁)
-  lefts {u} {v} assoc = _≈₃_.assoc
-  lefts {u} {v} left-unit = _≈₃_.left-unit
-  lefts {u} {v} right-unit = _≈₃_.right-unit
-  lefts {u} {v} (axiom x) = _≈₃_.axiom (left x)
-
-  -- [_]ᵣ maps the congruence of Δ into the congruence of the join.
-  rights :  ∀ {u v} → u ≈₂ v → [ u ]ᵣ ≈₃ [ v ]ᵣ
-  rights {u} {v} refl = _≈₃_.refl
-  rights {u} {v} (sym h) = _≈₃_.sym (rights h)
-  rights {u} {v} (trans h h₁) = _≈₃_.trans (rights h) (rights h₁)
-  rights {u} {v} (cong h h₁) = _≈₃_.cong (rights h) (rights h₁)
-  rights {u} {v} assoc = _≈₃_.assoc
-  rights {u} {v} left-unit = _≈₃_.left-unit
-  rights {u} {v} right-unit = _≈₃_.right-unit
-  rights {u} {v} (axiom x) = _≈₃_.axiom (right x)
-
--- Equalities in either component presentation lift to equalities in
--- the union Γ ∪ Δ.
-module LeftRightCongruence-∪
-  {A : Set}
-  (Γ : WRel A)
-  (Δ : WRel A)
-  where
-
-  open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_)
-  open PB Δ renaming (_===_ to _===₂_ ; _≈_ to _≈₂_)
-  open PB (Γ ∪ Δ) renaming (_===_ to _===₃_ ; _≈_ to _≈₃_)
-
-  -- The congruence of Γ is included in the congruence of Γ ∪ Δ.
-  lefts :  ∀ {u v} → u ≈₁ v → u ≈₃ v
-  lefts {u} {v} refl = _≈₃_.refl
-  lefts {u} {v} (sym h) = _≈₃_.sym (lefts h)
-  lefts {u} {v} (trans h h₁) = _≈₃_.trans (lefts h) (lefts h₁)
-  lefts {u} {v} (cong h h₁) = _≈₃_.cong (lefts h) (lefts h₁)
-  lefts {u} {v} assoc = _≈₃_.assoc
-  lefts {u} {v} left-unit = _≈₃_.left-unit
-  lefts {u} {v} right-unit = _≈₃_.right-unit
-  lefts {u} {v} (axiom x) = _≈₃_.axiom (left x)
-
-  -- The congruence of Δ is included in the congruence of Γ ∪ Δ.
-  rights :  ∀ {u v} → u ≈₂ v → u ≈₃ v
-  rights {u} {v} refl = _≈₃_.refl
-  rights {u} {v} (sym h) = _≈₃_.sym (rights h)
-  rights {u} {v} (trans h h₁) = _≈₃_.trans (rights h) (rights h₁)
-  rights {u} {v} (cong h h₁) = _≈₃_.cong (rights h) (rights h₁)
-  rights {u} {v} assoc = _≈₃_.assoc
-  rights {u} {v} left-unit = _≈₃_.left-unit
-  rights {u} {v} right-unit = _≈₃_.right-unit
-  rights {u} {v} (axiom x) = _≈₃_.axiom (right x)
+open import Word.Relation.Binary.Construct.Base using (_∪_ ; module LeftRightCongruence-∪)
 
 ------------------------------------------------------------------------
 -- Transporting normal forms

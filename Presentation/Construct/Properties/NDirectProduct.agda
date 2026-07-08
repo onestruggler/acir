@@ -21,7 +21,7 @@ open import Data.Unit using (⊤)
 open import Normalization.NormalForm.Propositional
   using (NormalForm ; NormalFormInjective)
 open import Notations using (₁₊ ; ₂₊)
-open import Presentation.Construct.Base using (_⊕^_)
+open import Word.Relation.Binary.Construct.DirectProduct using (_⊕^_)
 import Presentation.Construct.Properties.DirectProduct as DP
 import Presentation.Groups.Trivial as Trivial
 

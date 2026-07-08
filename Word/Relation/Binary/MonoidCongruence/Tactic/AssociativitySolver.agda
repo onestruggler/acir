@@ -12,7 +12,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Word.Relation.Binary.MonoidCongruence.Solver where
+module Word.Relation.Binary.MonoidCongruence.Tactic.AssociativitySolver where
 
 open import Data.List using (List ; [] ; _∷_ ; _++_)
 open import Data.Unit using (⊤ ; tt)
@@ -75,7 +75,7 @@ module Assoc {X : Set} (Γ : WRel X) where
 module Pattern-Assoc {X : Set} (Γ : WRel X) where
 
   open PB Γ
-  open import Word.Relation.Binary.MonoidCongruence.Setoid Γ using (word-setoid)
+  open import Word.Relation.Binary.MonoidCongruence.Core Γ using (word-setoid)
 
   -- Placeholder symbol for use in pattern words, e.g. (□ • □) • □.
   □ : Word ⊤

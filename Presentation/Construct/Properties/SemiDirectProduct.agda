@@ -36,7 +36,9 @@ open import Normalization.NormalForm.Propositional using (NormalForm ; NormalFor
 import Normalization.NormalForm.Setoid as SNF
 
 open import Normalization.Reidemeister-Schreier
-open import Presentation.Construct.Base
+open import Word.Relation.Binary.Construct.Base
+open import Word.Relation.Binary.Construct.DirectProduct
+open import Word.Relation.Binary.Construct.SemiDirectProduct
 
 open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_ ; refl' to refl'₁) using ()
 open PP Γ renaming (•-ε-monoid to m₁ ; word-setoid to word-setoid₁) using ()

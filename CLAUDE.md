@@ -32,17 +32,21 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 - **`Word/Base.agda`**: the `Word X` type (free monoid over generators `X`): constructors `[_]ʷ`, `ε`, `_•_`; powers `_^_`/`_^'_`; `wmap`, `wconcat`, `wconcatmap` and its postfix notation `_ʷ` (so `(f ʷ)` extends `f : X → Word Y` to words); folds `wfoldr`/`wfoldl`; the stateful traversals `_ᵗ`/`_ᵗ'` that drive coset enumeration; conjugation helpers `_ʰ`/`_ⁿ`/`_ʰ'`/`_ⁿ'`; `WRel X = Rel (Word X) 0ℓ`.
 - **`Word/Properties.agda`**: `wmap`/`wconcat` fusion laws, `lemma-ʷ-∘`, `lemma-fʷ-w^n`, `wfoldr-cong`/`wfoldl-cong`, and `≡-dec` (decidable equality of words).
 
-### Layer 2 — Group presentations (`Presentation/`)
-- **`Base.agda`**: parameterised by `Γ : WRel X`. `_===_` is the raw relation; `_≈_` the monoid congruence it generates (refl/sym/trans/cong/assoc/left-unit/right-unit/axiom); `refl'` lifts `_≡_`; combinators `cleft_`, `cright_`, `_reversed`; `Alphabet = X`.
-- **`Properties.agda`**: `≈-isEquivalence`, `word-setoid`, magma/semigroup/monoid structures and bundles; the associativity solvers (`to-list`/`from-list`, `mod-assoc`, `by-assoc`, `by-assoc-and`, and the pattern-guided `Pattern-Assoc.by-passoc`); word-power lemmas (`lemma-^-+`, `lemma-^^`, `word-comm`, …); `wfoldr`/`wfoldl` congruence lemmas.
+### Layer 2 — Words modulo a monoid congruence (`Word/Relation/Binary/`)
+- **`MonoidCongruence.agda`**: parameterised by `Γ : WRel X`. `_===_` is the raw relation; `_≈_` the monoid congruence it generates (refl/sym/trans/cong/assoc/left-unit/right-unit/axiom); `refl'` lifts `_≡_`; combinators `cleft_`, `cright_`, `_reversed`; `Alphabet = X`.
+- **`MonoidCongruence/Core.agda`**: `word-setoid`, the setoid of words modulo `≈`.  Kept in its own module (not folded into `MonoidCongruence`) so a bare `open` of the congruence never brings `word-setoid` and thus never clashes with the copy `Properties` re-exports.
+- **`MonoidCongruence/Properties.agda`**: `≈-isEquivalence`, magma/semigroup/monoid structures and bundles (re-exports `word-setoid`); word-power lemmas (`lemma-^-+`, `lemma-^^`, `word-comm`, …); `wfoldr`/`wfoldl` congruence lemmas.
+- **`MonoidCongruence/Tactic/AssociativitySolver.agda`**: the associativity solvers — `Assoc` (`to-list`/`from-list`, `mod-assoc`, `by-assoc`, `by-assoc-and`) and `Pattern-Assoc` (`□`, `by-passoc`).
+- **`Construct/Base.agda`**: shared glue — the embeddings `[_]ₗ`/`[_]ᵣ`, the join `_⋄_⋄_` and union `_∪_` of relations, `EmptyRel`, the n-fold alphabet sum `_⊎^_`, and `LeftRightCongruence`/`LeftRightCongruence-∪` (lift a congruence along the embeddings).
+- **`Construct/{DirectProduct,SemiDirectProduct,FreeProduct,Sugar,Trivial}.agda`**: one relation construction each — `CommRel`/`_⊕_`/`_⊕^_`; `ConjRel`/`ConjRelʷ`/`_⋊_⋆_`; `_*_`/`AmalgRel`/`_*_⋆_⋆_`; `SugarRel`; `TrivialRel`.  Each builds on `Construct.Base`.
+
+### Layer 3 — Group presentations (`Presentation/`)
 - **`Definitions.agda`**: `_IsPresentationOf_` (group), `_IsMonoidPresentationOf_`, and `module SubPresentation` (`Soundness` & `Completeness` of a semantics ⟦_⟧ : Syn → Sem, i.e. ⟦_⟧ is a setoid embedding).
 - **`GroupLike.agda`**: `Grouplike` (every generator has a left inverse) and `Group-Lemmas` (`_⁻¹`, cancellation, uniqueness of inverses, the group `•-ε-group`).
 - **`Morphism.agda`**: parameterised by presentations `Γ`, `Δ`. Builders turning generator-level data into `IsMonoidHomomorphism`/`Monomorphism`/`Isomorphism` and the group versions, for both `(f ʷ)` and `wmap f`.
-
-### Layer 3 — Constructions (`Presentation/Construct/`)
-- **`Base.agda`**: amalgamated product `_⊕_` and related combinators on `WRel`.
-- **`Properties/DirectProduct.agda`**, **`SemiDirectProduct.agda`**, **`SemiDirectProduct2.agda`**, **`NDirectProduct.agda`**, **`SugarProduct.agda`**: lift normal-form witnesses through the constructions.
-- **`Properties/Amalgamation.agda`**: amalgamated free product with coset normal form (`AmalDataNF`, `ANF`).
+- **`Construct/Base.agda`**: transport of normal forms — `anfpₗ`/`anfpᵣ` (adjoin a relation by a union `Γ ∪ Δ`), `mono-nfp`/`iso-nfp'` (pull back along a monoid mono/iso-morphism).  The relation *constructions* now live under `Word.Relation.Binary.Construct` (Layer 2).
+- **`Construct/Properties/DirectProduct.agda`**, **`SemiDirectProduct.agda`**, **`SemiDirectProduct2.agda`**, **`NDirectProduct.agda`**, **`SugarProduct.agda`**: lift normal-form witnesses through the constructions.
+- **`Construct/Properties/Amalgamation.agda`**: amalgamated free product with coset normal form (`AmalDataNF`, `ANF`).
 
 ### Layer — Circuits (`Circuit/`)
 - **`Base.agda`**: parameterised by `Gate : ℕ → Set`. Wire-indexed generators `Gen`, `Circuit n = Word (Gen n)`, shifts `_↑`/`_↥ᵏ_`, and `Lift-Relation` extending any gate relation with the structural rules `cong↑`, `comm₁`, `comm₂`.

@@ -23,7 +23,7 @@ open import Notations
 
 import Word.Relation.Binary.MonoidCongruence as PB
 open import Word.Relation.Binary.MonoidCongruence Γ
-open import Word.Relation.Binary.MonoidCongruence.Setoid Γ public using (word-setoid)
+open import Word.Relation.Binary.MonoidCongruence.Core Γ public using (word-setoid)
 
 open import Algebra.Structures {A = Word X} _≈_
 open import Algebra.Bundles using (Magma ; Semigroup ; Monoid)
@@ -146,7 +146,7 @@ comm⇒pow-comm {w} {v} (₂₊ a) (₂₊ b) eq  = begin
     v ^ ₂₊ b • w ^ ₂₊ a ∎
   where
     open SR word-setoid
-    open import Word.Relation.Binary.MonoidCongruence.Solver
+    open import Word.Relation.Binary.MonoidCongruence.Tactic.AssociativitySolver
     open Pattern-Assoc Γ
 
 -- Different powers of a word commute: a special case of comm⇒pow-comm

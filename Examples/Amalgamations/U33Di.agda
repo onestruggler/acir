@@ -10,7 +10,11 @@
 import Relation.Binary.Reasoning.Setoid as SR
 
 import Presentation.Groups.Cyclic as Cyclic
-open import Presentation.Construct.Base
+open import Word.Relation.Binary.Construct.Base
+open import Word.Relation.Binary.Construct.DirectProduct
+open import Word.Relation.Binary.Construct.SemiDirectProduct
+open import Word.Relation.Binary.Construct.FreeProduct
+open import Word.Relation.Binary.Construct.Sugar
 import Presentation.Construct.Properties.SugarProduct as SP
 open import Data.Unit using (⊤ ; tt)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_])
@@ -24,7 +28,7 @@ open import Word.Base
 import Normalization.NormalForm.Propositional as NFBase
 import Normalization.NormalForm.Setoid as SNF
 import Word.Relation.Binary.MonoidCongruence.Properties as PP
-import Word.Relation.Binary.MonoidCongruence.Solver as AS
+import Word.Relation.Binary.MonoidCongruence.Tactic.AssociativitySolver as AS
 import Word.Relation.Binary.MonoidCongruence as PB
 
 import Presentation.Construct.Properties.DirectProduct as DP

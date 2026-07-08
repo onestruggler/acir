@@ -26,8 +26,9 @@ open import Word.Base
 open import Word.Properties
 import Word.Relation.Binary.MonoidCongruence as PB
 import Word.Relation.Binary.MonoidCongruence.Properties as PP
-import Word.Relation.Binary.MonoidCongruence.Solver as AS
-open import Presentation.Construct.Base
+import Word.Relation.Binary.MonoidCongruence.Tactic.AssociativitySolver as AS
+open import Word.Relation.Binary.Construct.Base
+open import Word.Relation.Binary.Construct.FreeProduct
 open import Normalization.CosetNF
 
 

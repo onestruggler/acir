@@ -20,7 +20,9 @@ open import Word.Base
 
 import Word.Relation.Binary.MonoidCongruence as PB
 open import Normalization.NormalForm.Propositional using (NormalFormInjective ; NormalForm)
-open import Presentation.Construct.Base
+open import Word.Relation.Binary.Construct.Base
+open import Word.Relation.Binary.Construct.DirectProduct
+open import Word.Relation.Binary.Construct.SemiDirectProduct
 import Presentation.Construct.Properties.NDirectProduct as NDP
 import Presentation.Construct.Properties.SemiDirectProduct as SDP0
 import Presentation.Groups.Cyclic as Cyclic

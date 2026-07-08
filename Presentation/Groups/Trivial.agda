@@ -17,7 +17,8 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 open import Word.Base
 import Word.Relation.Binary.MonoidCongruence as PB
-open import Presentation.Construct.Base using (EmptyRel ; TrivialRel ; ≈ε)
+open import Word.Relation.Binary.Construct.Base using (EmptyRel)
+open import Word.Relation.Binary.Construct.Trivial using (TrivialRel ; ≈ε)
 open import Presentation.Morphism
 import Word.Relation.Binary.MonoidCongruence.Properties as PP
 import Normalization.NormalForm.Propositional as NFBase

@@ -25,7 +25,8 @@ open import Relation.Binary.PropositionalEquality as Eq
 import Relation.Binary.Reasoning.Setoid as SR
 
 import Word.Relation.Binary.MonoidCongruence as PB
-open import Presentation.Construct.Base
+open import Word.Relation.Binary.Construct.Base
+open import Word.Relation.Binary.Construct.DirectProduct
 open import Word.Relation.Binary.MonoidCongruence.Properties as PP
 open import Normalization.NormalForm.Propositional using (NormalForm ; NormalFormInjective)
 import Normalization.NormalForm.Setoid as SNF
