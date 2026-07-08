@@ -16,8 +16,8 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 open import Word.Base
 
-import Presentation.Base as PB
-import Presentation.Properties as PP
+import Word.Relation.Binary.MonoidCongruence as PB
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
 
 ------------------------------------------------------------------------
 -- Group-like presentations

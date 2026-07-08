@@ -8,7 +8,7 @@
 
 open import Word.Base
 
-module Presentation.Properties {X : Set} (Γ : WRel X) where
+module Word.Relation.Binary.MonoidCongruence.Properties {X : Set} (Γ : WRel X) where
 
 open import Data.List using (List ; [] ; _∷_ ; _++_)
 open import Data.Nat using (ℕ ; zero ; suc ; _+_ ; _*_)
@@ -21,9 +21,9 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 open import Notations
 
-import Presentation.Base as PB
-open import Presentation.Base Γ
-open import Presentation.Core Γ public using (word-setoid)
+import Word.Relation.Binary.MonoidCongruence as PB
+open import Word.Relation.Binary.MonoidCongruence Γ
+open import Word.Relation.Binary.MonoidCongruence.Setoid Γ public using (word-setoid)
 
 open import Algebra.Structures {A = Word X} _≈_
 open import Algebra.Bundles using (Magma ; Semigroup ; Monoid)
@@ -146,7 +146,7 @@ comm⇒pow-comm {w} {v} (₂₊ a) (₂₊ b) eq  = begin
     v ^ ₂₊ b • w ^ ₂₊ a ∎
   where
     open SR word-setoid
-    open import Presentation.Tactic.AssociativitySolver
+    open import Word.Relation.Binary.MonoidCongruence.Solver
     open Pattern-Assoc Γ
 
 -- Different powers of a word commute: a special case of comm⇒pow-comm

@@ -24,8 +24,8 @@ import Function.Construct.Composition as FCC
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 import Relation.Binary.Reasoning.Setoid as SR
 
-import Presentation.Base as PB
-import Presentation.Properties as PP
+import Word.Relation.Binary.MonoidCongruence as PB
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
 open import Normalization.NormalForm.Propositional using (NormalFormInjective ; NormalForm)
 import Normalization.NormalForm.Setoid as SNF
 open import Normalization.Reidemeister-Schreier

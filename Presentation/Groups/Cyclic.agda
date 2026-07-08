@@ -20,8 +20,8 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 open import Notations
 
-import Presentation.Base as PB
-import Presentation.Properties as PP
+import Word.Relation.Binary.MonoidCongruence as PB
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
 import Normalization.NormalForm.Propositional as NFBase
 import Normalization.NormalForm.Setoid as SNF
 open NFBase using (NormalFormInjective ; NormalForm)

@@ -16,10 +16,10 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 import Relation.Binary.Reasoning.Setoid as SR
 
 open import Word.Base
-import Presentation.Base as PB
+import Word.Relation.Binary.MonoidCongruence as PB
 open import Presentation.Construct.Base using (EmptyRel ; TrivialRel ; ≈ε)
 open import Presentation.Morphism
-import Presentation.Properties as PP
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
 import Normalization.NormalForm.Propositional as NFBase
 open NFBase using (NormalFormInjective ; NormalForm)
 

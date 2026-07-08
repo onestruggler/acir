@@ -23,9 +23,9 @@ open import Function using (_∘_)
 open import Word.Base
 import Normalization.NormalForm.Propositional as NFBase
 import Normalization.NormalForm.Setoid as SNF
-import Presentation.Properties as PP
-import Presentation.Tactic.AssociativitySolver as AS
-import Presentation.Base as PB
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
+import Word.Relation.Binary.MonoidCongruence.Solver as AS
+import Word.Relation.Binary.MonoidCongruence as PB
 
 import Presentation.Construct.Properties.DirectProduct as DP
 import Presentation.Construct.Properties.NDirectProduct as NDP

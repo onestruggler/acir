@@ -20,10 +20,10 @@ open import Function using (_∘_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Notations
-import Presentation.Base as PB
+import Word.Relation.Binary.MonoidCongruence as PB
 import Normalization.NormalForm.Propositional as NFBase
 import Normalization.NormalForm.Setoid as SNF
-import Presentation.Properties as PP
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
 open import Word.Base
 
 ------------------------------------------------------------------------

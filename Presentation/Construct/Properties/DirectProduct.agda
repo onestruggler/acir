@@ -24,9 +24,9 @@ open import Relation.Binary.PropositionalEquality as Eq
   using (_≡_ ; inspect) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 
-import Presentation.Base as PB
+import Word.Relation.Binary.MonoidCongruence as PB
 open import Presentation.Construct.Base
-open import Presentation.Properties as PP
+open import Word.Relation.Binary.MonoidCongruence.Properties as PP
 open import Normalization.NormalForm.Propositional using (NormalForm ; NormalFormInjective)
 import Normalization.NormalForm.Setoid as SNF
 open import Normalization.Reidemeister-Schreier

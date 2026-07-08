@@ -30,8 +30,8 @@ open import Relation.Binary.PropositionalEquality as Eq renaming ([_] to [_]') u
 import Relation.Binary.Reasoning.Setoid as SR
 
 open import Word.Properties
-import Presentation.Base as PB
-open import Presentation.Properties as PP
+import Word.Relation.Binary.MonoidCongruence as PB
+open import Word.Relation.Binary.MonoidCongruence.Properties as PP
 open import Normalization.NormalForm.Propositional using (NormalForm ; NormalFormInjective)
 import Normalization.NormalForm.Setoid as SNF
 

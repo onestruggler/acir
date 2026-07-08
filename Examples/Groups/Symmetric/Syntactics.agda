@@ -17,8 +17,8 @@ open import Word.Base
 
 open import Presentation.GroupLike
 import Circuit.Base
-import Presentation.Base as PB
-import Presentation.Properties as PP
+import Word.Relation.Binary.MonoidCongruence as PB
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
 
 module Examples.Groups.Symmetric.Syntactics where
 

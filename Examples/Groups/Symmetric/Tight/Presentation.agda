@@ -55,7 +55,7 @@ module _ (n : ℕ) where
     ; isGroupHomomorphism = ⟦⟧-isGroupHom
     }
 
-  import Presentation.Properties as PP
+  import Word.Relation.Binary.MonoidCongruence.Properties as PP
   open import Presentation.Definitions
 
   open import Examples.Groups.Symmetric.Tight.Semantics

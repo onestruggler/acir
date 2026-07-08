@@ -12,14 +12,14 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Presentation.Tactic.AssociativitySolver where
+module Word.Relation.Binary.MonoidCongruence.Solver where
 
 open import Data.List using (List ; [] ; _∷_ ; _++_)
 open import Data.Unit using (⊤ ; tt)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 import Relation.Binary.Reasoning.Setoid as SR
 
-import Presentation.Base as PB
+import Word.Relation.Binary.MonoidCongruence as PB
 open import Word.Base
 
 module Assoc {X : Set} (Γ : WRel X) where
@@ -75,7 +75,7 @@ module Assoc {X : Set} (Γ : WRel X) where
 module Pattern-Assoc {X : Set} (Γ : WRel X) where
 
   open PB Γ
-  open import Presentation.Core Γ using (word-setoid)
+  open import Word.Relation.Binary.MonoidCongruence.Setoid Γ using (word-setoid)
 
   -- Placeholder symbol for use in pattern words, e.g. (□ • □) • □.
   □ : Word ⊤

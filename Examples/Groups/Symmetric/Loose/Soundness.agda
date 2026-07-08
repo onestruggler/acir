@@ -13,7 +13,7 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl ; _�
 open import Function using (_∘_)
 
 open import Word.Base
-import Presentation.Base as PB
+import Word.Relation.Binary.MonoidCongruence as PB
 open import Notations
 
 module Examples.Groups.Symmetric.Loose.Soundness where

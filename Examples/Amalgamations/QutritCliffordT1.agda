@@ -19,9 +19,9 @@ open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_])
 open import Data.Unit using (⊤ ; tt)
 
 open import Word.Base
-import Presentation.Base as PB
-import Presentation.Properties as PP
-import Presentation.Tactic.AssociativitySolver as AS
+import Word.Relation.Binary.MonoidCongruence as PB
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
+import Word.Relation.Binary.MonoidCongruence.Solver as AS
 import Normalization.NormalForm.Setoid as SNF
 import Normalization.CosetNF as CA
 open CA using (PackedCosetTable)

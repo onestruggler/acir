@@ -9,7 +9,7 @@
 
 
 import Normalization.NormalForm.Propositional as NFBase
-import Presentation.Properties as PP
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
 open import Presentation.Definitions
 
 module Examples.Groups.Symmetric.Loose.Completeness where

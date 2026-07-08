@@ -8,7 +8,7 @@
 
 open import Word.Base using (WRel ; Word ; [_]ʷ ; ε ; _•_)
 
-module Presentation.Base {X : Set} (Γ : WRel X) where
+module Word.Relation.Binary.MonoidCongruence {X : Set} (Γ : WRel X) where
 
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 

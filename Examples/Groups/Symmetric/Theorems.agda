@@ -10,7 +10,7 @@ open import Algebra.Bundles using (Group)
 
 open import Presentation.Definitions
 import Normalization.NormalForm.Propositional as NFBase
-import Presentation.Properties as PP
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
 
 module Examples.Groups.Symmetric.Theorems where
 

@@ -15,7 +15,7 @@ open import Relation.Binary using (Rel)
 
 open import Notations
 open import Word.Base
-import Presentation.Base as PB
+import Word.Relation.Binary.MonoidCongruence as PB
 
 private
   variable

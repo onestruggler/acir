@@ -15,7 +15,7 @@
 -- of H peeled off and the coset landed in; (h ᵗ) extends it to words.
 --
 -- The congruence lemma "(f ʷ) preserves ≈" lives in
--- Presentation.Properties (module StarCongruence).
+-- Word.Relation.Binary.MonoidCongruence.Properties (module StarCongruence).
 --
 -- Modules, in increasing generality:
 --
@@ -44,8 +44,8 @@ import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 import Relation.Binary.Reasoning.Setoid as SR
 
 open import Word.Base
-import Presentation.Base as PB
-import Presentation.Properties as PP
+import Word.Relation.Binary.MonoidCongruence as PB
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
 
 module Normalization.Reidemeister-Schreier where
 

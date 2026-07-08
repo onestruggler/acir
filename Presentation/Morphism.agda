@@ -19,11 +19,11 @@ open import Function using (_∘_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 import Relation.Binary.Reasoning.Setoid as SR
 
-import Presentation.Base as PB
+import Word.Relation.Binary.MonoidCongruence as PB
 open import Presentation.GroupLike
 import Normalization.NormalForm.Propositional as NFBase
 import Normalization.NormalForm.Setoid as SNF
-import Presentation.Properties as PP
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
 open import Normalization.Reidemeister-Schreier
 open import ForStdlib.Algebra.Morphism.Consequences
   using (isMonoidHomomorphism⇒isGroupHomomorphism)
@@ -37,7 +37,7 @@ open PP Δ renaming (•-ε-monoid to monoid₂ ; word-setoid to setoid₂)
 -- Monoid morphisms
 --
 -- The congruence lemmas "(f ʷ) / wmap f preserve ≈" live in
--- Presentation.Properties (modules StarCongruence and GenCongruence);
+-- Word.Relation.Binary.MonoidCongruence.Properties (modules StarCongruence and GenCongruence);
 -- the builders below open them at (Γ , Δ).
 
 open MonoidMorphisms

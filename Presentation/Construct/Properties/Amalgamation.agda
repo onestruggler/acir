@@ -24,9 +24,9 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 open import Word.Base
 open import Word.Properties
-import Presentation.Base as PB
-import Presentation.Properties as PP
-import Presentation.Tactic.AssociativitySolver as AS
+import Word.Relation.Binary.MonoidCongruence as PB
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
+import Word.Relation.Binary.MonoidCongruence.Solver as AS
 open import Presentation.Construct.Base
 open import Normalization.CosetNF
 

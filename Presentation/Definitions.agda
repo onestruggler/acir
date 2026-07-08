@@ -28,7 +28,7 @@ open import Relation.Binary using (Setoid)
 open import Word.Base using (WRel ; Word)
 
 open import Presentation.GroupLike
-import Presentation.Properties as PP
+import Word.Relation.Binary.MonoidCongruence.Properties as PP
 
 private variable
   a ℓ : Level

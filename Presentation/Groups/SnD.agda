@@ -18,7 +18,7 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Notations
 open import Word.Base
 
-import Presentation.Base as PB
+import Word.Relation.Binary.MonoidCongruence as PB
 open import Normalization.NormalForm.Propositional using (NormalFormInjective ; NormalForm)
 open import Presentation.Construct.Base
 import Presentation.Construct.Properties.NDirectProduct as NDP
