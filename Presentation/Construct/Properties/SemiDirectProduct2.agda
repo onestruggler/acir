@@ -34,7 +34,7 @@ import Presentation.Base as PB
 open import Presentation.Construct.Base
 open import Presentation.Properties as PP
 open import Normalization.Base using (NormalForm ; NormalFormWithoutInverse)
-open import Presentation.Reidemeister-Schreier
+open import Normalization.Reidemeister-Schreier
 open import Word.Properties
 
 open PB Γ renaming
@@ -70,7 +70,7 @@ I = ε
 -- The generators of the semi-direct product.
 Y = N ⊎ H
 
-open Star-Injective-Full-Setoid Γ (Γ ⋄ Δ ⋄ ConjRelʷ conj) Cₛ I renaming (nf to anf)
+open Star-Injective-Full-Setoid Γ (Γ ⋄ Δ ⋄ ConjRelʷ conj) Cₛ I
 
 -- The section embedding a coset back into the product.
 [_] : C → Word Y
@@ -292,14 +292,14 @@ module _
 
   open RightAction f h h-congₛ-gen f-well-defined [_] []-cong [I]≈ε
     lemma-ract
-    renaming (nf-isInjective' to nf0-inj) hiding ([_]ₓ)
+    renaming (nf to anf ; nf-isInjective' to nf0-inj) hiding ([_]ₓ)
 
 ------------------------------------------------------------------------
 -- Normal forms
 
   -- The first stage of the normal form: a pair of a word over N and a
   -- coset, obtained from the Reidemeister-Schreier construction.
-  nf0 = (anf f h h-congₛ-gen)
+  nf0 = anf
 
   -- Builds a NormalFormWithoutInverse for the semi-direct product from
   -- NormalFormWithoutInverse witnesses for the two factors.

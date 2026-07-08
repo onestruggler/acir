@@ -39,7 +39,7 @@ import Function.Construct.Composition as FCC
 
 open import Word.Base
 open import Word.Properties
-open import Presentation.Reidemeister-Schreier
+open import Normalization.Reidemeister-Schreier
 
 import Presentation.Base as PB
 import Presentation.Properties as PP

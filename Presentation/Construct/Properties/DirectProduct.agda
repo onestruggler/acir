@@ -28,7 +28,7 @@ import Presentation.Base as PB
 open import Presentation.Construct.Base
 open import Presentation.Properties as PP
 open import Normalization.Base using (NormalForm ; NormalFormWithoutInverse)
-open import Presentation.Reidemeister-Schreier
+open import Normalization.Reidemeister-Schreier
 open import Word.Base
 open import Word.Properties
 
@@ -59,7 +59,7 @@ Y = A ⊎ B
 I : Word B
 I = ε
 
-open Star-Injective-Full-Setoid Γ (Γ ⋄ Δ ⋄ CommRel) Cₛ I renaming (nf to coset-nf)
+open Star-Injective-Full-Setoid Γ (Γ ⋄ Δ ⋄ CommRel) Cₛ I
 
 -- The section: embed a coset representative on the right.
 [_] : C → Word Y
@@ -201,11 +201,11 @@ open LeftRightCongruence Γ Δ CommRel
 []-cong = rights
 
 open RightAction f h h-congₛ-gen f-well-defined [_] []-cong [I]≈ε
-  lemma-ract hiding ([_]ₓ)
+  lemma-ract renaming (nf to coset-nf) hiding ([_]ₓ)
 
 -- The coset-pair normal form: split a word over A ⊎ B into a word
 -- over A and a coset representative in Word B.
-nf0 = (coset-nf f h h-congₛ-gen)
+nf0 = coset-nf
 
 nf0-cong : ∀ {w v} → w ≈₃ v → nf0 w ~ nf0 v
 nf0-cong {w} {v} = lemma-hypB I w v

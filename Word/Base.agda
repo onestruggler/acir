@@ -98,7 +98,7 @@ wfoldl _⊕_ b (w • w₁) = wfoldl _⊕_ (wfoldl _⊕_ b w) w₁
 -- it to whole words, threading the state left-to-right and
 -- concatenating the outputs; (h ᵗ') is the right-to-left mirror for
 -- left coset actions.  These drive the Reidemeister–Schreier method in
--- Presentation.Reidemeister-Schreier and Normalization.CosetNF.
+-- Normalization.Reidemeister-Schreier and Normalization.CosetNF.
 
 -- Left-to-right stateful traversal.
 _ᵗ : (C → Y → Word X × C) → (C → Word Y → Word X × C)

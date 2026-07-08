@@ -23,7 +23,7 @@ import Presentation.Base as PB
 open import Presentation.GroupLike
 import Normalization.Base as NFBase
 import Presentation.Properties as PP
-open import Presentation.Reidemeister-Schreier
+open import Normalization.Reidemeister-Schreier
 open import ForStdlib.Algebra.Morphism.Consequences
   using (isMonoidHomomorphism⇒isGroupHomomorphism)
 

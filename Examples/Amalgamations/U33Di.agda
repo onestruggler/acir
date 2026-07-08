@@ -28,7 +28,7 @@ import Presentation.Base as PB
 
 import Presentation.Construct.Properties.DirectProduct as DP
 import Presentation.Construct.Properties.NDirectProduct as NDP
-import Presentation.Reidemeister-Schreier as RS
+import Normalization.Reidemeister-Schreier as RS
 
 open import Presentation.Groups.SnD
 

@@ -4,10 +4,11 @@
 -- The Reidemeister–Schreier method.
 --
 -- Setup: Γ presents a subgroup H, Δ presents the ambient group G, and
--- f : X → Word Y embeds the generators of H as words of G.  The method
--- shows the induced monoid map (f ʷ) : Word X → Word Y is injective
--- modulo the presentations — i.e. H really is the subgroup it looks
--- like — and, given a Schreier section, packages a normal form.
+-- f : X → Word Y embeds the generators of H as words of G. If certain
+-- condition holds, the method shows the induced monoid map (f ʷ) :
+-- Word X → Word Y is injective modulo the presentations — i.e. H
+-- really is the subgroup it looks like — and, given a Schreier
+-- section, packages a normal form.
 --
 -- The engine is a coset action h : C → Y → Word X × C (a "Schreier
 -- table"): h c y slides the letter y past coset c, recording the piece
@@ -33,20 +34,20 @@
 
 open import Level using (0ℓ)
 
-open import Relation.Binary.PropositionalEquality as Eq renaming ([_] to [_]') using ( _≡_ ; inspect)
+open import Relation.Binary.PropositionalEquality as Eq
+  renaming ([_] to [_]') using ( _≡_ ; inspect)
 open import Relation.Binary using (IsEquivalence ; Setoid)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 open import Function.Definitions using (Injective ; Surjective)
 open import Data.Product using (_,_ ; _×_ ; proj₁ ; proj₂)
 
+import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 import Relation.Binary.Reasoning.Setoid as SR
-
 
 open import Word.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
 
-module Presentation.Reidemeister-Schreier where
+module Normalization.Reidemeister-Schreier where
 
 ------------------------------------------------------------------------
 -- Injectivity from an explicit section
@@ -81,21 +82,19 @@ module Star-Injective-Simplified {X Y : Set} (Γ : WRel X) (Δ : WRel Y) where
     left-inv (w • v) = _≈₁_.cong (left-inv w) (left-inv v)
 
     lemma-b : ∀ {u t : Word Y} → u ≈₂ t → (g ʷ) u ≈₁ (g ʷ) t
-    lemma-b = isStarCongruence.fʷ-cong g well-defined
-      where
-      module isStarCongruence = PP.StarCongruence Δ Γ
+    lemma-b = fʷ-cong g well-defined
+      where open PP.StarCongruence Δ Γ
 
     gʷ-surj : Surjective _≈₂_ _≈₁_ (g ʷ)
     gʷ-surj y = (f ʷ) y , λ x → _≈₁_.trans (lemma-b x) (_≈₁_.sym (left-inv y))
 
     reidemeister-schreier-simplified : (w v : Word X) → (f ʷ) w ≈₂ (f ʷ) v → w ≈₁ v
     reidemeister-schreier-simplified w v hyp = begin
-      w      ≈⟨ left-inv w ⟩
-      (g ʷ) ((f ʷ) w)      ≈⟨ lemma-b hyp ⟩
-      (g ʷ) ((f ʷ) v)      ≈⟨ _≈₁_.sym (left-inv v) ⟩
+      w               ≈⟨ left-inv w ⟩
+      (g ʷ) ((f ʷ) w) ≈⟨ lemma-b hyp ⟩
+      (g ʷ) ((f ʷ) v) ≈⟨ _≈₁_.sym (left-inv v) ⟩
       v         ∎
-      where
-        open SR word-setoid₁
+      where open SR word-setoid₁
 
     fʷ-inj : Injective _≈₁_ _≈₂_ (f ʷ)
     fʷ-inj = λ x₁ → reidemeister-schreier-simplified _ _ x₁
@@ -142,21 +141,23 @@ module Star-Injective-Full
     (h : C → Y → Word X × C)
     where
 
-    nf = (h ᵗ) I
+    private
+      hᵗ = (h ᵗ)
+      fʷ = f ʷ
     
     module Reidemeister-Schreier-Full
-      (h=⁻¹f-gen : ∀ (x : X) → ([ x ]ʷ , I) ~ ((h ᵗ) I (f x)))
-      (h-wd : ∀ (c : C){u t : Word Y} → u ===₂ t → ((h ᵗ) c u) ~ ((h ᵗ) c t))
+      (h=⁻¹f-gen : ∀ (x : X) → ([ x ]ʷ , I) ~ (hᵗ I (f x)))
+      (h-wd : ∀ (c : C){u t : Word Y} → u ===₂ t → (hᵗ c u) ~ (hᵗ c t))
       where
 
       -- Reconstruct a Schreier section g and prove (f ʷ) injective.  A
       -- word is "special" when its coset action from I returns to I;
       -- these are exactly the words in the image of (f ʷ), on which
-      -- g w = proj₁ ((h ᵗ) I w) is a left inverse of (f ʷ).
+      -- g w = proj₁ (hᵗ I w) is a left inverse of (f ʷ).
 
       -- Definition: A word is special if it doesn't leave the "I"-coset.
       special : Word Y → Set
-      special w = proj₂ ((h ᵗ) I w) ≡ I
+      special w = proj₂ (hᵗ I w) ≡ I
 
       -- Lemma: ε is special.
       lemma-special-ε : special ε
@@ -169,8 +170,8 @@ module Star-Injective-Full
 
       -- Lemma: Special words are closed under multiplication.
       lemma-special-• : ∀ (w v : Word Y) → special w → special v → special (w • v)
-      lemma-special-• w v sw sv with (h ᵗ) I w | inspect ((h ᵗ) I ) w
-      ... | (w' , c') | [ Eq.refl ]' with (h ᵗ) c' v | inspect ((h ᵗ) c' ) v
+      lemma-special-• w v sw sv with hᵗ I w | inspect (hᵗ I ) w
+      ... | (w' , c') | [ Eq.refl ]' with hᵗ c' v | inspect (hᵗ c' ) v
       ... | (v' , c'') | [ Eq.refl ]' = lem3
         where
           open Eq.≡-Reasoning
@@ -178,16 +179,16 @@ module Star-Injective-Full
           lem1 : c' ≡ I
           lem1 = sw
 
-          lem2 : (v' , c'') ≡ (h ᵗ) I v
+          lem2 : (v' , c'') ≡ hᵗ I v
           lem2 = begin
             (v' , c'') ≡⟨ Eq.refl ⟩
-            (h ᵗ) c' v ≡⟨ Eq.cong (\ x → (h ᵗ) x v) lem1 ⟩
-            (h ᵗ) I v ∎
+            hᵗ c' v ≡⟨ Eq.cong (\ x → hᵗ x v) lem1 ⟩
+            hᵗ I v ∎
 
           lem3 : c'' ≡ I
           lem3 = begin
             c'' ≡⟨ Eq.cong proj₂ lem2 ⟩
-            proj₂ ((h ᵗ) I v) ≡⟨ sv ⟩
+            proj₂ (hᵗ I v) ≡⟨ sv ⟩
             I ∎
 
       -- Lemma: The image of (f ʷ) is special.
@@ -198,7 +199,7 @@ module Star-Injective-Full
 
       -- Definition: For special words, there is a translation back.
       g : Word Y → Word X
-      g w = proj₁ ((h ᵗ) I w)
+      g w = proj₁ (hᵗ I w)
 
       -- Lemma: g preserves ε.
       lemma-g-ε : g ε ≡ ε
@@ -206,19 +207,19 @@ module Star-Injective-Full
 
       -- Lemma: g is a homomorphism on special words.
       lemma-g-• : ∀ (w v : Word Y) → special w → g (w • v) ≡ g w • g v
-      lemma-g-• w v hyp with (h ᵗ) I w | inspect ((h ᵗ) I) w
-      lemma-g-• w v hyp | (w' , c') | [ eq1 ]' with (h ᵗ) c' v | inspect ((h ᵗ) c') v
+      lemma-g-• w v hyp with hᵗ I w | inspect (hᵗ I) w
+      lemma-g-• w v hyp | (w' , c') | [ eq1 ]' with hᵗ c' v | inspect (hᵗ c') v
       lemma-g-• w v hyp | (w' , c') | [ eq1 ]' | (v' , c'') | [ eq2 ]' = lem6
         where
           open Eq.≡-Reasoning
           lem1 : c' ≡ I
           lem1 = hyp
 
-          lem2 : (v' , c'') ≡ (h ᵗ) I v
+          lem2 : (v' , c'') ≡ hᵗ I v
           lem2 = begin
             (v' , c'') ≡⟨ Eq.sym eq2 ⟩
-            (h ᵗ) c' v ≡⟨ Eq.cong (λ □ → (h ᵗ) □ v) lem1 ⟩
-            (h ᵗ) I v ∎
+            hᵗ c' v ≡⟨ Eq.cong (λ □ → hᵗ □ v) lem1 ⟩
+            hᵗ I v ∎
 
           lem4 : v' ≡ g v
           lem4 = Eq.cong proj₁ lem2 
@@ -228,69 +229,68 @@ module Star-Injective-Full
 
 
       -- Lemma: g is a left inverse of f ʷ.
-      lemma-a : ∀ (w : Word X) → w ≈₁ g ((f ʷ) w)
+      lemma-a : ∀ (w : Word X) → w ≈₁ g (fʷ w)
       lemma-a [ x ]ʷ = proj₁ (h=⁻¹f-gen x)
       lemma-a ε = _≈₁_.refl
       lemma-a (w • u) = claim
         where
           open SR word-setoid₁
-          claim :  w • u ≈₁ g ((f ʷ) (w • u))
+          claim :  w • u ≈₁ g (fʷ (w • u))
           claim = begin
             w • u ≈⟨ _≈₁_.cong (lemma-a w) _≈₁_.refl  ⟩
-            g ((f ʷ) w) • u ≈⟨ _≈₁_.cong _≈₁_.refl (lemma-a u) ⟩
-            g ((f ʷ) w) • g ((f ʷ) u) ≡⟨ Eq.sym ((lemma-g-• ((f ʷ) w) ((f ʷ) u) (lemma-special-fʷ w))) ⟩
-            g ((f ʷ) w • (f ʷ) u) ∎
+            g (fʷ w) • u ≈⟨ _≈₁_.cong _≈₁_.refl (lemma-a u) ⟩
+            g (fʷ w) • g (fʷ u) ≡⟨ Eq.sym ((lemma-g-• (fʷ w) (fʷ u) (lemma-special-fʷ w))) ⟩
+            g (fʷ w • fʷ u) ∎
 
 
       -- Lemma: Hypothesis B can be extended from the elements of Δ to
       -- all consequences of Δ.
-      lemma-hypB : ∀ (c : C) (u t : Word Y) → u ≈₂ t → (h ᵗ) c u ~ (h ᵗ) c t
+      lemma-hypB : ∀ (c : C) (u t : Word Y) → u ≈₂ t → hᵗ c u ~ hᵗ c t
       lemma-hypB c u t (axiom x) = h-wd c x
       lemma-hypB c u .u refl = _≈₁_.refl , Eq.refl
-      lemma-hypB c ((u • v) • w) (.u • (.v • .w)) assoc with (h ᵗ) c u
-      ... | (u' , c') with (h ᵗ) c' v
-      ... | (v' , c'') with (h ᵗ) c'' w
+      lemma-hypB c ((u • v) • w) (.u • (.v • .w)) assoc with hᵗ c u
+      ... | (u' , c') with hᵗ c' v
+      ... | (v' , c'') with hᵗ c'' w
       ... | (w' , c''') = (_≈₁_.assoc , Eq.refl)
-      lemma-hypB c (ε • u) .u left-unit with (h ᵗ) c u
+      lemma-hypB c (ε • u) .u left-unit with hᵗ c u
       ... | (u' , c') = (_≈₁_.left-unit , Eq.refl)
-      lemma-hypB c (u • ε) .u right-unit with (h ᵗ) c u
+      lemma-hypB c (u • ε) .u right-unit with hᵗ c u
       ... | (u' , c') = (_≈₁_.right-unit , Eq.refl)
 
       lemma-hypB c u t (sym hyp) = (_≈₁_.sym (lemma-hypB c t u hyp .proj₁)) , Eq.sym (lemma-hypB c t u hyp .proj₂)
       lemma-hypB c u t (trans {v = v} hyp1 hyp2) = _≈₁_.trans (lemma-hypB c u v hyp1 .proj₁) (lemma-hypB c v t hyp2 .proj₁) , Eq.trans (lemma-hypB c u v hyp1 .proj₂) (lemma-hypB c v t hyp2 .proj₂)
       lemma-hypB c (u • u') (t • t') (cong hyp1 hyp2)
-        with (h ᵗ) c u | (h ᵗ) c t | lemma-hypB c u t hyp1
+        with hᵗ c u | hᵗ c t | lemma-hypB c u t hyp1
       ... | (u'' , c') | (t'' , c'') | (ih1 , ih1')
         rewrite ih1'
-        with (h ᵗ) c'' u' | (h ᵗ) c'' t' | lemma-hypB c'' u' t' hyp2
+        with hᵗ c'' u' | hᵗ c'' t' | lemma-hypB c'' u' t' hyp2
       ... | (u''' , c''') | (t''' , c'''') | (ih2 , ih2') = (_≈₁_.cong ih1 ih2 , ih2')
 
       -- Lemma: g preserves relations.
       lemma-b : ∀ (u t : Word Y) → u ≈₂ t → g u ≈₁ g t
-      lemma-b u t hyp with (h ᵗ) I u | (h ᵗ) I t | lemma-hypB I u t hyp
+      lemma-b u t hyp with hᵗ I u | hᵗ I t | lemma-hypB I u t hyp
       ... | (u' , c') | (t' , c'') | (ih , ih') = ih
 
       -- Reidemeister-Schreier Theorem.
-      reidemeister-schreier : (w v : Word X) → (f ʷ) w ≈₂ (f ʷ) v → w ≈₁ v
+      reidemeister-schreier : (w v : Word X) → fʷ w ≈₂ fʷ v → w ≈₁ v
       reidemeister-schreier w v hyp = begin
           w ≈⟨ lemma-a w ⟩
-          g ((f ʷ) w) ≈⟨ lemma-b ((f ʷ) w) ((f ʷ) v) hyp ⟩
-          g ((f ʷ) v) ≈⟨ _≈₁_.sym (lemma-a v) ⟩
+          g (fʷ w) ≈⟨ lemma-b (fʷ w) (fʷ v) hyp ⟩
+          g (fʷ v) ≈⟨ _≈₁_.sym (lemma-a v) ⟩
           v ∎
           where
             open SR word-setoid₁
 
-      fʷ-inj : Injective _≈₁_ _≈₂_ (f ʷ)
+      fʷ-inj : Injective _≈₁_ _≈₂_ fʷ
       fʷ-inj = λ x₁ → reidemeister-schreier _ _ x₁
 
 
-
     -- Right normal form from the coset action and a Schreier section
-    -- [_].  nf w = (h ᵗ) I w = (Schreier word in X, final coset); its
-    -- inverse ⁻¹nf (a , c) = (f ʷ) a • [ c ] recovers w up to ≈.  Gives
+    -- [_].  nf w = hᵗ I w = (Schreier word in X, final coset); its
+    -- inverse ⁻¹nf (a , c) = fʷ a • [ c ] recovers w up to ≈.  Gives
     -- nf-isInjective, ⁻¹nf-nf=id, ⁻¹nf-wd, and ⁻¹nf-isSurjective.
     module RightAction
-      (f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)
+      (f-well-defined : ∀ {w v} → w ===₁ v → fʷ w ≈₂ fʷ v)
       ([_] : C → Word Y)
       ([I]≈ε : [ I ] ≈₂ ε)
       (lemma-ract : ∀ c b → let (b' , c') = h c b in let [_]ₓ = f ʷ in
@@ -308,6 +308,8 @@ module Star-Injective-Full
       infixl 4 _⊛_
       _⊛_ : C → Word Y → Word X × C
       _⊛_ = ract ᵗ
+
+      nf = I ⊛_
 
       lemma-⊛ : ∀ c w → let (w' , c') = c ⊛ w in [ c ] • w ≈₂ [ w' ]ₓ • [ c' ]
       lemma-⊛ c [ x ]ʷ = lemma-ract c x
@@ -364,12 +366,11 @@ module Star-Injective-Full
           claim {z} eqv = _≈₂_.trans (⁻¹nf-wd eqv) ⁻¹nf-nf=id
       
 
-
     -- Mirror of RightAction for a left coset action lact, with letters
-    -- absorbed on the left.  nfl = _⊛ I and ⁻¹nfl (c , a) = [ c ] • (f ʷ)
+    -- absorbed on the left.  nfl = _⊛ I and ⁻¹nfl (c , a) = [ c ] • fʷ
     -- a are the left normal form and its inverse; nfl-isInjective.
     module LeftAction
-      (f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)
+      (f-well-defined : ∀ {w v} → w ===₁ v → fʷ w ≈₂ fʷ v)
       ([_] : C → Word Y)
       ([I]≈ε : [ I ] ≈₂ ε)
       (lact : Y → C → C × Word X)
@@ -378,7 +379,6 @@ module Star-Injective-Full
       where
 
       [_]ₓ = f ʷ
-
 
       infixl 4 _⊛_
       _⊛_ : Word Y → C → C × Word X
@@ -403,29 +403,28 @@ module Star-Injective-Full
             open SR word-setoid₂
 
 
-      nfl : Word Y → C × Word X
-      nfl = _⊛ I
+      nf : Word Y → C × Word X
+      nf = _⊛ I
 
-      ⁻¹nfl : C × Word X → Word Y
-      ⁻¹nfl (c , a) = [ c ] • [ a ]ₓ
+      ⁻¹nf : C × Word X → Word Y
+      ⁻¹nf (c , a) = [ c ] • [ a ]ₓ
 
-      ⁻¹nfl-nfl=id : ∀ {w} → ⁻¹nfl (nfl w) ≈₂ w
-      ⁻¹nfl-nfl=id {w} = _≈₂_.trans (_≈₂_.sym (lemma-⊛ _ _) ) (_≈₂_.trans (_≈₂_.cong _≈₂_.refl [I]≈ε) _≈₂_.right-unit)
+      ⁻¹nf-nf=id : ∀ {w} → ⁻¹nf (nf w) ≈₂ w
+      ⁻¹nf-nf=id {w} = _≈₂_.trans (_≈₂_.sym (lemma-⊛ _ _) ) (_≈₂_.trans (_≈₂_.cong _≈₂_.refl [I]≈ε) _≈₂_.right-unit)
 
-      nfl-isInjective : Injective _≈₂_ (PW.Pointwise _≡_ _≈₁_) nfl
-      nfl-isInjective {x} {y} (eqc , eqa) with nfl x | inspect nfl x | nfl y | inspect nfl y
+      nf-isInjective : Injective _≈₂_ (PW.Pointwise _≡_ _≈₁_) nf
+      nf-isInjective {x} {y} (eqc , eqa) with nf x | inspect nf x | nf y | inspect nf y
       ... | (c , a) | [ Eq.refl ]' | (c' , a') | [ Eq.refl ]' = begin
-        x ≈⟨ _≈₂_.sym ⁻¹nfl-nfl=id ⟩
-        ⁻¹nfl (nfl x) ≈⟨ _≈₂_.refl ⟩
+        x ≈⟨ _≈₂_.sym ⁻¹nf-nf=id ⟩
+        ⁻¹nf (nf x) ≈⟨ _≈₂_.refl ⟩
         [ c ] • [ a ]ₓ ≡⟨ Eq.cong (\ □ → [ □ ] • [ a ]ₓ) eqc ⟩
         [ c' ] • [ a ]ₓ ≈⟨ _≈₂_.cong _≈₂_.refl (fʷ-cong f f-well-defined eqa) ⟩
         [ c' ] • [ a' ]ₓ ≡⟨ Eq.refl ⟩
-        ⁻¹nfl (nfl y) ≈⟨ ⁻¹nfl-nfl=id ⟩
+        ⁻¹nf (nf y) ≈⟨ ⁻¹nf-nf=id ⟩
         y ∎
           where
             open SR word-setoid₂
             open PP.StarCongruence Γ Δ
-
 
 
 ------------------------------------------------------------------------
@@ -470,31 +469,32 @@ module Star-Injective-Full-Setoid
     (h-congₛ-gen : ∀ {c d} y → c ≈ₛ d → h c y ~ h d y)
     where
 
+    private
+      hᵗ = (h ᵗ)
+      fʷ = f ʷ
+
     -- h ᵗ is congruent over C w.r.t a word in Y.
-    h-congₛ : ∀ {c d w} → c ≈ₛ d → (h ᵗ) c w ~ (h ᵗ) d w
+    h-congₛ : ∀ {c d w} → c ≈ₛ d → hᵗ c w ~ hᵗ d w
     h-congₛ {c} {d} {[ x ]ʷ} eq = h-congₛ-gen x eq
     h-congₛ {c} {d} {ε} eq = _≈₁_.refl , eq
-    h-congₛ {c} {d} {(w • v)} eq with (h ᵗ) c w | inspect ((h ᵗ) c) w | (h ᵗ) d w | inspect ((h ᵗ) d) w
-    ... | (wc , c') | [ Eq.refl ]' | (wd , d') | [ Eq.refl ]' with h-congₛ {c} {d} {w} eq | (h ᵗ) c' v | inspect ((h ᵗ) c') v | (h ᵗ) d' v | inspect ((h ᵗ) d') v
+    h-congₛ {c} {d} {(w • v)} eq with hᵗ c w | inspect (hᵗ c) w | hᵗ d w | inspect (hᵗ d) w
+    ... | (wc , c') | [ Eq.refl ]' | (wd , d') | [ Eq.refl ]' with h-congₛ {c} {d} {w} eq | hᵗ c' v | inspect (hᵗ c') v | hᵗ d' v | inspect (hᵗ d') v
     ... | ih1 | (vc , c'') | [ Eq.refl ]' | (vd , d'') | [ Eq.refl ]' with h-congₛ {c'} {d'} {v} (ih1 .proj₂)
     ... | ih2 = (_≈₁_.cong (ih1 .proj₁) (ih2 .proj₁)) , ih2 .proj₂
 
 
-    nf : Word Y → Word X × C
-    nf = (h ᵗ) I
-
     module Reidemeister-Schreier-Full
-      (h=⁻¹f-gen : ∀ (x : X) → ([ x ]ʷ , I) ~ ((h ᵗ) I (f x)))
-      (h-wd : ∀ (c : C){u t : Word Y} → u ===₂ t → ((h ᵗ) c u) ~ ((h ᵗ) c t))
+      (h=⁻¹f-gen : ∀ (x : X) → ([ x ]ʷ , I) ~ (hᵗ I (f x)))
+      (h-wd : ∀ (c : C){u t : Word Y} → u ===₂ t → (hᵗ c u) ~ (hᵗ c t))
       where
 
       -- Setoid analogue of Star-Injective-Full.Reidemeister-Schreier-Full:
-      -- reconstruct a Schreier section and prove (f ʷ) injective, now
+      -- reconstruct a Schreier section and prove fʷ injective, now
       -- tracking cosets only up to ≈ₛ.
 
       -- Definition: A word is special if it doesn't leave the "I"-coset.
       special : Word Y → Set
-      special w = proj₂ ((h ᵗ) I w) ≈ₛ I
+      special w = proj₂ (hᵗ I w) ≈ₛ I
 
       -- Lemma: ε is special.
       lemma-special-ε : special ε
@@ -507,37 +507,37 @@ module Star-Injective-Full-Setoid
 
       -- Lemma: Special words are closed under multiplication.
       lemma-special-• : ∀ (w v : Word Y) → special w → special v → special (w • v)
-      lemma-special-• w v sw sv with (h ᵗ) I w | inspect ((h ᵗ) I ) w
-      ... | (w' , c') | [ Eq.refl ]' with (h ᵗ) c' v | inspect ((h ᵗ) c' ) v
+      lemma-special-• w v sw sv with hᵗ I w | inspect (hᵗ I ) w
+      ... | (w' , c') | [ Eq.refl ]' with hᵗ c' v | inspect (hᵗ c' ) v
       ... | (v' , c'') | [ Eq.refl ]' = lem3
         where
 
           lem1 : c' ≈ₛ I
           lem1 = sw
 
-          lem2 : (v' , c'') ~ (h ᵗ) I v
+          lem2 : (v' , c'') ~ hᵗ I v
           lem2 = begin
             (v' , c'') ≡⟨ Eq.refl ⟩
-            (h ᵗ) c' v ≈⟨ h-congₛ {w = v} sw ⟩
-            (h ᵗ) I v ∎
+            hᵗ c' v ≈⟨ h-congₛ {w = v} sw ⟩
+            hᵗ I v ∎
             where open SR setoid-WX-Cₛ
 
           lem3 : c'' ≈ₛ I
           lem3 = begin
             c'' ≈⟨ proj₂ lem2 ⟩
-            proj₂ ((h ᵗ) I v) ≈⟨ sv ⟩
+            proj₂ (hᵗ I v) ≈⟨ sv ⟩
             I ∎
             where open SR Cₛ          
 
-      -- Lemma: The image of (f ʷ) is special.
-      lemma-special-fʷ : ∀ (w : Word X) → special ((f ʷ) w)
+      -- Lemma: The image of fʷ is special.
+      lemma-special-fʷ : ∀ (w : Word X) → special (fʷ w)
       lemma-special-fʷ [ x ]ʷ = lemma-special-f x
       lemma-special-fʷ ε = lemma-special-ε
-      lemma-special-fʷ (w • v) = lemma-special-• ((f ʷ) w) ((f ʷ) v) (lemma-special-fʷ w) (lemma-special-fʷ v)
+      lemma-special-fʷ (w • v) = lemma-special-• (fʷ w) (fʷ v) (lemma-special-fʷ w) (lemma-special-fʷ v)
 
       -- Definition: For special words, there is a translation back.
       g : Word Y → Word X
-      g w = proj₁ ((h ᵗ) I w)
+      g w = proj₁ (hᵗ I w)
 
       -- Lemma: g preserves ε.
       lemma-g-ε : g ε ≡ ε
@@ -545,19 +545,19 @@ module Star-Injective-Full-Setoid
 
       -- Lemma: g is a homomorphism on special words.
       lemma-g-• : ∀ (w v : Word Y) → special w → g (w • v) ≈₁ g w • g v
-      lemma-g-• w v hyp with (h ᵗ) I w | inspect ((h ᵗ) I) w
-      lemma-g-• w v hyp | (w' , c') | [ eq1 ]' with (h ᵗ) c' v | inspect ((h ᵗ) c') v
+      lemma-g-• w v hyp with hᵗ I w | inspect (hᵗ I) w
+      lemma-g-• w v hyp | (w' , c') | [ eq1 ]' with hᵗ c' v | inspect (hᵗ c') v
       lemma-g-• w v hyp | (w' , c') | [ eq1 ]' | (v' , c'') | [ eq2 ]' = lem6
         where
 
           lem1 : c' ≈ₛ I
           lem1 = hyp
 
-          lem2 : (v' , c'') ~ (h ᵗ) I v
+          lem2 : (v' , c'') ~ hᵗ I v
           lem2 = begin
             (v' , c'') ≡⟨ Eq.sym eq2 ⟩
-            (h ᵗ) c' v ≈⟨ h-congₛ {w = v} lem1 ⟩
-            (h ᵗ) I v ∎
+            hᵗ c' v ≈⟨ h-congₛ {w = v} lem1 ⟩
+            hᵗ I v ∎
             where open SR setoid-WX-Cₛ
 
           lem4 : v' ≈₁ g v
@@ -568,72 +568,72 @@ module Star-Injective-Full-Setoid
 
 
       -- Lemma: g is a left inverse of f ʷ.
-      lemma-a : ∀ (w : Word X) → w ≈₁ g ((f ʷ) w)
+      lemma-a : ∀ (w : Word X) → w ≈₁ g (fʷ w)
       lemma-a [ x ]ʷ = proj₁ (h=⁻¹f-gen x)
       lemma-a ε = _≈₁_.refl
       lemma-a (w • u) = claim
         where
           open SR word-setoid₁
-          claim :  w • u ≈₁ g ((f ʷ) (w • u))
+          claim :  w • u ≈₁ g (fʷ (w • u))
           claim = begin
             w • u ≈⟨ _≈₁_.cong (lemma-a w) _≈₁_.refl  ⟩
-            g ((f ʷ) w) • u ≈⟨ _≈₁_.cong _≈₁_.refl (lemma-a u) ⟩
-            g ((f ʷ) w) • g ((f ʷ) u) ≈⟨ _≈₁_.sym ((lemma-g-• ((f ʷ) w) ((f ʷ) u) (lemma-special-fʷ w))) ⟩
-            g ((f ʷ) w • (f ʷ) u) ∎
+            g (fʷ w) • u ≈⟨ _≈₁_.cong _≈₁_.refl (lemma-a u) ⟩
+            g (fʷ w) • g (fʷ u) ≈⟨ _≈₁_.sym ((lemma-g-• (fʷ w) (fʷ u) (lemma-special-fʷ w))) ⟩
+            g (fʷ w • fʷ u) ∎
 
 
       -- Lemma: Hypothesis B can be extended from the elements of Δ to
       -- all consequences of Δ.
-      lemma-hypB : ∀ (c : C) (u t : Word Y) → u ≈₂ t → (h ᵗ) c u ~ (h ᵗ) c t
+      lemma-hypB : ∀ (c : C) (u t : Word Y) → u ≈₂ t → hᵗ c u ~ hᵗ c t
       lemma-hypB c u t (axiom x) = h-wd c x
       lemma-hypB c u .u refl = _≈₁_.refl , reflₛ
-      lemma-hypB c ((u • v) • w) (.u • (.v • .w)) assoc with (h ᵗ) c u
-      ... | (u' , c') with (h ᵗ) c' v
-      ... | (v' , c'') with (h ᵗ) c'' w
+      lemma-hypB c ((u • v) • w) (.u • (.v • .w)) assoc with hᵗ c u
+      ... | (u' , c') with hᵗ c' v
+      ... | (v' , c'') with hᵗ c'' w
       ... | (w' , c''') = (_≈₁_.assoc , reflₛ)
-      lemma-hypB c (ε • u) .u left-unit with (h ᵗ) c u
+      lemma-hypB c (ε • u) .u left-unit with hᵗ c u
       ... | (u' , c') = (_≈₁_.left-unit , reflₛ)
-      lemma-hypB c (u • ε) .u right-unit with (h ᵗ) c u
+      lemma-hypB c (u • ε) .u right-unit with hᵗ c u
       ... | (u' , c') = (_≈₁_.right-unit , reflₛ)
 
       lemma-hypB c u t (sym hyp) = (_≈₁_.sym (lemma-hypB c t u hyp .proj₁)) , symₛ (lemma-hypB c t u hyp .proj₂)
       lemma-hypB c u t (trans {v = v} hyp1 hyp2) = _≈₁_.trans (lemma-hypB c u v hyp1 .proj₁) (lemma-hypB c v t hyp2 .proj₁) , transₛ (lemma-hypB c u v hyp1 .proj₂) (lemma-hypB c v t hyp2 .proj₂)
       lemma-hypB c (u • u') (t • t') (cong hyp1 hyp2)
-        with (h ᵗ) c u | (h ᵗ) c t | inspect ((h ᵗ) c) u | inspect ((h ᵗ) c) t | lemma-hypB c u t hyp1
+        with hᵗ c u | hᵗ c t | inspect (hᵗ c) u | inspect (hᵗ c) t | lemma-hypB c u t hyp1
       ... | (u'' , c') | (t'' , c'') | [ Eq.refl ]' | [ Eq.refl ]' | (ih1 , ih1')
-        with (h ᵗ) c'' u' | (h ᵗ) c'' t' | inspect ((h ᵗ) c'') u' | inspect ((h ᵗ) c'') t' | lemma-hypB c'' u' t' hyp2
+        with hᵗ c'' u' | hᵗ c'' t' | inspect (hᵗ c'') u' | inspect (hᵗ c'') t' | lemma-hypB c'' u' t' hyp2
       ... | (u''' , c''') | (t''' , c'''') | [ Eq.refl ]' | [ Eq.refl ]' | (ih2 , ih2') = (_≈₁_.cong ih1 (proj₁ claim)) , proj₂ claim
         where
         open SR setoid-WX-Cₛ
-        claim : (h ᵗ) ((h ᵗ) c u .proj₂) u' ~ (h ᵗ) ((h ᵗ) c t .proj₂) t'
+        claim : hᵗ (hᵗ c u .proj₂) u' ~ hᵗ (hᵗ c t .proj₂) t'
         claim = begin
-          (h ᵗ) ((h ᵗ) c u .proj₂) u' ≈⟨ lemma-hypB (((h ᵗ) c u .proj₂)) u' t' hyp2 ⟩
-          (h ᵗ) ((h ᵗ) c u .proj₂) t' ≈⟨ h-congₛ {w = t'} ih1' ⟩
-          (h ᵗ) ((h ᵗ) c t .proj₂) t' ∎
+          hᵗ (hᵗ c u .proj₂) u' ≈⟨ lemma-hypB ((hᵗ c u .proj₂)) u' t' hyp2 ⟩
+          hᵗ (hᵗ c u .proj₂) t' ≈⟨ h-congₛ {w = t'} ih1' ⟩
+          hᵗ (hᵗ c t .proj₂) t' ∎
 
       -- Lemma: g preserves relations.
       lemma-b : ∀ (u t : Word Y) → u ≈₂ t → g u ≈₁ g t
-      lemma-b u t hyp with (h ᵗ) I u | (h ᵗ) I t | lemma-hypB I u t hyp
+      lemma-b u t hyp with hᵗ I u | hᵗ I t | lemma-hypB I u t hyp
       ... | (u' , c') | (t' , c'') | (ih , ih') = ih
 
       -- Reidemeister-Schreier Theorem.
-      reidemeister-schreier : (w v : Word X) → (f ʷ) w ≈₂ (f ʷ) v → w ≈₁ v
+      reidemeister-schreier : (w v : Word X) → fʷ w ≈₂ fʷ v → w ≈₁ v
       reidemeister-schreier w v hyp = begin
           w ≈⟨ lemma-a w ⟩
-          g ((f ʷ) w) ≈⟨ lemma-b ((f ʷ) w) ((f ʷ) v) hyp ⟩
-          g ((f ʷ) v) ≈⟨ _≈₁_.sym (lemma-a v) ⟩
+          g (fʷ w) ≈⟨ lemma-b (fʷ w) (fʷ v) hyp ⟩
+          g (fʷ v) ≈⟨ _≈₁_.sym (lemma-a v) ⟩
           v ∎
           where
             open SR word-setoid₁
 
-      fʷ-inj : Injective _≈₁_ _≈₂_ (f ʷ)
+      fʷ-inj : Injective _≈₁_ _≈₂_ fʷ
       fʷ-inj = λ x₁ → reidemeister-schreier _ _ x₁
 
     -- Setoid analogue of RightAction.  The section must respect ≈ₛ
     -- ([]-cong); besides nf-isInjective (over ≡ on the coset) it also
     -- provides nf-isInjective' (over ≈ₛ on the coset).
     module RightAction
-      (f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)
+      (f-well-defined : ∀ {w v} → w ===₁ v → fʷ w ≈₂ fʷ v)
       ([_] : C → Word Y)
       ([]-cong : ∀ {c d} → c ≈ₛ d → [ c ] ≈₂ [ d ])
       ([I]≈ε : [ I ] ≈₂ ε)
@@ -647,6 +647,9 @@ module Star-Injective-Full-Setoid
       infixl 4 _⊛_
       _⊛_ : C → Word Y → Word X × C
       _⊛_ = h ᵗ
+
+      nf : Word Y → Word X × C
+      nf = I ⊛_
 
       lemma-⊛ : ∀ c w → let (w' , c') = c ⊛ w in [ c ] • w ≈₂ [ w' ]ₓ • [ c' ]
       lemma-⊛ c [ x ]ʷ = lemma-ract c x
@@ -702,11 +705,10 @@ module Star-Injective-Full-Setoid
             open PP.StarCongruence Γ Δ
 
 
-
     -- Setoid analogue of LeftAction (left coset action), likewise adding
     -- []-cong and the ≈ₛ-aware variant nfl-isInjective'.
     module LeftAction
-      (f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)
+      (f-well-defined : ∀ {w v} → w ===₁ v → fʷ w ≈₂ fʷ v)
       ([_] : C → Word Y)
       ([]-cong : ∀ {c d} → c ≈ₛ d → [ c ] ≈₂ [ d ])
       ([I]≈ε : [ I ] ≈₂ ε)
@@ -740,41 +742,39 @@ module Star-Injective-Full-Setoid
           where
             open SR word-setoid₂
 
+      nf : Word Y → C × Word X
+      nf = _⊛ I
 
-      nfl : Word Y → C × Word X
-      nfl = _⊛ I
+      ⁻¹nf : C × Word X → Word Y
+      ⁻¹nf (c , a) = [ c ] • [ a ]ₓ
 
-      ⁻¹nfl : C × Word X → Word Y
-      ⁻¹nfl (c , a) = [ c ] • [ a ]ₓ
+      ⁻¹nf-nf=id : ∀ {w} → ⁻¹nf (nf w) ≈₂ w
+      ⁻¹nf-nf=id {w} = _≈₂_.trans (_≈₂_.sym (lemma-⊛ _ _) ) (_≈₂_.trans (_≈₂_.cong _≈₂_.refl [I]≈ε) _≈₂_.right-unit)
 
-      ⁻¹nfl-nfl=id : ∀ {w} → ⁻¹nfl (nfl w) ≈₂ w
-      ⁻¹nfl-nfl=id {w} = _≈₂_.trans (_≈₂_.sym (lemma-⊛ _ _) ) (_≈₂_.trans (_≈₂_.cong _≈₂_.refl [I]≈ε) _≈₂_.right-unit)
-
-      nfl-isInjective : Injective _≈₂_ (PW.Pointwise _≡_ _≈₁_) nfl
-      nfl-isInjective {x} {y} (eqc , eqa) with nfl x | inspect nfl x | nfl y | inspect nfl y
+      nf-isInjective : Injective _≈₂_ (PW.Pointwise _≡_ _≈₁_) nf
+      nf-isInjective {x} {y} (eqc , eqa) with nf x | inspect nf x | nf y | inspect nf y
       ... | (c , a) | [ Eq.refl ]' | (c' , a') | [ Eq.refl ]' = begin
-        x ≈⟨ _≈₂_.sym ⁻¹nfl-nfl=id ⟩
-        ⁻¹nfl (nfl x) ≈⟨ _≈₂_.refl ⟩
+        x ≈⟨ _≈₂_.sym ⁻¹nf-nf=id ⟩
+        ⁻¹nf (nf x) ≈⟨ _≈₂_.refl ⟩
         [ c ] • [ a ]ₓ ≡⟨ Eq.cong (\ □ → [ □ ] • [ a ]ₓ) eqc ⟩
         [ c' ] • [ a ]ₓ ≈⟨ _≈₂_.cong _≈₂_.refl (fʷ-cong f f-well-defined eqa) ⟩
         [ c' ] • [ a' ]ₓ ≡⟨ Eq.refl ⟩
-        ⁻¹nfl (nfl y) ≈⟨ ⁻¹nfl-nfl=id ⟩
+        ⁻¹nf (nf y) ≈⟨ ⁻¹nf-nf=id ⟩
         y ∎
           where
             open SR word-setoid₂
             open PP.StarCongruence Γ Δ
 
-      nfl-isInjective' : Injective _≈₂_ (PW.Pointwise _≈ₛ_ _≈₁_) nfl
-      nfl-isInjective' {x} {y} (eqc , eqa) with nfl x | inspect nfl x | nfl y | inspect nfl y
+      nf-isInjective' : Injective _≈₂_ (PW.Pointwise _≈ₛ_ _≈₁_) nf
+      nf-isInjective' {x} {y} (eqc , eqa) with nf x | inspect nf x | nf y | inspect nf y
       ... | (c , a) | [ Eq.refl ]' | (c' , a') | [ Eq.refl ]' = begin
-        x ≈⟨ _≈₂_.sym ⁻¹nfl-nfl=id ⟩
-        ⁻¹nfl (nfl x) ≈⟨ _≈₂_.refl ⟩
+        x ≈⟨ _≈₂_.sym ⁻¹nf-nf=id ⟩
+        ⁻¹nf (nf x) ≈⟨ _≈₂_.refl ⟩
         [ c ] • [ a ]ₓ ≈⟨ _≈₂_.cong ([]-cong eqc) _≈₂_.refl ⟩
         [ c' ] • [ a ]ₓ ≈⟨ _≈₂_.cong _≈₂_.refl (fʷ-cong f f-well-defined eqa) ⟩
         [ c' ] • [ a' ]ₓ ≡⟨ Eq.refl ⟩
-        ⁻¹nfl (nfl y) ≈⟨ ⁻¹nfl-nfl=id ⟩
+        ⁻¹nf (nf y) ≈⟨ ⁻¹nf-nf=id ⟩
         y ∎
           where
             open SR word-setoid₂
             open PP.StarCongruence Γ Δ
-

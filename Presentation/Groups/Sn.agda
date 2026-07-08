@@ -32,7 +32,7 @@ import Normalization.Base as NFBase
 open NFBase using (NormalFormWithoutInverse ; NormalForm)
 
 import Normalization.CosetNF as CA
-import Presentation.Reidemeister-Schreier as RS
+import Normalization.Reidemeister-Schreier as RS
 open import Notations
 open import Presentation.GroupLike
 

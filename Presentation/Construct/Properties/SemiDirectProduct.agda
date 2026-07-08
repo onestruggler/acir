@@ -34,7 +34,7 @@ import Presentation.Base as PB
 open import Presentation.Properties as PP
 open import Normalization.Base using (NormalForm ; NormalFormWithoutInverse)
 
-open import Presentation.Reidemeister-Schreier
+open import Normalization.Reidemeister-Schreier
 open import Presentation.Construct.Base
 
 open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_ ; refl' to refl'₁) using ()
@@ -54,7 +54,7 @@ I = ε
 
 Y = N ⊎ H
 
-open Star-Injective-Full-Setoid Γ (Γ ⋄ Δ ⋄ ConjRel conj) Cₛ I renaming (nf to anf)
+open Star-Injective-Full-Setoid Γ (Γ ⋄ Δ ⋄ ConjRel conj) Cₛ I
 
 [_] : C → Word Y
 [_] = [_]ᵣ
@@ -335,9 +335,9 @@ module _
   []-cong {c} {d} right-unit = _≈₃_.right-unit
   []-cong {c} {d} (axiom x) = _≈₃_.axiom (right x)
 
-  open RightAction f h h-congₛ-gen f-well-defined [_] []-cong [I]≈ε lemma-ract renaming (nf-isInjective' to nf0-inj) hiding ([_]ₓ)
+  open RightAction f h h-congₛ-gen f-well-defined [_] []-cong [I]≈ε lemma-ract renaming (nf to anf ; nf-isInjective' to nf0-inj) hiding ([_]ₓ)
 
-  nf0 = (anf f h h-congₛ-gen)
+  nf0 = anf
 
 
   module NFP

@@ -26,7 +26,7 @@ import Normalization.Base as NFBase
 open NFBase using (NormalFormWithoutInverse ; NormalForm)
 import Normalization.CosetNF as CA
 open CA using (PackedCosetTable)
-import Presentation.Reidemeister-Schreier as RS
+import Normalization.Reidemeister-Schreier as RS
 
 import Presentation.Groups.Cyclic as Cyclic
 open import Presentation.Construct.Base

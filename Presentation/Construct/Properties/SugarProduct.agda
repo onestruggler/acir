@@ -27,7 +27,7 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open import Normalization.Base using (NormalFormWithoutInverse ; NormalForm)
-open import Presentation.Reidemeister-Schreier
+open import Normalization.Reidemeister-Schreier
 open import Presentation.Construct.Base
 
 open PB Γ renaming (_===_ to _===₁_) using ()
