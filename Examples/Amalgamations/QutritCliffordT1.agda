@@ -22,8 +22,7 @@ open import Word.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Presentation.Tactic.AssociativitySolver as AS
-import Normalization.Base as NFBase
-open NFBase using (NormalFormWithoutInverse ; NormalForm)
+import Normalization.NormalForm.Setoid as SNF
 import Normalization.CosetNF as CA
 open CA using (PackedCosetTable)
 import Normalization.Reidemeister-Schreier as RS
@@ -65,7 +64,7 @@ module Sζ where
     SS-cr : C
 
   open PB Pζ renaming (Alphabet to Sζ ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (Cyclic.nfp 9) using (by-equal-nf)
+  open SNF.NormalFormInjective (Cyclic.nfp 9) using (by-equal-nf)
 
   open PB _===_ renaming (Alphabet to SXζ) using (_≈_)
 
@@ -193,7 +192,7 @@ module SXζ where
     XXSXX-cr : C
 
   open PB (Sζ._===_) renaming (Alphabet to Sζ ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (Sζ.nfp (Cyclic.nfp 9)) using (by-equal-nf)
+  open SNF.NormalFormInjective (Sζ.nfp (Cyclic.nfp 9)) using (by-equal-nf)
   open Sζ renaming (S to S' ; ζ to ζ') using ()
 
   open PB _===_ renaming (Alphabet to SXζ) using (_≈_)
@@ -563,7 +562,7 @@ module SXζ where
   module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open cosetTheorems using (nfp ; nfp') public
 
-  module MM = NFBase.NormalFormWithoutInverse (nfp (Sζ.nfp (Cyclic.nfp 9)))
+  module MM = SNF.NormalFormInjective (nfp (Sζ.nfp (Cyclic.nfp 9)))
 
   lemma-order-Z : Z ^ 3 ≈ ε
   lemma-order-Z = MM.by-equal-nf Eq.refl
@@ -607,7 +606,7 @@ module SXζHH where
     HH-cr : C
 
   open PB (SXζ._===_) renaming (Alphabet to SXζ ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))) using (by-equal-nf)
+  open SNF.NormalFormInjective (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))) using (by-equal-nf)
   open SXζ renaming (S to S' ; ζ to ζ' ; X to X') using ()
 
   open PB _===_ renaming (Alphabet to SXζHH) using (_≈_)
@@ -735,7 +734,7 @@ module SXζHH where
   module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open cosetTheorems using (nfp ; nfp') public
 
-  module MM = NFBase.NormalFormWithoutInverse (nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))
+  module MM = SNF.NormalFormInjective (nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))
 
   lemma-order-Z : Z ^ 3 ≈ ε
   lemma-order-Z = MM.by-equal-nf Eq.refl
@@ -792,7 +791,7 @@ module CliffordTHH where
 
 
   open PB (SXζHH._===_) renaming (Alphabet to SXζ ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9)) )) using (by-equal-nf)
+  open SNF.NormalFormInjective (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9)) )) using (by-equal-nf)
   open PB _===_ renaming (Alphabet to CliffordTHH) using (_≈_)
   open SXζHH renaming (ζ to ζ' ; S to S' ; X to X' ; Z to Z' ; HH to HH') using ()
   
@@ -1125,7 +1124,7 @@ module CliffordTHH where
   module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open cosetTheorems using (nfp ; nfp') public
   
-  open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
+  open SNF.NormalFormInjective (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
 
   I : CT
   I = inj₂ tt
@@ -1233,7 +1232,7 @@ module CliffordTT where
 
 
   open PB (SXζHH._===_) renaming (Alphabet to SXζ ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9)) )) using (by-equal-nf)
+  open SNF.NormalFormInjective (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9)) )) using (by-equal-nf)
   open PB _===_ renaming (Alphabet to CliffordTHH) using (_≈_)
   open SXζHH renaming (ζ to ζ' ; S to S' ; X to X' ; Z to Z' ; HH to HH') using ()
   
@@ -1523,7 +1522,7 @@ module CliffordTT where
   module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open cosetTheorems using (nfp ; nfp') public
   
-  open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
+  open SNF.NormalFormInjective (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) renaming (by-equal-nf to by-nf) using ()
 
   I : CT
   I = inj₂ tt
@@ -1625,7 +1624,7 @@ module CliffordH where
     comm : ∀ {gen} → ζ • [ gen ]ʷ === [ gen ]ʷ • ζ
 
   open PB (SXζHH._===_) renaming (Alphabet to SXζ ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9)))) using (by-equal-nf)
+  open SNF.NormalFormInjective (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9)))) using (by-equal-nf)
   open PB _===_ renaming (Alphabet to CliffordH) using (_≈_)
   open SXζHH renaming (ζ to ζ' ; S to S' ; X to X' ; Z to Z' ; HH to HH') using ()
 
@@ -2000,7 +1999,7 @@ module CliffordH where
   module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open cosetTheorems using (nfp ; nfp') public
   
-  open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9) )))) renaming (by-equal-nf to by-nf) using ()
+  open SNF.NormalFormInjective (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9) )))) renaming (by-equal-nf to by-nf) using ()
 
   hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h ᵗ) (inj₁ c) (f m)) ≡ (w , inj₁ c')
   hcme HSS-cr SXζHH.HH-gen = X' • X' • HH' , HSS-cr , Eq.refl
@@ -2163,7 +2162,7 @@ module CliffordT1 where
   open PB amalPres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 
   
-  open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
+  open SNF.NormalFormInjective (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
 
   open import Algebra.Bundles using (Monoid)
   open import Algebra.Morphism.Structures using (module MonoidMorphisms)
@@ -2674,7 +2673,7 @@ module CliffordT1-Simplified where
 --  open PB _===_ renaming (_===_ to _===₁_ ; _≈_ to _≈_) using ()
 
   
-  open NFBase.NormalFormWithoutInverse (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
+  open SNF.NormalFormInjective (nfp (SXζHH.nfp (SXζ.nfp (Sζ.nfp (Cyclic.nfp 9))))) using (by-equal-nf)
 
   open import Algebra.Bundles using (Monoid)
   open import Algebra.Morphism.Structures using (module MonoidMorphisms)

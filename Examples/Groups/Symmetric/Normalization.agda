@@ -28,8 +28,9 @@ open import Word.Base
 open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Normalization.Base as NFBase
-open NFBase using (NormalFormWithoutInverse ; NormalForm)
+import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
+open NFBase using (NormalFormInjective ; NormalForm)
 import Normalization.CosetNF as CosetNF
 
 open import Notations
@@ -413,13 +414,15 @@ ext k = record
 
 -- S₀ is trivial: Gen 0 is empty, so ⊤ is the normal form and
 -- singleton collapses every word to ε.
-base0' : NormalForm (_VRel,_===_ 0)
+base0' : NormalForm (_VRel,_===_ 0) ⊤
 base0' = record
-  { NF           = ⊤
-  ; nf           = λ _ → tt
-  ; nf-cong      = λ _ → Eq.refl
-  ; inv-nf       = λ _ → ε
-  ; inv-nf∘nf=id = λ {w} → sym (singleton {w})
+  { rightInverse = record
+      { to        = λ _ → tt
+      ; from      = λ _ → ε
+      ; to-cong   = λ _ → Eq.refl
+      ; from-cong = λ { Eq.refl → refl }
+      ; inverseʳ  = λ { Eq.refl → sym singleton }
+      }
   }
   where
   open PB (_VRel,_===_ 0)
@@ -429,13 +432,15 @@ base0' = record
 
 -- S₁ is trivial as well: Gen 1 has no inhabitants, so every word
 -- again collapses to ε.
-base1' : NormalForm (_VRel,_===_ 1)
+base1' : NormalForm (_VRel,_===_ 1) ⊤
 base1' = record
-  { NF           = ⊤
-  ; nf           = λ _ → tt
-  ; nf-cong      = λ _ → Eq.refl
-  ; inv-nf       = λ _ → ε
-  ; inv-nf∘nf=id = λ {w} → sym (singleton {w})
+  { rightInverse = record
+      { to        = λ _ → tt
+      ; from      = λ _ → ε
+      ; to-cong   = λ _ → Eq.refl
+      ; from-cong = λ { Eq.refl → refl }
+      ; inverseʳ  = λ { Eq.refl → sym singleton }
+      }
   }
   where
   open PB (_VRel,_===_ 1)
@@ -448,36 +453,39 @@ base1' = record
 -- The main construction: a normal form for every Sₙ, obtained by
 -- folding the Extension up the coset tower from the trivial base
 -- cases.
-nfp'-t : ∀ n → NormalForm (_VRel,_===_ n)
+-- The tower carrier: ⊤ at levels 0 and 1, extended by one coset factor
+-- C (₁₊ k) at each higher level (folded up by T.tower-carrier).
+NF : ℕ → Set
+NF 0       = ⊤
+NF (suc k) = T.tower-carrier ⊤ k
+
+nfp'-t : ∀ n → NormalForm (_VRel,_===_ n) (NF n)
 nfp'-t 0       = base0'
 nfp'-t (suc k) = T.nfp'-tower ext base1' k
 
 ------------------------------------------------------------------------
--- Normal form, its inverse, and the NormalFormWithoutInverse witnesses
+-- Normal form, its inverse, and the NormalFormInjective witnesses
 --
 -- nf-of, inv-nf and NF are the coset tower's canonical normal-form
 -- data.  Note inv-nf uses the word-lift (f ʷ) rather than _↑; the two
 -- agree up to Word.Properties.wconcatmap-[f]ʷ.
 
-NF : ℕ → Set
-NF n = NormalForm.NF (nfp'-t n)
-
 nf-of : Circuit n → NF n
-nf-of {n} = NormalForm.nf (nfp'-t n)
+nf-of {n} = SNF.NormalForm.nf (nfp'-t n)
 
 inv-nf : NF n → Circuit n
-inv-nf {n} = NormalForm.inv-nf (nfp'-t n)
+inv-nf {n} = SNF.NormalForm.inv-nf (nfp'-t n)
 
-nfp : (n : ℕ) → NormalFormWithoutInverse (_VRel,_===_ n)
-nfp n = NormalForm.hasNormalFormWithoutInverse (nfp'-t n)
+nfp : (n : ℕ) → NormalFormInjective (_VRel,_===_ n) (NF n)
+nfp n = SNF.NormalForm.normalFormInjective (nfp'-t n)
 
 nf-cong : ∀ {n} → let _≈_ = PB._≈_ (_VRel,_===_ n) in
   Homomorphic₂ _≈_ _≡_ (nf-of {n})
-nf-cong {n} = NormalForm.nf-cong (nfp'-t n)
+nf-cong {n} = SNF.NormalForm.nf-cong (nfp'-t n)
 
 inv-nf∘nf≈id : (n : ℕ) → let _≈_ = PB._≈_ (_VRel,_===_ n) in {w : Circuit n} →
   inv-nf {n} (nf-of w) ≈ w
-inv-nf∘nf≈id n = NormalForm.inv-nf∘nf=id (nfp'-t n)
+inv-nf∘nf≈id n = SNF.NormalForm.inv-nf∘nf=id (nfp'-t n)
 
 ------------------------------------------------------------------------
 -- Decidable equality on normal forms

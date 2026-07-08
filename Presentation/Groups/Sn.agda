@@ -28,8 +28,9 @@ open import Data.Unit using (⊤ ; tt)
 open import Word.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Normalization.Base as NFBase
-open NFBase using (NormalFormWithoutInverse ; NormalForm)
+import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
+open NFBase using (NormalFormInjective ; NormalForm)
 
 import Normalization.CosetNF as CA
 import Normalization.Reidemeister-Schreier as RS
@@ -414,21 +415,22 @@ mutual
 
     f = nf-of {₁₊ n}
 
-    p0 : NormalFormWithoutInverse (pres n)
-    p0 = record { NF = NF n ; nf = nf-of ; nf-cong = nf-cong ; nf-injective = nf-injective }
+    p0 : NormalFormInjective (pres n) (NF n)
+    p0 = record
+      { injection = record { to = nf-of ; cong = nf-cong ; injective = nf-injective } }
 
     open PB (pres n) renaming (_≈_ to _≈₀_) using ()
     
     module M = CA.SingleLevel (pres n) (pres (₁₊ n)) (C (₁₊ n)) ε ([_]ʷ ∘ _ₛ) ract [_]
 
-    nfp-1 : NormalFormWithoutInverse (pres (₁₊ n))
+    nfp-1 : NormalFormInjective (pres (₁₊ n)) (NF (₁₊ n))
     nfp-1 = M.Transfer.nfp (λ x₁ → _≈₀_.refl , Eq.refl) ⁻¹[⇑]-wd'' ((λ x₁ → axiom (congₛ x₁))) _≈_.refl ract-sound p0
 
     open PP (pres (₁₊ n))
     open SR word-setoid
 
     f-inj :  ∀ {a b} → f a ≡ f b → a ≈ b
-    f-inj {a} {b} = NormalFormWithoutInverse.nf-injective nfp-1 
+    f-inj {a} {b} = SNF.NormalFormInjective.nf-injective nfp-1
   
   nf-cong : ∀ {n} →
     let _≈_ = PB._≈_ (pres n) in
@@ -475,8 +477,9 @@ mutual
     f-cong2 : ∀ {a b} → a ≈ b → f a ~ f b
     f-cong2 {a} {b} eq = RSA.lemma-hypB ([_]ʷ ∘ _ₛ) ract ⁻¹[⇑]-gen'  ⁻¹[⇑]-wd'' ε _ _ eq
 
-nfp : (n : ℕ) → NormalFormWithoutInverse (pres n)
-nfp n = record { NF = NF n ; nf = nf-of ; nf-cong = nf-cong ; nf-injective = nf-injective }
+nfp : (n : ℕ) → NormalFormInjective (pres n) (NF n)
+nfp n = record
+  { injection = record { to = nf-of ; cong = nf-cong ; injective = nf-injective } }
 
 inv-f : (n : ℕ) → NF n → Word (X n)
 inv-f zero = λ z → ε
@@ -500,6 +503,14 @@ inv-f∘nf-of≈id (₁₊ n) {w} = let (l , r) = racts ε w in begin
     open SR word-setoid
        
 
-nfp' : (n : ℕ) → NormalForm (pres n)
+nfp' : (n : ℕ) → NormalForm (pres n) (NF n)
 nfp' n = record
-              { NF = NF n ; nf = nf-of ; nf-cong = nf-cong ; inv-nf = inv-f n ; inv-nf∘nf=id = inv-f∘nf-of≈id n }
+  { rightInverse = record
+      { to        = nf-of
+      ; from      = inv-f n
+      ; to-cong   = nf-cong
+      ; from-cong = λ { Eq.refl → refl }
+      ; inverseʳ  = λ { Eq.refl → inv-f∘nf-of≈id n }
+      }
+  }
+  where open PB (pres n) using (refl)

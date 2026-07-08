@@ -48,7 +48,8 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 - **`Base.agda`**: parameterised by `Gate : ℕ → Set`. Wire-indexed generators `Gen`, `Circuit n = Word (Gen n)`, shifts `_↑`/`_↥ᵏ_`, and `Lift-Relation` extending any gate relation with the structural rules `cong↑`, `comm₁`, `comm₂`.
 
 ### Layer — Normalization (`Normalization/`)
-- **`Base.agda`**: parameterised by `Γ : WRel X`. The normal-form witnesses `NormalFormWithoutInverse`, `NormalForm`, `BijectiveNormalForm`, `WeakNormalForm`; `UniqueNormalForm` and `by-normalization` (soundness + unique NF ⇒ completeness).
+- **`NormalForm/Setoid.agda`**: setoid-valued normal-form witnesses on the stdlib `Function.Bundles` — `NormalFormInjective` = `Injection`, `BijectiveNormalForm` = `Bijection`, `NormalForm` = `RightInverse` (maps `word-setoid ⟶ₛ NF`) — plus `WeakNormalForm`, `UniqueNormalForm`, `by-normalization` (soundness + unique NF ⇒ completeness).
+- **`NormalForm/Propositional.agda`**: `Normalization.NormalForm.Setoid Γ (setoid B)` re-exported for a plain carrier set `B` (an explicit module parameter) — the witnesses land in `≡` on `B` and all derivations are inherited. Types read `NormalForm Γ B` / `NormalFormInjective Γ B`. Because the re-export fixes the codomain to `setoid B`, the witnesses are function-aliases here, not record names: **opening or projecting a witness value goes through `Normalization.NormalForm.Setoid` directly (imported `as SNF`)** — e.g. `open SNF.NormalForm nfp renaming (…)` — while `Propositional` is used only for the `Γ B` types and record construction.
 - **`Reidemeister-Schreier.agda`**: the injectivity/surjectivity engine. `Star-Injective-Simplified` proves `(f ʷ)` injective given a left inverse on generators; `Star-Injective-Full` (and its setoid variant) does coset enumeration and provides the Schreier section, right/left normal forms.
 - **`CosetNF.agda`**: coset normal forms via Reidemeister–Schreier: `lemma-ᵗ-act` (letters-to-words action law), `module SingleLevel` (one level), `CosetTable` / `PackedCosetTable` (coset tables with a distinguished identity coset), `CosetTower` (iterate up an ℕ-indexed family).
 
@@ -70,7 +71,7 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 - `[_]ʷ` injects a generator into `Word`. `[_]ₗ`/`[_]ᵣ` are left/right embeddings in products.
 - `(f ʷ)` extends `f : X → Word Y` to `Word X → Word Y` (postfix `_ʷ` = `wconcatmap`).
 - `(h ᵗ)` extends a coset action `h : C → Y → Word X × C` to words, threading the coset.
-- `nfp` (`NormalFormWithoutInverse`) and `nfp'` (`NormalForm`) are the standard names for normal-form witnesses.
+- `nfp` (`NormalFormInjective`) and `nfp'` (`NormalForm`) are the standard names for normal-form witnesses.
 - `by-equal-nf` proves `w ≈ v` from `nf w ≡ nf v`; `by-assoc` proves `w ≈ v` from `to-list w ≡ to-list v`; `by-passoc` re-brackets guided by pattern words built from `□`.
 - Files follow the agda-stdlib style guide (see `style-guide.md`): 72-char banner headers with library line `-- Presentations of groups`, `{-# OPTIONS --safe #-}`, imports sorted with `using` lists, `private variable` blocks, sentence-case section separators.
 - `Examples/Groups/Symmetric/Theorems.agda` is the style exemplar: it re-states the main theorems with definitions imported openly and proofs imported qualified.

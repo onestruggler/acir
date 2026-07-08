@@ -10,6 +10,7 @@
 module Presentation.Groups.SnD where
 
 open import Data.Nat using (ℕ ; zero)
+open import Data.Product using (_×_)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Unit using (⊤ ; tt)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
@@ -18,7 +19,7 @@ open import Notations
 open import Word.Base
 
 import Presentation.Base as PB
-open import Normalization.Base using (NormalFormWithoutInverse ; NormalForm)
+open import Normalization.NormalForm.Propositional using (NormalFormInjective ; NormalForm)
 open import Presentation.Construct.Base
 import Presentation.Construct.Properties.NDirectProduct as NDP
 import Presentation.Construct.Properties.SemiDirectProduct as SDP0
@@ -139,16 +140,21 @@ conj-hypn (₂₊ k) (c ₛ) {w} {v} (mid (comm a b)) = PB.axiom (mid (comm tt (
 pres-SnD : (k : ℕ) → WRel (⊤ ⊎^ ₁₊ k ⊎ X k)
 pres-SnD k = C^n (₁₊ k) ⋊ Sn.rel k ⋆ conj k
 
+-- Carrier of the wreath-product normal form: the (₁₊ k)-fold product of
+-- ℤ/Nℤ carriers paired with Sₖ's carrier.
+SnD-NF : ℕ → Set
+SnD-NF k = NDP.⊗-carrier (Cyclic.pres N) (₁₊ k) (Cyclic.NF N) × Sn.NF k
+
 -- Normal form of the wreath product, from the base's n-fold product
 -- normal form and Sₙ's normal form via the semidirect construction.
-nfp : (k : ℕ) → NormalFormWithoutInverse (C^n (₁₊ k) ⋊ Sn.rel k ⋆ conj k)
+nfp : (k : ℕ) → NormalFormInjective (C^n (₁₊ k) ⋊ Sn.rel k ⋆ conj k) (SnD-NF k)
 nfp k = NFP0.nfp (NDP.nfp (Cyclic.pres N) (₁₊ k) (Cyclic.nfp N)) (Sn.nfp k)
   where
   module SDP = SDP0 (C^n (₁₊ k)) (Sn.rel k) (conj k)
   module NFP0 = SDP.NFP (conj-hyph k) (conj-hypn k)
 
 -- Like nfp, but also carrying the section.
-nfp' : (k : ℕ) → NormalForm (C^n (₁₊ k) ⋊ Sn.rel k ⋆ conj k)
+nfp' : (k : ℕ) → NormalForm (C^n (₁₊ k) ⋊ Sn.rel k ⋆ conj k) (SnD-NF k)
 nfp' k = NFP'0.nfp' (NDP.nfp' (Cyclic.pres N) (₁₊ k) (Cyclic.nfp' N)) (Sn.nfp' k)
   where
   module SDP = SDP0 (C^n (₁₊ k)) (Sn.rel k) (conj k)

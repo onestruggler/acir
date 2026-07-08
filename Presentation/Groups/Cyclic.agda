@@ -22,8 +22,9 @@ open import Notations
 
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Normalization.Base as NFBase
-open NFBase using (NormalFormWithoutInverse ; NormalForm)
+import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
+open NFBase using (NormalFormInjective ; NormalForm)
 open import Word.Base hiding (wfoldl)
 
 ------------------------------------------------------------------------
@@ -263,11 +264,19 @@ f-cong : ∀ {N} → let _≈_ = PB._≈_ (pres (N)) in
 f-cong {N} {w} {v} = wfoldl-cong z
 
 
-nfp' : (n : ℕ) → NormalForm (pres n)
+nfp' : (n : ℕ) → NormalForm (pres n) (NF n)
 nfp' n = record
-           { NF = NF n ; nf = f ; nf-cong = f-cong ; inv-nf = g ; inv-nf∘nf=id = g∘f≈id }
+  { rightInverse = record
+      { to        = f
+      ; from      = g
+      ; to-cong   = f-cong
+      ; from-cong = λ { Eq.refl → refl }
+      ; inverseʳ  = λ { Eq.refl → g∘f≈id }
+      }
+  }
+  where open PB (pres n) using (refl)
 
-nfp : (n : ℕ) → NormalFormWithoutInverse (pres n)
-nfp n = NormalForm.hasNormalFormWithoutInverse (nfp' n)
+nfp : (n : ℕ) → NormalFormInjective (pres n) (NF n)
+nfp n = SNF.NormalForm.normalFormInjective (nfp' n)
 
 

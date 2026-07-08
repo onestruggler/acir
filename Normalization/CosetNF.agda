@@ -43,8 +43,9 @@ open import Normalization.Reidemeister-Schreier
 
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Normalization.Base as NFBase
-open NFBase using (NormalFormWithoutInverse ; NormalForm)
+import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
+open NFBase using (NormalFormInjective ; NormalForm)
 
 module Normalization.CosetNF where
 
@@ -177,7 +178,7 @@ module SingleLevel
 
     -- f ʷ is well-defined for ≈ of Γ.
     f-wd : ∀ {w v} → w ≈₁ v → (f ʷ) w ≈₂ (f ʷ) v
-    f-wd {w} {v} eqv = RA.[]ₓ-wd eqv
+    f-wd {w} {v} eqv = fʷ-cong eqv
 
 
     -- nf is injective: it faithfully records a word up to ≈.
@@ -212,10 +213,11 @@ module SingleLevel
     -- Transport a normal form for Γ to one for Δ, extending the
     -- normal-form carrier by the coset index:  NF_Δ = NF_Γ × C.
     -- (nf' = normalise the Word X component, keep the coset.)
-    nfp : NormalFormWithoutInverse Γ → NormalFormWithoutInverse Δ
-    nfp nfp1 = record { NF = NF₁ × C ; nf = nf' ; nf-cong = nf'-cong ; nf-injective = nf'-inj }
+    nfp : ∀ {NF₁} → NormalFormInjective Γ NF₁ → NormalFormInjective Δ (NF₁ × C)
+    nfp {NF₁} nfp1 = record
+      { injection = record { to = nf' ; cong = nf'-cong ; injective = nf'-inj } }
       where
-        open NormalFormWithoutInverse nfp1 renaming (NF to NF₁ ; nf to f₁ ; nf-cong to f₁-cong ; nf-injective to f₁-inj) using ()
+        open SNF.NormalFormInjective nfp1 renaming (nf to f₁ ; nf-cong to f₁-cong ; nf-injective to f₁-inj) using ()
 
         nf' : Word Y → NF₁ × C
         nf' = map f₁ id ∘ nf
@@ -236,12 +238,20 @@ module SingleLevel
     -- Same transport for the inverse-carrying NormalForm.  The inverse
     -- gg (n , c) = (f ʷ)(g₁ n) • [ c ] embeds the normalised Word X part
     -- and appends the coset's section; ggnf'=id checks it inverts nf'.
-    nfp' : NormalForm Γ → NormalForm Δ
-    nfp' nfp1 = record { NF = NF₁ × C ; nf = nf' ; nf-cong = nf-cong ; inv-nf = gg ; inv-nf∘nf=id = ggnf'=id }
+    nfp' : ∀ {NF₁} → NormalForm Γ NF₁ → NormalForm Δ (NF₁ × C)
+    nfp' {NF₁} nfp1 = record
+      { rightInverse = record
+          { to        = nf'
+          ; from      = gg
+          ; to-cong   = nf-cong
+          ; from-cong = λ { Eq.refl → _≈₂_.refl }
+          ; inverseʳ  = λ { Eq.refl → ggnf'=id }
+          }
+      }
       where
-        open NormalForm nfp1 renaming (hasNormalFormWithoutInverse to nfp-Γ' ; NF to NF₁ ; nf to f₁ ; nf-cong to f₁-cong ; nf-injective to f₁-inj ; inv-nf to g₁ ; inv-nf∘nf=id to gf=id) using ()
+        open SNF.NormalForm nfp1 renaming (normalFormInjective to nfp-Γ' ; nf to f₁ ; nf-cong to f₁-cong ; nf-injective to f₁-inj ; inv-nf to g₁ ; inv-nf∘nf=id to gf=id) using ()
 
-        open NormalFormWithoutInverse (nfp nfp-Γ') renaming (nf to nf')
+        open SNF.NormalFormInjective (nfp nfp-Γ') renaming (nf to nf')
 
         gg : NF₁ × C → Word Y
         gg (n , c) = [ g₁ n ]ₓ • [ c ]
@@ -537,7 +547,7 @@ record PackedCosetTable
 --     (embedding f, coset action h, section [_], and the five
 --     Reidemeister–Schreier hypotheses) taking P n to P (suc n),
 --   * a base normal form for P 0,
--- the tower produces a normal form (NormalFormWithoutInverse / NormalForm) for
+-- the tower produces a normal form (NormalFormInjective / NormalForm) for
 -- every level P n by folding the single-level extension.
 
 module CosetTower
@@ -573,13 +583,21 @@ module CosetTower
       h=⁻¹f-gen h-wd-ax f-wd-ax [I]≈ε h=ract public
       using (nfp ; nfp')
 
+  -- The carrier grows by one coset factor per level:
+  --   carrier 0 = NF₀,  carrier (suc n) = carrier n × Cᶜ n.
+  tower-carrier : Set → ℕ → Set
+  tower-carrier NF₀ zero    = NF₀
+  tower-carrier NF₀ (suc n) = tower-carrier NF₀ n × Cᶜ n
+
   -- Fold the extensions over the tower, from a base normal form for P 0.
   module _ (ext : ∀ n → Extension n) where
 
-    nfp-tower : NormalFormWithoutInverse (P 0) → ∀ n → NormalFormWithoutInverse (P n)
+    nfp-tower : ∀ {NF₀} → NormalFormInjective (P 0) NF₀ →
+                ∀ n → NormalFormInjective (P n) (tower-carrier NF₀ n)
     nfp-tower base zero    = base
     nfp-tower base (suc n) = Extension.nfp (ext n) (nfp-tower base n)
 
-    nfp'-tower : NormalForm (P 0) → ∀ n → NormalForm (P n)
+    nfp'-tower : ∀ {NF₀} → NormalForm (P 0) NF₀ →
+                 ∀ n → NormalForm (P n) (tower-carrier NF₀ n)
     nfp'-tower base zero    = base
     nfp'-tower base (suc n) = Extension.nfp' (ext n) (nfp'-tower base n)

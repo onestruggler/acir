@@ -15,7 +15,7 @@ open import Data.Nat using (ℕ ; zero ; suc ; _+_ ; _*_)
 import Data.Nat.Properties as NP
 open import Data.Product using (_,_)
 open import Level using (0ℓ)
-open import Relation.Binary using (IsEquivalence ; Setoid)
+open import Relation.Binary using (IsEquivalence)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 import Relation.Binary.Reasoning.Setoid as SR
 
@@ -23,6 +23,7 @@ open import Notations
 
 import Presentation.Base as PB
 open import Presentation.Base Γ
+open import Presentation.Core Γ public using (word-setoid)
 
 open import Algebra.Structures {A = Word X} _≈_
 open import Algebra.Bundles using (Magma ; Semigroup ; Monoid)
@@ -35,13 +36,6 @@ open import Algebra.Bundles using (Magma ; Semigroup ; Monoid)
   { refl  = refl
   ; sym   = sym
   ; trans = trans
-  }
-
-word-setoid : Setoid 0ℓ 0ℓ
-word-setoid = record
-  { Carrier       = Word X
-  ; _≈_           = _≈_
-  ; isEquivalence = ≈-isEquivalence
   }
 
 •-isMagma : IsMagma _•_

@@ -1,13 +1,14 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Setoid-valued normal forms for a presented monoid.
+-- Setoid-valued normal forms for a presented monoid, into a fixed
+-- codomain setoid NF.
 --
--- Like Normalization.Base, but the codomain NF is a Setoid and the
--- normal-form map is a setoid morphism nf : word-setoid ⟶ₛ NF, so its
--- congruence is bundled into the map (no separate nf-cong field).  The
--- witnesses are, on the nose, the stdlib Function.Bundles:
---   NormalFormWithoutInverse  =  Injection   word-setoid NF
+-- Like Normalization.NormalForm.Propositional, but the codomain NF is a
+-- Setoid and the normal-form map is a setoid morphism nf : word-setoid
+-- ⟶ₛ NF, so its congruence is bundled into the map (no separate nf-cong
+-- field).  The witnesses are, on the nose, the stdlib Function.Bundles:
+--   NormalFormInjective  =  Injection   word-setoid NF
 --   BijectiveNormalForm       =  Bijection   word-setoid NF
 --   NormalForm                =  RightInverse word-setoid NF   (nf = to)
 -- WeakNormalForm is the exception: its anf stays a plain function (no
@@ -17,33 +18,29 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Word.Base using (WRel ; Word)
+open import Level using (0ℓ ; _⊔_)
+open import Relation.Binary using (Setoid)
 
-module Normalization.BaseSetoid {X : Set} (Γ : WRel X) where
+module Normalization.NormalForm.Setoid
+  {X : Set} (Γ : WRel X) (NF : Setoid 0ℓ 0ℓ) where
 
 open import Data.Product using (proj₁ ; proj₂)
 open import Function using (_∘_)
 open import Function.Bundles using (Injection ; Bijection ; RightInverse ; _⟶ₛ_)
-open import Level using (0ℓ ; _⊔_) renaming (suc to lsuc)
-open import Relation.Binary using (Setoid)
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary.Decidable using (via-injection)
 import Relation.Binary.Reasoning.Setoid as SR
 
 open import Presentation.Base Γ
+open import Presentation.Core Γ using (word-setoid)
 import Presentation.Definitions
 
 private
   variable
     w v : Word X
 
-  -- The setoid of words modulo ≈ (a local copy of
-  -- Presentation.Properties.word-setoid).
-  word-setoid : Setoid 0ℓ 0ℓ
-  word-setoid = record
-    { Carrier       = Word X
-    ; _≈_           = _≈_
-    ; isEquivalence = record { refl = refl ; sym = sym ; trans = trans }
-    }
+open Setoid NF public using ()
+  renaming (Carrier to |NF| ; _≈_ to _≈ₙ_ ; refl to reflₙ ; sym to symₙ ; trans to transₙ)
 
 ------------------------------------------------------------------------
 -- Normal-form witnesses
@@ -51,12 +48,10 @@ private
 -- A normal-form map is a setoid injection out of the word setoid: a
 -- morphism nfₛ = injection.function : word-setoid ⟶ₛ NF (which bundles
 -- the congruence) that is injective, so  w ≈ v  ⇔  nf w ≈ nf v.
-record NormalFormWithoutInverse : Set₁ where
+record NormalFormInjective : Set where
   field
-    NF        : Setoid 0ℓ 0ℓ
     injection : Injection word-setoid NF
 
-  open Setoid NF public using () renaming (_≈_ to _≈ₙ_)
   open Injection injection public
     using ()
     renaming (to to nf ; cong to nf-cong ; injective to nf-injective
@@ -71,15 +66,13 @@ record NormalFormWithoutInverse : Set₁ where
   ≈-dec = via-injection injection
 
 
--- Like NormalFormWithoutInverse, but the normal-form map comes with a
+-- Like NormalFormInjective, but the normal-form map comes with a
 -- section inv-nf realising every normal form as a word; this is exactly
 -- a RightInverse (inv-nf ∘ nf ≗ id), and injectivity is then derivable.
-record NormalForm : Set₁ where
+record NormalForm : Set where
   field
-    NF           : Setoid 0ℓ 0ℓ
     rightInverse : RightInverse word-setoid NF
 
-  open Setoid NF public using () renaming (_≈_ to _≈ₙ_ ; refl to reflₙ)
   open RightInverse rightInverse public
     using (inverseʳ)
     renaming (to to nf ; from to inv-nf ; to-cong to nf-cong
@@ -108,25 +101,20 @@ record NormalForm : Set₁ where
   nf-injective : nf w ≈ₙ nf v → w ≈ v
   nf-injective x = trans (sym inv-nf∘nf=id) (trans (inv-nf-cong x) inv-nf∘nf=id)
 
-  hasNormalFormWithoutInverse : NormalFormWithoutInverse
-  hasNormalFormWithoutInverse = record
-    { NF = NF
-    ; injection = record { to = nf ; cong = nf-cong ; injective = nf-injective }
-    }
+  normalFormInjective : NormalFormInjective
+  normalFormInjective = record
+    { injection = record { to = nf ; cong = nf-cong ; injective = nf-injective } }
 
-  open NormalFormWithoutInverse hasNormalFormWithoutInverse public
+  open NormalFormInjective normalFormInjective public
     using (by-equal-nf)
 
 
--- Like NormalFormWithoutInverse, but also surjective: this is exactly a
+-- Like NormalFormInjective, but also surjective: this is exactly a
 -- Bijection.  The surjection's section gives inv-nf, hence a NormalForm.
-record BijectiveNormalForm : Set₁ where
+record BijectiveNormalForm : Set where
   field
-    NF        : Setoid 0ℓ 0ℓ
     bijection : Bijection word-setoid NF
 
-  open Setoid NF public using ()
-    renaming (_≈_ to _≈ₙ_ ; sym to symₙ ; trans to transₙ)
   open Bijection bijection public
     using (surjective)
     renaming (to to nf ; cong to nf-cong ; injective to nf-injective)
@@ -134,7 +122,7 @@ record BijectiveNormalForm : Set₁ where
   nfₛ : word-setoid ⟶ₛ NF
   nfₛ = record { to = nf ; cong = nf-cong }
 
-  inv-nf : Setoid.Carrier NF → Word X
+  inv-nf : |NF| → Word X
   inv-nf y = proj₁ (surjective y)
 
   inv-nf∘nf=id : inv-nf (nf w) ≈ w
@@ -144,10 +132,9 @@ record BijectiveNormalForm : Set₁ where
   inv-nf-cong {a} {b} eq = nf-injective
     (transₙ (proj₂ (surjective a) refl) (transₙ eq (symₙ (proj₂ (surjective b) refl))))
 
-  hasNormalForm : NormalForm
-  hasNormalForm = record
-    { NF = NF
-    ; rightInverse = record
+  normalForm : NormalForm
+  normalForm = record
+    { rightInverse = record
         { to        = nf
         ; from      = inv-nf
         ; to-cong   = nf-cong
@@ -158,18 +145,15 @@ record BijectiveNormalForm : Set₁ where
     }
 
 
--- A weaker witness: an invariant into a setoid that is merely injective
--- — the map anf is a plain function (no congruence required).
-record WeakNormalForm : Set₁ where
+-- A weaker witness: an invariant into NF that is merely injective — the
+-- map anf is a plain function (no congruence required).
+record WeakNormalForm : Set where
   field
-    ANF : Setoid 0ℓ 0ℓ
-  open Setoid ANF public using () renaming (Carrier to |ANF| ; _≈_ to _≈ₐ_)
-  field
-    anf           : Word X → |ANF|
-    anf-injective : anf w ≈ₐ anf v → w ≈ v
+    anf           : Word X → |NF|
+    anf-injective : anf w ≈ₙ anf v → w ≈ v
 
   -- Prove w ≈ v by comparing invariants.
-  by-equal-anf : anf w ≈ₐ anf v → w ≈ v
+  by-equal-anf : anf w ≈ₙ anf v → w ≈ v
   by-equal-anf = anf-injective
 
 
@@ -188,12 +172,12 @@ module _ {c d} (Sem : Setoid c d)
 
   -- A normal form with inverse whose section is separated by the
   -- semantics ⟦_⟧: normal forms with equal denotations are equal.
-  record UniqueNormalForm : Set (lsuc 0ℓ ⊔ c ⊔ d) where
+  record UniqueNormalForm : Set (c ⊔ d) where
     field
       normalForm : NormalForm
     open NormalForm normalForm public
     field
-      unique : ∀ {u v : Setoid.Carrier NF} → ⟦ inv-nf u ⟧ ≈₂ ⟦ inv-nf v ⟧ → u ≈ₙ v
+      unique : ∀ {u v : |NF|} → ⟦ inv-nf u ⟧ ≈₂ ⟦ inv-nf v ⟧ → u ≈ₙ v
 
   -- Soundness together with a unique normal form gives completeness.
   by-normalization : UniqueNormalForm → Soundness ⟦_⟧ → Completeness ⟦_⟧

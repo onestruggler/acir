@@ -27,7 +27,8 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Presentation.Base as PB
 open import Presentation.Construct.Base
 open import Presentation.Properties as PP
-open import Normalization.Base using (NormalForm ; NormalFormWithoutInverse)
+open import Normalization.NormalForm.Propositional using (NormalForm ; NormalFormInjective)
+import Normalization.NormalForm.Setoid as SNF
 open import Normalization.Reidemeister-Schreier
 open import Word.Base
 open import Word.Properties
@@ -217,16 +218,17 @@ nf0-cong {w} {v} = lemma-hypB I w v
 -- normal forms is a normal form for the direct product.
 
 module NFP
-  (nfp-Γ : NormalFormWithoutInverse Γ)
-  (nfp-Δ : NormalFormWithoutInverse Δ)
+  {NF₁ NF₂ : Set}
+  (nfp-Γ : NormalFormInjective Γ NF₁)
+  (nfp-Δ : NormalFormInjective Δ NF₂)
   where
 
-  open NormalFormWithoutInverse nfp-Γ
-    renaming (NF to NF₁ ; nf to nf₁ ;
+  open SNF.NormalFormInjective nfp-Γ
+    renaming (nf to nf₁ ;
               nf-injective to nf₁-inj ; nf-cong to nf₁-cong)
     using ()
-  open NormalFormWithoutInverse nfp-Δ
-    renaming (NF to NF₂ ; nf to nf₂ ;
+  open SNF.NormalFormInjective nfp-Δ
+    renaming (nf to nf₂ ;
               nf-injective to nf₂-inj ; nf-cong to nf₂-cong)
     using ()
 
@@ -248,12 +250,13 @@ module NFP
       (FCC.congruent _≈₃_ _~_ (PW.Pointwise _≡_ _≡_)
         nf0-cong (map nf₁-cong nf₂-cong) eq)
 
-  nfp : NormalFormWithoutInverse (Γ ⋄ Δ ⋄ CommRel)
+  nfp : NormalFormInjective (Γ ⋄ Δ ⋄ CommRel) (NF₁ × NF₂)
   nfp = record
-    { NF           = NF₁ × NF₂
-    ; nf           = nf
-    ; nf-cong      = nf-cong
-    ; nf-injective = nf-inj
+    { injection = record
+        { to        = nf
+        ; cong      = nf-cong
+        ; injective = nf-inj
+        }
     }
 
 ------------------------------------------------------------------------
@@ -264,23 +267,24 @@ module NFP
 -- multiplying the two inverses.
 
 module NFP'
-  (nfp-Γ : NormalForm Γ)
-  (nfp-Δ : NormalForm Δ)
+  {NF₁ NF₂ : Set}
+  (nfp-Γ : NormalForm Γ NF₁)
+  (nfp-Δ : NormalForm Δ NF₂)
   where
 
-  open NormalForm nfp-Γ
-    renaming (hasNormalFormWithoutInverse to nfp-Γ' ; NF to NF₁ ;
+  open SNF.NormalForm nfp-Γ
+    renaming (normalFormInjective to nfp-Γ' ;
               nf to nf₁ ; nf-injective to nf₁-inj ; nf-cong to nf₁-cong ;
               inv-nf to inv-nf₁ ; inv-nf∘nf=id to inv-nf₁∘nf₁=id)
     using ()
-  open NormalForm nfp-Δ
-    renaming (hasNormalFormWithoutInverse to nfp-Δ' ; NF to NF₂ ;
+  open SNF.NormalForm nfp-Δ
+    renaming (normalFormInjective to nfp-Δ' ;
               nf to nf₂ ; nf-injective to nf₂-inj ; nf-cong to nf₂-cong ;
               inv-nf to inv-nf₂ ; inv-nf∘nf=id to inv-nf₂∘nf₂=id)
     using ()
 
   open NFP nfp-Γ' nfp-Δ' using (nfp)
-  open NormalFormWithoutInverse nfp
+  open SNF.NormalFormInjective nfp
 
   -- The inverse of the pair normal form: embed both components and
   -- multiply.
@@ -316,7 +320,14 @@ module NFP'
     where
       open SR word-setoid₃
 
-  nfp' : NormalForm (Γ ⋄ Δ ⋄ CommRel)
+  nfp' : NormalForm (Γ ⋄ Δ ⋄ CommRel) (NF₁ × NF₂)
   nfp' = record
-           { NF = NF ; nf = nf ; nf-cong = nf-cong ; inv-nf = gg ; inv-nf∘nf=id = ggnf=id }
+    { rightInverse = record
+        { to        = nf
+        ; from      = gg
+        ; to-cong   = nf-cong
+        ; from-cong = λ { Eq.refl → refl }
+        ; inverseʳ  = λ { Eq.refl → ggnf=id }
+        }
+    }
 

@@ -22,8 +22,9 @@ open import Word.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Presentation.Tactic.AssociativitySolver as AS
-import Normalization.Base as NFBase
-open NFBase using (NormalFormWithoutInverse ; NormalForm)
+import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
+open NFBase using (NormalFormInjective ; NormalForm)
 import Normalization.CosetNF as CA
 open CA using (PackedCosetTable)
 
@@ -43,12 +44,12 @@ module Sω where
   PS : WRel Cyclic.X
   PS = Cyclic.rel 4
 
-  nfp : NormalFormWithoutInverse (Pω ⊕ PS)
+  nfp : NormalFormInjective (Pω ⊕ PS) (Cyclic.NF 8 × Cyclic.NF 4)
   nfp = DNF.NFP.nfp (Cyclic.nfp 8) (Cyclic.nfp 4)
     where
     module DNF = DP Pω PS
 
-  nfp' : NormalForm (Pω ⊕ PS)
+  nfp' : NormalForm (Pω ⊕ PS) (Cyclic.NF 8 × Cyclic.NF 4)
   nfp' = DNF.NFP'.nfp' (Cyclic.nfp' 8) (Cyclic.nfp' 4)
     where
     module DNF = DP Pω PS
@@ -90,7 +91,7 @@ module XSω where
 
   open Sω using (Pω ; PS)
   open PB (Pω ⊕ PS) renaming (Alphabet to Sω ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse Sω.nfp using (by-equal-nf)
+  open SNF.NormalFormInjective Sω.nfp using (by-equal-nf)
 
   open PB _===_ renaming (Alphabet to XSω) using (_≈_)
 
@@ -227,7 +228,7 @@ module Clifford where
 
 
   open PB (XSω._===_) renaming (Alphabet to XSω ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (XSω.nfp Sω.nfp) using (by-equal-nf)
+  open SNF.NormalFormInjective (XSω.nfp Sω.nfp) using (by-equal-nf)
   open PB _===_ renaming (Alphabet to Clifford) using (_≈_)
 
   open _≈_
@@ -480,7 +481,7 @@ module Clifford where
   module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open cosetTheorems using (nfp ; nfp') public
 
-  open NFBase.NormalFormWithoutInverse (nfp (XSω.nfp Sω.nfp)) renaming (by-equal-nf to by-nf) using ()
+  open SNF.NormalFormInjective (nfp (XSω.nfp Sω.nfp)) renaming (by-equal-nf to by-nf) using ()
 
   hcme : ∀ c m → ∃ \ w → ∃ \ c' → ((h ᵗ) (inj₁ c) (f m)) ≡ (w , inj₁ c')
   hcme HS-cr XSω.X-gen = XSω.ω ^ 2 • XSω.S ^ 2 • XSω.X , HS-cr , Eq.refl
@@ -555,7 +556,7 @@ module TXSω where
 
 
   open PB (XSω._===_) renaming (Alphabet to XSω ; _===_ to _===₀_ ; _≈_ to _≈₀_) using ()
-  open NormalFormWithoutInverse (XSω.nfp Sω.nfp) using (by-equal-nf)
+  open SNF.NormalFormInjective (XSω.nfp Sω.nfp) using (by-equal-nf)
   open PB _===_ renaming (Alphabet to Clifford) using (_≈_)
 
   open _≈_
@@ -728,7 +729,7 @@ module TXSω where
   module cosetTheorems = cosetData.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax _≈_.refl h-hyp
   open cosetTheorems using (nfp ; nfp') public
 
-  open NFBase.NormalFormWithoutInverse (nfp (XSω.nfp Sω.nfp)) renaming (by-equal-nf to by-nf) using ()
+  open SNF.NormalFormInjective (nfp (XSω.nfp Sω.nfp)) renaming (by-equal-nf to by-nf) using ()
 
   I : CT
   I = inj₂ tt
@@ -835,7 +836,7 @@ module CliffordT1 where
   open PB amalPres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 
 
-  open NormalFormWithoutInverse (nfp (XSω.nfp Sω.nfp)) using (by-equal-nf)
+  open SNF.NormalFormInjective (nfp (XSω.nfp Sω.nfp)) using (by-equal-nf)
 
   open import Algebra.Bundles using (Monoid)
   open import Algebra.Morphism.Structures using (module MonoidMorphisms)

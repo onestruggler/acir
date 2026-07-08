@@ -19,10 +19,10 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Examples.Groups.Symmetric.Cosets
 open import Examples.Groups.Symmetric.Loose.Semantics
 open import Examples.Groups.Symmetric.Normalization
-  using (nf-of ; NF ; inv-nf ; nf-cong ; inv-nf∘nf≈id)
+  using (nf-of ; NF ; inv-nf ; nf-cong ; inv-nf∘nf≈id ; nfp'-t)
 open import Examples.Groups.Symmetric.Syntactics
 open import Notations
-import Normalization.Base as NFBase
+import Normalization.NormalForm.Propositional as NFBase
 open import Word.Base using (_•_)
 open import Word.Properties using (wconcatmap-[f]ʷ)
 
@@ -145,10 +145,8 @@ private
 -- the endofunction semantics: the NormalForm witness is packaged together
 -- with uniqueness, given by ⟦inv-nf⟧-injective.
 unique-nf : ∀ n →
-  NFBase.UniqueNormalForm (_VRel,_===_ n) (Endo-setoid n) (⟦_⟧ {n})
+  NFBase.UniqueNormalForm (_VRel,_===_ n) (NF n) (Endo-setoid n) (⟦_⟧ {n})
 unique-nf n = record
-  { normalForm = record
-      { NF = NF n ; nf = nf-of ; nf-cong = nf-cong
-      ; inv-nf = inv-nf ; inv-nf∘nf=id = inv-nf∘nf≈id n }
+  { normalForm = nfp'-t n
   ; unique = ⟦inv-nf⟧-injective n
   }

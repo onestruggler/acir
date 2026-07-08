@@ -33,7 +33,8 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Presentation.Base as PB
 open import Presentation.Construct.Base
 open import Presentation.Properties as PP
-open import Normalization.Base using (NormalForm ; NormalFormWithoutInverse)
+open import Normalization.NormalForm.Propositional using (NormalForm ; NormalFormInjective)
+import Normalization.NormalForm.Setoid as SNF
 open import Normalization.Reidemeister-Schreier
 open import Word.Properties
 
@@ -301,19 +302,20 @@ module _
   -- coset, obtained from the Reidemeister-Schreier construction.
   nf0 = anf
 
-  -- Builds a NormalFormWithoutInverse for the semi-direct product from
-  -- NormalFormWithoutInverse witnesses for the two factors.
+  -- Builds a NormalFormInjective for the semi-direct product from
+  -- NormalFormInjective witnesses for the two factors.
   module NFP
-    (nfp-Γ : NormalFormWithoutInverse Γ)
-    (nfp-Δ : NormalFormWithoutInverse Δ)
+    {NF₁ NF₂ : Set}
+    (nfp-Γ : NormalFormInjective Γ NF₁)
+    (nfp-Δ : NormalFormInjective Δ NF₂)
     where
 
-    open NormalFormWithoutInverse nfp-Γ renaming
-      (NF to NF₁ ; nf to nf₁ ; nf-injective to nf₁-inj ;
+    open SNF.NormalFormInjective nfp-Γ renaming
+      (nf to nf₁ ; nf-injective to nf₁-inj ;
        nf-cong to nf₁-cong)
       using ()
-    open NormalFormWithoutInverse nfp-Δ renaming
-      (NF to NF₂ ; nf to nf₂ ; nf-injective to nf₂-inj ;
+    open SNF.NormalFormInjective nfp-Δ renaming
+      (nf to nf₂ ; nf-injective to nf₂-inj ;
        nf-cong to nf₂-cong)
       using ()
 
@@ -340,29 +342,30 @@ module _
 
     -- The headline export: a normal form (without inverse) for the
     -- semi-direct product.
-    nfp : NormalFormWithoutInverse (Γ ⋄ Δ ⋄ ConjRelʷ conj)
-    nfp = record { NF = NF₁ × NF₂ ; nf = nf ; nf-cong = nf-cong ; nf-injective = nf-inj }
+    nfp : NormalFormInjective (Γ ⋄ Δ ⋄ ConjRelʷ conj) (NF₁ × NF₂)
+    nfp = record { injection = record { to = nf ; cong = nf-cong ; injective = nf-inj } }
 
   -- Builds a NormalForm (with inverse) for the semi-direct product
   -- from NormalForm witnesses for the two factors.
   module NFP'
-    (nfp-Γ : NormalForm Γ)
-    (nfp-Δ : NormalForm Δ)
+    {NF₁ NF₂ : Set}
+    (nfp-Γ : NormalForm Γ NF₁)
+    (nfp-Δ : NormalForm Δ NF₂)
     where
 
-    open NormalForm nfp-Γ renaming
-      (hasNormalFormWithoutInverse to nfp-Γ' ; NF to NF₁ ; nf to nf₁ ;
+    open SNF.NormalForm nfp-Γ renaming
+      (normalFormInjective to nfp-Γ' ; nf to nf₁ ;
        nf-injective to nf₁-inj ; nf-cong to nf₁-cong ;
        inv-nf to inv-nf₁ ; inv-nf∘nf=id to inv-nf₁∘nf₁=id)
       using ()
-    open NormalForm nfp-Δ renaming
-      (hasNormalFormWithoutInverse to nfp-Δ' ; NF to NF₂ ; nf to nf₂ ;
+    open SNF.NormalForm nfp-Δ renaming
+      (normalFormInjective to nfp-Δ' ; nf to nf₂ ;
        nf-injective to nf₂-inj ; nf-cong to nf₂-cong ;
        inv-nf to inv-nf₂ ; inv-nf∘nf=id to inv-nf₂∘nf₂=id)
       using ()
 
     open NFP nfp-Γ' nfp-Δ' using (nfp)
-    open NormalFormWithoutInverse nfp
+    open SNF.NormalFormInjective nfp
 
     -- The inverse normal form, assembled from the factors' inv-nf
     -- functions.
@@ -399,7 +402,14 @@ module _
 
     -- The headline export: a normal form (with inverse) for the
     -- semi-direct product.
-    nfp' : NormalForm (Γ ⋄ Δ ⋄ ConjRelʷ conj)
+    nfp' : NormalForm (Γ ⋄ Δ ⋄ ConjRelʷ conj) (NF₁ × NF₂)
     nfp' = record
-             { NF = NF ; nf = nf ; nf-cong = nf-cong ; inv-nf = gg ; inv-nf∘nf=id = ggnf=id }
+      { rightInverse = record
+          { to        = nf
+          ; from      = gg
+          ; to-cong   = nf-cong
+          ; from-cong = λ { Eq.refl → refl }
+          ; inverseʳ  = λ { Eq.refl → ggnf=id }
+          }
+      }
 

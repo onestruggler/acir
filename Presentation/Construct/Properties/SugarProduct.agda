@@ -26,7 +26,8 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open import Normalization.Base using (NormalFormWithoutInverse ; NormalForm)
+open import Normalization.NormalForm.Propositional using (NormalFormInjective ; NormalForm)
+import Normalization.NormalForm.Setoid as SNF
 open import Normalization.Reidemeister-Schreier
 open import Presentation.Construct.Base
 
@@ -105,10 +106,11 @@ module _
 
   -- A normal form for Δ transports to the sugar product: normalise
   -- the desugaring.
-  nfp : NormalFormWithoutInverse Δ → NormalFormWithoutInverse (Γ ⋄ Δ ⋄ SugarRel f)
-  nfp p = record { NF = NF ; nf = nf ∘ (to-right ʷ) ; nf-cong = nf'-cong ; nf-injective = nf'-inj }
+  nfp : ∀ {NF} → NormalFormInjective Δ NF → NormalFormInjective (Γ ⋄ Δ ⋄ SugarRel f) NF
+  nfp p = record
+    { injection = record { to = nf ∘ (to-right ʷ) ; cong = nf'-cong ; injective = nf'-inj } }
     where
-    open NormalFormWithoutInverse p
+    open SNF.NormalFormInjective p
 
     nf' = nf ∘ (to-right ʷ)
 
@@ -120,11 +122,18 @@ module _
 
   -- Like nfp, but also transporting the section: realise the normal
   -- form in Δ and right-embed it.
-  nfp' : NormalForm Δ → NormalForm (Γ ⋄ Δ ⋄ SugarRel f)
-  nfp' p = record
-             { NF = NF ; nf = nf' ; nf-cong = nf'-cong ; inv-nf = inv-nf' ; inv-nf∘nf=id = inv-nf'∘nf'=id }
+  nfp' : ∀ {NF} → NormalForm Δ NF → NormalForm (Γ ⋄ Δ ⋄ SugarRel f) NF
+  nfp' {NF} p = record
+    { rightInverse = record
+        { to        = nf'
+        ; from      = inv-nf'
+        ; to-cong   = nf'-cong
+        ; from-cong = λ { Eq.refl → refl }
+        ; inverseʳ  = λ { Eq.refl → inv-nf'∘nf'=id }
+        }
+    }
     where
-    open NormalForm p
+    open SNF.NormalForm p
 
     nf' = nf ∘ (to-right ʷ)
 

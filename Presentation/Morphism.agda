@@ -21,7 +21,8 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 import Presentation.Base as PB
 open import Presentation.GroupLike
-import Normalization.Base as NFBase
+import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
 import Presentation.Properties as PP
 open import Normalization.Reidemeister-Schreier
 open import ForStdlib.Algebra.Morphism.Consequences
@@ -128,10 +129,10 @@ module WeakNormalFormTransfer
 
   -- Precomposing a normal form on Γ with wmap g yields a weak normal
   -- form on Δ.
-  weakNormalForm : NFBase.NormalFormWithoutInverse Γ → NFBase.WeakNormalForm Δ
-  weakNormalForm gp = record { ANF = NF ; anf = anf ; anf-injective = inj }
+  weakNormalForm : ∀ {NF} → NFBase.NormalFormInjective Γ NF → NFBase.WeakNormalForm Δ NF
+  weakNormalForm gp = record { anf = anf ; anf-injective = inj }
     where
-    open NFBase.NormalFormWithoutInverse gp
+    open SNF.NormalFormInjective gp
     anf = nf ∘ wmap g
     open SR setoid₂
     gʷ = wmap g

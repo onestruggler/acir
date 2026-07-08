@@ -21,7 +21,8 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 open import Function using (_∘_)
 
 open import Word.Base
-import Normalization.Base as NFBase
+import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
 import Presentation.Properties as PP
 import Presentation.Tactic.AssociativitySolver as AS
 import Presentation.Base as PB
@@ -189,10 +190,10 @@ module TwoLevel-Simplified-Amal where
     by-sub-nf : ∀ {w v} -> w ≈₀ v -> (g ʷ) w ≈ (g ʷ) v
     by-sub-nf {w} {v} eq = PP.StarCongruence.fʷ-cong _===₀_ _===_ g g-wd-ax eq
 
-    sub-nfp : NFBase.NormalFormWithoutInverse _===₀_
+    sub-nfp : NFBase.NormalFormInjective _===₀_ _
     sub-nfp = NDP.nfp (Cyclic.pres 4) 3 (Cyclic.nfp 4)
 
-    open NFBase.NormalFormWithoutInverse sub-nfp public
+    open SNF.NormalFormInjective sub-nfp public
 
     i₀' : Word M
     i₀' = [ inj₁ tt ]ʷ
@@ -295,7 +296,7 @@ module TwoLevel-Simplified-Amal where
     
     module DD = CNF.SingleLevel pres-D pres-KD C I f ract [_]
     open DD using (_~_)
-    open NFBase.NormalFormWithoutInverse (pres-D-nfp) renaming (by-equal-nf to bef) using ()
+    open SNF.NormalFormInjective (pres-D-nfp) renaming (by-equal-nf to bef) using ()
     open PB pres-KD renaming (_===_ to _===₂_ ; _≈_ to _≈₂_ ; refl' to refl'₂) using ()
     open PB pres-D renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
     open PP pres-KD renaming (word-setoid to ws₂) using ()
@@ -524,12 +525,12 @@ module TwoLevel-Simplified-Amal where
 
     -- pres-KD works on indices ₀ and ₁, the next component is i₂.
     pres-KI = pres-KD ⊕ (Cyclic.pres 4)
-    pres-KI-nfp : NFBase.NormalFormWithoutInverse pres-KI
+    pres-KI-nfp : NFBase.NormalFormInjective pres-KI _
     pres-KI-nfp = DP.NFP.nfp pres-KD (Cyclic.pres 4) (AAT.nfp pres-D-nfp) (Cyclic.nfp 4)
 
     open PB pres-KI renaming (Alphabet to B ; _===_ to _===₂_ ; _≈_ to _≈₃_) using ()
     open PB (Cyclic.pres 2) renaming (Alphabet to S ; _===_ to _===₀_) using ()
-    open NFBase.NormalFormWithoutInverse pres-KI-nfp renaming (by-equal-nf to bef') using ()
+    open SNF.NormalFormInjective pres-KI-nfp renaming (by-equal-nf to bef') using ()
 
     fs : ⊤ -> Word B
     fs tt = [ X₀₁ ]ₗ
@@ -539,7 +540,7 @@ module TwoLevel-Simplified-Amal where
     fs-wd-ax : {w v : Word Cyclic.X} → w ===₀ v → (fs ʷ) w ≈₃ (fs ʷ) v
     fs-wd-ax {.(Cyclic.T ^' 2)} {.ε} Cyclic.order = bef' Eq.refl
     
-    nfp-a : NFBase.NormalFormWithoutInverse pres'
+    nfp-a : NFBase.NormalFormInjective pres' _
     nfp-a = SP.nfp (Cyclic.pres 2) pres-KI fs fs-wd-ax pres-KI-nfp
 
     -- finally, we got all generators: K₀₁, i₀ -- i₂, and X₀₁.
@@ -673,8 +674,8 @@ module TwoLevel-Simplified-Amal where
       htme~ (inj₂ tt) = _≈₀_.refl , Eq.refl
 
       open PB
-      open NFBase.NormalFormWithoutInverse (PD.pres-nfp) using (by-equal-nf)
-      open NFBase.NormalFormWithoutInverse (M.pres-M-nfp) renaming (by-equal-nf to bef) using ()
+      open SNF.NormalFormInjective (PD.pres-nfp) using (by-equal-nf)
+      open SNF.NormalFormInjective (M.pres-M-nfp) renaming (by-equal-nf to bef) using ()
       
       hcme~ : (c : C) (m : ((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤) → [ c ]ₒ • f m ≈₁ ((f ʷ) (proj₁ (hcme c m)) • [ proj₁ (proj₂ (hcme c m)) ]ₒ)
       hcme~ X12 (inj₁ (inj₁ (inj₁ tt))) = by-equal-nf Eq.refl
@@ -874,8 +875,8 @@ module TwoLevel-Simplified-Amal where
       htme~ (inj₂ tt) = _≈₀_.refl , Eq.refl
 
       open PB
-      open NFBase.NormalFormWithoutInverse (Ki.nfp-a) using (by-equal-nf)
-      open NFBase.NormalFormWithoutInverse (M.pres-M-nfp) renaming (by-equal-nf to bef) using ()
+      open SNF.NormalFormInjective (Ki.nfp-a) using (by-equal-nf)
+      open SNF.NormalFormInjective (M.pres-M-nfp) renaming (by-equal-nf to bef) using ()
       
       hcme~ : (c : C) (m : M) → [ c ]ₒ • f m ≈₂ ((f ʷ) (proj₁ (hcme c m)) • [ proj₁ (proj₂ (hcme c m)) ]ₒ)
       hcme~ K01 (inj₁ (inj₁ (inj₁ tt))) = by-equal-nf Eq.refl
@@ -1073,7 +1074,7 @@ module TwoLevel-Simplified-Amal where
     open PP Sim._===_ renaming (•-ε-monoid to m₁ ; word-setoid to ws₁)
     open PP mypres renaming (•-ε-monoid to m₂)
 
-    open NFBase.NormalFormWithoutInverse (myANF.nfp M.pres-M-nfp) using (by-equal-nf)
+    open SNF.NormalFormInjective (myANF.nfp M.pres-M-nfp) using (by-equal-nf)
     
     open import Presentation.Morphism
 

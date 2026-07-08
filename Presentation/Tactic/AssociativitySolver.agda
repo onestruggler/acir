@@ -16,8 +16,6 @@ module Presentation.Tactic.AssociativitySolver where
 
 open import Data.List using (List ; [] ; _∷_ ; _++_)
 open import Data.Unit using (⊤ ; tt)
-open import Level using (0ℓ)
-open import Relation.Binary using (Setoid)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 import Relation.Binary.Reasoning.Setoid as SR
 
@@ -77,17 +75,7 @@ module Assoc {X : Set} (Γ : WRel X) where
 module Pattern-Assoc {X : Set} (Γ : WRel X) where
 
   open PB Γ
-
-  -- The setoid of words modulo ≈, used for the equational-reasoning
-  -- proofs below.  (Kept local to avoid a dependency cycle with
-  -- Presentation.Properties, which re-exports this module.)
-  private
-    word-setoid : Setoid 0ℓ 0ℓ
-    word-setoid = record
-      { Carrier       = Word X
-      ; _≈_           = _≈_
-      ; isEquivalence = record { refl = refl ; sym = sym ; trans = trans }
-      }
+  open import Presentation.Core Γ using (word-setoid)
 
   -- Placeholder symbol for use in pattern words, e.g. (□ • □) • □.
   □ : Word ⊤

@@ -9,12 +9,13 @@
 open import Algebra.Bundles using (Group)
 
 open import Presentation.Definitions
-import Normalization.Base as NFBase
+import Normalization.NormalForm.Propositional as NFBase
 import Presentation.Properties as PP
 
 module Examples.Groups.Symmetric.Theorems where
 
 open import Examples.Groups.Symmetric.Syntactics
+open import Examples.Groups.Symmetric.Normalization using (NF)
 
 open SubPresentation
 
@@ -30,7 +31,7 @@ module Loose where
 
   unique-nf : ∀ n →
   
-    NFBase.UniqueNormalForm (n VRel,_===_) (Endo-setoid n) (⟦_⟧ {n})
+    NFBase.UniqueNormalForm (n VRel,_===_) (NF n) (Endo-setoid n) (⟦_⟧ {n})
     
   unique-nf = LU.unique-nf
 
@@ -67,7 +68,7 @@ module Tight where
 
   unique-nf : ∀ n →
   
-    NFBase.UniqueNormalForm (n VRel,_===_) (Group.setoid (Permutation′-group n)) (⟦_⟧ {n})
+    NFBase.UniqueNormalForm (n VRel,_===_) (NF n) (Group.setoid (Permutation′-group n)) (⟦_⟧ {n})
     
   unique-nf n = TU.unique-nf-tight {n}
 

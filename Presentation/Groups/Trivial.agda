@@ -20,8 +20,8 @@ import Presentation.Base as PB
 open import Presentation.Construct.Base using (EmptyRel ; TrivialRel ; ≈ε)
 open import Presentation.Morphism
 import Presentation.Properties as PP
-import Normalization.Base as NFBase
-open NFBase using (NormalFormWithoutInverse ; NormalForm)
+import Normalization.NormalForm.Propositional as NFBase
+open NFBase using (NormalFormInjective ; NormalForm)
 
 ------------------------------------------------------------------------
 -- The trivial group over the empty alphabet
@@ -62,22 +62,25 @@ module P1 where
     b ∎
 
   -- Normal form: the one-element type ⊤.
-  nfp : NormalFormWithoutInverse EmptyRel
+  nfp : NormalFormInjective EmptyRel ⊤
   nfp = record
-    { NF           = ⊤
-    ; nf           = f
-    ; nf-cong      = λ {w} {v} z → Eq.refl
-    ; nf-injective = f-inj
+    { injection = record
+        { to        = f
+        ; cong      = λ {w} {v} z → Eq.refl
+        ; injective = f-inj
+        }
     }
 
   -- Normal form with inverse: the unique normal form maps back to ε.
-  nfp' : NormalForm EmptyRel
+  nfp' : NormalForm EmptyRel ⊤
   nfp' = record
-    { NF           = ⊤
-    ; nf           = f
-    ; nf-cong      = λ {w} {v} z → Eq.refl
-    ; inv-nf       = λ z → ε
-    ; inv-nf∘nf=id = λ {w} → sym singleton
+    { rightInverse = record
+        { to        = f
+        ; from      = λ z → ε
+        ; to-cong   = λ {w} {v} z → Eq.refl
+        ; from-cong = λ { Eq.refl → refl }
+        ; inverseʳ  = λ { Eq.refl → sym singleton }
+        }
     }
 
 ------------------------------------------------------------------------
@@ -119,22 +122,25 @@ module P2 (A : Set) where
     b ∎
 
   -- Normal form: the one-element type ⊤.
-  nfp : NormalFormWithoutInverse TrivialRel
+  nfp : NormalFormInjective TrivialRel ⊤
   nfp = record
-    { NF           = ⊤
-    ; nf           = f
-    ; nf-cong      = λ {w} {v} z → Eq.refl
-    ; nf-injective = f-inj
+    { injection = record
+        { to        = f
+        ; cong      = λ {w} {v} z → Eq.refl
+        ; injective = f-inj
+        }
     }
 
   -- Normal form with inverse: the unique normal form maps back to ε.
-  nfp' : NormalForm TrivialRel
+  nfp' : NormalForm TrivialRel ⊤
   nfp' = record
-    { NF           = ⊤
-    ; nf           = f
-    ; nf-cong      = λ {w} {v} z → Eq.refl
-    ; inv-nf       = λ z → ε
-    ; inv-nf∘nf=id = λ {w} → sym singleton
+    { rightInverse = record
+        { to        = f
+        ; from      = λ z → ε
+        ; to-cong   = λ {w} {v} z → Eq.refl
+        ; from-cong = λ { Eq.refl → refl }
+        ; inverseʳ  = λ { Eq.refl → sym singleton }
+        }
     }
 
 ------------------------------------------------------------------------
