@@ -88,7 +88,7 @@ module _
   to-right-wd {w} {v} (right {u} {v₁} x) rewrite lemma-to-right-r u | lemma-to-right-r v₁ = _≈₂_.axiom x
   to-right-wd {w} {v} (mid (desugar {m})) rewrite lemma-to-right-r (f m) = _≈₂_.refl
 
-  -- Desugaring is a congruence for the full congruence closure.
+  -- Desugaring respects the full monoid congruence _≈_.
   to-rightʷ-cong = PP.StarCongruence.fʷ-cong (Γ ⋄ Δ ⋄ SugarRel f) Δ to-right to-right-wd
 
   private module LR = LeftRightCongruence Γ Δ (SugarRel f)

@@ -33,7 +33,7 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 - **`Word/Properties.agda`**: `wmap`/`wconcat` fusion laws, `lemma-ʷ-∘`, `lemma-fʷ-w^n`, `wfoldr-cong`/`wfoldl-cong`, and `≡-dec` (decidable equality of words).
 
 ### Layer 2 — Group presentations (`Presentation/`)
-- **`Base.agda`**: parameterised by `Γ : WRel X`. `_===_` is the raw relation; `_≈_` its congruence closure (refl/sym/trans/cong/assoc/left-unit/right-unit/axiom); `refl'` lifts `_≡_`; combinators `cleft_`, `cright_`, `_reversed`; `Alphabet = X`.
+- **`Base.agda`**: parameterised by `Γ : WRel X`. `_===_` is the raw relation; `_≈_` the monoid congruence it generates (refl/sym/trans/cong/assoc/left-unit/right-unit/axiom); `refl'` lifts `_≡_`; combinators `cleft_`, `cright_`, `_reversed`; `Alphabet = X`.
 - **`Properties.agda`**: `≈-isEquivalence`, `word-setoid`, magma/semigroup/monoid structures and bundles; the associativity solvers (`to-list`/`from-list`, `mod-assoc`, `by-assoc`, `by-assoc-and`, and the pattern-guided `Pattern-Assoc.by-passoc`); word-power lemmas (`lemma-^-+`, `lemma-^^`, `word-comm`, …); `wfoldr`/`wfoldl` congruence lemmas.
 - **`Definitions.agda`**: `_IsPresentationOf_` (group), `_IsMonoidPresentationOf_`, and `module SubPresentation` (`Soundness` & `Completeness` of a semantics ⟦_⟧ : Syn → Sem, i.e. ⟦_⟧ is a setoid embedding).
 - **`GroupLike.agda`**: `Grouplike` (every generator has a left inverse) and `Group-Lemmas` (`_⁻¹`, cancellation, uniqueness of inverses, the group `•-ε-group`).
@@ -67,7 +67,7 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 
 ## Key conventions
 
-- `_===_` always means the raw relation (the axioms); `_≈_` always means the congruence closure.
+- `_===_` always means the raw relation (the axioms); `_≈_` always means the monoid congruence it generates (a congruence for `•`, closed under the monoid laws).
 - `[_]ʷ` injects a generator into `Word`. `[_]ₗ`/`[_]ᵣ` are left/right embeddings in products.
 - `(f ʷ)` extends `f : X → Word Y` to `Word X → Word Y` (postfix `_ʷ` = `wconcatmap`).
 - `(h ᵗ)` extends a coset action `h : C → Y → Word X × C` to words, threading the coset.

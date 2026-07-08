@@ -106,7 +106,7 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
     comm₂ : (h : Gate 2) (g : Gen n) → (₂₊ n) VRel,
       [ g ↥ ↥ ]ʷ • [ gate₂ h ]ʷ === [ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ
 
-  -- The congruence closure at wire count n lifts to wire count ₁₊ n.
+  -- The monoid congruence at wire count n lifts to wire count ₁₊ n.
   lemma-cong↑ : ∀ {n} (w v : Circuit n)
     → let open PB (_VRel,_===_ n)       using (_≈_)
           open PB (_VRel,_===_ (₁₊ n)) renaming (_≈_ to _≈↑_) using ()
