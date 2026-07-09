@@ -110,7 +110,8 @@ module _ {N X : Set}
   open import Level using (0ℓ)
   open import Presentation.Definitions using (_IsPresentationOf_)
   open import ForStdlib.Algebra.Construct.Extension
-  open import Normalization.NormalForm.Propositional using (NormalForm)
+  open import Normalization.NormalForm.Propositional
+    using (NormalForm ; BijectiveNormalForm)
 
   ext : WRel (N ⊎ X)
   ext = extension-presentation S R̄ conj corr
@@ -130,7 +131,7 @@ module _ {N X : Set}
     -- the N-part of the extension's normal form.
     {NFS NFQ : Set}
     (nfpS : NormalForm S NFS)
-    (nfpQ : NormalForm R̄ NFQ)
+    (nfpQ : BijectiveNormalForm R̄ NFQ)
     where
 
     open import Normalization.StarInterp ext
@@ -302,25 +303,26 @@ module _ {N X : Set}
 
     import Normalization.NormalForm.Setoid as SNF
     import Normalization.CosetNF as CNF
+    open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+    import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 
-    private module NQ = SNF.NormalForm nfpQ
+    private module NQ = SNF.BijectiveNormalForm nfpQ
 
-    open import Data.Unit using (⊤ ; tt)
+    -- The bijection gives both directions: inv-nf∘nf ≈ id and nf∘inv-nf ≡ id.
+    nf∘inv : ∀ c → NQ.nf (NQ.inv-nf c) ≡ c
+    nf∘inv c = proj₂ (NQ.surjective c) _≈q_.refl
 
-    -- Coset index: a proper canonical quotient normal form, or the
-    -- distinguished identity coset (represented by ε, so [I]≈ε and
-    -- h=⁻¹f-gen come out definitional).
+    -- Coset index: the canonical quotient normal forms (unique reps).
     Cᶜ : Set
-    Cᶜ = NFQ ⊎ ⊤
+    Cᶜ = NFQ
 
     -- Canonical representative of a coset.
     rep : Cᶜ → Word X
-    rep (inj₁ c)  = NQ.inv-nf c
-    rep (inj₂ tt) = ε
+    rep = NQ.inv-nf
 
     -- The identity coset.
     Iᶜ : Cᶜ
-    Iᶜ = inj₂ tt
+    Iᶜ = NQ.nf ε
 
     -- The generator embedding N ↪ ext and the Schreier section.
     fᶜ : N → Word (N ⊎ X)
@@ -336,7 +338,7 @@ module _ {N X : Set}
     hᶜ c (inj₁ n) = conjss (rep c) [ n ]ʷ , c
     hᶜ c (inj₂ x) =
       corrOf (_≈q_.sym (NQ.inv-nf∘nf=id {rep c • [ x ]ʷ})) ,
-      inj₁ (NQ.nf (rep c • [ x ]ʷ))
+      NQ.nf (rep c • [ x ]ʷ)
 
     -- The single-level coset extension carrying the twisted table.
     module CT = CNF.SingleLevel S ext Cᶜ Iᶜ fᶜ hᶜ secᶜ
@@ -345,12 +347,7 @@ module _ {N X : Set}
     -- Well-definedness of the coset action (h-wd-ax)
 
     open PB S using () renaming (_≈_ to _≈s_)
-    open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-    import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 
-    -- The conjugation action must respect the two presentations: conj-hypn
-    -- says conjugation by a rep letter respects the N-relations S; conj-hyph
-    -- says conjugation past R̄-equal rep words agrees.
     -- Structural laws of the word-valued conjugation.
     conjss-c-ε=ε : ∀ c → conjss c ε ≡ ε
     conjss-c-ε=ε [ x ]ʷ  = Eq.refl
@@ -385,10 +382,6 @@ module _ {N X : Set}
     f-wd-ax : ∀ {w v} → S w v → (fᶜ ʷ) w ≈ₑ (fᶜ ʷ) v
     f-wd-ax {w} {v} x rewrite aux-fᶜ w | aux-fᶜ v = lefts (_≈s_.axiom x)
 
-    -- RS hypothesis (4): the identity coset is ε (definitional).
-    [I]≈ε : secᶜ Iᶜ ≈ₑ ε
-    [I]≈ε = _≈ₑ_.refl
-
     -- RS hypothesis (5): section/action compatibility.  The N-generator
     -- case is the conjugation move lemma-comm; the quotient-generator case
     -- is exactly corrOf-eq (the correction of the reduction).
@@ -400,23 +393,17 @@ module _ {N X : Set}
       rewrite aux-fᶜ (corrOf (_≈q_.sym (NQ.inv-nf∘nf=id {rep c • [ x ]ʷ}))) =
       corrOf-eq (_≈q_.sym (NQ.inv-nf∘nf=id {rep c • [ x ]ʷ}))
 
-    -- The section law [c] • w ≈ [w']ₓ • [c'], obtained directly from the
-    -- RightAction engine (needs f-wd-ax/[I]≈ε/h=ract, NOT h-wd-ax — so no
-    -- circularity with the well-definedness proof below).
     open import Normalization.Reidemeister-Schreier
 
-    private
-      module RAᶜ = Star-Injective-Full.RightAction
-                     S ext Cᶜ Iᶜ fᶜ hᶜ f-wd-ax secᶜ [I]≈ε h=ract
-
-    hᵗ-hyp : ∀ c w → let (w' , c') = (hᶜ ᵗ) c w in
-             secᶜ c • w ≈ₑ (fᶜ ʷ) w' • secᶜ c'
-    hᵗ-hyp = RAᶜ.lemma-⊛
-
-    -- RS hypothesis (1): hᶜ inverts fᶜ on the identity coset (definitional,
-    -- since rep Iᶜ = ε and conjss ε = id).
-    h=⁻¹f-gen : ∀ (x : N) → CT._~_ ([ x ]ʷ , Iᶜ) ((hᶜ ᵗ) Iᶜ (fᶜ x))
-    h=⁻¹f-gen x = _≈s_.refl , Eq.refl
+    -- Threading hᶜ through a right-embedded word advances the coset to the
+    -- reduced representative (uniquely, since NFQ is canonical).
+    lemma-adv : ∀ c a → (hᶜ ᵗ) c [ a ]ᵣ .proj₂ ≡ NQ.nf (rep c • a)
+    lemma-adv c [ x ]ʷ = Eq.refl
+    lemma-adv c ε = Eq.sym (Eq.trans (NQ.nf-cong _≈q_.right-unit) (nf∘inv c))
+    lemma-adv c (a • a₁)
+      rewrite lemma-adv c a
+            | lemma-adv (NQ.nf (rep c • a)) a₁ =
+      NQ.nf-cong (_≈q_.trans (_≈q_.cong NQ.inv-nf∘nf=id _≈q_.refl) _≈q_.assoc)
 
     -- ext is group-like.  An N-generator's inverse lifts from S; a
     -- quotient generator's inverse is its R̄-inverse corrected by the
@@ -448,9 +435,29 @@ module _ {N X : Set}
     dpres :
       Realises →
       (sound-ax : ∀ {w v} → extp w v → Group._≈_ G ⟦ w ⟧ ⟦ v ⟧) →
+      (nf-ε : NQ.inv-nf (NQ.nf ε) ≡ ε) →
       ext IsPresentationOf G
-    dpres real sound-ax = {!!}
+    dpres real sound-ax nf-ε = {!!}
       where
+      -- RS hypothesis (4): the identity coset is ε (via the NF's
+      -- normalization of ε).
+      [I]≈ε : secᶜ Iᶜ ≈ₑ ε
+      [I]≈ε rewrite nf-ε = _≈ₑ_.refl
+
+      -- The section law [c] • w ≈ [w']ₓ • [c'] from the RightAction engine
+      -- (needs f-wd-ax/[I]≈ε/h=ract, NOT h-wd-ax — no circularity).
+      private
+        module RAᶜ = Star-Injective-Full.RightAction
+                       S ext Cᶜ Iᶜ fᶜ hᶜ f-wd-ax secᶜ [I]≈ε h=ract
+      hᵗ-hyp : ∀ c w → let (w' , c') = (hᶜ ᵗ) c w in
+               secᶜ c • w ≈ₑ (fᶜ ʷ) w' • secᶜ c'
+      hᵗ-hyp = RAᶜ.lemma-⊛
+
+      -- RS hypothesis (1): hᶜ inverts fᶜ on the identity coset (via nf-ε,
+      -- since then rep Iᶜ = ε and conjss ε = id).
+      h=⁻¹f-gen : ∀ (x : N) → CT._~_ ([ x ]ʷ , Iᶜ) ((hᶜ ᵗ) Iᶜ (fᶜ x))
+      h=⁻¹f-gen x rewrite nf-ε = _≈s_.refl , Eq.refl
+
       -- Full soundness (congruence, not just axioms) into G.
       module EC = E.Cong (sound-t (sound-s real) sound-ax)
       sound-full : ∀ {w v} → w ≈ₑ v → Gm._≈_ ⟦ w ⟧ ⟦ v ⟧
@@ -501,8 +508,18 @@ module _ {N X : Set}
       coset-wd c (right ())
       coset-wd c (mid (left (comm n x')))
         rewrite lemma-hᶜ-left c (conj x' n) = Eq.refl
-      coset-wd c (mid (right (tw r̄)))     = {!!}
+      coset-wd c (mid (right (tw {a} {b} r̄)))
+        rewrite lemma-hᶜ-left c (corr r̄) =
+        Eq.trans (lemma-adv c a)
+          (Eq.trans (NQ.nf-cong (_≈q_.cong _≈q_.refl (_≈q_.axiom r̄)))
+                    (Eq.sym (lemma-adv c b)))
 
       h-wd-ax : ∀ (c : Cᶜ) {u t} → ext u t →
                 CT._~_ ((hᶜ ᵗ) c u) ((hᶜ ᵗ) c t)
       h-wd-ax c ax = n-wd c ax (coset-wd c ax) , coset-wd c ax
+
+      -- The coset normal form for ext, transported from the N-factor's
+      -- normal form: NF_ext = NFS × NFQ.  (The Reidemeister–Schreier engine
+      -- packaged in CT.Transfer, now that all five hypotheses hold.)
+      module CTT = CT.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax [I]≈ε h=ract
+      nfp = CTT.nfp' nfpS
