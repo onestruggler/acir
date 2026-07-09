@@ -8,7 +8,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Fin using (Fin ; zero ; suc)
+open import Data.Fin using (Fin ; zero)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl ; _≗_)
 open import Function using (_∘_)
 

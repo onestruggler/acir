@@ -8,7 +8,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Fin using (Fin ; zero ; suc)
+open import Data.Fin using (Fin ; zero)
 open import Data.Fin.Permutation
   using ( _⟨$⟩ʳ_ ; _∘ₚ_ ; lift₀-cong )
   renaming (id to idP)

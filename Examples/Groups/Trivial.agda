@@ -6,9 +6,9 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Presentation.Groups.Trivial where
+module Examples.Groups.Trivial where
 
-open import Algebra.Bundles using (Monoid)
+open import Algebra.Bundles using (Monoid ; Group ; AbelianGroup)
 open import Algebra.Morphism.Structures using (module MonoidMorphisms)
 open import Data.Empty using (⊥)
 open import Data.Unit using (⊤ ; tt)
@@ -83,6 +83,51 @@ module P1 where
         }
     }
 
+  module Presentation where
+
+    open import Presentation.Definitions
+    open import Normalization.NormalForm.Setoid
+    open import Normalization.StarPresentation
+    open import Presentation.GroupLike using (Grouplike)
+    open import Function.Definitions using (Surjective)
+    open import Data.Product using (_,_)
+    open import Level
+    import Algebra.Construct.Terminal as Terminal
+
+    -- The target is the trivial (terminal) group, whose carrier is ⊤ and
+    -- whose equality relates every pair of elements.
+    gp : Group 0ℓ 0ℓ
+    gp = Terminal.group
+
+    -- The unique semantics out of the empty alphabet.
+    ⟦_⟧₀ : A → Group.Carrier gp
+    ⟦_⟧₀ ()
+
+    module GS = GroupSem pres (Eq.setoid ⊤) gp ⟦_⟧₀
+
+    -- Every axiom is respected, vacuously: EmptyRel has no axioms.
+    fʷ-cong-ax : ∀ {w v} → pres w v → Group._≈_ gp (GS.⟦ w ⟧) (GS.⟦ v ⟧)
+    fʷ-cong-ax ()
+
+    -- Group-like, vacuously: the alphabet ⊥ has no generators.
+    grouplike : Grouplike pres
+    grouplike ()
+
+    -- Any two normal forms coincide: ⊤ has a single element, so the
+    -- separation hypothesis is discharged by η for ⊤.
+    unfp : UniqueNormalForm pres (Eq.setoid ⊤) (Group.setoid gp) GS.⟦_⟧ nfp'
+    unfp = record { unique = λ _ → Eq.refl }
+
+    subpresentation : pres IsSubPresentationOf gp
+    subpresentation =
+      GS.GetSubPresentation.groupSubPres fʷ-cong-ax grouplike nfp' unfp
+
+    presentation : pres IsPresentationOf gp
+    presentation = isPresentationOf subpresentation claim
+      where
+      claim : Surjective _≈_ (Group._≈_ gp) GS.⟦_⟧
+      claim y = ε , λ _ → _
+
 ------------------------------------------------------------------------
 -- The trivial group via the universal relation
 
@@ -93,6 +138,8 @@ module P2 (A : Set) where
   -- The universal relation over the alphabet A.
   pres : WRel A
   pres = TrivialRel
+  infix 4 _===_
+  _===_ = pres
 
   open PB pres using (_≈_)
   open PP pres using (•-ε-monoid ; word-setoid)
@@ -142,6 +189,52 @@ module P2 (A : Set) where
         ; inverseʳ  = λ { Eq.refl → sym singleton }
         }
     }
+
+
+  module Presentation where
+
+    open import Presentation.Definitions
+    open import Normalization.NormalForm.Setoid
+    open import Normalization.StarPresentation
+    open import Presentation.GroupLike using (Grouplike)
+    open import Function.Definitions using (Surjective)
+    open import Data.Product using (_,_)
+    open import Level
+    import Algebra.Construct.Terminal as Terminal
+
+    -- The target is the trivial (terminal) group, whose carrier is ⊤ and
+    -- whose equality relates every pair of elements.
+    gp : Group 0ℓ 0ℓ
+    gp = Terminal.group
+
+    -- The unique semantics collapsing every generator to the identity.
+    ⟦_⟧₀ : A → Group.Carrier gp
+    ⟦_⟧₀ _ = Group.ε gp
+
+    module GS = GroupSem _===_ (Eq.setoid ⊤) gp ⟦_⟧₀
+
+    -- Every axiom is respected: the target group's equality is trivial.
+    fʷ-cong-ax : ∀ {w v} → w === v → Group._≈_ gp (GS.⟦ w ⟧) (GS.⟦ v ⟧)
+    fʷ-cong-ax _ = _
+
+    -- Group-like: ε left-inverts every generator, since [ x ]ʷ ≈ ε.
+    grouplike : Grouplike _===_
+    grouplike x = ε , trans left-unit (axiom ≈ε)
+
+    -- Any two normal forms coincide: ⊤ has a single element, so the
+    -- separation hypothesis is discharged by η for ⊤.
+    unfp : UniqueNormalForm _===_ (Eq.setoid ⊤) (Group.setoid gp) GS.⟦_⟧ nfp'
+    unfp = record { unique = λ _ → Eq.refl }
+
+    subpresentation : (_===_) IsSubPresentationOf gp
+    subpresentation =
+      GS.GetSubPresentation.groupSubPres fʷ-cong-ax grouplike nfp' unfp
+
+    presentation : _===_ IsPresentationOf gp
+    presentation = isPresentationOf subpresentation claim
+      where
+      claim : Surjective _≈_ (Group._≈_ gp) GS.⟦_⟧
+      claim y = ε , λ _ → _
 
 ------------------------------------------------------------------------
 -- The two presentations are isomorphic

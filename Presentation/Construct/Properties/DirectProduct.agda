@@ -14,22 +14,30 @@ module Presentation.Construct.Properties.DirectProduct
   (Δ : WRel B)
   where
 
-open import Data.Product using (_,_ ; _×_ ; map ; proj₁ ; proj₂)
+open import Algebra.Bundles using (Group)
+import Algebra.Construct.DirectProduct as ADP
+import Algebra.Morphism.Structures as GM
+open import Level
+open import Data.Product using (_,_ ; _×_ ; map ; proj₁ ; proj₂ ; ∃)
 import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 open import Function using (_∘_)
 import Function.Construct.Composition as FCC
-open import Function.Definitions using (Injective)
+open import Function.Definitions using (Injective ; Surjective)
+open import Relation.Binary using (Setoid)
 open import Relation.Binary.PropositionalEquality as Eq
   using (_≡_ ; inspect) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 
 import Presentation.Base as PB
+open import Presentation.Definitions
+open import Presentation.GroupLike using (Grouplike)
 open import Presentation.Construct.Base
 open import Presentation.Properties as PP
 open import Normalization.NormalForm.Propositional using (NormalForm ; NormalFormInjective)
 import Normalization.NormalForm.Setoid as SNF
 open import Normalization.Reidemeister-Schreier
+import Normalization.StarPresentation as SP
 open import Word.Base
 open import Word.Properties
 
@@ -331,3 +339,133 @@ module NFP'
         }
     }
 
+module Presentation
+  (G1 : Group 0ℓ 0ℓ)
+  (G2 : Group 0ℓ 0ℓ)
+  (p1 : Γ IsPresentationOf G1)
+  (p2 : Δ IsPresentationOf G2)
+  where
+
+  private
+    module P1 = _IsPresentationOf_ p1
+    module P2 = _IsPresentationOf_ p2
+    module H1 = Group G1
+    module H2 = Group G2
+
+    open GM.GroupMorphisms (Group.rawGroup P1.GL.•-ε-group) (Group.rawGroup G1)
+      using () renaming (module IsGroupIsomorphism to IGI₁)
+    open GM.GroupMorphisms (Group.rawGroup P2.GL.•-ε-group) (Group.rawGroup G2)
+      using () renaming (module IsGroupIsomorphism to IGI₂)
+    module Iso1 = IGI₁ P1.iso
+    module Iso2 = IGI₂ P2.iso
+
+  -- The direct product of the groups G1 and G2.
+  dp : Group 0ℓ 0ℓ
+  dp = ADP.group G1 G2
+
+  private
+    module D = Group dp
+
+    nf-setoid : Setoid 0ℓ 0ℓ
+    nf-setoid = PW.×-setoid word-setoid₁ Cₛ
+
+  -- Interpretation of generators: left generators land in the first
+  -- factor, right generators in the second.
+  ⟦_⟧₀ : Y → Group.Carrier dp
+  ⟦ inj₁ x ⟧₀ = P1.⟦ [ x ]ʷ ⟧ , H2.ε
+  ⟦ inj₂ y ⟧₀ = H1.ε , P2.⟦ [ y ]ʷ ⟧
+
+  private
+    module GS = SP.GroupSem (Γ ⋄ Δ ⋄ CommRel) nf-setoid dp ⟦_⟧₀
+  open GS using (⟦_⟧)
+
+  -- The interpretation of a left- (resp. right-) embedded word is the
+  -- factor interpretation in the first (resp. second) component.
+  emb-l : ∀ w → D._≈_ ⟦ [ w ]ₗ ⟧ (P1.⟦ w ⟧ , H2.ε)
+  emb-l [ x ]ʷ = D.refl
+  emb-l ε       = H1.sym Iso1.ε-homo , H2.refl
+  emb-l (w • v) =
+    D.trans (D.∙-cong (emb-l w) (emb-l v))
+      (H1.sym (Iso1.∙-homo w v) , H2.identityˡ H2.ε)
+
+  emb-r : ∀ c → D._≈_ ⟦ [ c ]ᵣ ⟧ (H1.ε , P2.⟦ c ⟧)
+  emb-r [ x ]ʷ = D.refl
+  emb-r ε       = H1.refl , H2.sym Iso2.ε-homo
+  emb-r (c • d) =
+    D.trans (D.∙-cong (emb-r c) (emb-r d))
+      (H1.identityˡ H1.ε , H2.sym (Iso2.∙-homo c d))
+
+  emb-x : ∀ w → D._≈_ ⟦ [ w ]ₓ ⟧ (P1.⟦ w ⟧ , H2.ε)
+  emb-x w rewrite aux-fʷ {w} | wconcatmap-[-]ʷ w = emb-l w
+
+  -- ⟦_⟧ maps the axioms of the product presentation to equalities of dp.
+  sound-ax : ∀ {u t} → (Γ ⋄ Δ ⋄ CommRel) u t → D._≈_ ⟦ u ⟧ ⟦ t ⟧
+  sound-ax (left {u} {v} x) =
+    D.trans (emb-l u)
+      (D.trans (Iso1.⟦⟧-cong (_≈₁_.axiom x) , H2.refl) (D.sym (emb-l v)))
+  sound-ax (right {u} {v} x) =
+    D.trans (emb-r u)
+      (D.trans (H1.refl , Iso2.⟦⟧-cong (_≈₂_.axiom x)) (D.sym (emb-r v)))
+  sound-ax (mid (comm a b)) =
+    D.trans (D.trans (D.∙-cong (emb-l [ a ]ʷ) (emb-r [ b ]ʷ))
+                     (H1.identityʳ _ , H2.identityˡ _))
+      (D.sym (D.trans (D.∙-cong (emb-r [ b ]ʷ) (emb-l [ a ]ʷ))
+                      (H1.identityˡ _ , H2.identityʳ _)))
+
+  -- Every generator of the product has a left inverse.
+  grouplike : Grouplike (Γ ⋄ Δ ⋄ CommRel)
+  grouplike (inj₁ a) = [ proj₁ (P1.gl a) ]ₗ , lefts (proj₂ (P1.gl a))
+  grouplike (inj₂ b) = [ proj₁ (P2.gl b) ]ᵣ , rights (proj₂ (P2.gl b))
+
+  -- The coset normal form, viewed as a setoid normal form.
+  nfp : SNF.NormalForm (Γ ⋄ Δ ⋄ CommRel) nf-setoid
+  nfp = record
+    { rightInverse = record
+        { to        = nf0
+        ; from      = ⁻¹nf
+        ; to-cong   = nf0-cong
+        ; from-cong = ⁻¹nf-wd
+        ; inverseʳ  = λ eq → _≈₃_.trans (⁻¹nf-wd eq) ⁻¹nf-nf=id
+        }
+    }
+
+  -- The interpretation of an inverse normal form is the pair of factor
+  -- interpretations.
+  sem-⁻¹nf : ∀ a c → D._≈_ ⟦ ⁻¹nf (a , c) ⟧ (P1.⟦ a ⟧ , P2.⟦ c ⟧)
+  sem-⁻¹nf a c =
+    D.trans (D.∙-cong (emb-x a) (emb-r c)) (H1.identityʳ _ , H2.identityˡ _)
+
+  -- Normal forms with equal denotations are equal, reducing factor by
+  -- factor to injectivity of the two factor interpretations.
+  unfp : SNF.UniqueNormalForm (Γ ⋄ Δ ⋄ CommRel) nf-setoid (Group.setoid dp) ⟦_⟧ nfp
+  unfp = record
+    { unique = λ { {a , c} {a' , c'} eq →
+        let p = D.trans (D.sym (sem-⁻¹nf a c)) (D.trans eq (sem-⁻¹nf a' c'))
+        in Iso1.injective (proj₁ p) , Iso2.injective (proj₂ p) } }
+
+  -- The product presentation is a sub-presentation of dp.
+  subPres : (Γ ⋄ Δ ⋄ CommRel) IsSubPresentationOf dp
+  subPres = GS.GetSubPresentation.groupSubPres sound-ax grouplike nfp unfp
+
+  private
+    open import Normalization.StarInterp (Γ ⋄ Δ ⋄ CommRel)
+    module E  = Extend (Group.monoid dp) ⟦_⟧₀
+    module EC = E.Cong sound-ax
+
+  -- ⟦_⟧ is onto: every pair is realised by a left word times a right
+  -- word, using surjectivity of the two factors.
+  surj : Surjective _≈₃_ D._≈_ ⟦_⟧
+  surj (g1 , g2) =
+    [ proj₁ s1 ]ₗ • [ proj₁ s2 ]ᵣ ,
+    λ z≈w →
+      D.trans (EC.fʷ-cong z≈w)
+        (D.trans (D.∙-cong (emb-l (proj₁ s1)) (emb-r (proj₁ s2)))
+          (D.trans (H1.identityʳ _ , H2.identityˡ _)
+            (proj₂ s1 _≈₁_.refl , proj₂ s2 _≈₂_.refl)))
+    where
+    s1 = Iso1.surjective g1
+    s2 = Iso2.surjective g2
+
+  -- A surjective sub-presentation is a presentation.
+  dpres : (Γ ⋄ Δ ⋄ CommRel) IsPresentationOf dp
+  dpres = isPresentationOf subPres surj

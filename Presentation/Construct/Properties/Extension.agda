@@ -1,0 +1,508 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- Presentations of group extensions (Proposition 2.55).
+--
+-- A group G with a normal subgroup N is an extension of N by G/N.
+-- Given a presentation ⟨Y | S⟩ of N and a presentation ⟨X̄ | R̄⟩ of the
+-- quotient G/N, a presentation of G on the generators X ∪ Y is obtained
+-- from three families of relations:
+--
+--   S : the relations of N,                        (on Y)
+--   T : x⁻¹ y x = w_{x y}  for x ∈ X, y ∈ Y,        (conjugation)
+--   R : r = w_r            for each relator r̄ ∈ R̄,  (twisted relators)
+--
+-- where, choosing coset representatives x ∈ G with xN = x̄, the words
+-- w_{x y}, w_r ∈ (Y ∪ Y⁻¹)* record — inside G — the values of the
+-- conjugate x⁻¹ y x ∈ N and of the lift r ∈ N of each quotient relator.
+--
+-- This is the general (possibly non-split) analogue of the semi-direct
+-- product in Presentation.Construct.Properties.SemiDirectProduct2: the
+-- split case is exactly the one in which every correction word w_r is
+-- trivial, so that the quotient relations R̄ hold on the nose on the
+-- representatives (the trivial correction `no-twist` below).
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+module Presentation.Construct.Properties.Extension where
+
+open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
+
+open import Word.Base
+open import Presentation.Construct.Base
+
+private
+  variable
+    N X : Set
+
+------------------------------------------------------------------------
+-- The twisted quotient relators R
+--
+-- In the framework a relation is a pair `u === v`, corresponding to the
+-- relator `u v⁻¹`.  Lifting a quotient relation `ū === v̄` (a pair of
+-- words over the representatives X) to G leaves a discrepancy in N: the
+-- two lifts differ by a correction word `corr r̄ ∈ (Y ∪ Y⁻¹)*`.  The
+-- twisted relation records this as
+--
+--     [ ū ]ᵣ  ===  [ corr r̄ ]ₗ • [ v̄ ]ᵣ.
+--
+-- The relator form `r =_G w_r` of Proposition 2.55 is the special case
+-- v̄ = ε (then `[ ū ]ᵣ === [ corr r̄ ]ₗ`).
+
+data RelTwist (R̄ : WRel X) (corr : ∀ {u v} → R̄ u v → Word N)
+    : WRel (N ⊎ X) where
+  tw : ∀ {u v} (r̄ : R̄ u v) →
+       RelTwist R̄ corr [ u ]ᵣ ([ corr r̄ ]ₗ • [ v ]ᵣ)
+
+------------------------------------------------------------------------
+-- The extension presentation  ⟨ X ∪ Y | R ∪ S ∪ T ⟩
+--
+-- N (= Y) is the left factor and carries its own relations S; X are the
+-- coset representatives and carry no relations of their own (EmptyRel),
+-- since every quotient relation is twisted into the mixed part.  The
+-- mixed relation is the union of the conjugation relation T (ConjRelʷ)
+-- and the twisted relators R (RelTwist).
+
+extension-presentation :
+  (S : WRel N) (R̄ : WRel X)
+  (conj : X → N → Word N) (corr : ∀ {u v} → R̄ u v → Word N) →
+  WRel (N ⊎ X)
+extension-presentation S R̄ conj corr =
+  S ⋄ EmptyRel ⋄ (ConjRelʷ conj ∪ RelTwist R̄ corr)
+
+------------------------------------------------------------------------
+-- Split extensions
+--
+-- The extension splits when a set of coset representatives can be chosen
+-- forming a complement C ≅ G/N.  Then the lifts of the quotient relators
+-- already vanish in G, i.e. every correction word is trivial.  With the
+-- trivial correction the twisted relators degenerate to pure right-hand
+-- relations, and the extension presentation is the semi-direct product
+--    S ⋄ R̄ ⋄ ConjRelʷ conj
+-- studied in Presentation.Construct.Properties.SemiDirectProduct2.
+
+no-twist : ∀ {R̄ : WRel X} {u v} → R̄ u v → Word N
+no-twist {u = u} _ = ε
+
+------------------------------------------------------------------------
+-- Proposition 2.55
+--
+-- With the notation above, ⟨ X ∪ Y | R ∪ S ∪ T ⟩ is a presentation of G.
+--
+-- We state the proposition inside the framework's `_IsPresentationOf_`.
+-- The interpretation ⟦_⟧₀ sends each generator to its value in G (an
+-- element of N for y ∈ Y, a chosen coset representative for x ∈ X), and
+-- `sound-ax` is the compatibility asserting that conj and corr really do
+-- record the conjugates and relator-lifts computed in G — this is the
+-- content of "G is an extension realising the recipe".  The proof
+-- extends the Reidemeister–Schreier coset enumeration of the semi-direct
+-- product (SemiDirectProduct2) so that closing a twisted relator emits
+-- its correction word; it is the remaining goal.
+
+module _ {N X : Set}
+  (S : WRel N) (R̄ : WRel X)
+  (conj : X → N → Word N) (corr : ∀ {u v} → R̄ u v → Word N)
+  where
+
+  open import Algebra.Bundles using (Group)
+  open import Algebra.Construct.Sub.Group
+  open import Level using (0ℓ)
+  open import Presentation.Definitions using (_IsPresentationOf_)
+  open import ForStdlib.Algebra.Construct.Extension
+  open import Normalization.NormalForm.Propositional using (NormalForm)
+
+  ext : WRel (N ⊎ X)
+  ext = extension-presentation S R̄ conj corr
+
+  extp = (ConjRelʷ conj ∪ RelTwist R̄ corr)
+
+  module Presentation
+    (GN : Group 0ℓ 0ℓ)
+    (GQ : Group 0ℓ 0ℓ)
+    (et : Extension GN GQ)
+    (let G = Extension.total et)
+    (pN : S IsPresentationOf GN)
+    (pQ : R̄ IsPresentationOf GQ)
+    (⟦_⟧₀ : (N ⊎ X) → Group.Carrier G)
+    -- The syntactic reduction data: normal forms for the two factors.
+    -- NFQ (canonical quotient cosets) is the coset index; NFS carries
+    -- the N-part of the extension's normal form.
+    {NFS NFQ : Set}
+    (nfpS : NormalForm S NFS)
+    (nfpQ : NormalForm R̄ NFQ)
+    where
+
+    open import Normalization.StarInterp ext
+    module E = Extend (Group.monoid G) ⟦_⟧₀
+
+    -- The monoid-homomorphic reading of a word in G.
+    ⟦_⟧ : Word (N ⊎ X) → Group.Carrier G
+    ⟦_⟧ = E.⟦_⟧
+
+    open import Algebra.Morphism.Structures
+      using (module MonoidMorphisms ; module GroupMorphisms)
+    open import Data.Product using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
+    open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
+    import Presentation.Base as PB
+
+    private
+      module Gm  = Group G
+      module GNm = Group GN
+      module PN  = _IsPresentationOf_ pN
+
+    -- The inclusion N ↪ G and its homomorphism laws.
+    incl : GNm.Carrier → Gm.Carrier
+    incl = Extension.incl et
+
+    private
+      module ιG = GroupMorphisms (Group.rawGroup GN) (Group.rawGroup G)
+      incl-cong = ιG.IsGroupHomomorphism.⟦⟧-cong (Extension.incl-homo et)
+      incl-∙    = ιG.IsGroupHomomorphism.homo    (Extension.incl-homo et)
+      incl-ε    = ιG.IsGroupHomomorphism.ε-homo  (Extension.incl-homo et)
+
+    -- The N-presentation interpretation ⟦_⟧N : Word N → N and its laws.
+    ⟦_⟧N : Word N → GNm.Carrier
+    ⟦_⟧N = PN.⟦_⟧
+
+    private
+      module πG = GroupMorphisms (Group.rawGroup PN.GL.•-ε-group)
+                                 (Group.rawGroup GN)
+      PN-hom  = πG.IsGroupMonomorphism.isGroupHomomorphism
+                  (πG.IsGroupIsomorphism.isGroupMonomorphism PN.iso)
+      PN-cong = πG.IsGroupHomomorphism.⟦⟧-cong PN-hom
+      PN-∙    = πG.IsGroupHomomorphism.homo    PN-hom
+      PN-ε    = πG.IsGroupHomomorphism.ε-homo  PN-hom
+
+    -- The realisation condition: ⟦_⟧₀ sends each N-generator to the image
+    -- under incl of its N-value.  This is what makes ⟦_⟧₀ interpret the
+    -- Y-part of the presentation inside the normal subgroup N ≤ G.
+    Realises : Set
+    Realises = ∀ n → Gm._≈_ ⟦ inj₁ n ⟧₀ (incl ⟦ [ n ]ʷ ⟧N)
+
+    -- A left-embedded word is read, in G, as the incl-image of its
+    -- N-value: ⟦ [ w ]ₗ ⟧ ≈ incl ⟦ w ⟧N.
+    emb-l : Realises → ∀ w → Gm._≈_ ⟦ [ w ]ₗ ⟧ (incl ⟦ w ⟧N)
+    emb-l real [ n ]ʷ = real n
+    emb-l real ε      = Gm.sym (Gm.trans (incl-cong PN-ε) incl-ε)
+    emb-l real (w • v) =
+      Gm.trans (Gm.∙-cong (emb-l real w) (emb-l real v))
+        (Gm.trans (Gm.sym (incl-∙ ⟦ w ⟧N ⟦ v ⟧N))
+                  (incl-cong (GNm.sym (PN-∙ w v))))
+
+    -- sound-s transforms soundness of S (i.e. pN, which presents N) into
+    -- soundness of the S-axioms with respect to the ambient group G.
+    sound-s : Realises → ∀ {w v} → S w v → Gm._≈_ ⟦ [ w ]ₗ ⟧ ⟦ [ v ]ₗ ⟧
+    sound-s real {w} {v} x =
+      Gm.trans (emb-l real w)
+        (Gm.trans (incl-cong (PN-cong (PB._≈_.axiom x)))
+                  (Gm.sym (emb-l real v)))
+
+    -- sound-t transforms soundness of extp (the mixed relations R ∪ T)
+    -- into soundness of the whole extension relation ext = S ⋄ ∅ ⋄ extp,
+    -- given soundness of the S-axioms (typically sound-s real).  The
+    -- right factor EmptyRel contributes no axioms.
+    sound-t : (∀ {w v} → S w v → Gm._≈_ ⟦ [ w ]ₗ ⟧ ⟦ [ v ]ₗ ⟧)
+            → (∀ {w v} → extp w v → Gm._≈_ ⟦ w ⟧ ⟦ v ⟧)
+            → ∀ {w v} → ext w v → Gm._≈_ ⟦ w ⟧ ⟦ v ⟧
+    sound-t sS sT (left x)  = sS x
+    sound-t sS sT (right ())
+    sound-t sS sT (mid x)   = sT x
+
+    ------------------------------------------------------------------
+    -- The twist mechanism
+    --
+    -- corr is given per R̄-axiom; a whole R̄-derivation a ≈q b carries an
+    -- accumulated correction word in N such that, right-embedded into ext,
+    --     [ a ]ᵣ  ≈  [ correction ]ₗ • [ b ]ᵣ.
+    -- The correction is built by recursion on the derivation: axioms
+    -- contribute corr, transitivity concatenates, congruence conjugates
+    -- the second correction past the first factor (the T-relation), and
+    -- symmetry inverts (via S's group-likeness).  This is exactly the data
+    -- the coset action needs to emit when a rep word is reduced modulo R̄.
+
+    conjs : X → Word N → Word N
+    conjs = conj ⁿ'
+    conjss : Word X → Word N → Word N
+    conjss = conj ʰ'
+
+    open PB ext using () renaming (_≈_ to _≈ₑ_)
+    open PB R̄  using () renaming (_≈_ to _≈q_)
+    open Group-Lemmas S PN.gl using ()
+      renaming (_⁻¹ to _⁻¹ₛ ; inverseˡ to inverseˡₛ)
+    open LeftRightCongruence S EmptyRel extp using (lefts)
+
+    -- Moving a rep letter x rightward past an N-word emits its conjugate
+    -- (the T = ConjRelʷ axiom, the left summand of extp).
+    lemma-comm1 : ∀ x w → [ [ x ]ʷ ]ᵣ • [ w ]ₗ ≈ₑ [ conjs x w ]ₗ • [ [ x ]ʷ ]ᵣ
+    lemma-comm1 x [ n ]ʷ = _≈ₑ_.axiom (mid (left (comm n x)))
+    lemma-comm1 x ε = _≈ₑ_.trans _≈ₑ_.right-unit (_≈ₑ_.sym _≈ₑ_.left-unit)
+    lemma-comm1 x (w • w₁) with lemma-comm1 x w | lemma-comm1 x w₁
+    ... | ih1 | ih2 =
+      _≈ₑ_.trans (_≈ₑ_.sym _≈ₑ_.assoc)
+        (_≈ₑ_.trans (_≈ₑ_.cong ih1 _≈ₑ_.refl)
+          (_≈ₑ_.trans _≈ₑ_.assoc
+            (_≈ₑ_.trans (_≈ₑ_.cong _≈ₑ_.refl ih2) (_≈ₑ_.sym _≈ₑ_.assoc))))
+
+    lemma-comm : ∀ w v → [ v ]ᵣ • [ w ]ₗ ≈ₑ [ conjss v w ]ₗ • [ v ]ᵣ
+    lemma-comm w [ x ]ʷ = lemma-comm1 x w
+    lemma-comm w ε = _≈ₑ_.trans _≈ₑ_.left-unit (_≈ₑ_.sym _≈ₑ_.right-unit)
+    lemma-comm w (v • v₁) with lemma-comm w v₁ | lemma-comm (conjss v₁ w) v
+    ... | ih2 | ih1 =
+      _≈ₑ_.sym
+        (_≈ₑ_.trans (_≈ₑ_.sym _≈ₑ_.assoc)
+          (_≈ₑ_.trans (_≈ₑ_.cong (_≈ₑ_.sym ih1) _≈ₑ_.refl)
+            (_≈ₑ_.trans _≈ₑ_.assoc
+              (_≈ₑ_.trans (_≈ₑ_.cong _≈ₑ_.refl (_≈ₑ_.sym ih2)) (_≈ₑ_.sym _≈ₑ_.assoc)))))
+
+    -- The correction carried by an R̄-derivation, with its ext-proof.
+    corr-witness : ∀ {a b} → a ≈q b →
+      ∃ λ (w : Word N) → [ a ]ᵣ ≈ₑ [ w ]ₗ • [ b ]ᵣ
+    corr-witness _≈q_.refl        = ε , _≈ₑ_.sym _≈ₑ_.left-unit
+    corr-witness (_≈q_.sym {a} {b} p) with corr-witness p
+    ... | wp , pp = (wp ⁻¹ₛ) ,
+      _≈ₑ_.trans (_≈ₑ_.sym _≈ₑ_.left-unit)
+        (_≈ₑ_.trans (_≈ₑ_.cong (_≈ₑ_.sym (lefts inverseˡₛ)) _≈ₑ_.refl)
+          (_≈ₑ_.trans _≈ₑ_.assoc (_≈ₑ_.cong _≈ₑ_.refl (_≈ₑ_.sym pp))))
+    corr-witness (_≈q_.trans p q) with corr-witness p | corr-witness q
+    ... | wp , pp | wq , pq = (wp • wq) ,
+      _≈ₑ_.trans pp (_≈ₑ_.trans (_≈ₑ_.cong _≈ₑ_.refl pq) (_≈ₑ_.sym _≈ₑ_.assoc))
+    corr-witness (_≈q_.cong {a} {b} {a'} {b'} p q)
+      with corr-witness p | corr-witness q
+    ... | wp , pp | wq , pq = (wp • conjss b wq) ,
+      _≈ₑ_.trans (_≈ₑ_.cong pp pq)
+        (_≈ₑ_.trans _≈ₑ_.assoc
+          (_≈ₑ_.trans (_≈ₑ_.cong _≈ₑ_.refl (_≈ₑ_.sym _≈ₑ_.assoc))
+            (_≈ₑ_.trans (_≈ₑ_.cong _≈ₑ_.refl (_≈ₑ_.cong (lemma-comm wq b) _≈ₑ_.refl))
+              (_≈ₑ_.trans (_≈ₑ_.cong _≈ₑ_.refl _≈ₑ_.assoc) (_≈ₑ_.sym _≈ₑ_.assoc)))))
+    corr-witness _≈q_.assoc      =
+      ε , _≈ₑ_.trans _≈ₑ_.assoc (_≈ₑ_.sym _≈ₑ_.left-unit)
+    corr-witness _≈q_.left-unit  = ε , _≈ₑ_.refl
+    corr-witness _≈q_.right-unit =
+      ε , _≈ₑ_.trans _≈ₑ_.right-unit (_≈ₑ_.sym _≈ₑ_.left-unit)
+    corr-witness (_≈q_.axiom r̄)  = corr r̄ , _≈ₑ_.axiom (mid (right (tw r̄)))
+
+    -- The correction word, and its defining ext-equation.
+    corrOf : ∀ {a b} → a ≈q b → Word N
+    corrOf p = proj₁ (corr-witness p)
+
+    corrOf-eq : ∀ {a b} (p : a ≈q b) → [ a ]ᵣ ≈ₑ [ corrOf p ]ₗ • [ b ]ᵣ
+    corrOf-eq p = proj₂ (corr-witness p)
+
+    ------------------------------------------------------------------
+    -- The twisted coset table
+    --
+    -- Cosets are the canonical quotient representatives NFQ (the normal
+    -- form for R̄): unique, hence a discrete index — which is what lets
+    -- the reduced coset action satisfy h-wd-ax while keeping congruence
+    -- trivial.  Advancing a coset by a quotient generator x reduces the
+    -- representative back to canonical form and emits the correction of
+    -- that reduction; advancing by an N-generator conjugates it past the
+    -- representative and keeps the coset.
+
+    import Normalization.NormalForm.Setoid as SNF
+    import Normalization.CosetNF as CNF
+
+    private module NQ = SNF.NormalForm nfpQ
+
+    open import Data.Unit using (⊤ ; tt)
+
+    -- Coset index: a proper canonical quotient normal form, or the
+    -- distinguished identity coset (represented by ε, so [I]≈ε and
+    -- h=⁻¹f-gen come out definitional).
+    Cᶜ : Set
+    Cᶜ = NFQ ⊎ ⊤
+
+    -- Canonical representative of a coset.
+    rep : Cᶜ → Word X
+    rep (inj₁ c)  = NQ.inv-nf c
+    rep (inj₂ tt) = ε
+
+    -- The identity coset.
+    Iᶜ : Cᶜ
+    Iᶜ = inj₂ tt
+
+    -- The generator embedding N ↪ ext and the Schreier section.
+    fᶜ : N → Word (N ⊎ X)
+    fᶜ n = [ inj₁ n ]ʷ
+
+    secᶜ : Cᶜ → Word (N ⊎ X)
+    secᶜ c = [ rep c ]ᵣ
+
+    -- The coset action: an N-generator conjugates past the representative
+    -- and keeps the coset; a quotient generator advances the coset to the
+    -- reduced representative and emits the correction of that reduction.
+    hᶜ : Cᶜ → (N ⊎ X) → Word N × Cᶜ
+    hᶜ c (inj₁ n) = conjss (rep c) [ n ]ʷ , c
+    hᶜ c (inj₂ x) =
+      corrOf (_≈q_.sym (NQ.inv-nf∘nf=id {rep c • [ x ]ʷ})) ,
+      inj₁ (NQ.nf (rep c • [ x ]ʷ))
+
+    -- The single-level coset extension carrying the twisted table.
+    module CT = CNF.SingleLevel S ext Cᶜ Iᶜ fᶜ hᶜ secᶜ
+
+    ------------------------------------------------------------------
+    -- Well-definedness of the coset action (h-wd-ax)
+
+    open PB S using () renaming (_≈_ to _≈s_)
+    open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+    import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
+
+    -- The conjugation action must respect the two presentations: conj-hypn
+    -- says conjugation by a rep letter respects the N-relations S; conj-hyph
+    -- says conjugation past R̄-equal rep words agrees.
+    -- Structural laws of the word-valued conjugation.
+    conjss-c-ε=ε : ∀ c → conjss c ε ≡ ε
+    conjss-c-ε=ε [ x ]ʷ  = Eq.refl
+    conjss-c-ε=ε ε       = Eq.refl
+    conjss-c-ε=ε (c • c₁) with conjss-c-ε=ε c₁
+    ... | ih rewrite ih = conjss-c-ε=ε c
+
+    conjss-homo : ∀ c w v → conjss c (w • v) ≡ conjss c w • conjss c v
+    conjss-homo [ x ]ʷ  w v = Eq.refl
+    conjss-homo ε       w v = Eq.refl
+    conjss-homo (c • c₁) w v with conjss-homo c₁ w v
+    ... | ih with conjss-homo c (conjss c₁ w) (conjss c₁ v)
+    ... | ih2 rewrite ih = ih2
+
+    -- Threading hᶜ through a left-embedded word keeps the coset fixed and
+    -- conjugates by the representative.
+    lemma-hᶜ-left : ∀ c a → (hᶜ ᵗ) c [ a ]ₗ ≡ (conjss (rep c) a , c)
+    lemma-hᶜ-left c [ n ]ʷ = Eq.refl
+    lemma-hᶜ-left c ε =
+      PW.≡×≡⇒≡ (Eq.sym (conjss-c-ε=ε (rep c)) , Eq.refl)
+    lemma-hᶜ-left c (a • a₁)
+      rewrite lemma-hᶜ-left c a | lemma-hᶜ-left c a₁ =
+      PW.≡×≡⇒≡ (Eq.sym (conjss-homo (rep c) a a₁) , Eq.refl)
+
+    -- (fᶜ ʷ) is the left embedding.
+    aux-fᶜ : ∀ w → (fᶜ ʷ) w ≡ [ w ]ₗ
+    aux-fᶜ [ n ]ʷ = Eq.refl
+    aux-fᶜ ε = Eq.refl
+    aux-fᶜ (w • v) rewrite aux-fᶜ w | aux-fᶜ v = Eq.refl
+
+    -- RS hypothesis (3): fᶜ respects the relations of S.
+    f-wd-ax : ∀ {w v} → S w v → (fᶜ ʷ) w ≈ₑ (fᶜ ʷ) v
+    f-wd-ax {w} {v} x rewrite aux-fᶜ w | aux-fᶜ v = lefts (_≈s_.axiom x)
+
+    -- RS hypothesis (4): the identity coset is ε (definitional).
+    [I]≈ε : secᶜ Iᶜ ≈ₑ ε
+    [I]≈ε = _≈ₑ_.refl
+
+    -- RS hypothesis (5): section/action compatibility.  The N-generator
+    -- case is the conjugation move lemma-comm; the quotient-generator case
+    -- is exactly corrOf-eq (the correction of the reduction).
+    h=ract : ∀ c b → let (b' , c') = hᶜ c b in
+             secᶜ c • [ b ]ʷ ≈ₑ (fᶜ ʷ) b' • secᶜ c'
+    h=ract c (inj₁ n)
+      rewrite aux-fᶜ (conjss (rep c) [ n ]ʷ) = lemma-comm [ n ]ʷ (rep c)
+    h=ract c (inj₂ x)
+      rewrite aux-fᶜ (corrOf (_≈q_.sym (NQ.inv-nf∘nf=id {rep c • [ x ]ʷ}))) =
+      corrOf-eq (_≈q_.sym (NQ.inv-nf∘nf=id {rep c • [ x ]ʷ}))
+
+    -- The section law [c] • w ≈ [w']ₓ • [c'], obtained directly from the
+    -- RightAction engine (needs f-wd-ax/[I]≈ε/h=ract, NOT h-wd-ax — so no
+    -- circularity with the well-definedness proof below).
+    open import Normalization.Reidemeister-Schreier
+
+    private
+      module RAᶜ = Star-Injective-Full.RightAction
+                     S ext Cᶜ Iᶜ fᶜ hᶜ f-wd-ax secᶜ [I]≈ε h=ract
+
+    hᵗ-hyp : ∀ c w → let (w' , c') = (hᶜ ᵗ) c w in
+             secᶜ c • w ≈ₑ (fᶜ ʷ) w' • secᶜ c'
+    hᵗ-hyp = RAᶜ.lemma-⊛
+
+    -- RS hypothesis (1): hᶜ inverts fᶜ on the identity coset (definitional,
+    -- since rep Iᶜ = ε and conjss ε = id).
+    h=⁻¹f-gen : ∀ (x : N) → CT._~_ ([ x ]ʷ , Iᶜ) ((hᶜ ᵗ) Iᶜ (fᶜ x))
+    h=⁻¹f-gen x = _≈s_.refl , Eq.refl
+
+    -- ext is group-like.  An N-generator's inverse lifts from S; a
+    -- quotient generator's inverse is its R̄-inverse corrected by the
+    -- reduction word corrOf (proj₂ (PQ.gl x)) — the "corr-gl" data.
+    private module PQ = _IsPresentationOf_ pQ
+
+    grouplike : Grouplike ext
+    grouplike (inj₁ n) = [ proj₁ (PN.gl n) ]ₗ , lefts (proj₂ (PN.gl n))
+    grouplike (inj₂ x) =
+      [ corrOf (proj₂ (PQ.gl x)) ⁻¹ₛ ]ₗ • [ proj₁ (PQ.gl x) ]ᵣ ,
+      (_≈ₑ_.trans _≈ₑ_.assoc
+        (_≈ₑ_.trans
+          (_≈ₑ_.cong _≈ₑ_.refl
+            (_≈ₑ_.trans (corrOf-eq (proj₂ (PQ.gl x))) _≈ₑ_.right-unit))
+          (lefts inverseˡₛ)))
+
+    -- Proposition 2.55.  Compatibility of conj / corr with G (soundness
+    -- of the raw extension axioms) yields a presentation of G.
+    --
+    -- With `real : Realises`, the raw-axiom soundness needed by
+    -- StarPresentation.GroupSem.GetSubPresentation is
+    --     sound-t (sound-s real) sound-ax
+    -- exactly as `sound-ax` is used in SemiDirectProduct2.Presentation.
+    -- What remains — following that file's subpres/dpres structure — is
+    -- the coset normal form for the *twisted* relators: a group-likeness
+    -- witness, a Reidemeister–Schreier NormalForm (nfp) and its
+    -- UniqueNormalForm (unfp) giving `groupSubPres`, and surjectivity
+    -- (`claim`), whence `dpres = isPresentationOf groupSubPres claim`.
+    dpres :
+      Realises →
+      (sound-ax : ∀ {w v} → extp w v → Group._≈_ G ⟦ w ⟧ ⟦ v ⟧) →
+      ext IsPresentationOf G
+    dpres real sound-ax = {!!}
+      where
+      -- Full soundness (congruence, not just axioms) into G.
+      module EC = E.Cong (sound-t (sound-s real) sound-ax)
+      sound-full : ∀ {w v} → w ≈ₑ v → Gm._≈_ ⟦ w ⟧ ⟦ v ⟧
+      sound-full = EC.fʷ-cong
+
+      -- pN is injective on N-words.
+      pN-inj : ∀ {w v} → GNm._≈_ ⟦ w ⟧N ⟦ v ⟧N → w ≈s v
+      pN-inj = πG.IsGroupMonomorphism.injective
+                 (πG.IsGroupIsomorphism.isGroupMonomorphism PN.iso)
+
+      -- Faithfulness of the left embedding, via the semantics: [w]ₗ ≈ [v]ₗ
+      -- lands, through G, in incl(⟦w⟧N) ≈ incl(⟦v⟧N), whence w ≈s v.
+      faithful : ∀ {w v} → [ w ]ₗ ≈ₑ [ v ]ₗ → w ≈s v
+      faithful {w} {v} e = pN-inj (Extension.incl-injective et
+        (Gm.trans (Gm.sym (emb-l real w))
+          (Gm.trans (sound-full e) (emb-l real v))))
+
+      open Group-Lemmas ext grouplike using (•-cancelʳ)
+
+      -- N-component well-definedness, uniformly: the section law turns an
+      -- ext-axiom into  [w_u]ₗ • sec c_u ≈ [w_t]ₗ • sec c_t; equal cosets
+      -- cancel the section, and faithfulness gives w_u ≈s w_t.
+      n-wd : ∀ (c : Cᶜ) {u t} → ext u t →
+             (hᶜ ᵗ) c u .proj₂ ≡ (hᶜ ᵗ) c t .proj₂ →
+             (hᶜ ᵗ) c u .proj₁ ≈s (hᶜ ᵗ) c t .proj₁
+      n-wd c {u} {t} ax ce = faithful faith
+        where
+        step : (fᶜ ʷ) ((hᶜ ᵗ) c u .proj₁) • secᶜ ((hᶜ ᵗ) c u .proj₂)
+             ≈ₑ (fᶜ ʷ) ((hᶜ ᵗ) c t .proj₁) • secᶜ ((hᶜ ᵗ) c t .proj₂)
+        step = _≈ₑ_.trans (_≈ₑ_.sym (hᵗ-hyp c u))
+                 (_≈ₑ_.trans (_≈ₑ_.cong _≈ₑ_.refl (_≈ₑ_.axiom ax)) (hᵗ-hyp c t))
+        step' : (fᶜ ʷ) ((hᶜ ᵗ) c u .proj₁) • secᶜ ((hᶜ ᵗ) c u .proj₂)
+              ≈ₑ (fᶜ ʷ) ((hᶜ ᵗ) c t .proj₁) • secᶜ ((hᶜ ᵗ) c u .proj₂)
+        step' = Eq.subst
+          (λ □ → (fᶜ ʷ) ((hᶜ ᵗ) c u .proj₁) • secᶜ ((hᶜ ᵗ) c u .proj₂)
+               ≈ₑ (fᶜ ʷ) ((hᶜ ᵗ) c t .proj₁) • secᶜ □)
+          (Eq.sym ce) step
+        faith : [ (hᶜ ᵗ) c u .proj₁ ]ₗ ≈ₑ [ (hᶜ ᵗ) c t .proj₁ ]ₗ
+        faith = Eq.subst₂ _≈ₑ_ (aux-fᶜ ((hᶜ ᵗ) c u .proj₁))
+                  (aux-fᶜ ((hᶜ ᵗ) c t .proj₁)) (•-cancelʳ step')
+
+      -- Coset-component well-definedness, per axiom.
+      coset-wd : ∀ (c : Cᶜ) {u t} → ext u t →
+                 (hᶜ ᵗ) c u .proj₂ ≡ (hᶜ ᵗ) c t .proj₂
+      coset-wd c (left {a} {b} x) =
+        Eq.trans (Eq.cong proj₂ (lemma-hᶜ-left c a))
+                 (Eq.sym (Eq.cong proj₂ (lemma-hᶜ-left c b)))
+      coset-wd c (right ())
+      coset-wd c (mid (left (comm n x')))
+        rewrite lemma-hᶜ-left c (conj x' n) = Eq.refl
+      coset-wd c (mid (right (tw r̄)))     = {!!}
+
+      h-wd-ax : ∀ (c : Cᶜ) {u t} → ext u t →
+                CT._~_ ((hᶜ ᵗ) c u) ((hᶜ ᵗ) c t)
+      h-wd-ax c ax = n-wd c ax (coset-wd c ax) , coset-wd c ax

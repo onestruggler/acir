@@ -26,7 +26,7 @@ open import Notations
 module Examples.Groups.Symmetric.Tight.Uniqueness where
 
 open import Examples.Groups.Symmetric.Syntactics
-open import Examples.Groups.Symmetric.Normalization using (nf-of ; NF ; inv-nf)
+open import Examples.Groups.Symmetric.Normalization using (NF ; inv-nf ; nfp'-t)
 open import Examples.Groups.Symmetric.Loose.Semantics
 open import Examples.Groups.Symmetric.Loose.Uniqueness using (unique-nf)
 
@@ -58,10 +58,9 @@ private
 
 unique-nf-tight :
   NFBase.UniqueNormalForm (_VRel,_===_ n) (NF n)
-    (Group.setoid (Permutation′-group n)) (TightSem.⟦_⟧ {n})
+    (Group.setoid (Permutation′-group n)) (TightSem.⟦_⟧ {n}) (nfp'-t n)
 unique-nf-tight {n = n} = record
-  { normalForm = UniqueNormalForm.normalForm (unique-nf n)
-  ; unique = λ {u} {v} eq →
+  { unique = λ {u} {v} eq →
       UniqueNormalForm.unique (unique-nf n)
         (λ k → Eq.trans (Eq.sym (⟦⟧-agree (inv-nf {n} u) k))
                (Eq.trans (eq k) (⟦⟧-agree (inv-nf {n} v) k)))

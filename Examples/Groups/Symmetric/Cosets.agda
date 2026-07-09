@@ -8,7 +8,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Nat using (ℕ ; zero ; suc)
+open import Data.Nat using (ℕ ; zero)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Relation.Nullary.Decidable using (yes ; no)

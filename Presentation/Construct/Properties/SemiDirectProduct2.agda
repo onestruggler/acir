@@ -25,7 +25,7 @@ import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 open import Function using (_∘_)
 import Function.Construct.Composition as FCC
-open import Function.Definitions using (Injective)
+open import Function.Definitions using (Injective ; Surjective)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; inspect) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
@@ -38,10 +38,19 @@ import Normalization.NormalForm.Setoid as SNF
 open import Normalization.Reidemeister-Schreier
 open import Word.Properties
 
+open import Algebra.Bundles using (Group)
+open import Algebra.Morphism.Structures using (module GroupMorphisms)
+open import Level using (0ℓ)
+open import Presentation.Definitions
+  using (_IsPresentationOf_ ; _IsSubPresentationOf_ ; isPresentationOf)
+open import Presentation.GroupLike using (Grouplike)
+import ForStdlib.Algebra.Construct.SemiDirectProduct as SDP
+import Normalization.StarPresentation
+
 open PB Γ renaming
   (_===_ to _===₁_ ; _≈_ to _≈₁_ ; refl to refl₁ ; sym to sym₁ ;
    trans to trans₁ ; cong to cong₁ ; left-unit to left-unit₁ ;
-   right-unit to right-unit₁)
+   right-unit to right-unit₁ ; refl' to refl'₁)
   using ()
 open PP Γ renaming (word-setoid to word-setoid₁) using ()
 open PB Δ renaming
@@ -412,4 +421,262 @@ module _
           ; inverseʳ  = λ { Eq.refl → ggnf=id }
           }
       }
+
+
+
+------------------------------------------------------------------------
+-- Presentation of the semi-direct product group
+--
+-- If Γ presents G1 and Δ presents G2, then Γ ⋄ Δ ⋄ ConjRelʷ conj
+-- presents the semi-direct product G1 ⋊ G2, where G2 acts on G1 by
+-- transporting the word-level conjugation action conjss through the two
+-- presentation isomorphisms.  (Lives inside the conj-hyph/conj-hypn
+-- block so the action-congruence lemmas are in scope.)
+
+  module Presentation
+    (G1 : Group 0ℓ 0ℓ)
+    (G2 : Group 0ℓ 0ℓ)
+    (p1 : Γ IsPresentationOf G1)
+    (p2 : Δ IsPresentationOf G2)
+    where
+
+    open Group G1 using ()
+      renaming (Carrier to |G1| ; _≈_ to _≈G1_ ; _∙_ to _∙G1_ ; ε to εG1 ;
+                trans to transG1 ; sym to symG1 ; ∙-cong to ∙-congG1)
+    open Group G2 using ()
+      renaming (Carrier to |G2| ; _≈_ to _≈G2_ ; _∙_ to _∙G2_ ; ε to εG2 ;
+                trans to transG2 ; sym to symG2 ; ∙-cong to ∙-congG2)
+
+    private
+      module P1 = _IsPresentationOf_ p1
+      module P2 = _IsPresentationOf_ p2
+      module I1 = GroupMorphisms.IsGroupIsomorphism P1.iso
+      module I2 = GroupMorphisms.IsGroupIsomorphism P2.iso
+
+    -- The presentation isomorphisms and their (up-to-≈) section inverses.
+    ⟦_⟧₁ : Word N → |G1|
+    ⟦_⟧₁ = P1.⟦_⟧
+    ⟦_⟧₂ : Word H → |G2|
+    ⟦_⟧₂ = P2.⟦_⟧
+
+    inv₁ : |G1| → Word N
+    inv₁ g = proj₁ (I1.surjective g)
+    inv₂ : |G2| → Word H
+    inv₂ g = proj₁ (I2.surjective g)
+
+    inv₁-corr : ∀ g → ⟦ inv₁ g ⟧₁ ≈G1 g
+    inv₁-corr g = proj₂ (I1.surjective g) refl₁
+    inv₂-corr : ∀ g → ⟦ inv₂ g ⟧₂ ≈G2 g
+    inv₂-corr g = proj₂ (I2.surjective g) refl₂
+
+    inv₁-⟦⟧ : ∀ w → inv₁ ⟦ w ⟧₁ ≈₁ w
+    inv₁-⟦⟧ w = I1.injective (inv₁-corr ⟦ w ⟧₁)
+
+    inv₁-cong : ∀ {g g'} → g ≈G1 g' → inv₁ g ≈₁ inv₁ g'
+    inv₁-cong {g} {g'} eq =
+      I1.injective (transG1 (inv₁-corr g) (transG1 eq (symG1 (inv₁-corr g'))))
+    inv₂-cong : ∀ {g g'} → g ≈G2 g' → inv₂ g ≈₂ inv₂ g'
+    inv₂-cong {g} {g'} eq =
+      I2.injective (transG2 (inv₂-corr g) (transG2 eq (symG2 (inv₂-corr g'))))
+
+    inv₁-hom : ∀ x y → inv₁ (x ∙G1 y) ≈₁ inv₁ x • inv₁ y
+    inv₁-hom x y = I1.injective
+      (transG1 (inv₁-corr (x ∙G1 y))
+      (transG1 (∙-congG1 (symG1 (inv₁-corr x)) (symG1 (inv₁-corr y)))
+               (symG1 (I1.∙-homo (inv₁ x) (inv₁ y)))))
+    inv₂-hom : ∀ x y → inv₂ (x ∙G2 y) ≈₂ inv₂ x • inv₂ y
+    inv₂-hom x y = I2.injective
+      (transG2 (inv₂-corr (x ∙G2 y))
+      (transG2 (∙-congG2 (symG2 (inv₂-corr x)) (symG2 (inv₂-corr y)))
+               (symG2 (I2.∙-homo (inv₂ x) (inv₂ y)))))
+
+------------------------------------------------------------------------
+-- The induced action of G2 on G1 and its laws
+
+    act : |G2| → |G1| → |G1|
+    act g x = ⟦ conjss (inv₂ g) (inv₁ x) ⟧₁
+
+    act-cong : ∀ {h h' x x'} → h ≈G2 h' → x ≈G1 x' → act h x ≈G1 act h' x'
+    act-cong eqh eqx = I1.⟦⟧-cong (conjss-cong (inv₂-cong eqh) (inv₁-cong eqx))
+
+    act-ε-homo : ∀ h → act h εG1 ≈G1 εG1
+    act-ε-homo h = transG1 (I1.⟦⟧-cong step) I1.ε-homo
+      where
+      inv₁ε : inv₁ εG1 ≈₁ ε
+      inv₁ε = I1.injective (transG1 (inv₁-corr εG1) (symG1 I1.ε-homo))
+      step : conjss (inv₂ h) (inv₁ εG1) ≈₁ ε
+      step = trans₁ (conj-congNH (inv₂ h) inv₁ε) (refl'₁ (conjss-c-ε=ε (inv₂ h)))
+
+    act-∙-homo : ∀ h x y → act h (x ∙G1 y) ≈G1 (act h x ∙G1 act h y)
+    act-∙-homo h x y = transG1 (I1.⟦⟧-cong step) (I1.∙-homo _ _)
+      where
+      step : conjss (inv₂ h) (inv₁ (x ∙G1 y))
+           ≈₁ conjss (inv₂ h) (inv₁ x) • conjss (inv₂ h) (inv₁ y)
+      step = trans₁ (conj-congNH (inv₂ h) (inv₁-hom x y))
+                    (refl'₁ (conjss-homo (inv₂ h) (inv₁ x) (inv₁ y)))
+
+    act-identity : ∀ x → act εG2 x ≈G1 x
+    act-identity x = transG1 (I1.⟦⟧-cong step) (inv₁-corr x)
+      where
+      inv₂ε : inv₂ εG2 ≈₂ ε
+      inv₂ε = I2.injective (transG2 (inv₂-corr εG2) (symG2 I2.ε-homo))
+      step : conjss (inv₂ εG2) (inv₁ x) ≈₁ inv₁ x
+      step = trans₁ (conj-congH (inv₁ x) inv₂ε) (refl'₁ (lemma-conjss-ε (inv₁ x)))
+
+    act-compose : ∀ h h' x → act (h ∙G2 h') x ≈G1 act h (act h' x)
+    act-compose h h' x = I1.⟦⟧-cong step
+      where
+      step : conjss (inv₂ (h ∙G2 h')) (inv₁ x)
+           ≈₁ conjss (inv₂ h) (inv₁ (act h' x))
+      step = trans₁ (conj-congH (inv₁ x) (inv₂-hom h h'))
+                    (conj-congNH (inv₂ h)
+                      (sym₁ (inv₁-⟦⟧ (conjss (inv₂ h') (inv₁ x)))))
+
+    φ : SDP.Action (Group.rawMonoid G1) (Group.rawMonoid G2)
+    φ = record
+      { act          = act
+      ; act-cong     = act-cong
+      ; act-ε-homo   = act-ε-homo
+      ; act-∙-homo   = act-∙-homo
+      ; act-identity = act-identity
+      ; act-compose  = act-compose
+      }
+
+------------------------------------------------------------------------
+-- The semi-direct product group  G1 ⋊ G2  and the presentation
+
+    -- First hole: the semi-direct product of the groups G1 and G2.
+    G1⋊G2 : Group 0ℓ 0ℓ
+    G1⋊G2 = SDP.group G1 G2 φ
+
+    -- The generator semantics: an N-generator lands in the G1 factor,
+    -- an H-generator in the G2 factor.  Its monoid-homomorphic extension
+    -- GS.⟦_⟧ (via StarPresentation) is the candidate isomorphism.
+    ⟦_⟧₀ : Y → Group.Carrier G1⋊G2
+    ⟦ inj₁ n  ⟧₀ = ⟦ [ n ]ʷ ⟧₁ , εG2
+    ⟦ inj₂ hh ⟧₀ = εG1 , ⟦ [ hh ]ʷ ⟧₂
+
+    private
+      -- The coset normal form is valued in the product of the N-word
+      -- setoid and the coset setoid (as in the direct-product case).
+      nf-setoid = PW.×-setoid word-setoid₁ Cₛ
+      module SP = Normalization.StarPresentation
+        (Γ ⋄ Δ ⋄ ConjRelʷ conj) nf-setoid
+      module GS = SP.GroupSem G1⋊G2 ⟦_⟧₀
+      module NF₃ = SNF (Γ ⋄ Δ ⋄ ConjRelʷ conj) nf-setoid
+      module D = Group G1⋊G2
+
+    open LeftRightCongruence Γ Δ (ConjRelʷ conj) using (lefts)
+
+    -- Section property for the second factor (analogue of inv₁-⟦⟧).
+    inv₂-⟦⟧ : ∀ w → inv₂ ⟦ w ⟧₂ ≈₂ w
+    inv₂-⟦⟧ w = I2.injective (inv₂-corr ⟦ w ⟧₂)
+
+    -- The coset map nf0 respects ≈₃.
+    nf0-cong : ∀ {w v} → w ≈₃ v → nf0 w ~ nf0 v
+    nf0-cong {w} {v} = lemma-hypB I w v
+
+    -- ⟦_⟧ of a left- (resp. right-) embedded word is the factor
+    -- interpretation in the matching component.  The action twist
+    -- collapses: εG2 acts as the identity and every action fixes εG1.
+    emb-l : ∀ w → D._≈_ (GS.⟦ [ w ]ₗ ⟧) (⟦ w ⟧₁ , εG2)
+    emb-l [ x ]ʷ = D.refl
+    emb-l ε       = symG1 I1.ε-homo , Group.refl G2
+    emb-l (w • v) =
+      D.trans (D.∙-cong (emb-l w) (emb-l v))
+        ( transG1 (∙-congG1 (Group.refl G1) (act-identity ⟦ v ⟧₁))
+                  (symG1 (I1.∙-homo w v))
+        , Group.identityˡ G2 εG2 )
+
+    emb-r : ∀ c → D._≈_ (GS.⟦ [ c ]ᵣ ⟧) (εG1 , ⟦ c ⟧₂)
+    emb-r [ x ]ʷ = D.refl
+    emb-r ε       = Group.refl G1 , symG2 I2.ε-homo
+    emb-r (c • d) =
+      D.trans (D.∙-cong (emb-r c) (emb-r d))
+        ( transG1 (∙-congG1 (Group.refl G1) (act-ε-homo ⟦ c ⟧₂))
+                  (Group.identityˡ G1 εG1)
+        , symG2 (I2.∙-homo c d) )
+
+    emb-x : ∀ w → D._≈_ (GS.⟦ [ w ]ₓ ⟧) (⟦ w ⟧₁ , εG2)
+    emb-x w rewrite aux-fʷ' {w} = emb-l w
+
+    -- ⟦_⟧ of an inverse normal form is the pair of factor
+    -- interpretations.
+    sem-⁻¹nf : ∀ a c → D._≈_ (GS.⟦ ⁻¹nf (a , c) ⟧) (⟦ a ⟧₁ , ⟦ c ⟧₂)
+    sem-⁻¹nf a c =
+      D.trans (D.∙-cong (emb-x a) (emb-r c))
+        ( transG1 (∙-congG1 (Group.refl G1) (act-identity εG1))
+                  (Group.identityʳ G1 ⟦ a ⟧₁)
+        , Group.identityˡ G2 ⟦ c ⟧₂ )
+
+    -- (1) ⟦_⟧ preserves the defining axioms: left = Γ, right = Δ, and
+    -- mid = the conjugation relation (act ⟦[h]⟧₂ ⟦[n]⟧₁ ≈ ⟦conj h n⟧₁).
+    sound-ax : ∀ {w v} → w ===₃ v → Group._≈_ G1⋊G2 (GS.⟦ w ⟧) (GS.⟦ v ⟧)
+    sound-ax (left {u} {v} x) =
+      D.trans (emb-l u)
+        (D.trans (I1.⟦⟧-cong (_≈₁_.axiom x) , Group.refl G2) (D.sym (emb-l v)))
+    sound-ax (right {u} {v} x) =
+      D.trans (emb-r u)
+        (D.trans (Group.refl G1 , I2.⟦⟧-cong (axiom₂ x)) (D.sym (emb-r v)))
+    sound-ax (mid (comm n h)) =
+      D.trans (D.∙-cong (emb-r [ h ]ʷ) (emb-l [ n ]ʷ))
+        (D.trans
+          ( transG1 (Group.identityˡ G1 (act ⟦ [ h ]ʷ ⟧₂ ⟦ [ n ]ʷ ⟧₁))
+              (transG1 act-key
+                (transG1 (symG1 (Group.identityʳ G1 ⟦ conj h n ⟧₁))
+                  (∙-congG1 (Group.refl G1) (symG1 (act-identity εG1)))))
+          , transG2 (Group.identityʳ G2 ⟦ [ h ]ʷ ⟧₂)
+              (symG2 (Group.identityˡ G2 ⟦ [ h ]ʷ ⟧₂)) )
+          (D.sym (D.∙-cong (emb-l (conj h n)) (emb-r [ h ]ʷ))))
+      where
+      act-key : act ⟦ [ h ]ʷ ⟧₂ ⟦ [ n ]ʷ ⟧₁ ≈G1 ⟦ conj h n ⟧₁
+      act-key = I1.⟦⟧-cong (conjss-cong (inv₂-⟦⟧ [ h ]ʷ) (inv₁-⟦⟧ [ n ]ʷ))
+
+    -- (2) Every generator has a left inverse, lifted from the factors.
+    grouplike₃ : Grouplike (Γ ⋄ Δ ⋄ ConjRelʷ conj)
+    grouplike₃ (inj₁ n) = [ proj₁ (P1.gl n) ]ₗ , lefts (proj₂ (P1.gl n))
+    grouplike₃ (inj₂ h) = [ proj₁ (P2.gl h) ]ᵣ , []-cong (proj₂ (P2.gl h))
+
+    -- (3) The coset normal form as a setoid normal form.
+    nfp₃ : NF₃.NormalForm
+    nfp₃ = record
+      { rightInverse = record
+          { to        = nf0
+          ; from      = ⁻¹nf
+          ; to-cong   = nf0-cong
+          ; from-cong = ⁻¹nf-wd
+          ; inverseʳ  = λ eq → _≈₃_.trans (⁻¹nf-wd eq) ⁻¹nf-nf=id
+          }
+      }
+
+    -- (4) Normal forms with equal denotations are equal, reducing factor
+    -- by factor to injectivity of the two factor interpretations.
+    unfp₃ : NF₃.UniqueNormalForm (Group.setoid G1⋊G2) GS.⟦_⟧ nfp₃
+    unfp₃ = record
+      { unique = λ { {a , c} {a' , c'} eq →
+          let p = D.trans (D.sym (sem-⁻¹nf a c)) (D.trans eq (sem-⁻¹nf a' c'))
+          in I1.injective (proj₁ p) , I2.injective (proj₂ p) } }
+
+    subpres : (Γ ⋄ Δ ⋄ ConjRelʷ conj) IsSubPresentationOf G1⋊G2
+    subpres = GS.GetSubPresentation.groupSubPres sound-ax grouplike₃ nfp₃ unfp₃
+
+    private
+      open import Normalization.StarInterp (Γ ⋄ Δ ⋄ ConjRelʷ conj)
+      module E  = Extend (Group.monoid G1⋊G2) ⟦_⟧₀
+      module EC = E.Cong sound-ax
+
+    -- (5) ⟦_⟧ is onto: each (g₁ , g₂) is realised by inv₁ g₁ on the left
+    -- and inv₂ g₂ on the right, using surjectivity of the two factors.
+    claim : Surjective _≈₃_ (Group._≈_ G1⋊G2) GS.⟦_⟧
+    claim (g1 , g2) =
+      [ inv₁ g1 ]ₗ • [ inv₂ g2 ]ᵣ ,
+      λ z≈w →
+        D.trans (EC.fʷ-cong z≈w)
+          (D.trans (D.∙-cong (emb-l (inv₁ g1)) (emb-r (inv₂ g2)))
+            ( transG1 (∙-congG1 (Group.refl G1) (act-identity εG1))
+                (transG1 (Group.identityʳ G1 ⟦ inv₁ g1 ⟧₁) (inv₁-corr g1))
+            , transG2 (Group.identityˡ G2 ⟦ inv₂ g2 ⟧₂) (inv₂-corr g2) ))
+
+    dpres : (Γ ⋄ Δ ⋄ ConjRelʷ conj) IsPresentationOf G1⋊G2
+    dpres = isPresentationOf subpres claim
 

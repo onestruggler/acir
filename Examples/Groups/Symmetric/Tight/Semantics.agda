@@ -9,8 +9,8 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Nat using (ℕ ; zero ; suc)
-open import Data.Fin using (Fin ; zero ; suc)
+open import Data.Nat using (ℕ ; zero)
+open import Data.Fin using (Fin ; zero)
 open import Data.Fin.Permutation
   using ( Permutation′ ; permutation ; _⟨$⟩ʳ_ ; _∘ₚ_
         ; lift₀ ; lift₀-id ; lift₀-comp )
@@ -25,12 +25,24 @@ open import Notations
 module Examples.Groups.Symmetric.Tight.Semantics where
 
 open import Examples.Groups.Symmetric.Syntactics
+open import Algebra.Bundles using (Group)
 
 ------------------------------------------------------------------------
 -- Permutation type
 
 Perm : ℕ → Set
 Perm n = Permutation′ n
+
+------------------------------------------------------------------------
+-- Group structure on Permutation′ n
+
+-- The symmetric group Sₙ is a generic carrier: its construction lives
+-- in the standard-library supplement (under the idiomatic name
+-- ∘ₚ-id-group).  Re-exported here as Permutation′-group so that the
+-- tight semantics keeps a single, readable home for "the meaning of
+-- the syntax".
+open import ForStdlib.Data.Fin.Permutation.Properties
+  using () renaming (∘ₚ-id-group to Permutation′-group) public
 
 ------------------------------------------------------------------------
 -- Semantic building blocks
@@ -62,9 +74,11 @@ shift = lift₀
 
 -- Words are read left-to-right: w • v applies w first, then v.
 ⟦_⟧ : ∀ {n} → Word (Gen n) → Perm n
-⟦ ε ⟧      = idP
-⟦ [ g ]ʷ ⟧ = ⟦ g ⟧ᵍ
-⟦ w • v ⟧  = ⟦ w ⟧ ∘ₚ ⟦ v ⟧
+⟦_⟧ {n} = E.⟦_⟧
+  where
+  open import Normalization.StarInterp (n VRel,_===_)
+  module E = Extend (Group.monoid (Permutation′-group n)) ⟦_⟧ᵍ
+
 
 ------------------------------------------------------------------------
 -- Lemmas about shift (= lift₀)
@@ -78,13 +92,3 @@ shift = lift₀
   Eq.trans (Eq.cong (⟦ v ↑ ⟧ ⟨$⟩ʳ_) (⟦↑⟧ w k))
   (Eq.trans (⟦↑⟧ v _) (lift₀-comp ⟦ w ⟧ ⟦ v ⟧ k))
 
-------------------------------------------------------------------------
--- Group structure on Permutation′ n
-
--- The symmetric group Sₙ is a generic carrier: its construction lives
--- in the standard-library supplement (under the idiomatic name
--- ∘ₚ-id-group).  Re-exported here as Permutation′-group so that the
--- tight semantics keeps a single, readable home for "the meaning of
--- the syntax".
-open import ForStdlib.Data.Fin.Permutation.Properties
-  using () renaming (∘ₚ-id-group to Permutation′-group) public

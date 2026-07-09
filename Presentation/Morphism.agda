@@ -77,6 +77,20 @@ module GenHomomorphism
     }
     where open PP.GenCongruence Γ Δ using (fʷ-cong)
 
+-- Congruence of the extension (f ʷ) = wconcatmap f.
+module Star-Congruence
+  (f : A → Word B)
+  (f-well-defined : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)
+  where
+  open PP.StarCongruence Γ Δ f f-well-defined public using (fʷ-cong)
+
+-- Congruence of the lift wmap f.
+module Congruence
+  (f : A → B)
+  (f-well-defined : let fʷ = wmap f in ∀ {w v} → w ===₁ v → (fʷ) w ≈₂ (fʷ) v)
+  where
+  open PP.GenCongruence Γ Δ f f-well-defined public using (fʷ-cong)
+
 -- Build a monoid monomorphism from (f ʷ), using Reidemeister-Schreier.
 module StarMonomorphism
   (f : A → Word B)

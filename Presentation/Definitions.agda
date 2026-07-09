@@ -10,9 +10,9 @@
 -- 2) Monoid presentation (_IsMonoidPresentationOf_): the analogous
 --    notion for monoids.
 --
--- 3) Sub-setoid presentation (module SubPresentation): soundness and
---    completeness of a semantics ⟦_⟧ : Syn → Sem, which together make
---    ⟦_⟧ a setoid embedding — Syn is presented as a sub-setoid of Sem.
+-- Soundness and adequacy of a semantics ⟦_⟧ : Syn → Sem (a setoid
+-- embedding) are just the stdlib primitives Function.Congruent and
+-- Function.Injective on the two setoids' equalities.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -22,8 +22,10 @@ module Presentation.Definitions where
 open import Algebra.Bundles using (Group ; Monoid)
 open import Algebra.Morphism.Structures
   using (module GroupMorphisms ; module MonoidMorphisms)
+open import ForStdlib.Algebra.Morphism.Consequences
+  using (isMonoidHomomorphism⇒isGroupHomomorphism)
+open import Function.Definitions using (Surjective)
 open import Level using (Level ; _⊔_)
-open import Relation.Binary using (Setoid)
 
 open import Word.Base using (WRel ; Word)
 
@@ -55,6 +57,16 @@ record _IsPresentationOf_ (_===_ : WRel X) (G : Group a ℓ) : Set (a ⊔ ℓ) w
     ⟦_⟧ : Word X → Group.Carrier G
     iso : IsGroupIsomorphism ⟦_⟧
 
+infix 4 _IsSubPresentationOf_
+record _IsSubPresentationOf_ (_===_ : WRel X) (G : Group a ℓ) : Set (a ⊔ ℓ) where
+  field
+    gl : Grouplike _===_
+  module GL = Group-Lemmas _===_ gl
+  open GroupMorphisms (Group.rawGroup GL.•-ε-group) (Group.rawGroup G)
+  field
+    ⟦_⟧ : Word X → Group.Carrier G
+    mono : IsGroupMonomorphism ⟦_⟧
+
 infix 4 _IsMonoidPresentationOf_
 record _IsMonoidPresentationOf_ (_===_ : WRel X) (M : Monoid a ℓ) : Set (a ⊔ ℓ) where
   open MonoidMorphisms (Monoid.rawMonoid (PP.•-ε-monoid _===_)) (Monoid.rawMonoid M)
@@ -62,24 +74,101 @@ record _IsMonoidPresentationOf_ (_===_ : WRel X) (M : Monoid a ℓ) : Set (a ⊔
     ⟦_⟧ : Word X → Monoid.Carrier M
     iso : IsMonoidIsomorphism ⟦_⟧
 
+
+infix 4 _IsSubMonoidPresentationOf_
+record _IsSubMonoidPresentationOf_ (_===_ : WRel X) (M : Monoid a ℓ) : Set (a ⊔ ℓ) where
+  open MonoidMorphisms (Monoid.rawMonoid (PP.•-ε-monoid _===_)) (Monoid.rawMonoid M)
+  field
+    ⟦_⟧ : Word X → Monoid.Carrier M
+    mono : IsMonoidMonomorphism ⟦_⟧
+
 ------------------------------------------------------------------------
--- Presentation of a sub-setoid
+-- A surjective sub-presentation is a presentation
 --
--- Soundness (⟦_⟧ preserves the equivalence) and completeness (⟦_⟧
--- reflects it) together say that ⟦_⟧ : Syn → Sem is a setoid
--- embedding: Syn is presented as the sub-setoid of Sem cut out by the
--- image of ⟦_⟧.
+-- A monomorphism that is additionally surjective is an isomorphism, so
+-- a sub-presentation whose interpretation ⟦_⟧ is onto is a full
+-- presentation.  (These lemmas live here, not in Presentation.Properties,
+-- because they mention the records above and Definitions already imports
+-- Properties — the reverse import would be a cycle.)
 
-module SubPresentation {a b ℓ₁ ℓ₂}
-  (Syn : Setoid a ℓ₁)
-  (Sem : Setoid b ℓ₂)
-  where
+module _ {_===_ : WRel X} {G : Group a ℓ}
+         (sub : _===_ IsSubPresentationOf G) where
+  open _IsSubPresentationOf_ sub
 
-  open Setoid Syn using () renaming (Carrier to A; _≈_ to _≈₁_)
-  open Setoid Sem using () renaming (Carrier to B; _≈_ to _≈₂_)
+  isPresentationOf : Surjective (Group._≈_ GL.•-ε-group) (Group._≈_ G) ⟦_⟧ →
+                     _===_ IsPresentationOf G
+  isPresentationOf surjective = record
+    { gl  = gl
+    ; ⟦_⟧ = ⟦_⟧
+    ; iso = record { isGroupMonomorphism = mono ; surjective = surjective }
+    }
 
-  Soundness : (⟦_⟧ : A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
-  Soundness ⟦_⟧ = ∀ {x y : A} → x ≈₁ y → ⟦ x ⟧ ≈₂ ⟦ y ⟧
+module _ {_===_ : WRel X} {M : Monoid a ℓ}
+         (sub : _===_ IsSubMonoidPresentationOf M) where
+  open _IsSubMonoidPresentationOf_ sub
 
-  Completeness : (⟦_⟧ : A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
-  Completeness ⟦_⟧ = ∀ {x y : A} → ⟦ x ⟧ ≈₂ ⟦ y ⟧ → x ≈₁ y
+  isMonoidPresentationOf : Surjective (Monoid._≈_ (PP.•-ε-monoid _===_)) (Monoid._≈_ M) ⟦_⟧ →
+                           _===_ IsMonoidPresentationOf M
+  isMonoidPresentationOf surjective = record
+    { ⟦_⟧ = ⟦_⟧
+    ; iso = record { isMonoidMonomorphism = mono ; surjective = surjective }
+    }
+
+------------------------------------------------------------------------
+-- A grouplike monoid presentation is a group presentation
+--
+-- If _===_ presents (as a monoid) the underlying monoid of a group G
+-- and is grouplike, then it presents G as a group.  Since •-ε-monoid is
+-- the monoid of the word group •-ε-group, the monoid isomorphism is a
+-- homomorphism between groups, hence a group isomorphism — a monoid
+-- homomorphism between groups automatically preserves inverses.
+
+module _ {_===_ : WRel X} {G : Group a ℓ}
+         (mp : _===_ IsMonoidPresentationOf (Group.monoid G))
+         (grouplike : Grouplike _===_) where
+  open _IsMonoidPresentationOf_ mp
+  open Group-Lemmas _===_ grouplike using (•-ε-group)
+  open MonoidMorphisms (Monoid.rawMonoid (PP.•-ε-monoid _===_))
+                       (Monoid.rawMonoid (Group.monoid G)) using (IsMonoidIsomorphism)
+  open IsMonoidIsomorphism iso using (isMonoidHomomorphism ; injective ; surjective)
+
+  monoidPresentation⇒presentation : _===_ IsPresentationOf G
+  monoidPresentation⇒presentation = record
+    { gl  = grouplike
+    ; ⟦_⟧ = ⟦_⟧
+    ; iso = record
+        { isGroupMonomorphism = record
+            { isGroupHomomorphism =
+                isMonoidHomomorphism⇒isGroupHomomorphism •-ε-group G isMonoidHomomorphism
+            ; injective = injective
+            }
+        ; surjective = surjective
+        }
+    }
+
+------------------------------------------------------------------------
+-- A grouplike sub-monoid presentation is a sub-presentation
+--
+-- The same upgrade for monomorphisms: a grouplike monoid monomorphism
+-- into a group's monoid is a group monomorphism.
+
+module _ {_===_ : WRel X} {G : Group a ℓ}
+         (smp : _===_ IsSubMonoidPresentationOf (Group.monoid G))
+         (grouplike : Grouplike _===_) where
+  open _IsSubMonoidPresentationOf_ smp
+  open Group-Lemmas _===_ grouplike using (•-ε-group)
+  open MonoidMorphisms (Monoid.rawMonoid (PP.•-ε-monoid _===_))
+                       (Monoid.rawMonoid (Group.monoid G)) using (IsMonoidMonomorphism)
+  open IsMonoidMonomorphism mono using (isMonoidHomomorphism ; injective)
+
+  subMonoidPresentation⇒subPresentation : _===_ IsSubPresentationOf G
+  subMonoidPresentation⇒subPresentation = record
+    { gl  = grouplike
+    ; ⟦_⟧ = ⟦_⟧
+    ; mono = record
+        { isGroupHomomorphism =
+            isMonoidHomomorphism⇒isGroupHomomorphism •-ε-group G isMonoidHomomorphism
+        ; injective = injective
+        }
+    }
+

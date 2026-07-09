@@ -14,7 +14,7 @@ import Relation.Binary.PropositionalEquality as Eq
 
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (Pointwise)
-open import Data.Nat using (zero ; suc)
+open import Data.Nat using (zero)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_])
 open import Data.Unit using (⊤ ; tt)
 
@@ -28,7 +28,7 @@ open NFBase using (NormalFormInjective ; NormalForm)
 import Normalization.CosetNF as CA
 open CA using (PackedCosetTable)
 
-import Presentation.Groups.Cyclic as Cyclic
+import Examples.Groups.Cyclic.Normalization as Cyclic
 open import Presentation.Construct.Base
 open import Presentation.Construct.Properties.Amalgamation
 import Presentation.Construct.Properties.DirectProduct as DP
@@ -39,10 +39,10 @@ module Examples.Amalgamations.CliffordT1 where
 
 module Sω where
   Pω : WRel Cyclic.X
-  Pω = Cyclic.rel 8
+  Pω = Cyclic.pres 8
 
   PS : WRel Cyclic.X
-  PS = Cyclic.rel 4
+  PS = Cyclic.pres 4
 
   nfp : NormalFormInjective (Pω ⊕ PS) (Cyclic.NF 8 × Cyclic.NF 4)
   nfp = DNF.NFP.nfp (Cyclic.nfp 8) (Cyclic.nfp 4)
@@ -133,7 +133,6 @@ module XSω where
   h-wd-ax ε-cr {u} {t} (comm {ω-gen}) = (by-equal-nf Eq.refl) , Eq.refl
 
   open PP _===_
-  open AS.Assoc _===_ using (by-assoc)
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} (left Cyclic.order) = _≈_.trans (by-assoc Eq.refl) (_≈_.axiom order-ω)
@@ -299,7 +298,6 @@ module Clifford where
   h-wd-ax (inj₂ tt) {u} {t} def-X = (by-equal-nf Eq.refl) , Eq.refl
 
   open PP _===_
-  open AS.Assoc _===_ using (by-assoc)
 
   lemma-ω : ∀ w → w • ω ≈ ω • w
   lemma-ω [ x ]ʷ = sym (axiom comm)
@@ -610,7 +608,6 @@ module TXSω where
   h-wd-ax (inj₂ tt) {u} {t} (comm {ω-gen}) = (by-equal-nf Eq.refl) , Eq.refl
 
   open PP _===_
-  open AS.Assoc _===_ using (by-assoc)
 
   lemma-ω : ∀ w → w • ω ≈ ω • w
   lemma-ω [ x ]ʷ = sym (axiom comm)
@@ -831,7 +828,6 @@ module CliffordT1 where
   amalPres = TXSω._===_ * Clifford._===_ ⋆ PackedCosetTable.f TXSω.packedTable ⋆ PackedCosetTable.f Clifford.packedTable
 
   open PB _===_ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
-  open AS.Assoc _===_ using (by-assoc)
 
   open PB amalPres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
 

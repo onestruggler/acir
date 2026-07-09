@@ -14,20 +14,18 @@ import Relation.Binary.PropositionalEquality as Eq
 
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (Pointwise)
-open import Data.Nat using (zero ; suc)
+open import Data.Nat using (zero)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_])
 open import Data.Unit using (⊤ ; tt)
 
 open import Word.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Presentation.Tactic.AssociativitySolver as AS
 import Normalization.NormalForm.Setoid as SNF
 import Normalization.CosetNF as CA
 open CA using (PackedCosetTable)
-import Normalization.Reidemeister-Schreier as RS
 
-import Presentation.Groups.Cyclic as Cyclic
+import Examples.Groups.Cyclic.Normalization as Cyclic
 open import Presentation.Construct.Base
 open import Presentation.Construct.Properties.Amalgamation
 open import Notations
@@ -37,7 +35,7 @@ module Examples.Amalgamations.QutritCliffordT1 where
 
 module Sζ where
   Pζ : WRel Cyclic.X
-  Pζ = Cyclic.rel 9
+  Pζ = Cyclic.pres 9
 
   ζ0 : Word Cyclic.X
   ζ0 = [ tt ]ʷ
@@ -102,7 +100,6 @@ module Sζ where
   h-wd-ax SS-cr {u} {t} (comm {ζ-gen}) = by-equal-nf Eq.refl , Eq.refl
 
   open PP _===_
-  open AS.Assoc _===_ using (by-assoc)
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} Cyclic.order = _≈_.trans (by-assoc Eq.refl) (_≈_.axiom order-ζ) 
@@ -313,7 +310,6 @@ module SXζ where
   h-wd-ax XSXX-cr comm-XS-SX = by-equal-nf Eq.refl , Eq.refl
   h-wd-ax XXSXX-cr comm-XS-SX = by-equal-nf Eq.refl , Eq.refl
   open PP _===_
-  open AS.Assoc _===_ using (by-assoc)
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} Sζ.order-ζ = axiom order-ζ
@@ -658,7 +654,6 @@ module SXζHH where
   h-wd-ax HH-cr comm-HH-S = by-equal-nf Eq.refl , Eq.refl
   
   open PP _===_
-  open AS.Assoc _===_ using (by-assoc)
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} SXζ.order-ζ = axiom order-ζ
@@ -889,7 +884,6 @@ module CliffordTHH where
 
 
   open PP _===_
-  open AS.Assoc _===_ using (by-assoc)
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} SXζHH.order-ζ = axiom order-ζ
@@ -1328,7 +1322,6 @@ module CliffordTT where
   h-wd-ax (inj₂ tt) comm-THH = by-equal-nf Eq.refl , Eq.refl
 
   open PP _===_
-  open AS.Assoc _===_ using (by-assoc)
 
   f-wd-ax : ∀ {w v} → w ===₀ v → (f ʷ) w ≈ (f ʷ) v
   f-wd-ax {w} {v} SXζHH.order-ζ = axiom order-ζ
@@ -1739,7 +1732,6 @@ module CliffordH where
   h-wd-ax (inj₂ tt) (comm {HH-gen}) = by-equal-nf Eq.refl , Eq.refl
 
   open PP _===_
-  open AS.Assoc _===_ using (by-assoc)
   open SR word-setoid
   
   lemma-ζ : ∀ w → w • ζ ≈ ζ • w
@@ -2116,7 +2108,6 @@ module CliffordT1 where
 
   open PB _===_ using (_≈_)
   open PP _===_ renaming (word-setoid to ws ; •-ε-monoid to mo)
-  open AS.Assoc _===_ using (by-assoc)
 
   open SR ws
   open _≈_
@@ -2327,7 +2318,6 @@ module CliffordT1-Simplified where
 
   open PB _===_ using (_≈_)
   open PP _===_ renaming (word-setoid to ws ; •-ε-monoid to mo)
-  open AS.Assoc _===_ using (by-assoc)
 
   open SR ws
   open _≈_

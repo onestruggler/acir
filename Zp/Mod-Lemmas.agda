@@ -1,0 +1,210 @@
+﻿------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Additional algebraic lemmas for ℤ/pℤ
+------------------------------------------------------------------------
+
+{-# OPTIONS --safe #-}
+{-# OPTIONS --termination-depth=2 #-}
+
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
+import Relation.Binary.PropositionalEquality as Eq
+
+open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Nat hiding (_^_ ; _+_ ; _*_)
+open import Data.Fin hiding (_+_ ; _-_)
+open import Data.Nat.Primality
+open import Notations
+
+
+
+module Zp.Mod-Lemmas (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+
+pattern auto = Eq.refl
+
+pattern ₀ = zero
+pattern ₁ = ₁₊ ₀
+pattern ₂ = ₁₊ ₁
+pattern ₃ = ₁₊ ₂
+pattern ₄ = 4
+pattern ₅ = 5
+pattern ₆ = 6
+pattern ₇ = 7
+pattern ₈ = 8
+pattern ₉ = 9
+pattern ₁₀ = 10
+pattern ₁₁ = 11
+pattern ₁₂ = 12
+pattern ₁₃ = 13
+pattern ₁₄ = 14
+pattern ₁₅ = 15
+
+
+
+open import Zp.ModularArithmetic
+open PrimeModulus p-2 p-prime
+
+open import Algebra.Properties.Ring (+-*-ring p-2)
+
+open Eq.≡-Reasoning
+
+aux4a : ∀ (k* : ℤ* ₚ) →
+  let
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  in
+  k ≢ ₁ → k⁻¹ ≢ ₁
+aux4a k* hyp h2 = hyp step1
+  where
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  step1 : k ≡ ₁
+  step1 = begin
+    k ≡⟨ Eq.sym (*-identityʳ k) ⟩
+    k * ₁ ≡⟨ Eq.cong (k *_) (Eq.sym h2) ⟩
+    k * k⁻¹ ≡⟨ lemma-⁻¹ʳ k {{nztoℕ {y = k} {neq0 = k* .proj₂}}} ⟩
+    ₁ ∎
+
+aux4a' : ∀ (k* : ℤ* ₚ) →
+  let
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  in
+  k ≢ ₁ → k⁻¹ + - ₁ ≢ ₀
+aux4a' k* hyp h2 = aux4a k* hyp step1
+  where
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  step1 : k⁻¹ ≡ ₁
+  step1 = begin
+    k⁻¹ ≡⟨ Eq.sym (+-identityʳ k⁻¹) ⟩
+    k⁻¹ + ₀ ≡⟨ Eq.cong (k⁻¹ +_) (Eq.sym (+-inverseˡ ₁)) ⟩
+    k⁻¹ + (- ₁ + ₁) ≡⟨ Eq.sym (+-assoc k⁻¹ (- ₁) ₁) ⟩
+    k⁻¹ + - ₁ + ₁ ≡⟨ Eq.cong (_+ ₁) h2 ⟩
+    ₀ + ₁ ≡⟨ +-identityˡ ₁ ⟩
+    ₁ ∎
+
+
+aux4a'' : ∀ (k*@(k , nz) : ℤ* ₚ) →
+  k ≢ ₁ → k + - ₁ ≢ ₀
+aux4a'' k*@(k , nz) hyp h2 = hyp claim
+  where
+  claim : k ≡ ₁
+  claim = begin
+    k ≡⟨ Eq.sym (+-identityʳ k) ⟩
+    k + ₀ ≡⟨ Eq.cong (k +_) (Eq.sym (+-inverseˡ ₁)) ⟩
+    k + (- ₁ + ₁) ≡⟨ Eq.sym (+-assoc k (- ₁) ₁) ⟩
+    k + - ₁ + ₁ ≡⟨ Eq.cong (_+ ₁) h2 ⟩
+    ₀ + ₁ ≡⟨ auto ⟩
+    ₁ ∎
+
+open Eq
+
+aux-ob1 : ∀ (b*@(b , nz) : ℤ* ₚ) (neq1 : b ≢ ₁) →
+  let
+  b⁻¹ = (b* ⁻¹) .proj₁
+  ob* : ℤ* ₚ
+  ob* = b⁻¹ + - ₁ , aux4a' (b*) neq1
+  -ob⁻¹ = ((-' ob*) ⁻¹ ) .proj₁
+  in
+  (b⁻¹ + - ₁) * -ob⁻¹ ≡ - ₁ × (-' ob*  *' b*) .proj₁ ≡ b + - ₁
+aux-ob1 b*@(b , nz) neq1 = claim1 , claim2
+  where
+  b⁻¹ = (b* ⁻¹) .proj₁
+  ob* : ℤ* ₚ
+  ob* = b⁻¹ + - ₁ , aux4a' (b*) neq1
+  -ob⁻¹ = ((-' ob*) ⁻¹ ) .proj₁
+  ob⁻¹ = (( ob*) ⁻¹ ) .proj₁
+  
+  claim1 : (b⁻¹ + - ₁) * -ob⁻¹ ≡ - ₁
+  claim1 = begin
+    (b⁻¹ + - ₁) * -ob⁻¹ ≡⟨ cong ((b⁻¹ + - ₁) *_) (inv-neg-comm ob*) ⟩
+    (b⁻¹ + - ₁) * - ob⁻¹ ≡⟨ sym (-‿distribʳ-* (b⁻¹ + - ₁) ob⁻¹) ⟩
+    - ((b⁻¹ + - ₁) * ob⁻¹) ≡⟨ cong -_ (lemma-⁻¹ʳ (b⁻¹ + - ₁) {{nztoℕ {y = (b⁻¹ + - ₁)} {neq0 = ob* .proj₂}}}) ⟩
+    - ₁ ∎
+
+  claim2 : (-' ob*  *' b*) .proj₁ ≡ b + - ₁
+  claim2 = begin
+    (-' ob*  *' b*) .proj₁ ≡⟨ auto ⟩
+    - (b⁻¹ + - ₁) * b ≡⟨ sym (-‿distribˡ-* ((b⁻¹ + - ₁)) b) ⟩
+    - ((b⁻¹ + - ₁) * b) ≡⟨ cong -_ (*-distribʳ-+ b b⁻¹ (- ₁)) ⟩
+    - (b⁻¹ * b + - ₁ * b) ≡⟨ cong -_ (cong₂ _+_ (lemma-⁻¹ˡ (b) {{nztoℕ {y = b} {neq0 = nz}}}) (-1*x≈-x b)) ⟩
+    - (₁ + - b) ≡⟨ sym (-‿+-comm ₁ (- b)) ⟩
+    - ₁ + - - b ≡⟨ cong (- ₁ +_) (-‿involutive b) ⟩
+    - ₁ + b ≡⟨ +-comm (- ₁) b ⟩
+    b + - ₁ ∎
+
+
+aux5a : ∀ (k* l* : ℤ* ₚ) →
+  let
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  [kl]⁻¹ = ((k* *' l*) ⁻¹) .proj₁
+  l⁻¹ = (l* ⁻¹) .proj₁
+  -l⁻¹ = - (l* ⁻¹) .proj₁
+  in
+  k ≢ ₁ → [kl]⁻¹ + -l⁻¹ ≢ ₀
+aux5a k* l* hyp h2 = (((k⁻¹ + - ₁ , aux4a' k* hyp) *' l* ⁻¹) .proj₂) claim
+  where
+  k = k* .proj₁
+  l⁻¹ = (l* ⁻¹) .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  [kl]⁻¹ = ((k* *' l*) ⁻¹) .proj₁
+  -l⁻¹ = - (l* ⁻¹) .proj₁
+  absurd : [kl]⁻¹ + -l⁻¹ ≡ (k⁻¹ + - ₁) * l⁻¹
+  absurd = Eq.trans (Eq.cong₂ (_+_) (inv-distrib k* l*) (Eq.sym (-1*x≈-x l⁻¹))) (Eq.trans (Eq.sym (*-distribʳ-+ l⁻¹ k⁻¹ (- ₁))) auto)
+  claim : (k⁻¹ + - ₁) * l⁻¹ ≡ ₀
+  claim = Eq.trans (Eq.sym (absurd)) h2
+    
+{-
+lemma-[k⁻¹-1]⁻¹ : ∀ (k* : ℤ* ₚ) →
+  let
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  k⁻¹-₁* : ℤ* ₚ
+  k⁻¹-₁* = (k⁻¹ + - ₁ , ?)
+  in k ≢ ₁ →
+  (k⁻¹-₁* ⁻¹) .proj₁ ≡ ((₁ + - k) ⁻¹) .proj₁ * k
+-}
+
+prede : ℤ* ₚ → ℤ ₚ
+prede (₀ , nz) with nz auto
+... | ()
+prede (₁₊ x , nz) = inject₁ x
+
+aux-k*≠1 : ∀ (k* : ℤ* ₚ) → let k = k* .proj₁ in k ≢ ₁ → prede k* ≢ ₀
+aux-k*≠1 k*@(₀ , snd) eq1 eq0 with snd auto
+... | ()
+aux-k*≠1 k*@(₁ , snd) eq1 eq0 with eq1 auto
+... | ()
+aux-k*≠1 k*@(₂₊ fst , snd) eq1 eq0 = 0≢1+n (Eq.sym eq0)
+  where
+  k = k* .proj₁
+  open import Data.Fin.Properties
+
+aux-k*≠1⇒k⁻¹≠1 : ∀ (k* : ℤ* ₚ) →
+  let
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  in
+  k ≢ ₁ → k⁻¹ ≢ ₁
+
+aux-k*≠1⇒k⁻¹≠1 k* eq1 eq1' = eq1 aux
+  where
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  aux : k* .proj₁ ≡ ₁
+  aux = begin
+    k* .proj₁ ≡⟨ Eq.sym (*-identityʳ k) ⟩
+    k* .proj₁ * ₁ ≡⟨ Eq.cong (k *_) (Eq.sym eq1') ⟩
+    k* .proj₁ * k⁻¹ ≡⟨ lemma-⁻¹ʳ k {{nztoℕ {y = k} {neq0 = k* .proj₂}}} ⟩
+    ₁ ∎
+
+b-c=0⇒b=c : ∀ (b c : ℤ ₚ) (eq0 : b + - c ≡ ₀) → b ≡ c
+b-c=0⇒b=c b c eq0 = begin
+  b ≡⟨ sym (+-identityʳ b) ⟩
+  b + ₀ ≡⟨ cong (b +_) (sym (+-inverseˡ c)) ⟩
+  b + (- c + c) ≡⟨ sym (+-assoc b (- c) c) ⟩
+  b + - c + c ≡⟨ cong (_+ c) eq0 ⟩
+  ₀ + c ≡⟨ +-identityˡ c ⟩
+  c ∎

@@ -6,14 +6,13 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Presentation.Groups.Cyclic where
+module Examples.Groups.Cyclic.Normalization where
 
 open import Data.Fin using (Fin ; zero ; suc ; toℕ ; fromℕ ; inject₁)
 open import Data.Fin.Induction using (<-weakInduction)
 open import Data.Fin.Properties using (suc-injective ; toℕ-inject₁ ; toℕ-fromℕ)
 open import Data.Nat using (ℕ ; zero ; suc)
 import Data.Nat.Properties as NP
-open import Data.Unit using (⊤ ; tt)
 open import Function using (_∘_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
@@ -30,22 +29,9 @@ open import Word.Base hiding (wfoldl)
 ------------------------------------------------------------------------
 -- Generators and relation
 
--- The generating set is a singleton: the only generator is tt.
-X = ⊤
+open import Examples.Groups.Cyclic.Syntactics public
 
--- The word consisting of the single generator.
-T : Word X
-T = [ tt ]ʷ
-
--- There is only one relation for a cyclic group: the generator has
--- order N. rel is indexed by the order of the cyclic group.
-data rel (N : ℕ) : WRel X where
-  order :  rel N (T ^' N) ε
-
--- pres 0 presents the free monoid ℕ; for N > 0, pres N presents the
--- additive group of the integers modulo N.
-pres : ℕ → WRel X
-pres N = rel N
+pres = _Cn,_===_
 
 ------------------------------------------------------------------------
 -- Successor modulo N
@@ -101,7 +87,7 @@ wfoldl {N} succ c (w • w₁) = wfoldl {N} succ (wfoldl {N} succ c w) w₁
 f : ∀ {N} → Word X → NF N
 f {N} = wfoldl {N} succ z
 
-wfoldl-sound : ∀ {N} → let _≈_ = PB._≈_ (pres N) in
+wfoldl-sound : ∀ {N} → let _≈_ = PB._≈_ (N Cn,_===_) in
   ∀ (succ : NF N → NF N)
     (succ-sound :  ∀ c → ([ c ] • T) ≈ [ succ c ])
     (c : NF N) (w : Word X)

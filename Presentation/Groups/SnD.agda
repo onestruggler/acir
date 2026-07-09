@@ -23,7 +23,7 @@ open import Normalization.NormalForm.Propositional using (NormalFormInjective ; 
 open import Presentation.Construct.Base
 import Presentation.Construct.Properties.NDirectProduct as NDP
 import Presentation.Construct.Properties.SemiDirectProduct as SDP0
-import Presentation.Groups.Cyclic as Cyclic
+import Examples.Groups.Cyclic.Normalization as Cyclic
 import Presentation.Groups.Sn as Sn
 open Sn hiding (nfp ; nfp')
 

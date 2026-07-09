@@ -25,6 +25,14 @@ import Presentation.Base as PB
 open import Presentation.Base Γ
 open import Presentation.Core Γ public using (word-setoid)
 
+-- Re-export the associativity solver (to-list / from-list / by-assoc /
+-- by-assoc-and) so that opening this module makes those tactics
+-- available for the presentation Γ.  Pattern-Assoc is re-exported as a
+-- Γ-applied submodule (open Pattern-Assoc to use by-passoc / □).
+import Presentation.Tactic.AssociativitySolver as AAS
+open AAS.Assoc Γ public
+module Pattern-Assoc = AAS.Pattern-Assoc Γ
+
 open import Algebra.Structures {A = Word X} _≈_
 open import Algebra.Bundles using (Magma ; Semigroup ; Monoid)
 
@@ -146,8 +154,7 @@ comm⇒pow-comm {w} {v} (₂₊ a) (₂₊ b) eq  = begin
     v ^ ₂₊ b • w ^ ₂₊ a ∎
   where
     open SR word-setoid
-    open import Presentation.Tactic.AssociativitySolver
-    open Pattern-Assoc Γ
+    open Pattern-Assoc
 
 -- Different powers of a word commute: a special case of comm⇒pow-comm
 -- (a word commutes with itself, so the hypothesis is refl).

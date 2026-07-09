@@ -29,6 +29,12 @@ pattern ₆ = suc ₅
 pattern ₇ = suc ₆
 pattern ₈ = suc ₇
 pattern ₉ = suc ₈
+pattern ₁₀ = suc ₉
+pattern ₁₁ = suc ₁₀
+pattern ₁₂ = suc ₁₁
+pattern ₁₃ = suc ₁₂
+pattern ₁₄ = suc ₁₃
+pattern ₁₅ = suc ₁₄
 
 -- Successor patterns: ₖ₊ n matches the numeral k added to n.
 pattern ₁₊ ⱼ = suc ⱼ

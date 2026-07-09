@@ -25,6 +25,7 @@ open import Relation.Binary using (IsEquivalence ; Setoid)
 
 open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Unit using (⊤ ; tt)
+open import Level using (0ℓ)
 open import Data.Sum using ([_,_] ; _⊎_ ; inj₁ ; inj₂)
 open import Data.Sum.Properties using (inj₁-injective)
 open import Data.Product using (_,_ ; _×_ ; proj₁ ; proj₂ ; map ; ∃)
@@ -270,6 +271,104 @@ module SingleLevel
           w ∎
           where
             open SR word-setoid₂
+
+
+------------------------------------------------------------------------
+-- Single-level coset extension over a setoid of cosets
+--
+-- As SingleLevel, but the coset index is a setoid Cₛ (cosets compared up
+-- to ≈ₛ) rather than a bare set with propositional equality.  This keeps
+-- the construction on the syntactic side — e.g. cosets are words over the
+-- quotient generators taken up to the quotient relation — without passing
+-- to a semantic quotient carrier.  Two extra hypotheses appear, since ≈ₛ
+-- is no longer forced: the coset action and the section must respect ≈ₛ
+-- (h-congₛ-gen, []-cong).  Everything is inherited from
+-- Star-Injective-Full-Setoid; the coset component of the normal form is
+-- now injective up to ≈ₛ (not ≡).
+
+module SingleLevel-Setoid
+  {X Y : Set}
+  (Γ   : WRel X)                          -- subgroup presentation (letters X)
+  (Δ   : WRel Y)                          -- group presentation    (letters Y)
+  (Cₛ  : Setoid 0ℓ 0ℓ)                    -- cosets, up to ≈ₛ
+  (I   : Setoid.Carrier Cₛ)               -- identity coset
+  (f   : X → Word Y)                      -- generator embedding H ↪ G
+  (h   : Setoid.Carrier Cₛ → Y → Word X × Setoid.Carrier Cₛ)  -- coset action
+  ([_] : Setoid.Carrier Cₛ → Word Y)      -- Schreier section
+  where
+
+  open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
+  open PB Δ renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
+  open PP Γ renaming (•-ε-monoid to m₁ ; word-setoid to word-setoid₁) using ()
+  open PP Δ renaming (•-ε-monoid to m₂ ; word-setoid to word-setoid₂) using ()
+  open Setoid Cₛ renaming (Carrier to C ; _≈_ to _≈ₛ_) using ()
+
+  infix 4 _~_
+  _~_ = PW.Pointwise _≈₁_ _≈ₛ_
+
+  module Transfer
+    -- (0) the coset action respects ≈ₛ.
+    (h-congₛ-gen : ∀ {c d} y → c ≈ₛ d → h c y ~ h d y)
+    -- (1) h inverts f on the identity coset.
+    (h=⁻¹f-gen   : ∀ (x : X) → ([ x ]ʷ , I) ~ ((h ᵗ) I (f x)))
+    -- (2) the coset action respects the relations of Δ.
+    (h-wd-ax     : ∀ (c : C){u t : Word Y} → u ===₂ t → ((h ᵗ) c u) ~ ((h ᵗ) c t))
+    -- (3) the embedding f respects the relations of Γ.
+    (f-wd-ax     : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)
+    -- (4) the section respects ≈ₛ.
+    ([]-cong     : ∀ {c d} → c ≈ₛ d → [ c ] ≈₂ [ d ])
+    -- (5) the identity coset is represented by the empty word.
+    ([I]≈ε       : [ I ] ≈₂ ε)
+    -- (6) section/action compatibility.
+    (h=ract      : ∀ c b → let (b' , c') = h c b in let [_]ₓ = f ʷ in
+      [ c ] • [ b ]ʷ ≈₂ [ b' ]ₓ • [ c' ])
+    where
+
+    [_]ₓ = f ʷ
+
+    module RSF = Star-Injective-Full-Setoid.Reidemeister-Schreier-Full
+                   Γ Δ Cₛ I f h h-congₛ-gen h=⁻¹f-gen h-wd-ax
+    module RA  = Star-Injective-Full-Setoid.RightAction
+                   Γ Δ Cₛ I f h h-congₛ-gen f-wd-ax [_] []-cong [I]≈ε h=ract
+
+    fʷ-cong : ∀ {w v} → w ≈₁ v → (f ʷ) w ≈₂ (f ʷ) v
+    fʷ-cong = PP.StarCongruence.fʷ-cong Γ Δ f f-wd-ax
+
+    -- The normal-form map: run the coset action from the identity coset.
+    nf : Word Y → Word X × C
+    nf = (h ᵗ) I
+
+    -- Sliding a whole word past a coset factors through the section.
+    hᵗ-hyp : ∀ c b → let (b' , c') = (h ᵗ) c b in [ c ] • b ≈₂ [ b' ]ₓ • [ c' ]
+    hᵗ-hyp c b = RA.lemma-⊛ c b
+
+    -- nf is well-defined for ≈ of Δ (up to ≈ₛ on the coset).
+    nf-wd : ∀ {u t : Word Y} → u ≈₂ t → nf u ~ nf t
+    nf-wd {u} {t} = RSF.lemma-hypB I u t
+
+    -- nf is injective (over ~, i.e. ≈₁ on the word and ≈ₛ on the coset).
+    nf-injective : Injective _≈₂_ _~_ nf
+    nf-injective = RA.nf-isInjective'
+
+    -- Section-based right inverse of nf.
+    inv-nf : Word X × C → Word Y
+    inv-nf (w , c) = (f ʷ) w • [ c ]
+
+    inv-nf-wd : ∀ {u t : Word X × C} → u ~ t → inv-nf u ≈₂ inv-nf t
+    inv-nf-wd = RA.⁻¹nf-wd
+
+    inv-nf-surjective : Surjective _~_ _≈₂_ inv-nf
+    inv-nf-surjective = RA.⁻¹nf-isSurjective
+
+    inv-nf∘nf=id : ∀ {w} → inv-nf (nf w) ≈₂ w
+    inv-nf∘nf=id {w} = RA.⁻¹nf-nf=id
+
+    -- f ʷ is injective, and its Schreier retraction.
+    fʷ-injective : (w v : Word X) → (f ʷ) w ≈₂ (f ʷ) v → w ≈₁ v
+    fʷ-injective = RSF.reidemeister-schreier
+
+    nfx : Word Y → Word X
+    nfx = RSF.g
 
 
 ------------------------------------------------------------------------

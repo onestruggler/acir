@@ -11,6 +11,8 @@ Theory for Real-Clifford+CH Quantum Circuits involves almost 300 pages
 handwritten proofs of completeness, which should and can by verified
 in this framework.
 
+
+
 ## Contributions
 
    0. An Agda library for reasoning circuit normal forms and complete
@@ -45,7 +47,25 @@ in this framework.
     https://www.mathstat.dal.ca/~xbian/LafontLP/
     https://www.mathstat.dal.ca/~xbian/qupit/index.php
 
+# Preliminary
+
+   The normal form given by a subgroup chain / stabilizer chain via
+   transversals (and cite Sims/Schreier–Sims), noting the mixed-radix
+   "digit expansion" analogy — each coset index is a digit in a
+   group-theoretic positional system. Specialize to circuit setting,
+   i.e., the subgroup chain is {Cir k | 0 <= k <= n, k is natural
+   number}, since Cir k < Cir (k + 1).
+
+
+
 # Libary Design
+
+## Design of Circuit
+
+   Inductively defined Circuit, and Inductively defined circuit
+   realtions ease the formalization. Careful state such
+   design. Prepare Examples showing correspondence between circuit
+   code and tizk drawing of circuit.
 
 ## NFProperty
 
@@ -54,6 +74,15 @@ in this framework.
    section and a retraction in the constructive setting.
 
 # Examples
+
+  List all proved presentations. To be precise, list all (R
+  IsPresentationOf G) records in the repo, including the relations R
+  and group G and also premises. Same for all the NormalForm and
+  UniqueNormalForm record.
+
+  Use the fancy name signed permutations/hyperoctahedral group for
+  SnD.  (formalize Lamplighter group if we have time)
+  
 
 # Conclusion and future work
 

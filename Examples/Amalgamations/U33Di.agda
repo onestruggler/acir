@@ -9,14 +9,14 @@
 
 import Relation.Binary.Reasoning.Setoid as SR
 
-import Presentation.Groups.Cyclic as Cyclic
+import Examples.Groups.Cyclic.Normalization as Cyclic
 open import Presentation.Construct.Base
 import Presentation.Construct.Properties.SugarProduct as SP
 open import Data.Unit using (⊤ ; tt)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_])
 open import Relation.Binary.PropositionalEquality as Eq renaming ([_] to [_]') using ( _≡_ ; inspect)
-open import Data.Nat using (ℕ ; suc ; zero)
-open import Data.Product using (_,_ ; _×_ ; proj₁ ; proj₂ ; map ; ∃)
+open import Data.Nat using (ℕ ; zero)
+open import Data.Product using (_,_ ; _×_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 open import Function using (_∘_)
 
@@ -29,7 +29,6 @@ import Presentation.Base as PB
 
 import Presentation.Construct.Properties.DirectProduct as DP
 import Presentation.Construct.Properties.NDirectProduct as NDP
-import Normalization.Reidemeister-Schreier as RS
 
 open import Presentation.Groups.SnD
 
@@ -54,7 +53,7 @@ module TwoLevel-Simplified-Amal where
       X₀₁-gen : Gen
       X₁₂-gen : Gen
 
-    open import Data.Nat using (ℕ ; suc ; zero)
+    open import Data.Nat using (ℕ ; zero)
 
     gen : Gen -> Word Gen
     gen = [_]ʷ
@@ -107,7 +106,6 @@ module TwoLevel-Simplified-Amal where
 
     open PB _===_ hiding (_===_)
     open PP _===_
-    open AS.Assoc _===_ using (by-assoc)
 
     open PB (Cyclic.pres 4 ⊕^ 3) renaming (_≈_ to _≈₀_ ; _===_ to _===₀_ ; Alphabet to M) using ()
 

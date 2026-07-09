@@ -145,8 +145,7 @@ private
 -- the endofunction semantics: the NormalForm witness is packaged together
 -- with uniqueness, given by ⟦inv-nf⟧-injective.
 unique-nf : ∀ n →
-  NFBase.UniqueNormalForm (_VRel,_===_ n) (NF n) (Endo-setoid n) (⟦_⟧ {n})
+  NFBase.UniqueNormalForm (_VRel,_===_ n) (NF n) (Endo-setoid n) (⟦_⟧ {n}) (nfp'-t n)
 unique-nf n = record
-  { normalForm = nfp'-t n
-  ; unique = ⟦inv-nf⟧-injective n
+  { unique = ⟦inv-nf⟧-injective n
   }

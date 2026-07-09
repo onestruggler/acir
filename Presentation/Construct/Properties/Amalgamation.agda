@@ -30,6 +30,71 @@ import Presentation.Tactic.AssociativitySolver as AS
 open import Presentation.Construct.Base
 open import Normalization.CosetNF
 
+open import Algebra.Bundles using (Group)
+open import Algebra.Morphism.Structures
+  using (module MonoidMorphisms ; module GroupMorphisms)
+open import Level using (0ℓ)
+open import Presentation.Definitions using (_IsPresentationOf_)
+open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
+open import ForStdlib.Algebra.Morphism.Consequences
+  using (isMonoidHomomorphism⇒isGroupHomomorphism)
+import ForStdlib.Algebra.Construct.Amalgamation as Amal
+
+
+------------------------------------------------------------------------
+-- The inverse of a presentation's interpretation
+--
+-- A presentation p : Γ IsPresentationOf G supplies a group isomorphism
+-- ⟦_⟧ : Word X / ≈ ≅ G.  Choosing a preimage for every element of G
+-- gives a section g : G → Word X that is inverse to ⟦_⟧ up to ≈, and is
+-- itself a group homomorphism (cong / homo / unit follow from injectivity
+-- of ⟦_⟧).
+
+module InvTools {X : Set} {Γ : WRel X} {G : Group 0ℓ 0ℓ}
+                (p : Γ IsPresentationOf G) where
+  open _IsPresentationOf_ p public
+  private
+    module DG = Group GL.•-ε-group
+    module CG = Group G
+  open MonoidMorphisms (Group.rawMonoid GL.•-ε-group) (Group.rawMonoid G)
+    using (module IsMonoidHomomorphism)
+  open GroupMorphisms (Group.rawGroup GL.•-ε-group) (Group.rawGroup G)
+    using (module IsGroupHomomorphism ; module IsGroupMonomorphism
+          ; module IsGroupIsomorphism)
+
+  private
+    grpMono = IsGroupIsomorphism.isGroupMonomorphism iso
+    grpHom  = IsGroupMonomorphism.isGroupHomomorphism grpMono
+    monHom  = IsGroupHomomorphism.isMonoidHomomorphism grpHom
+
+  injective  = IsGroupMonomorphism.injective grpMono
+  surjective = IsGroupIsomorphism.surjective iso
+  open IsMonoidHomomorphism monHom public using (homo ; ε-homo ; ⟦⟧-cong)
+
+  -- A chosen preimage under ⟦_⟧.
+  g : CG.Carrier → Word X
+  g y = proj₁ (surjective y)
+
+  -- ⟦_⟧ ∘ g ≈ id and g ∘ ⟦_⟧ ≈ id.
+  sect : ∀ y → CG._≈_ ⟦ g y ⟧ y
+  sect y = proj₂ (surjective y) DG.refl
+
+  retr : ∀ w → DG._≈_ (g ⟦ w ⟧) w
+  retr w = injective (sect ⟦ w ⟧)
+
+  -- g is a group homomorphism.
+  g-cong : ∀ {x y} → CG._≈_ x y → DG._≈_ (g x) (g y)
+  g-cong {x} {y} e =
+    injective (CG.trans (sect x) (CG.trans e (CG.sym (sect y))))
+
+  g-homo : ∀ x y → DG._≈_ (g (CG._∙_ x y)) (DG._∙_ (g x) (g y))
+  g-homo x y = injective (CG.trans (sect (CG._∙_ x y))
+    (CG.trans (CG.∙-cong (CG.sym (sect x)) (CG.sym (sect y)))
+              (CG.sym (homo (g x) (g y)))))
+
+  g-ε : DG._≈_ (g CG.ε) DG.ε
+  g-ε = injective (CG.trans (sect CG.ε) (CG.sym ε-homo))
+
 
 
 -- C (D) is the set of non-trivial coset representatives.
@@ -1476,3 +1541,246 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   module myData3 = SingleLevel P₀ mypres CD I f hh [_]
   open myData3.Transfer h=⁻¹f-gen hhh-wd-ax f-wd-ax (trans left-unit left-unit) hh-hyp hiding ([_]ₓ) public
+
+
+  -- If the three factors are given as concrete groups, the amalgamated
+  -- presentation presents their amalgamated free product.
+  module Presentation
+    (G0 : Group 0ℓ 0ℓ)
+    (G1 : Group 0ℓ 0ℓ)
+    (G2 : Group 0ℓ 0ℓ)
+    (p0 : P₀ IsPresentationOf G0)
+    (p1 : P1 IsPresentationOf G1)
+    (p2 : P2 IsPresentationOf G2)
+    where
+
+    module I0 = InvTools p0
+    module I1 = InvTools p1
+    module I2 = InvTools p2
+    module MG0 = Group G0
+    module MG1 = Group G1
+    module MG2 = Group G2
+
+    -- (f₁ ʷ) and (f₂ ʷ) respect the P₀-congruence.
+    f₁ʷ-cong = PP.StarCongruence.fʷ-cong P₀ P1 f₁ f-wd-ax₁
+    f₂ʷ-cong = PP.StarCongruence.fʷ-cong P₀ P2 f₂ f-wd-ax₂
+
+    ------------------------------------------------------------------
+    -- The amalgamating homomorphisms φ : G0 → G1 and ψ : G0 → G2,
+    -- induced by f₁ and f₂ through the three presentation isos.
+
+    φ : MG0.Carrier → MG1.Carrier
+    φ p = I1.⟦ (f₁ ʷ) (I0.g p) ⟧
+
+    ψ : MG0.Carrier → MG2.Carrier
+    ψ p = I2.⟦ (f₂ ʷ) (I0.g p) ⟧
+
+    φ-cong : ∀ {x y} → MG0._≈_ x y → MG1._≈_ (φ x) (φ y)
+    φ-cong e = I1.⟦⟧-cong (f₁ʷ-cong (I0.g-cong e))
+
+    φ-homo : ∀ x y → MG1._≈_ (φ (MG0._∙_ x y)) (MG1._∙_ (φ x) (φ y))
+    φ-homo x y = MG1.trans (I1.⟦⟧-cong (f₁ʷ-cong (I0.g-homo x y)))
+                           (I1.homo ((f₁ ʷ) (I0.g x)) ((f₁ ʷ) (I0.g y)))
+
+    φ-ε : MG1._≈_ (φ MG0.ε) MG1.ε
+    φ-ε = MG1.trans (I1.⟦⟧-cong (f₁ʷ-cong I0.g-ε)) I1.ε-homo
+
+    ψ-cong : ∀ {x y} → MG0._≈_ x y → MG2._≈_ (ψ x) (ψ y)
+    ψ-cong e = I2.⟦⟧-cong (f₂ʷ-cong (I0.g-cong e))
+
+    ψ-homo : ∀ x y → MG2._≈_ (ψ (MG0._∙_ x y)) (MG2._∙_ (ψ x) (ψ y))
+    ψ-homo x y = MG2.trans (I2.⟦⟧-cong (f₂ʷ-cong (I0.g-homo x y)))
+                           (I2.homo ((f₂ ʷ) (I0.g x)) ((f₂ ʷ) (I0.g y)))
+
+    ψ-ε : MG2._≈_ (ψ MG0.ε) MG2.ε
+    ψ-ε = MG2.trans (I2.⟦⟧-cong (f₂ʷ-cong I0.g-ε)) I2.ε-homo
+
+    module MM01 = MonoidMorphisms (Group.rawMonoid G0) (Group.rawMonoid G1)
+    module MM02 = MonoidMorphisms (Group.rawMonoid G0) (Group.rawMonoid G2)
+    module GM01 = GroupMorphisms (Group.rawGroup G0) (Group.rawGroup G1)
+    module GM02 = GroupMorphisms (Group.rawGroup G0) (Group.rawGroup G2)
+
+    φ-isMonoidHom : MM01.IsMonoidHomomorphism φ
+    φ-isMonoidHom = record
+      { isMagmaHomomorphism = record
+          { isRelHomomorphism = record { cong = φ-cong }
+          ; homo = φ-homo }
+      ; ε-homo = φ-ε }
+
+    ψ-isMonoidHom : MM02.IsMonoidHomomorphism ψ
+    ψ-isMonoidHom = record
+      { isMagmaHomomorphism = record
+          { isRelHomomorphism = record { cong = ψ-cong }
+          ; homo = ψ-homo }
+      ; ε-homo = ψ-ε }
+
+    φ⁻¹ : ∀ x → MG1._≈_ (φ (MG0._⁻¹ x)) (MG1._⁻¹ (φ x))
+    φ⁻¹ = GM01.IsGroupHomomorphism.⁻¹-homo
+            (isMonoidHomomorphism⇒isGroupHomomorphism G0 G1 φ-isMonoidHom)
+
+    ψ⁻¹ : ∀ x → MG2._≈_ (ψ (MG0._⁻¹ x)) (MG2._⁻¹ (ψ x))
+    ψ⁻¹ = GM02.IsGroupHomomorphism.⁻¹-homo
+            (isMonoidHomomorphism⇒isGroupHomomorphism G0 G2 ψ-isMonoidHom)
+
+    ------------------------------------------------------------------
+    -- The amalgamated free product of G1 and G2 over G0.
+
+    amalgamation : Group 0ℓ 0ℓ
+    amalgamation = Amal.group G1 G2 G0 φ ψ φ⁻¹ ψ⁻¹
+
+    private
+      module R  = Group amalgamation
+      module AI = Amal.Impl (Group.monoid G1) (Group.monoid G2)
+                            (Group.setoid G0) φ ψ
+
+    ------------------------------------------------------------------
+    -- mypres is group-like.
+
+    gl-mypres : Grouplike mypres
+    gl-mypres (inj₁ a) = [ proj₁ (I1.gl a) ]ₗ , AB.lefts (proj₂ (I1.gl a))
+    gl-mypres (inj₂ b) = [ proj₁ (I2.gl b) ]ᵣ , AB.rights (proj₂ (I2.gl b))
+
+    open Group-Lemmas mypres gl-mypres using (•-ε-group)
+
+    ------------------------------------------------------------------
+    -- Forward interpretation ⟦_⟧ᴬ : Word Y → amalgamated free product.
+
+    ⟦_⟧ᴬ : Word Y → R.Carrier
+    ⟦ [ inj₁ a ]ʷ ⟧ᴬ = inj₁ I1.⟦ [ a ]ʷ ⟧ ∷ []
+    ⟦ [ inj₂ b ]ʷ ⟧ᴬ = inj₂ I2.⟦ [ b ]ʷ ⟧ ∷ []
+    ⟦ ε ⟧ᴬ           = []
+    ⟦ u • v ⟧ᴬ       = ⟦ u ⟧ᴬ ++ ⟦ v ⟧ᴬ
+
+    -- A left/right-embedded word collapses to a single group letter.
+    fwdₗ : ∀ w → R._≈_ ⟦ [ w ]ₗ ⟧ᴬ (inj₁ I1.⟦ w ⟧ ∷ [])
+    fwdₗ [ a ]ʷ = R.refl
+    fwdₗ ε      = AI.sym (AI.trans (AI.m-cong I1.ε-homo) AI.m-ε)
+    fwdₗ (u • v) =
+      AI.trans (AI.++-cong (fwdₗ u) (fwdₗ v))
+        (AI.trans (AI.m-∙ I1.⟦ u ⟧ I1.⟦ v ⟧)
+                  (AI.m-cong (MG1.sym (I1.homo u v))))
+
+    fwdᵣ : ∀ w → R._≈_ ⟦ [ w ]ᵣ ⟧ᴬ (inj₂ I2.⟦ w ⟧ ∷ [])
+    fwdᵣ [ b ]ʷ = R.refl
+    fwdᵣ ε      = AI.sym (AI.trans (AI.n-cong I2.ε-homo) AI.n-ε)
+    fwdᵣ (u • v) =
+      AI.trans (AI.++-cong (fwdᵣ u) (fwdᵣ v))
+        (AI.trans (AI.n-∙ I2.⟦ u ⟧ I2.⟦ v ⟧)
+                  (AI.n-cong (MG2.sym (I2.homo u v))))
+
+    -- ⟦_⟧ᴬ is sound: it preserves the congruence _≈₃_.
+    sound-ax : ∀ {u v} → mypres u v → R._≈_ ⟦ u ⟧ᴬ ⟦ v ⟧ᴬ
+    sound-ax (left {u} {v} x) =
+      R.trans (fwdₗ u) (R.trans (AI.m-cong (I1.⟦⟧-cong (_≈₁_.axiom x)))
+                                (R.sym (fwdₗ v)))
+    sound-ax (right {u} {v} x) =
+      R.trans (fwdᵣ u) (R.trans (AI.n-cong (I2.⟦⟧-cong (_≈₂_.axiom x)))
+                                (R.sym (fwdᵣ v)))
+    sound-ax (mid (amal {m})) =
+      R.trans (fwdₗ (f₁ m))
+        (R.trans (AI.m-cong (MG1.sym φ=fm))
+          (R.trans (AI.glue (MG0.refl {I0.⟦ [ m ]ʷ ⟧}))
+            (R.trans (AI.n-cong ψ=fm) (R.sym (fwdᵣ (f₂ m))))))
+      where
+      φ=fm : MG1._≈_ (φ I0.⟦ [ m ]ʷ ⟧) I1.⟦ f₁ m ⟧
+      φ=fm = I1.⟦⟧-cong (f₁ʷ-cong (I0.retr [ m ]ʷ))
+      ψ=fm : MG2._≈_ (ψ I0.⟦ [ m ]ʷ ⟧) I2.⟦ f₂ m ⟧
+      ψ=fm = I2.⟦⟧-cong (f₂ʷ-cong (I0.retr [ m ]ʷ))
+
+    sound : ∀ {u v} → u ≈₃ v → R._≈_ ⟦ u ⟧ᴬ ⟦ v ⟧ᴬ
+    sound refl               = R.refl
+    sound (sym e)            = R.sym (sound e)
+    sound (trans e₁ e₂)      = R.trans (sound e₁) (sound e₂)
+    sound (cong e₁ e₂)       = AI.++-cong (sound e₁) (sound e₂)
+    sound (assoc {a} {b} {c}) = R.assoc ⟦ a ⟧ᴬ ⟦ b ⟧ᴬ ⟦ c ⟧ᴬ
+    sound left-unit          = R.refl
+    sound {v = v} right-unit = R.identityʳ ⟦ v ⟧ᴬ
+    sound (axiom x)          = sound-ax x
+
+    ------------------------------------------------------------------
+    -- Backward interpretation g-ᴬ, inverse to ⟦_⟧ᴬ.
+
+    g-ᴬ : R.Carrier → Word Y
+    g-ᴬ []             = ε
+    g-ᴬ (inj₁ x ∷ xs)  = [ I1.g x ]ₗ • g-ᴬ xs
+    g-ᴬ (inj₂ y ∷ xs)  = [ I2.g y ]ᵣ • g-ᴬ xs
+
+    g-ᴬ-hom : ∀ xs ys → g-ᴬ (xs ++ ys) ≈₃ (g-ᴬ xs • g-ᴬ ys)
+    g-ᴬ-hom []            ys = sym left-unit
+    g-ᴬ-hom (inj₁ x ∷ xs) ys = trans (cong refl (g-ᴬ-hom xs ys)) (sym assoc)
+    g-ᴬ-hom (inj₂ y ∷ xs) ys = trans (cong refl (g-ᴬ-hom xs ys)) (sym assoc)
+
+    -- A single glued letter, moved across the amalgamation, is a word.
+    amalʷ : ∀ w → [ (f₁ ʷ) w ]ₗ ≈₃ [ (f₂ ʷ) w ]ᵣ
+    amalʷ w = trans (refl'₃ (aux-f₁ w)) (sym (aux-f₂ w))
+
+    g-cong-ᴬ : ∀ {xs ys} → R._≈_ xs ys → g-ᴬ xs ≈₃ g-ᴬ ys
+    g-cong-ᴬ (AI.m-cong e)  = cong (AB.lefts (I1.g-cong e)) refl
+    g-cong-ᴬ (AI.n-cong e)  = cong (AB.rights (I2.g-cong e)) refl
+    g-cong-ᴬ (AI.m-∙ x y)   =
+      trans (sym assoc) (cong (sym (AB.lefts (I1.g-homo x y))) refl)
+    g-cong-ᴬ (AI.n-∙ x y)   =
+      trans (sym assoc) (cong (sym (AB.rights (I2.g-homo x y))) refl)
+    g-cong-ᴬ AI.m-ε         = trans (cong (AB.lefts I1.g-ε) refl) left-unit
+    g-cong-ᴬ AI.n-ε         = trans (cong (AB.rights I2.g-ε) refl) left-unit
+    g-cong-ᴬ (AI.glue {p} {q} e) = cong core refl
+      where
+      core : [ I1.g (φ p) ]ₗ ≈₃ [ I2.g (ψ q) ]ᵣ
+      core = trans (AB.lefts (I1.retr ((f₁ ʷ) (I0.g p))))
+             (trans (amalʷ (I0.g p))
+             (trans (AB.rights (f₂ʷ-cong (I0.g-cong e)))
+                    (AB.rights (_≈₂_.sym (I2.retr ((f₂ ʷ) (I0.g q)))))))
+    g-cong-ᴬ AI.refl        = refl
+    g-cong-ᴬ (AI.sym e)     = sym (g-cong-ᴬ e)
+    g-cong-ᴬ (AI.trans e₁ e₂) = trans (g-cong-ᴬ e₁) (g-cong-ᴬ e₂)
+    g-cong-ᴬ (AI.++-cong {xs} {xs'} {ys} {ys'} e₁ e₂) =
+      trans (g-ᴬ-hom xs ys)
+        (trans (cong (g-cong-ᴬ e₁) (g-cong-ᴬ e₂)) (sym (g-ᴬ-hom xs' ys')))
+
+    retr-ᴬ : ∀ w → g-ᴬ ⟦ w ⟧ᴬ ≈₃ w
+    retr-ᴬ [ inj₁ a ]ʷ =
+      trans (cong (AB.lefts (I1.retr [ a ]ʷ)) refl) right-unit
+    retr-ᴬ [ inj₂ b ]ʷ =
+      trans (cong (AB.rights (I2.retr [ b ]ʷ)) refl) right-unit
+    retr-ᴬ ε       = refl
+    retr-ᴬ (u • v) =
+      trans (g-ᴬ-hom ⟦ u ⟧ᴬ ⟦ v ⟧ᴬ) (cong (retr-ᴬ u) (retr-ᴬ v))
+
+    sect-ᴬ : ∀ xs → R._≈_ ⟦ g-ᴬ xs ⟧ᴬ xs
+    sect-ᴬ []            = R.refl
+    sect-ᴬ (inj₁ x ∷ xs) =
+      R.trans (AI.++-cong (fwdₗ (I1.g x)) (sect-ᴬ xs))
+              (AI.++-cong (AI.m-cong (I1.sect x)) R.refl)
+    sect-ᴬ (inj₂ y ∷ xs) =
+      R.trans (AI.++-cong (fwdᵣ (I2.g y)) (sect-ᴬ xs))
+              (AI.++-cong (AI.n-cong (I2.sect y)) R.refl)
+
+    ------------------------------------------------------------------
+    -- Assemble the isomorphism.
+
+    ⟦⟧ᴬ-isMonoidHom :
+      (MonoidMorphisms.IsMonoidHomomorphism
+        (Group.rawMonoid •-ε-group) (Group.rawMonoid amalgamation)) ⟦_⟧ᴬ
+    ⟦⟧ᴬ-isMonoidHom = record
+      { isMagmaHomomorphism = record
+          { isRelHomomorphism = record { cong = sound }
+          ; homo = λ u v → R.refl }
+      ; ε-homo = R.refl }
+
+    module GMᴬ = GroupMorphisms (Group.rawGroup •-ε-group)
+                               (Group.rawGroup amalgamation)
+
+    inj-ᴬ : ∀ {x y} → R._≈_ ⟦ x ⟧ᴬ ⟦ y ⟧ᴬ → x ≈₃ y
+    inj-ᴬ e = trans (sym (retr-ᴬ _)) (trans (g-cong-ᴬ e) (retr-ᴬ _))
+
+    ⟦⟧ᴬ-iso : GMᴬ.IsGroupIsomorphism ⟦_⟧ᴬ
+    ⟦⟧ᴬ-iso = record
+      { isGroupMonomorphism = record
+          { isGroupHomomorphism =
+              isMonoidHomomorphism⇒isGroupHomomorphism
+                •-ε-group amalgamation ⟦⟧ᴬ-isMonoidHom
+          ; injective = inj-ᴬ }
+      ; surjective = λ ys → g-ᴬ ys , λ z≈ → R.trans (sound z≈) (sect-ᴬ ys) }
+
+    dpres : (P₁ * P₂ ⋆ f₁ ⋆ f₂) IsPresentationOf amalgamation
+    dpres = record { gl = gl-mypres ; ⟦_⟧ = ⟦_⟧ᴬ ; iso = ⟦⟧ᴬ-iso }

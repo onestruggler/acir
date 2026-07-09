@@ -13,6 +13,7 @@ open import Algebra.Bundles using (Group)
 open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
 open import Level using (0ℓ)
 import Relation.Binary.Reasoning.Setoid as SR
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Word.Base
 
@@ -189,3 +190,84 @@ module Group-Lemmas
       ; ⁻¹-cong  = ⁻¹-cong
       }
     }
+
+------------------------------------------------------------------------
+-- Basis change
+--
+-- Cancel a common context b • _ • c from both sides of an equation.
+
+module Basis-Change
+  (Y : Set)
+  (Γ : WRel Y)
+  (group-like : Grouplike Γ)
+  where
+
+  open PB Γ
+  open PP Γ
+  open Group-Lemmas Γ group-like
+  open SR word-setoid
+
+  by-basis-change : ∀ {u v} b c d e →
+    d • b ≈ ε → c • e ≈ ε → b • u • c ≈ b • v • c → u ≈ v
+  by-basis-change {u} {v} b c d e h1 h2 eq =
+    begin u
+        ≈⟨ sym (trans left-unit right-unit) ⟩
+      ε • u • ε
+        ≈⟨ cong (sym h1) (cong refl (sym h2)) ⟩
+      (d • b) • u • (c • e)
+        ≈⟨ by-passoc (□ ^ 2 • □ • □ ^ 2) (□ • □ ^ 3 • □) Eq.refl ⟩
+      d • (b • u • c) • e
+        ≈⟨ cong refl (cong eq refl) ⟩
+      d • (b • v • c) • e
+        ≈⟨ by-passoc (□ • □ ^ 3 • □) (□ ^ 2 • □ • □ ^ 2) Eq.refl ⟩
+      (d • b) • v • (c • e)
+        ≈⟨ cong h1 (cong refl h2) ⟩
+      ε • v • ε
+        ≈⟨ trans left-unit right-unit ⟩
+      v ∎
+    where open Pattern-Assoc
+
+  bbc : ∀ {u v} b c → b • u • c ≈ b • v • c → u ≈ v
+  bbc {u} {v} b c eq =
+    by-basis-change b c (b ⁻¹) (c ⁻¹) inverseˡ inverseʳ eq
+
+  bbc-and : ∀ {u v x y} b c →
+    b • u • c ≈ x → b • v • c ≈ y → u ≈ v → x ≈ y
+  bbc-and {u} {v} {x} {y} b c equ eqv uv =
+    begin x    ≈⟨ sym equ ⟩
+      b • u • c  ≈⟨ cong refl (cong uv refl) ⟩
+      b • v • c  ≈⟨ eqv ⟩
+      y ∎
+
+------------------------------------------------------------------------
+-- Group actions
+
+word-act : ∀ {C Y : Set} → (Y → C → C) → Word Y → C → C
+word-act act1 [ x ]ʷ   c = act1 x c
+word-act act1 ε         c = c
+word-act act1 (w • w₁) c = word-act act1 w (word-act act1 w₁ c)
+
+module Group-Action
+  (C Y : Set)
+  (Γ : WRel Y)
+  (group-like : Grouplike Γ)
+  (act1 : Y → C → C)
+  (let act = word-act act1)
+  (let open PB Γ)
+  (hyp : ∀ {w v} → Γ w v → ∀ c → act w c ≡ act v c)
+  where
+
+  open PP Γ
+  open Group-Lemmas Γ group-like
+  open SR word-setoid
+
+  act-cong : ∀ w v c → w ≈ v → act w c ≡ act v c
+  act-cong w v c PB.refl                        = Eq.refl
+  act-cong w v c (PB.sym eq)                    = Eq.sym (act-cong v w c eq)
+  act-cong w v c (PB.trans eq eq₁)              = Eq.trans (act-cong _ _ c eq) (act-cong _ _ c eq₁)
+  act-cong w v c (PB.cong {w'} {w''} {v'} {v''} eq eq₁)
+    rewrite act-cong _ _ c eq₁                  = act-cong _ _ (word-act act1 v'' c) eq
+  act-cong w v c PB.assoc                       = Eq.refl
+  act-cong w v c PB.left-unit                   = Eq.refl
+  act-cong w v c PB.right-unit                  = Eq.refl
+  act-cong w v c (PB.axiom x)                   = hyp x c

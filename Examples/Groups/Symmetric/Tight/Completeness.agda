@@ -12,7 +12,8 @@ open import Data.Nat using (ℕ)
 
 import Normalization.NormalForm.Propositional as NFBase
 import Presentation.Properties as PP
-open import Presentation.Definitions
+open import Function.Definitions using (Injective)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Examples.Groups.Symmetric.Tight.Completeness where
 
@@ -22,8 +23,6 @@ open import Examples.Groups.Symmetric.Tight.Soundness using (sound)
 open import Examples.Groups.Symmetric.Normalization using (NF)
 import Examples.Groups.Symmetric.Tight.Uniqueness as TU
 
-open SubPresentation
-
 
 private variable n : ℕ
 
@@ -31,7 +30,7 @@ private variable n : ℕ
 -- Completeness of the tight semantics
 
 completeness : let open PP (n VRel,_===_) in
-  Completeness word-setoid (Group.setoid (Permutation′-group n)) ⟦_⟧
+  Injective (Setoid._≈_ word-setoid) (Setoid._≈_ (Group.setoid (Permutation′-group n))) ⟦_⟧
 completeness {n} =
   NFBase.by-normalization (_VRel,_===_ n) (NF n) (Group.setoid (Permutation′-group n)) (⟦_⟧ {n})
     TU.unique-nf-tight (sound {n})

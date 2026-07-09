@@ -10,7 +10,8 @@
 
 import Normalization.NormalForm.Propositional as NFBase
 import Presentation.Properties as PP
-open import Presentation.Definitions
+open import Function.Definitions using (Injective)
+open import Relation.Binary.Bundles using (Setoid)
 
 module Examples.Groups.Symmetric.Loose.Completeness where
 
@@ -19,8 +20,6 @@ open import Examples.Groups.Symmetric.Loose.Semantics using (Endo-setoid ; ⟦_�
 open import Examples.Groups.Symmetric.Loose.Soundness using (sound)
 open import Examples.Groups.Symmetric.Normalization using (NF)
 import Examples.Groups.Symmetric.Loose.Uniqueness as LU
-
-open SubPresentation
 
 
 ------------------------------------------------------------------------
@@ -32,7 +31,7 @@ completeness : ∀ n →
   Syn        = PPV.word-setoid
   Sem        = Endo-setoid n
   in
-  Completeness Syn Sem ⟦_⟧
+  Injective (Setoid._≈_ Syn) (Setoid._≈_ Sem) ⟦_⟧
 completeness n =
   NFBase.by-normalization (_VRel,_===_ n) (NF n) (Endo-setoid n) (⟦_⟧ {n})
     (LU.unique-nf n) sound
