@@ -130,7 +130,7 @@ module _ {N X : Set}
     -- NFQ (canonical quotient cosets) is the coset index; NFS carries
     -- the N-part of the extension's normal form.
     {NFS NFQ : Set}
-    (nfpS : NormalForm S NFS)
+    (nfpS : BijectiveNormalForm S NFS)
     (nfpQ : BijectiveNormalForm R̄ NFQ)
     where
 
@@ -145,6 +145,10 @@ module _ {N X : Set}
       using (module MonoidMorphisms ; module GroupMorphisms)
     open import Data.Product using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
     open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
+    open import Presentation.Definitions
+      using (_IsSubPresentationOf_ ; isPresentationOf)
+    open import Function.Definitions using (Surjective)
+    import Normalization.StarPresentation
     import Presentation.Base as PB
 
     private
@@ -174,6 +178,31 @@ module _ {N X : Set}
       PN-cong = πG.IsGroupHomomorphism.⟦⟧-cong PN-hom
       PN-∙    = πG.IsGroupHomomorphism.homo    PN-hom
       PN-ε    = πG.IsGroupHomomorphism.ε-homo  PN-hom
+      PN-surj = πG.IsGroupIsomorphism.surjective PN.iso
+
+    -- The quotient interpretation ⟦_⟧Q : Word X → GQ and its laws.
+    private
+      module GQm = Group GQ
+      module PQi = _IsPresentationOf_ pQ
+    ⟦_⟧Q : Word X → GQm.Carrier
+    ⟦_⟧Q = PQi.⟦_⟧
+    private
+      module ρG = GroupMorphisms (Group.rawGroup PQi.GL.•-ε-group)
+                                 (Group.rawGroup GQ)
+      PQ-mono = ρG.IsGroupIsomorphism.isGroupMonomorphism PQi.iso
+      PQ-hom  = ρG.IsGroupMonomorphism.isGroupHomomorphism PQ-mono
+      PQ-∙    = ρG.IsGroupHomomorphism.homo    PQ-hom
+      PQ-ε    = ρG.IsGroupHomomorphism.ε-homo  PQ-hom
+      PQ-inj  = ρG.IsGroupMonomorphism.injective PQ-mono
+      PQ-surj = ρG.IsGroupIsomorphism.surjective PQi.iso
+
+    -- The projection G ↠ GQ and its homomorphism laws.
+    proj : Gm.Carrier → GQm.Carrier
+    proj = Extension.proj et
+    private
+      module πp = GroupMorphisms (Group.rawGroup G) (Group.rawGroup GQ)
+      proj-∙ = πp.IsGroupHomomorphism.homo   (Extension.proj-homo et)
+      proj-ε = πp.IsGroupHomomorphism.ε-homo (Extension.proj-homo et)
 
     -- The realisation condition: ⟦_⟧₀ sends each N-generator to the image
     -- under incl of its N-value.  This is what makes ⟦_⟧₀ interpret the
@@ -229,6 +258,7 @@ module _ {N X : Set}
 
     open PB ext using () renaming (_≈_ to _≈ₑ_)
     open PB R̄  using () renaming (_≈_ to _≈q_)
+    open PB S  using () renaming (_≈_ to _≈s_)
     open Group-Lemmas S PN.gl using ()
       renaming (_⁻¹ to _⁻¹ₛ ; inverseˡ to inverseˡₛ)
     open LeftRightCongruence S EmptyRel extp using (lefts)
@@ -306,11 +336,16 @@ module _ {N X : Set}
     open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
     import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 
-    private module NQ = SNF.BijectiveNormalForm nfpQ
+    private
+      module NQ = SNF.BijectiveNormalForm nfpQ
+      module NS = SNF.BijectiveNormalForm nfpS
 
     -- The bijection gives both directions: inv-nf∘nf ≈ id and nf∘inv-nf ≡ id.
     nf∘inv : ∀ c → NQ.nf (NQ.inv-nf c) ≡ c
     nf∘inv c = proj₂ (NQ.surjective c) _≈q_.refl
+
+    nf∘invS : ∀ a → NS.nf (NS.inv-nf a) ≡ a
+    nf∘invS a = proj₂ (NS.surjective a) _≈s_.refl
 
     -- Coset index: the canonical quotient normal forms (unique reps).
     Cᶜ : Set
@@ -345,8 +380,6 @@ module _ {N X : Set}
 
     ------------------------------------------------------------------
     -- Well-definedness of the coset action (h-wd-ax)
-
-    open PB S using () renaming (_≈_ to _≈s_)
 
     -- Structural laws of the word-valued conjugation.
     conjss-c-ε=ε : ∀ c → conjss c ε ≡ ε
@@ -436,8 +469,11 @@ module _ {N X : Set}
       Realises →
       (sound-ax : ∀ {w v} → extp w v → Group._≈_ G ⟦ w ⟧ ⟦ v ⟧) →
       (nf-ε : NQ.inv-nf (NQ.nf ε) ≡ ε) →
+      -- The quotient realisation: each rep generator projects to its
+      -- quotient value in GQ.
+      (real-Q : ∀ x → GQm._≈_ (proj ⟦ inj₂ x ⟧₀) ⟦ [ x ]ʷ ⟧Q) →
       ext IsPresentationOf G
-    dpres real sound-ax nf-ε = {!!}
+    dpres real sound-ax nf-ε real-Q = isPresentationOf subpres claim
       where
       -- RS hypothesis (4): the identity coset is ε (via the NF's
       -- normalization of ε).
@@ -522,4 +558,112 @@ module _ {N X : Set}
       -- normal form: NF_ext = NFS × NFQ.  (The Reidemeister–Schreier engine
       -- packaged in CT.Transfer, now that all five hypotheses hold.)
       module CTT = CT.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax [I]≈ε h=ract
-      nfp = CTT.nfp' nfpS
+      nfp = CTT.nfp' NS.normalForm
+
+      ----------------------------------------------------------------
+      -- Assembly: nfp + soundness + surjectivity  ⇒  presentation.
+
+      -- A right-embedded word projects to its quotient value.
+      emb-r-Q : ∀ w → GQm._≈_ (proj ⟦ [ w ]ᵣ ⟧) ⟦ w ⟧Q
+      emb-r-Q [ x ]ʷ = real-Q x
+      emb-r-Q ε = GQm.trans proj-ε (GQm.sym PQ-ε)
+      emb-r-Q (w • v) =
+        GQm.trans (proj-∙ ⟦ [ w ]ᵣ ⟧ ⟦ [ v ]ᵣ ⟧)
+          (GQm.trans (GQm.∙-cong (emb-r-Q w) (emb-r-Q v)) (GQm.sym (PQ-∙ w v)))
+
+      -- (fᶜ ʷ) w reads as incl of its N-value.
+      emb-fᶜ : ∀ w → Gm._≈_ ⟦ (fᶜ ʷ) w ⟧ (incl ⟦ w ⟧N)
+      emb-fᶜ w = Eq.subst (λ □ → Gm._≈_ ⟦ □ ⟧ (incl ⟦ w ⟧N))
+                          (Eq.sym (aux-fᶜ w)) (emb-l real w)
+
+      module NFP = SNF.NormalForm nfp
+
+      -- The inverse normal form gg(a,c) reads as incl(N-part) • coset.
+      sem-gg : ∀ a c → Gm._≈_ ⟦ NFP.inv-nf (a , c) ⟧
+                             (incl ⟦ NS.inv-nf a ⟧N Gm.∙ ⟦ [ rep c ]ᵣ ⟧)
+      sem-gg a c = Gm.∙-cong (emb-fᶜ (NS.inv-nf a)) Gm.refl
+
+      -- Right cancellation in G.
+      G-cancelʳ : ∀ {a b x} → Gm._≈_ (a Gm.∙ x) (b Gm.∙ x) → Gm._≈_ a b
+      G-cancelʳ {a} {b} {x} eq = Gm.trans (Gm.sym (Gm.identityʳ a))
+        (Gm.trans (Gm.∙-cong Gm.refl (Gm.sym (Gm.inverseʳ x)))
+          (Gm.trans (Gm.sym (Gm.assoc a x (x Gm.⁻¹)))
+            (Gm.trans (Gm.∙-cong eq Gm.refl)
+              (Gm.trans (Gm.assoc b x (x Gm.⁻¹))
+                (Gm.trans (Gm.∙-cong Gm.refl (Gm.inverseʳ x)) (Gm.identityʳ b))))))
+
+      -- Projecting gg(a,c) recovers the coset's quotient value.
+      proj-cong = πp.IsGroupHomomorphism.⟦⟧-cong (Extension.proj-homo et)
+      proj-sem : ∀ a c → GQm._≈_ (proj ⟦ NFP.inv-nf (a , c) ⟧) ⟦ rep c ⟧Q
+      proj-sem a c = GQm.trans (proj-cong (sem-gg a c))
+        (GQm.trans (proj-∙ (incl ⟦ NS.inv-nf a ⟧N) ⟦ [ rep c ]ᵣ ⟧)
+          (GQm.trans (GQm.∙-cong (Extension.proj-kills-incl et ⟦ NS.inv-nf a ⟧N) GQm.refl)
+            (GQm.trans (GQm.identityˡ (proj ⟦ [ rep c ]ᵣ ⟧)) (emb-r-Q (rep c)))))
+
+      -- Unique normal form: equal denotations force equal NF pairs.
+      unfp : SNF.UniqueNormalForm ext (Eq.setoid (NFS × NFQ))
+               (Group.setoid G) ⟦_⟧ nfp
+      unfp = record { unique = uniq }
+        where
+        uniq : ∀ {u v : NFS × NFQ} →
+               Gm._≈_ ⟦ NFP.inv-nf u ⟧ ⟦ NFP.inv-nf v ⟧ → u ≡ v
+        uniq {a , c} {a' , c'} eq = Eq.cong₂ _,_ a≡a' c≡c'
+          where
+          c≡c' : c ≡ c'
+          c≡c' = Eq.trans (Eq.sym (nf∘inv c))
+            (Eq.trans (NQ.nf-cong (PQ-inj
+              (GQm.trans (GQm.sym (proj-sem a c))
+                (GQm.trans (proj-cong eq) (proj-sem a' c')))))
+              (nf∘inv c'))
+          gg-eq : Gm._≈_ (incl ⟦ NS.inv-nf a ⟧N Gm.∙ ⟦ [ rep c ]ᵣ ⟧)
+                         (incl ⟦ NS.inv-nf a' ⟧N Gm.∙ ⟦ [ rep c ]ᵣ ⟧)
+          gg-eq = Eq.subst
+            (λ □ → Gm._≈_ (incl ⟦ NS.inv-nf a ⟧N Gm.∙ ⟦ [ rep c ]ᵣ ⟧)
+                          (incl ⟦ NS.inv-nf a' ⟧N Gm.∙ ⟦ [ rep □ ]ᵣ ⟧))
+            (Eq.sym c≡c')
+            (Gm.trans (Gm.sym (sem-gg a c)) (Gm.trans eq (sem-gg a' c')))
+          a≡a' : a ≡ a'
+          a≡a' = Eq.trans (Eq.sym (nf∘invS a))
+            (Eq.trans (NS.nf-cong
+              (pN-inj (Extension.incl-injective et (G-cancelʳ gg-eq))))
+              (nf∘invS a'))
+
+      module SP = Normalization.StarPresentation ext (Eq.setoid (NFS × NFQ))
+      module GS = SP.GroupSem G ⟦_⟧₀
+      subpres : ext IsSubPresentationOf G
+      subpres = GS.GetSubPresentation.groupSubPres
+                  (sound-t (sound-s real) sound-ax) grouplike nfp unfp
+
+      -- Surjectivity: pick a rep word xw with ⟦xw⟧Q = proj g; then
+      -- g · ⟦[xw]ᵣ⟧⁻¹ ∈ ker(proj) = im(incl) is incl n = ⟦[nw]ₗ⟧, so
+      -- g = ⟦[nw]ₗ • [xw]ᵣ⟧.
+      claim : Surjective _≈ₑ_ Gm._≈_ ⟦_⟧
+      claim g = [ nw ]ₗ • [ xw ]ᵣ , λ z≈ → Gm.trans (sound-full z≈) g-eq
+        where
+        xw : Word X
+        xw = proj₁ (PQ-surj (proj g))
+        ⟦xw⟧≈ : GQm._≈_ ⟦ xw ⟧Q (proj g)
+        ⟦xw⟧≈ = proj₂ (PQ-surj (proj g)) _≈q_.refl
+        ker-elt : Gm.Carrier
+        ker-elt = g Gm.∙ (Gm._⁻¹ ⟦ [ xw ]ᵣ ⟧)
+        ker-proj : GQm._≈_ (proj ker-elt) GQm.ε
+        ker-proj = GQm.trans (proj-∙ g (Gm._⁻¹ ⟦ [ xw ]ᵣ ⟧))
+          (GQm.trans (GQm.∙-cong GQm.refl
+            (GQm.trans (πp.IsGroupHomomorphism.⁻¹-homo (Extension.proj-homo et) ⟦ [ xw ]ᵣ ⟧)
+              (GQm.⁻¹-cong (GQm.trans (emb-r-Q xw) ⟦xw⟧≈))))
+            (GQm.inverseʳ (proj g)))
+        n : GNm.Carrier
+        n = proj₁ (Extension.ker⊆im-incl et ker-elt ker-proj)
+        incl-n≈ : Gm._≈_ (incl n) ker-elt
+        incl-n≈ = proj₂ (Extension.ker⊆im-incl et ker-elt ker-proj)
+        nw : Word N
+        nw = proj₁ (PN-surj n)
+        ⟦nw⟧≈ : GNm._≈_ ⟦ nw ⟧N n
+        ⟦nw⟧≈ = proj₂ (PN-surj n) _≈s_.refl
+        g-eq : Gm._≈_ ⟦ [ nw ]ₗ • [ xw ]ᵣ ⟧ g
+        g-eq = Gm.trans (Gm.∙-cong (emb-l real nw) Gm.refl)
+          (Gm.trans (Gm.∙-cong (incl-cong ⟦nw⟧≈) Gm.refl)
+            (Gm.trans (Gm.∙-cong incl-n≈ Gm.refl)
+              (Gm.trans (Gm.assoc g (Gm._⁻¹ ⟦ [ xw ]ᵣ ⟧) ⟦ [ xw ]ᵣ ⟧)
+                (Gm.trans (Gm.∙-cong Gm.refl (Gm.inverseˡ ⟦ [ xw ]ᵣ ⟧))
+                          (Gm.identityʳ g)))))
