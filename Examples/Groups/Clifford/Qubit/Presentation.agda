@@ -71,7 +71,7 @@ open import Examples.Groups.Symplectic.Action p-2 p-prime using (act1)
 
 -- R̄ : the symplectic relations, over the Clifford generators Gen n.
 open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime
-open Symplectic-Derived-Gen using (Gen ; _QRel,_===_ ; order-S ; cong↑)
+open Symplectic-Derived-Gen using (Gen ; _QRel,_===_ ; srel ; order-S ; cong↑)
 
 ------------------------------------------------------------------------
 -- Generator sets
@@ -131,9 +131,9 @@ shiftPauli = wmap shift-gen
 -- The only nontrivial correction is S² = Z (order-S); cong↑ shifts a
 -- correction up one qubit; every other relator lifts with no Pauli.
 corr : ∀ {n} {u v} → (n QRel,_===_) u v → Word (PauliGen n)
-corr order-S    = Z₀
-corr (cong↑ r)  = shiftPauli (corr r)
-corr _          = ε
+corr (srel order-S)  = Z₀
+corr (cong↑ r)       = shiftPauli (corr r)
+corr _               = ε
 
 ------------------------------------------------------------------------
 -- The Clifford presentation, as an extension of Pauli by the symplectic
