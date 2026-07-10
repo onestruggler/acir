@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Group homomorphism from the free-group presentation (Word (Gen n) / ≈)
--- to the permutation group Permutation′ n, via the tight semantics.
+-- The direct-product presentation presents S₃ × C₅: a group
+-- isomorphism from the word group (Word Y / ≈) to the product group.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}

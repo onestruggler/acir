@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Unique normal form for the loose (ℤ/Nℤ) semantics of the cyclic
--- groups: normal forms with equal denotations are equal.
+-- Unique normal form for the ℤ/Nℤ semantics of the cyclic groups:
+-- normal forms with equal denotations are equal.
 ------------------------------------------------------------------------
 
 {-# OPTIONS  --safe #-}
@@ -87,7 +87,7 @@ unique-lemma (suc (suc N)) {u} {v}       eq =
   trans (sym (pow-id u)) (trans eq (pow-id v))
 
 ------------------------------------------------------------------------
--- Unique normal form for the loose semantics
+-- Unique normal form for the semantics
 
 -- The normal form of Examples.Groups.Cyclic.Normalization is unique for the
 -- ℤ/Nℤ semantics: the NormalForm witness is packaged together with

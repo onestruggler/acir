@@ -22,8 +22,11 @@ open import Data.Product using (_,_ ; ∃ ; proj₁ ; proj₂)
 open import Data.Vec using (_∷_ ; [] ; head ; tail)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≗_)
 
+open import Function.Definitions using (Surjective)
+
 open import Word.Base using (Word ; _•_ ; ε ; [_]ʷ)
 open import Notations
+import Presentation.Base as PB
 open import Presentation.GroupLike
 
 open import Zp.ModularArithmetic
@@ -74,6 +77,7 @@ module _ {n : ℕ} where
   open Group-Lemmas (n QRel,_===_) grouplike renaming (_⁻¹ to _⁻¹ʷ)
   open Group-Action (Pauli n) (Gen n) (n QRel,_===_) grouplike act1
     (lemma-act-cong-ax {n} _ _) using (act-cong)
+  open PB (n QRel,_===_) using (_≈_)
 
   -- Every circuit is a symplectic transformation.
   ⟦_⟧ : Word (Gen n) → Symplectic n
@@ -104,3 +108,12 @@ module _ {n : ℕ} where
       act-nf nf p                      ≡⟨ Eq.cong (act-nf nf) (Eq.sym (invˡ S p)) ⟩
       act-nf nf (ap⁻¹ S (ap S p))      ≡⟨ proj₂ invnf (ap S p) ⟩
       ap S p                           ∎
+
+  -- The same fact as stdlib's setoid surjectivity of ⟦_⟧, from the word
+  -- setoid (Word / ≈) onto (Symplectic / ≈ˢ): ⟦_⟧ respects the congruence,
+  -- so any z ≈ (the witness) also realises S.
+  surjective-fn : Surjective _≈_ _≈ˢ_ ⟦_⟧
+  surjective-fn S = w , λ {z} z≈w p → Eq.trans (act-cong z w p z≈w) (w≈S p)
+    where
+    w   = proj₁ (surjective S)
+    w≈S = proj₂ (surjective S)

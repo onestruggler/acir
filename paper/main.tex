@@ -38,8 +38,9 @@
 \newcommand{\agda}{\textsf{Agda}}
 % Inline Agda identifier.  Deliberately NOT \lstinline (fragile inside
 % macro arguments, tables, and math); Unicode in the argument is handled
-% by the \DeclareUnicodeCharacter block in agda-style.sty.
-\newcommand{\aid}[1]{\texttt{\small #1}}
+% by the \DeclareUnicodeCharacter block in agda-style.sty.  \mbox makes
+% it usable in both text and math mode.
+\newcommand{\aid}[1]{\mbox{\texttt{\small #1}}}
 
 \begin{document}
 

@@ -30,9 +30,16 @@ refinement~\cite{clement2024minimal}, rest on intricate normal-form
 manipulations; and Cl\'ement's complete equational theory for
 Real-Clifford+$CH$ circuits consists of a thirteen-page paper attached to an
 appendix of \emph{264 pages} of equational
-derivations~\cite{clement2026realcliffordch}.  Proofs of this shape --- long,
-regular, and computational --- are precisely the proofs that should be
-machine-checked, and precisely the proofs that a proof assistant with a
+derivations~\cite{clement2026realcliffordch}.  These are not outliers: the
+same tens of pages of mechanical calculation stand behind Selinger's
+normal-form analysis and its qutrit successor cited above, behind the
+rig-categorical completeness theorems for quantum programming
+languages~\cite{carette2024squareroots,fang2026hadamard}, and behind the
+recent uniform simplification of the rule sets of six near-Clifford circuit
+fragments~\cite{blake2026simpler} --- long, hand-written, hand-checked
+derivations every one of which deserves a machine's scrutiny.  Proofs of
+this shape --- long, regular, and computational --- are precisely the proofs
+that should be machine-checked, and precisely the proofs that a proof assistant with a
 strong evaluator can check largely \emph{by computation}.
 
 This paper reports on an Agda library built for exactly this purpose: a
@@ -175,9 +182,15 @@ Isabelle libraries~\cite{liu2019quantum,bordg2020dirac} --- verify
 \emph{programs}, \emph{compilers}, or the \emph{soundness} of rewrite rules
 against a fixed semantics.  Completeness of a rule set --- the meta-theoretic
 statement that the rules derive every semantic equality --- is not addressed
-by any of them; to our knowledge the only mechanized completeness proofs for
-circuit-like relation sets are the Bian--Selinger line above and the present
-work.  On the algebra side, Lean's mathlib defines presented groups as
+by any of them; to our knowledge the only mechanized completeness results in
+the vicinity are the Bian--Selinger line above and, in categorical form, the
+rig-groupoid school's: Choudhury, Karwowski, and Sabry's univalent
+presentation of the classical reversible language $\Pi$ as a free rig
+groupoid~\cite{choudhury2022symmetries}, and the partial Agda formalization
+--- complete for the two-qubit Clifford fragment --- accompanying its
+quantum square-root extension~\cite{carette2024squareroots}.  The most
+recent rig-categorical completeness theorems for quantum circuit languages
+\cite{fang2026hadamard,heunen2026onerig} remain pen-and-paper.  On the algebra side, Lean's mathlib defines presented groups as
 quotients of free groups and builds Coxeter groups on top of
 them~\cite{mathlib2020,mathlib-doc-presented}, Isabelle's Archive of Formal
 Proofs contains free groups and the Nielsen--Schreier

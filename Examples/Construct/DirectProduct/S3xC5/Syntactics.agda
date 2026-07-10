@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Symmetric groups Sₙ and their normal form via coset enumeration
--- Adapted to the Circuit / Lift-Relation framework
+-- Syntactics of S₃ × C₅: the generators and defining relations of the
+-- direct-product presentation of S₃ and C₅.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

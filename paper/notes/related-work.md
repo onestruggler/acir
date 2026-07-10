@@ -137,6 +137,44 @@ mentions their semantics)". Verified facts to support the delta:
   relations"; "first machine-checked completeness proof for the qutrit
   Clifford+T single-qutrit relation set". Each gets "to our knowledge".
 
+## F2. Rig-categorical completeness school (added 2026-07-10 on user request; all verified by fetch)
+- choudhury2022symmetries (PACMPL 6(POPL):6, 2022, doi 10.1145/3498667): Π as
+  free symmetric rig groupoid; MECHANIZED in HoTT-Agda ~7,500 lines (NbE,
+  verification, synthesis of reversible boolean circuits; full syntax + most
+  proofs); text mentions difficulty of the word problem in Sn. Closest
+  mechanization to ours → gets table row (Agda (HoTT) | ✓ | categorical | ✓ |
+  classical) + niche-claim scoping in intro and related summary.
+- carette2024squareroots (PACMPL 8(POPL), 2024, arXiv:2310.14056): rig
+  groupoids + square roots ⇒ universal quantum language; §6 SOUNDNESS AND
+  COMPLETENESS for: arbitrary Clifford (Thm 16), ≤2-qubit Clifford+T (Thm
+  19), Gaussian Clifford+T (Thm 25); §6.1 warm-up = ≤2-qubit Clifford (via
+  Selinger Fig. 9 / Bian–Selinger axioms). PARTIALLY MECHANIZED (their
+  §7.2, verified from the PDF 2026-07-10): Agda atop agda-categories;
+  formalised ALL of §5, ALL of §6.1, Lem 14 of §6.2, Lem 18 + (A14)–(A17)
+  of §6.3, and the Sleator–Weinfurter CCX decomposition; no errors found in
+  paper proofs; found a missing RigCategory coherence in agda-categories;
+  weak-category assoc/unit bookkeeping reported as a major cost (contrast
+  with our by-assoc). Table row added; intro + niche claims re-scoped.
+- fang2026hadamard (PACMPL 10(POPL):5, 2026, arXiv:2506.06835): Hadamard-Π;
+  completeness via NEW finite presentation + synthesis for orthogonal groups
+  over ℤ[1/√2] (ties to li2021on!). Pen-and-paper. Cited also in conclusion
+  as inviting target.
+- heunen2026onerig (LICS'26 to appear, arXiv:2510.05032): semisimple rig
+  categories; universal construction ⇒ sound+complete axiomatizations of
+  controlled circuits (quantum + Toffoli); Gray-code induction. Pen-and-paper.
+
+## F3. Blake FSCD'26 (added 2026-07-10 on user request; verified by fetch)
+- blake2026simpler (FSCD 2026 to appear, LIPIcs, arXiv:2602.09874, Colin
+  Blake): PROP-theoretic uniform treatment of SIX near-Clifford fragments
+  (qubit Clifford, real Clifford, Clifford+T ≤2 qubits, Clifford+CS ≤3
+  qubits, CNOT-dihedral, qutrit Clifford); transfers completeness results,
+  eliminates redundant rules; MINIMAL rule sets for qubit Clifford, real
+  Clifford, CNOT-dihedral. Pen-and-paper. Compared in related.tex (each
+  simplification = finite derivability obligations = by-equal-nf target) and
+  cited in intro's "long hand-checked computations" support sentence
+  alongside selinger2015clifford, li2025qutrit, carette2024squareroots,
+  fang2026hadamard.
+
 ## G. Still-unverified details (resolve in P5 if cited)
 - %% VERIFY-DETAIL markers in refs.bib (page ranges, LNCS/LIPIcs volumes).
 - Whether QutritCliffordT1's relation set matches a published source

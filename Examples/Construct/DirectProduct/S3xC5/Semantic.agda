@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Symmetric groups Sₙ and their normal form via coset enumeration
--- Adapted to the Circuit / Lift-Relation framework
+-- Semantics of S₃ × C₅: the direct product of the permutation group S₃
+-- and the cyclic group ℤ/5ℤ, with the generator interpretation ⟦_⟧₀.
 ------------------------------------------------------------------------
 
 {-# OPTIONS  --safe #-}

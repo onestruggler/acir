@@ -28,34 +28,32 @@ fact base the text was written from).
 
 ## Building
 
-No TeX toolchain was available on the authoring machine, so the sources are
-compile-clean by construction and mechanical audit (balanced environments,
-brace balance, cite/label consistency, Unicode coverage) but have **not**
-been compiled. To build:
+**Status: builds clean.**  `latexmk -pdf main.tex` produces `main.pdf`
+(26 pages) with zero errors, zero undefined citations/references, zero
+missing characters, and zero overfull boxes (verified 2026-07-10 with
+TeX Live in WSL, pdflatex route).
 
 ```
-latexmk -pdf main.tex          # pdflatex route (Unicode handled by the
+latexmk -pdf main.tex          # verified (Unicode handled by the
                                # literate + DeclareUnicodeCharacter tables)
-# or, if a Unicode engine is preferred:
-latexmk -lualatex main.tex
 ```
 
-Required packages: `acmart`, `listings`, `booktabs`, `pifont`, `quantikz`
-(v2; pulls in TikZ), plus the local `agda-style.sty`. On TeX Live:
-`texlive-publishers` (acmart), `texlive-pictures`/`quantikz`,
-`texlive-latex-extra`.
+Debian/Ubuntu packages used for the verified build:
+`texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
+texlive-fonts-extra texlive-publishers texlive-pictures texlive-science
+texlive-plain-generic latexmk` (the last of these supplies `binhex.tex`,
+which acmart needs), plus the local `agda-style.sty`.
 
-First-compile checklist (expected small fixups):
+Remaining pre-submission checklist:
 
-1. `quantikz` figure spacing in `sections/permutations.tex` may need
-   column/row-sep tweaks to taste.
-2. If pdflatex complains about a Unicode character, add it to **both**
+1. Resolve the `%% VERIFY-DETAIL` comments in `refs.bib` (page numbers,
+   LIPIcs/LNCS volumes) before camera-ready. BibTeX also warns about
+   empty `address`/`publisher` on EPTCS entries — cosmetic.
+2. If a new Unicode character is added to the text, add it to **both**
    tables in `agda-style.sty` (the `literate` list and the
    `\DeclareUnicodeCharacter` block) following the existing entries.
-3. Resolve the `%% VERIFY-DETAIL` comments in `refs.bib` (page numbers,
-   LIPIcs/LNCS volumes) before camera-ready.
-4. Page budget: the draft targets a full-length PACMPL submission; trim
-   `design.tex`/`related.tex` first if over.
+3. Page budget: 26 pages in `acmsmall` review mode; check the target
+   POPL cycle's limit and trim `design.tex`/`related.tex` first if over.
 
 ## Relation to the Agda code
 

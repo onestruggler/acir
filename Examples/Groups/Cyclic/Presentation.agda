@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Group homomorphism from the free-group presentation (Word (Gen n) / ≈)
--- to the permutation group Permutation′ n, via the tight semantics.
+-- The cyclic presentation ⟨ t ∣ t^(1+n) = ε ⟩ presents ℤ/(1+n)ℤ: a
+-- group isomorphism from the word group (Word X / ≈) to Cn-group (1+n).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}

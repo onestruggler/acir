@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Semantics of the symmetric group: permutations of Fin n.
+-- Semantics of the cyclic groups: the additive group Cn n, i.e. the
+-- integers ℤ at order 0 and ℤ/Nℤ at order N.
 ------------------------------------------------------------------------
 
 {-# OPTIONS  --safe #-}
@@ -30,7 +31,7 @@ open import Examples.Groups.Cyclic.Normalization
 
 open import Zp.ModularArithmetic
 ------------------------------------------------------------------------
--- 
+-- The carrier
 
 Cn : ℕ → Set
 Cn 0 = Int.ℤ
