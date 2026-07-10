@@ -10,9 +10,9 @@ open import Function using (_∘_ ; id)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
+open import Data.Unit using (tt)
 open import Data.Vec hiding ([_])
 open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
-open import Data.Empty using (⊥ ; ⊥-elim)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 open import Notations

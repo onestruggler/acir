@@ -1,22 +1,17 @@
 {-# OPTIONS  --safe #-}
 {-# OPTIONS  --call-by-name #-}
 {-# OPTIONS --termination-depth=4 #-}
-open import Level using (0ℓ)
 
 open import Relation.Binary using (Rel)
-open import Relation.Binary.Definitions using (DecidableEquality)
-open import Relation.Binary.Morphism.Definitions using (Homomorphic₂)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
-open import Relation.Nullary.Decidable using (yes ; no)
 
 
-open import Function using (_∘_ ; id)
+open import Function using (id)
 open import Function.Definitions using (Injective)
 
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; map₁ ; ∃ ; Σ ; Σ-syntax)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW using (≡×≡⇒≡ ; Pointwise ; ≡⇒≡×≡)
+open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 open import Agda.Builtin.Nat using (_-_)
 import Data.Nat as Nat
@@ -27,27 +22,23 @@ open import Data.Vec as V
 open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 
 open import Data.Maybe
-open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_] ; [_,_]′)
-open import Data.Unit using (⊤ ; tt)
+open import Data.Sum using ([_,_] ; [_,_]′)
+open import Data.Unit using (tt)
 open import Data.Empty using (⊥ ; ⊥-elim)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Normalization.CosetNF as CA
 import Normalization.Reidemeister-Schreier as RS
 open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
 open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
-import Presentation.Construct.Properties.SemiDirectProduct2 as SDP2
-import Presentation.Construct.Properties.DirectProduct as DP
-import Examples.Groups.Cyclic.Cyclic as Cyclic
 
 
-open import Data.Fin using (Fin ; toℕ ; suc ; zero ; fromℕ)
-open import Data.Fin.Properties using (suc-injective ; toℕ-inject₁ ; toℕ-fromℕ)
+open import Data.Fin using (toℕ ; suc ; fromℕ)
+open import Data.Fin.Properties using (toℕ-fromℕ)
 import Data.Nat.Properties as NP
 open import Presentation.GroupLike
 open import Presentation.Tactic.Rewriting using ()

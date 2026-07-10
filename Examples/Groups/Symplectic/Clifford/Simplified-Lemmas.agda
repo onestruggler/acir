@@ -19,9 +19,8 @@
 -- Part4 alone transitively re-exports the whole subtree.
 ------------------------------------------------------------------------
 
-open import Level using (0ℓ)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
+open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Data.Product using (_,_ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
 open import Data.Fin hiding (_+_ ; _-_)
 open import Data.Nat.Primality

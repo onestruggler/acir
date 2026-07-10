@@ -19,16 +19,15 @@
 -- presentation) this bridges the two presentations for the iso.
 ------------------------------------------------------------------------
 
-open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; module ≡-Reasoning) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
+open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
 import Data.Nat as Nat
 open import Data.Nat.DivMod
 open import Data.Fin hiding (_+_ ; _-_)
-open import Data.Fin.Properties using (toℕ-inject₁ ; toℕ-fromℕ ; toℕ<n ; toℕ-fromℕ<)
+open import Data.Fin.Properties using (toℕ-fromℕ ; toℕ<n ; toℕ-fromℕ<)
 import Data.Nat.Properties as NP
 open import Word.Base as WB hiding (wfoldl)
 import Presentation.Base as PB

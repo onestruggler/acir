@@ -1,11 +1,10 @@
 {-# OPTIONS --termination-depth=20 #-}
 {-# OPTIONS --inversion-max-depth=1000 #-}
 
-open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; module ≡-Reasoning) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
+open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
 import Data.Nat as Nat
 open import Data.Fin hiding (_+_ ; _-_)

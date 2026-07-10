@@ -4,11 +4,10 @@
 -- Scratch file: verifying that the simplified `selinger` relations are
 -- sound consequences of the original Clifford-Relations axioms.
 
-open import Level using (0ℓ)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
+open import Relation.Binary.PropositionalEquality using (_≡_)
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
+open import Data.Product using (_,_ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
 import Data.Nat as Nat
 open import Data.Fin hiding (_+_ ; _-_)

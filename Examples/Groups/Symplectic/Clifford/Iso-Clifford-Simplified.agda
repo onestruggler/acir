@@ -10,16 +10,13 @@
 -- Fully machine-checked — NO termination pragma (route (B)).
 ------------------------------------------------------------------------
 
-open import Level using (0ℓ)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
-import Relation.Binary.PropositionalEquality as Eq
+open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Function using (id)
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
+open import Data.Product using (_,_ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
 open import Data.Fin hiding (_+_ ; _-_)
 open import Word.Base as WB hiding (wfoldl)
 import Presentation.Base as PB
-import Presentation.Properties as PP
 open import Presentation.Construct.Base hiding (_*_)
 open import Presentation.GroupLike
 open import Data.Nat.Primality

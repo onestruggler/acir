@@ -1,0 +1,218 @@
+\section{Introduction}\label{sec:intro}
+
+Equational reasoning is the daily bread of circuit design.  Whether one
+optimizes a quantum circuit, verifies a compiler pass, or normalizes a
+diagram, the justification is always the same: a finite set of local rewrite
+rules, applied to a syntactic object, preserving a semantic interpretation.
+Two questions attach to any such rule set.  \emph{Soundness} --- does every
+rule preserve the semantics? --- is typically easy: it is a finite collection
+of small algebraic identities.  \emph{Completeness} --- can every true
+semantic equation be derived from the rules? --- is a different animal
+altogether.
+
+Completeness proofs are gigantic computations.  The standard strategy defines
+a \emph{normal form} for circuits, proves that every circuit can be rewritten
+to normal form using the rules, and proves that distinct normal forms denote
+distinct semantic objects.  The middle step is where the explosion happens:
+one must show, for every rule and every way a generator can meet a normal
+form, that the combination reduces again --- a case analysis that is
+mechanical, unforgiving, and enormous.  The literature wears the scars
+openly.  Selinger's presentation of the $n$-qubit Clifford group already
+required a substantial rewrite system and normal form
+analysis~\cite{selinger2015clifford}.  Its recent qutrit
+analogue by Li, Mosca, Ross, van~de~Wetering, and Zhao --- the first
+completeness result for a fragment of quantum circuits in an odd prime
+dimension --- runs to more than fifty pages of
+proofs~\cite{li2025qutrit}.  The first complete equational theory for full
+quantum circuits, by Cl\'ement, Heurtel, Mansfield, Perdrix, and
+Valiron~\cite{clement2023complete}, and its minimal
+refinement~\cite{clement2024minimal}, rest on intricate normal-form
+manipulations; and Cl\'ement's complete equational theory for
+Real-Clifford+$CH$ circuits consists of a thirteen-page paper attached to an
+appendix of \emph{264 pages} of equational
+derivations~\cite{clement2026realcliffordch}.  Proofs of this shape --- long,
+regular, and computational --- are precisely the proofs that should be
+machine-checked, and precisely the proofs that a proof assistant with a
+strong evaluator can check largely \emph{by computation}.
+
+This paper reports on an Agda library built for exactly this purpose: a
+general, reusable formal framework for \emph{presentations of monoids and
+groups by generators and relations}, for \emph{normal forms}, and for
+\emph{completeness} of finite relation sets, with circuits --- words of
+wire-indexed gates --- as the motivating instance.  The library is written in
+safe, axiom-free Agda~\cite{norell2007thesis,bove2009agda} against the Agda
+standard library~\cite{agdastdlib}, is compatible with the
+\texttt{--cubical-compatible} discipline, and is being prepared for
+submission to the standard library; the semantic constructions it needed and
+the standard library lacked (semidirect products, amalgamated free products
+of monoids, group extensions, epimorphisms, the permutation group bundled as
+a group) are staged in a dedicated \texttt{ForStdlib} hierarchy.
+
+\subsection{Contributions}\label{sec:contributions}
+
+\begin{enumerate}
+\item[(0)] \textbf{A library for circuit normal forms and complete relation
+  sets.}  A layered Agda library in which a relation set is an inductive
+  family on words, the presented monoid is the inductively generated
+  congruence closure (\S\ref{sec:design}), normal-form witnesses are the
+  standard library's function bundles out of the word setoid, and a single
+  generic lemma, \aid{by-normalization}, turns soundness plus a \emph{unique
+  normal form} into completeness (\S\ref{sec:nfproperty}).  A verified,
+  monoid-level Reidemeister--Schreier engine constructs normal forms by coset
+  enumeration, one verified coset table per level
+  (\S\ref{sec:engine}).
+
+\item[(1)] \textbf{Inductively defined circuits, for easy normalization and
+  completeness proofs.}  A generic circuit layer represents $n$-wire circuits
+  as words over wire-indexed generators, and extends any gate-specific
+  relation set with the structural rules --- shift congruence and
+  far-commutation --- shared by every circuit presentation
+  (\S\ref{sec:circuits}).  The indexing discipline is chosen so that Agda's
+  evaluator, not the human, discharges the case analyses: in our case
+  studies, coset-table obligations close by \aid{refl} after computation of
+  both sides.
+
+\item[(2)] \textbf{A catalogue of verified presentations}
+  (\S\ref{sec:examples}).  Seven nontrivial example families, several of them
+  formalizing presentations from the research literature: cyclic groups
+  (including $\mathbb{Z}$); symmetric groups $S_n$ presented as circuits,
+  proved sound and complete for a loose endofunction semantics and presented
+  for the group of permutations of $\mathsf{Fin}\;n$; wreath products
+  $\mathbb{Z}_N \wr S_n$ --- the groups of \emph{signed permutations} and
+  their generalizations; Pauli groups $(\mathbb{Z}_p \times \mathbb{Z}_p)^n$
+  for every odd prime $p$, assembled purely compositionally; and, as
+  two- and four-level amalgamated free products with verified alternating
+  normal forms, the single-qubit Clifford+$T$ monoid, a single-qutrit
+  Clifford+$T$ monoid, and $U_3(\mathbb{Z}[\tfrac12,i])$ from Bian and
+  Selinger's presentation of
+  $U_n(\mathbb{Z}[\tfrac12,i])$~\cite{bian2021un}.  Every headline theorem is
+  restated, with its full type, in a single index module
+  \texttt{MainTheorems.agda}.
+
+\item[(3)] \textbf{Monoid-level amalgamation and Reidemeister--Schreier.}
+  Following the methodology that Bian and Selinger introduced for their
+  syntactic verifications~\cite{bian2023cliffordt2,bian2023cliffordcs3,
+  bian2023thesis}, the library generalizes the group-theoretic notions ---
+  coset enumeration, the Reidemeister--Schreier subgroup presentation, and
+  amalgamated free products --- from groups to monoid presentations, where
+  inverses are not primitive.  Beyond the syntactic side, we prove the
+  corresponding \emph{semantic} presentation theorems: if $\Gamma$ presents
+  $G_1$ and $\Delta$ presents $G_2$, the constructed relation sets present
+  the direct product, the semidirect product, the $n$-fold product, the
+  amalgamated free product, and (given a realizing short exact sequence) an
+  arbitrary group extension (\S\ref{sec:constructions}).
+
+\item[(4)] \textbf{New theorems for the standard library.}  The semantic
+  side of the above required algebraic constructions absent from the Agda
+  standard library: semidirect products of monoids and groups via a bundled
+  \aid{Action} record; amalgamated free products of monoids as a pushout
+  presented by words over the disjoint union of carriers; group extensions
+  and split extensions as short exact sequences; monoid epimorphisms; the
+  fact that a monoid homomorphism between groups is a group homomorphism;
+  and the group of permutations of $\mathsf{Fin}\;n$ bundled as a
+  \aid{Group} (\S\ref{sec:forstdlib}).
+\end{enumerate}
+
+Everything stated as a theorem in this paper typechecks under
+\texttt{--safe}: there are no postulates, no unfinished holes, and no
+appeals to classical axioms anywhere in the development described here.  The
+library also contains a substantially larger work-in-progress layer ---
+about 68\,000 further lines --- formalizing symplectic groups
+$Sp(2n,\mathbb{Z}_p)$ and their Clifford-circuit presentations in all odd
+prime dimensions, the formal counterpart of the qutrit rule set
+of~\cite{li2025qutrit} and its odd-prime generalization; we report on its
+design but, in keeping with the rule above, claim no unfinished theorem from
+it (\S\ref{sec:conclusion}).
+
+\subsection{A first taste: permutations}\label{sec:taste}
+
+Section~\ref{sec:permutations} develops the smallest interesting instance
+end to end, and it is worth previewing here.  Take circuits over a single
+two-wire gate $\sigma$ (swap).  The gate-specific relations are the two
+classics --- $\sigma^2 = \varepsilon$ and the Yang--Baxter relation $\sigma
+\cdot (\sigma{\uparrow}) \cdot \sigma = (\sigma{\uparrow}) \cdot \sigma \cdot
+(\sigma{\uparrow})$ --- and the framework adds, once and for all, the
+structural rules every circuit theory shares.  The library's coset-tower
+engine then produces a normal form whose carrier at $n$ wires has exactly
+$n!$ elements --- a factorial number system, with one ``digit'' per level of
+the subgroup chain $S_1 < S_2 < \dots < S_n$ --- together with proofs that
+normalization is sound and that the normal form is unique for the semantics
+of permutations of $\mathsf{Fin}\;n$.  Soundness plus uniqueness yields, by
+the generic lemma, the completeness theorem: two circuits denote the same
+permutation exactly when the two relations above (plus structural rules)
+prove them equal.  Packaged as a record, this is the statement that the
+relation set \emph{presents} the permutation group:
+\begin{agdacode}
+symmetric-presentation :
+  ∀ n → (n VRel,_===_) IsPresentationOf (Permutation′-group n)
+\end{agdacode}
+The same pipeline, run on larger towers, yields the Clifford+$T$ and
+$U_3(\mathbb{Z}[\tfrac12,i])$ case studies.
+
+\subsection{Related work}\label{sec:related-intro}
+
+The closest prior work is the line of Agda verifications accompanying Bian
+and Selinger's presentations of quantum gate
+groups~\cite{bian2023cliffordt2,bian2023cliffordcs3,bian2023thesis}.  Those
+developments verify that two \emph{syntactic} presentations of a group are
+equivalent --- an isomorphism of finitely presented monoids obtained by
+Reidemeister--Schreier steps --- and never mention a semantics: no
+independent model of the group appears, so soundness and completeness with
+respect to an interpretation are not stated.  The present library grew out
+of that methodology and subsumes it: our amalgamation case studies
+(\S\ref{sec:examples}) end in exactly such syntactic isomorphisms, but the
+framework additionally relates presentations to independently constructed
+semantic groups (permutations, product groups, extension groups), which is
+what licenses the words ``sound'' and ``complete''.  The engine is also
+reusable: coset tables, towers, and product constructions are library
+modules with explicit hypothesis records, not per-paper proofs.
+
+In the proof-assistant landscape more broadly, quantum-circuit developments
+--- \textsc{Qwire}~\cite{paykin2017qwire}, \textsc{sqir}/\textsc{voqc}
+\cite{hietala2021voqc,hietala2021proving}, VyZX~\cite{lehmann2025vyzx},
+CoqQ~\cite{zhou2023coqq}, Qbricks~\cite{chareton2021qbricks}, and the
+Isabelle libraries~\cite{liu2019quantum,bordg2020dirac} --- verify
+\emph{programs}, \emph{compilers}, or the \emph{soundness} of rewrite rules
+against a fixed semantics.  Completeness of a rule set --- the meta-theoretic
+statement that the rules derive every semantic equality --- is not addressed
+by any of them; to our knowledge the only mechanized completeness proofs for
+circuit-like relation sets are the Bian--Selinger line above and the present
+work.  On the algebra side, Lean's mathlib defines presented groups as
+quotients of free groups and builds Coxeter groups on top of
+them~\cite{mathlib2020,mathlib-doc-presented}, Isabelle's Archive of Formal
+Proofs contains free groups and the Nielsen--Schreier
+theorem~\cite{breitner2010freegroups,kharim2023freegroups}, and the
+Coq/MathComp tradition culminating in the Odd Order
+theorem~\cite{gonthier2013oddorder} develops deep finite group theory ---
+but none of these provide coset-enumeration infrastructure for proving that
+a \emph{concrete} relation set presents a \emph{concrete} group, which is
+the bread and butter of this library.  Section~\ref{sec:related} makes these
+comparisons in detail, including the univalent
+alternatives~\cite{vezzosi2019cubical,cubicallibrary,agdaunimath,
+mangel2023sign} and formalized rewriting~\cite{sternagel2013kb,
+hirokawa2019abstract}.
+
+\subsubsection{Related tools}\label{sec:tools}
+
+Two web tools accompany the mathematics this library mechanizes.  A
+normalizer to \emph{Lafont normal form} for linear permutation circuits
+implements the normalization lemmas of Lafont's algebraic theory of Boolean
+circuits~\cite{lafont2003boolean,lafontlp-tool}; and a normalizer for the
+symplectic groups $Sp(2n,\mathbb{Z}_p)$ computes Selinger-style staircase
+normal forms for qupit Clifford circuits~\cite{qupit-tool}, the computational
+companion of our work-in-progress symplectic layer.  Both tools compute
+normal forms; the library proves them correct and complete.
+
+\subsection{Paper outline}
+
+Section~\ref{sec:permutations} walks through the permutation case study.
+Section~\ref{sec:preliminaries} recalls the group theory behind the design:
+normal forms from subgroup chains and transversals, and their mixed-radix
+reading.  Section~\ref{sec:design} presents the library layer by layer:
+words and presentations, the zoo of normal-form witnesses, inductively
+defined circuits, the Reidemeister--Schreier engine, and the product
+constructions with their presentation theorems.  Section~\ref{sec:examples}
+is the catalogue of verified results, with pointers into
+\texttt{MainTheorems.agda}.  Section~\ref{sec:related} compares with other
+formalizations.  Section~\ref{sec:discussion} discusses design decisions,
+statistics, and lessons learned, and Section~\ref{sec:conclusion} concludes.

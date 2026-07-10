@@ -1,0 +1,116 @@
+%% main.tex — POPL submission
+%% "Normal forms and complete relations for circuits in Agda"
+%%
+%% Build (no TeX toolchain on the authoring machine; see README.md):
+%%   latexmk -pdf main.tex          (pdflatex; Unicode handled via listings
+%%                                   literate table in agda-style.tex)
+%% If pdflatex chokes on a Unicode character in running text, prefer:
+%%   latexmk -lualatex main.tex
+%%
+%% Submission mode: anonymous double-blind review (PACMPL/POPL).
+\documentclass[acmsmall,review,anonymous]{acmart}
+
+%% PACMPL journal metadata (placeholders for the review version).
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{POPL}
+\acmArticle{1}
+\acmMonth{1}
+\setcopyright{none}
+
+%% Packages -----------------------------------------------------------
+\usepackage{booktabs}
+\usepackage{pifont}
+\usepackage{listings}
+\usepackage{quantikz}        % circuit diagrams (loads tikz)
+\usepackage{agda-style}      % local: Agda language + Unicode literate table
+
+%% PACMPL reference style (must precede \begin{document})
+\citestyle{acmauthoryear}
+
+%% Convenience macros -------------------------------------------------
+\newcommand{\Word}[1]{\ensuremath{\mathsf{Word}\;#1}}
+\newcommand{\Cir}[1]{\ensuremath{\mathsf{Cir}\;#1}}
+\newcommand{\pres}[2]{\ensuremath{\langle #1 \mid #2 \rangle}}
+\newcommand{\ie}{i.e.}
+\newcommand{\eg}{e.g.}
+\newcommand{\stdlib}{\textsf{agda-stdlib}}
+\newcommand{\agda}{\textsf{Agda}}
+% Inline Agda identifier.  Deliberately NOT \lstinline (fragile inside
+% macro arguments, tables, and math); Unicode in the argument is handled
+% by the \DeclareUnicodeCharacter block in agda-style.sty.
+\newcommand{\aid}[1]{\texttt{\small #1}}
+
+\begin{document}
+
+\title{Normal Forms and Complete Relations for Circuits in Agda}
+
+%% Anonymous submission: author block suppressed by the `anonymous' option,
+%% but acmart still requires one for the copyright/DOI machinery.
+\author{Anonymous Author(s)}
+\affiliation{%
+  \institution{Anonymous Institution}
+  \city{Anonymous City}
+  \country{Anonymous Country}}
+\email{anonymous@example.org}
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+%% CCS concepts (required by acmart) ----------------------------------
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10003752.10003790.10011740</concept_id>
+<concept_desc>Theory of computation~Type theory</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10003752.10003790.10002990</concept_id>
+<concept_desc>Theory of computation~Logic and verification</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10003752.10003790.10003800</concept_id>
+<concept_desc>Theory of computation~Equational logic and rewriting</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10003752.10010124.10010131.10010137</concept_id>
+<concept_desc>Theory of computation~Quantum computation theory</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+\ccsdesc[500]{Theory of computation~Type theory}
+\ccsdesc[500]{Theory of computation~Logic and verification}
+\ccsdesc[500]{Theory of computation~Equational logic and rewriting}
+\ccsdesc[300]{Theory of computation~Quantum computation theory}
+
+\keywords{group presentations, normal forms, completeness, quantum circuits,
+Clifford group, Reidemeister--Schreier, Agda, formal verification}
+
+\maketitle
+
+\input{sections/intro}
+\input{sections/permutations}
+\input{sections/preliminaries}
+\input{sections/design}
+\input{sections/examples}
+\input{sections/related}
+\input{sections/discussion}
+\input{sections/conclusion}
+
+%% Acknowledgements are automatically suppressed in anonymous mode.
+\begin{acks}
+We have used Claude to help with refactoring the accompanying code
+base~\cite{qupit-code} to its current form. We have used Claude to write this
+paper according to our paper outline~\cite{paper-outline} (later checked and
+revised by us).
+\end{acks}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{refs}
+
+\end{document}

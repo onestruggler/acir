@@ -1,0 +1,116 @@
+\section{Preliminaries: Normal Forms from Subgroup Chains}\label{sec:preliminaries}
+
+The library's normal forms all follow one classical recipe from
+computational group theory.  This section recalls it in mathematical
+vocabulary and fixes the intuitions --- transversals as digits, towers as
+positional number systems --- that the Agda modules of
+\S\ref{sec:design} implement.  Standard references are Sims's monograph on
+computation with finitely presented groups~\cite{sims1994computation} and
+the Handbook of Computational Group Theory~\cite{holt2005handbook}; the
+subgroup-presentation method goes back to Reidemeister and Schreier, in the
+form given by Magnus, Karrass, and Solitar~\cite{magnus2004combinatorial}.
+
+\subsection{Transversals and digits}
+
+Let $H \le G$ be a subgroup.  A \emph{(right) transversal} is a set of
+representatives for the right cosets $Hg$, one per coset; write $\bar g$
+for the representative of $Hg$.  Every $g \in G$ then factors
+\emph{uniquely} as
+\[
+  g \;=\; h \cdot \bar g, \qquad h \in H,\ \bar g \in \text{transversal},
+\]
+and the map $g \mapsto (h, \bar g)$ is a bijection
+$G \cong H \times (H\backslash G)$ of sets (not of groups).  If one now
+fixes a \emph{chain} of subgroups
+\[
+  1 = G_0 \;\le\; G_1 \;\le\; \dots \;\le\; G_n = G ,
+\]
+with a transversal $T_k$ for each step $G_{k-1} \le G_k$, iterating the
+factorization expresses every $g \in G$ uniquely as
+\[
+  g \;=\; t_1 \, t_2 \cdots t_n , \qquad t_k \in T_k .
+\]
+The tuple $(t_1,\dots,t_n)$ is a \emph{normal form} for $g$: existence is
+the iterated factorization, uniqueness is uniqueness of coset
+representatives at each level.  When the indices $[G_k : G_{k-1}] = r_k$
+are finite, $|G| = r_1 r_2 \cdots r_n$, and the normal form is literally a
+\emph{mixed-radix positional numeral}: the $k$-th digit ranges over $r_k$
+values, and enumerating tuples lexicographically enumerates the group.  For
+the chain $S_1 < S_2 < \dots < S_n$ of symmetric groups the radices are
+$2, 3, \dots, n$ and the numeral system is the factorial number system ---
+which is exactly the carrier $\aid{NF}\;n = \top \times C\,2 \times \dots
+\times C\,n$ built by the coset tower in \S\ref{sec:permutations}.  For a
+group of order $8 \cdot 4$ presented as a product of cyclic groups of
+orders $8$ and $4$ (the base of the Clifford+$T$ tower,
+\S\ref{sec:examples}) the radices are $8$ and $4$.  This digit reading of
+stabilizer-chain normal forms is the conceptual core of the
+Schreier--Sims method for permutation
+groups~\cite{sims1994computation,holt2005handbook}, where the $G_k$ are
+point stabilizers; our chains are chosen syntactically instead, but the
+arithmetic is the same.
+
+\subsection{Words, presentations, and the word problem}
+
+A \emph{presentation} $\langle X \mid R \rangle$ consists of a set $X$ of
+generators and a set $R$ of pairs of words over $X$ (we work with monoid
+presentations, so words are finite sequences with concatenation, and there
+are no formal inverses).  The presented monoid is the quotient of the free
+monoid $X^{*}$ by the least congruence $\approx$ containing $R$; the
+\emph{word problem} asks to decide $w \approx v$.  A presentation
+\emph{presents} a monoid or group $G$ (relative to an interpretation of
+generators) when the induced homomorphism $X^{*}/{\approx} \to G$ is an
+isomorphism; its injectivity is \emph{completeness} of $R$ for $G$, its
+surjectivity says the generators generate.  A group presentation in the
+classical sense is recovered by adding, for each generator, a generator
+playing the role of its inverse together with the cancellation relations
+--- in the library this is the \aid{Grouplike} condition of
+\S\ref{sec:presentations}, which asks every generator to have a left
+inverse up to $\approx$ and derives the group structure from it.
+
+Given $H \le G$ with $G = \langle Y \mid S \rangle$, the
+\emph{Reidemeister--Schreier} method produces a presentation of $H$: its
+generators are the \emph{Schreier generators} $\bar t y \, \overline{ty}^{\,-1}$
+($t$ in a transversal, $y \in Y$), and its relations are rewrites of the
+relators of $G$ through the coset table.  The data one must supply is
+finite and concrete --- the coset table
+$\tau : \text{cosets} \times Y \to \text{cosets}$ recording $Hty = H\tau(t,y)$,
+together with, for each step, the element of $H$ by which $ty$ differs from
+its representative.  Classical treatments run this as an algorithm
+(Todd--Coxeter coset enumeration~\cite{sims1994computation,
+holt2005handbook}); the library instead takes a \emph{claimed} coset table
+as input and \emph{verifies} it, by exhibiting five equational
+hypotheses relating the table, the section, and the relations
+(\S\ref{sec:engine}).  Verification rather than search is the right
+division of labour in a proof assistant: tables are found offline (by
+computation, or on paper), and the checked artifact certifies them.
+Bian and Selinger pioneered this monoid-level, verified use of
+Reidemeister--Schreier in Agda for their gate-group
+presentations~\cite{bian2023cliffordt2,bian2023cliffordcs3,bian2023thesis};
+the library turns it into a reusable module with the hypotheses packaged as
+a record.
+
+\subsection{Specialization to circuits}
+
+For circuits the chain is not chosen --- it is handed to us by the wire
+structure.  Writing $\mathsf{Cir}\,k$ for the group (or monoid) presented
+by $k$-wire circuits modulo a relation set, the shift operation
+$c \mapsto c{\uparrow}$ embeds
+\[
+  \mathsf{Cir}\,1 \;\le\; \mathsf{Cir}\,2 \;\le\; \dots \;\le\;
+  \mathsf{Cir}\,k \;\le\; \mathsf{Cir}\,(k{+}1) \;\le\; \dots
+\]
+as ``the circuits that do not touch the bottom wire''.  A normal form for
+$\mathsf{Cir}\,(k{+}1)$ over $\mathsf{Cir}\,k$ is then a transversal of
+this subgroup --- for permutations, the staircases of
+Figure~\ref{fig:staircase}; for Clifford-style groups, Selinger's
+staircase normal forms~\cite{selinger2015clifford} and their qutrit
+analogues~\cite{li2025qutrit} --- and a normal form for the whole group is
+a tower of such levels.  The library's \aid{CosetTower}
+(\S\ref{sec:engine}) is precisely this specialization: an $\mathbb{N}$-indexed
+family of presentations, a coset type per level, and a verified table per
+level, folded into a normal form whose carrier grows by one digit per
+level.  Where the subgroup chain branches instead of nesting --- two
+subgroups sharing a common base, as for the Clifford+$T$ groups ---
+the appropriate gluing is the \emph{amalgamated free product}, whose
+classical alternating normal form~\cite{magnus2004combinatorial} the
+library also verifies (\S\ref{sec:constructions}).

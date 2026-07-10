@@ -23,8 +23,8 @@
 -- and is not part of the build.
 ------------------------------------------------------------------------
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
+open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Data.Product using (_,_ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
 open import Data.Fin hiding (_+_ ; _-_)
 open import Data.Nat.Primality

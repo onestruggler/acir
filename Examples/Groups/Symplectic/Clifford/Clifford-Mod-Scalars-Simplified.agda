@@ -21,19 +21,15 @@
 -- isomorphism `id`, in the style of `Iso3`) is the next step.
 ------------------------------------------------------------------------
 
-open import Level using (0ℓ)
 
 open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
+open import Relation.Binary.PropositionalEquality using (_≡_)
 
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
+open import Data.Product using (_,_ ; proj₁ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
-import Data.Nat as Nat
 open import Data.Fin hiding (_+_ ; _-_)
-open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
-import Presentation.Base as PB
 
 open import Presentation.Construct.Base hiding (_*_)
 open import Presentation.GroupLike

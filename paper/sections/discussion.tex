@@ -1,0 +1,128 @@
+\section{Discussion}\label{sec:discussion}
+
+\subsection{Mechanization statistics}
+
+Table~\ref{tab:stats} gives the shape of the development (line counts of
+Agda source, July 2026).  Three observations.  The reusable core ---
+words, presentations, normal forms, the engine, the constructions, the
+circuit layer --- is under ten thousand lines; the verified examples add
+about the same again, and the largest single objects are the two
+amalgamation case studies.  Second, the work-in-progress symplectic layer
+dwarfs the verified library --- a realistic picture of what a
+multi-qudit Clifford completeness formalization costs, and a measure of
+how much the engine is about to be exercised.  Third, everything verified
+is uniformly \texttt{--safe} (and the core \texttt{--cubical-compatible}),
+with zero postulates; the only axioms in the development are the
+\aid{axiom} constructors of the relation sets themselves.
+
+\begin{table}[h]
+\caption{Size of the development (non-blank lines of Agda incl.\
+comments; \texttt{wc -l}).}
+\label{tab:stats}
+\centering
+\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Layer & Files & Lines \\
+\midrule
+\texttt{Word}, \texttt{Notations} & 3 & 308 \\
+\texttt{Presentation} (core, constructions, solvers) & 18 & 6\,912 \\
+\texttt{Normalization} (NF zoo, R--S engine, towers) & 6 & 1\,639 \\
+\texttt{Circuit} & 1 & 121 \\
+\texttt{ForStdlib} (staged stdlib additions) & 7 & 865 \\
+\midrule
+Verified examples (\S\ref{sec:examples}) & $\sim$32 & $\sim$8\,400 \\
+\quad of which qutrit Clifford+$T$ / $U_3(\mathbb{Z}[\frac12,i])$ & 2 & 4\,264 \\
+\midrule
+Work in progress: $\mathbb{Z}_p$, symplectic, odd-prime Clifford & 120 & 68\,053 \\
+\midrule
+Total & 190 & 89\,212 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Setoids versus quotients, revisited}
+
+The deliberate design decision of \S\ref{sec:presentations} --- presented
+monoids as setoids over inductive congruences, not as quotient types ---
+deserves a balance sheet now that the case studies are on the table.
+What it cost: every function out of words carries a congruence proof, and
+records like \aid{Injection} exist precisely to bundle that bookkeeping.
+What it bought: (i) normal-form maps, coset tables, and sections are
+plain structurally recursive programs, so the hundreds of table
+obligations in \S\ref{sec:examples} reduce to \aid{refl} by evaluation
+--- in a quotient-based development each would eliminate through a
+quotient before computing; (ii) sections --- maps \emph{into} the syntax
+choosing representatives, the load-bearing ingredient of
+\aid{NormalForm}, Schreier transversals, and amalgamation tails --- are
+natural for setoids and awkward for quotients, where they are not in
+general definable; (iii) the library remains inside plain
+\texttt{--safe} Agda and the standard library's algebra hierarchy, a
+requirement for upstreaming.  The univalent alternative
+\cite{vezzosi2019cubical,cubicallibrary} would erase cost (i)'s
+congruence fields but forfeit (ii) definitionally and (iii) by
+foundation.  For this problem domain --- where the whole game is
+computing canonical representatives --- we found the setoid side of the
+trade clearly favourable; the standard library's function bundles meant
+the ``zoo'' of \S\ref{sec:nfproperty} needed no new theory at all.
+
+\subsection{What the standard library lacked}
+
+The \texttt{ForStdlib} layer (\S\ref{sec:forstdlib}) is a measure of the
+gap between textbook group theory and what a widely used dependently
+typed standard library currently provides: no semidirect products, no
+amalgamated products or pushouts of monoids, no extensions or exact
+sequences, no epimorphism structures, not even the permutations of
+$\mathsf{Fin}\;n$ bundled as a group.  None of these are hard --- the
+seven modules total 865 lines --- but each was necessary for some
+semantic side of a presentation theorem, and we submit them as
+independently useful.  The deeper omission is thematic: the standard
+library's algebra hierarchy is rich in \emph{structures} but thin in
+\emph{constructions}, and presentation-level results force the
+constructions into existence.
+
+\subsection{Proof engineering lessons}
+
+Four lessons generalize beyond this library.  \emph{Choose indices for
+the unifier.}  The circuit layer's successor-only indexing
+(\S\ref{sec:circuits}) looks like a small stylistic choice; it is the
+difference between coverage checking succeeding by injectivity of
+constructors and stuck arithmetic side conditions contaminating every
+table.  \emph{Make certificates first-order.}  The five coset-table
+hypotheses quantify over finite inductive types only, so obligations
+split into finitely many closed goals --- the precondition for
+\aid{refl}-discharge; hypotheses phrased over all words would have
+demanded inductions in every instance.  \emph{Let evaluation prove.}
+The single most effective tool in the development is
+\aid{by-equal-nf Eq.refl}: once a normal form for a level exists, all
+equational facts \emph{about that level} that happen to be true become
+free.  This inverts the usual economy of formalization --- effort
+concentrates in setting up the next normal form, after which the
+typechecker absorbs the case explosion that dominates the pen-and-paper
+proofs of~\cite{selinger2015clifford,li2025qutrit,
+clement2026realcliffordch}.  \emph{Separate search from checking.}  Coset
+tables were found by ordinary computation (and, for the larger studies,
+by the companion web tools of \S\ref{sec:tools}); the library only ever
+verifies them.  Nothing in the formal development depends on how a table
+was produced, which kept the trusted story simple and the exploration
+loop fast.
+
+\subsection{Threats to the interpretation}
+
+Two honest caveats.  First, our completeness theorems are stated against
+semantic groups built compositionally ($\mathbb{Z}_N \wr S_n$, product
+groups, extension groups) or against permutations; for the amalgamation
+case studies the final theorems are isomorphisms between two
+\emph{presentations}, whose semantic reading as the concrete matrix
+monoids (e.g.\ Clifford+$T$ as unitaries over
+$\mathbb{Z}[\tfrac12,i]$~\cite{amy2020numbertheoretic,bian2021un})
+additionally uses the paper-mathematics identification of those groups
+with the amalgamated products --- the group-level amalgamation
+presentation theorem of \S\ref{sec:constructions} closes this gap
+whenever presentations of the three constituent groups are supplied, but
+we have not yet formalized the matrix side itself.  Connecting to a
+verified matrix semantics (\S\ref{sec:related}) would discharge this end
+to end.  Second, statistics like ``every obligation closed by
+\aid{refl}'' describe our case studies, not a theorem about the method;
+gate sets whose coset structure is not finitely enumerable per level
+would need genuinely new ideas.
