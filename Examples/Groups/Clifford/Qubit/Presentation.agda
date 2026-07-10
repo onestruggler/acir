@@ -139,5 +139,34 @@ corr _          = ε
 -- The Clifford presentation, as an extension of Pauli by the symplectic
 -- group.
 
-Clifford-pres : (n : ℕ) → WRel (PauliGen n ⊎ Gen n)
-Clifford-pres n = extension-presentation (Γ-H ⊕^ n) (n QRel,_===_) conj corr
+infix 4 _Clifford,_===_
+
+_Clifford,_===_ : (n : ℕ) → WRel (PauliGen n ⊎ Gen n)
+_Clifford,_===_ n = extension-presentation (Γ-H ⊕^ n) (n QRel,_===_) conj corr
+
+
+import Presentation.Properties as PP
+import Presentation.Base as PB
+open import Presentation.Definitions
+open import Normalization.NormalForm.Propositional
+open import Normalization.StarPresentation
+open import Examples.Groups.Clifford.Qubit.Semantics
+
+subpresentation : ∀ {n} -> 
+  (n Clifford,_===_) IsSubPresentationOf Clifford-group n
+subpresentation {n} =
+  GS.GetSubPresentation.groupSubPres {!!} {!!} {!!} {!!}
+  where
+  module GS = GroupSem (n Clifford,_===_) {!!} {!!} {!!}
+
+
+presentation : ∀ {n} -> let open PP (n Clifford,_===_) in
+  (n Clifford,_===_) IsPresentationOf {!!}
+presentation {n} = isPresentationOf subpresentation claim
+  where
+  open PB (n Clifford,_===_)
+  open import Function.Definitions using (Surjective)
+
+  claim : Surjective {!!} {!!} {!!}
+  claim y = {!!}
+

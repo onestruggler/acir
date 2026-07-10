@@ -17,7 +17,7 @@ open import Notations
 
 open import Zp.ModularArithmetic
 
-module Examples.Groups.Symplectic.Boxes (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Normalization.NF (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime

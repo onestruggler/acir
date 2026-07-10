@@ -112,7 +112,7 @@ completeness results parameterized over two naturals, which is where a
 mechanized, compositional treatment clearly outruns the per-instance
 pen-and-paper approach.
 
-\subsection{Pauli groups in all odd prime dimensions}
+\subsection{Pauli groups in all odd prime dimensions}\label{sec:pauli}
 
 The Pauli development is the purest showcase of compositionality --- there
 is \emph{no} coset enumeration in it at all:
@@ -259,10 +259,106 @@ largest verified objects in the library, and both consist mostly of
 first-order tables and \aid{refl}-discharged obligations --- the shape of
 proof this framework was designed to make routine.
 
+\subsection{The qubit Clifford groups as an extension, with an explicit cocycle}\label{sec:cliffordqubit}
+
+The catalogue's newest entry assembles the pieces above into the
+presentation this library was built for.  For every $n$, the $n$-qubit
+Clifford group modulo global phases is an extension of the symplectic
+group by the phaseless Pauli group~\cite{selinger2015clifford}:
+\[
+  1 \longrightarrow (\mathbb{Z}_2 \times \mathbb{Z}_2)^n
+    \longrightarrow \mathcal{C}_n
+    \longrightarrow Sp(2n, \mathbb{Z}_2)
+    \longrightarrow 1 ,
+\]
+conjugation by a Clifford operator acting on Pauli operators
+symplectically --- and at $p = 2$ the extension does \emph{not} split.
+The library now contains this presentation, for all $n$ at once, as an
+instance of the extension recipe of \S\ref{sec:constructions}
+(\texttt{Examples.Groups.Clifford.Qubit.Presentation}):
+
+\begin{agdacode}
+Clifford-pres : (n : ℕ) → WRel (PauliGen n ⊎ Gen n)
+Clifford-pres n = extension-presentation (Γ-H ⊕^ n) (n QRel,_===_) conj corr
+\end{agdacode}
+
+Every argument is an artifact from earlier sections.  The normal factor
+$\aid{Γ-H ⊕\char94\ n}$ is the verified Pauli presentation of
+\S\ref{sec:pauli}, instantiated at $p = 2$: an $X$- and a $Z$-generator
+per qubit.  The quotient relations $n\;\aid{QRel},{=}{=}{=}$ are the
+symplectic relations of the staircase layer (\S\ref{sec:wip}): order and
+braid-style laws for the parameterized generators $S$, $H$, and $C\!Z$,
+far-commutation, and the shift-congruence \aid{cong↑}.  The action
+\aid{conj} is computed rather than postulated --- a quotient generator
+$g$ conjugates a Pauli generator $y$ through the symplectic action
+\aid{act1} on Pauli vectors, and the result is read back into syntax:
+
+\begin{agdacode}
+conj : ∀ {n} → Gen n → PauliGen n → Word (PauliGen n)
+conj g y = vecToWord (act1 g (genToVec y))
+\end{agdacode}
+
+where \aid{genToVec} reads a generator as a basis vector and
+\aid{vecToWord} delogs a vector $(a_i, b_i)_i$ to the word
+$\prod_i X_i^{a_i} Z_i^{b_i}$ --- the Pauli normal form of
+\S\ref{sec:pauli} reused as a syntactic section.  The final ingredient
+is the \emph{cocycle}, the mathematical heart of a non-split extension.
+A presentation of an extension must record, for each quotient relator,
+the correction: the element of the normal subgroup by which the lift of
+the left-hand side differs from the lift of the right-hand side
+(\S\ref{sec:constructions}).  At $p = 2$ exactly one symplectic relator
+fails to lift on the nose: the phase gate obeys $S^2 = Z$, not
+$S^2 = I$, on the qubit it acts on, so the relator \aid{order-S}
+carries the correction $Z_0$; a shifted relator carries the shifted
+correction; and every other relator lifts either exactly or up to a
+global phase, which is invisible in the phaseless Pauli group.  In
+code, the entire cocycle of the $n$-qubit Clifford extension is three
+lines:
+
+\begin{agdacode}
+corr : ∀ {n} {u v} → (n QRel,_===_) u v → Word (PauliGen n)
+corr order-S    = Z₀
+corr (cong↑ r)  = shiftPauli (corr r)
+corr _          = ε
+\end{agdacode}
+
+(The correction data was validated, during development, against the
+exact $2{\times}2$, $4{\times}4$, and $8{\times}8$ Clifford matrices
+under the same conventions.)  Figure~\ref{fig:clifford-relations}
+displays the resulting relation set in full, one circuit equation per
+relation family, drawn in matrix-multiplication order --- the mirror
+image of the usual circuit-diagram convention, so that each diagram
+transcribes its Agda word letter for letter.  A few reading notes.  In
+(P4), $P$ and $Q$ range over Pauli letters on distinct qubits --- the
+cross-qubit commutations of the $n$-fold product.  The conjugation
+family (T1)--(T8) is shown for the standard letters; the actual family
+covers every parameterized letter --- $S^k$ sends $X \mapsto X Z^k$,
+the letter $H^2$ conjugates trivially at $p = 2$, and $H^3$ conjugates
+as $H$ --- and every shifted letter, acting on the correspondingly
+shifted qubit.  Among the twisted relators, (R9) and (R10) are
+Selinger's relations (C10) and (C11) with $S^{-1} = S$ at $p = 2$;
+(R14)--(R17) govern the multiplier gate $M_x$ (at $p = 2$ only $x = 1$
+occurs, and $M_1 = (SH)^3$); in (R18) and (R19) the box $g$ ranges
+over generators shifted past the arity of the bottom gate, with
+$U \in \{H, S\}$; and (R20)--(R22) collect the parameterized letters
+$S^k$, $H^k$, $C\!Z^k$ into $k$-fold products of the standard ones.  For odd primes the picture simplifies:
+the extension splits, every correction is $\varepsilon$, and the recipe
+degenerates to the semidirect-product presentation --- the route the
+odd-prime development takes.  \aid{Clifford-pres}~$n$ is thus a finite,
+explicitly given relation set for the $n$-qubit Clifford group modulo
+phases, typechecked under \texttt{--safe}; what remains for the full
+presentation \emph{theorem} is its semantic half --- realizing the
+extension record of \S\ref{sec:constructions} over the concrete
+Clifford group and supplying the two factor normal forms.  The Pauli
+half is in place (\S\ref{sec:pauli}, together with its verified vector
+semantics); the symplectic half is the staircase tower below.
+
+\input{sections/fig-relations}
+
 \subsection{Work in progress: symplectic groups and odd-prime Clifford circuits}\label{sec:wip}
 
 Beyond the verified catalogue, the repository contains a further
-$\sim$68\,000 lines formalizing the road to multi-qupit Clifford
+$\sim$67\,600 lines formalizing the road to multi-qupit Clifford
 completeness in odd prime dimensions: modular arithmetic over
 $\mathbb{Z}_p$, the symplectic groups $Sp(2n,\mathbb{Z}_p)$ and their
 action on Pauli vectors, symplectic transvection lemmas, and
@@ -270,13 +366,14 @@ Selinger-style staircase normal forms for the Clifford generators
 $S, H, C\!Z, \mathit{Ex}, M$ --- the formal counterpart of the qutrit
 rule set of Li, Mosca, Ross, van~de~Wetering, and
 Zhao~\cite{li2025qutrit} and its odd-prime generalization, with the
-companion web normalizer of \S\ref{sec:tools}~\cite{qupit-tool}.  This
-layer is not yet complete (its remaining obligations concern the
-equivalence of two Pauli-group carriers), and in keeping with our
+companion web normalizer of \S\ref{sec:tools}~\cite{qupit-tool}.  The
+relations-and-action sublayer of this development typechecks --- it is
+what \S\ref{sec:cliffordqubit} consumes --- but the staircase
+normal-form tower is still under construction, and in keeping with our
 ground rule --- nothing is claimed that does not typecheck under
-\texttt{--safe} today --- we report it as the library's driving next
-target rather than as a result.  What \emph{is} already visible from the
-verified layers is the intended endgame: the Pauli presentations of this
-section as the normal subgroup, the symplectic staircase as the coset
-tower, and the extension-presentation theorem of
-\S\ref{sec:constructions} as the glue.
+\texttt{--safe} today --- we report the layer as the library's driving
+next target rather than as a result.  The endgame, whose syntactic
+scaffolding \S\ref{sec:cliffordqubit} has now assembled, is visible: the
+Pauli presentations of this section as the normal subgroup, the
+symplectic staircase as the coset tower, and the extension-presentation
+theorem of \S\ref{sec:constructions} as the glue.

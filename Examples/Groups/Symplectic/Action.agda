@@ -55,12 +55,12 @@ open Symplectic-Derived-Gen
 open import Examples.Groups.Pauli.Semantics p-2 p-prime public
 
 act1 : ∀ {n} → Gen n → Pauli n → Pauli n
-act1 {₁₊ n} (H-gen ₀) ((a , b) ∷ ps) = ((a , b) ∷ ps)
-act1 {₁₊ n} (H-gen ₁) ((a , b) ∷ ps) = ((- b , a) ∷ ps)
-act1 {₁₊ n} (H-gen ₂) ((a , b) ∷ ps) = ((- a , - b) ∷ ps)
-act1 {₁₊ n} (H-gen ₃) ((a , b) ∷ ps) = ((b , - a) ∷ ps)
-act1 {₁₊ n} (S-gen k) ((a , b) ∷ ps) = ((a , b + a * k) ∷ ps)
-act1 {₂₊ n} (CZ-gen k) ((a , b) ∷ (a' , b') ∷ ps) = (a , b + a' * k) ∷ (a' , b' + a * k) ∷ ps
+act1 {₁₊ n} (gate₁ (H-gen ₀)) ((a , b) ∷ ps) = ((a , b) ∷ ps)
+act1 {₁₊ n} (gate₁ (H-gen ₁)) ((a , b) ∷ ps) = ((- b , a) ∷ ps)
+act1 {₁₊ n} (gate₁ (H-gen ₂)) ((a , b) ∷ ps) = ((- a , - b) ∷ ps)
+act1 {₁₊ n} (gate₁ (H-gen ₃)) ((a , b) ∷ ps) = ((b , - a) ∷ ps)
+act1 {₁₊ n} (gate₁ (S-gen k)) ((a , b) ∷ ps) = ((a , b + a * k) ∷ ps)
+act1 {₂₊ n} (gate₂ (CZ-gen k)) ((a , b) ∷ (a' , b') ∷ ps) = (a , b + a' * k) ∷ (a' , b' + a * k) ∷ ps
 act1 {₁₊ n} (g ↥) (p ∷ ps) = p ∷ act1 {n} g ps
 
 act : ∀ {n} → Word (Gen n) → Pauli n → Pauli n
@@ -81,17 +81,17 @@ lemma-act-↑ {n} (w • v) p q = begin
 
 
 lemma-act-↓-gen : ∀ {n} (gen : Gen n) → (p : Pauli1 ) (ps : Pauli n) → act1 (gen ↓-gen) (ps ∷ʳ p) ≡ (act1 gen ps) ∷ʳ p
-lemma-act-↓-gen {₁} (H-gen ₀) p (x ∷ []) = auto
-lemma-act-↓-gen {₁} (H-gen ₁) p (x ∷ []) = auto
-lemma-act-↓-gen {₁} (H-gen ₂) p (x ∷ []) = auto
-lemma-act-↓-gen {₁} (H-gen ₃) p (x ∷ []) = auto
-lemma-act-↓-gen {₁} (S-gen k) p (x ∷ []) = auto
-lemma-act-↓-gen {₂₊ n} (H-gen ₀) p (x ∷ x₁ ∷ ps) = auto
-lemma-act-↓-gen {₂₊ n} (H-gen ₁) p (x ∷ x₁ ∷ ps) = auto
-lemma-act-↓-gen {₂₊ n} (H-gen ₂) p (x ∷ x₁ ∷ ps) = auto
-lemma-act-↓-gen {₂₊ n} (H-gen ₃) p (x ∷ x₁ ∷ ps) = auto
-lemma-act-↓-gen {₂₊ n} (S-gen k) p (x ∷ x₁ ∷ ps) = auto
-lemma-act-↓-gen {₂₊ n} (CZ-gen k) p (x ∷ x₁ ∷ ps) = auto
+lemma-act-↓-gen {₁} (gate₁ (H-gen ₀)) p (x ∷ []) = auto
+lemma-act-↓-gen {₁} (gate₁ (H-gen ₁)) p (x ∷ []) = auto
+lemma-act-↓-gen {₁} (gate₁ (H-gen ₂)) p (x ∷ []) = auto
+lemma-act-↓-gen {₁} (gate₁ (H-gen ₃)) p (x ∷ []) = auto
+lemma-act-↓-gen {₁} (gate₁ (S-gen k)) p (x ∷ []) = auto
+lemma-act-↓-gen {₂₊ n} (gate₁ (H-gen ₀)) p (x ∷ x₁ ∷ ps) = auto
+lemma-act-↓-gen {₂₊ n} (gate₁ (H-gen ₁)) p (x ∷ x₁ ∷ ps) = auto
+lemma-act-↓-gen {₂₊ n} (gate₁ (H-gen ₂)) p (x ∷ x₁ ∷ ps) = auto
+lemma-act-↓-gen {₂₊ n} (gate₁ (H-gen ₃)) p (x ∷ x₁ ∷ ps) = auto
+lemma-act-↓-gen {₂₊ n} (gate₁ (S-gen k)) p (x ∷ x₁ ∷ ps) = auto
+lemma-act-↓-gen {₂₊ n} (gate₂ (CZ-gen k)) p (x ∷ x₁ ∷ ps) = auto
 lemma-act-↓-gen {₂₊ n} (gen ↥) p (x ∷ x₁ ∷ ps) rewrite lemma-act-↓-gen {₁₊ n} gen p (x₁ ∷ ps) = Eq.cong (x ∷_) auto
 
 -- lemma-act-↓ : ∀ {n} (w : Word (Gen n)) → (p : Pauli1 ) (ps : Pauli n) → act (w ↓) (ps ∷ʳ p) ≡ (act w ps) ∷ʳ p

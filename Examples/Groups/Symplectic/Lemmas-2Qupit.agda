@@ -69,7 +69,7 @@ module Lemmas-2Q (n : ℕ) where
     CZ ^ (k Nat.% p Nat.+ k Nat./ p Nat.* p) ≈⟨ ^-+ CZ (k Nat.% p) (k Nat./ p Nat.* p) ⟩
     CZ ^ (k Nat.% p) • CZ ^ (k Nat./ p Nat.* p) ≈⟨ (cright refl' (Eq.cong (CZ ^_) (NP.*-comm (k Nat./ p) p))) ⟩
     CZ ^ (k Nat.% p) • CZ ^ (p Nat.* (k Nat./ p)) ≈⟨ sym (cright ^^ CZ p (k Nat./ p)) ⟩
-    CZ ^ (k Nat.% p) • (CZ ^ p) ^ (k Nat./ p) ≈⟨ (cright ^-cong (CZ ^ p) ε (k Nat./ p) (axiom order-CZ)) ⟩
+    CZ ^ (k Nat.% p) • (CZ ^ p) ^ (k Nat./ p) ≈⟨ (cright ^-cong (CZ ^ p) ε (k Nat./ p) (axiom (srel order-CZ))) ⟩
     CZ ^ (k Nat.% p) • (ε) ^ (k Nat./ p) ≈⟨ (cright ε^k=ε (k Nat./ p)) ⟩
     CZ ^ (k Nat.% p) • ε ≈⟨ right-unit ⟩
     CZ ^ (k % p) ∎
@@ -81,8 +81,8 @@ module Lemmas-2Q (n : ℕ) where
   derived-M↑CZ x k@0 nz = trans right-unit (sym left-unit)
   derived-M↑CZ x k@1 nz = begin  
     M (x , nz) ↑ • CZ ^ k ≈⟨ refl ⟩
-    M (x , nz) ↑ • CZ ≈⟨ axiom (semi-M↑CZ (x , nz)) ⟩
-    CZ^ (x) • M (x , nz) ↑ ≈⟨ cong (axiom (derived-CZ (x))) refl ⟩
+    M (x , nz) ↑ • CZ ≈⟨ axiom (srel (semi-M↑CZ (x , nz))) ⟩
+    CZ^ (x) • M (x , nz) ↑ ≈⟨ cong (axiom (srel (derived-CZ (x)))) refl ⟩
     CZ ^ toℕ (x) • M (x , nz) ↑ ≈⟨ (cleft refl' (Eq.cong (CZ ^_) (Eq.sym ( NP.*-identityˡ (toℕ (x)))))) ⟩
     CZ ^ (k Nat.* toℕ (x)) • M (x , nz) ↑ ∎
     where
@@ -104,11 +104,11 @@ module Lemmas-2Q (n : ℕ) where
   lemma-M↑CZ^k : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     M (x , nz) ↑ • CZ^ k ≈ CZ^ (k * (x)) • M (x , nz) ↑
   lemma-M↑CZ^k x k nz = begin 
-    M (x , nz) ↑ • CZ^ k ≈⟨ cong refl (axiom (derived-CZ k)) ⟩
+    M (x , nz) ↑ • CZ^ k ≈⟨ cong refl (axiom (srel (derived-CZ k))) ⟩
     M (x , nz) ↑ • CZ ^ toℕ k ≈⟨ derived-M↑CZ x (toℕ k) nz ⟩
     CZ ^ (toℕ k Nat.* toℕ (x)) • M (x , nz) ↑ ≈⟨ (cleft lemma-CZ^k-% (toℕ k Nat.* toℕ (x))) ⟩
     CZ ^ ((toℕ k Nat.* toℕ (x)) % p) • M (x , nz) ↑ ≈⟨ (cleft refl' (Eq.cong (CZ ^_) (lemma-toℕ-% k (x)))) ⟩
-    CZ ^ toℕ (k * (x)) • M (x , nz) ↑ ≈⟨ cong (sym (axiom (derived-CZ (k * (x))))) refl ⟩
+    CZ ^ toℕ (k * (x)) • M (x , nz) ↑ ≈⟨ cong (sym (axiom (srel (derived-CZ (k * (x)))))) refl ⟩
     CZ^ (k * (x)) • M (x , nz) ↑ ∎
     where
     open SR word-setoid
@@ -121,8 +121,8 @@ module Lemmas-2Q (n : ℕ) where
   derived-M↓CZ x k@0 nz = trans right-unit (sym left-unit)
   derived-M↓CZ x k@1 nz = begin  
     M (x , nz) ↓ • CZ ^ k ≈⟨ refl ⟩
-    M (x , nz) ↓ • CZ ≈⟨ axiom (semi-M↓CZ (x , nz)) ⟩
-    CZ^ (x) • M (x , nz) ↓ ≈⟨ cong (axiom (derived-CZ (x))) refl ⟩
+    M (x , nz) ↓ • CZ ≈⟨ axiom (srel (semi-M↓CZ (x , nz))) ⟩
+    CZ^ (x) • M (x , nz) ↓ ≈⟨ cong (axiom (srel (derived-CZ (x)))) refl ⟩
     CZ ^ toℕ (x) • M (x , nz) ↓ ≈⟨ (cleft refl' (Eq.cong (CZ ^_) (Eq.sym ( NP.*-identityˡ (toℕ (x)))))) ⟩
     CZ ^ (k Nat.* toℕ (x)) • M (x , nz) ↓ ∎
     where
@@ -144,11 +144,11 @@ module Lemmas-2Q (n : ℕ) where
   lemma-M↓CZ^k : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     M (x , nz) ↓ • CZ^ k ≈ CZ^ (k * (x)) • M (x , nz) ↓
   lemma-M↓CZ^k x k nz = begin 
-    M (x , nz) ↓ • CZ^ k ≈⟨ cong refl (axiom (derived-CZ k)) ⟩
+    M (x , nz) ↓ • CZ^ k ≈⟨ cong refl (axiom (srel (derived-CZ k))) ⟩
     M (x , nz) ↓ • CZ ^ toℕ k ≈⟨ derived-M↓CZ x (toℕ k) nz ⟩
     CZ ^ (toℕ k Nat.* toℕ (x)) • M (x , nz) ↓ ≈⟨ (cleft lemma-CZ^k-% (toℕ k Nat.* toℕ (x))) ⟩
     CZ ^ ((toℕ k Nat.* toℕ (x)) % p) • M (x , nz) ↓ ≈⟨ (cleft refl' (Eq.cong (CZ ^_) (lemma-toℕ-% k (x)))) ⟩
-    CZ ^ toℕ (k * (x)) • M (x , nz) ↓ ≈⟨ cong (sym (axiom (derived-CZ (k * (x))))) refl ⟩
+    CZ ^ toℕ (k * (x)) • M (x , nz) ↓ ≈⟨ cong (sym (axiom (srel (derived-CZ (k * (x)))))) refl ⟩
     CZ^ (k * (x)) • M (x , nz) ↓ ∎
     where
     open SR word-setoid

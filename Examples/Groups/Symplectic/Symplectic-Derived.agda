@@ -59,13 +59,17 @@ open PrimeModulus p-2 p-prime
 module Symplectic-Derived-Gen where
 
   
-  data Gen : ℕ → Set where
-    H-gen : ∀ {n} → ℤ ₄ -> Gen (₁₊ n)
-    S-gen : ∀ {n} → ℤ ₚ -> Gen (₁₊ n)
-    CZ-gen : ∀ {n} → ℤ ₚ -> Gen (₂₊ n)
-    -- lift a generator from Gen n to Gen (₁₊ n). E.g., in a two
-    -- qupit circut H-gen = H 0, and H-gen ↥ = H 1.
-    _↥ : ∀ {n} → Gen n → Gen (₁₊ n)
+  -- The gate alphabet: single-qupit gates H (order 4, ℤ₄-indexed) and
+  -- S (ℤₚ-indexed), and the two-qupit gate CZ (ℤₚ-indexed).  The
+  -- wire-indexed generators Gen, circuits, the shifts _↑/_↓/_↥ᵏ_ and the
+  -- Lift-Relation machinery are all inherited from Circuit.Base; a
+  -- generator here is gate₁ (H-gen k), gate₁ (S-gen k) or gate₂ (CZ-gen k).
+  data Gate : ℕ → Set where
+    H-gen  : ℤ ₄ → Gate 1
+    S-gen  : ℤ ₚ → Gate 1
+    CZ-gen : ℤ ₚ → Gate 2
+
+  open import Circuit.Base Gate public
 
   [_⇑] : ∀ {n} → Word (Gen n) → Word (Gen (₁₊ n))
   [_⇑] {n} = ([_]ʷ ∘ _↥) WB.ʷ
@@ -73,21 +77,11 @@ module Symplectic-Derived-Gen where
   [_⇑]' : ∀ {n} → Word (Gen n) → Word (Gen (₁₊ n))
   [_⇑]' {n} = wmap _↥
 
-  _↑ : ∀ {n} → Word (Gen n) → Word (Gen (₁₊ n))
-  _↑ = wmap _↥
-
   _↓-gen : ∀ {n} → Gen n → Gen (₁₊ n)
   _↓-gen {zero} ()
-  _↓-gen {₁₊ n} (H-gen k) = (H-gen k)
-  _↓-gen {₁₊ n} (S-gen k) = S-gen k
-  _↓-gen {₁₊ .(₁₊ _)} (CZ-gen k) = CZ-gen k
+  _↓-gen {₁₊ n} (gate₁ h) = gate₁ h
+  _↓-gen {₁₊ .(₁₊ _)} (gate₂ h) = gate₂ h
   _↓-gen {₁₊ n} (g ↥) = (g ↓-gen) ↥
-
-  -- _↓ : ∀ {n} → Word (Gen n) → Word (Gen (₁₊ n))
-  -- _↓ {n} = wmap _↓-gen
-
-  _↓ : ∀ {n} → Word (Gen n) → Word (Gen ( n))
-  _↓ {n} x = x
 
 
   lemma-[⇑]=[⇑]' : ∀ {n} (w : Word (Gen n)) → [ w ⇑] ≡ [ w ⇑]'
@@ -96,13 +90,13 @@ module Symplectic-Derived-Gen where
   lemma-[⇑]=[⇑]' {n} (w • w₁) = Eq.cong₂ _•_ (lemma-[⇑]=[⇑]' w) (lemma-[⇑]=[⇑]' w₁)
 
   S : ∀ {n} → Word (Gen (₁₊ n))
-  S = [ S-gen ₁ ]ʷ
+  S = [ gate₁ (S-gen ₁) ]ʷ
 
   S⁻¹ : ∀ {n} → Word (Gen (₁₊ n))
   S⁻¹ = S ^ p-1
   
   H : ∀ {n} → Word (Gen (₁₊ n))
-  H = [ H-gen ₁ ]ʷ
+  H = [ gate₁ (H-gen ₁) ]ʷ
 
   H⁻¹ : ∀ {n} → Word (Gen (₁₊ n))
   H⁻¹ = H ^ 3
@@ -114,7 +108,7 @@ module Symplectic-Derived-Gen where
   SH = S • H
 
   CZ : ∀ {n} → Word (Gen (₂₊ n))
-  CZ = [ CZ-gen ₁ ]ʷ
+  CZ = [ gate₂ (CZ-gen ₁) ]ʷ
 
   CZ⁻¹ : ∀ {n} → Word (Gen (₂₊ n))
   CZ⁻¹ = CZ ^ p-1
@@ -147,13 +141,13 @@ module Symplectic-Derived-Gen where
   ⊤⊥ = ʰ|ʰ • ₕ|ₕ
 
   H^ : ∀ {n} → ℤ ₄ -> Word (Gen (₁₊ n))
-  H^ k = [ H-gen k ]ʷ
+  H^ k = [ gate₁ (H-gen k) ]ʷ
 
   S^ : ∀ {n} → ℤ ₚ -> Word (Gen (₁₊ n))
-  S^ k = [ S-gen k ]ʷ
+  S^ k = [ gate₁ (S-gen k) ]ʷ
 
   CZ^ : ∀ {n} → ℤ ₚ -> Word (Gen (₂₊ n))
-  CZ^ k = [ CZ-gen k ]ʷ
+  CZ^ k = [ gate₂ (CZ-gen k) ]ʷ
 
   M : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
   M x' = S^ x • H • S^ x⁻¹ • H • S^ x • H
@@ -172,56 +166,50 @@ module Symplectic-Derived-Gen where
   _^1 : ℤ* ₚ -> ℤ ₚ
   _^1 x' = let x = x' .proj₁ in x
 
+  -- The qupit-specific relations.  The structural rules — congruence
+  -- under wire-shifting (cong↑) and gates commuting past shifted-up
+  -- generators (comm₁/comm₂) — are supplied by Circuit.Base.Lift-Relation
+  -- below, and so are omitted here.  (The old comm-H/comm-S/comm-CZ are
+  -- the comm₁/comm₂ instances at gate₁ (H-gen ₁)/gate₁ (S-gen ₁)/
+  -- gate₂ (CZ-gen ₁).)
+  infix 4 _Q,_===_
+  data _Q,_===_ : (n : ℕ) → CRel n where
+
+    order-S :      ∀ {n} → (₁₊ n) Q,  S ^ p === ε
+    order-H :      ∀ {n} → (₁₊ n) Q,  H ^ 4 === ε
+    order-SH :     ∀ {n} → (₁₊ n) Q,  (S • H) ^ 3 === ε
+    comm-HHS :     ∀ {n} → (₁₊ n) Q,  H • H • S === S • H • H
+
+    M-mul :    ∀ {n} x y → (₁₊ n) Q,  M x • M y === M (x *' y)
+    semi-MS :    ∀ {n} x → (₁₊ n) Q,  M x • S === S^ (x ^2) • M x
+    semi-M↑CZ :  ∀ {n} x → (₂₊ n) Q,  M x ↑ • CZ === CZ^ (x ^1) • M x ↑
+    semi-M↓CZ :  ∀ {n} x → (₂₊ n) Q,  M x ↓ • CZ === CZ^ (x ^1) • M x ↓
+
+    order-CZ :     ∀ {n} → (₂₊ n) Q,  CZ ^ p === ε
+
+    comm-CZ-S↓ :   ∀ {n} → (₂₊ n) Q,  CZ • S ↓ === S ↓ • CZ
+    comm-CZ-S↑ :   ∀ {n} → (₂₊ n) Q,  CZ • S ↑ === S ↑ • CZ
+
+    selinger-c10 : ∀ {n} → (₂₊ n) Q,  CZ • H ↑ • CZ === S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓
+    selinger-c11 : ∀ {n} → (₂₊ n) Q,  CZ • H ↓ • CZ === S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑
+
+    selinger-c12 : ∀ {n} → (₃₊ n) Q,  CZ ↑ • CZ === CZ • CZ ↑
+    selinger-c13 : ∀ {n} → (₃₊ n) Q,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
+
+    selinger-c14 : ∀ {n} → (₃₊ n) Q,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
+    selinger-c15 : ∀ {n} → (₃₊ n) Q,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
+
+    derived-S :  ∀ {n} k → (₁₊ n) Q,  S^ k === S ^ toℕ k
+    derived-H :  ∀ {n} k → (₁₊ n) Q,  H^ k === H ^ toℕ k
+    derived-CZ : ∀ {n} k → (₂₊ n) Q,  CZ^ k === CZ ^ toℕ k
+
+  -- The full relation: the qupit-specific rules together with the
+  -- structural rules (srel / cong↑ / comm₁ / comm₂) from Lift-Relation.
+  open Lift-Relation _Q,_===_ public
+
   infix 4 _QRel,_===_
-  data _QRel,_===_ : (n : ℕ) → WRel (Gen n) where
-  
-    order-S :      ∀ {n} → (₁₊ n) QRel,  S ^ p === ε
-    order-H :      ∀ {n} → (₁₊ n) QRel,  H ^ 4 === ε
-    order-SH :     ∀ {n} → (₁₊ n) QRel,  (S • H) ^ 3 === ε
-    comm-HHS :     ∀ {n} → (₁₊ n) QRel,  H • H • S === S • H • H
-
-    M-mul :    ∀ {n} x y → (₁₊ n) QRel,  M x • M y === M (x *' y)
-    semi-MS :    ∀ {n} x → (₁₊ n) QRel,  M x • S === S^ (x ^2) • M x
-    semi-M↑CZ :  ∀ {n} x → (₂₊ n) QRel,  M x ↑ • CZ === CZ^ (x ^1) • M x ↑
-    semi-M↓CZ :  ∀ {n} x → (₂₊ n) QRel,  M x ↓ • CZ === CZ^ (x ^1) • M x ↓
-
-    order-CZ :     ∀ {n} → (₂₊ n) QRel,  CZ ^ p === ε
-
-    comm-CZ-S↓ :   ∀ {n} → (₂₊ n) QRel,  CZ • S ↓ === S ↓ • CZ
-    comm-CZ-S↑ :   ∀ {n} → (₂₊ n) QRel,  CZ • S ↑ === S ↑ • CZ
-
-    selinger-c10 : ∀ {n} → (₂₊ n) QRel,  CZ • H ↑ • CZ === S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓
-    selinger-c11 : ∀ {n} → (₂₊ n) QRel,  CZ • H ↓ • CZ === S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑
-
-    selinger-c12 : ∀ {n} → (₃₊ n) QRel,  CZ ↑ • CZ === CZ • CZ ↑
-    selinger-c13 : ∀ {n} → (₃₊ n) QRel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
-    
-    selinger-c14 : ∀ {n} → (₃₊ n) QRel,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
-    selinger-c15 : ∀ {n} → (₃₊ n) QRel,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
-
-    comm-H :    ∀ {n}{g} → (₂₊ n) QRel,  [ g ↥ ]ʷ • H === H • [ g ↥ ]ʷ
-    comm-S :    ∀ {n}{g} → (₂₊ n) QRel,  [ g ↥ ]ʷ • S === S • [ g ↥ ]ʷ
-    comm-CZ :   ∀ {n}{g} → (₃₊ n) QRel,  [ g ↥ ↥ ]ʷ • CZ === CZ • [ g ↥ ↥ ]ʷ
-
-    derived-S :  ∀ {n} k → (₁₊ n) QRel,  S^ k === S ^ toℕ k
-    derived-H :  ∀ {n} k → (₁₊ n) QRel,  H^ k === H ^ toℕ k
-    derived-CZ : ∀ {n} k → (₂₊ n) QRel,  CZ^ k === CZ ^ toℕ k
-
-    cong↑ : ∀ {n w v} → n QRel,  w === v → (₁₊ n) QRel,  w ↑ === v ↑
-
-
-  lemma-cong↑ : ∀ {n} w v →
-    let open PB (n QRel,_===_) using (_≈_) in
-    let open PB ((₁₊ n) QRel,_===_) renaming (_≈_ to _≈↑_) using () in
-    w ≈ v → w ↑ ≈↑ v ↑
-  lemma-cong↑ {n} w v PB.refl = PB.refl
-  lemma-cong↑ {n} w v (PB.sym eq) = PB.sym (lemma-cong↑ v w eq)
-  lemma-cong↑ {n} w v (PB.trans eq eq₁) = PB.trans (lemma-cong↑ _ _ eq) (lemma-cong↑ _ _ eq₁)
-  lemma-cong↑ {n} w v (PB.cong eq eq₁) = PB.cong (lemma-cong↑ _ _ eq) (lemma-cong↑ _ _ eq₁)
-  lemma-cong↑ {n} w v PB.assoc = PB.assoc
-  lemma-cong↑ {n} w v PB.left-unit = PB.left-unit
-  lemma-cong↑ {n} w v PB.right-unit = PB.right-unit
-  lemma-cong↑ {n} w v (PB.axiom x) = PB.axiom (cong↑ x)
+  _QRel,_===_ : (n : ℕ) → CRel n
+  _QRel,_===_ = _VRel,_===_
 
   lemma-cong↓-S^ : ∀ {n} k -> let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (S ^ k) ↓ ≈↓ S ^ k
@@ -284,34 +272,34 @@ module Symplectic-Derived-Gen where
   lemma-cong↓ {n} w v PB.assoc = PB.assoc
   lemma-cong↓ {n} w v PB.left-unit = PB.left-unit
   lemma-cong↓ {n} w v PB.right-unit = PB.right-unit
-  lemma-cong↓ {n} w v (PB.axiom order-S) = begin
+  lemma-cong↓ {n} w v (PB.axiom (srel order-S)) = begin
     ((S • S ^ ₁₊ p-2) ↓) ≈⟨ cong refl (lemma-cong↓-S^ (₁₊ p-2)) ⟩
-    ((S • S ^ ₁₊ p-2)) ≈⟨ axiom order-S ⟩
+    ((S • S ^ ₁₊ p-2)) ≈⟨ axiom (srel order-S) ⟩
     (ε ↓) ∎
     where
     open PB ((₁₊ n) QRel,_===_) renaming (_≈_ to _≈↓_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
-  lemma-cong↓ {n} w v (PB.axiom order-H) = PB.axiom order-H
-  lemma-cong↓ {n} w v (PB.axiom order-SH) = PB.axiom order-SH
-  lemma-cong↓ {n} w v (PB.axiom comm-HHS) = PB.axiom comm-HHS
-  lemma-cong↓ {n} w v (PB.axiom (M-mul x y)) = PB.axiom (M-mul x y)
-  lemma-cong↓ {n} w v (PB.axiom (semi-MS x)) = PB.axiom (semi-MS x)
-  lemma-cong↓ {n} w v (PB.axiom (semi-M↑CZ x)) = PB.axiom (semi-M↑CZ x)
-  lemma-cong↓ {n} w v (PB.axiom (semi-M↓CZ x)) = PB.axiom (semi-M↓CZ x)
-  lemma-cong↓ {n} w v (PB.axiom order-CZ) = begin
+  lemma-cong↓ {n} w v (PB.axiom (srel order-H)) = PB.axiom order-H
+  lemma-cong↓ {n} w v (PB.axiom (srel order-SH)) = PB.axiom order-SH
+  lemma-cong↓ {n} w v (PB.axiom (srel comm-HHS)) = PB.axiom comm-HHS
+  lemma-cong↓ {n} w v (PB.axiom (srel (M-mul x y))) = PB.axiom (srel (M-mul x y))
+  lemma-cong↓ {n} w v (PB.axiom (srel (semi-MS x))) = PB.axiom (srel (semi-MS x))
+  lemma-cong↓ {n} w v (PB.axiom (srel (semi-M↑CZ x))) = PB.axiom (srel (semi-M↑CZ x))
+  lemma-cong↓ {n} w v (PB.axiom (srel (semi-M↓CZ x))) = PB.axiom (srel (semi-M↓CZ x))
+  lemma-cong↓ {n} w v (PB.axiom (srel order-CZ)) = begin
     ((CZ • CZ ^ ₁₊ p-2) ↓) ≈⟨ cong refl (lemma-cong↓-CZ^ (₁₊ p-2)) ⟩
-    ((CZ • CZ ^ ₁₊ p-2)) ≈⟨ axiom order-CZ ⟩
+    ((CZ • CZ ^ ₁₊ p-2)) ≈⟨ axiom (srel order-CZ) ⟩
     (ε ↓) ∎
     where
     open PB ((₁₊ n) QRel,_===_) renaming (_≈_ to _≈↓_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
-  lemma-cong↓ {n} w v (PB.axiom comm-CZ-S↓) = PB.axiom comm-CZ-S↓
-  lemma-cong↓ {n} w v (PB.axiom comm-CZ-S↑) = PB.axiom comm-CZ-S↑
-  lemma-cong↓ {n} w v (PB.axiom selinger-c10) = begin
+  lemma-cong↓ {n} w v (PB.axiom (srel comm-CZ-S↓)) = PB.axiom comm-CZ-S↓
+  lemma-cong↓ {n} w v (PB.axiom (srel comm-CZ-S↑)) = PB.axiom comm-CZ-S↑
+  lemma-cong↓ {n} w v (PB.axiom (srel selinger-c10)) = begin
     ((CZ • (H ↑) • CZ) ↓) ≈⟨ refl ⟩
-    ((CZ • (H ↑) • CZ) ) ≈⟨ axiom selinger-c10 ⟩
+    ((CZ • (H ↑) • CZ) ) ≈⟨ axiom (srel selinger-c10) ⟩
     ((S⁻¹ ↑) • (H ↑) • (S⁻¹ ↑) • CZ • (H ↑) • (S⁻¹ ↑) • (S⁻¹ ↓)) ≈⟨ sym (cong (lemma-cong↓-S^↑ (₁₊ p-2)) (cright cong (lemma-cong↓-S^↑ (₁₊ p-2)) (cright (cright cong (lemma-cong↓-S^↑ (₁₊ p-2)) (lemma-cong↓-S^↓ (₁₊ p-2)))))) ⟩
     ((S⁻¹ ↑ ↓) • (H ↑) • (S⁻¹ ↑ ↓) • CZ • (H ↑) • (S⁻¹ ↑ ↓) • (S⁻¹ ↓ ↓)) ≈⟨ refl ⟩
     ((S⁻¹ ↑ ↓) • (H ↑ ↓) • (S⁻¹ ↑ ↓) • CZ ↓ • (H ↑ ↓) • (S⁻¹ ↑ ↓) • (S⁻¹ ↓ ↓)) ≈⟨ refl ⟩
@@ -320,9 +308,9 @@ module Symplectic-Derived-Gen where
     open PB ((₁₊ n) QRel,_===_) renaming (_≈_ to _≈↓_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
-  lemma-cong↓ {n} w v (PB.axiom selinger-c11) = begin
+  lemma-cong↓ {n} w v (PB.axiom (srel selinger-c11)) = begin
     ((CZ • (H ↓) • CZ) ↓) ≈⟨ refl ⟩
-    ((CZ • (H ↓) • CZ) ) ≈⟨ axiom selinger-c11 ⟩
+    ((CZ • (H ↓) • CZ) ) ≈⟨ axiom (srel selinger-c11) ⟩
     ((S⁻¹ ↓) • (H ↓) • (S⁻¹ ↓) • CZ • (H ↓) • (S⁻¹ ↓) • (S⁻¹ ↑)) ≈⟨ sym (cong (lemma-cong↓-S^↓ (₁₊ p-2)) (cright cong (lemma-cong↓-S^↓ (₁₊ p-2)) (cright (cright cong (lemma-cong↓-S^↓ (₁₊ p-2)) (lemma-cong↓-S^↑ (₁₊ p-2)))))) ⟩
     ((S⁻¹ ↓ ↓) • (H ↓) • (S⁻¹ ↓ ↓) • CZ • (H ↓) • (S⁻¹ ↓ ↓) • (S⁻¹ ↑ ↓)) ≈⟨ refl ⟩
     (((S⁻¹ ↓) • (H ↓) • (S⁻¹ ↓) • CZ • (H ↓) • (S⁻¹ ↓) • (S⁻¹ ↑)) ↓) ∎
@@ -330,34 +318,34 @@ module Symplectic-Derived-Gen where
     open PB ((₁₊ n) QRel,_===_) renaming (_≈_ to _≈↓_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
-  lemma-cong↓ {n} w v (PB.axiom selinger-c12) = PB.axiom selinger-c12
-  lemma-cong↓ {n} w v (PB.axiom selinger-c13) = PB.axiom selinger-c13
-  lemma-cong↓ {n} w v (PB.axiom selinger-c14) = PB.axiom selinger-c14
-  lemma-cong↓ {n} w v (PB.axiom selinger-c15) = PB.axiom selinger-c15
+  lemma-cong↓ {n} w v (PB.axiom (srel selinger-c12)) = PB.axiom selinger-c12
+  lemma-cong↓ {n} w v (PB.axiom (srel selinger-c13)) = PB.axiom selinger-c13
+  lemma-cong↓ {n} w v (PB.axiom (srel selinger-c14)) = PB.axiom selinger-c14
+  lemma-cong↓ {n} w v (PB.axiom (srel selinger-c15)) = PB.axiom selinger-c15
   lemma-cong↓ {n} w v (PB.axiom comm-H) = PB.axiom comm-H
   lemma-cong↓ {n} w v (PB.axiom comm-S) = PB.axiom comm-S
   lemma-cong↓ {n} w v (PB.axiom comm-CZ) = PB.axiom comm-CZ
-  lemma-cong↓ {n} w v (PB.axiom (derived-S k)) = begin
+  lemma-cong↓ {n} w v (PB.axiom (srel (derived-S k))) = begin
     ([ S-gen k ]ʷ ↓) ≈⟨ refl ⟩
-    ([ S-gen k ]ʷ) ≈⟨ axiom (derived-S k) ⟩
+    ([ S-gen k ]ʷ) ≈⟨ axiom (srel (derived-S k)) ⟩
     ((S ^ toℕ k)) ≈⟨ sym (lemma-cong↓-S^ (toℕ k)) ⟩
     ((S ^ toℕ k) ↓) ∎
     where
     open PB ((₁₊ n) QRel,_===_) renaming (_≈_ to _≈↓_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
-  lemma-cong↓ {n} w v (PB.axiom (derived-H k)) = begin
+  lemma-cong↓ {n} w v (PB.axiom (srel (derived-H k))) = begin
     ([ H-gen k ]ʷ ↓) ≈⟨ refl ⟩
-    ([ H-gen k ]ʷ) ≈⟨ axiom (derived-H k) ⟩
+    ([ H-gen k ]ʷ) ≈⟨ axiom (srel (derived-H k)) ⟩
     ((H ^ toℕ k)) ≈⟨ sym (lemma-cong↓-H^ (toℕ k)) ⟩
     ((H ^ toℕ k) ↓) ∎
     where
     open PB ((₁₊ n) QRel,_===_) renaming (_≈_ to _≈↓_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
-  lemma-cong↓ {n} w v (PB.axiom (derived-CZ k)) =  begin
+  lemma-cong↓ {n} w v (PB.axiom (srel (derived-CZ k))) =  begin
     ([ CZ-gen k ]ʷ ↓) ≈⟨ refl ⟩
-    ([ CZ-gen k ]ʷ) ≈⟨ axiom (derived-CZ k) ⟩
+    ([ CZ-gen k ]ʷ) ≈⟨ axiom (srel (derived-CZ k)) ⟩
     ((CZ ^ toℕ k)) ≈⟨ sym (lemma-cong↓-CZ^ (toℕ k)) ⟩
     ((CZ ^ toℕ k) ↓) ∎
     where
@@ -379,7 +367,7 @@ module Symplectic-Derived-Gen where
     
     S • w ↑ ≈ w ↑ • S
     
-  lemma-comm-S-w↑ {n} [ x ]ʷ = sym (axiom comm-S)
+  lemma-comm-S-w↑ {n} [ x ]ʷ = sym (axiom (comm₁ (S-gen ₁) x))
     where
     open PB ((₂₊ n) QRel,_===_)
   lemma-comm-S-w↑ {n} ε = trans right-unit (sym left-unit)
@@ -425,7 +413,7 @@ module Symplectic-Derived-Gen where
     
     H • w ↑ ≈ w ↑ • H
     
-  lemma-comm-H-w↑ {n} [ x ]ʷ = sym (axiom comm-H)
+  lemma-comm-H-w↑ {n} [ x ]ʷ = sym (axiom (comm₁ (H-gen ₁) x))
     where
     open PB ((₂₊ n) QRel,_===_)
   lemma-comm-H-w↑ {n} ε = trans right-unit (sym left-unit)
@@ -448,7 +436,7 @@ module Symplectic-Derived-Gen where
     
     CZ • w ↑ ↑ ≈ w ↑ ↑ • CZ
     
-  lemma-comm-CZ-w↑ {n} [ x ]ʷ = sym (axiom comm-CZ)
+  lemma-comm-CZ-w↑ {n} [ x ]ʷ = sym (axiom (comm₂ (CZ-gen ₁) x))
     where
     open PB ((₃₊ n) QRel,_===_)
   lemma-comm-CZ-w↑ {n} ε = trans right-unit (sym left-unit)
@@ -488,47 +476,47 @@ module Symplectic-Derived-GroupLike where
   open Symplectic-Derived-Gen
   
   grouplike : Grouplike (n QRel,_===_)
-  grouplike {₁₊ n} (H-gen k) = (H ^ toℕ k) ^ 3 , claim
+  grouplike {₁₊ n} (gate₁ (H-gen k)) = (H ^ toℕ k) ^ 3 , claim
     where
     open PB ((₁₊ n) QRel,_===_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
     claim : (H ^ toℕ k) ^ 3 • H^ k ≈ ε
     claim = begin
-      (H ^ toℕ k) ^ 3 • H^ k ≈⟨ (cright axiom (derived-H k)) ⟩
+      (H ^ toℕ k) ^ 3 • H^ k ≈⟨ (cright axiom (srel (derived-H k))) ⟩
       (H ^ toℕ k) ^ 3 • H ^ toℕ k ≈⟨ sym (^-+ (H ^ toℕ k) 3 1) ⟩
       (H ^ toℕ k) ^ 4 ≈⟨ ^^' H (toℕ k) 4 ⟩
-      (H ^ 4) ^ toℕ k ≈⟨ ^-cong (H ^ 4) ε (toℕ k) (axiom order-H) ⟩
+      (H ^ 4) ^ toℕ k ≈⟨ ^-cong (H ^ 4) ε (toℕ k) (axiom (srel order-H)) ⟩
       (ε) ^ toℕ k ≈⟨ ε^k=ε (toℕ k) ⟩
       ε ∎
 
-  grouplike {₁₊ n} (S-gen k) = (S ^ toℕ k) ^ p-1 ,  claim
+  grouplike {₁₊ n} (gate₁ (S-gen k)) = (S ^ toℕ k) ^ p-1 ,  claim
     where
     open PB ((₁₊ n) QRel,_===_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
     claim : (S ^ toℕ k) ^ p-1 • S^ k ≈ ε
     claim = begin
-      (S ^ toℕ k) ^ p-1 • S^ k ≈⟨ (cright axiom (derived-S k)) ⟩
+      (S ^ toℕ k) ^ p-1 • S^ k ≈⟨ (cright axiom (srel (derived-S k))) ⟩
       (S ^ toℕ k) ^ p-1 • S ^ toℕ k ≈⟨ sym (^-+ (S ^ toℕ k) p-1 1) ⟩
       (S ^ toℕ k) ^ (p-1 Nat.+ 1) ≈⟨ ^^' S (toℕ k) (p-1 Nat.+ 1) ⟩
       (S ^ (p-1 Nat.+ 1)) ^ toℕ k ≈⟨ ^-cong (S ^ (p-1 Nat.+ 1)) (S ^ p) (toℕ k) (refl' (Eq.cong (S ^_) (NP.+-comm p-1 1))) ⟩
-      (S ^ p) ^ toℕ k ≈⟨ ^-cong (S ^ p) ε (toℕ k) (axiom order-S) ⟩
+      (S ^ p) ^ toℕ k ≈⟨ ^-cong (S ^ p) ε (toℕ k) (axiom (srel order-S)) ⟩
       (ε) ^ toℕ k ≈⟨ ε^k=ε (toℕ k) ⟩
       ε ∎
 
-  grouplike {₂₊ n} (CZ-gen k) = (CZ ^ toℕ k) ^ p-1 ,  claim
+  grouplike {₂₊ n} (gate₂ (CZ-gen k)) = (CZ ^ toℕ k) ^ p-1 ,  claim
     where
     open PB ((₂₊ n) QRel,_===_)
     open PP ((₂₊ n) QRel,_===_)
     open SR word-setoid
     claim : (CZ ^ toℕ k) ^ p-1 • CZ^ k ≈ ε
     claim = begin
-      (CZ ^ toℕ k) ^ p-1 • CZ^ k ≈⟨ (cright axiom (derived-CZ k)) ⟩
+      (CZ ^ toℕ k) ^ p-1 • CZ^ k ≈⟨ (cright axiom (srel (derived-CZ k))) ⟩
       (CZ ^ toℕ k) ^ p-1 • CZ ^ toℕ k ≈⟨ sym (^-+ (CZ ^ toℕ k) p-1 1) ⟩
       (CZ ^ toℕ k) ^ (p-1 Nat.+ 1) ≈⟨ ^^' CZ (toℕ k) (p-1 Nat.+ 1) ⟩
       (CZ ^ (p-1 Nat.+ 1)) ^ toℕ k ≈⟨ ^-cong (CZ ^ (p-1 Nat.+ 1)) (CZ ^ p) (toℕ k) (refl' (Eq.cong (CZ ^_) (NP.+-comm p-1 1))) ⟩
-      (CZ ^ p) ^ toℕ k ≈⟨ ^-cong (CZ ^ p) ε (toℕ k) (axiom order-CZ) ⟩
+      (CZ ^ p) ^ toℕ k ≈⟨ ^-cong (CZ ^ p) ε (toℕ k) (axiom (srel order-CZ)) ⟩
       (ε) ^ toℕ k ≈⟨ ε^k=ε (toℕ k) ⟩
       ε ∎
 
@@ -1510,18 +1498,18 @@ module Symplectic-Powers0 where
   step-order : let open PB ((₁₊ n) QRel,_===_) hiding (_===_) in Step-Function (Gen (₁₊ n))  ((₁₊ n) QRel,_===_)
 
   -- Order of generators.
-  -- step-order (((S-gen ₁)) ∷ ((S-gen ₁)) ∷ ((S-gen ₁)) ∷ xs) = just (xs , at-head (PB.axiom order-S))
-  -- step-order (((S-gen ₁) ↥) ∷ ((S-gen ₁) ↥) ∷ ((S-gen ₁) ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ order-S)))
-  -- step-order (((S-gen ₁) ↥ ↥) ∷ ((S-gen ₁) ↥ ↥) ∷ ((S-gen ₁) ↥ ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ (cong↑ order-S))))
-  step-order (((H-gen ₁)) ∷ ((H-gen ₁)) ∷ ((H-gen ₁)) ∷ ((H-gen ₁)) ∷ xs) = just (xs , at-head (PB.axiom order-H))
-  step-order (((H-gen ₁) ↥) ∷ ((H-gen ₁) ↥) ∷ ((H-gen ₁) ↥) ∷ ((H-gen ₁) ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ order-H)))
-  step-order (((H-gen ₁) ↥ ↥) ∷ ((H-gen ₁) ↥ ↥) ∷ ((H-gen ₁) ↥ ↥) ∷ ((H-gen ₁) ↥ ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ (cong↑ order-H))))
-  -- step-order ((CZ-gen) ∷ (CZ-gen) ∷ (CZ-gen) ∷ xs) = just (xs , at-head (PB.axiom order-CZ))
+  -- step-order (((gate₁ (S-gen ₁))) ∷ ((gate₁ (S-gen ₁))) ∷ ((gate₁ (S-gen ₁))) ∷ xs) = just (xs , at-head (PB.axiom (srel order-S)))
+  -- step-order (((gate₁ (S-gen ₁)) ↥) ∷ ((gate₁ (S-gen ₁)) ↥) ∷ ((gate₁ (S-gen ₁)) ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ order-S)))
+  -- step-order (((gate₁ (S-gen ₁)) ↥ ↥) ∷ ((gate₁ (S-gen ₁)) ↥ ↥) ∷ ((gate₁ (S-gen ₁)) ↥ ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ (cong↑ order-S))))
+  step-order (((gate₁ (H-gen ₁))) ∷ ((gate₁ (H-gen ₁))) ∷ ((gate₁ (H-gen ₁))) ∷ ((gate₁ (H-gen ₁))) ∷ xs) = just (xs , at-head (PB.axiom (srel order-H)))
+  step-order (((gate₁ (H-gen ₁)) ↥) ∷ ((gate₁ (H-gen ₁)) ↥) ∷ ((gate₁ (H-gen ₁)) ↥) ∷ ((gate₁ (H-gen ₁)) ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ (srel order-H))))
+  step-order (((gate₁ (H-gen ₁)) ↥ ↥) ∷ ((gate₁ (H-gen ₁)) ↥ ↥) ∷ ((gate₁ (H-gen ₁)) ↥ ↥) ∷ ((gate₁ (H-gen ₁)) ↥ ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ (cong↑ (srel order-H)))))
+  -- step-order ((CZ-gen) ∷ (CZ-gen) ∷ (CZ-gen) ∷ xs) = just (xs , at-head (PB.axiom (srel order-CZ)))
   -- step-order ((CZ-gen ↥) ∷ (CZ-gen ↥) ∷ (CZ-gen ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ order-CZ)))
 
-  step-order (((S-gen ₁)) ∷ ((H-gen ₁)) ∷ ((S-gen ₁)) ∷ ((H-gen ₁)) ∷ ((S-gen ₁)) ∷ ((H-gen ₁)) ∷ xs) = just (xs , at-head (PB.axiom order-SH))
-  step-order (((S-gen ₁) ↥) ∷ ((H-gen ₁) ↥) ∷ ((S-gen ₁) ↥) ∷ ((H-gen ₁) ↥) ∷ ((S-gen ₁) ↥) ∷ ((H-gen ₁) ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ order-SH)))
-  step-order (((S-gen ₁) ↥ ↥) ∷ ((H-gen ₁) ↥ ↥) ∷ ((S-gen ₁) ↥ ↥) ∷ ((H-gen ₁) ↥ ↥) ∷ ((S-gen ₁) ↥ ↥) ∷ ((H-gen ₁) ↥ ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ (cong↑ order-SH))))
+  step-order (((gate₁ (S-gen ₁))) ∷ ((gate₁ (H-gen ₁))) ∷ ((gate₁ (S-gen ₁))) ∷ ((gate₁ (H-gen ₁))) ∷ ((gate₁ (S-gen ₁))) ∷ ((gate₁ (H-gen ₁))) ∷ xs) = just (xs , at-head (PB.axiom (srel order-SH)))
+  step-order (((gate₁ (S-gen ₁)) ↥) ∷ ((gate₁ (H-gen ₁)) ↥) ∷ ((gate₁ (S-gen ₁)) ↥) ∷ ((gate₁ (H-gen ₁)) ↥) ∷ ((gate₁ (S-gen ₁)) ↥) ∷ ((gate₁ (H-gen ₁)) ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ (srel order-SH))))
+  step-order (((gate₁ (S-gen ₁)) ↥ ↥) ∷ ((gate₁ (H-gen ₁)) ↥ ↥) ∷ ((gate₁ (S-gen ₁)) ↥ ↥) ∷ ((gate₁ (H-gen ₁)) ↥ ↥) ∷ ((gate₁ (S-gen ₁)) ↥ ↥) ∷ ((gate₁ (H-gen ₁)) ↥ ↥) ∷ xs) = just (xs , at-head (PB.axiom (cong↑ (cong↑ (srel order-SH)))))
 
 --  step-order (CZ-gen ∷ (H-gen ₁) ∷ (H-gen ₁) ↥ ∷ CZ-gen ∷ (H-gen ₁) ∷ (H-gen ₁) ↥ ∷ CZ-gen ∷ (H-gen ₁) ∷ (H-gen ₁) ↥ ∷ CZ-gen ∷ (H-gen ₁) ∷ (H-gen ₁) ↥ ∷ CZ-gen ∷ (H-gen ₁) ∷ (H-gen ₁) ↥ ∷ CZ-gen ∷ (H-gen ₁) ∷ (H-gen ₁) ↥ ∷ xs) = just (xs , at-head (PB.axiom lemma-order-Ex))
 --  step-order (CZ-gen ↥ ∷ (H-gen ₁) ↥ ∷ (H-gen ₁) ↥ ↥ ∷ CZ-gen ↥ ∷ (H-gen ₁) ↥ ∷ (H-gen ₁) ↥ ↥ ∷ CZ-gen ↥ ∷ (H-gen ₁) ↥ ∷ (H-gen ₁) ↥ ↥ ∷ CZ-gen ↥ ∷ (H-gen ₁) ↥ ∷ (H-gen ₁) ↥ ↥ ∷ CZ-gen ↥ ∷ (H-gen ₁) ↥ ∷ (H-gen ₁) ↥ ↥ ∷ CZ-gen ↥ ∷ (H-gen ₁) ↥ ∷ (H-gen ₁) ↥ ↥ ∷ xs) = just (xs , at-head (PB.axiom (cong↑ order-Ex)))
@@ -1554,13 +1542,13 @@ module Lemmas0 (n : ℕ) where
 
   lemma-S^k+l : ∀ k l -> S^ k • S^ l ≈ S^ (k + l)
   lemma-S^k+l k l = begin
-    S^ k • S^ l ≈⟨ cong (axiom (derived-S k)) (axiom (derived-S l)) ⟩
+    S^ k • S^ l ≈⟨ cong (axiom (srel (derived-S k))) (axiom (srel (derived-S l))) ⟩
     S ^ toℕ k • S ^ toℕ l ≈⟨ sym (^-+ S (toℕ k) (toℕ l)) ⟩
     S ^ (toℕ k Nat.+ toℕ l) ≡⟨ Eq.cong (S ^_) (m≡m%n+[m/n]*n k+l p) ⟩
     S ^ (k+l Nat.% p Nat.+ (k+l Nat./ p) Nat.* p) ≈⟨ ^-+ S (k+l Nat.% p) (((k+l Nat./ p) Nat.* p)) ⟩
     S ^ (k+l Nat.% p) • S ^ ((k+l Nat./ p) Nat.* p) ≈⟨ cong (refl' (Eq.cong (S ^_) (Eq.sym (toℕ-fromℕ< (m%n<n k+l p))))) (refl' (Eq.cong (S ^_) (NP.*-comm ((k+l Nat./ p)) p))) ⟩
-    S ^ toℕ (fromℕ< (m%n<n k+l p)) • S ^ (p Nat.* (k+l Nat./ p) ) ≈⟨ cong (sym (axiom (derived-S (k + l)))) (sym (^^ S p (k+l Nat./ p))) ⟩
-    S^ (k + l) • (S ^ p) ^ (k+l Nat./ p) ≈⟨ cright (^-cong (S ^ p) ε (k+l Nat./ p) (axiom order-S)) ⟩
+    S ^ toℕ (fromℕ< (m%n<n k+l p)) • S ^ (p Nat.* (k+l Nat./ p) ) ≈⟨ cong (sym (axiom (srel (derived-S (k + l))))) (sym (^^ S p (k+l Nat./ p))) ⟩
+    S^ (k + l) • (S ^ p) ^ (k+l Nat./ p) ≈⟨ cright (^-cong (S ^ p) ε (k+l Nat./ p) (axiom (srel order-S))) ⟩
     S^ (k + l) • ε ^ (k+l Nat./ p) ≈⟨ cright ε^k=ε (k+l Nat./ p) ⟩
     S^ (k + l) • ε ≈⟨ right-unit ⟩
     S^ (k + l) ∎
@@ -1574,7 +1562,7 @@ module Lemmas0 (n : ℕ) where
   lemma-S^k-k k = begin
     S^ k • S^ (- k) ≈⟨ lemma-S^k+l k (- k) ⟩
     S^ (k + - k) ≡⟨ Eq.cong S^ (+-inverseʳ k) ⟩
-    S^ ₀ ≈⟨ axiom (derived-S ₀) ⟩
+    S^ ₀ ≈⟨ axiom (srel (derived-S ₀)) ⟩
     ε ∎
     where
     open SR word-setoid
@@ -1582,9 +1570,9 @@ module Lemmas0 (n : ℕ) where
 
   lemma-S^-k+k : ∀ k -> S^ (- k) • S^ k ≈ ε
   lemma-S^-k+k k = begin
-    S^ (- k) • S^ k ≈⟨ cong (axiom (derived-S (- k))) (axiom (derived-S k)) ⟩
+    S^ (- k) • S^ k ≈⟨ cong (axiom (srel (derived-S (- k)))) (axiom (srel (derived-S k))) ⟩
     S ^ toℕ (- k) • S ^ toℕ k ≈⟨ comm⇒pow-comm (toℕ (- k)) (toℕ ( k)) refl ⟩
-    S ^ toℕ k • S ^ toℕ (- k) ≈⟨ cong (sym (axiom (derived-S k))) (sym (axiom (derived-S (- k)))) ⟩
+    S ^ toℕ k • S ^ toℕ (- k) ≈⟨ cong (sym (axiom (srel (derived-S k)))) (sym (axiom (srel (derived-S (- k))))) ⟩
     S^ k • S^ (- k) ≈⟨ lemma-S^k-k k ⟩
     ε ∎
     where
@@ -1597,7 +1585,7 @@ module Lemmas0 (n : ℕ) where
   
   lemma-M1 : ε ≈ M (₁ , λ ())
   lemma-M1 = begin
-    ε ≈⟨ _≈_.sym (axiom order-SH) ⟩
+    ε ≈⟨ _≈_.sym (axiom (srel order-SH)) ⟩
     (S • H) ^ 3 ≈⟨ by-assoc auto ⟩
     S • H • S • H • S • H ≡⟨ auto ⟩
     S^ ₁ • H • S^ ₁ • H • S^ ₁ • H ≡⟨ Eq.cong (\ xx -> S^ ₁ • H • S^ xx • H • S^ ₁ • H) (Eq.sym inv-₁) ⟩
@@ -1610,7 +1598,7 @@ module Lemmas0 (n : ℕ) where
   lemma-[H⁻¹S⁻¹]^3 : (H⁻¹ • S⁻¹) ^ 3 ≈ ε
   lemma-[H⁻¹S⁻¹]^3 = begin
     (H⁻¹ • S⁻¹) ^ 3 ≈⟨ _≈_.sym assoc ⟩
-    (H⁻¹ • S⁻¹) WB.^' 3 ≈⟨ ⁻¹-cong (axiom order-SH) ⟩
+    (H⁻¹ • S⁻¹) WB.^' 3 ≈⟨ ⁻¹-cong (axiom (srel order-SH)) ⟩
     winv ε ≈⟨ refl ⟩
     ε ∎
     where
@@ -1633,7 +1621,7 @@ module Lemmas0 (n : ℕ) where
   lemma-S⁻¹ = begin
     S⁻¹ ≈⟨ refl ⟩
     S ^ p-1 ≡⟨ Eq.cong (S ^_) (Eq.sym lemma-toℕ-ₚ₋₁) ⟩
-    S ^ toℕ ₚ₋₁ ≈⟨ sym (axiom (derived-S ₚ₋₁)) ⟩
+    S ^ toℕ ₚ₋₁ ≈⟨ sym (axiom (srel (derived-S ₚ₋₁))) ⟩
     S^ ₚ₋₁ ∎
     where
     open SR word-setoid
@@ -1644,8 +1632,8 @@ module Lemmas0 (n : ℕ) where
     HH • (S⁻¹ • H⁻¹) ^ 3 ≈⟨ (cright ^-cong (S⁻¹ • H⁻¹) (S⁻¹ • H • HH) 3 refl) ⟩
     HH • (S⁻¹ • H • HH) ^ 3 ≈⟨ refl ⟩
     HH • (S⁻¹ • H • HH) • (S⁻¹ • H • HH) • (S⁻¹ • H • HH) ≈⟨ (cright cong (cright sym assoc) (by-passoc (□ ^ 3 • □ ^ 3) (□ ^ 2 • □ ^ 2 • □ ^ 2) auto)) ⟩
-    HH • (S⁻¹ • HH • H) • (S⁻¹ • H) • (HH • S⁻¹) • H • HH ≈⟨ (cright cong (sym assoc) (cright cleft comm⇒pow-comm 1 p-1 (trans assoc (axiom comm-HHS)))) ⟩
-    HH • ((S⁻¹ • HH) • H) • (S⁻¹ • H) • (S⁻¹ • HH) • H • HH ≈⟨ (cright cong (cleft comm⇒pow-comm p-1 1 (sym (trans assoc (axiom comm-HHS)))) (cright assoc)) ⟩
+    HH • (S⁻¹ • HH • H) • (S⁻¹ • H) • (HH • S⁻¹) • H • HH ≈⟨ (cright cong (sym assoc) (cright cleft comm⇒pow-comm 1 p-1 (trans assoc (axiom (srel comm-HHS))))) ⟩
+    HH • ((S⁻¹ • HH) • H) • (S⁻¹ • H) • (S⁻¹ • HH) • H • HH ≈⟨ (cright cong (cleft comm⇒pow-comm p-1 1 (sym (trans assoc (axiom (srel comm-HHS))))) (cright assoc)) ⟩
     HH • ((HH • S⁻¹) • H) • (S⁻¹ • H) • S⁻¹ • HH • H • HH ≈⟨ (cright cright cright cright general-powers0 100 auto) ⟩
     HH • ((HH • S⁻¹) • H) • (S⁻¹ • H) • S⁻¹ • H ≈⟨ by-passoc (□ • (□ ^ 2 • □) • □) (□ ^ 2 • □ ^ 2 • □) auto ⟩
     (HH • HH) • (S⁻¹ • H) • (S⁻¹ • H) • S⁻¹ • H ≈⟨ (cleft general-powers0 100 auto) ⟩
@@ -1676,7 +1664,7 @@ module Lemmas0 (n : ℕ) where
     H • S^ x • H ≈⟨ (cright cright sym right-unit) ⟩
     H • S^ x • H • ε ≈⟨ cright cright cright sym (lemma-S^k-k x⁻¹) ⟩
     H • S^ x • H • S^ x⁻¹ • S^ -x⁻¹ ≈⟨ cright cright cright cright sym left-unit ⟩
-    H • S^ x • H • S^ x⁻¹ • ε • S^ -x⁻¹ ≈⟨ cright cright cright cright sym (cong (axiom order-H) refl) ⟩
+    H • S^ x • H • S^ x⁻¹ • ε • S^ -x⁻¹ ≈⟨ cright cright cright cright sym (cong (axiom (srel order-H)) refl) ⟩
     H • S^ x • H • S^ x⁻¹ • H ^ 4 • S^ -x⁻¹ ≈⟨ (cright cright cright cright by-passoc (□ ^ 4 • □) (□ • □ ^ 3 • □) auto) ⟩
     H • S^ x • H • S^ x⁻¹ • H • H ^ 3 • S^ -x⁻¹ ∎
     where
@@ -1689,8 +1677,8 @@ module Lemmas0 (n : ℕ) where
   derived-5 x k@0 nz = trans right-unit (sym left-unit)
   derived-5 x k@1 nz = begin  
     M (x , nz) • S ^ k ≈⟨ refl ⟩
-    M (x , nz) • S ≈⟨ axiom (semi-MS (x , nz)) ⟩
-    S^ (x * x) • M (x , nz) ≈⟨ cong (axiom (derived-S (x * x))) refl ⟩
+    M (x , nz) • S ≈⟨ axiom (srel (semi-MS (x , nz))) ⟩
+    S^ (x * x) • M (x , nz) ≈⟨ cong (axiom (srel (derived-S (x * x)))) refl ⟩
     S ^ toℕ (x * x) • M (x , nz) ≈⟨ (cleft refl' (Eq.cong (S ^_) (Eq.sym ( NP.*-identityˡ (toℕ (x * x)))))) ⟩
     S ^ (k Nat.* toℕ (x * x)) • M (x , nz) ∎
     where
@@ -1715,7 +1703,7 @@ module Lemmas0 (n : ℕ) where
     S ^ (k Nat.% p Nat.+ k Nat./ p Nat.* p) ≈⟨ ^-+ S (k Nat.% p) (k Nat./ p Nat.* p) ⟩
     S ^ (k Nat.% p) • S ^ (k Nat./ p Nat.* p) ≈⟨ (cright refl' (Eq.cong (S ^_) (NP.*-comm (k Nat./ p) p))) ⟩
     S ^ (k Nat.% p) • S ^ (p Nat.* (k Nat./ p)) ≈⟨ sym (cright ^^ S p (k Nat./ p)) ⟩
-    S ^ (k Nat.% p) • (S ^ p) ^ (k Nat./ p) ≈⟨ (cright ^-cong (S ^ p) ε (k Nat./ p) (axiom order-S)) ⟩
+    S ^ (k Nat.% p) • (S ^ p) ^ (k Nat./ p) ≈⟨ (cright ^-cong (S ^ p) ε (k Nat./ p) (axiom (srel order-S))) ⟩
     S ^ (k Nat.% p) • (ε) ^ (k Nat./ p) ≈⟨ (cright ε^k=ε (k Nat./ p)) ⟩
     S ^ (k Nat.% p) • ε ≈⟨ right-unit ⟩
     S ^ (k % p) ∎
@@ -1725,11 +1713,11 @@ module Lemmas0 (n : ℕ) where
   lemma-MS^k : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     M (x , nz) • S^ k ≈ S^ (k * (x * x)) • M (x , nz)
   lemma-MS^k x k nz = begin 
-    M (x , nz) • S^ k ≈⟨ cong refl (axiom (derived-S k)) ⟩
+    M (x , nz) • S^ k ≈⟨ cong refl (axiom (srel (derived-S k))) ⟩
     M (x , nz) • S ^ toℕ k ≈⟨ derived-5 x (toℕ k) nz ⟩
     S ^ (toℕ k Nat.* toℕ (x * x)) • M (x , nz) ≈⟨ (cleft lemma-S^k-% (toℕ k Nat.* toℕ (x * x))) ⟩
     S ^ ((toℕ k Nat.* toℕ (x * x)) % p) • M (x , nz) ≈⟨ (cleft refl' (Eq.cong (S ^_) (lemma-toℕ-% k (x * x)))) ⟩
-    S ^ toℕ (k * (x * x)) • M (x , nz) ≈⟨ cong (sym (axiom (derived-S (k * (x * x))))) refl ⟩
+    S ^ toℕ (k * (x * x)) • M (x , nz) ≈⟨ cong (sym (axiom (srel (derived-S (k * (x * x)))))) refl ⟩
     S^ (k * (x * x)) • M (x , nz) ∎
     where
     open SR word-setoid
@@ -1742,7 +1730,7 @@ module Lemmas0 (n : ℕ) where
     S ^ toℕ (fromℕ< (m%n<n (toℕ a Nat.* toℕ b) p)) ≡⟨ Eq.cong (S ^_) (toℕ-fromℕ< (m%n<n (toℕ a Nat.* toℕ b) p)) ⟩
     S ^ ((toℕ a Nat.* toℕ b) % p) ≈⟨ sym right-unit ⟩
     S ^ (ab Nat.% p) • ε ≈⟨ (cright sym (ε^k=ε (ab Nat./ p))) ⟩
-    S ^ (ab Nat.% p) • (ε) ^ (ab Nat./ p) ≈⟨ (cright sym (^-cong (S ^ p) ε (ab Nat./ p) (axiom order-S))) ⟩
+    S ^ (ab Nat.% p) • (ε) ^ (ab Nat./ p) ≈⟨ (cright sym (^-cong (S ^ p) ε (ab Nat./ p) (axiom (srel order-S)))) ⟩
     S ^ (ab Nat.% p) • (S ^ p) ^ (ab Nat./ p) ≈⟨ (cright ^^ S p (ab Nat./ p)) ⟩
     S ^ (ab Nat.% p) • S ^ (p Nat.* (ab Nat./ p)) ≈⟨ (cright refl' (Eq.cong (S ^_) (NP.*-comm p (ab Nat./ p)))) ⟩
     S ^ (ab Nat.% p) • S ^ (ab Nat./ p Nat.* p) ≈⟨ sym (^-+ S (ab Nat.% p) (ab Nat./ p Nat.* p)) ⟩
@@ -1763,16 +1751,16 @@ module Lemmas0 (n : ℕ) where
     M (y , nzy) • (H • S^ x • H • S^ x⁻¹ • H) • H ^ 3 • S^ -x⁻¹ ≈⟨ (cright cleft sym left-unit) ⟩
     M (y , nzy) • (ε • H • S^ x • H • S^ x⁻¹ • H) • H ^ 3 • S^ -x⁻¹ ≈⟨ (cright cleft cleft sym (lemma-S^-k+k x⁻¹)) ⟩
     M (y , nzy) • ((S^ -x⁻¹ • S^ x⁻¹) • H • S^ x • H • S^ x⁻¹ • H) • H ^ 3 • S^ -x⁻¹ ≈⟨ by-passoc (□ • (□ ^ 2 • □ ^ 5) • □) (□ ^ 2 • □ ^ 6 • □) auto ⟩
-    (M (y , nzy) • S^ -x⁻¹) • (S^ x⁻¹ • H • S^ x • H • S^ x⁻¹ • H) • H ^ 3 • S^ -x⁻¹ ≈⟨ (cleft (cright axiom (derived-S -x⁻¹))) ⟩
+    (M (y , nzy) • S^ -x⁻¹) • (S^ x⁻¹ • H • S^ x • H • S^ x⁻¹ • H) • H ^ 3 • S^ -x⁻¹ ≈⟨ (cleft (cright axiom (srel (derived-S -x⁻¹)))) ⟩
     (M (y , nzy) • S ^ toℕ -x⁻¹) • (S^ x⁻¹ • H • S^ x • H • S^ x⁻¹ • H) • H ^ 3 • S^ -x⁻¹ ≈⟨ (cleft derived-5 y (toℕ -x⁻¹) nzy) ⟩
     (S ^ (toℕ -x⁻¹ Nat.* toℕ (y * y)) • M (y , nzy)) • (S^ x⁻¹ • H • S^ x • H • S^ x⁻¹ • H) • H ^ 3 • S^ -x⁻¹ ≈⟨ by-passoc (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
     S ^ (toℕ -x⁻¹ Nat.* toℕ (y * y)) • (M (y , nzy) • (S^ x⁻¹ • H • S^ x • H • S^ x⁻¹ • H)) • H ^ 3 • S^ -x⁻¹ ≈⟨ (cright cleft (cright (cright cright cleft refl' (Eq.cong S^ (Eq.sym (inv-involutive ((x , nz)))))))) ⟩
-    S ^ (toℕ -x⁻¹ Nat.* toℕ (y * y)) • (M (y , nzy) • M ((x , nz) ⁻¹)) • H ^ 3 • S^ -x⁻¹ ≈⟨ (cright cleft axiom (M-mul (y , nzy) ((x , nz) ⁻¹))) ⟩
+    S ^ (toℕ -x⁻¹ Nat.* toℕ (y * y)) • (M (y , nzy) • M ((x , nz) ⁻¹)) • H ^ 3 • S^ -x⁻¹ ≈⟨ (cright cleft axiom (srel (M-mul (y , nzy) ((x , nz) ⁻¹)))) ⟩
     S ^ (toℕ -x⁻¹ Nat.* toℕ (y * y)) • M ((y , nzy) *' ((x , nz) ⁻¹)) • H ^ 3 • S^ -x⁻¹ ≈⟨ (cright by-passoc (□ • □ ^ 3 • □) (□ ^ 3 • □ ^ 2) auto) ⟩
     S ^ (toℕ -x⁻¹ Nat.* toℕ (y * y)) • (M ((y , nzy) *' ((x , nz) ⁻¹)) • HH) • H • S^ -x⁻¹ ≈⟨ (cright cleft (cright lemma-HH-M-1)) ⟩
-    S ^ (toℕ -x⁻¹ Nat.* toℕ (y * y)) • (M ((y , nzy) *' ((x , nz) ⁻¹)) • M -'₁) • H • S^ -x⁻¹ ≈⟨ (cright cleft axiom (M-mul (((y , nzy) *' ((x , nz) ⁻¹))) -'₁)) ⟩
+    S ^ (toℕ -x⁻¹ Nat.* toℕ (y * y)) • (M ((y , nzy) *' ((x , nz) ⁻¹)) • M -'₁) • H • S^ -x⁻¹ ≈⟨ (cright cleft axiom (srel (M-mul ((y , nzy) *' ((x , nz) ⁻¹)) -'₁))) ⟩
     S ^ (toℕ -x⁻¹ Nat.* toℕ (y * y)) • (M (((y , nzy) *' ((x , nz) ⁻¹)) *' -'₁) ) • H • S^ -x⁻¹ ≈⟨ (cleft sym (lemma-S^ab -x⁻¹ (y * y))) ⟩
-    S ^ toℕ (-x⁻¹ * (y * y)) • M -y/x' • (H • S^ -x⁻¹) ≈⟨ cong (sym (axiom (derived-S (-x⁻¹ * (y * y))))) refl ⟩
+    S ^ toℕ (-x⁻¹ * (y * y)) • M -y/x' • (H • S^ -x⁻¹) ≈⟨ cong (sym (axiom (srel (derived-S (-x⁻¹ * (y * y)))))) refl ⟩
     S^ (-x⁻¹ * (y * y)) • M -y/x' • (H • S^ -x⁻¹) ∎
     where
     open SR word-setoid
@@ -1799,7 +1787,7 @@ module Lemmas0 (n : ℕ) where
     S^ -x⁻¹ • (M (-' (x' ⁻¹)) • H • ε) • H • S^ x • H ≈⟨ (cright cleft (cright right-unit)) ⟩
     S^ -x⁻¹ • (M (-' (x' ⁻¹)) • H) • H • S^ x • H ≈⟨ (cright by-assoc auto) ⟩
     S^ -x⁻¹ • (M (-' (x' ⁻¹)) • H • H) • S^ x • H ≈⟨ (cright cleft cright lemma-HH-M-1) ⟩
-    S^ -x⁻¹ • (M (-' (x' ⁻¹)) • M -'₁) • S^ x • H ≈⟨ (cright cleft axiom (M-mul (-' (x' ⁻¹)) -'₁)) ⟩
+    S^ -x⁻¹ • (M (-' (x' ⁻¹)) • M -'₁) • S^ x • H ≈⟨ (cright cleft axiom (srel (M-mul (-' (x' ⁻¹)) -'₁))) ⟩
     S^ -x⁻¹ • M (-' (x' ⁻¹) *' -'₁) • S^ x • H ≈⟨ (cright cleft aux-MM ((-' (x' ⁻¹) *' -'₁) .proj₂) ((x' ⁻¹) .proj₂) aux-a2) ⟩
     S^ -x⁻¹ • M (x' ⁻¹) • S^ x • H ≈⟨ sym (cong refl assoc) ⟩
     S^ -x⁻¹ • (M (x' ⁻¹) • S^ x) • H ≈⟨ (cright cleft lemma-MS^k x⁻¹ x ((x' ⁻¹) .proj₂)) ⟩
@@ -1864,7 +1852,7 @@ module Lemmas-1 (n : ℕ) where
     CZ ^ (k Nat.% p Nat.+ k Nat./ p Nat.* p) ≈⟨ ^-+ CZ (k Nat.% p) (k Nat./ p Nat.* p) ⟩
     CZ ^ (k Nat.% p) • CZ ^ (k Nat./ p Nat.* p) ≈⟨ (cright refl' (Eq.cong (CZ ^_) (NP.*-comm (k Nat./ p) p))) ⟩
     CZ ^ (k Nat.% p) • CZ ^ (p Nat.* (k Nat./ p)) ≈⟨ sym (cright ^^ CZ p (k Nat./ p)) ⟩
-    CZ ^ (k Nat.% p) • (CZ ^ p) ^ (k Nat./ p) ≈⟨ (cright ^-cong (CZ ^ p) ε (k Nat./ p) (axiom order-CZ)) ⟩
+    CZ ^ (k Nat.% p) • (CZ ^ p) ^ (k Nat./ p) ≈⟨ (cright ^-cong (CZ ^ p) ε (k Nat./ p) (axiom (srel order-CZ))) ⟩
     CZ ^ (k Nat.% p) • (ε) ^ (k Nat./ p) ≈⟨ (cright ε^k=ε (k Nat./ p)) ⟩
     CZ ^ (k Nat.% p) • ε ≈⟨ right-unit ⟩
     CZ ^ (k % p) ∎

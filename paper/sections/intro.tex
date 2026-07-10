@@ -124,12 +124,16 @@ Everything stated as a theorem in this paper typechecks under
 \texttt{--safe}: there are no postulates, no unfinished holes, and no
 appeals to classical axioms anywhere in the development described here.  The
 library also contains a substantially larger work-in-progress layer ---
-about 68\,000 further lines --- formalizing symplectic groups
+roughly 67\,600 further lines --- formalizing symplectic groups
 $Sp(2n,\mathbb{Z}_p)$ and their Clifford-circuit presentations in all odd
 prime dimensions, the formal counterpart of the qutrit rule set
 of~\cite{li2025qutrit} and its odd-prime generalization; we report on its
 design but, in keeping with the rule above, claim no unfinished theorem from
-it (\S\ref{sec:conclusion}).
+it (\S\ref{sec:conclusion}).  Its first fully checked fruit is already in
+the catalogue: the $n$-qubit Clifford relation set, assembled for all $n$ as
+a group extension of the symplectic relations by the verified Pauli
+presentation, with an explicit three-line cocycle recording that
+$S^2 = Z$ (\S\ref{sec:cliffordqubit}).
 
 \subsection{A first taste: permutations}\label{sec:taste}
 

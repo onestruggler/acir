@@ -18,6 +18,26 @@ GREEN (verified, citable as theorems):
 - Presentation/Groups/SnD.agda (old wreath-as-NF file; EXIT=0)
 - Examples/Groups/Cyclic/Theorems.agda, Examples/Groups/Trivial.agda (in root closures)
 
+STATUS FLIPS (2026-07-10, after user's Clifford-pres addition):
+- Examples/Groups/Pauli/Semantics.agda — NOW GREEN (user fixed the metas).
+- Examples/Groups/Clifford/Qubit/Presentation.agda — NEW, GREEN (143 lines):
+  Clifford-pres n = extension-presentation (Γ-H ⊕^ n) (n QRel,_===_) conj corr
+  — the n-qubit Clifford relation set as a group extension (Selinger
+  1310.6813 structure: 1 → phaseless Pauli → Clifford → Sp(2n,2) → 1);
+  conj = vecToWord ∘ act1 ∘ genToVec (word-valued symplectic action);
+  corr = p=2 cocycle: order-S ↦ Z₀, cong↑ r ↦ shiftPauli (corr r), _ ↦ ε
+  (S² = Z is the only non-lifting relator; global phases die in phaseless
+  Pauli; odd p splits → semidirect). Verified numerically per file header.
+  This is a DEFINITION (relation set), not yet an IsPresentationOf theorem.
+- Examples/Groups/Symplectic/{Symplectic-Derived,Action}.agda — green (in
+  Clifford-pres closure). Symplectic gens: H-gen : ℤ₄ →, S-gen : ℤₚ →,
+  CZ-gen : ℤₚ → (parameterized powers); QRel: order-S (S^p), order-H (H⁴),
+  order-SH ((SH)³), comm-HHS, order-CZ, comm-CZ-S↓/↑, far-comm, cong↑.
+- Examples/Groups/Symplectic/NF-Inj.agda — STILL RED (exit 42): the
+  staircase normal-form tower remains WIP.
+- Stats deltas: verified examples 32→35 files / 8,372→8,962 lines; WIP
+  118/67,606; Zp (3/2,942) counted in the green closure; totals 191/89,355.
+
 RED / WIP (do NOT claim; may mention as work-in-progress):
 - Examples/Construct/DirectProduct/S3xC5/Presentation.agda — ParseError 47.40
   (presentation upgrade commented out; sub-presentation WIP)

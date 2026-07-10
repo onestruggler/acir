@@ -193,7 +193,7 @@ lemma-act-cong-ax : ∀ {n} w v -> let open PB (n QRel,_===_) in
   ----------------------------
   ∀ c -> act {n} w c ≡ act v c
 
-lemma-act-cong-ax {n} w v order-S (x@(a , b) ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel order-S) (x@(a , b) ∷ t) = begin
   act (S ^ p) ((a , b) ∷ t) ≡⟨ lemma-act-Sᵏ p ((a , b) ∷ t) ⟩
   act (S^ (fromℕ< (m%n<n p p))) ((a , b) ∷ t) ≡⟨ Eq.cong (\ xx -> act (S^ xx) ((a , b) ∷ t)) (FP.fromℕ<-cong (p Nat.% p) 0 (n%n≡0 p) (m%n<n p p) NP.0<1+n) ⟩
   act (S^ ₀) ((a , b) ∷ t) ≡⟨ auto ⟩
@@ -202,7 +202,7 @@ lemma-act-cong-ax {n} w v order-S (x@(a , b) ∷ t) = begin
   where
   open ≡-Reasoning
 
-lemma-act-cong-ax {n} w v order-H (x@(a , b) ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel order-H) (x@(a , b) ∷ t) = begin
   act (H • H • H • H) ((a , b) ∷ t) ≡⟨ auto ⟩
   act H (act H (act H (act H ((a , b) ∷ t)))) ≡⟨ auto ⟩
   act H (act H (act H (((- b , a) ∷ t)))) ≡⟨ auto ⟩
@@ -214,7 +214,7 @@ lemma-act-cong-ax {n} w v order-H (x@(a , b) ∷ t) = begin
   where
   open ≡-Reasoning
 
-lemma-act-cong-ax {n} w v order-SH (x@(a , b) ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel order-SH) (x@(a , b) ∷ t) = begin
   act ((S • H) • (S • H) • S • H) ((a , b) ∷ t) ≡⟨ auto ⟩
   act (S • H) (act (S • H) (act (S • H) ((a , b) ∷ t))) ≡⟨ auto ⟩
   act (S • H) (act (S • H) (((- b , a + - b * ₁) ∷ t))) ≡⟨ Eq.cong (\ xx -> act (S • H) (act (S • H) (((- b , a + xx) ∷ t)))) (*-identityʳ (- b)) ⟩
@@ -248,7 +248,7 @@ lemma-act-cong-ax {n} w v order-SH (x@(a , b) ∷ t) = begin
     b ∎
 
 
-lemma-act-cong-ax {n} w v comm-HHS (x@(a , b) ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel comm-HHS) (x@(a , b) ∷ t) = begin
   act (H • H • S) ((a , b) ∷ t) ≡⟨ auto ⟩
   act H (act H (act S ((a , b) ∷ t))) ≡⟨ auto ⟩
   act H (act H (((a , b + a * ₁) ∷ t))) ≡⟨ Eq.cong (\ xx -> act H (act H (((a , b + xx) ∷ t)))) (*-identityʳ a) ⟩
@@ -263,7 +263,7 @@ lemma-act-cong-ax {n} w v comm-HHS (x@(a , b) ∷ t) = begin
 
 
 
-lemma-act-cong-ax {n} w v (M-mul z y) (x@(a , b) ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel (M-mul z y)) (x@(a , b) ∷ t) = begin
   act (M z • M y) ((a , b) ∷ t) ≡⟨ Eq.cong (act (M z)) (lemma-M a b t y) ⟩
   act (M z) ((a * y⁻¹ , b * y') ∷ t) ≡⟨ lemma-M (a * y⁻¹) (b * y') t z ⟩
   ((a * y⁻¹ * z⁻¹ , b * y' * z') ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> (xx , yy) ∷ t) (*-assoc a y⁻¹ z⁻¹) (*-assoc b y' z') ⟩
@@ -276,7 +276,7 @@ lemma-act-cong-ax {n} w v (M-mul z y) (x@(a , b) ∷ t) = begin
   z⁻¹ = (z ⁻¹) .proj₁
   y' = y .proj₁
   y⁻¹ = (y ⁻¹) .proj₁
-lemma-act-cong-ax {n} w v (semi-MS y) (x@(a , b) ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel (semi-MS y)) (x@(a , b) ∷ t) = begin
   act (M y • S) ((a , b) ∷ t) ≡⟨ auto ⟩
   act (M y) ((a , b + a * ₁) ∷ t) ≡⟨ Eq.cong (\ xx -> act (M y) ((a , b + xx) ∷ t)) (*-identityʳ a) ⟩
   act (M y) ((a , b + a) ∷ t) ≡⟨ lemma-M a (b + a) t y ⟩
@@ -298,7 +298,7 @@ lemma-act-cong-ax {n} w v (semi-MS y) (x@(a , b) ∷ t) = begin
     (b * y') + a * y' ≡⟨ Eq.sym (*-distribʳ-+ y' b a) ⟩
     (b + a) * y' ∎
   
-lemma-act-cong-ax {n} w v (semi-M↑CZ y) (x@(a , b) ∷ (a' , b') ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel (semi-M↑CZ y)) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act ((M y ↑) • CZ) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   act (M y ↑) ((a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> act (M y ↑) ((a , b + xx) ∷ (a' , b' + yy) ∷ t))  (*-identityʳ a') (*-identityʳ a) ⟩
   act (M y ↑) ((a , b + a') ∷ (a' , b' + a) ∷ t) ≡⟨ Eq.cong (\ xx -> ((a , b + a') ∷ xx)) (lemma-M a' (b' + a) t y) ⟩
@@ -313,7 +313,7 @@ lemma-act-cong-ax {n} w v (semi-M↑CZ y) (x@(a , b) ∷ (a' , b') ∷ t) = begi
   aux : (a' * y⁻¹) * y' ≡ a'
   aux = Eq.trans (Eq.trans (*-assoc a' y⁻¹ y') (Eq.cong (a' *_) (lemma-⁻¹ˡ y' {{nztoℕ {y = y'} {neq0 = y .proj₂}}}))) (*-identityʳ a')
   
-lemma-act-cong-ax {n} w v (semi-M↓CZ y) (x@(a , b) ∷ (a' , b') ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel (semi-M↓CZ y)) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act ((M y ↓) • CZ) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   act (M y ↓) ((a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> act (M y ↓) ((a , b + xx) ∷ (a' , b' + yy) ∷ t))  (*-identityʳ a') (*-identityʳ a) ⟩
   act (M y ↓) ((a , b + a') ∷ (a' , b' + a) ∷ t) ≡⟨ (lemma-M a (b + a') ((a' , b' + a) ∷ t) y) ⟩
@@ -329,7 +329,7 @@ lemma-act-cong-ax {n} w v (semi-M↓CZ y) (x@(a , b) ∷ (a' , b') ∷ t) = begi
   aux = Eq.trans (Eq.trans (*-assoc a y⁻¹ y') (Eq.cong (a *_) (lemma-⁻¹ˡ y' {{nztoℕ {y = y'} {neq0 = y .proj₂}}}))) (*-identityʳ a)
 
 
-lemma-act-cong-ax {n} w v order-CZ (x@(a , b) ∷ (a' , b') ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel order-CZ) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act (CZ ^ p) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ lemma-act-CZᵏ p ((a , b) ∷ (a' , b') ∷ t) ⟩
   act (CZ^ (fromℕ< (m%n<n p p))) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ Eq.cong (\ xx -> act (CZ^ xx) ((a , b) ∷ (a' , b') ∷ t)) (FP.fromℕ<-cong (p Nat.% p) 0 (n%n≡0 p) (m%n<n p p) NP.0<1+n) ⟩
   act (CZ^ ₀) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
@@ -339,7 +339,7 @@ lemma-act-cong-ax {n} w v order-CZ (x@(a , b) ∷ (a' , b') ∷ t) = begin
   open ≡-Reasoning
 
 
-lemma-act-cong-ax {n} w v comm-CZ-S↓ (x@(a , b) ∷ (a' , b') ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel comm-CZ-S↓) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act (CZ • (S ↓)) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   act (CZ) ((a , b + a * ₁) ∷ (a' , b') ∷ t) ≡⟨ Eq.cong (\ xx -> act (CZ) ((a , b + xx) ∷ (a' , b') ∷ t)) (*-identityʳ a) ⟩
   act (CZ) ((a , b + a) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
@@ -358,7 +358,7 @@ lemma-act-cong-ax {n} w v comm-CZ-S↓ (x@(a , b) ∷ (a' , b') ∷ t) = begin
     b + (a' + a) ≡⟨ Eq.sym (+-assoc b a' a) ⟩
     (b + a') + a ≡⟨ Eq.cong ((b + a') +_) (Eq.sym (*-identityʳ a)) ⟩
     (b + a') + a * ₁ ∎
-lemma-act-cong-ax {n} w v comm-CZ-S↑ (x@(a , b) ∷ (a' , b') ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel comm-CZ-S↑) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act (CZ • (S ↑)) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   act (CZ) ((a , b) ∷ (a' , b' + a' * ₁) ∷ t) ≡⟨ Eq.cong (\ xx -> act (CZ) ((a , b) ∷ (a' , b' + xx) ∷ t)) (*-identityʳ a') ⟩
   act (CZ) ((a , b) ∷ (a' , b' + a') ∷ t) ≡⟨ auto ⟩
@@ -380,7 +380,7 @@ lemma-act-cong-ax {n} w v comm-CZ-S↑ (x@(a , b) ∷ (a' , b') ∷ t) = begin
 
 
 
-lemma-act-cong-ax {n} w v selinger-c10 (x@(a , b) ∷ (a' , b') ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel selinger-c10) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act (CZ • (H ↑) • CZ) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   act (CZ • (H ↑)) ((a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> act (CZ • (H ↑)) ((a , b + xx) ∷ (a' , b' + yy) ∷ t)) (*-identityʳ a') (*-identityʳ a) ⟩
   act (CZ • (H ↑)) ((a , b + a') ∷ (a' , b' + a) ∷ t) ≡⟨ auto ⟩
@@ -420,7 +420,7 @@ lemma-act-cong-ax {n} w v selinger-c10 (x@(a , b) ∷ (a' , b') ∷ t) = begin
 
 
 
-lemma-act-cong-ax {n} w v selinger-c11 (x@(a , b) ∷ (a' , b') ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel selinger-c11) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act (CZ • (H ↓) • CZ) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   act (CZ • (H ↓)) ((a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> act (CZ • (H ↓)) ((a , b + xx) ∷ (a' , b' + yy) ∷ t)) (*-identityʳ a') (*-identityʳ a) ⟩
   act (CZ • (H ↓)) ((a , b + a') ∷ (a' , b' + a) ∷ t) ≡⟨ auto ⟩
@@ -466,7 +466,7 @@ lemma-act-cong-ax {n} w v selinger-c11 (x@(a , b) ∷ (a' , b') ∷ t) = begin
     (b' + a' * - ₁) + - (b + a * - ₁) ≡⟨ aux4ag b' a' b a ⟩
     (b' + a) + - (b + a') * ₁ ∎
 
-lemma-act-cong-ax {n} w v selinger-c12 (x@(a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel selinger-c12) (x@(a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
   act ((CZ ↑) • CZ) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ≡⟨ auto ⟩
   act (CZ ↑) ((a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ (a'' , b'') ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> act (CZ ↑) ((a , b + xx) ∷ (a' , b' + yy) ∷ (a'' , b'') ∷ t)) (*-identityʳ a') (*-identityʳ a) ⟩
   act (CZ ↑) ((a , b + a') ∷ (a' , b' + a) ∷ (a'' , b'') ∷ t) ≡⟨ auto ⟩
@@ -487,7 +487,7 @@ lemma-act-cong-ax {n} w v selinger-c12 (x@(a , b) ∷ (a' , b') ∷ (a'' , b'') 
     (b' + a'') + a * ₁ ∎
 
     
-lemma-act-cong-ax {n} w v selinger-c13 ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel selinger-c13) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
   act ((⊤⊥ ↑) • (CZ ↓) • (⊥⊤ ↑)) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ≡⟨ cong (act ((⊤⊥ ↑) • (CZ ↓))) (Eq.trans (lemma-act-↑ ⊥⊤ (a , b) ((a' , b') ∷ (a'' , b'') ∷ t)) (Eq.cong ((a , b) ∷_) (lemma-act-⊥⊤ a' b' a'' b'' t))) ⟩
   act ((⊤⊥ ↑) • (CZ ↓)) ((a , b) ∷ (a'' , - b' + b'') ∷ (- a'' + - a' , - b') ∷ t) ≡⟨ auto ⟩
   act ((⊤⊥ ↑)) ((a , b + a'' * ₁) ∷ (a'' , (- b' + b'') + a * ₁) ∷ (- a'' + - a' , - b') ∷ t) ≡⟨ Eq.trans (lemma-act-↑ ⊤⊥ (a , b + a'' * ₁) ((a'' , (- b' + b'') + a * ₁) ∷ (- a'' + - a' , - b') ∷ t)) (cong ((a , b + a'' * ₁) ∷_) (lemma-act-⊤⊥ a'' ((- b' + b'') + a * ₁) (- a'' + - a') (- b') t)) ⟩
@@ -522,7 +522,7 @@ lemma-act-cong-ax {n} w v selinger-c13 ((a , b) ∷ (a' , b') ∷ (a'' , b'') �
     b + a'' * ₁ ∎
 
     
-lemma-act-cong-ax {n} w v selinger-c14 ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel selinger-c14) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
   act (((⊤⊥ ↑) • (CZ ↓)) • ((⊤⊥ ↑) • (CZ ↓)) • (⊤⊥ ↑) • (CZ ↓)) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ≡⟨ cong (act (((⊤⊥ ↑) • (CZ ↓)) • ((⊤⊥ ↑) • (CZ ↓)))) (lemma-act-⊤⊥↑CZ↓ a b a' b' a'' b'' t) ⟩
   act (((⊤⊥ ↑) • (CZ ↓)) • ((⊤⊥ ↑) • (CZ ↓))) ((a , b + a') ∷ (- a' + - a'' , - b'') ∷ (a' , - b'' + (b' + a)) ∷ t) ≡⟨ cong (act (⊤⊥ ↑ • CZ ↓)) (lemma-act-⊤⊥↑CZ↓ a (b + a') (- a' + - a'') (- b'') a' (- b'' + (b' + a)) t) ⟩
   act (((⊤⊥ ↑) • (CZ ↓))) ((a , (b + a') + (- a' + - a'')) ∷ (- (- a' + - a'') + - a' , - (- b'' + (b' + a))) ∷ (- a' + - a'' , - (- b'' + (b' + a)) + (- b'' + a)) ∷ t) ≡⟨ lemma-act-⊤⊥↑CZ↓ a ((b + a') + (- a' + - a'')) (- (- a' + - a'') + - a') (- (- b'' + (b' + a))) (- a' + - a'') (- (- b'' + (b' + a)) + (- b'' + a)) t ⟩
@@ -587,7 +587,7 @@ lemma-act-cong-ax {n} w v selinger-c14 ((a , b) ∷ (a' , b') ∷ (a'' , b'') �
     b ∎
 
     
-lemma-act-cong-ax {n} w v selinger-c15 ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
+lemma-act-cong-ax {n} w v (srel selinger-c15) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
   act (((⊥⊤ ↓) • (CZ ↑)) • ((⊥⊤ ↓) • (CZ ↑)) • (⊥⊤ ↓) • (CZ ↑)) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ≡⟨ cong (act (((⊥⊤ ↓) • (CZ ↑)) • ((⊥⊤ ↓) • (CZ ↑)))) (lemma-act-⊥⊤↓CZ↑ a b a' b' a'' b'' t) ⟩
   act (((⊥⊤ ↓) • (CZ ↑)) • ((⊥⊤ ↓) • (CZ ↑))) ((a' , - b + (b' + a'')) ∷ (- a' + - a , - b) ∷ (a'' , b'' + a') ∷ t) ≡⟨ cong (act (((⊥⊤ ↓) • (CZ ↑)))) (lemma-act-⊥⊤↓CZ↑ a' (- b + (b' + a'')) (- a' + - a) (- b) a'' (b'' + a') t) ⟩
   act (((⊥⊤ ↓) • (CZ ↑))) ((- a' + - a , - (- b + (b' + a'')) + (- b + a'')) ∷ (- (- a' + - a) + - a' , - (- b + (b' + a''))) ∷ (a'' , (b'' + a') + (- a' + - a)) ∷ t) ≡⟨ lemma-act-⊥⊤↓CZ↑ (- a' + - a) (- (- b + (b' + a'')) + (- b + a'')) (- (- a' + - a) + - a') (- (- b + (b' + a''))) a'' ((b'' + a') + (- a' + - a)) t ⟩
@@ -611,14 +611,17 @@ lemma-act-cong-ax {n} w v selinger-c15 ((a , b) ∷ (a' , b') ∷ (a'' , b'') �
     open ≡-Reasoning
 
 
-lemma-act-cong-ax {n} w v comm-H ((a , b) ∷ (a' , b') ∷ t) = auto
-lemma-act-cong-ax {n} w v comm-S ((a , b) ∷ (a' , b') ∷ t) = auto
-lemma-act-cong-ax {n} w v comm-CZ ((a , b) ∷ (a' , b') ∷ t) = auto
+lemma-act-cong-ax {n} w v (comm₁ (H-gen ₀) g) ((a , b) ∷ ps) = auto
+lemma-act-cong-ax {n} w v (comm₁ (H-gen ₁) g) ((a , b) ∷ ps) = auto
+lemma-act-cong-ax {n} w v (comm₁ (H-gen ₂) g) ((a , b) ∷ ps) = auto
+lemma-act-cong-ax {n} w v (comm₁ (H-gen ₃) g) ((a , b) ∷ ps) = auto
+lemma-act-cong-ax {n} w v (comm₁ (S-gen k) g) ((a , b) ∷ ps) = auto
+lemma-act-cong-ax {n} w v (comm₂ (CZ-gen k) g) ((a , b) ∷ (a' , b') ∷ ps) = auto
 
 
 
-lemma-act-cong-ax {n} w v (derived-S k) (x@(a , b) ∷ t) = begin
-  act [ S-gen k ]ʷ ((a , b) ∷ t) ≡⟨ Eq.cong (\ xx ->  act (S^ xx) ((a , b) ∷ t)) (Eq.sym aux) ⟩
+lemma-act-cong-ax {n} w v (srel (derived-S k)) (x@(a , b) ∷ t) = begin
+  act [ gate₁ (S-gen k) ]ʷ ((a , b) ∷ t) ≡⟨ Eq.cong (\ xx ->  act (S^ xx) ((a , b) ∷ t)) (Eq.sym aux) ⟩
   act (S^ k') ((a , b) ∷ t) ≡⟨ Eq.sym (lemma-act-Sᵏ (toℕ k) (((a , b) ∷ t))) ⟩
   act (S ^ toℕ k) ((a , b) ∷ t) ∎
   where
@@ -629,18 +632,18 @@ lemma-act-cong-ax {n} w v (derived-S k) (x@(a , b) ∷ t) = begin
     fromℕ< (m%n<n (toℕ k) p) ≡⟨ fromℕ<-cong ((toℕ k) Nat.% p) (toℕ k) (m<n⇒m%n≡m (toℕ<n k)) (m%n<n (toℕ k) p) (toℕ<n k) ⟩
     fromℕ< (toℕ<n k) ≡⟨ fromℕ<-toℕ k (toℕ<n k) ⟩
     k ∎
-lemma-act-cong-ax {n} w v (derived-H ₀) (x@(a , b) ∷ t) = auto
-lemma-act-cong-ax {n} w v (derived-H ₁) (x@(a , b) ∷ t) = auto
-lemma-act-cong-ax {n} w v (derived-H ₂) (x@(a , b) ∷ t) = auto
-lemma-act-cong-ax {n} w v (derived-H ₃) (x@(a , b) ∷ t) = begin
-  act [ H-gen ₃ ]ʷ ((a , b) ∷ t) ≡⟨ auto ⟩
+lemma-act-cong-ax {n} w v (srel (derived-H ₀)) (x@(a , b) ∷ t) = auto
+lemma-act-cong-ax {n} w v (srel (derived-H ₁)) (x@(a , b) ∷ t) = auto
+lemma-act-cong-ax {n} w v (srel (derived-H ₂)) (x@(a , b) ∷ t) = auto
+lemma-act-cong-ax {n} w v (srel (derived-H ₃)) (x@(a , b) ∷ t) = begin
+  act [ gate₁ (H-gen ₃) ]ʷ ((a , b) ∷ t) ≡⟨ auto ⟩
   ((b , - a) ∷ t) ≡⟨ Eq.cong (\ xx -> ((xx , - a) ∷ t)) (Eq.sym (-‿involutive b)) ⟩
   ((- - b , - a) ∷ t) ≡⟨ auto ⟩
   act (H) ((- a , - b) ∷ t) ≡⟨ auto ⟩
   act (H • H • H) ((a , b) ∷ t) ∎
   where open ≡-Reasoning
-lemma-act-cong-ax {n} w v (derived-CZ k) (x@(a , b) ∷ t) = begin
-  act [ CZ-gen k ]ʷ ((a , b) ∷ t) ≡⟨ Eq.cong (\ xx ->  act (CZ^ xx) ((a , b) ∷ t)) (Eq.sym aux) ⟩
+lemma-act-cong-ax {n} w v (srel (derived-CZ k)) (x@(a , b) ∷ t) = begin
+  act [ gate₂ (CZ-gen k) ]ʷ ((a , b) ∷ t) ≡⟨ Eq.cong (\ xx ->  act (CZ^ xx) ((a , b) ∷ t)) (Eq.sym aux) ⟩
   act (CZ^ k') ((a , b) ∷ t) ≡⟨ Eq.sym (lemma-act-CZᵏ (toℕ k) (((a , b) ∷ t))) ⟩
   act (CZ ^ toℕ k) ((a , b) ∷ t) ∎
   where

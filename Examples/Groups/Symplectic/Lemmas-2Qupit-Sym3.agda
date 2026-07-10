@@ -279,7 +279,7 @@ lemma-semi-M↓-XC {n} m = begin
   open Symplectic-GroupLike
   open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
 
---open import Examples.Groups.Symplectic.Boxes p-2 p-prime
+--open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime
 open import Examples.Groups.Symplectic.LM-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Pushing.DH p-2 p-prime
 open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
