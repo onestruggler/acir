@@ -137,13 +137,12 @@ jth-babox {₁₊ j} {₁₊ n} (s≤s j≤n) v a = jth-babox j≤n v a ↑
 [_]ˡ' : ∀ {n} → L' n → Word (Gen n)
 [_]ˡ' {0} l = ε
 [_]ˡ' {1} l = [ l ]ᵃ
-[_]ˡ' {2} l = ε
-[_]ˡ' {₃₊ n} (vb , a) = [ vb ]ᵛᵇ • [ a ]ᵃ
+[_]ˡ' {₂₊ n} (vb , a) = [ vb ]ᵛᵇ • [ a ]ᵃ
 
 [_]ˡᵐ : ∀ {n} → LM n → Word (Gen n)
 [_]ˡᵐ {0} _ = ε
-[_]ˡᵐ {1} lm1 = ⟦ lm1 ⟧₁
-[_]ˡᵐ {2} lm2 = ⟦ lm2 ⟧₂
+[_]ˡᵐ {1} (m , l) = {!!}
+[_]ˡᵐ {2} lm2 = {!!}
 [_]ˡᵐ {₃₊ n} (inj₁ (m , l)) = [ m ]ᵐ • [ l ]ˡ'
 [_]ˡᵐ {₃₊ n} (inj₂ (d , lm)) = [ d ]ᵈ • [ lm ]ˡᵐ ↑
 
@@ -151,6 +150,7 @@ jth-babox {₁₊ j} {₁₊ n} (s≤s j≤n) v a = jth-babox j≤n v a ↑
 [_] {0} tt = ε
 [_] {₁₊ n} (nf , lm) = [ nf ] ↑ • [ lm ]ˡᵐ
 
+{-
 
 data BoxType : Set where
   ᵃ : BoxType
@@ -336,3 +336,4 @@ lemma-dbox-IZ {n} (c@(₁₊ c') , d) t = begin
   aux2 = (Eq.cong (\ (xx : ℤ ₚ) -> (xx , ₀) ∷ pZ ∷ t) aux )
   
 
+-}

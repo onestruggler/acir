@@ -55,7 +55,6 @@ L (₂₊ n) = Σ[ (j , le) ∈ LE (₁₊ n) ] Lj ((₁₊ n) ∸ j)
 L' : ℕ → Set
 L' 0 = ⊤
 L' 1 = A
-L' 2 = ⊤
 L' (₂₊ n) = Vec B (₁₊ n) × A
 
 M : ℕ → Set
@@ -65,11 +64,9 @@ M (₂₊ n) = E × Vec D (₁₊ n)
 
 LM : (n : ℕ) → Set
 LM 0 = ⊤
-LM 1 = NF1
-LM 2 = Cosets2
+LM 1 = M 1 × L' 1
+LM 2 = M 2 × (L' 2 ⊎ L' 1)
 LM (₃₊ n) = M (₃₊ n) × L' (₃₊ n) ⊎ D × LM (₂₊ n) 
-
-
 
 NF : (n : ℕ) → Set
 NF 0 = ⊤

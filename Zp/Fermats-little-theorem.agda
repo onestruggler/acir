@@ -341,8 +341,8 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
 
   lemma-wact-inv-⇑ : ∀ {n} w →
     let
-    open Group-Lemmas _ _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ)
-    open Group-Lemmas _ _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ')
+    open Group-Lemmas _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ)
+    open Group-Lemmas _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ')
     open PB (rel (₁₊ n)) renaming (_≈_ to _≈ʷ_)
     in
     [ w ⇑] ⁻¹ʷ' ≈ʷ [ w ⁻¹ʷ ⇑]
@@ -353,33 +353,35 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
     [ w₁ ⇑] ⁻¹ʷ' • [ w ⇑] ⁻¹ʷ' ≈⟨ PB.cong (lemma-wact-inv-⇑ w₁) (lemma-wact-inv-⇑ w) ⟩
     [ (w • w₁) ⁻¹ʷ ⇑] ∎
     where
-    open Group-Lemmas _ _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ) 
-    open Group-Lemmas _ _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ')
+    open Group-Lemmas _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ) 
+    open Group-Lemmas _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ')
     open PB (rel (₁₊ n)) renaming (_≈_ to _≈ʷ_)
     open PP (rel (₁₊ n))
     open SR word-setoid
 
 
-  lemma-wact-inv : ∀ {n} w x → let open Group-Lemmas _ _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ) in
+  lemma-wact-inv : ∀ {n} w x → let open Group-Lemmas _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ) in
     wact' {n} w ⟨$⟩ʳ (wact' (w ⁻¹ʷ) ⟨$⟩ʳ x) ≡ x
   lemma-wact-inv {n} w x = begin
     wact' w ⟨$⟩ʳ (wact' (w ⁻¹ʷ) ⟨$⟩ʳ x) ≡⟨ auto ⟩
-    wact' (w • w ⁻¹ʷ) ⟨$⟩ʳ x ≡⟨ lemma-wact-cong _ _ x (lemma-right-inverse {w})⟩
+    wact' (w • w ⁻¹ʷ) ⟨$⟩ʳ x ≡⟨ lemma-wact-cong _ _ x (GLw.inverseʳ {w})⟩
     wact' ε ⟨$⟩ʳ x ≡⟨ auto ⟩
     x ∎
     where
-    open Group-Lemmas _ _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ) 
+    module GLw = Group-Lemmas _ (grouplike {n})
+    open GLw using () renaming (_⁻¹ to _⁻¹ʷ)
     open ≡-Reasoning
 
-  lemma-wact-invˡ : ∀ {n} w x → let open Group-Lemmas _ _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ) in
+  lemma-wact-invˡ : ∀ {n} w x → let open Group-Lemmas _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ) in
     wact' {n}  (w ⁻¹ʷ) ⟨$⟩ʳ (wact' w ⟨$⟩ʳ x) ≡ x
   lemma-wact-invˡ {n} w x = begin
     wact'  (w ⁻¹ʷ) ⟨$⟩ʳ (wact' w ⟨$⟩ʳ x) ≡⟨ auto ⟩
-    wact' (w ⁻¹ʷ • w) ⟨$⟩ʳ x ≡⟨ lemma-wact-cong _ _ x (lemma-left-inverse {w})⟩
+    wact' (w ⁻¹ʷ • w) ⟨$⟩ʳ x ≡⟨ lemma-wact-cong _ _ x (GLw.inverseˡ {w})⟩
     wact' ε ⟨$⟩ʳ x ≡⟨ auto ⟩
     x ∎
     where
-    open Group-Lemmas _ _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ) 
+    module GLw = Group-Lemmas _ (grouplike {n})
+    open GLw using () renaming (_⁻¹ to _⁻¹ʷ)
     open ≡-Reasoning
 
 
@@ -395,14 +397,14 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
     open ≡-Reasoning
 
 
-  lemma-wact₀' : ∀ {n} c → let open Group-Lemmas _ _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ) in
+  lemma-wact₀' : ∀ {n} c → let open Group-Lemmas _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ) in
     wact' {n} ([ c-of-fin c ] ⁻¹ʷ) ⟨$⟩ʳ ₀ ≡ c
   lemma-wact₀' {n} c = begin
     wact' {n} ([ c-of-fin c ] ⁻¹ʷ) ⟨$⟩ʳ ₀ ≡⟨ cong (wact' {n} ([ c-of-fin c ] ⁻¹ʷ) ⟨$⟩ʳ_) (sym (lemma-wact₀ c)) ⟩
     wact' {n} ([ c-of-fin c ] ⁻¹ʷ) ⟨$⟩ʳ (wact' {n} [ c-of-fin c ] ⟨$⟩ʳ c) ≡⟨ lemma-wact-invˡ [ c-of-fin c ] c ⟩
     c ∎
     where
-    open Group-Lemmas _ _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ) 
+    open Group-Lemmas _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ) 
     open ≡-Reasoning
 
   wact : Word (X n) → Fin (₁₊ n) → Fin (₁₊ n)
@@ -418,14 +420,14 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
   decompose' {₀} p = tt
   decompose' {₁₊ n} p = let x = p ⟨$⟩ʳ ₀ in decompose' (F.remove ₀ (wact' ([ c-of-fin x ] ⁻¹ʷ) ∘ₚ p)) , c-of-fin x
     where
-    open Group-Lemmas _ _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
+    open Group-Lemmas _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
 
 
   eval : ∀ {n} → NF n → Permutation′ (₁₊ n)
   eval {₀} tt = F.id
   eval {₁₊ n} (nf' , c) = (lift₀ (eval nf')) ∘ₚ wact' ([ c ] ⁻¹ʷ)
     where
-    open Group-Lemmas _ _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
+    open Group-Lemmas _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
 
   eval' : ∀ {n} → NF n → Permutation′ (₁₊ n)
   eval' {n} nf = wact' (inv-f n nf)
@@ -433,7 +435,7 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
   eval'' : ∀ {n} → NF n → Permutation′ (₁₊ n)
   eval'' {n} nf = wact' ((inv-f n nf) ⁻¹ʷ)
     where
-    open Group-Lemmas _ _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ)
+    open Group-Lemmas _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ)
 
 
   lift0 : ∀ {n} → (Fin n → Fin n) → Fin (₁₊ n) → Fin (₁₊ n)
@@ -464,13 +466,13 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
     p ⟨$⟩ʳ i ∎
     where
     open ≡-Reasoning
-    open Group-Lemmas _ _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
+    open Group-Lemmas _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
 
 
   eval-decompose''-aux' : ∀ {n} nf →
     let
-    open Group-Lemmas _ _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
-    open Group-Lemmas _ _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ')
+    open Group-Lemmas _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
+    open Group-Lemmas _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ')
     in
     wact' ([ inv-f n nf ⇑] ⁻¹ʷ) ≈ lift₀ (eval nf)
   eval-decompose''-aux' {₀} tt ₀ = auto
@@ -482,8 +484,8 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
     lift₀ (lift₀ (eval nf) ∘ₚ wact' ([ c ] ⁻¹ʷ')) ⟨$⟩ʳ ₀ ∎
     where
     open ≡-Reasoning
-    open Group-Lemmas _ _ (grouplike {₂₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
-    open Group-Lemmas _ _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ')
+    open Group-Lemmas _ (grouplike {₂₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
+    open Group-Lemmas _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ')
 
   eval-decompose''-aux' {₁₊ n} nf'@(nf , c) (₁₊ i) = begin
     wact' ([ inv-f (₁₊ n) nf' ⇑] ⁻¹ʷ) ⟨$⟩ʳ (₁₊ i) ≡⟨ lemma-wact-cong ([ inv-f (₁₊ n) nf' ⇑] ⁻¹ʷ) [ (inv-f (₁₊ n) nf') ⁻¹ʷ' ⇑] (₁₊ i) (lemma-wact-inv-⇑ (inv-f (₁₊ n) nf')) ⟩
@@ -497,8 +499,8 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
     lift₀ (lift₀ (eval nf) ∘ₚ wact' ([ c ] ⁻¹ʷ')) ⟨$⟩ʳ (₁₊ i) ∎
     where
     open ≡-Reasoning
-    open Group-Lemmas _ _ (grouplike {₂₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
-    open Group-Lemmas _ _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ')
+    open Group-Lemmas _ (grouplike {₂₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
+    open Group-Lemmas _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ')
 
 
 
@@ -518,8 +520,8 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
     p ⟨$⟩ʳ i ∎
     where
     open ≡-Reasoning
-    open Group-Lemmas _ _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
-    open Group-Lemmas _ _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ')
+    open Group-Lemmas _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
+    open Group-Lemmas _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ')
     aux : wact' ([ inv-f n (decompose (F.remove ₀ (p ∘ₚ wact' [ c-of-fin (p ⟨$⟩ʳ ₀) ]))) ⇑]  ⁻¹ʷ) ≈ lift₀ (eval (decompose (F.remove ₀ ( p ∘ₚ wact' [ c-of-fin (p ⟨$⟩ʳ ₀) ]))))
     aux = eval-decompose''-aux' ((decompose (F.remove ₀ (p ∘ₚ wact' [ c-of-fin (p ⟨$⟩ʳ ₀) ]))))
 
@@ -535,7 +537,7 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
     p ⟨$⟩ʳ i ∎
     where
     open ≡-Reasoning
-    open Group-Lemmas _ _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
+    open Group-Lemmas _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
 -}
 
   product∘p=product'-ax : ∀ {n} w (v : Vector (ℤ ₚ) (₁₊ n)) → let p = act' {n} w in product {₁₊ n} (v ∘ (p ⟨$⟩ʳ_)) ≡ product v
@@ -579,7 +581,7 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
     product {n} (v ∘ (eval'' (decompose p) ⟨$⟩ʳ_)) ≡⟨ product∘p=product' (((inv-f n' ((decompose p))) ⁻¹ʷ)) v ⟩
     product {n} v ∎
     where
-    open Group-Lemmas _ _ (grouplike {n'}) renaming (_⁻¹ to _⁻¹ʷ)
+    open Group-Lemmas _ (grouplike {n'}) renaming (_⁻¹ to _⁻¹ʷ)
     open ≡-Reasoning
     pwe : Pointwise _≡_  (v ∘ (p ⟨$⟩ʳ_)) (v ∘ (eval'' (decompose p) ⟨$⟩ʳ_))
     pwe i rewrite eval-decompose'' p i = auto
@@ -592,8 +594,8 @@ module PrimeModulus' (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
   fix0⇒∃w {n} p eq = ((inv-f n nf) ⁻¹ʷ') , claim
     where
     open ≡-Reasoning
-    open Group-Lemmas _ _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
-    open Group-Lemmas _ _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ')
+    open Group-Lemmas _ (grouplike {₁₊ n}) renaming (_⁻¹ to _⁻¹ʷ)
+    open Group-Lemmas _ (grouplike {n}) renaming (_⁻¹ to _⁻¹ʷ')
     nfc = decompose p
     nf = nfc .proj₁
     claim : p ≈ wact' [ (inv-f n nf) ⁻¹ʷ' ⇑]
