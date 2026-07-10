@@ -46,7 +46,8 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡�
 
 open import Examples.Groups.Clifford.Qubit.SignedPauli
   using (Φ ; P4Carrier ; β ; γ ; ι ; ι-+ ; _·_ ; +-swap-middle)
-open import Examples.Groups.Clifford.Qubit.CliffordAction using (δ ; incl ; cact1)
+open import Examples.Groups.Clifford.Qubit.CliffordAction using (δ ; incl ; cact1 ; cact)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
 private
   variable
@@ -461,3 +462,14 @@ cact1-homo g (s , P) (s' , P') =
     (sign-lemma s s' (δ g P) (δ g P') (γ P P') (δ g (P +ₚ P'))
                 (γ (act1 g P) (act1 g P')) (δ-coc g P P'))
     (act1-+ g P P')
+
+------------------------------------------------------------------------
+-- cact of a whole Clifford word is a homomorphism of P4
+
+cact-homo : (w : Word (Gen n)) (x y : P4Carrier n) →
+            cact w (x · y) ≡ cact w x · cact w y
+cact-homo [ g ]ʷ  x y = cact1-homo g x y
+cact-homo ε       x y = Eq.refl
+cact-homo (w • v) x y =
+  Eq.trans (Eq.cong (cact w) (cact-homo v x y))
+           (cact-homo w (cact v x) (cact v y))
