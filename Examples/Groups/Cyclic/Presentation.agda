@@ -35,8 +35,11 @@ open import Data.Fin.Permutation
         ; inverseˡ ; inverseʳ ; lift₀ ; lift₀-cong ; remove ; lift₀-remove)
 open import Data.Product using (_,_)
 
-open import Data.Nat using (zero ; suc)
+open import Data.Nat using (ℕ ; zero ; suc ; _+_)
+import Data.Nat.Properties as NP
 open import Data.Fin using (zero ; suc)
+
+import Normalization.NormalForm.Propositional as NFBase
 
 import Examples.Groups.Cyclic.Uniqueness as TU
 import Examples.Groups.Cyclic.Normalization as SN
@@ -73,3 +76,44 @@ presentation {n} = isPresentationOf subpresentation claim
 
   claim : Surjective _≈_ (Group._≈_ ((Cn-group (₁₊ n)))) (⟦_⟧ {(₁₊ n)})
   claim y = SN.[ y ] , λ {z} z≈y → Eq.trans (sound z≈y) (nf-sound n y)
+
+------------------------------------------------------------------------
+-- Order 0: the presented monoid is ℕ
+--
+-- Every presentation in this library is a monoid presentation.  At
+-- order 0 the relation T ^' 0 = ε is the trivial ε = ε, so the
+-- presented monoid is the free monoid on the single generator: (ℕ, +,
+-- 0), with the generator denoting 1.  Read as a group presentation the
+-- same relation set presents the cyclic group of order 0, which is ℤ
+-- by definition — but grouplikeness fails at order 0 (T has no left
+-- inverse), so monoidPresentation⇒presentation does not apply, and the
+-- monoid-level statement below is the sharpest one available.  This is
+-- the smallest example separating monoid presentations from group
+-- presentations.
+
+private
+  module MS₀ = MonoidSem (0 Cn,_===_) (Eq.setoid (SN.NF 0)) NP.+-0-monoid (λ _ → 1)
+
+-- The denotation of Tᵏ in (ℕ, +, 0) is k itself.
+sem-ℕ : ∀ k → MS₀.⟦_⟧ (T ^' k) ≡ k
+sem-ℕ zero          = refl
+sem-ℕ (suc zero)    = refl
+sem-ℕ (suc (suc k)) = trans (cong (_+ 1) (sem-ℕ (suc k))) (NP.+-comm (suc k) 1)
+
+-- Distinct normal forms (word counts) have distinct denotations.
+unique-nf₀ :
+  NFBase.UniqueNormalForm (0 Cn,_===_) (SN.NF 0) (Eq.setoid ℕ) MS₀.⟦_⟧ (SN.nfp' 0)
+unique-nf₀ = record
+  { unique = λ {u} {v} eq → trans (sym (sem-ℕ u)) (trans eq (sem-ℕ v)) }
+
+private
+  module Sub₀ = MS₀.GetSubPresentation (λ { order → refl }) (SN.nfp' 0) unique-nf₀
+
+monoid-presentation : (0 Cn,_===_) IsMonoidPresentationOf NP.+-0-monoid
+monoid-presentation = isMonoidPresentationOf Sub₀.monoidSubPres claim
+  where
+  open PB (0 Cn,_===_)
+  open import Function.Definitions using (Surjective)
+
+  claim : Surjective _≈_ (_≡_ {A = ℕ}) MS₀.⟦_⟧
+  claim k = SN.[_] {0} k , λ {z} hyp → Eq.trans (Sub₀.fʷ-cong hyp) (sem-ℕ k)

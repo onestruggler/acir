@@ -3,15 +3,12 @@
 \subsection{Mechanization statistics}
 
 Table~\ref{tab:stats} gives the shape of the development (line counts of
-Agda source, July 2026).  Three observations.  The reusable core ---
+Agda source, July 2026).  Two observations.  The reusable core ---
 words, presentations, normal forms, the engine, the constructions, the
-circuit layer --- is under ten thousand lines; the verified examples add
+circuit layer --- is roughly ten thousand lines; the verified examples add
 about the same again, and the largest single objects are the two
-amalgamation case studies.  Second, the work-in-progress symplectic layer
-dwarfs the verified library --- a realistic picture of what a
-multi-qudit Clifford completeness formalization costs, and a measure of
-how much the engine is about to be exercised.  Third, everything verified
-is uniformly \texttt{--safe} (and the core \texttt{--cubical-compatible}),
+amalgamation case studies.  Second, everything is uniformly
+\texttt{--safe} (and the core \texttt{--cubical-compatible}),
 with zero postulates; the only axioms in the development are the
 \aid{axiom} constructors of the relation sets themselves.
 
@@ -26,18 +23,16 @@ comments; \texttt{wc -l}).}
 Layer & Files & Lines \\
 \midrule
 \texttt{Word}, \texttt{Notations} & 3 & 308 \\
-\texttt{Presentation} (core, constructions, solvers) & 18 & 6\,912 \\
-\texttt{Normalization} (NF zoo, R--S engine, towers) & 6 & 1\,639 \\
+\texttt{Presentation} (core, constructions, solvers) & 18 & 7\,028 \\
+\texttt{Normalization} (NF zoo, R--S engine, towers) & 6 & 1\,728 \\
 \texttt{Circuit} & 1 & 121 \\
 \texttt{ForStdlib} (staged stdlib additions) & 7 & 865 \\
-$\mathbb{Z}_p$ modular arithmetic (support) & 3 & 2\,942 \\
+$\mathbb{Z}_p$ modular arithmetic (support) & 3 & 2\,944 \\
 \midrule
-Verified examples (\S\ref{sec:examples}) & 35 & 8\,962 \\
-\quad of which qutrit Clifford+$T$ / $U_3(\mathbb{Z}[\frac12,i])$ & 2 & 4\,264 \\
+Verified examples (\S\ref{sec:examples}) & 36 & 9\,236 \\
+\quad of which qutrit Clifford+$T$ / $U_3(\mathbb{Z}[\frac12,i])$ & 2 & 4\,262 \\
 \midrule
-Work in progress: symplectic, odd-prime Clifford & 118 & 67\,606 \\
-\midrule
-Total & 191 & 89\,355 \\
+Total & 74 & 22\,230 \\
 \bottomrule
 \end{tabular}
 \end{table}

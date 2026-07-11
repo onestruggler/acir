@@ -14,7 +14,9 @@ open import Relation.Binary.PropositionalEquality as Eq
 open import Function.Definitions using (Congruent ; Injective)
 open import Relation.Binary.Bundles using (Setoid)
 
-open import Presentation.Definitions using (_IsPresentationOf_)
+import Data.Nat.Properties as NP
+open import Presentation.Definitions
+  using (_IsPresentationOf_ ; _IsMonoidPresentationOf_)
 
 module Examples.Groups.Cyclic.Theorems where
 
@@ -60,3 +62,10 @@ completeness = LC.completeness
 
 presentation : ∀ {n} → (₁₊ n Cn,_===_) IsPresentationOf (Cn-group (₁₊ n))
 presentation = LP.presentation
+
+-- At order 0 the relation T ^' 0 = ε is trivial, so the presented
+-- *monoid* is the free monoid on one generator, (ℕ, +, 0).  The cyclic
+-- group of order 0 is ℤ, but grouplikeness fails at order 0, so the
+-- monoid presentation is the sharpest statement available there.
+monoid-presentation : (0 Cn,_===_) IsMonoidPresentationOf NP.+-0-monoid
+monoid-presentation = LP.monoid-presentation

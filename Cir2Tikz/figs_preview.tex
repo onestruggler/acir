@@ -1,0 +1,15 @@
+\documentclass[border=6pt]{standalone}
+\usepackage{tikzit}
+\input{circuits.tikzstyles}
+\definecolor{normGreen}{RGB}{214, 243, 221}
+\definecolor{normRed}{RGB}{249, 196, 196}
+\usepackage{amsmath}
+\begin{document}
+\begin{tabular}{l}
+\textbf{Fig 1:}\ \tikzfig{fig1_sigma}\\[10pt]
+\textbf{Fig 2a comm2 (staggered):}\ \tikzfig{fig2_comm2}\\[10pt]
+\textbf{Fig 2a comm2 (flat):}\ \tikzfig{fig2_comm2_flat}\\[10pt]
+\textbf{Fig 2b yang-baxter:}\ \tikzfig{fig2_yb}\\[10pt]
+\textbf{Fig 3 staircase:}\ \tikzfig{fig3_staircase}\\
+\end{tabular}
+\end{document}

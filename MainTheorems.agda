@@ -20,7 +20,9 @@ module MainTheorems where
 open import Algebra.Bundles using (Group ; Monoid)
 open import Algebra.Morphism.Structures using (module MonoidMorphisms)
 open import Data.Empty using (⊥)
+open import Data.Product using (_×_)
 open import Data.Nat using (ℕ ; suc ; 2+)
+import Data.Nat.Properties as NatP
 open import Data.Nat.Primality using (Prime)
 open import Function.Definitions using (Congruent ; Injective)
 open import Level using (Level ; 0ℓ)
@@ -31,9 +33,12 @@ open import Notations using (₁₊)
 open import Word.Base using (Word ; WRel ; _ʷ)
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open import Presentation.Definitions using (_IsPresentationOf_)
+open import Presentation.Definitions
+  using (_IsPresentationOf_ ; _IsMonoidPresentationOf_
+        ; monoidPresentation⇒presentation)
+open import Presentation.GroupLike using (Grouplike)
 open import Presentation.Construct.Base
-  using (_⋄_⋄_ ; CommRel ; ConjRelʷ ; EmptyRel ; TrivialRel ; _⊕^_)
+  using (_⋄_⋄_ ; CommRel ; ConjRelʷ ; EmptyRel ; TrivialRel ; _⊕_ ; _⊕^_)
 import Normalization.NormalForm.Setoid as SNF
 import Normalization.NormalForm.Propositional as NFBase
 
@@ -56,6 +61,7 @@ import Examples.Groups.Symmetric.Theorems as SymThm
 import Examples.Groups.Pauli.Presentation as Pauli
 import Examples.Construct.SemiDirectProduct.SnD as SnD
 import Examples.Amalgamations.CliffordT1 as CliffordT1
+import Examples.Amalgamations.CliffordT1BaseUNF as CliffordT1Base
 import Examples.Amalgamations.QutritCliffordT1 as QutritCliffordT1
 import Examples.Amalgamations.U33Di as U33Di
 
@@ -75,6 +81,35 @@ completeness-by-normalization :
     Injective (PB._≈_ Γ) (Setoid._≈_ Sem) ⟦_⟧
 completeness-by-normalization Γ NFs Sem ⟦_⟧ = SNF.by-normalization Γ NFs Sem ⟦_⟧
 
+-- Conversely, completeness plus an exact section (nf ∘ inv-nf ≗ id)
+-- makes a normal form unique for ⟦_⟧.
+
+unique-nf-by-completeness :
+  ∀ {X : Set} (Γ : WRel X) (NFs : Setoid 0ℓ 0ℓ)
+    {c d : Level} (Sem : Setoid c d) (⟦_⟧ : Word X → Setoid.Carrier Sem)
+    (nf : SNF.NormalForm Γ NFs) →
+    (∀ {u} → Setoid._≈_ NFs
+       (SNF.NormalForm.nf nf (SNF.NormalForm.inv-nf nf u)) u) →
+    Injective (PB._≈_ Γ) (Setoid._≈_ Sem) ⟦_⟧ →
+    SNF.UniqueNormalForm Γ NFs Sem ⟦_⟧ nf
+unique-nf-by-completeness Γ NFs Sem ⟦_⟧ nf = SNF.by-completeness Γ NFs Sem ⟦_⟧ nf
+
+------------------------------------------------------------------------
+-- A grouplike monoid presentation is a group presentation
+--
+-- Home: Presentation.Definitions.  Every presentation in this library
+-- is a monoid presentation; a Grouplike witness (a left inverse for
+-- every generator) upgrades a monoid presentation of G's underlying
+-- monoid to a group presentation of G.
+
+monoid-presentation⇒group-presentation :
+  ∀ {X : Set} {_===_ : WRel X} {a ℓ : Level} {G : Group a ℓ} →
+  _===_ IsMonoidPresentationOf (Group.monoid G) →
+  Grouplike _===_ →
+  _===_ IsPresentationOf G
+monoid-presentation⇒group-presentation mp gl =
+  monoidPresentation⇒presentation mp gl
+
 ------------------------------------------------------------------------
 -- Presentations of products of presented groups
 --
@@ -84,6 +119,9 @@ completeness-by-normalization Γ NFs Sem ⟦_⟧ = SNF.by-normalization Γ NFs S
 --
 --   Direct-Product-Presentation Γ Δ G₁ G₂ p₁ p₂
 --     .dpres : (Γ ⋄ Δ ⋄ CommRel) IsPresentationOf dp        [dp = G₁ × G₂]
+--     .LiftUNF nfp₁ nfp₂ unfp₁ unfp₂ .unfp' : the pair normal form is
+--       unique for the product semantics (uniqueness lifts from the
+--       factors)
 --   Home: Presentation.Construct.Properties.DirectProduct
 module Direct-Product-Presentation = DirectProduct.Presentation
 
@@ -94,11 +132,17 @@ module N-fold-Direct-Product-Presentation = NDirectProduct.Presentation
 
 --   Semidirect-Product-Presentation Γ Δ conj hyph hypn G₁ G₂ p₁ p₂
 --     .dpres : (Γ ⋄ Δ ⋄ ConjRelʷ conj) IsPresentationOf G1⋊G2
+--     .LiftUNF nfp₁ nfp₂ unfp₁ unfp₂ .unfp' : the pair normal form is
+--       unique for the semi-direct product semantics
 --   Home: Presentation.Construct.Properties.SemiDirectProduct2
 module Semidirect-Product-Presentation = SemiDirectProduct.Presentation
 
 --   Amalgamated-Product-Presentation P₁ P₂ ad G₀ G₁ G₂ p₀ p₁ p₂
 --     .dpres : (P₁ * P₂ ⋆ f₁ ⋆ f₂) IsPresentationOf amalgamation
+--     .UNF nfp₀ exact₀ sect-coset .unfp : the alternating normal form
+--       is unique for the amalgamated-product semantics, given two
+--       first-order exactness certificates (base normal form; coset
+--       table on section words)
 --   Home: Presentation.Construct.Properties.Amalgamation
 module Amalgamated-Product-Presentation = Amalgamation.ANF.Presentation
 
@@ -131,6 +175,19 @@ trivial-presentation′ A = Trivial.P2.Presentation.presentation A
 cyclic-presentation :
   ∀ {n} → ((₁₊ n) Cn,_===_) IsPresentationOf (CycSem.Cn-group (₁₊ n))
 cyclic-presentation = CycThm.presentation
+
+-- Order 0 separates monoid presentations from group presentations.
+-- The cyclic group of order 0 is ℤ by definition, and read as a group
+-- presentation the trivial relation T^0 = ε (i.e. ε = ε) does present
+-- ℤ.  But all presentations here are monoid presentations, and as a
+-- monoid presentation it presents the free monoid on one generator:
+-- (ℕ, +, 0).  Grouplikeness — the hypothesis of
+-- monoid-presentation⇒group-presentation — is exactly what fails at
+-- order 0: the generator has no left inverse.
+
+cyclic-monoid-presentation :
+  (0 Cn,_===_) IsMonoidPresentationOf NatP.+-0-monoid
+cyclic-monoid-presentation = CycThm.monoid-presentation
 
 cyclic-unique-nf :
   ∀ n → NFBase.UniqueNormalForm (n Cn,_===_) (CycNF.NF n)
@@ -213,6 +270,18 @@ clifford+T-qubit-isomorphism :
     (Monoid.rawMonoid (PP.•-ε-monoid CliffordT1.CliffordT1.amalPres))
     (CliffordT1.CliffordT1.f ʷ)
 clifford+T-qubit-isomorphism = CliffordT1.CliffordT1.CliffordT1-isomorphism
+
+-- The tower's base normal form ⟨ω⟩ × ⟨S⟩ (carrier Fin 8 × Fin 4,
+-- radices 8·4) is unique for the direct-product semantics ℤ/8ℤ × ℤ/4ℤ,
+-- lifted from the two cyclic unique-normal-form witnesses.
+-- Home: Examples.Amalgamations.CliffordT1BaseUNF.
+
+clifford+T-base-unique-nf :
+  SNF.UniqueNormalForm (CliffordT1.Sω.Pω ⊕ CliffordT1.Sω.PS)
+    (Eq.setoid (CycNF.NF 8 × CycNF.NF 4))
+    (Group.setoid CliffordT1Base.Z8×Z4)
+    CliffordT1Base.⟦_⟧ CliffordT1.Sω.nfp'
+clifford+T-base-unique-nf = CliffordT1Base.unfp'
 
 ------------------------------------------------------------------------
 -- Amalgamation case studies: single-qutrit Clifford+T

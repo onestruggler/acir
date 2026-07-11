@@ -17,6 +17,12 @@
 %% to amssymb when it does not (avoids the known acmart/amssymb clash).
 \ifdefined\rtimes\else\RequirePackage{amssymb}\fi
 
+%% U+21A5 UPWARDS ARROW FROM BAR (Agda's _↥ shift-up constructor).  There
+%% is no base symbol for it, so we render it as \mapsto given a quarter
+%% turn: the tail-bar lands at the bottom and the arrowhead points up.
+\RequirePackage{graphicx}
+\newcommand{\AgdaMapsUp}{\rotatebox[origin=c]{90}{\ensuremath{\mapsto}}}
+
 \lstdefinelanguage{Agda}{
   sensitive=true,
   morekeywords={abstract,constructor,data,do,field,hiding,import,in,
@@ -94,7 +100,7 @@
     {∁}{{\ensuremath{\complement}}}1
   % --- arrows ---------------------------------------------------------
     {→}{{\ensuremath{\to}}}1 {⟶}{{\ensuremath{\longrightarrow}}}1
-    {↑}{{\ensuremath{\uparrow}}}1 {↥}{{\ensuremath{\Uparrow}}}1
+    {↑}{{\ensuremath{\uparrow}}}1 {↥}{{\AgdaMapsUp}}1
     {↦}{{\ensuremath{\mapsto}}}1 {↪}{{\ensuremath{\hookrightarrow}}}1
     {⋯}{{\ensuremath{\cdots}}}1 {⇒}{{\ensuremath{\Rightarrow}}}1
     {⇔}{{\ensuremath{\Leftrightarrow}}}1 {↔}{{\ensuremath{\leftrightarrow}}}1
@@ -210,7 +216,7 @@
   \DeclareUnicodeCharacter{2192}{\ensuremath{\to}}
   \DeclareUnicodeCharacter{27F6}{\ensuremath{\longrightarrow}}
   \DeclareUnicodeCharacter{2191}{\ensuremath{\uparrow}}
-  \DeclareUnicodeCharacter{21A5}{\ensuremath{\Uparrow}}
+  \DeclareUnicodeCharacter{21A5}{\AgdaMapsUp}
   \DeclareUnicodeCharacter{21A6}{\ensuremath{\mapsto}}
   \DeclareUnicodeCharacter{21AA}{\ensuremath{\hookrightarrow}}
   \DeclareUnicodeCharacter{22EF}{\ensuremath{\cdots}}

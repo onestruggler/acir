@@ -10,16 +10,15 @@ This is the Agda formalisation accompanying the paper *"A Complete and Natural R
 
 ```bash
 # Typecheck via WSL (Agda 2.8, resolves dependencies automatically).
-# These four roots cover the whole live library:
-wsl --exec /home/onest/.cabal/bin/agda Examples/Groups/Symmetric/Theorems.agda
-wsl --exec /home/onest/.cabal/bin/agda Examples/Amalgamations/CliffordT1.agda
-wsl --exec /home/onest/.cabal/bin/agda Examples/Amalgamations/QutritCliffordT1.agda
-wsl --exec /home/onest/.cabal/bin/agda Examples/Amalgamations/U33Di.agda
+# This single root covers the whole live library (it imports the index
+# module of every development, including the four former roots
+# Symmetric/Theorems, CliffordT1, QutritCliffordT1, U33Di):
+wsl --exec /home/onest/.cabal/bin/agda MainTheorems.agda
 ```
 
 Use WSL Agda 2.8 (`wsl --exec /home/onest/.cabal/bin/agda`) for all files. The WSL install uses its own stdlib at `/home/onest/.agda/lib/agda-stdlib/`. The `.agda-lib` file (`qupit.agda-lib`) includes `.` and depends on `standard-library`.
 
-**Always re-typecheck the four roots above after any edit to library files.** From PowerShell, invoke WSL directly (Git-Bash mangles the Linux path).
+**Always re-typecheck `MainTheorems.agda` after any edit to library files.** From PowerShell, invoke WSL directly (Git-Bash mangles the Linux path).
 
 ## Architecture
 
@@ -48,10 +47,10 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 - **`Base.agda`**: parameterised by `Gate : ℕ → Set`. Wire-indexed generators `Gen`, `Circuit n = Word (Gen n)`, shifts `_↑`/`_↥ᵏ_`, and `Lift-Relation` extending any gate relation with the structural rules `cong↑`, `comm₁`, `comm₂`.
 
 ### Layer — Normalization (`Normalization/`)
-- **`NormalForm/Setoid.agda`**: setoid-valued normal-form witnesses on the stdlib `Function.Bundles` — `NormalFormInjective` = `Injection`, `BijectiveNormalForm` = `Bijection`, `NormalForm` = `RightInverse` (maps `word-setoid ⟶ₛ NF`) — plus `WeakNormalForm`, `UniqueNormalForm`, `by-normalization` (soundness + unique NF ⇒ completeness).
+- **`NormalForm/Setoid.agda`**: setoid-valued normal-form witnesses on the stdlib `Function.Bundles` — `NormalFormInjective` = `Injection`, `BijectiveNormalForm` = `Bijection`, `NormalForm` = `RightInverse` (maps `word-setoid ⟶ₛ NF`) — plus `WeakNormalForm`, `UniqueNormalForm`, `by-normalization` (soundness + unique NF ⇒ completeness), and the converse `by-completeness` (completeness + exact section `nf ∘ inv-nf ≗ id` ⇒ unique NF).
 - **`NormalForm/Propositional.agda`**: `Normalization.NormalForm.Setoid Γ (setoid B)` re-exported for a plain carrier set `B` (an explicit module parameter) — the witnesses land in `≡` on `B` and all derivations are inherited. Types read `NormalForm Γ B` / `NormalFormInjective Γ B`. Because the re-export fixes the codomain to `setoid B`, the witnesses are function-aliases here, not record names: **opening or projecting a witness value goes through `Normalization.NormalForm.Setoid` directly (imported `as SNF`)** — e.g. `open SNF.NormalForm nfp renaming (…)` — while `Propositional` is used only for the `Γ B` types and record construction.
 - **`Reidemeister-Schreier.agda`**: the injectivity/surjectivity engine. `Star-Injective-Simplified` proves `(f ʷ)` injective given a left inverse on generators; `Star-Injective-Full` (and its setoid variant) does coset enumeration and provides the Schreier section, right/left normal forms.
-- **`CosetNF.agda`**: coset normal forms via Reidemeister–Schreier: `lemma-ᵗ-act` (letters-to-words action law), `module SingleLevel` (one level), `CosetTable` / `PackedCosetTable` (coset tables with a distinguished identity coset), `CosetTower` (iterate up an ℕ-indexed family).
+- **`CosetNF.agda`**: coset normal forms via Reidemeister–Schreier: `lemma-ᵗ-act` (letters-to-words action law), `module SingleLevel` (one level; its `Transfer.Unique` derives `nf' ∘ gg ≡ id` for the transported NF from base exactness + coset exactness of the table on sections, via cancellation and R–S injectivity), `CosetTable` / `PackedCosetTable` (coset tables with a distinguished identity coset), `CosetTower` (iterate up an ℕ-indexed family).
 
 ### Layer 4 — Specific groups (`Presentation/Groups/`)
 - **`Cyclic.agda`**: ℤ/nℤ presentation with `pres n`, `nfp n`, `nfp' n`.

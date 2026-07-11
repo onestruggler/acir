@@ -29,6 +29,8 @@ import Presentation.Properties as PP
 import Presentation.Tactic.AssociativitySolver as AS
 open import Presentation.Construct.Base
 open import Normalization.CosetNF
+import Normalization.NormalForm.Setoid as SNF
+open import Normalization.NormalForm.Propositional using (NormalForm)
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Morphism.Structures
@@ -1784,3 +1786,35 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
     dpres : (P₁ * P₂ ⋆ f₁ ⋆ f₂) IsPresentationOf amalgamation
     dpres = record { gl = gl-mypres ; ⟦_⟧ = ⟦_⟧ᴬ ; iso = ⟦⟧ᴬ-iso }
+
+    ------------------------------------------------------------------
+    -- Uniqueness of the alternating normal form
+    --
+    -- Completeness (inj-ᴬ) plus exactness of the alternating section
+    -- upgrade the transported normal form nfp' to a unique one for
+    -- the amalgamated-product semantics.  The premises are two
+    -- first-order certificates: exactness of the base normal form,
+    -- and coset exactness of the amalgamation table on section words
+    -- (the table run on the section of an alternating descriptor
+    -- returns that descriptor).
+
+    module UNF
+      {NF₀ : Set} (nfp0 : NormalForm P₀ NF₀)
+      (exact₀ : ∀ u →
+        SNF.NormalForm.nf nfp0 (SNF.NormalForm.inv-nf nfp0 u) ≡ u)
+      (sect-coset : ∀ cd → proj₂ (nf [ cd ]) ≡ cd)
+      where
+
+      private
+        module U = Unique gl-mypres sect-coset nfp0 exact₀
+
+      open SNF.NormalForm (nfp' nfp0)
+        renaming (nf-cong to nf'-cong ; inv-nf to gg') using ()
+
+      unfp : SNF.UniqueNormalForm mypres (Eq.setoid (NF₀ × CD))
+               (Group.setoid amalgamation) ⟦_⟧ᴬ (nfp' nfp0)
+      unfp = record
+        { unique = λ {u} {v} eq →
+            Eq.trans (Eq.sym (U.nf'∘gg=id u))
+              (Eq.trans (nf'-cong (inj-ᴬ {gg' u} {gg' v} eq))
+                        (U.nf'∘gg=id v)) }

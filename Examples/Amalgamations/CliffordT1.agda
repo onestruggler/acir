@@ -54,6 +54,11 @@ module Sω where
     where
     module DNF = DP Pω PS
 
+  -- nfp' is additionally unique for the direct-product semantics
+  -- ℤ/8ℤ × ℤ/4ℤ: see Examples.Amalgamations.CliffordT1BaseUNF (a
+  -- separate module, because the cyclic semantics does not carry the
+  -- --cubical-compatible flag that this file does).
+
   open PB (Pω ⊕ PS) renaming (Alphabet to Sω ; _===_ to _===₀_) using ()
 
   ω : Word Sω

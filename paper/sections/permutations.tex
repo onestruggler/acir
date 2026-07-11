@@ -36,30 +36,7 @@ composition left to right):
 
 \begin{figure}[h]
 \centering
-\begin{minipage}[c]{0.2\linewidth}\centering
-\begin{quantikz}[row sep=0.18cm, column sep=0.35cm]
-  \lstick{2} & \qw       & \qw \\
-  \lstick{1} & \swap{1}  & \qw \\
-  \lstick{0} & \targX{}  & \qw
-\end{quantikz}\\[2pt]
-$\sigma$
-\end{minipage}\hfill
-\begin{minipage}[c]{0.2\linewidth}\centering
-\begin{quantikz}[row sep=0.18cm, column sep=0.35cm]
-  \lstick{2} & \swap{1}  & \qw \\
-  \lstick{1} & \targX{}  & \qw \\
-  \lstick{0} & \qw       & \qw
-\end{quantikz}\\[2pt]
-$\sigma{\uparrow}$
-\end{minipage}\hfill
-\begin{minipage}[c]{0.42\linewidth}\centering
-\begin{quantikz}[row sep=0.18cm, column sep=0.35cm]
-  \lstick{2} & \qw      & \swap{1} & \qw      & \qw \\
-  \lstick{1} & \swap{1} & \targX{} & \swap{1} & \qw \\
-  \lstick{0} & \targX{} & \qw      & \targX{} & \qw
-\end{quantikz}\\[2pt]
-$\sigma \mathbin{\bullet} \sigma{\uparrow} \mathbin{\bullet} \sigma$
-\end{minipage}
+\scalebox{0.75}{\tikzfig{figures/fig1_sigma}}
 \caption{Circuit code and diagrams for three-wire permutation circuits:
 the Agda values \aid{σ}, \aid{σ ↑}, and \aid{σ • σ ↑ • σ} of type
 \aid{Circuit 3}.}
@@ -107,34 +84,12 @@ for the presented monoid is precisely $\approx$.
 
 \begin{figure}[h]
 \centering
-\begin{minipage}[c]{0.44\linewidth}\centering
-\begin{quantikz}[row sep=0.18cm, column sep=0.3cm]
-  & \swap{1} & \qw      & \qw \\
-  & \targX{} & \qw      & \qw \\
-  & \qw      & \swap{1} & \qw \\
-  & \qw      & \targX{} & \qw
-\end{quantikz}
-$=$
-\begin{quantikz}[row sep=0.18cm, column sep=0.3cm]
-  & \qw      & \swap{1} & \qw \\
-  & \qw      & \targX{} & \qw \\
-  & \swap{1} & \qw      & \qw \\
-  & \targX{} & \qw      & \qw
-\end{quantikz}\\[2pt]
+\begin{minipage}[c]{0.41\linewidth}\centering
+\scalebox{0.75}{\tikzfig{figures/fig2_comm2}}\\[2pt]
 {\small \aid{comm₂}: disjoint gates commute}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.52\linewidth}\centering
-\begin{quantikz}[row sep=0.18cm, column sep=0.3cm]
-  & \qw      & \swap{1} & \qw      & \qw \\
-  & \swap{1} & \targX{} & \swap{1} & \qw \\
-  & \targX{} & \qw      & \targX{} & \qw
-\end{quantikz}
-$=$
-\begin{quantikz}[row sep=0.18cm, column sep=0.3cm]
-  & \swap{1} & \qw      & \swap{1} & \qw \\
-  & \targX{} & \swap{1} & \targX{} & \qw \\
-  & \qw      & \targX{} & \qw      & \qw
-\end{quantikz}\\[2pt]
+\begin{minipage}[c]{0.55\linewidth}\centering
+\scalebox{0.75}{\tikzfig{figures/fig2_yb}}\\[2pt]
 {\small \aid{yang-baxter}}
 \end{minipage}
 \caption{The generic far-commutation rule and the gate-specific braid
@@ -230,12 +185,7 @@ Clifford circuits restricted to swaps~\cite{selinger2015clifford}.
 
 \begin{figure}[h]
 \centering
-\begin{quantikz}[row sep=0.16cm, column sep=0.3cm]
-  \lstick{3} & \qw      & \qw      & \swap{1} & \qw      & \qw \\
-  \lstick{2} & \qw      & \swap{1} & \targX{} & \swap{1} & \qw \\
-  \lstick{1} & \swap{1} & \targX{} & \qw      & \targX{} & \qw \\
-  \lstick{0} & \targX{} & \qw      & \qw      & \qw      & \qw
-\end{quantikz}
+\scalebox{0.75}{\tikzfig{figures/fig3_staircase}}
 \caption{The section of the normal form
 $(\mathsf{tt},\, \sigma{\bullet}\varepsilon,\,
 \sigma{\bullet}\sigma{\bullet}\varepsilon,\,

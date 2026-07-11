@@ -190,6 +190,20 @@ module _ {c d} (Sem : Setoid c d)
       ⟦ inv-nf (nf y) ⟧ ∎
       where open SR Sem
 
+  -- Conversely, completeness (semantic injectivity of ⟦_⟧) together
+  -- with an exact section (nf ∘ inv-nf ≗ id) makes a normal form
+  -- unique for ⟦_⟧.
+  module _ (normalForm : NormalForm) where
+    open NormalForm normalForm
+
+    by-completeness : (∀ {u} → nf (inv-nf u) ≈ₙ u) →
+                      Injective _≈_ _≈₂_ ⟦_⟧ →
+                      UniqueNormalForm normalForm
+    by-completeness nf∘inv-nf=id complete = record
+      { unique = λ eq →
+          transₙ (symₙ nf∘inv-nf=id)
+            (transₙ (nf-cong (complete eq)) nf∘inv-nf=id) }
+
 
 module SurjSem {c d} (normalForm : NormalForm) (Sem : Setoid c d)
   (let open Setoid Sem using () renaming (Carrier to Cₛ ; _≈_ to _≈₂_ ; sym to sym₂))

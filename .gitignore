@@ -16,3 +16,21 @@ paper/*.fls
 paper/*.log
 paper/*.out
 paper/*.pdf
+
+# Haskell / GHC build artifacts (Cir2Tikz tool)
+*.hi
+*.o
+*.dyn_hi
+*.dyn_o
+*.p_hi
+*.p_o
+*.prof
+*.hp
+*.exe
+Cir2Tikz/main_local
+
+# cabal / stack
+dist/
+dist-newstyle/
+.stack-work/
+*.cabal.project.local

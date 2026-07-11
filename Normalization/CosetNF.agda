@@ -44,6 +44,7 @@ open import Normalization.Reidemeister-Schreier
 
 import Presentation.Base as PB
 import Presentation.Properties as PP
+open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
 import Normalization.NormalForm.Propositional as NFBase
 import Normalization.NormalForm.Setoid as SNF
 open NFBase using (NormalFormInjective ; NormalForm)
@@ -271,6 +272,80 @@ module SingleLevel
           w ∎
           where
             open SR word-setoid₂
+
+    -- The stateful traversal splits definitionally on concatenation.
+    ᵗ-• : ∀ (c : C) (u v : Word Y) →
+          (h ᵗ) c (u • v) ≡
+          ( proj₁ ((h ᵗ) c u) • proj₁ ((h ᵗ) (proj₂ ((h ᵗ) c u)) v)
+          , proj₂ ((h ᵗ) (proj₂ ((h ᵗ) c u)) v) )
+    ᵗ-• c u v with (h ᵗ) c u
+    ... | (u' , c') with (h ᵗ) c' v
+    ... | (v' , c'') = Eq.refl
+
+    ------------------------------------------------------------------
+    -- Uniqueness of the transported normal form
+    --
+    -- The transported normal form nfp' is exact — nf' ∘ gg ≡ id — as
+    -- soon as (i) the base normal form is exact, and (ii) the coset
+    -- table is exact on sections: running the table on a coset's
+    -- section returns that coset.  Both premises are first-order
+    -- certificates.  The word component needs no further table
+    -- obligations: it follows from right cancellation (Δ grouplike)
+    -- and the Reidemeister–Schreier injectivity of (f ʷ).
+
+    module Unique
+      (grouplike : Grouplike Δ)
+      (sect-coset : ∀ c → proj₂ (nf [ c ]) ≡ c)
+      {NF₁ : Set} (nfp1 : NormalForm Γ NF₁)
+      (exact₁ : ∀ u → SNF.NormalForm.nf nfp1 (SNF.NormalForm.inv-nf nfp1 u) ≡ u)
+      where
+
+      open SNF.NormalForm nfp1
+        renaming (nf to nf₁ ; inv-nf to inv-nf₁ ; nf-cong to nf₁-cong) using ()
+      open SNF.NormalForm (nfp' nfp1)
+        renaming (nf to nf'' ; inv-nf to gg) using ()
+      open Group-Lemmas Δ grouplike using (•-cancelʳ)
+
+      -- The table returns to the identity coset on any embedded word.
+      fx-coset : ∀ w → proj₂ ((h ᵗ) I ((f ʷ) w)) ≡ I
+      fx-coset [ x ]ʷ = Eq.sym (proj₂ (h=⁻¹f-gen x))
+      fx-coset ε      = Eq.refl
+      fx-coset (w • v) = begin
+        proj₂ ((h ᵗ) I ((f ʷ) w • (f ʷ) v))
+          ≡⟨ Eq.cong proj₂ (ᵗ-• I ((f ʷ) w) ((f ʷ) v)) ⟩
+        proj₂ ((h ᵗ) (proj₂ ((h ᵗ) I ((f ʷ) w))) ((f ʷ) v))
+          ≡⟨ Eq.cong (λ z → proj₂ ((h ᵗ) z ((f ʷ) v))) (fx-coset w) ⟩
+        proj₂ ((h ᵗ) I ((f ʷ) v))
+          ≡⟨ fx-coset v ⟩
+        I ∎
+        where open Eq.≡-Reasoning
+
+      -- nf' inverts gg on the nose.
+      nf'∘gg=id : ∀ u → nf'' (gg u) ≡ u
+      nf'∘gg=id (n , c) = Eq.cong₂ _,_ word-part coset-part
+        where
+        coset-part : proj₂ (nf (gg (n , c))) ≡ c
+        coset-part = begin
+          proj₂ ((h ᵗ) I ([ inv-nf₁ n ]ₓ • [ c ]))
+            ≡⟨ Eq.cong proj₂ (ᵗ-• I [ inv-nf₁ n ]ₓ [ c ]) ⟩
+          proj₂ ((h ᵗ) (proj₂ ((h ᵗ) I [ inv-nf₁ n ]ₓ)) [ c ])
+            ≡⟨ Eq.cong (λ z → proj₂ ((h ᵗ) z [ c ])) (fx-coset (inv-nf₁ n)) ⟩
+          proj₂ ((h ᵗ) I [ c ])
+            ≡⟨ sect-coset c ⟩
+          c ∎
+          where open Eq.≡-Reasoning
+
+        step : ([ proj₁ (nf (gg (n , c))) ]ₓ • [ c ]) ≈₂ ([ inv-nf₁ n ]ₓ • [ c ])
+        step = Eq.subst
+          (λ z → ([ proj₁ (nf (gg (n , c))) ]ₓ • [ z ]) ≈₂ ([ inv-nf₁ n ]ₓ • [ c ]))
+          coset-part
+          inv-nf∘nf=id
+
+        word-part : nf₁ (proj₁ (nf (gg (n , c)))) ≡ n
+        word-part = Eq.trans
+          (nf₁-cong (fʷ-injective (proj₁ (nf (gg (n , c)))) (inv-nf₁ n)
+            (•-cancelʳ step)))
+          (exact₁ n)
 
 
 ------------------------------------------------------------------------

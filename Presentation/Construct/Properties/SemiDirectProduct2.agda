@@ -680,3 +680,46 @@ module _
     dpres : (Γ ⋄ Δ ⋄ ConjRelʷ conj) IsPresentationOf G1⋊G2
     dpres = isPresentationOf subpres claim
 
+    ------------------------------------------------------------------------
+    -- Uniqueness lifts through the semi-direct product
+    --
+    -- If the two factor normal forms are unique for the factor
+    -- semantics, the pair normal form of NFP' is unique for the
+    -- semi-direct product semantics: the interpretation of a pair
+    -- section computes componentwise (the action twist collapses on
+    -- units), so distinct pairs are separated factor by factor.
+
+    module LiftUNF
+      {NF₁ NF₂ : Set}
+      (nfp-Γ : NormalForm Γ NF₁)
+      (nfp-Δ : NormalForm Δ NF₂)
+      (unfp-Γ : SNF.UniqueNormalForm Γ (Eq.setoid NF₁)
+                  (Group.setoid G1) ⟦_⟧₁ nfp-Γ)
+      (unfp-Δ : SNF.UniqueNormalForm Δ (Eq.setoid NF₂)
+                  (Group.setoid G2) ⟦_⟧₂ nfp-Δ)
+      where
+
+      open NFP' nfp-Γ nfp-Δ using (nfp' ; gg)
+
+      open SNF.UniqueNormalForm unfp-Γ
+        renaming (unique to unique₁ ; inv-nf to inv-nf₁) using ()
+      open SNF.UniqueNormalForm unfp-Δ
+        renaming (unique to unique₂ ; inv-nf to inv-nf₂) using ()
+
+      -- The interpretation of a pair section is the pair of factor
+      -- interpretations of the factor sections.
+      sem-gg : ∀ u₁ u₂ →
+        D._≈_ (GS.⟦ gg (u₁ , u₂) ⟧) (⟦ inv-nf₁ u₁ ⟧₁ , ⟦ inv-nf₂ u₂ ⟧₂)
+      sem-gg u₁ u₂ =
+        D.trans (D.∙-cong (emb-x (inv-nf₁ u₁)) (emb-r (inv-nf₂ u₂)))
+          ( transG1 (∙-congG1 (Group.refl G1) (act-identity εG1))
+                    (Group.identityʳ G1 ⟦ inv-nf₁ u₁ ⟧₁)
+          , Group.identityˡ G2 ⟦ inv-nf₂ u₂ ⟧₂ )
+
+      unfp' : SNF.UniqueNormalForm (Γ ⋄ Δ ⋄ ConjRelʷ conj)
+                (Eq.setoid (NF₁ × NF₂)) (Group.setoid G1⋊G2) GS.⟦_⟧ nfp'
+      unfp' = record
+        { unique = λ { {u₁ , u₂} {v₁ , v₂} eq →
+            let p = D.trans (D.sym (sem-gg u₁ u₂)) (D.trans eq (sem-gg v₁ v₂))
+            in Eq.cong₂ _,_ (unique₁ (proj₁ p)) (unique₂ (proj₂ p)) } }
+

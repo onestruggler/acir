@@ -82,7 +82,9 @@ a group) are staged in a dedicated \texttt{ForStdlib} hierarchy.
 \item[(2)] \textbf{A catalogue of verified presentations}
   (\S\ref{sec:examples}).  Seven nontrivial example families, several of them
   formalizing presentations from the research literature: cyclic groups
-  (including $\mathbb{Z}$); symmetric groups $S_n$ presented as circuits,
+  of every positive order (with, at order $0$, the free monoid
+  $\mathbb{N}$ presented as a monoid --- the smallest witness that our
+  presentations are monoid presentations); symmetric groups $S_n$ presented as circuits,
   proved sound and complete for a loose endofunction semantics and presented
   for the group of permutations of $\mathsf{Fin}\;n$; wreath products
   $\mathbb{Z}_N \wr S_n$ --- the groups of \emph{signed permutations} and
@@ -123,17 +125,10 @@ a group) are staged in a dedicated \texttt{ForStdlib} hierarchy.
 Everything stated as a theorem in this paper typechecks under
 \texttt{--safe}: there are no postulates, no unfinished holes, and no
 appeals to classical axioms anywhere in the development described here.  The
-library also contains a substantially larger work-in-progress layer ---
-roughly 67\,600 further lines --- formalizing symplectic groups
-$Sp(2n,\mathbb{Z}_p)$ and their Clifford-circuit presentations in all odd
-prime dimensions, the formal counterpart of the qutrit rule set
-of~\cite{li2025qutrit} and its odd-prime generalization; we report on its
-design but, in keeping with the rule above, claim no unfinished theorem from
-it (\S\ref{sec:conclusion}).  Its first fully checked fruit is already in
-the catalogue: the $n$-qubit Clifford relation set, assembled for all $n$ as
-a group extension of the symplectic relations by the verified Pauli
-presentation, with an explicit three-line cocycle recording that
-$S^2 = Z$ (\S\ref{sec:cliffordqubit}).
+driving next target --- machine-checked completeness for multi-qudit
+Clifford circuits in all odd prime dimensions, the formal counterpart of
+the qutrit rule set of~\cite{li2025qutrit} and its odd-prime
+generalization --- is discussed as future work (\S\ref{sec:conclusion}).
 
 \subsection{A first taste: permutations}\label{sec:taste}
 
@@ -211,14 +206,13 @@ hirokawa2019abstract}.
 
 \subsubsection{Related tools}\label{sec:tools}
 
-Two web tools accompany the mathematics this library mechanizes.  A
+Two web tools implement the mathematics this library mechanizes.  A
 normalizer to \emph{Lafont normal form} for linear permutation circuits
 implements the normalization lemmas of Lafont's algebraic theory of Boolean
 circuits~\cite{lafont2003boolean,lafontlp-tool}; and a normalizer for the
 symplectic groups $Sp(2n,\mathbb{Z}_p)$ computes Selinger-style staircase
-normal forms for qupit Clifford circuits~\cite{qupit-tool}, the computational
-companion of our work-in-progress symplectic layer.  Both tools compute
-normal forms; the library proves them correct and complete.
+normal forms~\cite{qupit-tool}.  Both tools compute normal forms of
+exactly the kind this library is built to prove correct and complete; the formalized proofs are on-going and close to finish.
 
 \subsection{Paper outline}
 

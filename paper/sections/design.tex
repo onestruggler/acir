@@ -106,9 +106,19 @@ group onto $G$ whose underlying function is the interpretation.  Weaker
 records (\aid{{\_}IsSubPresentationOf{\_}} with a monomorphism;
 monoid-level variants) come with upgrade lemmas: a surjective
 sub-presentation is a presentation, and a grouplike monoid presentation of
-$G$'s underlying monoid is a group presentation --- the latter via the
-\texttt{ForStdlib} fact that monoid homomorphisms between groups preserve
-inverses (\S\ref{sec:forstdlib}).  These upgrades structure every proof in
+$G$'s underlying monoid is a group presentation
+(\aid{monoid-presentation⇒group-presentation} in the index) --- the
+latter via the \texttt{ForStdlib} fact that monoid homomorphisms between
+groups preserve inverses (\S\ref{sec:forstdlib}).  One design point
+deserves emphasis: since words have no primitive inverses, \emph{every}
+presentation in this library is at bottom a \emph{monoid} presentation,
+and group presentations are the \aid{Grouplike} special case.  The
+distinction is mathematically real, and the smallest cyclic relation
+already exhibits it: read as a group presentation, the trivial relation
+$T^{\,0} = \varepsilon$ presents the cyclic group of order $0$ --- by
+definition $\mathbb{Z}$ --- but the \emph{monoid} it presents is the
+free monoid $(\mathbb{N}, +, 0)$, and grouplikeness is exactly what
+fails at order $0$ (\S\ref{sec:cyclic}).  These upgrades structure every proof in
 the catalogue: one proves soundness, injectivity (by normalization), and
 surjectivity separately, and the records assemble the isomorphism.
 
@@ -186,7 +196,13 @@ value is that every case study only ever proves \aid{unique} --- a
 statement about \emph{normal forms}, i.e.\ about concrete first-order data
 --- never about arbitrary words.  A companion lemma
 (\aid{by-normalization-wsurj}) similarly reduces surjectivity of the
-semantics to surjectivity on normal forms.  Sub-presentations then come
+semantics to surjectivity on normal forms, and a converse
+(\aid{by-completeness}) recovers \aid{UniqueNormalForm} from
+completeness plus an exact section ($\aid{nf} \circ \aid{inv\text{-}nf}
+\equiv \mathrm{id}$) --- the route by which the construction theorems of
+\S\ref{sec:constructions} lift uniqueness witnesses through products,
+semidirect products, and amalgamations
+(Table~\ref{tab:nfs}).  Sub-presentations then come
 for free (\texttt{Normalization.StarPresentation}): given soundness on
 axioms, a \aid{NormalForm}, and a \aid{UniqueNormalForm}, the module
 assembles the monoid (or, with \aid{Grouplike}, group) monomorphism ---
@@ -243,8 +259,7 @@ developments can move freely along the wire chain
 $\mathsf{Cir}\,k \le \mathsf{Cir}\,(k{+}1)$ of
 \S\ref{sec:preliminaries}.  Instantiating \aid{Gate} is all it takes to
 define a new circuit theory: the permutation instance has one gate and two
-axioms; the (in progress) qupit Clifford instance has gates
-$S, H, C\!Z, \mathit{Ex}, M$ over a prime parameter.
+axioms.
 
 \subsection{The Reidemeister--Schreier engine}\label{sec:engine}
 
@@ -302,11 +317,8 @@ matches the table.  From these, \aid{Transfer} derives well-definedness of
 $[c] \aid{•} b \approx_2 (f\,\aid{ʷ})\,b' \aid{•} [c']$ for whole words,
 injectivity --- and the payoff, the \emph{normal-form transports}
 \[
-  \aid{nfp} : \mathrm{NFI}\;\Gamma\;\mathit{NF}
-    \to \mathrm{NFI}\;\Delta\;(\mathit{NF} \times C),
-  \qquad
-  \aid{nfp'} : \mathrm{NF}\;\Gamma\;\mathit{NF}
-    \to \mathrm{NF}\;\Delta\;(\mathit{NF} \times C):
+  \aid{nf-transp} : \mathrm{NormalForm}\;\Gamma\;\mathit{NF}
+    \to \mathrm{NormalForma}\;\Delta\;(\mathit{NF} \times C),
 \]
 a normal form for the subgroup yields one for the group, with one more
 coset digit.  A record \aid{PackedCosetTable} bundles the data and
@@ -392,7 +404,7 @@ isomorphisms).  A further module proves the recipe for arbitrary group
 $1 \to N \to G \to Q \to 1$ realizing conjugation and relator-correction
 data, the union of $N$'s relations, word-valued conjugation rules, and
 twisted lifts of $Q$'s relators presents $G$
-(cf.\ Proposition~2.55 of~\cite{bian2023thesis}); semidirect products are
+(cf.\ Proposition~2.55 of~\cite{holt2005handbook}); semidirect products are
 the special case with trivial corrections.  These construction theorems
 are what make the catalogue of \S\ref{sec:examples} cheap: the Pauli
 presentation, for instance, is \emph{assembled} --- cyclic factors, one

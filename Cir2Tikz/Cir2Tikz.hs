@@ -15,7 +15,7 @@ type Arity = Int
 
 data BoxType = A | B | D | E | L Int | M Int | LM Int deriving (Show, Eq, Ord)
 
-data GateType = H | S | Z | X | Y | Ex | Box BoxType | Oplus | Dot | Mul deriving (Show, Eq, Ord)
+data GateType = H | S | Z | X | Y | Ex | I | Box BoxType | Oplus | Dot | Mul deriving (Show, Eq, Ord)
 
 -- Erase edges must be drawed at last. An erase egde is just a white
 -- edge.
@@ -39,6 +39,7 @@ arity Dot = 1
 arity Z = 1
 arity X = 1
 arity Ex = 2
+arity I = 1
 arity (Box bt) = arity_b bt
 arity Mul = 1
 
@@ -69,6 +70,10 @@ width (Gate Dot _ str) = standard_gate_width
 width (Gate (Box bt) _ str) = standard_gate_width + (fromIntegral l * 0.25)
   where
     l = length $ filter (\x -> not (elem x "{},^_$")) str
+-- Identity: an idle wire.  Draws nothing and takes no horizontal space;
+-- it only exists to bring a wire into the circuit's wire range so the
+-- straight wire is drawn.
+width (Gate I _ _) = 0
 width (Gate _ _ str) = if l < 4 then standard_gate_width else 1 + standard_gate_width
   where
     l = length $ filter (\x -> not (elem x "{},^_$")) str
@@ -229,6 +234,7 @@ nt_of_gate :: Gate -> NodeType
 nt_of_gate (Gate Oplus _ _) = TARG
 nt_of_gate (Gate Dot _ _) = CTRL
 nt_of_gate (Gate Ex _ _) = NONE
+nt_of_gate (Gate I _ _) = NONE
 nt_of_gate (Gate (Box bt) _ _) = BT bt
 nt_of_gate (Gate _ _ _) = GATE
 
@@ -254,6 +260,8 @@ draw_gate_yshift yshift (Gate Oplus w str, i , x) = (printf "\\node [style=cnot 
 draw_gate_yshift yshift (Gate Dot w str, i , x) = (printf "\\node [style=cnot ctrl] (%s) at (%f, %f) {$%s$};\n" i x (fromIntegral w * 2 + yshift :: Float) str , [])
 
 draw_gate_yshift yshift (Gate Mul w str, i , x) = (printf "\\node [style=gate] (%s) at (%f, %f) {$%s$};\n"i x (fromIntegral w * 2 + yshift :: Float) str , [])
+
+draw_gate_yshift yshift (Gate I w str, i , x) = ("" , [])
 
 draw_gate_yshift yshift (Gate Ex w str, i , x) = (
   printf "\\node [style=none] (%stl) at (%f, %f) {$%s$};\n"i (x - 0.75) ((y + yshift) + 2) str ++
@@ -307,6 +315,8 @@ draw_gate (Gate Oplus w str, i , x) = (printf "\\node [style=cnot targ] (%s) at 
 draw_gate (Gate Dot w str, i , x) = (printf "\\node [style=cnot ctrl] (%s) at (%f, %f) {$%s$};\n" i x (fromIntegral w * 2 :: Float) str , [])
 
 draw_gate (Gate Mul w str, i , x) = (printf "\\node [style=gate] (%s) at (%f, %f) {$%s$};\n"i x (fromIntegral w * 2 :: Float) str , [])
+
+draw_gate (Gate I w str, i , x) = ("" , [])
 
 draw_gate (Gate Ex w str, i , x) = (
   printf "\\node [style=none] (%stl) at (%f, %f) {$%s$};\n"i (x - 0.75) (y + 2) str ++

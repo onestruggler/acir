@@ -87,7 +87,7 @@ eg_pcirs =
 
 
 
-data UserGate = Sep | H Int | He Int String | S Int | Se Int String | Z Int | Ze Int String | X Int | Xe Int String | CX Int Int | CZ Int Int | CXe Int Int String | CZe Int Int String | A Int String | B Int String | E Int String | D Int String | Mul Int String | Ex Int deriving (Show, Eq, Ord, Read)
+data UserGate = Sep | H Int | He Int String | S Int | Se Int String | Z Int | Ze Int String | X Int | Xe Int String | CX Int Int | CZ Int Int | CXe Int Int String | CZe Int Int String | A Int String | B Int String | E Int String | D Int String | Mul Int String | Ex Int | I Int deriving (Show, Eq, Ord, Read)
 
 data Spec = Spec String deriving (Show, Eq, Ord, Read)
 data Cir = Cir [UserGate] Spec deriving (Show, Eq, Ord, Read)
@@ -105,6 +105,7 @@ gate_trans (Z k) = CT.Gate CT.Z k ""
 gate_trans (Ze k e) = CT.Gate CT.Z k ("^{" ++ e ++ "}")
 gate_trans (CX k l) = CT.Ctrl k "" $ CT.Gate CT.Oplus l ""
 gate_trans (Ex k) = CT.Gate CT.Ex k ""
+gate_trans (I k) = CT.Gate CT.I k ""
 gate_trans (CXe k l e) = CT.Ctrl k e $ CT.Gate CT.Oplus l ""
 gate_trans (CZ k l) = CT.Ctrl k "" $ CT.Gate CT.Dot l ""
 gate_trans (CZe k l e) = CT.Ctrl k e $ CT.Gate CT.Dot l ""
