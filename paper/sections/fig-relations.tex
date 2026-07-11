@@ -1,0 +1,138 @@
+%% The complete relation set of Clifford-pres, in circuit form.
+%% Convention: diagrams are read in MATRIX-MULTIPLICATION order — the
+%% rightmost gate is applied first — the inverse of the usual
+%% quantum-circuit convention (and of Selinger's Figure 8).  Diagrams
+%% therefore transcribe the Agda words letter for letter, left to right.
+%% Each equation is wrapped in an \mbox so line breaks fall only
+%% between equations.
+\begin{figure}[p]
+\centering
+\tikzset{qz/.style={row sep={0.12cm,between origins}, column sep=0.16cm}}
+\newcommand{\eqtag}[1]{{\footnotesize(#1)}}
+\footnotesize
+
+\textbf{Pauli relations}\par\smallskip
+
+\mbox{\begin{quantikz}[qz]& \gate{X} & \gate{X} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \qw\end{quantikz}\;\eqtag{P1}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{Z} & \gate{Z} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \qw\end{quantikz}\;\eqtag{P2}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{X} & \gate{Z} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{Z} & \gate{X} & \qw\end{quantikz}\;\eqtag{P3}}\hfill
+\mbox{\begin{quantikz}[qz]& \qw & \gate{Q} & \qw \\ & \gate{P} & \qw & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{Q} & \qw & \qw \\ & \qw & \gate{P} & \qw\end{quantikz}\;\eqtag{P4}}
+
+\smallskip
+\textbf{Conjugation relations} (\aid{ConjRelʷ conj})\par\smallskip
+
+\mbox{\begin{quantikz}[qz]& \gate{H} & \gate{X} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{Z} & \gate{H} & \qw\end{quantikz}\;\eqtag{T1}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{H} & \gate{Z} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{X} & \gate{H} & \qw\end{quantikz}\;\eqtag{T2}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{S} & \gate{X} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{X} & \gate{Z} & \gate{S} & \qw\end{quantikz}\;\eqtag{T3}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{S} & \gate{Z} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{Z} & \gate{S} & \qw\end{quantikz}\;\eqtag{T4}}
+
+\smallskip
+
+\mbox{\begin{quantikz}[qz]& \ctrl{1} & \qw & \qw \\ & \control{} & \gate{X} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \gate{Z} & \ctrl{1} & \qw \\ & \gate{X} & \qw & \control{} & \qw\end{quantikz}\;\eqtag{T5}}\hfill
+\mbox{\begin{quantikz}[qz]& \ctrl{1} & \qw & \qw \\ & \control{} & \gate{Z} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \ctrl{1} & \qw \\ & \gate{Z} & \control{} & \qw\end{quantikz}\;\eqtag{T6}}\hfill
+\mbox{\begin{quantikz}[qz]& \ctrl{1} & \gate{X} & \qw \\ & \control{} & \qw & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \gate{X} & \ctrl{1} & \qw \\ & \gate{Z} & \qw & \control{} & \qw\end{quantikz}\;\eqtag{T7}}\hfill
+\mbox{\begin{quantikz}[qz]& \ctrl{1} & \gate{Z} & \qw \\ & \control{} & \qw & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{Z} & \ctrl{1} & \qw \\ & \qw & \control{} & \qw\end{quantikz}\;\eqtag{T8}}
+
+\smallskip
+\textbf{Twisted symplectic relators} (\aid{RelTwist}; (R1) is the cocycle)\par\smallskip
+
+\mbox{\fbox{\begin{quantikz}[qz]& \gate{S} & \gate{S} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{Z} & \qw\end{quantikz}}\;\eqtag{R1}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{H} & \gate{H} & \gate{H} & \gate{H} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \qw\end{quantikz}\;\eqtag{R2}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{S} & \gate{H} & \gate{S} & \gate{H} & \gate{S} & \gate{H} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \qw\end{quantikz}\;\eqtag{R3}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{H} & \gate{H} & \gate{S} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{S} & \gate{H} & \gate{H} & \qw\end{quantikz}\;\eqtag{R4}}
+
+\smallskip
+
+\mbox{\begin{quantikz}[qz]& \ctrl{1} & \ctrl{1} & \qw \\ & \control{} & \control{} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \qw \\ & \qw & \qw\end{quantikz}\;\eqtag{R5}}\hfill
+\mbox{\begin{quantikz}[qz]& \ctrl{1} & \qw & \qw \\ & \control{} & \gate{S} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \ctrl{1} & \qw \\ & \gate{S} & \control{} & \qw\end{quantikz}\;\eqtag{R6}}\hfill
+\mbox{\begin{quantikz}[qz]& \ctrl{1} & \gate{S} & \qw \\ & \control{} & \qw & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{S} & \ctrl{1} & \qw \\ & \qw & \control{} & \qw\end{quantikz}\;\eqtag{R7}}\hfill
+\mbox{\begin{quantikz}[qz]& \ctrl{1} & \qw & \qw \\ & \control{} & \ctrl{1} & \qw \\ & \qw & \control{} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \ctrl{1} & \qw \\ & \ctrl{1} & \control{} & \qw \\ & \control{} & \qw & \qw\end{quantikz}\;\eqtag{R8}}
+
+\smallskip
+
+\mbox{\begin{quantikz}[qz]& \ctrl{1} & \gate{H} & \ctrl{1} & \qw \\ & \control{} & \qw & \control{} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{S} & \gate{H} & \gate{S} & \ctrl{1} & \gate{H} & \gate{S} & \qw & \qw \\ & \qw & \qw & \qw & \control{} & \qw & \qw & \gate{S} & \qw\end{quantikz}\;\eqtag{R9}}\hfill
+\mbox{\begin{quantikz}[qz]& \ctrl{1} & \qw & \ctrl{1} & \qw \\ & \control{} & \gate{H} & \control{} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \qw & \qw & \ctrl{1} & \qw & \qw & \gate{S} & \qw \\ & \gate{S} & \gate{H} & \gate{S} & \control{} & \gate{H} & \gate{S} & \qw & \qw\end{quantikz}\;\eqtag{R10}}
+
+\smallskip
+
+\mbox{\begin{quantikz}[qz]& \gate[2]{⊤⊥} & \qw & \gate[2]{⊥⊤} & \qw \\ & & \ctrl{1} & & \qw \\ & \qw & \control{} & \qw & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \ctrl{1} & \qw & \qw \\ & \gate[2]{⊥⊤} & \control{} & \gate[2]{⊤⊥} & \qw \\ & & \qw & & \qw\end{quantikz}\;\eqtag{R11}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate[2]{⊤⊥} & \qw & \gate[2]{⊤⊥} & \qw & \gate[2]{⊤⊥} & \qw & \qw \\ & & \ctrl{1} & & \ctrl{1} & & \ctrl{1} & \qw \\ & \qw & \control{} & \qw & \control{} & \qw & \control{} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \qw \\ & \qw & \qw \\ & \qw & \qw\end{quantikz}\;\eqtag{R12}}
+
+\smallskip
+
+\mbox{\begin{quantikz}[qz]& \qw & \ctrl{1} & \qw & \ctrl{1} & \qw & \ctrl{1} & \qw \\ & \gate[2]{⊥⊤} & \control{} & \gate[2]{⊥⊤} & \control{} & \gate[2]{⊥⊤} & \control{} & \qw \\ & & \qw & & \qw & & \qw & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \qw \\ & \qw & \qw \\ & \qw & \qw\end{quantikz}\;\eqtag{R13}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{M_x} & \gate{M_y} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{M_{xy}} & \qw\end{quantikz}\;\eqtag{R14}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{M_x} & \gate{S} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{S^{x^2}} & \gate{M_x} & \qw\end{quantikz}\;\eqtag{R15}}
+
+\smallskip
+
+\mbox{\begin{quantikz}[qz]& \gate{M_x} & \qw & \qw \\ & \qw & \ctrl{-1} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate[2]{C\!Z^{x}} & \gate{M_x} & \qw \\ & & \qw & \qw\end{quantikz}\;\eqtag{R16}}\hfill
+\mbox{\begin{quantikz}[qz]& \qw & \ctrl{1} & \qw \\ & \gate{M_x} & \control{} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate[2]{C\!Z^{x}} & \qw & \qw \\ & & \gate{M_x} & \qw\end{quantikz}\;\eqtag{R17}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{g} & \qw & \qw \\ & \qw & \gate{U} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \gate{g} & \qw \\ & \gate{U} & \qw & \qw\end{quantikz}\;\eqtag{R18}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{g} & \qw & \qw \\ & \qw & \ctrl{1} & \qw \\ & \qw & \control{} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \qw & \gate{g} & \qw \\ & \ctrl{1} & \qw & \qw \\ & \control{} & \qw & \qw\end{quantikz}\;\eqtag{R19}}
+
+\smallskip
+
+\mbox{\begin{quantikz}[qz]& \gate{S^k} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{S} & \push{\,\cdots\,} & \gate{S} & \qw\end{quantikz}\;\eqtag{R20}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{H^k} & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \gate{H} & \push{\,\cdots\,} & \gate{H} & \qw\end{quantikz}\;\eqtag{R21}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate[2]{C\!Z^{k}} & \qw \\ & & \qw\end{quantikz}
+${}={}$ \begin{quantikz}[qz]& \ctrl{1} & \push{\,\cdots\,} & \ctrl{1} & \qw \\ & \control{} & \qw & \control{} & \qw\end{quantikz}\;\eqtag{R22}}
+
+\smallskip
+\textbf{Abbreviations}\par\smallskip
+
+\mbox{\begin{quantikz}[qz]& \gate[2]{⊥⊤} & \qw \\ & & \qw\end{quantikz}
+${}:={}$ \begin{quantikz}[qz]& \qw & \ctrl{1} & \qw & \gate{H} & \ctrl{1} & \gate{H} & \qw \\ & \gate{H} & \control{} & \gate{H} & \qw & \control{} & \qw & \qw\end{quantikz}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate[2]{⊤⊥} & \qw \\ & & \qw\end{quantikz}
+${}:={}$ \begin{quantikz}[qz]& \gate{H} & \ctrl{1} & \gate{H} & \qw & \ctrl{1} & \qw & \qw \\ & \qw & \control{} & \qw & \gate{H} & \control{} & \gate{H} & \qw\end{quantikz}}\hfill
+\mbox{\begin{quantikz}[qz]& \gate{M_x} & \qw\end{quantikz}
+${}:={}$ \begin{quantikz}[qz]& \gate{S^x} & \gate{H} & \gate{S^{x^{-1}}} & \gate{H} & \gate{S^x} & \gate{H} & \qw\end{quantikz}}
+
+\caption{The complete relation set of $\aid{Clifford-pres}\ n$
+(\S\ref{sec:cliffordqubit}) in circuit form, at $p = 2$.
+\emph{Reading convention:} diagrams compose in matrix-multiplication
+order --- the \emph{rightmost} gate is applied first --- the mirror
+image of the usual quantum-circuit convention (and of Figure~8
+of~\cite{selinger2015clifford}), so each diagram transcribes its Agda
+word letter for letter, left to right.  Wires are numbered from the
+bottom; every relation may be shifted upward to any wires
+(\aid{cong↑}) and is stated on the fewest wires at which it makes
+sense.  The boxed (R1) is the cocycle: the lift of the quotient
+relator $S^2 = \varepsilon$ picks up the Pauli correction $Z$; all
+other corrections are trivial.  See \S\ref{sec:cliffordqubit} for the
+conventions governing the parameterized and shifted gates.}
+\label{fig:clifford-relations}
+\end{figure}
