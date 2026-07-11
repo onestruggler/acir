@@ -17,7 +17,7 @@ module Examples.Groups.Clifford.Qubit.CliffordAut where
 
 open import Data.Nat using (ℕ)
 open import Data.Nat.Primality using (Prime ; prime?)
-open import Data.Product using (_×_ ; _,_)
+open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Vec using (Vec ; [] ; _∷_)
 open import Relation.Nullary.Decidable using (from-yes)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
@@ -473,3 +473,85 @@ cact-homo ε       x y = Eq.refl
 cact-homo (w • v) x y =
   Eq.trans (Eq.cong (cact w) (cact-homo v x y))
            (cact-homo w (cact v x) (cact v y))
+
+------------------------------------------------------------------------
+-- Each generator has P4-order dividing 4 (S⁴ = H⁴ = CZ⁴ = 1 on P4)
+
+-- Reassociate a left-nested 4-fold phase sum and cancel it.
+collapse4 : (s c0 c1 c2 c3 : Φ) → ((c0 + c1) + c2) + c3 ≡ ₀ →
+            (((s + c0) + c1) + c2) + c3 ≡ s
+collapse4 s c0 c1 c2 c3 hyp = begin
+  (((s + c0) + c1) + c2) + c3
+    ≡⟨ Eq.cong (λ □ → (□ + c2) + c3) (+-assoc s c0 c1) ⟩
+  ((s + (c0 + c1)) + c2) + c3
+    ≡⟨ Eq.cong (_+ c3) (+-assoc s (c0 + c1) c2) ⟩
+  (s + ((c0 + c1) + c2)) + c3
+    ≡⟨ +-assoc s ((c0 + c1) + c2) c3 ⟩
+  s + (((c0 + c1) + c2) + c3)
+    ≡⟨ Eq.cong (s +_) hyp ⟩
+  s + ₀
+    ≡⟨ +-identityʳ s ⟩
+  s ∎
+  where open Eq.≡-Reasoning
+
+g4-id : (g : Gen n) (x : P4Carrier n) →
+        cact1 g (cact1 g (cact1 g (cact1 g x))) ≡ x
+g4-id (gate₁ (H-gen ₀)) (s , (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₀)) (s , (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₀)) (s , (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₀)) (s , (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₁)) (s , (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₁)) (s , (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₁)) (s , (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₁)) (s , (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₂)) (s , (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₂)) (s , (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₂)) (s , (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₂)) (s , (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₃)) (s , (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₃)) (s , (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₃)) (s , (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (H-gen ₃)) (s , (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (S-gen ₀)) (s , (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (S-gen ₀)) (s , (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (S-gen ₀)) (s , (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (S-gen ₀)) (s , (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (S-gen ₁)) (s , (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (S-gen ₁)) (s , (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (S-gen ₁)) (s , (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₁ (S-gen ₁)) (s , (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₀ , ₀) ∷ (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₀ , ₀) ∷ (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₀ , ₀) ∷ (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₀ , ₀) ∷ (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₀ , ₁) ∷ (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₀ , ₁) ∷ (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₀ , ₁) ∷ (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₀ , ₁) ∷ (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₁ , ₀) ∷ (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₁ , ₀) ∷ (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₁ , ₀) ∷ (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₁ , ₀) ∷ (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₁ , ₁) ∷ (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₁ , ₁) ∷ (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₁ , ₁) ∷ (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₀)) (s , (₁ , ₁) ∷ (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₀ , ₀) ∷ (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₀ , ₀) ∷ (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₀ , ₀) ∷ (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₀ , ₀) ∷ (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₀ , ₁) ∷ (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₀ , ₁) ∷ (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₀ , ₁) ∷ (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₀ , ₁) ∷ (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₁ , ₀) ∷ (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₁ , ₀) ∷ (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₁ , ₀) ∷ (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₁ , ₀) ∷ (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₁ , ₁) ∷ (₀ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₁ , ₁) ∷ (₀ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₁ , ₁) ∷ (₁ , ₀) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (gate₂ (CZ-gen ₁)) (s , (₁ , ₁) ∷ (₁ , ₁) ∷ ps) = Eq.cong₂ _,_ (collapse4 s _ _ _ _ Eq.refl) Eq.refl
+g4-id (g ↥) (s , p ∷ ps) =
+  Eq.cong₂ _,_ (Eq.cong proj₁ (g4-id g (s , ps)))
+               (Eq.cong (p ∷_) (Eq.cong proj₂ (g4-id g (s , ps))))
