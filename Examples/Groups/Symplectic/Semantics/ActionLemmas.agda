@@ -62,7 +62,7 @@ lemma-act-CX p@(a , b) q@(c , d) t = begin
   act (H ^ ₃ • CZ • H) ((a , b) ∷ (c , d) ∷ t) ≡⟨ auto ⟩
   act (H ^ ₃ • CZ) ((- b , a) ∷ (c , d) ∷ t) ≡⟨ auto ⟩
   act (H ^ ₃) ((- b , a + c * ₁) ∷ (c , d + - b * ₁) ∷ t) ≡⟨  Eq.cong₂ (\ xx yy -> act (H ^ ₃) ((- b , a + xx) ∷ (c , d + yy) ∷ t)) (*-identityʳ (c)) (*-identityʳ (- b))  ⟩
-  act (H ^ ₃) ((- b , a + c) ∷ (c , d + - b) ∷ t) ≡⟨ lemma-act-cong _ _ (PB.sym (PB.axiom (derived-H ₃))) (((- b , a + c) ∷ (c , d + - b) ∷ t)) ⟩
+  act (H ^ ₃) ((- b , a + c) ∷ (c , d + - b) ∷ t) ≡⟨ lemma-act-cong _ _ (PB.sym (PB.axiom (srel (derived-H ₃)))) (((- b , a + c) ∷ (c , d + - b) ∷ t)) ⟩
   act (H^ ₃) ((- b , a + c) ∷ (c , d + - b) ∷ t) ≡⟨ auto ⟩
   ((a + c , - - b) ∷ (c , d + - b) ∷ t) ≡⟨ Eq.cong (\ xx -> ((a + c , xx) ∷ (c , d + - b) ∷ t)) (-‿involutive b) ⟩
   ((a + c , b) ∷ (c , d + - b) ∷ t) ∎
