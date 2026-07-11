@@ -43,6 +43,7 @@ open Symplectic-Derived-Gen using (Gen)
 
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (P4Carrier)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact)
+open import Examples.Groups.Clifford.Qubit.CliffordAut using (g4-id)
 
 private
   variable
@@ -105,3 +106,49 @@ isMonoidᶜ {n} = record
 
 Clifford-monoid : ℕ → Monoid 0ℓ 0ℓ
 Clifford-monoid n = record { isMonoid = isMonoidᶜ {n} }
+
+------------------------------------------------------------------------
+-- Inverses: reverse the word and cube each generator (g³ = g⁻¹ on P4)
+
+infix 8 _⁻¹ᶜ
+_⁻¹ᶜ : Word (Gen n) → Word (Gen n)
+[ g ]ʷ  ⁻¹ᶜ = [ g ]ʷ • [ g ]ʷ • [ g ]ʷ
+ε       ⁻¹ᶜ = ε
+(w • v) ⁻¹ᶜ = (v ⁻¹ᶜ) • (w ⁻¹ᶜ)
+
+-- cact (w⁻¹ᶜ) cancels cact w on the left (using g4-id at generators).
+invˡ-lemma : (w : Word (Gen n)) (x : P4Carrier n) → cact (w ⁻¹ᶜ) (cact w x) ≡ x
+invˡ-lemma [ g ]ʷ  x = g4-id g x
+invˡ-lemma ε       x = Eq.refl
+invˡ-lemma (w • v) x =
+  Eq.trans (Eq.cong (cact (v ⁻¹ᶜ)) (invˡ-lemma w (cact v x))) (invˡ-lemma v x)
+
+invʳ-lemma : (w : Word (Gen n)) (x : P4Carrier n) → cact w (cact (w ⁻¹ᶜ) x) ≡ x
+invʳ-lemma [ g ]ʷ  x = g4-id g x
+invʳ-lemma ε       x = Eq.refl
+invʳ-lemma (w • v) x =
+  Eq.trans (Eq.cong (cact w) (invʳ-lemma v (cact (w ⁻¹ᶜ) x))) (invʳ-lemma w x)
+
+⁻¹-congᶜ : {w v : Word (Gen n)} → w ≈ᶜ v → (w ⁻¹ᶜ) ≈ᶜ (v ⁻¹ᶜ)
+⁻¹-congᶜ {w = w} {v} w≈v x =
+  Eq.trans (Eq.cong (cact (w ⁻¹ᶜ)) (Eq.sym step1)) (invˡ-lemma w (cact (v ⁻¹ᶜ) x))
+  where
+  step1 : cact w (cact (v ⁻¹ᶜ) x) ≡ x
+  step1 = Eq.trans (w≈v (cact (v ⁻¹ᶜ) x)) (invʳ-lemma v x)
+
+------------------------------------------------------------------------
+-- The Clifford group
+
+open import Algebra.Bundles using (Group)
+open import Algebra.Structures using (IsGroup)
+open import Data.Product using (_,_)
+
+isGroupᶜ : ∀ {n} → IsGroup (_≈ᶜ_ {n}) _•_ ε _⁻¹ᶜ
+isGroupᶜ {n} = record
+  { isMonoid = isMonoidᶜ {n}
+  ; inverse  = (λ w → invˡ-lemma w) , (λ w → invʳ-lemma w)
+  ; ⁻¹-cong  = λ {w} {v} → ⁻¹-congᶜ {w = w} {v}
+  }
+
+Clifford-group : ℕ → Group 0ℓ 0ℓ
+Clifford-group n = record { isGroup = isGroupᶜ {n} }
