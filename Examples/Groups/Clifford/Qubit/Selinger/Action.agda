@@ -40,10 +40,11 @@ open PrimeModulus p-2 p-prime
 
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
   using (module Symplectic-Derived-Gen)
-open Symplectic-Derived-Gen using (Gen ; gate₁ ; gate₂ ; H-gen ; S-gen ; CZ-gen ; S ; H ; CZ)
+open Symplectic-Derived-Gen using (Gen ; gate₁ ; gate₂ ; H-gen ; S-gen ; CZ-gen ; S ; H ; CZ ; _↑ ; _↓)
 
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (P4Carrier ; ι)
-open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; cact1 ; δ)
+open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; cact1 ; δ ; incl)
+open import Word.Base using (_•_)
 open import Examples.Groups.Clifford.Qubit.CliffordAut using (g4-id ; ι-2 ; neg-id ; neg-mul)
 
 private
@@ -109,3 +110,26 @@ c5-sound (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.cong₂ _,_ phase pauli
   pauli = Eq.cong₂ (λ □ ▢ → (a , □) ∷ (a' , ▢) ∷ ps)
             (Eq.trans (+-assoc b (a' * ₁) (a' * ₁)) (Eq.trans (Eq.cong (b +_) (x+x (a' * ₁))) (+-identityʳ b)))
             (Eq.trans (+-assoc b' (a * ₁) (a * ₁)) (Eq.trans (Eq.cong (b' +_) (x+x (a * ₁))) (+-identityʳ b')))
+
+------------------------------------------------------------------------
+-- C6/C7:  S commutes with CZ (either wire).
+
+-- Swap the last two summands: (s + x) + y ≡ (s + y) + x.
+swap-add : ∀ {m} (s x y : ℤ m) → (s + x) + y ≡ (s + y) + x
+swap-add s x y = Eq.trans (+-assoc s x y)
+                 (Eq.trans (Eq.cong (s +_) (+-comm x y))
+                           (Eq.sym (+-assoc s y x)))
+
+-- C6:  S↓·CZ = CZ·S↓.  S on wire 0 is diagonal, hence commutes with CZ;
+-- on the action the two conjugation phases and the two Z-updates just
+-- swap order.
+c6-sound : (x : P4Carrier (₂₊ n)) → cact (S ↓ • CZ) x ≡ cact (CZ • S ↓) x
+c6-sound (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.cong₂ _,_
+  (swap-add s (ι (₁ * a * a')) (incl (₁ * a)))
+  (Eq.cong (λ □ → (a , □) ∷ (a' , b' + a * ₁) ∷ ps) (swap-add b (a' * ₁) (a * ₁)))
+
+-- C7:  S↑·CZ = CZ·S↑.  Same, with the roles of the two wires exchanged.
+c7-sound : (x : P4Carrier (₂₊ n)) → cact (S ↑ • CZ) x ≡ cact (CZ • S ↑) x
+c7-sound (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.cong₂ _,_
+  (swap-add s (ι (₁ * a * a')) (incl (₁ * a')))
+  (Eq.cong (λ □ → (a , b + a' * ₁) ∷ (a' , □) ∷ ps) (swap-add b' (a * ₁) (a' * ₁)))
