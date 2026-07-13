@@ -19,16 +19,16 @@
 
 module Examples.Groups.Clifford.Qubit.Selinger.Action where
 
-open import Data.Nat using (ℕ)
+open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Nat.Primality using (Prime ; prime?)
-open import Data.Product using (_,_)
+open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Data.Vec using (_∷_)
 open import Relation.Nullary.Decidable using (from-yes)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Notations
 open import Zp.ModularArithmetic
-open import Word.Base using (_^_)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
 
 p-2 : ℕ
 p-2 = 0
@@ -45,9 +45,9 @@ open Symplectic-Derived-Gen using (Gen ; gate₁ ; gate₂ ; H-gen ; S-gen ; CZ-
 open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli)
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; cact1 ; δ ; incl)
-open import Word.Base using (_•_)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime using (act)
 open import Examples.Groups.Clifford.Qubit.CliffordAut using (g4-id ; ι-2 ; neg-id ; neg-mul)
-open import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime using (X ; Z)
+open import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime using (X ; Z ; ω)
 
 private
   variable
@@ -323,3 +323,65 @@ c12-sound (s , (a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ ps) = Eq.cong₂ _,_
   (swap-add s (ι (₁ * a * a')) (ι (₁ * a' * a'')))
   (Eq.cong (λ □ → (a , b + a' * ₁) ∷ (a' , □) ∷ (a'' , b'' + a' * ₁) ∷ ps)
            (swap-add b' (a * ₁) (a'' * ₁)))
+
+------------------------------------------------------------------------
+-- Phase additivity, and the Pauli component of cact.
+
+-- The Pauli component of cact w is the phaseless action act w (so it does
+-- not depend on the incoming phase).
+cact-proj₂ : (w : Word (Gen n)) (x : P4Carrier n)
+           → proj₂ (cact w x) ≡ act w (proj₂ x)
+cact-proj₂ [ g ]ʷ  (s , P) = Eq.refl
+cact-proj₂ ε       (s , P) = Eq.refl
+cact-proj₂ (w • v) x =
+  Eq.trans (cact-proj₂ w (cact v x)) (Eq.cong (act w) (cact-proj₂ v x))
+
+pauli-indep : (w : Word (Gen n)) (s : Φ) (P : Pauli n)
+            → proj₂ (cact w (s , P)) ≡ proj₂ (cact w (₀ , P))
+pauli-indep w s P = Eq.trans (cact-proj₂ w (s , P)) (Eq.sym (cact-proj₂ w (₀ , P)))
+
+-- Running cact w from phase s adds s to the phase obtained from 0.
+cact-phase : (w : Word (Gen n)) (s : Φ) (P : Pauli n)
+           → proj₁ (cact w (s , P)) ≡ s + proj₁ (cact w (₀ , P))
+cact-phase [ g ]ʷ s P = Eq.cong (s +_) (Eq.sym (+-identityˡ (δ g P)))
+cact-phase ε       s P = Eq.sym (+-identityʳ s)
+cact-phase (w • v) s P = begin
+  proj₁ (cact w (cact v (s , P)))
+    ≡⟨ cact-phase w (proj₁ (cact v (s , P))) (proj₂ (cact v (s , P))) ⟩
+  proj₁ (cact v (s , P)) + proj₁ (cact w (₀ , proj₂ (cact v (s , P))))
+    ≡⟨ Eq.cong₂ _+_ (cact-phase v s P)
+         (Eq.cong (λ Q → proj₁ (cact w (₀ , Q))) (pauli-indep v s P)) ⟩
+  (s + proj₁ (cact v (₀ , P))) + proj₁ (cact w (₀ , proj₂ (cact v (₀ , P))))
+    ≡⟨ +-assoc s (proj₁ (cact v (₀ , P))) _ ⟩
+  s + (proj₁ (cact v (₀ , P)) + proj₁ (cact w (₀ , proj₂ (cact v (₀ , P)))))
+    ≡⟨ Eq.cong (s +_)
+         (Eq.sym (cact-phase w (proj₁ (cact v (₀ , P))) (proj₂ (cact v (₀ , P))))) ⟩
+  s + proj₁ (cact w (cact v (₀ , P))) ∎
+  where open Eq.≡-Reasoning
+
+------------------------------------------------------------------------
+-- C1:  ω⁸ = 1.  ω = (SH)³ is the global scalar e^{iπ/4}; conjugation by a
+-- scalar is trivial, so cact ω = id.  From the zero phase (fully concrete
+-- in a, b) it reduces to refl; the general phase follows by additivity.
+
+cact-ω₀ : (a b : ℤ ₚ) (ps : Pauli n) → cact ω (₀ , (a , b) ∷ ps) ≡ (₀ , (a , b) ∷ ps)
+cact-ω₀ ₀ ₀ ps = Eq.refl
+cact-ω₀ ₀ ₁ ps = Eq.refl
+cact-ω₀ ₁ ₀ ps = Eq.refl
+cact-ω₀ ₁ ₁ ps = Eq.refl
+
+cact-ω : (x : P4Carrier (₁₊ n)) → cact ω x ≡ x
+cact-ω (s , (a , b) ∷ ps) = Eq.cong₂ _,_
+  (Eq.trans (cact-phase ω s ((a , b) ∷ ps))
+   (Eq.trans (Eq.cong (s +_) (Eq.cong proj₁ (cact-ω₀ a b ps))) (+-identityʳ s)))
+  (Eq.trans (pauli-indep ω s ((a , b) ∷ ps)) (Eq.cong proj₂ (cact-ω₀ a b ps)))
+
+-- C1:  cact ω⁸ = id, by iterating cact-ω.  (w ^ 1 = w is a special case
+-- of the power, so match 0 / 1 / 2+.)
+cact-ω^ : (k : ℕ) (x : P4Carrier (₁₊ n)) → cact (ω ^ k) x ≡ x
+cact-ω^ zero          x = Eq.refl
+cact-ω^ (suc zero)    x = cact-ω x
+cact-ω^ (suc (suc k)) x = Eq.trans (Eq.cong (cact ω) (cact-ω^ (suc k) x)) (cact-ω x)
+
+c1-sound : (x : P4Carrier (₁₊ n)) → cact (ω ^ 8) x ≡ x
+c1-sound = cact-ω^ 8
