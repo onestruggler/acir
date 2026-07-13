@@ -313,3 +313,13 @@ c9-sound {n} (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.trans lhs (Eq.sym rhs)
   rhs : cact (CZ • Z ↓ • X ↑) (s , (a , b) ∷ (a' , b') ∷ ps) ≡ mid
   rhs = Eq.trans (Eq.cong (λ y → cact CZ (cact (Z ↓) y)) (cact-X↑ s a b a' b' ps))
                  (Eq.cong (cact CZ) (cact-Z↓ (s + Q) a b ((a' , b') ∷ ps)))
+
+------------------------------------------------------------------------
+-- C12:  CZ↑·CZ = CZ·CZ↑.  Both CZ's are diagonal, hence commute; on the
+-- action the two phases and the wire-1 Z-update just swap order.
+
+c12-sound : (x : P4Carrier (₃₊ n)) → cact (CZ ↑ • CZ) x ≡ cact (CZ • CZ ↑) x
+c12-sound (s , (a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ ps) = Eq.cong₂ _,_
+  (swap-add s (ι (₁ * a * a')) (ι (₁ * a' * a'')))
+  (Eq.cong (λ □ → (a , b + a' * ₁) ∷ (a' , □) ∷ (a'' , b'' + a' * ₁) ∷ ps)
+           (swap-add b' (a * ₁) (a'' * ₁)))
