@@ -40,7 +40,7 @@ open PrimeModulus p-2 p-prime
 
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
   using (module Symplectic-Derived-Gen)
-open Symplectic-Derived-Gen using (Gen ; gate₁ ; gate₂ ; H-gen ; S-gen ; CZ-gen ; S ; H ; CZ ; _↑ ; _↓)
+open Symplectic-Derived-Gen using (Gen ; gate₁ ; gate₂ ; H-gen ; S-gen ; CZ-gen ; S ; H ; CZ ; ⊤⊥ ; ⊥⊤ ; _↑ ; _↓)
 
 open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli)
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
@@ -385,3 +385,95 @@ cact-ω^ (suc (suc k)) x = Eq.trans (Eq.cong (cact ω) (cact-ω^ (suc k) x)) (ca
 
 c1-sound : (x : P4Carrier (₁₊ n)) → cact (ω ^ 8) x ≡ x
 c1-sound = cact-ω^ 8
+
+-- Phase machinery for lifting phase-0 equalities to all phases.
+cact-lift : (w : Word (Gen n)) (s : Φ) (P : Pauli n)
+          → cact w (s , P) ≡ (s + proj₁ (cact w (₀ , P)) , proj₂ (cact w (₀ , P)))
+cact-lift w s P = Eq.cong₂ _,_ (cact-phase w s P) (pauli-indep w s P)
+
+lift-eq : (u v : Word (Gen n)) (s : Φ) (P : Pauli n)
+        → cact u (₀ , P) ≡ cact v (₀ , P)
+        → cact u (s , P) ≡ cact v (s , P)
+lift-eq u v s P base = begin
+  cact u (s , P)                                              ≡⟨ cact-lift u s P ⟩
+  s + proj₁ (cact u (₀ , P)) , proj₂ (cact u (₀ , P))
+    ≡⟨ Eq.cong₂ (λ q Q → s + q , Q) (Eq.cong proj₁ base) (Eq.cong proj₂ base) ⟩
+  s + proj₁ (cact v (₀ , P)) , proj₂ (cact v (₀ , P))        ≡⟨ Eq.sym (cact-lift v s P) ⟩
+  cact v (s , P) ∎
+  where open Eq.≡-Reasoning
+
+------------------------------------------------------------------------
+-- C13:  ⊤⊥↑·CZ↓·⊥⊤↑ = ⊥⊤↓·CZ↑·⊤⊥↓.  These words contain only H and CZ,
+-- so cact-phase is cheap; the phase-0 identity holds on each of the 64
+-- Pauli basis elements (all refl), and lift-eq lifts it to every phase.
+
+c13-base : (P : Pauli (₃₊ n))
+         → cact (⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑) (₀ , P) ≡ cact (⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓) (₀ , P)
+c13-base ((₀ , ₀) ∷ (₀ , ₀) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₀ , ₀) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₀ , ₀) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₀ , ₀) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₀ , ₁) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₀ , ₁) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₀ , ₁) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₀ , ₁) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₁ , ₀) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₁ , ₀) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₁ , ₀) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₁ , ₀) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₁ , ₁) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₀) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₀ , ₀) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₀ , ₀) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₀ , ₀) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₀ , ₀) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₀ , ₁) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₀ , ₁) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₀ , ₁) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₀ , ₁) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₁ , ₀) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₁ , ₀) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₁ , ₀) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₁ , ₀) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₀ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₀ , ₀) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₀ , ₀) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₀ , ₀) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₀ , ₀) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₀ , ₁) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₀ , ₁) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₀ , ₁) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₀ , ₁) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₁ , ₀) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₁ , ₀) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₁ , ₀) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₁ , ₀) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₁ , ₁) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₀) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₀ , ₀) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₀ , ₀) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₀ , ₀) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₀ , ₀) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₀ , ₁) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₀ , ₁) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₀ , ₁) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₀ , ₁) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₁ , ₀) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₁ , ₀) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₁ , ₀) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₁ , ₀) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps) = Eq.refl
+c13-base ((₁ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps) = Eq.refl
+
+c13-sound : (x : P4Carrier (₃₊ n))
+          → cact (⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑) x ≡ cact (⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓) x
+c13-sound (s , P) = lift-eq (⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑) (⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓) s P (c13-base P)
