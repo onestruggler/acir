@@ -34,14 +34,20 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Clifford.Qubit.Selinger.NormalForm
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
+open import Data.Nat using (zero ; suc)
 open import Data.Fin using (Fin ; toℕ)
 open import Data.Product using (_×_ ; _,_)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≗_)
 
 open import Notations
-open import Word.Base using (Word ; _•_ ; _^_)
+open import Word.Base using (Word ; ε ; _•_ ; _^_)
 
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
-open Symplectic-Derived-Gen using (Gen)
+open Symplectic-Derived-Gen using (Gen ; S ; H ; SH ; srel ; order-SH)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
+  using (act)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime
+  using (lemma-act-cong-ax)
 open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime using (NF)
 -- The realising circuit [ nf ] : NF n → Word (Gen n) (Selinger's N(n)) is
 -- built in Normalization.Section, avoiding the WIP Surjectivity chain.
@@ -68,3 +74,22 @@ ExactNF n = NF n × Fin 8
 -- the first wire, so this needs at least one qubit.)
 ⟦_⟧ᴺ : ExactNF (₁₊ n) → Word (Gen (₁₊ n))
 ⟦ nf , p ⟧ᴺ = nf→word nf • ω ^ toℕ p
+
+------------------------------------------------------------------------
+-- The scalar ωᵖ is invisible to the symplectic (phaseless) action
+
+-- ω = (S·H)³ acts trivially on Pauli operators (relation order-SH).
+act-ω : (x : _) → act (ω {n}) x ≡ x
+act-ω = lemma-act-cong-ax ((S • H) ^ 3) ε (srel order-SH)
+
+-- Hence so does every power ωᵏ (match the 0/1/2+ shape of the word power).
+act-ω^ : (k : ℕ) (x : _) → act (ω {n} ^ k) x ≡ x
+act-ω^ zero          x = Eq.refl
+act-ω^ (suc zero)    x = act-ω x
+act-ω^ (suc (suc k)) x = Eq.trans (Eq.cong (act ω) (act-ω^ (suc k) x)) (act-ω x)
+
+-- Therefore the exact normal form and its symplectic core have the same
+-- action: the ωᵖ layer is exactly the datum the symplectic quotient forgets.
+nf-act-invariant : (nf : NF (₁₊ n)) (p : Fin 8)
+                 → act ⟦ nf , p ⟧ᴺ ≗ act (nf→word nf)
+nf-act-invariant nf p x = Eq.cong (act (nf→word nf)) (act-ω^ (toℕ p) x)
