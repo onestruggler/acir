@@ -47,7 +47,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Symplectic-Derived (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.ExtendedGate.Syntactics (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 

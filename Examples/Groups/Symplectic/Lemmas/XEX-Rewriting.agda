@@ -43,7 +43,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.XEX-Rewriting (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
+module Examples.Groups.Symplectic.Lemmas.XEX-Rewriting (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 
 
@@ -325,7 +325,7 @@ module XEX-Rewriting where
 
 
 module Rewriting-EX (m : ℕ) where
-  open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
+  open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   open Symplectic
   module L0 = Lemmas0 0
   open Rewriting
@@ -333,27 +333,27 @@ module Rewriting-EX (m : ℕ) where
   open Rewriting.Step (step-cong (step-EX {m})) renaming (general-rewrite to rewrite-EX ; multistep to multi-ex-step) public
 
 module Homo (m : ℕ) where
-  open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
+  open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   open Symplectic
   module L0 = Lemmas0 0
 
-  open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime
-  open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
+  open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
   open import Examples.Groups.Symplectic.Cosets p-2 p-prime
   open Lemmas-2Q 0
 
-  open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
-  open import Examples.Groups.Symplectic.Ex-Sym p-2 p-prime
-  open import Examples.Groups.Symplectic.Ex-Sym1 p-2 p-prime
-  open import Examples.Groups.Symplectic.Ex-Sym2 p-2 p-prime
-  open import Examples.Groups.Symplectic.Ex-Sym3 p-2 p-prime
-  open import Examples.Groups.Symplectic.Ex-Sym2n p-2 p-prime
-  open import Examples.Groups.Symplectic.Ex-Sym3n p-2 p-prime
-  open import Examples.Groups.Symplectic.Ex-Sym4n p-2 p-prime
-  open import Examples.Groups.Symplectic.Ex-Sym4n2 p-2 p-prime
+  open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n2 p-2 p-prime
 
-  open import Examples.Groups.Symplectic.Lemma-Comm p-2 p-prime 0
-  open import Examples.Groups.Symplectic.Lemma-Postfix p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm p-2 p-prime 0
+  open import Examples.Groups.Symplectic.Lemmas.Lemma-Postfix p-2 p-prime
   open Lemmas0a
   open Lemmas0a1
   open Lemmas0b
@@ -365,7 +365,7 @@ module Homo (m : ℕ) where
 
 
   open LM2
-  open import Examples.Groups.Symplectic.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
+  open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
 
   -- open Symplectic
   -- open Symplectic-GroupLike

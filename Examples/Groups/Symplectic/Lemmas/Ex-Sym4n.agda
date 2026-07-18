@@ -44,7 +44,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Ex-Sym4n (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
+module Examples.Groups.Symplectic.Lemmas.Ex-Sym4n (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 
 
@@ -55,12 +55,12 @@ private
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym2n p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym3n p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 open Lemmas0a
 open Lemmas0b hiding (lemma-comm-Ex-H')
 
@@ -74,10 +74,10 @@ open import Data.Nat.DivMod
 open import Data.Fin.Properties
 
 
-open import Examples.Groups.Symplectic.Ex-Sym1 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open Lemmas0a1
 
-open import Examples.Groups.Symplectic.Embeding-2n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime
 open Lemmas0b hiding (lemma-comm-Ex-H')
 
 open Duality

@@ -9,7 +9,7 @@
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 open import Data.Nat.Primality
 
-module Examples.Groups.Symplectic.BoxRelations (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
+module Examples.Groups.Symplectic.Lemmas.BoxRelations (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Data.Product using (_,_)
 open import Data.Unit using (tt)
@@ -23,10 +23,10 @@ open import Word.Base as WB
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic
 
-open import Examples.Groups.Symplectic.LM-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 import Examples.Groups.Symplectic.BR.One.A p-2 p-prime 0 as OA
 import Examples.Groups.Symplectic.BR.One.E p-2 p-prime 0 as OE
 import Examples.Groups.Symplectic.BR.Two.L-CZ p-2 p-prime as TLCZ

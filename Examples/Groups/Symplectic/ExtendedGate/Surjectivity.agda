@@ -16,7 +16,7 @@
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)
 
-module Examples.Groups.Symplectic.Surjectivity (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
+module Examples.Groups.Symplectic.ExtendedGate.Surjectivity (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Data.Product using (_,_ ; ∃ ; proj₁ ; proj₂)
 open import Data.Vec using (_∷_ ; [] ; head ; tail)
@@ -33,13 +33,13 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
 open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli ; Pauli1)
-open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open Symplectic-Derived-Gen      using (Gen ; _↑ ; _QRel,_===_)
 open Symplectic-Derived-GroupLike using (grouplike)
-open import Examples.Groups.Symplectic.Semantics.ActionLemmas p-2 p-prime using (NF ; [_]ˡᵐ)
-open import Examples.Groups.Symplectic.Action p-2 p-prime using (act ; act1)
-open import Examples.Groups.Symplectic.Action-Lemmas p-2 p-prime using (lemma-act-cong-ax)
-open import Examples.Groups.Symplectic.NF p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.ActionLemmas p-2 p-prime using (NF ; [_]ˡᵐ)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime using (act ; act1)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime using (lemma-act-cong-ax)
+open import Examples.Groups.Symplectic.ExtendedGate.NF p-2 p-prime
   using (act-nf ; lemma-invnf ; sform-preserving ; lemma-actw-linear)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime
 open Symplectic

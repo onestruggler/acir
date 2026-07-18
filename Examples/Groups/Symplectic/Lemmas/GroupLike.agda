@@ -40,7 +40,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.GroupLike (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Lemmas.GroupLike (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -55,8 +55,8 @@ private
     n : ℕ
 
 
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym2n p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
 open Symplectic
 open Lemmas-Sym
 

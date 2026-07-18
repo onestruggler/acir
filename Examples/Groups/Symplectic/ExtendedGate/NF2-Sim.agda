@@ -40,7 +40,7 @@ open import Zp.Fermats-little-theorem
 
 open import Zp.ModularArithmetic
 
-module Examples.Groups.Symplectic.NF2-Sim
+module Examples.Groups.Symplectic.ExtendedGate.NF2-Sim
   (p-2 : ℕ)
   (p-prime : Prime (suc (₁₊ p-2)))
   (let open PrimeModulus' p-2 p-prime hiding (act))
@@ -54,18 +54,18 @@ open Primitive-Root-Modp' g* g-gen
 
 
 
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic-Simplified p-2 p-prime g* g-gen
-import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime as ND
-open import Examples.Groups.Symplectic.Lemmas-2Qupit p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
+import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime as ND
+open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open Lemmas-2Q 2
 open Symplectic
-open import Examples.Groups.Symplectic.NF1 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
 open Normal-Form1 renaming (⟦_⟧₁ to ⟦_⟧₁' ; ⟦_⟧ₘ₊ to ⟦_⟧ₘ₊') using ()
-open import Examples.Groups.Symplectic.NF1-Sim p-2 p-prime g* g-gen
-open import Examples.Groups.Symplectic.Action p-2 p-prime renaming (act to dact)
-open import Examples.Groups.Symplectic.Action-Sym p-2 p-prime g* g-gen
+open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sim p-2 p-prime g* g-gen
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime renaming (act to dact)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Sym p-2 p-prime g* g-gen
 
 module LM2 where
 
@@ -105,7 +105,7 @@ module LM2 where
 
   open GroupMorphisms
 
-  import Examples.Groups.Symplectic.NF2 p-2 p-prime as LM2T 
+  import Examples.Groups.Symplectic.ExtendedGate.NF2 p-2 p-prime as LM2T 
   module LM2P = LM2T.LM2
   open LM2P renaming (⟦_⟧₂ to ⟦_⟧₂' ; ⟦_⟧ₚ to ⟦_⟧ₚ') using ()
 
@@ -192,7 +192,7 @@ module LM2 where
     open PB ((₂₊ n) QRel,_===₃_)
 
 
-  open import Examples.Groups.Symplectic.Action-Lemmas p-2 p-prime
+  open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime
 
   Theorem-LM2 :
 

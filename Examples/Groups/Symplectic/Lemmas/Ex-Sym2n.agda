@@ -43,7 +43,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Ex-Sym2n (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Lemmas.Ex-Sym2n (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -51,10 +51,10 @@ module Examples.Groups.Symplectic.Ex-Sym2n (p-2 : ℕ) (p-prime : Prime (2+ p-2)
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym2 p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
 open Lemmas0a
 
 
@@ -196,7 +196,7 @@ lemma-HCZHS^k {n} k@(₂₊ k') = begin
   open Sym0-Rewriting (₁₊ n)
   open Pattern-Assoc
 
-open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 
 lemma-semi-HH↑-CZ^k' : let open PB ((₂₊ n) QRel,_===_) in ∀ k ->
 
@@ -204,7 +204,7 @@ lemma-semi-HH↑-CZ^k' : let open PB ((₂₊ n) QRel,_===_) in ∀ k ->
 
 lemma-semi-HH↑-CZ^k' {n} k = lemma-semi-HH↑-CZ^k k
   where
-  open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
   open Q2.Lemmas-2Q n
 
 
@@ -228,7 +228,7 @@ lemma-semi-HH↑-CZ^k'-ℕ {n} k = begin
   open Commuting-Symplectic n
   open Symplectic-GroupLike
   open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
-  open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
   open Q2.Lemmas-2Q n
 
 
@@ -246,7 +246,7 @@ lemma-XCS^k {n} k = bbc (HH ↑) ε auxn
   open Commuting-Symplectic n
   open Symplectic-GroupLike
   open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
-  open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
   open Q2.Lemmas-2Q n
   open import Algebra.Properties.Ring (+-*-ring p-2)
 
@@ -288,7 +288,7 @@ lemma-XCS^k-ℕ {n} k = bbc (HH ↑) ε aux0
   open Commuting-Symplectic n
   open Symplectic-GroupLike
   open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
-  open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
   open Q2.Lemmas-2Q n
   open import Algebra.Properties.Ring (+-*-ring p-2)
 
@@ -363,7 +363,7 @@ lemma-CXS^k {n} k = {!!}
   open Commuting-Symplectic n
   open Symplectic-GroupLike
   open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
-  open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
   open Q2.Lemmas-2Q n
   open import Algebra.Properties.Ring (+-*-ring p-2)
 
@@ -394,7 +394,7 @@ lemma-CXS^k-ℕ k = by-duality' (lemma-XCS^k-ℕ k) aux1 aux2
   open Commuting-Symplectic 0
   open Symplectic-GroupLike
   open Basis-Change _ ((₂₊ 0) QRel,_===_) grouplike
-  open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
   open Q2.Lemmas-2Q 0
   open import Algebra.Properties.Ring (+-*-ring p-2)
   -k = p-1 Nat.* k
@@ -430,7 +430,7 @@ lemma-CXS-ℕ = begin
   open Commuting-Symplectic 0
   open Symplectic-GroupLike
   open Basis-Change _ ((₂₊ 0) QRel,_===_) grouplike
-  open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
   open Q2.Lemmas-2Q 0
   open import Algebra.Properties.Ring (+-*-ring p-2)
   -k = p-1 Nat.* k
@@ -1180,7 +1180,7 @@ lemma-comm-Ex-H' {n} = begin
     S ∎
 
 
-open import Examples.Groups.Symplectic.Embeding-2n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime
 open Lemmas0b hiding (lemma-comm-Ex-H')
 
 lemma-comm-Ex-H↑'-n : let open PB ((₂₊ n) QRel,_===_) in
@@ -1202,7 +1202,7 @@ lemma-comm-Ex-CZ-n : let open PB ((₂₊ n) QRel,_===_) in
   CZ • Ex ≈ Ex • CZ
 lemma-comm-Ex-CZ-n {n} = by-emb n lemma-comm-Ex-CZ
 
-open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as L2Q
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as L2Q
 open L2Q.Lemmas-2Q 0
 
 
@@ -1211,7 +1211,7 @@ lemma-order-Ex-n : let open PB ((₂₊ n) QRel,_===_) in
 lemma-order-Ex-n {n} = by-emb n lemma-order-Ex
 
 
-open import Examples.Groups.Symplectic.Ex-Sym1 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open Lemmas0a1
 
 open import Algebra.Properties.Ring (+-*-ring p-2)

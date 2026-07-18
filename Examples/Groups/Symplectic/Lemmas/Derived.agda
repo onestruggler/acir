@@ -43,7 +43,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Derived (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Lemmas.Derived (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -52,9 +52,9 @@ module Examples.Groups.Symplectic.Derived (p-2 : ℕ) (p-prime : Prime (2+ p-2))
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Zp.Mod-Lemmas p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 
 

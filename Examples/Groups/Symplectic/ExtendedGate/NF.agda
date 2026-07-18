@@ -22,7 +22,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.NF (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.ExtendedGate.NF (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -31,22 +31,22 @@ module Examples.Groups.Symplectic.NF (p-2 : ℕ) (p-prime : Prime (2+ p-2))  whe
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open Symplectic-Derived-Gen renaming (M to ZM)
-open import Examples.Groups.Symplectic.NF1 p-2 p-prime
-open import Examples.Groups.Symplectic.Semantics.ActionLemmas p-2 p-prime
---open import Examples.Groups.Symplectic.LM-Lemmas p-2 p-prime
-open import Examples.Groups.Symplectic.LM-Lemmas2 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.ActionLemmas p-2 p-prime
+--open import Examples.Groups.Symplectic.ExtendedGate.LM-Lemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.LM-Lemmas2 p-2 p-prime
 open Normal-Form1
 
 private
   variable
     n : ℕ
     
-open import Examples.Groups.Symplectic.Action p-2 p-prime
-open import Examples.Groups.Symplectic.Action-Lemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Symplectic.NF2 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2 p-2 p-prime
 open LM2
 open ≡-Reasoning
 open Eq

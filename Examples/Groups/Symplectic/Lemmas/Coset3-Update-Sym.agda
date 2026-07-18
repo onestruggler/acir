@@ -38,35 +38,35 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Coset3-Update-Sym (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Lemmas.Coset3-Update-Sym (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas-2Qupit p-2 p-prime
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2
 open Symplectic
 open Lemmas-Sym
-open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym3 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym4 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym5 p-2 p-prime hiding (module L0)
+open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym5 p-2 p-prime hiding (module L0)
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 
-open import Examples.Groups.Symplectic.Lemma-Comm p-2 p-prime 0
-open import Examples.Groups.Symplectic.Completeness1-Sym p-2 p-prime renaming (module Completeness to Cp1)
-open import Examples.Groups.Symplectic.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to Cp2)
+open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm p-2 p-prime 0
+open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to Cp1)
+open import Examples.Groups.Symplectic.Lemmas.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to Cp2)
 open Lemmas0a
 open Lemmas0a1
 open Lemmas0b
 open Lemmas0c
 
 open LM2
-open import Examples.Groups.Symplectic.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
+open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
 
 
 module Completeness where
@@ -85,16 +85,16 @@ module Completeness where
   open import Examples.Groups.Symplectic.Proofs.P6 p-2 p-prime
   open import Examples.Groups.Symplectic.Proofs.P7 p-2 p-prime hiding (module L0)
   open import Examples.Groups.Symplectic.Proofs.P8 p-2 p-prime
-  open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as TQ
-  open import Examples.Groups.Symplectic.Lemma-Postfix p-2 p-prime
-  open import Examples.Groups.Symplectic.Derived p-2 p-prime
-  open import Examples.Groups.Symplectic.Derived2 p-2 p-prime
---  open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime as NF1
+  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as TQ
+  open import Examples.Groups.Symplectic.Lemmas.Lemma-Postfix p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Derived p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Derived2 p-2 p-prime
+--  open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime as NF1
 --  open NF1.Normal-Form1 using ()
   
   open TQ.Lemmas-2Q 0
   open Duality
-  import Examples.Groups.Symplectic.Duality p-2 p-prime as ND
+  import Examples.Groups.Symplectic.Lemmas.Duality p-2 p-prime as ND
   open Lemmas0 1
   module L0 = Lemmas0 0
   open import Algebra.Properties.Ring (+-*-ring p-2)

@@ -46,7 +46,7 @@ open import Data.Nat.Primality
 open import Notations
 import Circuit.Base
 
-module Examples.Groups.Symplectic.Symplectic (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Syntactics (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime

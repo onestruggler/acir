@@ -1,48 +1,30 @@
-{-# OPTIONS  --safe #-}
-{-# OPTIONS --termination-depth=2 #-}
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- The action on Simplified circuits, via the Sim ≅ Derived isomorphism
+------------------------------------------------------------------------
 
-open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
-import Relation.Binary.Reasoning.Setoid as SR
-import Relation.Binary.PropositionalEquality as Eq
+{-# OPTIONS --safe --termination-depth=2 #-}
 
-
-open import Function using (_∘_ ; id)
-open import Function.Definitions using (Injective)
-
-open import Data.Product using (_,_ ; proj₁ ; ∃)
+open import Data.Fin using (toℕ ; fromℕ<)
+open import Data.Fin.Properties using (fromℕ<-cong ; fromℕ<-toℕ ; toℕ-fromℕ< ; toℕ<n)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
-open import Agda.Builtin.Nat using (_-_)
 import Data.Nat as Nat
-open import Data.Bool hiding (_<_ ; _≤_)
-open import Data.List hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
-open import Data.Vec hiding ([_])
-open import Data.Fin hiding (_+_ ; _-_)
-
-open import Data.Maybe
-open import Data.Sum using ([_,_] ; [_,_]′)
-
-open import Word.Base as WB hiding (wfoldl)
-open import Word.Properties
+open import Data.Nat.DivMod
+open import Data.Nat.Primality using (Prime)
+open import Data.Product using (_,_ ; proj₁ ; ∃)
+open import Function using (_∘_ ; id)
+open import Notations
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Normalization.Reidemeister-Schreier as RS
-open import Notations
-module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
-
-open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
-
-
-open import Data.Fin using (toℕ ; suc ; fromℕ)
-open import Data.Fin.Properties using (toℕ-fromℕ ; toℕ-fromℕ< ; fromℕ<-toℕ ; toℕ<n ; fromℕ<-cong)
-open import Presentation.GroupLike
 open import Presentation.Tactic.Rewriting hiding ([_])
-open import Data.Nat.Primality
+import Relation.Binary.PropositionalEquality as Eq
+open import Relation.Binary.PropositionalEquality using (_≡_)
+import Relation.Binary.Reasoning.Setoid as SR
+open import Word.Base hiding (wfoldl)
 open import Zp.Fermats-little-theorem
-
-
 open import Zp.ModularArithmetic
-module Examples.Groups.Symplectic.Action-Sym
+module Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Sym
   (p-2 : ℕ)
   (p-prime : Prime (suc (₁₊ p-2)))
   (let open PrimeModulus' p-2 p-prime hiding (act))
@@ -55,53 +37,29 @@ private
   variable
     n : ℕ
 
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime as SD
-open import Examples.Groups.Symplectic.Symplectic-Simplified p-2 p-prime g* g-gen
-open import Examples.Groups.Symplectic.Lemmas-2Qupit p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime as SD
+open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
+open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
 open Lemmas-2Q 2 hiding (lemma-CZ^k-%)
 open Symplectic
 open Simplified-Relations
 
 open import Examples.Groups.Pauli.Semantics p-2 p-prime
-open import Examples.Groups.Symplectic.Iso-Sym-Derived p-2 p-prime hiding (module G1 ; module G2)
+open import Examples.Groups.Symplectic.ExtendedGate.Iso-Sym-Derived p-2 p-prime hiding (module G1 ; module G2)
 open Iso
-open import Algebra.Morphism.Construct.Composition
 
-
-open Symplectic renaming (Gen to Gen₁ ; _QRel,_===_ to _QRel,_===₁_) using ()
-open Sim renaming (_QRel,_===_ to _QRel,_===₂_) using ()
 open SymDerived renaming (Gen to Gen₃ ; _QRel,_===_ to _QRel,_===₃_) using ()
-
-open Symplectic-GroupLike renaming (grouplike to grouplike₁) using ()
-open Symplectic-Sim-GroupLike renaming (grouplike to grouplike₂) using ()
-open Symplectic-Derived-GroupLike renaming (grouplike to grouplike₃) using ()
-
-
-open import Algebra.Bundles using (Group)
-open import Algebra.Morphism.Structures using (module GroupMorphisms)
-
-open GroupMorphisms
-
-Theorem-Sim-iso-Der : ∀ {n} ->
-  let
-  module G1 = Group-Lemmas (n QRel,_===₁_) grouplike₁
-  module G2 = Group-Lemmas (n QRel,_===₂_) grouplike₂
-  module G3 = Group-Lemmas (n QRel,_===₃_) grouplike₃
-  in
-  IsGroupIsomorphism (Group.rawGroup G2.•-ε-group) (Group.rawGroup G3.•-ε-group) ((f'* {n}) ∘ id)
-Theorem-Sim-iso-Der {n}  = isGroupIsomorphism PB.trans Theorem-Sym-iso-Sim' Theorem-Sym-iso-SymDerived
 
 der : Word (Gen₂ n) -> Word (Gen₃ n)
 der {n} = ((f'* {n}) ∘ id)
 
-open import Examples.Groups.Symplectic.Action p-2 p-prime renaming (act to dact) using ()
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime renaming (act to dact) using ()
 act : ∀ {n} → Word (Gen n) → Pauli n → Pauli n
 act {n} w ps = dact (der w) ps
 
 
 module D = SymDerived
-open import Data.Nat.DivMod
 
 
 lemma-der' : let open PB ((₁₊ n) QRel,_===₃_) in
@@ -121,7 +79,7 @@ lemma-der'' {n} k = begin
   der (S ^ k) ≈⟨ lemma-der' k ⟩
   D.S ^ k ≈⟨ lemma-S^k-% k ⟩
   D.S ^ (k Nat.% p) ≈⟨ refl' (Eq.cong (D.S ^_) (Eq.sym ( toℕ-fromℕ< (m%n<n k p)))) ⟩
-  D.S ^ toℕ k' ≈⟨ sym (axiom (D._QRel,_===_.derived-S k')) ⟩
+  D.S ^ toℕ k' ≈⟨ sym (axiom (D.srel (D.derived-S k'))) ⟩
   D.S^ k' ∎
   where
   open PB ((₁₊ n) QRel,_===₃_)
@@ -155,10 +113,10 @@ lemma-derH : ∀ k ->
   open PB ((₁₊ n) QRel,_===₃_)
   in
   der (H^ k) ≈ D.H^ k
-lemma-derH {n} ₀ = PB.sym (PB.axiom (D._QRel,_===_.derived-H ₀))
+lemma-derH {n} ₀ = PB.sym (PB.axiom (D.srel (D.derived-H ₀)))
 lemma-derH {n} ₁ = PB.refl
-lemma-derH {n} ₂ = PB.sym (PB.axiom (D._QRel,_===_.derived-H ₂))
-lemma-derH {n} ₃ = PB.sym (PB.axiom (D._QRel,_===_.derived-H ₃))
+lemma-derH {n} ₂ = PB.sym (PB.axiom (D.srel (D.derived-H ₂)))
+lemma-derH {n} ₃ = PB.sym (PB.axiom (D.srel (D.derived-H ₃)))
 
 
 
@@ -189,7 +147,7 @@ lemma-derCZ'' {n} k = begin
   der (CZ ^ k) ≈⟨ lemma-derCZ' k ⟩
   D.CZ ^ k ≈⟨ lemma-CZ^k-% k ⟩
   D.CZ ^ (k Nat.% p) ≈⟨ refl' (Eq.cong (D.CZ ^_) (Eq.sym ( toℕ-fromℕ< (m%n<n k p)))) ⟩
-  D.CZ ^ toℕ k' ≈⟨ sym (axiom (D._QRel,_===_.derived-CZ k')) ⟩
+  D.CZ ^ toℕ k' ≈⟨ sym (axiom (D.srel (D.derived-CZ k'))) ⟩
   D.CZ^ k' ∎
   where
   open PB ((₂₊ n) QRel,_===₃_)

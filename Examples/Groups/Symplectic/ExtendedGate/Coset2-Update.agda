@@ -40,7 +40,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Coset2-Update (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.ExtendedGate.Coset2-Update (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -48,16 +48,16 @@ module Examples.Groups.Symplectic.Coset2-Update (p-2 : ℕ) (p-prime : Prime (2+
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas-2Qupit p-2 p-prime
-open import Examples.Groups.Symplectic.NF2 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2 p-2 p-prime
 open Lemmas-2Q 2
 open Symplectic-Derived-Gen
-open import Examples.Groups.Symplectic.NF1 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
 open Normal-Form1
 open Action
 open LM2
-open import Examples.Groups.Symplectic.Completeness1 p-2 p-prime renaming (module Completeness to CP1) using ()
+open import Examples.Groups.Symplectic.ExtendedGate.Completeness1 p-2 p-prime renaming (module Completeness to CP1) using ()
 
 
 module Completeness where

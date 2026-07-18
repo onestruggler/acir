@@ -24,7 +24,7 @@ open import Presentation.GroupLike
 open import Data.Fin.Properties using (toℕ-fromℕ ; toℕ-fromℕ<)
 open import Data.Nat.DivMod using (_%_ ; _/_ ; m≡m%n+[m/n]*n ; m%n<n)
 import Data.Nat.Properties as NP
-import Examples.Groups.Symplectic.Symplectic as NS
+import Examples.Groups.Symplectic.Syntactics as NS
 open import Data.Nat.Primality
 
 open import Zp.ModularArithmetic
@@ -51,7 +51,7 @@ import Examples.Groups.Symplectic.Clifford.Iso p-3 p-prime g* g-gen as ISO
 import Examples.Groups.Symplectic.Clifford.Iso2 p-3 p-prime g* g-gen as ISO2
 
 
-import Examples.Groups.Symplectic.Symplectic p-2 p-prime as NSym
+import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
 import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
 
 

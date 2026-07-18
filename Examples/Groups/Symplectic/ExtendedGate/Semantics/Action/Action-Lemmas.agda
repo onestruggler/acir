@@ -43,7 +43,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Action-Lemmas (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -51,9 +51,10 @@ module Examples.Groups.Symplectic.Action-Lemmas (p-2 : ℕ) (p-prime : Prime (2+
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime
-open import Examples.Groups.Symplectic.Action p-2 p-prime 
-open import Examples.Groups.Symplectic.NF1 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime 
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.ZpCalculation p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
 open Normal-Form1
 
 
@@ -65,128 +66,6 @@ open import Algebra.Properties.Ring (+-*-ring p-2)
 open Eq
 
 --     - (- (- b + (b' + a'')) + (- b + a''))
-aux2o : ∀ a' a'' -> - (- (- a' + - a'') + - a') + - (- a' + - a'') ≡ a'
-aux2o a' a'' = begin
-  - (- (- a' + - a'') + - a') + - (- a' + - a'') ≡⟨ cong (_+ - (- a' + - a'')) (sym (-‿+-comm (- (- a' + - a'')) (- a'))) ⟩
-  (- - (- a' + - a'') + - - a') + - (- a' + - a'') ≡⟨ cong (_+ - (- a' + - a'')) (+-comm (- - (- a' + - a'')) (- - a')) ⟩
-  (- - a' + - - (- a' + - a'')) + - (- a' + - a'') ≡⟨ +-assoc (- - a') (- - (- a' + - a'')) (- (- a' + - a'')) ⟩
-  - - a' + (- - (- a' + - a'') + - (- a' + - a'')) ≡⟨ cong (- - a' +_) (+-inverseˡ (- (- a' + - a''))) ⟩
-  - - a' + ₀ ≡⟨ +-identityʳ (- - a') ⟩
-  - - a' ≡⟨ -‿involutive a' ⟩
-  a' ∎
-  where
-  open ≡-Reasoning
-
-
-
- -- --- - (- (- a' + - a) + - a') + - (- a' + - a)
-aux30 : ∀ b'' b' a ->  - (- (- b'' + (b' + a)) + (- b'' + a)) ≡ b'
-aux30 b'' b' a = begin
-  - (- (- b'' + (b' + a)) + (- b'' + a)) ≡⟨ (sym (-‿+-comm (- (- b'' + (b' + a))) ((- b'' + a)))) ⟩
-  - - (- b'' + (b' + a)) + - (- b'' + a) ≡⟨ cong (_+ - (- b'' + a)) (-‿involutive ((- b'' + (b' + a)))) ⟩
-  (- b'' + (b' + a)) + - (- b'' + a) ≡⟨ cong (_+ - (- b'' + a)) (sym (+-assoc (- b'') b' a)) ⟩
-  (- b'' + b' + a) + - (- b'' + a) ≡⟨ cong (_+ - (- b'' + a)) (trans (cong (_+ a)  (+-comm (- b'') b')) (+-assoc b' (- b'') a)) ⟩
-  b' + (- b'' + a) + - (- b'' + a) ≡⟨ +-assoc b' ((- b'' + a)) (- (- b'' + a)) ⟩
-  b' + ((- b'' + a) + - (- b'' + a)) ≡⟨ cong (b' +_) (+-inverseʳ ((- b'' + a))) ⟩
-  b' + ₀ ≡⟨ +-identityʳ b' ⟩
-  b' ∎
-  where
-  open ≡-Reasoning
-  
-    -- -              - (- (- b + (b' + a'')) + (- b + a'')) + (- (- b + (b' + a'')) + a'')
-aux5o : ∀ b'' b' a -> - (- (- b'' + (b' + a)) + (- b'' + a)) + (- (- b'' + (b' + a)) + a) ≡ b''
-aux5o b'' b' a = begin
-  - (- (- b'' + (b' + a)) + (- b'' + a)) + (- (- b'' + (b' + a)) + a) ≡⟨ cong (_+ (- (- b'' + (b' + a)) + a)) (sym (-‿+-comm (- (- b'' + (b' + a))) ((- b'' + a)))) ⟩
-  (- - (- b'' + (b' + a)) + - (- b'' + a)) + (- (- b'' + (b' + a)) + a) ≡⟨ cong (_+ (- (- b'' + (b' + a)) + a)) (+-comm (- - (- b'' + (b' + a))) (- (- b'' + a))) ⟩
-  (- (- b'' + a) + - - (- b'' + (b' + a))) + (- (- b'' + (b' + a)) + a) ≡⟨ trans (+-assoc (- (- b'' + a)) (- - (- b'' + (b' + a))) ((- (- b'' + (b' + a)) + a))) (cong (- (- b'' + a) +_) (sym (+-assoc (- - (- b'' + (b' + a))) (- (- b'' + (b' + a))) a))) ⟩
-  - (- b'' + a) + ((- - (- b'' + (b' + a)) + - (- b'' + (b' + a))) + a) ≡⟨ cong (\ xx -> - (- b'' + a) + (xx + a)) (+-inverseˡ (- (- b'' + (b' + a)))) ⟩
-  - (- b'' + a) + (₀ + a) ≡⟨ cong₂ _+_ (sym (-‿+-comm (- b'') a)) (+-identityˡ a) ⟩
-  - - b'' + - a + a ≡⟨ +-assoc (- - b'') (- a) a ⟩
-  - - b'' + (- a + a) ≡⟨ cong₂ _+_ (-‿involutive b'') (+-inverseˡ a) ⟩
-  b'' + ₀ ≡⟨ +-identityʳ b'' ⟩
-  b'' ∎
-  where
-  open ≡-Reasoning
-
-
-aux40b : ∀ a' a'' -> - (- a' + - a'') + - a' ≡ a''
-aux40b a' a'' = begin
-  - (- a' + - a'') + - a' ≡⟨ cong (_+ - a') (sym (-‿+-comm (- a') (- a''))) ⟩
-  (- - a' + - - a'') + - a' ≡⟨ cong (_+ - a') (+-comm (- - a') (- - a'')) ⟩
-  (- - a'' + - - a') + - a' ≡⟨ +-assoc (- - a'') (- - a') (- a') ⟩
-  - - a'' + (- - a' + - a') ≡⟨ cong (- - a'' +_) (+-inverseˡ (- a')) ⟩
-  - - a'' + ₀ ≡⟨ +-identityʳ (- - a'') ⟩
-  - - a'' ≡⟨ -‿involutive a'' ⟩
-  a'' ∎
-  where
-  open ≡-Reasoning
-
-
-aux4ag : ∀ b a b' a' -> (b + a * - ₁) + - (b' + a' * - ₁) ≡ (b + a') + - (b' + a) * ₁
-aux4ag b a b' a' = begin
-  (b + a * - ₁) + - (b' + a' * - ₁) ≡⟨ Eq.cong₂ _+_ (Eq.cong (b +_) (Eq.trans (*-comm a (- ₁)) (-1*x≈-x a))) (Eq.sym (-‿+-comm b' (a' * - ₁))) ⟩
-  (b + - a) + (- b' + - (a' * - ₁)) ≡⟨ Eq.cong (\ xx -> (b + - a) + (- b' + xx)) (-‿distribʳ-* a' (- ₁)) ⟩
-  (b + - a) + (- b' + (a' * - - ₁)) ≡⟨ Eq.cong (λ xx → b + - a + (- b' + a' * xx)) (-‿involutive ₁) ⟩
-  (b + - a) + (- b' + (a' * ₁)) ≡⟨ Eq.cong (λ xx → b + - a + (- b' + xx)) (*-identityʳ a') ⟩
-  (b + - a) + (- b' + (a')) ≡⟨ Eq.cong ((b + - a) +_) (+-comm (- b') a') ⟩
-  b + - a + (a' + - b') ≡⟨ +-assoc b (- a) ((a' + - b')) ⟩
-  b + (- a + (a' + - b')) ≡⟨ Eq.cong (b +_) (Eq.sym (+-assoc (- a) a' (- b'))) ⟩
-  b + (- a + a' + - b') ≡⟨ Eq.cong (b +_) (Eq.cong (_+ - b') (+-comm (- a) a')) ⟩
-  b + (a' + - a + - b') ≡⟨ Eq.cong (b +_) (+-assoc a' (- a) (- b')) ⟩
-  b + (a' + (- a + - b')) ≡⟨ Eq.sym (+-assoc b a' (- a + - b')) ⟩
-  (b + a') + (- a + - b') ≡⟨ Eq.cong ((b + a') +_) (+-comm (- a) (- b')) ⟩
-  (b + a') + (- b' + - a) ≡⟨ Eq.cong (b + a' +_) (-‿+-comm b' a) ⟩
-  (b + a') + - (b' + a) ≡⟨ Eq.cong (b + a' +_) (Eq.sym (*-identityʳ (- (b' + a)))) ⟩
-  (b + a') + - (b' + a) * ₁ ∎
-  where
-  open ≡-Reasoning
-
-
-aux4c : ∀ b' a' a ->  - (b' + a' * - ₁) + - ((a' + a) + - (b' + a' * - ₁) * - ₁) * - ₁ ≡ a' + a * ₁
-aux4c b' a' a = begin
-  - (b' + a' * - ₁) + - ((a' + a) + - (b' + a' * - ₁) * - ₁) * - ₁ ≡⟨ cong (- (b' + a' * - ₁) +_) (Eq.trans (*-comm (- ((a' + a) + - (b' + a' * - ₁) * - ₁)) (- ₁)) (-1*x≈-x (- ((a' + a) + - (b' + a' * - ₁) * - ₁)))) ⟩
-  - (b' + a' * - ₁) + - - ((a' + a) + - (b' + a' * - ₁) * - ₁) ≡⟨ cong (- (b' + a' * - ₁) +_) (-‿involutive (((a' + a) + - (b' + a' * - ₁) * - ₁))) ⟩
-  - (b' + a' * - ₁) + ((a' + a) + - (b' + a' * - ₁) * - ₁) ≡⟨ cong (- (b' + a' * - ₁) +_) (cong ((a' + a) +_) (Eq.trans (*-comm (- (b' + a' * - ₁)) (- ₁)) (-1*x≈-x (- (b' + a' * - ₁))))) ⟩
-  - (b' + a' * - ₁) + ((a' + a) + - - (b' + a' * - ₁)) ≡⟨ cong (- (b' + a' * - ₁) +_) (cong ((a' + a) +_) (-‿involutive ((b' + a' * - ₁)))) ⟩
-  - (b' + a' * - ₁) + ((a' + a) + (b' + a' * - ₁)) ≡⟨ cong (- (b' + a' * - ₁) +_) (+-comm (a' + a) (b' + a' * - ₁)) ⟩
-  - (b' + a' * - ₁) + ((b' + a' * - ₁) + (a' + a)) ≡⟨ sym (+-assoc (- (b' + a' * - ₁)) ((b' + a' * - ₁)) (a' + a)) ⟩
-  - (b' + a' * - ₁) + (b' + a' * - ₁) + (a' + a) ≡⟨ cong (_+ (a' + a)) (+-inverseˡ ((b' + a' * - ₁))) ⟩
-  ₀ + (a' + a) ≡⟨ +-identityˡ (a' + a) ⟩
-  (a' + a) ≡⟨ Eq.cong (a' +_) (Eq.sym (*-identityʳ a)) ⟩
-  a' + a * ₁ ∎
-  where
-  open ≡-Reasoning
-
-
---      - (- (- b + (b' + a'')) + (- b + a''))
-aux30o : ∀ b'' b' a ->  - (- (- b'' + (b' + a)) + (- b'' + a)) ≡ b'
-aux30o b'' b' a = begin
-  - (- (- b'' + (b' + a)) + (- b'' + a)) ≡⟨ (sym (-‿+-comm (- (- b'' + (b' + a))) ((- b'' + a)))) ⟩
-  - - (- b'' + (b' + a)) + - (- b'' + a) ≡⟨ cong (_+ - (- b'' + a)) (-‿involutive ((- b'' + (b' + a)))) ⟩
-  (- b'' + (b' + a)) + - (- b'' + a) ≡⟨ cong (_+ - (- b'' + a)) (sym (+-assoc (- b'') b' a)) ⟩
-  (- b'' + b' + a) + - (- b'' + a) ≡⟨ cong (_+ - (- b'' + a)) (trans (cong (_+ a)  (+-comm (- b'') b')) (+-assoc b' (- b'') a)) ⟩
-  b' + (- b'' + a) + - (- b'' + a) ≡⟨ +-assoc b' ((- b'' + a)) (- (- b'' + a)) ⟩
-  b' + ((- b'' + a) + - (- b'' + a)) ≡⟨ cong (b' +_) (+-inverseʳ ((- b'' + a))) ⟩
-  b' + ₀ ≡⟨ +-identityʳ b' ⟩
-  b' ∎
-  where
-  open ≡-Reasoning
-
---      ((b'' + a') + (- a' + - a)) + (- (- a' + - a) + - a')
-aux1o : ∀ b a' a'' -> ((b + a') + (- a' + - a'')) + (- (- a' + - a'') + - a') ≡ b
-aux1o b a' a''  = begin
-  ((b + a') + (- a' + - a'')) + (- (- a' + - a'') + - a') ≡⟨ +-assoc ((b + a')) ((- a' + - a'')) (- (- a' + - a'') + - a') ⟩
-  (b + a') + ((- a' + - a'') + (- (- a' + - a'') + - a')) ≡⟨ cong (b + a' +_) (sym (+-assoc ((- a' + - a'')) (- (- a' + - a'')) (- a'))) ⟩
-  (b + a') + (((- a' + - a'') + - (- a' + - a'')) + - a') ≡⟨ cong ((b + a') +_) (cong (_+ - a') (+-inverseʳ ((- a' + - a'')))) ⟩
-  (b + a') + (₀ + - a') ≡⟨ cong ((b + a') +_) (+-identityˡ (- a')) ⟩
-  (b + a') + (- a') ≡⟨ +-assoc b a' (- a') ⟩
-  b + (a' + - a') ≡⟨ cong (b +_) (+-inverseʳ {n = p} a') ⟩
-  b + ₀ ≡⟨ +-identityʳ b ⟩
-  b ∎
-  where
-  open ≡-Reasoning
-
-
 lemma-act-cong-ax : ∀ {n} w v -> let open PB (n QRel,_===_) in
 
   w === v ->
@@ -385,7 +264,7 @@ lemma-act-cong-ax {n} w v (srel selinger-c10) (x@(a , b) ∷ (a' , b') ∷ t) = 
   act (CZ • (H ↑)) ((a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> act (CZ • (H ↑)) ((a , b + xx) ∷ (a' , b' + yy) ∷ t)) (*-identityʳ a') (*-identityʳ a) ⟩
   act (CZ • (H ↑)) ((a , b + a') ∷ (a' , b' + a) ∷ t) ≡⟨ auto ⟩
   act (CZ) ((a , b + a') ∷ (- (b' + a) , a') ∷ t) ≡⟨ auto ⟩
-  ((a , (b + a') + - (b' + a) * ₁) ∷ (- (b' + a) , a' + a * ₁) ∷ t) ≡⟨ cong₃ (\ xx yy zz -> ((a , xx) ∷ (yy , zz) ∷ t)) (Eq.sym (aux4ag b a b' a')) (Eq.cong -_ (Eq.sym aux4b)) (Eq.sym (aux4c b' a' a)) ⟩
+  ((a , (b + a') + - (b' + a) * ₁) ∷ (- (b' + a) , a' + a * ₁) ∷ t) ≡⟨ cong₃ (\ xx yy zz -> ((a , xx) ∷ (yy , zz) ∷ t)) (Eq.sym (mul-neg1-swap b a b' a')) (Eq.cong -_ (Eq.sym aux4b)) (Eq.sym (mul-neg1-recover b' a' a)) ⟩
   ((a , (b + a * - ₁) + - (b' + a' * - ₁)) ∷ (- ((a' + a) + - (b' + a' * - ₁) * - ₁) , - (b' + a' * - ₁) + - ((a' + a) + - (b' + a' * - ₁) * - ₁) * - ₁ ) ∷ t) ≡⟨ cong₃ (\ xx yy zz -> ((a , (b + a * - ₁) + xx) ∷ (- ((a' + yy) + - (b' + a' * - ₁) * - ₁) , - (b' + a' * - ₁) + - ((a' + zz) + - (b' + a' * - ₁) * - ₁) * - ₁ ) ∷ t)) (Eq.sym (*-identityʳ (- (b' + a' * - ₁)))) (Eq.sym (*-identityʳ a)) (Eq.sym (*-identityʳ a)) ⟩
   ((a , (b + a * - ₁) + - (b' + a' * - ₁) * ₁) ∷ (- ((a' + a * ₁) + - (b' + a' * - ₁) * - ₁) , - (b' + a' * - ₁) + - ((a' + a * ₁) + - (b' + a' * - ₁) * - ₁) * - ₁ ) ∷ t) ≡⟨ Eq.cong (\ xx -> ((a , (b + a * xx) + - (b' + a' * xx) * ₁) ∷ (- ((a' + a * ₁) + - (b' + a' * xx) * xx) , - (b' + a' * xx) + - ((a' + a * ₁) + - (b' + a' * xx) * xx) * xx ) ∷ t)) (Eq.sym aux2) ⟩
   ((a , (b + a * p-1') + - (b' + a' * p-1') * ₁) ∷ (- ((a' + a * ₁) + - (b' + a' * p-1') * p-1') , - (b' + a' * p-1') + - ((a' + a * ₁) + - (b' + a' * p-1') * p-1') * p-1' ) ∷ t) ≡⟨ Eq.sym (Eq.trans (lemma-act-↑ S⁻¹ ((a , (b + a * p-1') + - (b' + a' * p-1') * ₁)) ((- ((a' + a * ₁) + - (b' + a' * p-1') * p-1') , - (b' + a' * p-1') ) ∷ t)) (Eq.cong ((a , (b + a * p-1') + - (b' + a' * p-1') * ₁) ∷_) (lemma-act-Sᵏ p-1 ((- (a' + a * ₁ + - (b' + a' * p-1') * p-1') , - (b' + a' * p-1')) ∷ t)))) ⟩
@@ -457,13 +336,13 @@ lemma-act-cong-ax {n} w v (srel selinger-c11) (x@(a , b) ∷ (a' , b') ∷ t) = 
   aux4b : - (b + a * - ₁) + - ((a + a' * ₁) + - (b + a * - ₁) * - ₁) * - ₁ ≡ a + a' * ₁
   aux4b = begin
     - (b + a * - ₁) + - ((a + a' * ₁) + - (b + a * - ₁) * - ₁) * - ₁ ≡⟨ cong (\ xx -> - (b + a * - ₁) + - ((a + xx) + - (b + a * - ₁) * - ₁) * - ₁ ) (*-identityʳ a') ⟩
-    - (b + a * - ₁) + - ((a + a') + - (b + a * - ₁) * - ₁) * - ₁ ≡⟨ aux4c b a a' ⟩
+    - (b + a * - ₁) + - ((a + a') + - (b + a * - ₁) * - ₁) * - ₁ ≡⟨ mul-neg1-recover b a a' ⟩
     a + a' * ₁ ∎
 
   aux4d : (b' + a' * - ₁) + - (b + a * - ₁) * ₁ ≡ (b' + a) + - (b + a') * ₁
   aux4d = begin
     (b' + a' * - ₁) + - (b + a * - ₁) * ₁ ≡⟨ cong ((b' + a' * - ₁) +_) (*-identityʳ (- (b + a * - ₁))) ⟩
-    (b' + a' * - ₁) + - (b + a * - ₁) ≡⟨ aux4ag b' a' b a ⟩
+    (b' + a' * - ₁) + - (b + a * - ₁) ≡⟨ mul-neg1-swap b' a' b a ⟩
     (b' + a) + - (b + a') * ₁ ∎
 
 lemma-act-cong-ax {n} w v (srel selinger-c12) (x@(a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
@@ -526,7 +405,7 @@ lemma-act-cong-ax {n} w v (srel selinger-c14) ((a , b) ∷ (a' , b') ∷ (a'' , 
   act (((⊤⊥ ↑) • (CZ ↓)) • ((⊤⊥ ↑) • (CZ ↓)) • (⊤⊥ ↑) • (CZ ↓)) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ≡⟨ cong (act (((⊤⊥ ↑) • (CZ ↓)) • ((⊤⊥ ↑) • (CZ ↓)))) (lemma-act-⊤⊥↑CZ↓ a b a' b' a'' b'' t) ⟩
   act (((⊤⊥ ↑) • (CZ ↓)) • ((⊤⊥ ↑) • (CZ ↓))) ((a , b + a') ∷ (- a' + - a'' , - b'') ∷ (a' , - b'' + (b' + a)) ∷ t) ≡⟨ cong (act (⊤⊥ ↑ • CZ ↓)) (lemma-act-⊤⊥↑CZ↓ a (b + a') (- a' + - a'') (- b'') a' (- b'' + (b' + a)) t) ⟩
   act (((⊤⊥ ↑) • (CZ ↓))) ((a , (b + a') + (- a' + - a'')) ∷ (- (- a' + - a'') + - a' , - (- b'' + (b' + a))) ∷ (- a' + - a'' , - (- b'' + (b' + a)) + (- b'' + a)) ∷ t) ≡⟨ lemma-act-⊤⊥↑CZ↓ a ((b + a') + (- a' + - a'')) (- (- a' + - a'') + - a') (- (- b'' + (b' + a))) (- a' + - a'') (- (- b'' + (b' + a)) + (- b'' + a)) t ⟩
-  ((a , ((b + a') + (- a' + - a'')) + (- (- a' + - a'') + - a')) ∷ (- (- (- a' + - a'') + - a') + - (- a' + - a'') , - (- (- b'' + (b' + a)) + (- b'' + a))) ∷ (- (- a' + - a'') + - a' , - (- (- b'' + (b' + a)) + (- b'' + a)) + (- (- b'' + (b' + a)) + a)) ∷ t) ≡⟨ cong₃ (\ xx yy zz -> ((a , xx) ∷ (yy , zz) ∷ (- (- a' + - a'') + - a' , - (- (- b'' + (b' + a)) + (- b'' + a)) + (- (- b'' + (b' + a)) + a)) ∷ t)) aux1 aux2 (aux30 b'' b' a) ⟩
+  ((a , ((b + a') + (- a' + - a'')) + (- (- a' + - a'') + - a')) ∷ (- (- (- a' + - a'') + - a') + - (- a' + - a'') , - (- (- b'' + (b' + a)) + (- b'' + a))) ∷ (- (- a' + - a'') + - a' , - (- (- b'' + (b' + a)) + (- b'' + a)) + (- (- b'' + (b' + a)) + a)) ∷ t) ≡⟨ cong₃ (\ xx yy zz -> ((a , xx) ∷ (yy , zz) ∷ (- (- a' + - a'') + - a' , - (- (- b'' + (b' + a)) + (- b'' + a)) + (- (- b'' + (b' + a)) + a)) ∷ t)) aux1 aux2 (recover-b' b'' b' a) ⟩
   ((a , b) ∷ (a' , b') ∷ (- (- a' + - a'') + - a' , - (- (- b'' + (b' + a)) + (- b'' + a)) + (- (- b'' + (b' + a)) + a)) ∷ t) ≡⟨ cong₂ (\ xx yy -> ((a , b) ∷ (a' , b') ∷ (xx , yy) ∷ t)) aux40 aux5 ⟩
   (a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t ≡⟨ auto ⟩
   act ε ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ∎
@@ -591,8 +470,8 @@ lemma-act-cong-ax {n} w v (srel selinger-c15) ((a , b) ∷ (a' , b') ∷ (a'' , 
   act (((⊥⊤ ↓) • (CZ ↑)) • ((⊥⊤ ↓) • (CZ ↑)) • (⊥⊤ ↓) • (CZ ↑)) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ≡⟨ cong (act (((⊥⊤ ↓) • (CZ ↑)) • ((⊥⊤ ↓) • (CZ ↑)))) (lemma-act-⊥⊤↓CZ↑ a b a' b' a'' b'' t) ⟩
   act (((⊥⊤ ↓) • (CZ ↑)) • ((⊥⊤ ↓) • (CZ ↑))) ((a' , - b + (b' + a'')) ∷ (- a' + - a , - b) ∷ (a'' , b'' + a') ∷ t) ≡⟨ cong (act (((⊥⊤ ↓) • (CZ ↑)))) (lemma-act-⊥⊤↓CZ↑ a' (- b + (b' + a'')) (- a' + - a) (- b) a'' (b'' + a') t) ⟩
   act (((⊥⊤ ↓) • (CZ ↑))) ((- a' + - a , - (- b + (b' + a'')) + (- b + a'')) ∷ (- (- a' + - a) + - a' , - (- b + (b' + a''))) ∷ (a'' , (b'' + a') + (- a' + - a)) ∷ t) ≡⟨ lemma-act-⊥⊤↓CZ↑ (- a' + - a) (- (- b + (b' + a'')) + (- b + a'')) (- (- a' + - a) + - a') (- (- b + (b' + a''))) a'' ((b'' + a') + (- a' + - a)) t ⟩
-  ((- (- a' + - a) + - a' , - (- (- b + (b' + a'')) + (- b + a'')) + (- (- b + (b' + a'')) + a'')) ∷ (- (- (- a' + - a) + - a') + - (- a' + - a) , - (- (- b + (b' + a'')) + (- b + a''))) ∷ (a'' , ((b'' + a') + (- a' + - a)) + (- (- a' + - a) + - a')) ∷ t) ≡⟨ cong₃ (\ xx yy zz -> (xx , yy) ∷ (zz , - (- (- b + (b' + a'')) + (- b + a''))) ∷ (a'' , ((b'' + a') + (- a' + - a)) + (- (- a' + - a) + - a')) ∷ t) (aux40b a' a) (aux5o b b' a'') (aux2o a' a) ⟩
-  (a , b) ∷ (a' , - (- (- b + (b' + a'')) + (- b + a''))) ∷ (a'' , ((b'' + a') + (- a' + - a)) + (- (- a' + - a) + - a')) ∷ t ≡⟨ cong₂ (\ xx yy -> (a , b) ∷ (a' , xx) ∷ (a'' , yy) ∷ t ) (aux30o b b' a'') (aux1o') ⟩
+  ((- (- a' + - a) + - a' , - (- (- b + (b' + a'')) + (- b + a'')) + (- (- b + (b' + a'')) + a'')) ∷ (- (- (- a' + - a) + - a') + - (- a' + - a) , - (- (- b + (b' + a'')) + (- b + a''))) ∷ (a'' , ((b'' + a') + (- a' + - a)) + (- (- a' + - a) + - a')) ∷ t) ≡⟨ cong₃ (\ xx yy zz -> (xx , yy) ∷ (zz , - (- (- b + (b' + a'')) + (- b + a''))) ∷ (a'' , ((b'' + a') + (- a' + - a)) + (- (- a' + - a) + - a')) ∷ t) (recover-a'' a' a) (recover-b'' b b' a'') (recover-a' a' a) ⟩
+  (a , b) ∷ (a' , - (- (- b + (b' + a'')) + (- b + a''))) ∷ (a'' , ((b'' + a') + (- a' + - a)) + (- (- a' + - a) + - a')) ∷ t ≡⟨ cong₂ (\ xx yy -> (a , b) ∷ (a' , xx) ∷ (a'' , yy) ∷ t ) (recover-b' b b' a'') (aux1o') ⟩
   act ε ((a , b) ∷ (a' ,  b') ∷ (a'' , b'') ∷ t) ∎
   where
   open ≡-Reasoning

@@ -20,7 +20,7 @@
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)
 
-module Examples.Groups.Symplectic.PushMScz (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
+module Examples.Groups.Symplectic.Normalization.Pushing.PushMScz (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Data.Product using (_,_ ; ∃)
 open import Data.Vec using (_∷_ ; [])
@@ -30,16 +30,16 @@ open import Relation.Binary.PropositionalEquality using (_≡_)
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
 open Lemmas-Sym using (lemma-comm-Sᵏ-w↑)
-open import Examples.Groups.Symplectic.LM-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Symplectic.Pushing.DS p-2 p-prime using (aux-DS↑)
+open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime using (aux-DS↑)
 open import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime
   using (lemma-dir-and-vd') renaming (dir-of to ddcz-dir ; vd'-of to ddcz-vd')
-open import Examples.Groups.Symplectic.BoxRelations p-2 p-prime
-open Two using (D←H-S↑-S-CZ)
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
+  using (module Lemmas-2Q)
 
 open import Notations
 open import Word.Base using (Word ; _•_ ; ε)
@@ -112,18 +112,22 @@ push-E-S^ {n} e k = begin
   pf = Eq.trans (Eq.cong (- e +_) (Eq.sym (-‿involutive k))) (-‿+-comm e (- k))
 
 ------------------------------------------------------------------------
--- CZ through a single a = 0 D box: absorbed, b ↦ b − 1, no direction.
--- (b is split only to force dir-of/d'-of of the unified D relation to
--- reduce.)
+-- CZ through a single a = 0 D box, at arbitrary width (₂₊ n): absorbed,
+-- b ↦ b − 1, no direction.  Since [ (₀ , b) ]ᵈ = Ex • CZ^(-b), this is
+-- pure CZ-power arithmetic and holds at any width.
 
-D-CZ-a0 : ∀ (b : ℤ ₚ) →
-  let open PB (2 QRel,_===_) in [ (₀ , b) ]ᵈ • CZ ≈ [ (₀ , b + - ₁) ]ᵈ
-D-CZ-a0 ₀        = trans (D←H-S↑-S-CZ (₀ , ₀) CZ-gen (λ ())) simp
-  where open PB (2 QRel,_===_) ; open PP (2 QRel,_===_)
-        simp = trans (cright left-unit) left-unit
-D-CZ-a0 (₁₊ b') = trans (D←H-S↑-S-CZ (₀ , ₁₊ b') CZ-gen (λ ())) simp
-  where open PB (2 QRel,_===_) ; open PP (2 QRel,_===_)
-        simp = trans (cright left-unit) left-unit
+D-CZ-a0 : ∀ {n} (b : ℤ ₚ) →
+  let open PB ((₂₊ n) QRel,_===_) in [ (₀ , b) ]ᵈ • CZ ≈ [ (₀ , b + - ₁) ]ᵈ
+D-CZ-a0 {n} b = begin
+  [ (₀ , b) ]ᵈ • CZ        ≈⟨ assoc ⟩
+  Ex • (CZ^ (- b) • CZ)    ≈⟨ cright (lemma-CZ^k+l (- b) ₁) ⟩
+  Ex • CZ^ (- b + ₁)       ≈⟨ cright (refl' (Eq.cong CZ^ arith)) ⟩
+  Ex • CZ^ (- (b + - ₁))   ∎
+  where
+  open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_) ; open SR word-setoid
+  open Lemmas-2Q n using (lemma-CZ^k+l)
+  arith : - b + ₁ ≡ - (b + - ₁)
+  arith = Eq.trans (Eq.cong (- b +_) (Eq.sym (-‿involutive ₁))) (-‿+-comm b (- ₁))
 
 -- CZ through the width-2 M box M 2 = E × one (a = 0) D box.
 push-M-CZ-M2-a0 : ∀ (e : E) (b : ℤ ₚ) →

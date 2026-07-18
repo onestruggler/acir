@@ -39,7 +39,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Lemma-Comm-n (p-2 : ℕ) (p-prime : Prime (2+ p-2)) (n : ℕ)  where
+module Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n (p-2 : ℕ) (p-prime : Prime (2+ p-2)) (n : ℕ)  where
 
 
 
@@ -47,20 +47,20 @@ module Examples.Groups.Symplectic.Lemma-Comm-n (p-2 : ℕ) (p-prime : Prime (2+ 
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas-2Qupit p-2 p-prime
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
 open Lemmas-2Q 2
 open Symplectic
 open Lemmas-Sym
 
-open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open Lemmas0a
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 
 open LM2
-open import Examples.Groups.Symplectic.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
+open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
 
 open PB ((₂₊ n) QRel,_===_)
 open PP ((₂₊ n) QRel,_===_)
@@ -236,7 +236,7 @@ aux-comm-CZ^a-S^b↑' a b = begin
   S ↑  ^ b • CZ ^ a ≈⟨ (cleft refl' (aux-↑ S (b))) ⟩
   (S ^ b) ↑ • CZ ^ a ∎
 
-open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym
 
 aux-comm-CX-S^k↑ : ∀ k -> CX • S^ k ↑ ≈ S^ k ↑ • CX
 aux-comm-CX-S^k↑ k = begin

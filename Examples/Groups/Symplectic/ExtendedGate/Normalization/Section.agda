@@ -22,19 +22,19 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Normalization.Section (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.ExtendedGate.Normalization.Section (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open Symplectic-Derived-Gen renaming (M to ZM)
-open import Examples.Groups.Symplectic.NF1 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime public
 open Normal-Form1
 
-open import Examples.Groups.Symplectic.NF2 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2 p-2 p-prime
 open LM2
 
 private

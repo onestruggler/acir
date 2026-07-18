@@ -36,7 +36,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Ex-Rewriting (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Lemmas.Ex-Rewriting (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -44,16 +44,16 @@ module Examples.Groups.Symplectic.Ex-Rewriting (p-2 : ℕ) (p-prime : Prime (2+ 
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic
-open import Examples.Groups.Symplectic.Ex-Sym2 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
 open Lemmas0b
-open import Examples.Groups.Symplectic.Ex-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open Lemmas0a
-open import Examples.Groups.Symplectic.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym2n p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym3n p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym4n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n p-2 p-prime
 open Lemmas0a1
 
 module Ex-Rewriting where

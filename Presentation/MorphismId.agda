@@ -19,7 +19,7 @@ open import Word.Base
 open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open import Presentation.Reidemeister-Schreier hiding (module Star-Congruence)
+open import Normalization.Reidemeister-Schreier
 
 module Presentation.MorphismId {A : Set} (Γ : WRel A) (Δ : WRel A) where
 
@@ -31,7 +31,7 @@ open PP Δ renaming (•-ε-monoid to m₂ ; word-setoid to ws₂)
 open PB
 
 
-lemma-id* : ∀ {B : Set} {w : Word B} -> (([_]ʷ ∘ id) *) w ≡ w
+lemma-id* : ∀ {B : Set} {w : Word B} -> (([_]ʷ ∘ id) ʷ) w ≡ w
 lemma-id* {B} {[ x ]ʷ} = Eq.refl
 lemma-id* {B} {ε} = Eq.refl
 lemma-id* {B} {w • w₁} = Eq.cong₂ _•_ lemma-id* lemma-id*
@@ -89,11 +89,11 @@ module StarMonomorphism
   where
 
 
-  g-wd : {u t : Word A} → u ===₂ t → (g *) u ≈₁ (g *) t
+  g-wd : {u t : Word A} → u ===₂ t → (g ʷ) u ≈₁ (g ʷ) t
   g-wd {u} {t} eq rewrite lemma-id* {w = u} | lemma-id* {w = t} = g-well-defined eq
   
 
-  g-linv : (x : A) → [ x ]ʷ ≈₁ (g *) (f x)
+  g-linv : (x : A) → [ x ]ʷ ≈₁ (g ʷ) (f x)
   g-linv x rewrite lemma-id* {w = f x} = _≈₁_.refl
 
 
@@ -102,9 +102,9 @@ module StarMonomorphism
   open Reidemeister-Schreier-Simplified f g g-wd g-linv
 
   id-inj : Injective  _≈₁_  _≈₂_ id
-  id-inj {x} {y} eq = f*-inj eq'
+  id-inj {x} {y} eq = fʷ-inj eq'
     where
-    eq' : (f *) x ≈₂ (g *) y
+    eq' : (f ʷ) x ≈₂ (g ʷ) y
     eq' =  _≈₂_.trans (refl'₂ lemma-id*) ( _≈₂_.trans eq ( _≈₂_.sym (refl'₂ lemma-id*)))
 
   isMonoidMonomorphism : IsMonoidMonomorphism id
@@ -118,15 +118,15 @@ module StarIsomorphism
   (g-well-defined : ∀ {u t : Word A} -> u ===₂ t -> id u ≈₁ id t)
   where
 
-  f-linv : (x : A) → [ x ]ʷ ≈₂ (f *) (g x)
+  f-linv : (x : A) → [ x ]ʷ ≈₂ (f ʷ) (g x)
   f-linv x rewrite lemma-id* {w = f x} = _≈₂_.refl
   
-  f-wd : {u t : Word A} → u ===₁ t → (g *) u ≈₂ (g *) t
+  f-wd : {u t : Word A} → u ===₁ t → (g ʷ) u ≈₂ (g ʷ) t
   f-wd {u} {t} eq rewrite lemma-id* {w = u} | lemma-id* {w = t} = f-well-defined eq
 
   open StarMonomorphism f-well-defined g-well-defined 
   open Star-Injective-Simplified Δ Γ
-  open Reidemeister-Schreier-Simplified g f f-wd f-linv renaming (g*-surj to f*-surj)
+  open Reidemeister-Schreier-Simplified g f f-wd f-linv renaming (gʷ-surj to fʷ-surj)
 
   id-surj : Surjective _≈₁_ _≈₂_ id
   id-surj y = y , claim
@@ -151,8 +151,8 @@ module GroupMorphs
        (group-like₁ : Grouplike _===₁_)
        (group-like₂ : Grouplike _===₂_)
        where
-  open Group-Lemmas A _===₁_ group-like₁ renaming (•-ε-group to •-ε-group₁)
-  open Group-Lemmas A _===₂_ group-like₂ renaming (•-ε-group to •-ε-group₂ ; lemma-left-inverse-unique to lemma-left-inverse-unique₂ ; lemma-cong-inv to lemma-cong-inv₂)
+  open Group-Lemmas _===₁_ group-like₁ renaming (•-ε-group to •-ε-group₁)
+  open Group-Lemmas _===₂_ group-like₂ renaming (•-ε-group to •-ε-group₂ ; inverseˡ-unique to lemma-left-inverse-unique₂ ; ⁻¹-cong to lemma-cong-inv₂)
   
   open GroupMorphisms (Group.rawGroup •-ε-group₁) (Group.rawGroup •-ε-group₂)
 
@@ -197,10 +197,10 @@ module GroupMorphs
     open StarGroupHomomorphism f-well-defined
     open Star-Injective-Simplified Γ Δ
     
-    f-linv : (x : A) → [ x ]ʷ ≈₂ (f *) (g x)
+    f-linv : (x : A) → [ x ]ʷ ≈₂ (f ʷ) (g x)
     f-linv x rewrite lemma-id* {w = f x} = _≈₂_.refl
 
-    f-wd : {u t : Word A} → u ===₁ t → (g *) u ≈₂ (g *) t
+    f-wd : {u t : Word A} → u ===₁ t → (g ʷ) u ≈₂ (g ʷ) t
     f-wd {u} {t} eq rewrite lemma-id* {w = u} | lemma-id* {w = t} = f-well-defined eq
 
     open StarMonomorphism f-well-defined g-well-defined 
@@ -221,10 +221,10 @@ module GroupMorphs
     (g-well-defined : ∀ {u t : Word A} -> u ===₂ t -> id u ≈₁ id t)
     where
 
-    f-linv : (x : A) → [ x ]ʷ ≈₂ (f *) (g x)
+    f-linv : (x : A) → [ x ]ʷ ≈₂ (f ʷ) (g x)
     f-linv x rewrite lemma-id* {w = f x} = _≈₂_.refl
 
-    f-wd : {u t : Word A} → u ===₁ t → (g *) u ≈₂ (g *) t
+    f-wd : {u t : Word A} → u ===₁ t → (g ʷ) u ≈₂ (g ʷ) t
     f-wd {u} {t} eq rewrite lemma-id* {w = u} | lemma-id* {w = t} = f-well-defined eq
 
     open StarGroupMonomorphism f-well-defined g-well-defined 

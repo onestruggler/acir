@@ -60,8 +60,8 @@ open import Examples.Groups.Symplectic.Clifford.Clifford-Lemmas p-3 p-prime g* g
 
 
 
-import Examples.Groups.Symplectic.Symplectic p-2 p-prime as NSym
-import Examples.Groups.Symplectic.Symplectic-Simplified p-2 p-prime g* g-gen as NSim
+import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
+import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 --module Sym = NSym.Symplectic
 --module Sim = NSim.Simplified-Relations
 import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
@@ -91,7 +91,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     let open PB (SemiDirect._QRel,_===_ (₂₊ m)) using (_≈_) in
     (w SemiDirect.↑) • SemiDirect.H ≈ SemiDirect.H • (w SemiDirect.↑)
   lemma-w↑H [ inj₁ xz ]ʷ = PB.sym (PB.axiom (mid (comm (xz XZ.↥) Sym.H-gen)))
-  lemma-w↑H [ inj₂ sm ]ʷ = PB.axiom (right Sim.comm-H)
+  lemma-w↑H [ inj₂ sm ]ʷ = PB.axiom (right (Sim.comm₁ Sym.H-gate _))
   lemma-w↑H ε = PB.trans PB.left-unit (PB.sym PB.right-unit)
   lemma-w↑H (u • v) = PB.trans PB.assoc (PB.trans (PB.cong PB.refl (lemma-w↑H v)) (PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (lemma-w↑H u) PB.refl) PB.assoc)))
 
@@ -99,7 +99,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     let open PB (SemiDirect._QRel,_===_ (₃₊ m)) using (_≈_) in
     (w SemiDirect.↑ SemiDirect.↑) • SemiDirect.CZ ≈ SemiDirect.CZ • (w SemiDirect.↑ SemiDirect.↑)
   lemma-w↑↑CZ [ inj₁ xz ]ʷ = PB.sym (PB.axiom (mid (comm (xz XZ.↥ XZ.↥) Sym.CZ-gen)))
-  lemma-w↑↑CZ [ inj₂ sm ]ʷ = PB.axiom (right Sim.comm-CZ)
+  lemma-w↑↑CZ [ inj₂ sm ]ʷ = PB.axiom (right (Sim.comm₂ Sym.CZ-gate _))
   lemma-w↑↑CZ ε = PB.trans PB.left-unit (PB.sym PB.right-unit)
   lemma-w↑↑CZ (u • v) = PB.trans PB.assoc (PB.trans (PB.cong PB.refl (lemma-w↑↑CZ v)) (PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (lemma-w↑↑CZ u) PB.refl) PB.assoc)))
 
@@ -107,7 +107,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     let open PB (SemiDirect._QRel,_===_ (₂₊ m)) using (_≈_) in
     (w SemiDirect.↑) • SemiDirect.S ≈ SemiDirect.S • (w SemiDirect.↑)
   lemma-w↑S [ inj₁ xz ]ʷ = PB.sym (PB.axiom (mid (comm (xz XZ.↥) Sym.S-gen)))
-  lemma-w↑S [ inj₂ sm ]ʷ = PB.axiom (right Sim.comm-S)
+  lemma-w↑S [ inj₂ sm ]ʷ = PB.axiom (right (Sim.comm₁ Sym.S-gate _))
   lemma-w↑S ε = PB.trans PB.left-unit (PB.sym PB.right-unit)
   lemma-w↑S (u • v) = PB.trans PB.assoc (PB.trans (PB.cong PB.refl (lemma-w↑S v)) (PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (lemma-w↑S u) PB.refl) PB.assoc)))
 
@@ -219,7 +219,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     zp : SemiDirect.Z ^ p ≈ ε
     zp = trans (refl' (Eq.sym (SemiDirect.lemma-[]ₗ^k XZ.Z p))) (axiom (left XZ.order-Z))
     sp : SemiDirect.S ^ p ≈ ε
-    sp = trans (refl' (Eq.sym (SemiDirect.lemma-[]ᵣ^k Sym.S p))) (axiom (right Sim.order-S))
+    sp = trans (refl' (Eq.sym (SemiDirect.lemma-[]ᵣ^k Sym.S p))) (axiom (right (Sim.srel Sim.order-S)))
     sp' : SemiDirect.S • SemiDirect.S ^ (p-1) ≈ ε
     sp' = trans (sym (^-+ SemiDirect.S 1 (p-1))) sp
     H⁴' : (SemiDirect.H • SemiDirect.H) • (SemiDirect.H • SemiDirect.H) ≈ ε
@@ -485,7 +485,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     sp : SemiDirect.S ^ p ≈ ε
     sp = begin
       SemiDirect.S ^ p  ≡⟨ Eq.sym (SemiDirect.lemma-[]ᵣ^k Sym.S p) ⟩
-      [ Sym.S ^ p ]ᵣ    ≈⟨ axiom (right Sim.order-S) ⟩
+      [ Sym.S ^ p ]ᵣ    ≈⟨ axiom (right (Sim.srel Sim.order-S)) ⟩
       ε ∎
     zk^p : (SemiDirect.Z ^ k) ^ p ≈ ε
     zk^p = begin
@@ -498,7 +498,7 @@ module Iso-Inverse-Direction (n : ℕ) where
   h-well-defined {₁₊ n} order-H = begin
     (h *) (H ^ 2)            ≡⟨ lemma-f*-w^n {f = h} {w = H} 2 ⟩
     (h *) H ^ 2              ≡⟨ Eq.sym (SemiDirect.lemma-[]ᵣ^k Sym.H 2) ⟩
-    [ Sym.H ^ 2 ]ᵣ          ≈⟨ axiom (right Sim.order-H) ⟩
+    [ Sym.H ^ 2 ]ᵣ          ≈⟨ axiom (right (Sim.srel Sim.order-H)) ⟩
     [ Sim.M₋₁ {n} ]ᵣ        ≈⟨ sym (h-M {n} -'₁) ⟩
     (h *) (M -'₁) ∎
     where
@@ -509,7 +509,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     (h *) (Mg^ k)                       ≡⟨ lemma-f*-w^n {f = h} {w = Mg {n}} (toℕ k) ⟩
     (h *) (Mg {n}) ^ toℕ k              ≈⟨ ^-cong ((h *) (Mg {n})) ([ Sim.Mg {n} ]ᵣ) (toℕ k) (h-Mg {n}) ⟩
     [ Sim.Mg {n} ]ᵣ ^ toℕ k            ≡⟨ Eq.sym (SemiDirect.lemma-[]ᵣ^k (Sim.Mg {n}) (toℕ k)) ⟩
-    [ Sim.Mg {n} ^ toℕ k ]ᵣ            ≈⟨ axiom (right (Sim.M-power k)) ⟩
+    [ Sim.Mg {n} ^ toℕ k ]ᵣ            ≈⟨ axiom (right (Sim.srel (Sim.M-power k))) ⟩
     [ Sym.M (g^ k) ]ᵣ                  ≈⟨ sym (h-M {n} (g^ k)) ⟩
     (h *) (M (g^ k)) ∎
     where
@@ -521,7 +521,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     (h *) (Mg • 𝑠)
       ≈⟨ cong (h-Mg {n}) (hs {n}) ⟩
     [ Sim.Mg {n} ]ᵣ • [ Sym.S ]ᵣ
-      ≈⟨ axiom (right Sim.semi-MS) ⟩
+      ≈⟨ axiom (right (Sim.srel Sim.semi-MS)) ⟩
     [ Sym.S ^ toℕ (g * g) ]ᵣ • [ Sim.Mg {n} ]ᵣ
       ≈⟨ cong (trans (refl' (SemiDirect.lemma-[]ᵣ^k Sym.S (toℕ (g * g)))) (sym (hs-pow (toℕ (g * g))))) (sym (h-Mg {n})) ⟩
     (h *) (𝑠^ (g * g) • Mg) ∎
@@ -791,7 +791,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     bareM : ([ Sim.Mg {n} ]ᵣ) SemiDirect.↑ • SemiDirect.CZ ≈ SemiDirect.CZ ^ (toℕ g) • ([ Sim.Mg {n} ]ᵣ) SemiDirect.↑
     bareM = begin
       ([ Sim.Mg {n} ]ᵣ) SemiDirect.↑ • SemiDirect.CZ           ≡⟨ Eq.cong (_• SemiDirect.CZ) (SemiDirect.lemma-[]ᵣ-↑ (Sim.Mg {n})) ⟩
-      [ Sim.Mg {n} Sym.↑ ]ᵣ • SemiDirect.CZ                    ≈⟨ axiom (right Sim.semi-M↑CZ) ⟩
+      [ Sim.Mg {n} Sym.↑ ]ᵣ • SemiDirect.CZ                    ≈⟨ axiom (right (Sim.srel Sim.semi-M↑CZ)) ⟩
       [ Sym.CZ ^ toℕ g ]ᵣ • [ Sim.Mg {n} Sym.↑ ]ᵣ             ≡⟨ Eq.cong₂ _•_ (SemiDirect.lemma-[]ᵣ^k Sym.CZ (toℕ g)) (Eq.sym (SemiDirect.lemma-[]ᵣ-↑ (Sim.Mg {n}))) ⟩
       SemiDirect.CZ ^ (toℕ g) • ([ Sim.Mg {n} ]ᵣ) SemiDirect.↑ ∎
   h-well-defined {₂₊ n} semi-M↓CZ = begin
@@ -806,7 +806,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     open SR word-setoid
     bareM↓ : [ Sim.Mg {₁₊ n} ]ᵣ • SemiDirect.CZ ≈ SemiDirect.CZ ^ (toℕ g) • [ Sim.Mg {₁₊ n} ]ᵣ
     bareM↓ = begin
-      [ Sim.Mg {₁₊ n} ]ᵣ • SemiDirect.CZ            ≈⟨ axiom (right Sim.semi-M↓CZ) ⟩
+      [ Sim.Mg {₁₊ n} ]ᵣ • SemiDirect.CZ            ≈⟨ axiom (right (Sim.srel Sim.semi-M↓CZ)) ⟩
       [ Sym.CZ ^ toℕ g ]ᵣ • [ Sim.Mg {₁₊ n} ]ᵣ      ≡⟨ Eq.cong (_• [ Sim.Mg {₁₊ n} ]ᵣ) (SemiDirect.lemma-[]ᵣ^k Sym.CZ (toℕ g)) ⟩
       SemiDirect.CZ ^ (toℕ g) • [ Sim.Mg {₁₊ n} ]ᵣ ∎
   h-well-defined {₂₊ n} rel-X↑-CZ = begin
@@ -844,14 +844,14 @@ module Iso-Inverse-Direction (n : ℕ) where
   h-well-defined order-CZ = begin
     (h *) (CZ ^ p)   ≡⟨ lemma-f*-w^n {f = h} {w = CZ} p ⟩
     (h *) CZ ^ p     ≡⟨ Eq.sym (SemiDirect.lemma-[]ᵣ^k Sym.CZ p) ⟩
-    [ Sym.CZ ^ p ]ᵣ  ≈⟨ PB.axiom (right Sim.order-CZ) ⟩
+    [ Sym.CZ ^ p ]ᵣ  ≈⟨ PB.axiom (right (Sim.srel Sim.order-CZ)) ⟩
     ε ∎
     where open SR (PP.word-setoid (SemiDirect._QRel,_===_ _))
-  h-well-defined comm-CZ-S↓ = PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (lemma-CZ-Zk _) PB.refl) (PB.trans PB.assoc (PB.trans (PB.cong PB.refl (PB.axiom (right Sim.comm-CZ-S↓))) (PB.sym PB.assoc))))
-  h-well-defined comm-CZ-S↑ rewrite lemma-h↑ S = PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (lemma-CZ-Z↑k _) PB.refl) (PB.trans PB.assoc (PB.trans (PB.cong PB.refl (PB.axiom (right Sim.comm-CZ-S↑))) (PB.sym PB.assoc))))
+  h-well-defined comm-CZ-S↓ = PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (lemma-CZ-Zk _) PB.refl) (PB.trans PB.assoc (PB.trans (PB.cong PB.refl (PB.axiom (right (Sim.srel Sim.comm-CZ-S↓)))) (PB.sym PB.assoc))))
+  h-well-defined comm-CZ-S↑ rewrite lemma-h↑ S = PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (lemma-CZ-Z↑k _) PB.refl) (PB.trans PB.assoc (PB.trans (PB.cong PB.refl (PB.axiom (right (Sim.srel Sim.comm-CZ-S↑)))) (PB.sym PB.assoc))))
   h-well-defined {₂₊ n} selinger-c10 = begin
       (h *) (CZ • (H ↑) • CZ)
-        ≈⟨ axiom (right Sim.selinger-c10) ⟩
+        ≈⟨ axiom (right (Sim.srel Sim.selinger-c10)) ⟩
       [ Sym.S⁻¹ Sym.↑ ]ᵣ • [ Sym.H Sym.↑ ]ᵣ • [ Sym.S⁻¹ Sym.↑ ]ᵣ • [ Sym.CZ ]ᵣ • [ Sym.H Sym.↑ ]ᵣ • [ Sym.S⁻¹ Sym.↑ ]ᵣ • [ Sym.S⁻¹ ]ᵣ
         ≈⟨ cong (conv↑ {n}) (cong refl (cong (conv↑ {n}) (cong refl (cong refl (cong (conv↑ {n}) (conv↓ {₁₊ n})))))) ⟩
       (h *) ((𝑠 ↑) ^ p-1 • (H ↑) • (𝑠 ↑) ^ p-1 • CZ • (H ↑) • (𝑠 ↑) ^ p-1 • (𝑠 ↓) ^ p-1) ∎
@@ -861,7 +861,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     open SR word-setoid
   h-well-defined {₂₊ n} selinger-c11 = begin
       (h *) (CZ • (H ↓) • CZ)
-        ≈⟨ axiom (right Sim.selinger-c11) ⟩
+        ≈⟨ axiom (right (Sim.srel Sim.selinger-c11)) ⟩
       [ Sym.S⁻¹ ]ᵣ • [ Sym.H ]ᵣ • [ Sym.S⁻¹ ]ᵣ • [ Sym.CZ ]ᵣ • [ Sym.H ]ᵣ • [ Sym.S⁻¹ ]ᵣ • [ Sym.S⁻¹ Sym.↑ ]ᵣ
         ≈⟨ cong (conv↓ {₁₊ n}) (cong refl (cong (conv↓ {₁₊ n}) (cong refl (cong refl (cong (conv↓ {₁₊ n}) (conv↑ {n})))))) ⟩
       (h *) ((𝑠 ↓) ^ p-1 • (H ↓) • (𝑠 ↓) ^ p-1 • CZ • (H ↓) • (𝑠 ↓) ^ p-1 • (𝑠 ↑) ^ p-1) ∎
@@ -871,16 +871,16 @@ module Iso-Inverse-Direction (n : ℕ) where
     open SR word-setoid
   h-well-defined {₃₊ n} selinger-c12 rewrite lemma-h↑ (CZ {n}) = begin
       SemiDirect.CZ {n} SemiDirect.↑ • SemiDirect.CZ     ≡⟨ Eq.cong (_• SemiDirect.CZ) (SemiDirect.lemma-[]ᵣ-↑ (Sym.CZ {n})) ⟩
-      [ Sym.CZ {n} Sym.↑ ]ᵣ • SemiDirect.CZ              ≈⟨ axiom (right Sim.selinger-c12) ⟩
+      [ Sym.CZ {n} Sym.↑ ]ᵣ • SemiDirect.CZ              ≈⟨ axiom (right (Sim.srel Sim.selinger-c12)) ⟩
       SemiDirect.CZ • [ Sym.CZ {n} Sym.↑ ]ᵣ             ≡⟨ Eq.cong (SemiDirect.CZ •_) (Eq.sym (SemiDirect.lemma-[]ᵣ-↑ (Sym.CZ {n}))) ⟩
       SemiDirect.CZ • SemiDirect.CZ {n} SemiDirect.↑ ∎
     where
     open PB (SemiDirect._QRel,_===_ (₃₊ n))
     open PP (SemiDirect._QRel,_===_ (₃₊ n))
     open SR word-setoid
-  h-well-defined {n} {w} {v} selinger-c13 = PB.axiom (right Sim.selinger-c13)
-  h-well-defined {n} {w} {v} selinger-c14 = PB.axiom (right Sim.selinger-c14)
-  h-well-defined {n} {w} {v} selinger-c15 = PB.axiom (right Sim.selinger-c15)
+  h-well-defined {n} {w} {v} selinger-c13 = PB.axiom (right (Sim.srel Sim.selinger-c13))
+  h-well-defined {n} {w} {v} selinger-c14 = PB.axiom (right (Sim.srel Sim.selinger-c14))
+  h-well-defined {n} {w} {v} selinger-c15 = PB.axiom (right (Sim.srel Sim.selinger-c15))
   h-well-defined (comm-H {x = x}) = lemma-w↑H (h x)
   h-well-defined (comm-S {x = x}) = PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (lemma-w↑Zk (h x) _) PB.refl) (PB.trans PB.assoc (PB.trans (PB.cong PB.refl (lemma-w↑S (h x))) (PB.sym PB.assoc))))
   h-well-defined (comm-CZ {x = x}) = lemma-w↑↑CZ (h x)

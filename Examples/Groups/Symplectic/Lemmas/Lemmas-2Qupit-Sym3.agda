@@ -41,7 +41,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Lemmas-2Qupit-Sym3 (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym3 (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -49,9 +49,9 @@ module Examples.Groups.Symplectic.Lemmas-2Qupit-Sym3 (p-2 : ℕ) (p-prime : Prim
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas4-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
 
 
 open Symplectic renaming (M to ZM)
@@ -280,9 +280,9 @@ lemma-semi-M↓-XC {n} m = begin
   open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
 
 --open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime
-open import Examples.Groups.Symplectic.LM-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Pushing.DH p-2 p-prime
-open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 

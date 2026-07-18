@@ -8,7 +8,7 @@ import Relation.Binary.PropositionalEquality as Eq
 open import Function using (id)
 open import Function.Definitions using (Injective)
 
-open import Data.Product using (_,_)
+open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 open import Agda.Builtin.Nat using (_-_)
 import Data.Nat as Nat
@@ -40,7 +40,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Action (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -48,25 +48,16 @@ module Examples.Groups.Symplectic.Action (p-2 : ℕ) (p-prime : Prime (2+ p-2)) 
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 
 
 open Symplectic-Derived-Gen
 open import Examples.Groups.Pauli.Semantics p-2 p-prime public
 
-act1 : ∀ {n} → Gen n → Pauli n → Pauli n
-act1 {₁₊ n} (gate₁ (H-gen ₀)) ((a , b) ∷ ps) = ((a , b) ∷ ps)
-act1 {₁₊ n} (gate₁ (H-gen ₁)) ((a , b) ∷ ps) = ((- b , a) ∷ ps)
-act1 {₁₊ n} (gate₁ (H-gen ₂)) ((a , b) ∷ ps) = ((- a , - b) ∷ ps)
-act1 {₁₊ n} (gate₁ (H-gen ₃)) ((a , b) ∷ ps) = ((b , - a) ∷ ps)
-act1 {₁₊ n} (gate₁ (S-gen k)) ((a , b) ∷ ps) = ((a , b + a * k) ∷ ps)
-act1 {₂₊ n} (gate₂ (CZ-gen k)) ((a , b) ∷ (a' , b') ∷ ps) = (a , b + a' * k) ∷ (a' , b' + a * k) ∷ ps
-act1 {₁₊ n} (g ↥) (p ∷ ps) = p ∷ act1 {n} g ps
-
-act : ∀ {n} → Word (Gen n) → Pauli n → Pauli n
-act {n} = word-act act1
--- act {n} ε p = p
--- act {n} (w • w₁) p = act w (act w₁ p)
+-- The action definitions act1 / act now live in the Base submodule,
+-- re-exported here so downstream (which imports Action) is unaffected.
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Base p-2 p-prime public
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.ZpCalculation p-2 p-prime
 
 lemma-act-↑ : ∀ {n} (w : Word (Gen n)) → (p : Pauli1 ) (q : Pauli n) → act (w ↑) (p ∷ q) ≡ p ∷ act w q
 lemma-act-↑ {n} [ x ]ʷ p q = auto
@@ -80,24 +71,6 @@ lemma-act-↑ {n} (w • v) p q = begin
   where open ≡-Reasoning
 
 
-lemma-act-↓-gen : ∀ {n} (gen : Gen n) → (p : Pauli1 ) (ps : Pauli n) → act1 (gen ↓-gen) (ps ∷ʳ p) ≡ (act1 gen ps) ∷ʳ p
-lemma-act-↓-gen {₁} (gate₁ (H-gen ₀)) p (x ∷ []) = auto
-lemma-act-↓-gen {₁} (gate₁ (H-gen ₁)) p (x ∷ []) = auto
-lemma-act-↓-gen {₁} (gate₁ (H-gen ₂)) p (x ∷ []) = auto
-lemma-act-↓-gen {₁} (gate₁ (H-gen ₃)) p (x ∷ []) = auto
-lemma-act-↓-gen {₁} (gate₁ (S-gen k)) p (x ∷ []) = auto
-lemma-act-↓-gen {₂₊ n} (gate₁ (H-gen ₀)) p (x ∷ x₁ ∷ ps) = auto
-lemma-act-↓-gen {₂₊ n} (gate₁ (H-gen ₁)) p (x ∷ x₁ ∷ ps) = auto
-lemma-act-↓-gen {₂₊ n} (gate₁ (H-gen ₂)) p (x ∷ x₁ ∷ ps) = auto
-lemma-act-↓-gen {₂₊ n} (gate₁ (H-gen ₃)) p (x ∷ x₁ ∷ ps) = auto
-lemma-act-↓-gen {₂₊ n} (gate₁ (S-gen k)) p (x ∷ x₁ ∷ ps) = auto
-lemma-act-↓-gen {₂₊ n} (gate₂ (CZ-gen k)) p (x ∷ x₁ ∷ ps) = auto
-lemma-act-↓-gen {₂₊ n} (gen ↥) p (x ∷ x₁ ∷ ps) rewrite lemma-act-↓-gen {₁₊ n} gen p (x₁ ∷ ps) = Eq.cong (x ∷_) auto
-
--- lemma-act-↓ : ∀ {n} (w : Word (Gen n)) → (p : Pauli1 ) (ps : Pauli n) → act (w ↓) (ps ∷ʳ p) ≡ (act w ps) ∷ʳ p
--- lemma-act-↓ {₁₊ n} [ x ]ʷ p (x₁ ∷ ps) = lemma-act-↓-gen x p (x₁ ∷ ps)
--- lemma-act-↓ {n} ε p ps = auto
--- lemma-act-↓ {n} (w • w₁) p ps rewrite lemma-act-↓ w₁ p ps | lemma-act-↓ w p (act w₁ ps) = auto
 
 open import Data.Nat.DivMod
 open import Algebra.Properties.Ring (+-*-ring p-2)
@@ -205,39 +178,12 @@ lemma-act-ʰ|ʰ {n} a b a' b' t = begin
   open ≡-Reasoning
 
 
-aux1-aaa : ∀ a a' -> - a + - (- a' + - a) ≡ a'
-aux1-aaa a a' = begin
-  - a + - (- a' + - a) ≡⟨ Eq.cong (- a +_) (Eq.sym (-‿+-comm (- a') (- a))) ⟩
-  - a + (- - a' + - - a) ≡⟨ Eq.cong (- a +_) (+-comm (- - a') (- - a)) ⟩
-  - a + (- - a + - - a') ≡⟨ Eq.sym (+-assoc (- a) (- - a) (- - a')) ⟩
-  - a + - - a + - - a' ≡⟨ Eq.cong (_+ - - a') (+-inverseʳ (- a)) ⟩
-  ₀ + - - a' ≡⟨ +-identityˡ (- - a') ⟩
-  - - a' ≡⟨ -‿involutive a' ⟩
-  a' ∎
-  where
-  open ≡-Reasoning
-
-aux1-aaa' : ∀ a a' -> - a + - (a' + - a) ≡ - a'
-aux1-aaa' a a' = begin
-  - a + - (a' + - a) ≡⟨ Eq.cong (- a +_) (Eq.sym (-‿+-comm (a') (- a))) ⟩
-  - a + (- a' + - - a) ≡⟨ Eq.cong (- a +_) (+-comm (- a') (- - a)) ⟩
-  - a + (- - a + - a') ≡⟨ Eq.sym (+-assoc (- a) (- - a) (- a')) ⟩
-  - a + - - a + - a' ≡⟨ Eq.cong (_+ - a') (+-inverseʳ (- a)) ⟩
-  ₀ + - a' ≡⟨ +-identityˡ (- a') ⟩
-  - a' ∎
-  where
-  open ≡-Reasoning
-
-
-aux1-bbb : ∀ b b' -> - (b + - b') ≡ - b + b'
-aux1-bbb b b' = Eq.trans (Eq.sym (-‿+-comm b (- b'))) (Eq.cong (- b +_) (-‿involutive b'))
-
 lemma-act-⊥⊤ : ∀ {n} a b a' b' t -> 
   act {₂₊ n} ⊥⊤ ((a , b) ∷ (a' , b') ∷ t) ≡ (a' , - b + b') ∷ (- a' + - a , - b) ∷ t
 lemma-act-⊥⊤ {n} a b a' b' t = begin
   act {₂₊ n} ⊥⊤ ((a , b) ∷ (a' , b') ∷ t) ≡⟨ Eq.cong (act {₂₊ n} ₕ|ₕ) (lemma-act-ʰ|ʰ a b a' b' t) ⟩
   act {₂₊ n} ₕ|ₕ ((a , b + - b') ∷ (- a' + - a , - b') ∷ t) ≡⟨ lemma-act-ₕ|ₕ a (b + - b') (- a' + - a) (- b') t ⟩
-  ((- a + - (- a' + - a) , - (b + - b')) ∷ (- a' + - a , - b' + - (b + - b')) ∷ t) ≡⟨ cong₃ (\ xx yy zz -> (xx , yy) ∷ (- a' + - a , zz) ∷ t) (aux1-aaa a a') (aux1-bbb b b') (aux1-aaa' b' b ) ⟩
+  ((- a + - (- a' + - a) , - (b + - b')) ∷ (- a' + - a , - b' + - (b + - b')) ∷ t) ≡⟨ cong₃ (\ xx yy zz -> (xx , yy) ∷ (- a' + - a , zz) ∷ t) (neg-neg-cancelˡ a a') (neg-sub b b') (neg-neg-cancelʳ b' b ) ⟩
   (a' , - b + b') ∷ (- a' + - a , - b) ∷ t ∎
   where
   open ≡-Reasoning
@@ -248,7 +194,7 @@ lemma-act-⊤⊥ : ∀ {n} a b a' b' t ->
 lemma-act-⊤⊥ {n} a b a' b' t = begin
   act {₂₊ n} ⊤⊥ ((a , b) ∷ (a' , b') ∷ t) ≡⟨ Eq.cong (act {₂₊ n} ʰ|ʰ) (lemma-act-ₕ|ₕ a b a' b' t) ⟩
   act {₂₊ n} ʰ|ʰ ((- a + - a' , - b) ∷ (a' , b' + - b) ∷ t) ≡⟨ lemma-act-ʰ|ʰ (- a + - a') (- b) a' (b' + - b) t ⟩
-  ((- a + - a' , - b + - (b' + - b)) ∷ (- a' + - (- a + - a') , - (b' + - b)) ∷ t) ≡⟨ cong₃ (\ xx yy zz -> (- a + - a' , xx) ∷ (yy , zz) ∷ t) (aux1-aaa' b b') (aux1-aaa a' a) (aux1-bbb b' b) ⟩
+  ((- a + - a' , - b + - (b' + - b)) ∷ (- a' + - (- a + - a') , - (b' + - b)) ∷ t) ≡⟨ cong₃ (\ xx yy zz -> (- a + - a' , xx) ∷ (yy , zz) ∷ t) (neg-neg-cancelʳ b b') (neg-neg-cancelˡ a' a) (neg-sub b' b) ⟩
   ((- a + - a' , - b') ∷ (a , - b' + b) ∷ t) ∎
   where
   open ≡-Reasoning
@@ -273,4 +219,6 @@ lemma-act-⊥⊤↓CZ↑ {n} a b a' b' a'' b'' t = begin
   ((a' , - b + (b' + a'')) ∷ (- a' + - a , - b) ∷ (a'' , b'' + a') ∷ t) ∎
   where
   open ≡-Reasoning
+
+
 

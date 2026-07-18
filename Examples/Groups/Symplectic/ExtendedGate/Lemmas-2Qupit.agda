@@ -42,7 +42,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Lemmas-2Qupit (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -50,7 +50,7 @@ module Examples.Groups.Symplectic.Lemmas-2Qupit (p-2 : ℕ) (p-prime : Prime (2+
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 
 module Lemmas-2Q (n : ℕ) where
 

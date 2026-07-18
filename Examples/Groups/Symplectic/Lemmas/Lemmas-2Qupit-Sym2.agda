@@ -42,7 +42,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Lemmas-2Qupit-Sym2 (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym2 (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -50,13 +50,13 @@ module Examples.Groups.Symplectic.Lemmas-2Qupit-Sym2 (p-2 : ℕ) (p-prime : Prim
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 
 
 open Symplectic
 open Lemmas-Sym
 
-open import Examples.Groups.Symplectic.GroupLike p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.GroupLike p-2 p-prime
 
 lemma-Induction : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in ∀ {w v v'} -> w • v ≈ v' • w -> ∀ k -> w • v ^ k ≈ v' ^ k • w
 lemma-Induction {n} {w} {v} {v'} eq k@0 = trans right-unit (sym left-unit)

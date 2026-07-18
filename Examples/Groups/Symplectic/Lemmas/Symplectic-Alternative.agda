@@ -51,7 +51,7 @@ open import Algebra.Properties.Group
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
-module Examples.Groups.Symplectic.Symplectic-Alternative
+module Examples.Groups.Symplectic.Lemmas.Symplectic-Alternative
   (p-2 : ℕ)
   (p-prime : Prime (suc (₁₊ p-2)))
   (let open PrimeModulus' p-2 p-prime)
@@ -66,8 +66,8 @@ open Primitive-Root-Modp' g* g-gen
 
 module Symplectic-Alternative where
 
-import Examples.Groups.Symplectic.Symplectic-Simplified p-2 p-prime as NSim
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime using (module Symplectic)
+import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime as NSim
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime using (module Symplectic)
 open Symplectic hiding (_QRel,_===_)
 
 module Alternative-Relations where

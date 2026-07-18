@@ -36,8 +36,8 @@ open import Algebra.Properties.Ring (+-*-ring p-2) using (-‿+-comm)
 
 open import Examples.Groups.Pauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; _+ₚ_ ; _+₁_ ; pIₙ)
-open import Examples.Groups.Symplectic.Action p-2 p-prime using (act1)
-open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime using (act1)
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
   using (module Symplectic-Derived-Gen)
 open Symplectic-Derived-Gen
   using (Gen ; gate₁ ; gate₂ ; H-gen ; S-gen ; CZ-gen ; _↥)

@@ -20,16 +20,16 @@
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)
 
-module Examples.Groups.Symplectic.PushMSn (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
+module Examples.Groups.Symplectic.Normalization.Pushing.PushMSn (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Data.Product using (_,_ ; ∃ ; proj₁ ; proj₂)
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
-open import Examples.Groups.Symplectic.LM-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.PushM p-2 p-prime using (push-M-S)
+open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.PushM p-2 p-prime using (push-M-S)
 
 open import Notations
 open import Word.Base using (Word ; _•_ ; ε ; _^_)

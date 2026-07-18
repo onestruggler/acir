@@ -3,7 +3,7 @@
 
 ------------------------------------------------------------------------
 -- A *simplified* relation set for the qudit Clifford group mod scalars,
--- an analogue of `Examples.Groups.Symplectic.Symplectic-Simplified` for `Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar`.
+-- an analogue of `Examples.Groups.Symplectic.Simplified.Syntactics` for `Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar`.
 --
 -- Simplification strategy (applied per relation):
 --   (1) push the X and Z (Pauli) parts of both sides to the right-most
@@ -157,7 +157,7 @@ module Simplified-Relations where
     --
     --     Replace every 𝑠⁻¹ by the basic S⁻¹ (= 𝑠⁻¹ · Z^½), push the
     --     resulting Z-halves to the right and cancel.  The symplectic
-    --     part is exactly the `Examples.Groups.Symplectic.Symplectic-Simplified` relation; the
+    --     part is exactly the `Examples.Groups.Symplectic.Simplified.Syntactics` relation; the
     --     leftover Pauli collapses to a single tail X↑ · Z↑ (the Z↓
     --     halves cancel).  Result (basic gates, Pauli right-most):
     --

@@ -43,7 +43,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Lemmas4-Sym (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 private
   variable
@@ -56,33 +56,33 @@ private
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
-open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.LM-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 
-open import Examples.Groups.Symplectic.Action p-2 p-prime
-open import Examples.Groups.Symplectic.Action-Lemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
 open LM2
 
 
 open import Zp.ModularArithmetic
-open import Examples.Groups.Symplectic.Lemmas-2Qupit p-2 p-prime
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
-open import Examples.Groups.Symplectic.NF1 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym3 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym4 p-2 p-prime
---open import Examples.Groups.Symplectic.Ex-Sym5 p-2 p-prime hiding (module L0)
+open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4 p-2 p-prime
+--open import Examples.Groups.Symplectic.Lemmas.Ex-Sym5 p-2 p-prime hiding (module L0)
 
-open import Examples.Groups.Symplectic.Lemma-Comm-n p-2 p-prime
-open import Examples.Groups.Symplectic.Completeness1-Sym p-2 p-prime renaming (module Completeness to Cp1)
+open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to Cp1)
 open Lemmas0a
 open Lemmas0a1
 open Lemmas0b
@@ -90,8 +90,8 @@ open Lemmas0c
 open Lemmas-Sym
 open Duality
 
-open import Examples.Groups.Symplectic.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
---open import Examples.Groups.Symplectic.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to CP2) using ()
+open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
+--open import Examples.Groups.Symplectic.Lemmas.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to CP2) using ()
 
 
 aux-comm-m-CZ↑ : let open PB ((₃₊ n) QRel,_===_) in ∀ m -> ⟦ m ⟧ₘ • CZ ↑ ≈ CZ ↑ • ⟦ m ⟧ₘ
@@ -276,7 +276,7 @@ comm-Ex-CZ^k-w↑↑ {₁₊ n} k w = begin
   open PP ((₃₊ n) QRel,_===_)
   open SR word-setoid
   open Lemmas3
-  open import Examples.Groups.Symplectic.Ex-Sym3n p-2 p-prime hiding (lemma-comm-Ex-w↑↑)
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime hiding (lemma-comm-Ex-w↑↑)
   
 
 lemma-comm-CX^k-w↑↑ : ∀ {n} k w → let open PB ((₂₊ n) QRel,_===_) in
@@ -298,7 +298,7 @@ lemma-comm-CX^k-w↑↑ {n} k w = begin
   open SR word-setoid
   open Pattern-Assoc
   open Lemmas3
-  open import Examples.Groups.Symplectic.Ex-Sym3n p-2 p-prime hiding (lemma-comm-Ex-w↑↑)
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime hiding (lemma-comm-Ex-w↑↑)
 
 
 
@@ -329,7 +329,7 @@ comm-dbox-w↑↑' {₁₊ n} a@₀ b' w = let b = (₀ , b') in  begin
   open PP ((₃₊ n) QRel,_===_)
   open SR word-setoid
   open Lemmas3
-  open import Examples.Groups.Symplectic.Ex-Sym3n p-2 p-prime hiding (lemma-comm-Ex-w↑↑)
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime hiding (lemma-comm-Ex-w↑↑)
   
 comm-dbox-w↑↑' {₁₊ n} a@(₁₊ _) b w = let d = (a , b) in  begin
   [ a , b ]ᵈ • w ↑ ↑ ≈⟨ refl ⟩
@@ -383,7 +383,7 @@ comm-bbox-w↑↑' {₁₊ n} a@₀ b' w = let b = (₀ , b') in  begin
   open PP ((₃₊ n) QRel,_===_)
   open SR word-setoid
   open Lemmas3
-  open import Examples.Groups.Symplectic.Ex-Sym3n p-2 p-prime hiding (lemma-comm-Ex-w↑↑)
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime hiding (lemma-comm-Ex-w↑↑)
 
 
 comm-bbox-w↑↑' {₁₊ n} a@(₁₊ _) b w = let d = (a , b) in  begin
@@ -541,7 +541,7 @@ lemma-Ex-M-n {n} m@x' = by-emb' (lemma-Ex-M m) aux aux2
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
   open Pattern-Assoc
-  open import Examples.Groups.Symplectic.Embeding-2n p-2 p-prime n
+  open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime n
 
   aux : f* (Ex • ZM m) ≈ Ex • ZM m
   aux = cong refl (lemma-f*-M m)

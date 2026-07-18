@@ -42,12 +42,12 @@ open import Data.Nat.Primality
 open import Notations
 
 open import Zp.ModularArithmetic
-module Examples.Groups.Symplectic.NF1-Sym (p-2 : ℕ) (p-prime : Prime (2+ p-2))
+module Examples.Groups.Symplectic.ExtendedGate.NF1-Sym (p-2 : ℕ) (p-prime : Prime (2+ p-2))
   where
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime as SD
-open import Examples.Groups.Symplectic.Lemmas-2Qupit p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime as SD
+open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
 open Lemmas-2Q 2 hiding (lemma-CZ^k-%)
 open Symplectic
 
@@ -84,7 +84,7 @@ open import Examples.Groups.Pauli.Semantics p-2 p-prime
 
 
 {-
-  open import Examples.Groups.Symplectic.Iso-Sym-Derived p-2 p-prime hiding (module G1 ; module G2)
+  open import Examples.Groups.Symplectic.Sim-Ext-Sym p-2 p-prime hiding (module G1 ; module G2)
   open Iso
   open import Algebra.Morphism.Construct.Composition
 
@@ -110,12 +110,12 @@ open import Examples.Groups.Pauli.Semantics p-2 p-prime
     module G3 = Group-Lemmas (n QRel,_===₃_) grouplike₃
     in
     IsGroupIsomorphism (Group.rawGroup G2.•-ε-group) (Group.rawGroup G3.•-ε-group) ((f'* {n}) ∘ id)
-  Theorem-Sim-iso-Der {n}  = isGroupIsomorphism PB.trans Theorem-Sym-iso-Sim' Theorem-Sym-iso-SymDerived
+  Theorem-Sim-iso-Der {n}  = isGroupIsomorphism PB.trans Theorem-Sym-iso-Sim' Theorem-Sym-iso-Ext
 
   der : Word (Gen₂ n) -> Word (Gen₃ n)
   der {n} = ((f'* {n}) ∘ id)
 
-  open import Examples.Groups.Symplectic.Action p-2 p-prime renaming (act to dact) using ()
+  open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime renaming (act to dact) using ()
   act : ∀ {n} → Word (Gen n) → Pauli n → Pauli n
   act {n} w ps = dact (der w) ps
 

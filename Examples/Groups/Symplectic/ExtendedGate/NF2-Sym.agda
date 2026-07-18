@@ -39,7 +39,7 @@ open import Data.Nat.Primality
 
 open import Zp.ModularArithmetic
 
-module Examples.Groups.Symplectic.NF2-Sym
+module Examples.Groups.Symplectic.ExtendedGate.NF2-Sym
  (p-2 : ℕ) (p-prime : Prime (2+ p-2))
   where
 open PrimeModulus p-2 p-prime
@@ -50,13 +50,13 @@ open PrimeModulus p-2 p-prime
 
 
 
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
-import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime as ND
-open import Examples.Groups.Symplectic.Lemmas-2Qupit p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime as ND
+open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
 open Lemmas-2Q 2
 open Symplectic
-open import Examples.Groups.Symplectic.Action p-2 p-prime renaming (act to dact)
-open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime renaming (act to dact)
+open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
 
 module LM2 where
 
@@ -99,7 +99,7 @@ module LM2 where
 
   open GroupMorphisms
 
-  import Examples.Groups.Symplectic.NF2 p-2 p-prime as LM2T 
+  import Examples.Groups.Symplectic.ExtendedGate.NF2 p-2 p-prime as LM2T 
   module LM2P = LM2T.LM2
   open LM2P renaming (⟦_⟧₂ to ⟦_⟧₂') using ()
 

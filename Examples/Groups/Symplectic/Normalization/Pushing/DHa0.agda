@@ -25,7 +25,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Pushing.DHa0 (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Normalization.Pushing.DHa0 (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 private
   variable
@@ -33,10 +33,10 @@ private
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
-open import Examples.Groups.Symplectic.LM-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym2n p-2 p-prime using (lemma-comm-Ex-H-n)
+open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime using (lemma-comm-Ex-H-n)
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
 ------------------------------------------------------------------------

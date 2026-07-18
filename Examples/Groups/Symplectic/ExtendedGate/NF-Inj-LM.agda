@@ -1,4 +1,4 @@
--- Part of the Examples.Groups.Symplectic.NF-Inj split (memory-reduced typechecking).
+-- Part of the Examples.Groups.Symplectic.ExtendedGate.NF-Inj split (memory-reduced typechecking).
 -- --safe omitted while the 4 head-injectivity lemmas remain postulated.
 -- (call-by-need: --call-by-name omitted; these proof-heavy modules typecheck
 --  far faster and with less memory under the default sharing strategy.)
@@ -41,7 +41,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.NF-Inj-LM (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.ExtendedGate.NF-Inj-LM (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -50,25 +50,25 @@ module Examples.Groups.Symplectic.NF-Inj-LM (p-2 : ℕ) (p-prime : Prime (2+ p-2
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open Symplectic-Derived-Gen renaming (M to ZM)
-open import Examples.Groups.Symplectic.NF1 p-2 p-prime
-open import Examples.Groups.Symplectic.Semantics.ActionLemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.ActionLemmas p-2 p-prime
 open Normal-Form1
 
 private
   variable
     n : ℕ
     
-open import Examples.Groups.Symplectic.Action p-2 p-prime
-open import Examples.Groups.Symplectic.Action-Lemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Symplectic.NF2 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2 p-2 p-prime
 open LM2
 open ≡-Reasoning
 open Eq hiding ([_])
 
-open import Examples.Groups.Symplectic.NF-Inj-Base p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF-Inj-Base p-2 p-prime
 open Symplectic-Derived-GroupLike
 
 -- LM head-injectivity: if two LM coset representatives agree on every head output,

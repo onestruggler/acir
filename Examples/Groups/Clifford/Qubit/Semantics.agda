@@ -38,7 +38,7 @@ open import ForStdlib.Algebra.Construct.Extension using (Extension ; semidirect)
 
 open import Examples.Groups.Pauli.Semantics p-2 p-prime using (+ₚ-group)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
-open import Examples.Groups.Symplectic.Semidirect p-2 p-prime using (φ)
+open import Examples.Construct.SemiDirectProduct.Clifford p-2 p-prime using (φ)
 
 ------------------------------------------------------------------------
 -- The Clifford group as an extension of Sp(2n, 2) by Pauli n

@@ -64,7 +64,7 @@ open Primitive-Root-Modp' g* g-gen
 
 module Symplectic-Simplified where
 
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime as NSym
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
 open import Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar p-3 p-prime g* g-gen
 -- open Symplectic hiding (_QRel,_===_)
 

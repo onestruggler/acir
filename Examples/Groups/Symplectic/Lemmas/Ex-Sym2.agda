@@ -45,7 +45,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Ex-Sym2 (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Lemmas.Ex-Sym2 (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -53,9 +53,9 @@ module Examples.Groups.Symplectic.Ex-Sym2 (p-2 : ℕ) (p-prime : Prime (2+ p-2))
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open Lemmas0a
 module Lemmas0b where
 
@@ -181,7 +181,7 @@ module Lemmas0b where
     open Commuting-Symplectic 0
     open Symplectic-GroupLike
     open Basis-Change _ ((₂₊ 0) QRel,_===_) grouplike
-    open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+    open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
     open Q2.Lemmas-2Q 0
 
 
@@ -205,7 +205,7 @@ module Lemmas0b where
     open Commuting-Symplectic 0
     open Symplectic-GroupLike
     open Basis-Change _ ((₂₊ 0) QRel,_===_) grouplike
-    open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+    open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
     open Q2.Lemmas-2Q 0
 
 
@@ -223,7 +223,7 @@ module Lemmas0b where
     open Commuting-Symplectic 0
     open Symplectic-GroupLike
     open Basis-Change _ ((₂₊ 0) QRel,_===_) grouplike
-    open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+    open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
     open Q2.Lemmas-2Q 0
     open import Algebra.Properties.Ring (+-*-ring p-2)
 
@@ -265,7 +265,7 @@ module Lemmas0b where
     open Commuting-Symplectic 0
     open Symplectic-GroupLike
     open Basis-Change _ ((₂₊ 0) QRel,_===_) grouplike
-    open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+    open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
     open Q2.Lemmas-2Q 0
     open import Algebra.Properties.Ring (+-*-ring p-2)
     
@@ -339,7 +339,7 @@ module Lemmas0b where
     open Commuting-Symplectic 0
     open Symplectic-GroupLike
     open Basis-Change _ ((₂₊ 0) QRel,_===_) grouplike
-    open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+    open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
     open Q2.Lemmas-2Q 0
     open import Algebra.Properties.Ring (+-*-ring p-2)
     aux1 : dual (S^ k ↑ • S^ k • CZ^ (- k) • H ↑ ^ 3 • CZ • H ↑) ≈ S^ k • S^ k ↑ • CZ^ (- k) • H ^ 3 • CZ • H
@@ -370,7 +370,7 @@ module Lemmas0b where
     open Commuting-Symplectic 0
     open Symplectic-GroupLike
     open Basis-Change _ ((₂₊ 0) QRel,_===_) grouplike
-    open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+    open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
     open Q2.Lemmas-2Q 0
     open import Algebra.Properties.Ring (+-*-ring p-2)
     -k = p-1 Nat.* k
@@ -406,7 +406,7 @@ module Lemmas0b where
     open Commuting-Symplectic 0
     open Symplectic-GroupLike
     open Basis-Change _ ((₂₊ 0) QRel,_===_) grouplike
-    open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as Q2
+    open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
     open Q2.Lemmas-2Q 0
     open import Algebra.Properties.Ring (+-*-ring p-2)
     -k = p-1 Nat.* k
@@ -913,7 +913,7 @@ module Lemmas0b where
     open Commuting-Symplectic 0
     open Sym0-Rewriting 1
 
-  open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime as L2Q
+  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as L2Q
   open L2Q.Lemmas-2Q 0
 
 
@@ -949,7 +949,7 @@ module Lemmas0b where
     open Commuting-Symplectic 0
     open Sym0-Rewriting 1
 
-  open import Examples.Groups.Symplectic.Ex-Sym1 p-2 p-prime
+  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
   open Lemmas0a1
 
   open import Algebra.Properties.Ring (+-*-ring p-2)

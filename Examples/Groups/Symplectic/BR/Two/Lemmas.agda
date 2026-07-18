@@ -58,36 +58,36 @@ open import Zp.ModularArithmetic
 open import Zp.Mod-Lemmas p-2 p-prime
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic
-open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.LM-Sym p-2 p-prime hiding (M)
+open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime hiding (M)
 
-open import Examples.Groups.Symplectic.Action p-2 p-prime
-open import Examples.Groups.Symplectic.Action-Lemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
 open LM2
 
 
 open import Zp.ModularArithmetic
-open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym3 p-2 p-prime
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym3 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
-open import Examples.Groups.Symplectic.NF1 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym3 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym4 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym5 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym2n p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym3n p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym5 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 
-open import Examples.Groups.Symplectic.Lemma-Comm-n p-2 p-prime 0
-open import Examples.Groups.Symplectic.Completeness1-Sym p-2 p-prime renaming (module Completeness to Cp1)
+open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n p-2 p-prime 0
+open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to Cp1)
 open Lemmas0a
 open Lemmas0a1
 open Lemmas0b
@@ -95,12 +95,12 @@ open Lemmas0c
 open Lemmas-Sym
 open Duality
 
-open import Examples.Groups.Symplectic.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
---open import Examples.Groups.Symplectic.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to CP2) using ()
-open import Examples.Groups.Symplectic.Lemmas4-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas-3Q p-2 p-prime
-open import Examples.Groups.Symplectic.Pushing.DH p-2 p-prime
-open import Examples.Groups.Symplectic.Duality p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
+--open import Examples.Groups.Symplectic.Lemmas.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to CP2) using ()
+open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-3Q p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Duality p-2 p-prime
 
 
 open PB ((₂₊ n) QRel,_===_)
@@ -229,7 +229,7 @@ aux-XC^-XC'^ k = aux-XC^-XC'^-N (toℕ k)
 aux-CX^-CX'^ : ∀ k -> CX^ k ≈ CX'^ k
 aux-CX^-CX'^ k = aux-CX^-CX'^-N (toℕ k)
 
-open import Examples.Groups.Symplectic.Duality p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Duality p-2 p-prime
 open Duality
 
 lemma-semi-XCCZ^k : ∀ (k*@(k , nz) : ℤ* ₚ) ->
@@ -476,36 +476,36 @@ open import Zp.ModularArithmetic
 open import Zp.Mod-Lemmas p-2 p-prime
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
-open import Examples.Groups.Symplectic.Symplectic p-2 p-prime
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to M)
-open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.LM-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 
-open import Examples.Groups.Symplectic.Action p-2 p-prime
-open import Examples.Groups.Symplectic.Action-Lemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
 open LM2
 
 
 open import Zp.ModularArithmetic
-open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas-2Qupit-Sym3 p-2 p-prime
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym3 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
-open import Examples.Groups.Symplectic.NF1 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym3 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym4 p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym5 p-2 p-prime hiding (module L0)
-open import Examples.Groups.Symplectic.Ex-Sym2n p-2 p-prime
-open import Examples.Groups.Symplectic.Ex-Sym3n p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4 p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym5 p-2 p-prime hiding (module L0)
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 
-open import Examples.Groups.Symplectic.Lemma-Comm-n p-2 p-prime 0
-open import Examples.Groups.Symplectic.Completeness1-Sym p-2 p-prime renaming (module Completeness to Cp1)
+open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n p-2 p-prime 0
+open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to Cp1)
 open Lemmas0a
 open Lemmas0a1
 open Lemmas0b
@@ -513,12 +513,12 @@ open Lemmas0c
 open Lemmas-Sym
 open Duality
 
-open import Examples.Groups.Symplectic.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
-open import Examples.Groups.Symplectic.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to CP2) using ()
-open import Examples.Groups.Symplectic.Lemmas4-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas-3Q p-2 p-prime
-open import Examples.Groups.Symplectic.Pushing.DH p-2 p-prime
-open import Examples.Groups.Symplectic.Duality p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
+open import Examples.Groups.Symplectic.Lemmas.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to CP2) using ()
+open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemmas-3Q p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Duality p-2 p-prime
 open import Examples.Groups.Symplectic.BR.Calculations p-2 p-prime
 open import Examples.Groups.Symplectic.BR.One.A p-2 p-prime
 
@@ -666,7 +666,7 @@ aux-XC^-XC'^ k = aux-XC^-XC'^-N (toℕ k)
 aux-CX^-CX'^ : ∀ k -> CX^ k ≈ CX'^ k
 aux-CX^-CX'^ k = aux-CX^-CX'^-N (toℕ k)
 
-open import Examples.Groups.Symplectic.Duality p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Duality p-2 p-prime
 open Duality
 
 lemma-semi-XCCZ^k : ∀ (k*@(k , nz) : ℤ* ₚ) ->

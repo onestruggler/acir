@@ -37,7 +37,7 @@ p-2 = 0
 p-prime : Prime 2
 p-prime = from-yes (prime? 2)
 
-open import Examples.Groups.Symplectic.Symplectic-Derived p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
   using (module Symplectic-Derived-Gen)
 open Symplectic-Derived-Gen using (Gen)
 

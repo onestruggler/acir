@@ -55,8 +55,8 @@ module Examples.Groups.Symplectic.Clifford.SDProduct
 
 
 
-import Examples.Groups.Symplectic.Symplectic p-2 p-prime as NSym
-import Examples.Groups.Symplectic.Symplectic-Simplified p-2 p-prime g* g-gen as NSim
+import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
+import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 module Sym = NSym.Symplectic
 module Sim = NSim.Simplified-Relations
 import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
@@ -247,31 +247,31 @@ module SemiDirect where
   pattern comm-X = left XZ.comm-X
 
 
-  pattern order-S = right Sim.order-S
-  pattern order-H = right Sim.order-H
-  pattern M-power = right Sim.M-power
-  pattern semi-MS = right Sim.semi-MS
+  pattern order-S = right (Sim.srel Sim.order-S)
+  pattern order-H = right (Sim.srel Sim.order-H)
+  pattern M-power = right (Sim.srel Sim.M-power)
+  pattern semi-MS = right (Sim.srel Sim.semi-MS)
 
 {-
-  pattern semi-M↑CZ = right Sim.semi-M↑CZ
-  pattern semi-M↓CZ = right Sim.semi-M↓CZ
+  pattern semi-M↑CZ = right (Sim.srel Sim.semi-M↑CZ)
+  pattern semi-M↓CZ = right (Sim.srel Sim.semi-M↓CZ)
 
-  pattern order-CZ = right Sim.order-CZ
+  pattern order-CZ = right (Sim.srel Sim.order-CZ)
 
-  pattern comm-CZ-S↓ = right Sim.comm-CZ-S↓
-  pattern comm-CZ-S↑ = right Sim.comm-CZ-S↑
+  pattern comm-CZ-S↓ = right (Sim.srel Sim.comm-CZ-S↓)
+  pattern comm-CZ-S↑ = right (Sim.srel Sim.comm-CZ-S↑)
 
-  pattern selinger-c10 = right Sim.selinger-c10
-  pattern selinger-c11 = right Sim.selinger-c11
+  pattern selinger-c10 = right (Sim.srel Sim.selinger-c10)
+  pattern selinger-c11 = right (Sim.srel Sim.selinger-c11)
 
-  pattern selinger-c12 = right Sim.selinger-c12
-  pattern selinger-c13 = right Sim.selinger-c13
-  pattern selinger-c14 = right Sim.selinger-c14
-  pattern selinger-c15 = right Sim.selinger-c15
+  pattern selinger-c12 = right (Sim.srel Sim.selinger-c12)
+  pattern selinger-c13 = right (Sim.srel Sim.selinger-c13)
+  pattern selinger-c14 = right (Sim.srel Sim.selinger-c14)
+  pattern selinger-c15 = right (Sim.srel Sim.selinger-c15)
 
-  pattern comm-H = right Sim.comm-H
-  pattern comm-S = right Sim.comm-S
-  pattern comm-CZ = right Sim.comm-CZ
+  pattern comm-H = right (Sim.comm₁ Sym.H-gate _)
+  pattern comm-S = right (Sim.comm₁ Sym.S-gate _)
+  pattern comm-CZ = right (Sim.comm₂ Sym.CZ-gate _)
   pattern cong↑ = right Sim.cong↑
 
 
