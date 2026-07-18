@@ -36,7 +36,7 @@ open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli ; Pauli1)
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open Symplectic-Derived-Gen      using (Gen ; _↑ ; _QRel,_===_)
 open Symplectic-Derived-GroupLike using (grouplike)
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.ActionLemmas p-2 p-prime using (NF ; [_]ˡᵐ)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.BoxAction p-2 p-prime using (NF ; [_]ˡᵐ)
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime using (act ; act1)
 open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime using (act-sound-ax)
 open import Examples.Groups.Symplectic.ExtendedGate.NF p-2 p-prime

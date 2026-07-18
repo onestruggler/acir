@@ -34,7 +34,7 @@ open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open Symplectic-Derived-Gen renaming (M to ZM)
 open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.ActionLemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.BoxAction p-2 p-prime
 --open import Examples.Groups.Symplectic.ExtendedGate.LM-Lemmas p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.LM-Lemmas2 p-2 p-prime
 open Normal-Form1

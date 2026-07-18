@@ -12,7 +12,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.ExtendedGate.Semantics.Base (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.ExtendedGate.Semantics.Action (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 open import Zp.ModularArithmetic
