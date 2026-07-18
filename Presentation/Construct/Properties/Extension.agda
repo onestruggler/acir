@@ -482,9 +482,8 @@ module _ {N X : Set}
 
       -- The section law [c] • w ≈ [w']ₓ • [c'] from the RightAction engine
       -- (needs f-wd-ax/[I]≈ε/h=ract, NOT h-wd-ax — no circularity).
-      private
-        module RAᶜ = Star-Injective-Full.RightAction
-                       S ext Cᶜ Iᶜ fᶜ hᶜ f-wd-ax secᶜ [I]≈ε h=ract
+      module RAᶜ = Star-Injective-Full.RightAction
+                     S ext Cᶜ Iᶜ fᶜ hᶜ f-wd-ax secᶜ [I]≈ε h=ract
       hᵗ-hyp : ∀ c w → let (w' , c') = (hᶜ ᵗ) c w in
                secᶜ c • w ≈ₑ (fᶜ ʷ) w' • secᶜ c'
       hᵗ-hyp = RAᶜ.lemma-⊛
