@@ -44,7 +44,7 @@ open import Word.Base using (Word ; ε ; _•_ ; _^_)
 
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open Symplectic-Derived-Gen using (Gen ; S ; H ; SH ; srel ; order-SH)
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime
   using (act)
 open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime
   using (act-sound-ax)

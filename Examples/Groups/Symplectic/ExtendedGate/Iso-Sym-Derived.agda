@@ -57,7 +57,7 @@ open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
 open Lemmas-2Q 2
 open Symplectic-Derived-Gen
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime
 open Normal-Form1
 
 module Sym  = Symplectic

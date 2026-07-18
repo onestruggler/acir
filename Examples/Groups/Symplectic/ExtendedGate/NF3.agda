@@ -52,7 +52,7 @@ open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.NF2 p-2 p-prime
 open LM2
 open Normal-Form1
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 
 open ≡-Reasoning

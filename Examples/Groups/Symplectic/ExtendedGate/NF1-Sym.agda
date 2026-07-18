@@ -115,7 +115,7 @@ open import Examples.Groups.Pauli.Semantics p-2 p-prime
   der : Word (Gen₂ n) -> Word (Gen₃ n)
   der {n} = ((f'* {n}) ∘ id)
 
-  open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime renaming (act to dact) using ()
+  open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime renaming (act to dact) using ()
   act : ∀ {n} → Word (Gen n) → Pauli n → Pauli n
   act {n} w ps = dact (der w) ps
 

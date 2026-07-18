@@ -32,7 +32,7 @@ p-prime = from-yes (prime? 2)
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
   using (module Symplectic-Derived-Gen)
 open Symplectic-Derived-Gen using (Gen)
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime using (act)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime using (act)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime
   using (Symplectic ; _≈ˢ_ ; _∘ˢ_ ; εˢ ; Sp-group)
 open import Examples.Groups.Symplectic.ExtendedGate.Surjectivity p-2 p-prime using (⟦_⟧)

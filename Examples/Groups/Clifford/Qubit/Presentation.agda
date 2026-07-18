@@ -67,7 +67,7 @@ open import Examples.Groups.Pauli.Presentation p-2 p-prime using (Γ-H)
 -- The Pauli group as vectors, and the symplectic action act1.
 open import Examples.Groups.Pauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; pX ; pZ ; pI ; pIₙ)
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime using (act1)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime using (act1)
 
 -- R̄ : the symplectic relations, over the Clifford generators Gen n.
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime

@@ -43,7 +43,7 @@ p-prime = from-yes (prime? 2)
 open PrimeModulus p-2 p-prime
 
 open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli)
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime using (act1)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime using (act1)
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
   using (module Symplectic-Derived-Gen)
 open Symplectic-Derived-Gen

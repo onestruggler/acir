@@ -39,7 +39,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 
@@ -55,8 +55,8 @@ open import Examples.Groups.Pauli.Semantics p-2 p-prime public
 
 -- The action definitions act1 / act now live in the Base submodule,
 -- re-exported here so downstream (which imports Action) is unaffected.
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Base p-2 p-prime public
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.ZpCalculation p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Base p-2 p-prime public
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.ZpCalculation p-2 p-prime
 
 lemma-act-↑ : ∀ {n} (w : Word (Gen n)) → (p : Pauli1 ) (q : Pauli n) → act (w ↑) (p ∷ q) ≡ p ∷ act w q
 lemma-act-↑ {n} [ x ]ʷ p q = auto

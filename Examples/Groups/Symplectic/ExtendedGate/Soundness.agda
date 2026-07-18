@@ -30,8 +30,8 @@ open import Zp.ModularArithmetic
 open import Algebra.Properties.Ring (+-*-ring p-2)
 open import Examples.Groups.Pauli.Semantics p-2 p-prime hiding (cong₃)
 open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.ZpCalculation p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.ZpCalculation p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 
 open PrimeModulus p-2 p-prime

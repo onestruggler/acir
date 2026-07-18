@@ -16,7 +16,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.ActionLemmas (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.ExtendedGate.Semantics.ActionLemmas (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
 open import Zp.ModularArithmetic
@@ -41,7 +41,7 @@ private
 -- Examples.Groups.Symplectic.ExtendedGate.Normalization.Section (re-exported above).
 
 --open import Examples.Groups.Pauli.Semantics p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 

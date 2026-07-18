@@ -55,7 +55,7 @@ import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime as ND
 open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
 open Lemmas-2Q 2
 open Symplectic
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime renaming (act to dact)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime renaming (act to dact)
 open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
 
 module LM2 where

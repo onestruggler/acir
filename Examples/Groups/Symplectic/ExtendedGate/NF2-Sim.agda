@@ -49,7 +49,7 @@ open Symplectic
 open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
 open Normal-Form1 renaming (⟦_⟧₁ to ⟦_⟧₁' ; ⟦_⟧ₘ₊ to ⟦_⟧ₘ₊') using ()
 open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sim p-2 p-prime g* g-gen
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime renaming (act to dact)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime renaming (act to dact)
 
 ------------------------------------------------------------------------
 -- The action on Simplified circuits, via the Sim ≅ Derived isomorphism

@@ -54,14 +54,14 @@ open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open Symplectic-Derived-Gen renaming (M to ZM)
 open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.ActionLemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.ActionLemmas p-2 p-prime
 open Normal-Form1
 
 private
   variable
     n : ℕ
     
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 open import Examples.Groups.Symplectic.ExtendedGate.NF2 p-2 p-prime

@@ -45,7 +45,7 @@ open Symplectic-Derived-Gen using (Gen ; gate₁ ; gate₂ ; H-gen ; S-gen ; CZ-
 open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli)
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; cact1 ; δ ; incl)
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime using (act)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime using (act)
 open import Examples.Groups.Clifford.Qubit.CliffordAut using (g4-id ; ι-2 ; neg-id ; neg-mul)
 open import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime using (X ; Z ; ω)
 
