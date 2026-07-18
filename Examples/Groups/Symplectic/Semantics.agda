@@ -15,7 +15,7 @@
 --     and preserves sform (Symplectic-Derived.lemma-sform-fix).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)

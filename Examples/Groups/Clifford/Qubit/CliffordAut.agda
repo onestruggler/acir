@@ -11,7 +11,7 @@
 --     act1 g (δ-coc).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Clifford.Qubit.CliffordAut where
 

@@ -11,7 +11,7 @@
 -- construction yields a presentation of the wreath-product group.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Construct.SemiDirectProduct.SnD where
 

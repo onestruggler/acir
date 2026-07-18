@@ -8,7 +8,7 @@
 -- focused on the action itself.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.PropositionalEquality as Eq
 

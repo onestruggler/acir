@@ -10,7 +10,7 @@
 -- repo's Symplectic.Surjectivity).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Clifford.Qubit.CliffordExtension where
 

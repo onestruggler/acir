@@ -26,7 +26,7 @@
 -- the symplectic result above with the ℤ/8 ω-layer.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)
@@ -46,8 +46,8 @@ open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open Symplectic-Derived-Gen using (Gen ; S ; H ; SH ; srel ; order-SH)
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
   using (act)
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime
-  using (lemma-act-cong-ax)
+open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime
+  using (act-sound-ax)
 open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime using (NF)
 -- The realising circuit [ nf ] : NF n → Word (Gen n) (Selinger's N(n)) is
 -- built in Normalization.Section, avoiding the WIP Surjectivity chain.
@@ -80,7 +80,7 @@ ExactNF n = NF n × Fin 8
 
 -- ω = (S·H)³ acts trivially on Pauli operators (relation order-SH).
 act-ω : (x : _) → act (ω {n}) x ≡ x
-act-ω = lemma-act-cong-ax ((S • H) ^ 3) ε (srel order-SH)
+act-ω = act-sound-ax ((S • H) ^ 3) ε (srel order-SH)
 
 -- Hence so does every power ωᵏ (match the 0/1/2+ shape of the word power).
 act-ω^ : (k : ℕ) (x : _) → act (ω {n} ^ k) x ≡ x

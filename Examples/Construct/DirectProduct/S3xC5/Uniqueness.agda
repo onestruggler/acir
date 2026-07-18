@@ -5,7 +5,7 @@
 -- equal denotations in the product group are equal.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.PropositionalEquality as Eq
   using (_≡_ ; refl ; sym ; trans ; cong ; cong₂)

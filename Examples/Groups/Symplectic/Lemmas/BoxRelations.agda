@@ -4,7 +4,7 @@
 -- Drivation of box relations from axioms.
 ------------------------------------------------------------------------
 
-{-# OPTIONS  --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 open import Data.Nat.Primality

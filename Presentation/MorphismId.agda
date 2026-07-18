@@ -1,4 +1,4 @@
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 open import Level using (0ℓ)
 open import Relation.Binary using (IsEquivalence ; Setoid ; Rel)
 open import Data.Product using (_,_ ; proj₂)
@@ -94,7 +94,9 @@ module StarMonomorphism
   
 
   g-linv : (x : A) → [ x ]ʷ ≈₁ (g ʷ) (f x)
-  g-linv x rewrite lemma-id* {w = f x} = _≈₁_.refl
+  -- `refl'₁` lifts the propositional `lemma-id*` to `≈₁`, avoiding the
+  -- `rewrite` whose with-abstraction is unification-stuck under --without-K.
+  g-linv x = refl'₁ (Eq.sym (lemma-id* {w = f x}))
 
 
   open StarHomomorphism f-well-defined
@@ -119,7 +121,7 @@ module StarIsomorphism
   where
 
   f-linv : (x : A) → [ x ]ʷ ≈₂ (f ʷ) (g x)
-  f-linv x rewrite lemma-id* {w = f x} = _≈₂_.refl
+  f-linv x = refl'₂ (Eq.sym (lemma-id* {w = g x}))
   
   f-wd : {u t : Word A} → u ===₁ t → (g ʷ) u ≈₂ (g ʷ) t
   f-wd {u} {t} eq rewrite lemma-id* {w = u} | lemma-id* {w = t} = f-well-defined eq
@@ -198,7 +200,7 @@ module GroupMorphs
     open Star-Injective-Simplified Γ Δ
     
     f-linv : (x : A) → [ x ]ʷ ≈₂ (f ʷ) (g x)
-    f-linv x rewrite lemma-id* {w = f x} = _≈₂_.refl
+    f-linv x = refl'₂ (Eq.sym (lemma-id* {w = g x}))
 
     f-wd : {u t : Word A} → u ===₁ t → (g ʷ) u ≈₂ (g ʷ) t
     f-wd {u} {t} eq rewrite lemma-id* {w = u} | lemma-id* {w = t} = f-well-defined eq
@@ -222,7 +224,7 @@ module GroupMorphs
     where
 
     f-linv : (x : A) → [ x ]ʷ ≈₂ (f ʷ) (g x)
-    f-linv x rewrite lemma-id* {w = f x} = _≈₂_.refl
+    f-linv x = refl'₂ (Eq.sym (lemma-id* {w = g x}))
 
     f-wd : {u t : Word A} → u ===₁ t → (g ʷ) u ≈₂ (g ʷ) t
     f-wd {u} {t} eq rewrite lemma-id* {w = u} | lemma-id* {w = t} = f-well-defined eq

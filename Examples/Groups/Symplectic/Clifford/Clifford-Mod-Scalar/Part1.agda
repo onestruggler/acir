@@ -1,5 +1,5 @@
--- {-# OPTIONS --allow-unsolved-metas #-}
-{-# OPTIONS --safe #-}
+-- {-# OPTIONS --cubical-compatible --allow-unsolved-metas #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 -- {-# OPTIONS --prop #-}
 {-# OPTIONS --termination-depth=20 #-}
 

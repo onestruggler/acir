@@ -1,4 +1,4 @@
-﻿{-# OPTIONS  --safe #-}
+﻿{-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --termination-depth=2 #-}
 
 open import Relation.Binary using (Rel)

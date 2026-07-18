@@ -34,7 +34,7 @@
 -- the odd-prime development under Examples.Groups.Symplectic.Clifford.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Clifford.Qubit.Presentation where
 

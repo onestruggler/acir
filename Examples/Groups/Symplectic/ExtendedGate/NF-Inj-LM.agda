@@ -2,7 +2,7 @@
 -- --safe omitted while the 4 head-injectivity lemmas remain postulated.
 -- (call-by-need: --call-by-name omitted; these proof-heavy modules typecheck
 --  far faster and with less memory under the default sharing strategy.)
-{-# OPTIONS --termination-depth=4 #-}
+{-# OPTIONS --cubical-compatible --termination-depth=4 #-}
 
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
@@ -61,7 +61,7 @@ private
     n : ℕ
     
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 open import Examples.Groups.Symplectic.ExtendedGate.NF2 p-2 p-prime
 open LM2
@@ -182,7 +182,7 @@ lemma-lm-tail-surj {n} lm qs = ps , proof
   where
   open Group-Lemmas ((₁₊ n) QRel,_===_) grouplike renaming (_⁻¹ to _⁻¹ʷ)
   open Group-Action (Pauli (₁₊ n)) (Gen (₁₊ n)) ((₁₊ n) QRel,_===_) grouplike act1
-         (lemma-act-cong-ax {₁₊ n} _ _)
+         (act-sound-ax {₁₊ n} _ _)
 
   ps = act ([ lm ]ˡᵐ ⁻¹ʷ) (pI ∷ qs)
 

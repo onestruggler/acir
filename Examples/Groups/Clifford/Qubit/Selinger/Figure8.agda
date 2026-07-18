@@ -21,7 +21,7 @@
 -- structural rules (cong↑, comm₁, comm₂) come from Lift-Relation.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)

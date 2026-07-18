@@ -5,7 +5,7 @@
 -- isomorphism from the word group (Word Y / ≈) to the product group.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Construct.DirectProduct.S3xC5.Presentation where
 

@@ -10,7 +10,7 @@
 -- bundled group Sp-group (Examples.Groups.Symplectic.Semantics).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --termination-depth=2 #-}
 
 open import Data.Nat using (ℕ ; 2+)
@@ -38,7 +38,7 @@ open Symplectic-Derived-Gen      using (Gen ; _↑ ; _QRel,_===_)
 open Symplectic-Derived-GroupLike using (grouplike)
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.ActionLemmas p-2 p-prime using (NF ; [_]ˡᵐ)
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime using (act ; act1)
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime using (lemma-act-cong-ax)
+open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime using (act-sound-ax)
 open import Examples.Groups.Symplectic.ExtendedGate.NF p-2 p-prime
   using (act-nf ; lemma-invnf ; sform-preserving ; lemma-actw-linear)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime
@@ -76,7 +76,7 @@ module _ {n : ℕ} where
 
   open Group-Lemmas (n QRel,_===_) grouplike renaming (_⁻¹ to _⁻¹ʷ)
   open Group-Action (Pauli n) (Gen n) (n QRel,_===_) grouplike act1
-    (lemma-act-cong-ax {n} _ _) using (act-cong)
+    (act-sound-ax {n} _ _) using (act-cong)
   open PB (n QRel,_===_) using (_≈_)
 
   -- Every circuit is a symplectic transformation.

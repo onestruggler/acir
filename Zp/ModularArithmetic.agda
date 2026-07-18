@@ -5,7 +5,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe #-}
-
+{-# OPTIONS --cubical-compatible #-}
 {-# OPTIONS --call-by-name #-}
 
 open import Notations
@@ -720,21 +720,13 @@ module PrimeModulus (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
     where
     open Eq.≡-Reasoning
 
+  -- The modular inverse depends on its argument only through the value,
+  -- not the ≢₀ proof: once the value is a successor, nztoℕ discards the
+  -- proof (returning record { nonZero = tt }).  Casing on the value thus
+  -- avoids heterogeneous equality (and hence axiom K).
   inv-cong : ∀ k* l* → k* .proj₁ ≡ l* .proj₁ → (k* ⁻¹) .proj₁ ≡ (l* ⁻¹) .proj₁
-  inv-cong k*@(k , nzk) l*@(l , nzl) eq = begin
-    (k* ⁻¹) .proj₁ ≡⟨ auto ⟩
-    _⁻¹' k {{nztoℕ {neq0 = nzk}}}  ≡⟨ HE.≅-to-≡ aux ⟩
-    _⁻¹' l {{nztoℕ {neq0 = nzl}}}  ≡⟨ auto ⟩
-    (l* ⁻¹) .proj₁ ∎
-    where
-    open import Relation.Binary.HeterogeneousEquality as HE
-    nzk=nzl : nzk ≅ nzl
-    nzk=nzl = ≡-subst-removable (\ x → x ≢ ₀) (Eq.sym eq) nzl
-    
-    aux : _⁻¹' k {{nztoℕ {neq0 = nzk}}} ≅ _⁻¹' l {{nztoℕ {neq0 = nzl}}}
-    aux = HE.cong₂ (\ xx yy → _⁻¹' xx {{nztoℕ {neq0 = yy}}}) (reflexive eq) nzk=nzl
-
-    open Eq.≡-Reasoning
+  inv-cong (₀ , nzk)    _         _    with () ← nzk refl
+  inv-cong (₁₊ k , nzk) (l , nzl) refl = refl
 
 
   aux-inv-xy : ∀ x y → (y ⁻¹ *' x ⁻¹) .proj₁ * (x *' y) .proj₁ ≡ ₁

@@ -19,7 +19,7 @@
 -- automorphism of P4 (proven in a later module).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Clifford.Qubit.CliffordAction where
 

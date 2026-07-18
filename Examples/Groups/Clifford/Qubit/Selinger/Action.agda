@@ -15,7 +15,7 @@
 -- to the ℤ/4 action and are validated by the ℤ/8 layer.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Clifford.Qubit.Selinger.Action where
 

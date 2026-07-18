@@ -1,4 +1,4 @@
-{-# OPTIONS  --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS  --call-by-name #-}
 {-# OPTIONS --termination-depth=4 #-}
 
@@ -53,7 +53,7 @@ open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
 open LM2

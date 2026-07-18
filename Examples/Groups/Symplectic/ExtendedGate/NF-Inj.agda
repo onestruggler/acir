@@ -2,7 +2,7 @@
 -- --safe omitted while the 4 head-injectivity lemmas remain postulated.
 -- (call-by-need: --call-by-name omitted; these proof-heavy modules typecheck
 --  far faster and with less memory under the default sharing strategy.)
-{-# OPTIONS --termination-depth=4 #-}
+{-# OPTIONS --cubical-compatible --termination-depth=4 #-}
 
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
 import Relation.Binary.PropositionalEquality as Eq
@@ -59,7 +59,7 @@ private
     n : ℕ
     
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 open import Examples.Groups.Symplectic.ExtendedGate.NF2 p-2 p-prime
 open LM2

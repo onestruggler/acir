@@ -1,4 +1,4 @@
-{-# OPTIONS  --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS  --call-by-name #-}
 {-# OPTIONS --termination-depth=4 #-}
 open import Relation.Binary.PropositionalEquality
@@ -44,7 +44,7 @@ private
     n : ℕ
     
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 open import Examples.Groups.Symplectic.ExtendedGate.NF2 p-2 p-prime
 open LM2
@@ -814,7 +814,7 @@ lemma-nf {n} w = nf , claim
   where
   open ≡-Reasoning
   open Group-Lemmas (n QRel,_===_) grouplike renaming (_⁻¹ to _⁻¹ʷ)
-  open Group-Action (Pauli n) (Gen n) (n QRel,_===_) grouplike act1 (lemma-act-cong-ax {n} _ _)
+  open Group-Action (Pauli n) (Gen n) (n QRel,_===_) grouplike act1 (act-sound-ax {n} _ _)
 
   invnf = lemma-invnf (act (w ⁻¹ʷ)) (lemma-actw-linear (w ⁻¹ʷ)) (sform-preserving ( w ⁻¹ʷ))
   nf = invnf .proj₁

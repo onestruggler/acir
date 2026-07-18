@@ -4,7 +4,7 @@
 -- The Simplified ≅ Derived group isomorphism for the extended gate set
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Morphism.Construct.Composition

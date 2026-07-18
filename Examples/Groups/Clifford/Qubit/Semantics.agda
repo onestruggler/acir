@@ -17,7 +17,7 @@
 -- order-S ↦ Z entry of the cocycle in Qubit.Presentation.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Clifford.Qubit.Semantics where
 

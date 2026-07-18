@@ -5,7 +5,7 @@
 -- isomorphism.  (Moved out of ExtendedGate.Iso-Sym-Derived.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --termination-depth=2 #-}
 
 open import Data.Nat using (ℕ ; 2+)

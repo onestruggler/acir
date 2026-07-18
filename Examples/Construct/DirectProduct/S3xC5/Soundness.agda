@@ -9,7 +9,7 @@
 -- its C₅ residue; the mixed axiom is the commutation of the two.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Fin.Permutation using (_⟨$⟩ʳ_)
 open import Data.Product using (_,_ ; proj₁ ; proj₂)

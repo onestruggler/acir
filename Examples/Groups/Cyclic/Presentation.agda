@@ -5,7 +5,7 @@
 -- group isomorphism from the word group (Word X / ≈) to Cn-group (1+n).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Cyclic.Presentation where
 

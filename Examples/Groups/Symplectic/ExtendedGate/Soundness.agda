@@ -1,87 +1,64 @@
-{-# OPTIONS  --safe #-}
-{-# OPTIONS  --call-by-name #-}
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- Soundness of the Pauli action semantics for the extended gate set:
+-- circuits related by the presentation act identically on Paulis.
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --call-by-name #-}
 {-# OPTIONS --termination-depth=3 #-}
 
-open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
-import Relation.Binary.PropositionalEquality as Eq
-
-
-open import Function using (id)
-open import Function.Definitions using (Injective)
-
-open import Data.Product using (_,_ ; proj₁ ; proj₂)
-open import Data.Nat hiding (_^_ ; _+_ ; _*_)
-open import Agda.Builtin.Nat using (_-_)
-import Data.Nat as Nat
-open import Data.Bool hiding (_<_ ; _≤_)
-open import Data.List hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
-open import Data.Vec hiding ([_])
 open import Data.Fin hiding (_+_ ; _-_)
-
-open import Data.Maybe
-open import Data.Sum using ([_,_] ; [_,_]′)
-open import Data.Unit using (⊤)
-open import Data.Empty using (⊥)
-
-open import Word.Base as WB hiding (wfoldl)
-open import Word.Properties
-import Presentation.Base as PB
-import Normalization.Reidemeister-Schreier as RS
-open import Notations
-module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
-
-open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
-
-
-open import Data.Fin using (toℕ ; zero ; fromℕ)
-import Data.Fin.Properties as FP
-import Data.Nat.Properties as NP
-open import Presentation.GroupLike
-open import Presentation.Tactic.Rewriting hiding ([_])
+open import Data.Fin.Properties using (fromℕ<-cong ; fromℕ<-toℕ ; toℕ<n)
+open import Data.Nat hiding (_^_ ; _+_ ; _*_)
+import Data.Nat as Nat
+open import Data.Nat.DivMod using (m<n⇒m%n≡m ; m%n<n ; n%n≡0)
 open import Data.Nat.Primality
+import Data.Nat.Properties as NP
+open import Data.Product using (_,_ ; proj₁ ; proj₂)
+open import Data.Vec hiding ([_])
+open import Notations
+import Presentation.Base as PB
+open import Relation.Binary.PropositionalEquality using (_≡_ ; module ≡-Reasoning)
+import Relation.Binary.PropositionalEquality as Eq
+open import Word.Base hiding (wfoldl)
 
-
-
-module Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Action-Lemmas (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
-
-
-
-
+module Examples.Groups.Symplectic.ExtendedGate.Soundness (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Zp.ModularArithmetic
-open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime 
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.ZpCalculation p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
-open Normal-Form1
-
-
-open Symplectic-Derived-Gen
-open import Examples.Groups.Pauli.Semantics p-2 p-prime hiding (cong₃)
-open import Data.Nat.DivMod
-open import Data.Fin.Properties
 open import Algebra.Properties.Ring (+-*-ring p-2)
+open import Examples.Groups.Pauli.Semantics p-2 p-prime hiding (cong₃)
+open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.Properties p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Action.ZpCalculation p-2 p-prime
+open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
+
+open PrimeModulus p-2 p-prime
+open Normal-Form1
+open Symplectic-Derived-Gen
 open Eq
 
---     - (- (- b + (b' + a'')) + (- b + a''))
-lemma-act-cong-ax : ∀ {n} w v -> let open PB (n QRel,_===_) in
+
+------------------------------------------------------------------------
+-- Soundness of the raw axioms (one relation step)
+
+act-sound-ax : ∀ {n} w v -> let open PB (n QRel,_===_) in
 
   w === v ->
   ----------------------------
   ∀ c -> act {n} w c ≡ act v c
 
-lemma-act-cong-ax {n} w v (srel order-S) (x@(a , b) ∷ t) = begin
+act-sound-ax {n} w v (srel order-S) (x@(a , b) ∷ t) = begin
   act (S ^ p) ((a , b) ∷ t) ≡⟨ lemma-act-Sᵏ p ((a , b) ∷ t) ⟩
-  act (S^ (fromℕ< (m%n<n p p))) ((a , b) ∷ t) ≡⟨ Eq.cong (\ xx -> act (S^ xx) ((a , b) ∷ t)) (FP.fromℕ<-cong (p Nat.% p) 0 (n%n≡0 p) (m%n<n p p) NP.0<1+n) ⟩
+  act (S^ (fromℕ< (m%n<n p p))) ((a , b) ∷ t) ≡⟨ Eq.cong (\ xx -> act (S^ xx) ((a , b) ∷ t)) (fromℕ<-cong (p Nat.% p) 0 (n%n≡0 p) (m%n<n p p) NP.0<1+n) ⟩
   act (S^ ₀) ((a , b) ∷ t) ≡⟨ auto ⟩
   ((a , b + a * ₀) ∷ t) ≡⟨ Eq.sym (Eq.cong (\ xx -> (a , xx) ∷ t) (Eq.sym (Eq.trans (Eq.cong (b +_) (*-zeroʳ a)) (+-identityʳ b)))) ⟩
   act ε ((a , b) ∷ t) ∎
   where
   open ≡-Reasoning
 
-lemma-act-cong-ax {n} w v (srel order-H) (x@(a , b) ∷ t) = begin
+act-sound-ax {n} w v (srel order-H) (x@(a , b) ∷ t) = begin
   act (H • H • H • H) ((a , b) ∷ t) ≡⟨ auto ⟩
   act H (act H (act H (act H ((a , b) ∷ t)))) ≡⟨ auto ⟩
   act H (act H (act H (((- b , a) ∷ t)))) ≡⟨ auto ⟩
@@ -93,7 +70,7 @@ lemma-act-cong-ax {n} w v (srel order-H) (x@(a , b) ∷ t) = begin
   where
   open ≡-Reasoning
 
-lemma-act-cong-ax {n} w v (srel order-SH) (x@(a , b) ∷ t) = begin
+act-sound-ax {n} w v (srel order-SH) (x@(a , b) ∷ t) = begin
   act ((S • H) • (S • H) • S • H) ((a , b) ∷ t) ≡⟨ auto ⟩
   act (S • H) (act (S • H) (act (S • H) ((a , b) ∷ t))) ≡⟨ auto ⟩
   act (S • H) (act (S • H) (((- b , a + - b * ₁) ∷ t))) ≡⟨ Eq.cong (\ xx -> act (S • H) (act (S • H) (((- b , a + xx) ∷ t)))) (*-identityʳ (- b)) ⟩
@@ -127,7 +104,7 @@ lemma-act-cong-ax {n} w v (srel order-SH) (x@(a , b) ∷ t) = begin
     b ∎
 
 
-lemma-act-cong-ax {n} w v (srel comm-HHS) (x@(a , b) ∷ t) = begin
+act-sound-ax {n} w v (srel comm-HHS) (x@(a , b) ∷ t) = begin
   act (H • H • S) ((a , b) ∷ t) ≡⟨ auto ⟩
   act H (act H (act S ((a , b) ∷ t))) ≡⟨ auto ⟩
   act H (act H (((a , b + a * ₁) ∷ t))) ≡⟨ Eq.cong (\ xx -> act H (act H (((a , b + xx) ∷ t)))) (*-identityʳ a) ⟩
@@ -142,7 +119,7 @@ lemma-act-cong-ax {n} w v (srel comm-HHS) (x@(a , b) ∷ t) = begin
 
 
 
-lemma-act-cong-ax {n} w v (srel (M-mul z y)) (x@(a , b) ∷ t) = begin
+act-sound-ax {n} w v (srel (M-mul z y)) (x@(a , b) ∷ t) = begin
   act (M z • M y) ((a , b) ∷ t) ≡⟨ Eq.cong (act (M z)) (lemma-M a b t y) ⟩
   act (M z) ((a * y⁻¹ , b * y') ∷ t) ≡⟨ lemma-M (a * y⁻¹) (b * y') t z ⟩
   ((a * y⁻¹ * z⁻¹ , b * y' * z') ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> (xx , yy) ∷ t) (*-assoc a y⁻¹ z⁻¹) (*-assoc b y' z') ⟩
@@ -155,7 +132,7 @@ lemma-act-cong-ax {n} w v (srel (M-mul z y)) (x@(a , b) ∷ t) = begin
   z⁻¹ = (z ⁻¹) .proj₁
   y' = y .proj₁
   y⁻¹ = (y ⁻¹) .proj₁
-lemma-act-cong-ax {n} w v (srel (semi-MS y)) (x@(a , b) ∷ t) = begin
+act-sound-ax {n} w v (srel (semi-MS y)) (x@(a , b) ∷ t) = begin
   act (M y • S) ((a , b) ∷ t) ≡⟨ auto ⟩
   act (M y) ((a , b + a * ₁) ∷ t) ≡⟨ Eq.cong (\ xx -> act (M y) ((a , b + xx) ∷ t)) (*-identityʳ a) ⟩
   act (M y) ((a , b + a) ∷ t) ≡⟨ lemma-M a (b + a) t y ⟩
@@ -177,7 +154,7 @@ lemma-act-cong-ax {n} w v (srel (semi-MS y)) (x@(a , b) ∷ t) = begin
     (b * y') + a * y' ≡⟨ Eq.sym (*-distribʳ-+ y' b a) ⟩
     (b + a) * y' ∎
   
-lemma-act-cong-ax {n} w v (srel (semi-M↑CZ y)) (x@(a , b) ∷ (a' , b') ∷ t) = begin
+act-sound-ax {n} w v (srel (semi-M↑CZ y)) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act ((M y ↑) • CZ) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   act (M y ↑) ((a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> act (M y ↑) ((a , b + xx) ∷ (a' , b' + yy) ∷ t))  (*-identityʳ a') (*-identityʳ a) ⟩
   act (M y ↑) ((a , b + a') ∷ (a' , b' + a) ∷ t) ≡⟨ Eq.cong (\ xx -> ((a , b + a') ∷ xx)) (lemma-M a' (b' + a) t y) ⟩
@@ -192,7 +169,7 @@ lemma-act-cong-ax {n} w v (srel (semi-M↑CZ y)) (x@(a , b) ∷ (a' , b') ∷ t)
   aux : (a' * y⁻¹) * y' ≡ a'
   aux = Eq.trans (Eq.trans (*-assoc a' y⁻¹ y') (Eq.cong (a' *_) (lemma-⁻¹ˡ y' {{nztoℕ {y = y'} {neq0 = y .proj₂}}}))) (*-identityʳ a')
   
-lemma-act-cong-ax {n} w v (srel (semi-M↓CZ y)) (x@(a , b) ∷ (a' , b') ∷ t) = begin
+act-sound-ax {n} w v (srel (semi-M↓CZ y)) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act ((M y ↓) • CZ) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   act (M y ↓) ((a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> act (M y ↓) ((a , b + xx) ∷ (a' , b' + yy) ∷ t))  (*-identityʳ a') (*-identityʳ a) ⟩
   act (M y ↓) ((a , b + a') ∷ (a' , b' + a) ∷ t) ≡⟨ (lemma-M a (b + a') ((a' , b' + a) ∷ t) y) ⟩
@@ -208,9 +185,9 @@ lemma-act-cong-ax {n} w v (srel (semi-M↓CZ y)) (x@(a , b) ∷ (a' , b') ∷ t)
   aux = Eq.trans (Eq.trans (*-assoc a y⁻¹ y') (Eq.cong (a *_) (lemma-⁻¹ˡ y' {{nztoℕ {y = y'} {neq0 = y .proj₂}}}))) (*-identityʳ a)
 
 
-lemma-act-cong-ax {n} w v (srel order-CZ) (x@(a , b) ∷ (a' , b') ∷ t) = begin
+act-sound-ax {n} w v (srel order-CZ) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act (CZ ^ p) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ lemma-act-CZᵏ p ((a , b) ∷ (a' , b') ∷ t) ⟩
-  act (CZ^ (fromℕ< (m%n<n p p))) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ Eq.cong (\ xx -> act (CZ^ xx) ((a , b) ∷ (a' , b') ∷ t)) (FP.fromℕ<-cong (p Nat.% p) 0 (n%n≡0 p) (m%n<n p p) NP.0<1+n) ⟩
+  act (CZ^ (fromℕ< (m%n<n p p))) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ Eq.cong (\ xx -> act (CZ^ xx) ((a , b) ∷ (a' , b') ∷ t)) (fromℕ<-cong (p Nat.% p) 0 (n%n≡0 p) (m%n<n p p) NP.0<1+n) ⟩
   act (CZ^ ₀) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   ((a , b + a' * ₀) ∷ (a' , b' + a * ₀) ∷ t) ≡⟨ Eq.sym (Eq.cong₂ (\ xx yy -> (a , xx) ∷ (a' , yy) ∷ t) (Eq.sym (Eq.trans (Eq.cong (b +_) (*-zeroʳ a')) (+-identityʳ b)))  (Eq.sym (Eq.trans (Eq.cong (b' +_) (*-zeroʳ a)) (+-identityʳ b')))) ⟩
   act ε ((a , b) ∷ (a' , b') ∷ t) ∎
@@ -218,7 +195,7 @@ lemma-act-cong-ax {n} w v (srel order-CZ) (x@(a , b) ∷ (a' , b') ∷ t) = begi
   open ≡-Reasoning
 
 
-lemma-act-cong-ax {n} w v (srel comm-CZ-S↓) (x@(a , b) ∷ (a' , b') ∷ t) = begin
+act-sound-ax {n} w v (srel comm-CZ-S↓) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act (CZ • (S ↓)) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   act (CZ) ((a , b + a * ₁) ∷ (a' , b') ∷ t) ≡⟨ Eq.cong (\ xx -> act (CZ) ((a , b + xx) ∷ (a' , b') ∷ t)) (*-identityʳ a) ⟩
   act (CZ) ((a , b + a) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
@@ -237,7 +214,7 @@ lemma-act-cong-ax {n} w v (srel comm-CZ-S↓) (x@(a , b) ∷ (a' , b') ∷ t) = 
     b + (a' + a) ≡⟨ Eq.sym (+-assoc b a' a) ⟩
     (b + a') + a ≡⟨ Eq.cong ((b + a') +_) (Eq.sym (*-identityʳ a)) ⟩
     (b + a') + a * ₁ ∎
-lemma-act-cong-ax {n} w v (srel comm-CZ-S↑) (x@(a , b) ∷ (a' , b') ∷ t) = begin
+act-sound-ax {n} w v (srel comm-CZ-S↑) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act (CZ • (S ↑)) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   act (CZ) ((a , b) ∷ (a' , b' + a' * ₁) ∷ t) ≡⟨ Eq.cong (\ xx -> act (CZ) ((a , b) ∷ (a' , b' + xx) ∷ t)) (*-identityʳ a') ⟩
   act (CZ) ((a , b) ∷ (a' , b' + a') ∷ t) ≡⟨ auto ⟩
@@ -259,7 +236,7 @@ lemma-act-cong-ax {n} w v (srel comm-CZ-S↑) (x@(a , b) ∷ (a' , b') ∷ t) = 
 
 
 
-lemma-act-cong-ax {n} w v (srel selinger-c10) (x@(a , b) ∷ (a' , b') ∷ t) = begin
+act-sound-ax {n} w v (srel selinger-c10) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act (CZ • (H ↑) • CZ) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   act (CZ • (H ↑)) ((a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> act (CZ • (H ↑)) ((a , b + xx) ∷ (a' , b' + yy) ∷ t)) (*-identityʳ a') (*-identityʳ a) ⟩
   act (CZ • (H ↑)) ((a , b + a') ∷ (a' , b' + a) ∷ t) ≡⟨ auto ⟩
@@ -299,7 +276,7 @@ lemma-act-cong-ax {n} w v (srel selinger-c10) (x@(a , b) ∷ (a' , b') ∷ t) = 
 
 
 
-lemma-act-cong-ax {n} w v (srel selinger-c11) (x@(a , b) ∷ (a' , b') ∷ t) = begin
+act-sound-ax {n} w v (srel selinger-c11) (x@(a , b) ∷ (a' , b') ∷ t) = begin
   act (CZ • (H ↓) • CZ) ((a , b) ∷ (a' , b') ∷ t) ≡⟨ auto ⟩
   act (CZ • (H ↓)) ((a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> act (CZ • (H ↓)) ((a , b + xx) ∷ (a' , b' + yy) ∷ t)) (*-identityʳ a') (*-identityʳ a) ⟩
   act (CZ • (H ↓)) ((a , b + a') ∷ (a' , b' + a) ∷ t) ≡⟨ auto ⟩
@@ -345,7 +322,7 @@ lemma-act-cong-ax {n} w v (srel selinger-c11) (x@(a , b) ∷ (a' , b') ∷ t) = 
     (b' + a' * - ₁) + - (b + a * - ₁) ≡⟨ mul-neg1-swap b' a' b a ⟩
     (b' + a) + - (b + a') * ₁ ∎
 
-lemma-act-cong-ax {n} w v (srel selinger-c12) (x@(a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
+act-sound-ax {n} w v (srel selinger-c12) (x@(a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
   act ((CZ ↑) • CZ) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ≡⟨ auto ⟩
   act (CZ ↑) ((a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ (a'' , b'') ∷ t) ≡⟨ Eq.cong₂ (\ xx yy -> act (CZ ↑) ((a , b + xx) ∷ (a' , b' + yy) ∷ (a'' , b'') ∷ t)) (*-identityʳ a') (*-identityʳ a) ⟩
   act (CZ ↑) ((a , b + a') ∷ (a' , b' + a) ∷ (a'' , b'') ∷ t) ≡⟨ auto ⟩
@@ -366,7 +343,7 @@ lemma-act-cong-ax {n} w v (srel selinger-c12) (x@(a , b) ∷ (a' , b') ∷ (a'' 
     (b' + a'') + a * ₁ ∎
 
     
-lemma-act-cong-ax {n} w v (srel selinger-c13) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
+act-sound-ax {n} w v (srel selinger-c13) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
   act ((⊤⊥ ↑) • (CZ ↓) • (⊥⊤ ↑)) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ≡⟨ cong (act ((⊤⊥ ↑) • (CZ ↓))) (Eq.trans (lemma-act-↑ ⊥⊤ (a , b) ((a' , b') ∷ (a'' , b'') ∷ t)) (Eq.cong ((a , b) ∷_) (lemma-act-⊥⊤ a' b' a'' b'' t))) ⟩
   act ((⊤⊥ ↑) • (CZ ↓)) ((a , b) ∷ (a'' , - b' + b'') ∷ (- a'' + - a' , - b') ∷ t) ≡⟨ auto ⟩
   act ((⊤⊥ ↑)) ((a , b + a'' * ₁) ∷ (a'' , (- b' + b'') + a * ₁) ∷ (- a'' + - a' , - b') ∷ t) ≡⟨ Eq.trans (lemma-act-↑ ⊤⊥ (a , b + a'' * ₁) ((a'' , (- b' + b'') + a * ₁) ∷ (- a'' + - a' , - b') ∷ t)) (cong ((a , b + a'' * ₁) ∷_) (lemma-act-⊤⊥ a'' ((- b' + b'') + a * ₁) (- a'' + - a') (- b') t)) ⟩
@@ -401,7 +378,7 @@ lemma-act-cong-ax {n} w v (srel selinger-c13) ((a , b) ∷ (a' , b') ∷ (a'' , 
     b + a'' * ₁ ∎
 
     
-lemma-act-cong-ax {n} w v (srel selinger-c14) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
+act-sound-ax {n} w v (srel selinger-c14) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
   act (((⊤⊥ ↑) • (CZ ↓)) • ((⊤⊥ ↑) • (CZ ↓)) • (⊤⊥ ↑) • (CZ ↓)) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ≡⟨ cong (act (((⊤⊥ ↑) • (CZ ↓)) • ((⊤⊥ ↑) • (CZ ↓)))) (lemma-act-⊤⊥↑CZ↓ a b a' b' a'' b'' t) ⟩
   act (((⊤⊥ ↑) • (CZ ↓)) • ((⊤⊥ ↑) • (CZ ↓))) ((a , b + a') ∷ (- a' + - a'' , - b'') ∷ (a' , - b'' + (b' + a)) ∷ t) ≡⟨ cong (act (⊤⊥ ↑ • CZ ↓)) (lemma-act-⊤⊥↑CZ↓ a (b + a') (- a' + - a'') (- b'') a' (- b'' + (b' + a)) t) ⟩
   act (((⊤⊥ ↑) • (CZ ↓))) ((a , (b + a') + (- a' + - a'')) ∷ (- (- a' + - a'') + - a' , - (- b'' + (b' + a))) ∷ (- a' + - a'' , - (- b'' + (b' + a)) + (- b'' + a)) ∷ t) ≡⟨ lemma-act-⊤⊥↑CZ↓ a ((b + a') + (- a' + - a'')) (- (- a' + - a'') + - a') (- (- b'' + (b' + a))) (- a' + - a'') (- (- b'' + (b' + a)) + (- b'' + a)) t ⟩
@@ -466,7 +443,7 @@ lemma-act-cong-ax {n} w v (srel selinger-c14) ((a , b) ∷ (a' , b') ∷ (a'' , 
     b ∎
 
     
-lemma-act-cong-ax {n} w v (srel selinger-c15) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
+act-sound-ax {n} w v (srel selinger-c15) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
   act (((⊥⊤ ↓) • (CZ ↑)) • ((⊥⊤ ↓) • (CZ ↑)) • (⊥⊤ ↓) • (CZ ↑)) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ≡⟨ cong (act (((⊥⊤ ↓) • (CZ ↑)) • ((⊥⊤ ↓) • (CZ ↑)))) (lemma-act-⊥⊤↓CZ↑ a b a' b' a'' b'' t) ⟩
   act (((⊥⊤ ↓) • (CZ ↑)) • ((⊥⊤ ↓) • (CZ ↑))) ((a' , - b + (b' + a'')) ∷ (- a' + - a , - b) ∷ (a'' , b'' + a') ∷ t) ≡⟨ cong (act (((⊥⊤ ↓) • (CZ ↑)))) (lemma-act-⊥⊤↓CZ↑ a' (- b + (b' + a'')) (- a' + - a) (- b) a'' (b'' + a') t) ⟩
   act (((⊥⊤ ↓) • (CZ ↑))) ((- a' + - a , - (- b + (b' + a'')) + (- b + a'')) ∷ (- (- a' + - a) + - a' , - (- b + (b' + a''))) ∷ (a'' , (b'' + a') + (- a' + - a)) ∷ t) ≡⟨ lemma-act-⊥⊤↓CZ↑ (- a' + - a) (- (- b + (b' + a'')) + (- b + a'')) (- (- a' + - a) + - a') (- (- b + (b' + a''))) a'' ((b'' + a') + (- a' + - a)) t ⟩
@@ -490,16 +467,16 @@ lemma-act-cong-ax {n} w v (srel selinger-c15) ((a , b) ∷ (a' , b') ∷ (a'' , 
     open ≡-Reasoning
 
 
-lemma-act-cong-ax {n} w v (comm₁ (H-gen ₀) g) ((a , b) ∷ ps) = auto
-lemma-act-cong-ax {n} w v (comm₁ (H-gen ₁) g) ((a , b) ∷ ps) = auto
-lemma-act-cong-ax {n} w v (comm₁ (H-gen ₂) g) ((a , b) ∷ ps) = auto
-lemma-act-cong-ax {n} w v (comm₁ (H-gen ₃) g) ((a , b) ∷ ps) = auto
-lemma-act-cong-ax {n} w v (comm₁ (S-gen k) g) ((a , b) ∷ ps) = auto
-lemma-act-cong-ax {n} w v (comm₂ (CZ-gen k) g) ((a , b) ∷ (a' , b') ∷ ps) = auto
+act-sound-ax {n} w v (comm₁ (H-gen ₀) g) ((a , b) ∷ ps) = auto
+act-sound-ax {n} w v (comm₁ (H-gen ₁) g) ((a , b) ∷ ps) = auto
+act-sound-ax {n} w v (comm₁ (H-gen ₂) g) ((a , b) ∷ ps) = auto
+act-sound-ax {n} w v (comm₁ (H-gen ₃) g) ((a , b) ∷ ps) = auto
+act-sound-ax {n} w v (comm₁ (S-gen k) g) ((a , b) ∷ ps) = auto
+act-sound-ax {n} w v (comm₂ (CZ-gen k) g) ((a , b) ∷ (a' , b') ∷ ps) = auto
 
 
 
-lemma-act-cong-ax {n} w v (srel (derived-S k)) (x@(a , b) ∷ t) = begin
+act-sound-ax {n} w v (srel (derived-S k)) (x@(a , b) ∷ t) = begin
   act [ gate₁ (S-gen k) ]ʷ ((a , b) ∷ t) ≡⟨ Eq.cong (\ xx ->  act (S^ xx) ((a , b) ∷ t)) (Eq.sym aux) ⟩
   act (S^ k') ((a , b) ∷ t) ≡⟨ Eq.sym (lemma-act-Sᵏ (toℕ k) (((a , b) ∷ t))) ⟩
   act (S ^ toℕ k) ((a , b) ∷ t) ∎
@@ -511,17 +488,17 @@ lemma-act-cong-ax {n} w v (srel (derived-S k)) (x@(a , b) ∷ t) = begin
     fromℕ< (m%n<n (toℕ k) p) ≡⟨ fromℕ<-cong ((toℕ k) Nat.% p) (toℕ k) (m<n⇒m%n≡m (toℕ<n k)) (m%n<n (toℕ k) p) (toℕ<n k) ⟩
     fromℕ< (toℕ<n k) ≡⟨ fromℕ<-toℕ k (toℕ<n k) ⟩
     k ∎
-lemma-act-cong-ax {n} w v (srel (derived-H ₀)) (x@(a , b) ∷ t) = auto
-lemma-act-cong-ax {n} w v (srel (derived-H ₁)) (x@(a , b) ∷ t) = auto
-lemma-act-cong-ax {n} w v (srel (derived-H ₂)) (x@(a , b) ∷ t) = auto
-lemma-act-cong-ax {n} w v (srel (derived-H ₃)) (x@(a , b) ∷ t) = begin
+act-sound-ax {n} w v (srel (derived-H ₀)) (x@(a , b) ∷ t) = auto
+act-sound-ax {n} w v (srel (derived-H ₁)) (x@(a , b) ∷ t) = auto
+act-sound-ax {n} w v (srel (derived-H ₂)) (x@(a , b) ∷ t) = auto
+act-sound-ax {n} w v (srel (derived-H ₃)) (x@(a , b) ∷ t) = begin
   act [ gate₁ (H-gen ₃) ]ʷ ((a , b) ∷ t) ≡⟨ auto ⟩
   ((b , - a) ∷ t) ≡⟨ Eq.cong (\ xx -> ((xx , - a) ∷ t)) (Eq.sym (-‿involutive b)) ⟩
   ((- - b , - a) ∷ t) ≡⟨ auto ⟩
   act (H) ((- a , - b) ∷ t) ≡⟨ auto ⟩
   act (H • H • H) ((a , b) ∷ t) ∎
   where open ≡-Reasoning
-lemma-act-cong-ax {n} w v (srel (derived-CZ k)) (x@(a , b) ∷ t) = begin
+act-sound-ax {n} w v (srel (derived-CZ k)) (x@(a , b) ∷ t) = begin
   act [ gate₂ (CZ-gen k) ]ʷ ((a , b) ∷ t) ≡⟨ Eq.cong (\ xx ->  act (CZ^ xx) ((a , b) ∷ t)) (Eq.sym aux) ⟩
   act (CZ^ k') ((a , b) ∷ t) ≡⟨ Eq.sym (lemma-act-CZᵏ (toℕ k) (((a , b) ∷ t))) ⟩
   act (CZ ^ toℕ k) ((a , b) ∷ t) ∎
@@ -534,27 +511,27 @@ lemma-act-cong-ax {n} w v (srel (derived-CZ k)) (x@(a , b) ∷ t) = begin
     fromℕ< (toℕ<n k) ≡⟨ fromℕ<-toℕ k (toℕ<n k) ⟩
     k ∎
 
-lemma-act-cong-ax {₁₊ n} w v (cong↑ {n}{w₁} {v₁} eq) (a ∷ ps) = begin
+act-sound-ax {₁₊ n} w v (cong↑ {n}{w₁} {v₁} eq) (a ∷ ps) = begin
   act (w₁ ↑) (a ∷ ps) ≡⟨ lemma-act-↑ w₁ a ps ⟩
-  a ∷ act (w₁) (ps) ≡⟨ Eq.cong (a ∷_) (lemma-act-cong-ax _ _ eq ps) ⟩
+  a ∷ act (w₁) (ps) ≡⟨ Eq.cong (a ∷_) (act-sound-ax _ _ eq ps) ⟩
   a ∷ act (v₁) (ps) ≡⟨ Eq.sym (lemma-act-↑ v₁ a ps) ⟩
   act (v₁ ↑) (a ∷ ps) ∎
   where open ≡-Reasoning
 
-lemma-act-cong : ∀ {n} w v -> let open PB (n QRel,_===_) in w ≈ v -> ∀ c -> act {n} w c ≡ act v c
-lemma-act-cong {n} w v PB.refl ps = auto
-lemma-act-cong {n} w v (PB.sym eq) ps = Eq.sym (lemma-act-cong v w eq ps)
-lemma-act-cong {n} w v (PB.trans eq eq₁) ps = Eq.trans (lemma-act-cong w _ eq ps) (lemma-act-cong _ v eq₁ ps)
-lemma-act-cong {n} w v (PB.cong {w₁} {w'} {v₁} {v'} eq eq₁) ps = begin
+------------------------------------------------------------------------
+-- Soundness for the generated congruence
+
+act-sound : ∀ {n} w v -> let open PB (n QRel,_===_) in w ≈ v -> ∀ c -> act {n} w c ≡ act v c
+act-sound {n} w v PB.refl ps = auto
+act-sound {n} w v (PB.sym eq) ps = Eq.sym (act-sound v w eq ps)
+act-sound {n} w v (PB.trans eq eq₁) ps = Eq.trans (act-sound w _ eq ps) (act-sound _ v eq₁ ps)
+act-sound {n} w v (PB.cong {w₁} {w'} {v₁} {v'} eq eq₁) ps = begin
   act (w₁ • v₁) ps ≡⟨ auto ⟩
-  act w₁ (act v₁ ps) ≡⟨ Eq.cong (act w₁) (lemma-act-cong _ _ eq₁ ps) ⟩
-  act w₁ (act v' ps) ≡⟨ lemma-act-cong _ _ eq (act v' ps) ⟩
+  act w₁ (act v₁ ps) ≡⟨ Eq.cong (act w₁) (act-sound _ _ eq₁ ps) ⟩
+  act w₁ (act v' ps) ≡⟨ act-sound _ _ eq (act v' ps) ⟩
   act (w' • v') ps ∎
   where open ≡-Reasoning
-lemma-act-cong {n} w v PB.assoc ps = auto
-lemma-act-cong {n} w v PB.left-unit ps = auto
-lemma-act-cong {n} w v PB.right-unit ps = auto
-lemma-act-cong {n} w v (PB.axiom x) ps = lemma-act-cong-ax _ _ x ps
-
-
-
+act-sound {n} w v PB.assoc ps = auto
+act-sound {n} w v PB.left-unit ps = auto
+act-sound {n} w v PB.right-unit ps = auto
+act-sound {n} w v (PB.axiom x) ps = act-sound-ax _ _ x ps

@@ -1,4 +1,4 @@
-{-# OPTIONS --allow-unsolved-metas #-}
+{-# OPTIONS --cubical-compatible --allow-unsolved-metas #-}
 -- {-# OPTIONS  --safe #-}
 {-# OPTIONS --termination-depth=4 #-}
 

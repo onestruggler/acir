@@ -1,4 +1,4 @@
-{-# OPTIONS --termination-depth=20 #-}
+{-# OPTIONS --cubical-compatible --termination-depth=20 #-}
 {-# OPTIONS --inversion-max-depth=1000 #-}
 
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; module ≡-Reasoning) renaming ([_] to [_]')

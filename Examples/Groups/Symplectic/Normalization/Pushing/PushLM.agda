@@ -15,7 +15,7 @@
 -- sent through the whole M column by push-M-Sⁿ, escaping as its direction.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)

@@ -14,7 +14,7 @@
 -- H-through-M rule entirely.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --termination-depth=2 #-}
 
 open import Data.Nat using (ℕ ; 2+)

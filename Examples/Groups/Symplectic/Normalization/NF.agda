@@ -3,7 +3,7 @@
 -- defined somewhere else.
 ------------------------------------------------------------------------
 
-{-# OPTIONS  --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS  --call-by-name #-}
 
 open import Data.Nat

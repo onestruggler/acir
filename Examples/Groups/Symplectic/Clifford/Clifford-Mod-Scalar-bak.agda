@@ -1,4 +1,4 @@
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --prop #-}
 {-# OPTIONS --termination-depth=20 #-}
 

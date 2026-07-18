@@ -19,7 +19,7 @@
 -- phase gate gives S X S⁻¹ = i X Z, so a genuine i appears.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Clifford.Qubit.SignedPauli where
 

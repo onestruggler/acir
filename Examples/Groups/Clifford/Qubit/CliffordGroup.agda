@@ -16,7 +16,7 @@
 -- = CZ⁴ = 1 on P4) and are added in a later section.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Clifford.Qubit.CliffordGroup where
 
