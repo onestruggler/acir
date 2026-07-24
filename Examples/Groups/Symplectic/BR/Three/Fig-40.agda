@@ -58,20 +58,20 @@ open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
-open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 open LM2
 
 
 open import Zp.ModularArithmetic
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym3 p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
 open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime

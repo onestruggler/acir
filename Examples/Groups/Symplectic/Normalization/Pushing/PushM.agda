@@ -54,12 +54,12 @@ push-M-S : ∀ {n} (m : M (₁₊ n)) →
   let open PB ((₁₊ n) QRel,_===_) in
   ∃ λ (dir : Word (Gen (₁₊ n))) → ∃ λ (m' : M (₁₊ n)) → [ m ]ᵐ • S ≈ dir • [ m' ]ᵐ
 
--- Base case M 1 = E : E←S absorbs the S, no direction gate.
-push-M-S {0} e = ε , (e + - ₁) , trans (E←S e) (sym left-unit)
+-- Base case M 1 = Vec D 0 × E : E←S absorbs the S, no direction gate.
+push-M-S {0} (vd , e) = ε , (vd , e + - ₁) , trans (E←S e) (sym left-unit)
   where open PB (1 QRel,_===_) ; open PP (1 QRel,_===_)
 
 -- a = 0 : the S escapes upward as S↑, box unchanged.
-push-M-S {₁₊ n} (e , (₀ , b) ∷ v) = S ↑ , (e , (₀ , b) ∷ v) , claim
+push-M-S {₁₊ n} ((₀ , b) ∷ v , e) = S ↑ , ((₀ , b) ∷ v , e) , claim
   where
   open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_) ; open SR word-setoid
   x = ₀ , b
@@ -78,7 +78,7 @@ push-M-S {₁₊ n} (e , (₀ , b) ∷ v) = S ↑ , (e , (₀ , b) ∷ v) , clai
     S ↑ • ([ e ]ᵉ • ([ x ]ᵈ • [ v ]ᵛᵈ ↑))     ∎
 
 -- a ≠ 0 : the S is absorbed by the bottom D box (b ↦ b − a).
-push-M-S {₁₊ n} (e , (a@(₁₊ i) , b) ∷ v) = ε , (e , (a , b + - a) ∷ v) , claim
+push-M-S {₁₊ n} ((a@(₁₊ i) , b) ∷ v , e) = ε , ((a , b + - a) ∷ v , e) , claim
   where
   open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_) ; open SR word-setoid
   x  = a , b

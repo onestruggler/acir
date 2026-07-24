@@ -48,13 +48,13 @@ import Presentation.Properties as PP
 import Relation.Binary.Reasoning.Setoid as SR
 
 ------------------------------------------------------------------------
--- Pushing S ↑ through the base M box (M 2 = E × one D box).
+-- Pushing S ↑ through the base M box (M 2 = one D box × E).
 -- S ↑ descends to a plain S; the box is unchanged.
 
 push-M-S↑ : (m : M 2) →
   let open PB (2 QRel,_===_) in
   ∃ λ (dir : Word (Gen 2)) → ∃ λ (m' : M 2) → [ m ]ᵐ • S ↑ ≈ dir • [ m' ]ᵐ
-push-M-S↑ (e , x ∷ []) = S , (e , x ∷ []) , claim
+push-M-S↑ (x ∷ [] , e) = S , (x ∷ [] , e) , claim
   where
   open PB (2 QRel,_===_) ; open PP (2 QRel,_===_) ; open SR word-setoid
   open Lemmas0 1
@@ -76,12 +76,12 @@ push-M-S↑ (e , x ∷ []) = S , (e , x ∷ []) , claim
     S • ([ e ]ᵉ • ([ x ]ᵈ • ε))     ∎
 
 ------------------------------------------------------------------------
--- Pushing CZ through the M box M 3 = E × Vec D 2, via DD←CZ.
+-- Pushing CZ through the M box M 3 = Vec D 2 × E, via DD←CZ.
 
 push-M-CZ : (m : M 3) →
   let open PB (3 QRel,_===_) in
   ∃ λ (dir : Word (Gen 3)) → ∃ λ (m' : M 3) → [ m ]ᵐ • CZ ≈ dir • [ m' ]ᵐ
-push-M-CZ (e , vd) = ddcz-dir vd ↑ , (e , ddcz-vd' vd) , claim
+push-M-CZ (vd , e) = ddcz-dir vd ↑ , (ddcz-vd' vd , e) , claim
   where
   open PB (3 QRel,_===_) ; open PP (3 QRel,_===_) ; open SR word-setoid
   claim : ([ e ]ᵉ • [ vd ]ᵛᵈ) • CZ
@@ -129,10 +129,10 @@ D-CZ-a0 {n} b = begin
   arith : - b + ₁ ≡ - (b + - ₁)
   arith = Eq.trans (Eq.cong (- b +_) (Eq.sym (-‿involutive ₁))) (-‿+-comm b (- ₁))
 
--- CZ through the width-2 M box M 2 = E × one (a = 0) D box.
+-- CZ through the width-2 M box M 2 = one (a = 0) D box × E.
 push-M-CZ-M2-a0 : ∀ (e : E) (b : ℤ ₚ) →
   let open PB (2 QRel,_===_) in
-  [ (e , (₀ , b) ∷ []) ]ᵐ • CZ ≈ [ (e , (₀ , b + - ₁) ∷ []) ]ᵐ
+  [ ((₀ , b) ∷ [] , e) ]ᵐ • CZ ≈ [ ((₀ , b + - ₁) ∷ [] , e) ]ᵐ
 push-M-CZ-M2-a0 e b = begin
   ([ e ]ᵉ • ([ (₀ , b) ]ᵈ • ε)) • CZ    ≈⟨ cong (cright right-unit) refl ⟩
   ([ e ]ᵉ • [ (₀ , b) ]ᵈ) • CZ          ≈⟨ assoc ⟩

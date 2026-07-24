@@ -282,7 +282,7 @@ lemma-semi-M↓-XC {n} m = begin
 --open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 

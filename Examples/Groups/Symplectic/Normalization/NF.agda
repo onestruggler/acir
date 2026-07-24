@@ -1,31 +1,34 @@
 ------------------------------------------------------------------------
--- Various box definitions. The interpretation of box as circuits is
--- defined somewhere else.
+-- Presentations of groups
+--
+-- Various box definitions.  The interpretation of boxes as circuits
+-- is defined elsewhere.
 ------------------------------------------------------------------------
-
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS  --call-by-name #-}
 
-open import Data.Nat
-open import Data.Nat.Primality
+open import Data.Nat using (ℕ ; _≤_ ; _∸_ ; 2+)
+open import Data.Nat.Primality using (Prime)
 open import Data.Product using (_×_ ; _,_ ; Σ-syntax)
 open import Data.Sum using (_⊎_)
 open import Data.Unit using (⊤)
-open import Data.Vec
-open import Relation.Binary.PropositionalEquality using (_≢_)
+open import Data.Vec using (Vec)
 open import Notations
-
+open import Relation.Binary.PropositionalEquality using (_≢_)
 open import Zp.ModularArithmetic
 
-module Examples.Groups.Symplectic.Normalization.NF (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.Symplectic.Normalization.NF
+  (p-2 : ℕ) (p-prime : Prime (2+ p-2))
+  where
 
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 
 private
   variable
     n : ℕ
 
+
+------------------------------------------------------------------------
+-- Atomic box components
 
 A : Set
 A = Σ[ ab ∈ (ℤ ₚ × ℤ ₚ) ] (ab ≢ (₀ , ₀))
@@ -38,6 +41,9 @@ D = ℤ ₚ × ℤ ₚ
 
 E : Set
 E = ℤ ₚ
+
+------------------------------------------------------------------------
+-- Width-indexed boxes
 
 Lj : (j : ℕ) → Set
 Lj j = Vec B j × A
@@ -54,19 +60,17 @@ L (₂₊ n) = Σ[ (j , le) ∈ LE (₁₊ n) ] Lj ((₁₊ n) ∸ j)
 
 L' : ℕ → Set
 L' 0 = ⊤
-L' 1 = A
-L' (₂₊ n) = Vec B (₁₊ n) × A
+L' (₁₊ n) = Vec B n × A
 
 M : ℕ → Set
 M 0 = ⊤
-M 1 = E
-M (₂₊ n) = E × Vec D (₁₊ n)
+M (₁₊ n) = Vec D n × E
 
 LM : (n : ℕ) → Set
 LM 0 = ⊤
 LM 1 = M 1 × L' 1
-LM 2 = M 2 × (L' 2 ⊎ L' 1)
-LM (₃₊ n) = M (₃₊ n) × L' (₃₊ n) ⊎ D × LM (₂₊ n) 
+--LM 2 = M 2 × (L' 2 ⊎ L' 1)
+LM (₂₊ n) = M (₂₊ n) × L' (₂₊ n) ⊎ D × LM (₁₊ n)
 
 NF : (n : ℕ) → Set
 NF 0 = ⊤

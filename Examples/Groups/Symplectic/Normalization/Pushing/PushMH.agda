@@ -60,7 +60,7 @@ module _ {n : ℕ}
   push-M-H : (m : M (₂₊ n)) →
     let open PB ((₂₊ n) QRel,_===_) in
     ∃ λ (dir : Word (Gen (₂₊ n))) → ∃ λ (m' : M (₂₊ n)) → [ m ]ᵐ • H ≈ dir • [ m' ]ᵐ
-  push-M-H (e , x ∷ v) = dirDH x ↑ , (e , d'DH x ∷ v) , claim
+  push-M-H (x ∷ v , e) = dirDH x ↑ , (d'DH x ∷ v , e) , claim
     where
     open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_) ; open SR word-setoid
     claim : ([ e ]ᵉ • ([ x ]ᵈ • [ v ]ᵛᵈ ↑)) • H

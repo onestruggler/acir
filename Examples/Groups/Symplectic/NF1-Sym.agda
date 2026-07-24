@@ -42,11 +42,11 @@ open import Data.Nat.Primality
 open import Notations
 
 open import Zp.ModularArithmetic
-module Examples.Groups.Symplectic.ExtendedGate.NF1-Sym (p-2 : ℕ) (p-prime : Prime (2+ p-2))
+module Examples.Groups.Symplectic.NF1-Sym (p-2 : ℕ) (p-prime : Prime (2+ p-2))
   where
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime as SD
+
 open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
 open Lemmas-2Q 2 hiding (lemma-CZ^k-%)
 open Symplectic

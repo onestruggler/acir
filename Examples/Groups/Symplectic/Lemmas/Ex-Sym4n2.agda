@@ -51,12 +51,12 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 
 open Lemmas-2Q n
 open Symplectic
-open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime

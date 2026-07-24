@@ -51,6 +51,7 @@ open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
+open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open Lemmas-2Q 2
 open Symplectic-Derived-Gen
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime
@@ -64,8 +65,8 @@ module Completeness where
       
 
   PrimitiveGen : Gen (₁₊ n) -> Set
-  PrimitiveGen (H-gen ₁) = ⊤
-  PrimitiveGen (S-gen ₁) = ⊤
+  PrimitiveGen (gate₁ (H-gen ₁)) = ⊤
+  PrimitiveGen (gate₁ (S-gen ₁)) = ⊤
   PrimitiveGen _ = ⊥
 
   PrimitiveWord : Word(Gen (₁₊ n)) -> Set
@@ -74,9 +75,9 @@ module Completeness where
   PrimitiveWord (w • w₁) = PrimitiveWord w × PrimitiveWord w₁
 
   desugar-gen :(Gen (₁₊ n)) -> Word(Gen (₁₊ n))
-  desugar-gen (H-gen x) = H ^ toℕ x
-  desugar-gen (S-gen x) = S ^ toℕ x
-  desugar-gen (CZ-gen x) = CZ ^ toℕ x
+  desugar-gen (gate₁ (H-gen x)) = H ^ toℕ x
+  desugar-gen (gate₁ (S-gen x)) = S ^ toℕ x
+  desugar-gen (gate₂ (CZ-gen x)) = CZ ^ toℕ x
   desugar-gen {₁₊ n} (x ↥) = (desugar-gen x) ↑
 
   desugar-word : Word (Gen (₁₊ n)) -> Word(Gen (₁₊ n))
@@ -94,8 +95,8 @@ module Completeness where
   lemma-S^-Prim (₂₊ k) = tt , (lemma-S^-Prim (₁₊ k))
 
   lemma-desugar-gen : (g :(Gen (₁₊ n))) -> PrimitiveGen g -> PrimitiveWord (desugar-gen g)
-  lemma-desugar-gen (H-gen x) pg = lemma-H^-Prim (toℕ x)
-  lemma-desugar-gen (S-gen x) pg = lemma-S^-Prim (toℕ x)
+  lemma-desugar-gen (gate₁ (H-gen x)) pg = lemma-H^-Prim (toℕ x)
+  lemma-desugar-gen (gate₁ (S-gen x)) pg = lemma-S^-Prim (toℕ x)
   
   lemma-desugar-word : (w : Word(Gen (₁₊ n))) ->  PrimitiveWord w -> PrimitiveWord (desugar-word w)
   lemma-desugar-word [ x ]ʷ pg = lemma-desugar-gen x pg
@@ -105,9 +106,9 @@ module Completeness where
 
   lemma-desugar-gen-≈ : let open PB ((₁₊ n) QRel,_===_) in
     (g :(Gen (₁₊ n))) -> desugar-gen g ≈ [ g ]ʷ
-  lemma-desugar-gen-≈ (H-gen x) = PB.sym (PB.axiom (derived-H x))
-  lemma-desugar-gen-≈ (S-gen x) = PB.sym (PB.axiom (derived-S x))
-  lemma-desugar-gen-≈ (CZ-gen x) = PB.sym (PB.axiom (derived-CZ x))
+  lemma-desugar-gen-≈ (gate₁ (H-gen x)) = PB.sym (PB.axiom (srel (derived-H x)))
+  lemma-desugar-gen-≈ (gate₁ (S-gen x)) = PB.sym (PB.axiom (srel (derived-S x)))
+  lemma-desugar-gen-≈ (gate₂ (CZ-gen x)) = PB.sym (PB.axiom (srel (derived-CZ x)))
   lemma-desugar-gen-≈ {₁₊ n} (x ↥) = lemma-cong↑ _ _ (lemma-desugar-gen-≈ x)
 
 
@@ -126,22 +127,22 @@ module Completeness where
     -----------------------------------------------
     ∃ \ nf' -> ⟦ nf ⟧₁ • [ g ]ʷ ≈ ⟦ nf' ⟧₁
     
-  Lemma-single-qupit-completeness {n} nf@(s , m , ε) (H-gen ₁) pg = (s , m , HS^ ₀) , claim
+  Lemma-single-qupit-completeness {n} nf@(s , m , ε) (gate₁ (H-gen ₁)) pg = (s , m , HS^ ₀) , claim
     where
     open PB ((₁₊ n) QRel,_===_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
     open Pattern-Assoc
-    claim : (⟦ s ⟧ₛ • ⟦ m ⟧ₘ • ε) • [ H-gen ₁ ]ʷ ≈ ⟦ s ⟧ₛ • ⟦ m ⟧ₘ • H • S^ ₀
+    claim : (⟦ s ⟧ₛ • ⟦ m ⟧ₘ • ε) • [ gate₁ (H-gen ₁) ]ʷ ≈ ⟦ s ⟧ₛ • ⟦ m ⟧ₘ • H • S^ ₀
     claim = begin
       (⟦ s ⟧ₛ • ⟦ m ⟧ₘ • ε) • H ≈⟨ _≈_.cong (_≈_.cong refl right-unit) refl ⟩
       (⟦ s ⟧ₛ • ⟦ m ⟧ₘ) • H ≈⟨ by-assoc auto ⟩
-      (⟦ s ⟧ₛ • ⟦ m ⟧ₘ) • H • ε ≈⟨ (cright cright _≈_.sym (axiom (derived-S ₀))) ⟩
+      (⟦ s ⟧ₛ • ⟦ m ⟧ₘ) • H • ε ≈⟨ (cright cright _≈_.sym (axiom (srel (derived-S ₀)))) ⟩
       (⟦ s ⟧ₛ • ⟦ m ⟧ₘ) • H • S^ ₀ ≈⟨ assoc ⟩
       ⟦ s ⟧ₛ • ⟦ m ⟧ₘ • H • S^ ₀ ∎
 
 
-  Lemma-single-qupit-completeness {n} nf@(s , x , HS^ ₀) (H-gen ₁) pg = nf' , claim
+  Lemma-single-qupit-completeness {n} nf@(s , x , HS^ ₀) (gate₁ (H-gen ₁)) pg = nf' , claim
     where
     open PB ((₁₊ n) QRel,_===_)
     open PP ((₁₊ n) QRel,_===_)
@@ -151,18 +152,18 @@ module Completeness where
 
     x'  = x *' -'₁
     nf' = s , x' , ε
-    claim : ⟦ s , x , HS^ ₀ ⟧₁ • [ H-gen ₁ ]ʷ ≈ ⟦ nf' ⟧₁
+    claim : ⟦ s , x , HS^ ₀ ⟧₁ • [ gate₁ (H-gen ₁) ]ʷ ≈ ⟦ nf' ⟧₁
     claim = begin
-      ⟦ s , x , HS^ ₀ ⟧₁ • [ H-gen ₁ ]ʷ ≈⟨ (cleft (cright (cright (cright axiom (derived-S ₀))))) ⟩
+      ⟦ s , x , HS^ ₀ ⟧₁ • [ gate₁ (H-gen ₁) ]ʷ ≈⟨ (cleft (cright (cright (cright axiom (srel (derived-S ₀)))))) ⟩
       (⟦ s ⟧ₛ • M x • (H • ε)) • H ≈⟨ trans assoc (cright assoc) ⟩
       ⟦ s ⟧ₛ • M x • (H • ε) • H ≈⟨ (cright cright cong right-unit refl) ⟩
       ⟦ s ⟧ₛ • M x • HH ≈⟨ (cright cright lemma-HH-M-1) ⟩
-      ⟦ s ⟧ₛ • M x • M -'₁ ≈⟨ (cright axiom (M-mul x -'₁)) ⟩
+      ⟦ s ⟧ₛ • M x • M -'₁ ≈⟨ (cright axiom (srel (M-mul x -'₁))) ⟩
       ⟦ s ⟧ₛ • M (x *' -'₁) ≈⟨ sym (cong refl right-unit) ⟩
       ⟦ s ⟧ₛ • M (x *' -'₁) • ε ≈⟨ refl ⟩
       ⟦ nf' ⟧₁ ∎
 
-  Lemma-single-qupit-completeness {n} nf@(l , (y , nzy) , HS^ x@(₁₊ k')) (H-gen ₁) pg = nf' , claim
+  Lemma-single-qupit-completeness {n} nf@(l , (y , nzy) , HS^ x@(₁₊ k')) (gate₁ (H-gen ₁)) pg = nf' , claim
     where
     open PB ((₁₊ n) QRel,_===_)
     open PP ((₁₊ n) QRel,_===_)
@@ -180,16 +181,16 @@ module Completeness where
     -y/x = -y/x' .proj₁
 
     nf' = (l + -x⁻¹ * (y * y)) , -y/x' , (HS^ -x⁻¹)
-    claim : ⟦ l , (y , nzy) , HS^ (₁₊ k') ⟧₁ • [ H-gen ₁ ]ʷ ≈ ⟦ nf' ⟧₁
+    claim : ⟦ l , (y , nzy) , HS^ (₁₊ k') ⟧₁ • [ gate₁ (H-gen ₁) ]ʷ ≈ ⟦ nf' ⟧₁
     claim = begin
-      ⟦ l , (y , nzy) , HS^ (₁₊ k') ⟧₁ • [ H-gen ₁ ]ʷ ≈⟨ trans assoc (cong refl assoc) ⟩
+      ⟦ l , (y , nzy) , HS^ (₁₊ k') ⟧₁ • [ gate₁ (H-gen ₁) ]ʷ ≈⟨ trans assoc (cong refl assoc) ⟩
       S^ l • M (y , nzy) • (H • S^ (₁₊ k')) • H ≈⟨ (cright cright assoc) ⟩
       S^ l • M (y , nzy) • H • S^ (₁₊ k') • H ≈⟨ (cright derived-7 x y nz nzy) ⟩
       S^ l • S^ (-x⁻¹ * (y * y)) • M -y/x' • (H • S^ -x⁻¹) ≈⟨ sym assoc ⟩
       (S^ l • S^ (-x⁻¹ * (y * y))) • M -y/x' • (H • S^ -x⁻¹) ≈⟨ (cleft lemma-S^k+l l (-x⁻¹ * (y * y))) ⟩
       ⟦ nf' ⟧₁ ∎
 
-  Lemma-single-qupit-completeness {n} nf@(l , (y , nzy) , ε) (S-gen ₁) pg = nf' , claim
+  Lemma-single-qupit-completeness {n} nf@(l , (y , nzy) , ε) (gate₁ (S-gen ₁)) pg = nf' , claim
     where
     open PB ((₁₊ n) QRel,_===_)
     open PP ((₁₊ n) QRel,_===_)
@@ -198,17 +199,17 @@ module Completeness where
     open Lemmas0 n
 
     nf' = (l + y * y) , (y , nzy) , ε
-    claim : ⟦ l , (y , nzy) , ε ⟧₁ • [ S-gen ₁ ]ʷ ≈ ⟦ nf' ⟧₁
+    claim : ⟦ l , (y , nzy) , ε ⟧₁ • [ gate₁ (S-gen ₁) ]ʷ ≈ ⟦ nf' ⟧₁
     claim = begin
-      ⟦ l , (y , nzy) , ε ⟧₁ • [ S-gen ₁ ]ʷ ≈⟨ trans assoc (cong refl assoc) ⟩
-      S^ l • M (y , nzy) • ε • [ S-gen ₁ ]ʷ ≈⟨ cong refl (cong refl left-unit) ⟩
-      S^ l • M (y , nzy) • S ≈⟨ (cright axiom (semi-MS (y , nzy))) ⟩
+      ⟦ l , (y , nzy) , ε ⟧₁ • [ gate₁ (S-gen ₁) ]ʷ ≈⟨ trans assoc (cong refl assoc) ⟩
+      S^ l • M (y , nzy) • ε • [ gate₁ (S-gen ₁) ]ʷ ≈⟨ cong refl (cong refl left-unit) ⟩
+      S^ l • M (y , nzy) • S ≈⟨ (cright axiom (srel (semi-MS (y , nzy)))) ⟩
       S^ l • S^ (y * y) • M (y , nzy) ≈⟨ sym assoc ⟩
       (S^ l • S^ (y * y)) • M (y , nzy) ≈⟨ (cleft lemma-S^k+l l (y * y)) ⟩
       S^ (l + (y * y)) • M (y , nzy) ≈⟨ sym (cong refl right-unit) ⟩
       ⟦ nf' ⟧₁ ∎
       
-  Lemma-single-qupit-completeness {n} nf@(s , m , HS^ k) (S-gen ₁) pg = nf' , claim
+  Lemma-single-qupit-completeness {n} nf@(s , m , HS^ k) (gate₁ (S-gen ₁)) pg = nf' , claim
     where
     open PB ((₁₊ n) QRel,_===_)
     open PP ((₁₊ n) QRel,_===_)
@@ -218,9 +219,9 @@ module Completeness where
 
     k' = k + ₁
     nf' = s , m , HS^ k'
-    claim : ⟦ s , m , HS^ k ⟧₁ • [ S-gen ₁ ]ʷ ≈ ⟦ nf' ⟧₁
+    claim : ⟦ s , m , HS^ k ⟧₁ • [ gate₁ (S-gen ₁) ]ʷ ≈ ⟦ nf' ⟧₁
     claim = begin
-      ⟦ s , m , HS^ k ⟧₁ • [ S-gen ₁ ]ʷ ≈⟨ trans assoc (cong refl assoc) ⟩
+      ⟦ s , m , HS^ k ⟧₁ • [ gate₁ (S-gen ₁) ]ʷ ≈⟨ trans assoc (cong refl assoc) ⟩
       ⟦ s ⟧ₛ • ⟦ m ⟧ₘ • (H • S^ k) • S ≈⟨ refl ⟩
       ⟦ s ⟧ₛ • ⟦ m ⟧ₘ • (H • S^ k) • S^ ₁ ≈⟨ (cright cright assoc) ⟩
       ⟦ s ⟧ₛ • ⟦ m ⟧ₘ • H • S^ k • S^ ₁ ≈⟨ (cright cright cright lemma-S^k+l k ₁) ⟩

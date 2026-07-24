@@ -49,11 +49,11 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2
 open Symplectic
 open Lemmas-Sym
-open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
@@ -168,7 +168,7 @@ module Completeness where
   open import Examples.Groups.Symplectic.Lemmas.Lemma-Postfix p-2 p-prime
   open import Examples.Groups.Symplectic.Lemmas.Derived p-2 p-prime
   open import Examples.Groups.Symplectic.Lemmas.Derived2 p-2 p-prime
---  open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime as NF1
+--  open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime as NF1
 --  open NF1.Normal-Form1 using ()
   
   open TQ.Lemmas-2Q 0

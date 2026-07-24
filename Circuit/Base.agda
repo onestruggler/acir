@@ -51,13 +51,6 @@ private
 ------------------------------------------------------------------------
 -- Structural lift operations
 
--- Shift all generators up by one wire.
-_↑ : Circuit n → Circuit (₁₊ n)
-_↑ = wmap _↥
-
--- Identity: marks a circuit acting on the bottom wires (notation only).
-_↓ : Circuit n → Circuit n
-_↓ x = x
 
 -- Shift a generator up by k wires.
 -- Type Gen (k + n) (k on the left) avoids the n + 0 ≢ n issue.
@@ -69,8 +62,35 @@ g ↥ᵏ ₁₊ k   = (g ↥ᵏ k) ↥
 -- Lift a circuit up by k wires.
 infixl 7 _↑ᵏ_
 _↑ᵏ_ : Circuit n → (k : ℕ) → Circuit (k + n)
-w ↑ᵏ zero    = w
-w ↑ᵏ ₁₊ k   = (w ↑ᵏ k) ↑
+w ↑ᵏ k  = wmap (_↥ᵏ k) w
+
+-- Shift all generators up by one wire.
+_↑ : Circuit n → Circuit (₁₊ n)
+_↑ = _↑ᵏ 1
+
+-- Widen a generator by k extra wires on top, keeping its action on the
+-- bottom wires.  Dual to _↥ᵏ_: whereas _↥ᵏ_ inserts wires below and
+-- shifts the gate up onto them, _↧ᵏ_ leaves the gate where it is and
+-- pads new wires above.  The result type Gen (n + k) puts the new wires
+-- on the right, so e.g. Gen 2 embeds into Gen (2 + k) ≡ Gen (₂₊ k).
+infixl 8 _↧ᵏ_
+_↧ᵏ_ : Gen n → (k : ℕ) → Gen (n + k)
+gate₁ h ↧ᵏ k = gate₁ h
+gate₂ h ↧ᵏ k = gate₂ h
+(g ↥)   ↧ᵏ k = (g ↧ᵏ k) ↥
+
+-- Widen a circuit by k extra wires on top (the _↧ᵏ_ map on every gate).
+-- In particular _↓ᵏ_ {2} embeds Circuit 2 into Circuit (₂₊ k).
+infixl 7 _↓ᵏ_
+_↓ᵏ_ : Circuit n → (k : ℕ) → Circuit (n + k)
+w ↓ᵏ k = wmap (_↧ᵏ k) w
+
+-- Identity: marks a circuit acting on the bottom wires (notation only).
+-- Kept as the identity (not _↓ᵏ 1): downstream code writes `w ↓` to pin a
+-- polymorphic gate to the bottom wires, letting the surrounding context
+-- fix the wire count by unification — the dual of the genuine shift `_↑`.
+_↓ : Circuit n → Circuit n
+_↓ x = x
 
 ------------------------------------------------------------------------
 -- Lift-Relation

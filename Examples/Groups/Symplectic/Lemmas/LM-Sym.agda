@@ -53,11 +53,11 @@ open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
-open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime public
 
 
-open import Examples.Groups.Symplectic.ExtendedGate.NF2-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 open LM2
 
 private
@@ -137,8 +137,8 @@ B' = B
 
 [_]ᵐ : ∀ {n} → M n → Word (Gen n)
 [_]ᵐ {0} _ = ε
-[_]ᵐ {1} e = [ e ]ᵉ
-[_]ᵐ {₂₊ n} (e , vd) = [ e ]ᵉ • [ vd ]ᵛᵈ
+[_]ᵐ {1} (vd , e) = [ e ]ᵉ
+[_]ᵐ {₂₊ n} (vd , e) = [ e ]ᵉ • [ vd ]ᵛᵈ
 
 jth-abox : ∀ {j n} → j ≤ n → A → Word (Gen (₁₊ n))
 jth-abox {₀} {n} _ a = [ a ]ᵃ
@@ -176,16 +176,14 @@ jth-babox {₁₊ j} {₁₊ n} (s≤s j≤n) v a = jth-babox j≤n v a ↑
 
 [_]ˡ' : ∀ {n} → L' n → Word (Gen n)
 [_]ˡ' {0} l = ε
-[_]ˡ' {1} l = [ l ]ᵃ
+[_]ˡ' {1} (vb , a) = [ a ]ᵃ
 [_]ˡ' {₂₊ n} (vb , a) = [ vb ]ᵛᵇ • [ a ]ᵃ
 
 [_]ˡᵐ : ∀ {n} → LM n → Word (Gen n)
 [_]ˡᵐ {0} _ = ε
 [_]ˡᵐ {1} (m , l) = [ m ]ᵐ • [ l ]ˡ'
-[_]ˡᵐ {2} (m , inj₁ l) = [ m ]ᵐ • [ l ]ˡ'
-[_]ˡᵐ {2} (m , inj₂ l) = [ m ]ᵐ • [ l ]ᵃ
-[_]ˡᵐ {₃₊ n} (inj₁ (m , l)) = [ m ]ᵐ • [ l ]ˡ'
-[_]ˡᵐ {₃₊ n} (inj₂ (d , lm)) = [ d ]ᵈ • [ lm ]ˡᵐ ↑
+[_]ˡᵐ {₂₊ n} (inj₁ (m , l)) = [ m ]ᵐ • [ l ]ˡ'
+[_]ˡᵐ {₂₊ n} (inj₂ (d , lm)) = [ d ]ᵈ • [ lm ]ˡᵐ ↑
 
 [_] : ∀ {n} → NF n → Word (Gen n)
 [_] {0} tt = ε

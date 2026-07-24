@@ -39,7 +39,7 @@ open import Data.Nat.Primality
 
 open import Zp.ModularArithmetic
 
-module Examples.Groups.Symplectic.ExtendedGate.NF2-Sym
+module Examples.Groups.Symplectic.NF2-Sym
  (p-2 : ℕ) (p-prime : Prime (2+ p-2))
   where
 open PrimeModulus p-2 p-prime
@@ -56,7 +56,7 @@ open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
 open Lemmas-2Q 2
 open Symplectic
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime renaming (act to dact)
-open import Examples.Groups.Symplectic.ExtendedGate.NF1-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 
 module LM2 where
 

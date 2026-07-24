@@ -69,7 +69,7 @@ module Symplectic where
 
   -- Open the Syntactics framework: provides Gen, gate₁, gate₂, _↥, _↑, _↓, _↥ᵏ_, _↑ᵏ_, Lift-Relation.
   private module SC = Circuit.Base SympGate
-  open SC using (Gen ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_) public
+  open SC using (Gen ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_ ; Circuit ; _↓ᵏ_) public
 
   -- Backward-compatible pattern synonyms for the three basic generators.
   -- These let CommData and Rewriting-Sym0 use the old constructor-style names.
