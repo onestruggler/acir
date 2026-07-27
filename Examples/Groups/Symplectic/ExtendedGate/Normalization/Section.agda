@@ -71,8 +71,8 @@ private
 
 [_]ᵐ : ∀ {n} → M n → Word (Gen n)
 [_]ᵐ {0} _ = ε
-[_]ᵐ {1} (vd , e) = [ e ]ᵉ
-[_]ᵐ {₂₊ n} (vd , e) = [ e ]ᵉ • [ vd ]ᵛᵈ
+[_]ᵐ {₁₊ n} ([] , e) = [ e ]ᵉ
+[_]ᵐ {₁₊ n} (x ∷ vd , e) = [ x ]ᵈ • [ vd , e ]ᵐ ↑
 
 jth-abox : ∀ {j n} → j ≤ n → A → Word (Gen (₁₊ n))
 jth-abox {₀} {n} _ a = [ a ]ᵃ
@@ -110,8 +110,7 @@ jth-babox {₁₊ j} {₁₊ n} (s≤s j≤n) v a = jth-babox j≤n v a ↑
 
 [_]ˡ' : ∀ {n} → L' n → Word (Gen n)
 [_]ˡ' {0} l = ε
-[_]ˡ' {1} (vb , a) = [ a ]ᵃ
-[_]ˡ' {₂₊ n} (vb , a) = [ vb ]ᵛᵇ • [ a ]ᵃ
+[_]ˡ' {₁₊ n} (vb , a) = [ vb ]ᵛᵇ • [ a ]ᵃ
 
 [_]ˡᵐ : ∀ {n} → LM n → Word (Gen n)
 [_]ˡᵐ {0} _ = ε

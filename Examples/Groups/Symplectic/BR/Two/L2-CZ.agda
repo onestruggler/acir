@@ -104,7 +104,7 @@ l'-of : L' 2 ⊎ L' 1 -> L' 2 ⊎ L' 1
 
 -- L' 2 inputs (the j=0 boxes)
 l'-of (inj₁ (((c , d) ∷ []) , ((a@₀ , b@(₁₊ _)) , _))) with b ≟ c
-l'-of (inj₁ (((c , d) ∷ []) , ((a@₀ , b@(₁₊ _)) , _))) | yes eq  = inj₂ ((b , d) , λ ())
+l'-of (inj₁ (((c , d) ∷ []) , ((a@₀ , b@(₁₊ _)) , _))) | yes eq  = inj₂ ([] , (b , d) , λ ())
 l'-of (inj₁ (((c , d) ∷ []) , ((a@₀ , b@(₁₊ _)) , _))) | no neq  = inj₁ (((c , d + - a) ∷ []) , ((a , b + - c) , nzp))
   where
   nzp : (a , b + - c) ≢ (₀ , ₀)
@@ -112,13 +112,13 @@ l'-of (inj₁ (((c , d) ∷ []) , ((a@₀ , b@(₁₊ _)) , _))) | no neq  = inj
 l'-of (inj₁ (((c , d) ∷ []) , ((a@(₁₊ _) , b) , _)))            = inj₁ (((c , d + - a) ∷ []) , ((a , b + - c) , λ ()))
 l'-of (inj₁ (((c , d) ∷ []) , ((a@₀ , b@₀) , nz)))              = ⊥-elim (nz auto)
 
--- L' 1 (= A) inputs (the j=1 boxes)
-l'-of (inj₂ ((a@₀ , b@(₁₊ _)) , nzp)) = inj₂ ((a , b) , nzp)
-l'-of (inj₂ ((a@(₁₊ _) , b) , nz))    = inj₁ (((a , b) ∷ []) , ((₀ , - a) , nzp))
+-- L' 1 (= Vec B 0 × A) inputs (the j=1 boxes)
+l'-of (inj₂ ([] , (a@₀ , b@(₁₊ _)) , nzp)) = inj₂ ([] , (a , b) , nzp)
+l'-of (inj₂ ([] , (a@(₁₊ _) , b) , nz))    = inj₁ (((a , b) ∷ []) , ((₀ , - a) , nzp))
   where
   nzp : (₀ , - a) ≢ (₀ , ₀)
   nzp = aux-b≠0⇒ab≠0 ₀ (- a) ((-' (a , λ ())) .proj₂)
-l'-of (inj₂ ((a@₀ , b@₀) , nz))       = ⊥-elim (nz auto)
+l'-of (inj₂ ([] , (a@₀ , b@₀) , nz))       = ⊥-elim (nz auto)
 
 
 
@@ -156,12 +156,12 @@ dir-of (inj₁ (((c@(₁₊ _) , d) ∷ []) , ((a@(₁₊ _) , b) , nz)))       
 
 dir-of (inj₁ (((c , d) ∷ []) , ((a@₀ , b@₀) , nzx))) = ⊥-elim (nzx auto)
 
--- L' 1 (= A) inputs (j=1)
-dir-of (inj₂ x@((a@₀ , b@(₁₊ _)) , nzx)) =   CZ^ b⁻¹
+-- L' 1 (= Vec B 0 × A) inputs (j=1)
+dir-of (inj₂ ([] , (a@₀ , b@(₁₊ _)) , nzx)) =   CZ^ b⁻¹
   where b⁻¹ = ((b , λ ()) ⁻¹) .proj₁
-dir-of (inj₂ x@((a@(₁₊ _) , b) , nzx))   =   H • CZ^ a⁻¹ • H ^ 3
+dir-of (inj₂ ([] , (a@(₁₊ _) , b) , nzx))   =   H • CZ^ a⁻¹ • H ^ 3
   where a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
-dir-of (inj₂ ((a@₀ , b@₀) , nzx))        =   ⊥-elim (nzx auto)
+dir-of (inj₂ ([] , (a@₀ , b@₀) , nzx))      =   ⊥-elim (nzx auto)
 
 
 ------------------------------------------------------------------------
@@ -174,7 +174,7 @@ intp : L' 2 ⊎ L' 1 -> Word (Gen 2)
 intp (inj₁ l) = [ l ]ˡ'
 -- the ε mirrors [_]ˡ on the j=1 (empty-vector) L 2 value, so that
 -- intp (l'-of l) is definitionally the old [ l'-of l ]ˡ.
-intp (inj₂ a) = (ε • [ a ]ᵃ) ↑
+intp (inj₂ (_ , a)) = (ε • [ a ]ᵃ) ↑
 
 
 lemma-dir-and-l' : ∀ (l : L' 2 ⊎ L' 1) ->
@@ -459,7 +459,7 @@ lemma-dir-and-l' l@(inj₁ (((c@(₁₊ _) , d) ∷ []) , ((a@₀ , b@(₁₊ _)
   dir-acz = H • CZ^ b⁻¹ • H ^ 3
   dir = dir-acz ⁻¹ʷ • HH
   l' : L' 2 ⊎ L' 1
-  l' = inj₂ ((b , d) , λ ())
+  l' = inj₂ ([] , (b , d) , λ ())
 
   nz-b = (-' (b , λ ())) .proj₂
   nz--b : - - b ≢ ₀
@@ -598,7 +598,7 @@ lemma-dir-and-l' l@(inj₁ (((c@(₁₊ _) , d) ∷ []) , ((a@₀ , b@(₁₊ _)
 
 
 
-lemma-dir-and-l' l@(inj₂ x@((a@₀ , b@(₁₊ _)) , nzx)) = begin
+lemma-dir-and-l' l@(inj₂ ([] , x@((a@₀ , b@(₁₊ _)) , nzx))) = begin
   intp l • CZ ≈⟨ cleft left-unit ⟩
   [ x ]ᵃ ↑ • CZ ≈⟨ lemma-A-CZ-1 (b , (λ ())) ⟩
   CZ^ b⁻¹ • [ x ]ᵃ ↑ ≈⟨ cright sym left-unit ⟩
@@ -607,7 +607,7 @@ lemma-dir-and-l' l@(inj₂ x@((a@₀ , b@(₁₊ _)) , nzx)) = begin
   b⁻¹ = ((b , λ ()) ⁻¹) .proj₁
   l' = l'-of l
   dir = dir-of l
-lemma-dir-and-l' l@(inj₂ x@((a@(₁₊ _) , b) , nzx)) = begin
+lemma-dir-and-l' l@(inj₂ ([] , x@((a@(₁₊ _) , b) , nzx))) = begin
   intp l • CZ ≈⟨ cleft left-unit ⟩
   [ x ]ᵃ ↑ • CZ ≈⟨ lemma-A-CZ-2 (a , λ ()) b ⟩
   dir • [ a , b ]ᵇ • [ (₀ , - a) , nzx' ]ᵃ ≈⟨ cright sym (trans assoc left-unit) ⟩
@@ -621,4 +621,4 @@ lemma-dir-and-l' l@(inj₂ x@((a@(₁₊ _) , b) , nzx)) = begin
   dir = (H • CZ^ a⁻¹ • H ^ 3)
   l' : L' 2 ⊎ L' 1
   l' = inj₁ (((a , b) ∷ []) , ((₀ , - a) , nzx'))
-lemma-dir-and-l' (inj₂ ((a@₀ , b@₀) , nzx)) = ⊥-elim (nzx auto)
+lemma-dir-and-l' (inj₂ ([] , (a@₀ , b@₀) , nzx)) = ⊥-elim (nzx auto)

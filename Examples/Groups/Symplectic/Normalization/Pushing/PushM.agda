@@ -28,7 +28,7 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Symplectic.Normalization.Pushing.PushM (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Data.Product using (_,_ ; ∃)
-open import Data.Vec using (_∷_)
+open import Data.Vec using (_∷_ ; [])
 open import Data.Fin using (toℕ)
 
 open import Zp.ModularArithmetic
@@ -39,7 +39,7 @@ open Lemmas-Sym using (lemma-comm-S-w↑ ; lemma-comm-Sᵏ-w↑)
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.BoxRelations p-2 p-prime
 open One using (E←S)
-open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime using (aux-DS)
+open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime using (aux-DS ; lemma-ᵐ-flat)
 
 open import Notations
 open import Word.Base using (Word ; _•_ ; ε)
@@ -55,11 +55,11 @@ push-M-S : ∀ {n} (m : M (₁₊ n)) →
   ∃ λ (dir : Word (Gen (₁₊ n))) → ∃ λ (m' : M (₁₊ n)) → [ m ]ᵐ • S ≈ dir • [ m' ]ᵐ
 
 -- Base case M 1 = Vec D 0 × E : E←S absorbs the S, no direction gate.
-push-M-S {0} (vd , e) = ε , (vd , e + - ₁) , trans (E←S e) (sym left-unit)
+push-M-S {0} ([] , e) = ε , ([] , e + - ₁) , trans (E←S e) (sym left-unit)
   where open PB (1 QRel,_===_) ; open PP (1 QRel,_===_)
 
 -- a = 0 : the S escapes upward as S↑, box unchanged.
-push-M-S {₁₊ n} ((₀ , b) ∷ v , e) = S ↑ , ((₀ , b) ∷ v , e) , claim
+push-M-S {₁₊ n} ((₀ , b) ∷ v , e) = S ↑ , ((₀ , b) ∷ v , e) , wrapped
   where
   open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_) ; open SR word-setoid
   x = ₀ , b
@@ -76,9 +76,15 @@ push-M-S {₁₊ n} ((₀ , b) ∷ v , e) = S ↑ , ((₀ , b) ∷ v , e) , clai
     ([ e ]ᵉ • S ↑) • ([ x ]ᵈ • [ v ]ᵛᵈ ↑)     ≈⟨ cleft (lemma-comm-Sᵏ-w↑ (toℕ (- e)) S) ⟩
     (S ↑ • [ e ]ᵉ) • ([ x ]ᵈ • [ v ]ᵛᵈ ↑)     ≈⟨ assoc ⟩
     S ↑ • ([ e ]ᵉ • ([ x ]ᵈ • [ v ]ᵛᵈ ↑))     ∎
+  wrapped : [ ((₀ , b) ∷ v , e) ]ᵐ • S ≈ S ↑ • [ ((₀ , b) ∷ v , e) ]ᵐ
+  wrapped = begin
+    [ ((₀ , b) ∷ v , e) ]ᵐ • S           ≈⟨ cleft (lemma-ᵐ-flat ((₀ , b) ∷ v) e) ⟩
+    ([ e ]ᵉ • [ (₀ , b) ∷ v ]ᵛᵈ) • S     ≈⟨ claim ⟩
+    S ↑ • ([ e ]ᵉ • [ (₀ , b) ∷ v ]ᵛᵈ)   ≈⟨ cright (sym (lemma-ᵐ-flat ((₀ , b) ∷ v) e)) ⟩
+    S ↑ • [ ((₀ , b) ∷ v , e) ]ᵐ         ∎
 
 -- a ≠ 0 : the S is absorbed by the bottom D box (b ↦ b − a).
-push-M-S {₁₊ n} ((a@(₁₊ i) , b) ∷ v , e) = ε , ((a , b + - a) ∷ v , e) , claim
+push-M-S {₁₊ n} ((a@(₁₊ i) , b) ∷ v , e) = ε , ((a , b + - a) ∷ v , e) , wrapped
   where
   open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_) ; open SR word-setoid
   x  = a , b
@@ -94,3 +100,9 @@ push-M-S {₁₊ n} ((a@(₁₊ i) , b) ∷ v , e) = ε , ((a , b + - a) ∷ v ,
     [ e ]ᵉ • ((ε ↑ • [ x' ]ᵈ) • [ v ]ᵛᵈ ↑)    ≈⟨ cright (cleft left-unit) ⟩
     [ e ]ᵉ • ([ x' ]ᵈ • [ v ]ᵛᵈ ↑)            ≈⟨ sym left-unit ⟩
     ε • ([ e ]ᵉ • ([ x' ]ᵈ • [ v ]ᵛᵈ ↑))      ∎
+  wrapped : [ ((a , b) ∷ v , e) ]ᵐ • S ≈ ε • [ ((a , b + - a) ∷ v , e) ]ᵐ
+  wrapped = begin
+    [ ((a , b) ∷ v , e) ]ᵐ • S                 ≈⟨ cleft (lemma-ᵐ-flat ((a , b) ∷ v) e) ⟩
+    ([ e ]ᵉ • [ (a , b) ∷ v ]ᵛᵈ) • S           ≈⟨ claim ⟩
+    ε • ([ e ]ᵉ • [ (a , b + - a) ∷ v ]ᵛᵈ)     ≈⟨ cright (sym (lemma-ᵐ-flat ((a , b + - a) ∷ v) e)) ⟩
+    ε • [ ((a , b + - a) ∷ v , e) ]ᵐ           ∎

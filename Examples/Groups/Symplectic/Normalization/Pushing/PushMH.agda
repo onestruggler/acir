@@ -40,6 +40,7 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
 open Lemmas-Sym using (lemma-comm-H-w↑ ; lemma-comm-Sᵏ-w↑)
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime using (lemma-ᵐ-flat)
 
 open import Notations
 open import Word.Base using (Word ; _•_)
@@ -60,7 +61,7 @@ module _ {n : ℕ}
   push-M-H : (m : M (₂₊ n)) →
     let open PB ((₂₊ n) QRel,_===_) in
     ∃ λ (dir : Word (Gen (₂₊ n))) → ∃ λ (m' : M (₂₊ n)) → [ m ]ᵐ • H ≈ dir • [ m' ]ᵐ
-  push-M-H (x ∷ v , e) = dirDH x ↑ , (d'DH x ∷ v , e) , claim
+  push-M-H (x ∷ v , e) = dirDH x ↑ , (d'DH x ∷ v , e) , wrapped
     where
     open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_) ; open SR word-setoid
     claim : ([ e ]ᵉ • ([ x ]ᵈ • [ v ]ᵛᵈ ↑)) • H
@@ -76,3 +77,9 @@ module _ {n : ℕ}
       ([ e ]ᵉ • dirDH x ↑) • ([ d'DH x ]ᵈ • [ v ]ᵛᵈ ↑) ≈⟨ cleft (lemma-comm-Sᵏ-w↑ (toℕ (- e)) (dirDH x)) ⟩
       (dirDH x ↑ • [ e ]ᵉ) • ([ d'DH x ]ᵈ • [ v ]ᵛᵈ ↑) ≈⟨ assoc ⟩
       dirDH x ↑ • ([ e ]ᵉ • ([ d'DH x ]ᵈ • [ v ]ᵛᵈ ↑)) ∎
+    wrapped : [ (x ∷ v , e) ]ᵐ • H ≈ dirDH x ↑ • [ (d'DH x ∷ v , e) ]ᵐ
+    wrapped = begin
+      [ (x ∷ v , e) ]ᵐ • H                     ≈⟨ cleft (lemma-ᵐ-flat (x ∷ v) e) ⟩
+      ([ e ]ᵉ • [ x ∷ v ]ᵛᵈ) • H               ≈⟨ claim ⟩
+      dirDH x ↑ • ([ e ]ᵉ • [ d'DH x ∷ v ]ᵛᵈ)  ≈⟨ cright (sym (lemma-ᵐ-flat (d'DH x ∷ v) e)) ⟩
+      dirDH x ↑ • [ (d'DH x ∷ v , e) ]ᵐ        ∎

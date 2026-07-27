@@ -53,7 +53,14 @@ private variable
 C = LM
 
 open import Examples.Groups.Symplectic.BR.One.A p-2 p-prime as OA
-open import Examples.Groups.Symplectic.BR.Two.D p-2 p-prime as TD
+import Examples.Groups.Symplectic.BR.Two.D p-2 p-prime as TD
+import Examples.Groups.Symplectic.BR.Two.L-CZ p-2 p-prime as LCZ
+import Examples.Groups.Symplectic.BR.Two.L2-CZ p-2 p-prime as LCZ2
+open import Examples.Groups.Symplectic.BR.Two.D-w p-2 p-prime as TDw
+open import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime as DDCZ
+
+open import Data.Vec
+open import Data.Nat using (s≤s ; z≤n)
 
 ------------------------------------------------------------------------
 -- Right coset action
@@ -69,10 +76,18 @@ ract {₁₊ n} (inj₂ y@(d , lm↑)) g@(gate₁ x)
   using d' ← TD.d'-of d (gate₁ x) λ ()
   using (spw , dir) ← TD.dir-of d (gate₁ x) λ ()
   = dir ↓ᵏ n , inj₂ (d' , lm↑)
-ract {₁} (inj₂ y@(d , e , a)) (gate₂ CZ-gate) = {!!}
+ract {₁} (inj₂ y@(d , m@(vd@[] , e) , l@(vb@[] , a@((x , z) , a≠0)))) (gate₂ CZ-gate)
+  using w ← LCZ2.dir-of (inj₂ ([] , a))
+  using (spw , dir , d') ← TDw.push-D-w d w (TDw.dir-of₂-No-Top-H ( (inj₂ ([] , a))))
+  with LCZ2.l'-of (inj₂ ([] , a))
+... | inj₂ l' = dir , inj₂ (d' , (vd , (e + spw)) , l')
+... | inj₁ l' = dir , inj₁ ((d' ∷ vd , (e + spw)) , l')
 
 ract {₂₊ n} (inj₂ y@(d , inj₁ x)) (gate₂ CZ-gate) = {!!}
 ract {₂₊ n} (inj₂ y@(d , inj₂ y₁)) (gate₂ CZ-gate) = {!!}
+  -- using d' ← DDCZ.d'-of d (gate₁ x) λ ()
+  -- using (spw , dir) ← DDCZ.dir-of d (gate₁ x) λ ()
+  -- = dir ↓ᵏ n , inj₂ (d' , lm↑)
 ract {₁₊ n} (inj₂ y@(d , lm↑)) (g ↥)
   using (gs , lm↑') ← ract lm↑ g = gs ↑ , inj₂ (d , lm↑')
 

@@ -35,7 +35,7 @@ open Symplectic renaming (M to ZM)
 open Lemmas-Sym using (lemma-comm-Sᵏ-w↑)
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime using (aux-DS↑)
+open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime using (aux-DS↑ ; lemma-ᵐ-flat)
 open import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime
   using (lemma-dir-and-vd') renaming (dir-of to ddcz-dir ; vd'-of to ddcz-vd')
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
@@ -54,7 +54,7 @@ import Relation.Binary.Reasoning.Setoid as SR
 push-M-S↑ : (m : M 2) →
   let open PB (2 QRel,_===_) in
   ∃ λ (dir : Word (Gen 2)) → ∃ λ (m' : M 2) → [ m ]ᵐ • S ↑ ≈ dir • [ m' ]ᵐ
-push-M-S↑ (x ∷ [] , e) = S , (x ∷ [] , e) , claim
+push-M-S↑ (x ∷ [] , e) = S , (x ∷ [] , e) , wrapped
   where
   open PB (2 QRel,_===_) ; open PP (2 QRel,_===_) ; open SR word-setoid
   open Lemmas0 1
@@ -74,6 +74,12 @@ push-M-S↑ (x ∷ [] , e) = S , (x ∷ [] , e) , claim
     (S • [ e ]ᵉ) • [ x ]ᵈ           ≈⟨ assoc ⟩
     S • ([ e ]ᵉ • [ x ]ᵈ)           ≈⟨ cright (sym (cright right-unit)) ⟩
     S • ([ e ]ᵉ • ([ x ]ᵈ • ε))     ∎
+  wrapped : [ (x ∷ [] , e) ]ᵐ • S ↑ ≈ S • [ (x ∷ [] , e) ]ᵐ
+  wrapped = begin
+    [ (x ∷ [] , e) ]ᵐ • S ↑        ≈⟨ cleft (lemma-ᵐ-flat (x ∷ []) e) ⟩
+    ([ e ]ᵉ • [ x ∷ [] ]ᵛᵈ) • S ↑  ≈⟨ claim ⟩
+    S • ([ e ]ᵉ • [ x ∷ [] ]ᵛᵈ)    ≈⟨ cright (sym (lemma-ᵐ-flat (x ∷ []) e)) ⟩
+    S • [ (x ∷ [] , e) ]ᵐ          ∎
 
 ------------------------------------------------------------------------
 -- Pushing CZ through the M box M 3 = Vec D 2 × E, via DD←CZ.
@@ -81,7 +87,7 @@ push-M-S↑ (x ∷ [] , e) = S , (x ∷ [] , e) , claim
 push-M-CZ : (m : M 3) →
   let open PB (3 QRel,_===_) in
   ∃ λ (dir : Word (Gen 3)) → ∃ λ (m' : M 3) → [ m ]ᵐ • CZ ≈ dir • [ m' ]ᵐ
-push-M-CZ (vd , e) = ddcz-dir vd ↑ , (ddcz-vd' vd , e) , claim
+push-M-CZ (vd , e) = ddcz-dir vd ↑ , (ddcz-vd' vd , e) , wrapped
   where
   open PB (3 QRel,_===_) ; open PP (3 QRel,_===_) ; open SR word-setoid
   claim : ([ e ]ᵉ • [ vd ]ᵛᵈ) • CZ
@@ -93,6 +99,12 @@ push-M-CZ (vd , e) = ddcz-dir vd ↑ , (ddcz-vd' vd , e) , claim
     ([ e ]ᵉ • ddcz-dir vd ↑) • [ ddcz-vd' vd ]ᵛᵈ   ≈⟨ cleft (lemma-comm-Sᵏ-w↑ (toℕ (- e)) (ddcz-dir vd)) ⟩
     (ddcz-dir vd ↑ • [ e ]ᵉ) • [ ddcz-vd' vd ]ᵛᵈ   ≈⟨ assoc ⟩
     ddcz-dir vd ↑ • ([ e ]ᵉ • [ ddcz-vd' vd ]ᵛᵈ)   ∎
+  wrapped : [ (vd , e) ]ᵐ • CZ ≈ ddcz-dir vd ↑ • [ (ddcz-vd' vd , e) ]ᵐ
+  wrapped = begin
+    [ (vd , e) ]ᵐ • CZ                            ≈⟨ cleft (lemma-ᵐ-flat vd e) ⟩
+    ([ e ]ᵉ • [ vd ]ᵛᵈ) • CZ                      ≈⟨ claim ⟩
+    ddcz-dir vd ↑ • ([ e ]ᵉ • [ ddcz-vd' vd ]ᵛᵈ)  ≈⟨ cright (sym (lemma-ᵐ-flat (ddcz-vd' vd) e)) ⟩
+    ddcz-dir vd ↑ • [ (ddcz-vd' vd , e) ]ᵐ        ∎
 
 ------------------------------------------------------------------------
 -- The E box absorbs an S-power: this is how the M column (at its base)
@@ -134,9 +146,16 @@ push-M-CZ-M2-a0 : ∀ (e : E) (b : ℤ ₚ) →
   let open PB (2 QRel,_===_) in
   [ ((₀ , b) ∷ [] , e) ]ᵐ • CZ ≈ [ ((₀ , b + - ₁) ∷ [] , e) ]ᵐ
 push-M-CZ-M2-a0 e b = begin
-  ([ e ]ᵉ • ([ (₀ , b) ]ᵈ • ε)) • CZ    ≈⟨ cong (cright right-unit) refl ⟩
-  ([ e ]ᵉ • [ (₀ , b) ]ᵈ) • CZ          ≈⟨ assoc ⟩
-  [ e ]ᵉ • ([ (₀ , b) ]ᵈ • CZ)          ≈⟨ cright (D-CZ-a0 b) ⟩
-  [ e ]ᵉ • [ (₀ , b + - ₁) ]ᵈ           ≈⟨ cright (sym right-unit) ⟩
-  [ e ]ᵉ • ([ (₀ , b + - ₁) ]ᵈ • ε)     ∎
-  where open PB (2 QRel,_===_) ; open PP (2 QRel,_===_) ; open SR word-setoid
+  [ ((₀ , b) ∷ [] , e) ]ᵐ • CZ           ≈⟨ cleft (lemma-ᵐ-flat ((₀ , b) ∷ []) e) ⟩
+  ([ e ]ᵉ • [ (₀ , b) ∷ [] ]ᵛᵈ) • CZ     ≈⟨ flat ⟩
+  [ e ]ᵉ • [ (₀ , b + - ₁) ∷ [] ]ᵛᵈ      ≈⟨ sym (lemma-ᵐ-flat ((₀ , b + - ₁) ∷ []) e) ⟩
+  [ ((₀ , b + - ₁) ∷ [] , e) ]ᵐ          ∎
+  where
+  open PB (2 QRel,_===_) ; open PP (2 QRel,_===_) ; open SR word-setoid
+  flat : ([ e ]ᵉ • ([ (₀ , b) ]ᵈ • ε)) • CZ ≈ [ e ]ᵉ • ([ (₀ , b + - ₁) ]ᵈ • ε)
+  flat = begin
+    ([ e ]ᵉ • ([ (₀ , b) ]ᵈ • ε)) • CZ    ≈⟨ cong (cright right-unit) refl ⟩
+    ([ e ]ᵉ • [ (₀ , b) ]ᵈ) • CZ          ≈⟨ assoc ⟩
+    [ e ]ᵉ • ([ (₀ , b) ]ᵈ • CZ)          ≈⟨ cright (D-CZ-a0 b) ⟩
+    [ e ]ᵉ • [ (₀ , b + - ₁) ]ᵈ           ≈⟨ cright (sym right-unit) ⟩
+    [ e ]ᵉ • ([ (₀ , b + - ₁) ]ᵈ • ε)     ∎

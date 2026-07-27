@@ -205,6 +205,54 @@ aux-DS↑ {n} d@(a@(₁₊ _) , b) = begin
   open SR word-setoid
   open Lemmas0 (₁₊ n)
   open Pattern-Assoc
-  
+
   a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
   -b/a = - b * a⁻¹
+
+
+------------------------------------------------------------------------
+-- Bridge between the recursive M-box normal form and the flat one.
+--
+-- The new [_]ᵐ is recursive: [ x ∷ vd , e ]ᵐ = [ x ]ᵈ • [ vd , e ]ᵐ ↑,
+-- placing the E-box on the top wire.  The push proofs are written against
+-- the flat form [ e ]ᵉ • [ vd ]ᵛᵈ (E-box on the bottom wire).  These
+-- lemmas relate the two so the flat proofs can be reused by wrapping.
+
+-- Twisted power: (S ↑)^m slides rightward through a D-box, each S↑
+-- descending to a bottom S.
+aux-DS↑-pow : let open PB ((₂₊ n) QRel,_===_) in
+  ∀ d m -> [ d ]ᵈ • (S ↑) ^ m ≈ (S ^ m) • [ d ]ᵈ
+aux-DS↑-pow {n} d zero      = trans right-unit (sym left-unit)
+  where open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_)
+aux-DS↑-pow {n} d (₁₊ zero) = aux-DS↑ d
+aux-DS↑-pow {n} d (₂₊ m)    = begin
+  [ d ]ᵈ • (S ↑) ^ (₂₊ m)          ≈⟨ sym assoc ⟩
+  ([ d ]ᵈ • S ↑) • (S ↑) ^ (₁₊ m)  ≈⟨ cleft (aux-DS↑ d) ⟩
+  (S • [ d ]ᵈ) • (S ↑) ^ (₁₊ m)    ≈⟨ assoc ⟩
+  S • ([ d ]ᵈ • (S ↑) ^ (₁₊ m))    ≈⟨ cright (aux-DS↑-pow d (₁₊ m)) ⟩
+  S • ((S ^ (₁₊ m)) • [ d ]ᵈ)      ≈⟨ sym assoc ⟩
+  (S ^ (₂₊ m)) • [ d ]ᵈ            ∎
+  where open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_) ; open SR word-setoid
+
+-- A bottom E-box on the top wire slides under a D-box onto the bottom
+-- wire: [ x ]ᵈ • [ e ]ᵉ ↑ ≈ [ e ]ᵉ • [ x ]ᵈ.
+dbox-eᵉ↑ : ∀ {n} (x : D) (e : E) → let open PB ((₂₊ n) QRel,_===_) in
+  [ x ]ᵈ • [ e ]ᵉ ↑ ≈ [ e ]ᵉ • [ x ]ᵈ
+dbox-eᵉ↑ {n} x e = begin
+  [ x ]ᵈ • [ e ]ᵉ ↑              ≈⟨ cright (lemma-cong↑-S^ (toℕ (- e))) ⟩
+  [ x ]ᵈ • (S ↑) ^ toℕ (- e)     ≈⟨ aux-DS↑-pow x (toℕ (- e)) ⟩
+  (S ^ toℕ (- e)) • [ x ]ᵈ       ∎
+  where open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_) ; open SR word-setoid
+
+-- Bridge: the recursive M-box equals the flat E-then-D form.
+lemma-ᵐ-flat : ∀ {n} (vd : Vec D n) (e : E) → let open PB ((₁₊ n) QRel,_===_) in
+  [ (vd , e) ]ᵐ ≈ [ e ]ᵉ • [ vd ]ᵛᵈ
+lemma-ᵐ-flat {0} [] e = sym right-unit
+  where open PB (1 QRel,_===_) ; open PP (1 QRel,_===_)
+lemma-ᵐ-flat {₁₊ n} (x ∷ vd) e = begin
+  [ (x ∷ vd , e) ]ᵐ                ≈⟨ cright (lemma-cong↑ _ _ (lemma-ᵐ-flat vd e)) ⟩
+  [ x ]ᵈ • ([ e ]ᵉ • [ vd ]ᵛᵈ) ↑   ≈⟨ sym assoc ⟩
+  ([ x ]ᵈ • [ e ]ᵉ ↑) • [ vd ]ᵛᵈ ↑ ≈⟨ cleft (dbox-eᵉ↑ x e) ⟩
+  ([ e ]ᵉ • [ x ]ᵈ) • [ vd ]ᵛᵈ ↑   ≈⟨ assoc ⟩
+  [ e ]ᵉ • ([ x ]ᵈ • [ vd ]ᵛᵈ ↑)   ∎
+  where open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_) ; open SR word-setoid
