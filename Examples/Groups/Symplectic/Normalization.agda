@@ -50,10 +50,13 @@ open import Data.Sum
 private variable
   n : ℕ
 
-C = LM
+C = ML
 
 open import Examples.Groups.Symplectic.BR.One.A p-2 p-prime as OA
 import Examples.Groups.Symplectic.BR.Two.D p-2 p-prime as TD
+import Examples.Groups.Symplectic.BR.Two.D-Bot p-2 p-prime as TDB
+import Examples.Groups.Symplectic.BR.Two.B-Top p-2 p-prime as TBT
+import Examples.Groups.Symplectic.BR.Two.ML'-Top p-2 p-prime as ML'T
 import Examples.Groups.Symplectic.BR.Two.L-CZ p-2 p-prime as LCZ
 import Examples.Groups.Symplectic.BR.Two.L2-CZ p-2 p-prime as LCZ2
 open import Examples.Groups.Symplectic.BR.Two.D-w p-2 p-prime as TDw
@@ -71,7 +74,9 @@ open import Data.Nat using (s≤s ; z≤n)
 ract : ∀ {n} -> C (₁₊ n) → Gen (₁₊ n) → Circuit n × C (₁₊ n)
 ract {₁₊ n} (inj₁ x) (gate₁ x₁) = {!!}
 ract {₁₊ n} (inj₁ x) (gate₂ x₁) = {!!}
-ract {₁₊ n} (inj₁ x) (g ↥) = {!!}
+ract {₁₊ n} (inj₁ x) (gate₁ x₁ ↥) = ML'T.dir-of ? ? ? , {!!}
+ract {₁₊ n} (inj₁ x) (gate₂ x₁ ↥) = {!!}
+ract {₁₊ n} (inj₁ x) ((g ↥) ↥) = {!!}
 ract {₁₊ n} (inj₂ y@(d , lm↑)) g@(gate₁ x)
   using d' ← TD.d'-of d (gate₁ x) λ ()
   using (spw , dir) ← TD.dir-of d (gate₁ x) λ ()

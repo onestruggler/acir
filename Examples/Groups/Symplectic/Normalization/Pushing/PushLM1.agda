@@ -5,16 +5,16 @@
 -- update, exercising the whole "push through L, then push the dirty gate
 -- through M" pipeline in miniature.
 --
---   [ lm ]ˡᵐ • [ g ]ʷ  ≈  [ lm' ]ˡᵐ
+--   [ lm ]ᵐˡ • [ g ]ʷ  ≈  [ lm' ]ᵐˡ
 --
--- At width 1, LM 1 = M 1 × L' 1 = E × A, so [ lm ]ˡᵐ = [ e ]ᵉ • [ a ]ᵃ.
+-- At width 1, ML 1 = M 1 × L' 1 = E × A, so [ lm ]ᵐˡ = [ e ]ᵉ • [ a ]ᵃ.
 -- The generator g first goes through the A box (single-qupit box
 -- relation), which — crucially — emits only a *power of S* as its dirty
 -- gate (A-dir-S-power).  That S^k is then swallowed by the E box
 -- (push-E-S^, e ↦ e − k).  There is no escaping direction.
 --
 -- Stated over the E · A box product at arbitrary width (₁₊ n) — at width
--- 1 this is exactly [ (e , a) ]ˡᵐ • [ g ]ʷ.  g is a bottom-wire single
+-- 1 this is exactly [ (e , a) ]ᵐˡ • [ g ]ʷ.  g is a bottom-wire single
 -- gate (S or H); the hypothesis Bottom-Wire-Single rules out CZ and any
 -- lifted gate, which never enter the single-qupit A box.
 ------------------------------------------------------------------------

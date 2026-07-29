@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The LM-box push for the inj₂ shape: LM = M · A (an M column followed
+-- The ML-box push for the inj₂ shape: ML = M · A (an M column followed
 -- by a single A box, no B boxes).  This is the first case where the dirty
 -- gate genuinely *escapes upward* (rather than being absorbed as at width
 -- 1), exercising the general-n M-side machinery.  Stated over the M · A
 -- box product at arbitrary width (₁₊ n) — at width 2 this is exactly
--- [ (m , inj₂ a) ]ˡᵐ • g.
+-- [ (m , inj₂ a) ]ᵐˡ • g.
 --
 --   ([ m ]ᵐ • [ a ]ᵃ) • g  ≈  dir • ([ m' ]ᵐ • [ a' ]ᵃ)
 --
@@ -56,7 +56,7 @@ A-dir-S-power-S ((₁₊ _ , ₁₊ _) , nz) = ₀ , Eq.refl
 
 ------------------------------------------------------------------------
 -- Pushing S through the M · A box product at width (₁₊ n).  At width 2
--- this is exactly [ (m , inj₂ a) ]ˡᵐ • S.
+-- this is exactly [ (m , inj₂ a) ]ᵐˡ • S.
 
 push-LM2-inj₂-S : ∀ {n} (m : M (₁₊ n)) (a : A) →
   let open PB ((₁₊ n) QRel,_===_)
@@ -85,7 +85,7 @@ push-LM2-inj₂-S {n} m a = begin
 
 ------------------------------------------------------------------------
 -- The same for H: the A-box direction for an H-gen push is also a power
--- of S, so H through the inj₂ LM box goes exactly as S does.
+-- of S, so H through the inj₂ ML box goes exactly as S does.
 
 A-dir-S-power-H : ∀ {n} (a : A) →
   ∃ λ k → dir-and-A'-of n a H-gen tt .proj₁ ≡ S^ k

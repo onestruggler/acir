@@ -52,7 +52,7 @@ Lj j = Vec B j × A
 LE : (n : ℕ) → Set
 LE n = Σ[ j ∈ ℕ ] j ≤ n
 
--- n-indexed boxes (L, M, LM, NF) is of width n.
+-- n-indexed boxes (L, M, ML, NF) is of width n.
 L : (n : ℕ) → Set
 L 0 = ⊤
 L 1 = A
@@ -66,12 +66,15 @@ M : ℕ → Set
 M 0 = ⊤
 M (₁₊ n) = Vec D n × E
 
-LM : (n : ℕ) → Set
-LM 0 = ⊤
-LM 1 = M 1 × L' 1
---LM 2 = M 2 × (L' 2 ⊎ L' 1)
-LM (₂₊ n) = M (₂₊ n) × L' (₂₊ n) ⊎ D × LM (₁₊ n)
+ML' : (n : ℕ) → Set
+ML' 0 = ⊤
+ML' n@(₁₊ _) = M n × L' n
+
+ML : (n : ℕ) → Set
+ML 0 = ⊤
+ML 1 = ML' 1
+ML (₂₊ n) = ML' (₂₊ n) ⊎ D × ML (₁₊ n)
 
 NF : (n : ℕ) → Set
 NF 0 = ⊤
-NF (₁₊ n) = NF n × LM (₁₊ n)
+NF (₁₊ n) = NF n × ML (₁₊ n)

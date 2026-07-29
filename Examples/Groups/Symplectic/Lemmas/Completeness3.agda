@@ -113,7 +113,7 @@ lemma-coset-update : let open PB ((₁₊ n) QRel,_===_) in
 
   ∀ (lm : LM' (₁₊ n)) (g : (Gen (₁₊ n))) ->
   ----------------------------------------------------------------------
-  ∃ \ (lm' : LM' (₁₊ n)) -> ∃ \ w -> [ lm ]ˡᵐ' • [ g ]ʷ ≈ w ↑ • [ lm' ]ˡᵐ'
+  ∃ \ (lm' : LM' (₁₊ n)) -> ∃ \ w -> [ lm ]ᵐˡ' • [ g ]ʷ ≈ w ↑ • [ lm' ]ᵐˡ'
 
 {-
 lemma-coset-update {n@2} lm@(case-I d@(a@(₁₊ a-1) , b) c2@(case-Ex-| nf1 mc@(m , HS^ hs))) g@CZ-gen = {!!}
@@ -140,9 +140,9 @@ lemma-coset-update {n@2} lm@(case-I d@(a@(₁₊ a-1) , b) c2@(case-Ex-| nf1 mc@
   open Sym0-Rewriting 2
   
   
-  claim : [ lm ]ˡᵐ' • CZ ≈ (w ↑) • [ lm' ]ˡᵐ'
+  claim : [ lm ]ᵐˡ' • CZ ≈ (w ↑) • [ lm' ]ᵐˡ'
   claim = begin
-    [ lm ]ˡᵐ' • CZ ≈⟨ {!!} ⟩
+    [ lm ]ᵐˡ' • CZ ≈⟨ {!!} ⟩
     (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • ((CZ ^ ₁₊ k) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε ≈⟨ (cright cright cright cleft lemma-cong↑ _ _ (lemma-CZ^k-% ((₁₊ k)))) ⟩
     (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • ((CZ ^ ((₁₊ k) Nat.% p)) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε ≈⟨ (cright cright cright cleft (lemma-cong↑ _ _ (B1.refl' (Eq.cong (CZ ^_) {!!})))) ⟩
     (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • ((CZ ^ 0) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε ≈⟨ (cright cright cright left-unit ) ⟩
@@ -159,7 +159,7 @@ lemma-coset-update {n@2} lm@(case-I d@(a@(₁₊ a-1) , b) c2@(case-Ex-| nf1 mc@
     (H ↑ • CZ ↑ ^ k • H ↑ ^ 3 • ⟦ m ⟧ₘ ↑ ↑) • [ d ]ᵈ • Ex ↑ • ⟦ nf1 ⟧₁ ↑ ↑  ≈⟨ (cleft cright cleft refl' (lemma-^-↑ CZ k)) ⟩
     (H ↑ • (CZ ^ k) ↑ • H ↑ ^ 3 • ⟦ m ⟧ₘ ↑ ↑) • [ d ]ᵈ • Ex ↑ • ⟦ nf1 ⟧₁ ↑ ↑  ≈⟨ refl ⟩
     (H • (CZ ^ k) • H ^ 3 • ⟦ m ⟧ₘ ↑) ↑ • [ d ]ᵈ • Ex ↑ • ⟦ nf1 ⟧₁ ↑ ↑  ≈⟨ refl ⟩
-    (w ↑) • [ lm' ]ˡᵐ' ∎
+    (w ↑) • [ lm' ]ᵐˡ' ∎
 
 
 
@@ -190,9 +190,9 @@ lemma-coset-update {n@_} lm@(case-I d@(a@(₁₊ a-1) , b) c2@(case-Ex-| nf1 mc@
   open Sym0-Rewriting 2
   
   
-  claim : [ lm ]ˡᵐ' • CZ ≈ (w ↑) • [ lm' ]ˡᵐ'
+  claim : [ lm ]ᵐˡ' • CZ ≈ (w ↑) • [ lm' ]ᵐˡ'
   claim = begin
-    [ lm ]ˡᵐ' • CZ ≈⟨ lemma-coset-update-I-Ex-| a-1 b nf1 m ⟩
+    [ lm ]ᵐˡ' • CZ ≈⟨ lemma-coset-update-I-Ex-| a-1 b nf1 m ⟩
     (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • ((CZ ^ ₁₊ k) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε ≈⟨ (cright cright cright cleft lemma-cong↑ _ _ (lemma-CZ^k-% ((₁₊ k)))) ⟩
     (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • ((CZ ^ ((₁₊ k) Nat.% p)) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε ≈⟨ (cright cright cright cleft (lemma-cong↑ _ _ (B1.refl' (Eq.cong (CZ ^_) eq)))) ⟩
     (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • ((CZ ^ 0) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε ≈⟨ (cright cright cright left-unit ) ⟩
@@ -209,7 +209,7 @@ lemma-coset-update {n@_} lm@(case-I d@(a@(₁₊ a-1) , b) c2@(case-Ex-| nf1 mc@
     (H ↑ • CZ ↑ ^ k • H ↑ ^ 3 • ⟦ m ⟧ₘ ↑ ↑) • [ d ]ᵈ • Ex ↑ • ⟦ nf1 ⟧₁ ↑ ↑  ≈⟨ (cleft cright cleft refl' (lemma-^-↑ CZ k)) ⟩
     (H ↑ • (CZ ^ k) ↑ • H ↑ ^ 3 • ⟦ m ⟧ₘ ↑ ↑) • [ d ]ᵈ • Ex ↑ • ⟦ nf1 ⟧₁ ↑ ↑  ≈⟨ refl ⟩
     (H • (CZ ^ k) • H ^ 3 • ⟦ m ⟧ₘ ↑) ↑ • [ d ]ᵈ • Ex ↑ • ⟦ nf1 ⟧₁ ↑ ↑  ≈⟨ refl ⟩
-    (w ↑) • [ lm' ]ˡᵐ' ∎
+    (w ↑) • [ lm' ]ᵐˡ' ∎
 
 
 lemma-coset-update {n@_} lm@(case-I d@(a@(₁₊ a-1) , b) c2@(case-Ex-| nf1 mc@(m , ε))) g@CZ-gen | ₁₊ k-1 | [ eq ]' = lm' , w , claim
@@ -256,9 +256,9 @@ lemma-coset-update {n@_} lm@(case-I d@(a@(₁₊ a-1) , b) c2@(case-Ex-| nf1 mc@
   open Sym0-Rewriting 2
   
   
-  claim : [ lm ]ˡᵐ' • CZ ≈ (w ↑) • [ lm' ]ˡᵐ'
+  claim : [ lm ]ᵐˡ' • CZ ≈ (w ↑) • [ lm' ]ᵐˡ'
   claim = begin
-    [ lm ]ˡᵐ' • CZ ≈⟨ lemma-coset-update-I-Ex-| a-1 b nf1 m ⟩
+    [ lm ]ᵐˡ' • CZ ≈⟨ lemma-coset-update-I-Ex-| a-1 b nf1 m ⟩
     (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • ((CZ ^ ₁₊ k) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε ≈⟨ (cright cright cright cleft lemma-cong↑ _ _ (lemma-CZ^k-% ((₁₊ k)))) ⟩
     (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • ((CZ ^ ((₁₊ k) Nat.% p)) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε ≈⟨ (cright cright cright cleft (lemma-cong↑ _ _ (B1.refl' (Eq.cong (CZ ^_) (Eq.sym (toℕ-fromℕ< (m%n<n (₁₊ k) p))))))) ⟩
     (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • ((CZ^ k') ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε ≈⟨ (cright cright cright sym (cleft left-unit) ) ⟩
@@ -278,7 +278,7 @@ lemma-coset-update {n@_} lm@(case-I d@(a@(₁₊ a-1) , b) c2@(case-Ex-| nf1 mc@
     (H ↑ • (CZ ^ k) ↑ • H ↑ ^ 3 • ZM (k' , nzk) ↑ ↑) • [ d ]ᵈ • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ZM ((k' , nzk)⁻¹ *' m) ↑ • ε ≈⟨ (   refl ) ⟩
     (H • (CZ ^ k) • H ^ 3 • ZM (k' , nzk) ↑) ↑ • [ d ]ᵈ • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ZM ((k' , nzk)⁻¹ *' m) ↑ • ε ≈⟨ (   refl ) ⟩
 
-    (w ↑) • [ lm' ]ˡᵐ' ∎
+    (w ↑) • [ lm' ]ᵐˡ' ∎
 
 
 lemma-coset-update {n@2} lm@(case-I d@(a@₀ , b@(₁₊ _)) c2@(case-Ex-| nf1 mc@(m , ε))) g@CZ-gen = lm' , w  , claim
@@ -296,9 +296,9 @@ lemma-coset-update {n@2} lm@(case-I d@(a@₀ , b@(₁₊ _)) c2@(case-Ex-| nf1 m
   open SR word-setoid
   open Pattern-Assoc
   open Lemmas-2Q 0
-  claim : [ lm ]ˡᵐ' • CZ ≈ (w ↑) • [ lm' ]ˡᵐ'
+  claim : [ lm ]ᵐˡ' • CZ ≈ (w ↑) • [ lm' ]ᵐˡ'
   claim = begin
-    [ lm ]ˡᵐ' • CZ ≈⟨ refl ⟩
+    [ lm ]ᵐˡ' • CZ ≈⟨ refl ⟩
     ([ d ]ᵈ • ((Ex • CZ • ⟦ nf1 ⟧₁ ↑ • ⟦ mc ⟧ₘ₊) ↑)) • CZ ≈⟨ (cleft (cright cright cright cright right-unit)) ⟩
     ([ d ]ᵈ • ((Ex • CZ • ⟦ nf1 ⟧₁ ↑ • ⟦ m ⟧ₘ) ↑)) • CZ ≈⟨ by-passoc (□ ^ 5 • □) (□ ^ 4 • □ ^ 2) auto ⟩
     ([ d ]ᵈ • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑) • ⟦ m ⟧ₘ ↑ • CZ ≈⟨ (cright axiom (semi-M↑CZ m)) ⟩
@@ -323,7 +323,7 @@ lemma-coset-update {n@2} lm@(case-I d@(a@₀ , b@(₁₊ _)) c2@(case-Ex-| nf1 m
     CZ ↑ ^ toℕ (m' * b⁻¹) • [ d ]ᵈ' • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cong (sym (aux-dd d)) (cright cright cright sym right-unit)) ⟩
     CZ ↑ ^ toℕ (m' * b⁻¹) • [ d ]ᵈ • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε ≈⟨ (cleft refl' (lemma-^-↑ CZ (toℕ (m' * b⁻¹)))) ⟩
     CZ^ (m' * b⁻¹) ↑ • [ d ]ᵈ • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε ≈⟨ refl ⟩
-    (w ↑) • [ lm' ]ˡᵐ' ∎
+    (w ↑) • [ lm' ]ᵐˡ' ∎
 
 
 
@@ -335,11 +335,11 @@ lemma-coset-update {n@0} lm g@H-gen = lm' , ε , claim
   
   cp1 = CP1.Lemma-single-qupit-completeness {0} lm g  _
   lm' = cp1 .proj₁
-  claim : [ lm ]ˡᵐ' • [ H-gen ]ʷ ≈ (ε ↑) • [ lm' ]ˡᵐ'
+  claim : [ lm ]ᵐˡ' • [ H-gen ]ʷ ≈ (ε ↑) • [ lm' ]ᵐˡ'
   claim = begin
-    [ lm ]ˡᵐ' • [ H-gen ]ʷ ≈⟨ cp1 .proj₂ ⟩
-    [ lm' ]ˡᵐ' ≈⟨ sym left-unit ⟩
-    (ε ↑) • [ lm' ]ˡᵐ' ∎
+    [ lm ]ᵐˡ' • [ H-gen ]ʷ ≈⟨ cp1 .proj₂ ⟩
+    [ lm' ]ᵐˡ' ≈⟨ sym left-unit ⟩
+    (ε ↑) • [ lm' ]ᵐˡ' ∎
   
 lemma-coset-update {n@0} lm g@S-gen = lm' , ε , claim
   where
@@ -349,11 +349,11 @@ lemma-coset-update {n@0} lm g@S-gen = lm' , ε , claim
   
   cp1 = CP1.Lemma-single-qupit-completeness {0} lm g  _
   lm' = cp1 .proj₁
-  claim : [ lm ]ˡᵐ' • [ S-gen ]ʷ ≈ (ε ↑) • [ lm' ]ˡᵐ'
+  claim : [ lm ]ᵐˡ' • [ S-gen ]ʷ ≈ (ε ↑) • [ lm' ]ᵐˡ'
   claim = begin
-    [ lm ]ˡᵐ' • [ S-gen ]ʷ ≈⟨ cp1 .proj₂ ⟩
-    [ lm' ]ˡᵐ' ≈⟨ sym left-unit ⟩
-    (ε ↑) • [ lm' ]ˡᵐ' ∎
+    [ lm ]ᵐˡ' • [ S-gen ]ʷ ≈⟨ cp1 .proj₂ ⟩
+    [ lm' ]ᵐˡ' ≈⟨ sym left-unit ⟩
+    (ε ↑) • [ lm' ]ᵐˡ' ∎
 
 lemma-coset-update {n@1} lm g = CP2.Lemma-two-qupit-completeness lm g
 
@@ -368,15 +368,15 @@ lemma-coset-update {n@2} lm@(case-I d lm↑) (g ↥) = lm' , w ↑ , claim
   lm↑' = ih .proj₁
   lm' = case-I d lm↑'
   w = ih .proj₂ .proj₁
-  claim : [ lm ]ˡᵐ' • [ g ↥ ]ʷ ≈ (w ↑ ↑) • [ lm' ]ˡᵐ'
+  claim : [ lm ]ᵐˡ' • [ g ↥ ]ʷ ≈ (w ↑ ↑) • [ lm' ]ᵐˡ'
   claim = begin
-    [ lm ]ˡᵐ' • [ g ↥ ]ʷ ≈⟨ assoc ⟩
-    [ d ]ᵈ • [ lm↑ ]ˡᵐ' ↑ • [ g ↥ ]ʷ ≈⟨ refl ⟩
-    [ d ]ᵈ • [ lm↑ ]ˡᵐ' ↑ • [ g ]ʷ ↑ ≈⟨ (cright lemma-cong↑ _ _ (ih .proj₂ .proj₂)) ⟩
-    [ d ]ᵈ • w ↑ ↑ • [ lm↑' ]ˡᵐ' ↑ ≈⟨ sym assoc ⟩
-    ([ d ]ᵈ • w ↑ ↑) • [ lm↑' ]ˡᵐ' ↑ ≈⟨ (cleft comm-dbox-w↑↑ d w) ⟩
-    (w ↑ ↑ • [ d ]ᵈ) • [ lm↑' ]ˡᵐ' ↑ ≈⟨ assoc ⟩
-    w ↑ ↑ • [ d ]ᵈ • [ lm↑' ]ˡᵐ' ↑ ∎
+    [ lm ]ᵐˡ' • [ g ↥ ]ʷ ≈⟨ assoc ⟩
+    [ d ]ᵈ • [ lm↑ ]ᵐˡ' ↑ • [ g ↥ ]ʷ ≈⟨ refl ⟩
+    [ d ]ᵈ • [ lm↑ ]ᵐˡ' ↑ • [ g ]ʷ ↑ ≈⟨ (cright lemma-cong↑ _ _ (ih .proj₂ .proj₂)) ⟩
+    [ d ]ᵈ • w ↑ ↑ • [ lm↑' ]ᵐˡ' ↑ ≈⟨ sym assoc ⟩
+    ([ d ]ᵈ • w ↑ ↑) • [ lm↑' ]ᵐˡ' ↑ ≈⟨ (cleft comm-dbox-w↑↑ d w) ⟩
+    (w ↑ ↑ • [ d ]ᵈ) • [ lm↑' ]ᵐˡ' ↑ ≈⟨ assoc ⟩
+    w ↑ ↑ • [ d ]ᵈ • [ lm↑' ]ᵐˡ' ↑ ∎
 
 
 lemma-coset-update {n@2} lm@(case-I (d)  lm↑) g@S-gen = lm' , w , claim
@@ -388,14 +388,14 @@ lemma-coset-update {n@2} lm@(case-I (d)  lm↑) g@S-gen = lm' , w , claim
   d' = (d-of-DS d)
   lm' = case-I d' lm↑
   w = dir-of-DS d
-  claim : [ lm ]ˡᵐ' • S ≈ (w ↑) • [ lm' ]ˡᵐ'
+  claim : [ lm ]ᵐˡ' • S ≈ (w ↑) • [ lm' ]ᵐˡ'
   claim = begin
-    ([ d ]ᵈ • [ lm↑ ]ˡᵐ' ↑) • S ≈⟨ assoc ⟩
-    [ d ]ᵈ • [ lm↑ ]ˡᵐ' ↑ • S ≈⟨ (cright sym (lemma-comm-S-w↑ [ lm↑ ]ˡᵐ')) ⟩
-    [ d ]ᵈ • S • [ lm↑ ]ˡᵐ' ↑ ≈⟨ sym assoc ⟩
-    ([ d ]ᵈ • S) • [ lm↑ ]ˡᵐ' ↑ ≈⟨ (cleft (aux-DS d)) ⟩
-    (w ↑ • [ d' ]ᵈ ) • [ lm↑ ]ˡᵐ' ↑ ≈⟨ assoc ⟩
-    w ↑ • [ lm' ]ˡᵐ' ∎
+    ([ d ]ᵈ • [ lm↑ ]ᵐˡ' ↑) • S ≈⟨ assoc ⟩
+    [ d ]ᵈ • [ lm↑ ]ᵐˡ' ↑ • S ≈⟨ (cright sym (lemma-comm-S-w↑ [ lm↑ ]ᵐˡ')) ⟩
+    [ d ]ᵈ • S • [ lm↑ ]ᵐˡ' ↑ ≈⟨ sym assoc ⟩
+    ([ d ]ᵈ • S) • [ lm↑ ]ᵐˡ' ↑ ≈⟨ (cleft (aux-DS d)) ⟩
+    (w ↑ • [ d' ]ᵈ ) • [ lm↑ ]ᵐˡ' ↑ ≈⟨ assoc ⟩
+    w ↑ • [ lm' ]ᵐˡ' ∎
 
 lemma-coset-update {n@2} lm@(case-I (d)  lm↑) g@H-gen = lm' , w , claim
   where
@@ -406,14 +406,14 @@ lemma-coset-update {n@2} lm@(case-I (d)  lm↑) g@H-gen = lm' , w , claim
   d' = (d-of-DH d)
   lm' = case-I d' lm↑
   w = dir-of-DH d
-  claim : [ lm ]ˡᵐ' • H ≈ (w ↑) • [ lm' ]ˡᵐ'
+  claim : [ lm ]ᵐˡ' • H ≈ (w ↑) • [ lm' ]ᵐˡ'
   claim = begin
-    ([ d ]ᵈ • [ lm↑ ]ˡᵐ' ↑) • H ≈⟨ assoc ⟩
-    [ d ]ᵈ • [ lm↑ ]ˡᵐ' ↑ • H ≈⟨ (cright sym (lemma-comm-H-w↑ [ lm↑ ]ˡᵐ')) ⟩
-    [ d ]ᵈ • H • [ lm↑ ]ˡᵐ' ↑ ≈⟨ sym assoc ⟩
-    ([ d ]ᵈ • H) • [ lm↑ ]ˡᵐ' ↑ ≈⟨ (cleft (aux-DH d)) ⟩
-    (w ↑ • [ d' ]ᵈ ) • [ lm↑ ]ˡᵐ' ↑ ≈⟨ assoc ⟩
-    w ↑ • [ lm' ]ˡᵐ' ∎
+    ([ d ]ᵈ • [ lm↑ ]ᵐˡ' ↑) • H ≈⟨ assoc ⟩
+    [ d ]ᵈ • [ lm↑ ]ᵐˡ' ↑ • H ≈⟨ (cright sym (lemma-comm-H-w↑ [ lm↑ ]ᵐˡ')) ⟩
+    [ d ]ᵈ • H • [ lm↑ ]ᵐˡ' ↑ ≈⟨ sym assoc ⟩
+    ([ d ]ᵈ • H) • [ lm↑ ]ᵐˡ' ↑ ≈⟨ (cleft (aux-DH d)) ⟩
+    (w ↑ • [ d' ]ᵈ ) • [ lm↑ ]ᵐˡ' ↑ ≈⟨ assoc ⟩
+    w ↑ • [ lm' ]ᵐˡ' ∎
 
 
 
@@ -435,9 +435,9 @@ lemma-coset-update {n@2} lm@(case-I d@(a@₀ , b@₀) c2@(case-Ex-| nf1 mc@(m , 
   module L2Q = Lemmas-2Q 1
 
 
-  claim : [ lm ]ˡᵐ' • CZ ≈ (w ↑) • [ lm' ]ˡᵐ'
+  claim : [ lm ]ᵐˡ' • CZ ≈ (w ↑) • [ lm' ]ᵐˡ'
   claim = begin
-    [ lm ]ˡᵐ' • CZ ≈⟨ refl ⟩
+    [ lm ]ᵐˡ' • CZ ≈⟨ refl ⟩
     (Ex • ((Ex • CZ • ⟦ nf1 ⟧₁ ↑ • ⟦ mc ⟧ₘ₊) ↑)) • CZ ≈⟨ refl ⟩
     (Ex • ((Ex • CZ • ⟦ nf1 ⟧₁ ↑ • ⟦ m ⟧ₘ • H • S^ hs) ↑)) • CZ ≈⟨ by-passoc (□ ^ 7 • □) ((□ • (□ ^ 3 • □ ^ 2 • □)) • □) auto ⟩
     (Ex • ((Ex • CZ • ⟦ nf1 ⟧₁ ↑) • (⟦ m ⟧ₘ • H) • S^ hs) ↑) • CZ ≈⟨ (cleft cright cright cleft sym (lemma-cong↑ _ _  (semi-HM' m))) ⟩
@@ -484,7 +484,7 @@ lemma-coset-update {n@2} lm@(case-I d@(a@₀ , b@₀) c2@(case-Ex-| nf1 mc@(m , 
     (H ↑ • CZ ^ k • ZM ((m) ⁻¹) • H ↑ ^ 3) ↑ • (Ex • CZ^ (- ₁) • ZM ((m)⁻¹ ⁻¹)) • ⟦ c2 ⟧₂ ↑ ≈⟨  (cright cleft sym (aux-dbox-nzb' m⁻¹ ((m ⁻¹) .proj₂))) ⟩
     (H ↑ • CZ ^ k • ZM ((m) ⁻¹) • H ↑ ^ 3) ↑ • [ ₀ , m⁻¹ ]ᵈ • ⟦ c2 ⟧₂ ↑ ≈⟨  refl ⟩
     
-    (w ↑) • [ lm' ]ˡᵐ' ∎
+    (w ↑) • [ lm' ]ᵐˡ' ∎
 
 
 
@@ -498,9 +498,9 @@ lemma-coset-update {n@2} lm@(case-I d@(a@₀ , b@₀) c2@(case-Ex-| nf1 mc@(m , 
   open PP ((₁₊ n) QRel,_===_)
   open SR word-setoid
   open Pattern-Assoc
-  claim : [ lm ]ˡᵐ' • CZ ≈ (w ↑) • [ lm' ]ˡᵐ'
+  claim : [ lm ]ᵐˡ' • CZ ≈ (w ↑) • [ lm' ]ᵐˡ'
   claim = begin
-    [ lm ]ˡᵐ' • CZ ≈⟨ refl ⟩
+    [ lm ]ᵐˡ' • CZ ≈⟨ refl ⟩
     (Ex • ((Ex • CZ • ⟦ nf1 ⟧₁ ↑ • ⟦ mc ⟧ₘ₊) ↑)) • CZ ≈⟨ (cleft (cright cright cright cright right-unit)) ⟩
     (Ex • ((Ex • CZ • ⟦ nf1 ⟧₁ ↑ • ⟦ m ⟧ₘ) ↑)) • CZ ≈⟨ by-passoc (□ ^ 5 • □) (□ ^ 4 • □ ^ 2) auto ⟩
     (Ex • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑) • ⟦ m ⟧ₘ ↑ • CZ ≈⟨ (cright axiom (semi-M↑CZ m)) ⟩
@@ -513,7 +513,7 @@ lemma-coset-update {n@2} lm@(case-I d@(a@₀ , b@₀) c2@(case-Ex-| nf1 mc@(m , 
     (CZ ↑ ^ toℕ m' • Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cleft cleft refl' (lemma-^-↑ CZ (toℕ m'))) ⟩
     ((CZ ^ toℕ m') ↑ • Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ by-passoc (□ ^ 3 • □ ^ 3) (□ • □ ^ 5) auto ⟩
     (CZ^ m') ↑ • Ex • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cright cright cright cright sym right-unit) ⟩
-    (w ↑) • [ lm' ]ˡᵐ' ∎
+    (w ↑) • [ lm' ]ᵐˡ' ∎
 
 
 lemma-coset-update {n@2} lm@(case-I d@(a@₀ , b@₀) (case-Ex-nf1 nf1)) g@CZ-gen = lm' , w  , claim
@@ -525,15 +525,15 @@ lemma-coset-update {n@2} lm@(case-I d@(a@₀ , b@₀) (case-Ex-nf1 nf1)) g@CZ-ge
   open PP ((₁₊ n) QRel,_===_)
   open SR word-setoid
   open Pattern-Assoc
-  claim : [ lm ]ˡᵐ' • CZ ≈ (w ↑) • [ lm' ]ˡᵐ'
+  claim : [ lm ]ᵐˡ' • CZ ≈ (w ↑) • [ lm' ]ᵐˡ'
   claim = begin
-    [ lm ]ˡᵐ' • CZ ≈⟨ refl ⟩
+    [ lm ]ᵐˡ' • CZ ≈⟨ refl ⟩
     (Ex • ((Ex • (⟦ nf1 ⟧₁ ↑)) ↑)) • CZ ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 2 • □ ^ 2) auto ⟩
     (Ex • Ex ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • CZ ≈⟨ (cright sym (lemma-comm-CZ-w↑↑ ⟦ nf1 ⟧₁)) ⟩
     (Ex • Ex ↑) • CZ • ⟦ nf1 ⟧₁ ↑ ↑ ≈⟨ sym (by-passoc (□ ^ 3 • □) (□ ^ 2 • □ ^ 2) auto) ⟩
     (Ex • Ex ↑ • CZ) • ⟦ nf1 ⟧₁ ↑ ↑ ≈⟨ (cleft lemma-Ex-Ex↑-CZ) ⟩
     (CZ ↑ • Ex • Ex ↑) • ⟦ nf1 ⟧₁ ↑ ↑ ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 4) auto ⟩
-    (w ↑) • [ lm' ]ˡᵐ' ∎
+    (w ↑) • [ lm' ]ᵐˡ' ∎
 
 -}
 
@@ -551,9 +551,9 @@ lemma-coset-update {n@2} lm@(case-I d c2@(case-nf1 nf1@(s , mc@(m , ε)))) CZ-ge
   open Lemmas0 2
   open Rewriting-Powers n
   
-  claim : [ case-I d c2 ]ˡᵐ' • CZ ≈ w ↑ • [ lm' ]ˡᵐ'
+  claim : [ case-I d c2 ]ᵐˡ' • CZ ≈ w ↑ • [ lm' ]ᵐˡ'
   claim = begin
-    [ case-I d c2 ]ˡᵐ' • CZ ≈⟨ refl ⟩
+    [ case-I d c2 ]ᵐˡ' • CZ ≈⟨ refl ⟩
     ([ d ]ᵈ • ⟦ c2 ⟧₂ ↑)  • CZ ≈⟨ (cleft cright lemma-cong↑ _ _ (aux-mc-of2 c2)) ⟩
     ([ d ]ᵈ • (⟦ rm-mc2 c2 ⟧₂ • ⟦ mc-of2 c2 ⟧ₘ₊) ↑) • CZ ≈⟨ refl ⟩
     ([ d ]ᵈ • ⟦ rm-mc2 c2 ⟧₂ ↑ • ⟦ m , ε ⟧ₘ₊ ↑) • CZ ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 2 • □ ^ 2) auto ⟩
@@ -569,7 +569,7 @@ lemma-coset-update {n@2} lm@(case-I d c2@(case-nf1 nf1@(s , mc@(m , ε)))) CZ-ge
     ((w ↑ • [ d-of-DH^3 d ]ᵈ) • ⟦ rm-mc2 c2 ⟧₂ ↑) • (CZ ^ 0 • H • CZ^ y) • (⟦ m ⟧ₘ • ε) ↑ ≈⟨ refl ⟩
     ((w ↑ • [ d-of-DH^3 d ]ᵈ) • ⟦ rm-mc2 c2 ⟧₂ ↑) • (CZ ^ 0 • H • CZ^ y) • (⟦ m ⟧ₘ • ε) ↑ ≈⟨ by-passoc ((□ ^ 2 • □ ^ 2) • □) (□ • □ ^ 3 • □) auto ⟩
     w ↑ • ([ d-of-DH^3 d ]ᵈ • ⟦ rm-mc2 c2 ⟧₂ ↑) • (CZ ^ 0 • H • CZ^ y) • (⟦ m ⟧ₘ • ε) ↑ ≈⟨ cong refl {!!} ⟩
-    w ↑ • [ lm' ]ˡᵐ' ∎
+    w ↑ • [ lm' ]ᵐˡ' ∎
 
 
 
@@ -588,9 +588,9 @@ lemma-coset-update {n@2} lm@(case-I d c2@(case-| mc↑ nf1@(s , mc@(m , ε)))) C
   open Lemmas0 2
   open Rewriting-Powers n
   
-  claim : [ case-I d c2 ]ˡᵐ' • CZ ≈ w ↑ • [ lm' ]ˡᵐ'
+  claim : [ case-I d c2 ]ᵐˡ' • CZ ≈ w ↑ • [ lm' ]ᵐˡ'
   claim = begin
-    [ case-I d c2 ]ˡᵐ' • CZ ≈⟨ refl ⟩
+    [ case-I d c2 ]ᵐˡ' • CZ ≈⟨ refl ⟩
     ([ d ]ᵈ • ⟦ c2 ⟧₂ ↑)  • CZ ≈⟨ (cleft cright lemma-cong↑ _ _ (aux-mc-of2 c2)) ⟩
     ([ d ]ᵈ • (⟦ rm-mc2 c2 ⟧₂ • ⟦ mc-of2 c2 ⟧ₘ₊) ↑) • CZ ≈⟨ refl ⟩
     ([ d ]ᵈ • ⟦ rm-mc2 c2 ⟧₂ ↑ • ⟦ m , ε ⟧ₘ₊ ↑) • CZ ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 2 • □ ^ 2) auto ⟩
@@ -606,7 +606,7 @@ lemma-coset-update {n@2} lm@(case-I d c2@(case-| mc↑ nf1@(s , mc@(m , ε)))) C
     ((w ↑ • [ d-of-DH^3 d ]ᵈ) • ⟦ rm-mc2 c2 ⟧₂ ↑) • (CZ ^ 0 • H • CZ^ y) • (⟦ m ⟧ₘ • ε) ↑ ≈⟨ refl ⟩
     ((w ↑ • [ d-of-DH^3 d ]ᵈ) • ⟦ rm-mc2 c2 ⟧₂ ↑) • (CZ ^ 0 • H • CZ^ y) • (⟦ m ⟧ₘ • ε) ↑ ≈⟨ by-passoc ((□ ^ 2 • □ ^ 2) • □) (□ • □ ^ 3 • □) auto ⟩
     w ↑ • ([ d-of-DH^3 d ]ᵈ • ⟦ rm-mc2 c2 ⟧₂ ↑) • (CZ ^ 0 • H • CZ^ y) • (⟦ m ⟧ₘ • ε) ↑ ≈⟨ cong refl {!!} ⟩
-    w ↑ • [ lm' ]ˡᵐ' ∎
+    w ↑ • [ lm' ]ᵐˡ' ∎
 
 
 lemma-coset-update {n@2} lm@(case-I d c2@(case-|| k* l pf@(s , mc↑ , mc@(m , ε)))) CZ-gen = lm' , w , claim
@@ -623,9 +623,9 @@ lemma-coset-update {n@2} lm@(case-I d c2@(case-|| k* l pf@(s , mc↑ , mc@(m , �
   open Lemmas0 2
   open Rewriting-Powers n
   
-  claim : [ case-I d c2 ]ˡᵐ' • CZ ≈ w ↑ • [ lm' ]ˡᵐ'
+  claim : [ case-I d c2 ]ᵐˡ' • CZ ≈ w ↑ • [ lm' ]ᵐˡ'
   claim = begin
-    [ case-I d c2 ]ˡᵐ' • CZ ≈⟨ refl ⟩
+    [ case-I d c2 ]ᵐˡ' • CZ ≈⟨ refl ⟩
     ([ d ]ᵈ • ⟦ c2 ⟧₂ ↑)  • CZ ≈⟨ (cleft cright lemma-cong↑ _ _ (aux-mc-of2 c2)) ⟩
     ([ d ]ᵈ • (⟦ rm-mc2 c2 ⟧₂ • ⟦ mc-of2 c2 ⟧ₘ₊) ↑) • CZ ≈⟨ refl ⟩
     ([ d ]ᵈ • ⟦ rm-mc2 c2 ⟧₂ ↑ • ⟦ m , ε ⟧ₘ₊ ↑) • CZ ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 2 • □ ^ 2) auto ⟩
@@ -641,7 +641,7 @@ lemma-coset-update {n@2} lm@(case-I d c2@(case-|| k* l pf@(s , mc↑ , mc@(m , �
     ((w ↑ • [ d-of-DH^3 d ]ᵈ) • ⟦ rm-mc2 c2 ⟧₂ ↑) • (CZ ^ 0 • H • CZ^ y) • (⟦ m ⟧ₘ • ε) ↑ ≈⟨ refl ⟩
     ((w ↑ • [ d-of-DH^3 d ]ᵈ) • ⟦ rm-mc2 c2 ⟧₂ ↑) • (CZ ^ 0 • H • CZ^ y) • (⟦ m ⟧ₘ • ε) ↑ ≈⟨ by-passoc ((□ ^ 2 • □ ^ 2) • □) (□ • □ ^ 3 • □) auto ⟩
     w ↑ • ([ d-of-DH^3 d ]ᵈ • ⟦ rm-mc2 c2 ⟧₂ ↑) • (CZ ^ 0 • H • CZ^ y) • (⟦ m ⟧ₘ • ε) ↑ ≈⟨ cong refl {!!} ⟩
-    w ↑ • [ lm' ]ˡᵐ' ∎
+    w ↑ • [ lm' ]ᵐˡ' ∎
 
 
 lemma-coset-update {n@2} lm@(case-I d c2@(case-||ₐ k pf@(s , mc↑ , mc@(m , ε)))) CZ-gen = lm' , w , claim
@@ -658,9 +658,9 @@ lemma-coset-update {n@2} lm@(case-I d c2@(case-||ₐ k pf@(s , mc↑ , mc@(m , �
   open Lemmas0 2
   open Rewriting-Powers n
   
-  claim : [ case-I d c2 ]ˡᵐ' • CZ ≈ w ↑ • [ lm' ]ˡᵐ'
+  claim : [ case-I d c2 ]ᵐˡ' • CZ ≈ w ↑ • [ lm' ]ᵐˡ'
   claim = begin
-    [ case-I d c2 ]ˡᵐ' • CZ ≈⟨ refl ⟩
+    [ case-I d c2 ]ᵐˡ' • CZ ≈⟨ refl ⟩
     ([ d ]ᵈ • ⟦ c2 ⟧₂ ↑)  • CZ ≈⟨ (cleft cright lemma-cong↑ _ _ (aux-mc-of2 c2)) ⟩
     ([ d ]ᵈ • (⟦ rm-mc2 c2 ⟧₂ • ⟦ mc-of2 c2 ⟧ₘ₊) ↑) • CZ ≈⟨ refl ⟩
     ([ d ]ᵈ • ⟦ rm-mc2 c2 ⟧₂ ↑ • ⟦ m , ε ⟧ₘ₊ ↑) • CZ ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 2 • □ ^ 2) auto ⟩
@@ -676,7 +676,7 @@ lemma-coset-update {n@2} lm@(case-I d c2@(case-||ₐ k pf@(s , mc↑ , mc@(m , �
     ((w ↑ • [ d-of-DH^3 d ]ᵈ) • ⟦ rm-mc2 c2 ⟧₂ ↑) • (CZ ^ 0 • H • CZ^ y) • (⟦ m ⟧ₘ • ε) ↑ ≈⟨ refl ⟩
     ((w ↑ • [ d-of-DH^3 d ]ᵈ) • ⟦ rm-mc2 c2 ⟧₂ ↑) • (CZ ^ 0 • H • CZ^ y) • (⟦ m ⟧ₘ • ε) ↑ ≈⟨ by-passoc ((□ ^ 2 • □ ^ 2) • □) (□ • □ ^ 3 • □) auto ⟩
     w ↑ • ([ d-of-DH^3 d ]ᵈ • ⟦ rm-mc2 c2 ⟧₂ ↑) • (CZ ^ 0 • H • CZ^ y) • (⟦ m ⟧ₘ • ε) ↑ ≈⟨ cong refl {!!} ⟩
-    w ↑ • [ lm' ]ˡᵐ' ∎
+    w ↑ • [ lm' ]ᵐˡ' ∎
 
 
 

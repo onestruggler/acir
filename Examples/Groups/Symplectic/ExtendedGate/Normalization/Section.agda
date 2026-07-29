@@ -112,15 +112,15 @@ jth-babox {₁₊ j} {₁₊ n} (s≤s j≤n) v a = jth-babox j≤n v a ↑
 [_]ˡ' {0} l = ε
 [_]ˡ' {₁₊ n} (vb , a) = [ vb ]ᵛᵇ • [ a ]ᵃ
 
-[_]ˡᵐ : ∀ {n} → LM n → Word (Gen n)
-[_]ˡᵐ {0} _ = ε
-[_]ˡᵐ {1} (m , l) = [ m ]ᵐ • [ l ]ˡ'
-[_]ˡᵐ {₂₊ n} (inj₁ (m , l)) = [ m ]ᵐ • [ l ]ˡ'
-[_]ˡᵐ {₂₊ n} (inj₂ (d , lm)) = [ d ]ᵈ • [ lm ]ˡᵐ ↑
+[_]ᵐˡ : ∀ {n} → ML n → Word (Gen n)
+[_]ᵐˡ {0} _ = ε
+[_]ᵐˡ {1} (m , l) = [ m ]ᵐ • [ l ]ˡ'
+[_]ᵐˡ {₂₊ n} (inj₁ (m , l)) = [ m ]ᵐ • [ l ]ˡ'
+[_]ᵐˡ {₂₊ n} (inj₂ (d , lm)) = [ d ]ᵈ • [ lm ]ᵐˡ ↑
 
 [_] : ∀ {n} → NF n → Word (Gen n)
 [_] {0} tt = ε
-[_] {₁₊ n} (nf , lm) = [ nf ] ↑ • [ lm ]ˡᵐ
+[_] {₁₊ n} (nf , lm) = [ nf ] ↑ • [ lm ]ᵐˡ
 
 
 data BoxType : Set where
@@ -131,7 +131,7 @@ data BoxType : Set where
   ˡ : BoxType
   ˡ' : BoxType
   ᵐ : BoxType
-  ˡᵐ : BoxType
+  ᵐˡ : BoxType
   ᵛᵇ : BoxType
   ᵛᵈ : BoxType
   ⁿᶠ : BoxType
@@ -144,7 +144,7 @@ Box ᵉ = E
 Box {n} ˡ = L n
 Box {n} ˡ' = L' n
 Box {n} ᵐ = M n
-Box {n} ˡᵐ = LM n
+Box {n} ᵐˡ = ML n
 Box {n} ᵛᵇ = Vec B n
 Box {n} ᵛᵈ = Vec D n
 Box {n} ⁿᶠ = NF n
@@ -161,7 +161,7 @@ BWidth ⁿᶠ = 0
 BWidth ˡ = 0
 BWidth ˡ' = 0
 BWidth ᵐ = 0
-BWidth ˡᵐ = 0
+BWidth ᵐˡ = 0
 BWidth ᵇ = 2
 BWidth ᵈ = 2
 BWidth _ = 1
@@ -175,7 +175,7 @@ BWidth _ = 1
 ⟦_⟧ {j} {n} ˡ x j≤n = [ x ]ˡ
 ⟦_⟧ {j} {n} ˡ' x j≤n = [ x ]ˡ'
 ⟦_⟧ {j} {n} ᵐ x j≤n = [ x ]ᵐ
-⟦_⟧ {j} {n} ˡᵐ x j≤n = [ x ]ˡᵐ
+⟦_⟧ {j} {n} ᵐˡ x j≤n = [ x ]ᵐˡ
 ⟦_⟧ {j} {n} ᵛᵇ x j≤n = [ x ]ᵛᵇ
 ⟦_⟧ {j} {n} ᵛᵈ x j≤n = [ x ]ᵛᵈ
 ⟦_⟧ {j} {n} ⁿᶠ x j≤n = [ x ]

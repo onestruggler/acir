@@ -496,7 +496,7 @@ lemma-aux-act-[] (w • w₁) rewrite lemma-aux-act-[] w₁ = lemma-aux-act-[] w
 
 
 lemma-fundamental : ∀ {n} (w : Word (Gen (₁₊ n))) → let f = act w in 
-  ∃ \ lm → act ([ lm ]ˡᵐ • w) pZ₀ ≡ pZ₀ × act ([ lm ]ˡᵐ • w) pX₀ ≡ pX₀
+  ∃ \ lm → act ([ lm ]ᵐˡ • w) pZ₀ ≡ pZ₀ × act ([ lm ]ᵐˡ • w) pX₀ ≡ pX₀
 lemma-fundamental {n} w  = lm
   where
   open ≡-Reasoning
@@ -511,7 +511,7 @@ lemma-fundamental {n} w  = lm
 
 lemma-fundamental' : ∀ {n} (f : Pauli (₁₊ n) → Pauli (₁₊ n)) →
   (hyp : ∀ ps qs → sform (f ps) (f qs) ≡ sform ps qs) → 
-  ∃ \ lm → act [ lm ]ˡᵐ (f pZ₀) ≡ pZ₀ × act [ lm ]ˡᵐ (f pX₀) ≡ pX₀
+  ∃ \ lm → act [ lm ]ᵐˡ (f pZ₀) ≡ pZ₀ × act [ lm ]ᵐˡ (f pX₀) ≡ pX₀
 lemma-fundamental' {n} f hyp  = lm
   where
   open ≡-Reasoning
@@ -724,7 +724,7 @@ Linear-Symp-⇒FixP⇒ {n} f fl@(fa , fm) symp fp0 = (lemma-sub f fl) , claim
 
 act-nf : ∀ {n} → NF n → Pauli n → Pauli n
 act-nf {₀} nf [] = []
-act-nf {₁₊ n} (ih , lm) ps = let s1 = (act [ lm ]ˡᵐ ps) in head s1 ∷ act-nf ih (tail s1)
+act-nf {₁₊ n} (ih , lm) ps = let s1 = (act [ lm ]ᵐˡ ps) in head s1 ∷ act-nf ih (tail s1)
 
 
 
@@ -755,13 +755,13 @@ lemma-invnf {₁₊ n} f fl symp = (ih , lm) , claim
   lmp = lemma-fundamental' f symp
   lm = lmp .proj₁
 
-  lmf = act [ lm ]ˡᵐ ∘ f
+  lmf = act [ lm ]ᵐˡ ∘ f
 
   lmfl : IsLinear lmf
-  lmfl = lemma-linear-compose f (act [ lm ]ˡᵐ) fl (lemma-actw-linear [ lm ]ˡᵐ)
+  lmfl = lemma-linear-compose f (act [ lm ]ᵐˡ) fl (lemma-actw-linear [ lm ]ᵐˡ)
 
   lmf-symp : Symplectic lmf
-  lmf-symp = lemma-symplectic-compose f (act [ lm ]ˡᵐ) symp (sform-preserving [ lm ]ˡᵐ)
+  lmf-symp = lemma-symplectic-compose f (act [ lm ]ᵐˡ) symp (sform-preserving [ lm ]ᵐˡ)
 
   lmf-fp0 : Fix-P₀ lmf
   lmf-fp0 = Linear-Symp-FixZX⇒FixP lmf lmfl lmf-symp (lmp .proj₂)
@@ -776,7 +776,7 @@ lemma-invnf {₁₊ n} f fl symp = (ih , lm) , claim
 
 
   claim : ∀ p → act-nf (ih , lm) (f p) ≡ p
-  claim qs@(p ∷ ps) = let s1 = act [ lm ]ˡᵐ (f qs) in begin
+  claim qs@(p ∷ ps) = let s1 = act [ lm ]ᵐˡ (f qs) in begin
     act-nf (ih , lm) (f qs) ≡⟨ auto ⟩
     head s1 ∷ act-nf ih (tail s1) ≡⟨ Eq.cong₂ _∷_ auto (Eq.cong (act-nf ih) (Eq.cong tail (lmf-fp0 p ps))) ⟩
     head s1 ∷ act-nf ih (g ps) ≡⟨ Eq.cong₂ _∷_ auto (ihp .proj₂ ps) ⟩

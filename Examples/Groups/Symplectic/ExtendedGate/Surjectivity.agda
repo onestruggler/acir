@@ -36,7 +36,7 @@ open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli ; Pauli1)
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open Symplectic-Derived-Gen      using (Gen ; _↑ ; _QRel,_===_)
 open Symplectic-Derived-GroupLike using (grouplike)
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.BoxAction p-2 p-prime using (NF ; [_]ˡᵐ)
+open import Examples.Groups.Symplectic.ExtendedGate.Semantics.BoxAction p-2 p-prime using (NF ; [_]ᵐˡ)
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime using (act ; act1)
 open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime using (act-sound-ax)
 open import Examples.Groups.Symplectic.ExtendedGate.NF p-2 p-prime
@@ -58,12 +58,12 @@ act-↑ (w • w') p ps =
 -- The word realising a normal form.
 nf→word : ∀ {n} → NF n → Word (Gen n)
 nf→word {₀}    _        = ε
-nf→word {₁₊ n} (ih , lm) = nf→word ih ↑ • [ lm ]ˡᵐ
+nf→word {₁₊ n} (ih , lm) = nf→word ih ↑ • [ lm ]ᵐˡ
 
 -- It has the same action as the normal form.
 act-nf→word : ∀ {n} (nf : NF n) → act (nf→word nf) ≗ act-nf nf
 act-nf→word {₀}    _        []       = Eq.refl
-act-nf→word {₁₊ n} (ih , lm) ps with act [ lm ]ˡᵐ ps
+act-nf→word {₁₊ n} (ih , lm) ps with act [ lm ]ᵐˡ ps
 ... | (x ∷ xs) =
   Eq.trans (act-↑ (nf→word ih) x xs)
            (Eq.cong (x ∷_) (act-nf→word ih xs))

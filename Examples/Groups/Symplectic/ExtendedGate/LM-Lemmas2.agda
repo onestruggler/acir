@@ -92,8 +92,8 @@ Theorem-LM :
   ∀ (p q : Pauli n) ->
   sform p q ≡ ₁ ->
   -------------------------------
-  ∃ \ lm -> act [ lm ]ˡᵐ p ≡ pZ₀ ×
-            act [ lm ]ˡᵐ q ≡ pX₀
+  ∃ \ lm -> act [ lm ]ᵐˡ p ≡ pZ₀ ×
+            act [ lm ]ᵐˡ q ≡ pX₀
 
 
 Theorem-LM {0} [] [] sf=1 = ⊥-elim (0ₚ≢1ₚ sf=1)
@@ -118,21 +118,21 @@ Theorem-LM {₃₊ n} ps@(p1@(₀ , ₀) ∷ p2 ∷ p3 ∷ pt) qs@(q1 ∷ q2 ∷
   lm : LM (₃₊ n)
   lm = inj₂ (q1 , ih .proj₁)
   
-  claim1 : act [ lm ]ˡᵐ ps ≡ pZ₀
+  claim1 : act [ lm ]ᵐˡ ps ≡ pZ₀
   claim1 = begin
-    act [ lm ]ˡᵐ ps ≡⟨ auto ⟩
-    act ([ q1 ]ᵈ • [ lm2 ]ˡᵐ ↑) ps ≡⟨ auto ⟩
-    act [ q1 ]ᵈ (act ([ lm2 ]ˡᵐ ↑) ps) ≡⟨ Eq.cong (act [ q1 ]ᵈ) (lemma-act-↑ [ lm2 ]ˡᵐ pI (p2 ∷ p3 ∷ pt)) ⟩
-    act [ q1 ]ᵈ (pI ∷ act {₂₊ n} [ lm2 ]ˡᵐ (p2 ∷ p3 ∷ pt)) ≡⟨ Eq.cong (\ xx -> act [ q1 ]ᵈ (pI ∷ xx)) (ih .proj₂ .proj₁) ⟩
+    act [ lm ]ᵐˡ ps ≡⟨ auto ⟩
+    act ([ q1 ]ᵈ • [ lm2 ]ᵐˡ ↑) ps ≡⟨ auto ⟩
+    act [ q1 ]ᵈ (act ([ lm2 ]ᵐˡ ↑) ps) ≡⟨ Eq.cong (act [ q1 ]ᵈ) (lemma-act-↑ [ lm2 ]ᵐˡ pI (p2 ∷ p3 ∷ pt)) ⟩
+    act [ q1 ]ᵈ (pI ∷ act {₂₊ n} [ lm2 ]ᵐˡ (p2 ∷ p3 ∷ pt)) ≡⟨ Eq.cong (\ xx -> act [ q1 ]ᵈ (pI ∷ xx)) (ih .proj₂ .proj₁) ⟩
     act [ q1 ]ᵈ (pI ∷ pZ₀) ≡⟨ lemma-dbox-IZ q1 pIₙ ⟩
     pZ₀ ∎
 
-  claim2 : act [ lm ]ˡᵐ qs ≡ pX₀
+  claim2 : act [ lm ]ᵐˡ qs ≡ pX₀
   claim2 = begin
-    act [ lm ]ˡᵐ qs ≡⟨ auto ⟩
-    act ([ q1 ]ᵈ • [ lm2 ]ˡᵐ ↑) qs ≡⟨ auto ⟩
-    act [ q1 ]ᵈ (act ([ lm2 ]ˡᵐ ↑) qs) ≡⟨ Eq.cong (act [ q1 ]ᵈ) (lemma-act-↑ [ lm2 ]ˡᵐ q1 (q2 ∷ q3 ∷ qt)) ⟩
-    act [ q1 ]ᵈ (q1 ∷ act {₂₊ n} [ lm2 ]ˡᵐ (q2 ∷ q3 ∷ qt)) ≡⟨ Eq.cong (\ xx -> act [ q1 ]ᵈ (q1 ∷ xx)) (ih .proj₂ .proj₂) ⟩
+    act [ lm ]ᵐˡ qs ≡⟨ auto ⟩
+    act ([ q1 ]ᵈ • [ lm2 ]ᵐˡ ↑) qs ≡⟨ auto ⟩
+    act [ q1 ]ᵈ (act ([ lm2 ]ᵐˡ ↑) qs) ≡⟨ Eq.cong (act [ q1 ]ᵈ) (lemma-act-↑ [ lm2 ]ᵐˡ q1 (q2 ∷ q3 ∷ qt)) ⟩
+    act [ q1 ]ᵈ (q1 ∷ act {₂₊ n} [ lm2 ]ᵐˡ (q2 ∷ q3 ∷ qt)) ≡⟨ Eq.cong (\ xx -> act [ q1 ]ᵈ (q1 ∷ xx)) (ih .proj₂ .proj₂) ⟩
     act [ q1 ]ᵈ (q1 ∷ pX₀) ≡⟨ lemma-dbox q1 pIₙ ⟩
     pX₀ ∎
 
@@ -155,7 +155,7 @@ Theorem-LM {₃₊ n} ps@(p1@(a1@(₁₊ a1') , b1) ∷ p2 ∷ p3 ∷ pt) qs@(q1
   lm : LM (₃₊ n)
   lm = inj₁ (m , l)
   
-  claim1 : act [ lm ]ˡᵐ ((₁₊ a1' , b1) ∷ p2 ∷ p3 ∷ pt) ≡ pZ₀
+  claim1 : act [ lm ]ᵐˡ ((₁₊ a1' , b1) ∷ p2 ∷ p3 ∷ pt) ≡ pZ₀
   claim1 = begin
     act ([ m ]ᵐ • [ l ]ˡ') ((₁₊ a1' , b1) ∷ p2 ∷ p3 ∷ pt) ≡⟨ auto ⟩
     act ([ m ]ᵐ • [ p2 ∷ p3 ∷ pt ]ᵛᵇ • [ (p1 , λ ()) ]ᵃ) ((₁₊ a1' , b1) ∷ p2 ∷ p3 ∷ pt) ≡⟨ Eq.cong (act ([ m ]ᵐ • [ p2 ∷ p3 ∷ pt ]ᵛᵇ)) (lemma-abox p1 (λ ()) (p2 ∷ p3 ∷ pt)) ⟩
@@ -166,7 +166,7 @@ Theorem-LM {₃₊ n} ps@(p1@(a1@(₁₊ a1') , b1) ∷ p2 ∷ p3 ∷ pt) qs@(q1
     pZ₀ ∎
 
 
-  claim2 : act [ lm ]ˡᵐ (q1 ∷ q2 ∷ q3 ∷ qt) ≡ pX₀
+  claim2 : act [ lm ]ᵐˡ (q1 ∷ q2 ∷ q3 ∷ qt) ≡ pX₀
   claim2 = begin
     act ([ m ]ᵐ • [ l ]ˡ') (q1 ∷ q2 ∷ q3 ∷ qt) ≡⟨ auto ⟩
     act ([ m ]ᵐ • [ p2 ∷ p3 ∷ pt ]ᵛᵇ • [ (p1 , λ ()) ]ᵃ) (q1 ∷ q2 ∷ q3 ∷ qt) ≡⟨ Eq.cong (act ([ m ]ᵐ • [ p2 ∷ p3 ∷ pt ]ᵛᵇ)) (lemma-abox-X p1 q1 (λ ()) (q2 ∷ q3 ∷ qt)) ⟩
@@ -205,7 +205,7 @@ Theorem-LM {₃₊ n} ps@(p1@(a1 , b1@(₁₊ b1')) ∷ p2 ∷ p3 ∷ pt) qs@(q1
   lm : LM (₃₊ n)
   lm = inj₁ (m , l)
   
-  claim1 : act [ lm ]ˡᵐ ((a1 , b1) ∷ p2 ∷ p3 ∷ pt) ≡ pZ₀
+  claim1 : act [ lm ]ᵐˡ ((a1 , b1) ∷ p2 ∷ p3 ∷ pt) ≡ pZ₀
   claim1 = begin
     act ([ m ]ᵐ • [ l ]ˡ') ((a1 , b1) ∷ p2 ∷ p3 ∷ pt) ≡⟨ auto ⟩
     act ([ m ]ᵐ • [ p2 ∷ p3 ∷ pt ]ᵛᵇ • [ (p1 , λ ()) ]ᵃ) ((a1 , b1) ∷ p2 ∷ p3 ∷ pt) ≡⟨ Eq.cong (act ([ m ]ᵐ • [ p2 ∷ p3 ∷ pt ]ᵛᵇ)) (lemma-abox p1 (λ ()) (p2 ∷ p3 ∷ pt)) ⟩
@@ -216,7 +216,7 @@ Theorem-LM {₃₊ n} ps@(p1@(a1 , b1@(₁₊ b1')) ∷ p2 ∷ p3 ∷ pt) qs@(q1
     pZ₀ ∎
 
 
-  claim2 : act [ lm ]ˡᵐ (q1 ∷ q2 ∷ q3 ∷ qt) ≡ pX₀
+  claim2 : act [ lm ]ᵐˡ (q1 ∷ q2 ∷ q3 ∷ qt) ≡ pX₀
   claim2 = begin
     act ([ m ]ᵐ • [ l ]ˡ') (q1 ∷ q2 ∷ q3 ∷ qt) ≡⟨ auto ⟩
     act ([ m ]ᵐ • [ p2 ∷ p3 ∷ pt ]ᵛᵇ • [ (p1 , λ ()) ]ᵃ) (q1 ∷ q2 ∷ q3 ∷ qt) ≡⟨ Eq.cong (act ([ m ]ᵐ • [ p2 ∷ p3 ∷ pt ]ᵛᵇ)) (lemma-abox-X p1 q1 (λ ()) (q2 ∷ q3 ∷ qt)) ⟩

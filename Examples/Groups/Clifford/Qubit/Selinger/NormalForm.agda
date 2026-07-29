@@ -9,9 +9,9 @@
 --
 --   * NF n              the normal-form data (Symplectic.Normalization.NF)
 --   * nf→word : NF n → Word (Gen n)   the realising circuit; it satisfies
---       nf→word (nf , lm) = nf→word nf ↑ • [ lm ]ˡᵐ,
+--       nf→word (nf , lm) = nf→word nf ↑ • [ lm ]ᵐˡ,
 --     which is exactly Selinger's recursion N(n) = (N(n-1) ⊗ I)·M(n)·L(n)
---     with [ lm ]ˡᵐ = M(n)·L(n) built from the convenient gates A–E of
+--     with [ lm ]ᵐˡ = M(n)·L(n) built from the convenient gates A–E of
 --     Figure 1;
 --   * surjective : every symplectic map is realised by nf→word of some NF.
 --

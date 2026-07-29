@@ -286,7 +286,7 @@ lemma-coset-update-I-Ex-| : let open PB (3 QRel,_===_) in
   lm = case-I (a , b) (case-Ex-| nf1 (m , ε))
   k = toℕ (m .proj₁ * a)
   in
-  [ lm ]ˡᵐ' • CZ ≈ (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ (a , b) ]ᵈ • Ex ↑ • ((CZ ^ ₁₊ k) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε
+  [ lm ]ᵐˡ' • CZ ≈ (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ (a , b) ]ᵈ • Ex ↑ • ((CZ ^ ₁₊ k) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε
 lemma-coset-update-I-Ex-| a' b nf1 m = claim
   where
   a = ₁₊ a'
@@ -315,9 +315,9 @@ lemma-coset-update-I-Ex-| a' b nf1 m = claim
   open Sym0-Rewriting 2
   
   
-  claim : [ lm ]ˡᵐ' • CZ ≈ (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ (a , b) ]ᵈ • Ex ↑ • ((CZ ^ ₁₊ k) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε
+  claim : [ lm ]ᵐˡ' • CZ ≈ (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ (a , b) ]ᵈ • Ex ↑ • ((CZ ^ ₁₊ k) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε
   claim = begin
-    [ lm ]ˡᵐ' • CZ ≈⟨ refl ⟩
+    [ lm ]ᵐˡ' • CZ ≈⟨ refl ⟩
     ([ d ]ᵈ • ((Ex • CZ • ⟦ nf1 ⟧₁ ↑ • ⟦ mc ⟧ₘ₊) ↑)) • CZ ≈⟨ (cleft (cright cright cright cright right-unit)) ⟩
     ([ d ]ᵈ • ((Ex • CZ • ⟦ nf1 ⟧₁ ↑ • ⟦ m ⟧ₘ) ↑)) • CZ ≈⟨ by-passoc (□ ^ 5 • □) (□ ^ 4 • □ ^ 2) auto ⟩
     ([ d ]ᵈ • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑) • ⟦ m ⟧ₘ ↑ • CZ ≈⟨ (cright axiom (semi-M↑CZ m)) ⟩

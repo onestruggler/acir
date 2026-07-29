@@ -35,7 +35,6 @@ private
   variable
     n : ℕ
 
-
 -- A box is MC.
 [_]ᵃ : ∀ {n} → A → Word (Gen (₁₊ n))
 [_]ᵃ {n} ((₀ , ₀), pr) = ⊥-elim (pr auto)
@@ -46,17 +45,25 @@ private
   -b/a = - b * a⁻¹
 
 [_]ᵇ : ∀ {n} → B → Word (Gen (₂₊ n))
-[_]ᵇ {n} (₀ , ₀) = Ex
-[_]ᵇ {n} (a@₀ , b@(₁₊ b-1)) = Ex • CX • [ (a , b) , (λ ()) ]ᵃ ↑
-[_]ᵇ {n} (a@(₁₊ a-1) , b) = Ex • CX • [ (a , b) , (λ ()) ]ᵃ ↑
+[_]ᵇ {n} (₀ , b) = Ex • CX'^ b
+[_]ᵇ {n} (a@(₁₊ a-1) , b) = Ex • CX'^ a • H ↑ • S^ -b/a ↑
+  where
+  a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
+  -b/a = - b * a⁻¹
+
 
 [_]ᵈ : ∀ {n} → D → Word (Gen (₂₊ n))
-[_]ᵈ {n} (₀ , d) = Ex • CZ^ (- d)
-[_]ᵈ {n} (a@(₁₊ _) , b) = [ ₀ , ₁ ]ᵈ • [ (a , b) , (λ ()) ]ᵃ
+[_]ᵈ {n} (₀ , b) = Ex • CZ^ (- b)
+[_]ᵈ {n} (a@(₁₊ _) , b) = Ex • CZ^ (- a) • H • S^ -b/a
+  where
+  a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
+  -b/a = - b * a⁻¹
 
 [_]ᵉ : ∀ {n} → E → Word (Gen (₁₊ n))
 [_]ᵉ {n} b = S^ (- b)
 
+-- Vec B is in circuit order, i.e. the matrix of B1 B2 B3 is B3 * B2 *
+-- B1. A reversion is needed for it to be interpreted as words.
 [_]ᵛᵇ : ∀ {n} → Vec B n → Word (Gen (₁₊ n))
 [_]ᵛᵇ {₀} [] = ε
 [_]ᵛᵇ {₁₊ n} (x ∷ v) = [ v ]ᵛᵇ ↑ • [ x ]ᵇ
@@ -67,14 +74,12 @@ private
 
 [_]ᵐ : ∀ {n} → M n → Word (Gen n)
 [_]ᵐ {0} _ = ε
---[_]ᵐ {1} (vd , e) = [ e ]ᵉ
 [_]ᵐ {₁₊ n} ([] , e) = [ e ]ᵉ
-[_]ᵐ {₁₊ n} (x ∷ vd , e) =  [ x ]ᵈ • [ vd , e ]ᵐ ↑
+[_]ᵐ {₁₊ n} (x ∷ vd , e) = [ x ]ᵈ • [ vd , e ]ᵐ ↑
 
 jth-abox : ∀ {j n} → j ≤ n → A → Word (Gen (₁₊ n))
 jth-abox {₀} {n} _ a = [ a ]ᵃ
 jth-abox {₁₊ j} {₁₊ n} (s≤s j≤n) a = jth-abox {j} {n} (j≤n) a ↑
-
 
 jth-bbox : ∀ {j n} → j ≤ n → B → Word (Gen (₂₊ n))
 jth-bbox {₀} {n} _ a = [ a ]ᵇ
@@ -107,19 +112,21 @@ jth-babox {₁₊ j} {₁₊ n} (s≤s j≤n) v a = jth-babox j≤n v a ↑
 
 [_]ˡ' : ∀ {n} → L' n → Word (Gen n)
 [_]ˡ' {0} l = ε
---[_]ˡ' {1} (vb , a) = [ a ]ᵃ
 [_]ˡ' {₁₊ n} (vb , a) = [ vb ]ᵛᵇ • [ a ]ᵃ
 
-[_]ˡᵐ : ∀ {n} → LM n → Word (Gen n)
-[_]ˡᵐ {0} _ = ε
-[_]ˡᵐ {1} (m , l) = [ m ]ᵐ • [ l ]ˡ'
-[_]ˡᵐ {₂₊ n} (inj₁ (m , l)) = [ m ]ᵐ • [ l ]ˡ'
-[_]ˡᵐ {₂₊ n} (inj₂ (d , lm)) = [ d ]ᵈ • [ lm ]ˡᵐ ↑
+[_]ᵐˡ' : ∀ {n} → ML' n → Word (Gen n)
+[_]ᵐˡ' {0} _ = ε
+[_]ᵐˡ' {₁₊ n} (m , l) = [ m ]ᵐ • [ l ]ˡ'
+
+[_]ᵐˡ : ∀ {n} → ML n → Word (Gen n)
+[_]ᵐˡ {0} _ = ε
+[_]ᵐˡ {1} (m , l) = [ m ]ᵐ • [ l ]ˡ'
+[_]ᵐˡ {₂₊ n} (inj₁ (m , l)) = [ m ]ᵐ • [ l ]ˡ'
+[_]ᵐˡ {₂₊ n} (inj₂ (d , lm)) = [ d ]ᵈ • [ lm ]ᵐˡ ↑
 
 [_] : ∀ {n} → NF n → Word (Gen n)
 [_] {0} tt = ε
-[_] {₁₊ n} (nf , lm) = [ nf ] ↑ • [ lm ]ˡᵐ
-
+[_] {₁₊ n} (nf , lm) = [ nf ] ↑ • [ lm ]ᵐˡ
 
 data BoxType : Set where
   ᵃ : BoxType
@@ -129,7 +136,7 @@ data BoxType : Set where
   ˡ : BoxType
   ˡ' : BoxType
   ᵐ : BoxType
-  ˡᵐ : BoxType
+  ᵐˡ : BoxType
   ᵛᵇ : BoxType
   ᵛᵈ : BoxType
   ⁿᶠ : BoxType
@@ -142,7 +149,7 @@ Box ᵉ = E
 Box {n} ˡ = L n
 Box {n} ˡ' = L' n
 Box {n} ᵐ = M n
-Box {n} ˡᵐ = LM n
+Box {n} ᵐˡ = ML n
 Box {n} ᵛᵇ = Vec B n
 Box {n} ᵛᵈ = Vec D n
 Box {n} ⁿᶠ = NF n
@@ -159,7 +166,7 @@ BWidth ⁿᶠ = 0
 BWidth ˡ = 0
 BWidth ˡ' = 0
 BWidth ᵐ = 0
-BWidth ˡᵐ = 0
+BWidth ᵐˡ = 0
 BWidth ᵇ = 2
 BWidth ᵈ = 2
 BWidth _ = 1
@@ -173,7 +180,7 @@ BWidth _ = 1
 ⟦_⟧ {j} {n} ˡ x j≤n = [ x ]ˡ
 ⟦_⟧ {j} {n} ˡ' x j≤n = [ x ]ˡ'
 ⟦_⟧ {j} {n} ᵐ x j≤n = [ x ]ᵐ
-⟦_⟧ {j} {n} ˡᵐ x j≤n = [ x ]ˡᵐ
+⟦_⟧ {j} {n} ᵐˡ x j≤n = [ x ]ᵐˡ
 ⟦_⟧ {j} {n} ᵛᵇ x j≤n = [ x ]ᵛᵇ
 ⟦_⟧ {j} {n} ᵛᵈ x j≤n = [ x ]ᵛᵈ
 ⟦_⟧ {j} {n} ⁿᶠ x j≤n = [ x ]

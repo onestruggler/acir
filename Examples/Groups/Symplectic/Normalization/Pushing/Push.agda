@@ -2,7 +2,7 @@
 -- Presentations of groups
 --
 -- Index of the coset-update "push" lemmas for the symplectic Clifford
--- normal form.  Pushing a generator g through an LM box is decomposed as
+-- normal form.  Pushing a generator g through an ML box is decomposed as
 --
 --     push g through the L box  →  read off the dirty gate  →
 --     push the dirty gate through the M column.
@@ -45,9 +45,9 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.DHa0 p-2 p-prime pu
   using (aux-DHa0)
 
 ------------------------------------------------------------------------
--- The LM-box push  [ lm ]ˡᵐ • [ g ]ʷ ≈ dir • [ lm' ]ˡᵐ
+-- The LM-box push  [ lm ]ᵐˡ • [ g ]ʷ ≈ dir • [ lm' ]ᵐˡ
 
--- Width 1 (LM 1 = E · A): the full pipeline, everything absorbed.
+-- Width 1 (ML 1 = E · A): the full pipeline, everything absorbed.
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushLM1 p-2 p-prime public
   using (push-LM1)
 

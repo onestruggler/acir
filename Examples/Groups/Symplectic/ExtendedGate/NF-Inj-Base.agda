@@ -99,15 +99,15 @@ lemma-actw-pIₙ {n} (w • w₁) = begin
 postulate
   -- n=1: NF1 elements are distinguished by head of Pauli action.
   lemma-nf1-head-inj : ∀ (lm₁ lm₂ : NF1) →
-    (∀ ps → head (act [ lm₁ ]ˡᵐ ps) ≡ head (act [ lm₂ ]ˡᵐ ps)) → lm₁ ≡ lm₂
+    (∀ ps → head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) → lm₁ ≡ lm₂
 
   -- n=2: Cosets2 elements are distinguished by head of Pauli action.
   lemma-cosets2-head-inj : ∀ (lm₁ lm₂ : Cosets2) →
-    (∀ ps → head (act [ lm₁ ]ˡᵐ ps) ≡ head (act [ lm₂ ]ˡᵐ ps)) → lm₁ ≡ lm₂
+    (∀ ps → head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) → lm₁ ≡ lm₂
 
   -- The M×L' branch (inj₁) and D×LM branch (inj₂) produce distinct head outputs.
   lemma-lm-inj₁≁inj₂ : ∀ {n} (m : M (₃₊ n)) (l : L' (₃₊ n)) (d : D) (lm' : LM (₂₊ n)) →
-    (∀ ps → head (act ([ m ]ᵐ • [ l ]ˡ') ps) ≡ head (act ([ d ]ᵈ • [ lm' ]ˡᵐ ↑) ps)) → ⊥
+    (∀ ps → head (act ([ m ]ᵐ • [ l ]ˡ') ps) ≡ head (act ([ d ]ᵈ • [ lm' ]ᵐˡ ↑) ps)) → ⊥
 
   -- M×L' action is head-injective.
   lemma-ml-head-inj : ∀ {n} (m₁ m₂ : M (₃₊ n)) (l₁ l₂ : L' (₃₊ n)) →

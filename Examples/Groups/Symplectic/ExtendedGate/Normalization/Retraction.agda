@@ -60,8 +60,8 @@ private
   variable
     n : ℕ
 
-push-LM1 : LM 1 -> Gen 1 -> Word (Gen 0) × LM 1
-push-LM1 : LM 1 -> Gen 1 -> Word (Gen 0) × LM 1
+push-LM1 : ML 1 -> Gen 1 -> Word (Gen 0) × ML 1
+push-LM1 : ML 1 -> Gen 1 -> Word (Gen 0) × ML 1
 
 
 retraction : ∀ {n} -> NF n -> Word (Gen n)
