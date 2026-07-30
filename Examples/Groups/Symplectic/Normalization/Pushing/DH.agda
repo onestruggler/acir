@@ -234,15 +234,17 @@ aux-DH {n} d@(₀ , b@(₁₊ _)) = claim
 
   w = ε
   d' = (b , ₀)
+  -- [ (₀,b) ]ᵈ = Ex • CZ^(-b), and [ (b,₀) ]ᵈ = Ex • CZ^(-b) • H • S^(-0·b⁻¹)
+  -- with S^(-0·b⁻¹) = S^0 = ε, so H just re-labels the box; no direction.
+  s0 : let open PB ((₂₊ n) QRel,_===_) in ε ≈ S^ (- ₀ * b⁻¹')
+  s0 = sym (refl' (Eq.cong (S^) (Eq.trans (Eq.cong (_* b⁻¹') -0#≈0#) (*-zeroˡ b⁻¹'))))
+
   claim : [ d ]ᵈ • H ≈ w ↑ • [ d' ]ᵈ
   claim = begin
-    ([ d ]ᵈ • H) ≈⟨ ( (cleft {!!} b nz)) ⟩
-    ((Ex • CZ^ (- ₁) • ⟦ (b , nz) ⁻¹ ⟧ₘ) • H) ≈⟨ ( trans assoc (cong refl assoc)) ⟩
-    (Ex • CZ^ (- ₁) • ⟦ (b , nz) ⁻¹ ⟧ₘ • H) ≈⟨ ( (cright cright cright sym right-unit)) ⟩
-    (Ex • CZ^ (- ₁) • ⟦ (b , nz) ⁻¹ ⟧ₘ • H • ε) ≈⟨ ( (cright cright cright cright sym (refl' (Eq.cong (S^) (Eq.trans (Eq.cong (_* b⁻¹') -0#≈0#) (*-zeroˡ b⁻¹')))))) ⟩
-    (Ex • CZ^ (- ₁) • ⟦ (b , nz) ⁻¹ ⟧ₘ • H • S^ (- ₀ * b⁻¹')) ≈⟨ ( sym ({!!} b ₀ nz)) ⟩
-    [ (b , ₀) ]ᵈ  ≈⟨ sym left-unit ⟩
-    ε • [ (b , ₀) ]ᵈ  ∎
+    (Ex • CZ^ (- b)) • H                             ≈⟨ assoc ⟩
+    Ex • (CZ^ (- b) • H)                             ≈⟨ cright (cright (trans (sym right-unit) (cright s0))) ⟩
+    Ex • (CZ^ (- b) • (H • S^ (- ₀ * b⁻¹')))         ≈⟨ sym left-unit ⟩
+    ε • (Ex • (CZ^ (- b) • (H • S^ (- ₀ * b⁻¹'))))   ∎
 
 
 aux-DH {n} d@(a@(₁₊ _) , b@(₁₊ _)) = trans claim claim'
