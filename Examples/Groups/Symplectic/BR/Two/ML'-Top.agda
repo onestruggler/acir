@@ -1,7 +1,8 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 ------------------------------------------------------------------------
--- Pushing a top gate (gate₁ x₁ ↥) through an ML' box, at width (₂₊ n).
+-- Pushing a top gate (g ↥, for any generator g) through an ML' box, at
+-- width (₂₊ n).
 --
 -- ML' (₂₊ n) = M (₂₊ n) × L' (₂₊ n) = (Vec D (₁₊ n) × E) × (Vec B (₁₊ n) × A),
 -- so an ML' (₂₊ n) box is
@@ -9,9 +10,9 @@
 --   [ (d₀ ∷ dr , e) ]ᵐ • [ (b₀ ∷ lr , a) ]ˡ'
 --     = ([ d₀ ]ᵈ • [ (dr,e) ]ᵐ ↑) • (([ lr ]ᵛᵇ ↑ • [ b₀ ]ᵇ) • [ a ]ᵃ).
 --
--- The idea is BD-Top's (B-Top through the bottom B box, then the bottom
--- residual through the bottom D box), with the extra commuting of the
--- parts of the box disjoint from the moving gate/residual:
+-- For a unary gate the idea is BD-Top's (B-Top through the bottom B box,
+-- then the bottom residual through the bottom D box), with the extra
+-- commuting of the parts of the box disjoint from the moving gate/residual:
 --
 --   * [ a ]ᵃ (wire 0) vs the top gate            : comm-abox-w↑;
 --   * the ↑-lifted M/L' tails [ (dr,e) ]ᵐ ↑ and [ lr ]ᵛᵇ ↑ (wires ≥ 1)
@@ -20,6 +21,11 @@
 -- The Gen-2 pushes B-Top.lemma-B-br and BD-Top.lemmaᵈ-w are lifted to
 -- Gen (₂₊ n) by CongDownK.cong↓ᵏ (widening) together with the box- and
 -- ↓ᵏ-composition rewrites below.
+--
+-- The binary gate g = gate₂ CZ is handled by escaping CZ ↑ downward
+-- through the B-vector (BB-CZ-n.gen-bb-cz), then pushing that bottom
+-- residual up through the M-column (PushMword.push-Mʷ-suc); the two
+-- pushes are bridged from LM-Sym to Section boxes by vbbox-eq / mbox-eq.
 ------------------------------------------------------------------------
 
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
@@ -44,8 +50,7 @@ open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic hiding (M)
 open Lemmas-Sym
-open import Data.Empty using (⊥ ; ⊥-elim)
-open import Data.Unit using (⊤ ; tt)
+open import Data.Empty using (⊥-elim)
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime as LM
 open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
@@ -53,6 +58,12 @@ open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.CongDownK p-2 p-prime
 import Examples.Groups.Symplectic.BR.Two.B-Top p-2 p-prime as BT
 import Examples.Groups.Symplectic.BR.Two.BD-Top p-2 p-prime as BD
+open import Examples.Groups.Symplectic.BR.Three.BB-CZ-n p-2 p-prime
+  using (gen-bb-cz ; gen-dir-b ; gen-vb'-of)
+open import Examples.Groups.Symplectic.Normalization.Pushing.DVecPush p-2 p-prime
+  using (dvec-word)
+open import Examples.Groups.Symplectic.Normalization.Pushing.PushMword p-2 p-prime
+  using (push-Mʷ-suc)
 
 -- Section's A/B/D boxes are (byte-)identical to LM-Sym's, but distinct
 -- functions; these bridges (refl after splitting the argument) let us
@@ -70,6 +81,17 @@ bbox-eq (₁₊ a , b) = Eq.refl
 dbox-eq : ∀ {n} (d : D) → [_]ᵈ {n} d ≡ LM.[_]ᵈ {n} d
 dbox-eq (₀ , b)    = Eq.refl
 dbox-eq (₁₊ a , b) = Eq.refl
+
+-- The vector / M-column boxes are folds over the per-box boxes, so the
+-- box-eq bridges lift through them by induction.
+vbbox-eq : ∀ {n} (bv : Vec B n) → [ bv ]ᵛᵇ ≡ LM.[ bv ]ᵛᵇ
+vbbox-eq []       = Eq.refl
+vbbox-eq (x ∷ bv) = Eq.cong₂ _•_ (Eq.cong _↑ (vbbox-eq bv)) (bbox-eq x)
+
+mbox-eq : ∀ {n} (m : M n) → [ m ]ᵐ ≡ LM.[ m ]ᵐ
+mbox-eq {0}     _            = Eq.refl
+mbox-eq {₁₊ n} ([] , e)      = Eq.refl
+mbox-eq {₁₊ n} (x ∷ vd , e)  = Eq.cong₂ _•_ (dbox-eq x) (Eq.cong _↑ (mbox-eq (vd , e)))
 
 ------------------------------------------------------------------------
 -- Box-widening: a Gen-2 box, widened by ↓ᵏ k, is the width-k box.
@@ -150,32 +172,34 @@ module _ {n : ℕ} where
       (trans (cong↓ᵏ n _ _ (BD.lemmaᵈ-w d w))
         (refl' (Eq.cong₂ _•_ (↑↓ᵏ-comm (proj₁ (BD.pushᵈ d w)) n) (dbox-↓ᵏ (proj₂ (BD.pushᵈ d w)) n))))
 
-UnaryGen : ∀ {n} -> Gen n -> Set
-UnaryGen {n} (gate₁ x) = ⊤
-UnaryGen {n} (gate₂ x) = ⊥
-UnaryGen {n} (g ↥) = UnaryGen g
-
 ------------------------------------------------------------------------
--- Pushing a unary gate through an M-column · B-vector (no trailing A).
+-- Pushing any generator through an M-column · B-vector (no trailing A).
 -- This is the shape the higher-wire recursion factors through; unlike
--- ML', it recurses cleanly (the gate commutes past d₁ and b₁).
+-- ML', it recurses cleanly (a unary gate commutes past d₁ and b₁; a
+-- gate₂ CZ escapes downward via gen-bb-cz + push-Mʷ-suc).
 
-mbv-push : ∀ {k} (m : M (₁₊ k)) (bv : Vec B k) (g : Gen k) (ug : UnaryGen g) ->
+mbv-push : ∀ {k} (m : M (₁₊ k)) (bv : Vec B k) (g : Gen k) ->
   Word (Gen k) × (M (₁₊ k) × Vec B k)
-mbv-push {₁₊ k'} (d₁ ∷ dr' , e) (b₁ ∷ bv') (gate₁ y) _ =
+-- The gate₂ clause is placed first so that `mbv-push m bv (gate₂ …)`
+-- reduces even when the M-column / B-vector are abstract: its first
+-- pattern is a plain pair (never stuck on a `∷`), unlike the unary
+-- clauses which peel a bottom box.
+mbv-push (vd , e) bv (gate₂ CZ-gate) =
+  let pm = push-Mʷ-suc (vd , e) (gen-dir-b bv)
+  in proj₁ pm , (proj₁ (proj₂ pm) , gen-vb'-of bv)
+mbv-push {₁₊ k'} (d₁ ∷ dr' , e) (b₁ ∷ bv') (gate₁ y) =
   proj₁ (BD.pushᵈ d₁ (BT.dir-of b₁ y)) ↓ᵏ k' ,
     ((proj₂ (BD.pushᵈ d₁ (BT.dir-of b₁ y)) ∷ dr' , e) , (BT.b'-of b₁ y ∷ bv'))
-mbv-push _ _ (gate₂ y) ()
-mbv-push (d₁ ∷ dr' , e) (b₁ ∷ bv') (h ↥) ug =
-  let (dt , ((dvt , et) , bvt)) = mbv-push (dr' , e) bv' h ug
+mbv-push (d₁ ∷ dr' , e) (b₁ ∷ bv') (h ↥) =
+  let (dt , ((dvt , et) , bvt)) = mbv-push (dr' , e) bv' h
   in dt ↑ , ((d₁ ∷ dvt , et) , (b₁ ∷ bvt))
 
-push-MBvec : ∀ {k} (m : M (₁₊ k)) (bv : Vec B k) (g : Gen k) (ug : UnaryGen g) ->
+push-MBvec : ∀ {k} (m : M (₁₊ k)) (bv : Vec B k) (g : Gen k) ->
   let open PB ((₁₊ k) QRel,_===_) in
   [ m ]ᵐ • [ bv ]ᵛᵇ • [ g ↥ ]ʷ ≈
-    (proj₁ (mbv-push m bv g ug) ↑) •
-      ([ proj₁ (proj₂ (mbv-push m bv g ug)) ]ᵐ • [ proj₂ (proj₂ (mbv-push m bv g ug)) ]ᵛᵇ)
-push-MBvec {₁₊ k'} (d₁ ∷ dr' , e) (b₁ ∷ bv') (gate₁ y) _ = begin
+    (proj₁ (mbv-push m bv g) ↑) •
+      ([ proj₁ (proj₂ (mbv-push m bv g)) ]ᵐ • [ proj₂ (proj₂ (mbv-push m bv g)) ]ᵛᵇ)
+push-MBvec {₁₊ k'} (d₁ ∷ dr' , e) (b₁ ∷ bv') (gate₁ y) = begin
   (De • Me) • ((LRe • Be) • G)          ≈⟨ sa ((□ • □) • ((□ • □) • □)) (□ ^ 5) auto ⟩
   De • (Me • (LRe • (Be • G)))          ≈⟨ cright (cright (cright (lemma-B-br-n b₁ y))) ⟩
   De • (Me • (LRe • (db • Be')))        ≈⟨ cright (cright (sym assoc)) ⟩
@@ -203,13 +227,40 @@ push-MBvec {₁₊ k'} (d₁ ∷ dr' , e) (b₁ ∷ bv') (gate₁ y) _ = begin
   r = BD.pushᵈ d₁ dir-b
   De' = [ proj₂ r ]ᵈ
   Res = (proj₁ r ↓ᵏ k') ↑
-push-MBvec _ _ (gate₂ y) ()
-push-MBvec {₁₊ k'} (d₁ ∷ dr' , e) (b₁ ∷ bv') (h ↥) ug = begin
+push-MBvec {₂₊ k''} (vd , e) bv (gate₂ CZ-gate) = begin
+  Mw • (Bv • G)                         ≈⟨ cright bb-step ⟩
+  Mw • (db • Bv')                       ≈⟨ sym assoc ⟩
+  (Mw • db) • Bv'                       ≈⟨ cleft m-step ⟩
+  ((dir ↑) • Mw') • Bv'                 ≈⟨ assoc ⟩
+  (dir ↑) • (Mw' • Bv')                 ∎
+  where
+  open PB ((₃₊ k'') QRel,_===_) ; open PP ((₃₊ k'') QRel,_===_) ; open SR word-setoid
+  Mw = [ (vd , e) ]ᵐ
+  Bv = [ bv ]ᵛᵇ
+  G = [ gate₂ CZ-gate ↥ ]ʷ
+  dir-b = gen-dir-b bv
+  db = dir-b ↓ᵏ (₁₊ k'')
+  Bv' = [ gen-vb'-of bv ]ᵛᵇ
+  pm = push-Mʷ-suc (vd , e) dir-b
+  dir = proj₁ pm
+  Mw' = [ proj₁ (proj₂ pm) ]ᵐ
+  -- CZ↑ through the B-vector (gen-bb-cz), bridged Section ↔ LM-Sym.
+  bb-step : Bv • G ≈ db • Bv'
+  bb-step = trans (cleft (refl' (vbbox-eq bv)))
+              (trans (gen-bb-cz bv)
+                (cright (refl' (Eq.sym (vbbox-eq (gen-vb'-of bv))))))
+  -- the escaping bottom direction pushed up through the M-column
+  -- (push-Mʷ-suc), bridged Section ↔ LM-Sym.
+  m-step : Mw • db ≈ (dir ↑) • Mw'
+  m-step = trans (cleft (refl' (mbox-eq (vd , e))))
+             (trans (proj₂ (proj₂ pm))
+               (cright (refl' (Eq.sym (mbox-eq (proj₁ (proj₂ pm)))))))
+push-MBvec {₁₊ k'} (d₁ ∷ dr' , e) (b₁ ∷ bv') (h ↥) = begin
   (De • Me) • ((LRe • Be) • G)          ≈⟨ sa ((□ • □) • ((□ • □) • □)) (□ ^ 5) auto ⟩
   De • (Me • (LRe • (Be • G)))          ≈⟨ cright (cright (cright (comm-bbox-w↑↑-S b₁ w))) ⟩
   De • (Me • (LRe • (G • Be)))          ≈⟨ cright (cright (sym assoc)) ⟩
   De • (Me • ((LRe • G) • Be))          ≈⟨ cright (sym assoc) ⟩
-  De • ((Me • (LRe • G)) • Be)          ≈⟨ cright (cleft (lemma-cong↑ _ _ (push-MBvec (dr' , e) bv' h ug))) ⟩
+  De • ((Me • (LRe • G)) • Be)          ≈⟨ cright (cleft (lemma-cong↑ _ _ (push-MBvec (dr' , e) bv' h))) ⟩
   De • ((dt↑↑ • (Me'' • LRe'')) • Be)    ≈⟨ sa (□ • ((□ • (□ • □)) • □)) ((□ • □) • ((□ • □) • □)) auto ⟩
   (De • dt↑↑) • ((Me'' • LRe'') • Be)    ≈⟨ cleft (comm-dbox-w↑↑-S d₁ dt) ⟩
   (dt↑↑ • De) • ((Me'' • LRe'') • Be)    ≈⟨ sa ((□ • □) • ((□ • □) • □)) (□ • ((□ • □) • (□ • □))) auto ⟩
@@ -223,37 +274,37 @@ push-MBvec {₁₊ k'} (d₁ ∷ dr' , e) (b₁ ∷ bv') (h ↥) ug = begin
   Be = [ b₁ ]ᵇ
   w = [ h ]ʷ
   G = [ h ↥ ↥ ]ʷ
-  td = mbv-push (dr' , e) bv' h ug
+  td = mbv-push (dr' , e) bv' h
   dt = proj₁ td
   dt↑↑ = dt ↑ ↑
   Me'' = [ proj₁ (proj₂ td) ]ᵐ ↑
   LRe'' = [ proj₂ (proj₂ td) ]ᵛᵇ ↑
 
 ------------------------------------------------------------------------
--- The ML' push for any unary gate g ↥: commute the trailing A box out,
+-- The ML' push for any generator g ↥: commute the trailing A box out,
 -- push through the M·B-vector, put the A box back.
 
-ml'-of : ∀ {n} (ml : ML' (₂₊ n)) (g : Gen (₁₊ n)) (ug : UnaryGen g) -> ML' (₂₊ n)
-ml'-of ((dv , e) , (bv , a)) g ug =
-  let (dir , (m' , bv')) = mbv-push (dv , e) bv g ug in (m' , (bv' , a))
+ml'-of : ∀ {n} (ml : ML' (₂₊ n)) (g : Gen (₁₊ n)) -> ML' (₂₊ n)
+ml'-of ((dv , e) , (bv , a)) g =
+  let (dir , (m' , bv')) = mbv-push (dv , e) bv g in (m' , (bv' , a))
 
-dir-of : ∀ {n} (ml : ML' (₂₊ n)) (g : Gen (₁₊ n)) (ug : UnaryGen g) -> Word (Gen (₁₊ n))
-dir-of ((dv , e) , (bv , a)) g ug = proj₁ (mbv-push (dv , e) bv g ug)
+dir-of : ∀ {n} (ml : ML' (₂₊ n)) (g : Gen (₁₊ n)) -> Word (Gen (₁₊ n))
+dir-of ((dv , e) , (bv , a)) g = proj₁ (mbv-push (dv , e) bv g)
 
-lemma-ML'-Top : ∀ {n} (ml : ML' (₂₊ n)) (g : Gen (₁₊ n)) (ug : UnaryGen g) ->
+lemma-ML'-Top : ∀ {n} (ml : ML' (₂₊ n)) (g : Gen (₁₊ n)) ->
   let
   open PB ((₂₊ n) QRel,_===_)
-  ml' = ml'-of ml g ug
-  dir = dir-of ml g ug
+  ml' = ml'-of ml g
+  dir = dir-of ml g
   in
   [ ml ]ᵐˡ' • [ g ↥ ]ʷ ≈ dir ↑ • [ ml' ]ᵐˡ'
-lemma-ML'-Top {n} ((dv , e) , (bv , a)) g ug = begin
+lemma-ML'-Top {n} ((dv , e) , (bv , a)) g = begin
   (Mw • (Bv • Ae)) • G                        ≈⟨ assoc ⟩
   Mw • ((Bv • Ae) • G)                        ≈⟨ cright assoc ⟩
   Mw • (Bv • (Ae • G))                        ≈⟨ cright (cright (comm-abox-w↑-S a [ g ]ʷ)) ⟩
   Mw • (Bv • (G • Ae))                        ≈⟨ cright (sym assoc) ⟩
   Mw • ((Bv • G) • Ae)                        ≈⟨ sym assoc ⟩
-  (Mw • (Bv • G)) • Ae                        ≈⟨ cleft (push-MBvec (dv , e) bv g ug) ⟩
+  (Mw • (Bv • G)) • Ae                        ≈⟨ cleft (push-MBvec (dv , e) bv g) ⟩
   ((dir ↑) • (Mw' • Bv')) • Ae                ≈⟨ assoc ⟩
   (dir ↑) • ((Mw' • Bv') • Ae)                ≈⟨ cright assoc ⟩
   (dir ↑) • (Mw' • (Bv' • Ae))                ∎
@@ -263,9 +314,9 @@ lemma-ML'-Top {n} ((dv , e) , (bv , a)) g ug = begin
   Bv = [ bv ]ᵛᵇ
   Ae = [ a ]ᵃ
   G = [ g ↥ ]ʷ
-  dir = proj₁ (mbv-push (dv , e) bv g ug)
-  Mw' = [ proj₁ (proj₂ (mbv-push (dv , e) bv g ug)) ]ᵐ
-  Bv' = [ proj₂ (proj₂ (mbv-push (dv , e) bv g ug)) ]ᵛᵇ
+  dir = proj₁ (mbv-push (dv , e) bv g)
+  Mw' = [ proj₁ (proj₂ (mbv-push (dv , e) bv g)) ]ᵐ
+  Bv' = [ proj₂ (proj₂ (mbv-push (dv , e) bv g)) ]ᵛᵇ
 
 ------------------------------------------------------------------------
 -- The original ML' (₂₊ n) top-gate push is the wire-1 (gate₁) instance.
@@ -279,4 +330,4 @@ lemma-ML'-Top-eg1 : ∀ {n} (d₀ : D) (dr : Vec D n) (e : E) (b₀ : B) (lr : V
   ([ (d₀ ∷ dr , e) ]ᵐ • [ (b₀ ∷ lr , a) ]ˡ') • [ gate₁ x₁ ↥ ]ʷ ≈
     ((proj₁ r ↓ᵏ n) ↑) • ([ (proj₂ r ∷ dr , e) ]ᵐ • [ (BT.b'-of b₀ x₁ ∷ lr , a) ]ˡ')
 lemma-ML'-Top-eg1 d₀ dr e b₀ lr a x₁ =
-  lemma-ML'-Top ((d₀ ∷ dr , e) , (b₀ ∷ lr , a)) (gate₁ x₁) tt
+  lemma-ML'-Top ((d₀ ∷ dr , e) , (b₀ ∷ lr , a)) (gate₁ x₁)
