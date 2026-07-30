@@ -29,11 +29,12 @@ open import Examples.Groups.Symplectic.CongDownK p-2 p-prime using (cong↓ᵏ ;
 open import Examples.Groups.Symplectic.BR.Three.DD-CZ-n p-2 p-prime using (d-↓ᵏ)
 import Examples.Groups.Symplectic.BR.Two.D p-2 p-prime as TD
 
-open import Data.Product using (proj₁ ; proj₂)
+open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃ ; ∃-syntax)
+open import Examples.Groups.Symplectic.BR.Three.DD-CZ-n p-2 p-prime using (gen-dd-cz ; gen-dir-of ; gen-vd'-of)
 import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Notations
-open import Word.Base using (Word ; _•_ ; ε)
+open import Word.Base using (Word ; _•_ ; ε ; [_]ʷ)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Relation.Binary.Reasoning.Setoid as SR
@@ -122,3 +123,43 @@ module _ {n : ℕ} where
     ([ d₁ ]ᵈ • ((Hdir h ↓ᵏ n) ↑ ↑)) • [ Hd' h ∷ t ]ᵛᵈ ↑                    ≈⟨ cleft (comm-dbox-w↑↑ d₁ (Hdir h ↓ᵏ n)) ⟩
     (((Hdir h ↓ᵏ n) ↑ ↑) • [ d₁ ]ᵈ) • [ Hd' h ∷ t ]ᵛᵈ ↑                    ≈⟨ assoc ⟩
     ((Hdir h ↓ᵏ n) ↑ ↑) • ([ d₁ ]ᵈ • [ Hd' h ∷ t ]ᵛᵈ ↑)                    ∎
+
+------------------------------------------------------------------------
+-- Push a whole Word (Gen 2) (padded to wires 0,1) through the D-vector,
+-- composing the per-letter atoms; residual stays dir↑.
+
+module _ {n : ℕ} where
+  open PB ((₃₊ n) QRel,_===_)
+  open PP ((₃₊ n) QRel,_===_)
+  open SR word-setoid
+
+  -- One letter of the residual word, pushed through the D-vector.  Split
+  -- off from `dvec-word` so the constructor patterns (gate₁ S-gate, …) do
+  -- not clash with the `[_]ʷ` bracket in the `∷`-pattern LHS.
+  dvec-letter : ∀ (g : Gen 2) (vd : Vec D (₂₊ n)) →
+    ∃[ dir ] ∃[ vd' ] ([ vd ]ᵛᵈ • ([ g ]ʷ ↓ᵏ (₁₊ n)) ≈ (dir ↑) • [ vd' ]ᵛᵈ)
+  dvec-letter (gate₁ S-gate) (d₁ ∷ h ∷ t) =
+    dir-of-DS d₁ , (d-of-DS d₁ ∷ h ∷ t) , dvec-S d₁ (h ∷ t)
+  dvec-letter (gate₁ H-gate) (d₁ ∷ h ∷ t) =
+    (Hdir d₁ ↓ᵏ (₁₊ n)) , (Hd' d₁ ∷ h ∷ t) , dvec-H d₁ (h ∷ t)
+  dvec-letter (gate₂ CZ-gate) vd =
+    gen-dir-of vd , gen-vd'-of vd , gen-dd-cz vd
+  dvec-letter (gate₁ S-gate ↥) (d₁ ∷ h ∷ t) =
+    (dir-of-DS h ↑) , (d₁ ∷ d-of-DS h ∷ t) , dvec-S↑ d₁ h t
+  dvec-letter (gate₁ H-gate ↥) (d₁ ∷ h ∷ t) =
+    ((Hdir h ↓ᵏ n) ↑) , (d₁ ∷ Hd' h ∷ t) , dvec-H↑ d₁ h t
+
+  dvec-word : ∀ (u : Word (Gen 2)) (vd : Vec D (₂₊ n)) →
+    ∃[ dir ] ∃[ vd' ] ([ vd ]ᵛᵈ • (u ↓ᵏ (₁₊ n)) ≈ (dir ↑) • [ vd' ]ᵛᵈ)
+  dvec-word ε (d₁ ∷ h ∷ t) = ε , (d₁ ∷ h ∷ t) , trans right-unit (sym left-unit)
+  dvec-word [ g ]ʷ vd = dvec-letter g vd
+  dvec-word (u • v) vd =
+    let (dir₁ , vd₁ , eq₁) = dvec-word u vd
+        (dir₂ , vd₂ , eq₂) = dvec-word v vd₁
+    in (dir₁ • dir₂) , vd₂ , (begin
+      [ vd ]ᵛᵈ • ((u • v) ↓ᵏ (₁₊ n))            ≈⟨ sym assoc ⟩
+      ([ vd ]ᵛᵈ • (u ↓ᵏ (₁₊ n))) • (v ↓ᵏ (₁₊ n)) ≈⟨ cleft eq₁ ⟩
+      ((dir₁ ↑) • [ vd₁ ]ᵛᵈ) • (v ↓ᵏ (₁₊ n))     ≈⟨ assoc ⟩
+      (dir₁ ↑) • ([ vd₁ ]ᵛᵈ • (v ↓ᵏ (₁₊ n)))     ≈⟨ cright eq₂ ⟩
+      (dir₁ ↑) • ((dir₂ ↑) • [ vd₂ ]ᵛᵈ)          ≈⟨ sym assoc ⟩
+      (dir₁ • dir₂) ↑ • [ vd₂ ]ᵛᵈ                ∎)
