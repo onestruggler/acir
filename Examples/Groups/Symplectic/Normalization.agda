@@ -264,7 +264,10 @@ ract-base-↑ c (u • v) rewrite ract-base-↑ c u = ract-base-↑ c v
 -- the DD-CZ residual (wires 0,1) commutes past gs2↑↑ (comm-↓ᵏ2-w↑↑).
 ⁻¹[⇑]-wd'' {suc (suc (suc m''))} (inj₂ (d , inj₂ (d2 , lm2))) (comm₂ CZ-gate g) =
     PB.sym (comm-↓ᵏ2-w↑↑ (DDCZ.dir-of (d ∷ d2 ∷ [])) (proj₁ (ract lm2 g))) , Eq.refl
-⁻¹[⇑]-wd'' {suc (suc zero)} (inj₂ (d , inj₂ (d2 , lm2))) (comm₂ CZ-gate g) = {!!}
+⁻¹[⇑]-wd'' {suc (suc zero)} (inj₂ (d , inj₂ (d2 , (([] , e) , ([] , a))))) (comm₂ CZ-gate (gate₁ H-gate)) =
+    PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
+⁻¹[⇑]-wd'' {suc (suc zero)} (inj₂ (d , inj₂ (d2 , (([] , e) , ([] , a))))) (comm₂ CZ-gate (gate₁ S-gate)) =
+    PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
 ⁻¹[⇑]-wd'' {suc (suc m')} (inj₂ (d , inj₁ ml')) (comm₂ CZ-gate g) = {!!}
 ⁻¹[⇑]-wd'' {suc (suc m')} (inj₁ ml') (comm₂ CZ-gate g) = {!!}
 
