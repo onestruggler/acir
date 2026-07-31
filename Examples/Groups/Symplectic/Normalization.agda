@@ -49,6 +49,8 @@ open import Data.Vec using (Vec ; [] ; _∷_ ; replicate)
 
 import Examples.Groups.Symplectic.Normalization.Pushing.PushML p-2 p-prime as PushML
 import Examples.Groups.Symplectic.BR.Two.ML'-Top p-2 p-prime as ML'T
+open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime using (dir-of-DS ; d-of-DS)
+open import Examples.Groups.Symplectic.Normalization.Pushing.DVecPush p-2 p-prime using (Hdir ; Hd')
 open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime using (aux-mc1ε)
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime using (lemma-order-Ex-n)
 open import Algebra.Properties.Ring (+-*-ring p-2) using (-0#≈0#)
@@ -201,7 +203,28 @@ mbv-id {₁₊ k'} (g ↥) =
   let _===_ = (₁₊ n) QRel,_===_ in
   ∀ (c : C (₁₊ n)) {u t : Circuit (₁₊ n)} →
     u === t → (ract {n} ᵗ) c u ≋ (ract {n} ᵗ) c t
-⁻¹[⇑]-wd'' {n} c eq = {!!}
+⁻¹[⇑]-wd'' {n} c (srel x)   = {!!}
+⁻¹[⇑]-wd'' {n} c (cong↑ eq)  = {!!}
+-- comm₁ on inj₂ (d, lm): the bottom gate₁ only rewrites d, the lifted g
+-- only recurses into lm, so both action-orders reach the same coset
+-- (Eq.refl); the residual is a wire-0 escape commuting past the lifted
+-- recursion residual gs↑ (comm-↓ᵏ-w↑; at width 1 gs↑ = ε, so units).
+⁻¹[⇑]-wd'' {suc k} (inj₁ ml') (comm₁ h g) = {!!}
+⁻¹[⇑]-wd'' {suc (suc k)} (inj₂ (d , lm)) (comm₁ H-gate g) =
+    PB.sym (ML'T.comm-↓ᵏ-w↑ (Hdir d) (proj₁ (ract lm g))) , Eq.refl
+⁻¹[⇑]-wd'' {suc (suc k)} (inj₂ ((₀ , b) , lm)) (comm₁ S-gate g) =
+    PB.sym (ML'T.comm-↓ᵏ-w↑ [ gate₁ S-gate ]ʷ (proj₁ (ract lm g))) , Eq.refl
+⁻¹[⇑]-wd'' {suc (suc k)} (inj₂ ((₁₊ a , b) , lm)) (comm₁ S-gate g) =
+    PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
+⁻¹[⇑]-wd'' {suc zero} (inj₂ (d , (([] , e) , ([] , a)))) (comm₁ H-gate (gate₁ H-gate)) =
+    PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
+⁻¹[⇑]-wd'' {suc zero} (inj₂ (d , (([] , e) , ([] , a)))) (comm₁ H-gate (gate₁ S-gate)) =
+    PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
+⁻¹[⇑]-wd'' {suc zero} (inj₂ (d , (([] , e) , ([] , a)))) (comm₁ S-gate (gate₁ H-gate)) =
+    PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
+⁻¹[⇑]-wd'' {suc zero} (inj₂ (d , (([] , e) , ([] , a)))) (comm₁ S-gate (gate₁ S-gate)) =
+    PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
+⁻¹[⇑]-wd'' {n} c (comm₂ h g) = {!!}
 
 ------------------------------------------------------------------------
 -- Tower instantiation (via Normalization.CosetNF.CosetTower)
