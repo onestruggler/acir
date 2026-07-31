@@ -48,6 +48,7 @@ open import Data.Sum
 open import Data.Vec using (Vec ; [] ; _∷_ ; replicate)
 
 import Examples.Groups.Symplectic.Normalization.Pushing.PushML p-2 p-prime as PushML
+import Examples.Groups.Symplectic.Normalization.Pushing.Push p-2 p-prime as Push
 import Examples.Groups.Symplectic.BR.Two.ML'-Top p-2 p-prime as ML'T
 import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime as DDCZ
 open import Examples.Groups.Symplectic.BR.Three.BB-CZ-n p-2 p-prime using (comm-↓ᵏ2-w↑↑)
@@ -196,6 +197,23 @@ mbv-id {₁₊ k'} (g ↥) =
       (Eq.sym (mbv-id x .proj₁)) (Eq.sym (mbv-id x .proj₂ .proj₁))
   where open PB ((suc m) QRel,_===_)
 
+-- The keystone of the inj₁ structural cases: the bottom-gate box update
+-- (Push.ract, from the A-box S-cascade) and the lifted-gate box update
+-- (ML'-Top.ml'-of / dir-of, from mbv-push) commute on an ML' box.  The A
+-- box and B-vector parts commute trivially; the load-bearing content is
+-- that the wire-0 S-cascade and the wire-≥1 gate thread commute on the
+-- shared M column.  Two components: the coset (ml'-of-comm) and the
+-- residual (dir-of-comm).
+ml'-of-comm : ∀ {k} (ml' : ML' (₂₊ k)) (g : Gen (₁₊ k)) (h : SympGate 1) →
+  proj₂ (Push.ract (ML'T.ml'-of ml' g) h) ≡ ML'T.ml'-of (proj₂ (Push.ract ml' h)) g
+ml'-of-comm ml' g h = {!!}
+
+dir-of-comm : ∀ {k} (ml' : ML' (₂₊ k)) (g : Gen (₁₊ k)) (h : SympGate 1) →
+  let open PB ((₁₊ k) QRel,_===_) in
+  ML'T.dir-of ml' g • proj₁ (Push.ract (ML'T.ml'-of ml' g) h) ≈
+  proj₁ (Push.ract ml' h) • ML'T.dir-of (proj₂ (Push.ract ml' h)) g
+dir-of-comm ml' g h = {!!}
+
 -- Threading a lifted word through an inj₂ (d, lm) coset recurses into lm
 -- (the outer D box d is inert, every lifted gate peels one wire), so it
 -- equals the sub-action on lm re-lifted, with d re-attached.
@@ -244,7 +262,8 @@ ract-base-↑ c (u • v) rewrite ract-base-↑ c u = ract-base-↑ c v
 -- only recurses into lm, so both action-orders reach the same coset
 -- (Eq.refl); the residual is a wire-0 escape commuting past the lifted
 -- recursion residual gs↑ (comm-↓ᵏ-w↑; at width 1 gs↑ = ε, so units).
-⁻¹[⇑]-wd'' {suc k} (inj₁ ml') (comm₁ h g) = {!!}
+⁻¹[⇑]-wd'' {suc k} (inj₁ ml') (comm₁ h g) =
+    dir-of-comm ml' g h , Eq.cong inj₁ (ml'-of-comm ml' g h)
 ⁻¹[⇑]-wd'' {suc (suc k)} (inj₂ (d , lm)) (comm₁ H-gate g) =
     PB.sym (ML'T.comm-↓ᵏ-w↑ (Hdir d) (proj₁ (ract lm g))) , Eq.refl
 ⁻¹[⇑]-wd'' {suc (suc k)} (inj₂ ((₀ , b) , lm)) (comm₁ S-gate g) =
