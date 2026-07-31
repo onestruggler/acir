@@ -48,6 +48,7 @@ open import Data.Sum
 open import Data.Vec using (Vec ; [] ; _∷_ ; replicate)
 
 import Examples.Groups.Symplectic.Normalization.Pushing.PushML p-2 p-prime as PushML
+import Examples.Groups.Symplectic.BR.Two.ML'-Top p-2 p-prime as ML'T
 open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime using (aux-mc1ε)
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime using (lemma-order-Ex-n)
 open import Algebra.Properties.Ring (+-*-ring p-2) using (-0#≈0#)
@@ -155,11 +156,41 @@ aux-MB {suc m} = begin
 [I]≈ε' {suc m} = trans (sym assoc) (trans (cleft aux-MB) (trans left-unit [Ia]≈ε))
   where open PB ((₂₊ m) QRel,_===_) ; open PP ((₂₊ m) QRel,_===_)
 
+-- mbv-push fixes the identity M-column + B-vector and escapes as the gate:
+-- pushing a generator through the all-zero box leaves it unchanged and the
+-- residual is [ g ]ʷ (the box updates are all identities up to -0 / +-inv).
+mbv-id : ∀ {k} (g : Gen k) →
+  let Z = replicate k (₀ , ₀)
+      r = ML'T.mbv-push (Z , ₀) Z g
+  in (proj₁ (proj₂ r) ≡ (Z , ₀)) × (proj₂ (proj₂ r) ≡ Z)
+     × (PB._≈_ (k QRel,_===_) (proj₁ r) [ g ]ʷ)
+mbv-id {₁₊ k'} (gate₁ H-gate) =
+    Eq.cong (λ z → ((₀ , z) ∷ replicate k' (₀ , ₀)) , ₀) -0#≈0#
+  , Eq.cong (λ z → (₀ , z) ∷ replicate k' (₀ , ₀)) -0#≈0#
+  , PB.refl
+mbv-id {₁₊ k'} (gate₁ S-gate) =
+    Eq.cong (λ z → ((₀ , z) ∷ replicate k' (₀ , ₀)) , ₀) (+-inverseʳ ₀)
+  , Eq.cong (λ z → (₀ , z) ∷ replicate k' (₀ , ₀)) (+-inverseʳ ₀)
+  , PB.refl
+mbv-id {₂₊ k''} (gate₂ CZ-gate) =
+    Eq.cong₂ (λ z₁ z₂ → ((₀ , z₁) ∷ (₀ , z₂) ∷ replicate k'' (₀ , ₀)) , ₀) (+-inverseʳ ₀) (+-inverseʳ ₀)
+  , Eq.cong₂ (λ z₁ z₂ → (₀ , z₁) ∷ (₀ , z₂) ∷ replicate k'' (₀ , ₀)) (+-inverseʳ ₀) (+-inverseʳ ₀)
+  , PB.refl
+mbv-id {₁₊ k'} (g ↥) =
+    Eq.cong (λ p → ((₀ , ₀) ∷ proj₁ p , proj₂ p)) (mbv-id g .proj₁)
+  , Eq.cong ((₀ , ₀) ∷_) (mbv-id g .proj₂ .proj₁)
+  , lemma-cong↑ _ _ (mbv-id g .proj₂ .proj₂)
+
 -- Acting on the identity coset by an embedded generator recovers the
 -- generator itself.
 ⁻¹[⇑]-gen' : ∀ {n} (x : Gen n) →
   _≋_ {n} ([ x ]ʷ , Iᶜ {n}) ((ract {n} ᵗ) (Iᶜ {n}) ([ x ↥ ]ʷ))
-⁻¹[⇑]-gen' {n} x = {!!}
+⁻¹[⇑]-gen' {zero} ()
+⁻¹[⇑]-gen' {suc m} x =
+    PB.sym (mbv-id x .proj₂ .proj₂)
+  , Eq.cong₂ (λ mm bb → inj₁ (mm , (bb , Ia)))
+      (Eq.sym (mbv-id x .proj₁)) (Eq.sym (mbv-id x .proj₂ .proj₁))
+  where open PB ((suc m) QRel,_===_)
 
 -- Well-definedness: the coset action respects the raw relations.  This
 -- is the Reidemeister–Schreier completeness obligation for the
