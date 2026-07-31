@@ -194,6 +194,30 @@ mbv-id {₁₊ k'} (g ↥) =
       (Eq.sym (mbv-id x .proj₁)) (Eq.sym (mbv-id x .proj₂ .proj₁))
   where open PB ((suc m) QRel,_===_)
 
+-- Threading a lifted word through an inj₂ (d, lm) coset recurses into lm
+-- (the outer D box d is inert, every lifted gate peels one wire), so it
+-- equals the sub-action on lm re-lifted, with d re-attached.
+ract-inj₂-↑ : ∀ {k} (d : D) (lm : C (₁₊ k)) (w : Circuit (₁₊ k)) →
+  (ract ᵗ) (inj₂ (d , lm)) (w ↑) ≡
+    ((ract ᵗ) lm w .proj₁ ↑ , inj₂ (d , (ract ᵗ) lm w .proj₂))
+ract-inj₂-↑ d lm [ g ]ʷ = Eq.refl
+ract-inj₂-↑ d lm ε       = Eq.refl
+ract-inj₂-↑ d lm (u • v)
+  rewrite ract-inj₂-↑ d lm u
+        | ract-inj₂-↑ d ((ract ᵗ) lm u .proj₂) v = Eq.refl
+
+-- Base level: Gen 0 is empty, so every Circuit 0 word collapses to ε, and
+-- a lifted (gate-free) word leaves any coset fixed.
+sing0 : {w : Circuit 0} → PB._≈_ (0 QRel,_===_) w ε
+sing0 {[ () ]ʷ}
+sing0 {ε}     = PB.refl
+sing0 {w • v} = PB.trans (PB.cong sing0 sing0) PB.left-unit
+
+ract-base-↑ : (c : C 1) (w : Circuit 0) → (ract {0} ᵗ) c (w ↑) .proj₂ ≡ c
+ract-base-↑ c ε       = Eq.refl
+ract-base-↑ c [ () ]ʷ
+ract-base-↑ c (u • v) rewrite ract-base-↑ c u = ract-base-↑ c v
+
 -- Well-definedness: the coset action respects the raw relations.  This
 -- is the Reidemeister–Schreier completeness obligation for the
 -- symplectic presentation (order-{S,H,SH,CZ}, comm-HHS, M-mul,
@@ -204,7 +228,16 @@ mbv-id {₁₊ k'} (g ↥) =
   ∀ (c : C (₁₊ n)) {u t : Circuit (₁₊ n)} →
     u === t → (ract {n} ᵗ) c u ≋ (ract {n} ᵗ) c t
 ⁻¹[⇑]-wd'' {n} c (srel x)   = {!!}
-⁻¹[⇑]-wd'' {n} c (cong↑ eq)  = {!!}
+-- cong↑ on inj₂: threading recurses into lm (ract-inj₂-↑), so the whole
+-- case follows from the recursive call ⁻¹[⇑]-wd'' lm eq.
+⁻¹[⇑]-wd'' {suc k} (inj₁ ml') (cong↑ eq) = {!!}
+⁻¹[⇑]-wd'' {suc k} (inj₂ (d , lm)) (cong↑ {w = w} {v} eq)
+  rewrite ract-inj₂-↑ d lm w | ract-inj₂-↑ d lm v =
+    lemma-cong↑ _ _ (⁻¹[⇑]-wd'' lm eq .proj₁)
+  , Eq.cong (λ z → inj₂ (d , z)) (⁻¹[⇑]-wd'' lm eq .proj₂)
+⁻¹[⇑]-wd'' {zero} c (cong↑ {w = w} {v} eq) =
+    PB.trans sing0 (PB.sym sing0)
+  , Eq.trans (ract-base-↑ c w) (Eq.sym (ract-base-↑ c v))
 -- comm₁ on inj₂ (d, lm): the bottom gate₁ only rewrites d, the lifted g
 -- only recurses into lm, so both action-orders reach the same coset
 -- (Eq.refl); the residual is a wire-0 escape commuting past the lifted
