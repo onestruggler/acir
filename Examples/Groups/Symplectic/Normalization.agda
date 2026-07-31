@@ -48,6 +48,9 @@ open import Data.Sum
 open import Data.Vec using (Vec ; [] ; _∷_ ; replicate)
 
 import Examples.Groups.Symplectic.Normalization.Pushing.PushML p-2 p-prime as PushML
+open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime using (aux-mc1ε)
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime using (lemma-order-Ex-n)
+open import Algebra.Properties.Ring (+-*-ring p-2) using (-0#≈0#)
 
 private variable
   n : ℕ
@@ -101,9 +104,56 @@ Iᶜ : ∀ {n} → C (₁₊ n)
 Iᶜ {zero}  = ([] , ₀) , ([] , Ia)
 Iᶜ {suc m} = inj₁ ((replicate (₁₊ m) (₀ , ₀) , ₀) , (replicate (₁₊ m) (₀ , ₀) , Ia))
 
+-- The identity A box interprets to ε: [ Ia ]ᵃ = M ((₁,λ())⁻¹) • ⟦ε⟧ₕₛ,
+-- and (₁,λ())⁻¹ has value ₁ (inv-₁), so aux-MM + aux-mc1ε finish.
+[Ia]≈ε : ∀ {n} → let open PB ((₁₊ n) QRel,_===_) in [ Ia ]ᵃ ≈ ε
+[Ia]≈ε {n} = trans (cong (aux-MM (((₁ , λ ()) ⁻¹) .proj₂) (λ ()) inv-₁) refl) aux-mc1ε
+  where open PB ((₁₊ n) QRel,_===_) ; open Lemmas0 n
+
+-- Zero boxes reduce to ε / Ex (the CZ^/CX'^/S^ powers vanish; -0 ≡ 0).
+[₀]ᵉ≈ε : ∀ {n} → let open PB ((₁₊ n) QRel,_===_) in [_]ᵉ {n} ₀ ≈ ε
+[₀]ᵉ≈ε {n} = refl' (Eq.cong S^ -0#≈0#)
+  where open PB ((₁₊ n) QRel,_===_)
+
+[₀]ᵈ≈Ex : ∀ {n} → let open PB ((₂₊ n) QRel,_===_) in [_]ᵈ {n} (₀ , ₀) ≈ Ex
+[₀]ᵈ≈Ex {n} = trans (cright (refl' (Eq.cong CZ^ -0#≈0#))) right-unit
+  where open PB ((₂₊ n) QRel,_===_)
+
+[₀]ᵇ≈Ex : ∀ {n} → let open PB ((₂₊ n) QRel,_===_) in [_]ᵇ {n} (₀ , ₀) ≈ Ex
+[₀]ᵇ≈Ex {n} = trans (cright (cright left-unit)) (trans (cright H3H≈ε) right-unit)
+  where
+  open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_)
+  H3H≈ε : H ^ 3 • H ≈ ε
+  H3H≈ε = trans (sym (^-+ H 3 1)) (axiom order-H)
+
+-- All-zero M column · all-zero B vector telescopes to ε: at each level a
+-- D-box Ex pairs with a B-box Ex (Ex² ≈ ε), leaving the shorter product.
+aux-MB : ∀ {k} → let open PB ((₁₊ k) QRel,_===_) in
+  [ (replicate k (₀ , ₀) , ₀) ]ᵐ • [ replicate k (₀ , ₀) ]ᵛᵇ ≈ ε
+aux-MB {zero} = trans right-unit [₀]ᵉ≈ε
+  where open PB (1 QRel,_===_)
+aux-MB {suc m} = begin
+  ([ (₀ , ₀) ]ᵈ • [ (dv , ₀) ]ᵐ ↑) • ([ dv ]ᵛᵇ ↑ • [ (₀ , ₀) ]ᵇ)
+    ≈⟨ cong refl (cright [₀]ᵇ≈Ex) ⟩
+  ([ (₀ , ₀) ]ᵈ • [ (dv , ₀) ]ᵐ ↑) • ([ dv ]ᵛᵇ ↑ • Ex)
+    ≈⟨ cong (cleft [₀]ᵈ≈Ex) refl ⟩
+  (Ex • [ (dv , ₀) ]ᵐ ↑) • ([ dv ]ᵛᵇ ↑ • Ex)              ≈⟨ assoc ⟩
+  Ex • ([ (dv , ₀) ]ᵐ ↑ • ([ dv ]ᵛᵇ ↑ • Ex))             ≈⟨ cright (sym assoc) ⟩
+  Ex • (([ (dv , ₀) ]ᵐ ↑ • [ dv ]ᵛᵇ ↑) • Ex)
+    ≈⟨ cright (cleft (lemma-cong↑ _ _ (aux-MB {m}))) ⟩
+  Ex • (ε • Ex)                                           ≈⟨ cright left-unit ⟩
+  Ex • Ex                                                 ≈⟨ lemma-order-Ex-n ⟩
+  ε ∎
+  where
+  open PB ((₂₊ m) QRel,_===_) ; open PP ((₂₊ m) QRel,_===_) ; open SR word-setoid
+  dv = replicate m (₀ , ₀)
+
 -- Its interpretation is the identity word.
 [I]≈ε' : ∀ {n} → let open PB ((₁₊ n) QRel,_===_) in [ Iᶜ {n} ]ᶜ ≈ ε
-[I]≈ε' {n} = {!!}
+[I]≈ε' {zero}  = trans (sym assoc) (trans (cleft aux-MB) (trans left-unit [Ia]≈ε))
+  where open PB (1 QRel,_===_) ; open PP (1 QRel,_===_)
+[I]≈ε' {suc m} = trans (sym assoc) (trans (cleft aux-MB) (trans left-unit [Ia]≈ε))
+  where open PB ((₂₊ m) QRel,_===_) ; open PP ((₂₊ m) QRel,_===_)
 
 -- Acting on the identity coset by an embedded generator recovers the
 -- generator itself.
