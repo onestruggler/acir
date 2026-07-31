@@ -49,6 +49,8 @@ open import Data.Vec using (Vec ; [] ; _∷_ ; replicate)
 
 import Examples.Groups.Symplectic.Normalization.Pushing.PushML p-2 p-prime as PushML
 import Examples.Groups.Symplectic.BR.Two.ML'-Top p-2 p-prime as ML'T
+import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime as DDCZ
+open import Examples.Groups.Symplectic.BR.Three.BB-CZ-n p-2 p-prime using (comm-↓ᵏ2-w↑↑)
 open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime using (dir-of-DS ; d-of-DS)
 open import Examples.Groups.Symplectic.Normalization.Pushing.DVecPush p-2 p-prime using (Hdir ; Hd')
 open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime using (aux-mc1ε)
@@ -257,7 +259,14 @@ ract-base-↑ c (u • v) rewrite ract-base-↑ c u = ract-base-↑ c v
     PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
 ⁻¹[⇑]-wd'' {suc zero} (inj₂ (d , (([] , e) , ([] , a)))) (comm₁ S-gate (gate₁ S-gate)) =
     PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
-⁻¹[⇑]-wd'' {n} c (comm₂ h g) = {!!}
+-- comm₂ on a fully-nested inj₂ (d, inj₂ (d2, lm2)): CZ hits the bottom two
+-- D boxes (d, d2), g↥↥ recurses into lm2 — disjoint, so coset Eq.refl and
+-- the DD-CZ residual (wires 0,1) commutes past gs2↑↑ (comm-↓ᵏ2-w↑↑).
+⁻¹[⇑]-wd'' {suc (suc (suc m''))} (inj₂ (d , inj₂ (d2 , lm2))) (comm₂ CZ-gate g) =
+    PB.sym (comm-↓ᵏ2-w↑↑ (DDCZ.dir-of (d ∷ d2 ∷ [])) (proj₁ (ract lm2 g))) , Eq.refl
+⁻¹[⇑]-wd'' {suc (suc zero)} (inj₂ (d , inj₂ (d2 , lm2))) (comm₂ CZ-gate g) = {!!}
+⁻¹[⇑]-wd'' {suc (suc m')} (inj₂ (d , inj₁ ml')) (comm₂ CZ-gate g) = {!!}
+⁻¹[⇑]-wd'' {suc (suc m')} (inj₁ ml') (comm₂ CZ-gate g) = {!!}
 
 ------------------------------------------------------------------------
 -- Tower instantiation (via Normalization.CosetNF.CosetTower)
