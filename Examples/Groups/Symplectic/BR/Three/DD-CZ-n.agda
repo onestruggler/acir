@@ -70,12 +70,18 @@ module _ {n : ℕ} where
   open PP ((₃₊ n) QRel,_===_)
   open SR word-setoid
 
-  gen-dd-cz : ∀ (vd : Vec D (₂₊ n)) →
-    [ vd ]ᵛᵈ • CZ ≈ (gen-dir-of vd ↑) • [ gen-vd'-of vd ]ᵛᵈ
-  gen-dd-cz (d1 ∷ d2 ∷ dr) = begin
+  -- The bottom CZ interacts with only the bottom two D boxes; the tail
+  -- above them (wires ≥ 2) is an ARBITRARY word w, commuted past CZ by
+  -- lemma-comm-CZ-w↑↑.  gen-dd-cz below is the D-vector-tail instance.
+  gen-dd-cz-tail : ∀ (d1 d2 : D) (w : Word (Gen (₁₊ n))) →
+    ([ d1 ]ᵈ • ([ d2 ]ᵈ • w ↑) ↑) • CZ ≈
+      ((DDCZ.dir-of (d1 ∷ d2 ∷ []) ↓ᵏ n) ↑) •
+        ([ (proj₁ d1 , proj₂ d1 + - proj₁ d2) ]ᵈ •
+          ([ (proj₁ d2 , proj₂ d2 + - proj₁ d1) ]ᵈ • w ↑) ↑)
+  gen-dd-cz-tail d1 d2 w = begin
     (A1 • (A2 • T)) • CZ                     ≈⟨ assoc ⟩
     A1 • ((A2 • T) • CZ)                     ≈⟨ cright assoc ⟩
-    A1 • (A2 • (T • CZ))                     ≈⟨ cright (cright (sym (lemma-comm-CZ-w↑↑ [ dr ]ᵛᵈ))) ⟩
+    A1 • (A2 • (T • CZ))                     ≈⟨ cright (cright (sym (lemma-comm-CZ-w↑↑ w))) ⟩
     A1 • (A2 • (CZ • T))                     ≈⟨ cright (sym assoc) ⟩
     A1 • ((A2 • CZ) • T)                     ≈⟨ sym assoc ⟩
     (A1 • (A2 • CZ)) • T                     ≈⟨ cleft widened-DDCZ ⟩
@@ -85,7 +91,7 @@ module _ {n : ℕ} where
     where
     A1  = [ d1 ]ᵈ
     A2  = [ d2 ]ᵈ ↑
-    T   = [ dr ]ᵛᵈ ↑ ↑
+    T   = w ↑ ↑
     dir = DDCZ.dir-of (d1 ∷ d2 ∷ []) ↓ᵏ n
     -- bottom-two update, spelled out to match gen-vd'-of / DDCZ.vd'-of:
     head-vd' = (proj₁ d1 , proj₂ d1 + - proj₁ d2)
@@ -109,3 +115,7 @@ module _ {n : ℕ} where
       ([ d1 ∷ d2 ∷ [] ]ᵛᵈ • CZ) ↓ᵏ n                    ≈⟨ cong↓ᵏ n _ _ (DDCZ.lemma-dir-and-vd' (d1 ∷ d2 ∷ [])) ⟩
       (DDCZ.dir-of (d1 ∷ d2 ∷ []) ↑ • [ DDCZ.vd'-of (d1 ∷ d2 ∷ []) ]ᵛᵈ) ↓ᵏ n ≈⟨ trans (refl' eqR) (cright (cright right-unit)) ⟩
       dir ↑ • (A1' • A2')                               ∎
+
+  gen-dd-cz : ∀ (vd : Vec D (₂₊ n)) →
+    [ vd ]ᵛᵈ • CZ ≈ (gen-dir-of vd ↑) • [ gen-vd'-of vd ]ᵛᵈ
+  gen-dd-cz (d1 ∷ d2 ∷ dr) = gen-dd-cz-tail d1 d2 [ dr ]ᵛᵈ

@@ -1,8 +1,9 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Symmetric groups Sₙ and their normal form via coset enumeration
--- Adapted to the Circuit / Lift-Relation framework
+-- The multi-qudit symplectic Clifford group and its normal form via
+-- coset enumeration (Reidemeister–Schreier), built on the coset action
+-- of Normalization.Pushing.PushML.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -12,6 +13,7 @@ open import Data.Nat.Primality using (Prime)
 open import Notations
 
 module Examples.Groups.Symplectic.Normalization (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
+open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 
 open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
@@ -37,419 +39,103 @@ import Normalization.NormalForm.Setoid as SNF
 open NFBase using (NormalFormInjective ; NormalForm)
 import Normalization.CosetNF as CosetNF
 
-
-open import Examples.Groups.Symplectic.NewCosets p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
-open Symplectic
+open Symplectic renaming (M to ZM)
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Data.Sum
+open import Data.Vec using (Vec ; [] ; _∷_ ; replicate)
 
+import Examples.Groups.Symplectic.Normalization.Pushing.PushML p-2 p-prime as PushML
 
 private variable
   n : ℕ
 
 C = ML
 
-open import Examples.Groups.Symplectic.BR.One.A p-2 p-prime as OA
-import Examples.Groups.Symplectic.BR.Two.D p-2 p-prime as TD
-import Examples.Groups.Symplectic.BR.Two.D-Bot p-2 p-prime as TDB
-import Examples.Groups.Symplectic.BR.Two.B-Top p-2 p-prime as TBT
-import Examples.Groups.Symplectic.BR.Two.ML'-Top p-2 p-prime as ML'T
-import Examples.Groups.Symplectic.BR.Two.L-CZ p-2 p-prime as LCZ
-import Examples.Groups.Symplectic.BR.Two.L2-CZ p-2 p-prime as LCZ2
-open import Examples.Groups.Symplectic.BR.Two.D-w p-2 p-prime as TDw
-open import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime as DDCZ
-
-open import Data.Vec
-open import Data.Nat using (s≤s ; z≤n)
-
 ------------------------------------------------------------------------
--- Right coset action
+-- Right coset action (proved in PushML)
 
--- The right action of a generator on a coset: ract c b returns the
--- residual circuit b' and the coset c' reached from c by b, so that
--- [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ (see ract-sound below).
-ract : ∀ {n} -> C (₁₊ n) → Gen (₁₊ n) → Circuit n × C (₁₊ n)
-ract {₁₊ n} (inj₁ x) (gate₁ x₁) = {!!}
-ract {₁₊ n} (inj₁ x) (gate₂ x₁) = {!!}
-ract {₁₊ n} (inj₁ x) (gate₁ x₁ ↥) = ML'T.dir-of ? ? ? , {!!}
-ract {₁₊ n} (inj₁ x) (gate₂ x₁ ↥) = {!!}
-ract {₁₊ n} (inj₁ x) ((g ↥) ↥) = {!!}
-ract {₁₊ n} (inj₂ y@(d , lm↑)) g@(gate₁ x)
-  using d' ← TD.d'-of d (gate₁ x) λ ()
-  using (spw , dir) ← TD.dir-of d (gate₁ x) λ ()
-  = dir ↓ᵏ n , inj₂ (d' , lm↑)
-ract {₁} (inj₂ y@(d , m@(vd@[] , e) , l@(vb@[] , a@((x , z) , a≠0)))) (gate₂ CZ-gate)
-  using w ← LCZ2.dir-of (inj₂ ([] , a))
-  using (spw , dir , d') ← TDw.push-D-w d w (TDw.dir-of₂-No-Top-H ( (inj₂ ([] , a))))
-  with LCZ2.l'-of (inj₂ ([] , a))
-... | inj₂ l' = dir , inj₂ (d' , (vd , (e + spw)) , l')
-... | inj₁ l' = dir , inj₁ ((d' ∷ vd , (e + spw)) , l')
+-- The right action of a generator on a coset: ract c g returns the
+-- residual circuit b' and the coset c' reached, so that
+-- [ c ]ᶜ • [ g ]ʷ ≈ b' ↑ • [ c' ]ᶜ.
+ract : ∀ {n} → C (₁₊ n) → Gen (₁₊ n) → Circuit n × C (₁₊ n)
+ract = PushML.ract
 
-ract {₂₊ n} (inj₂ y@(d , inj₁ x)) (gate₂ CZ-gate) = {!!}
-ract {₂₊ n} (inj₂ y@(d , inj₂ y₁)) (gate₂ CZ-gate) = {!!}
-  -- using d' ← DDCZ.d'-of d (gate₁ x) λ ()
-  -- using (spw , dir) ← DDCZ.dir-of d (gate₁ x) λ ()
-  -- = dir ↓ᵏ n , inj₂ (d' , lm↑)
-ract {₁₊ n} (inj₂ y@(d , lm↑)) (g ↥)
-  using (gs , lm↑') ← ract lm↑ g = gs ↑ , inj₂ (d , lm↑')
+[_]ᶜ : ∀ {n} → C (₁₊ n) → Circuit (₁₊ n)
+[_]ᶜ = [_]ᵐˡ
 
-
-ract {n@₀} c@(m , l) g = ε , (m .proj₁ , m .proj₂ + - k) , (l .proj₁ , a')
-  where
-
-  open import Examples.Groups.Symplectic.Normalization.Pushing.PushLM1 p-2 p-prime
-  bws' : ∀ (g : Gen 1) -> Bottom-Wire-Single n g
-  bws' (gate₁ H-gate) = tt
-  bws' (gate₁ S-gate) = tt
-
-  bws = bws' g
-  a' = OA.dir-and-A'-of n (l .proj₂) g bws .proj₂
-  k  = A-dir-S-power (l .proj₂) g bws .proj₁
-
-
-{-
-  -- Extension of ract to whole circuits: the stateful fold _ᵗ threads
--- the coset through the word.
-racts : C (₁₊ n) → Circuit (₂₊ n) → Circuit (₁₊ n) × C (₁₊ n)
-racts {n} = ract {n} ᵗ
-
-------------------------------------------------------------------------
--- Soundness of the coset action
-
--- ract-sound certifies the coset-table transition: for
--- (b' , c') = ract c b we have [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ.
-ract-sound : ∀ {n} c b →
-  let
-    open PB ((₂₊ n) VRel,_===_)
-    (b' , c') = ract {n} c b
-  in
-
-    [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ
-
-ract-sound {n} ε σ-gen = cong refl (sym right-unit)
-  where
-  P = _VRel,_===_ (₂₊ n)
-  open PB P
-ract-sound {n} (σ• ε) σ-gen =
-  trans (cong right-unit refl)
-        (trans (axiom (srel order)) (sym right-unit))
-  where
-  P = _VRel,_===_ (₂₊ n)
-  open PB P
-  open PP P
-ract-sound {n} ε (g ↥) =
-  trans left-unit (sym right-unit)
-  where
-  P = _VRel,_===_ (₂₊ n)
-  open PB P
-ract-sound {₁₊ n} (σ• σ• c) σ-gen = begin
-  [ σ• σ• c ]ᶜ • σ ≈⟨ assoc ⟩
-  σ • [ σ• c ]ᶜ ↑ • σ ≡⟨ Eq.refl ⟩
-  σ • (σ ↑ • [ c ]ᶜ ↑ ↑) • σ ≈⟨ cong refl assoc ⟩
-  σ • σ ↑ • [ c ]ᶜ ↑ ↑ • σ ≈⟨ cong refl (cong refl (lemma-comm ([ c ]ᶜ))) ⟩
-  σ • σ ↑ • σ • [ c ]ᶜ ↑ ↑ ≈⟨ sym (cong refl assoc) ⟩
-  σ • (σ ↑ • σ) • [ c ]ᶜ ↑ ↑ ≈⟨ sym assoc ⟩
-  (σ • (σ ↑ • σ)) • [ c ]ᶜ ↑ ↑ ≈⟨ cong (axiom (srel yang-baxter)) refl ⟩
-  (σ ↑ • σ • σ ↑) • [ c ]ᶜ ↑ ↑ ≈⟨ trans assoc (cong refl assoc) ⟩
-  σ ↑ • σ • σ ↑ • [ c ]ᶜ ↑ ↑ ≡⟨ Eq.refl ⟩
-  σ ↑ • σ • [ σ• c ]ᶜ ↑ ∎
-  where
-  P = (₃₊ n) VRel,_===_
-  open PB P
-  open PP P
-  open SR word-setoid
-ract-sound {0} (σ• c) ((gate₁ ()) ↥)
-ract-sound {0} (σ• c) (((() ↥)) ↥)
-ract-sound {₁₊ n} (σ• ε) (b@σ-gen ↥) = begin
-  [ σ• ε ]ᶜ • [ b ↥ ]ʷ ≈⟨ assoc ⟩
-  σ • (ε • [ b ]ʷ) ↑ ≈⟨ cright (lemma-cong↑ (ε • [ b ]ʷ) (b0 ↑ • [ c0 ]ᶜ) ih) ⟩
-  σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
-  σ • (b0 ↑ ↑ • [ c0 ]ᶜ ↑) ≈⟨ sym assoc ⟩
-  (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (lemma-comm b0)) refl ⟩
-  (b0 ↑ ↑ • σ) • [ c0 ]ᶜ ↑ ≈⟨ assoc ⟩
-  b0 ↑ ↑ • [ σ• c0 ]ᶜ ∎
-  where
-  P  = _VRel,_===_ (₃₊ n)
-  open PB P
-  open PP P
-  open SR word-setoid
-  b0 = proj₁ (ract {n} ε b)
-  c0 = proj₂ (ract {n} ε b)
-  ih = ract-sound {n} ε b
-ract-sound {₁₊ n} (σ• ε) (b@(b' ↥) ↥) = begin
-  [ σ• ε ]ᶜ • [ b ↥ ]ʷ ≈⟨ assoc ⟩
-  σ • (ε • [ b ]ʷ) ↑ ≈⟨ cong refl (lemma-cong↑ (ε • [ b ]ʷ) (b0 ↑ • [ c0 ]ᶜ) ih) ⟩
-  σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
-  σ • (b0 ↑ ↑ • [ c0 ]ᶜ ↑) ≈⟨ sym assoc ⟩
-  (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (lemma-comm b0)) refl ⟩
-  (b0 ↑ ↑ • σ) • [ c0 ]ᶜ ↑ ≈⟨ assoc ⟩
-  b0 ↑ ↑ • [ σ• c0 ]ᶜ ∎
-  where
-  P  = _VRel,_===_ (₃₊ n)
-  open PB P
-  open PP P
-  open SR word-setoid
-  b0 = proj₁ (ract {n} ε b)
-  c0 = proj₂ (ract {n} ε b)
-  ih = ract-sound {n} ε b
-
-ract-sound {₁₊ n} (σ• σ• c) (b@σ-gen ↥) = begin
-  [ σ• σ• c ]ᶜ • [ b ↥ ]ʷ ≈⟨ assoc ⟩
-  σ • ([ σ• c ]ᶜ • [ b ]ʷ) ↑ ≈⟨ cong refl (lemma-cong↑ _ _ ih) ⟩
-  σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
-  σ • (b0 ↑ ↑ • [ c0 ]ᶜ ↑) ≈⟨ sym assoc ⟩
-  (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (lemma-comm b0)) refl ⟩
-  (b0 ↑ ↑ • σ) • [ c0 ]ᶜ ↑ ≈⟨ assoc ⟩
-  b0 ↑ ↑ • [ σ• c0 ]ᶜ ∎
-  where
-  P  = _VRel,_===_ (₃₊ n)
-  open PB P
-  open PP P
-  open SR word-setoid
-  b0 = proj₁ (ract {n} (σ• c) b)
-  c0 = proj₂ (ract {n} (σ• c) b)
-  ih = ract-sound {n} (σ• c) b
-ract-sound {₁₊ n} (σ• σ• c) (b@(bb ↥) ↥) = begin
-  [ σ• σ• c ]ᶜ • [ b ↥ ]ʷ ≈⟨ assoc ⟩
-  σ • ([ σ• c ]ᶜ • [ b ]ʷ) ↑ ≈⟨ cong refl (lemma-cong↑ _ _ ih) ⟩
-  σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
-  σ • (b0 ↑ ↑ • [ c0 ]ᶜ ↑) ≈⟨ sym assoc ⟩
-  (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (lemma-comm b0)) refl ⟩
-  (b0 ↑ ↑ • σ) • [ c0 ]ᶜ ↑ ≈⟨ assoc ⟩
-  b0 ↑ ↑ • [ σ• c0 ]ᶜ ∎
-  where
-  P  = _VRel,_===_ (₃₊ n)
-  open PB P
-  open PP P
-  open SR word-setoid
-  b0 = proj₁ (ract {n} (σ• c) b)
-  c0 = proj₂ (ract {n} (σ• c) b)
-  ih = ract-sound {n} (σ• c) b
-
-------------------------------------------------------------------------
--- Soundness of the coset action on words
-
--- racts-sound extends ract-sound from generators to circuits.
-racts-sound : ∀ {n} c bs →
-  let
-    open PB ((₂₊ n) VRel,_===_)
-    (bs' , c') = racts {n} c bs
-  in
-    [ c ]ᶜ • bs ≈ bs' ↑ • [ c' ]ᶜ
-
-racts-sound {n} c [ x ]ʷ = ract-sound c x
-racts-sound {n} c ε = trans right-unit (sym left-unit)
-  where
-  P = _VRel,_===_ (₂₊ n)
-  open PB P
-racts-sound {n} c (bs • as) with racts c bs | racts-sound c bs
-... | (bs' , c') | ih1 with racts c' as | racts-sound c' as
-... | (as' , c'') | ih2 = begin
-  [ c ]ᶜ • (bs • as) ≈⟨ sym assoc ⟩
-  ([ c ]ᶜ • bs) • as ≈⟨ cong ih1 refl ⟩
-  (bs' ↑ • [ c' ]ᶜ) • as ≈⟨ assoc ⟩
-  bs' ↑ • [ c' ]ᶜ • as ≈⟨ cong refl ih2 ⟩
-  bs' ↑ • as' ↑ • [ c'' ]ᶜ ≈⟨ sym assoc ⟩
-  (bs' • as') ↑ • [ c'' ]ᶜ ∎
-  where
-  P = (₂₊ n) VRel,_===_
-  open PB P
-  open PP P
-  open SR word-setoid
+ract-sound : ∀ {n} c g →
+  let open PB ((₁₊ n) QRel,_===_)
+      (b' , c') = ract {n} c g
+  in [ c ]ᶜ • [ g ]ʷ ≈ b' ↑ • [ c' ]ᶜ
+ract-sound = PushML.ract-sound
 
 ------------------------------------------------------------------------
 -- Pointwise relation on action results
-
--- Presentation equivalence on the circuit component, propositional
--- equality on the coset component.
+--
+-- Presentation equivalence on the residual circuit component,
+-- propositional equality on the coset component.
 infix 4 _≋_
-_≋_ : Rel (Circuit (₁₊ n) × C (₁₊ n)) 0ℓ
-_≋_ {n} = let _≈₀_ = PB._≈_ ((₁₊ n) VRel,_===_)
+_≋_ : Rel (Circuit n × C (₁₊ n)) 0ℓ
+_≋_ {n} = let _≈₀_ = PB._≈_ (n QRel,_===_)
           in Pointwise _≈₀_ (_≡_ {A = C (₁₊ n)})
 
 ------------------------------------------------------------------------
--- Inverse of the generator embedding
+-- The identity coset and the two Extension obligations that are NOT
+-- generic (well-definedness on the axioms is the completeness content).
+--
+-- SCAFFOLD: I, [I]≈ε, the generator-inverse property, and the axiom
+-- well-definedness are stated with their final types and left as holes
+-- to be discharged.
 
--- Acting on the trivial coset by an embedded generator recovers the
+-- The identity coset: the ML box interpreting to ε.
+-- (Boxes are Fin 3 × Fin 3 / Fin 3.  The all-zero box + identity A box is
+-- a PLACEHOLDER value — the actual identity representative is pinned down
+-- when discharging [I]≈ε' below.)
+Ia : A
+Ia = (₀ , ₁) , λ ()
+
+Iᶜ : ∀ {n} → C (₁₊ n)
+Iᶜ {zero}  = ([] , ₀) , ([] , Ia)
+Iᶜ {suc m} = inj₁ ((replicate (₁₊ m) (₀ , ₀) , ₀) , (replicate (₁₊ m) (₀ , ₀) , Ia))
+
+-- Its interpretation is the identity word.
+[I]≈ε' : ∀ {n} → let open PB ((₁₊ n) QRel,_===_) in [ Iᶜ {n} ]ᶜ ≈ ε
+[I]≈ε' {n} = {!!}
+
+-- Acting on the identity coset by an embedded generator recovers the
 -- generator itself.
-⁻¹[⇑]-gen' : let _⊛_ = ract ᵗ in ∀ (x : Gen (₁₊ n)) →
-  ([ x ]ʷ , ε) ≋ ε ⊛ [ x ↥ ]ʷ
-⁻¹[⇑]-gen' {n} x = PB.refl , Eq.refl
+⁻¹[⇑]-gen' : ∀ {n} (x : Gen n) →
+  _≋_ {n} ([ x ]ʷ , Iᶜ {n}) ((ract {n} ᵗ) (Iᶜ {n}) ([ x ↥ ]ʷ))
+⁻¹[⇑]-gen' {n} x = {!!}
 
-------------------------------------------------------------------------
--- Auxiliary computation lemmas for the coset action
-
--- Acting on the trivial coset by a lifted circuit strips one lift and
--- leaves the coset fixed.
-ract-suc' : ∀ {n} w → (ract {n} ᵗ) ε (w ↑) ≡ (w , ε)
-ract-suc' {n} [ x ]ʷ = Eq.refl
-ract-suc' {n} ε       = Eq.refl
-ract-suc' {n} (w • v) with ract-suc' {n} w
-... | ih with ract-suc' {n} v
-... | ih' with racts ε (w ↑)
-... | (w' , ew) rewrite Eq.cong proj₁ ih | Eq.cong proj₂ ih
-                       | Eq.cong proj₁ ih' | Eq.cong proj₂ ih'
-              with racts ε (v ↑)
-... | (v' , ev) = begin
-  w • v , ε   ≡⟨ Eq.refl ⟩
-  (w • v , ε) ∎
-  where open ≡-Reasoning
-
--- Acting on the coset σ• ε by a triply lifted circuit strips one lift
--- and leaves the coset fixed.  The recursive sub-computation is
--- racts ε (w ↑ ↑) rather than racts ε (w ↑): on a coset σ• c the
--- action peels only the outermost lift before recursing, so each
--- generator still carries two lifts when it reaches the trivial coset.
-ract-suc''' : ∀ {n} (w : Circuit n) →
-  (ract {₁₊ n} ᵗ) (σ• ε) (w ↑ ↑ ↑) ≡ (w ↑ ↑ , σ• ε)
-ract-suc''' {n} [ x ]ʷ = Eq.refl
-ract-suc''' {n} ε       = Eq.refl
-ract-suc''' {n} (w • v) with ract-suc''' {n} w
-... | ih with ract-suc''' {n} v
-... | ih' with racts ε (w ↑ ↑)
-... | (w'' , ew) rewrite Eq.cong proj₁ ih | Eq.cong proj₂ ih
-                        | Eq.cong proj₁ ih' | Eq.cong proj₂ ih'
-               with racts ε (v ↑ ↑)
-... | (v'' , ev) = begin
-  w ↑ ↑ • v ↑ ↑ , σ• ε   ≡⟨ Eq.refl ⟩
-  (w ↑ ↑ • v ↑ ↑ , σ• ε) ∎
-  where open ≡-Reasoning
-
--- The generator σ passes through any coset of the form σ• σ• c
--- unchanged, leaving the coset fixed.
-ract-σ•σ•σ : ∀ {n} (c : C n) →
-  racts (σ• σ• c) σ ≡ (σ , σ• σ• c)
-ract-σ•σ•σ {n} c = Eq.refl
-
--- Acting on σ• c by a lifted generator lifts the result of acting on
--- c by the generator itself.
-ract-σ•1 : ∀ {n} (c : C (₁₊ n)) (g : Gen (₂₊ n)) →
-  let (b' , c') = ract {n} c g
-  in ract (σ• c) (g ↥) ≡ (b' ↑ , σ• c')
-ract-σ•1 {n} ε       σ-gen   = Eq.refl
-ract-σ•1 {n} ε       (g' ↥)  = Eq.refl
-ract-σ•1 {n} (σ• c') σ-gen   = Eq.refl
-ract-σ•1 {n} (σ• c') (g' ↥)  = Eq.refl
-
--- Word version of ract-σ•1: acting on σ• c by a lifted circuit
--- lifts the result of acting on c.
-ract-σ•1s : ∀ {n} (c : C (₁₊ n)) w →
-  let (w' , c') = (ract {n} ᵗ) c w
-  in (ract {₁₊ n} ᵗ) (σ• c) (w ↑) ≡ (w' ↑ , σ• c')
-ract-σ•1s {n} c [ x ]ʷ = ract-σ•1 c x
-ract-σ•1s {n} c ε       = Eq.refl
-ract-σ•1s {n} c (w • v)
-  with ract-σ•1s c w | (ract ᵗ) c w | inspect ((ract ᵗ) c) w
-... | ih1 | w' , c0 | [ eq1 ]ₑ rewrite ih1 | eq1
-  with ract-σ•1s c0 v | (ract ᵗ) c0 v | inspect ((ract ᵗ) c0) v
-... | ih2 | v' , c1 | [ eq2 ]ₑ rewrite eq2 | Eq.cong proj₁ ih2 | Eq.cong proj₂ ih2 = Eq.refl
-
--- A doubly lifted generator passes through the coset σ• ε unchanged.
--- The n = 0 case is vacuous since Gen 0 is empty; for n ≥ 1 the
--- equation holds by definition.
-ract-σ•ε-gg↥ : ∀ {n} (g : Gen n) →
-  ract {n} (σ• ε) (g ↥ ↥) ≡ ([ g ↥ ]ʷ , σ• ε)
-ract-σ•ε-gg↥ {zero}  ()
-ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
-
-------------------------------------------------------------------------
--- Well-definedness of the coset action
-
--- The coset action respects the raw relations: acting on a coset by
--- two axiom-related circuits yields ≋-related results.
+-- Well-definedness: the coset action respects the raw relations.  This
+-- is the Reidemeister–Schreier completeness obligation for the
+-- symplectic presentation (order-{S,H,SH,CZ}, comm-HHS, M-mul,
+-- semi-{MS,M↑CZ,M↓CZ}, comm-CZ-S{↓,↑}, selinger-c10..c15, and the
+-- structural cong↑/comm₁/comm₂).  Discharged case-by-case below.
 ⁻¹[⇑]-wd'' : ∀ {n} →
-  let _⊛_ = ract ᵗ in
-  let _===_ = (₂₊ n) VRel,_===_ in
-  ∀ (c : C (₁₊ n)){u t : Circuit (₂₊ n)} →
-
-    u === t → c ⊛ u ≋ c ⊛ t
-
--- ε coset
-⁻¹[⇑]-wd'' {n} ε (srel order)
-  = PB.left-unit , Eq.refl
-⁻¹[⇑]-wd'' {n} ε (comm₂ σ-gate g)
-  rewrite ract-σ•ε-gg↥ g
-  = PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
-⁻¹[⇑]-wd'' {n} ε (srel yang-baxter)
-  = PB.trans PB.left-unit
-      (PB.trans PB.left-unit
-        (PB.trans (PB.sym PB.right-unit)
-          (PB.cong PB.refl (PB.sym PB.left-unit))))
-  , Eq.refl
-⁻¹[⇑]-wd'' {n} ε (cong↑ {w = w} {v} eq)
-  rewrite ract-suc' {n} w | ract-suc' {n} v
-  = PB.axiom eq , Eq.refl
-
--- σ• ε coset
-⁻¹[⇑]-wd'' {n} (σ• ε) (srel order)
-  = PB.left-unit , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (comm₂ σ-gate g)
-  rewrite ract-σ•ε-gg↥ g
-  = PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (srel yang-baxter)
-  = PB.refl , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (srel order))
-  = PB.left-unit , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (comm₂ σ-gate g))
-  rewrite ract-σ•ε-gg↥ g
-  = PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (srel yang-baxter))
-  = PB.trans PB.left-unit
-      (PB.trans PB.left-unit
-        (PB.trans (PB.sym PB.right-unit)
-          (PB.cong PB.refl (PB.sym PB.left-unit))))
-  , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (srel order)))
-  rewrite ract-σ•1 {₁₊ n} ε σ-gen
-  = PB.axiom (cong↑ (srel order)) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (comm₂ σ-gate g)))
-  = PB.axiom (cong↑ (comm₂ σ-gate g)) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (srel yang-baxter)))
-  rewrite ract-σ•1 {₁₊ n} ε σ-gen
-  = PB.axiom (cong↑ (srel yang-baxter)) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (cong↑ {w = w} {v} eq)))
-  rewrite ract-suc''' w | ract-suc''' v
-  = PB.axiom (cong↑ (cong↑ eq)) , Eq.refl
-
--- σ• σ• c coset
-⁻¹[⇑]-wd'' {n} (σ• σ• c) (srel order)
-  = PB.axiom (srel order) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} ε) (srel yang-baxter)
-  = PB.trans (PB.cong PB.refl PB.right-unit)
-      (PB.trans PB.right-unit
-        (PB.trans (PB.sym PB.left-unit)
-          (PB.cong PB.refl (PB.sym PB.left-unit))))
-  , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} (σ• c)) (srel yang-baxter)
-  = PB.axiom (srel yang-baxter) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (gate₁ ()))
-⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (() ↥))
-⁻¹[⇑]-wd'' {n} (σ• σ•_ {₁₊ m} c) (comm₂ σ-gate g)
-  rewrite ract-σ•1 c g
-  = lemma-comm (proj₁ (ract c g)) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} c) (cong↑ {w = w} {v} eq)
-  with ⁻¹[⇑]-wd'' (σ• c) eq
-... | (wv , eq0)
-  rewrite ract-σ•1s (σ• c) w | ract-σ•1s (σ• c) v
-  = lemma-cong↑ _ _ wv , Eq.cong σ•_ eq0
+  let _===_ = (₁₊ n) QRel,_===_ in
+  ∀ (c : C (₁₊ n)) {u t : Circuit (₁₊ n)} →
+    u === t → (ract {n} ᵗ) c u ≋ (ract {n} ᵗ) c t
+⁻¹[⇑]-wd'' {n} c eq = {!!}
 
 ------------------------------------------------------------------------
 -- Tower instantiation (via Normalization.CosetNF.CosetTower)
 --
--- Sₙ is built by iterating the single-level coset extension: level
--- (₂₊ k) extends level (₁₊ k) by the cosets C (₁₊ k), with right
--- action ract.  Below we package that single-level data as an
--- Extension and fold it up the tower.
+-- Spₙ is built by iterating the single-level coset extension: level
+-- (₁₊ k) extends level k by the cosets C (₁₊ k) = ML (₁₊ k), with right
+-- action ract.  The alphabet at level k is Gen k, so the tower starts
+-- from the empty Gen 0.
 
 module T = CosetNF.CosetTower
-  (λ k → Gen (₁₊ k)) (λ k → _VRel,_===_ (₁₊ k)) (λ k → C (₁₊ k))
+  (λ k → Gen k) (λ k → k QRel,_===_) (λ k → C (₁₊ k))
 
 ext : ∀ k → T.Extension k
 ext k = record
-  { I         = ε
+  { I         = Iᶜ {k}
   ; f         = [_]ʷ ∘ _↥
   ; h         = ract
   ; [_]       = [_]ᶜ
@@ -457,19 +143,19 @@ ext k = record
   ; h-wd-ax   = ⁻¹[⇑]-wd''
   ; f-wd-ax   = λ x → Eq.subst₂ _≈_ (Eq.sym (wconcatmap-[f]ʷ _)) (Eq.sym (wconcatmap-[f]ʷ _))
                                 (PB.axiom (cong↑ x))
-  ; [I]≈ε     = _≈_.refl
+  ; [I]≈ε     = [I]≈ε'
   ; h=ract    = λ c b →
       Eq.subst (λ x → _≈_ ([ c ]ᶜ • [ b ]ʷ) (x • [ ract c b .proj₂ ]ᶜ))
                (Eq.sym (wconcatmap-[f]ʷ (ract c b .proj₁)))
                (ract-sound c b)
   }
   where
-  open PB (_VRel,_===_ (₂₊ k))
-  open PP (_VRel,_===_ (₂₊ k))
+  open PB ((₁₊ k) QRel,_===_)
+  open PP ((₁₊ k) QRel,_===_)
 
--- S₀ is trivial: Gen 0 is empty, so ⊤ is the normal form and
--- singleton collapses every word to ε.
-base0' : NormalForm (_VRel,_===_ 0) ⊤
+-- Sp₀ is trivial: Gen 0 is empty, so ⊤ is the normal form and every
+-- word collapses to ε.
+base0' : NormalForm (0 QRel,_===_) ⊤
 base0' = record
   { rightInverse = record
       { to        = λ _ → tt
@@ -480,77 +166,36 @@ base0' = record
       }
   }
   where
-  open PB (_VRel,_===_ 0)
+  open PB (0 QRel,_===_)
   singleton : ∀ {a} → a ≈ ε
+  singleton {[ () ]ʷ}
   singleton {ε}      = PB.refl
   singleton {a • a₁} = PB.trans (PB.cong singleton singleton) PB.left-unit
 
--- S₁ is trivial as well: Gen 1 has no inhabitants, so every word
--- again collapses to ε.
-base1' : NormalForm (_VRel,_===_ 1) ⊤
-base1' = record
-  { rightInverse = record
-      { to        = λ _ → tt
-      ; from      = λ _ → ε
-      ; to-cong   = λ _ → Eq.refl
-      ; from-cong = λ { Eq.refl → refl }
-      ; inverseʳ  = λ { Eq.refl → sym singleton }
-      }
-  }
-  where
-  open PB (_VRel,_===_ 1)
-  singleton : ∀ {a} → a ≈ ε
-  singleton {[ gate₁ () ]ʷ}
-  singleton {[ () ↥ ]ʷ}
-  singleton {ε}      = PB.refl
-  singleton {a • a₁} = PB.trans (PB.cong singleton singleton) PB.left-unit
+-- The main construction: a normal form for every Spₙ, obtained by
+-- folding the Extension up the coset tower from the trivial base.
+NFᵗ : ℕ → Set
+NFᵗ n = T.tower-carrier ⊤ n
 
--- The main construction: a normal form for every Sₙ, obtained by
--- folding the Extension up the coset tower from the trivial base
--- cases.
--- The tower carrier: ⊤ at levels 0 and 1, extended by one coset factor
--- C (₁₊ k) at each higher level (folded up by T.tower-carrier).
-NF : ℕ → Set
-NF 0       = ⊤
-NF (suc k) = T.tower-carrier ⊤ k
-
-nfp'-t : ∀ n → NormalForm (_VRel,_===_ n) (NF n)
-nfp'-t 0       = base0'
-nfp'-t (suc k) = T.nfp'-tower ext base1' k
+nfp'-t : ∀ n → NormalForm (n QRel,_===_) (NFᵗ n)
+nfp'-t n = T.nfp'-tower ext base0' n
 
 ------------------------------------------------------------------------
 -- Normal form, its inverse, and the NormalFormInjective witnesses
---
--- nf-of, inv-nf and NF are the coset tower's canonical normal-form
--- data.  Note inv-nf uses the word-lift (f ʷ) rather than _↑; the two
--- agree up to Word.Properties.wconcatmap-[f]ʷ.
 
-nf-of : Circuit n → NF n
+nf-of : Circuit n → NFᵗ n
 nf-of {n} = SNF.NormalForm.nf (nfp'-t n)
 
-inv-nf : NF n → Circuit n
+inv-nf : NFᵗ n → Circuit n
 inv-nf {n} = SNF.NormalForm.inv-nf (nfp'-t n)
 
-nfp : (n : ℕ) → NormalFormInjective (_VRel,_===_ n) (NF n)
+nfp : (n : ℕ) → NormalFormInjective (n QRel,_===_) (NFᵗ n)
 nfp n = SNF.NormalForm.normalFormInjective (nfp'-t n)
 
-nf-cong : ∀ {n} → let _≈_ = PB._≈_ (_VRel,_===_ n) in
+nf-cong : ∀ {n} → let _≈_ = PB._≈_ (n QRel,_===_) in
   Homomorphic₂ _≈_ _≡_ (nf-of {n})
 nf-cong {n} = SNF.NormalForm.nf-cong (nfp'-t n)
 
-inv-nf∘nf≈id : (n : ℕ) → let _≈_ = PB._≈_ (_VRel,_===_ n) in {w : Circuit n} →
+inv-nf∘nf≈id : (n : ℕ) → let _≈_ = PB._≈_ (n QRel,_===_) in {w : Circuit n} →
   inv-nf {n} (nf-of w) ≈ w
 inv-nf∘nf≈id n = SNF.NormalForm.inv-nf∘nf=id (nfp'-t n)
-
-------------------------------------------------------------------------
--- Decidable equality on normal forms
-
-deceq : DecidableEquality (NF n)
-deceq {zero}    tt      tt       = yes Eq.refl
-deceq {₁₊ zero} tt      tt       = yes Eq.refl
-deceq {₂₊ n}   (a , b) (a' , b') with deceq {₁₊ n} a a' | deceqC b b'
-... | yes p1 | yes p2 = yes (≡×≡⇒≡ (p1 , p2))
-... | yes p1 | no  p2 = no (λ { x → p2 (proj₂ (≡⇒≡×≡ x)) })
-... | no  p1 | yes p2 = no (λ { x → p1 (proj₁ (≡⇒≡×≡ x)) })
-... | no  p1 | no  p2 = no (λ { x → p2 (proj₂ (≡⇒≡×≡ x)) })
--}
