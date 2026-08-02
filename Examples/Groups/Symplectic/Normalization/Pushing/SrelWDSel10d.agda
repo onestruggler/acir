@@ -44,6 +44,10 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDZM
   p-2 p-prime using (iexp ; ineg)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10c
   p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10b
+  p-2 p-prime using (SIfix)
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ
+  p-2 p-prime using (↓-pow-S)
 
 ------------------------------------------------------------------------
 -- The value kit shared by both normal-form chains.
@@ -658,4 +662,215 @@ module LValues (a2' b2'' w : Fin (₁₊ p-2))
       iSv * ₁₊ b2''
         ≡⟨ *-comm iSv (₁₊ b2'') ⟩
       ₁₊ b2'' * iSv ∎
+
+
+------------------------------------------------------------------------
+-- The L-side normalization and the branch-B residual identity.
+
+module _ {m : ℕ} (a2' b2'' w : Fin (₁₊ p-2))
+  (eq-w : ₁₊ b2'' + ₁₊ a2' ≡ ₁₊ w) where
+
+  open PB ((₂₊ m) QRel,_===_)
+  open PP ((₂₊ m) QRel,_===_)
+  open SR word-setoid
+  open LValues a2' b2'' w eq-w
+
+  private
+    h : Word (Gen (₂₊ m))
+    h = H {m} ↑
+
+    hp3 : Word (Gen (₂₊ m))
+    hp3 = (H {m} ↑) ^ 3
+
+    c : Word (Gen (₂₊ m))
+    c = CZ
+
+    W : Word (Gen (₂₊ m))
+    W = h • (c • hp3)
+
+    q₁f ir₁f : ℤ ₚ
+    q₁f  = q₁* .proj₁
+    ir₁f = (r₁* ⁻¹) .proj₁
+
+    v-hz0 : - (((-' r₁*) ⁻¹) .proj₁) ≡ ir₁f
+    v-hz0 = Eq.trans (Eq.cong -_ (ineg r₁* (-' r₁*) Eq.refl))
+      (-‿involutive ir₁f)
+
+    v-ct : ((-' r₂*) ⁻¹) .proj₁ ≡ - q₂v
+    v-ct = Eq.trans (ineg r₂* (-' r₂*) Eq.refl)
+      (Eq.cong -_ (Eq.trans (iexp B* Sv*) (*-comm iB (₁₊ w))))
+
+    fixdownL : S⁻¹ {m} ↑ • (h • (S⁻¹ ↑ • (c • (h • (S⁻¹ ↑ • S⁻¹ ↓))))) ≡
+               S⁻¹ ↑ • (h • (S⁻¹ ↑ • (c • (h • (S⁻¹ ↑ • S⁻¹)))))
+    fixdownL = Eq.cong
+      (λ u → S⁻¹ ↑ • (h • (S⁻¹ ↑ • (c • (h • (S⁻¹ ↑ • u))))))
+      (↓-pow-S p-1)
+
+  Lnorm : W • ((ZM q* ↑ • S^ rv ↑) • W) ≈ CANON a2' b2'' w eq-w
+  Lnorm = begin
+    W • ((ZM q* ↑ • S^ rv ↑) • W)
+      ≈⟨ trans assoc (trans (cright assoc)
+           (cright (cright (cright assoc)))) ⟩
+    h • (c • (hp3 • (ZM q* ↑ • (S^ rv ↑ • W))))
+      ≈⟨ cright (cright (sym assoc)) ⟩
+    h • (c • ((hp3 • ZM q* ↑) • (S^ rv ↑ • W)))
+      ≈⟨ cright (cright (cleft (H3Mup q*))) ⟩
+    h • (c • ((ZM (q* ⁻¹) ↑ • hp3) • (S^ rv ↑ • W)))
+      ≈⟨ cright (cright assoc) ⟩
+    h • (c • (ZM (q* ⁻¹) ↑ • (hp3 • (S^ rv ↑ • W))))
+      ≈⟨ cright (cright (cright (trans assoc (trans (cright assoc)
+           (trans (cright (cright (cright (sym assoc))))
+           (trans (cright (cright (sym assoc))) (sym assoc))))))) ⟩
+    h • (c • (ZM (q* ⁻¹) ↑ •
+      ((h • h) • ((h • (S^ rv ↑ • h)) • (c • hp3)))))
+      ≈⟨ cright (cright (cright (cleft HHMup))) ⟩
+    h • (c • (ZM (q* ⁻¹) ↑ • (ZM (-' (₁ , λ ())) ↑ •
+      ((h • (S^ rv ↑ • h)) • (c • hp3)))))
+      ≈⟨ cright (cright (cright (cright (cleft (d7εup r*))))) ⟩
+    h • (c • (ZM (q* ⁻¹) ↑ • (ZM (-' (₁ , λ ())) ↑ •
+      ((S^ (- irf) ↑ • (ZM (-' (r* ⁻¹)) ↑ • (h • S^ (- irf) ↑))) •
+        (c • hp3)))))
+      ≈⟨ cright (cright (cright (cright (trans assoc
+           (trans (cright assoc) (cright (cright assoc))))))) ⟩
+    h • (c • (ZM (q* ⁻¹) ↑ • (ZM (-' (₁ , λ ())) ↑ •
+      (S^ (- irf) ↑ • (ZM (-' (r* ⁻¹)) ↑ •
+        (h • (S^ (- irf) ↑ • (c • hp3))))))))
+      ≈⟨ cright (cright (trans (sym assoc)
+           (cleft (Zmulup (q* ⁻¹) (-' (₁ , λ ())) (-' r*) v-a)))) ⟩
+    h • (c • (ZM (-' r*) ↑ • (S^ (- irf) ↑ • (ZM (-' (r* ⁻¹)) ↑ •
+      (h • (S^ (- irf) ↑ • (c • hp3)))))))
+      ≈⟨ cright (cright (cright (trans (sym assoc)
+           (trans (cleft (SZmoveup (- irf) (-' (r* ⁻¹)) (- rv) v-b))
+             assoc)))) ⟩
+    h • (c • (ZM (-' r*) ↑ • (ZM (-' (r* ⁻¹)) ↑ • (S^ (- rv) ↑ •
+      (h • (S^ (- irf) ↑ • (c • hp3)))))))
+      ≈⟨ cright (cright (trans (sym assoc) (trans (cleft
+           (trans (Zmulup (-' r*) (-' (r* ⁻¹)) (₁ , λ ()) v-c) Mεup))
+           left-unit))) ⟩
+    h • (c • (S^ (- rv) ↑ • (h • (S^ (- irf) ↑ • (c • hp3)))))
+      ≈⟨ cright (trans (sym assoc)
+           (trans (cleft (comm-CZ-S^↑ (- rv))) assoc)) ⟩
+    h • (S^ (- rv) ↑ • (c • (h • (S^ (- irf) ↑ • (c • hp3)))))
+      ≈⟨ cright (cright (cright (cright (trans (sym assoc)
+           (trans (cleft (sym (comm-CZ-S^↑ (- irf)))) assoc))))) ⟩
+    h • (S^ (- rv) ↑ • (c • (h • (c • (S^ (- irf) ↑ • hp3)))))
+      ≈⟨ cright (cright (trans (cright (sym assoc))
+           (trans (sym assoc) (trans (cleft (axiom selinger-c10))
+             (cleft (refl' fixdownL)))))) ⟩
+    h • (S^ (- rv) ↑ • ((S⁻¹ ↑ • (h • (S⁻¹ ↑ • (c • (h •
+      (S⁻¹ ↑ • S⁻¹)))))) • (S^ (- irf) ↑ • hp3)))
+      ≈⟨ cright (trans (sym assoc) (cleft (trans (sym assoc)
+           (trans (cleft (cright (refl'
+               (Eq.cong _↑ (Eq.sym SIfix)))))
+             (cleft (trans (Sk+lup (- rv) (- ₁))
+               (refl' (Eq.cong (λ t → S^ t ↑) v-d)))))))) ⟩
+    h • ((S^ (- r₁v) ↑ • (h • (S⁻¹ ↑ • (c • (h • (S⁻¹ ↑ • S⁻¹)))))) •
+      (S^ (- irf) ↑ • hp3))
+      ≈⟨ sym assoc ⟩
+    (h • (S^ (- r₁v) ↑ • (h • (S⁻¹ ↑ • (c • (h • (S⁻¹ ↑ • S⁻¹))))))) •
+      (S^ (- irf) ↑ • hp3)
+      ≈⟨ cleft (trans (cright (sym assoc)) (sym assoc)) ⟩
+    ((h • (S^ (- r₁v) ↑ • h)) • (S⁻¹ ↑ • (c • (h • (S⁻¹ ↑ • S⁻¹))))) •
+      (S^ (- irf) ↑ • hp3)
+      ≈⟨ cleft (cleft (d7εup (-' r₁*))) ⟩
+    ((S^ (- (((-' r₁*) ⁻¹) .proj₁)) ↑ • (ZM (-' ((-' r₁*) ⁻¹)) ↑ •
+      (h • S^ (- (((-' r₁*) ⁻¹) .proj₁)) ↑))) •
+      (S⁻¹ ↑ • (c • (h • (S⁻¹ ↑ • S⁻¹))))) • (S^ (- irf) ↑ • hp3)
+      ≈⟨ cleft (cleft (cleft (refl' (Eq.cong (λ t → S^ t ↑) v-hz)))) ⟩
+    ((S^ q₁f ↑ • (ZM (-' ((-' r₁*) ⁻¹)) ↑ •
+      (h • S^ (- (((-' r₁*) ⁻¹) .proj₁)) ↑))) •
+      (S⁻¹ ↑ • (c • (h • (S⁻¹ ↑ • S⁻¹))))) • (S^ (- irf) ↑ • hp3)
+      ≈⟨ cleft (cleft (cright (cleft
+           (ZMvalup (-' ((-' r₁*) ⁻¹)) q₁* v-hz)))) ⟩
+    ((S^ q₁f ↑ • (ZM q₁* ↑ •
+      (h • S^ (- (((-' r₁*) ⁻¹) .proj₁)) ↑))) •
+      (S⁻¹ ↑ • (c • (h • (S⁻¹ ↑ • S⁻¹))))) • (S^ (- irf) ↑ • hp3)
+      ≈⟨ cleft (cleft (cright (cright (cright (refl'
+           (Eq.cong (λ t → S^ t ↑) v-hz0)))))) ⟩
+    ((S^ q₁f ↑ • (ZM q₁* ↑ • (h • S^ ir₁f ↑))) •
+      (S⁻¹ ↑ • (c • (h • (S⁻¹ ↑ • S⁻¹))))) • (S^ (- irf) ↑ • hp3)
+      ≈⟨ cleft (trans assoc (trans (cright assoc)
+           (cright (cright assoc)))) ⟩
+    (S^ q₁f ↑ • (ZM q₁* ↑ • (h • (S^ ir₁f ↑ •
+      (S⁻¹ ↑ • (c • (h • (S⁻¹ ↑ • S⁻¹)))))))) • (S^ (- irf) ↑ • hp3)
+      ≈⟨ trans assoc (trans (cright assoc)
+           (cright (cright assoc))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • ((S^ ir₁f ↑ •
+      (S⁻¹ ↑ • (c • (h • (S⁻¹ ↑ • S⁻¹))))) • (S^ (- irf) ↑ • hp3))))
+      ≈⟨ cright (cright (cright (trans assoc (cright assoc)))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • (S^ ir₁f ↑ • (S⁻¹ ↑ •
+      ((c • (h • (S⁻¹ ↑ • S⁻¹))) • (S^ (- irf) ↑ • hp3))))))
+      ≈⟨ cright (cright (cright (trans (sym assoc) (cleft
+           (trans (cright (refl' (Eq.cong _↑ (Eq.sym SIfix))))
+             (trans (Sk+lup ir₁f (- ₁))
+               (refl' (Eq.cong (λ t → S^ t ↑) v-e)))))))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • (S^ (- r₂v) ↑ •
+      ((c • (h • (S⁻¹ ↑ • S⁻¹))) • (S^ (- irf) ↑ • hp3)))))
+      ≈⟨ cright (cright (cright (cright (trans assoc
+           (cright (trans assoc (cright assoc))))))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • (S^ (- r₂v) ↑ • (c • (h •
+      (S⁻¹ ↑ • (S⁻¹ • (S^ (- irf) ↑ • hp3))))))))
+      ≈⟨ cright (cright (cright (trans (sym assoc)
+           (trans (cleft (sym (comm-CZ-S^↑ (- r₂v)))) assoc)))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • (c • (S^ (- r₂v) ↑ • (h •
+      (S⁻¹ ↑ • (S⁻¹ • (S^ (- irf) ↑ • hp3))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright (cright
+           (trans (sym assoc) (trans (cleft (SdownW (S^ (- irf))))
+             (trans assoc (cright (SdownW (H ^ 3)))))))))))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • (c • (S^ (- r₂v) ↑ • (h •
+      (S⁻¹ ↑ • (S^ (- irf) ↑ • (hp3 • S⁻¹))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright
+           (trans (sym assoc) (cleft (trans (cleft (refl'
+               (Eq.cong _↑ (Eq.sym SIfix))))
+             (trans (Sk+lup (- ₁) (- irf))
+               (refl' (Eq.cong (λ t → S^ t ↑) v-f))))))))))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • (c • (S^ (- r₂v) ↑ • (h •
+      (S^ (- q₂v) ↑ • (hp3 • S⁻¹)))))))
+      ≈⟨ cright (cright (cright (cright (cright (trans
+           (cright (sym assoc)) (sym assoc)))))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • (c • (S^ (- r₂v) ↑ •
+      ((h • (S^ (- q₂v) ↑ • hp3)) • S⁻¹)))))
+      ≈⟨ cright (cright (cright (cright (cright (cleft
+           (Ttail a2' b2'' w eq-w)))))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • (c • (S^ (- r₂v) ↑ •
+      ((ZM (-' r₂*) ↑ • (S^ it₃f ↑ • (h • S^ r₂v ↑))) • S⁻¹)))))
+      ≈⟨ cright (cright (cright (cright (cright (trans assoc
+           (trans (cright assoc) (cright (cright assoc)))))))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • (c • (S^ (- r₂v) ↑ •
+      (ZM (-' r₂*) ↑ • (S^ it₃f ↑ • (h • (S^ r₂v ↑ • S⁻¹))))))))
+      ≈⟨ cright (cright (cright (cright (trans (sym assoc)
+           (trans (cleft (SZmoveup (- r₂v) (-' r₂*) (- it₃f) vm3))
+             assoc))))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • (c • (ZM (-' r₂*) ↑ •
+      (S^ (- it₃f) ↑ • (S^ it₃f ↑ • (h • (S^ r₂v ↑ • S⁻¹))))))))
+      ≈⟨ cright (cright (cright (cright (cright (trans (sym assoc)
+           (trans (cleft (trans (Sk+lup (- it₃f) it₃f)
+               (refl' (Eq.cong (λ t → S^ t ↑) (+-inverseˡ it₃f)))))
+             left-unit)))))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • (c • (ZM (-' r₂*) ↑ •
+      (h • (S^ r₂v ↑ • S⁻¹))))))
+      ≈⟨ cright (cright (cright (trans (sym assoc)
+           (trans (cleft (trans (cMup (-' r₂*))
+               (cright (refl' (Eq.cong CZ^ v-ct))))) assoc)))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (h • (ZM (-' r₂*) ↑ •
+      (CZ^ (- q₂v) • (h • (S^ r₂v ↑ • S⁻¹))))))
+      ≈⟨ cright (cright (trans (sym assoc)
+           (trans (cleft (trans (HMup (-' r₂*))
+               (cleft (ZMvalup ((-' r₂*) ⁻¹) (-' q₂*) v-ct))))
+             assoc))) ⟩
+    S^ q₁f ↑ • (ZM q₁* ↑ • (ZM (-' q₂*) ↑ •
+      (h • (CZ^ (- q₂v) • (h • (S^ r₂v ↑ • S⁻¹))))))
+      ≈⟨ cright (trans (sym assoc)
+           (cleft (Zmulup q₁* (-' q₂*) (-' q*) v-qq))) ⟩
+    S^ q₁f ↑ • (ZM (-' q*) ↑ •
+      (h • (CZ^ (- q₂v) • (h • (S^ r₂v ↑ • S⁻¹)))))
+      ≈⟨ trans (sym assoc) (trans (cleft
+           (SZmoveup q₁f (-' q*) (rv * r₂v) v-hs)) assoc) ⟩
+    ZM (-' q*) ↑ • (S^ (rv * r₂v) ↑ •
+      (h • (CZ^ (- q₂v) • (h • (S^ r₂v ↑ • S⁻¹))))) ∎
+
+  identityB : W • ((ZM q* ↑ • S^ rv ↑) • W) ≈
+              (ZM q₁* ↑ • S^ r₁v ↑) •
+                (W • ((ZM q₂* ↑ • S^ r₂v ↑) • S⁻¹))
+  identityB = trans Lnorm (sym (Rnorm a2' b2'' w eq-w))
 
