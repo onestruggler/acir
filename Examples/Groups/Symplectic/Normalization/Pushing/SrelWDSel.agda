@@ -44,6 +44,8 @@ import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime as DDCZ
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ2 p-2 p-prime
   using (ract-↑-≡)
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ p-2 p-prime
+  using (H↑3H↑≈ε)
 
 ------------------------------------------------------------------------
 -- c12 on a triply-inj₂ coset, all-zero a-slots: every escape is the
@@ -316,3 +318,68 @@ module _ {m : ℕ} where
             (Eq.cong₂ (λ w t → inj₂ ((₀ , w) , inj₂ ((₁₊ a3' , t) , lm3)))
               Eq.refl
               (e0 b3))))))
+
+------------------------------------------------------------------------
+-- c12 with a nonzero middle wire: both escapes are conjugated by the
+-- same H↑, so the conjugations merge and the axiom applies inside.
+
+    conj-merge : ∀ (X Y : Word (Gen (₃₊ m))) →
+      (H ↑ • (X • (H ↑) ^ 3)) • (H ↑ • (Y • (H ↑) ^ 3)) ≈
+      H ↑ • ((X • Y) • (H ↑) ^ 3)
+    conj-merge X Y = begin
+      (H ↑ • (X • (H ↑) ^ 3)) • (H ↑ • (Y • (H ↑) ^ 3))   ≈⟨ assoc ⟩
+      H ↑ • ((X • (H ↑) ^ 3) • (H ↑ • (Y • (H ↑) ^ 3)))   ≈⟨ cright assoc ⟩
+      H ↑ • (X • ((H ↑) ^ 3 • (H ↑ • (Y • (H ↑) ^ 3))))   ≈⟨ cright (cright (sym assoc)) ⟩
+      H ↑ • (X • (((H ↑) ^ 3 • H ↑) • (Y • (H ↑) ^ 3)))   ≈⟨ cright (cright (cleft (H↑3H↑≈ε {₁₊ m}))) ⟩
+      H ↑ • (X • (ε • (Y • (H ↑) ^ 3)))                   ≈⟨ cright (cright left-unit) ⟩
+      H ↑ • (X • (Y • (H ↑) ^ 3))                         ≈⟨ cright (sym assoc) ⟩
+      H ↑ • ((X • Y) • (H ↑) ^ 3) ∎
+
+    c12-go-0c0 : ∀ (a2' : Fin (₁₊ p-2)) (b1 b2 b3 : ℤ ₚ) (lm3 : C (₁₊ m)) →
+      ((ract3 ᵗ) (inj₂ ((₀ , b1) , inj₂ ((₁₊ a2' , b2) , inj₂ ((₀ , b3) , lm3))))
+        (CZ ↑ • CZ)) ≋
+      ((ract3 ᵗ) (inj₂ ((₀ , b1) , inj₂ ((₁₊ a2' , b2) , inj₂ ((₀ , b3) , lm3))))
+        (CZ • CZ ↑))
+    c12-go-0c0 a2' b1 b2 b3 lm3 = resid≈ , coset≡
+      where
+      lm : C (₃₊ m)
+      lm = inj₂ ((₁₊ a2' , b2) , inj₂ ((₀ , b3) , lm3))
+
+      e0 : ∀ (t : ℤ ₚ) → t + - ₀ ≡ t
+      e0 t = Eq.trans (Eq.cong (t +_) -0#≈0#) (+-identityʳ t)
+
+      slide : (H ↑ • (CZ ↑ • (H ↑) ^ 3)) • (H ↑ • (CZ • (H ↑) ^ 3)) ≈
+              (H ↑ • (CZ • (H ↑) ^ 3)) • (H ↑ • (CZ ↑ • (H ↑) ^ 3))
+      slide =
+        trans (conj-merge (CZ ↑) CZ)
+        (trans (cright (cleft (axiom selinger-c12)))
+               (sym (conj-merge CZ (CZ ↑))))
+
+      resid≈ : ((ract3 ᵗ) (inj₂ ((₀ , b1) , lm)) (CZ ↑ • CZ)) .proj₁ ≈
+               ((ract3 ᵗ) (inj₂ ((₀ , b1) , lm)) (CZ • CZ ↑)) .proj₁
+      resid≈ =
+        trans (refl' (Eq.cong
+            (λ pr → pr .proj₁ • ((ract3 ᵗ) (pr .proj₂) CZ) .proj₁)
+            (ract-↑-≡ (₀ , b1) lm CZ)))
+        (trans slide
+        (sym (refl' (Eq.cong
+            (λ pr → (H ↑ • (CZ • (H ↑) ^ 3)) • pr .proj₁)
+            (ract-↑-≡ (₀ , b1 + - ₁₊ a2')
+              (inj₂ ((₁₊ a2' , b2 + - ₀) , inj₂ ((₀ , b3) , lm3))) CZ)))))
+
+      coset≡ : ((ract3 ᵗ) (inj₂ ((₀ , b1) , lm)) (CZ ↑ • CZ)) .proj₂ ≡
+               ((ract3 ᵗ) (inj₂ ((₀ , b1) , lm)) (CZ • CZ ↑)) .proj₂
+      coset≡ =
+        Eq.trans (Eq.cong (λ pr → ((ract3 ᵗ) (pr .proj₂) CZ) .proj₂)
+            (ract-↑-≡ (₀ , b1) lm CZ))
+        (Eq.trans (Eq.cong
+            (λ w → inj₂ ((₀ , b1 + - ₁₊ a2') ,
+              inj₂ ((₁₊ a2' , w) , inj₂ ((₀ , b3 + - ₁₊ a2') , lm3))))
+            (Eq.trans (e0 (b2 + - ₀)) (e0 b2)))
+        (Eq.sym (Eq.trans (Eq.cong proj₂
+            (ract-↑-≡ (₀ , b1 + - ₁₊ a2')
+              (inj₂ ((₁₊ a2' , b2 + - ₀) , inj₂ ((₀ , b3) , lm3))) CZ))
+          (Eq.cong
+            (λ w → inj₂ ((₀ , b1 + - ₁₊ a2') ,
+              inj₂ ((₁₊ a2' , w) , inj₂ ((₀ , b3 + - ₁₊ a2') , lm3))))
+            (Eq.trans (e0 (b2 + - ₀)) (e0 b2))))))
