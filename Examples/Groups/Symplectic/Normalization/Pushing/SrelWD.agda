@@ -73,6 +73,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMD p-2 p-prim
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMD2 p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMD3 p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDGo p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ p-2 p-prime
 
 ------------------------------------------------------------------------
 -- The axioms, one at a time.
@@ -214,7 +215,33 @@ srel-wd {suc m} (inj₂ ((₁₊ a' , b) , lm)) (Base.semi-MS x) =
     (x≢0⇒suc (x .proj₁ * ₁₊ a') ((x *' (₁₊ a' , λ ())) .proj₂) .proj₂)
     Eq.refl Eq.refl
 srel-wd c (Base.semi-M↑CZ x)  = {!!}
-srel-wd c (Base.semi-M↓CZ x)  = {!!}
+-- semi-M↓CZ: on doubly-inj₂ cosets M↓≡ turns the down-widened M word
+-- into the plain M word and the MD/CZ^ engines drive both sides to the
+-- axiom one width down (SrelWDMCZ).
+srel-wd {suc n'} (inj₁ ml') (Base.semi-M↓CZ x) = {!!}
+srel-wd {suc zero} (inj₂ (d , ml1)) (Base.semi-M↓CZ x) = {!!}
+srel-wd {suc (suc m)} (inj₂ (d , inj₁ ml')) (Base.semi-M↓CZ x) = {!!}
+srel-wd {suc (suc m)} (inj₂ ((₀ , b1) , inj₂ ((₀ , g2) , lm2))) (Base.semi-M↓CZ x) =
+  semiMCZ-go-00 x b1 g2 ((x ⁻¹) .proj₁ * b1) lm2 Eq.refl
+srel-wd {suc (suc m)} (inj₂ ((₀ , b1) , inj₂ ((₁₊ c2 , g2) , lm2))) (Base.semi-M↓CZ x) =
+  semiMCZ-go-0c x (x≢0⇒suc (x .proj₁) (x .proj₂) .proj₁) c2 b1 g2
+    ((x ⁻¹) .proj₁ * b1) (b1 + nsum (toℕ (x .proj₁)) (- ₁₊ c2)) lm2
+    (x≢0⇒suc (x .proj₁) (x .proj₂) .proj₂) Eq.refl Eq.refl
+srel-wd {suc (suc m)} (inj₂ ((₁₊ a1 , b1) , inj₂ ((₀ , g2) , lm2))) (Base.semi-M↓CZ x) =
+  semiMCZ-go-a0 x (x≢0⇒suc (x .proj₁) (x .proj₂) .proj₁) a1
+    (x≢0⇒suc (x .proj₁ * ₁₊ a1) ((x *' (₁₊ a1 , λ ())) .proj₂) .proj₁)
+    b1 g2 ((x ⁻¹) .proj₁ * b1) (g2 + nsum (toℕ (x .proj₁)) (- ₁₊ a1)) lm2
+    (x≢0⇒suc (x .proj₁) (x .proj₂) .proj₂)
+    (x≢0⇒suc (x .proj₁ * ₁₊ a1) ((x *' (₁₊ a1 , λ ())) .proj₂) .proj₂)
+    Eq.refl Eq.refl
+srel-wd {suc (suc m)} (inj₂ ((₁₊ a1 , b1) , inj₂ ((₁₊ c2 , g2) , lm2))) (Base.semi-M↓CZ x) =
+  semiMCZ-go-cc x (x≢0⇒suc (x .proj₁) (x .proj₂) .proj₁) a1
+    (x≢0⇒suc (x .proj₁ * ₁₊ a1) ((x *' (₁₊ a1 , λ ())) .proj₂) .proj₁) c2
+    b1 g2 ((x ⁻¹) .proj₁ * b1) (b1 + nsum (toℕ (x .proj₁)) (- ₁₊ c2))
+    (g2 + nsum (toℕ (x .proj₁)) (- ₁₊ a1)) lm2
+    (x≢0⇒suc (x .proj₁) (x .proj₂) .proj₂)
+    (x≢0⇒suc (x .proj₁ * ₁₊ a1) ((x *' (₁₊ a1 , λ ())) .proj₂) .proj₂)
+    Eq.refl Eq.refl Eq.refl
 -- order-CZ on a doubly-inj₂ coset: the b-shifts cycle with period p
 -- (nsum-p≡0) and the residual is the p-th power of the DD-CZ escape,
 -- which vanishes as a conjugate of CZ ^ p (fully nonzero pattern open).
