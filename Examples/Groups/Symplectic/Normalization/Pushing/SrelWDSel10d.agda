@@ -497,3 +497,165 @@ module _ {m : ℕ} (a2' b2'' w : Fin (₁₊ p-2))
       ≈⟨ cleft (Zmulup (-' (₁ , λ ())) r₂* (-' r₂*) vneg-l) ⟩
     ZM (-' r₂*) ↑ • (S^ it₃f ↑ • (h • S^ r₂v ↑)) ∎
 
+
+------------------------------------------------------------------------
+-- The value kit for the L-side normalization.
+
+module LValues (a2' b2'' w : Fin (₁₊ p-2))
+  (eq-w : ₁₊ b2'' + ₁₊ a2' ≡ ₁₊ w) where
+
+  open TailValues a2' b2'' w eq-w public
+
+  irf : ℤ ₚ
+  irf = (r* ⁻¹) .proj₁
+
+  private
+    instA  = nztoℕ {y = ₁₊ a2'} {neq0 = λ ()}
+    instB  = nztoℕ {y = ₁₊ b2''} {neq0 = λ ()}
+    instSv = nztoℕ {y = ₁₊ w} {neq0 = λ ()}
+    instR  = nztoℕ {y = r* .proj₁} {neq0 = r* .proj₂}
+
+  open Eq.≡-Reasoning
+
+  v-a : ((q* ⁻¹) *' (-' (₁ , λ ()))) .proj₁ ≡ (-' r*) .proj₁
+  v-a = begin
+    ((q* ⁻¹) .proj₁) * - ₁
+      ≡⟨ Eq.cong (_* - ₁) (iexp A* B*) ⟩
+    (iA * ₁₊ b2'') * - ₁
+      ≡⟨ Eq.sym (-‿distribʳ-* (iA * ₁₊ b2'') ₁) ⟩
+    - ((iA * ₁₊ b2'') * ₁)
+      ≡⟨ Eq.cong -_ (Eq.trans (*-identityʳ (iA * ₁₊ b2''))
+           (*-comm iA (₁₊ b2''))) ⟩
+    - (₁₊ b2'' * iA) ∎
+
+  v-b : - irf * ((((-' (r* ⁻¹)) ⁻¹) .proj₁) *
+                 (((-' (r* ⁻¹)) ⁻¹) .proj₁)) ≡ - rv
+  v-b = begin
+    - irf * ((((-' (r* ⁻¹)) ⁻¹) .proj₁) * (((-' (r* ⁻¹)) ⁻¹) .proj₁))
+      ≡⟨ Eq.cong (λ t → - irf * (t * t))
+           (Eq.trans (ineg (r* ⁻¹) (-' (r* ⁻¹)) Eq.refl)
+             (Eq.cong -_ (inv-involutive r*))) ⟩
+    - irf * (- rv * - rv)
+      ≡⟨ Eq.cong (- irf *_) (negneg rv rv) ⟩
+    - irf * (rv * rv)
+      ≡⟨ Eq.sym (-‿distribˡ-* irf (rv * rv)) ⟩
+    - (irf * (rv * rv))
+      ≡⟨ Eq.cong -_ (Eq.trans (Eq.sym (*-assoc irf rv rv))
+           (Eq.trans (Eq.cong (_* rv)
+               (lemma-⁻¹ˡ (r* .proj₁) {{instR}}))
+             (*-identityˡ rv))) ⟩
+    - rv ∎
+
+  v-c : ((-' r*) *' (-' (r* ⁻¹))) .proj₁ ≡ ₁
+  v-c = Eq.trans (negneg rv irf) (lemma-⁻¹ʳ (r* .proj₁) {{instR}})
+
+  v-d : - rv + - ₁ ≡ - r₁v
+  v-d = Eq.trans (-‿+-comm rv ₁) (Eq.cong -_ inner)
+    where
+    inner : rv + ₁ ≡ r₁v
+    inner = begin
+      rv + ₁
+        ≡⟨ Eq.cong (rv +_) (Eq.sym (lemma-⁻¹ʳ (₁₊ a2') {{instA}})) ⟩
+      ₁₊ b2'' * iA + ₁₊ a2' * iA
+        ≡⟨ Eq.sym (*-distribʳ-+ iA (₁₊ b2'') (₁₊ a2')) ⟩
+      (₁₊ b2'' + ₁₊ a2') * iA
+        ≡⟨ Eq.cong (_* iA) eq-w ⟩
+      ₁₊ w * iA ∎
+
+  vAB : ₁₊ a2' + - ₁₊ w ≡ - ₁₊ b2''
+  vAB = begin
+    ₁₊ a2' + - ₁₊ w
+      ≡⟨ Eq.cong (λ t → ₁₊ a2' + - t) (Eq.sym eq-w) ⟩
+    ₁₊ a2' + - (₁₊ b2'' + ₁₊ a2')
+      ≡⟨ Eq.cong (₁₊ a2' +_) (Eq.sym (-‿+-comm (₁₊ b2'') (₁₊ a2'))) ⟩
+    ₁₊ a2' + (- ₁₊ b2'' + - ₁₊ a2')
+      ≡⟨ Eq.cong (₁₊ a2' +_) (+-comm (- ₁₊ b2'') (- ₁₊ a2')) ⟩
+    ₁₊ a2' + (- ₁₊ a2' + - ₁₊ b2'')
+      ≡⟨ Eq.sym (+-assoc (₁₊ a2') (- ₁₊ a2') (- ₁₊ b2'')) ⟩
+    (₁₊ a2' + - ₁₊ a2') + - ₁₊ b2''
+      ≡⟨ Eq.cong (_+ - ₁₊ b2'') (+-inverseʳ (₁₊ a2')) ⟩
+    ₀ + - ₁₊ b2''
+      ≡⟨ +-identityˡ (- ₁₊ b2'') ⟩
+    - ₁₊ b2'' ∎
+
+  v-e : ((r₁* ⁻¹) .proj₁) + - ₁ ≡ - r₂v
+  v-e = begin
+    ((r₁* ⁻¹) .proj₁) + - ₁
+      ≡⟨ Eq.cong₂ _+_ (iexp Sv* A*)
+           (Eq.cong -_ (Eq.sym (lemma-⁻¹ˡ (₁₊ w) {{instSv}}))) ⟩
+    iSv * ₁₊ a2' + - (iSv * ₁₊ w)
+      ≡⟨ Eq.cong (iSv * ₁₊ a2' +_) (-‿distribʳ-* iSv (₁₊ w)) ⟩
+    iSv * ₁₊ a2' + iSv * - ₁₊ w
+      ≡⟨ Eq.sym (*-distribˡ-+ iSv (₁₊ a2') (- ₁₊ w)) ⟩
+    iSv * (₁₊ a2' + - ₁₊ w)
+      ≡⟨ Eq.cong (iSv *_) vAB ⟩
+    iSv * - ₁₊ b2''
+      ≡⟨ Eq.sym (-‿distribʳ-* iSv (₁₊ b2'')) ⟩
+    - (iSv * ₁₊ b2'')
+      ≡⟨ Eq.cong -_ (*-comm iSv (₁₊ b2'')) ⟩
+    - r₂v ∎
+
+  v-f : - ₁ + - irf ≡ - q₂v
+  v-f = Eq.trans (-‿+-comm ₁ irf) (Eq.cong -_ inner)
+    where
+    inner : ₁ + irf ≡ q₂v
+    inner = begin
+      ₁ + irf
+        ≡⟨ Eq.cong₂ _+_ (Eq.sym (lemma-⁻¹ʳ (₁₊ b2'') {{instB}}))
+             (Eq.trans (iexp B* A*) (*-comm iB (₁₊ a2'))) ⟩
+      ₁₊ b2'' * iB + ₁₊ a2' * iB
+        ≡⟨ Eq.sym (*-distribʳ-+ iB (₁₊ b2'') (₁₊ a2')) ⟩
+      (₁₊ b2'' + ₁₊ a2') * iB
+        ≡⟨ Eq.cong (_* iB) eq-w ⟩
+      ₁₊ w * iB ∎
+
+  v-hc : (r₁* ⁻¹) .proj₁ ≡ q₁* .proj₁
+  v-hc = Eq.trans (iexp Sv* A*) (*-comm iSv (₁₊ a2'))
+
+  v-hz : - (((-' r₁*) ⁻¹) .proj₁) ≡ q₁* .proj₁
+  v-hz = Eq.trans (Eq.cong -_ (ineg r₁* (-' r₁*) Eq.refl))
+    (Eq.trans (-‿involutive ((r₁* ⁻¹) .proj₁)) v-hc)
+
+  v-qq : (q₁* *' (-' q₂*)) .proj₁ ≡ (-' q*) .proj₁
+  v-qq = begin
+    (q₁* .proj₁) * - q₂v
+      ≡⟨ Eq.sym (-‿distribʳ-* (q₁* .proj₁) q₂v) ⟩
+    - (q₁* .proj₁ * q₂v)
+      ≡⟨ Eq.cong -_ v-q₁q₂ ⟩
+    - qv ∎
+
+  v-hs : (q₁* .proj₁) * ((((-' q*) ⁻¹) .proj₁) *
+                         (((-' q*) ⁻¹) .proj₁)) ≡ rv * r₂v
+  v-hs = begin
+    (q₁* .proj₁) * ((((-' q*) ⁻¹) .proj₁) * (((-' q*) ⁻¹) .proj₁))
+      ≡⟨ Eq.cong (λ t → (q₁* .proj₁) * (t * t))
+           (Eq.trans (ineg q* (-' q*) Eq.refl)
+             (Eq.cong -_ (iexp A* B*))) ⟩
+    (q₁* .proj₁) * (- (iA * ₁₊ b2'') * - (iA * ₁₊ b2''))
+      ≡⟨ Eq.cong ((q₁* .proj₁) *_)
+           (negneg (iA * ₁₊ b2'') (iA * ₁₊ b2'')) ⟩
+    (₁₊ a2' * iSv) * ((iA * ₁₊ b2'') * (iA * ₁₊ b2''))
+      ≡⟨ Eq.sym (*-assoc (₁₊ a2' * iSv) (iA * ₁₊ b2'') (iA * ₁₊ b2'')) ⟩
+    ((₁₊ a2' * iSv) * (iA * ₁₊ b2'')) * (iA * ₁₊ b2'')
+      ≡⟨ Eq.cong₂ _*_ claim (*-comm iA (₁₊ b2'')) ⟩
+    (₁₊ b2'' * iSv) * (₁₊ b2'' * iA)
+      ≡⟨ *-comm r₂v rv ⟩
+    rv * r₂v ∎
+    where
+    claim : (₁₊ a2' * iSv) * (iA * ₁₊ b2'') ≡ ₁₊ b2'' * iSv
+    claim = begin
+      (₁₊ a2' * iSv) * (iA * ₁₊ b2'')
+        ≡⟨ Eq.cong (_* (iA * ₁₊ b2'')) (*-comm (₁₊ a2') iSv) ⟩
+      (iSv * ₁₊ a2') * (iA * ₁₊ b2'')
+        ≡⟨ *-assoc iSv (₁₊ a2') (iA * ₁₊ b2'') ⟩
+      iSv * (₁₊ a2' * (iA * ₁₊ b2''))
+        ≡⟨ Eq.cong (iSv *_) (Eq.sym (*-assoc (₁₊ a2') iA (₁₊ b2''))) ⟩
+      iSv * ((₁₊ a2' * iA) * ₁₊ b2'')
+        ≡⟨ Eq.cong (λ t → iSv * (t * ₁₊ b2''))
+             (lemma-⁻¹ʳ (₁₊ a2') {{instA}}) ⟩
+      iSv * (₁ * ₁₊ b2'')
+        ≡⟨ Eq.cong (iSv *_) (*-identityˡ (₁₊ b2'')) ⟩
+      iSv * ₁₊ b2''
+        ≡⟨ *-comm iSv (₁₊ b2'') ⟩
+      ₁₊ b2'' * iSv ∎
+
