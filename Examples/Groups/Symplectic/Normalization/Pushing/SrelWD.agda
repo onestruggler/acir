@@ -75,6 +75,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMD3 p-2 p-pri
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDGo p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ2 p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel p-2 p-prime
 
 ------------------------------------------------------------------------
 -- The axioms, one at a time.
@@ -297,7 +298,22 @@ srel-wd {suc (suc m)} (inj₂ (d , inj₂ ((₁₊ a2 , b2) , lm2))) Base.comm-C
   commCZS↑-go-+ d a2 b2 lm2
 srel-wd c Base.selinger-c10   = {!!}
 srel-wd c Base.selinger-c11   = {!!}
-srel-wd c Base.selinger-c12   = {!!}
+-- selinger-c12 on triply-inj₂ cosets with a clean middle wire: the two
+-- CZ escapes commute letterwise (axiom at the cores).  Nonzero-middle
+-- patterns still open.
+srel-wd {suc (suc n)} (inj₁ ml') Base.selinger-c12 = {!!}
+srel-wd {suc (suc n)} (inj₂ (d1 , inj₁ ml')) Base.selinger-c12 = {!!}
+srel-wd {suc (suc zero)} (inj₂ (d1 , inj₂ (d2 , ml1))) Base.selinger-c12 = {!!}
+srel-wd {suc (suc (suc m))} (inj₂ (d1 , inj₂ (d2 , inj₁ ml'))) Base.selinger-c12 = {!!}
+srel-wd {suc (suc (suc m))} (inj₂ ((₀ , b1) , inj₂ ((₀ , b2) , inj₂ ((₀ , b3) , lm3)))) Base.selinger-c12 =
+  c12-go-000 b1 b2 b3 lm3
+srel-wd {suc (suc (suc m))} (inj₂ ((₁₊ a1' , b1) , inj₂ ((₀ , b2) , inj₂ ((₀ , b3) , lm3)))) Base.selinger-c12 =
+  c12-go-a00 a1' b1 b2 b3 lm3
+srel-wd {suc (suc (suc m))} (inj₂ ((₀ , b1) , inj₂ ((₀ , b2) , inj₂ ((₁₊ a3' , b3) , lm3)))) Base.selinger-c12 =
+  c12-go-00c a3' b1 b2 b3 lm3
+srel-wd {suc (suc (suc m))} (inj₂ ((₁₊ a1' , b1) , inj₂ ((₀ , b2) , inj₂ ((₁₊ a3' , b3) , lm3)))) Base.selinger-c12 =
+  c12-go-a0c a1' a3' b1 b2 b3 lm3
+srel-wd {suc (suc (suc m))} (inj₂ (d1 , inj₂ ((₁₊ a2' , b2) , inj₂ (d3 , lm3)))) Base.selinger-c12 = {!!}
 srel-wd c Base.selinger-c13   = {!!}
 srel-wd c Base.selinger-c14   = {!!}
 srel-wd c Base.selinger-c15   = {!!}
