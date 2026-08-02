@@ -41,7 +41,7 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
-  using (-0#≈0# ; -‿involutive)
+  using (-0#≈0# ; -‿involutive ; -‿distribˡ-* ; -‿distribʳ-*)
 
 import Data.Nat.Properties as NP
 
@@ -49,7 +49,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.DVecPush p-2 p-prim
   using (Hdir ; Hd')
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDZM p-2 p-prime
-  using (hpad)
+  using (hpad ; ineg)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDCZ p-2 p-prime
   using (pow-↑)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ p-2 p-prime
@@ -663,4 +663,128 @@ module _ {m : ℕ} where
              ((ract2 ᵗ) (inj₂ ((₀ , b1) , lm))
                (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓)) .proj₂
     coset≡ = Eq.trans L-c (Eq.sym R-c)
+
+
+------------------------------------------------------------------------
+-- TW3 : H • S⁻¹ • H ≈ S • H • S (append S to TW2 and cancel).
+
+module _ {j : ℕ} where
+  open PB ((₁₊ j) QRel,_===_)
+
+  SSinv : S • S⁻¹ ≈ ε
+  SSinv = axiom order-S
+
+  H4ε : H ^ 4 ≈ ε
+  H4ε = axiom order-H
+
+  TW3 : H • (S⁻¹ • H) ≈ S • (H • S)
+  TW3 =
+    trans (sym right-unit)
+    (trans (cright (sym Sp-1-S))
+    (trans assoc
+    (trans (cright assoc)
+    (trans (cright (cright (sym assoc)))
+    (trans (cright (sym assoc))
+    (trans (sym assoc)
+    (trans (cleft TW2) assoc)))))))
+
+------------------------------------------------------------------------
+-- The anti-diagonal Hdir unit is HH • S⁻¹: when v ≡ -u the quotient
+-- and the phase both take the value -1.
+
+module _ {m : ℕ} where
+  open PB ((₁₊ m) QRel,_===_)
+  open Lemmas0 m
+
+  unitHS : ∀ (u v : Fin (₁₊ p-2)) → ₁₊ v ≡ - ₁₊ u →
+    (Hdir (₁₊ u , ₁₊ v) ↓ᵏ m) ≈ HH • S⁻¹
+  unitHS u v veq =
+    trans (refl' (hpad u v))
+    (trans (cong (aux-MM (Q .proj₂) ((-' (₁ , λ ())) .proj₂) Qv)
+                 (refl' (Eq.trans (Eq.cong S^ Rv) SIfix)))
+           (cleft (sym lemma-HH-M-1)))
+    where
+    U* V* : ℤ* ₚ
+    U* = (₁₊ u , λ ())
+    V* = (₁₊ v , λ ())
+    Q = U* *' (V* ⁻¹)
+    iU = (U* ⁻¹) .proj₁
+    inst-u = nztoℕ {y = ₁₊ u} {neq0 = λ ()}
+    Qv : Q .proj₁ ≡ - ₁
+    Qv = Eq.trans (Eq.cong (₁₊ u *_) (ineg U* V* veq))
+         (Eq.trans (Eq.sym (-‿distribʳ-* (₁₊ u) iU))
+                   (Eq.cong -_ (lemma-⁻¹ʳ (₁₊ u) {{inst-u}})))
+    Rv : ₁₊ v * iU ≡ - ₁
+    Rv = Eq.trans (Eq.cong (_* iU) veq)
+         (Eq.trans (Eq.sym (-‿distribˡ-* (₁₊ u) iU))
+                   (Eq.cong -_ (lemma-⁻¹ʳ (₁₊ u) {{inst-u}})))
+
+------------------------------------------------------------------------
+-- The branch-A residual identity:
+-- W • (HH↑ • S⁻¹↑) • W ≈ HH↑ • S⁻¹↑ • CZ • S⁻¹.
+
+module _ {m : ℕ} where
+  open PB ((₂₊ m) QRel,_===_)
+  open PP ((₂₊ m) QRel,_===_)
+
+  private
+    W3 : Word (Gen (₂₊ m))
+    W3 = H ↑ • (CZ • (H ↑) ^ 3)
+
+  SupSinv : S {m} ↑ • S⁻¹ ↑ ≈ ε
+  SupSinv = lemma-cong↑ (S • S⁻¹) ε SSinv
+
+  SinvupS : S⁻¹ {m} ↑ • S ↑ ≈ ε
+  SinvupS = lemma-cong↑ (S⁻¹ • S) ε Sp-1-S
+
+  H4up : H {m} ↑ • (H ↑) ^ 3 ≈ ε
+  H4up = lemma-cong↑ (H ^ 4) ε H4ε
+
+  SdownSup : S⁻¹ • S {m} ↑ ≈ S ↑ • S⁻¹
+  SdownSup = comm⇒pow-comm {w = S} {v = S ↑} p-1 1 (lemma-comm-S-w↑ S)
+
+  TW3lift : H {m} ↑ • (S⁻¹ ↑ • H ↑) ≈ S ↑ • (H ↑ • S ↑)
+  TW3lift = lemma-cong↑ (H • (S⁻¹ • H)) (S • (H • S)) TW3
+
+  residAkey : W3 • ((HH ↑ • S⁻¹ ↑) • W3) ≈
+              HH ↑ • (S⁻¹ ↑ • (CZ • S⁻¹))
+  residAkey =
+    trans assoc
+    (trans (cright assoc)
+    (trans (cright (cright (sym assoc)))
+    (trans (cright (cright (cleft (sym assoc))))
+    (trans (cright (cright (cleft (cleft H5lift))))
+    (trans (cright (cright assoc))
+    (trans (cright (cright
+        (trans (cright (sym assoc))
+        (trans (sym assoc) (cleft TW3lift)))))
+    (trans (cright (cright assoc))
+    (trans (cright (sym assoc))
+    (trans (cright (cleft (axiom comm-CZ-S↑)))
+    (trans (cright assoc)
+    (trans (cright (cright (cright
+        (trans assoc (cright
+          (trans (sym assoc)
+          (trans (cleft (sym (axiom comm-CZ-S↑))) assoc)))))))
+    (trans (cright (cright
+        (trans (cright (sym assoc))
+        (trans (sym assoc)
+        (trans (cleft (axiom selinger-c10))
+               (cleft (refl' fixdown2)))))))
+    (trans (cright (sym assoc))
+    (trans (cright (cleft
+        (trans (sym assoc) (trans (cleft SupSinv) left-unit))))
+    (trans (cright assoc)
+    (trans (cright (cright assoc))
+    (trans (cright (cright (cright assoc)))
+    (trans (cright (cright (cright (cright assoc))))
+    (trans (cright (cright (cright (cright (cright assoc)))))
+    (trans (cright (cright (cright (cright (cright (cright
+        (trans (sym assoc) (trans (cleft SdownSup) assoc))))))))
+    (trans (cright (cright (cright (cright (cright
+        (trans (sym assoc) (trans (cleft SinvupS) left-unit)))))))
+    (trans (cright (cright (cright (cright (cright Scomm3)))))
+    (trans (cright (cright (cright (cright
+        (trans (sym assoc) (trans (cleft H4up) left-unit))))))
+           (sym assoc))))))))))))))))))))))))
 
