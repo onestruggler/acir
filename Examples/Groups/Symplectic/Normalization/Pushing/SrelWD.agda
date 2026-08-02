@@ -76,6 +76,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDGo p-2 p-prim
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ2 p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10 p-2 p-prime
 
 ------------------------------------------------------------------------
 -- The axioms, one at a time.
@@ -296,7 +297,17 @@ srel-wd {suc (suc m)} (inj₂ (d , inj₂ ((₀ , b2) , lm2))) Base.comm-CZ-S↑
   comm-W-S↑ d b2 , Eq.refl
 srel-wd {suc (suc m)} (inj₂ (d , inj₂ ((₁₊ a2 , b2) , lm2))) Base.comm-CZ-S↑ =
   commCZS↑-go-+ d a2 b2 lm2
-srel-wd c Base.selinger-c10   = {!!}
+-- selinger-c10: the S⁻¹ = S^(p-1) chunks thread through the box pair
+-- with the S^-engines; on the all-zero pattern every escape is its
+-- letter and the residual is the axiom (other patterns open).
+srel-wd {suc n'} (inj₁ ml') Base.selinger-c10 = {!!}
+srel-wd {suc zero} (inj₂ (d , ml1)) Base.selinger-c10 = {!!}
+srel-wd {suc (suc m)} (inj₂ (d , inj₁ ml')) Base.selinger-c10 = {!!}
+srel-wd {suc (suc m)} (inj₂ ((₀ , b1) , inj₂ ((₀ , ₀) , lm2))) Base.selinger-c10 =
+  c10-go-000 b1 lm2
+srel-wd {suc (suc m)} (inj₂ ((₀ , b1) , inj₂ ((₀ , ₁₊ b2') , lm2))) Base.selinger-c10 = {!!}
+srel-wd {suc (suc m)} (inj₂ ((₀ , b1) , inj₂ ((₁₊ a2' , b2) , lm2))) Base.selinger-c10 = {!!}
+srel-wd {suc (suc m)} (inj₂ ((₁₊ a1' , b1) , inj₂ (d2 , lm2))) Base.selinger-c10 = {!!}
 srel-wd c Base.selinger-c11   = {!!}
 -- selinger-c12 on triply-inj₂ cosets with a clean middle wire: the two
 -- CZ escapes commute letterwise (axiom at the cores).  Nonzero-middle
