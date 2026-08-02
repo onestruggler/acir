@@ -72,6 +72,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDZM p-2 p-prim
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMD p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMD2 p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMD3 p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDGo p-2 p-prime
 
 ------------------------------------------------------------------------
 -- The axioms, one at a time.
@@ -93,14 +94,8 @@ srel-wd {zero} (([] , e) , ([] , ((₁₊ a' , b) , nz))) Base.order-S =
                            (Eq.trans (Eq.cong (b +_) (nsum-p≡0 (- (₁₊ a'))))
                                      (+-identityʳ b))))
 srel-wd {suc m} (inj₁ ml') Base.order-S = {!!}
-srel-wd {suc m} (inj₂ (d@(₀ , b) , lm)) Base.order-S =
-  let open PB ((₁₊ m) QRel,_===_) in
-  trans (refl' (ract-S^-resid-a0 b lm p)) (axiom order-S) ,
-  Eq.trans (ract-S^-coset d lm p) (Eq.cong (λ z → inj₂ (z , lm)) (dDS^p≡id d))
-srel-wd {suc m} (inj₂ (d@(₁₊ a , b) , lm)) Base.order-S =
-  let open PB ((₁₊ m) QRel,_===_) in
-  ract-S^-resid-a+ d lm p (λ ()) ,
-  Eq.trans (ract-S^-coset d lm p) (Eq.cong (λ z → inj₂ (z , lm)) (dDS^p≡id d))
+srel-wd {suc m} (inj₂ ((₀ , b) , lm)) Base.order-S = orderS-go-0 b lm
+srel-wd {suc m} (inj₂ ((₁₊ a , b) , lm)) Base.order-S = orderS-go-+ a b lm
 -- order-H at width 1: the A box 4-cycles under H ((0,b) ↦ (b,0) ↦
 -- (0,-b) ↦ (-b,0) ↦ (0,b), and (a,b) ↦ (b,-a) ↦ (-a,-b) ↦ (-b,a) ↦
 -- (a,b)); the escape powers vanish except on fully nonzero boxes, where
@@ -122,29 +117,10 @@ srel-wd {zero} (([] , e) , ([] , ((₁₊ a₀ , ₁₊ b₀) , nz))) Base.order
 srel-wd {suc m} (inj₁ ml')     Base.order-H = {!!}
 -- order-H on inj₂: the D box 4-cycles under (a,b) ↦ (b,-a); the Hdir
 -- escapes collapse to H ^ 4 (fully nonzero pattern still open).
-srel-wd {suc m} (inj₂ ((₀ , ₀) , lm)) Base.order-H =
-  orderH-resid-00 ,
-  Eq.cong (λ v → inj₂ (v , lm))
-    (Eq.cong₂ _,_ (Eq.trans (Eq.cong -_ -0#≈0#) -0#≈0#)
-                  (Eq.trans (Eq.cong -_ -0#≈0#) -0#≈0#))
-srel-wd {suc m} (inj₂ ((₀ , ₁₊ b') , lm)) Base.order-H =
-  elim-suc (- ₁₊ b') (neg≢0 (₁₊ b') λ ()) λ z eq-z →
-  orderH-resid-0b b' z eq-z ,
-  Eq.cong (λ v → inj₂ (v , lm))
-    (Eq.cong₂ _,_ (Eq.trans (Eq.cong -_ -0#≈0#) -0#≈0#)
-                  (-‿involutive (₁₊ b')))
-srel-wd {suc m} (inj₂ ((₁₊ a' , ₀) , lm)) Base.order-H =
-  elim-suc (- ₁₊ a') (neg≢0 (₁₊ a') λ ()) λ y eq-y →
-  orderH-resid-a0 a' y eq-y ,
-  Eq.cong (λ v → inj₂ (v , lm))
-    (Eq.cong₂ _,_ (-‿involutive (₁₊ a'))
-                  (Eq.trans (Eq.cong -_ -0#≈0#) -0#≈0#))
-srel-wd {suc m} (inj₂ ((₁₊ a' , ₁₊ b') , lm)) Base.order-H =
-  elim-suc (- ₁₊ a') (neg≢0 (₁₊ a') λ ()) λ y eq-y →
-  elim-suc (- ₁₊ b') (neg≢0 (₁₊ b') λ ()) λ z eq-z →
-  orderH-resid-nn a' b' y z eq-y eq-z ,
-  Eq.cong (λ v → inj₂ (v , lm))
-    (Eq.cong₂ _,_ (-‿involutive (₁₊ a')) (-‿involutive (₁₊ b')))
+srel-wd {suc m} (inj₂ ((₀ , ₀) , lm)) Base.order-H = orderH-go-00 lm
+srel-wd {suc m} (inj₂ ((₀ , ₁₊ b') , lm)) Base.order-H = orderH-go-0b b' lm
+srel-wd {suc m} (inj₂ ((₁₊ a' , ₀) , lm)) Base.order-H = orderH-go-a0 a' lm
+srel-wd {suc m} (inj₂ ((₁₊ a' , ₁₊ b') , lm)) Base.order-H = orderH-go-nn a' b' lm
 srel-wd {zero} (([] , e) , ([] , ((₀ , ₀) , nz))) Base.order-SH = ⊥-elim (nz auto)
 srel-wd {zero} (([] , e) , ([] , ((₀ , ₁₊ b₀) , nz))) Base.order-SH =
   elim-suc (- (₁₊ b₀)) (neg≢0 (₁₊ b₀) λ ()) λ z eq-z →
@@ -163,63 +139,10 @@ srel-wd {suc m} (inj₁ ml')      Base.order-SH = {!!}
 -- order-SH on the (₀,₀) inj₂ coset: every letter's escape is the
 -- letter itself (the box cycles through (₀,±0)), so the residual tree
 -- is literally (S • H) ^ 3 after normalising -0 components.
-srel-wd {suc m} (inj₂ ((₀ , ₀) , lm)) Base.order-SH =
-  PB.trans (refl'ᵣ (Eq.cong₂ _•_ Eq.refl (Eq.cong₂ _•_
-      (Eq.cong₂ _•_ Eq.refl
-        (Eq.cong (λ v → Hdir v ↓ᵏ m) (Eq.cong (₀ ,_) -0#≈0#)))
-      (Eq.cong₂ _•_
-        (Eq.cong (λ v → dir-of-DS v) (Eq.cong₂ _,_ -0#≈0# -0#≈0#))
-        (Eq.cong (λ v → Hdir v ↓ᵏ m)
-          (Eq.cong (λ v → d-of-DS v) (Eq.cong₂ _,_ -0#≈0# -0#≈0#)))))))
-    (PB.axiom order-SH) ,
-  Eq.trans (Eq.cong (λ v → inj₂ (Hd' (d-of-DS v) , lm))
-             (Eq.cong₂ _,_ -0#≈0# -0#≈0#))
-           (Eq.cong (λ v → inj₂ ((₀ , v) , lm)) -0#≈0#)
--- Other inj₂ patterns of order-SH: the orbit passes (a,-a)-type boxes,
--- so the escapes are ZM • S^ units collapsing through the unit calculus.
-srel-wd {suc m} (inj₂ ((₀ , ₁₊ b') , lm)) Base.order-SH =
-  elim-suc (- ₁₊ b') (neg≢0 (₁₊ b') λ ()) λ z eq-z →
-  orderSH-resid-0b b' z eq-z ,
-  Eq.trans (Eq.cong (λ v → inj₂ (Hd' (d-of-DS v) , lm))
-             (Eq.cong₂ _,_
-               (Eq.trans (Eq.cong₂ _+_ -0#≈0# eq-z) (+-0ˡ (₁₊ z))) eq-z))
-    (Eq.cong₂ (λ v w → inj₂ ((v , w) , lm)) (+-inverseʳ (₁₊ z))
-      (Eq.trans (Eq.cong -_ (Eq.sym eq-z)) (-‿involutive (₁₊ b'))))
-srel-wd {suc m} (inj₂ ((₁₊ a' , ₀) , lm)) Base.order-SH =
-  elim-suc (- ₁₊ a') (neg≢0 (₁₊ a') λ ()) λ y eq-y →
-  orderSH-resid-a0 a' y eq-y ,
-  Eq.trans (Eq.cong (λ v → inj₂ (Hd' (d-of-DS (Hd' (d-of-DS (v , - ₁₊ a')))) , lm))
-             (Eq.trans (+-0ˡ (- ₁₊ a')) eq-y))
-  (Eq.trans (Eq.cong (λ v → inj₂ (Hd' (d-of-DS v) , lm))
-             (Eq.cong (_, - ₁₊ y)
-               (Eq.trans (Eq.cong (_+ - ₁₊ y) eq-y) (+-inverseʳ (₁₊ y)))))
-    (Eq.cong₂ (λ v w → inj₂ ((v , w) , lm))
-      (Eq.trans (Eq.cong -_ (Eq.sym eq-y)) (-‿involutive (₁₊ a'))) -0#≈0#))
-srel-wd {suc m} (inj₂ ((₁₊ a' , ₁₊ b') , lm)) Base.order-SH =
-  elim-suc (- ₁₊ a') (neg≢0 (₁₊ a') λ ()) λ y eq-y →
-  elim-suc (- ₁₊ b') (neg≢0 (₁₊ b') λ ()) λ z eq-z →
-  elim-fin (₁₊ b' + - ₁₊ a')
-    (λ Xeq →
-      orderSH-resid-nn0 a' b' y eq-y Xeq ,
-      Eq.trans
-        (Eq.trans (Eq.cong (λ v → inj₂ (Hd' (d-of-DS (Hd' (d-of-DS v))) , lm))
-                    (Eq.cong₂ _,_ Xeq eq-y))
-          (Eq.cong₂ (λ v w → inj₂ ((v , w) , lm))
-            (Eq.trans (Eq.cong₂ _+_ -0#≈0#
-                (Eq.trans (Eq.cong -_ (Eq.sym eq-y)) (-‿involutive (₁₊ a'))))
-              (+-0ˡ (₁₊ a')))
-            (Eq.trans (Eq.cong -_ (Eq.sym eq-y)) (-‿involutive (₁₊ a')))))
-        (Eq.sym (Eq.cong (λ v → inj₂ ((₁₊ a' , v) , lm))
-          (+-‿cancel (₁₊ b') (₁₊ a') Xeq))))
-    (λ w Xeq →
-      orderSH-resid-nnw a' b' y z w eq-y eq-z Xeq ,
-      Eq.trans (Eq.cong
-          (λ v → inj₂ (Hd' (d-of-DS (Hd' (d-of-DS (v , - ₁₊ a')))) , lm)) Xeq)
-      (Eq.trans (Eq.cong (λ v → inj₂ (Hd' (d-of-DS v) , lm))
-                  (Eq.cong (_, - ₁₊ w) (sndZ-lem a' b' w z Xeq eq-z)))
-        (Eq.cong₂ (λ v w' → inj₂ ((v , w') , lm))
-          (sndA-lem a' b' w z Xeq eq-z)
-          (Eq.trans (Eq.cong -_ (Eq.sym eq-z)) (-‿involutive (₁₊ b'))))))
+srel-wd {suc m} (inj₂ ((₀ , ₀) , lm)) Base.order-SH = orderSH-go-00 lm
+srel-wd {suc m} (inj₂ ((₀ , ₁₊ b') , lm)) Base.order-SH = orderSH-go-0b b' lm
+srel-wd {suc m} (inj₂ ((₁₊ a' , ₀) , lm)) Base.order-SH = orderSH-go-a0 a' lm
+srel-wd {suc m} (inj₂ ((₁₊ a' , ₁₊ b') , lm)) Base.order-SH = orderSH-go-nn a' b' lm
 srel-wd {zero} (([] , e) , ([] , ((₀ , ₀) , nz))) Base.comm-HHS = ⊥-elim (nz auto)
 srel-wd {zero} (([] , e) , ([] , ((₀ , ₁₊ b₀) , nz))) Base.comm-HHS =
   elim-suc (- (₁₊ b₀)) (neg≢0 (₁₊ b₀) λ ()) λ y eq-y →
@@ -236,71 +159,10 @@ srel-wd {zero} (([] , e) , ([] , ((₁₊ a₀ , ₁₊ b₀) , nz))) Base.comm-
 srel-wd {suc m} (inj₁ ml')      Base.comm-HHS = {!!}
 -- comm-HHS on (₀,·) inj₂ cosets: the residuals normalise to the two
 -- sides of the axiom itself (fully nonzero D boxes still open).
-srel-wd {suc m} (inj₂ ((₀ , ₀) , lm)) Base.comm-HHS =
-  PB.trans (refl'ᵣ (Eq.cong₂ _•_ Eq.refl (Eq.cong₂ _•_
-      (Eq.cong (λ v → Hdir v ↓ᵏ m) (Eq.cong (₀ ,_) -0#≈0#))
-      (Eq.cong (λ v → dir-of-DS v) (Eq.cong₂ _,_ -0#≈0# -0#≈0#)))))
-  (PB.trans (PB.axiom comm-HHS)
-    (PB.sym (refl'ᵣ (Eq.cong₂ _•_ Eq.refl (Eq.cong₂ _•_ Eq.refl
-      (Eq.cong (λ v → Hdir v ↓ᵏ m) (Eq.cong (₀ ,_) -0#≈0#))))))) ,
-  Eq.trans (Eq.cong (λ v → inj₂ (d-of-DS v , lm)) (Eq.cong₂ _,_ -0#≈0# -0#≈0#))
-           (Eq.sym (Eq.cong (λ v → inj₂ (v , lm)) (Eq.cong₂ _,_ -0#≈0# -0#≈0#)))
-srel-wd {suc m} (inj₂ ((₀ , ₁₊ b') , lm)) Base.comm-HHS =
-  elim-suc (- ₁₊ b') (neg≢0 (₁₊ b') λ ()) λ z eq-z →
-  PB.trans
-    (PB.trans (refl'ᵣ (Eq.cong₂ _•_ Eq.refl (Eq.cong₂ _•_
-        (Eq.cong (λ v → Hdir v ↓ᵏ m) (Eq.cong (₁₊ b' ,_) -0#≈0#))
-        (Eq.cong (λ v → dir-of-DS v) (Eq.cong₂ _,_ -0#≈0# eq-z)))))
-      (PB.trans PB.left-unit (PB.trans PB.assoc (PB.axiom comm-HHS))))
-    (PB.sym (PB.trans (refl'ᵣ (Eq.cong₂ _•_ Eq.refl (Eq.cong₂ _•_ Eq.refl
-        (Eq.cong (λ v → Hdir v ↓ᵏ m) (Eq.cong (₁₊ b' ,_) -0#≈0#)))))
-      (PB.cong PB.refl PB.left-unit))) ,
-  Eq.trans (Eq.cong (λ v → inj₂ (d-of-DS v , lm)) (Eq.cong₂ _,_ -0#≈0# eq-z))
-           (Eq.sym (Eq.cong₂ (λ v w → inj₂ ((v , w) , lm)) -0#≈0# eq-z))
--- comm-HHS on (suc,·) inj₂ cosets: the RHS path passes an (a,-a)-type
--- box, so both sides escape as ZM • S^ units that merge to ZM (-1).
-srel-wd {suc m} (inj₂ ((₁₊ a' , ₀) , lm)) Base.comm-HHS =
-  elim-suc (- ₁₊ a') (neg≢0 (₁₊ a') λ ()) λ y eq-y →
-  commHHS-a0-resid a' y eq-y ,
-  Eq.trans
-    (Eq.trans (Eq.cong (λ v → inj₂ (d-of-DS v , lm))
-                (Eq.cong₂ _,_ eq-y -0#≈0#))
-      (Eq.cong (λ v → inj₂ ((₁₊ y , v) , lm))
-        (Eq.trans (+-0ˡ (- ₁₊ y))
-          (Eq.trans (Eq.cong -_ (Eq.sym eq-y)) (-‿involutive (₁₊ a'))))))
-    (Eq.sym (Eq.cong₂ (λ v w → inj₂ ((v , w) , lm)) eq-y
-      (Eq.trans (Eq.cong -_ (+-0ˡ (- ₁₊ a'))) (-‿involutive (₁₊ a')))))
-srel-wd {suc m} (inj₂ ((₁₊ a' , ₁₊ b') , lm)) Base.comm-HHS =
-  elim-suc (- ₁₊ a') (neg≢0 (₁₊ a') λ ()) λ y eq-y →
-  elim-suc (- ₁₊ b') (neg≢0 (₁₊ b') λ ()) λ z eq-z →
-  elim-fin (₁₊ b' + - ₁₊ a')
-    (λ Xeq →
-      commHHS-nn0-resid a' b' y eq-y Xeq ,
-      Eq.trans
-        (Eq.trans (Eq.cong (λ v → inj₂ (d-of-DS v , lm))
-                    (Eq.cong₂ _,_ eq-y eq-z))
-          (Eq.cong (λ v → inj₂ ((₁₊ y , v) , lm))
-            (Eq.trans (Eq.cong₂ _+_ (Eq.sym eq-z)
-                (Eq.trans (Eq.cong -_ (Eq.sym eq-y)) (-‿involutive (₁₊ a'))))
-            (Eq.trans (Eq.cong (λ v → - v + ₁₊ a')
-                (+-‿cancel (₁₊ b') (₁₊ a') Xeq))
-              (+-inverseˡ (₁₊ a'))))))
-        (Eq.sym (Eq.cong₂ (λ v w → inj₂ ((v , w) , lm)) eq-y
-          (Eq.trans (Eq.cong -_ Xeq) -0#≈0#))))
-    (λ w Xeq →
-      commHHS-nnw-resid a' b' y w eq-y Xeq ,
-      Eq.trans
-        (Eq.trans (Eq.cong (λ v → inj₂ (d-of-DS v , lm))
-                    (Eq.cong₂ _,_ eq-y eq-z))
-          (Eq.cong (λ v → inj₂ ((₁₊ y , v) , lm))
-            (Eq.trans (Eq.cong₂ _+_ (Eq.sym eq-z)
-                (Eq.trans (Eq.cong -_ (Eq.sym eq-y)) (-‿involutive (₁₊ a'))))
-            (Eq.sym
-              (Eq.trans (Eq.cong -_ (Eq.sym Xeq))
-              (Eq.trans (Eq.sym (-‿+-comm (₁₊ b') (- ₁₊ a')))
-                (Eq.cong (- ₁₊ b' +_) (-‿involutive (₁₊ a')))))))))
-        (Eq.sym (Eq.cong₂ (λ v w' → inj₂ ((v , w') , lm)) eq-y
-          (Eq.cong -_ Xeq))))
+srel-wd {suc m} (inj₂ ((₀ , ₀) , lm)) Base.comm-HHS = commHHS-go-00 lm
+srel-wd {suc m} (inj₂ ((₀ , ₁₊ b') , lm)) Base.comm-HHS = commHHS-go-0b b' lm
+srel-wd {suc m} (inj₂ ((₁₊ a' , ₀) , lm)) Base.comm-HHS = commHHS-go-a0 a' lm
+srel-wd {suc m} (inj₂ ((₁₊ a' , ₁₊ b') , lm)) Base.comm-HHS = commHHS-go-nn a' b' lm
 -- M-mul at width 1: two M threadings against one, by ractM!.
 srel-wd {zero} (([] , e) , ([] , (ab , nz))) (Base.M-mul x y) =
   PB.trans sing0 (PB.sym sing0) ,
@@ -359,30 +221,8 @@ srel-wd c (Base.semi-M↓CZ x)  = {!!}
 srel-wd {suc n'} (inj₁ ml') Base.order-CZ = {!!}
 srel-wd {suc zero} (inj₂ (d , ml1)) Base.order-CZ = {!!}
 srel-wd {suc (suc m)} (inj₂ (d , inj₁ ml')) Base.order-CZ = {!!}
-srel-wd {suc (suc m)} (inj₂ ((₀ , b1) , inj₂ ((₀ , g2) , lm2))) Base.order-CZ =
-  PB.trans (ract-CZ^-resid (₀ , b1) (₀ , g2) lm2 p) (ddp-00 b1 g2) ,
-  Eq.trans (ract-CZ^-coset (₀ , b1) (₀ , g2) lm2 p)
-    (Eq.cong₂ (λ v w → inj₂ ((₀ , v) , inj₂ ((₀ , w) , lm2)))
-      (Eq.trans (Eq.cong (b1 +_) (nsum-p≡0 (- ₀))) (+-identityʳ b1))
-      (Eq.trans (Eq.cong (g2 +_) (nsum-p≡0 (- ₀))) (+-identityʳ g2)))
-srel-wd {suc (suc m)} (inj₂ ((₀ , b1) , inj₂ ((₁₊ c2 , g2) , lm2))) Base.order-CZ =
-  PB.trans (ract-CZ^-resid (₀ , b1) (₁₊ c2 , g2) lm2 p) (ddp-0c b1 g2 c2) ,
-  Eq.trans (ract-CZ^-coset (₀ , b1) (₁₊ c2 , g2) lm2 p)
-    (Eq.cong₂ (λ v w → inj₂ ((₀ , v) , inj₂ ((₁₊ c2 , w) , lm2)))
-      (Eq.trans (Eq.cong (b1 +_) (nsum-p≡0 (- ₁₊ c2))) (+-identityʳ b1))
-      (Eq.trans (Eq.cong (g2 +_) (nsum-p≡0 (- ₀))) (+-identityʳ g2)))
-srel-wd {suc (suc m)} (inj₂ ((₁₊ a1 , b1) , inj₂ ((₀ , g2) , lm2))) Base.order-CZ =
-  PB.trans (ract-CZ^-resid (₁₊ a1 , b1) (₀ , g2) lm2 p) (ddp-a0 a1 b1 g2) ,
-  Eq.trans (ract-CZ^-coset (₁₊ a1 , b1) (₀ , g2) lm2 p)
-    (Eq.cong₂ (λ v w → inj₂ ((₁₊ a1 , v) , inj₂ ((₀ , w) , lm2)))
-      (Eq.trans (Eq.cong (b1 +_) (nsum-p≡0 (- ₀))) (+-identityʳ b1))
-      (Eq.trans (Eq.cong (g2 +_) (nsum-p≡0 (- ₁₊ a1))) (+-identityʳ g2)))
-srel-wd {suc (suc m)} (inj₂ ((₁₊ a1 , b1) , inj₂ ((₁₊ c2 , g2) , lm2))) Base.order-CZ =
-  PB.trans (ract-CZ^-resid (₁₊ a1 , b1) (₁₊ c2 , g2) lm2 p) (ddp-cc a1 c2 b1 g2) ,
-  Eq.trans (ract-CZ^-coset (₁₊ a1 , b1) (₁₊ c2 , g2) lm2 p)
-    (Eq.cong₂ (λ v w → inj₂ ((₁₊ a1 , v) , inj₂ ((₁₊ c2 , w) , lm2)))
-      (Eq.trans (Eq.cong (b1 +_) (nsum-p≡0 (- ₁₊ c2))) (+-identityʳ b1))
-      (Eq.trans (Eq.cong (g2 +_) (nsum-p≡0 (- ₁₊ a1))) (+-identityʳ g2)))
+srel-wd {suc (suc m)} (inj₂ (d1 , inj₂ (d2 , lm2))) Base.order-CZ =
+  orderCZ-go d1 d2 lm2
 -- comm-CZ-S↓ on a doubly-inj₂ coset: both gates act on the two bottom
 -- D boxes; the coset updates are commuting b-shifts, and the CZ escape
 -- (b-irrelevant, a-components preserved) commutes with the S escape.
@@ -392,14 +232,7 @@ srel-wd {suc (suc m)} (inj₂ (d , inj₁ ml')) Base.comm-CZ-S↓ = {!!}
 srel-wd {suc (suc m)} (inj₂ ((₀ , b1) , inj₂ (d2 , lm2))) Base.comm-CZ-S↓ =
   comm-W-S b1 d2 , Eq.refl
 srel-wd {suc (suc m)} (inj₂ ((₁₊ a1 , b1) , inj₂ (d2 , lm2))) Base.comm-CZ-S↓ =
-  PB.trans PB.right-unit
-    (PB.trans
-      (refl'ᵣ (Eq.cong (_↓ᵏ m)
-        (DDdir-birrelˡ (₁₊ a1) b1 (b1 + - ₁₊ a1) d2)))
-      (PB.sym PB.left-unit)) ,
-  Eq.cong (λ v → inj₂ ((₁₊ a1 , v) ,
-                       inj₂ ((proj₁ d2 , proj₂ d2 + - ₁₊ a1) , lm2)))
-          (sub-swap b1 (proj₁ d2) (₁₊ a1))
+  commCZS↓-go-+ a1 b1 d2 lm2
 -- comm-CZ-S↑ on a doubly-inj₂ coset: S↑ recurses onto the second D box.
 srel-wd {suc n'} (inj₁ ml') Base.comm-CZ-S↑ = {!!}
 srel-wd {suc zero} (inj₂ (d , ml1)) Base.comm-CZ-S↑ = {!!}
@@ -407,14 +240,7 @@ srel-wd {suc (suc m)} (inj₂ (d , inj₁ ml')) Base.comm-CZ-S↑ = {!!}
 srel-wd {suc (suc m)} (inj₂ (d , inj₂ ((₀ , b2) , lm2))) Base.comm-CZ-S↑ =
   comm-W-S↑ d b2 , Eq.refl
 srel-wd {suc (suc m)} (inj₂ (d , inj₂ ((₁₊ a2 , b2) , lm2))) Base.comm-CZ-S↑ =
-  PB.trans PB.right-unit
-    (PB.trans
-      (refl'ᵣ (Eq.cong (_↓ᵏ m)
-        (DDdir-birrelʳ d (₁₊ a2) b2 (b2 + - ₁₊ a2))))
-      (PB.sym PB.left-unit)) ,
-  Eq.cong (λ v → inj₂ ((proj₁ d , proj₂ d + - ₁₊ a2) ,
-                       inj₂ ((₁₊ a2 , v) , lm2)))
-          (sub-swap b2 (proj₁ d) (₁₊ a2))
+  commCZS↑-go-+ d a2 b2 lm2
 srel-wd c Base.selinger-c10   = {!!}
 srel-wd c Base.selinger-c11   = {!!}
 srel-wd c Base.selinger-c12   = {!!}
