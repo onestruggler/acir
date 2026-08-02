@@ -69,6 +69,9 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDW1 p-2 p-prim
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDM p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDCZ p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDZM p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMD p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMD2 p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMD3 p-2 p-prime
 
 ------------------------------------------------------------------------
 -- The axioms, one at a time.
@@ -316,7 +319,16 @@ srel-wd {zero} (([] , e) , ([] , (ab , nz))) (Base.M-mul x y) =
                             (Eq.sym (inv-distrib x y)))))))
             (Eq.sym (ractM! (x *' y) e ab nz (Mact-nz (x *' y) ab nz)))))
 srel-wd {suc m} (inj₁ ml')      (Base.M-mul x y) = {!!}
-srel-wd {suc m} (inj₂ (d , lm)) (Base.M-mul x y) = {!!}
+-- M-mul on inj₂: thread the two M-words through the D box via the MD
+-- engine; the escapes multiply by the M-mul axiom one width down.
+srel-wd {suc m} (inj₂ ((₀ , b) , lm)) (Base.M-mul x y) =
+  Mmul-wd-0 x y b ((x ⁻¹) .proj₁ * b) lm Eq.refl
+srel-wd {suc m} (inj₂ ((₁₊ a' , b) , lm)) (Base.M-mul x y) =
+  Mmul-wd-+ x y a'
+    (x≢0⇒suc (x .proj₁ * ₁₊ a') ((x *' (₁₊ a' , λ ())) .proj₂) .proj₁)
+    b ((x ⁻¹) .proj₁ * b) lm
+    (x≢0⇒suc (x .proj₁ * ₁₊ a') ((x *' (₁₊ a' , λ ())) .proj₂) .proj₂)
+    Eq.refl
 srel-wd {zero} (([] , e) , ([] , ((₀ , ₀) , nz))) (Base.semi-MS x) =
   ⊥-elim (nz auto)
 srel-wd {zero} (([] , e) , ([] , ((₀ , ₁₊ β') , nz))) (Base.semi-MS x) =
@@ -328,7 +340,17 @@ srel-wd {zero} (([] , e) , ([] , ((₁₊ α' , β) , nz))) (Base.semi-MS x) =
     λ s eq-s →
   PB.trans sing0 (PB.sym sing0) , semi-MS-nn x e α' β nz s eq-s
 srel-wd {suc m} (inj₁ ml')      (Base.semi-MS x) = {!!}
-srel-wd {suc m} (inj₂ (d , lm)) (Base.semi-MS x) = {!!}
+-- semi-MS on inj₂: on a = 0 boxes both sides escape through the axiom;
+-- on a ≠ 0 boxes the S/S^ letters are absorbed and both sides collapse
+-- to the M escape alone.
+srel-wd {suc m} (inj₂ ((₀ , b) , lm)) (Base.semi-MS x) =
+  semiMS-wd-0 x b ((x ⁻¹) .proj₁ * b) lm Eq.refl
+srel-wd {suc m} (inj₂ ((₁₊ a' , b) , lm)) (Base.semi-MS x) =
+  semiMS-wd-+ x a'
+    (x≢0⇒suc (x .proj₁ * ₁₊ a') ((x *' (₁₊ a' , λ ())) .proj₂) .proj₁)
+    b ((x ⁻¹) .proj₁ * b) (b + nsum (toℕ (x ^2)) (- ₁₊ a')) lm
+    (x≢0⇒suc (x .proj₁ * ₁₊ a') ((x *' (₁₊ a' , λ ())) .proj₂) .proj₂)
+    Eq.refl Eq.refl
 srel-wd c (Base.semi-M↑CZ x)  = {!!}
 srel-wd c (Base.semi-M↓CZ x)  = {!!}
 -- order-CZ on a doubly-inj₂ coset: the b-shifts cycle with period p
