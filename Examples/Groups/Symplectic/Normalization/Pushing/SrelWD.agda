@@ -319,7 +319,8 @@ srel-wd {suc (suc (suc m))} (inj₂ ((₁₊ a1' , b1) , inj₂ ((₁₊ a2' , b
   c12-go-aa0 a1' a2' b1 b2 b3 lm3
 srel-wd {suc (suc (suc m))} (inj₂ ((₀ , b1) , inj₂ ((₁₊ a2' , b2) , inj₂ ((₁₊ a3' , b3) , lm3)))) Base.selinger-c12 =
   c12-go-0aa a2' a3' b1 b2 b3 lm3
-srel-wd {suc (suc (suc m))} (inj₂ ((₁₊ a1' , b1) , inj₂ ((₁₊ a2' , b2) , inj₂ ((₁₊ a3' , b3) , lm3)))) Base.selinger-c12 = {!!}
+srel-wd {suc (suc (suc m))} (inj₂ ((₁₊ a1' , b1) , inj₂ ((₁₊ a2' , b2) , inj₂ ((₁₊ a3' , b3) , lm3)))) Base.selinger-c12 =
+  c12-go-aaa a1' a2' a3' b1 b2 b3 lm3
 srel-wd c Base.selinger-c13   = {!!}
 srel-wd c Base.selinger-c14   = {!!}
 srel-wd c Base.selinger-c15   = {!!}
