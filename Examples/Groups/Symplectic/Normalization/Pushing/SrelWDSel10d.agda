@@ -38,7 +38,7 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
-  using (-‿distribʳ-* ; -‿distribˡ-*)
+  using (-‿distribʳ-* ; -‿distribˡ-* ; -‿involutive ; -‿+-comm)
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDZM
   p-2 p-prime using (iexp ; ineg)
@@ -313,3 +313,187 @@ module _ {m : ℕ} (a2' b2'' w : Fin (₁₊ p-2))
       ≈⟨ assoc ⟩
     ZM (-' q*) ↑ •
       (S^ (rv * r₂v) ↑ • (h • (CZ^ (- q₂v) • (h • (S^ r₂v ↑ • S⁻¹))))) ∎
+
+------------------------------------------------------------------------
+-- The L-side tail: H↑ • S^(-q₂)↑ • H↑³ collapses to the r₂-unit, by
+-- three derived-7 rounds and Borel merges.
+
+module TailValues (a2' b2'' w : Fin (₁₊ p-2))
+  (eq-w : ₁₊ b2'' + ₁₊ a2' ≡ ₁₊ w) where
+
+  open BValues a2' b2'' w eq-w public
+
+  it₃f : ℤ ₚ
+  it₃f = (r₂* ⁻¹) .proj₁
+
+  private
+    instR₂ = nztoℕ {y = r₂* .proj₁} {neq0 = r₂* .proj₂}
+
+  vg' : - (((-' q₂*) ⁻¹) .proj₁) ≡ r₂v
+  vg' = Eq.trans (Eq.cong -_ (ineg q₂* (-' q₂*) Eq.refl))
+    (Eq.trans (-‿involutive ((q₂* ⁻¹) .proj₁))
+    (Eq.trans (iexp Sv* B*) (*-comm iSv (₁₊ b2''))))
+
+  vt1 : - it₃f * (r₂v * r₂v) ≡ - r₂v
+  vt1 = Eq.trans (Eq.sym (-‿distribˡ-* it₃f (r₂v * r₂v)))
+    (Eq.cong -_ (Eq.trans (Eq.sym (*-assoc it₃f r₂v r₂v))
+      (Eq.trans (Eq.cong (_* r₂v)
+          (lemma-⁻¹ˡ (r₂* .proj₁) {{instR₂}}))
+        (*-identityˡ r₂v))))
+
+  vbig : ((r₂* *' (r₂* ⁻¹)) *' (-' (₁ , λ ()))) .proj₁ ≡
+         (-' (₁ , λ ())) .proj₁
+  vbig = Eq.trans (Eq.cong (_* - ₁)
+      (lemma-⁻¹ʳ (r₂* .proj₁) {{instR₂}}))
+    (*-identityˡ (- ₁))
+
+  vslot : - it₃f ≡ (-' q₂*) .proj₁
+  vslot = Eq.cong -_
+    (Eq.trans (iexp B* Sv*) (*-comm iB (₁₊ w)))
+
+  vt5 : r₂v * (it₃f * it₃f) ≡ it₃f
+  vt5 = Eq.trans (Eq.sym (*-assoc r₂v it₃f it₃f))
+    (Eq.trans (Eq.cong (_* it₃f)
+        (lemma-⁻¹ʳ (r₂* .proj₁) {{instR₂}}))
+      (*-identityˡ it₃f))
+
+  vneg-l : ((-' (₁ , λ ())) *' r₂*) .proj₁ ≡ (-' r₂*) .proj₁
+  vneg-l = Eq.trans (*-comm (- ₁) r₂v)
+    (Eq.trans (Eq.sym (-‿distribʳ-* r₂v ₁))
+      (Eq.cong -_ (*-identityʳ r₂v)))
+
+  negneg : ∀ (x y : ℤ ₚ) → - x * - y ≡ x * y
+  negneg x y = Eq.trans (Eq.sym (-‿distribˡ-* x (- y)))
+    (Eq.trans (Eq.cong -_ (Eq.sym (-‿distribʳ-* x y)))
+      (-‿involutive (x * y)))
+
+  vm3 : - r₂v * (((-' r₂*) ⁻¹) .proj₁ * ((-' r₂*) ⁻¹) .proj₁) ≡ - it₃f
+  vm3 = Eq.trans (Eq.cong (λ t → - r₂v * (t * t))
+      (ineg r₂* (-' r₂*) Eq.refl))
+    (Eq.trans (Eq.cong (- r₂v *_) (negneg it₃f it₃f))
+    (Eq.trans (Eq.sym (-‿distribˡ-* r₂v (it₃f * it₃f)))
+      (Eq.cong -_ vt5)))
+
+module _ {m : ℕ} (a2' b2'' w : Fin (₁₊ p-2))
+  (eq-w : ₁₊ b2'' + ₁₊ a2' ≡ ₁₊ w) where
+
+  open PB ((₂₊ m) QRel,_===_)
+  open PP ((₂₊ m) QRel,_===_)
+  open SR word-setoid
+  open TailValues a2' b2'' w eq-w
+
+  private
+    module L0m = Lemmas0 m
+
+    h : Word (Gen (₂₊ m))
+    h = H {m} ↑
+
+    hp3 : Word (Gen (₂₊ m))
+    hp3 = (H {m} ↑) ^ 3
+
+  -- The M-headed derived-7, lifted.
+  d7fullup : ∀ (x y : ℤ* ₚ) →
+    ZM y ↑ • (H {m} ↑ • (S^ (x .proj₁) ↑ • H ↑)) ≈
+    S^ (- ((x ⁻¹) .proj₁) * (y .proj₁ * y .proj₁)) ↑ •
+      (ZM ((y *' (x ⁻¹)) *' (-' (₁ , λ ()))) ↑ •
+        (H ↑ • S^ (- ((x ⁻¹) .proj₁)) ↑))
+  d7fullup x y = lemma-cong↑
+    (ZM y • (H • (S^ (x .proj₁) • H)))
+    (S^ (- ((x ⁻¹) .proj₁) * (y .proj₁ * y .proj₁)) •
+      (ZM ((y *' (x ⁻¹)) *' (-' (₁ , λ ()))) •
+        (H • S^ (- ((x ⁻¹) .proj₁)))))
+    (L0m.derived-7 (x .proj₁) (y .proj₁) (x .proj₂) (y .proj₂))
+
+  Ttail : h • (S^ (- q₂v) ↑ • hp3) ≈
+          ZM (-' r₂*) ↑ • (S^ it₃f ↑ • (h • S^ r₂v ↑))
+  Ttail = begin
+    h • (S^ (- q₂v) ↑ • hp3)
+      ≈⟨ cright (sym assoc) ⟩
+    h • ((S^ (- q₂v) ↑ • h) • (h • h))
+      ≈⟨ sym assoc ⟩
+    (h • (S^ (- q₂v) ↑ • h)) • (h • h)
+      ≈⟨ cleft (d7εup (-' q₂*)) ⟩
+    (S^ (- (((-' q₂*) ⁻¹) .proj₁)) ↑ •
+      (ZM (-' ((-' q₂*) ⁻¹)) ↑ •
+        (h • S^ (- (((-' q₂*) ⁻¹) .proj₁)) ↑))) • (h • h)
+      ≈⟨ cleft (cleft (refl' (Eq.cong (λ t → S^ t ↑) vg'))) ⟩
+    (S^ r₂v ↑ • (ZM (-' ((-' q₂*) ⁻¹)) ↑ •
+      (h • S^ (- (((-' q₂*) ⁻¹) .proj₁)) ↑))) • (h • h)
+      ≈⟨ cleft (cright (cleft (ZMvalup (-' ((-' q₂*) ⁻¹)) r₂* vg'))) ⟩
+    (S^ r₂v ↑ • (ZM r₂* ↑ •
+      (h • S^ (- (((-' q₂*) ⁻¹) .proj₁)) ↑))) • (h • h)
+      ≈⟨ cleft (cright (cright (cright (refl'
+           (Eq.cong (λ t → S^ t ↑) vg'))))) ⟩
+    (S^ r₂v ↑ • (ZM r₂* ↑ • (h • S^ r₂v ↑))) • (h • h)
+      ≈⟨ assoc ⟩
+    S^ r₂v ↑ • ((ZM r₂* ↑ • (h • S^ r₂v ↑)) • (h • h))
+      ≈⟨ cright assoc ⟩
+    S^ r₂v ↑ • (ZM r₂* ↑ • ((h • S^ r₂v ↑) • (h • h)))
+      ≈⟨ cright (cright assoc) ⟩
+    S^ r₂v ↑ • (ZM r₂* ↑ • (h • (S^ r₂v ↑ • (h • h))))
+      ≈⟨ cright (cright (cright (sym assoc))) ⟩
+    S^ r₂v ↑ • (ZM r₂* ↑ • (h • ((S^ r₂v ↑ • h) • h)))
+      ≈⟨ cright (cright (sym assoc)) ⟩
+    S^ r₂v ↑ • (ZM r₂* ↑ • ((h • (S^ r₂v ↑ • h)) • h))
+      ≈⟨ cright (sym assoc) ⟩
+    S^ r₂v ↑ • ((ZM r₂* ↑ • (h • (S^ r₂v ↑ • h))) • h)
+      ≈⟨ cright (cleft (d7fullup r₂* r₂*)) ⟩
+    S^ r₂v ↑ • ((S^ (- it₃f * (r₂v * r₂v)) ↑ •
+      (ZM ((r₂* *' (r₂* ⁻¹)) *' (-' (₁ , λ ()))) ↑ •
+        (h • S^ (- it₃f) ↑))) • h)
+      ≈⟨ cright (cleft (cleft (refl' (Eq.cong (λ t → S^ t ↑) vt1)))) ⟩
+    S^ r₂v ↑ • ((S^ (- r₂v) ↑ •
+      (ZM ((r₂* *' (r₂* ⁻¹)) *' (-' (₁ , λ ()))) ↑ •
+        (h • S^ (- it₃f) ↑))) • h)
+      ≈⟨ cright (cleft (cright (cleft (ZMvalup
+           ((r₂* *' (r₂* ⁻¹)) *' (-' (₁ , λ ())))
+           (-' (₁ , λ ())) vbig)))) ⟩
+    S^ r₂v ↑ • ((S^ (- r₂v) ↑ • (ZM (-' (₁ , λ ())) ↑ •
+      (h • S^ (- it₃f) ↑))) • h)
+      ≈⟨ cright (cleft (cright (cright (cright (refl'
+           (Eq.cong (λ t → S^ t ↑) vslot)))))) ⟩
+    S^ r₂v ↑ • ((S^ (- r₂v) ↑ • (ZM (-' (₁ , λ ())) ↑ •
+      (h • S^ ((-' q₂*) .proj₁) ↑))) • h)
+      ≈⟨ cright assoc ⟩
+    S^ r₂v ↑ • (S^ (- r₂v) ↑ • ((ZM (-' (₁ , λ ())) ↑ •
+      (h • S^ ((-' q₂*) .proj₁) ↑)) • h))
+      ≈⟨ cright (cright assoc) ⟩
+    S^ r₂v ↑ • (S^ (- r₂v) ↑ • (ZM (-' (₁ , λ ())) ↑ •
+      ((h • S^ ((-' q₂*) .proj₁) ↑) • h)))
+      ≈⟨ cright (cright (cright assoc)) ⟩
+    S^ r₂v ↑ • (S^ (- r₂v) ↑ • (ZM (-' (₁ , λ ())) ↑ •
+      (h • (S^ ((-' q₂*) .proj₁) ↑ • h))))
+      ≈⟨ sym assoc ⟩
+    (S^ r₂v ↑ • S^ (- r₂v) ↑) • (ZM (-' (₁ , λ ())) ↑ •
+      (h • (S^ ((-' q₂*) .proj₁) ↑ • h)))
+      ≈⟨ cleft (trans (Sk+lup r₂v (- r₂v)) (refl'
+           (Eq.cong (λ t → S^ t ↑) (+-inverseʳ r₂v)))) ⟩
+    S^ ₀ ↑ • (ZM (-' (₁ , λ ())) ↑ •
+      (h • (S^ ((-' q₂*) .proj₁) ↑ • h)))
+      ≈⟨ left-unit ⟩
+    ZM (-' (₁ , λ ())) ↑ • (h • (S^ ((-' q₂*) .proj₁) ↑ • h))
+      ≈⟨ cright (d7εup (-' q₂*)) ⟩
+    ZM (-' (₁ , λ ())) ↑ • (S^ (- (((-' q₂*) ⁻¹) .proj₁)) ↑ •
+      (ZM (-' ((-' q₂*) ⁻¹)) ↑ •
+        (h • S^ (- (((-' q₂*) ⁻¹) .proj₁)) ↑)))
+      ≈⟨ cright (cleft (refl' (Eq.cong (λ t → S^ t ↑) vg'))) ⟩
+    ZM (-' (₁ , λ ())) ↑ • (S^ r₂v ↑ •
+      (ZM (-' ((-' q₂*) ⁻¹)) ↑ •
+        (h • S^ (- (((-' q₂*) ⁻¹) .proj₁)) ↑)))
+      ≈⟨ cright (cright (cleft (ZMvalup (-' ((-' q₂*) ⁻¹)) r₂* vg'))) ⟩
+    ZM (-' (₁ , λ ())) ↑ • (S^ r₂v ↑ • (ZM r₂* ↑ •
+      (h • S^ (- (((-' q₂*) ⁻¹) .proj₁)) ↑)))
+      ≈⟨ cright (cright (cright (cright (refl'
+           (Eq.cong (λ t → S^ t ↑) vg'))))) ⟩
+    ZM (-' (₁ , λ ())) ↑ • (S^ r₂v ↑ • (ZM r₂* ↑ • (h • S^ r₂v ↑)))
+      ≈⟨ cright (sym assoc) ⟩
+    ZM (-' (₁ , λ ())) ↑ • ((S^ r₂v ↑ • ZM r₂* ↑) • (h • S^ r₂v ↑))
+      ≈⟨ cright (cleft (SZmoveup r₂v r₂* it₃f vt5)) ⟩
+    ZM (-' (₁ , λ ())) ↑ • ((ZM r₂* ↑ • S^ it₃f ↑) • (h • S^ r₂v ↑))
+      ≈⟨ cright assoc ⟩
+    ZM (-' (₁ , λ ())) ↑ • (ZM r₂* ↑ • (S^ it₃f ↑ • (h • S^ r₂v ↑)))
+      ≈⟨ sym assoc ⟩
+    (ZM (-' (₁ , λ ())) ↑ • ZM r₂* ↑) • (S^ it₃f ↑ • (h • S^ r₂v ↑))
+      ≈⟨ cleft (Zmulup (-' (₁ , λ ())) r₂* (-' r₂*) vneg-l) ⟩
+    ZM (-' r₂*) ↑ • (S^ it₃f ↑ • (h • S^ r₂v ↑)) ∎
+
