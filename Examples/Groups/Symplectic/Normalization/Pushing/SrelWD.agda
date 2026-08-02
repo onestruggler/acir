@@ -78,6 +78,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ2 p-2 p-pr
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10 p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10b p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10e p-2 p-prime
 
 ------------------------------------------------------------------------
 -- The axioms, one at a time.
@@ -314,7 +315,7 @@ srel-wd {suc (suc m)} (inj₂ ((₀ , b1) , inj₂ ((₁₊ a2' , ₁₊ b2'') ,
   elim-fin (₁₊ b2'' + ₁₊ a2')
     (λ eqs → elim-suc (- ₁₊ a2') (neg≢0 (₁₊ a2') λ ()) λ y eq-y →
        c10-go-0aaA b1 a2' b2'' y lm2 eqs eq-y)
-    (λ w eqw → {!!})
+    (λ w eqw → c10-go-0aaB b1 a2' b2'' w lm2 eqw)
 srel-wd {suc (suc m)} (inj₂ ((₁₊ a1' , b1) , inj₂ (d2 , lm2))) Base.selinger-c10 = {!!}
 srel-wd c Base.selinger-c11   = {!!}
 -- selinger-c12 on triply-inj₂ cosets with a clean middle wire: the two
