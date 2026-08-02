@@ -42,6 +42,8 @@ open import Algebra.Properties.Ring (+-*-ring p-2)
 
 import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime as DDCZ
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDCZ p-2 p-prime
+  using (pow-↑ ; conj-pow)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ2 p-2 p-prime
   using (ract-↑-≡)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ p-2 p-prime
@@ -514,3 +516,110 @@ module _ {m : ℕ} where
             (λ w → inj₂ ((₁₊ a1' , b1 + - ₁₊ a2') ,
               inj₂ ((₁₊ a2' , w) , inj₂ ((₀ , b3 + - ₁₊ a2') , lm3))))
             (e0 (b2 + - ₁₊ a1'))))))
+
+    -- CZ commutes with a singly-lifted S-power (comm-CZ-S↑ powered).
+    comm-CZ-S^↑ : ∀ (t : ℤ ₚ) → CZ • S^ t ↑ ≈ S^ t ↑ • CZ
+    comm-CZ-S^↑ t =
+      trans (cright (refl' (Eq.sym (pow-↑ S (toℕ t)))))
+      (trans (comm⇒pow-comm {w = CZ} {v = S ↑} 1 (toℕ t) (axiom comm-CZ-S↑))
+             (cleft (refl' (pow-↑ S (toℕ t)))))
+
+    c12-go-0aa : ∀ (a2' a3' : Fin (₁₊ p-2)) (b1 b2 b3 : ℤ ₚ) (lm3 : C (₁₊ m)) →
+      ((ract3 ᵗ) (inj₂ ((₀ , b1) , inj₂ ((₁₊ a2' , b2) , inj₂ ((₁₊ a3' , b3) , lm3))))
+        (CZ ↑ • CZ)) ≋
+      ((ract3 ᵗ) (inj₂ ((₀ , b1) , inj₂ ((₁₊ a2' , b2) , inj₂ ((₁₊ a3' , b3) , lm3))))
+        (CZ • CZ ↑))
+    c12-go-0aa a2' a3' b1 b2 b3 lm3 = resid≈ , coset≡
+      where
+      lm : C (₃₊ m)
+      lm = inj₂ ((₁₊ a2' , b2) , inj₂ ((₁₊ a3' , b3) , lm3))
+
+      e0 : ∀ (t : ℤ ₚ) → t + - ₀ ≡ t
+      e0 t = Eq.trans (Eq.cong (t +_) -0#≈0#) (+-identityʳ t)
+
+      u₂ = - ₁₊ a3' * ((₁₊ a2' , λ ()) ⁻¹) .proj₁
+      v₂ = - ₁₊ a2' * ((₁₊ a3' , λ ()) ⁻¹) .proj₁
+
+      Z₂ Y : Word (Gen (₃₊ m))
+      Z₂ = (H ↑) ↑ • ((CZ ↑ • (S^ u₂ ↑ • S^ v₂ ↑ ↑)) • ((H ↑) ↑) ^ 3)
+      Y  = H ↑ • (CZ • (H ↑) ^ 3)
+
+      padWi : ∀ (B G : ℤ ₚ) →
+        (DDCZ.dir-of ((₁₊ a2' , B) ∷ (₁₊ a3' , G) ∷ []) ↓ᵏ m) ≡
+        H • (H ↑ • (CZ • (S^ u₂ • (H ^ 3 • (S^ v₂ ↑ • (H ↑) ^ 3)))))
+      padWi B G = Eq.cong₂
+        (λ s t → H • (H ↑ • (CZ • (s • (H ^ 3 • (t • (H ↑) ^ 3))))))
+        (S^-↓ᵏ u₂ m)
+        (Eq.trans (↑↓ᵏ-comm (S^ v₂) m) (Eq.cong _↑ (S^-↓ᵏ v₂ m)))
+
+      module PBm = PB ((₂₊ m) QRel,_===_)
+      module PPm = PP ((₂₊ m) QRel,_===_)
+
+      -- The inner escape in single-H-conjugated form.
+      innerZ : PBm._≈_
+        (H • (H ↑ • (CZ • (S^ u₂ • (H ^ 3 • (S^ v₂ ↑ • (H ↑) ^ 3))))))
+        (H • ((H ↑ • ((CZ • (S^ u₂ • S^ v₂ ↑)) • (H ↑) ^ 3)) • H ^ 3))
+      innerZ =
+        PBm.trans (reshape {m} CZ u₂ v₂)
+        (PBm.trans PBm.assoc
+        (PBm.trans (PBm.cong PBm.refl (PBm.cong PBm.refl
+            (PBm.cong PBm.refl
+              (PPm.comm⇒pow-comm {w = H} {v = H ↑} 3 3
+                (lemma-comm-H-w↑ H)))))
+        (PBm.trans (PBm.cong PBm.refl (PBm.cong PBm.refl
+            (PBm.sym PBm.assoc)))
+          (PBm.cong PBm.refl (PBm.sym PBm.assoc)))))
+
+      liftZ' : ∀ (B G : ℤ ₚ) →
+        (DDCZ.dir-of ((₁₊ a2' , B) ∷ (₁₊ a3' , G) ∷ []) ↓ᵏ m) ↑ ≈
+        H ↑ • (Z₂ • (H ↑) ^ 3)
+      liftZ' B G = trans (refl' (Eq.cong _↑ (padWi B G)))
+        (lemma-cong↑
+          (H • (H ↑ • (CZ • (S^ u₂ • (H ^ 3 • (S^ v₂ ↑ • (H ↑) ^ 3))))))
+          (H • ((H ↑ • ((CZ • (S^ u₂ • S^ v₂ ↑)) • (H ↑) ^ 3)) • H ^ 3))
+          innerZ)
+
+      Z₂CZ : Z₂ • CZ ≈ CZ • Z₂
+      Z₂CZ = cpL (sym (lemma-comm-CZ-w↑ H))
+        (cpL (cpL (axiom selinger-c12)
+          (cpL (sym (comm-CZ-S^↑ u₂))
+            (sym (lemma-comm-CZ-w↑ (S^ v₂)))))
+          (comm⇒pow-comm {w = (H ↑) ↑} {v = CZ} 3 1
+            (sym (lemma-comm-CZ-w↑ H))))
+
+      slide : (H ↑ • (Z₂ • (H ↑) ^ 3)) • Y ≈ Y • (H ↑ • (Z₂ • (H ↑) ^ 3))
+      slide =
+        trans (conj-merge Z₂ CZ)
+        (trans (cright (cleft Z₂CZ))
+               (sym (conj-merge CZ Z₂)))
+
+      resid≈ : ((ract3 ᵗ) (inj₂ ((₀ , b1) , lm)) (CZ ↑ • CZ)) .proj₁ ≈
+               ((ract3 ᵗ) (inj₂ ((₀ , b1) , lm)) (CZ • CZ ↑)) .proj₁
+      resid≈ =
+        trans (refl' (Eq.cong
+            (λ pr → pr .proj₁ • ((ract3 ᵗ) (pr .proj₂) CZ) .proj₁)
+            (ract-↑-≡ (₀ , b1) lm CZ)))
+        (trans (cong (liftZ' b2 b3) refl)
+        (trans slide
+        (trans (cong refl (sym (liftZ' (b2 + - ₀) b3)))
+        (sym (refl' (Eq.cong
+            (λ pr → Y • pr .proj₁)
+            (ract-↑-≡ (₀ , b1 + - ₁₊ a2')
+              (inj₂ ((₁₊ a2' , b2 + - ₀) , inj₂ ((₁₊ a3' , b3) , lm3))) CZ)))))))
+
+      coset≡ : ((ract3 ᵗ) (inj₂ ((₀ , b1) , lm)) (CZ ↑ • CZ)) .proj₂ ≡
+               ((ract3 ᵗ) (inj₂ ((₀ , b1) , lm)) (CZ • CZ ↑)) .proj₂
+      coset≡ =
+        Eq.trans (Eq.cong (λ pr → ((ract3 ᵗ) (pr .proj₂) CZ) .proj₂)
+            (ract-↑-≡ (₀ , b1) lm CZ))
+        (Eq.trans (Eq.cong
+            (λ w → inj₂ ((₀ , b1 + - ₁₊ a2') ,
+              inj₂ ((₁₊ a2' , w) , inj₂ ((₁₊ a3' , b3 + - ₁₊ a2') , lm3))))
+            (e0 (b2 + - ₁₊ a3')))
+        (Eq.sym (Eq.trans (Eq.cong proj₂
+            (ract-↑-≡ (₀ , b1 + - ₁₊ a2')
+              (inj₂ ((₁₊ a2' , b2 + - ₀) , inj₂ ((₁₊ a3' , b3) , lm3))) CZ))
+          (Eq.cong
+            (λ w → inj₂ ((₀ , b1 + - ₁₊ a2') ,
+              inj₂ ((₁₊ a2' , w) , inj₂ ((₁₊ a3' , b3 + - ₁₊ a2') , lm3))))
+            (Eq.cong (_+ - ₁₊ a3') (e0 b2))))))
