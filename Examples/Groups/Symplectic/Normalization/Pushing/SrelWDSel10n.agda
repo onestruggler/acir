@@ -149,3 +149,109 @@ module _ {j : ℕ} where
     vone = Eq.trans (negneg ((Q ⁻¹) .proj₁) (((Q ⁻¹) ⁻¹) .proj₁))
       (lemma-⁻¹ʳ ((Q ⁻¹) .proj₁)
         {{nztoℕ {y = (Q ⁻¹) .proj₁} {neq0 = (Q ⁻¹) .proj₂}}})
+
+------------------------------------------------------------------------
+-- The two crossing lemmas.  The S^δ that separates the two sides is
+-- produced by lem1 and consumed by lem2.
+
+module _ {j : ℕ} where
+  open PB ((₁₊ j) QRel,_===_)
+  open PP ((₁₊ j) QRel,_===_)
+  open SR word-setoid
+  open Lemmas0 j using (lemma-S^k+l ; aux-MM)
+
+  -- lem1 : the pre-CZ block, leaving S^δ on the right.
+  lem1 : ∀ (Qz : ℤ* ₚ) →
+    let qz = Qz .proj₁ ; izQ = (Qz ⁻¹) .proj₁ in
+    (H • (S^ (- ((Qz ⁻¹) .proj₁)) • H)) • S⁻¹ ≈
+    ZM Qz • (S^ ((Qz ⁻¹) .proj₁) • (H • S^ (Qz .proj₁ + - ₁)))
+  lem1 Qz = begin
+    (H • (S^ (- ((Qz ⁻¹) .proj₁)) • H)) • S⁻¹
+      ≈⟨ cleft (d7ε X) ⟩
+    (S^ (- ((X ⁻¹) .proj₁)) •
+      (ZM (-' (X ⁻¹)) • (H • S^ (- ((X ⁻¹) .proj₁))))) • S⁻¹
+      ≈⟨ cleft (cleft (refl' (Eq.cong S^ negX))) ⟩
+    (S^ (Qz .proj₁) •
+      (ZM (-' (X ⁻¹)) • (H • S^ (- ((X ⁻¹) .proj₁))))) • S⁻¹
+      ≈⟨ cleft (cright (cleft
+           (aux-MM ((-' (X ⁻¹)) .proj₂) (Qz .proj₂) negX))) ⟩
+    (S^ (Qz .proj₁) • (ZM Qz • (H • S^ (- ((X ⁻¹) .proj₁))))) • S⁻¹
+      ≈⟨ cleft (cright (cright (cright (refl' (Eq.cong S^ negX))))) ⟩
+    (S^ (Qz .proj₁) • (ZM Qz • (H • S^ (Qz .proj₁)))) • S⁻¹
+      ≈⟨ trans assoc (trans (cright assoc) (cright (cright assoc))) ⟩
+    S^ (Qz .proj₁) • (ZM Qz • (H • (S^ (Qz .proj₁) • S⁻¹)))
+      ≈⟨ cright (cright (cright (trans
+           (cright (refl' (Eq.sym (SIfix {j}))))
+           (lemma-S^k+l (Qz .proj₁) (- ₁))))) ⟩
+    S^ (Qz .proj₁) • (ZM Qz • (H • S^ (Qz .proj₁ + - ₁)))
+      ≈⟨ trans (sym assoc)
+           (trans (cleft (SZmove (Qz .proj₁) Qz ((Qz ⁻¹) .proj₁) vmove))
+             assoc) ⟩
+    ZM Qz • (S^ ((Qz ⁻¹) .proj₁) • (H • S^ (Qz .proj₁ + - ₁))) ∎
+    where
+    X : ℤ* ₚ
+    X = -' (Qz ⁻¹)
+
+    negX : - ((X ⁻¹) .proj₁) ≡ Qz .proj₁
+    negX = Eq.trans (Eq.cong -_
+        (Eq.trans (ineg (Qz ⁻¹) X Eq.refl)
+          (Eq.cong -_ (inv-involutive Qz))))
+      (-‿involutive (Qz .proj₁))
+
+    vmove : Qz .proj₁ * (((Qz ⁻¹) .proj₁) * ((Qz ⁻¹) .proj₁)) ≡
+            (Qz ⁻¹) .proj₁
+    vmove = Eq.trans (Eq.sym (*-assoc (Qz .proj₁) ((Qz ⁻¹) .proj₁)
+        ((Qz ⁻¹) .proj₁)))
+      (Eq.trans (Eq.cong (_* ((Qz ⁻¹) .proj₁))
+          (lemma-⁻¹ʳ (Qz .proj₁)
+            {{nztoℕ {y = Qz .proj₁} {neq0 = Qz .proj₂}}}))
+        (*-identityˡ ((Qz ⁻¹) .proj₁)))
+
+  -- lem2 : the post-CZ block, consuming the S^δ on the left.
+  lem2 : ∀ (Qzy : ℤ* ₚ) (δ vz : ℤ ₚ) →
+    δ + ((Qzy ⁻¹) .proj₁) ≡ vz →
+    S^ δ • (H • (S^ (- (Qzy .proj₁)) • H ^ 3)) ≈
+    S^ vz • (H ^ 3 • (ZM Qzy • S^ ((Qzy ⁻¹) .proj₁)))
+  lem2 Qzy δ vz dv = begin
+    S^ δ • (H • (S^ (- (Qzy .proj₁)) • H ^ 3))
+      ≈⟨ cright (trans (cright (sym assoc)) (sym assoc)) ⟩
+    S^ δ • ((H • (S^ (- (Qzy .proj₁)) • H)) • (H • H))
+      ≈⟨ cright (cleft (d7ε Y)) ⟩
+    S^ δ • ((S^ (- ((Y ⁻¹) .proj₁)) •
+      (ZM (-' (Y ⁻¹)) • (H • S^ (- ((Y ⁻¹) .proj₁))))) • (H • H))
+      ≈⟨ cright (cleft (cleft (refl' (Eq.cong S^ negY)))) ⟩
+    S^ δ • ((S^ ((Qzy ⁻¹) .proj₁) •
+      (ZM (-' (Y ⁻¹)) • (H • S^ (- ((Y ⁻¹) .proj₁))))) • (H • H))
+      ≈⟨ cright (cleft (cright (cleft
+           (aux-MM ((-' (Y ⁻¹)) .proj₂) ((Qzy ⁻¹) .proj₂) negY)))) ⟩
+    S^ δ • ((S^ ((Qzy ⁻¹) .proj₁) •
+      (ZM (Qzy ⁻¹) • (H • S^ (- ((Y ⁻¹) .proj₁))))) • (H • H))
+      ≈⟨ cright (cleft (cright (cright (cright
+           (refl' (Eq.cong S^ negY)))))) ⟩
+    S^ δ • ((S^ ((Qzy ⁻¹) .proj₁) •
+      (ZM (Qzy ⁻¹) • (H • S^ ((Qzy ⁻¹) .proj₁)))) • (H • H))
+      ≈⟨ cright (trans assoc (trans (cright assoc)
+           (cright (cright assoc)))) ⟩
+    S^ δ • (S^ ((Qzy ⁻¹) .proj₁) • (ZM (Qzy ⁻¹) •
+      (H • (S^ ((Qzy ⁻¹) .proj₁) • (H • H)))))
+      ≈⟨ cright (cright (cright (cright (SkHH ((Qzy ⁻¹) .proj₁))))) ⟩
+    S^ δ • (S^ ((Qzy ⁻¹) .proj₁) • (ZM (Qzy ⁻¹) •
+      (H • ((H • H) • S^ ((Qzy ⁻¹) .proj₁)))))
+      ≈⟨ cright (cright (cright (sym assoc))) ⟩
+    S^ δ • (S^ ((Qzy ⁻¹) .proj₁) • (ZM (Qzy ⁻¹) •
+      (H ^ 3 • S^ ((Qzy ⁻¹) .proj₁))))
+      ≈⟨ trans (sym assoc) (cleft (trans
+           (lemma-S^k+l δ ((Qzy ⁻¹) .proj₁))
+           (refl' (Eq.cong S^ dv)))) ⟩
+    S^ vz • (ZM (Qzy ⁻¹) • (H ^ 3 • S^ ((Qzy ⁻¹) .proj₁)))
+      ≈⟨ cright (trans (sym assoc)
+           (trans (cleft (sym (H3M Qzy))) assoc)) ⟩
+    S^ vz • (H ^ 3 • (ZM Qzy • S^ ((Qzy ⁻¹) .proj₁))) ∎
+    where
+    Y : ℤ* ₚ
+    Y = -' Qzy
+
+    negY : - ((Y ⁻¹) .proj₁) ≡ (Qzy ⁻¹) .proj₁
+    negY = Eq.trans (Eq.cong -_ (ineg Qzy Y Eq.refl))
+      (-‿involutive ((Qzy ⁻¹) .proj₁))
+
