@@ -273,3 +273,189 @@ module _ {m : ℕ} (a1' a2' y : Fin (₁₊ p-2))
            (refl' (Eq.cong S^ wc4)))) ⟩
     S • (H • S^ (- irŷ)) ∎
 
+
+------------------------------------------------------------------------
+-- The βα residual identity.
+
+module _ {m : ℕ} (a1' a2' y : Fin (₁₊ p-2))
+  (ySum : ₁₊ y ≡ - (₁₊ a2' + ₁₊ a1')) where
+
+  open PB ((₂₊ m) QRel,_===_)
+  open PP ((₂₊ m) QRel,_===_)
+  open SR word-setoid
+  open BAValues a1' a2' y ySum
+
+  private
+    h : Word (Gen (₂₊ m))
+    h = H {m} ↑
+
+    WD : Word (Gen (₂₊ m))
+    WD = H • (CZ • H ^ 3)
+
+    PADg PADy : Word (Gen (₂₊ m))
+    PADg = H • (h • (CZ • (S^ u₁v • (H ^ 3 • (S^ v₁v ↑ • h ^ 3)))))
+    PADy = H • (h • (CZ • (S^ uyv • (H ^ 3 • (S^ vyv ↑ • h ^ 3)))))
+
+    SkW : ∀ (k : ℤ ₚ) (w : Word (Gen (₁₊ m))) →
+      S^ k • w ↑ ≈ w ↑ • S^ k
+    SkW k w = comm⇒pow-comm {w = S} {v = w ↑} (toℕ k) 1
+      (lemma-comm-S-w↑ w)
+
+    SkCZ : ∀ (k : ℤ ₚ) → S^ k • CZ ≈ CZ • S^ k
+    SkCZ k = comm⇒pow-comm {w = S} {v = CZ} (toℕ k) 1
+      (sym (axiom comm-CZ-S↓))
+
+    HW : ∀ (w : Word (Gen (₁₊ m))) → H • w ↑ ≈ w ↑ • H
+    HW w = lemma-comm-H-w↑ w
+
+    H3W : ∀ (w : Word (Gen (₁₊ m))) → H ^ 3 • w ↑ ≈ w ↑ • H ^ 3
+    H3W w = comm⇒pow-comm {w = H} {v = w ↑} 3 1 (lemma-comm-H-w↑ w)
+
+    module L0up = Lemmas0 (₁₊ m)
+
+    H4bot : H {₁₊ m} ^ 3 • H ≈ ε
+    H4bot = trans assoc (trans (cright assoc) (axiom order-H))
+
+    midup : S^ v₁v ↑ • (h ^ 3 • (ZM qŷp ↑ • (S^ rŷv ↑ • h))) ≈
+            S ↑ • (h • S^ (- irŷ) ↑)
+    midup = lemma-cong↑
+      (S^ v₁v • (H ^ 3 • (ZM qŷp • (S^ rŷv • H))))
+      (S • (H • S^ (- irŷ)))
+      (midlow a1' a2' y ySum)
+
+    fixdownL : S⁻¹ {m} ↑ •
+        (h • (S⁻¹ ↑ • (CZ • (h • (S⁻¹ ↑ • S⁻¹ ↓))))) ≡
+      S⁻¹ ↑ • (h • (S⁻¹ ↑ • (CZ • (h • (S⁻¹ ↑ • S⁻¹)))))
+    fixdownL = Eq.cong
+      (λ u → S⁻¹ ↑ • (h • (S⁻¹ ↑ • (CZ • (h • (S⁻¹ ↑ • u))))))
+      (↓-pow-S p-1)
+
+  idβα : PADg • ((ZM qŷp ↑ • S^ rŷv ↑) • PADy) ≈
+         (h • h) • (S⁻¹ ↑ • WD)
+  idβα = begin
+    PADg • ((ZM qŷp ↑ • S^ rŷv ↑) • PADy)
+      ≈⟨ trans assoc (trans (cright assoc)
+           (trans (cright (cright assoc))
+           (trans (cright (cright (cright assoc)))
+           (trans (cright (cright (cright (cright assoc))))
+             (cright (cright (cright (cright (cright assoc))))))))) ⟩
+    H • (h • (CZ • (S^ u₁v • (H ^ 3 • (S^ v₁v ↑ •
+      (h ^ 3 • ((ZM qŷp ↑ • S^ rŷv ↑) • PADy)))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright (cright
+           assoc)))))) ⟩
+    H • (h • (CZ • (S^ u₁v • (H ^ 3 • (S^ v₁v ↑ • (h ^ 3 •
+      (ZM qŷp ↑ • (S^ rŷv ↑ • (H • (h • (CZ • (S^ uyv •
+        (H ^ 3 • (S^ vyv ↑ • h ^ 3))))))))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright (cright
+           (cright (trans (sym assoc)
+             (trans (cleft (sym (HW (S^ rŷv))))
+               assoc))))))))) ⟩
+    H • (h • (CZ • (S^ u₁v • (H ^ 3 • (S^ v₁v ↑ • (h ^ 3 •
+      (ZM qŷp ↑ • (H • (S^ rŷv ↑ • (h • (CZ • (S^ uyv •
+        (H ^ 3 • (S^ vyv ↑ • h ^ 3))))))))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright
+           (cright (trans (sym assoc)
+             (trans (cleft (sym (HW (ZM qŷp)))) assoc)))))))) ⟩
+    H • (h • (CZ • (S^ u₁v • (H ^ 3 • (S^ v₁v ↑ • (h ^ 3 •
+      (H • (ZM qŷp ↑ • (S^ rŷv ↑ • (h • (CZ • (S^ uyv •
+        (H ^ 3 • (S^ vyv ↑ • h ^ 3))))))))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright
+           (trans (sym assoc)
+             (trans (cleft (sym (HW (H ^ 3)))) assoc)))))))  ⟩
+    H • (h • (CZ • (S^ u₁v • (H ^ 3 • (S^ v₁v ↑ • (H •
+      (h ^ 3 • (ZM qŷp ↑ • (S^ rŷv ↑ • (h • (CZ • (S^ uyv •
+        (H ^ 3 • (S^ vyv ↑ • h ^ 3))))))))))))))
+      ≈⟨ cright (cright (cright (cright (cright
+           (trans (sym assoc)
+             (trans (cleft (sym (HW (S^ v₁v)))) assoc))))))  ⟩
+    H • (h • (CZ • (S^ u₁v • (H ^ 3 • (H • (S^ v₁v ↑ •
+      (h ^ 3 • (ZM qŷp ↑ • (S^ rŷv ↑ • (h • (CZ • (S^ uyv •
+        (H ^ 3 • (S^ vyv ↑ • h ^ 3))))))))))))))
+      ≈⟨ cright (cright (cright (cright (trans (sym assoc)
+           (trans (cleft H4bot) left-unit))))) ⟩
+    H • (h • (CZ • (S^ u₁v • (S^ v₁v ↑ •
+      (h ^ 3 • (ZM qŷp ↑ • (S^ rŷv ↑ • (h • (CZ • (S^ uyv •
+        (H ^ 3 • (S^ vyv ↑ • h ^ 3))))))))))))
+      ≈⟨ cright (cright (cright (cright (trans (cright
+           (trans (cright (trans (cright (sym assoc)) (sym assoc)))
+             (sym assoc)))
+           (trans (sym assoc)
+             (cleft midup)))))) ⟩
+    H • (h • (CZ • (S^ u₁v • ((S ↑ • (h • S^ (- irŷ) ↑)) •
+      (CZ • (S^ uyv • (H ^ 3 • (S^ vyv ↑ • h ^ 3))))))))
+      ≈⟨ cright (cright (cright (cright (trans assoc
+           (cright assoc))))) ⟩
+    H • (h • (CZ • (S^ u₁v • (S ↑ • (h • (S^ (- irŷ) ↑ •
+      (CZ • (S^ uyv • (H ^ 3 • (S^ vyv ↑ • h ^ 3))))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright
+           (trans (sym assoc)
+             (trans (cleft (sym (comm-CZ-S^↑ (- irŷ))))
+             (trans assoc (cright (trans (sym assoc)
+               (trans (cleft (sym (SkW uyv (S^ (- irŷ)))))
+               (trans assoc (cright (trans (sym assoc)
+                 (trans (cleft (sym (H3W (S^ (- irŷ)))))
+                 (trans assoc (cright (trans (sym assoc)
+                   (trans (cleft (Sk+lup (- irŷ) vyv))
+                     (cleft (refl'
+                       (Eq.cong (λ t → S^ t ↑) wc5)))))))))))))))))))))) ⟩
+    H • (h • (CZ • (S^ u₁v • (S ↑ • (h • (CZ • (S^ uyv •
+      (H ^ 3 • (S ↑ • h ^ 3)))))))))
+      ≈⟨ cright (cright (cright (trans (sym assoc)
+           (trans (cleft (SkW u₁v S))
+           (trans assoc (cright (trans (sym assoc)
+             (trans (cleft (SkW u₁v H))
+             (trans assoc (cright (trans (sym assoc)
+               (trans (cleft (SkCZ u₁v))
+               (trans assoc (cright (trans (sym assoc)
+                 (trans (cleft (L0up.lemma-S^k+l u₁v uyv))
+                   (cleft (refl' (Eq.cong S^ wc6))))))))))))))))))) ⟩
+    H • (h • (CZ • (S ↑ • (h • (CZ • (S •
+      (H ^ 3 • (S ↑ • h ^ 3))))))))
+      ≈⟨ cright (cright (trans (sym assoc)
+           (trans (cleft (axiom comm-CZ-S↑)) assoc))) ⟩
+    H • (h • (S ↑ • (CZ • (h • (CZ • (S •
+      (H ^ 3 • (S ↑ • h ^ 3))))))))
+      ≈⟨ cright (cright (cright (trans (cright (sym assoc))
+           (trans (sym assoc) (trans (cleft (axiom selinger-c10))
+             (cleft (refl' fixdownL))))))) ⟩
+    H • (h • (S ↑ • ((S⁻¹ ↑ • (h • (S⁻¹ ↑ • (CZ • (h •
+      (S⁻¹ ↑ • S⁻¹)))))) • (S • (H ^ 3 • (S ↑ • h ^ 3))))))
+      ≈⟨ cright (cright (trans (sym assoc)
+           (trans (cleft (trans (sym assoc)
+             (trans (cleft SupSinv) left-unit)))
+             assoc))) ⟩
+    H • (h • (h • ((S⁻¹ ↑ • (CZ • (h • (S⁻¹ ↑ • S⁻¹)))) •
+      (S • (H ^ 3 • (S ↑ • h ^ 3))))))
+      ≈⟨ cright (cright (cright (trans assoc
+           (cright (trans assoc (cright (trans assoc
+             (cright assoc)))))))) ⟩
+    H • (h • (h • (S⁻¹ ↑ • (CZ • (h • (S⁻¹ ↑ • (S⁻¹ •
+      (S • (H ^ 3 • (S ↑ • h ^ 3))))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright (cright
+           (trans (sym assoc)
+             (trans (cleft (Sp-1-S {₁₊ m})) left-unit)))))))) ⟩
+    H • (h • (h • (S⁻¹ ↑ • (CZ • (h • (S⁻¹ ↑ •
+      (H ^ 3 • (S ↑ • h ^ 3))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright
+           (trans (sym assoc)
+             (trans (cleft (sym (H3W S⁻¹)))
+             (trans assoc (cright (trans (sym assoc)
+               (trans (cleft SinvupS) left-unit))))))))))) ⟩
+    H • (h • (h • (S⁻¹ ↑ • (CZ • (h • (H ^ 3 • h ^ 3))))))
+      ≈⟨ cright (cright (cright (cright (cright
+           (trans (sym assoc)
+             (trans (cleft (sym (H3W H)))
+             (trans assoc (cright H4up)))))))) ⟩
+    H • (h • (h • (S⁻¹ ↑ • (CZ • (H ^ 3 • ε)))))
+      ≈⟨ cright (cright (cright (cright (cright right-unit)))) ⟩
+    H • (h • (h • (S⁻¹ ↑ • (CZ • H ^ 3))))
+      ≈⟨ trans (sym assoc) (trans (cleft (HW H)) assoc) ⟩
+    h • (H • (h • (S⁻¹ ↑ • (CZ • H ^ 3))))
+      ≈⟨ cright (trans (sym assoc) (trans (cleft (HW H)) assoc)) ⟩
+    h • (h • (H • (S⁻¹ ↑ • (CZ • H ^ 3))))
+      ≈⟨ cright (cright (trans (sym assoc)
+           (trans (cleft (HW S⁻¹)) assoc))) ⟩
+    h • (h • (S⁻¹ ↑ • (H • (CZ • H ^ 3))))
+      ≈⟨ sym assoc ⟩
+    (h • h) • (S⁻¹ ↑ • WD) ∎
+
