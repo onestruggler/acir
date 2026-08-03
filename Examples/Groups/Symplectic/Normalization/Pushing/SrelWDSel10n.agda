@@ -255,3 +255,206 @@ module _ {j : ℕ} where
     negY = Eq.trans (Eq.cong -_ (ineg Qzy Y Eq.refl))
       (-‿involutive ((Qzy ⁻¹) .proj₁))
 
+
+------------------------------------------------------------------------
+-- The ββ value kit, under zySum : z ≡ y + (a₂ + a₁).
+
+module BBValues (a1' a2' y z : Fin (₁₊ p-2))
+  (zySum : ₁₊ z ≡ ₁₊ y + (₁₊ a2' + ₁₊ a1')) where
+
+  A₁* A₂* Y* Z* : ℤ* ₚ
+  A₁* = (₁₊ a1' , λ ())
+  A₂* = (₁₊ a2' , λ ())
+  Y*  = (₁₊ y , λ ())
+  Z*  = (₁₊ z , λ ())
+
+  iA₁ iA₂ iY iZ : ℤ ₚ
+  iA₁ = (A₁* ⁻¹) .proj₁
+  iA₂ = (A₂* ⁻¹) .proj₁
+  iY  = (Y* ⁻¹) .proj₁
+  iZ  = (Z* ⁻¹) .proj₁
+
+  Qy* Qz* Qzy* : ℤ* ₚ
+  Qy*  = A₂* *' (Y* ⁻¹)
+  Qz*  = A₂* *' (Z* ⁻¹)
+  Qzy* = Z* *' (Y* ⁻¹)
+
+  u₁v v₁v uyv vyv uzv vzv : ℤ ₚ
+  u₁v = - ₁₊ a2' * iA₁
+  v₁v = - ₁₊ a1' * iA₂
+  uyv = - ₁₊ y * iA₁
+  vyv = - ₁₊ a1' * iY
+  uzv = - ₁₊ z * iA₁
+  vzv = - ₁₊ a1' * iZ
+
+  private
+    instA₁ = nztoℕ {y = ₁₊ a1'} {neq0 = λ ()}
+    instA₂ = nztoℕ {y = ₁₊ a2'} {neq0 = λ ()}
+    instY  = nztoℕ {y = ₁₊ y} {neq0 = λ ()}
+    instZ  = nztoℕ {y = ₁₊ z} {neq0 = λ ()}
+
+  open Eq.≡-Reasoning
+
+  -- The two additive rearrangements of zySum.
+  wAY : ₁₊ a1' + ₁₊ y ≡ ₁₊ z + - ₁₊ a2'
+  wAY = begin
+    ₁₊ a1' + ₁₊ y
+      ≡⟨ +-comm (₁₊ a1') (₁₊ y) ⟩
+    ₁₊ y + ₁₊ a1'
+      ≡⟨ Eq.sym (+-identityʳ (₁₊ y + ₁₊ a1')) ⟩
+    (₁₊ y + ₁₊ a1') + ₀
+      ≡⟨ Eq.cong ((₁₊ y + ₁₊ a1') +_) (Eq.sym (+-inverseʳ (₁₊ a2'))) ⟩
+    (₁₊ y + ₁₊ a1') + (₁₊ a2' + - ₁₊ a2')
+      ≡⟨ Eq.sym (+-assoc (₁₊ y + ₁₊ a1') (₁₊ a2') (- ₁₊ a2')) ⟩
+    ((₁₊ y + ₁₊ a1') + ₁₊ a2') + - ₁₊ a2'
+      ≡⟨ Eq.cong (_+ - ₁₊ a2') claim ⟩
+    ₁₊ z + - ₁₊ a2' ∎
+    where
+    claim : (₁₊ y + ₁₊ a1') + ₁₊ a2' ≡ ₁₊ z
+    claim = begin
+      (₁₊ y + ₁₊ a1') + ₁₊ a2'
+        ≡⟨ +-assoc (₁₊ y) (₁₊ a1') (₁₊ a2') ⟩
+      ₁₊ y + (₁₊ a1' + ₁₊ a2')
+        ≡⟨ Eq.cong (₁₊ y +_) (+-comm (₁₊ a1') (₁₊ a2')) ⟩
+      ₁₊ y + (₁₊ a2' + ₁₊ a1')
+        ≡⟨ Eq.sym zySum ⟩
+      ₁₊ z ∎
+
+  wA2Y : ₁₊ a2' + ₁₊ y ≡ ₁₊ z + - ₁₊ a1'
+  wA2Y = begin
+    ₁₊ a2' + ₁₊ y
+      ≡⟨ +-comm (₁₊ a2') (₁₊ y) ⟩
+    ₁₊ y + ₁₊ a2'
+      ≡⟨ Eq.sym (+-identityʳ (₁₊ y + ₁₊ a2')) ⟩
+    (₁₊ y + ₁₊ a2') + ₀
+      ≡⟨ Eq.cong ((₁₊ y + ₁₊ a2') +_) (Eq.sym (+-inverseʳ (₁₊ a1'))) ⟩
+    (₁₊ y + ₁₊ a2') + (₁₊ a1' + - ₁₊ a1')
+      ≡⟨ Eq.sym (+-assoc (₁₊ y + ₁₊ a2') (₁₊ a1') (- ₁₊ a1')) ⟩
+    ((₁₊ y + ₁₊ a2') + ₁₊ a1') + - ₁₊ a1'
+      ≡⟨ Eq.cong (_+ - ₁₊ a1')
+           (Eq.trans (+-assoc (₁₊ y) (₁₊ a2') (₁₊ a1'))
+             (Eq.sym zySum)) ⟩
+    ₁₊ z + - ₁₊ a1' ∎
+
+  wZY : ₁₊ a2' + ₁₊ a1' ≡ ₁₊ z + - ₁₊ y
+  wZY = begin
+    ₁₊ a2' + ₁₊ a1'
+      ≡⟨ Eq.sym (+-identityˡ (₁₊ a2' + ₁₊ a1')) ⟩
+    ₀ + (₁₊ a2' + ₁₊ a1')
+      ≡⟨ Eq.cong (_+ (₁₊ a2' + ₁₊ a1')) (Eq.sym (+-inverseˡ (₁₊ y))) ⟩
+    (- ₁₊ y + ₁₊ y) + (₁₊ a2' + ₁₊ a1')
+      ≡⟨ +-assoc (- ₁₊ y) (₁₊ y) (₁₊ a2' + ₁₊ a1') ⟩
+    - ₁₊ y + (₁₊ y + (₁₊ a2' + ₁₊ a1'))
+      ≡⟨ Eq.cong (- ₁₊ y +_) (Eq.sym zySum) ⟩
+    - ₁₊ y + ₁₊ z
+      ≡⟨ +-comm (- ₁₊ y) (₁₊ z) ⟩
+    ₁₊ z + - ₁₊ y ∎
+
+  -- The generic shape: -(t·i) + -(s·i) ≡ -((t+s)·i).
+  private
+    negsum : ∀ (t s i : ℤ ₚ) → - t * i + - s * i ≡ - ((t + s) * i)
+    negsum t s i = begin
+      - t * i + - s * i
+        ≡⟨ Eq.sym (*-distribʳ-+ i (- t) (- s)) ⟩
+      (- t + - s) * i
+        ≡⟨ Eq.cong (_* i) (-‿+-comm t s) ⟩
+      - (t + s) * i
+        ≡⟨ Eq.sym (-‿distribˡ-* (t + s) i) ⟩
+      - ((t + s) * i) ∎
+
+    -- (w + -x)·i ≡ w·i + -₁ when x·i ≡ ₁.
+    splitone : ∀ (w x i : ℤ ₚ) → x * i ≡ ₁ →
+      (w + - x) * i ≡ w * i + - ₁
+    splitone w x i xi = begin
+      (w + - x) * i
+        ≡⟨ *-distribʳ-+ i w (- x) ⟩
+      w * i + - x * i
+        ≡⟨ Eq.cong (w * i +_) (Eq.trans (Eq.sym (-‿distribˡ-* x i))
+             (Eq.cong -_ xi)) ⟩
+      w * i + - ₁ ∎
+
+    splitneg : ∀ (w x i : ℤ ₚ) → (w + - x) * i ≡ w * i + - (x * i)
+    splitneg w x i = Eq.trans (*-distribʳ-+ i w (- x))
+      (Eq.cong (w * i +_) (Eq.sym (-‿distribˡ-* x i)))
+
+    neg1 : ∀ (t : ℤ ₚ) → - (t + - ₁) + - ₁ ≡ - t
+    neg1 t = begin
+      - (t + - ₁) + - ₁
+        ≡⟨ Eq.cong (_+ - ₁) (Eq.sym (-‿+-comm t (- ₁))) ⟩
+      (- t + - - ₁) + - ₁
+        ≡⟨ Eq.cong (λ u → (- t + u) + - ₁) (-‿involutive ₁) ⟩
+      (- t + ₁) + - ₁
+        ≡⟨ +-assoc (- t) ₁ (- ₁) ⟩
+      - t + (₁ + - ₁)
+        ≡⟨ Eq.cong (- t +_) (+-inverseʳ ₁) ⟩
+      - t + ₀
+        ≡⟨ +-identityʳ (- t) ⟩
+      - t ∎
+
+  αval : (v₁v + - (₁₊ y * iA₂)) + - ₁ ≡ - (₁₊ z * iA₂)
+  αval = Eq.trans
+    (Eq.cong (_+ - ₁)
+      (Eq.trans (Eq.cong (v₁v +_)
+          (-‿distribˡ-* (₁₊ y) iA₂))
+      (Eq.trans (negsum (₁₊ a1') (₁₊ y) iA₂)
+        (Eq.cong -_ (Eq.trans (Eq.cong (_* iA₂) wAY)
+          (splitone (₁₊ z) (₁₊ a2') iA₂
+            (lemma-⁻¹ʳ (₁₊ a2') {{instA₂}})))))))
+    (neg1 (₁₊ z * iA₂))
+
+  βval : (u₁v + uyv) + - ₁ ≡ uzv
+  βval = Eq.trans
+    (Eq.cong (_+ - ₁)
+      (Eq.trans (negsum (₁₊ a2') (₁₊ y) iA₁)
+        (Eq.cong -_ (Eq.trans (Eq.cong (_* iA₁) wA2Y)
+          (splitone (₁₊ z) (₁₊ a1') iA₁
+            (lemma-⁻¹ʳ (₁₊ a1') {{instA₁}}))))))
+    (Eq.trans (neg1 (₁₊ z * iA₁))
+      (-‿distribˡ-* (₁₊ z) iA₁))
+
+  γval : - ₁ + (- (₁₊ a2' * iY) + vyv) ≡ - (₁₊ z * iY)
+  γval = begin
+    - ₁ + (- (₁₊ a2' * iY) + vyv)
+      ≡⟨ Eq.cong (λ t → - ₁ + (t + vyv))
+           (-‿distribˡ-* (₁₊ a2') iY) ⟩
+    - ₁ + (- ₁₊ a2' * iY + - ₁₊ a1' * iY)
+      ≡⟨ Eq.cong (- ₁ +_) (negsum (₁₊ a2') (₁₊ a1') iY) ⟩
+    - ₁ + - ((₁₊ a2' + ₁₊ a1') * iY)
+      ≡⟨ Eq.cong (λ t → - ₁ + - t)
+           (Eq.trans (Eq.cong (_* iY) wZY)
+             (splitone (₁₊ z) (₁₊ y) iY
+               (lemma-⁻¹ʳ (₁₊ y) {{instY}}))) ⟩
+    - ₁ + - (₁₊ z * iY + - ₁)
+      ≡⟨ +-comm (- ₁) (- (₁₊ z * iY + - ₁)) ⟩
+    - (₁₊ z * iY + - ₁) + - ₁
+      ≡⟨ neg1 (₁₊ z * iY) ⟩
+    - (₁₊ z * iY) ∎
+
+  dval : ((₁₊ a2' * iZ) + - ₁) + (₁₊ y * iZ) ≡ vzv
+  dval = begin
+    ((₁₊ a2' * iZ) + - ₁) + (₁₊ y * iZ)
+      ≡⟨ +-assoc (₁₊ a2' * iZ) (- ₁) (₁₊ y * iZ) ⟩
+    (₁₊ a2' * iZ) + (- ₁ + (₁₊ y * iZ))
+      ≡⟨ Eq.cong ((₁₊ a2' * iZ) +_) (+-comm (- ₁) (₁₊ y * iZ)) ⟩
+    (₁₊ a2' * iZ) + ((₁₊ y * iZ) + - ₁)
+      ≡⟨ Eq.sym (+-assoc (₁₊ a2' * iZ) (₁₊ y * iZ) (- ₁)) ⟩
+    ((₁₊ a2' * iZ) + (₁₊ y * iZ)) + - ₁
+      ≡⟨ Eq.cong (_+ - ₁) (Eq.sym (*-distribʳ-+ iZ (₁₊ a2') (₁₊ y))) ⟩
+    ((₁₊ a2' + ₁₊ y) * iZ) + - ₁
+      ≡⟨ Eq.cong (_+ - ₁) (Eq.trans (Eq.cong (_* iZ) wA2Y)
+           (splitneg (₁₊ z) (₁₊ a1') iZ)) ⟩
+    ((₁₊ z * iZ) + - (₁₊ a1' * iZ)) + - ₁
+      ≡⟨ Eq.cong (λ t → (t + - (₁₊ a1' * iZ)) + - ₁)
+           (lemma-⁻¹ʳ (₁₊ z) {{instZ}}) ⟩
+    (₁ + - (₁₊ a1' * iZ)) + - ₁
+      ≡⟨ Eq.cong (_+ - ₁) (+-comm ₁ (- (₁₊ a1' * iZ))) ⟩
+    (- (₁₊ a1' * iZ) + ₁) + - ₁
+      ≡⟨ +-assoc (- (₁₊ a1' * iZ)) ₁ (- ₁) ⟩
+    - (₁₊ a1' * iZ) + (₁ + - ₁)
+      ≡⟨ Eq.cong (- (₁₊ a1' * iZ) +_) (+-inverseʳ ₁) ⟩
+    - (₁₊ a1' * iZ) + ₀
+      ≡⟨ +-identityʳ (- (₁₊ a1' * iZ)) ⟩
+    - (₁₊ a1' * iZ)
+      ≡⟨ -‿distribˡ-* (₁₊ a1') iZ ⟩
+    - ₁₊ a1' * iZ ∎
+
