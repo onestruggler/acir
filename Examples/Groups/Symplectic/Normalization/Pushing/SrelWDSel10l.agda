@@ -213,3 +213,63 @@ module BAValues (a1' a2' y : Fin (₁₊ p-2))
     ₁₊ a1' * iA₁
       ≡⟨ lemma-⁻¹ʳ (₁₊ a1') {{instA₁}} ⟩
     ₁ ∎
+
+  wiq : ((qŷp ⁻¹) .proj₁) ≡ rŷv
+  wiq = Eq.trans (iexp A₂* Y*) (*-comm iA₂ (₁₊ y))
+
+  wb3 : ((qŷp ⁻¹) *' (-' (₁ , λ ()))) .proj₁ ≡ (-' (qŷp ⁻¹)) .proj₁
+  wb3 = Eq.trans (Eq.sym (-‿distribʳ-* ((qŷp ⁻¹) .proj₁) ₁))
+    (Eq.cong -_ (*-identityʳ ((qŷp ⁻¹) .proj₁)))
+
+  wPR : ((-' (qŷp ⁻¹)) *' (-' (rŷp ⁻¹))) .proj₁ ≡ ₁
+  wPR = Eq.trans (negneg ((qŷp ⁻¹) .proj₁) irŷ)
+    (Eq.trans (Eq.cong (_* irŷ) wiq)
+      (lemma-⁻¹ʳ (rŷp .proj₁) {{instRŷ'}}))
+    where
+    instRŷ' = nztoℕ {y = rŷp .proj₁} {neq0 = rŷp .proj₂}
+
+------------------------------------------------------------------------
+-- The one-wire core: the two units and the H-tail annihilate.
+
+module _ {m : ℕ} (a1' a2' y : Fin (₁₊ p-2))
+  (ySum : ₁₊ y ≡ - (₁₊ a2' + ₁₊ a1')) where
+
+  open PB ((₁₊ m) QRel,_===_)
+  open PP ((₁₊ m) QRel,_===_)
+  open SR word-setoid
+  open BAValues a1' a2' y ySum
+  open Lemmas0 m using (lemma-HH-M-1 ; lemma-S^k+l ; lemma-M1 ; aux-MM)
+
+  midlow : S^ v₁v • (H ^ 3 • (ZM qŷp • (S^ rŷv • H))) ≈
+           S • (H • S^ (- irŷ))
+  midlow = begin
+    S^ v₁v • (H ^ 3 • (ZM qŷp • (S^ rŷv • H)))
+      ≈⟨ cright (trans (sym assoc) (trans (cleft (H3M qŷp)) assoc)) ⟩
+    S^ v₁v • (ZM (qŷp ⁻¹) • (H ^ 3 • (S^ rŷv • H)))
+      ≈⟨ cright (cright (trans assoc (trans (cright assoc)
+           (sym assoc)))) ⟩
+    S^ v₁v • (ZM (qŷp ⁻¹) • ((H • H) • (H • (S^ rŷv • H))))
+      ≈⟨ cright (cright (cright (d7ε rŷp))) ⟩
+    S^ v₁v • (ZM (qŷp ⁻¹) • ((H • H) •
+      (S^ (- irŷ) • (ZM (-' (rŷp ⁻¹)) • (H • S^ (- irŷ))))))
+      ≈⟨ cright (cright (cleft lemma-HH-M-1)) ⟩
+    S^ v₁v • (ZM (qŷp ⁻¹) • (ZM (-' (₁ , λ ())) •
+      (S^ (- irŷ) • (ZM (-' (rŷp ⁻¹)) • (H • S^ (- irŷ))))))
+      ≈⟨ cright (trans (sym assoc)
+           (cleft (Zmul (qŷp ⁻¹) (-' (₁ , λ ())) (-' (qŷp ⁻¹)) wb3))) ⟩
+    S^ v₁v • (ZM (-' (qŷp ⁻¹)) •
+      (S^ (- irŷ) • (ZM (-' (rŷp ⁻¹)) • (H • S^ (- irŷ)))))
+      ≈⟨ cright (cright (trans (sym assoc)
+           (trans (cleft (SZmove (- irŷ) (-' (rŷp ⁻¹)) (- rŷv) wc1))
+             assoc))) ⟩
+    S^ v₁v • (ZM (-' (qŷp ⁻¹)) •
+      (ZM (-' (rŷp ⁻¹)) • (S^ (- rŷv) • (H • S^ (- irŷ)))))
+      ≈⟨ cright (trans (sym assoc) (trans (cleft
+           (trans (Zmul (-' (qŷp ⁻¹)) (-' (rŷp ⁻¹)) (₁ , λ ()) wPR)
+             (sym lemma-M1)))
+           left-unit)) ⟩
+    S^ v₁v • (S^ (- rŷv) • (H • S^ (- irŷ)))
+      ≈⟨ trans (sym assoc) (cleft (trans (lemma-S^k+l v₁v (- rŷv))
+           (refl' (Eq.cong S^ wc4)))) ⟩
+    S • (H • S^ (- irŷ)) ∎
+
