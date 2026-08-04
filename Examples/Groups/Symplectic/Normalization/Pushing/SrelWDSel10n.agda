@@ -705,3 +705,128 @@ module _ {m : ℕ} where
     TW : Word (Gen (₁₊ m))
     TW = S^ vz • (H ^ 3 • (ZM Qzy • S^ ezy))
 
+
+------------------------------------------------------------------------
+-- The ββ residual identity: Lgen normalises the left, Rgen the right,
+-- and the two crossing lemmas move the surplus S^δ across the CZ.
+
+module _ {m : ℕ} (a1' a2' y z : Fin (₁₊ p-2))
+  (zySum : ₁₊ z ≡ ₁₊ y + (₁₊ a2' + ₁₊ a1')) where
+
+  open PB ((₂₊ m) QRel,_===_)
+  open PP ((₂₊ m) QRel,_===_)
+  open SR word-setoid
+  open BBValues a1' a2' y z zySum
+  open Lemmas-Sym using (lemma-cong↑)
+
+  private
+    h : Word (Gen (₂₊ m))
+    h = H {m} ↑
+
+    PADw : ℤ ₚ → ℤ ₚ → Word (Gen (₂₊ m))
+    PADw u v = H • (h • (CZ • (S^ u • (H ^ 3 • (S^ v ↑ • h ^ 3)))))
+
+    iQy iQz iQzy δv : ℤ ₚ
+    iQy  = (Qy* ⁻¹) .proj₁
+    iQz  = (Qz* ⁻¹) .proj₁
+    iQzy = (Qzy* ⁻¹) .proj₁
+    δv   = Qz* .proj₁ + - ₁
+
+    iQyval : iQy ≡ ₁₊ y * iA₂
+    iQyval = Eq.trans (iexp A₂* Y*) (*-comm iA₂ (₁₊ y))
+
+    iQzval : iQz ≡ ₁₊ z * iA₂
+    iQzval = Eq.trans (iexp A₂* Z*) (*-comm iA₂ (₁₊ z))
+
+    iQzyval : iQzy ≡ ₁₊ y * iZ
+    iQzyval = Eq.trans (iexp Z* Y*) (*-comm iZ (₁₊ y))
+
+    αcast : (v₁v + - iQy) + - ₁ ≡ - iQz
+    αcast = Eq.trans (Eq.cong (λ t → (v₁v + - t) + - ₁) iQyval)
+      (Eq.trans αval (Eq.cong -_ (Eq.sym iQzval)))
+
+    βcast : - ₁ + (u₁v + uyv) ≡ uzv
+    βcast = Eq.trans (+-comm (- ₁) (u₁v + uyv)) βval
+
+    dcast : δv + iQzy ≡ vzv
+    dcast = Eq.trans (Eq.cong (δv +_) iQzyval) dval
+
+    lem1up : (h • (S^ (- iQz) ↑ • h)) • S⁻¹ ↑ ≈
+             ZM Qz* ↑ • (S^ iQz ↑ • (h • S^ δv ↑))
+    lem1up = lemma-cong↑
+      ((H • (S^ (- iQz) • H)) • S⁻¹)
+      (ZM Qz* • (S^ iQz • (H • S^ δv)))
+      (lem1 Qz*)
+
+    lem2up : S^ δv ↑ • (h • (S^ (- (Qzy* .proj₁)) ↑ • h ^ 3)) ≈
+             S^ vzv ↑ • (h ^ 3 • (ZM Qzy* ↑ • S^ iQzy ↑))
+    lem2up = lemma-cong↑
+      (S^ δv • (H • (S^ (- (Qzy* .proj₁)) • H ^ 3)))
+      (S^ vzv • (H ^ 3 • (ZM Qzy* • S^ iQzy)))
+      (lem2 Qzy* δv vzv dcast)
+
+  idββ : PADw u₁v v₁v • ((ZM Qy* ↑ • S^ (₁₊ y * iA₂) ↑) • PADw uyv vyv) ≈
+         (ZM Qz* ↑ • S^ (₁₊ z * iA₂) ↑) •
+           (PADw uzv vzv • (ZM Qzy* ↑ • S^ (₁₊ y * iZ) ↑))
+  idββ = begin
+    PADw u₁v v₁v • ((ZM Qy* ↑ • S^ (₁₊ y * iA₂) ↑) • PADw uyv vyv)
+      ≈⟨ cright (cleft (cright (refl'
+           (Eq.cong (λ t → S^ t ↑) (Eq.sym iQyval))))) ⟩
+    PADw u₁v v₁v • ((ZM Qy* ↑ • S^ iQy ↑) • PADw uyv vyv)
+      ≈⟨ Lgen Qy* u₁v v₁v uyv vyv ⟩
+    H • (h • (S^ ((v₁v + - iQy) + - ₁) ↑ • (h • (S⁻¹ ↑ • (CZ • (h •
+      (S^ (- ₁ + (- (Qy* .proj₁) + vyv)) ↑ •
+        (h ^ 3 • (S^ (- ₁ + (u₁v + uyv)) • H ^ 3)))))))))
+      ≈⟨ cright (cright (cleft (refl'
+           (Eq.cong (λ t → S^ t ↑) αcast)))) ⟩
+    H • (h • (S^ (- iQz) ↑ • (h • (S⁻¹ ↑ • (CZ • (h •
+      (S^ (- ₁ + (- (Qy* .proj₁) + vyv)) ↑ •
+        (h ^ 3 • (S^ (- ₁ + (u₁v + uyv)) • H ^ 3)))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright (cright
+           (cleft (refl' (Eq.cong (λ t → S^ t ↑) γval))))))))) ⟩
+    H • (h • (S^ (- iQz) ↑ • (h • (S⁻¹ ↑ • (CZ • (h •
+      (S^ (- (Qzy* .proj₁)) ↑ •
+        (h ^ 3 • (S^ (- ₁ + (u₁v + uyv)) • H ^ 3)))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright (cright
+           (cright (cright (cleft (refl'
+             (Eq.cong S^ βcast)))))))))))  ⟩
+    H • (h • (S^ (- iQz) ↑ • (h • (S⁻¹ ↑ • (CZ • (h •
+      (S^ (- (Qzy* .proj₁)) ↑ • (h ^ 3 • (S^ uzv • H ^ 3)))))))))
+      ≈⟨ cright (trans (cright (cright (sym assoc)))
+           (trans (cright (sym assoc))
+           (trans (sym assoc)
+           (trans (cleft (cright (sym assoc)))
+                  (cleft (sym assoc)))))) ⟩
+    H • (((h • (S^ (- iQz) ↑ • h)) • S⁻¹ ↑) • (CZ • (h •
+      (S^ (- (Qzy* .proj₁)) ↑ • (h ^ 3 • (S^ uzv • H ^ 3))))))
+      ≈⟨ cright (cleft lem1up) ⟩
+    H • ((ZM Qz* ↑ • (S^ iQz ↑ • (h • S^ δv ↑))) • (CZ • (h •
+      (S^ (- (Qzy* .proj₁)) ↑ • (h ^ 3 • (S^ uzv • H ^ 3))))))
+      ≈⟨ cright (trans assoc (trans (cright assoc)
+           (cright (cright assoc)))) ⟩
+    H • (ZM Qz* ↑ • (S^ iQz ↑ • (h • (S^ δv ↑ • (CZ • (h •
+      (S^ (- (Qzy* .proj₁)) ↑ • (h ^ 3 • (S^ uzv • H ^ 3)))))))))
+      ≈⟨ cright (cright (cright (cright (trans (sym assoc)
+           (trans (cleft (sym (comm-CZ-S^↑ δv))) assoc))))) ⟩
+    H • (ZM Qz* ↑ • (S^ iQz ↑ • (h • (CZ • (S^ δv ↑ • (h •
+      (S^ (- (Qzy* .proj₁)) ↑ • (h ^ 3 • (S^ uzv • H ^ 3)))))))))
+      ≈⟨ cright (cright (cright (cright (cright
+           (trans (cright (cright (sym assoc)))
+           (trans (cright (sym assoc)) (sym assoc))))))) ⟩
+    H • (ZM Qz* ↑ • (S^ iQz ↑ • (h • (CZ •
+      ((S^ δv ↑ • (h • (S^ (- (Qzy* .proj₁)) ↑ • h ^ 3))) •
+        (S^ uzv • H ^ 3))))))
+      ≈⟨ cright (cright (cright (cright (cright (cleft lem2up))))) ⟩
+    H • (ZM Qz* ↑ • (S^ iQz ↑ • (h • (CZ •
+      ((S^ vzv ↑ • (h ^ 3 • (ZM Qzy* ↑ • S^ iQzy ↑))) •
+        (S^ uzv • H ^ 3))))))
+      ≈⟨ sym (Rgen Qz* Qzy* iQz iQzy uzv vzv) ⟩
+    (ZM Qz* ↑ • S^ iQz ↑) • (PADw uzv vzv • (ZM Qzy* ↑ • S^ iQzy ↑))
+      ≈⟨ cleft (cright (refl' (Eq.cong (λ t → S^ t ↑) iQzval))) ⟩
+    (ZM Qz* ↑ • S^ (₁₊ z * iA₂) ↑) •
+      (PADw uzv vzv • (ZM Qzy* ↑ • S^ iQzy ↑))
+      ≈⟨ cright (cright (cright (refl'
+           (Eq.cong (λ t → S^ t ↑) iQzyval)))) ⟩
+    (ZM Qz* ↑ • S^ (₁₊ z * iA₂) ↑) •
+      (PADw uzv vzv • (ZM Qzy* ↑ • S^ (₁₊ y * iZ) ↑)) ∎
+
