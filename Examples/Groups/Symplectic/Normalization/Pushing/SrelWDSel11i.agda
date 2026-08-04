@@ -307,3 +307,195 @@ module _ {m : ℕ} where
           (Eq.cong (λ v → inj₂ (Hd' (₁₊ a1' , v) ,
               inj₂ ((₁₊ a2' , b2 + - ₁₊ a1') , lm2)))
             eqY)))
+
+------------------------------------------------------------------------
+-- The RHS escapes, one step at a time (pair-valued, so the coset
+-- threads through).
+--
+--   1. S⁻¹ ↓ on an a≠0 box  — escape ≈ ε          (ract-S^-resid-a+)
+--   2. H ↓  on (A1, ₀)      — escape Hdir (A1,₀) ↓ᵏ (₁₊ m), definitional
+--   3. S⁻¹ ↓ on an a=₀ box  — escape ≡ S ^ p-1    (ract-S^-resid-a0)
+--   4. CZ on (₀,·),(A2,·)   — the a=₀/a≠0 dir-of branch
+--   5. H ↓ on (₀, ₁₊ w)     — escape Hdir (₀,₁₊w) ↓ᵏ (₁₊ m), definitional
+--   6. S⁻¹ ↓ on an a≠0 box  — escape ≈ ε
+--   7. S⁻¹ ↑ on an a≠0 box  — escape ≈ ε, under ↑
+
+  module RSteps (b1 b2 : ℤ ₚ) (a1' a2' w : Fin (₁₊ p-2))
+    (lm2 : C (₁₊ m))
+    (eqY : b1 + - ₁₊ a2' ≡ ₁₊ w) (eqZ : b1 + ₁₊ a1' ≡ ₀) where
+
+    open Values a1' a2' w b1 eqY eqZ public
+
+    lm : C (₂₊ m)
+    lm = inj₂ ((₁₊ a2' , b2) , lm2)
+
+    E₁raw = ((ract2 ᵗ) (inj₂ ((₁₊ a1' , b1) , lm)) (S ^ p-1)) .proj₁
+    E₆raw = ((ract2 ᵗ) (inj₂ ((₁₊ w , - ₀) ,
+              inj₂ ((₁₊ a2' , b2 + - ₀) , lm2))) (S ^ p-1)) .proj₁
+    E₇raw = ((ract {₁₊ m} ᵗ)
+              (inj₂ ((₁₊ a2' , b2 + - ₀) , lm2)) S⁻¹) .proj₁
+
+    -- step 1
+    r1 : ((ract2 ᵗ) (inj₂ ((₁₊ a1' , b1) , lm)) (S⁻¹ ↓))
+         ≡ (E₁raw , inj₂ ((₁₊ a1' , ₀) , lm))
+    r1 = Eq.trans
+      (Eq.cong (λ u → (ract2 ᵗ) (inj₂ ((₁₊ a1' , b1) , lm)) u)
+        (↓-pow-S p-1))
+      (Eq.cong₂ _,_ Eq.refl
+        (Eq.trans (ract-S^-coset (₁₊ a1' , b1) lm p-1)
+          (Eq.cong (λ d → inj₂ (d , lm))
+            (Eq.trans (it-dDS-nz p-1 (₁₊ a1') b1 (λ ()))
+              (Eq.cong (₁₊ a1' ,_) r1fix)))))
+
+    -- step 3
+    r3 : ((ract2 ᵗ) (inj₂ ((₀ , - ₁₊ a1') , lm)) (S⁻¹ ↓))
+         ≡ (S ^ p-1 , inj₂ ((₀ , - ₁₊ a1') , lm))
+    r3 = Eq.trans
+      (Eq.cong (λ u → (ract2 ᵗ) (inj₂ ((₀ , - ₁₊ a1') , lm)) u)
+        (↓-pow-S p-1))
+      (Eq.cong₂ _,_
+        (ract-S^-resid-a0 (- ₁₊ a1') lm p-1)
+        (Eq.trans (ract-S^-coset (₀ , - ₁₊ a1') lm p-1)
+          (Eq.cong (λ d → inj₂ (d , lm)) (it-dDS-a0 p-1 (- ₁₊ a1')))))
+
+    -- step 6
+    r6 : ((ract2 ᵗ) (inj₂ ((₁₊ w , - ₀) ,
+           inj₂ ((₁₊ a2' , b2 + - ₀) , lm2))) (S⁻¹ ↓))
+         ≡ (E₆raw , inj₂ ((₁₊ w , ₁₊ w) ,
+             inj₂ ((₁₊ a2' , b2 + - ₀) , lm2)))
+    r6 = Eq.trans
+      (Eq.cong (λ u → (ract2 ᵗ) (inj₂ ((₁₊ w , - ₀) ,
+          inj₂ ((₁₊ a2' , b2 + - ₀) , lm2))) u)
+        (↓-pow-S p-1))
+      (Eq.cong₂ _,_ Eq.refl
+        (Eq.trans (ract-S^-coset (₁₊ w , - ₀)
+            (inj₂ ((₁₊ a2' , b2 + - ₀) , lm2)) p-1)
+          (Eq.cong (λ d → inj₂ (d , inj₂ ((₁₊ a2' , b2 + - ₀) , lm2)))
+            (Eq.trans (it-dDS-nz p-1 (₁₊ w) (- ₀) (λ ()))
+              (Eq.cong (₁₊ w ,_) r6fix)))))
+
+    -- the three escapes that vanish
+    E₁≈ε : E₁raw ≈ ε
+    E₁≈ε = ract-S^-resid-a+ (₁₊ a1' , b1) lm p-1 (λ ())
+
+    E₆≈ε : E₆raw ≈ ε
+    E₆≈ε = ract-S^-resid-a+ (₁₊ w , - ₀)
+             (inj₂ ((₁₊ a2' , b2 + - ₀) , lm2)) p-1 (λ ())
+
+    E₇≈ε : E₇raw ↑ ≈ ε
+    E₇≈ε = trans (lemma-cong↑ E₇raw ε
+             (ract-S^-resid-a+ (₁₊ a2' , b2 + - ₀) lm2 p-1 (λ ()))) refl
+
+    -- The two H escapes and the second CZ pad, named.
+    HH2 CZpad Hw : Word (Gen (₂₊ m))
+    HH2   = Hdir (₁₊ a1' , ₀) ↓ᵏ (₁₊ m)
+    CZpad = ((ract2 ᵗ) (inj₂ ((₀ , - ₁₊ a1') , lm)) CZ) .proj₁
+    Hw    = Hdir (₀ , ₁₊ w) ↓ᵏ (₁₊ m)
+
+    REST1 REST3 REST4 : Word (Gen (₃₊ m))
+    REST1 = H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑
+    REST3 = CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑
+    REST4 = H ↓ • S⁻¹ ↓ • S⁻¹ ↑
+
+    -- step 7's escape, unwrapped.
+    r7 : ((ract2 ᵗ) (inj₂ ((₁₊ w , ₁₊ w) ,
+           inj₂ ((₁₊ a2' , b2 + - ₀) , lm2))) (S⁻¹ ↑)) .proj₁
+         ≡ E₇raw ↑
+    r7 = Eq.cong proj₁ (ract-↑-≡ (₁₊ w , ₁₊ w)
+           (inj₂ ((₁₊ a2' , b2 + - ₀) , lm2)) S⁻¹)
+
+    -- The whole RHS escape, as an explicit seven-factor word.
+    R-fix : ((ract2 ᵗ) (inj₂ ((₁₊ a1' , b1) , lm))
+              (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑)) .proj₁
+            ≡ E₁raw • (HH2 • ((S ^ p-1) •
+                (CZpad • (Hw • (E₆raw • (E₇raw ↑))))))
+    R-fix =
+      Eq.trans (Eq.cong
+          (λ pr → pr .proj₁ • ((ract2 ᵗ) (pr .proj₂) REST1) .proj₁) r1)
+      (Eq.cong (E₁raw •_)
+      (Eq.cong (HH2 •_)
+      (Eq.trans (Eq.cong
+          (λ pr → pr .proj₁ • ((ract2 ᵗ) (pr .proj₂) REST3) .proj₁) r3)
+      (Eq.cong ((S ^ p-1) •_)
+      (Eq.cong (CZpad •_)
+      (Eq.trans (Eq.cong
+          (λ v → ((ract2 ᵗ) (inj₂ ((₀ , v) ,
+              inj₂ ((₁₊ a2' , b2 + - ₀) , lm2))) REST4) .proj₁)
+          vfix)
+      (Eq.cong (Hw •_)
+      (Eq.trans (Eq.cong
+          (λ pr → pr .proj₁ •
+            ((ract2 ᵗ) (pr .proj₂) (S⁻¹ ↑)) .proj₁) r6)
+        (Eq.cong (E₆raw •_) r7)))))))))
+
+    -- Everything except the two H escapes and the S-power cancels.
+    Rclean : E₁raw • (HH2 • ((S ^ p-1) •
+               (CZpad • (Hw • (E₆raw • (E₇raw ↑))))))
+             ≈ HH2 • ((S ^ p-1) • CZpad)
+    Rclean = trans (cleft E₁≈ε) (trans left-unit
+      (cright (cright (trans (cright Zε) right-unit))))
+      where
+      -- Hw is Hdir (₀ , ₁₊ w) ↓ᵏ _, and Hdir on an a=₀,b≠₀ box is ε,
+      -- so the tail collapses entirely.
+      Zε : Hw • (E₆raw • (E₇raw ↑)) ≈ ε
+      Zε = trans left-unit (trans (cleft E₆≈ε) (trans left-unit E₇≈ε))
+
+    ------------------------------------------------------------------
+    -- The LHS escape, with both CZ pads expanded.
+
+    PADg PADy HU : Word (Gen (₂₊ m))
+    PADg = H • (H ↑ • (CZ • (S^ (- ₁₊ a2' * ((₁₊ a1' , λ ()) ⁻¹) .proj₁)
+      • (H ^ 3 • (S^ (- ₁₊ a1' * ((₁₊ a2' , λ ()) ⁻¹) .proj₁) ↑
+        • (H ↑) ^ 3)))))
+    PADy = H • (H ↑ • (CZ • (S^ (- ₁₊ a2' * ((₁₊ w , λ ()) ⁻¹) .proj₁)
+      • (H ^ 3 • (S^ (- ₁₊ w * ((₁₊ a2' , λ ()) ⁻¹) .proj₁) ↑
+        • (H ↑) ^ 3)))))
+    HU   = Hdir (₁₊ a1' , ₁₊ w) ↓ᵏ (₁₊ m)
+
+    L-pads : ((ract2 ᵗ) (inj₂ ((₁₊ a1' , b1) , lm)) (CZ • H ↓ • CZ))
+               .proj₁ ≡ PADg • (HU • PADy)
+    L-pads = Eq.cong₂ _•_ (padSA a1' a2' b1 b2)
+      (Eq.cong₂ _•_
+        (Eq.cong (λ v → Hdir (₁₊ a1' , v) ↓ᵏ (₁₊ m)) eqY)
+        (Eq.trans
+          (Eq.cong (λ c → ((ract2 ᵗ) c CZ) .proj₁)
+            (Eq.cong (λ v → inj₂ (Hd' (₁₊ a1' , v) ,
+                inj₂ ((₁₊ a2' , b2 + - ₁₊ a1') , lm2)))
+              eqY))
+          (padSA w a2' (- ₁₊ a1') (b2 + - ₁₊ a1'))))
+
+    ------------------------------------------------------------------
+    -- WHAT REMAINS for this sub-case: the word identity.
+    --
+    -- Recorded as a well-typed Set, NOT postulated and NOT inhabited —
+    -- exactly the shape of RhoExDirect.ρ-Ex-Goal.  Everything else in
+    -- the βα branch is proved; `c11-go-aaβα` below takes it as an
+    -- argument, so supplying an inhabitant finishes SrelWD.agda:374.
+    --
+    -- It is the c11 analogue of SrelWDSel10l.idβα (409 lines there).
+
+    idβα-c11-Goal : Set
+    idβα-c11-Goal = PADg • (HU • PADy) ≈ HH2 • ((S ^ p-1) • CZpad)
+
+------------------------------------------------------------------------
+-- The βα sub-case, complete modulo the word identity.
+
+  c11-go-aaβα : ∀ (b1 b2 : ℤ ₚ) (a1' a2' w : Fin (₁₊ p-2))
+    (lm2 : C (₁₊ m)) →
+    (eqY : b1 + - ₁₊ a2' ≡ ₁₊ w) → (eqZ : b1 + ₁₊ a1' ≡ ₀) →
+    RSteps.idβα-c11-Goal b1 b2 a1' a2' w lm2 eqY eqZ →
+    ((ract2 ᵗ) (inj₂ ((₁₊ a1' , b1) , inj₂ ((₁₊ a2' , b2) , lm2)))
+      (CZ • H ↓ • CZ)) ≋
+    ((ract2 ᵗ) (inj₂ ((₁₊ a1' , b1) , inj₂ ((₁₊ a2' , b2) , lm2)))
+      (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑))
+  c11-go-aaβα b1 b2 a1' a2' w lm2 eqY eqZ ident =
+    resid≈ , c11-βα-coset b1 b2 a1' a2' w lm2 eqY eqZ
+    where
+    open RSteps b1 b2 a1' a2' w lm2 eqY eqZ
+
+    resid≈ : ((ract2 ᵗ) (inj₂ ((₁₊ a1' , b1) , lm))
+                (CZ • H ↓ • CZ)) .proj₁ ≈
+             ((ract2 ᵗ) (inj₂ ((₁₊ a1' , b1) , lm))
+               (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑)) .proj₁
+    resid≈ = trans (refl' L-pads)
+      (trans ident (sym (trans (refl' R-fix) Rclean)))
