@@ -47,6 +47,8 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ
   p-2 p-prime using (↓-pow-S)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ2
   p-2 p-prime using (ract-↑-≡)
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10
+  p-2 p-prime using (nsum-p-1)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10b
   p-2 p-prime using (TW ; unitS)
 import Presentation.Properties as PP
@@ -262,4 +264,193 @@ module _ {m : ℕ} where
           (trans (cright (sym assoc)) (sym assoc)))
           (trans (cleft (TW {₁₊ m})) assoc))))
         (trans (cright (sym assoc)) (sym assoc)))))))))
+
+
+  c11-go-0b1 : ∀ (b1' : Fin (₁₊ p-2)) (b2 : ℤ ₚ) (lm2 : C (₁₊ m)) →
+    ((ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , inj₂ ((₀ , b2) , lm2)))
+      (CZ • H ↓ • CZ)) ≋
+    ((ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , inj₂ ((₀ , b2) , lm2)))
+      (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑))
+  c11-go-0b1 b1' b2 lm2 = resid≈ , coset≡
+    where
+    e0 : ∀ (t : ℤ ₚ) → t + - ₀ ≡ t
+    e0 t = Eq.trans (Eq.cong (t +_) -0#≈0#) (+-identityʳ t)
+
+    z00 : - ₀ + - ₀ ≡ ₀
+    z00 = Eq.trans (Eq.cong₂ _+_ -0#≈0# -0#≈0#) (+-identityʳ ₀)
+
+    lm : C (₂₊ m)
+    lm = inj₂ ((₀ , b2) , lm2)
+
+    nfixb : nsum p-1 (- ₁₊ b1') ≡ ₁₊ b1'
+    nfixb = Eq.trans (nsum-p-1 (- ₁₊ b1')) (-‿involutive (₁₊ b1'))
+
+    bfix3 : - ₀ + nsum p-1 (- ₁₊ b1') ≡ ₁₊ b1'
+    bfix3 = Eq.trans (Eq.cong₂ _+_ -0#≈0# nfixb) (+-identityˡ (₁₊ b1'))
+
+    bfix6 : - ₁₊ b1' + nsum p-1 (- ₁₊ b1') ≡ ₀
+    bfix6 = Eq.trans (Eq.cong (- ₁₊ b1' +_) nfixb) (+-inverseˡ (₁₊ b1'))
+
+    hdfix : Hd' (₀ , ₁₊ b1') ≡ (₁₊ b1' , - ₀)
+    hdfix = Eq.refl
+
+    cF : C (₃₊ m)
+    cF = inj₂ ((₁₊ b1' , ₀) , inj₂ ((₀ , b2 + - ₁₊ b1') , lm2))
+
+    L-fix : ((ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , lm)) (CZ • H ↓ • CZ))
+              .proj₁ ≡ CZ • (ε • WD)
+    L-fix = Eq.cong₂ _•_ Eq.refl (Eq.cong₂ _•_
+      (Eq.cong (λ v → Hdir (₀ , v) ↓ᵏ (₁₊ m)) (e0 (₁₊ b1')))
+      (Eq.cong (λ pr → ((ract2' ᵗ) pr CZ) .proj₁)
+        (Eq.trans
+          (Eq.cong₂ (λ v w → inj₂ (Hd' (₀ , v) , inj₂ ((₀ , w) , lm2)))
+            (e0 (₁₊ b1')) (e0 b2))
+          (Eq.cong (λ d → inj₂ (d , inj₂ ((₀ , b2) , lm2))) hdfix))))
+
+    L-c : ((ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , lm)) (CZ • H ↓ • CZ))
+            .proj₂ ≡ cF
+    L-c = Eq.trans (Eq.cong (λ pr → ((ract2' ᵗ) pr CZ) .proj₂)
+        (Eq.trans
+          (Eq.cong₂ (λ v w → inj₂ (Hd' (₀ , v) , inj₂ ((₀ , w) , lm2)))
+            (e0 (₁₊ b1')) (e0 b2))
+          (Eq.cong (λ d → inj₂ (d , inj₂ ((₀ , b2) , lm2))) hdfix)))
+      (Eq.cong (λ v → inj₂ ((₁₊ b1' , v) ,
+          inj₂ ((₀ , b2 + - ₁₊ b1') , lm2))) z00)
+
+    REST5' = H ↓ • S⁻¹ ↓ • S⁻¹ ↑
+
+    E₃raw = ((ract2' ᵗ) (inj₂ ((₁₊ b1' , - ₀) , lm)) (S ^ p-1)) .proj₁
+    E₆raw = ((ract2' ᵗ) (inj₂ ((₁₊ b1' , - ₁₊ b1') ,
+              inj₂ ((₀ , b2 + - ₁₊ b1') , lm2))) (S ^ p-1)) .proj₁
+
+    q1 : ((ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , lm)) (S⁻¹ ↓)) ≡
+         (S ^ p-1 , inj₂ ((₀ , ₁₊ b1') , lm))
+    q1 = Eq.trans
+      (Eq.cong (λ w → (ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , lm)) w)
+        (↓-pow-S p-1))
+      (Eq.cong₂ _,_
+        (ract-S^-resid-a0 (₁₊ b1') lm p-1)
+        (Eq.trans (ract-S^-coset (₀ , ₁₊ b1') lm p-1)
+          (Eq.cong (λ d → inj₂ (d , lm)) (it-dDS-a0 p-1 (₁₊ b1')))))
+
+    q3 : ((ract2' ᵗ) (inj₂ ((₁₊ b1' , - ₀) , lm)) (S⁻¹ ↓)) ≡
+         (E₃raw , inj₂ ((₁₊ b1' , ₁₊ b1') , lm))
+    q3 = Eq.trans
+      (Eq.cong (λ w → (ract2' ᵗ) (inj₂ ((₁₊ b1' , - ₀) , lm)) w)
+        (↓-pow-S p-1))
+      (Eq.cong₂ _,_ Eq.refl
+        (Eq.trans (ract-S^-coset (₁₊ b1' , - ₀) lm p-1)
+          (Eq.cong (λ d → inj₂ (d , lm))
+            (Eq.trans (it-dDS-nz p-1 (₁₊ b1') (- ₀) (λ ()))
+              (Eq.cong (₁₊ b1' ,_) bfix3)))))
+
+    q5 : ((ract2' ᵗ) (inj₂ ((₁₊ b1' , ₁₊ b1' + - ₀) ,
+           inj₂ ((₀ , b2 + - ₁₊ b1') , lm2))) (H ↓)) ≡
+         ((Hdir (₁₊ b1' , ₁₊ b1') ↓ᵏ (₁₊ m)) ,
+          inj₂ ((₁₊ b1' , - ₁₊ b1') ,
+            inj₂ ((₀ , b2 + - ₁₊ b1') , lm2)))
+    q5 = Eq.cong (λ v → ((Hdir (₁₊ b1' , v) ↓ᵏ (₁₊ m)) ,
+        inj₂ (Hd' (₁₊ b1' , v) , inj₂ ((₀ , b2 + - ₁₊ b1') , lm2))))
+      (e0 (₁₊ b1'))
+
+    q6 : ((ract2' ᵗ) (inj₂ ((₁₊ b1' , - ₁₊ b1') ,
+           inj₂ ((₀ , b2 + - ₁₊ b1') , lm2))) (S⁻¹ ↓)) ≡
+         (E₆raw , inj₂ ((₁₊ b1' , ₀) ,
+           inj₂ ((₀ , b2 + - ₁₊ b1') , lm2)))
+    q6 = Eq.trans
+      (Eq.cong (λ w → (ract2' ᵗ) (inj₂ ((₁₊ b1' , - ₁₊ b1') ,
+          inj₂ ((₀ , b2 + - ₁₊ b1') , lm2))) w) (↓-pow-S p-1))
+      (Eq.cong₂ _,_ Eq.refl
+        (Eq.trans (ract-S^-coset (₁₊ b1' , - ₁₊ b1')
+            (inj₂ ((₀ , b2 + - ₁₊ b1') , lm2)) p-1)
+          (Eq.cong (λ d → inj₂ (d , inj₂ ((₀ , b2 + - ₁₊ b1') , lm2)))
+            (Eq.trans (it-dDS-nz p-1 (₁₊ b1') (- ₁₊ b1') (λ ()))
+              (Eq.cong (₁₊ b1' ,_) bfix6)))))
+
+    q7 : ((ract2' ᵗ) (inj₂ ((₁₊ b1' , ₀) ,
+           inj₂ ((₀ , b2 + - ₁₊ b1') , lm2))) (S⁻¹ ↑)) ≡
+         ((S ^ p-1) ↑ , cF)
+    q7 = Eq.trans
+      (ract-↑-≡ (₁₊ b1' , ₀) (inj₂ ((₀ , b2 + - ₁₊ b1') , lm2)) S⁻¹)
+      (Eq.cong₂ _,_
+        (Eq.cong _↑ (ract-S^-resid-a0 (b2 + - ₁₊ b1') lm2 p-1))
+        (Eq.cong (λ c → inj₂ ((₁₊ b1' , ₀) , c))
+          (Eq.trans (ract-S^-coset (₀ , b2 + - ₁₊ b1') lm2 p-1)
+            (Eq.cong (λ d → inj₂ (d , lm2))
+              (it-dDS-a0 p-1 (b2 + - ₁₊ b1'))))))
+
+    R-fix : ((ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , lm))
+              (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑)) .proj₁ ≡
+            S ^ p-1 • (ε • (E₃raw • (WD •
+              ((Hdir (₁₊ b1' , ₁₊ b1') ↓ᵏ (₁₊ m)) •
+                (E₆raw • (S ^ p-1) ↑)))))
+    R-fix =
+      Eq.trans (Eq.cong
+          (λ pr → pr .proj₁ •
+            ((ract2' ᵗ) (pr .proj₂) (H ↓ • S⁻¹ ↓ • CZ • REST5')) .proj₁)
+          q1)
+      (Eq.cong (λ t → S ^ p-1 • t)
+      (Eq.cong (λ t → ε • t)
+      (Eq.trans (Eq.cong
+          (λ pr → pr .proj₁ • ((ract2' ᵗ) (pr .proj₂) (CZ • REST5')) .proj₁)
+          q3)
+      (Eq.cong (λ t → E₃raw • t)
+      (Eq.cong (λ t → WD • t)
+      (Eq.trans (Eq.cong
+          (λ pr → pr .proj₁ •
+            ((ract2' ᵗ) (pr .proj₂) (S⁻¹ ↓ • S⁻¹ ↑)) .proj₁)
+          q5)
+      (Eq.cong (λ t → (Hdir (₁₊ b1' , ₁₊ b1') ↓ᵏ (₁₊ m)) • t)
+      (Eq.trans (Eq.cong
+          (λ pr → pr .proj₁ • ((ract2' ᵗ) (pr .proj₂) (S⁻¹ ↑)) .proj₁)
+          q6)
+        (Eq.cong (λ t → E₆raw • t) (Eq.cong proj₁ q7))))))))))
+
+    Rclean : S ^ p-1 • (ε • (E₃raw • (WD •
+               ((Hdir (₁₊ b1' , ₁₊ b1') ↓ᵏ (₁₊ m)) •
+                 (E₆raw • (S ^ p-1) ↑))))) ≈
+             S⁻¹ • (WD • (S • S⁻¹ ↑))
+    Rclean =
+      cright (trans left-unit
+        (trans (cleft (ract-S^-resid-a+ (₁₊ b1' , - ₀) lm p-1 (λ ())))
+        (trans left-unit
+          (cright (trans (cleft (unitS {₁₊ m} b1'))
+            (cright (trans (cleft
+                (ract-S^-resid-a+ (₁₊ b1' , - ₁₊ b1')
+                  (inj₂ ((₀ , b2 + - ₁₊ b1') , lm2)) p-1 (λ ())))
+              left-unit)))))))
+
+    resid≈ : ((ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , lm))
+                (CZ • H ↓ • CZ)) .proj₁ ≈
+             ((ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , lm))
+               (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑)) .proj₁
+    resid≈ =
+      trans (refl' L-fix)
+      (trans (cright left-unit)
+      (trans residkey11
+      (sym (trans (refl' R-fix) Rclean))))
+
+    R-c : ((ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , lm))
+            (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑)) .proj₂ ≡ cF
+    R-c =
+      Eq.trans (Eq.cong
+          (λ pr → ((ract2' ᵗ) (pr .proj₂)
+            (H ↓ • S⁻¹ ↓ • CZ • REST5')) .proj₂)
+          q1)
+      (Eq.trans (Eq.cong
+          (λ pr → ((ract2' ᵗ) (pr .proj₂) (CZ • REST5')) .proj₂)
+          q3)
+      (Eq.trans (Eq.cong
+          (λ pr → ((ract2' ᵗ) (pr .proj₂) (S⁻¹ ↓ • S⁻¹ ↑)) .proj₂)
+          q5)
+      (Eq.trans (Eq.cong
+          (λ pr → ((ract2' ᵗ) (pr .proj₂) (S⁻¹ ↑)) .proj₂)
+          q6)
+        (Eq.cong proj₂ q7))))
+
+    coset≡ : ((ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , lm))
+                (CZ • H ↓ • CZ)) .proj₂ ≡
+             ((ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , lm))
+               (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑)) .proj₂
+    coset≡ = Eq.trans L-c (Eq.sym R-c)
 

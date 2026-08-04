@@ -344,7 +344,9 @@ srel-wd {suc zero} (inj₂ (d , ml1)) Base.selinger-c11 = {!!}
 srel-wd {suc (suc m)} (inj₂ (d , inj₁ ml')) Base.selinger-c11 = {!!}
 srel-wd {suc (suc m)} (inj₂ ((₀ , ₀) , inj₂ ((₀ , b2) , lm2))) Base.selinger-c11 =
   c11-go-000 b2 lm2
-srel-wd {suc (suc m)} (inj₂ ((₀ , ₁₊ b1') , inj₂ (d2 , lm2))) Base.selinger-c11 = {!!}
+srel-wd {suc (suc m)} (inj₂ ((₀ , ₁₊ b1') , inj₂ ((₀ , b2) , lm2))) Base.selinger-c11 =
+  c11-go-0b1 b1' b2 lm2
+srel-wd {suc (suc m)} (inj₂ ((₀ , ₁₊ b1') , inj₂ ((₁₊ a2' , b2) , lm2))) Base.selinger-c11 = {!!}
 srel-wd {suc (suc m)} (inj₂ ((₀ , ₀) , inj₂ ((₁₊ a2' , b2) , lm2))) Base.selinger-c11 = {!!}
 srel-wd {suc (suc m)} (inj₂ ((₁₊ a1' , b1) , inj₂ (d2 , lm2))) Base.selinger-c11 = {!!}
 -- selinger-c12 on triply-inj₂ cosets with a clean middle wire: the two
