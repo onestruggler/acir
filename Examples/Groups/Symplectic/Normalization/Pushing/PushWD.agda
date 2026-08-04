@@ -51,6 +51,9 @@ open Symplectic renaming (M to ZM)
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
+open import Algebra.Properties.Ring (+-*-ring p-2)
+  using (-‿involutive)
+
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
   p-2 p-prime
 
@@ -131,6 +134,156 @@ ract-S^-inj₁-a+-resid {m} dv e bv a₀ b nz (suc (suc j)) =
 -- order-S at inj₁, a ≠ 0 branch: the p-fold b-shift closes (nsum-p≡0)
 -- and every escape is ε.  This is the first degenerate-coset case of
 -- srel-wd discharged at general width.
+
+------------------------------------------------------------------------
+-- order-H on half-zero boxes: the quarter turn (α,β) ↦ (β,−α) keeps a
+-- half-zero box half-zero, and A-dir-S-power is ₀ on both half-zero
+-- H-clauses, so the whole 4-cycle stays in the A box.  Stuck negated
+-- components are rewritten into constructor form mid-orbit (elim-suc at
+-- the call site, inj₁-a-eq here), exactly as at width 1.
+
+-- (₀ , −₁₊a) ≢ (₀,₀): the second component is a negated successor.
+nz-0- : ∀ (a : Fin (₁₊ p-2)) →
+  _≢_ {A = ℤ ₚ × ℤ ₚ} (₀ , - ₁₊ a) (₀ , ₀)
+nz-0- a eq = neg≢0 (₁₊ a) (λ ()) (Eq.cong proj₂ eq)
+
+-- The two half-zero H-steps (escape ε, M column and B-vector untouched).
+ract-H-inj₁-0b : ∀ {m : ℕ} (dv : Vec D (₁₊ m)) (e : E) (bv : Vec B (₁₊ m))
+  (b₀ : Fin (₁₊ p-2)) (nz : (₀ , ₁₊ b₀) ≢ (₀ , ₀)) →
+  ract {₁₊ m} (inj₁ ((dv , e) , (bv , ((₀ , ₁₊ b₀) , nz)))) (gate₁ H-gate)
+  ≡ (ε , inj₁ ((dv , e) , (bv , ((₁₊ b₀ , ₀) , λ ()))))
+ract-H-inj₁-0b dv e bv b₀ nz = Eq.cong (ε ,_) (inj₁-a-eq Eq.refl)
+
+ract-H-inj₁-a0 : ∀ {m : ℕ} (dv : Vec D (₁₊ m)) (e : E) (bv : Vec B (₁₊ m))
+  (a₀ : Fin (₁₊ p-2)) (nz : (₁₊ a₀ , ₀) ≢ (₀ , ₀)) →
+  ract {₁₊ m} (inj₁ ((dv , e) , (bv , ((₁₊ a₀ , ₀) , nz)))) (gate₁ H-gate)
+  ≡ (ε , inj₁ ((dv , e) , (bv , ((₀ , - ₁₊ a₀) , nz-0- a₀))))
+ract-H-inj₁-a0 dv e bv a₀ nz = Eq.cong (ε ,_) (inj₁-a-eq Eq.refl)
+
+------------------------------------------------------------------------
+-- The two order-H orbits.  The hypotheses (y , eq-y) put the stuck
+-- negated components into constructor form, mirroring srel-wd {zero}'s
+-- elim-suc call shape.
+
+orderH-inj₁-0b : ∀ {m : ℕ} (dv : Vec D (₁₊ m)) (e : E) (bv : Vec B (₁₊ m))
+  (b₀ : Fin (₁₊ p-2)) (nz : (₀ , ₁₊ b₀) ≢ (₀ , ₀))
+  (y : Fin (₁₊ p-2)) (eq-y : - ₁₊ b₀ ≡ ₁₊ y) →
+  ((ract {₁₊ m} ᵗ)
+     (inj₁ ((dv , e) , (bv , ((₀ , ₁₊ b₀) , nz)))) (H ^ 4))
+  ≋
+  ((ract {₁₊ m} ᵗ)
+     (inj₁ ((dv , e) , (bv , ((₀ , ₁₊ b₀) , nz)))) ε)
+orderH-inj₁-0b {m} dv e bv b₀ nz y eq-y = resid≈ , coset≡
+  where
+  open PB ((₁₊ m) QRel,_===_)
+
+  c₁ = inj₁ ((dv , e) , (bv , ((₁₊ b₀ , ₀) , λ ())))
+  c₂ = inj₁ ((dv , e) , (bv , ((₀ , ₁₊ y) , λ ())))
+  c₃ = inj₁ ((dv , e) , (bv , ((₁₊ y , ₀) , λ ())))
+
+  s₁ = ract-H-inj₁-0b dv e bv b₀ nz
+  s₂ : ract {₁₊ m} c₁ (gate₁ H-gate) ≡ (ε , c₂)
+  s₂ = Eq.trans (ract-H-inj₁-a0 dv e bv b₀ (λ ()))
+    (Eq.cong (ε ,_) (inj₁-a-eq (Eq.cong (₀ ,_) eq-y)))
+  s₃ : ract {₁₊ m} c₂ (gate₁ H-gate) ≡ (ε , c₃)
+  s₃ = ract-H-inj₁-0b dv e bv y (λ ())
+  s₄fix : (₀ , - ₁₊ y) ≡ (₀ , ₁₊ b₀)
+  s₄fix = Eq.cong (₀ ,_)
+    (Eq.trans (Eq.cong -_ (Eq.sym eq-y)) (-‿involutive (₁₊ b₀)))
+  s₄ : ract {₁₊ m} c₃ (gate₁ H-gate)
+       ≡ (ε , inj₁ ((dv , e) , (bv , ((₀ , ₁₊ b₀) , nz))))
+  s₄ = Eq.trans (ract-H-inj₁-a0 dv e bv y (λ ()))
+    (Eq.cong (ε ,_) (inj₁-a-eq s₄fix))
+
+  coset≡ : ((ract {₁₊ m} ᵗ)
+      (inj₁ ((dv , e) , (bv , ((₀ , ₁₊ b₀) , nz)))) (H ^ 4)) .proj₂
+    ≡ inj₁ ((dv , e) , (bv , ((₀ , ₁₊ b₀) , nz)))
+  coset≡ =
+    Eq.trans (Eq.cong (λ pr → ((ract {₁₊ m} ᵗ) (pr .proj₂) (H ^ 3)) .proj₂) s₁)
+    (Eq.trans (Eq.cong (λ pr → ((ract {₁₊ m} ᵗ) (pr .proj₂) (H ^ 2)) .proj₂) s₂)
+    (Eq.trans (Eq.cong (λ pr → ((ract {₁₊ m} ᵗ) (pr .proj₂) (H ^ 1)) .proj₂) s₃)
+      (Eq.cong proj₂ s₄)))
+
+  resid≈ : ((ract {₁₊ m} ᵗ)
+      (inj₁ ((dv , e) , (bv , ((₀ , ₁₊ b₀) , nz)))) (H ^ 4)) .proj₁ ≈ ε
+  resid≈ =
+    trans (cong (refl' (Eq.cong proj₁ s₁))
+      (trans (refl' (Eq.cong
+          (λ pr → ((ract {₁₊ m} ᵗ) (pr .proj₂) (H ^ 3)) .proj₁) s₁))
+      (trans (cong (refl' (Eq.cong proj₁ s₂))
+        (trans (refl' (Eq.cong
+            (λ pr → ((ract {₁₊ m} ᵗ) (pr .proj₂) (H ^ 2)) .proj₁) s₂))
+        (trans (cong (refl' (Eq.cong proj₁ s₃))
+          (trans (refl' (Eq.cong
+              (λ pr → ((ract {₁₊ m} ᵗ) (pr .proj₂) (H ^ 1)) .proj₁) s₃))
+            (refl' (Eq.cong proj₁ s₄))))
+          left-unit)))
+        left-unit)))
+      left-unit
+
+orderH-inj₁-a0 : ∀ {m : ℕ} (dv : Vec D (₁₊ m)) (e : E) (bv : Vec B (₁₊ m))
+  (a₀ : Fin (₁₊ p-2)) (nz : (₁₊ a₀ , ₀) ≢ (₀ , ₀))
+  (y : Fin (₁₊ p-2)) (eq-y : - ₁₊ a₀ ≡ ₁₊ y)
+  (y₂ : Fin (₁₊ p-2)) (eq-y₂ : - ₁₊ y ≡ ₁₊ y₂) →
+  ((ract {₁₊ m} ᵗ)
+     (inj₁ ((dv , e) , (bv , ((₁₊ a₀ , ₀) , nz)))) (H ^ 4))
+  ≋
+  ((ract {₁₊ m} ᵗ)
+     (inj₁ ((dv , e) , (bv , ((₁₊ a₀ , ₀) , nz)))) ε)
+orderH-inj₁-a0 {m} dv e bv a₀ nz y eq-y y₂ eq-y₂ = resid≈ , coset≡
+  where
+  open PB ((₁₊ m) QRel,_===_)
+
+  c₁ = inj₁ ((dv , e) , (bv , ((₀ , ₁₊ y) , λ ())))
+  c₂ = inj₁ ((dv , e) , (bv , ((₁₊ y , ₀) , λ ())))
+  c₃ = inj₁ ((dv , e) , (bv , ((₀ , ₁₊ y₂) , λ ())))
+
+  s₁ : ract {₁₊ m} (inj₁ ((dv , e) , (bv , ((₁₊ a₀ , ₀) , nz))))
+         (gate₁ H-gate) ≡ (ε , c₁)
+  s₁ = Eq.trans (ract-H-inj₁-a0 dv e bv a₀ nz)
+    (Eq.cong (ε ,_) (inj₁-a-eq (Eq.cong (₀ ,_) eq-y)))
+  s₂ : ract {₁₊ m} c₁ (gate₁ H-gate) ≡ (ε , c₂)
+  s₂ = ract-H-inj₁-0b dv e bv y (λ ())
+  s₃ : ract {₁₊ m} c₂ (gate₁ H-gate) ≡ (ε , c₃)
+  s₃ = Eq.trans (ract-H-inj₁-a0 dv e bv y (λ ()))
+    (Eq.cong (ε ,_) (inj₁-a-eq (Eq.cong (₀ ,_) eq-y₂)))
+  s₄fix : (₁₊ y₂ , ₀) ≡ (₁₊ a₀ , ₀)
+  s₄fix = Eq.cong (_, ₀)
+    (Eq.trans (Eq.sym eq-y₂)
+      (Eq.trans (Eq.cong -_ (Eq.sym eq-y)) (-‿involutive (₁₊ a₀))))
+  s₄ : ract {₁₊ m} c₃ (gate₁ H-gate)
+       ≡ (ε , inj₁ ((dv , e) , (bv , ((₁₊ a₀ , ₀) , nz))))
+  s₄ = Eq.trans (ract-H-inj₁-0b dv e bv y₂ (λ ()))
+    (Eq.cong (ε ,_) (inj₁-a-eq s₄fix))
+
+  coset≡ : ((ract {₁₊ m} ᵗ)
+      (inj₁ ((dv , e) , (bv , ((₁₊ a₀ , ₀) , nz)))) (H ^ 4)) .proj₂
+    ≡ inj₁ ((dv , e) , (bv , ((₁₊ a₀ , ₀) , nz)))
+  coset≡ =
+    Eq.trans (Eq.cong (λ pr → ((ract {₁₊ m} ᵗ) (pr .proj₂) (H ^ 3)) .proj₂) s₁)
+    (Eq.trans (Eq.cong (λ pr → ((ract {₁₊ m} ᵗ) (pr .proj₂) (H ^ 2)) .proj₂) s₂)
+    (Eq.trans (Eq.cong (λ pr → ((ract {₁₊ m} ᵗ) (pr .proj₂) (H ^ 1)) .proj₂) s₃)
+      (Eq.cong proj₂ s₄)))
+
+  resid≈ : ((ract {₁₊ m} ᵗ)
+      (inj₁ ((dv , e) , (bv , ((₁₊ a₀ , ₀) , nz)))) (H ^ 4)) .proj₁ ≈ ε
+  resid≈ =
+    trans (cong (refl' (Eq.cong proj₁ s₁))
+      (trans (refl' (Eq.cong
+          (λ pr → ((ract {₁₊ m} ᵗ) (pr .proj₂) (H ^ 3)) .proj₁) s₁))
+      (trans (cong (refl' (Eq.cong proj₁ s₂))
+        (trans (refl' (Eq.cong
+            (λ pr → ((ract {₁₊ m} ᵗ) (pr .proj₂) (H ^ 2)) .proj₁) s₂))
+        (trans (cong (refl' (Eq.cong proj₁ s₃))
+          (trans (refl' (Eq.cong
+              (λ pr → ((ract {₁₊ m} ᵗ) (pr .proj₂) (H ^ 1)) .proj₁) s₃))
+            (refl' (Eq.cong proj₁ s₄))))
+          left-unit)))
+        left-unit)))
+      left-unit
+
+------------------------------------------------------------------------
+-- order-S at inj₁, a ≠ 0 branch.
 
 orderS-inj₁-a+ : ∀ {m : ℕ} (dv : Vec D (₁₊ m)) (e : E) (bv : Vec B (₁₊ m))
   (a₀ : Fin (₁₊ p-2)) (b : ℤ ₚ) (nz : (₁₊ a₀ , b) ≢ (₀ , ₀)) →

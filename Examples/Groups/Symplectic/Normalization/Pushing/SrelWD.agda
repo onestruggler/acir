@@ -147,7 +147,18 @@ srel-wd {zero} (([] , e) , ([] , ((₁₊ a₀ , ₁₊ b₀) , nz))) Base.order
   elim-suc (- (₁₊ a₀)) (neg≢0 (₁₊ a₀) λ ()) λ y eq-y →
   elim-suc (- (₁₊ b₀)) (neg≢0 (₁₊ b₀) λ ()) λ z eq-z →
   order-H-nn e a₀ b₀ nz y z eq-y eq-z
-srel-wd {suc m} (inj₁ ml')     Base.order-H = {!!}
+-- order-H on inj₁: half-zero boxes stay half-zero along the quarter-turn
+-- 4-cycle and emit nothing (PushWD); only the fully nonzero box cascades.
+srel-wd {suc m} (inj₁ ((dv , e) , (bv , ((₀ , ₀) , nz)))) Base.order-H =
+  ⊥-elim (nz auto)
+srel-wd {suc m} (inj₁ ((dv , e) , (bv , ((₀ , ₁₊ b₀) , nz)))) Base.order-H =
+  elim-suc (- (₁₊ b₀)) (neg≢0 (₁₊ b₀) λ ()) λ y eq-y →
+  orderH-inj₁-0b dv e bv b₀ nz y eq-y
+srel-wd {suc m} (inj₁ ((dv , e) , (bv , ((₁₊ a₀ , ₀) , nz)))) Base.order-H =
+  elim-suc (- (₁₊ a₀)) (neg≢0 (₁₊ a₀) λ ()) λ y eq-y →
+  elim-suc (- (₁₊ y)) (neg≢0 (₁₊ y) λ ()) λ y2 eq-y2 →
+  orderH-inj₁-a0 dv e bv a₀ nz y eq-y y2 eq-y2
+srel-wd {suc m} (inj₁ ((dv , e) , (bv , ((₁₊ a₀ , ₁₊ b₀) , nz)))) Base.order-H = {!!}
 -- order-H on inj₂: the D box 4-cycles under (a,b) ↦ (b,-a); the Hdir
 -- escapes collapse to H ^ 4 (fully nonzero pattern still open).
 srel-wd {suc m} (inj₂ ((₀ , ₀) , lm)) Base.order-H = orderH-go-00 lm
