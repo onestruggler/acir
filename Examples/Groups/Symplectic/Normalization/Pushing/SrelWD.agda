@@ -90,6 +90,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11 p-2 p-p
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11b p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11d p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11e p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11f p-2 p-prime
 
 ------------------------------------------------------------------------
 -- The axioms, one at a time.
@@ -358,7 +359,10 @@ srel-wd {suc (suc m)} (inj₂ ((₀ , ₀) , inj₂ ((₁₊ a2' , b2) , lm2))) 
   c11-go-0a2 b2 a2' y lm2 eq-y
 srel-wd {suc (suc m)} (inj₂ ((₁₊ a1' , ₀) , inj₂ ((₀ , b2) , lm2))) Base.selinger-c11 =
   c11-go-a00 b2 a1' lm2
-srel-wd {suc (suc m)} (inj₂ ((₁₊ a1' , ₁₊ b1'') , inj₂ ((₀ , b2) , lm2))) Base.selinger-c11 = {!!}
+srel-wd {suc (suc m)} (inj₂ ((₁₊ a1' , ₁₊ b1'') , inj₂ ((₀ , b2) , lm2))) Base.selinger-c11 =
+  elim-fin (₁₊ b1'' + ₁₊ a1')
+    (λ eqY → c11-go-ab0α b2 a1' b1'' lm2 eqY)
+    (λ y eqY → {!!})
 srel-wd {suc (suc m)} (inj₂ ((₁₊ a1' , b1) , inj₂ ((₁₊ a2' , b2) , lm2))) Base.selinger-c11 = {!!}
 -- selinger-c12 on triply-inj₂ cosets with a clean middle wire: the two
 -- CZ escapes commute letterwise (axiom at the cores).  Nonzero-middle
