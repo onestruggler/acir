@@ -88,6 +88,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10m p-2 p-
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10o p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11 p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11b p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11d p-2 p-prime
 
 ------------------------------------------------------------------------
 -- The axioms, one at a time.
@@ -350,7 +351,7 @@ srel-wd {suc (suc m)} (inj₂ ((₀ , ₁₊ b1') , inj₂ ((₀ , b2) , lm2))) 
 srel-wd {suc (suc m)} (inj₂ ((₀ , ₁₊ b1') , inj₂ ((₁₊ a2' , b2) , lm2))) Base.selinger-c11 =
   elim-fin (₁₊ b1' + - ₁₊ a2')
     (λ eqX → c11-go-0b2α b2 b1' a2' lm2 eqX)
-    (λ x eqX → {!!})
+    (λ x eqX → c11-go-0b2β b2 b1' a2' x lm2 eqX)
 srel-wd {suc (suc m)} (inj₂ ((₀ , ₀) , inj₂ ((₁₊ a2' , b2) , lm2))) Base.selinger-c11 =
   elim-suc (- (₁₊ a2')) (neg≢0 (₁₊ a2') λ ()) λ y eq-y →
   c11-go-0a2 b2 a2' y lm2 eq-y
