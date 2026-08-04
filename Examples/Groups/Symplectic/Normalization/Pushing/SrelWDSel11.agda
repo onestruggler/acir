@@ -44,13 +44,13 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.DVecPush
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
   p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ
-  p-2 p-prime using (↓-pow-S)
+  p-2 p-prime using (↓-pow-S ; H↑3H↑≈ε)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ2
   p-2 p-prime using (ract-↑-≡)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10
   p-2 p-prime using (nsum-p-1)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10b
-  p-2 p-prime using (TW ; unitS)
+  p-2 p-prime using (TW ; unitS ; Sp-1-S ; SinvupS)
 import Presentation.Properties as PP
 import Relation.Binary.Reasoning.Setoid as SR
 
@@ -453,4 +453,96 @@ module _ {m : ℕ} where
              ((ract2' ᵗ) (inj₂ ((₀ , ₁₊ b1') , lm))
                (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑)) .proj₂
     coset≡ = Eq.trans L-c (Eq.sym R-c)
+
+
+------------------------------------------------------------------------
+-- The (₀,₀)/(₁₊a2',b2) pattern.  The first CZ escapes top-conjugated
+-- (W), the middle H escapes ε, and the last CZ hits the clause-4 pad
+-- whose two slots BOTH take the value 1 (because the rotated box is
+-- exactly -a₂).  The identity then closes with four cancellations.
+
+module _ {m : ℕ} where
+  open PB ((₂₊ m) QRel,_===_)
+  open PP ((₂₊ m) QRel,_===_)
+  open SR word-setoid
+  open Lemmas-Sym using (lemma-comm-H-w↑ ; lemma-comm-S-w↑)
+
+  private
+    W2 : Word (Gen (₂₊ m))
+    W2 = H ↑ • (CZ • (H ↑) ^ 3)
+
+    PAD1c : Word (Gen (₂₊ m))
+    PAD1c = H • (H ↑ • (CZ • (S • (H ^ 3 • (S ↑ • (H ↑) ^ 3)))))
+
+    HWa : ∀ (w : Word (Gen (₁₊ m))) → H • w ↑ ≈ w ↑ • H
+    HWa w = lemma-comm-H-w↑ w
+
+    SinvHup : S⁻¹ • H ↑ ≈ H ↑ • S⁻¹
+    SinvHup = comm⇒pow-comm {w = S} {v = H ↑} p-1 1
+      (lemma-comm-S-w↑ H)
+
+    SupH3a : S⁻¹ {m} ↑ • H ^ 3 ≈ H ^ 3 • S⁻¹ ↑
+    SupH3a = sym (comm⇒pow-comm {w = H} {v = S⁻¹ ↑} 3 1
+      (lemma-comm-H-w↑ S⁻¹))
+
+    fixdown11a : S⁻¹ ↓ • (H ↓ • (S⁻¹ ↓ • (CZ • (H ↓ •
+        (S⁻¹ {₁₊ m} ↓ • S⁻¹ ↑))))) ≡
+      S⁻¹ • (H • (S⁻¹ • (CZ • (H • (S⁻¹ • S⁻¹ ↑)))))
+    fixdown11a = Eq.cong₂
+      (λ u v → u • (H • (v • (CZ • (H • (v • S⁻¹ ↑))))))
+      (↓-pow-S p-1) (↓-pow-S p-1)
+
+  idc11a : W2 • PAD1c ≈ S⁻¹ • (H • (S⁻¹ • W2))
+  idc11a = begin
+    W2 • PAD1c
+      ≈⟨ trans assoc (cright assoc) ⟩
+    H ↑ • (CZ • ((H ↑) ^ 3 • PAD1c))
+      ≈⟨ cright (cright (trans (sym assoc)
+           (trans (cleft (sym (HWa (H ^ 3))))
+           (trans assoc
+           (trans (cright (sym assoc))
+           (trans (cright (cleft H↑3H↑≈ε)) (cright left-unit))))))) ⟩
+    H ↑ • (CZ • (H • (CZ • (S • (H ^ 3 • (S ↑ • (H ↑) ^ 3))))))
+      ≈⟨ cright (trans (cright (sym assoc)) (sym assoc)) ⟩
+    H ↑ • ((CZ • (H • CZ)) • (S • (H ^ 3 • (S ↑ • (H ↑) ^ 3))))
+      ≈⟨ cright (cleft (trans (axiom selinger-c11) (refl' fixdown11a))) ⟩
+    H ↑ • ((S⁻¹ • (H • (S⁻¹ • (CZ • (H • (S⁻¹ • S⁻¹ ↑)))))) •
+      (S • (H ^ 3 • (S ↑ • (H ↑) ^ 3))))
+      ≈⟨ cright (trans assoc (cright (trans assoc (cright (trans assoc
+           (cright (trans assoc (cright (trans assoc
+             (cright assoc)))))))))) ⟩
+    H ↑ • (S⁻¹ • (H • (S⁻¹ • (CZ • (H • (S⁻¹ •
+      (S⁻¹ ↑ • (S • (H ^ 3 • (S ↑ • (H ↑) ^ 3))))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright (cright
+           (trans (sym assoc)
+             (trans (cleft (sym (lemma-comm-S-w↑ S⁻¹))) assoc)))))))) ⟩
+    H ↑ • (S⁻¹ • (H • (S⁻¹ • (CZ • (H • (S⁻¹ •
+      (S • (S⁻¹ ↑ • (H ^ 3 • (S ↑ • (H ↑) ^ 3))))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright
+           (trans (sym assoc)
+             (trans (cleft (Sp-1-S {₁₊ m})) left-unit)))))))  ⟩
+    H ↑ • (S⁻¹ • (H • (S⁻¹ • (CZ • (H •
+      (S⁻¹ ↑ • (H ^ 3 • (S ↑ • (H ↑) ^ 3))))))))
+      ≈⟨ cright (cright (cright (cright (cright (cright
+           (trans (sym assoc)
+             (trans (cleft SupH3a) assoc))))))) ⟩
+    H ↑ • (S⁻¹ • (H • (S⁻¹ • (CZ • (H •
+      (H ^ 3 • (S⁻¹ ↑ • (S ↑ • (H ↑) ^ 3))))))))
+      ≈⟨ cright (cright (cright (cright (cright
+           (trans (sym assoc)
+             (trans (cleft (axiom order-H)) left-unit)))))) ⟩
+    H ↑ • (S⁻¹ • (H • (S⁻¹ • (CZ •
+      (S⁻¹ ↑ • (S ↑ • (H ↑) ^ 3))))))
+      ≈⟨ cright (cright (cright (cright (cright
+           (trans (sym assoc)
+             (trans (cleft SinvupS) left-unit)))))) ⟩
+    H ↑ • (S⁻¹ • (H • (S⁻¹ • (CZ • (H ↑) ^ 3))))
+      ≈⟨ trans (sym assoc) (trans (cleft (sym SinvHup)) assoc) ⟩
+    S⁻¹ • (H ↑ • (H • (S⁻¹ • (CZ • (H ↑) ^ 3))))
+      ≈⟨ cright (trans (sym assoc)
+           (trans (cleft (sym (HWa H))) assoc)) ⟩
+    S⁻¹ • (H • (H ↑ • (S⁻¹ • (CZ • (H ↑) ^ 3))))
+      ≈⟨ cright (cright (trans (sym assoc)
+           (trans (cleft (sym SinvHup)) assoc))) ⟩
+    S⁻¹ • (H • (S⁻¹ • (H ↑ • (CZ • (H ↑) ^ 3)))) ∎
 
