@@ -645,3 +645,63 @@ module _ {m : ℕ} where
       (S^ (v₁ + - iQ) • (H • S^ (- q)))
       (midgen v₁ Q)
 
+
+------------------------------------------------------------------------
+-- The generic R-normalisation: a unit, one pad and a second unit.
+-- Pure commutation — no value conditions.
+
+module _ {m : ℕ} where
+  open PB ((₂₊ m) QRel,_===_)
+  open PP ((₂₊ m) QRel,_===_)
+  open SR word-setoid
+  open Lemmas-Sym using (lemma-comm-S-w↑ ; lemma-comm-H-w↑)
+
+  private
+    h : Word (Gen (₂₊ m))
+    h = H {m} ↑
+
+    PADr : ℤ ₚ → ℤ ₚ → Word (Gen (₂₊ m))
+    PADr u v = H • (h • (CZ • (S^ u • (H ^ 3 • (S^ v ↑ • h ^ 3)))))
+
+    SkW' : ∀ (k : ℤ ₚ) (w : Word (Gen (₁₊ m))) →
+      S^ k • w ↑ ≈ w ↑ • S^ k
+    SkW' k w = comm⇒pow-comm {w = S} {v = w ↑} (toℕ k) 1
+      (lemma-comm-S-w↑ w)
+
+    HW' : ∀ (w : Word (Gen (₁₊ m))) → H • w ↑ ≈ w ↑ • H
+    HW' w = lemma-comm-H-w↑ w
+
+    H3W' : ∀ (w : Word (Gen (₁₊ m))) → H ^ 3 • w ↑ ≈ w ↑ • H ^ 3
+    H3W' w = comm⇒pow-comm {w = H} {v = w ↑} 3 1 (lemma-comm-H-w↑ w)
+
+  Rgen : ∀ (Qz Qzy : ℤ* ₚ) (ez ezy uz vz : ℤ ₚ) →
+    (ZM Qz ↑ • S^ ez ↑) • (PADr uz vz • (ZM Qzy ↑ • S^ ezy ↑)) ≈
+    H • (ZM Qz ↑ • (S^ ez ↑ • (h • (CZ •
+      ((S^ vz ↑ • (h ^ 3 • (ZM Qzy ↑ • S^ ezy ↑))) • (S^ uz • H ^ 3))))))
+  Rgen Qz Qzy ez ezy uz vz = begin
+    (ZM Qz ↑ • S^ ez ↑) • (PADr uz vz • (ZM Qzy ↑ • S^ ezy ↑))
+      ≈⟨ assoc ⟩
+    ZM Qz ↑ • (S^ ez ↑ • (PADr uz vz • (ZM Qzy ↑ • S^ ezy ↑)))
+      ≈⟨ cright (cright (trans assoc (cright (trans assoc
+           (cright (trans assoc (cright (trans assoc
+             (cright (trans assoc (cright assoc))))))))))) ⟩
+    ZM Qz ↑ • (S^ ez ↑ • (H • (h • (CZ • (S^ uz • (H ^ 3 •
+      (S^ vz ↑ • (h ^ 3 • (ZM Qzy ↑ • S^ ezy ↑)))))))))
+      ≈⟨ cright (trans (sym assoc)
+           (trans (cleft (sym (HW' (S^ ez)))) assoc)) ⟩
+    ZM Qz ↑ • (H • (S^ ez ↑ • (h • (CZ • (S^ uz • (H ^ 3 •
+      (S^ vz ↑ • (h ^ 3 • (ZM Qzy ↑ • S^ ezy ↑)))))))))
+      ≈⟨ trans (sym assoc) (trans (cleft (sym (HW' (ZM Qz)))) assoc) ⟩
+    H • (ZM Qz ↑ • (S^ ez ↑ • (h • (CZ • (S^ uz • (H ^ 3 •
+      (S^ vz ↑ • (h ^ 3 • (ZM Qzy ↑ • S^ ezy ↑)))))))))
+      ≈⟨ cright (cright (cright (cright (cright
+           (trans (cright (H3W' TW))
+           (trans (sym assoc)
+           (trans (cleft (SkW' uz TW)) assoc))))))) ⟩
+    H • (ZM Qz ↑ • (S^ ez ↑ • (h • (CZ •
+      ((S^ vz ↑ • (h ^ 3 • (ZM Qzy ↑ • S^ ezy ↑))) •
+        (S^ uz • H ^ 3)))))) ∎
+    where
+    TW : Word (Gen (₁₊ m))
+    TW = S^ vz • (H ^ 3 • (ZM Qzy • S^ ezy))
+
