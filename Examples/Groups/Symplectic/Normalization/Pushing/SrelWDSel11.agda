@@ -47,6 +47,10 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ
   p-2 p-prime using (↓-pow-S)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ2
   p-2 p-prime using (ract-↑-≡)
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel10b
+  p-2 p-prime using (TW ; unitS)
+import Presentation.Properties as PP
+import Relation.Binary.Reasoning.Setoid as SR
 
 module _ {m : ℕ} where
   open PB ((₂₊ m) QRel,_===_)
@@ -198,3 +202,64 @@ module _ {m : ℕ} where
              ((ract2 ᵗ) (inj₂ ((₀ , ₀) , lm))
                (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑)) .proj₂
     coset≡ = Eq.trans L-c (Eq.sym R-c)
+
+------------------------------------------------------------------------
+-- The (₀,₁₊b1')/(₀,b2) pattern: the middle H escapes ε and rotates
+-- b₁ into the a-slot, so the last CZ escapes bottom-conjugated.  The
+-- residual identity is c10's residkey mirrored, and it rests on the
+-- same one-wire fact TW — here applied on the bottom wire directly.
+
+module _ {m : ℕ} where
+  open PB ((₂₊ m) QRel,_===_)
+  open PP ((₂₊ m) QRel,_===_)
+  open SR word-setoid
+  open Lemmas-Sym using (lemma-comm-H-w↑)
+
+  private
+    ract2' = ract {₂₊ m}
+
+    WD : Word (Gen (₂₊ m))
+    WD = H • (CZ • H ^ 3)
+
+    SdownCZ : S⁻¹ • CZ ≈ CZ • S⁻¹
+    SdownCZ = comm⇒pow-comm {w = S} {v = CZ} p-1 1
+      (sym (axiom comm-CZ-S↓))
+
+    SupH3 : S⁻¹ {m} ↑ • H ^ 3 ≈ H ^ 3 • S⁻¹ ↑
+    SupH3 = sym (comm⇒pow-comm {w = H} {v = S⁻¹ ↑} 3 1
+      (lemma-comm-H-w↑ S⁻¹))
+
+    fixdown11 : S⁻¹ ↓ • (H ↓ • (S⁻¹ ↓ • (CZ • (H ↓ •
+        (S⁻¹ {₁₊ m} ↓ • S⁻¹ ↑))))) ≡
+      S⁻¹ • (H • (S⁻¹ • (CZ • (H • (S⁻¹ • S⁻¹ ↑)))))
+    fixdown11 = Eq.cong₂
+      (λ u v → u • (H • (v • (CZ • (H • (v • S⁻¹ ↑))))))
+      (↓-pow-S p-1) (↓-pow-S p-1)
+
+  -- The mirror of residkey: the bottom S⁻¹ crosses the CZ and the
+  -- remaining S⁻¹•H•S⁻¹•H³ is TW.
+  residkey11 : CZ • WD ≈ S⁻¹ • (WD • (S • S⁻¹ ↑))
+  residkey11 =
+    trans (cright (sym assoc))
+    (trans (sym assoc)
+    (trans (cleft (axiom selinger-c11))
+    (trans (cleft (refl' fixdown11))
+    (trans assoc (cright inner)))))
+    where
+    inner : (H • (S⁻¹ • (CZ • (H • (S⁻¹ • S⁻¹ ↑))))) • H ^ 3 ≈
+            WD • (S • S⁻¹ ↑)
+    inner =
+      trans assoc
+      (trans (cright assoc)
+      (trans (cright (cright assoc))
+      (trans (cright (cright (cright assoc)))
+      (trans (cright (cright (cright (cright assoc))))
+      (trans (cright (cright (cright (cright (cright SupH3)))))
+      (trans (cright (trans (sym assoc)
+        (trans (cleft SdownCZ) assoc)))
+      (trans (cright (cright (trans
+          (trans (cright (cright (sym assoc)))
+          (trans (cright (sym assoc)) (sym assoc)))
+          (trans (cleft (TW {₁₊ m})) assoc))))
+        (trans (cright (sym assoc)) (sym assoc)))))))))
+
