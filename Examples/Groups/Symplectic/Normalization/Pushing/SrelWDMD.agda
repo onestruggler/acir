@@ -925,3 +925,76 @@ module _ {m : ℕ} where
       (Eq.trans (+-assoc (₁₊ v') (- ₁₊ b') (₁₊ b'))
       (Eq.trans (Eq.cong (₁₊ v' +_) (+-inverseˡ (₁₊ b')))
                 (+-identityʳ (₁₊ v')))))))
+
+------------------------------------------------------------------------
+-- Total closed forms: witnesses are marshalled internally, so callers
+-- see only the zero pattern of the a-slot.
+
+  MD-resid!0 : ∀ (x : ℤ* ₚ) (b : ℤ ₚ) (lm : C (₁₊ m)) →
+    ((ract' ᵗ) (inj₂ ((₀ , b) , lm)) (ZM x)) .proj₁ ≈ ZM x
+  MD-resid!0 x ₀ lm = MD-resid-00 x lm
+  MD-resid!0 x (₁₊ b') lm =
+    elim-suc (- ((x ⁻¹) .proj₁ * ₁₊ b'))
+      (neg≢0 ((x ⁻¹) .proj₁ * ₁₊ b') (((x ⁻¹) *' (₁₊ b' , λ ())) .proj₂))
+      λ t' eq-t → MD-resid-0b x b' t' lm eq-t
+
+  MD-coset!0 : ∀ (x : ℤ* ₚ) (b : ℤ ₚ) (lm : C (₁₊ m)) →
+    ((ract' ᵗ) (inj₂ ((₀ , b) , lm)) (ZM x)) .proj₂ ≡
+    inj₂ ((₀ , (x ⁻¹) .proj₁ * b) , lm)
+  MD-coset!0 x ₀ lm =
+    Eq.trans (MD-coset-00 x lm)
+      (Eq.cong (λ v → inj₂ ((₀ , v) , lm)) (Eq.sym (*-zeroʳ ((x ⁻¹) .proj₁))))
+  MD-coset!0 x (₁₊ b') lm =
+    elim-suc (- ((x ⁻¹) .proj₁ * ₁₊ b'))
+      (neg≢0 ((x ⁻¹) .proj₁ * ₁₊ b') (((x ⁻¹) *' (₁₊ b' , λ ())) .proj₂))
+      λ t' eq-t → MD-coset-0b x b' t' lm eq-t
+
+  MD-resid!+ : ∀ (x : ℤ* ₚ) (a' : Fin (₁₊ p-2)) (b : ℤ ₚ) (lm : C (₁₊ m)) →
+    ((ract' ᵗ) (inj₂ ((₁₊ a' , b) , lm)) (ZM x)) .proj₁ ≈ ZM (x ⁻¹)
+  MD-resid!+ x a' ₀ lm =
+    elim-suc (- (x .proj₁ * ₁₊ a'))
+      (neg≢0 (x .proj₁ * ₁₊ a') ((x *' (₁₊ a' , λ ())) .proj₂))
+      λ s' eq-s → elim-suc (- ₁₊ s') (neg≢0 (₁₊ s') λ ())
+      λ u' eq-u → MD-resid-a0 x a' s' u' lm eq-s eq-u
+  MD-resid!+ x a' (₁₊ b') lm =
+    elim-fin (₁₊ b' + - (x .proj₁ * ₁₊ a'))
+      (λ Weq → elim-suc (- ₁₊ a') (neg≢0 (₁₊ a') λ ())
+        λ y eq-y → MD-resid-nn0 x a' b' y lm eq-y Weq)
+      (λ w' Weq →
+        elim-suc (- ((x ⁻¹) .proj₁ * ₁₊ b'))
+          (neg≢0 ((x ⁻¹) .proj₁ * ₁₊ b') (((x ⁻¹) *' (₁₊ b' , λ ())) .proj₂))
+        λ t' eq-t →
+        elim-suc (x .proj₁ * ₁₊ a') ((x *' (₁₊ a' , λ ())) .proj₂)
+        λ v' eq-v → MD-resid-nnw x a' b' w' t' v' lm Weq eq-t eq-v)
+
+  MD-coset!+ : ∀ (x : ℤ* ₚ) (a' : Fin (₁₊ p-2)) (b : ℤ ₚ) (lm : C (₁₊ m)) →
+    ((ract' ᵗ) (inj₂ ((₁₊ a' , b) , lm)) (ZM x)) .proj₂ ≡
+    inj₂ ((x .proj₁ * ₁₊ a' , (x ⁻¹) .proj₁ * b) , lm)
+  MD-coset!+ x a' ₀ lm =
+    elim-suc (- (x .proj₁ * ₁₊ a'))
+      (neg≢0 (x .proj₁ * ₁₊ a') ((x *' (₁₊ a' , λ ())) .proj₂))
+      λ s' eq-s → elim-suc (- ₁₊ s') (neg≢0 (₁₊ s') λ ())
+      λ u' eq-u →
+        Eq.trans (MD-coset-a0 x a' s' u' lm eq-s eq-u)
+          (Eq.cong (λ v → inj₂ ((x .proj₁ * ₁₊ a' , v) , lm))
+            (Eq.sym (*-zeroʳ ((x ⁻¹) .proj₁))))
+  MD-coset!+ x a' (₁₊ b') lm =
+    elim-fin (₁₊ b' + - (x .proj₁ * ₁₊ a'))
+      (λ Weq → elim-suc (- ₁₊ a') (neg≢0 (₁₊ a') λ ())
+        λ y eq-y → MD-coset-nn0 x a' b' y lm eq-y Weq)
+      (λ w' Weq →
+        elim-suc (- ((x ⁻¹) .proj₁ * ₁₊ b'))
+          (neg≢0 ((x ⁻¹) .proj₁ * ₁₊ b') (((x ⁻¹) *' (₁₊ b' , λ ())) .proj₂))
+        λ t' eq-t →
+        elim-suc (x .proj₁ * ₁₊ a') ((x *' (₁₊ a' , λ ())) .proj₂)
+        λ v' eq-v → MD-coset-nnw x a' b' w' t' v' lm Weq eq-t eq-v)
+
+------------------------------------------------------------------------
+-- ZM value congruence (the nz slots are proof-irrelevant).
+
+module _ {j : ℕ} where
+  open PB ((₁₊ j) QRel,_===_)
+  open Lemmas0 j
+
+  ZM-val≈ : ∀ (q q' : ℤ* ₚ) → q .proj₁ ≡ q' .proj₁ → ZM q ≈ ZM q'
+  ZM-val≈ q q' eq = aux-MM (q .proj₂) (q' .proj₂) eq
