@@ -97,6 +97,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11i p-2 p-
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11j p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11k p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.ExTransport p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.PushWD p-2 p-prime
 
 ------------------------------------------------------------------------
 -- The axioms, one at a time.
@@ -117,7 +118,15 @@ srel-wd {zero} (([] , e) , ([] , ((₁₊ a' , b) , nz))) Base.order-S =
                   (Eq.cong (λ z → ₁₊ a' , z)
                            (Eq.trans (Eq.cong (b +_) (nsum-p≡0 (- (₁₊ a'))))
                                      (+-identityʳ b))))
-srel-wd {suc m} (inj₁ ml') Base.order-S = {!!}
+-- order-S on inj₁: on an a ≠ 0 A box the S-gate's A-dir-S-power is ₀,
+-- so the M column and B-vector are untouched (mbSⁿ 0) and the orbit is
+-- the width-1 A-box computation (PushWD).  The (₀ , ₁₊ b') box emits
+-- b⁻²-powers into the mb-S cascade and remains open.
+srel-wd {suc m} (inj₁ ((dv , e) , (bv , ((₀ , ₀) , nz)))) Base.order-S =
+  ⊥-elim (nz auto)
+srel-wd {suc m} (inj₁ ((dv , e) , (bv , ((₀ , ₁₊ b') , nz)))) Base.order-S = {!!}
+srel-wd {suc m} (inj₁ ((dv , e) , (bv , ((₁₊ a₀ , b) , nz)))) Base.order-S =
+  orderS-inj₁-a+ dv e bv a₀ b nz
 srel-wd {suc m} (inj₂ ((₀ , b) , lm)) Base.order-S = orderS-go-0 b lm
 srel-wd {suc m} (inj₂ ((₁₊ a , b) , lm)) Base.order-S = orderS-go-+ a b lm
 -- order-H at width 1: the A box 4-cycles under H ((0,b) ↦ (b,0) ↦
