@@ -42,7 +42,8 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
-  using (-0#≈0# ; -‿involutive ; -‿+-comm)
+  using (-0#≈0# ; -‿involutive ; -‿+-comm
+       ; -‿distribˡ-* ; -‿distribʳ-*)
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.DVecPush
   p-2 p-prime using (Hdir ; Hd')
@@ -118,6 +119,61 @@ module Values (a1' a2' w : Fin (₁₊ p-2)) (b1 : ℤ ₚ)
     (Eq.trans (Eq.cong (λ t → b2 + (t + ₁₊ a2')) (+-inverseˡ (₁₊ a1')))
     (Eq.trans (Eq.cong (b2 +_) (+-identityˡ (₁₊ a2')))
       (Eq.cong (_+ ₁₊ a2') (Eq.sym (e0 b2)))))))
+
+------------------------------------------------------------------------
+-- The unit kit for the βα branch.
+--
+-- The c11 analogue of SrelWDSel10l.BAValues, which idβα consumes.  The
+-- pads carry S-exponents built from a₁⁻¹, a₂⁻¹ and w⁻¹; these are the
+-- names and the basic algebra relating them, under
+-- wSum : w ≡ -(a₁ + a₂).
+
+module Units (a1' a2' w : Fin (₁₊ p-2))
+  (wSum : ₁₊ w ≡ - (₁₊ a1' + ₁₊ a2')) where
+
+  A₁* A₂* W* : ℤ* ₚ
+  A₁* = (₁₊ a1' , λ ())
+  A₂* = (₁₊ a2' , λ ())
+  W*  = (₁₊ w , λ ())
+
+  iA₁ iA₂ iW : ℤ ₚ
+  iA₁ = (A₁* ⁻¹) .proj₁
+  iA₂ = (A₂* ⁻¹) .proj₁
+  iW  = (W* ⁻¹) .proj₁
+
+  -- the four S-exponents appearing in PADg and PADy
+  u₁v v₁v uwv vwv : ℤ ₚ
+  u₁v = - ₁₊ a2' * iA₁      -- PADg, bottom wire
+  v₁v = - ₁₊ a1' * iA₂      -- PADg, top wire
+  uwv = - ₁₊ a2' * iW       -- PADy, bottom wire
+  vwv = - ₁₊ w   * iA₂      -- PADy, top wire
+
+  negneg : ∀ (s t : ℤ ₚ) → - s * - t ≡ s * t
+  negneg s t = Eq.trans (Eq.sym (-‿distribˡ-* s (- t)))
+    (Eq.trans (Eq.cong -_ (Eq.sym (-‿distribʳ-* s t)))
+      (-‿involutive (s * t)))
+
+  -- the two sum identities the pad merges need
+  wWA : ₁₊ a1' + ₁₊ w ≡ - ₁₊ a2'
+  wWA = Eq.trans (Eq.cong (₁₊ a1' +_) wSum)
+    (Eq.trans (Eq.cong (₁₊ a1' +_)
+        (Eq.sym (-‿+-comm (₁₊ a1') (₁₊ a2'))))
+    (Eq.trans (Eq.sym (+-assoc (₁₊ a1') (- ₁₊ a1') (- ₁₊ a2')))
+    (Eq.trans (Eq.cong (_+ - ₁₊ a2') (+-inverseʳ (₁₊ a1')))
+      (+-identityˡ (- ₁₊ a2')))))
+
+  wWB : ₁₊ a2' + ₁₊ w ≡ - ₁₊ a1'
+  wWB = Eq.trans (Eq.cong (₁₊ a2' +_) wSum)
+    (Eq.trans (Eq.cong (₁₊ a2' +_)
+        (Eq.sym (-‿+-comm (₁₊ a1') (₁₊ a2'))))
+    (Eq.trans (Eq.cong (₁₊ a2' +_) (+-comm (- ₁₊ a1') (- ₁₊ a2')))
+    (Eq.trans (Eq.sym (+-assoc (₁₊ a2') (- ₁₊ a2') (- ₁₊ a1')))
+    (Eq.trans (Eq.cong (_+ - ₁₊ a1') (+-inverseʳ (₁₊ a2')))
+      (+-identityˡ (- ₁₊ a1'))))))
+
+  -- w as a sum, in the two orders the chains need
+  negw' : - ₁₊ w ≡ ₁₊ a1' + ₁₊ a2'
+  negw' = Eq.trans (Eq.cong -_ wSum) (-‿involutive (₁₊ a1' + ₁₊ a2'))
 
 ------------------------------------------------------------------------
 -- The coset half.

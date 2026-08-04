@@ -38,7 +38,8 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
-  using (-0#≈0# ; -‿involutive ; -‿+-comm)
+  using (-0#≈0# ; -‿involutive ; -‿+-comm
+       ; -‿distribˡ-* ; -‿distribʳ-*)
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.DVecPush
   p-2 p-prime using (Hdir ; Hd')
@@ -123,6 +124,48 @@ module Values (a1' a2' z : Fin (₁₊ p-2)) (b1 : ℤ ₚ)
         (Eq.trans (+-assoc b2 (- ₁₊ a2') (₁₊ a2'))
         (Eq.trans (Eq.cong (b2 +_) (+-inverseˡ (₁₊ a2')))
           (+-identityʳ b2))))))))))
+
+------------------------------------------------------------------------
+-- The unit kit for the αβ branch (analogue of SrelWDSel10l.BAValues),
+-- under zSum : z ≡ a₂ + a₁.
+
+module Units (a1' a2' z : Fin (₁₊ p-2))
+  (zSum : ₁₊ z ≡ ₁₊ a2' + ₁₊ a1') where
+
+  A₁* A₂* Z* : ℤ* ₚ
+  A₁* = (₁₊ a1' , λ ())
+  A₂* = (₁₊ a2' , λ ())
+  Z*  = (₁₊ z , λ ())
+
+  iA₁ iA₂ iZ : ℤ ₚ
+  iA₁ = (A₁* ⁻¹) .proj₁
+  iA₂ = (A₂* ⁻¹) .proj₁
+  iZ  = (Z* ⁻¹) .proj₁
+
+  -- the S-exponents in PADg and PADz
+  u₁v v₁v uzv vzv : ℤ ₚ
+  u₁v = - ₁₊ a2' * iA₁
+  v₁v = - ₁₊ a1' * iA₂
+  uzv = - ₁₊ a2' * iZ
+  vzv = - ₁₊ z   * iA₂
+
+  negneg : ∀ (s t : ℤ ₚ) → - s * - t ≡ s * t
+  negneg s t = Eq.trans (Eq.sym (-‿distribˡ-* s (- t)))
+    (Eq.trans (Eq.cong -_ (Eq.sym (-‿distribʳ-* s t)))
+      (-‿involutive (s * t)))
+
+  zA : ₁₊ z + - ₁₊ a1' ≡ ₁₊ a2'
+  zA = Eq.trans (Eq.cong (_+ - ₁₊ a1') zSum)
+    (Eq.trans (+-assoc (₁₊ a2') (₁₊ a1') (- ₁₊ a1'))
+    (Eq.trans (Eq.cong (₁₊ a2' +_) (+-inverseʳ (₁₊ a1')))
+      (+-identityʳ (₁₊ a2'))))
+
+  zB : ₁₊ z + - ₁₊ a2' ≡ ₁₊ a1'
+  zB = Eq.trans (Eq.cong (_+ - ₁₊ a2') zSum)
+    (Eq.trans (Eq.cong (_+ - ₁₊ a2') (+-comm (₁₊ a2') (₁₊ a1')))
+    (Eq.trans (+-assoc (₁₊ a1') (₁₊ a2') (- ₁₊ a2'))
+    (Eq.trans (Eq.cong (₁₊ a1' +_) (+-inverseʳ (₁₊ a2')))
+      (+-identityʳ (₁₊ a1')))))
 
 ------------------------------------------------------------------------
 -- The coset half.

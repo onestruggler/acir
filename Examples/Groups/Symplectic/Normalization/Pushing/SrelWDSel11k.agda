@@ -38,7 +38,8 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
-  using (-0#≈0# ; -‿involutive ; -‿+-comm)
+  using (-0#≈0# ; -‿involutive ; -‿+-comm
+       ; -‿distribˡ-* ; -‿distribʳ-*)
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.DVecPush
   p-2 p-prime using (Hdir ; Hd')
@@ -151,6 +152,57 @@ module Values (a1' a2' w z : Fin (₁₊ p-2)) (b1 : ℤ ₚ)
       (Eq.trans (+-assoc b2 (- ₁₊ w) (- ₁₊ a1'))
       (Eq.trans (Eq.cong (b2 +_) (+-comm (- ₁₊ w) (- ₁₊ a1')))
         (Eq.sym (+-assoc b2 (- ₁₊ a1') (- ₁₊ w)))))))))))
+
+------------------------------------------------------------------------
+-- The unit kit for the ββ branch (analogue of SrelWDSel10l.BAValues),
+-- under zSum : z ≡ (w + a₂) + a₁.  This branch has four distinct units,
+-- since neither box degenerates on either side.
+
+module Units (a1' a2' w z : Fin (₁₊ p-2))
+  (zSum : ₁₊ z ≡ (₁₊ w + ₁₊ a2') + ₁₊ a1') where
+
+  A₁* A₂* W* Z* : ℤ* ₚ
+  A₁* = (₁₊ a1' , λ ())
+  A₂* = (₁₊ a2' , λ ())
+  W*  = (₁₊ w , λ ())
+  Z*  = (₁₊ z , λ ())
+
+  iA₁ iA₂ iW iZ : ℤ ₚ
+  iA₁ = (A₁* ⁻¹) .proj₁
+  iA₂ = (A₂* ⁻¹) .proj₁
+  iW  = (W* ⁻¹) .proj₁
+  iZ  = (Z* ⁻¹) .proj₁
+
+  -- the S-exponents in PADg, PADw and PADz
+  u₁v v₁v uwv vwv uzv vzv : ℤ ₚ
+  u₁v = - ₁₊ a2' * iA₁
+  v₁v = - ₁₊ a1' * iA₂
+  uwv = - ₁₊ a2' * iW
+  vwv = - ₁₊ w   * iA₂
+  uzv = - ₁₊ a2' * iZ
+  vzv = - ₁₊ z   * iA₂
+
+  negneg : ∀ (s t : ℤ ₚ) → - s * - t ≡ s * t
+  negneg s t = Eq.trans (Eq.sym (-‿distribˡ-* s (- t)))
+    (Eq.trans (Eq.cong -_ (Eq.sym (-‿distribʳ-* s t)))
+      (-‿involutive (s * t)))
+
+  zA : ₁₊ z + - ₁₊ a1' ≡ ₁₊ w + ₁₊ a2'
+  zA = Eq.trans (Eq.cong (_+ - ₁₊ a1') zSum)
+    (Eq.trans (+-assoc (₁₊ w + ₁₊ a2') (₁₊ a1') (- ₁₊ a1'))
+    (Eq.trans (Eq.cong ((₁₊ w + ₁₊ a2') +_) (+-inverseʳ (₁₊ a1')))
+      (+-identityʳ (₁₊ w + ₁₊ a2'))))
+
+  zB : ₁₊ z + - ₁₊ a2' ≡ ₁₊ w + ₁₊ a1'
+  zB = Eq.trans (Eq.cong (_+ - ₁₊ a2') zSum)
+    (Eq.trans (Eq.cong (_+ - ₁₊ a2') (+-assoc (₁₊ w) (₁₊ a2') (₁₊ a1')))
+    (Eq.trans (Eq.cong (λ t → (₁₊ w + t) + - ₁₊ a2')
+        (+-comm (₁₊ a2') (₁₊ a1')))
+    (Eq.trans (Eq.cong (_+ - ₁₊ a2')
+        (Eq.sym (+-assoc (₁₊ w) (₁₊ a1') (₁₊ a2'))))
+    (Eq.trans (+-assoc (₁₊ w + ₁₊ a1') (₁₊ a2') (- ₁₊ a2'))
+    (Eq.trans (Eq.cong ((₁₊ w + ₁₊ a1') +_) (+-inverseʳ (₁₊ a2')))
+      (+-identityʳ (₁₊ w + ₁₊ a1')))))))
 
 ------------------------------------------------------------------------
 -- The ββ orbit.  Nothing degenerates: all four H escapes are clause-4
