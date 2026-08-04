@@ -93,6 +93,10 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11e p-2 p-
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11f p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11g p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11h p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11i p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11j p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSel11k p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.ExTransport p-2 p-prime
 
 ------------------------------------------------------------------------
 -- The axioms, one at a time.
@@ -369,10 +373,13 @@ srel-wd {suc (suc m)} (inj₂ ((₁₊ a1' , b1) , inj₂ ((₁₊ a2' , b2) , l
   elim-fin (b1 + - ₁₊ a2')
     (λ eqY → elim-fin (b1 + ₁₊ a1')
       (λ eqZ → c11-go-aaαα b1 b2 a1' a2' lm2 eqY eqZ)
-      (λ z eqZ → {!!}))
+      (λ z eqZ → c11-go-aaαβ b1 b2 a1' a2' z lm2 eqY eqZ
+        (idαβ-c11-ident b1 b2 a1' a2' z lm2 eqY eqZ)))
     (λ w eqY → elim-fin (b1 + ₁₊ a1')
-      (λ eqZ → {!!})
-      (λ z eqZ → {!!}))
+      (λ eqZ → c11-go-aaβα b1 b2 a1' a2' w lm2 eqY eqZ
+        (idβα-c11-ident b1 b2 a1' a2' w lm2 eqY eqZ))
+      (λ z eqZ → c11-go-aaββ b1 b2 a1' a2' w z lm2 eqY eqZ
+        (idββ-c11-ident b1 b2 a1' a2' w z lm2 eqY eqZ)))
 -- selinger-c12 on triply-inj₂ cosets with a clean middle wire: the two
 -- CZ escapes commute letterwise (axiom at the cores).  Nonzero-middle
 -- patterns still open.
