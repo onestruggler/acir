@@ -9,7 +9,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect
 import Relation.Binary.PropositionalEquality as Eq
 
 
-open import Function using (_∘_ ; id)
+open import Function using (_∘_ ; id ; _∋_)
 open import Function.Definitions using (Injective)
 
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
@@ -77,8 +77,8 @@ open Symplectic-Derived-GroupLike
 -- • n=2+n' with inj₁/inj₂ tags: use lemma-ml-head-inj and lemma-lm-inj₁≁inj₂.
 -- • inj₂/inj₂: recover d₁=d₂ from head at pZ∷pIₙ and pX∷pIₙ, then lm'
 --   equality by IH using head at pZ-prefixed inputs after canceling d via +₁-cancelʳ.
-lemma-lm-head-inj : ∀ {n} (lm₁ lm₂ : LM (₁₊ n)) →
-  (∀ ps → head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) → lm₁ ≡ lm₂
+lemma-lm-head-inj : ∀ {n} (lm₁ lm₂ : ML (₁₊ n)) →
+  (∀ (ps : Pauli (₁₊ n)) → head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) → lm₁ ≡ lm₂
 lemma-lm-head-inj {₀} lm₁ lm₂ h = lemma-nf1-head-inj lm₁ lm₂ h
 lemma-lm-head-inj {₁} lm₁ lm₂ h = lemma-cosets2-head-inj lm₁ lm₂ h
 lemma-lm-head-inj {₁₊ (₁₊ n)} (inj₁ (m₁ , l₁)) (inj₁ (m₂ , l₂)) h =
@@ -91,7 +91,7 @@ lemma-lm-head-inj {₁₊ (₁₊ n)} (inj₂ (d₁ , lm₁')) (inj₂ (d₂ , l
   Eq.cong inj₂ (≡×≡⇒≡ (d-eq , lm'-eq))
   where
   -- act [inj₂(d,lm')]ᵐˡ (p ∷ ps') = act [d]ᵈ (p ∷ act [lm']ᵐˡ ps').
-  unfold-act : ∀ d lm' p₀ (ps' : Pauli (₂₊ n)) →
+  unfold-act : ∀ (d : D) (lm' : ML (₂₊ n)) (p₀ : Pauli1) (ps' : Pauli (₂₊ n)) →
     act [ inj₂ (d , lm') ]ᵐˡ (p₀ ∷ ps') ≡ act [ d ]ᵈ (p₀ ∷ act [ lm' ]ᵐˡ ps')
   unfold-act d lm' p₀ ps' = begin
     act [ inj₂ (d , lm') ]ᵐˡ (p₀ ∷ ps')
@@ -101,19 +101,19 @@ lemma-lm-head-inj {₁₊ (₁₊ n)} (inj₂ (d₁ , lm₁')) (inj₂ (d₂ , l
     act [ d ]ᵈ (p₀ ∷ act [ lm' ]ᵐˡ ps') ∎
 
   -- Head agreement after canceling lm' by act [lm']ᵐˡ pIₙ = pIₙ.
-  head-at-pI : ∀ p₀ → head (act [ d₁ ]ᵈ (p₀ ∷ pIₙ)) ≡ head (act [ d₂ ]ᵈ (p₀ ∷ pIₙ))
+  head-at-pI : ∀ (p₀ : Pauli1) → head (act [ d₁ ]ᵈ (p₀ ∷ pIₙ {₂₊ n})) ≡ head (act [ d₂ ]ᵈ (p₀ ∷ pIₙ {₂₊ n}))
   head-at-pI p₀ = begin
-    head (act [ d₁ ]ᵈ (p₀ ∷ pIₙ))
+    head (act [ d₁ ]ᵈ (p₀ ∷ pIₙ {₂₊ n}))
       ≡⟨ cong (λ v → head (act [ d₁ ]ᵈ (p₀ ∷ v))) (sym (lemma-actw-pIₙ [ lm₁' ]ᵐˡ)) ⟩
-    head (act [ d₁ ]ᵈ (p₀ ∷ act [ lm₁' ]ᵐˡ pIₙ))
-      ≡⟨ cong head (sym (unfold-act d₁ lm₁' p₀ pIₙ)) ⟩
-    head (act [ inj₂ (d₁ , lm₁') ]ᵐˡ (p₀ ∷ pIₙ))
-      ≡⟨ h (p₀ ∷ pIₙ) ⟩
-    head (act [ inj₂ (d₂ , lm₂') ]ᵐˡ (p₀ ∷ pIₙ))
-      ≡⟨ cong head (unfold-act d₂ lm₂' p₀ pIₙ) ⟩
-    head (act [ d₂ ]ᵈ (p₀ ∷ act [ lm₂' ]ᵐˡ pIₙ))
+    head (act [ d₁ ]ᵈ (p₀ ∷ act [ lm₁' ]ᵐˡ (pIₙ {₂₊ n})))
+      ≡⟨ cong head (sym (unfold-act d₁ lm₁' p₀ (pIₙ {₂₊ n}))) ⟩
+    head (act [ ML (₃₊ n) ∋ inj₂ (d₁ , lm₁') ]ᵐˡ (p₀ ∷ pIₙ {₂₊ n}))
+      ≡⟨ h (p₀ ∷ pIₙ {₂₊ n}) ⟩
+    head (act [ ML (₃₊ n) ∋ inj₂ (d₂ , lm₂') ]ᵐˡ (p₀ ∷ pIₙ {₂₊ n}))
+      ≡⟨ cong head (unfold-act d₂ lm₂' p₀ (pIₙ {₂₊ n})) ⟩
+    head (act [ d₂ ]ᵈ (p₀ ∷ act [ lm₂' ]ᵐˡ (pIₙ {₂₊ n})))
       ≡⟨ cong (λ v → head (act [ d₂ ]ᵈ (p₀ ∷ v))) (lemma-actw-pIₙ [ lm₂' ]ᵐˡ) ⟩
-    head (act [ d₂ ]ᵈ (p₀ ∷ pIₙ)) ∎
+    head (act [ d₂ ]ᵈ (p₀ ∷ pIₙ {₂₊ n})) ∎
 
   -- d.proj₁ extracted via pZ-prefix: head(act [d]ᵈ (pZ ∷ pI ∷ t)) = (₀, d.proj₁).
   d-eq-fst : d₁ .proj₁ ≡ d₂ .proj₁
@@ -134,7 +134,7 @@ lemma-lm-head-inj {₁₊ (₁₊ n)} (inj₂ (d₁ , lm₁')) (inj₂ (d₂ , l
   d-eq = ≡×≡⇒≡ (d-eq-fst , d-eq-snd)
 
   -- Head equality at arbitrary ps', using pZ-prefix and canceling d via d-eq.
-  lm'-head-eq : ∀ ps' → head (act [ lm₁' ]ᵐˡ ps') ≡ head (act [ lm₂' ]ᵐˡ ps')
+  lm'-head-eq : ∀ (ps' : Pauli (₂₊ n)) → head (act [ lm₁' ]ᵐˡ ps') ≡ head (act [ lm₂' ]ᵐˡ ps')
   lm'-head-eq ps' =
     let
       raw : head (act [ d₁ ]ᵈ (pZ ∷ act [ lm₁' ]ᵐˡ ps'))
@@ -168,15 +168,15 @@ lemma-lm-head-inj {₁₊ (₁₊ n)} (inj₂ (d₁ , lm₁')) (inj₂ (d₂ , l
   lm'-eq = lemma-lm-head-inj lm₁' lm₂' lm'-head-eq
 
 -- Full-action injectivity follows from head-injectivity (head equality implies full equality).
-lemma-lm-inj : ∀ {n} (lm₁ lm₂ : LM n) →
-  act [ lm₁ ]ᵐˡ ≗ act [ lm₂ ]ᵐˡ → lm₁ ≡ lm₂
+lemma-lm-inj : ∀ {n} (lm₁ lm₂ : ML n) →
+  (∀ (ps : Pauli n) → act [ lm₁ ]ᵐˡ ps ≡ act [ lm₂ ]ᵐˡ ps) → lm₁ ≡ lm₂
 lemma-lm-inj {₀} tt tt _ = auto
 lemma-lm-inj {₁₊ n} lm₁ lm₂ h = lemma-lm-head-inj lm₁ lm₂ (λ ps → Eq.cong head (h ps))
 
 -- Surjectivity of tail ∘ act [lm]ᵐˡ: the preimage of (pI ∷ qs) under act [lm]ᵐˡ
 -- is act ([lm]ᵐˡ ⁻¹ʷ) (pI ∷ qs), and its image under act [lm]ᵐˡ is pI ∷ qs
 -- by the right-inverse law, so its tail equals qs.
-lemma-lm-tail-surj : ∀ {n} (lm : LM (₁₊ n)) (qs : Pauli n) →
+lemma-lm-tail-surj : ∀ {n} (lm : ML (₁₊ n)) (qs : Pauli n) →
   ∃ λ ps → tail (act [ lm ]ᵐˡ ps) ≡ qs
 lemma-lm-tail-surj {n} lm qs = ps , proof
   where

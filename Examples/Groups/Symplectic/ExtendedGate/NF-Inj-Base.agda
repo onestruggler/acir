@@ -24,7 +24,7 @@ open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 open import Data.Maybe hiding (zipWith ; map)
 open import Data.Sum using (inj₁ ; inj₂ ; [_,_] ; [_,_]′)
 open import Data.Unit using (tt)
-open import Data.Empty using (⊥)
+open import Data.Empty using (⊥ ; ⊥-elim)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 open import Word.Properties
@@ -69,10 +69,6 @@ open LM2
 open ≡-Reasoning
 open Eq hiding ([_])
 
--- Componentwise Pauli1 addition (local copy of Examples.Groups.Symplectic.NF._+₁_, to avoid importing Examples.Groups.Symplectic.ExtendedGate.NF here).
-_+₁_ : ℤ ₚ × ℤ ₚ → ℤ ₚ × ℤ ₚ → ℤ ₚ × ℤ ₚ
-_+₁_ (a , b) (c , d) = (a + c , b + d)
-
 -- head/tail reconstruction (local copy of Examples.Groups.Symplectic.NF.lemma-aux-vec).
 lemma-aux-vec : ∀ {A : Set} n (v : Vec A (₁₊ n)) → head v ∷ tail v ≡ v
 lemma-aux-vec {A} ₀ (x ∷ v) = auto
@@ -80,12 +76,12 @@ lemma-aux-vec {A} (₁₊ n) (x ∷ v) = auto
 
 -- act fixes pIₙ (local copy of Examples.Groups.Symplectic.NF.lemma-actw-pIₙ).
 lemma-actw-pIₙ : ∀ {n} w → act w pIₙ ≡ pIₙ {n}
-lemma-actw-pIₙ {n} [ H-gen ₀ ]ʷ = auto
-lemma-actw-pIₙ {n} [ H-gen ₁ ]ʷ = Eq.cong₂ _∷_ (≡×≡⇒≡ (-0#≈0# , auto)) auto
-lemma-actw-pIₙ {n} [ H-gen ₂ ]ʷ = Eq.cong₂ _∷_ (≡×≡⇒≡ (-0#≈0# , -0#≈0#)) auto
-lemma-actw-pIₙ {n} [ H-gen ₃ ]ʷ = Eq.cong₂ _∷_ (≡×≡⇒≡ (auto , -0#≈0#)) auto
-lemma-actw-pIₙ {n} [ S-gen k ]ʷ = auto
-lemma-actw-pIₙ {n} [ CZ-gen k ]ʷ = auto
+lemma-actw-pIₙ {n} [ gate₁ (H-gen ₀) ]ʷ = auto
+lemma-actw-pIₙ {n} [ gate₁ (H-gen ₁) ]ʷ = Eq.cong₂ _∷_ (≡×≡⇒≡ (-0#≈0# , auto)) auto
+lemma-actw-pIₙ {n} [ gate₁ (H-gen ₂) ]ʷ = Eq.cong₂ _∷_ (≡×≡⇒≡ (-0#≈0# , -0#≈0#)) auto
+lemma-actw-pIₙ {n} [ gate₁ (H-gen ₃) ]ʷ = Eq.cong₂ _∷_ (≡×≡⇒≡ (auto , -0#≈0#)) auto
+lemma-actw-pIₙ {n} [ gate₁ (S-gen k) ]ʷ = auto
+lemma-actw-pIₙ {n} [ gate₂ (CZ-gen k) ]ʷ = auto
 lemma-actw-pIₙ {n} [ x ↥ ]ʷ = Eq.cong₂ _∷_ auto (lemma-actw-pIₙ [ x ]ʷ)
 lemma-actw-pIₙ {n} ε = auto
 lemma-actw-pIₙ {n} (w • w₁) = begin
@@ -97,16 +93,12 @@ lemma-actw-pIₙ {n} (w • w₁) = begin
 
 -- Sub-postulates for lemma-lm-head-inj.
 postulate
-  -- n=1: NF1 elements are distinguished by head of Pauli action.
-  lemma-nf1-head-inj : ∀ (lm₁ lm₂ : NF1) →
-    (∀ ps → head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) → lm₁ ≡ lm₂
-
-  -- n=2: Cosets2 elements are distinguished by head of Pauli action.
-  lemma-cosets2-head-inj : ∀ (lm₁ lm₂ : Cosets2) →
-    (∀ ps → head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) → lm₁ ≡ lm₂
+  -- n=2: ML 2 elements are distinguished by head of Pauli action.
+  lemma-cosets2-head-inj : ∀ (lm₁ lm₂ : ML 2) →
+    (∀ (ps : Pauli 2) → head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) → lm₁ ≡ lm₂
 
   -- The M×L' branch (inj₁) and D×LM branch (inj₂) produce distinct head outputs.
-  lemma-lm-inj₁≁inj₂ : ∀ {n} (m : M (₃₊ n)) (l : L' (₃₊ n)) (d : D) (lm' : LM (₂₊ n)) →
+  lemma-lm-inj₁≁inj₂ : ∀ {n} (m : M (₃₊ n)) (l : L' (₃₊ n)) (d : D) (lm' : ML (₂₊ n)) →
     (∀ ps → head (act ([ m ]ᵐ • [ l ]ˡ') ps) ≡ head (act ([ d ]ᵈ • [ lm' ]ᵐˡ ↑) ps)) → ⊥
 
   -- M×L' action is head-injective.
@@ -262,4 +254,195 @@ neg-inj a b h = begin
   - - a ≡⟨ cong -_ h ⟩
   - - b ≡⟨ -‿involutive b ⟩
   b     ∎
+
+------------------------------------------------------------------------
+-- Helpers for the n=1 (ML 1) head-injectivity proof.
+
+-- The A witness (a proof of ≢ (₀,₀)) is proof-irrelevant: functions into ⊥
+-- are definitionally equal, so A-equality is determined by the first projection.
+A-≡ : ∀ (a₁ a₂ : A) → a₁ .proj₁ ≡ a₂ .proj₁ → a₁ ≡ a₂
+A-≡ (_ , _) (_ , _) refl = refl
+
+-- Left multiplicative cancellation by a nonzero scalar.
+*-cancelˡ-nz : ∀ (a x y : ℤ ₚ) (nz : a ≢ ₀) → a * x ≡ a * y → x ≡ y
+*-cancelˡ-nz a x y nz eq = begin
+  x               ≡⟨ sym (*-identityˡ x) ⟩
+  ₁ * x           ≡⟨ cong (_* x) (sym (lemma-⁻¹ˡ a {{nztoℕ {y = a} {neq0 = nz}}})) ⟩
+  ainv * a * x    ≡⟨ *-assoc ainv a x ⟩
+  ainv * (a * x)  ≡⟨ cong (ainv *_) eq ⟩
+  ainv * (a * y)  ≡⟨ sym (*-assoc ainv a y) ⟩
+  ainv * a * y    ≡⟨ cong (_* y) (lemma-⁻¹ˡ a {{nztoℕ {y = a} {neq0 = nz}}}) ⟩
+  ₁ * y           ≡⟨ *-identityˡ y ⟩
+  y ∎
+  where
+  ainv = ((a , nz) ⁻¹) .proj₁
+
+-- act [ lm ]ᵐˡ for lm : ML 1 is a single-qudit map; its head is the whole entry.
+-- Four evaluations pin the map down at pZ and pX for the two A-shapes.
+
+-- x = ₀ branch (a = (₀ , ₁₊ y')).
+hdZ0 : ∀ e y' (pr : (₀ , ₁₊ y') ≢ (₀ , ₀)) →
+  head (act [ (([] , e) , ([] , ((₀ , ₁₊ y') , pr))) ]ᵐˡ (pZ ∷ [])) ≡ (₀ , ((₁₊ y' , λ ()) ⁻¹) .proj₁)
+hdZ0 e y' pr = cong head (begin
+  act [ (([] , e) , ([] , ((₀ , ₁₊ y') , pr))) ]ᵐˡ (pZ ∷ [])
+    ≡⟨ auto ⟩
+  act (S^ (- e)) (act (ZM inv) ((₀ , ₁) ∷ []))
+    ≡⟨ cong (act (S^ (- e))) (lemma-M ₀ ₁ [] inv) ⟩
+  act (S^ (- e)) ((₀ * inv⁻¹ , ₁ * xI) ∷ [])
+    ≡⟨ auto ⟩
+  ((₀ * inv⁻¹ , ₁ * xI + ₀ * inv⁻¹ * (- e)) ∷ [])
+    ≡⟨ cong (_∷ []) (≡×≡⇒≡ (*-zeroˡ inv⁻¹ , simp)) ⟩
+  ((₀ , xI) ∷ []) ∎)
+  where
+  inv = (₁₊ y' , λ ()) ⁻¹
+  xI = inv .proj₁
+  inv⁻¹ = (inv ⁻¹) .proj₁
+  simp : ₁ * xI + ₀ * inv⁻¹ * (- e) ≡ xI
+  simp = trans (cong₂ _+_ (*-identityˡ xI)
+                          (trans (cong (_* (- e)) (*-zeroˡ inv⁻¹)) (*-zeroˡ (- e))))
+               (+-identityʳ xI)
+
+hdX0 : ∀ e y' (pr : (₀ , ₁₊ y') ≢ (₀ , ₀)) →
+  head (act [ (([] , e) , ([] , ((₀ , ₁₊ y') , pr))) ]ᵐˡ (pX ∷ [])) ≡ (₁₊ y' , (₁₊ y') * (- e))
+hdX0 e y' pr = cong head (begin
+  act [ (([] , e) , ([] , ((₀ , ₁₊ y') , pr))) ]ᵐˡ (pX ∷ [])
+    ≡⟨ auto ⟩
+  act (S^ (- e)) (act (ZM inv) ((₁ , ₀) ∷ []))
+    ≡⟨ cong (act (S^ (- e))) (lemma-M ₁ ₀ [] inv) ⟩
+  act (S^ (- e)) ((₁ * inv⁻¹ , ₀ * xI) ∷ [])
+    ≡⟨ auto ⟩
+  ((₁ * inv⁻¹ , ₀ * xI + ₁ * inv⁻¹ * (- e)) ∷ [])
+    ≡⟨ cong (_∷ []) (≡×≡⇒≡ (p1 , p2)) ⟩
+  ((₁₊ y' , (₁₊ y') * (- e)) ∷ []) ∎)
+  where
+  inv = (₁₊ y' , λ ()) ⁻¹
+  xI = inv .proj₁
+  inv⁻¹ = (inv ⁻¹) .proj₁
+  ii : inv⁻¹ ≡ ₁₊ y'
+  ii = inv-involutive (₁₊ y' , λ ())
+  p1 : ₁ * inv⁻¹ ≡ ₁₊ y'
+  p1 = trans (*-identityˡ inv⁻¹) ii
+  p2 : ₀ * xI + ₁ * inv⁻¹ * (- e) ≡ (₁₊ y') * (- e)
+  p2 = trans (cong₂ _+_ (*-zeroˡ xI) (cong (_* (- e)) p1)) (+-identityˡ ((₁₊ y') * (- e)))
+
+-- x ≠ ₀ branch (a = (₁₊ x' , y)).
+hdZ1 : ∀ e x' y (pr : (₁₊ x' , y) ≢ (₀ , ₀)) →
+  head (act [ (([] , e) , ([] , ((₁₊ x' , y) , pr))) ]ᵐˡ (pZ ∷ [])) ≡ (- (₁₊ x') , (₁₊ x') * e)
+hdZ1 e x' y pr = cong head (begin
+  act [ (([] , e) , ([] , ((₁₊ x' , y) , pr))) ]ᵐˡ (pZ ∷ [])
+    ≡⟨ auto ⟩
+  act (S^ (- e)) (act (ZM inv) (act (H • S^ k) ((₀ , ₁) ∷ [])))
+    ≡⟨ cong (λ v → act (S^ (- e)) (act (ZM inv) v)) (lemma-HS-x k ₀ ₁ []) ⟩
+  act (S^ (- e)) (act (ZM inv) ((- (₁ + ₀ * k) , ₀) ∷ []))
+    ≡⟨ cong (act (S^ (- e))) (lemma-M (- (₁ + ₀ * k)) ₀ [] inv) ⟩
+  act (S^ (- e)) ((- (₁ + ₀ * k) * inv⁻¹ , ₀ * xI) ∷ [])
+    ≡⟨ auto ⟩
+  ((- (₁ + ₀ * k) * inv⁻¹ , ₀ * xI + - (₁ + ₀ * k) * inv⁻¹ * (- e)) ∷ [])
+    ≡⟨ cong (_∷ []) (≡×≡⇒≡ (q1 , q2)) ⟩
+  ((- (₁₊ x') , (₁₊ x') * e) ∷ []) ∎)
+  where
+  inv = (₁₊ x' , λ ()) ⁻¹
+  xI = inv .proj₁
+  inv⁻¹ = (inv ⁻¹) .proj₁
+  k = - y * xI
+  ii : inv⁻¹ ≡ ₁₊ x'
+  ii = inv-involutive (₁₊ x' , λ ())
+  q1 : - (₁ + ₀ * k) * inv⁻¹ ≡ - (₁₊ x')
+  q1 = trans (cong (λ z → - z * inv⁻¹) (trans (cong (₁ +_) (*-zeroˡ k)) (+-identityʳ ₁)))
+             (trans (-1*x≈-x inv⁻¹) (cong -_ ii))
+  q2 : ₀ * xI + - (₁ + ₀ * k) * inv⁻¹ * (- e) ≡ (₁₊ x') * e
+  q2 = trans (cong₂ _+_ (*-zeroˡ xI) (cong (_* (- e)) q1))
+             (trans (+-identityˡ (- (₁₊ x') * (- e)))
+                    (trans (sym (-‿distribˡ-* (₁₊ x') (- e)))
+                    (trans (cong -_ (sym (-‿distribʳ-* (₁₊ x') e)))
+                           (-‿involutive ((₁₊ x') * e)))))
+
+hdX1 : ∀ e x' y (pr : (₁₊ x' , y) ≢ (₀ , ₀)) →
+  head (act [ (([] , e) , ([] , ((₁₊ x' , y) , pr))) ]ᵐˡ (pX ∷ [])) .proj₁ ≡ y
+hdX1 e x' y pr = cong proj₁ (cong head (begin
+  act [ (([] , e) , ([] , ((₁₊ x' , y) , pr))) ]ᵐˡ (pX ∷ [])
+    ≡⟨ auto ⟩
+  act (S^ (- e)) (act (ZM inv) (act (H • S^ k) ((₁ , ₀) ∷ [])))
+    ≡⟨ cong (λ v → act (S^ (- e)) (act (ZM inv) v)) (lemma-HS-x k ₁ ₀ []) ⟩
+  act (S^ (- e)) (act (ZM inv) ((- (₀ + ₁ * k) , ₁) ∷ []))
+    ≡⟨ cong (act (S^ (- e))) (lemma-M (- (₀ + ₁ * k)) ₁ [] inv) ⟩
+  act (S^ (- e)) ((- (₀ + ₁ * k) * inv⁻¹ , ₁ * xI) ∷ [])
+    ≡⟨ auto ⟩
+  ((- (₀ + ₁ * k) * inv⁻¹ , ₁ * xI + - (₀ + ₁ * k) * inv⁻¹ * (- e)) ∷ [])
+    ≡⟨ cong (λ z → (z , ₁ * xI + - (₀ + ₁ * k) * inv⁻¹ * (- e)) ∷ []) r1 ⟩
+  ((y , ₁ * xI + - (₀ + ₁ * k) * inv⁻¹ * (- e)) ∷ []) ∎))
+  where
+  inv = (₁₊ x' , λ ()) ⁻¹
+  xI = inv .proj₁
+  inv⁻¹ = (inv ⁻¹) .proj₁
+  k = - y * xI
+  ii : inv⁻¹ ≡ ₁₊ x'
+  ii = inv-involutive (₁₊ x' , λ ())
+  -- - (₀ + ₁ * k) * inv⁻¹ = - k * inv⁻¹ = (y * xI) * inv⁻¹ = y * (xI * inv⁻¹) = y
+  r1 : - (₀ + ₁ * k) * inv⁻¹ ≡ y
+  r1 = begin
+    - (₀ + ₁ * k) * inv⁻¹        ≡⟨ cong (λ z → - z * inv⁻¹) (trans (+-identityˡ (₁ * k)) (*-identityˡ k)) ⟩
+    - k * inv⁻¹                  ≡⟨ cong (_* inv⁻¹) (trans (-‿distribˡ-* (- y) xI) (cong (_* xI) (-‿involutive y))) ⟩
+    y * xI * inv⁻¹               ≡⟨ *-assoc y xI inv⁻¹ ⟩
+    y * (xI * inv⁻¹)             ≡⟨ cong (λ z → y * (xI * z)) ii ⟩
+    y * (xI * (₁₊ x'))           ≡⟨ cong (y *_) (lemma-⁻¹ˡ (₁₊ x') {{nztoℕ {y = ₁₊ x'} {neq0 = λ ()}}}) ⟩
+    y * ₁                        ≡⟨ *-identityʳ y ⟩
+    y ∎
+
+------------------------------------------------------------------------
+-- n=1 head-injectivity: ML 1 elements are distinguished by the head of
+-- their Pauli action.  Recover the A-shape (x = ₀ vs x ≠ ₀) from the
+-- pZ head, then the remaining data from the pZ/pX heads.
+lemma-nf1-head-inj : ∀ (lm₁ lm₂ : ML 1) →
+  (∀ (ps : Pauli 1) → head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) → lm₁ ≡ lm₂
+-- Absurd A = (₀ , ₀) cases.
+lemma-nf1-head-inj (([] , _) , ([] , ((₀ , ₀) , pr₁))) _ _ = ⊥-elim (pr₁ refl)
+lemma-nf1-head-inj (([] , _) , ([] , ((₁₊ _ , _) , _))) (([] , _) , ([] , ((₀ , ₀) , pr₂))) _ = ⊥-elim (pr₂ refl)
+lemma-nf1-head-inj (([] , _) , ([] , ((₀ , ₁₊ _) , _))) (([] , _) , ([] , ((₀ , ₀) , pr₂))) _ = ⊥-elim (pr₂ refl)
+-- x₁ = ₀ , x₂ = ₀.
+lemma-nf1-head-inj (([] , e₁) , ([] , ((₀ , ₁₊ y₁') , pr₁))) (([] , e₂) , ([] , ((₀ , ₁₊ y₂') , pr₂))) h =
+  ≡×≡⇒≡ (cong ([] ,_) e-eq , cong ([] ,_) a-eq)
+  where
+  X0eq : (₁₊ y₁' , (₁₊ y₁') * (- e₁)) ≡ (₁₊ y₂' , (₁₊ y₂') * (- e₂))
+  X0eq = trans (sym (hdX0 e₁ y₁' pr₁)) (trans (h (pX ∷ [])) (hdX0 e₂ y₂' pr₂))
+  y-eq : ₁₊ y₁' ≡ ₁₊ y₂'
+  y-eq = cong proj₁ X0eq
+  a-eq : ((₀ , ₁₊ y₁') , pr₁) ≡ ((₀ , ₁₊ y₂') , pr₂)
+  a-eq = A-≡ _ _ (cong (₀ ,_) y-eq)
+  coeff-eq : (₁₊ y₁') * (- e₁) ≡ (₁₊ y₁') * (- e₂)
+  coeff-eq = trans (cong proj₂ X0eq) (cong (_* (- e₂)) (sym y-eq))
+  e-eq : e₁ ≡ e₂
+  e-eq = neg-inj e₁ e₂ (*-cancelˡ-nz (₁₊ y₁') (- e₁) (- e₂) (λ ()) coeff-eq)
+-- x₁ = ₀ , x₂ ≠ ₀ : contradictory pZ heads.
+lemma-nf1-head-inj (([] , e₁) , ([] , ((₀ , ₁₊ y₁') , pr₁))) (([] , e₂) , ([] , ((₁₊ x₂' , y₂) , pr₂))) h =
+  ⊥-elim ((-' (₁₊ x₂' , λ ())) .proj₂ (sym peq))
+  where
+  Zeq : (₀ , ((₁₊ y₁' , λ ()) ⁻¹) .proj₁) ≡ (- (₁₊ x₂') , (₁₊ x₂') * e₂)
+  Zeq = trans (sym (hdZ0 e₁ y₁' pr₁)) (trans (h (pZ ∷ [])) (hdZ1 e₂ x₂' y₂ pr₂))
+  peq : ₀ ≡ - (₁₊ x₂')
+  peq = cong proj₁ Zeq
+-- x₁ ≠ ₀ , x₂ = ₀ : contradictory pZ heads.
+lemma-nf1-head-inj (([] , e₁) , ([] , ((₁₊ x₁' , y₁) , pr₁))) (([] , e₂) , ([] , ((₀ , ₁₊ y₂') , pr₂))) h =
+  ⊥-elim ((-' (₁₊ x₁' , λ ())) .proj₂ peq)
+  where
+  Zeq : (- (₁₊ x₁') , (₁₊ x₁') * e₁) ≡ (₀ , ((₁₊ y₂' , λ ()) ⁻¹) .proj₁)
+  Zeq = trans (sym (hdZ1 e₁ x₁' y₁ pr₁)) (trans (h (pZ ∷ [])) (hdZ0 e₂ y₂' pr₂))
+  peq : - (₁₊ x₁') ≡ ₀
+  peq = cong proj₁ Zeq
+-- x₁ ≠ ₀ , x₂ ≠ ₀.
+lemma-nf1-head-inj (([] , e₁) , ([] , ((₁₊ x₁' , y₁) , pr₁))) (([] , e₂) , ([] , ((₁₊ x₂' , y₂) , pr₂))) h =
+  ≡×≡⇒≡ (cong ([] ,_) e-eq , cong ([] ,_) a-eq)
+  where
+  Zeq : (- (₁₊ x₁') , (₁₊ x₁') * e₁) ≡ (- (₁₊ x₂') , (₁₊ x₂') * e₂)
+  Zeq = trans (sym (hdZ1 e₁ x₁' y₁ pr₁)) (trans (h (pZ ∷ [])) (hdZ1 e₂ x₂' y₂ pr₂))
+  x-eq : ₁₊ x₁' ≡ ₁₊ x₂'
+  x-eq = neg-inj (₁₊ x₁') (₁₊ x₂') (cong proj₁ Zeq)
+  y-eq : y₁ ≡ y₂
+  y-eq = trans (sym (hdX1 e₁ x₁' y₁ pr₁)) (trans (cong proj₁ (h (pX ∷ []))) (hdX1 e₂ x₂' y₂ pr₂))
+  a-eq : ((₁₊ x₁' , y₁) , pr₁) ≡ ((₁₊ x₂' , y₂) , pr₂)
+  a-eq = A-≡ _ _ (≡×≡⇒≡ (x-eq , y-eq))
+  coeff-eq : (₁₊ x₁') * e₁ ≡ (₁₊ x₁') * e₂
+  coeff-eq = trans (cong proj₂ Zeq) (cong (_* e₂) (sym x-eq))
+  e-eq : e₁ ≡ e₂
+  e-eq = *-cancelˡ-nz (₁₊ x₁') e₁ e₂ (λ ()) coeff-eq
 
