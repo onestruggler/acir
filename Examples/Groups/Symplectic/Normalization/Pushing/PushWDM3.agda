@@ -532,3 +532,59 @@ module _ (x* : ℤ* ₚ) where
            (TDw.ntH-^ TDw.ntH-S txI) .proj₂ .proj₂
     P₃ = TDw.push-D-w (P₂ .proj₂ , - P₂ .proj₁) (S ^ tx)
            (TDw.ntH-^ TDw.ntH-S tx) .proj₂ .proj₂
+
+------------------------------------------------------------------------
+-- The drift-step direction of the shape-crossing cycle,
+-- ZM m • H • CZ^ w • H ^ 3, through a D box: the box maps to
+-- (m·da − nsum t (−1)-shifted , m⁻¹·db) and the emission is the CZ
+-- stage's nsum t (eCZ (m⁻¹·db)).
+
+module _ (m* : ℤ* ₚ) (w : ℤ ₚ) where
+  private
+    mv  = m* .proj₁
+    mIv = (m* ⁻¹) .proj₁
+    tw  = toℕ w
+
+  GDrift : ∀ (da db : ℤ ₚ) →
+    TDw.push-D-w (da , db)
+      (ZM m* • (H • (CZ^ w • (H ^ 3))))
+      (TDw.ntH-ZM m* TDw.•ⁿ (TDw.ntH-H TDw.•ⁿ
+        (TDw.ntH-CZ^ w TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)))
+      .proj₂ .proj₂
+    ≡ (- (- (mv * da) + nsum tw (- ₁)) , mIv * db)
+  GDrift da db =
+    Eq.trans (Eq.cong (λ bx → TDw.push-D-w bx
+        (H • (CZ^ w • (H ^ 3)))
+        (TDw.ntH-H TDw.•ⁿ (TDw.ntH-CZ^ w TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3))
+        .proj₂ .proj₂)
+      (GZM m* da db))
+    (Eq.trans (Eq.cong (λ bx → TDw.push-D-w bx
+        (H ^ 3) (TDw.ntH-^ TDw.ntH-H 3) .proj₂ .proj₂)
+      (GCZd tw (mIv * db) (- (mv * da))))
+      (Eq.cong (λ z → (- (- (mv * da) + nsum tw (- ₁)) , z))
+        (-‿involutive (mIv * db))))
+
+  EDrift : ∀ (da db : ℤ ₚ) →
+    TDw.push-D-w (da , db)
+      (ZM m* • (H • (CZ^ w • (H ^ 3))))
+      (TDw.ntH-ZM m* TDw.•ⁿ (TDw.ntH-H TDw.•ⁿ
+        (TDw.ntH-CZ^ w TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)))
+      .proj₁
+    ≡ nsum tw (eCZ (mIv * db))
+  EDrift da db =
+    Eq.trans (Eq.cong₂ _+_ (EZM m* da db)
+      (Eq.cong₂ _+_ (EH (Q₁ .proj₁) (Q₁ .proj₂))
+        (Eq.trans (Eq.cong₂ _+_
+            (Eq.trans (Eq.cong (λ q →
+                TDw.push-D-w (q .proj₂ , - q .proj₁) (CZ ^ tw)
+                  (TDw.ntH-^ TDw.ntH-CZ tw) .proj₁)
+              (GZM m* da db))
+              (E1 tw (mIv * db) (- (mv * da))))
+            (EH3 (Q₂ .proj₁) (Q₂ .proj₂)))
+          (+-identityʳ (nsum tw (eCZ (mIv * db)))))))
+    (Eq.trans (+-identityˡ (₀ + nsum tw (eCZ (mIv * db))))
+              (+-identityˡ (nsum tw (eCZ (mIv * db)))))
+    where
+    Q₁ = TDw.push-D-w (da , db) (ZM m*) (TDw.ntH-ZM m*) .proj₂ .proj₂
+    Q₂ = TDw.push-D-w (Q₁ .proj₂ , - Q₁ .proj₁) (CZ ^ tw)
+           (TDw.ntH-^ TDw.ntH-CZ tw) .proj₂ .proj₂
