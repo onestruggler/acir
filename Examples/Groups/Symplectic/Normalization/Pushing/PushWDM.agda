@@ -48,6 +48,8 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
 open import Examples.Groups.Symplectic.BR.Two.D-w p-2 p-prime as TDw
   using ()
 import Examples.Groups.Symplectic.BR.Two.L2-CZ p-2 p-prime as LCZ2
+open import Examples.Groups.Symplectic.Normalization.Pushing.DS
+  p-2 p-prime using (d-of-DS)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushLM1
   p-2 p-prime using (A-dir-S-power)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDM
@@ -56,7 +58,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.MbSOrder
   p-2 p-prime using
   (itf ; mbSⁿm ; mbSⁿ-shiftζ ; mbSⁿ-block ; module MbS-OP ;
    ζΔ ; _⊞_ ; ⊞-⊞ ; ζΔ-+ ; ⊞-ζ0 ; nsum-* ; chainΦ ; chain-0 ; sumZ ;
-   +-swap)
+   +-swap ; eCZ)
 open import Data.List using () renaming ([] to []ᴸ ; _∷_ to _∷ᴸ_)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWD
   p-2 p-prime using
@@ -946,3 +948,70 @@ commCZS↑-w2-coset d e (₁₊ α , ₁₊ β') nz =
             (TDw.dir-of₂-No-Top-H (inj₂ ([] , ((₁₊ α , ₁₊ β') , nz))))
             .proj₁))
     (Eq.sym (e+-0 e)))
+
+------------------------------------------------------------------------
+-- comm-CZ-S↓ at width 2, A = (₀ , ₁₊ b) branch, COSET half.  Here the
+-- S hits the bottom D box (d-of-DS) while the CZ collapse pushes the
+-- all-CZ word CZ^ b⁻¹ through the same box: the two box updates are
+-- b-translations that commute (G1), and the emitted exponent depends
+-- only on the box's a-component, which both preserve (E1).
+
+-- The CZ-power push's emitted exponent: nsum t (eCZ a), b-independent.
+E1 : ∀ (t : ℕ) (a b : ℤ ₚ) →
+  TDw.push-D-w (a , b) (CZ ^ t) (TDw.ntH-^ TDw.ntH-CZ t) .proj₁
+  ≡ nsum t (eCZ a)
+E1 zero a b = Eq.refl
+E1 (suc zero) ₀      ₀      = Eq.sym (+-identityʳ ₀)
+E1 (suc zero) ₀      (₁₊ _) = Eq.sym (+-identityʳ ₀)
+E1 (suc zero) (₁₊ i) ₀      = Eq.sym (+-identityʳ (₁₊ i))
+E1 (suc zero) (₁₊ i) (₁₊ _) = Eq.sym (+-identityʳ (₁₊ i))
+E1 (suc (suc t)) ₀ ₀ =
+  Eq.cong (₀ +_) (E1 (suc t) ₀ (₀ + - ₁))
+E1 (suc (suc t)) ₀ (₁₊ b') =
+  Eq.cong (₀ +_) (E1 (suc t) ₀ (₁₊ b' + - ₁))
+E1 (suc (suc t)) (₁₊ i) ₀ =
+  Eq.cong (₁₊ i +_) (E1 (suc t) (₁₊ i) (₀ + - ₁))
+E1 (suc (suc t)) (₁₊ i) (₁₊ b') =
+  Eq.cong (₁₊ i +_) (E1 (suc t) (₁₊ i) (₁₊ b' + - ₁))
+
+-- d-of-DS commutes with the CZ-power push on the D box.
+G1 : ∀ (t : ℕ) (a b : ℤ ₚ) →
+  d-of-DS (TDw.push-D-w (a , b) (CZ ^ t) (TDw.ntH-^ TDw.ntH-CZ t)
+             .proj₂ .proj₂)
+  ≡ TDw.push-D-w (d-of-DS (a , b)) (CZ ^ t) (TDw.ntH-^ TDw.ntH-CZ t)
+      .proj₂ .proj₂
+G1 zero ₀      b = Eq.refl
+G1 zero (₁₊ i) b = Eq.refl
+G1 (suc zero) ₀      b = Eq.refl
+G1 (suc zero) (₁₊ i) b =
+  Eq.cong (λ z → (₁₊ i , z)) (+-swap b (- ₁) (- ₁₊ i))
+G1 (suc (suc t)) ₀ b = G1 (suc t) ₀ (b + - ₁)
+G1 (suc (suc t)) (₁₊ i) b =
+  Eq.trans (G1 (suc t) (₁₊ i) (b + - ₁))
+    (Eq.cong
+      (λ z → TDw.push-D-w (₁₊ i , z) (CZ ^ suc t)
+               (TDw.ntH-^ TDw.ntH-CZ (suc t)) .proj₂ .proj₂)
+      (+-swap b (- ₁) (- ₁₊ i)))
+
+-- Slot congruence: rewrite the D and E slots of a width-2 inj₂ coset.
+inj₂-w1-de-eq : ∀ {d d' : D} {e e' : E} {a : A} → d ≡ d' → e ≡ e' →
+  _≡_ {A = C 2}
+    (inj₂ (d , (([] , e) , ([] , a))))
+    (inj₂ (d' , (([] , e') , ([] , a))))
+inj₂-w1-de-eq Eq.refl Eq.refl = Eq.refl
+
+commCZS↓-w2-0b-coset : ∀ (d : D) (e : E) (b : Fin (₁₊ p-2))
+  (nz : (₀ , ₁₊ b) ≢ (₀ , ₀)) →
+  ((ract {1} ᵗ)
+     (inj₂ (d , (([] , e) , ([] , ((₀ , ₁₊ b) , nz))))) (CZ • S ↓)) .proj₂
+  ≡ ((ract {1} ᵗ)
+     (inj₂ (d , (([] , e) , ([] , ((₀ , ₁₊ b) , nz))))) (S ↓ • CZ)) .proj₂
+commCZS↓-w2-0b-coset (₀ , db) e b nz =
+  inj₂-w1-de-eq (G1 (toℕ (((₁₊ b , λ ()) ⁻¹) .proj₁)) ₀ db) Eq.refl
+commCZS↓-w2-0b-coset (₁₊ a' , db) e b nz =
+  inj₂-w1-de-eq
+    (G1 (toℕ (((₁₊ b , λ ()) ⁻¹) .proj₁)) (₁₊ a') db)
+    (Eq.cong (λ z → e + - z)
+      (Eq.trans (E1 (toℕ (((₁₊ b , λ ()) ⁻¹) .proj₁)) (₁₊ a') db)
+        (Eq.sym (E1 (toℕ (((₁₊ b , λ ()) ⁻¹) .proj₁)) (₁₊ a')
+          (db + - ₁₊ a')))))
