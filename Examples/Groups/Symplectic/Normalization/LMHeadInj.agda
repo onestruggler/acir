@@ -233,6 +233,48 @@ dbox-pX-head (₁₊ a' , b) (c , e) t = trans
     - b ∎
 
 ------------------------------------------------------------------------
+-- The head's a-component under a D box is the incoming wire-1
+-- a-component: the H / S^ letters act on wire 0, CZ powers preserve
+-- a-components, and the final Ex swaps wire 1 down.  This is the
+-- inj₂-branch invariant behind the inj₁ ≁ inj₂ separation.
+
+dbox-head-fst : ∀ (d : D) (x z c e : ℤ ₚ) (t : Pauli n) →
+  head (act ([_]ᵈ {n} d) ((x , z) ∷ (c , e) ∷ t)) .proj₁ ≡ c
+dbox-head-fst (₀ , b) x z c e t = cong (λ v → head v .proj₁)
+  (trans (cong (act Ex) (act-CZ^ (- b) x z c e t))
+         (act-Ex x (z + c * (- b)) c (e + x * (- b)) t))
+dbox-head-fst (₁₊ a' , b) x z c e t = cong (λ v → head v .proj₁)
+  (trans (cong (λ v → act Ex (act (CZ^ (- ₁₊ a')) (act H v)))
+           (act-S^ k' x z ((c , e) ∷ t)))
+  (trans (cong (act Ex)
+           (act-CZ^ (- ₁₊ a') (- (z + x * k')) x c e t))
+         (act-Ex (- (z + x * k')) (x + c * (- ₁₊ a'))
+                 c (e + (- (z + x * k')) * (- ₁₊ a')) t)))
+  where
+  k' = - b * (((₁₊ a' , λ ()) ⁻¹) .proj₁)
+
+-- The inj₂ unfolding, and the resulting zero invariant: an inj₂ coset
+-- word, applied to any input whose tail is the identity Pauli, returns
+-- a head with zero a-component (the tail is fixed by the inner action,
+-- so wire 1 feeds ₀ into dbox-head-fst).
+
+inj₂-unfold : ∀ {n} (d : D) (lm' : ML (₁₊ n)) (p₀ : Pauli1)
+  (ps' : Pauli (₁₊ n)) →
+  act [ ML (₂₊ n) ∋ inj₂ (d , lm') ]ᵐˡ (p₀ ∷ ps') ≡
+    act ([_]ᵈ {n} d) (p₀ ∷ act [ lm' ]ᵐˡ ps')
+inj₂-unfold {n} d lm' p₀ ps' =
+  cong (act ([_]ᵈ {n} d)) (lemma-act-↑ [ lm' ]ᵐˡ p₀ ps')
+
+inj₂-head-fst-0 : ∀ {n} (d : D) (lm' : ML (₁₊ n)) (p₀ : Pauli1) →
+  head (act [ ML (₂₊ n) ∋ inj₂ (d , lm') ]ᵐˡ (p₀ ∷ pIₙ {₁₊ n})) .proj₁ ≡ ₀
+inj₂-head-fst-0 {n} d lm' p₀ =
+  trans (cong (λ v → head v .proj₁)
+          (inj₂-unfold d lm' p₀ (pIₙ {₁₊ n})))
+  (trans (cong (λ v → head (act ([_]ᵈ {n} d) (p₀ ∷ v)) .proj₁)
+          (act-pIₙ [ lm' ]ᵐˡ))
+         (dbox-head-fst d (p₀ .proj₁) (p₀ .proj₂) ₀ ₀ (pIₙ {n})))
+
+------------------------------------------------------------------------
 -- The width induction
 --
 -- The two remaining base facts are module parameters; instantiating
