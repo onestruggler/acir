@@ -509,3 +509,26 @@ module _ (x* : ℤ* ₚ) where
       xv * α + ₀
         ≡⟨ +-identityʳ (xv * α) ⟩
       xv * α ∎
+
+  -- The ZM word emits nothing: every stage's emission is ₀ (ES/EH at
+  -- the η-projections of the intermediate boxes).
+  EZM : ∀ (α β : ℤ ₚ) →
+    TDw.push-D-w (α , β) (ZM x*) (TDw.ntH-ZM x*) .proj₁ ≡ ₀
+  EZM α β =
+    Eq.trans (Eq.cong₂ _+_ (ES tx α β)
+      (Eq.cong₂ _+_ (EH (P₁ .proj₁) (P₁ .proj₂))
+        (Eq.cong₂ _+_ (ES txI (P₁ .proj₂) (- P₁ .proj₁))
+          (Eq.cong₂ _+_ (EH (P₂ .proj₁) (P₂ .proj₂))
+            (Eq.cong₂ _+_ (ES tx (P₂ .proj₂) (- P₂ .proj₁))
+              (EH (P₃ .proj₁) (P₃ .proj₂)))))))
+    (Eq.trans (+-identityˡ (₀ + (₀ + (₀ + (₀ + ₀)))))
+    (Eq.trans (+-identityˡ (₀ + (₀ + (₀ + ₀))))
+    (Eq.trans (+-identityˡ (₀ + (₀ + ₀)))
+    (Eq.trans (+-identityˡ (₀ + ₀)) (+-identityˡ ₀)))))
+    where
+    P₁ = TDw.push-D-w (α , β) (S ^ tx)
+           (TDw.ntH-^ TDw.ntH-S tx) .proj₂ .proj₂
+    P₂ = TDw.push-D-w (P₁ .proj₂ , - P₁ .proj₁) (S ^ txI)
+           (TDw.ntH-^ TDw.ntH-S txI) .proj₂ .proj₂
+    P₃ = TDw.push-D-w (P₂ .proj₂ , - P₂ .proj₁) (S ^ tx)
+           (TDw.ntH-^ TDw.ntH-S tx) .proj₂ .proj₂
