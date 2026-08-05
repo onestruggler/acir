@@ -23,7 +23,7 @@ open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 open import Data.Nat using (zero ; suc)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Sum using (inj₁ ; inj₂)
-open import Data.Empty using (⊥-elim)
+open import Data.Empty using (⊥ ; ⊥-elim)
 open import Data.Fin using (Fin ; toℕ)
 open import Data.Vec using (Vec ; [] ; _∷_)
 import Relation.Binary.PropositionalEquality as Eq
@@ -43,6 +43,10 @@ open import Examples.Groups.Symplectic.BR.Two.D-w p-2 p-prime as TDw
   using (push-D-w)
 open import Examples.Groups.Symplectic.Normalization.Pushing.Push2
   p-2 p-prime using (coset)
+open import Examples.Groups.Symplectic.Normalization.Pushing.PushWDM
+  p-2 p-prime using (E1 ; GCZd)
+open import Examples.Groups.Symplectic.Normalization.Pushing.MbSOrder
+  p-2 p-prime using (eCZ)
 
 ------------------------------------------------------------------------
 -- The (a ≠ 0 , c = 0) branch: direction ε, pure d-drift.
@@ -105,3 +109,85 @@ module OrdCZ-inj₁-c0 (a' : Fin (₁₊ p-2)) where
         (Eq.trans (Eq.cong (dd +_) (nsum-p≡0 (- ₁₊ a'))) (+-identityʳ dd))
         (Eq.trans (Eq.cong (b +_) (nsum-p≡0 (- ₀))) (+-identityʳ b))
         (Eq.trans (Eq.cong (e +_) (nsum-p≡0 (- ₀))) (+-identityʳ e)))
+
+------------------------------------------------------------------------
+-- The (a = 0 , c = 0 , dd = 0) branch: the direction is CZ^ b⁻¹ with
+-- the canonical ntH-CZ^ witness, so PushWDM's E1/GCZd closed forms
+-- apply on the nose: the D box gains nsum t (− 1) on its b-component
+-- and E drops by nsum t (eCZ da) per step, with t = toℕ b⁻¹ fixed.
+
+module OrdCZ-inj₁-00 (b' : Fin (₁₊ p-2)) where
+
+  private
+    t : ℕ
+    t = toℕ (((₁₊ b' , λ ()) ⁻¹) .proj₁)
+
+  cst : E → D → C 2
+  cst e d₀ =
+    inj₁ ((d₀ ∷ [] , e) , (((₀ , ₀) ∷ []) , ((₀ , ₁₊ b') , λ ())))
+
+  -- Proof-agnostic collapse onto the canonical coset: the l'-of
+  -- no-branch produces a where-lifted nonzero proof, which unifies
+  -- away once the value components are rewritten.
+  fix : ∀ {d₁ d₂ : D} {e₁ e₂ dd₁ b₁ : ℤ ₚ}
+    {pr : _≡_ {A = ℤ ₚ × ℤ ₚ} (₀ , b₁) (₀ , ₀) → ⊥} →
+    d₁ ≡ d₂ → e₁ ≡ e₂ → dd₁ ≡ ₀ → b₁ ≡ ₁₊ b' →
+    _≡_ {A = C 2}
+      (inj₁ ((d₁ ∷ [] , e₁) , (((₀ , dd₁) ∷ []) , ((₀ , b₁) , pr))))
+      (cst e₂ d₂)
+  fix Eq.refl Eq.refl Eq.refl Eq.refl = Eq.refl
+
+  z00 : ∀ (x : ℤ ₚ) → x + - ₀ ≡ x
+  z00 x = Eq.trans (Eq.cong (x +_) -₀≡₀') (+-identityʳ x)
+    where
+    -₀≡₀' : - ₀ ≡ ₀
+    -₀≡₀' = Eq.trans (Eq.sym (+-identityʳ (- z)))
+                     (+-inverseˡ z)
+      where
+      z : ℤ ₚ
+      z = ₀
+
+  stepCZ : ∀ (e da db : ℤ ₚ) →
+    proj₂ (ract {1} (cst e (da , db)) (gate₂ CZ-gate))
+    ≡ cst (e + - nsum t (eCZ da)) (da , db + nsum t (- ₁))
+  stepCZ e da db = fix
+    (GCZd t da db)
+    (Eq.cong (λ z → e + - z) (E1 t da db))
+    (z00 ₀)
+    (z00 (₁₊ b'))
+
+  cstC : ∀ {e₁ e₂ : ℤ ₚ} {da db₁ db₂ : ℤ ₚ} →
+    e₁ ≡ e₂ → db₁ ≡ db₂ → cst e₁ (da , db₁) ≡ cst e₂ (da , db₂)
+  cstC {da = da} pe pdb =
+    Eq.cong₂ (λ u v → cst u (da , v)) pe pdb
+
+  orbit : ∀ (k : ℕ) (e da db : ℤ ₚ) →
+    ((ract {1} ᵗ) (cst e (da , db)) (CZ ^ k)) .proj₂
+    ≡ cst (e + nsum k (- nsum t (eCZ da)))
+          (da , db + nsum k (nsum t (- ₁)))
+  orbit zero e da db =
+    cstC (Eq.sym (+-identityʳ e)) (Eq.sym (+-identityʳ db))
+  orbit (suc zero) e da db =
+    Eq.trans (stepCZ e da db)
+      (cstC
+        (Eq.cong (e +_) (Eq.sym (+-identityʳ (- nsum t (eCZ da)))))
+        (Eq.cong (db +_) (Eq.sym (+-identityʳ (nsum t (- ₁))))))
+  orbit (suc (suc k)) e da db =
+    Eq.trans (Eq.cong (λ c → ((ract {1} ᵗ) c (CZ ^ suc k)) .proj₂)
+        (stepCZ e da db))
+    (Eq.trans (orbit (suc k) (e + - nsum t (eCZ da)) da
+        (db + nsum t (- ₁)))
+      (cstC
+        (+-assoc e (- nsum t (eCZ da)) (nsum (suc k) (- nsum t (eCZ da))))
+        (+-assoc db (nsum t (- ₁)) (nsum (suc k) (nsum t (- ₁))))))
+
+  ordCZ-inj₁-00-coset : ∀ (e da db : ℤ ₚ) →
+    ((ract {1} ᵗ) (cst e (da , db)) (CZ ^ p)) .proj₂
+    ≡ ((ract {1} ᵗ) (cst e (da , db)) ε) .proj₂
+  ordCZ-inj₁-00-coset e da db =
+    Eq.trans (orbit p e da db)
+      (cstC
+        (Eq.trans (Eq.cong (e +_) (nsum-p≡0 (- nsum t (eCZ da))))
+                  (+-identityʳ e))
+        (Eq.trans (Eq.cong (db +_) (nsum-p≡0 (nsum t (- ₁))))
+                  (+-identityʳ db)))
