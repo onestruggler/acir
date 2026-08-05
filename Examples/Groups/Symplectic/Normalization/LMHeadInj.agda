@@ -58,7 +58,7 @@ open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using (A ; B ; D ; E ; M ; L' ; ML ; ML' ;
          [_]ᵐˡ ; [_]ᵈ ; [_]ᵃ ; [_]ᵇ ; [_]ᵐ ; [_]ᵛᵇ)
 open import Examples.Groups.Symplectic.Normalization.NF1HeadInj p-2 p-prime
-  using (lemma-nf1-head-inj)
+  using (lemma-nf1-head-inj ; A-≡)
 
 private
   variable
@@ -574,6 +574,95 @@ module Induction
     lm₁ ≡ lm₂
   lemma-lm-inj lm₁ lm₂ h =
     lemma-lm-head-inj lm₁ lm₂ (λ ps → cong head (h ps))
+
+------------------------------------------------------------------------
+-- Toward inj₁-head-inj: the A-box transform's a-component is the
+-- uniform linear functional q ↦ q₁·y − x·q₂ (both shapes), so the two
+-- probes pX / pZ read off y and −x, and the A box of an inj₁ coset is
+-- determined by its head behaviour.
+
+aHd-fst-lin : ∀ (x y : ℤ ₚ) (pr : (x , y) ≢ (₀ , ₀)) (q₁ q₂ : ℤ ₚ) →
+  aHd ((x , y) , pr) (q₁ , q₂) .proj₁ ≡ q₁ * y + - (x * q₂)
+aHd-fst-lin ₀ ₀ pr q₁ q₂ = ⊥-elim (pr refl)
+aHd-fst-lin ₀ (₁₊ y') pr q₁ q₂ = begin
+  q₁ * invI              ≡⟨ cong (q₁ *_) (inv-involutive (₁₊ y' , λ ())) ⟩
+  q₁ * ₁₊ y'             ≡⟨ sym (+-identityʳ (q₁ * ₁₊ y')) ⟩
+  q₁ * ₁₊ y' + ₀         ≡⟨ cong (q₁ * ₁₊ y' +_)
+                              (sym (trans (cong -_ (*-zeroˡ q₂)) -₀≡₀)) ⟩
+  q₁ * ₁₊ y' + - (₀ * q₂) ∎
+  where
+  invI = (((₁₊ y' , λ ()) ⁻¹ ⁻¹) .proj₁)
+aHd-fst-lin (₁₊ x') y pr q₁ q₂ = begin
+  (- (q₂ + q₁ * k)) * invI
+    ≡⟨ cong ((- (q₂ + q₁ * k)) *_) ii ⟩
+  (- (q₂ + q₁ * k)) * ₁₊ x'
+    ≡⟨ sym (-‿distribˡ-* (q₂ + q₁ * k) (₁₊ x')) ⟩
+  - ((q₂ + q₁ * k) * ₁₊ x')
+    ≡⟨ cong -_ (*-distribʳ-+ (₁₊ x') q₂ (q₁ * k)) ⟩
+  - (q₂ * ₁₊ x' + q₁ * k * ₁₊ x')
+    ≡⟨ sym (-‿+-comm (q₂ * ₁₊ x') (q₁ * k * ₁₊ x')) ⟩
+  - (q₂ * ₁₊ x') + - (q₁ * k * ₁₊ x')
+    ≡⟨ cong₂ _+_ (cong -_ (*-comm q₂ (₁₊ x'))) (cong -_ kx-eq) ⟩
+  - (₁₊ x' * q₂) + - (- (q₁ * y))
+    ≡⟨ cong (- (₁₊ x' * q₂) +_) (-‿involutive (q₁ * y)) ⟩
+  - (₁₊ x' * q₂) + q₁ * y
+    ≡⟨ +-comm (- (₁₊ x' * q₂)) (q₁ * y) ⟩
+  q₁ * y + - (₁₊ x' * q₂) ∎
+  where
+  inv  = (₁₊ x' , λ ()) ⁻¹
+  xI   = inv .proj₁
+  invI = ((inv ⁻¹) .proj₁)
+  k    = - y * xI
+  ii : invI ≡ ₁₊ x'
+  ii = inv-involutive (₁₊ x' , λ ())
+  kx-eq : q₁ * k * ₁₊ x' ≡ - (q₁ * y)
+  kx-eq = begin
+    q₁ * (- y * xI) * ₁₊ x'   ≡⟨ cong (_* ₁₊ x') (sym (*-assoc q₁ (- y) xI)) ⟩
+    q₁ * - y * xI * ₁₊ x'     ≡⟨ *-assoc (q₁ * - y) xI (₁₊ x') ⟩
+    q₁ * - y * (xI * ₁₊ x')   ≡⟨ cong (q₁ * - y *_)
+                                   (lemma-⁻¹ˡ (₁₊ x')
+                                     {{nztoℕ {y = ₁₊ x'} {neq0 = λ ()}}}) ⟩
+    q₁ * - y * ₁              ≡⟨ *-identityʳ (q₁ * - y) ⟩
+    q₁ * - y                  ≡⟨ sym (-‿distribʳ-* q₁ y) ⟩
+    - (q₁ * y)                ∎
+
+aHd-pX : ∀ (x y : ℤ ₚ) (pr : (x , y) ≢ (₀ , ₀)) →
+  aHd ((x , y) , pr) pX .proj₁ ≡ y
+aHd-pX x y pr = trans (aHd-fst-lin x y pr ₁ ₀)
+  (trans (cong₂ _+_ (*-identityˡ y)
+           (trans (cong -_ (*-zeroʳ x)) -₀≡₀))
+         (+-identityʳ y))
+
+aHd-pZ : ∀ (x y : ℤ ₚ) (pr : (x , y) ≢ (₀ , ₀)) →
+  aHd ((x , y) , pr) pZ .proj₁ ≡ - x
+aHd-pZ x y pr = trans (aHd-fst-lin x y pr ₀ ₁)
+  (trans (cong₂ _+_ (*-zeroˡ y) (cong -_ (*-identityʳ x)))
+         (+-identityˡ (- x)))
+
+-- The A box of an inj₁ coset is determined by its head behaviour.
+inj₁-recover-a : ∀ {n} (dv₁ dv₂ : Vec D (₁₊ n)) (e₁ e₂ : E)
+  (bv₁ bv₂ : Vec B (₁₊ n)) (a₁ a₂ : A) →
+  (∀ (ps : Pauli (₂₊ n)) →
+    head (act [ ML (₂₊ n) ∋ inj₁ ((dv₁ , e₁) , (bv₁ , a₁)) ]ᵐˡ ps) ≡
+    head (act [ ML (₂₊ n) ∋ inj₁ ((dv₂ , e₂) , (bv₂ , a₂)) ]ᵐˡ ps)) →
+  a₁ ≡ a₂
+inj₁-recover-a {n} dv₁ dv₂ e₁ e₂ bv₁ bv₂
+  ((x₁ , y₁) , pr₁) ((x₂ , y₂) , pr₂) h =
+  A-≡ _ _ (≡×≡⇒≡ (x-eq , y-eq))
+  where
+  probe-eq : ∀ (p₀ : Pauli1) →
+    aHd ((x₁ , y₁) , pr₁) p₀ .proj₁ ≡ aHd ((x₂ , y₂) , pr₂) p₀ .proj₁
+  probe-eq p₀ =
+    trans (sym (inj₁-fst dv₁ e₁ bv₁ ((x₁ , y₁) , pr₁) p₀))
+    (trans (cong proj₁ (h (p₀ ∷ pIₙ {₁₊ n})))
+           (inj₁-fst dv₂ e₂ bv₂ ((x₂ , y₂) , pr₂) p₀))
+  y-eq : y₁ ≡ y₂
+  y-eq = trans (sym (aHd-pX x₁ y₁ pr₁))
+         (trans (probe-eq pX) (aHd-pX x₂ y₂ pr₂))
+  x-eq : x₁ ≡ x₂
+  x-eq = neg-inj x₁ x₂
+    (trans (sym (aHd-pZ x₁ y₁ pr₁))
+    (trans (probe-eq pZ) (aHd-pZ x₂ y₂ pr₂)))
 
 ------------------------------------------------------------------------
 -- With the separation proved, ONE parameter remains: ML' (₂₊)
