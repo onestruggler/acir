@@ -19,7 +19,7 @@
 -- The (₀ , ₁₊ b) branch emits j = b⁻²-powers and genuinely cascades
 -- through mb-S (each B box re-emitting Rof residuals into the M
 -- column); its well-definedness needs an order-p theorem for the
--- cascade and remains open, as do the H-driven axioms (kH ≠ ₀ on fully
+-- cascade and remains open, as do the H-driven axioms (kHn ≠ ₀ on fully
 -- nonzero boxes).
 ------------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
-  using (-‿involutive)
+  using (-‿involutive ; -‿distribˡ-* ; -‿distribʳ-*)
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
   p-2 p-prime
@@ -61,7 +61,8 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.PushLM1
 import Examples.Groups.Symplectic.Normalization.Pushing.Push
   p-2 p-prime as Push
 open import Examples.Groups.Symplectic.Normalization.Pushing.MbSOrder
-  p-2 p-prime using (itf ; mbSⁿm ; mbSⁿ-orderp)
+  p-2 p-prime using (itf ; mbSⁿm ; mbSⁿ-orderp ; chainΦ ; chain-0 ; sumZ)
+open import Data.List using () renaming ([] to []ᴸ ; _∷_ to _∷ᴸ_)
 
 ------------------------------------------------------------------------
 -- Congruence through inj₁, invariant in the (judgementally irrelevant)
@@ -346,3 +347,129 @@ orderS-inj₁-0b-coset {m} mm bv b₀ nz =
   Eq.trans (ract-S^-inj₁-0b-coset mm bv b₀ nz p)
     (Eq.cong (λ z → inj₁ (z , (bv , ((₀ , ₁₊ b₀) , nz))))
       (mbSⁿ-orderp (toℕ (kS0 {m} b₀ nz)) bv mm))
+
+------------------------------------------------------------------------
+-- order-H at inj₁, fully nonzero box, COSET half.  The H 4-cycle
+-- (a,b) → (b,−a) → (−a,−b) → (−b,a) → (a,b) emits the S-power
+-- exponents [ab]⁻¹, −[ab]⁻¹, [ab]⁻¹, −[ab]⁻¹ into the mb-S cascade;
+-- they sum to zero, so the M column returns by MbSOrder.chain-0.  The
+-- stuck negated components are put in constructor form by the caller's
+-- elim-suc hypotheses (y, z, w), mirroring srel-wd {zero}'s call shape.
+
+-- ⁻¹'s value component depends only on the value component (the
+-- nonzeroness proof feeds an η-unit instance).
+inv-val-cong : ∀ (x y : ℤ* ₚ) → x .proj₁ ≡ y .proj₁ →
+  (x ⁻¹) .proj₁ ≡ (y ⁻¹) .proj₁
+inv-val-cong (v , nzv) (v' , nzv') Eq.refl = Eq.refl
+
+module OrderH-nn {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (a₀ b₀ : Fin (₁₊ p-2)) (nz : (₁₊ a₀ , ₁₊ b₀) ≢ (₀ , ₀))
+  (y : Fin (₁₊ p-2)) (eq-y : - ₁₊ a₀ ≡ ₁₊ y)
+  (z : Fin (₁₊ p-2)) (eq-z : - ₁₊ b₀ ≡ ₁₊ z)
+  (w : Fin (₁₊ p-2)) (eq-w : - ₁₊ y ≡ ₁₊ w)
+  where
+
+  -- The fixed exponent emitted by a fully nonzero (₁₊ α , ₁₊ β) box.
+  kHn : (α β : Fin (₁₊ p-2)) (nzx : (₁₊ α , ₁₊ β) ≢ (₀ , ₀)) → ℤ ₚ
+  kHn α β nzx =
+    A-dir-S-power {₁₊ m} ((₁₊ α , ₁₊ β) , nzx) (gate₁ H-gate)
+      (Push.bws1 {₁₊ m} H-gate) .proj₁
+
+  private
+    j₁ = kHn a₀ b₀ nz
+    j₂ = kHn b₀ y (λ ())
+    j₃ = kHn y z (λ ())
+    j₄ = kHn z w (λ ())
+
+    x* : ℤ* ₚ
+    x* = (₁₊ a₀ , λ ()) *' (₁₊ b₀ , λ ())
+
+    J : ℤ ₚ
+    J = (x* ⁻¹) .proj₁
+
+    -- The A-box clause's meta was solved to the [αβ]⁻¹ term.
+    kHn-val : ∀ α β nzx →
+      kHn α β nzx ≡ (((₁₊ α , λ ()) *' (₁₊ β , λ ())) ⁻¹) .proj₁
+    kHn-val α β nzx = Eq.refl
+
+    -- ₁₊ w ≡ ₁₊ a₀ (two negations cancel).
+    wEq : ₁₊ w ≡ ₁₊ a₀
+    wEq = Eq.trans (Eq.sym eq-w)
+      (Eq.trans (Eq.cong -_ (Eq.sym eq-y)) (-‿involutive (₁₊ a₀)))
+
+    -- − ₁₊ z ≡ ₁₊ b₀.
+    zEq : - ₁₊ z ≡ ₁₊ b₀
+    zEq = Eq.trans (Eq.cong -_ (Eq.sym eq-z)) (-‿involutive (₁₊ b₀))
+
+    j₁≡ : j₁ ≡ J
+    j₁≡ = kHn-val a₀ b₀ nz
+
+    j₂≡ : j₂ ≡ - J
+    j₂≡ = Eq.trans (kHn-val b₀ y (λ ()))
+      (Eq.trans (inv-val-cong ((₁₊ b₀ , λ ()) *' (₁₊ y , λ ())) (-' x*)
+        (Eq.trans (Eq.cong (₁₊ b₀ *_) (Eq.sym eq-y))
+        (Eq.trans (Eq.sym (-‿distribʳ-* (₁₊ b₀) (₁₊ a₀)))
+                  (Eq.cong -_ (*-comm (₁₊ b₀) (₁₊ a₀))))))
+        (inv-neg-comm x*))
+
+    j₃≡ : j₃ ≡ J
+    j₃≡ = Eq.trans (kHn-val y z (λ ()))
+      (inv-val-cong ((₁₊ y , λ ()) *' (₁₊ z , λ ())) x*
+        (Eq.trans (Eq.cong₂ _*_ (Eq.sym eq-y) (Eq.sym eq-z))
+        (Eq.trans (Eq.sym (-‿distribˡ-* (₁₊ a₀) (- ₁₊ b₀)))
+        (Eq.trans (Eq.cong -_ (Eq.sym (-‿distribʳ-* (₁₊ a₀) (₁₊ b₀))))
+                  (-‿involutive (₁₊ a₀ * ₁₊ b₀))))))
+
+    j₄≡ : j₄ ≡ - J
+    j₄≡ = Eq.trans (kHn-val z w (λ ()))
+      (Eq.trans (inv-val-cong ((₁₊ z , λ ()) *' (₁₊ w , λ ())) (-' x*)
+        (Eq.trans (Eq.cong₂ _*_ (Eq.sym eq-z) wEq)
+        (Eq.trans (Eq.sym (-‿distribˡ-* (₁₊ b₀) (₁₊ a₀)))
+                  (Eq.cong -_ (*-comm (₁₊ b₀) (₁₊ a₀))))))
+        (inv-neg-comm x*))
+
+    sum0 : sumZ (j₁ ∷ᴸ j₂ ∷ᴸ j₃ ∷ᴸ j₄ ∷ᴸ []ᴸ) ≡ ₀
+    sum0 =
+      Eq.trans (Eq.cong₂ _+_ j₁≡ (Eq.cong₂ _+_ j₂≡
+        (Eq.cong₂ _+_ j₃≡ (Eq.cong₂ _+_ j₄≡ Eq.refl))))
+      (Eq.trans (Eq.cong (λ t → J + (- J + (J + t))) (+-identityʳ (- J)))
+      (Eq.trans (Eq.cong (λ t → J + (- J + t)) (+-inverseʳ J))
+      (Eq.trans (Eq.cong (J +_) (+-identityʳ (- J)))
+                (+-inverseʳ J))))
+
+    Φ : ℤ ₚ → M (₂₊ m) → M (₂₊ m)
+    Φ j zz = mbSⁿm (toℕ j) zz bv
+
+    m₁ = Φ j₁ mm
+    m₂ = Φ j₂ m₁
+    m₃ = Φ j₃ m₂
+
+    c₀ c₁ c₂ c₃ : C (₂₊ m)
+    c₀ = inj₁ (mm , (bv , ((₁₊ a₀ , ₁₊ b₀) , nz)))
+    c₁ = inj₁ (m₁ , (bv , ((₁₊ b₀ , ₁₊ y) , λ ())))
+    c₂ = inj₁ (m₂ , (bv , ((₁₊ y , ₁₊ z) , λ ())))
+    c₃ = inj₁ (m₃ , (bv , ((₁₊ z , ₁₊ w) , λ ())))
+
+    s₁ : proj₂ (ract {₁₊ m} c₀ (gate₁ H-gate)) ≡ c₁
+    s₁ = inj₁-a-eq (Eq.cong (₁₊ b₀ ,_) eq-y)
+
+    s₂ : proj₂ (ract {₁₊ m} c₁ (gate₁ H-gate)) ≡ c₂
+    s₂ = inj₁-a-eq (Eq.cong (₁₊ y ,_) eq-z)
+
+    s₃ : proj₂ (ract {₁₊ m} c₂ (gate₁ H-gate)) ≡ c₃
+    s₃ = inj₁-a-eq (Eq.cong (₁₊ z ,_) eq-w)
+
+    s₄ : proj₂ (ract {₁₊ m} c₃ (gate₁ H-gate))
+         ≡ inj₁ (Φ j₄ m₃ , (bv , ((₁₊ a₀ , ₁₊ b₀) , nz)))
+    s₄ = inj₁-a-eq (Eq.cong₂ _,_ wEq zEq)
+
+  -- The 4-cycle closes on the coset.
+  orderH-inj₁-nn-coset :
+    ((ract {₁₊ m} ᵗ) c₀ (H ^ 4)) .proj₂ ≡ c₀
+  orderH-inj₁-nn-coset =
+    Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c (H ^ 3)) .proj₂) s₁)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c (H ^ 2)) .proj₂) s₂)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c (H ^ 1)) .proj₂) s₃)
+    (Eq.trans s₄
+      (Eq.cong (λ zz → inj₁ (zz , (bv , ((₁₊ a₀ , ₁₊ b₀) , nz))))
+        (chain-0 (j₁ ∷ᴸ j₂ ∷ᴸ j₃ ∷ᴸ j₄ ∷ᴸ []ᴸ) mm bv sum0)))))
