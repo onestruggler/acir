@@ -33,7 +33,9 @@
 --   sem-↑-inj : ⟦ w ↑ ⟧ ≈ˢ ⟦ v ↑ ⟧ → ⟦ w ⟧ ≈ˢ ⟦ v ⟧
 --       injectivity of the semantic wire embedding.  Pure linear algebra
 --       over ℤ/p: ⟦ w ↑ ⟧ is the block-diagonal extension of ⟦ w ⟧, and
---       block-diagonal extension is injective.  Absent from the repo.
+--       block-diagonal extension is injective.  PROVED below (lift-act
+--       + sem-↑-inj): the lifted action is head-preserving cons, so the
+--       tail component recovers the unlifted action.
 --
 --   complete : ⟦ w ⟧ ≈ˢ ⟦ v ⟧ → w ≈ v   (at width n)
 --       faithfulness of the representation at width n — completeness.
@@ -57,6 +59,10 @@ open import Level using (0ℓ)
 open import Relation.Binary using (Setoid ; IsEquivalence)
 open import Algebra.Structures using (IsGroup)
 import Relation.Binary.PropositionalEquality as Eq
+open Eq using (_≡_)
+open import Data.Product using (_,_)
+open import Data.Vec using (_∷_)
+open import Data.Vec.Properties using (∷-injectiveʳ)
 
 open import Word.Base
 import Presentation.Base as PB
@@ -66,7 +72,10 @@ open Symplectic using (Gen ; Circuit ; _↥ ; _↑ ; _QRel,_===_ ; lemma-[⇑]=[
 
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem
   using (_≈ˢ_ ; _∘ˢ_ ; εˢ ; Sp-isGroup)
+open Sem.Symplectic using (ap)
 open Sem.Interpretation using (⟦_⟧)
+open import Examples.Groups.Pauli.Semantics p-2 p-prime
+  using (Pauli ; Pauli1)
 
 open import Examples.Groups.Symplectic.Transport p-2 p-prime
   using (sound-ax)
@@ -141,6 +150,29 @@ Faithful n = ∀ (w v : Circuit n) →
   ⟦ w ⟧ ≈ˢ ⟦ v ⟧ → PB._≈_ (n QRel,_===_) w v
 
 ------------------------------------------------------------------------
+-- Sem-↑-Inj HOLDS.  The lifted generator action is head-preserving
+-- cons (Semantics.actg (g ↥) (x ∷ ps) = x ∷ actg g ps), so a lifted
+-- word acts as id ⊕ ⟦ w ⟧ on the phase space, and injectivity reads
+-- off the tail component.  This discharges the first of the two
+-- CosetNF2 obligations; the residual halves of srel-wd now hinge ONLY
+-- on Faithful (completeness one width down).
+
+private
+  lift-act : ∀ {n} (w : Circuit n) (x : Pauli1) (ps : Pauli n) →
+    ap ⟦ (fᵤ ʷ) w ⟧ (x ∷ ps) ≡ x ∷ ap ⟦ w ⟧ ps
+  lift-act [ g ]ʷ  x ps = Eq.refl
+  lift-act ε       x ps = Eq.refl
+  lift-act (w • v) x ps =
+    Eq.trans (Eq.cong (ap ⟦ (fᵤ ʷ) w ⟧) (lift-act v x ps))
+             (lift-act w x (ap ⟦ v ⟧ ps))
+
+sem-↑-inj : ∀ (n : ℕ) → Sem-↑-Inj n
+sem-↑-inj n w v hyp ps =
+  ∷-injectiveʳ
+    (Eq.trans (Eq.sym (lift-act w (₀ , ₀) ps))
+      (Eq.trans (hyp ((₀ , ₀) ∷ ps)) (lift-act v (₀ , ₀) ps)))
+
+------------------------------------------------------------------------
 -- The payoff.
 --
 -- Given the two obligations above, fʷ-injective — i.e. ↑-faithfulness —
@@ -185,3 +217,9 @@ module Injectivity (n : ℕ)
   ↑-inj-↑ w v eq = ↑-inj w v
     (P₂.trans (P₂.refl' (lemma-[⇑]=[⇑]' w))
       (P₂.trans eq (P₂.refl' (Eq.sym (lemma-[⇑]=[⇑]' v)))))
+
+------------------------------------------------------------------------
+-- With sem-↑-inj proved above, ↑-faithfulness needs only Faithful n.
+
+module Injectivity! (n : ℕ) (faithful : Faithful n) =
+  Injectivity n (sem-↑-inj n) faithful
