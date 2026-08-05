@@ -26,6 +26,7 @@ open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Sum using (inj₁ ; inj₂)
+open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin ; toℕ)
 open import Data.Vec using (Vec ; [] ; _∷_)
 import Relation.Binary.PropositionalEquality as Eq
@@ -45,7 +46,7 @@ open import Algebra.Properties.Ring (+-*-ring p-2)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
   p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDM
-  p-2 p-prime using (nsum-neg ; valM-C ; valM-D)
+  p-2 p-prime using (nsum-neg ; valM-C ; valM-D ; Mact-nz)
 open import Examples.Groups.Symplectic.Normalization.Pushing.MbSOrder
   p-2 p-prime using
   (itf ; mbSⁿm ; mbSⁿ-shiftζ ; mbSⁿ-block ; module MbS-OP ;
@@ -632,3 +633,75 @@ module RactM-nn {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
         (S^ x • H)) .proj₂) seg₄)
     (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c H) .proj₂) seg₅)
               seg₆))))
+
+------------------------------------------------------------------------
+-- The dispatcher: the full inj₁ M-word action, mirroring ractM!'s
+-- internal case tree.
+
+ractM!-inj₁ : ∀ {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m)) (x* : ℤ* ₚ)
+  (ab : ℤ ₚ × ℤ ₚ) (nz : ab ≢ (₀ , ₀))
+  (nz' : (x* .proj₁ * ab .proj₁ , (x* ⁻¹) .proj₁ * ab .proj₂) ≢ (₀ , ₀)) →
+  ((ract {₁₊ m} ᵗ) (inj₁ (mm , (bv , (ab , nz)))) (ZM x*)) .proj₂
+  ≡ inj₁ (mm , (bv ,
+      ((x* .proj₁ * ab .proj₁ , (x* ⁻¹) .proj₁ * ab .proj₂) , nz')))
+ractM!-inj₁ mm bv x* (₀ , ₀) nz nz' = ⊥-elim (nz auto)
+ractM!-inj₁ {m} mm bv x* (₀ , ₁₊ β') nz nz' =
+  elim-suc (- ((x* ⁻¹) .proj₁ * ₁₊ β'))
+           (neg≢0 ((x* ⁻¹) .proj₁ * ₁₊ β')
+                  (((x* ⁻¹) *' (₁₊ β' , λ ())) .proj₂))
+    λ u eq-u →
+  Eq.trans
+    (RactM-0b.ractM-inj₁-0b mm bv x* β' nz u eq-u
+      (λ e0 → ((x* ⁻¹) *' (₁₊ β' , λ ())) .proj₂ (Eq.cong proj₂ e0)))
+    (inj₁-a-eq (Eq.cong (λ z → (z , (x* ⁻¹) .proj₁ * ₁₊ β'))
+      (Eq.sym (*-zeroʳ (x* .proj₁)))))
+ractM!-inj₁ {m} mm bv x* (₁₊ α' , β) nz nz' =
+  elim-fin (β + - (x* .proj₁ * ₁₊ α'))
+    (λ Xeq0 →
+       elim-suc (- ₁₊ α') (neg≢0 (₁₊ α') λ ()) λ y eq-y →
+       elim-suc β
+         (λ e0 → (x* *' (₁₊ α' , λ ())) .proj₂
+                   (Eq.trans (Eq.sym (+-‿cancel β (x* .proj₁ * ₁₊ α') Xeq0)) e0))
+         λ g eq-g →
+       RactM-w0.ractM-inj₁-w0 mm bv x* α' β nz y g Xeq0 eq-y eq-g nz')
+    (λ w Xeq →
+       elim-fin β
+         (λ eq-b0 →
+            elim-suc (- ₁₊ w) (neg≢0 (₁₊ w) λ ()) λ t eq-t →
+            RactM-b0.ractM-inj₁-b0 mm bv x* α' β nz w t Xeq eq-b0 eq-t nz')
+         (λ g eq-g →
+            elim-suc (- ((x* ⁻¹) .proj₁ * β))
+              (neg≢0 ((x* ⁻¹) .proj₁ * β)
+                (((x* ⁻¹) *' (β , (λ e0 → suc≢0 (Eq.trans (Eq.sym eq-g) e0))))
+                  .proj₂))
+              λ v eq-v →
+            elim-suc (x* .proj₁ * ₁₊ α') ((x* *' (₁₊ α' , λ ())) .proj₂)
+              λ s eq-s →
+            RactM-nn.ractM-inj₁-nn mm bv x* α' β nz w v s g
+              Xeq eq-v eq-s eq-g nz'))
+
+------------------------------------------------------------------------
+-- The M-mul COSET half at inj₁: two M threadings against one, exactly
+-- the width-1 argument with ractM!-inj₁ for ractM! (the M column stays
+-- at mm throughout).
+
+Mmul-inj₁-coset : ∀ {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (x* y* : ℤ* ₚ) (ab : ℤ ₚ × ℤ ₚ) (nz : ab ≢ (₀ , ₀)) →
+  ((ract {₁₊ m} ᵗ) (inj₁ (mm , (bv , (ab , nz)))) (ZM x* • ZM y*)) .proj₂
+  ≡ ((ract {₁₊ m} ᵗ) (inj₁ (mm , (bv , (ab , nz)))) (ZM (x* *' y*))) .proj₂
+Mmul-inj₁-coset {m} mm bv x* y* ab nz =
+  Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c (ZM y*)) .proj₂)
+             (ractM!-inj₁ mm bv x* ab nz (Mact-nz x* ab nz)))
+  (Eq.trans (ractM!-inj₁ mm bv y*
+              (x* .proj₁ * ab .proj₁ , (x* ⁻¹) .proj₁ * ab .proj₂)
+              (Mact-nz x* ab nz)
+              (Mact-nz y* _ (Mact-nz x* ab nz)))
+  (Eq.trans (inj₁-a-eq (Eq.cong₂ _,_
+      (Eq.trans (Eq.sym (*-assoc (y* .proj₁) (x* .proj₁) (ab .proj₁)))
+                (Eq.cong (_* ab .proj₁) (*-comm (y* .proj₁) (x* .proj₁))))
+      (Eq.trans (Eq.sym (*-assoc ((y* ⁻¹) .proj₁) ((x* ⁻¹) .proj₁) (ab .proj₂)))
+                (Eq.cong (_* ab .proj₂)
+                  (Eq.trans (*-comm ((y* ⁻¹) .proj₁) ((x* ⁻¹) .proj₁))
+                            (Eq.sym (inv-distrib x* y*)))))))
+    (Eq.sym (ractM!-inj₁ mm bv (x* *' y*) ab nz
+              (Mact-nz (x* *' y*) ab nz)))))
