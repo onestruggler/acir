@@ -40,16 +40,17 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
-  using (-‿involutive ; -‿distribʳ-*)
+  using (-‿involutive ; -‿distribʳ-* ; -‿distribˡ-* ; -‿+-comm ; -0#≈0#)
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
   p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDM
-  p-2 p-prime using (nsum-neg)
+  p-2 p-prime using (nsum-neg ; valM-C ; valM-D)
 open import Examples.Groups.Symplectic.Normalization.Pushing.MbSOrder
   p-2 p-prime using
   (itf ; mbSⁿm ; mbSⁿ-shiftζ ; mbSⁿ-block ; module MbS-OP ;
-   ζΔ ; _⊞_ ; ⊞-⊞ ; ζΔ-+ ; ⊞-ζ0 ; nsum-*)
+   ζΔ ; _⊞_ ; ⊞-⊞ ; ζΔ-+ ; ⊞-ζ0 ; nsum-* ; chainΦ ; chain-0 ; sumZ)
+open import Data.List using () renaming ([] to []ᴸ ; _∷_ to _∷ᴸ_)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWD
   p-2 p-prime using
   (inj₁-a-eq ; kS0 ; kS0-val ; sqInv ; kHn ; kHn-val ; inv-val-cong ;
@@ -69,6 +70,23 @@ blockH-0 {k} j jH t mm bv w0 =
       (Eq.cong (ζΔ jH) (MbS-OP.σ-const bv mm (ζΔ (nsum t j) σm))))
   (Eq.trans (⊞-⊞ mm (ζΔ (nsum t j) σm) (ζΔ jH σm))
   (Eq.trans (Eq.cong (mm ⊞_) (ζΔ-+ (nsum t j) jH σm))
+  (Eq.trans (Eq.cong (λ z → mm ⊞ ζΔ z σm) w0)
+            (⊞-ζ0 mm σm))))))
+  where
+  σm = MbS-OP.σ bv mm
+
+-- The mirror: a step at jH followed by a block at j.
+Hblock-0 : ∀ {k} (jH j : ℤ ₚ) (t : ℕ) (mm : M (₁₊ k)) (bv : Vec B k) →
+  jH + nsum t j ≡ ₀ →
+  itf (λ z → mbSⁿm (toℕ j) z bv) t (mbSⁿm (toℕ jH) mm bv) ≡ mm
+Hblock-0 {k} jH j t mm bv w0 =
+  Eq.trans (Eq.cong (itf (λ z → mbSⁿm (toℕ j) z bv) t)
+      (mbSⁿ-shiftζ jH mm bv))
+  (Eq.trans (mbSⁿ-block j t (mm ⊞ ζΔ jH σm) bv)
+  (Eq.trans (Eq.cong ((mm ⊞ ζΔ jH σm) ⊞_)
+      (Eq.cong (ζΔ (nsum t j)) (MbS-OP.σ-const bv mm (ζΔ jH σm))))
+  (Eq.trans (⊞-⊞ mm (ζΔ jH σm) (ζΔ (nsum t j) σm))
+  (Eq.trans (Eq.cong (mm ⊞_) (ζΔ-+ jH (nsum t j) σm))
   (Eq.trans (Eq.cong (λ z → mm ⊞ ζΔ z σm) w0)
             (⊞-ζ0 mm σm))))))
   where
@@ -192,6 +210,418 @@ module RactM-0b {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
   ractM-inj₁-0b :
     ((ract {₁₊ m} ᵗ) c₀ (ZM x*)) .proj₂ ≡ cF
   ractM-inj₁-0b =
+    Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
+        (H • (S^ ix • (H • (S^ x • H))))) .proj₂) seg₁)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
+        (S^ ix • (H • (S^ x • H)))) .proj₂) seg₂)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
+        (H • (S^ x • H))) .proj₂) seg₃)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
+        (S^ x • H)) .proj₂) seg₄)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c H) .proj₂) seg₅)
+              seg₆))))
+
+------------------------------------------------------------------------
+-- The (₁₊ α' , β) branch with β − xα ≡ 0 (mirror of SrelWDM.ractM-w0).
+
+module RactM-w0 {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (x* : ℤ* ₚ) (α' : Fin (₁₊ p-2)) (β : ℤ ₚ)
+  (nz : (₁₊ α' , β) ≢ (₀ , ₀)) (y g : Fin (₁₊ p-2))
+  (Xeq0 : β + - (x* .proj₁ * ₁₊ α') ≡ ₀)
+  (eq-y : - ₁₊ α' ≡ ₁₊ y)
+  (eq-g : β ≡ ₁₊ g)
+  (nz' : (x* .proj₁ * ₁₊ α' , (x* ⁻¹) .proj₁ * β) ≢ (₀ , ₀))
+  where
+
+  private
+    x  = x* .proj₁
+    ix = (x* ⁻¹) .proj₁
+    instᵢ = nztoℕ {y = x} {neq0 = x* .proj₂}
+    iα = ((₁₊ α' , λ ()) ⁻¹) .proj₁
+    V  = ix * (iα * iα)
+
+    Φ : ℤ ₚ → M (₂₊ m) → M (₂₊ m)
+    Φ j zz = mbSⁿm (toℕ j) zz bv
+
+    mmB = itf (λ z → mbSⁿm (toℕ (kS0 {m} y (λ ()))) z bv) (toℕ ix) mm
+
+    beq : β ≡ x * ₁₊ α'
+    beq = +-‿cancel β (x * ₁₊ α') Xeq0
+
+    xy≡-β : x * ₁₊ y ≡ - β
+    xy≡-β = Eq.trans (Eq.cong (x *_) (Eq.sym eq-y))
+      (Eq.trans (Eq.sym (-‿distribʳ-* x (₁₊ α')))
+                (Eq.cong -_ (Eq.sym beq)))
+
+    ixβ≡α : ix * β ≡ ₁₊ α'
+    ixβ≡α = Eq.trans (Eq.cong (ix *_) beq)
+      (Eq.trans (Eq.sym (*-assoc ix x (₁₊ α')))
+      (Eq.trans (Eq.cong (_* ₁₊ α') (lemma-⁻¹ˡ x {{instᵢ}}))
+                (*-identityˡ (₁₊ α'))))
+
+    ab-eq : _≡_ {A = ℤ ₚ × ℤ ₚ} (₁₊ g , - ₁₊ y) (x * ₁₊ α' , ix * β)
+    ab-eq = Eq.cong₂ _,_ (Eq.trans (Eq.sym eq-g) beq)
+      (Eq.trans
+        (Eq.trans (Eq.cong -_ (Eq.sym eq-y)) (-‿involutive (₁₊ α')))
+        (Eq.sym ixβ≡α))
+
+    iy-eq : ((₁₊ y , λ ()) ⁻¹) .proj₁ ≡ - iα
+    iy-eq = Eq.trans
+      (inv-cong (₁₊ y , λ ()) (-' (₁₊ α' , λ ())) (Eq.sym eq-y))
+      (inv-neg-comm (₁₊ α' , λ ()))
+
+    w1V : nsum (toℕ ix) (kS0 {m} y (λ ())) ≡ V
+    w1V = Eq.trans (Eq.cong (nsum (toℕ ix)) (kS0-val {m} y (λ ())))
+      (Eq.trans (nsum-* ix (sqInv y))
+        (Eq.cong (ix *_)
+          (Eq.trans (Eq.cong₂ _*_ iy-eq iy-eq) (negneg-* iα iα))))
+
+    αxα : ₁₊ α' * (x * ₁₊ α') ≡ x * (₁₊ α' * ₁₊ α')
+    αxα = Eq.trans (Eq.sym (*-assoc (₁₊ α') x (₁₊ α')))
+      (Eq.trans (Eq.cong (_* ₁₊ α') (*-comm (₁₊ α') x))
+                (*-assoc x (₁₊ α') (₁₊ α')))
+
+    KHyg : kHn {m} y g (λ ()) ≡ - V
+    KHyg = Eq.trans (kHn-val {m} y g (λ ()))
+      (KabV x* α' y g
+        (Eq.trans (Eq.cong₂ _*_ (Eq.sym eq-y) (Eq.sym eq-g))
+        (Eq.trans (Eq.sym (-‿distribˡ-* (₁₊ α') β))
+          (Eq.cong -_ (Eq.trans (Eq.cong (₁₊ α' *_) beq) αxα)))))
+
+    w0-sum : nsum (toℕ ix) (kS0 {m} y (λ ())) + kHn {m} y g (λ ()) ≡ ₀
+    w0-sum = Eq.trans (Eq.cong₂ _+_ w1V KHyg) (+-inverseʳ V)
+
+    M-return : Φ (kHn {m} y g (λ ())) mmB ≡ mm
+    M-return = blockH-0 (kS0 {m} y (λ ())) (kHn {m} y g (λ ()))
+                 (toℕ ix) mm bv w0-sum
+
+    c₀ c₁ c₂ c₃ c₄ c₅ cF : C (₂₊ m)
+    c₀ = inj₁ (mm  , (bv , ((₁₊ α' , β) , nz)))
+    c₁ = inj₁ (mm  , (bv , ((₁₊ α' , ₀) , λ ())))
+    c₂ = inj₁ (mm  , (bv , ((₀ , ₁₊ y) , λ ())))
+    c₃ = inj₁ (mmB , (bv , ((₀ , ₁₊ y) , λ ())))
+    c₄ = inj₁ (mmB , (bv , ((₁₊ y , ₀) , λ ())))
+    c₅ = inj₁ (mmB , (bv , ((₁₊ y , ₁₊ g) , λ ())))
+    cF = inj₁ (mm  , (bv , ((x * ₁₊ α' , ix * β) , nz')))
+
+    seg₁ : ((ract {₁₊ m} ᵗ) c₀ (S^ x)) .proj₂ ≡ c₁
+    seg₁ = Eq.trans
+      (ract-S^-inj₁-a+-coset (proj₁ mm) (proj₂ mm) bv α' β nz (toℕ x))
+      (inj₁-a-eq (Eq.cong (₁₊ α' ,_)
+        (Eq.trans (Eq.cong (β +_) (nsum-neg x (₁₊ α'))) Xeq0)))
+
+    seg₂ : proj₂ (ract {₁₊ m} c₁ (gate₁ H-gate)) ≡ c₂
+    seg₂ = inj₁-a-eq (Eq.cong (λ z → (₀ , z)) eq-y)
+
+    seg₃ : ((ract {₁₊ m} ᵗ) c₂ (S^ ix)) .proj₂ ≡ c₃
+    seg₃ = ract-S^-inj₁-0b-coset mm bv y (λ ()) (toℕ ix)
+
+    seg₄ : proj₂ (ract {₁₊ m} c₃ (gate₁ H-gate)) ≡ c₄
+    seg₄ = inj₁-a-eq Eq.refl
+
+    seg₅ : ((ract {₁₊ m} ᵗ) c₄ (S^ x)) .proj₂ ≡ c₅
+    seg₅ = Eq.trans
+      (ract-S^-inj₁-a+-coset (proj₁ mmB) (proj₂ mmB) bv y ₀ (λ ())
+        (toℕ x))
+      (inj₁-a-eq (Eq.cong (₁₊ y ,_)
+        (Eq.trans (+-0ˡ (nsum (toℕ x) (- ₁₊ y)))
+        (Eq.trans (nsum-neg x (₁₊ y))
+        (Eq.trans (Eq.cong -_ xy≡-β)
+          (Eq.trans (-‿involutive β) eq-g))))))
+
+    seg₆ : proj₂ (ract {₁₊ m} c₅ (gate₁ H-gate)) ≡ cF
+    seg₆ = Eq.trans (inj₁-a-eq ab-eq)
+      (Eq.cong
+        (λ zz → inj₁ (zz , (bv , ((x * ₁₊ α' , ix * β) , nz'))))
+        M-return)
+
+  ractM-inj₁-w0 :
+    ((ract {₁₊ m} ᵗ) c₀ (ZM x*)) .proj₂ ≡ cF
+  ractM-inj₁-w0 =
+    Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
+        (H • (S^ ix • (H • (S^ x • H))))) .proj₂) seg₁)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
+        (S^ ix • (H • (S^ x • H)))) .proj₂) seg₂)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
+        (H • (S^ x • H))) .proj₂) seg₃)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
+        (S^ x • H)) .proj₂) seg₄)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c H) .proj₂) seg₅)
+              seg₆))))
+
+------------------------------------------------------------------------
+-- The (₁₊ α' , β) branch with β ≡ 0 (mirror of SrelWDM.ractM-b0).
+
+module RactM-b0 {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (x* : ℤ* ₚ) (α' : Fin (₁₊ p-2)) (β : ℤ ₚ)
+  (nz : (₁₊ α' , β) ≢ (₀ , ₀)) (w t : Fin (₁₊ p-2))
+  (Xeq : β + - (x* .proj₁ * ₁₊ α') ≡ ₁₊ w)
+  (eq-b0 : β ≡ ₀)
+  (eq-t : - ₁₊ w ≡ ₁₊ t)
+  (nz' : (x* .proj₁ * ₁₊ α' , (x* ⁻¹) .proj₁ * β) ≢ (₀ , ₀))
+  where
+
+  private
+    x  = x* .proj₁
+    ix = (x* ⁻¹) .proj₁
+    instᵢ = nztoℕ {y = x} {neq0 = x* .proj₂}
+    iα = ((₁₊ α' , λ ()) ⁻¹) .proj₁
+    V  = ix * (iα * iα)
+
+    Φ : ℤ ₚ → M (₂₊ m) → M (₂₊ m)
+    Φ j zz = mbSⁿm (toℕ j) zz bv
+
+    mm₁ = Φ (kHn {m} α' w (λ ())) mm
+    mmB = itf (λ z → mbSⁿm (toℕ (kS0 {m} t (λ ()))) z bv) (toℕ x) mm₁
+
+    t≡xα : ₁₊ t ≡ x * ₁₊ α'
+    t≡xα = Eq.trans (Eq.sym eq-t)
+      (Eq.trans (Eq.cong -_ (Eq.sym Xeq))
+      (Eq.trans (Eq.cong -_ (Eq.cong (_+ - (x * ₁₊ α')) eq-b0))
+      (Eq.trans (Eq.cong -_ (+-0ˡ (- (x * ₁₊ α'))))
+                (-‿involutive (x * ₁₊ α')))))
+
+    ab-eq : _≡_ {A = ℤ ₚ × ℤ ₚ} (₁₊ t , ₀) (x * ₁₊ α' , ix * β)
+    ab-eq = Eq.cong₂ _,_ t≡xα
+      (Eq.sym (Eq.trans (Eq.cong (ix *_) eq-b0) (*-zeroʳ ix)))
+
+    it-eq : ((₁₊ t , λ ()) ⁻¹) .proj₁ ≡ ix * iα
+    it-eq = Eq.trans
+      (inv-cong (₁₊ t , λ ()) (x* *' (₁₊ α' , λ ())) t≡xα)
+      (inv-distrib x* (₁₊ α' , λ ()))
+
+    wBV : nsum (toℕ x) (kS0 {m} t (λ ())) ≡ V
+    wBV = Eq.trans (Eq.cong (nsum (toℕ x)) (kS0-val {m} t (λ ())))
+      (Eq.trans (nsum-* x (sqInv t))
+      (Eq.trans (Eq.cong (x *_) (Eq.cong₂ _*_ it-eq it-eq))
+      (Eq.trans (Eq.sym (*-assoc x (ix * iα) (ix * iα)))
+      (Eq.trans (Eq.cong (_* (ix * iα))
+        (Eq.trans (Eq.sym (*-assoc x ix iα))
+        (Eq.trans (Eq.cong (_* iα) (lemma-⁻¹ʳ x {{instᵢ}}))
+                  (*-identityˡ iα))))
+      (Eq.trans (Eq.sym (*-assoc iα ix iα))
+      (Eq.trans (Eq.cong (_* iα) (*-comm iα ix))
+                (*-assoc ix iα iα)))))))
+
+    αxα : ₁₊ α' * (x * ₁₊ α') ≡ x * (₁₊ α' * ₁₊ α')
+    αxα = Eq.trans (Eq.sym (*-assoc (₁₊ α') x (₁₊ α')))
+      (Eq.trans (Eq.cong (_* ₁₊ α') (*-comm (₁₊ α') x))
+                (*-assoc x (₁₊ α') (₁₊ α')))
+
+    KHαw : kHn {m} α' w (λ ()) ≡ - V
+    KHαw = Eq.trans (kHn-val {m} α' w (λ ()))
+      (KabV x* α' α' w
+        (Eq.trans (Eq.cong (₁₊ α' *_)
+          (Eq.trans (Eq.sym Xeq)
+          (Eq.trans (Eq.cong (_+ - (x * ₁₊ α')) eq-b0)
+                    (+-0ˡ (- (x * ₁₊ α'))))))
+        (Eq.trans (Eq.sym (-‿distribʳ-* (₁₊ α') (x * ₁₊ α')))
+                  (Eq.cong -_ αxα))))
+
+    w0-sum : kHn {m} α' w (λ ()) + nsum (toℕ x) (kS0 {m} t (λ ())) ≡ ₀
+    w0-sum = Eq.trans (Eq.cong₂ _+_ KHαw wBV) (+-inverseˡ V)
+
+    M-return : mmB ≡ mm
+    M-return = Hblock-0 (kHn {m} α' w (λ ())) (kS0 {m} t (λ ()))
+                 (toℕ x) mm bv w0-sum
+
+    c₀ c₁ c₂ c₃ c₄ c₅ cF : C (₂₊ m)
+    c₀ = inj₁ (mm  , (bv , ((₁₊ α' , β) , nz)))
+    c₁ = inj₁ (mm  , (bv , ((₁₊ α' , ₁₊ w) , λ ())))
+    c₂ = inj₁ (mm₁ , (bv , ((₁₊ w , - ₁₊ α') , λ ())))
+    c₃ = inj₁ (mm₁ , (bv , ((₁₊ w , ₀) , λ ())))
+    c₄ = inj₁ (mm₁ , (bv , ((₀ , ₁₊ t) , λ ())))
+    c₅ = inj₁ (mmB , (bv , ((₀ , ₁₊ t) , λ ())))
+    cF = inj₁ (mm  , (bv , ((x * ₁₊ α' , ix * β) , nz')))
+
+    seg₁ : ((ract {₁₊ m} ᵗ) c₀ (S^ x)) .proj₂ ≡ c₁
+    seg₁ = Eq.trans
+      (ract-S^-inj₁-a+-coset (proj₁ mm) (proj₂ mm) bv α' β nz (toℕ x))
+      (inj₁-a-eq (Eq.cong (₁₊ α' ,_)
+        (Eq.trans (Eq.cong (β +_) (nsum-neg x (₁₊ α'))) Xeq)))
+
+    seg₂ : proj₂ (ract {₁₊ m} c₁ (gate₁ H-gate)) ≡ c₂
+    seg₂ = inj₁-a-eq Eq.refl
+
+    seg₃ : ((ract {₁₊ m} ᵗ) c₂ (S^ ix)) .proj₂ ≡ c₃
+    seg₃ = Eq.trans
+      (ract-S^-inj₁-a+-coset (proj₁ mm₁) (proj₂ mm₁) bv w (- ₁₊ α')
+        (λ ()) (toℕ ix))
+      (inj₁-a-eq (Eq.cong (₁₊ w ,_)
+        (Eq.trans (Eq.cong ((- ₁₊ α') +_) (nsum-neg ix (₁₊ w)))
+        (Eq.trans (Eq.cong (λ z → - ₁₊ α' + - (ix * z)) (Eq.sym Xeq))
+        (Eq.trans (valM-C x* (₁₊ α') β)
+        (Eq.trans (Eq.cong (λ z → - (ix * z)) eq-b0)
+          (Eq.trans (Eq.cong -_ (*-zeroʳ ix)) -0#≈0#)))))))
+
+    seg₄ : proj₂ (ract {₁₊ m} c₃ (gate₁ H-gate)) ≡ c₄
+    seg₄ = inj₁-a-eq (Eq.cong (λ z → (₀ , z)) eq-t)
+
+    seg₅ : ((ract {₁₊ m} ᵗ) c₄ (S^ x)) .proj₂ ≡ c₅
+    seg₅ = ract-S^-inj₁-0b-coset mm₁ bv t (λ ()) (toℕ x)
+
+    seg₆ : proj₂ (ract {₁₊ m} c₅ (gate₁ H-gate)) ≡ cF
+    seg₆ = Eq.trans (inj₁-a-eq ab-eq)
+      (Eq.cong
+        (λ zz → inj₁ (zz , (bv , ((x * ₁₊ α' , ix * β) , nz'))))
+        M-return)
+
+  ractM-inj₁-b0 :
+    ((ract {₁₊ m} ᵗ) c₀ (ZM x*)) .proj₂ ≡ cF
+  ractM-inj₁-b0 =
+    Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
+        (H • (S^ ix • (H • (S^ x • H))))) .proj₂) seg₁)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
+        (S^ ix • (H • (S^ x • H)))) .proj₂) seg₂)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
+        (H • (S^ x • H))) .proj₂) seg₃)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
+        (S^ x • H)) .proj₂) seg₄)
+    (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c H) .proj₂) seg₅)
+              seg₆))))
+
+------------------------------------------------------------------------
+-- The generic branch: α ≠ 0, β ≠ 0, β − xα ≠ 0 (mirror of
+-- SrelWDM.ractM-nn).  Three fully nonzero H-stops; the exponents
+-- telescope by the x-scaled partial fraction (pf-invx).
+
+module RactM-nn {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (x* : ℤ* ₚ) (α' : Fin (₁₊ p-2)) (β : ℤ ₚ)
+  (nz : (₁₊ α' , β) ≢ (₀ , ₀)) (w v s g : Fin (₁₊ p-2))
+  (Xeq : β + - (x* .proj₁ * ₁₊ α') ≡ ₁₊ w)
+  (eq-v : - ((x* ⁻¹) .proj₁ * β) ≡ ₁₊ v)
+  (eq-s : x* .proj₁ * ₁₊ α' ≡ ₁₊ s)
+  (eq-g : β ≡ ₁₊ g)
+  (nz' : (x* .proj₁ * ₁₊ α' , (x* ⁻¹) .proj₁ * β) ≢ (₀ , ₀))
+  where
+
+  private
+    x  = x* .proj₁
+    ix = (x* ⁻¹) .proj₁
+    instᵢ = nztoℕ {y = x} {neq0 = x* .proj₂}
+
+    Φ : ℤ ₚ → M (₂₊ m) → M (₂₊ m)
+    Φ j zz = mbSⁿm (toℕ j) zz bv
+
+    j₁ = kHn {m} α' w (λ ())
+    j₂ = kHn {m} w v (λ ())
+    j₃ = kHn {m} v s (λ ())
+
+    mm₁ = Φ j₁ mm
+    mm₂ = Φ j₂ mm₁
+
+    I1 : Kab w v ≡ - (x * Kab w g)
+    I1 = Eq.trans
+      (inv-cong ((₁₊ w , λ ()) *' (₁₊ v , λ ()))
+                (-' ((x* ⁻¹) *' ((₁₊ w , λ ()) *' (₁₊ g , λ ()))))
+        (Eq.trans (Eq.cong (₁₊ w *_) (Eq.sym eq-v))
+        (Eq.trans (Eq.sym (-‿distribʳ-* (₁₊ w) (ix * β)))
+        (Eq.cong -_
+          (Eq.trans (Eq.sym (*-assoc (₁₊ w) ix β))
+          (Eq.trans (Eq.cong (_* β) (*-comm (₁₊ w) ix))
+          (Eq.trans (*-assoc ix (₁₊ w) β)
+                    (Eq.cong (λ z → ix * (₁₊ w * z)) eq-g))))))))
+      (Eq.trans
+        (inv-neg-comm ((x* ⁻¹) *' ((₁₊ w , λ ()) *' (₁₊ g , λ ()))))
+        (Eq.cong -_
+          (Eq.trans (inv-distrib (x* ⁻¹) ((₁₊ w , λ ()) *' (₁₊ g , λ ())))
+                    (Eq.cong (_* Kab w g) (inv-involutive x*)))))
+
+    I2 : Kab v s ≡ - Kab α' g
+    I2 = Eq.trans
+      (inv-cong ((₁₊ v , λ ()) *' (₁₊ s , λ ()))
+                (-' ((₁₊ α' , λ ()) *' (₁₊ g , λ ())))
+        (Eq.trans (Eq.cong₂ _*_ (Eq.sym eq-v) (Eq.sym eq-s))
+        (Eq.trans (Eq.sym (-‿distribˡ-* (ix * β) (x * ₁₊ α')))
+        (Eq.cong -_
+          (Eq.trans (*-assoc ix β (x * ₁₊ α'))
+          (Eq.trans (Eq.cong (ix *_)
+            (Eq.trans (Eq.sym (*-assoc β x (₁₊ α')))
+            (Eq.trans (Eq.cong (_* ₁₊ α') (*-comm β x))
+                      (*-assoc x β (₁₊ α')))))
+          (Eq.trans (Eq.sym (*-assoc ix x (β * ₁₊ α')))
+          (Eq.trans (Eq.cong (_* (β * ₁₊ α')) (lemma-⁻¹ˡ x {{instᵢ}}))
+          (Eq.trans (*-identityˡ (β * ₁₊ α'))
+          (Eq.trans (*-comm β (₁₊ α'))
+                    (Eq.cong (₁₊ α' *_) eq-g)))))))))))
+      (inv-neg-comm ((₁₊ α' , λ ()) *' (₁₊ g , λ ())))
+
+    awb-g : x * ₁₊ α' + ₁₊ w ≡ ₁₊ g
+    awb-g = Eq.trans (Eq.cong (x * ₁₊ α' +_) (Eq.sym Xeq))
+      (Eq.trans (+-comm (x * ₁₊ α') (β + - (x * ₁₊ α')))
+      (Eq.trans (+-assoc β (- (x * ₁₊ α')) (x * ₁₊ α'))
+      (Eq.trans (Eq.cong (β +_) (+-inverseˡ (x * ₁₊ α')))
+      (Eq.trans (+-identityʳ β) eq-g))))
+
+    sum0 : sumZ (j₁ ∷ᴸ j₂ ∷ᴸ j₃ ∷ᴸ []ᴸ) ≡ ₀
+    sum0 =
+      Eq.trans (Eq.cong₂ _+_ (kHn-val {m} α' w (λ ()))
+        (Eq.cong₂ _+_ (Eq.trans (kHn-val {m} w v (λ ())) I1)
+          (Eq.cong₂ _+_ (Eq.trans (kHn-val {m} v s (λ ())) I2) Eq.refl)))
+      (Eq.trans (Eq.cong (λ z → Kab α' w + (- (x * Kab w g) + z))
+          (+-identityʳ (- Kab α' g)))
+      (Eq.trans (Eq.cong (Kab α' w +_)
+          (-‿+-comm (x * Kab w g) (Kab α' g)))
+      (Eq.trans (Eq.cong (λ z → Kab α' w + - z)
+          (pf-invx x* α' w g awb-g))
+        (+-inverseʳ (Kab α' w)))))
+
+    M-return : Φ j₃ mm₂ ≡ mm
+    M-return = chain-0 (j₁ ∷ᴸ j₂ ∷ᴸ j₃ ∷ᴸ []ᴸ) mm bv sum0
+
+    ab-eq : _≡_ {A = ℤ ₚ × ℤ ₚ} (₁₊ s , - ₁₊ v) (x * ₁₊ α' , ix * β)
+    ab-eq = Eq.cong₂ _,_ (Eq.sym eq-s)
+      (Eq.trans (Eq.cong -_ (Eq.sym eq-v)) (-‿involutive (ix * β)))
+
+    c₀ c₁ c₂ c₃ c₄ c₅ cF : C (₂₊ m)
+    c₀ = inj₁ (mm  , (bv , ((₁₊ α' , β) , nz)))
+    c₁ = inj₁ (mm  , (bv , ((₁₊ α' , ₁₊ w) , λ ())))
+    c₂ = inj₁ (mm₁ , (bv , ((₁₊ w , - ₁₊ α') , λ ())))
+    c₃ = inj₁ (mm₁ , (bv , ((₁₊ w , ₁₊ v) , λ ())))
+    c₄ = inj₁ (mm₂ , (bv , ((₁₊ v , - ₁₊ w) , λ ())))
+    c₅ = inj₁ (mm₂ , (bv , ((₁₊ v , ₁₊ s) , λ ())))
+    cF = inj₁ (mm  , (bv , ((x * ₁₊ α' , ix * β) , nz')))
+
+    seg₁ : ((ract {₁₊ m} ᵗ) c₀ (S^ x)) .proj₂ ≡ c₁
+    seg₁ = Eq.trans
+      (ract-S^-inj₁-a+-coset (proj₁ mm) (proj₂ mm) bv α' β nz (toℕ x))
+      (inj₁-a-eq (Eq.cong (₁₊ α' ,_)
+        (Eq.trans (Eq.cong (β +_) (nsum-neg x (₁₊ α'))) Xeq)))
+
+    seg₂ : proj₂ (ract {₁₊ m} c₁ (gate₁ H-gate)) ≡ c₂
+    seg₂ = inj₁-a-eq Eq.refl
+
+    seg₃ : ((ract {₁₊ m} ᵗ) c₂ (S^ ix)) .proj₂ ≡ c₃
+    seg₃ = Eq.trans
+      (ract-S^-inj₁-a+-coset (proj₁ mm₁) (proj₂ mm₁) bv w (- ₁₊ α')
+        (λ ()) (toℕ ix))
+      (inj₁-a-eq (Eq.cong (₁₊ w ,_)
+        (Eq.trans (Eq.cong ((- ₁₊ α') +_) (nsum-neg ix (₁₊ w)))
+        (Eq.trans (Eq.cong (λ z → - ₁₊ α' + - (ix * z)) (Eq.sym Xeq))
+        (Eq.trans (valM-C x* (₁₊ α') β) eq-v)))))
+
+    seg₄ : proj₂ (ract {₁₊ m} c₃ (gate₁ H-gate)) ≡ c₄
+    seg₄ = inj₁-a-eq Eq.refl
+
+    seg₅ : ((ract {₁₊ m} ᵗ) c₄ (S^ x)) .proj₂ ≡ c₅
+    seg₅ = Eq.trans
+      (ract-S^-inj₁-a+-coset (proj₁ mm₂) (proj₂ mm₂) bv v (- ₁₊ w)
+        (λ ()) (toℕ x))
+      (inj₁-a-eq (Eq.cong (₁₊ v ,_)
+        (Eq.trans (Eq.cong ((- ₁₊ w) +_) (nsum-neg x (₁₊ v)))
+        (Eq.trans (Eq.cong₂ (λ z1 z2 → - z1 + - (x * z2))
+                    (Eq.sym Xeq) (Eq.sym eq-v))
+        (Eq.trans (valM-D x* (₁₊ α') β) eq-s)))))
+
+    seg₆ : proj₂ (ract {₁₊ m} c₅ (gate₁ H-gate)) ≡ cF
+    seg₆ = Eq.trans (inj₁-a-eq ab-eq)
+      (Eq.cong
+        (λ zz → inj₁ (zz , (bv , ((x * ₁₊ α' , ix * β) , nz'))))
+        M-return)
+
+  ractM-inj₁-nn :
+    ((ract {₁₊ m} ᵗ) c₀ (ZM x*)) .proj₂ ≡ cF
+  ractM-inj₁-nn =
     Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
         (H • (S^ ix • (H • (S^ x • H))))) .proj₂) seg₁)
     (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c
