@@ -46,9 +46,9 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.Push2
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWDM
   p-2 p-prime using (E1 ; GCZd ; ES ; GS ; EH ; EH3)
 open import Algebra.Properties.Ring (+-*-ring p-2)
-  using (-‿involutive)
+  using (-‿involutive ; -‿+-comm ; -‿distribʳ-*)
 open import Examples.Groups.Symplectic.Normalization.Pushing.MbSOrder
-  p-2 p-prime using (eCZ)
+  p-2 p-prime using (eCZ ; nsum-*)
 
 ------------------------------------------------------------------------
 -- The (a ≠ 0 , c = 0) branch: direction ε, pure d-drift.
@@ -413,3 +413,99 @@ module OrdCZ-inj₁-cc (a₀ c₁' : Fin (₁₊ p-2)) where
         Eq.refl
         (Eq.trans (Eq.cong (da +_) (nsum-p≡0 (nsum tk db)))
                   (+-identityʳ da)))
+
+------------------------------------------------------------------------
+-- The ZM word through a D box acts as the symplectic scaling
+-- diag(x , x⁻¹): the S-power stages are GS shifts, the H stages
+-- definitional quarter-turns, and the composite telescopes.  This is
+-- the cornerstone for the shape-crossing order-CZ branches, whose
+-- drift directions contain ZM factors.
+
+module _ (x* : ℤ* ₚ) where
+  private
+    xv  = x* .proj₁
+    xIv = (x* ⁻¹) .proj₁
+    tx  = toℕ xv
+    txI = toℕ xIv
+    inst = nztoℕ {y = xv} {neq0 = x* .proj₂}
+    B₁n = λ (α β : ℤ ₚ) → β + nsum tx (- α)
+    A₂n = λ (α β : ℤ ₚ) → - α + nsum txI (- B₁n α β)
+
+  GZM : ∀ (α β : ℤ ₚ) →
+    TDw.push-D-w (α , β) (ZM x*) (TDw.ntH-ZM x*) .proj₂ .proj₂
+    ≡ (xv * α , xIv * β)
+  GZM α β =
+    Eq.trans (Eq.cong (λ bx → TDw.push-D-w bx
+        (H • (S^ xIv • (H • (S^ xv • H))))
+        (TDw.ntH-H TDw.•ⁿ (TDw.ntH-S^ xIv TDw.•ⁿ
+          (TDw.ntH-H TDw.•ⁿ (TDw.ntH-S^ xv TDw.•ⁿ TDw.ntH-H))))
+        .proj₂ .proj₂)
+      (GS tx α β))
+    (Eq.trans (Eq.cong (λ bx → TDw.push-D-w bx
+        (H • (S^ xv • H))
+        (TDw.ntH-H TDw.•ⁿ (TDw.ntH-S^ xv TDw.•ⁿ TDw.ntH-H))
+        .proj₂ .proj₂)
+      (GS txI (B₁n α β) (- α)))
+    (Eq.trans (Eq.cong (λ bx → TDw.push-D-w bx H TDw.ntH-H .proj₂ .proj₂)
+      (GS tx (A₂n α β) (- B₁n α β)))
+      (Eq.cong₂ _,_ (fst-full α β) (snd-full α β))))
+    where
+    open Eq.≡-Reasoning
+    r1 : ∀ (α : ℤ ₚ) → nsum tx (- α) ≡ xv * - α
+    r1 α = nsum-* xv (- α)
+    inner1 : ∀ (α β : ℤ ₚ) → - (β + xv * - α) ≡ - β + xv * α
+    inner1 α β = Eq.trans
+      (Eq.cong (λ z → - (β + z)) (Eq.sym (-‿distribʳ-* xv α)))
+      (Eq.trans (Eq.sym (-‿+-comm β (- (xv * α))))
+        (Eq.cong (- β +_) (-‿involutive (xv * α))))
+    A₂-alg : ∀ (α β : ℤ ₚ) → - α + xIv * - (β + xv * - α) ≡ - (xIv * β)
+    A₂-alg α β = begin
+      - α + xIv * - (β + xv * - α)
+        ≡⟨ Eq.cong (λ z → - α + xIv * z) (inner1 α β) ⟩
+      - α + xIv * (- β + xv * α)
+        ≡⟨ Eq.cong (- α +_) (*-distribˡ-+ xIv (- β) (xv * α)) ⟩
+      - α + (xIv * - β + xIv * (xv * α))
+        ≡⟨ Eq.cong (- α +_) (Eq.cong₂ _+_
+             (Eq.sym (-‿distribʳ-* xIv β))
+             (Eq.trans (Eq.sym (*-assoc xIv xv α))
+               (Eq.trans (Eq.cong (_* α) (lemma-⁻¹ˡ xv {{inst}}))
+                         (*-identityˡ α)))) ⟩
+      - α + (- (xIv * β) + α)
+        ≡⟨ Eq.cong (- α +_) (+-comm (- (xIv * β)) α) ⟩
+      - α + (α + - (xIv * β))
+        ≡⟨ Eq.sym (+-assoc (- α) α (- (xIv * β))) ⟩
+      (- α + α) + - (xIv * β)
+        ≡⟨ Eq.cong (_+ - (xIv * β)) (+-inverseˡ α) ⟩
+      ₀ + - (xIv * β)
+        ≡⟨ +-identityˡ (- (xIv * β)) ⟩
+      - (xIv * β) ∎
+    A₂-chain : ∀ (α β : ℤ ₚ) → A₂n α β ≡ - (xIv * β)
+    A₂-chain α β = Eq.trans
+      (Eq.cong (λ z → - α + nsum txI (- (β + z))) (r1 α))
+      (Eq.trans (Eq.cong (- α +_) (nsum-* xIv (- (β + xv * - α))))
+        (A₂-alg α β))
+    snd-full : ∀ (α β : ℤ ₚ) → - A₂n α β ≡ xIv * β
+    snd-full α β = Eq.trans (Eq.cong -_ (A₂-chain α β))
+      (-‿involutive (xIv * β))
+    fst-full : ∀ (α β : ℤ ₚ) →
+      - B₁n α β + nsum tx (- A₂n α β) ≡ xv * α
+    fst-full α β = begin
+      - B₁n α β + nsum tx (- A₂n α β)
+        ≡⟨ Eq.cong₂ (λ u v → - (β + u) + nsum tx v)
+             (r1 α) (snd-full α β) ⟩
+      - (β + xv * - α) + nsum tx (xIv * β)
+        ≡⟨ Eq.cong₂ _+_ (inner1 α β) (nsum-* xv (xIv * β)) ⟩
+      (- β + xv * α) + xv * (xIv * β)
+        ≡⟨ Eq.cong ((- β + xv * α) +_)
+             (Eq.trans (Eq.sym (*-assoc xv xIv β))
+               (Eq.trans (Eq.cong (_* β) (lemma-⁻¹ʳ xv {{inst}}))
+                         (*-identityˡ β))) ⟩
+      (- β + xv * α) + β
+        ≡⟨ Eq.cong (_+ β) (+-comm (- β) (xv * α)) ⟩
+      (xv * α + - β) + β
+        ≡⟨ +-assoc (xv * α) (- β) β ⟩
+      xv * α + (- β + β)
+        ≡⟨ Eq.cong (xv * α +_) (+-inverseˡ β) ⟩
+      xv * α + ₀
+        ≡⟨ +-identityʳ (xv * α) ⟩
+      xv * α ∎
