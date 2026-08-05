@@ -687,3 +687,51 @@ module BDZM-mod (x* : ℤ* ₚ) where
       xv * α + ₀
         ≡⟨ +-identityʳ (xv * α) ⟩
       xv * α ∎
+
+------------------------------------------------------------------------
+-- Width-2 mbv-push letter step lemmas: a lifted unary gate on an inj₁
+-- coset updates the single (b₁ , d₁) pair by the B-Top escape pushed
+-- through the D box; E and the A box are untouched.
+
+module MbvW2 where
+
+  liftS-0 : ∀ (b₂ e da db : ℤ ₚ) (a : A) →
+    proj₂ (ract {1}
+      (inj₁ (((da , db) ∷ [] , e) , (((₀ , b₂) ∷ []) , a)))
+      ((gate₁ S-gate) ↥))
+    ≡ inj₁ (((da , db + - da) ∷ [] , e) , (((₀ , b₂ + - ₀) ∷ []) , a))
+  liftS-0 ₀ e da db a = Eq.refl
+  liftS-0 (₁₊ b₂') e da db a = Eq.refl
+
+  liftS-+ : ∀ (c' : Fin (₁₊ p-2)) (b₂ e da db : ℤ ₚ) (a : A) →
+    proj₂ (ract {1}
+      (inj₁ (((da , db) ∷ [] , e) , (((₁₊ c' , b₂) ∷ []) , a)))
+      ((gate₁ S-gate) ↥))
+    ≡ inj₁ (((da , db) ∷ [] , e) ,
+            (((₁₊ c' , b₂ + - ₁₊ c') ∷ []) , a))
+  liftS-+ c' ₀ e da db a = Eq.refl
+  liftS-+ c' (₁₊ b₂') e da db a = Eq.refl
+
+  liftH-00 : ∀ (e da db : ℤ ₚ) (a : A) →
+    proj₂ (ract {1}
+      (inj₁ (((da , db) ∷ [] , e) , (((₀ , ₀) ∷ []) , a)))
+      ((gate₁ H-gate) ↥))
+    ≡ inj₁ (((db , - da) ∷ [] , e) , (((₀ , - ₀) ∷ []) , a))
+  liftH-00 e da db a = Eq.refl
+
+  liftH-0b : ∀ (b₂' : Fin (₁₊ p-2)) (e da db : ℤ ₚ) (a : A) →
+    proj₂ (ract {1}
+      (inj₁ (((da , db) ∷ [] , e) , (((₀ , ₁₊ b₂') ∷ []) , a)))
+      ((gate₁ H-gate) ↥))
+    ≡ inj₁ (((da , db) ∷ [] , e) , (((₁₊ b₂' , - ₀) ∷ []) , a))
+  liftH-0b b₂' e da db a = Eq.refl
+
+  liftH-c0 : ∀ (c' : Fin (₁₊ p-2)) (e da db : ℤ ₚ) (a : A) →
+    proj₂ (ract {1}
+      (inj₁ (((da , db) ∷ [] , e) , (((₁₊ c' , ₀) ∷ []) , a)))
+      ((gate₁ H-gate) ↥))
+    ≡ inj₁ (((- da , - db) ∷ [] , e) , (((₀ , - ₁₊ c') ∷ []) , a))
+  liftH-c0 c' e da db a = Eq.refl
+
+  -- liftH-cb (the ZM-escape letter) exceeds the batch-mode conversion
+  -- budget (kHn-class Bézout churn) — to be added interactively.
