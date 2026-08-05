@@ -20,7 +20,7 @@ module Examples.Groups.Symplectic.Normalization.Pushing.PushWDM3
 
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 
-open import Data.Nat using (zero ; suc)
+open import Data.Nat using (zero ; suc ; 2+)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Sum using (inj₁ ; inj₂)
 open import Data.Empty using (⊥ ; ⊥-elim)
@@ -41,6 +41,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
   p-2 p-prime
 open import Examples.Groups.Symplectic.BR.Two.D-w p-2 p-prime as TDw
   using (push-D-w)
+import Examples.Groups.Symplectic.BR.Two.BD-Top p-2 p-prime as BD
 open import Examples.Groups.Symplectic.Normalization.Pushing.Push2
   p-2 p-prime using (coset)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWDM
@@ -588,3 +589,101 @@ module _ (m* : ℤ* ₚ) (w : ℤ ₚ) where
     Q₁ = TDw.push-D-w (da , db) (ZM m*) (TDw.ntH-ZM m*) .proj₂ .proj₂
     Q₂ = TDw.push-D-w (Q₁ .proj₂ , - Q₁ .proj₁) (CZ ^ tw)
            (TDw.ntH-^ TDw.ntH-CZ tw) .proj₂ .proj₂
+
+------------------------------------------------------------------------
+-- The BD-level toolbox: box maps of Gen-1 words through a D box via
+-- BD-Top.pushᵈ (no witnesses, uniform per-letter maps — strictly
+-- simpler than the TDw level).  These feed the width-2 mbv-push letter
+-- lemmas shared by c10, semi-M↑CZ, and core-M1.
+
+BDS^-box : ∀ (k : ℕ) (a b : ℤ ₚ) →
+  BD.pushᵈ (a , b) (S ^ k) .proj₂ ≡ (a , b + nsum k (- a))
+BDS^-box zero a b = Eq.cong (a ,_) (Eq.sym (+-identityʳ b))
+BDS^-box (suc zero) a b =
+  Eq.cong (a ,_) (Eq.cong (b +_) (Eq.sym (+-identityʳ (- a))))
+BDS^-box (2+ k) a b =
+  Eq.trans (BDS^-box (suc k) a (b + - a))
+    (Eq.cong (a ,_) (+-assoc b (- a) (nsum (suc k) (- a))))
+
+module BDZM-mod (x* : ℤ* ₚ) where
+  private
+    xv  = x* .proj₁
+    xIv = (x* ⁻¹) .proj₁
+    tx  = toℕ xv
+    txI = toℕ xIv
+    inst = nztoℕ {y = xv} {neq0 = x* .proj₂}
+    B₁n = λ (α β : ℤ ₚ) → β + nsum tx (- α)
+    A₂n = λ (α β : ℤ ₚ) → - α + nsum txI (- B₁n α β)
+
+  BDZM-box : ∀ (α β : ℤ ₚ) →
+    BD.pushᵈ (α , β) (ZM x*) .proj₂ ≡ (xv * α , xIv * β)
+  BDZM-box α β =
+    Eq.trans (Eq.cong (λ bx → BD.pushᵈ bx
+        (H • (S^ xIv • (H • (S^ xv • H)))) .proj₂)
+      (BDS^-box tx α β))
+    (Eq.trans (Eq.cong (λ bx → BD.pushᵈ bx
+        (H • (S^ xv • H)) .proj₂)
+      (BDS^-box txI (B₁n α β) (- α)))
+    (Eq.trans (Eq.cong (λ bx → BD.pushᵈ bx H .proj₂)
+      (BDS^-box tx (A₂n α β) (- B₁n α β)))
+      (Eq.cong₂ _,_ (fst-full α β) (snd-full α β))))
+    where
+    open Eq.≡-Reasoning
+    r1 : ∀ (α : ℤ ₚ) → nsum tx (- α) ≡ xv * - α
+    r1 α = nsum-* xv (- α)
+    inner1 : ∀ (α β : ℤ ₚ) → - (β + xv * - α) ≡ - β + xv * α
+    inner1 α β = Eq.trans
+      (Eq.cong (λ z → - (β + z)) (Eq.sym (-‿distribʳ-* xv α)))
+      (Eq.trans (Eq.sym (-‿+-comm β (- (xv * α))))
+        (Eq.cong (- β +_) (-‿involutive (xv * α))))
+    A₂-alg : ∀ (α β : ℤ ₚ) → - α + xIv * - (β + xv * - α) ≡ - (xIv * β)
+    A₂-alg α β = begin
+      - α + xIv * - (β + xv * - α)
+        ≡⟨ Eq.cong (λ z → - α + xIv * z) (inner1 α β) ⟩
+      - α + xIv * (- β + xv * α)
+        ≡⟨ Eq.cong (- α +_) (*-distribˡ-+ xIv (- β) (xv * α)) ⟩
+      - α + (xIv * - β + xIv * (xv * α))
+        ≡⟨ Eq.cong (- α +_) (Eq.cong₂ _+_
+             (Eq.sym (-‿distribʳ-* xIv β))
+             (Eq.trans (Eq.sym (*-assoc xIv xv α))
+               (Eq.trans (Eq.cong (_* α) (lemma-⁻¹ˡ xv {{inst}}))
+                         (*-identityˡ α)))) ⟩
+      - α + (- (xIv * β) + α)
+        ≡⟨ Eq.cong (- α +_) (+-comm (- (xIv * β)) α) ⟩
+      - α + (α + - (xIv * β))
+        ≡⟨ Eq.sym (+-assoc (- α) α (- (xIv * β))) ⟩
+      (- α + α) + - (xIv * β)
+        ≡⟨ Eq.cong (_+ - (xIv * β)) (+-inverseˡ α) ⟩
+      ₀ + - (xIv * β)
+        ≡⟨ +-identityˡ (- (xIv * β)) ⟩
+      - (xIv * β) ∎
+    A₂-chain : ∀ (α β : ℤ ₚ) → A₂n α β ≡ - (xIv * β)
+    A₂-chain α β = Eq.trans
+      (Eq.cong (λ z → - α + nsum txI (- (β + z))) (r1 α))
+      (Eq.trans (Eq.cong (- α +_) (nsum-* xIv (- (β + xv * - α))))
+        (A₂-alg α β))
+    snd-full : ∀ (α β : ℤ ₚ) → - A₂n α β ≡ xIv * β
+    snd-full α β = Eq.trans (Eq.cong -_ (A₂-chain α β))
+      (-‿involutive (xIv * β))
+    fst-full : ∀ (α β : ℤ ₚ) →
+      - B₁n α β + nsum tx (- A₂n α β) ≡ xv * α
+    fst-full α β = begin
+      - B₁n α β + nsum tx (- A₂n α β)
+        ≡⟨ Eq.cong₂ (λ u v → - (β + u) + nsum tx v)
+             (r1 α) (snd-full α β) ⟩
+      - (β + xv * - α) + nsum tx (xIv * β)
+        ≡⟨ Eq.cong₂ _+_ (inner1 α β) (nsum-* xv (xIv * β)) ⟩
+      (- β + xv * α) + xv * (xIv * β)
+        ≡⟨ Eq.cong ((- β + xv * α) +_)
+             (Eq.trans (Eq.sym (*-assoc xv xIv β))
+               (Eq.trans (Eq.cong (_* β) (lemma-⁻¹ʳ xv {{inst}}))
+                         (*-identityˡ β))) ⟩
+      (- β + xv * α) + β
+        ≡⟨ Eq.cong (_+ β) (+-comm (- β) (xv * α)) ⟩
+      (xv * α + - β) + β
+        ≡⟨ +-assoc (xv * α) (- β) β ⟩
+      xv * α + (- β + β)
+        ≡⟨ Eq.cong (xv * α +_) (+-inverseˡ β) ⟩
+      xv * α + ₀
+        ≡⟨ +-identityʳ (xv * α) ⟩
+      xv * α ∎
