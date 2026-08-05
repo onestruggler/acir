@@ -2,12 +2,14 @@
 -- Presentations of groups
 --
 -- The lemma-lm-head-inj width induction for the plain gate set,
--- transplanted from ExtendedGate.NF-Inj-LM.  Everything is proved here
--- except the two remaining base facts, which are module parameters of
+-- transplanted from ExtendedGate.NF-Inj-LM and improved: the inj₂
+-- spine runs at ALL widths ≥ 2 (ExtendedGate treated width 2 as a
+-- separate postulate; here the ML 2 inj₂ side is covered by the same
+-- argument, so no cosets2 base is needed).  Everything is proved here
+-- except the ML' branch facts, which are module parameters of
 -- `Induction` (so this file stays --safe while they are ground
 -- separately):
---   • cosets2-head-inj : ML 2 head-injectivity;
---   • inj₁-head-inj / inj₁≁inj₂ : the ML' branch at width ₃₊.
+--   • inj₁-head-inj / inj₁≁inj₂ : the ML' branch at width ₂₊.
 -- The width-1 base is lemma-nf1-head-inj (NF1HeadInj, proved).
 --
 -- Infrastructure proved here: the CZ-power action closed form
@@ -238,18 +240,15 @@ dbox-pX-head (₁₊ a' , b) (c , e) t = trans
 -- full lemma-lm-head-inj — the sole postulate of Normalization.NF-Inj.
 
 module Induction
-  (cosets2-head-inj : ∀ (lm₁ lm₂ : ML 2) →
-    (∀ (ps : Pauli 2) → head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) →
-    lm₁ ≡ lm₂)
-  (inj₁-head-inj : ∀ {n} (ml₁ ml₂ : ML' (₃₊ n)) →
-    (∀ (ps : Pauli (₃₊ n)) →
-      head (act [ ML (₃₊ n) ∋ inj₁ ml₁ ]ᵐˡ ps) ≡
-      head (act [ ML (₃₊ n) ∋ inj₁ ml₂ ]ᵐˡ ps)) →
+  (inj₁-head-inj : ∀ {n} (ml₁ ml₂ : ML' (₂₊ n)) →
+    (∀ (ps : Pauli (₂₊ n)) →
+      head (act [ ML (₂₊ n) ∋ inj₁ ml₁ ]ᵐˡ ps) ≡
+      head (act [ ML (₂₊ n) ∋ inj₁ ml₂ ]ᵐˡ ps)) →
     ml₁ ≡ ml₂)
-  (inj₁≁inj₂ : ∀ {n} (ml : ML' (₃₊ n)) (d : D) (lm' : ML (₂₊ n)) →
-    (∀ (ps : Pauli (₃₊ n)) →
-      head (act [ ML (₃₊ n) ∋ inj₁ ml ]ᵐˡ ps) ≡
-      head (act [ ML (₃₊ n) ∋ inj₂ (d , lm') ]ᵐˡ ps)) →
+  (inj₁≁inj₂ : ∀ {n} (ml : ML' (₂₊ n)) (d : D) (lm' : ML (₁₊ n)) →
+    (∀ (ps : Pauli (₂₊ n)) →
+      head (act [ ML (₂₊ n) ∋ inj₁ ml ]ᵐˡ ps) ≡
+      head (act [ ML (₂₊ n) ∋ inj₂ (d , lm') ]ᵐˡ ps)) →
     ⊥)
   where
 
@@ -258,50 +257,49 @@ module Induction
       head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) →
     lm₁ ≡ lm₂
   lemma-lm-head-inj {₀} lm₁ lm₂ h = lemma-nf1-head-inj lm₁ lm₂ h
-  lemma-lm-head-inj {₁} lm₁ lm₂ h = cosets2-head-inj lm₁ lm₂ h
-  lemma-lm-head-inj {₁₊ (₁₊ n)} (inj₁ ml₁) (inj₁ ml₂) h =
+  lemma-lm-head-inj {₁₊ n} (inj₁ ml₁) (inj₁ ml₂) h =
     cong inj₁ (inj₁-head-inj ml₁ ml₂ h)
-  lemma-lm-head-inj {₁₊ (₁₊ n)} (inj₁ ml) (inj₂ (d , lm')) h =
+  lemma-lm-head-inj {₁₊ n} (inj₁ ml) (inj₂ (d , lm')) h =
     ⊥-elim (inj₁≁inj₂ ml d lm' h)
-  lemma-lm-head-inj {₁₊ (₁₊ n)} (inj₂ (d , lm')) (inj₁ ml) h =
+  lemma-lm-head-inj {₁₊ n} (inj₂ (d , lm')) (inj₁ ml) h =
     ⊥-elim (inj₁≁inj₂ ml d lm' (λ ps → sym (h ps)))
-  lemma-lm-head-inj {₁₊ (₁₊ n)} (inj₂ (d₁ , lm₁')) (inj₂ (d₂ , lm₂')) h =
+  lemma-lm-head-inj {₁₊ n} (inj₂ (d₁ , lm₁')) (inj₂ (d₂ , lm₂')) h =
     cong inj₂ (≡×≡⇒≡ (d-eq , lm'-eq))
     where
     -- act [inj₂(d,lm')]ᵐˡ (p ∷ ps') = act [d]ᵈ (p ∷ act [lm']ᵐˡ ps').
-    unfold-act : ∀ (d : D) (lm' : ML (₂₊ n)) (p₀ : Pauli1)
-      (ps' : Pauli (₂₊ n)) →
-      act [ ML (₃₊ n) ∋ inj₂ (d , lm') ]ᵐˡ (p₀ ∷ ps') ≡
-        act ([_]ᵈ {₁₊ n} d) (p₀ ∷ act [ lm' ]ᵐˡ ps')
+    unfold-act : ∀ (d : D) (lm' : ML (₁₊ n)) (p₀ : Pauli1)
+      (ps' : Pauli (₁₊ n)) →
+      act [ ML (₂₊ n) ∋ inj₂ (d , lm') ]ᵐˡ (p₀ ∷ ps') ≡
+        act ([_]ᵈ {n} d) (p₀ ∷ act [ lm' ]ᵐˡ ps')
     unfold-act d lm' p₀ ps' =
-      cong (act ([_]ᵈ {₁₊ n} d)) (lemma-act-↑ [ lm' ]ᵐˡ p₀ ps')
+      cong (act ([_]ᵈ {n} d)) (lemma-act-↑ [ lm' ]ᵐˡ p₀ ps')
 
     -- Head agreement with the tails cancelled at the identity Pauli.
     head-at-pI : ∀ (p₀ : Pauli1) →
-      head (act ([_]ᵈ {₁₊ n} d₁) (p₀ ∷ pIₙ {₂₊ n})) ≡
-      head (act ([_]ᵈ {₁₊ n} d₂) (p₀ ∷ pIₙ {₂₊ n}))
+      head (act ([_]ᵈ {n} d₁) (p₀ ∷ pIₙ {₁₊ n})) ≡
+      head (act ([_]ᵈ {n} d₂) (p₀ ∷ pIₙ {₁₊ n}))
     head-at-pI p₀ = begin
-      head (act ([_]ᵈ {₁₊ n} d₁) (p₀ ∷ pIₙ {₂₊ n}))
-        ≡⟨ cong (λ v → head (act ([_]ᵈ {₁₊ n} d₁) (p₀ ∷ v)))
+      head (act ([_]ᵈ {n} d₁) (p₀ ∷ pIₙ {₁₊ n}))
+        ≡⟨ cong (λ v → head (act ([_]ᵈ {n} d₁) (p₀ ∷ v)))
              (sym (act-pIₙ [ lm₁' ]ᵐˡ)) ⟩
-      head (act ([_]ᵈ {₁₊ n} d₁) (p₀ ∷ act [ lm₁' ]ᵐˡ (pIₙ {₂₊ n})))
-        ≡⟨ cong head (sym (unfold-act d₁ lm₁' p₀ (pIₙ {₂₊ n}))) ⟩
-      head (act [ ML (₃₊ n) ∋ inj₂ (d₁ , lm₁') ]ᵐˡ (p₀ ∷ pIₙ {₂₊ n}))
-        ≡⟨ h (p₀ ∷ pIₙ {₂₊ n}) ⟩
-      head (act [ ML (₃₊ n) ∋ inj₂ (d₂ , lm₂') ]ᵐˡ (p₀ ∷ pIₙ {₂₊ n}))
-        ≡⟨ cong head (unfold-act d₂ lm₂' p₀ (pIₙ {₂₊ n})) ⟩
-      head (act ([_]ᵈ {₁₊ n} d₂) (p₀ ∷ act [ lm₂' ]ᵐˡ (pIₙ {₂₊ n})))
-        ≡⟨ cong (λ v → head (act ([_]ᵈ {₁₊ n} d₂) (p₀ ∷ v)))
+      head (act ([_]ᵈ {n} d₁) (p₀ ∷ act [ lm₁' ]ᵐˡ (pIₙ {₁₊ n})))
+        ≡⟨ cong head (sym (unfold-act d₁ lm₁' p₀ (pIₙ {₁₊ n}))) ⟩
+      head (act [ ML (₂₊ n) ∋ inj₂ (d₁ , lm₁') ]ᵐˡ (p₀ ∷ pIₙ {₁₊ n}))
+        ≡⟨ h (p₀ ∷ pIₙ {₁₊ n}) ⟩
+      head (act [ ML (₂₊ n) ∋ inj₂ (d₂ , lm₂') ]ᵐˡ (p₀ ∷ pIₙ {₁₊ n}))
+        ≡⟨ cong head (unfold-act d₂ lm₂' p₀ (pIₙ {₁₊ n})) ⟩
+      head (act ([_]ᵈ {n} d₂) (p₀ ∷ act [ lm₂' ]ᵐˡ (pIₙ {₁₊ n})))
+        ≡⟨ cong (λ v → head (act ([_]ᵈ {n} d₂) (p₀ ∷ v)))
              (act-pIₙ [ lm₂' ]ᵐˡ) ⟩
-      head (act ([_]ᵈ {₁₊ n} d₂) (p₀ ∷ pIₙ {₂₊ n})) ∎
+      head (act ([_]ᵈ {n} d₂) (p₀ ∷ pIₙ {₁₊ n})) ∎
 
     -- d .proj₁ via the pZ prefix at the identity.
     d-eq-fst : d₁ .proj₁ ≡ d₂ .proj₁
     d-eq-fst = +-cancelˡ-strip
       (cong proj₂
-        (trans (sym (dbox-pZ-head d₁ (₀ , ₀) (pIₙ {₁₊ n})))
+        (trans (sym (dbox-pZ-head d₁ (₀ , ₀) (pIₙ {n})))
         (trans (head-at-pI pZ)
-               (dbox-pZ-head d₂ (₀ , ₀) (pIₙ {₁₊ n})))))
+               (dbox-pZ-head d₂ (₀ , ₀) (pIₙ {n})))))
       where
       +-cancelˡ-strip : ₀ + d₁ .proj₁ ≡ ₀ + d₂ .proj₁ →
         d₁ .proj₁ ≡ d₂ .proj₁
@@ -312,9 +310,9 @@ module Induction
     d-eq-snd : d₁ .proj₂ ≡ d₂ .proj₂
     d-eq-snd = neg-inj _ _ (+-cancelˡ-strip
       (cong proj₂
-        (trans (sym (dbox-pX-head d₁ (₀ , ₀) (pIₙ {₁₊ n})))
+        (trans (sym (dbox-pX-head d₁ (₀ , ₀) (pIₙ {n})))
         (trans (head-at-pI pX)
-               (dbox-pX-head d₂ (₀ , ₀) (pIₙ {₁₊ n}))))))
+               (dbox-pX-head d₂ (₀ , ₀) (pIₙ {n}))))))
       where
       +-cancelˡ-strip : ₀ + - (d₁ .proj₂) ≡ ₀ + - (d₂ .proj₂) →
         - (d₁ .proj₂) ≡ - (d₂ .proj₂)
@@ -326,28 +324,28 @@ module Induction
 
     -- Head equality one width down, from the pZ prefix at arbitrary
     -- inputs, cancelling the d shift.
-    lm'-head-eq : ∀ (ps' : Pauli (₂₊ n)) →
+    lm'-head-eq : ∀ (ps' : Pauli (₁₊ n)) →
       head (act [ lm₁' ]ᵐˡ ps') ≡ head (act [ lm₂' ]ᵐˡ ps')
     lm'-head-eq ps' =
       let
         v₁ = act [ lm₁' ]ᵐˡ ps'
         v₂ = act [ lm₂' ]ᵐˡ ps'
-        raw : head (act ([_]ᵈ {₁₊ n} d₁) (pZ ∷ v₁))
-            ≡ head (act ([_]ᵈ {₁₊ n} d₂) (pZ ∷ v₂))
+        raw : head (act ([_]ᵈ {n} d₁) (pZ ∷ v₁))
+            ≡ head (act ([_]ᵈ {n} d₂) (pZ ∷ v₂))
         raw = trans (cong head (sym (unfold-act d₁ lm₁' pZ ps')))
               (trans (h (pZ ∷ ps'))
                      (cong head (unfold-act d₂ lm₂' pZ ps')))
-        lhs : head (act ([_]ᵈ {₁₊ n} d₁) (pZ ∷ v₁))
+        lhs : head (act ([_]ᵈ {n} d₁) (pZ ∷ v₁))
             ≡ head v₁ +₁ (₀ , d₁ .proj₁)
         lhs = trans
-          (cong (λ v → head (act ([_]ᵈ {₁₊ n} d₁) (pZ ∷ v)))
-            (sym (lemma-aux-vec (₁₊ n) v₁)))
+          (cong (λ v → head (act ([_]ᵈ {n} d₁) (pZ ∷ v)))
+            (sym (lemma-aux-vec n v₁)))
           (dbox-pZ-head d₁ (head v₁) (tail v₁))
-        rhs : head (act ([_]ᵈ {₁₊ n} d₂) (pZ ∷ v₂))
+        rhs : head (act ([_]ᵈ {n} d₂) (pZ ∷ v₂))
             ≡ head v₂ +₁ (₀ , d₂ .proj₁)
         rhs = trans
-          (cong (λ v → head (act ([_]ᵈ {₁₊ n} d₂) (pZ ∷ v)))
-            (sym (lemma-aux-vec (₁₊ n) v₂)))
+          (cong (λ v → head (act ([_]ᵈ {n} d₂) (pZ ∷ v)))
+            (sym (lemma-aux-vec n v₂)))
           (dbox-pZ-head d₂ (head v₂) (tail v₂))
         combined : head v₁ +₁ (₀ , d₁ .proj₁) ≡ head v₂ +₁ (₀ , d₂ .proj₁)
         combined = trans (sym lhs) (trans raw rhs)
