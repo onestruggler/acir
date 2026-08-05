@@ -12,9 +12,12 @@
 -- normal form of Normalization.Section, and injectivity of the section
 -- (the completeness crux) is Normalization.NF-Inj.⟦[]⟧-injective.
 --
--- Two analytic inputs remain postulated, matching the boundary drawn by
--- the active completeness work (Normalization.NF-Inj / .Uniqueness, both
--- of which likewise omit --safe):
+-- The completeness crux is now fully proved: Normalization.NF-Inj is
+-- postulate-free and --safe (head-injectivity of the ML coset action
+-- is Normalization.LMHeadInj.lemma-lm-head-inj-proved).  What remains
+-- postulated on this route is the normalizer triple of
+-- Normalization.Uniqueness (nf-t / nf-t-cong / retract-t) and
+-- Surjectivity's Theorem-LM input:
 --   * sound-ax : the base symplectic relations act identically on Paulis
 --     (soundness of the presentation in the symplectic semantics);
 --   * surj-nf  : every symplectic transformation is realised by some
