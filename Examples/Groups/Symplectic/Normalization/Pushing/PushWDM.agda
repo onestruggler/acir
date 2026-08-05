@@ -1015,3 +1015,56 @@ commCZS↓-w2-0b-coset (₁₊ a' , db) e b nz =
       (Eq.trans (E1 (toℕ (((₁₊ b , λ ()) ⁻¹) .proj₁)) (₁₊ a') db)
         (Eq.sym (E1 (toℕ (((₁₊ b , λ ()) ⁻¹) .proj₁)) (₁₊ a')
           (db + - ₁₊ a')))))
+
+------------------------------------------------------------------------
+-- Width-2 push-D-w closed forms for the cascade-vs-collapse identity
+-- (the (₁₊ α , β) branch of comm-CZ-S↓ at width 2).  Phase 1: the
+-- S-power and H closed forms and eCZ's identity nature.
+
+-- eCZ is the identity (it is defined by cases only to make the
+-- width-2 base facts reduce).
+eCZ-id : ∀ (x : ℤ ₚ) → eCZ x ≡ x
+eCZ-id ₀      = Eq.refl
+eCZ-id (₁₊ i) = Eq.refl
+
+-- S-power through a D box: no emission, b shifts by nsum t (− a).
+ES : ∀ (t : ℕ) (a b : ℤ ₚ) →
+  TDw.push-D-w (a , b) (S ^ t) (TDw.ntH-^ TDw.ntH-S t) .proj₁ ≡ ₀
+ES zero a b = Eq.refl
+ES (suc zero) ₀      ₀      = Eq.refl
+ES (suc zero) ₀      (₁₊ _) = Eq.refl
+ES (suc zero) (₁₊ i) ₀      = Eq.refl
+ES (suc zero) (₁₊ i) (₁₊ _) = Eq.refl
+ES (suc (suc t)) ₀ ₀ =
+  Eq.trans (Eq.cong (₀ +_) (ES (suc t) ₀ (₀ + - ₀))) (+-identityʳ ₀)
+ES (suc (suc t)) ₀ (₁₊ b') =
+  Eq.trans (Eq.cong (₀ +_) (ES (suc t) ₀ (₁₊ b' + - ₀))) (+-identityʳ ₀)
+ES (suc (suc t)) (₁₊ i) ₀ =
+  Eq.trans (Eq.cong (₀ +_) (ES (suc t) (₁₊ i) (₀ + - ₁₊ i)))
+    (+-identityʳ ₀)
+ES (suc (suc t)) (₁₊ i) (₁₊ b') =
+  Eq.trans (Eq.cong (₀ +_) (ES (suc t) (₁₊ i) (₁₊ b' + - ₁₊ i)))
+    (+-identityʳ ₀)
+
+GS : ∀ (t : ℕ) (a b : ℤ ₚ) →
+  TDw.push-D-w (a , b) (S ^ t) (TDw.ntH-^ TDw.ntH-S t) .proj₂ .proj₂
+  ≡ (a , b + nsum t (- a))
+GS zero a b = Eq.cong (a ,_) (Eq.sym (+-identityʳ b))
+GS (suc zero) a b =
+  Eq.cong (a ,_) (Eq.cong (b +_) (Eq.sym (+-identityʳ (- a))))
+GS (suc (suc t)) a b =
+  Eq.trans (GS (suc t) a (b + - a))
+    (Eq.cong (a ,_) (+-assoc b (- a) (nsum (suc t) (- a))))
+
+-- One H through a D box: the quarter turn, no emission (projection
+-- forms; d'-of needs no component split).
+GH : ∀ (a b : ℤ ₚ) →
+  TDw.push-D-w (a , b) H TDw.ntH-H .proj₂ .proj₂ ≡ (b , - a)
+GH a b = Eq.refl
+
+EH : ∀ (a b : ℤ ₚ) →
+  TDw.push-D-w (a , b) H TDw.ntH-H .proj₁ ≡ ₀
+EH ₀      ₀      = Eq.refl
+EH ₀      (₁₊ _) = Eq.refl
+EH (₁₊ i) ₀      = Eq.refl
+EH (₁₊ i) (₁₊ _) = Eq.refl
