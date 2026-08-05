@@ -55,7 +55,7 @@ open import Data.List using () renaming ([] to []ᴸ ; _∷_ to _∷ᴸ_)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWD
   p-2 p-prime using
   (inj₁-a-eq ; kS0 ; kS0-val ; sqInv ; kHn ; kHn-val ; inv-val-cong ;
-   ract-S^-inj₁-0b-coset ; ract-S^-inj₁-a+-coset)
+   ract-S^-inj₁-0b-coset ; ract-S^-inj₁-a+-coset ; ract-S-inj₁-a+)
 
 ------------------------------------------------------------------------
 -- Weighted closure: an S-power block at exponent j followed by a step
@@ -705,3 +705,139 @@ Mmul-inj₁-coset {m} mm bv x* y* ab nz =
                             (Eq.sym (inv-distrib x* y*)))))))
     (Eq.sym (ractM!-inj₁ mm bv (x* *' y*) ab nz
               (Mact-nz (x* *' y*) ab nz)))))
+
+------------------------------------------------------------------------
+-- Block-vs-step: an S-power block whose total weight equals a single
+-- exponent is the same M-column update.
+
+blockStep-eq : ∀ {k} (j j' : ℤ ₚ) (t : ℕ) (mm : M (₁₊ k)) (bv : Vec B k) →
+  nsum t j ≡ j' →
+  itf (λ z → mbSⁿm (toℕ j) z bv) t mm ≡ mbSⁿm (toℕ j') mm bv
+blockStep-eq j j' t mm bv weq =
+  Eq.trans (mbSⁿ-block j t mm bv)
+  (Eq.trans (Eq.cong (λ z → mm ⊞ ζΔ z (MbS-OP.σ bv mm)) weq)
+            (Eq.sym (mbSⁿ-shiftζ j' mm bv)))
+
+------------------------------------------------------------------------
+-- semi-MS at inj₁, (₀ , ₁₊ β') branch (mirror of SrelWDM.semi-MS-0b):
+-- both sides subtract the SAME cascade weight — the image box's
+-- exponent is x²·β⁻² (im²x), matching the S^ (x ^2) block's total.
+
+module SemiMS-0b {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (x* : ℤ* ₚ) (β' : Fin (₁₊ p-2)) (nz : (₀ , ₁₊ β') ≢ (₀ , ₀))
+  (m₀ : Fin (₁₊ p-2)) (eq-m : (x* ⁻¹) .proj₁ * ₁₊ β' ≡ ₁₊ m₀)
+  where
+
+  private
+    x  = x* .proj₁
+    ix = (x* ⁻¹) .proj₁
+    iβ = ((₁₊ β' , λ ()) ⁻¹) .proj₁
+    nzM = Mact-nz x* (₀ , ₁₊ β') nz
+
+    Φ : ℤ ₚ → M (₂₊ m) → M (₂₊ m)
+    Φ j zz = mbSⁿm (toℕ j) zz bv
+
+    mmB = itf (λ z → mbSⁿm (toℕ (kS0 {m} β' nz)) z bv) (toℕ (x* ^2)) mm
+
+    valAB : _≡_ {A = ℤ ₚ × ℤ ₚ} (x * ₀ , ix * ₁₊ β') (₀ , ₁₊ m₀)
+    valAB = Eq.cong₂ _,_ (*-zeroʳ x) eq-m
+
+    im-eq : ((₁₊ m₀ , λ ()) ⁻¹) .proj₁ ≡ x * iβ
+    im-eq = Eq.trans
+      (inv-cong (₁₊ m₀ , λ ()) ((x* ⁻¹) *' (₁₊ β' , λ ())) (Eq.sym eq-m))
+      (Eq.trans (inv-distrib (x* ⁻¹) (₁₊ β' , λ ()))
+                (Eq.cong (_* iβ) (inv-involutive x*)))
+
+    im²x : sqInv m₀ ≡ (x* ^2) * sqInv β'
+    im²x = Eq.trans (Eq.cong₂ _*_ im-eq im-eq)
+      (Eq.trans (*-assoc x iβ (x * iβ))
+      (Eq.trans (Eq.cong (x *_) (Eq.sym (*-assoc iβ x iβ)))
+      (Eq.trans (Eq.cong (λ z → x * (z * iβ)) (*-comm iβ x))
+      (Eq.trans (Eq.cong (x *_) (*-assoc x iβ iβ))
+                (Eq.sym (*-assoc x x (iβ * iβ)))))))
+
+    wEq : nsum (toℕ (x* ^2)) (kS0 {m} β' nz) ≡ kS0 {m} m₀ (λ ())
+    wEq = Eq.trans (Eq.cong (nsum (toℕ (x* ^2))) (kS0-val {m} β' nz))
+      (Eq.trans (nsum-* (x* ^2) (sqInv β'))
+        (Eq.sym (Eq.trans (kS0-val {m} m₀ (λ ())) im²x)))
+
+  semiMS-inj₁-0b :
+    ((ract {₁₊ m} ᵗ)
+       (inj₁ (mm , (bv , ((₀ , ₁₊ β') , nz)))) (ZM x* • S)) .proj₂
+    ≡ ((ract {₁₊ m} ᵗ)
+       (inj₁ (mm , (bv , ((₀ , ₁₊ β') , nz)))) (S^ (x* ^2) • ZM x*)) .proj₂
+  semiMS-inj₁-0b =
+    Eq.trans (Eq.cong (λ c → proj₂ (ract {₁₊ m} c (gate₁ S-gate)))
+        (Eq.trans (ractM!-inj₁ mm bv x* (₀ , ₁₊ β') nz nzM)
+                  (inj₁-a-eq {ny = λ ()} valAB)))
+    (Eq.sym
+      (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c (ZM x*)) .proj₂)
+          (ract-S^-inj₁-0b-coset mm bv β' nz (toℕ (x* ^2))))
+      (Eq.trans (Eq.trans (ractM!-inj₁ mmB bv x* (₀ , ₁₊ β') nz nzM)
+                          (inj₁-a-eq {ny = λ ()} valAB))
+        (Eq.cong (λ zz → inj₁ (zz , (bv , ((₀ , ₁₊ m₀) , λ ()))))
+          (blockStep-eq (kS0 {m} β' nz) (kS0 {m} m₀ (λ ()))
+            (toℕ (x* ^2)) mm bv wEq)))))
+
+------------------------------------------------------------------------
+-- semi-MS at inj₁, (₁₊ α' , β) branch (mirror of SrelWDM.semi-MS-nn):
+-- no cascade weight on either side — the S letters are absorbed by the
+-- a ≠ 0 boxes, and the values agree by x⁻¹·(β − x²α) ≡ x⁻¹β − xα.
+
+module SemiMS-nn {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (x* : ℤ* ₚ) (α' : Fin (₁₊ p-2)) (β : ℤ ₚ)
+  (nz : (₁₊ α' , β) ≢ (₀ , ₀))
+  (s : Fin (₁₊ p-2)) (eq-s : x* .proj₁ * ₁₊ α' ≡ ₁₊ s)
+  where
+
+  private
+    x  = x* .proj₁
+    ix = (x* ⁻¹) .proj₁
+    instᵢ = nztoℕ {y = x} {neq0 = x* .proj₂}
+    nzM = Mact-nz x* (₁₊ α' , β) nz
+
+    B2 = β + - ((x* ^2) * ₁₊ α')
+
+    ix-x² : ix * (x* ^2) ≡ x
+    ix-x² = Eq.trans (Eq.sym (*-assoc ix x x))
+      (Eq.trans (Eq.cong (_* x) (lemma-⁻¹ˡ x {{instᵢ}}))
+                (*-identityˡ x))
+
+    ixB2 : ix * B2 ≡ (ix * β) + - (x * ₁₊ α')
+    ixB2 = Eq.trans (*-distribˡ-+ ix β (- ((x* ^2) * ₁₊ α')))
+      (Eq.cong ((ix * β) +_)
+        (Eq.trans (Eq.sym (-‿distribʳ-* ix ((x* ^2) * ₁₊ α')))
+          (Eq.cong -_
+            (Eq.trans (Eq.sym (*-assoc ix (x* ^2) (₁₊ α')))
+                      (Eq.cong (_* ₁₊ α') ix-x²)))))
+
+    valAB : _≡_ {A = ℤ ₚ × ℤ ₚ} (x * ₁₊ α' , ix * β) (₁₊ s , ix * β)
+    valAB = Eq.cong (_, ix * β) eq-s
+
+    boxF : _≡_ {A = ℤ ₚ × ℤ ₚ} (x * ₁₊ α' , ix * B2)
+           (₁₊ s , (ix * β) + - ₁₊ s)
+    boxF = Eq.cong₂ _,_ eq-s
+      (Eq.trans ixB2
+        (Eq.cong ((ix * β) +_) (Eq.cong -_ eq-s)))
+
+  semiMS-inj₁-nn :
+    ((ract {₁₊ m} ᵗ)
+       (inj₁ (mm , (bv , ((₁₊ α' , β) , nz)))) (ZM x* • S)) .proj₂
+    ≡ ((ract {₁₊ m} ᵗ)
+       (inj₁ (mm , (bv , ((₁₊ α' , β) , nz)))) (S^ (x* ^2) • ZM x*)) .proj₂
+  semiMS-inj₁-nn =
+    Eq.trans (Eq.cong (λ c → proj₂ (ract {₁₊ m} c (gate₁ S-gate)))
+        (Eq.trans (ractM!-inj₁ mm bv x* (₁₊ α' , β) nz nzM)
+                  (inj₁-a-eq valAB)))
+    (Eq.trans (Eq.cong proj₂
+        (ract-S-inj₁-a+ (proj₁ mm) (proj₂ mm) bv s (ix * β) (λ ())))
+    (Eq.sym
+      (Eq.trans (Eq.cong (λ c → ((ract {₁₊ m} ᵗ) c (ZM x*)) .proj₂)
+          (Eq.trans
+            (ract-S^-inj₁-a+-coset (proj₁ mm) (proj₂ mm) bv α' β nz
+              (toℕ (x* ^2)))
+            (inj₁-a-eq (Eq.cong (₁₊ α' ,_)
+              (Eq.cong (β +_) (nsum-neg (x* ^2) (₁₊ α')))))))
+      (Eq.trans (ractM!-inj₁ mm bv x* (₁₊ α' , B2) (λ ())
+                  (Mact-nz x* (₁₊ α' , B2) (λ ())))
+                (inj₁-a-eq boxF)))))
