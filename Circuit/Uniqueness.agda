@@ -4,7 +4,7 @@ open import Word.Base using (WRel ; Word ; ε ; _•_)
 open import Level using (0ℓ ; _⊔_)
 open import Relation.Binary using (Setoid)
 open import Data.Nat using (ℕ)
-open import Data.Vec.Base using (Vec ; _∷_)
+open import Data.Vec.Base as Vec using (Vec ; _∷_)
 import Data.Vec.Relation.Binary.Equality.Setoid as VecEq
 open import Algebra.Bundles using (Monoid)
 open import Algebra.Bundles.Raw using (RawMonoid)
@@ -54,15 +54,21 @@ module Circuit.Uniqueness
   -- exactly as the unlifted circuit does ...
   (head-fix : ∀ {n} (h : Setoid.Carrier Ob) (t : Vec (Setoid.Carrier Ob) n)
               (w : Circuit n) -> ((h ∷ t) ◁ ⟦ w ↑ ⟧) ≋ (h ∷ (t ◁ ⟦ w ⟧)))
-  -- ... so a coset representative must be determined by how it acts
-  -- on the head, uniformly in the tail.  The two states compared
-  -- below share a head but not a tail: the lifted prefixes of two
-  -- normal forms transport a common tail by different semantic
-  -- elements g1 and g2 (that is all head-fix leaves of them), so the
-  -- hypothesis is quantified over that pair of transports.
-  (c-inj : ∀ {n} {c1 c2 : C n} (g1 g2 : Monoid.Carrier (Sem n)) ->
-    (∀ (h : Setoid.Carrier Ob) (t : Vec (Setoid.Carrier Ob) n) ->
-       ((h ∷ (t ◁ g1)) ◁ ⟦ [ c1 ]ᶜ ⟧) ≋ ((h ∷ (t ◁ g2)) ◁ ⟦ [ c2 ]ᶜ ⟧)) ->
+  -- ... and zz is a distinguished object whose constant vector every
+  -- circuit fixes.  Together these make h ∷ Vec.replicate n zz a
+  -- probe state that lifted circuits leave alone outright -- the head
+  -- passes through, the tail is fixed -- which is what probe-fix
+  -- below records.  (head-fix alone is too weak: it lets a lifted
+  -- prefix transport the tail, and two normal forms transport it
+  -- differently, so the two sides would not share a tail.)
+  (zz : Setoid.Carrier Ob)
+  (zz-fix : ∀ {n} (w : Circuit n) ->
+    (Vec.replicate n zz ◁ ⟦ w ⟧) ≋ Vec.replicate n zz)
+  -- A coset representative is determined by how it acts on the head
+  -- of that probe state.
+  (c-inj : ∀ {n} {c1 c2 : C n} ->
+    (∀ (h : Setoid.Carrier Ob)  -> let t = Vec.replicate n zz in
+       ((h ∷ t) ◁ ⟦ [ c1 ]ᶜ ⟧) ≋ ((h ∷ t) ◁ ⟦ [ c2 ]ᶜ ⟧)) ->
     c1 ≡ c2)
   where
 
@@ -75,7 +81,16 @@ open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary.Decidable using (via-injection)
 open import Word.Base
 
-open VecEq Ob using (≋-setoid ; ≋-refl ; ≋-sym)
+open VecEq Ob using (≋-setoid ; ≋-refl ; ≋-sym ; ≋-trans)
+  renaming (_∷_ to _∷≋_)   -- the pointwise cons, not Vec's
+
+-- The probe state h ∷ Vec.replicate n zz is fixed by every lifted
+-- circuit: head-fix passes the head through and reduces the tail to
+-- the unlifted action, which zz-fix then fixes.
+probe-fix : ∀ {n} (h : Setoid.Carrier Ob) (w : Circuit n) ->
+            ((h ∷ Vec.replicate n zz) ◁ ⟦ w ↑ ⟧) ≋ (h ∷ Vec.replicate n zz)
+probe-fix h w =
+  ≋-trans (head-fix h (Vec.replicate _ zz) w) (Setoid.refl Ob ∷≋ zz-fix w)
 
 -- The homomorphism laws at width n, unpacked: homo, ε-homo, ⟦⟧-cong.
 module ⟦⟧-homo (n : ℕ) = MonoidMorphisms.IsMonoidHomomorphism (mhomo n)
@@ -89,17 +104,16 @@ sem-sound : ∀ {n} ->
 sem-sound {n} = ⟦⟧-homo.⟦⟧-cong n
 
 -- The top coset of a normal form is determined by the semantics: act
--- with both sides of eq on an arbitrary state h ∷ t.  The lifted
--- prefixes pass through the head (head-fix), leaving states that
--- still share the head h and differ only in how the prefixes
--- transported the tail; c-inj separates the two coset
--- representatives from that.  No case split on the width, and no
--- state needs to be produced: h and t stay universally quantified.
+-- with both sides of eq on the probe state h ∷ Vec.replicate n zz.
+-- The lifted prefixes fix it (probe-fix), so what remains is the
+-- action of the two coset representatives on that state, which c-inj
+-- separates.  No case split on the width: at width 0 the lifted
+-- prefix is ε ↑ = ε, fixed by probe-fix like any other lift.
 coset-unique : ∀ n (l l' : NF n) (r r' : C n)
   → let open Monoid (Sem (₁₊ n)) in
   (eq : ⟦ (inv-nf {n} l ↑) • [ r ]ᶜ ⟧ ≈ ⟦ (inv-nf l') ↑ • [ r' ]ᶜ ⟧)
   → r ≡ r'
-coset-unique n l l' r r' eq = c-inj ⟦ inv-nf l ⟧ ⟦ inv-nf l' ⟧ claim
+coset-unique n l l' r r' eq = c-inj claim
   where
   module Semn = Monoid (Sem (₁₊ n))
   open Semn using (_∙_)
@@ -117,21 +131,22 @@ coset-unique n l l' r r' eq = c-inj ⟦ inv-nf l ⟧ ⟦ inv-nf l' ⟧ claim
   eq-∙ = Semn.trans (Semn.sym (homoₙ (inv-nf l ↑) [ r ]ᶜ))
            (Semn.trans eq (homoₙ (inv-nf l' ↑) [ r' ]ᶜ))
 
-  claim : ∀ (h : Setoid.Carrier Ob) (t : Vec (Setoid.Carrier Ob) n) ->
-          ((h ∷ (t ◁ ⟦ inv-nf l ⟧)) ◁ ⟦ [ r ]ᶜ ⟧) ≋
-          ((h ∷ (t ◁ ⟦ inv-nf l' ⟧)) ◁ ⟦ [ r' ]ᶜ ⟧)
-  claim h t = begin
-    (h ∷ (t ◁ ⟦ inv-nf l ⟧)) ◁ ⟦ [ r ]ᶜ ⟧
-      ≈⟨ ◁-cong (≋-sym (head-fix h t (inv-nf l))) Semn.refl ⟩
-    ((h ∷ t) ◁ gl) ◁ ⟦ [ r ]ᶜ ⟧
-      ≈⟨ ≋-sym (◁-compose (h ∷ t) gl ⟦ [ r ]ᶜ ⟧) ⟩
-    (h ∷ t) ◁ (gl ∙ ⟦ [ r ]ᶜ ⟧)
+  tz = Vec.replicate n zz
+
+  claim : ∀ (h : Setoid.Carrier Ob) ->
+          ((h ∷ tz) ◁ ⟦ [ r ]ᶜ ⟧) ≋ ((h ∷ tz) ◁ ⟦ [ r' ]ᶜ ⟧)
+  claim h = begin
+    (h ∷ tz) ◁ ⟦ [ r ]ᶜ ⟧
+      ≈⟨ ◁-cong (≋-sym (probe-fix h (inv-nf l))) Semn.refl ⟩
+    ((h ∷ tz) ◁ gl) ◁ ⟦ [ r ]ᶜ ⟧
+      ≈⟨ ≋-sym (◁-compose (h ∷ tz) gl ⟦ [ r ]ᶜ ⟧) ⟩
+    (h ∷ tz) ◁ (gl ∙ ⟦ [ r ]ᶜ ⟧)
       ≈⟨ ◁-cong ≋-refl eq-∙ ⟩
-    (h ∷ t) ◁ (gl' ∙ ⟦ [ r' ]ᶜ ⟧)
-      ≈⟨ ◁-compose (h ∷ t) gl' ⟦ [ r' ]ᶜ ⟧ ⟩
-    ((h ∷ t) ◁ gl') ◁ ⟦ [ r' ]ᶜ ⟧
-      ≈⟨ ◁-cong (head-fix h t (inv-nf l')) Semn.refl ⟩
-    (h ∷ (t ◁ ⟦ inv-nf l' ⟧)) ◁ ⟦ [ r' ]ᶜ ⟧
+    (h ∷ tz) ◁ (gl' ∙ ⟦ [ r' ]ᶜ ⟧)
+      ≈⟨ ◁-compose (h ∷ tz) gl' ⟦ [ r' ]ᶜ ⟧ ⟩
+    ((h ∷ tz) ◁ gl') ◁ ⟦ [ r' ]ᶜ ⟧
+      ≈⟨ ◁-cong (probe-fix h (inv-nf l')) Semn.refl ⟩
+    (h ∷ tz) ◁ ⟦ [ r' ]ᶜ ⟧
       ∎
 
 
