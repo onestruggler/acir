@@ -656,3 +656,22 @@ chain-0 js m bv sum0 =
   Eq.trans (chain-shift js m bv)
   (Eq.trans (Eq.cong (λ z → m ⊞ ζΔ z (MbS-OP.σ bv m)) sum0)
             (⊞-ζ0 m (MbS-OP.σ bv m)))
+
+-- An S-power BLOCK: t pushes at the fixed exponent j shift the M
+-- column by nsum t j — so whole blocks enter the exponent bookkeeping
+-- as single ζΔ items (the shape of the M-mul orbits, whose S^ x blocks
+-- have symbolic length toℕ x).
+mbSⁿ-block : ∀ {k} (j : ℤ ₚ) (t : ℕ) (m : M (₁₊ k)) (bv : Vec B k) →
+  itf (λ z → mbSⁿm (toℕ j) z bv) t m ≡ m ⊞ ζΔ (nsum t j) (MbS-OP.σ bv m)
+mbSⁿ-block j zero m bv = Eq.sym (⊞-ζ0 m (MbS-OP.σ bv m))
+mbSⁿ-block j (suc t) m bv =
+  Eq.trans (mbSⁿ-block j t (mbSⁿm (toℕ j) m bv) bv)
+  (Eq.trans (Eq.cong₂ _⊞_ (mbSⁿ-shiftζ j m bv)
+              (Eq.cong (ζΔ (nsum t j)) σΦ≡σ))
+  (Eq.trans (⊞-⊞ m (ζΔ j σm) (ζΔ (nsum t j) σm))
+            (Eq.cong (m ⊞_) (ζΔ-+ j (nsum t j) σm))))
+  where
+  σm = MbS-OP.σ bv m
+  σΦ≡σ : MbS-OP.σ bv (mbSⁿm (toℕ j) m bv) ≡ σm
+  σΦ≡σ = Eq.trans (Eq.cong (MbS-OP.σ bv) (mbSⁿ-shiftζ j m bv))
+                  (MbS-OP.σ-const bv m (ζΔ j σm))
