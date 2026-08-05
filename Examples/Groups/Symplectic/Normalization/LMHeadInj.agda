@@ -959,6 +959,237 @@ bMix-00 (₁₊ c₁' , b₂) =
   k = - b₂ * (((₁₊ c₁' , λ ()) ⁻¹) .proj₁)
 
 ------------------------------------------------------------------------
+-- Recovery of a B box from its bMix functional (two probes).
+
+bM10 : ∀ (c₁ β₂ : ℤ ₚ) → bMix (c₁ , β₂) ₁ ₀ ≡ β₂
+bM10 c₁ β₂ = trans (bMix-lin c₁ β₂ ₁ ₀)
+  (trans (cong₂ _+_ (*-identityˡ β₂)
+           (trans (cong -_ (*-zeroˡ c₁)) -₀≡₀))
+         (+-identityʳ β₂))
+
+bM01 : ∀ (c₁ β₂ : ℤ ₚ) → bMix (c₁ , β₂) ₀ ₁ ≡ - c₁
+bM01 c₁ β₂ = trans (bMix-lin c₁ β₂ ₀ ₁)
+  (trans (cong₂ _+_ (*-zeroˡ β₂) (cong -_ (*-identityˡ c₁)))
+         (+-identityˡ (- c₁)))
+
+b-recover : ∀ (b₁ b₂ : B) → (∀ c f → bMix b₁ c f ≡ bMix b₂ c f) →
+  b₁ ≡ b₂
+b-recover (c₁ , β₂) (c₁' , β₂') hyp = ≡×≡⇒≡
+  ( neg-inj c₁ c₁'
+      (trans (sym (bM01 c₁ β₂)) (trans (hyp ₀ ₁) (bM01 c₁' β₂')))
+  , trans (sym (bM10 c₁ β₂)) (trans (hyp ₁ ₀) (bM10 c₁' β₂')) )
+
+------------------------------------------------------------------------
+-- Recovery of a D box from its shift-through-the-B-junk functional.
+
+T : B → D → ℤ ₚ → ℤ ₚ → ℤ ₚ
+T b d c f = dShift d (bTop b ₀ c f .proj₁) (bTop b ₀ c f .proj₂)
+
+T-lin1 : ∀ (β₂ δ₁ δ₂ c f : ℤ ₚ) →
+  T (₀ , β₂) (δ₁ , δ₂) c f ≡ δ₁ * f + - (δ₂ * c)
+T-lin1 β₂ δ₁ δ₂ c f =
+  trans (cong (dShift (δ₁ , δ₂) c) sndfix) (dShift-lin δ₁ δ₂ c f)
+  where
+  sndfix : f + - (₀ * β₂) ≡ f
+  sndfix = trans (cong (f +_) (trans (cong -_ (*-zeroˡ β₂)) -₀≡₀))
+                 (+-identityʳ f)
+
+T-lin2 : ∀ (γ₁' : Fin (₁₊ p-2)) (β₂ δ₁ δ₂ c f : ℤ ₚ) →
+  let k = - β₂ * (((₁₊ γ₁' , λ ()) ⁻¹) .proj₁) in
+  T (₁₊ γ₁' , β₂) (δ₁ , δ₂) c f ≡ δ₁ * c + - (δ₂ * (- (f + c * k)))
+T-lin2 γ₁' β₂ δ₁ δ₂ c f =
+  trans (cong (dShift (δ₁ , δ₂) (- (f + c * k))) sndfix)
+        (dShift-lin δ₁ δ₂ (- (f + c * k)) c)
+  where
+  k = - β₂ * (((₁₊ γ₁' , λ ()) ⁻¹) .proj₁)
+  sndfix : c + - (₀ * ₁₊ γ₁') ≡ c
+  sndfix = trans (cong (c +_) (trans (cong -_ (*-zeroˡ (₁₊ γ₁'))) -₀≡₀))
+                 (+-identityʳ c)
+
+T-00 : ∀ (b : B) (d : D) → T b d ₀ ₀ ≡ ₀
+T-00 (₀ , β₂) (δ₁ , δ₂) = trans (T-lin1 β₂ δ₁ δ₂ ₀ ₀)
+  (trans (cong₂ _+_ (*-zeroʳ δ₁) (trans (cong -_ (*-zeroʳ δ₂)) -₀≡₀))
+         (+-identityʳ ₀))
+T-00 (₁₊ γ₁' , β₂) (δ₁ , δ₂) = trans (T-lin2 γ₁' β₂ δ₁ δ₂ ₀ ₀)
+  (trans (cong₂ _+_ (*-zeroʳ δ₁)
+           (trans (cong (λ w → - (δ₂ * - w))
+                    (trans (cong (₀ +_) (*-zeroˡ k)) (+-identityʳ ₀)))
+             (trans (cong (λ w → - (δ₂ * w)) -₀≡₀)
+               (trans (cong -_ (*-zeroʳ δ₂)) -₀≡₀))))
+         (+-identityʳ ₀))
+  where
+  k = - β₂ * (((₁₊ γ₁' , λ ()) ⁻¹) .proj₁)
+
+d-recover : ∀ (b : B) (d₁ d₂ : D) →
+  (∀ c f → T b d₁ c f ≡ T b d₂ c f) → d₁ ≡ d₂
+d-recover (₀ , β₂) (δ₁ , δ₂) (δ₁' , δ₂') hyp = ≡×≡⇒≡ (δ₁-eq , δ₂-eq)
+  where
+  ev10 : ∀ (u₁ u₂ : ℤ ₚ) → T (₀ , β₂) (u₁ , u₂) ₁ ₀ ≡ - u₂
+  ev10 u₁ u₂ = trans (T-lin1 β₂ u₁ u₂ ₁ ₀)
+    (trans (cong₂ _+_ (*-zeroʳ u₁) (cong -_ (*-identityʳ u₂)))
+           (+-identityˡ (- u₂)))
+  ev01 : ∀ (u₁ u₂ : ℤ ₚ) → T (₀ , β₂) (u₁ , u₂) ₀ ₁ ≡ u₁
+  ev01 u₁ u₂ = trans (T-lin1 β₂ u₁ u₂ ₀ ₁)
+    (trans (cong₂ _+_ (*-identityʳ u₁)
+             (trans (cong -_ (*-zeroʳ u₂)) -₀≡₀))
+           (+-identityʳ u₁))
+  δ₂-eq : δ₂ ≡ δ₂'
+  δ₂-eq = neg-inj δ₂ δ₂'
+    (trans (sym (ev10 δ₁ δ₂)) (trans (hyp ₁ ₀) (ev10 δ₁' δ₂')))
+  δ₁-eq : δ₁ ≡ δ₁'
+  δ₁-eq = trans (sym (ev01 δ₁ δ₂)) (trans (hyp ₀ ₁) (ev01 δ₁' δ₂'))
+d-recover (₁₊ γ₁' , β₂) (δ₁ , δ₂) (δ₁' , δ₂') hyp = ≡×≡⇒≡ (δ₁-eq , δ₂-eq)
+  where
+  k = - β₂ * (((₁₊ γ₁' , λ ()) ⁻¹) .proj₁)
+  ev01 : ∀ (u₁ u₂ : ℤ ₚ) → T (₁₊ γ₁' , β₂) (u₁ , u₂) ₀ ₁ ≡ u₂
+  ev01 u₁ u₂ = trans (T-lin2 γ₁' β₂ u₁ u₂ ₀ ₁)
+    (trans (cong₂ _+_ (*-zeroʳ u₁)
+             (trans (cong (λ w → - (u₂ * - w))
+                      (trans (cong (₁ +_) (*-zeroˡ k)) (+-identityʳ ₁)))
+               (trans (cong -_ (sym (-‿distribʳ-* u₂ ₁)))
+                 (trans (cong -_ (cong -_ (*-identityʳ u₂)))
+                        (-‿involutive u₂)))))
+           (+-identityˡ u₂))
+  ev10 : ∀ (u₁ u₂ : ℤ ₚ) →
+    T (₁₊ γ₁' , β₂) (u₁ , u₂) ₁ ₀ ≡ u₁ + - (u₂ * - (₀ + ₁ * k))
+  ev10 u₁ u₂ = trans (T-lin2 γ₁' β₂ u₁ u₂ ₁ ₀)
+    (cong (_+ - (u₂ * - (₀ + ₁ * k))) (*-identityʳ u₁))
+  δ₂-eq : δ₂ ≡ δ₂'
+  δ₂-eq = trans (sym (ev01 δ₁ δ₂)) (trans (hyp ₀ ₁) (ev01 δ₁' δ₂'))
+  eq10 : δ₁ + - (δ₂ * - (₀ + ₁ * k)) ≡ δ₁' + - (δ₂ * - (₀ + ₁ * k))
+  eq10 = trans (sym (ev10 δ₁ δ₂))
+         (trans (hyp ₁ ₀)
+         (trans (ev10 δ₁' δ₂')
+           (cong (λ w → δ₁' + - (w * - (₀ + ₁ * k))) (sym δ₂-eq))))
+  δ₁-eq : δ₁ ≡ δ₁'
+  δ₁-eq = +-cancelʳ' (- (δ₂ * - (₀ + ₁ * k))) δ₁ δ₁' eq10
+
+------------------------------------------------------------------------
+-- The probe formulas at a pIₙ tail.
+
+F-probe : ∀ {k} (d : D) (dv : Vec D k) (e : E) (b : B) (bv : Vec B k)
+  (q₁ q₂ c f : ℤ ₚ) →
+  head (act ([ (d ∷ dv , e) ]ᵐ • [ b ∷ bv ]ᵛᵇ)
+    ((q₁ , q₂) ∷ (c , f) ∷ pIₙ {k})) .proj₁ ≡ q₁ + bMix b c f
+F-probe {k} d dv e b bv q₁ q₂ c f =
+  trans (cong proj₁ (mb-step d dv e b bv q₁ q₂ c f (pIₙ {k})))
+        (mb-fst dv e bv (q₁ + bMix b c f , q₂))
+
+G-probe : ∀ {k} (d : D) (dv : Vec D k) (e : E) (b : B) (bv : Vec B k)
+  (q₁ c f : ℤ ₚ) →
+  head (act ([ (d ∷ dv , e) ]ᵐ • [ b ∷ bv ]ᵛᵇ)
+    ((q₁ , ₀) ∷ (c , f) ∷ pIₙ {k})) .proj₂ ≡
+  (q₁ + bMix b c f) * (- e) + T b d c f
+G-probe {k} d dv e b bv q₁ c f =
+  trans (cong proj₂ (mb-step d dv e b bv q₁ ₀ c f (pIₙ {k})))
+        (cong (_+ T b d c f)
+          (trans (cong proj₂ (mb-full dv e bv (q₁ + bMix b c f , ₀)))
+                 (mbSnd-σ0 dv e bv (q₁ + bMix b c f) ₀ refl)))
+
+------------------------------------------------------------------------
+-- The column-recovery induction: two M/B staircase composites with the
+-- same head behaviour have equal D columns, E, and B columns.
+
+mb-inj : ∀ {k} (dv₁ dv₂ : Vec D k) (e₁ e₂ : E) (bv₁ bv₂ : Vec B k) →
+  (∀ (v : Pauli (₁₊ k)) →
+    head (act ([ (dv₁ , e₁) ]ᵐ • [ bv₁ ]ᵛᵇ) v) ≡
+    head (act ([ (dv₂ , e₂) ]ᵐ • [ bv₂ ]ᵛᵇ) v)) →
+  _≡_ {A = M (₁₊ k) × Vec B k} ((dv₁ , e₁) , bv₁) ((dv₂ , e₂) , bv₂)
+mb-inj {₀} [] [] e₁ e₂ [] [] hyp =
+  cong (λ w → (([] , w) , [])) (neg-inj e₁ e₂ neg-e-eq)
+  where
+  strip : ∀ e → ₀ + ₁ * (- e) ≡ - e
+  strip e = trans (+-identityˡ (₁ * (- e))) (*-identityˡ (- e))
+  neg-e-eq : - e₁ ≡ - e₂
+  neg-e-eq =
+    trans (sym (strip e₁))
+    (trans (sym (cong proj₂ (cong head (act-S^ (- e₁) ₁ ₀ []))))
+    (trans (cong proj₂ (hyp ((₁ , ₀) ∷ [])))
+    (trans (cong proj₂ (cong head (act-S^ (- e₂) ₁ ₀ [])))
+           (strip e₂))))
+mb-inj {₁₊ k'} (d₁ ∷ dv₁') (d₂ ∷ dv₂') e₁ e₂ (b₁ ∷ bv₁') (b₂ ∷ bv₂') hyp =
+  ≡×≡⇒≡ ( ≡×≡⇒≡ (cong₂ _∷_ d-eq dv'-eq , e-eq)
+        , cong₂ _∷_ b-eq bv'-eq )
+  where
+  b-eq : b₁ ≡ b₂
+  b-eq = b-recover b₁ b₂ λ c f → +-cancelˡ'' ₀ _ _
+    (trans (sym (F-probe d₁ dv₁' e₁ b₁ bv₁' ₀ ₀ c f))
+    (trans (cong proj₁ (hyp ((₀ , ₀) ∷ (c , f) ∷ pIₙ {k'})))
+           (F-probe d₂ dv₂' e₂ b₂ bv₂' ₀ ₀ c f)))
+
+  Gsimp : ∀ (d : D) (dv : Vec D k') (e : E) (b : B) (bv : Vec B k') →
+    head (act ([ (d ∷ dv , e) ]ᵐ • [ b ∷ bv ]ᵛᵇ)
+      ((₁ , ₀) ∷ (₀ , ₀) ∷ pIₙ {k'})) .proj₂ ≡ - e
+  Gsimp d dv e b bv = trans (G-probe d dv e b bv ₁ ₀ ₀)
+    (trans (cong₂ _+_
+             (trans (cong (_* (- e))
+                      (trans (cong (₁ +_) (bMix-00 b)) (+-identityʳ ₁)))
+                    (*-identityˡ (- e)))
+             (T-00 b d))
+           (+-identityʳ (- e)))
+
+  e-eq : e₁ ≡ e₂
+  e-eq = neg-inj e₁ e₂
+    (trans (sym (Gsimp d₁ dv₁' e₁ b₁ bv₁'))
+    (trans (cong proj₂ (hyp ((₁ , ₀) ∷ (₀ , ₀) ∷ pIₙ {k'})))
+           (Gsimp d₂ dv₂' e₂ b₂ bv₂')))
+
+  d-eq : d₁ ≡ d₂
+  d-eq = d-recover b₁ d₁ d₂ λ c f →
+    +-cancelˡ'' ((₀ + bMix b₁ c f) * (- e₁)) _ _
+      (trans (sym (G-probe d₁ dv₁' e₁ b₁ bv₁' ₀ c f))
+      (trans (cong proj₂ (hyp ((₀ , ₀) ∷ (c , f) ∷ pIₙ {k'})))
+      (trans (G-probe d₂ dv₂' e₂ b₂ bv₂' ₀ c f)
+        (cong₂ _+_
+          (cong₂ (λ u w → (₀ + bMix u c f) * (- w)) (sym b-eq) (sym e-eq))
+          (cong (λ u → T u d₂ c f) (sym b-eq))))))
+
+  sub-hyp : ∀ (w : Pauli (₁₊ k')) →
+    head (act ([ (dv₁' , e₁) ]ᵐ • [ bv₁' ]ᵛᵇ) w) ≡
+    head (act ([ (dv₂' , e₂) ]ᵐ • [ bv₂' ]ᵛᵇ) w)
+  sub-hyp ((wh₁ , wh₂) ∷ wt) = ≡×≡⇒≡ (fst-eq , snd-eq)
+    where
+    S₁ = head (act ([ (dv₁' , e₁) ]ᵐ • [ bv₁' ]ᵛᵇ) ((wh₁ , wh₂) ∷ wt))
+    S₂ = head (act ([ (dv₂' , e₂) ]ᵐ • [ bv₂' ]ᵛᵇ) ((wh₁ , wh₂) ∷ wt))
+    T₁' = dShift d₁ (bTop b₁ wh₂ ₀ ₀ .proj₁) (bTop b₁ wh₂ ₀ ₀ .proj₂)
+    T₂' = dShift d₂ (bTop b₂ wh₂ ₀ ₀ .proj₁) (bTop b₂ wh₂ ₀ ₀ .proj₂)
+    inFix : ∀ (b : B) → (wh₁ + bMix b ₀ ₀ , wh₂) ≡ (wh₁ , wh₂)
+    inFix b = ≡×≡⇒≡
+      (trans (cong (wh₁ +_) (bMix-00 b)) (+-identityʳ wh₁) , refl)
+    step₁ : head (act ([ (d₁ ∷ dv₁' , e₁) ]ᵐ • [ b₁ ∷ bv₁' ]ᵛᵇ)
+              ((wh₁ , wh₂) ∷ (₀ , ₀) ∷ wt)) ≡ (S₁ .proj₁ , S₁ .proj₂ + T₁')
+    step₁ = trans (mb-step d₁ dv₁' e₁ b₁ bv₁' wh₁ wh₂ ₀ ₀ wt)
+      (cong (λ s → (s .proj₁ , s .proj₂ + T₁'))
+        (cong (λ p → head (act ([ (dv₁' , e₁) ]ᵐ • [ bv₁' ]ᵛᵇ) (p ∷ wt)))
+          (inFix b₁)))
+    step₂ : head (act ([ (d₂ ∷ dv₂' , e₂) ]ᵐ • [ b₂ ∷ bv₂' ]ᵛᵇ)
+              ((wh₁ , wh₂) ∷ (₀ , ₀) ∷ wt)) ≡ (S₂ .proj₁ , S₂ .proj₂ + T₂')
+    step₂ = trans (mb-step d₂ dv₂' e₂ b₂ bv₂' wh₁ wh₂ ₀ ₀ wt)
+      (cong (λ s → (s .proj₁ , s .proj₂ + T₂'))
+        (cong (λ p → head (act ([ (dv₂' , e₂) ]ᵐ • [ bv₂' ]ᵛᵇ) (p ∷ wt)))
+          (inFix b₂)))
+    combined : (S₁ .proj₁ , S₁ .proj₂ + T₁') ≡ (S₂ .proj₁ , S₂ .proj₂ + T₂')
+    combined = trans (sym step₁)
+      (trans (hyp ((wh₁ , wh₂) ∷ (₀ , ₀) ∷ wt)) step₂)
+    T-eq : T₂' ≡ T₁'
+    T-eq = cong₂ (λ u v →
+        dShift v (bTop u wh₂ ₀ ₀ .proj₁) (bTop u wh₂ ₀ ₀ .proj₂))
+      (sym b-eq) (sym d-eq)
+    fst-eq : S₁ .proj₁ ≡ S₂ .proj₁
+    fst-eq = cong proj₁ combined
+    snd-eq : S₁ .proj₂ ≡ S₂ .proj₂
+    snd-eq = +-cancelʳ' T₁' (S₁ .proj₂) (S₂ .proj₂)
+      (trans (cong proj₂ combined) (cong (S₂ .proj₂ +_) T-eq))
+
+  IH : _≡_ {A = M (₁₊ k') × Vec B k'}
+    ((dv₁' , e₁) , bv₁') ((dv₂' , e₂) , bv₂')
+  IH = mb-inj dv₁' dv₂' e₁ e₂ bv₁' bv₂' sub-hyp
+  dv'-eq : dv₁' ≡ dv₂'
+  dv'-eq = cong (λ w → w .proj₁ .proj₁) IH
+  bv'-eq : bv₁' ≡ bv₂'
+  bv'-eq = cong proj₂ IH
+
+------------------------------------------------------------------------
 -- With the separation proved, ONE parameter remains: ML' (₂₊)
 -- head-injectivity.
 
