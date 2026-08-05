@@ -872,12 +872,12 @@ mb-step {k} d₁ dv' e b₁ bv' q₁ q₂ c f t =
 -- probes read the B box off; and it vanishes at (₀ , ₀), which is what
 -- lets the recursion pass full input generality down a level.
 
-bMix-lin : ∀ (c₁ b₂ : ℤ ₚ) (pr : (c₁ , b₂) ≢ (₀ , ₀)) (c f : ℤ ₚ) →
+bMix-lin : ∀ (c₁ b₂ : ℤ ₚ) (c f : ℤ ₚ) →
   bMix (c₁ , b₂) c f ≡ c * b₂ + - (f * c₁)
-bMix-lin ₀ b₂ pr c f = sym
+bMix-lin ₀ b₂ c f = sym
   (trans (cong (c * b₂ +_) (trans (cong -_ (*-zeroʳ f)) -₀≡₀))
          (+-identityʳ (c * b₂)))
-bMix-lin (₁₊ c₁') b₂ pr c f = begin
+bMix-lin (₁₊ c₁') b₂ c f = begin
   (- (f + c * k)) * ₁₊ c₁'
     ≡⟨ sym (-‿distribˡ-* (f + c * k) (₁₊ c₁')) ⟩
   - ((f + c * k) * ₁₊ c₁')
@@ -904,6 +904,50 @@ bMix-lin (₁₊ c₁') b₂ pr c f = begin
     c * - b₂ * ₁              ≡⟨ *-identityʳ (c * - b₂) ⟩
     c * - b₂                  ≡⟨ sym (-‿distribʳ-* c b₂) ⟩
     - (c * b₂)                ∎
+
+-- dShift is likewise the uniform linear functional
+-- (x , z) ↦ δ₁·z − δ₂·x.
+dShift-lin : ∀ (δ₁ δ₂ : ℤ ₚ) (x z : ℤ ₚ) →
+  dShift (δ₁ , δ₂) x z ≡ δ₁ * z + - (δ₂ * x)
+dShift-lin ₀ δ₂ x z = begin
+  x * - δ₂          ≡⟨ sym (-‿distribʳ-* x δ₂) ⟩
+  - (x * δ₂)        ≡⟨ cong -_ (*-comm x δ₂) ⟩
+  - (δ₂ * x)        ≡⟨ sym (+-identityˡ (- (δ₂ * x))) ⟩
+  ₀ + - (δ₂ * x)    ≡⟨ cong (_+ - (δ₂ * x)) (sym (*-zeroˡ z)) ⟩
+  ₀ * z + - (δ₂ * x) ∎
+dShift-lin (₁₊ d') δ₂ x z = begin
+  (- (z + x * k')) * (- ₁₊ d')
+    ≡⟨ negneg (z + x * k') (₁₊ d') ⟩
+  (z + x * k') * ₁₊ d'
+    ≡⟨ *-distribʳ-+ (₁₊ d') z (x * k') ⟩
+  z * ₁₊ d' + x * k' * ₁₊ d'
+    ≡⟨ cong₂ _+_ (*-comm z (₁₊ d')) kx-eq ⟩
+  ₁₊ d' * z + - (δ₂ * x) ∎
+  where
+  dI = (((₁₊ d' , λ ()) ⁻¹) .proj₁)
+  k' = - δ₂ * dI
+  kx-eq : x * k' * ₁₊ d' ≡ - (δ₂ * x)
+  kx-eq = begin
+    x * (- δ₂ * dI) * ₁₊ d'  ≡⟨ cong (_* ₁₊ d') (sym (*-assoc x (- δ₂) dI)) ⟩
+    x * - δ₂ * dI * ₁₊ d'    ≡⟨ *-assoc (x * - δ₂) dI (₁₊ d') ⟩
+    x * - δ₂ * (dI * ₁₊ d')  ≡⟨ cong (x * - δ₂ *_)
+                                  (lemma-⁻¹ˡ (₁₊ d')
+                                    {{nztoℕ {y = ₁₊ d'} {neq0 = λ ()}}}) ⟩
+    x * - δ₂ * ₁             ≡⟨ *-identityʳ (x * - δ₂) ⟩
+    x * - δ₂                 ≡⟨ sym (-‿distribʳ-* x δ₂) ⟩
+    - (x * δ₂)               ≡⟨ cong -_ (*-comm x δ₂) ⟩
+    - (δ₂ * x)               ∎
+
++-cancelˡ'' : ∀ (x y₁ y₂ : ℤ ₚ) → x + y₁ ≡ x + y₂ → y₁ ≡ y₂
++-cancelˡ'' x y₁ y₂ eq = begin
+  y₁              ≡⟨ sym (+-identityˡ y₁) ⟩
+  ₀ + y₁          ≡⟨ cong (_+ y₁) (sym (+-inverseˡ x)) ⟩
+  (- x + x) + y₁  ≡⟨ +-assoc (- x) x y₁ ⟩
+  - x + (x + y₁)  ≡⟨ cong (- x +_) eq ⟩
+  - x + (x + y₂)  ≡⟨ sym (+-assoc (- x) x y₂) ⟩
+  (- x + x) + y₂  ≡⟨ cong (_+ y₂) (+-inverseˡ x) ⟩
+  ₀ + y₂          ≡⟨ +-identityˡ y₂ ⟩
+  y₂              ∎
 
 bMix-00 : ∀ (b : B) → bMix b ₀ ₀ ≡ ₀
 bMix-00 (₀ , b₂) = *-zeroˡ b₂
