@@ -1190,6 +1190,107 @@ mb-inj {₁₊ k'} (d₁ ∷ dv₁') (d₂ ∷ dv₂') e₁ e₂ (b₁ ∷ bv₁
   bv'-eq = cong proj₂ IH
 
 ------------------------------------------------------------------------
+-- The A transform is surjective: aInv is a right inverse of aHd, so
+-- full input generality passes through the A box to the staircase.
+
+aInv : A → Pauli1 → Pauli1
+aInv ((₀ , ₀) , pr) r = ⊥-elim (pr refl)
+aInv ((₀ , ₁₊ y') , pr) (r₁ , r₂) =
+  (r₁ * (((₁₊ y' , λ ()) ⁻¹) .proj₁) , r₂ * (((₁₊ y' , λ ()) ⁻¹ ⁻¹) .proj₁))
+aInv ((₁₊ x' , y) , pr) (r₁ , r₂) =
+  ( r₂ * ₁₊ x'
+  , - (r₁ * xI) + - (r₂ * ₁₊ x' * (- y * xI)) )
+  where xI = ((₁₊ x' , λ ()) ⁻¹) .proj₁
+
+aHd-aInv : ∀ (a : A) (r : Pauli1) → aHd a (aInv a r) ≡ r
+aHd-aInv ((₀ , ₀) , pr) r = ⊥-elim (pr refl)
+aHd-aInv ((₀ , ₁₊ y') , pr) (r₁ , r₂) = ≡×≡⇒≡ (fst-eq , snd-eq)
+  where
+  inv  = (₁₊ y' , λ ()) ⁻¹
+  xI   = inv .proj₁
+  invI = ((inv ⁻¹) .proj₁)
+  fst-eq : r₁ * xI * invI ≡ r₁
+  fst-eq = trans (*-assoc r₁ xI invI)
+    (trans (cong (r₁ *_)
+             (lemma-⁻¹ʳ xI {{nztoℕ {y = xI} {neq0 = inv .proj₂}}}))
+           (*-identityʳ r₁))
+  snd-eq : r₂ * invI * xI ≡ r₂
+  snd-eq = trans (*-assoc r₂ invI xI)
+    (trans (cong (r₂ *_)
+             (lemma-⁻¹ˡ xI {{nztoℕ {y = xI} {neq0 = inv .proj₂}}}))
+           (*-identityʳ r₂))
+aHd-aInv ((₁₊ x' , y) , pr) (r₁ , r₂) = ≡×≡⇒≡ (fst-eq , snd-eq)
+  where
+  inv  = (₁₊ x' , λ ()) ⁻¹
+  xI   = inv .proj₁
+  invI = ((inv ⁻¹) .proj₁)
+  k    = - y * xI
+  q₁ = r₂ * ₁₊ x'
+  q₂ = - (r₁ * xI) + - (q₁ * k)
+  inner : q₂ + q₁ * k ≡ - (r₁ * xI)
+  inner = trans (+-assoc (- (r₁ * xI)) (- (q₁ * k)) (q₁ * k))
+    (trans (cong (- (r₁ * xI) +_) (+-inverseˡ (q₁ * k)))
+           (+-identityʳ (- (r₁ * xI))))
+  fst-eq : (- (q₂ + q₁ * k)) * invI ≡ r₁
+  fst-eq = trans (cong (λ w → (- w) * invI) inner)
+    (trans (cong (_* invI) (-‿involutive (r₁ * xI)))
+    (trans (*-assoc r₁ xI invI)
+    (trans (cong (r₁ *_)
+             (lemma-⁻¹ʳ xI {{nztoℕ {y = xI} {neq0 = inv .proj₂}}}))
+           (*-identityʳ r₁))))
+  snd-eq : q₁ * xI ≡ r₂
+  snd-eq = trans (*-assoc r₂ (₁₊ x') xI)
+    (trans (cong (r₂ *_)
+             (lemma-⁻¹ʳ (₁₊ x') {{nztoℕ {y = ₁₊ x'} {neq0 = λ ()}}}))
+           (*-identityʳ r₂))
+
+------------------------------------------------------------------------
+-- THE LAST BASE: ML' (₂₊) head-injectivity, assembled.
+
+inj₁-head-inj-proved : ∀ {n} (ml₁ ml₂ : ML' (₂₊ n)) →
+  (∀ (ps : Pauli (₂₊ n)) →
+    head (act [ ML (₂₊ n) ∋ inj₁ ml₁ ]ᵐˡ ps) ≡
+    head (act [ ML (₂₊ n) ∋ inj₁ ml₂ ]ᵐˡ ps)) →
+  ml₁ ≡ ml₂
+inj₁-head-inj-proved {n} ((dv₁ , e₁) , (bv₁ , a₁))
+                         ((dv₂ , e₂) , (bv₂ , a₂)) h =
+  ≡×≡⇒≡ (cong proj₁ mb-eq , ≡×≡⇒≡ (cong proj₂ mb-eq , a-eq))
+  where
+  a-eq : a₁ ≡ a₂
+  a-eq = inj₁-recover-a dv₁ dv₂ e₁ e₂ bv₁ bv₂ a₁ a₂ h
+
+  h' : ∀ (ps : Pauli (₂₊ n)) →
+    head (act [ ML (₂₊ n) ∋ inj₁ ((dv₁ , e₁) , (bv₁ , a₁)) ]ᵐˡ ps) ≡
+    head (act [ ML (₂₊ n) ∋ inj₁ ((dv₂ , e₂) , (bv₂ , a₁)) ]ᵐˡ ps)
+  h' ps = trans (h ps)
+    (cong (λ u →
+        head (act [ ML (₂₊ n) ∋ inj₁ ((dv₂ , e₂) , (bv₂ , u)) ]ᵐˡ ps))
+      (sym a-eq))
+
+  fix : ∀ (dv : Vec D (₁₊ n)) (e : E) (bv : Vec B (₁₊ n))
+    (q : Pauli1) (ps' : Pauli (₁₊ n)) →
+    head (act [ ML (₂₊ n) ∋ inj₁ ((dv , e) , (bv , a₁)) ]ᵐˡ
+      (aInv a₁ q ∷ ps')) ≡
+    head (act ([ (dv , e) ]ᵐ • [ bv ]ᵛᵇ) (q ∷ ps'))
+  fix dv e bv q ps' = cong head
+    (trans (cong (λ v' → act [ (dv , e) ]ᵐ (act [ bv ]ᵛᵇ v'))
+             (abox-hd a₁ (aInv a₁ q) ps'))
+           (cong (λ p → act ([ (dv , e) ]ᵐ • [ bv ]ᵛᵇ) (p ∷ ps'))
+             (aHd-aInv a₁ q)))
+
+  mb-hyp : ∀ (v : Pauli (₂₊ n)) →
+    head (act ([ (dv₁ , e₁) ]ᵐ • [ bv₁ ]ᵛᵇ) v) ≡
+    head (act ([ (dv₂ , e₂) ]ᵐ • [ bv₂ ]ᵛᵇ) v)
+  mb-hyp (q ∷ ps') =
+    trans (sym (fix dv₁ e₁ bv₁ q ps'))
+    (trans (h' (aInv a₁ q ∷ ps'))
+           (fix dv₂ e₂ bv₂ q ps'))
+
+  mb-eq : _≡_ {A = M (₂₊ n) × Vec B (₁₊ n)}
+    ((dv₁ , e₁) , bv₁) ((dv₂ , e₂) , bv₂)
+  mb-eq = mb-inj dv₁ dv₂ e₁ e₂ bv₁ bv₂ mb-hyp
+
+------------------------------------------------------------------------
 -- With the separation proved, ONE parameter remains: ML' (₂₊)
 -- head-injectivity.
 
@@ -1200,3 +1301,21 @@ module Induction!
       head (act [ ML (₂₊ n) ∋ inj₁ ml₂ ]ᵐˡ ps)) →
     ml₁ ≡ ml₂)
   = Induction inj₁-head-inj inj₁≁inj₂-proved
+
+------------------------------------------------------------------------
+-- THE THEOREM, closed: every parameter is discharged.  This is the
+-- statement postulated as lemma-lm-head-inj in Normalization.NF-Inj —
+-- the completeness crux — now proved outright, --safe.
+
+module Complete = Induction! inj₁-head-inj-proved
+
+lemma-lm-head-inj-proved : ∀ {n} (lm₁ lm₂ : ML (₁₊ n)) →
+  (∀ (ps : Pauli (₁₊ n)) →
+    head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) →
+  lm₁ ≡ lm₂
+lemma-lm-head-inj-proved = Complete.lemma-lm-head-inj
+
+lemma-lm-inj-proved : ∀ {n} (lm₁ lm₂ : ML (₁₊ n)) →
+  (∀ (ps : Pauli (₁₊ n)) → act [ lm₁ ]ᵐˡ ps ≡ act [ lm₂ ]ᵐˡ ps) →
+  lm₁ ≡ lm₂
+lemma-lm-inj-proved = Complete.lemma-lm-inj
