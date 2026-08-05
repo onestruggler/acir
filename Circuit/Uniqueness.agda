@@ -4,6 +4,8 @@ open import Word.Base using (WRel ; Word ; ε ; _•_)
 open import Level using (0ℓ ; _⊔_)
 open import Relation.Binary using (Setoid)
 open import Data.Nat using (ℕ)
+open import Data.Vec.Base using (Vec)
+import Data.Vec.Relation.Binary.Equality.Setoid as VecEq
 open import Algebra.Bundles.Raw using (RawMonoid)
 import Circuit.Base as CB
 import Presentation.Base as PB
@@ -11,7 +13,7 @@ open import Notations
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 import Relation.Binary.Reasoning.Setoid as SR
 
-open import ForStdlib.Algebra.Action using (RightAction)
+open import ForStdlib.Algebra.IndexedAction using (IndexedRightAction)
 
 module Circuit.Uniqueness
   (C : ℕ -> Set)
@@ -35,21 +37,21 @@ module Circuit.Uniqueness
          ; _∙_     = _•_
          ; ε       = ε
          })
-  -- ... which acts on the right on a family of state setoids
-  -- (ForStdlib.Algebra.Action.RightAction): ◁-cong says the action
+  -- ... which acts on the right on vectors of single-wire states
+  -- over the object setoid Ob, one object per wire
+  -- (ForStdlib.Algebra.IndexedAction): ◁-cong says the action
   -- factors through the semantics, ◁-compose that acting by w • v is
   -- acting by w then v.
-  {s e} (St : ℕ -> Setoid s e)
-  (act : ∀ n -> RightAction (⟦⟧-rawMonoid n) (St n))
-  (let _◁_ : ∀ {n} -> Setoid.Carrier (St n) -> Circuit n -> Setoid.Carrier (St n)
-       _◁_ {n} = RightAction._◁_ (act n))
+  {s e} (Ob : Setoid s e)
+  (act : IndexedRightAction ⟦⟧-rawMonoid Ob)
+  (let open IndexedRightAction act using (_◁_ ; ◁-cong ; ◁-compose))
+  (let open VecEq Ob using (_≋_))
   -- A base state fixed by every lifted circuit ...
-  (base : ∀ {n} -> Setoid.Carrier (St n))
-  (base-fix : ∀ {n} (w : Circuit n) ->
-    Setoid._≈_ (St (₁₊ n)) (base ◁ (w ↑)) base)
+  (base : ∀ {n} -> Vec (Setoid.Carrier Ob) n)
+  (base-fix : ∀ {n} (w : Circuit n) -> (base ◁ (w ↑)) ≋ base)
   -- ... on which the coset representatives act injectively.
   (c-inj : ∀ {n} {c1 c2 : C n} ->
-    Setoid._≈_ (St (₁₊ n)) (base ◁ [ c1 ]ᶜ) (base ◁ [ c2 ]ᶜ) -> c1 ≡ c2)
+    (base ◁ [ c1 ]ᶜ) ≋ (base ◁ [ c2 ]ᶜ) -> c1 ≡ c2)
   where
 
 open import Circuit.CosetNF C I Gate [_]ᶜ
@@ -60,6 +62,8 @@ open import Function.Bundles using (Injection ; Bijection ; RightInverse ; _⟶�
 open import Relation.Binary.Definitions using (Decidable)
 open import Relation.Nullary.Decidable using (via-injection)
 open import Word.Base
+
+open VecEq Ob using (≋-setoid ; ≋-refl ; ≋-sym)
 
 -- The top coset of a normal form is determined by the semantics: act
 -- with both sides of eq on the base state.  The lifted prefixes fix
@@ -73,19 +77,17 @@ coset-unique : ∀ n (l l' : NF n) (r r' : C n)
   → r ≡ r'
 coset-unique n l l' r r' eq = c-inj claim
   where
-  open RightAction (act (₁₊ n)) using (◁-cong ; ◁-compose)
-  module Stn  = Setoid (St  (₁₊ n))
   module Semn = Setoid (Sem (₁₊ n))
-  open SR (St (₁₊ n))
+  open SR (≋-setoid (₁₊ n))
 
-  claim : (base ◁ [ r ]ᶜ) Stn.≈ (base ◁ [ r' ]ᶜ)
+  claim : (base ◁ [ r ]ᶜ) ≋ (base ◁ [ r' ]ᶜ)
   claim = begin
     base ◁ [ r ]ᶜ
-      ≈⟨ ◁-cong (Stn.sym (base-fix (inv-nf l))) Semn.refl ⟩
+      ≈⟨ ◁-cong (≋-sym (base-fix (inv-nf l))) Semn.refl ⟩
     (base ◁ (inv-nf l ↑)) ◁ [ r ]ᶜ
-      ≈⟨ Stn.sym (◁-compose base (inv-nf l ↑) [ r ]ᶜ) ⟩
+      ≈⟨ ≋-sym (◁-compose base (inv-nf l ↑) [ r ]ᶜ) ⟩
     base ◁ ((inv-nf l ↑) • [ r ]ᶜ)
-      ≈⟨ ◁-cong Stn.refl eq ⟩
+      ≈⟨ ◁-cong ≋-refl eq ⟩
     base ◁ ((inv-nf l' ↑) • [ r' ]ᶜ)
       ≈⟨ ◁-compose base (inv-nf l' ↑) [ r' ]ᶜ ⟩
     (base ◁ (inv-nf l' ↑)) ◁ [ r' ]ᶜ
