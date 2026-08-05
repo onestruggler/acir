@@ -128,3 +128,24 @@ srel-wd1 (([] , e) , ([] , ((₁₊ α' , β) , nz))) (Base.semi-MS x) =
   elim-suc (x .proj₁ * ₁₊ α') ((x *' (₁₊ α' , λ ())) .proj₂)
     λ s eq-s →
   PB.trans sing0 (PB.sym sing0) , semi-MS-nn x e α' β nz s eq-s
+
+------------------------------------------------------------------------
+-- The FULL level-1 well-definedness: the lifted relation at width 1 is
+-- srel (the six families above) + cong↑ (a lifted width-0 word — Gen 0
+-- is empty, so both sides fix the coset and the residuals collapse) +
+-- comm₁ (vacuous: its lifted gate lives in the empty Gen 0); comm₂ is
+-- excluded by its width index.
+
+ract-base-↑ : (c : C 1) (w : Circuit 0) → (ract {0} ᵗ) c (w ↑) .proj₂ ≡ c
+ract-base-↑ c ε       = Eq.refl
+ract-base-↑ c [ () ]ʷ
+ract-base-↑ c (u • v) rewrite ract-base-↑ c u = ract-base-↑ c v
+
+wd1 : ∀ (c : C 1) {u t : Circuit 1} →
+  Symplectic._QRel,_===_ 1 u t →
+  (ract {0} ᵗ) c u ≋ (ract {0} ᵗ) c t
+wd1 c (srel x) = srel-wd1 c x
+wd1 c (cong↑ {w = w} {v} eq) =
+    PB.trans sing0 (PB.sym sing0)
+  , Eq.trans (ract-base-↑ c w) (Eq.sym (ract-base-↑ c v))
+wd1 c (comm₁ h ())
