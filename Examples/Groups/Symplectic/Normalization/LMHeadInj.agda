@@ -55,7 +55,8 @@ open import Examples.Groups.Symplectic.BoxAction p-2 p-prime
   using (act ; sc ; sc-toℕ ; sc-suc ; act-S^ ; act-H ; act-HS^ ; act-M ;
          act-Ex)
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
-  using (A ; D ; M ; L' ; ML ; ML' ; [_]ᵐˡ ; [_]ᵈ ; [_]ᵃ)
+  using (A ; B ; D ; E ; M ; L' ; ML ; ML' ;
+         [_]ᵐˡ ; [_]ᵈ ; [_]ᵃ ; [_]ᵇ ; [_]ᵐ ; [_]ᵛᵇ)
 open import Examples.Groups.Symplectic.Normalization.NF1HeadInj p-2 p-prime
   using (lemma-nf1-head-inj)
 
@@ -339,6 +340,109 @@ aProbe-fst-nz ((₁₊ a' , b) , pr) eq = neg-suc-nz' a' (trans (sym q1) eq)
     - (₁₊ a')              ∎
 
 ------------------------------------------------------------------------
+-- The B-box carrier law: on an input whose wire 1 is the identity, a
+-- B-box word deposits junk on wire 0 and passes the old head to wire 1
+-- UNCHANGED.  (CX'^ κ = H³ • CZ^ κ • H, so first the closed form.)
+
+act-CX'^ : ∀ (κ : ℤ ₚ) (x z c e : ℤ ₚ) (t : Pauli n) →
+  act (Symplectic.CX'^ κ) ((x , z) ∷ (c , e) ∷ t) ≡
+    (x + c * κ , z) ∷ (c , e + - (z * κ)) ∷ t
+act-CX'^ κ x z c e t =
+  trans (cong (act (H ^ 3)) (act-CZ^ κ (- z) x c e t))
+        (cong₂ (λ P Q → P ∷ Q ∷ t)
+          (≡×≡⇒≡ (-‿involutive (x + c * κ) , -‿involutive z))
+          (cong (λ w → (c , e + w)) (sym (-‿distribˡ-* z κ))))
+
+bJunk : B → ℤ ₚ → Pauli1
+bJunk (₀ , b₂) z = (₀ , - (z * b₂))
+bJunk (₁₊ c₁' , _) z = (₀ , - (z * ₁₊ c₁'))
+
+bbox-carrier : ∀ (b : B) (x z : ℤ ₚ) (t : Pauli n) →
+  act ([_]ᵇ {n} b) ((x , z) ∷ (₀ , ₀) ∷ t) ≡ bJunk b z ∷ (x , z) ∷ t
+bbox-carrier (₀ , b₂) x z t =
+  trans (cong (act Ex) (act-CX'^ b₂ x z ₀ ₀ t))
+  (trans (act-Ex (x + ₀ * b₂) z ₀ (₀ + - (z * b₂)) t)
+         (cong₂ (λ P Q → P ∷ Q ∷ t)
+           (cong (₀ ,_) (+-identityˡ (- (z * b₂))))
+           (cong (_, z) (trans (cong (x +_) (*-zeroˡ b₂)) (+-identityʳ x)))))
+bbox-carrier (₁₊ c₁' , b₂) x z t =
+  trans (cong (λ v → act Ex (act (Symplectic.CX'^ (₁₊ c₁')) (act (H ↑) v)))
+          (trans (lemma-act-↑ (S^ k) (x , z) ((₀ , ₀) ∷ t))
+                 (cong ((x , z) ∷_) (act-S^ k ₀ ₀ t))))
+  (trans (cong (λ v → act Ex (act (Symplectic.CX'^ (₁₊ c₁')) v))
+          (trans (lemma-act-↑ H (x , z) ((₀ , ₀ + ₀ * k) ∷ t))
+                 (cong ((x , z) ∷_) (act-H ₀ (₀ + ₀ * k) t))))
+  (trans (cong (act Ex)
+          (act-CX'^ (₁₊ c₁') x z (- (₀ + ₀ * k)) ₀ t))
+  (trans (act-Ex (x + (- (₀ + ₀ * k)) * ₁₊ c₁') z
+                 (- (₀ + ₀ * k)) (₀ + - (z * ₁₊ c₁')) t)
+         (cong₂ (λ P Q → P ∷ Q ∷ t)
+           (≡×≡⇒≡ (c̃0 , +-identityˡ (- (z * ₁₊ c₁'))))
+           (cong (_, z) carrier-eq)))))
+  where
+  k = - b₂ * (((₁₊ c₁' , λ ()) ⁻¹) .proj₁)
+  z00 : ₀ + ₀ * k ≡ ₀
+  z00 = trans (cong (₀ +_) (*-zeroˡ k)) (+-identityʳ ₀)
+  c̃0 : - (₀ + ₀ * k) ≡ ₀
+  c̃0 = trans (cong -_ z00) -₀≡₀
+  carrier-eq : x + (- (₀ + ₀ * k)) * ₁₊ c₁' ≡ x
+  carrier-eq = trans (cong (λ w → x + w * ₁₊ c₁') c̃0)
+    (trans (cong (x +_) (*-zeroˡ (₁₊ c₁'))) (+-identityʳ x))
+
+------------------------------------------------------------------------
+-- The M-column/B-column composite fixes the head's a-component: the
+-- carrier climbs the B staircase unchanged, and the D staircase hands
+-- a-components straight down (dbox-head-fst), meeting in the middle.
+
+mb-fst : ∀ {k} (dv : Vec D k) (e : E) (bv : Vec B k) (q : Pauli1) →
+  head (act ([ (dv , e) ]ᵐ • [ bv ]ᵛᵇ) (q ∷ pIₙ {k})) .proj₁ ≡ q .proj₁
+mb-fst [] e [] (q₁ , q₂) =
+  cong (λ v → head v .proj₁) (act-S^ (- e) q₁ q₂ [])
+mb-fst {₁₊ k'} (d₁ ∷ dv') e (b₁ ∷ bv') q@(q₁ , q₂) =
+  trans (cong (λ v → head v .proj₁) V)
+  (trans (cong (λ v → head (act ([_]ᵈ {k'} d₁) (bJunk b₁ q₂ ∷ v)) .proj₁)
+           (sym (lemma-aux-vec k' inner)))
+  (trans (dbox-head-fst d₁ (bJunk b₁ q₂ .proj₁) (bJunk b₁ q₂ .proj₂)
+           (head inner .proj₁) (head inner .proj₂) (tail inner))
+         (mb-fst dv' e bv' q)))
+  where
+  inner = act ([ (dv' , e) ]ᵐ • [ bv' ]ᵛᵇ) (q ∷ pIₙ {k'})
+  V : act ([ (d₁ ∷ dv' , e) ]ᵐ • [ b₁ ∷ bv' ]ᵛᵇ) (q ∷ pIₙ {₁₊ k'}) ≡
+      act ([_]ᵈ {k'} d₁) (bJunk b₁ q₂ ∷ inner)
+  V = trans (cong (λ v → act ([_]ᵈ {k'} d₁)
+               (act ([ (dv' , e) ]ᵐ ↑) (act ([ bv' ]ᵛᵇ ↑) v)))
+          (bbox-carrier b₁ q₁ q₂ (pIₙ {k'})))
+      (trans (cong (λ v → act ([_]ᵈ {k'} d₁) (act ([ (dv' , e) ]ᵐ ↑) v))
+          (lemma-act-↑ [ bv' ]ᵛᵇ (bJunk b₁ q₂) ((q₁ , q₂) ∷ pIₙ {k'})))
+        (cong (act ([_]ᵈ {k'} d₁))
+          (lemma-act-↑ [ (dv' , e) ]ᵐ (bJunk b₁ q₂)
+            (act [ bv' ]ᵛᵇ ((q₁ , q₂) ∷ pIₙ {k'})))))
+
+------------------------------------------------------------------------
+-- The assembled separation: at the probe input, an inj₁ word's head
+-- a-component is the A-box transform's (nonzero), an inj₂ word's is ₀.
+
+inj₁-fst : ∀ {n} (dv : Vec D (₁₊ n)) (e : E) (bv : Vec B (₁₊ n)) (a : A)
+  (p₀ : Pauli1) →
+  head (act [ ML (₂₊ n) ∋ inj₁ ((dv , e) , (bv , a)) ]ᵐˡ
+    (p₀ ∷ pIₙ {₁₊ n})) .proj₁ ≡ aHd a p₀ .proj₁
+inj₁-fst {n} dv e bv a p₀ =
+  trans (cong (λ v → head v .proj₁)
+          (cong (λ v → act [ (dv , e) ]ᵐ (act [ bv ]ᵛᵇ v))
+            (abox-hd a p₀ (pIₙ {₁₊ n}))))
+        (mb-fst dv e bv (aHd a p₀))
+
+inj₁≁inj₂-proved : ∀ {n} (ml : ML' (₂₊ n)) (d : D) (lm' : ML (₁₊ n)) →
+  (∀ (ps : Pauli (₂₊ n)) →
+    head (act [ ML (₂₊ n) ∋ inj₁ ml ]ᵐˡ ps) ≡
+    head (act [ ML (₂₊ n) ∋ inj₂ (d , lm') ]ᵐˡ ps)) →
+  ⊥
+inj₁≁inj₂-proved {n} ((dv , e) , (bv , a)) d lm' h = aProbe-fst-nz a
+  (trans (sym (inj₁-fst dv e bv a (aProbe a)))
+  (trans (cong proj₁ (h (aProbe a ∷ pIₙ {₁₊ n})))
+         (inj₂-head-fst-0 d lm' (aProbe a))))
+
+------------------------------------------------------------------------
 -- The width induction
 --
 -- The two remaining base facts are module parameters; instantiating
@@ -470,3 +574,15 @@ module Induction
     lm₁ ≡ lm₂
   lemma-lm-inj lm₁ lm₂ h =
     lemma-lm-head-inj lm₁ lm₂ (λ ps → cong head (h ps))
+
+------------------------------------------------------------------------
+-- With the separation proved, ONE parameter remains: ML' (₂₊)
+-- head-injectivity.
+
+module Induction!
+  (inj₁-head-inj : ∀ {n} (ml₁ ml₂ : ML' (₂₊ n)) →
+    (∀ (ps : Pauli (₂₊ n)) →
+      head (act [ ML (₂₊ n) ∋ inj₁ ml₁ ]ᵐˡ ps) ≡
+      head (act [ ML (₂₊ n) ∋ inj₁ ml₂ ]ᵐˡ ps)) →
+    ml₁ ≡ ml₂)
+  = Induction inj₁-head-inj inj₁≁inj₂-proved
