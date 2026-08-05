@@ -799,6 +799,122 @@ inj₁-recover-e {n} dv₁ dv₂ e₁ e₂ bv₁ bv₂ a h =
            (cong proj₂ (inj₁-full dv₂ e₂ bv₂ a (aProbe a))))
 
 ------------------------------------------------------------------------
+-- The full B-box law with BOTH wires general: the box deposits
+-- bTop b z c f on wire 0 and sends the head up as (x + bMix b c f , z).
+-- Both closed forms are the exact raw outputs — no rewriting needed.
+
+bTop : B → ℤ ₚ → ℤ ₚ → ℤ ₚ → Pauli1
+bTop (₀ , b₂) z c f = (c , f + - (z * b₂))
+bTop (₁₊ c₁' , b₂) z c f =
+  (- (f + c * (- b₂ * (((₁₊ c₁' , λ ()) ⁻¹) .proj₁))) , c + - (z * ₁₊ c₁'))
+
+bMix : B → ℤ ₚ → ℤ ₚ → ℤ ₚ
+bMix (₀ , b₂) c f = c * b₂
+bMix (₁₊ c₁' , b₂) c f =
+  (- (f + c * (- b₂ * (((₁₊ c₁' , λ ()) ⁻¹) .proj₁)))) * ₁₊ c₁'
+
+bbox-full : ∀ (b : B) (x z c f : ℤ ₚ) (t : Pauli n) →
+  act ([_]ᵇ {n} b) ((x , z) ∷ (c , f) ∷ t) ≡
+    bTop b z c f ∷ (x + bMix b c f , z) ∷ t
+bbox-full (₀ , b₂) x z c f t =
+  trans (cong (act Ex) (act-CX'^ b₂ x z c f t))
+        (act-Ex (x + c * b₂) z c (f + - (z * b₂)) t)
+bbox-full (₁₊ c₁' , b₂) x z c f t =
+  trans (cong (λ v → act Ex (act (Symplectic.CX'^ (₁₊ c₁')) (act (H ↑) v)))
+          (trans (lemma-act-↑ (S^ k) (x , z) ((c , f) ∷ t))
+                 (cong ((x , z) ∷_) (act-S^ k c f t))))
+  (trans (cong (λ v → act Ex (act (Symplectic.CX'^ (₁₊ c₁')) v))
+          (trans (lemma-act-↑ H (x , z) ((c , f + c * k) ∷ t))
+                 (cong ((x , z) ∷_) (act-H c (f + c * k) t))))
+  (trans (cong (act Ex)
+          (act-CX'^ (₁₊ c₁') x z (- (f + c * k)) c t))
+         (act-Ex (x + (- (f + c * k)) * ₁₊ c₁') z
+                 (- (f + c * k)) (c + - (z * ₁₊ c₁')) t)))
+  where
+  k = - b₂ * (((₁₊ c₁' , λ ()) ⁻¹) .proj₁)
+
+-- One-step unfolding of the M/B staircase at a fully general input:
+-- the head one level down enters shifted by bMix, and the D box adds
+-- the dShift of the deposited bTop junk.
+
+mb-step : ∀ {k} (d₁ : D) (dv' : Vec D k) (e : E) (b₁ : B)
+  (bv' : Vec B k) (q₁ q₂ c f : ℤ ₚ) (t : Pauli k) →
+  head (act ([ (d₁ ∷ dv' , e) ]ᵐ • [ b₁ ∷ bv' ]ᵛᵇ)
+    ((q₁ , q₂) ∷ (c , f) ∷ t)) ≡
+  ( head (act ([ (dv' , e) ]ᵐ • [ bv' ]ᵛᵇ)
+      ((q₁ + bMix b₁ c f , q₂) ∷ t)) .proj₁
+  , head (act ([ (dv' , e) ]ᵐ • [ bv' ]ᵛᵇ)
+      ((q₁ + bMix b₁ c f , q₂) ∷ t)) .proj₂ +
+    dShift d₁ (bTop b₁ q₂ c f .proj₁) (bTop b₁ q₂ c f .proj₂) )
+mb-step {k} d₁ dv' e b₁ bv' q₁ q₂ c f t =
+  trans (cong head V)
+  (trans (cong (λ v → head (act ([_]ᵈ {k} d₁) (bTop b₁ q₂ c f ∷ v)))
+           (sym (lemma-aux-vec k inner)))
+         (dbox-head-full d₁ (bTop b₁ q₂ c f .proj₁)
+           (bTop b₁ q₂ c f .proj₂)
+           (head inner .proj₁) (head inner .proj₂) (tail inner)))
+  where
+  inner = act ([ (dv' , e) ]ᵐ • [ bv' ]ᵛᵇ) ((q₁ + bMix b₁ c f , q₂) ∷ t)
+  V : act ([ (d₁ ∷ dv' , e) ]ᵐ • [ b₁ ∷ bv' ]ᵛᵇ)
+        ((q₁ , q₂) ∷ (c , f) ∷ t) ≡
+      act ([_]ᵈ {k} d₁) (bTop b₁ q₂ c f ∷ inner)
+  V = trans (cong (λ v → act ([_]ᵈ {k} d₁)
+               (act ([ (dv' , e) ]ᵐ ↑) (act ([ bv' ]ᵛᵇ ↑) v)))
+          (bbox-full b₁ q₁ q₂ c f t))
+      (trans (cong (λ v → act ([_]ᵈ {k} d₁) (act ([ (dv' , e) ]ᵐ ↑) v))
+          (lemma-act-↑ [ bv' ]ᵛᵇ (bTop b₁ q₂ c f)
+            ((q₁ + bMix b₁ c f , q₂) ∷ t)))
+        (cong (act ([_]ᵈ {k} d₁))
+          (lemma-act-↑ [ (dv' , e) ]ᵐ (bTop b₁ q₂ c f)
+            (act [ bv' ]ᵛᵇ ((q₁ + bMix b₁ c f , q₂) ∷ t)))))
+
+-- bMix is the uniform linear functional (c , f) ↦ c·b₂ − f·c₁, so two
+-- probes read the B box off; and it vanishes at (₀ , ₀), which is what
+-- lets the recursion pass full input generality down a level.
+
+bMix-lin : ∀ (c₁ b₂ : ℤ ₚ) (pr : (c₁ , b₂) ≢ (₀ , ₀)) (c f : ℤ ₚ) →
+  bMix (c₁ , b₂) c f ≡ c * b₂ + - (f * c₁)
+bMix-lin ₀ b₂ pr c f = sym
+  (trans (cong (c * b₂ +_) (trans (cong -_ (*-zeroʳ f)) -₀≡₀))
+         (+-identityʳ (c * b₂)))
+bMix-lin (₁₊ c₁') b₂ pr c f = begin
+  (- (f + c * k)) * ₁₊ c₁'
+    ≡⟨ sym (-‿distribˡ-* (f + c * k) (₁₊ c₁')) ⟩
+  - ((f + c * k) * ₁₊ c₁')
+    ≡⟨ cong -_ (*-distribʳ-+ (₁₊ c₁') f (c * k)) ⟩
+  - (f * ₁₊ c₁' + c * k * ₁₊ c₁')
+    ≡⟨ sym (-‿+-comm (f * ₁₊ c₁') (c * k * ₁₊ c₁')) ⟩
+  - (f * ₁₊ c₁') + - (c * k * ₁₊ c₁')
+    ≡⟨ cong (- (f * ₁₊ c₁') +_) (cong -_ kc-eq) ⟩
+  - (f * ₁₊ c₁') + - (- (c * b₂))
+    ≡⟨ cong (- (f * ₁₊ c₁') +_) (-‿involutive (c * b₂)) ⟩
+  - (f * ₁₊ c₁') + c * b₂
+    ≡⟨ +-comm (- (f * ₁₊ c₁')) (c * b₂) ⟩
+  c * b₂ + - (f * ₁₊ c₁') ∎
+  where
+  xI = (((₁₊ c₁' , λ ()) ⁻¹) .proj₁)
+  k  = - b₂ * xI
+  kc-eq : c * k * ₁₊ c₁' ≡ - (c * b₂)
+  kc-eq = begin
+    c * (- b₂ * xI) * ₁₊ c₁'  ≡⟨ cong (_* ₁₊ c₁') (sym (*-assoc c (- b₂) xI)) ⟩
+    c * - b₂ * xI * ₁₊ c₁'    ≡⟨ *-assoc (c * - b₂) xI (₁₊ c₁') ⟩
+    c * - b₂ * (xI * ₁₊ c₁')  ≡⟨ cong (c * - b₂ *_)
+                                   (lemma-⁻¹ˡ (₁₊ c₁')
+                                     {{nztoℕ {y = ₁₊ c₁'} {neq0 = λ ()}}}) ⟩
+    c * - b₂ * ₁              ≡⟨ *-identityʳ (c * - b₂) ⟩
+    c * - b₂                  ≡⟨ sym (-‿distribʳ-* c b₂) ⟩
+    - (c * b₂)                ∎
+
+bMix-00 : ∀ (b : B) → bMix b ₀ ₀ ≡ ₀
+bMix-00 (₀ , b₂) = *-zeroˡ b₂
+bMix-00 (₁₊ c₁' , b₂) =
+  trans (cong (λ w → (- (₀ + w)) * ₁₊ c₁') (*-zeroˡ k))
+    (trans (cong (λ w → (- w) * ₁₊ c₁') (+-identityʳ ₀))
+      (trans (cong (_* ₁₊ c₁') -₀≡₀) (*-zeroˡ (₁₊ c₁'))))
+  where
+  k = - b₂ * (((₁₊ c₁' , λ ()) ⁻¹) .proj₁)
+
+------------------------------------------------------------------------
 -- With the separation proved, ONE parameter remains: ML' (₂₊)
 -- head-injectivity.
 
