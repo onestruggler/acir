@@ -55,7 +55,7 @@ open import Algebra.Properties.Ring (+-*-ring p-2)
   using (-‿involutive ; -‿+-comm)
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
-  p-2 p-prime using (nsum ; nsum-p≡0)
+  p-2 p-prime using (nsum ; nsum-p≡0 ; nsum-toℕ)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushBword
   p-2 p-prime using (No-Top ; NoTopGen ; sg ; εⁿ ; _•ⁿ_)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushMbS
@@ -557,3 +557,102 @@ mbSⁿ-orderp t bv = OP.orderp
   where
   module OP = OrderP (λ z → mbSⁿm t z bv)
     (λ m → mbSⁿ-avec t m bv) (λ m δ → mbSⁿ-equiv t m bv δ)
+
+------------------------------------------------------------------------
+-- Scalar shift calculus.  nsum (toℕ x) is multiplication by x, so a
+-- cascade push with ℤₚ-exponent x shifts the M column by x · σ, and a
+-- CHAIN of pushes shifts by the sum of its exponents: a chain whose
+-- exponents sum to zero is the identity (chain-0).  This is the
+-- workhorse for the H-driven orbits, whose four exponents
+-- [ab]⁻¹, −[ab]⁻¹, [ab]⁻¹, −[ab]⁻¹ cancel pairwise.
+
+open import Data.Fin.Properties using (toℕ-fromℕ< ; toℕ-injective)
+open import Data.List using (List ; foldr)
+  renaming ([] to []ᴸ ; _∷_ to _∷ᴸ_)
+
+nsum-* : ∀ (x δ : ℤ ₚ) → nsum (toℕ x) δ ≡ x * δ
+nsum-* x δ = toℕ-injective
+  (Eq.trans (nsum-toℕ (toℕ x) δ) (Eq.sym (toℕ-fromℕ< _)))
+
+ζΔᵥ : ∀ {k} → ℤ ₚ → DΔ k → DΔ k
+ζΔᵥ x = map (x *_)
+
+ζΔ : ∀ {k} → ℤ ₚ → MΔ k → MΔ k
+ζΔ x (δv , δe) = ζΔᵥ x δv , x * δe
+
+nΔ-ζ : ∀ {k} (x : ℤ ₚ) (δ : MΔ k) → nΔ (toℕ x) δ ≡ ζΔ x δ
+nΔ-ζ x (δv , δe) = Eq.cong₂ _,_ (go δv) (nsum-* x δe)
+  where
+  go : ∀ {k} (δv : DΔ k) → nΔᵥ (toℕ x) δv ≡ ζΔᵥ x δv
+  go []       = Eq.refl
+  go (δ ∷ δv) = Eq.cong₂ _∷_ (nsum-* x δ) (go δv)
+
+ζΔ-+ : ∀ {k} (x y : ℤ ₚ) (δ : MΔ k) → ζΔ x δ +Δ ζΔ y δ ≡ ζΔ (x + y) δ
+ζΔ-+ x y (δv , δe) =
+  Eq.cong₂ _,_ (go δv) (Eq.sym (*-distribʳ-+ δe x y))
+  where
+  go : ∀ {k} (δv : DΔ k) → ζΔᵥ x δv +Δᵥ ζΔᵥ y δv ≡ ζΔᵥ (x + y) δv
+  go []       = Eq.refl
+  go (δ ∷ δv) = Eq.cong₂ _∷_ (Eq.sym (*-distribʳ-+ δ x y)) (go δv)
+
+⊞-ζ0 : ∀ {k} (m : M (₁₊ k)) (δ : MΔ k) → m ⊞ ζΔ ₀ δ ≡ m
+⊞-ζ0 (dv , e) (δv , δe) =
+  Eq.cong₂ _,_ (go dv δv)
+    (Eq.trans (Eq.cong (e +_) (*-zeroˡ δe)) (+-identityʳ e))
+  where
+  go : ∀ {k} (dv : Vec D k) (δv : DΔ k) → dv ⊞ᵥ ζΔᵥ ₀ δv ≡ dv
+  go [] [] = Eq.refl
+  go ((a , b) ∷ dv) (δ ∷ δv) =
+    Eq.cong₂ _∷_
+      (Eq.cong (a ,_)
+        (Eq.trans (Eq.cong (b +_) (*-zeroˡ δ)) (+-identityʳ b)))
+      (go dv δv)
+
+-- The mb-S instance of the abstract engine, publicly.
+module MbS-OP {k : ℕ} (bv : Vec B k) = OrderP (λ z → mbSm z bv)
+  (λ m → mbS-avec m bv) (λ m δ → mbS-equiv m bv δ)
+
+mbSⁿ-itf : ∀ {k} (t : ℕ) (m : M (₁₊ k)) (bv : Vec B k) →
+  mbSⁿm t m bv ≡ itf (λ z → mbSm z bv) t m
+mbSⁿ-itf zero    m bv = Eq.refl
+mbSⁿ-itf (suc t) m bv =
+  Eq.trans (mbSⁿ-step t m bv) (mbSⁿ-itf t (mbSm m bv) bv)
+
+-- One cascade push shifts by its ℤₚ exponent.
+mbSⁿ-shiftζ : ∀ {k} (x : ℤ ₚ) (m : M (₁₊ k)) (bv : Vec B k) →
+  mbSⁿm (toℕ x) m bv ≡ m ⊞ ζΔ x (MbS-OP.σ bv m)
+mbSⁿ-shiftζ x m bv =
+  Eq.trans (mbSⁿ-itf (toℕ x) m bv)
+  (Eq.trans (MbS-OP.shift bv (toℕ x) m)
+            (Eq.cong (m ⊞_) (nΔ-ζ x (MbS-OP.σ bv m))))
+
+-- Chains of cascade pushes, threaded step-first.
+sumZ : List (ℤ ₚ) → ℤ ₚ
+sumZ = foldr _+_ ₀
+
+chainΦ : ∀ {k} → List (ℤ ₚ) → M (₁₊ k) → Vec B k → M (₁₊ k)
+chainΦ []ᴸ       m bv = m
+chainΦ (j ∷ᴸ js) m bv = chainΦ js (mbSⁿm (toℕ j) m bv) bv
+
+chain-shift : ∀ {k} (js : List (ℤ ₚ)) (m : M (₁₊ k)) (bv : Vec B k) →
+  chainΦ js m bv ≡ m ⊞ ζΔ (sumZ js) (MbS-OP.σ bv m)
+chain-shift []ᴸ m bv = Eq.sym (⊞-ζ0 m (MbS-OP.σ bv m))
+chain-shift (j ∷ᴸ js) m bv =
+  Eq.trans (chain-shift js (mbSⁿm (toℕ j) m bv) bv)
+  (Eq.trans (Eq.cong₂ _⊞_ (mbSⁿ-shiftζ j m bv)
+              (Eq.cong (ζΔ (sumZ js)) σΦ≡σ))
+  (Eq.trans (⊞-⊞ m (ζΔ j σm) (ζΔ (sumZ js) σm))
+            (Eq.cong (m ⊞_) (ζΔ-+ j (sumZ js) σm))))
+  where
+  σm = MbS-OP.σ bv m
+  σΦ≡σ : MbS-OP.σ bv (mbSⁿm (toℕ j) m bv) ≡ σm
+  σΦ≡σ = Eq.trans (Eq.cong (MbS-OP.σ bv) (mbSⁿ-shiftζ j m bv))
+                  (MbS-OP.σ-const bv m (ζΔ j σm))
+
+-- A chain whose exponents sum to zero is the identity on the M column.
+chain-0 : ∀ {k} (js : List (ℤ ₚ)) (m : M (₁₊ k)) (bv : Vec B k) →
+  sumZ js ≡ ₀ → chainΦ js m bv ≡ m
+chain-0 js m bv sum0 =
+  Eq.trans (chain-shift js m bv)
+  (Eq.trans (Eq.cong (λ z → m ⊞ ζΔ z (MbS-OP.σ bv m)) sum0)
+            (⊞-ζ0 m (MbS-OP.σ bv m)))
