@@ -58,7 +58,7 @@ open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using (A ; B ; D ; E ; M ; L' ; ML ; ML' ;
          [_]ᵐˡ ; [_]ᵈ ; [_]ᵃ ; [_]ᵇ ; [_]ᵐ ; [_]ᵛᵇ)
 open import Examples.Groups.Symplectic.Normalization.NF1HeadInj p-2 p-prime
-  using (lemma-nf1-head-inj ; A-≡)
+  using (lemma-nf1-head-inj ; A-≡ ; *-cancelˡ-nz)
 
 private
   variable
@@ -663,6 +663,140 @@ inj₁-recover-a {n} dv₁ dv₂ e₁ e₂ bv₁ bv₂
   x-eq = neg-inj x₁ x₂
     (trans (sym (aHd-pZ x₁ y₁ pr₁))
     (trans (probe-eq pZ) (aHd-pZ x₂ y₂ pr₂)))
+
+------------------------------------------------------------------------
+-- Toward E-recovery: the FULL head value of the M/B composite.  The
+-- D-box head law with both components (dShift is the exact raw shift),
+-- and the closed form mbSnd accumulating the staircase contributions.
+
+dShift : D → ℤ ₚ → ℤ ₚ → ℤ ₚ
+dShift (₀ , b) x z = x * (- b)
+dShift (₁₊ a' , b) x z =
+  (- (z + x * (- b * (((₁₊ a' , λ ()) ⁻¹) .proj₁)))) * (- ₁₊ a')
+
+dbox-head-full : ∀ (d : D) (x z c e : ℤ ₚ) (t : Pauli n) →
+  head (act ([_]ᵈ {n} d) ((x , z) ∷ (c , e) ∷ t)) ≡ (c , e + dShift d x z)
+dbox-head-full (₀ , b) x z c e t = cong head
+  (trans (cong (act Ex) (act-CZ^ (- b) x z c e t))
+         (act-Ex x (z + c * (- b)) c (e + x * (- b)) t))
+dbox-head-full (₁₊ a' , b) x z c e t = cong head
+  (trans (cong (λ v → act Ex (act (CZ^ (- ₁₊ a')) (act H v)))
+           (act-S^ k' x z ((c , e) ∷ t)))
+  (trans (cong (act Ex)
+           (act-CZ^ (- ₁₊ a') (- (z + x * k')) x c e t))
+         (act-Ex (- (z + x * k')) (x + c * (- ₁₊ a'))
+                 c (e + (- (z + x * k')) * (- ₁₊ a')) t)))
+  where
+  k' = - b * (((₁₊ a' , λ ()) ⁻¹) .proj₁)
+
+mbSnd : ∀ {k} → Vec D k → E → Vec B k → Pauli1 → ℤ ₚ
+mbSnd [] e [] (q₁ , q₂) = q₂ + q₁ * (- e)
+mbSnd (d₁ ∷ dv') e (b₁ ∷ bv') q@(q₁ , q₂) =
+  mbSnd dv' e bv' q +
+    dShift d₁ (bJunk b₁ q₂ .proj₁) (bJunk b₁ q₂ .proj₂)
+
+mb-full : ∀ {k} (dv : Vec D k) (e : E) (bv : Vec B k) (q : Pauli1) →
+  head (act ([ (dv , e) ]ᵐ • [ bv ]ᵛᵇ) (q ∷ pIₙ {k})) ≡
+    (q .proj₁ , mbSnd dv e bv q)
+mb-full [] e [] (q₁ , q₂) = cong head (act-S^ (- e) q₁ q₂ [])
+mb-full {₁₊ k'} (d₁ ∷ dv') e (b₁ ∷ bv') q@(q₁ , q₂) =
+  trans (cong head V)
+  (trans (cong (λ v → head (act ([_]ᵈ {k'} d₁) (bJunk b₁ q₂ ∷ v)))
+           (sym (lemma-aux-vec k' inner)))
+  (trans (dbox-head-full d₁ (bJunk b₁ q₂ .proj₁) (bJunk b₁ q₂ .proj₂)
+           (head inner .proj₁) (head inner .proj₂) (tail inner))
+         (cong (λ w → (w .proj₁ , w .proj₂ +
+             dShift d₁ (bJunk b₁ q₂ .proj₁) (bJunk b₁ q₂ .proj₂)))
+           (mb-full dv' e bv' q))))
+  where
+  inner = act ([ (dv' , e) ]ᵐ • [ bv' ]ᵛᵇ) (q ∷ pIₙ {k'})
+  V : act ([ (d₁ ∷ dv' , e) ]ᵐ • [ b₁ ∷ bv' ]ᵛᵇ) (q ∷ pIₙ {₁₊ k'}) ≡
+      act ([_]ᵈ {k'} d₁) (bJunk b₁ q₂ ∷ inner)
+  V = trans (cong (λ v → act ([_]ᵈ {k'} d₁)
+               (act ([ (dv' , e) ]ᵐ ↑) (act ([ bv' ]ᵛᵇ ↑) v)))
+          (bbox-carrier b₁ q₁ q₂ (pIₙ {k'})))
+      (trans (cong (λ v → act ([_]ᵈ {k'} d₁) (act ([ (dv' , e) ]ᵐ ↑) v))
+          (lemma-act-↑ [ bv' ]ᵛᵇ (bJunk b₁ q₂) ((q₁ , q₂) ∷ pIₙ {k'})))
+        (cong (act ([_]ᵈ {k'} d₁))
+          (lemma-act-↑ [ (dv' , e) ]ᵐ (bJunk b₁ q₂)
+            (act [ bv' ]ᵛᵇ ((q₁ , q₂) ∷ pIₙ {k'})))))
+
+-- At a probe whose transformed second component is ₀ the staircase
+-- contributions all vanish, leaving q₁ · (− e).
+
+bJunk-snd-0 : ∀ (b : B) (σ : ℤ ₚ) → σ ≡ ₀ → bJunk b σ .proj₂ ≡ ₀
+bJunk-snd-0 (₀ , b₂) σ σ0 =
+  trans (cong (λ w → - (w * b₂)) σ0)
+    (trans (cong -_ (*-zeroˡ b₂)) -₀≡₀)
+bJunk-snd-0 (₁₊ c₁' , _) σ σ0 =
+  trans (cong (λ w → - (w * ₁₊ c₁')) σ0)
+    (trans (cong -_ (*-zeroˡ (₁₊ c₁'))) -₀≡₀)
+
+dShift-00 : ∀ (d : D) (z : ℤ ₚ) → z ≡ ₀ → dShift d ₀ z ≡ ₀
+dShift-00 (₀ , b) z z0 = *-zeroˡ (- b)
+dShift-00 (₁₊ a' , b) z z0 =
+  trans (cong (λ w → (- (w + ₀ * k')) * (- ₁₊ a')) z0)
+    (trans (cong (λ w → (- (₀ + w)) * (- ₁₊ a')) (*-zeroˡ k'))
+      (trans (cong (λ w → (- w) * (- ₁₊ a')) (+-identityʳ ₀))
+        (trans (cong (_* (- ₁₊ a')) -₀≡₀) (*-zeroˡ (- ₁₊ a')))))
+  where
+  k' = - b * (((₁₊ a' , λ ()) ⁻¹) .proj₁)
+
+mbSnd-σ0 : ∀ {k} (dv : Vec D k) (e : E) (bv : Vec B k) (α σ : ℤ ₚ) →
+  σ ≡ ₀ → mbSnd dv e bv (α , σ) ≡ α * (- e)
+mbSnd-σ0 [] e [] α σ σ0 =
+  trans (cong (_+ α * (- e)) σ0) (+-identityˡ (α * (- e)))
+mbSnd-σ0 (d₁ ∷ dv') e (b₁ ∷ bv') α σ σ0 =
+  trans (cong₂ _+_ (mbSnd-σ0 dv' e bv' α σ σ0)
+                   (dShift-0-arg))
+        (+-identityʳ (α * (- e)))
+  where
+  bJunk-fst : ∀ (b : B) → bJunk b σ .proj₁ ≡ ₀
+  bJunk-fst (₀ , _) = refl
+  bJunk-fst (₁₊ _ , _) = refl
+  dShift-0-arg : dShift d₁ (bJunk b₁ σ .proj₁) (bJunk b₁ σ .proj₂) ≡ ₀
+  dShift-0-arg = trans
+    (cong₂ (dShift d₁) (bJunk-fst b₁) (bJunk-snd-0 b₁ σ σ0))
+    (dShift-00 d₁ ₀ refl)
+
+aProbe-snd-0 : ∀ (a : A) → aHd a (aProbe a) .proj₂ ≡ ₀
+aProbe-snd-0 ((₀ , ₀) , pr) = ⊥-elim (pr refl)
+aProbe-snd-0 ((₀ , ₁₊ y') , pr) = *-zeroˡ (((₁₊ y' , λ ()) ⁻¹) .proj₁)
+aProbe-snd-0 ((₁₊ x' , y) , pr) = *-zeroˡ (((₁₊ x' , λ ()) ⁻¹) .proj₁)
+
+-- The full head value of an inj₁ coset word at a probed input.
+inj₁-full : ∀ {n} (dv : Vec D (₁₊ n)) (e : E) (bv : Vec B (₁₊ n))
+  (a : A) (p₀ : Pauli1) →
+  head (act [ ML (₂₊ n) ∋ inj₁ ((dv , e) , (bv , a)) ]ᵐˡ
+    (p₀ ∷ pIₙ {₁₊ n})) ≡ (aHd a p₀ .proj₁ , mbSnd dv e bv (aHd a p₀))
+inj₁-full {n} dv e bv a p₀ =
+  trans (cong head
+          (cong (λ v → act [ (dv , e) ]ᵐ (act [ bv ]ᵛᵇ v))
+            (abox-hd a p₀ (pIₙ {₁₊ n}))))
+        (mb-full dv e bv (aHd a p₀))
+
+-- E is recovered: with the A boxes already equal, compare the second
+-- head components at the probe.
+inj₁-recover-e : ∀ {n} (dv₁ dv₂ : Vec D (₁₊ n)) (e₁ e₂ : E)
+  (bv₁ bv₂ : Vec B (₁₊ n)) (a : A) →
+  (∀ (ps : Pauli (₂₊ n)) →
+    head (act [ ML (₂₊ n) ∋ inj₁ ((dv₁ , e₁) , (bv₁ , a)) ]ᵐˡ ps) ≡
+    head (act [ ML (₂₊ n) ∋ inj₁ ((dv₂ , e₂) , (bv₂ , a)) ]ᵐˡ ps)) →
+  e₁ ≡ e₂
+inj₁-recover-e {n} dv₁ dv₂ e₁ e₂ bv₁ bv₂ a h =
+  neg-inj e₁ e₂
+    (*-cancelˡ-nz α (- e₁) (- e₂) (aProbe-fst-nz a)
+      (trans (sym (mbSnd-σ0 dv₁ e₁ bv₁ α σ σ0))
+      (trans snd-eq (mbSnd-σ0 dv₂ e₂ bv₂ α σ σ0))))
+  where
+  α = aHd a (aProbe a) .proj₁
+  σ = aHd a (aProbe a) .proj₂
+  σ0 = aProbe-snd-0 a
+  snd-eq : mbSnd dv₁ e₁ bv₁ (α , σ) ≡ mbSnd dv₂ e₂ bv₂ (α , σ)
+  snd-eq =
+    trans (sym (cong proj₂ (inj₁-full dv₁ e₁ bv₁ a (aProbe a))))
+    (trans (cong proj₂ (h (aProbe a ∷ pIₙ {₁₊ n})))
+           (cong proj₂ (inj₁-full dv₂ e₂ bv₂ a (aProbe a))))
 
 ------------------------------------------------------------------------
 -- With the separation proved, ONE parameter remains: ML' (₂₊)
