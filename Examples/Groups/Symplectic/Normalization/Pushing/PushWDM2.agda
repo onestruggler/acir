@@ -176,3 +176,36 @@ MBWCZ (suc (suc t)) (₁₊ i) (₁₊ b') ê =
       (MBWS (toℕ (₁₊ α' * ₁₊ α')) a b (ê + - ₁)))
     (MBWCZ (toℕ (- ₁₊ α')) a (b + nsum (toℕ (₁₊ α' * ₁₊ α')) (- a))
       (ê + - ₁))
+
+------------------------------------------------------------------------
+-- Phase 4a: the t-fold cascade in closed form.  The per-step shifts
+-- depend only on the (preserved) a-component, so they accumulate as
+-- nsum-scaled constants.
+
+Φ-w2-iter : ∀ (t : ℕ) (α' : Fin (₁₊ p-2)) (β : ℤ ₚ) (a b : ℤ ₚ) (ê : E) →
+  itf (λ z → mbSm z ((₁₊ α' , β) ∷ [])) t ((a , b) ∷ [] , ê)
+  ≡ ((a , b + nsum t (nsum (toℕ (₁₊ α' * ₁₊ α')) (- a)
+                      + nsum (toℕ (- ₁₊ α')) (- ₁))) ∷ []
+    , ê + nsum t (- ₁ + - nsum (toℕ (- ₁₊ α')) (eCZ a)))
+Φ-w2-iter zero α' β a b ê =
+  Eq.cong₂ _,_
+    (Eq.cong (λ z → (a , z) ∷ []) (Eq.sym (+-identityʳ b)))
+    (Eq.sym (+-identityʳ ê))
+Φ-w2-iter (suc t) α' β a b ê =
+  Eq.trans (Eq.cong (itf (λ z → mbSm z ((₁₊ α' , β) ∷ [])) t)
+      (Φ-w2 α' β a b ê))
+  (Eq.trans (Φ-w2-iter t α' β a
+      ((b + nsum (toℕ (₁₊ α' * ₁₊ α')) (- a)) + nsum (toℕ (- ₁₊ α')) (- ₁))
+      ((ê + - ₁) + - nsum (toℕ (- ₁₊ α')) (eCZ a)))
+    (Eq.cong₂ _,_
+      (Eq.cong (λ z → (a , z) ∷ [])
+        (Eq.trans (Eq.cong (_+ nsum t ΔB)
+            (+-assoc b (nsum (toℕ (₁₊ α' * ₁₊ α')) (- a))
+                       (nsum (toℕ (- ₁₊ α')) (- ₁))))
+          (+-assoc b ΔB (nsum t ΔB))))
+      (Eq.trans (Eq.cong (_+ nsum t ΔE)
+          (+-assoc ê (- ₁) (- nsum (toℕ (- ₁₊ α')) (eCZ a))))
+        (+-assoc ê ΔE (nsum t ΔE)))))
+  where
+  ΔB = nsum (toℕ (₁₊ α' * ₁₊ α')) (- a) + nsum (toℕ (- ₁₊ α')) (- ₁)
+  ΔE = - ₁ + - nsum (toℕ (- ₁₊ α')) (eCZ a)
