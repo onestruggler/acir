@@ -31,7 +31,7 @@ open import Data.Empty using (⊥ ; ⊥-elim)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
 open import Data.Sum using (inj₁ ; inj₂)
-open import Data.Fin using (toℕ)
+open import Data.Fin using (Fin ; toℕ)
 open import Data.Vec using (Vec ; _∷_ ; [] ; head ; tail)
 open import Function using (_∋_)
 import Relation.Binary.PropositionalEquality as Eq
@@ -52,9 +52,10 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic using (S^ ; CZ^ ; S ; H ; CZ ; Ex ; Circuit ; Gen ;
   gate₁ ; gate₂ ; _↥ ; _↑ ; H-gate ; S-gate ; CZ-gate)
 open import Examples.Groups.Symplectic.BoxAction p-2 p-prime
-  using (act ; sc ; sc-toℕ ; sc-suc ; act-S^ ; act-H ; act-Ex)
+  using (act ; sc ; sc-toℕ ; sc-suc ; act-S^ ; act-H ; act-HS^ ; act-M ;
+         act-Ex)
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
-  using (D ; M ; L' ; ML ; ML' ; [_]ᵐˡ ; [_]ᵈ)
+  using (A ; D ; M ; L' ; ML ; ML' ; [_]ᵐˡ ; [_]ᵈ ; [_]ᵃ)
 open import Examples.Groups.Symplectic.Normalization.NF1HeadInj p-2 p-prime
   using (lemma-nf1-head-inj)
 
@@ -273,6 +274,69 @@ inj₂-head-fst-0 {n} d lm' p₀ =
   (trans (cong (λ v → head (act ([_]ᵈ {n} d) (p₀ ∷ v)) .proj₁)
           (act-pIₙ [ lm' ]ᵐˡ))
          (dbox-head-fst d (p₀ .proj₁) (p₀ .proj₂) ₀ ₀ (pIₙ {n})))
+
+------------------------------------------------------------------------
+-- The A-box head transform: [ a ]ᵃ is a word of wire-0 gates, so it
+-- acts on the head alone, by the closed form aHd.  At a shape-chosen
+-- input (pX for the (₀,·) shape, pZ otherwise) the transformed head
+-- has NONZERO a-component — the inj₁ side of the separation.
+
+aHd : A → Pauli1 → Pauli1
+aHd ((₀ , ₀) , pr) q = ⊥-elim (pr refl)
+aHd ((₀ , ₁₊ b') , pr) (q₁ , q₂) =
+  (q₁ * (((₁₊ b' , λ ()) ⁻¹ ⁻¹) .proj₁) , q₂ * (((₁₊ b' , λ ()) ⁻¹) .proj₁))
+aHd ((₁₊ a' , b) , pr) (q₁ , q₂) =
+  ( (- (q₂ + q₁ * (- b * xI))) * (((₁₊ a' , λ ()) ⁻¹ ⁻¹) .proj₁)
+  , q₁ * xI )
+  where xI = ((₁₊ a' , λ ()) ⁻¹) .proj₁
+
+abox-hd : ∀ (a : A) (q : Pauli1) (t : Pauli n) →
+  act ([_]ᵃ {n} a) (q ∷ t) ≡ aHd a q ∷ t
+abox-hd ((₀ , ₀) , pr) q t = ⊥-elim (pr refl)
+abox-hd ((₀ , ₁₊ b') , pr) (q₁ , q₂) t =
+  act-M ((₁₊ b' , λ ()) ⁻¹) q₁ q₂ t
+abox-hd ((₁₊ a' , b) , pr) (q₁ , q₂) t =
+  trans (cong (act (Symplectic.M inv)) (act-HS^ k q₁ q₂ t))
+        (act-M inv (- (q₂ + q₁ * k)) q₁ t)
+  where
+  inv = (₁₊ a' , λ ()) ⁻¹
+  k   = - b * (inv .proj₁)
+
+-- The shape-chosen probe input, and nonzeroness of the transformed
+-- a-component there.
+aProbe : A → Pauli1
+aProbe ((₀ , _) , _)  = pX
+aProbe ((₁₊ _ , _) , _) = pZ
+
+suc≢₀' : ∀ {x : Fin (₁₊ p-2)} → _≡_ {A = ℤ ₚ} (₁₊ x) ₀ → ⊥
+suc≢₀' ()
+
+neg-suc-nz' : ∀ (x : Fin (₁₊ p-2)) → - (₁₊ x) ≡ ₀ → ⊥
+neg-suc-nz' x h = suc≢₀'
+  (trans (sym (-‿involutive (₁₊ x))) (trans (cong -_ h) -₀≡₀))
+
+aProbe-fst-nz : ∀ (a : A) → aHd a (aProbe a) .proj₁ ≡ ₀ → ⊥
+aProbe-fst-nz ((₀ , ₀) , pr) _ = pr refl
+aProbe-fst-nz ((₀ , ₁₊ b') , pr) eq = suc≢₀' (trans (sym p1) eq)
+  where
+  invI = (((₁₊ b' , λ ()) ⁻¹ ⁻¹) .proj₁)
+  p1 : ₁ * invI ≡ ₁₊ b'
+  p1 = trans (*-identityˡ invI) (inv-involutive (₁₊ b' , λ ()))
+aProbe-fst-nz ((₁₊ a' , b) , pr) eq = neg-suc-nz' a' (trans (sym q1) eq)
+  where
+  inv  = (₁₊ a' , λ ()) ⁻¹
+  xI   = inv .proj₁
+  invI = ((inv ⁻¹) .proj₁)
+  k    = - b * xI
+  s1 : ₁ + ₀ * k ≡ ₁
+  s1 = trans (cong (₁ +_) (*-zeroˡ k)) (+-identityʳ ₁)
+  q1 : (- (₁ + ₀ * k)) * invI ≡ - (₁₊ a')
+  q1 = begin
+    (- (₁ + ₀ * k)) * invI ≡⟨ cong (λ z → (- z) * invI) s1 ⟩
+    (- ₁) * invI           ≡⟨ sym (-‿distribˡ-* ₁ invI) ⟩
+    - (₁ * invI)           ≡⟨ cong -_ (*-identityˡ invI) ⟩
+    - invI                 ≡⟨ cong -_ (inv-involutive (₁₊ a' , λ ())) ⟩
+    - (₁₊ a')              ∎
 
 ------------------------------------------------------------------------
 -- The width induction
