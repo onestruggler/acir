@@ -35,7 +35,8 @@ open Symplectic renaming (M to ZM)
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
-open import Algebra.Properties.Ring (+-*-ring p-2) using (-‿distribʳ-*)
+open import Algebra.Properties.Ring (+-*-ring p-2)
+  using (-‿distribʳ-* ; -0#≈0#)
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
   p-2 p-prime using (C ; ract ; nsum ; _≋_ ; c1-eq ; elim-suc)
@@ -47,6 +48,10 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDM
   p-2 p-prime using (ractM! ; Mact-nz)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ2
   p-2 p-prime using (ract-↑-≡)
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMD
+  p-2 p-prime using (MD-coset!0 ; MD-coset!+)
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDMCZ
+  p-2 p-prime using (M↓≡)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWD
   p-2 p-prime using (inv-val-cong)
 import Examples.Groups.Symplectic.Normalization.Pushing.StrategyB2
@@ -201,3 +206,162 @@ semi-M↑CZ-wd2-inj₂-0b x da db e b nz =
     (inj₂ ((da , db) , (([] , e) , ([] , ((₀ , ₁₊ b) , nz)))))
     (srel (Base.semi-M↑CZ x))
     (SemiMuCZ-0b.semiMuCZ-wd2-0b-coset x b nz m' eq-m da db e)
+
+------------------------------------------------------------------------
+-- semi-M↓CZ at inj₂ (d , (₀,bA)-box): the down-widened M word equals
+-- the plain width-2 M word (M↓≡), which drives the D BOX (MD-coset!0/+
+-- from the M-mul engine: (₀,b) ↦ (₀ , x⁻¹·b), (₁₊a',b) ↦ (x·a' ,
+-- x⁻¹·b), the width-1 part untouched); the CZ legs run the same
+-- CZOrbit-0b since the A box is fixed on both sides.
+
+module SemiMdCZ-0A (x : ℤ* ₚ) (bA : Fin (₁₊ p-2))
+  (nzA : (₀ , ₁₊ bA) ≢ (₀ , ₀))
+  where
+
+  open CZOrbit-0b bA nzA using ()
+    renaming (tCZ to tA ; cst to cstA ; stepCZ to stepA ; orbitCZ to orbitA)
+
+  private
+    X : ℤ ₚ
+    X = x .proj₁
+
+    x⁻¹v : ℤ ₚ
+    x⁻¹v = (x ⁻¹) .proj₁
+
+    BA* : ℤ* ₚ
+    BA* = (₁₊ bA , λ ())
+
+    ml1e : E → C 1
+    ml1e e = ([] , e) , ([] , ((₀ , ₁₊ bA) , nzA))
+
+    ΔA : ℤ ₚ
+    ΔA = nsum tA (- ₁)
+
+    -- x⁻¹ · (k-fold drift) = one-step drift.
+    chain2 : x⁻¹v * nsum (toℕ X) ΔA ≡ ΔA
+    chain2 = Eq.trans (Eq.cong (x⁻¹v *_) (nsum-* X ΔA))
+             (Eq.trans (Eq.sym (*-assoc x⁻¹v X ΔA))
+             (Eq.trans (Eq.cong (_* ΔA)
+                 (lemma-⁻¹ˡ X {{nztoℕ {y = X} {neq0 = x .proj₂}}}))
+               (*-identityˡ ΔA)))
+
+    dsnd : ∀ (ddb : ℤ ₚ) →
+      x⁻¹v * ddb + ΔA ≡ x⁻¹v * (ddb + nsum (toℕ X) ΔA)
+    dsnd ddb = Eq.sym
+      (Eq.trans (*-distribˡ-+ x⁻¹v ddb (nsum (toℕ X) ΔA))
+                (Eq.cong ((x⁻¹v * ddb) +_) chain2))
+
+    -- nsum tA ₀ vanishes (rate times zero).
+    z0 : nsum tA ₀ ≡ ₀
+    z0 = Eq.trans (nsum-* ((BA* ⁻¹) .proj₁) ₀) (*-zeroʳ ((BA* ⁻¹) .proj₁))
+
+    -z0 : - nsum tA ₀ ≡ ₀
+    -z0 = Eq.trans (Eq.cong -_ z0) -0#≈0#
+
+    e00 : ∀ (e : E) → e + - nsum tA ₀ ≡ e
+    e00 e = Eq.trans (Eq.cong (e +_) -z0) (+-identityʳ e)
+
+    e00' : ∀ (e : E) → e + nsum (toℕ X) (- nsum tA ₀) ≡ e
+    e00' e = Eq.trans
+      (Eq.cong (e +_)
+        (Eq.trans (Eq.cong (nsum (toℕ X)) -z0)
+        (Eq.trans (nsum-* X ₀) (*-zeroʳ X))))
+      (+-identityʳ e)
+
+  -- D box (₀ , ddb): the drive scales the second slot; no e-emission
+  -- (eCZ ₀ = ₀).
+  semiMdCZ-00-coset : ∀ (ddb e : ℤ ₚ) →
+    ((ract {1} ᵗ) (cstA (₀ , ddb) e) (ZM x ↓ • CZ)) .proj₂
+    ≡ ((ract {1} ᵗ) (cstA (₀ , ddb) e) (CZ^ (x ^1) • ZM x ↓)) .proj₂
+  semiMdCZ-00-coset ddb e =
+    Eq.trans
+      (Eq.trans
+        (Eq.cong (λ w → ((ract {1} ᵗ) (cstA (₀ , ddb) e) (w • CZ)) .proj₂)
+                 (M↓≡ x))
+      (Eq.trans
+        (Eq.cong (λ z → ((ract {1} ᵗ) z CZ) .proj₂)
+                 (MD-coset!0 x ddb (ml1e e)))
+        (stepA ₀ (x⁻¹v * ddb) e)))
+    (Eq.trans
+      (inj₂-w1-de-eq
+        (Eq.cong (₀ ,_) (dsnd ddb))
+        (Eq.trans (e00 e) (Eq.sym (e00' e))))
+      (Eq.sym
+        (Eq.trans
+          (Eq.cong (λ z → ((ract {1} ᵗ) z (ZM x ↓)) .proj₂)
+                   (orbitA (toℕ X) ₀ ddb e))
+        (Eq.trans
+          (Eq.cong (λ w → ((ract {1} ᵗ)
+              (cstA (₀ , ddb + nsum (toℕ X) ΔA)
+                    (e + nsum (toℕ X) (- nsum tA ₀))) w) .proj₂)
+            (M↓≡ x))
+          (MD-coset!0 x (ddb + nsum (toℕ X) ΔA)
+            (ml1e (e + nsum (toℕ X) (- nsum tA ₀))))))))
+
+  -- D box (₁₊ a' , ddb): the drive scales both slots; the e-emission
+  -- rates match because bA⁻¹·(x·a') = x·(bA⁻¹·a').
+  semiMdCZ-+-coset : ∀ (a' v' : Fin (₁₊ p-2))
+    (eq-v : X * ₁₊ a' ≡ ₁₊ v') (ddb e : ℤ ₚ) →
+    ((ract {1} ᵗ) (cstA (₁₊ a' , ddb) e) (ZM x ↓ • CZ)) .proj₂
+    ≡ ((ract {1} ᵗ) (cstA (₁₊ a' , ddb) e) (CZ^ (x ^1) • ZM x ↓)) .proj₂
+  semiMdCZ-+-coset a' v' eq-v ddb e =
+    Eq.trans
+      (Eq.trans
+        (Eq.cong (λ w → ((ract {1} ᵗ) (cstA (₁₊ a' , ddb) e) (w • CZ)) .proj₂)
+                 (M↓≡ x))
+      (Eq.trans
+        (Eq.cong (λ z → ((ract {1} ᵗ) z CZ) .proj₂)
+          (Eq.trans (MD-coset!+ x a' ddb (ml1e e))
+            (Eq.cong (λ u → inj₂ ((u , x⁻¹v * ddb) , ml1e e)) eq-v)))
+        (stepA (₁₊ v') (x⁻¹v * ddb) e)))
+    (Eq.trans
+      (inj₂-w1-de-eq
+        (Eq.cong₂ _,_ (Eq.sym eq-v) (dsnd ddb))
+        (Eq.cong (e +_) e+))
+      (Eq.sym
+        (Eq.trans
+          (Eq.cong (λ z → ((ract {1} ᵗ) z (ZM x ↓)) .proj₂)
+                   (orbitA (toℕ X) (₁₊ a') ddb e))
+        (Eq.trans
+          (Eq.cong (λ w → ((ract {1} ᵗ)
+              (cstA (₁₊ a' , ddb + nsum (toℕ X) ΔA)
+                    (e + nsum (toℕ X) (- nsum tA (eCZ (₁₊ a'))))) w) .proj₂)
+            (M↓≡ x))
+          (MD-coset!+ x a' (ddb + nsum (toℕ X) ΔA)
+            (ml1e (e + nsum (toℕ X) (- nsum tA (eCZ (₁₊ a'))))))))))
+    where
+    bAi : ℤ ₚ
+    bAi = (BA* ⁻¹) .proj₁
+
+    swap3 : bAi * (X * ₁₊ a') ≡ X * (bAi * ₁₊ a')
+    swap3 = Eq.trans (Eq.sym (*-assoc bAi X (₁₊ a')))
+            (Eq.trans (Eq.cong (_* ₁₊ a') (*-comm bAi X))
+                      (*-assoc X bAi (₁₊ a')))
+
+    e+ : - nsum tA (₁₊ v') ≡ nsum (toℕ X) (- nsum tA (₁₊ a'))
+    e+ = Eq.trans (Eq.cong -_
+           (Eq.trans (nsum-* bAi (₁₊ v'))
+           (Eq.trans (Eq.cong (bAi *_) (Eq.sym eq-v)) swap3)))
+         (Eq.trans (-‿distribʳ-* X (bAi * ₁₊ a'))
+         (Eq.sym (Eq.trans (nsum-* X (- nsum tA (₁₊ a')))
+           (Eq.cong (X *_) (Eq.cong -_ (nsum-* bAi (₁₊ a')))))))
+
+------------------------------------------------------------------------
+-- The full ≋ pair for the ↓ variant, dispatched over the D box.
+
+semi-M↓CZ-wd2-inj₂-0A : ∀ (x : ℤ* ₚ) (dd : D) (e : ℤ ₚ)
+  (bA : Fin (₁₊ p-2)) (nzA : (₀ , ₁₊ bA) ≢ (₀ , ₀)) →
+  let c = inj₂ (dd , (([] , e) , ([] , ((₀ , ₁₊ bA) , nzA)))) in
+  (ract {1} ᵗ) c (ZM x ↓ • CZ) ≋ (ract {1} ᵗ) c (CZ^ (x ^1) • ZM x ↓)
+semi-M↓CZ-wd2-inj₂-0A x (₀ , ddb) e bA nzA =
+  SB2.wd-from-coset
+    (inj₂ ((₀ , ddb) , (([] , e) , ([] , ((₀ , ₁₊ bA) , nzA)))))
+    (srel (Base.semi-M↓CZ x))
+    (SemiMdCZ-0A.semiMdCZ-00-coset x bA nzA ddb e)
+semi-M↓CZ-wd2-inj₂-0A x (₁₊ a' , ddb) e bA nzA =
+  elim-suc (x .proj₁ * ₁₊ a') ((x *' (₁₊ a' , λ ())) .proj₂)
+    λ v' eq-v →
+  SB2.wd-from-coset
+    (inj₂ ((₁₊ a' , ddb) , (([] , e) , ([] , ((₀ , ₁₊ bA) , nzA)))))
+    (srel (Base.semi-M↓CZ x))
+    (SemiMdCZ-0A.semiMdCZ-+-coset x bA nzA a' v' eq-v ddb e)
