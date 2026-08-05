@@ -45,12 +45,18 @@ open import Algebra.Properties.Ring (+-*-ring p-2)
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
   p-2 p-prime
+open import Examples.Groups.Symplectic.BR.Two.D-w p-2 p-prime as TDw
+  using ()
+import Examples.Groups.Symplectic.BR.Two.L2-CZ p-2 p-prime as LCZ2
+open import Examples.Groups.Symplectic.Normalization.Pushing.PushLM1
+  p-2 p-prime using (A-dir-S-power)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDM
   p-2 p-prime using (nsum-neg ; valM-C ; valM-D ; Mact-nz)
 open import Examples.Groups.Symplectic.Normalization.Pushing.MbSOrder
   p-2 p-prime using
   (itf ; mbSⁿm ; mbSⁿ-shiftζ ; mbSⁿ-block ; module MbS-OP ;
-   ζΔ ; _⊞_ ; ⊞-⊞ ; ζΔ-+ ; ⊞-ζ0 ; nsum-* ; chainΦ ; chain-0 ; sumZ)
+   ζΔ ; _⊞_ ; ⊞-⊞ ; ζΔ-+ ; ⊞-ζ0 ; nsum-* ; chainΦ ; chain-0 ; sumZ ;
+   +-swap)
 open import Data.List using () renaming ([] to []ᴸ ; _∷_ to _∷ᴸ_)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWD
   p-2 p-prime using
@@ -890,3 +896,53 @@ Mmul-inj₁-coset-full : ∀ {m : ℕ} (x* y* : ℤ* ₚ) (ml' : ML' (₂₊ m))
   ≡ ((ract {₁₊ m} ᵗ) (inj₁ ml') (ZM (x* *' y*))) .proj₂
 Mmul-inj₁-coset-full x* y* ((dv , e) , (bv , (ab , nz))) =
   Mmul-inj₁-coset (dv , e) bv x* y* ab nz
+
+------------------------------------------------------------------------
+-- comm-CZ-S↑ at width 2 (the inj₂ (d , ml1) hole), COSET half.  The
+-- CZ collapse (LCZ2 via TDw.push-D-w) reads only the A box's shape,
+-- and the S↑ recursion updates the A box exactly as B-Top's b'-of
+-- does after the collapse — on every branch the two normal forms share
+-- all their (stuck) engine terms and differ only in the E slot, closed
+-- by +-swap / e+-0.  Slot congruences absorb the where-lifted
+-- nonzeroness proofs as implicits.
+
+inj₂-w1-e-eq : ∀ {d : D} {e e' : E} {a : A} → e ≡ e' →
+  _≡_ {A = C 2}
+    (inj₂ (d , (([] , e) , ([] , a))))
+    (inj₂ (d , (([] , e') , ([] , a))))
+inj₂-w1-e-eq Eq.refl = Eq.refl
+
+inj₁-e-eq : ∀ {m : ℕ} {dv : Vec D (₁₊ m)} {e e' : E} {bv : Vec B (₁₊ m)}
+  {x : ℤ ₚ × ℤ ₚ} {nx : x ≢ (₀ , ₀)} → e ≡ e' →
+  _≡_ {A = C (₂₊ m)}
+    (inj₁ ((dv , e) , (bv , (x , nx))))
+    (inj₁ ((dv , e') , (bv , (x , nx))))
+inj₁-e-eq Eq.refl = Eq.refl
+
+commCZS↑-w2-coset : ∀ (d : D) (e : E) (ab : ℤ ₚ × ℤ ₚ)
+  (nz : ab ≢ (₀ , ₀)) →
+  ((ract {1} ᵗ)
+     (inj₂ (d , (([] , e) , ([] , (ab , nz))))) (CZ • S ↑)) .proj₂
+  ≡ ((ract {1} ᵗ)
+     (inj₂ (d , (([] , e) , ([] , (ab , nz))))) (S ↑ • CZ)) .proj₂
+commCZS↑-w2-coset d e (₀ , ₀) nz = ⊥-elim (nz auto)
+commCZS↑-w2-coset d e (₀ , ₁₊ b) nz =
+  inj₂-w1-e-eq (+-swap e
+    (- (TDw.push-D-w d
+         (LCZ2.dir-of (inj₂ ([] , ((₀ , ₁₊ b) , nz))))
+         (TDw.dir-of₂-No-Top-H (inj₂ ([] , ((₀ , ₁₊ b) , nz)))) .proj₁))
+    (- (A-dir-S-power {0} ((₀ , ₁₊ b) , nz) (gate₁ S-gate) _ .proj₁)))
+commCZS↑-w2-coset d e (₁₊ α , ₀) nz =
+  inj₁-e-eq (Eq.cong
+    (_+ - (TDw.push-D-w d
+            (LCZ2.dir-of (inj₂ ([] , ((₁₊ α , ₀) , nz))))
+            (TDw.dir-of₂-No-Top-H (inj₂ ([] , ((₁₊ α , ₀) , nz))))
+            .proj₁))
+    (Eq.sym (e+-0 e)))
+commCZS↑-w2-coset d e (₁₊ α , ₁₊ β') nz =
+  inj₁-e-eq (Eq.cong
+    (_+ - (TDw.push-D-w d
+            (LCZ2.dir-of (inj₂ ([] , ((₁₊ α , ₁₊ β') , nz))))
+            (TDw.dir-of₂-No-Top-H (inj₂ ([] , ((₁₊ α , ₁₊ β') , nz))))
+            .proj₁))
+    (Eq.sym (e+-0 e)))
