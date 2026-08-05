@@ -56,6 +56,12 @@ open import Algebra.Properties.Ring (+-*-ring p-2)
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
   p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Pushing.PushLM1
+  p-2 p-prime using (A-dir-S-power)
+import Examples.Groups.Symplectic.Normalization.Pushing.Push
+  p-2 p-prime as Push
+open import Examples.Groups.Symplectic.Normalization.Pushing.MbSOrder
+  p-2 p-prime using (itf ; mbSⁿm ; mbSⁿ-orderp)
 
 ------------------------------------------------------------------------
 -- Congruence through inj₁, invariant in the (judgementally irrelevant)
@@ -298,3 +304,45 @@ orderS-inj₁-a+ {m} dv e bv a₀ b nz =
     (inj₁-a-eq (Eq.cong (₁₊ a₀ ,_)
       (Eq.trans (Eq.cong (b +_) (nsum-p≡0 (- ₁₊ a₀)))
         (+-identityʳ b))))
+
+------------------------------------------------------------------------
+-- order-S at inj₁, (₀ , ₁₊ b) branch, COSET half.  The S-step leaves
+-- the A box (and its nonzeroness proof) literally unchanged and emits
+-- the fixed exponent kS0 = b⁻² into the mb-S cascade (mbSⁿ), so the
+-- p-fold orbit on the M column is the p-th iterate of the cascade's
+-- M-update — the identity, by the cascade order-p theorem
+-- (MbSOrder.mbSⁿ-orderp).  The residual half (the accumulated cascade
+-- escapes ≈ ε) is the ↑-faithfulness obligation and remains open.
+
+-- The fixed S-power exponent emitted by a (₀ , ₁₊ b₀) box.
+kS0 : ∀ {m : ℕ} (b₀ : Fin (₁₊ p-2)) (nz : (₀ , ₁₊ b₀) ≢ (₀ , ₀)) → ℤ ₚ
+kS0 {m} b₀ nz =
+  A-dir-S-power {₁₊ m} ((₀ , ₁₊ b₀) , nz) (gate₁ S-gate)
+    (Push.bws1 {₁₊ m} S-gate) .proj₁
+
+-- The S-power orbit, coset component: t cascade steps on the M column,
+-- everything else fixed.  Each single step is definitional (the A-box
+-- clauses fire on the constructor-form box), so the orbit is a direct
+-- recursion on t.
+ract-S^-inj₁-0b-coset : ∀ {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (b₀ : Fin (₁₊ p-2)) (nz : (₀ , ₁₊ b₀) ≢ (₀ , ₀)) (t : ℕ) →
+  ((ract {₁₊ m} ᵗ)
+     (inj₁ (mm , (bv , ((₀ , ₁₊ b₀) , nz)))) (S ^ t)) .proj₂
+  ≡ inj₁ ( itf (λ z → mbSⁿm (toℕ (kS0 {m} b₀ nz)) z bv) t mm
+         , (bv , ((₀ , ₁₊ b₀) , nz)))
+ract-S^-inj₁-0b-coset mm bv b₀ nz zero          = Eq.refl
+ract-S^-inj₁-0b-coset mm bv b₀ nz (suc zero)    = Eq.refl
+ract-S^-inj₁-0b-coset {m} mm bv b₀ nz (suc (suc t)) =
+  ract-S^-inj₁-0b-coset
+    (mbSⁿm (toℕ (kS0 {m} b₀ nz)) mm bv) bv b₀ nz (suc t)
+
+-- The p-fold orbit closes on the coset.
+orderS-inj₁-0b-coset : ∀ {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (b₀ : Fin (₁₊ p-2)) (nz : (₀ , ₁₊ b₀) ≢ (₀ , ₀)) →
+  ((ract {₁₊ m} ᵗ)
+     (inj₁ (mm , (bv , ((₀ , ₁₊ b₀) , nz)))) (S ^ p)) .proj₂
+  ≡ inj₁ (mm , (bv , ((₀ , ₁₊ b₀) , nz)))
+orderS-inj₁-0b-coset {m} mm bv b₀ nz =
+  Eq.trans (ract-S^-inj₁-0b-coset mm bv b₀ nz p)
+    (Eq.cong (λ z → inj₁ (z , (bv , ((₀ , ₁₊ b₀) , nz))))
+      (mbSⁿ-orderp (toℕ (kS0 {m} b₀ nz)) bv mm))
