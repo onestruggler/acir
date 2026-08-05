@@ -52,7 +52,9 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDM
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWD
   p-2 p-prime using (kS0 ; kS0-val ; sqInv ; sqInv-neg ; inj₁-a-eq)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWDM
-  p-2 p-prime using (eCZ-id)
+  p-2 p-prime using (eCZ-id ; GW ; EW)
+open import Examples.Groups.Symplectic.BR.Two.D-w p-2 p-prime as TDw
+  using ()
 
 ------------------------------------------------------------------------
 -- S-power and CZ-power blocks through the one-D-box column.
@@ -223,13 +225,14 @@ MBWCZ (suc (suc t)) (₁₊ i) (₁₊ b') ê =
 
 module Vals (α' : Fin (₁₊ p-2)) where
 
+  α : ℤ ₚ
+  α = ₁₊ α'
+  α* : ℤ* ₚ
+  α* = (₁₊ α' , λ ())
+  iα : ℤ ₚ
+  iα = (α* ⁻¹) .proj₁
+
   private
-    α : ℤ ₚ
-    α = ₁₊ α'
-    α* : ℤ* ₚ
-    α* = (₁₊ α' , λ ())
-    iα : ℤ ₚ
-    iα = (α* ⁻¹) .proj₁
     instα = nztoℕ {y = α} {neq0 = λ ()}
 
     ααiα : (α * α) * iα ≡ α
@@ -313,3 +316,213 @@ module Vals (α' : Fin (₁₊ p-2)) where
   V6 y eq-y X = Eq.trans (nsum-* (kS0 {0} y (λ ())) X)
     (Eq.cong (_* X)
       (Eq.trans (kS0-val {0} y (λ ())) (sqInv-neg α' y eq-y)))
+
+------------------------------------------------------------------------
+-- Phase 4c: the assembly.  Both threadings converge on the common
+-- coset CF = inj₁ (((da + iα , db + − da) ∷ [] , (e − iα·db) + iα·da)
+-- , (bv , ((₀ , ₁₊ y) , λ ()))): the LHS via the collapse closed forms
+-- and the t-fold cascade scaled by V6 (then V1/V4 on the b-slot and
+-- V2/V5 on the E-slot); the RHS via the collapse at d-of-DS d and the
+-- E-slot distribution.
+
+M2-eq : ∀ {dd dd' : D} {ee ee' : E} → dd ≡ dd' → ee ≡ ee' →
+  _≡_ {A = M 2} (dd ∷ [] , ee) (dd' ∷ [] , ee')
+M2-eq Eq.refl Eq.refl = Eq.refl
+
+commCZS↓-w2-a+-coset : ∀ (d : D) (e : E) (α' : Fin (₁₊ p-2)) (β : ℤ ₚ)
+  (nz : (₁₊ α' , β) ≢ (₀ , ₀))
+  (y : Fin (₁₊ p-2)) (eq-y : - ₁₊ α' ≡ ₁₊ y) →
+  ((ract {1} ᵗ)
+     (inj₂ (d , (([] , e) , ([] , ((₁₊ α' , β) , nz))))) (CZ • S ↓)) .proj₂
+  ≡ ((ract {1} ᵗ)
+     (inj₂ (d , (([] , e) , ([] , ((₁₊ α' , β) , nz))))) (S ↓ • CZ)) .proj₂
+commCZS↓-w2-a+-coset (da@(₁₊ i) , db) e α' β nz y eq-y =
+  Eq.trans
+    (Eq.trans (Eq.cong (λ c → proj₂ (ract {1} c (gate₁ S-gate))) lhs₁)
+              (Eq.cong wrapM M-chain))
+    (Eq.sym (Eq.trans rhs₁ (Eq.cong wrapM rhs-M)))
+  where
+  open Vals α'
+  J    = kS0 {0} y (λ ())
+  bv₂  = (₁₊ α' , β) ∷ []
+  ΔBt  = nsum (toℕ (₁₊ α' * ₁₊ α')) (- (da + iα))
+           + nsum (toℕ (- ₁₊ α')) (- ₁)
+  ΔEt  = - ₁ + - nsum (toℕ (- ₁₊ α')) (eCZ (da + iα))
+
+  wrapM : M 2 → C 2
+  wrapM z = inj₁ (z , (bv₂ , ((₀ , ₁₊ y) , λ ())))
+
+  lhs₁ = inj₁-a-eq {ny = λ ()} (Eq.cong (λ z → (₀ , z)) eq-y)
+  rhs₁ = inj₁-a-eq {ny = λ ()} (Eq.cong (λ z → (₀ , z)) eq-y)
+
+  dFix : TDw.push-D-w (da , db)
+           (H • (CZ ^ toℕ iα • H ^ 3))
+           (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+              TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₂ .proj₂
+         ≡ (da + iα , db)
+  dFix = Eq.trans (GW (toℕ iα) da db)
+    (Eq.cong₂ _,_ (V3 da) (-‿involutive db))
+
+  eVal : TDw.push-D-w (da , db)
+           (H • (CZ ^ toℕ iα • H ^ 3))
+           (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+              TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₁
+         ≡ iα * db
+  eVal = Eq.trans (EW (toℕ iα) da db)
+    (Eq.trans (Eq.cong (nsum (toℕ iα)) (eCZ-id db)) (nsum-* iα db))
+
+  M-chain :
+    mbSⁿm (toℕ J)
+      (TDw.push-D-w (da , db)
+         (H • (CZ ^ toℕ iα • H ^ 3))
+         (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+            TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₂ .proj₂ ∷ []
+      , e + - TDw.push-D-w (da , db)
+                (H • (CZ ^ toℕ iα • H ^ 3))
+                (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+                   TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₁) bv₂
+    ≡ ((da + iα , db + - da) ∷ [] , (e + - (iα * db)) + iα * da)
+  M-chain =
+    Eq.trans (Eq.cong (λ z → mbSⁿm (toℕ J) z bv₂)
+        (M2-eq dFix (Eq.cong (λ w → e + - w) eVal)))
+    (Eq.trans (mbSⁿ-itf (toℕ J)
+        ((da + iα , db) ∷ [] , e + - (iα * db)) bv₂)
+    (Eq.trans (Φ-w2-iter (toℕ J) α' β (da + iα) db (e + - (iα * db)))
+      (M2-eq
+        (Eq.cong (λ z → (da + iα , z))
+          (Eq.cong (db +_)
+            (Eq.trans (V6 y eq-y ΔBt)
+              (Eq.trans (Eq.cong ((iα * iα) *_) (V1 (da + iα)))
+                        (V4 da)))))
+        (Eq.cong ((e + - (iα * db)) +_)
+          (Eq.trans (V6 y eq-y ΔEt)
+            (Eq.trans (Eq.cong ((iα * iα) *_) (V2 (da + iα)))
+                      (V5 da)))))))
+
+  dFix' : TDw.push-D-w (da , db + - da)
+            (H • (CZ ^ toℕ iα • H ^ 3))
+            (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+               TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₂ .proj₂
+          ≡ (da + iα , db + - da)
+  dFix' = Eq.trans (GW (toℕ iα) da (db + - da))
+    (Eq.cong₂ _,_ (V3 da) (-‿involutive (db + - da)))
+
+  eVal' : TDw.push-D-w (da , db + - da)
+            (H • (CZ ^ toℕ iα • H ^ 3))
+            (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+               TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₁
+          ≡ iα * (db + - da)
+  eVal' = Eq.trans (EW (toℕ iα) da (db + - da))
+    (Eq.trans (Eq.cong (nsum (toℕ iα)) (eCZ-id (db + - da)))
+              (nsum-* iα (db + - da)))
+
+  inner : - (iα * (db + - da)) ≡ - (iα * db) + iα * da
+  inner = Eq.trans (Eq.cong -_ (*-distribˡ-+ iα db (- da)))
+    (Eq.trans (Eq.cong -_
+        (Eq.cong ((iα * db) +_) (Eq.sym (-‿distribʳ-* iα da))))
+    (Eq.trans (Eq.sym (-‿+-comm (iα * db) (- (iα * da))))
+              (Eq.cong ((- (iα * db)) +_) (-‿involutive (iα * da)))))
+
+  E-compare : (e + - (iα * db)) + iα * da ≡ e + - (iα * (db + - da))
+  E-compare = Eq.trans (+-assoc e (- (iα * db)) (iα * da))
+    (Eq.cong (e +_) (Eq.sym inner))
+
+  rhs-M :
+    (TDw.push-D-w (da , db + - da)
+       (H • (CZ ^ toℕ iα • H ^ 3))
+       (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+          TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₂ .proj₂ ∷ []
+    , e + - TDw.push-D-w (da , db + - da)
+              (H • (CZ ^ toℕ iα • H ^ 3))
+              (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+                 TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₁)
+    ≡ ((da + iα , db + - da) ∷ [] , (e + - (iα * db)) + iα * da)
+  rhs-M = M2-eq dFix'
+    (Eq.trans (Eq.cong (λ w → e + - w) eVal') (Eq.sym E-compare))
+commCZS↓-w2-a+-coset (₀ , db) e α' β nz y eq-y =
+  Eq.trans
+    (Eq.trans (Eq.cong (λ c → proj₂ (ract {1} c (gate₁ S-gate))) lhs₁)
+              (Eq.cong wrapM M-chain))
+    (Eq.sym (Eq.trans rhs₁ (Eq.cong wrapM rhs-M)))
+  where
+  open Vals α'
+  J    = kS0 {0} y (λ ())
+  bv₂  = (₁₊ α' , β) ∷ []
+  ΔBt  = nsum (toℕ (₁₊ α' * ₁₊ α')) (- (₀ + iα))
+           + nsum (toℕ (- ₁₊ α')) (- ₁)
+  ΔEt  = - ₁ + - nsum (toℕ (- ₁₊ α')) (eCZ (₀ + iα))
+
+  wrapM : M 2 → C 2
+  wrapM z = inj₁ (z , (bv₂ , ((₀ , ₁₊ y) , λ ())))
+
+  lhs₁ = inj₁-a-eq {ny = λ ()} (Eq.cong (λ z → (₀ , z)) eq-y)
+  rhs₁ = inj₁-a-eq {ny = λ ()} (Eq.cong (λ z → (₀ , z)) eq-y)
+
+  dFix : TDw.push-D-w (₀ , db)
+           (H • (CZ ^ toℕ iα • H ^ 3))
+           (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+              TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₂ .proj₂
+         ≡ (₀ + iα , db)
+  dFix = Eq.trans (GW (toℕ iα) ₀ db)
+    (Eq.cong₂ _,_ (V3 ₀) (-‿involutive db))
+
+  eVal : TDw.push-D-w (₀ , db)
+           (H • (CZ ^ toℕ iα • H ^ 3))
+           (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+              TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₁
+         ≡ iα * db
+  eVal = Eq.trans (EW (toℕ iα) ₀ db)
+    (Eq.trans (Eq.cong (nsum (toℕ iα)) (eCZ-id db)) (nsum-* iα db))
+
+  M-chain :
+    mbSⁿm (toℕ J)
+      (TDw.push-D-w (₀ , db)
+         (H • (CZ ^ toℕ iα • H ^ 3))
+         (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+            TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₂ .proj₂ ∷ []
+      , e + - TDw.push-D-w (₀ , db)
+                (H • (CZ ^ toℕ iα • H ^ 3))
+                (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+                   TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₁) bv₂
+    ≡ ((₀ + iα , db + - ₀) ∷ [] , (e + - (iα * db)) + iα * ₀)
+  M-chain =
+    Eq.trans (Eq.cong (λ z → mbSⁿm (toℕ J) z bv₂)
+        (M2-eq dFix (Eq.cong (λ w → e + - w) eVal)))
+    (Eq.trans (mbSⁿ-itf (toℕ J)
+        ((₀ + iα , db) ∷ [] , e + - (iα * db)) bv₂)
+    (Eq.trans (Φ-w2-iter (toℕ J) α' β (₀ + iα) db (e + - (iα * db)))
+      (M2-eq
+        (Eq.cong (λ z → (₀ + iα , z))
+          (Eq.cong (db +_)
+            (Eq.trans (V6 y eq-y ΔBt)
+              (Eq.trans (Eq.cong ((iα * iα) *_) (V1 (₀ + iα)))
+                        (V4 ₀)))))
+        (Eq.cong ((e + - (iα * db)) +_)
+          (Eq.trans (V6 y eq-y ΔEt)
+            (Eq.trans (Eq.cong ((iα * iα) *_) (V2 (₀ + iα)))
+                      (V5 ₀)))))))
+
+  dFix' : TDw.push-D-w (₀ , db)
+            (H • (CZ ^ toℕ iα • H ^ 3))
+            (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+               TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₂ .proj₂
+          ≡ (₀ + iα , db + - ₀)
+  dFix' = Eq.trans (GW (toℕ iα) ₀ db)
+    (Eq.cong₂ _,_ (V3 ₀)
+      (Eq.trans (-‿involutive db) (Eq.sym (e+-0 db))))
+
+  rhs-M :
+    (TDw.push-D-w (₀ , db)
+       (H • (CZ ^ toℕ iα • H ^ 3))
+       (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+          TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₂ .proj₂ ∷ []
+    , e + - TDw.push-D-w (₀ , db)
+              (H • (CZ ^ toℕ iα • H ^ 3))
+              (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ (toℕ iα)
+                 TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3)) .proj₁)
+    ≡ ((₀ + iα , db + - ₀) ∷ [] , (e + - (iα * db)) + iα * ₀)
+  rhs-M = M2-eq dFix'
+    (Eq.trans (Eq.cong (λ w → e + - w) eVal)
+      (Eq.sym (Eq.trans
+        (Eq.cong ((e + - (iα * db)) +_) (*-zeroʳ iα))
+        (+-identityʳ (e + - (iα * db))))))
