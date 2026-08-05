@@ -52,7 +52,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDM
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWD
   p-2 p-prime using (kS0 ; kS0-val ; sqInv ; sqInv-neg ; inj₁-a-eq)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWDM
-  p-2 p-prime using (eCZ-id ; GW ; EW)
+  p-2 p-prime using (eCZ-id ; GW ; EW ; GCZd ; E1 ; inj₂-w1-de-eq)
 open import Examples.Groups.Symplectic.BR.Two.D-w p-2 p-prime as TDw
   using ()
 
@@ -526,3 +526,66 @@ commCZS↓-w2-a+-coset (₀ , db) e α' β nz y eq-y =
       (Eq.sym (Eq.trans
         (Eq.cong ((e + - (iα * db)) +_) (*-zeroʳ iα))
         (+-identityʳ (e + - (iα * db))))))
+
+------------------------------------------------------------------------
+-- order-CZ at width 2, (₀ , ₁₊ b) branch, COSET half.  The collapse
+-- keeps the coset inj₂-shaped with the SAME A box (and proof), so the
+-- CZ^ p orbit iterates one value map: the D box's b-component shifts
+-- by nsum t' (−1) and the E box drops by nsum t' (eCZ da) per step,
+-- with t' = toℕ b⁻¹ fixed.  Both accumulations vanish at p (nsum-p≡0).
+
+module OrdCZ-0b (b : Fin (₁₊ p-2)) (nz : (₀ , ₁₊ b) ≢ (₀ , ₀)) where
+
+  private
+    t' : ℕ
+    t' = toℕ (((₁₊ b , λ ()) ⁻¹) .proj₁)
+
+    A₀ : A
+    A₀ = ((₀ , ₁₊ b) , nz)
+
+    cst : D → E → C 2
+    cst dd ee = inj₂ (dd , (([] , ee) , ([] , A₀)))
+
+    stepCZ : ∀ (da db e : ℤ ₚ) →
+      proj₂ (ract {1} (cst (da , db) e) (gate₂ CZ-gate))
+      ≡ cst (da , db + nsum t' (- ₁)) (e + - nsum t' (eCZ da))
+    stepCZ da db e =
+      inj₂-w1-de-eq (GCZd t' da db)
+        (Eq.cong (λ z → e + - z) (E1 t' da db))
+
+    orbit : ∀ (k : ℕ) (da db e : ℤ ₚ) →
+      ((ract {1} ᵗ) (cst (da , db) e) (CZ ^ k)) .proj₂
+      ≡ cst (da , db + nsum k (nsum t' (- ₁)))
+            (e + nsum k (- nsum t' (eCZ da)))
+    orbit zero da db e =
+      inj₂-w1-de-eq
+        (Eq.cong (da ,_) (Eq.sym (+-identityʳ db)))
+        (Eq.sym (+-identityʳ e))
+    orbit (suc zero) da db e =
+      Eq.trans (stepCZ da db e)
+        (inj₂-w1-de-eq
+          (Eq.cong (da ,_)
+            (Eq.cong (db +_) (Eq.sym (+-identityʳ (nsum t' (- ₁))))))
+          (Eq.cong (e +_) (Eq.sym (+-identityʳ (- nsum t' (eCZ da))))))
+    orbit (suc (suc k)) da db e =
+      Eq.trans (Eq.cong (λ c → ((ract {1} ᵗ) c (CZ ^ suc k)) .proj₂)
+          (stepCZ da db e))
+      (Eq.trans (orbit (suc k) da (db + nsum t' (- ₁))
+          (e + - nsum t' (eCZ da)))
+        (inj₂-w1-de-eq
+          (Eq.cong (da ,_)
+            (+-assoc db (nsum t' (- ₁)) (nsum (suc k) (nsum t' (- ₁)))))
+          (+-assoc e (- nsum t' (eCZ da))
+            (nsum (suc k) (- nsum t' (eCZ da))))))
+
+  ordCZ-w2-0b-coset : ∀ (d : D) (e : E) →
+    ((ract {1} ᵗ) (inj₂ (d , (([] , e) , ([] , A₀)))) (CZ ^ p)) .proj₂
+    ≡ ((ract {1} ᵗ) (inj₂ (d , (([] , e) , ([] , A₀)))) ε) .proj₂
+  ordCZ-w2-0b-coset (da , db) e =
+    Eq.trans (orbit p da db e)
+      (inj₂-w1-de-eq
+        (Eq.cong (da ,_)
+          (Eq.trans (Eq.cong (db +_) (nsum-p≡0 (nsum t' (- ₁))))
+                    (+-identityʳ db)))
+        (Eq.trans (Eq.cong (e +_) (nsum-p≡0 (- nsum t' (eCZ da))))
+                  (+-identityʳ e)))
