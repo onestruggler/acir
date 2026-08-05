@@ -1068,3 +1068,58 @@ EH ₀      ₀      = Eq.refl
 EH ₀      (₁₊ _) = Eq.refl
 EH (₁₊ i) ₀      = Eq.refl
 EH (₁₊ i) (₁₊ _) = Eq.refl
+
+------------------------------------------------------------------------
+-- Phase 2: the collapse word W = H • CZ^ t • H ^ 3 through a D box, in
+-- closed form.  The box maps compose definitionally, so GW is a single
+-- congruence through the CZ-power closed form; the emissions need the
+-- component splits (EH at the η-projections for the H ^ 3 tail).
+
+GCZd : ∀ (t : ℕ) (x y : ℤ ₚ) →
+  TDw.push-D-w (x , y) (CZ ^ t) (TDw.ntH-^ TDw.ntH-CZ t) .proj₂ .proj₂
+  ≡ (x , y + nsum t (- ₁))
+GCZd zero x y = Eq.cong (x ,_) (Eq.sym (+-identityʳ y))
+GCZd (suc zero) x y =
+  Eq.cong (x ,_) (Eq.cong (y +_) (Eq.sym (+-identityʳ (- ₁))))
+GCZd (suc (suc t)) x y =
+  Eq.trans (GCZd (suc t) x (y + - ₁))
+    (Eq.cong (x ,_) (+-assoc y (- ₁) (nsum (suc t) (- ₁))))
+
+-- H ^ 3 emits nothing (at arbitrary, possibly compound, components).
+EH3 : ∀ (x y : ℤ ₚ) →
+  TDw.push-D-w (x , y) (H ^ 3) (TDw.ntH-^ TDw.ntH-H 3) .proj₁ ≡ ₀
+EH3 x y =
+  Eq.trans (Eq.cong₂ _+_ (EH x y)
+    (Eq.trans (Eq.cong₂ _+_ (EH y (- x)) (EH (- x) (- y)))
+      (+-identityʳ ₀)))
+  (+-identityʳ ₀)
+
+-- The collapse word's box map: a gains − nsum t (− 1), b survives (in
+-- raw double-negation form; the value fixes happen at the use site).
+GW : ∀ (t : ℕ) (a b : ℤ ₚ) →
+  TDw.push-D-w (a , b) (H • (CZ ^ t • H ^ 3))
+    (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ t TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3))
+    .proj₂ .proj₂
+  ≡ (- (- a + nsum t (- ₁)) , - (- b))
+GW t a b =
+  Eq.cong
+    (λ z → TDw.push-D-w z (H ^ 3) (TDw.ntH-^ TDw.ntH-H 3) .proj₂ .proj₂)
+    (GCZd t b (- a))
+
+-- The collapse word's emission: nsum t (eCZ b) (the CZ block reads the
+-- rotated box, whose a-component is b).
+EW : ∀ (t : ℕ) (a b : ℤ ₚ) →
+  TDw.push-D-w (a , b) (H • (CZ ^ t • H ^ 3))
+    (TDw.ntH-H TDw.•ⁿ (TDw.ntH-^ TDw.ntH-CZ t TDw.•ⁿ TDw.ntH-^ TDw.ntH-H 3))
+    .proj₁
+  ≡ nsum t (eCZ b)
+EW t a b =
+  Eq.trans (Eq.cong₂ _+_ (EH a b)
+    (Eq.trans (Eq.cong₂ _+_ (E1 t b (- a))
+        (EH3
+          (proj₁ (TDw.push-D-w (b , - a) (CZ ^ t)
+                    (TDw.ntH-^ TDw.ntH-CZ t) .proj₂ .proj₂))
+          (proj₂ (TDw.push-D-w (b , - a) (CZ ^ t)
+                    (TDw.ntH-^ TDw.ntH-CZ t) .proj₂ .proj₂))))
+      (+-identityʳ (nsum t (eCZ b)))))
+  (+-0ˡ (nsum t (eCZ b)))
