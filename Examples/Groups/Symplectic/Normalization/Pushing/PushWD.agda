@@ -779,6 +779,52 @@ inv-3sum u@(uv₁ , nzu) v@(vv , nzv) s@(sv , nzs) hyp =
   hyp' = Eq.trans (+-comm sv (uv₁ + vv))
     (Eq.trans (+-assoc uv₁ vv sv) hyp)
 
+-- − x · − y ≡ x · y.
+neg-neg-* : ∀ (x y : ℤ ₚ) → - x * - y ≡ x * y
+neg-neg-* x y = Eq.trans (Eq.sym (-‿distribˡ-* x (- y)))
+  (Eq.trans (Eq.cong -_ (Eq.sym (-‿distribʳ-* x y))) (-‿involutive (x * y)))
+
+-- sqInv is invariant under negating the argument.
+sqInv-neg : ∀ (β u : Fin (₁₊ p-2)) (equ : - ₁₊ β ≡ ₁₊ u) →
+  sqInv u ≡ sqInv β
+sqInv-neg β u equ =
+  Eq.trans (Eq.cong₂ _*_ iEq iEq)
+    (neg-neg-* (((₁₊ β , λ ()) ⁻¹) .proj₁) (((₁₊ β , λ ()) ⁻¹) .proj₁))
+  where
+  iEq : ((₁₊ u , λ ()) ⁻¹) .proj₁ ≡ - (((₁₊ β , λ ()) ⁻¹) .proj₁)
+  iEq = Eq.trans (inv-val-cong (₁₊ u , λ ()) (-' (₁₊ β , λ ())) (Eq.sym equ))
+                 (inv-neg-comm (₁₊ β , λ ()))
+
+-- Diagonal H-exponent: kHn β β is the inverse square.
+kHn-diag : ∀ {m : ℕ} (β : Fin (₁₊ p-2)) (nzx : (₁₊ β , ₁₊ β) ≢ (₀ , ₀)) →
+  kHn {m} β β nzx ≡ sqInv β
+kHn-diag {m} β nzx =
+  Eq.trans (kHn-val {m} β β nzx) (inv-distrib (₁₊ β , λ ()) (₁₊ β , λ ()))
+
+-- H-exponent on a (β , −γ) box: the negated inverse of βγ.
+kHn-neg : ∀ {m : ℕ} (β γ u : Fin (₁₊ p-2)) (equ : - ₁₊ γ ≡ ₁₊ u)
+  (nzx : (₁₊ β , ₁₊ u) ≢ (₀ , ₀)) →
+  kHn {m} β u nzx ≡ - (((₁₊ β , λ ()) *' (₁₊ γ , λ ())) ⁻¹) .proj₁
+kHn-neg {m} β γ u equ nzx =
+  Eq.trans (kHn-val {m} β u nzx)
+  (Eq.trans (inv-val-cong ((₁₊ β , λ ()) *' (₁₊ u , λ ()))
+      (-' ((₁₊ β , λ ()) *' (₁₊ γ , λ ())))
+      (Eq.trans (Eq.cong (₁₊ β *_) (Eq.sym equ))
+                (Eq.sym (-‿distribʳ-* (₁₊ β) (₁₊ γ)))))
+    (inv-neg-comm ((₁₊ β , λ ()) *' (₁₊ γ , λ ()))))
+
+-- Thread three bottom unary gates through the coset.
+thread3 : ∀ {m : ℕ} (g₁ g₂ g₃ : SympGate 1) (c c₁ c₂ c₃ : C (₂₊ m)) →
+  proj₂ (ract {₁₊ m} c (gate₁ g₁)) ≡ c₁ →
+  proj₂ (ract {₁₊ m} c₁ (gate₁ g₂)) ≡ c₂ →
+  proj₂ (ract {₁₊ m} c₂ (gate₁ g₃)) ≡ c₃ →
+  ((ract {₁₊ m} ᵗ)
+     c ([ gate₁ g₁ ]ʷ • ([ gate₁ g₂ ]ʷ • [ gate₁ g₃ ]ʷ))) .proj₂ ≡ c₃
+thread3 {m} g₁ g₂ g₃ c c₁ c₂ c₃ e₁ e₂ e₃ =
+  Eq.trans (Eq.cong
+    (λ cc → ((ract {₁₊ m} ᵗ) cc ([ gate₁ g₂ ]ʷ • [ gate₁ g₃ ]ʷ)) .proj₂) e₁)
+  (Eq.trans (Eq.cong (λ cc → proj₂ (ract {₁₊ m} cc (gate₁ g₃))) e₂) e₃)
+
 module OrderSH-nnw {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
   (a₀ b₀ : Fin (₁₊ p-2)) (nz : (₁₊ a₀ , ₁₊ b₀) ≢ (₀ , ₀))
   (y : Fin (₁₊ p-2)) (eq-y : - ₁₊ a₀ ≡ ₁₊ y)
@@ -862,3 +908,285 @@ module OrderSH-nnw {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
     (Eq.trans (SH-pair c₄ c₅ _ s₅ s₆)
       (Eq.cong (λ zz → inj₁ (zz , (bv , ((₁₊ a₀ , ₁₊ b₀) , nz))))
         (chain-0 (j₂ ∷ᴸ j₄ ∷ᴸ j₆ ∷ᴸ []ᴸ) mm bv sum0))))
+
+------------------------------------------------------------------------
+-- comm-HHS at inj₁, COSET halves: both action orders land on the same
+-- coset.  On each branch every emitted chain sums to zero, so both
+-- sides' M columns return to mm (chain-0) and the boxes agree after
+-- normalising stuck negations.
+
+module CommHHS-0b {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (b₀ : Fin (₁₊ p-2)) (nz : (₀ , ₁₊ b₀) ≢ (₀ , ₀))
+  (y : Fin (₁₊ p-2)) (eq-y : - ₁₊ b₀ ≡ ₁₊ y)
+  where
+
+  private
+    Φ : ℤ ₚ → M (₂₊ m) → M (₂₊ m)
+    Φ j zz = mbSⁿm (toℕ j) zz bv
+
+    jEq : kS0 {m} y (λ ()) ≡ kS0 {m} b₀ nz
+    jEq = Eq.trans (kS0-val {m} y (λ ()))
+      (Eq.trans (sqInv-neg b₀ y eq-y) (Eq.sym (kS0-val {m} b₀ nz)))
+
+    c₀ cL₁ cL₂ cF cR₁ : C (₂₊ m)
+    c₀  = inj₁ (mm , (bv , ((₀ , ₁₊ b₀) , nz)))
+    cL₁ = inj₁ (mm , (bv , ((₁₊ b₀ , ₀) , λ ())))
+    cL₂ = inj₁ (mm , (bv , ((₀ , ₁₊ y) , λ ())))
+    cF  = inj₁ (Φ (kS0 {m} b₀ nz) mm , (bv , ((₀ , ₁₊ y) , λ ())))
+    cR₁ = inj₁ (Φ (kS0 {m} b₀ nz) mm , (bv , ((₀ , ₁₊ b₀) , nz)))
+
+    sL₁ : proj₂ (ract {₁₊ m} c₀ (gate₁ H-gate)) ≡ cL₁
+    sL₁ = inj₁-a-eq Eq.refl
+    sL₂ : proj₂ (ract {₁₊ m} cL₁ (gate₁ H-gate)) ≡ cL₂
+    sL₂ = inj₁-a-eq (Eq.cong (₀ ,_) eq-y)
+    sL₃ : proj₂ (ract {₁₊ m} cL₂ (gate₁ S-gate)) ≡ cF
+    sL₃ = Eq.cong (λ j → inj₁ (Φ j mm , (bv , ((₀ , ₁₊ y) , λ ())))) jEq
+
+    sR₁ : proj₂ (ract {₁₊ m} c₀ (gate₁ S-gate)) ≡ cR₁
+    sR₁ = Eq.refl
+    sR₂ : proj₂ (ract {₁₊ m} cR₁ (gate₁ H-gate))
+          ≡ inj₁ (Φ (kS0 {m} b₀ nz) mm , (bv , ((₁₊ b₀ , ₀) , λ ())))
+    sR₂ = inj₁-a-eq Eq.refl
+    sR₃ : proj₂ (ract {₁₊ m}
+            (inj₁ (Φ (kS0 {m} b₀ nz) mm , (bv , ((₁₊ b₀ , ₀) , λ ()))))
+            (gate₁ H-gate)) ≡ cF
+    sR₃ = inj₁-a-eq (Eq.cong (₀ ,_) eq-y)
+
+  commHHS-inj₁-0b-coset :
+    ((ract {₁₊ m} ᵗ) c₀ (H • H • S)) .proj₂
+    ≡ ((ract {₁₊ m} ᵗ) c₀ (S • H • H)) .proj₂
+  commHHS-inj₁-0b-coset =
+    Eq.trans (thread3 H-gate H-gate S-gate c₀ cL₁ cL₂ cF sL₁ sL₂ sL₃)
+      (Eq.sym (thread3 S-gate H-gate H-gate c₀ cR₁
+        (inj₁ (Φ (kS0 {m} b₀ nz) mm , (bv , ((₁₊ b₀ , ₀) , λ ()))))
+        cF sR₁ sR₂ sR₃))
+
+module CommHHS-a0 {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (a₀ : Fin (₁₊ p-2)) (nz : (₁₊ a₀ , ₀) ≢ (₀ , ₀))
+  (y : Fin (₁₊ p-2)) (eq-y : - ₁₊ a₀ ≡ ₁₊ y)
+  where
+
+  private
+    j₂ = kHn {m} a₀ y (λ ())
+    j₃ = kHn {m} y y (λ ())
+
+    Φ : ℤ ₚ → M (₂₊ m) → M (₂₊ m)
+    Φ j zz = mbSⁿm (toℕ j) zz bv
+
+    yEq : - ₁₊ y ≡ ₁₊ a₀
+    yEq = Eq.trans (Eq.cong -_ (Eq.sym eq-y)) (-‿involutive (₁₊ a₀))
+
+    sum0 : sumZ (j₂ ∷ᴸ j₃ ∷ᴸ []ᴸ) ≡ ₀
+    sum0 =
+      Eq.trans (Eq.cong₂ _+_ (kHn-neg {m} a₀ a₀ y eq-y (λ ()))
+        (Eq.cong₂ _+_
+          (Eq.trans (kHn-diag {m} y (λ ())) (sqInv-neg a₀ y eq-y))
+          Eq.refl))
+      (Eq.trans (Eq.cong₂ _+_
+          (Eq.cong -_ (inv-distrib (₁₊ a₀ , λ ()) (₁₊ a₀ , λ ())))
+          (+-identityʳ (sqInv a₀)))
+        (+-inverseˡ (sqInv a₀)))
+
+    c₀ cL₁ cL₂ cF cR₁ cR₂ : C (₂₊ m)
+    c₀  = inj₁ (mm , (bv , ((₁₊ a₀ , ₀) , nz)))
+    cL₁ = inj₁ (mm , (bv , ((₀ , ₁₊ y) , λ ())))
+    cL₂ = inj₁ (mm , (bv , ((₁₊ y , ₀) , λ ())))
+    cF  = inj₁ (mm , (bv , ((₁₊ y , ₁₊ a₀) , λ ())))
+    cR₁ = inj₁ (mm , (bv , ((₁₊ a₀ , ₁₊ y) , λ ())))
+    cR₂ = inj₁ (Φ j₂ mm , (bv , ((₁₊ y , ₁₊ y) , λ ())))
+
+    sL₁ : proj₂ (ract {₁₊ m} c₀ (gate₁ H-gate)) ≡ cL₁
+    sL₁ = inj₁-a-eq (Eq.cong (₀ ,_) eq-y)
+    sL₂ : proj₂ (ract {₁₊ m} cL₁ (gate₁ H-gate)) ≡ cL₂
+    sL₂ = inj₁-a-eq Eq.refl
+    sL₃ : proj₂ (ract {₁₊ m} cL₂ (gate₁ S-gate)) ≡ cF
+    sL₃ = inj₁-a-eq (Eq.cong (₁₊ y ,_)
+      (Eq.trans (+-identityˡ (- ₁₊ y)) yEq))
+
+    sR₁ : proj₂ (ract {₁₊ m} c₀ (gate₁ S-gate)) ≡ cR₁
+    sR₁ = inj₁-a-eq (Eq.cong (₁₊ a₀ ,_)
+      (Eq.trans (+-identityˡ (- ₁₊ a₀)) eq-y))
+    sR₂ : proj₂ (ract {₁₊ m} cR₁ (gate₁ H-gate)) ≡ cR₂
+    sR₂ = inj₁-a-eq (Eq.cong (₁₊ y ,_) eq-y)
+    sR₃ : proj₂ (ract {₁₊ m} cR₂ (gate₁ H-gate))
+          ≡ inj₁ (Φ j₃ (Φ j₂ mm) , (bv , ((₁₊ y , ₁₊ a₀) , λ ())))
+    sR₃ = inj₁-a-eq (Eq.cong (₁₊ y ,_) yEq)
+
+  commHHS-inj₁-a0-coset :
+    ((ract {₁₊ m} ᵗ) c₀ (H • H • S)) .proj₂
+    ≡ ((ract {₁₊ m} ᵗ) c₀ (S • H • H)) .proj₂
+  commHHS-inj₁-a0-coset =
+    Eq.trans (thread3 H-gate H-gate S-gate c₀ cL₁ cL₂ cF sL₁ sL₂ sL₃)
+      (Eq.sym (Eq.trans
+        (thread3 S-gate H-gate H-gate c₀ cR₁ cR₂
+          (inj₁ (Φ j₃ (Φ j₂ mm) , (bv , ((₁₊ y , ₁₊ a₀) , λ ()))))
+          sR₁ sR₂ sR₃)
+        (Eq.cong (λ zz → inj₁ (zz , (bv , ((₁₊ y , ₁₊ a₀) , λ ()))))
+          (chain-0 (j₂ ∷ᴸ j₃ ∷ᴸ []ᴸ) mm bv sum0))))
+
+
+module CommHHS-nn0 {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (a₀ b₀ : Fin (₁₊ p-2)) (nz : (₁₊ a₀ , ₁₊ b₀) ≢ (₀ , ₀))
+  (y z : Fin (₁₊ p-2)) (eq-y : - ₁₊ a₀ ≡ ₁₊ y) (eq-z : - ₁₊ b₀ ≡ ₁₊ z)
+  (Xeq : ₁₊ b₀ + - ₁₊ a₀ ≡ ₀)
+  where
+
+  private
+    j₁ = kHn {m} a₀ b₀ nz
+    j₂ = kHn {m} b₀ y (λ ())
+
+    Φ : ℤ ₚ → M (₂₊ m) → M (₂₊ m)
+    Φ j zz = mbSⁿm (toℕ j) zz bv
+
+    aEqb : ₁₊ a₀ ≡ ₁₊ b₀
+    aEqb = Eq.trans (Eq.sym (+-identityˡ (₁₊ a₀)))
+      (Eq.trans (Eq.cong (_+ ₁₊ a₀) (Eq.sym Xeq))
+      (Eq.trans (+-assoc (₁₊ b₀) (- ₁₊ a₀) (₁₊ a₀))
+      (Eq.trans (Eq.cong (₁₊ b₀ +_) (+-inverseˡ (₁₊ a₀)))
+                (+-identityʳ (₁₊ b₀)))))
+
+    zy0 : ₁₊ z + - ₁₊ y ≡ ₀
+    zy0 = Eq.trans (Eq.cong₂ _+_ (Eq.sym eq-z) (Eq.cong -_ (Eq.sym eq-y)))
+      (Eq.trans (Eq.cong (- ₁₊ b₀ +_) (-‿involutive (₁₊ a₀)))
+      (Eq.trans (Eq.cong (- ₁₊ b₀ +_) aEqb) (+-inverseˡ (₁₊ b₀))))
+
+    sum0 : sumZ (j₁ ∷ᴸ j₂ ∷ᴸ []ᴸ) ≡ ₀
+    sum0 =
+      Eq.trans (Eq.cong₂ _+_ (kHn-val {m} a₀ b₀ nz)
+        (Eq.cong₂ _+_
+          (Eq.trans (kHn-neg {m} b₀ a₀ y eq-y (λ ()))
+            (Eq.cong -_ (inv-val-cong
+              ((₁₊ b₀ , λ ()) *' (₁₊ a₀ , λ ()))
+              ((₁₊ a₀ , λ ()) *' (₁₊ b₀ , λ ()))
+              (*-comm (₁₊ b₀) (₁₊ a₀)))))
+          Eq.refl))
+      (Eq.trans (Eq.cong
+          ((((₁₊ a₀ , λ ()) *' (₁₊ b₀ , λ ())) ⁻¹) .proj₁ +_)
+          (+-identityʳ (- ((((₁₊ a₀ , λ ()) *' (₁₊ b₀ , λ ())) ⁻¹) .proj₁))))
+        (+-inverseʳ ((((₁₊ a₀ , λ ()) *' (₁₊ b₀ , λ ())) ⁻¹) .proj₁)))
+
+    c₀ cL₁ cL₂ cF cR₁ cR₂ : C (₂₊ m)
+    c₀  = inj₁ (mm , (bv , ((₁₊ a₀ , ₁₊ b₀) , nz)))
+    cL₁ = inj₁ (Φ j₁ mm , (bv , ((₁₊ b₀ , ₁₊ y) , λ ())))
+    cL₂ = inj₁ (Φ j₂ (Φ j₁ mm) , (bv , ((₁₊ y , ₁₊ z) , λ ())))
+    cF  = inj₁ (mm , (bv , ((₁₊ y , ₀) , λ ())))
+    cR₁ = inj₁ (mm , (bv , ((₁₊ a₀ , ₀) , λ ())))
+    cR₂ = inj₁ (mm , (bv , ((₀ , ₁₊ y) , λ ())))
+
+    sL₁ : proj₂ (ract {₁₊ m} c₀ (gate₁ H-gate)) ≡ cL₁
+    sL₁ = inj₁-a-eq (Eq.cong (₁₊ b₀ ,_) eq-y)
+    sL₂ : proj₂ (ract {₁₊ m} cL₁ (gate₁ H-gate)) ≡ cL₂
+    sL₂ = inj₁-a-eq (Eq.cong (₁₊ y ,_) eq-z)
+    sL₃ : proj₂ (ract {₁₊ m} cL₂ (gate₁ S-gate)) ≡ cF
+    sL₃ = Eq.trans
+      (inj₁-a-eq (Eq.cong (₁₊ y ,_) zy0))
+      (Eq.cong (λ zz → inj₁ (zz , (bv , ((₁₊ y , ₀) , λ ()))))
+        (chain-0 (j₁ ∷ᴸ j₂ ∷ᴸ []ᴸ) mm bv sum0))
+
+    sR₁ : proj₂ (ract {₁₊ m} c₀ (gate₁ S-gate)) ≡ cR₁
+    sR₁ = inj₁-a-eq (Eq.cong (₁₊ a₀ ,_) Xeq)
+    sR₂ : proj₂ (ract {₁₊ m} cR₁ (gate₁ H-gate)) ≡ cR₂
+    sR₂ = inj₁-a-eq (Eq.cong (₀ ,_) eq-y)
+    sR₃ : proj₂ (ract {₁₊ m} cR₂ (gate₁ H-gate)) ≡ cF
+    sR₃ = inj₁-a-eq Eq.refl
+
+  commHHS-inj₁-nn0-coset :
+    ((ract {₁₊ m} ᵗ) c₀ (H • H • S)) .proj₂
+    ≡ ((ract {₁₊ m} ᵗ) c₀ (S • H • H)) .proj₂
+  commHHS-inj₁-nn0-coset =
+    Eq.trans (thread3 H-gate H-gate S-gate c₀ cL₁ cL₂ cF sL₁ sL₂ sL₃)
+      (Eq.sym (thread3 S-gate H-gate H-gate c₀ cR₁ cR₂ cF sR₁ sR₂ sR₃))
+
+module CommHHS-nnw {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
+  (a₀ b₀ : Fin (₁₊ p-2)) (nz : (₁₊ a₀ , ₁₊ b₀) ≢ (₀ , ₀))
+  (y z w : Fin (₁₊ p-2)) (eq-y : - ₁₊ a₀ ≡ ₁₊ y)
+  (eq-z : - ₁₊ b₀ ≡ ₁₊ z) (Xeq : ₁₊ b₀ + - ₁₊ a₀ ≡ ₁₊ w)
+  where
+
+  private
+    j₁ = kHn {m} a₀ b₀ nz
+    j₂ = kHn {m} b₀ y (λ ())
+    j₁ʳ = kHn {m} a₀ w (λ ())
+    j₂ʳ = kHn {m} w y (λ ())
+
+    Φ : ℤ ₚ → M (₂₊ m) → M (₂₊ m)
+    Φ j zz = mbSⁿm (toℕ j) zz bv
+
+    yEq : - ₁₊ y ≡ ₁₊ a₀
+    yEq = Eq.trans (Eq.cong -_ (Eq.sym eq-y)) (-‿involutive (₁₊ a₀))
+
+    sum0L : sumZ (j₁ ∷ᴸ j₂ ∷ᴸ []ᴸ) ≡ ₀
+    sum0L =
+      Eq.trans (Eq.cong₂ _+_ (kHn-val {m} a₀ b₀ nz)
+        (Eq.cong₂ _+_
+          (Eq.trans (kHn-neg {m} b₀ a₀ y eq-y (λ ()))
+            (Eq.cong -_ (inv-val-cong
+              ((₁₊ b₀ , λ ()) *' (₁₊ a₀ , λ ()))
+              ((₁₊ a₀ , λ ()) *' (₁₊ b₀ , λ ()))
+              (*-comm (₁₊ b₀) (₁₊ a₀)))))
+          Eq.refl))
+      (Eq.trans (Eq.cong
+          ((((₁₊ a₀ , λ ()) *' (₁₊ b₀ , λ ())) ⁻¹) .proj₁ +_)
+          (+-identityʳ (- ((((₁₊ a₀ , λ ()) *' (₁₊ b₀ , λ ())) ⁻¹) .proj₁))))
+        (+-inverseʳ ((((₁₊ a₀ , λ ()) *' (₁₊ b₀ , λ ())) ⁻¹) .proj₁)))
+
+    sum0R : sumZ (j₁ʳ ∷ᴸ j₂ʳ ∷ᴸ []ᴸ) ≡ ₀
+    sum0R =
+      Eq.trans (Eq.cong₂ _+_ (kHn-val {m} a₀ w (λ ()))
+        (Eq.cong₂ _+_
+          (Eq.trans (kHn-neg {m} w a₀ y eq-y (λ ()))
+            (Eq.cong -_ (inv-val-cong
+              ((₁₊ w , λ ()) *' (₁₊ a₀ , λ ()))
+              ((₁₊ a₀ , λ ()) *' (₁₊ w , λ ()))
+              (*-comm (₁₊ w) (₁₊ a₀)))))
+          Eq.refl))
+      (Eq.trans (Eq.cong
+          ((((₁₊ a₀ , λ ()) *' (₁₊ w , λ ())) ⁻¹) .proj₁ +_)
+          (+-identityʳ (- ((((₁₊ a₀ , λ ()) *' (₁₊ w , λ ())) ⁻¹) .proj₁))))
+        (+-inverseʳ ((((₁₊ a₀ , λ ()) *' (₁₊ w , λ ())) ⁻¹) .proj₁)))
+
+    -- Both final boxes normalise to (₁₊ y , − ₁₊ b₀ + ₁₊ a₀).
+    zy-canon : ₁₊ z + - ₁₊ y ≡ - ₁₊ b₀ + ₁₊ a₀
+    zy-canon = Eq.cong₂ _+_ (Eq.sym eq-z) yEq
+
+    wz-eq : - ₁₊ w ≡ - ₁₊ b₀ + ₁₊ a₀
+    wz-eq = Eq.trans (Eq.cong -_ (Eq.sym Xeq))
+      (Eq.trans (Eq.sym (-‿+-comm (₁₊ b₀) (- ₁₊ a₀)))
+        (Eq.cong (- ₁₊ b₀ +_) (-‿involutive (₁₊ a₀))))
+
+    c₀ cL₁ cL₂ cF cR₁ cR₂ : C (₂₊ m)
+    c₀  = inj₁ (mm , (bv , ((₁₊ a₀ , ₁₊ b₀) , nz)))
+    cL₁ = inj₁ (Φ j₁ mm , (bv , ((₁₊ b₀ , ₁₊ y) , λ ())))
+    cL₂ = inj₁ (Φ j₂ (Φ j₁ mm) , (bv , ((₁₊ y , ₁₊ z) , λ ())))
+    cF  = inj₁ (mm , (bv , ((₁₊ y , - ₁₊ b₀ + ₁₊ a₀) , λ ())))
+    cR₁ = inj₁ (mm , (bv , ((₁₊ a₀ , ₁₊ w) , λ ())))
+    cR₂ = inj₁ (Φ j₁ʳ mm , (bv , ((₁₊ w , ₁₊ y) , λ ())))
+
+    sL₁ : proj₂ (ract {₁₊ m} c₀ (gate₁ H-gate)) ≡ cL₁
+    sL₁ = inj₁-a-eq (Eq.cong (₁₊ b₀ ,_) eq-y)
+    sL₂ : proj₂ (ract {₁₊ m} cL₁ (gate₁ H-gate)) ≡ cL₂
+    sL₂ = inj₁-a-eq (Eq.cong (₁₊ y ,_) eq-z)
+    sL₃ : proj₂ (ract {₁₊ m} cL₂ (gate₁ S-gate)) ≡ cF
+    sL₃ = Eq.trans
+      (inj₁-a-eq (Eq.cong (₁₊ y ,_) zy-canon))
+      (Eq.cong
+        (λ zz → inj₁ (zz , (bv , ((₁₊ y , - ₁₊ b₀ + ₁₊ a₀) , λ ()))))
+        (chain-0 (j₁ ∷ᴸ j₂ ∷ᴸ []ᴸ) mm bv sum0L))
+
+    sR₁ : proj₂ (ract {₁₊ m} c₀ (gate₁ S-gate)) ≡ cR₁
+    sR₁ = inj₁-a-eq (Eq.cong (₁₊ a₀ ,_) Xeq)
+    sR₂ : proj₂ (ract {₁₊ m} cR₁ (gate₁ H-gate)) ≡ cR₂
+    sR₂ = inj₁-a-eq (Eq.cong (₁₊ w ,_) eq-y)
+    sR₃ : proj₂ (ract {₁₊ m} cR₂ (gate₁ H-gate)) ≡ cF
+    sR₃ = Eq.trans
+      (inj₁-a-eq (Eq.cong (₁₊ y ,_) wz-eq))
+      (Eq.cong
+        (λ zz → inj₁ (zz , (bv , ((₁₊ y , - ₁₊ b₀ + ₁₊ a₀) , λ ()))))
+        (chain-0 (j₁ʳ ∷ᴸ j₂ʳ ∷ᴸ []ᴸ) mm bv sum0R))
+
+  commHHS-inj₁-nnw-coset :
+    ((ract {₁₊ m} ᵗ) c₀ (H • H • S)) .proj₂
+    ≡ ((ract {₁₊ m} ᵗ) c₀ (S • H • H)) .proj₂
+  commHHS-inj₁-nnw-coset =
+    Eq.trans (thread3 H-gate H-gate S-gate c₀ cL₁ cL₂ cF sL₁ sL₂ sL₃)
+      (Eq.sym (thread3 S-gate H-gate H-gate c₀ cR₁ cR₂ cF sR₁ sR₂ sR₃))
