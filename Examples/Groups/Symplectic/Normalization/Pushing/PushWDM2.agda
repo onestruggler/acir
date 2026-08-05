@@ -37,7 +37,7 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
-  using (-‿involutive ; -‿+-comm)
+  using (-‿involutive ; -‿+-comm ; -‿distribˡ-* ; -‿distribʳ-*)
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
   p-2 p-prime
@@ -46,7 +46,11 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.PushBword
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushMbS
   p-2 p-prime using (mb-S ; mbSⁿ ; Rof ; Rof-nt)
 open import Examples.Groups.Symplectic.Normalization.Pushing.MbSOrder
-  p-2 p-prime using (itf ; mbSⁿm ; mbSm ; mbwM ; eCZ)
+  p-2 p-prime using (itf ; mbSⁿm ; mbSm ; mbwM ; eCZ ; nsum-* ; mbSⁿ-itf)
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDM
+  p-2 p-prime using (nsum-neg)
+open import Examples.Groups.Symplectic.Normalization.Pushing.PushWD
+  p-2 p-prime using (kS0 ; kS0-val ; sqInv ; sqInv-neg ; inj₁-a-eq)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWDM
   p-2 p-prime using (eCZ-id)
 
@@ -209,3 +213,103 @@ MBWCZ (suc (suc t)) (₁₊ i) (₁₊ b') ê =
   where
   ΔB = nsum (toℕ (₁₊ α' * ₁₊ α')) (- a) + nsum (toℕ (- ₁₊ α')) (- ₁)
   ΔE = - ₁ + - nsum (toℕ (- ₁₊ α')) (eCZ a)
+
+------------------------------------------------------------------------
+-- Phase 4b: the value arithmetic.  With α = ₁₊ α', iα = α⁻¹, the
+-- collapse maps the box to (da + iα , db) emitting iα·db, and the
+-- cascade at weight iα² has per-step shifts ΔB = −α²·(da + iα) + α and
+-- ΔE = −1 + α·(da + iα); scaled by iα² these are −da and iα·da — the
+-- exact compensations of the pre-collapse d-of-DS route.
+
+module Vals (α' : Fin (₁₊ p-2)) where
+
+  private
+    α : ℤ ₚ
+    α = ₁₊ α'
+    α* : ℤ* ₚ
+    α* = (₁₊ α' , λ ())
+    iα : ℤ ₚ
+    iα = (α* ⁻¹) .proj₁
+    instα = nztoℕ {y = α} {neq0 = λ ()}
+
+    ααiα : (α * α) * iα ≡ α
+    ααiα = Eq.trans (*-assoc α α iα)
+      (Eq.trans (Eq.cong (α *_) (lemma-⁻¹ʳ α {{instα}}))
+                (*-identityʳ α))
+
+    IU : (iα * iα) * (α * α) ≡ ₁
+    IU = Eq.trans (*-assoc iα iα (α * α))
+      (Eq.trans (Eq.cong (iα *_)
+          (Eq.trans (Eq.sym (*-assoc iα α α))
+            (Eq.trans (Eq.cong (_* α) (lemma-⁻¹ˡ α {{instα}}))
+                      (*-identityˡ α))))
+        (lemma-⁻¹ˡ α {{instα}}))
+
+  V1 : ∀ (a₀ : ℤ ₚ) →
+    nsum (toℕ (α * α)) (- a₀) + nsum (toℕ (- α)) (- ₁)
+    ≡ - ((α * α) * a₀) + α
+  V1 a₀ = Eq.cong₂ _+_ (nsum-neg (α * α) a₀)
+    (Eq.trans (nsum-neg (- α) ₁)
+      (Eq.trans (Eq.cong -_ (*-identityʳ (- α))) (-‿involutive α)))
+
+  V2 : ∀ (a₀ : ℤ ₚ) →
+    - ₁ + - nsum (toℕ (- α)) (eCZ a₀) ≡ - ₁ + α * a₀
+  V2 a₀ = Eq.cong (- ₁ +_)
+    (Eq.trans (Eq.cong (λ z → - nsum (toℕ (- α)) z) (eCZ-id a₀))
+    (Eq.trans (Eq.cong -_ (nsum-* (- α) a₀))
+    (Eq.trans (Eq.cong -_ (Eq.sym (-‿distribˡ-* α a₀)))
+              (-‿involutive (α * a₀)))))
+
+  V3 : ∀ (da : ℤ ₚ) →
+    - (- da + nsum (toℕ iα) (- ₁)) ≡ da + iα
+  V3 da = Eq.trans
+    (Eq.cong (λ z → - (- da + z))
+      (Eq.trans (nsum-neg iα ₁) (Eq.cong -_ (*-identityʳ iα))))
+    (Eq.trans (Eq.cong -_ (-‿+-comm da iα)) (-‿involutive (da + iα)))
+
+  V4 : ∀ (da : ℤ ₚ) →
+    (iα * iα) * (- ((α * α) * (da + iα)) + α) ≡ - da
+  V4 da =
+    Eq.trans (Eq.cong ((iα * iα) *_) d2)
+    (Eq.trans (Eq.sym (-‿distribʳ-* (iα * iα) ((α * α) * da)))
+              (Eq.cong -_ d4))
+    where
+    d1 : (α * α) * (da + iα) ≡ ((α * α) * da) + α
+    d1 = Eq.trans (*-distribˡ-+ (α * α) da iα)
+           (Eq.cong (((α * α) * da) +_) ααiα)
+    d2 : - ((α * α) * (da + iα)) + α ≡ - ((α * α) * da)
+    d2 = Eq.trans (Eq.cong (λ z → - z + α) d1)
+      (Eq.trans (Eq.cong (_+ α) (Eq.sym (-‿+-comm ((α * α) * da) α)))
+      (Eq.trans (+-assoc (- ((α * α) * da)) (- α) α)
+      (Eq.trans (Eq.cong ((- ((α * α) * da)) +_) (+-inverseˡ α))
+                (+-identityʳ (- ((α * α) * da))))))
+    d4 : (iα * iα) * ((α * α) * da) ≡ da
+    d4 = Eq.trans (Eq.sym (*-assoc (iα * iα) (α * α) da))
+           (Eq.trans (Eq.cong (_* da) IU) (*-identityˡ da))
+
+  V5 : ∀ (da : ℤ ₚ) →
+    (iα * iα) * (- ₁ + α * (da + iα)) ≡ iα * da
+  V5 da =
+    Eq.trans (Eq.cong ((iα * iα) *_) e2) e3
+    where
+    e1 : α * (da + iα) ≡ (α * da) + ₁
+    e1 = Eq.trans (*-distribˡ-+ α da iα)
+           (Eq.cong ((α * da) +_) (lemma-⁻¹ʳ α {{instα}}))
+    e2 : - ₁ + α * (da + iα) ≡ α * da
+    e2 = Eq.trans (Eq.cong (- ₁ +_) e1)
+      (Eq.trans (Eq.cong (- ₁ +_) (+-comm (α * da) ₁))
+      (Eq.trans (Eq.sym (+-assoc (- ₁) ₁ (α * da)))
+      (Eq.trans (Eq.cong (_+ (α * da)) (+-inverseˡ ₁))
+                (+-0ˡ (α * da)))))
+    e3 : (iα * iα) * (α * da) ≡ iα * da
+    e3 = Eq.trans (*-assoc iα iα (α * da))
+           (Eq.cong (iα *_)
+             (Eq.trans (Eq.sym (*-assoc iα α da))
+               (Eq.trans (Eq.cong (_* da) (lemma-⁻¹ˡ α {{instα}}))
+                         (*-identityˡ da))))
+
+  V6 : ∀ (y : Fin (₁₊ p-2)) (eq-y : - α ≡ ₁₊ y) (X : ℤ ₚ) →
+    nsum (toℕ (kS0 {0} y (λ ()))) X ≡ (iα * iα) * X
+  V6 y eq-y X = Eq.trans (nsum-* (kS0 {0} y (λ ())) X)
+    (Eq.cong (_* X)
+      (Eq.trans (kS0-val {0} y (λ ())) (sqInv-neg α' y eq-y)))
