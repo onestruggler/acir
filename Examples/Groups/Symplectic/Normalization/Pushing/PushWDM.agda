@@ -55,7 +55,13 @@ open import Data.List using () renaming ([] to []ᴸ ; _∷_ to _∷ᴸ_)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWD
   p-2 p-prime using
   (inj₁-a-eq ; kS0 ; kS0-val ; sqInv ; kHn ; kHn-val ; inv-val-cong ;
-   ract-S^-inj₁-0b-coset ; ract-S^-inj₁-a+-coset ; ract-S-inj₁-a+)
+   ract-S^-inj₁-0b-coset ; ract-S^-inj₁-a+-coset ; ract-S-inj₁-a+ ;
+   orderS-inj₁-0b-coset ; orderS-inj₁-a+ ;
+   orderH-inj₁-0b ; orderH-inj₁-a0 ; module OrderH-nn ;
+   module OrderSH-0b ; module OrderSH-a0 ;
+   module OrderSH-nn0 ; module OrderSH-nnw ;
+   module CommHHS-0b ; module CommHHS-a0 ;
+   module CommHHS-nn0 ; module CommHHS-nnw)
 
 ------------------------------------------------------------------------
 -- Weighted closure: an S-power block at exponent j followed by a step
@@ -841,3 +847,46 @@ module SemiMS-nn {m : ℕ} (mm : M (₂₊ m)) (bv : Vec B (₁₊ m))
       (Eq.trans (ractM!-inj₁ mm bv x* (₁₊ α' , B2) (λ ())
                   (Mact-nz x* (₁₊ α' , B2) (λ ())))
                 (inj₁-a-eq boxF)))))
+
+------------------------------------------------------------------------
+-- Sealed per-family dispatchers: the COSET (≡) component of srel-wd at
+-- inj₁ for every unary axiom family, with the box dispatch (elim-suc /
+-- elim-fin, mirroring the width-1 clauses) done INSIDE.  Each is
+-- stated exactly as the hole's obligation, so a future fill consumes
+-- it with no further case analysis.
+
+orderS-inj₁-coset : ∀ {m : ℕ} (ml' : ML' (₂₊ m)) →
+  ((ract {₁₊ m} ᵗ) (inj₁ ml') (S ^ p)) .proj₂
+  ≡ ((ract {₁₊ m} ᵗ) (inj₁ ml') ε) .proj₂
+orderS-inj₁-coset ((dv , e) , (bv , ((₀ , ₀) , nz))) = ⊥-elim (nz auto)
+orderS-inj₁-coset ((dv , e) , (bv , ((₀ , ₁₊ b') , nz))) =
+  orderS-inj₁-0b-coset (dv , e) bv b' nz
+orderS-inj₁-coset ((dv , e) , (bv , ((₁₊ a₀ , b) , nz))) =
+  proj₂ (orderS-inj₁-a+ dv e bv a₀ b nz)
+
+-- NOTE: sealed dispatchers for the kHn-heavy families (order-H,
+-- order-SH, comm-HHS) blow up the checker (the nested elim-suc motives
+-- re-instantiate conversion-heavy types); their per-branch lemmas in
+-- PushWD take the same hypothesis shapes as the width-1 clauses, so
+-- the dispatch belongs at the eventual srel-wd fill site instead.
+
+semiMS-inj₁-coset : ∀ {m : ℕ} (x* : ℤ* ₚ) (ml' : ML' (₂₊ m)) →
+  ((ract {₁₊ m} ᵗ) (inj₁ ml') (ZM x* • S)) .proj₂
+  ≡ ((ract {₁₊ m} ᵗ) (inj₁ ml') (S^ (x* ^2) • ZM x*)) .proj₂
+semiMS-inj₁-coset x* ((dv , e) , (bv , ((₀ , ₀) , nz))) =
+  ⊥-elim (nz auto)
+semiMS-inj₁-coset x* ((dv , e) , (bv , ((₀ , ₁₊ β') , nz))) =
+  elim-suc ((x* ⁻¹) .proj₁ * ₁₊ β')
+           (((x* ⁻¹) *' (₁₊ β' , λ ())) .proj₂)
+    λ m₀ eq-m →
+  SemiMS-0b.semiMS-inj₁-0b (dv , e) bv x* β' nz m₀ eq-m
+semiMS-inj₁-coset x* ((dv , e) , (bv , ((₁₊ α' , β) , nz))) =
+  elim-suc (x* .proj₁ * ₁₊ α') ((x* *' (₁₊ α' , λ ())) .proj₂)
+    λ s eq-s →
+  SemiMS-nn.semiMS-inj₁-nn (dv , e) bv x* α' β nz s eq-s
+
+Mmul-inj₁-coset-full : ∀ {m : ℕ} (x* y* : ℤ* ₚ) (ml' : ML' (₂₊ m)) →
+  ((ract {₁₊ m} ᵗ) (inj₁ ml') (ZM x* • ZM y*)) .proj₂
+  ≡ ((ract {₁₊ m} ᵗ) (inj₁ ml') (ZM (x* *' y*))) .proj₂
+Mmul-inj₁-coset-full x* y* ((dv , e) , (bv , (ab , nz))) =
+  Mmul-inj₁-coset (dv , e) bv x* y* ab nz
