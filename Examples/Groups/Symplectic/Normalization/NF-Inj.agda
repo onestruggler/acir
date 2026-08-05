@@ -10,13 +10,12 @@
 --
 -- The proof is the structural engine (act / act-nf / lemma-act-nf /
 -- lemma-nf-inj).  Tail-surjectivity of the ML coset action is proved here
--- from the invertibility of the symplectic action; the one remaining
--- input is head-injectivity of the ML coset action, postulated (the
--- boundary drawn by the analogous Examples.Groups.Symplectic.ExtendedGate.
--- NF-Inj, where --safe is likewise omitted).
+-- from the invertibility of the symplectic action; head-injectivity of
+-- the ML coset action is imported from Normalization.LMHeadInj, where it
+-- is proved outright.  The module is postulate-free and --safe.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --termination-depth=4 #-}
+{-# OPTIONS --cubical-compatible --safe --termination-depth=4 #-}
 
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)
@@ -46,6 +45,7 @@ open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem using (_≈�
 open Sem.Symplectic using (ap ; ap⁻¹ ; invʳ)
 open Sem.Interpretation using (⟦_⟧ ; actg)
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime hiding (⟦_⟧)
+import Examples.Groups.Symplectic.Normalization.LMHeadInj p-2 p-prime as LMHI
 
 private
   variable
@@ -100,17 +100,18 @@ lemma-act-nf {₁₊ n} (ih , lm) ps =
   where open Eq.≡-Reasoning
 
 ------------------------------------------------------------------------
--- The gate-arithmetic crux (postulated)
+-- The gate-arithmetic crux (proved)
 --
 -- Head-injectivity of the ML coset action: two coset representatives that
 -- agree on every head output are equal.  This is the combinatorial heart
--- of completeness — proved, modulo four further base postulates, in
--- Examples.Groups.Symplectic.ExtendedGate.NF-Inj-{Base,LM}; its plain-gate
--- proof is the remaining open work.  (--safe is omitted for this reason.)
+-- of completeness, proved outright in Normalization.LMHeadInj (width-1
+-- base in Normalization.NF1HeadInj; the width induction, the
+-- inj₁ ≁ inj₂ separation, and the box-parameter recovery all
+-- machine-checked, --safe).
 
-postulate
-  lemma-lm-head-inj : ∀ {n} (lm₁ lm₂ : ML (₁₊ n)) →
-    (∀ (ps : Pauli (₁₊ n)) → head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) → lm₁ ≡ lm₂
+lemma-lm-head-inj : ∀ {n} (lm₁ lm₂ : ML (₁₊ n)) →
+  (∀ (ps : Pauli (₁₊ n)) → head (act [ lm₁ ]ᵐˡ ps) ≡ head (act [ lm₂ ]ᵐˡ ps)) → lm₁ ≡ lm₂
+lemma-lm-head-inj = LMHI.lemma-lm-head-inj-proved
 
 -- tail ∘ act [ lm ]ᵐˡ is surjective onto Pauli n.  No coset structure is
 -- needed: act [ lm ]ᵐˡ = ap ⟦ [ lm ]ᵐˡ ⟧ is a bijection (the Symplectic
