@@ -44,7 +44,9 @@ open import Examples.Groups.Symplectic.BR.Two.D-w p-2 p-prime as TDw
 open import Examples.Groups.Symplectic.Normalization.Pushing.Push2
   p-2 p-prime using (coset)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushWDM
-  p-2 p-prime using (E1 ; GCZd ; ES ; GS)
+  p-2 p-prime using (E1 ; GCZd ; ES ; GS ; EH ; EH3)
+open import Algebra.Properties.Ring (+-*-ring p-2)
+  using (-‿involutive)
 open import Examples.Groups.Symplectic.Normalization.Pushing.MbSOrder
   p-2 p-prime using (eCZ)
 
@@ -295,3 +297,119 @@ module OrdCZ-inj₁-0d (b' dd' : Fin (₁₊ p-2)) where
         (Eq.trans (Eq.cong (db +_)
                     (nsum-p≡0 (nsum tS (- da) + nsum t (- ₁))))
                   (+-identityʳ db)))
+
+------------------------------------------------------------------------
+-- The (a ≠ 0 , c ≠ 0) branch: the direction is the constant sandwich
+-- H ^ 3 • S^ (− a·c⁻¹) • H.  Through the D box: the H-pushes emit
+-- nothing and quarter-turn the box (GH is definitional), the S-power
+-- emits nothing (ES) and shifts by nsum tk (− (− db)); composed, the
+-- box map is (da , db) ↦ (da + nsum tk db , db) with everything else
+-- emitting ₀.  All four coset accumulators drift by constants.
+
+module OrdCZ-inj₁-cc (a₀ c₁' : Fin (₁₊ p-2)) where
+
+  private
+    cI : ℤ ₚ
+    cI = ((₁₊ c₁' , λ ()) ⁻¹) .proj₁
+    kHs : ℤ ₚ
+    kHs = - (₁₊ a₀ * cI)
+    tk : ℕ
+    tk = toℕ kHs
+
+  cst : ℤ ₚ → ℤ ₚ → E → ℤ ₚ → ℤ ₚ → C 2
+  cst dd b e da db =
+    inj₁ (((da , db) ∷ [] , e) ,
+          (((₁₊ c₁' , dd) ∷ []) , ((₁₊ a₀ , b) , λ ())))
+
+  z00c : ∀ (x : ℤ ₚ) → x + - ₀ ≡ x
+  z00c x = Eq.trans (Eq.cong (x +_) neg0) (+-identityʳ x)
+    where
+    neg0 : - ₀ ≡ ₀
+    neg0 = Eq.trans (Eq.sym (+-identityʳ (- z))) (+-inverseˡ z)
+      where
+      z : ℤ ₚ
+      z = ₀
+
+  cstC : ∀ {dd₁ dd₂ b₁ b₂ e₁ e₂ da₁ da₂ db : ℤ ₚ} →
+    dd₁ ≡ dd₂ → b₁ ≡ b₂ → e₁ ≡ e₂ → da₁ ≡ da₂ →
+    cst dd₁ b₁ e₁ da₁ db ≡ cst dd₂ b₂ e₂ da₂ db
+  cstC {dd₂ = dd₂} {b₁ = b₁} {b₂ = b₂} {e₁ = e₁} {e₂ = e₂}
+       {da₁ = da₁} {db = db} pdd pb pe pda =
+    Eq.trans (Eq.cong (λ u → cst u b₁ e₁ da₁ db) pdd)
+    (Eq.trans (Eq.cong (λ u → cst dd₂ u e₁ da₁ db) pb)
+    (Eq.trans (Eq.cong (λ u → cst dd₂ b₂ u da₁ db) pe)
+              (Eq.cong (λ u → cst dd₂ b₂ e₂ u db) pda)))
+
+  private
+    sbox : ℤ ₚ → ℤ ₚ → ℤ ₚ × ℤ ₚ
+    sbox da db =
+      TDw.push-D-w (- db , - - da) (S ^ tk) (TDw.ntH-^ TDw.ntH-S tk)
+        .proj₂ .proj₂
+
+  stepCZ : ∀ (dd b e da db : ℤ ₚ) →
+    proj₂ (ract {1} (cst dd b e da db) (gate₂ CZ-gate))
+    ≡ cst (dd + - ₁₊ a₀) (b + - ₁₊ c₁') e (da + nsum tk db) db
+  stepCZ dd b e da db = Eq.cong₂ (λ dp ee → inj₁ ((dp ∷ [] , ee) ,
+      (((₁₊ c₁' , dd + - ₁₊ a₀) ∷ []) , ((₁₊ a₀ , b + - ₁₊ c₁') , λ ()))))
+    d-eq e-eq
+    where
+    d-eq : TDw.push-D-w (sbox da db) H TDw.ntH-H .proj₂ .proj₂
+           ≡ (da + nsum tk db , db)
+    d-eq = Eq.trans
+      (Eq.cong (λ bx → TDw.push-D-w bx H TDw.ntH-H .proj₂ .proj₂)
+        (GS tk (- db) (- - da)))
+      (Eq.cong₂ _,_
+        (Eq.cong₂ _+_ (-‿involutive da)
+          (Eq.cong (nsum tk) (-‿involutive db)))
+        (-‿involutive db))
+    e-eq : e + - (TDw.push-D-w (da , db) (H ^ 3)
+                    (TDw.ntH-^ TDw.ntH-H 3) .proj₁
+                  + (TDw.push-D-w (- db , - - da) (S ^ tk)
+                       (TDw.ntH-^ TDw.ntH-S tk) .proj₁
+                     + TDw.push-D-w (sbox da db) H TDw.ntH-H .proj₁))
+           ≡ e
+    e-eq = Eq.trans
+      (Eq.cong (λ z → e + - z)
+        (Eq.trans (Eq.cong₂ _+_ (EH3 da db)
+            (Eq.trans (Eq.cong₂ _+_ (ES tk (- db) (- - da))
+                (EH (sbox da db .proj₁) (sbox da db .proj₂)))
+              (+-identityʳ ₀)))
+          (+-identityˡ ₀)))
+      (z00c e)
+
+  orbit : ∀ (k : ℕ) (dd b e da db : ℤ ₚ) →
+    ((ract {1} ᵗ) (cst dd b e da db) (CZ ^ k)) .proj₂
+    ≡ cst (dd + nsum k (- ₁₊ a₀)) (b + nsum k (- ₁₊ c₁')) e
+          (da + nsum k (nsum tk db)) db
+  orbit zero dd b e da db =
+    cstC (Eq.sym (+-identityʳ dd)) (Eq.sym (+-identityʳ b)) Eq.refl
+         (Eq.sym (+-identityʳ da))
+  orbit (suc zero) dd b e da db =
+    Eq.trans (stepCZ dd b e da db)
+      (cstC
+        (Eq.cong (dd +_) (Eq.sym (+-identityʳ (- ₁₊ a₀))))
+        (Eq.cong (b +_) (Eq.sym (+-identityʳ (- ₁₊ c₁'))))
+        Eq.refl
+        (Eq.cong (da +_) (Eq.sym (+-identityʳ (nsum tk db)))))
+  orbit (suc (suc k)) dd b e da db =
+    Eq.trans (Eq.cong (λ c → ((ract {1} ᵗ) c (CZ ^ suc k)) .proj₂)
+        (stepCZ dd b e da db))
+    (Eq.trans (orbit (suc k) (dd + - ₁₊ a₀) (b + - ₁₊ c₁') e
+        (da + nsum tk db) db)
+      (cstC
+        (+-assoc dd (- ₁₊ a₀) (nsum (suc k) (- ₁₊ a₀)))
+        (+-assoc b (- ₁₊ c₁') (nsum (suc k) (- ₁₊ c₁')))
+        Eq.refl
+        (+-assoc da (nsum tk db) (nsum (suc k) (nsum tk db)))))
+
+  ordCZ-inj₁-cc-coset : ∀ (dd b e da db : ℤ ₚ) →
+    ((ract {1} ᵗ) (cst dd b e da db) (CZ ^ p)) .proj₂
+    ≡ ((ract {1} ᵗ) (cst dd b e da db) ε) .proj₂
+  ordCZ-inj₁-cc-coset dd b e da db =
+    Eq.trans (orbit p dd b e da db)
+      (cstC
+        (Eq.trans (Eq.cong (dd +_) (nsum-p≡0 (- ₁₊ a₀))) (+-identityʳ dd))
+        (Eq.trans (Eq.cong (b +_) (nsum-p≡0 (- ₁₊ c₁'))) (+-identityʳ b))
+        Eq.refl
+        (Eq.trans (Eq.cong (da +_) (nsum-p≡0 (nsum tk db)))
+                  (+-identityʳ da)))
