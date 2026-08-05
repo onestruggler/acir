@@ -4,7 +4,7 @@ open import Word.Base using (WRel ; Word ; ε ; _•_)
 open import Level using (0ℓ ; _⊔_)
 open import Relation.Binary using (Setoid)
 open import Data.Nat using (ℕ)
-open import Data.Vec.Base using (Vec)
+open import Data.Vec.Base using (Vec ; _∷_)
 import Data.Vec.Relation.Binary.Equality.Setoid as VecEq
 open import Algebra.Bundles using (Monoid)
 open import Algebra.Bundles.Raw using (RawMonoid)
@@ -50,12 +50,20 @@ module Circuit.Uniqueness
   (act : IndexedRightAction (\ n -> Monoid.rawMonoid (Sem n)) Ob)
   (let open IndexedRightAction act using (_◁_ ; ◁-cong ; ◁-compose))
   (let open VecEq Ob using (_≋_))
-  -- A base state fixed by every lifted circuit ...
-  (base : ∀ {n} -> Vec (Setoid.Carrier Ob) n)
-  (base-fix : ∀ {n} (w : Circuit n) -> (base ◁ ⟦ w ↑ ⟧) ≋ base)
-  -- ... on which the coset representatives act injectively.
-  (c-inj : ∀ {n} {c1 c2 : C n} ->
-    (base ◁ ⟦ [ c1 ]ᶜ ⟧) ≋ (base ◁ ⟦ [ c2 ]ᶜ ⟧) -> c1 ≡ c2)
+  -- A lifted circuit leaves the head alone and acts on the tail
+  -- exactly as the unlifted circuit does ...
+  (head-fix : ∀ {n} (h : Setoid.Carrier Ob) (t : Vec (Setoid.Carrier Ob) n)
+              (w : Circuit n) -> ((h ∷ t) ◁ ⟦ w ↑ ⟧) ≋ (h ∷ (t ◁ ⟦ w ⟧)))
+  -- ... so a coset representative must be determined by how it acts
+  -- on the head, uniformly in the tail.  The two states compared
+  -- below share a head but not a tail: the lifted prefixes of two
+  -- normal forms transport a common tail by different semantic
+  -- elements g1 and g2 (that is all head-fix leaves of them), so the
+  -- hypothesis is quantified over that pair of transports.
+  (c-inj : ∀ {n} {c1 c2 : C n} (g1 g2 : Monoid.Carrier (Sem n)) ->
+    (∀ (h : Setoid.Carrier Ob) (t : Vec (Setoid.Carrier Ob) n) ->
+       ((h ∷ (t ◁ g1)) ◁ ⟦ [ c1 ]ᶜ ⟧) ≋ ((h ∷ (t ◁ g2)) ◁ ⟦ [ c2 ]ᶜ ⟧)) ->
+    c1 ≡ c2)
   where
 
 open import Circuit.CosetNF C I Gate [_]ᶜ
@@ -81,16 +89,17 @@ sem-sound : ∀ {n} ->
 sem-sound {n} = ⟦⟧-homo.⟦⟧-cong n
 
 -- The top coset of a normal form is determined by the semantics: act
--- with both sides of eq on the base state.  The lifted prefixes fix
--- it (base-fix), so what remains is the action of the two coset
--- representatives, which c-inj separates.  No case split on the
--- width: at width 0 the lifted prefix is ε ↑ = ε, fixed by base-fix
--- like any other lift.
+-- with both sides of eq on an arbitrary state h ∷ t.  The lifted
+-- prefixes pass through the head (head-fix), leaving states that
+-- still share the head h and differ only in how the prefixes
+-- transported the tail; c-inj separates the two coset
+-- representatives from that.  No case split on the width, and no
+-- state needs to be produced: h and t stay universally quantified.
 coset-unique : ∀ n (l l' : NF n) (r r' : C n)
   → let open Monoid (Sem (₁₊ n)) in
   (eq : ⟦ (inv-nf {n} l ↑) • [ r ]ᶜ ⟧ ≈ ⟦ (inv-nf l') ↑ • [ r' ]ᶜ ⟧)
   → r ≡ r'
-coset-unique n l l' r r' eq = c-inj claim
+coset-unique n l l' r r' eq = c-inj ⟦ inv-nf l ⟧ ⟦ inv-nf l' ⟧ claim
   where
   module Semn = Monoid (Sem (₁₊ n))
   open Semn using (_∙_)
@@ -108,19 +117,21 @@ coset-unique n l l' r r' eq = c-inj claim
   eq-∙ = Semn.trans (Semn.sym (homoₙ (inv-nf l ↑) [ r ]ᶜ))
            (Semn.trans eq (homoₙ (inv-nf l' ↑) [ r' ]ᶜ))
 
-  claim : (base ◁ ⟦ [ r ]ᶜ ⟧) ≋ (base ◁ ⟦ [ r' ]ᶜ ⟧)
-  claim = begin
-    (base ◁ ⟦ [ r ]ᶜ ⟧)
-      ≈⟨ ◁-cong (≋-sym (base-fix (inv-nf l))) Semn.refl ⟩
-    (base ◁ gl) ◁ ⟦ [ r ]ᶜ ⟧
-      ≈⟨ ≋-sym (◁-compose base gl ⟦ [ r ]ᶜ ⟧) ⟩
-    base ◁ (gl ∙ ⟦ [ r ]ᶜ ⟧)
+  claim : ∀ (h : Setoid.Carrier Ob) (t : Vec (Setoid.Carrier Ob) n) ->
+          ((h ∷ (t ◁ ⟦ inv-nf l ⟧)) ◁ ⟦ [ r ]ᶜ ⟧) ≋
+          ((h ∷ (t ◁ ⟦ inv-nf l' ⟧)) ◁ ⟦ [ r' ]ᶜ ⟧)
+  claim h t = begin
+    (h ∷ (t ◁ ⟦ inv-nf l ⟧)) ◁ ⟦ [ r ]ᶜ ⟧
+      ≈⟨ ◁-cong (≋-sym (head-fix h t (inv-nf l))) Semn.refl ⟩
+    ((h ∷ t) ◁ gl) ◁ ⟦ [ r ]ᶜ ⟧
+      ≈⟨ ≋-sym (◁-compose (h ∷ t) gl ⟦ [ r ]ᶜ ⟧) ⟩
+    (h ∷ t) ◁ (gl ∙ ⟦ [ r ]ᶜ ⟧)
       ≈⟨ ◁-cong ≋-refl eq-∙ ⟩
-    base ◁ (gl' ∙ ⟦ [ r' ]ᶜ ⟧)
-      ≈⟨ ◁-compose base gl' ⟦ [ r' ]ᶜ ⟧ ⟩
-    (base ◁ gl') ◁ ⟦ [ r' ]ᶜ ⟧
-      ≈⟨ ◁-cong (base-fix (inv-nf l')) Semn.refl ⟩
-    (base ◁ ⟦ [ r' ]ᶜ ⟧)
+    (h ∷ t) ◁ (gl' ∙ ⟦ [ r' ]ᶜ ⟧)
+      ≈⟨ ◁-compose (h ∷ t) gl' ⟦ [ r' ]ᶜ ⟧ ⟩
+    ((h ∷ t) ◁ gl') ◁ ⟦ [ r' ]ᶜ ⟧
+      ≈⟨ ◁-cong (head-fix h t (inv-nf l')) Semn.refl ⟩
+    (h ∷ (t ◁ ⟦ inv-nf l' ⟧)) ◁ ⟦ [ r' ]ᶜ ⟧
       ∎
 
 
