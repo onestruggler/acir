@@ -87,3 +87,28 @@ faithful-from n nfp agree w v =
     (Group.setoid (Sp-group n)) (⟦_⟧ {n}) {nfp}
     (record { unique = unique-of n (SNF.NormalForm.inv-nf nfp) agree })
     sound
+
+-- The same over an arbitrary carrier, which is the form the tower
+-- needs: the tower's carrier is CosetNF.tower-carrier ⊤ n, the same
+-- recursion as NF n but a distinct stuck term at a variable width, so
+-- it reaches NF n through a map rather than by conversion.  φ need
+-- only be injective; the tower's is the evident isomorphism.
+faithful-from′ : ∀ n {B : Set}
+                 (nfp : NFBase.NormalForm (n QRel,_===_) B)
+                 (φ : B → NF n) →
+                 (∀ {u v} → φ u ≡ φ v → u ≡ v) →
+                 (∀ u → PB._≈_ (n QRel,_===_)
+                          (SNF.NormalForm.inv-nf nfp u) [ φ u ]) →
+                 Faithful n
+faithful-from′ n {B} nfp φ φ-inj agree w v =
+  NFU.by-normalization (n QRel,_===_) B
+    (Group.setoid (Sp-group n)) (⟦_⟧ {n}) {nfp}
+    (record { unique =
+        λ {u} {v'} eq → φ-inj (⟦[]⟧-injective n (eq' eq)) })
+    sound
+  where
+  open SNF.NormalForm nfp using () renaming (inv-nf to gg)
+  eq' : ∀ {u v' : B} → ⟦ gg u ⟧ ≈ˢ ⟦ gg v' ⟧ →
+        ⟦ [ φ u ] ⟧ ≈ˢ ⟦ [ φ v' ] ⟧
+  eq' {u} {v'} eq q = Eq.trans (Eq.sym (sound (agree u) q))
+                        (Eq.trans (eq q) (sound (agree v') q))
