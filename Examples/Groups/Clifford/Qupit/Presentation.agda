@@ -15,22 +15,20 @@
 -- semidirect product, so all that is needed here is to feed it the
 -- pieces.
 --
--- Of those pieces the symplectic one is available outright:
--- Simplified.Presentation.presentation presents Sp(2n, ℤ/pℤ).  Three
--- are not, and are taken as parameters of `Build` below rather than
--- assumed:
+-- Both factor presentations are available outright:
+-- Simplified.Presentation.presentation presents Sp(2n, ℤ/pℤ), and
+-- XZPresentation.presentation presents the Pauli group (ℤ/pℤ × ℤ/pℤ)ⁿ.
 --
---   * respects-Δ / respects-Γ — the conjugation action is well defined,
---     i.e. it respects the symplectic rules in its acting argument and
---     the Pauli rules in its acted-on argument.  These are the two
---     hypotheses SemiDirectProduct2 asks for; they are exactly the
---     `hyph` / `hypn` that Iso.agda's commented-out attempt left open.
---   * p₁ — the Pauli side: XZ n presents (ℤ/pℤ × ℤ/pℤ)ⁿ.  XZ.agda
---     carries the relation and its grouplike witness, but no
---     presentation theorem; Examples.Groups.Pauli.Presentation proves
---     the analogous statement over a different alphabet.
+-- What is still missing is the well-definedness of the action, taken as
+-- parameters of `Build` below rather than assumed:
 --
--- Once those three land, `presentation` below is the presentation
+--   * respects-Δ / respects-Γ — the conjugation action respects the
+--     symplectic rules in its acting argument and the Pauli rules in
+--     its acted-on argument.  These are the two hypotheses
+--     SemiDirectProduct2 asks for; they are exactly the `hyph` / `hypn`
+--     that Iso.agda's commented-out attempt left open.
+--
+-- Once those two land, `presentation` below is the presentation
 -- theorem, with no further work.
 --
 -- Note on the group: the machinery builds the semidirect product from
@@ -72,7 +70,9 @@ open import Presentation.Definitions using (_IsPresentationOf_)
 import Presentation.Construct.Properties.SemiDirectProduct2 as SDP2
 
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
+open import Examples.Groups.Pauli.Semantics p-2 p-prime using (+ₚ-group)
 import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
+import Examples.Groups.Symplectic.XZPresentation p-2 p-prime as XZPres
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen as SimPres
 open import Examples.Groups.Clifford.Qupit.SDProduct p-3 p-prime g* g-gen
@@ -121,13 +121,12 @@ module Semidirect (n : ℕ) where
   module Build
     (respects-Δ : Respects-Δ)
     (respects-Γ : Respects-Γ)
-    (G₁ : Group 0ℓ 0ℓ)
-    (p₁ : Γ IsPresentationOf G₁)
     where
 
     private
       module P = SDP.Presentation respects-Δ respects-Γ
-                   G₁ (Sp-group n) p₁ (SimPres.presentation {n})
+                   (+ₚ-group n) (Sp-group n)
+                   (XZPres.presentation {n}) (SimPres.presentation {n})
 
     -- The semidirect product of the Pauli group by Sp(2n, ℤ/pℤ), with
     -- the action transported through the two presentations.
@@ -142,27 +141,34 @@ module Semidirect (n : ℕ) where
 ------------------------------------------------------------------------
 -- What remains
 --
--- To turn `Build` into an unconditional theorem, three things are
--- needed; none is assumed anywhere in this file.
+-- Both obligations reduce to one bridge lemma, rather than to a rule-by
+-- rule grind, because the Pauli presentation is now available and so is
+-- its completeness.  Write sem for the Pauli reading of an XZ word
+-- (XZPresentation) and actg / ⟦_⟧ for the semantic symplectic action
+-- (Symplectic.Semantics.Interpretation).  The bridge is
 --
---   (1) Respects-Γ.  For each symplectic generator c and each Pauli
---       rule, conjugating by c respects it: e.g. for c = H and
---       order-X, conj H (X ^ p) = Z ^ p ≈ ε.  A case analysis over the
---       six XZ rules and the generator shapes, needing the power law
---       for the extended action.
+--   conj-sem : sem ((conj ⁿ') c w) ≡ actg c (sem w)
 --
---   (2) Respects-Δ.  For each simplified symplectic rule c === d and
---       each Pauli generator, conjugating by c and by d agree.  This is
---       the substantial one — it is the statement that the symplectic
---       rules act consistently on the Paulis, over ~17 rules whose
---       words are long (M-power, semi-M*CZ, selinger-c10 … c15).
+-- for a generator c, extended to words as
 --
---   (3) p₁, the Pauli side.  XZ n presents (ℤ/pℤ × ℤ/pℤ)ⁿ: every word
---       normalises to X^a Z^b per wire, which is a normal form,
---       soundness and surjectivity away from a presentation theorem.
---       Alternatively, transport Examples.Groups.Pauli.Presentation
---       along an alphabet isomorphism XZ.Gen n ≅ (Γ-H ⊎^ n), in the
---       style of Iso3.
+--   conjw-sem : sem ((conj ʰ') c w) ≡ ap ⟦ c ⟧ (sem w)
+--
+-- both by induction, from the fourteen generator cases of conj (each a
+-- concrete ℤ/pℤ identity, e.g. conj H X = Z against actg H (₁,₀) =
+-- (-₀,₁)).  Given the bridge:
+--
+--   * Respects-Γ: a Pauli rule gives sem u ≡ sem v (soundness), hence
+--     actg c (sem u) ≡ actg c (sem v), hence the two conjugates have
+--     equal readings, hence they are ≈ by completeness of the Pauli
+--     presentation.
+--
+--   * Respects-Δ: a symplectic rule gives ⟦c⟧ ≈ˢ ⟦d⟧ (soundness of the
+--     simplified presentation), i.e. ap ⟦c⟧ ≗ ap ⟦d⟧; the bridge turns
+--     that into equal readings, and completeness again concludes.
+--
+-- So the long rules — M-power, semi-M*CZ, selinger-c10 … c15 — never
+-- have to be conjugated by hand: they are handled by soundness of the
+-- presentation they already have.
 --
 -- Relating `Pauli⋊Sp` to Semantics.agda's `Pauli⋊Sp-group` additionally
 -- needs the two actions to agree — that a symplectic element acts on a
