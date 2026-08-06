@@ -56,8 +56,10 @@ open Sem.Interpretation using (⟦_⟧ ; ⟦_⟧ᵍ)
 
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using (NF ; [_])
+open import Examples.Groups.Symplectic.Normalization.Normalizer p-2 p-prime
+  using (nfp'-t)
 open import Examples.Groups.Symplectic.Normalization.Uniqueness p-2 p-prime
-  using (nfp'-t ; unique-nf)
+  using (⟦[]⟧-injective)
 
 open SNF using (UniqueNormalForm)
 
@@ -112,7 +114,7 @@ private
                             (Group.setoid (Sp-group n)) GS.⟦_⟧ (nfp'-t n)
     unfp = record
       { unique = λ {u} {v} eq →
-          UniqueNormalForm.unique (unique-nf n)
+          ⟦[]⟧-injective n
             (λ p → Eq.trans (agree [ u ] p)
                    (Eq.trans (eq p) (Eq.sym (agree [ v ] p)))) }
 
