@@ -15,6 +15,7 @@ open import Data.Fin.Permutation
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; refl)
 import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Uniqueness.Propositional as NFU
 import Normalization.NormalForm.Setoid as SNF
 open import Algebra.Bundles using (Group)
 import Examples.Groups.Symmetric.Tight.Semantics as TightSem
@@ -56,6 +57,9 @@ private
 ------------------------------------------------------------------------
 -- Unique normal form for the tight semantics
 
+-- A tight denotation determines a loose one wirewise (⟦⟧-agree), so
+-- the loose uniqueness transfers: rewrite the hypothesis along
+-- ⟦⟧-agree at both ends and appeal to unique-nf.
 unique-nf-tight :
   NFBase.UniqueNormalForm (_VRel,_===_ n) (NF n)
     (Group.setoid (Permutation′-group n)) (TightSem.⟦_⟧ {n}) (nfp'-t n)
@@ -66,3 +70,15 @@ unique-nf-tight {n = n} = record
                (Eq.trans (eq k) (⟦⟧-agree (inv-nf {n} v) k)))
   }
   where open SNF using (UniqueNormalForm)
+
+-- The same content in the packaging of
+-- Normalization.NormalForm.Uniqueness, which takes the section
+-- inv-nf directly instead of a whole NormalForm record.  The two
+-- `unique` fields have the same type, so this is a repackaging.
+unique-nf-tight′ : ∀ n →
+  let open NFU (_VRel,_===_ n) (NF n)
+               (Group.setoid (Permutation′-group n)) (TightSem.⟦_⟧ {n})
+  in UniqueNormalForm (inv-nf {n})
+unique-nf-tight′ n = record
+  { unique = SNF.UniqueNormalForm.unique (unique-nf-tight {n})
+  }
