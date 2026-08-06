@@ -20,12 +20,16 @@
 -- Normalization.agda, which is --safe and hole-free).  So
 -- `subpresentation` below rests on nothing.
 --
--- `presentation` additionally needs SURJECTIVITY, and that is still
+-- The presentation additionally needs SURJECTIVITY, which is still
 -- open: Surjectivity.agda postulates Theorem-LM (every symplectic
--- transformation is realised by some circuit).  That is why this
--- module cannot yet carry --safe — the obligation is a different one
--- from anything on the normalization route.
+-- transformation is realised by some circuit) — a different obligation
+-- from anything on the normalization route.  So surjectivity is a
+-- HYPOTHESIS here (presentation-from) rather than an import, which
+-- keeps this module --safe and keeps soundness and completeness free
+-- of it.  Examples.Groups.Symplectic.PresentationFull discharges it.
 ------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ)
 open import Data.Nat.Primality using (Prime)
@@ -75,14 +79,19 @@ open SNF using (UniqueNormalForm)
 -- symplectic action ⟦_⟧.  Proved in Transport, by carrying the extended
 -- gate set's soundness back along the group isomorphism f'*.
 --
--- surj-nf : every symplectic transformation is the action of some
--- circuit — surjectivity of ⟦_⟧ onto Sp-group.  Proved directly in
--- Surjectivity via the box normal-form inversion engine `lemma-invnf`
--- (the whole reduction is verified; its single remaining gate-specific
--- input is the single-level `Theorem-LM`, postulated there).
+-- Surjectivity is NOT imported here.  Surjectivity.agda still
+-- postulates Theorem-LM, and importing it would cost this module its
+-- --safe flag — and with it the postulate-freedom of soundness and
+-- completeness, which do not depend on surjectivity at all.  It is
+-- taken as a hypothesis instead (Surjectivity below), and discharged
+-- in Examples.Groups.Symplectic.PresentationFull.
 
 open import Examples.Groups.Symplectic.Transport p-2 p-prime using (sound-ax)
-open import Examples.Groups.Symplectic.Surjectivity p-2 p-prime using (surj-nf)
+
+-- Every symplectic transformation is the action of some circuit.
+Surjectivity : ℕ → Set
+Surjectivity n =
+  ∀ (S : Sem.Symplectic n) → ∃ λ (w : Circuit n) → ⟦ w ⟧ ≈ˢ S
 
 ------------------------------------------------------------------------
 -- The presentation, assembled level by level
@@ -154,20 +163,26 @@ private
     ⟦⟧-cong PB.right-unit  p = Eq.refl
     ⟦⟧-cong (PB.axiom x)   p = soundE x p
 
-    -- Surjectivity of GS.⟦_⟧ onto Sp-group, transported from surj-nf.
-    claim : Surjective _≈_ (Group._≈_ (Sp-group n)) GS.⟦_⟧
-    claim S = w , λ {z} z≈w p →
+    -- Surjectivity of GS.⟦_⟧ onto Sp-group, transported from the
+    -- surjectivity of ⟦_⟧.
+    claim : Surjectivity n → Surjective _≈_ (Group._≈_ (Sp-group n)) GS.⟦_⟧
+    claim surj S = w , λ {z} z≈w p →
       Eq.trans (⟦⟧-cong z≈w p)
         (Eq.trans (Eq.sym (agree w p)) (w≈S p))
       where
-      w   = proj₁ (surj-nf S)
-      w≈S = proj₂ (surj-nf S)
+      w   = proj₁ (surj S)
+      w≈S = proj₂ (surj S)
 
 ------------------------------------------------------------------------
 -- The symplectic presentation
 
+-- Soundness and completeness, unconditionally.
 subpresentation : ∀ {n} → (n QRel,_===_) IsSubPresentationOf (Sp-group n)
 subpresentation {n} = Build.subpres n
 
-presentation : ∀ {n} → (n QRel,_===_) IsPresentationOf (Sp-group n)
-presentation {n} = isPresentationOf (Build.subpres n) (Build.claim n)
+-- The presentation, given surjectivity.  PresentationFull discharges
+-- the hypothesis with Surjectivity.surj-nf.
+presentation-from : ∀ {n} → Surjectivity n →
+                    (n QRel,_===_) IsPresentationOf (Sp-group n)
+presentation-from {n} surj =
+  isPresentationOf (Build.subpres n) (Build.claim n surj)

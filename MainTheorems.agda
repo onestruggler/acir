@@ -35,7 +35,7 @@ import Presentation.Base as PB
 import Presentation.Properties as PP
 open import Presentation.Definitions
   using (_IsPresentationOf_ ; _IsMonoidPresentationOf_
-        ; monoidPresentation⇒presentation)
+        ; _IsSubPresentationOf_ ; monoidPresentation⇒presentation)
 open import Presentation.GroupLike using (Grouplike)
 open import Presentation.Construct.Base
   using (_⋄_⋄_ ; CommRel ; ConjRelʷ ; EmptyRel ; TrivialRel ; _⊕_ ; _⊕^_)
@@ -60,6 +60,12 @@ import Examples.Groups.Symmetric.Loose.Semantics as SymLoose
 import Examples.Groups.Symmetric.Tight.Semantics as SymTight
 import Examples.Groups.Symmetric.Theorems as SymThm
 import Examples.Groups.Pauli.Presentation as Pauli
+import Examples.Groups.Symplectic.Syntactics as SympSyn
+import Examples.Groups.Symplectic.Semantics as SympSem
+import Examples.Groups.Symplectic.Normalization as SympNrm
+import Examples.Groups.Symplectic.Normalization.Section as SympSec
+import Examples.Groups.Symplectic.Normalization.Uniqueness as SympUnq
+import Examples.Groups.Symplectic.Presentation as SympPres
 import Examples.Construct.SemiDirectProduct.SnD as SnD
 import Examples.Amalgamations.CliffordT1 as CliffordT1
 import Examples.Amalgamations.CliffordT1BaseUNF as CliffordT1Base
@@ -314,3 +320,55 @@ U₃-presentation-isomorphism :
       (PP.•-ε-monoid U33Di.TwoLevel-Simplified-Amal.Simplified._===_))
     (U33Di.TwoLevel-Simplified-Amal.Iso.g ʷ)
 U₃-presentation-isomorphism = U33Di.TwoLevel-Simplified-Amal.Iso.U33Di-isomorphism
+
+------------------------------------------------------------------------
+-- Concrete presentations: the symplectic groups Sp(2n, ℤ/pℤ)
+--
+-- Home: Examples.Groups.Symplectic.*.  For an odd prime p, the
+-- qupit-Clifford circuits modulo the relations of Symplectic.Syntactics
+-- present Sp(2n, ℤ/pℤ).  The engine is the Reidemeister–Schreier coset
+-- tower of Symplectic.Normalization, whose well-definedness is proved
+-- by induction on the width: each level's obligation needs only
+-- faithfulness one level down.
+--
+-- Soundness and completeness are unconditional.  Surjectivity is not —
+-- Symplectic.Surjectivity still postulates Theorem-LM — so the full
+-- presentation theorem is stated here with surjectivity as a
+-- hypothesis.  Symplectic.PresentationFull discharges it and is the
+-- only module on this route without --safe.
+
+module Symplectic-Theorems (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
+
+  private
+    module Syn  = SympSyn  p-2 p-prime
+    module Sem  = SympSem  p-2 p-prime
+    module Sec  = SympSec  p-2 p-prime
+    module Nrm  = SympNrm  p-2 p-prime
+    module Unq  = SympUnq  p-2 p-prime
+    module Pres = SympPres p-2 p-prime
+
+  open Syn.Symplectic using (Circuit ; _QRel,_===_)
+  open Sem using (Sp-group ; _≈ˢ_)
+  open Sem.Interpretation using (⟦_⟧)
+  open Sec using (NF ; [_])
+
+  -- The coset tower's normal form, at every width.  Postulate-free:
+  -- the tower is complete (Symplectic.Normalization is --safe and
+  -- hole-free), so no normalizer is assumed.
+  normal-form : ∀ n → NFBase.NormalForm (n QRel,_===_) (NF n)
+  normal-form = Nrm.nfp'-sec
+
+  -- It is unique for the symplectic semantics: normal forms with equal
+  -- denotations are equal.  This is the completeness crux.
+  unique-nf : ∀ n {u v : NF n} → ⟦ [ u ] ⟧ ≈ˢ ⟦ [ v ] ⟧ → u Eq.≡ v
+  unique-nf = Unq.⟦[]⟧-injective
+
+  -- Soundness and completeness of the presentation, unconditionally.
+  subpresentation : ∀ n →
+                    (n QRel,_===_) IsSubPresentationOf (Sp-group n)
+  subpresentation n = Pres.subpresentation {n}
+
+  -- The presentation theorem, given surjectivity of the action.
+  presentation : ∀ n → Pres.Surjectivity n →
+                 (n QRel,_===_) IsPresentationOf (Sp-group n)
+  presentation n = Pres.presentation-from {n}
