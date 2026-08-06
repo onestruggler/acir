@@ -12,16 +12,19 @@
 -- normal form of Normalization.Section, and injectivity of the section
 -- (the completeness crux) is Normalization.NF-Inj.⟦[]⟧-injective.
 --
--- The completeness crux is now fully proved: Normalization.NF-Inj is
--- postulate-free and --safe (head-injectivity of the ML coset action
--- is Normalization.LMHeadInj.lemma-lm-head-inj-proved).  What remains
--- postulated on this route is the normalizer triple of
--- Normalization.Uniqueness (nf-t / nf-t-cong / retract-t) and
--- Surjectivity's Theorem-LM input:
---   * sound-ax : the base symplectic relations act identically on Paulis
---     (soundness of the presentation in the symplectic semantics);
---   * surj-nf  : every symplectic transformation is realised by some
---     circuit (surjectivity onto Sp-group).
+-- SOUNDNESS AND COMPLETENESS ARE NOW POSTULATE-FREE.  The completeness
+-- crux is Normalization.LMHeadInj.lemma-lm-head-inj-proved, and the
+-- normalizer is no longer postulated: Normalization.nfp'-sec is the
+-- coset tower's own normal form, transported onto Section's NF, the
+-- tower having been completed by the width induction (see
+-- Normalization.agda, which is --safe and hole-free).  So
+-- `subpresentation` below rests on nothing.
+--
+-- `presentation` additionally needs SURJECTIVITY, and that is still
+-- open: Surjectivity.agda postulates Theorem-LM (every symplectic
+-- transformation is realised by some circuit).  That is why this
+-- module cannot yet carry --safe — the obligation is a different one
+-- from anything on the normalization route.
 ------------------------------------------------------------------------
 
 open import Data.Nat using (ℕ)
@@ -56,10 +59,12 @@ open Sem.Interpretation using (⟦_⟧ ; ⟦_⟧ᵍ)
 
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using (NF ; [_])
-open import Examples.Groups.Symplectic.Normalization.Normalizer p-2 p-prime
-  using (nfp'-t)
+-- The normal form is now the coset tower's own, transported onto
+-- Section's NF: no normalizer is postulated any more.
+open import Examples.Groups.Symplectic.Normalization p-2 p-prime
+  using (nfp'-sec-agree) renaming (nfp'-sec to nfp'-t)
 open import Examples.Groups.Symplectic.Normalization.Uniqueness p-2 p-prime
-  using (⟦[]⟧-injective)
+  using (⟦[]⟧-injective) renaming (sound to soundQ)
 
 open SNF using (UniqueNormalForm)
 
@@ -112,11 +117,22 @@ private
     -- Uniqueness for GS.⟦_⟧ = uniqueness for ⟦_⟧ conjugated by agree.
     unfp : UniqueNormalForm (n QRel,_===_) (Eq.setoid (NF n))
                             (Group.setoid (Sp-group n)) GS.⟦_⟧ (nfp'-t n)
+    -- The section is now the tower's, which is [_] only up to the
+    -- congruence, so the chain is bridged through that agreement.
+    bridge : ∀ (u : NF n) p →
+             ap GS.⟦ SNF.NormalForm.inv-nf (nfp'-t n) u ⟧ p ≡
+             ap GS.⟦ [ u ] ⟧ p
+    bridge u p =
+      Eq.trans (Eq.sym (agree (SNF.NormalForm.inv-nf (nfp'-t n) u) p))
+        (Eq.trans (soundQ (nfp'-sec-agree n u) p) (agree [ u ] p))
+
     unfp = record
       { unique = λ {u} {v} eq →
           ⟦[]⟧-injective n
             (λ p → Eq.trans (agree [ u ] p)
-                   (Eq.trans (eq p) (Eq.sym (agree [ v ] p)))) }
+                   (Eq.trans (Eq.sym (bridge u p))
+                   (Eq.trans (eq p)
+                   (Eq.trans (bridge v p) (Eq.sym (agree [ v ] p)))))) }
 
     module GSP = GS.GetSubPresentation soundE grouplike (nfp'-t n) unfp
 

@@ -368,6 +368,56 @@ nfp'-t : ∀ n → NormalForm (n QRel,_===_) (NFᵗ n)
 nfp'-t n = TowerLevel.nfp' (tower n)
 
 ------------------------------------------------------------------------
+-- The same, over Section's NF
+--
+-- The tower's carrier and Section's NF are the same recursion but
+-- distinct stuck terms at a variable width, so the normal form is
+-- transported along the isomorphism φ rather than reused.  This is the
+-- form the rest of the development is stated over, and it is what
+-- makes the postulated normalizer unnecessary.
+
+ψ : ∀ {n} → NF n → NFᵗ n
+ψ {0}    _       = tt
+ψ {₁₊ k} (u , c) = ψ u , c
+
+ψ∘φ : ∀ {n} (u : NFᵗ n) → ψ (φ u) ≡ u
+ψ∘φ {0}    _       = Eq.refl
+ψ∘φ {₁₊ k} (u , c) = Eq.cong (_, c) (ψ∘φ u)
+
+nfp'-sec : ∀ n → NormalForm (n QRel,_===_) (NF n)
+nfp'-sec n = record
+  { rightInverse = record
+      { to        = φ ∘ nfᵗ
+      ; from      = invᵗ ∘ ψ
+      ; to-cong   = λ eq → Eq.cong φ (SNF.NormalForm.nf-cong (nfp'-t n) eq)
+      ; from-cong = λ { Eq.refl → PB.refl }
+      ; inverseʳ  = λ { {w} Eq.refl → retract w }
+      }
+  }
+  where
+  nfᵗ  = SNF.NormalForm.nf (nfp'-t n)
+  invᵗ = SNF.NormalForm.inv-nf (nfp'-t n)
+
+  -- ψ undoes φ, so the round trip is the tower's own retraction.
+  retract : ∀ w → PB._≈_ (n QRel,_===_) (invᵗ (ψ (φ (nfᵗ w)))) w
+  retract w = PB.trans
+    (PB.refl' (n QRel,_===_) (Eq.cong invᵗ (ψ∘φ (nfᵗ w))))
+    (SNF.NormalForm.inv-nf∘nf=id (nfp'-t n))
+
+φ∘ψ : ∀ {n} (u : NF n) → φ (ψ u) ≡ u
+φ∘ψ {0}    _       = Eq.refl
+φ∘ψ {₁₊ k} (u , c) = Eq.cong (_, c) (φ∘ψ u)
+
+-- The transported section is Section's [_], up to the congruence.
+-- This is what lets the uniqueness theorem, which is stated over [_],
+-- be read as uniqueness for this normal form.
+nfp'-sec-agree : ∀ n (u : NF n) →
+  PB._≈_ (n QRel,_===_) (SNF.NormalForm.inv-nf (nfp'-sec n) u) [ u ]
+nfp'-sec-agree n u = PB.trans
+  (TowerLevel.agree (tower n) (ψ u))
+  (PB.refl' (n QRel,_===_) (Eq.cong [_] (φ∘ψ u)))
+
+------------------------------------------------------------------------
 -- Normal form, its inverse, and the NormalFormInjective witnesses
 
 nf-of : Circuit n → NFᵗ n
