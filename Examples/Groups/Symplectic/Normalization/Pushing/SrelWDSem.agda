@@ -70,10 +70,17 @@ open import Examples.Groups.Symplectic.Normalization.NF-Inj p-2 p-prime
   using (lemma-lm-head-inj)
 open import Examples.Groups.Symplectic.Normalization.Uniqueness
   p-2 p-prime using (Ob ; head-fix ; sound)
+open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
+  p-2 p-prime using (_≋_)
+open import
+  Examples.Groups.Symplectic.Normalization.Pushing.SyllableAction
+  p-2 p-prime using (act ; resid ; step)
+import Examples.Groups.Symplectic.Normalization.Pushing.RhoExAbstract
+  p-2 p-prime as RhoEx
 
 private variable n : ℕ
 
-open VecEq Ob using (_≋_)
+open VecEq Ob using () renaming (_≋_ to _≋ᵥ_)
 
 
 ------------------------------------------------------------------------
@@ -163,3 +170,34 @@ coset-wd {n} c {u} {t} u≈t = lemma-lm-head-inj cᵤ cₜ heads
   heads ps = Eq.trans (Eq.sym (peel (uu .proj₁) cᵤ ps))
                (Eq.trans (Eq.cong head (sem ps))
                          (peel (tt .proj₁) cₜ ps))
+
+
+------------------------------------------------------------------------
+-- The whole obligation, from ↑-injectivity alone
+
+-- RhoExAbstract's Strategy-B derives the residual (≈) half from the
+-- word equation plus the coset half, by cancelling [ c′ ]ᶜ — which is
+-- legitimate because the presentation is Grouplike — and then
+-- descending through the lift, which is where ↑-inj is needed.  Its
+-- coset-half argument used to be supplied one axiom at a time; coset-wd
+-- supplies it for every congruent pair at once.
+--
+-- So srel-wd, both halves, at every width, now rests on ↑-inj and
+-- nothing else.  It cannot rest on less: RhoExAbstract's Converse
+-- shows ↑-inj is derivable FROM srel-wd at the same level, so the two
+-- are equivalent and no amount of further work on this route will
+-- remove the hypothesis.  ↑-inj has to come from outside — from
+-- Faithful one width down, which is the width induction.
+
+module Full (n : ℕ)
+  (↑-inj : ∀ (w v : Circuit n) →
+     PB._≈_ ((₁₊ n) QRel,_===_) (w ↑) (v ↑) →
+     PB._≈_ (n QRel,_===_) w v)
+  where
+
+  private module SB = RhoEx.Strategy-B n ↑-inj
+
+  -- Congruent words act identically on cosets, residual and all.
+  srel-wd-all : (c : ML (₁₊ n)) {u t : Circuit (₁₊ n)} →
+                PB._≈_ ((₁₊ n) QRel,_===_) u t → act n c u ≋ act n c t
+  srel-wd-all c eq = SB.resid-half c eq (coset-wd c eq) , coset-wd c eq
