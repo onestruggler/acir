@@ -68,17 +68,18 @@ open Primitive-Root-Modp' g* g-gen
 module Symplectic-Simplified where
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
--- Same hiding list as Part1: Symplectic's axiom aliases all collide with the
--- Clifford relation's constructors (see Part1 for the full note).
+-- Same hiding list as Part1: only Symplectic's generator layer is taken
+-- (see Part1 for the full note).
 open Symplectic hiding
-  ( _QRel,_===_ ; M ; M₁
+  ( _QRel,_===_ ; M ; M₁ ; module Base
   ; order-S ; order-H ; order-SH
   ; semi-M↑CZ ; semi-M↓CZ ; order-CZ
   ; comm-CZ-S↓ ; comm-CZ-S↑
   ; selinger-c10 ; selinger-c11 ; selinger-c12
   ; selinger-c13 ; selinger-c14 ; selinger-c15
-  ; comm-H ; comm-S ; comm-CZ
-  ; cong↑ ; lemma-cong↑ ) public
+  ; comm-H ; comm-S ; comm-CZ ; comm-HHS
+  ; M-mul ; semi-MS
+  ; srel ; cong↑ ; comm₁ ; comm₂ ; lemma-cong↑ ) public
 
 1/2 = ((₂ , λ ()) ⁻¹) .proj₁
 

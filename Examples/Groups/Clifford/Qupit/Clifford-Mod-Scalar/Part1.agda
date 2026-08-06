@@ -66,20 +66,24 @@ open Primitive-Root-Modp' g* g-gen
 module Symplectic-Simplified where
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
--- Besides the relation itself, Symplectic exports each of its axioms as a
--- top-level alias (order-S, …, selinger-c15, comm-H/S/CZ) and the structural
--- cong↑ / lemma-cong↑.  Every one of those names is also a constructor of the
--- Clifford relation below, so they are hidden here; reach for the symplectic
--- version as NSym.Symplectic.… if it is ever needed.
+-- This development takes from Symplectic only the *generator layer* — the
+-- gate set Gen and the derived words (S, H, CZ, M, S^, ⊤⊥, …), which the
+-- original and the simplified presentations share.  Everything about the
+-- relation comes from Simplified instead, so the whole relation layer of
+-- Symplectic is hidden here: its axioms (which are also exported as
+-- top-level aliases, and would clash with the Clifford relation's
+-- constructors below), the structural rules, and the raw relation itself.
+-- Reach for the symplectic version as NSym.Symplectic.… if ever needed.
 open Symplectic hiding
-  ( _QRel,_===_ ; M ; M₁
+  ( _QRel,_===_ ; M ; M₁ ; module Base
   ; order-S ; order-H ; order-SH
   ; semi-M↑CZ ; semi-M↓CZ ; order-CZ
   ; comm-CZ-S↓ ; comm-CZ-S↑
   ; selinger-c10 ; selinger-c11 ; selinger-c12
   ; selinger-c13 ; selinger-c14 ; selinger-c15
-  ; comm-H ; comm-S ; comm-CZ
-  ; cong↑ ; lemma-cong↑ ) public
+  ; comm-H ; comm-S ; comm-CZ ; comm-HHS
+  ; M-mul ; semi-MS
+  ; srel ; cong↑ ; comm₁ ; comm₂ ; lemma-cong↑ ) public
 
 1/2 = ((₂ , λ ()) ⁻¹) .proj₁
 
