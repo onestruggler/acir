@@ -37,8 +37,11 @@ private
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime as SD
 open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
+-- Symplectic-Sim-GroupLike, and the Iso theorems that used to be the
+-- submodule Iso, moved out when Simplified.Syntactics was split up.
+open import Examples.Groups.Symplectic.Simplified.Lemmas p-2 p-prime g* g-gen
+open import Examples.Groups.Symplectic.Simplified.Iso p-2 p-prime g* g-gen
 open import Examples.Groups.Symplectic.Sim-Ext-Sym p-2 p-prime hiding (module G1 ; module G2)
-open Iso
 open Simplified-Relations
 
 open Symplectic  renaming (_QRel,_===_ to _QRel,_===₁_) using ()
