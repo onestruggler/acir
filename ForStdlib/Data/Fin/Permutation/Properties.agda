@@ -22,8 +22,7 @@ open import Data.Fin.Permutation
         ; lift₀ ; lift₀-id ; lift₀-comp ; lift₀-cong )
 open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (ℕ)
-open import ForStdlib.Algebra.IndexedGroups
-  using (IndexedGroup ; Embedding ; emb-injective⇒emb^-injective)
+open import ForStdlib.Algebra.IndexedGroups using (IndexedGroup ; Embedding)
 open import Data.Product.Base using (_,_ ; proj₁ ; proj₂)
 import Function.Endo.Propositional as Endo
 open import Relation.Binary.PropositionalEquality
@@ -118,31 +117,31 @@ lift₀-flip : ∀ {n} (π : Permutation′ n) → lift₀ (flip π) ≈ flip (l
 lift₀-flip π zero    = refl
 lift₀-flip π (suc i) = refl
 
-∘ₚ-id-embedding : Embedding ∘ₚ-id-indexedGroup
-∘ₚ-id-embedding = record
-  { emb                 = lift₀
-  ; isGroupHomomorphism = λ n → record
-    { isMonoidHomomorphism = record
-      { isMagmaHomomorphism = record
-        { isRelHomomorphism = record { cong = λ {π} {ρ} → lift₀-cong π ρ }
-        ; homo              = λ π ρ i → sym (lift₀-comp π ρ i)
-        }
-      ; ε-homo = lift₀-id
-      }
-    ; ⁻¹-homo = lift₀-flip
-    }
-  }
-
-------------------------------------------------------------------------
--- The embedding is injective
-
--- lift₀ π and lift₀ ρ agree at suc i exactly when π and ρ agree at i,
--- so agreement everywhere on Fin (suc n) forces agreement everywhere
--- on Fin n.  (The two permutations' behaviour at 0 carries no
--- information: both fix it.)
+-- lift₀ is injective: lift₀ π and lift₀ ρ agree at suc i exactly when
+-- π and ρ agree at i, so agreement everywhere on Fin (suc n) forces
+-- agreement everywhere on Fin n.  (The two permutations' behaviour at
+-- 0 carries no information: both fix it.)
 
 lift₀-injective : ∀ {n} {π ρ : Permutation′ n} → lift₀ π ≈ lift₀ ρ → π ≈ ρ
 lift₀-injective π≈ρ i = suc-injective (π≈ρ (suc i))
+
+∘ₚ-id-embedding : Embedding ∘ₚ-id-indexedGroup
+∘ₚ-id-embedding = record
+  { emb                 = lift₀
+  ; isGroupMonomorphism = λ n → record
+    { isGroupHomomorphism = record
+      { isMonoidHomomorphism = record
+        { isMagmaHomomorphism = record
+          { isRelHomomorphism = record { cong = λ {π} {ρ} → lift₀-cong π ρ }
+          ; homo              = λ π ρ i → sym (lift₀-comp π ρ i)
+          }
+        ; ε-homo = lift₀-id
+        }
+      ; ⁻¹-homo = lift₀-flip
+      }
+    ; injective = λ {π} {ρ} → lift₀-injective {n} {π} {ρ}
+    }
+  }
 
 -- Hence the k-fold embedding of Sₙ into Sₖ₊ₙ is injective too.
 
@@ -150,5 +149,4 @@ lift₀^-injective : ∀ {n} (k : ℕ) {π ρ : Permutation′ n} →
                    Embedding.emb^ ∘ₚ-id-embedding k π ≈
                    Embedding.emb^ ∘ₚ-id-embedding k ρ →
                    π ≈ ρ
-lift₀^-injective =
-  emb-injective⇒emb^-injective ∘ₚ-id-embedding lift₀-injective
+lift₀^-injective = Embedding.emb^-injective ∘ₚ-id-embedding

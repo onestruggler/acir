@@ -33,8 +33,7 @@ open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≗_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
-open import ForStdlib.Algebra.IndexedGroups
-  using (IndexedGroup ; Embedding ; emb-injective⇒emb^-injective)
+open import ForStdlib.Algebra.IndexedGroups using (IndexedGroup ; Embedding)
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
@@ -207,39 +206,42 @@ lift₀ˢ-ε (x ∷ ps) = Eq.refl
 lift₀ˢ-⁻¹ : ∀ {n} (S : Symplectic n) → lift₀ˢ (S ⁻¹ˢ) ≈ˢ (lift₀ˢ S) ⁻¹ˢ
 lift₀ˢ-⁻¹ S (x ∷ ps) = Eq.refl
 
+-- lift₀ˢ is injective: two lifted transformations that agree
+-- everywhere agree in particular on the probes pI ∷ ps, whose heads
+-- they both fix, so their tails agree on every ps.  Any head would do
+-- -- pI is simply the one at hand.
+
+lift₀ˢ-injective : ∀ {n} {S T : Symplectic n} → lift₀ˢ S ≈ˢ lift₀ˢ T → S ≈ˢ T
+lift₀ˢ-injective e ps = ∷-injectiveʳ (e (pI ∷ ps))
+
 -- Stated at top level, with the width n explicit, so that the
--- congruence's implicit width is pinned: checking lift₀ˢ-cong against
--- the implicit-headed field type leaves it unsolved otherwise.
-lift₀ˢ-isGroupHomomorphism : ∀ n →
-  GroupMorphisms.IsGroupHomomorphism (Group.rawGroup (Sp-group n))
+-- implicit widths below are pinned.  _≈ˢ_ compares transformations
+-- through their ACTIONS, so unifying two ≈ˢ statements determines the
+-- actions but never the Symplectic records; checking lift₀ˢ-cong or
+-- lift₀ˢ-injective against an implicit-headed field type therefore
+-- leaves unsolved metas unless {S} {T} are bound explicitly.
+lift₀ˢ-isGroupMonomorphism : ∀ n →
+  GroupMorphisms.IsGroupMonomorphism (Group.rawGroup (Sp-group n))
     (Group.rawGroup (Sp-group (suc n))) (lift₀ˢ {n})
-lift₀ˢ-isGroupHomomorphism n = record
-  { isMonoidHomomorphism = record
-    { isMagmaHomomorphism = record
-      { isRelHomomorphism = record { cong = λ {S} {T} → lift₀ˢ-cong {n} {S} {T} }
-      ; homo              = lift₀ˢ-∘
+lift₀ˢ-isGroupMonomorphism n = record
+  { isGroupHomomorphism = record
+    { isMonoidHomomorphism = record
+      { isMagmaHomomorphism = record
+        { isRelHomomorphism = record { cong = λ {S} {T} → lift₀ˢ-cong {n} {S} {T} }
+        ; homo              = lift₀ˢ-∘
+        }
+      ; ε-homo = lift₀ˢ-ε
       }
-    ; ε-homo = lift₀ˢ-ε
+    ; ⁻¹-homo = lift₀ˢ-⁻¹
     }
-  ; ⁻¹-homo = lift₀ˢ-⁻¹
+  ; injective = λ {S} {T} → lift₀ˢ-injective {n} {S} {T}
   }
 
 Sp-embedding : Embedding Sp-indexedGroup
 Sp-embedding = record
   { emb                 = lift₀ˢ
-  ; isGroupHomomorphism = lift₀ˢ-isGroupHomomorphism
+  ; isGroupMonomorphism = lift₀ˢ-isGroupMonomorphism
   }
-
-------------------------------------------------------------------------
--- The embedding is injective
-
--- Two lifted transformations that agree everywhere agree in
--- particular on the probes pI ∷ ps, whose heads they both fix; so
--- their tails agree on every ps.  Any head would do -- pI is simply
--- the one at hand.
-
-lift₀ˢ-injective : ∀ {n} {S T : Symplectic n} → lift₀ˢ S ≈ˢ lift₀ˢ T → S ≈ˢ T
-lift₀ˢ-injective e ps = ∷-injectiveʳ (e (pI ∷ ps))
 
 -- Hence the k-fold embedding of Sp(2n) into Sp(2(k+n)) is injective.
 
@@ -247,12 +249,7 @@ lift₀ˢ^-injective : ∀ {n} (k : ℕ) {S T : Symplectic n} →
                     Embedding.emb^ Sp-embedding k S ≈ˢ
                     Embedding.emb^ Sp-embedding k T →
                     S ≈ˢ T
--- As with the congruence above, S and T must be bound explicitly:
--- _≈ˢ_ compares transformations through their actions, so unifying
--- two ≈ˢ statements pins the actions but never the records.
-lift₀ˢ^-injective =
-  emb-injective⇒emb^-injective Sp-embedding
-    (λ {n} {S} {T} → lift₀ˢ-injective {n} {S} {T})
+lift₀ˢ^-injective = Embedding.emb^-injective Sp-embedding
 
 
 module Interpretation where
