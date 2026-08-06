@@ -33,6 +33,7 @@ open import Word.Base as WB hiding (wfoldl ; _^'_)
 
 open import Presentation.Construct.Base hiding (_*_)
 open import Presentation.GroupLike
+import Circuit.Base
 open import Data.Nat.Primality
 
 open import Zp.ModularArithmetic
@@ -65,7 +66,8 @@ open Clifford-Relations hiding
   ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-Mζ ; order-SH ; comm-HHSHHS
   ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
   ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12
-  ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ ; lemma-cong↑ )
+  ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ ; lemma-cong↑
+  ; srel ; comm₁ ; comm₂ ; module Base )
 
 
 module Simplified-Relations where
@@ -82,121 +84,160 @@ module Simplified-Relations where
     zX : ℕ
     zX = toℕ ((g* .proj₁ + (- 1ₚ)) * 1/2)
 
+  -- Group-specific axioms only.  cong↑ and the gate commutations are
+  -- the same for every circuit presentation and come from
+  -- Circuit.Base.Lift-Relation below.
+  module Base where
+    infix 4 _SRel,_===_
+    data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
+
+      ----------------------------------------------------------------
+      -- (A) Single-qudit symplectic layer — already in basic S, H.
+      --     No X/Z present: kept verbatim.
+      ----------------------------------------------------------------
+      order-S :       ∀ {n} → (₁₊ n) SRel,  S ^ p === ε
+      order-SH :      ∀ {n} → (₁₊ n) SRel,  (S • H) ^ 3 === ε
+      comm-HHSHHS :   ∀ {n} → (₁₊ n) SRel,  H • H • S • H • H • S === S • H • H • S • H • H
+
+      ----------------------------------------------------------------
+      -- (B) Metaplectic layer.
+      --     order-H / M-power pin down the "diagonal" subgroup; kept verbatim.
+      --
+      --     All three semi-M relations are stated in their *simplified* form: the
+      --     metaplectic Mg = M g′ is replaced by its bare S,H multiplier
+      --     Wg = S^g·H·S^(g⁻¹)·H·S^g·H, with Mg's own Pauli pushed out and
+      --     cancelled.  semi-Mζ is further reduced to its fully-collected form,
+      --     using the basic S (not ζ = S·Z^½) and a single Z^(g-1) tail (the
+      --     left-over Z^½ has been cross-cancelled):
+      --
+      --     All three now carry their Pauli at the right-most position:
+      --
+      --        semi-Mζ   :  Wg  · S  = S^(g²) · Wg  · Z^(g-1)
+      --        semi-M↑CZ :  Wg↑ · CZ = CZ^g  · Wg↑ · Z↓^(½(g-1))
+      --        semi-M↓CZ :  Wg  · CZ = CZ^g  · Wg  · Z↑^(½(g-1))
+      --
+      --     The S-form semi-Mζ is the `final-semi-Mζ` theorem of
+      --     Examples.Groups.Clifford.Qupit.Mg-Simplify; the CZ ones are the `final-semi-M*CZ`
+      --     theorems (all soundness, in the original Clifford presentation).
+      --     The original Mg-forms are recovered as the `completeness-semi-M*`
+      --     lemmas of Examples.Groups.Clifford.Qupit.Mg-Simplify-S (the S-form is first turned back
+      --     into the ζ-form by `SemiS-rev.lemma-semi-Mζ`).
+      --
+      --     The completeness proofs of the two CZ relations need Z↔CZ
+      --     commutation, which is NOT a consequence of selinger + Pauli (it would
+      --     otherwise loop back through the metaplectic relations).  We therefore
+      --     add Z↔CZ as the explicit Pauli-layer axioms comm-Z-CZ / comm-Z↑-CZ
+      --     (see (C) below) — both hold in the Clifford presentation as theorems,
+      --     so the two presentations remain isomorphic.
+      ----------------------------------------------------------------
+      order-H :       ∀ {n} → (₁₊ n) SRel,  H ^ 2 === M₋₁
+      M-power : ∀ {n} (k : ℤ ₚ) → (₁₊ n) SRel,  Mg^ k === M (g^ k)
+      semi-Mζ :       ∀ {n} → (₁₊ n) SRel,  Wg • S === S ^ toℕ (g * g) • Wg • Z ^ toℕ (g + (- 1ₚ))
+      semi-M↑CZ :     ∀ {n} → (₂₊ n) SRel,  Wg ↑ • CZ === CZ^ g • Wg ↑ • (Z ↓) ^ zX
+      semi-M↓CZ :     ∀ {n} → (₂₊ n) SRel,  Wg • CZ === CZ^ g • Wg • (Z ↑) ^ zX
+
+      ----------------------------------------------------------------
+      -- (C) Pauli layer — the canonical transport rules for X, Z.
+      --     X and Z are already at the right-most positions, nothing
+      --     to cancel: these *define* the Pauli action, kept verbatim.
+      --
+      --     comm-Z-CZ / comm-Z↑-CZ ("CZ is diagonal": it commutes with the
+      --     Z Paulis on both qudits) are NEW axioms.  They are theorems in the
+      --     original Clifford presentation (proved there via the metaplectic
+      --     relations), but in the Simplified presentation they cannot be
+      --     re-derived from selinger + Pauli alone, and they are exactly what is
+      --     needed to break the circularity in the semi-M↑CZ / semi-M↓CZ
+      --     completeness proofs.  One per qudit: neither follows from the other.
+      ----------------------------------------------------------------
+      comm-X-Z :      ∀ {n} → (₁₊ n) SRel,  X • Z === Z • X
+      rel-X↑-CZ :     ∀ {n} → (₂₊ n) SRel,  CZ • X ↑ === X ↑ • Z ↓ • CZ
+      rel-X↓-CZ :     ∀ {n} → (₂₊ n) SRel,  CZ • X ↓ === X ↓ • Z ↑ • CZ
+      comm-Z-CZ :     ∀ {n} → (₂₊ n) SRel,  Z • CZ === CZ • Z
+      comm-Z↑-CZ :    ∀ {n} → (₂₊ n) SRel,  Z ↑ • CZ === CZ • Z ↑
+
+      ----------------------------------------------------------------
+      -- (D) CZ layer (no X/Z): kept verbatim.
+      ----------------------------------------------------------------
+      order-CZ :      ∀ {n} → (₂₊ n) SRel,  CZ ^ p === ε
+      comm-CZ-S↓ :    ∀ {n} → (₂₊ n) SRel,  CZ • S ↓ === S ↓ • CZ
+      comm-CZ-S↑ :    ∀ {n} → (₂₊ n) SRel,  CZ • S ↑ === S ↑ • CZ
+
+      ----------------------------------------------------------------
+      -- (E) The two "selinger" CZ–H–CZ relations: this is where the
+      --     strategy actually changes something.
+      --
+      --     Original (Clifford-Relations), using ζ = S · Z^½ :
+      --        CZ • H↑ • CZ
+      --          === ζ↑⁻¹ • H↑ • ζ↑⁻¹ • CZ • H↑ • ζ↑⁻¹ • ζ↓⁻¹
+      --
+      --     Replace every ζ⁻¹ by the basic S⁻¹ (= ζ⁻¹ · Z^½), push the
+      --     resulting Z-halves to the right and cancel.  The symplectic
+      --     part is exactly the `Examples.Groups.Symplectic.Simplified.Syntactics` relation; the
+      --     leftover Pauli collapses to a single tail X↑ · Z↑ (the Z↓
+      --     halves cancel).  Result (basic gates, Pauli right-most):
+      --
+      --        CZ • H↑ • CZ • X↑ • Z↑
+      --          === S⁻¹↑ • H↑ • S⁻¹↑ • CZ • H↑ • S⁻¹↑ • S⁻¹↓
+      --
+      --     (and ↑↔↓ for c11, with tail X↓ · Z↓).
+      --
+      --     [proposed; the Pauli tail still needs to be verified.]
+      ----------------------------------------------------------------
+      selinger-c10 :  ∀ {n} → (₂₊ n) SRel,
+        CZ • H ↑ • CZ • X ↑ • Z ↑ === S ↑ ^ p-1 • H ↑ • S ↑ ^ p-1 • CZ • H ↑ • S ↑ ^ p-1 • S ↓ ^ p-1
+      selinger-c11 :  ∀ {n} → (₂₊ n) SRel,
+        CZ • H ↓ • CZ • X ↓ • Z ↓ === S ↓ ^ p-1 • H ↓ • S ↓ ^ p-1 • CZ • H ↓ • S ↓ ^ p-1 • S ↑ ^ p-1
+
+      ----------------------------------------------------------------
+      -- (F) Three-qudit selinger relations (no X/Z): kept verbatim.
+      ----------------------------------------------------------------
+      selinger-c12 :  ∀ {n} → (₃₊ n) SRel,  CZ ↑ • CZ === CZ • CZ ↑
+      selinger-c13 :  ∀ {n} → (₃₊ n) SRel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
+      selinger-c14 :  ∀ {n} → (₃₊ n) SRel,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
+      selinger-c15 :  ∀ {n} → (₃₊ n) SRel,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
+
+  -- Full relation: the axioms above plus the structural rules.
+  private module SC = Circuit.Base SympGate
+  private module LR = SC.Lift-Relation Base._SRel,_===_
+
   infix 4 _QRel,_===_
-  data _QRel,_===_ : (n : ℕ) → WRel (Gen n) where
+  _QRel,_===_ : (n : ℕ) → WRel (Gen n)
+  _QRel,_===_ = LR._VRel,_===_
 
-    ----------------------------------------------------------------
-    -- (A) Single-qudit symplectic layer — already in basic S, H.
-    --     No X/Z present: kept verbatim.
-    ----------------------------------------------------------------
-    order-S :       ∀ {n} → (₁₊ n) QRel,  S ^ p === ε
-    order-SH :      ∀ {n} → (₁₊ n) QRel,  (S • H) ^ 3 === ε
-    comm-HHSHHS :   ∀ {n} → (₁₊ n) QRel,  H • H • S • H • H • S === S • H • H • S • H • H
+  open LR public using (srel ; cong↑ ; comm₁ ; comm₂ ; lemma-cong↑)
 
-    ----------------------------------------------------------------
-    -- (B) Metaplectic layer.
-    --     order-H / M-power pin down the "diagonal" subgroup; kept verbatim.
-    --
-    --     All three semi-M relations are stated in their *simplified* form: the
-    --     metaplectic Mg = M g′ is replaced by its bare S,H multiplier
-    --     Wg = S^g·H·S^(g⁻¹)·H·S^g·H, with Mg's own Pauli pushed out and
-    --     cancelled.  semi-Mζ is further reduced to its fully-collected form,
-    --     using the basic S (not ζ = S·Z^½) and a single Z^(g-1) tail (the
-    --     left-over Z^½ has been cross-cancelled):
-    --
-    --     All three now carry their Pauli at the right-most position:
-    --
-    --        semi-Mζ   :  Wg  · S  = S^(g²) · Wg  · Z^(g-1)
-    --        semi-M↑CZ :  Wg↑ · CZ = CZ^g  · Wg↑ · Z↓^(½(g-1))
-    --        semi-M↓CZ :  Wg  · CZ = CZ^g  · Wg  · Z↑^(½(g-1))
-    --
-    --     The S-form semi-Mζ is the `final-semi-Mζ` theorem of
-    --     Examples.Groups.Clifford.Qupit.Mg-Simplify; the CZ ones are the `final-semi-M*CZ`
-    --     theorems (all soundness, in the original Clifford presentation).
-    --     The original Mg-forms are recovered as the `completeness-semi-M*`
-    --     lemmas of Examples.Groups.Clifford.Qupit.Mg-Simplify-S (the S-form is first turned back
-    --     into the ζ-form by `SemiS-rev.lemma-semi-Mζ`).
-    --
-    --     The completeness proofs of the two CZ relations need Z↔CZ
-    --     commutation, which is NOT a consequence of selinger + Pauli (it would
-    --     otherwise loop back through the metaplectic relations).  We therefore
-    --     add Z↔CZ as the explicit Pauli-layer axioms comm-Z-CZ / comm-Z↑-CZ
-    --     (see (C) below) — both hold in the Clifford presentation as theorems,
-    --     so the two presentations remain isomorphic.
-    ----------------------------------------------------------------
-    order-H :       ∀ {n} → (₁₊ n) QRel,  H ^ 2 === M₋₁
-    M-power : ∀ {n} (k : ℤ ₚ) → (₁₊ n) QRel,  Mg^ k === M (g^ k)
-    semi-Mζ :       ∀ {n} → (₁₊ n) QRel,  Wg • S === S ^ toℕ (g * g) • Wg • Z ^ toℕ (g + (- 1ₚ))
-    semi-M↑CZ :     ∀ {n} → (₂₊ n) QRel,  Wg ↑ • CZ === CZ^ g • Wg ↑ • (Z ↓) ^ zX
-    semi-M↓CZ :     ∀ {n} → (₂₊ n) QRel,  Wg • CZ === CZ^ g • Wg • (Z ↑) ^ zX
+  -- Pattern synonyms, so the axiom names keep working in both
+  -- expression and pattern position.
+  pattern order-S      = srel Base.order-S
+  pattern order-SH     = srel Base.order-SH
+  pattern comm-HHSHHS  = srel Base.comm-HHSHHS
+  pattern order-H      = srel Base.order-H
+  pattern M-power      k = srel (Base.M-power k)
+  pattern semi-Mζ      = srel Base.semi-Mζ
+  pattern semi-M↑CZ    = srel Base.semi-M↑CZ
+  pattern semi-M↓CZ    = srel Base.semi-M↓CZ
+  pattern comm-X-Z     = srel Base.comm-X-Z
+  pattern rel-X↑-CZ    = srel Base.rel-X↑-CZ
+  pattern rel-X↓-CZ    = srel Base.rel-X↓-CZ
+  pattern comm-Z-CZ    = srel Base.comm-Z-CZ
+  pattern comm-Z↑-CZ   = srel Base.comm-Z↑-CZ
+  pattern order-CZ     = srel Base.order-CZ
+  pattern comm-CZ-S↓   = srel Base.comm-CZ-S↓
+  pattern comm-CZ-S↑   = srel Base.comm-CZ-S↑
+  pattern selinger-c10 = srel Base.selinger-c10
+  pattern selinger-c11 = srel Base.selinger-c11
+  pattern selinger-c12 = srel Base.selinger-c12
+  pattern selinger-c13 = srel Base.selinger-c13
+  pattern selinger-c14 = srel Base.selinger-c14
+  pattern selinger-c15 = srel Base.selinger-c15
 
-    ----------------------------------------------------------------
-    -- (C) Pauli layer — the canonical transport rules for X, Z.
-    --     X and Z are already at the right-most positions, nothing
-    --     to cancel: these *define* the Pauli action, kept verbatim.
-    --
-    --     comm-Z-CZ / comm-Z↑-CZ ("CZ is diagonal": it commutes with the
-    --     Z Paulis on both qudits) are NEW axioms.  They are theorems in the
-    --     original Clifford presentation (proved there via the metaplectic
-    --     relations), but in the Simplified presentation they cannot be
-    --     re-derived from selinger + Pauli alone, and they are exactly what is
-    --     needed to break the circularity in the semi-M↑CZ / semi-M↓CZ
-    --     completeness proofs.  One per qudit: neither follows from the other.
-    ----------------------------------------------------------------
-    comm-X-Z :      ∀ {n} → (₁₊ n) QRel,  X • Z === Z • X
-    rel-X↑-CZ :     ∀ {n} → (₂₊ n) QRel,  CZ • X ↑ === X ↑ • Z ↓ • CZ
-    rel-X↓-CZ :     ∀ {n} → (₂₊ n) QRel,  CZ • X ↓ === X ↓ • Z ↑ • CZ
-    comm-Z-CZ :     ∀ {n} → (₂₊ n) QRel,  Z • CZ === CZ • Z
-    comm-Z↑-CZ :    ∀ {n} → (₂₊ n) QRel,  Z ↑ • CZ === CZ • Z ↑
+  -- Definitions, not synonyms: as a synonym the implicit x is a meta
+  -- the goal need not determine.  Pattern-position uses match comm₁/comm₂.
+  comm-H : ∀ {n} {x : Gen (₁₊ n)} → (₂₊ n) QRel, [ x ↥ ]ʷ • H === H • [ x ↥ ]ʷ
+  comm-H {x = x} = comm₁ H-gate x
 
-    ----------------------------------------------------------------
-    -- (D) CZ layer (no X/Z): kept verbatim.
-    ----------------------------------------------------------------
-    order-CZ :      ∀ {n} → (₂₊ n) QRel,  CZ ^ p === ε
-    comm-CZ-S↓ :    ∀ {n} → (₂₊ n) QRel,  CZ • S ↓ === S ↓ • CZ
-    comm-CZ-S↑ :    ∀ {n} → (₂₊ n) QRel,  CZ • S ↑ === S ↑ • CZ
+  comm-S : ∀ {n} {x : Gen (₁₊ n)} → (₂₊ n) QRel, [ x ↥ ]ʷ • S === S • [ x ↥ ]ʷ
+  comm-S {x = x} = comm₁ S-gate x
 
-    ----------------------------------------------------------------
-    -- (E) The two "selinger" CZ–H–CZ relations: this is where the
-    --     strategy actually changes something.
-    --
-    --     Original (Clifford-Relations), using ζ = S · Z^½ :
-    --        CZ • H↑ • CZ
-    --          === ζ↑⁻¹ • H↑ • ζ↑⁻¹ • CZ • H↑ • ζ↑⁻¹ • ζ↓⁻¹
-    --
-    --     Replace every ζ⁻¹ by the basic S⁻¹ (= ζ⁻¹ · Z^½), push the
-    --     resulting Z-halves to the right and cancel.  The symplectic
-    --     part is exactly the `Examples.Groups.Symplectic.Simplified.Syntactics` relation; the
-    --     leftover Pauli collapses to a single tail X↑ · Z↑ (the Z↓
-    --     halves cancel).  Result (basic gates, Pauli right-most):
-    --
-    --        CZ • H↑ • CZ • X↑ • Z↑
-    --          === S⁻¹↑ • H↑ • S⁻¹↑ • CZ • H↑ • S⁻¹↑ • S⁻¹↓
-    --
-    --     (and ↑↔↓ for c11, with tail X↓ · Z↓).
-    --
-    --     [proposed; the Pauli tail still needs to be verified.]
-    ----------------------------------------------------------------
-    selinger-c10 :  ∀ {n} → (₂₊ n) QRel,
-      CZ • H ↑ • CZ • X ↑ • Z ↑ === S ↑ ^ p-1 • H ↑ • S ↑ ^ p-1 • CZ • H ↑ • S ↑ ^ p-1 • S ↓ ^ p-1
-    selinger-c11 :  ∀ {n} → (₂₊ n) QRel,
-      CZ • H ↓ • CZ • X ↓ • Z ↓ === S ↓ ^ p-1 • H ↓ • S ↓ ^ p-1 • CZ • H ↓ • S ↓ ^ p-1 • S ↑ ^ p-1
-
-    ----------------------------------------------------------------
-    -- (F) Three-qudit selinger relations (no X/Z): kept verbatim.
-    ----------------------------------------------------------------
-    selinger-c12 :  ∀ {n} → (₃₊ n) QRel,  CZ ↑ • CZ === CZ • CZ ↑
-    selinger-c13 :  ∀ {n} → (₃₊ n) QRel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
-    selinger-c14 :  ∀ {n} → (₃₊ n) QRel,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
-    selinger-c15 :  ∀ {n} → (₃₊ n) QRel,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
-
-    ----------------------------------------------------------------
-    -- (G) Structural relations: kept verbatim.
-    ----------------------------------------------------------------
-    comm-H :     ∀ {n}{x} → (₂₊ n) QRel,  [ x ↥ ]ʷ • H === H • [ x ↥ ]ʷ
-    comm-S :     ∀ {n}{x} → (₂₊ n) QRel,  [ x ↥ ]ʷ • S === S • [ x ↥ ]ʷ
-    comm-CZ :    ∀ {n}{x} → (₃₊ n) QRel,  [ x ↥ ↥ ]ʷ • CZ === CZ • [ x ↥ ↥ ]ʷ
-
-    cong↑ :      ∀ {n w v} →     n QRel,  w === v →
-                              -------------------------
-                              (₁₊ n) QRel,  w ↑ === v ↑
+  comm-CZ : ∀ {n} {x : Gen (₁₊ n)} → (₃₊ n) QRel, [ x ↥ ↥ ]ʷ • CZ === CZ • [ x ↥ ↥ ]ʷ
+  comm-CZ {x = x} = comm₂ CZ-gate x

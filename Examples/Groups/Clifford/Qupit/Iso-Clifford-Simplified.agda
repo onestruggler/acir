@@ -84,7 +84,7 @@ f-well-defined CliR.selinger-c15   = PB.axiom SimR.selinger-c15
 f-well-defined {₂₊ n} (CliR.comm₁ H-gate _)  = PB.axiom SimR.comm-H
 f-well-defined {₂₊ n} (CliR.comm₁ S-gate _)  = PB.axiom SimR.comm-S
 f-well-defined {₃₊ n} (CliR.comm₂ CZ-gate _) = PB.axiom SimR.comm-CZ
-f-well-defined (CliR.cong↑ eq)     = Cmp.Lemmas-Clifford-S.lemma-cong↑ _ _ (f-well-defined eq)
+f-well-defined (CliR.cong↑ eq)     = SimR.lemma-cong↑ _ _ (f-well-defined eq)
 
 -- g : Simplified → Clifford  (every Simplified relation holds in Clifford)
 g-well-defined : ∀ {n} → let open PB (CliR._QRel,_===_ n) renaming (_≈_ to _≈₁_) in
@@ -111,9 +111,10 @@ g-well-defined SimR.selinger-c12   = PB.axiom CliR.selinger-c12
 g-well-defined SimR.selinger-c13   = PB.axiom CliR.selinger-c13
 g-well-defined SimR.selinger-c14   = PB.axiom CliR.selinger-c14
 g-well-defined SimR.selinger-c15   = PB.axiom CliR.selinger-c15
-g-well-defined SimR.comm-H         = PB.axiom CliR.comm-H
-g-well-defined SimR.comm-S         = PB.axiom CliR.comm-S
-g-well-defined SimR.comm-CZ        = PB.axiom CliR.comm-CZ
+-- Both sides are on the framework now, so these match comm₁/comm₂ here too.
+g-well-defined {₂₊ n} (SimR.comm₁ H-gate _)  = PB.axiom CliR.comm-H
+g-well-defined {₂₊ n} (SimR.comm₁ S-gate _)  = PB.axiom CliR.comm-S
+g-well-defined {₃₊ n} (SimR.comm₂ CZ-gate _) = PB.axiom CliR.comm-CZ
 g-well-defined (SimR.cong↑ eq)     = Clifford-Relations.lemma-cong↑ _ _ (g-well-defined eq)
 
 module M (n : ℕ) where

@@ -48,19 +48,11 @@ open import Examples.Groups.Clifford.Qupit.Simplified-Lemmas.Part1 p-3 p-prime g
 -- ====================================================================
 module Lemmas-Clifford-S where
 
-  lemma-cong↑ : ∀ {n} w v →
-    let open PB (n QRel,_===_) using (_≈_) in
-    let open PB ((₁₊ n) QRel,_===_) renaming (_≈_ to _≈↑_) using () in
-    w ≈ v → w ↑ ≈↑ v ↑
-  lemma-cong↑ {n} w v PB.refl = PB.refl
-  lemma-cong↑ {n} w v (PB.sym eq) = PB.sym (lemma-cong↑ v w eq)
-  lemma-cong↑ {n} w v (PB.trans eq eq₁) = PB.trans (lemma-cong↑ _ _ eq) (lemma-cong↑ _ _ eq₁)
-  lemma-cong↑ {n} w v (PB.cong eq eq₁) = PB.cong (lemma-cong↑ _ _ eq) (lemma-cong↑ _ _ eq₁)
-  lemma-cong↑ {n} w v PB.assoc = PB.assoc
-  lemma-cong↑ {n} w v PB.left-unit = PB.left-unit
-  lemma-cong↑ {n} w v PB.right-unit = PB.right-unit
-  lemma-cong↑ {n} w v (PB.axiom x) = PB.axiom (cong↑ x)
-
+  -- lemma-cong↑ comes from Circuit.Base.Lift-Relation now, re-exported by
+  -- Simplified-Relations; the hand-written copy that stood here was the
+  -- same induction.  Deliberately NOT re-exported here: re-exporting it
+  -- makes the bare name ambiguous between this module and
+  -- Simplified-Relations even though both denote the same definition.
 
   lemma-^-↑ : ∀ {n} (w : Word (Gen n)) k → w ↑ ^ k ≡ (w ^ k) ↑
   lemma-^-↑ w ₀ = auto
