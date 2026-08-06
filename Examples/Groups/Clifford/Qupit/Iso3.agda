@@ -64,7 +64,7 @@ module M (n : ℕ) where
   f-left-inv-gen Cli.H-gen = PB.refl
   f-left-inv-gen Cli.CZ-gen = PB.refl
   f-left-inv-gen (x Cli.↥) =
-    PB.trans (Cli.Lemmas-Clifford.lemma-cong↑ _ _ (f-left-inv-gen x))
+    PB.trans (Cli.Clifford-Relations.lemma-cong↑ _ _ (f-left-inv-gen x))
              (PB.refl' (Cli.Clifford-Relations._QRel,_===_ _) (Eq.sym (lemma-f*-SD↑ (h x))))
   f-left-inv-gen {₁₊ m} Cli.S-gen = begin
       [ Cli.S-gen ]ʷ

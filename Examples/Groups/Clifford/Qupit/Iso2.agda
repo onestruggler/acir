@@ -887,8 +887,10 @@ module Iso-Inverse-Direction (n : ℕ) where
   h-well-defined {n} {w} {v} selinger-c13 = PB.axiom (right (Sim.srel Sim.selinger-c13))
   h-well-defined {n} {w} {v} selinger-c14 = PB.axiom (right (Sim.srel Sim.selinger-c14))
   h-well-defined {n} {w} {v} selinger-c15 = PB.axiom (right (Sim.srel Sim.selinger-c15))
-  h-well-defined (comm-H {x = x}) = lemma-w↑H (h x)
-  h-well-defined (comm-S {x = x}) = PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (lemma-w↑Zk (h x) _) PB.refl) (PB.trans PB.assoc (PB.trans (PB.cong PB.refl (lemma-w↑S (h x))) (PB.sym PB.assoc))))
-  h-well-defined (comm-CZ {x = x}) = lemma-w↑↑CZ (h x)
+  -- comm-H/comm-S/comm-CZ are framework instances now, so these match
+  -- through comm₁/comm₂ rather than on a constructor of their own.
+  h-well-defined {₂₊ n} (comm₁ H-gate x) = lemma-w↑H (h x)
+  h-well-defined {₂₊ n} (comm₁ S-gate x) = PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (lemma-w↑Zk (h x) _) PB.refl) (PB.trans PB.assoc (PB.trans (PB.cong PB.refl (lemma-w↑S (h x))) (PB.sym PB.assoc))))
+  h-well-defined {₃₊ n} (comm₂ CZ-gate x) = lemma-w↑↑CZ (h x)
   h-well-defined (cong↑ {n'} {w'} {v'} eq) rewrite lemma-h↑ w' | lemma-h↑ v' = SemiDirect.lemma-cong↑ _ _ (h-well-defined eq)
 

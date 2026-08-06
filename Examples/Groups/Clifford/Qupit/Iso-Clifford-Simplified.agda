@@ -78,9 +78,12 @@ f-well-defined CliR.selinger-c12   = PB.axiom SimR.selinger-c12
 f-well-defined CliR.selinger-c13   = PB.axiom SimR.selinger-c13
 f-well-defined CliR.selinger-c14   = PB.axiom SimR.selinger-c14
 f-well-defined CliR.selinger-c15   = PB.axiom SimR.selinger-c15
-f-well-defined CliR.comm-H         = PB.axiom SimR.comm-H
-f-well-defined CliR.comm-S         = PB.axiom SimR.comm-S
-f-well-defined CliR.comm-CZ        = PB.axiom SimR.comm-CZ
+-- Matched through comm₁/comm₂: on the Clifford side these three are now
+-- instances of the framework's structural rules, so there is no
+-- constructor named comm-H to match on any more.
+f-well-defined {₂₊ n} (CliR.comm₁ H-gate _)  = PB.axiom SimR.comm-H
+f-well-defined {₂₊ n} (CliR.comm₁ S-gate _)  = PB.axiom SimR.comm-S
+f-well-defined {₃₊ n} (CliR.comm₂ CZ-gate _) = PB.axiom SimR.comm-CZ
 f-well-defined (CliR.cong↑ eq)     = Cmp.Lemmas-Clifford-S.lemma-cong↑ _ _ (f-well-defined eq)
 
 -- g : Simplified → Clifford  (every Simplified relation holds in Clifford)
@@ -111,7 +114,7 @@ g-well-defined SimR.selinger-c15   = PB.axiom CliR.selinger-c15
 g-well-defined SimR.comm-H         = PB.axiom CliR.comm-H
 g-well-defined SimR.comm-S         = PB.axiom CliR.comm-S
 g-well-defined SimR.comm-CZ        = PB.axiom CliR.comm-CZ
-g-well-defined (SimR.cong↑ eq)     = Lemmas-Clifford.lemma-cong↑ _ _ (g-well-defined eq)
+g-well-defined (SimR.cong↑ eq)     = Clifford-Relations.lemma-cong↑ _ _ (g-well-defined eq)
 
 module M (n : ℕ) where
   module G1 = Group-Lemmas (CliR._QRel,_===_ n) (Clifford-GroupLike.grouplike {n})

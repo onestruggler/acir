@@ -262,7 +262,7 @@ module C10 (m : ℕ) where
   cZ↓sd a = comm⇒pow-comm a p-1 (sym (lemma-comm-ζ-Z {₁₊ m}))
   -- Pauli reorderings (mod scalars X,Z commute)
   cX↑Z↑ : ∀ a b → (X ↑) ^ a • (Z ↑) ^ b ≈ (Z ↑) ^ b • (X ↑) ^ a
-  cX↑Z↑ a b = comm⇒pow-comm a b (lemma-cong↑ _ _ (PB.axiom (comm-X-Z {m})))
+  cX↑Z↑ a b = comm⇒pow-comm a b (lemma-cong↑ _ _ (PB.axiom (comm-X-Z)))
   cX↑Z↓ : ∀ a b → (X ↑) ^ a • (Z ↓) ^ b ≈ (Z ↓) ^ b • (X ↑) ^ a
   cX↑Z↓ a b = comm⇒pow-comm a b (sym (lemma-comm-Z-w↑ {m} X))
   cZ↑Z↓ : ∀ a b → (Z ↑) ^ a • (Z ↓) ^ b ≈ (Z ↓) ^ b • (Z ↑) ^ a

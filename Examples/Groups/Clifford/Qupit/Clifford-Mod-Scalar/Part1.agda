@@ -30,6 +30,7 @@ open import Data.Empty using (⊥)
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 open import Word.Properties
 import Presentation.Base as PB
+import Circuit.Base
 import Presentation.Properties as PP
 import Normalization.Reidemeister-Schreier as RS
 open import Notations
@@ -138,63 +139,103 @@ module Clifford-Relations where
 
 
 
+  -- Group-specific axioms only.  The structural rules — congruence
+  -- under _↑, and a gate at the bottom commuting with anything shifted
+  -- up past it — are not repeated here: they are the same for every
+  -- circuit presentation and come from Lift-Relation below.
+  module Base where
+    infix 4 _SRel,_===_
+    data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
+
+      order-S :           ∀ {n} → (₁₊ n) SRel,  S ^ p === ε
+      order-H :           ∀ {n} → (₁₊ n) SRel,  H ^ 2 === M₋₁
+      M-power : ∀ {n} (k : ℤ ₚ) → (₁₊ n) SRel,  Mg^ k === M (g^ k)
+      semi-Mζ :           ∀ {n} → (₁₊ n) SRel,  Mg • ζ === ζ^ (g * g) • Mg
+      order-SH :          ∀ {n} → (₁₊ n) SRel,  (S • H) ^ 3 === ε
+      comm-HHSHHS :       ∀ {n} → (₁₊ n) SRel,  H • H • S • H • H • S === S • H • H • S • H • H
+      comm-X-Z :          ∀ {n} → (₁₊ n) SRel,  X • Z === Z • X
+
+      semi-M↑CZ :         ∀ {n} → (₂₊ n) SRel,  Mg ↑ • CZ === CZ^ g • Mg ↑
+      semi-M↓CZ :         ∀ {n} → (₂₊ n) SRel,  Mg ↓ • CZ === CZ^ g • Mg ↓
+
+      rel-X↑-CZ :         ∀ {n} → (₂₊ n) SRel,  CZ • X ↑ === X ↑ • Z ↓ • CZ
+      rel-X↓-CZ :         ∀ {n} → (₂₊ n) SRel,  CZ • X ↓ === X ↓ • Z ↑ • CZ
+
+      order-CZ :          ∀ {n} → (₂₊ n) SRel,  CZ ^ p === ε
+
+      comm-CZ-S↓ :        ∀ {n} → (₂₊ n) SRel,  CZ • S ↓ === S ↓ • CZ
+      comm-CZ-S↑ :        ∀ {n} → (₂₊ n) SRel,  CZ • S ↑ === S ↑ • CZ
+
+      selinger-c10 :      ∀ {n} → (₂₊ n) SRel,  CZ • H ↑ • CZ === ζ ↑ ^ p-1 • H ↑ • ζ ↑ ^ p-1 • CZ • H ↑ • ζ ↑ ^ p-1 • ζ ↓ ^ p-1
+      selinger-c11 :      ∀ {n} → (₂₊ n) SRel,  CZ • H ↓ • CZ === ζ ↓ ^ p-1 • H ↓ • ζ ↓ ^ p-1 • CZ • H ↓ • ζ ↓ ^ p-1 • ζ ↑ ^ p-1
+
+      selinger-c12 :      ∀ {n} → (₃₊ n) SRel,  CZ ↑ • CZ === CZ • CZ ↑
+      selinger-c13 :      ∀ {n} → (₃₊ n) SRel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
+
+      selinger-c14 :      ∀ {n} → (₃₊ n) SRel,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
+      selinger-c15 :      ∀ {n} → (₃₊ n) SRel,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
+
+  -- Full relation: the axioms above plus the structural rules.
+  private module SC = Circuit.Base SympGate
+  private module LR = SC.Lift-Relation Base._SRel,_===_
+
   infix 4 _QRel,_===_
-  data _QRel,_===_ : (n : ℕ) → WRel (Gen n) where
-  
-    order-S :           ∀ {n} → (₁₊ n) QRel,  S ^ p === ε
-    order-H :           ∀ {n} → (₁₊ n) QRel,  H ^ 2 === M₋₁
-    M-power : ∀ {n} (k : ℤ ₚ) → (₁₊ n) QRel,  Mg^ k === M (g^ k)
-    semi-Mζ :           ∀ {n} → (₁₊ n) QRel,  Mg • ζ === ζ^ (g * g) • Mg
-    order-SH :          ∀ {n} → (₁₊ n) QRel,  (S • H) ^ 3 === ε
-    comm-HHSHHS :       ∀ {n} → (₁₊ n) QRel,  H • H • S • H • H • S === S • H • H • S • H • H
-    comm-X-Z :          ∀ {n} → (₁₊ n) QRel,  X • Z === Z • X
+  _QRel,_===_ : (n : ℕ) → WRel (Gen n)
+  _QRel,_===_ = LR._VRel,_===_
 
-    semi-M↑CZ :         ∀ {n} → (₂₊ n) QRel,  Mg ↑ • CZ === CZ^ g • Mg ↑
-    semi-M↓CZ :         ∀ {n} → (₂₊ n) QRel,  Mg ↓ • CZ === CZ^ g • Mg ↓
+  -- Structural rules, exported directly.  lemma-cong↑ is now the
+  -- framework's, so the copy that used to live in Lemmas-Clifford is gone.
+  open LR public using (srel ; cong↑ ; comm₁ ; comm₂ ; lemma-cong↑)
 
-    rel-X↑-CZ :         ∀ {n} → (₂₊ n) QRel,  CZ • X ↑ === X ↑ • Z ↓ • CZ
-    rel-X↓-CZ :         ∀ {n} → (₂₊ n) QRel,  CZ • X ↓ === X ↓ • Z ↑ • CZ
+  -- Every axiom keeps the name it had before the split, as a pattern
+  -- synonym rather than a definition, so that call sites in BOTH
+  -- expression and pattern position go on working untouched.
+  -- Each binds {n} explicitly, so that the old spellings `order-H` and
+  -- `order-H {n = n}` both still elaborate.
+  pattern order-S = srel (Base.order-S)
+  pattern order-H = srel (Base.order-H)
+  pattern M-power k = srel (Base.M-power k)
+  pattern semi-Mζ = srel (Base.semi-Mζ)
+  pattern order-SH = srel (Base.order-SH)
+  pattern comm-HHSHHS = srel (Base.comm-HHSHHS)
+  pattern comm-X-Z = srel (Base.comm-X-Z)
+  pattern semi-M↑CZ = srel (Base.semi-M↑CZ)
+  pattern semi-M↓CZ = srel (Base.semi-M↓CZ)
+  pattern rel-X↑-CZ = srel (Base.rel-X↑-CZ)
+  pattern rel-X↓-CZ = srel (Base.rel-X↓-CZ)
+  pattern order-CZ = srel (Base.order-CZ)
+  pattern comm-CZ-S↓ = srel (Base.comm-CZ-S↓)
+  pattern comm-CZ-S↑ = srel (Base.comm-CZ-S↑)
+  pattern selinger-c10 = srel (Base.selinger-c10)
+  pattern selinger-c11 = srel (Base.selinger-c11)
+  pattern selinger-c12 = srel (Base.selinger-c12)
+  pattern selinger-c13 = srel (Base.selinger-c13)
+  pattern selinger-c14 = srel (Base.selinger-c14)
+  pattern selinger-c15 = srel (Base.selinger-c15)
 
-    order-CZ :          ∀ {n} → (₂₊ n) QRel,  CZ ^ p === ε
+  -- The three structural commutations that used to be axioms are
+  -- instances of comm₁/comm₂ now.  These are definitions, not pattern
+  -- synonyms: as a synonym the implicit x is inserted as a meta that the
+  -- goal does not always pin down, and expression-position uses (of
+  -- which there are many, mostly in the commute tables) then fail to
+  -- elaborate.  Pattern-position uses match on comm₁/comm₂ directly.
+  comm-H : ∀ {n} {x : Gen (₁₊ n)} → (₂₊ n) QRel, [ x ↥ ]ʷ • H === H • [ x ↥ ]ʷ
+  comm-H {x = x} = comm₁ H-gate x
 
-    comm-CZ-S↓ :        ∀ {n} → (₂₊ n) QRel,  CZ • S ↓ === S ↓ • CZ
-    comm-CZ-S↑ :        ∀ {n} → (₂₊ n) QRel,  CZ • S ↑ === S ↑ • CZ
+  comm-S : ∀ {n} {x : Gen (₁₊ n)} → (₂₊ n) QRel, [ x ↥ ]ʷ • S === S • [ x ↥ ]ʷ
+  comm-S {x = x} = comm₁ S-gate x
 
-    selinger-c10 :      ∀ {n} → (₂₊ n) QRel,  CZ • H ↑ • CZ === ζ ↑ ^ p-1 • H ↑ • ζ ↑ ^ p-1 • CZ • H ↑ • ζ ↑ ^ p-1 • ζ ↓ ^ p-1
-    selinger-c11 :      ∀ {n} → (₂₊ n) QRel,  CZ • H ↓ • CZ === ζ ↓ ^ p-1 • H ↓ • ζ ↓ ^ p-1 • CZ • H ↓ • ζ ↓ ^ p-1 • ζ ↑ ^ p-1
-
-    selinger-c12 :      ∀ {n} → (₃₊ n) QRel,  CZ ↑ • CZ === CZ • CZ ↑
-    selinger-c13 :      ∀ {n} → (₃₊ n) QRel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
-    
-    selinger-c14 :      ∀ {n} → (₃₊ n) QRel,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
-    selinger-c15 :      ∀ {n} → (₃₊ n) QRel,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
-
-    comm-H :         ∀ {n}{x} → (₂₊ n) QRel,  [ x ↥ ]ʷ • H === H • [ x ↥ ]ʷ
-    comm-S :         ∀ {n}{x} → (₂₊ n) QRel,  [ x ↥ ]ʷ • S === S • [ x ↥ ]ʷ
-    comm-CZ :        ∀ {n}{x} → (₃₊ n) QRel,  [ x ↥ ↥ ]ʷ • CZ === CZ • [ x ↥ ↥ ]ʷ
-    
-    cong↑ :         ∀ {n w v} →      n QRel,  w === v →
-                                -------------------------       
-                                (₁₊ n) QRel,  w ↑ === v ↑
+  comm-CZ : ∀ {n} {x : Gen (₁₊ n)} → (₃₊ n) QRel, [ x ↥ ↥ ]ʷ • CZ === CZ • [ x ↥ ↥ ]ʷ
+  comm-CZ {x = x} = comm₂ CZ-gate x
 
 
 module Lemmas-Clifford where
 
   open Clifford-Relations
   
-  lemma-cong↑ : ∀ {n} w v →
-    let open PB (n QRel,_===_) using (_≈_) in
-    let open PB ((₁₊ n) QRel,_===_) renaming (_≈_ to _≈↑_) using () in
-    w ≈ v → w ↑ ≈↑ v ↑
-  lemma-cong↑ {n} w v PB.refl = PB.refl
-  lemma-cong↑ {n} w v (PB.sym eq) = PB.sym (lemma-cong↑ v w eq)
-  lemma-cong↑ {n} w v (PB.trans eq eq₁) = PB.trans (lemma-cong↑ _ _ eq) (lemma-cong↑ _ _ eq₁)
-  lemma-cong↑ {n} w v (PB.cong eq eq₁) = PB.cong (lemma-cong↑ _ _ eq) (lemma-cong↑ _ _ eq₁)
-  lemma-cong↑ {n} w v PB.assoc = PB.assoc
-  lemma-cong↑ {n} w v PB.left-unit = PB.left-unit
-  lemma-cong↑ {n} w v PB.right-unit = PB.right-unit
-  lemma-cong↑ {n} w v (PB.axiom x) = PB.axiom (cong↑ x)
-
+  -- lemma-cong↑ comes from Circuit.Base.Lift-Relation now, re-exported
+  -- by Clifford-Relations; the hand-written copy that stood here was
+  -- the same induction and has been dropped.
 
   lemma-^-↑ : ∀ {n} (w : Word (Gen n)) k → w ↑ ^ k ≡ (w ^ k) ↑
   lemma-^-↑ w ₀ = auto

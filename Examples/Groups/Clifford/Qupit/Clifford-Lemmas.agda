@@ -97,7 +97,7 @@ lemma-conj-ζ-X : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in
 lemma-conj-ζ-X {n} = begin
   ζ • X ≡⟨ auto ⟩
   (S • Z ^ toℕ 1/2) • X ≈⟨ assoc ⟩
-  S • (Z ^ toℕ 1/2 • X) ≈⟨ cong refl (sym (comm⇒pow-comm 1 (toℕ 1/2) (_≈_.axiom _QRel,_===_.comm-X-Z))) ⟩
+  S • (Z ^ toℕ 1/2 • X) ≈⟨ cong refl (sym (comm⇒pow-comm 1 (toℕ 1/2) (_≈_.axiom Clifford-Relations.comm-X-Z))) ⟩
   S • (X • Z ^ toℕ 1/2) ≈⟨ sym assoc ⟩
   (S • X) • Z ^ toℕ 1/2 ≈⟨ cong (CLb.conj-S-X n) refl ⟩
   ((X • Z) • S) • Z ^ toℕ 1/2 ≈⟨ assoc ⟩
@@ -115,7 +115,7 @@ lemma-S^p-1•S {n} = begin
   S ^ p-1 • S ^ 1 ≈⟨ sym (^-+ S p-1 1) ⟩
   S ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (S ^_) (NP.+-comm p-1 1) ⟩
   S ^ (1 Nat.+ p-1) ≡⟨ auto ⟩
-  S ^ p ≈⟨ axiom _QRel,_===_.order-S ⟩
+  S ^ p ≈⟨ axiom Clifford-Relations.order-S ⟩
   ε ∎
   where
   open PB ((₁₊ n) QRel,_===_)
@@ -128,7 +128,7 @@ lemma-S•S^p-1 {n} = begin
   S • S ^ p-1 ≡⟨ auto ⟩
   S ^ 1 • S ^ p-1 ≈⟨ sym (^-+ S 1 p-1) ⟩
   S ^ (1 Nat.+ p-1) ≡⟨ auto ⟩
-  S ^ p ≈⟨ axiom _QRel,_===_.order-S ⟩
+  S ^ p ≈⟨ axiom Clifford-Relations.order-S ⟩
   ε ∎
   where
   open PB ((₁₊ n) QRel,_===_)
@@ -156,7 +156,7 @@ lemma-comm-S-Z {n} = trans lhs (sym rhs)
   rhs = begin
     S • Z ≡⟨ auto ⟩
     S • (H • H • S • H • H • S ^ p-1) ≈⟨ by-passoc (□ • □ • □ • □ • □ • □ • □) ((□ • □ • □ • □ • □ • □) • □) auto ⟩
-    (S • H • H • S • H • H) • S ^ p-1 ≈⟨ cong (sym (axiom _QRel,_===_.comm-HHSHHS)) refl ⟩
+    (S • H • H • S • H • H) • S ^ p-1 ≈⟨ cong (sym (axiom Clifford-Relations.comm-HHSHHS)) refl ⟩
     (H • H • S • H • H • S) • S ^ p-1 ≈⟨ by-passoc ((□ • □ • □ • □ • □ • □) • □) (□ • □ • □ • □ • □ • □ • □) auto ⟩
     H • H • S • H • H • (S • S ^ p-1) ≈⟨ cong refl (cong refl (cong refl (cong refl (cong refl lemma-S•S^p-1)))) ⟩
     H • H • S • H • H • ε ≈⟨ cong refl (cong refl (cong refl (cong refl right-unit))) ⟩
@@ -186,7 +186,7 @@ lemma-CZ^k-% {n} k = begin
   CZ ^ (k Nat.% p Nat.+ k Nat./ p Nat.* p) ≈⟨ ^-+ CZ (k Nat.% p) (k Nat./ p Nat.* p) ⟩
   CZ ^ (k Nat.% p) • CZ ^ (k Nat./ p Nat.* p) ≈⟨ cright refl' (Eq.cong (CZ ^_) (NP.*-comm (k Nat./ p) p)) ⟩
   CZ ^ (k Nat.% p) • CZ ^ (p Nat.* (k Nat./ p)) ≈⟨ sym (cright ^^ CZ p (k Nat./ p)) ⟩
-  CZ ^ (k Nat.% p) • (CZ ^ p) ^ (k Nat./ p) ≈⟨ cright ^-cong (CZ ^ p) ε (k Nat./ p) (_≈_.axiom _QRel,_===_.order-CZ) ⟩
+  CZ ^ (k Nat.% p) • (CZ ^ p) ^ (k Nat./ p) ≈⟨ cright ^-cong (CZ ^ p) ε (k Nat./ p) (_≈_.axiom Clifford-Relations.order-CZ) ⟩
   CZ ^ (k Nat.% p) • ε ^ (k Nat./ p) ≈⟨ cright ε^k=ε (k Nat./ p) ⟩
   CZ ^ (k Nat.% p) • ε ≈⟨ right-unit ⟩
   CZ ^ (k % p) ∎
@@ -203,7 +203,7 @@ lemma-Mg-CZ^k {n} k@0 = trans right-unit (sym left-unit)
   open PB ((₂₊ n) QRel,_===_)
 lemma-Mg-CZ^k {n} k@1 = begin
   M g* • CZ ^ k ≈⟨ refl ⟩
-  M g* • CZ ≈⟨ _≈_.axiom _QRel,_===_.semi-M↓CZ ⟩
+  M g* • CZ ≈⟨ _≈_.axiom Clifford-Relations.semi-M↓CZ ⟩
   CZ^ g • M g* ≈⟨ refl ⟩
   CZ ^ toℕ g • M g* ≈⟨ cleft refl' (Eq.cong (CZ ^_) (Eq.sym (NP.*-identityˡ (toℕ g)))) ⟩
   CZ ^ (k Nat.* toℕ g) • M g* ∎
@@ -239,7 +239,7 @@ lemma-Mg^k-CZ {n} k@0 = begin
   open SR word-setoid
 lemma-Mg^k-CZ {n} k@1 = begin
   M g* ^ k • CZ ≈⟨ refl ⟩
-  M g* • CZ ≈⟨ _≈_.axiom _QRel,_===_.semi-M↓CZ ⟩
+  M g* • CZ ≈⟨ _≈_.axiom Clifford-Relations.semi-M↓CZ ⟩
   CZ^ g • M g* ≈⟨ cleft refl' (Eq.cong CZ^ (Eq.sym (lemma-x^′1=x g))) ⟩
   CZ^ (g ^′ k) • M g* ^ k ∎
   where
@@ -267,9 +267,9 @@ lemma-M₋₁-CZ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
   M₋₁ • CZ ≈ CZ^ ((-'₁) .proj₁) • M₋₁
 lemma-M₋₁-CZ {n} = begin
   M₋₁ • CZ ≈⟨ refl' (Eq.cong (_• CZ) (CL.aux-M≡M (₁₊ n) -'₁ (g^ k₀) eqk)) ⟩
-  M (g^ k₀) • CZ ≈⟨ cleft sym (_≈_.axiom (_QRel,_===_.M-power k₀)) ⟩
+  M (g^ k₀) • CZ ≈⟨ cleft sym (_≈_.axiom (Clifford-Relations.M-power k₀)) ⟩
   M g* ^ (toℕ k₀) • CZ ≈⟨ lemma-Mg^k-CZ (toℕ k₀) ⟩
-  CZ^ (g ^′ toℕ k₀) • M g* ^ (toℕ k₀) ≈⟨ cright _≈_.axiom (_QRel,_===_.M-power k₀) ⟩
+  CZ^ (g ^′ toℕ k₀) • M g* ^ (toℕ k₀) ≈⟨ cright _≈_.axiom (Clifford-Relations.M-power k₀) ⟩
   CZ^ (g ^′ toℕ k₀) • M (g^ k₀) ≈⟨ refl' (Eq.cong (CZ^ (g ^′ toℕ k₀) •_) (Eq.sym (CL.aux-M≡M (₁₊ n) -'₁ (g^ k₀) eqk))) ⟩
   CZ^ (g ^′ toℕ k₀) • M₋₁ ≈⟨ cleft refl' (Eq.cong CZ^ (Eq.sym eqk)) ⟩
   CZ^ ((-'₁) .proj₁) • M₋₁ ∎
@@ -313,7 +313,7 @@ lemma-HHCZHH : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
   H • H • CZ • H • H ≈ CZ^ ((-'₁) .proj₁)
 lemma-HHCZHH {n} = begin
   H • H • CZ • H • H ≈⟨ by-passoc (□ • □ • □ • □ • □) ((□ • □) • □ • (□ • □)) auto ⟩
-  (H • H) • CZ • (H • H) ≈⟨ cong (_≈_.axiom _QRel,_===_.order-H) (cong refl (_≈_.axiom _QRel,_===_.order-H)) ⟩
+  (H • H) • CZ • (H • H) ≈⟨ cong (_≈_.axiom Clifford-Relations.order-H) (cong refl (_≈_.axiom Clifford-Relations.order-H)) ⟩
   M₋₁ • CZ • M₋₁ ≈⟨ lemma-M₋₁CZM₋₁ ⟩
   CZ^ ((-'₁) .proj₁) ∎
   where
@@ -326,7 +326,7 @@ lemma-HHCZ⁻¹HH : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
   H • H • CZ^ ((-'₁) .proj₁) • H • H ≈ CZ
 lemma-HHCZ⁻¹HH {n} = begin
   H • H • CZ^ ((-'₁) .proj₁) • H • H ≈⟨ by-passoc (□ • □ • □ • □ • □) ((□ • □) • □ • (□ • □)) auto ⟩
-  (H • H) • CZ^ ((-'₁) .proj₁) • (H • H) ≈⟨ cong (_≈_.axiom _QRel,_===_.order-H) (cong refl (_≈_.axiom _QRel,_===_.order-H)) ⟩
+  (H • H) • CZ^ ((-'₁) .proj₁) • (H • H) ≈⟨ cong (_≈_.axiom Clifford-Relations.order-H) (cong refl (_≈_.axiom Clifford-Relations.order-H)) ⟩
   M₋₁ • CZ^ ((-'₁) .proj₁) • M₋₁ ≈⟨ lemma-M₋₁CZ⁻¹M₋₁ ⟩
   CZ ∎
   where
@@ -343,7 +343,7 @@ lemma-S'CZS'⁻¹ {n} = begin
   H • H • S • (H • H • CZ • H • H) • S ^ p-1 • H • H
     ≈⟨ cong refl (cong refl (cong refl (cong lemma-HHCZHH refl))) ⟩
   H • H • S • CZ^ ((-'₁) .proj₁) • S ^ p-1 • H • H
-    ≈⟨ cong refl (cong refl (trans (sym assoc) (trans (cong (comm⇒pow-comm 1 (toℕ ((-'₁) .proj₁)) (sym (_≈_.axiom _QRel,_===_.comm-CZ-S↓))) refl) assoc))) ⟩
+    ≈⟨ cong refl (cong refl (trans (sym assoc) (trans (cong (comm⇒pow-comm 1 (toℕ ((-'₁) .proj₁)) (sym (_≈_.axiom Clifford-Relations.comm-CZ-S↓))) refl) assoc))) ⟩
   H • H • CZ^ ((-'₁) .proj₁) • S • S ^ p-1 • H • H
     ≈⟨ cong refl (cong refl (cong refl (trans (sym assoc) (cong lemma-S•S^p-1 refl)))) ⟩
   H • H • CZ^ ((-'₁) .proj₁) • ε • H • H
@@ -404,7 +404,7 @@ lemma-Mg↑-CZ^k {n} k@0 = trans right-unit (sym left-unit)
   open PB ((₂₊ n) QRel,_===_)
 lemma-Mg↑-CZ^k {n} k@1 = begin
   M g* ↑ • CZ ^ k ≈⟨ refl ⟩
-  M g* ↑ • CZ ≈⟨ _≈_.axiom _QRel,_===_.semi-M↑CZ ⟩
+  M g* ↑ • CZ ≈⟨ _≈_.axiom Clifford-Relations.semi-M↑CZ ⟩
   CZ^ g • M g* ↑ ≈⟨ refl ⟩
   CZ ^ toℕ g • M g* ↑ ≈⟨ cleft refl' (Eq.cong (CZ ^_) (Eq.sym (NP.*-identityˡ (toℕ g)))) ⟩
   CZ ^ (k Nat.* toℕ g) • M g* ↑ ∎
@@ -440,7 +440,7 @@ lemma-Mg↑^k-CZ {n} k@0 = begin
   open SR word-setoid
 lemma-Mg↑^k-CZ {n} k@1 = begin
   (M g* ↑) ^ k • CZ ≈⟨ refl ⟩
-  M g* ↑ • CZ ≈⟨ _≈_.axiom _QRel,_===_.semi-M↑CZ ⟩
+  M g* ↑ • CZ ≈⟨ _≈_.axiom Clifford-Relations.semi-M↑CZ ⟩
   CZ^ g • M g* ↑ ≈⟨ cleft refl' (Eq.cong CZ^ (Eq.sym (lemma-x^′1=x g))) ⟩
   CZ^ (g ^′ k) • (M g* ↑) ^ k ∎
   where
@@ -485,7 +485,7 @@ lemma-M₋₁↑-CZ {n} = begin
   eqk : (-'₁) .proj₁ ≡ g ^′ toℕ k₀
   eqk = Eq.sym (lemma-log-inject (-'₁))
   bridge : (M g* ^ toℕ k₀) ↑ ≈ M (g^ k₀) ↑
-  bridge = lemma-cong↑ (M g* ^ toℕ k₀) (M (g^ k₀)) (PB.axiom (_QRel,_===_.M-power {n = n} k₀))
+  bridge = lemma-cong↑ (M g* ^ toℕ k₀) (M (g^ k₀)) (PB.axiom (Clifford-Relations.M-power k₀))
 
 lemma-M₋₁↑CZM₋₁↑ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
   M₋₁ ↑ • CZ • M₋₁ ↑ ≈ CZ^ ((-'₁) .proj₁)
@@ -528,7 +528,7 @@ lemma-HHCZHH↑ {n} = begin
   open SR word-setoid
   open Pattern-Assoc
   bridge : H ↑ • H ↑ ≈ M₋₁ ↑
-  bridge = lemma-cong↑ (H • H) M₋₁ (PB.axiom (_QRel,_===_.order-H {n = n}))
+  bridge = lemma-cong↑ (H • H) M₋₁ (PB.axiom (Clifford-Relations.order-H))
 
 lemma-HHCZ⁻¹HH↑ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
   H ↑ • H ↑ • CZ^ ((-'₁) .proj₁) • H ↑ • H ↑ ≈ CZ
@@ -543,7 +543,7 @@ lemma-HHCZ⁻¹HH↑ {n} = begin
   open SR word-setoid
   open Pattern-Assoc
   bridge : H ↑ • H ↑ ≈ M₋₁ ↑
-  bridge = lemma-cong↑ (H • H) M₋₁ (PB.axiom (_QRel,_===_.order-H {n = n}))
+  bridge = lemma-cong↑ (H • H) M₋₁ (PB.axiom (Clifford-Relations.order-H))
 
 lemma-S^p-1•S↑ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
   (S ↑) ^ p-1 • S ↑ ≈ ε
@@ -576,7 +576,7 @@ lemma-S'CZS'⁻¹↑ {n} = begin
   H ↑ • H ↑ • S ↑ • (H ↑ • H ↑ • CZ • H ↑ • H ↑) • (S ↑) ^ p-1 • H ↑ • H ↑
     ≈⟨ cong refl (cong refl (cong refl (cong lemma-HHCZHH↑ refl))) ⟩
   H ↑ • H ↑ • S ↑ • CZ^ ((-'₁) .proj₁) • (S ↑) ^ p-1 • H ↑ • H ↑
-    ≈⟨ cong refl (cong refl (trans (sym assoc) (trans (cong (comm⇒pow-comm 1 (toℕ ((-'₁) .proj₁)) (sym (_≈_.axiom _QRel,_===_.comm-CZ-S↑))) refl) assoc))) ⟩
+    ≈⟨ cong refl (cong refl (trans (sym assoc) (trans (cong (comm⇒pow-comm 1 (toℕ ((-'₁) .proj₁)) (sym (_≈_.axiom Clifford-Relations.comm-CZ-S↑))) refl) assoc))) ⟩
   H ↑ • H ↑ • CZ^ ((-'₁) .proj₁) • S ↑ • (S ↑) ^ p-1 • H ↑ • H ↑
     ≈⟨ cong refl (cong refl (cong refl (trans (sym assoc) (cong lemma-S•S^p-1↑ refl)))) ⟩
   H ↑ • H ↑ • CZ^ ((-'₁) .proj₁) • ε • H ↑ • H ↑
@@ -650,7 +650,7 @@ lemma-comm-Z↑-CZ {n} = begin
   (H ↑ • H ↑ • S ↑ • H ↑ • H ↑ • (S ↑) ^ p-1) • CZ
     ≈⟨ by-passoc ((□ • □ • □ • □ • □ • □) • □) (□ • □ • □ • □ • □ • (□ • □)) auto ⟩
   H ↑ • H ↑ • S ↑ • H ↑ • H ↑ • ((S ↑) ^ p-1 • CZ)
-    ≈⟨ cong refl (cong refl (cong refl (cong refl (cong refl (comm⇒pow-comm p-1 1 (sym (_≈_.axiom _QRel,_===_.comm-CZ-S↑))))))) ⟩
+    ≈⟨ cong refl (cong refl (cong refl (cong refl (cong refl (comm⇒pow-comm p-1 1 (sym (_≈_.axiom Clifford-Relations.comm-CZ-S↑))))))) ⟩
   H ↑ • H ↑ • S ↑ • H ↑ • H ↑ • (CZ • (S ↑) ^ p-1)
     ≈⟨ by-passoc (□ • □ • □ • □ • □ • (□ • □)) ((□ • □ • □ • □ • □ • □) • □) auto ⟩
   (H ↑ • H ↑ • S ↑ • H ↑ • H ↑ • CZ) • (S ↑) ^ p-1
@@ -682,7 +682,7 @@ lemma-comm-ζ↑-CZ {n} = begin
   S ↑ • ((Z ↑) ^ toℕ 1/2 • CZ) ≈⟨ cong refl (comm⇒pow-comm (toℕ 1/2) 1 lemma-comm-Z↑-CZ) ⟩
   S ↑ • (CZ ^ 1 • (Z ↑) ^ toℕ 1/2) ≡⟨ auto ⟩
   S ↑ • (CZ • (Z ↑) ^ toℕ 1/2) ≈⟨ sym assoc ⟩
-  (S ↑ • CZ) • (Z ↑) ^ toℕ 1/2 ≈⟨ cong (sym (_≈_.axiom _QRel,_===_.comm-CZ-S↑)) refl ⟩
+  (S ↑ • CZ) • (Z ↑) ^ toℕ 1/2 ≈⟨ cong (sym (_≈_.axiom Clifford-Relations.comm-CZ-S↑)) refl ⟩
   (CZ • S ↑) • (Z ↑) ^ toℕ 1/2 ≈⟨ assoc ⟩
   CZ • (S ↑ • (Z ↑) ^ toℕ 1/2) ≈⟨ refl' (Eq.cong (CZ •_) (Eq.sym lemma-ζ↑)) ⟩
   CZ • ζ ↑ ∎
@@ -696,7 +696,7 @@ lemma-comm-Z-CZ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
 lemma-comm-Z-CZ {n} = begin
   Z • CZ ≡⟨ auto ⟩
   (H • H • S • H • H • S ^ p-1) • CZ ≈⟨ by-passoc ((□ • □ • □ • □ • □ • □) • □) (□ • □ • □ • □ • □ • (□ • □)) auto ⟩
-  H • H • S • H • H • (S ^ p-1 • CZ) ≈⟨ cong refl (cong refl (cong refl (cong refl (cong refl (comm⇒pow-comm p-1 1 (sym (_≈_.axiom _QRel,_===_.comm-CZ-S↓))))))) ⟩
+  H • H • S • H • H • (S ^ p-1 • CZ) ≈⟨ cong refl (cong refl (cong refl (cong refl (cong refl (comm⇒pow-comm p-1 1 (sym (_≈_.axiom Clifford-Relations.comm-CZ-S↓))))))) ⟩
   H • H • S • H • H • (CZ • S ^ p-1) ≈⟨ by-passoc (□ • □ • □ • □ • □ • (□ • □)) ((□ • □ • □ • □ • □ • □) • □) auto ⟩
   (H • H • S • H • H • CZ) • S ^ p-1 ≈⟨ cong lemma-comm-S'-CZ refl ⟩
   (CZ • H • H • S • H • H) • S ^ p-1 ≈⟨ by-assoc auto ⟩
@@ -716,7 +716,7 @@ lemma-comm-ζ-CZ {n} = begin
   S • (Z ^ toℕ 1/2 • CZ) ≈⟨ cong refl (comm⇒pow-comm (toℕ 1/2) 1 lemma-comm-Z-CZ) ⟩
   S • (CZ ^ 1 • Z ^ toℕ 1/2) ≡⟨ auto ⟩
   S • (CZ • Z ^ toℕ 1/2) ≈⟨ sym assoc ⟩
-  (S • CZ) • Z ^ toℕ 1/2 ≈⟨ cong (sym (_≈_.axiom _QRel,_===_.comm-CZ-S↓)) refl ⟩
+  (S • CZ) • Z ^ toℕ 1/2 ≈⟨ cong (sym (_≈_.axiom Clifford-Relations.comm-CZ-S↓)) refl ⟩
   (CZ • S) • Z ^ toℕ 1/2 ≈⟨ assoc ⟩
   CZ • (S • Z ^ toℕ 1/2) ≡⟨ auto ⟩
   CZ • ζ ∎

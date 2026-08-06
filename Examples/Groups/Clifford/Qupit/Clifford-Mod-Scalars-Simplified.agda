@@ -56,7 +56,16 @@ open Primitive-Root-Modp' g* g-gen
 -- (X, Z, X⁻¹, Z⁻¹, S⁻¹, Z^, X^, ζ, ζ^, M, M₋₁, Mg, Mg^, ⊤⊥, ⊥⊤, …)
 -- from the original Clifford presentation.
 open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar p-3 p-prime g* g-gen
-open Clifford-Relations hiding (_QRel,_===_)
+-- The axiom names below used to be constructors on both sides, and Agda
+-- lets constructor names overload.  Since Clifford-Relations moved onto
+-- Circuit.Base.Lift-Relation its axioms are pattern synonyms, which do
+-- not overload, so each shared name has to be hidden explicitly — the
+-- same list Simplified-Lemmas/Part3 already carries.
+open Clifford-Relations hiding
+  ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-Mζ ; order-SH ; comm-HHSHHS
+  ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
+  ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12
+  ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ ; lemma-cong↑ )
 
 
 module Simplified-Relations where
