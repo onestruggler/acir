@@ -35,7 +35,7 @@ open import Algebra.Morphism.Structures using (module GroupMorphisms)
 open import Notations
 
 
-module Examples.Groups.Symplectic.Clifford.Iso3
+module Examples.Groups.Clifford.Qupit.Iso3
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -45,10 +45,10 @@ module Examples.Groups.Symplectic.Clifford.Iso3
   where
 
 
-open import Examples.Groups.Symplectic.Clifford.SDProduct p-3 p-prime g* g-gen
-open import Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar p-3 p-prime g* g-gen as Cli
-import Examples.Groups.Symplectic.Clifford.Iso p-3 p-prime g* g-gen as ISO
-import Examples.Groups.Symplectic.Clifford.Iso2 p-3 p-prime g* g-gen as ISO2
+open import Examples.Groups.Clifford.Qupit.SDProduct p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar p-3 p-prime g* g-gen as Cli
+import Examples.Groups.Clifford.Qupit.Iso p-3 p-prime g* g-gen as ISO
+import Examples.Groups.Clifford.Qupit.Iso2 p-3 p-prime g* g-gen as ISO2
 
 
 import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
@@ -62,7 +62,7 @@ module M (n : ℕ) where
   -- f ∘ h ≈ id on Clifford generators
   f-left-inv-gen : ∀ {m} (x : Cli.Gen m) →
     let open PB (Cli.Clifford-Relations._QRel,_===_ m) using (_≈_) in
-    [ x ]ʷ ≈ (f *) (h x)
+    [ x ]ʷ ≈ (f ʷ) (h x)
   f-left-inv-gen Cli.H-gen = PB.refl
   f-left-inv-gen Cli.CZ-gen = PB.refl
   f-left-inv-gen (x Cli.↥) =
@@ -72,8 +72,8 @@ module M (n : ℕ) where
       [ Cli.S-gen ]ʷ
         ≈⟨ sym claim ⟩
       C.Z^ Cli.-1/2 • C.𝑠
-        ≡⟨ Eq.cong (λ z → z • C.𝑠) (Eq.sym (lemma-f*-w^n {f = f} {w = SemiDirect.Z} (toℕ Cli.-1/2))) ⟩
-      (f *) (h Cli.S-gen) ∎
+        ≡⟨ Eq.cong (λ z → z • C.𝑠) (Eq.sym (lemma-fʷ-w^n {f = f} {w = SemiDirect.Z} (toℕ Cli.-1/2))) ⟩
+      (f ʷ) (h Cli.S-gen) ∎
     where
     module C = Cli.Clifford-Relations
     open PB (C._QRel,_===_ (₁₊ m))
@@ -113,7 +113,7 @@ module M (n : ℕ) where
   -- h ∘ f ≈ id on SemiDirect generators
   g-left-inv-gen : ∀ {m} (x : SemiDirect.Gen m) →
     let open PB (SemiDirect._QRel,_===_ m) using (_≈_) in
-    [ x ]ʷ ≈ (h *) (f x)
+    [ x ]ʷ ≈ (h ʷ) (f x)
   g-left-inv-gen SemiDirect.X-gen = PB.sym h-X
   g-left-inv-gen SemiDirect.Z-gen = PB.sym h-Z
   g-left-inv-gen SemiDirect.H-gen = PB.refl
@@ -126,15 +126,15 @@ module M (n : ℕ) where
     PB.trans (SemiDirect.lemma-cong↑ _ _ (g-left-inv-gen (inj₂ y)))
              (PB.refl' (SemiDirect._QRel,_===_ _) (Eq.sym (lemma-h↑ (f (inj₂ y)))))
 
-  module G1 = Group-Lemmas (SemiDirect.Gen n) (SemiDirect._QRel,_===_ n) (Semi-GroupLike.grouplike {n})
-  module G2 = Group-Lemmas (Cli.Gen n) (Cli.Clifford-Relations._QRel,_===_ n) (Cli.Clifford-GroupLike.grouplike {n})
+  module G1 = Group-Lemmas (SemiDirect._QRel,_===_ n) (Semi-GroupLike.grouplike {n})
+  module G2 = Group-Lemmas (Cli.Clifford-Relations._QRel,_===_ n) (Cli.Clifford-GroupLike.grouplike {n})
 
   open GroupMorphisms
 
   open import Presentation.Morphism (SemiDirect._QRel,_===_ n) (Cli.Clifford-Relations._QRel,_===_ n)
-  open GroupMorphs (Semi-GroupLike.grouplike {n}) (Cli.Clifford-GroupLike.grouplike {n})
+  open GroupMorphism (Semi-GroupLike.grouplike {n}) (Cli.Clifford-GroupLike.grouplike {n})
 
   Theorem-SemiDirect-iso-Clifford :
-    IsGroupIsomorphism (Group.rawGroup G1.•-ε-group) (Group.rawGroup G2.•-ε-group) (f *)
+    IsGroupIsomorphism (Group.rawGroup G1.•-ε-group) (Group.rawGroup G2.•-ε-group) (f ʷ)
   Theorem-SemiDirect-iso-Clifford =
     StarGroupIsomorphism.isGroupIsomorphism f h f-well-defined f-left-inv-gen h-well-defined g-left-inv-gen

@@ -16,7 +16,8 @@
 --   * S    = the Pauli presentation      (Examples.Groups.Pauli.Presentation),
 --   * R̄    = the symplectic relations     (Symplectic._QRel,_===_),
 --   * conj = the symplectic action of a quotient generator on a Pauli
---            generator (the word-valued form of Symplectic.Action.act1),
+--            generator (the word-valued form of
+--            Symplectic.Semantics.Interpretation.actg),
 --   * corr = the cocycle: the Pauli correction word carried by each
 --            symplectic relator when it is lifted to Clifford.
 --
@@ -28,10 +29,10 @@
 -- the two-qubit selinger relators up to e^{-iπ/4}), and a global phase is
 -- trivial in the phaseless Pauli group.  cong↑ shifts a correction up one
 -- qubit.  This was verified numerically against the exact 2×2/4×4/8×8
--- Clifford matrices under the act1 conventions.
+-- Clifford matrices under the actg conventions.
 --
 -- (For odd p the extension splits — every correction is ε; that case is
--- the odd-prime development under Examples.Groups.Symplectic.Clifford.)
+-- the odd-prime development under Examples.Groups.Clifford.Qupit.)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -64,14 +65,15 @@ open import Presentation.Construct.Properties.Extension using (extension-present
 -- (an X- and a Z-generator per qubit).
 open import Examples.Groups.Pauli.Presentation p-2 p-prime using (Γ-H)
 
--- The Pauli group as vectors, and the symplectic action act1.
+-- The Pauli group as vectors, and the symplectic action actg.
 open import Examples.Groups.Pauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; pX ; pZ ; pI ; pIₙ)
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime using (act1)
+import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem
+open SympSem.Interpretation using (actg)
 
 -- R̄ : the symplectic relations, over the Clifford generators Gen n.
-open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
-open Symplectic-Derived-Gen using (Gen ; _QRel,_===_ ; srel ; order-S ; cong↑)
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime using (module Symplectic)
+open Symplectic using (Gen ; _QRel,_===_ ; srel ; cong↑ ; module Base)
 
 ------------------------------------------------------------------------
 -- Generator sets
@@ -85,7 +87,8 @@ PauliGen n = (⊤ ⊎ ⊤) ⊎^ n
 --
 -- conj g y :   the word over Pauli generators equal, inside Clifford, to
 --              the conjugate g · y · g⁻¹ of the Pauli generator y by the
---              quotient generator g.  Determined by Symplectic.Action.act1.
+--              quotient generator g.  Determined by
+--              Symplectic.Semantics.Interpretation.actg.
 
 -- A Pauli generator names a single-qubit X or Z at one position; read it
 -- back as a basis vector of the Pauli group.
@@ -107,7 +110,7 @@ vecToWord {₂₊ n} ((a , b) ∷ ps) =
   • wmap inj₂ (vecToWord {₁₊ n} ps)
 
 conj : ∀ {n} → Gen n → PauliGen n → Word (PauliGen n)
-conj g y = vecToWord (act1 g (genToVec y))
+conj g y = vecToWord (actg g (genToVec y))
 
 ------------------------------------------------------------------------
 -- corr : the p = 2 cocycle
@@ -131,9 +134,9 @@ shiftPauli = wmap shift-gen
 -- The only nontrivial correction is S² = Z (order-S); cong↑ shifts a
 -- correction up one qubit; every other relator lifts with no Pauli.
 corr : ∀ {n} {u v} → (n QRel,_===_) u v → Word (PauliGen n)
-corr (srel order-S)  = Z₀
-corr (cong↑ r)       = shiftPauli (corr r)
-corr _               = ε
+corr (srel Base.order-S) = Z₀
+corr (cong↑ r)           = shiftPauli (corr r)
+corr _                   = ε
 
 ------------------------------------------------------------------------
 -- The Clifford presentation, as an extension of Pauli by the symplectic
@@ -145,28 +148,30 @@ _Clifford,_===_ : (n : ℕ) → WRel (PauliGen n ⊎ Gen n)
 _Clifford,_===_ n = extension-presentation (Γ-H ⊕^ n) (n QRel,_===_) conj corr
 
 
-import Presentation.Properties as PP
-import Presentation.Base as PB
+open import Algebra.Bundles using (Group)
+open import Function.Definitions using (Surjective)
 open import Presentation.Definitions
-open import Normalization.NormalForm.Propositional
 open import Normalization.StarPresentation
-open import Examples.Groups.Clifford.Qubit.Semantics
 
-subpresentation : ∀ {n} -> 
+open import Examples.Groups.Clifford.Qubit.Semantics using (Clifford-group)
+
+-- Still open: the four inputs of GetSubPresentation — the generator
+-- semantics ⟦_⟧₀, soundness of every axiom, groupliness, and a unique
+-- normal form for the extension presentation.
+subpresentation : ∀ {n} →
   (n Clifford,_===_) IsSubPresentationOf Clifford-group n
 subpresentation {n} =
   GS.GetSubPresentation.groupSubPres {!!} {!!} {!!} {!!}
   where
-  module GS = GroupSem (n Clifford,_===_) {!!} {!!} {!!}
+  module GS = GroupSem (n Clifford,_===_) (Group.setoid (Clifford-group n))
+                       (Clifford-group n) {!!}
 
-
-presentation : ∀ {n} -> let open PP (n Clifford,_===_) in
-  (n Clifford,_===_) IsPresentationOf {!!}
+presentation : ∀ {n} →
+  (n Clifford,_===_) IsPresentationOf Clifford-group n
 presentation {n} = isPresentationOf subpresentation claim
   where
-  open PB (n Clifford,_===_)
-  open import Function.Definitions using (Surjective)
+  open _IsSubPresentationOf_ (subpresentation {n}) using (module GL ; ⟦_⟧)
 
-  claim : Surjective {!!} {!!} {!!}
+  claim : Surjective (Group._≈_ GL.•-ε-group) (Group._≈_ (Clifford-group n)) ⟦_⟧
   claim y = {!!}
 

@@ -3,7 +3,7 @@
 
 ------------------------------------------------------------------------
 -- A *simplified* relation set for the qudit Clifford group mod scalars,
--- an analogue of `Examples.Groups.Symplectic.Simplified.Syntactics` for `Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar`.
+-- an analogue of `Examples.Groups.Symplectic.Simplified.Syntactics` for `Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar`.
 --
 -- Simplification strategy (applied per relation):
 --   (1) push the X and Z (Pauli) parts of both sides to the right-most
@@ -40,7 +40,7 @@ open import Zp.Fermats-little-theorem
 open import Notations
 
 
-module Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalars-Simplified
+module Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalars-Simplified
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -55,7 +55,7 @@ open Primitive-Root-Modp' g* g-gen
 -- Inherit the generators (S, H, CZ, ↥) and every derived word
 -- (X, Z, X⁻¹, Z⁻¹, S⁻¹, Z^, X^, 𝑠, 𝑠^, M, M₋₁, Mg, Mg^, ⊤⊥, ⊥⊤, …)
 -- from the original Clifford presentation.
-open import Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar p-3 p-prime g* g-gen
 open Clifford-Relations hiding (_QRel,_===_)
 
 
@@ -102,10 +102,10 @@ module Simplified-Relations where
     --        semi-M↓CZ :  Wg  · CZ = CZ^g  · Wg  · Z↑^(½(g-1))
     --
     --     The S-form semi-M𝑠 is the `final-semi-M𝑠` theorem of
-    --     Examples.Groups.Symplectic.Clifford.Mg-Simplify; the CZ ones are the `final-semi-M*CZ`
+    --     Examples.Groups.Clifford.Qupit.Mg-Simplify; the CZ ones are the `final-semi-M*CZ`
     --     theorems (all soundness, in the original Clifford presentation).
     --     The original Mg-forms are recovered as the `completeness-semi-M*`
-    --     lemmas of Examples.Groups.Symplectic.Clifford.Mg-Simplify-S (the S-form is first turned back
+    --     lemmas of Examples.Groups.Clifford.Qupit.Mg-Simplify-S (the S-form is first turned back
     --     into the 𝑠-form by `SemiS-rev.lemma-semi-M𝑠`).
     --
     --     The completeness proofs of the two CZ relations need Z↔CZ

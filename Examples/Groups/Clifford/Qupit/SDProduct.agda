@@ -1,5 +1,4 @@
-{-# OPTIONS --cubical-compatible --allow-unsolved-metas #-}
--- {-# OPTIONS  --safe #-}
+{-# OPTIONS --cubical-compatible #-}
 {-# OPTIONS --termination-depth=4 #-}
 
 open import Relation.Binary using (Rel)
@@ -41,7 +40,7 @@ open import Data.Nat.Primality
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
-module Examples.Groups.Symplectic.Clifford.SDProduct
+module Examples.Groups.Clifford.Qupit.SDProduct
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -60,6 +59,22 @@ import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as 
 module Sym = NSym.Symplectic
 module Sim = NSim.Simplified-Relations
 import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
+
+-- Powers commute with the left/right embeddings.  These two lemmas used to
+-- live in Presentation.Construct.Properties, which was pruned as dead code
+-- once this development stopped being reachable; they are needed only here
+-- and in Iso, so they are kept local.
+lemma-[w^n]ₗ=[w]ₗ^n : ∀ {A B : Set} (w : Word A) (n : ℕ) →
+                      [_]ₗ {B = B} (w ^ n) ≡ [ w ]ₗ ^ n
+lemma-[w^n]ₗ=[w]ₗ^n w ₀       = Eq.refl
+lemma-[w^n]ₗ=[w]ₗ^n w (₁₊ ₀)  = Eq.refl
+lemma-[w^n]ₗ=[w]ₗ^n w (₂₊ n)  = Eq.cong₂ _•_ Eq.refl (lemma-[w^n]ₗ=[w]ₗ^n w (₁₊ n))
+
+lemma-[w^n]ᵣ=[w]ᵣ^n : ∀ {A B : Set} (w : Word B) (n : ℕ) →
+                      [_]ᵣ {A = A} (w ^ n) ≡ [ w ]ᵣ ^ n
+lemma-[w^n]ᵣ=[w]ᵣ^n w ₀       = Eq.refl
+lemma-[w^n]ᵣ=[w]ᵣ^n w (₁₊ ₀)  = Eq.refl
+lemma-[w^n]ᵣ=[w]ᵣ^n w (₂₊ n)  = Eq.cong₂ _•_ Eq.refl (lemma-[w^n]ᵣ=[w]ᵣ^n w (₁₊ n))
 
 module SemiDirect where
 
@@ -299,7 +314,7 @@ module SemiDirect where
 
   infix 4 _QRel,_===_
   _QRel,_===_ : (n : ℕ) → WRel (Gen n)
-  _QRel,_===_ n = (XZ._QRel,_===_ n ⸲ Sim._QRel,_===_  n ⸲ Γⱼ' conj)
+  _QRel,_===_ n = (XZ._QRel,_===_ n ⋄ Sim._QRel,_===_  n ⋄ ConjRelʷ conj)
   
 
   lemma-[]ₗ-↑ : ∀ (u : Word (XZ.Gen n)) -> [ u ]ₗ ↑ ≡ [ u XZ.↑ ]ₗ
@@ -344,10 +359,13 @@ module SemiDirect where
   lemma-cong↑ {n} w v PB.right-unit = PB.right-unit
   lemma-cong↑ {₁₊ n} w v (PB.axiom (left {u} {v₁} x)) rewrite lemma-[]ₗ-↑ u | lemma-[]ₗ-↑ v₁ = PB.axiom (left (XZ.cong↑ x))
   lemma-cong↑ {₁₊ n} w v (PB.axiom (right {u} {v₁} x)) rewrite lemma-[]ᵣ-↑ u | lemma-[]ᵣ-↑ v₁ = PB.axiom (right (Sim.cong↑ x))
-  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.X-gen Sym.H-gen))) = PB.axiom (mid (comm (XZ.X-gen XZ.↥) (Sym.Gen.H-gen Sym.↥)))
-  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.X-gen Sym.S-gen))) = PB.axiom (mid (comm (XZ.X-gen XZ.↥) (Sym.Gen.S-gen Sym.↥)))
-  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.X-gen Sym.CZ-gen))) = PB.axiom (mid (comm (XZ.X-gen XZ.↥) (Sym.Gen.CZ-gen Sym.↥)))
-  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.X-gen (b Sym.↥)))) = PB.axiom (mid (comm (XZ.X-gen XZ.↥) ((b Sym.Gen.↥) Sym.↥)))
+  -- At width 0 the symplectic side is empty: every SimBase axiom needs at
+  -- least one wire, and cong↑/comm₁/comm₂ each produce a successor width.
+  lemma-cong↑ {₀} w v (PB.axiom (right (Sim.srel ())))
+  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.X-gen Sym.H-gen))) = PB.axiom (mid (comm (XZ.X-gen XZ.↥) (Sym.H-gen Sym.↥)))
+  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.X-gen Sym.S-gen))) = PB.axiom (mid (comm (XZ.X-gen XZ.↥) (Sym.S-gen Sym.↥)))
+  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.X-gen Sym.CZ-gen))) = PB.axiom (mid (comm (XZ.X-gen XZ.↥) (Sym.CZ-gen Sym.↥)))
+  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.X-gen (b Sym.↥)))) = PB.axiom (mid (comm (XZ.X-gen XZ.↥) ((b Sym.↥) Sym.↥)))
   lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.Z-gen Sym.H-gen))) = begin
     H ↑ • Z ↑ ≈⟨ axiom (mid (comm (XZ.Z-gen XZ.↥) (Sym.H-gen Sym.↥))) ⟩
     ([ conj (Sym.H-gen) (XZ.Z-gen) XZ.↑ ]ₗ) • H ↑ ≡⟨ Eq.sym (Eq.cong (\ xx -> xx • H ↑) (lemma-[]ₗ-↑ (conj (Sym.H-gen) (XZ.Z-gen)))) ⟩
@@ -358,14 +376,14 @@ module SemiDirect where
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
     
-  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.Z-gen Sym.S-gen))) = PB.axiom (mid (comm (XZ.Z-gen XZ.↥) (Sym.Gen.S-gen Sym.↥)))
-  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.Z-gen Sym.CZ-gen))) = PB.axiom (mid (comm (XZ.Z-gen XZ.↥) (Sym.Gen.CZ-gen Sym.↥)))
-  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.Z-gen (b Sym.↥)))) = PB.axiom (mid (comm (XZ.Z-gen XZ.↥) ((b Sym.Gen.↥) Sym.↥)))
-  lemma-cong↑ {n} w v (PB.axiom (mid (comm (a XZ.↥) Sym.H-gen))) = PB.axiom (mid (comm ((a XZ.↥) XZ.↥) (Sym.Gen.H-gen Sym.↥)))
-  lemma-cong↑ {n} w v (PB.axiom (mid (comm (a XZ.↥) Sym.S-gen))) = PB.axiom (mid (comm ((a XZ.↥) XZ.↥) (Sym.Gen.S-gen Sym.↥)))
-  lemma-cong↑ {n} w v (PB.axiom (mid (comm (XZ.X-gen XZ.↥) Sym.CZ-gen))) = PB.axiom (mid (comm ((XZ.X-gen XZ.↥) XZ.↥) (Sym.Gen.CZ-gen Sym.↥)))
-  lemma-cong↑ {n} w v (PB.axiom (mid (comm (XZ.Z-gen XZ.↥) Sym.CZ-gen))) = PB.axiom (mid (comm ((XZ.Z-gen XZ.↥) XZ.↥) (Sym.Gen.CZ-gen Sym.↥)))
-  lemma-cong↑ {n} w v (PB.axiom (mid (comm ((a XZ.↥) XZ.↥) Sym.CZ-gen))) = PB.axiom (mid (comm (((a XZ.↥) XZ.↥) XZ.↥) (Sym.Gen.CZ-gen Sym.↥)))
+  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.Z-gen Sym.S-gen))) = PB.axiom (mid (comm (XZ.Z-gen XZ.↥) (Sym.S-gen Sym.↥)))
+  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.Z-gen Sym.CZ-gen))) = PB.axiom (mid (comm (XZ.Z-gen XZ.↥) (Sym.CZ-gen Sym.↥)))
+  lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.Z-gen (b Sym.↥)))) = PB.axiom (mid (comm (XZ.Z-gen XZ.↥) ((b Sym.↥) Sym.↥)))
+  lemma-cong↑ {n} w v (PB.axiom (mid (comm (a XZ.↥) Sym.H-gen))) = PB.axiom (mid (comm ((a XZ.↥) XZ.↥) (Sym.H-gen Sym.↥)))
+  lemma-cong↑ {n} w v (PB.axiom (mid (comm (a XZ.↥) Sym.S-gen))) = PB.axiom (mid (comm ((a XZ.↥) XZ.↥) (Sym.S-gen Sym.↥)))
+  lemma-cong↑ {n} w v (PB.axiom (mid (comm (XZ.X-gen XZ.↥) Sym.CZ-gen))) = PB.axiom (mid (comm ((XZ.X-gen XZ.↥) XZ.↥) (Sym.CZ-gen Sym.↥)))
+  lemma-cong↑ {n} w v (PB.axiom (mid (comm (XZ.Z-gen XZ.↥) Sym.CZ-gen))) = PB.axiom (mid (comm ((XZ.Z-gen XZ.↥) XZ.↥) (Sym.CZ-gen Sym.↥)))
+  lemma-cong↑ {n} w v (PB.axiom (mid (comm ((a XZ.↥) XZ.↥) Sym.CZ-gen))) = PB.axiom (mid (comm (((a XZ.↥) XZ.↥) XZ.↥) (Sym.CZ-gen Sym.↥)))
   lemma-cong↑ {₁₊ n@(₁₊ n')} w v (PB.axiom (mid (comm (a XZ.↥) (b Sym.↥)))) = begin
     [ inj₂ (b Sym.↥ Sym.↥) ]ʷ • [ inj₁ (a XZ.↥ XZ.↥) ]ʷ ≈⟨ refl ⟩
     [ inj₂ (b Sym.↥) ]ʷ ↑ • [ inj₁ (a XZ.↥) ]ʷ ↑ ≈⟨ PB.axiom (mid (comm ((a XZ.↥) XZ.↥) ((b Sym.↥) Sym.↥))) ⟩
@@ -377,7 +395,7 @@ module SemiDirect where
     open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↑_)
     open PP ((₂₊ n) QRel,_===_)
     open SR word-setoid
--- lemma-cong↑ _ _ (PB.axiom (mid (comm (a XZ.↥) (b Sym.Gen.↥))))
+-- lemma-cong↑ _ _ (PB.axiom (mid (comm (a XZ.↥) (b Sym.↥))))
 
 
 module Semi-GroupLike where
@@ -393,7 +411,7 @@ module Semi-GroupLike where
     open PB ((₁₊ n) QRel,_===_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
-    open LeftRightCongruence (XZ._QRel,_===_ (₁₊ n)) (Sim._QRel,_===_  (₁₊ n)) (Γⱼ' conj)
+    open LeftRightCongruence (XZ._QRel,_===_ (₁₊ n)) (Sim._QRel,_===_  (₁₊ n)) (ConjRelʷ conj)
     open NSim.Lemmas1 n
     claim : (H ) ^ 3 • H ≈ ε
     claim = begin
@@ -406,7 +424,7 @@ module Semi-GroupLike where
     open PB ((₁₊ n) QRel,_===_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
-    open LeftRightCongruence (XZ._QRel,_===_ (₁₊ n)) (Sim._QRel,_===_  (₁₊ n)) (Γⱼ' conj)
+    open LeftRightCongruence (XZ._QRel,_===_ (₁₊ n)) (Sim._QRel,_===_  (₁₊ n)) (ConjRelʷ conj)
     open NSim.Lemmas1 n
     module RG = NSim.Symplectic-Sim-GroupLike
     claim : S ^ p-1 • S ≈ ε
@@ -419,7 +437,7 @@ module Semi-GroupLike where
     open PB ((₂₊ n) QRel,_===_)
     open PP ((₂₊ n) QRel,_===_)
     open SR word-setoid
-    open LeftRightCongruence (XZ._QRel,_===_ (₂₊ n)) (Sim._QRel,_===_  (₂₊ n)) (Γⱼ' conj)
+    open LeftRightCongruence (XZ._QRel,_===_ (₂₊ n)) (Sim._QRel,_===_  (₂₊ n)) (ConjRelʷ conj)
     open NSim.Lemmas1 n
     module RG = NSim.Symplectic-Sim-GroupLike
     claim : CZ ^ p-1 • CZ ≈ ε
@@ -433,7 +451,7 @@ module Semi-GroupLike where
     open PB ((₁₊ n) QRel,_===_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
-    open LeftRightCongruence (XZ._QRel,_===_ (₁₊ n)) (Sim._QRel,_===_  (₁₊ n)) (Γⱼ' conj)
+    open LeftRightCongruence (XZ._QRel,_===_ (₁₊ n)) (Sim._QRel,_===_  (₁₊ n)) (ConjRelʷ conj)
     open NSim.Lemmas1 n
     module LG = XZ.XZ-GroupLike
     claim : X ^ p-1 • X ≈ ε
@@ -447,7 +465,7 @@ module Semi-GroupLike where
     open PB ((₁₊ n) QRel,_===_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
-    open LeftRightCongruence (XZ._QRel,_===_ (₁₊ n)) (Sim._QRel,_===_  (₁₊ n)) (Γⱼ' conj)
+    open LeftRightCongruence (XZ._QRel,_===_ (₁₊ n)) (Sim._QRel,_===_  (₁₊ n)) (ConjRelʷ conj)
     open NSim.Lemmas1 n
     module LG = XZ.XZ-GroupLike
     claim : Z ^ p-1 • Z ≈ ε
@@ -460,8 +478,8 @@ module Semi-GroupLike where
   grouplike {₂₊ n} (inj₁ (g XZ.↥)) with XZ.XZ-GroupLike.grouplike (g XZ.↥)
   ... | ig , prf = ([ ig ]ₗ) , lefts prf
     where
-    open LeftRightCongruence (XZ._QRel,_===_ (₂₊ n)) (Sim._QRel,_===_  (₂₊ n)) (Γⱼ' conj)
+    open LeftRightCongruence (XZ._QRel,_===_ (₂₊ n)) (Sim._QRel,_===_  (₂₊ n)) (ConjRelʷ conj)
   grouplike {₂₊ n} (inj₂ (g Sym.↥)) with NSim.Symplectic-Sim-GroupLike.grouplike (g Sym.↥)
   ... | ig , prf = ([ ig ]ᵣ) , rights prf
     where
-    open LeftRightCongruence (XZ._QRel,_===_ (₂₊ n)) (Sim._QRel,_===_  (₂₊ n)) (Γⱼ' conj)
+    open LeftRightCongruence (XZ._QRel,_===_ (₂₊ n)) (Sim._QRel,_===_  (₂₊ n)) (ConjRelʷ conj)

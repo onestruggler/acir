@@ -49,7 +49,7 @@ open import Algebra.Properties.Group
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
-module Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar.Part1
+module Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar.Part1
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -66,7 +66,20 @@ open Primitive-Root-Modp' g* g-gen
 module Symplectic-Simplified where
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
-open Symplectic hiding (_QRel,_===_ ; M ; M₁) public
+-- Besides the relation itself, Symplectic exports each of its axioms as a
+-- top-level alias (order-S, …, selinger-c15, comm-H/S/CZ) and the structural
+-- cong↑ / lemma-cong↑.  Every one of those names is also a constructor of the
+-- Clifford relation below, so they are hidden here; reach for the symplectic
+-- version as NSym.Symplectic.… if it is ever needed.
+open Symplectic hiding
+  ( _QRel,_===_ ; M ; M₁
+  ; order-S ; order-H ; order-SH
+  ; semi-M↑CZ ; semi-M↓CZ ; order-CZ
+  ; comm-CZ-S↓ ; comm-CZ-S↑
+  ; selinger-c10 ; selinger-c11 ; selinger-c12
+  ; selinger-c13 ; selinger-c14 ; selinger-c15
+  ; comm-H ; comm-S ; comm-CZ
+  ; cong↑ ; lemma-cong↑ ) public
 
 1/2 = ((₂ , λ ()) ⁻¹) .proj₁
 

@@ -1,10 +1,7 @@
 {-# OPTIONS --cubical-compatible --termination-depth=20 #-}
 {-# OPTIONS --inversion-max-depth=1000 #-}
 
--- Scratch file: verifying that the simplified `selinger` relations are
--- sound consequences of the original Clifford-Relations axioms.
-
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; module ≡-Reasoning) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 open import Data.Product using (_,_ ; ∃)
@@ -15,16 +12,17 @@ open import Word.Base as WB hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open import Presentation.Construct.Base hiding (_*_)
+open import Presentation.GroupLike
 open import Presentation.Tactic.Rewriting
 import Data.Nat.Properties as NP
-open import Data.Nat.DivMod using (_%_ ; _/_ ; m≡m%n+[m/n]*n ; m%n<n ; m*n%n≡0)
-open import Data.Fin.Properties using (toℕ-fromℕ<)
+open import Data.Nat.DivMod
+open import Data.Fin.Properties using (toℕ-fromℕ ; toℕ-fromℕ<)
 open import Data.Nat.Primality
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 open import Notations
 
-module Examples.Groups.Symplectic.Clifford.Clifford-Simplified-Verify
+module Examples.Groups.Clifford.Qupit.Simplified-Lemmas.Part4
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -36,16 +34,29 @@ module Examples.Groups.Symplectic.Clifford.Clifford-Simplified-Verify
 
 open Primitive-Root-Modp' g* g-gen
 
-open import Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar p-3 p-prime g* g-gen
-open Clifford-Relations
-open import Examples.Groups.Symplectic.Clifford.Clifford-Lemmas p-3 p-prime g* g-gen hiding (module CL ; module CLb)
+open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar p-3 p-prime g* g-gen
+open Clifford-Relations hiding
+  ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-M𝑠 ; order-SH ; comm-HHSHHS
+  ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
+  ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12
+  ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ )
+open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalars-Simplified p-3 p-prime g* g-gen
+open Simplified-Relations
+open import Examples.Groups.Clifford.Qupit.Simplified-Lemmas.Part3 p-3 p-prime g* g-gen public
 
--- Foundational fact: S⁻¹ = 𝑠⁻¹ · Z^½  (since 𝑠 = S · Z^½ and S,Z commute).
+
+
+
+-- ====================================================================
+-- Foundational lemma + cascade (tail-c10 / tail-c11) for the Simplified
+-- presentation: a copy of the verified Clifford cascade, repointed to
+-- the -S base lemmas.  These give RHS_simp ≈ RHS_orig·X·Z in Simplified.
+-- ====================================================================
 module _ (n : ℕ) where
   open PB ((₁₊ n) QRel,_===_)
   open PP ((₁₊ n) QRel,_===_)
   open SR word-setoid
-  open Lemmas1 n using (lemma-order-Z ; lemma-comm-Z-S)
+  open Lemmas1-S n using (lemma-order-Z ; lemma-comm-Z-S)
 
   -- Z and S commute, hence Z and 𝑠 commute, and we can split powers.
   cZS : Z • S ≈ S • Z
@@ -90,13 +101,14 @@ module _ (n : ℕ) where
 
 
 -- Base-level (₁₊ m) X-conjugations, lifted into C10 afterwards.
+
 module C10Base (m : ℕ) where
   open PB ((₁₊ m) QRel,_===_)
   open PP ((₁₊ m) QRel,_===_)
   open SR word-setoid
-  open Lemmas1 m using (lemma-order-𝑠 ; lemma-order-H)
-  open Lemmas-Clifford using (lemma-Induction)
-  open Lemmas1b m using (conj-H-X^k ; lemma-HH-Z)
+  open Lemmas1-S m using (lemma-order-𝑠 ; lemma-order-H)
+  open Lemmas-Clifford-S using (lemma-Induction)
+  open Lemmas1b-S m using (conj-H-X^k ; lemma-HH-Z)
 
   𝑠𝑠⁻¹ : 𝑠 • 𝑠 ^ p-1 ≈ ε
   𝑠𝑠⁻¹ = lemma-order-𝑠
@@ -150,16 +162,17 @@ module C10Base (m : ℕ) where
 -- We work on the ↑ qubit at level (₂₊ m); base conjugation lemmas
 -- (level ₁₊ m) are lifted via cong↑ / lemma-↑^.
 ------------------------------------------------------------------------
+
 module C10 (m : ℕ) where
   open PB ((₂₊ m) QRel,_===_)
   open PP ((₂₊ m) QRel,_===_)
   open SR word-setoid
   open Pattern-Assoc
-  open Lemmas-Clifford using (lemma-cong↑ ; lemma-↑^ ; lemma-Induction ; lemma-comm-Z-w↑)
-  open Lemmas1b m using (conj-H-X^k ; conj-H-Z ; lemma-HH-Z ; lemma-HH-X)
+  open Lemmas-Clifford-S using (lemma-cong↑ ; lemma-↑^ ; lemma-Induction ; lemma-comm-Z-w↑)
+  open Lemmas1b-S m using (conj-H-X^k ; conj-H-Z ; lemma-HH-Z ; lemma-HH-X)
   -- Z↓ lives at level ₂₊ m, i.e. the base Z of Lemmas1 (₁₊ m)
   order-Z↓ : (Z ↓) ^ p ≈ ε
-  order-Z↓ = Lemmas1.lemma-order-Z (₁₊ m)
+  order-Z↓ = Lemmas1-S.lemma-order-Z (₁₊ m)
 
   z : ℕ
   z = toℕ 1/2
@@ -272,9 +285,9 @@ module C10 (m : ℕ) where
   -- order facts and mod-reduction for the ↑/↓ Paulis
   ----------------------------------------------------------------------
   order-X↑ : (X ↑) ^ p ≈ ε
-  order-X↑ = trans (refl' (Eq.sym (lemma-↑^ p X))) (lemma-cong↑ _ _ (Lemmas1.lemma-order-X m))
+  order-X↑ = trans (refl' (Eq.sym (lemma-↑^ p X))) (lemma-cong↑ _ _ (Lemmas1-S.lemma-order-X m))
   order-Z↑ : (Z ↑) ^ p ≈ ε
-  order-Z↑ = trans (refl' (Eq.sym (lemma-↑^ p Z))) (lemma-cong↑ _ _ (Lemmas1.lemma-order-Z m))
+  order-Z↑ = trans (refl' (Eq.sym (lemma-↑^ p Z))) (lemma-cong↑ _ _ (Lemmas1-S.lemma-order-Z m))
 
   Xmod↑ : ∀ k → (X ↑) ^ k ≈ (X ↑) ^ (k % p)
   Xmod↑ k = begin
@@ -514,38 +527,25 @@ module C10 (m : ℕ) where
 
 
 
-  soundness-c10 : CZ • H ↑ • CZ • X ↑ • Z ↑
-                ≈ (S ↑) ^ p-1 • H ↑ • (S ↑) ^ p-1 • CZ • H ↑ • (S ↑) ^ p-1 • (S ↓) ^ p-1
-  soundness-c10 = begin
-    CZ • H ↑ • CZ • X ↑ • Z ↑
-      ≈⟨ by-assoc auto ⟩
-    (CZ • H ↑ • CZ) • (X ↑ • Z ↑)
-      ≈⟨ cleft (axiom selinger-c10) ⟩
-    RHS-orig • (X ↑ • Z ↑)
-      ≈⟨ sym tail-c10 ⟩
-    (S ↑) ^ p-1 • H ↑ • (S ↑) ^ p-1 • CZ • H ↑ • (S ↑) ^ p-1 • (S ↓) ^ p-1 ∎
-------------------------------------------------------------------------
--- Soundness of the simplified selinger-c11: the ↑↔↓ mirror of c10.
--- Main qubit is ↓ (the base, identity); other qubit is ↑ (the lift).
-------------------------------------------------------------------------
+
 module C11 (m : ℕ) where
   open PB ((₂₊ m) QRel,_===_)
   open PP ((₂₊ m) QRel,_===_)
   open SR word-setoid
   open Pattern-Assoc
-  open Lemmas-Clifford using (lemma-cong↑ ; lemma-↑^ ; lemma-Induction
+  open Lemmas-Clifford-S using (lemma-cong↑ ; lemma-↑^ ; lemma-Induction
                             ; lemma-comm-Z-w↑ ; lemma-comm-X-w↑ ; lemma-comm-H-w↑)
-  open Lemmas1b (₁₊ m) using (conj-H-X^k)   -- down (base) H-conjugation at ₂₊ m
+  open Lemmas1b-S (₁₊ m) using (conj-H-X^k)   -- down (base) H-conjugation at ₂₊ m
 
   z : ℕ
   z = toℕ 1/2
 
   order-Z↓ : (Z ↓) ^ p ≈ ε
-  order-Z↓ = Lemmas1.lemma-order-Z (₁₊ m)
+  order-Z↓ = Lemmas1-S.lemma-order-Z (₁₊ m)
   order-X↓ : (X ↓) ^ p ≈ ε
-  order-X↓ = Lemmas1.lemma-order-X (₁₊ m)
+  order-X↓ = Lemmas1-S.lemma-order-X (₁₊ m)
   order-Z↑ : (Z ↑) ^ p ≈ ε
-  order-Z↑ = trans (refl' (Eq.sym (lemma-↑^ p Z))) (lemma-cong↑ _ _ (Lemmas1.lemma-order-Z m))
+  order-Z↑ = trans (refl' (Eq.sym (lemma-↑^ p Z))) (lemma-cong↑ _ _ (Lemmas1-S.lemma-order-Z m))
 
   -- foundational, main (↓) and other (↑) qubits
   fnd↓ : (S ↓) ^ p-1 ≈ (𝑠 ↓) ^ p-1 • (Z ↓) ^ z
@@ -832,13 +832,24 @@ module C11 (m : ℕ) where
       RHS-orig • (X ↓ • Z ↓) ∎
 
 
-  soundness-c11 : CZ • H ↓ • CZ • X ↓ • Z ↓
-                ≈ (S ↓) ^ p-1 • H ↓ • (S ↓) ^ p-1 • CZ • H ↓ • (S ↓) ^ p-1 • (S ↑) ^ p-1
-  soundness-c11 = begin
-    CZ • H ↓ • CZ • X ↓ • Z ↓
-      ≈⟨ by-assoc auto ⟩
-    (CZ • H ↓ • CZ) • (X ↓ • Z ↓)
-      ≈⟨ cleft (axiom selinger-c11) ⟩
-    RHS-orig • (X ↓ • Z ↓)
-      ≈⟨ sym tail-c11 ⟩
-    (S ↓) ^ p-1 • H ↓ • (S ↓) ^ p-1 • CZ • H ↓ • (S ↓) ^ p-1 • (S ↑) ^ p-1 ∎
+
+-- ====================================================================
+-- Completeness: the original (𝑠-form) selinger relations hold in the
+-- Simplified presentation.  From the Simplified selinger axiom + the
+-- tail-lemma (RHS_simp ≈ RHS_orig·X·Z) by right-cancelling X·Z.
+-- ====================================================================
+module Completeness-S (m : ℕ) where
+  open PB ((₂₊ m) QRel,_===_)
+  open PP ((₂₊ m) QRel,_===_)
+  open Pattern-Assoc
+  open Group-Lemmas ((₂₊ m) QRel,_===_) (Simplified-GroupLike-S.grouplike {₂₊ m})
+
+  completeness-c10 : CZ • H ↑ • CZ ≈ C10.RHS-orig m
+  completeness-c10 = •-cancelʳ {h = X ↑ • Z ↑}
+    (trans (by-assoc auto) (trans (axiom selinger-c10) (C10.tail-c10 m)))
+
+  completeness-c11 : CZ • H ↓ • CZ ≈ C11.RHS-orig m
+  completeness-c11 = •-cancelʳ {h = X ↓ • Z ↓}
+    (trans (by-assoc auto) (trans (axiom selinger-c11) (C11.tail-c11 m)))
+
+

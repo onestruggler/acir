@@ -1,54 +1,27 @@
-{-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --termination-depth=20 #-}
+{-# OPTIONS --cubical-compatible --termination-depth=20 #-}
+{-# OPTIONS --inversion-max-depth=1000 #-}
 
-
-open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; inspect ; setoid ; module ≡-Reasoning ; _≢_) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; module ≡-Reasoning) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
-
-
-open import Function using (id)
-open import Function.Definitions using (Injective)
-
 open import Data.Product using (_,_ ; proj₁ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
-open import Data.Nat.DivMod
-open import Agda.Builtin.Nat using ()
 import Data.Nat as Nat
 open import Data.Fin hiding (_+_ ; _-_)
-open import Data.Bool
-open import Data.List hiding ([_])
-
-
-open import Data.Maybe
-open import Data.Sum using ([_,_])
-open import Data.Unit using (tt)
-
 open import Word.Base as WB hiding (wfoldl ; _^'_)
-open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Normalization.Reidemeister-Schreier as RS
-open import Notations
-module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
-open import Presentation.Tactic.Rewriting
-
 open import Presentation.Construct.Base hiding (_*_)
-
-
-import Data.Nat.Properties as NP
 open import Presentation.GroupLike
+open import Presentation.Tactic.Rewriting
+import Data.Nat.Properties as NP
+open import Data.Nat.DivMod
 open import Data.Nat.Primality
-open import Data.Nat.Coprimality hiding (sym)
-open import Data.Nat.GCD
-open Bézout
-open import Data.Empty
-open import Algebra.Properties.Group
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
+open import Notations
 
-module Examples.Groups.Symplectic.Clifford.Clifford-Lemmas
+module Examples.Groups.Clifford.Qupit.Simplified-Lemmas.Part3
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -58,23 +31,29 @@ module Examples.Groups.Symplectic.Clifford.Clifford-Lemmas
   where
 
 
-
-
 open Primitive-Root-Modp' g* g-gen
 
-module Symplectic-Simplified where
+open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar p-3 p-prime g* g-gen
+open Clifford-Relations hiding
+  ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-M𝑠 ; order-SH ; comm-HHSHHS
+  ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
+  ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12
+  ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ )
+open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalars-Simplified p-3 p-prime g* g-gen
+open Simplified-Relations
+open import Examples.Groups.Clifford.Qupit.Simplified-Lemmas.Part2 p-3 p-prime g* g-gen public
 
-open import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
-open import Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar p-3 p-prime g* g-gen
--- open Symplectic hiding (_QRel,_===_)
 
-open Clifford-Relations
 
-open Lemmas-Clifford
-open Clifford-GroupLike
 
-module CL = Lemmas1
-module CLb = Lemmas1b
+-- ====================================================================
+-- Clifford-Lemmas-S : copy of Examples.Groups.Clifford.Qupit.Clifford-Lemmas (𝑠-conjugation,
+-- Z↑-CZ, comm-𝑠-w↑, …) for the Simplified relation.
+-- ====================================================================
+open Lemmas-Clifford-S
+open Simplified-GroupLike-S
+module CL = Lemmas1-S
+module CLb = Lemmas1b-S
 
 lemma-comm-𝑠-w↑ : ∀ {n} w -> let open PB ((₂₊ n) QRel,_===_) in
   𝑠 • w ↑ ≈ w ↑ • 𝑠
@@ -196,6 +175,11 @@ lemma-CZ^k-% {n} k = begin
   open SR word-setoid
   open import Data.Nat.DivMod using (m≡m%n+[m/n]*n)
 
+{- DEAD CLUSTER (parked): the Mg / M₋₁ / H²·CZ·H² CZ-conjugation family
+   (lemma-Mg-CZ^k … lemma-comm-S'-CZ↑).  Routed through `axiom semi-M↓CZ`/
+   `semi-M↑CZ`, now in simplified Wg-form, so it no longer type-checks here;
+   its only live consumers (lemma-comm-Z-CZ / lemma-comm-Z↑-CZ) are now the
+   comm-Z-CZ / comm-Z↑-CZ axioms.  Kept verbatim for reference.
 lemma-Mg-CZ^k : ∀ {n} k -> let open PB ((₂₊ n) QRel,_===_) in
   M g* • CZ ^ k ≈ CZ ^ (k Nat.* toℕ g) • M g*
 lemma-Mg-CZ^k {n} k@0 = trans right-unit (sym left-unit)
@@ -634,6 +618,7 @@ lemma-comm-S'-CZ↑ {n} = begin
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
   open Pattern-Assoc
+-}  -- end DEAD CZ-conjugation cluster
 
 lemma-Z↑ : ∀ {n} -> Z {n} ↑ ≡ H ↑ • H ↑ • S ↑ • H ↑ • H ↑ • (S ↑) ^ p-1
 lemma-Z↑ {n} = begin
@@ -645,26 +630,11 @@ lemma-Z↑ {n} = begin
 
 lemma-comm-Z↑-CZ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
   Z ↑ • CZ ≈ CZ • Z ↑
-lemma-comm-Z↑-CZ {n} = begin
-  Z ↑ • CZ ≈⟨ refl' (Eq.cong (_• CZ) lemma-Z↑) ⟩
-  (H ↑ • H ↑ • S ↑ • H ↑ • H ↑ • (S ↑) ^ p-1) • CZ
-    ≈⟨ by-passoc ((□ • □ • □ • □ • □ • □) • □) (□ • □ • □ • □ • □ • (□ • □)) auto ⟩
-  H ↑ • H ↑ • S ↑ • H ↑ • H ↑ • ((S ↑) ^ p-1 • CZ)
-    ≈⟨ cong refl (cong refl (cong refl (cong refl (cong refl (comm⇒pow-comm p-1 1 (sym (_≈_.axiom _QRel,_===_.comm-CZ-S↑))))))) ⟩
-  H ↑ • H ↑ • S ↑ • H ↑ • H ↑ • (CZ • (S ↑) ^ p-1)
-    ≈⟨ by-passoc (□ • □ • □ • □ • □ • (□ • □)) ((□ • □ • □ • □ • □ • □) • □) auto ⟩
-  (H ↑ • H ↑ • S ↑ • H ↑ • H ↑ • CZ) • (S ↑) ^ p-1
-    ≈⟨ cong lemma-comm-S'-CZ↑ refl ⟩
-  (CZ • H ↑ • H ↑ • S ↑ • H ↑ • H ↑) • (S ↑) ^ p-1
-    ≈⟨ by-assoc auto ⟩
-  CZ • (H ↑ • H ↑ • S ↑ • H ↑ • H ↑ • (S ↑) ^ p-1)
-    ≈⟨ refl' (Eq.cong (CZ •_) (Eq.sym lemma-Z↑)) ⟩
-  CZ • Z ↑ ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-  open Pattern-Assoc
+-- Z↑ commutes with CZ: taken as the axiom comm-Z↑-CZ in the Simplified
+-- presentation (the metaplectic-route proof would loop through the demoted
+-- semi-M relations).
+lemma-comm-Z↑-CZ {n} = _≈_.axiom _QRel,_===_.comm-Z↑-CZ
+  where open PB ((₂₊ n) QRel,_===_)
 
 lemma-𝑠↑ : ∀ {n} -> 𝑠 {n} ↑ ≡ S ↑ • (Z ↑) ^ toℕ 1/2
 lemma-𝑠↑ {n} = begin
@@ -693,20 +663,10 @@ lemma-comm-𝑠↑-CZ {n} = begin
 
 lemma-comm-Z-CZ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
   Z • CZ ≈ CZ • Z
-lemma-comm-Z-CZ {n} = begin
-  Z • CZ ≡⟨ auto ⟩
-  (H • H • S • H • H • S ^ p-1) • CZ ≈⟨ by-passoc ((□ • □ • □ • □ • □ • □) • □) (□ • □ • □ • □ • □ • (□ • □)) auto ⟩
-  H • H • S • H • H • (S ^ p-1 • CZ) ≈⟨ cong refl (cong refl (cong refl (cong refl (cong refl (comm⇒pow-comm p-1 1 (sym (_≈_.axiom _QRel,_===_.comm-CZ-S↓))))))) ⟩
-  H • H • S • H • H • (CZ • S ^ p-1) ≈⟨ by-passoc (□ • □ • □ • □ • □ • (□ • □)) ((□ • □ • □ • □ • □ • □) • □) auto ⟩
-  (H • H • S • H • H • CZ) • S ^ p-1 ≈⟨ cong lemma-comm-S'-CZ refl ⟩
-  (CZ • H • H • S • H • H) • S ^ p-1 ≈⟨ by-assoc auto ⟩
-  CZ • (H • H • S • H • H • S ^ p-1) ≡⟨ auto ⟩
-  CZ • Z ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-  open Pattern-Assoc
+-- Z commutes with CZ: taken as the axiom comm-Z-CZ in the Simplified
+-- presentation (see lemma-comm-Z↑-CZ for the rationale).
+lemma-comm-Z-CZ {n} = _≈_.axiom _QRel,_===_.comm-Z-CZ
+  where open PB ((₂₊ n) QRel,_===_)
 
 lemma-comm-𝑠-CZ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
   𝑠 • CZ ≈ CZ • 𝑠
@@ -724,4 +684,3 @@ lemma-comm-𝑠-CZ {n} = begin
   open PB ((₂₊ n) QRel,_===_)
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
-

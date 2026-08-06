@@ -52,7 +52,7 @@ open import Algebra.Properties.Group
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
-module Examples.Groups.Symplectic.Clifford-Mod-Scalar-bak
+module Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar-bak
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))

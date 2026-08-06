@@ -1,57 +1,28 @@
--- {-# OPTIONS --cubical-compatible --allow-unsolved-metas #-}
-{-# OPTIONS --cubical-compatible --safe #-}
--- {-# OPTIONS --prop #-}
-{-# OPTIONS --termination-depth=20 #-}
+{-# OPTIONS --cubical-compatible --termination-depth=20 #-}
+{-# OPTIONS --inversion-max-depth=1000 #-}
 
-
-open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; inspect ; setoid ; module ≡-Reasoning ; _≢_) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; module ≡-Reasoning) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
-
-
-open import Function using (id)
-open import Function.Definitions using (Injective)
-
 open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
-open import Data.Nat.DivMod
-open import Agda.Builtin.Nat using ()
 import Data.Nat as Nat
 open import Data.Fin hiding (_+_ ; _-_)
-open import Data.Bool
-open import Data.List hiding ([_])
-
-
-open import Data.Maybe
-open import Data.Sum using ([_,_])
-open import Data.Unit using (tt)
-
 open import Word.Base as WB hiding (wfoldl ; _^'_)
-open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Normalization.Reidemeister-Schreier as RS
-open import Notations
-module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
-open import Presentation.Tactic.Rewriting
-
 open import Presentation.Construct.Base hiding (_*_)
-
-
-open import Data.Fin.Properties as FP using (toℕ-inject₁ ; toℕ-fromℕ)
-import Data.Nat.Properties as NP
 open import Presentation.GroupLike
+open import Presentation.Tactic.Rewriting
+import Data.Nat.Properties as NP
+open import Data.Nat.DivMod
+open import Data.Fin.Properties using (toℕ-inject₁ ; toℕ-fromℕ ; toℕ-fromℕ<)
 open import Data.Nat.Primality
-open import Data.Nat.Coprimality hiding (sym)
-open import Data.Nat.GCD
-open Bézout
-open import Data.Empty
-open import Algebra.Properties.Group
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
+open import Notations
 
-module Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar.Part2
+module Examples.Groups.Clifford.Qupit.Simplified-Lemmas.Part1
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -61,25 +32,22 @@ module Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar.Part2
   where
 
 
-
-
 open Primitive-Root-Modp' g* g-gen
 
-module Symplectic-Simplified where
-
-open import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
-open Symplectic hiding (_QRel,_===_ ; M ; M₁) public
-
-1/2 = ((₂ , λ ()) ⁻¹) .proj₁
-
--1/2 = - ((₂ , λ ()) ⁻¹) .proj₁
-
-open import Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar.Part1 p-3 p-prime g* g-gen using (module Clifford-Relations)
-
-module Lemmas1 (n : ℕ) where
+open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar p-3 p-prime g* g-gen
+open Clifford-Relations hiding
+  ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-M𝑠 ; order-SH ; comm-HHSHHS
+  ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
+  ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12
+  ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ )
+open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalars-Simplified p-3 p-prime g* g-gen
+open Simplified-Relations
 
 
-  open Clifford-Relations
+-- ====================================================================
+-- Lemmas1-S : copy of Clifford-Mod-Scalar.Lemmas1 (order + M machinery)
+-- ====================================================================
+module Lemmas1-S (n : ℕ) where
 
   open PB ((₁₊ n) QRel,_===_) hiding (_===_)
   open PP ((₁₊ n) QRel,_===_)
@@ -135,6 +103,15 @@ module Lemmas1 (n : ℕ) where
 
 
 
+  {- DEAD CLUSTER (commented out 2026-06-23).
+     These four lemmas (lemma-Mg𝑠^k, lemma-Mg𝑠^k', lemma-Mg^k𝑠, lemma-semi-M𝑠)
+     are -S copies of the Clifford Lemmas1 generalisations of semi-M𝑠.  They are
+     unused anywhere in the Simplified subtree, and they depend on `axiom semi-M𝑠`
+     in its *original* Mg-form — but in the Simplified presentation that axiom is
+     now the *simplified* (Wg-based) form.  The original Mg-form is recovered as
+     Examples.Groups.Clifford.Qupit.Mg-Simplify-S.SemiS.completeness-semi-M𝑠; repointing these here
+     would create a circular import (Mg-Simplify-S itself needs this base module),
+     so they are simply parked.
   lemma-Mg𝑠^k : ∀ k ->  let g⁻¹ = (g′ ⁻¹) .proj₁ in let -g⁻¹ = - g⁻¹ in
     Mg • 𝑠 ^ k ≈ 𝑠 ^ (k Nat.* toℕ (g * g)) • Mg
   lemma-Mg𝑠^k k@0 = trans right-unit (sym left-unit)
@@ -159,6 +136,7 @@ module Lemmas1 (n : ℕ) where
     𝑠 ^ (k Nat.* toℕ (g * g)) • Mg ∎
     where
     open SR word-setoid
+  -}  -- end DEAD lemma-Mg𝑠^k
 
 
   open import Data.Fin.Properties
@@ -415,6 +393,12 @@ module Lemmas1 (n : ℕ) where
 
 
 
+  {- DEAD CLUSTER (commented out 2026-06-23): -S copies of the semi-M𝑠
+     generalisations (lemma-Mg𝑠^k', lemma-Mg^k𝑠, lemma-semi-M𝑠).  Unused, and
+     they reference the (now simplified, Wg-based) axiom semi-M𝑠 in its old
+     original Mg-form.  The original form is recovered as
+     Examples.Groups.Clifford.Qupit.Mg-Simplify-S.SemiS.completeness-semi-M𝑠 (repointing here would
+     be circular — Mg-Simplify-S depends on this base module).
   lemma-Mg𝑠^k' : ∀ k -> let x⁻¹ = (g′ ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     Mg • 𝑠^ k ≈ 𝑠^ (k * (g * g)) • Mg
   lemma-Mg𝑠^k' k = begin 
@@ -465,6 +449,10 @@ module Lemmas1 (n : ℕ) where
     k = inject₁ (g-gen x .proj₁)
     eqk : x .proj₁ ≡ (g^ k) .proj₁
     eqk = Eq.sym (lemma-log-inject x)
+  -}  -- end DEAD cluster (lemma-Mg𝑠^k' / lemma-Mg^k𝑠 / lemma-semi-M𝑠)
 
 
 
+
+
+-- ====================================================================

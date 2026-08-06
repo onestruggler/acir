@@ -51,7 +51,7 @@ open import Algebra.Properties.Group
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
-module Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar.Part3
+module Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar.Part3
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -68,14 +68,24 @@ open Primitive-Root-Modp' g* g-gen
 module Symplectic-Simplified where
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
-open Symplectic hiding (_QRel,_===_ ; M ; M₁) public
+-- Same hiding list as Part1: Symplectic's axiom aliases all collide with the
+-- Clifford relation's constructors (see Part1 for the full note).
+open Symplectic hiding
+  ( _QRel,_===_ ; M ; M₁
+  ; order-S ; order-H ; order-SH
+  ; semi-M↑CZ ; semi-M↓CZ ; order-CZ
+  ; comm-CZ-S↓ ; comm-CZ-S↑
+  ; selinger-c10 ; selinger-c11 ; selinger-c12
+  ; selinger-c13 ; selinger-c14 ; selinger-c15
+  ; comm-H ; comm-S ; comm-CZ
+  ; cong↑ ; lemma-cong↑ ) public
 
 1/2 = ((₂ , λ ()) ⁻¹) .proj₁
 
 -1/2 = - ((₂ , λ ()) ⁻¹) .proj₁
 
-open import Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar.Part1 p-3 p-prime g* g-gen using (module Clifford-Relations ; module Lemmas-Clifford)
-open import Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar.Part2 p-3 p-prime g* g-gen using (module Lemmas1)
+open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar.Part1 p-3 p-prime g* g-gen using (module Clifford-Relations ; module Lemmas-Clifford)
+open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar.Part2 p-3 p-prime g* g-gen using (module Lemmas1)
 
 module Clifford-GroupLike where
 

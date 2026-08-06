@@ -21,7 +21,7 @@ open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 open import Notations
 
-module Examples.Groups.Symplectic.Clifford.Simplified-Lemmas.Part2
+module Examples.Groups.Clifford.Qupit.Simplified-Lemmas.Part2
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -33,15 +33,15 @@ module Examples.Groups.Symplectic.Clifford.Simplified-Lemmas.Part2
 
 open Primitive-Root-Modp' g* g-gen
 
-open import Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalar p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar p-3 p-prime g* g-gen
 open Clifford-Relations hiding
   ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-M𝑠 ; order-SH ; comm-HHSHHS
   ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
   ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12
   ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ )
-open import Examples.Groups.Symplectic.Clifford.Clifford-Mod-Scalars-Simplified p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalars-Simplified p-3 p-prime g* g-gen
 open Simplified-Relations
-open import Examples.Groups.Symplectic.Clifford.Simplified-Lemmas.Part1 p-3 p-prime g* g-gen public
+open import Examples.Groups.Clifford.Qupit.Simplified-Lemmas.Part1 p-3 p-prime g* g-gen public
 
 -- Lemmas-Clifford-S : copy of Clifford-Mod-Scalar.Lemmas-Clifford
 -- (lemma-cong↑, lemma-↑^, lemma-Induction, lemma-comm-*-w↑, …)
