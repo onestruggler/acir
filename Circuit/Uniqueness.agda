@@ -10,40 +10,40 @@
 -- its denotation, which is the UniqueNormalForm half of a completeness
 -- proof (see Normalization.NormalForm.Uniqueness).
 --
--- The argument peels off one wire at a time.  Given denotations that
--- agree,
+-- The semantics acts on the LEFT on vectors of per-wire states, so
+-- that in the denotation of inv-nf (u , c) the coset factor is the one
+-- applied to the input and the lifted prefix acts afterwards, on the
+-- tail of the result.  Unfolding that all the way down gives the
+-- blockwise act-nf below, and the argument then runs as:
 --
---   ⟦ inv-nf u ↑ • [ r ]ᶜ ⟧ ≈ ⟦ inv-nf v ↑ • [ r' ]ᶜ ⟧ ,
+--   * the coset is read off the HEAD of the result, on every input
+--     (c-inj), the lifted prefix being unable to disturb a head;
+--   * the prefix is then compared on every tail, which c-surj supplies
+--     by pulling an arbitrary tail back through the coset action, and
+--     the induction hypothesis applies one wire down.
 --
---   * coset-unique recovers r ≡ r' by acting with both sides on a
---     probe state that every lifted circuit fixes.  The two prefixes
---     therefore drop out, leaving only the coset representatives
---     acting, and c-inj separates those;
---   * dir-unique then cancels the — now common — coset factor in the
---     group at width 1+n, and descends a wire along the injectivity of
---     the semantic embedding;
---   * ⟦inv-nf⟧-injective iterates the two down the tower, and
---     unique-nf packages the result.
+-- Recovering the coset from every input, rather than from states of
+-- some restricted shape, is what makes this usable when a coset
+-- carries per-wire data: those need probes at every wire to pin down.
 --
 -- The semantics enters only through its interface, never through any
 -- particular gate set: a monoid homomorphism from circuits into a
--- family of groups, a right action of those groups on vectors of
--- per-wire states, and the compatibility of wire-lifting with the
--- group embedding.
+-- family of monoids, a left action of those monoids on vectors of
+-- per-wire states, and the fact that lifted circuits fix the head.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles using (Group ; Monoid)
+open import Algebra.Bundles using (Monoid)
 open import Algebra.Morphism.Structures using (module MonoidMorphisms)
 open import Data.Nat using (ℕ)
-open import Data.Vec.Base as Vec using (Vec ; _∷_)
+open import Data.Product using (Σ-syntax ; _,_ ; proj₁ ; proj₂)
+open import Data.Vec.Base as Vec using (Vec ; _∷_ ; head ; tail)
 import Data.Vec.Relation.Binary.Equality.Setoid as VecEq
-open import ForStdlib.Algebra.IndexedAction using (IndexedRightAction)
-open import ForStdlib.Algebra.IndexedGroups using (Embedding)
+open import ForStdlib.Algebra.IndexedAction using (IndexedLeftAction)
 open import Level using (0ℓ)
 open import Relation.Binary using (Rel ; Setoid)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+open import Relation.Binary.PropositionalEquality using (_≡_)
 
 open import Notations
 import Circuit.Base as CB
@@ -55,15 +55,11 @@ module Circuit.Uniqueness
   (Gate : ℕ → Set)
   (let open CB Gate)
   ([_]ᶜ : ∀ {n} → C n → Circuit (₁₊ n))
-  -- The semantics of an n-wire circuit is an element of the group
+  -- The semantics of an n-wire circuit is an element of the monoid
   -- Sem n.  Writing the width implicitly, _≈ₛ_ is equality there.
-  {c d} (Sem : ℕ → Group c d)
-  (let _≈ₛ_ : ∀ {n} → Rel (Group.Carrier (Sem n)) d
-       _≈ₛ_ {n} = Group._≈_ (Sem n))
-  -- Each width embeds into the next, injectively (the injectivity is
-  -- part of an Embedding: see ForStdlib.Algebra.IndexedGroups).
-  (embedding : Embedding (record { group = Sem }))
-  (let open Embedding embedding using (emb ; emb-injective))
+  {c d} (Sem : ℕ → Monoid c d)
+  (let _≈ₛ_ : ∀ {n} → Rel (Monoid.Carrier (Sem n)) d
+       _≈ₛ_ {n} = Monoid._≈_ (Sem n))
   -- The relation presenting the circuits, extended with the
   -- structural rules by Lift-Relation.
   (_SRel,_===_ : (n : ℕ) → CRel n)
@@ -72,65 +68,60 @@ module Circuit.Uniqueness
   -- lifted relation, form the word monoid at width n ...
   (let word-monoid : ℕ → Monoid 0ℓ 0ℓ
        word-monoid n = PP.•-ε-monoid (n VRel,_===_))
-  (⟦_⟧ : ∀ {n} → Circuit n → Group.Carrier (Sem n))
+  (⟦_⟧ : ∀ {n} → Circuit n → Monoid.Carrier (Sem n))
   -- ... and the semantics is a monoid homomorphism out of it.  Its
   -- ε-homo and homo fields say ⟦_⟧ takes ε and _•_ to the unit and
   -- product of Sem n; its isRelHomomorphism field is exactly
   -- soundness, recovered as sem-sound below.
   (mhomo : ∀ n → MonoidMorphisms.IsMonoidHomomorphism
                    (Monoid.rawMonoid (word-monoid n))
-                   (Group.rawMonoid (Sem n))
+                   (Monoid.rawMonoid (Sem n))
                    (⟦_⟧ {n}))
-  -- Lifting a circuit by a wire is, semantically, the embedding.
-  (compat : ∀ {n} {w : Circuit n} → ⟦ w ↑ ⟧ ≈ₛ emb ⟦ w ⟧)
-  -- Sem acts on the right on vectors of single-wire states over the
-  -- object setoid Ob, one object per wire.  ◁-compose says acting by
-  -- a product is acting by its factors in turn, which combined with
-  -- mhomo's homo turns composition of circuits into composition of
-  -- actions.
+  -- Sem acts on the LEFT on vectors of single-wire states over the
+  -- object setoid Ob, one object per wire.  ▷-compose says acting by
+  -- a product is acting by its right factor first, which combined
+  -- with mhomo's homo puts the coset factor of a normal form next to
+  -- the input.
   {s e} (Ob : Setoid s e)
-  (act : IndexedRightAction (λ n → Group.rawMonoid (Sem n)) Ob)
-  (let open IndexedRightAction act using (_◁_ ; ◁-cong ; ◁-compose))
+  (act : IndexedLeftAction (λ n → Monoid.rawMonoid (Sem n)) Ob)
+  (let open IndexedLeftAction act using (_▷_ ; ▷-cong ; ▷-identity
+                                        ; ▷-compose))
   (let open VecEq Ob using (_≋_))
   -- A lifted circuit leaves the head alone and acts on the tail
-  -- exactly as the unlifted circuit does ...
+  -- exactly as the unlifted circuit does.  Nothing is assumed about
+  -- which states it fixes: the head is all this argument needs.
   (head-fix : ∀ {n} (h : Setoid.Carrier Ob)
               (t : Vec (Setoid.Carrier Ob) n) (w : Circuit n) →
-              ((h ∷ t) ◁ ⟦ w ↑ ⟧) ≋ (h ∷ (t ◁ ⟦ w ⟧)))
-  -- ... and zz is a distinguished object whose constant vector every
-  -- circuit fixes.  Together these make h ∷ replicate n zz a probe
-  -- state that lifted circuits leave alone outright — the head passes
-  -- through, the tail is fixed — which is what probe-fix records.
-  -- (head-fix alone is too weak: it lets a lifted prefix transport
-  -- the tail, and two normal forms transport it differently, so the
-  -- two sides would not share a tail.)
-  (zz : Setoid.Carrier Ob)
-  (zz-fix : ∀ {n} (w : Circuit n) →
-            (Vec.replicate n zz ◁ ⟦ w ⟧) ≋ Vec.replicate n zz)
-  -- A coset representative is determined by how it acts on the head
-  -- of that probe state.
+              (⟦ w ↑ ⟧ ▷ (h ∷ t)) ≋ (h ∷ (⟦ w ⟧ ▷ t)))
+  -- A coset representative is determined by the head of its action,
+  -- on every state ...
   (c-inj : ∀ {n} {c1 c2 : C n} →
-           (∀ (h : Setoid.Carrier Ob) → let t = Vec.replicate n zz in
-              ((h ∷ t) ◁ ⟦ [ c1 ]ᶜ ⟧) ≋ ((h ∷ t) ◁ ⟦ [ c2 ]ᶜ ⟧)) →
+           (∀ (ps : Vec (Setoid.Carrier Ob) (₁₊ n)) →
+              Setoid._≈_ Ob (head (⟦ [ c1 ]ᶜ ⟧ ▷ ps))
+                            (head (⟦ [ c2 ]ᶜ ⟧ ▷ ps))) →
            c1 ≡ c2)
+  -- ... and every tail arises from its action, which is what lets the
+  -- inner normal forms be compared on all of Vec Ob n.
+  (c-surj : ∀ {n} (c : C n) (qs : Vec (Setoid.Carrier Ob) n) →
+            Σ[ ps ∈ Vec (Setoid.Carrier Ob) (₁₊ n) ]
+              (tail (⟦ [ c ]ᶜ ⟧ ▷ ps)) ≋ qs)
   where
 
-import Algebra.Properties.Group as GroupProperties
-open import Data.Product using (_,_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using (≡×≡⇒≡)
-import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
-open import Word.Base using (_•_)
+open import Relation.Binary.PropositionalEquality as Eq using (refl)
 
 import Presentation.Base as PB
 open import Circuit.CosetNF C I Gate [_]ᶜ
 import Normalization.NormalForm.Uniqueness.Propositional as Uniqueness
 
--- The pointwise cons _∷≋_ is renamed apart from Vec's own _∷_.
-open VecEq Ob using (≋-setoid ; ≋-refl ; ≋-sym ; ≋-trans)
-  renaming (_∷_ to _∷≋_)
+open VecEq Ob using (≋-refl ; ≋-sym ; ≋-trans)
+  renaming (_∷_ to _∷≋_)   -- the pointwise cons, not Vec's
 
 private
+  |Ob| : Set s
+  |Ob| = Setoid.Carrier Ob
+
   -- Equality of circuits: the congruence generated by the presented
   -- relation, with the width implicit.
   infix 4 _≈ʷ_
@@ -139,6 +130,20 @@ private
 
   -- The homomorphism laws at width n: homo, ε-homo, ⟦⟧-cong.
   module Homo (n : ℕ) = MonoidMorphisms.IsMonoidHomomorphism (mhomo n)
+
+  -- Vectors of positive length split, which act-nf's recursion needs.
+  -- The vectors are matched as conses before the pointwise proof, or
+  -- the split gets stuck on the stuck action term.
+  vec-eta : ∀ {n} (xs : Vec |Ob| (₁₊ n)) → xs ≋ (head xs ∷ tail xs)
+  vec-eta (x ∷ xs) = ≋-refl
+
+  head-of : ∀ {n} {xs ys : Vec |Ob| (₁₊ n)} →
+            xs ≋ ys → Setoid._≈_ Ob (head xs) (head ys)
+  head-of {xs = _ ∷ _} {_ ∷ _} (e ∷≋ _) = e
+
+  tail-of : ∀ {n} {xs ys : Vec |Ob| (₁₊ n)} →
+            xs ≋ ys → tail xs ≋ tail ys
+  tail-of {xs = _ ∷ _} {_ ∷ _} (_ ∷≋ es) = es
 
 
 ------------------------------------------------------------------------
@@ -152,130 +157,87 @@ sem-sound {n} = Homo.⟦⟧-cong n
 
 
 ------------------------------------------------------------------------
--- The probe state
+-- The blockwise action of a normal form
 
--- The probe state h ∷ replicate n zz is fixed by every lifted
--- circuit: head-fix passes the head through and reduces the tail to
--- the unlifted action, which zz-fix then fixes.
+-- Peeling one coset at a time: the coset acts on the input, its head
+-- is the wire this level decides, and the rest of the normal form
+-- carries on down the tail.
 
-probe-fix : ∀ {n} (h : Setoid.Carrier Ob) (w : Circuit n) →
-            ((h ∷ Vec.replicate n zz) ◁ ⟦ w ↑ ⟧) ≋
-            (h ∷ Vec.replicate n zz)
-probe-fix h w =
-  ≋-trans (head-fix h (Vec.replicate _ zz) w)
-          (Setoid.refl Ob ∷≋ zz-fix w)
+act-nf : ∀ {n} → NF n → Vec |Ob| n → Vec |Ob| n
+act-nf {₀}    _       xs = xs
+act-nf {₁₊ n} (u , c) ps = head rs ∷ act-nf u (tail rs)
+  where rs = ⟦ [ c ]ᶜ ⟧ ▷ ps
 
+act-nf-cong : ∀ {n} (u : NF n) {xs ys : Vec |Ob| n} →
+              xs ≋ ys → act-nf u xs ≋ act-nf u ys
+act-nf-cong {₀}    _       xs≋ys = xs≋ys
+act-nf-cong {₁₊ n} (u , c) xs≋ys =
+  head-of rs≋ ∷≋ act-nf-cong u (tail-of rs≋)
+  where rs≋ = ▷-cong (Monoid.refl (Sem (₁₊ n))) xs≋ys
 
-------------------------------------------------------------------------
--- Uniqueness of the top coset
-
--- The top coset of a normal form is determined by the semantics: act
--- with both sides of eq on the probe state.  The lifted prefixes fix
--- it, so what remains is the action of the two coset representatives
--- on that state, which c-inj separates.  No case split on the width:
--- at width 0 the lifted prefix is ε ↑ = ε, fixed by probe-fix like
--- any other lift.
-
-coset-unique : ∀ n (l l' : NF n) (r r' : C n) →
-               ⟦ inv-nf {n} l ↑ • [ r ]ᶜ ⟧ ≈ₛ
-               ⟦ inv-nf {n} l' ↑ • [ r' ]ᶜ ⟧ →
-               r ≡ r'
-coset-unique n l l' r r' eq = c-inj claim
-  where
-  module Semn = Group (Sem (₁₊ n))
-  open Semn using (_∙_)
-  open ≈-Reasoning (≋-setoid (₁₊ n))
-
-  gl  = ⟦ inv-nf l ↑ ⟧
-  gl' = ⟦ inv-nf l' ↑ ⟧
-  tz  = Vec.replicate n zz
-
-  -- Both denotations split as products, so eq — an equation between
-  -- the denotations of the composite circuits — becomes an equation
-  -- between products in Sem.
-  eq-∙ : (gl ∙ ⟦ [ r ]ᶜ ⟧) ≈ₛ (gl' ∙ ⟦ [ r' ]ᶜ ⟧)
-  eq-∙ = Semn.trans (Semn.sym (Homo.homo (₁₊ n) (inv-nf l ↑) [ r ]ᶜ))
-           (Semn.trans eq (Homo.homo (₁₊ n) (inv-nf l' ↑) [ r' ]ᶜ))
-
-  claim : ∀ (h : Setoid.Carrier Ob) →
-          ((h ∷ tz) ◁ ⟦ [ r ]ᶜ ⟧) ≋ ((h ∷ tz) ◁ ⟦ [ r' ]ᶜ ⟧)
-  claim h = begin
-    (h ∷ tz) ◁ ⟦ [ r ]ᶜ ⟧
-      ≈⟨ ◁-cong (≋-sym (probe-fix h (inv-nf l))) Semn.refl ⟩
-    ((h ∷ tz) ◁ gl) ◁ ⟦ [ r ]ᶜ ⟧
-      ≈⟨ ≋-sym (◁-compose (h ∷ tz) gl ⟦ [ r ]ᶜ ⟧) ⟩
-    (h ∷ tz) ◁ (gl ∙ ⟦ [ r ]ᶜ ⟧)
-      ≈⟨ ◁-cong ≋-refl eq-∙ ⟩
-    (h ∷ tz) ◁ (gl' ∙ ⟦ [ r' ]ᶜ ⟧)
-      ≈⟨ ◁-compose (h ∷ tz) gl' ⟦ [ r' ]ᶜ ⟧ ⟩
-    ((h ∷ tz) ◁ gl') ◁ ⟦ [ r' ]ᶜ ⟧
-      ≈⟨ ◁-cong (probe-fix h (inv-nf l')) Semn.refl ⟩
-    (h ∷ tz) ◁ ⟦ [ r' ]ᶜ ⟧
-      ∎
-
-
-------------------------------------------------------------------------
--- Uniqueness of the tail
-
--- Once the two coset representatives are known to agree, matching on
--- that equality makes the two right factors literally the same, so
--- the factor cancels in the group at width 1+n.  What is left is an
--- equation between the two lifted prefixes; compat rewrites those as
--- embeddings, and the embedding is injective, so the equation
--- descends a wire.
-
-dir-unique : ∀ n (l l' : NF n) (r r' : C n) → r ≡ r' →
-             ⟦ inv-nf {n} l ↑ • [ r ]ᶜ ⟧ ≈ₛ ⟦ inv-nf l' ↑ • [ r' ]ᶜ ⟧ →
-             ⟦ inv-nf {n} l ⟧ ≈ₛ ⟦ inv-nf l' ⟧
-dir-unique n l l' r _ refl eq = emb-injective embedded
-  where
-  open Group (Sem (₁₊ n)) using (_∙_ ; sym ; setoid)
-  open GroupProperties (Sem (₁₊ n)) using (∙-cancelʳ)
-  open ≈-Reasoning setoid
-
-  -- The homomorphism splits both denotations into products.
-  eq-∙ : (⟦ inv-nf l ↑ ⟧ ∙ ⟦ [ r ]ᶜ ⟧) ≈ₛ (⟦ inv-nf l' ↑ ⟧ ∙ ⟦ [ r ]ᶜ ⟧)
-  eq-∙ = begin
-    ⟦ inv-nf l ↑ ⟧ ∙ ⟦ [ r ]ᶜ ⟧
-      ≈⟨ sym (Homo.homo (₁₊ n) (inv-nf l ↑) [ r ]ᶜ) ⟩
-    ⟦ inv-nf l ↑ • [ r ]ᶜ ⟧
-      ≈⟨ eq ⟩
-    ⟦ inv-nf l' ↑ • [ r ]ᶜ ⟧
-      ≈⟨ Homo.homo (₁₊ n) (inv-nf l' ↑) [ r ]ᶜ ⟩
-    ⟦ inv-nf l' ↑ ⟧ ∙ ⟦ [ r ]ᶜ ⟧
-      ∎
-
-  embedded : emb ⟦ inv-nf l ⟧ ≈ₛ emb ⟦ inv-nf l' ⟧
-  embedded = begin
-    emb ⟦ inv-nf l ⟧    ≈⟨ sym compat ⟩
-    ⟦ inv-nf l ↑ ⟧      ≈⟨ ∙-cancelʳ _ _ _ eq-∙ ⟩
-    ⟦ inv-nf l' ↑ ⟧     ≈⟨ compat ⟩
-    emb ⟦ inv-nf l' ⟧   ∎
+-- act-nf is the action of the normal form's denotation.  The lifted
+-- prefix is peeled off by ▷-compose and then passes through the head
+-- by head-fix.
+lemma-act-nf : ∀ {n} (u : NF n) (ps : Vec |Ob| n) →
+               act-nf u ps ≋ (⟦ inv-nf u ⟧ ▷ ps)
+lemma-act-nf {₀}    _       ps = ≋-sym (≋-trans
+  (▷-cong (Homo.ε-homo ₀) ≋-refl) (▷-identity ps))
+lemma-act-nf {₁₊ n} (u , c) ps = ≋-trans
+  (Setoid.refl Ob ∷≋ lemma-act-nf u (tail rs))
+  (≋-trans (≋-sym (head-fix (head rs) (tail rs) (inv-nf u)))
+    (≋-trans (▷-cong (Monoid.refl (Sem (₁₊ n))) (≋-sym (vec-eta rs)))
+      (≋-trans (≋-sym (▷-compose ⟦ inv-nf u ↑ ⟧ ⟦ [ c ]ᶜ ⟧ ps))
+               (▷-cong (Monoid.sym (Sem (₁₊ n))
+                          (Homo.homo (₁₊ n) (inv-nf u ↑) [ c ]ᶜ))
+                       ≋-refl))))
+  where rs = ⟦ [ c ]ᶜ ⟧ ▷ ps
 
 
 ------------------------------------------------------------------------
 -- Uniqueness of normal forms
 
--- Normal forms with equal denotations are equal.  At width 0 there is
--- only one normal form.  At width 1+n a normal form is a pair, and
--- the two halves are recovered by the two lemmas above: the coset by
--- coset-unique, and then the tail by dir-unique followed by the
--- induction hypothesis a wire down.
+-- Normal forms with the same blockwise action are equal.  At width
+-- 1+n the coset is read off the heads by c-inj; the inner normal
+-- forms are then compared at an arbitrary tail, which c-surj produces
+-- as the tail of the coset's action on some state.
 
+nf-injective : ∀ {n} (u v : NF n) →
+               (∀ ps → act-nf u ps ≋ act-nf v ps) → u ≡ v
+nf-injective {₀}    _        _        _   = refl
+nf-injective {₁₊ n} (u₁ , c₁) (u₂ , c₂) hyp =
+  ≡×≡⇒≡ (nf-injective u₁ u₂ tails , c≡c')
+  where
+  c≡c' : c₁ ≡ c₂
+  c≡c' = c-inj (λ ps → head-of (hyp ps))
+
+  -- With the cosets equal, the two sides run the inner normal forms
+  -- on the very same tail, and every tail is such a tail.
+  tails : ∀ qs → act-nf u₁ qs ≋ act-nf u₂ qs
+  tails qs = ≋-trans (act-nf-cong u₁ (≋-sym tail-eq))
+               (≋-trans (tail-of (hyp ps))
+                        (act-nf-cong u₂ (≋-trans same tail-eq)))
+    where
+    cs    = c-surj c₁ qs
+    ps    = proj₁ cs
+    tail-eq = proj₂ cs
+
+    same : tail (⟦ [ c₂ ]ᶜ ⟧ ▷ ps) ≋ tail (⟦ [ c₁ ]ᶜ ⟧ ▷ ps)
+    same rewrite c≡c' = ≋-refl
+
+-- Hence normal forms with equal denotations are equal.
 ⟦inv-nf⟧-injective : ∀ n {u v : NF n} →
                      ⟦ inv-nf {n} u ⟧ ≈ₛ ⟦ inv-nf {n} v ⟧ → u ≡ v
-⟦inv-nf⟧-injective ₀       eq = auto
-⟦inv-nf⟧-injective (₁₊ n) {du , cu} {dv , cv} eq =
-  ≡×≡⇒≡ (⟦inv-nf⟧-injective n (dir-unique n du dv cu cv c≡c' eq) , c≡c')
+⟦inv-nf⟧-injective n {u} {v} eq = nf-injective u v claim
   where
-  c≡c' : cu ≡ cv
-  c≡c' = coset-unique n du dv cu cv eq
+  claim : ∀ ps → act-nf u ps ≋ act-nf v ps
+  claim ps = ≋-trans (lemma-act-nf u ps)
+               (≋-trans (▷-cong eq ≋-refl) (≋-sym (lemma-act-nf v ps)))
 
 -- Packaged as the normal-form uniqueness witness.
 
 unique-nf : ∀ n →
             let open Uniqueness (n VRel,_===_) (NF n)
-                                (Group.setoid (Sem n)) (⟦_⟧ {n})
+                                (Monoid.setoid (Sem n)) (⟦_⟧ {n})
             in UniqueNormalForm (inv-nf {n})
 unique-nf n = record
   { unique = ⟦inv-nf⟧-injective n

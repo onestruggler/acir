@@ -79,13 +79,39 @@ indexedRightAction φ = record
   }
 
 ------------------------------------------------------------------------
+-- Indexed left actions
+
+-- The same for a left action: acting by a product is acting by its
+-- RIGHT factor first.  Which of the two a given semantics provides is
+-- not a matter of taste — it is fixed by the order in which the
+-- interpretation composes words — so both are offered.
+
+record IndexedLeftAction (M : ℕ → RawMonoid b ℓ₂) (S : Setoid a ℓ₁) :
+                         Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+  private
+    module M (n : ℕ) = RawMonoid (M n)
+    module S = Setoid S
+  open VecEq S using (_≋_)
+
+  infixr 7 _▷_
+  field
+    _▷_        : ∀ {n} → M.Carrier n → Vec S.Carrier n → Vec S.Carrier n
+    ▷-cong     : ∀ {n} {g g′ : M.Carrier n} {xs xs′ : Vec S.Carrier n} →
+                 M._≈_ n g g′ → xs ≋ xs′ → g ▷ xs ≋ g′ ▷ xs′
+    ▷-identity : ∀ {n} (xs : Vec S.Carrier n) → M.ε n ▷ xs ≋ xs
+    ▷-compose  : ∀ {n} (g h : M.Carrier n) (xs : Vec S.Carrier n) →
+                 (M._∙_ n g h) ▷ xs ≋ g ▷ (h ▷ xs)
+
+
+------------------------------------------------------------------------
 -- Consequences for indexed group actions
 
 -- When every level of the acting family is a group, the inverse and
 -- cancellation laws of Action.Group-Lemmas hold at every index.
 
 module Group-Lemmas (G : ℕ → Group b ℓ₂) (S : Setoid a ℓ₁)
-                    (φ : IndexedRightAction (λ n → Group.rawMonoid (G n)) S)
+                    (φ : IndexedRightAction
+                           (λ n → Group.rawMonoid (G n)) S)
                     where
   private
     module G (n : ℕ) = Group (G n)
