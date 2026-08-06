@@ -14,7 +14,8 @@
 --
 -- where
 --   * S    = the Pauli presentation      (Examples.Groups.Pauli.Presentation),
---   * R̄    = the symplectic relations     (Symplectic._QRel,_===_),
+--   * R̄    = the symplectic relations, taken from the SIMPLIFIED rule set
+--            (Symplectic.Simplified.Syntactics.Simplified-Relations),
 --   * conj = the symplectic action of a quotient generator on a Pauli
 --            generator (the word-valued form of
 --            Symplectic.Semantics.Interpretation.actg),
@@ -25,11 +26,20 @@
 -- ℤ/2 × ℤ/2, no phase), the only symplectic relator that fails to lift
 -- exactly is order-S: over the qubit phase gate S = diag(1, i) one has
 -- S² = Z, so corr(order-S) = Z on the acted qubit.  Every other relator
--- lifts either exactly or up to a global phase (e.g. (SH)³ = e^{iπ/4}·I,
--- the two-qubit selinger relators up to e^{-iπ/4}), and a global phase is
+-- lifts either exactly or up to a global phase, and a global phase is
 -- trivial in the phaseless Pauli group.  cong↑ shifts a correction up one
 -- qubit.  This was verified numerically against the exact 2×2/4×4/8×8
 -- Clifford matrices under the actg conventions.
+--
+-- On the simplified rule set the global-phase relators are worth naming,
+-- because at p = 2 the M-generators degenerate: ℤ*₂ = {1}, so
+--
+--     Mg = M₋₁ = M 1 = S·H·S·H·S·H = (SH)³ = ω,
+--
+-- the order-8 scalar.  Hence order-H reads H² = ω, and M-power, semi-MS
+-- and semi-M↑CZ / semi-M↓CZ all say that ω is central — each a global
+-- phase, so each has corr = ε.  The two-qubit selinger relators lift up
+-- to e^{-iπ/4}, likewise ε.
 --
 -- (For odd p the extension splits — every correction is ε; that case is
 -- the odd-prime development under Examples.Groups.Clifford.Qupit.)
@@ -72,8 +82,18 @@ import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem
 open SympSem.Interpretation using (actg)
 
 -- R̄ : the symplectic relations, over the Clifford generators Gen n.
+--
+-- The rule set is the SIMPLIFIED one (Symplectic.Simplified).  Its
+-- syntax — Gen, the gates, and the derived words — is shared with
+-- Symplectic.Syntactics, which Simplified.Syntactics itself re-exports;
+-- only the relation differs.
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime using (module Symplectic)
-open Symplectic using (Gen ; _QRel,_===_ ; srel ; cong↑ ; module Base)
+open Symplectic using (Gen)
+
+open import Examples.Groups.Clifford.Qubit.PrimitiveRoot using (g* ; g-gen)
+open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
+  using (module Simplified-Relations)
+open Simplified-Relations using (_QRel,_===_ ; srel ; cong↑ ; order-S)
 
 ------------------------------------------------------------------------
 -- Generator sets
@@ -134,9 +154,9 @@ shiftPauli = wmap shift-gen
 -- The only nontrivial correction is S² = Z (order-S); cong↑ shifts a
 -- correction up one qubit; every other relator lifts with no Pauli.
 corr : ∀ {n} {u v} → (n QRel,_===_) u v → Word (PauliGen n)
-corr (srel Base.order-S) = Z₀
-corr (cong↑ r)           = shiftPauli (corr r)
-corr _                   = ε
+corr (srel order-S) = Z₀
+corr (cong↑ r)      = shiftPauli (corr r)
+corr _              = ε
 
 ------------------------------------------------------------------------
 -- The Clifford presentation, as an extension of Pauli by the symplectic

@@ -38,15 +38,17 @@ p-prime = from-yes (prime? 2)
 
 open PrimeModulus p-2 p-prime
 
-open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
-  using (module Symplectic-Derived-Gen)
-open Symplectic-Derived-Gen using (Gen ; gate₁ ; gate₂ ; H-gen ; S-gen ; CZ-gen ; S ; H ; CZ ; ⊤⊥ ; ⊥⊤ ; _↑ ; _↓)
+import Examples.Groups.Symplectic.Syntactics p-2 p-prime as Syn
+open Syn.Symplectic
+  using (Gen ; gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate ; S ; H ; CZ ; ⊤⊥ ; ⊥⊤ ; _↑ ; _↓)
 
 open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli)
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; cact1 ; δ ; incl)
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime using (act)
-open import Examples.Groups.Clifford.Qubit.CliffordAut using (g4-id ; ι-2 ; neg-id ; neg-mul)
+open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem using ()
+open Sem.Symplectic using (ap)
+open Sem.Interpretation using (⟦_⟧)
+open import Examples.Groups.Clifford.Qubit.CliffordAut using (g4-id ; ι-2 ; neg-id)
 open import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime using (X ; Z ; ω)
 
 private
@@ -57,7 +59,7 @@ private
 -- C3:  S⁴ = 1.  Exactly g4-id at the S generator.
 
 c3-sound : (x : P4Carrier (₁₊ n)) → cact (S ^ 4) x ≡ x
-c3-sound = g4-id (gate₁ (S-gen ₁))
+c3-sound = g4-id (gate₁ S-gate)
 
 ------------------------------------------------------------------------
 -- C2:  H² = 1.  H has P4-order 2 (H² = I on P4, phase included).
@@ -66,25 +68,23 @@ c2-sound : (x : P4Carrier (₁₊ n)) → cact (H ^ 2) x ≡ x
 c2-sound (s , (a , b) ∷ ps) = Eq.cong₂ _,_ phase pauli
   where
   open Eq.≡-Reasoning
-  -- phase: s + ι(₁·a·b) + ι(₁·(-b)·a) ≡ s, the two ι's cancelling.
-  phase : (s + ι (₁ * a * b)) + ι (₁ * (- b) * a) ≡ s
+  -- phase: s + ι(a·b) + ι((-b)·a) ≡ s, the two ι's cancelling.
+  phase : (s + ι (a * b)) + ι ((- b) * a) ≡ s
   phase = begin
-    (s + ι (₁ * a * b)) + ι (₁ * (- b) * a)
-      ≡⟨ +-assoc s (ι (₁ * a * b)) (ι (₁ * (- b) * a)) ⟩
-    s + (ι (₁ * a * b) + ι (₁ * (- b) * a))
-      ≡⟨ Eq.cong (λ □ → s + (ι (₁ * a * b) + ι □)) lemma ⟩
-    s + (ι (₁ * a * b) + ι (₁ * a * b))
-      ≡⟨ Eq.cong (s +_) (ι-2 (₁ * a * b)) ⟩
+    (s + ι (a * b)) + ι ((- b) * a)
+      ≡⟨ +-assoc s (ι (a * b)) (ι ((- b) * a)) ⟩
+    s + (ι (a * b) + ι ((- b) * a))
+      ≡⟨ Eq.cong (λ □ → s + (ι (a * b) + ι □)) lemma ⟩
+    s + (ι (a * b) + ι (a * b))
+      ≡⟨ Eq.cong (s +_) (ι-2 (a * b)) ⟩
     s + ₀   ≡⟨ +-identityʳ s ⟩   s ∎
     where
-    -- ₁·(-b)·a = ₁·a·b, using -x=x and commutativity at p=2.
-    lemma : ₁ * (- b) * a ≡ ₁ * a * b
+    -- (-b)·a = a·b, using -x=x and commutativity at p=2.
+    lemma : (- b) * a ≡ a * b
     lemma = begin
-      ₁ * (- b) * a   ≡⟨ Eq.cong (λ □ → ₁ * □ * a) (neg-id b) ⟩
-      ₁ * b * a       ≡⟨ *-assoc ₁ b a ⟩
-      ₁ * (b * a)     ≡⟨ Eq.cong (₁ *_) (*-comm b a) ⟩
-      ₁ * (a * b)     ≡⟨ Eq.sym (*-assoc ₁ a b) ⟩
-      ₁ * a * b       ∎
+      (- b) * a   ≡⟨ Eq.cong (_* a) (neg-id b) ⟩
+      b * a       ≡⟨ *-comm b a ⟩
+      a * b       ∎
   pauli : ((- a) , (- b)) ∷ ps ≡ (a , b) ∷ ps
   pauli = Eq.cong (_∷ ps) (Eq.cong₂ _,_ (neg-id a) (neg-id b))
 
@@ -100,18 +100,18 @@ c5-sound : (x : P4Carrier (₂₊ n)) → cact (CZ ^ 2) x ≡ x
 c5-sound (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.cong₂ _,_ phase pauli
   where
   open Eq.≡-Reasoning
-  phase : (s + ι (₁ * a * a')) + ι (₁ * a * a') ≡ s
+  phase : (s + ι (a * a')) + ι (a * a') ≡ s
   phase = begin
-    (s + ι (₁ * a * a')) + ι (₁ * a * a')
-      ≡⟨ +-assoc s (ι (₁ * a * a')) (ι (₁ * a * a')) ⟩
-    s + (ι (₁ * a * a') + ι (₁ * a * a'))
-      ≡⟨ Eq.cong (s +_) (ι-2 (₁ * a * a')) ⟩
+    (s + ι (a * a')) + ι (a * a')
+      ≡⟨ +-assoc s (ι (a * a')) (ι (a * a')) ⟩
+    s + (ι (a * a') + ι (a * a'))
+      ≡⟨ Eq.cong (s +_) (ι-2 (a * a')) ⟩
     s + ₀   ≡⟨ +-identityʳ s ⟩   s ∎
-  pauli : (a , b + a' * ₁ + a' * ₁) ∷ (a' , b' + a * ₁ + a * ₁) ∷ ps
+  pauli : (a , b + a' + a') ∷ (a' , b' + a + a) ∷ ps
         ≡ (a , b) ∷ (a' , b') ∷ ps
   pauli = Eq.cong₂ (λ □ ▢ → (a , □) ∷ (a' , ▢) ∷ ps)
-            (Eq.trans (+-assoc b (a' * ₁) (a' * ₁)) (Eq.trans (Eq.cong (b +_) (x+x (a' * ₁))) (+-identityʳ b)))
-            (Eq.trans (+-assoc b' (a * ₁) (a * ₁)) (Eq.trans (Eq.cong (b' +_) (x+x (a * ₁))) (+-identityʳ b')))
+            (Eq.trans (+-assoc b a' a') (Eq.trans (Eq.cong (b +_) (x+x a')) (+-identityʳ b)))
+            (Eq.trans (+-assoc b' a a) (Eq.trans (Eq.cong (b' +_) (x+x a)) (+-identityʳ b')))
 
 ------------------------------------------------------------------------
 -- C6/C7:  S commutes with CZ (either wire).
@@ -127,14 +127,14 @@ swap-add s x y = Eq.trans (+-assoc s x y)
 -- swap order.
 c6-sound : (x : P4Carrier (₂₊ n)) → cact (S ↓ • CZ) x ≡ cact (CZ • S ↓) x
 c6-sound (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.cong₂ _,_
-  (swap-add s (ι (₁ * a * a')) (incl (₁ * a)))
-  (Eq.cong (λ □ → (a , □) ∷ (a' , b' + a * ₁) ∷ ps) (swap-add b (a' * ₁) (a * ₁)))
+  (swap-add s (ι (a * a')) (incl a))
+  (Eq.cong (λ □ → (a , □) ∷ (a' , b' + a) ∷ ps) (swap-add b a' a))
 
 -- C7:  S↑·CZ = CZ·S↑.  Same, with the roles of the two wires exchanged.
 c7-sound : (x : P4Carrier (₂₊ n)) → cact (S ↑ • CZ) x ≡ cact (CZ • S ↑) x
 c7-sound (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.cong₂ _,_
-  (swap-add s (ι (₁ * a * a')) (incl (₁ * a')))
-  (Eq.cong (λ □ → (a , b + a' * ₁) ∷ (a' , □) ∷ ps) (swap-add b' (a * ₁) (a' * ₁)))
+  (swap-add s (ι (a * a')) (incl a'))
+  (Eq.cong (λ □ → (a , b + a') ∷ (a' , □) ∷ ps) (swap-add b' a a'))
 
 ------------------------------------------------------------------------
 -- The Pauli action of the derived Pauli words Z = SS and X = HSSH.
@@ -152,14 +152,12 @@ private
   incl-double ₀ = Eq.refl
   incl-double ₁ = Eq.refl
 
-  -- ₁·(-b)·a = ₁·a·b  (at p = 2:  -x = x, and · commutes).
-  neg-comm-mul : (a b : ℤ ₚ) → ₁ * (- b) * a ≡ ₁ * a * b
+  -- (-b)·a = a·b  (at p = 2:  -x = x, and · commutes).
+  neg-comm-mul : (a b : ℤ ₚ) → (- b) * a ≡ a * b
   neg-comm-mul a b = begin
-    ₁ * (- b) * a   ≡⟨ Eq.cong (λ □ → ₁ * □ * a) (neg-id b) ⟩
-    ₁ * b * a       ≡⟨ *-assoc ₁ b a ⟩
-    ₁ * (b * a)     ≡⟨ Eq.cong (₁ *_) (*-comm b a) ⟩
-    ₁ * (a * b)     ≡⟨ Eq.sym (*-assoc ₁ a b) ⟩
-    ₁ * a * b       ∎
+    (- b) * a   ≡⟨ Eq.cong (_* a) (neg-id b) ⟩
+    b * a       ≡⟨ *-comm b a ⟩
+    a * b       ∎
 
   -- Commutative rearrangement of four summands.
   rearrangeQRP : ∀ {m} (s P Q R : ℤ m) → (s + P) + (Q + R) ≡ ((s + Q) + R) + P
@@ -173,32 +171,24 @@ private
   rearrangeRQP s P Q R =
     Eq.trans (rearrangeQRP s P Q R) (Eq.cong (_+ P) (swap-add s Q R))
 
-  -- ι(v · ₁) = ι v.
-  ι-*1 : (v : ℤ ₚ) → ι (v * ₁) ≡ ι v
-  ι-*1 v = Eq.cong ι (*-identityʳ v)
-
 -- Z = SS on wire 0:  phase += ι(X-exponent a).
 cact-Z↓ : (s : Φ) (a b : ℤ ₚ) (ps : Pauli n)
         → cact (Z ↓) (s , (a , b) ∷ ps) ≡ (s + ι a , (a , b) ∷ ps)
 cact-Z↓ s a b ps = Eq.cong₂ _,_
-  (Eq.trans (+-assoc s (incl (₁ * a)) (incl (₁ * a)))
-   (Eq.trans (Eq.cong (s +_) (incl-double (₁ * a)))
-             (Eq.cong (λ □ → s + ι □) (*-identityˡ a))))
+  (Eq.trans (+-assoc s (incl a) (incl a)) (Eq.cong (s +_) (incl-double a)))
   (Eq.cong (λ □ → (a , □) ∷ ps)
-   (Eq.trans (+-assoc b (a * ₁) (a * ₁))
-    (Eq.trans (Eq.cong (b +_) (x+x (a * ₁))) (+-identityʳ b))))
+   (Eq.trans (+-assoc b a a)
+    (Eq.trans (Eq.cong (b +_) (x+x a)) (+-identityʳ b))))
 
 -- Z = SS on wire 1.
 cact-Z↑ : (s : Φ) (a b a' b' : ℤ ₚ) (ps : Pauli n)
         → cact (Z ↑) (s , (a , b) ∷ (a' , b') ∷ ps)
         ≡ (s + ι a' , (a , b) ∷ (a' , b') ∷ ps)
 cact-Z↑ s a b a' b' ps = Eq.cong₂ _,_
-  (Eq.trans (+-assoc s (incl (₁ * a')) (incl (₁ * a')))
-   (Eq.trans (Eq.cong (s +_) (incl-double (₁ * a')))
-             (Eq.cong (λ □ → s + ι □) (*-identityˡ a'))))
+  (Eq.trans (+-assoc s (incl a') (incl a')) (Eq.cong (s +_) (incl-double a')))
   (Eq.cong (λ □ → (a , b) ∷ (a' , □) ∷ ps)
-   (Eq.trans (+-assoc b' (a' * ₁) (a' * ₁))
-    (Eq.trans (Eq.cong (b' +_) (x+x (a' * ₁))) (+-identityʳ b'))))
+   (Eq.trans (+-assoc b' a' a')
+    (Eq.trans (Eq.cong (b' +_) (x+x a')) (+-identityʳ b'))))
 
 -- X = HSSH on wire 0:  phase += ι(Z-exponent b).  (Proved through cact-Z↓,
 -- since X = H·Z·H and Z ↓ = SS reduces definitionally.)
@@ -206,23 +196,23 @@ cact-X↓ : (s : Φ) (a b : ℤ ₚ) (ps : Pauli n)
         → cact (X ↓) (s , (a , b) ∷ ps) ≡ (s + ι b , (a , b) ∷ ps)
 cact-X↓ s a b ps = begin
   cact (X ↓) (s , (a , b) ∷ ps)
-    ≡⟨ Eq.cong (cact H) (cact-Z↓ (s + ι (₁ * a * b)) (- b) a ps) ⟩
-  ((s + ι (₁ * a * b)) + ι (- b)) + ι (₁ * (- b) * a) , ((- a) , (- b)) ∷ ps
+    ≡⟨ Eq.cong (cact H) (cact-Z↓ (s + ι (a * b)) (- b) a ps) ⟩
+  ((s + ι (a * b)) + ι (- b)) + ι ((- b) * a) , ((- a) , (- b)) ∷ ps
     ≡⟨ Eq.cong₂ _,_ phase pauli ⟩
   s + ι b , (a , b) ∷ ps ∎
   where
   pauli : ((- a) , (- b)) ∷ ps ≡ (a , b) ∷ ps
   pauli = Eq.cong (_∷ ps) (Eq.cong₂ _,_ (neg-id a) (neg-id b))
-  cancel : ι (₁ * a * b) + ι (₁ * (- b) * a) ≡ ₀
-  cancel = Eq.trans (Eq.cong (λ □ → ι (₁ * a * b) + ι □) (neg-comm-mul a b))
-                    (ι-2 (₁ * a * b))
-  phase : ((s + ι (₁ * a * b)) + ι (- b)) + ι (₁ * (- b) * a) ≡ s + ι b
+  cancel : ι (a * b) + ι ((- b) * a) ≡ ₀
+  cancel = Eq.trans (Eq.cong (λ □ → ι (a * b) + ι □) (neg-comm-mul a b))
+                    (ι-2 (a * b))
+  phase : ((s + ι (a * b)) + ι (- b)) + ι ((- b) * a) ≡ s + ι b
   phase = begin
-    ((s + ι (₁ * a * b)) + ι (- b)) + ι (₁ * (- b) * a)
-      ≡⟨ Eq.cong (_+ ι (₁ * (- b) * a)) (swap-add s (ι (₁ * a * b)) (ι (- b))) ⟩
-    ((s + ι (- b)) + ι (₁ * a * b)) + ι (₁ * (- b) * a)
-      ≡⟨ +-assoc (s + ι (- b)) (ι (₁ * a * b)) (ι (₁ * (- b) * a)) ⟩
-    (s + ι (- b)) + (ι (₁ * a * b) + ι (₁ * (- b) * a))
+    ((s + ι (a * b)) + ι (- b)) + ι ((- b) * a)
+      ≡⟨ Eq.cong (_+ ι ((- b) * a)) (swap-add s (ι (a * b)) (ι (- b))) ⟩
+    ((s + ι (- b)) + ι (a * b)) + ι ((- b) * a)
+      ≡⟨ +-assoc (s + ι (- b)) (ι (a * b)) (ι ((- b) * a)) ⟩
+    (s + ι (- b)) + (ι (a * b) + ι ((- b) * a))
       ≡⟨ Eq.cong ((s + ι (- b)) +_) cancel ⟩
     (s + ι (- b)) + ₀
       ≡⟨ +-identityʳ (s + ι (- b)) ⟩
@@ -234,24 +224,24 @@ cact-X↑ : (s : Φ) (a b a' b' : ℤ ₚ) (ps : Pauli n)
         ≡ (s + ι b' , (a , b) ∷ (a' , b') ∷ ps)
 cact-X↑ s a b a' b' ps = begin
   cact (X ↑) (s , (a , b) ∷ (a' , b') ∷ ps)
-    ≡⟨ Eq.cong (cact (H ↑)) (cact-Z↑ (s + ι (₁ * a' * b')) a b (- b') a' ps) ⟩
-  ((s + ι (₁ * a' * b')) + ι (- b')) + ι (₁ * (- b') * a')
+    ≡⟨ Eq.cong (cact (H ↑)) (cact-Z↑ (s + ι (a' * b')) a b (- b') a' ps) ⟩
+  ((s + ι (a' * b')) + ι (- b')) + ι ((- b') * a')
     , (a , b) ∷ ((- a') , (- b')) ∷ ps
     ≡⟨ Eq.cong₂ _,_ phase pauli ⟩
   s + ι b' , (a , b) ∷ (a' , b') ∷ ps ∎
   where
   pauli : (a , b) ∷ ((- a') , (- b')) ∷ ps ≡ (a , b) ∷ (a' , b') ∷ ps
   pauli = Eq.cong (λ □ → (a , b) ∷ □ ∷ ps) (Eq.cong₂ _,_ (neg-id a') (neg-id b'))
-  cancel : ι (₁ * a' * b') + ι (₁ * (- b') * a') ≡ ₀
-  cancel = Eq.trans (Eq.cong (λ □ → ι (₁ * a' * b') + ι □) (neg-comm-mul a' b'))
-                    (ι-2 (₁ * a' * b'))
-  phase : ((s + ι (₁ * a' * b')) + ι (- b')) + ι (₁ * (- b') * a') ≡ s + ι b'
+  cancel : ι (a' * b') + ι ((- b') * a') ≡ ₀
+  cancel = Eq.trans (Eq.cong (λ □ → ι (a' * b') + ι □) (neg-comm-mul a' b'))
+                    (ι-2 (a' * b'))
+  phase : ((s + ι (a' * b')) + ι (- b')) + ι ((- b') * a') ≡ s + ι b'
   phase = begin
-    ((s + ι (₁ * a' * b')) + ι (- b')) + ι (₁ * (- b') * a')
-      ≡⟨ Eq.cong (_+ ι (₁ * (- b') * a')) (swap-add s (ι (₁ * a' * b')) (ι (- b'))) ⟩
-    ((s + ι (- b')) + ι (₁ * a' * b')) + ι (₁ * (- b') * a')
-      ≡⟨ +-assoc (s + ι (- b')) (ι (₁ * a' * b')) (ι (₁ * (- b') * a')) ⟩
-    (s + ι (- b')) + (ι (₁ * a' * b') + ι (₁ * (- b') * a'))
+    ((s + ι (a' * b')) + ι (- b')) + ι ((- b') * a')
+      ≡⟨ Eq.cong (_+ ι ((- b') * a')) (swap-add s (ι (a' * b')) (ι (- b'))) ⟩
+    ((s + ι (- b')) + ι (a' * b')) + ι ((- b') * a')
+      ≡⟨ +-assoc (s + ι (- b')) (ι (a' * b')) (ι ((- b') * a')) ⟩
+    (s + ι (- b')) + (ι (a' * b') + ι ((- b') * a'))
       ≡⟨ Eq.cong ((s + ι (- b')) +_) cancel ⟩
     (s + ι (- b')) + ₀
       ≡⟨ +-identityʳ (s + ι (- b')) ⟩
@@ -261,28 +251,26 @@ cact-X↑ s a b a' b' ps = begin
 -- C8/C9:  X through CZ picks up a Z on the other wire.
 
 -- C8:  X↓·CZ = CZ·X↓·Z↑.  Both sides are routed to the common form
--- ((s+ιa')+ιb)+ι(₁aa') via the closed-form Pauli actions; the phases
--- match by commutative rearrangement (ι(b+a'·₁) = ιb + ιa').
+-- ((s+ιa')+ιb)+ι(aa') via the closed-form Pauli actions; the phases
+-- match by commutative rearrangement (ι(b+a') = ιb + ιa').
 c8-sound : (x : P4Carrier (₂₊ n)) → cact (X ↓ • CZ) x ≡ cact (CZ • X ↓ • Z ↑) x
 c8-sound {n} (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.trans lhs (Eq.sym rhs)
   where
   P Q R : Φ
-  P = ι (₁ * a * a')
+  P = ι (a * a')
   Q = ι b
   R = ι a'
   mid : P4Carrier (₂₊ n)
-  mid = ((s + R) + Q) + P , (a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ ps
-  phase : (s + P) + ι (b + a' * ₁) ≡ ((s + R) + Q) + P
+  mid = ((s + R) + Q) + P , (a , b + a') ∷ (a' , b' + a) ∷ ps
+  phase : (s + P) + ι (b + a') ≡ ((s + R) + Q) + P
   phase = begin
-    (s + P) + ι (b + a' * ₁)
-      ≡⟨ Eq.cong ((s + P) +_) (ι-+ b (a' * ₁)) ⟩
-    (s + P) + (ι b + ι (a' * ₁))
-      ≡⟨ Eq.cong (λ □ → (s + P) + (ι b + □)) (ι-*1 a') ⟩
+    (s + P) + ι (b + a')
+      ≡⟨ Eq.cong ((s + P) +_) (ι-+ b a') ⟩
     (s + P) + (Q + R)
       ≡⟨ rearrangeRQP s P Q R ⟩
     ((s + R) + Q) + P ∎
   lhs : cact (X ↓ • CZ) (s , (a , b) ∷ (a' , b') ∷ ps) ≡ mid
-  lhs = Eq.trans (cact-X↓ (s + P) a (b + a' * ₁) ((a' , b' + a * ₁) ∷ ps))
+  lhs = Eq.trans (cact-X↓ (s + P) a (b + a') ((a' , b' + a) ∷ ps))
                  (Eq.cong₂ _,_ phase Eq.refl)
   rhs : cact (CZ • X ↓ • Z ↑) (s , (a , b) ∷ (a' , b') ∷ ps) ≡ mid
   rhs = Eq.trans (Eq.cong (λ y → cact CZ (cact (X ↓) y)) (cact-Z↑ s a b a' b' ps))
@@ -293,22 +281,20 @@ c9-sound : (x : P4Carrier (₂₊ n)) → cact (X ↑ • CZ) x ≡ cact (CZ •
 c9-sound {n} (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.trans lhs (Eq.sym rhs)
   where
   P Q R : Φ
-  P = ι (₁ * a * a')
+  P = ι (a * a')
   Q = ι b'
   R = ι a
   mid : P4Carrier (₂₊ n)
-  mid = ((s + Q) + R) + P , (a , b + a' * ₁) ∷ (a' , b' + a * ₁) ∷ ps
-  phase : (s + P) + ι (b' + a * ₁) ≡ ((s + Q) + R) + P
+  mid = ((s + Q) + R) + P , (a , b + a') ∷ (a' , b' + a) ∷ ps
+  phase : (s + P) + ι (b' + a) ≡ ((s + Q) + R) + P
   phase = begin
-    (s + P) + ι (b' + a * ₁)
-      ≡⟨ Eq.cong ((s + P) +_) (ι-+ b' (a * ₁)) ⟩
-    (s + P) + (ι b' + ι (a * ₁))
-      ≡⟨ Eq.cong (λ □ → (s + P) + (ι b' + □)) (ι-*1 a) ⟩
+    (s + P) + ι (b' + a)
+      ≡⟨ Eq.cong ((s + P) +_) (ι-+ b' a) ⟩
     (s + P) + (Q + R)
       ≡⟨ rearrangeQRP s P Q R ⟩
     ((s + Q) + R) + P ∎
   lhs : cact (X ↑ • CZ) (s , (a , b) ∷ (a' , b') ∷ ps) ≡ mid
-  lhs = Eq.trans (cact-X↑ (s + P) a (b + a' * ₁) a' (b' + a * ₁) ps)
+  lhs = Eq.trans (cact-X↑ (s + P) a (b + a') a' (b' + a) ps)
                  (Eq.cong₂ _,_ phase Eq.refl)
   rhs : cact (CZ • Z ↓ • X ↑) (s , (a , b) ∷ (a' , b') ∷ ps) ≡ mid
   rhs = Eq.trans (Eq.cong (λ y → cact CZ (cact (Z ↓) y)) (cact-X↑ s a b a' b' ps))
@@ -320,21 +306,21 @@ c9-sound {n} (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.trans lhs (Eq.sym rhs)
 
 c12-sound : (x : P4Carrier (₃₊ n)) → cact (CZ ↑ • CZ) x ≡ cact (CZ • CZ ↑) x
 c12-sound (s , (a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ ps) = Eq.cong₂ _,_
-  (swap-add s (ι (₁ * a * a')) (ι (₁ * a' * a'')))
-  (Eq.cong (λ □ → (a , b + a' * ₁) ∷ (a' , □) ∷ (a'' , b'' + a' * ₁) ∷ ps)
-           (swap-add b' (a * ₁) (a'' * ₁)))
+  (swap-add s (ι (a * a')) (ι (a' * a'')))
+  (Eq.cong (λ □ → (a , b + a') ∷ (a' , □) ∷ (a'' , b'' + a') ∷ ps)
+           (swap-add b' a a''))
 
 ------------------------------------------------------------------------
 -- Phase additivity, and the Pauli component of cact.
 
--- The Pauli component of cact w is the phaseless action act w (so it does
+-- The Pauli component of cact w is the phaseless action of w (so it does
 -- not depend on the incoming phase).
 cact-proj₂ : (w : Word (Gen n)) (x : P4Carrier n)
-           → proj₂ (cact w x) ≡ act w (proj₂ x)
+           → proj₂ (cact w x) ≡ ap ⟦ w ⟧ (proj₂ x)
 cact-proj₂ [ g ]ʷ  (s , P) = Eq.refl
 cact-proj₂ ε       (s , P) = Eq.refl
 cact-proj₂ (w • v) x =
-  Eq.trans (cact-proj₂ w (cact v x)) (Eq.cong (act w) (cact-proj₂ v x))
+  Eq.trans (cact-proj₂ w (cact v x)) (Eq.cong (ap ⟦ w ⟧) (cact-proj₂ v x))
 
 pauli-indep : (w : Word (Gen n)) (s : Φ) (P : Pauli n)
             → proj₂ (cact w (s , P)) ≡ proj₂ (cact w (₀ , P))

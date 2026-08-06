@@ -32,10 +32,14 @@ module Examples.Groups.Clifford.Qubit.Selinger.Figure8
 open import Notations
 open import Word.Base using (Word ; ε ; _•_ ; _^_)
 
-open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
-open Symplectic-Derived-Gen
-  using ( Gen ; CRel ; _↑ ; _↓ ; module Lift-Relation
-        ; S ; H ; CZ ; SH ; ⊤⊥ ; ⊥⊤ )
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+  using (module Symplectic)
+open Symplectic
+  using (Gen ; SympGate ; _↑ ; _↓ ; S ; H ; CZ ; ⊤⊥ ; ⊥⊤)
+
+-- CRel and the structural rules come straight from the circuit framework
+-- that Symplectic itself is built on (it keeps its copy private).
+open import Circuit.Base SympGate using (CRel ; module Lift-Relation)
 
 private
   variable
@@ -43,6 +47,10 @@ private
 
 ------------------------------------------------------------------------
 -- Derived words: the scalar ω and the Pauli operators X, Z
+
+-- SH, the one-qubit word S·H.
+SH : Word (Gen (₁₊ n))
+SH = S • H
 
 -- ω = SHSHSH = (SH)³ (Selinger C4, taken as a definition).
 ω : Word (Gen (₁₊ n))
