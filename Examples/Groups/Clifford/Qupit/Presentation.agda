@@ -15,28 +15,19 @@
 -- semidirect product, so all that is needed here is to feed it the
 -- pieces.
 --
--- Both factor presentations are available outright:
--- Simplified.Presentation.presentation presents Sp(2n, ℤ/pℤ), and
--- XZPresentation.presentation presents the Pauli group (ℤ/pℤ × ℤ/pℤ)ⁿ.
+-- Every input is a theorem, so the presentation below is
+-- unconditional — no postulate, no hole, no hypothesis:
 --
--- What is still missing is the well-definedness of the action, taken as
--- parameters of `Build` below rather than assumed:
+--   * the symplectic factor: Simplified.Presentation.presentation,
+--     which presents Sp(2n, ℤ/pℤ);
+--   * the Pauli factor: XZPresentation.presentation, which presents
+--     (ℤ/pℤ × ℤ/pℤ)ⁿ;
+--   * the two well-definedness hypotheses on the conjugation action:
+--     ConjAction.respects-Δ and ConjAction.respects-Γ (the `hyph` and
+--     `hypn` that Iso.agda's commented-out attempt left open).
 --
---   * respects-Δ / respects-Γ — the conjugation action respects the
---     symplectic rules in its acting argument and the Pauli rules in
---     its acted-on argument.  These are the two hypotheses
---     SemiDirectProduct2 asks for; they are exactly the `hyph` / `hypn`
---     that Iso.agda's commented-out attempt left open.
---
--- Once those two land, `presentation` below is the presentation
--- theorem, with no further work.
---
--- Note on the group: the machinery builds the semidirect product from
--- the *transported* action (a symplectic element acts on a Pauli by
--- conjugating representative words and re-interpreting), so `Pauli⋊Sp`
--- here is that group, not definitionally the `Pauli⋊Sp-group` of
--- Semantics.agda, whose action is `ap` directly.  Identifying the two
--- needs the action-agreement lemma noted at the bottom of this file.
+-- See the note at the foot of the file on how `Pauli⋊Sp` relates to
+-- Semantics.agda's `Pauli⋊Sp-group`.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -77,6 +68,7 @@ import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as 
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen as SimPres
 open import Examples.Groups.Clifford.Qupit.SDProduct p-3 p-prime g* g-gen
   using (module SemiDirect)
+import Examples.Groups.Clifford.Qupit.ConjAction p-3 p-prime g* g-gen as CA
 
 ------------------------------------------------------------------------
 -- The instantiation, one width at a time
@@ -95,57 +87,48 @@ module Semidirect (n : ℕ) where
   open PB Γ using () renaming (_≈_ to _≈₁_)
 
   --------------------------------------------------------------------
-  -- The two well-definedness obligations for the action
-  --
-  -- Conjugation is given on generators only; for the semidirect
-  -- product to be well defined it must respect both factors' rules
-  -- once extended to words — in the acting argument (Respects-Δ, the
-  -- symplectic rules) and in the acted-on argument (Respects-Γ, the
-  -- Pauli rules).
-
-  Respects-Δ : Set
-  Respects-Δ = ∀ {c d} (u : Word (XZ.Gen n)) →
-               Δ c d → (cj ʰ') c u ≈₁ (cj ʰ') d u
-
-  Respects-Γ : Set
-  Respects-Γ = ∀ (c : NSim.Symplectic.Gen n) {u v : Word (XZ.Gen n)} →
-               Γ u v → (cj ⁿ') c u ≈₁ (cj ⁿ') c v
-
-  --------------------------------------------------------------------
   -- The presentation
   --
-  -- Given the two obligations and a presentation of the Pauli factor,
-  -- the symplectic factor's own presentation theorem completes the
-  -- input to the generic construction.
+  -- Every input is a theorem: the two factor presentations, and the two
+  -- well-definedness obligations proved in ConjAction.
 
-  module Build
-    (respects-Δ : Respects-Δ)
-    (respects-Γ : Respects-Γ)
-    where
+  private
+    module P = SDP.Presentation (CA.respects-Δ {n}) (CA.respects-Γ {n})
+                 (+ₚ-group n) (Sp-group n)
+                 (XZPres.presentation {n}) (SimPres.presentation {n})
 
-    private
-      module P = SDP.Presentation respects-Δ respects-Γ
-                   (+ₚ-group n) (Sp-group n)
-                   (XZPres.presentation {n}) (SimPres.presentation {n})
+  -- The semidirect product of the Pauli group by Sp(2n, ℤ/pℤ), with the
+  -- action transported through the two presentations.
+  Pauli⋊Sp : Group 0ℓ 0ℓ
+  Pauli⋊Sp = P.G1⋊G2
 
-    -- The semidirect product of the Pauli group by Sp(2n, ℤ/pℤ), with
-    -- the action transported through the two presentations.
-    Pauli⋊Sp : Group 0ℓ 0ℓ
-    Pauli⋊Sp = P.G1⋊G2
-
-    -- The headline theorem: the relation SDProduct assembles presents
-    -- that group.
-    presentation : (SemiDirect._QRel,_===_ n) IsPresentationOf Pauli⋊Sp
-    presentation = P.dpres
+  -- The headline theorem: the relation SDProduct assembles presents
+  -- that group.
+  presentation : (SemiDirect._QRel,_===_ n) IsPresentationOf Pauli⋊Sp
+  presentation = P.dpres
 
 ------------------------------------------------------------------------
--- What remains
+-- The theorem, at every width
+
+-- The Pauli-by-symplectic relation presents the semidirect product of
+-- the Pauli group by Sp(2n, ℤ/pℤ).
+presentation : ∀ {n} →
+               (SemiDirect._QRel,_===_ n) IsPresentationOf (Semidirect.Pauli⋊Sp n)
+presentation {n} = Semidirect.presentation n
+
+------------------------------------------------------------------------
+-- A note on the group
 --
--- Both obligations reduce to one bridge lemma, rather than to a rule-by
--- rule grind, because the Pauli presentation is now available and so is
--- its completeness.  Write sem for the Pauli reading of an XZ word
--- (XZPresentation) and actg / ⟦_⟧ for the semantic symplectic action
--- (Symplectic.Semantics.Interpretation).  The bridge is
+-- The generic construction builds the semidirect product from the
+-- *transported* action — a symplectic element acts on a Pauli by
+-- conjugating representative words and re-interpreting — so Pauli⋊Sp is
+-- that group rather than definitionally the `Pauli⋊Sp-group` of
+-- Semantics.agda, whose action is `ap`.  ConjAction.conjw-sem is
+-- exactly the statement that the two actions agree on representatives,
+-- so the two groups are isomorphic; identifying them is a transport
+-- along that isomorphism.
+--
+-- For the record, the route the two obligations took (ConjAction) was
 --
 --   conj-sem : sem ((conj ⁿ') c w) ≡ actg c (sem w)
 --
@@ -169,10 +152,4 @@ module Semidirect (n : ℕ) where
 -- So the long rules — M-power, semi-M*CZ, selinger-c10 … c15 — never
 -- have to be conjugated by hand: they are handled by soundness of the
 -- presentation they already have.
---
--- Relating `Pauli⋊Sp` to Semantics.agda's `Pauli⋊Sp-group` additionally
--- needs the two actions to agree — that a symplectic element acts on a
--- Pauli by `ap` exactly as conjugation of representative words does —
--- after which the two semidirect products are isomorphic and the
--- presentation transports.
 ------------------------------------------------------------------------

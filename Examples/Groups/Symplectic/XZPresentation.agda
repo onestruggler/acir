@@ -24,6 +24,7 @@ module Examples.Groups.Symplectic.XZPresentation
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Algebra.Bundles using (Group)
+open import Algebra.Morphism.Structures using (module GroupMorphisms)
 open import Data.Fin using (toℕ)
 open import Data.Fin.Properties using (toℕ-injective ; toℕ-fromℕ< ; toℕ<n)
 import Data.Nat as Nat
@@ -454,6 +455,22 @@ module Build (n : ℕ) where
   presentation =
     isPresentationOf subpres
       (λ P → inv-nf P , λ eq → Eq.trans (EC.fʷ-cong eq) (surj P))
+
+  private
+    module ISO = GroupMorphisms.IsGroupIsomorphism
+                   (_IsPresentationOf_.iso presentation)
+
+  -- Soundness and completeness, in the form the conjugation action
+  -- needs: two words are equal in the presentation exactly when they
+  -- read as the same Pauli.
+  sound : ∀ {w v : Word (Gen n)} → PB._≈_ Γ w v → sem w ≡ sem v
+  sound {w} {v} eq =
+    Eq.trans (Eq.sym (sem-agrees w)) (Eq.trans (EC.fʷ-cong eq) (sem-agrees v))
+
+  complete : ∀ {w v : Word (Gen n)} → sem w ≡ sem v → PB._≈_ Γ w v
+  complete {w} {v} eq =
+    ISO.injective
+      (Eq.trans (sem-agrees w) (Eq.trans eq (Eq.sym (sem-agrees v))))
 
 ------------------------------------------------------------------------
 -- The Pauli rules present (ℤ/pℤ × ℤ/pℤ)ⁿ
