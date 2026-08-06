@@ -8,15 +8,15 @@
 -- This module discharges that hypothesis with Surjectivity.surj-nf and
 -- so states the presentation theorem in full.
 --
--- It is deliberately the ONLY place on this route that is not --safe:
--- Surjectivity.agda still postulates Theorem-LM (single-level box
--- existence), so anything downstream of surj-nf inherits it.  Keeping
--- that confined here means soundness and completeness — everything in
--- Presentation.agda — stay postulate-free and can be indexed from the
--- --safe MainTheorems.
+-- Surjectivity is proved, not postulated: Surjectivity.agda and
+-- TheoremLM.agda long carried comments saying Theorem-LM was an open
+-- input, but neither file contains a postulate — the only one in the
+-- library is in ExtendedGate.NF-Inj-Base, which is not in this cone.
+-- They merely lacked --safe.  So this module, and hence the whole
+-- presentation theorem, is postulate-free.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --cubical-compatible --safe --termination-depth=2 #-}
 
 open import Data.Nat using (ℕ)
 open import Data.Nat.Primality using (Prime)

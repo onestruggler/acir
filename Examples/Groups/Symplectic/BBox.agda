@@ -4,7 +4,7 @@
 -- b-vector and d-vector row-clearing for the inj₁ case of Theorem-LM.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)

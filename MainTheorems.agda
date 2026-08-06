@@ -66,6 +66,7 @@ import Examples.Groups.Symplectic.Normalization as SympNrm
 import Examples.Groups.Symplectic.Normalization.Section as SympSec
 import Examples.Groups.Symplectic.Normalization.Uniqueness as SympUnq
 import Examples.Groups.Symplectic.Presentation as SympPres
+import Examples.Groups.Symplectic.PresentationFull as SympFull
 import Examples.Construct.SemiDirectProduct.SnD as SnD
 import Examples.Amalgamations.CliffordT1 as CliffordT1
 import Examples.Amalgamations.CliffordT1BaseUNF as CliffordT1Base
@@ -331,11 +332,10 @@ U₃-presentation-isomorphism = U33Di.TwoLevel-Simplified-Amal.Iso.U33Di-isomorp
 -- by induction on the width: each level's obligation needs only
 -- faithfulness one level down.
 --
--- Soundness and completeness are unconditional.  Surjectivity is not —
--- Symplectic.Surjectivity still postulates Theorem-LM — so the full
--- presentation theorem is stated here with surjectivity as a
--- hypothesis.  Symplectic.PresentationFull discharges it and is the
--- only module on this route without --safe.
+-- All three ingredients — soundness, completeness and surjectivity —
+-- are proved outright, so the presentation theorem below is
+-- unconditional and, like everything else in this file, rests on no
+-- postulate.
 
 module Symplectic-Theorems (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
@@ -368,7 +368,7 @@ module Symplectic-Theorems (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
                     (n QRel,_===_) IsSubPresentationOf (Sp-group n)
   subpresentation n = Pres.subpresentation {n}
 
-  -- The presentation theorem, given surjectivity of the action.
-  presentation : ∀ n → Pres.Surjectivity n →
-                 (n QRel,_===_) IsPresentationOf (Sp-group n)
-  presentation n = Pres.presentation-from {n}
+  -- The presentation theorem: the qupit-Clifford circuits modulo the
+  -- relations present Sp(2n, ℤ/pℤ).
+  presentation : ∀ n → (n QRel,_===_) IsPresentationOf (Sp-group n)
+  presentation n = SympFull.presentation p-2 p-prime {n}

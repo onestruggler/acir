@@ -20,15 +20,18 @@
 --     tail (Linear-Symp-FixZX⇒FixP / Linear-Symp-⇒FixP⇒), and the
 --     induction hypothesis applies.
 --
--- The whole reduction is proved here.  The one remaining gate-specific
--- input is `Theorem-LM` (the single-level box existence), postulated: the
--- base cases already exist as Examples.Groups.Symplectic.NF1-Sym.Theorem-NF1
--- (n = 1) and NF2-Sym.Theorem-LM2 (n = 2); only the top-level recursion,
--- together with matching those files' `act = dact ∘ der` to `ap ⟦_⟧`,
--- remains to be assembled.
+-- The whole reduction is proved here, and so is its gate-specific
+-- input `Theorem-LM` (single-level box existence, in
+-- Examples.Groups.Symplectic.TheoremLM).  This file is --safe and
+-- postulate-free.
+--
+-- (An earlier version of this comment described Theorem-LM as
+-- postulated.  That was stale: the module contains no postulate — the
+-- library's only one is in ExtendedGate.NF-Inj-Base, which is not in
+-- this cone — it merely lacked the --safe flag, which hid the fact.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --termination-depth=2 #-}
+{-# OPTIONS --cubical-compatible --safe --termination-depth=2 #-}
 
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)

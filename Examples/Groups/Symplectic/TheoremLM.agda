@@ -1,4 +1,4 @@
-------------------------------------------------------------------------
+﻿------------------------------------------------------------------------
 -- Presentations of groups
 --
 -- The single-level box-existence theorem `Theorem-LM` for the plain gate
@@ -8,12 +8,14 @@
 --
 -- Built by induction on the width n on top of the single-qupit box
 -- actions of Examples.Groups.Symplectic.BoxAction.  n = 0 is vacuous
--- (sform = 0 ≠ 1) and n = 1 assembles the ML 1 box  S^(-e) • [p]ᵃ.  The
--- n ≥ 2 cases (two-qupit base and the width recursion) are postulated for
--- now (LM≥2).
+-- (sform = 0 ≠ 1) and n = 1 assembles the ML 1 box  S^(-e) • [p]ᵃ.
+--
+-- (An earlier version of this comment said the n ≥ 2 cases were
+-- postulated.  That was stale: this module contains no postulate and
+-- is --safe.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --termination-depth=2 #-}
+{-# OPTIONS --cubical-compatible --safe --termination-depth=2 #-}
 
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)
