@@ -1,4 +1,4 @@
-------------------------------------------------------------------------
+﻿------------------------------------------------------------------------
 -- Presentations of groups
 --
 -- The multi-qudit symplectic Clifford group and its normal form via
@@ -48,6 +48,11 @@ open import Data.Sum
 open import Data.Vec using (Vec ; [] ; _∷_ ; replicate)
 
 import Examples.Groups.Symplectic.Normalization.Pushing.PushML p-2 p-prime as PushML
+import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSem
+  p-2 p-prime as SWS
+import Examples.Groups.Symplectic.Normalization.SemInj p-2 p-prime as SemInj
+import Examples.Groups.Symplectic.Normalization.FaithfulFrom
+  p-2 p-prime as FF
 import Examples.Groups.Symplectic.Normalization.Pushing.Push p-2 p-prime as Push
 import Examples.Groups.Symplectic.BR.Two.ML'-Top p-2 p-prime as ML'T
 import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime as DDCZ
@@ -197,22 +202,11 @@ mbv-id {₁₊ k'} (g ↥) =
       (Eq.sym (mbv-id x .proj₁)) (Eq.sym (mbv-id x .proj₂ .proj₁))
   where open PB ((suc m) QRel,_===_)
 
--- The keystone of the inj₁ structural cases: the bottom-gate box update
--- (Push.ract, from the A-box S-cascade) and the lifted-gate box update
--- (ML'-Top.ml'-of / dir-of, from mbv-push) commute on an ML' box.  The A
--- box and B-vector parts commute trivially; the load-bearing content is
--- that the wire-0 S-cascade and the wire-≥1 gate thread commute on the
--- shared M column.  Two components: the coset (ml'-of-comm) and the
--- residual (dir-of-comm).
-ml'-of-comm : ∀ {k} (ml' : ML' (₂₊ k)) (g : Gen (₁₊ k)) (h : SympGate 1) →
-  proj₂ (Push.ract (ML'T.ml'-of ml' g) h) ≡ ML'T.ml'-of (proj₂ (Push.ract ml' h)) g
-ml'-of-comm ml' g h = {!!}
-
-dir-of-comm : ∀ {k} (ml' : ML' (₂₊ k)) (g : Gen (₁₊ k)) (h : SympGate 1) →
-  let open PB ((₁₊ k) QRel,_===_) in
-  ML'T.dir-of ml' g • proj₁ (Push.ract (ML'T.ml'-of ml' g) h) ≈
-  proj₁ (Push.ract ml' h) • ML'T.dir-of (proj₂ (Push.ract ml' h)) g
-dir-of-comm ml' g h = {!!}
+-- (The two keystone lemmas that used to sit here — ml'-of-comm and
+-- dir-of-comm, the commutation of the bottom-gate and lifted-gate box
+-- updates on an ML' box — were needed only by the case-by-case
+-- ⁻¹[⇑]-wd''.  The uniform proof does not go through them, so they are
+-- gone; Normalization.Pushing.Keystone keeps the statements.)
 
 -- Threading a lifted word through an inj₂ (d, lm) coset recurses into lm
 -- (the outer D box d is inert, every lifted gate peels one wire), so it
@@ -243,52 +237,23 @@ ract-base-↑ c (u • v) rewrite ract-base-↑ c u = ract-base-↑ c v
 -- symplectic presentation (order-{S,H,SH,CZ}, comm-HHS, M-mul,
 -- semi-{MS,M↑CZ,M↓CZ}, comm-CZ-S{↓,↑}, selinger-c10..c15, and the
 -- structural cong↑/comm₁/comm₂).  Discharged case-by-case below.
+-- Well-definedness: the coset action respects the raw relations.  This
+-- is the Reidemeister–Schreier completeness obligation for the
+-- symplectic presentation.  It used to be discharged case by case,
+-- with the group-specific axioms left open; it is now uniform.
+--
+-- SrelWDSem.Full.srel-wd-all gives it for EVERY congruent pair, so a
+-- raw relation is covered by injecting it into the congruence with
+-- PB.axiom — one clause for all the axioms and all the structural
+-- rules at once.  The price is ↑-injectivity at this level, which the
+-- tower below supplies from the level beneath.
 ⁻¹[⇑]-wd'' : ∀ {n} →
+  (↑inj : ∀ (w v : Circuit n) →
+     PB._≈_ ((₁₊ n) QRel,_===_) (w ↑) (v ↑) → PB._≈_ (n QRel,_===_) w v) →
   let _===_ = (₁₊ n) QRel,_===_ in
   ∀ (c : C (₁₊ n)) {u t : Circuit (₁₊ n)} →
     u === t → (ract {n} ᵗ) c u ≋ (ract {n} ᵗ) c t
-⁻¹[⇑]-wd'' {n} c (srel x)   = {!!}
--- cong↑ on inj₂: threading recurses into lm (ract-inj₂-↑), so the whole
--- case follows from the recursive call ⁻¹[⇑]-wd'' lm eq.
-⁻¹[⇑]-wd'' {suc k} (inj₁ ml') (cong↑ eq) = {!!}
-⁻¹[⇑]-wd'' {suc k} (inj₂ (d , lm)) (cong↑ {w = w} {v} eq)
-  rewrite ract-inj₂-↑ d lm w | ract-inj₂-↑ d lm v =
-    lemma-cong↑ _ _ (⁻¹[⇑]-wd'' lm eq .proj₁)
-  , Eq.cong (λ z → inj₂ (d , z)) (⁻¹[⇑]-wd'' lm eq .proj₂)
-⁻¹[⇑]-wd'' {zero} c (cong↑ {w = w} {v} eq) =
-    PB.trans sing0 (PB.sym sing0)
-  , Eq.trans (ract-base-↑ c w) (Eq.sym (ract-base-↑ c v))
--- comm₁ on inj₂ (d, lm): the bottom gate₁ only rewrites d, the lifted g
--- only recurses into lm, so both action-orders reach the same coset
--- (Eq.refl); the residual is a wire-0 escape commuting past the lifted
--- recursion residual gs↑ (comm-↓ᵏ-w↑; at width 1 gs↑ = ε, so units).
-⁻¹[⇑]-wd'' {suc k} (inj₁ ml') (comm₁ h g) =
-    dir-of-comm ml' g h , Eq.cong inj₁ (ml'-of-comm ml' g h)
-⁻¹[⇑]-wd'' {suc (suc k)} (inj₂ (d , lm)) (comm₁ H-gate g) =
-    PB.sym (ML'T.comm-↓ᵏ-w↑ (Hdir d) (proj₁ (ract lm g))) , Eq.refl
-⁻¹[⇑]-wd'' {suc (suc k)} (inj₂ ((₀ , b) , lm)) (comm₁ S-gate g) =
-    PB.sym (ML'T.comm-↓ᵏ-w↑ [ gate₁ S-gate ]ʷ (proj₁ (ract lm g))) , Eq.refl
-⁻¹[⇑]-wd'' {suc (suc k)} (inj₂ ((₁₊ a , b) , lm)) (comm₁ S-gate g) =
-    PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
-⁻¹[⇑]-wd'' {suc zero} (inj₂ (d , (([] , e) , ([] , a)))) (comm₁ H-gate (gate₁ H-gate)) =
-    PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
-⁻¹[⇑]-wd'' {suc zero} (inj₂ (d , (([] , e) , ([] , a)))) (comm₁ H-gate (gate₁ S-gate)) =
-    PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
-⁻¹[⇑]-wd'' {suc zero} (inj₂ (d , (([] , e) , ([] , a)))) (comm₁ S-gate (gate₁ H-gate)) =
-    PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
-⁻¹[⇑]-wd'' {suc zero} (inj₂ (d , (([] , e) , ([] , a)))) (comm₁ S-gate (gate₁ S-gate)) =
-    PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
--- comm₂ on a fully-nested inj₂ (d, inj₂ (d2, lm2)): CZ hits the bottom two
--- D boxes (d, d2), g↥↥ recurses into lm2 — disjoint, so coset Eq.refl and
--- the DD-CZ residual (wires 0,1) commutes past gs2↑↑ (comm-↓ᵏ2-w↑↑).
-⁻¹[⇑]-wd'' {suc (suc (suc m''))} (inj₂ (d , inj₂ (d2 , lm2))) (comm₂ CZ-gate g) =
-    PB.sym (comm-↓ᵏ2-w↑↑ (DDCZ.dir-of (d ∷ d2 ∷ [])) (proj₁ (ract lm2 g))) , Eq.refl
-⁻¹[⇑]-wd'' {suc (suc zero)} (inj₂ (d , inj₂ (d2 , (([] , e) , ([] , a))))) (comm₂ CZ-gate (gate₁ H-gate)) =
-    PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
-⁻¹[⇑]-wd'' {suc (suc zero)} (inj₂ (d , inj₂ (d2 , (([] , e) , ([] , a))))) (comm₂ CZ-gate (gate₁ S-gate)) =
-    PB.trans PB.left-unit (PB.sym PB.right-unit) , Eq.refl
-⁻¹[⇑]-wd'' {suc (suc m')} (inj₂ (d , inj₁ ml')) (comm₂ CZ-gate g) = {!!}
-⁻¹[⇑]-wd'' {suc (suc m')} (inj₁ ml') (comm₂ CZ-gate g) = {!!}
+⁻¹[⇑]-wd'' {n} ↑inj c r = SWS.Full.srel-wd-all n ↑inj c (PB.axiom r)
 
 ------------------------------------------------------------------------
 -- Tower instantiation (via Normalization.CosetNF.CosetTower)
@@ -301,14 +266,17 @@ ract-base-↑ c (u • v) rewrite ract-base-↑ c u = ract-base-↑ c v
 module T = CosetNF.CosetTower
   (λ k → Gen k) (λ k → k QRel,_===_) (λ k → C (₁₊ k))
 
-ext : ∀ k → T.Extension k
-ext k = record
+ext : ∀ k →
+      (∀ (w v : Circuit k) →
+         PB._≈_ ((₁₊ k) QRel,_===_) (w ↑) (v ↑) → PB._≈_ (k QRel,_===_) w v) →
+      T.Extension k
+ext k ↑inj = record
   { I         = Iᶜ {k}
   ; f         = [_]ʷ ∘ _↥
   ; h         = ract
   ; [_]       = [_]ᶜ
   ; h=⁻¹f-gen = ⁻¹[⇑]-gen'
-  ; h-wd-ax   = ⁻¹[⇑]-wd''
+  ; h-wd-ax   = ⁻¹[⇑]-wd'' ↑inj
   ; f-wd-ax   = λ x → Eq.subst₂ _≈_ (Eq.sym (wconcatmap-[f]ʷ _)) (Eq.sym (wconcatmap-[f]ʷ _))
                                 (PB.axiom (cong↑ x))
   ; [I]≈ε     = [I]≈ε'
@@ -345,8 +313,59 @@ base0' = record
 NFᵗ : ℕ → Set
 NFᵗ n = T.tower-carrier ⊤ n
 
+-- The tower's carrier is the same recursion as Section's NF, but a
+-- distinct stuck term at a variable width, so it reaches NF through a
+-- map.  φ is the evident isomorphism.
+φ : ∀ {n} → NFᵗ n → NF n
+φ {0}    _       = tt
+φ {₁₊ k} (u , c) = φ u , c
+
+φ-inj : ∀ {n} {u v : NFᵗ n} → φ u ≡ φ v → u ≡ v
+φ-inj {0}    {_}     {_}      _  = Eq.refl
+φ-inj {₁₊ k} {u , c} {v , c'} eq =
+  ≡×≡⇒≡ (φ-inj (Eq.cong proj₁ eq) , Eq.cong proj₂ eq)
+
+-- One level of the tower, carrying the fact that its section agrees
+-- with Section's [_].  That agreement is what lets the uniqueness
+-- theorem be read as faithfulness at this width.
+record TowerLevel (n : ℕ) : Set where
+  field
+    nfp'   : NormalForm (n QRel,_===_) (NFᵗ n)
+    agree : ∀ u → PB._≈_ (n QRel,_===_)
+                    (SNF.NormalForm.inv-nf nfp' u) [ φ u ]
+
+-- The induction.  Level (1+k) needs ↑-injectivity at k, which comes
+-- from faithfulness at k, which comes from Level k — strictly below,
+-- so the recursion is well founded.
+tower : ∀ n → TowerLevel n
+tower 0 = record { nfp' = base0' ; agree = λ _ → PB.refl }
+tower (₁₊ k) = record { nfp' = nfp'₁ ; agree = agree₁ }
+  where
+  prev = tower k
+
+  ↑inj : ∀ (w v : Circuit k) →
+         PB._≈_ ((₁₊ k) QRel,_===_) (w ↑) (v ↑) → PB._≈_ (k QRel,_===_) w v
+  ↑inj = SemInj.Injectivity!.↑-inj-↑ k
+           (FF.faithful-from′ k (TowerLevel.nfp' prev) φ φ-inj
+              (TowerLevel.agree prev))
+
+  nfp'₁ : NormalForm ((₁₊ k) QRel,_===_) (NFᵗ (₁₊ k))
+  nfp'₁ = T.Extension.nfp' (ext k ↑inj) (TowerLevel.nfp' prev)
+
+  -- The new section is (f ʷ)(inv-nf prev u) • [ c ]ᶜ and Section's is
+  -- [ φ u ] ↑ • [ c ]ᵐˡ, so the two agree by the word-lift bridge and
+  -- the level below's agreement lifted through _↑.
+  agree₁ : ∀ u → PB._≈_ ((₁₊ k) QRel,_===_)
+                   (SNF.NormalForm.inv-nf nfp'₁ u) [ φ u ]
+  agree₁ (u , c) = PB.cong
+    (PB.trans (PB.refl' ((₁₊ k) QRel,_===_)
+                (wconcatmap-[f]ʷ
+                  (SNF.NormalForm.inv-nf (TowerLevel.nfp' prev) u)))
+              (lemma-cong↑ _ _ (TowerLevel.agree prev u)))
+    PB.refl
+
 nfp'-t : ∀ n → NormalForm (n QRel,_===_) (NFᵗ n)
-nfp'-t n = T.nfp'-tower ext base0' n
+nfp'-t n = TowerLevel.nfp' (tower n)
 
 ------------------------------------------------------------------------
 -- Normal form, its inverse, and the NormalFormInjective witnesses
