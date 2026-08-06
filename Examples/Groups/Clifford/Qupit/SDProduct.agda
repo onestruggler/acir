@@ -56,6 +56,9 @@ module Examples.Groups.Clifford.Qupit.SDProduct
 
 import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
+-- Lemmas1 / Lemmas1b / Symplectic-Sim-GroupLike moved here when
+-- Simplified.Syntactics was split up.
+import Examples.Groups.Symplectic.Simplified.Lemmas p-2 p-prime g* g-gen as NSimL
 module Sym = NSym.Symplectic
 module Sim = NSim.Simplified-Relations
 import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
@@ -412,7 +415,7 @@ module Semi-GroupLike where
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
     open LeftRightCongruence (XZ._QRel,_===_ (₁₊ n)) (Sim._QRel,_===_  (₁₊ n)) (ConjRelʷ conj)
-    open NSim.Lemmas1 n
+    open NSimL.Lemmas1 n
     claim : (H ) ^ 3 • H ≈ ε
     claim = begin
       (H) ^ 3 • H ≈⟨ by-assoc auto ⟩
@@ -425,8 +428,8 @@ module Semi-GroupLike where
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
     open LeftRightCongruence (XZ._QRel,_===_ (₁₊ n)) (Sim._QRel,_===_  (₁₊ n)) (ConjRelʷ conj)
-    open NSim.Lemmas1 n
-    module RG = NSim.Symplectic-Sim-GroupLike
+    open NSimL.Lemmas1 n
+    module RG = NSimL.Symplectic-Sim-GroupLike
     claim : S ^ p-1 • S ≈ ε
     claim = begin
       S ^ p-1 • S ≡⟨ (Eq.cong ( \ xx -> xx • S) ( Eq.sym (lemma-[]ᵣ^k Sym.S p-1))) ⟩
@@ -438,8 +441,8 @@ module Semi-GroupLike where
     open PP ((₂₊ n) QRel,_===_)
     open SR word-setoid
     open LeftRightCongruence (XZ._QRel,_===_ (₂₊ n)) (Sim._QRel,_===_  (₂₊ n)) (ConjRelʷ conj)
-    open NSim.Lemmas1 n
-    module RG = NSim.Symplectic-Sim-GroupLike
+    open NSimL.Lemmas1 n
+    module RG = NSimL.Symplectic-Sim-GroupLike
     claim : CZ ^ p-1 • CZ ≈ ε
     claim = begin
       CZ ^ p-1 • CZ ≡⟨ (Eq.cong ( \ xx -> xx • CZ) ( Eq.sym (lemma-[]ᵣ^k Sym.CZ p-1))) ⟩
@@ -452,7 +455,7 @@ module Semi-GroupLike where
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
     open LeftRightCongruence (XZ._QRel,_===_ (₁₊ n)) (Sim._QRel,_===_  (₁₊ n)) (ConjRelʷ conj)
-    open NSim.Lemmas1 n
+    open NSimL.Lemmas1 n
     module LG = XZ.XZ-GroupLike
     claim : X ^ p-1 • X ≈ ε
     claim = begin
@@ -466,7 +469,7 @@ module Semi-GroupLike where
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
     open LeftRightCongruence (XZ._QRel,_===_ (₁₊ n)) (Sim._QRel,_===_  (₁₊ n)) (ConjRelʷ conj)
-    open NSim.Lemmas1 n
+    open NSimL.Lemmas1 n
     module LG = XZ.XZ-GroupLike
     claim : Z ^ p-1 • Z ≈ ε
     claim = begin
@@ -479,7 +482,7 @@ module Semi-GroupLike where
   ... | ig , prf = ([ ig ]ₗ) , lefts prf
     where
     open LeftRightCongruence (XZ._QRel,_===_ (₂₊ n)) (Sim._QRel,_===_  (₂₊ n)) (ConjRelʷ conj)
-  grouplike {₂₊ n} (inj₂ (g Sym.↥)) with NSim.Symplectic-Sim-GroupLike.grouplike (g Sym.↥)
+  grouplike {₂₊ n} (inj₂ (g Sym.↥)) with NSimL.Symplectic-Sim-GroupLike.grouplike (g Sym.↥)
   ... | ig , prf = ([ ig ]ᵣ) , rights prf
     where
     open LeftRightCongruence (XZ._QRel,_===_ (₂₊ n)) (Sim._QRel,_===_  (₂₊ n)) (ConjRelʷ conj)

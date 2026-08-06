@@ -61,6 +61,8 @@ open import Examples.Groups.Clifford.Qupit.Clifford-Lemmas p-3 p-prime g* g-gen 
 
 import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
+-- Lemmas1 / Lemmas1b moved here when Simplified.Syntactics was split up.
+import Examples.Groups.Symplectic.Simplified.Lemmas p-2 p-prime g* g-gen as NSimL
 --module Sym = NSym.Symplectic
 --module Sim = NSim.Simplified-Relations
 import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
@@ -179,7 +181,7 @@ module Iso-Inverse-Direction (n : ℕ) where
   lemma-HH-S {m} = rights lemma-comm-HHS
     where
     open LeftRightCongruence (XZ._QRel,_===_ (₁₊ m)) (Sim._QRel,_===_ (₁₊ m)) (ConjRelʷ SemiDirect.conj)
-    open NSim.Lemmas1b m
+    open NSimL.Lemmas1b m
 
   lemma-H⁴ : ∀ {m} → let open PB (SemiDirect._QRel,_===_ (₁₊ m)) using (_≈_) in SemiDirect.H ^ 4 ≈ ε
   lemma-H⁴ {m} = begin
@@ -191,7 +193,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     open PP (SemiDirect._QRel,_===_ (₁₊ m))
     open SR word-setoid
     open LeftRightCongruence (XZ._QRel,_===_ (₁₊ m)) (Sim._QRel,_===_ (₁₊ m)) (ConjRelʷ SemiDirect.conj)
-    open NSim.Lemmas1 m
+    open NSimL.Lemmas1 m
 
   lemma-HH-Z^k : ∀ {m} (k : ℕ) → let open PB (SemiDirect._QRel,_===_ (₁₊ m)) using (_≈_) in (SemiDirect.H • SemiDirect.H) • SemiDirect.Z ^ k ≈ (SemiDirect.Z ^ p-1) ^ k • (SemiDirect.H • SemiDirect.H)
   lemma-HH-Z^k 0 = PB.trans PB.right-unit (PB.sym PB.left-unit)
@@ -567,7 +569,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     open SR word-setoid
     open Pattern-Assoc
     open LeftRightCongruence (XZ._QRel,_===_ (₁₊ m)) (Sim._QRel,_===_ (₁₊ m)) (ConjRelʷ SemiDirect.conj)
-    open NSim.Lemmas1 m
+    open NSimL.Lemmas1 m
     k = toℕ Cli.-1/2
     a = (p-1) Nat.* k
     b = (p-1) Nat.* a
