@@ -24,7 +24,6 @@ open import Presentation.GroupLike
 open import Data.Fin.Properties using (toℕ-fromℕ ; toℕ-fromℕ<)
 open import Data.Nat.DivMod using (_%_ ; _/_ ; m≡m%n+[m/n]*n ; m%n<n)
 import Data.Nat.Properties as NP
-import Examples.Groups.Symplectic.Syntactics as NS
 open import Data.Nat.Primality
 
 open import Zp.ModularArithmetic
@@ -51,7 +50,6 @@ import Examples.Groups.Clifford.Qupit.Iso p-3 p-prime g* g-gen as ISO
 import Examples.Groups.Clifford.Qupit.Iso2 p-3 p-prime g* g-gen as ISO2
 
 
-import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
 import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
 
 
@@ -122,7 +120,7 @@ module M (n : ℕ) where
   g-left-inv-gen (inj₁ (x XZ.↥)) =
     PB.trans (SemiDirect.lemma-cong↑ _ _ (g-left-inv-gen (inj₁ x)))
              (PB.refl' (SemiDirect._QRel,_===_ _) (Eq.sym (lemma-h↑ (f (inj₁ x)))))
-  g-left-inv-gen (inj₂ (y NS.Symplectic.↥)) =
+  g-left-inv-gen (inj₂ (y Sym.↥)) =
     PB.trans (SemiDirect.lemma-cong↑ _ _ (g-left-inv-gen (inj₂ y)))
              (PB.refl' (SemiDirect._QRel,_===_ _) (Eq.sym (lemma-h↑ (f (inj₂ y)))))
 

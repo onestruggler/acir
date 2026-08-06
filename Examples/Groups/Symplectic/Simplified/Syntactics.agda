@@ -78,6 +78,13 @@ open Primitive-Root-Modp' g* g-gen
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
 open Symplectic hiding (_QRel,_===_ ; srel ; cong↑ ; comm₁ ; comm₂ ; lemma-cong↑ ; order-S ; order-H ; semi-MS ; semi-M↑CZ ; semi-M↓CZ ; order-CZ ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12 ; selinger-c13 ; selinger-c14 ; selinger-c15)
 
+-- The gate set and the derived words are common to both presentations, so
+-- re-export the module holding them.  A client that only wants the
+-- simplified relation can then rest on this module alone, and never name
+-- Symplectic.Syntactics itself.
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+  using (module Symplectic) public
+
 module Simplified-Relations where
 
   

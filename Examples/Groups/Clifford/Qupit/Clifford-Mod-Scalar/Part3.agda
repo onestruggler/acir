@@ -67,7 +67,7 @@ open Primitive-Root-Modp' g* g-gen
 
 module Symplectic-Simplified where
 
-open import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
+open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 -- Same hiding list as Part1: only Symplectic's generator layer is taken
 -- (see Part1 for the full note).
 open Symplectic hiding
@@ -299,7 +299,6 @@ module Lemmas1b (n : ℕ) where
     S⁻¹ ^ p-1 ≈ S
   aux-S⁻¹⁻¹ = •-cancelʳ {h = S⁻¹} aux00
     where
-    open Sym0-Rewriting n
     open Basis-Change _ ((₁₊ n) QRel,_===_) grouplike
     open Group-Lemmas ((₁₊ n) QRel,_===_) grouplike renaming (_⁻¹ to _⁻¹′)
     aux00 : S⁻¹ ^ p-1 • S⁻¹ ≈ S • S⁻¹
@@ -318,7 +317,6 @@ module Lemmas1b (n : ℕ) where
     Z⁻¹ ^ p-1 ≈ Z
   aux-Z⁻¹⁻¹ = •-cancelʳ {h = Z⁻¹} aux00
     where
-    open Sym0-Rewriting n
     open Basis-Change _ ((₁₊ n) QRel,_===_) grouplike
     open Group-Lemmas ((₁₊ n) QRel,_===_) grouplike renaming (_⁻¹ to _⁻¹′)
     aux00 : Z⁻¹ ^ p-1 • Z⁻¹ ≈ Z • Z⁻¹
@@ -339,7 +337,6 @@ module Lemmas1b (n : ℕ) where
     X⁻¹ ^ p-1 ≈ X
   aux-X⁻¹⁻¹ = •-cancelʳ {h = X⁻¹} aux00
     where
-    open Sym0-Rewriting n
     open Basis-Change _ ((₁₊ n) QRel,_===_) grouplike
     open Group-Lemmas ((₁₊ n) QRel,_===_) grouplike renaming (_⁻¹ to _⁻¹′)
     aux00 : X⁻¹ ^ p-1 • X⁻¹ ≈ X • X⁻¹

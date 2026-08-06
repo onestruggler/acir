@@ -65,7 +65,7 @@ open Primitive-Root-Modp' g* g-gen
 
 module Symplectic-Simplified where
 
-open import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
+open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 -- This development takes from Symplectic only the *generator layer* — the
 -- gate set Gen and the derived words (S, H, CZ, M, S^, ⊤⊥, …), which the
 -- original and the simplified presentations share.  Everything about the
@@ -73,7 +73,7 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
 -- Symplectic is hidden here: its axioms (which are also exported as
 -- top-level aliases, and would clash with the Clifford relation's
 -- constructors below), the structural rules, and the raw relation itself.
--- Reach for the symplectic version as NSym.Symplectic.… if ever needed.
+-- Reach for the symplectic version as NSim.Symplectic.… if ever needed.
 open Symplectic hiding
   ( _QRel,_===_ ; M ; M₁ ; module Base
   ; order-S ; order-H ; order-SH

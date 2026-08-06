@@ -67,7 +67,7 @@ open Primitive-Root-Modp' g* g-gen
 
 module Symplectic-Simplified where
 
-open import Examples.Groups.Symplectic.Syntactics p-2 p-prime as NSym
+open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 -- Same hiding list as Part1: only Symplectic's generator layer is taken
 -- (see Part1 for the full note).
 open Symplectic hiding
