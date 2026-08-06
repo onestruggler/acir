@@ -15,11 +15,15 @@ module ForStdlib.Data.Fin.Permutation.Properties where
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Structures using (IsMonoid ; IsGroup)
-open import Data.Fin.Base using (Fin)
+open import Data.Fin.Base using (Fin ; zero ; suc)
 open import Data.Fin.Permutation
   using ( Permutation′ ; id ; _⟨$⟩ʳ_ ; _⟨$⟩ˡ_ ; _∘ₚ_ ; flip ; _≈_
-        ; inverseˡ ; inverseʳ )
+        ; inverseˡ ; inverseʳ
+        ; lift₀ ; lift₀-id ; lift₀-comp ; lift₀-cong )
+open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (ℕ)
+open import ForStdlib.Algebra.IndexedGroups
+  using (IndexedGroup ; Embedding ; emb-injective⇒emb^-injective)
 open import Data.Product.Base using (_,_ ; proj₁ ; proj₂)
 import Function.Endo.Propositional as Endo
 open import Relation.Binary.PropositionalEquality
@@ -91,3 +95,60 @@ open import Relation.Binary.Structures using (IsEquivalence)
   ; _⁻¹     = flip
   ; isGroup = ∘ₚ-id-isGroup n
   }
+
+------------------------------------------------------------------------
+-- Sₙ as an indexed group
+
+-- The symmetric groups form a family indexed by the number of points.
+
+∘ₚ-id-indexedGroup : IndexedGroup _ _
+∘ₚ-id-indexedGroup = record { group = ∘ₚ-id-group }
+
+------------------------------------------------------------------------
+-- The embedding of Sₙ into Sₙ₊₁
+
+-- lift₀ adjoins a new point 0 and fixes it, sending suc i to
+-- suc (π i).  It is a group homomorphism: the standard library
+-- supplies the unit and product laws (lift₀-id, lift₀-comp) and the
+-- congruence (lift₀-cong), and the inverse law holds on the nose,
+-- since flip only exchanges the two directions of the underlying
+-- inverse pair.
+
+lift₀-flip : ∀ {n} (π : Permutation′ n) → lift₀ (flip π) ≈ flip (lift₀ π)
+lift₀-flip π zero    = refl
+lift₀-flip π (suc i) = refl
+
+∘ₚ-id-embedding : Embedding ∘ₚ-id-indexedGroup
+∘ₚ-id-embedding = record
+  { emb                 = lift₀
+  ; isGroupHomomorphism = λ n → record
+    { isMonoidHomomorphism = record
+      { isMagmaHomomorphism = record
+        { isRelHomomorphism = record { cong = λ {π} {ρ} → lift₀-cong π ρ }
+        ; homo              = λ π ρ i → sym (lift₀-comp π ρ i)
+        }
+      ; ε-homo = lift₀-id
+      }
+    ; ⁻¹-homo = lift₀-flip
+    }
+  }
+
+------------------------------------------------------------------------
+-- The embedding is injective
+
+-- lift₀ π and lift₀ ρ agree at suc i exactly when π and ρ agree at i,
+-- so agreement everywhere on Fin (suc n) forces agreement everywhere
+-- on Fin n.  (The two permutations' behaviour at 0 carries no
+-- information: both fix it.)
+
+lift₀-injective : ∀ {n} {π ρ : Permutation′ n} → lift₀ π ≈ lift₀ ρ → π ≈ ρ
+lift₀-injective π≈ρ i = suc-injective (π≈ρ (suc i))
+
+-- Hence the k-fold embedding of Sₙ into Sₖ₊ₙ is injective too.
+
+lift₀^-injective : ∀ {n} (k : ℕ) {π ρ : Permutation′ n} →
+                   Embedding.emb^ ∘ₚ-id-embedding k π ≈
+                   Embedding.emb^ ∘ₚ-id-embedding k ρ →
+                   π ≈ ρ
+lift₀^-injective =
+  emb-injective⇒emb^-injective ∘ₚ-id-embedding lift₀-injective
