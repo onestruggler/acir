@@ -49,9 +49,13 @@ private
   -- descriptor.
   ⟦[]ᶜ⟧-zero : ∀ {n} (r : C n) → ⟦ [ r ]ᶜ ⟧ fzero ≡ depth r
   ⟦[]ᶜ⟧-zero ε      = Eq.refl
-  ⟦[]ᶜ⟧-zero (σ• c) =
-    Eq.trans (⟦↑⟧ ([ c ]ᶜ) (fsuc fzero))
-             (Eq.cong fsuc (⟦[]ᶜ⟧-zero c))
+  ⟦[]ᶜ⟧-zero (σ• c) = begin
+    ⟦ [ σ• c ]ᶜ ⟧ fzero ≡⟨ ⟦↑⟧ ([ c ]ᶜ) (fsuc fzero) ⟩
+    shift ⟦ [ c ]ᶜ ⟧ ₁ ≡⟨ Eq.cong ₁₊ (⟦[]ᶜ⟧-zero c) ⟩
+    fsuc (depth c) ≡⟨ auto ⟩
+    depth (σ• c) ∎
+    where
+    open Eq.≡-Reasoning
 
   -- A coset representative is injective on fsuc-values, so its action can
   -- be cancelled there.
@@ -85,49 +89,55 @@ private
   coset-unique : ∀ n (l l' : NF (₁₊ n)) (r r' : C (₁₊ n))
     → (eq : ∀ k → ⟦ inv-nf {(₁₊ n)} l ↑ • [ r ]ᶜ ⟧ k ≡ ⟦ inv-nf {(₁₊ n)} l' ↑ • [ r' ]ᶜ ⟧ k)
     → r ≡ r'
-  coset-unique n l l' r r' eq =
-    depth-injective
-      (Eq.trans (Eq.sym (⟦[]ᶜ⟧-zero r))
-      (Eq.trans
-        (Eq.trans
-          (Eq.cong (⟦ [ r ]ᶜ ⟧) (Eq.sym (⟦↑⟧ (inv-nf {(₁₊ n)} l) fzero)))
-          (Eq.trans (eq fzero)
-          (Eq.cong (⟦ [ r' ]ᶜ ⟧) (⟦↑⟧ (inv-nf {(₁₊ n)} l') fzero))))
-        (⟦[]ᶜ⟧-zero r')))
+  coset-unique n l l' r r' eq = depth-injective claim
+    where
+    open Eq.≡-Reasoning
+    lw = inv-nf {(₁₊ n)} l
+    lw' = inv-nf {(₁₊ n)} l'
+    claim : depth r ≡ depth r'
+    claim = begin
+      depth r ≡⟨ ⟦[]ᶜ⟧-zero r ⟨
+      ⟦ [ r ]ᶜ ⟧ fzero ≡⟨ Eq.cong ⟦ [ r ]ᶜ ⟧ (Eq.sym (⟦↑⟧ lw fzero)) ⟩
+      ⟦ lw ↑ • [ r ]ᶜ ⟧ fzero ≡⟨ eq fzero ⟩
+      ⟦ lw' ↑ • [ r' ]ᶜ ⟧ fzero ≡⟨ Eq.cong ⟦ [ r' ]ᶜ ⟧ ((⟦↑⟧ lw' fzero)) ⟩
+      ⟦ [ r' ]ᶜ ⟧ fzero ≡⟨ ⟦[]ᶜ⟧-zero r' ⟩
+      depth r' ∎
 
   -- Once r ≡ r' is known, the coset factor cancels, leaving pointwise
-  -- equality of the lifted inv-nf prefixes.
-  prefix-unique : ∀ n (l l' : NF (₁₊ n)) (r r' : C (₁₊ n))
+  -- equality of the lifted inv-nf dirs.
+  dir-unique : ∀ n (l l' : NF (₁₊ n)) (r r' : C (₁₊ n))
     → r ≡ r'
     → (eq : ∀ k → ⟦ inv-nf {(₁₊ n)} l ↑ • [ r ]ᶜ ⟧ k ≡ ⟦ inv-nf {(₁₊ n)} l' ↑ • [ r' ]ᶜ ⟧ k)
     → ∀ j → ⟦ inv-nf {(₁₊ n)} l ⟧ j ≡ ⟦ inv-nf {(₁₊ n)} l' ⟧ j
-  prefix-unique n l l' r r' r≡r' eq j =
-    ⟦[]ᶜ⟧-suc-injective r
-      (Eq.trans
-        (Eq.cong (⟦ [ r ]ᶜ ⟧) (Eq.sym (⟦↑⟧ (inv-nf {(₁₊ n)} l) (fsuc j))))
-        (Eq.trans
-          (Eq.subst
-            (λ s → ⟦ [ r ]ᶜ ⟧ (⟦ inv-nf {(₁₊ n)} l ↑ ⟧ (fsuc j))
-                 ≡ ⟦ [ s ]ᶜ ⟧ (⟦ inv-nf {(₁₊ n)} l' ↑ ⟧ (fsuc j)))
-            (Eq.sym r≡r')
-            (eq (fsuc j)))
-          (Eq.cong (⟦ [ r ]ᶜ ⟧) (⟦↑⟧ (inv-nf {(₁₊ n)} l') (fsuc j)))))
+  dir-unique n l l' r r' r≡r' eq j = ⟦[]ᶜ⟧-suc-injective r claim
+    where
+    open Eq.≡-Reasoning
+    lw = inv-nf {(₁₊ n)} l
+    lw' = inv-nf {(₁₊ n)} l'
+    claim : ⟦ [ r ]ᶜ ⟧ (shift ⟦ inv-nf l ⟧ (₁₊ j)) ≡
+            ⟦ [ r ]ᶜ ⟧ (shift ⟦ inv-nf l' ⟧ (₁₊ j))
+    claim = begin
+      ⟦ [ r ]ᶜ ⟧ (shift ⟦ inv-nf l ⟧ (₁₊ j)) ≡⟨ Eq.cong ⟦ [ r ]ᶜ ⟧ (Eq.sym (⟦↑⟧ lw (fsuc j))) ⟩
+      ⟦ lw ↑ • [ r ]ᶜ ⟧ (₁₊ j) ≡⟨ eq (₁₊ j) ⟩
+      ⟦ lw' ↑ • [ r' ]ᶜ ⟧ (₁₊ j) ≡⟨ Eq.cong (\ x -> ⟦ lw' ↑ • [ x ]ᶜ ⟧ (₁₊ j)) r≡r' ⟨
+      ⟦ lw' ↑ • [ r ]ᶜ ⟧ (₁₊ j) ≡⟨ Eq.cong ⟦ [ r ]ᶜ ⟧ (⟦↑⟧ lw' (fsuc j)) ⟩
+      ⟦ [ r ]ᶜ ⟧ (shift ⟦ inv-nf l' ⟧ (₁₊ j)) ∎
 
 ------------------------------------------------------------------------
 -- Semantic injectivity of inv-nf: pointwise-equal denotations imply equal NFs
 
 private
   -- By induction on the coset tower: the cases n = 0, 1 are trivial since
-  -- NF is ⊤ there; at ₂₊ n' the normal form splits as prefix × coset, the
-  -- coset components agree by coset-unique, and the prefixes agree by the
-  -- induction hypothesis via prefix-unique.
+  -- NF is ⊤ there; at ₂₊ n' the normal form splits as dir × coset, the
+  -- coset components agree by coset-unique, and the dires agree by the
+  -- induction hypothesis via dir-unique.
   ⟦inv-nf⟧-injective : ∀ n {u v : NF n}
     → (∀ k → ⟦ inv-nf {n} u ⟧ k ≡ ⟦ inv-nf {n} v ⟧ k)
     → u ≡ v
   ⟦inv-nf⟧-injective 0       {tt}     {tt}      _   = Eq.refl
   ⟦inv-nf⟧-injective 1       {tt}     {tt}      _   = Eq.refl
   ⟦inv-nf⟧-injective (₂₊ n') {l , r} {l' , r'} eq  =
-    ≡×≡⇒≡ (⟦inv-nf⟧-injective (₁₊ n') (prefix-unique n' l l' r r' r≡r' eq↑) , r≡r')
+    ≡×≡⇒≡ (⟦inv-nf⟧-injective (₁₊ n') (dir-unique n' l l' r r' r≡r' eq↑) , r≡r')
     where
     -- inv-nf {₂₊ n'} (x , s) is (f ʷ)(inv-nf x) • [ s ]ᶜ; bridge to the ↑ form
     to↑ : ∀ (x : NF (₁₊ n')) (s : C (₁₊ n')) k
