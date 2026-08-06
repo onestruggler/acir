@@ -17,24 +17,30 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Nat using (ℕ ; 2+)
+open import Data.Nat using (ℕ ; suc ; 2+)
 open import Data.Nat.Primality using (Prime)
 
 module Examples.Groups.Symplectic.Semantics (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Algebra.Bundles    using (Group)
+open import Algebra.Morphism.Structures using (module GroupMorphisms)
 open import Algebra.Structures using (IsGroup)
 open import Data.Product using (_,_)
 open import Data.Vec using (_∷_ ; [])
+open import Data.Vec.Properties using (∷-injectiveʳ)
 open import Function using (id ; _∘_)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≗_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
+open import ForStdlib.Algebra.IndexedGroups
+  using (IndexedGroup ; Embedding ; emb-injective⇒emb^-injective)
+
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli ; sform ; sform1 ; _+ₚ_ ; _*ₚ_)
+open import Examples.Groups.Pauli.Semantics p-2 p-prime
+  using (Pauli ; sform ; sform1 ; _+ₚ_ ; _*ₚ_ ; _+₁_ ; _*₁_ ; pI)
 
 ------------------------------------------------------------------------
 -- Symplectic transformations
@@ -150,6 +156,103 @@ module _ (n : ℕ) where
 
   Sp-group : Group 0ℓ 0ℓ
   Sp-group = record { isGroup = Sp-isGroup }
+
+------------------------------------------------------------------------
+-- Sp as an indexed group
+
+-- The symplectic groups form a family indexed by the number of qupits.
+
+Sp-indexedGroup : IndexedGroup 0ℓ 0ℓ
+Sp-indexedGroup = record { group = Sp-group }
+
+------------------------------------------------------------------------
+-- The embedding of Sp(2n) into Sp(2(1+n))
+
+-- A transformation of the n-qupit phase space acts on the
+-- (1+n)-qupit phase space by ignoring the new wire 0 and acting on
+-- the remaining tail.  This is the semantic counterpart of the
+-- syntactic shift _↥, whose action is by definition
+-- actg (g ↥) (x ∷ ps) = x ∷ actg g ps.
+
+lift₀ᵖ : ∀ {n} → (Pauli n → Pauli n) → Pauli (suc n) → Pauli (suc n)
+lift₀ᵖ f (x ∷ ps) = x ∷ f ps
+
+-- Each law is the corresponding law of S on the tail, with the head
+-- untouched: linearity and form-preservation hold on the new wire
+-- because nothing happens there (sform1 x y is a common summand).
+lift₀ˢ : ∀ {n} → Symplectic n → Symplectic (suc n)
+lift₀ˢ S = record
+  { ap        = lift₀ᵖ (ap S)
+  ; ap⁻¹      = lift₀ᵖ (ap⁻¹ S)
+  ; invˡ      = λ { (x ∷ ps)          → Eq.cong (x ∷_) (invˡ S ps) }
+  ; invʳ      = λ { (x ∷ ps)          → Eq.cong (x ∷_) (invʳ S ps) }
+  ; linear-+  = λ { (x ∷ ps) (y ∷ qs) → Eq.cong ((x +₁ y) ∷_) (linear-+ S ps qs) }
+  ; linear-*  = λ { k (x ∷ ps)        → Eq.cong ((k *₁ x) ∷_) (linear-* S k ps) }
+  ; preserves = λ { (x ∷ ps) (y ∷ qs) → Eq.cong (sform1 x y +_) (preserves S ps qs) }
+  }
+
+-- lift₀ˢ is a group homomorphism.  Composition, identity and inverse
+-- all hold on the nose: lift₀ˢ threads the head through unchanged and
+-- both sides do the same thing to the tail.
+
+lift₀ˢ-cong : ∀ {n} {S T : Symplectic n} → S ≈ˢ T → lift₀ˢ S ≈ˢ lift₀ˢ T
+lift₀ˢ-cong e (x ∷ ps) = Eq.cong (x ∷_) (e ps)
+
+lift₀ˢ-∘ : ∀ {n} (S T : Symplectic n) → lift₀ˢ (S ∘ˢ T) ≈ˢ lift₀ˢ S ∘ˢ lift₀ˢ T
+lift₀ˢ-∘ S T (x ∷ ps) = Eq.refl
+
+lift₀ˢ-ε : ∀ {n} → lift₀ˢ (εˢ {n}) ≈ˢ εˢ
+lift₀ˢ-ε (x ∷ ps) = Eq.refl
+
+lift₀ˢ-⁻¹ : ∀ {n} (S : Symplectic n) → lift₀ˢ (S ⁻¹ˢ) ≈ˢ (lift₀ˢ S) ⁻¹ˢ
+lift₀ˢ-⁻¹ S (x ∷ ps) = Eq.refl
+
+-- Stated at top level, with the width n explicit, so that the
+-- congruence's implicit width is pinned: checking lift₀ˢ-cong against
+-- the implicit-headed field type leaves it unsolved otherwise.
+lift₀ˢ-isGroupHomomorphism : ∀ n →
+  GroupMorphisms.IsGroupHomomorphism (Group.rawGroup (Sp-group n))
+    (Group.rawGroup (Sp-group (suc n))) (lift₀ˢ {n})
+lift₀ˢ-isGroupHomomorphism n = record
+  { isMonoidHomomorphism = record
+    { isMagmaHomomorphism = record
+      { isRelHomomorphism = record { cong = λ {S} {T} → lift₀ˢ-cong {n} {S} {T} }
+      ; homo              = lift₀ˢ-∘
+      }
+    ; ε-homo = lift₀ˢ-ε
+    }
+  ; ⁻¹-homo = lift₀ˢ-⁻¹
+  }
+
+Sp-embedding : Embedding Sp-indexedGroup
+Sp-embedding = record
+  { emb                 = lift₀ˢ
+  ; isGroupHomomorphism = lift₀ˢ-isGroupHomomorphism
+  }
+
+------------------------------------------------------------------------
+-- The embedding is injective
+
+-- Two lifted transformations that agree everywhere agree in
+-- particular on the probes pI ∷ ps, whose heads they both fix; so
+-- their tails agree on every ps.  Any head would do -- pI is simply
+-- the one at hand.
+
+lift₀ˢ-injective : ∀ {n} {S T : Symplectic n} → lift₀ˢ S ≈ˢ lift₀ˢ T → S ≈ˢ T
+lift₀ˢ-injective e ps = ∷-injectiveʳ (e (pI ∷ ps))
+
+-- Hence the k-fold embedding of Sp(2n) into Sp(2(k+n)) is injective.
+
+lift₀ˢ^-injective : ∀ {n} (k : ℕ) {S T : Symplectic n} →
+                    Embedding.emb^ Sp-embedding k S ≈ˢ
+                    Embedding.emb^ Sp-embedding k T →
+                    S ≈ˢ T
+-- As with the congruence above, S and T must be bound explicitly:
+-- _≈ˢ_ compares transformations through their actions, so unifying
+-- two ≈ˢ statements pins the actions but never the records.
+lift₀ˢ^-injective =
+  emb-injective⇒emb^-injective Sp-embedding
+    (λ {n} {S} {T} → lift₀ˢ-injective {n} {S} {T})
 
 
 module Interpretation where
