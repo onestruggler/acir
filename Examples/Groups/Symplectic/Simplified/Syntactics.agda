@@ -90,6 +90,8 @@ module Simplified-Relations where
   Mg^ : ℤ ₚ ->  ∀ {n} -> Word (Gen (₁₊ n))
   Mg^ k = Mg ^ toℕ k
 
+  private variable
+    n : ℕ
 
   -- Group-specific rules only; the structural rules cong↑, comm₁, comm₂
   -- are supplied by Circuit.Base.Lift-Relation below.
@@ -97,27 +99,27 @@ module Simplified-Relations where
     infix 4 _SRel,_===_
     data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
 
-      order-S :           ∀ {n} → (₁₊ n) SRel,  S ^ p === ε
-      order-H :           ∀ {n} → (₁₊ n) SRel,  H ^ 2 === M₋₁
-      M-power : ∀ {n} (k : ℤ ₚ) → (₁₊ n) SRel,  Mg^ k === M (g^ k)
-      semi-MS :           ∀ {n} → (₁₊ n) SRel,  Mg • S === S^ (g * g) • Mg
+      order-S :           (₁₊ n) SRel,  S ^ p === ε
+      order-H :           (₁₊ n) SRel,  H ^ 2 === M₋₁
+      M-power :     ∀ k → (₁₊ n) SRel,  Mg^ k === M (g^ k)
+      semi-MS :           (₁₊ n) SRel,  Mg • S === S^ (g * g) • Mg
 
-      semi-M↑CZ :         ∀ {n} → (₂₊ n) SRel,  Mg ↑ • CZ === CZ^ g • Mg ↑
-      semi-M↓CZ :         ∀ {n} → (₂₊ n) SRel,  Mg ↓ • CZ === CZ^ g • Mg ↓
+      semi-M↑CZ :         (₂₊ n) SRel,  Mg ↑ • CZ === CZ^ g • Mg ↑
+      semi-M↓CZ :         (₂₊ n) SRel,  Mg ↓ • CZ === CZ^ g • Mg ↓
 
-      order-CZ :          ∀ {n} → (₂₊ n) SRel,  CZ ^ p === ε
+      order-CZ :          (₂₊ n) SRel,  CZ ^ p === ε
 
-      comm-CZ-S↓ :        ∀ {n} → (₂₊ n) SRel,  CZ • S ↓ === S ↓ • CZ
-      comm-CZ-S↑ :        ∀ {n} → (₂₊ n) SRel,  CZ • S ↑ === S ↑ • CZ
+      comm-CZ-S↓ :        (₂₊ n) SRel,  CZ • S ↓ === S ↓ • CZ
+      comm-CZ-S↑ :        (₂₊ n) SRel,  CZ • S ↑ === S ↑ • CZ
 
-      selinger-c10 :      ∀ {n} → (₂₊ n) SRel,  CZ • H ↑ • CZ === S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓
-      selinger-c11 :      ∀ {n} → (₂₊ n) SRel,  CZ • H ↓ • CZ === S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑
+      selinger-c10 :      (₂₊ n) SRel,  CZ • H ↑ • CZ === S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓
+      selinger-c11 :      (₂₊ n) SRel,  CZ • H ↓ • CZ === S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑
 
-      selinger-c12 :      ∀ {n} → (₃₊ n) SRel,  CZ ↑ • CZ === CZ • CZ ↑
-      selinger-c13 :      ∀ {n} → (₃₊ n) SRel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
+      selinger-c12 :      (₃₊ n) SRel,  CZ ↑ • CZ === CZ • CZ ↑
+      selinger-c13 :      (₃₊ n) SRel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
 
-      selinger-c14 :      ∀ {n} → (₃₊ n) SRel,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
-      selinger-c15 :      ∀ {n} → (₃₊ n) SRel,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
+      selinger-c14 :      (₃₊ n) SRel,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
+      selinger-c15 :      (₃₊ n) SRel,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
 
   open SimBase public
 
