@@ -50,7 +50,8 @@ open import Normalization.StarPresentation
 subpresentation : ∀ {n} -> let open PP (n VRel,_===_) in
   (n VRel,_===_) IsSubPresentationOf (Permutation′-group n)
 subpresentation {n} =
-  GS.GetSubPresentation.groupSubPres sound-ax grouplike (SN.nfp'-t n) TU.unique-nf-tight
+  GS.GetSubPresentation.groupSubPres sound-ax grouplike (SN.nfp'-t n)
+                                     TU.unique-nf-tight-bundled
   where
   module GS = GroupSem (n VRel,_===_) (Eq.setoid (SN.NF n))
                        (Permutation′-group n) (⟦_⟧ᵍ {n})

@@ -57,28 +57,35 @@ private
 ------------------------------------------------------------------------
 -- Unique normal form for the tight semantics
 
--- A tight denotation determines a loose one wirewise (⟦⟧-agree), so
--- the loose uniqueness transfers: rewrite the hypothesis along
--- ⟦⟧-agree at both ends and appeal to unique-nf.
-unique-nf-tight :
-  NFBase.UniqueNormalForm (_VRel,_===_ n) (NF n)
-    (Group.setoid (Permutation′-group n)) (TightSem.⟦_⟧ {n}) (nfp'-t n)
-unique-nf-tight {n = n} = record
-  { unique = λ {u} {v} eq →
-      UniqueNormalForm.unique (unique-nf n)
-        (λ k → Eq.trans (Eq.sym (⟦⟧-agree (inv-nf {n} u) k))
-               (Eq.trans (eq k) (⟦⟧-agree (inv-nf {n} v) k)))
-  }
-  where open SNF using (UniqueNormalForm)
+private
+  -- A tight denotation determines a loose one wirewise (⟦⟧-agree), so
+  -- the loose uniqueness transfers: rewrite the hypothesis along
+  -- ⟦⟧-agree at both ends and appeal to unique-nf.  This is the whole
+  -- content of the two witnesses below, which differ only in how they
+  -- are packaged.
+  transfer : ∀ {n} {u v : NF n} →
+             (∀ k → TightSem.⟦ inv-nf {n} u ⟧ ⟨$⟩ʳ k ≡
+                    TightSem.⟦ inv-nf {n} v ⟧ ⟨$⟩ʳ k) →
+             u ≡ v
+  transfer {n} {u} {v} eq =
+    UniqueNormalForm.unique (unique-nf n)
+      (λ k → Eq.trans (Eq.sym (⟦⟧-agree (inv-nf {n} u) k))
+             (Eq.trans (eq k) (⟦⟧-agree (inv-nf {n} v) k)))
+    where open SNF using (UniqueNormalForm)
 
--- The same content in the packaging of
--- Normalization.NormalForm.Uniqueness, which takes the section
--- inv-nf directly instead of a whole NormalForm record.  The two
--- `unique` fields have the same type, so this is a repackaging.
-unique-nf-tight′ : ∀ n →
+-- Uniqueness in the sense of Normalization.NormalForm.Uniqueness,
+-- which states it against the section inv-nf alone.
+unique-nf-tight : ∀ {n} →
   let open NFU (_VRel,_===_ n) (NF n)
                (Group.setoid (Permutation′-group n)) (TightSem.⟦_⟧ {n})
   in UniqueNormalForm (inv-nf {n})
-unique-nf-tight′ n = record
-  { unique = SNF.UniqueNormalForm.unique (unique-nf-tight {n})
-  }
+unique-nf-tight = record { unique = transfer }
+
+-- The same content in the packaging of
+-- Normalization.NormalForm.Setoid, which states uniqueness against a
+-- whole NormalForm record.  Kept because that is the form
+-- Normalization.StarPresentation's groupSubPres consumes.
+unique-nf-tight-bundled : ∀ {n} →
+  NFBase.UniqueNormalForm (_VRel,_===_ n) (NF n)
+    (Group.setoid (Permutation′-group n)) (TightSem.⟦_⟧ {n}) (nfp'-t n)
+unique-nf-tight-bundled = record { unique = transfer }

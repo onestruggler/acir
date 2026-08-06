@@ -41,6 +41,7 @@ open import Presentation.Construct.Base
   using (_⋄_⋄_ ; CommRel ; ConjRelʷ ; EmptyRel ; TrivialRel ; _⊕_ ; _⊕^_)
 import Normalization.NormalForm.Setoid as SNF
 import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Uniqueness.Propositional as NFU
 
 import Presentation.Construct.Properties.DirectProduct as DirectProduct
 import Presentation.Construct.Properties.NDirectProduct as NDirectProduct
@@ -208,9 +209,10 @@ symmetric-presentation :
 symmetric-presentation n = SymThm.Tight.presentation n
 
 symmetric-unique-nf :
-  ∀ n → NFBase.UniqueNormalForm (n VRel,_===_) (SymNF.NF n)
-          (Group.setoid (SymTight.Permutation′-group n))
-          (SymTight.⟦_⟧ {n}) (SymNF.nfp'-t n)
+  ∀ n → let open NFU (n VRel,_===_) (SymNF.NF n)
+                     (Group.setoid (SymTight.Permutation′-group n))
+                     (SymTight.⟦_⟧ {n})
+        in UniqueNormalForm (SymNF.inv-nf {n})
 symmetric-unique-nf n = SymThm.Tight.unique-nf n
 
 symmetric-unique-nf-loose :

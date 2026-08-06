@@ -10,7 +10,7 @@
 open import Algebra.Bundles using (Group)
 open import Data.Nat using (ℕ)
 
-import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Uniqueness.Propositional as NFU
 import Presentation.Properties as PP
 open import Function.Definitions using (Injective)
 open import Relation.Binary.Bundles using (Setoid)
@@ -20,7 +20,7 @@ module Examples.Groups.Symmetric.Tight.Completeness where
 open import Examples.Groups.Symmetric.Syntactics using (_VRel,_===_)
 open import Examples.Groups.Symmetric.Tight.Semantics using (⟦_⟧ ; Permutation′-group)
 open import Examples.Groups.Symmetric.Tight.Soundness using (sound)
-open import Examples.Groups.Symmetric.Normalization using (NF)
+open import Examples.Groups.Symmetric.Normalization using (NF ; nfp'-t)
 import Examples.Groups.Symmetric.Tight.Uniqueness as TU
 
 
@@ -31,6 +31,10 @@ private variable n : ℕ
 
 completeness : let open PP (n VRel,_===_) in
   Injective (Setoid._≈_ word-setoid) (Setoid._≈_ (Group.setoid (Permutation′-group n))) ⟦_⟧
+-- The normal form must be supplied explicitly: by-normalization takes
+-- it implicitly, but its uniqueness argument mentions only the
+-- section inv-nf, from which the record cannot be recovered.
 completeness {n} =
-  NFBase.by-normalization (_VRel,_===_ n) (NF n) (Group.setoid (Permutation′-group n)) (⟦_⟧ {n})
-    TU.unique-nf-tight (sound {n})
+  NFU.by-normalization (_VRel,_===_ n) (NF n)
+    (Group.setoid (Permutation′-group n)) (⟦_⟧ {n})
+    {nfp'-t n} TU.unique-nf-tight (sound {n})

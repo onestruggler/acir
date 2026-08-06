@@ -9,6 +9,7 @@
 open import Algebra.Bundles using (Group)
 
 import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Uniqueness.Propositional as NFU
 import Presentation.Properties as PP
 open import Presentation.Definitions using (_IsPresentationOf_)
 open import Function.Definitions using (Congruent ; Injective)
@@ -17,7 +18,8 @@ open import Relation.Binary.Bundles using (Setoid)
 module Examples.Groups.Symmetric.Theorems where
 
 open import Examples.Groups.Symmetric.Syntactics
-open import Examples.Groups.Symmetric.Normalization using (NF ; nfp'-t)
+open import Examples.Groups.Symmetric.Normalization
+  using (NF ; inv-nf ; nfp'-t)
 
 ------------------------------------------------------------------------
 -- Unique normal form, soundness, completeness and presentation
@@ -65,9 +67,11 @@ module Tight where
   import Examples.Groups.Symmetric.Tight.Presentation as TP
 
   unique-nf : ∀ n →
-  
-    NFBase.UniqueNormalForm (n VRel,_===_) (NF n) (Group.setoid (Permutation′-group n)) (⟦_⟧ {n}) (nfp'-t n)
-    
+
+    let open NFU (n VRel,_===_) (NF n)
+                 (Group.setoid (Permutation′-group n)) (⟦_⟧ {n})
+    in UniqueNormalForm (inv-nf {n})
+
   unique-nf n = TU.unique-nf-tight {n}
 
 
