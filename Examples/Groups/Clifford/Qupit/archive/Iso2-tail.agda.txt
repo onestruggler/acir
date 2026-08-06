@@ -99,14 +99,14 @@ Abandoned WIP (incomplete, {!!} holes). Not part of the build.
   f-well-defined SemiDirect.comm-Z₁-X₁ = by-sub-nf₁ OL.lemma-conj-X-Z
 
   f-well-defined SemiDirect.order-H₀ = by-sub-nf₀ (axiom O.order-H)
-  f-well-defined SemiDirect.order-S₀ =  ( by-sub-nf₀ lemma-order-𝑠)
-  f-well-defined SemiDirect.order-S₀H₀ = by-sub-nf₀ lemma-order-𝑠H
-  f-well-defined SemiDirect.comm-H₀H₀S₀ = by-sub-nf₀ lemma-comm-HH𝑠
+  f-well-defined SemiDirect.order-S₀ =  ( by-sub-nf₀ lemma-order-ζ)
+  f-well-defined SemiDirect.order-S₀H₀ = by-sub-nf₀ lemma-order-ζH
+  f-well-defined SemiDirect.comm-H₀H₀S₀ = by-sub-nf₀ lemma-comm-HHζ
 
   f-well-defined SemiDirect.order-H₁ = by-sub-nf₁ (axiom O.order-H)
-  f-well-defined SemiDirect.order-S₁ =  ( by-sub-nf₁ lemma-order-𝑠)
-  f-well-defined SemiDirect.order-S₁H₁ = by-sub-nf₁ lemma-order-𝑠H
-  f-well-defined SemiDirect.comm-H₁H₁S₁ = by-sub-nf₁ lemma-comm-HH𝑠
+  f-well-defined SemiDirect.order-S₁ =  ( by-sub-nf₁ lemma-order-ζ)
+  f-well-defined SemiDirect.order-S₁H₁ = by-sub-nf₁ lemma-order-ζH
+  f-well-defined SemiDirect.comm-H₁H₁S₁ = by-sub-nf₁ lemma-comm-HHζ
 
   f-well-defined SemiDirect.comm-H₁H₀ = general-comm auto
   f-well-defined SemiDirect.comm-H₁S₀ = general-comm auto
@@ -124,12 +124,12 @@ Abandoned WIP (incomplete, {!!} holes). Not part of the build.
 
   f-well-defined SemiDirect.conj-H₀-X₀ = rewrite-push-HH 100 auto
   f-well-defined SemiDirect.conj-H₀-Z₀ = rewrite-push-HH 100 auto
-  f-well-defined SemiDirect.conj-S₀-X₀ = by-sub-nf₀ lemma-conj-𝑠-X
+  f-well-defined SemiDirect.conj-S₀-X₀ = by-sub-nf₀ lemma-conj-ζ-X
   f-well-defined SemiDirect.conj-S₀-Z₀ = rewrite-push-HH 100 auto
 
   f-well-defined SemiDirect.conj-H₁-X₁ = rewrite-push-HH 100 auto
   f-well-defined SemiDirect.conj-H₁-Z₁ = rewrite-push-HH 100 auto
-  f-well-defined SemiDirect.conj-S₁-X₁ = by-sub-nf₁ lemma-conj-𝑠-X
+  f-well-defined SemiDirect.conj-S₁-X₁ = by-sub-nf₁ lemma-conj-ζ-X
   f-well-defined SemiDirect.conj-S₁-Z₁ = rewrite-push-HH 100 auto
 
   f-well-defined SemiDirect.conj-H₁-X₀ = general-comm auto

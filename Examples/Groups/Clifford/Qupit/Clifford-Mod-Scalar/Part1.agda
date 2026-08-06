@@ -111,14 +111,14 @@ module Clifford-Relations where
   X^ : ℤ ₚ ->  ∀ {n} -> Word (Gen (₁₊ n))
   X^ k = X ^ toℕ k
 
-  𝑠 : ∀ {n} -> Word (Gen (₁₊ n))
-  𝑠 = S • Z^ 1/2
-  𝑠^ : ∀ {n} ->  ℤ ₚ ->  Word (Gen (₁₊ n))
-  𝑠^ k = 𝑠 ^ toℕ k
+  ζ : ∀ {n} -> Word (Gen (₁₊ n))
+  ζ = S • Z^ 1/2
+  ζ^ : ∀ {n} ->  ℤ ₚ ->  Word (Gen (₁₊ n))
+  ζ^ k = ζ ^ toℕ k
 
 
   M : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
-  M x' = 𝑠^ x • H • 𝑠^ x⁻¹ • H • 𝑠^ x • H
+  M x' = ζ^ x • H • ζ^ x⁻¹ • H • ζ^ x • H
     where
     x = x' .proj₁
     x⁻¹ = ((x' ⁻¹) .proj₁ )
@@ -144,7 +144,7 @@ module Clifford-Relations where
     order-S :           ∀ {n} → (₁₊ n) QRel,  S ^ p === ε
     order-H :           ∀ {n} → (₁₊ n) QRel,  H ^ 2 === M₋₁
     M-power : ∀ {n} (k : ℤ ₚ) → (₁₊ n) QRel,  Mg^ k === M (g^ k)
-    semi-M𝑠 :           ∀ {n} → (₁₊ n) QRel,  Mg • 𝑠 === 𝑠^ (g * g) • Mg
+    semi-Mζ :           ∀ {n} → (₁₊ n) QRel,  Mg • ζ === ζ^ (g * g) • Mg
     order-SH :          ∀ {n} → (₁₊ n) QRel,  (S • H) ^ 3 === ε
     comm-HHSHHS :       ∀ {n} → (₁₊ n) QRel,  H • H • S • H • H • S === S • H • H • S • H • H
     comm-X-Z :          ∀ {n} → (₁₊ n) QRel,  X • Z === Z • X
@@ -160,8 +160,8 @@ module Clifford-Relations where
     comm-CZ-S↓ :        ∀ {n} → (₂₊ n) QRel,  CZ • S ↓ === S ↓ • CZ
     comm-CZ-S↑ :        ∀ {n} → (₂₊ n) QRel,  CZ • S ↑ === S ↑ • CZ
 
-    selinger-c10 :      ∀ {n} → (₂₊ n) QRel,  CZ • H ↑ • CZ === 𝑠 ↑ ^ p-1 • H ↑ • 𝑠 ↑ ^ p-1 • CZ • H ↑ • 𝑠 ↑ ^ p-1 • 𝑠 ↓ ^ p-1
-    selinger-c11 :      ∀ {n} → (₂₊ n) QRel,  CZ • H ↓ • CZ === 𝑠 ↓ ^ p-1 • H ↓ • 𝑠 ↓ ^ p-1 • CZ • H ↓ • 𝑠 ↓ ^ p-1 • 𝑠 ↑ ^ p-1
+    selinger-c10 :      ∀ {n} → (₂₊ n) QRel,  CZ • H ↑ • CZ === ζ ↑ ^ p-1 • H ↑ • ζ ↑ ^ p-1 • CZ • H ↑ • ζ ↑ ^ p-1 • ζ ↓ ^ p-1
+    selinger-c11 :      ∀ {n} → (₂₊ n) QRel,  CZ • H ↓ • CZ === ζ ↓ ^ p-1 • H ↓ • ζ ↓ ^ p-1 • CZ • H ↓ • ζ ↓ ^ p-1 • ζ ↑ ^ p-1
 
     selinger-c12 :      ∀ {n} → (₃₊ n) QRel,  CZ ↑ • CZ === CZ • CZ ↑
     selinger-c13 :      ∀ {n} → (₃₊ n) QRel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓

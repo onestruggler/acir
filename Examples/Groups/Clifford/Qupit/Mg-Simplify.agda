@@ -3,8 +3,8 @@
 
 ------------------------------------------------------------------------
 -- Exploration: simplify the metaplectic Mg = M(g') appearing in
--- semi-M𝑠 / semi-M↑CZ / semi-M↓CZ / order-H, by collecting the Z^½
--- Paulis out of the 𝑠-powers (S,Z commute) and pushing them through
+-- semi-Mζ / semi-M↑CZ / semi-M↓CZ / order-H, by collecting the Z^½
+-- Paulis out of the ζ-powers (S,Z commute) and pushing them through
 -- the H's, to expose the underlying S,H,CZ content.
 ------------------------------------------------------------------------
 
@@ -47,10 +47,10 @@ open Clifford-GroupLike
 module CL  = Lemmas1
 module CLb = Lemmas1b
 
--- ── collect the Paulis out of an 𝑠-power: 𝑠^k = S^k · Z^(k·½) ──
-𝑠-collect : ∀ {n} k -> let open PB ((₁₊ n) QRel,_===_) in
-  𝑠 ^ k ≈ S ^ k • Z ^ (k Nat.* toℕ 1/2)
-𝑠-collect {n} k = begin
+-- ── collect the Paulis out of an ζ-power: ζ^k = S^k · Z^(k·½) ──
+ζ-collect : ∀ {n} k -> let open PB ((₁₊ n) QRel,_===_) in
+  ζ ^ k ≈ S ^ k • Z ^ (k Nat.* toℕ 1/2)
+ζ-collect {n} k = begin
   (S • Z ^ toℕ 1/2) ^ k          ≈⟨ ^-• S (Z ^ toℕ 1/2) k commSZ ⟩
   S ^ k • (Z ^ toℕ 1/2) ^ k      ≈⟨ cright (^^ Z (toℕ 1/2) k) ⟩
   S ^ k • Z ^ (toℕ 1/2 Nat.* k)  ≈⟨ cright (refl' (Eq.cong (Z ^_) (NP.*-comm (toℕ 1/2) k))) ⟩
@@ -62,7 +62,7 @@ module CLb = Lemmas1b
   commSZ : S • Z ^ toℕ 1/2 ≈ Z ^ toℕ 1/2 • S
   commSZ = comm⇒pow-comm 1 (toℕ 1/2) (sym (CL.lemma-comm-Z-S n))
 
--- ── expand M x: collect Paulis out of all three 𝑠-powers ──
+-- ── expand M x: collect Paulis out of all three ζ-powers ──
 module _ (x : ℤ* ₚ) where
   private
     a = toℕ (x .proj₁)
@@ -72,8 +72,8 @@ module _ (x : ℤ* ₚ) where
   M-expand : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in
     M x ≈ (S ^ a • Z ^ (a Nat.* z)) • H • (S ^ b • Z ^ (b Nat.* z)) • H • (S ^ a • Z ^ (a Nat.* z)) • H
   M-expand {n} = begin
-    𝑠 ^ a • H • 𝑠 ^ b • H • 𝑠 ^ a • H
-      ≈⟨ cong (𝑠-collect a) (cong refl (cong (𝑠-collect b) (cong refl (cong (𝑠-collect a) refl)))) ⟩
+    ζ ^ a • H • ζ ^ b • H • ζ ^ a • H
+      ≈⟨ cong (ζ-collect a) (cong refl (cong (ζ-collect b) (cong refl (cong (ζ-collect a) refl)))) ⟩
     (S ^ a • Z ^ (a Nat.* z)) • H • (S ^ b • Z ^ (b Nat.* z)) • H • (S ^ a • Z ^ (a Nat.* z)) • H ∎
     where
     open PB ((₁₊ n) QRel,_===_)
@@ -546,7 +546,7 @@ module SemiCZ (n : ℕ) where
   commZ↓Wg↑ : (Z ↓) ^ zX • Wg↑ ≈ Wg↑ • (Z ↓) ^ zX
   commZ↓Wg↑ = comm⇒pow-comm zX 1 (lemma-comm-Z-w↑ (S ^ a • H • S ^ b • H • S ^ a • H))
 
-  -- Paulis pushed to the right-most (same shape as semi-M𝑠):
+  -- Paulis pushed to the right-most (same shape as semi-Mζ):
   final-semi-M↑CZ : Wg↑ • CZ ≈ CZ^ g • Wg↑ • (Z ↓) ^ zX
   final-semi-M↑CZ = begin
     Wg↑ • CZ                        ≈⟨ simplified-semi-M↑CZ ⟩
@@ -643,7 +643,7 @@ module SemiCZ↓ (n : ℕ) where
   commQCZ : Q • CZ^ g ≈ CZ^ g • Q
   commQCZ = comm⇒pow-comm zX (toℕ g) lemma-comm-Z↑-CZ
 
-  -- Paulis pushed to the right-most (same shape as semi-M𝑠):
+  -- Paulis pushed to the right-most (same shape as semi-Mζ):
   final-semi-M↓CZ : Wg • CZ ≈ CZ^ g • Wg • Q
   final-semi-M↓CZ = begin
     Wg • CZ            ≈⟨ simplified-semi-M↓CZ ⟩
@@ -740,7 +740,7 @@ module SemiCZ↓₋₁ (n : ℕ) where
     (Q • CZ^ (-'₁ .proj₁) • Wg) • P ∎)
 
 -- ════════════════════════════════════════════════════════════════════
--- semi-M𝑠 with the Paulis pushed out & cancelled (single-qudit; no lift).
+-- semi-Mζ with the Paulis pushed out & cancelled (single-qudit; no lift).
 -- The X-Pauli of Mg cancels, leaving an irreducible Z^(½(g-1)).
 -- ════════════════════════════════════════════════════════════════════
 module SemiS (n : ℕ) where
@@ -766,8 +766,8 @@ module SemiS (n : ℕ) where
   decompWP : M g* ≈ Wg • P
   decompWP = trans D.M-decomp-clean (by-passoc (□ ^ 8) (□ ^ 6 • □ ^ 2) auto)
 
-  -- push the Pauli P past 𝑠 (= S·Z^½):  P·𝑠 ≈ 𝑠·Z^(zZ+(p-1)zX)·X^zX
-  Pstep : P • 𝑠 ≈ 𝑠 • (Z ^ E' • X ^ zX)
+  -- push the Pauli P past ζ (= S·Z^½):  P·ζ ≈ ζ·Z^(zZ+(p-1)zX)·X^zX
+  Pstep : P • ζ ≈ ζ • (Z ^ E' • X ^ zX)
   Pstep = begin
     (Z ^ zZ • X ^ zX) • (S • Z ^ z½)                          ≈⟨ assoc ⟩
     Z ^ zZ • (X ^ zX • (S • Z ^ z½))                          ≈⟨ cright (sym assoc) ⟩
@@ -800,36 +800,36 @@ module SemiS (n : ℕ) where
     arith3 = Eq.trans (Eq.sym (NP.+-assoc zX zZ (p-1 Nat.* zX)))
              (Eq.trans (Eq.cong (Nat._+ (p-1 Nat.* zX)) (NP.+-comm zX zZ)) (NP.+-assoc zZ zX (p-1 Nat.* zX)))
 
-  -- THE simplified relation: Wg·𝑠 ≈ 𝑠^(g²)·Wg·Z^(½(g-1))
-  simplified-semi-M𝑠 : Wg • 𝑠 ≈ 𝑠^ (g * g) • Wg • Z ^ zX
-  simplified-semi-M𝑠 = •-cancelʳ {h = Z ^ E' • X ^ zX} (trans lhs (sym rhs))
+  -- THE simplified relation: Wg·ζ ≈ ζ^(g²)·Wg·Z^(½(g-1))
+  simplified-semi-Mζ : Wg • ζ ≈ ζ^ (g * g) • Wg • Z ^ zX
+  simplified-semi-Mζ = •-cancelʳ {h = Z ^ E' • X ^ zX} (trans lhs (sym rhs))
     where
-    lhs : (Wg • 𝑠) • (Z ^ E' • X ^ zX) ≈ 𝑠^ (g * g) • (Wg • P)
+    lhs : (Wg • ζ) • (Z ^ E' • X ^ zX) ≈ ζ^ (g * g) • (Wg • P)
     lhs = begin
-      (Wg • 𝑠) • (Z ^ E' • X ^ zX)   ≈⟨ assoc ⟩
-      Wg • (𝑠 • (Z ^ E' • X ^ zX))   ≈⟨ cright (sym Pstep) ⟩
-      Wg • (P • 𝑠)                    ≈⟨ sym assoc ⟩
-      (Wg • P) • 𝑠                    ≈⟨ cleft (sym decompWP) ⟩
-      M g* • 𝑠                        ≈⟨ axiom semi-M𝑠 ⟩
-      𝑠^ (g * g) • M g*               ≈⟨ cright decompWP ⟩
-      𝑠^ (g * g) • (Wg • P) ∎
-    rhs : (𝑠^ (g * g) • Wg • Z ^ zX) • (Z ^ E' • X ^ zX) ≈ 𝑠^ (g * g) • (Wg • P)
+      (Wg • ζ) • (Z ^ E' • X ^ zX)   ≈⟨ assoc ⟩
+      Wg • (ζ • (Z ^ E' • X ^ zX))   ≈⟨ cright (sym Pstep) ⟩
+      Wg • (P • ζ)                    ≈⟨ sym assoc ⟩
+      (Wg • P) • ζ                    ≈⟨ cleft (sym decompWP) ⟩
+      M g* • ζ                        ≈⟨ axiom semi-Mζ ⟩
+      ζ^ (g * g) • M g*               ≈⟨ cright decompWP ⟩
+      ζ^ (g * g) • (Wg • P) ∎
+    rhs : (ζ^ (g * g) • Wg • Z ^ zX) • (Z ^ E' • X ^ zX) ≈ ζ^ (g * g) • (Wg • P)
     rhs = begin
-      (𝑠^ (g * g) • Wg • Z ^ zX) • (Z ^ E' • X ^ zX)        ≈⟨ assoc ⟩
-      𝑠^ (g * g) • ((Wg • Z ^ zX) • (Z ^ E' • X ^ zX))      ≈⟨ cright assoc ⟩
-      𝑠^ (g * g) • (Wg • (Z ^ zX • (Z ^ E' • X ^ zX)))      ≈⟨ cright (cright (sym assoc)) ⟩
-      𝑠^ (g * g) • (Wg • ((Z ^ zX • Z ^ E') • X ^ zX))      ≈⟨ cright (cright (cleft (sym (^-+ Z zX E')))) ⟩
-      𝑠^ (g * g) • (Wg • (Z ^ (zX Nat.+ E') • X ^ zX))      ≈⟨ cright (cright (cleft Zred)) ⟩
-      𝑠^ (g * g) • (Wg • (Z ^ zZ • X ^ zX)) ∎
+      (ζ^ (g * g) • Wg • Z ^ zX) • (Z ^ E' • X ^ zX)        ≈⟨ assoc ⟩
+      ζ^ (g * g) • ((Wg • Z ^ zX) • (Z ^ E' • X ^ zX))      ≈⟨ cright assoc ⟩
+      ζ^ (g * g) • (Wg • (Z ^ zX • (Z ^ E' • X ^ zX)))      ≈⟨ cright (cright (sym assoc)) ⟩
+      ζ^ (g * g) • (Wg • ((Z ^ zX • Z ^ E') • X ^ zX))      ≈⟨ cright (cright (cleft (sym (^-+ Z zX E')))) ⟩
+      ζ^ (g * g) • (Wg • (Z ^ (zX Nat.+ E') • X ^ zX))      ≈⟨ cright (cright (cleft Zred)) ⟩
+      ζ^ (g * g) • (Wg • (Z ^ zZ • X ^ zX)) ∎
 
-  -- 𝑠 = S·Z^½ still hides a Pauli.  Expanding both 𝑠's via 𝑠-collect pulls the
-  -- Z^½ Paulis out, giving the relation in basic gates S, H, Z (no 𝑠 left):
+  -- ζ = S·Z^½ still hides a Pauli.  Expanding both ζ's via ζ-collect pulls the
+  -- Z^½ Paulis out, giving the relation in basic gates S, H, Z (no ζ left):
   --   (S^a·H·S^b·H·S^a·H)·S·Z^½ ≈ S^(g²)·Z^(g²·½)·(S^a·H·S^b·H·S^a·H)·Z^(½(g-1))
-  pushed-semi-M𝑠 : Wg • S • Z ^ z½
+  pushed-semi-Mζ : Wg • S • Z ^ z½
                  ≈ S ^ toℕ (g * g) • Z ^ (toℕ (g * g) Nat.* z½) • Wg • Z ^ zX
-  pushed-semi-M𝑠 = begin
-    Wg • S • Z ^ z½                                                ≈⟨ simplified-semi-M𝑠 ⟩
-    𝑠^ (g * g) • Wg • Z ^ zX                                       ≈⟨ cleft (𝑠-collect (toℕ (g * g))) ⟩
+  pushed-semi-Mζ = begin
+    Wg • S • Z ^ z½                                                ≈⟨ simplified-semi-Mζ ⟩
+    ζ^ (g * g) • Wg • Z ^ zX                                       ≈⟨ cleft (ζ-collect (toℕ (g * g))) ⟩
     (S ^ toℕ (g * g) • Z ^ (toℕ (g * g) Nat.* z½)) • (Wg • Z ^ zX) ≈⟨ assoc ⟩
     S ^ toℕ (g * g) • Z ^ (toℕ (g * g) Nat.* z½) • Wg • Z ^ zX ∎
 
@@ -945,10 +945,10 @@ module SemiS-collected (n : ℕ) where
   -- fully collected: push the middle Z through Wg (Z-Wg) and merge it with the
   -- trailing Z^(½(g-1)).  All Paulis now sit at the right-most position; the two
   -- RHS Z-powers combine into one (Z^(g·½) · Z^(½(g-1)) = Z^(g-½)).
-  collected-semi-M𝑠 : Wg • S • Z ^ z½ ≈ S ^ c • Wg • Z ^ (toℕ (g * 1/2) Nat.+ zX)
-  collected-semi-M𝑠 = begin
-    Wg • S • Z ^ z½                              ≈⟨ SemiS.simplified-semi-M𝑠 n ⟩
-    𝑠^ (g * g) • Wg • Z ^ zX                     ≈⟨ cleft (𝑠-collect c) ⟩
+  collected-semi-Mζ : Wg • S • Z ^ z½ ≈ S ^ c • Wg • Z ^ (toℕ (g * 1/2) Nat.+ zX)
+  collected-semi-Mζ = begin
+    Wg • S • Z ^ z½                              ≈⟨ SemiS.simplified-semi-Mζ n ⟩
+    ζ^ (g * g) • Wg • Z ^ zX                     ≈⟨ cleft (ζ-collect c) ⟩
     (S ^ c • Z ^ (c Nat.* z½)) • Wg • Z ^ zX     ≈⟨ assoc ⟩
     S ^ c • (Z ^ (c Nat.* z½) • Wg • Z ^ zX)     ≈⟨ cright (sym assoc) ⟩
     S ^ c • ((Z ^ (c Nat.* z½) • Wg) • Z ^ zX)   ≈⟨ cright (cleft pushMid) ⟩
@@ -1000,10 +1000,10 @@ module SemiS-collected (n : ℕ) where
                      (Eq.cong (λ t → t + 1/2) (*-identityʳ gm)))))))))
 
   -- Wg · S ≈ S^(g²) · Wg · Z^(g-1)
-  final-semi-M𝑠 : Wg • S ≈ S ^ c • Wg • Z ^ toℕ (g + (- 1ₚ))
-  final-semi-M𝑠 = •-cancelʳ {h = Z ^ z½} (begin
+  final-semi-Mζ : Wg • S ≈ S ^ c • Wg • Z ^ toℕ (g + (- 1ₚ))
+  final-semi-Mζ = •-cancelʳ {h = Z ^ z½} (begin
     (Wg • S) • Z ^ z½                              ≈⟨ assoc ⟩
-    Wg • (S • Z ^ z½)                              ≈⟨ collected-semi-M𝑠 ⟩
+    Wg • (S • Z ^ z½)                              ≈⟨ collected-semi-Mζ ⟩
     S ^ c • Wg • Z ^ (toℕ (g * 1/2) Nat.+ zX)      ≈⟨ cright (cright expeq) ⟩
     S ^ c • Wg • Z ^ (toℕ (g + (- 1ₚ)) Nat.+ z½)   ≈⟨ cright (cright (^-+ Z (toℕ (g + (- 1ₚ))) z½)) ⟩
     S ^ c • Wg • (Z ^ toℕ (g + (- 1ₚ)) • Z ^ z½)   ≈⟨ cright (sym assoc) ⟩
@@ -1022,11 +1022,11 @@ module SemiS-collected (n : ℕ) where
               (Eq.trans (Eq.cong toℕ ringEq) (Eq.sym (D.toℕ-+ (g + (- 1ₚ)) 1/2)))
 
 -- ════════════════════════════════════════════════════════════════════
--- lemma-Mg^kS : the S-analogue of lemma-Mg^k𝑠.
+-- lemma-Mg^kS : the S-analogue of lemma-Mg^kζ.
 --   Mg^k · S  ≈  S^((g²)^k) · Mg^k · Z^(½(g^k-1)).
--- Mg^k = M(g^k) conjugates Z by g^(-k); pushing the half-Pauli of 𝑠
--- through Mg^k turns the lemma-Mg^k𝑠 right-hand 𝑠-power into S plus a
--- single right-most Z, exactly as Wg does in final-semi-M𝑠.
+-- Mg^k = M(g^k) conjugates Z by g^(-k); pushing the half-Pauli of ζ
+-- through Mg^k turns the lemma-Mg^kζ right-hand ζ-power into S plus a
+-- single right-most Z, exactly as Wg does in final-semi-Mζ.
 -- ════════════════════════════════════════════════════════════════════
 module MgPowS (n : ℕ) where
   open PB ((₁₊ n) QRel,_===_)
@@ -1112,8 +1112,8 @@ module MgPowS (n : ℕ) where
   lemma-Mg^kS k = •-cancelʳ {h = Z ^ z½} (begin
     (Mg ^ k • S) • Z ^ z½                                                          ≈⟨ assoc ⟩
     Mg ^ k • (S • Z ^ z½)                                                          ≈⟨ refl ⟩
-    Mg ^ k • 𝑠                                                                     ≈⟨ CL.lemma-Mg^k𝑠 n k ⟩
-    𝑠^ ((g * g) ^′ k) • Mg ^ k                                                     ≈⟨ cleft (𝑠-collect (toℕ ((g * g) ^′ k))) ⟩
+    Mg ^ k • ζ                                                                     ≈⟨ CL.lemma-Mg^kζ n k ⟩
+    ζ^ ((g * g) ^′ k) • Mg ^ k                                                     ≈⟨ cleft (ζ-collect (toℕ ((g * g) ^′ k))) ⟩
     (S ^ toℕ ((g * g) ^′ k) • Z ^ (toℕ ((g * g) ^′ k) Nat.* z½)) • Mg ^ k          ≈⟨ assoc ⟩
     S ^ toℕ ((g * g) ^′ k) • (Z ^ (toℕ ((g * g) ^′ k) Nat.* z½) • Mg ^ k)          ≈⟨ cright (cleft (Zmod (toℕ ((g * g) ^′ k) Nat.* z½))) ⟩
     S ^ toℕ ((g * g) ^′ k) • (Z ^ ((toℕ ((g * g) ^′ k) Nat.* z½) % p) • Mg ^ k)    ≈⟨ cright (cleft (refl' (Eq.cong (Z ^_) (lemma-toℕ-% ((g * g) ^′ k) 1/2)))) ⟩

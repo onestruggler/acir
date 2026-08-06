@@ -12,7 +12,7 @@
 --
 --   Part1 : Lemmas1-S
 --   Part2 : Lemmas-Clifford-S, Simplified-GroupLike-S, Lemmas1b-S
---   Part3 : the standalone 𝑠/Z/CZ conjugation lemmas (CL, CLb glue)
+--   Part3 : the standalone ζ/Z/CZ conjugation lemmas (CL, CLb glue)
 --   Part4 : the tail-c10/c11 cascade, C10/C11, Completeness-S
 --
 -- Each part imports its predecessor with `public`, so re-exporting

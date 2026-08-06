@@ -9,10 +9,10 @@
 --   (1) push the X and Z (Pauli) parts of both sides to the right-most
 --       position and cancel them as far as possible;
 --   (2) use only the basic gates S, H, CZ as much as possible
---       (in particular, prefer S over 𝑠 = S · Z^½);
+--       (in particular, prefer S over ζ = S · Z^½);
 --   (3) keep the original structure as much as possible.
 --
--- The generators and all the derived words (X, Z, 𝑠, M, Mg, …) are
+-- The generators and all the derived words (X, Z, ζ, M, Mg, …) are
 -- inherited unchanged from `Clifford-Mod-Scalar`; only the *relation
 -- set* `_QRel,_===_` is redefined.
 --
@@ -53,7 +53,7 @@ module Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalars-Simplified
 open Primitive-Root-Modp' g* g-gen
 
 -- Inherit the generators (S, H, CZ, ↥) and every derived word
--- (X, Z, X⁻¹, Z⁻¹, S⁻¹, Z^, X^, 𝑠, 𝑠^, M, M₋₁, Mg, Mg^, ⊤⊥, ⊥⊤, …)
+-- (X, Z, X⁻¹, Z⁻¹, S⁻¹, Z^, X^, ζ, ζ^, M, M₋₁, Mg, Mg^, ⊤⊥, ⊥⊤, …)
 -- from the original Clifford presentation.
 open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar p-3 p-prime g* g-gen
 open Clifford-Relations hiding (_QRel,_===_)
@@ -62,7 +62,7 @@ open Clifford-Relations hiding (_QRel,_===_)
 module Simplified-Relations where
 
   -- The bare S,H multiplier of Mg = M g′ and the leftover Pauli exponent
-  -- ½(g-1), used only to state the simplified semi-M𝑠 relation.  Kept
+  -- ½(g-1), used only to state the simplified semi-Mζ relation.  Kept
   -- `private` so they don't collide with the local copies in Mg-Simplify /
   -- Mg-Simplify-S (they are definitionally equal to those, so the iso still
   -- lines up).
@@ -91,22 +91,22 @@ module Simplified-Relations where
     --     All three semi-M relations are stated in their *simplified* form: the
     --     metaplectic Mg = M g′ is replaced by its bare S,H multiplier
     --     Wg = S^g·H·S^(g⁻¹)·H·S^g·H, with Mg's own Pauli pushed out and
-    --     cancelled.  semi-M𝑠 is further reduced to its fully-collected form,
-    --     using the basic S (not 𝑠 = S·Z^½) and a single Z^(g-1) tail (the
+    --     cancelled.  semi-Mζ is further reduced to its fully-collected form,
+    --     using the basic S (not ζ = S·Z^½) and a single Z^(g-1) tail (the
     --     left-over Z^½ has been cross-cancelled):
     --
     --     All three now carry their Pauli at the right-most position:
     --
-    --        semi-M𝑠   :  Wg  · S  = S^(g²) · Wg  · Z^(g-1)
+    --        semi-Mζ   :  Wg  · S  = S^(g²) · Wg  · Z^(g-1)
     --        semi-M↑CZ :  Wg↑ · CZ = CZ^g  · Wg↑ · Z↓^(½(g-1))
     --        semi-M↓CZ :  Wg  · CZ = CZ^g  · Wg  · Z↑^(½(g-1))
     --
-    --     The S-form semi-M𝑠 is the `final-semi-M𝑠` theorem of
+    --     The S-form semi-Mζ is the `final-semi-Mζ` theorem of
     --     Examples.Groups.Clifford.Qupit.Mg-Simplify; the CZ ones are the `final-semi-M*CZ`
     --     theorems (all soundness, in the original Clifford presentation).
     --     The original Mg-forms are recovered as the `completeness-semi-M*`
     --     lemmas of Examples.Groups.Clifford.Qupit.Mg-Simplify-S (the S-form is first turned back
-    --     into the 𝑠-form by `SemiS-rev.lemma-semi-M𝑠`).
+    --     into the ζ-form by `SemiS-rev.lemma-semi-Mζ`).
     --
     --     The completeness proofs of the two CZ relations need Z↔CZ
     --     commutation, which is NOT a consequence of selinger + Pauli (it would
@@ -117,7 +117,7 @@ module Simplified-Relations where
     ----------------------------------------------------------------
     order-H :       ∀ {n} → (₁₊ n) QRel,  H ^ 2 === M₋₁
     M-power : ∀ {n} (k : ℤ ₚ) → (₁₊ n) QRel,  Mg^ k === M (g^ k)
-    semi-M𝑠 :       ∀ {n} → (₁₊ n) QRel,  Wg • S === S ^ toℕ (g * g) • Wg • Z ^ toℕ (g + (- 1ₚ))
+    semi-Mζ :       ∀ {n} → (₁₊ n) QRel,  Wg • S === S ^ toℕ (g * g) • Wg • Z ^ toℕ (g + (- 1ₚ))
     semi-M↑CZ :     ∀ {n} → (₂₊ n) QRel,  Wg ↑ • CZ === CZ^ g • Wg ↑ • (Z ↓) ^ zX
     semi-M↓CZ :     ∀ {n} → (₂₊ n) QRel,  Wg • CZ === CZ^ g • Wg • (Z ↑) ^ zX
 
@@ -151,11 +151,11 @@ module Simplified-Relations where
     -- (E) The two "selinger" CZ–H–CZ relations: this is where the
     --     strategy actually changes something.
     --
-    --     Original (Clifford-Relations), using 𝑠 = S · Z^½ :
+    --     Original (Clifford-Relations), using ζ = S · Z^½ :
     --        CZ • H↑ • CZ
-    --          === 𝑠↑⁻¹ • H↑ • 𝑠↑⁻¹ • CZ • H↑ • 𝑠↑⁻¹ • 𝑠↓⁻¹
+    --          === ζ↑⁻¹ • H↑ • ζ↑⁻¹ • CZ • H↑ • ζ↑⁻¹ • ζ↓⁻¹
     --
-    --     Replace every 𝑠⁻¹ by the basic S⁻¹ (= 𝑠⁻¹ · Z^½), push the
+    --     Replace every ζ⁻¹ by the basic S⁻¹ (= ζ⁻¹ · Z^½), push the
     --     resulting Z-halves to the right and cancel.  The symplectic
     --     part is exactly the `Examples.Groups.Symplectic.Simplified.Syntactics` relation; the
     --     leftover Pauli collapses to a single tail X↑ · Z↑ (the Z↓

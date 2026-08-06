@@ -10,7 +10,7 @@
 -- (`open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar …`) sees exactly the same
 -- names as before the split:
 --
---   Part1 : shared preamble (patterns, 𝑠/1/2, Symplectic), Clifford-Relations, Lemmas-Clifford
+--   Part1 : shared preamble (patterns, ζ/1/2, Symplectic), Clifford-Relations, Lemmas-Clifford
 --   Part2 : Lemmas1
 --   Part3 : Clifford-GroupLike, CommData-Sim, Commuting-Symplectic-Sim,
 --           Rewriting-Sim, Sim-Rewriting, Lemmas1b

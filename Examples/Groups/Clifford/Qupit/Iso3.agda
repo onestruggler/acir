@@ -69,8 +69,8 @@ module M (n : ℕ) where
   f-left-inv-gen {₁₊ m} Cli.S-gen = begin
       [ Cli.S-gen ]ʷ
         ≈⟨ sym claim ⟩
-      C.Z^ Cli.-1/2 • C.𝑠
-        ≡⟨ Eq.cong (λ z → z • C.𝑠) (Eq.sym (lemma-fʷ-w^n {f = f} {w = SemiDirect.Z} (toℕ Cli.-1/2))) ⟩
+      C.Z^ Cli.-1/2 • C.ζ
+        ≡⟨ Eq.cong (λ z → z • C.ζ) (Eq.sym (lemma-fʷ-w^n {f = f} {w = SemiDirect.Z} (toℕ Cli.-1/2))) ⟩
       (f ʷ) (h Cli.S-gen) ∎
     where
     module C = Cli.Clifford-Relations
@@ -100,9 +100,9 @@ module M (n : ℕ) where
       ε ∎
     commSZ : Cli.S • C.Z^ Cli.1/2 ≈ C.Z^ Cli.1/2 • Cli.S
     commSZ = comm⇒pow-comm 1 (toℕ Cli.1/2) (sym lemma-comm-Z-S)
-    claim : C.Z^ Cli.-1/2 • C.𝑠 ≈ Cli.S
+    claim : C.Z^ Cli.-1/2 • C.ζ ≈ Cli.S
     claim = begin
-      C.Z^ Cli.-1/2 • C.𝑠                                ≈⟨ cright commSZ ⟩
+      C.Z^ Cli.-1/2 • C.ζ                                ≈⟨ cright commSZ ⟩
       C.Z^ Cli.-1/2 • (C.Z^ Cli.1/2 • Cli.S)                 ≈⟨ sym assoc ⟩
       (C.Z^ Cli.-1/2 • C.Z^ Cli.1/2) • Cli.S                 ≈⟨ cleft zhalf ⟩
       ε • Cli.S                                          ≈⟨ left-unit ⟩

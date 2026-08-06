@@ -18,8 +18,8 @@ Abandoned WIP (incomplete, {!!} holes), was nested-block-commented. Not part of 
     (S ^ p-1 • Z^ 1/2 ^ p-1) • H • (S ^ p-1 • Z^ 1/2 ^ p-1) • H • (S ^ p-1 • Z^ 1/2  ^ p-1) • H ≈⟨ cong (sym (lemma-^-• S (Z^ 1/2) (p-1) (word-comm 1 (toℕ 1/2) (sym lemma-comm-Z-S)))) (cright cong ((sym (lemma-^-• S (Z^ 1/2) (p-1) (word-comm 1 (toℕ 1/2) (sym lemma-comm-Z-S))))) (cright cleft (sym (lemma-^-• S (Z^ 1/2) (p-1) (word-comm 1 (toℕ 1/2) (sym lemma-comm-Z-S)))))) ⟩
     (S • Z^ 1/2) ^ p-1 • H • (S • Z^ 1/2) ^ p-1 • H • (S • Z^ 1/2) ^ p-1 • H ≈⟨ refl ⟩
     (S • Z^ 1/2) ^ p-1 • H • (S • Z^ 1/2) ^ p-1 • H • (S • Z^ 1/2) ^ p-1 • H ≈⟨ refl ⟩
-    𝑠 ^ p-1 • H • 𝑠 ^ p-1 • H • 𝑠 ^ p-1 • H ≈⟨ cong (refl' (Eq.cong (𝑠 ^_) (Eq.sym lemma-toℕ-1ₚ))) (cright cong ((refl' (Eq.cong (𝑠 ^_) (Eq.sym (Eq.trans (Eq.cong toℕ aux-₁⁻¹ ) lemma-toℕ-1ₚ))))) (cright cleft (refl' (Eq.cong (𝑠 ^_) (Eq.sym lemma-toℕ-1ₚ))))) ⟩
-    𝑠^ x • H • 𝑠^ x⁻¹ • H • 𝑠^ x • H ≈⟨ refl ⟩
+    ζ ^ p-1 • H • ζ ^ p-1 • H • ζ ^ p-1 • H ≈⟨ cong (refl' (Eq.cong (ζ ^_) (Eq.sym lemma-toℕ-1ₚ))) (cright cong ((refl' (Eq.cong (ζ ^_) (Eq.sym (Eq.trans (Eq.cong toℕ aux-₁⁻¹ ) lemma-toℕ-1ₚ))))) (cright cleft (refl' (Eq.cong (ζ ^_) (Eq.sym lemma-toℕ-1ₚ))))) ⟩
+    ζ^ x • H • ζ^ x⁻¹ • H • ζ^ x • H ≈⟨ refl ⟩
     M -'₁ ≈⟨ sym (axiom order-H) ⟩
     HH ∎
     where
@@ -136,9 +136,9 @@ Abandoned WIP (incomplete, {!!} holes), was nested-block-commented. Not part of 
     S • (H • X^ 1/2) • S • (H • X^ 1/2) • S • (H • X^ 1/2) ≈⟨ (cright cong (conj-H-X^k (toℕ 1/2)) (cright cong (conj-H-X^k (toℕ 1/2)) (cright  (conj-H-X^k (toℕ 1/2))))) ⟩
     S • (Z^ 1/2 • H) • S • (Z^ 1/2 • H) • S • (Z^ 1/2 • H) ≈⟨ special-assoc (□ • □ ^ 2 • □ • □ ^ 2 • □ • □ ^ 2) (□ ^ 2 • □ • □ ^ 2 • □ • □ ^ 2 • □) auto  ⟩
     (S • Z^ 1/2) • H • (S • Z^ 1/2) • H • (S • Z^ 1/2) • H ≈⟨ refl ⟩
-    𝑠 • H • 𝑠^ ₁ • H • 𝑠 • H ≡⟨ Eq.cong (\ z -> 𝑠 • H • 𝑠^ z • H • 𝑠 • H) (Eq.sym inv-₁) ⟩
-    𝑠 • H • 𝑠^ x⁻¹ • H • 𝑠 • H ≡⟨ auto ⟩
-    𝑠^ x • H • 𝑠^ x⁻¹ • H • 𝑠^ x • H ≡⟨ auto ⟩
+    ζ • H • ζ^ ₁ • H • ζ • H ≡⟨ Eq.cong (\ z -> ζ • H • ζ^ z • H • ζ • H) (Eq.sym inv-₁) ⟩
+    ζ • H • ζ^ x⁻¹ • H • ζ • H ≡⟨ auto ⟩
+    ζ^ x • H • ζ^ x⁻¹ • H • ζ^ x • H ≡⟨ auto ⟩
     M₁ ≈⟨ lemma-M1 ⟩
     ε ∎
     where
@@ -190,7 +190,7 @@ Abandoned WIP (incomplete, {!!} holes), was nested-block-commented. Not part of 
   derived-5 x k@0 nz = trans right-unit (sym left-unit)
   derived-5 x k@1 nz = begin  
     M (x , nz) • S ^ k ≈⟨ refl ⟩
-    M (x , nz) • S ≈⟨ lemma-semi-M𝑠 (x , nz) ⟩
+    M (x , nz) • S ≈⟨ lemma-semi-Mζ (x , nz) ⟩
     S^ (x * x) • M (x , nz) ≈⟨ refl ⟩
     S ^ toℕ (x * x) • M (x , nz) ≈⟨ (cleft refl' (Eq.cong (S ^_) (Eq.sym ( NP.*-identityˡ (toℕ (x * x)))))) ⟩
     S ^ (k Nat.* toℕ (x * x)) • M (x , nz) ∎
@@ -232,7 +232,7 @@ Abandoned WIP (incomplete, {!!} holes), was nested-block-commented. Not part of 
   lemma-comm-HHS = begin
     H • H • S ≈⟨ sym assoc ⟩
     HH • S ≈⟨ (cleft axiom order-H) ⟩
-    M₋₁ • S ≈⟨ lemma-semi-M𝑠 -'₁ ⟩
+    M₋₁ • S ≈⟨ lemma-semi-Mζ -'₁ ⟩
     S^ (- ₁ * - ₁) • M₋₁ ≈⟨ (cleft refl' (Eq.cong S^ aux-0)) ⟩
     S^ ₁ • M₋₁ ≈⟨ refl ⟩
     S • M₋₁ ≈⟨ (cright sym (axiom order-H)) ⟩
@@ -1088,7 +1088,7 @@ module Iso where
   f-well-defined {₁₊ n} (M-mul x y) = lemma-M-mul x y
     where
     open Lemmas1 n
-  f-well-defined {₁₊ n} (semi-M𝑠 x) = lemma-semi-M𝑠 x
+  f-well-defined {₁₊ n} (semi-Mζ x) = lemma-semi-Mζ x
     where
     open Lemmas1 n
   f-well-defined {₂₊ n} (semi-M↑CZ x) = lemma-semi-M↑CZ x
@@ -1133,7 +1133,7 @@ module Iso where
     open Sim
 
     
-  g-well-defined {₁₊ n} Sim.semi-M𝑠 = PB.axiom (_QRel,_===₁_.semi-M𝑠 ((g , g≠0)))
+  g-well-defined {₁₊ n} Sim.semi-Mζ = PB.axiom (_QRel,_===₁_.semi-Mζ ((g , g≠0)))
   g-well-defined Sim.semi-M↑CZ = PB.axiom (_QRel,_===₁_.semi-M↑CZ ((g , g≠0)))
   g-well-defined Sim.semi-M↓CZ = PB.axiom (_QRel,_===₁_.semi-M↓CZ ((g , g≠0)))
   g-well-defined Sim.order-CZ = PB.axiom _QRel,_===₁_.order-CZ
