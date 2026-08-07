@@ -26,9 +26,37 @@
 -- soundness is obtained by transporting along Simplified.Iso, whose
 -- underlying map on words is the identity, into Faithful1.⟦⟧-sound.
 --
--- This file introduces the exact normal form and its realising circuit.
--- Exact existence and uniqueness (Lemma 5.5 with the scalar) then combine
--- the symplectic result above with the ℤ/8 ω-layer.
+-- This file introduces the exact normal form and its realising circuit,
+-- and proves Lemma 5.5 for everything below the scalar:
+--
+--   nf-existence      w ≈ nf→word (nfˢ w)            (existence)
+--   nf-uniqueness     nf→word u ≈ nf→word v → u ≡ v  (uniqueness)
+--   exact-existence   w ≈ ⟦ nfˢ w , p ⟧ᴺ, for ANY p
+--   exact-uniqueness  ⟦ u , p ⟧ᴺ ≈ ⟦ v , q ⟧ᴺ → u ≡ v
+--   scalar-invisible  ⟦ u , p ⟧ᴺ ≈ ⟦ u , q ⟧ᴺ
+--   act-determines-nf  same action ⇒ same symplectic part
+--
+-- all with respect to the symplectic congruence, where ω ≈ ε (ω≈ε).  So
+-- the symplectic layer pins the NF component down exactly and says
+-- nothing whatever about the scalar: p is precisely the datum the
+-- quotient forgets, and the ℤ/8 layer of Qubit.ExactExtension is
+-- precisely what has to supply it.
+--
+-- WHAT IS MISSING for the exact statement (Figure 8 rather than the
+-- symplectic rule set).  Qubit.ExactExtension.ExactData asks for
+--
+--   scalars    : w acts trivially on P4  ⇒  w ≈ᶠ ωᵏ for some k,
+--   ω-faithful : ωʲ ≈ᶠ ωᵏ ⇒ j ≡ k,
+--
+-- and the natural route to the first is "≈ mod scalars ⇒ ≈ up to ωᵏ",
+-- which needs ω to be CENTRAL in Figure 8.  It is not derivable there as
+-- transcribed: at width 1 the axioms are exactly c1–c4, i.e.
+-- ⟨S , H | H² , S⁴ , (SH)²⁴⟩ — the von Dyck group D(4,2,24), infinite
+-- since ¼ + ½ + ¹⁄₂₄ < 1, whereas C(1) has order 192.  Adding centrality
+-- of the scalar (Selinger has ω as a central generator; here it is the
+-- derived word (SH)³) closes exactly that gap: modulo a central ω of
+-- order 8 the width-1 quotient is ⟨S , H | H² , S⁴ , (SH)³⟩ ≅ S₄, of
+-- order 24, and 24 · 8 = 192.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -61,11 +89,15 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≗_)
 open import Word.Base using (Word ; ε ; _•_ ; _^_)
 import Presentation.Base as PB
 open import Presentation.GroupLike using (module Group-Lemmas)
+import Normalization.NormalForm.Setoid as SNF
 
 import Examples.Groups.Symplectic.Syntactics p-2 p-prime as Syn
 open Syn.Symplectic using (Gen ; S ; H ; Circuit)
 -- Qualified: PrimeModulus' (in the module telescope) also exports `act`.
 import Examples.Groups.Symplectic.WordAction p-2 p-prime as WA
+open import Examples.Groups.Symplectic.Semantics p-2 p-prime
+  using (_≈ˢ_ ; module Interpretation)
+open Interpretation using (⟦_⟧)
 open import Examples.Groups.Symplectic.Normalization.Faithful1 p-2 p-prime
   using (⟦⟧-sound)
 open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime using (NF)
@@ -73,6 +105,13 @@ open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime using (NF)
 -- built in Normalization.Section, avoiding the WIP Surjectivity chain.
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using () renaming ([_] to nf→word)
+-- The normal form itself (coset enumeration up the tower), and the
+-- injectivity of its section — Selinger's Lemma 5.5 for the symplectic
+-- quotient.
+open import Examples.Groups.Symplectic.Normalization p-2 p-prime
+  using (nfp'-sec ; nfp'-sec-agree)
+open import Examples.Groups.Symplectic.Normalization.Uniqueness p-2 p-prime
+  using (⟦[]⟧-injective)
 open import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime using (ω)
 
 -- The simplified rule set, and its identification with the original one.
@@ -150,3 +189,101 @@ act-ω^ (suc (suc k)) x =
 nf-act-invariant : (nf : NF (₁₊ n)) (p : Fin 8)
                  → WA.act ⟦ nf , p ⟧ᴺ ≗ WA.act (nf→word nf)
 nf-act-invariant nf p x = Eq.cong (WA.act (nf→word nf)) (act-ω^ (toℕ p) x)
+
+------------------------------------------------------------------------
+-- The scalar is symplectically trivial
+--
+-- act-ω above is the image of a syntactic fact: in the symplectic rule
+-- set ω is not merely invisible to the action, it IS the empty word.
+
+infix 4 _≈₁_
+_≈₁_ : {n : ℕ} → Circuit n → Circuit n → Set
+_≈₁_ {n} = PB._≈_ (n QRel,_===₁_)
+
+ω≈ε : ω {n} ≈₁ ε
+ω≈ε {n} = ≈₂⇒≈₁ (SimL.Lemmas1.lemma-order-SH n)
+
+ω^≈ε : (k : ℕ) → (ω {n} ^ k) ≈₁ ε
+ω^≈ε zero          = PB.refl
+ω^≈ε (suc zero)    = ω≈ε
+ω^≈ε (suc (suc k)) = PB.trans (PB.cong ω≈ε (ω^≈ε (suc k))) PB.left-unit
+
+-- Hence an exact normal form is, symplectically, its core.
+⟦⟧ᴺ-core : (nf : NF (₁₊ n)) (p : Fin 8) → ⟦ nf , p ⟧ᴺ ≈₁ nf→word nf
+⟦⟧ᴺ-core nf p = PB.trans (PB.cong PB.refl (ω^≈ε (toℕ p))) PB.right-unit
+
+------------------------------------------------------------------------
+-- Existence and uniqueness (Selinger Lemma 5.5, symplectic half)
+--
+-- The symplectic layer already has a normal form; what is added here is
+-- its reading through nf→word, which is the form Selinger's N(n) takes.
+
+-- The normal form of a circuit.
+nfˢ : Circuit n → NF n
+nfˢ {n} = SNF.NormalForm.nf (nfp'-sec n)
+
+-- Existence: every circuit is symplectically equal to the word of its
+-- normal form.  (The normal form's own section agrees with nf→word —
+-- nfp'-sec-agree — so the retraction can be read over Section's [_].)
+nf-existence : (w : Circuit n) → w ≈₁ nf→word (nfˢ w)
+nf-existence {n} w =
+  PB.trans (PB.sym (SNF.NormalForm.inv-nf∘nf=id (nfp'-sec n) {w}))
+           (nfp'-sec-agree n (nfˢ w))
+
+-- Uniqueness: normal forms with symplectically equal words are equal.
+-- Soundness pushes the equation into Sp(2n,p), where the section is
+-- injective (Normalization.Uniqueness).
+nf-uniqueness : {u v : NF n} → nf→word u ≈₁ nf→word v → u ≡ v
+nf-uniqueness {n} eq = ⟦[]⟧-injective n (⟦⟧-sound eq)
+
+------------------------------------------------------------------------
+-- The same, in the exact packaging
+--
+-- Every circuit has an exact normal form — with ANY scalar the caller
+-- likes, since the symplectic congruence cannot see it — and the
+-- symplectic component of an exact normal form is determined, while the
+-- scalar component is not.  Pinning the scalar down is exactly the work
+-- left to the exact (Figure-8) layer, where ω has order 8 instead of 1.
+
+exact-existence : (w : Circuit (₁₊ n)) (p : Fin 8) → w ≈₁ ⟦ nfˢ w , p ⟧ᴺ
+exact-existence w p =
+  PB.trans (nf-existence w) (PB.sym (⟦⟧ᴺ-core (nfˢ w) p))
+
+exact-uniqueness : {u v : NF (₁₊ n)} {p q : Fin 8} →
+                   ⟦ u , p ⟧ᴺ ≈₁ ⟦ v , q ⟧ᴺ → u ≡ v
+exact-uniqueness {u = u} {v} {p} {q} eq = nf-uniqueness
+  (PB.trans (PB.sym (⟦⟧ᴺ-core u p)) (PB.trans eq (⟦⟧ᴺ-core v q)))
+
+scalar-invisible : (u : NF (₁₊ n)) (p q : Fin 8) → ⟦ u , p ⟧ᴺ ≈₁ ⟦ u , q ⟧ᴺ
+scalar-invisible u p q = PB.trans (⟦⟧ᴺ-core u p) (PB.sym (⟦⟧ᴺ-core u q))
+
+------------------------------------------------------------------------
+-- The normal form decides the symplectic word problem
+
+nf-sound : {w v : Circuit n} → w ≈₁ v → nfˢ w ≡ nfˢ v
+nf-sound {n} = SNF.NormalForm.nf-cong (nfp'-sec n)
+
+nf-complete : {w v : Circuit n} → nfˢ w ≡ nfˢ v → w ≈₁ v
+nf-complete {n} {w} {v} eq = PB.trans
+  (nf-existence w)
+  (PB.trans (PB.refl' (n QRel,_===₁_) (Eq.cong nf→word eq))
+            (PB.sym (nf-existence v)))
+
+------------------------------------------------------------------------
+-- The symplectic part is determined by the operator
+--
+-- The strongest form: two exact normal forms with the same ACTION have
+-- the same symplectic part.  Their scalars need not agree — the action
+-- is blind to ω (act-ω), which is why the exact group needs the ℤ/8
+-- layer of Qubit.ExactExtension on top of this.
+
+act-determines-nf : {u v : NF (₁₊ n)} {p q : Fin 8} →
+                    WA.act ⟦ u , p ⟧ᴺ ≗ WA.act ⟦ v , q ⟧ᴺ → u ≡ v
+act-determines-nf {n} {u} {v} {p} {q} eq = ⟦[]⟧-injective (₁₊ n) claim
+  where
+  claim : ⟦ nf→word u ⟧ ≈ˢ ⟦ nf→word v ⟧
+  claim x =
+    Eq.trans (Eq.sym (WA.act≡ap (nf→word u) x))
+      (Eq.trans (Eq.sym (nf-act-invariant u p x))
+        (Eq.trans (eq x)
+          (Eq.trans (nf-act-invariant v q x) (WA.act≡ap (nf→word v) x))))
