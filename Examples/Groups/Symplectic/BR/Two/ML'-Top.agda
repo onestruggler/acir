@@ -35,7 +35,7 @@ open import Data.Vec using (Vec ; [] ; _∷_)
 import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
+open import Word.Base hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Relation.Binary.Reasoning.Setoid as SR
@@ -60,7 +60,6 @@ import Examples.Groups.Symplectic.BR.Two.B-Top p-2 p-prime as BT
 import Examples.Groups.Symplectic.BR.Two.BD-Top p-2 p-prime as BD
 open import Examples.Groups.Symplectic.BR.Three.BB-CZ-n p-2 p-prime
   using (gen-bb-cz ; gen-dir-b ; gen-vb'-of)
-open import Examples.Groups.Symplectic.Normalization.Pushing.DVecPush p-2 p-prime
   using (dvec-word)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushMword p-2 p-prime
   using (push-Mʷ-suc)
