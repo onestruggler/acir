@@ -20,8 +20,8 @@
 --
 --   * the symplectic factor: Simplified.Presentation.presentation,
 --     which presents Sp(2n, ℤ/pℤ);
---   * the Pauli factor: XZPresentation.presentation, which presents
---     (ℤ/pℤ × ℤ/pℤ)ⁿ;
+--   * the Pauli factor: Pauli.Presentation-Alt's presentation, which
+--     presents (ℤ/pℤ × ℤ/pℤ)ⁿ;
 --   * the two well-definedness hypotheses on the conjugation action:
 --     ConjAction.respects-Δ and ConjAction.respects-Γ (the `hyph` and
 --     `hypn` that Iso.agda's commented-out attempt left open).
@@ -62,8 +62,7 @@ import Presentation.Construct.Properties.SemiDirectProduct2 as SDP2
 
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
 open import Examples.Groups.Pauli.Semantics p-2 p-prime using (+ₚ-group)
-import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
-import Examples.Groups.Symplectic.XZPresentation p-2 p-prime as XZPres
+import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime as XZ
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen as SimPres
 open import Examples.Groups.Clifford.Qupit.SemiDirect.Syntactics p-3 p-prime g* g-gen
@@ -95,7 +94,7 @@ module Semidirect (n : ℕ) where
   private
     module P = SDP.Presentation (CA.respects-Δ {n}) (CA.respects-Γ {n})
                  (+ₚ-group n) (Sp-group n)
-                 (XZPres.presentation {n}) (SimPres.presentation {n})
+                 (XZ.presentation {n}) (SimPres.presentation {n})
 
   -- The semidirect product of the Pauli group by Sp(2n, ℤ/pℤ), with the
   -- action transported through the two presentations.

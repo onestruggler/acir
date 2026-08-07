@@ -61,8 +61,7 @@ open import Examples.Groups.Symplectic.Semantics p-2 p-prime
   using (Symplectic ; _≈ˢ_ ; _∘ˢ_ ; module Interpretation)
 open Symplectic using (ap ; linear-+)
 open Interpretation using (⟦_⟧ᵍ ; ⟦_⟧)
-import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
-open import Examples.Groups.Symplectic.XZPresentation p-2 p-prime
+open import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime as XZ
   using (sem ; ⟦_⟧₀ ; sem-↑ ; sem-X^ ; mult ; mult-p ; sound-ax ; module Build)
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen as SimPres

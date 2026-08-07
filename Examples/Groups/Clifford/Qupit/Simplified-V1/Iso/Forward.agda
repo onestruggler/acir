@@ -55,7 +55,7 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Forward
 open import Examples.Groups.Clifford.Qupit.SemiDirect.Syntactics p-3 p-prime g* g-gen
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasCZ p-3 p-prime g* g-gen hiding (module CL ; module CLb)
 
-import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
+import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime as XZ
 
 module Iso (n : ℕ) where
 
@@ -178,7 +178,7 @@ module Iso (n : ℕ) where
     open PP (n Clifford.QRel,_===_)
     open SR word-setoid
   f-well-defined (SD.comm-Z-X) = PB.sym (PB.axiom Clifford.comm-X-Z)
-  f-well-defined {n@(₁₊ n')} (left (XZ.comm-X {g = g})) = begin
+  f-well-defined {n@(₂₊ n2)} (left (XZ.comm₁ XZ.X-gate g)) = begin
     (f ʷ) ([ [ g XZ.↥ ]ʷ • XZ.X ]ₗ) ≡⟨ auto ⟩
     (f ʷ) ([ [ g XZ.↥ ]ʷ ]ₗ) • (f ʷ) ([ XZ.X ]ₗ) ≡⟨ auto ⟩
     (f ʷ) ([ [ g XZ.↥ ]ʷ ]ₗ) • Clifford.X ≈⟨ sym₂ (Lemmas-Clifford.lemma-comm-X-w↑ (f (inj₁ g))) ⟩
@@ -188,7 +188,7 @@ module Iso (n : ℕ) where
     open PB (n Clifford.QRel,_===_) renaming (_===_ to _===₂_ ; _≈_ to _≈₂_ ; cleft_ to cleft₂_ ; cright_ to cright₂_ ; sym to sym₂) using (refl')
     open PP (n Clifford.QRel,_===_)
     open SR word-setoid
-  f-well-defined {n@(₁₊ n')} (left (XZ.comm-Z {g = g})) = begin
+  f-well-defined {n@(₂₊ n2)} (left (XZ.comm₁ XZ.Z-gate g)) = begin
     (f ʷ) ([ [ g XZ.↥ ]ʷ • XZ.Z ]ₗ) ≡⟨ auto ⟩
     (f ʷ) ([ [ g XZ.↥ ]ʷ ]ₗ) • (f ʷ) ([ XZ.Z ]ₗ) ≡⟨ auto ⟩
     (f ʷ) ([ [ g XZ.↥ ]ʷ ]ₗ) • Clifford.Z ≈⟨ sym₂ (Lemmas-Clifford.lemma-comm-Z-w↑ (f (inj₁ g))) ⟩
@@ -198,6 +198,11 @@ module Iso (n : ℕ) where
     open PB (n Clifford.QRel,_===_) renaming (_===_ to _===₂_ ; _≈_ to _≈₂_ ; cleft_ to cleft₂_ ; cright_ to cright₂_ ; sym to sym₂) using (refl')
     open PP (n Clifford.QRel,_===_)
     open SR word-setoid
+  -- cong↑ from width ₀: the Pauli relation there is empty, exactly as
+  -- the symplectic one is below.  It needs saying now that XZ is a
+  -- Lift-Relation, since the emptiness is no longer visible in the
+  -- shape of a datatype.
+  f-well-defined {₁₊ ₀} (left (XZ.cong↑ (XZ.srel ())))
   f-well-defined {n@(suc (n'@(₁₊ n'')))} (left (XZ.cong↑ {w = w} {v} x)) = begin
     (f ʷ) ([ w XZ.↑ ]ₗ) ≡⟨ lemma-f*-[w]ₗ {w = w} ⟩
     (f ʷ) ([ w ]ₗ) ↑ ≈⟨ Clifford-Relations.lemma-cong↑ ((f ʷ) ([ w ]ₗ)) ((f ʷ) ([ v ]ₗ)) (f-well-defined (left x)) ⟩

@@ -54,7 +54,7 @@ import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Forward p-3 p-prime g* g
 import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Inverse p-3 p-prime g* g-gen as ISO2
 
 
-import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
+import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime as XZ
 
 
 module M (n : ℕ) where

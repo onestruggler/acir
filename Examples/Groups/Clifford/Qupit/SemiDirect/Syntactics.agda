@@ -85,7 +85,7 @@ import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as 
 import Examples.Groups.Symplectic.Simplified.Lemmas p-2 p-prime g* g-gen as NSimL
 module Sym = NSim.Symplectic
 module Sim = NSim.Simplified-Relations
-import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
+import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime as XZ
 
 -- Powers commute with the left/right embeddings.  These two lemmas used to
 -- live in Presentation.Construct.Properties, which was pruned as dead code
@@ -285,8 +285,8 @@ module SemiDirect where
   pattern order-Z = left XZ.order-Z
   pattern comm-Z-X = left XZ.comm-Z-X
   
-  pattern comm-Z = left XZ.comm-Z
-  pattern comm-X = left XZ.comm-X
+  pattern comm-Z = left (XZ.comm₁ XZ.Z-gate _)
+  pattern comm-X = left (XZ.comm₁ XZ.X-gate _)
 
 
   pattern order-S = right (Sim.srel Sim.order-S)
@@ -386,9 +386,12 @@ module SemiDirect where
   lemma-cong↑ {n} w v PB.right-unit = PB.right-unit
   lemma-cong↑ {₁₊ n} w v (PB.axiom (left {u} {v₁} x)) rewrite lemma-[]ₗ-↑ u | lemma-[]ₗ-↑ v₁ = PB.axiom (left (XZ.cong↑ x))
   lemma-cong↑ {₁₊ n} w v (PB.axiom (right {u} {v₁} x)) rewrite lemma-[]ᵣ-↑ u | lemma-[]ᵣ-↑ v₁ = PB.axiom (right (Sim.cong↑ x))
-  -- At width 0 the symplectic side is empty: every SimBase axiom needs at
-  -- least one wire, and cong↑/comm₁/comm₂ each produce a successor width.
+  -- At width 0 both sides are empty: every base axiom needs at least one
+  -- wire, and cong↑/comm₁/comm₂ each produce a successor width.  The XZ
+  -- side needs saying now that it too is a Lift-Relation, since the
+  -- emptiness is no longer visible in the shape of a datatype.
   lemma-cong↑ {₀} w v (PB.axiom (right (Sim.srel ())))
+  lemma-cong↑ {₀} w v (PB.axiom (left (XZ.srel ())))
   lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.X-gen Sym.H-gen))) = PB.axiom (mid (comm (XZ.X-gen XZ.↥) (Sym.H-gen Sym.↥)))
   lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.X-gen Sym.S-gen))) = PB.axiom (mid (comm (XZ.X-gen XZ.↥) (Sym.S-gen Sym.↥)))
   lemma-cong↑ {n} w v (PB.axiom (mid (comm XZ.X-gen Sym.CZ-gen))) = PB.axiom (mid (comm (XZ.X-gen XZ.↥) (Sym.CZ-gen Sym.↥)))

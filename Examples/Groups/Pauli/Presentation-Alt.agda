@@ -1,61 +1,376 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The Pauli rules present (ℤ/pℤ × ℤ/pℤ)ⁿ.
+-- The Pauli rules, and the theorem that they present (ℤ/pℤ × ℤ/pℤ)ⁿ.
 --
--- XZ.agda gives the n-wire Pauli presentation: generators X and Z on
--- each wire, each of order p, all commuting.  Its semantic target is
--- the additive group of Pauli n = (ℤ/pℤ × ℤ/pℤ)ⁿ, a Pauli word being
--- read as the vector of its X- and Z-exponents.
+-- The rules are the n-wire Pauli presentation: generators X and Z on
+-- each wire, each of order p, all commuting.  They are built on the
+-- circuit framework, the gate set being two one-qubit gates and no
+-- two-qubit gate, so Circuit.Base.Gen supplies the generators and the
+-- wire shifts.
 --
--- The normal form is X^a Z^b on each wire, read straight off that
--- vector; normalising a word is just collecting exponents, which the
--- commutation lemmas of XZ.agda already support.
+-- The semantic target is the additive group of Pauli n = (ℤ/pℤ × ℤ/pℤ)ⁿ,
+-- a Pauli word being read as the vector of its X- and Z-exponents.  The
+-- normal form is X^a Z^b on each wire, read straight off that vector;
+-- normalising a word is just collecting exponents, which the
+-- commutation lemmas below already support.
+--
+-- This file is `Presentation-Alt` because Examples.Groups.Pauli
+-- .Presentation presents the same group by other means.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --termination-depth=2 #-}
 
-open import Data.Nat using (ℕ ; suc ; 2+)
-open import Data.Nat.Primality using (Prime)
 
+open import Relation.Binary using (Rel)
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
+import Relation.Binary.Reasoning.Setoid as SR
+import Relation.Binary.PropositionalEquality as Eq
+open import Relation.Nullary.Decidable using (yes ; no)
+
+
+open import Function using (_∘_ ; id)
+open import Function.Definitions using (Injective)
+
+open import Data.Product using (_,_)
+open import Data.Nat hiding (_^_ ; _+_ ; _*_)
+open import Agda.Builtin.Nat using (_-_)
+import Data.Nat as Nat
+open import Data.Bool hiding (_<_ ; _≤_)
+open import Data.List hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
+open import Data.Vec hiding ([_])
+open import Data.Fin hiding (_+_ ; _-_)
+
+open import Data.Maybe
+open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_] ; [_,_]′)
+open import Data.Unit using (tt)
+
+open import Word.Base as WB hiding (wfoldl ; _^'_)
+open import Word.Properties
+import Presentation.Base as PB
+import Presentation.Properties as PP
+import Circuit.Base
+import Normalization.Reidemeister-Schreier as RS
 open import Notations
+module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
-module Examples.Groups.Symplectic.XZPresentation
+open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
+import Presentation.Construct.Properties.DirectProduct as DP
+import Examples.Groups.Cyclic.Cyclic as Cyclic
+
+
+open import Data.Fin using (Fin)
+import Data.Nat.Properties as NP
+open import Presentation.GroupLike
+open import Presentation.Tactic.Rewriting hiding ([_])
+open import Data.Nat.Primality
+
+module Examples.Groups.Pauli.Presentation-Alt
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
+
+open import Zp.ModularArithmetic
+open PrimeModulus p-2 p-prime
+
+
+------------------------------------------------------------------------
+-- Generators, from the circuit framework
+--
+-- The gate set is two one-qubit gates and no two-qubit gate, so
+-- Circuit.Base.Gen gives back exactly the datatype this file used to
+-- declare by hand: gate₁ X-gate, gate₁ Z-gate, and _↥.  The gate₂
+-- constructor is there but uninhabited, XZGate 2 being empty.
+
+data XZGate : ℕ → Set where
+  X-gate : XZGate 1
+  Z-gate : XZGate 1
+
+private module SC = Circuit.Base XZGate
+open SC public using (Gen ; _↥ ; _↑ ; _↓)
+
+-- The old constructor names, as pattern synonyms, so that uses in both
+-- expression and pattern position go on working untouched.
+pattern X-gen = SC.gate₁ X-gate
+pattern Z-gen = SC.gate₁ Z-gate
+
+[_⇑] : ∀ {n} → Word (Gen n) → Word (Gen (₁₊ n))
+[_⇑] {n} = ([_]ʷ ∘ _↥) WB.ʷ
+
+[_⇑]' : ∀ {n} → Word (Gen n) → Word (Gen (₁₊ n))
+[_⇑]' {n} = wmap _↥
+
+-- _↑ and _↓ are the framework's now (opened above).  They agree with
+-- the definitions that stood here: SC._↑ is wmap (_↥ᵏ 1), and g ↥ᵏ 1
+-- reduces to g ↥, so this is the same function.
+
+lemma-[⇑]=[⇑]' : ∀ {n} (w : Word (Gen n)) → [ w ⇑] ≡ [ w ⇑]'
+lemma-[⇑]=[⇑]' {n} [ x ]ʷ = Eq.refl
+lemma-[⇑]=[⇑]' {n} ε = Eq.refl
+lemma-[⇑]=[⇑]' {n} (w • w₁) = Eq.cong₂ _•_ (lemma-[⇑]=[⇑]' w) (lemma-[⇑]=[⇑]' w₁)
+
+X : ∀ {n} → Word (Gen (₁₊ n))
+X = [ X-gen ]ʷ
+
+Z : ∀ {n} → Word (Gen (₁₊ n))
+Z = [ Z-gen ]ʷ
+
+-- Group-specific axioms only.  cong↑, and a gate commuting with
+-- anything shifted up past it, are the same for every circuit
+-- presentation and come from Lift-Relation below.
+module Base where
+  infix 4 _SRel,_===_
+  data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
+
+    order-X :  ∀ {n} → (₁₊ n) SRel,  X ^ p === ε
+    order-Z :  ∀ {n} → (₁₊ n) SRel,  Z ^ p === ε
+    comm-Z-X : ∀ {n} → (₁₊ n) SRel,  Z • X === X • Z
+
+private module LR = SC.Lift-Relation Base._SRel,_===_
+
+infix 4 _QRel,_===_
+_QRel,_===_ : (n : ℕ) → WRel (Gen n)
+_QRel,_===_ = LR._VRel,_===_
+
+-- Structural rules, exported directly.  lemma-cong↑ is the framework's
+-- now; the hand-written copy that stood here was the same induction.
+open LR public using (srel ; cong↑ ; comm₁ ; comm₂ ; lemma-cong↑)
+
+pattern order-X  = srel Base.order-X
+pattern order-Z  = srel Base.order-Z
+pattern comm-Z-X = srel Base.comm-Z-X
+
+-- comm-X and comm-Z were structural axioms; they are instances of comm₁
+-- now.  Definitions rather than pattern synonyms: as synonyms the
+-- implicit g is a meta the goal does not always pin down.
+comm-X : ∀ {n} {g : Gen (₁₊ n)} → (₂₊ n) QRel, [ g ↥ ]ʷ • X === X • [ g ↥ ]ʷ
+comm-X {g = g} = comm₁ X-gate g
+
+comm-Z : ∀ {n} {g : Gen (₁₊ n)} → (₂₊ n) QRel, [ g ↥ ]ʷ • Z === Z • [ g ↥ ]ʷ
+comm-Z {g = g} = comm₁ Z-gate g
+
+
+import Data.Nat.Literals as NL
+open import Agda.Builtin.FromNat
+open import Data.Fin.Literals
+import Data.Nat.Literals as NL
+
+
+lemma-^-↑ : ∀ {n} (w : Word (Gen n)) k → w ↑ ^ k ≡ (w ^ k) ↑
+lemma-^-↑ w ₀ = auto
+lemma-^-↑ w ₁ = auto
+lemma-^-↑ w (₂₊ k) = begin
+  (w ↑) • (w ↑) ^ ₁₊ k ≡⟨ Eq.cong ((w ↑) •_) (lemma-^-↑ w (₁₊ k)) ⟩
+  (w ↑) • (w ^ ₁₊ k) ↑ ≡⟨ auto ⟩
+  ((w • w ^ ₁₊ k) ↑) ∎
+  where open ≡-Reasoning
+
+
+instance
+  Numℕ' : Number ℕ
+  Numℕ' = NL.number 
+
+instance
+  NumFin' : Number (Fin p)
+  NumFin' = number p
+
+lemma-comm-X-w↑ : ∀ {n} w → let open PB ((₂₊ n) QRel,_===_) in
+
+  X • w ↑ ≈ w ↑ • X
+
+lemma-comm-X-w↑ {n} [ x ]ʷ = sym (axiom comm-X)
+  where
+  open PB ((₂₊ n) QRel,_===_)
+lemma-comm-X-w↑ {n} ε = trans right-unit (sym left-unit)
+  where
+  open PB ((₂₊ n) QRel,_===_)
+lemma-comm-X-w↑ {n} (w • w₁) = begin
+  X • ((w • w₁) ↑) ≈⟨ refl ⟩
+  X • (w ↑ • w₁ ↑) ≈⟨ sym assoc ⟩
+  (X • w ↑) • w₁ ↑ ≈⟨ cong (lemma-comm-X-w↑ w) refl ⟩
+  (w ↑ • X) • w₁ ↑ ≈⟨ assoc ⟩
+  w ↑ • X • w₁ ↑ ≈⟨ cong refl (lemma-comm-X-w↑ w₁) ⟩
+  w ↑ • w₁ ↑ • X ≈⟨ sym assoc ⟩
+  ((w • w₁) ↑) • X ∎
+  where
+  open PB ((₂₊ n) QRel,_===_)
+  open PP ((₂₊ n) QRel,_===_)
+  open SR word-setoid
+
+lemma-comm-Xᵏ-w↑ : ∀ {n} k w → let open PB ((₂₊ n) QRel,_===_) in
+
+  X ^ k • w ↑ ≈ w ↑ • X ^ k
+
+lemma-comm-Xᵏ-w↑ {n} ₀ w = trans left-unit (sym right-unit)
+  where
+  open PB ((₂₊ n) QRel,_===_)
+lemma-comm-Xᵏ-w↑ {n} ₁ w = lemma-comm-X-w↑ w
+  where
+  open PB ((₂₊ n) QRel,_===_)
+lemma-comm-Xᵏ-w↑ {n} (₂₊ k) w = begin
+  (X • X ^ ₁₊ k) • (w ↑) ≈⟨ assoc ⟩
+  X • X ^ ₁₊ k • (w ↑) ≈⟨ cong refl (lemma-comm-Xᵏ-w↑ (₁₊ k) w) ⟩
+  X • (w ↑) • X ^ ₁₊ k ≈⟨ sym assoc ⟩
+  (X • w ↑) • X ^ ₁₊ k ≈⟨ cong (lemma-comm-X-w↑ w) refl ⟩
+  (w ↑ • X) • X ^ ₁₊ k ≈⟨ assoc ⟩
+  (w ↑) • X • X ^ ₁₊ k ∎
+  where
+  open PB ((₂₊ n) QRel,_===_)
+  open PP ((₂₊ n) QRel,_===_)
+  open SR word-setoid
+
+
+lemma-comm-Z-w↑ : ∀ {n} w → let open PB ((₂₊ n) QRel,_===_) in
+
+  Z • w ↑ ≈ w ↑ • Z
+
+lemma-comm-Z-w↑ {n} [ x ]ʷ = sym (axiom comm-Z)
+  where
+  open PB ((₂₊ n) QRel,_===_)
+lemma-comm-Z-w↑ {n} ε = trans right-unit (sym left-unit)
+  where
+  open PB ((₂₊ n) QRel,_===_)
+lemma-comm-Z-w↑ {n} (w • w₁) = begin
+  Z • ((w • w₁) ↑) ≈⟨ refl ⟩
+  Z • (w ↑ • w₁ ↑) ≈⟨ sym assoc ⟩
+  (Z • w ↑) • w₁ ↑ ≈⟨ cong (lemma-comm-Z-w↑ w) refl ⟩
+  (w ↑ • Z) • w₁ ↑ ≈⟨ assoc ⟩
+  w ↑ • Z • w₁ ↑ ≈⟨ cong refl (lemma-comm-Z-w↑ w₁) ⟩
+  w ↑ • w₁ ↑ • Z ≈⟨ sym assoc ⟩
+  ((w • w₁) ↑) • Z ∎
+  where
+  open PB ((₂₊ n) QRel,_===_)
+  open PP ((₂₊ n) QRel,_===_)
+  open SR word-setoid
+
+
+lemma-comm-Zᵏ-w↑ : ∀ {n} k w → let open PB ((₂₊ n) QRel,_===_) in
+
+  Z ^ k • w ↑ ≈ w ↑ • Z ^ k
+
+lemma-comm-Zᵏ-w↑ {n} ₀ w = trans left-unit (sym right-unit)
+  where
+  open PB ((₂₊ n) QRel,_===_)
+lemma-comm-Zᵏ-w↑ {n} ₁ w = lemma-comm-Z-w↑ w
+  where
+  open PB ((₂₊ n) QRel,_===_)
+lemma-comm-Zᵏ-w↑ {n} (₂₊ k) w = begin
+  (Z • Z ^ ₁₊ k) • (w ↑) ≈⟨ assoc ⟩
+  Z • Z ^ ₁₊ k • (w ↑) ≈⟨ cong refl (lemma-comm-Zᵏ-w↑ (₁₊ k) w) ⟩
+  Z • (w ↑) • Z ^ ₁₊ k ≈⟨ sym assoc ⟩
+  (Z • w ↑) • Z ^ ₁₊ k ≈⟨ cong (lemma-comm-Z-w↑ w) refl ⟩
+  (w ↑ • Z) • Z ^ ₁₊ k ≈⟨ assoc ⟩
+  (w ↑) • Z • Z ^ ₁₊ k ∎
+  where
+  open PB ((₂₊ n) QRel,_===_)
+  open PP ((₂₊ n) QRel,_===_)
+  open SR word-setoid
+
+
+module XZ-GroupLike where
+
+  private
+    variable
+      n : ℕ
+
+  grouplike : Grouplike (n QRel,_===_)
+  grouplike {₁₊ n} (X-gen) = (X) ^ p-1 ,  claim
+    where
+    open PB ((₁₊ n) QRel,_===_)
+    open PP ((₁₊ n) QRel,_===_)
+    open SR word-setoid
+    claim : (X) ^ p-1 • X ≈ ε
+    claim = begin
+      (X) ^ p-1 • X ≈⟨ sym (^-+ (X) p-1 1) ⟩
+      (X) ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (X ^_) ( NP.+-comm p-1 1) ⟩
+      (X ^ p) ≈⟨ (axiom order-X) ⟩
+      (ε) ∎
+
+  grouplike {₁₊ n} (Z-gen) = (Z) ^ p-1 ,  claim
+    where
+    open PB ((₁₊ n) QRel,_===_)
+    open PP ((₁₊ n) QRel,_===_)
+    open SR word-setoid
+    claim : (Z) ^ p-1 • Z ≈ ε
+    claim = begin
+      (Z) ^ p-1 • Z ≈⟨ sym (^-+ (Z) p-1 1) ⟩
+      (Z) ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (Z ^_) ( NP.+-comm p-1 1) ⟩
+      (Z ^ p) ≈⟨ (axiom order-Z) ⟩
+      (ε) ∎
+
+  grouplike {₂₊ n} (g ↥) with grouplike g
+  ... | ig , prf = (ig ↑) , lemma-cong↑ (ig • [ g ]ʷ) ε prf
+    where
+    open PB ((₂₊ n) QRel,_===_)
+    open PP ((₂₊ n) QRel,_===_)
+
+-- ----------------------------------------------------------------------
+-- * Data required for applying word tactics to Symplectic generators
+
+module CommData where
+  private
+    variable
+      n : ℕ
+
+  -- Commutativity.
+  commute : (x y : Gen (₂₊ n)) → let open PB ((₂₊ n) QRel,_===_) in Maybe (([ x ]ʷ • [ y ]ʷ) ≈ ([ y ]ʷ • [ x ]ʷ))
+  commute {n} Z-gen (y ↥) = just (PB.sym (PB.axiom comm-Z))
+  commute {n} (x ↥) Z-gen = just (PB.axiom comm-Z)
+  commute {n} X-gen (y ↥) = just (PB.sym (PB.axiom comm-X))
+  commute {n} (x ↥) X-gen = just (PB.axiom comm-X)
+  
+  commute {n@(₁₊ n')} (x ↥) (y ↥) with commute x y
+  ... | nothing = nothing
+  ... | just eq = just (lemma-cong↑ ([ x ]ʷ • [ y ]ʷ) ([ y ]ʷ • [ x ]ʷ) eq)
+
+  commute {n} _ _ = nothing
+
+
+  -- We number the generators for the purpose of ordering them.
+  ord : Gen (₁₊ n) → ℕ
+  ord {n}(X-gen) = 0
+  ord {n} (Z-gen) = 1
+  ord {₁₊ n} (g ↥) = 2 Nat.+ ord g
+
+  -- Ordering of generators.
+  les : Gen (₂₊ n) → Gen (₂₊ n) → Bool
+  les x y with ord x Nat.<? ord y
+  les x y | yes _ = true
+  les x y | no _ = false
+
+module Commuting-Symplectic (n : ℕ) where
+  open CommData
+  open Commuting (((₂₊ n) QRel,_===_) ) commute les public
+
+
+
+------------------------------------------------------------------------
+-- The presentation theorem
+--
+-- Everything above is the rule set; everything below reads a word as a
+-- Pauli vector and shows that reading is an isomorphism.
+
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Morphism.Structures using (module GroupMorphisms)
-open import Data.Fin using (toℕ)
 open import Data.Fin.Properties using (toℕ-injective ; toℕ-fromℕ< ; toℕ<n)
-import Data.Nat as Nat
 open import Data.Nat.DivMod
   using (_%_ ; _/_ ; m%n<n ; n%n≡0 ; %-distribˡ-+ ; m%n%n≡m%n ; m<n⇒m%n≡m
         ; m≡m%n+[m/n]*n)
-import Data.Nat.Properties as NP
 open import Data.Product using (_,_ ; proj₁ ; proj₂)
-open import Data.Vec using ([] ; _∷_)
 open import Level using (0ℓ)
 open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-import Relation.Binary.Reasoning.Setoid as SR
 
-open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
-import Presentation.Base as PB
-import Presentation.Properties as PP
 open import Presentation.Definitions
   using (_IsPresentationOf_ ; _IsSubPresentationOf_ ; isPresentationOf)
 import Normalization.NormalForm.Setoid as SNF
 import Normalization.StarPresentation
 
-open import Zp.ModularArithmetic
-open PrimeModulus p-2 p-prime
 
 open import Examples.Groups.Pauli.Semantics p-2 p-prime
   using ( Pauli ; Pauli1 ; pI ; pIₙ ; pX ; pZ ; pX₀ ; pZ₀
         ; _+₁_ ; _+ₚ_ ; +ₚ-group
         ; +₁-identityˡ ; +₁-identityʳ
         ; +ₚ-assoc ; +ₚ-comm ; +ₚ-identityˡ ; +ₚ-identityʳ )
-open import Examples.Groups.Symplectic.XZ p-2 p-prime
 
 private
   variable
@@ -157,8 +472,8 @@ sound-ax {₁₊ n} order-X =
 sound-ax {₁₊ n} order-Z =
   Eq.trans (sem-Z^ p) (Eq.cong (λ z → (₀ , z) ∷ pIₙ) mult-p)
 sound-ax {₁₊ n} comm-Z-X          = +ₚ-comm pZ₀ pX₀
-sound-ax {₂₊ n} (comm-X {g = g})  = +ₚ-comm (pI ∷ ⟦ g ⟧₀) pX₀
-sound-ax {₂₊ n} (comm-Z {g = g})  = +ₚ-comm (pI ∷ ⟦ g ⟧₀) pZ₀
+sound-ax {₂₊ n} (comm₁ X-gate g)  = +ₚ-comm (pI ∷ ⟦ g ⟧₀) pX₀
+sound-ax {₂₊ n} (comm₁ Z-gate g)  = +ₚ-comm (pI ∷ ⟦ g ⟧₀) pZ₀
 sound-ax {₁₊ n} (cong↑ {w = w} {v} ax) =
   Eq.trans (sem-↑ w) (Eq.trans (Eq.cong (pI ∷_) (sound-ax ax)) (Eq.sym (sem-↑ v)))
 
