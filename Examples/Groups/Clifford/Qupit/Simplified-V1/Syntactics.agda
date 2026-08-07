@@ -1,6 +1,4 @@
--- {-# OPTIONS --cubical-compatible --allow-unsolved-metas #-}
 {-# OPTIONS --cubical-compatible --safe #-}
--- {-# OPTIONS --prop #-}
 {-# OPTIONS --termination-depth=20 #-}
 
 ------------------------------------------------------------------------
@@ -77,8 +75,6 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics
   where
 
 
-
-
 open Primitive-Root-Modp' g* g-gen
 
 module Symplectic-Simplified where
@@ -134,7 +130,6 @@ module Clifford-Relations where
   R^ : ∀ {n} ->  ℤ ₚ ->  Word (Gen (₁₊ n))
   R^ k = R ^ toℕ k
 
-
   M : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
   M x' = R^ x • H • R^ x⁻¹ • H • R^ x • H
     where
@@ -152,8 +147,6 @@ module Clifford-Relations where
 
   Mg^ : ℤ ₚ ->  ∀ {n} -> Word (Gen (₁₊ n))
   Mg^ k = Mg ^ toℕ k
-
-
 
 
   -- Group-specific axioms only.  The structural rules — congruence

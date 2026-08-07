@@ -33,8 +33,6 @@ open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
-
-
 open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime
 open import Examples.Groups.Symplectic.BR.Calculations p-2 p-prime

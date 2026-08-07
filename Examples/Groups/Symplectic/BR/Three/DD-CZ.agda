@@ -10,7 +10,6 @@ import Relation.Binary.PropositionalEquality as Eq
 
 open import Data.Product using (_,_ ; proj₁)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
-open import Agda.Builtin.Nat using (_-_)
 --open import Data.List using () hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
 open import Data.Vec as V
 

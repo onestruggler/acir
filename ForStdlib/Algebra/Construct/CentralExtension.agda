@@ -4,7 +4,7 @@
 -- Central extensions of a group H by an abelian group A, presented by a
 -- normalised 2-cocycle.
 --
---               incl       proj
+--               incl              proj
 --   1 ─────→ A ───────→ A ×_c H ───────→ H ─────→ 1
 --
 -- Elements are pairs |A| × |H|, as for the direct product, but the first
