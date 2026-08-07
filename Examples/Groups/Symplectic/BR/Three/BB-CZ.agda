@@ -2,7 +2,7 @@
 {-# OPTIONS  --call-by-name #-}
 {-# OPTIONS --termination-depth=4 #-}
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (_≗_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -14,16 +14,14 @@ open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 --open import Data.List using () hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
 open import Data.Vec as V
 
-open import Data.Sum using ([_,_])
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
+open import Word.Base hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Normalization.Reidemeister-Schreier as RS
 open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
-open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
 open import Data.Fin using (toℕ)
@@ -45,31 +43,20 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
-open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 
-open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime
 
 
-open import Zp.ModularArithmetic
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4 p-2 p-prime hiding (lemma-Ex-S^ᵏ ; lemma-Ex-S^ᵏ↑)
 --open import Examples.Groups.Symplectic.Lemmas.Ex-Sym5 p-2 p-prime hiding (module L0)
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n2 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n3 p-2 p-prime
 
 
-open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n p-2 p-prime 0
-open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to Cp1)
 open Lemmas0c
 open Lemmas-Sym
 open Duality
@@ -79,7 +66,6 @@ open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime as L4
 open import Examples.Groups.Symplectic.Lemmas.Duality p-2 p-prime
 open import Examples.Groups.Symplectic.BR.Three.Lemmas p-2 p-prime
 open import Examples.Groups.Symplectic.BR.Three.Lemmas3 p-2 p-prime hiding (module L02)
-open import Examples.Groups.Symplectic.BR.Three.Lemmas5 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime 1 renaming (f* to emb ; by-emb' to lemma-cong⇣' ; by-emb to lemma-cong⇣ )
 
 open PB (3 QRel,_===_)
@@ -101,8 +87,6 @@ open import Examples.Groups.Symplectic.Lemmas.XEX-Rewriting p-2 p-prime
 open Rewriting-EX 2
 open Homo 2 renaming (lemma-f* to lemma-f*-EX)
 open Commuting-Symplectic 1
-open import Data.List hiding (reverse)
-open import Examples.Groups.Symplectic.BR.Two.D p-2 p-prime hiding (dir-of)
 open import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime renaming (dir-of to dir-of-dd)
 
 infixl 9 _⇣
