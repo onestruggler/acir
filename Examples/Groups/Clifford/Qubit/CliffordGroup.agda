@@ -1,15 +1,31 @@
-------------------------------------------------------------------------
+﻿------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The n-qubit Clifford group (p = 2), non-split, as a concrete group,
--- and as an extension of Sp(2n,2) by the Pauli group:
+-- The n-qubit Clifford group modulo scalars (p = 2), written CMS n, as a
+-- concrete group and as a non-split extension of Sp(2n,2) by the *plain*
+-- Pauli group:
 --
---     1 ─→ Pauli n ─→ Clifford n ─→ Sp(2n, 2) ─→ 1.
+--     1 ─→ Pauli n ─→ CMS n ─→ Sp(2n, 2) ─→ 1.
 --
--- Elements are Clifford words (over the gate generators Gen n) identified
--- when they act equally on the phased Pauli group P4 n by conjugation:
+-- The kernel is the phaseless Pauli group Pauli n = (ℤ/2 × ℤ/2)ⁿ — the
+-- bundle +ₚ-group of Pauli.Semantics, with no phase attached.  The ℤ/4
+-- phase of SignedPauli never appears there.  It appears one level down,
+-- as the model deciding when two Clifford *words* (over the gate
+-- generators Gen n) denote the same element of CMS n:
 --
---     w ≈ᶜ v   ⟺   ∀ x → cact w x ≡ cact v x.
+--     w ≈ᶜ v   ⟺   ∀ x → cact w x ≡ cact v x,
+--
+-- with x ranging over P4 n = ℤ/4 × Pauli n.
+--
+-- The phase is not optional in that role.  Conjugation by a Pauli is
+-- symplectically trivial — that is proj-kills-incl below — so on
+-- phaseless Paulis every incl P would act as the identity and
+-- incl-injective would be false; what separates two Paulis is the phase
+-- ι (sform P Q) they attach.  ℤ/2 signs would not do either, since
+-- S X S⁻¹ = i X Z produces a genuine i.  Quotienting words by ≈ᶜ
+-- therefore kills exactly the global scalars, whence the name:
+-- CMS n = C(n)/⟨ω⟩.  The exact Clifford group C(n) is the scalar layer
+-- above, in Qubit.ExactExtension.
 --
 -- Composition is word concatenation (cact (w • v) = cact w ∘ cact v); the
 -- monoid laws are near-definitional.  Inverses use the P4-order of each
@@ -118,8 +134,8 @@ isMonoidᶜ {n} = record
   }
   where open import Data.Product using (_,_)
 
-Clifford-monoid : ℕ → Monoid 0ℓ 0ℓ
-Clifford-monoid n = record { isMonoid = isMonoidᶜ {n} }
+CMS-monoid : ℕ → Monoid 0ℓ 0ℓ
+CMS-monoid n = record { isMonoid = isMonoidᶜ {n} }
 
 ------------------------------------------------------------------------
 -- Inverses: reverse the word and cube each generator (g³ = g⁻¹ on P4)
@@ -164,8 +180,8 @@ isGroupᶜ {n} = record
   ; ⁻¹-cong  = λ {w} {v} → ⁻¹-congᶜ {w = w} {v}
   }
 
-Clifford-group : ℕ → Group 0ℓ 0ℓ
-Clifford-group n = record { isGroup = isGroupᶜ {n} }
+CMS-group : ℕ → Group 0ℓ 0ℓ
+CMS-group n = record { isGroup = isGroupᶜ {n} }
 
 ------------------------------------------------------------------------
 -- Shifting a Clifford word up one wire
@@ -398,8 +414,8 @@ sform-separates (p ∷ ps) (p' ∷ ps') hyp =
 ------------------------------------------------------------------------
 -- The two maps of the extension
 --
---   incl : Pauli n → Clifford n   conjugation by a Pauli operator,
---   proj : Clifford n → Sp(2n,2)  the induced phaseless action.
+--   incl : Pauli n → CMS n       conjugation by a Pauli operator,
+--   proj : CMS n → Sp(2n,2)      the induced phaseless action.
 
 open import Algebra.Morphism.Structures
   using (module MonoidMorphisms ; module GroupMorphisms)
@@ -433,7 +449,7 @@ module _ {n : ℕ} where
 
   private
     module MN = MonoidMorphisms (Group.rawMonoid (+ₚ-group n))
-                                (Group.rawMonoid (Clifford-group n))
+                                (Group.rawMonoid (CMS-group n))
 
   -- Conjugation phases add, so incl turns +ₚ into word concatenation.
   incl-∙ : (P P' : Pauli n) → incl (P +ₚ P') ≈ᶜ (incl P • incl P')
@@ -500,7 +516,7 @@ proj-cong {w = w} {v} w≈v P =
 module _ {n : ℕ} where
 
   private
-    module MP = MonoidMorphisms (Group.rawMonoid (Clifford-group n))
+    module MP = MonoidMorphisms (Group.rawMonoid (CMS-group n))
                                 (Group.rawMonoid (Sp-group n))
 
   -- ⟦ w • v ⟧ = ⟦ w ⟧ ∘ˢ ⟦ v ⟧ and ⟦ ε ⟧ = εˢ hold definitionally.
@@ -757,19 +773,19 @@ module _ {n : ℕ} (w : Word (Gen n)) (triv : proj w ≈ˢ εˢ) where
 ------------------------------------------------------------------------
 -- The Clifford group as a group extension
 --
---     1 ─→ Pauli n ─→ Clifford n ─→ Sp(2n, 2) ─→ 1
+--     1 ─→ Pauli n ─→ CMS n ─→ Sp(2n, 2) ─→ 1
 
 open import ForStdlib.Algebra.Construct.Extension using (Extension)
 
-Clifford-extension : (n : ℕ) → Extension (+ₚ-group n) (Sp-group n)
-Clifford-extension n = record
-  { total           = Clifford-group n
+CMS-extension : (n : ℕ) → Extension (+ₚ-group n) (Sp-group n)
+CMS-extension n = record
+  { total           = CMS-group n
   ; incl            = incl
   ; proj            = proj
   ; incl-homo       = isMonoidHomomorphism⇒isGroupHomomorphism
-                        (+ₚ-group n) (Clifford-group n) incl-mon
+                        (+ₚ-group n) (CMS-group n) incl-mon
   ; proj-homo       = isMonoidHomomorphism⇒isGroupHomomorphism
-                        (Clifford-group n) (Sp-group n) proj-mon
+                        (CMS-group n) (Sp-group n) proj-mon
   ; incl-injective  = incl-injective
   ; proj-surjective = proj-surjective
   ; proj-kills-incl = proj-kills-incl
@@ -783,7 +799,7 @@ Clifford-extension n = record
 -- but in the Clifford group it squares to the Pauli Z rather than to the
 -- identity — so proj has no section sending that involution to an
 -- involution.  This is the concrete obstruction that makes
--- Clifford-extension a genuinely non-split extension, and the reason it
+-- CMS-extension a genuinely non-split extension, and the reason it
 -- cannot be built with `semidirect` (which would force S² = 1).
 --
 -- It is also the semantic counterpart of corr (order-S) = Z₀, the one

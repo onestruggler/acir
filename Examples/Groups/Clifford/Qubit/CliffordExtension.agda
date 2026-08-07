@@ -1,7 +1,7 @@
-------------------------------------------------------------------------
+﻿------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The projection Clifford-group ↠ Sp(2n,2) of the qubit Clifford
+-- The projection CMS-group ↠ Sp(2n,2) of the qubit Clifford
 -- extension (p = 2).
 --
 -- The extension itself is now built in
@@ -41,7 +41,7 @@ open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem
   using (Symplectic ; _≈ˢ_ ; _∘ˢ_ ; εˢ ; Sp-group)
 
 open import Examples.Groups.Clifford.Qubit.CliffordGroup
-  using (Clifford-extension ; Clifford-group ; _≈ᶜ_ ; proj ; proj-cong ; cact-proj₂)
+  using (CMS-extension ; CMS-group ; _≈ᶜ_ ; proj ; proj-cong ; cact-proj₂)
   public
 
 private

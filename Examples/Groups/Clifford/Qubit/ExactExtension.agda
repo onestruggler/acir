@@ -1,9 +1,9 @@
-------------------------------------------------------------------------
+﻿------------------------------------------------------------------------
 -- Presentations of groups
 --
 -- The scalar layer of the qubit Clifford group,
 --
---     1 ─→ ⟨ω⟩ ─→ Exact n ─→ Clifford n ─→ 1,
+--     1 ─→ ⟨ω⟩ ─→ Exact n ─→ CMS n ─→ 1,
 --
 -- as an ordinary extension.
 --
@@ -20,7 +20,7 @@
 -- bookkeeping:
 --
 --   sound      — Figure 8 is sound for the P4-action, so the identity on
---                words descends to Clifford n;
+--                words descends to CMS n;
 --   scalars    — a word acting trivially on P4 is a power of ω
 --                (completeness, restricted to the scalars);
 --   ω-faithful — ω has order exactly 8, i.e. the scalars are not
@@ -65,7 +65,7 @@ open import ForStdlib.Algebra.Morphism.Consequences
   using (isMonoidHomomorphism⇒isGroupHomomorphism)
 
 open import Examples.Groups.Clifford.Qubit.CliffordGroup
-  using (p-2 ; p-prime ; _≈ᶜ_ ; Clifford-group ; ≈ᶜ-refl)
+  using (p-2 ; p-prime ; _≈ᶜ_ ; CMS-group ; ≈ᶜ-refl)
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
@@ -193,7 +193,7 @@ record ExactData (n : ℕ) : Set where
 ------------------------------------------------------------------------
 -- The extension
 --
---     1 ─→ ⟨ω⟩ ─→ Exact n ─→ Clifford n ─→ 1
+--     1 ─→ ⟨ω⟩ ─→ Exact n ─→ CMS n ─→ 1
 --
 -- incl is k ↦ ωᵏ and proj is the identity on words: the two groups have
 -- the same carrier and differ only in how much they identify.
@@ -206,7 +206,7 @@ module _ {n : ℕ} (d : ExactData n) where
     module MI = MonoidMorphisms (Group.rawMonoid Scalar-group)
                                 (Group.rawMonoid (Exact-group (₁₊ n)))
     module MP = MonoidMorphisms (Group.rawMonoid (Exact-group (₁₊ n)))
-                                (Group.rawMonoid (Clifford-group (₁₊ n)))
+                                (Group.rawMonoid (CMS-group (₁₊ n)))
 
     incl-mon : MI.IsMonoidHomomorphism (scalar {n})
     incl-mon = record
@@ -228,7 +228,7 @@ module _ {n : ℕ} (d : ExactData n) where
       ; ε-homo = λ _ → Eq.refl
       }
 
-  Exact : Extension Scalar-group (Clifford-group (₁₊ n))
+  Exact : Extension Scalar-group (CMS-group (₁₊ n))
   Exact = record
     { total           = Exact-group (₁₊ n)
     ; incl            = scalar
@@ -236,7 +236,7 @@ module _ {n : ℕ} (d : ExactData n) where
     ; incl-homo       = isMonoidHomomorphism⇒isGroupHomomorphism
                           Scalar-group (Exact-group (₁₊ n)) incl-mon
     ; proj-homo       = isMonoidHomomorphism⇒isGroupHomomorphism
-                          (Exact-group (₁₊ n)) (Clifford-group (₁₊ n)) proj-mon
+                          (Exact-group (₁₊ n)) (CMS-group (₁₊ n)) proj-mon
     ; incl-injective  = ω-faithful
     ; proj-surjective = λ h → h , ≈ᶜ-refl {w = h}
     ; proj-kills-incl = λ k → cact-ω^ (toℕ k)

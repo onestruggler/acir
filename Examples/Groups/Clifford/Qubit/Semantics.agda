@@ -1,13 +1,20 @@
-------------------------------------------------------------------------
+﻿------------------------------------------------------------------------
 -- Presentations of groups
 --
 -- The n-qubit Clifford group (p = 2) as group extensions, semantic side.
 -- Two layers, neither of them split:
 --
---     1 ─→ Pauli n ─→ Clifford n ─→ Sp(2n, 2) ─→ 1        (below)
---     1 ─→ ⟨ω⟩     ─→ Exact n    ─→ Clifford n ─→ 1        (scalar layer)
+--     1 ─→ Pauli n ─→ CMS n   ─→ Sp(2n, 2) ─→ 1        (below)
+--     1 ─→ ⟨ω⟩     ─→ Exact n ─→ CMS n     ─→ 1        (scalar layer)
 --
--- The first is re-exported from Examples.Groups.Clifford.Qubit.
+-- CMS n is the Clifford group modulo scalars, C(n)/⟨ω⟩; Exact n is the
+-- Clifford group itself.  Note that the kernel of the first layer is the
+-- *plain* Pauli group Pauli n = (ℤ/2 × ℤ/2)ⁿ, with no phase: the ℤ/4
+-- phase of SignedPauli is used only to define equality of Clifford words,
+-- never as the kernel.  See the header of Qubit.CliffordGroup for why it
+-- cannot be dropped from that role.
+--
+-- The first layer is re-exported from Examples.Groups.Clifford.Qubit.
 -- CliffordGroup, where the total group is the quotient of Clifford words
 -- by equal action on the phased Pauli group P4, and incl / proj /
 -- exactness are proved from that action.  It is NOT a semidirect
@@ -57,13 +64,13 @@ import Examples.Groups.Clifford.Qubit.CliffordGroup as CG
 ------------------------------------------------------------------------
 -- Layer 1: the Clifford group as a non-split extension of Sp(2n, 2)
 
--- 1 → Pauli n → Clifford n → Sp(2n, 2) → 1.
-Clifford-extension : (n : ℕ) → Extension (+ₚ-group n) (Sp-group n)
-Clifford-extension = CG.Clifford-extension
+-- 1 → Pauli n → CMS n → Sp(2n, 2) → 1.
+CMS-extension : (n : ℕ) → Extension (+ₚ-group n) (Sp-group n)
+CMS-extension = CG.CMS-extension
 
 -- The total group: Clifford words modulo equal action on P4.
-Clifford-group : (n : ℕ) → Group 0ℓ 0ℓ
-Clifford-group n = Extension.total (Clifford-extension n)
+CMS-group : (n : ℕ) → Group 0ℓ 0ℓ
+CMS-group n = Extension.total (CMS-extension n)
 
 -- The witness that it does not split, re-exported for convenience.
 open CG using (S²=Z) public
@@ -84,8 +91,8 @@ open import Examples.Groups.Clifford.Qubit.ExactExtension
   using (Scalar-group ; Exact-group ; ExactData)
   renaming (Exact to Exact-of)
 
--- 1 → ⟨ω⟩ → Exact n → Clifford n → 1.
-Exact : ∀ {n} → ExactData n → Extension Scalar-group (Clifford-group (₁₊ n))
+-- 1 → ⟨ω⟩ → Exact n → CMS n → 1.
+Exact : ∀ {n} → ExactData n → Extension Scalar-group (CMS-group (₁₊ n))
 Exact = Exact-of
 
 ------------------------------------------------------------------------
@@ -115,5 +122,5 @@ Exact = Exact-of
 -- WIP) and matrices over ℤ[1/√2, i].
 --
 -- Group-theoretically the extension is the non-split 2^{1+2n}·Sp(2n,2);
--- in particular a direct product ℤ/8 × Clifford n would be the wrong
+-- in particular a direct product ℤ/8 × CMS n would be the wrong
 -- group, which is why the scalar cannot simply be adjoined.
