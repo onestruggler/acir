@@ -762,3 +762,78 @@ act-⊤⊥ a b a' b' t = begin
                        (neg-sub b' b)) ⟩
   ((- (a + a') , - b') ∷ (a , - b' + b) ∷ t) ∎
   where open ≡-Reasoning
+
+private
+  -- x + - (x + y) ≡ - y, the other association of cancel-mid.
+  cancel-mid₂ : ∀ (x y : ℤ ₚ) → x + - (x + y) ≡ - y
+  cancel-mid₂ x y =
+    Eq.trans (Eq.cong (λ z → x + - z) (+-comm x y)) (cancel-mid x y)
+
+  -- x + ((- x + y) + z) ≡ y + z
+  absorb : ∀ (x y z : ℤ ₚ) → x + ((- x + y) + z) ≡ y + z
+  absorb x y z = begin
+    x + ((- x + y) + z) ≡⟨ Eq.sym (+-assoc x (- x + y) z) ⟩
+    (x + (- x + y)) + z ≡⟨ Eq.cong (_+ z) (Eq.sym (+-assoc x (- x) y)) ⟩
+    ((x + - x) + y) + z ≡⟨ Eq.cong (λ u → (u + y) + z) (+-inverseʳ x) ⟩
+    (₀ + y) + z         ≡⟨ Eq.cong (_+ z) (+-identityˡ y) ⟩
+    y + z               ∎
+    where open ≡-Reasoning
+
+-- Both sides are CZ between wires 0 and 2, built two different ways.
+sound-c13 : ∀ (q : Pauli (₃₊ n)) →
+            act (⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑) q ≡ act (⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓) q
+sound-c13 ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = Eq.trans lhs (Eq.sym rhs)
+  where
+  open ≡-Reasoning
+
+  C : Pauli (₃₊ _)
+  C = (a , b + a'') ∷ (a' , b') ∷ (a'' , b'' + a) ∷ t
+
+  lhs : act (⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ≡ C
+  lhs = begin
+    act (⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t)
+      ≡⟨ Eq.cong (act (⊤⊥ ↑ • CZ ↓))
+           (Eq.trans (act-↑ ⊥⊤ (a , b) ((a' , b') ∷ (a'' , b'') ∷ t))
+                     (Eq.cong (λ z → (a , b) ∷ z)
+                              (act-⊥⊤ a' b' a'' b'' t))) ⟩
+    act (⊤⊥ ↑ • CZ ↓)
+        ((a , b) ∷ (a'' , - b' + b'') ∷ (- (a'' + a') , - b') ∷ t)
+      ≡⟨ act-↑ ⊤⊥ (a , b + a'')
+               ((a'' , (- b' + b'') + a) ∷ (- (a'' + a') , - b') ∷ t) ⟩
+    ((a , b + a'')
+      ∷ act ⊤⊥ ((a'' , (- b' + b'') + a) ∷ (- (a'' + a') , - b') ∷ t))
+      ≡⟨ Eq.cong (λ z → (a , b + a'') ∷ z)
+           (act-⊤⊥ a'' ((- b' + b'') + a) (- (a'' + a')) (- b') t) ⟩
+    ((a , b + a'')
+      ∷ (- (a'' + - (a'' + a')) , - - b')
+      ∷ (a'' , - - b' + ((- b' + b'') + a)) ∷ t)
+      ≡⟨ Eq.cong₂ (λ u v → (a , b + a'') ∷ u ∷ (a'' , v) ∷ t)
+           (Eq.cong₂ _,_ (Eq.trans (Eq.cong -_ (cancel-mid₂ a'' a'))
+                                   (-‿involutive a'))
+                         (-‿involutive b'))
+           (Eq.trans (Eq.cong (λ z → z + ((- b' + b'') + a))
+                              (-‿involutive b'))
+                     (absorb b' b'' a)) ⟩
+    C ∎
+
+  rhs : act (⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ≡ C
+  rhs = begin
+    act (⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t)
+      ≡⟨ Eq.cong (act (⊥⊤ ↓ • CZ ↑)) (act-⊤⊥ a b a' b' ((a'' , b'') ∷ t)) ⟩
+    act (⊥⊤ ↓ • CZ ↑)
+        ((- (a + a') , - b') ∷ (a , - b' + b) ∷ (a'' , b'') ∷ t)
+      ≡⟨ Eq.cong (act ⊥⊤)
+           (act-↑ CZ (- (a + a') , - b') ((a , - b' + b) ∷ (a'' , b'') ∷ t)) ⟩
+    act ⊥⊤ ((- (a + a') , - b')
+             ∷ (a , (- b' + b) + a'') ∷ (a'' , b'' + a) ∷ t)
+      ≡⟨ act-⊥⊤ (- (a + a')) (- b') a ((- b' + b) + a'') ((a'' , b'' + a) ∷ t) ⟩
+    ((a , - - b' + ((- b' + b) + a''))
+      ∷ (- (a + - (a + a')) , - - b') ∷ (a'' , b'' + a) ∷ t)
+      ≡⟨ Eq.cong₂ (λ u v → (a , u) ∷ v ∷ (a'' , b'' + a) ∷ t)
+           (Eq.trans (Eq.cong (λ z → z + ((- b' + b) + a''))
+                              (-‿involutive b'))
+                     (absorb b' b a''))
+           (Eq.cong₂ _,_ (Eq.trans (Eq.cong -_ (cancel-mid₂ a a'))
+                                   (-‿involutive a'))
+                         (-‿involutive b')) ⟩
+    C ∎
