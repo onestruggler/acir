@@ -684,3 +684,81 @@ sound-c11 ((a , b) ∷ (a' , b') ∷ t) = Eq.sym (begin
     (b' + - a') + (- b + a)   ≡⟨ rearr4 b' (- a') (- b) a ⟩
     (b' + a) + (- b + - a')   ≡⟨ Eq.cong ((b' + a) +_) (-‿+-comm b a') ⟩
     (b' + a) + - (b + a')     ∎
+
+------------------------------------------------------------------------
+-- The compound two-wire words
+--
+-- ₕ|ₕ = H CZ H on the lower wire and ʰ|ʰ = H CZ H on the upper one are
+-- the CX-like gates; ⊥⊤ and ⊤⊥ are their two products.  Closed forms
+-- for all four, so that c13 to c15 — which are built entirely from them
+-- — can be computed without unfolding to twenty-odd letters.
+
+-- Both single ones are already in normal form.
+act-ₕ|ₕ : ∀ a b a' b' (t : Pauli n) →
+          act ₕ|ₕ ((a , b) ∷ (a' , b') ∷ t)
+            ≡ (- (a + a') , - b) ∷ (a' , b' + - b) ∷ t
+act-ₕ|ₕ a b a' b' t = Eq.refl
+
+act-ʰ|ʰ : ∀ a b a' b' (t : Pauli n) →
+          act ʰ|ʰ ((a , b) ∷ (a' , b') ∷ t)
+            ≡ (a , b + - b') ∷ (- (a' + a) , - b') ∷ t
+act-ʰ|ʰ a b a' b' t = Eq.refl
+
+private
+  -- a + - (a' + a) ≡ - a'
+  cancel-mid : ∀ (a a' : ℤ ₚ) → a + - (a' + a) ≡ - a'
+  cancel-mid a a' = begin
+    a + - (a' + a)  ≡⟨ Eq.cong (a +_) (Eq.sym (-‿+-comm a' a)) ⟩
+    a + (- a' + - a) ≡⟨ Eq.sym (+-assoc a (- a') (- a)) ⟩
+    (a + - a') + - a ≡⟨ Eq.cong (_+ - a) (+-comm a (- a')) ⟩
+    (- a' + a) + - a ≡⟨ +-assoc (- a') a (- a) ⟩
+    - a' + (a + - a) ≡⟨ Eq.cong (- a' +_) (+-inverseʳ a) ⟩
+    - a' + ₀         ≡⟨ +-identityʳ (- a') ⟩
+    - a'             ∎
+    where open ≡-Reasoning
+
+  -- - y + (- x + y) ≡ - x
+  cancel-out : ∀ (x y : ℤ ₚ) → - y + (- x + y) ≡ - x
+  cancel-out x y = begin
+    - y + (- x + y) ≡⟨ Eq.cong (- y +_) (+-comm (- x) y) ⟩
+    - y + (y + - x) ≡⟨ Eq.sym (+-assoc (- y) y (- x)) ⟩
+    (- y + y) + - x ≡⟨ Eq.cong (_+ - x) (+-inverseˡ y) ⟩
+    ₀ + - x         ≡⟨ +-identityˡ (- x) ⟩
+    - x             ∎
+    where open ≡-Reasoning
+
+act-⊥⊤ : ∀ a b a' b' (t : Pauli n) →
+         act ⊥⊤ ((a , b) ∷ (a' , b') ∷ t)
+           ≡ (a' , - b + b') ∷ (- (a' + a) , - b) ∷ t
+act-⊥⊤ a b a' b' t = begin
+  act ⊥⊤ ((a , b) ∷ (a' , b') ∷ t)
+    ≡⟨ Eq.cong (act ₕ|ₕ) (act-ʰ|ʰ a b a' b' t) ⟩
+  act ₕ|ₕ ((a , b + - b') ∷ (- (a' + a) , - b') ∷ t)
+    ≡⟨ act-ₕ|ₕ a (b + - b') (- (a' + a)) (- b') t ⟩
+  (( - (a + - (a' + a)) , - (b + - b'))
+    ∷ (- (a' + a) , - b' + - (b + - b')) ∷ t)
+    ≡⟨ Eq.cong₂ (λ u v → u ∷ (- (a' + a) , v) ∷ t)
+         (Eq.cong₂ _,_ (Eq.trans (Eq.cong -_ (cancel-mid a a'))
+                                 (-‿involutive a'))
+                       (neg-sub b b'))
+         (Eq.trans (Eq.cong (- b' +_) (neg-sub b b')) (cancel-out b b')) ⟩
+  ((a' , - b + b') ∷ (- (a' + a) , - b) ∷ t) ∎
+  where open ≡-Reasoning
+
+act-⊤⊥ : ∀ a b a' b' (t : Pauli n) →
+         act ⊤⊥ ((a , b) ∷ (a' , b') ∷ t)
+           ≡ (- (a + a') , - b') ∷ (a , - b' + b) ∷ t
+act-⊤⊥ a b a' b' t = begin
+  act ⊤⊥ ((a , b) ∷ (a' , b') ∷ t)
+    ≡⟨ Eq.cong (act ʰ|ʰ) (act-ₕ|ₕ a b a' b' t) ⟩
+  act ʰ|ʰ ((- (a + a') , - b) ∷ (a' , b' + - b) ∷ t)
+    ≡⟨ act-ʰ|ʰ (- (a + a')) (- b) a' (b' + - b) t ⟩
+  (( - (a + a') , - b + - (b' + - b))
+    ∷ (- (a' + - (a + a')) , - (b' + - b)) ∷ t)
+    ≡⟨ Eq.cong₂ (λ u v → (- (a + a') , u) ∷ v ∷ t)
+         (Eq.trans (Eq.cong (- b +_) (neg-sub b' b)) (cancel-out b' b))
+         (Eq.cong₂ _,_ (Eq.trans (Eq.cong -_ (cancel-mid a' a))
+                                 (-‿involutive a))
+                       (neg-sub b' b)) ⟩
+  ((- (a + a') , - b') ∷ (a , - b' + b) ∷ t) ∎
+  where open ≡-Reasoning
