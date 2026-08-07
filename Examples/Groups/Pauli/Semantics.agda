@@ -1,5 +1,5 @@
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --termination-depth=2 #-}
+
 open import Relation.Binary.PropositionalEquality using (_≡_ ; module ≡-Reasoning)
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -10,14 +10,10 @@ open import Data.Vec hiding ([_])
 open import Notations
 open import Data.Nat.Primality
 
-
-
 module Examples.Groups.Pauli.Semantics (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
-
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-
 
 Pauli1 = ℤ ₚ × ℤ ₚ
 
@@ -31,10 +27,8 @@ sform : ∀ {n} → Pauli n → Pauli n → ℤ ₚ
 sform {₀} [] [] = ₀
 sform {₁₊ n} (x ∷ ps) (y ∷ qs) = sform1 x y + sform ps qs
 
-
 cong₃ : ∀ {A B C D : Set}(f : A → B → C → D) {x y u v a b} → x ≡ y → u ≡ v → a ≡ b → f x u a  ≡ f y v b
 cong₃ f Eq.refl Eq.refl Eq.refl = Eq.refl
-
 
 pIₙ : ∀ {n} → Pauli n
 pIₙ {₀} = []
