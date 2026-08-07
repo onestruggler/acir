@@ -64,7 +64,7 @@ import Examples.Groups.Clifford.Qupit.Simplified-V1.Presentation
 -- The V2 rules, their grouplike witness, and the isomorphism with V1.
 open import Examples.Groups.Clifford.Qupit.Simplified-V2.Syntactics
   p-3 p-prime g* g-gen as Sim using (module Simplified-Relations)
-open import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas
+open import Examples.Groups.Clifford.Qupit.Simplified-V2.Completeness
   p-3 p-prime g* g-gen as SimL using (module Simplified-GroupLike-S)
 import Examples.Groups.Clifford.Qupit.Simplified-V2.Iso
   p-3 p-prime g* g-gen as ISO

@@ -21,7 +21,7 @@ open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 open import Notations
 
-module Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas.Structural
+module Examples.Groups.Clifford.Qupit.Simplified-V2.Structural
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -42,7 +42,7 @@ open Clifford-Relations hiding
   ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ ; lemma-cong↑ )
 open import Examples.Groups.Clifford.Qupit.Simplified-V2.Syntactics p-3 p-prime g* g-gen
 open Simplified-Relations
-open import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas.Base p-3 p-prime g* g-gen public
+open import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas p-3 p-prime g* g-gen public
 
 -- Lemmas-Clifford-S : copy of Simplified-V1.Syntactics's
 --                     Lemmas-Clifford

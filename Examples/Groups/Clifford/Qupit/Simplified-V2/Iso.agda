@@ -46,7 +46,7 @@ open import Examples.Groups.Clifford.Qupit.Simplified-V1.Lemmas
   using (module Clifford-GroupLike)
 import Examples.Groups.Clifford.Qupit.Simplified-V2.Syntactics p-3 p-prime g* g-gen as Sim
 import Examples.Groups.Clifford.Qupit.Simplified-V1.Soundness p-3 p-prime g* g-gen as Snd
-import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas p-3 p-prime g* g-gen as Cmp
+import Examples.Groups.Clifford.Qupit.Simplified-V2.Completeness p-3 p-prime g* g-gen as Cmp
 -- semi-M bridges: soundness (simplified holds in Clifford) and
 -- completeness (original holds in Simplified) of the simplified semi-M relations.
 import Examples.Groups.Clifford.Qupit.Simplified-V1.SemiM   p-3 p-prime g* g-gen as MgC

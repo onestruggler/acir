@@ -63,7 +63,7 @@ open Clifford-Relations hiding
   ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ ; lemma-cong↑ )
 open import Examples.Groups.Clifford.Qupit.Simplified-V2.Syntactics p-3 p-prime g* g-gen
 open Simplified-Relations
-open import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Simplified-V2.Completeness p-3 p-prime g* g-gen
 open Lemmas-Clifford-S
 open Simplified-GroupLike-S
 -- (CL = Lemmas1-S and CLb = Lemmas1b-S are re-exported by Simplified-Lemmas)
