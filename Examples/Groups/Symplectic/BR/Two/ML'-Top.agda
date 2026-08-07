@@ -60,7 +60,6 @@ import Examples.Groups.Symplectic.BR.Two.B-Top p-2 p-prime as BT
 import Examples.Groups.Symplectic.BR.Two.BD-Top p-2 p-prime as BD
 open import Examples.Groups.Symplectic.BR.Three.BB-CZ-n p-2 p-prime
   using (gen-bb-cz ; gen-dir-b ; gen-vb'-of)
-  using (dvec-word)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushMword p-2 p-prime
   using (push-Mʷ-suc)
 
