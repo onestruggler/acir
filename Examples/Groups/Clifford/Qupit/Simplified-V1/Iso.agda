@@ -54,7 +54,7 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Iso
   where
 
 
-open import Examples.Groups.Clifford.Qupit.SDProduct p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.SemiDirect.SDProduct p-3 p-prime g* g-gen
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Lemmas p-3 p-prime g* g-gen hiding (module CL ; module CLb)
 
 

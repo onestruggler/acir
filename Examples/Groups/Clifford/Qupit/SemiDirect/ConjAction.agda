@@ -37,7 +37,7 @@ open import Notations
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
-module Examples.Groups.Clifford.Qupit.ConjAction
+module Examples.Groups.Clifford.Qupit.SemiDirect.ConjAction
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -67,7 +67,7 @@ open import Examples.Groups.Symplectic.XZPresentation p-2 p-prime
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen as SimPres
 open import Examples.Construct.SemiDirectProduct.Clifford p-2 p-prime using (ap-ε)
-open import Examples.Groups.Clifford.Qupit.SDProduct p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.SemiDirect.SDProduct p-3 p-prime g* g-gen
   using (module SemiDirect)
 
 open NSim.Symplectic using (Gen ; H-gen ; S-gen ; CZ-gen ; _↥)
