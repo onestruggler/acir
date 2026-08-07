@@ -306,9 +306,11 @@ module Lemmas1b (n : ℕ) where
   -- without appealing to order-SH.  These are the right-moving
   -- companions of conj-S-X^k / conj-S^l-X, which move S past a Pauli.
   --
-  -- NOTE: everything here is independent of order-SH.  lemma-SHSH and
-  -- lemma-HSHSH above are NOT usable for that derivation — both are
-  -- proved from `axiom order-SH` and so are downstream of it.
+  -- NOTE: lemma-SHSH and lemma-HSHSH above are proved from
+  -- `axiom order-SH`, so they are downstream of it.  CORRECTION to an
+  -- earlier claim here: conj-X^k-S below is NOT order-SH-free either —
+  -- it goes through lemma-XS, conj-S-X and lemma-SX, and lemma-SX uses
+  -- lemma-SHSH.  See the warning on lemma-order-SH.
 
   -- Z-powers commute with S outright.
   comm-Z^k-S : ∀ k -> Z ^ k • S ≈ S • Z ^ k
@@ -419,6 +421,94 @@ module Lemmas1b (n : ℕ) where
       ≈⟨ by-passoc (□ ^ 2 • □ • □ ^ 2 • □ • □ ^ 2 • □)
                    (□ • □ • □ • □ • □ • □ • □ • □ • □) auto ⟩
     S • Z ^ a½ • H • S • Z ^ a½ • H • S • Z ^ a½ • H ∎
+
+  comm-Z⁻¹^k-S : ∀ k -> Z⁻¹ ^ k • S ≈ S • Z⁻¹ ^ k
+  comm-Z⁻¹^k-S k = lemma-Inductionˡ (comm-Z^k-S p-1) k
+
+  lemma-RH³=SH³ : (R • H) ^ 3 ≈ (S • H) ^ 3
+  lemma-RH³=SH³ = begin
+    (R • H) ^ 3
+      ≈⟨ lemma-RH⁶ ⟩
+    S • Z ^ a½ • H • S • Z ^ a½ • H • S • Z ^ a½ • H
+      ≈⟨ by-passoc (□ • □ • □ • □ • □ • □ • □ • □ • □)
+                   (□ • □ ^ 2 • □ ^ 6) auto ⟩
+    S • (Z ^ a½ • H) • (S • Z ^ a½ • H • S • Z ^ a½ • H)
+      ≈⟨ (cright cleft sym (conj-H-X^k a½)) ⟩
+    S • (H • X ^ a½) • (S • Z ^ a½ • H • S • Z ^ a½ • H)
+      ≈⟨ by-passoc (□ • □ ^ 2 • □ ^ 6) (□ • □ • □ ^ 2 • □ ^ 5) auto ⟩
+    S • H • (X ^ a½ • S) • (Z ^ a½ • H • S • Z ^ a½ • H)
+      ≈⟨ (cright cright cleft conj-X^k-S a½) ⟩
+    S • H • (S • (X • Z⁻¹) ^ a½) • (Z ^ a½ • H • S • Z ^ a½ • H)
+      ≈⟨ by-passoc (□ • □ • □ ^ 2 • □ ^ 5) (□ • □ • □ • □ ^ 2 • □ ^ 4) auto ⟩
+    S • H • S • ((X • Z⁻¹) ^ a½ • Z ^ a½) • (H • S • Z ^ a½ • H)
+      ≈⟨ (cright cright cright cleft cleft split-XZ⁻¹^k a½) ⟩
+    S • H • S • ((X ^ a½ • Z⁻¹ ^ a½) • Z ^ a½) • (H • S • Z ^ a½ • H)
+      ≈⟨ (cright cright cright cleft assoc) ⟩
+    S • H • S • (X ^ a½ • Z⁻¹ ^ a½ • Z ^ a½) • (H • S • Z ^ a½ • H)
+      ≈⟨ (cright cright cright cleft cright aux-Z⁻¹^k-Z^k a½) ⟩
+    S • H • S • (X ^ a½ • ε) • (H • S • Z ^ a½ • H)
+      ≈⟨ (cright cright cright cleft right-unit) ⟩
+    S • H • S • X ^ a½ • (H • S • Z ^ a½ • H)
+      ≈⟨ by-passoc (□ • □ • □ • □ • □ ^ 4) (□ • □ • □ • □ ^ 2 • □ ^ 3) auto ⟩
+    S • H • S • (X ^ a½ • H) • (S • Z ^ a½ • H)
+      ≈⟨ (cright cright cright cleft conj-X^k-H a½) ⟩
+    S • H • S • (H • Z⁻¹ ^ a½) • (S • Z ^ a½ • H)
+      ≈⟨ by-passoc (□ • □ • □ • □ ^ 2 • □ ^ 3) (□ • □ • □ • □ • □ ^ 2 • □ ^ 2) auto ⟩
+    S • H • S • H • (Z⁻¹ ^ a½ • S) • (Z ^ a½ • H)
+      ≈⟨ (cright cright cright cright cleft comm-Z⁻¹^k-S a½) ⟩
+    S • H • S • H • (S • Z⁻¹ ^ a½) • (Z ^ a½ • H)
+      ≈⟨ by-passoc (□ • □ • □ • □ • □ ^ 2 • □ ^ 2) (□ • □ • □ • □ • □ • □ ^ 2 • □) auto ⟩
+    S • H • S • H • S • (Z⁻¹ ^ a½ • Z ^ a½) • H
+      ≈⟨ (cright cright cright cright cright cleft aux-Z⁻¹^k-Z^k a½) ⟩
+    S • H • S • H • S • ε • H
+      ≈⟨ (cright cright cright cright cright left-unit) ⟩
+    S • H • S • H • S • H
+      ≈⟨ sym (by-passoc ((□ ^ 2) ^ 3) (□ • □ • □ • □ • □ • □) auto) ⟩
+    (S • H) ^ 3 ∎
+
+  -- (S • H) ^ 3 ≈ ε, from M-power via lemma-M1 and the bridge above.
+  --
+  -- WARNING: this does NOT show order-SH is redundant.  The chain is
+  -- circular, through exactly one link:
+  --
+  --   lemma-order-SH -> lemma-RH³=SH³ -> conj-X^k-S -> lemma-XS
+  --                  -> conj-S-X -> lemma-SX -> lemma-SHSH
+  --                  -> axiom order-SH
+  --
+  -- Everything else here is genuinely order-SH-free (conj-H-X and its
+  -- powers are pure associativity; conj-H-Z, lemma-XH, comm-Z^k-S and
+  -- the Z-power arithmetic go through order-H, order-S and
+  -- comm-HHSHHS).  lemma-SX is the sole contaminated input, and it is
+  -- contaminated only at line 259.
+  --
+  -- To break the cycle, conj-S-X needs an order-SH-free proof.  The
+  -- paper's route suggests one: lemma-M1 gives (R • H) ^ 3 ≈ ε with no
+  -- Pauli bridge at all, so the R-analogue of lemma-SHSH is available
+  -- for free; derive conj-R-X from it, then conj-S-X from S = R • Z^-½
+  -- together with comm-X-Z.  Not attempted here.
+  lemma-order-SH : (S • H) ^ 3 ≈ ε
+  lemma-order-SH = begin
+    (S • H) ^ 3
+      ≈⟨ sym lemma-RH³=SH³ ⟩
+    (R • H) ^ 3
+      ≈⟨ by-passoc ((□ ^ 2) ^ 3) (□ • □ • □ • □ • □ • □) auto ⟩
+    R • H • R • H • R • H
+      ≈⟨ (cright cright cleft aux-R) ⟩
+    R^ x • H • R^ x⁻¹ • H • R^ x • H
+      ≈⟨ refl ⟩
+    M x'
+      ≈⟨ lemma-M1 ⟩
+    ε ∎
+    where
+    x' : ℤ* ₚ
+    x' = (₁ , λ ())
+    x = x' .proj₁
+    x⁻¹ = ((x' ⁻¹) .proj₁)
+    aux-R : R ≈ R^ x⁻¹
+    aux-R = begin
+      R      ≈⟨ refl ⟩
+      R^ ₁   ≡⟨ Eq.cong R^ (Eq.sym aux₁⁻¹') ⟩
+      R^ x⁻¹ ∎
 
   aux-X⁻¹ : X⁻¹ ≈ H • S⁻¹ • H • H • S • H
   aux-X⁻¹ = begin
