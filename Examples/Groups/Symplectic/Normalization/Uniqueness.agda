@@ -81,7 +81,7 @@ open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using ([_]ᵐˡ) renaming (NF to NFˢ ; [_] to [_]ˢ)
 open import Examples.Groups.Symplectic.Normalization.NF-Inj p-2 p-prime
   using (act ; lemma-lm-head-inj ; lemma-lm-tail-surj)
-open import Examples.Groups.Symplectic.Transport p-2 p-prime
+open import Examples.Groups.Symplectic.SoundnessDirect p-2 p-prime
   using (sound-ax)
 
 private variable n : ℕ

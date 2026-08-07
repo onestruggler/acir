@@ -24,7 +24,7 @@
 --   * the monoid laws are FREE — ⟦ w • v ⟧ is *definitionally*
 --     ⟦ w ⟧ ∘ˢ ⟦ v ⟧ and ⟦ ε ⟧ is εˢ (Semantics.agda:331-334), so the
 --     four structural fields are just Sp-isGroup's ∙-cong/assoc/identity;
---   * soundness of the axioms is Transport.sound-ax, already proved,
+--   * soundness of the axioms is SoundnessDirect.sound-ax, already proved,
 --     postulate-free and --safe.
 --
 -- What is left is `reflect`, and it factors into two independent
@@ -77,7 +77,7 @@ open Sem.Interpretation using (⟦_⟧)
 open import Examples.Groups.Pauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1)
 
-open import Examples.Groups.Symplectic.Transport p-2 p-prime
+open import Examples.Groups.Symplectic.SoundnessDirect p-2 p-prime
   using (sound-ax)
 
 import Normalization.CosetNF2 as CNF2

@@ -9,7 +9,7 @@
 --     (Pushing.Tower01 / Pushing.Exact01): every width-1 word is
 --     ≈-equal to its normal form's section, gg (nf w) ≈ w;
 --   * soundness of the presentation in the symplectic action
---     (Transport.sound-ax, lifted here to the congruence);
+--     (SoundnessDirect.sound-ax, lifted here to the congruence);
 --   * semantic injectivity of normal forms (NF-Inj.⟦[]⟧-injective) —
 --     the normal-form carrier ⊤ × C 1 IS NF 1, and the tower's
 --     section gg coincides definitionally with the NF section [_].
@@ -42,7 +42,7 @@ open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem
   using (_≈ˢ_)
 open Sem.Symplectic using (ap)
 open Sem.Interpretation using (⟦_⟧)
-open import Examples.Groups.Symplectic.Transport p-2 p-prime
+open import Examples.Groups.Symplectic.SoundnessDirect p-2 p-prime
   using (sound-ax)
 
 import Examples.Groups.Symplectic.Normalization.NF-Inj p-2 p-prime as NFI

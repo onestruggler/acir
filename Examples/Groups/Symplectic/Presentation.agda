@@ -86,7 +86,7 @@ open SNF using (UniqueNormalForm)
 -- taken as a hypothesis instead (Surjectivity below), and discharged
 -- in Examples.Groups.Symplectic.PresentationFull.
 
-open import Examples.Groups.Symplectic.Transport p-2 p-prime using (sound-ax)
+open import Examples.Groups.Symplectic.SoundnessDirect p-2 p-prime using (sound-ax)
 
 -- Every symplectic transformation is the action of some circuit.
 Surjectivity : ℕ → Set

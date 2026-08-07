@@ -12,7 +12,7 @@
 -- The two agree pointwise (act≡ap), but only propositionally: for a
 -- variable word the two recursions are stuck at different heads, so the
 -- bridge lemma is needed whenever a result stated for one is used on the
--- other.  act-sound-ax is the ⟦_⟧-free restatement of Transport.sound-ax
+-- other.  act-sound-ax is the ⟦_⟧-free restatement of SoundnessDirect.sound-ax
 -- that this buys.
 ------------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem using ()
 open Sem.Symplectic using (ap)
 open Sem.Interpretation using (actg ; ⟦_⟧)
 
-open import Examples.Groups.Symplectic.Transport p-2 p-prime using (sound-ax)
+open import Examples.Groups.Symplectic.SoundnessDirect p-2 p-prime using (sound-ax)
 
 private
   variable
@@ -64,7 +64,7 @@ act≡ap (w • v) x =
 ------------------------------------------------------------------------
 -- Soundness, stated for act
 
--- Transport.sound-ax with both sides pushed along act≡ap.
+-- SoundnessDirect.sound-ax with both sides pushed along act≡ap.
 act-sound-ax : (w v : Circuit n) → n QRel, w === v → ∀ x → act w x ≡ act v x
 act-sound-ax w v r x =
   Eq.trans (act≡ap w x) (Eq.trans (sound-ax r x) (Eq.sym (act≡ap v x)))
