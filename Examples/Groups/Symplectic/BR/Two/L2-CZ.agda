@@ -2,35 +2,30 @@
 {-# OPTIONS  --call-by-name #-}
 {-# OPTIONS --termination-depth=4 #-}
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Nullary.Decidable using (yes ; no)
 
 
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW using (≡×≡⇒≡)
+open import Data.Product using (_,_ ; proj₁ ; proj₂)
+open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _≟_)
-open import Data.Bool hiding (_<_ ; _≤_ ; _≟_)
 --open import Data.List using () hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
-open import Data.Vec as V
+open import Data.Vec
 open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 
-open import Data.Maybe
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Empty using (⊥-elim)
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
-open import Word.Properties
+open import Word.Base hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Normalization.Reidemeister-Schreier as RS
 open import Notations
 
 
 
 open import Presentation.GroupLike
-open import Presentation.Tactic.Rewriting using ()
 open import Data.Nat.Primality
 
 
@@ -54,12 +49,9 @@ open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime hiding (M)
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
 
-open import Zp.ModularArithmetic
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
