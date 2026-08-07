@@ -42,7 +42,9 @@ open import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic using ( Circuit ; Gen ; SympGate ; gate₁ ; gate₂ ; _↥
                       ; H-gate ; S-gate ; CZ-gate ; S ; H ; CZ ; _↑ ; _↓
-                      ; S^ ; CZ^ ; M ; _^1 ; _^2 ; S⁻¹ ; ₕ|ₕ ; ʰ|ʰ ; ⊥⊤ ; ⊤⊥ )
+                      ; S^ ; CZ^ ; M ; _^1 ; _^2 ; S⁻¹ ; ₕ|ₕ ; ʰ|ʰ ; ⊥⊤ ; ⊤⊥
+                      ; _QRel,_===_ ; srel ; cong↑ ; comm₁ ; comm₂
+                      ; module Base )
 
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem
 open Sem.Symplectic using (ap)
@@ -863,3 +865,245 @@ act-⊥⊤↓CZ↑ a b a' b' a'' b'' t =
   Eq.trans (Eq.cong (act ⊥⊤)
                     (act-↑ CZ (a , b) ((a' , b') ∷ (a'' , b'') ∷ t)))
            (act-⊥⊤ a b a' (b' + a'') ((a'' , b'' + a') ∷ t))
+
+private
+  -- (b + x) + - (x + y) ≡ b + - y
+  shift-cancel : ∀ (b x y : ℤ ₚ) → (b + x) + - (x + y) ≡ b + - y
+  shift-cancel b x y = begin
+    (b + x) + - (x + y)   ≡⟨ Eq.cong ((b + x) +_) (Eq.sym (-‿+-comm x y)) ⟩
+    (b + x) + (- x + - y) ≡⟨ rearr4 b x (- x) (- y) ⟩
+    (b + - y) + (- x + x) ≡⟨ Eq.cong ((b + - y) +_) (+-inverseˡ x) ⟩
+    (b + - y) + ₀         ≡⟨ +-identityʳ (b + - y) ⟩
+    b + - y               ∎
+    where open ≡-Reasoning
+
+  -- - (x + y) + x ≡ - y
+  neg-sum-cancel : ∀ (x y : ℤ ₚ) → - (x + y) + x ≡ - y
+  neg-sum-cancel x y = begin
+    - (x + y) + x   ≡⟨ Eq.cong (_+ x) (Eq.sym (-‿+-comm x y)) ⟩
+    (- x + - y) + x ≡⟨ +-assoc (- x) (- y) x ⟩
+    - x + (- y + x) ≡⟨ Eq.cong (- x +_) (+-comm (- y) x) ⟩
+    - x + (x + - y) ≡⟨ Eq.sym (+-assoc (- x) x (- y)) ⟩
+    (- x + x) + - y ≡⟨ Eq.cong (_+ - y) (+-inverseˡ x) ⟩
+    ₀ + - y         ≡⟨ +-identityˡ (- y) ⟩
+    - y             ∎
+    where open ≡-Reasoning
+
+  -- - (- x + (y + z)) ≡ (x + - y) + - z
+  neg-mix2 : ∀ (x y z : ℤ ₚ) → - (- x + (y + z)) ≡ (x + - y) + - z
+  neg-mix2 x y z = begin
+    - (- x + (y + z))   ≡⟨ Eq.sym (-‿+-comm (- x) (y + z)) ⟩
+    - - x + - (y + z)   ≡⟨ Eq.cong (_+ - (y + z)) (-‿involutive x) ⟩
+    x + - (y + z)       ≡⟨ Eq.cong (x +_) (Eq.sym (-‿+-comm y z)) ⟩
+    x + (- y + - z)     ≡⟨ Eq.sym (+-assoc x (- y) (- z)) ⟩
+    (x + - y) + - z     ∎
+    where open ≡-Reasoning
+
+  -- (b + - x) + x ≡ b
+  add-cancel : ∀ (b x : ℤ ₚ) → (b + - x) + x ≡ b
+  add-cancel b x = begin
+    (b + - x) + x ≡⟨ +-assoc b (- x) x ⟩
+    b + (- x + x) ≡⟨ Eq.cong (b +_) (+-inverseˡ x) ⟩
+    b + ₀         ≡⟨ +-identityʳ b ⟩
+    b             ∎
+    where open ≡-Reasoning
+
+  -- (x + - y) + - x ≡ - y
+  drop-x : ∀ (x y : ℤ ₚ) → (x + - y) + - x ≡ - y
+  drop-x x y = begin
+    (x + - y) + - x ≡⟨ +-assoc x (- y) (- x) ⟩
+    x + (- y + - x) ≡⟨ Eq.cong (x +_) (+-comm (- y) (- x)) ⟩
+    x + (- x + - y) ≡⟨ Eq.sym (+-assoc x (- x) (- y)) ⟩
+    (x + - x) + - y ≡⟨ Eq.cong (_+ - y) (+-inverseʳ x) ⟩
+    ₀ + - y         ≡⟨ +-identityˡ (- y) ⟩
+    - y             ∎
+    where open ≡-Reasoning
+
+  -- ((x + - y) + - z) + (- x + z) ≡ - y
+  cross-cancel : ∀ (x y z : ℤ ₚ) → ((x + - y) + - z) + (- x + z) ≡ - y
+  cross-cancel x y z = begin
+    ((x + - y) + - z) + (- x + z) ≡⟨ +-assoc (x + - y) (- z) (- x + z) ⟩
+    (x + - y) + (- z + (- x + z)) ≡⟨ Eq.cong ((x + - y) +_) (cancel-out x z) ⟩
+    (x + - y) + - x               ≡⟨ drop-x x y ⟩
+    - y                           ∎
+    where open ≡-Reasoning
+
+  -- x + (y + - x) ≡ y
+  absorb' : ∀ (x y : ℤ ₚ) → x + (y + - x) ≡ y
+  absorb' x y = begin
+    x + (y + - x) ≡⟨ Eq.cong (x +_) (+-comm y (- x)) ⟩
+    x + (- x + y) ≡⟨ Eq.sym (+-assoc x (- x) y) ⟩
+    (x + - x) + y ≡⟨ Eq.cong (_+ y) (+-inverseʳ x) ⟩
+    ₀ + y         ≡⟨ +-identityˡ y ⟩
+    y             ∎
+    where open ≡-Reasoning
+
+-- Cubing ⊤⊥↑ CZ is the identity.  The X-slots permute as
+-- a , a' + a'' , a' and the Z-slots pick up shears; three rounds bring
+-- every wire back.
+sound-c14 : ∀ (q : Pauli (₃₊ n)) → act ((⊤⊥ ↑ • CZ ↓) ^ 3) q ≡ q
+sound-c14 ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
+  act ((⊤⊥ ↑ • CZ ↓) ^ 3) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t)
+    ≡⟨ Eq.cong (λ z → act (⊤⊥ ↑ • CZ ↓) (act (⊤⊥ ↑ • CZ ↓) z))
+               (act-⊤⊥↑CZ a b a' b' a'' b'' t) ⟩
+  act (⊤⊥ ↑ • CZ ↓) (act (⊤⊥ ↑ • CZ ↓) S1)
+    ≡⟨ Eq.cong (act (⊤⊥ ↑ • CZ ↓)) round2 ⟩
+  act (⊤⊥ ↑ • CZ ↓) S2
+    ≡⟨ round3 ⟩
+  ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ∎
+  where
+  open ≡-Reasoning
+
+  S1 : Pauli (₃₊ _)
+  S1 = (a , b + a') ∷ (- (a' + a'') , - b'') ∷ (a' , - b'' + (b' + a)) ∷ t
+
+  S2 : Pauli (₃₊ _)
+  S2 = (a , b + - a'')
+        ∷ (a'' , (b'' + - b') + - a)
+        ∷ (- (a' + a'') , - b') ∷ t
+
+  round2 : act (⊤⊥ ↑ • CZ ↓) S1 ≡ S2
+  round2 = begin
+    act (⊤⊥ ↑ • CZ ↓) S1
+      ≡⟨ act-⊤⊥↑CZ a (b + a') (- (a' + a'')) (- b'') a'
+                   (- b'' + (b' + a)) t ⟩
+    ((a , (b + a') + - (a' + a''))
+      ∷ (- (- (a' + a'') + a') , - (- b'' + (b' + a)))
+      ∷ (- (a' + a'') , - (- b'' + (b' + a)) + (- b'' + a)) ∷ t)
+      ≡⟨ Eq.cong₂ (λ u v → (a , u) ∷ v
+                             ∷ (- (a' + a'')
+                               , - (- b'' + (b' + a)) + (- b'' + a)) ∷ t)
+           (shift-cancel b a' a'')
+           (Eq.cong₂ _,_ (Eq.trans (Eq.cong -_ (neg-sum-cancel a' a''))
+                                   (-‿involutive a''))
+                         (neg-mix2 b'' b' a)) ⟩
+    ((a , b + - a'') ∷ (a'' , (b'' + - b') + - a)
+      ∷ (- (a' + a'') , - (- b'' + (b' + a)) + (- b'' + a)) ∷ t)
+      ≡⟨ Eq.cong (λ z → (a , b + - a'') ∷ (a'' , (b'' + - b') + - a)
+                          ∷ (- (a' + a'') , z) ∷ t)
+           (Eq.trans (Eq.cong (_+ (- b'' + a)) (neg-mix2 b'' b' a))
+                     (cross-cancel b'' b' a)) ⟩
+    S2 ∎
+
+  round3 : act (⊤⊥ ↑ • CZ ↓) S2
+             ≡ ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t)
+  round3 = begin
+    act (⊤⊥ ↑ • CZ ↓) S2
+      ≡⟨ act-⊤⊥↑CZ a (b + - a'') a'' ((b'' + - b') + - a)
+                   (- (a' + a'')) (- b') t ⟩
+    ((a , (b + - a'') + a'')
+      ∷ (- (a'' + - (a' + a'')) , - - b')
+      ∷ (a'' , - - b' + (((b'' + - b') + - a) + a)) ∷ t)
+      ≡⟨ Eq.cong₂ (λ u v → (a , u) ∷ v
+                             ∷ (a'' , - - b' + (((b'' + - b') + - a) + a)) ∷ t)
+           (add-cancel b a'')
+           (Eq.cong₂ _,_ (Eq.trans (Eq.cong -_ (cancel-mid a'' a'))
+                                   (-‿involutive a'))
+                         (-‿involutive b')) ⟩
+    ((a , b) ∷ (a' , b')
+      ∷ (a'' , - - b' + (((b'' + - b') + - a) + a)) ∷ t)
+      ≡⟨ Eq.cong (λ z → (a , b) ∷ (a' , b') ∷ (a'' , z) ∷ t)
+           (Eq.trans (Eq.cong₂ _+_ (-‿involutive b')
+                                   (add-cancel (b'' + - b') a))
+                     (absorb' b' b'')) ⟩
+    ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ∎
+
+-- The mirror of c14, on the other pair of wires.
+sound-c15 : ∀ (q : Pauli (₃₊ n)) → act ((⊥⊤ ↓ • CZ ↑) ^ 3) q ≡ q
+sound-c15 ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = begin
+  act ((⊥⊤ ↓ • CZ ↑) ^ 3) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t)
+    ≡⟨ Eq.cong (λ z → act (⊥⊤ ↓ • CZ ↑) (act (⊥⊤ ↓ • CZ ↑) z))
+               (act-⊥⊤↓CZ↑ a b a' b' a'' b'' t) ⟩
+  act (⊥⊤ ↓ • CZ ↑) (act (⊥⊤ ↓ • CZ ↑) S1)
+    ≡⟨ Eq.cong (act (⊥⊤ ↓ • CZ ↑)) round2 ⟩
+  act (⊥⊤ ↓ • CZ ↑) S2
+    ≡⟨ round3 ⟩
+  ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ∎
+  where
+  open ≡-Reasoning
+
+  S1 : Pauli (₃₊ _)
+  S1 = (a' , - b + (b' + a''))
+        ∷ (- (a' + a) , - b) ∷ (a'' , b'' + a') ∷ t
+
+  S2 : Pauli (₃₊ _)
+  S2 = (- (a' + a) , - b')
+        ∷ (a , (b + - b') + - a'') ∷ (a'' , b'' + - a) ∷ t
+
+  round2 : act (⊥⊤ ↓ • CZ ↑) S1 ≡ S2
+  round2 = begin
+    act (⊥⊤ ↓ • CZ ↑) S1
+      ≡⟨ act-⊥⊤↓CZ↑ a' (- b + (b' + a'')) (- (a' + a)) (- b)
+                    a'' (b'' + a') t ⟩
+    (( - (a' + a) , - (- b + (b' + a'')) + (- b + a''))
+      ∷ (- (- (a' + a) + a') , - (- b + (b' + a'')))
+      ∷ (a'' , (b'' + a') + - (a' + a)) ∷ t)
+      ≡⟨ Eq.cong₂ (λ u v → u ∷ v ∷ (a'' , (b'' + a') + - (a' + a)) ∷ t)
+           (Eq.cong₂ _,_ Eq.refl
+              (Eq.trans (Eq.cong (_+ (- b + a'')) (neg-mix2 b b' a''))
+                        (cross-cancel b b' a'')))
+           (Eq.cong₂ _,_ (Eq.trans (Eq.cong -_ (neg-sum-cancel a' a))
+                                   (-‿involutive a))
+                         (neg-mix2 b b' a'')) ⟩
+    ((- (a' + a) , - b') ∷ (a , (b + - b') + - a'')
+      ∷ (a'' , (b'' + a') + - (a' + a)) ∷ t)
+      ≡⟨ Eq.cong (λ z → (- (a' + a) , - b') ∷ (a , (b + - b') + - a'')
+                          ∷ (a'' , z) ∷ t)
+           (shift-cancel b'' a' a) ⟩
+    S2 ∎
+
+  round3 : act (⊥⊤ ↓ • CZ ↑) S2
+             ≡ ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t)
+  round3 = begin
+    act (⊥⊤ ↓ • CZ ↑) S2
+      ≡⟨ act-⊥⊤↓CZ↑ (- (a' + a)) (- b') a ((b + - b') + - a'')
+                    a'' (b'' + - a) t ⟩
+    (( a , - - b' + (((b + - b') + - a'') + a''))
+      ∷ (- (a + - (a' + a)) , - - b')
+      ∷ (a'' , (b'' + - a) + a) ∷ t)
+      ≡⟨ Eq.cong₂ (λ u v → u ∷ v ∷ (a'' , (b'' + - a) + a) ∷ t)
+           (Eq.cong₂ _,_ Eq.refl
+              (Eq.trans (Eq.cong₂ _+_ (-‿involutive b')
+                                      (add-cancel (b + - b') a''))
+                        (absorb' b' b)))
+           (Eq.cong₂ _,_ (Eq.trans (Eq.cong -_ (cancel-mid a a'))
+                                   (-‿involutive a'))
+                         (-‿involutive b')) ⟩
+    ((a , b) ∷ (a' , b') ∷ (a'' , (b'' + - a) + a) ∷ t)
+      ≡⟨ Eq.cong (λ z → (a , b) ∷ (a' , b') ∷ (a'' , z) ∷ t)
+           (add-cancel b'' a) ⟩
+    ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) ∎
+
+------------------------------------------------------------------------
+-- Soundness
+--
+-- Every raw relation of the plain presentation preserves the symplectic
+-- action.  This is Transport.sound-ax, proved without leaving the plain
+-- gate set: seventeen group-specific rules, two structural ones, and
+-- the shift case, which is act-↑ either side of the induction
+-- hypothesis.
+
+sound-ax : ∀ {n} {w v : Circuit n} → n QRel, w === v → ⟦ w ⟧ ≈ˢ ⟦ v ⟧
+sound-ax (srel Base.order-S)       = sound-order-S
+sound-ax (srel Base.order-H)       = sound-order-H
+sound-ax (srel Base.order-SH)      = sound-order-SH
+sound-ax (srel Base.comm-HHS)      = sound-comm-HHS
+sound-ax (srel (Base.M-mul x y))   = sound-M-mul x y
+sound-ax (srel (Base.semi-MS x))   = sound-semi-MS x
+sound-ax (srel (Base.semi-M↑CZ x)) = sound-semi-M↑CZ x
+sound-ax (srel (Base.semi-M↓CZ x)) = sound-semi-M↓CZ x
+sound-ax (srel Base.order-CZ)      = sound-order-CZ
+sound-ax (srel Base.comm-CZ-S↓)    = sound-comm-CZ-S↓
+sound-ax (srel Base.comm-CZ-S↑)    = sound-comm-CZ-S↑
+sound-ax (srel Base.selinger-c10)  = sound-c10
+sound-ax (srel Base.selinger-c11)  = sound-c11
+sound-ax (srel Base.selinger-c12)  = sound-c12
+sound-ax (srel Base.selinger-c13)  = sound-c13
+sound-ax (srel Base.selinger-c14)  = sound-c14
+sound-ax (srel Base.selinger-c15)  = sound-c15
+sound-ax (comm₁ h g)               = sound-comm₁ h g
+sound-ax (comm₂ h g)               = sound-comm₂ h g
+sound-ax (cong↑ {w = w} {v = v} r) (q ∷ qs) =
+  Eq.trans (act-↑ w q qs)
+    (Eq.trans (Eq.cong (q ∷_) (sound-ax r qs))
+              (Eq.sym (act-↑ v q qs)))
