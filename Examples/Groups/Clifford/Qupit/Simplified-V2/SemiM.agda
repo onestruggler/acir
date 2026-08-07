@@ -19,7 +19,8 @@
 -- presentation) this bridges the two presentations for the iso.
 ------------------------------------------------------------------------
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; module ≡-Reasoning) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
+  renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
@@ -905,7 +906,6 @@ module SemiS (n : ℕ) where
   open SR word-setoid
   open Pattern-Assoc
   open Push n using (SpushK)
-  open Group-Lemmas ((₁₊ n) QRel,_===_) (grouplike {₁₊ n}) using (•-cancelʳ)
   module D = Decomp n g*
   private
     a  = toℕ (g* .proj₁)

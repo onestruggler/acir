@@ -23,18 +23,16 @@
 -- level down.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --termination-depth=20 #-}
-{-# OPTIONS --inversion-max-depth=1000 #-}
+{-# OPTIONS --cubical-compatible #-}
 
 open import Data.Fin using (toℕ)
 open import Data.Nat using (ℕ ; suc)
 open import Data.Nat.Primality using (Prime)
 open import Data.Product using (_,_ ; ∃)
-open import Relation.Binary.PropositionalEquality using (_≡_)
-
 open import Notations
-open import Zp.ModularArithmetic
+open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Zp.Fermats-little-theorem
+open import Zp.ModularArithmetic
 
 module Examples.Groups.Clifford.Qupit.Simplified-V2.Presentation
   (p-3 : ℕ)
@@ -47,15 +45,14 @@ module Examples.Groups.Clifford.Qupit.Simplified-V2.Presentation
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Bundles.Raw using (RawGroup)
-open import Algebra.Morphism.Structures using (module GroupMorphisms)
 import Algebra.Morphism.Construct.Composition as MC
+open import Algebra.Morphism.Structures using (module GroupMorphisms)
 open import Function using (id)
 open import Level using (0ℓ)
-open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Definitions using (Transitive)
-
 open import Presentation.Definitions using (_IsPresentationOf_)
 open import Presentation.GroupLike using (module Group-Lemmas)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Transitive)
 
 -- The V1 rules and their presentation theorem.
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar
@@ -119,7 +116,8 @@ private
     ------------------------------------------------------------------
     -- The composite
 
-    open GroupMorphisms (Group.rawGroup W₂.•-ε-group) (Group.rawGroup G₃)
+    open GroupMorphisms (Group.rawGroup W₂.•-ε-group)
+                        (Group.rawGroup G₃)
 
     -- Transitivity of the target's equality, three implicits bound by
     -- hand: the semidirect product compares through projections, so

@@ -1,7 +1,8 @@
 {-# OPTIONS --cubical-compatible --termination-depth=20 #-}
 {-# OPTIONS --inversion-max-depth=1000 #-}
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; module ≡-Reasoning) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
+  renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 open import Data.Product using (_,_ ; ∃)
@@ -169,7 +170,7 @@ module C10 (m : ℕ) where
   open SR word-setoid
   open Pattern-Assoc
   open Lemmas-Clifford-S using (lemma-cong↑ ; lemma-↑^ ; lemma-Induction ; lemma-comm-Z-w↑)
-  open Lemmas1b-S m using (conj-H-X^k ; conj-H-Z ; lemma-HH-Z ; lemma-HH-X)
+  open Lemmas1b-S m using (conj-H-X^k ; lemma-HH-Z)
   -- Z↓ lives at level ₂₊ m, i.e. the base Z of Lemmas1 (₁₊ m)
   order-Z↓ : (Z ↓) ^ p ≈ ε
   order-Z↓ = Lemmas1-S.lemma-order-Z (₁₊ m)

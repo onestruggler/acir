@@ -39,4 +39,5 @@ module Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas
   (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
   where
 
-open import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas.Completeness p-3 p-prime g* g-gen public
+open import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas.Completeness
+  p-3 p-prime g* g-gen public
