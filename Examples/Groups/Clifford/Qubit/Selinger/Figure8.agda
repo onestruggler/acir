@@ -10,7 +10,7 @@
 --
 -- Relations C1–C15 (Figure 8):
 --   (a) n ≥ 0 : ω⁸ = 1                                          (C1)
---   (b) n ≥ 1 : H² = 1, S⁴ = 1, SHSHSH = ω (definitional here)  (C2–C4)
+--   (b) n ≥ 1 : H² = 1, S⁴ = 1, SHSHSH = ω (an identity here)   (C2–C4)
 --   (c) n ≥ 2 : CZ² = 1; S commutes with CZ (either wire);      (C5–C7)
 --               X-through-CZ picks up a Z (either wire);        (C8, C9)
 --               CZ·H·CZ = … · ω⁻¹                               (C10, C11)
@@ -80,6 +80,14 @@ data _Sel,_===_ : (n : ℕ) → CRel n where
   -- (b) n ≥ 1
   c2  : ∀ {n} → (₁₊ n) Sel,  H ^ 2 === ε
   c3  : ∀ {n} → (₁₊ n) Sel,  S ^ 4 === ε
+
+  -- C4 defines the scalar.  Since ω is a derived word here and not a
+  -- generator, the relation is an identity — `axiom c4` and `refl` prove
+  -- the same thing, and adding it does not change the presented group.
+  -- It is stated all the same, so that the constructors track Figure 8's
+  -- numbering and match Qubit.Selinger.Figure8-Mod-Scalar, where the
+  -- same relation reads SHSHSH = 1 and is the quotient map.
+  c4  : ∀ {n} → (₁₊ n) Sel,  SH ^ 3 === ω
 
   -- (c) n ≥ 2
   c5  : ∀ {n} → (₂₊ n) Sel,  CZ ^ 2 === ε
