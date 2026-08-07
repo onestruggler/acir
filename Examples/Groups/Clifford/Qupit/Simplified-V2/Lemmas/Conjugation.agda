@@ -35,7 +35,7 @@ open Primitive-Root-Modp' g* g-gen
 
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen
 open Clifford-Relations hiding
-  ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-Mζ ; order-SH ; comm-HHSHHS
+  ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-MR ; order-SH ; comm-HHSHHS
   ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
   ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12
   ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ ; lemma-cong↑ )
@@ -47,41 +47,41 @@ open import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas.Structural p-3 p
 
 
 -- ====================================================================
--- Clifford-Lemmas-S : copy of Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Lemmas (ζ-conjugation,
--- Z↑-CZ, comm-ζ-w↑, …) for the Simplified relation.
+-- Clifford-Lemmas-S : copy of Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Lemmas (R-conjugation,
+-- Z↑-CZ, comm-R-w↑, …) for the Simplified relation.
 -- ====================================================================
 open Lemmas-Clifford-S
 open Simplified-GroupLike-S
 module CL = Lemmas1-S
 module CLb = Lemmas1b-S
 
-lemma-comm-ζ-w↑ : ∀ {n} w -> let open PB ((₂₊ n) QRel,_===_) in
-  ζ • w ↑ ≈ w ↑ • ζ
-lemma-comm-ζ-w↑ {n} w = begin
-  ζ • w ↑ ≡⟨ auto ⟩
+lemma-comm-R-w↑ : ∀ {n} w -> let open PB ((₂₊ n) QRel,_===_) in
+  R • w ↑ ≈ w ↑ • R
+lemma-comm-R-w↑ {n} w = begin
+  R • w ↑ ≡⟨ auto ⟩
   (S • Z ^ toℕ 1/2) • w ↑ ≈⟨ assoc ⟩
   S • (Z ^ toℕ 1/2 • w ↑) ≈⟨ cong refl (comm⇒pow-comm (toℕ 1/2) 1 (lemma-comm-Z-w↑ w)) ⟩
   S • (w ↑ • Z ^ toℕ 1/2) ≈⟨ sym assoc ⟩
   (S • w ↑) • Z ^ toℕ 1/2 ≈⟨ cong (lemma-comm-S-w↑ w) refl ⟩
   (w ↑ • S) • Z ^ toℕ 1/2 ≈⟨ assoc ⟩
   w ↑ • (S • Z ^ toℕ 1/2) ≡⟨ auto ⟩
-  w ↑ • ζ ∎
+  w ↑ • R ∎
   where
   open PB ((₂₊ n) QRel,_===_)
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
 
-lemma-conj-ζ-X : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in
-  ζ • X ≈ (X • Z) • ζ
-lemma-conj-ζ-X {n} = begin
-  ζ • X ≡⟨ auto ⟩
+lemma-conj-R-X : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in
+  R • X ≈ (X • Z) • R
+lemma-conj-R-X {n} = begin
+  R • X ≡⟨ auto ⟩
   (S • Z ^ toℕ 1/2) • X ≈⟨ assoc ⟩
   S • (Z ^ toℕ 1/2 • X) ≈⟨ cong refl (sym (comm⇒pow-comm 1 (toℕ 1/2) (_≈_.axiom Simplified-Relations.comm-X-Z))) ⟩
   S • (X • Z ^ toℕ 1/2) ≈⟨ sym assoc ⟩
   (S • X) • Z ^ toℕ 1/2 ≈⟨ cong (CLb.conj-S-X n) refl ⟩
   ((X • Z) • S) • Z ^ toℕ 1/2 ≈⟨ assoc ⟩
   (X • Z) • (S • Z ^ toℕ 1/2) ≡⟨ auto ⟩
-  (X • Z) • ζ ∎
+  (X • Z) • R ∎
   where
   open PB ((₁₊ n) QRel,_===_)
   open PP ((₁₊ n) QRel,_===_)
@@ -141,10 +141,10 @@ lemma-comm-S-Z {n} = trans lhs (sym rhs)
     H • H • S • H • H • ε ≈⟨ cong refl (cong refl (cong refl (cong refl right-unit))) ⟩
     H • H • S • H • H ∎
 
-lemma-comm-ζ-Z : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in
-  ζ • Z ≈ Z • ζ
-lemma-comm-ζ-Z {n} = begin
-  ζ • Z ≡⟨ auto ⟩
+lemma-comm-R-Z : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in
+  R • Z ≈ Z • R
+lemma-comm-R-Z {n} = begin
+  R • Z ≡⟨ auto ⟩
   (S • Z ^ toℕ 1/2) • Z ≈⟨ assoc ⟩
   S • (Z ^ toℕ 1/2 • Z) ≈⟨ cong refl (pow-comm Z (toℕ 1/2) 1) ⟩
   S • (Z ^ 1 • Z ^ toℕ 1/2) ≡⟨ auto ⟩
@@ -152,7 +152,7 @@ lemma-comm-ζ-Z {n} = begin
   (S • Z) • Z ^ toℕ 1/2 ≈⟨ cong (sym lemma-comm-S-Z) refl ⟩
   (Z • S) • Z ^ toℕ 1/2 ≈⟨ assoc ⟩
   Z • (S • Z ^ toℕ 1/2) ≡⟨ auto ⟩
-  Z • ζ ∎
+  Z • R ∎
   where
   open PB ((₁₊ n) QRel,_===_)
   open PP ((₁₊ n) QRel,_===_)
@@ -636,26 +636,26 @@ lemma-comm-Z↑-CZ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
 lemma-comm-Z↑-CZ {n} = _≈_.axiom Simplified-Relations.comm-Z↑-CZ
   where open PB ((₂₊ n) QRel,_===_)
 
-lemma-ζ↑ : ∀ {n} -> ζ {n} ↑ ≡ S ↑ • (Z ↑) ^ toℕ 1/2
-lemma-ζ↑ {n} = begin
-  ζ ↑ ≡⟨ auto ⟩
+lemma-R↑ : ∀ {n} -> R {n} ↑ ≡ S ↑ • (Z ↑) ^ toℕ 1/2
+lemma-R↑ {n} = begin
+  R ↑ ≡⟨ auto ⟩
   (S • Z ^ toℕ 1/2) ↑ ≡⟨ auto ⟩
   S ↑ • (Z ^ toℕ 1/2) ↑ ≡⟨ Eq.cong (S ↑ •_) (lemma-↑^ (toℕ 1/2) Z) ⟩
   S ↑ • (Z ↑) ^ toℕ 1/2 ∎
   where open ≡-Reasoning
 
-lemma-comm-ζ↑-CZ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
-  ζ ↑ • CZ ≈ CZ • ζ ↑
-lemma-comm-ζ↑-CZ {n} = begin
-  ζ ↑ • CZ ≈⟨ refl' (Eq.cong (_• CZ) lemma-ζ↑) ⟩
+lemma-comm-R↑-CZ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
+  R ↑ • CZ ≈ CZ • R ↑
+lemma-comm-R↑-CZ {n} = begin
+  R ↑ • CZ ≈⟨ refl' (Eq.cong (_• CZ) lemma-R↑) ⟩
   (S ↑ • (Z ↑) ^ toℕ 1/2) • CZ ≈⟨ assoc ⟩
   S ↑ • ((Z ↑) ^ toℕ 1/2 • CZ) ≈⟨ cong refl (comm⇒pow-comm (toℕ 1/2) 1 lemma-comm-Z↑-CZ) ⟩
   S ↑ • (CZ ^ 1 • (Z ↑) ^ toℕ 1/2) ≡⟨ auto ⟩
   S ↑ • (CZ • (Z ↑) ^ toℕ 1/2) ≈⟨ sym assoc ⟩
   (S ↑ • CZ) • (Z ↑) ^ toℕ 1/2 ≈⟨ cong (sym (_≈_.axiom Simplified-Relations.comm-CZ-S↑)) refl ⟩
   (CZ • S ↑) • (Z ↑) ^ toℕ 1/2 ≈⟨ assoc ⟩
-  CZ • (S ↑ • (Z ↑) ^ toℕ 1/2) ≈⟨ refl' (Eq.cong (CZ •_) (Eq.sym lemma-ζ↑)) ⟩
-  CZ • ζ ↑ ∎
+  CZ • (S ↑ • (Z ↑) ^ toℕ 1/2) ≈⟨ refl' (Eq.cong (CZ •_) (Eq.sym lemma-R↑)) ⟩
+  CZ • R ↑ ∎
   where
   open PB ((₂₊ n) QRel,_===_)
   open PP ((₂₊ n) QRel,_===_)
@@ -668,10 +668,10 @@ lemma-comm-Z-CZ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
 lemma-comm-Z-CZ {n} = _≈_.axiom Simplified-Relations.comm-Z-CZ
   where open PB ((₂₊ n) QRel,_===_)
 
-lemma-comm-ζ-CZ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
-  ζ • CZ ≈ CZ • ζ
-lemma-comm-ζ-CZ {n} = begin
-  ζ • CZ ≡⟨ auto ⟩
+lemma-comm-R-CZ : ∀ {n} -> let open PB ((₂₊ n) QRel,_===_) in
+  R • CZ ≈ CZ • R
+lemma-comm-R-CZ {n} = begin
+  R • CZ ≡⟨ auto ⟩
   (S • Z ^ toℕ 1/2) • CZ ≈⟨ assoc ⟩
   S • (Z ^ toℕ 1/2 • CZ) ≈⟨ cong refl (comm⇒pow-comm (toℕ 1/2) 1 lemma-comm-Z-CZ) ⟩
   S • (CZ ^ 1 • Z ^ toℕ 1/2) ≡⟨ auto ⟩
@@ -679,7 +679,7 @@ lemma-comm-ζ-CZ {n} = begin
   (S • CZ) • Z ^ toℕ 1/2 ≈⟨ cong (sym (_≈_.axiom Simplified-Relations.comm-CZ-S↓)) refl ⟩
   (CZ • S) • Z ^ toℕ 1/2 ≈⟨ assoc ⟩
   CZ • (S • Z ^ toℕ 1/2) ≡⟨ auto ⟩
-  CZ • ζ ∎
+  CZ • R ∎
   where
   open PB ((₂₊ n) QRel,_===_)
   open PP ((₂₊ n) QRel,_===_)

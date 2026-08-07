@@ -36,7 +36,7 @@ open Primitive-Root-Modp' g* g-gen
 
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen
 open Clifford-Relations hiding
-  ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-Mζ ; order-SH ; comm-HHSHHS
+  ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-MR ; order-SH ; comm-HHSHHS
   ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
   ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12
   ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ ; lemma-cong↑ )
@@ -58,7 +58,7 @@ module _ (n : ℕ) where
   open SR word-setoid
   open Lemmas1-S n using (lemma-order-Z ; lemma-comm-Z-S)
 
-  -- Z and S commute, hence Z and ζ commute, and we can split powers.
+  -- Z and S commute, hence Z and R commute, and we can split powers.
   cZS : Z • S ≈ S • Z
   cZS = lemma-comm-Z-S
 
@@ -84,9 +84,9 @@ module _ (n : ℕ) where
     lemma-arith = Eq.trans (NP.+-comm (toℕ 1/2 Nat.* p-1) (toℕ 1/2))
                            (Eq.cong (toℕ 1/2 Nat.+_) (NP.*-comm (toℕ 1/2) p-1))
 
-  -- the key lemma: S^(p-1) ≈ ζ^(p-1) • Z^½
-  lemma-S⁻¹=ζ⁻¹Z : S ^ p-1 ≈ ζ ^ p-1 • Z^ 1/2
-  lemma-S⁻¹=ζ⁻¹Z = begin
+  -- the key lemma: S^(p-1) ≈ R^(p-1) • Z^½
+  lemma-S⁻¹=R⁻¹Z : S ^ p-1 ≈ R ^ p-1 • Z^ 1/2
+  lemma-S⁻¹=R⁻¹Z = begin
     S ^ p-1
       ≈⟨ sym right-unit ⟩
     S ^ p-1 • ε
@@ -97,7 +97,7 @@ module _ (n : ℕ) where
       ≈⟨ cleft (sym (^-• S (Z^ 1/2) p-1 (comm⇒pow-comm 1 (toℕ 1/2) (sym cZS)))) ⟩
     (S • Z^ 1/2) ^ p-1 • Z^ 1/2
       ≡⟨ Eq.refl ⟩
-    ζ ^ p-1 • Z^ 1/2 ∎
+    R ^ p-1 • Z^ 1/2 ∎
 
 
 -- Base-level (₁₊ m) X-conjugations, lifted into C10 afterwards.
@@ -106,31 +106,31 @@ module C10Base (m : ℕ) where
   open PB ((₁₊ m) QRel,_===_)
   open PP ((₁₊ m) QRel,_===_)
   open SR word-setoid
-  open Lemmas1-S m using (lemma-order-ζ ; lemma-order-H)
+  open Lemmas1-S m using (lemma-order-R ; lemma-order-H)
   open Lemmas-Clifford-S using (lemma-Induction)
   open Lemmas1b-S m using (conj-H-X^k ; lemma-HH-Z)
 
-  ζζ⁻¹ : ζ • ζ ^ p-1 ≈ ε
-  ζζ⁻¹ = lemma-order-ζ
-  ζ⁻¹ζ : ζ ^ p-1 • ζ ≈ ε
-  ζ⁻¹ζ = trans (comm⇒pow-comm p-1 1 refl) ζζ⁻¹
+  RR⁻¹ : R • R ^ p-1 ≈ ε
+  RR⁻¹ = lemma-order-R
+  R⁻¹R : R ^ p-1 • R ≈ ε
+  R⁻¹R = trans (comm⇒pow-comm p-1 1 refl) RR⁻¹
 
-  conj-ζ-X^k : ∀ a → ζ • X ^ a ≈ (X ^ a • Z ^ a) • ζ
-  conj-ζ-X^k a = trans (lemma-Induction lemma-conj-ζ-X a)
+  conj-R-X^k : ∀ a → R • X ^ a ≈ (X ^ a • Z ^ a) • R
+  conj-R-X^k a = trans (lemma-Induction lemma-conj-R-X a)
                        (cleft (^-• X Z a (axiom comm-X-Z)))
 
-  -- X^a • ζ⁻¹  ≈  ζ⁻¹ • X^a • Z^a
-  bXζ : ∀ a → X ^ a • ζ ^ p-1 ≈ ζ ^ p-1 • X ^ a • Z ^ a
-  bXζ a = begin
-    X ^ a • ζ ^ p-1                            ≈⟨ sym left-unit ⟩
-    ε • (X ^ a • ζ ^ p-1)                      ≈⟨ cleft (sym ζ⁻¹ζ) ⟩
-    (ζ ^ p-1 • ζ) • (X ^ a • ζ ^ p-1)          ≈⟨ assoc ⟩
-    ζ ^ p-1 • (ζ • (X ^ a • ζ ^ p-1))          ≈⟨ cright (sym assoc) ⟩
-    ζ ^ p-1 • ((ζ • X ^ a) • ζ ^ p-1)          ≈⟨ cright (cleft (conj-ζ-X^k a)) ⟩
-    ζ ^ p-1 • (((X ^ a • Z ^ a) • ζ) • ζ ^ p-1) ≈⟨ cright assoc ⟩
-    ζ ^ p-1 • ((X ^ a • Z ^ a) • (ζ • ζ ^ p-1)) ≈⟨ cright (cright ζζ⁻¹) ⟩
-    ζ ^ p-1 • ((X ^ a • Z ^ a) • ε)            ≈⟨ cright right-unit ⟩
-    ζ ^ p-1 • (X ^ a • Z ^ a) ∎
+  -- X^a • R⁻¹  ≈  R⁻¹ • X^a • Z^a
+  bXR : ∀ a → X ^ a • R ^ p-1 ≈ R ^ p-1 • X ^ a • Z ^ a
+  bXR a = begin
+    X ^ a • R ^ p-1                            ≈⟨ sym left-unit ⟩
+    ε • (X ^ a • R ^ p-1)                      ≈⟨ cleft (sym R⁻¹R) ⟩
+    (R ^ p-1 • R) • (X ^ a • R ^ p-1)          ≈⟨ assoc ⟩
+    R ^ p-1 • (R • (X ^ a • R ^ p-1))          ≈⟨ cright (sym assoc) ⟩
+    R ^ p-1 • ((R • X ^ a) • R ^ p-1)          ≈⟨ cright (cleft (conj-R-X^k a)) ⟩
+    R ^ p-1 • (((X ^ a • Z ^ a) • R) • R ^ p-1) ≈⟨ cright assoc ⟩
+    R ^ p-1 • ((X ^ a • Z ^ a) • (R • R ^ p-1)) ≈⟨ cright (cright RR⁻¹) ⟩
+    R ^ p-1 • ((X ^ a • Z ^ a) • ε)            ≈⟨ cright right-unit ⟩
+    R ^ p-1 • (X ^ a • Z ^ a) ∎
 
   -- X^a • H  ≈  H • (Z⁻¹)^a    (H-conjugation of X from the right)
   bXH : ∀ a → X ^ a • H ≈ H • (Z^ (- 1ₚ)) ^ a
@@ -177,15 +177,15 @@ module C10 (m : ℕ) where
   z : ℕ
   z = toℕ 1/2
 
-  -- foundational, lifted to the ↑ qubit:  (S↑)^(p-1) ≈ (ζ↑)^(p-1) • (Z↑)^z
-  fnd↑ : (S ↑) ^ p-1 ≈ (ζ ↑) ^ p-1 • (Z ↑) ^ z
+  -- foundational, lifted to the ↑ qubit:  (S↑)^(p-1) ≈ (R↑)^(p-1) • (Z↑)^z
+  fnd↑ : (S ↑) ^ p-1 ≈ (R ↑) ^ p-1 • (Z ↑) ^ z
   fnd↑ = trans (refl' (Eq.sym (lemma-↑^ p-1 S)))
-         (trans (lemma-cong↑ _ _ (lemma-S⁻¹=ζ⁻¹Z m))
-                (refl' (Eq.cong₂ _•_ (lemma-↑^ p-1 ζ) (lemma-↑^ z Z))))
+         (trans (lemma-cong↑ _ _ (lemma-S⁻¹=R⁻¹Z m))
+                (refl' (Eq.cong₂ _•_ (lemma-↑^ p-1 R) (lemma-↑^ z Z))))
 
-  -- foundational on the ↓ qubit (↓ is the identity):  S^(p-1) ≈ ζ^(p-1) • Z^z
-  fnd↓ : S ^ p-1 ≈ ζ ^ p-1 • Z^ 1/2
-  fnd↓ = lemma-S⁻¹=ζ⁻¹Z (₁₊ m)
+  -- foundational on the ↓ qubit (↓ is the identity):  S^(p-1) ≈ R^(p-1) • Z^z
+  fnd↓ : S ^ p-1 ≈ R ^ p-1 • Z^ 1/2
+  fnd↓ = lemma-S⁻¹=R⁻¹Z (₁₊ m)
 
   -- Z↑ through H↑  (Z•H = H•X)
   qZH : ∀ a → (Z ↑) ^ a • (H ↑) ≈ (H ↑) • (X ↑) ^ a
@@ -193,19 +193,19 @@ module C10 (m : ℕ) where
           (trans (lemma-cong↑ _ _ (PB.sym (conj-H-X^k a)))
                  (refl' (Eq.cong ((H ↑) •_) (lemma-↑^ a X))))
 
-  -- Z↑ commutes with (ζ↑)^(p-1)
-  qZζ : ∀ a → (Z ↑) ^ a • (ζ ↑) ^ p-1 ≈ (ζ ↑) ^ p-1 • (Z ↑) ^ a
-  qZζ a = comm⇒pow-comm a p-1 (lemma-cong↑ _ _ (PB.sym (lemma-comm-ζ-Z {m})))
+  -- Z↑ commutes with (R↑)^(p-1)
+  qZR : ∀ a → (Z ↑) ^ a • (R ↑) ^ p-1 ≈ (R ↑) ^ p-1 • (Z ↑) ^ a
+  qZR a = comm⇒pow-comm a p-1 (lemma-cong↑ _ _ (PB.sym (lemma-comm-R-Z {m})))
 
   -- Z↑ commutes with CZ
   qZCZ : ∀ a → (Z ↑) ^ a • CZ ≈ CZ • (Z ↑) ^ a
   qZCZ a = comm⇒pow-comm a 1 (lemma-comm-Z↑-CZ {m})
 
-  -- X↑ through (ζ↑)^(p-1)
-  qXζ : ∀ a → (X ↑) ^ a • (ζ ↑) ^ p-1 ≈ (ζ ↑) ^ p-1 • (X ↑) ^ a • (Z ↑) ^ a
-  qXζ a = trans (refl' (Eq.cong₂ _•_ (Eq.sym (lemma-↑^ a X)) (Eq.sym (lemma-↑^ p-1 ζ))))
-          (trans (lemma-cong↑ _ _ (C10Base.bXζ m a))
-                 (refl' (Eq.cong₂ _•_ (lemma-↑^ p-1 ζ)
+  -- X↑ through (R↑)^(p-1)
+  qXR : ∀ a → (X ↑) ^ a • (R ↑) ^ p-1 ≈ (R ↑) ^ p-1 • (X ↑) ^ a • (Z ↑) ^ a
+  qXR a = trans (refl' (Eq.cong₂ _•_ (Eq.sym (lemma-↑^ a X)) (Eq.sym (lemma-↑^ p-1 R))))
+          (trans (lemma-cong↑ _ _ (C10Base.bXR m a))
+                 (refl' (Eq.cong₂ _•_ (lemma-↑^ p-1 R)
                                       (Eq.cong₂ _•_ (lemma-↑^ a X) (lemma-↑^ a Z)))))
 
   -- X↑ through H↑  (X•H = H•Z⁻¹), flat exponent
@@ -263,16 +263,16 @@ module C10 (m : ℕ) where
   ----------------------------------------------------------------------
   -- cross-qubit and Pauli commutations used by the cascade
   ----------------------------------------------------------------------
-  cZ↑sd : ∀ a → (Z ↑) ^ a • (ζ ↓) ^ p-1 ≈ (ζ ↓) ^ p-1 • (Z ↑) ^ a
-  cZ↑sd a = comm⇒pow-comm a p-1 (sym (lemma-comm-ζ-w↑ {m} Z))
-  cX↑sd : ∀ a → (X ↑) ^ a • (ζ ↓) ^ p-1 ≈ (ζ ↓) ^ p-1 • (X ↑) ^ a
-  cX↑sd a = comm⇒pow-comm a p-1 (sym (lemma-comm-ζ-w↑ {m} X))
+  cZ↑sd : ∀ a → (Z ↑) ^ a • (R ↓) ^ p-1 ≈ (R ↓) ^ p-1 • (Z ↑) ^ a
+  cZ↑sd a = comm⇒pow-comm a p-1 (sym (lemma-comm-R-w↑ {m} Z))
+  cX↑sd : ∀ a → (X ↑) ^ a • (R ↓) ^ p-1 ≈ (R ↓) ^ p-1 • (X ↑) ^ a
+  cX↑sd a = comm⇒pow-comm a p-1 (sym (lemma-comm-R-w↑ {m} X))
   cZ↓H : ∀ a → (Z ↓) ^ a • H ↑ ≈ H ↑ • (Z ↓) ^ a
   cZ↓H a = comm⇒pow-comm a 1 (lemma-comm-Z-w↑ {m} H)
-  cZ↓su : ∀ a → (Z ↓) ^ a • (ζ ↑) ^ p-1 ≈ (ζ ↑) ^ p-1 • (Z ↓) ^ a
-  cZ↓su a = comm⇒pow-comm a p-1 (lemma-comm-Z-w↑ {m} ζ)
-  cZ↓sd : ∀ a → (Z ↓) ^ a • (ζ ↓) ^ p-1 ≈ (ζ ↓) ^ p-1 • (Z ↓) ^ a
-  cZ↓sd a = comm⇒pow-comm a p-1 (sym (lemma-comm-ζ-Z {₁₊ m}))
+  cZ↓su : ∀ a → (Z ↓) ^ a • (R ↑) ^ p-1 ≈ (R ↑) ^ p-1 • (Z ↓) ^ a
+  cZ↓su a = comm⇒pow-comm a p-1 (lemma-comm-Z-w↑ {m} R)
+  cZ↓sd : ∀ a → (Z ↓) ^ a • (R ↓) ^ p-1 ≈ (R ↓) ^ p-1 • (Z ↓) ^ a
+  cZ↓sd a = comm⇒pow-comm a p-1 (sym (lemma-comm-R-Z {₁₊ m}))
   -- Pauli reorderings (mod scalars X,Z commute)
   cX↑Z↑ : ∀ a b → (X ↑) ^ a • (Z ↑) ^ b ≈ (Z ↑) ^ b • (X ↑) ^ a
   cX↑Z↑ a b = comm⇒pow-comm a b (lemma-cong↑ _ _ (PB.axiom (comm-X-Z)))
@@ -399,125 +399,125 @@ module C10 (m : ℕ) where
   -- Soundness of the simplified selinger-c10 (basic-S form + Pauli tail)
   ----------------------------------------------------------------------
   RHS-orig : Word (Gen (₂₊ m))
-  RHS-orig = (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • CZ • H ↑ • (ζ ↑) ^ p-1 • (ζ ↓) ^ p-1
+  RHS-orig = (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • CZ • H ↑ • (R ↑) ^ p-1 • (R ↓) ^ p-1
 
   tail-c10 : (S ↑) ^ p-1 • H ↑ • (S ↑) ^ p-1 • CZ • H ↑ • (S ↑) ^ p-1 • (S ↓) ^ p-1
        ≈ RHS-orig • (X ↑ • Z ↑)
   tail-c10 = begin
     (S ↑) ^ p-1 • H ↑ • (S ↑) ^ p-1 • CZ • H ↑ • (S ↑) ^ p-1 • (S ↓) ^ p-1
       ≈⟨ cong fnd↑ (cong refl (cong fnd↑ (cong refl (cong refl (cong fnd↑ fnd↓))))) ⟩
-    ((ζ ↑) ^ p-1 • (Z ↑) ^ z) • H ↑ • ((ζ ↑) ^ p-1 • (Z ↑) ^ z) • CZ • H ↑
-      • ((ζ ↑) ^ p-1 • (Z ↑) ^ z) • ((ζ ↓) ^ p-1 • (Z ↓) ^ z)
+    ((R ↑) ^ p-1 • (Z ↑) ^ z) • H ↑ • ((R ↑) ^ p-1 • (Z ↑) ^ z) • CZ • H ↑
+      • ((R ↑) ^ p-1 • (Z ↑) ^ z) • ((R ↓) ^ p-1 • (Z ↓) ^ z)
       ≈⟨ push ⟩
     RHS-orig • (X ↑ • Z ↑) ∎
     where
-    push : ((ζ ↑) ^ p-1 • (Z ↑) ^ z) • H ↑ • ((ζ ↑) ^ p-1 • (Z ↑) ^ z) • CZ • H ↑
-         • ((ζ ↑) ^ p-1 • (Z ↑) ^ z) • ((ζ ↓) ^ p-1 • (Z ↓) ^ z)
+    push : ((R ↑) ^ p-1 • (Z ↑) ^ z) • H ↑ • ((R ↑) ^ p-1 • (Z ↑) ^ z) • CZ • H ↑
+         • ((R ↑) ^ p-1 • (Z ↑) ^ z) • ((R ↓) ^ p-1 • (Z ↓) ^ z)
          ≈ RHS-orig • (X ↑ • Z ↑)
     push = begin
-      ((ζ ↑) ^ p-1 • (Z ↑) ^ z) • H ↑ • ((ζ ↑) ^ p-1 • (Z ↑) ^ z) • CZ • H ↑
-        • ((ζ ↑) ^ p-1 • (Z ↑) ^ z) • ((ζ ↓) ^ p-1 • (Z ↓) ^ z)
+      ((R ↑) ^ p-1 • (Z ↑) ^ z) • H ↑ • ((R ↑) ^ p-1 • (Z ↑) ^ z) • CZ • H ↑
+        • ((R ↑) ^ p-1 • (Z ↑) ^ z) • ((R ↓) ^ p-1 • (Z ↓) ^ z)
         ≈⟨ by-passoc ((□ • □) • (□ • ((□ • □) • (□ • (□ • ((□ • □) • (□ • □)))))))
                          (□ • □ • □ • □ • □ • □ • □ • □ • □ • □ • □) auto ⟩
-      (ζ ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (ζ ↑) ^ p-1 • (Z ↑) ^ z • CZ • H ↑
-        • (ζ ↑) ^ p-1 • (Z ↑) ^ z • (ζ ↓) ^ p-1 • (Z ↓) ^ z
+      (R ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (R ↑) ^ p-1 • (Z ↑) ^ z • CZ • H ↑
+        • (R ↑) ^ p-1 • (Z ↑) ^ z • (R ↓) ^ p-1 • (Z ↓) ^ z
         -- push Zu#3 past sd:  Zu·(sd·Zd) ≈ sd·(Zu·Zd)
         ≈⟨ cright (cright (cright (cright (cright (cright (cright (cright
              (trans (sym assoc) (trans (cleft (cZ↑sd z)) assoc))))))))) ⟩
-      (ζ ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (ζ ↑) ^ p-1 • (Z ↑) ^ z • CZ • H ↑
-        • (ζ ↑) ^ p-1 • (ζ ↓) ^ p-1 • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (R ↑) ^ p-1 • (Z ↑) ^ z • CZ • H ↑
+        • (R ↑) ^ p-1 • (R ↓) ^ p-1 • (Z ↑) ^ z • (Z ↓) ^ z
         -- push Zu#2 through CZ:  Zu·CZ ≈ CZ·Zu
         ≈⟨ cright (cright (cright (cright
              (trans (sym assoc) (trans (cleft (qZCZ z)) assoc))))) ⟩
-      (ζ ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (ζ ↑) ^ p-1 • CZ • (Z ↑) ^ z • H ↑
-        • (ζ ↑) ^ p-1 • (ζ ↓) ^ p-1 • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (R ↑) ^ p-1 • CZ • (Z ↑) ^ z • H ↑
+        • (R ↑) ^ p-1 • (R ↓) ^ p-1 • (Z ↑) ^ z • (Z ↓) ^ z
         -- push Zu#2 through H:  Zu·H ≈ H·Xu
         ≈⟨ cright (cright (cright (cright (cright
              (trans (sym assoc) (trans (cleft (qZH z)) assoc)))))) ⟩
-      (ζ ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (ζ ↑) ^ p-1 • CZ • H ↑ • (X ↑) ^ z
-        • (ζ ↑) ^ p-1 • (ζ ↓) ^ p-1 • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (R ↑) ^ p-1 • CZ • H ↑ • (X ↑) ^ z
+        • (R ↑) ^ p-1 • (R ↓) ^ p-1 • (Z ↑) ^ z • (Z ↓) ^ z
         -- push Xu through su (spawns Zu):  Xu·su ≈ su·Xu·Zu
         ≈⟨ cright (cright (cright (cright (cright (cright
-             (trans (sym assoc) (trans (cleft (qXζ z)) (trans assoc (cright assoc)))))))) ) ⟩
-      (ζ ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (ζ ↑) ^ p-1 • CZ • H ↑ • (ζ ↑) ^ p-1
-        • (X ↑) ^ z • (Z ↑) ^ z • (ζ ↓) ^ p-1 • (Z ↑) ^ z • (Z ↓) ^ z
+             (trans (sym assoc) (trans (cleft (qXR z)) (trans assoc (cright assoc)))))))) ) ⟩
+      (R ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (R ↑) ^ p-1 • CZ • H ↑ • (R ↑) ^ p-1
+        • (X ↑) ^ z • (Z ↑) ^ z • (R ↓) ^ p-1 • (Z ↑) ^ z • (Z ↓) ^ z
         -- push spawned Zu past sd:  Zu·sd ≈ sd·Zu
         ≈⟨ cright (cright (cright (cright (cright (cright (cright (cright
              (trans (sym assoc) (trans (cleft (cZ↑sd z)) assoc))))))))) ⟩
-      (ζ ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (ζ ↑) ^ p-1 • CZ • H ↑ • (ζ ↑) ^ p-1
-        • (X ↑) ^ z • (ζ ↓) ^ p-1 • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (R ↑) ^ p-1 • CZ • H ↑ • (R ↑) ^ p-1
+        • (X ↑) ^ z • (R ↓) ^ p-1 • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- push Xu past sd:  Xu·sd ≈ sd·Xu
         ≈⟨ cright (cright (cright (cright (cright (cright (cright
              (trans (sym assoc) (trans (cleft (cX↑sd z)) assoc)))))))) ⟩
-      (ζ ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (ζ ↑) ^ p-1 • CZ • H ↑ • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • (Z ↑) ^ z • H ↑ • (R ↑) ^ p-1 • CZ • H ↑ • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 3a: Zu#1 through H:  Zu·H ≈ H·Xu
         ≈⟨ cright (trans (sym assoc) (trans (cleft (qZH z)) assoc)) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (X ↑) ^ z • (ζ ↑) ^ p-1 • CZ • H ↑ • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (X ↑) ^ z • (R ↑) ^ p-1 • CZ • H ↑ • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 3b: Xu through su (spawns Zu):  Xu·su ≈ su·Xu·Zu
-        ≈⟨ cright (cright (trans (sym assoc) (trans (cleft (qXζ z)) (trans assoc (cright assoc))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • CZ • H ↑ • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+        ≈⟨ cright (cright (trans (sym assoc) (trans (cleft (qXR z)) (trans assoc (cright assoc))))) ⟩
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • CZ • H ↑ • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 3c: Xu past spawned Zu:  Xu·Zu ≈ Zu·Xu
         ≈⟨ cright (cright (cright (trans (sym assoc) (trans (cleft (cX↑Z↑ z z)) assoc)))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • (Z ↑) ^ z • (X ↑) ^ z • CZ • H ↑ • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • (Z ↑) ^ z • (X ↑) ^ z • CZ • H ↑ • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 3d: Xu through CZ (spawns Z↓⁻):  Xu·CZ ≈ CZ·Xu·Z↓⁻
         ≈⟨ cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qXCZ z)) (trans assoc (cright assoc))))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • (Z ↑) ^ z • CZ • (X ↑) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • (Z ↑) ^ z • CZ • (X ↑) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 3e: Xu past Z↓⁻:  Xu·Z↓⁻ ≈ Z↓⁻·Xu
         ≈⟨ cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cX↑Z↓ z (toℕ (- 1ₚ) Nat.* z))) assoc)))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • (Z ↑) ^ z • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • H ↑ • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • (Z ↑) ^ z • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • H ↑ • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 3f: Xu through H:  Xu·H ≈ H·Zu⁻
         ≈⟨ cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qXH z)) assoc))))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • (Z ↑) ^ z • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • (Z ↑) ^ z • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 3g: Zu⁻ through su:  Zu⁻·su ≈ su·Zu⁻
-        ≈⟨ cright (cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qZζ (toℕ (- 1ₚ) Nat.* z))) assoc)))))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • (Z ↑) ^ z • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (ζ ↑) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z)
-        • (ζ ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+        ≈⟨ cright (cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qZR (toℕ (- 1ₚ) Nat.* z))) assoc)))))))) ⟩
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • (Z ↑) ^ z • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (R ↑) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z)
+        • (R ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 3h: Zu⁻ past sd:  Zu⁻·sd ≈ sd·Zu⁻
         ≈⟨ cright (cright (cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cZ↑sd (toℕ (- 1ₚ) Nat.* z))) assoc))))))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • (Z ↑) ^ z • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • (Z ↑) ^ z • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 4a: leftover Zu through CZ
         ≈⟨ cright (cright (cright (trans (sym assoc) (trans (cleft (qZCZ z)) assoc)))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • CZ • (Z ↑) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • CZ • (Z ↑) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 4b: leftover Zu past Z↓⁻
         ≈⟨ cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cZ↑Z↓ z (toℕ (- 1ₚ) Nat.* z))) assoc))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (Z ↑) ^ z • H ↑ • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (Z ↑) ^ z • H ↑ • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 4c: leftover Zu through H
         ≈⟨ cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qZH z)) assoc)))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (X ↑) ^ z • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (X ↑) ^ z • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 4d: leftover Xu through su (spawns Zu_b)
-        ≈⟨ cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qXζ z)) (trans assoc (cright assoc)))))))) ) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (ζ ↑) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z
-        • (ζ ↓) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+        ≈⟨ cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qXR z)) (trans assoc (cright assoc)))))))) ) ⟩
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (R ↑) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z
+        • (R ↓) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 4e: spawned Zu_b past sd
         ≈⟨ cright (cright (cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cZ↑sd z)) assoc))))))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (ζ ↑) ^ p-1 • (X ↑) ^ z
-        • (ζ ↓) ^ p-1 • (Z ↑) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (R ↑) ^ p-1 • (X ↑) ^ z
+        • (R ↓) ^ p-1 • (Z ↑) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 4f: leftover Xu past sd
         ≈⟨ cright (cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cX↑sd z)) assoc)))))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • CZ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • H ↑ • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 5a: leftover Z↓⁻ through H
         ≈⟨ cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cZ↓H (toℕ (- 1ₚ) Nat.* z))) assoc))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • CZ • H ↑ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (ζ ↑) ^ p-1
-        • (ζ ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • CZ • H ↑ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (R ↑) ^ p-1
+        • (R ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 5b: leftover Z↓⁻ through su
         ≈⟨ cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cZ↓su (toℕ (- 1ₚ) Nat.* z))) assoc)))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • CZ • H ↑ • (ζ ↑) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z)
-        • (ζ ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • CZ • H ↑ • (R ↑) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z)
+        • (R ↓) ^ p-1 • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- 5c: leftover Z↓⁻ past sd
         ≈⟨ cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cZ↓sd (toℕ (- 1ₚ) Nat.* z))) assoc))))))) ⟩
-      (ζ ↑) ^ p-1 • H ↑ • (ζ ↑) ^ p-1 • CZ • H ↑ • (ζ ↑) ^ p-1 • (ζ ↓) ^ p-1
+      (R ↑) ^ p-1 • H ↑ • (R ↑) ^ p-1 • CZ • H ↑ • (R ↑) ^ p-1 • (R ↓) ^ p-1
         • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↑) ^ z • (Z ↑) ^ z • (Z ↑) ^ z • (Z ↓) ^ z
         -- collect the tail (depth 7) to X↑·Z↑, then regroup the frame as RHS-orig
         ≈⟨ trans (cright (cright (cright (cright (cright (cright (cright collect-tail)))))))
@@ -548,32 +548,32 @@ module C11 (m : ℕ) where
   order-Z↑ = trans (refl' (Eq.sym (lemma-↑^ p Z))) (lemma-cong↑ _ _ (Lemmas1-S.lemma-order-Z m))
 
   -- foundational, main (↓) and other (↑) qubits
-  fnd↓ : (S ↓) ^ p-1 ≈ (ζ ↓) ^ p-1 • (Z ↓) ^ z
-  fnd↓ = lemma-S⁻¹=ζ⁻¹Z (₁₊ m)
-  fnd↑ : (S ↑) ^ p-1 ≈ (ζ ↑) ^ p-1 • (Z ↑) ^ z
+  fnd↓ : (S ↓) ^ p-1 ≈ (R ↓) ^ p-1 • (Z ↓) ^ z
+  fnd↓ = lemma-S⁻¹=R⁻¹Z (₁₊ m)
+  fnd↑ : (S ↑) ^ p-1 ≈ (R ↑) ^ p-1 • (Z ↑) ^ z
   fnd↑ = trans (refl' (Eq.sym (lemma-↑^ p-1 S)))
-         (trans (lemma-cong↑ _ _ (lemma-S⁻¹=ζ⁻¹Z m))
-                (refl' (Eq.cong₂ _•_ (lemma-↑^ p-1 ζ) (lemma-↑^ z Z))))
+         (trans (lemma-cong↑ _ _ (lemma-S⁻¹=R⁻¹Z m))
+                (refl' (Eq.cong₂ _•_ (lemma-↑^ p-1 R) (lemma-↑^ z Z))))
 
   -- down-qubit conjugations (↓ is identity, so these are base lemmas directly)
   qZH↓ : ∀ a → (Z ↓) ^ a • (H ↓) ≈ (H ↓) • (X ↓) ^ a
   qZH↓ a = PB.sym (conj-H-X^k a)
-  qXζ↓ : ∀ a → (X ↓) ^ a • (ζ ↓) ^ p-1 ≈ (ζ ↓) ^ p-1 • (X ↓) ^ a • (Z ↓) ^ a
-  qXζ↓ a = C10Base.bXζ (₁₊ m) a
+  qXR↓ : ∀ a → (X ↓) ^ a • (R ↓) ^ p-1 ≈ (R ↓) ^ p-1 • (X ↓) ^ a • (Z ↓) ^ a
+  qXR↓ a = C10Base.bXR (₁₊ m) a
   qXH↓ : ∀ a → (X ↓) ^ a • (H ↓) ≈ (H ↓) • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* a)
   qXH↓ a = trans (C10Base.bXH (₁₊ m) a) (cright (^^ Z (toℕ (- 1ₚ)) a))
   qZCZ↓ : ∀ a → (Z ↓) ^ a • CZ ≈ CZ • (Z ↓) ^ a
   qZCZ↓ a = comm⇒pow-comm a 1 (lemma-comm-Z-CZ {m})
-  qZζ↓ : ∀ a → (Z ↓) ^ a • (ζ ↓) ^ p-1 ≈ (ζ ↓) ^ p-1 • (Z ↓) ^ a
-  qZζ↓ a = comm⇒pow-comm a p-1 (sym (lemma-comm-ζ-Z {₁₊ m}))
+  qZR↓ : ∀ a → (Z ↓) ^ a • (R ↓) ^ p-1 ≈ (R ↓) ^ p-1 • (Z ↓) ^ a
+  qZR↓ a = comm⇒pow-comm a p-1 (sym (lemma-comm-R-Z {₁₊ m}))
 
   -- cross-qubit commutations
-  cZ↑s↓ : ∀ a → (Z ↑) ^ a • (ζ ↓) ^ p-1 ≈ (ζ ↓) ^ p-1 • (Z ↑) ^ a
-  cZ↑s↓ a = comm⇒pow-comm a p-1 (sym (lemma-comm-ζ-w↑ {m} Z))
-  cX↓s↑ : ∀ a → (X ↓) ^ a • (ζ ↑) ^ p-1 ≈ (ζ ↑) ^ p-1 • (X ↓) ^ a
-  cX↓s↑ a = comm⇒pow-comm a p-1 (lemma-comm-X-w↑ {m} ζ)
-  cZ↓s↑ : ∀ a → (Z ↓) ^ a • (ζ ↑) ^ p-1 ≈ (ζ ↑) ^ p-1 • (Z ↓) ^ a
-  cZ↓s↑ a = comm⇒pow-comm a p-1 (lemma-comm-Z-w↑ {m} ζ)
+  cZ↑s↓ : ∀ a → (Z ↑) ^ a • (R ↓) ^ p-1 ≈ (R ↓) ^ p-1 • (Z ↑) ^ a
+  cZ↑s↓ a = comm⇒pow-comm a p-1 (sym (lemma-comm-R-w↑ {m} Z))
+  cX↓s↑ : ∀ a → (X ↓) ^ a • (R ↑) ^ p-1 ≈ (R ↑) ^ p-1 • (X ↓) ^ a
+  cX↓s↑ a = comm⇒pow-comm a p-1 (lemma-comm-X-w↑ {m} R)
+  cZ↓s↑ : ∀ a → (Z ↓) ^ a • (R ↑) ^ p-1 ≈ (R ↑) ^ p-1 • (Z ↓) ^ a
+  cZ↓s↑ a = comm⇒pow-comm a p-1 (lemma-comm-Z-w↑ {m} R)
   cZ↑H↓ : ∀ a → (Z ↑) ^ a • H ↓ ≈ H ↓ • (Z ↑) ^ a
   cZ↑H↓ a = comm⇒pow-comm a 1 (sym (lemma-comm-H-w↑ {m} Z))
   -- Pauli reorderings
@@ -724,107 +724,107 @@ module C11 (m : ℕ) where
       ≈⟨ cright right-unit ⟩
     X ↓ • Z ↓ ∎
 
-  -- cross Z↑ commuting with the (up) ζ↑ frame gate (mirror of c10's cZ↓sd)
-  cZ↑s↑ : ∀ a → (Z ↑) ^ a • (ζ ↑) ^ p-1 ≈ (ζ ↑) ^ p-1 • (Z ↑) ^ a
-  cZ↑s↑ a = comm⇒pow-comm a p-1 (lemma-cong↑ _ _ (PB.sym (lemma-comm-ζ-Z {m})))
+  -- cross Z↑ commuting with the (up) R↑ frame gate (mirror of c10's cZ↓sd)
+  cZ↑s↑ : ∀ a → (Z ↑) ^ a • (R ↑) ^ p-1 ≈ (R ↑) ^ p-1 • (Z ↑) ^ a
+  cZ↑s↑ a = comm⇒pow-comm a p-1 (lemma-cong↑ _ _ (PB.sym (lemma-comm-R-Z {m})))
 
   RHS-orig : Word (Gen (₂₊ m))
-  RHS-orig = (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • CZ • H ↓ • (ζ ↓) ^ p-1 • (ζ ↑) ^ p-1
+  RHS-orig = (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • CZ • H ↓ • (R ↓) ^ p-1 • (R ↑) ^ p-1
 
   tail-c11 : (S ↓) ^ p-1 • H ↓ • (S ↓) ^ p-1 • CZ • H ↓ • (S ↓) ^ p-1 • (S ↑) ^ p-1
        ≈ RHS-orig • (X ↓ • Z ↓)
   tail-c11 = begin
     (S ↓) ^ p-1 • H ↓ • (S ↓) ^ p-1 • CZ • H ↓ • (S ↓) ^ p-1 • (S ↑) ^ p-1
       ≈⟨ cong fnd↓ (cong refl (cong fnd↓ (cong refl (cong refl (cong fnd↓ fnd↑))))) ⟩
-    ((ζ ↓) ^ p-1 • (Z ↓) ^ z) • H ↓ • ((ζ ↓) ^ p-1 • (Z ↓) ^ z) • CZ • H ↓
-      • ((ζ ↓) ^ p-1 • (Z ↓) ^ z) • ((ζ ↑) ^ p-1 • (Z ↑) ^ z)
+    ((R ↓) ^ p-1 • (Z ↓) ^ z) • H ↓ • ((R ↓) ^ p-1 • (Z ↓) ^ z) • CZ • H ↓
+      • ((R ↓) ^ p-1 • (Z ↓) ^ z) • ((R ↑) ^ p-1 • (Z ↑) ^ z)
       ≈⟨ push ⟩
     RHS-orig • (X ↓ • Z ↓) ∎
     where
-    push : ((ζ ↓) ^ p-1 • (Z ↓) ^ z) • H ↓ • ((ζ ↓) ^ p-1 • (Z ↓) ^ z) • CZ • H ↓
-         • ((ζ ↓) ^ p-1 • (Z ↓) ^ z) • ((ζ ↑) ^ p-1 • (Z ↑) ^ z)
+    push : ((R ↓) ^ p-1 • (Z ↓) ^ z) • H ↓ • ((R ↓) ^ p-1 • (Z ↓) ^ z) • CZ • H ↓
+         • ((R ↓) ^ p-1 • (Z ↓) ^ z) • ((R ↑) ^ p-1 • (Z ↑) ^ z)
          ≈ RHS-orig • (X ↓ • Z ↓)
     push = begin
-      ((ζ ↓) ^ p-1 • (Z ↓) ^ z) • H ↓ • ((ζ ↓) ^ p-1 • (Z ↓) ^ z) • CZ • H ↓
-        • ((ζ ↓) ^ p-1 • (Z ↓) ^ z) • ((ζ ↑) ^ p-1 • (Z ↑) ^ z)
+      ((R ↓) ^ p-1 • (Z ↓) ^ z) • H ↓ • ((R ↓) ^ p-1 • (Z ↓) ^ z) • CZ • H ↓
+        • ((R ↓) ^ p-1 • (Z ↓) ^ z) • ((R ↑) ^ p-1 • (Z ↑) ^ z)
         ≈⟨ by-passoc ((□ • □) • (□ • ((□ • □) • (□ • (□ • ((□ • □) • (□ • □)))))))
                          (□ • □ • □ • □ • □ • □ • □ • □ • □ • □ • □) auto ⟩
-      (ζ ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (ζ ↓) ^ p-1 • (Z ↓) ^ z • CZ • H ↓
-        • (ζ ↓) ^ p-1 • (Z ↓) ^ z • (ζ ↑) ^ p-1 • (Z ↑) ^ z
+      (R ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (R ↓) ^ p-1 • (Z ↓) ^ z • CZ • H ↓
+        • (R ↓) ^ p-1 • (Z ↓) ^ z • (R ↑) ^ p-1 • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright (cright (cright (cright
              (trans (sym assoc) (trans (cleft (cZ↓s↑ z)) assoc))))))))) ⟩
-      (ζ ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (ζ ↓) ^ p-1 • (Z ↓) ^ z • CZ • H ↓
-        • (ζ ↓) ^ p-1 • (ζ ↑) ^ p-1 • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (R ↓) ^ p-1 • (Z ↓) ^ z • CZ • H ↓
+        • (R ↓) ^ p-1 • (R ↑) ^ p-1 • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright
              (trans (sym assoc) (trans (cleft (qZCZ↓ z)) assoc))))) ⟩
-      (ζ ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (ζ ↓) ^ p-1 • CZ • (Z ↓) ^ z • H ↓
-        • (ζ ↓) ^ p-1 • (ζ ↑) ^ p-1 • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (R ↓) ^ p-1 • CZ • (Z ↓) ^ z • H ↓
+        • (R ↓) ^ p-1 • (R ↑) ^ p-1 • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright
              (trans (sym assoc) (trans (cleft (qZH↓ z)) assoc)))))) ⟩
-      (ζ ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (ζ ↓) ^ p-1 • CZ • H ↓ • (X ↓) ^ z
-        • (ζ ↓) ^ p-1 • (ζ ↑) ^ p-1 • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (R ↓) ^ p-1 • CZ • H ↓ • (X ↓) ^ z
+        • (R ↓) ^ p-1 • (R ↑) ^ p-1 • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright (cright
-             (trans (sym assoc) (trans (cleft (qXζ↓ z)) (trans assoc (cright assoc)))))))) ) ⟩
-      (ζ ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (ζ ↓) ^ p-1 • CZ • H ↓ • (ζ ↓) ^ p-1
-        • (X ↓) ^ z • (Z ↓) ^ z • (ζ ↑) ^ p-1 • (Z ↓) ^ z • (Z ↑) ^ z
+             (trans (sym assoc) (trans (cleft (qXR↓ z)) (trans assoc (cright assoc)))))))) ) ⟩
+      (R ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (R ↓) ^ p-1 • CZ • H ↓ • (R ↓) ^ p-1
+        • (X ↓) ^ z • (Z ↓) ^ z • (R ↑) ^ p-1 • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright (cright (cright (cright
              (trans (sym assoc) (trans (cleft (cZ↓s↑ z)) assoc))))))))) ⟩
-      (ζ ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (ζ ↓) ^ p-1 • CZ • H ↓ • (ζ ↓) ^ p-1
-        • (X ↓) ^ z • (ζ ↑) ^ p-1 • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (R ↓) ^ p-1 • CZ • H ↓ • (R ↓) ^ p-1
+        • (X ↓) ^ z • (R ↑) ^ p-1 • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright (cright (cright
              (trans (sym assoc) (trans (cleft (cX↓s↑ z)) assoc)))))))) ⟩
-      (ζ ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (ζ ↓) ^ p-1 • CZ • H ↓ • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • (Z ↓) ^ z • H ↓ • (R ↓) ^ p-1 • CZ • H ↓ • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (trans (sym assoc) (trans (cleft (qZH↓ z)) assoc)) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (X ↓) ^ z • (ζ ↓) ^ p-1 • CZ • H ↓ • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
-        ≈⟨ cright (cright (trans (sym assoc) (trans (cleft (qXζ↓ z)) (trans assoc (cright assoc))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • CZ • H ↓ • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (X ↓) ^ z • (R ↓) ^ p-1 • CZ • H ↓ • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+        ≈⟨ cright (cright (trans (sym assoc) (trans (cleft (qXR↓ z)) (trans assoc (cright assoc))))) ⟩
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • CZ • H ↓ • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (trans (sym assoc) (trans (cleft (cX↓Z↓ z z)) assoc)))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • (Z ↓) ^ z • (X ↓) ^ z • CZ • H ↓ • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • (Z ↓) ^ z • (X ↓) ^ z • CZ • H ↓ • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qXCZ↓ z)) (trans assoc (cright assoc))))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • (Z ↓) ^ z • CZ • (X ↓) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • (Z ↓) ^ z • CZ • (X ↓) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cX↓Z↑ z (toℕ (- 1ₚ) Nat.* z))) assoc)))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • (Z ↓) ^ z • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • H ↓ • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • (Z ↓) ^ z • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • H ↓ • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qXH↓ z)) assoc))))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • (Z ↓) ^ z • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
-        ≈⟨ cright (cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qZζ↓ (toℕ (- 1ₚ) Nat.* z))) assoc)))))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • (Z ↓) ^ z • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (ζ ↓) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z)
-        • (ζ ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • (Z ↓) ^ z • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+        ≈⟨ cright (cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qZR↓ (toℕ (- 1ₚ) Nat.* z))) assoc)))))))) ⟩
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • (Z ↓) ^ z • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (R ↓) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z)
+        • (R ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cZ↓s↑ (toℕ (- 1ₚ) Nat.* z))) assoc))))))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • (Z ↓) ^ z • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • (Z ↓) ^ z • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (trans (sym assoc) (trans (cleft (qZCZ↓ z)) assoc)))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • CZ • (Z ↓) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • CZ • (Z ↓) ^ z • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cZ↓Z↑ z (toℕ (- 1ₚ) Nat.* z))) assoc))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (Z ↓) ^ z • H ↓ • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (Z ↓) ^ z • H ↓ • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qZH↓ z)) assoc)))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (X ↓) ^ z • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
-        ≈⟨ cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qXζ↓ z)) (trans assoc (cright assoc)))))))) ) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (ζ ↓) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z
-        • (ζ ↑) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (X ↓) ^ z • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+        ≈⟨ cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (qXR↓ z)) (trans assoc (cright assoc)))))))) ) ⟩
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (R ↓) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z
+        • (R ↑) ^ p-1 • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cZ↓s↑ z)) assoc))))))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (ζ ↓) ^ p-1 • (X ↓) ^ z
-        • (ζ ↑) ^ p-1 • (Z ↓) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (R ↓) ^ p-1 • (X ↓) ^ z
+        • (R ↑) ^ p-1 • (Z ↓) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cX↓s↑ z)) assoc)))))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • CZ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • H ↓ • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cZ↑H↓ (toℕ (- 1ₚ) Nat.* z))) assoc))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • CZ • H ↓ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (ζ ↓) ^ p-1
-        • (ζ ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • CZ • H ↓ • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (R ↓) ^ p-1
+        • (R ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cZ↑s↓ (toℕ (- 1ₚ) Nat.* z))) assoc)))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • CZ • H ↓ • (ζ ↓) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z)
-        • (ζ ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • CZ • H ↓ • (R ↓) ^ p-1 • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z)
+        • (R ↑) ^ p-1 • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ cright (cright (cright (cright (cright (cright (trans (sym assoc) (trans (cleft (cZ↑s↑ (toℕ (- 1ₚ) Nat.* z))) assoc))))))) ⟩
-      (ζ ↓) ^ p-1 • H ↓ • (ζ ↓) ^ p-1 • CZ • H ↓ • (ζ ↓) ^ p-1 • (ζ ↑) ^ p-1
+      (R ↓) ^ p-1 • H ↓ • (R ↓) ^ p-1 • CZ • H ↓ • (R ↓) ^ p-1 • (R ↑) ^ p-1
         • (Z ↑) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ (toℕ (- 1ₚ) Nat.* z) • (X ↓) ^ z • (Z ↓) ^ z • (Z ↓) ^ z • (Z ↑) ^ z
         ≈⟨ trans (cright (cright (cright (cright (cright (cright (cright collect-tail↓)))))))
                  (by-passoc (□ • □ • □ • □ • □ • □ • □ • □ • □)
@@ -834,7 +834,7 @@ module C11 (m : ℕ) where
 
 
 -- ====================================================================
--- Completeness: the original (ζ-form) selinger relations hold in the
+-- Completeness: the original (R-form) selinger relations hold in the
 -- Simplified presentation.  From the Simplified selinger axiom + the
 -- tail-lemma (RHS_simp ≈ RHS_orig·X·Z) by right-cancelling X·Z.
 -- ====================================================================

@@ -112,14 +112,14 @@ module Clifford-Relations where
   X^ : ℤ ₚ ->  ∀ {n} -> Word (Gen (₁₊ n))
   X^ k = X ^ toℕ k
 
-  ζ : ∀ {n} -> Word (Gen (₁₊ n))
-  ζ = S • Z^ 1/2
-  ζ^ : ∀ {n} ->  ℤ ₚ ->  Word (Gen (₁₊ n))
-  ζ^ k = ζ ^ toℕ k
+  R : ∀ {n} -> Word (Gen (₁₊ n))
+  R = S • Z^ 1/2
+  R^ : ∀ {n} ->  ℤ ₚ ->  Word (Gen (₁₊ n))
+  R^ k = R ^ toℕ k
 
 
   M : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
-  M x' = ζ^ x • H • ζ^ x⁻¹ • H • ζ^ x • H
+  M x' = R^ x • H • R^ x⁻¹ • H • R^ x • H
     where
     x = x' .proj₁
     x⁻¹ = ((x' ⁻¹) .proj₁ )
@@ -150,7 +150,7 @@ module Clifford-Relations where
       order-S :           ∀ {n} → (₁₊ n) SRel,  S ^ p === ε
       order-H :           ∀ {n} → (₁₊ n) SRel,  H ^ 2 === M₋₁
       M-power : ∀ {n} (k : ℤ ₚ) → (₁₊ n) SRel,  Mg^ k === M (g^ k)
-      semi-Mζ :           ∀ {n} → (₁₊ n) SRel,  Mg • ζ === ζ^ (g * g) • Mg
+      semi-MR :           ∀ {n} → (₁₊ n) SRel,  Mg • R === R^ (g * g) • Mg
       order-SH :          ∀ {n} → (₁₊ n) SRel,  (S • H) ^ 3 === ε
       comm-HHSHHS :       ∀ {n} → (₁₊ n) SRel,  H • H • S • H • H • S === S • H • H • S • H • H
       comm-X-Z :          ∀ {n} → (₁₊ n) SRel,  X • Z === Z • X
@@ -166,8 +166,8 @@ module Clifford-Relations where
       comm-CZ-S↓ :        ∀ {n} → (₂₊ n) SRel,  CZ • S ↓ === S ↓ • CZ
       comm-CZ-S↑ :        ∀ {n} → (₂₊ n) SRel,  CZ • S ↑ === S ↑ • CZ
 
-      selinger-c10 :      ∀ {n} → (₂₊ n) SRel,  CZ • H ↑ • CZ === ζ ↑ ^ p-1 • H ↑ • ζ ↑ ^ p-1 • CZ • H ↑ • ζ ↑ ^ p-1 • ζ ↓ ^ p-1
-      selinger-c11 :      ∀ {n} → (₂₊ n) SRel,  CZ • H ↓ • CZ === ζ ↓ ^ p-1 • H ↓ • ζ ↓ ^ p-1 • CZ • H ↓ • ζ ↓ ^ p-1 • ζ ↑ ^ p-1
+      selinger-c10 :      ∀ {n} → (₂₊ n) SRel,  CZ • H ↑ • CZ === R ↑ ^ p-1 • H ↑ • R ↑ ^ p-1 • CZ • H ↑ • R ↑ ^ p-1 • R ↓ ^ p-1
+      selinger-c11 :      ∀ {n} → (₂₊ n) SRel,  CZ • H ↓ • CZ === R ↓ ^ p-1 • H ↓ • R ↓ ^ p-1 • CZ • H ↓ • R ↓ ^ p-1 • R ↑ ^ p-1
 
       selinger-c12 :      ∀ {n} → (₃₊ n) SRel,  CZ ↑ • CZ === CZ • CZ ↑
       selinger-c13 :      ∀ {n} → (₃₊ n) SRel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
@@ -195,7 +195,7 @@ module Clifford-Relations where
   pattern order-S = srel (Base.order-S)
   pattern order-H = srel (Base.order-H)
   pattern M-power k = srel (Base.M-power k)
-  pattern semi-Mζ = srel (Base.semi-Mζ)
+  pattern semi-MR = srel (Base.semi-MR)
   pattern order-SH = srel (Base.order-SH)
   pattern comm-HHSHHS = srel (Base.comm-HHSHHS)
   pattern comm-X-Z = srel (Base.comm-X-Z)

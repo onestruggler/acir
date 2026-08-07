@@ -11,7 +11,7 @@
 -- reverse: from the simplified axioms (semi-M*, now Wg-based) it recovers
 -- the *original* Mg-form relations as `completeness-semi-M*`:
 --
---     completeness-semi-Mζ   :  Mg  · ζ  ≈ ζ^(g²) · Mg
+--     completeness-semi-MR   :  Mg  · R  ≈ R^(g²) · Mg
 --     completeness-semi-M↑CZ :  Mg↑ · CZ ≈ CZ^g · Mg↑
 --     completeness-semi-M↓CZ :  Mg  · CZ ≈ CZ^g · Mg
 --
@@ -51,11 +51,11 @@ module Examples.Groups.Clifford.Qupit.Simplified-V2.SemiM
 
 
 open Primitive-Root-Modp' g* g-gen
--- inherit the derived words (S,H,Z,ζ,M,Mg,…) from Clifford-Relations,
+-- inherit the derived words (S,H,Z,R,M,Mg,…) from Clifford-Relations,
 -- but take the *relation* and axioms from the Simplified presentation.
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen
 open Clifford-Relations hiding
-  ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-Mζ ; order-SH ; comm-HHSHHS
+  ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-MR ; order-SH ; comm-HHSHHS
   ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
   ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12
   ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ ; lemma-cong↑ )
@@ -66,10 +66,10 @@ open Lemmas-Clifford-S
 open Simplified-GroupLike-S
 -- (CL = Lemmas1-S and CLb = Lemmas1b-S are re-exported by Simplified-Lemmas)
 
--- ── collect the Paulis out of an ζ-power: ζ^k = S^k · Z^(k·½) ──
-ζ-collect : ∀ {n} k -> let open PB ((₁₊ n) QRel,_===_) in
-  ζ ^ k ≈ S ^ k • Z ^ (k Nat.* toℕ 1/2)
-ζ-collect {n} k = begin
+-- ── collect the Paulis out of an R-power: R^k = S^k · Z^(k·½) ──
+R-collect : ∀ {n} k -> let open PB ((₁₊ n) QRel,_===_) in
+  R ^ k ≈ S ^ k • Z ^ (k Nat.* toℕ 1/2)
+R-collect {n} k = begin
   (S • Z ^ toℕ 1/2) ^ k          ≈⟨ ^-• S (Z ^ toℕ 1/2) k commSZ ⟩
   S ^ k • (Z ^ toℕ 1/2) ^ k      ≈⟨ cright (^^ Z (toℕ 1/2) k) ⟩
   S ^ k • Z ^ (toℕ 1/2 Nat.* k)  ≈⟨ cright (refl' (Eq.cong (Z ^_) (NP.*-comm (toℕ 1/2) k))) ⟩
@@ -81,7 +81,7 @@ open Simplified-GroupLike-S
   commSZ : S • Z ^ toℕ 1/2 ≈ Z ^ toℕ 1/2 • S
   commSZ = comm⇒pow-comm 1 (toℕ 1/2) (sym (CL.lemma-comm-Z-S n))
 
--- ── expand M x: collect Paulis out of all three ζ-powers ──
+-- ── expand M x: collect Paulis out of all three R-powers ──
 module _ (x : ℤ* ₚ) where
   private
     a = toℕ (x .proj₁)
@@ -91,8 +91,8 @@ module _ (x : ℤ* ₚ) where
   M-expand : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in
     M x ≈ (S ^ a • Z ^ (a Nat.* z)) • H • (S ^ b • Z ^ (b Nat.* z)) • H • (S ^ a • Z ^ (a Nat.* z)) • H
   M-expand {n} = begin
-    ζ ^ a • H • ζ ^ b • H • ζ ^ a • H
-      ≈⟨ cong (ζ-collect a) (cong refl (cong (ζ-collect b) (cong refl (cong (ζ-collect a) refl)))) ⟩
+    R ^ a • H • R ^ b • H • R ^ a • H
+      ≈⟨ cong (R-collect a) (cong refl (cong (R-collect b) (cong refl (cong (R-collect a) refl)))) ⟩
     (S ^ a • Z ^ (a Nat.* z)) • H • (S ^ b • Z ^ (b Nat.* z)) • H • (S ^ a • Z ^ (a Nat.* z)) • H ∎
     where
     open PB ((₁₊ n) QRel,_===_)
@@ -679,9 +679,9 @@ module SemiCZ↓ (n : ℕ) where
       Q • (CZ^ g • (Wg • P))            ≈⟨ trans (cright (sym assoc)) (sym assoc) ⟩
       (Q • CZ^ g • Wg) • P ∎
 -- ════════════════════════════════════════════════════════════════════
--- SemiS-rev: derive the OLD simplified ζ-form
---     lemma-semi-Mζ :  Wg · ζ  ≈ ζ^(g²) · Wg · Z^(½(g-1))
--- from the NEW fully-collected S-form axiom semi-Mζ
+-- SemiS-rev: derive the OLD simplified R-form
+--     lemma-semi-MR :  Wg · R  ≈ R^(g²) · Wg · Z^(½(g-1))
+-- from the NEW fully-collected S-form axiom semi-MR
 --     (axiom)         Wg · S  =  S^(g²) · Wg · Z^(g-1).
 -- The bridge is the Z-Wg conjugation: pushing Z^m through Wg gives Z^(g⁻¹m)
 -- (the X-part vanishes because a·b = g·g⁻¹ = 1).
@@ -786,11 +786,11 @@ module SemiS-rev (n : ℕ) where
     c  = toℕ (g * g)
     zX = toℕ ((g* .proj₁ + (- 1ₚ)) * 1/2)
 
-  -- the Pauli-rearrangement half of the original collected-semi-Mζ (no axiom used):
+  -- the Pauli-rearrangement half of the original collected-semi-MR (no axiom used):
   -- push the middle Z through Wg (Z-Wg) and merge it with the trailing Z^(½(g-1)).
-  collect-rhs : ζ^ (g * g) • Wg • Z ^ zX ≈ S ^ c • Wg • Z ^ (toℕ (g * 1/2) Nat.+ zX)
+  collect-rhs : R^ (g * g) • Wg • Z ^ zX ≈ S ^ c • Wg • Z ^ (toℕ (g * 1/2) Nat.+ zX)
   collect-rhs = begin
-    ζ^ (g * g) • Wg • Z ^ zX                     ≈⟨ cleft (ζ-collect c) ⟩
+    R^ (g * g) • Wg • Z ^ zX                     ≈⟨ cleft (R-collect c) ⟩
     (S ^ c • Z ^ (c Nat.* z½)) • Wg • Z ^ zX     ≈⟨ assoc ⟩
     S ^ c • (Z ^ (c Nat.* z½) • Wg • Z ^ zX)     ≈⟨ cright (sym assoc) ⟩
     S ^ c • ((Z ^ (c Nat.* z½) • Wg) • Z ^ zX)   ≈⟨ cright (cleft pushMid) ⟩
@@ -850,20 +850,20 @@ module SemiS-rev (n : ℕ) where
     modeq = Eq.trans (D.toℕ-+ (g * 1/2) ((g + (- 1ₚ)) * 1/2))
             (Eq.trans (Eq.cong toℕ ringEq) (Eq.sym (D.toℕ-+ (g + (- 1ₚ)) 1/2)))
 
-  -- THE LEMMA: old simplified ζ-form, derived from the S-form axiom + Z-Wg.
-  lemma-semi-Mζ : Wg • ζ ≈ ζ^ (g * g) • Wg • Z ^ zX
-  lemma-semi-Mζ = begin
-    Wg • ζ                                         ≡⟨ auto ⟩
+  -- THE LEMMA: old simplified R-form, derived from the S-form axiom + Z-Wg.
+  lemma-semi-MR : Wg • R ≈ R^ (g * g) • Wg • Z ^ zX
+  lemma-semi-MR = begin
+    Wg • R                                         ≡⟨ auto ⟩
     Wg • (S • Z ^ z½)                              ≈⟨ sym assoc ⟩
-    (Wg • S) • Z ^ z½                              ≈⟨ cleft (axiom semi-Mζ) ⟩
+    (Wg • S) • Z ^ z½                              ≈⟨ cleft (axiom semi-MR) ⟩
     (S ^ c • Wg • Z ^ toℕ (g + (- 1ₚ))) • Z ^ z½   ≈⟨ assoc ⟩
     S ^ c • ((Wg • Z ^ toℕ (g + (- 1ₚ))) • Z ^ z½) ≈⟨ cright assoc ⟩
     S ^ c • (Wg • (Z ^ toℕ (g + (- 1ₚ)) • Z ^ z½)) ≈⟨ cright (cright (sym (^-+ Z (toℕ (g + (- 1ₚ))) z½))) ⟩
     S ^ c • (Wg • Z ^ (toℕ (g + (- 1ₚ)) Nat.+ z½)) ≈⟨ cright (cright (sym expeq)) ⟩
     S ^ c • (Wg • Z ^ (toℕ (g * 1/2) Nat.+ zX))    ≈⟨ sym collect-rhs ⟩
-    ζ^ (g * g) • Wg • Z ^ zX ∎
+    R^ (g * g) • Wg • Z ^ zX ∎
 
-  -- ── power generalization of the S-form axiom (analogue of lemma-Mgζ^k) ──
+  -- ── power generalization of the S-form axiom (analogue of lemma-MgR^k) ──
   -- push S^k through Wg:   Wg · S^k ≈ S^(k·g²) · Wg · Z^(k·(g-1)).
   -- Induction on k; the trailing Z slides past the next Sᵏ (Z,S commute).
   private d = toℕ (g + (- 1ₚ))
@@ -874,13 +874,13 @@ module SemiS-rev (n : ℕ) where
     ε • Wg         ≈⟨ cright (sym right-unit) ⟩
     ε • (Wg • ε) ∎
   lemma-WgS^k 1 = begin
-    Wg • S ^ 1                              ≈⟨ axiom semi-Mζ ⟩
+    Wg • S ^ 1                              ≈⟨ axiom semi-MR ⟩
     S ^ c • Wg • Z ^ d                      ≈⟨ cleft (refl' (Eq.cong (S ^_) (Eq.sym (NP.*-identityˡ c)))) ⟩
     S ^ (1 Nat.* c) • Wg • Z ^ d            ≈⟨ cright (cright (refl' (Eq.cong (Z ^_) (Eq.sym (NP.*-identityˡ d))))) ⟩
     S ^ (1 Nat.* c) • Wg • Z ^ (1 Nat.* d) ∎
   lemma-WgS^k (₂₊ k') = begin
     Wg • S ^ (₂₊ k')                                                  ≈⟨ sym assoc ⟩
-    (Wg • S) • S ^ (₁₊ k')                                            ≈⟨ cleft (axiom semi-Mζ) ⟩
+    (Wg • S) • S ^ (₁₊ k')                                            ≈⟨ cleft (axiom semi-MR) ⟩
     (S ^ c • Wg • Z ^ d) • S ^ (₁₊ k')                               ≈⟨ assoc ⟩
     S ^ c • ((Wg • Z ^ d) • S ^ (₁₊ k'))                             ≈⟨ cright assoc ⟩
     S ^ c • (Wg • (Z ^ d • S ^ (₁₊ k')))                             ≈⟨ cright (cright (comm⇒pow-comm d (₁₊ k') (CL.lemma-comm-Z-S n))) ⟩
@@ -896,7 +896,7 @@ module SemiS-rev (n : ℕ) where
 
 
 -- ════════════════════════════════════════════════════════════════════
--- semi-Mζ with the Paulis pushed out & cancelled (single-qudit; no lift).
+-- semi-MR with the Paulis pushed out & cancelled (single-qudit; no lift).
 -- The X-Pauli of Mg cancels, leaving an irreducible Z^(½(g-1)).
 -- ════════════════════════════════════════════════════════════════════
 module SemiS (n : ℕ) where
@@ -922,8 +922,8 @@ module SemiS (n : ℕ) where
   decompWP : M g* ≈ Wg • P
   decompWP = trans D.M-decomp-clean (by-passoc (□ ^ 8) (□ ^ 6 • □ ^ 2) auto)
 
-  -- push the Pauli P past ζ (= S·Z^½):  P·ζ ≈ ζ·Z^(zZ+(p-1)zX)·X^zX
-  Pstep : P • ζ ≈ ζ • (Z ^ E' • X ^ zX)
+  -- push the Pauli P past R (= S·Z^½):  P·R ≈ R·Z^(zZ+(p-1)zX)·X^zX
+  Pstep : P • R ≈ R • (Z ^ E' • X ^ zX)
   Pstep = begin
     (Z ^ zZ • X ^ zX) • (S • Z ^ z½)                          ≈⟨ assoc ⟩
     Z ^ zZ • (X ^ zX • (S • Z ^ z½))                          ≈⟨ cright (sym assoc) ⟩
@@ -957,25 +957,25 @@ module SemiS (n : ℕ) where
              (Eq.trans (Eq.cong (Nat._+ (p-1 Nat.* zX)) (NP.+-comm zX zZ)) (NP.+-assoc zZ zX (p-1 Nat.* zX)))
 
   -- COMPLETENESS: recover the original Mg-form from the simplified S-form axiom.
-  -- decompWP + Pstep expose Wg·ζ, then SemiS-rev.lemma-semi-Mζ (the ζ-form
+  -- decompWP + Pstep expose Wg·R, then SemiS-rev.lemma-semi-MR (the R-form
   -- recovered from the S-form axiom via Z-Wg) fires, and the
   -- trailing Z^E'·X^zX collapses (rhs) back to the Pauli P of the Mg decomp.
-  completeness-semi-Mζ : M g* • ζ ≈ ζ^ (g * g) • M g*
-  completeness-semi-Mζ = begin
-    M g* • ζ                                          ≈⟨ cleft decompWP ⟩
-    (Wg • P) • ζ                                      ≈⟨ assoc ⟩
-    Wg • (P • ζ)                                      ≈⟨ cright Pstep ⟩
-    Wg • (ζ • (Z ^ E' • X ^ zX))                     ≈⟨ sym assoc ⟩
-    (Wg • ζ) • (Z ^ E' • X ^ zX)                     ≈⟨ cleft (SemiS-rev.lemma-semi-Mζ n) ⟩
-    (ζ^ (g * g) • Wg • Z ^ zX) • (Z ^ E' • X ^ zX)   ≈⟨ rhs ⟩
-    ζ^ (g * g) • (Wg • P)                            ≈⟨ cright (sym decompWP) ⟩
-    ζ^ (g * g) • M g* ∎
+  completeness-semi-MR : M g* • R ≈ R^ (g * g) • M g*
+  completeness-semi-MR = begin
+    M g* • R                                          ≈⟨ cleft decompWP ⟩
+    (Wg • P) • R                                      ≈⟨ assoc ⟩
+    Wg • (P • R)                                      ≈⟨ cright Pstep ⟩
+    Wg • (R • (Z ^ E' • X ^ zX))                     ≈⟨ sym assoc ⟩
+    (Wg • R) • (Z ^ E' • X ^ zX)                     ≈⟨ cleft (SemiS-rev.lemma-semi-MR n) ⟩
+    (R^ (g * g) • Wg • Z ^ zX) • (Z ^ E' • X ^ zX)   ≈⟨ rhs ⟩
+    R^ (g * g) • (Wg • P)                            ≈⟨ cright (sym decompWP) ⟩
+    R^ (g * g) • M g* ∎
     where
-    rhs : (ζ^ (g * g) • Wg • Z ^ zX) • (Z ^ E' • X ^ zX) ≈ ζ^ (g * g) • (Wg • P)
+    rhs : (R^ (g * g) • Wg • Z ^ zX) • (Z ^ E' • X ^ zX) ≈ R^ (g * g) • (Wg • P)
     rhs = begin
-      (ζ^ (g * g) • Wg • Z ^ zX) • (Z ^ E' • X ^ zX)        ≈⟨ assoc ⟩
-      ζ^ (g * g) • ((Wg • Z ^ zX) • (Z ^ E' • X ^ zX))      ≈⟨ cright assoc ⟩
-      ζ^ (g * g) • (Wg • (Z ^ zX • (Z ^ E' • X ^ zX)))      ≈⟨ cright (cright (sym assoc)) ⟩
-      ζ^ (g * g) • (Wg • ((Z ^ zX • Z ^ E') • X ^ zX))      ≈⟨ cright (cright (cleft (sym (^-+ Z zX E')))) ⟩
-      ζ^ (g * g) • (Wg • (Z ^ (zX Nat.+ E') • X ^ zX))      ≈⟨ cright (cright (cleft Zred)) ⟩
-      ζ^ (g * g) • (Wg • (Z ^ zZ • X ^ zX)) ∎
+      (R^ (g * g) • Wg • Z ^ zX) • (Z ^ E' • X ^ zX)        ≈⟨ assoc ⟩
+      R^ (g * g) • ((Wg • Z ^ zX) • (Z ^ E' • X ^ zX))      ≈⟨ cright assoc ⟩
+      R^ (g * g) • (Wg • (Z ^ zX • (Z ^ E' • X ^ zX)))      ≈⟨ cright (cright (sym assoc)) ⟩
+      R^ (g * g) • (Wg • ((Z ^ zX • Z ^ E') • X ^ zX))      ≈⟨ cright (cright (cleft (sym (^-+ Z zX E')))) ⟩
+      R^ (g * g) • (Wg • (Z ^ (zX Nat.+ E') • X ^ zX))      ≈⟨ cright (cright (cleft Zred)) ⟩
+      R^ (g * g) • (Wg • (Z ^ zZ • X ^ zX)) ∎

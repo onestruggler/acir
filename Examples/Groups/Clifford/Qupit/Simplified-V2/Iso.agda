@@ -61,7 +61,7 @@ f-well-defined : ∀ {n} → let open PB (SimR._QRel,_===_ n) renaming (_≈_ to
 f-well-defined CliR.order-S        = PB.axiom SimR.order-S
 f-well-defined CliR.order-H        = PB.axiom SimR.order-H
 f-well-defined (CliR.M-power k)    = PB.axiom (SimR.M-power k)
-f-well-defined CliR.semi-Mζ        = MgS.SemiS.completeness-semi-Mζ _
+f-well-defined CliR.semi-MR        = MgS.SemiS.completeness-semi-MR _
 f-well-defined CliR.order-SH       = PB.axiom SimR.order-SH
 f-well-defined CliR.comm-HHSHHS    = PB.axiom SimR.comm-HHSHHS
 f-well-defined CliR.comm-X-Z       = PB.axiom SimR.comm-X-Z
@@ -92,7 +92,7 @@ g-well-defined : ∀ {n} → let open PB (CliR._QRel,_===_ n) renaming (_≈_ to
 g-well-defined SimR.order-S        = PB.axiom CliR.order-S
 g-well-defined SimR.order-H        = PB.axiom CliR.order-H
 g-well-defined (SimR.M-power k)    = PB.axiom (CliR.M-power k)
-g-well-defined SimR.semi-Mζ        = MgC.SemiS-collected.final-semi-Mζ _
+g-well-defined SimR.semi-MR        = MgC.SemiS-collected.final-semi-MR _
 g-well-defined SimR.order-SH       = PB.axiom CliR.order-SH
 g-well-defined SimR.comm-HHSHHS    = PB.axiom CliR.comm-HHSHHS
 g-well-defined SimR.comm-X-Z       = PB.axiom CliR.comm-X-Z

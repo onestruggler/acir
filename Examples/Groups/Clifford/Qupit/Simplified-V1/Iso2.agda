@@ -312,7 +312,7 @@ module Iso-Inverse-Direction (n : ℕ) where
         ≈⟨ finalZ ⟩
       SemiDirect.Z ∎
 
-  -- h-Mg reduces to h-ζ : (h*) Clifford.ζ ≈ S, which reduces to
+  -- h-Mg reduces to h-R : (h*) Clifford.R ≈ S, which reduces to
   --   h-Z : (h*) Clifford.Z ≈ SemiDirect.Z.
   -- h-Z assembly (using the 7 lemmas above), with k = toℕ -1/2:
   --   (h*)Z = HH·Zᵏ·S·HH·(Zᵏ·S)^{p-1}
@@ -322,9 +322,9 @@ module Iso-Inverse-Direction (n : ℕ) where
   --     ≈ Z^{(p-1)k}·S·Z^{k(p-1)}·S^{p-1}        (^-•)
   --     ≈ Z^{(p-1)k}·Z^{k(p-1)}·S^p              (Z,S commute; order-S: S^p ≈ ε)
   --     ≈ Z^{2k(p-1)} ≈ Z                        (^-+;  2k(p-1) ≡ 1 mod p  -- remaining ℤ_p arithmetic)
-  hs : ∀ {m} → let open PB (SemiDirect._QRel,_===_ (₁₊ m)) using (_≈_) in (h ʷ) (ζ {m}) ≈ SemiDirect.S
+  hs : ∀ {m} → let open PB (SemiDirect._QRel,_===_ (₁₊ m)) using (_≈_) in (h ʷ) (R {m}) ≈ SemiDirect.S
   hs {m} = begin
-      (h ʷ) (ζ {m})
+      (h ʷ) (R {m})
         ≈⟨ cright hz12 ⟩
       (SemiDirect.Z ^ k • SemiDirect.S) • SemiDirect.Z ^ (toℕ Cli.1/2)
         ≈⟨ assoc ⟩
@@ -371,8 +371,8 @@ module Iso-Inverse-Direction (n : ℕ) where
       SemiDirect.Z ^ ((k Nat.+ toℕ Cli.1/2) % p)       ≡⟨ Eq.cong (SemiDirect.Z ^_) arith0 ⟩
       ε ∎
 
-  hs-pow : ∀ {m} k → let open PB (SemiDirect._QRel,_===_ (₁₊ m)) using (_≈_) in (h ʷ) (ζ {m} ^ k) ≈ SemiDirect.S ^ k
-  hs-pow {m} k = trans (refl' (lemma-fʷ-w^n {f = h} {w = ζ {m}} k)) (^-cong ((h ʷ) (ζ {m})) SemiDirect.S k (hs {m}))
+  hs-pow : ∀ {m} k → let open PB (SemiDirect._QRel,_===_ (₁₊ m)) using (_≈_) in (h ʷ) (R {m} ^ k) ≈ SemiDirect.S ^ k
+  hs-pow {m} k = trans (refl' (lemma-fʷ-w^n {f = h} {w = R {m}} k)) (^-cong ((h ʷ) (R {m})) SemiDirect.S k (hs {m}))
     where
     open PB (SemiDirect._QRel,_===_ (₁₊ m))
     open PP (SemiDirect._QRel,_===_ (₁₊ m))
@@ -435,23 +435,23 @@ module Iso-Inverse-Direction (n : ℕ) where
   ↑pow w 1 = Eq.refl
   ↑pow w (₂₊ k) = Eq.cong₂ _•_ Eq.refl (↑pow w (₁₊ k))
 
-  hs↑ : ∀ {m} → let open PB (SemiDirect._QRel,_===_ (₂₊ m)) using (_≈_) in (h ʷ) (ζ {m} ↑) ≈ SemiDirect.S SemiDirect.↑
-  hs↑ {m} = trans (refl' (lemma-h↑ (ζ {m}))) (SemiDirect.lemma-cong↑ {₁₊ m} _ _ (hs {m}))
+  hs↑ : ∀ {m} → let open PB (SemiDirect._QRel,_===_ (₂₊ m)) using (_≈_) in (h ʷ) (R {m} ↑) ≈ SemiDirect.S SemiDirect.↑
+  hs↑ {m} = trans (refl' (lemma-h↑ (R {m}))) (SemiDirect.lemma-cong↑ {₁₊ m} _ _ (hs {m}))
     where
     open PB (SemiDirect._QRel,_===_ (₂₊ m))
 
-  hs↑pow : ∀ {m} → let open PB (SemiDirect._QRel,_===_ (₂₊ m)) using (_≈_) in (h ʷ) ((ζ {m} ↑) ^ p-1) ≈ (SemiDirect.S SemiDirect.↑) ^ p-1
-  hs↑pow {m} = trans (refl' (lemma-fʷ-w^n {f = h} {w = ζ {m} ↑} p-1)) (^-cong ((h ʷ) (ζ {m} ↑)) (SemiDirect.S SemiDirect.↑) p-1 (hs↑ {m}))
+  hs↑pow : ∀ {m} → let open PB (SemiDirect._QRel,_===_ (₂₊ m)) using (_≈_) in (h ʷ) ((R {m} ↑) ^ p-1) ≈ (SemiDirect.S SemiDirect.↑) ^ p-1
+  hs↑pow {m} = trans (refl' (lemma-fʷ-w^n {f = h} {w = R {m} ↑} p-1)) (^-cong ((h ʷ) (R {m} ↑)) (SemiDirect.S SemiDirect.↑) p-1 (hs↑ {m}))
     where
     open PB (SemiDirect._QRel,_===_ (₂₊ m))
     open PP (SemiDirect._QRel,_===_ (₂₊ m))
 
-  conv↓ : ∀ {m} → let open PB (SemiDirect._QRel,_===_ (₁₊ m)) using (_≈_) in [ Sym.S⁻¹ {m} ]ᵣ ≈ (h ʷ) (ζ {m} ^ p-1)
+  conv↓ : ∀ {m} → let open PB (SemiDirect._QRel,_===_ (₁₊ m)) using (_≈_) in [ Sym.S⁻¹ {m} ]ᵣ ≈ (h ʷ) (R {m} ^ p-1)
   conv↓ {m} = trans (refl' (SemiDirect.lemma-[]ᵣ^k (Sym.S {m}) p-1)) (sym (hs-pow {m} p-1))
     where
     open PB (SemiDirect._QRel,_===_ (₁₊ m))
 
-  conv↑ : ∀ {m} → let open PB (SemiDirect._QRel,_===_ (₂₊ m)) using (_≈_) in [ Sym.S⁻¹ {m} Sym.↑ ]ᵣ ≈ (h ʷ) ((ζ {m} ↑) ^ p-1)
+  conv↑ : ∀ {m} → let open PB (SemiDirect._QRel,_===_ (₂₊ m)) using (_≈_) in [ Sym.S⁻¹ {m} Sym.↑ ]ᵣ ≈ (h ʷ) ((R {m} ↑) ^ p-1)
   conv↑ {m} = trans (refl' eq≡) (sym (hs↑pow {m}))
     where
     open PB (SemiDirect._QRel,_===_ (₂₊ m))
@@ -520,14 +520,14 @@ module Iso-Inverse-Direction (n : ℕ) where
     open PP (SemiDirect._QRel,_===_ (₁₊ n))
     open SR word-setoid
     open Primitive-Root-Modp' g* g-gen
-  h-well-defined {₁₊ n} semi-Mζ = begin
-    (h ʷ) (Mg • ζ)
+  h-well-defined {₁₊ n} semi-MR = begin
+    (h ʷ) (Mg • R)
       ≈⟨ cong (h-Mg {n}) (hs {n}) ⟩
     [ Sim.Mg {n} ]ᵣ • [ Sym.S ]ᵣ
       ≈⟨ axiom (right (Sim.srel Sim.semi-MS)) ⟩
     [ Sym.S ^ toℕ (g * g) ]ᵣ • [ Sim.Mg {n} ]ᵣ
       ≈⟨ cong (trans (refl' (SemiDirect.lemma-[]ᵣ^k Sym.S (toℕ (g * g)))) (sym (hs-pow (toℕ (g * g))))) (sym (h-Mg {n})) ⟩
-    (h ʷ) (ζ^ (g * g) • Mg) ∎
+    (h ʷ) (R^ (g * g) • Mg) ∎
     where
     open PB (SemiDirect._QRel,_===_ (₁₊ n))
     open PP (SemiDirect._QRel,_===_ (₁₊ n))
@@ -542,13 +542,13 @@ module Iso-Inverse-Direction (n : ℕ) where
       Zk • (u • (Zk • (u • (Zk • u))))
         ≈⟨ cright (sym assoc) ⟩
       Zk • ((u • Zk) • (u • (Zk • u)))
-        ≈⟨ cright (cleft R) ⟩
+        ≈⟨ cright (cleft Rk) ⟩
       Zk • ((Q₁ • u) • (u • (Zk • u)))
         ≈⟨ cright assoc ⟩
       Zk • (Q₁ • (u • (u • (Zk • u))))
         ≈⟨ cright (cright (cright (sym assoc))) ⟩
       Zk • (Q₁ • (u • ((u • Zk) • u)))
-        ≈⟨ cright (cright (cright (cleft R))) ⟩
+        ≈⟨ cright (cright (cright (cleft Rk))) ⟩
       Zk • (Q₁ • (u • ((Q₁ • u) • u)))
         ≈⟨ cright (cright (by-passoc (□ • ((□ • □) • □)) ((□ • □) • (□ • □)) Eq.refl)) ⟩
       Zk • (Q₁ • ((u • Q₁) • (u • u)))
@@ -599,8 +599,8 @@ module Iso-Inverse-Direction (n : ℕ) where
       ((SemiDirect.X ^ ((p-1) Nat.* j) • SemiDirect.Z ^ ((p-1) Nat.* j)) • SemiDirect.S) • SemiDirect.H
         ≈⟨ assoc ⟩
       (SemiDirect.X ^ ((p-1) Nat.* j) • SemiDirect.Z ^ ((p-1) Nat.* j)) • u ∎
-    R : u • Zk ≈ Q₁ • u
-    R = Rgen k
+    Rk : u • Zk ≈ Q₁ • u
+    Rk = Rgen k
     uXa : u • SemiDirect.X ^ a ≈ SemiDirect.Z ^ a • u
     uXa = begin
       u • SemiDirect.X ^ a
@@ -860,7 +860,7 @@ module Iso-Inverse-Direction (n : ℕ) where
         ≈⟨ axiom (right (Sim.srel Sim.selinger-c10)) ⟩
       [ Sym.S⁻¹ Sym.↑ ]ᵣ • [ Sym.H Sym.↑ ]ᵣ • [ Sym.S⁻¹ Sym.↑ ]ᵣ • [ Sym.CZ ]ᵣ • [ Sym.H Sym.↑ ]ᵣ • [ Sym.S⁻¹ Sym.↑ ]ᵣ • [ Sym.S⁻¹ ]ᵣ
         ≈⟨ cong (conv↑ {n}) (cong refl (cong (conv↑ {n}) (cong refl (cong refl (cong (conv↑ {n}) (conv↓ {₁₊ n})))))) ⟩
-      (h ʷ) ((ζ ↑) ^ p-1 • (H ↑) • (ζ ↑) ^ p-1 • CZ • (H ↑) • (ζ ↑) ^ p-1 • (ζ ↓) ^ p-1) ∎
+      (h ʷ) ((R ↑) ^ p-1 • (H ↑) • (R ↑) ^ p-1 • CZ • (H ↑) • (R ↑) ^ p-1 • (R ↓) ^ p-1) ∎
     where
     open PB (SemiDirect._QRel,_===_ (₂₊ n))
     open PP (SemiDirect._QRel,_===_ (₂₊ n))
@@ -870,7 +870,7 @@ module Iso-Inverse-Direction (n : ℕ) where
         ≈⟨ axiom (right (Sim.srel Sim.selinger-c11)) ⟩
       [ Sym.S⁻¹ ]ᵣ • [ Sym.H ]ᵣ • [ Sym.S⁻¹ ]ᵣ • [ Sym.CZ ]ᵣ • [ Sym.H ]ᵣ • [ Sym.S⁻¹ ]ᵣ • [ Sym.S⁻¹ Sym.↑ ]ᵣ
         ≈⟨ cong (conv↓ {₁₊ n}) (cong refl (cong (conv↓ {₁₊ n}) (cong refl (cong refl (cong (conv↓ {₁₊ n}) (conv↑ {n})))))) ⟩
-      (h ʷ) ((ζ ↓) ^ p-1 • (H ↓) • (ζ ↓) ^ p-1 • CZ • (H ↓) • (ζ ↓) ^ p-1 • (ζ ↑) ^ p-1) ∎
+      (h ʷ) ((R ↓) ^ p-1 • (H ↓) • (R ↓) ^ p-1 • CZ • (H ↓) • (R ↓) ^ p-1 • (R ↑) ^ p-1) ∎
     where
     open PB (SemiDirect._QRel,_===_ (₂₊ n))
     open PP (SemiDirect._QRel,_===_ (₂₊ n))

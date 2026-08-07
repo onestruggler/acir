@@ -93,14 +93,14 @@ module Clifford-Relations where
   X^ : ℤ ₚ ->  ∀ {n} -> Word (Gen (₁₊ n))
   X^ k = X ^ toℕ k
 
-  ζ : ∀ {n} -> Word (Gen (₁₊ n))
-  ζ = S • Z^ 1/2
-  ζ^ : ∀ {n} ->  ℤ ₚ ->  Word (Gen (₁₊ n))
-  ζ^ k = ζ ^ toℕ k
+  R : ∀ {n} -> Word (Gen (₁₊ n))
+  R = S • Z^ 1/2
+  R^ : ∀ {n} ->  ℤ ₚ ->  Word (Gen (₁₊ n))
+  R^ k = R ^ toℕ k
 
 
   M : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
-  M x' = ζ^ x • H • ζ^ x⁻¹ • H • ζ^ x • H
+  M x' = R^ x • H • R^ x⁻¹ • H • R^ x • H
     where
     x = x' .proj₁
     x⁻¹ = ((x' ⁻¹) .proj₁ )
@@ -126,7 +126,7 @@ module Clifford-Relations where
     order-S :           ∀ {n} → (₁₊ n) QRel,  S ^ p === ε
     order-H :           ∀ {n} → (₁₊ n) QRel,  H ^ 2 === M₋₁
     M-power : ∀ {n} (k : ℤ ₚ) → (₁₊ n) QRel,  Mg^ k === M (g^ k)
-    semi-Mζ :           ∀ {n} → (₁₊ n) QRel,  Mg • ζ === ζ^ (g * g) • Mg
+    semi-MR :           ∀ {n} → (₁₊ n) QRel,  Mg • R === R^ (g * g) • Mg
     order-SH :          ∀ {n} → (₁₊ n) QRel,  (S • H) ^ 3 === ε
     comm-HHSHHS :       ∀ {n} → (₁₊ n) QRel,  H • H • S • H • H • S === S • H • H • S • H • H
 
@@ -138,8 +138,8 @@ module Clifford-Relations where
     comm-CZ-S↓ :        ∀ {n} → (₂₊ n) QRel,  CZ • S ↓ === S ↓ • CZ
     comm-CZ-S↑ :        ∀ {n} → (₂₊ n) QRel,  CZ • S ↑ === S ↑ • CZ
 
-    selinger-c10 :      ∀ {n} → (₂₊ n) QRel,  CZ • H ↑ • CZ === ζ ↑ ^ p-1 • H ↑ • ζ ↑ ^ p-1 • CZ • H ↑ • ζ ↑ ^ p-1 • ζ ↓ ^ p-1
-    selinger-c11 :      ∀ {n} → (₂₊ n) QRel,  CZ • H ↓ • CZ === ζ ↓ ^ p-1 • H ↓ • ζ ↓ ^ p-1 • CZ • H ↓ • ζ ↓ ^ p-1 • ζ ↑ ^ p-1
+    selinger-c10 :      ∀ {n} → (₂₊ n) QRel,  CZ • H ↑ • CZ === R ↑ ^ p-1 • H ↑ • R ↑ ^ p-1 • CZ • H ↑ • R ↑ ^ p-1 • R ↓ ^ p-1
+    selinger-c11 :      ∀ {n} → (₂₊ n) QRel,  CZ • H ↓ • CZ === R ↓ ^ p-1 • H ↓ • R ↓ ^ p-1 • CZ • H ↓ • R ↓ ^ p-1 • R ↑ ^ p-1
 
     selinger-c12 :      ∀ {n} → (₃₊ n) QRel,  CZ ↑ • CZ === CZ • CZ ↑
     selinger-c13 :      ∀ {n} → (₃₊ n) QRel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
@@ -423,9 +423,9 @@ module Lemmas1 (n : ℕ) where
   aux-M≡M : ∀ y y' -> y .proj₁ ≡ y' .proj₁ -> M {n = n} y ≡ M y'
   aux-M≡M y y' eq = begin
     M y ≡⟨ auto ⟩
-    ζ^ x • H • ζ^ x⁻¹ • H • ζ^ x • H ≡⟨ Eq.cong₂ (\ xx yy -> ζ^ xx • H • ζ^ yy • H • ζ^ x • H) eq aux-eq ⟩
-    ζ^ x' • H • ζ^ x'⁻¹ • H • ζ^ x • H ≡⟨ Eq.cong (\ xx -> ζ^ x' • H • ζ^ x'⁻¹ • H • ζ^ xx • H) eq ⟩
-    ζ^ x' • H • ζ^ x'⁻¹ • H • ζ^ x' • H ≡⟨ auto ⟩
+    R^ x • H • R^ x⁻¹ • H • R^ x • H ≡⟨ Eq.cong₂ (\ xx yy -> R^ xx • H • R^ yy • H • R^ x • H) eq aux-eq ⟩
+    R^ x' • H • R^ x'⁻¹ • H • R^ x • H ≡⟨ Eq.cong (\ xx -> R^ x' • H • R^ x'⁻¹ • H • R^ xx • H) eq ⟩
+    R^ x' • H • R^ x'⁻¹ • H • R^ x' • H ≡⟨ auto ⟩
     M y' ∎
     where
     open ≡-Reasoning
@@ -467,28 +467,28 @@ module Lemmas1 (n : ℕ) where
 
 
 
-  lemma-Mgζ^k : ∀ k ->  let g⁻¹ = (g′ ⁻¹) .proj₁ in let -g⁻¹ = - g⁻¹ in
-    Mg • ζ ^ k ≈ ζ ^ (k Nat.* toℕ (g * g)) • Mg
-  lemma-Mgζ^k k@0 = trans right-unit (sym left-unit)
-  lemma-Mgζ^k k@1 = begin  
-    Mg • ζ ^ k ≈⟨ refl ⟩
-    Mg • ζ ≈⟨ axiom semi-Mζ ⟩
-    ζ^ (g * g) • Mg ≈⟨ refl ⟩
-    ζ ^ toℕ (g * g) • Mg ≈⟨ (cleft refl' (Eq.cong (ζ ^_) (Eq.sym ( NP.*-identityˡ (toℕ (g * g)))))) ⟩
-    ζ ^ (k Nat.* toℕ (g * g)) • Mg ∎
+  lemma-MgR^k : ∀ k ->  let g⁻¹ = (g′ ⁻¹) .proj₁ in let -g⁻¹ = - g⁻¹ in
+    Mg • R ^ k ≈ R ^ (k Nat.* toℕ (g * g)) • Mg
+  lemma-MgR^k k@0 = trans right-unit (sym left-unit)
+  lemma-MgR^k k@1 = begin  
+    Mg • R ^ k ≈⟨ refl ⟩
+    Mg • R ≈⟨ axiom semi-MR ⟩
+    R^ (g * g) • Mg ≈⟨ refl ⟩
+    R ^ toℕ (g * g) • Mg ≈⟨ (cleft refl' (Eq.cong (R ^_) (Eq.sym ( NP.*-identityˡ (toℕ (g * g)))))) ⟩
+    R ^ (k Nat.* toℕ (g * g)) • Mg ∎
     where
     open SR word-setoid
-  lemma-Mgζ^k k@(₂₊ k') = begin  
-    Mg • ζ ^ k ≈⟨ refl ⟩
-    Mg • ζ • ζ ^ ₁₊ k' ≈⟨ sym assoc ⟩
-    (Mg • ζ) • ζ ^ ₁₊ k' ≈⟨ (cleft lemma-Mgζ^k 1 ) ⟩
-    (ζ ^ (1 Nat.* toℕ (g * g)) • Mg) • ζ ^ ₁₊ k' ≈⟨ assoc ⟩
-    ζ ^ (1 Nat.* toℕ (g * g)) • Mg • ζ ^ ₁₊ k' ≈⟨ (cright lemma-Mgζ^k (₁₊ k')) ⟩
-    ζ ^ (1 Nat.* toℕ (g * g)) • ζ ^ (₁₊ k' Nat.* toℕ (g * g)) • Mg ≈⟨ sym assoc ⟩
-    (ζ ^ (1 Nat.* toℕ (g * g)) • ζ ^ (₁₊ k' Nat.* toℕ (g * g))) • Mg ≈⟨ (cleft sym (^-+ ζ ((1 Nat.* toℕ (g * g))) ((₁₊ k' Nat.* toℕ (g * g))))) ⟩
-    (ζ ^ ((1 Nat.* toℕ (g * g)) Nat.+ (₁₊ k' Nat.* toℕ (g * g)))) • Mg ≈⟨ (cleft refl' (Eq.cong (ζ ^_) (Eq.sym (NP.*-distribʳ-+ (toℕ (g * g)) ₁ (₁₊ k'))))) ⟩
-    ζ ^ ((1 Nat.+ ₁₊ k') Nat.* toℕ (g * g) ) • Mg ≈⟨ refl ⟩
-    ζ ^ (k Nat.* toℕ (g * g)) • Mg ∎
+  lemma-MgR^k k@(₂₊ k') = begin  
+    Mg • R ^ k ≈⟨ refl ⟩
+    Mg • R • R ^ ₁₊ k' ≈⟨ sym assoc ⟩
+    (Mg • R) • R ^ ₁₊ k' ≈⟨ (cleft lemma-MgR^k 1 ) ⟩
+    (R ^ (1 Nat.* toℕ (g * g)) • Mg) • R ^ ₁₊ k' ≈⟨ assoc ⟩
+    R ^ (1 Nat.* toℕ (g * g)) • Mg • R ^ ₁₊ k' ≈⟨ (cright lemma-MgR^k (₁₊ k')) ⟩
+    R ^ (1 Nat.* toℕ (g * g)) • R ^ (₁₊ k' Nat.* toℕ (g * g)) • Mg ≈⟨ sym assoc ⟩
+    (R ^ (1 Nat.* toℕ (g * g)) • R ^ (₁₊ k' Nat.* toℕ (g * g))) • Mg ≈⟨ (cleft sym (^-+ R ((1 Nat.* toℕ (g * g))) ((₁₊ k' Nat.* toℕ (g * g))))) ⟩
+    (R ^ ((1 Nat.* toℕ (g * g)) Nat.+ (₁₊ k' Nat.* toℕ (g * g)))) • Mg ≈⟨ (cleft refl' (Eq.cong (R ^_) (Eq.sym (NP.*-distribʳ-+ (toℕ (g * g)) ₁ (₁₊ k'))))) ⟩
+    R ^ ((1 Nat.+ ₁₊ k') Nat.* toℕ (g * g) ) • Mg ≈⟨ refl ⟩
+    R ^ (k Nat.* toℕ (g * g)) • Mg ∎
     where
     open SR word-setoid
 
@@ -718,8 +718,8 @@ module Lemmas1 (n : ℕ) where
     open SR word-setoid
     open Pattern-Assoc
   
-  lemma-order-ζ : ζ ^ p ≈ ε
-  lemma-order-ζ = begin
+  lemma-order-R : R ^ p ≈ ε
+  lemma-order-R = begin
     (S • Z^ 1/2) ^ p ≈⟨ ^-cong (S • Z^ 1/2) (Z^ 1/2 • S) p (comm⇒pow-comm 1 (toℕ 1/2) (sym lemma-comm-Z-S)) ⟩
     (Z^ 1/2 • S) ^ p ≈⟨ ^-• (Z^ 1/2) S p (comm⇒pow-comm (toℕ 1/2) 1 lemma-comm-Z-S) ⟩
     Z^ 1/2 ^ p • S ^ p ≈⟨ (cright axiom order-S) ⟩
@@ -729,16 +729,16 @@ module Lemmas1 (n : ℕ) where
     where
     open SR word-setoid
     
-  lemma-ζ^k-% : ∀ k -> ζ ^ k ≈ ζ ^ (k % p)
-  lemma-ζ^k-% k = begin
-    ζ ^ k ≡⟨ Eq.cong (ζ ^_) (m≡m%n+[m/n]*n k p) ⟩
-    ζ ^ (k Nat.% p Nat.+ k Nat./ p Nat.* p) ≈⟨ ^-+ ζ (k Nat.% p) (k Nat./ p Nat.* p) ⟩
-    ζ ^ (k Nat.% p) • ζ ^ (k Nat./ p Nat.* p) ≈⟨ (cright refl' (Eq.cong (ζ ^_) (NP.*-comm (k Nat./ p) p))) ⟩
-    ζ ^ (k Nat.% p) • ζ ^ (p Nat.* (k Nat./ p)) ≈⟨ sym (cright ^^ ζ p (k Nat./ p)) ⟩
-    ζ ^ (k Nat.% p) • (ζ ^ p) ^ (k Nat./ p) ≈⟨ (cright ^-cong (ζ ^ p) ε (k Nat./ p) (lemma-order-ζ)) ⟩
-    ζ ^ (k Nat.% p) • (ε) ^ (k Nat./ p) ≈⟨ (cright ε^k=ε (k Nat./ p)) ⟩
-    ζ ^ (k Nat.% p) • ε ≈⟨ right-unit ⟩
-    ζ ^ (k % p) ∎
+  lemma-R^k-% : ∀ k -> R ^ k ≈ R ^ (k % p)
+  lemma-R^k-% k = begin
+    R ^ k ≡⟨ Eq.cong (R ^_) (m≡m%n+[m/n]*n k p) ⟩
+    R ^ (k Nat.% p Nat.+ k Nat./ p Nat.* p) ≈⟨ ^-+ R (k Nat.% p) (k Nat./ p Nat.* p) ⟩
+    R ^ (k Nat.% p) • R ^ (k Nat./ p Nat.* p) ≈⟨ (cright refl' (Eq.cong (R ^_) (NP.*-comm (k Nat./ p) p))) ⟩
+    R ^ (k Nat.% p) • R ^ (p Nat.* (k Nat./ p)) ≈⟨ sym (cright ^^ R p (k Nat./ p)) ⟩
+    R ^ (k Nat.% p) • (R ^ p) ^ (k Nat./ p) ≈⟨ (cright ^-cong (R ^ p) ε (k Nat./ p) (lemma-order-R)) ⟩
+    R ^ (k Nat.% p) • (ε) ^ (k Nat./ p) ≈⟨ (cright ε^k=ε (k Nat./ p)) ⟩
+    R ^ (k Nat.% p) • ε ≈⟨ right-unit ⟩
+    R ^ (k % p) ∎
     where
     open SR word-setoid
 
@@ -747,50 +747,50 @@ module Lemmas1 (n : ℕ) where
 
 
 
-  lemma-Mgζ^k' : ∀ k -> let x⁻¹ = (g′ ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
-    Mg • ζ^ k ≈ ζ^ (k * (g * g)) • Mg
-  lemma-Mgζ^k' k = begin 
-    Mg • ζ^ k ≈⟨ refl ⟩
-    Mg • ζ ^ toℕ k ≈⟨ lemma-Mgζ^k (toℕ k) ⟩
-    ζ ^ (toℕ k Nat.* toℕ (g * g)) • Mg ≈⟨ (cleft lemma-ζ^k-% (toℕ k Nat.* toℕ (g * g))) ⟩
-    ζ ^ ((toℕ k Nat.* toℕ (g * g)) % p) • Mg ≈⟨ (cleft refl' (Eq.cong (ζ ^_) (lemma-toℕ-% k (g * g)))) ⟩
-    ζ ^ toℕ (k * (g * g)) • Mg ≈⟨ refl ⟩
-    ζ^ (k * (g * g)) • Mg ∎
+  lemma-MgR^k' : ∀ k -> let x⁻¹ = (g′ ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+    Mg • R^ k ≈ R^ (k * (g * g)) • Mg
+  lemma-MgR^k' k = begin 
+    Mg • R^ k ≈⟨ refl ⟩
+    Mg • R ^ toℕ k ≈⟨ lemma-MgR^k (toℕ k) ⟩
+    R ^ (toℕ k Nat.* toℕ (g * g)) • Mg ≈⟨ (cleft lemma-R^k-% (toℕ k Nat.* toℕ (g * g))) ⟩
+    R ^ ((toℕ k Nat.* toℕ (g * g)) % p) • Mg ≈⟨ (cleft refl' (Eq.cong (R ^_) (lemma-toℕ-% k (g * g)))) ⟩
+    R ^ toℕ (k * (g * g)) • Mg ≈⟨ refl ⟩
+    R^ (k * (g * g)) • Mg ∎
     where
     open SR word-setoid
     x⁻¹ = (g′ ⁻¹) .proj₁
     -x⁻¹ = - x⁻¹
 
-  lemma-Mg^kζ : ∀ k -> Mg ^ k • ζ ≈ ζ^ ((g * g) ^′ k) • Mg ^ k
-  lemma-Mg^kζ k@0 = trans left-unit (sym right-unit)
-  lemma-Mg^kζ k@1 = begin
-    Mg ^ k • ζ ≈⟨ axiom semi-Mζ ⟩
-    ζ^ ((g * g)) • Mg ^ k ≈⟨ (cleft refl' ( Eq.cong ζ^ (Eq.sym (lemma-x^′1=x (fromℕ< _))))) ⟩ -- 
-    ζ^ ((g * g) ^′ k) • Mg ^ k ∎
+  lemma-Mg^kR : ∀ k -> Mg ^ k • R ≈ R^ ((g * g) ^′ k) • Mg ^ k
+  lemma-Mg^kR k@0 = trans left-unit (sym right-unit)
+  lemma-Mg^kR k@1 = begin
+    Mg ^ k • R ≈⟨ axiom semi-MR ⟩
+    R^ ((g * g)) • Mg ^ k ≈⟨ (cleft refl' ( Eq.cong R^ (Eq.sym (lemma-x^′1=x (fromℕ< _))))) ⟩ -- 
+    R^ ((g * g) ^′ k) • Mg ^ k ∎
     where
     open SR word-setoid
-  lemma-Mg^kζ k@(₂₊ n) = begin
-    (Mg • Mg ^ ₁₊ n) • ζ ≈⟨ assoc ⟩
-    Mg • Mg ^ ₁₊ n • ζ ≈⟨ (cright lemma-Mg^kζ (₁₊ n)) ⟩
-    Mg • ζ^ ((g * g) ^′ (₁₊ n)) • Mg ^ (₁₊ n) ≈⟨ sym assoc ⟩
-    (Mg • ζ^ ((g * g) ^′ (₁₊ n))) • Mg ^ (₁₊ n) ≈⟨ (cleft lemma-Mgζ^k' ((g * g) ^′ (₁₊ n))) ⟩
-    (ζ^ (((g * g) ^′ (₁₊ n)) * (g * g)) • Mg) • Mg ^ (₁₊ n) ≈⟨ refl' (Eq.cong (\ xx -> (ζ^ xx • Mg) • Mg ^ (₁₊ n)) (*-comm ((g * g) ^′ (₁₊ n)) (g * g))) ⟩
-    (ζ^ ((g * g) * ((g * g) ^′ (₁₊ n))) • Mg) • Mg ^ (₁₊ n) ≈⟨ assoc ⟩
-    ζ^ ((g * g) ^′ k) • Mg • Mg ^ ₁₊ n ∎
+  lemma-Mg^kR k@(₂₊ n) = begin
+    (Mg • Mg ^ ₁₊ n) • R ≈⟨ assoc ⟩
+    Mg • Mg ^ ₁₊ n • R ≈⟨ (cright lemma-Mg^kR (₁₊ n)) ⟩
+    Mg • R^ ((g * g) ^′ (₁₊ n)) • Mg ^ (₁₊ n) ≈⟨ sym assoc ⟩
+    (Mg • R^ ((g * g) ^′ (₁₊ n))) • Mg ^ (₁₊ n) ≈⟨ (cleft lemma-MgR^k' ((g * g) ^′ (₁₊ n))) ⟩
+    (R^ (((g * g) ^′ (₁₊ n)) * (g * g)) • Mg) • Mg ^ (₁₊ n) ≈⟨ refl' (Eq.cong (\ xx -> (R^ xx • Mg) • Mg ^ (₁₊ n)) (*-comm ((g * g) ^′ (₁₊ n)) (g * g))) ⟩
+    (R^ ((g * g) * ((g * g) ^′ (₁₊ n))) • Mg) • Mg ^ (₁₊ n) ≈⟨ assoc ⟩
+    R^ ((g * g) ^′ k) • Mg • Mg ^ ₁₊ n ∎
     where
     open SR word-setoid
 
 
-  lemma-semi-Mζ : ∀ x -> let x' = x .proj₁ in let k = g-gen x .proj₁ in M x • ζ ≈ ζ^ ((x' * x')) • M x
-  lemma-semi-Mζ x = begin
-    M x • ζ ≈⟨ (cleft refl' (aux-M≡M x (g^ k) (eqk))) ⟩
-    M (g^ k) • ζ ≈⟨ cong (sym (axiom (M-power (k)))) refl ⟩
-    Mg^ k • ζ ≈⟨ lemma-Mg^kζ (toℕ k) ⟩
-    ζ^ ((g * g) ^′ toℕ k) • Mg^ k ≈⟨ (cright axiom (M-power (k))) ⟩
-    ζ^ ((g * g) ^′ toℕ k) • M (g^ k) ≈⟨ (cleft refl' (Eq.cong ζ^ (*-^′-distribʳ g g (toℕ k)))) ⟩
-    ζ^ ((g ^′ toℕ k) * (g ^′ toℕ k)) • M (g^ k) ≈⟨ sym (cleft refl' (Eq.cong₂ (\ xx yy -> ζ^ (xx * yy)) (eqk) (eqk))) ⟩
-    ζ^ (x' * x') • M (g^ k) ≈⟨ (cright refl' (aux-M≡M (g^ k) x (Eq.sym (eqk)))) ⟩
-    ζ^ (x' * x') • M x ∎
+  lemma-semi-MR : ∀ x -> let x' = x .proj₁ in let k = g-gen x .proj₁ in M x • R ≈ R^ ((x' * x')) • M x
+  lemma-semi-MR x = begin
+    M x • R ≈⟨ (cleft refl' (aux-M≡M x (g^ k) (eqk))) ⟩
+    M (g^ k) • R ≈⟨ cong (sym (axiom (M-power (k)))) refl ⟩
+    Mg^ k • R ≈⟨ lemma-Mg^kR (toℕ k) ⟩
+    R^ ((g * g) ^′ toℕ k) • Mg^ k ≈⟨ (cright axiom (M-power (k))) ⟩
+    R^ ((g * g) ^′ toℕ k) • M (g^ k) ≈⟨ (cleft refl' (Eq.cong R^ (*-^′-distribʳ g g (toℕ k)))) ⟩
+    R^ ((g ^′ toℕ k) * (g ^′ toℕ k)) • M (g^ k) ≈⟨ sym (cleft refl' (Eq.cong₂ (\ xx yy -> R^ (xx * yy)) (eqk) (eqk))) ⟩
+    R^ (x' * x') • M (g^ k) ≈⟨ (cright refl' (aux-M≡M (g^ k) x (Eq.sym (eqk)))) ⟩
+    R^ (x' * x') • M x ∎
     where
     open SR word-setoid
     x' = x .proj₁
@@ -1258,8 +1258,8 @@ module Lemmas1b (n : ℕ) where
     (S ^ p-1 • Z^ 1/2 ^ p-1) • H • (S ^ p-1 • Z^ 1/2 ^ p-1) • H • (S ^ p-1 • Z^ 1/2  ^ p-1) • H ≈⟨ cong (sym (^-• S (Z^ 1/2) (p-1) (comm⇒pow-comm 1 (toℕ 1/2) (sym lemma-comm-Z-S)))) (cright cong ((sym (^-• S (Z^ 1/2) (p-1) (comm⇒pow-comm 1 (toℕ 1/2) (sym lemma-comm-Z-S))))) (cright cleft (sym (^-• S (Z^ 1/2) (p-1) (comm⇒pow-comm 1 (toℕ 1/2) (sym lemma-comm-Z-S)))))) ⟩
     (S • Z^ 1/2) ^ p-1 • H • (S • Z^ 1/2) ^ p-1 • H • (S • Z^ 1/2) ^ p-1 • H ≈⟨ refl ⟩
     (S • Z^ 1/2) ^ p-1 • H • (S • Z^ 1/2) ^ p-1 • H • (S • Z^ 1/2) ^ p-1 • H ≈⟨ refl ⟩
-    ζ ^ p-1 • H • ζ ^ p-1 • H • ζ ^ p-1 • H ≈⟨ cong (refl' (Eq.cong (ζ ^_) (Eq.sym lemma-toℕ-1ₚ))) (cright cong ((refl' (Eq.cong (ζ ^_) (Eq.sym (Eq.trans (Eq.cong toℕ aux-₁⁻¹ ) lemma-toℕ-1ₚ))))) (cright cleft (refl' (Eq.cong (ζ ^_) (Eq.sym lemma-toℕ-1ₚ))))) ⟩
-    ζ^ x • H • ζ^ x⁻¹ • H • ζ^ x • H ≈⟨ refl ⟩
+    R ^ p-1 • H • R ^ p-1 • H • R ^ p-1 • H ≈⟨ cong (refl' (Eq.cong (R ^_) (Eq.sym lemma-toℕ-1ₚ))) (cright cong ((refl' (Eq.cong (R ^_) (Eq.sym (Eq.trans (Eq.cong toℕ aux-₁⁻¹ ) lemma-toℕ-1ₚ))))) (cright cleft (refl' (Eq.cong (R ^_) (Eq.sym lemma-toℕ-1ₚ))))) ⟩
+    R^ x • H • R^ x⁻¹ • H • R^ x • H ≈⟨ refl ⟩
     M -'₁ ≈⟨ sym (axiom order-H) ⟩
     HH ∎
     where
@@ -1403,7 +1403,7 @@ module Lemmas1b (n : ℕ) where
   derived-5 x k@0 nz = trans right-unit (sym left-unit)
   derived-5 x k@1 nz = begin  
     M (x , nz) • S ^ k ≈⟨ refl ⟩
-    M (x , nz) • S ≈⟨ lemma-semi-Mζ (x , nz) ⟩
+    M (x , nz) • S ≈⟨ lemma-semi-MR (x , nz) ⟩
     S^ (x * x) • M (x , nz) ≈⟨ refl ⟩
     S ^ toℕ (x * x) • M (x , nz) ≈⟨ (cleft refl' (Eq.cong (S ^_) (Eq.sym ( NP.*-identityˡ (toℕ (x * x)))))) ⟩
     S ^ (k Nat.* toℕ (x * x)) • M (x , nz) ∎
@@ -1445,7 +1445,7 @@ module Lemmas1b (n : ℕ) where
   lemma-comm-HHS = begin
     H • H • S ≈⟨ sym assoc ⟩
     HH • S ≈⟨ (cleft axiom order-H) ⟩
-    M₋₁ • S ≈⟨ lemma-semi-Mζ -'₁ ⟩
+    M₋₁ • S ≈⟨ lemma-semi-MR -'₁ ⟩
     S^ (- ₁ * - ₁) • M₋₁ ≈⟨ (cleft refl' (Eq.cong S^ aux-0)) ⟩
     S^ ₁ • M₋₁ ≈⟨ refl ⟩
     S • M₋₁ ≈⟨ (cright sym (axiom order-H)) ⟩
@@ -2301,7 +2301,7 @@ module Iso where
   f-well-defined {₁₊ n} (M-mul x y) = lemma-M-mul x y
     where
     open Lemmas1 n
-  f-well-defined {₁₊ n} (semi-Mζ x) = lemma-semi-Mζ x
+  f-well-defined {₁₊ n} (semi-MR x) = lemma-semi-MR x
     where
     open Lemmas1 n
   f-well-defined {₂₊ n} (semi-M↑CZ x) = lemma-semi-M↑CZ x
@@ -2346,7 +2346,7 @@ module Iso where
     open Sim
 
     
-  g-well-defined {₁₊ n} Sim.semi-Mζ = PB.axiom (_QRel,_===₁_.semi-Mζ ((g , g≠0)))
+  g-well-defined {₁₊ n} Sim.semi-MR = PB.axiom (_QRel,_===₁_.semi-MR ((g , g≠0)))
   g-well-defined Sim.semi-M↑CZ = PB.axiom (_QRel,_===₁_.semi-M↑CZ ((g , g≠0)))
   g-well-defined Sim.semi-M↓CZ = PB.axiom (_QRel,_===₁_.semi-M↓CZ ((g , g≠0)))
   g-well-defined Sim.order-CZ = PB.axiom _QRel,_===₁_.order-CZ
