@@ -55,18 +55,13 @@ private
 ------------------------------------------------------------------------
 -- Derived words: the Pauli operators X, Z
 --
--- ω is still a word — it has to be, to state C4 below — but there is no
--- ω⁻¹ any more: once ω = 1 the inverse is ε, so every ω⁻¹ that appeared
--- in Figure 8 has simply gone.
+-- Neither ω nor ω⁻¹ is defined here.  ω named the scalar in Figure 8,
+-- and modulo scalars there is nothing for it to name: C4 below sets the
+-- word it stood for, (SH)³, to the identity, and says so directly.
 
 -- SH, the one-qubit word S·H.
 SH : Word (Gen (₁₊ n))
 SH = S • H
-
--- ω = SHSHSH = (SH)³.  In Figure 8 this names the order-8 scalar; here
--- C4 below sets it to the identity.
-ω : Word (Gen (₁₊ n))
-ω = SH ^ 3
 
 -- X = HSSH, Z = SS  (Selinger §4).
 X : Word (Gen (₁₊ n))
@@ -89,7 +84,7 @@ data _Sel,_===_ : (n : ℕ) → CRel n where
   -- C4 is SHSHSH = ω in Figure 8, where it defines the scalar.  Modulo
   -- scalars ω is the identity, so the same relation reads SHSHSH = 1.
   -- This replaces C1 (ω⁸ = 1), which follows from it.
-  c4  : ∀ {n} → (₁₊ n) Sel,  ω === ε
+  c4  : ∀ {n} → (₁₊ n) Sel,  SH ^ 3 === ε
 
   -- (c) n ≥ 2
   c5  : ∀ {n} → (₂₊ n) Sel,  CZ ^ 2 === ε
