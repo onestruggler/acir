@@ -5,7 +5,7 @@
 
 
 open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; inspect ; setoid ; module ≡-Reasoning ; _≢_) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (_≡_ ; setoid ; _≢_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Nullary.Decidable using (yes ; no)

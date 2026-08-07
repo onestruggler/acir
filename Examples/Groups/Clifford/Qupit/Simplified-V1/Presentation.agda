@@ -30,11 +30,10 @@ open import Data.Fin using (toℕ)
 open import Data.Nat using (ℕ ; suc)
 open import Data.Nat.Primality using (Prime)
 open import Data.Product using (_,_ ; ∃)
-open import Relation.Binary.PropositionalEquality using (_≡_)
-
 open import Notations
-open import Zp.ModularArithmetic
+open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Zp.Fermats-little-theorem
+open import Zp.ModularArithmetic
 
 module Examples.Groups.Clifford.Qupit.Simplified-V1.Presentation
   (p-3 : ℕ)
@@ -47,30 +46,32 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Presentation
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Bundles.Raw using (RawGroup)
-open import Algebra.Morphism.Structures using (module GroupMorphisms)
 import Algebra.Morphism.Construct.Composition as MC
+open import Algebra.Morphism.Structures using (module GroupMorphisms)
 open import Function using (_∘_)
 open import Level using (0ℓ)
-open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.Definitions using (Transitive)
-
-open import Word.Base using (Word ; _ʷ)
 open import Presentation.Definitions using (_IsPresentationOf_)
 open import Presentation.GroupLike using (module Group-Lemmas)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.Definitions using (Transitive)
+open import Word.Base using (_ʷ)
 
--- The semidirect-product rules, their grouplike witness, and their
--- presentation theorem.
+-- The semidirect-product rules and their presentation theorem.
 open import Examples.Groups.Clifford.Qupit.SemiDirect.Syntactics
-  p-3 p-prime g* g-gen as SD using (module SemiDirect ; module Semi-GroupLike)
+  p-3 p-prime g* g-gen as SD using (module SemiDirect)
 import Examples.Groups.Clifford.Qupit.SemiDirect.Presentation
   p-3 p-prime g* g-gen as SDPres
 
 -- The V1 Clifford rules, their grouplike witness, and the isomorphism.
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar
-  p-3 p-prime g* g-gen as Cli using (module Clifford-Relations ; module Clifford-GroupLike)
-import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Forward p-3 p-prime g* g-gen as IFwd
-import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Inverse p-3 p-prime g* g-gen as IInv
-import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso         p-3 p-prime g* g-gen as IThm
+  p-3 p-prime g* g-gen as Cli
+  using (module Clifford-Relations ; module Clifford-GroupLike)
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso
+  p-3 p-prime g* g-gen as IThm
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Forward
+  p-3 p-prime g* g-gen as IFwd
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Inverse
+  p-3 p-prime g* g-gen as IInv
 
 private
   module Build (n : ℕ) where
@@ -107,7 +108,8 @@ private
       -- Presentation.Morphism instantiated the other way round from
       -- Iso: Clifford first, semidirect second.
       open import Presentation.Morphism
-        (Cli.Clifford-Relations._QRel,_===_ n) (SemiDirect._QRel,_===_ n)
+        (Cli.Clifford-Relations._QRel,_===_ n)
+        (SemiDirect._QRel,_===_ n)
       open GroupMorphism (Clifford-GroupLike.grouplike {n}) P.gl
 
     -- Iso's six ingredients, with f and h exchanged.
@@ -123,7 +125,8 @@ private
     ------------------------------------------------------------------
     -- The composite
 
-    open GroupMorphisms (Group.rawGroup W₁.•-ε-group) (Group.rawGroup G₃)
+    open GroupMorphisms (Group.rawGroup W₁.•-ε-group)
+                        (Group.rawGroup G₃)
 
     -- Transitivity of the target's equality, with its three implicits
     -- bound by hand: the semidirect product's equality is Pointwise

@@ -156,7 +156,7 @@ module C10 (m : ℕ) where
   open SR word-setoid
   open Pattern-Assoc
   open Lemmas-Clifford using (lemma-cong↑ ; lemma-↑^ ; lemma-Induction ; lemma-comm-Z-w↑)
-  open Lemmas1b m using (conj-H-X^k ; conj-H-Z ; lemma-HH-Z ; lemma-HH-X)
+  open Lemmas1b m using (conj-H-X^k ; lemma-HH-Z)
   -- Z↓ lives at level ₂₊ m, i.e. the base Z of Lemmas1 (₁₊ m)
   order-Z↓ : (Z ↓) ^ p ≈ ε
   order-Z↓ = Lemmas1.lemma-order-Z (₁₊ m)

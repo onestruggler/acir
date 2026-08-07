@@ -2,7 +2,7 @@
 {-# OPTIONS --termination-depth=4 #-}
 
 open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; setoid) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -59,7 +59,6 @@ open import Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasCZ p-3 p-prime g*
 
 
 
-import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 -- Lemmas1 / Lemmas1b moved here when Simplified.Syntactics was split up.
 import Examples.Groups.Symplectic.Simplified.Lemmas p-2 p-prime g* g-gen as NSimL
 --module Sym = NSim.Symplectic

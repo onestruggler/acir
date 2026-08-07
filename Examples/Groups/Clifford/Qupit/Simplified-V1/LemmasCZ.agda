@@ -3,7 +3,7 @@
 
 
 open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; inspect ; setoid ; module ≡-Reasoning ; _≢_) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (_≡_ ; setoid ; module ≡-Reasoning ; _≢_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -64,7 +64,7 @@ open Primitive-Root-Modp' g* g-gen
 
 module Symplectic-Simplified where
 
-open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
+open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen
 -- open Symplectic hiding (_QRel,_===_)
 

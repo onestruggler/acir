@@ -5,14 +5,12 @@
 
 
 open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; inspect ; setoid ; module ≡-Reasoning ; _≢_) renaming ([_] to [_]')
-import Relation.Binary.Reasoning.Setoid as SR
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_) renaming ([_] to [_]')
 import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Nullary.Decidable using (yes ; no)
 
 
 open import Function using (id)
-open import Function.Definitions using (Injective)
 
 open import Data.Product using (_,_ ; proj₁ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
@@ -25,13 +23,10 @@ open import Data.List hiding ([_])
 
 
 open import Data.Maybe
-open import Data.Sum using ([_,_])
-open import Data.Unit using (tt)
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
+open import Word.Base hiding (wfoldl ; _^'_)
 open import Word.Properties
 import Presentation.Base as PB
-import Presentation.Properties as PP
 import Normalization.Reidemeister-Schreier as RS
 open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
@@ -40,7 +35,6 @@ open import Presentation.Tactic.Rewriting
 open import Presentation.Construct.Base hiding (_*_)
 
 
-import Data.Nat.Properties as NP
 open import Presentation.GroupLike
 open import Data.Nat.Primality
 open import Data.Nat.Coprimality hiding (sym)

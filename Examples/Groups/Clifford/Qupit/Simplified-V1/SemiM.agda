@@ -8,7 +8,7 @@
 -- the H's, to expose the underlying S,H,CZ content.
 ------------------------------------------------------------------------
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; module ≡-Reasoning) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
