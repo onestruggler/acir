@@ -26,7 +26,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Word.Base using (WRel ; Word)
+open import Word.Base using (WRel ; Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 
 module Presentation.Construct.Properties.CentralProduct
   {A B : Set}
@@ -73,6 +73,20 @@ module _ {M : Set} (f₁ : M → Word A) (f₂ : M → Word B) where
   weaken (PB.axiom (left x))  = PB.axiom (left x)
   weaken (PB.axiom (right x)) = PB.axiom (right x)
   weaken (PB.axiom (mid x))   = PB.axiom (mid (left x))
+
+  ----------------------------------------------------------------------
+  -- The two spellings agree on whole words
+  --
+  -- The amalgamation axioms identify the two spellings of a central
+  -- GENERATOR; the identification of the two spellings of a central
+  -- WORD is this induction.  It is the form completeness needs, since
+  -- the antidiagonal element to be cancelled there is given by a word
+  -- over the centre's generators, not by a single one.
+
+  glue-word : ∀ (m : Word M) → [ (f₁ ʷ) m ]ₗ ≈ᶜ [ (f₂ ʷ) m ]ᵣ
+  glue-word [ x ]ʷ  = PB.axiom (mid (right amal))
+  glue-word ε       = PB.refl
+  glue-word (u • v) = PB.cong (glue-word u) (glue-word v)
 
 ------------------------------------------------------------------------
 -- The presentation theorem
