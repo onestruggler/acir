@@ -11,10 +11,9 @@ open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 --open import Data.List using () hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
 
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
+open import Word.Base hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Normalization.Reidemeister-Schreier as RS
 
 
 
@@ -43,15 +42,10 @@ open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 
 
 
-open import Zp.ModularArithmetic
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 --open import Examples.Groups.Symplectic.Lemmas.Ex-Sym5 p-2 p-prime hiding (module L0)
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
