@@ -1,0 +1,475 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- Soundness of the plain qupit-Clifford presentation in the symplectic
+-- semantics, proved directly.
+--
+-- Examples.Groups.Symplectic.Transport proves the same statement by
+-- transporting it across the isomorphism with the extended gate set,
+-- where the work actually happens (ExtendedGate.Soundness).  This
+-- module redoes it in place.
+--
+-- What the extended gate set buys is that S^k, CZ^k and M are single
+-- generators there, carrying their scalar in the action.  Here they are
+-- words, so the direct proof needs power lemmas first — lemma-S^ and
+-- lemma-CZ^ below — after which each rule is the same computation.
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+open import Data.Nat using (ℕ ; suc ; 2+)
+open import Data.Nat.Primality using (Prime)
+open import Notations
+
+module Examples.Groups.Symplectic.SoundnessDirect
+  (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
+
+open import Data.Fin using (toℕ)
+open import Data.Product using (_,_ ; proj₁)
+open import Data.Vec using (_∷_)
+import Relation.Binary.PropositionalEquality as Eq
+open Eq using (_≡_ ; module ≡-Reasoning)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
+
+open import Zp.ModularArithmetic
+open PrimeModulus p-2 p-prime
+open import Algebra.Properties.Ring (+-*-ring p-2)
+
+open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli)
+open import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime
+  using (mult ; mult-toℕ ; mult-p)
+
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+open Symplectic using ( Circuit ; Gen ; SympGate ; gate₁ ; gate₂ ; _↥
+                      ; H-gate ; S-gate ; CZ-gate ; S ; H ; CZ ; _↑ ; _↓
+                      ; S^ ; CZ^ ; M ; _^1 ; _^2 )
+
+open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem
+open Sem.Symplectic using (ap)
+open Sem.Interpretation using (⟦_⟧ ; actg)
+
+private
+  variable
+    n : ℕ
+
+------------------------------------------------------------------------
+-- The action of a circuit
+--
+-- ⟦_⟧ is a monoid map into Symplectic and ap is the action, so this
+-- computes: act [ g ]ʷ = actg g, act ε q = q and act (w • v) q =
+-- act w (act v q), all definitionally.
+
+act : Circuit n → Pauli n → Pauli n
+act w q = ap ⟦ w ⟧ q
+
+-- A shifted circuit acts on the tail.
+act-↑ : ∀ (w : Circuit n) q qs → act (w ↑) (q ∷ qs) ≡ q ∷ act w qs
+act-↑ [ x ]ʷ  q qs = Eq.refl
+act-↑ ε       q qs = Eq.refl
+act-↑ (w • v) q qs =
+  Eq.trans (Eq.cong (act (w ↑)) (act-↑ v q qs)) (act-↑ w q (act v qs))
+
+------------------------------------------------------------------------
+-- ℤ/pℤ lemmas used by the power lemmas
+
+private
+  -- One more application of S, absorbed into the coefficient.
+  step : ∀ (b m a : ℤ ₚ) → (b + m * a) + a ≡ b + (₁ + m) * a
+  step b m a = begin
+    (b + m * a) + a     ≡⟨ +-assoc b (m * a) a ⟩
+    b + (m * a + a)     ≡⟨ Eq.cong (b +_) (+-comm (m * a) a) ⟩
+    b + (a + m * a)     ≡⟨ Eq.cong (λ z → b + (z + m * a)) (Eq.sym (*-identityˡ a)) ⟩
+    b + (₁ * a + m * a) ≡⟨ Eq.cong (b +_) (Eq.sym (*-distribʳ-+ a ₁ m)) ⟩
+    b + (₁ + m) * a     ∎
+    where open ≡-Reasoning
+
+  zero-step : ∀ (b a : ℤ ₚ) → b ≡ b + ₀ * a
+  zero-step b a =
+    Eq.sym (Eq.trans (Eq.cong (b +_) (*-zeroˡ a)) (+-identityʳ b))
+
+  one-step : ∀ (b a : ℤ ₚ) → b + a ≡ b + (₁ + ₀) * a
+  one-step b a = Eq.cong (b +_) (begin
+    a           ≡⟨ Eq.sym (*-identityˡ a) ⟩
+    ₁ * a       ≡⟨ Eq.cong (_* a) (Eq.sym (+-identityʳ ₁)) ⟩
+    (₁ + ₀) * a ∎)
+    where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Powers of S and of CZ
+--
+-- S adds the X-exponent to the Z-exponent, so S^k adds it k times, and
+-- mult k — the image of k in ℤ/pℤ — turns those k additions into one
+-- multiplication.  CZ does the same across two wires.
+
+lemma-S^ : ∀ k a b (t : Pauli n) →
+           act (S ^ k) ((a , b) ∷ t) ≡ (a , b + mult k * a) ∷ t
+lemma-S^ ₀      a b t = Eq.cong (λ z → (a , z) ∷ t) (zero-step b a)
+lemma-S^ ₁      a b t = Eq.cong (λ z → (a , z) ∷ t) (one-step b a)
+lemma-S^ (₂₊ k) a b t = begin
+  act (S • S ^ ₁₊ k) ((a , b) ∷ t)
+    ≡⟨ Eq.cong (act S) (lemma-S^ (₁₊ k) a b t) ⟩
+  ((a , (b + mult (₁₊ k) * a) + a) ∷ t)
+    ≡⟨ Eq.cong (λ z → (a , z) ∷ t) (step b (mult (₁₊ k)) a) ⟩
+  ((a , b + mult (₂₊ k) * a) ∷ t) ∎
+  where open ≡-Reasoning
+
+lemma-CZ^ : ∀ k a b a' b' (t : Pauli n) →
+            act (CZ ^ k) ((a , b) ∷ (a' , b') ∷ t)
+              ≡ (a , b + mult k * a') ∷ (a' , b' + mult k * a) ∷ t
+lemma-CZ^ ₀ a b a' b' t =
+  Eq.cong₂ (λ z z' → (a , z) ∷ (a' , z') ∷ t)
+    (zero-step b a') (zero-step b' a)
+lemma-CZ^ ₁ a b a' b' t =
+  Eq.cong₂ (λ z z' → (a , z) ∷ (a' , z') ∷ t)
+    (one-step b a') (one-step b' a)
+lemma-CZ^ (₂₊ k) a b a' b' t = begin
+  act (CZ • CZ ^ ₁₊ k) ((a , b) ∷ (a' , b') ∷ t)
+    ≡⟨ Eq.cong (act CZ) (lemma-CZ^ (₁₊ k) a b a' b' t) ⟩
+  ((a , (b + mult (₁₊ k) * a') + a') ∷ (a' , (b' + mult (₁₊ k) * a) + a) ∷ t)
+    ≡⟨ Eq.cong₂ (λ z z' → (a , z) ∷ (a' , z') ∷ t)
+         (step b (mult (₁₊ k)) a') (step b' (mult (₁₊ k)) a) ⟩
+  ((a , b + mult (₂₊ k) * a') ∷ (a' , b' + mult (₂₊ k) * a) ∷ t) ∎
+  where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- ℤ/pℤ lemmas used by the rules
+
+private
+  neg-sub : ∀ (a b : ℤ ₚ) → - (a + - b) ≡ - a + b
+  neg-sub a b =
+    Eq.trans (Eq.sym (-‿+-comm a (- b))) (Eq.cong (- a +_) (-‿involutive b))
+
+  -- The middle step of (SH)³.
+  sh₂ : ∀ (a b : ℤ ₚ) → - b + - (a + - b) ≡ - a
+  sh₂ a b = begin
+    - b + - (a + - b) ≡⟨ Eq.cong (- b +_) (neg-sub a b) ⟩
+    - b + (- a + b)   ≡⟨ Eq.cong (- b +_) (+-comm (- a) b) ⟩
+    - b + (b + - a)   ≡⟨ Eq.sym (+-assoc (- b) b (- a)) ⟩
+    (- b + b) + - a   ≡⟨ Eq.cong (_+ - a) (+-inverseˡ b) ⟩
+    ₀ + - a           ≡⟨ +-identityˡ (- a) ⟩
+    - a               ∎
+    where open ≡-Reasoning
+
+  sh₃ : ∀ (a b : ℤ ₚ) → (- a + b) + - - a ≡ b
+  sh₃ a b = begin
+    (- a + b) + - - a ≡⟨ Eq.cong ((- a + b) +_) (-‿involutive a) ⟩
+    (- a + b) + a     ≡⟨ Eq.cong (_+ a) (+-comm (- a) b) ⟩
+    (b + - a) + a     ≡⟨ +-assoc b (- a) a ⟩
+    b + (- a + a)     ≡⟨ Eq.cong (b +_) (+-inverseˡ a) ⟩
+    b + ₀             ≡⟨ +-identityʳ b ⟩
+    b                 ∎
+    where open ≡-Reasoning
+
+  -- Swapping the two summands added to b.
+  swap-add : ∀ (b x y : ℤ ₚ) → (b + x) + y ≡ (b + y) + x
+  swap-add b x y = begin
+    (b + x) + y ≡⟨ +-assoc b x y ⟩
+    b + (x + y) ≡⟨ Eq.cong (b +_) (+-comm x y) ⟩
+    b + (y + x) ≡⟨ Eq.sym (+-assoc b y x) ⟩
+    (b + y) + x ∎
+    where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- The rules that need no scalar gate
+
+-- S has order p: p additions of a amount to ₀ * a.
+sound-order-S : ∀ (q : Pauli (₁₊ n)) → act (S ^ p) q ≡ q
+sound-order-S ((a , b) ∷ t) = begin
+  act (S ^ p) ((a , b) ∷ t)  ≡⟨ lemma-S^ p a b t ⟩
+  ((a , b + mult p * a) ∷ t) ≡⟨ Eq.cong (λ z → (a , b + z * a) ∷ t) mult-p ⟩
+  ((a , b + ₀ * a) ∷ t)      ≡⟨ Eq.cong (λ z → (a , z) ∷ t) (Eq.sym (zero-step b a)) ⟩
+  ((a , b) ∷ t)              ∎
+  where open ≡-Reasoning
+
+-- H is (a , b) ↦ (- b , a), so H² negates both and H⁴ is the identity.
+sound-order-H : ∀ (q : Pauli (₁₊ n)) → act (H ^ 4) q ≡ q
+sound-order-H ((a , b) ∷ t) =
+  Eq.cong₂ (λ z z' → (z , z') ∷ t) (-‿involutive a) (-‿involutive b)
+
+-- SH is (a , b) ↦ (- b , a + - b); iterating it three times is the
+-- identity.
+sound-order-SH : ∀ (q : Pauli (₁₊ n)) → act ((S • H) ^ 3) q ≡ q
+sound-order-SH ((a , b) ∷ t) =
+  Eq.cong₂ (λ z z' → (z , z') ∷ t) fst snd
+  where
+  open ≡-Reasoning
+  fst : - (- b + - (a + - b)) ≡ a
+  fst = Eq.trans (Eq.cong -_ (sh₂ a b)) (-‿involutive a)
+  snd : - (a + - b) + - (- b + - (a + - b)) ≡ b
+  snd = begin
+    - (a + - b) + - (- b + - (a + - b))
+      ≡⟨ Eq.cong₂ _+_ (neg-sub a b) (Eq.cong -_ (sh₂ a b)) ⟩
+    (- a + b) + - - a ≡⟨ sh₃ a b ⟩
+    b ∎
+
+-- H² is negation, which commutes with S.
+sound-comm-HHS : ∀ (q : Pauli (₁₊ n)) → act (H • H • S) q ≡ act (S • H • H) q
+sound-comm-HHS ((a , b) ∷ t) =
+  Eq.cong (λ z → (- a , z) ∷ t) (Eq.sym (-‿+-comm b a))
+
+-- CZ has order p, by the same count as S.
+sound-order-CZ : ∀ (q : Pauli (₂₊ n)) → act (CZ ^ p) q ≡ q
+sound-order-CZ ((a , b) ∷ (a' , b') ∷ t) = begin
+  act (CZ ^ p) ((a , b) ∷ (a' , b') ∷ t)
+    ≡⟨ lemma-CZ^ p a b a' b' t ⟩
+  ((a , b + mult p * a') ∷ (a' , b' + mult p * a) ∷ t)
+    ≡⟨ Eq.cong₂ (λ z z' → (a , b + z * a') ∷ (a' , b' + z' * a) ∷ t) mult-p mult-p ⟩
+  ((a , b + ₀ * a') ∷ (a' , b' + ₀ * a) ∷ t)
+    ≡⟨ Eq.cong₂ (λ z z' → (a , z) ∷ (a' , z') ∷ t)
+         (Eq.sym (zero-step b a')) (Eq.sym (zero-step b' a)) ⟩
+  ((a , b) ∷ (a' , b') ∷ t) ∎
+  where open ≡-Reasoning
+
+-- CZ and S on the bottom wire both only add to that wire's Z-exponent.
+sound-comm-CZ-S↓ : ∀ (q : Pauli (₂₊ n)) →
+                   act (CZ • S ↓) q ≡ act (S ↓ • CZ) q
+sound-comm-CZ-S↓ ((a , b) ∷ (a' , b') ∷ t) =
+  Eq.cong (λ z → (a , z) ∷ (a' , b' + a) ∷ t) (swap-add b a a')
+
+sound-comm-CZ-S↑ : ∀ (q : Pauli (₂₊ n)) →
+                   act (CZ • S ↑) q ≡ act (S ↑ • CZ) q
+sound-comm-CZ-S↑ ((a , b) ∷ (a' , b') ∷ t) =
+  Eq.cong (λ z → (a , b + a') ∷ (a' , z) ∷ t) (swap-add b' a' a)
+
+------------------------------------------------------------------------
+-- The structural rules
+--
+-- A gate at the bottom and a generator shifted past it touch disjoint
+-- wires, so the two actions commute definitionally.
+
+sound-comm₁ : ∀ (h : SympGate 1) (g : Gen n) (q : Pauli (₁₊ n)) →
+              act ([ g ↥ ]ʷ • [ gate₁ h ]ʷ) q ≡ act ([ gate₁ h ]ʷ • [ g ↥ ]ʷ) q
+sound-comm₁ H-gate g ((a , b) ∷ qs) = Eq.refl
+sound-comm₁ S-gate g ((a , b) ∷ qs) = Eq.refl
+
+sound-comm₂ : ∀ (h : SympGate 2) (g : Gen n) (q : Pauli (₂₊ n)) →
+              act ([ g ↥ ↥ ]ʷ • [ gate₂ h ]ʷ) q
+                ≡ act ([ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ) q
+sound-comm₂ CZ-gate g ((a , b) ∷ (a' , b') ∷ qs) = Eq.refl
+
+------------------------------------------------------------------------
+-- The M gate
+--
+-- M x = S^x H S^x⁻¹ H S^x H is the scaling map, and the point of the
+-- whole rule set: it is what makes the multiplicative group of ℤ/pℤ
+-- available inside the presentation.  Semantically it multiplies the
+-- X-exponent by x⁻¹ and the Z-exponent by x.
+
+-- S to a ℤ/pℤ exponent: mult (toℕ k) is k.
+lemma-S^' : ∀ (k : ℤ ₚ) a b (t : Pauli n) →
+            act (S^ k) ((a , b) ∷ t) ≡ (a , b + k * a) ∷ t
+lemma-S^' k a b t =
+  Eq.trans (lemma-S^ (toℕ k) a b t)
+           (Eq.cong (λ z → (a , b + z * a) ∷ t) (mult-toℕ k))
+
+private
+  -- x⁻¹ x ≡ ₁ and x x⁻¹ ≡ ₁, with the instance argument discharged.
+  inv-left : ∀ (x : ℤ* ₚ) → (x ⁻¹) .proj₁ * x .proj₁ ≡ ₁
+  inv-left (x , nz) = lemma-⁻¹ˡ x {{nztoℕ {y = x} {neq0 = nz}}}
+
+  inv-right : ∀ (x : ℤ* ₚ) → x .proj₁ * (x ⁻¹) .proj₁ ≡ ₁
+  inv-right x = Eq.trans (*-comm (x .proj₁) ((x ⁻¹) .proj₁)) (inv-left x)
+
+  -- (- a + c) + a ≡ c
+  cancel-l : ∀ (a c : ℤ ₚ) → (- a + c) + a ≡ c
+  cancel-l a c = begin
+    (- a + c) + a ≡⟨ Eq.cong (_+ a) (+-comm (- a) c) ⟩
+    (c + - a) + a ≡⟨ +-assoc c (- a) a ⟩
+    c + (- a + a) ≡⟨ Eq.cong (c +_) (+-inverseˡ a) ⟩
+    c + ₀         ≡⟨ +-identityʳ c ⟩
+    c             ∎
+    where open ≡-Reasoning
+
+  -- - (a + u * - b) ≡ - a + u * b
+  neg-mix : ∀ (u a b : ℤ ₚ) → - (a + u * - b) ≡ - a + u * b
+  neg-mix u a b = begin
+    - (a + u * - b)   ≡⟨ Eq.sym (-‿+-comm a (u * - b)) ⟩
+    - a + - (u * - b) ≡⟨ Eq.cong (λ z → - a + - z) (Eq.sym (-‿distribʳ-* u b)) ⟩
+    - a + - - (u * b) ≡⟨ Eq.cong (- a +_) (-‿involutive (u * b)) ⟩
+    - a + u * b       ∎
+    where open ≡-Reasoning
+
+  -- The middle of M collapses: with v = u⁻¹ the Z-slot becomes - (v a).
+  mid : ∀ (x : ℤ* ₚ) a b →
+        let u = x .proj₁ ; v = (x ⁻¹) .proj₁ in
+        - b + v * - (a + u * - b) ≡ - (v * a)
+  mid x a b = begin
+    - b + v * - (a + u * - b) ≡⟨ Eq.cong (- b +_) (Eq.sym (-‿distribʳ-* v (a + u * - b))) ⟩
+    - b + - (v * (a + u * - b))
+      ≡⟨ Eq.cong (λ z → - b + - z) (*-distribˡ-+ v a (u * - b)) ⟩
+    - b + - (v * a + v * (u * - b))
+      ≡⟨ Eq.cong (λ z → - b + - (v * a + z)) (Eq.sym (*-assoc v u (- b))) ⟩
+    - b + - (v * a + (v * u) * - b)
+      ≡⟨ Eq.cong (λ z → - b + - (v * a + z * - b)) (inv-left x) ⟩
+    - b + - (v * a + ₁ * - b)
+      ≡⟨ Eq.cong (λ z → - b + - (v * a + z)) (*-identityˡ (- b)) ⟩
+    - b + - (v * a + - b) ≡⟨ sh₂ (v * a) b ⟩
+    - (v * a)             ∎
+    where
+    open ≡-Reasoning
+    u = x .proj₁
+    v = (x ⁻¹) .proj₁
+
+lemma-M : ∀ (x : ℤ* ₚ) a b (t : Pauli n) →
+          act (M x) ((a , b) ∷ t)
+            ≡ (a * (x ⁻¹) .proj₁ , b * x .proj₁) ∷ t
+lemma-M x a b t = begin
+  act (M x) ((a , b) ∷ t)
+    ≡⟨ Eq.cong (λ z → act (S^ u • H • S^ v • H) z) (lemma-S^' u (- b) a t) ⟩
+  act (S^ u • H • S^ v • H) ((- b , a + u * - b) ∷ t)
+    ≡⟨ Eq.cong (λ z → act (S^ u • H) z) (lemma-S^' v (- (a + u * - b)) (- b) t) ⟩
+  act (S^ u • H) ((- (a + u * - b) , - b + v * - (a + u * - b)) ∷ t)
+    ≡⟨ Eq.cong (λ z → act (S^ u • H) ((- (a + u * - b) , z) ∷ t)) (mid x a b) ⟩
+  act (S^ u • H) ((- (a + u * - b) , - (v * a)) ∷ t)
+    ≡⟨ lemma-S^' u (- - (v * a)) (- (a + u * - b)) t ⟩
+  ((- - (v * a) , - (a + u * - b) + u * - - (v * a)) ∷ t)
+    ≡⟨ Eq.cong₂ (λ z z' → (z , z') ∷ t) (-‿involutive (v * a))
+         (Eq.cong₂ _+_ (neg-mix u a b)
+                       (Eq.cong (u *_) (-‿involutive (v * a)))) ⟩
+  ((v * a , (- a + u * b) + u * (v * a)) ∷ t)
+    ≡⟨ Eq.cong (λ z → (v * a , (- a + u * b) + z) ∷ t) collapse ⟩
+  ((v * a , (- a + u * b) + a) ∷ t)
+    ≡⟨ Eq.cong (λ z → (v * a , z) ∷ t) (cancel-l a (u * b)) ⟩
+  ((v * a , u * b) ∷ t)
+    ≡⟨ Eq.cong₂ (λ z z' → (z , z') ∷ t) (*-comm v a) (*-comm u b) ⟩
+  ((a * v , b * u) ∷ t) ∎
+  where
+  open ≡-Reasoning
+  u = x .proj₁
+  v = (x ⁻¹) .proj₁
+  collapse : u * (v * a) ≡ a
+  collapse = begin
+    u * (v * a) ≡⟨ Eq.sym (*-assoc u v a) ⟩
+    (u * v) * a ≡⟨ Eq.cong (_* a) (inv-right x) ⟩
+    ₁ * a       ≡⟨ *-identityˡ a ⟩
+    a           ∎
+
+-- CZ to a ℤ/pℤ exponent.
+lemma-CZ^' : ∀ (k : ℤ ₚ) a b a' b' (t : Pauli n) →
+             act (CZ^ k) ((a , b) ∷ (a' , b') ∷ t)
+               ≡ (a , b + k * a') ∷ (a' , b' + k * a) ∷ t
+lemma-CZ^' k a b a' b' t =
+  Eq.trans (lemma-CZ^ (toℕ k) a b a' b' t)
+           (Eq.cong₂ (λ z z' → (a , b + z * a') ∷ (a' , b' + z' * a) ∷ t)
+                     (mult-toℕ k) (mult-toℕ k))
+
+private
+  -- x (c x⁻¹) ≡ c: scaling a coordinate and unscaling it.
+  scale-cancel : ∀ (x : ℤ* ₚ) (c : ℤ ₚ) →
+                 x .proj₁ * (c * (x ⁻¹) .proj₁) ≡ c
+  scale-cancel x c = begin
+    x' * (c * v) ≡⟨ Eq.cong (x' *_) (*-comm c v) ⟩
+    x' * (v * c) ≡⟨ Eq.sym (*-assoc x' v c) ⟩
+    (x' * v) * c ≡⟨ Eq.cong (_* c) (inv-right x) ⟩
+    ₁ * c        ≡⟨ *-identityˡ c ⟩
+    c            ∎
+    where
+    open ≡-Reasoning
+    x' = x .proj₁
+    v  = (x ⁻¹) .proj₁
+
+------------------------------------------------------------------------
+-- The rules governing M
+
+-- Scaling by y and then by x is scaling by xy; the inverses multiply
+-- the other way round, which is what inv-distrib says.
+sound-M-mul : ∀ (x y : ℤ* ₚ) (q : Pauli (₁₊ n)) →
+              act (M x • M y) q ≡ act (M (x *' y)) q
+sound-M-mul x y ((a , b) ∷ t) = begin
+  act (M x • M y) ((a , b) ∷ t)
+    ≡⟨ Eq.cong (act (M x)) (lemma-M y a b t) ⟩
+  act (M x) ((a * y⁻¹ , b * y') ∷ t)
+    ≡⟨ lemma-M x (a * y⁻¹) (b * y') t ⟩
+  (((a * y⁻¹) * x⁻¹ , (b * y') * x') ∷ t)
+    ≡⟨ Eq.cong₂ (λ z z' → (z , z') ∷ t) (*-assoc a y⁻¹ x⁻¹) (*-assoc b y' x') ⟩
+  ((a * (y⁻¹ * x⁻¹) , b * (y' * x')) ∷ t)
+    ≡⟨ Eq.cong₂ (λ z z' → (a * z , b * z') ∷ t)
+         (Eq.sym (Eq.trans (inv-distrib x y) (*-comm x⁻¹ y⁻¹)))
+         (*-comm y' x') ⟩
+  ((a * ((x *' y) ⁻¹) .proj₁ , b * (x' * y')) ∷ t)
+    ≡⟨ Eq.sym (lemma-M (x *' y) a b t) ⟩
+  act (M (x *' y)) ((a , b) ∷ t) ∎
+  where
+  open ≡-Reasoning
+  x'  = x .proj₁
+  x⁻¹ = (x ⁻¹) .proj₁
+  y'  = y .proj₁
+  y⁻¹ = (y ⁻¹) .proj₁
+
+-- Conjugating S by M scales the shear by x².
+sound-semi-MS : ∀ (x : ℤ* ₚ) (q : Pauli (₁₊ n)) →
+                act (M x • S) q ≡ act (S^ (x ^2) • M x) q
+sound-semi-MS x ((a , b) ∷ t) = begin
+  act (M x • S) ((a , b) ∷ t)
+    ≡⟨ lemma-M x a (b + a) t ⟩
+  ((a * x⁻¹ , (b + a) * x') ∷ t)
+    ≡⟨ Eq.cong (λ z → (a * x⁻¹ , z) ∷ t) aux ⟩
+  ((a * x⁻¹ , b * x' + (x ^2) * (a * x⁻¹)) ∷ t)
+    ≡⟨ Eq.sym (lemma-S^' (x ^2) (a * x⁻¹) (b * x') t) ⟩
+  act (S^ (x ^2)) ((a * x⁻¹ , b * x') ∷ t)
+    ≡⟨ Eq.sym (Eq.cong (act (S^ (x ^2))) (lemma-M x a b t)) ⟩
+  act (S^ (x ^2) • M x) ((a , b) ∷ t) ∎
+  where
+  open ≡-Reasoning
+  x'  = x .proj₁
+  x⁻¹ = (x ⁻¹) .proj₁
+  aux : (b + a) * x' ≡ b * x' + (x ^2) * (a * x⁻¹)
+  aux = begin
+    (b + a) * x'                 ≡⟨ *-distribʳ-+ x' b a ⟩
+    b * x' + a * x'              ≡⟨ Eq.cong (λ z → b * x' + z) (*-comm a x') ⟩
+    b * x' + x' * a              ≡⟨ Eq.cong (λ z → b * x' + x' * z)
+                                      (Eq.sym (scale-cancel x a)) ⟩
+    b * x' + x' * (x' * (a * x⁻¹))
+                                 ≡⟨ Eq.cong (b * x' +_)
+                                      (Eq.sym (*-assoc x' x' (a * x⁻¹))) ⟩
+    b * x' + (x ^2) * (a * x⁻¹)  ∎
+
+-- Conjugating CZ by M on either wire scales the coupling by x.
+sound-semi-M↑CZ : ∀ (x : ℤ* ₚ) (q : Pauli (₂₊ n)) →
+                  act (M x ↑ • CZ) q ≡ act (CZ^ (x ^1) • M x ↑) q
+sound-semi-M↑CZ x ((a , b) ∷ (a' , b') ∷ t) = begin
+  act (M x ↑ • CZ) ((a , b) ∷ (a' , b') ∷ t)
+    ≡⟨ act-↑ (M x) (a , b + a') ((a' , b' + a) ∷ t) ⟩
+  ((a , b + a') ∷ act (M x) ((a' , b' + a) ∷ t))
+    ≡⟨ Eq.cong (λ z → (a , b + a') ∷ z) (lemma-M x a' (b' + a) t) ⟩
+  ((a , b + a') ∷ (a' * x⁻¹ , (b' + a) * x') ∷ t)
+    ≡⟨ Eq.cong₂ (λ z z' → (a , b + z) ∷ (a' * x⁻¹ , z') ∷ t)
+         (Eq.sym (scale-cancel x a')) aux ⟩
+  ((a , b + x' * (a' * x⁻¹)) ∷ (a' * x⁻¹ , b' * x' + x' * a) ∷ t)
+    ≡⟨ Eq.sym (lemma-CZ^' x' a b (a' * x⁻¹) (b' * x') t) ⟩
+  act (CZ^ (x ^1)) ((a , b) ∷ (a' * x⁻¹ , b' * x') ∷ t)
+    ≡⟨ Eq.sym (Eq.cong (λ z → act (CZ^ (x ^1)) ((a , b) ∷ z))
+                       (lemma-M x a' b' t)) ⟩
+  act (CZ^ (x ^1)) ((a , b) ∷ act (M x) ((a' , b') ∷ t))
+    ≡⟨ Eq.cong (act (CZ^ (x ^1)))
+               (Eq.sym (act-↑ (M x) (a , b) ((a' , b') ∷ t))) ⟩
+  act (CZ^ (x ^1) • M x ↑) ((a , b) ∷ (a' , b') ∷ t) ∎
+  where
+  open ≡-Reasoning
+  x'  = x .proj₁
+  x⁻¹ = (x ⁻¹) .proj₁
+  aux : (b' + a) * x' ≡ b' * x' + x' * a
+  aux = Eq.trans (*-distribʳ-+ x' b' a)
+                 (Eq.cong (b' * x' +_) (*-comm a x'))
+
+sound-semi-M↓CZ : ∀ (x : ℤ* ₚ) (q : Pauli (₂₊ n)) →
+                  act (M x ↓ • CZ) q ≡ act (CZ^ (x ^1) • M x ↓) q
+sound-semi-M↓CZ x ((a , b) ∷ (a' , b') ∷ t) = begin
+  act (M x ↓ • CZ) ((a , b) ∷ (a' , b') ∷ t)
+    ≡⟨ lemma-M x a (b + a') ((a' , b' + a) ∷ t) ⟩
+  ((a * x⁻¹ , (b + a') * x') ∷ (a' , b' + a) ∷ t)
+    ≡⟨ Eq.cong₂ (λ z z' → (a * x⁻¹ , z) ∷ (a' , b' + z') ∷ t)
+         aux (Eq.sym (scale-cancel x a)) ⟩
+  ((a * x⁻¹ , b * x' + x' * a') ∷ (a' , b' + x' * (a * x⁻¹)) ∷ t)
+    ≡⟨ Eq.sym (lemma-CZ^' x' (a * x⁻¹) (b * x') a' b' t) ⟩
+  act (CZ^ (x ^1)) ((a * x⁻¹ , b * x') ∷ (a' , b') ∷ t)
+    ≡⟨ Eq.sym (Eq.cong (act (CZ^ (x ^1)))
+                       (lemma-M x a b ((a' , b') ∷ t))) ⟩
+  act (CZ^ (x ^1) • M x ↓) ((a , b) ∷ (a' , b') ∷ t) ∎
+  where
+  open ≡-Reasoning
+  x'  = x .proj₁
+  x⁻¹ = (x ⁻¹) .proj₁
+  aux : (b + a') * x' ≡ b * x' + x' * a'
+  aux = Eq.trans (*-distribʳ-+ x' b a')
+                 (Eq.cong (b * x' +_) (*-comm a' x'))
