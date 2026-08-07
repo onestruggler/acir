@@ -70,38 +70,38 @@ Z = S ^ 2
 ------------------------------------------------------------------------
 -- The Figure-8 relations
 
-infix 4 _C,_===_
+infix 4 _Sel,_===_
 
-data _C,_===_ : (n : ℕ) → CRel n where
+data _Sel,_===_ : (n : ℕ) → CRel n where
 
   -- (a) n ≥ 0
-  c1  : ∀ {n} → (₁₊ n) C,  ω ^ 8 === ε
+  c1  : ∀ {n} → (₁₊ n) Sel,  ω ^ 8 === ε
 
   -- (b) n ≥ 1
-  c2  : ∀ {n} → (₁₊ n) C,  H ^ 2 === ε
-  c3  : ∀ {n} → (₁₊ n) C,  S ^ 4 === ε
+  c2  : ∀ {n} → (₁₊ n) Sel,  H ^ 2 === ε
+  c3  : ∀ {n} → (₁₊ n) Sel,  S ^ 4 === ε
 
   -- (c) n ≥ 2
-  c5  : ∀ {n} → (₂₊ n) C,  CZ ^ 2 === ε
-  c6  : ∀ {n} → (₂₊ n) C,  S ↓ • CZ === CZ • S ↓
-  c7  : ∀ {n} → (₂₊ n) C,  S ↑ • CZ === CZ • S ↑
-  c8  : ∀ {n} → (₂₊ n) C,  X ↓ • CZ === CZ • X ↓ • Z ↑
-  c9  : ∀ {n} → (₂₊ n) C,  X ↑ • CZ === CZ • Z ↓ • X ↑
-  c10 : ∀ {n} → (₂₊ n) C,  CZ • H ↑ • CZ ===
-                           SH ↑ • CZ • (S • H • S) ↑ • S ↓ • ω⁻¹
-  c11 : ∀ {n} → (₂₊ n) C,  CZ • H ↓ • CZ ===
-                           SH ↓ • CZ • (S • H • S) ↓ • S ↑ • ω⁻¹
+  c5  : ∀ {n} → (₂₊ n) Sel,  CZ ^ 2 === ε
+  c6  : ∀ {n} → (₂₊ n) Sel,  S ↓ • CZ === CZ • S ↓
+  c7  : ∀ {n} → (₂₊ n) Sel,  S ↑ • CZ === CZ • S ↑
+  c8  : ∀ {n} → (₂₊ n) Sel,  X ↓ • CZ === CZ • X ↓ • Z ↑
+  c9  : ∀ {n} → (₂₊ n) Sel,  X ↑ • CZ === CZ • Z ↓ • X ↑
+  c10 : ∀ {n} → (₂₊ n) Sel,  CZ • H ↑ • CZ ===
+                             SH ↑ • CZ • (S • H • S) ↑ • S ↓ • ω⁻¹
+  c11 : ∀ {n} → (₂₊ n) Sel,  CZ • H ↓ • CZ ===
+                             SH ↓ • CZ • (S • H • S) ↓ • S ↑ • ω⁻¹
 
   -- (d) n ≥ 3
-  c12 : ∀ {n} → (₃₊ n) C,  CZ ↑ • CZ === CZ • CZ ↑
-  c13 : ∀ {n} → (₃₊ n) C,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
-  c14 : ∀ {n} → (₃₊ n) C,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
-  c15 : ∀ {n} → (₃₊ n) C,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
+  c12 : ∀ {n} → (₃₊ n) Sel,  CZ ↑ • CZ === CZ • CZ ↑
+  c13 : ∀ {n} → (₃₊ n) Sel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
+  c14 : ∀ {n} → (₃₊ n) Sel,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
+  c15 : ∀ {n} → (₃₊ n) Sel,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
 
 ------------------------------------------------------------------------
 -- The full relation, with the structural rules srel/cong↑/comm₁/comm₂.
 
-open Lift-Relation _C,_===_ public
+open Lift-Relation _Sel,_===_ public
 
 infix 4 _CRel,_===_
 _CRel,_===_ : (n : ℕ) → CRel n

@@ -28,7 +28,6 @@ open import Word.Base as WB hiding (wfoldl ; _^'_)
 open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open PP using (NormalFormWithoutInverse ; NormalForm)
 import Normalization.Reidemeister-Schreier as RS
 open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
@@ -44,42 +43,10 @@ open import Presentation.GroupLike
 open import Presentation.Tactic.Rewriting hiding ([_])
 open import Data.Nat.Primality
 
-
-
 module Examples.Groups.Symplectic.XZ (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
-
-
-
-
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
-
-{-
-module XZ where
-
-  Gen = Cyclic.X ⊎ Cyclic.X
-
-  infix 4 _===_
-  _===_ : WRel Gen
-  _===_ = (Cyclic.pres p ⸲ Cyclic.pres p ⸲ Γₓ)
-
-  pattern X-gen = inj₁ tt
-  pattern Z-gen = inj₂ tt
-
-  pattern order-X = left Cyclic.order
-  pattern order-Z = right Cyclic.order
-  pattern comm-Z-X = mid (comm tt tt)
-
-  X : Word Gen
-  X = [ X-gen ]ʷ
-
-  Z : Word Gen
-  Z = [ Z-gen ]ʷ
-
-  nfp' : NormalForm _===_
-  nfp' = DP.NFP'.nfp' (Cyclic.pres p) (Cyclic.pres p) (Cyclic.nfp' p) (Cyclic.nfp' p)
--}
 
 
 data Gen : ℕ → Set where

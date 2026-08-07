@@ -533,10 +533,13 @@ module _ {n : ℕ} where
 -- sform then realises g as sform v, and w agrees with conjugation by v.
 
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (γ ; γ-εˡ ; _·_)
-open import Examples.Groups.Clifford.Qubit.CliffordAction using (δ)
+-- CliffordAction's phase map ℤ/2 → ℤ/4 is renamed so that it does not
+-- clash with `incl`, the inclusion of the extension above.
+open import Examples.Groups.Clifford.Qubit.CliffordAction
+  using (δ) renaming (incl to inclΦ)
 open import Examples.Groups.Clifford.Qubit.CliffordAut using (cact-homo ; neg-id)
 open import Examples.Groups.Clifford.Qubit.Selinger.Action using (cact-phase ; x+x)
-open Symplectic using (gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate ; _↥)
+open Symplectic using (gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate ; _↥ ; S)
 open Sem.Interpretation using (actg)
 
 -- Generic cancellation in ℤ/m (both ℤ ₚ and Φ occur below; the modulus
@@ -772,3 +775,42 @@ Clifford-extension n = record
   ; proj-kills-incl = proj-kills-incl
   ; ker⊆im-incl     = λ w triv → ker-witness w triv , ker-witness-correct w triv
   }
+
+------------------------------------------------------------------------
+-- The extension does not split: S² = Z
+--
+-- The phase gate S projects to a transvection of order 2 in Sp(2n,2),
+-- but in the Clifford group it squares to the Pauli Z rather than to the
+-- identity — so proj has no section sending that involution to an
+-- involution.  This is the concrete obstruction that makes
+-- Clifford-extension a genuinely non-split extension, and the reason it
+-- cannot be built with `semidirect` (which would force S² = 1).
+--
+-- It is also the semantic counterpart of corr (order-S) = Z₀, the one
+-- nontrivial entry of the cocycle in Qubit.Presentation.
+
+-- inclΦ a + inclΦ a = ι a: two ×1 phases make a ×2 phase.
+incl-2 : (a : ℤ ₚ) → inclΦ a + inclΦ a ≡ ι a
+incl-2 ₀ = auto
+incl-2 ₁ = auto
+
+S²=Z : ∀ {n} → (S • S) ≈ᶜ incl {₁₊ n} (pZ ∷ pIₙ)
+S²=Z {n} (s , (a , b) ∷ ps) = Eq.trans lhs (Eq.sym rhs)
+  where
+  -- Z on wire 0 pairs with the X-exponent of the probe.
+  probe : sform (pZ ∷ pIₙ) ((a , b) ∷ ps) ≡ a
+  probe = Eq.trans (Eq.cong₂ _+_ (sform1-₀₁ a b) (sform-pIˡ ps))
+                   (+-identityʳ a)
+
+  -- Applying S twice: the two ×1 phases add to ι a, and the Z-exponent
+  -- returns to b because a + a = 0.
+  lhs : cact (S • S) (s , (a , b) ∷ ps) ≡ (s + ι a , (a , b) ∷ ps)
+  lhs = Eq.cong₂ _,_
+    (Eq.trans (+-assoc s (inclΦ a) (inclΦ a)) (Eq.cong (s +_) (incl-2 a)))
+    (Eq.cong (λ □ → (a , □) ∷ ps)
+      (Eq.trans (+-assoc b a a)
+        (Eq.trans (Eq.cong (b +_) (x+x a)) (+-identityʳ b))))
+
+  rhs : cact (incl (pZ ∷ pIₙ)) (s , (a , b) ∷ ps) ≡ (s + ι a , (a , b) ∷ ps)
+  rhs = Eq.trans (cact-pauliWord (pZ ∷ pIₙ) s ((a , b) ∷ ps))
+                 (Eq.cong (λ □ → s + ι □ , (a , b) ∷ ps) probe)

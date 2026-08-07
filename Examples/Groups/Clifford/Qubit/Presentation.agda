@@ -68,7 +68,7 @@ open import Data.Fin using (toℕ)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _^'_ ; wmap)
 open import Notations using (₁₊ ; ₂₊)
 
-open import Presentation.Construct.Base using (_⊕^_ ; _⊎^_)
+open import Presentation.Construct.Base using (_⊕^_ ; _⊎^_ ; _⋄_⋄_ ; ConjRelʷ)
 open import Presentation.Construct.Properties.Extension using (extension-presentation)
 
 -- S : the Pauli presentation, over the generators (⊤ ⊎ ⊤) ⊎^ n
@@ -173,25 +173,63 @@ open import Function.Definitions using (Surjective)
 open import Presentation.Definitions
 open import Normalization.StarPresentation
 
-open import Examples.Groups.Clifford.Qubit.Semantics using (Clifford-group)
 
--- Still open: the four inputs of GetSubPresentation — the generator
--- semantics ⟦_⟧₀, soundness of every axiom, groupliness, and a unique
--- normal form for the extension presentation.
-subpresentation : ∀ {n} →
-  (n Clifford,_===_) IsSubPresentationOf Clifford-group n
-subpresentation {n} =
-  GS.GetSubPresentation.groupSubPres {!!} {!!} {!!} {!!}
-  where
-  module GS = GroupSem (n Clifford,_===_) (Group.setoid (Clifford-group n))
-                       (Clifford-group n) {!!}
+------------------------------------------------------------------------
+-- The split case: a presentation of Pauli n ⋊ Sp(2n, 2)
+--
+-- Dropping the cocycle (corr ≡ ε) turns the extension relation into
+-- Γ ⋄ Δ ⋄ ConjRelʷ conj, which is exactly the relation
+-- Presentation.Construct.Properties.SemiDirectProduct2 presents.  Both
+-- factor presentations are already available:
+--
+--   * Pauli.Pauli-presentation n : (Γ-H ⊕^ n) IsPresentationOf Pauli-group n
+--   * Simplified.Presentation.presentation : QRel IsPresentationOf Sp-group n
+--
+-- so the semidirect product needs only the two action-congruence
+-- hypotheses below.  Note the resulting group is SDP.group with the
+-- action TRANSPORTED from conj through the two presentation
+-- isomorphisms; it is the Pauli ⋊ Sp group, but not the same Agda value
+-- as Examples.Construct.SemiDirectProduct.Clifford.Pauli⋊Sp-group, whose
+-- action is ap and whose Pauli factor is the Vec-based +ₚ-group.
 
-presentation : ∀ {n} →
-  (n Clifford,_===_) IsPresentationOf Clifford-group n
-presentation {n} = isPresentationOf subpresentation claim
-  where
-  open _IsSubPresentationOf_ (subpresentation {n}) using (module GL ; ⟦_⟧)
+import Presentation.Base as PB
+open import Word.Base using (_ⁿ' ; _ʰ')
+open import Presentation.Construct.Properties.SemiDirectProduct2 as SD2
 
-  claim : Surjective (Group._≈_ GL.•-ε-group) (Group._≈_ (Clifford-group n)) ⟦_⟧
-  claim y = {!!}
+open import Examples.Groups.Pauli.Presentation p-2 p-prime
+  using (Pauli-group ; Pauli-presentation)
+open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
+open import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen
+  as SimP using ()
 
+-- conj respects the symplectic axioms in its acting argument: related
+-- symplectic words conjugate every Pauli word alike.
+ConjHypH : (n : ℕ) → Set
+ConjHypH n = ∀ {c d : Word (Gen n)} (w : Word (PauliGen n)) →
+             (n QRel,_===_) c d →
+             PB._≈_ (Γ-H ⊕^ n) ((conj ʰ') c w) ((conj ʰ') d w)
+
+-- conj respects the Pauli axioms in its acted argument: conjugating both
+-- sides of a Pauli relation by one gate keeps them related.
+ConjHypN : (n : ℕ) → Set
+ConjHypN n = ∀ (c : Gen n) {u v : Word (PauliGen n)} →
+             (Γ-H ⊕^ n) u v →
+             PB._≈_ (Γ-H ⊕^ n) ((conj ⁿ') c u) ((conj ⁿ') c v)
+
+module SemiDirect (n : ℕ) (hyph : ConjHypH n) (hypn : ConjHypN n) where
+
+  private
+    module SD = SD2 (Γ-H ⊕^ n) (n QRel,_===_) (conj {n})
+    module P  = SD.Presentation hyph hypn
+                  (Pauli-group n) (Sp-group n)
+                  (Pauli-presentation n) (SimP.presentation {n})
+
+  -- Pauli n ⋊ Sp(2n, 2), with the action transported from conj.
+  Pauli⋊Sp : Group _ _
+  Pauli⋊Sp = P.G1⋊G2
+
+  -- The headline: the semidirect relation presents it.
+  presentation :
+    ((Γ-H ⊕^ n) ⋄ (n QRel,_===_) ⋄ ConjRelʷ (conj {n}))
+      IsPresentationOf Pauli⋊Sp
+  presentation = P.dpres
