@@ -47,7 +47,7 @@ open import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas.Structural p-3 p
 
 
 -- ====================================================================
--- Clifford-Lemmas-S : copy of Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Lemmas (R-conjugation,
+-- Clifford-Lemmas-S : copy of Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasCZ (R-conjugation,
 -- Z↑-CZ, comm-R-w↑, …) for the Simplified relation.
 -- ====================================================================
 open Lemmas-Clifford-S

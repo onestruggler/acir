@@ -48,7 +48,7 @@ open import Algebra.Properties.Group
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
-module Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Lemmas
+module Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasCZ
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))

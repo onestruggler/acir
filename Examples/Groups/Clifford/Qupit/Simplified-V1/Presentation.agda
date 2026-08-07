@@ -6,7 +6,7 @@
 -- Nothing new is proved here: the theorem is the composite of two
 -- results that already exist.
 --
---   * Iso3 gives a group isomorphism between the word group of the
+--   * Iso gives a group isomorphism between the word group of the
 --     semidirect-product rules and the word group of the V1 Clifford
 --     rules.  It is stated in the direction SemiDirect → Clifford, via
 --     (f ʷ); the direction that composes here is the other one, so it
@@ -68,17 +68,17 @@ import Examples.Groups.Clifford.Qupit.SemiDirect.Presentation
 -- The V1 Clifford rules, their grouplike witness, and the isomorphism.
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar
   p-3 p-prime g* g-gen as Cli using (module Clifford-Relations ; module Clifford-GroupLike)
-import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso  p-3 p-prime g* g-gen as ISO
-import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso2 p-3 p-prime g* g-gen as ISO2
-import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso3 p-3 p-prime g* g-gen as ISO3
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Forward p-3 p-prime g* g-gen as IFwd
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Inverse p-3 p-prime g* g-gen as IInv
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso         p-3 p-prime g* g-gen as IThm
 
 private
   module Build (n : ℕ) where
 
     private
-      module I  = ISO.Iso n
-      module I2 = ISO2.Iso-Inverse-Direction n
-      module I3 = ISO3.M n
+      module I  = IFwd.Iso n
+      module I2 = IInv.Iso-Inverse-Direction n
+      module I3 = IThm.M n
       module P  = _IsPresentationOf_ (SDPres.presentation {n})
 
     -- The two word groups: W₁ over the Clifford rules, W₂ over the
@@ -105,12 +105,12 @@ private
                                   (Group.rawGroup G₃)
 
       -- Presentation.Morphism instantiated the other way round from
-      -- Iso3: Clifford first, semidirect second.
+      -- Iso: Clifford first, semidirect second.
       open import Presentation.Morphism
         (Cli.Clifford-Relations._QRel,_===_ n) (SemiDirect._QRel,_===_ n)
       open GroupMorphism (Clifford-GroupLike.grouplike {n}) P.gl
 
-    -- Iso3's six ingredients, with f and h exchanged.
+    -- Iso's six ingredients, with f and h exchanged.
     iso₁₂ : M₁₂.IsGroupIsomorphism (I.h ʷ)
     iso₁₂ = StarGroupIsomorphism.isGroupIsomorphism
               I.h I.f

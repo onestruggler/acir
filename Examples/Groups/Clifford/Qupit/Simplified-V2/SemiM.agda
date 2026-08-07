@@ -4,7 +4,7 @@
 ------------------------------------------------------------------------
 -- Completeness for the *simplified* semi-M relations.
 --
--- This is the Simplified-presentation twin of Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify.
+-- This is the Simplified-presentation twin of Examples.Groups.Clifford.Qupit.Simplified-V1.SemiM.
 -- It re-derives the Mg decomposition machinery (M-decomp + Pauli push)
 -- against the Simplified axioms (every step uses only shared structural
 -- axioms, so the proofs copy verbatim), and then runs that machinery in

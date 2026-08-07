@@ -117,7 +117,7 @@ module Simplified-Relations where
       --        semi-M↓CZ :  Wg  · CZ = CZ^g  · Wg  · Z↑^(½(g-1))
       --
       --     The S-form semi-MR is the `final-semi-MR` theorem of
-      --     Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify; the CZ ones are the `final-semi-M*CZ`
+      --     Examples.Groups.Clifford.Qupit.Simplified-V1.SemiM; the CZ ones are the `final-semi-M*CZ`
       --     theorems (all soundness, in the original Clifford presentation).
       --     The original Mg-forms are recovered as the `completeness-semi-M*`
       --     lemmas of Examples.Groups.Clifford.Qupit.Simplified-V2.SemiM (the S-form is first turned back

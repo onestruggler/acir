@@ -29,7 +29,7 @@ open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 open import Notations
 
-module Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify
+module Examples.Groups.Clifford.Qupit.Simplified-V1.SemiM
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -475,7 +475,7 @@ module Decomp (n : ℕ) (x : ℤ* ₚ) where
 -- semi-M↑CZ with the Paulis pushed out & cancelled:
 --   the qudit-1 Paulis of Mg↑ cancel, leaving an irreducible Z↓^(½(g-1)).
 -- ════════════════════════════════════════════════════════════════════
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Lemmas p-3 p-prime g* g-gen using (lemma-comm-Z↑-CZ ; lemma-comm-Z-CZ ; lemma-M₋₁-CZ)
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasCZ p-3 p-prime g* g-gen using (lemma-comm-Z↑-CZ ; lemma-comm-Z-CZ ; lemma-M₋₁-CZ)
 
 module SemiCZ (n : ℕ) where
   open PB ((₂₊ n) QRel,_===_)

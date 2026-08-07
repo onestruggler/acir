@@ -41,14 +41,14 @@ open Primitive-Root-Modp' g* g-gen
 
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen
 import Examples.Groups.Clifford.Qupit.Simplified-V2.Syntactics p-3 p-prime g* g-gen as Sim
-import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Simplified-Verify p-3 p-prime g* g-gen as Snd
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Soundness p-3 p-prime g* g-gen as Snd
 import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas p-3 p-prime g* g-gen as Cmp
 -- semi-M bridges: soundness (simplified holds in Clifford) and
 -- completeness (original holds in Simplified) of the simplified semi-M relations.
-import Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify   p-3 p-prime g* g-gen as MgC
+import Examples.Groups.Clifford.Qupit.Simplified-V1.SemiM   p-3 p-prime g* g-gen as MgC
 import Examples.Groups.Clifford.Qupit.Simplified-V2.SemiM p-3 p-prime g* g-gen as MgS
 -- Clifford-side proofs of Z↔CZ (the new comm-Z-CZ / comm-Z↑-CZ axioms).
-import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Lemmas p-3 p-prime g* g-gen as CliL
+import Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasCZ p-3 p-prime g* g-gen as CliL
 
 open import Algebra.Bundles using (Group)
 
