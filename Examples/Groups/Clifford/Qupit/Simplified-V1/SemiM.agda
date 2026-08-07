@@ -1,5 +1,4 @@
-{-# OPTIONS --cubical-compatible --termination-depth=20 #-}
-{-# OPTIONS --inversion-max-depth=1000 #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 ------------------------------------------------------------------------
 -- Exploration: simplify the metaplectic Mg = M(g') appearing in
@@ -37,7 +36,6 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.SemiM
   (g*@(g , g≠0) : ℤ* ₚ)
   (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
   where
-
 
 open Primitive-Root-Modp' g* g-gen
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics

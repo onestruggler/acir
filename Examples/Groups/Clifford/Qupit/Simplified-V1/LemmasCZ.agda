@@ -1,12 +1,9 @@
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --termination-depth=20 #-}
-
 
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; setoid ; module ≡-Reasoning ; _≢_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
-
 
 open import Function using (id)
 open import Function.Definitions using (Injective)
@@ -36,7 +33,6 @@ open import Presentation.Tactic.Rewriting
 
 open import Presentation.Construct.Base hiding (_*_)
 
-
 import Data.Nat.Properties as NP
 open import Presentation.GroupLike
 open import Data.Nat.Primality
@@ -56,9 +52,6 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasCZ
   (g*@(g , g≠0) : ℤ* ₚ)
   (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
   where
-
-
-
 
 open Primitive-Root-Modp' g* g-gen
 
@@ -731,4 +724,3 @@ lemma-comm-R-CZ {n} = begin
   open PB ((₂₊ n) QRel,_===_)
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
-

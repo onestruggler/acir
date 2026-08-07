@@ -1,14 +1,9 @@
--- {-# OPTIONS --cubical-compatible --allow-unsolved-metas #-}
 {-# OPTIONS --cubical-compatible --safe #-}
--- {-# OPTIONS --prop #-}
-{-# OPTIONS --termination-depth=20 #-}
-
 
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_) renaming ([_] to [_]')
 import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Nullary.Decidable using (yes ; no)
-
 
 open import Function using (id)
 
@@ -21,7 +16,6 @@ open import Data.Fin hiding (_+_ ; _-_)
 open import Data.Bool
 open import Data.List hiding ([_])
 
-
 open import Data.Maybe
 
 open import Word.Base hiding (wfoldl ; _^'_)
@@ -33,7 +27,6 @@ module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 open import Presentation.Tactic.Rewriting
 
 open import Presentation.Construct.Base hiding (_*_)
-
 
 open import Presentation.GroupLike
 open import Data.Nat.Primality
@@ -53,9 +46,6 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Tactics
   (g*@(g , g≠0) : ℤ* ₚ)
   (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
   where
-
-
-
 
 open Primitive-Root-Modp' g* g-gen
 
@@ -143,8 +133,6 @@ module Rewriting-Sim where
   open Clifford-Relations
   variable
     n : ℕ
-
-  
   
   step-sym0 : let open PB ((₁₊ n) QRel,_===_) hiding (_===_) in Step-Function (Gen (₁₊ n))  ((₁₊ n) QRel,_===_)
 
@@ -206,7 +194,6 @@ module Rewriting-Sim where
   step-sym0 {n} ((S-gen) ∷ (H-gen) ∷ (H-gen) ∷ (S-gen) ∷ (H-gen) ∷ (H-gen) ∷ xs) = just ((H-gen) ∷ (H-gen) ∷ (S-gen) ∷ (H-gen) ∷ (H-gen) ∷ (S-gen) ∷ xs , at-head (PB.sym (PB.axiom comm-HHSHHS)))
   step-sym0 {n} ((S-gen ↥) ∷ (H-gen ↥) ∷ (H-gen ↥) ∷ (S-gen ↥) ∷ (H-gen ↥) ∷ (H-gen ↥) ∷ xs) = just ((H-gen ↥) ∷ (H-gen ↥) ∷ (S-gen ↥) ∷ (H-gen ↥) ∷ (H-gen ↥) ∷ (S-gen ↥) ∷ xs , at-head (PB.sym (PB.axiom (cong↑  comm-HHSHHS))))
   step-sym0 {n} ((S-gen ↥ ↥) ∷ (H-gen ↥ ↥) ∷ (H-gen ↥ ↥) ∷ (S-gen ↥ ↥) ∷ (H-gen ↥ ↥) ∷ (H-gen ↥ ↥) ∷ xs) = just ((H-gen ↥ ↥) ∷ (H-gen ↥ ↥) ∷ (S-gen ↥ ↥) ∷ (H-gen ↥ ↥) ∷ (H-gen ↥ ↥) ∷ (S-gen ↥ ↥) ∷ xs , at-head (PB.sym (PB.axiom (cong↑ (cong↑ comm-HHSHHS)))))
-
 
   -- Catch-all
   step-sym0 _ = nothing

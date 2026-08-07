@@ -1,5 +1,4 @@
-{-# OPTIONS --cubical-compatible #-}
-{-# OPTIONS --termination-depth=4 #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; setoid ; module ≡-Reasoning) renaming ([_] to [_]')
@@ -56,96 +55,7 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Forward
 open import Examples.Groups.Clifford.Qupit.SemiDirect.Syntactics p-3 p-prime g* g-gen
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasCZ p-3 p-prime g* g-gen hiding (module CL ; module CLb)
 
-
---module Sym = NSim.Symplectic
---module Sim = NSim.Simplified-Relations
 import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
-
-
-{-  
-
-{-
-  open PB Sim._===_ renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
-  open PP Sim._===_ renaming (•-ε-monoid to m₂ ; word-setoid to ws₂) using ()
-  
-  open PB XZ._===_ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
-  open PP XZ._===_ renaming (•-ε-monoid to m₁ ; word-setoid to ws₁ ; by-assoc-and to by-assoc-and₁ ; by-assoc to by-assoc₁) using ()
--}
-
-  open PB hiding (_===_)
-
-
-  hyph :
-    let
-    open PB (Sim._QRel,_===_ n) renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
-    open PB (XZ._QRel,_===_ n) renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
-    in
-    
-    ∀ {c d} n -> c ===₂ d -> (conj ʰ') c n ≈₁ (conj ʰ') d n
-
-  hyph {c} {d} [ XZ.X-gen ]ʷ (Sim.srel Sim.order-S) = {!!}
-  hyph {c} {d} [ XZ.Z-gen ]ʷ (Sim.srel Sim.order-S) = {!!}
-  hyph {c} {d} [ (x XZ.↥) ]ʷ (Sim.srel Sim.order-S) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.order-H) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel (Sim.M-power k)) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.semi-MS) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.semi-M↑CZ) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.semi-M↓CZ) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.order-CZ) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.comm-CZ-S↓) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.comm-CZ-S↑) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.selinger-c10) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.selinger-c11) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.selinger-c12) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.selinger-c13) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.selinger-c14) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.srel Sim.selinger-c15) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.comm₁ Sym.H-gate _) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.comm₁ Sym.S-gate _) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.comm₂ Sym.CZ-gate _) = {!!}
-  hyph {c} {d} [ x ]ʷ (Sim.cong↑ ax) = {!!}
-  hyph {c} {d} ε ax = {!!}
-  hyph {c} {d} (n • n₁) ax = {!!}
-
-
-  hypn :
-    let
-    open PB (Sim._QRel,_===_ n) renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
-    open PB (XZ._QRel,_===_ n) renaming (_===_ to _===₁_ ; _≈_ to _≈₁_) using ()
-    in
-  
-    ∀ c {w v} -> w ===₁ v -> (conj ⁿ') c w ≈₁ (conj ⁿ') c v
-  hypn Sym.H-gen XZ.order-X = {!!}
-  hypn Sym.H-gen XZ.order-Z = {!!}
-  hypn Sym.H-gen XZ.comm-Z-X = {!!}
-  hypn Sym.H-gen XZ.comm-X = {!!}
-  hypn Sym.H-gen XZ.comm-Z = {!!}
-  hypn Sym.H-gen (XZ.cong↑ ax) = {!!}
-  hypn Sym.S-gen XZ.order-X = {!!}
-  hypn Sym.S-gen XZ.order-Z = {!!}
-  hypn Sym.S-gen XZ.comm-Z-X = {!!}
-  hypn Sym.S-gen XZ.comm-X = {!!}
-  hypn Sym.S-gen XZ.comm-Z = {!!}
-  hypn Sym.S-gen (XZ.cong↑ ax) = {!!}
-  hypn Sym.CZ-gen XZ.order-X = {!!}
-  hypn Sym.CZ-gen XZ.order-Z = {!!}
-  hypn Sym.CZ-gen XZ.comm-Z-X = {!!}
-  hypn Sym.CZ-gen XZ.comm-X = {!!}
-  hypn Sym.CZ-gen XZ.comm-Z = {!!}
-  hypn Sym.CZ-gen (XZ.cong↑ ax) = {!!}
-  hypn (c Sym.↥) XZ.order-X = {!!}
-  hypn (c Sym.↥) XZ.order-Z = {!!}
-  hypn (c Sym.↥) XZ.comm-Z-X = {!!}
-  hypn (c Sym.↥) XZ.comm-X = {!!}
-  hypn (c Sym.↥) XZ.comm-Z = {!!}
-  hypn (c Sym.↥) (XZ.cong↑ ax) = {!!}
-
-
-  nfp' : (n : ℕ) -> NormalForm (n QRel,_===_)
-  nfp' n = SDP2.NFP'.nfp' (XZ._QRel,_===_  n) (Sim._QRel,_===_ n) (conj {n}) (hyph {n}) (hypn {n}) {!!} {!!}
-
-
--}
 
 module Iso (n : ℕ) where
 
@@ -159,10 +69,6 @@ module Iso (n : ℕ) where
     using (module Lemmas1b)
 
   module Clifford = Clifford-Relations
---  open Clifford-Lemmas
-
---  open import Presentation.Morphism SemiDirect._===_ Clifford-Relations._===_
---  open GroupMorphs SemiDirect.grouplike Clifford-GroupLike.grouplike
 
 
   f : ∀ {n} -> SemiDirect.Gen n -> Word (Gen n)
@@ -179,34 +85,6 @@ module Iso (n : ℕ) where
   h Cli.S-gen = SemiDirect.Z^ -1/2 • SemiDirect.S
   h Cli.CZ-gen = SemiDirect.CZ
   h (x Cli.↥) = (h x) SemiDirect.↑
-
-{-
-
-  
-  
-
-  open Clifford-Powers renaming (general-powers to general-powers₂)
-  open Commuting-Clifford
-
-  open PP SemiDirect._===_ renaming (by-assoc-and to by-assoc-and₁)
-  open PP Clifford._===_ renaming (by-assoc-and to by-assoc-and₂ ; word-setoid to ws₂ ; by-assoc to by-assoc₂)
-
-  open PB hiding (_===_)
-  open Clifford
-
-
-  import One.Clifford-Mod-Scalar as OC
-  import Two.Clifford-Mod-Scalar as TC
-  module O = OC.Clifford
-  module OL = OC.Clifford-Lemmas
-  open Clifford-Powers
-  open Clifford-Rewriting
-  open TC.Clifford-Duality
-  open OC.Clifford-Lemmas2
-  open Clifford-Lemmas2a
-  open OC.Clifford-Lemmas
---  open PP.NormalForm Clifford-NFP'.nfp' renaming (by-equal-nf to by-equal-nf₂)
--}
 
 
   module SD = SemiDirect

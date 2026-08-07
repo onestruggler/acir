@@ -1,5 +1,4 @@
-{-# OPTIONS --cubical-compatible #-}
-{-# OPTIONS --termination-depth=4 #-}
+{-# OPTIONS --safe --cubical-compatible #-}
 
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; setoid) renaming ([_] to [_]')
@@ -52,17 +51,11 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Inverse
   (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
   where
 
-
 open import Examples.Groups.Clifford.Qupit.SemiDirect.Syntactics p-3 p-prime g* g-gen
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Forward p-3 p-prime g* g-gen
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasCZ p-3 p-prime g* g-gen hiding (module CL ; module CLb)
 
-
-
--- Lemmas1 / Lemmas1b moved here when Simplified.Syntactics was split up.
 import Examples.Groups.Symplectic.Simplified.Lemmas p-2 p-prime g* g-gen as NSimL
---module Sym = NSim.Symplectic
---module Sim = NSim.Simplified-Relations
 import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
 
 
@@ -76,13 +69,6 @@ module Iso-Inverse-Direction (n : ℕ) where
   open import Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasXZ
     p-3 p-prime g* g-gen
     using (module Lemmas1b)
-
---  module Clifford = Clifford-Relations
---  open Clifford-Lemmas
-
---  open import Presentation.Morphism SemiDirect._===_ Clifford-Relations._===_
---  open GroupMorphs SemiDirect.grouplike Clifford-GroupLike.grouplike
-
 
   open Clifford-Relations
   open Iso n
@@ -899,4 +885,3 @@ module Iso-Inverse-Direction (n : ℕ) where
   h-well-defined {₂₊ n} (comm₁ S-gate x) = PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (lemma-w↑Zk (h x) _) PB.refl) (PB.trans PB.assoc (PB.trans (PB.cong PB.refl (lemma-w↑S (h x))) (PB.sym PB.assoc))))
   h-well-defined {₃₊ n} (comm₂ CZ-gate x) = lemma-w↑↑CZ (h x)
   h-well-defined (cong↑ {n'} {w'} {v'} eq) rewrite lemma-h↑ w' | lemma-h↑ v' = SemiDirect.lemma-cong↑ _ _ (h-well-defined eq)
-

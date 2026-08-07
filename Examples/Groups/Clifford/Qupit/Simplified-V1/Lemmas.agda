@@ -1,14 +1,9 @@
--- {-# OPTIONS --cubical-compatible --allow-unsolved-metas #-}
 {-# OPTIONS --cubical-compatible --safe #-}
--- {-# OPTIONS --prop #-}
-{-# OPTIONS --termination-depth=20 #-}
-
 
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; setoid ; module ≡-Reasoning ; _≢_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
-
 
 open import Function using (id)
 open import Function.Definitions using (Injective)
@@ -38,7 +33,6 @@ open import Presentation.Tactic.Rewriting
 
 open import Presentation.Construct.Base hiding (_*_)
 
-
 open import Data.Fin.Properties as FP using (toℕ-inject₁ ; toℕ-fromℕ)
 import Data.Nat.Properties as NP
 open import Presentation.GroupLike
@@ -59,9 +53,6 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Lemmas
   (g*@(g , g≠0) : ℤ* ₚ)
   (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
   where
-
-
-
 
 open Primitive-Root-Modp' g* g-gen
 
@@ -132,9 +123,6 @@ module Lemmas1 (n : ℕ) where
     where
     open SR word-setoid
 
-
-
-
   lemma-S⁻¹ : S⁻¹ ≈ S^ ₚ₋₁
   lemma-S⁻¹ = begin
     S⁻¹ ≈⟨ refl ⟩
@@ -143,8 +131,6 @@ module Lemmas1 (n : ℕ) where
     S^ ₚ₋₁ ∎
     where
     open SR word-setoid
-
-
 
   lemma-MgR^k : ∀ k ->  let g⁻¹ = (g′ ⁻¹) .proj₁ in let -g⁻¹ = - g⁻¹ in
     Mg • R ^ k ≈ R ^ (k Nat.* toℕ (g * g)) • Mg
@@ -422,10 +408,6 @@ module Lemmas1 (n : ℕ) where
     open SR word-setoid
 
 
-
-
-
-
   lemma-MgR^k' : ∀ k -> let x⁻¹ = (g′ ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     Mg • R^ k ≈ R^ (k * (g * g)) • Mg
   lemma-MgR^k' k = begin 
@@ -476,9 +458,6 @@ module Lemmas1 (n : ℕ) where
     k = inject₁ (g-gen x .proj₁)
     eqk : x .proj₁ ≡ (g^ k) .proj₁
     eqk = Eq.sym (lemma-log-inject x)
-
-
-
 
 
 module Clifford-GroupLike where

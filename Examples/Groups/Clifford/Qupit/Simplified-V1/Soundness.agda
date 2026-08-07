@@ -1,5 +1,4 @@
-{-# OPTIONS --cubical-compatible --termination-depth=20 #-}
-{-# OPTIONS --inversion-max-depth=1000 #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 -- Scratch file: verifying that the simplified `selinger` relations are
 -- sound consequences of the original Clifford-Relations axioms.
@@ -32,7 +31,6 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Soundness
   (g*@(g , g≠0) : ℤ* ₚ)
   (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
   where
-
 
 open Primitive-Root-Modp' g* g-gen
 

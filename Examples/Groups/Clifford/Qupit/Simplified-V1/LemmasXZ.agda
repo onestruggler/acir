@@ -1,16 +1,10 @@
--- {-# OPTIONS --cubical-compatible --allow-unsolved-metas #-}
 {-# OPTIONS --cubical-compatible --safe #-}
--- {-# OPTIONS --prop #-}
-{-# OPTIONS --termination-depth=20 #-}
-
 
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; setoid ; _≢_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Nullary.Decidable using (yes ; no)
-
-
 open import Function using (id)
 open import Function.Definitions using (Injective)
 
@@ -39,7 +33,6 @@ open import Presentation.Tactic.Rewriting
 
 open import Presentation.Construct.Base hiding (_*_)
 
-
 import Data.Nat.Properties as NP
 open import Presentation.GroupLike
 open import Data.Nat.Primality
@@ -59,9 +52,6 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasXZ
   (g*@(g , g≠0) : ℤ* ₚ)
   (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
   where
-
-
-
 
 open Primitive-Root-Modp' g* g-gen
 
@@ -91,7 +81,6 @@ open import Examples.Groups.Clifford.Qupit.Simplified-V1.Tactics p-3 p-prime g* 
 
 module Lemmas1b (n : ℕ) where
 
-
   open Clifford-Relations
   open Lemmas-Clifford
   open Lemmas1 n
@@ -103,7 +92,6 @@ module Lemmas1b (n : ℕ) where
   open Clifford-GroupLike
   open import Data.Nat.DivMod
   open import Data.Fin.Properties
-
 
   aux-S⁻¹⁻¹ : 
     S⁻¹ ^ p-1 ≈ S
@@ -141,8 +129,6 @@ module Lemmas1b (n : ℕ) where
       ε ≈⟨ sym (lemma-order-Z) ⟩
       Z • Z⁻¹ ∎
 
-
-
   aux-X⁻¹⁻¹ : 
     X⁻¹ ^ p-1 ≈ X
   aux-X⁻¹⁻¹ = •-cancelʳ {h = X⁻¹} aux00
@@ -160,8 +146,6 @@ module Lemmas1b (n : ℕ) where
       ε ^ p-1 ≈⟨ ε^k=ε (₁₊ p-2) ⟩
       ε ≈⟨ sym (lemma-order-X) ⟩
       X • X⁻¹ ∎
-
-
 
   conj-H-X : H • X ≈ Z • H
   conj-H-X = begin
@@ -312,15 +296,6 @@ module Lemmas1b (n : ℕ) where
     X • Z ^ l • S ^ l ≈⟨ sym assoc ⟩
     (X • Z ^ l) • S ^ l ∎
 
-{-
-  conj-S^l-X^k : ∀ l k -> S ^ l • X ^ k ≈ X ^ k • (Z ^ l • S ^ l) ^ k
-  conj-S^l-X^k l k = begin
-    S ^ l • X ^ k ≈⟨ lemma-Induction (conj-S^l-X' l) k ⟩
-    (X • Z ^ l) ^ k • S ^ l ≈⟨ refl ⟩
-    (X • Z ^ l) ^ k • S ^ l ≈⟨ {!!} ⟩
-    X ^ k • (Z ^ l • S ^ l) ^ k ∎  
--}
-
   aux-X⁻¹ : X⁻¹ ≈ H • S⁻¹ • H • H • S • H
   aux-X⁻¹ = begin
     X⁻¹ ≈⟨ lemma-X^k-ℕ p-1 ⟩
@@ -328,7 +303,6 @@ module Lemmas1b (n : ℕ) where
     H • S⁻¹ • H • H • S • H ∎
     where
     open Sim-Rewriting n
-
 
   aux-Z⁻¹ : Z⁻¹ ≈ H • H • S ^ p-1 • H • H • S
   aux-Z⁻¹ = begin
