@@ -334,6 +334,45 @@ module Lemmas1b (n : ℕ) where
   conj-X^k-S : ∀ k -> X ^ k • S ≈ S • (X • Z⁻¹) ^ k
   conj-X^k-S k = lemma-Inductionˡ lemma-XS k
 
+  -- X^(-1) spelled as a Z-power exponent is X⁻¹: toℕ (- ₁) is p-1.
+  aux-X^-₁ : X^ (- ₁) ≈ X⁻¹
+  aux-X^-₁ = refl' (Eq.cong (X ^_)
+               (Eq.trans (Eq.cong toℕ (Eq.sym p-1=-1ₚ)) lemma-toℕ-ₚ₋₁))
+
+  aux-X-X⁻¹ : X • X⁻¹ ≈ ε
+  aux-X-X⁻¹ = lemma-order-X
+
+  aux-Z⁻¹-Z : Z⁻¹ • Z ≈ ε
+  aux-Z⁻¹-Z = begin
+    Z⁻¹ • Z ≈⟨ comm⇒pow-comm p-1 1 refl ⟩
+    Z • Z⁻¹ ≈⟨ lemma-Z-Z⁻¹ ⟩
+    ε ∎
+
+  -- Conjugation by H sends X to Z and Z to X⁻¹, so it sends X to Z⁻¹ the
+  -- other way round.  This is the companion of conj-H-X / conj-H-Z that
+  -- moves the Pauli rightward through H.
+  lemma-XH : X • H ≈ H • Z⁻¹
+  lemma-XH = bbc ε Z claim
+    where
+    open Basis-Change _ ((₁₊ n) QRel,_===_) grouplike
+    claim : ε • (X • H) • Z ≈ ε • (H • Z⁻¹) • Z
+    claim = begin
+      ε • (X • H) • Z   ≈⟨ left-unit ⟩
+      (X • H) • Z       ≈⟨ assoc ⟩
+      X • (H • Z)       ≈⟨ (cright conj-H-Z) ⟩
+      X • (X^ (- ₁) • H) ≈⟨ (cright cleft aux-X^-₁) ⟩
+      X • (X⁻¹ • H)     ≈⟨ sym assoc ⟩
+      (X • X⁻¹) • H     ≈⟨ (cleft aux-X-X⁻¹) ⟩
+      ε • H             ≈⟨ left-unit ⟩
+      H                 ≈⟨ sym right-unit ⟩
+      H • ε             ≈⟨ (cright sym aux-Z⁻¹-Z) ⟩
+      H • Z⁻¹ • Z       ≈⟨ sym assoc ⟩
+      (H • Z⁻¹) • Z     ≈⟨ sym left-unit ⟩
+      ε • (H • Z⁻¹) • Z ∎
+
+  conj-X^k-H : ∀ k -> X ^ k • H ≈ H • Z⁻¹ ^ k
+  conj-X^k-H k = lemma-Inductionˡ lemma-XH k
+
   aux-X⁻¹ : X⁻¹ ≈ H • S⁻¹ • H • H • S • H
   aux-X⁻¹ = begin
     X⁻¹ ≈⟨ lemma-X^k-ℕ p-1 ⟩
