@@ -17,4 +17,3 @@ open import Relation.Binary.PropositionalEquality using (setoid)
 
 module Normalization.NormalForm.Propositional {X : Set} (Γ : WRel X) (B : Set) where
 
-open import Normalization.NormalForm.Setoid Γ (setoid B) public
