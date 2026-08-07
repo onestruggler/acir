@@ -9,7 +9,6 @@
 
 module Notations where
 
-open import Data.Fin using (zero ; suc)
 open import Data.Nat using (zero ; suc)
 
 import Relation.Binary.PropositionalEquality as Eq
