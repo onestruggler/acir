@@ -1,3 +1,28 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- The Pauli-by-symplectic semidirect product, syntactically.
+--
+-- Generators are XZ.Gen n ⊎ Sym.Gen n: a Pauli on the left, a
+-- symplectic gate on the right.  The relation is
+--
+--   XZ n ⋄ Simplified n ⋄ ConjRelʷ conj
+--
+-- — the Pauli rules on the left, the simplified symplectic rules on the
+-- right, and in the middle the conjugation rule h·n = (conj h n)·h,
+-- where conj says how each symplectic generator conjugates each Pauli
+-- generator (H swaps X and Z, S sends X to XZ, CZ couples the wires).
+--
+-- Alongside the relation: the derived words (X, Z, S, H, CZ, M, Ex, …),
+-- the embedding lemmas relating [_]ₗ / [_]ᵣ to the wire shift, the
+-- congruence lemma-cong↑, and Semi-GroupLike, which gives every
+-- generator a left inverse.  This is the same shape as
+-- Symplectic.Syntactics, one level up.
+--
+-- The action's well-definedness is in ConjAction, and the presentation
+-- theorem it feeds is in Presentation.
+------------------------------------------------------------------------
+
 {-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --termination-depth=4 #-}
 
@@ -40,7 +65,7 @@ open import Data.Nat.Primality
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
-module Examples.Groups.Clifford.Qupit.SemiDirect.SDProduct
+module Examples.Groups.Clifford.Qupit.SemiDirect.Syntactics
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))

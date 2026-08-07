@@ -44,7 +44,7 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Iso3
   where
 
 
-open import Examples.Groups.Clifford.Qupit.SemiDirect.SDProduct p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.SemiDirect.Syntactics p-3 p-prime g* g-gen
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen as Cli
 import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso p-3 p-prime g* g-gen as ISO
 import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso2 p-3 p-prime g* g-gen as ISO2

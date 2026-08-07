@@ -66,7 +66,7 @@ import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
 import Examples.Groups.Symplectic.XZPresentation p-2 p-prime as XZPres
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen as SimPres
-open import Examples.Groups.Clifford.Qupit.SemiDirect.SDProduct p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.SemiDirect.Syntactics p-3 p-prime g* g-gen
   using (module SemiDirect)
 import Examples.Groups.Clifford.Qupit.SemiDirect.ConjAction p-3 p-prime g* g-gen as CA
 
