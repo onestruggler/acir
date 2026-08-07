@@ -4,17 +4,12 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
-open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
-open import Word.Properties
+open import Word.Base hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Normalization.Reidemeister-Schreier as RS
 open import Notations
 
-open import Presentation.GroupLike
-open import Presentation.Tactic.Rewriting using ()
 open import Data.Nat.Primality
 
 module Examples.Groups.Symplectic.BR.One.E (p-2 : ℕ) (p-prime : Prime (2+ p-2)) (n : ℕ)  where
@@ -25,13 +20,9 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 
-open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Soundness p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
 
-open import Zp.ModularArithmetic
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
