@@ -61,8 +61,11 @@ open import Examples.Groups.Symplectic.Semantics p-2 p-prime
   using (Symplectic ; _≈ˢ_ ; _∘ˢ_ ; module Interpretation)
 open Symplectic using (ap ; linear-+)
 open Interpretation using (⟦_⟧ᵍ ; ⟦_⟧)
+-- mult and mult-p moved to Zp.Mod-Lemmas in 33ff400; Presentation-Alt
+-- only imports them, so they have to come from there directly.
+open import Zp.Mod-Lemmas p-2 p-prime using (mult ; mult-p)
 open import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime as XZ
-  using (sem ; ⟦_⟧₀ ; sem-↑ ; sem-X^ ; mult ; mult-p ; sound-ax ; module Build)
+  using (sem ; ⟦_⟧₀ ; sem-↑ ; sem-X^ ; sound-ax ; module Build)
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen as SimPres
 open import Examples.Construct.SemiDirectProduct.Clifford p-2 p-prime using (ap-ε)
