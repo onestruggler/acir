@@ -20,7 +20,8 @@ module MainTheorems where
 open import Algebra.Bundles using (Group ; Monoid)
 open import Algebra.Morphism.Structures using (module MonoidMorphisms)
 open import Data.Empty using (⊥)
-open import Data.Product using (_×_)
+open import Data.Fin using (toℕ)
+open import Data.Product using (_×_ ; _,_ ; ∃)
 open import Data.Nat using (ℕ ; suc ; 2+)
 import Data.Nat.Properties as NatP
 open import Data.Nat.Primality using (Prime)
@@ -30,6 +31,8 @@ open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.PropositionalEquality as Eq
 
 open import Notations using (₁₊)
+open import Zp.ModularArithmetic using (ℤ ; ℤ* ; _^′_)
+open import Zp.Fermats-little-theorem using (module PrimeModulus')
 open import Word.Base using (Word ; WRel ; _ʷ)
 import Presentation.Base as PB
 import Presentation.Properties as PP
@@ -67,6 +70,8 @@ import Examples.Groups.Symplectic.Normalization.Section as SympSec
 import Examples.Groups.Symplectic.Normalization.Uniqueness as SympUnq
 import Examples.Groups.Symplectic.Presentation as SympPres
 import Examples.Groups.Symplectic.PresentationFull as SympFull
+import Examples.Groups.Symplectic.Simplified.Syntactics as SympSimSyn
+import Examples.Groups.Symplectic.Simplified.Presentation as SympSimPres
 import Examples.Construct.SemiDirectProduct.SnD as SnD
 import Examples.Amalgamations.CliffordT1 as CliffordT1
 import Examples.Amalgamations.CliffordT1BaseUNF as CliffordT1Base
@@ -372,3 +377,32 @@ module Symplectic-Theorems (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
   -- relations present Sp(2n, ℤ/pℤ).
   presentation : ∀ n → (n QRel,_===_) IsPresentationOf (Sp-group n)
   presentation n = SympFull.presentation p-2 p-prime {n}
+
+------------------------------------------------------------------------
+-- Concrete presentations: the symplectic groups, from the simplified
+-- rules
+--
+-- Home: Examples.Groups.Symplectic.Simplified.Presentation.  The
+-- simplified rules replace the M-matrices of the rules above by powers
+-- of a single metaplectic generator Mg, so they are stated relative to
+-- a primitive root g of ℤ/pℤ, which is what names it.  They present the
+-- same group, by transport along the isomorphism of the two rule sets.
+
+module Symplectic-Simplified-Theorems
+  (p-2 : ℕ) (p-prime : Prime (2+ p-2))
+  (let open PrimeModulus' p-2 p-prime)
+  (g*@(g , g≠0) : ℤ* ₚ)
+  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ λ (k : ℤ ₚ-₁) → x Eq.≡ g ^′ toℕ k)
+  where
+
+  private
+    module Syn  = SympSimSyn  p-2 p-prime g* g-gen
+    module Pres = SympSimPres p-2 p-prime g* g-gen
+
+  open Syn.Simplified-Relations using (_QRel,_===_)
+  open SympSem p-2 p-prime using (Sp-group)
+
+  -- The simplified rules present Sp(2n, ℤ/pℤ).
+  simplified-presentation :
+    ∀ n → (n QRel,_===_) IsPresentationOf (Sp-group n)
+  simplified-presentation n = Pres.presentation {n}
