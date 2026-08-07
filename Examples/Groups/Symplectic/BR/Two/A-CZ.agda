@@ -2,7 +2,7 @@
 {-# OPTIONS  --call-by-name #-}
 {-# OPTIONS --termination-depth=4 #-}
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (_≢_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -14,10 +14,9 @@ open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 
 open import Data.Empty using (⊥-elim)
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
+open import Word.Base hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
-import Normalization.Reidemeister-Schreier as RS
 open import Notations
 
 
@@ -46,15 +45,10 @@ open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
 
-open import Zp.ModularArithmetic
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 
