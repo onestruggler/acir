@@ -69,20 +69,18 @@ open import Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.Lemmas
   p-3 p-prime g* g-gen
   using (module Clifford-GroupLike)
-import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso
-  p-3 p-prime g* g-gen as IThm
-import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Forward
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Forward
   p-3 p-prime g* g-gen as IFwd
-import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Inverse
-  p-3 p-prime g* g-gen as IInv
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso
+  p-3 p-prime g* g-gen as ISO
 
 private
   module Build (n : ℕ) where
 
     private
       module I  = IFwd.Iso n
-      module I2 = IInv.Iso-Inverse-Direction n
-      module I3 = IThm.M n
+      module I2 = ISO.Iso-Inverse-Direction n
+      module I3 = ISO.M n
       module P  = _IsPresentationOf_ (SDPres.presentation {n})
 
     -- The two word groups: W₁ over the Clifford rules, W₂ over the
