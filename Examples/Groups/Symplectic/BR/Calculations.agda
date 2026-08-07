@@ -1,7 +1,7 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (module ≡-Reasoning) renaming ([_] to [_]')
 import Relation.Binary.PropositionalEquality as Eq
 
 
@@ -9,7 +9,7 @@ open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
+open import Word.Base hiding (wfoldl ; _^'_)
 
 open import Data.Nat.Primality
 
@@ -28,14 +28,8 @@ open Symplectic renaming (M to ZM)
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
 
-open import Zp.ModularArithmetic
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 --open import Examples.Groups.Symplectic.Lemmas.Ex-Sym5 p-2 p-prime hiding (module L0)
 
 
