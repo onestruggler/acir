@@ -23,9 +23,12 @@
 --   Selinger.Translation — the maps f and g and their word extensions;
 --   Selinger.PauliWords  — the calculus of X and Z in Figure 8 mod
 --                          scalars (squares, XZ = ZX, disjoint wires);
+--   Selinger.PauliVec    — the vector/word dictionary for the Paulis;
+--   Selinger.Conjugation — fwd-conj, the conjugation axioms;
+--   Selinger.Relators    — fwd-tw, the twisted symplectic relators;
 --   Selinger.GroupLike   — group-likeness of both rule sets.
 --
--- This module assembles them: the round trips, fwd-pauli, the split of
+-- This module assembles them: the round trips, fwd-pauli, the proof of
 -- f-well-defined, and the isomorphism itself.  See the note at the
 -- bottom for what the remaining parameters amount to.
 ------------------------------------------------------------------------
@@ -68,10 +71,12 @@ open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-ge
 open Simplified-Relations using (M₋₁ ; _QRel,_===_)
   renaming (srel to ssrel ; order-S to sorder-S ; order-H to sorder-H)
 
--- The three supporting modules.
+-- The supporting modules.
 open import Examples.Groups.Clifford.Qubit.Selinger.Translation
 open import Examples.Groups.Clifford.Qubit.Selinger.PauliWords
 open import Examples.Groups.Clifford.Qubit.Selinger.GroupLike
+open import Examples.Groups.Clifford.Qubit.Selinger.Conjugation using (fwd-conj)
+open import Examples.Groups.Clifford.Qubit.Selinger.Relators using (fwd-tw)
 
 private
   variable
@@ -198,46 +203,35 @@ fwd-pauli {n} {u} {v} x
   rewrite fₗ≡Pw {n} u | fₗ≡Pw {n} v = pauli-rel x
 
 ------------------------------------------------------------------------
--- f-well-defined, split by axiom family
+-- f-well-defined
 --
--- The extension relation is (Γ-H ⊕^ n) ⋄ EmptyRel ⋄ (ConjRelʷ ∪
--- RelTwist), so there are exactly three real cases; the EmptyRel factor
--- contributes none.  fwd-pauli is proved above; what remains is
+-- Every axiom of the extension presentation holds among the derived
+-- Figure-8 words.  The extension relation is (Γ-H ⊕^ n) ⋄ EmptyRel ⋄
+-- (ConjRelʷ ∪ RelTwist), so there are exactly three real cases; the
+-- EmptyRel factor contributes none.
 --
---   fwd-conj — each gate conjugates each Pauli generator as conj says;
---   fwd-tw   — each simplified symplectic relator holds up to its
---              Pauli correction corr.
+--   fwd-pauli — the Pauli relations, proved above;
+--   fwd-conj  — each gate conjugates each Pauli generator as conj says
+--               (Selinger.Conjugation);
+--   fwd-tw    — each simplified symplectic relator holds up to its
+--               Pauli correction corr (Selinger.Relators).
 
-module F-WD
-  (n : ℕ)
-  (fwd-conj : (y : PauliGen n) (x : Gen n) →
-              PB._≈_ (n CRel,_===_)
-                     ((f ʷ) ([ [ x ]ʷ ]ᵣ • [ [ y ]ʷ ]ₗ))
-                     ((f ʷ) ([ conj x y ]ₗ • [ [ x ]ʷ ]ᵣ)))
-  (fwd-tw : ∀ {u v} (r̄ : (n QRel,_===_) u v) →
-            PB._≈_ (n CRel,_===_)
-                   ((f ʷ) [ u ]ᵣ) ((f ʷ) ([ corr r̄ ]ₗ • [ v ]ᵣ)))
-  where
-
-  f-well-defined : ∀ {w v} → (n Clifford,_===_) w v →
-                   PB._≈_ (n CRel,_===_) ((f ʷ) w) ((f ʷ) v)
-  f-well-defined (_⋄_⋄_.left x)  = fwd-pauli x
-  f-well-defined (_⋄_⋄_.right ())
-  f-well-defined (_⋄_⋄_.mid (_∪_.left (ConjRelʷ.comm y x))) = fwd-conj y x
-  f-well-defined (_⋄_⋄_.mid (_∪_.right (tw r̄)))             = fwd-tw r̄
+f-well-defined : ∀ {n w v} → (n Clifford,_===_) w v →
+                 PB._≈_ (n CRel,_===_) ((f ʷ) w) ((f ʷ) v)
+f-well-defined (_⋄_⋄_.left x)  = fwd-pauli x
+f-well-defined (_⋄_⋄_.right ())
+f-well-defined (_⋄_⋄_.mid (_∪_.left (ConjRelʷ.comm y x))) = fwd-conj y x
+f-well-defined (_⋄_⋄_.mid (_∪_.right (tw r̄)))             = fwd-tw r̄
 
 ------------------------------------------------------------------------
 -- The isomorphism
 --
--- Given the two well-definedness conditions and the round trip g ∘ f,
--- the two rule sets present the same group, and the isomorphism is (f ʷ).
--- Both group-likeness witnesses come from Selinger.GroupLike.
+-- Given the remaining well-definedness condition and the round trip
+-- g ∘ f, the two rule sets present the same group, and the isomorphism
+-- is (f ʷ).  Both group-likeness witnesses come from Selinger.GroupLike.
 
 module Iso
   (n : ℕ)
-  -- Every extension axiom holds among the derived Figure-8 words.
-  (f-well-defined : ∀ {w v} → (n Clifford,_===_) w v →
-                    PB._≈_ (n CRel,_===_) ((f ʷ) w) ((f ʷ) v))
   -- Every Figure-8 axiom (mod scalar) holds in the extension presentation.
   (g-well-defined : ∀ {u t} → (n CRel,_===_) u t →
                     PB._≈_ (n Clifford,_===_) ((g ʷ) u) ((g ʷ) t))
@@ -286,14 +280,9 @@ module Iso
 -- _Clifford,_===_ at wire counts n and ₁₊ n needs a structural shift
 -- lemma that has not been built.
 --
--- f-well-defined is split by module F-WD above; fwd-pauli is proved, so
--- only fwd-conj and fwd-tw remain.  fwd-conj is one case per gate/Pauli
--- pair, matching conj against C6–C9.  fwd-tw is one case per simplified
--- symplectic relator, each holding up to its Pauli correction corr r̄; it
--- is the largest piece left.
+-- f-well-defined is proved above, out of fwd-pauli (here), fwd-conj
+-- (Selinger.Conjugation) and fwd-tw (Selinger.Relators).
 --
 -- g-well-defined is the converse: derive C2–C15 (with ω = ε) inside the
--- extension presentation.
---
--- These are the two substantive halves and are a large development —
--- essentially Selinger's completeness argument in both directions.
+-- extension presentation.  It is the substantive half that remains —
+-- essentially Selinger's completeness argument in the other direction.

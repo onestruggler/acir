@@ -195,7 +195,7 @@ private
 
   -- A Pauli generator above wire 0, translated after the action of a
   -- gate that fixes the wire-0 slot.
-  above : (ps : Pauli m) (y : PauliGen (₁₊ m)) →
+  above : (ps : Pauli (₁₊ m)) (y : PauliGen (₁₊ m)) →
           PB._≈_ ((₁₊ m) CRel,_===_) (Pw (vecToWord ps)) (pauliGen→word y) →
           PB._≈_ ((₂₊ m) CRel,_===_)
                  (Pw (vecToWord (pI ∷ ps))) (pauliGen→word y ↑)
@@ -208,55 +208,55 @@ conj-word : (x : Gen n) (y : PauliGen n) →
             PB._≈_ (n CRel,_===_)
                    ([ x ]ʷ • pauliGen→word y) (Pw (conj x y) • [ x ]ʷ)
 
-conj-word (gate₁ H-gate) y with pview y
+conj-word {₁₊ m} (gate₁ H-gate) y with pview {m} y
 ... | vX =
   via (PB.refl' _ P-X)
-      (PB.trans (PB.refl' _ (conj-X (gate₁ H-gate)))
+      (PB.trans (PB.refl' _ (Eq.cong Pw (conj-X (gate₁ H-gate))))
                 (PB.trans (Pw-basis pZ) Pq-Z))
       (Wire0.HX _)
 ... | vZ =
   via (PB.refl' _ P-Z)
-      (PB.trans (PB.refl' _ (conj-Z (gate₁ H-gate)))
+      (PB.trans (PB.refl' _ (Eq.cong Pw (conj-Z (gate₁ H-gate))))
                 (PB.trans (Pw-basis pX) Pq-X))
       (Wire0.HZ _)
 ... | v↑ y' =
   via PB.refl (above (genToVec y') y' (Pw-genToVec y'))
       (PB.sym (↑Comm.↑-comm-gen _ (pauliGen→word y') H-gate))
 
-conj-word (gate₁ S-gate) y with pview y
+conj-word {₁₊ m} (gate₁ S-gate) y with pview {m} y
 ... | vX =
   via (PB.refl' _ P-X)
-      (PB.trans (PB.refl' _ (conj-X (gate₁ S-gate)))
+      (PB.trans (PB.refl' _ (Eq.cong Pw (conj-X (gate₁ S-gate))))
                 (PB.trans (Pw-basis (₁ , ₁)) Pq-XZ))
       (Wire0.SX _)
 ... | vZ =
   via (PB.refl' _ P-Z)
-      (PB.trans (PB.refl' _ (conj-Z (gate₁ S-gate)))
+      (PB.trans (PB.refl' _ (Eq.cong Pw (conj-Z (gate₁ S-gate))))
                 (PB.trans (Pw-basis pZ) Pq-Z))
       (Wire0.SZ _)
 ... | v↑ y' =
   via PB.refl (above (genToVec y') y' (Pw-genToVec y'))
       (PB.sym (↑Comm.↑-comm-gen _ (pauliGen→word y') S-gate))
 
-conj-word (gate₂ CZ-gate) y with pview y
+conj-word {₂₊ m} (gate₂ CZ-gate) y with pview {₁₊ m} y
 ... | vX =
   via (PB.refl' _ P-X)
-      (PB.trans (PB.refl' _ (conj-X (gate₂ CZ-gate)))
+      (PB.trans (PB.refl' _ (Eq.cong Pw (conj-X (gate₂ CZ-gate))))
                 (PB.trans (Pw-basis₂ pX pZ)
                           (PB.cong Pq-X (lemma-cong↑ _ _ Pq-Z))))
       (Wire01.CZ-X _)
 ... | vZ =
   via (PB.refl' _ P-Z)
-      (PB.trans (PB.refl' _ (conj-Z (gate₂ CZ-gate)))
+      (PB.trans (PB.refl' _ (Eq.cong Pw (conj-Z (gate₂ CZ-gate))))
                 (PB.trans (Pw-basis₂ pZ pI)
                           (PB.trans (PB.cong Pq-Z (lemma-cong↑ _ _ Pq-I))
                                     PB.right-unit)))
       (Wire01.CZ-Z _)
-... | v↑ y' with pview y'
+... | v↑ y' with pview {m} y'
 ... | vX =
   via (PB.refl' _ (Eq.cong _↑ P-X))
       (PB.trans (PB.refl' _
-                  (Eq.cong (λ □ → vecToWord (actg (gate₂ CZ-gate) (pI ∷ □)))
+                  (Eq.cong (λ □ → Pw (vecToWord (actg (gate₂ CZ-gate) (pI ∷ □))))
                            genToVec-X))
                 (PB.trans (Pw-basis₂ pZ pX)
                           (PB.cong Pq-Z (lemma-cong↑ _ _ Pq-X))))
@@ -264,7 +264,7 @@ conj-word (gate₂ CZ-gate) y with pview y
 ... | vZ =
   via (PB.refl' _ (Eq.cong _↑ P-Z))
       (PB.trans (PB.refl' _
-                  (Eq.cong (λ □ → vecToWord (actg (gate₂ CZ-gate) (pI ∷ □)))
+                  (Eq.cong (λ □ → Pw (vecToWord (actg (gate₂ CZ-gate) (pI ∷ □))))
                            genToVec-Z))
                 (PB.trans (Pw-basis₂ pI pZ)
                           (PB.trans (PB.cong Pq-I (lemma-cong↑ _ _ Pq-Z))
@@ -276,19 +276,21 @@ conj-word (gate₂ CZ-gate) y with pview y
              (above (genToVec y'') y'' (Pw-genToVec y'')))
       (Wire01.CZ-comm _ (pauliGen→word y''))
 
-conj-word (g ↥) y with pview y
+conj-word {₁₊ m} (g ↥) y with pview {m} y
 ... | vX =
   via (PB.refl' _ P-X)
       (PB.trans (PB.refl' _
-                  (Eq.trans (conj-X (g ↥))
-                            (Eq.cong (λ □ → vecToWord (pX ∷ □)) (act-pI g))))
+                  (Eq.cong Pw
+                    (Eq.trans (conj-X (g ↥))
+                              (Eq.cong (λ □ → vecToWord (pX ∷ □)) (act-pI g)))))
                 (PB.trans (Pw-basis pX) Pq-X))
       (↑Comm.↑-comm-X _ [ g ]ʷ)
 ... | vZ =
   via (PB.refl' _ P-Z)
       (PB.trans (PB.refl' _
-                  (Eq.trans (conj-Z (g ↥))
-                            (Eq.cong (λ □ → vecToWord (pZ ∷ □)) (act-pI g))))
+                  (Eq.cong Pw
+                    (Eq.trans (conj-Z (g ↥))
+                              (Eq.cong (λ □ → vecToWord (pZ ∷ □)) (act-pI g)))))
                 (PB.trans (Pw-basis pZ) Pq-Z))
       (↑Comm.↑-comm-Z _ [ g ]ʷ)
 ... | v↑ y' =
