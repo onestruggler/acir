@@ -51,7 +51,7 @@ open import Algebra.Properties.Group
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
-module Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar.Part2
+module Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar.Lemmas
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -85,7 +85,7 @@ open Symplectic hiding
 
 -1/2 = - ((₂ , λ ()) ⁻¹) .proj₁
 
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar.Part1 p-3 p-prime g* g-gen using (module Clifford-Relations)
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar.Syntactics p-3 p-prime g* g-gen using (module Clifford-Relations ; module Lemmas-Clifford)
 
 module Lemmas1 (n : ℕ) where
 
@@ -479,3 +479,57 @@ module Lemmas1 (n : ℕ) where
 
 
 
+
+
+module Clifford-GroupLike where
+
+  private
+    variable
+      n : ℕ
+    
+  open Clifford-Relations
+  open Lemmas-Clifford
+
+
+  grouplike : Grouplike (n QRel,_===_)
+  grouplike {₁₊ n} (H-gen) = (H ) ^ 3 , claim
+    where
+    open PB ((₁₊ n) QRel,_===_)
+    open PP ((₁₊ n) QRel,_===_)
+    open SR word-setoid
+    open Lemmas1 n
+    claim : (H ) ^ 3 • H ≈ ε
+    claim = begin
+      (H) ^ 3 • H ≈⟨ by-assoc auto ⟩
+      (H) ^ 4 ≈⟨ lemma-order-H ⟩
+      ε ∎
+
+  grouplike {₁₊ n} (S-gen) = (S) ^ p-1 ,  claim
+    where
+    open PB ((₁₊ n) QRel,_===_)
+    open PP ((₁₊ n) QRel,_===_)
+    open SR word-setoid
+    claim : (S) ^ p-1 • S ≈ ε
+    claim = begin
+      (S) ^ p-1 • S ≈⟨ sym (^-+ (S) p-1 1) ⟩
+      (S) ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (S ^_) ( NP.+-comm p-1 1) ⟩
+      (S ^ p) ≈⟨ (axiom order-S) ⟩
+      (ε) ∎
+
+  grouplike {₂₊ n} (CZ-gen) = (CZ) ^ p-1 ,  claim
+    where
+    open PB ((₂₊ n) QRel,_===_)
+    open PP ((₂₊ n) QRel,_===_)
+    open SR word-setoid
+    claim : (CZ) ^ p-1 • CZ ≈ ε
+    claim = begin
+      (CZ) ^ p-1 • CZ ≈⟨ sym (^-+ (CZ) p-1 1) ⟩
+      (CZ) ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (CZ ^_) ( NP.+-comm p-1 1) ⟩
+      (CZ ^ p) ≈⟨ (axiom order-CZ) ⟩
+      (ε) ∎
+
+  grouplike {₂₊ n} (g ↥) with grouplike g
+  ... | ig , prf = (ig ↑) , lemma-cong↑ (ig • [ g ]ʷ) ε prf
+    where
+    open PB ((₂₊ n) QRel,_===_)
+    open PP ((₂₊ n) QRel,_===_)
