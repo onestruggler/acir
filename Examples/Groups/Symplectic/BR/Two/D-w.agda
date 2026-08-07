@@ -25,7 +25,7 @@ open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Primality
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
+open import Word.Base hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open import Presentation.GroupLike
