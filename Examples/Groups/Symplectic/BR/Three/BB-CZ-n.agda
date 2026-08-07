@@ -18,7 +18,7 @@ open import Data.Vec using (Vec ; [] ; _∷_)
 import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
+open import Word.Base hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Relation.Binary.Reasoning.Setoid as SR
