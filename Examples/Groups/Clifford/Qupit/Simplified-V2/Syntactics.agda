@@ -41,7 +41,7 @@ open import Zp.Fermats-little-theorem
 open import Notations
 
 
-module Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalars-Simplified
+module Examples.Groups.Clifford.Qupit.Simplified-V2.Syntactics
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -120,7 +120,7 @@ module Simplified-Relations where
       --     Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify; the CZ ones are the `final-semi-M*CZ`
       --     theorems (all soundness, in the original Clifford presentation).
       --     The original Mg-forms are recovered as the `completeness-semi-M*`
-      --     lemmas of Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify-S (the S-form is first turned back
+      --     lemmas of Examples.Groups.Clifford.Qupit.Simplified-V2.SemiM (the S-form is first turned back
       --     into the ζ-form by `SemiS-rev.lemma-semi-Mζ`).
       --
       --     The completeness proofs of the two CZ relations need Z↔CZ

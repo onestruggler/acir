@@ -5,18 +5,20 @@
 -- Re-derivation of the Clifford conjugation base-lemma subtree for the
 -- *Simplified* presentation (route (B): fully machine-checked).
 --
--- This module is an aggregator: the development was split across four
--- files in the `Simplified-Lemmas/` folder (to keep each under ~1000
--- LOC).  It re-exports all of them publicly, so existing importers see
--- exactly the same names as before the split:
+-- This module is an aggregator: the development is split across the
+-- files in the `Lemmas/` folder, by subject.  It re-exports all of them
+-- publicly, so importers see one flat set of names:
 --
---   Part1 : Lemmas1-S
---   Part2 : Lemmas-Clifford-S, Simplified-GroupLike-S, Lemmas1b-S
---   Part3 : the standalone ζ/Z/CZ conjugation lemmas (CL, CLb glue)
---   Part4 : the tail-c10/c11 cascade, C10/C11, Completeness-S
+--   Base         : Lemmas1-S — the base lemmas (M-mul, the orders of
+--                  H, X and Z, the S/H commutations)
+--   Structural   : Lemmas-Clifford-S (cong↑ and friends),
+--                  Simplified-GroupLike-S, and Lemmas1b-S
+--   Conjugation  : the standalone 𝑠/Z/CZ conjugation lemmas, with the
+--                  CL / CLb glue onto Base and Structural
+--   Completeness : the tail-c10/c11 cascade, C10, C11, Completeness-S
 --
--- Each part imports its predecessor with `public`, so re-exporting
--- Part4 alone transitively re-exports the whole subtree.
+-- Each file imports its predecessor with `public`, so re-exporting
+-- Completeness alone transitively re-exports the whole subtree.
 ------------------------------------------------------------------------
 
 open import Relation.Binary.PropositionalEquality using (_≡_)
@@ -28,7 +30,7 @@ open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 open import Notations
 
-module Examples.Groups.Clifford.Qupit.Simplified-V1.Simplified-Lemmas
+module Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -37,4 +39,4 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Simplified-Lemmas
   (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
   where
 
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Simplified-Lemmas.Part4 p-3 p-prime g* g-gen public
+open import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas.Completeness p-3 p-prime g* g-gen public

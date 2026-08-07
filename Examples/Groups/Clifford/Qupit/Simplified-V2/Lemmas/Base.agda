@@ -22,7 +22,7 @@ open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 open import Notations
 
-module Examples.Groups.Clifford.Qupit.Simplified-V1.Simplified-Lemmas.Part1
+module Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas.Base
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -40,7 +40,7 @@ open Clifford-Relations hiding
   ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
   ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12
   ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ ; lemma-cong↑ )
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalars-Simplified p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Simplified-V2.Syntactics p-3 p-prime g* g-gen
 open Simplified-Relations
 
 
@@ -109,7 +109,7 @@ module Lemmas1-S (n : ℕ) where
      unused anywhere in the Simplified subtree, and they depend on `axiom semi-Mζ`
      in its *original* Mg-form — but in the Simplified presentation that axiom is
      now the *simplified* (Wg-based) form.  The original Mg-form is recovered as
-     Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify-S.SemiS.completeness-semi-Mζ; repointing these here
+     Examples.Groups.Clifford.Qupit.Simplified-V2.SemiM.SemiS.completeness-semi-Mζ; repointing these here
      would create a circular import (Mg-Simplify-S itself needs this base module),
      so they are simply parked.
   lemma-Mgζ^k : ∀ k ->  let g⁻¹ = (g′ ⁻¹) .proj₁ in let -g⁻¹ = - g⁻¹ in
@@ -397,7 +397,7 @@ module Lemmas1-S (n : ℕ) where
      generalisations (lemma-Mgζ^k', lemma-Mg^kζ, lemma-semi-Mζ).  Unused, and
      they reference the (now simplified, Wg-based) axiom semi-Mζ in its old
      original Mg-form.  The original form is recovered as
-     Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify-S.SemiS.completeness-semi-Mζ (repointing here would
+     Examples.Groups.Clifford.Qupit.Simplified-V2.SemiM.SemiS.completeness-semi-Mζ (repointing here would
      be circular — Mg-Simplify-S depends on this base module).
   lemma-Mgζ^k' : ∀ k -> let x⁻¹ = (g′ ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     Mg • ζ^ k ≈ ζ^ (k * (g * g)) • Mg

@@ -40,7 +40,7 @@ open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 open import Notations
 
-module Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify-S
+module Examples.Groups.Clifford.Qupit.Simplified-V2.SemiM
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -59,9 +59,9 @@ open Clifford-Relations hiding
   ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
   ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12
   ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ ; lemma-cong↑ )
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalars-Simplified p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Simplified-V2.Syntactics p-3 p-prime g* g-gen
 open Simplified-Relations
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Simplified-Lemmas p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas p-3 p-prime g* g-gen
 open Lemmas-Clifford-S
 open Simplified-GroupLike-S
 -- (CL = Lemmas1-S and CLb = Lemmas1b-S are re-exported by Simplified-Lemmas)
