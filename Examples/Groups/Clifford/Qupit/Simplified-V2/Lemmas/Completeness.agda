@@ -35,7 +35,8 @@ module Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas.Completeness
 
 open Primitive-Root-Modp' g* g-gen
 
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics
+  p-3 p-prime g* g-gen
 open Clifford-Relations hiding
   ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-MR ; order-SH ; comm-HHSHHS
   ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ

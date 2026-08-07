@@ -45,7 +45,11 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Iso
 
 
 open import Examples.Groups.Clifford.Qupit.SemiDirect.Syntactics p-3 p-prime g* g-gen
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen as Cli
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics
+  p-3 p-prime g* g-gen as Cli
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Lemmas
+  p-3 p-prime g* g-gen as CliL
+  using (module Clifford-GroupLike ; module Lemmas1)
 import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Forward p-3 p-prime g* g-gen as ISO
 import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Inverse p-3 p-prime g* g-gen as ISO2
 
@@ -77,7 +81,7 @@ module M (n : ℕ) where
     open PB (C._QRel,_===_ (₁₊ m))
     open PP (C._QRel,_===_ (₁₊ m))
     open SR word-setoid
-    open Cli.Lemmas1 m using (lemma-order-Z ; lemma-comm-Z-S)
+    open CliL.Lemmas1 m using (lemma-order-Z ; lemma-comm-Z-S)
     toℕ-+ : ∀ (a b : ℤ ₚ) → (toℕ a Nat.+ toℕ b) % p ≡ toℕ (a + b)
     toℕ-+ a b = Eq.sym (toℕ-fromℕ< (m%n<n (toℕ a Nat.+ toℕ b) p))
     arith0 : (toℕ Cli.-1/2 Nat.+ toℕ Cli.1/2) % p ≡ 0
@@ -125,12 +129,12 @@ module M (n : ℕ) where
              (PB.refl' (SemiDirect._QRel,_===_ _) (Eq.sym (lemma-h↑ (f (inj₂ y)))))
 
   module G1 = Group-Lemmas (SemiDirect._QRel,_===_ n) (Semi-GroupLike.grouplike {n})
-  module G2 = Group-Lemmas (Cli.Clifford-Relations._QRel,_===_ n) (Cli.Clifford-GroupLike.grouplike {n})
+  module G2 = Group-Lemmas (Cli.Clifford-Relations._QRel,_===_ n) (CliL.Clifford-GroupLike.grouplike {n})
 
   open GroupMorphisms
 
   open import Presentation.Morphism (SemiDirect._QRel,_===_ n) (Cli.Clifford-Relations._QRel,_===_ n)
-  open GroupMorphism (Semi-GroupLike.grouplike {n}) (Cli.Clifford-GroupLike.grouplike {n})
+  open GroupMorphism (Semi-GroupLike.grouplike {n}) (CliL.Clifford-GroupLike.grouplike {n})
 
   Theorem-SemiDirect-iso-Clifford :
     IsGroupIsomorphism (Group.rawGroup G1.•-ε-group) (Group.rawGroup G2.•-ε-group) (f ʷ)

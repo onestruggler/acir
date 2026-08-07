@@ -3,7 +3,8 @@
 
 ------------------------------------------------------------------------
 -- A *simplified* relation set for the qudit Clifford group mod scalars,
--- an analogue of `Examples.Groups.Symplectic.Simplified.Syntactics` for `Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar`.
+-- an analogue of `Examples.Groups.Symplectic.Simplified.Syntactics`
+-- for `Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics`.
 --
 -- Simplification strategy (applied per relation):
 --   (1) push the X and Z (Pauli) parts of both sides to the right-most
@@ -13,7 +14,7 @@
 --   (3) keep the original structure as much as possible.
 --
 -- The generators and all the derived words (X, Z, R, M, Mg, …) are
--- inherited unchanged from `Clifford-Mod-Scalar`; only the *relation
+-- inherited unchanged from Simplified-V1; only the *relation
 -- set* `_QRel,_===_` is redefined.
 --
 -- NOTE: this file states the proposed simplified presentation only.
@@ -56,7 +57,8 @@ open Primitive-Root-Modp' g* g-gen
 -- Inherit the generators (S, H, CZ, ↥) and every derived word
 -- (X, Z, X⁻¹, Z⁻¹, S⁻¹, Z^, X^, R, R^, M, M₋₁, Mg, Mg^, ⊤⊥, ⊥⊤, …)
 -- from the original Clifford presentation.
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics
+  p-3 p-prime g* g-gen
 -- The axiom names below used to be constructors on both sides, and Agda
 -- lets constructor names overload.  Since Clifford-Relations moved onto
 -- Circuit.Base.Lift-Relation its axioms are pattern synonyms, which do

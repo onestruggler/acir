@@ -55,8 +55,9 @@ open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Definitions using (Transitive)
 
 -- The V1 rules and their presentation theorem.
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar
-  p-3 p-prime g* g-gen as Cli using (module Clifford-Relations)
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics
+  p-3 p-prime g* g-gen as Cli
+  using (module Clifford-Relations)
 import Examples.Groups.Clifford.Qupit.Simplified-V1.Presentation
   p-3 p-prime g* g-gen as V1Pres
 

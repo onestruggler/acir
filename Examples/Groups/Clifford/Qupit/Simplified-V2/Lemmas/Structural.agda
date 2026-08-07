@@ -33,7 +33,8 @@ module Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas.Structural
 
 open Primitive-Root-Modp' g* g-gen
 
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics
+  p-3 p-prime g* g-gen
 open Clifford-Relations hiding
   ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-MR ; order-SH ; comm-HHSHHS
   ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
@@ -43,7 +44,8 @@ open import Examples.Groups.Clifford.Qupit.Simplified-V2.Syntactics p-3 p-prime 
 open Simplified-Relations
 open import Examples.Groups.Clifford.Qupit.Simplified-V2.Lemmas.Base p-3 p-prime g* g-gen public
 
--- Lemmas-Clifford-S : copy of Clifford-Mod-Scalar.Lemmas-Clifford
+-- Lemmas-Clifford-S : copy of Simplified-V1.Syntactics's
+--                     Lemmas-Clifford
 -- (lemma-cong↑, lemma-↑^, lemma-Induction, lemma-comm-*-w↑, …)
 -- ====================================================================
 module Lemmas-Clifford-S where

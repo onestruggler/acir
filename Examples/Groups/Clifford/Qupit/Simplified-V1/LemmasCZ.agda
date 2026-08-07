@@ -65,7 +65,14 @@ open Primitive-Root-Modp' g* g-gen
 module Symplectic-Simplified where
 
 open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics
+  p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Lemmas
+  p-3 p-prime g* g-gen
+  using (module Clifford-GroupLike ; module Lemmas1)
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasXZ
+  p-3 p-prime g* g-gen
+  using (module Lemmas1b)
 -- open Symplectic hiding (_QRel,_===_)
 
 open Clifford-Relations

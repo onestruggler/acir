@@ -51,7 +51,7 @@ open import Algebra.Properties.Group
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
-module Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar.Lemmas
+module Examples.Groups.Clifford.Qupit.Simplified-V1.Lemmas
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -85,7 +85,7 @@ open Symplectic hiding
 
 -1/2 = - ((₂ , λ ()) ⁻¹) .proj₁
 
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar.Syntactics p-3 p-prime g* g-gen using (module Clifford-Relations ; module Lemmas-Clifford)
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics p-3 p-prime g* g-gen using (module Clifford-Relations ; module Lemmas-Clifford)
 
 module Lemmas1 (n : ℕ) where
 

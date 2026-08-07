@@ -63,9 +63,12 @@ import Examples.Groups.Clifford.Qupit.SemiDirect.Presentation
   p-3 p-prime g* g-gen as SDPres
 
 -- The V1 Clifford rules, their grouplike witness, and the isomorphism.
-open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics
   p-3 p-prime g* g-gen as Cli
-  using (module Clifford-Relations ; module Clifford-GroupLike)
+  using (module Clifford-Relations)
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Lemmas
+  p-3 p-prime g* g-gen
+  using (module Clifford-GroupLike)
 import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso
   p-3 p-prime g* g-gen as IThm
 import Examples.Groups.Clifford.Qupit.Simplified-V1.Iso.Forward

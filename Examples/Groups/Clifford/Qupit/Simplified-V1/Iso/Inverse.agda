@@ -68,7 +68,14 @@ import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
 
 module Iso-Inverse-Direction (n : ℕ) where
 
-  open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen as Cli
+  open import Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics
+    p-3 p-prime g* g-gen as Cli
+  open import Examples.Groups.Clifford.Qupit.Simplified-V1.Lemmas
+    p-3 p-prime g* g-gen
+    using (module Lemmas1)
+  open import Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasXZ
+    p-3 p-prime g* g-gen
+    using (module Lemmas1b)
 
 --  module Clifford = Clifford-Relations
 --  open Clifford-Lemmas

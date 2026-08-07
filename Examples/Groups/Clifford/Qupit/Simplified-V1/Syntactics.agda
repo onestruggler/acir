@@ -3,6 +3,23 @@
 -- {-# OPTIONS --prop #-}
 {-# OPTIONS --termination-depth=20 #-}
 
+------------------------------------------------------------------------
+-- Qudit Clifford group mod scalars: the rules and their preamble.
+--
+-- This is the first of four sibling files, which must be imported in
+-- this order — each uses the ones above it:
+--
+--   Syntactics : the shared preamble (patterns, 𝑠/1/2, Symplectic),
+--                the relation Clifford-Relations, and its structural
+--                lemmas Lemmas-Clifford
+--   Lemmas     : Lemmas1 (the M-lemmas: M-mul, M-power, order-M, …)
+--                and Clifford-GroupLike
+--   Tactics    : the word tactics — CommData-Sim,
+--                Commuting-Symplectic-Sim, Rewriting-Sim, Sim-Rewriting
+--   LemmasXZ   : Lemmas1b, the X/Z-conjugation lemmas (lemma-HH-X,
+--                lemma-SX, lemma-HSH, …), which use the rewriting
+--                tactic and so come last
+------------------------------------------------------------------------
 
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; setoid ; module ≡-Reasoning ; _≢_) renaming ([_] to [_]')
@@ -50,7 +67,7 @@ open import Algebra.Properties.Group
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
-module Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar.Syntactics
+module Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))

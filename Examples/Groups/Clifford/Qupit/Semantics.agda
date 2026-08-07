@@ -8,7 +8,7 @@
 --   * the scalars ⟨ω⟩, written ω^ k for k : ℤ/pℤ, with ω^p = 1;
 --   * the semidirect product Pauli n ⋊ Sp(2n, ℤ/pℤ), the qupit Clifford
 --     group *modulo scalars* — the semantic counterpart of the
---     presentation in Clifford-Mod-Scalar (re-exported from
+--     presentation in Simplified-V1.Syntactics (re-exported from
 --     Examples.Construct.SemiDirectProduct.Clifford);
 --   * the Clifford group *with* scalars: the central extension
 --
