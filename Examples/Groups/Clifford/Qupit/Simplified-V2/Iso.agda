@@ -68,7 +68,6 @@ f-well-defined (CliR.M-power k)    = PB.axiom (SimR.M-power k)
 f-well-defined CliR.semi-MR        = MgS.SemiS.completeness-semi-MR _
 f-well-defined CliR.order-SH       = PB.axiom SimR.order-SH
 f-well-defined CliR.comm-HHSHHS    = PB.axiom SimR.comm-HHSHHS
-f-well-defined CliR.comm-X-Z       = PB.axiom SimR.comm-X-Z
 f-well-defined CliR.semi-M↑CZ      = MgS.SemiCZ.completeness-semi-M↑CZ _
 f-well-defined CliR.semi-M↓CZ      = MgS.SemiCZ↓.completeness-semi-M↓CZ _
 f-well-defined CliR.rel-X↑-CZ      = PB.axiom SimR.rel-X↑-CZ
@@ -99,7 +98,8 @@ g-well-defined (SimR.M-power k)    = PB.axiom (CliR.M-power k)
 g-well-defined SimR.semi-MR        = MgC.SemiS-collected.final-semi-MR _
 g-well-defined SimR.order-SH       = PB.axiom CliR.order-SH
 g-well-defined SimR.comm-HHSHHS    = PB.axiom CliR.comm-HHSHHS
-g-well-defined SimR.comm-X-Z       = PB.axiom CliR.comm-X-Z
+-- comm-X-Z is no longer a Clifford axiom; it is derived there.
+g-well-defined SimR.comm-X-Z       = CliL.CLb.lemma-comm-X-Z _
 g-well-defined SimR.semi-M↑CZ      = MgC.SemiCZ.final-semi-M↑CZ _
 g-well-defined SimR.semi-M↓CZ      = MgC.SemiCZ↓.final-semi-M↓CZ _
 g-well-defined SimR.rel-X↑-CZ      = PB.axiom CliR.rel-X↑-CZ

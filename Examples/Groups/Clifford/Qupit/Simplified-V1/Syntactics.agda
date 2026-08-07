@@ -160,6 +160,11 @@ module Clifford-Relations where
   -- under _↑, and a gate at the bottom commuting with anything shifted
   -- up past it — are not repeated here: they are the same for every
   -- circuit presentation and come from Lift-Relation below.
+  --
+  -- X • Z === Z • X is NOT among them: it is derivable from order-SH
+  -- and M-power (which make both (S • H) ^ 3 and (R • H) ^ 3 trivial,
+  -- for the two elements S and R = S • Z^½ that differ by one Pauli).
+  -- See Lemmas1b.lemma-comm-X-Z in LemmasXZ.
   module Base where
     infix 4 _SRel,_===_
     data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
@@ -170,7 +175,6 @@ module Clifford-Relations where
       semi-MR :           ∀ {n} → (₁₊ n) SRel,  Mg • R === R^ (g * g) • Mg
       order-SH :          ∀ {n} → (₁₊ n) SRel,  (S • H) ^ 3 === ε
       comm-HHSHHS :       ∀ {n} → (₁₊ n) SRel,  H • H • S • H • H • S === S • H • H • S • H • H
-      comm-X-Z :          ∀ {n} → (₁₊ n) SRel,  X • Z === Z • X
 
       semi-M↑CZ :         ∀ {n} → (₂₊ n) SRel,  Mg ↑ • CZ === CZ^ g • Mg ↑
       semi-M↓CZ :         ∀ {n} → (₂₊ n) SRel,  Mg ↓ • CZ === CZ^ g • Mg ↓
@@ -215,7 +219,6 @@ module Clifford-Relations where
   pattern semi-MR = srel (Base.semi-MR)
   pattern order-SH = srel (Base.order-SH)
   pattern comm-HHSHHS = srel (Base.comm-HHSHHS)
-  pattern comm-X-Z = srel (Base.comm-X-Z)
   pattern semi-M↑CZ = srel (Base.semi-M↑CZ)
   pattern semi-M↓CZ = srel (Base.semi-M↓CZ)
   pattern rel-X↑-CZ = srel (Base.rel-X↑-CZ)

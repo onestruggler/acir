@@ -165,7 +165,7 @@ module Push (n : ℕ) where
   SpushK k = trans (lemma-Inductionˡ Spush1 k) (cright step)
     where
     commXZ : X • Z ^ p-1 ≈ Z ^ p-1 • X
-    commXZ = comm⇒pow-comm 1 p-1 (axiom comm-X-Z)
+    commXZ = comm⇒pow-comm 1 p-1 (CLb.lemma-comm-X-Z _)
     step : (X • Z ^ p-1) ^ k ≈ X ^ k • Z ^ (p-1 Nat.* k)
     step = trans (^-• X (Z ^ p-1) k commXZ) (cright (^^ Z p-1 k))
 
@@ -265,7 +265,7 @@ module Decomp (n : ℕ) (x : ℤ* ₚ) where
     S ^ k • ((Z ^ d • H) • (Z ^ N • X ^ F'))         ≈⟨ cright (cleft (sym (CLb.conj-H-X^k n d))) ⟩
     S ^ k • ((H • X ^ d) • (Z ^ N • X ^ F'))         ≈⟨ cright assoc ⟩
     S ^ k • (H • (X ^ d • (Z ^ N • X ^ F')))         ≈⟨ cright (cright (sym assoc)) ⟩
-    S ^ k • (H • ((X ^ d • Z ^ N) • X ^ F'))         ≈⟨ cright (cright (cleft (comm⇒pow-comm d N (axiom comm-X-Z)))) ⟩
+    S ^ k • (H • ((X ^ d • Z ^ N) • X ^ F'))         ≈⟨ cright (cright (cleft (comm⇒pow-comm d N (CLb.lemma-comm-X-Z _)))) ⟩
     S ^ k • (H • ((Z ^ N • X ^ d) • X ^ F'))         ≈⟨ cright (cright assoc) ⟩
     S ^ k • (H • (Z ^ N • (X ^ d • X ^ F')))         ≈⟨ cright (cright (cright (sym (^-+ X d F')))) ⟩
     S ^ k • H • Z ^ N • X ^ (d Nat.+ F') ∎
@@ -320,7 +320,7 @@ module Decomp (n : ℕ) (x : ℤ* ₚ) where
     S ^ k • ((Z ^ d • H) • (Z ^ N • X ^ F' • W)) ≈⟨ cright (cleft (sym (CLb.conj-H-X^k n d))) ⟩
     S ^ k • ((H • X ^ d) • (Z ^ N • X ^ F' • W)) ≈⟨ cright assoc ⟩
     S ^ k • (H • (X ^ d • (Z ^ N • X ^ F' • W))) ≈⟨ cright (cright (sym assoc)) ⟩
-    S ^ k • (H • ((X ^ d • Z ^ N) • (X ^ F' • W))) ≈⟨ cright (cright (cleft (comm⇒pow-comm d N (axiom comm-X-Z)))) ⟩
+    S ^ k • (H • ((X ^ d • Z ^ N) • (X ^ F' • W))) ≈⟨ cright (cright (cleft (comm⇒pow-comm d N (CLb.lemma-comm-X-Z _)))) ⟩
     S ^ k • (H • ((Z ^ N • X ^ d) • (X ^ F' • W))) ≈⟨ cright (cright assoc) ⟩
     S ^ k • (H • (Z ^ N • (X ^ d • (X ^ F' • W)))) ≈⟨ cright (cright (cright (sym assoc))) ⟩
     S ^ k • (H • (Z ^ N • ((X ^ d • X ^ F') • W))) ≈⟨ cright (cright (cright (cleft (sym (^-+ X d F'))))) ⟩
@@ -780,7 +780,7 @@ module SemiS (n : ℕ) where
     Z ^ zZ • ((S • X ^ zX • Z ^ (p-1 Nat.* zX)) • Z ^ z½)     ≈⟨ cright assoc ⟩
     Z ^ zZ • (S • (X ^ zX • Z ^ (p-1 Nat.* zX)) • Z ^ z½)     ≈⟨ cright (cright assoc) ⟩
     Z ^ zZ • (S • (X ^ zX • (Z ^ (p-1 Nat.* zX) • Z ^ z½)))   ≈⟨ cright (cright (cright (sym (^-+ Z (p-1 Nat.* zX) z½)))) ⟩
-    Z ^ zZ • (S • (X ^ zX • Z ^ (p-1 Nat.* zX Nat.+ z½)))     ≈⟨ cright (cright (comm⇒pow-comm zX (p-1 Nat.* zX Nat.+ z½) (axiom comm-X-Z))) ⟩
+    Z ^ zZ • (S • (X ^ zX • Z ^ (p-1 Nat.* zX Nat.+ z½)))     ≈⟨ cright (cright (comm⇒pow-comm zX (p-1 Nat.* zX Nat.+ z½) (CLb.lemma-comm-X-Z _))) ⟩
     Z ^ zZ • (S • (Z ^ (p-1 Nat.* zX Nat.+ z½) • X ^ zX))     ≈⟨ sym assoc ⟩
     (Z ^ zZ • S) • (Z ^ (p-1 Nat.* zX Nat.+ z½) • X ^ zX)     ≈⟨ cleft (comm⇒pow-comm zZ 1 (CL.lemma-comm-Z-S n)) ⟩
     (S • Z ^ zZ) • (Z ^ (p-1 Nat.* zX Nat.+ z½) • X ^ zX)     ≈⟨ assoc ⟩
@@ -1063,7 +1063,7 @@ module MgPowS (n : ℕ) where
     Z ^ e • (Z ^ zZ • X ^ zX)       ≈⟨ sym assoc ⟩
     (Z ^ e • Z ^ zZ) • X ^ zX       ≈⟨ cleft ZZcomm ⟩
     (Z ^ zZ • Z ^ e) • X ^ zX       ≈⟨ assoc ⟩
-    Z ^ zZ • (Z ^ e • X ^ zX)       ≈⟨ cright (comm⇒pow-comm e zX (sym (axiom comm-X-Z))) ⟩
+    Z ^ zZ • (Z ^ e • X ^ zX)       ≈⟨ cright (comm⇒pow-comm e zX (sym (CLb.lemma-comm-X-Z _))) ⟩
     Z ^ zZ • (X ^ zX • Z ^ e)       ≈⟨ sym assoc ⟩
     (Z ^ zZ • X ^ zX) • Z ^ e ∎
     where

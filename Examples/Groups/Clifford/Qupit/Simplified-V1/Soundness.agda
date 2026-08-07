@@ -110,7 +110,7 @@ module C10Base (m : ℕ) where
 
   conj-R-X^k : ∀ a → R • X ^ a ≈ (X ^ a • Z ^ a) • R
   conj-R-X^k a = trans (lemma-Induction lemma-conj-R-X a)
-                       (cleft (^-• X Z a (axiom comm-X-Z)))
+                       (cleft (^-• X Z a (Lemmas1b.lemma-comm-X-Z _)))
 
   -- X^a • R⁻¹  ≈  R⁻¹ • X^a • Z^a
   bXR : ∀ a → X ^ a • R ^ p-1 ≈ R ^ p-1 • X ^ a • Z ^ a
@@ -267,7 +267,7 @@ module C10 (m : ℕ) where
   cZ↓sd a = comm⇒pow-comm a p-1 (sym (lemma-comm-R-Z {₁₊ m}))
   -- Pauli reorderings (mod scalars X,Z commute)
   cX↑Z↑ : ∀ a b → (X ↑) ^ a • (Z ↑) ^ b ≈ (Z ↑) ^ b • (X ↑) ^ a
-  cX↑Z↑ a b = comm⇒pow-comm a b (lemma-cong↑ _ _ (PB.axiom (comm-X-Z)))
+  cX↑Z↑ a b = comm⇒pow-comm a b (lemma-cong↑ _ _ (Lemmas1b.lemma-comm-X-Z _))
   cX↑Z↓ : ∀ a b → (X ↑) ^ a • (Z ↓) ^ b ≈ (Z ↓) ^ b • (X ↑) ^ a
   cX↑Z↓ a b = comm⇒pow-comm a b (sym (lemma-comm-Z-w↑ {m} X))
   cZ↑Z↓ : ∀ a b → (Z ↑) ^ a • (Z ↓) ^ b ≈ (Z ↓) ^ b • (Z ↑) ^ a
@@ -583,7 +583,7 @@ module C11 (m : ℕ) where
   cZ↑H↓ a = comm⇒pow-comm a 1 (sym (lemma-comm-H-w↑ {m} Z))
   -- Pauli reorderings
   cX↓Z↓ : ∀ a b → (X ↓) ^ a • (Z ↓) ^ b ≈ (Z ↓) ^ b • (X ↓) ^ a
-  cX↓Z↓ a b = comm⇒pow-comm a b (axiom comm-X-Z)
+  cX↓Z↓ a b = comm⇒pow-comm a b (Lemmas1b.lemma-comm-X-Z _)
   cX↓Z↑ : ∀ a b → (X ↓) ^ a • (Z ↑) ^ b ≈ (Z ↑) ^ b • (X ↓) ^ a
   cX↓Z↑ a b = comm⇒pow-comm a b (lemma-comm-X-w↑ {m} Z)
   cZ↓Z↑ : ∀ a b → (Z ↓) ^ a • (Z ↑) ^ b ≈ (Z ↑) ^ b • (Z ↓) ^ a

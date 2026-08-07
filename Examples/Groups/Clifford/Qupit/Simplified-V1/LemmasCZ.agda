@@ -97,7 +97,7 @@ lemma-conj-R-X : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in
 lemma-conj-R-X {n} = begin
   R • X ≡⟨ auto ⟩
   (S • Z ^ toℕ 1/2) • X ≈⟨ assoc ⟩
-  S • (Z ^ toℕ 1/2 • X) ≈⟨ cong refl (sym (comm⇒pow-comm 1 (toℕ 1/2) (_≈_.axiom Clifford-Relations.comm-X-Z))) ⟩
+  S • (Z ^ toℕ 1/2 • X) ≈⟨ cong refl (sym (comm⇒pow-comm 1 (toℕ 1/2) (CLb.lemma-comm-X-Z n))) ⟩
   S • (X • Z ^ toℕ 1/2) ≈⟨ sym assoc ⟩
   (S • X) • Z ^ toℕ 1/2 ≈⟨ cong (CLb.conj-S-X n) refl ⟩
   ((X • Z) • S) • Z ^ toℕ 1/2 ≈⟨ assoc ⟩

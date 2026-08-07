@@ -764,15 +764,6 @@ module Iso-Inverse-Direction (n : ℕ) where
       ε • (SemiDirect.S • SemiDirect.S)
         ≈⟨ left-unit ⟩
       SemiDirect.S • SemiDirect.S ∎
-  h-well-defined {₁₊ n} comm-X-Z = begin
-    (h ʷ) (X • Z)                  ≈⟨ cong (h-X {n}) (h-Z {n}) ⟩
-    SemiDirect.X • SemiDirect.Z    ≈⟨ sym (axiom (left XZ.comm-Z-X)) ⟩
-    SemiDirect.Z • SemiDirect.X    ≈⟨ sym (cong (h-Z {n}) (h-X {n})) ⟩
-    (h ʷ) (Z • X) ∎
-    where
-    open PB (SemiDirect._QRel,_===_ (₁₊ n))
-    open PP (SemiDirect._QRel,_===_ (₁₊ n))
-    open SR word-setoid
   h-well-defined {₂₊ n} semi-M↑CZ rewrite lemma-h↑ (Mg {n}) = begin
       ((h ʷ) (Mg {n})) SemiDirect.↑ • SemiDirect.CZ                       ≈⟨ cong (h-Mg↑ {n}) refl ⟩
       ([ Sim.Mg {n} ]ᵣ) SemiDirect.↑ • SemiDirect.CZ                   ≈⟨ bareM ⟩

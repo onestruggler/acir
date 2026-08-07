@@ -375,9 +375,289 @@ module Lemmas1b (n : ℕ) where
   conj-X^k-H : ∀ k -> X ^ k • H ≈ H • Z⁻¹ ^ k
   conj-X^k-H k = lemma-Inductionˡ lemma-XH k
 
+  -- --------------------------------------------------------------------
+  -- X and Z commute
+  --
+  -- This is a consequence of the other rules, not an independent one.
+  -- Two of them state that a word of the shape (- • H) ^ 3 is trivial:
+  --
+  --     (S • H) ^ 3 ≈ ε      (order-SH)
+  --     (R • H) ^ 3 ≈ ε      (M-power, through lemma-M1: M ₁ is (R • H) ^ 3)
+  --
+  -- and S and R = S • Z^½ differ by exactly one Pauli, Z^½.  Conjugation
+  -- by S • H sends X to Z⁻¹ • X⁻¹ and Z⁻¹ • X⁻¹ to Z, so collecting the
+  -- three copies of X^½ out of (R • H) ^ 3 ≈ ((S • H) • X^½) ^ 3 and
+  -- cancelling (S • H) ^ 3 leaves the Pauli residue
+  --
+  --     Z^½ • (Z⁻¹ • X⁻¹)^½ • X^½ ≈ ε          (lemma-half-residue)
+  --
+  -- i.e. (Z⁻¹ • X⁻¹)^½ ≈ Z⁻¹^½ • X⁻¹^½.  A ½-power squares to the word
+  -- itself, so squaring THAT identity gives two expressions for Z⁻¹ • X⁻¹
+  -- which differ only by one transposition of Z⁻¹^½ and X⁻¹^½; cancelling
+  -- the outer letters leaves those two commuting, and Z, X are their
+  -- squares.
+  --
+  -- Nothing below uses comm-X-Z, so the axiom is redundant.
+
+  -- ½ as a natural exponent.
+  half : ℕ
+  half = toℕ 1/2
+
+  aux-k+k : ∀ (k : ℕ) -> k Nat.+ k ≡ k Nat.* 2
+  aux-k+k k = Eq.trans
+    (Eq.cong₂ Nat._+_ (Eq.sym (NP.*-identityʳ k)) (Eq.sym (NP.*-identityʳ k)))
+    (Eq.sym (NP.*-distribˡ-+ k 1 1))
+
+  -- The modulus of a bare numeral is ambiguous inside nztoℕ, so pin it.
+  2ₚ : ℤ ₚ
+  2ₚ = ₂
+
+  aux-half*2 : 1/2 * 2ₚ ≡ ₁
+  aux-half*2 = lemma-⁻¹ˡ 2ₚ {{nztoℕ {y = 2ₚ} {neq0 = λ ()}}}
+
+  -- (½ + ½) % p ≡ 1
+  aux-half+half : (half Nat.+ half) % p ≡ 1
+  aux-half+half = Eq.trans (Eq.cong (_% p) (aux-k+k half))
+                  (Eq.trans (lemma-toℕ-% 1/2 2ₚ) (Eq.cong toℕ aux-half*2))
+
+  -- Exponents of a word of order p only matter modulo p.
+  aux-pow-mod : ∀ (w : Word (Gen (₁₊ n))) -> w ^ p ≈ ε -> ∀ k -> w ^ k ≈ w ^ (k % p)
+  aux-pow-mod w ord k = begin
+    w ^ k                               ≡⟨ Eq.cong (w ^_) (m≡m%n+[m/n]*n k p) ⟩
+    w ^ (k % p Nat.+ k / p Nat.* p)     ≈⟨ ^-+ w (k % p) (k / p Nat.* p) ⟩
+    w ^ (k % p) • w ^ (k / p Nat.* p)   ≈⟨ (cright refl' (Eq.cong (w ^_) (NP.*-comm (k / p) p))) ⟩
+    w ^ (k % p) • w ^ (p Nat.* (k / p)) ≈⟨ (cright sym (^^ w p (k / p))) ⟩
+    w ^ (k % p) • (w ^ p) ^ (k / p)     ≈⟨ (cright ^-cong (w ^ p) ε (k / p) ord) ⟩
+    w ^ (k % p) • ε ^ (k / p)           ≈⟨ (cright ε^k=ε (k / p)) ⟩
+    w ^ (k % p) • ε                     ≈⟨ right-unit ⟩
+    w ^ (k % p) ∎
+
+  -- A ½-power squares to the word itself.
+  aux-half-square : ∀ (w : Word (Gen (₁₊ n))) -> w ^ p ≈ ε -> w ^ half • w ^ half ≈ w
+  aux-half-square w ord = begin
+    w ^ half • w ^ half     ≈⟨ sym (^-+ w half half) ⟩
+    w ^ (half Nat.+ half)   ≈⟨ aux-pow-mod w ord (half Nat.+ half) ⟩
+    w ^ ((half Nat.+ half) % p) ≡⟨ Eq.cong (w ^_) aux-half+half ⟩
+    w ∎
+
+  aux-order-Z⁻¹ : Z⁻¹ ^ p ≈ ε
+  aux-order-Z⁻¹ = lemma-order-w^k Z p p-1 lemma-order-Z
+
+  aux-order-X⁻¹ : X⁻¹ ^ p ≈ ε
+  aux-order-X⁻¹ = lemma-order-w^k X p p-1 lemma-order-X
+
+  -- (w ^ p-1) ^ k is a two-sided inverse of w ^ k.
+  aux-pow-inverseˡ : ∀ (w : Word (Gen (₁₊ n))) -> w ^ p ≈ ε -> ∀ k ->
+    (w ^ p-1) ^ k • w ^ k ≈ ε
+  aux-pow-inverseˡ w ord k = begin
+    (w ^ p-1) ^ k • w ^ k     ≈⟨ (cleft ^^' w p-1 k) ⟩
+    (w ^ k) ^ p-1 • w ^ k     ≈⟨ sym (^-+ (w ^ k) p-1 1) ⟩
+    (w ^ k) ^ (p-1 Nat.+ 1)   ≡⟨ Eq.cong ((w ^ k) ^_) (NP.+-comm p-1 1) ⟩
+    (w ^ k) ^ p               ≈⟨ lemma-order-w^k w p k ord ⟩
+    ε ∎
+
+  aux-pow-inverseʳ : ∀ (w : Word (Gen (₁₊ n))) -> w ^ p ≈ ε -> ∀ k ->
+    w ^ k • (w ^ p-1) ^ k ≈ ε
+  aux-pow-inverseʳ w ord k = begin
+    w ^ k • (w ^ p-1) ^ k     ≈⟨ (cright ^^' w p-1 k) ⟩
+    w ^ k • (w ^ k) ^ p-1     ≈⟨ sym (^-+ (w ^ k) 1 p-1) ⟩
+    (w ^ k) ^ p               ≈⟨ lemma-order-w^k w p k ord ⟩
+    ε ∎
+
+  -- Conjugation by S • H sends X to Z⁻¹ • X⁻¹ …
+  conj-SH-X : X • (S • H) ≈ (S • H) • (Z⁻¹ • X⁻¹)
+  conj-SH-X = begin
+    X • (S • H)           ≈⟨ sym assoc ⟩
+    (X • S) • H           ≈⟨ (cleft lemma-XS) ⟩
+    (S • X • Z⁻¹) • H     ≈⟨ by-passoc ((□ • □ • □) • □) (□ • □ • □ • □) auto ⟩
+    S • X • Z⁻¹ • H       ≈⟨ (cright cright sym (conj-H-X^k p-1)) ⟩
+    S • X • H • X⁻¹       ≈⟨ (cright sym assoc) ⟩
+    S • (X • H) • X⁻¹     ≈⟨ (cright cleft lemma-XH) ⟩
+    S • (H • Z⁻¹) • X⁻¹   ≈⟨ by-passoc (□ • ((□ • □) • □)) ((□ • □) • (□ • □)) auto ⟩
+    (S • H) • (Z⁻¹ • X⁻¹) ∎
+
+  aux-X-H³ : X • H ^ 3 ≈ H ^ 3 • Z
+  aux-X-H³ = begin
+    X • H • H • H            ≈⟨ sym assoc ⟩
+    (X • H) • H • H          ≈⟨ (cleft lemma-XH) ⟩
+    (H • Z⁻¹) • H • H        ≈⟨ by-passoc ((□ • □) • □ • □) (□ • (□ • □) • □) auto ⟩
+    H • (Z⁻¹ • H) • H        ≈⟨ (cright cleft sym (conj-H-X^k p-1)) ⟩
+    H • (H • X⁻¹) • H        ≈⟨ by-passoc (□ • (□ • □) • □) (□ • □ • (□ • □)) auto ⟩
+    H • H • (X⁻¹ • H)        ≈⟨ (cright cright conj-X^k-H p-1) ⟩
+    H • H • (H • Z⁻¹ ^ p-1)  ≈⟨ (cright cright cright aux-Z⁻¹⁻¹) ⟩
+    H • H • H • Z            ≈⟨ by-passoc (□ • □ • □ • □) ((□ • □ • □) • □) auto ⟩
+    H ^ 3 • Z ∎
+
+  aux-X-SHSH : X • ((S • H) • (S • H)) ≈ ((S • H) • (S • H)) • Z
+  aux-X-SHSH = begin
+    X • ((S • H) • (S • H))
+      ≈⟨ (cright by-passoc ((□ • □) • (□ • □)) (□ • □ • □ • □) auto) ⟩
+    X • (S • H • S • H)     ≈⟨ (cright lemma-SHSH) ⟩
+    X • (H ^ 3 • S⁻¹)       ≈⟨ sym assoc ⟩
+    (X • H ^ 3) • S⁻¹       ≈⟨ (cleft aux-X-H³) ⟩
+    (H ^ 3 • Z) • S⁻¹       ≈⟨ assoc ⟩
+    H ^ 3 • (Z • S⁻¹)       ≈⟨ (cright comm⇒pow-comm 1 p-1 lemma-comm-Z-S) ⟩
+    H ^ 3 • (S⁻¹ • Z)       ≈⟨ sym assoc ⟩
+    (H ^ 3 • S⁻¹) • Z       ≈⟨ (cleft sym lemma-SHSH) ⟩
+    (S • H • S • H) • Z
+      ≈⟨ (cleft by-passoc (□ • □ • □ • □) ((□ • □) • (□ • □)) auto) ⟩
+    ((S • H) • (S • H)) • Z ∎
+
+  -- … and Z⁻¹ • X⁻¹ to Z.
+  conj-SH-Y : (Z⁻¹ • X⁻¹) • (S • H) ≈ (S • H) • Z
+  conj-SH-Y = bbc (S • H) ε claim
+    where
+    open Basis-Change _ ((₁₊ n) QRel,_===_) grouplike
+    claim : (S • H) • (((Z⁻¹ • X⁻¹) • (S • H)) • ε) ≈ (S • H) • (((S • H) • Z) • ε)
+    claim = begin
+      (S • H) • (((Z⁻¹ • X⁻¹) • (S • H)) • ε) ≈⟨ (cright right-unit) ⟩
+      (S • H) • ((Z⁻¹ • X⁻¹) • (S • H))       ≈⟨ sym assoc ⟩
+      ((S • H) • (Z⁻¹ • X⁻¹)) • (S • H)       ≈⟨ (cleft sym conj-SH-X) ⟩
+      (X • (S • H)) • (S • H)                 ≈⟨ assoc ⟩
+      X • ((S • H) • (S • H))                 ≈⟨ aux-X-SHSH ⟩
+      ((S • H) • (S • H)) • Z                 ≈⟨ assoc ⟩
+      (S • H) • ((S • H) • Z)                 ≈⟨ (cright sym right-unit) ⟩
+      (S • H) • (((S • H) • Z) • ε) ∎
+
+  conj-SH-X^k : ∀ k -> X ^ k • (S • H) ≈ (S • H) • (Z⁻¹ • X⁻¹) ^ k
+  conj-SH-X^k = lemma-Inductionˡ conj-SH-X
+
+  conj-SH-Y^k : ∀ k -> (Z⁻¹ • X⁻¹) ^ k • (S • H) ≈ (S • H) • Z ^ k
+  conj-SH-Y^k = lemma-Inductionˡ conj-SH-Y
+
+  -- Z⁻¹ • X⁻¹ is a conjugate of X, so it too has order p.
+  aux-order-Y : (Z⁻¹ • X⁻¹) ^ p ≈ ε
+  aux-order-Y = bbc (S • H) ε claim
+    where
+    open Basis-Change _ ((₁₊ n) QRel,_===_) grouplike
+    claim : (S • H) • ((Z⁻¹ • X⁻¹) ^ p • ε) ≈ (S • H) • (ε • ε)
+    claim = begin
+      (S • H) • ((Z⁻¹ • X⁻¹) ^ p • ε) ≈⟨ (cright right-unit) ⟩
+      (S • H) • (Z⁻¹ • X⁻¹) ^ p       ≈⟨ sym (conj-SH-X^k p) ⟩
+      X ^ p • (S • H)                 ≈⟨ (cleft lemma-order-X) ⟩
+      ε • (S • H)                     ≈⟨ left-unit ⟩
+      S • H                           ≈⟨ sym right-unit ⟩
+      (S • H) • ε                     ≈⟨ (cright sym left-unit) ⟩
+      (S • H) • (ε • ε) ∎
+
+  aux-RH : R • H ≈ (S • H) • X ^ half
+  aux-RH = begin
+    R • H                  ≈⟨ assoc ⟩
+    S • (Z ^ half • H)     ≈⟨ (cright sym (conj-H-X^k half)) ⟩
+    S • (H • X ^ half)     ≈⟨ sym assoc ⟩
+    (S • H) • X ^ half ∎
+
+  -- (R • H) ^ 3 is M ₁, which M-power makes trivial.
+  lemma-order-RH : (R • H) ^ 3 ≈ ε
+  lemma-order-RH = begin
+    (R • H) ^ 3
+      ≈⟨ by-passoc ((□ ^ 2) ^ 3) (□ • □ • □ • □ • □ • □) auto ⟩
+    R • H • R • H • R • H
+      ≈⟨ (cright cright cleft aux-R) ⟩
+    R^ x • H • R^ x⁻¹ • H • R^ x • H
+      ≈⟨ refl ⟩
+    M x'
+      ≈⟨ lemma-M1 ⟩
+    ε ∎
+    where
+    x' : ℤ* ₚ
+    x' = (₁ , λ ())
+    x = x' .proj₁
+    x⁻¹ = ((x' ⁻¹) .proj₁)
+    aux-R : R ≈ R^ x⁻¹
+    aux-R = begin
+      R      ≈⟨ refl ⟩
+      R^ ₁   ≡⟨ Eq.cong R^ (Eq.sym aux₁⁻¹') ⟩
+      R^ x⁻¹ ∎
+
+  -- Collect the three X^½ out of (R • H) ^ 3 and cancel (S • H) ^ 3.
+  aux-collect : (R • H) ^ 3 ≈ Z ^ half • ((Z⁻¹ • X⁻¹) ^ half • X ^ half)
+  aux-collect = begin
+    (R • H) ^ 3
+      ≈⟨ ^-cong (R • H) ((S • H) • X ^ half) 3 aux-RH ⟩
+    ((S • H) • X ^ half) ^ 3
+      ≈⟨ by-passoc ((□ ^ 2 • □) ^ 3)
+                   (□ ^ 2 • ((□ • □ ^ 2) • ((□ • □ ^ 2) • □))) auto ⟩
+    (S • H) • ((X ^ half • (S • H)) • ((X ^ half • (S • H)) • X ^ half))
+      ≈⟨ (cright cleft conj-SH-X^k half) ⟩
+    (S • H) • (((S • H) • (Z⁻¹ • X⁻¹) ^ half) • ((X ^ half • (S • H)) • X ^ half))
+      ≈⟨ (cright cright cleft conj-SH-X^k half) ⟩
+    (S • H) • (((S • H) • (Z⁻¹ • X⁻¹) ^ half) • (((S • H) • (Z⁻¹ • X⁻¹) ^ half) • X ^ half))
+      ≈⟨ by-passoc (□ ^ 2 • ((□ ^ 2 • □) • ((□ ^ 2 • □) • □)))
+                   (□ ^ 2 • (□ ^ 2 • ((□ • □ ^ 2) • (□ • □)))) auto ⟩
+    (S • H) • ((S • H) • (((Z⁻¹ • X⁻¹) ^ half • (S • H)) • ((Z⁻¹ • X⁻¹) ^ half • X ^ half)))
+      ≈⟨ (cright cright cleft conj-SH-Y^k half) ⟩
+    (S • H) • ((S • H) • (((S • H) • Z ^ half) • ((Z⁻¹ • X⁻¹) ^ half • X ^ half)))
+      ≈⟨ by-passoc (□ ^ 2 • (□ ^ 2 • ((□ ^ 2 • □) • (□ • □))))
+                   ((□ ^ 2) ^ 3 • (□ • □ • □)) auto ⟩
+    (S • H) ^ 3 • (Z ^ half • ((Z⁻¹ • X⁻¹) ^ half • X ^ half))
+      ≈⟨ (cleft axiom order-SH) ⟩
+    ε • (Z ^ half • ((Z⁻¹ • X⁻¹) ^ half • X ^ half))
+      ≈⟨ left-unit ⟩
+    Z ^ half • ((Z⁻¹ • X⁻¹) ^ half • X ^ half) ∎
+
+  lemma-half-residue : Z ^ half • ((Z⁻¹ • X⁻¹) ^ half • X ^ half) ≈ ε
+  lemma-half-residue = trans (sym aux-collect) lemma-order-RH
+
+  -- Reading the residue as a factorisation of (Z⁻¹ • X⁻¹)^½.
+  aux-half-Y : Z⁻¹ ^ half • X⁻¹ ^ half ≈ (Z⁻¹ • X⁻¹) ^ half
+  aux-half-Y = begin
+    Z⁻¹ ^ half • X⁻¹ ^ half
+      ≈⟨ (cleft sym right-unit) ⟩
+    (Z⁻¹ ^ half • ε) • X⁻¹ ^ half
+      ≈⟨ (cleft cright sym lemma-half-residue) ⟩
+    (Z⁻¹ ^ half • (Z ^ half • ((Z⁻¹ • X⁻¹) ^ half • X ^ half))) • X⁻¹ ^ half
+      ≈⟨ by-passoc ((□ • □ • □ • □) • □) (((□ • □) • □) • (□ • □)) auto ⟩
+    ((Z⁻¹ ^ half • Z ^ half) • (Z⁻¹ • X⁻¹) ^ half) • (X ^ half • X⁻¹ ^ half)
+      ≈⟨ cong (cleft aux-pow-inverseˡ Z lemma-order-Z half)
+              (aux-pow-inverseʳ X lemma-order-X half) ⟩
+    (ε • (Z⁻¹ • X⁻¹) ^ half) • ε
+      ≈⟨ right-unit ⟩
+    ε • (Z⁻¹ • X⁻¹) ^ half
+      ≈⟨ left-unit ⟩
+    (Z⁻¹ • X⁻¹) ^ half ∎
+
+  -- The two ½-powers commute: both sides below are Z⁻¹ • X⁻¹.
+  comm-half-Z⁻¹-X⁻¹ : Z⁻¹ ^ half • X⁻¹ ^ half ≈ X⁻¹ ^ half • Z⁻¹ ^ half
+  comm-half-Z⁻¹-X⁻¹ = bbc (Z⁻¹ ^ half) (X⁻¹ ^ half) claim
+    where
+    open Basis-Change _ ((₁₊ n) QRel,_===_) grouplike
+    claim : Z⁻¹ ^ half • ((Z⁻¹ ^ half • X⁻¹ ^ half) • X⁻¹ ^ half)
+          ≈ Z⁻¹ ^ half • ((X⁻¹ ^ half • Z⁻¹ ^ half) • X⁻¹ ^ half)
+    claim = begin
+      Z⁻¹ ^ half • ((Z⁻¹ ^ half • X⁻¹ ^ half) • X⁻¹ ^ half)
+        ≈⟨ by-passoc (□ • ((□ • □) • □)) ((□ • □) • (□ • □)) auto ⟩
+      (Z⁻¹ ^ half • Z⁻¹ ^ half) • (X⁻¹ ^ half • X⁻¹ ^ half)
+        ≈⟨ cong (aux-half-square Z⁻¹ aux-order-Z⁻¹) (aux-half-square X⁻¹ aux-order-X⁻¹) ⟩
+      Z⁻¹ • X⁻¹
+        ≈⟨ sym (aux-half-square (Z⁻¹ • X⁻¹) aux-order-Y) ⟩
+      (Z⁻¹ • X⁻¹) ^ half • (Z⁻¹ • X⁻¹) ^ half
+        ≈⟨ sym (cong aux-half-Y aux-half-Y) ⟩
+      (Z⁻¹ ^ half • X⁻¹ ^ half) • (Z⁻¹ ^ half • X⁻¹ ^ half)
+        ≈⟨ by-passoc ((□ • □) • (□ • □)) (□ • ((□ • □) • □)) auto ⟩
+      Z⁻¹ ^ half • ((X⁻¹ ^ half • Z⁻¹ ^ half) • X⁻¹ ^ half) ∎
+
+  comm-Z⁻¹-X⁻¹ : Z⁻¹ • X⁻¹ ≈ X⁻¹ • Z⁻¹
+  comm-Z⁻¹-X⁻¹ = begin
+    Z⁻¹ • X⁻¹
+      ≈⟨ sym (cong (aux-half-square Z⁻¹ aux-order-Z⁻¹) (aux-half-square X⁻¹ aux-order-X⁻¹)) ⟩
+    (Z⁻¹ ^ half • Z⁻¹ ^ half) • (X⁻¹ ^ half • X⁻¹ ^ half)
+      ≈⟨ comm⇒pow-comm 2 2 comm-half-Z⁻¹-X⁻¹ ⟩
+    (X⁻¹ ^ half • X⁻¹ ^ half) • (Z⁻¹ ^ half • Z⁻¹ ^ half)
+      ≈⟨ cong (aux-half-square X⁻¹ aux-order-X⁻¹) (aux-half-square Z⁻¹ aux-order-Z⁻¹) ⟩
+    X⁻¹ • Z⁻¹ ∎
+
+  -- comm-X-Z, derived.
+  lemma-comm-X-Z : X • Z ≈ Z • X
+  lemma-comm-X-Z = sym (begin
+    Z • X                   ≈⟨ sym (cong aux-Z⁻¹⁻¹ aux-X⁻¹⁻¹) ⟩
+    Z⁻¹ ^ p-1 • X⁻¹ ^ p-1   ≈⟨ comm⇒pow-comm p-1 p-1 comm-Z⁻¹-X⁻¹ ⟩
+    X⁻¹ ^ p-1 • Z⁻¹ ^ p-1   ≈⟨ cong aux-X⁻¹⁻¹ aux-Z⁻¹⁻¹ ⟩
+    X • Z ∎)
+
   -- X commutes with Z-powers, hence with Z⁻¹.
   comm-X-Z^k : ∀ k -> X • Z ^ k ≈ Z ^ k • X
-  comm-X-Z^k k = lemma-Induction (axiom comm-X-Z) k
+  comm-X-Z^k k = lemma-Induction lemma-comm-X-Z k
 
   split-XZ⁻¹^k : ∀ k -> (X • Z⁻¹) ^ k ≈ X ^ k • Z⁻¹ ^ k
   split-XZ⁻¹^k k = ^-• X Z⁻¹ k (comm-X-Z^k p-1)
@@ -485,7 +765,9 @@ module Lemmas1b (n : ℕ) where
   -- paper's route suggests one: lemma-M1 gives (R • H) ^ 3 ≈ ε with no
   -- Pauli bridge at all, so the R-analogue of lemma-SHSH is available
   -- for free; derive conj-R-X from it, then conj-S-X from S = R • Z^-½
-  -- together with comm-X-Z.  Not attempted here.
+  -- together with comm-X-Z.  Not attempted here.  (Note that
+  -- lemma-comm-X-Z above does NOT break the cycle: it is itself proved
+  -- from order-SH, in the same (S • H) ^ 3 vs (R • H) ^ 3 comparison.)
   lemma-order-SH : (S • H) ^ 3 ≈ ε
   lemma-order-SH = begin
     (S • H) ^ 3

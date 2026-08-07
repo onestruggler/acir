@@ -66,7 +66,7 @@ open import Examples.Groups.Clifford.Qupit.Simplified-V1.Syntactics
 -- same list Simplified-Lemmas/Part3 already carries.
 open Clifford-Relations hiding
   ( _QRel,_===_ ; order-S ; order-H ; M-power ; semi-MR ; order-SH ; comm-HHSHHS
-  ; comm-X-Z ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
+  ; semi-M↑CZ ; semi-M↓CZ ; rel-X↑-CZ ; rel-X↓-CZ ; order-CZ
   ; comm-CZ-S↓ ; comm-CZ-S↑ ; selinger-c10 ; selinger-c11 ; selinger-c12
   ; selinger-c13 ; selinger-c14 ; selinger-c15 ; comm-H ; comm-S ; comm-CZ ; cong↑ ; lemma-cong↑
   ; srel ; comm₁ ; comm₂ ; module Base )

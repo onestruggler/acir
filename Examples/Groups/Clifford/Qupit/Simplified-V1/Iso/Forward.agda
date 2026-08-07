@@ -177,7 +177,7 @@ module Iso (n : ℕ) where
     open PB (n Clifford.QRel,_===_) renaming (_===_ to _===₂_ ; _≈_ to _≈₂_ ; cleft_ to cleft₂_ ; cright_ to cright₂_) using (refl')
     open PP (n Clifford.QRel,_===_)
     open SR word-setoid
-  f-well-defined (SD.comm-Z-X) = PB.sym (PB.axiom Clifford.comm-X-Z)
+  f-well-defined (SD.comm-Z-X) = PB.sym (Lemmas1b.lemma-comm-X-Z _)
   f-well-defined {n@(₂₊ n2)} (left (XZ.comm₁ XZ.X-gate g)) = begin
     (f ʷ) ([ [ g XZ.↥ ]ʷ • XZ.X ]ₗ) ≡⟨ auto ⟩
     (f ʷ) ([ [ g XZ.↥ ]ʷ ]ₗ) • (f ʷ) ([ XZ.X ]ₗ) ≡⟨ auto ⟩
