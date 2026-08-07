@@ -10,4 +10,3 @@
 
 module Examples.Groups.Cyclic.Cyclic where
 
-open import Examples.Groups.Cyclic.Normalization public
