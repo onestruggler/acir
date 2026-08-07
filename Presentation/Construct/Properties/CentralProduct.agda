@@ -35,16 +35,19 @@ module Presentation.Construct.Properties.CentralProduct
   where
 
 open import Algebra.Bundles using (AbelianGroup ; Group)
-open import Data.Product using (_,_ ; proj₁ ; proj₂)
+import Algebra.Morphism.Structures as GM
+open import Data.Product using (_,_ ; _×_ ; ∃ ; proj₁ ; proj₂)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
-open import Function.Definitions using (Surjective)
+open import Function.Definitions using (Injective ; Surjective)
 open import Level using (0ℓ)
 
 open import ForStdlib.Algebra.Construct.CentralProduct
   using (CentralPair ; from≈ ; glue) renaming (group to central-product-group)
 open import Presentation.Construct.Base
 open import Presentation.Definitions using (_IsPresentationOf_)
-open import Presentation.GroupLike using (Grouplike)
+open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
+open import ForStdlib.Algebra.Morphism.Consequences
+  using (isMonoidHomomorphism⇒isGroupHomomorphism)
 import Presentation.Base as PB
 import Presentation.Construct.Properties.DirectProduct Γ Δ as DP
 
@@ -100,7 +103,7 @@ module _ {M : Set} (f₁ : M → Word A) (f₂ : M → Word B) where
 ------------------------------------------------------------------------
 -- The presentation theorem
 --
--- REMAINING GOAL.  With G₁, G₂, C, a CentralPair χ : CentralPair C G₁ G₂,
+-- With G₁, G₂, C, a CentralPair χ : CentralPair C G₁ G₂,
 -- presentations p₁ : Γ IsPresentationOf G₁, p₂ : Δ IsPresentationOf G₂,
 -- pC : Θ IsPresentationOf (AbelianGroup.group C), and the compatibility
 --
@@ -145,7 +148,11 @@ module _ {M : Set} (f₁ : M → Word A) (f₂ : M → Word B) where
 --     so injectivity of the direct-product presentation gives
 --     w • U • V ⁻¹ ≈ᵈ v, and `weaken` above turns that into w ≈ᶜ v.
 --
--- Every ingredient is in place; what is missing is the assembly.
+-- The theorem is Presentation.Complete.WithRealises.cpres below.  One
+-- step of the reuse needs care and is `bridge`: the two interpretations
+-- are the same fold of the same generator map, but over the two groups'
+-- monoids, which multiply pairs componentwise in both cases though not
+-- by the same term.
 
 module Presentation
   {M : Set}
@@ -157,7 +164,7 @@ module Presentation
   (f₁ : M → Word A) (f₂ : M → Word B)
   where
 
-  open CentralPair χ using (ιˡ ; ιʳ)
+  open CentralPair χ
 
   private
     module P₁  = _IsPresentationOf_ p₁
@@ -264,6 +271,7 @@ module Presentation
     sound-ax (mid (left x))   = sound-dp (mid x)
     sound-ax (mid (right x))  = sound-amal x
 
+    open E.Cong sound-ax public using (isMonoidHomomorphism)
     private module EC = E.Cong sound-ax
 
     -- The interpretation is a congruence for the central-product
@@ -282,3 +290,167 @@ module Presentation
     ... | w , pf = w , λ {z} eq →
       CPG.trans (⟦⟧-cong eq)
                 (fromD (D.trans (D.sym (bridge w)) (pf PB.refl)))
+
+  ----------------------------------------------------------------------
+  -- Completeness
+  --
+  -- Here the centre must itself be presented: the antidiagonal element
+  -- separating two words has to be named by a word over its generators
+  -- before the amalgamation relations can cancel it.
+
+  module Complete
+    (Θ : WRel M)
+    (pC : Θ IsPresentationOf AbelianGroup.group C)
+    where
+
+    private
+      module PC = _IsPresentationOf_ pC
+
+    -- The spellings, extended from generators to words: if f₁ m and
+    -- f₂ m name the images of each central generator, then their word
+    -- extensions name the images of each central word.
+    Realises : Set
+    Realises =
+      (∀ m → Group._≈_ G₁ P₁.⟦ f₁ m ⟧ (ιˡ PC.⟦ [ m ]ʷ ⟧)) ×
+      (∀ m → Group._≈_ G₂ P₂.⟦ f₂ m ⟧ (ιʳ PC.⟦ [ m ]ʷ ⟧))
+
+    module WithRealises (r : Realises) where
+
+      private
+        module H₁ = Group G₁
+        module H₂ = Group G₂
+        module AC = AbelianGroup C
+
+        open GM.GroupMorphisms (Group.rawGroup P₁.GL.•-ε-group)
+                               (Group.rawGroup G₁)
+          using () renaming (module IsGroupIsomorphism to IGI₁)
+        open GM.GroupMorphisms (Group.rawGroup P₂.GL.•-ε-group)
+                               (Group.rawGroup G₂)
+          using () renaming (module IsGroupIsomorphism to IGI₂)
+        open GM.GroupMorphisms (Group.rawGroup PC.GL.•-ε-group)
+                               (Group.rawGroup (AbelianGroup.group C))
+          using () renaming (module IsGroupIsomorphism to IGIC)
+        module Iso₁ = IGI₁ P₁.iso
+        module Iso₂ = IGI₂ P₂.iso
+        module IsoC = IGIC PC.iso
+
+        r₁ = proj₁ r
+        r₂ = proj₂ r
+
+      ------------------------------------------------------------------
+      -- The spellings name central WORDS, not just central generators
+
+      word-r₁ : ∀ mw → Group._≈_ G₁ P₁.⟦ (f₁ ʷ) mw ⟧ (ιˡ PC.⟦ mw ⟧)
+      word-r₁ [ m ]ʷ  = r₁ m
+      word-r₁ ε       =
+        H₁.trans Iso₁.ε-homo
+          (H₁.sym (H₁.trans (ιˡ-cong IsoC.ε-homo) ιˡ-ε))
+      word-r₁ (u • v) =
+        H₁.trans (Iso₁.∙-homo _ _)
+          (H₁.trans (H₁.∙-cong (word-r₁ u) (word-r₁ v))
+            (H₁.sym (H₁.trans (ιˡ-cong (IsoC.∙-homo _ _)) (ιˡ-∙ _ _))))
+
+      word-r₂ : ∀ mw → Group._≈_ G₂ P₂.⟦ (f₂ ʷ) mw ⟧ (ιʳ PC.⟦ mw ⟧)
+      word-r₂ [ m ]ʷ  = r₂ m
+      word-r₂ ε       =
+        H₂.trans Iso₂.ε-homo
+          (H₂.sym (H₂.trans (ιʳ-cong IsoC.ε-homo) ιʳ-ε))
+      word-r₂ (u • v) =
+        H₂.trans (Iso₂.∙-homo _ _)
+          (H₂.trans (H₂.∙-cong (word-r₂ u) (word-r₂ v))
+            (H₂.sym (H₂.trans (ιʳ-cong (IsoC.∙-homo _ _)) (ιʳ-∙ _ _))))
+
+      private
+        module S  = Sound (λ m → PC.⟦ [ m ]ʷ ⟧) r₁ r₂
+        module GL = Group-Lemmas cprel grouplike
+        module Pdp = _IsPresentationOf_ DPP.dpres
+        open GM.GroupMorphisms (Group.rawGroup Pdp.GL.•-ε-group)
+                               (Group.rawGroup DPP.dp)
+          using () renaming (module IsGroupIsomorphism to IGIdp)
+        module Isodp = IGIdp Pdp.iso
+
+      open GL using (•-cancelʳ)
+
+      ------------------------------------------------------------------
+      -- Injectivity
+      --
+      -- Two words equal in the central product differ, in the direct
+      -- product, by an antidiagonal element (ιˡ x , ιʳ (x ⁻¹)).  Name x
+      -- by a word mw over the central generators — possible because Θ
+      -- presents C — and let U, V be its two spellings.  Then w • U and
+      -- v • V have the SAME direct-product value, so the direct
+      -- product's injectivity identifies them; glue-word identifies U
+      -- with V; and cancelling V on the right leaves w ≈ v.
+
+      inj : Injective (PB._≈_ cprel) CPG._≈_ ⟦_⟧
+      inj {w} {v} (x , e₁ , e₂) =
+        •-cancelʳ (PB.trans (PB.cong PB.refl (PB.sym (glue-word f₁ f₂ mw)))
+                            wU≈vV)
+        where
+        mw : Word M
+        mw = proj₁ (IsoC.surjective x)
+
+        pmw : AbelianGroup._≈_ C PC.⟦ mw ⟧ x
+        pmw = proj₂ (IsoC.surjective x) PB.refl
+
+        U V : Word (A ⊎ B)
+        U = [ (f₁ ʷ) mw ]ₗ
+        V = [ (f₂ ʷ) mw ]ᵣ
+
+        semU : D._≈_ ⟦ U ⟧ (ιˡ x , H₂.ε)
+        semU = D.trans (D.sym (bridge U))
+                 (D.trans (DPP.emb-l ((f₁ ʷ) mw))
+                          (H₁.trans (word-r₁ mw) (ιˡ-cong pmw) , H₂.refl))
+
+        semV : D._≈_ ⟦ V ⟧ (H₁.ε , ιʳ x)
+        semV = D.trans (D.sym (bridge V))
+                 (D.trans (DPP.emb-r ((f₂ ʷ) mw))
+                          (H₁.refl , H₂.trans (word-r₂ mw) (ιʳ-cong pmw)))
+
+        -- The right-hand components meet because ιʳ (x ⁻¹) ∙ ιʳ x is ε.
+        second : H₂._≈_ (proj₂ ⟦ w ⟧ H₂.∙ proj₂ ⟦ U ⟧)
+                        (proj₂ ⟦ v ⟧ H₂.∙ proj₂ ⟦ V ⟧)
+        second =
+          H₂.trans (H₂.∙-congˡ (proj₂ semU))
+            (H₂.trans (H₂.identityʳ _)
+              (H₂.sym
+                (H₂.trans (H₂.∙-cong e₂ (proj₂ semV))
+                  (H₂.trans (H₂.assoc _ _ _)
+                    (H₂.trans (H₂.∙-congˡ (H₂.trans (H₂.sym (ιʳ-∙ _ _))
+                                            (H₂.trans (ιʳ-cong (AbelianGroup.inverseˡ C x))
+                                                      ιʳ-ε)))
+                              (H₂.identityʳ _))))))
+
+        first : H₁._≈_ (proj₁ ⟦ w ⟧ H₁.∙ proj₁ ⟦ U ⟧)
+                       (proj₁ ⟦ v ⟧ H₁.∙ proj₁ ⟦ V ⟧)
+        first =
+          H₁.trans (H₁.∙-congˡ (proj₁ semU))
+            (H₁.trans (H₁.sym e₁)
+              (H₁.sym (H₁.trans (H₁.∙-congˡ (proj₁ semV))
+                                (H₁.identityʳ _))))
+
+        key : D._≈_ ⟦ w • U ⟧ ⟦ v • V ⟧
+        key = first , second
+
+        wU≈vV : PB._≈_ cprel (w • U) (v • V)
+        wU≈vV = weaken f₁ f₂
+          (Isodp.injective
+            (D.trans (bridge (w • U)) (D.trans key (D.sym (bridge (v • V))))))
+
+      ------------------------------------------------------------------
+      -- The presentation theorem
+
+      cpres : cprel IsPresentationOf cp
+      cpres = record
+        { gl  = grouplike
+        ; ⟦_⟧ = ⟦_⟧
+        ; iso = record
+          { isGroupMonomorphism = record
+            { isGroupHomomorphism =
+                isMonoidHomomorphism⇒isGroupHomomorphism
+                  GL.•-ε-group cp S.isMonoidHomomorphism
+            ; injective = inj
+            }
+          ; surjective = S.surj
+          }
+        }
