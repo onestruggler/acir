@@ -14,19 +14,20 @@
 --
 -- The comparison is set up as in Examples.Groups.Symplectic.Simplified.
 -- Iso, but there the two rule sets share a generating set and the
--- isomorphism is the identity on words.  Here the generating sets differ
--- — (2) names the Paulis as generators, (1) derives them as the words
--- X = HS²H and Z = S² — so the identity will not do, and the builder is
--- Presentation.Morphism.GroupMorphism.StarGroupIsomorphism, which takes a
--- translation in each direction:
+-- isomorphism is the identity on words.  Here the generating sets differ,
+-- so the builder is Presentation.Morphism.GroupMorphism.
+-- StarGroupIsomorphism, which takes a translation in each direction.
 --
---     f : PauliGen n ⊎ Gen n → Word (Gen n)     (Paulis to gate words)
---     g : Gen n → Word (PauliGen n ⊎ Gen n)     (gates to themselves)
+-- The supporting material is split off:
 --
--- What is proved here: f, g, the Figure-8 side's group-likeness, and the
--- round trip f ∘ g.  The two well-definedness obligations and the round
--- trip g ∘ f are taken as module parameters of `Iso` — see the note at
--- the bottom for what each amounts to.
+--   Selinger.Translation — the maps f and g and their word extensions;
+--   Selinger.PauliWords  — the calculus of X and Z in Figure 8 mod
+--                          scalars (squares, XZ = ZX, disjoint wires);
+--   Selinger.GroupLike   — group-likeness of both rule sets.
+--
+-- This module assembles them: the round trips, fwd-pauli, the split of
+-- f-well-defined, and the isomorphism itself.  See the note at the
+-- bottom for what the remaining parameters amount to.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -34,81 +35,47 @@
 module Examples.Groups.Clifford.Qubit.Selinger.Iso where
 
 open import Data.Nat using (ℕ ; zero)
-open import Data.Nat.Primality using (Prime ; prime?)
-open import Data.Product using (_,_ ; ∃)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Unit using (⊤ ; tt)
-open import Relation.Nullary.Decidable using (from-yes)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Notations
-open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_ ; _ʷ)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_ ; _ʷ ; wmap)
 
 import Presentation.Base as PB
-open import Presentation.GroupLike using (Grouplike)
 open import Presentation.Morphism using (module GroupMorphism)
+open import Presentation.Construct.Base
+  using (_⋄_⋄_ ; _∪_ ; [_]ₗ ; [_]ᵣ ; ConjRelʷ ; CommRel ; _⊕^_)
+open import Presentation.Construct.Properties.Extension using (tw)
+import Examples.Groups.Cyclic.Syntactics as CyS
 
--- Qubit case: fix the prime to 2.
-p-2 : ℕ
-p-2 = 0
-
-p-prime : Prime 2
-p-prime = from-yes (prime? 2)
+open import Examples.Groups.Clifford.Qubit.PrimitiveRoot
+  using (p-2 ; p-prime ; g* ; g-gen)
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
-open Symplectic using (Gen ; gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate ; _↥ ; _↑)
+open Symplectic using (Gen ; gate₁ ; H-gate)
 
 import Examples.Groups.Clifford.Qubit.Selinger.Figure8-Mod-Scalar p-2 p-prime as MS
-open MS using (X ; Z ; _CRel,_===_ ; srel ; lemma-cong↑)
+open MS using (X ; Z ; _CRel,_===_ ; lemma-cong↑)
 
 open import Examples.Groups.Clifford.Qubit.Presentation
-  using (PauliGen ; _Clifford,_===_)
+  using (PauliGen ; _Clifford,_===_ ; conj ; corr ; vecToWord)
+open import Examples.Groups.Pauli.Semantics p-2 p-prime using (pIₙ)
+open import Examples.Groups.Pauli.Presentation p-2 p-prime using (Γ-H)
+open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
+  using (module Simplified-Relations)
+open Simplified-Relations using (M₋₁ ; _QRel,_===_)
+  renaming (srel to ssrel ; order-S to sorder-S ; order-H to sorder-H)
+
+-- The three supporting modules.
+open import Examples.Groups.Clifford.Qubit.Selinger.Translation
+open import Examples.Groups.Clifford.Qubit.Selinger.PauliWords
+open import Examples.Groups.Clifford.Qubit.Selinger.GroupLike
 
 private
   variable
     n : ℕ
-
-------------------------------------------------------------------------
--- The two translations
-
--- A Pauli generator names a single-qubit X or Z at one position; send it
--- to the corresponding derived word X = HS²H or Z = S² on that wire.
--- The clause structure matches genToVec in Qubit.Presentation.
-pauliGen→word : PauliGen n → Word (Gen n)
-pauliGen→word {₁₊ zero} (inj₁ tt)        = X
-pauliGen→word {₁₊ zero} (inj₂ tt)        = Z
-pauliGen→word {₂₊ n}    (inj₁ (inj₁ tt)) = X
-pauliGen→word {₂₊ n}    (inj₁ (inj₂ tt)) = Z
-pauliGen→word {₂₊ n}    (inj₂ y)         = (pauliGen→word {₁₊ n} y) ↑
-
--- Paulis become their gate words; gates stay put.
-f : PauliGen n ⊎ Gen n → Word (Gen n)
-f (inj₁ y)  = pauliGen→word y
-f (inj₂ gg) = [ gg ]ʷ
-
--- Gates embed on the right.
-g : Gen n → Word (PauliGen n ⊎ Gen n)
-g gg = [ inj₂ gg ]ʷ
-
-------------------------------------------------------------------------
--- The Figure-8 side is group-like
---
--- H² = ε (C2), S⁴ = ε (C3) and CZ² = ε (C5) give each gate a left
--- inverse; a shifted generator inherits its inverse through cong↑.
-
-grouplike-MS : Grouplike (n CRel,_===_)
-grouplike-MS (gate₁ H-gate)  = [ gate₁ H-gate ]ʷ , PB.axiom (srel MS.c2)
-grouplike-MS (gate₂ CZ-gate) = [ gate₂ CZ-gate ]ʷ , PB.axiom (srel MS.c5)
-grouplike-MS (gate₁ S-gate)  = S' • S' • S' , claim
-  where
-  S' = [ gate₁ S-gate ]ʷ
-  -- (S·(S·S))·S has to be rebracketed into S ^ 4 = S·(S·(S·S)).
-  claim : PB._≈_ (_ CRel,_===_) ((S' • S' • S') • S') ε
-  claim = PB.trans PB.assoc
-            (PB.trans (PB.cong PB.refl PB.assoc)
-                      (PB.axiom (srel MS.c3)))
-grouplike-MS (gg ↥) with grouplike-MS gg
-... | inv , eq = inv ↑ , lemma-cong↑ (inv • [ gg ]ʷ) ε eq
 
 ------------------------------------------------------------------------
 -- The round trip on the Figure-8 side
@@ -120,14 +87,154 @@ f-left-inv-gen : (x : Gen n) →
 f-left-inv-gen x = PB.refl
 
 ------------------------------------------------------------------------
+-- Pauli generators as gate words
+--
+-- The Z generator on wire 0 is S², and this is immediate: it is exactly
+-- the twisted relator for order-S, whose correction Z₀ is the single
+-- nontrivial entry of corr in Qubit.Presentation.
+--
+-- Split on n: Presentation.Z₀ is defined by cases on the wire count, so
+-- it does not reduce against Z-gen while n is a variable.
+
+Z-gen-eq : (n : ℕ) →
+           PB._≈_ ((₁₊ n) Clifford,_===_)
+                  [ inj₁ (Z-gen {n}) ]ʷ ((g ʷ) (Z {n}))
+Z-gen-eq zero =
+  PB.sym (PB.trans (PB.axiom (_⋄_⋄_.mid (_∪_.right (tw (ssrel sorder-S)))))
+                   PB.right-unit)
+Z-gen-eq (₁₊ m) =
+  PB.sym (PB.trans (PB.axiom (_⋄_⋄_.mid (_∪_.right (tw (ssrel sorder-S)))))
+                   PB.right-unit)
+
+------------------------------------------------------------------------
+-- The reduction: everything left on the g side rests on M₋₁ ≈ ε
+--
+-- M₋₁ = M 1 = SHSHSH = (SH)³ is the scalar word.  It is trivial in the
+-- phaseless Clifford group, but syntactically that is the statement that
+-- the accumulated Pauli correction of Simplified.Lemmas.lemma-order-SH
+-- vanishes — see the closing note.  Granting it, H² = ε follows at once
+-- from the twisted relator for the simplified order-H, whose correction
+-- is ε and whose right-hand side is M₋₁.
+
+module Reduction
+  (M₋₁≈ε : ∀ {n} → PB._≈_ ((₁₊ n) Clifford,_===_) [ M₋₁ {n} ]ᵣ ε)
+  where
+
+  H²≈ε : ∀ {n} → PB._≈_ ((₁₊ n) Clifford,_===_) [ Symplectic.H ^ 2 ]ᵣ ε
+  H²≈ε = PB.trans (PB.axiom (_⋄_⋄_.mid (_∪_.right (tw (ssrel sorder-H)))))
+                  (PB.trans PB.left-unit M₋₁≈ε)
+
+  -- Z-gen-eq with the right embedding spelled out.
+  Z-gen-eqᵣ : (n : ℕ) →
+              PB._≈_ ((₁₊ n) Clifford,_===_) [ inj₁ (Z-gen {n}) ]ʷ [ Z {n} ]ᵣ
+  Z-gen-eqᵣ n =
+    Eq.subst (λ □ → PB._≈_ ((₁₊ n) Clifford,_===_) [ inj₁ (Z-gen {n}) ]ʷ □)
+             (gʷ≡ᵣ (Z {n})) (Z-gen-eq n)
+
+  -- conj carries the wire-0 Z generator to the wire-0 X generator, since
+  -- actg H pZ = pX.  The trailing ε's are vecToWord's empty exponents.
+  conj-eq : (n : ℕ) →
+            PB._≈_ ((₁₊ n) Clifford,_===_)
+                   [ conj (gate₁ H-gate) (Z-gen {n}) ]ₗ [ inj₁ (X-gen {n}) ]ʷ
+  conj-eq zero   = PB.right-unit
+  conj-eq (₁₊ m) = PB.trans (PB.cong PB.right-unit tail-ε) PB.right-unit
+    where
+    -- The tail is wmap inj₁ (wmap inj₂ (vecToWord pIₙ)); fuse the two
+    -- relabellings, then collapse by pIw-ε at wire count ₁₊ m.
+    tail-ε : PB._≈_ ((₂₊ m) Clifford,_===_)
+                    (wmap inj₁ (wmap inj₂ (vecToWord (pIₙ {₁₊ m})))) ε
+    tail-ε =
+      Eq.subst (λ □ → PB._≈_ ((₂₊ m) Clifford,_===_) □ ε)
+               (Eq.sym (wmap-∘ inj₁ inj₂ (vecToWord (pIₙ {₁₊ m}))))
+               (pIw-ε ((₂₊ m) Clifford,_===_) (₁₊ m) (λ x → inj₁ (inj₂ x)))
+
+  -- X = H Z H, and the two H's collapse by H² ≈ ε.
+  X-gen-eq : (n : ℕ) →
+             PB._≈_ ((₁₊ n) Clifford,_===_)
+                    [ inj₁ (X-gen {n}) ]ʷ ((g ʷ) (X {n}))
+  X-gen-eq n =
+    Eq.subst (λ □ → PB._≈_ ((₁₊ n) Clifford,_===_) [ inj₁ (X-gen {n}) ]ʷ □)
+             (gʷ≡ᵣ (X {n})) (PB.sym chain)
+    where
+    chain : PB._≈_ ((₁₊ n) Clifford,_===_) [ X {n} ]ᵣ [ inj₁ (X-gen {n}) ]ʷ
+    chain =
+      PB.trans (PB.cong PB.refl (PB.cong (PB.sym (Z-gen-eqᵣ n)) PB.refl))
+        (PB.trans (PB.sym PB.assoc)
+          (PB.trans (PB.cong (PB.axiom (_⋄_⋄_.mid (_∪_.left
+                       (ConjRelʷ.comm (Z-gen {n}) (gate₁ H-gate))))) PB.refl)
+            (PB.trans PB.assoc
+              (PB.trans (PB.cong PB.refl H²≈ε)
+                (PB.trans PB.right-unit (conj-eq n))))))
+
+------------------------------------------------------------------------
+-- fwd-pauli
+--
+-- The Pauli relations hold among the derived words.  At wire 0 they are
+-- X² = Z² = ε and XZ = ZX; the `right` branch shifts and recurses; the
+-- `mid` branch is disjoint-wire commutation.
+
+pauli-rel : ∀ {n u v} → (Γ-H ⊕^ n) u v →
+            PB._≈_ (n CRel,_===_) (Pw u) (Pw v)
+pauli-rel {₁₊ zero} (_⋄_⋄_.left  CyS.order) = X²≈ε
+pauli-rel {₁₊ zero} (_⋄_⋄_.right CyS.order) = Z²≈ε
+pauli-rel {₁₊ zero} (_⋄_⋄_.mid (CommRel.comm tt tt)) = XZ.XZ≈ZX zero
+pauli-rel {₂₊ m} (_⋄_⋄_.left (_⋄_⋄_.left  CyS.order)) = X²≈ε
+pauli-rel {₂₊ m} (_⋄_⋄_.left (_⋄_⋄_.right CyS.order)) = Z²≈ε
+pauli-rel {₂₊ m} (_⋄_⋄_.left (_⋄_⋄_.mid (CommRel.comm tt tt))) = XZ.XZ≈ZX (₁₊ m)
+-- subst rather than rewrite: rewriting here hides the structural
+-- recursion from the termination checker.
+pauli-rel {₂₊ m} (_⋄_⋄_.right {u} {v} x) =
+  Eq.subst₂ (PB._≈_ ((₂₊ m) CRel,_===_))
+            (Eq.sym (Pw-↑ m u)) (Eq.sym (Pw-↑ m v))
+            (lemma-cong↑ (Pw {₁₊ m} u) (Pw {₁₊ m} v) (pauli-rel x))
+pauli-rel {₂₊ m} (_⋄_⋄_.mid (CommRel.comm (inj₁ tt) b)) =
+  PB.sym (↑Comm.↑-comm-X (₁₊ m) (pauliGen→word b))
+pauli-rel {₂₊ m} (_⋄_⋄_.mid (CommRel.comm (inj₂ tt) b)) =
+  PB.sym (↑Comm.↑-comm-Z (₁₊ m) (pauliGen→word b))
+
+fwd-pauli : ∀ {n u v} → (Γ-H ⊕^ n) u v →
+            PB._≈_ (n CRel,_===_) ((f ʷ) [ u ]ₗ) ((f ʷ) [ v ]ₗ)
+fwd-pauli {n} {u} {v} x
+  rewrite fₗ≡Pw {n} u | fₗ≡Pw {n} v = pauli-rel x
+
+------------------------------------------------------------------------
+-- f-well-defined, split by axiom family
+--
+-- The extension relation is (Γ-H ⊕^ n) ⋄ EmptyRel ⋄ (ConjRelʷ ∪
+-- RelTwist), so there are exactly three real cases; the EmptyRel factor
+-- contributes none.  fwd-pauli is proved above; what remains is
+--
+--   fwd-conj — each gate conjugates each Pauli generator as conj says;
+--   fwd-tw   — each simplified symplectic relator holds up to its
+--              Pauli correction corr.
+
+module F-WD
+  (n : ℕ)
+  (fwd-conj : (y : PauliGen n) (x : Gen n) →
+              PB._≈_ (n CRel,_===_)
+                     ((f ʷ) ([ [ x ]ʷ ]ᵣ • [ [ y ]ʷ ]ₗ))
+                     ((f ʷ) ([ conj x y ]ₗ • [ [ x ]ʷ ]ᵣ)))
+  (fwd-tw : ∀ {u v} (r̄ : (n QRel,_===_) u v) →
+            PB._≈_ (n CRel,_===_)
+                   ((f ʷ) [ u ]ᵣ) ((f ʷ) ([ corr r̄ ]ₗ • [ v ]ᵣ)))
+  where
+
+  f-well-defined : ∀ {w v} → (n Clifford,_===_) w v →
+                   PB._≈_ (n CRel,_===_) ((f ʷ) w) ((f ʷ) v)
+  f-well-defined (_⋄_⋄_.left x)  = fwd-pauli x
+  f-well-defined (_⋄_⋄_.right ())
+  f-well-defined (_⋄_⋄_.mid (_∪_.left (ConjRelʷ.comm y x))) = fwd-conj y x
+  f-well-defined (_⋄_⋄_.mid (_∪_.right (tw r̄)))             = fwd-tw r̄
+
+------------------------------------------------------------------------
 -- The isomorphism
 --
--- Given the three remaining inputs, the two rule sets present the same
--- group, and the isomorphism is (f ʷ).
+-- Given the two well-definedness conditions and the round trip g ∘ f,
+-- the two rule sets present the same group, and the isomorphism is (f ʷ).
+-- Both group-likeness witnesses come from Selinger.GroupLike.
 
 module Iso
   (n : ℕ)
-  (grouplike-Cl : Grouplike (n Clifford,_===_))
   -- Every extension axiom holds among the derived Figure-8 words.
   (f-well-defined : ∀ {w v} → (n Clifford,_===_) w v →
                     PB._≈_ (n CRel,_===_) ((f ʷ) w) ((f ʷ) v))
@@ -141,34 +248,51 @@ module Iso
 
   private
     module GM = GroupMorphism (n Clifford,_===_) (n CRel,_===_)
-                  grouplike-Cl grouplike-MS
+                  (GL.grouplike-Cl n) grouplike-MS
 
   open GM.StarGroupIsomorphism f g
          f-well-defined f-left-inv-gen g-well-defined g-left-inv-gen
     public using (isGroupIsomorphism)
 
 ------------------------------------------------------------------------
--- What the three parameters amount to
+-- What the remaining parameters amount to
 --
 -- g-left-inv-gen is the smallest.  On a gate generator it is refl; on a
 -- Pauli generator it asks for Z = S² and X = HS²H inside
--- _Clifford,_===_.  Both are available there: the twisted relator for
--- order-S reads [ S² ]ᵣ === [ Z₀ ]ₗ, and the conjugation axiom for H
--- carries Z₀ to X₀, since conj H (inj₂ tt) = pX.
+-- _Clifford,_===_.  Both wire-0 cases are proved:
 --
--- f-well-defined splits over the extension's three axiom families
--- (Extension.extension-presentation = S ⋄ EmptyRel ⋄ (ConjRelʷ ∪
--- RelTwist)):
---   * left  — the Pauli relations Γ-H ⊕^ n must hold among the derived
---     words: X² = Z² = ε and all commutations.  X and Z on one wire
---     commute only modulo the scalar, which is exactly what `scalar`
---     supplies and why the exact Figure 8 would not do;
---   * mid (left …) — the conjugation axioms, one per gate/Pauli pair,
---     matching conj against C6–C9;
---   * mid (right (tw r̄)) — one per simplified symplectic relator,
---     each holding up to its Pauli correction corr r̄.
+--   * Z-gen-eq (unconditional) is exactly the twisted relator for
+--     order-S, whose correction Z₀ is the one nontrivial entry of corr;
+--   * Reduction.X-gen-eq follows from M₋₁ ≈ ε, via the conjugation axiom
+--     for H (conj H Z-gen is the X generator, since actg H pZ = pX),
+--     which turns [ X ]ᵣ into [ X-gen ]ₗ • [ H ² ]ᵣ, and then
+--     Reduction.H²≈ε.
 --
--- g-well-defined is the converse: derive C1–C15 (with ω = ε) inside the
+-- So the wire-0 half of g-left-inv-gen rests on the single lemma
+--
+--     M₋₁≈ε :  [ M₋₁ ]ᵣ  ≈  ε      in _Clifford,_===_,
+--
+-- where M₋₁ = M 1 = SHSHSH = (SH)³ is the scalar word.  The same lemma
+-- is what C2 (H² = ε) and C4 ((SH)³ = ε) of g-well-defined need, so it
+-- is the shared next target.  It says the accumulated Pauli correction
+-- of Simplified.Lemmas.lemma-order-SH is trivial; corr-witness in
+-- Presentation.Construct.Properties.Extension computes that correction
+-- from the derivation, and discharging it means evaluating that word in
+-- the Pauli presentation, where Pauli-presentation's injectivity reduces
+-- it to a check in Pauli-group n.
+--
+-- What is still missing for g-left-inv-gen beyond M₋₁≈ε is the higher
+-- wires: a Pauli generator inj₂ y sits at wire ≥ 1, and relating
+-- _Clifford,_===_ at wire counts n and ₁₊ n needs a structural shift
+-- lemma that has not been built.
+--
+-- f-well-defined is split by module F-WD above; fwd-pauli is proved, so
+-- only fwd-conj and fwd-tw remain.  fwd-conj is one case per gate/Pauli
+-- pair, matching conj against C6–C9.  fwd-tw is one case per simplified
+-- symplectic relator, each holding up to its Pauli correction corr r̄; it
+-- is the largest piece left.
+--
+-- g-well-defined is the converse: derive C2–C15 (with ω = ε) inside the
 -- extension presentation.
 --
 -- These are the two substantive halves and are a large development —
