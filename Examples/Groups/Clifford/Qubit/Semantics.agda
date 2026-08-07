@@ -22,11 +22,11 @@
 -- semantic counterpart of corr (order-S) = Z₀, the single nontrivial
 -- entry of the cocycle in Qubit.Presentation.)
 --
--- The second layer restores the global scalar ω of order 8.  It is built
--- as a central extension, from the ω-exponent Ω of a word; see
--- Qubit.ExactCocycle, which derives the whole cocycle from Ω, and the
--- note at the end of this file for why Ω is the one thing the P4-action
--- cannot supply.
+-- The second layer restores the global scalar ω of order 8.  Its total
+-- group is the one Figure 8 presents — Clifford words modulo the exact
+-- congruence — so it is assembled by hand, like the first; see
+-- Qubit.ExactExtension, and the note at the end of this file for what it
+-- still takes as input and why the P4-action cannot supply it.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -35,6 +35,7 @@ module Examples.Groups.Clifford.Qubit.Semantics where
 
 open import Data.Nat using (ℕ)
 open import Data.Nat.Primality using (Prime ; prime?)
+open import Notations using (₁₊)
 open import Relation.Nullary.Decidable using (from-yes)
 open import Level using (0ℓ)
 open import Algebra.Bundles using (Group)
@@ -71,45 +72,48 @@ open CG using (S²=Z) public
 -- Layer 2: the scalars ⟨ω⟩, and the exact Clifford group
 --
 -- ⟨ω⟩ ≅ ℤ/8, written additively in the exponent of ω: ωʲ · ωᵏ = ω^{j+k}.
--- The extension itself is the central extension twisted by the cocycle
--- that Qubit.ExactCocycle derives from the ω-exponent Ω of a word.
+-- The extension is an ordinary one, assembled by hand exactly as layer 1
+-- is: the total group is Clifford words modulo the *exact* congruence —
+-- the one Selinger's Figure 8 presents, which unlike ≈ᶜ still sees the
+-- global scalar — with incl k = ωᵏ and proj the identity on words.  See
+-- Qubit.ExactExtension.
+--
+-- The scalar layer needs at least one qubit, ω living on the first wire.
 
-open import Examples.Groups.Clifford.Qubit.ExactCocycle
-  using (Scalar ; Scalar-abelian ; Scalar-group ; ScalarExponent ; Pins-ω)
+open import Examples.Groups.Clifford.Qubit.ExactExtension
+  using (Scalar-group ; Exact-group ; ExactData)
   renaming (Exact to Exact-of)
 
 -- 1 → ⟨ω⟩ → Exact n → Clifford n → 1.
-Exact : ∀ {n} → ScalarExponent n → Extension Scalar-group (Clifford-group n)
+Exact : ∀ {n} → ExactData n → Extension Scalar-group (Clifford-group (₁₊ n))
 Exact = Exact-of
 
 ------------------------------------------------------------------------
 -- What Exact n still takes as input
 --
--- Everything in ForStdlib.Algebra.Construct.CentralExtension — the
--- twisted group, both homomorphisms, all four exactness conditions — is
--- proved, and Qubit.ExactCocycle now derives the cocycle (normalisation
--- and the cocycle identity included) from a single function
+-- The group structure of the Figure-8 words, that k ↦ ωᵏ is a
+-- homomorphism ℤ/8 → Exact n, surjectivity of proj and that proj kills
+-- the scalars are all proved in Qubit.ExactExtension.  So `Exact` is a
+-- definition, not a hole; what remains is to supply one ExactData n, and
+-- its three fields are Selinger's theorems rather than bookkeeping:
 --
---     Ω : Word (Gen n) → ℤ/8,
+--   sound      — Figure-8-equal words act equally on P4;
+--   scalars    — a word acting trivially on P4 is some ωᵏ;
+--   ω-faithful — ω has order exactly 8 in the presented group.
 --
--- the power of ω that a word carries against a chosen exact lift.  So
--- `Exact` is a definition, not a hole; what remains is to *supply* one
--- ScalarExponent n meeting the specification Pins-ω, i.e. Ω ((SH)³) = ₁,
--- without which the ⟨ω⟩ layer is a proper quotient of ℤ/8.
+-- `sound` is within reach: Selinger.Action already discharges C1, C2, C3,
+-- C5-C9, C12 and C13, and C4 is an identity, leaving C10, C11, C14, C15.
 --
--- Why no formula does it.  Examples.Groups.Clifford.Qupit.Semantics
--- twists by ½·sform P (ap S Q); ℤ/2 has no ½, and its p = 2 replacement
--- is the ℤ/4-valued γ = ι ∘ β of SignedPauli.  But that cocycle only
--- reaches the Pauli layer.  More sharply — and this is now a theorem,
--- ExactCocycle.action-blind — *any* Ω that is invariant under ≈ᶜ sends ω
--- to ₀ and so fails Pins-ω, because ω acts trivially on P4
--- (Selinger.Action.cact-ω).  The scalar is exactly the datum cact
--- discards, so Ω has to come from a faithful model of the exact Clifford
--- group.  The two candidates in reach are Selinger's exact normal form
+-- The other two cannot come from the action, and ExactExtension.
+-- action-blind makes that precise: ω acts trivially on P4
+-- (Selinger.Action.cact-ω), so if ≈ᶜ implied the Figure-8 congruence then
+-- ω = ω¹ and ε = ω⁰ would be identified and ω-faithful would force
+-- ₁ ≡ ₀.  The scalar is exactly the datum cact discards, so ω-faithful
+-- has to come from a faithful model of the exact Clifford group.  The two
+-- candidates in reach are Selinger's exact normal form
 -- (Qubit.Selinger.NormalForm, ExactNF n = NF n × Fin 8, uniqueness still
 -- WIP) and matrices over ℤ[1/√2, i].
 --
--- The trivial cocycle is not an escape: it gives the direct product
--- ℤ/8 × Clifford n, whose Ω is constant ₀ — action-invariant, hence
--- ruled out above.  Group-theoretically the extension is the non-split
--- 2^{2n}·Sp(2n,2), the nontrivial class in H²(Clifford n, ℤ/8).
+-- Group-theoretically the extension is the non-split 2^{1+2n}·Sp(2n,2);
+-- in particular a direct product ℤ/8 × Clifford n would be the wrong
+-- group, which is why the scalar cannot simply be adjoined.
