@@ -540,6 +540,34 @@ module _ {n : ℕ} where
              (Eq.cong proj₂ (cact-pauliWord P ₀ Q))
 
 ------------------------------------------------------------------------
+-- Why CMS n cannot be built on phaseless Paulis
+--
+-- The tempting simplification is to identify Clifford words when they
+-- agree on Pauli n rather than on P4 n.  That does not give CMS n but
+-- Sp(2n, 2): the phaseless action of a Clifford *is* its symplectic map,
+-- so the whole Pauli kernel collapses.  phaseless-blind says it — any
+-- two Paulis conjugate alike phaselessly — and X₀≢Z₀ exhibits two that
+-- must nevertheless stay apart, so incl-injective would be false at one
+-- qubit and above.
+--
+-- One sign bit is not enough either, and the reason is worth recording,
+-- since it is what pins the phase group at ℤ/4.  Clifford conjugation
+-- does act faithfully on the *signed* Hermitian Paulis ±i^{ab}XᵃZᵇ, the
+-- Aaronson-Gottesman tableau, which is only ℤ/2 × Pauli n.  But those do
+-- not form a group — X · Z = -i·(iXZ) leaves the set — and the exactness
+-- proof below needs a group: φ-+ derives additivity of the phase from
+-- cact w being a homomorphism of P4.  Conversely the ± Pauli group
+-- {± XᵃZᵇ} *is* a group but is not Clifford-stable, S X S⁻¹ = i XZ
+-- escaping it.  ℤ/4 is the smallest phase group that is both.
+
+phaseless-blind : (P P' : Pauli n) → proj (incl P) ≈ˢ proj (incl P')
+phaseless-blind P P' Q =
+  Eq.trans (proj-kills-incl P Q) (Eq.sym (proj-kills-incl P' Q))
+
+X₀≢Z₀ : Eq._≢_ (pX ∷ pIₙ {n}) (pZ ∷ pIₙ {n})
+X₀≢Z₀ ()
+
+------------------------------------------------------------------------
 -- Exactness at the middle: a Clifford in the kernel of proj is a Pauli
 --
 -- If w acts trivially on the phaseless Paulis then all it does is attach
