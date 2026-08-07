@@ -18,13 +18,12 @@
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
+open import Word.Base hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Relation.Binary.Reasoning.Setoid as SR
 
 open import Data.Nat.Primality
-open import Notations
 
 module Examples.Groups.Symplectic.BR.Two.BD-Top (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
