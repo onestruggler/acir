@@ -4,12 +4,12 @@
 -- Soundness of the plain qupit-Clifford presentation in the symplectic
 -- semantics, proved directly.
 --
--- Examples.Groups.Symplectic.Transport proves the same statement by
--- transporting it across the isomorphism with the extended gate set,
--- where the work actually happens (ExtendedGate.Soundness).  This
--- module redoes it in place.
+-- This replaces Examples.Groups.Symplectic.Transport, which proved the
+-- same statement by carrying it across the isomorphism with the
+-- extended gate set, where the work happened (ExtendedGate.Soundness).
+-- That module is in the history if the comparison is ever wanted.
 --
--- What the extended gate set buys is that S^k, CZ^k and M are single
+-- What the extended gate set bought is that S^k, CZ^k and M are single
 -- generators there, carrying their scalar in the action.  Here they are
 -- words, so the direct proof needs power lemmas first — lemma-S^ and
 -- lemma-CZ^ below — after which each rule is the same computation.
