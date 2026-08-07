@@ -373,6 +373,53 @@ module Lemmas1b (n : ℕ) where
   conj-X^k-H : ∀ k -> X ^ k • H ≈ H • Z⁻¹ ^ k
   conj-X^k-H k = lemma-Inductionˡ lemma-XH k
 
+  -- X commutes with Z-powers, hence with Z⁻¹.
+  comm-X-Z^k : ∀ k -> X • Z ^ k ≈ Z ^ k • X
+  comm-X-Z^k k = lemma-Induction (axiom comm-X-Z) k
+
+  split-XZ⁻¹^k : ∀ k -> (X • Z⁻¹) ^ k ≈ X ^ k • Z⁻¹ ^ k
+  split-XZ⁻¹^k k = ^-• X Z⁻¹ k (comm-X-Z^k p-1)
+
+  aux-Z⁻¹^k-Z^k : ∀ k -> Z⁻¹ ^ k • Z ^ k ≈ ε
+  aux-Z⁻¹^k-Z^k k = begin
+    Z⁻¹ ^ k • Z ^ k ≈⟨ sym (^-• Z⁻¹ Z k (comm⇒pow-comm p-1 1 refl)) ⟩
+    (Z⁻¹ • Z) ^ k   ≈⟨ ^-cong (Z⁻¹ • Z) ε k aux-Z⁻¹-Z ⟩
+    ε ^ k           ≈⟨ ε^k=ε k ⟩
+    ε ∎
+
+  -- --------------------------------------------------------------------
+  -- (R • H) ^ 3 ≈ (S • H) ^ 3, the bridge that makes order-SH derivable.
+  --
+  -- R = S • Z^½, so each R contributes a Pauli.  Moved one at a time,
+  -- each cancels against the NEXT Z^½ (Proposition 4.8):
+  --
+  --   S P H S P H S P H          P = Z^a, Q = X^a, a = toℕ ½
+  --   S H Q S P H S P H          P•H = H•Q
+  --   S H S (X•Z⁻¹)^a P H S P H  Q•S = S•(X•Z⁻¹)^a
+  --   S H S X^a H S P H          (X^a•Z⁻¹^a)•Z^a = X^a
+  --   S H S H Z⁻¹^a S P H        X^a•H = H•Z⁻¹^a
+  --   S H S H S Z⁻¹^a P H        Z⁻¹^a•S = S•Z⁻¹^a
+  --   S H S H S H                Z⁻¹^a•Z^a = ε
+  --
+  -- R is unfolded in its own `refl` step: a by-passoc pattern cannot
+  -- span the R boundary, since unfolding changes the atom count 6 -> 9.
+
+  -- The ℕ exponent carried by R's Pauli.
+  a½ : ℕ
+  a½ = toℕ 1/2
+
+  lemma-RH⁶ : (R • H) ^ 3 ≈ S • Z ^ a½ • H • S • Z ^ a½ • H • S • Z ^ a½ • H
+  lemma-RH⁶ = begin
+    (R • H) ^ 3
+      ≈⟨ by-passoc ((□ • □) • (□ • □) • (□ • □))
+                   (□ • □ • □ • □ • □ • □) auto ⟩
+    R • H • R • H • R • H
+      ≈⟨ refl ⟩
+    (S • Z ^ a½) • H • (S • Z ^ a½) • H • (S • Z ^ a½) • H
+      ≈⟨ by-passoc (□ ^ 2 • □ • □ ^ 2 • □ • □ ^ 2 • □)
+                   (□ • □ • □ • □ • □ • □ • □ • □ • □) auto ⟩
+    S • Z ^ a½ • H • S • Z ^ a½ • H • S • Z ^ a½ • H ∎
+
   aux-X⁻¹ : X⁻¹ ≈ H • S⁻¹ • H • H • S • H
   aux-X⁻¹ = begin
     X⁻¹ ≈⟨ lemma-X^k-ℕ p-1 ⟩
