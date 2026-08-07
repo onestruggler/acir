@@ -296,6 +296,44 @@ module Lemmas1b (n : ℕ) where
     X • Z ^ l • S ^ l ≈⟨ sym assoc ⟩
     (X • Z ^ l) • S ^ l ∎
 
+  -- --------------------------------------------------------------------
+  -- Moving Pauli powers rightward past S
+  --
+  -- Groundwork for deriving order-SH from M-power alone, following
+  -- Proposition 4.8: the plan is (R • H) ^ 3 ≈ (S • H) ^ 3, where
+  -- R = S • Z^½.  Since M ₁ = (R • H) ^ 3 definitionally and lemma-M1
+  -- gives M ₁ ≈ ε out of M-power, that would yield (S • H) ^ 3 ≈ ε
+  -- without appealing to order-SH.  These are the right-moving
+  -- companions of conj-S-X^k / conj-S^l-X, which move S past a Pauli.
+  --
+  -- NOTE: everything here is independent of order-SH.  lemma-SHSH and
+  -- lemma-HSHSH above are NOT usable for that derivation — both are
+  -- proved from `axiom order-SH` and so are downstream of it.
+
+  -- Z-powers commute with S outright.
+  comm-Z^k-S : ∀ k -> Z ^ k • S ≈ S • Z ^ k
+  comm-Z^k-S k = lemma-Inductionˡ lemma-comm-Z-S k
+
+  -- Z • Z⁻¹ is Z ^ p on the nose, since p = ₂₊ p-2.
+  lemma-Z-Z⁻¹ : Z • Z⁻¹ ≈ ε
+  lemma-Z-Z⁻¹ = lemma-order-Z
+
+  -- Moving a single X rightward past S costs a Z⁻¹.
+  lemma-XS : X • S ≈ S • X • Z⁻¹
+  lemma-XS = sym (begin
+    S • X • Z⁻¹         ≈⟨ sym assoc ⟩
+    (S • X) • Z⁻¹       ≈⟨ (cleft conj-S-X) ⟩
+    ((X • Z) • S) • Z⁻¹ ≈⟨ assoc ⟩
+    (X • Z) • S • Z⁻¹   ≈⟨ (cright sym (comm-Z^k-S p-1)) ⟩
+    (X • Z) • Z⁻¹ • S   ≈⟨ by-passoc (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
+    X • (Z • Z⁻¹) • S   ≈⟨ (cright cleft lemma-Z-Z⁻¹) ⟩
+    X • ε • S           ≈⟨ (cright left-unit) ⟩
+    X • S ∎)
+
+  -- …and so an X-power costs a Z⁻¹-power.
+  conj-X^k-S : ∀ k -> X ^ k • S ≈ S • (X • Z⁻¹) ^ k
+  conj-X^k-S k = lemma-Inductionˡ lemma-XS k
+
   aux-X⁻¹ : X⁻¹ ≈ H • S⁻¹ • H • H • S • H
   aux-X⁻¹ = begin
     X⁻¹ ≈⟨ lemma-X^k-ℕ p-1 ⟩
