@@ -140,11 +140,11 @@ module _ (A : AbelianGroup a ℓ₁) (G : Group b ℓ₂) (H : Group c ℓ₃)
     ιʳ-unit h = H.trans (H.∙-congˡ (H.trans (ιʳ-cong AP.ε⁻¹≈ε) ιʳ-ε))
                         (H.identityʳ h)
 
-    from≈ : ∀ {g₁ g₂ h₁ h₂} →
-            g₁ G.≈ g₂ → h₁ H.≈ h₂ → (g₁ , h₁) ≈′ (g₂ , h₂)
-    from≈ {g₁} {g₂} {h₁} {h₂} eg eh =
-      A.ε , G.trans (G.sym eg) (G.sym (ιˡ-unit g₁))
-          , H.trans (H.sym eh) (H.sym (ιʳ-unit h₁))
+  -- The quotient map: equal in the direct product, equal here.
+  from≈ : ∀ {g₁ g₂ h₁ h₂} → g₁ G.≈ g₂ → h₁ H.≈ h₂ → (g₁ , h₁) ≈′ (g₂ , h₂)
+  from≈ {g₁} {g₂} {h₁} {h₂} eg eh =
+    A.ε , G.trans (G.sym eg) (G.sym (ιˡ-unit g₁))
+        , H.trans (H.sym eh) (H.sym (ιʳ-unit h₁))
 
   ------------------------------------------------------------------------
   -- The equality is an equivalence
