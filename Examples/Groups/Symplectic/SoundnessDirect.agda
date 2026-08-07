@@ -42,7 +42,7 @@ open import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic using ( Circuit ; Gen ; SympGate ; gate₁ ; gate₂ ; _↥
                       ; H-gate ; S-gate ; CZ-gate ; S ; H ; CZ ; _↑ ; _↓
-                      ; S^ ; CZ^ ; M ; _^1 ; _^2 )
+                      ; S^ ; CZ^ ; M ; _^1 ; _^2 ; S⁻¹ ; ₕ|ₕ ; ʰ|ʰ ; ⊥⊤ ; ⊤⊥ )
 
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem
 open Sem.Symplectic using (ap)
@@ -473,3 +473,214 @@ sound-semi-M↓CZ x ((a , b) ∷ (a' , b') ∷ t) = begin
   aux : (b + a') * x' ≡ b * x' + x' * a'
   aux = Eq.trans (*-distribʳ-+ x' b a')
                  (Eq.cong (b * x' +_) (*-comm a' x'))
+
+------------------------------------------------------------------------
+-- The inverse shear
+--
+-- S⁻¹ is S ^ p-1, and p is ₁₊ p-1 definitionally, so mult p-1 is - ₁:
+-- one step short of the full cycle.
+
+private
+  mult-p-1 : mult p-1 ≡ - ₁
+  mult-p-1 = begin
+    mult p-1              ≡⟨ Eq.sym (+-identityˡ (mult p-1)) ⟩
+    ₀ + mult p-1          ≡⟨ Eq.cong (_+ mult p-1) (Eq.sym (+-inverseˡ ₁)) ⟩
+    (- ₁ + ₁) + mult p-1  ≡⟨ +-assoc (- ₁) ₁ (mult p-1) ⟩
+    - ₁ + (₁ + mult p-1)  ≡⟨ Eq.cong (- ₁ +_) mult-p ⟩
+    - ₁ + ₀               ≡⟨ +-identityʳ (- ₁) ⟩
+    - ₁                   ∎
+    where open ≡-Reasoning
+
+act-S⁻¹ : ∀ a b (t : Pauli n) → act S⁻¹ ((a , b) ∷ t) ≡ (a , b + - a) ∷ t
+act-S⁻¹ a b t = begin
+  act (S ^ p-1) ((a , b) ∷ t)  ≡⟨ lemma-S^ p-1 a b t ⟩
+  ((a , b + mult p-1 * a) ∷ t) ≡⟨ Eq.cong (λ z → (a , b + z * a) ∷ t) mult-p-1 ⟩
+  ((a , b + - ₁ * a) ∷ t)      ≡⟨ Eq.cong (λ z → (a , b + z) ∷ t) neg-one ⟩
+  ((a , b + - a) ∷ t)          ∎
+  where
+  open ≡-Reasoning
+  neg-one : - ₁ * a ≡ - a
+  neg-one = Eq.trans (Eq.sym (-‿distribˡ-* ₁ a)) (Eq.cong -_ (*-identityˡ a))
+
+------------------------------------------------------------------------
+-- The Selinger rules
+
+-- Two CZs on overlapping pairs commute: each adds to a different
+-- wire's Z-exponent, and the middle wire receives both.
+sound-c12 : ∀ (q : Pauli (₃₊ n)) → act (CZ ↑ • CZ) q ≡ act (CZ • CZ ↑) q
+sound-c12 ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) =
+  Eq.cong (λ z → (a , b + a') ∷ (a' , z) ∷ (a'' , b'' + a') ∷ t)
+          (swap-add b' a a'')
+
+private
+  -- Rearranging four summands in the commutative group.
+  rearr4 : ∀ (w x y z : ℤ ₚ) → (w + x) + (y + z) ≡ (w + z) + (y + x)
+  rearr4 w x y z = begin
+    (w + x) + (y + z) ≡⟨ +-assoc w x (y + z) ⟩
+    w + (x + (y + z)) ≡⟨ Eq.cong (w +_) (Eq.sym (+-assoc x y z)) ⟩
+    w + ((x + y) + z) ≡⟨ Eq.cong (λ u → w + (u + z)) (+-comm x y) ⟩
+    w + ((y + x) + z) ≡⟨ Eq.cong (w +_) (+-comm (y + x) z) ⟩
+    w + (z + (y + x)) ≡⟨ Eq.sym (+-assoc w z (y + x)) ⟩
+    (w + z) + (y + x) ∎
+    where open ≡-Reasoning
+
+  -- (a' + a) + (b' + - a') ≡ a + b'
+  mid-X : ∀ (a a' b' : ℤ ₚ) → (a' + a) + (b' + - a') ≡ a + b'
+  mid-X a a' b' = begin
+    (a' + a) + (b' + - a') ≡⟨ +-assoc a' a (b' + - a') ⟩
+    a' + (a + (b' + - a')) ≡⟨ Eq.cong (a' +_) (Eq.sym (+-assoc a b' (- a'))) ⟩
+    a' + ((a + b') + - a') ≡⟨ Eq.cong (a' +_) (+-comm (a + b') (- a')) ⟩
+    a' + (- a' + (a + b')) ≡⟨ Eq.sym (+-assoc a' (- a') (a + b')) ⟩
+    (a' + - a') + (a + b') ≡⟨ Eq.cong (_+ (a + b')) (+-inverseʳ a') ⟩
+    ₀ + (a + b')           ≡⟨ +-identityˡ (a + b') ⟩
+    a + b'                 ∎
+    where open ≡-Reasoning
+
+  -- (- b' + a') + (b' + a) ≡ a' + a
+  mid-Z : ∀ (a a' b' : ℤ ₚ) → (- b' + a') + (b' + a) ≡ a' + a
+  mid-Z a a' b' = begin
+    (- b' + a') + (b' + a) ≡⟨ +-assoc (- b') a' (b' + a) ⟩
+    - b' + (a' + (b' + a)) ≡⟨ Eq.cong (- b' +_) (Eq.sym (+-assoc a' b' a)) ⟩
+    - b' + ((a' + b') + a) ≡⟨ Eq.cong (λ u → - b' + (u + a)) (+-comm a' b') ⟩
+    - b' + ((b' + a') + a) ≡⟨ Eq.cong (- b' +_) (+-assoc b' a' a) ⟩
+    - b' + (b' + (a' + a)) ≡⟨ Eq.sym (+-assoc (- b') b' (a' + a)) ⟩
+    (- b' + b') + (a' + a) ≡⟨ Eq.cong (_+ (a' + a)) (+-inverseˡ b') ⟩
+    ₀ + (a' + a)           ≡⟨ +-identityˡ (a' + a) ⟩
+    a' + a                 ∎
+    where open ≡-Reasoning
+
+-- Conjugating CZ by H on the upper wire.  Both sides send
+-- (a , b) (a' , b') to (a , b + a' - b' - a) (- b' - a , a' + a); the
+-- right-hand side gets there through four shears.
+sound-c10 : ∀ (q : Pauli (₂₊ n)) →
+            act (CZ • H ↑ • CZ) q
+              ≡ act (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓) q
+sound-c10 ((a , b) ∷ (a' , b') ∷ t) = Eq.sym (begin
+  act (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓)
+      ((a , b) ∷ (a' , b') ∷ t)
+    ≡⟨ Eq.cong (act (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑))
+               (act-S⁻¹ a b ((a' , b') ∷ t)) ⟩
+  act (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑)
+      ((a , b + - a) ∷ (a' , b') ∷ t)
+    ≡⟨ Eq.cong (act (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑))
+               (Eq.trans (act-↑ S⁻¹ (a , b + - a) ((a' , b') ∷ t))
+                         (Eq.cong (λ z → (a , b + - a) ∷ z)
+                                  (act-S⁻¹ a' b' t))) ⟩
+  act (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑)
+      ((a , b + - a) ∷ (a' , b' + - a') ∷ t)
+    ≡⟨ Eq.cong (act (S⁻¹ ↑ • H ↑))
+               (Eq.trans (act-↑ S⁻¹ (a , (b + - a) + - (b' + - a'))
+                                    ((- (b' + - a') , a' + a) ∷ t))
+                         (Eq.cong (λ z → (a , (b + - a) + - (b' + - a')) ∷ z)
+                                  (act-S⁻¹ (- (b' + - a')) (a' + a) t))) ⟩
+  act (S⁻¹ ↑ • H ↑)
+      ((a , (b + - a) + - (b' + - a'))
+        ∷ (- (b' + - a') , (a' + a) + - - (b' + - a')) ∷ t)
+    ≡⟨ Eq.trans (act-↑ S⁻¹ (a , (b + - a) + - (b' + - a'))
+                           (act H ((- (b' + - a') , (a' + a) + - - (b' + - a')) ∷ t)))
+                (Eq.cong (λ z → (a , (b + - a) + - (b' + - a')) ∷ z)
+                         (act-S⁻¹ (- ((a' + a) + - - (b' + - a')))
+                                  (- (b' + - a')) t)) ⟩
+  ((a , (b + - a) + - (b' + - a'))
+    ∷ ( - ((a' + a) + - - (b' + - a'))
+      , - (b' + - a') + - - ((a' + a) + - - (b' + - a'))) ∷ t)
+    ≡⟨ Eq.cong₂ (λ u v → (a , u) ∷ v ∷ t) fstZ sndPair ⟩
+  ((a , (b + a') + - (b' + a)) ∷ (- (b' + a) , a' + a) ∷ t) ∎)
+  where
+  open ≡-Reasoning
+
+  -- The upper wire's X-slot, - ((a' + a) + - - (b' + - a')), is - (b' + a).
+  X≡ : - ((a' + a) + - - (b' + - a')) ≡ - (b' + a)
+  X≡ = begin
+    - ((a' + a) + - - (b' + - a'))
+      ≡⟨ Eq.cong (λ z → - ((a' + a) + z)) (-‿involutive (b' + - a')) ⟩
+    - ((a' + a) + (b' + - a')) ≡⟨ Eq.cong -_ (mid-X a a' b') ⟩
+    - (a + b')                 ≡⟨ Eq.cong -_ (+-comm a b') ⟩
+    - (b' + a)                 ∎
+
+  fstZ : (b + - a) + - (b' + - a') ≡ (b + a') + - (b' + a)
+  fstZ = begin
+    (b + - a) + - (b' + - a') ≡⟨ Eq.cong ((b + - a) +_) (neg-sub b' a') ⟩
+    (b + - a) + (- b' + a')   ≡⟨ rearr4 b (- a) (- b') a' ⟩
+    (b + a') + (- b' + - a)   ≡⟨ Eq.cong ((b + a') +_) (-‿+-comm b' a) ⟩
+    (b + a') + - (b' + a)     ∎
+
+  sndZ : - (b' + - a') + - - ((a' + a) + - - (b' + - a')) ≡ a' + a
+  sndZ = begin
+    - (b' + - a') + - - ((a' + a) + - - (b' + - a'))
+      ≡⟨ Eq.cong (- (b' + - a') +_) (-‿involutive ((a' + a) + - - (b' + - a'))) ⟩
+    - (b' + - a') + ((a' + a) + - - (b' + - a'))
+      ≡⟨ Eq.cong₂ _+_ (neg-sub b' a')
+           (Eq.trans (Eq.cong (λ z → (a' + a) + z) (-‿involutive (b' + - a')))
+                     (Eq.trans (mid-X a a' b') (+-comm a b'))) ⟩
+    (- b' + a') + (b' + a) ≡⟨ mid-Z a a' b' ⟩
+    a' + a                 ∎
+
+  sndPair : ( - ((a' + a) + - - (b' + - a'))
+            , - (b' + - a') + - - ((a' + a) + - - (b' + - a')))
+            ≡ (- (b' + a) , a' + a)
+  sndPair = Eq.cong₂ _,_ X≡ sndZ
+
+-- The mirror image of c10, conjugating CZ by H on the lower wire.  The
+-- helpers are the same ones with the two wires exchanged.
+sound-c11 : ∀ (q : Pauli (₂₊ n)) →
+            act (CZ • H ↓ • CZ) q
+              ≡ act (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑) q
+sound-c11 ((a , b) ∷ (a' , b') ∷ t) = Eq.sym (begin
+  act (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑)
+      ((a , b) ∷ (a' , b') ∷ t)
+    ≡⟨ Eq.cong (act (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓))
+               (Eq.trans (act-↑ S⁻¹ (a , b) ((a' , b') ∷ t))
+                         (Eq.cong (λ z → (a , b) ∷ z) (act-S⁻¹ a' b' t))) ⟩
+  act (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓)
+      ((a , b) ∷ (a' , b' + - a') ∷ t)
+    ≡⟨ Eq.cong (act (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓))
+               (act-S⁻¹ a b ((a' , b' + - a') ∷ t)) ⟩
+  act (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓)
+      ((a , b + - a) ∷ (a' , b' + - a') ∷ t)
+    ≡⟨ Eq.cong (act (S⁻¹ ↓ • H ↓))
+               (act-S⁻¹ (- (b + - a)) (a + a')
+                        ((a' , (b' + - a') + - (b + - a)) ∷ t)) ⟩
+  act (S⁻¹ ↓ • H ↓)
+      ((- (b + - a) , (a + a') + - - (b + - a))
+        ∷ (a' , (b' + - a') + - (b + - a)) ∷ t)
+    ≡⟨ act-S⁻¹ (- ((a + a') + - - (b + - a))) (- (b + - a))
+               ((a' , (b' + - a') + - (b + - a)) ∷ t) ⟩
+  (( - ((a + a') + - - (b + - a))
+   , - (b + - a) + - - ((a + a') + - - (b + - a)))
+     ∷ (a' , (b' + - a') + - (b + - a)) ∷ t)
+    ≡⟨ Eq.cong₂ (λ u v → u ∷ (a' , v) ∷ t) fstPair sndZ ⟩
+  ((- (b + a') , a + a') ∷ (a' , (b' + a) + - (b + a')) ∷ t) ∎)
+  where
+  open ≡-Reasoning
+
+  X≡ : - ((a + a') + - - (b + - a)) ≡ - (b + a')
+  X≡ = begin
+    - ((a + a') + - - (b + - a))
+      ≡⟨ Eq.cong (λ z → - ((a + a') + z)) (-‿involutive (b + - a)) ⟩
+    - ((a + a') + (b + - a)) ≡⟨ Eq.cong -_ (mid-X a' a b) ⟩
+    - (a' + b)               ≡⟨ Eq.cong -_ (+-comm a' b) ⟩
+    - (b + a')               ∎
+
+  fstZ : - (b + - a) + - - ((a + a') + - - (b + - a)) ≡ a + a'
+  fstZ = begin
+    - (b + - a) + - - ((a + a') + - - (b + - a))
+      ≡⟨ Eq.cong (- (b + - a) +_) (-‿involutive ((a + a') + - - (b + - a))) ⟩
+    - (b + - a) + ((a + a') + - - (b + - a))
+      ≡⟨ Eq.cong₂ _+_ (neg-sub b a)
+           (Eq.trans (Eq.cong (λ z → (a + a') + z) (-‿involutive (b + - a)))
+                     (Eq.trans (mid-X a' a b) (+-comm a' b))) ⟩
+    (- b + a) + (b + a') ≡⟨ mid-Z a' a b ⟩
+    a + a'               ∎
+
+  fstPair : ( - ((a + a') + - - (b + - a))
+            , - (b + - a) + - - ((a + a') + - - (b + - a)))
+            ≡ (- (b + a') , a + a')
+  fstPair = Eq.cong₂ _,_ X≡ fstZ
+
+  sndZ : (b' + - a') + - (b + - a) ≡ (b' + a) + - (b + a')
+  sndZ = begin
+    (b' + - a') + - (b + - a) ≡⟨ Eq.cong ((b' + - a') +_) (neg-sub b a) ⟩
+    (b' + - a') + (- b + a)   ≡⟨ rearr4 b' (- a') (- b) a ⟩
+    (b' + a) + (- b + - a')   ≡⟨ Eq.cong ((b' + a) +_) (-‿+-comm b a') ⟩
+    (b' + a) + - (b + a')     ∎
