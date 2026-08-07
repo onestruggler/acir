@@ -6,23 +6,26 @@
 -- Examples.Groups.Clifford.Qubit.Selinger.Figure8 with the order-8
 -- scalar ω quotiented out.
 --
--- The scalars form the central subgroup ⟨ω⟩ ≅ ℤ/8, so the quotient is
--- presented by the same generators and the same relations plus ω = 1.
--- Adding that one relation is what "removing the scalars" means; simply
--- deleting the ω's would present a different (larger) group, since the
--- ω-free forms of C10 and C11 are not consequences of Figure 8 on their
--- own.  Concretely, against Figure8.agda:
+-- The scalar ω is removed outright: this relation set does not mention
+-- it at all.  Against Figure8.agda:
 --
---   * C4, which is definitional there (SHSHSH = ω), becomes SHSHSH = 1.
---     This is the only relation added, and it is the quotient map.
---   * C1 (ω⁸ = 1) is dropped: it now follows from C4 by congruence.
+--   * C1 (ω⁸ = 1) is dropped, and so is C4 (SHSHSH = ω), which was
+--     definitional there.  The word ω = (SH)³ is gone with them.
 --   * The ω⁻¹ tails of C10 and C11 are dropped, as is ω⁻¹ itself.
 --   * Everything else — C2, C3, C5–C9, C12–C15, and the derived words
 --     X = HSSH, Z = SS — is verbatim.
 --
--- Note that S⁴ = 1 (C3) stays: S² = Z is a Pauli, not a scalar, so it
--- survives this quotient.  Only the further quotient by the Paulis gives
--- the phaseless S² = 1 of the symplectic presentation.
+-- What this presents.  The ω-free C10 and C11 hold in the Clifford group
+-- modulo scalars, so this relation set is sound for that quotient and
+-- the induced map onto it is onto.  It is NOT thereby a presentation of
+-- it: nothing here forces (SH)³ to the identity.  At n = 1 the surviving
+-- relations are just H² = S⁴ = 1, whose group is ℤ/2 * ℤ/4, where
+-- (SH)³ ≠ 1.  Whether the n ≥ 2 relations force (SH)³ = 1 — which is
+-- exactly what the dropped C4 would have asserted — is open here.
+--
+-- Note that S⁴ = 1 (C3) stays: S² = Z is a Pauli, not a scalar, so it is
+-- untouched by removing scalars.  Only the further quotient by the
+-- Paulis gives the phaseless S² = 1 of the symplectic presentation.
 --
 -- As in Figure8, the structural rules (cong↑, comm₁, comm₂) come from
 -- Lift-Relation rather than being restated.
@@ -55,18 +58,13 @@ private
 ------------------------------------------------------------------------
 -- Derived words: the Pauli operators X, Z
 --
--- ω is still a word — it has to be, to state C4 below — but there is no
--- ω⁻¹ any more: once ω = 1 the inverse is ε, so every ω⁻¹ that appeared
--- in Figure 8 has simply gone.
+-- Neither ω nor ω⁻¹ is defined here: no relation below mentions the
+-- scalar, so the words that named it are gone too.  SH stays — it is
+-- still needed to state C10 and C11.
 
 -- SH, the one-qubit word S·H.
 SH : Word (Gen (₁₊ n))
 SH = S • H
-
--- ω = SHSHSH = (SH)³.  In Figure 8 this names the order-8 scalar; here
--- C4 below sets it to the identity.
-ω : Word (Gen (₁₊ n))
-ω = SH ^ 3
 
 -- X = HSSH, Z = SS  (Selinger §4).
 X : Word (Gen (₁₊ n))
@@ -85,11 +83,6 @@ data _Sel,_===_ : (n : ℕ) → CRel n where
   -- (b) n ≥ 1
   c2  : ∀ {n} → (₁₊ n) Sel,  H ^ 2 === ε
   c3  : ∀ {n} → (₁₊ n) Sel,  S ^ 4 === ε
-
-  -- C4 is SHSHSH = ω in Figure 8, where it defines the scalar.  Modulo
-  -- scalars ω is the identity, so the same relation reads SHSHSH = 1.
-  -- This replaces C1 (ω⁸ = 1), which follows from it.
-  c4  : ∀ {n} → (₁₊ n) Sel,  ω === ε
 
   -- (c) n ≥ 2
   c5  : ∀ {n} → (₂₊ n) Sel,  CZ ^ 2 === ε
