@@ -2,7 +2,7 @@
 {-# OPTIONS  --call-by-name #-}
 {-# OPTIONS --termination-depth=4 #-}
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
+open import Relation.Binary.PropositionalEquality using (_≢_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -15,7 +15,7 @@ open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 
 open import Data.Empty using (⊥-elim)
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
+open import Word.Base hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 
@@ -44,19 +44,15 @@ open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 open LM2
 
 
-open import Zp.ModularArithmetic
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 
-open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 --open import Examples.Groups.Symplectic.Lemmas.Ex-Sym5 p-2 p-prime hiding (module L0)
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 
 open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n p-2 p-prime 0
-open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to Cp1)
 open Lemmas0a
 open Lemmas0a1
 open Lemmas0b
@@ -64,12 +60,8 @@ open Lemmas-Sym
 open Duality
 
 --open import Examples.Groups.Symplectic.Lemmas.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to CP2) using ()
-open import Examples.Groups.Symplectic.Lemmas.Lemmas-3Q p-2 p-prime
-open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Duality p-2 p-prime
 
-open import Examples.Groups.Symplectic.BR.Calculations p-2 p-prime
-open import Examples.Groups.Symplectic.BR.One.A p-2 p-prime
 open import Examples.Groups.Symplectic.BR.Two.Lemmas p-2 p-prime hiding (n ; module L01 ; sa)
 open import Examples.Groups.Symplectic.BR.Two.D p-2 p-prime hiding (n ; module L01) renaming(dir-of to  dir-of-d)
 
