@@ -837,3 +837,29 @@ sound-c13 ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t) = Eq.trans lhs (Eq.sym r
                                    (-‿involutive a'))
                          (-‿involutive b')) ⟩
     C ∎
+
+------------------------------------------------------------------------
+-- The factors that c14 and c15 cube
+--
+-- Closed forms for one application, so that the cube can be taken three
+-- of these at a time rather than by unfolding twenty-one letters.
+
+act-⊤⊥↑CZ : ∀ a b a' b' a'' b'' (t : Pauli n) →
+            act (⊤⊥ ↑ • CZ ↓) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t)
+              ≡ (a , b + a')
+                ∷ (- (a' + a'') , - b'')
+                ∷ (a' , - b'' + (b' + a)) ∷ t
+act-⊤⊥↑CZ a b a' b' a'' b'' t =
+  Eq.trans (act-↑ ⊤⊥ (a , b + a') ((a' , b' + a) ∷ (a'' , b'') ∷ t))
+           (Eq.cong (λ z → (a , b + a') ∷ z)
+                    (act-⊤⊥ a' (b' + a) a'' b'' t))
+
+act-⊥⊤↓CZ↑ : ∀ a b a' b' a'' b'' (t : Pauli n) →
+             act (⊥⊤ ↓ • CZ ↑) ((a , b) ∷ (a' , b') ∷ (a'' , b'') ∷ t)
+               ≡ (a' , - b + (b' + a''))
+                 ∷ (- (a' + a) , - b)
+                 ∷ (a'' , b'' + a') ∷ t
+act-⊥⊤↓CZ↑ a b a' b' a'' b'' t =
+  Eq.trans (Eq.cong (act ⊥⊤)
+                    (act-↑ CZ (a , b) ((a' , b') ∷ (a'' , b'') ∷ t)))
+           (act-⊥⊤ a b a' (b' + a'') ((a'' , b'' + a') ∷ t))
