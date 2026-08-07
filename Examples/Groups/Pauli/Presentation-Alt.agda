@@ -71,6 +71,8 @@ module Examples.Groups.Pauli.Presentation-Alt
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
+open import Zp.Mod-Lemmas p-2 p-prime
+  using (mult ; toℕ-+ ; mult-toℕ ; mult-p)
 
 
 ------------------------------------------------------------------------
@@ -376,40 +378,6 @@ private
   variable
     n : ℕ
 
-------------------------------------------------------------------------
--- ℤ/pℤ as the image of ℕ
---
--- mult k is the k-fold sum of ₁; it is the residue of k, so it is the
--- identity on representatives of ℤ/pℤ and vanishes at p.
-
-mult : ℕ → ℤ ₚ
-mult ₀      = ₀
-mult (₁₊ k) = ₁ + mult k
-
-toℕ-+ : ∀ (a b : ℤ ₚ) → toℕ (a + b) ≡ (toℕ a Nat.+ toℕ b) % p
-toℕ-+ a b = toℕ-fromℕ< (m%n<n (toℕ a Nat.+ toℕ b) p)
-
-private
-  0%p≡0 : 0 % p ≡ 0
-  0%p≡0 = Eq.refl
-
-  mult-% : ∀ k → toℕ (mult k) ≡ k % p
-  mult-% ₀      = Eq.sym 0%p≡0
-  mult-% (₁₊ k) = begin
-    toℕ (₁ + mult k)               ≡⟨ toℕ-+ ₁ (mult k) ⟩
-    (1 Nat.+ toℕ (mult k)) % p     ≡⟨ Eq.cong (λ z → (1 Nat.+ z) % p) (mult-% k) ⟩
-    (1 Nat.+ k % p) % p            ≡⟨ %-distribˡ-+ 1 (k % p) p ⟩
-    (1 % p Nat.+ (k % p) % p) % p  ≡⟨ Eq.cong (λ z → (1 % p Nat.+ z) % p) (m%n%n≡m%n k p) ⟩
-    (1 % p Nat.+ k % p) % p        ≡⟨ Eq.sym (%-distribˡ-+ 1 k p) ⟩
-    (1 Nat.+ k) % p                ∎
-    where open Eq.≡-Reasoning
-
--- mult undoes toℕ, and kills p.
-mult-toℕ : ∀ (a : ℤ ₚ) → mult (toℕ a) ≡ a
-mult-toℕ a = toℕ-injective (Eq.trans (mult-% (toℕ a)) (m<n⇒m%n≡m (toℕ<n a)))
-
-mult-p : mult p ≡ ₀
-mult-p = toℕ-injective (Eq.trans (mult-% p) (n%n≡0 p))
 
 ------------------------------------------------------------------------
 -- The semantics

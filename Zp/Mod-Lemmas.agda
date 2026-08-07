@@ -14,6 +14,11 @@ open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 open import Data.Fin hiding (_+_ ; _-_)
 open import Data.Nat.Primality
+import Data.Nat as Nat
+open import Data.Nat.DivMod
+  using (_%_ ; m%n<n ; n%n≡0 ; %-distribˡ-+ ; m%n%n≡m%n ; m<n⇒m%n≡m)
+open import Data.Fin.Properties
+  using (toℕ-injective ; toℕ-fromℕ< ; toℕ<n)
 open import Notations
 
 
@@ -208,3 +213,38 @@ b-c=0⇒b=c b c eq0 = begin
   b + - c + c ≡⟨ cong (_+ c) eq0 ⟩
   ₀ + c ≡⟨ +-identityˡ c ⟩
   c ∎
+
+------------------------------------------------------------------------
+-- ℤ/pℤ as the image of ℕ
+--
+-- mult k is the k-fold sum of ₁; it is the residue of k, so it is the
+-- identity on representatives of ℤ/pℤ and vanishes at p.
+
+mult : ℕ → ℤ ₚ
+mult ₀      = ₀
+mult (₁₊ k) = ₁ + mult k
+
+toℕ-+ : ∀ (a b : ℤ ₚ) → toℕ (a + b) ≡ (toℕ a Nat.+ toℕ b) % p
+toℕ-+ a b = toℕ-fromℕ< (m%n<n (toℕ a Nat.+ toℕ b) p)
+
+private
+  0%p≡0 : 0 % p ≡ 0
+  0%p≡0 = Eq.refl
+
+  mult-% : ∀ k → toℕ (mult k) ≡ k % p
+  mult-% ₀      = Eq.sym 0%p≡0
+  mult-% (₁₊ k) = begin
+    toℕ (₁ + mult k)               ≡⟨ toℕ-+ ₁ (mult k) ⟩
+    (1 Nat.+ toℕ (mult k)) % p     ≡⟨ Eq.cong (λ z → (1 Nat.+ z) % p) (mult-% k) ⟩
+    (1 Nat.+ k % p) % p            ≡⟨ %-distribˡ-+ 1 (k % p) p ⟩
+    (1 % p Nat.+ (k % p) % p) % p  ≡⟨ Eq.cong (λ z → (1 % p Nat.+ z) % p) (m%n%n≡m%n k p) ⟩
+    (1 % p Nat.+ k % p) % p        ≡⟨ Eq.sym (%-distribˡ-+ 1 k p) ⟩
+    (1 Nat.+ k) % p                ∎
+    where open Eq.≡-Reasoning
+
+-- mult undoes toℕ, and kills p.
+mult-toℕ : ∀ (a : ℤ ₚ) → mult (toℕ a) ≡ a
+mult-toℕ a = toℕ-injective (Eq.trans (mult-% (toℕ a)) (m<n⇒m%n≡m (toℕ<n a)))
+
+mult-p : mult p ≡ ₀
+mult-p = toℕ-injective (Eq.trans (mult-% p) (n%n≡0 p))
