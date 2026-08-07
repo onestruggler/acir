@@ -1,18 +1,13 @@
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS  --call-by-name #-}
-{-# OPTIONS --termination-depth=4 #-}
 
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
-
-
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 --open import Data.List using () hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
-open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 
 open import Data.Unit using (⊤ ; tt)
 open import Data.Empty using (⊥ ; ⊥-elim)
@@ -25,14 +20,7 @@ open import Notations
 
 open import Data.Nat.Primality
 
-
-
 module Examples.Groups.Symplectic.BR.One.A (p-2 : ℕ) (p-prime : Prime (2+ p-2)) (n : ℕ)  where
-
-    
-
-
-
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
@@ -43,17 +31,6 @@ open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
-
-
-
-
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
-
-
 
 
 open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
