@@ -24,7 +24,7 @@ open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 open import Notations
 
-module Examples.Groups.Clifford.Qupit.Clifford-Simplified-Verify
+module Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Simplified-Verify
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -36,9 +36,9 @@ module Examples.Groups.Clifford.Qupit.Clifford-Simplified-Verify
 
 open Primitive-Root-Modp' g* g-gen
 
-open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen
 open Clifford-Relations
-open import Examples.Groups.Clifford.Qupit.Clifford-Lemmas p-3 p-prime g* g-gen hiding (module CL ; module CLb)
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Lemmas p-3 p-prime g* g-gen hiding (module CL ; module CLb)
 
 -- Foundational fact: S⁻¹ = ζ⁻¹ · Z^½  (since ζ = S · Z^½ and S,Z commute).
 module _ (n : ℕ) where

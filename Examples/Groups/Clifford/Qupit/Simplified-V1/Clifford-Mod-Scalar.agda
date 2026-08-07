@@ -7,7 +7,7 @@
 -- This module is an aggregator: the development was split across three
 -- files in the `Clifford-Mod-Scalar/` folder (to keep each under ~1000
 -- LOC).  It re-exports all of them publicly, so every existing importer
--- (`open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar …`) sees exactly the same
+-- (`open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar …`) sees exactly the same
 -- names as before the split:
 --
 --   Part1 : shared preamble (patterns, ζ/1/2, Symplectic), Clifford-Relations, Lemmas-Clifford
@@ -32,7 +32,7 @@ open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 open import Notations
 
-module Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar
+module Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -45,9 +45,9 @@ module Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar
 -- first modules; re-export it in full.  From Part2/Part3 re-export only their
 -- own modules (their preambles are copies of Part1's — taking them again would
 -- be a duplicate definition).
-open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar.Part1 p-3 p-prime g* g-gen public
-open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar.Part2 p-3 p-prime g* g-gen public
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar.Part1 p-3 p-prime g* g-gen public
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar.Part2 p-3 p-prime g* g-gen public
   using (module Lemmas1)
-open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar.Part3 p-3 p-prime g* g-gen public
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar.Part3 p-3 p-prime g* g-gen public
   using ( module Clifford-GroupLike ; module CommData-Sim ; module Commuting-Symplectic-Sim
         ; module Rewriting-Sim ; module Sim-Rewriting ; module Lemmas1b )

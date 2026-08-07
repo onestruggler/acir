@@ -27,7 +27,7 @@ open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 open import Notations
 
-module Examples.Groups.Clifford.Qupit.Iso-Clifford-Simplified
+module Examples.Groups.Clifford.Qupit.Simplified-V1.Iso-Clifford-Simplified
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -39,16 +39,16 @@ module Examples.Groups.Clifford.Qupit.Iso-Clifford-Simplified
 
 open Primitive-Root-Modp' g* g-gen
 
-open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar p-3 p-prime g* g-gen
-import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalars-Simplified p-3 p-prime g* g-gen as Sim
-import Examples.Groups.Clifford.Qupit.Clifford-Simplified-Verify p-3 p-prime g* g-gen as Snd
-import Examples.Groups.Clifford.Qupit.Simplified-Lemmas p-3 p-prime g* g-gen as Cmp
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalars-Simplified p-3 p-prime g* g-gen as Sim
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Simplified-Verify p-3 p-prime g* g-gen as Snd
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Simplified-Lemmas p-3 p-prime g* g-gen as Cmp
 -- semi-M bridges: soundness (simplified holds in Clifford) and
 -- completeness (original holds in Simplified) of the simplified semi-M relations.
-import Examples.Groups.Clifford.Qupit.Mg-Simplify   p-3 p-prime g* g-gen as MgC
-import Examples.Groups.Clifford.Qupit.Mg-Simplify-S p-3 p-prime g* g-gen as MgS
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify   p-3 p-prime g* g-gen as MgC
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify-S p-3 p-prime g* g-gen as MgS
 -- Clifford-side proofs of Z↔CZ (the new comm-Z-CZ / comm-Z↑-CZ axioms).
-import Examples.Groups.Clifford.Qupit.Clifford-Lemmas p-3 p-prime g* g-gen as CliL
+import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Lemmas p-3 p-prime g* g-gen as CliL
 
 open import Algebra.Bundles using (Group)
 

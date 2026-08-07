@@ -44,7 +44,7 @@ open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
 
-module Examples.Groups.Clifford.Qupit.Iso
+module Examples.Groups.Clifford.Qupit.Simplified-V1.Iso
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -55,7 +55,7 @@ module Examples.Groups.Clifford.Qupit.Iso
 
 
 open import Examples.Groups.Clifford.Qupit.SDProduct p-3 p-prime g* g-gen
-open import Examples.Groups.Clifford.Qupit.Clifford-Lemmas p-3 p-prime g* g-gen hiding (module CL ; module CLb)
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Lemmas p-3 p-prime g* g-gen hiding (module CL ; module CLb)
 
 
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
@@ -151,7 +151,7 @@ import Examples.Groups.Symplectic.XZ p-2 p-prime as XZ
 
 module Iso (n : ℕ) where
 
-  open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar p-3 p-prime g* g-gen as Cli
+  open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen as Cli
 
   module Clifford = Clifford-Relations
 --  open Clifford-Lemmas

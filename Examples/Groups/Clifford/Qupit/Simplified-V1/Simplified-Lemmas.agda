@@ -28,7 +28,7 @@ open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 open import Notations
 
-module Examples.Groups.Clifford.Qupit.Simplified-Lemmas
+module Examples.Groups.Clifford.Qupit.Simplified-V1.Simplified-Lemmas
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -37,4 +37,4 @@ module Examples.Groups.Clifford.Qupit.Simplified-Lemmas
   (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
   where
 
-open import Examples.Groups.Clifford.Qupit.Simplified-Lemmas.Part4 p-3 p-prime g* g-gen public
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Simplified-Lemmas.Part4 p-3 p-prime g* g-gen public

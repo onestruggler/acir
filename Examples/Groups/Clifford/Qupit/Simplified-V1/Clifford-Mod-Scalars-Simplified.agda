@@ -3,7 +3,7 @@
 
 ------------------------------------------------------------------------
 -- A *simplified* relation set for the qudit Clifford group mod scalars,
--- an analogue of `Examples.Groups.Symplectic.Simplified.Syntactics` for `Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar`.
+-- an analogue of `Examples.Groups.Symplectic.Simplified.Syntactics` for `Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar`.
 --
 -- Simplification strategy (applied per relation):
 --   (1) push the X and Z (Pauli) parts of both sides to the right-most
@@ -41,7 +41,7 @@ open import Zp.Fermats-little-theorem
 open import Notations
 
 
-module Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalars-Simplified
+module Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalars-Simplified
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
@@ -56,7 +56,7 @@ open Primitive-Root-Modp' g* g-gen
 -- Inherit the generators (S, H, CZ, ↥) and every derived word
 -- (X, Z, X⁻¹, Z⁻¹, S⁻¹, Z^, X^, ζ, ζ^, M, M₋₁, Mg, Mg^, ⊤⊥, ⊥⊤, …)
 -- from the original Clifford presentation.
-open import Examples.Groups.Clifford.Qupit.Clifford-Mod-Scalar p-3 p-prime g* g-gen
+open import Examples.Groups.Clifford.Qupit.Simplified-V1.Clifford-Mod-Scalar p-3 p-prime g* g-gen
 -- The axiom names below used to be constructors on both sides, and Agda
 -- lets constructor names overload.  Since Clifford-Relations moved onto
 -- Circuit.Base.Lift-Relation its axioms are pattern synonyms, which do
@@ -117,10 +117,10 @@ module Simplified-Relations where
       --        semi-M↓CZ :  Wg  · CZ = CZ^g  · Wg  · Z↑^(½(g-1))
       --
       --     The S-form semi-Mζ is the `final-semi-Mζ` theorem of
-      --     Examples.Groups.Clifford.Qupit.Mg-Simplify; the CZ ones are the `final-semi-M*CZ`
+      --     Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify; the CZ ones are the `final-semi-M*CZ`
       --     theorems (all soundness, in the original Clifford presentation).
       --     The original Mg-forms are recovered as the `completeness-semi-M*`
-      --     lemmas of Examples.Groups.Clifford.Qupit.Mg-Simplify-S (the S-form is first turned back
+      --     lemmas of Examples.Groups.Clifford.Qupit.Simplified-V1.Mg-Simplify-S (the S-form is first turned back
       --     into the ζ-form by `SemiS-rev.lemma-semi-Mζ`).
       --
       --     The completeness proofs of the two CZ relations need Z↔CZ
