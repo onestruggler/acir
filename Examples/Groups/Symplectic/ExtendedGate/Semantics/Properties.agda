@@ -4,10 +4,8 @@ open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect
 import Relation.Binary.PropositionalEquality as Eq
 
 
-open import Function using (id)
-open import Function.Definitions using (Injective)
 
-open import Data.Product using (_,_ ; proj₁ ; proj₂)
+open import Data.Product using (_,_)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 open import Agda.Builtin.Nat using (_-_)
 import Data.Nat as Nat
@@ -17,7 +15,7 @@ open import Data.Vec hiding ([_])
 open import Data.Fin hiding (_+_ ; _-_)
 
 open import Data.Maybe
-open import Data.Sum using ([_,_] ; [_,_]′)
+open import Data.Sum using ([_,_])
 open import Data.Unit using (⊤)
 open import Data.Empty using (⊥)
 
@@ -30,7 +28,7 @@ module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
-open import Data.Fin using (toℕ ; zero ; fromℕ)
+open import Data.Fin using (toℕ ; fromℕ)
 open import Data.Fin.Properties as FP using (toℕ-fromℕ)
 import Data.Nat.Properties as NP
 open import Presentation.GroupLike

@@ -40,7 +40,7 @@ open Eq using (_≡_ ; _≢_ ; refl ; sym ; trans ; cong ; cong₂ ; subst ;
 open ≡-Reasoning
 
 open import Notations
-open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
+open import Word.Base using ([_]ʷ ; ε ; _•_ ; _^_)
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime

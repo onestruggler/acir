@@ -1,13 +1,9 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --termination-depth=2 #-}
 
-open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
-open import Relation.Nullary.Decidable using (no)
 
 
-open import Function using (id)
-open import Function.Definitions using (Injective)
 
 open import Data.Product using (_,_)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
@@ -18,7 +14,7 @@ open import Data.Vec hiding ([_])
 open import Data.Fin hiding (_+_ ; _-_)
 
 open import Data.Maybe
-open import Data.Sum using ([_,_] ; [_,_]′)
+open import Data.Sum using ([_,_])
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 open import Word.Properties

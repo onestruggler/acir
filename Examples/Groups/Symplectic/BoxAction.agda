@@ -21,7 +21,7 @@ module Examples.Groups.Symplectic.BoxAction (p-2 : ℕ) (p-prime : Prime (2+ p-2
 
 import Data.Nat as Nat
 import Data.Nat.Properties as NP
-open import Data.Nat.DivMod using (m%n<n ; _%_ ; %-distribˡ-+ ; m<n⇒m%n≡m ; n%n≡0)
+open import Data.Nat.DivMod using (m%n<n ; _%_ ; %-distribˡ-+ ; m<n⇒m%n≡m)
 open import Data.Fin using (Fin ; toℕ ; fromℕ<)
 open import Data.Fin.Properties using (toℕ<n ; toℕ-fromℕ< ; fromℕ<-toℕ ; fromℕ<-cong)
 open import Data.Product using (_,_ ; proj₁ ; proj₂)
@@ -31,7 +31,7 @@ import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; module ≡-Reasoning)
 
 open import Notations
-open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
+open import Word.Base using ([_]ʷ ; ε ; _•_ ; _^_)
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
@@ -42,8 +42,6 @@ open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli ; Pauli1 ; 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic using (Circuit ; Gen ; S ; H ; S^ ; M ; CZ ; CZ^ ; Ex ; _↑)
 
-open import Data.Empty using (⊥)
-open import Relation.Binary.PropositionalEquality using (_≢_)
 
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem
 open Sem.Symplectic using (ap)

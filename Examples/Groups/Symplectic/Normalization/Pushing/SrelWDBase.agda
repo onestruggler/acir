@@ -21,7 +21,7 @@ open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (Pointwise)
-open import Data.Sum using (inj₁ ; inj₂)
+open import Data.Sum using (inj₂)
 open import Level using (0ℓ)
 open import Relation.Binary using (Rel)
 import Relation.Binary.PropositionalEquality as Eq
@@ -50,11 +50,11 @@ open Lemmas-Sym using (lemma-comm-S-w↑ ; lemma-comm-H-w↑)
 open import Data.Nat using (zero ; suc) renaming (_+_ to _+ℕ_ ; _*_ to _*ℕ_)
 open import Data.Nat.DivMod using (_%_ ; m%n<n ; %-distribˡ-+ ; m*n%n≡0 ; m<n⇒m%n≡m ; m%n%n≡m%n)
 open import Data.Product using (∃)
-open import Data.Fin using (Fin ; toℕ ; fromℕ<)
+open import Data.Fin using (Fin ; toℕ)
 open import Data.Fin.Properties using (toℕ-injective ; toℕ-fromℕ<)
 import Data.Nat.Properties as NP
 open import Data.Unit using (tt)
-open import Data.Vec using ([] ; _∷_)
+open import Data.Vec using ([])
 open import Algebra.Properties.Ring (+-*-ring p-2)
   using (-0#≈0# ; -‿involutive ; -‿distribˡ-* ; -‿distribʳ-* ; -‿+-comm)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushLM1 p-2 p-prime

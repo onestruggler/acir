@@ -11,8 +11,6 @@ open import Data.Nat.Primality using (Prime)
 
 module Examples.Groups.Symplectic.BBox (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
-open import Data.Nat using (zero ; suc)
-open import Data.Fin using (toℕ)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
 open import Data.Vec using (Vec ; [] ; _∷_ ; _∷ʳ_ ; head ; tail)

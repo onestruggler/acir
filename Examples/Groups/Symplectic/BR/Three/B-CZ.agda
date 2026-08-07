@@ -14,8 +14,7 @@ open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 --open import Data.List using () hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
 open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 
-open import Data.Sum using ([_,_] ; [_,_]′)
-open import Data.Unit using (tt)
+open import Data.Sum using ([_,_])
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
@@ -27,7 +26,6 @@ module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
-open import Data.Fin using (toℕ)
 open import Presentation.GroupLike
 open import Data.Nat.Primality
 

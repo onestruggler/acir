@@ -7,7 +7,6 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
 
-open import Function.Definitions using (Injective)
 
 open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
@@ -17,7 +16,6 @@ open import Data.Bool hiding (_<_ ; _≤_)
 open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 
 open import Data.Maybe
-open import Data.Unit using (tt)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 open import Word.Properties

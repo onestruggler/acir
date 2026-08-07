@@ -14,20 +14,13 @@ open import Notations
 module Examples.Groups.Symplectic.Normalization.Pushing.PushML (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 
-open import Data.Nat using (ℕ ; zero ; suc)
+open import Data.Nat using (ℕ)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using (≡×≡⇒≡ ; Pointwise ; ≡⇒≡×≡)
-open import Data.Unit using (⊤ ; tt)
-open import Function using (_∘_)
-open import Level using (0ℓ)
-open import Relation.Binary using (Rel)
-open import Relation.Binary.Definitions using (DecidableEquality)
-open import Relation.Binary.Morphism.Definitions using (Homomorphic₂)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]ₑ)
 import Relation.Binary.Reasoning.Setoid as SR
-open import Relation.Nullary.Decidable using (yes ; no)
 
 open import Word.Base
 open import Word.Properties
@@ -53,7 +46,6 @@ private variable
 
 
 open import Data.Vec
-open import Data.Nat using (s≤s ; z≤n)
 
 open Lemmas-Sym using (lemma-comm-S-w↑ ; lemma-comm-H-w↑)
 open import Examples.Groups.Symplectic.BR.Three.DD-CZ-n p-2 p-prime using (gen-dd-cz-tail)

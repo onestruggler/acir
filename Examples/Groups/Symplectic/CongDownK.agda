@@ -21,7 +21,7 @@
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 import Data.Nat as ℕ
 open import Data.Fin using (toℕ)
-open import Data.Product using (_,_ ; proj₁ ; proj₂)
+open import Data.Product using (_,_ ; proj₁)
 
 import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Binary.PropositionalEquality using (_≡_)

@@ -2,14 +2,11 @@
 {-# OPTIONS  --call-by-name #-}
 {-# OPTIONS --termination-depth=4 #-}
 
-open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
 
-open import Function using (id)
-open import Function.Definitions using (Injective)
 
 open import Data.Product using (_,_ ; proj₁)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
@@ -22,8 +19,7 @@ open import Data.Vec as V
 open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 
 open import Data.Maybe
-open import Data.Sum using ([_,_] ; [_,_]′)
-open import Data.Unit using (tt)
+open import Data.Sum using ([_,_])
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 open import Word.Properties
@@ -36,7 +32,7 @@ module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
-open import Data.Fin using (toℕ ; suc ; fromℕ)
+open import Data.Fin using (toℕ ; fromℕ)
 open import Data.Fin.Properties using (toℕ-fromℕ)
 open import Presentation.GroupLike
 open import Presentation.Tactic.Rewriting using ()

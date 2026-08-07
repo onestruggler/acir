@@ -7,15 +7,14 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
 
-open import Function using (_∘_ ; id)
+open import Function using (_∘_)
 
 open import Data.Product using (_,_ ; proj₁)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 --open import Data.List using () hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
 open import Data.Vec as V
 
-open import Data.Sum using ([_,_] ; [_,_]′)
-open import Data.Unit using (tt)
+open import Data.Sum using ([_,_])
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 import Presentation.Base as PB

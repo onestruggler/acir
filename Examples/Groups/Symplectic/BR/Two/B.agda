@@ -13,7 +13,7 @@ open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 --open import Data.List using () hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
 open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 
-open import Data.Empty using (⊥ ; ⊥-elim)
+open import Data.Empty using (⊥-elim)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 import Presentation.Base as PB

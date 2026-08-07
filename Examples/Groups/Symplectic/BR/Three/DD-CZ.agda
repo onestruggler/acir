@@ -14,7 +14,7 @@ open import Agda.Builtin.Nat using (_-_)
 --open import Data.List using () hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
 open import Data.Vec as V
 
-open import Data.Empty using (⊥ ; ⊥-elim)
+open import Data.Empty using (⊥-elim)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 import Presentation.Base as PB

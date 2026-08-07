@@ -13,7 +13,7 @@
 -- the bottom phase is S^ ₀ ↓ = ε, which left-unit discards.
 ------------------------------------------------------------------------
 
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Product using (_,_ ; proj₁)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)

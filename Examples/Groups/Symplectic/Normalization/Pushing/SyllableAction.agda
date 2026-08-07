@@ -28,9 +28,8 @@ module Examples.Groups.Symplectic.Normalization.Pushing.SyllableAction
 
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 
-open import Data.Nat using (ℕ ; zero ; suc)
+open import Data.Nat using (ℕ)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent using (Pointwise)
 open import Data.Fin using (toℕ)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)

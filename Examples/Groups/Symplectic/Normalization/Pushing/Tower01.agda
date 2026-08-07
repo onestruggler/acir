@@ -25,7 +25,7 @@ open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Unit using (⊤ ; tt)
-open import Data.Vec using ([] ; _∷_)
+open import Data.Vec using ([])
 open import Function using (_∘_)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)

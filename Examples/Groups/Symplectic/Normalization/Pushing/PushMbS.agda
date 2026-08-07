@@ -19,9 +19,8 @@ open import Data.Nat.Primality using (Prime)
 
 module Examples.Groups.Symplectic.Normalization.Pushing.PushMbS (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
-open import Data.Product using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Product using (∃ ; _,_ ; proj₁ ; proj₂)
 open import Data.Vec using (Vec ; _∷_ ; [])
-open import Data.Fin using (toℕ)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
 
@@ -36,7 +35,7 @@ import Examples.Groups.Symplectic.BR.Two.ML'-Top p-2 p-prime as ML'T
 open import Examples.Groups.Symplectic.CongDownK p-2 p-prime using (cong↓ᵏ)
 
 open import Notations
-open import Word.Base using (Word ; _•_ ; ε ; [_]ʷ ; _^_)
+open import Word.Base using (Word ; _•_ ; ε ; _^_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Relation.Binary.Reasoning.Setoid as SR

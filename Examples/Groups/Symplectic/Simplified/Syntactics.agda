@@ -15,17 +15,13 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --termination-depth=20 #-}
 
-open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; inspect ; setoid ; module ≡-Reasoning ; _≢_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
-open import Relation.Nullary.Decidable using (yes ; no)
 
 
-open import Function using (id)
-open import Function.Definitions using (Injective)
 
-open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
+open import Data.Product using (_,_ ; proj₁ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
 open import Data.Nat.DivMod
 open import Agda.Builtin.Nat using ()
@@ -37,7 +33,7 @@ open import Data.List hiding ([_])
 
 open import Data.Maybe
 open import Data.Sum using ([_,_])
-open import Data.Unit using (⊤ ; tt)
+open import Data.Unit using (⊤)
 open import Data.Empty using (⊥)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)

@@ -19,11 +19,7 @@ module Examples.Groups.Symplectic.Normalization.Pushing.SrelWDW1
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 
 open import Data.Nat using (ℕ ; zero ; suc)
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent using (Pointwise)
-open import Data.Sum using (inj₁ ; inj₂)
-open import Level using (0ℓ)
-open import Relation.Binary using (Rel)
+open import Data.Product using (_,_ ; proj₁ ; proj₂)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
 
@@ -48,20 +44,15 @@ import Relation.Binary.Reasoning.Setoid as SR
 open Lemmas-Sym using (lemma-comm-S-w↑ ; lemma-comm-H-w↑)
 
 open import Data.Nat using (zero ; suc) renaming (_+_ to _+ℕ_ ; _*_ to _*ℕ_)
-open import Data.Nat.DivMod using (_%_ ; m%n<n ; %-distribˡ-+ ; m*n%n≡0 ; m<n⇒m%n≡m ; m%n%n≡m%n)
-open import Data.Product using (∃)
-open import Data.Fin using (Fin ; toℕ ; fromℕ<)
-open import Data.Fin.Properties using (toℕ-injective ; toℕ-fromℕ<)
+open import Data.Fin using (Fin)
 import Data.Nat.Properties as NP
 open import Data.Unit using (tt)
-open import Data.Vec using ([] ; _∷_)
 open import Algebra.Properties.Ring (+-*-ring p-2)
   using (-0#≈0# ; -‿involutive ; -‿distribˡ-* ; -‿distribʳ-* ; -‿+-comm)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushLM1 p-2 p-prime
   using (A-dir-S-power)
 import Examples.Groups.Symplectic.BR.One.A p-2 p-prime as OA
 open import Relation.Binary.PropositionalEquality using (_≢_)
-open import Data.Empty using (⊥-elim)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase p-2 p-prime
 
 -- The three width-1 H⁴ orbits, one helper per zero-pattern of the A

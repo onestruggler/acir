@@ -18,8 +18,7 @@ open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 
 open import Data.Maybe
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
-open import Data.Unit using (tt)
-open import Data.Empty using (⊥ ; ⊥-elim)
+open import Data.Empty using (⊥-elim)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 open import Word.Properties
@@ -30,7 +29,6 @@ open import Notations
 
 
 
-open import Data.Fin.Properties using (0≢1+n)
 open import Presentation.GroupLike
 open import Presentation.Tactic.Rewriting using ()
 open import Data.Nat.Primality

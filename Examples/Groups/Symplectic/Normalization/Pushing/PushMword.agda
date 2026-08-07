@@ -23,7 +23,7 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Symplectic.Normalization.Pushing.PushMword (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃ ; ∃-syntax)
-open import Data.Vec using (Vec ; _∷_ ; [])
+open import Data.Vec using (_∷_ ; [])
 open import Data.Fin using (toℕ)
 import Relation.Binary.PropositionalEquality as Eq
 

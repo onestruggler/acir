@@ -5,11 +5,9 @@ open import Level using (0ℓ)
 
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
-open import Relation.Nullary.Decidable using (no)
 
 
-open import Function using (_∘_ ; id)
-open import Function.Definitions using (Injective)
+open import Function using (_∘_)
 
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
@@ -22,9 +20,9 @@ import Data.Vec as Vec
 open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 
 open import Data.Maybe
-open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_] ; [_,_]′)
+open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_])
 open import Data.Unit using (⊤ ; tt)
-open import Data.Empty using (⊥ ; ⊥-elim)
+open import Data.Empty using (⊥-elim)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 open import Word.Properties
@@ -35,7 +33,6 @@ module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
-open import Data.Fin using (suc)
 open import Presentation.GroupLike
 open import Presentation.Tactic.Rewriting hiding ([_])
 open import Data.Nat.Primality

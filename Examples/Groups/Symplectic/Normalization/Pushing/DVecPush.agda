@@ -15,7 +15,7 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Symplectic.Normalization.Pushing.DVecPush (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Data.Product using (_,_)
-open import Data.Vec using (Vec ; _∷_ ; [])
+open import Data.Vec using (Vec ; _∷_)
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime

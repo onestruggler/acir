@@ -1,14 +1,12 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --termination-depth=2 #-}
 
-open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
 
-open import Function using (_∘_ ; id)
-open import Function.Definitions using (Injective)
+open import Function using (_∘_)
 
 open import Data.Product using (_,_ ; proj₁)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
@@ -19,7 +17,7 @@ open import Data.Vec hiding ([_])
 open import Data.Fin hiding (_+_ ; _-_)
 
 open import Data.Maybe
-open import Data.Sum using ([_,_] ; [_,_]′)
+open import Data.Sum using ([_,_])
 
 open import Word.Base as WB hiding (wfoldl)
 open import Word.Properties
@@ -617,7 +615,6 @@ g-left-inv-gen {(₁₊ n)} (x Sym.↥) = begin
   open SR word-setoid
 
 
-open import Algebra.Bundles using (Group)
 open import Algebra.Morphism.Structures using (module GroupMorphisms)
 
 open GroupMorphisms

@@ -18,11 +18,9 @@ open import Notations
 module Examples.Groups.Symplectic.Normalization.Pushing.SrelWD1
   (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
 
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
-open import Data.Sum using (inj₁ ; inj₂)
+open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Data.Empty using (⊥-elim)
-open import Data.Fin using (Fin ; toℕ)
-open import Data.Vec using ([] ; _∷_)
+open import Data.Vec using ([])
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; _≢_)
 

@@ -1,17 +1,15 @@
 ﻿{-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --termination-depth=2 #-}
 
-open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Nullary.Decidable using (yes ; no)
 
 
-open import Function using (_∘_ ; id)
-open import Function.Definitions using (Injective)
+open import Function using (_∘_)
 
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃ ; Σ ; Σ-syntax)
+open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃ ; Σ-syntax)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 open import Agda.Builtin.Nat using (_-_)
 import Data.Nat as Nat
@@ -22,8 +20,8 @@ import Data.Vec as Vec
 open import Data.Fin hiding (_+_ ; _-_)
 
 open import Data.Maybe
-open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_] ; [_,_]′)
-open import Data.Unit using (⊤ ; tt)
+open import Data.Sum using ([_,_])
+open import Data.Unit using (⊤)
 open import Data.Empty using (⊥)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
@@ -36,7 +34,7 @@ module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
-open import Data.Fin using (Fin ; toℕ ; zero ; fromℕ)
+open import Data.Fin using (Fin ; toℕ ; fromℕ)
 open import Data.Fin.Properties using (toℕ-fromℕ)
 import Data.Nat.Properties as NP
 open import Presentation.GroupLike

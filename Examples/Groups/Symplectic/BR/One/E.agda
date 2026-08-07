@@ -2,7 +2,6 @@
 {-# OPTIONS  --call-by-name #-}
 {-# OPTIONS --termination-depth=4 #-}
 
-open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
@@ -13,7 +12,6 @@ open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 --open import Data.List using () hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
 open import Data.Fin hiding (_+_ ; _-_ ; _≤_ ; _<_)
 
-open import Data.Unit using (tt)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 open import Word.Properties

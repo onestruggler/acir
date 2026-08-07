@@ -24,16 +24,16 @@ module Examples.Groups.Symplectic.Normalization.NF-Inj
   (p-2 : ℕ) (p-prime : Prime (2+ p-2))
   where
 
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
+open import Data.Product using (_×_ ; _,_ ; ∃)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
-open import Data.Unit using (⊤ ; tt)
+open import Data.Unit using (tt)
 open import Data.Vec using (Vec ; _∷_ ; [] ; head ; tail)
-open import Function using (_∘_ ; id)
+open import Function using (id)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; _≗_)
 
 open import Notations
-open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; wmap)
+open import Word.Base using ([_]ʷ ; ε ; _•_)
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime

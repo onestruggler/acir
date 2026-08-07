@@ -18,8 +18,7 @@ open import Data.Nat.Primality using (Prime)
 
 module Examples.Groups.Symplectic.DBox (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
-open import Data.Product using (_,_ ; proj₁ ; proj₂)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
+open import Data.Product using (_,_ ; proj₁)
 open import Data.Vec using (_∷_)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; module ≡-Reasoning)

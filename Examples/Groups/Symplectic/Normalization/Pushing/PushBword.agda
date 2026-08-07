@@ -20,11 +20,11 @@ open import Data.Nat.Primality using (Prime)
 
 module Examples.Groups.Symplectic.Normalization.Pushing.PushBword (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
-open import Data.Product using (∃ ; _,_ ; proj₁ ; proj₂)
+open import Data.Product using (∃ ; _,_)
 open import Data.Vec using (Vec)
 open import Data.Fin using (toℕ)
 open import Data.Unit using (⊤ ; tt)
-open import Data.Empty using (⊥ ; ⊥-elim)
+open import Data.Empty using (⊥)
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime

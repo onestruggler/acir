@@ -40,14 +40,14 @@ module Examples.Groups.Symplectic.Surjectivity (p-2 : ℕ) (p-prime : Prime (2+ 
 
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
-open import Data.Unit using (⊤ ; tt)
+open import Data.Unit using (tt)
 open import Data.Vec using (Vec ; [] ; _∷_ ; head ; tail)
 open import Function using (_∘_ ; id)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; _≗_ ; module ≡-Reasoning)
 
 open import Notations
-open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
+open import Word.Base using ([_]ʷ ; ε ; _•_)
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime

@@ -14,9 +14,8 @@ open import Notations
 module Examples.Groups.Symplectic.Normalization.Pushing.Push6 (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 
-open import Data.Nat using (ℕ ; zero ; suc)
+open import Data.Nat using (ℕ)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
-open import Data.Unit using (⊤ ; tt)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_) renaming ([_] to [_]ₑ)
 import Relation.Binary.Reasoning.Setoid as SR
@@ -39,7 +38,6 @@ private variable
 
 
 open import Data.Vec
-open import Data.Nat using (s≤s ; z≤n)
 
 import Examples.Groups.Symplectic.BR.Two.ML'-Top p-2 p-prime as ML'T
 import Examples.Groups.Symplectic.BR.Two.L2-CZ p-2 p-prime as LCZ2

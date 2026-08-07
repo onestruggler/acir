@@ -56,7 +56,7 @@ open import Examples.Groups.Symplectic.Normalization.Uniqueness
 open import Examples.Groups.Symplectic.Normalization.SemInj p-2 p-prime
   using (Faithful)
 
-open import Algebra.Bundles using (Group ; Monoid)
+open import Algebra.Bundles using (Group)
 
 
 ------------------------------------------------------------------------

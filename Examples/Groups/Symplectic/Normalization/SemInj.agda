@@ -56,7 +56,7 @@ module Examples.Groups.Symplectic.Normalization.SemInj
   (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
 
 open import Level using (0ℓ)
-open import Relation.Binary using (Setoid ; IsEquivalence)
+open import Relation.Binary using (Setoid)
 open import Algebra.Structures using (IsGroup)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
