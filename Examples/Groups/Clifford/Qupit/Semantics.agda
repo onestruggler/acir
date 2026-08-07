@@ -35,7 +35,7 @@ open import Data.Nat.Primality using (Prime)
 
 open import Notations
 
-module Examples.Groups.Clifford.Qupit.Simplified-V1.Semantics
+module Examples.Groups.Clifford.Qupit.Semantics
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
