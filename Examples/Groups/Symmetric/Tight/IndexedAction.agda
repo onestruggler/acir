@@ -51,11 +51,9 @@ open import Level using (0ℓ)
 open import Relation.Binary using (Setoid)
 open import Relation.Binary.PropositionalEquality as Eq
   using (_≡_ ; refl)
-open import Relation.Nullary.Decidable using (yes ; no)
 open import Relation.Nullary.Negation using (contradiction)
 
 open import Notations
-open import Word.Base using (Word)
 
 import Circuit.CosetNF as CosetNF
 import Circuit.Uniqueness as CU
