@@ -13,7 +13,6 @@ import Data.Fin.Properties as FP
 open import Data.Nat using (ℕ)
 open import Data.Product using (_,_)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
-open import Data.Unit using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Examples.Groups.Symmetric.Cosets
