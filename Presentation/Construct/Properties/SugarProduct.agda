@@ -28,7 +28,6 @@ import Presentation.Base as PB
 import Presentation.Properties as PP
 open import Normalization.NormalForm.Propositional using (NormalFormInjective ; NormalForm)
 import Normalization.NormalForm.Setoid as SNF
-open import Normalization.Reidemeister-Schreier
 open import Presentation.Construct.Base
 
 open PB Γ renaming (_===_ to _===₁_) using ()
