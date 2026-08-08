@@ -1,10 +1,5 @@
 {-# OPTIONS --cubical-compatible --safe #-}
-open import Level using (0ℓ)
-open import Relation.Binary using (IsEquivalence ; Setoid ; Rel)
 open import Data.Product using (_,_)
-open import Relation.Binary.Morphism.Definitions using (Homomorphic₂)
-open import Relation.Binary.PropositionalEquality using (_≡_)
-import Relation.Binary.PropositionalEquality as Eq
 import Relation.Binary.Reasoning.Setoid as SR
 
 open import Word.Base
@@ -14,28 +9,16 @@ module Presentation.Tactic.Rewriting where
 
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open import Presentation.Tactic.AssociativitySolver using (module Assoc)
 
-open import Relation.Binary.Definitions using (DecidableEquality ; Decidable)
-open import Relation.Binary.Morphism.Structures using (IsRelMonomorphism)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; setoid)
 import Relation.Binary.PropositionalEquality as Eq
-open import Relation.Nullary.Decidable using (via-injection)
-open import Function.Definitions using (Injective)
-open import Function.Bundles using (Injection)
-open import Function using (_∘_)
-open import Data.Nat using (ℕ ; zero ; suc)
-import Relation.Binary.Reasoning.Setoid as Eqv
-open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 
 open import Data.Product using (_×_ ; proj₁ ; proj₂ ; ∃)
-open import Data.List using (_++_ ; [] ; _∷_ ; List ; _ʳ++_)
 
 open import Data.Maybe
 open import Data.Bool
 open import Data.Nat
 open import Data.List hiding ([_])
-open import Agda.Builtin.Nat using (_-_)
 
 record Reveal_·_is_ {A : Set} {B : A → Set}
                     (f : (x : A) → B x) (x : A) (y : B x) : Set where
