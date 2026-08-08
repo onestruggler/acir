@@ -46,17 +46,21 @@
 -- symplectic rule set).  Qubit.ExactExtension.ExactData asks for
 --
 --   scalars    : w acts trivially on P4  ⇒  w ≈ᶠ ωᵏ for some k,
---   ω-faithful : ωʲ ≈ᶠ ωᵏ ⇒ j ≡ k,
+--   ω-faithful : ωʲ ≈ᶠ ωᵏ ⇒ j ≡ k.
 --
--- and the natural route to the first is "≈ mod scalars ⇒ ≈ up to ωᵏ",
--- which needs ω to be CENTRAL in Figure 8.  It is not derivable there as
--- transcribed: at width 1 the axioms are exactly c1–c4, i.e.
--- ⟨S , H | H² , S⁴ , (SH)²⁴⟩ — the von Dyck group D(4,2,24), infinite
--- since ¼ + ½ + ¹⁄₂₄ < 1, whereas C(1) has order 192.  Adding centrality
--- of the scalar (Selinger has ω as a central generator; here it is the
--- derived word (SH)³) closes exactly that gap: modulo a central ω of
--- order 8 the width-1 quotient is ⟨S , H | H² , S⁴ , (SH)³⟩ ≅ S₄, of
--- order 24, and 24 · 8 = 192.
+-- The route to the first is "≈ mod scalars ⇒ ≈ up to ωᵏ", by induction
+-- on the mod-scalar derivation; its congruence case needs ω to commute
+-- past a word.  That is now available — Figure8.ω-central / ω^-central,
+-- from the axiom Figure8.cω, which had to be added: our ω is the derived
+-- word (SH)³ rather than Selinger's central generator, and without
+-- centrality the width-1 fragment ⟨S , H | H² , S⁴ , (SH)²⁴⟩ is the
+-- infinite von Dyck group D(4,2,24) instead of C(1).  What remains for
+-- `scalars` is the induction itself, plus completeness of Figure 8 mod
+-- scalars for the P4 action (Selinger.Iso, one layer down).
+--
+-- `ω-faithful` is a different kind of statement: the scalars have to be
+-- shown NOT to collapse, which no syntactic argument gives — it wants
+-- the matrix model, or another ℤ/8-valued invariant.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

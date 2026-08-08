@@ -47,6 +47,7 @@ open Symplectic
 -- CRel and the structural rules come straight from the circuit framework
 -- that Symplectic itself is built on (it keeps its copy private).
 open import Circuit.Base SympGate using (CRel ; module Lift-Relation)
+import Presentation.Base as PB
 
 private
   variable
@@ -113,3 +114,19 @@ open Lift-Relation _Sel,_===_ public
 infix 4 _CRel,_===_
 _CRel,_===_ : (n : ℕ) → CRel n
 _CRel,_===_ = _VRel,_===_
+
+------------------------------------------------------------------------
+-- Centrality of the scalar is free here
+--
+-- Figure 8 needs an axiom saying ω is central (Figure8.cω), because
+-- there ω = (SH)³ is a derived word and nothing else makes it commute.
+-- Modulo scalars that word is the identity (C4), so the same statement
+-- is derivable, in four steps.  Nothing is lost by not assuming it.
+
+SH³-central : (w : Word (Gen (₁₊ n))) →
+              PB._≈_ ((₁₊ n) CRel,_===_) ((SH ^ 3) • w) (w • (SH ^ 3))
+SH³-central w =
+  PB.trans (PB.cong (PB.axiom (srel c4)) PB.refl)
+    (PB.trans PB.left-unit
+      (PB.trans (PB.sym PB.right-unit)
+                (PB.cong PB.refl (PB.sym (PB.axiom (srel c4))))))

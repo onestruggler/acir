@@ -16,6 +16,21 @@
 --               CZ·H·CZ = … · ω⁻¹                               (C10, C11)
 --   (d) n ≥ 3 : CZ↑·CZ = CZ·CZ↑, and three more                 (C12–C15)
 --
+-- ... plus one relation that is not in Selinger's numbered list because
+-- there it needs no stating: ω is CENTRAL (cω below).  Selinger's ω is a
+-- generator, and a scalar generator commutes with everything by fiat;
+-- ours is the derived word (SH)³, so centrality has to be an axiom.
+-- Without it the presentation is too weak — at width 1 the relations are
+-- exactly C1–C4, i.e. ⟨S , H | H² , S⁴ , (SH)²⁴⟩, the von Dyck group
+-- D(4,2,24), which is infinite (¼ + ½ + ¹⁄₂₄ < 1), whereas C(1) has
+-- order 192.  With a central ω of order 8 the width-1 quotient by ⟨ω⟩ is
+-- ⟨S , H | H² , S⁴ , (SH)³⟩ ≅ S₄, and 24 · 8 = 192.
+--
+-- cω is sound for the P4-action (Selinger.Soundness.cω-sound): ω acts as
+-- the identity there, so both sides act as the gate does.  It is also
+-- invisible modulo scalars, where ω = 1 — Figure8-Mod-Scalar derives its
+-- instance rather than assuming it.
+--
 -- This is the *exact* Clifford group (with the order-8 scalar ω and
 -- S⁴ = 1, not the phaseless S² = 1 of the symplectic quotient).  The
 -- structural rules (cong↑, comm₁, comm₂) come from Lift-Relation.
@@ -30,7 +45,8 @@ module Examples.Groups.Clifford.Qubit.Selinger.Figure8
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Notations
-open import Word.Base using (Word ; ε ; _•_ ; _^_)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
+import Presentation.Base as PB
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
@@ -100,6 +116,10 @@ data _Sel,_===_ : (n : ℕ) → CRel n where
   c11 : ∀ {n} → (₂₊ n) Sel,  CZ • H ↓ • CZ ===
                              SH ↓ • CZ • (S • H • S) ↓ • S ↑ • ω⁻¹
 
+  -- The scalar is central.  One instance per generator; centrality for
+  -- whole words follows (ω-central below).
+  cω  : ∀ {n} (g : Gen (₁₊ n)) → (₁₊ n) Sel,  ω • [ g ]ʷ === [ g ]ʷ • ω
+
   -- (d) n ≥ 3
   c12 : ∀ {n} → (₃₊ n) Sel,  CZ ↑ • CZ === CZ • CZ ↑
   c13 : ∀ {n} → (₃₊ n) Sel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
@@ -114,3 +134,33 @@ open Lift-Relation _Sel,_===_ public
 infix 4 _CRel,_===_
 _CRel,_===_ : (n : ℕ) → CRel n
 _CRel,_===_ = _VRel,_===_
+
+------------------------------------------------------------------------
+-- The scalar is central
+--
+-- cω gives it for the generators; a word commutes with ω because each of
+-- its letters does.  (ε and _•_ are the two other cases: the empty word
+-- by the unit laws, a concatenation by walking ω across both halves.)
+
+infix 4 _≈ᶠ_
+_≈ᶠ_ : {n : ℕ} → Word (Gen n) → Word (Gen n) → Set
+_≈ᶠ_ {n} = PB._≈_ (n CRel,_===_)
+
+ω-central : (w : Word (Gen (₁₊ n))) → (ω • w) ≈ᶠ (w • ω)
+ω-central [ g ]ʷ  = PB.axiom (srel (cω g))
+ω-central ε       = PB.trans PB.right-unit (PB.sym PB.left-unit)
+ω-central (w • v) =
+  PB.trans (PB.sym PB.assoc)
+    (PB.trans (PB.cong (ω-central w) PB.refl)
+      (PB.trans PB.assoc
+        (PB.trans (PB.cong PB.refl (ω-central v)) (PB.sym PB.assoc))))
+
+-- Hence so does every power of ω: the scalars are a central subgroup.
+ω^-central : (k : ℕ) (w : Word (Gen (₁₊ n))) → ((ω ^ k) • w) ≈ᶠ (w • (ω ^ k))
+ω^-central ₀       w = PB.trans PB.left-unit (PB.sym PB.right-unit)
+ω^-central (₁₊ ₀)  w = ω-central w
+ω^-central (₂₊ k)  w =
+  PB.trans PB.assoc
+    (PB.trans (PB.cong PB.refl (ω^-central (₁₊ k) w))
+      (PB.trans (PB.sym PB.assoc)
+        (PB.trans (PB.cong (ω-central w) PB.refl) PB.assoc)))
