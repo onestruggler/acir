@@ -25,7 +25,6 @@ module Examples.Groups.Symplectic.TheoremLM (p-2 : ℕ) (p-prime : Prime (2+ p-2
 open import Data.Empty using (⊥-elim)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Sum using (inj₁ ; inj₂)
-open import Data.Unit using (tt)
 open import Data.Vec using ([] ; _∷_)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; _≢_ ; module ≡-Reasoning)
