@@ -17,16 +17,15 @@
 -- faithfulness of ω — are about the datum the P4 action discards, and
 -- cannot come from here at all.)
 --
--- WHAT IS STILL MISSING, and why.  Assembling the axiom cases into
--- `axiom-sound : n CRel, w === v → w ≈ᶜ v` does not typecheck yet: the
--- clause for an axiom whose word is long makes Agda compare that word's
--- action against the clause's goal, and unfolding cact along it with a
--- symbolic Pauli exhausts memory (see below).  C1 is the case that has
--- resisted every workaround tried — naming the word behind a definition,
--- rewriting with a word equation through Eq.subst, re-proving it by case
--- analysis (c1-sound' below, which is green), sharing Action's p-2 /
--- p-prime so the two ω's are syntactically one term.  Each of those moves
--- pushes the failure later without removing it.
+-- THE ASSEMBLY, once open, is now closed — see axiom-soundᶠ and sound at
+-- the end.  It had resisted every workaround tried (naming the word
+-- behind a definition, rewriting through Eq.subst, re-proving C1 by case
+-- analysis, sharing Action's p-2 / p-prime so the two ω's are one term);
+-- each pushed the failure later without removing it.  The fix was none
+-- of those: it is the module's --call-by-name flag.  Call-by-NEED is what
+-- duplicates the Pauli once per letter, so the C1 clause over ω⁸ never
+-- finished; under call-by-name the whole induction checks in ~310 s.
+-- (The heavy symplectic files carry the same flag for the same reason.)
 --
 -- The shape of the four proofs is forced by how `cact` computes.  Only
 -- the phase depends on the incoming phase, and additively, so `lift-eq`
@@ -41,11 +40,16 @@
 -- The same reason keeps the ω⁻¹ tail of C10/C11 inside the case analysis
 -- rather than being peeled off by cact-ω^ beforehand.
 --
--- Everything below is green (about 100 s); it is only the final assembly
--- that is open.
+-- Everything here is green, in about 310 s.  `sound` at the end is the
+-- `sound` field of ExactData; the record's other two fields —
+-- completeness on the scalars, and faithfulness of ω — are about the
+-- datum the P4 action discards, and cannot come from this module.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+-- --call-by-name: this is what makes the final assembly (axiom-soundᶠ /
+-- sound, at the end) typecheck.  Call-by-need duplicates the Pauli once
+-- per letter of the word being normalised; call-by-name does not.
+{-# OPTIONS --cubical-compatible --safe --call-by-name #-}
 
 module Examples.Groups.Clifford.Qubit.Selinger.Soundness where
 
@@ -66,7 +70,9 @@ import Presentation.Base as PB
 -- be two different terms: comparing them forces cact to be unfolded along
 -- ω⁸'s 48 letters, which is the blow-up described above.
 open import Examples.Groups.Clifford.Qubit.Selinger.Action
-  using (p-2 ; p-prime ; swap-add ; lift-eq ; cact-ω)
+  using ( p-2 ; p-prime ; swap-add ; lift-eq ; cact-ω
+        ; c2-sound ; c3-sound ; c5-sound ; c6-sound ; c7-sound
+        ; c8-sound ; c9-sound ; c12-sound ; c13-sound )
 
 open PrimeModulus p-2 p-prime
 
@@ -79,10 +85,13 @@ open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli)
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; δ ; incl)
 open import Examples.Groups.Clifford.Qubit.CliffordGroup
-  using (_≈ᶜ_ ; cact-↑)
+  using (_≈ᶜ_ ; cact-↑ ; ≈ᶜ-refl ; ≈ᶜ-sym ; ≈ᶜ-trans ; ∙-congᶜ)
 
 import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
-open F8 using (_CRel,_===_ ; srel ; cong↑ ; comm₁ ; comm₂ ; SH ; ω ; ω⁻¹)
+open F8
+  using ( _CRel,_===_ ; srel ; cong↑ ; comm₁ ; comm₂ ; SH ; ω ; ω⁻¹
+        ; c1 ; c2 ; c3 ; c4 ; c5 ; c6 ; c7 ; c8 ; c9 ; c10 ; c11
+        ; c12 ; c13 ; c14 ; c15 ; cω ; cω↑ )
 
 private
   variable
@@ -424,3 +433,49 @@ c15-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq
 c15-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
 c15-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
 
+
+------------------------------------------------------------------------
+-- Closing the induction: Figure 8 is sound for the P4 action
+--
+-- Every axiom has its lemma above (or in Selinger.Action); cong↑ is
+-- sound-↑, comm₁ / comm₂ are the two lemmas of the structural section,
+-- and C4 is an identity since ω is the derived word (SH)³.  The
+-- congruence cases are structural: cact of a concatenation is the
+-- composite, so assoc and the two unit laws hold on the nose.
+--
+-- This is the sound field of Qubit.ExactExtension.ExactData.
+
+axiom-soundᶠ : {n : ℕ} {w v : Word (Gen n)} → (n CRel, w === v) → w ≈ᶜ v
+axiom-soundᶠ (srel c1)      = c1-sound'
+axiom-soundᶠ (srel c2)      = c2-sound
+axiom-soundᶠ (srel c3)      = c3-sound
+axiom-soundᶠ (srel c4)      = λ _ → Eq.refl
+axiom-soundᶠ (srel c5)      = c5-sound
+axiom-soundᶠ (srel c6)      = c6-sound
+axiom-soundᶠ (srel c7)      = c7-sound
+axiom-soundᶠ (srel c8)      = c8-sound
+axiom-soundᶠ (srel c9)      = c9-sound
+axiom-soundᶠ (srel c10)     = c10-sound
+axiom-soundᶠ (srel c11)     = c11-sound
+axiom-soundᶠ (srel c12)     = c12-sound
+axiom-soundᶠ (srel c13)     = c13-sound
+axiom-soundᶠ (srel c14)     = c14-sound
+axiom-soundᶠ (srel c15)     = c15-sound
+axiom-soundᶠ (srel (cω g))  = cω-sound g
+axiom-soundᶠ (srel cω↑)     = cω↑-sound
+axiom-soundᶠ (cong↑ {w = w} {v = v} r) =
+  sound-↑ {w = w} {v = v} (axiom-soundᶠ r)
+axiom-soundᶠ (comm₁ h g)    = comm₁-sound h g
+axiom-soundᶠ (comm₂ h g)    = comm₂-sound h g
+
+sound : {n : ℕ} {w v : Word (Gen n)} → w ≈ᶠ v → w ≈ᶜ v
+sound {w = w}          PB.refl         = ≈ᶜ-refl {w = w}
+sound {w = w} {v}      (PB.sym e)      = ≈ᶜ-sym {w = v} {v = w} (sound e)
+sound {w = w} {v}      (PB.trans {v = u} e f) =
+  ≈ᶜ-trans {w = w} {v = u} {u = v} (sound e) (sound f)
+sound (PB.cong {w = a} {w' = a'} {v = b} {v' = b'} e f) =
+  ∙-congᶜ {w = a} {a'} {b} {b'} (sound e) (sound f)
+sound {w = w}          PB.assoc        = ≈ᶜ-refl {w = w}
+sound {w = w}          PB.left-unit    = ≈ᶜ-refl {w = w}
+sound {w = w}          PB.right-unit   = ≈ᶜ-refl {w = w}
+sound (PB.axiom x)                     = axiom-soundᶠ x
