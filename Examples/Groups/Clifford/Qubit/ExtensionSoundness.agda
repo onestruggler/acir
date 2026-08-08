@@ -79,7 +79,8 @@ import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem
 open SympSem.Interpretation using (actg ; actg-sform)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
-open Symplectic using (Gen ; Circuit ; gate₁ ; gate₂ ; _↥ ; _↑ ; S ; H ; CZ)
+open Symplectic
+  using (Gen ; Circuit ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; S ; H ; CZ)
 
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; δ ; incl)
@@ -427,6 +428,88 @@ semi-M↓CZ-sound : ((M₋₁ {₁₊ n}) • CZ) ≈ᶜ (ε • (CZ • (M₋�
 semi-M↓CZ-sound {n} = plain (M₋₁ • CZ) (CZ • M₋₁)
   (λ x → Eq.trans (cactω (cact CZ x))
                   (Eq.sym (Eq.cong (cact CZ) (cactω x))))
+
+------------------------------------------------------------------------
+-- The two-wire axioms
+--
+-- order-CZ and the two CZ/S commutations touch wires 0 and 1, so the
+-- action is decided by the two head Paulis: sixteen concrete cases,
+-- each closed by lift-eq (which reduces the check to phase 0) with the
+-- tail ps symbolic throughout.  The words are named so that conversion
+-- checking compares them, not their unfoldings.
+
+private
+  CZ² : Word (Gen (₂₊ n))
+  CZ² = CZ ^ 2
+
+  CZS↓ S↓CZ CZS↑ S↑CZ : Word (Gen (₂₊ n))
+  CZS↓ = CZ • S ↓
+  S↓CZ = S ↓ • CZ
+  CZS↑ = CZ • S ↑
+  S↑CZ = S ↑ • CZ
+
+order-CZ-sound : (CZ {n} ^ 2) ≈ᶜ (ε • ε)
+order-CZ-sound {n} = plain (CZ ^ 2) ε go
+  where
+  go : (x : P4Carrier (₂₊ n)) → cact CZ² x ≡ cact ε x
+  go (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZ² ε s P Eq.refl
+
+comm-CZ-S↓-sound : ((CZ {n}) • S ↓) ≈ᶜ (ε • (S ↓ • CZ))
+comm-CZ-S↓-sound {n} = plain (CZ • S ↓) (S ↓ • CZ) go
+  where
+  go : (x : P4Carrier (₂₊ n)) → cact CZS↓ x ≡ cact S↓CZ x
+  go (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZS↓ S↓CZ s P Eq.refl
+
+comm-CZ-S↑-sound : ((CZ {n}) • S ↑) ≈ᶜ (ε • (S ↑ • CZ))
+comm-CZ-S↑-sound {n} = plain (CZ • S ↑) (S ↑ • CZ) go
+  where
+  go : (x : P4Carrier (₂₊ n)) → cact CZS↑ x ≡ cact S↑CZ x
+  go (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
 
 -- The per-axiom obligation that remains: each raw axiom of the
 -- simplified rule set acts as its correction demands.  (For every axiom
