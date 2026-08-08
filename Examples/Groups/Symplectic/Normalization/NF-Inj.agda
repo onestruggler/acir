@@ -26,7 +26,6 @@ module Examples.Groups.Symplectic.Normalization.NF-Inj
 
 open import Data.Product using (_×_ ; _,_ ; ∃)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
-open import Data.Unit using (tt)
 open import Data.Vec using (Vec ; _∷_ ; [] ; head ; tail)
 open import Function using (id)
 import Relation.Binary.PropositionalEquality as Eq
