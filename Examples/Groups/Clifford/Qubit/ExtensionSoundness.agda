@@ -50,7 +50,7 @@ open import Notations
 open import Zp.ModularArithmetic
 open import Data.Sum using (inj₂)
 open import Data.Vec using (_∷_ ; [])
-open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; wmap)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_ ; wmap)
 
 open import Examples.Groups.Clifford.Qubit.CliffordGroup
   using ( p-2 ; p-prime ; _≈ᶜ_ ; pauliWord ; cact-pauliWord ; sform-+ˡ
@@ -77,10 +77,11 @@ import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem
 open SympSem.Interpretation using (actg ; actg-sform)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
-open Symplectic using (Gen ; Circuit ; gate₁ ; gate₂ ; _↥ ; _↑)
+open Symplectic using (Gen ; Circuit ; gate₁ ; gate₂ ; _↥ ; _↑ ; S)
 
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
-open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; δ)
+open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; δ ; incl)
+open import Examples.Groups.Clifford.Qubit.CliffordGroup using (incl-2)
 
 private
   variable
@@ -320,6 +321,59 @@ pw-shift {n} c = ≈ᶜ-trans {w = pw (shiftPauli c)}
     (identityˡᶜ ((pauliWord (vecOf c)) ↑))
     (sound-↑ {w = pauliWord (vecOf c)} {v = pw c}
              (≈ᶜ-sym {w = pw c} {v = pauliWord (vecOf c)} (pw-vecOf c))))
+
+------------------------------------------------------------------------
+-- Discharging the axioms
+--
+-- Fourteen of the fifteen have correction ε, so their obligation is just
+-- "the two sides act alike"; `plain` puts such a proof into the shape
+-- twist-sound wants.  order-S is the one with content, and is done in
+-- full below.
+
+-- (Both endpoints explicit: _≈ᶜ_ is a defined relation.)
+plain : (u v : Circuit n) → u ≈ᶜ v → u ≈ᶜ (ε • v)
+plain u v e = ≈ᶜ-trans {w = u} {v = v} {u = ε • v} e
+                (≈ᶜ-sym {w = ε • v} {v = v} (identityˡᶜ v))
+
+-- order-S: S² is not the identity in the Clifford group — it is the
+-- Pauli Z on wire 0, which is exactly what corr records.  Reading both
+-- sides at (s , (a , b) ∷ ps):
+--
+--   S²           : phase  s + incl a + incl a,  head (a , (b + a) + a)
+--   conj. by Z₀  : phase  s + ι (sform Z₀ _),   head (a , b)
+--
+-- and incl a + incl a = ι a (CliffordGroup.incl-2) while
+-- sform (pZ ∷ pIₙ) ((a , b) ∷ ps) = a.  No word is ever unfolded beyond
+-- the two letters of S².
+
+private
+  -- b + a + a = b, and sform against Z₀ reads off the X-exponent.
+  sq : (a b : ℤ ₚ) → (b + a) + a ≡ b
+  sq ₀ ₀ = auto
+  sq ₀ ₁ = auto
+  sq ₁ ₀ = auto
+  sq ₁ ₁ = auto
+
+  sform-Z₀ : (a b : ℤ ₚ) (ps : Pauli n) →
+             sform ((₀ , ₁) ∷ pIₙ) ((a , b) ∷ ps) ≡ a
+  sform-Z₀ ₀ ₀ ps = Eq.trans (Eq.cong (₀ +_) (sform-pIˡ ps)) auto
+  sform-Z₀ ₀ ₁ ps = Eq.trans (Eq.cong (₀ +_) (sform-pIˡ ps)) auto
+  sform-Z₀ ₁ ₀ ps = Eq.trans (Eq.cong (₁ +_) (sform-pIˡ ps)) auto
+  sform-Z₀ ₁ ₁ ps = Eq.trans (Eq.cong (₁ +_) (sform-pIˡ ps)) auto
+
+order-S-sound : (S {n} ^ 2) ≈ᶜ (pauliWord ((₀ , ₁) ∷ pIₙ) • ε)
+order-S-sound (s , (a , b) ∷ ps) = begin
+  ((s + incl a) + incl a) , (a , (b + a) + a) ∷ ps
+    ≡⟨ Eq.cong₂ (λ x y → x , (a , y) ∷ ps)
+                (Eq.trans (+-assoc s (incl a) (incl a))
+                          (Eq.cong (s +_) (incl-2 a)))
+                (sq a b) ⟩
+  (s + ι a) , (a , b) ∷ ps
+    ≡⟨ Eq.cong (λ □ → (s + ι □) , (a , b) ∷ ps) (Eq.sym (sform-Z₀ a b ps)) ⟩
+  (s + ι (sform ((₀ , ₁) ∷ pIₙ) ((a , b) ∷ ps))) , (a , b) ∷ ps
+    ≡⟨ Eq.sym (cact-pauliWord ((₀ , ₁) ∷ pIₙ) s ((a , b) ∷ ps)) ⟩
+  cact (pauliWord ((₀ , ₁) ∷ pIₙ)) (s , (a , b) ∷ ps)   ∎
+  where open Eq.≡-Reasoning
 
 -- The per-axiom obligation that remains: each raw axiom of the
 -- simplified rule set acts as its correction demands.  (For every axiom
