@@ -15,9 +15,7 @@ open import Function using (id)
 open import Data.Product using (_,_ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
 open import Data.Fin hiding (_+_ ; _-_)
-open import Word.Base as WB hiding (wfoldl)
 import Presentation.Base as PB
-open import Presentation.Construct.Base hiding (_*_)
 open import Presentation.GroupLike
 open import Data.Nat.Primality
 open import Algebra.Morphism.Structures using (module GroupMorphisms)
