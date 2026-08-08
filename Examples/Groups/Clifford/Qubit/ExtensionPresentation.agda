@@ -101,7 +101,10 @@ open Simplified-Relations using (_QRel,_===_)
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen
   as SimP
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli)
+open import Data.Unit using (tt)
+open import Data.Vec using (_∷_)
+open import Notations
+open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli ; pI)
 open import Examples.Groups.Clifford.Qubit.CMS
   using ( Clifford-extension ; Clifford-group ; pauliIncl
         ; vec ; nest ; vec∘nest ; vec-cong ; vec-injective )
@@ -167,6 +170,20 @@ bijectiveᴾ n = record
     }
   }
 
+-- NOTE for `Realises`.  It reduces to the coordinate identity
+--
+--   gen-vec : vec m ⟦ [ y ]ʷ ⟧N ≡ genToVec y
+--
+-- and the width-1 cases of that hold by `refl`.  The width-≥2 cases do
+-- NOT, and the reason is not mathematical: `vec` comes from Qubit.CMS,
+-- which instantiates Pauli.Semantics at ITS OWN p-2 / p-prime, while
+-- `genToVec` and `pIₙ` come from Qubit.Presentation's instantiation.
+-- The two are definitionally equal values of two different module
+-- instances, so the tail `vec (₁₊ m) (⟦ … ⟧N .proj₂)` does not meet
+-- `pIₙ` syntactically.  Align the instances first (have one module take
+-- the prime from the other, as ExactExtension takes it from
+-- CliffordGroup) and the recursion should go through.
+
 module Clifford (n : ℕ) where
 
   nfpS = bijectiveᴾ n
@@ -207,6 +224,14 @@ module Clifford (n : ℕ) where
     embˡ [ y ]ʷ  = Eq.refl
     embˡ ε       = Eq.refl
     embˡ (c • d) = Eq.cong₂ _•_ (embˡ c) (embˡ d)
+
+  ------------------------------------------------------------------
+  -- Realises
+  --
+  -- Both sides are conjugation by a Pauli operator — the transported
+  -- inclusion is pauliIncl ∘ vec — so everything reduces to the
+  -- coordinate identity: the Pauli presentation's generator values are
+  -- the basis vectors genToVec names.
 
   sound-ax : {w v : Word (PauliGen n ⊎ Gen n)} →
              Ext.extp (Γ-H ⊕^ n) (n QRel,_===_) conj corr w v →
