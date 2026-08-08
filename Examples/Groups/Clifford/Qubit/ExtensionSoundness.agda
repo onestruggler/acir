@@ -56,7 +56,17 @@ open import Examples.Groups.Clifford.Qubit.CliffordGroup
   using ( p-2 ; p-prime ; _≈ᶜ_ ; pauliWord ; cact-pauliWord ; sform-+ˡ
         ; ≈ᶜ-refl ; ≈ᶜ-sym ; ≈ᶜ-trans ; ∙-congᶜ )
 open import Examples.Groups.Clifford.Qubit.Presentation
-  using (PauliGen ; genToVec ; vecToWord ; conj)
+  using (PauliGen ; genToVec ; vecToWord ; conj ; corr ; shiftPauli)
+
+open import Examples.Groups.Clifford.Qubit.PrimitiveRoot using (g* ; g-gen)
+open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
+  using (module Simplified-Relations)
+open Simplified-Relations
+  using (_QRel,_===_ ; srel ; cong↑ ; comm₁ ; comm₂ ; module SimBase)
+open SimBase using (_SRel,_===_)
+open import Examples.Groups.Clifford.Qubit.Selinger.Soundness
+  using (sound-↑ ; comm₁-sound ; comm₂-sound)
+open import Examples.Groups.Clifford.Qubit.CliffordGroup using (identityˡᶜ)
 
 open PrimeModulus p-2 p-prime
 
@@ -67,7 +77,7 @@ import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem
 open SympSem.Interpretation using (actg ; actg-sform)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
-open Symplectic using (Gen)
+open Symplectic using (Gen ; Circuit ; gate₁ ; gate₂ ; _↥ ; _↑)
 
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; δ)
@@ -271,3 +281,81 @@ conj-sound y x =
                      {v = pauliWord (actg x (genToVec y))}
                      (delog (actg x (genToVec y))))
              (≈ᶜ-refl {w = [ x ]ʷ}))
+
+------------------------------------------------------------------------
+-- The twisted-relator family of sound-ax, structurally
+--
+-- For a symplectic relator r̄ : ū === v̄ the twisted relation reads
+-- [ ū ]ᵣ = [ corr r̄ ]ₗ · [ v̄ ]ᵣ, i.e. in CMS n
+--
+--     ū  ≈ᶜ  pw (corr r̄) · v̄.
+--
+-- corr is ε except at order-S, where it is Z₀, and it follows cong↑ by
+-- shifting.  So the whole family reduces to the raw axioms: everything
+-- structural — the wire shift and the two disjoint-wire commutations —
+-- is discharged once and for all below, leaving one obligation per
+-- axiom of the simplified rule set.
+
+-- shiftPauli prepends the identity to the vector (the letter case is
+-- vacuous at width 0, where there are no Pauli generators).
+private
+  vecOf-shift : (c : Word (PauliGen n)) → vecOf (shiftPauli c) ≡ pI ∷ vecOf c
+  vecOf-shift {₀}    [ () ]ʷ
+  vecOf-shift {₁₊ m} [ y ]ʷ  = Eq.refl
+  vecOf-shift        ε       = Eq.refl
+  vecOf-shift        (w • v) =
+    Eq.trans (Eq.cong₂ _+ₚ_ (vecOf-shift w) (vecOf-shift v))
+             (Eq.cong (_∷ (vecOf w +ₚ vecOf v)) (+₁-identityˡ pI))
+
+-- Shifting a correction up a wire is shifting its conjugation.
+pw-shift : (c : Word (PauliGen n)) → pw (shiftPauli c) ≈ᶜ (pw c) ↑
+pw-shift {n} c = ≈ᶜ-trans {w = pw (shiftPauli c)}
+                          {v = pauliWord (pI ∷ vecOf c)}
+                          {u = (pw c) ↑}
+  (Eq.subst (λ □ → pw (shiftPauli c) ≈ᶜ pauliWord □)
+            (vecOf-shift c) (pw-vecOf (shiftPauli c)))
+  (≈ᶜ-trans {w = pauliWord (pI ∷ vecOf c)}
+            {v = (pauliWord (vecOf c)) ↑}
+            {u = (pw c) ↑}
+    (identityˡᶜ ((pauliWord (vecOf c)) ↑))
+    (sound-↑ {w = pauliWord (vecOf c)} {v = pw c}
+             (≈ᶜ-sym {w = pw c} {v = pauliWord (vecOf c)} (pw-vecOf c))))
+
+-- The per-axiom obligation that remains: each raw axiom of the
+-- simplified rule set acts as its correction demands.  (For every axiom
+-- but order-S the correction is ε, so this says the two sides act
+-- alike; for order-S it says S² is conjugation by Z on wire 0.)
+AxiomSound : Set
+AxiomSound = ∀ {n} {u v : Circuit n} (r : n SRel, u === v) →
+             u ≈ᶜ (pw (corr (srel r)) • v)
+
+-- Given that, the whole twisted family follows.
+twist-sound : AxiomSound →
+              ∀ {n} {u v : Circuit n} (r̄ : (n QRel,_===_) u v) →
+              u ≈ᶜ (pw (corr r̄) • v)
+twist-sound as (srel r)    = as r
+twist-sound as (comm₁ h g) =
+  ≈ᶜ-trans {w = [ g ↥ ]ʷ • [ gate₁ h ]ʷ}
+           {v = [ gate₁ h ]ʷ • [ g ↥ ]ʷ}
+           {u = ε • ([ gate₁ h ]ʷ • [ g ↥ ]ʷ)}
+    (comm₁-sound h g)
+    (≈ᶜ-sym {w = ε • ([ gate₁ h ]ʷ • [ g ↥ ]ʷ)}
+            {v = [ gate₁ h ]ʷ • [ g ↥ ]ʷ}
+            (identityˡᶜ ([ gate₁ h ]ʷ • [ g ↥ ]ʷ)))
+twist-sound as (comm₂ h g) =
+  ≈ᶜ-trans {w = [ g ↥ ↥ ]ʷ • [ gate₂ h ]ʷ}
+           {v = [ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ}
+           {u = ε • ([ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ)}
+    (comm₂-sound h g)
+    (≈ᶜ-sym {w = ε • ([ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ)}
+            {v = [ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ}
+            (identityˡᶜ ([ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ)))
+twist-sound as (cong↑ {w = u'} {v = v'} r) =
+  ≈ᶜ-trans {w = u' ↑} {v = (pw (corr r) • v') ↑}
+           {u = pw (shiftPauli (corr r)) • (v' ↑)}
+    (sound-↑ {w = u'} {v = pw (corr r) • v'} (twist-sound as r))
+    (∙-congᶜ {w = (pw (corr r)) ↑} {pw (shiftPauli (corr r))}
+             {v' ↑} {v' ↑}
+             (≈ᶜ-sym {w = pw (shiftPauli (corr r))} {v = (pw (corr r)) ↑}
+                     (pw-shift (corr r)))
+             (≈ᶜ-refl {w = v' ↑}))
