@@ -80,7 +80,7 @@ open SympSem.Interpretation using (actg ; actg-sform)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
 open Symplectic
-  using (Gen ; Circuit ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; S ; H ; CZ)
+  using (Gen ; Circuit ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; S ; H ; CZ ; ⊤⊥ ; ⊥⊤)
 
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; δ ; incl)
@@ -510,6 +510,30 @@ comm-CZ-S↑-sound {n} = plain (CZ • S ↑) (S ↑ • CZ) go
   go (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
   go (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
   go (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq CZS↑ S↑CZ s P Eq.refl
+
+------------------------------------------------------------------------
+-- The three-wire axioms: do NOT restate them here
+--
+-- selinger-c12 … c15 are letter-for-letter the Figure-8 relations of the
+-- same names, and their P4-soundness is already proved — c12 and c13 in
+-- Selinger.Action, c14 and c15 in Selinger.Soundness, each a 64-case
+-- head split.  The obvious move is to wrap them with `plain`, and it is
+-- a trap: doing so puts TWO differently-named copies of the same long
+-- word in one goal (this module's and the private one over there), and
+-- the conversion checker resolves that by unfolding cact along the word
+-- with a symbolic Pauli.  Measured: 25 GB resident and still climbing
+-- after 11 minutes, i.e. the blow-up documented in Selinger.Soundness's
+-- header.
+--
+-- So these four are to be plugged in AT THE ASSEMBLY SITE, where the
+-- axiom itself supplies the words and only one copy is ever in play:
+--
+--     axiom-sound selinger-c12 = plain _ _ c12-sound
+--
+-- with the underscores solved from the axiom's own indices.  The same
+-- caution applies to c10 / c11, whose two sides differ between the two
+-- rule sets and so need their own sixteen-case computation — write it
+-- against named words, exactly as Soundness.agda does.
 
 -- The per-axiom obligation that remains: each raw axiom of the
 -- simplified rule set acts as its correction demands.  (For every axiom
