@@ -9,29 +9,19 @@ import Relation.Binary.PropositionalEquality as Eq
 
 open import Data.Product using (_,_ ; proj₁)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
-open import Agda.Builtin.Nat using (_-_)
-open import Data.Bool hiding (_<_ ; _≤_)
-open import Data.List hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
-open import Data.Vec hiding ([_])
-open import Data.Fin hiding (_+_ ; _-_)
 
-open import Data.Maybe
-open import Data.Sum using ([_,_])
 
 open import Word.Base as WB hiding (wfoldl)
-open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Normalization.Reidemeister-Schreier as RS
 open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
-open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
 open import Data.Fin using (toℕ)
 open import Presentation.GroupLike
-open import Presentation.Tactic.Rewriting hiding ([_])
 open import Data.Nat.Primality
 
 
@@ -56,8 +46,6 @@ open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 
-open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm p-2 p-prime 0
-open import Examples.Groups.Symplectic.Lemmas.Lemma-Postfix p-2 p-prime
 open Lemmas0a
 open Lemmas0a1
 open Lemmas0b
@@ -65,7 +53,6 @@ open Lemmas0c
 module L0 = Lemmas0 0
 
 open LM2
-open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
 
 private
   n : ℕ
@@ -74,10 +61,7 @@ private
 open Symplectic
 open Symplectic-GroupLike
 
-open import Data.Nat.DivMod
-open import Data.Fin.Properties
 open Duality
-open import Algebra.Properties.Ring (+-*-ring p-2)
 
 aux-dual-M : ∀ m -> dual (M m) ≡ M m ↑ 
 aux-dual-M m@x' = begin
