@@ -59,7 +59,7 @@ open import Presentation.Construct.Base using (_⊕^_)
 open import Presentation.Definitions using (_IsPresentationOf_)
 open import Normalization.NormalForm.Propositional using (BijectiveNormalForm)
 import Normalization.NormalForm.Setoid as SNF
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 import Presentation.Construct.Properties.Extension as Ext
 
 open import Examples.Groups.Clifford.Qubit.Presentation
@@ -111,12 +111,19 @@ module Clifford (n : ℕ)
     ⟦_⟧₀ nfpS nfpQ
     public
 
-  -- The headline, once the four compatibility inputs are supplied.
+  -- One of the four is free: a gate generator's projection into
+  -- Sp(2n,2) is its symplectic denotation, which is also what the
+  -- quotient presentation reads off a one-letter word.  Both sides are
+  -- ⟦ x ⟧ᵍ after unfolding, so the symplectic maps are equal on the nose.
+  real-Q : ∀ x → Group._≈_ (Sp-group n) (proj ⟦ inj₂ x ⟧₀) ⟦ [ x ]ʷ ⟧Q
+  real-Q x _ = Eq.refl
+
+  -- The headline, once the three remaining compatibility inputs are
+  -- supplied.
   presentation :
     Realises →
     (∀ {w v} → Ext.extp (Γ-H ⊕^ n) (n QRel,_===_) conj corr w v →
                Group._≈_ (Clifford-group n) ⟦ w ⟧ ⟦ v ⟧) →
     SNF.BijectiveNormalForm.inv-nf nfpQ (SNF.BijectiveNormalForm.nf nfpQ ε) ≡ ε →
-    (∀ x → Group._≈_ (Sp-group n) (proj ⟦ inj₂ x ⟧₀) ⟦ [ x ]ʷ ⟧Q) →
     (n Clifford,_===_) IsPresentationOf (Clifford-group n)
-  presentation = dpres
+  presentation real sound-ax nf-ε = dpres real sound-ax nf-ε real-Q
