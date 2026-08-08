@@ -15,11 +15,19 @@ open import Level
 module Normalization.StarPresentation {A : Set} (Γ : WRel A) (NF : Setoid 0ℓ 0ℓ) where
 
 open import Algebra.Bundles using (Monoid ; Group)
+open import Algebra.Morphism.Structures
   using (module MonoidMorphisms ; module GroupMorphisms)
+open import Function using (_∘_)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+import Relation.Binary.Reasoning.Setoid as SR
 
 import Presentation.Base as PB
 open import Presentation.GroupLike
+import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
 import Presentation.Properties as PP
+open import Normalization.Reidemeister-Schreier
+open import ForStdlib.Algebra.Morphism.Consequences
   using (isMonoidHomomorphism⇒isGroupHomomorphism)
 
 open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_)

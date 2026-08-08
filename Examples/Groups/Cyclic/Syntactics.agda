@@ -8,10 +8,13 @@
 
 module Examples.Groups.Cyclic.Syntactics where
 
+open import Data.Fin using (zero ; suc)
 open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Product using (_,_)
 open import Data.Unit using (⊤ ; tt)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]')
 
+open import Notations
 
 import Presentation.Base as PB
 open import Presentation.GroupLike using (Grouplike)

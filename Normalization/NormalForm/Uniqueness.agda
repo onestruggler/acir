@@ -14,9 +14,13 @@ module Normalization.NormalForm.Uniqueness
 
 open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Function using (_∘_)
+open import Function.Bundles using (Injection ; Bijection ; RightInverse ; _⟶ₛ_)
+open import Relation.Binary.Definitions using (Decidable)
+open import Relation.Nullary.Decidable using (via-injection)
 import Relation.Binary.Reasoning.Setoid as SR
 
 open import Presentation.Base Γ
+open import Presentation.Core Γ using (word-setoid)
 open import Function.Definitions using (Congruent ; Injective ; Surjective ; StrictlySurjective)
 open import Function.Consequences using (surjective⇒strictlySurjective ; strictlySurjective⇒surjective)
 

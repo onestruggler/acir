@@ -1,5 +1,8 @@
 {-# OPTIONS --cubical-compatible --safe #-}
+open import Level using (0ℓ)
+open import Relation.Binary using (IsEquivalence ; Setoid ; Rel)
 open import Data.Product using (_,_ ; proj₂)
+open import Relation.Binary.Morphism.Definitions using (Homomorphic₂)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -13,6 +16,7 @@ open import Algebra.Bundles.Raw using (RawGroup)
 
 
 open import Word.Base
+open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open import Normalization.Reidemeister-Schreier

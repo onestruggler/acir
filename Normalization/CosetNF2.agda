@@ -55,6 +55,7 @@ open import Data.Product using (_,_ ; _×_ ; proj₁ ; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 
 open import Word.Base
+open import Word.Properties
 
 import Presentation.Base as PB
 
