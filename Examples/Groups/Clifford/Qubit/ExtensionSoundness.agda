@@ -63,11 +63,15 @@ open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-ge
   using (module Simplified-Relations)
 open Simplified-Relations
   using (_QRel,_===_ ; srel ; cong↑ ; comm₁ ; comm₂ ; module SimBase ; M₋₁)
-open SimBase using (_SRel,_===_)
+open SimBase
+  using ( _SRel,_===_ ; order-S ; order-H ; M-power ; semi-MS ; semi-M↑CZ
+        ; semi-M↓CZ ; order-CZ ; comm-CZ-S↓ ; comm-CZ-S↑
+        ; selinger-c10 ; selinger-c11 ; selinger-c12 ; selinger-c13
+        ; selinger-c14 ; selinger-c15 )
 open import Examples.Groups.Clifford.Qubit.Selinger.Soundness
-  using (sound-↑ ; comm₁-sound ; comm₂-sound ; cω↑-sound)
+  using (sound-↑ ; comm₁-sound ; comm₂-sound ; cω↑-sound ; c14-sound ; c15-sound)
 open import Examples.Groups.Clifford.Qubit.Selinger.Action
-  using (cact-ω ; lift-eq)
+  using (cact-ω ; lift-eq ; c12-sound ; c13-sound)
 open import Examples.Groups.Clifford.Qubit.CliffordGroup using (identityˡᶜ)
 
 open PrimeModulus p-2 p-prime
@@ -608,6 +612,45 @@ selinger-c11-sound {n} = plain L11ˢ R11ˢ go
 AxiomSound : Set
 AxiomSound = ∀ {n} {u v : Circuit n} (r : n SRel, u === v) →
              u ≈ᶜ (pw (corr (srel r)) • v)
+
+-- THE ASSEMBLY, and what it costs.  Written out it is
+--
+--   axiom-sound : AxiomSound
+--   axiom-sound (order-S {₀})    = order-S-sound    -- the width split is
+--   axiom-sound (order-S {₁₊ m}) = order-S-sound    -- needed: Z₀, the
+--   axiom-sound order-H          = order-H-sound    -- one non-trivial
+--   axiom-sound (M-power ₀)      = M-power-sound    -- correction, is
+--   axiom-sound semi-MS          = semi-MS-sound    -- defined by cases
+--   axiom-sound semi-M↑CZ        = semi-M↑CZ-sound  -- on the width
+--   axiom-sound semi-M↓CZ        = semi-M↓CZ-sound
+--   axiom-sound order-CZ         = order-CZ-sound
+--   axiom-sound comm-CZ-S↓       = comm-CZ-S↓-sound
+--   axiom-sound comm-CZ-S↑       = comm-CZ-S↑-sound
+--   axiom-sound selinger-c10     = selinger-c10-sound
+--   axiom-sound selinger-c11     = selinger-c11-sound
+--   axiom-sound selinger-c12     = plain (CZ ↑ • CZ) (CZ • CZ ↑) c12-sound
+--   axiom-sound selinger-c13     =
+--     plain (⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑) (⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓) c13-sound
+--   axiom-sound selinger-c14     = plain ((⊤⊥ ↑ • CZ ↓) ^ 3) ε c14-sound
+--   axiom-sound selinger-c15     = plain ((⊥⊤ ↓ • CZ ↑) ^ 3) ε c15-sound
+--
+-- Measured 2026-08-08 under an 8 GB cap:
+--
+--   * everything through selinger-c13 checks, in 24 s.  c12 and c13 need
+--     their words written OUT — `plain _ _ c12-sound` leaves metas, since
+--     _≈ᶜ_ is a defined relation and cannot determine them — but writing
+--     the same expression the axiom uses costs nothing;
+--   * selinger-c14 / c15 exhaust 8 GB in ~34 s whatever the body.  Their
+--     words are cubes of the derived ⊤⊥ / ⊥⊤, and the blow-up is in the
+--     CLAUSE'S GOAL rather than the proof — the same phenomenon
+--     Soundness.agda's header records for its own axiom-sound;
+--   * M-power needs a second clause: Agda asks for M-power (₁₊ k), so its
+--     exponent type is not the one-element ℤ/1 that ℤ*₂ triviality would
+--     suggest.  That case has to be inhabited-and-proved or shown absurd.
+--
+-- So the eleven lemmas above stand on their own, and closing AxiomSound
+-- waits on a way to keep c14/c15's words out of the goal: an abstract or
+-- opaque wrapper, or the per-clause module split Soundness.agda suggests.
 
 -- Given that, the whole twisted family follows.
 twist-sound : AxiomSound →
