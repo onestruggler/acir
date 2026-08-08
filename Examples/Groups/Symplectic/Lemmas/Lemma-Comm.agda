@@ -1,35 +1,23 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 
 
 
 open import Data.Product using (_,_ ; proj₁)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
-open import Agda.Builtin.Nat using (_-_)
-open import Data.Bool hiding (_<_ ; _≤_)
-open import Data.List hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
-open import Data.Vec hiding ([_])
-open import Data.Fin hiding (_+_ ; _-_)
 
-open import Data.Maybe
-open import Data.Sum using ([_,_])
 
 open import Word.Base as WB hiding (wfoldl)
-open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Normalization.Reidemeister-Schreier as RS
 open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
-open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
 open import Data.Fin using (toℕ)
-open import Presentation.GroupLike
-open import Presentation.Tactic.Rewriting hiding ([_] ; inspect)
 open import Data.Nat.Primality
 
 
@@ -55,7 +43,6 @@ open Lemmas0a
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 
 open LM2
-open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
 
 open PB ((₂₊ n) QRel,_===_)
 open PP ((₂₊ n) QRel,_===_)
@@ -231,7 +218,6 @@ aux-comm-CZ^a-S^b↑' a b = begin
   S ↑  ^ b • CZ ^ a ≈⟨ (cleft refl' (aux-↑ S (b))) ⟩
   (S ^ b) ↑ • CZ ^ a ∎
 
-open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym
 
 aux-comm-CX-S^k↑ : ∀ k -> CX • S^ k ↑ ≈ S^ k ↑ • CX
 aux-comm-CX-S^k↑ k = begin
