@@ -1,38 +1,25 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 
 
 
 open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
-open import Agda.Builtin.Nat using (_-_)
-open import Data.Bool hiding (_<_ ; _≤_)
-open import Data.List hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
-open import Data.Vec hiding ([_])
-open import Data.Fin hiding (_+_ ; _-_)
 
-open import Data.Maybe
-open import Data.Sum using ([_,_])
 open import Data.Unit using (⊤)
 open import Data.Empty using (⊥)
 
 open import Word.Base as WB hiding (wfoldl)
-open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Normalization.Reidemeister-Schreier as RS
-open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
-open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
 open import Data.Fin using (toℕ)
-open import Presentation.GroupLike
-open import Presentation.Tactic.Rewriting hiding ([_] ; inspect)
 open import Data.Nat.Primality
 
 
