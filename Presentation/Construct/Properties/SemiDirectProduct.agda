@@ -23,8 +23,6 @@ open import Data.Product using (_,_ ; _×_ ; map ; proj₁ ; proj₂)
 import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 open import Function using (_∘_)
-import Function.Construct.Composition as FCC
-open import Function.Definitions using (Injective)
 open import Relation.Binary.PropositionalEquality as Eq renaming ([_] to [_]') using (_≡_ ; inspect)
 
 import Relation.Binary.Reasoning.Setoid as SR
