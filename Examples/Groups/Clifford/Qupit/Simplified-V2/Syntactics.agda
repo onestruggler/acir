@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------
 
 
-open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
 open import Data.Product using (_,_ ; proj₁ ; ∃)
@@ -31,8 +30,6 @@ open import Data.Fin hiding (_+_ ; _-_)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 
-open import Presentation.Construct.Base hiding (_*_)
-open import Presentation.GroupLike
 import Circuit.Base
 open import Data.Nat.Primality
 
