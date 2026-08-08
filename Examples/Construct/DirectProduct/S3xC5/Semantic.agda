@@ -16,8 +16,6 @@ open import Data.Sum using (inj₁ ; inj₂)
 open import Data.Fin using (Fin)
 open import Notations
 
-open import Examples.Groups.Symmetric.Syntactics using (_VRel,_===_)
-open import Examples.Groups.Cyclic.Normalization using (_Cn,_===_)
 import Examples.Groups.Cyclic.Semantics as CS
 import Examples.Groups.Symmetric.Tight.Semantics as TS
 
