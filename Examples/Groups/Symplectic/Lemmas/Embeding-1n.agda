@@ -1,4 +1,4 @@
-﻿{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 --{-# OPTIONS --termination-depth=5 #-}
 
 import Relation.Binary.Reasoning.Setoid as SR

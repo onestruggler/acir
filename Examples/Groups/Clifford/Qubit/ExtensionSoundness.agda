@@ -45,7 +45,8 @@
 -- --call-by-name: the axiom-sound clauses for selinger-c14 / c15 have
 -- long words in their goals, and call-by-need normalisation of cact
 -- along them exhausts memory (see the note at axiom-sound).  The heavy
--- symplectic files (e.g. BR.Three.Fig-40) use the same flag.
+-- symplectic files carry the same flag for the same reason -- the whole
+-- of BR/Two and BR/Three, e.g. BR.Three.DD-CZ.
 {-# OPTIONS --cubical-compatible --safe --call-by-name #-}
 
 module Examples.Groups.Clifford.Qubit.ExtensionSoundness where
