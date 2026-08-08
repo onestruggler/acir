@@ -56,7 +56,6 @@ open import Examples.Groups.Symplectic.Semantics p-2 p-prime
   using (_≈ˢ_ ; module Interpretation) renaming (Symplectic to Sym)
 open Sym using (ap)
 open Interpretation using (⟦_⟧)
-open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using ([_]ᵐˡ)
 -- ract / ract-sound / [_]ᶜ are taken from PushML rather than from
 -- Normalization, which aliases them: Normalization still has open
