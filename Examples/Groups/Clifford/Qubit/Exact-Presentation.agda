@@ -4,7 +4,7 @@
 -- The n-qubit Clifford group *with* its scalar, presented as a group
 -- extension (Selinger, arXiv:1310.6813).
 --
---     1 ─→ ⟨ω⟩ ≅ ℤ/8 ─→ Exact (₁₊ n) ─→ CMS (₁₊ n) ─→ 1
+--     1 ─→ ⟨ω⟩ ≅ ℤ/8 ─→ Exact n ─→ CMS n ─→ 1
 --
 -- This is the scalar layer, one storey above Qubit.Presentation: there
 -- the normal subgroup is the Pauli group and the quotient is symplectic;
@@ -43,9 +43,17 @@
 -- shift.  For the same reason Figure8.cω (centrality) becomes the single
 -- clause of `conj` below.
 --
--- Width.  ω = (SH)³ needs a wire to live on, so everything is stated at
--- width ₁₊ n, as in Qubit.ExactExtension.  (At width 0 the generating
--- set is empty and every circuit is ε, so ℤ/8 could not embed.)
+-- Width.  The relation is stated at every width n, which is possible
+-- precisely because the scalar has become a generator: nothing here
+-- mentions the word (SH)³, so nothing needs a wire to write it on.
+--
+-- The presentation THEOREM is a different matter, and is to be read at
+-- width ₁₊ n, as Qubit.ExactExtension states it.  At width 0 the gate
+-- alphabet Gen 0 is empty, so every circuit is ε and the group Figure 8
+-- presents is trivial, whereas _Exact, 0 ===_ is ⟨ t ∣ t⁸ ⟩ ≅ ℤ/8: the
+-- scalar has nowhere to live, and ⟨ω⟩ cannot embed.  Instantiating this
+-- relation at ₁₊ n is what the group side wants; indexing it at n costs
+-- nothing and keeps the definition uniform.
 --
 -- The corrections are not all trivial, so this instance is not the split
 -- one that Presentation.Construct.Properties.SemiDirectProduct2 covers;
@@ -109,7 +117,7 @@ T⁻¹ = T ^' 7
 -- group; in Figure 8, where ω is the derived word (SH)³, the same fact
 -- has to be an axiom (Figure8.cω).
 
-conj : Gen (₁₊ n) → ScalarGen → Word ScalarGen
+conj : Gen n → ScalarGen → Word ScalarGen
 conj _ _ = T
 
 ------------------------------------------------------------------------
@@ -141,7 +149,7 @@ corr (MS.comm₂ h g) = ε
 ------------------------------------------------------------------------
 -- The exact Clifford presentation
 --
--- The alphabet is ScalarGen ⊎ Gen (₁₊ n): the scalar t, and the gates.
+-- The alphabet is ScalarGen ⊎ Gen n: the scalar t, and the gates.
 -- Unfolding extension-presentation, the relations are
 --
 --   S    t⁸ = 1                                     (on the scalar)
@@ -154,14 +162,15 @@ corr (MS.comm₂ h g) = ε
 
 infix 4 _Exact,_===_
 
-_Exact,_===_ : (n : ℕ) → WRel (ScalarGen ⊎ Gen (₁₊ n))
+_Exact,_===_ : (n : ℕ) → WRel (ScalarGen ⊎ Gen n)
 _Exact,_===_ n =
-  extension-presentation Scalar-relation ((₁₊ n) MS.CRel,_===_) conj corr
+  extension-presentation Scalar-relation (n MS.CRel,_===_) conj corr
 
 ------------------------------------------------------------------------
 -- What Proposition 2.55 would still need
 --
--- The analogue of Qubit.ExtensionPresentation, one layer up.  Of the
+-- The analogue of Qubit.ExtensionPresentation, one layer up, applied to
+-- _Exact, (₁₊ n) ===_ (see the note on width above).  Of the
 -- proposition's inputs, the scalar side is done and the quotient side is
 -- the open front:
 --
