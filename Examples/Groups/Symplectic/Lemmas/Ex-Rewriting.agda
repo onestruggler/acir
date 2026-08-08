@@ -1,32 +1,22 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 {-# OPTIONS --termination-depth=2 #-}
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
 
 
 
 open import Data.Product using (_,_)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
-open import Agda.Builtin.Nat using (_-_)
-open import Data.Bool hiding (_<_ ; _≤_)
 open import Data.List hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
-open import Data.Vec hiding ([_])
-open import Data.Fin hiding (_+_ ; _-_)
 
 open import Data.Maybe
-open import Data.Sum using ([_,_])
 
-open import Word.Base as WB hiding (wfoldl ; _^'_)
-open import Word.Properties
 import Presentation.Base as PB
 import Normalization.Reidemeister-Schreier as RS
 open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
-open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
-open import Presentation.GroupLike
 open import Presentation.Tactic.Rewriting hiding ([_])
 open import Data.Nat.Primality
 
@@ -48,8 +38,6 @@ open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open Lemmas0a
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n p-2 p-prime
 open Lemmas0a1
 
 module Ex-Rewriting where
