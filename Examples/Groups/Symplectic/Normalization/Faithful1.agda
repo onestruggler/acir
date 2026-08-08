@@ -31,7 +31,6 @@ module Examples.Groups.Symplectic.Normalization.Faithful1
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_)
 
-open import Word.Base
 import Presentation.Base as PB
 import Normalization.NormalForm.Setoid as SNF
 
