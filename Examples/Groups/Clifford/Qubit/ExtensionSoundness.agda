@@ -80,7 +80,8 @@ open SympSem.Interpretation using (actg ; actg-sform)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
 open Symplectic
-  using (Gen ; Circuit ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; S ; H ; CZ ; ⊤⊥ ; ⊥⊤)
+  using ( Gen ; Circuit ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓
+        ; S ; S⁻¹ ; H ; CZ ; ⊤⊥ ; ⊥⊤ )
 
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; δ ; incl)
@@ -534,6 +535,71 @@ comm-CZ-S↑-sound {n} = plain (CZ • S ↑) (S ↑ • CZ) go
 -- caution applies to c10 / c11, whose two sides differ between the two
 -- rule sets and so need their own sixteen-case computation — write it
 -- against named words, exactly as Soundness.agda does.
+
+------------------------------------------------------------------------
+-- selinger-c10
+--
+-- Unlike c12…c15 this one is NOT shared with Figure 8: the simplified
+-- rule set writes the right-hand side with S⁻¹'s (which are S at p = 2)
+-- and no ω, where Figure 8 writes SH's and a trailing ω⁻¹.  So it needs
+-- its own computation — sixteen head cases, tail symbolic, lift-eq for
+-- the phase, against words named locally so that conversion never
+-- unfolds cact along them.
+
+private
+  L10ˢ R10ˢ : Word (Gen (₂₊ n))
+  L10ˢ = CZ • H ↑ • CZ
+  R10ˢ = S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓
+
+selinger-c10-sound : (L10ˢ {n}) ≈ᶜ (ε • R10ˢ)
+selinger-c10-sound {n} = plain L10ˢ R10ˢ go
+  where
+  go : (x : P4Carrier (₂₊ n)) → cact L10ˢ x ≡ cact R10ˢ x
+  go (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq L10ˢ R10ˢ s P Eq.refl
+
+------------------------------------------------------------------------
+-- selinger-c11, the mirror image
+
+private
+  L11ˢ R11ˢ : Word (Gen (₂₊ n))
+  L11ˢ = CZ • H ↓ • CZ
+  R11ˢ = S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑
+
+selinger-c11-sound : (L11ˢ {n}) ≈ᶜ (ε • R11ˢ)
+selinger-c11-sound {n} = plain L11ˢ R11ˢ go
+  where
+  go : (x : P4Carrier (₂₊ n)) → cact L11ˢ x ≡ cact R11ˢ x
+  go (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
+  go (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq L11ˢ R11ˢ s P Eq.refl
 
 -- The per-axiom obligation that remains: each raw axiom of the
 -- simplified rule set acts as its correction demands.  (For every axiom
