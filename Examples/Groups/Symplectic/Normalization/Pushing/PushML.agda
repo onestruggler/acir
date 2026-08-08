@@ -14,22 +14,17 @@ open import Notations
 module Examples.Groups.Symplectic.Normalization.Pushing.PushML (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 
-open import Data.Nat using (ℕ)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using (≡×≡⇒≡ ; Pointwise ; ≡⇒≡×≡)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]ₑ)
 import Relation.Binary.Reasoning.Setoid as SR
 
 open import Word.Base
-open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Normalization.NormalForm.Propositional as NFBase
-import Normalization.NormalForm.Setoid as SNF
 open NFBase using (NormalFormInjective ; NormalForm)
-import Normalization.CosetNF as CosetNF
 
 
 --open import Examples.Groups.Symplectic.NewCosets p-2 p-prime
