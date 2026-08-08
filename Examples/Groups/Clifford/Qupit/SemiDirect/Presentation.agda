@@ -54,7 +54,6 @@ module Examples.Groups.Clifford.Qupit.SemiDirect.Presentation
 
 open import Algebra.Bundles using (Group)
 open import Level using (0ℓ)
-open import Word.Base using (Word ; _ʰ' ; _ⁿ')
 
 import Presentation.Base as PB
 open import Presentation.Definitions using (_IsPresentationOf_)
