@@ -96,11 +96,18 @@ open import Examples.Groups.Clifford.Qubit.CMS
 ------------------------------------------------------------------------
 -- Proposition 2.55, instantiated
 
+-- The quotient factor's witness is now available: Simplified.Bijective
+-- upgrades the coset-tower normal form to a bijection, using uniqueness
+-- of the section for the round trip nf ∘ inv-nf ≡ id.
+open import Examples.Groups.Symplectic.Simplified.Bijective p-2 p-prime g* g-gen
+  using (bijective₂)
+
 module Clifford (n : ℕ)
-  {NFS NFQ : Set}
+  {NFS : Set}
   (nfpS : BijectiveNormalForm (Γ-H ⊕^ n) NFS)
-  (nfpQ : BijectiveNormalForm (n QRel,_===_) NFQ)
   where
+
+  nfpQ = bijective₂ n
 
   -- (The proposition's own module is opened publicly; it internally
   -- names a module E, so this one is EP.)
