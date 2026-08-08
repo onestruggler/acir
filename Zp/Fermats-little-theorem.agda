@@ -5,8 +5,6 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --call-by-name #-}
-{-# OPTIONS --termination-depth=5 #-}
 
 open import Notations
 module Zp.Fermats-little-theorem where

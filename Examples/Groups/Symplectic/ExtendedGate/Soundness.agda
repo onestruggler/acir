@@ -6,8 +6,6 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --call-by-name #-}
-{-# OPTIONS --termination-depth=3 #-}
 
 open import Data.Fin hiding (_+_ ; _-_)
 open import Data.Fin.Properties using (fromℕ<-cong ; fromℕ<-toℕ ; toℕ<n)

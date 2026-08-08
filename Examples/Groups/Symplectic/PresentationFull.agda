@@ -16,7 +16,7 @@
 -- presentation theorem, is postulate-free.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe --termination-depth=2 #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ)
 open import Data.Nat.Primality using (Prime)

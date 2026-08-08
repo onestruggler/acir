@@ -1,6 +1,4 @@
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --termination-depth=2 #-}
-{-# OPTIONS  --call-by-name #-}
 
 
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')

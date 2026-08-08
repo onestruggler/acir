@@ -31,7 +31,7 @@
 -- this cone — it merely lacked the --safe flag, which hid the fact.)
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe --termination-depth=2 #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)

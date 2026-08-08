@@ -1,5 +1,4 @@
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --termination-depth=20 #-}
 
 ------------------------------------------------------------------------
 -- Qudit Clifford group mod scalars: the rules and their preamble.

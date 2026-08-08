@@ -1,5 +1,4 @@
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --termination-depth=2 #-}
 
 open import Data.Product using (_,_)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)

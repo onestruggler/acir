@@ -1,5 +1,4 @@
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS  --call-by-name #-}
 --{-# OPTIONS --termination-depth=2 #-}
 open import Level using (0ℓ)
 

@@ -1,5 +1,4 @@
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --termination-depth=20 #-}
 
 ------------------------------------------------------------------------
 -- A *simplified* relation set for the qudit Clifford group mod scalars,

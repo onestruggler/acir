@@ -1,5 +1,4 @@
-{-# OPTIONS --cubical-compatible --termination-depth=20 #-}
-{-# OPTIONS --inversion-max-depth=1000 #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; module ≡-Reasoning) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR

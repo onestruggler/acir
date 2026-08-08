@@ -4,9 +4,7 @@
 -- Modular arithmetic on ℤ/nℤ (as Fin n) with ring operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
-{-# OPTIONS --cubical-compatible #-}
-{-# OPTIONS --call-by-name #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Notations
 module Zp.ModularArithmetic where

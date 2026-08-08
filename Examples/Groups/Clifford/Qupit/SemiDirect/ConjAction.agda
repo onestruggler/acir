@@ -25,7 +25,6 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --termination-depth=4 #-}
 
 open import Data.Fin using (toℕ)
 open import Data.Nat using (ℕ ; suc)

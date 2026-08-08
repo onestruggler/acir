@@ -18,7 +18,7 @@
 -- reads off the D box's components as head shifts.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe --termination-depth=4 #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ ; 2+ ; zero ; suc)
 open import Data.Nat.Primality using (Prime)

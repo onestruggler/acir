@@ -1,5 +1,4 @@
-{-# OPTIONS --cubical-compatible --termination-depth=20 #-}
-{-# OPTIONS --inversion-max-depth=1000 #-}
+{-# OPTIONS --cubical-compatible --safe --termination-depth=20 --inversion-max-depth=1000 #-}
 
 ------------------------------------------------------------------------
 -- Completeness for the *simplified* semi-M relations.

@@ -1,3 +1,4 @@
+{-# OPTIONS --cubical-compatible --safe #-}
 -- Throwaway computational validation of Keystone.core-M1 at p = 3.
 -- NOT part of the library; delete after use.
 

@@ -1,6 +1,4 @@
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS  --call-by-name #-}
-{-# OPTIONS --termination-depth=4 #-}
 
 open import Relation.Binary.PropositionalEquality using (_≡_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
@@ -372,9 +370,6 @@ aux-M↑CX^k m k = sym (begin
 
 
 {-
-{-# OPTIONS  --safe #-}
-{-# OPTIONS  --call-by-name #-}
-{-# OPTIONS --termination-depth=4 #-}
 
 
 
