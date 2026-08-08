@@ -74,7 +74,7 @@ open import Level using (0ℓ)
 
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 open import Presentation.Construct.Base
-  using (_⊕^_ ; [_]ₗ ; [_]ᵣ ; left ; right ; comm)
+  using (_⊕^_ ; _⊎^_ ; [_]ₗ ; [_]ᵣ ; left ; right ; comm)
 open import Presentation.Construct.Properties.Extension using (tw)
 open import Presentation.Definitions using (_IsPresentationOf_)
 open import Normalization.NormalForm.Propositional using (BijectiveNormalForm)
@@ -104,10 +104,10 @@ import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen
 open import Data.Unit using (tt)
 open import Data.Vec using (_∷_)
 open import Notations
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli ; pI)
+open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli ; pI ; pX ; pZ)
 open import Examples.Groups.Clifford.Qubit.CMS
   using ( Clifford-extension ; Clifford-group ; pauliIncl
-        ; vec ; nest ; vec∘nest ; vec-cong ; vec-injective )
+        ; vec ; nest ; vec∘nest ; vec-cong ; vec-injective ; vec-ε )
 
 ------------------------------------------------------------------------
 -- The interpretation of the generators in CMS n
@@ -170,28 +170,13 @@ bijectiveᴾ n = record
     }
   }
 
--- NOTE for `Realises`.  It reduces to the coordinate identity
---
---   gen-vec : vec m ⟦ [ y ]ʷ ⟧N ≡ genToVec y
---
--- whose width-1 cases hold by `refl` — so the identity itself is right.
--- The width-≥2 cases do not, and the goal Agda reports is
---
---   vec (₁₊ m) (⟦ [ inj₁ (inj₁ tt) ]ʷ ⟧N .proj₂)  ≟  pIₙ.
---
--- So ⟦_⟧N does reduce to a PAIR there (the direct-product presentation),
--- and what is missing is that its second component is the unit: the fact
--- that the n-fold presentation sends a left-injected generator to
--- (⟦ a ⟧ , ε).  That is a statement about
--- Presentation.Construct.Properties.DirectProduct's interpretation, and
--- is where to look next.
---
--- (The printed types also carry two instantiations of Pauli.Semantics —
--- Qubit.CMS's and Qubit.Presentation's, each with its own p-2 / p-prime.
--- They are definitionally equal, and the width-1 cases go through
--- across them, so that is probably not the obstacle; but if the unit
--- lemma alone does not close it, align the instances the way
--- ExactExtension takes its prime from CliffordGroup.)
+-- The coordinate identity behind `Realises`: laid out as a vector, the
+-- Pauli presentation's reading of a generator is the basis vector that
+-- genToVec names.  Proved in Qubit.Realises -- the case split on
+-- PauliGen does not go through in this module's scope, where PauliGen
+-- will not reduce to a datatype.
+
+open import Examples.Groups.Clifford.Qubit.Realises using (vec-gen)
 
 module Clifford (n : ℕ) where
 
@@ -249,10 +234,16 @@ module Clifford (n : ℕ) where
   sound-ax (right (tw {u} {v} r̄))
     rewrite embʳ u | embˡ (corr r̄) | embʳ v = twisted-sound r̄
 
-  -- The headline, once the two remaining compatibility inputs are
-  -- supplied.
+  -- Realises.  ⟦ inj₁ y ⟧₀ is conjugation by genToVec y, and the
+  -- transported inclusion is pauliIncl ∘ vec, so both sides are
+  -- pauliIncl applied to the same vector once vec-gen identifies them.
+  realises : Realises
+  realises y =
+    Group.reflexive (Clifford-group n)
+      (Eq.cong (pauliIncl n) (Eq.sym (vec-gen n y)))
+
+  -- The headline, once the remaining compatibility input is supplied.
   presentation :
-    Realises →
     SNF.BijectiveNormalForm.inv-nf nfpQ (SNF.BijectiveNormalForm.nf nfpQ ε) ≡ ε →
     (n Clifford,_===_) IsPresentationOf (Clifford-group n)
-  presentation real nf-ε = dpres real sound-ax nf-ε real-Q
+  presentation nf-ε = dpres realises sound-ax nf-ε real-Q
