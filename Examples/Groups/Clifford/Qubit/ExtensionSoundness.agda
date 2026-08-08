@@ -62,10 +62,12 @@ open import Examples.Groups.Clifford.Qubit.PrimitiveRoot using (g* ; g-gen)
 open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
   using (module Simplified-Relations)
 open Simplified-Relations
-  using (_QRel,_===_ ; srel ; cong↑ ; comm₁ ; comm₂ ; module SimBase)
+  using (_QRel,_===_ ; srel ; cong↑ ; comm₁ ; comm₂ ; module SimBase ; M₋₁)
 open SimBase using (_SRel,_===_)
 open import Examples.Groups.Clifford.Qubit.Selinger.Soundness
-  using (sound-↑ ; comm₁-sound ; comm₂-sound)
+  using (sound-↑ ; comm₁-sound ; comm₂-sound ; cω↑-sound)
+open import Examples.Groups.Clifford.Qubit.Selinger.Action
+  using (cact-ω ; lift-eq)
 open import Examples.Groups.Clifford.Qubit.CliffordGroup using (identityˡᶜ)
 
 open PrimeModulus p-2 p-prime
@@ -77,7 +79,7 @@ import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem
 open SympSem.Interpretation using (actg ; actg-sform)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
-open Symplectic using (Gen ; Circuit ; gate₁ ; gate₂ ; _↥ ; _↑ ; S)
+open Symplectic using (Gen ; Circuit ; gate₁ ; gate₂ ; _↥ ; _↑ ; S ; H ; CZ)
 
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; δ ; incl)
@@ -374,6 +376,57 @@ order-S-sound (s , (a , b) ∷ ps) = begin
     ≡⟨ Eq.sym (cact-pauliWord ((₀ , ₁) ∷ pIₙ) s ((a , b) ∷ ps)) ⟩
   cact (pauliWord ((₀ , ₁) ∷ pIₙ)) (s , (a , b) ∷ ps)   ∎
   where open Eq.≡-Reasoning
+
+------------------------------------------------------------------------
+-- The scalar axioms
+--
+-- Five of the fourteen ε-correction axioms are about M₋₁, which at p = 2
+-- is the scalar (S·H)³ = ω — the ℤ*₂-is-trivial collapse.  ω acts as the
+-- identity on P4 (Action.cact-ω), on any wire (Soundness.cω↑-sound), so
+-- these need no case analysis at all: both sides act as whatever is left
+-- when ω is deleted.
+
+private
+  cactω : (x : P4Carrier (₁₊ n)) → cact (M₋₁ {n}) x ≡ x
+  cactω = cact-ω
+
+  cactω↑ : (x : P4Carrier (₂₊ n)) → cact ((M₋₁ {n}) ↑) x ≡ x
+  cactω↑ x = Eq.trans (cω↑-sound x) (cact-ω x)
+
+-- M-power at k = ₀ reads ε === M₋₁ (ℤ*₂ being trivial).
+M-power-sound : (ε {X = Gen (₁₊ n)}) ≈ᶜ (ε • M₋₁)
+M-power-sound = plain ε M₋₁ (λ x → Eq.sym (cactω x))
+
+-- order-H: H² = M₋₁.  H² acts trivially, and so does the scalar.
+order-H-sound : (H {n} ^ 2) ≈ᶜ (ε • M₋₁)
+order-H-sound {n} = plain (H ^ 2) M₋₁ h²
+  where
+  h² : (x : P4Carrier (₁₊ n)) → cact (H ^ 2) x ≡ cact M₋₁ x
+  h² (s , P@((₀ , ₀) ∷ ps)) =
+    Eq.trans (lift-eq (H ^ 2) ε s P Eq.refl) (Eq.sym (cactω (s , P)))
+  h² (s , P@((₀ , ₁) ∷ ps)) =
+    Eq.trans (lift-eq (H ^ 2) ε s P Eq.refl) (Eq.sym (cactω (s , P)))
+  h² (s , P@((₁ , ₀) ∷ ps)) =
+    Eq.trans (lift-eq (H ^ 2) ε s P Eq.refl) (Eq.sym (cactω (s , P)))
+  h² (s , P@((₁ , ₁) ∷ ps)) =
+    Eq.trans (lift-eq (H ^ 2) ε s P Eq.refl) (Eq.sym (cactω (s , P)))
+
+-- semi-MS: the scalar commutes with S (at p = 2 the exponent g·g is 1).
+semi-MS-sound : ((M₋₁ {n}) • S) ≈ᶜ (ε • (S • M₋₁))
+semi-MS-sound {n} = plain (M₋₁ • S) (S • M₋₁)
+  (λ x → Eq.trans (cactω (cact S x)) (Eq.sym (Eq.cong (cact S) (cactω x))))
+
+-- semi-M↑CZ / semi-M↓CZ: the same, one wire up and on the bottom wire
+-- (at p = 2 the exponent g is 1, so CZ^g is CZ).
+semi-M↑CZ-sound : (((M₋₁ {n}) ↑) • CZ) ≈ᶜ (ε • (CZ • ((M₋₁ {n}) ↑)))
+semi-M↑CZ-sound {n} = plain ((M₋₁ ↑) • CZ) (CZ • (M₋₁ ↑))
+  (λ x → Eq.trans (cactω↑ (cact CZ x))
+                  (Eq.sym (Eq.cong (cact CZ) (cactω↑ x))))
+
+semi-M↓CZ-sound : ((M₋₁ {₁₊ n}) • CZ) ≈ᶜ (ε • (CZ • (M₋₁ {₁₊ n})))
+semi-M↓CZ-sound {n} = plain (M₋₁ • CZ) (CZ • M₋₁)
+  (λ x → Eq.trans (cactω (cact CZ x))
+                  (Eq.sym (Eq.cong (cact CZ) (cactω x))))
 
 -- The per-axiom obligation that remains: each raw axiom of the
 -- simplified rule set acts as its correction demands.  (For every axiom
