@@ -46,8 +46,6 @@ open Eq using (_≡_)
 open import Word.Base
 
 import Presentation.Base as PB
-import Presentation.Properties as PP
-open import Presentation.GroupLike
 open import Presentation.Definitions
 open import Normalization.StarPresentation
 import Normalization.NormalForm.Setoid as SNF
