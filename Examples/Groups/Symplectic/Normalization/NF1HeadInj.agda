@@ -4,10 +4,9 @@
 -- Width-1 head-injectivity for the plain gate set: ML 1 coset
 -- representatives are distinguished by the head of their Pauli action.
 --
--- Transplanted from ExtendedGate.NF-Inj-Base.lemma-nf1-head-inj, with
--- the act-chains re-derived from BoxAction's act-S^ / act-HS^ / act-M
--- closed forms (the live section words S^ (- e) / M inv / H • S^ -b/a
--- unfold definitionally under act).  This is the width-1 base of the
+-- The act-chains are derived from BoxAction's act-S^ / act-HS^ /
+-- act-M closed forms (the live section words S^ (- e) / M inv /
+-- H • S^ -b/a unfold definitionally under act).  This is the width-1 base of the
 -- lemma-lm-head-inj width induction — the sole postulate of
 -- Normalization.NF-Inj, i.e. the completeness crux.
 ------------------------------------------------------------------------

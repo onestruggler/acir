@@ -75,9 +75,6 @@ module LM2 where
 
   open GroupMorphisms
 
-  import Examples.Groups.Symplectic.ExtendedGate.NF2 p-2 p-prime as LM2T 
-  module LM2P = LM2T.LM2
-  open LM2P renaming (⟦_⟧₂ to ⟦_⟧₂') using ()
 
 {-
 

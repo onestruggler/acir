@@ -1,11 +1,10 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The lemma-lm-head-inj width induction for the plain gate set,
--- transplanted from ExtendedGate.NF-Inj-LM and improved: the inj₂
--- spine runs at ALL widths ≥ 2 (ExtendedGate treated width 2 as a
--- separate postulate; here the ML 2 inj₂ side is covered by the same
--- argument, so no cosets2 base is needed).  Everything is proved here
+-- The lemma-lm-head-inj width induction for the plain gate set: the
+-- inj₂ spine runs at ALL widths ≥ 2 (the ML 2 inj₂ side is covered by
+-- the same argument, so no cosets2 base is needed).  Everything is
+-- proved here
 -- except the ML' branch facts, which are module parameters of
 -- `Induction` (so this file stays --safe while they are ground
 -- separately):

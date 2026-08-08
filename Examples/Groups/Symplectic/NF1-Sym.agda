@@ -1,25 +1,13 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
-import Relation.Binary.Reasoning.Setoid as SR
-import Relation.Binary.PropositionalEquality as Eq
 
 
 
 open import Data.Product using (_×_ ; _,_)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW using (≡×≡⇒≡)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
-open import Agda.Builtin.Nat using (_-_)
-import Data.Nat as Nat
-open import Data.Bool hiding (_<_ ; _≤_)
-open import Data.List hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
-open import Data.Vec hiding ([_])
-open import Data.Fin hiding (_+_ ; _-_)
 
-open import Data.Maybe
-open import Data.Sum using ([_,_])
 
-open import Word.Base as WB hiding (wfoldl)
+open import Word.Base
 open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
@@ -107,9 +95,6 @@ open import Examples.Groups.Pauli.Semantics p-2 p-prime
   der : Word (Gen₂ n) -> Word (Gen₃ n)
   der {n} = ((f'* {n}) ∘ id)
 
-  open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime renaming (act to dact) using ()
-  act : ∀ {n} → Word (Gen n) → Pauli n → Pauli n
-  act {n} w ps = dact (der w) ps
 
 
   module D = SymDerived

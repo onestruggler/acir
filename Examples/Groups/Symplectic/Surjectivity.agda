@@ -26,9 +26,8 @@
 -- postulate-free.
 --
 -- (An earlier version of this comment described Theorem-LM as
--- postulated.  That was stale: the module contains no postulate — the
--- library's only one is in ExtendedGate.NF-Inj-Base, which is not in
--- this cone — it merely lacked the --safe flag, which hid the fact.)
+-- postulated.  That was stale: the module contains no postulate — it
+-- merely lacked the --safe flag, which hid the fact.)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

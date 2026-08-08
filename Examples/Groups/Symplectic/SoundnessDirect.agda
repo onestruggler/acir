@@ -6,8 +6,8 @@
 --
 -- This replaces Examples.Groups.Symplectic.Transport, which proved the
 -- same statement by carrying it across the isomorphism with the
--- extended gate set, where the work happened (ExtendedGate.Soundness).
--- That module is in the history if the comparison is ever wanted.
+-- extended gate set, where the work happened.  That module is in the
+-- history if the comparison is ever wanted.
 --
 -- What the extended gate set bought is that S^k, CZ^k and M are single
 -- generators there, carrying their scalar in the action.  Here they are

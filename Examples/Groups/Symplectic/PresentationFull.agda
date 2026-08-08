@@ -10,10 +10,9 @@
 --
 -- Surjectivity is proved, not postulated: Surjectivity.agda and
 -- TheoremLM.agda long carried comments saying Theorem-LM was an open
--- input, but neither file contains a postulate — the only one in the
--- library is in ExtendedGate.NF-Inj-Base, which is not in this cone.
--- They merely lacked --safe.  So this module, and hence the whole
--- presentation theorem, is postulate-free.
+-- input, but neither file contains a postulate; they merely lacked
+-- --safe.  So this module, and hence the whole presentation theorem,
+-- is postulate-free.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
