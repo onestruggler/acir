@@ -21,7 +21,7 @@
 -- ⟦_⟧₀ of the generators in CMS n: a gate is itself, a Pauli generator is
 -- conjugation by the corresponding Pauli operator (CMS.pauliIncl).
 --
--- Of the proposition's six inputs, three are discharged here:
+-- Of the proposition's six inputs, four are discharged here:
 --
 --   nfpQ      Simplified.Bijective — the coset-tower normal form
 --             upgraded to a bijection (nf ∘ inv-nf ≡ id from uniqueness
@@ -34,20 +34,23 @@
 --             factor cannot be done this way — Sp(2n,2)'s elements are
 --             records of functions compared pointwise;
 --   real-Q    a gate projects to its symplectic value: both sides are
---             ⟦ x ⟧ᵍ, so this is refl.
+--             ⟦ x ⟧ᵍ, so this is refl;
+--   sound-ax  the substance — conj records conjugation in CMS n, and
+--             each twisted relator's correction word is the Pauli that
+--             lifting it accumulates.  Both families are proved in
+--             Qubit.ExtensionSoundness over plain Clifford words
+--             (conj-sound, twisted-sound); all that happens here is
+--             reading them through ⟦_⟧ on the mixed alphabet, which is
+--             structural since ⟦_⟧ is a monoid map into CMS n and CMS's
+--             product is concatenation.
 --
--- Three remain, as arguments of `presentation`:
+-- Two remain, as arguments of `presentation`:
 --
 --   Realises  a Pauli generator is interpreted as the inclusion of its
 --             Pauli value.  Both sides are conjugation by a Pauli
 --             operator, so this reduces to the coordinate identity
 --             genToVec y ≡ vec n ⟦ [ y ]ʷ ⟧N, i.e. that the Pauli
 --             presentation's generator values are the basis vectors;
---   sound-ax  the substance: conj records conjugation in CMS n, and
---             each twisted relator's correction word is the Pauli that
---             lifting it accumulates.  This is the semantic twin of
---             Selinger.Conjugation / Selinger.Relators, which prove the
---             same two families inside Figure 8 mod scalars;
 --   nf-ε      the quotient normal form's section sends ε to ε.  NOT true
 --             by computation at a variable width — the coset tower is
 --             stuck on n — so it wants an induction over the levels.
@@ -69,8 +72,10 @@ open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 open import Level using (0ℓ)
 
-open import Word.Base using (Word ; [_]ʷ ; ε)
-open import Presentation.Construct.Base using (_⊕^_)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
+open import Presentation.Construct.Base
+  using (_⊕^_ ; [_]ₗ ; [_]ᵣ ; left ; right ; comm)
+open import Presentation.Construct.Properties.Extension using (tw)
 open import Presentation.Definitions using (_IsPresentationOf_)
 open import Normalization.NormalForm.Propositional using (BijectiveNormalForm)
 import Normalization.NormalForm.Setoid as SNF
@@ -79,6 +84,8 @@ import Presentation.Construct.Properties.Extension as Ext
 
 open import Examples.Groups.Clifford.Qubit.Presentation
   using (p-2 ; p-prime ; PauliGen ; genToVec ; conj ; corr ; _Clifford,_===_)
+open import Examples.Groups.Clifford.Qubit.ExtensionSoundness
+  using (pw ; conj-sound ; twisted-sound)
 
 open import Examples.Groups.Pauli.Presentation p-2 p-prime
   using (Γ-H ; Pauli-group ; Pauli-presentation)
@@ -181,12 +188,37 @@ module Clifford (n : ℕ) where
   real-Q : ∀ x → Group._≈_ (Sp-group n) (proj ⟦ inj₂ x ⟧₀) ⟦ [ x ]ʷ ⟧Q
   real-Q x _ = Eq.refl
 
-  -- The headline, once the three remaining compatibility inputs are
+  ------------------------------------------------------------------
+  -- sound-ax
+  --
+  -- Both families are proved in Qubit.ExtensionSoundness, over plain
+  -- Clifford words; all that is needed here is to read them through the
+  -- proposition's ⟦_⟧ on the mixed alphabet.  ⟦_⟧ is the monoid
+  -- extension of ⟦_⟧₀ into CMS n, whose product IS concatenation, so
+  -- both embeddings are structural.
+
+  private
+    embʳ : (w : Word (Gen n)) → ⟦ [ w ]ᵣ ⟧ ≡ w
+    embʳ [ g ]ʷ  = Eq.refl
+    embʳ ε       = Eq.refl
+    embʳ (w • v) = Eq.cong₂ _•_ (embʳ w) (embʳ v)
+
+    embˡ : (c : Word (PauliGen n)) → ⟦ [ c ]ₗ ⟧ ≡ pw c
+    embˡ [ y ]ʷ  = Eq.refl
+    embˡ ε       = Eq.refl
+    embˡ (c • d) = Eq.cong₂ _•_ (embˡ c) (embˡ d)
+
+  sound-ax : {w v : Word (PauliGen n ⊎ Gen n)} →
+             Ext.extp (Γ-H ⊕^ n) (n QRel,_===_) conj corr w v →
+             Group._≈_ (Clifford-group n) ⟦ w ⟧ ⟦ v ⟧
+  sound-ax (left (comm y x)) rewrite embˡ (conj x y) = conj-sound y x
+  sound-ax (right (tw {u} {v} r̄))
+    rewrite embʳ u | embˡ (corr r̄) | embʳ v = twisted-sound r̄
+
+  -- The headline, once the two remaining compatibility inputs are
   -- supplied.
   presentation :
     Realises →
-    (∀ {w v} → Ext.extp (Γ-H ⊕^ n) (n QRel,_===_) conj corr w v →
-               Group._≈_ (Clifford-group n) ⟦ w ⟧ ⟦ v ⟧) →
     SNF.BijectiveNormalForm.inv-nf nfpQ (SNF.BijectiveNormalForm.nf nfpQ ε) ≡ ε →
     (n Clifford,_===_) IsPresentationOf (Clifford-group n)
-  presentation real sound-ax nf-ε = dpres real sound-ax nf-ε real-Q
+  presentation real nf-ε = dpres real sound-ax nf-ε real-Q
