@@ -44,9 +44,12 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Clifford.Qubit.Selinger.Figure8
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+
 open import Notations
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
 import Presentation.Base as PB
+import Presentation.Properties
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
@@ -120,6 +123,12 @@ data _Sel,_===_ : (n : ℕ) → CRel n where
   -- whole words follows (ω-central below).
   cω  : ∀ {n} (g : Gen (₁₊ n)) → (₁₊ n) Sel,  ω • [ g ]ʷ === [ g ]ʷ • ω
 
+  -- The scalar does not depend on the wire it is written on.  Selinger
+  -- has one generator ω for all widths; here ω is (SH)³ on wire 0, so
+  -- ω ↑ — the same word one wire up — is a syntactically different term
+  -- naming the same scalar, and they have to be identified.
+  cω↑ : ∀ {n} → (₂₊ n) Sel,  ω ↑ === ω
+
   -- (d) n ≥ 3
   c12 : ∀ {n} → (₃₊ n) Sel,  CZ ↑ • CZ === CZ • CZ ↑
   c13 : ∀ {n} → (₃₊ n) Sel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
@@ -164,3 +173,24 @@ _≈ᶠ_ {n} = PB._≈_ (n CRel,_===_)
     (PB.trans (PB.cong PB.refl (ω^-central (₁₊ k) w))
       (PB.trans (PB.sym PB.assoc)
         (PB.trans (PB.cong (ω-central w) PB.refl) PB.assoc)))
+
+------------------------------------------------------------------------
+-- The scalar is the same on every wire
+--
+-- cω↑ says it for ω; powers follow, because _↑ (a wmap) distributes over
+-- concatenation and hence over powers.
+
+ω↑≈ω : ((ω {n}) ↑) ≈ᶠ ω
+ω↑≈ω = PB.axiom (srel cω↑)
+
+-- (w ^ k) ↑ = (w ↑) ^ k, on the nose.
+↑-^ : (w : Word (Gen n)) (k : ℕ) → (w ^ k) ↑ ≡ (w ↑) ^ k
+↑-^ w ₀      = Eq.refl
+↑-^ w (₁₊ ₀) = Eq.refl
+↑-^ w (₂₊ k) = Eq.cong ((w ↑) •_) (↑-^ w (₁₊ k))
+
+ω^↑≈ω^ : (k : ℕ) → (((ω {n}) ^ k) ↑) ≈ᶠ ((ω {₁₊ n}) ^ k)
+ω^↑≈ω^ {n} k =
+  PB.trans (PB.refl' ((₂₊ n) CRel,_===_) (↑-^ (ω {n}) k))
+           (PP.^-cong ((ω {n}) ↑) ω k ω↑≈ω)
+  where module PP = Presentation.Properties ((₂₊ n) CRel,_===_)
