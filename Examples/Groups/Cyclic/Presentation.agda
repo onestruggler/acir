@@ -9,15 +9,12 @@
 
 module Examples.Groups.Cyclic.Presentation where
 
-open import Data.Fin.Permutation using (inverseˡ)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (sym ; trans ; cong)
 
 open import Algebra.Bundles using (Group)
 
-open import Presentation.GroupLike
 
-open import Examples.Groups.Cyclic.Syntactics
 
 open import Notations
 open import Word.Base
@@ -44,7 +41,6 @@ import Normalization.NormalForm.Propositional as NFBase
 import Examples.Groups.Cyclic.Uniqueness as TU
 import Examples.Groups.Cyclic.Normalization as SN
 
-import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; refl)
 
 open import Normalization.StarPresentation
