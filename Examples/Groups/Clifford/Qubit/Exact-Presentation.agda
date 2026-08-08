@@ -16,8 +16,9 @@
 --
 -- (Presentation.Construct.Properties.Extension, Proposition 2.55), where
 --
---   * S    = the cyclic presentation of order 8, ⟨ t ∣ t⁸ = 1 ⟩
---            (Cyclic.Syntactics); the generator t names ω,
+--   * S    = the cyclic presentation of order 8, ⟨ ω ∣ ω⁸ = 1 ⟩
+--            (Cyclic.Syntactics, whose single generator is renamed ω on
+--            import — in this presentation the scalar IS a generator),
 --   * R̄    = Selinger's Figure 8 taken modulo scalars
 --            (Selinger.Figure8-Mod-Scalar),
 --   * conj = the action of a Clifford gate on the scalar: trivial,
@@ -29,15 +30,15 @@
 -- Figure 8 and its mod-scalar quotient, and the exponents are the ones
 -- already computed in Selinger.ScalarKernel.srel-kernel:
 --
---     C4   SHSHSH = 1   (Figure 8: = ω)                corr = t
---     C10  CZ·H↑·CZ = … (Figure 8 keeps a tail ω⁻¹)    corr = t⁷
---     C11  the same on the other wire                  corr = t⁷
+--     C4   SHSHSH = 1   (Figure 8: = ω)                corr = ω
+--     C10  CZ·H↑·CZ = … (Figure 8 keeps a tail ω⁻¹)    corr = ω⁷
+--     C11  the same on the other wire                  corr = ω⁷
 --     the other twelve, and comm₁ / comm₂              corr = ε
 --
 -- cong↑ recurses with the SAME word.  This is where the scalar cocycle
 -- is easier than the Pauli one of Qubit.Presentation, which has to shift
 -- its correction up a qubit (shiftPauli): the scalar alphabet does not
--- depend on the width, one generator t naming the scalar on every wire.
+-- depend on the width, one generator ω naming the scalar on every wire.
 -- That is Figure8.cω↑ (ω ↑ = ω) turned into syntax — once ω is a
 -- generator rather than the derived word (SH)³, there is nothing left to
 -- shift.  For the same reason Figure8.cω (centrality) becomes the single
@@ -50,7 +51,7 @@
 -- The presentation THEOREM is a different matter, and is to be read at
 -- width ₁₊ n, as Qubit.ExactExtension states it.  At width 0 the gate
 -- alphabet Gen 0 is empty, so every circuit is ε and the group Figure 8
--- presents is trivial, whereas _Exact, 0 ===_ is ⟨ t ∣ t⁸ ⟩ ≅ ℤ/8: the
+-- presents is trivial, whereas _Exact, 0 ===_ is ⟨ ω ∣ ω⁸ ⟩ ≅ ℤ/8: the
 -- scalar has nowhere to live, and ⟨ω⟩ cannot embed.  Instantiating this
 -- relation at ₁₊ n is what the group side wants; indexing it at n costs
 -- nothing and keeps the definition uniform.
@@ -74,8 +75,11 @@ open import Presentation.Construct.Properties.Extension
   using (extension-presentation)
 open import Presentation.Definitions using (_IsPresentationOf_)
 
+-- The cyclic generator is the scalar, so it is imported under the name
+-- Figure 8 gives it.  (Figure8-Mod-Scalar, the other import, defines no
+-- ω of its own — modulo scalars there is nothing for it to name.)
 open import Examples.Groups.Cyclic.Syntactics
-  using (T ; _Cn,_===_) renaming (X to ScalarGen)
+  using (_Cn,_===_) renaming (X to ScalarGen ; T to ω)
 import Examples.Groups.Cyclic.Presentation as Cyc
 import Examples.Groups.Cyclic.Semantics as CycSem
 
@@ -96,7 +100,7 @@ private
 -- S : the scalars ⟨ω⟩ ≅ ℤ/8
 --
 -- One generator (Cyclic.Syntactics.X is a singleton), one relation
--- t⁸ = 1.  Cyclic.Presentation shows this is a presentation of ℤ/8, so
+-- ω⁸ = 1.  Cyclic.Presentation shows this is a presentation of ℤ/8, so
 -- the normal factor needs no work of its own here.
 
 Scalar-relation : WRel ScalarGen
@@ -106,8 +110,8 @@ Scalar-presentation : Scalar-relation IsPresentationOf CycSem.Cn-group 8
 Scalar-presentation = Cyc.presentation {7}
 
 -- ω⁻¹ = ω⁷, since ω has order 8 (Figure 8's C1, here S's `order`).
-T⁻¹ : Word ScalarGen
-T⁻¹ = T ^' 7
+ω⁻¹ : Word ScalarGen
+ω⁻¹ = ω ^' 7
 
 ------------------------------------------------------------------------
 -- conj : the scalar is central
@@ -118,7 +122,7 @@ T⁻¹ = T ^' 7
 -- has to be an axiom (Figure8.cω).
 
 conj : Gen n → ScalarGen → Word ScalarGen
-conj _ _ = T
+conj _ _ = ω
 
 ------------------------------------------------------------------------
 -- corr : the scalar cocycle
@@ -135,9 +139,9 @@ conj _ _ = T
 -- on the right, rhs • ωᵏ; centrality moves it across.)
 
 srel-corr : ∀ {u v} → (n MS.Sel, u === v) → Word ScalarGen
-srel-corr MS.c4  = T
-srel-corr MS.c10 = T⁻¹
-srel-corr MS.c11 = T⁻¹
+srel-corr MS.c4  = ω
+srel-corr MS.c10 = ω⁻¹
+srel-corr MS.c11 = ω⁻¹
 srel-corr _      = ε
 
 corr : ∀ {u v} → (n MS.CRel, u === v) → Word ScalarGen
@@ -149,13 +153,13 @@ corr (MS.comm₂ h g) = ε
 ------------------------------------------------------------------------
 -- The exact Clifford presentation
 --
--- The alphabet is ScalarGen ⊎ Gen n: the scalar t, and the gates.
+-- The alphabet is ScalarGen ⊎ Gen n: the scalar ω, and the gates.
 -- Unfolding extension-presentation, the relations are
 --
---   S    t⁸ = 1                                     (on the scalar)
---   T    g⁻¹ t g = t     for every gate g           (conj, centrality)
+--   S    ω⁸ = 1                                     (on the scalar)
+--   T    g⁻¹ ω g = ω     for every gate g           (conj, centrality)
 --   R    the fifteen Figure-8 relations, each corrected by its power of
---        t                                          (corr, twisted)
+--        ω                                          (corr, twisted)
 --
 -- and nothing else: the gate side contributes EmptyRel, every mod-scalar
 -- relation having been twisted into the mixed part.
@@ -200,6 +204,6 @@ _Exact,_===_ n =
 --   Sec-trivial / Conj-trivial
 --             the identity coset's representative is trivial in the
 --             exact group.  Conj-trivial is free here, unlike in the
---             Pauli layer: conj is constant, so conjugating t by any
---             representative returns t on the nose.
+--             Pauli layer: conj is constant, so conjugating ω by any
+--             representative returns ω on the nose.
 ------------------------------------------------------------------------
