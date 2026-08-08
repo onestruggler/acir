@@ -10,7 +10,6 @@ open import Word.Base
 
 module Presentation.Properties {X : Set} (Γ : WRel X) where
 
-open import Data.List using (List ; [] ; _∷_ ; _++_)
 open import Data.Nat using (ℕ ; zero ; suc ; _+_ ; _*_)
 import Data.Nat.Properties as NP
 open import Data.Product using (_,_)
