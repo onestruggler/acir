@@ -20,7 +20,6 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Symplectic.BoxAction (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 import Data.Nat as Nat
-import Data.Nat.Properties as NP
 open import Data.Nat.DivMod using (m%n<n ; _%_ ; %-distribˡ-+ ; m<n⇒m%n≡m)
 open import Data.Fin using (Fin ; toℕ ; fromℕ<)
 open import Data.Fin.Properties using (toℕ<n ; toℕ-fromℕ< ; fromℕ<-toℕ ; fromℕ<-cong)
