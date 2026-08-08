@@ -18,13 +18,10 @@ import Normalization.Reidemeister-Schreier as RS
 open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
-open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
 open import Data.Fin using (toℕ)
 import Data.Nat.Properties as NP
-open import Presentation.GroupLike
-open import Presentation.Tactic.Rewriting hiding ([_])
 open import Data.Nat.Primality
 
 
