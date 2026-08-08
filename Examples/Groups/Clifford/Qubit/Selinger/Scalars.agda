@@ -25,8 +25,35 @@
 -- which is what turns kernel-ε's ℕ into ExactData's ℤ/8.  With the
 -- hypothesis discharged, `scalars` is one of the three fields of
 -- ExactData; the others are `sound` (Selinger.Soundness has the
--- per-relation lemmas but not the assembled induction) and `ω-faithful`
--- (not a syntactic statement at all).
+-- per-relation lemmas but not the assembled induction — and the
+-- --call-by-name flag that closed the analogous sweep in
+-- Qubit.ExtensionSoundness is the obvious thing to try there) and
+-- `ω-faithful` (not a syntactic statement at all).
+--
+------------------------------------------------------------------------
+-- Discharging Complete-mod-scalars: the recipe
+--
+-- Qubit.ExtensionPresentation.Clifford.presentation gives
+--
+--     (n Clifford,_===_) IsPresentationOf (Clifford-group n)
+--
+-- once its last two inputs (Realises, nf-ε) are in.  From that,
+-- Complete-mod-scalars is four steps, all bookkeeping:
+--
+--   1. translate w : Word (Gen (₁₊ n)) into the extension alphabet with
+--      Selinger.Translation's g, and note ⟦ (g ʷ) w ⟧ ≈ᶜ w — the same
+--      structural induction as ExtensionPresentation's embʳ, since g
+--      sends a gate to itself;
+--   2. w ≈ᶜ ε therefore gives ⟦ (g ʷ) w ⟧ ≈ᶜ ⟦ ε ⟧, and COMPLETENESS of
+--      the presentation (the injective half of its iso) turns that into
+--      (g ʷ) w ≈ᶜˡ ε in the extension congruence;
+--   3. push that across Selinger.Iso in the f direction — f's
+--      well-definedness is Selinger.Conjugation.fwd-conj together with
+--      Selinger.Relators.fwd-tw — giving (f ʷ) ((g ʷ) w) ≈ᵐˢ (f ʷ) ε;
+--   4. close with the round trip (f ʷ) ∘ (g ʷ) ≈ᵐˢ id, which is the
+--      Iso's g-left-inverse, and (f ʷ) ε = ε.
+--
+-- Nothing there needs a new idea; the pieces all exist.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
