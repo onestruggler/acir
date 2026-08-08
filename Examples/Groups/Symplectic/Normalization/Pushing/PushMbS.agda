@@ -29,7 +29,6 @@ open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
-import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime as LM
 import Examples.Groups.Symplectic.BR.Two.B p-2 p-prime as BB
 import Examples.Groups.Symplectic.BR.Two.ML'-Top p-2 p-prime as ML'T
 open import Examples.Groups.Symplectic.CongDownK p-2 p-prime using (cong↓ᵏ)
