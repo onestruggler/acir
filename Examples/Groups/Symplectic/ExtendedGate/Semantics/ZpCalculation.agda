@@ -14,7 +14,6 @@ open import Relation.Binary.PropositionalEquality as Eq
 
 open import Data.Nat using (ℕ ; 2+)
 open import Data.Nat.Primality using (Prime)
-open import Notations
 
 module Examples.Groups.Symplectic.ExtendedGate.Semantics.ZpCalculation (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
