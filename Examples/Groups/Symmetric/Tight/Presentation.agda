@@ -9,13 +9,11 @@
 
 module Examples.Groups.Symmetric.Tight.Presentation where
 
-open import Data.Fin.Permutation using (_⟨$⟩ˡ_ ; _⟨$⟩ʳ_ ; inverseˡ)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (sym ; trans ; cong)
 
 open import Algebra.Bundles using (Group)
 
-open import Presentation.GroupLike
 
 open import Examples.Groups.Symmetric.Syntactics
 import Examples.Groups.Symmetric.Tight.Semantics as ST
@@ -42,7 +40,6 @@ open import Examples.Groups.Symmetric.Cosets
 import Examples.Groups.Symmetric.Tight.Uniqueness as TU
 import Examples.Groups.Symmetric.Normalization as SN
 
-import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; refl)
 
 open import Normalization.StarPresentation
