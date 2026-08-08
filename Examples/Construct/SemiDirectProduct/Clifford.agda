@@ -22,7 +22,6 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Construct.SemiDirectProduct.Clifford (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Algebra.Bundles using (Group)
-open import Data.Product using (_,_)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; module ≡-Reasoning)
 
