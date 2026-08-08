@@ -9,32 +9,21 @@ import Relation.Binary.PropositionalEquality as Eq
 
 open import Data.Product using (_,_ ; proj₁)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
-open import Agda.Builtin.Nat using (_-_)
 import Data.Nat as Nat
-open import Data.Bool hiding (_<_ ; _≤_)
-open import Data.List hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
-open import Data.Vec hiding ([_])
 open import Data.Fin hiding (_+_ ; _-_)
 
-open import Data.Maybe
-open import Data.Sum using ([_,_])
 
 open import Word.Base as WB hiding (wfoldl)
-open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Normalization.Reidemeister-Schreier as RS
 open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
-open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
-open import Data.Fin using (toℕ ; fromℕ)
-open import Data.Fin.Properties using (toℕ-fromℕ)
 import Data.Nat.Properties as NP
 open import Presentation.GroupLike
-open import Presentation.Tactic.Rewriting hiding ([_])
 open import Data.Nat.Primality
 
 
@@ -48,7 +37,6 @@ module Examples.Groups.Symplectic.Lemmas.Ex-Sym2n (p-2 : ℕ) (p-prime : Prime (
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
 open Lemmas0a
@@ -192,7 +180,6 @@ lemma-HCZHS^k {n} k@(₂₊ k') = begin
   open Sym0-Rewriting (₁₊ n)
   open Pattern-Assoc
 
-open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 
 lemma-semi-HH↑-CZ^k' : let open PB ((₂₊ n) QRel,_===_) in ∀ k ->
 
@@ -1210,7 +1197,6 @@ lemma-order-Ex-n {n} = by-emb n lemma-order-Ex
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open Lemmas0a1
 
-open import Algebra.Properties.Ring (+-*-ring p-2)
 
 lemma-CZCZ^aHCZ^k-n : let open PB ((₂₊ n) QRel,_===_) in ∀ a k -> (nzk : k ≢ ₀) -> 
   let
