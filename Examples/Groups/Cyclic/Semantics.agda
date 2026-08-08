@@ -10,7 +10,6 @@
 open import Data.Fin using (Fin ; zero ; suc)
 open import Data.Nat using (ℕ ; zero ; suc)
 import Data.Integer as Int
-open import Function using (id)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl)
 
 open import Notations using (₁₊ ; ₂₊)
@@ -23,7 +22,6 @@ import Data.Integer.Properties as IntP
 open import Data.Product using (_,_)
 open import Level using (0ℓ)
 
-open import Data.Unit using (tt)
 
 module Examples.Groups.Cyclic.Semantics where
 
