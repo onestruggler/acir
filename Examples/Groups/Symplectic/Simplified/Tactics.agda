@@ -11,16 +11,12 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Relation.Binary.PropositionalEquality using (_≡_ ; inspect ; setoid ; module ≡-Reasoning ; _≢_) renaming ([_] to [_]')
-import Relation.Binary.Reasoning.Setoid as SR
-import Relation.Binary.PropositionalEquality as Eq
 open import Relation.Nullary.Decidable using (yes ; no)
 
 
 
 open import Data.Product using (_,_ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
-open import Data.Nat.DivMod
-open import Agda.Builtin.Nat using ()
 import Data.Nat as Nat
 open import Data.Fin hiding (_+_ ; _-_)
 open import Data.Bool
@@ -28,30 +24,19 @@ open import Data.List hiding ([_])
 
 
 open import Data.Maybe
-open import Data.Sum using ([_,_])
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
-open import Word.Properties
 import Presentation.Base as PB
-import Presentation.Properties as PP
 import Normalization.Reidemeister-Schreier as RS
-import Circuit.Base
 open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 open import Presentation.Tactic.Rewriting
 
-open import Presentation.Construct.Base hiding (_*_)
 
 
-open import Data.Fin.Properties as FP using (toℕ-inject₁ ; toℕ-fromℕ)
-import Data.Nat.Properties as NP
-open import Presentation.GroupLike
 open import Data.Nat.Primality
-open import Data.Nat.Coprimality hiding (sym)
 open import Data.Nat.GCD
 open Bézout
-open import Data.Empty
-open import Algebra.Properties.Group
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
