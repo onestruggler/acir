@@ -6,7 +6,6 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Algebra.Bundles using (Group)
 
 import Normalization.NormalForm.Propositional as NFBase
 import Presentation.Properties as PP
