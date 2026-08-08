@@ -37,7 +37,9 @@ data Gate : ℕ → Set where
 -- Syntactic framework
 
 private module SC = Circuit.Base Gate
-open SC using (Gen ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_; Circuit) public
+-- gate₀ is exported so clients can discharge it: this gate set has no
+-- 0-ary gate, so every gate₀ case is the absurd `gate₀ ()`.
+open SC using (Gen ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_; Circuit) public
 
 pattern σ-gen = gate₂ σ-gate
 

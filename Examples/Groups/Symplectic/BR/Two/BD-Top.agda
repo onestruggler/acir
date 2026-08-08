@@ -48,6 +48,7 @@ open SR word-setoid
 pushᵈ : D → Word (Gen 1) → Word (Gen 1) × D
 pushᵈ d [ gate₁ H-gate ]ʷ = DB.dir-of d H-gate , DB.d'-of d H-gate
 pushᵈ d [ gate₁ S-gate ]ʷ = DB.dir-of d S-gate , DB.d'-of d S-gate
+pushᵈ d [ gate₀ () ↥ ]ʷ
 pushᵈ d ε                 = ε , d
 pushᵈ d (w • v)           = proj₁ r₁ • proj₁ r₂ , proj₂ r₂
   where
@@ -62,6 +63,7 @@ lemmaᵈ-w : (d : D) (w : Word (Gen 1)) ->
   [ d ]ᵈ • (w ↓ᵏ 1) ≈ (proj₁ (pushᵈ d w) ↑) • [ proj₂ (pushᵈ d w) ]ᵈ
 lemmaᵈ-w d [ gate₁ H-gate ]ʷ = DB.lemma-D-br d H-gate
 lemmaᵈ-w d [ gate₁ S-gate ]ʷ = DB.lemma-D-br d S-gate
+lemmaᵈ-w d [ gate₀ () ↥ ]ʷ
 lemmaᵈ-w d ε = begin
   [ d ]ᵈ • ε ≈⟨ right-unit ⟩
   [ d ]ᵈ     ≈⟨ sym left-unit ⟩

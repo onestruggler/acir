@@ -173,9 +173,10 @@ ract-S^-coset d lm (suc (suc k)) = ract-S^-coset (d-of-DS d) lm (suc k)
 -- irrelevant (⊥ is an irrelevant record), so only value components
 -- matter in the coset equalities.
 
--- Every width-0 word collapses to ε (Gen 0 is empty).
+-- Every width-0 word collapses to ε: Gen 0 holds only gate₀, and this
+-- gate set has no 0-ary gate.
 sing0 : {w : Circuit 0} → PB._≈_ (0 QRel,_===_) w ε
-sing0 {[ () ]ʷ}
+sing0 {[ gate₀ () ]ʷ}
 sing0 {ε}     = PB.refl
 sing0 {w • v} = PB.trans (PB.cong sing0 sing0) PB.left-unit
 

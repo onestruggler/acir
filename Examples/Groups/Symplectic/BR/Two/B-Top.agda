@@ -68,6 +68,7 @@ dir-of (₁₊ a , b) S-gate = ε
 lemma-dual↑ : ∀ (w : Word (Gen 1)) -> dual (w ↑) ≡ w ↓ᵏ 1
 lemma-dual↑ [ gate₁ H-gate ]ʷ = Eq.refl
 lemma-dual↑ [ gate₁ S-gate ]ʷ = Eq.refl
+lemma-dual↑ [ gate₀ () ↥ ]ʷ
 lemma-dual↑ ε                 = Eq.refl
 lemma-dual↑ (w • v)           = Eq.cong₂ _•_ (lemma-dual↑ w) (lemma-dual↑ v)
 

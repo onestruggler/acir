@@ -74,7 +74,7 @@ module Symplectic-Derived-Gen where
   [_⇑]' {n} = wmap _↥
 
   _↓-gen : ∀ {n} → Gen n → Gen (₁₊ n)
-  _↓-gen {zero} ()
+  _↓-gen {zero} (gate₀ ())
   _↓-gen {₁₊ n} (gate₁ h) = gate₁ h
   _↓-gen {₁₊ .(₁₊ _)} (gate₂ h) = gate₂ h
   _↓-gen {₁₊ n} (g ↥) = (g ↓-gen) ↥
@@ -521,6 +521,9 @@ module Symplectic-Derived-GroupLike where
     where
     open PB ((₂₊ n) QRel,_===_)
     open PP ((₂₊ n) QRel,_===_)
+  -- At width 1 the shifted generator would live in Gen 0, where the only
+  -- constructor is gate₀ and this gate set has no 0-ary gate.
+  grouplike ((gate₀ ()) ↥)
 
 
   import Data.Nat.Literals as NL

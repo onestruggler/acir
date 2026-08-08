@@ -143,6 +143,7 @@ module _ {n : ℕ} where
     (Hdir d₁ ↓ᵏ (₁₊ n)) , (Hd' d₁ ∷ h ∷ t) , dvec-H d₁ (h ∷ t)
   dvec-letter (gate₂ CZ-gate) vd =
     gen-dir-of vd , gen-vd'-of vd , gen-dd-cz vd
+  dvec-letter (gate₀ () ↥ ↥) vd
   dvec-letter (gate₁ S-gate ↥) (d₁ ∷ h ∷ t) =
     (dir-of-DS h ↑) , (d₁ ∷ d-of-DS h ∷ t) , dvec-S↑ d₁ h t
   dvec-letter (gate₁ H-gate ↥) (d₁ ∷ h ∷ t) =

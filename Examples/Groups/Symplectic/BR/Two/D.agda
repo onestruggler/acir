@@ -113,10 +113,12 @@ d'-of (a , b) (S-gen ↥) _   = (a , b)
 d'-of (a , b) CZ-gen _      = (a , b + - ₁)
 
 d'-of (a , b) (H-gen ↥) neq = ⊥-elim (neq auto)
+d'-of (a , b) (gate₀ () ↥ ↥) neq
 
 
 dir-of : ∀ (d : D) (g : Gen 2) (neq : g ≢ H-gen ↥) -> ℤ ₚ × Word (Gen 1)
 
+dir-of d (gate₀ () ↥ ↥) neq
 dir-of (₀ , ₀)               H-gen neq = ₀ , H
 dir-of (₀ , ₁₊ _)            H-gen neq = ₀ , ε
 dir-of (₁₊ _ , ₀)            H-gen neq = ₀ , HH
@@ -146,6 +148,7 @@ lemma-D-br : ∀ (d : D) (g : Gen 2) (neq : g ≢ H-gen ↥) ->
   [ d ]ᵈ • [ g ]ʷ ≈ S^ e ↓ • dir ↑ • [ d' ]ᵈ
 
 lemma-D-br d@(a , b) g@(H-gen ↥) neq = ⊥-elim (neq auto)
+lemma-D-br d (gate₀ () ↥ ↥) neq
 
 lemma-D-br d@(a@(₁₊ _) , b@₀) g@CZ-gen neq = begin
   (Ex • CZ^ (- a) • (H • S^ -b/a)) • CZ ≈⟨ by-passoc (□ ^ 4 • □) (□ ^ 2 • □ ^ 3) auto ⟩

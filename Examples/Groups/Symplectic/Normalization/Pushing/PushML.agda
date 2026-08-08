@@ -86,6 +86,7 @@ C = ML
 
 ract : ∀ {n} -> C (₁₊ n) → Gen (₁₊ n) → Circuit n × C (₁₊ n)
 -- Width 1 (no B boxes, no sum): ML 1 = ML' 1, only bottom unary gates.
+ract {₀} ml (gate₀ () ↥)
 ract {₀} ml (gate₁ x) = Push.ract ml x
 -- inj₁: a pure ML' box.
 ract {₁₊ n} (inj₁ ml') (gate₁ x) =
@@ -133,6 +134,7 @@ ract-sound : ∀ {n} c g →
     [ c ]ᶜ • [ g ]ʷ ≈ b' ↑ • [ c' ]ᶜ
 
 -- Width 1: the bottom unary gate is absorbed by the A/E boxes.
+ract-sound {₀} ml (gate₀ () ↥)
 ract-sound {₀} ml (gate₁ x) = Push.ract-sound ml x
 -- inj₁: delegate to the ML'-level pushes (definitionally [ inj₁ ml' ]ᵐˡ = [ ml' ]ᵐˡ').
 ract-sound {₁₊ n} (inj₁ ml') (gate₁ x) = Push.ract-sound ml' x

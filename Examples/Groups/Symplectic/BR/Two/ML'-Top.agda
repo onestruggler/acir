@@ -144,6 +144,7 @@ module _ {n : ℕ} where
 
   comm-↓ᵏ-w↑ [ gate₁ H-gate ]ʷ w = lemma-comm-H-w↑ w
   comm-↓ᵏ-w↑ [ gate₁ S-gate ]ʷ w = lemma-comm-S-w↑ w
+  comm-↓ᵏ-w↑ [ gate₀ () ↥ ]ʷ w
   comm-↓ᵏ-w↑ ε             w = trans left-unit (sym right-unit)
   comm-↓ᵏ-w↑ (u • v)       w = begin
     ((u ↓ᵏ (₁₊ n)) • (v ↓ᵏ (₁₊ n))) • (w ↑)   ≈⟨ assoc ⟩
@@ -197,6 +198,7 @@ push-MBvec : ∀ {k} (m : M (₁₊ k)) (bv : Vec B k) (g : Gen k) ->
   [ m ]ᵐ • [ bv ]ᵛᵇ • [ g ↥ ]ʷ ≈
     (proj₁ (mbv-push m bv g) ↑) •
       ([ proj₁ (proj₂ (mbv-push m bv g)) ]ᵐ • [ proj₂ (proj₂ (mbv-push m bv g)) ]ᵛᵇ)
+push-MBvec ([] , _) bv (gate₀ ())
 push-MBvec {₁₊ k'} (d₁ ∷ dr' , e) (b₁ ∷ bv') (gate₁ y) = begin
   (De • Me) • ((LRe • Be) • G)          ≈⟨ sa ((□ • □) • ((□ • □) • □)) (□ ^ 5) auto ⟩
   De • (Me • (LRe • (Be • G)))          ≈⟨ cright (cright (cright (lemma-B-br-n b₁ y))) ⟩

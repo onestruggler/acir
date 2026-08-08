@@ -136,7 +136,7 @@ srel-wd1 (([] , e) , ([] , ((₁₊ α' , β) , nz))) (Base.semi-MS x) =
 
 ract-base-↑ : (c : C 1) (w : Circuit 0) → (ract {0} ᵗ) c (w ↑) .proj₂ ≡ c
 ract-base-↑ c ε       = Eq.refl
-ract-base-↑ c [ () ]ʷ
+ract-base-↑ c [ gate₀ () ]ʷ
 ract-base-↑ c (u • v) rewrite ract-base-↑ c u = ract-base-↑ c v
 
 wd1 : ∀ (c : C 1) {u t : Circuit 1} →
@@ -146,4 +146,4 @@ wd1 c (srel x) = srel-wd1 c x
 wd1 c (cong↑ {w = w} {v} eq) =
     PB.trans sing0 (PB.sym sing0)
   , Eq.trans (ract-base-↑ c w) (Eq.sym (ract-base-↑ c v))
-wd1 c (comm₁ h ())
+wd1 c (comm₁ h (gate₀ ()))

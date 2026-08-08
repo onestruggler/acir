@@ -45,7 +45,7 @@ private
   Γ₀ : ℕ → WRel ⊤
   Γ₀ m = suc m Cn,_===_
 open import Examples.Groups.Symmetric.Syntactics
-  using (Gate ; σ-gate ; Gen ; gate₁ ; gate₂ ; _↥ ; _↑ ; σ ; _SRel,_===_
+  using (Gate ; σ-gate ; Gen ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; σ ; _SRel,_===_
         ; order ; yang-baxter ; srel ; cong↑ ; comm₁ ; comm₂ ; _VRel,_===_)
 
 ------------------------------------------------------------------------
@@ -68,6 +68,12 @@ act : ∀ {n} → Gen n → ⊤ ⊎^ n → ⊤ ⊎^ n
 act        (gate₂ σ-gate) x        = sw₂ x
 act {₂₊ n} (g ↥) (inj₁ tt)         = inj₁ tt
 act {₂₊ n} (g ↥) (inj₂ y)          = inj₂ (act g y)
+-- Gen 0 holds only gate₀, and this gate set has no 0-ary gate.  These
+-- come LAST: an absurd clause ahead of the computational ones would
+-- split the case tree on gate₀ first and stop act from reducing on a
+-- variable generator.
+act        (gate₀ ())
+act        (gate₀ () ↥)
 
 -- The word-valued conjugation action: each generator is sent to a
 -- single (permuted) coordinate.
@@ -130,6 +136,7 @@ sw₂-invol {₁₊ n} (inj₂ (inj₂ y))  = Eq.refl
 -- (matches: comm₂).
 comm₂-pt : ∀ {n} (g : Gen n) (x : ⊤ ⊎^ (₂₊ n))
          → act (g ↥ ↥) (sw₂ x) ≡ sw₂ (act (g ↥ ↥) x)
+comm₂-pt {₀} (gate₀ ())
 comm₂-pt {₁₊ n} g (inj₁ tt)        = Eq.refl
 comm₂-pt {₁₊ n} g (inj₂ (inj₁ tt)) = Eq.refl
 comm₂-pt {₁₊ n} g (inj₂ (inj₂ y))  = Eq.refl
@@ -274,6 +281,7 @@ sw₂-rl→l {n} u = begin
 conj-hypn : ∀ {n m} (c : Gen n) {w v} → (Γ₀ m ⊕^ n) w v
           → PB._≈_ (Γ₀ m ⊕^ n) ((conj ⁿ') c w) ((conj ⁿ') c v)
 -- The bottom transposition swaps coordinates 0 and 1.
+conj-hypn {₁} (gate₀ () ↥)
 conj-hypn {₂₊ zero}   {m} (gate₂ σ-gate) (left Cyc.order)
   rewrite sw₂-l→r₀ (Cyc.T ^' suc m)                              = PB._≈_.axiom (right Cyc.order)
 conj-hypn {₂₊ (₁₊ n)} {m} (gate₂ σ-gate) (left Cyc.order)

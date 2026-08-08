@@ -63,6 +63,7 @@ pow-↓ᵏ w (₂₊ j)  k = Eq.cong ((w ↓ᵏ k) •_) (pow-↓ᵏ w (₁₊ j
 -- same letter, definitionally.
 ↓ᵏ-↓ᵏ-1 : ∀ (w : Circuit 1) (k : ℕ) → (w ↓ᵏ 1) ↓ᵏ k ≡ w ↓ᵏ (₁₊ k)
 ↓ᵏ-↓ᵏ-1 [ gate₁ h ]ʷ k = Eq.refl
+↓ᵏ-↓ᵏ-1 [ gate₀ () ↥ ]ʷ k
 ↓ᵏ-↓ᵏ-1 ε            k = Eq.refl
 ↓ᵏ-↓ᵏ-1 (w • v)      k = Eq.cong₂ _•_ (↓ᵏ-↓ᵏ-1 w k) (↓ᵏ-↓ᵏ-1 v k)
 

@@ -1,4 +1,4 @@
-﻿------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Presentations of groups
 --
 -- The multi-qudit symplectic Clifford group and its normal form via
@@ -195,7 +195,7 @@ mbv-id {₁₊ k'} (g ↥) =
 -- generator itself.
 ⁻¹[⇑]-gen' : ∀ {n} (x : Gen n) →
   _≋_ {n} ([ x ]ʷ , Iᶜ {n}) ((ract {n} ᵗ) (Iᶜ {n}) ([ x ↥ ]ʷ))
-⁻¹[⇑]-gen' {zero} ()
+⁻¹[⇑]-gen' {zero} (gate₀ ())
 ⁻¹[⇑]-gen' {suc m} x =
     PB.sym (mbv-id x .proj₂ .proj₂)
   , Eq.cong₂ (λ mm bb → inj₁ (mm , (bb , Ia)))
@@ -223,13 +223,13 @@ ract-inj₂-↑ d lm (u • v)
 -- Base level: Gen 0 is empty, so every Circuit 0 word collapses to ε, and
 -- a lifted (gate-free) word leaves any coset fixed.
 sing0 : {w : Circuit 0} → PB._≈_ (0 QRel,_===_) w ε
-sing0 {[ () ]ʷ}
+sing0 {[ gate₀ () ]ʷ}
 sing0 {ε}     = PB.refl
 sing0 {w • v} = PB.trans (PB.cong sing0 sing0) PB.left-unit
 
 ract-base-↑ : (c : C 1) (w : Circuit 0) → (ract {0} ᵗ) c (w ↑) .proj₂ ≡ c
 ract-base-↑ c ε       = Eq.refl
-ract-base-↑ c [ () ]ʷ
+ract-base-↑ c [ gate₀ () ]ʷ
 ract-base-↑ c (u • v) rewrite ract-base-↑ c u = ract-base-↑ c v
 
 -- Well-definedness: the coset action respects the raw relations.  This
@@ -304,7 +304,7 @@ base0' = record
   where
   open PB (0 QRel,_===_)
   singleton : ∀ {a} → a ≈ ε
-  singleton {[ () ]ʷ}
+  singleton {[ gate₀ () ]ʷ}
   singleton {ε}      = PB.refl
   singleton {a • a₁} = PB.trans (PB.cong singleton singleton) PB.left-unit
 

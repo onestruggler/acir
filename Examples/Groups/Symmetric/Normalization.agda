@@ -53,7 +53,7 @@ ract {n}     (σ• ε)    σ-gen       = ε , ε
 ract {₁₊ n}  (σ• σ• c) σ-gen       = (σ {n = n}) , σ• σ• c
 ract {n}     ε         (g ↥)       = [ g ]ʷ , ε
 ract {0}     (σ• ε)    (gate₁ () ↥)
-ract {0}     (σ• ε)    ((() ↥) ↥)
+ract {0}     (σ• ε)    (gate₀ () ↥ ↥)
 ract {₁₊ n}  (σ• c)    (g ↥)   = proj₁ (ract {n} c g) ↑ , σ• (proj₂ (ract {n} c g))
 
 -- Extension of ract to whole circuits: the stateful fold _ᵗ threads
@@ -107,7 +107,7 @@ ract-sound {₁₊ n} (σ• σ• c) σ-gen = begin
   open PP P
   open SR word-setoid
 ract-sound {0} (σ• c) ((gate₁ ()) ↥)
-ract-sound {0} (σ• c) (((() ↥)) ↥)
+ract-sound {0} (σ• c) ((gate₀ () ↥) ↥)
 ract-sound {₁₊ n} (σ• ε) (b@σ-gen ↥) = begin
   [ σ• ε ]ᶜ • [ b ↥ ]ʷ ≈⟨ assoc ⟩
   σ • (ε • [ b ]ʷ) ↑ ≈⟨ cright (lemma-cong↑ (ε • [ b ]ʷ) (b0 ↑ • [ c0 ]ᶜ) ih) ⟩
@@ -293,11 +293,11 @@ ract-σ•1s {n} c (w • v)
 ... | ih2 | v' , c1 | [ eq2 ]ₑ rewrite eq2 | Eq.cong proj₁ ih2 | Eq.cong proj₂ ih2 = Eq.refl
 
 -- A doubly lifted generator passes through the coset σ• ε unchanged.
--- The n = 0 case is vacuous since Gen 0 is empty; for n ≥ 1 the
--- equation holds by definition.
+-- The n = 0 case is vacuous: Gen 0 holds only gate₀, and this gate set
+-- has no 0-ary gate.  For n ≥ 1 the equation holds by definition.
 ract-σ•ε-gg↥ : ∀ {n} (g : Gen n) →
   ract {n} (σ• ε) (g ↥ ↥) ≡ ([ g ↥ ]ʷ , σ• ε)
-ract-σ•ε-gg↥ {zero}  ()
+ract-σ•ε-gg↥ {zero}  (gate₀ ())
 ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
 
 ------------------------------------------------------------------------
@@ -371,7 +371,7 @@ ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} (σ• c)) (srel yang-baxter)
   = PB.axiom (srel yang-baxter) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (gate₁ ()))
-⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (() ↥))
+⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (gate₀ () ↥))
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {₁₊ m} c) (comm₂ σ-gate g)
   rewrite ract-σ•1 c g
   = lemma-comm (proj₁ (ract c g)) , Eq.refl
@@ -427,11 +427,12 @@ base0' = record
   where
   open PB (_VRel,_===_ 0)
   singleton : ∀ {a} → a ≈ ε
+  singleton {[ gate₀ () ]ʷ}
   singleton {ε}      = PB.refl
   singleton {a • a₁} = PB.trans (PB.cong singleton singleton) PB.left-unit
 
--- S₁ is trivial as well: Gen 1 has no inhabitants, so every word
--- again collapses to ε.
+-- S₁ is trivial as well: Gen 1 holds only gate₀, and this gate set has
+-- no 0-ary gate, so every word again collapses to ε.
 base1' : NormalForm (_VRel,_===_ 1) ⊤
 base1' = record
   { rightInverse = record
@@ -446,7 +447,7 @@ base1' = record
   open PB (_VRel,_===_ 1)
   singleton : ∀ {a} → a ≈ ε
   singleton {[ gate₁ () ]ʷ}
-  singleton {[ () ↥ ]ʷ}
+  singleton {[ gate₀ () ↥ ]ʷ}
   singleton {ε}      = PB.refl
   singleton {a • a₁} = PB.trans (PB.cong singleton singleton) PB.left-unit
 

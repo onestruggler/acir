@@ -151,6 +151,7 @@ ntH-gen-inv S-gen     neq = ntH-^ ntH-S _
 ntH-gen-inv CZ-gen    neq = ntH-^ ntH-CZ _
 ntH-gen-inv (S-gen ↥) neq = ntH-Sᵏ↑ _
 ntH-gen-inv (H-gen ↥) neq = ⊥-elim (neq auto)
+ntH-gen-inv (gate₀ () ↥ ↥) neq
 
 -- Closure under the group-like word inverse (matching L-CZ's _⁻¹ʷ).
 ntH-⁻¹ʷ : ∀ {w} → No-Top-H w → No-Top-H (w ⁻¹ʷ)

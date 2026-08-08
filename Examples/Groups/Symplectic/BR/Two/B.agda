@@ -103,6 +103,7 @@ lemma-B~dualD x@(a@(₁₊ _) , b) = begin
 
 dir-and-b' : ∀ (d : B) (g : Gen 2) (neqH : g ≢ H-gen) (neqCZ : g ≢ CZ-gen) -> Word (Gen 2) × B
 
+dir-and-b' d (gate₀ () ↥ ↥) neqH neqCZ
 dir-and-b' d@(a , b)                   H-gen neqH neqCZ  =  ⊥-elim (neqH  auto)
 dir-and-b' d@(a , b)                  CZ-gen neqH neqCZ  =  ⊥-elim (neqCZ auto)
 dir-and-b' d@(a , b)               (H-gen ↥) neqH neqCZ  =  dual dir               ,   d'
@@ -171,12 +172,14 @@ b'-of (a , b) (H-gen ↥) _ _  =  (b , - a)
 b'-of (a , b) (S-gen ↥) _ _  =  (a , b + - a)
 b'-of (a , b)     S-gen _ _  =  (a , b)
 
+b'-of (a , b) (gate₀ () ↥ ↥) _ _
 b'-of (a , b) H-gen nH nCZ   =  ⊥-elim (nH  auto)
 b'-of (a , b) CZ-gen nH nCZ  =  ⊥-elim (nCZ auto)
 
 
 dir-of : ∀ (d : B) (g : Gen 2) (neqH : g ≢ H-gen) (neqCZ : g ≢ CZ-gen) -> Word (Gen 2)
 
+dir-of d (gate₀ () ↥ ↥) _ _
 dir-of d@(a , b)               (H-gen ↥) _ _  =  dual dir
   where
   ed = dir-of-d d H-gen λ ()
@@ -201,6 +204,7 @@ lemma-B-br : ∀ (b : B) (g : Gen 2) (neqH : g ≢ H-gen) (neqCZ : g ≢ CZ-gen)
 
   [ b ]ᵇ • [ g ]ʷ ≈ dir • [ b' ]ᵇ
 
+lemma-B-br d (gate₀ () ↥ ↥) neqH neqCZ
 lemma-B-br d@(a@₀ , b@₀) g@(S-gen) neqH neqCZ = begin
   [ d ]ᵇ • S ≈⟨ assoc ⟩
   Ex • CX'^ b • S ≈⟨ rewrite-sym0 10 auto ⟩

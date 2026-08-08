@@ -400,6 +400,9 @@ module Symplectic-Sim-GroupLike where
     where
     open PB ((₂₊ n) QRel,_===_)
     open PP ((₂₊ n) QRel,_===_)
+  -- Width 1: the shifted generator would live in Gen 0, which holds only
+  -- gate₀, and this gate set has no 0-ary gate.
+  grouplike (gate₀ () ↥)
 
 module Lemmas1b (n : ℕ) where
 

@@ -48,6 +48,7 @@ open TBB using (_⇣)
 ⇣≡↓ᵏ1 [ gate₂ CZ-gate ]ʷ    = Eq.refl
 ⇣≡↓ᵏ1 [ gate₁ H-gate ↥ ]ʷ   = Eq.refl
 ⇣≡↓ᵏ1 [ gate₁ S-gate ↥ ]ʷ   = Eq.refl
+⇣≡↓ᵏ1 [ gate₀ () ↥ ↥ ]ʷ
 ⇣≡↓ᵏ1 ε                     = Eq.refl
 ⇣≡↓ᵏ1 (w • v)               = Eq.cong₂ _•_ (⇣≡↓ᵏ1 w) (⇣≡↓ᵏ1 v)
 
@@ -111,6 +112,7 @@ module _ {n : ℕ} where
   comm-↓ᵏ2-w↑↑ [ gate₂ CZ-gate ]ʷ  w = lemma-comm-CZ-w↑↑ w
   comm-↓ᵏ2-w↑↑ [ gate₁ H-gate ↥ ]ʷ w = lemma-cong↑ _ _ (lemma-comm-H-w↑ w)
   comm-↓ᵏ2-w↑↑ [ gate₁ S-gate ↥ ]ʷ w = lemma-cong↑ _ _ (lemma-comm-S-w↑ w)
+  comm-↓ᵏ2-w↑↑ [ gate₀ () ↥ ↥ ]ʷ w
   comm-↓ᵏ2-w↑↑ ε                   w = trans left-unit (sym right-unit)
   comm-↓ᵏ2-w↑↑ (u • v)             w = begin
     ((u ↓ᵏ (₁₊ n)) • (v ↓ᵏ (₁₊ n))) • (w ↑ ↑)   ≈⟨ assoc ⟩

@@ -67,7 +67,9 @@ module Symplectic where
 
   -- Open the Syntactics framework: provides Gen, gate₁, gate₂, _↥, _↑, _↓, _↥ᵏ_, _↑ᵏ_, Lift-Relation.
   private module SC = Circuit.Base SympGate
-  open SC using (Gen ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_ ; Circuit ; _↓ᵏ_) public
+  -- gate₀ is exported so that clients can discharge it: SympGate has no
+  -- 0-ary gate, so every gate₀ case in this development is `gate₀ ()`.
+  open SC using (Gen ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_ ; Circuit ; _↓ᵏ_) public
 
   -- Backward-compatible pattern synonyms for the three basic generators.
   -- These let CommData and Rewriting-Sym0 use the old constructor-style names.
@@ -1951,6 +1953,8 @@ module CommData where
   ord {₁₊ n} (CZ-gen) = 2
 --  ord {₁₊ n} (EX-gen) = 3
   ord {₁₊ n} (g ↥) = 4 Nat.+ ord g
+  -- Gen 0 is inhabited only by gate₀, and SympGate has no 0-ary gate.
+  ord {₀} ((gate₀ ()) ↥)
 
 
   -- Ordering of generators.
@@ -4984,6 +4988,7 @@ module Duality where
 --  dual-gen EX-gen = EX-gen
   dual-gen (gate₁ H-gate ↥)      = gate₁ H-gate
   dual-gen (gate₁ S-gate ↥)      = gate₁ S-gate
+  dual-gen (((gate₀ ()) ↥) ↥)
   
 
   -- Compute the dual of a word.
@@ -4999,6 +5004,7 @@ module Duality where
   lemma-double-dual ([ gate₁ S-gate ]ʷ)       = Eq.refl
   lemma-double-dual ([ gate₁ S-gate ↥ ]ʷ)     = Eq.refl
   lemma-double-dual ([ gate₂ CZ-gate ]ʷ)      = Eq.refl
+  lemma-double-dual ([ ((gate₀ ()) ↥) ↥ ]ʷ)
 --  lemma-double-dual ([ EX-gen ]ʷ) = Eq.refl
   lemma-double-dual ε = Eq.refl
   lemma-double-dual (w • v) = Eq.cong₂ _•_ (lemma-double-dual w) (lemma-double-dual v)
@@ -5156,6 +5162,11 @@ module Duality where
   lemma-dual (comm₁ H-gate (gate₁ H-gate)) = sym (axiom comm-H)
   lemma-dual (comm₁ S-gate (gate₁ S-gate)) = sym (axiom comm-S)
   lemma-dual (comm₁ S-gate (gate₁ H-gate)) = sym (axiom comm-H)
+  -- The shifted generator can now sit at width 0, where only gate₀ lives.
+  lemma-dual (comm₁ h (gate₀ ()))
+  lemma-dual (comm₁ h ((gate₀ ()) ↥))
+  lemma-dual (comm₂ h (gate₀ ()))
+  lemma-dual (cong↑ (comm₁ h (gate₀ ())))
   lemma-dual (cong↑ (srel Base.order-S)) = begin
      S • dual ((S ^ p-1) ↑) ≈⟨ (cright refl' (Eq.cong dual (Eq.sym (aux-↑ S p-1)))) ⟩
      S • dual ((S ↑ ^ p-1)) ≈⟨ (cright refl' ( aux-dual (S ↑) p-1)) ⟩

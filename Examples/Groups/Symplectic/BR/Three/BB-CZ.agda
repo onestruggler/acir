@@ -212,6 +212,7 @@ aux-comm-w⇣-v↑↑ [ S-gen ]ʷ v = lemma-comm-S-w↑ (v ↑)
 aux-comm-w⇣-v↑↑ [ CZ-gen ]ʷ v = lemma-comm-CZ-w↑↑ v
 aux-comm-w⇣-v↑↑ [ H-gen ↥ ]ʷ v = lemma-cong↑ _ _ (lemma-comm-H-w↑ v)
 aux-comm-w⇣-v↑↑ [ S-gen ↥ ]ʷ v = lemma-cong↑ _ _ (lemma-comm-S-w↑ v)
+aux-comm-w⇣-v↑↑ [ gate₀ () ↥ ↥ ]ʷ v
 aux-comm-w⇣-v↑↑ ε v = trans left-unit (sym right-unit)
 aux-comm-w⇣-v↑↑ (w • w') v = begin
   (w • w') ⇣ • v ↑ ↑ ≈⟨ assoc ⟩
@@ -227,6 +228,7 @@ aux-Ex-w⇣-Ex [ S-gen ]ʷ = refl
 aux-Ex-w⇣-Ex [ CZ-gen ]ʷ = refl
 aux-Ex-w⇣-Ex [ H-gen ↥ ]ʷ = refl
 aux-Ex-w⇣-Ex [ S-gen ↥ ]ʷ = refl
+aux-Ex-w⇣-Ex [ gate₀ () ↥ ↥ ]ʷ
 aux-Ex-w⇣-Ex ε = refl
 aux-Ex-w⇣-Ex (w • v) = begin
   Ex • (w • v) ⇣ • Ex ≈⟨ sa (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) auto ⟩
@@ -245,6 +247,7 @@ aux-Ex↑-Ex-w↑ [ S-gen ]ʷ = rewrite-swap 100 auto
 aux-Ex↑-Ex-w↑ [ CZ-gen ]ʷ = rewrite-swap 100 auto
 aux-Ex↑-Ex-w↑ [ H-gen ↥ ]ʷ = rewrite-swap 100 auto
 aux-Ex↑-Ex-w↑ [ S-gen ↥ ]ʷ = rewrite-swap 100 auto
+aux-Ex↑-Ex-w↑ [ gate₀ () ↥ ↥ ]ʷ
 aux-Ex↑-Ex-w↑ ε = trans right-unit (sym left-unit)
 aux-Ex↑-Ex-w↑ (w • v) = begin
   (Ex ↑ • Ex) • (w • v) ↑ ≈⟨ sa (□ ^ 2 • □ ^ 2) ((□ ^ 2 • □) • □) auto ⟩

@@ -90,9 +90,10 @@ aux-MB₀ = trans right-unit [₀]ᵉ≈ε
 f↥ : Gen 0 → Circuit 1
 f↥ = [_]ʷ ∘ _↥
 
--- (1) h inverts f on the identity coset — vacuous: Gen 0 is empty.
+-- (1) h inverts f on the identity coset — vacuous: Gen 0 holds only
+-- gate₀, and this gate set has no 0-ary gate.
 gen0 : ∀ (x : Gen 0) → ([ x ]ʷ , I₀) ≋ ((ract {0} ᵗ) I₀ (f↥ x))
-gen0 ()
+gen0 (gate₀ ())
 
 -- (3) the embedding respects the width-0 relations (via cong↑).
 fwd0 : ∀ {w v : Circuit 0} → (0 QRel,_===_) w v →

@@ -147,6 +147,7 @@ lemma-Ex-dual-gen CZ-gen = rewrite-ex 100 auto
 --lemma-Ex-dual-gen EX-gen = rewrite-ex 100 auto
 lemma-Ex-dual-gen (H-gen ↥) = rewrite-ex 100 auto
 lemma-Ex-dual-gen (S-gen ↥) = rewrite-ex 100 auto
+lemma-Ex-dual-gen (gate₀ () ↥ ↥)
 
 
 lemma-Ex-dual : ∀ w -> dual w ≈ Ex • w • Ex

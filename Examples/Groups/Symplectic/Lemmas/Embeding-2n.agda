@@ -74,6 +74,7 @@ f CZ-gen = CZ-gen
 --f EX-gen = EX-gen
 f (H-gen ↥) = H-gen ↥
 f (S-gen ↥) = S-gen ↥
+f (((gate₀ ()) ↥) ↥)
 
 f* = wmap f
 
@@ -166,7 +167,9 @@ f-wd-ax (comm₁ H-gate H-gen) = axiom comm-H
 f-wd-ax (comm₁ H-gate S-gen) = axiom comm-H
 f-wd-ax (comm₁ S-gate H-gen) = axiom comm-S
 f-wd-ax (comm₁ S-gate S-gen) = axiom comm-S
-f-wd-ax (comm₂ _ ())
+f-wd-ax (comm₁ _ (gate₀ ()))
+f-wd-ax (comm₁ _ ((gate₀ ()) ↥))
+f-wd-ax (comm₂ _ (gate₀ ()))
 f-wd-ax (cong↑ (srel Base.order-S)) = begin
   f* ((S • S ^ ₁₊ p-2) ↑) ≈⟨  lemma-f*-Sᵏ↑ p ⟩
   ((S • S ^ ₁₊ p-2) ↑) ≈⟨ axiom (cong↑ order-S) ⟩
@@ -184,7 +187,7 @@ f-wd-ax (cong↑ (srel (Base.semi-MS x))) = begin
   (M x • S) ↑ ≈⟨ axiom (cong↑ (semi-MS x)) ⟩
   (S^ (x ^2) • M x) ↑ ≈⟨ sym (cong (lemma-f*-Sᵏ↑ (toℕ (x ^2))) (lemma-f*-M↑ x )) ⟩
   f* ((S^ (x ^2) • M x) ↑) ∎
-f-wd-ax (cong↑ (comm₁ _ ()))
+f-wd-ax (cong↑ (comm₁ _ (gate₀ ())))
 f-wd-ax (cong↑ (cong↑ (srel ())))
 
 

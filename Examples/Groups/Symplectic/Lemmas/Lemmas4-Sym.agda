@@ -136,6 +136,8 @@ aux-comm-m-w↑ {₁₊ n} m [ H-gen ]ʷ = aux-comm-m-H↑ n m
 aux-comm-m-w↑ {₁₊ n} m [ S-gen ]ʷ = aux-comm-m-S↑ n m
 aux-comm-m-w↑ {₂₊ n} m [ CZ-gen ]ʷ = aux-comm-m-CZ↑ m
 aux-comm-m-w↑ {₂₊ n} m [ x ↥ ]ʷ = aux-comm-m-g↥↑ m x
+aux-comm-m-w↑ {₀} m [ gate₀ () ]ʷ
+aux-comm-m-w↑ {₁} m [ gate₀ () ↥ ]ʷ
 aux-comm-m-w↑ {n} m ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
 aux-comm-m-w↑ {n} m (w • v) = begin
   ⟦ m ⟧ₘ • w ↑ • v ↑ ≈⟨ sym assoc ⟩
@@ -152,6 +154,7 @@ aux-comm-m-w↑ {n} m (w • v) = begin
 
 comm-abox-w↑ : let open PB ((₁₊ n) QRel,_===_) in
   ∀ a (w : Word (Gen n)) -> [ a ]ᵃ • w ↑ ≈ w ↑ • [ a ]ᵃ
+comm-abox-w↑ {₀} ((₁₊ _ , _) , _) [ gate₀ () ]ʷ
 comm-abox-w↑ {n} a@((₀ , ₀) , neqI) w = ⊥-elim (neqI auto)
 comm-abox-w↑ {n} a@((₀ , b@(₁₊ _)) , neqI) w = begin
   ⟦ (b , λ ()) ⁻¹ , ε ⟧ₘ₊ • (w ↑) ≈⟨ (cleft right-unit) ⟩
@@ -197,6 +200,7 @@ comm-abox-w↑ {n@(₁₊ _)} ((a@(₁₊ _) , b) , neqI) w = begin
 
 comm-hs-w↑ : let open PB ((₁₊ n) QRel,_===_) in
   ∀ k (w : Word (Gen n)) -> (H • S^ k) • w ↑ ≈ w ↑ • H • S^ k
+comm-hs-w↑ {₀} k [ gate₀ () ]ʷ
 comm-hs-w↑ {0} k ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
 comm-hs-w↑ {0} k (w • v) = begin
   (H • S^ k) • w ↑ • v ↑ ≈⟨ sym assoc ⟩
@@ -225,6 +229,7 @@ comm-hs-w↑ {n@(₁₊ _)} k w = begin
 comm-Ex-CZ^k-w↑↑ : let open PB ((₂₊ n) QRel,_===_) in
   ∀ k (w : Word (Gen n)) -> (Ex • CZ^ k) • w ↑ ↑ ≈ w ↑ ↑ • Ex • CZ^ k
 
+comm-Ex-CZ^k-w↑↑ {₀} k [ gate₀ () ]ʷ
 comm-Ex-CZ^k-w↑↑ {0} l ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
 comm-Ex-CZ^k-w↑↑ {0} k (w • v) = begin
   (Ex • CZ^ k) • w ↑ ↑ • v ↑ ↑ ≈⟨ sym assoc ⟩
@@ -280,6 +285,7 @@ lemma-comm-CX^k-w↑↑ {n} k w = begin
 
 comm-dbox-w↑↑' : let open PB ((₂₊ n) QRel,_===_) in
   ∀ a b (w : Word (Gen n)) -> [ a , b ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ a , b ]ᵈ
+comm-dbox-w↑↑' {₀} a b [ gate₀ () ]ʷ
 comm-dbox-w↑↑' {0} a b ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
 comm-dbox-w↑↑' {0} a b' (w • v) = let b = (a , b') in begin
   [ b ]ᵈ • w ↑ ↑ • v ↑ ↑ ≈⟨ sym assoc ⟩
@@ -334,6 +340,7 @@ comm-dbox-w↑↑ {n} d@(a , b) w = comm-dbox-w↑↑' a b w
 
 comm-bbox-w↑↑' : let open PB ((₂₊ n) QRel,_===_) in
   ∀ a b (w : Word (Gen n)) -> [ a , b ]ᵇ • w ↑ ↑ ≈ w ↑ ↑ • [ a , b ]ᵇ
+comm-bbox-w↑↑' {₀} a b [ gate₀ () ]ʷ
 comm-bbox-w↑↑' {0} a b ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
 comm-bbox-w↑↑' {0} a b' (w • v) = let b = (a , b') in begin
   [ b ]ᵇ • w ↑ ↑ • v ↑ ↑ ≈⟨ sym assoc ⟩

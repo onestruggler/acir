@@ -25,14 +25,24 @@ private
 -- Generators and circuits
 
 -- Gen n: a single-step generator on exactly n wires.
+-- gate₀ h occupies no wires, so it is available at EVERY width — a
+--   global gate, such as a scalar, and the only constructor that
+--   inhabits Gen 0;
 -- gate₁ h acts on the bottom 1 wire of a (₁₊ k)-wire circuit;
 -- gate₂ h acts on the bottom 2 wires of a (₂₊ k)-wire circuit.
 -- _↥ shifts any generator up by one wire.
 --
--- Indices begin with suc (no top-level addition) so Agda's coverage
--- checker can solve unification goals by injectivity of ₁₊ alone,
--- avoiding stuck Diophantine equations of the form arity + k ≟ target.
+-- The wire-consuming constructors begin their index with suc (no
+-- top-level addition) so Agda's coverage checker can solve unification
+-- goals by injectivity of ₁₊ alone, avoiding stuck Diophantine equations
+-- of the form arity + k ≟ target.  gate₀ needs no such care: its index is
+-- an unconstrained n, which is precisely what makes it width-polymorphic.
+--
+-- Note for clients: a function defined by cases on Gen now owes a gate₀
+-- clause.  Where Gate 0 is empty — as it is for SympGate — that clause is
+-- the absurd pattern `gate₀ ()`.
 data Gen : ℕ → Set where
+  gate₀ : Gate 0 → Gen n
   gate₁ : Gate 1 → Gen (₁₊ n)
   gate₂ : Gate 2 → Gen (₂₊ n)
   _↥   : Gen n → Gen (₁₊ n)
@@ -73,8 +83,10 @@ _↑ = _↑ᵏ 1
 -- shifts the gate up onto them, _↧ᵏ_ leaves the gate where it is and
 -- pads new wires above.  The result type Gen (n + k) puts the new wires
 -- on the right, so e.g. Gen 2 embeds into Gen (2 + k) ≡ Gen (₂₊ k).
+-- A gate₀ is width-polymorphic already, so widening only re-indexes it.
 infixl 8 _↧ᵏ_
 _↧ᵏ_ : Gen n → (k : ℕ) → Gen (n + k)
+gate₀ h ↧ᵏ k = gate₀ h
 gate₁ h ↧ᵏ k = gate₁ h
 gate₂ h ↧ᵏ k = gate₂ h
 (g ↥)   ↧ᵏ k = (g ↧ᵏ k) ↥
@@ -96,11 +108,13 @@ _↓ x = x
 -- Lift-Relation
 --
 -- Extends any family of circuit relations (indexed by wire count) with
--- the two structural rules shared by ALL circuit presentations:
+-- the structural rules shared by ALL circuit presentations:
 --
 --   cong↑  — equalities are preserved under _↑
 --   comm   — an m-ary gate at the bottom commutes with any generator
---            that has been shifted up m wires
+--            that has been shifted up m wires.  One rule per arity:
+--            comm₀, comm₁, comm₂.  At m = 0 there is nothing to shift,
+--            so a global gate commutes with every generator outright.
 --
 -- Usage: define a group-specific CRel (order relations, braid
 -- relations, etc.), then open Lift-Relation CRel to obtain the full
@@ -119,8 +133,12 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
     -- Structural: a gate at the bottom commutes with any generator
     -- that has been shifted up past it.
     --
+    -- comm₀: a 0-ary gate holds no wires, so it commutes with EVERY
+    --        generator at the same width, with no shift on either side.
     -- comm₁: a 1-ary gate at wire 0 commutes with g shifted up 1 wire.
     -- comm₂: a 2-ary gate at wires 0-1 commutes with g shifted up 2 wires.
+    comm₀ : (h : Gate 0) (g : Gen n) → n VRel,
+      [ g ]ʷ • [ gate₀ h ]ʷ === [ gate₀ h ]ʷ • [ g ]ʷ
     comm₁ : (h : Gate 1) (g : Gen n) → (₁₊ n) VRel,
       [ g ↥ ]ʷ • [ gate₁ h ]ʷ === [ gate₁ h ]ʷ • [ g ↥ ]ʷ
     comm₂ : (h : Gate 2) (g : Gen n) → (₂₊ n) VRel,
