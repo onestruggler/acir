@@ -8,18 +8,11 @@ open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 
 
 open import Word.Base
-open import Word.Properties
-import Presentation.Base as PB
-import Presentation.Properties as PP
 import Normalization.Reidemeister-Schreier as RS
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
-open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
-open import Data.Fin using (toℕ ; fromℕ)
-open import Presentation.GroupLike
-open import Presentation.Tactic.Rewriting hiding ([_])
 open import Data.Nat.Primality
 open import Notations
 
@@ -62,7 +55,6 @@ open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 ⟦_⟧₁ : NF1 -> Word (Gen (₁₊ n))
 ⟦ s , m , c ⟧₁ =  ⟦ s ⟧ₛ • ⟦ m ⟧ₘ • ⟦ c ⟧ₕₛ
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
 
 
 {-
