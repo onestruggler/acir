@@ -27,18 +27,26 @@
 -- all — which is what keeps this clear of the cact blow-up that
 -- Selinger.Soundness has to work around.
 --
--- What still separates these from `sound-ax` itself:
+-- Both families are now closed:
 --
---   * the ConjRelʷ case needs, in addition, that ⟦_⟧ of a left-embedded
---     `vecToWord P` is pauliWord P — the delogging lemma.  conj x y is
---     by definition vecToWord (actg x (genToVec y)), so with that lemma
---     the case is exactly pauli-conj at P = genToVec y;
---   * the RelTwist case is per-relator: for each axiom of the simplified
---     symplectic rule set, its two sides must act alike up to the
---     correction (Z₀ for order-S, ε elsewhere, shifted by cong↑).
+--   conj-sound     the ConjRelʷ axiom, via the delogging lemma (`delog`:
+--                  ⟦_⟧ of a left-embedded vecToWord P is pauliWord P) and
+--                  pauli-conj at P = genToVec y, since conj x y is by
+--                  definition vecToWord (actg x (genToVec y));
+--   twisted-sound  the RelTwist family, for EVERY relator: axiom-sound
+--                  discharges all fifteen raw axioms and twist-sound
+--                  carries them through cong↑, comm₁ and comm₂.
+--
+-- What separates these from `sound-ax` itself is now only bookkeeping:
+-- the two must be read through Proposition 2.55's ⟦_⟧ on the mixed
+-- alphabet, i.e. ⟦ [ w ]ₗ ⟧ = pw w and ⟦ [ w ]ᵣ ⟧ = w.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+-- --call-by-name: the axiom-sound clauses for selinger-c14 / c15 have
+-- long words in their goals, and call-by-need normalisation of cact
+-- along them exhausts memory (see the note at axiom-sound).  The heavy
+-- symplectic files (e.g. BR.Three.Fig-40) use the same flag.
+{-# OPTIONS --cubical-compatible --safe --call-by-name #-}
 
 module Examples.Groups.Clifford.Qubit.ExtensionSoundness where
 
@@ -648,9 +656,31 @@ AxiomSound = ∀ {n} {u v : Circuit n} (r : n SRel, u === v) →
 --     exponent type is not the one-element ℤ/1 that ℤ*₂ triviality would
 --     suggest.  That case has to be inhabited-and-proved or shown absurd.
 --
--- So the eleven lemmas above stand on their own, and closing AxiomSound
--- waits on a way to keep c14/c15's words out of the goal: an abstract or
--- opaque wrapper, or the per-clause module split Soundness.agda suggests.
+-- The fix was the module's --call-by-name flag: call-by-need
+-- normalisation is what duplicates the Pauli once per letter, and under
+-- call-by-name the same clauses go through.  M-power's second clause is
+-- discharged by the absurd pattern — its exponent lives in ℤ/1.
+
+axiom-sound : AxiomSound
+axiom-sound (order-S {₀})    = order-S-sound
+axiom-sound (order-S {₁₊ m}) = order-S-sound
+axiom-sound order-H          = order-H-sound
+axiom-sound (M-power ₀)      = M-power-sound
+axiom-sound (M-power ₁)      = plain M₋₁ M₋₁ (λ _ → Eq.refl)
+axiom-sound (M-power (₂₊ ()))
+axiom-sound semi-MS          = semi-MS-sound
+axiom-sound semi-M↑CZ        = semi-M↑CZ-sound
+axiom-sound semi-M↓CZ        = semi-M↓CZ-sound
+axiom-sound order-CZ         = order-CZ-sound
+axiom-sound comm-CZ-S↓       = comm-CZ-S↓-sound
+axiom-sound comm-CZ-S↑       = comm-CZ-S↑-sound
+axiom-sound selinger-c10     = selinger-c10-sound
+axiom-sound selinger-c11     = selinger-c11-sound
+axiom-sound selinger-c12     = plain (CZ ↑ • CZ) (CZ • CZ ↑) c12-sound
+axiom-sound selinger-c13     =
+  plain (⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑) (⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓) c13-sound
+axiom-sound selinger-c14     = plain ((⊤⊥ ↑ • CZ ↓) ^ 3) ε c14-sound
+axiom-sound selinger-c15     = plain ((⊥⊤ ↓ • CZ ↑) ^ 3) ε c15-sound
 
 -- Given that, the whole twisted family follows.
 twist-sound : AxiomSound →
@@ -682,3 +712,10 @@ twist-sound as (cong↑ {w = u'} {v = v'} r) =
              (≈ᶜ-sym {w = pw (shiftPauli (corr r))} {v = (pw (corr r)) ↑}
                      (pw-shift (corr r)))
              (≈ᶜ-refl {w = v' ↑}))
+
+------------------------------------------------------------------------
+-- sound-ax's twisted half, with no hypothesis left
+
+twisted-sound : {n : ℕ} {u v : Circuit n} (r̄ : (n QRel,_===_) u v) →
+                u ≈ᶜ (pw (corr r̄) • v)
+twisted-sound = twist-sound axiom-sound
