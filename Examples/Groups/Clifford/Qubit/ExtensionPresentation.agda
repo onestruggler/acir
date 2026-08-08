@@ -21,23 +21,36 @@
 -- ⟦_⟧₀ of the generators in CMS n: a gate is itself, a Pauli generator is
 -- conjugation by the corresponding Pauli operator (CMS.pauliIncl).
 --
--- The proposition's four remaining inputs are left as arguments of
--- `presentation`, and its two normal-form witnesses as parameters of
--- this module.  They are, in the order the work is likely to be done:
+-- Of the proposition's six inputs, three are discharged here:
 --
---   nfpS, nfpQ  bijective normal forms for the two factors.  Both
---               factors have a NormalForm in the library already; a
---               BIJECTIVE one needs additionally nf ∘ inv-nf ≡ id, which
---               follows from the corresponding uniqueness theorem
---               (⟦ inv-nf a ⟧ ≈ ⟦ inv-nf b ⟧ → a ≡ b) applied to
---               inv-nf∘nf=id — see Symplectic.Normalization.Uniqueness.
---   sound-ax    the substance: conj records conjugation in CMS n, and
---               each twisted relator's correction word is the Pauli that
---               lifting it accumulates.  This is the semantic twin of
---               Selinger.Conjugation / Selinger.Relators, which prove the
---               same two families inside Figure 8 mod scalars.
---   nf-ε        the quotient normal form sends ε to ε.
---   real-Q      a gate projects to its symplectic value.
+--   nfpQ      Simplified.Bijective — the coset-tower normal form
+--             upgraded to a bijection (nf ∘ inv-nf ≡ id from uniqueness
+--             of the section), with both congruences routed through
+--             Simplified.Iso;
+--   nfpS      read off the Pauli presentation itself: it is already an
+--             isomorphism onto Pauli-group n, and composing with the
+--             coordinate map vec lands it in Pauli n, a type with
+--             propositional equality (bijectiveᴾ below).  The quotient
+--             factor cannot be done this way — Sp(2n,2)'s elements are
+--             records of functions compared pointwise;
+--   real-Q    a gate projects to its symplectic value: both sides are
+--             ⟦ x ⟧ᵍ, so this is refl.
+--
+-- Three remain, as arguments of `presentation`:
+--
+--   Realises  a Pauli generator is interpreted as the inclusion of its
+--             Pauli value.  Both sides are conjugation by a Pauli
+--             operator, so this reduces to the coordinate identity
+--             genToVec y ≡ vec n ⟦ [ y ]ʷ ⟧N, i.e. that the Pauli
+--             presentation's generator values are the basis vectors;
+--   sound-ax  the substance: conj records conjugation in CMS n, and
+--             each twisted relator's correction word is the Pauli that
+--             lifting it accumulates.  This is the semantic twin of
+--             Selinger.Conjugation / Selinger.Relators, which prove the
+--             same two families inside Figure 8 mod scalars;
+--   nf-ε      the quotient normal form's section sends ε to ε.  NOT true
+--             by computation at a variable width — the coset tower is
+--             stuck on n — so it wants an induction over the levels.
 --
 -- Why this module exists: with `presentation` in hand, completeness of
 -- _Clifford,_===_ for CMS n is one projection away, and composing it
@@ -50,7 +63,9 @@
 module Examples.Groups.Clifford.Qubit.ExtensionPresentation where
 
 open import Algebra.Bundles using (Group)
+open import Algebra.Morphism.Structures using (module GroupMorphisms)
 open import Data.Nat using (ℕ)
+open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 open import Level using (0ℓ)
 
@@ -79,8 +94,10 @@ open Simplified-Relations using (_QRel,_===_)
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen
   as SimP
 
+open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli)
 open import Examples.Groups.Clifford.Qubit.CMS
-  using (Clifford-extension ; Clifford-group ; pauliIncl)
+  using ( Clifford-extension ; Clifford-group ; pauliIncl
+        ; vec ; nest ; vec∘nest ; vec-cong ; vec-injective )
 
 ------------------------------------------------------------------------
 -- The interpretation of the generators in CMS n
@@ -96,17 +113,56 @@ open import Examples.Groups.Clifford.Qubit.CMS
 ------------------------------------------------------------------------
 -- Proposition 2.55, instantiated
 
--- The quotient factor's witness is now available: Simplified.Bijective
--- upgrades the coset-tower normal form to a bijection, using uniqueness
--- of the section for the round trip nf ∘ inv-nf ≡ id.
+------------------------------------------------------------------------
+-- The two normal-form witnesses
+--
+-- The quotient factor's is Simplified.Bijective's: the coset-tower
+-- normal form upgraded to a bijection, using uniqueness of the section
+-- for the round trip nf ∘ inv-nf ≡ id.
+
 open import Examples.Groups.Symplectic.Simplified.Bijective p-2 p-prime g* g-gen
   using (bijective₂)
 
-module Clifford (n : ℕ)
-  {NFS : Set}
-  (nfpS : BijectiveNormalForm (Γ-H ⊕^ n) NFS)
-  where
+-- The Pauli factor's needs no normal-form development at all: its
+-- presentation IS an isomorphism onto Pauli-group n, so composing with
+-- the coordinate map vec (which is injective, and hits every vector)
+-- turns it into a bijection onto Pauli n — a type with propositional
+-- equality, which is what BijectiveNormalForm wants.  The quotient
+-- factor cannot be handled this way: Sp(2n,2)'s elements are records of
+-- functions, compared pointwise, not propositionally.
 
+private
+  module PNiso (n : ℕ) where
+    module PN = _IsPresentationOf_ (Pauli-presentation n)
+    open GroupMorphisms (Group.rawGroup PN.GL.•-ε-group)
+                        (Group.rawGroup (Pauli-group n))
+    mono   = IsGroupIsomorphism.isGroupMonomorphism PN.iso
+    hom    = IsGroupMonomorphism.isGroupHomomorphism mono
+    cong-N = IsGroupHomomorphism.⟦⟧-cong hom
+    inj-N  = IsGroupMonomorphism.injective mono
+    surj-N = IsGroupIsomorphism.surjective PN.iso
+    ⟦_⟧N   = PN.⟦_⟧
+
+-- A Pauli word's normal form is the vector it denotes.
+nfᴾ : (n : ℕ) → Word (PauliGen n) → Pauli n
+nfᴾ n w = vec n (PNiso.⟦_⟧N n w)
+
+bijectiveᴾ : (n : ℕ) → BijectiveNormalForm (Γ-H ⊕^ n) (Pauli n)
+bijectiveᴾ n = record
+  { bijection = record
+    { to        = nfᴾ n
+    ; cong      = λ eq → vec-cong n (PNiso.cong-N n eq)
+    ; bijective =
+        (λ eq → PNiso.inj-N n (vec-injective n eq))
+      , λ P → proj₁ (PNiso.surj-N n (nest n P)) , λ {z} z≈ →
+          Eq.trans (vec-cong n (proj₂ (PNiso.surj-N n (nest n P)) z≈))
+                   (vec∘nest n P)
+    }
+  }
+
+module Clifford (n : ℕ) where
+
+  nfpS = bijectiveᴾ n
   nfpQ = bijective₂ n
 
   -- (The proposition's own module is opened publicly; it internally
