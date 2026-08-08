@@ -51,9 +51,17 @@
 --             operator, so this reduces to the coordinate identity
 --             genToVec y ≡ vec n ⟦ [ y ]ʷ ⟧N, i.e. that the Pauli
 --             presentation's generator values are the basis vectors;
---   nf-ε      the quotient normal form's section sends ε to ε.  NOT true
---             by computation at a variable width — the coset tower is
---             stuck on n — so it wants an induction over the levels.
+--   Sec-trivial / Conj-trivial
+--             the identity coset's representative is trivial in CMS n —
+--             its section is ≈ ε in the extension, and conjugating a
+--             Pauli generator by it does nothing.  These replaced the
+--             old nf-ε (rep Iᶜ ≡ ε), which is UNSATISFIABLE for a coset
+--             tower: Symplectic.Simplified.NfEps proves it, since one
+--             level's inverse is gg (n , c) = (f ʷ) (g₁ n) • [ c ], a
+--             concatenation whatever its arguments.  Note that
+--             rep Iᶜ ≈ ε in the QUOTIENT is free and does not suffice:
+--             lifting it into the extension picks up corrOf, so what is
+--             being asked is that that correction vanishes.
 --
 -- Why this module exists: with `presentation` in hand, completeness of
 -- _Clifford,_===_ for CMS n is one projection away, and composing it
@@ -242,8 +250,14 @@ module Clifford (n : ℕ) where
     Group.reflexive (Clifford-group n)
       (Eq.cong (pauliIncl n) (Eq.sym (vec-gen n y)))
 
-  -- The headline, once the remaining compatibility input is supplied.
+  -- The headline, once the two triviality inputs are supplied: the
+  -- identity coset's representative must be trivial in CMS n (not only
+  -- in Sp(2n,2)), and conjugating a Pauli generator by it must do
+  -- nothing.  A section sending the identity coset to ε on the nose
+  -- gives both at once, but the coset tower's does not -- see
+  -- Symplectic.Simplified.NfEps.
   presentation :
-    SNF.BijectiveNormalForm.inv-nf nfpQ (SNF.BijectiveNormalForm.nf nfpQ ε) ≡ ε →
+    Sec-trivial → Conj-trivial →
     (n Clifford,_===_) IsPresentationOf (Clifford-group n)
-  presentation nf-ε = dpres realises sound-ax nf-ε real-Q
+  presentation sec-triv conj-triv =
+    dpres realises sound-ax sec-triv conj-triv real-Q

@@ -465,20 +465,44 @@ module _ {N X : Set}
     -- witness, a Reidemeister–Schreier NormalForm (nfp) and its
     -- UniqueNormalForm (unfp) giving `groupSubPres`, and surjectivity
     -- (`claim`), whence `dpres = isPresentationOf groupSubPres claim`.
+    -- The two facts asked of the identity coset's representative.  A
+    -- normal form with rep Iᶜ ≡ ε on the nose gives both by `rewrite`,
+    -- which is how this used to be stated; asking for them separately is
+    -- strictly weaker, and it has to be, because rep Iᶜ ≡ ε is
+    -- unsatisfiable for a coset TOWER: one level of
+    -- Normalization.CosetNF.SingleLevel.Transfer defines its inverse as
+    -- gg (n , c) = (f ʷ) (g₁ n) • [ c ], a concatenation whatever its
+    -- arguments, so above the base the two sides differ in head
+    -- constructor.  (Examples.Groups.Symplectic.Simplified.NfEps proves
+    -- this for the symplectic tower.)
+    --
+    -- Note that rep Iᶜ ≈q ε -- which every normal form gives for free,
+    -- by inv-nf∘nf=id -- does NOT imply sec-triv: the right factor of
+    -- ext carries EmptyRel, so a quotient equality reaches the extension
+    -- only through corrOf-eq, picking up the correction [ corrOf p ]ₗ.
+    -- sec-triv says exactly that that correction vanishes, i.e. that the
+    -- representative is trivial in G and not merely in GQ.
+
+    Sec-trivial : Set
+    Sec-trivial = secᶜ Iᶜ ≈ₑ ε
+
+    Conj-trivial : Set
+    Conj-trivial = ∀ (x : N) → conjss (rep Iᶜ) [ x ]ʷ ≈s [ x ]ʷ
+
     dpres :
       Realises →
       (sound-ax : ∀ {w v} → extp w v → Group._≈_ G ⟦ w ⟧ ⟦ v ⟧) →
-      (nf-ε : NQ.inv-nf (NQ.nf ε) ≡ ε) →
+      (sec-triv : Sec-trivial) →
+      (conj-triv : Conj-trivial) →
       -- The quotient realisation: each rep generator projects to its
       -- quotient value in GQ.
       (real-Q : ∀ x → GQm._≈_ (proj ⟦ inj₂ x ⟧₀) ⟦ [ x ]ʷ ⟧Q) →
       ext IsPresentationOf G
-    dpres real sound-ax nf-ε real-Q = isPresentationOf subpres claim
+    dpres real sound-ax sec-triv conj-triv real-Q = isPresentationOf subpres claim
       where
-      -- RS hypothesis (4): the identity coset is ε (via the NF's
-      -- normalization of ε).
+      -- RS hypothesis (4): the identity coset's section is trivial.
       [I]≈ε : secᶜ Iᶜ ≈ₑ ε
-      [I]≈ε rewrite nf-ε = _≈ₑ_.refl
+      [I]≈ε = sec-triv
 
       -- The section law [c] • w ≈ [w']ₓ • [c'] from the RightAction engine
       -- (needs f-wd-ax/[I]≈ε/h=ract, NOT h-wd-ax — no circularity).
@@ -488,10 +512,11 @@ module _ {N X : Set}
                secᶜ c • w ≈ₑ (fᶜ ʷ) w' • secᶜ c'
       hᵗ-hyp = RAᶜ.lemma-⊛
 
-      -- RS hypothesis (1): hᶜ inverts fᶜ on the identity coset (via nf-ε,
-      -- since then rep Iᶜ = ε and conjss ε = id).
+      -- RS hypothesis (1): hᶜ inverts fᶜ on the identity coset.  The
+      -- action of an N-generator there is conjugation by rep Iᶜ, so this
+      -- is conj-triv read backwards; the coset is unchanged.
       h=⁻¹f-gen : ∀ (x : N) → CT._~_ ([ x ]ʷ , Iᶜ) ((hᶜ ᵗ) Iᶜ (fᶜ x))
-      h=⁻¹f-gen x rewrite nf-ε = _≈s_.refl , Eq.refl
+      h=⁻¹f-gen x = _≈s_.sym (conj-triv x) , Eq.refl
 
       -- Full soundness (congruence, not just axioms) into G.
       module EC = E.Cong (sound-t (sound-s real) sound-ax)
