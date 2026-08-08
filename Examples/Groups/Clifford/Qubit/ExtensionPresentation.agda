@@ -174,15 +174,24 @@ bijectiveᴾ n = record
 --
 --   gen-vec : vec m ⟦ [ y ]ʷ ⟧N ≡ genToVec y
 --
--- and the width-1 cases of that hold by `refl`.  The width-≥2 cases do
--- NOT, and the reason is not mathematical: `vec` comes from Qubit.CMS,
--- which instantiates Pauli.Semantics at ITS OWN p-2 / p-prime, while
--- `genToVec` and `pIₙ` come from Qubit.Presentation's instantiation.
--- The two are definitionally equal values of two different module
--- instances, so the tail `vec (₁₊ m) (⟦ … ⟧N .proj₂)` does not meet
--- `pIₙ` syntactically.  Align the instances first (have one module take
--- the prime from the other, as ExactExtension takes it from
--- CliffordGroup) and the recursion should go through.
+-- whose width-1 cases hold by `refl` — so the identity itself is right.
+-- The width-≥2 cases do not, and the goal Agda reports is
+--
+--   vec (₁₊ m) (⟦ [ inj₁ (inj₁ tt) ]ʷ ⟧N .proj₂)  ≟  pIₙ.
+--
+-- So ⟦_⟧N does reduce to a PAIR there (the direct-product presentation),
+-- and what is missing is that its second component is the unit: the fact
+-- that the n-fold presentation sends a left-injected generator to
+-- (⟦ a ⟧ , ε).  That is a statement about
+-- Presentation.Construct.Properties.DirectProduct's interpretation, and
+-- is where to look next.
+--
+-- (The printed types also carry two instantiations of Pauli.Semantics —
+-- Qubit.CMS's and Qubit.Presentation's, each with its own p-2 / p-prime.
+-- They are definitionally equal, and the width-1 cases go through
+-- across them, so that is probably not the obstacle; but if the unit
+-- lemma alone does not close it, align the instances the way
+-- ExactExtension takes its prime from CliffordGroup.)
 
 module Clifford (n : ℕ) where
 
