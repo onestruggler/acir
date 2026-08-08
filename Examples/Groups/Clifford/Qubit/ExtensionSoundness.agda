@@ -48,15 +48,21 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Notations
 open import Zp.ModularArithmetic
-open import Word.Base using (Word ; [_]ʷ ; _•_)
+open import Data.Sum using (inj₂)
+open import Data.Vec using (_∷_ ; [])
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; wmap)
 
 open import Examples.Groups.Clifford.Qubit.CliffordGroup
-  using (p-2 ; p-prime ; _≈ᶜ_ ; pauliWord ; cact-pauliWord ; sform-+ˡ)
+  using ( p-2 ; p-prime ; _≈ᶜ_ ; pauliWord ; cact-pauliWord ; sform-+ˡ
+        ; ≈ᶜ-refl ; ≈ᶜ-sym ; ≈ᶜ-trans ; ∙-congᶜ )
+open import Examples.Groups.Clifford.Qubit.Presentation
+  using (PauliGen ; genToVec ; vecToWord ; conj)
 
 open PrimeModulus p-2 p-prime
 
 open import Examples.Groups.Pauli.Semantics p-2 p-prime
-  using (Pauli ; sform ; _+ₚ_)
+  using ( Pauli ; Pauli1 ; pI ; pIₙ ; sform ; sform1 ; _+ₚ_
+        ; +₁-identityˡ ; +ₚ-identityˡ )
 import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem
 open SympSem.Interpretation using (actg ; actg-sform)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
@@ -138,3 +144,130 @@ pauli-conj x P (s , R) = begin
     ≡⟨ Eq.refl ⟩
   cact (pauliWord (actg x P)) (cact [ x ]ʷ (s , R))   ∎
   where open Eq.≡-Reasoning
+
+------------------------------------------------------------------------
+-- Delogging a Pauli word
+--
+-- The extension names Paulis twice over: as vectors (what actg acts on)
+-- and as words over the Pauli generators (what conj returns).  The
+-- interpretation of such a word in CMS n is the product of the
+-- conjugations its letters name, and pauliWord-∙ turns that product into
+-- a single conjugation — by the vector the word denotes.  So the whole
+-- delogging question reduces to a computation on VECTORS: `vecOf`
+-- undoes `vecToWord`.
+
+-- The vector a Pauli word denotes.
+vecOf : Word (PauliGen n) → Pauli n
+vecOf [ y ]ʷ  = genToVec y
+vecOf ε       = pIₙ
+vecOf (w • v) = vecOf w +ₚ vecOf v
+
+-- Its interpretation in CMS n: each letter is conjugation by its basis
+-- vector.  (This is ⟦_⟧ of Proposition 2.55 restricted to left-embedded
+-- words, spelled out without the extension machinery.)
+pw : Word (PauliGen n) → Word (Gen n)
+pw [ y ]ʷ  = pauliWord (genToVec y)
+pw ε       = ε
+pw (w • v) = pw w • pw v
+
+-- sform vanishes on the identity in the left argument too (the library
+-- has the right-hand version).
+private
+  sform1-pIˡ : (c d : ℤ ₚ) → sform1 pI (c , d) ≡ ₀
+  sform1-pIˡ ₀ ₀ = auto
+  sform1-pIˡ ₀ ₁ = auto
+  sform1-pIˡ ₁ ₀ = auto
+  sform1-pIˡ ₁ ₁ = auto
+
+  sform-pIˡ : (R : Pauli n) → sform (pIₙ {n}) R ≡ ₀
+  sform-pIˡ []             = Eq.refl
+  sform-pIˡ ((c , d) ∷ Rs) =
+    Eq.trans (Eq.cong₂ _+_ (sform1-pIˡ c d) (sform-pIˡ Rs)) (+-identityˡ ₀)
+
+-- Conjugation by the identity Pauli is the identity.
+pauliWord-pIₙ : (pauliWord (pIₙ {n})) ≈ᶜ ε
+pauliWord-pIₙ (s , R) = Eq.trans (cact-pauliWord pIₙ s R)
+  (Eq.cong (_, R) (Eq.trans (Eq.cong (λ □ → s + ι □) (sform-pIˡ R))
+                            (+-identityʳ s)))
+
+-- A Pauli word acts as conjugation by the vector it denotes.
+-- (_≈ᶜ_ is a defined relation — equality of the P4-action — so its
+-- endpoints are never inferable; every combinator below is applied with
+-- them explicit.)
+pw-vecOf : (w : Word (PauliGen n)) → pw w ≈ᶜ pauliWord (vecOf w)
+pw-vecOf [ y ]ʷ  = ≈ᶜ-refl {w = pauliWord (genToVec y)}
+pw-vecOf ε       = ≈ᶜ-sym {w = pauliWord pIₙ} {v = ε} pauliWord-pIₙ
+pw-vecOf (w • v) =
+  ≈ᶜ-trans {w = pw w • pw v}
+           {v = pauliWord (vecOf w) • pauliWord (vecOf v)}
+           {u = pauliWord (vecOf w +ₚ vecOf v)}
+    (∙-congᶜ {w = pw w} {pauliWord (vecOf w)} {pw v} {pauliWord (vecOf v)}
+             (pw-vecOf w) (pw-vecOf v))
+    (pauliWord-∙ (vecOf w) (vecOf v))
+
+------------------------------------------------------------------------
+-- vecOf undoes vecToWord
+--
+-- A pure computation on vectors: the exponents are ℤ/2, so each wire
+-- contributes X^a Z^b with a , b ∈ {0 , 1} and the four cases are
+-- concrete.
+
+private
+  -- Shifting a Pauli word up one wire prepends the identity.
+  vecOf-↑ : (w : Word (PauliGen (₁₊ n))) →
+            vecOf (wmap inj₂ w) ≡ pI ∷ vecOf w
+  vecOf-↑ [ y ]ʷ  = Eq.refl
+  vecOf-↑ ε       = Eq.refl
+  vecOf-↑ (w • v) =
+    Eq.trans (Eq.cong₂ _+ₚ_ (vecOf-↑ w) (vecOf-↑ v))
+             (Eq.cong (_∷ (vecOf w +ₚ vecOf v)) (+₁-identityˡ pI))
+
+  -- Two identity summands in front of a tail.
+  tail-pIₙ : (ps : Pauli n) → (pIₙ +ₚ pIₙ) +ₚ ps ≡ ps
+  tail-pIₙ ps = Eq.trans (Eq.cong (_+ₚ ps) (+ₚ-identityˡ pIₙ)) (+ₚ-identityˡ ps)
+
+vecOf-vecToWord : (P : Pauli n) → vecOf (vecToWord P) ≡ P
+vecOf-vecToWord {₀}      []             = Eq.refl
+vecOf-vecToWord {₁₊ ₀}   ((₀ , ₀) ∷ []) = auto
+vecOf-vecToWord {₁₊ ₀}   ((₀ , ₁) ∷ []) = auto
+vecOf-vecToWord {₁₊ ₀}   ((₁ , ₀) ∷ []) = auto
+vecOf-vecToWord {₁₊ ₀}   ((₁ , ₁) ∷ []) = auto
+vecOf-vecToWord {₂₊ n}   ((₀ , ₀) ∷ ps)
+  rewrite vecOf-↑ (vecToWord ps) | vecOf-vecToWord ps =
+  Eq.cong₂ _∷_ auto (tail-pIₙ ps)
+vecOf-vecToWord {₂₊ n}   ((₀ , ₁) ∷ ps)
+  rewrite vecOf-↑ (vecToWord ps) | vecOf-vecToWord ps =
+  Eq.cong₂ _∷_ auto (tail-pIₙ ps)
+vecOf-vecToWord {₂₊ n}   ((₁ , ₀) ∷ ps)
+  rewrite vecOf-↑ (vecToWord ps) | vecOf-vecToWord ps =
+  Eq.cong₂ _∷_ auto (tail-pIₙ ps)
+vecOf-vecToWord {₂₊ n}   ((₁ , ₁) ∷ ps)
+  rewrite vecOf-↑ (vecToWord ps) | vecOf-vecToWord ps =
+  Eq.cong₂ _∷_ auto (tail-pIₙ ps)
+
+-- The delogging lemma: a Pauli vector, read out as a word and
+-- interpreted, is conjugation by that vector.
+delog : (P : Pauli n) → pw (vecToWord P) ≈ᶜ pauliWord P
+delog {n} P = Eq.subst (λ □ → pw (vecToWord P) ≈ᶜ pauliWord □)
+                       (vecOf-vecToWord P) (pw-vecOf (vecToWord P))
+
+------------------------------------------------------------------------
+-- The conjugation family of sound-ax
+--
+-- conj x y is by definition vecToWord (actg x (genToVec y)), so with the
+-- delogging lemma the ConjRelʷ axiom is exactly pauli-conj at
+-- P = genToVec y.
+
+conj-sound : (y : PauliGen n) (x : Gen n) →
+             ([ x ]ʷ • pw [ y ]ʷ) ≈ᶜ (pw (conj x y) • [ x ]ʷ)
+conj-sound y x =
+  ≈ᶜ-trans {w = [ x ]ʷ • pauliWord (genToVec y)}
+           {v = pauliWord (actg x (genToVec y)) • [ x ]ʷ}
+           {u = pw (conj x y) • [ x ]ʷ}
+    (pauli-conj x (genToVec y))
+    (∙-congᶜ {w = pauliWord (actg x (genToVec y))}
+             {pw (conj x y)} {[ x ]ʷ} {[ x ]ʷ}
+             (≈ᶜ-sym {w = pw (vecToWord (actg x (genToVec y)))}
+                     {v = pauliWord (actg x (genToVec y))}
+                     (delog (actg x (genToVec y))))
+             (≈ᶜ-refl {w = [ x ]ʷ}))
