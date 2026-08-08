@@ -1,7 +1,6 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 --{-# OPTIONS --termination-depth=2 #-}
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -9,30 +8,19 @@ import Relation.Binary.PropositionalEquality as Eq
 
 open import Data.Product using (_,_ ; proj₁)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
-open import Agda.Builtin.Nat using (_-_)
-open import Data.Bool hiding (_<_ ; _≤_)
-open import Data.List hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
-open import Data.Vec hiding ([_])
-open import Data.Fin hiding (_+_ ; _-_)
 
-open import Data.Maybe
-open import Data.Sum using ([_,_])
 
 open import Word.Base as WB hiding (wfoldl)
-open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Normalization.Reidemeister-Schreier as RS
 open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
-open import Presentation.Construct.Base hiding (_*_ ; _⊕_)
 
 
 open import Data.Fin using (toℕ)
-open import Data.Fin.Properties using (toℕ-inject₁)
 open import Presentation.GroupLike
-open import Presentation.Tactic.Rewriting hiding ([_])
 open import Data.Nat.Primality
 
 
@@ -57,30 +45,23 @@ open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n p-2 p-prime as Sym4n
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime as Sym2n hiding (lemma-XCS^k')
 
 open import Examples.Groups.Symplectic.Lemmas.Ex-Rewriting p-2 p-prime
 open Rewriting-Ex n
 
-open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm p-2 p-prime 0
-open import Examples.Groups.Symplectic.Lemmas.Lemma-Postfix p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Duality p-2 p-prime hiding (module L0)
 open Lemmas0a
 open Lemmas0a1
 open Lemmas0b
 open Lemmas0c
 
 open LM2
-open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
 
 
 open Symplectic
 open Lemmas-Sym
 open Symplectic-GroupLike
 
-open import Data.Nat.DivMod
 open import Data.Fin.Properties
 open Duality
 
@@ -100,7 +81,6 @@ lemma-Ex-S^ᵏ k = begin
 
 
 
-open import Algebra.Properties.Ring (+-*-ring p-2)
 open PB ((₂₊ n) QRel,_===_)
 open PP ((₂₊ n) QRel,_===_)
 open SR word-setoid
@@ -109,7 +89,6 @@ open Lemmas0 (₁₊ n)
 open Commuting-Symplectic n
 open Sym0-Rewriting (₁₊ n)
 open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
-import Examples.Groups.Symplectic.Lemmas.Duality p-2 p-prime as ND
 
 lemma-Ex-M-n : ∀ m -> Ex • M m ≈ M m ↑ • Ex
 lemma-Ex-M-n m@x' = begin
