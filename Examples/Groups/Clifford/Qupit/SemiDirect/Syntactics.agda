@@ -409,6 +409,11 @@ module SemiDirect where
     PB.axiom (mid (comm ((XZ.Z-gen XZ.↥) XZ.↥) (Sym.CZ-gen Sym.↥)))
   lemma-cong↑ w v (PB.axiom (mid (comm ((a XZ.↥) XZ.↥) Sym.CZ-gen))) =
     PB.axiom (mid (comm (((a XZ.↥) XZ.↥) XZ.↥) (Sym.CZ-gen Sym.↥)))
+  -- Width one is vacuous: both shifted generators would come from Gen 0,
+  -- and neither gate set has an arity-0 gate for gate₀ to take.  Before
+  -- Circuit.Base gained gate₀ this was invisible, Gen 0 having had no
+  -- constructor at all.
+  lemma-cong↑ {₁} w v (PB.axiom (mid (comm ((XZ.gate₀ ()) XZ.↥) b)))
   lemma-cong↑ {₁₊ n@(₁₊ n')} w v (PB.axiom (mid (comm (a XZ.↥) (b Sym.↥)))) = begin
     [ inj₂ (b Sym.↥ Sym.↥) ]ʷ • [ inj₁ (a XZ.↥ XZ.↥) ]ʷ
       ≈⟨ refl ⟩
@@ -516,6 +521,11 @@ module Semi-GroupLike where
       ε ∎
 
   -- A shifted generator inherits its inverse from one wire down.
+  -- Width one: same vacuity as in lemma-cong↑ above.  The ₂₊ clauses
+  -- cannot simply relax, because the witness they build lives in the
+  -- amalgamation formed at that width.
+  grouplike {₁} (inj₁ ((XZ.gate₀ ()) XZ.↥))
+  grouplike {₁} (inj₂ ((Sym.gate₀ ()) Sym.↥))
   grouplike {₂₊ n} (inj₁ (g XZ.↥)) with XZ.XZ-GroupLike.grouplike (g XZ.↥)
   ... | ig , prf = [ ig ]ₗ , lefts prf
     where open LRC (₂₊ n)
