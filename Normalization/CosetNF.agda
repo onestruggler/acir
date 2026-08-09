@@ -30,7 +30,6 @@ open import Data.Sum using ([_,_] ; _⊎_ ; inj₁ ; inj₂)
 open import Data.Sum.Properties using (inj₁-injective)
 open import Data.Product using (_,_ ; _×_ ; proj₁ ; proj₂ ; map ; ∃)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
-open import Data.List hiding ([_] ; map)
 
 open import Function.Definitions using (Injective ; Surjective)
 open import Function using (_∘_ ; id)
@@ -39,7 +38,6 @@ import Function.Construct.Composition as FCC
 
 
 open import Word.Base
-open import Word.Properties
 open import Normalization.Reidemeister-Schreier
 
 import Presentation.Base as PB
