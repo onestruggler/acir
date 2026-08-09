@@ -9,7 +9,6 @@
 open import Notations
 module Zp.Fermats-little-theorem where
 
-open import Algebra.Structures
 
 -- open Integer hiding (+_; _-_) -- using (_+_; _*_; -_; +0)
 -- open import Data.Integer.GCD
@@ -18,32 +17,19 @@ open import Algebra.Structures
 
 open import Data.Product
 
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')
 open import Relation.Binary.PropositionalEquality as Eq hiding ([_])
-open import Data.Nat.Divisibility
 
-import Data.Fin as Fin
-open import Data.Empty using (⊥ ; ⊥-elim)
 open import Data.Fin hiding (_+_ ; _-_ ; _≤_)
-open import Data.Fin.Properties
 
 open import Data.Nat as ℕ hiding (_+_ ; _*_ ; _^_)
-open import Data.Fin.Literals
-import Data.Nat.Literals as NL
-open import Agda.Builtin.FromNat
-open import Data.Unit.Base using (⊤)
 open import Data.Nat.DivMod
 open import Data.Nat.Properties as NP using (n<1+n)
 open import Data.Fin.Properties as FP
 open import Zp.ModularArithmetic
 
 open import Data.Nat.Primality
-open import Data.Nat.Coprimality hiding (sym)
 open import Data.Nat.GCD
 open Bézout
-open import Data.Empty
-open import Algebra.Properties.Group
 import Relation.Binary.Reasoning.Setoid as SR
 
 
