@@ -27,7 +27,9 @@ private
 -- Gen n: a single-step generator on exactly n wires.
 -- gate₀ h occupies no wires, so it is available at EVERY width — a
 --   global gate, such as a scalar, and the only constructor that
---   inhabits Gen 0;
+--   inhabits Gen 0.  Being available at every width is not yet the same
+--   as being the SAME gate at every width: _↑ still relabels it, and
+--   Lift-Relation's ω↑=ω is what identifies the two spellings;
 -- gate₁ h acts on the bottom 1 wire of a (₁₊ k)-wire circuit;
 -- gate₂ h acts on the bottom 2 wires of a (₂₊ k)-wire circuit.
 -- _↥ shifts any generator up by one wire.
@@ -38,9 +40,10 @@ private
 -- of the form arity + k ≟ target.  gate₀ needs no such care: its index is
 -- an unconstrained n, which is precisely what makes it width-polymorphic.
 --
--- Note for clients: a function defined by cases on Gen now owes a gate₀
--- clause.  Where Gate 0 is empty — as it is for SympGate — that clause is
--- the absurd pattern `gate₀ ()`.
+-- Note for clients: a function defined by cases on Gen owes a gate₀
+-- clause, and one defined by cases on Lift-Relation's _VRel,_===_ owes
+-- an ω↑=ω clause.  Where Gate 0 is empty — as it is for SympGate — both
+-- are the absurd patterns `gate₀ ()` and `ω↑=ω ()`.
 data Gen : ℕ → Set where
   gate₀ : Gate 0 → Gen n
   gate₁ : Gate 1 → Gen (₁₊ n)
@@ -115,6 +118,13 @@ _↓ x = x
 --            that has been shifted up m wires.  One rule per arity:
 --            comm₀, comm₁, comm₂.  At m = 0 there is nothing to shift,
 --            so a global gate commutes with every generator outright.
+--   ω↑=ω   — a 0-ary gate is the same gate on every wire, so shifting
+--            one leaves it unchanged.
+--
+-- The last two are the price and the payoff of admitting global gates:
+-- a 0-ary gate is central (comm₀) and width-independent (ω↑=ω), and both
+-- facts are uniform enough to belong here rather than being restated by
+-- every presentation that has a scalar.
 --
 -- Usage: define a group-specific CRel (order relations, braid
 -- relations, etc.), then open Lift-Relation CRel to obtain the full
@@ -143,6 +153,25 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
       [ g ↥ ]ʷ • [ gate₁ h ]ʷ === [ gate₁ h ]ʷ • [ g ↥ ]ʷ
     comm₂ : (h : Gate 2) (g : Gen n) → (₂₊ n) VRel,
       [ g ↥ ↥ ]ʷ • [ gate₂ h ]ʷ === [ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ
+
+    -- Structural: a global gate does not depend on the wire it is
+    -- written on.
+    --
+    -- gate₀ is width-polymorphic, but _↑ is a wmap and relabels it all
+    -- the same: at width ₁₊ n the shift of gate₀ ω is (gate₀ ω) ↥, a
+    -- term distinct from the gate₀ ω that already lives at that width.
+    -- This rule identifies the two, so that one 0-ary gate is one
+    -- generator and not one generator per wire-depth.
+    --
+    -- It does not follow from cong↑, which carries an equation from one
+    -- width to the next but cannot relate w ↑ to w at the SAME width.
+    -- Nor is there an analogue at the wire-consuming arities: gate₁ h
+    -- and (gate₁ h) ↥ act on different wires and must stay apart — which
+    -- is why this is the only rule of its shape.
+    --
+    -- Presentations with a global gate used to state this for
+    -- themselves; Selinger's Figure 8 carried it as cω↑.
+    ω↑=ω : (ω : Gate 0) → (₁₊ n) VRel, [ gate₀ ω ]ʷ ↑ === [ gate₀ ω ]ʷ
 
   -- The monoid congruence at wire count n lifts to wire count ₁₊ n.
   lemma-cong↑ : ∀ {n} (w v : Circuit n)
