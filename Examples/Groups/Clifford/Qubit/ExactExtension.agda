@@ -54,6 +54,7 @@ open import Relation.Nullary using (¬_)
 
 open import Notations
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
+open import Word.Properties using (lemma-fʷ-w^n)
 
 import Presentation.Base as PB
 open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
@@ -69,10 +70,17 @@ open import Examples.Groups.Clifford.Qubit.CliffordGroup
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
-open Symplectic using (Gen ; gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate ; _↥)
+open Symplectic using (Gen)
 
 import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
 open F8 using (ω ; _CRel,_===_ ; srel ; lemma-cong↑)
+
+-- The two sides of the sequence now live over different alphabets:
+-- Figure 8 over ExactGate, the P4-action layer over SympGate.  D is the
+-- translation, and it is what proj has become — it used to be the
+-- identity on words, back when both sides were symplectic circuits.
+open import Examples.Groups.Clifford.Qubit.Selinger.Relabel p-2 p-prime
+  using (D ; E ; D∘E)
 
 open import Examples.Groups.Clifford.Qubit.Selinger.Action using (cact-ω ; cact-ω^)
 
@@ -102,22 +110,12 @@ private
 -- words form a group.
 
 infix 4 _≈ᶠ_
-_≈ᶠ_ : {n : ℕ} → Word (Gen n) → Word (Gen n) → Set
+_≈ᶠ_ : {n : ℕ} → F8.Circuit n → F8.Circuit n → Set
 _≈ᶠ_ {n} = PB._≈_ (n CRel,_===_)
 
+-- Group-likeness now lives with the rule set, as Figure8.grouplike.
 grouplike-F8 : Grouplike (n CRel,_===_)
-grouplike-F8 (gate₁ H-gate)  = [ gate₁ H-gate ]ʷ , PB.axiom (srel F8.c2)
-grouplike-F8 (gate₂ CZ-gate) = [ gate₂ CZ-gate ]ʷ , PB.axiom (srel F8.c5)
-grouplike-F8 (gate₁ S-gate)  = S' • S' • S' , claim
-  where
-  S' = [ gate₁ S-gate ]ʷ
-  -- (S·(S·S))·S has to be rebracketed into S ^ 4 = S·(S·(S·S)).
-  claim : ((S' • S' • S') • S') ≈ᶠ ε
-  claim = PB.trans PB.assoc
-            (PB.trans (PB.cong PB.refl PB.assoc) (PB.axiom (srel F8.c3)))
-grouplike-F8 (gg ↥) with grouplike-F8 gg
-... | inv , eq = inv ↑' , lemma-cong↑ (inv • [ gg ]ʷ) ε eq
-  where open Symplectic using () renaming (_↑ to _↑')
+grouplike-F8 = F8.grouplike
 
 -- Clifford words modulo the exact congruence.
 Exact-group : (n : ℕ) → Group 0ℓ 0ℓ
@@ -126,10 +124,11 @@ Exact-group n = Group-Lemmas.•-ε-group (n CRel,_===_) (grouplike-F8 {n})
 ------------------------------------------------------------------------
 -- Powers of the scalar
 --
--- ω lives on the first wire, so the scalar layer needs at least one
--- qubit; everything below is stated at width ₁₊ n.
+-- ω is a 0-ary generator, so it exists at every width; the layer is
+-- still stated at ₁₊ n, because that is where its symplectic reading
+-- (SH)³ has a wire to live on.
 
-scalar : ℤ 8 → Word (Gen (₁₊ n))
+scalar : ℤ 8 → F8.Circuit (₁₊ n)
 scalar k = ω ^ toℕ k
 
 private
@@ -180,12 +179,14 @@ private
 -- coarse for it, `scalars` and `ω-faithful` that Figure 8 is exactly
 -- right on the scalars.
 
+-- Each is now stated across the translation D, since a Figure-8 word
+-- and its P4-action live over different alphabets.
 record ExactData (n : ℕ) : Set where
   field
     -- Soundness: Figure-8-equal words act equally on P4.
-    sound      : {w v : Word (Gen (₁₊ n))} → w ≈ᶠ v → w ≈ᶜ v
+    sound      : {w v : F8.Circuit (₁₊ n)} → w ≈ᶠ v → D w ≈ᶜ D v
     -- Completeness on the scalars: a word acting trivially on P4 is ωᵏ.
-    scalars    : (w : Word (Gen (₁₊ n))) → w ≈ᶜ ε →
+    scalars    : (w : F8.Circuit (₁₊ n)) → D w ≈ᶜ ε →
                  ∃ λ (k : ℤ 8) → scalar k ≈ᶠ w
     -- Faithfulness on the scalars: ω has order exactly 8.
     ω-faithful : {j k : ℤ 8} → scalar {n} j ≈ᶠ scalar k → j ≡ k
@@ -195,8 +196,11 @@ record ExactData (n : ℕ) : Set where
 --
 --     1 ─→ ⟨ω⟩ ─→ Exact n ─→ CMS n ─→ 1
 --
--- incl is k ↦ ωᵏ and proj is the identity on words: the two groups have
--- the same carrier and differ only in how much they identify.
+-- incl is k ↦ ωᵏ and proj is D, the translation from Figure 8's
+-- alphabet to the symplectic one.  It used to be the identity on words,
+-- when both groups had the same carrier and differed only in how much
+-- they identified; now the scalar is a generator on one side and the
+-- word (SH)³ on the other, and D is what reconciles them.
 
 module _ {n : ℕ} (d : ExactData n) where
 
@@ -217,9 +221,10 @@ module _ {n : ℕ} (d : ExactData n) where
       ; ε-homo = PB.refl
       }
 
-    -- proj is the identity: concatenation and ε are shared, and the
-    -- congruence only has to get coarser, which is `sound`.
-    proj-mon : MP.IsMonoidHomomorphism (λ w → w)
+    -- D is a monoid map by construction (it is a _ʷ extension, so it
+    -- distributes over concatenation and sends ε to ε definitionally),
+    -- and the congruence only has to get coarser, which is `sound`.
+    proj-mon : MP.IsMonoidHomomorphism D
     proj-mon = record
       { isMagmaHomomorphism = record
         { isRelHomomorphism = record { cong = sound }
@@ -232,14 +237,20 @@ module _ {n : ℕ} (d : ExactData n) where
   Exact = record
     { total           = Exact-group (₁₊ n)
     ; incl            = scalar
-    ; proj            = λ w → w
+    ; proj            = D
     ; incl-homo       = isMonoidHomomorphism⇒isGroupHomomorphism
                           Scalar-group (Exact-group (₁₊ n)) incl-mon
     ; proj-homo       = isMonoidHomomorphism⇒isGroupHomomorphism
                           (Exact-group (₁₊ n)) (CMS-group (₁₊ n)) proj-mon
     ; incl-injective  = ω-faithful
-    ; proj-surjective = λ h → h , ≈ᶜ-refl {w = h}
-    ; proj-kills-incl = λ k → cact-ω^ (toℕ k)
+    -- Surjectivity of D: a symplectic circuit is the translation of its
+    -- own relabelling, since E never produces a scalar (Relabel.D∘E).
+    ; proj-surjective = λ h →
+        E h , Eq.subst (_≈ᶜ h) (Eq.sym (D∘E h)) (≈ᶜ-refl {w = h})
+    -- D of ωᵏ is (SH)³ to the k, which acts trivially.  D distributes
+    -- over powers because it is a _ʷ extension (Word.Properties).
+    ; proj-kills-incl = λ k →
+        Eq.subst (_≈ᶜ ε) (Eq.sym (lemma-fʷ-w^n (toℕ k))) (cact-ω^ (toℕ k))
     ; ker⊆im-incl     = scalars
     }
 
@@ -254,7 +265,7 @@ module _ {n : ℕ} (d : ExactData n) where
 -- NormalForm, ExactNF n = NF n × Fin 8, uniqueness still WIP) or
 -- matrices over ℤ[1/√2, i].
 
-action-blind : ({w v : Word (Gen (₁₊ n))} → w ≈ᶜ v → w ≈ᶠ v) →
+action-blind : ({w v : F8.Circuit (₁₊ n)} → D w ≈ᶜ D v → w ≈ᶠ v) →
                ¬ ExactData n
 action-blind conv d with ExactData.ω-faithful d {₁} {₀} (conv cact-ω)
 ... | ()

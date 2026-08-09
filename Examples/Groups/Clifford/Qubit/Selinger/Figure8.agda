@@ -60,12 +60,15 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Clifford.Qubit.Selinger.Figure8
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
+open import Data.Product using (_,_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Notations
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
 import Presentation.Base as PB
 import Presentation.Properties
+open import Presentation.GroupLike using (Grouplike)
+open import Presentation.Tactic.AssociativitySolver using (module Assoc)
 
 -- Gate types for the exact Clifford group generators.
 data ExactGate : ℕ → Set where
@@ -234,3 +237,24 @@ _≈ᶠ_ {n} = PB._≈_ (n CRel,_===_)
   PB.trans (PB.refl' ((₁₊ n) CRel,_===_) (↑-^ (ω {n}) k))
            (PP.^-cong ((ω {n}) ↑) ω k ω↑≈ω)
   where module PP = Presentation.Properties ((₁₊ n) CRel,_===_)
+
+------------------------------------------------------------------------
+-- Figure 8 is group-like
+--
+-- Every generator has a left inverse: ω from C1 (order 8), H from C2,
+-- S from C3 and CZ from C5, each up to the bracketing that by-assoc
+-- settles; a shifted generator inherits its inverse through cong↑.
+-- This is what makes the Figure-8 words a group, and it lives here
+-- rather than with its clients because it is a fact about the rule set.
+
+private module A (k : ℕ) = Assoc (k CRel,_===_)
+
+grouplike : Grouplike (n CRel,_===_)
+grouplike {n} (gate₀ ω-gate) =
+  ω ^ 7 , A.by-assoc-and n (PB.axiom (srel c1)) Eq.refl Eq.refl
+grouplike     (gate₁ H-gate)  = H  , PB.axiom (srel c2)
+grouplike     (gate₂ CZ-gate) = CZ , PB.axiom (srel c5)
+grouplike {n} (gate₁ S-gate)  =
+  S • S • S , A.by-assoc-and n (PB.axiom (srel c3)) Eq.refl Eq.refl
+grouplike (y ↥) with grouplike y
+... | inv , eq = inv ↑ , lemma-cong↑ (inv • [ y ]ʷ) ε eq
