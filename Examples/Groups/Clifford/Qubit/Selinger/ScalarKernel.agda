@@ -62,6 +62,13 @@ import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
 import Examples.Groups.Clifford.Qubit.Selinger.Figure8-Mod-Scalar p-2 p-prime as MS
 open F8 using (ω ; _≈ᶠ_ ; ω^-central ; ω^↑≈ω^ ; ↑-^)
 
+-- Figure 8 and its mod-scalar quotient no longer share an alphabet: the
+-- quotient kept SympGate, Figure 8 has ExactGate.  E relabels a
+-- mod-scalar word into Figure 8's, and every statement below compares
+-- E-images rather than words.
+import Examples.Groups.Clifford.Qubit.Selinger.Relabel p-2 p-prime as RL
+open RL using (E ; E-↑)
+
 private
   variable
     n : ℕ
@@ -78,58 +85,40 @@ _≈ᵐˢ_ {n} = PB._≈_ (n MS.CRel,_===_)
 ------------------------------------------------------------------------
 -- The scalar word
 --
--- Width 0 has no gates at all, so there is nothing for ω to be; every
--- word is ε there, and taking the scalar to be ε keeps Ω total.  Writing
--- Ω as a POWER (rather than by cases on the width) is what makes
--- Ω n ₀ ≡ ε hold for a variable width — the k = 0 cases below are then
--- literally the Figure-8 rule with a unit appended.
+-- ω is a 0-ary generator now, so it exists at every width and Ω is a
+-- plain power.  The width-0 special case this section used to carry —
+-- there was no ω to write at width 0, so Ω₁ put ε there, and ε^ and a
+-- split in every lemma followed — has gone entirely.
 
-Ω₁ : (n : ℕ) → Circuit n
-Ω₁ ₀      = ε
-Ω₁ (₁₊ n) = ω
-
-Ω : (n : ℕ) → ℕ → Circuit n
-Ω n k = Ω₁ n ^ k
-
--- At width 0 the scalar is trivial.  (Stated at every width: the
--- width-0 scalar is also met one wire up, as ε ↑.)
-ε^ : {m : ℕ} (k : ℕ) → (ε {X = Gen m} ^ k) ≈ᶠ ε
-ε^ ₀       = PB.refl
-ε^ (₁₊ ₀)  = PB.refl
-ε^ (₂₊ k)  = PB.trans PB.left-unit (ε^ (₁₊ k))
+Ω : (n : ℕ) → ℕ → F8.Circuit n
+Ω n k = ω ^ k
 
 -- Exponents add.
 Ω-+ : (n j k : ℕ) → Ω n (j + k) ≈ᶠ (Ω n j • Ω n k)
-Ω-+ n j k = P.^-+ n (Ω₁ n) j k
+Ω-+ n j k = P.^-+ n ω j k
 
--- The scalar is central (this is the point of Figure8.cω).
-Ω-central : (n k : ℕ) (w : Circuit n) → (Ω n k • w) ≈ᶠ (w • Ω n k)
-Ω-central ₀      k w =
-  PB.trans (PB.cong (ε^ k) PB.refl)
-    (PB.trans PB.left-unit
-      (PB.trans (PB.sym PB.right-unit) (PB.cong PB.refl (PB.sym (ε^ k)))))
-Ω-central (₁₊ n) k w = ω^-central k w
+-- The scalar is central (Circuit.Base's comm₀, via Figure8.ω^-central).
+Ω-central : (n k : ℕ) (w : F8.Circuit n) → (Ω n k • w) ≈ᶠ (w • Ω n k)
+Ω-central n k w = ω^-central k w
 
 -- ω⁸ = 1, so every eighth power vanishes.
 Ω-8 : (n k : ℕ) → Ω n (8 * k) ≈ᶠ ε
-Ω-8 ₀      k       = ε^ (8 * k)
-Ω-8 (₁₊ n) ₀       = PB.refl
-Ω-8 (₁₊ n) (₁₊ k)  =
-  PB.trans (PB.refl' ((₁₊ n) F8.CRel,_===_) (Eq.cong (ω ^_) (*-suc 8 k)))
-    (PB.trans (P.^-+ (₁₊ n) ω 8 (8 * k))
-      (PB.trans (PB.cong (PB.axiom (F8.srel F8.c1)) (Ω-8 (₁₊ n) k))
+Ω-8 n ₀      = PB.refl
+Ω-8 n (₁₊ k) =
+  PB.trans (PB.refl' (n F8.CRel,_===_) (Eq.cong (ω ^_) (*-suc 8 k)))
+    (PB.trans (P.^-+ n ω 8 (8 * k))
+      (PB.trans (PB.cong (PB.axiom (F8.srel F8.c1)) (Ω-8 n k))
                 PB.left-unit))
 
 -- Hence every exponent has an inverse: k + 7k = 8k, on the nose.
 Ω-inv : (n k : ℕ) → (Ω n k • Ω n (7 * k)) ≈ᶠ ε
 Ω-inv n k = PB.trans (PB.sym (Ω-+ n k (7 * k))) (Ω-8 n k)
 
--- The scalar moves up a wire (this is the point of Figure8.cω↑).  At
--- width 0 the exponent is simply dropped: ε lifts to ε, which is ω⁰.
-Ω-↑ : (n k : ℕ) → ∃ λ k' → ((Ω n k) ↑) ≈ᶠ Ω (₁₊ n) k'
-Ω-↑ ₀      k = ₀ ,
-  PB.trans (PB.refl' (₁ F8.CRel,_===_) (↑-^ ε k)) (ε^ k)
-Ω-↑ (₁₊ n) k = k , ω^↑≈ω^ k
+-- The scalar moves up a wire (Circuit.Base's ω↑=ω).  The exponent is
+-- carried across unchanged, so the ∃ this used to return — needed only
+-- to drop the exponent at width 0 — has gone with it.
+Ω-↑ : (n k : ℕ) → ((Ω n k) F8.↑) ≈ᶠ Ω (₁₊ n) k
+Ω-↑ n k = ω^↑≈ω^ k
 
 ------------------------------------------------------------------------
 -- The axioms
@@ -140,10 +129,11 @@ _≈ᵐˢ_ {n} = PB._≈_ (n MS.CRel,_===_)
 -- infixr, so appending the scalar to the whole right-hand side is not
 -- the same term as Figure 8's, which has it inside.)
 
-shared : {w v : Circuit n} → (w ≈ᶠ v) → ∃ λ k → w ≈ᶠ (v • Ω n k)
+shared : {w v : F8.Circuit n} → (w ≈ᶠ v) → ∃ λ k → w ≈ᶠ (v • Ω n k)
 shared e = ₀ , PB.trans e (PB.sym PB.right-unit)
 
-srel-kernel : {w v : Circuit n} → (n MS.Sel, w === v) → ∃ λ k → w ≈ᶠ (v • Ω n k)
+srel-kernel : {w v : Circuit n} →
+              (n MS.Sel, w === v) → ∃ λ k → E w ≈ᶠ (E v • Ω n k)
 srel-kernel MS.c2  = shared (PB.axiom (F8.srel F8.c2))
 srel-kernel MS.c3  = shared (PB.axiom (F8.srel F8.c3))
 srel-kernel MS.c5  = shared (PB.axiom (F8.srel F8.c5))
@@ -156,8 +146,11 @@ srel-kernel MS.c13 = shared (PB.axiom (F8.srel F8.c13))
 srel-kernel MS.c14 = shared (PB.axiom (F8.srel F8.c14))
 srel-kernel MS.c15 = shared (PB.axiom (F8.srel F8.c15))
 
--- C4: mod scalars (SH)³ = 1, and in Figure 8 that word IS ω.
-srel-kernel MS.c4 = ₁ , PB.sym PB.left-unit
+-- C4: mod scalars (SH)³ = 1, and in Figure 8 that word IS ω — but only
+-- by C4 now.  It used to hold definitionally, back when Figure 8 defined
+-- ω to BE (SH)³; with ω a generator the axiom has to be invoked.
+srel-kernel MS.c4 =
+  ₁ , PB.trans (PB.axiom (F8.srel F8.c4)) (PB.sym PB.left-unit)
 
 -- C10 / C11: Figure 8 keeps a trailing ω⁻¹ = ω⁷ inside the right-hand
 -- side; the quotient drops it.  Same letters, different brackets.
@@ -169,16 +162,22 @@ srel-kernel (MS.c11 {n}) =
 ------------------------------------------------------------------------
 -- The induction
 
-axiom-kernel : {w v : Circuit n} → (n MS.VRel, w === v) → ∃ λ k → w ≈ᶠ (v • Ω n k)
+axiom-kernel : {w v : Circuit n} →
+               (n MS.VRel, w === v) → ∃ λ k → E w ≈ᶠ (E v • Ω n k)
 axiom-kernel (MS.srel r)     = srel-kernel r
-axiom-kernel (MS.comm₁ h g)  = shared (PB.axiom (F8.comm₁ h g))
-axiom-kernel (MS.comm₂ h g)  = shared (PB.axiom (F8.comm₂ h g))
-axiom-kernel (MS.cong↑ {n} x) with axiom-kernel x
-... | k , e with Ω-↑ n k
-...   | k' , e' = k' ,
-  PB.trans (F8.lemma-cong↑ _ _ e) (PB.cong PB.refl e')
+axiom-kernel (MS.comm₁ h g)  =
+  shared (PB.axiom (F8.comm₁ (RL.gate→ h) (RL.sym→ex g)))
+axiom-kernel (MS.comm₂ h g)  =
+  shared (PB.axiom (F8.comm₂ (RL.gate→ h) (RL.sym→ex g)))
+-- E commutes with the shift, so the induction is the width-n result one
+-- wire up, with the scalar carried across by Ω-↑.
+axiom-kernel (MS.cong↑ {n} {w = u} {v = v} x) with axiom-kernel x
+... | k , e = k ,
+  Eq.subst₂ _≈ᶠ_ (Eq.sym (E-↑ u))
+            (Eq.cong (_• Ω (₁₊ n) k) (Eq.sym (E-↑ v)))
+            (PB.trans (F8.lemma-cong↑ _ _ e) (PB.cong PB.refl (Ω-↑ n k)))
 
-kernel : {w v : Circuit n} → w ≈ᵐˢ v → ∃ λ k → w ≈ᶠ (v • Ω n k)
+kernel : {w v : Circuit n} → w ≈ᵐˢ v → ∃ λ k → E w ≈ᶠ (E v • Ω n k)
 kernel PB.refl        = ₀ , PB.sym PB.right-unit
 kernel PB.assoc       = ₀ , PB.trans PB.assoc (PB.sym PB.right-unit)
 kernel PB.left-unit   = ₀ , PB.trans PB.left-unit (PB.sym PB.right-unit)
@@ -202,7 +201,7 @@ kernel {n} (PB.cong {v = w'} {v' = v'} e f) with kernel e | kernel f
   PB.trans (PB.cong d d')
     (PB.trans PB.assoc
       (PB.trans (PB.cong PB.refl (PB.sym PB.assoc))
-        (PB.trans (PB.cong PB.refl (PB.cong (Ω-central n k v') PB.refl))
+        (PB.trans (PB.cong PB.refl (PB.cong (Ω-central n k (E v')) PB.refl))
           (PB.trans (PB.cong PB.refl PB.assoc)
             (PB.trans (PB.sym PB.assoc)
                       (PB.cong PB.refl (PB.sym (Ω-+ n k k'))))))))
@@ -216,6 +215,6 @@ kernel {n} (PB.cong {v = w'} {v' = v'} e f) with kernel e | kernel f
 -- mod scalars); bridging the two is completeness of Figure 8 mod
 -- scalars, i.e. Selinger.Iso together with the extension presentation.
 
-kernel-ε : {w : Circuit n} → w ≈ᵐˢ ε → ∃ λ k → w ≈ᶠ Ω n k
+kernel-ε : {w : Circuit n} → w ≈ᵐˢ ε → ∃ λ k → E w ≈ᶠ Ω n k
 kernel-ε e with kernel e
 ... | k , d = k , PB.trans d PB.left-unit

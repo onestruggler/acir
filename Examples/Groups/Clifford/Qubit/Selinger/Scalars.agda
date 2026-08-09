@@ -110,19 +110,21 @@ Complete-mod-scalars =
 -- ScalarKernel.Ω-8 says ω^(8q) = 1, which is C1 iterated; splitting
 -- k = k%8 + (k/8)·8 therefore collapses everything but the remainder.
 
+-- (ω is 0-ary now, so it lives at width n rather than ₁₊ n; the indices
+-- below shifted down accordingly, and Ω-8 no longer needs a width split.)
 ω^-mod : (k : ℕ) → ((ω {n}) ^ (k % 8)) ≈ᶠ ((ω {n}) ^ k)
 ω^-mod {n} k = PB.sym
-  (PB.trans (PB.refl' ((₁₊ n) F8.CRel,_===_)
+  (PB.trans (PB.refl' (n F8.CRel,_===_)
                       (Eq.cong (ω ^_) (m≡m%n+[m/n]*n k 8)))
-    (PB.trans (P.^-+ (₁₊ n) ω (k % 8) ((k / 8) * 8))
+    (PB.trans (P.^-+ n ω (k % 8) ((k / 8) * 8))
       (PB.trans (PB.cong PB.refl vanish) PB.right-unit)))
   where
   -- (k/8)·8 = 8·(k/8), and Ω-8 kills the latter.
   vanish : ((ω {n}) ^ ((k / 8) * 8)) ≈ᶠ ε
   vanish = PB.trans
-    (PB.refl' ((₁₊ n) F8.CRel,_===_)
+    (PB.refl' (n F8.CRel,_===_)
               (Eq.cong (ω ^_) (*-comm (k / 8) 8)))
-    (Ω-8 (₁₊ n) (k / 8))
+    (Ω-8 n (k / 8))
 
 ------------------------------------------------------------------------
 -- The field itself
