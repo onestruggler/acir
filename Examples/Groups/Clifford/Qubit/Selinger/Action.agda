@@ -49,7 +49,19 @@ open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem using ()
 open Sem.Symplectic using (ap)
 open Sem.Interpretation using (⟦_⟧)
 open import Examples.Groups.Clifford.Qubit.CliffordAut using (g4-id ; ι-2 ; neg-id)
-open import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime using (X ; Z ; ω)
+-- X, Z and ω as SYMPLECTIC words.  Figure 8 now has its own gate set
+-- (ExactGate, in which ω is a 0-ary generator), so ITS X and Z are words
+-- over a different alphabet; `cact` is defined on Symplectic circuits,
+-- which makes the mod-scalar copy the right source.  ω has no
+-- mod-scalar counterpart — modulo scalars there is nothing for it to
+-- name — so it is spelled out here as the word Figure 8 used to define
+-- it to be.  Nothing below is about Figure 8's rule set: this module
+-- only needs the words, to compute their P4-action.
+open import Examples.Groups.Clifford.Qubit.Selinger.Figure8-Mod-Scalar
+  p-2 p-prime using (X ; Z)
+
+ω : ∀ {n} → Word (Gen (₁₊ n))
+ω = (S • H) ^ 3
 
 private
   variable

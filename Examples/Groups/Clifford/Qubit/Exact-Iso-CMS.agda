@@ -449,9 +449,10 @@ g-wd-ax (srel (F8.c11 {n})) =
   PB.trans (twist (MS.srel MS.c11))
     (PB.trans (PB.sym (ext-comm _ ω⁻¹)) (AE.by-assoc (₂₊ n) Eq.refl))
 
--- cω↑: the extension's scalar generator does not depend on the width, so
--- both sides translate to the same word.
-g-wd-ax (srel F8.cω↑) = PB.refl
+-- ω↑=ω: the extension's scalar generator does not depend on the width,
+-- so both sides translate to the same word.  (Figure 8 used to state
+-- this as its own axiom cω↑; it is Circuit.Base's structural rule now.)
+g-wd-ax (F8.ω↑=ω ω-gate) = PB.refl
 
 -- The structural rules.  comm₀ is centrality, which on this side is
 -- ext-comm1; comm₁ and comm₂ are their mod-scalar namesakes, after a

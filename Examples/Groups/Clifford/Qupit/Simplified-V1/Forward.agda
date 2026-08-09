@@ -178,6 +178,10 @@ module Iso (n : ℕ) where
     open PP (n Clifford.QRel,_===_)
     open SR word-setoid
   f-well-defined (SD.comm-Z-X) = PB.sym (Lemmas1b.lemma-comm-X-Z _)
+  -- At width ₁ the shifted generator is a Gen ₀, which gate₀ inhabits;
+  -- neither gate set has a 0-ary gate, so the split goes one deeper.
+  f-well-defined {₁₊ ₀} (left (XZ.comm₁ XZ.X-gate (XZ.gate₀ ())))
+  f-well-defined {₁₊ ₀} (left (XZ.comm₁ XZ.Z-gate (XZ.gate₀ ())))
   f-well-defined {n@(₂₊ n2)} (left (XZ.comm₁ XZ.X-gate g)) = begin
     (f ʷ) ([ [ g XZ.↥ ]ʷ • XZ.X ]ₗ) ≡⟨ auto ⟩
     (f ʷ) ([ [ g XZ.↥ ]ʷ ]ₗ) • (f ʷ) ([ XZ.X ]ₗ) ≡⟨ auto ⟩
@@ -392,7 +396,9 @@ module Iso (n : ℕ) where
   -- the Clifford commutation lemmas are stated at ₂₊/₃₊, so the real work
   -- starts one wire higher; at the minimal width the generator is a Gen ₀,
   -- of which there is none.
-  f-well-defined {₁₊ ₀} (right (Sim.comm₁ Sym.H-gate ()))
+  -- (Gen ₀ is inhabited only by gate₀, and SympGate has no 0-ary gate,
+  -- so the split has to go one constructor deeper than a bare `()`.)
+  f-well-defined {₁₊ ₀} (right (Sim.comm₁ Sym.H-gate (Sym.gate₀ ())))
   f-well-defined {n@(₂₊ n')} (right (Sim.comm₁ Sym.H-gate x)) = begin
     (f ʷ) ([ [ x Sym.↥ ]ʷ • H ]ᵣ) ≡⟨ auto ⟩
     (f (inj₂ x)) ↑ • Cli.H ≈⟨ sym₂ (Lemmas-Clifford.lemma-comm-H-w↑ (f (inj₂ x))) ⟩
@@ -402,7 +408,7 @@ module Iso (n : ℕ) where
     open PB (n Clifford.QRel,_===_) renaming (_===_ to _===₂_ ; _≈_ to _≈₂_ ; cleft_ to cleft₂_ ; cright_ to cright₂_ ; sym to sym₂) using (refl')
     open PP (n Clifford.QRel,_===_)
     open SR word-setoid
-  f-well-defined {₁₊ ₀} (right (Sim.comm₁ Sym.S-gate ()))
+  f-well-defined {₁₊ ₀} (right (Sim.comm₁ Sym.S-gate (Sym.gate₀ ())))
   f-well-defined {n@(₂₊ n')} (right (Sim.comm₁ Sym.S-gate x)) = begin
     (f ʷ) ([ [ x Sym.↥ ]ʷ • S ]ᵣ) ≡⟨ auto ⟩
     (f (inj₂ x)) ↑ • Clifford.R ≈⟨ sym₂ (lemma-comm-R-w↑ (f (inj₂ x))) ⟩
@@ -412,7 +418,7 @@ module Iso (n : ℕ) where
     open PB (n Clifford.QRel,_===_) renaming (_===_ to _===₂_ ; _≈_ to _≈₂_ ; cleft_ to cleft₂_ ; cright_ to cright₂_ ; sym to sym₂) using (refl')
     open PP (n Clifford.QRel,_===_)
     open SR word-setoid
-  f-well-defined {₂₊ ₀} (right (Sim.comm₂ Sym.CZ-gate ()))
+  f-well-defined {₂₊ ₀} (right (Sim.comm₂ Sym.CZ-gate (Sym.gate₀ ())))
   f-well-defined {n@(₃₊ n')} (right (Sim.comm₂ Sym.CZ-gate x)) = begin
     (f ʷ) ([ [ x Sym.↥ Sym.↥ ]ʷ • CZ ]ᵣ) ≡⟨ auto ⟩
     (f (inj₂ x)) ↑ ↑ • Cli.CZ ≈⟨ sym₂ (Lemmas-Clifford.lemma-comm-CZ-w↑ (f (inj₂ x))) ⟩
@@ -435,6 +441,20 @@ module Iso (n : ℕ) where
     open SR word-setoid
 
 
+  -- Neither factor has a 0-ary gate, so a gate₀ on either side of the
+  -- commutation is absurd.  One clause per shape Agda splits into: the
+  -- absurd pattern has to sit where the case tree actually branches.
+  f-well-defined (mid (comm (XZ.gate₀ ()) _))
+  f-well-defined (mid (comm ((XZ.gate₀ ()) XZ.↥) _))
+  f-well-defined (mid (comm (((XZ.gate₀ ()) XZ.↥) XZ.↥) _))
+  f-well-defined (mid (comm XZ.X-gen (Sym.gate₀ ())))
+  f-well-defined (mid (comm XZ.Z-gen (Sym.gate₀ ())))
+  f-well-defined (mid (comm (n₁ XZ.↥) (Sym.gate₀ ())))
+  -- STILL INCOMPLETE: two `mid (comm n h)` cases remain, both fallout
+  -- from gate₀ inhabiting Gen ₀.  They need Agda's own case split to
+  -- locate; the absurd pattern has to sit exactly where the case tree
+  -- branches, and the clauses above cover every position I could find
+  -- by hand.
   f-well-defined {n@(₁₊ n')} (mid (comm XZ.X-gen Sym.H-gen)) = begin
     (f ʷ) ([ [ Sym.H-gen ]ʷ ]ᵣ • [ [ XZ.X-gen ]ʷ ]ₗ) ≡⟨ auto ⟩
     Cli.H • Clifford.X ≈⟨ CLb.conj-H-X n' ⟩

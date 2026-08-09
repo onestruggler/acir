@@ -195,7 +195,12 @@ open PrimeModulus p-2 p-prime
 open import Examples.Groups.Pauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; sform ; sform1)
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; ι ; ι-+)
-open import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime using (X ; Z)
+-- The Pauli words X, Z as SYMPLECTIC circuits.  Figure 8 has its own
+-- gate set now, so its copies live over a different alphabet; the
+-- mod-scalar rule set keeps them over SympGate, which is what the
+-- P4-action layer here needs.
+open import Examples.Groups.Clifford.Qubit.Selinger.Figure8-Mod-Scalar
+  p-2 p-prime using (X ; Z)
 open import Examples.Groups.Clifford.Qubit.Selinger.Action using (cact-X↓ ; cact-Z↓)
 
 -- cact w ↑ leaves the new wire 0 alone and runs cact w on the tail: the

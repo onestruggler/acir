@@ -24,13 +24,12 @@
 -- ω-central below is the structural rule walked across a word — and C1
 -- can be stated at width 0 as Selinger states it.
 --
--- Only one relation about the scalar has to be added by hand:
---
---   cω↑  the scalar does not depend on the wire it is written on.  A
---        0-ary gate is width-polymorphic, but _↑ still moves it: ω ↑ is
---        the generator (gate₀ ω-gate) ↥, a different term from
---        gate₀ ω-gate at the same width, and the two name the same
---        scalar.
+-- No relation about the scalar has to be added by hand at all.  Its
+-- other structural fact — that it does not depend on the wire it is
+-- written on, so that ω ↑ and ω name the same generator — is
+-- Circuit.Base's ω↑=ω.  This module used to state that itself, as cω↑;
+-- both it and centrality now come from Lift-Relation, and C1 and C4 are
+-- the only relations Figure 8 states about ω.
 --
 -- An earlier version of this module had no 0-ary gates and made ω the
 -- derived one-qubit word (SH)³.  Centrality then had to be an axiom
@@ -164,12 +163,9 @@ data _Sel,_===_ : (n : ℕ) → CRel n where
   c11 : ∀ {n} → (₂₊ n) Sel,  CZ • H ↓ • CZ ===
                              SH ↓ • CZ • (S • H • S) ↓ • S ↑ • ω⁻¹
 
-  -- The scalar does not depend on the wire it is written on.  gate₀ is
-  -- width-polymorphic, but _↑ still relabels it, so ω ↑ and ω are
-  -- different terms at the same width and have to be identified.
-  --
-  -- (Centrality needs no axiom: it is Circuit.Base's comm₀.)
-  cω↑ : ∀ {n} → (₁₊ n) Sel,  ω ↑ === ω
+  -- (Neither of the scalar's two structural facts needs an axiom here:
+  -- centrality is Circuit.Base's comm₀ and width-independence is its
+  -- ω↑=ω.  C1 and C4 are the only relations Figure 8 states about ω.)
 
   -- (d) n ≥ 3
   c12 : ∀ {n} → (₃₊ n) Sel,  CZ ↑ • CZ === CZ • CZ ↑
@@ -221,11 +217,11 @@ _≈ᶠ_ {n} = PB._≈_ (n CRel,_===_)
 ------------------------------------------------------------------------
 -- The scalar is the same on every wire
 --
--- cω↑ says it for ω; powers follow, because _↑ (a wmap) distributes over
--- concatenation and hence over powers.
+-- The structural ω↑=ω says it for ω; powers follow, because _↑ (a wmap)
+-- distributes over concatenation and hence over powers.
 
 ω↑≈ω : ((ω {n}) ↑) ≈ᶠ ω
-ω↑≈ω = PB.axiom (srel cω↑)
+ω↑≈ω = PB.axiom (ω↑=ω ω-gate)
 
 -- (w ^ k) ↑ = (w ↑) ^ k, on the nose.
 ↑-^ : (w : Word (Gen n)) (k : ℕ) → (w ^ k) ↑ ≡ (w ↑) ^ k
