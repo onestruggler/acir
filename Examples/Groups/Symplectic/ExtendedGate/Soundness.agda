@@ -18,7 +18,6 @@ open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Data.Vec hiding ([_])
 open import Notations
 import Presentation.Base as PB
-open import Relation.Binary.PropositionalEquality using (_≡_ ; module ≡-Reasoning)
 import Relation.Binary.PropositionalEquality as Eq
 open import Word.Base hiding (wfoldl)
 
@@ -26,7 +25,6 @@ module Examples.Groups.Symplectic.ExtendedGate.Soundness (p-2 : ℕ) (p-prime : 
 
 open import Zp.ModularArithmetic
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Pauli.Semantics p-2 p-prime hiding (cong₃)
 open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.ZpCalculation p-2 p-prime
