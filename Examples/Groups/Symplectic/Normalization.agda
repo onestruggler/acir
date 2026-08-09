@@ -23,12 +23,10 @@ open import Data.Unit using (⊤ ; tt)
 open import Function using (_∘_)
 open import Level using (0ℓ)
 open import Relation.Binary using (Rel)
-open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.Morphism.Definitions using (Homomorphic₂)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]ₑ)
 import Relation.Binary.Reasoning.Setoid as SR
-open import Relation.Nullary.Decidable using (yes ; no)
 
 open import Word.Base
 open import Word.Properties
@@ -53,12 +51,7 @@ import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDSem
 import Examples.Groups.Symplectic.Normalization.SemInj p-2 p-prime as SemInj
 import Examples.Groups.Symplectic.Normalization.FaithfulFrom
   p-2 p-prime as FF
-import Examples.Groups.Symplectic.Normalization.Pushing.Push p-2 p-prime as Push
 import Examples.Groups.Symplectic.BR.Two.ML'-Top p-2 p-prime as ML'T
-import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime as DDCZ
-open import Examples.Groups.Symplectic.BR.Three.BB-CZ-n p-2 p-prime using (comm-↓ᵏ2-w↑↑)
-open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime using (dir-of-DS ; d-of-DS)
-open import Examples.Groups.Symplectic.Normalization.Pushing.DVecPush p-2 p-prime using (Hdir ; Hd')
 open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime using (aux-mc1ε)
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime using (lemma-order-Ex-n)
 open import Algebra.Properties.Ring (+-*-ring p-2) using (-0#≈0#)
