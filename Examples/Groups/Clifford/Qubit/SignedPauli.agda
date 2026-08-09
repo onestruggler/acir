@@ -33,7 +33,6 @@ open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Relation.Nullary.Decidable using (from-yes)
 
-open import Notations
 open import Zp.ModularArithmetic
 
 -- Qubit case: fix the prime to 2.
