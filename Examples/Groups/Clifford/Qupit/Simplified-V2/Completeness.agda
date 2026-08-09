@@ -11,9 +11,7 @@ open import Data.Fin hiding (_+_ ; _-_)
 open import Word.Base as WB hiding (wfoldl ; _^'_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open import Presentation.Construct.Base hiding (_*_)
 open import Presentation.GroupLike
-open import Presentation.Tactic.Rewriting
 import Data.Nat.Properties as NP
 open import Data.Nat.DivMod
 open import Data.Fin.Properties using (toℕ-fromℕ ; toℕ-fromℕ<)
