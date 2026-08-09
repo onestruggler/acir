@@ -22,7 +22,6 @@ open import Data.Vec using (Vec ; [] ; _∷_)
 open import Relation.Nullary.Decidable using (from-yes)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
-open import Notations
 open import Zp.ModularArithmetic
 
 p-2 : ℕ
@@ -32,7 +31,6 @@ p-prime : Prime 2
 p-prime = from-yes (prime? 2)
 
 open PrimeModulus p-2 p-prime
-open import Algebra.Properties.Ring (+-*-ring p-2) using (-‿+-comm)
 
 open import Examples.Groups.Pauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; _+ₚ_ ; _+₁_ ; pIₙ)
@@ -43,7 +41,6 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic
   using (Gen ; gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate ; _↥)
 
-open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
 
 open import Examples.Groups.Clifford.Qubit.SignedPauli
   using (Φ ; P4Carrier ; β ; γ ; ι ; ι-+ ; _·_ ; +-swap-middle)
