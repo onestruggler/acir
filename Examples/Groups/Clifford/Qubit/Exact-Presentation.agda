@@ -69,7 +69,7 @@ open import Data.Nat using (ℕ)
 open import Data.Sum using (_⊎_)
 
 open import Notations
-open import Word.Base using (Word ; WRel ; ε ; _^'_)
+open import Word.Base using (Word ; WRel ; ε ; _^_)
 
 open import Presentation.Construct.Properties.Extension
   using (extension-presentation)
@@ -78,12 +78,17 @@ open import Presentation.Definitions using (_IsPresentationOf_)
 -- The cyclic generator is the scalar, so it is imported under the name
 -- Figure 8 gives it.  (Figure8-Mod-Scalar, the other import, defines no
 -- ω of its own — modulo scalars there is nothing for it to name.)
+-- Re-exported: the scalar alphabet and its generator are part of this
+-- module's interface, since _Exact,_===_ is a relation over them.
 open import Examples.Groups.Cyclic.Syntactics
-  using (_Cn,_===_) renaming (X to ScalarGen ; T to ω)
+  using (_Cn,_===_) renaming (X to ScalarGen ; T to ω) public
 import Examples.Groups.Cyclic.Presentation as Cyc
 import Examples.Groups.Cyclic.Semantics as CycSem
 
-open import Examples.Groups.Clifford.Qubit.CliffordGroup using (p-2 ; p-prime)
+-- The qubit case, p = 2.  Taken from PrimitiveRoot rather than
+-- CliffordGroup: the two agree definitionally, and this one does not go
+-- through the P4-action layer.
+open import Examples.Groups.Clifford.Qubit.PrimitiveRoot using (p-2 ; p-prime)
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
@@ -110,8 +115,10 @@ Scalar-presentation : Scalar-relation IsPresentationOf CycSem.Cn-group 8
 Scalar-presentation = Cyc.presentation {7}
 
 -- ω⁻¹ = ω⁷, since ω has order 8 (Figure 8's C1, here S's `order`).
+-- Right-associated, matching Figure8.ω⁻¹, so that the translation of
+-- Qubit.Exact-Iso-CMS carries it across without re-bracketing.
 ω⁻¹ : Word ScalarGen
-ω⁻¹ = ω ^' 7
+ω⁻¹ = ω ^ 7
 
 ------------------------------------------------------------------------
 -- conj : the scalar is central
