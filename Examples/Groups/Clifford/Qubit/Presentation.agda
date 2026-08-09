@@ -169,9 +169,7 @@ _Clifford,_===_ n = extension-presentation (Γ-H ⊕^ n) (n QRel,_===_) conj cor
 
 
 open import Algebra.Bundles using (Group)
-open import Function.Definitions using (Surjective)
 open import Presentation.Definitions
-open import Normalization.StarPresentation
 
 
 ------------------------------------------------------------------------
