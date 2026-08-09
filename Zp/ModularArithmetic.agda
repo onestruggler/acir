@@ -18,14 +18,10 @@ open import Algebra.Structures
 
 open import Data.Product
 
-open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as ≡
 open import Relation.Binary.PropositionalEquality as Eq
-open import Data.Nat.Divisibility
 
-import Data.Fin as Fin
 open import Data.Fin hiding (_+_ ; _-_ )
-open import Data.Fin.Properties
 
 infixl 6 _+_ _＊_
 infixl 7 _*_
@@ -382,7 +378,6 @@ open import Data.Nat.Primality
 open import Data.Nat.Coprimality hiding (sym)
 open import Data.Nat.GCD
 open Bézout
-open import Data.Empty
 open import Algebra.Properties.Group
 
 module PrimeModulus (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
