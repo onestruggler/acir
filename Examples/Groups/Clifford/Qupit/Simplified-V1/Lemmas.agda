@@ -507,8 +507,11 @@ module Clifford-GroupLike where
       (CZ ^ p) ≈⟨ (axiom order-CZ) ⟩
       (ε) ∎
 
-  grouplike {₂₊ n} (g ↥) with grouplike g
+  -- Any shifted generator: invert underneath and shift the witness up.
+  -- The width is ₁₊ n rather than ₂₊ n because Gen 0 is inhabited now
+  -- that Circuit.Base has gate₀, so (g ↥) can appear on one wire too.
+  grouplike {₁₊ n} (g ↥) with grouplike g
   ... | ig , prf = (ig ↑) , lemma-cong↑ (ig • [ g ]ʷ) ε prf
     where
-    open PB ((₂₊ n) QRel,_===_)
-    open PP ((₂₊ n) QRel,_===_)
+    open PB ((₁₊ n) QRel,_===_)
+    open PP ((₁₊ n) QRel,_===_)
