@@ -68,7 +68,6 @@ module Examples.Groups.Clifford.Qubit.Exact-Presentation where
 open import Data.Nat using (ℕ)
 open import Data.Sum using (_⊎_)
 
-open import Notations
 open import Word.Base using (Word ; WRel ; ε ; _^_)
 
 open import Presentation.Construct.Properties.Extension
