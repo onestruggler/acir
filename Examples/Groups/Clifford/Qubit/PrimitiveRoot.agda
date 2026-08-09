@@ -24,7 +24,6 @@ open import Data.Product using (∃ ; _,_ ; proj₁)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Relation.Nullary.Decidable using (from-yes)
 
-open import Notations
 open import Zp.ModularArithmetic
 open import Zp.Fermats-little-theorem
 
