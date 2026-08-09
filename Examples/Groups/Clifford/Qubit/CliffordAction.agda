@@ -29,7 +29,6 @@ open import Data.Product using (_,_)
 open import Data.Vec using (_∷_)
 open import Relation.Nullary.Decidable using (from-yes)
 
-open import Notations
 open import Zp.ModularArithmetic
 open import Word.Base using (Word)
 open import Presentation.GroupLike using (word-act)
