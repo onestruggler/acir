@@ -87,7 +87,7 @@ data XZGate : ℕ → Set where
   Z-gate : XZGate 1
 
 private module SC = Circuit.Base XZGate
-open SC public using (Gen ; _↥ ; _↑ ; _↓)
+open SC public using (Gen ; gate₀ ; _↥ ; _↑ ; _↓)
 
 -- The old constructor names, as pattern synonyms, so that uses in both
 -- expression and pattern position go on working untouched.
@@ -298,7 +298,9 @@ module XZ-GroupLike where
       (Z ^ p) ≈⟨ (axiom order-Z) ⟩
       (ε) ∎
 
-  grouplike {₂₊ n} (g ↥) with grouplike g
+  -- Width ₁₊ n, not ₂₊ n: Circuit.Base's gate₀ makes Gen 0 inhabited,
+  -- so a shift can appear on one wire too.
+  grouplike {₁₊ n} (g ↥) with grouplike g
   ... | ig , prf = (ig ↑) , lemma-cong↑ (ig • [ g ]ʷ) ε prf
     where
     open PB ((₂₊ n) QRel,_===_)
@@ -330,6 +332,9 @@ module CommData where
   ord : Gen (₁₊ n) → ℕ
   ord {n}(X-gen) = 0
   ord {n} (Z-gen) = 1
+  -- Under a shift on one wire sits gate₀, which ord cannot be applied
+  -- to, so this case is constant rather than recursive.
+  ord {₀} (g ↥) = 2
   ord {₁₊ n} (g ↥) = 2 Nat.+ ord g
 
   -- Ordering of generators.
@@ -439,8 +444,10 @@ sound-ax {₁₊ n} order-X =
 sound-ax {₁₊ n} order-Z =
   Eq.trans (sem-Z^ p) (Eq.cong (λ z → (₀ , z) ∷ pIₙ) mult-p)
 sound-ax {₁₊ n} comm-Z-X          = +ₚ-comm pZ₀ pX₀
-sound-ax {₂₊ n} (comm₁ X-gate g)  = +ₚ-comm (pI ∷ ⟦ g ⟧₀) pX₀
-sound-ax {₂₊ n} (comm₁ Z-gate g)  = +ₚ-comm (pI ∷ ⟦ g ⟧₀) pZ₀
+-- Width ₁₊ n, not ₂₊ n: comm₁ h g is available from width one now that
+-- g can be a gate₀ generator on no wires.
+sound-ax {₁₊ n} (comm₁ X-gate g)  = +ₚ-comm (pI ∷ ⟦ g ⟧₀) pX₀
+sound-ax {₁₊ n} (comm₁ Z-gate g)  = +ₚ-comm (pI ∷ ⟦ g ⟧₀) pZ₀
 sound-ax {₁₊ n} (cong↑ {w = w} {v} ax) =
   Eq.trans (sem-↑ w) (Eq.trans (Eq.cong (pI ∷_) (sound-ax ax)) (Eq.sym (sem-↑ v)))
 
@@ -492,6 +499,15 @@ gen-comm {₁₊ n} X-gen  X-gen  = PB.refl
 gen-comm {₁₊ n} X-gen  Z-gen  = PB.sym (PB.axiom comm-Z-X)
 gen-comm {₁₊ n} Z-gen  X-gen  = PB.axiom comm-Z-X
 gen-comm {₁₊ n} Z-gen  Z-gen  = PB.refl
+-- comm-X and comm-Z are stated at width ₂₊ n, so the ₂₊ clauses below
+-- stay as they were.  What gate₀ adds is the possibility of a shift on
+-- one wire, and that is vacuous here: the only inhabitant of Gen 0
+-- would be gate₀ h, and XZGate 0 is empty.
+gen-comm {₁} X-gen      ((gate₀ ()) ↥)
+gen-comm {₁} ((gate₀ ()) ↥) X-gen
+gen-comm {₁} Z-gen      ((gate₀ ()) ↥)
+gen-comm {₁} ((gate₀ ()) ↥) Z-gen
+gen-comm {₁} ((gate₀ ()) ↥) (y ↥)
 gen-comm {₂₊ n} X-gen  (y ↥)  = PB.sym (PB.axiom comm-X)
 gen-comm {₂₊ n} (x ↥)  X-gen  = PB.axiom comm-X
 gen-comm {₂₊ n} Z-gen  (y ↥)  = PB.sym (PB.axiom comm-Z)
