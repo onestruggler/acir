@@ -29,7 +29,6 @@ module Examples.Groups.Clifford.Qubit.Selinger.Conjugation where
 open import Data.Nat using (ℕ ; zero)
 open import Data.Product using (_,_)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
-open import Data.Unit using (⊤ ; tt)
 open import Data.Vec using ([] ; _∷_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
