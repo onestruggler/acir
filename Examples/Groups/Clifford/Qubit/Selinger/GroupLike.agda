@@ -29,7 +29,6 @@ open import Data.Nat using (ℕ)
 open import Data.Product using (_,_ ; ∃ ; proj₁ ; proj₂)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 
-open import Notations
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ⁿ' ; _ʰ')
 
 import Presentation.Base as PB
