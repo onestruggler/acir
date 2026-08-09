@@ -96,6 +96,10 @@ module CommData-Sim where
   ord {n}(S-gen) = 0
   ord {n} (H-gen) = 1
   ord {₁₊ n} (CZ-gen) = 2
+  -- On one wire the only thing under a shift is gate₀, which ord cannot
+  -- be applied to (it wants a non-zero width), so this case is constant
+  -- rather than recursive.
+  ord {₀} (g ↥) = 3
   ord {₁₊ n} (g ↥) = 3 Nat.+ ord g
 
 

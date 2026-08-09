@@ -385,11 +385,14 @@ module Simplified-GroupLike-S where
       (CZ ^ p) ≈⟨ (axiom order-CZ) ⟩
       (ε) ∎
 
-  grouplike {₂₊ n} (g ↥) with grouplike g
+  -- Width ₁₊ n, not ₂₊ n: gate₀ makes Gen 0 inhabited, so a shift can
+  -- appear on one wire too.  The witness is width-generic — invert
+  -- underneath and shift it up — so the same construction carries over.
+  grouplike {₁₊ n} (g ↥) with grouplike g
   ... | ig , prf = (ig ↑) , lemma-cong↑ (ig • [ g ]ʷ) ε prf
     where
-    open PB ((₂₊ n) QRel,_===_)
-    open PP ((₂₊ n) QRel,_===_)
+    open PB ((₁₊ n) QRel,_===_)
+    open PP ((₁₊ n) QRel,_===_)
 
 
 
