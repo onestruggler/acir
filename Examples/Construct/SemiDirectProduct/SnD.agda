@@ -367,8 +367,9 @@ module Wreath (n m : ℕ) where
   -- presented group with wreath-group — whereas a normal form is
   -- syntactic, and it is what the amalgamation machinery consumes
   -- (Presentation.Construct.Properties.Amalgamation's AmalDataNF).
-  -- Without it this module could not stand in for the older
-  -- Presentation.Groups.SnD, which carries both.
+  -- Without it this module could not have replaced the hand-rolled
+  -- wreath product that Examples.Amalgamations.U33Di used to import,
+  -- which carried both.
 
   private
     module NFP₀  = SDP.NFP  (conj-hyph {n} {m}) (conj-hypn {n} {m})

@@ -52,11 +52,12 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 - **`Reidemeister-Schreier.agda`**: the injectivity/surjectivity engine. `Star-Injective-Simplified` proves `(f ʷ)` injective given a left inverse on generators; `Star-Injective-Full` (and its setoid variant) does coset enumeration and provides the Schreier section, right/left normal forms.
 - **`CosetNF.agda`**: coset normal forms via Reidemeister–Schreier: `lemma-ᵗ-act` (letters-to-words action law), `module SingleLevel` (one level; its `Transfer.Unique` derives `nf' ∘ gg ≡ id` for the transported NF from base exactness + coset exactness of the table on sections, via cancellation and R–S injectivity), `CosetTable` / `PackedCosetTable` (coset tables with a distinguished identity coset), `CosetTower` (iterate up an ℕ-indexed family).
 
-### Layer 4 — Specific groups (`Presentation/Groups/`)
-- **`Cyclic.agda`**: ℤ/nℤ presentation with `pres n`, `nfp n`, `nfp' n`.
-- **`Sn.agda`**: symmetric group Sₙ via inductive Reidemeister–Schreier; exports `pres n`, `rel n`, `nfp n`, `nfp' n`.
-- **`SnD.agda`**: the wreath product ℤ/4ℤ ≀ Sₙ as a semidirect product.
+### Layer 4 — Specific groups (`Examples/Groups/`)
+- **`Cyclic/`**: ℤ/nℤ. `Syntactics` (the relation `_Cn,_===_` over a one-element alphabet), `Presentation`, `Normalization`, `Theorems`.
 - **`Trivial.agda`**: the trivial group (two presentations, proved isomorphic).
+- **`Symmetric/`**, **`Symplectic/`**, **`Clifford/`**, **`ProjectiveClifford/`**, **`Pauli/`**, **`ProjectivePauli/`**: see Layer 5.
+
+There is no longer a `Presentation/Groups/`: it held a second Sₙ and a hand-rolled ℤ/4ℤ ≀ Sₙ, both over an inductive alphabet rather than circuit generators, and both are gone. The wreath product now comes from `Examples/Construct/SemiDirectProduct/SnD.agda`, which supplies `pres`, `nfp` and `nfp'` over the `Examples/Groups/Symmetric` alphabet.
 
 ### Layer 5 — Examples (`Examples/`)
 - **`Groups/Symmetric/`**: completeness of the circuit presentation of Sₙ. `Theorems.agda` collects the main results (unique normal form, soundness, completeness for the loose endofunction semantics and the tight permutation semantics, and `IsPresentationOf`). Support: `Syntactics`, `Cosets`, `Normalization`, `Loose/*`, `Tight/*`.

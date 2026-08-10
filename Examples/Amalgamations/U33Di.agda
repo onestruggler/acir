@@ -30,11 +30,12 @@ import Presentation.Base as PB
 import Presentation.Construct.Properties.DirectProduct as DP
 import Presentation.Construct.Properties.NDirectProduct as NDP
 
--- The wreath product ℤ/4ℤ ≀ Sₙ now comes from the semi-direct-product
--- CONSTRUCTION rather than from the hand-rolled Presentation.Groups.SnD.
--- The two present the same group, but over different alphabets: the old
--- acting factor was the inductive Sn.X, the new one is the symmetric
--- group's circuit generators.
+-- The wreath product ℤ/4ℤ ≀ Sₙ comes from the semi-direct-product
+-- CONSTRUCTION.  It used to come from a hand-rolled module of its own,
+-- which presented the same group over a different alphabet: the acting
+-- factor there was an inductive Sn.X, here it is the symmetric group's
+-- circuit generators.  The compatibility layer below is what absorbs
+-- that change of alphabet.
 import Examples.Construct.SemiDirectProduct.SnD as NSnD
 open import Notations
 
