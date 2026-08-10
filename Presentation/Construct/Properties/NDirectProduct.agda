@@ -27,7 +27,7 @@ open import Notations using (₁₊ ; ₂₊)
 open import Presentation.Construct.Base using (_⊕^_)
 open import Presentation.Definitions using (_IsPresentationOf_)
 import Presentation.Construct.Properties.DirectProduct as DP
-import Examples.Groups.Trivial as Trivial
+import Examples.Groups.Trivial.Presentation as Trivial
 
 ------------------------------------------------------------------------
 -- Normal forms for n-fold direct products
@@ -48,14 +48,14 @@ import Examples.Groups.Trivial as Trivial
 -- Γ ⊕^ n.
 nfp : (n : ℕ) {NF : Set} → NormalFormInjective Γ NF
     → NormalFormInjective (Γ ⊕^ n) (⊗-carrier n NF)
-nfp zero nfΓ = Trivial.Empty.nfp
+nfp zero nfΓ = Trivial.nfp
 nfp (₁₊ zero) nfΓ = nfΓ
 nfp (₂₊ n) nfΓ = DP.NFP.nfp Γ (Γ ⊕^ ₁₊ n) nfΓ (nfp (₁₊ n) nfΓ)
 
 -- Like nfp, but for witnesses that also carry a section inv-nf of
 -- the normal-form function; the section is lifted the same way.
 nfp' : (n : ℕ) {NF : Set} → NormalForm Γ NF → NormalForm (Γ ⊕^ n) (⊗-carrier n NF)
-nfp' zero nfΓ = Trivial.Empty.nfp'
+nfp' zero nfΓ = Trivial.nfp'
 nfp' (₁₊ zero) nfΓ = nfΓ
 nfp' (₂₊ n) nfΓ = DP.NFP'.nfp' Γ (Γ ⊕^ ₁₊ n) nfΓ (nfp' (₁₊ n) nfΓ)
 
@@ -75,13 +75,13 @@ module Presentation
   -- The n-fold direct product of G: the trivial group at n = 0, G at
   -- n = 1, and G × (previous power) beyond.
   ⊗-group : ℕ → Group 0ℓ 0ℓ
-  ⊗-group zero      = Trivial.Empty.Presentation.gp
+  ⊗-group zero      = Trivial.gp
   ⊗-group (₁₊ zero) = G
   ⊗-group (₂₊ n)    = ADP.group G (⊗-group (₁₊ n))
 
   -- Γ ⊕^ n presents the n-fold direct product ⊗-group n.
   presentation : (n : ℕ) → (Γ ⊕^ n) IsPresentationOf (⊗-group n)
-  presentation zero      = Trivial.Empty.Presentation.presentation
+  presentation zero      = Trivial.presentation
   presentation (₁₊ zero) = p
   presentation (₂₊ n)    =
     DP.Presentation.dpres Γ (Γ ⊕^ ₁₊ n) G (⊗-group (₁₊ n)) p (presentation (₁₊ n))

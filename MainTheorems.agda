@@ -52,7 +52,8 @@ import Presentation.Construct.Properties.SemiDirectProduct as SemiDirectProduct
 import Presentation.Construct.Properties.Amalgamation as Amalgamation
 import Presentation.Construct.Properties.Extension as Extension
 
-import Examples.Groups.Trivial as Trivial
+import Examples.Groups.Trivial.Presentation as Trivial
+import Examples.Groups.Trivial.Presentation-Alt as TrivialAlt
 open import Examples.Groups.Cyclic.Normalization using (_Cn,_===_)
 import Examples.Groups.Cyclic.Normalization as CycNF
 import Examples.Groups.Cyclic.Semantics as CycSem
@@ -167,17 +168,20 @@ module Group-Extension-Presentation = Extension.Presentation
 ------------------------------------------------------------------------
 -- Concrete presentations: the trivial group
 --
--- Home: Examples.Groups.Trivial (two presentations, one over the empty
--- alphabet with no axioms, one over any alphabet with the coarsest
--- relation).
+-- Home: Examples.Groups.Trivial.Presentation (over the empty alphabet,
+-- no axioms) and .Presentation-Alt (over any alphabet, the coarsest
+-- relation).  That the two present isomorphic monoids is
+-- .Presentation-Equivalence.
 
 trivial-presentation :
-  EmptyRel {⊥} IsPresentationOf Trivial.Empty.Presentation.gp
-trivial-presentation = Trivial.Empty.Presentation.presentation
+  EmptyRel {⊥} IsPresentationOf Trivial.gp
+trivial-presentation = Trivial.presentation
 
+-- gp is the same terminal group on both sides, and it does not depend
+-- on the alphabet, so unlike `presentation` it takes no argument here.
 trivial-presentation′ : (A : Set) →
-  TrivialRel {A} IsPresentationOf Trivial.Universal.Presentation.gp A
-trivial-presentation′ A = Trivial.Universal.Presentation.presentation A
+  TrivialRel {A} IsPresentationOf TrivialAlt.gp
+trivial-presentation′ A = TrivialAlt.presentation A
 
 ------------------------------------------------------------------------
 -- Concrete presentations: cyclic groups
