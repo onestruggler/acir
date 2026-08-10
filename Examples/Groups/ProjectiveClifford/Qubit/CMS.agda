@@ -242,65 +242,6 @@ Clifford-group n = Extension.total (Clifford-extension n)
 pauliIncl : (n : ℕ) → Pauli n → Group.Carrier (Clifford-group n)
 pauliIncl n = Extension.incl (CMS-extension n)
 
-------------------------------------------------------------------------
--- The scalar layer: 1 ─→ ⟨ω⟩ ─→ Exact n ─→ CMS n ─→ 1
---
--- Above CMS n sits the exact Clifford group, which still sees the global
--- scalar ω = e^{iπ/4}.  The scalars ⟨ω⟩ = { ωᵏ } are cyclic of order 8
--- (ω⁸ = ε, relation C1 of Figure 8) and are normal — they are the kernel
--- of the projection that forgets the scalar, so the layer is again an
--- extension, and again a non-split one.
---
--- Everything but three of Selinger's theorems is proved in
--- Qubit.ExactExtension: the total group is Clifford words modulo the
--- exact congruence — the group Figure 8 presents — the inclusion is
--- k ↦ ωᵏ and the projection is the identity on words.  The three
--- remaining inputs are packaged there as ExactData n (soundness of
--- Figure 8 for the P4-action, completeness on the scalars, and that ω has
--- order exactly 8); see that module for why the last cannot come from the
--- action.
---
--- As on the Pauli layer, the kernel is taken here in the shape a
--- presentation produces: Scalars = Cn-group 8, the group presented by the
--- cyclic relation 8 Cn,_===_ (T⁸ = ε), rather than the +-0-group 6 of
--- ExactExtension.  The two are the same ℤ/8 — same carrier, addition,
--- unit and negation — so nothing has to be transported.
---
--- ω lives on the first wire, so this layer needs ₁₊ n qubits.
---
--- What this sets up: Proposition 2.55 applied to
---
---     S    = 8 Cn,_===_             (the scalars, presented by Scalars)
---     R̄    = ₁₊ n Clifford,_===_    (the quotient CMS n)
---
--- with the trivial conjugation (ω is central) and the cocycle recording
--- which Clifford relators lift to Figure 8 only up to a power of ω.  The
--- resulting relation should then be shown equivalent to the rule set of
--- Qubit.Selinger.Figure8, exactly as Qubit.Selinger.Iso does one layer
--- down for _Clifford,_===_ against Figure8-Mod-Scalar.
-
-open import Examples.Groups.Cyclic.Semantics using (Cn-group)
-open import Examples.Groups.Cyclic.Normalization using (_Cn,_===_)
-import Examples.Groups.Cyclic.Presentation as CyP
-open import Presentation.Definitions using (_IsPresentationOf_)
-
-open import Examples.Groups.Clifford.Qubit.ExactExtension
-  using (ExactData ; Exact-group) renaming (Exact to Exact-of)
-
--- The scalars ⟨ω⟩ ≅ ℤ/8, written additively in the exponent of ω.
-Scalars : Group 0ℓ 0ℓ
-Scalars = Cn-group 8
-
--- The cyclic relation T⁸ = ε presents them.
-Scalars-presentation : (8 Cn,_===_) IsPresentationOf Scalars
-Scalars-presentation = CyP.presentation
-
--- 1 → ⟨ω⟩ → Exact n → CMS n → 1, with the scalars in the shape that
--- 8 Cn,_===_ presents and the quotient the group of the layer below.
-Exact-extension : {n : ℕ} → ExactData n →
-                  Extension Scalars (Clifford-group (₁₊ n))
-Exact-extension d = Exact-of d
-
--- The total group: Clifford words modulo the exact (Figure-8) congruence.
-Exact-total : {n : ℕ} → ExactData n → Group 0ℓ 0ℓ
-Exact-total {n} d = Extension.total (Exact-extension d)
+-- The scalar layer above this one, 1 → ⟨ω⟩ → Exact n → CMS n → 1, with
+-- Clifford-group n as its quotient, is outside the projective
+-- development: see Examples.Groups.Clifford.Qubit.Semantics.
