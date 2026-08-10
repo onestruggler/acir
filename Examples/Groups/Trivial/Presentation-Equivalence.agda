@@ -3,9 +3,9 @@
 --
 -- The two presentations are isomorphic.
 --
--- For any alphabet B, ⟨ ⊥ ∣ ⟩ (Syntactics) and ⟨ B ∣ w = ε ⟩
--- (Syntactics-Alt) present isomorphic monoids.  Both present the
--- trivial group -- Presentation and Presentation-Alt say so
+-- For any alphabet B, ⟨ ⊥ ∣ ⟩ (Presentation1) and ⟨ B ∣ w = ε ⟩
+-- (Presentation2) present isomorphic monoids.  Both present the
+-- trivial group -- the two Presentation modules say so
 -- separately -- but this is the syntactic statement, a monoid
 -- isomorphism between the two presented monoids, and it does not go
 -- through the semantics at all.
@@ -29,13 +29,9 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _ʷ)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 
-import Examples.Groups.Trivial.Normalization as Nrm
-import Examples.Groups.Trivial.Syntactics as Syn
-
-private
-  -- The empty side's collapse lemma, which is what makes (g ʷ)
-  -- well-defined below.
-  module N = Nrm Syn.pres Syn.gen≈ε
+-- The first presentation's collapse lemma, which is what makes (g ʷ)
+-- well-defined below.
+import Examples.Groups.Trivial.Presentation1.Normalization as N
 
 open PB (EmptyRel {⊥}) using ()
   renaming (_===_ to _===₁_ ; _≈_ to _≈₁_)

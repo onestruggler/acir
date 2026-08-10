@@ -3,15 +3,19 @@
 --
 -- ⟨ ⊥ ∣ ⟩ presents the trivial group.
 --
--- The shared machinery instantiated at the empty alphabet.  The
--- alternative presentation, over an arbitrary alphabet, is
--- Presentation-Alt; that the two present isomorphic monoids is
--- Presentation-Equivalence.
+-- The presentation theorem for the first presentation.  Everything it
+-- consumes was proved generically and instantiated by the sibling
+-- modules of this directory; what is added here is the assembly and the
+-- surjectivity of the interpretation.
+--
+-- The second presentation, over an arbitrary alphabet, is
+-- Presentation2.Presentation; that the two present isomorphic monoids
+-- is Examples.Groups.Trivial.Presentation-Equivalence.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.Trivial.Presentation where
+module Examples.Groups.Trivial.Presentation1.Presentation where
 
 open import Algebra.Bundles using (Group)
 open import Data.Product using (_,_)
@@ -24,21 +28,20 @@ open import Presentation.Definitions
 import Presentation.Base as PB
 
 open import Examples.Groups.Trivial.Semantics using (gp) public
-open import Examples.Groups.Trivial.Syntactics using (X ; pres ; gen≈ε) public
+open import Examples.Groups.Trivial.Presentation1.Syntactics
+  using (X ; pres ; gen≈ε) public
 
-import Examples.Groups.Trivial.Interpretation as Intp
-import Examples.Groups.Trivial.Normalization as Nrm
-import Examples.Groups.Trivial.UniqueNormalForm as UNF
-
-private
-  module I = Intp pres gen≈ε
+import Examples.Groups.Trivial.Presentation1.Interpretation as I
 
 -- The normal form is part of this module's interface: clients that need
 -- the trivial group as a base case take it from here
 -- (Presentation.Construct.Properties.NDirectProduct does, at width 0).
-open Nrm pres gen≈ε public using (w≈ε ; nf ; nfp ; nfp')
+open import Examples.Groups.Trivial.Presentation1.Normalization public
+  using (w≈ε ; nf ; nfp ; nfp')
+open import Examples.Groups.Trivial.Presentation1.UniqueNormalForm public
+  using (unfp)
+
 open I public using (⟦_⟧₀ ; grouplike)
-open UNF pres gen≈ε public using (unfp)
 
 open PB pres using (_≈_)
 

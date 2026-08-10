@@ -3,15 +3,18 @@
 --
 -- ⟨ A ∣ w = ε for every word w ⟩ presents the trivial group.
 --
--- The same shared machinery as Presentation, instantiated at an
--- arbitrary alphabet instead of the empty one.  Only the syntactic
--- input differs: there gen≈ε holds vacuously, here by an axiom.  That
--- the two present isomorphic monoids is Presentation-Equivalence.
+-- The presentation theorem for the second presentation.  It is the same
+-- assembly as Presentation1.Presentation, over an arbitrary alphabet
+-- instead of the empty one; only the syntactic input differs, gen≈ε
+-- holding there vacuously and here by an axiom.
+--
+-- That the two present isomorphic monoids is
+-- Examples.Groups.Trivial.Presentation-Equivalence.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.Trivial.Presentation-Alt (A : Set) where
+module Examples.Groups.Trivial.Presentation2.Presentation (A : Set) where
 
 open import Algebra.Bundles using (Group)
 open import Data.Product using (_,_)
@@ -23,20 +26,21 @@ open import Presentation.Definitions
 
 import Presentation.Base as PB
 
+-- gp is re-exported, not abstracted over A: the target group is the
+-- same terminal group whatever the alphabet, so this is `gp`, never
+-- `gp A`.  Contrast `presentation` below, which does take A.
 open import Examples.Groups.Trivial.Semantics using (gp) public
-open import Examples.Groups.Trivial.Syntactics-Alt A
+open import Examples.Groups.Trivial.Presentation2.Syntactics A
   using (X ; pres ; gen≈ε) public
 
-import Examples.Groups.Trivial.Interpretation as Intp
-import Examples.Groups.Trivial.Normalization as Nrm
-import Examples.Groups.Trivial.UniqueNormalForm as UNF
+import Examples.Groups.Trivial.Presentation2.Interpretation A as I
 
-private
-  module I = Intp pres gen≈ε
+open import Examples.Groups.Trivial.Presentation2.Normalization A public
+  using (w≈ε ; nf ; nfp ; nfp')
+open import Examples.Groups.Trivial.Presentation2.UniqueNormalForm A public
+  using (unfp)
 
-open Nrm pres gen≈ε public using (w≈ε ; nf ; nfp ; nfp')
 open I public using (⟦_⟧₀ ; grouplike)
-open UNF pres gen≈ε public using (unfp)
 
 open PB pres using (_≈_)
 
