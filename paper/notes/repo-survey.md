@@ -274,8 +274,8 @@ Circuit n = Word (Gen n)
 ### Concrete presentations (R IsPresentationOf G), all GREEN:
 | # | Relations R | Group G | File |
 |---|---|---|---|
-| 1 | EmptyRel over ⊥ | Terminal.group (trivial) | Examples/Groups/Trivial.agda P1.Presentation.presentation (125) |
-| 2 | TrivialRel over any A | Terminal.group | ibid. P2.Presentation.presentation (233) |
+| 1 | EmptyRel over ⊥ | Terminal.group (trivial) | Examples/Groups/Trivial.agda Empty.Presentation.presentation |
+| 2 | TrivialRel over any A | Terminal.group | ibid. Universal.Presentation.presentation |
 | 3 | (₁₊ n) Cn,_===_ (T^{n+1} = ε) | Cn-group (₁₊ n) (= ℤ/(n+1)ℤ on Fin) | Examples/Groups/Cyclic/Theorems.agda presentation (61) |
 | 4 | n VRel,_===_ (circuit Coxeter: order, yang-baxter + cong↑/comm₂) | Permutation′-group n (stdlib permutations of Fin n) | Examples/Groups/Symmetric/Theorems.agda Tight.presentation (74) |
 | 5 | Cₚ ⋄ Cₚ ⋄ CommRel | H-group = ℤ/p × ℤ/p | Examples/Groups/ProjectivePauli/Presentation.agda H-pres (58) |

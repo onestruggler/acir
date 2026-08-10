@@ -172,12 +172,12 @@ module Group-Extension-Presentation = Extension.Presentation
 -- relation).
 
 trivial-presentation :
-  EmptyRel {⊥} IsPresentationOf Trivial.P1.Presentation.gp
-trivial-presentation = Trivial.P1.Presentation.presentation
+  EmptyRel {⊥} IsPresentationOf Trivial.Empty.Presentation.gp
+trivial-presentation = Trivial.Empty.Presentation.presentation
 
-trivial-presentation′ :
-  (A : Set) → TrivialRel {A} IsPresentationOf Trivial.P2.Presentation.gp A
-trivial-presentation′ A = Trivial.P2.Presentation.presentation A
+trivial-presentation′ : (A : Set) →
+  TrivialRel {A} IsPresentationOf Trivial.Universal.Presentation.gp A
+trivial-presentation′ A = Trivial.Universal.Presentation.presentation A
 
 ------------------------------------------------------------------------
 -- Concrete presentations: cyclic groups
