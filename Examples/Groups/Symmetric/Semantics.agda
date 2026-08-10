@@ -3,13 +3,18 @@
 --
 -- Semantics of the symmetric group: bijections on Fin n via
 -- Data.Fin.Permutation.Permutation′.
+--
+-- The tight semantic domain, and the one the presentation theorem
+-- targets: unlike the endofunctions of SubPresentation.Semantics, every
+-- permutation is a denotation (Surjectivity), so the sub-presentation
+-- can be promoted to a presentation.
 -- Re-exports the group structure on Permutation′ n (whose generic
 -- definition lives in ForStdlib.Data.Fin.Permutation.Properties).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.Symmetric.Tight.Semantics where
+module Examples.Groups.Symmetric.Semantics where
 
 open import Algebra.Bundles using (Group)
 open import Data.Fin using (Fin ; zero)

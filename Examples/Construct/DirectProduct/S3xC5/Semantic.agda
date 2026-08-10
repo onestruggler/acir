@@ -17,7 +17,7 @@ open import Data.Fin using (Fin)
 open import Notations
 
 import Examples.Groups.Cyclic.Semantics as CS
-import Examples.Groups.Symmetric.Tight.Semantics as TS
+import Examples.Groups.Symmetric.Semantics as TS
 
 open import Examples.Construct.DirectProduct.S3xC5.Syntactics
 open import Algebra.Bundles using (Group)

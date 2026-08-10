@@ -41,8 +41,8 @@ import Presentation.Construct.Properties.SemiDirectProduct as SDP'
 open import Examples.Groups.Cyclic.Normalization as Cyc using (_Cn,_===_)
 open import Examples.Groups.Cyclic.Semantics using (Cn-group)
 import Examples.Groups.Cyclic.Presentation as CyP
-open import Examples.Groups.Symmetric.Tight.Semantics using (Permutation′-group)
-import Examples.Groups.Symmetric.Tight.Presentation as ST
+open import Examples.Groups.Symmetric.Semantics using (Permutation′-group)
+import Examples.Groups.Symmetric.Presentation as ST
 import Examples.Groups.Symmetric.Normalization as SN
 
 private

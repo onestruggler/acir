@@ -2,6 +2,18 @@
 -- Presentations of groups
 --
 -- This file collects main theorems for convenience.
+--
+-- The two submodules follow the two semantics, and so the two halves of
+-- the directory:
+--
+--   Tight   the permutation semantics -- Semantics, Interpretation,
+--           UniqueNormalForm, Surjectivity, Presentation, at the top
+--           level.  Reaches a full presentation.
+--   Loose   the endofunction semantics -- SubPresentation/.  Reaches a
+--           setoid embedding and stops, the semantics not being onto.
+--
+-- The submodule names are kept for the two semantics themselves; the
+-- directory names say what each chain gets you.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -27,10 +39,10 @@ open import Examples.Groups.Symmetric.Syntactics
 
 module Loose where
 
-  open import Examples.Groups.Symmetric.Loose.Semantics
-  import Examples.Groups.Symmetric.Loose.Soundness as LS
-  import Examples.Groups.Symmetric.Loose.Completeness as LC
-  import Examples.Groups.Symmetric.Loose.Uniqueness as LU
+  open import Examples.Groups.Symmetric.SubPresentation.Semantics
+  import Examples.Groups.Symmetric.SubPresentation.Interpretation as LS
+  import Examples.Groups.Symmetric.SubPresentation.SubPres as LC
+  import Examples.Groups.Symmetric.SubPresentation.UniqueNormalForm as LU
 
   unique-nf : ∀ n →
 
@@ -64,9 +76,9 @@ module Loose where
 
 module Tight where
 
-  open import Examples.Groups.Symmetric.Tight.Semantics
-  import Examples.Groups.Symmetric.Tight.Uniqueness as TU
-  import Examples.Groups.Symmetric.Tight.Presentation as TP
+  open import Examples.Groups.Symmetric.Semantics
+  import Examples.Groups.Symmetric.UniqueNormalForm as TU
+  import Examples.Groups.Symmetric.Presentation as TP
 
   unique-nf : ∀ n →
 

@@ -1,12 +1,15 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Unique normal form for the loose (endofunction) semantics of Sₙ.
+-- Unique normal form for the endofunction semantics of Sₙ.
+--
+-- This is the primitive one: the permutation uniqueness of
+-- Examples.Groups.Symmetric.UniqueNormalForm is derived from it.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.Symmetric.Loose.Uniqueness where
+module Examples.Groups.Symmetric.SubPresentation.UniqueNormalForm where
 
 open import Data.Fin using (Fin) renaming (zero to fzero ; suc to fsuc)
 open import Data.Nat using (ℕ)
@@ -21,7 +24,7 @@ import Data.Fin.Properties as FP
 import Normalization.NormalForm.Propositional as NFBase
 
 open import Examples.Groups.Symmetric.Cosets
-open import Examples.Groups.Symmetric.Loose.Semantics
+open import Examples.Groups.Symmetric.SubPresentation.Semantics
 open import Examples.Groups.Symmetric.Normalization
   using (nf-of ; NF ; inv-nf ; nf-cong ; inv-nf∘nf≈id ; nfp'-t)
 open import Examples.Groups.Symmetric.Syntactics

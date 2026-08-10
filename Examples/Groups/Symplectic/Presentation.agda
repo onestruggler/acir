@@ -5,7 +5,7 @@
 -- (Word (Gen n) / ≈) to the symplectic group Sp(2n, ℤ/pℤ), via the
 -- symplectic (Pauli-action) semantics.
 --
--- Adapted from Examples.Groups.Symmetric.Tight.Presentation.  The
+-- Adapted from Examples.Groups.Symmetric.Presentation.  The
 -- symmetric development threads the interpretation through the coset
 -- section explicitly; here the interpretation is the linear symplectic
 -- action ⟦_⟧ : Circuit n → Symplectic n, the normal form is the box

@@ -1,12 +1,19 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Semantics of the symmetric group: permutations of Fin n.
+-- Semantics of the symmetric group: ENDOFUNCTIONS on Fin n.
+--
+-- The loose semantic domain, and the reason this chain only reaches a
+-- sub-presentation: a circuit denotes an endofunction soundly and the
+-- normal form is still unique for it, so ⟦_⟧ is a setoid embedding --
+-- but not every endofunction is a denotation, so there is no
+-- surjectivity to promote it with.  The permutation semantics, which
+-- does get that far, is Examples.Groups.Symmetric.Semantics.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.Symmetric.Loose.Semantics where
+module Examples.Groups.Symmetric.SubPresentation.Semantics where
 
 open import Data.Fin using (Fin ; zero ; suc)
 open import Data.Nat using (ℕ)

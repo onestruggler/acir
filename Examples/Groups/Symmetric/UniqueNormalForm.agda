@@ -1,13 +1,14 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Unique normal form for the tight (Permutation′) semantics of Sₙ,
--- derived from the loose uniqueness via a pointwise agreement lemma.
+-- Unique normal form for the permutation (Permutation′) semantics of
+-- Sₙ, derived from the endofunction uniqueness of
+-- SubPresentation.UniqueNormalForm via a pointwise agreement lemma.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.Symmetric.Tight.Uniqueness where
+module Examples.Groups.Symmetric.UniqueNormalForm where
 
 open import Algebra.Bundles using (Group)
 open import Data.Fin using (Fin ; zero ; suc)
@@ -24,13 +25,13 @@ import Relation.Binary.PropositionalEquality as Eq
 
 open Eq using (_≡_ ; refl)
 
-open import Examples.Groups.Symmetric.Loose.Semantics
-open import Examples.Groups.Symmetric.Loose.Uniqueness using (unique-nf)
+open import Examples.Groups.Symmetric.SubPresentation.Semantics
+open import Examples.Groups.Symmetric.SubPresentation.UniqueNormalForm using (unique-nf)
 open import Examples.Groups.Symmetric.Normalization
   using (NF ; inv-nf ; nfp'-t)
 open import Examples.Groups.Symmetric.Syntactics
 
-import Examples.Groups.Symmetric.Tight.Semantics as TightSem
+import Examples.Groups.Symmetric.Semantics as TightSem
 
 open TightSem using (Permutation′-group)
 

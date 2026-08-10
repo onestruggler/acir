@@ -27,7 +27,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.Symmetric.Tight.IndexedAction where
+module Examples.Groups.Symmetric.IndexedAction where
 
 open import Algebra.Bundles using (Group ; Monoid)
 open import Algebra.Morphism.Structures using (module MonoidMorphisms)
@@ -63,9 +63,9 @@ import Presentation.Properties as PP
 open import Examples.Groups.Symmetric.Cosets
   using (C ; [_]ᶜ ; σ•_) renaming (ε to εᶜ)
 open import Examples.Groups.Symmetric.Syntactics
-open import Examples.Groups.Symmetric.Tight.Semantics
+open import Examples.Groups.Symmetric.Semantics
   using (Perm ; ⟦_⟧ ; ⟦↑⟧ ; Permutation′-group)
-open import Examples.Groups.Symmetric.Tight.Soundness using (sound)
+open import Examples.Groups.Symmetric.Interpretation using (sound)
 
 private
   variable
