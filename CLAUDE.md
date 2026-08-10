@@ -54,7 +54,7 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 
 ### Layer 4 — Specific groups (`Examples/Groups/`)
 - **`Cyclic/`**: ℤ/nℤ. `Syntactics` (the relation `_Cn,_===_` over a one-element alphabet), `Presentation`, `Normalization`, `Theorems`.
-- **`Trivial.agda`**: the trivial group (two presentations, proved isomorphic).
+- **`Trivial.agda`**: the trivial group, two presentations proved isomorphic. `Collapsed Γ gen≈ε` derives everything (`w≈ε`, `nf`/`nfp`/`nfp'`, and the sub-module `Presentation` targeting `Terminal.group`) from the single hypothesis that every generator is `≈ ε`; `Empty` (alphabet `⊥`, `EmptyRel`) and `Universal A` (any alphabet, `TrivialRel`) instantiate it, and `Empty≅Universal B` gives the monoid isomorphism between them.
 - **`Symmetric/`**, **`Symplectic/`**, **`Clifford/`**, **`ProjectiveClifford/`**, **`Pauli/`**, **`ProjectivePauli/`**: see Layer 5.
 
 There is no longer a `Presentation/Groups/`: it held a second Sₙ and a hand-rolled ℤ/4ℤ ≀ Sₙ, both over an inductive alphabet rather than circuit generators, and both are gone. The wreath product now comes from `Examples/Construct/SemiDirectProduct/SnD.agda`, which supplies `pres`, `nfp` and `nfp'` over the `Examples/Groups/Symmetric` alphabet.
