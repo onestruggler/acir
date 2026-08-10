@@ -44,7 +44,7 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 - **`Properties/Amalgamation.agda`**: amalgamated free product with coset normal form (`AmalDataNF`, `ANF`).
 
 ### Layer — Circuits (`Circuit/`)
-- **`Base.agda`**: parameterised by `Gate : ℕ → Set`. Wire-indexed generators `Gen`, `Circuit n = Word (Gen n)`, shifts `_↑`/`_↥ᵏ_`, and `Lift-Relation` extending any gate relation with the structural rules `cong↑`, `comm₁`, `comm₂`.
+- **`Base.agda`**: parameterised by `Gate : ℕ → Set`. Wire-indexed generators `Gen`, `Circuit n = Word (Gen n)`, shifts `_↑`/`_↥ᵏ_`, and `Lift-Relation` extending any gate relation with the structural rules `cong↑`, `comm₀`/`comm₁`/`comm₂` and `ω↑=ω`. `Lift-Relation` also supplies, once for every circuit presentation: `comm-gate₀-w`/`comm-gate₁-w↑`/`comm-gate₂-w↑↑` (the comm rules extended from a generator to a whole circuit), `lemma-cong↑`, `lemma-srel` (the group-specific congruence embeds in the full one), and **`Grouplike-Lift`**, which derives `Grouplike` for the whole relation from inverses for the **gates alone** — `_↥` is a relabelling, not a gate, so the shift tower is structural. Clients pass three arguments (arities 0/1/2), using `λ ()` where the arity is uninhabited; they must not re-prove the `_↥` case.
 
 ### Layer — Normalization (`Normalization/`)
 - **`NormalForm/Setoid.agda`**: setoid-valued normal-form witnesses on the stdlib `Function.Bundles` — `NormalFormInjective` = `Injection`, `BijectiveNormalForm` = `Bijection`, `NormalForm` = `RightInverse` (maps `word-setoid ⟶ₛ NF`) — plus `WeakNormalForm`, `UniqueNormalForm`, `by-normalization` (soundness + unique NF ⇒ completeness), and the converse `by-completeness` (completeness + exact section `nf ∘ inv-nf ≗ id` ⇒ unique NF).

@@ -44,7 +44,7 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Clifford.Qubit.Selinger.Figure8
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
-open import Data.Product using (_,_)
+open import Data.Product using (_,_ ; ∃)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Notations
@@ -224,12 +224,25 @@ _≈ᶠ_ {n} = PB._≈_ (n CRel,_===_)
 
 private module A (k : ℕ) = Assoc (k CRel,_===_)
 
-grouplike : Grouplike (n CRel,_===_)
-grouplike {n} (gate₀ ω-gate) =
-  ω ^ 7 , A.by-assoc-and n (PB.axiom (srel c1)) Eq.refl Eq.refl
-grouplike     (gate₁ H-gate)  = H  , PB.axiom (srel c2)
-grouplike     (gate₂ CZ-gate) = CZ , PB.axiom (srel c5)
-grouplike {n} (gate₁ S-gate)  =
-  S • S • S , A.by-assoc-and n (PB.axiom (srel c3)) Eq.refl Eq.refl
-grouplike (y ↥) with grouplike y
-... | inv , eq = inv ↑ , lemma-cong↑ (inv • [ y ]ʷ) ε eq
+-- Only the four gates need inverses; the shift tower is structural and
+-- is handled by Grouplike-Lift.  ω is the interesting case: being 0-ary
+-- it inhabits Gen n at every width, so its inverse is owed at every
+-- width too -- which is exactly the shape of the first argument.
+private
+
+  gl₀ : ∀ {n} h → ∃ λ (iw : Circuit n) →
+          PB._≈_ (n CRel,_===_) (iw • [ gate₀ h ]ʷ) ε
+  gl₀ {n} ω-gate =
+    ω ^ 7 , A.by-assoc-and n (PB.axiom (srel c1)) Eq.refl Eq.refl
+
+  gl₁ : ∀ {n} h → ∃ λ (iw : Circuit (₁₊ n)) →
+          PB._≈_ ((₁₊ n) CRel,_===_) (iw • [ gate₁ h ]ʷ) ε
+  gl₁     H-gate = H  , PB.axiom (srel c2)
+  gl₁ {n} S-gate =
+    S • S • S , A.by-assoc-and (₁₊ n) (PB.axiom (srel c3)) Eq.refl Eq.refl
+
+  gl₂ : ∀ {n} h → ∃ λ (iw : Circuit (₂₊ n)) →
+          PB._≈_ ((₂₊ n) CRel,_===_) (iw • [ gate₂ h ]ʷ) ε
+  gl₂ CZ-gate = CZ , PB.axiom (srel c5)
+
+open Grouplike-Lift gl₀ gl₁ gl₂ public using (grouplike)

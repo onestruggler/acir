@@ -243,8 +243,11 @@ module Symplectic where
   _QRel,_===_ : (n : ℕ) → WRel (Gen n)
   _QRel,_===_ = LR._VRel,_===_
 
-  -- Structural rules, exported directly.
-  open LR public using (srel ; cong↑ ; comm₁ ; comm₂ ; lemma-cong↑)
+  -- Structural rules, exported directly.  Grouplike-Lift is among them:
+  -- it derives Grouplike for the whole relation from inverses for the
+  -- gates alone, the shift tower being structural.
+  open LR public
+    using (srel ; cong↑ ; comm₁ ; comm₂ ; lemma-cong↑ ; module Grouplike-Lift)
 
   -- Group-specific axioms lifted to the full relation (preserves call-site names).
   order-S    : ∀ {n} → (₁₊ n) QRel, S ^ p === ε
@@ -655,44 +658,49 @@ module Symplectic-GroupLike where
   open Symplectic
   open Lemmas-Sym
 
-  grouplike : Grouplike (n QRel,_===_)
-  grouplike {n} (gate₁ H-gate) = H ^ 3 , claim
-    where
-    open PB (n QRel,_===_)
-    open PP (n QRel,_===_)
-    open SR word-setoid
-    claim : H ^ 3 • H ≈ ε
-    claim = begin
-      H ^ 3 • H ≈⟨ by-assoc auto ⟩
-      H ^ 4 ≈⟨ axiom order-H ⟩
-      ε ∎
-  grouplike {n} (gate₁ S-gate) = S ^ p-1 , claim
-    where
-    open PB (n QRel,_===_)
-    open PP (n QRel,_===_)
-    open SR word-setoid
-    claim : S ^ p-1 • S ≈ ε
-    claim = begin
-      S ^ p-1 • S ≈⟨ sym (^-+ S p-1 1) ⟩
-      S ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (S ^_) (NP.+-comm p-1 1) ⟩
-      S ^ p ≈⟨ axiom order-S ⟩
-      ε ∎
-  grouplike {n} (gate₂ CZ-gate) = CZ ^ p-1 , claim
-    where
-    open PB (n QRel,_===_)
-    open PP (n QRel,_===_)
-    open SR word-setoid
-    claim : CZ ^ p-1 • CZ ≈ ε
-    claim = begin
-      CZ ^ p-1 • CZ ≈⟨ sym (^-+ CZ p-1 1) ⟩
-      CZ ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (CZ ^_) (NP.+-comm p-1 1) ⟩
-      CZ ^ p ≈⟨ axiom order-CZ ⟩
-      ε ∎
-  grouplike {n} (g ↥) with grouplike g
-  ... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf
-    where
-    open PB (n QRel,_===_)
-    open PP (n QRel,_===_)
+  -- Inverses for the gates.  The shift case is gone: Grouplike-Lift
+  -- supplies it once, from lemma-cong↑, for every circuit presentation.
+  private
+
+    gl₁ : ∀ {n} (h : SympGate 1) → ∃ λ (ih : Circuit (₁₊ n)) →
+            PB._≈_ ((₁₊ n) QRel,_===_) (ih • [ gate₁ h ]ʷ) ε
+    gl₁ {n} H-gate = H ^ 3 , claim
+      where
+      open PB ((₁₊ n) QRel,_===_)
+      open PP ((₁₊ n) QRel,_===_)
+      open SR word-setoid
+      claim : H ^ 3 • H ≈ ε
+      claim = begin
+        H ^ 3 • H ≈⟨ by-assoc auto ⟩
+        H ^ 4 ≈⟨ axiom order-H ⟩
+        ε ∎
+    gl₁ {n} S-gate = S ^ p-1 , claim
+      where
+      open PB ((₁₊ n) QRel,_===_)
+      open PP ((₁₊ n) QRel,_===_)
+      open SR word-setoid
+      claim : S ^ p-1 • S ≈ ε
+      claim = begin
+        S ^ p-1 • S ≈⟨ sym (^-+ S p-1 1) ⟩
+        S ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (S ^_) (NP.+-comm p-1 1) ⟩
+        S ^ p ≈⟨ axiom order-S ⟩
+        ε ∎
+
+    gl₂ : ∀ {n} (h : SympGate 2) → ∃ λ (ih : Circuit (₂₊ n)) →
+            PB._≈_ ((₂₊ n) QRel,_===_) (ih • [ gate₂ h ]ʷ) ε
+    gl₂ {n} CZ-gate = CZ ^ p-1 , claim
+      where
+      open PB ((₂₊ n) QRel,_===_)
+      open PP ((₂₊ n) QRel,_===_)
+      open SR word-setoid
+      claim : CZ ^ p-1 • CZ ≈ ε
+      claim = begin
+        CZ ^ p-1 • CZ ≈⟨ sym (^-+ CZ p-1 1) ⟩
+        CZ ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (CZ ^_) (NP.+-comm p-1 1) ⟩
+        CZ ^ p ≈⟨ axiom order-CZ ⟩
+        ε ∎
+
+  open Grouplike-Lift (λ ()) gl₁ gl₂ public using (grouplike)
 
 
 {-

@@ -75,10 +75,14 @@ open LR public
 ------------------------------------------------------------------------
 -- Grouplike (each generator has a two-sided inverse)
 
-grouplike : Grouplike (_VRel,_===_ n)
-grouplike {₂₊ k} (gate₂ σ-gate) = σ , PB.axiom (srel order)
-grouplike {₁₊ n} (g ↥) with grouplike {n} g
-... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf
+-- Only the gate needs an inverse, and σ is its own: the shift tower is
+-- handled once and for all by Grouplike-Lift.  Gate 0 and Gate 1 are
+-- uninhabited here, so those two arguments are absurd.
+open LR.Grouplike-Lift
+  (λ ())
+  (λ ())
+  (λ { σ-gate → σ , PB.axiom (srel order) })
+  public using (grouplike)
 
 ------------------------------------------------------------------------
 -- Doubly-shifted circuits commute with σ
