@@ -16,6 +16,7 @@
 module Examples.Construct.SemiDirectProduct.SnD where
 
 open import Data.Nat using (ℕ ; zero ; suc)
+open import Data.Product using (_×_)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Unit using (⊤ ; tt)
 open import Function using (id ; _∘_)
@@ -31,6 +32,8 @@ open import Presentation.Construct.Base
   using (_⊎^_ ; _⊕^_ ; [_]ₗ ; [_]ᵣ ; _⋄_⋄_ ; left ; right ; mid ; CommRel ; comm
         ; ConjRelʷ ; module LeftRightCongruence)
 open import Presentation.Definitions using (_IsPresentationOf_)
+open import Normalization.NormalForm.Propositional
+  using (NormalFormInjective ; NormalForm)
 import Presentation.Base as PB
 import Presentation.Construct.Properties.NDirectProduct as NDP
 import Presentation.Construct.Properties.SemiDirectProduct2 as SDP2
@@ -39,6 +42,7 @@ open import Examples.Groups.Cyclic.Semantics using (Cn-group)
 import Examples.Groups.Cyclic.Presentation as CyP
 open import Examples.Groups.Symmetric.Tight.Semantics using (Permutation′-group)
 import Examples.Groups.Symmetric.Tight.Presentation as ST
+import Examples.Groups.Symmetric.Normalization as SN
 
 private
   -- The base factor: ℤ/(suc m)ℤ, a single generator of order suc m.
@@ -344,3 +348,38 @@ module Wreath (n m : ℕ) where
   presentation :
     ((Γ₀ m ⊕^ n) ⋄ (n VRel,_===_) ⋄ ConjRelʷ (conj {n})) IsPresentationOf wreath-group
   presentation = SDPP.dpres
+
+  ------------------------------------------------------------------
+  -- The normal form
+  --
+  -- Both factors have one — the n-fold product of ℤ/(suc m)ℤ from
+  -- NDirectProduct, and Sₙ's coset tower from Symmetric.Normalization —
+  -- and the semi-direct-product construction transfers them to the
+  -- wreath product, on exactly the two hypotheses the presentation
+  -- already needed.  So this costs no new proof obligation.
+  --
+  -- Why it is worth having alongside `presentation`: the two say
+  -- different things.  `presentation` is semantic — it identifies the
+  -- presented group with wreath-group — whereas a normal form is
+  -- syntactic, and it is what the amalgamation machinery consumes
+  -- (Presentation.Construct.Properties.Amalgamation's AmalDataNF).
+  -- Without it this module could not stand in for the older
+  -- Presentation.Groups.SnD, which carries both.
+
+  private
+    module NFP₀  = SDP.NFP  (conj-hyph {n} {m}) (conj-hypn {n} {m})
+    module NFP'₀ = SDP.NFP' (conj-hyph {n} {m}) (conj-hypn {n} {m})
+
+  -- Carrier: the n-fold product of ℤ/(suc m)ℤ normal forms, paired
+  -- with Sₙ's.
+  SnD-NF : Set
+  SnD-NF = NDP.⊗-carrier (Γ₀ m) n (Cyc.NF (suc m)) × SN.NF n
+
+  nfp : NormalFormInjective
+          ((Γ₀ m ⊕^ n) ⋄ (n VRel,_===_) ⋄ ConjRelʷ (conj {n})) SnD-NF
+  nfp = NFP₀.nfp (NDP.nfp (Γ₀ m) n (Cyc.nfp (suc m))) (SN.nfp n)
+
+  -- Like nfp, but also carrying the section.
+  nfp' : NormalForm
+           ((Γ₀ m ⊕^ n) ⋄ (n VRel,_===_) ⋄ ConjRelʷ (conj {n})) SnD-NF
+  nfp' = NFP'₀.nfp' (NDP.nfp' (Γ₀ m) n (Cyc.nfp' (suc m))) (SN.nfp'-t n)
