@@ -7,27 +7,27 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Fin using (Fin ; zero ; suc)
-open import Data.Nat using (ℕ ; zero ; suc)
-import Data.Integer as Int
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl)
-
-open import Notations using (₁₊ ; ₂₊)
-open import Word.Base using (Word ; ε)
+module Examples.Groups.Cyclic.Semantics where
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Definitions using (LeftInverse ; RightInverse)
 open import Algebra.Structures using (IsGroup)
-import Data.Integer.Properties as IntP
+open import Data.Fin using (zero)
+open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Product using (_,_)
 open import Level using (0ℓ)
+open import Relation.Binary.PropositionalEquality as Eq
+  using (_≡_ ; refl)
 
-
-module Examples.Groups.Cyclic.Semantics where
-
-open import Examples.Groups.Cyclic.Normalization
+import Data.Integer as Int
+import Data.Integer.Properties as IntP
 
 open import ForStdlib.Data.Fin.Mod
+open import Notations using (₁₊ ; ₂₊)
+open import Word.Base using (Word)
+
+open import Examples.Groups.Cyclic.Syntactics using (X ; _Cn,_===_)
+
 ------------------------------------------------------------------------
 -- The carrier
 
@@ -53,10 +53,10 @@ Cn0-group = record
   ; isGroup = Cn0-isGroup
   }
 
--- For N = suc n the carrier is ℤ/(suc n)ℤ.  ModularArithmetic supplies
--- the abelian-group structure for moduli ≥ 2; the inverse law for the
--- trivial modulus 1 (ℤ/1ℤ, a singleton) is added here so that the
--- structure is available for every suc n.
+-- For N = suc n the carrier is ℤ/(suc n)ℤ.  ForStdlib.Data.Fin.Mod
+-- supplies the abelian-group structure for moduli ≥ 2; the inverse law
+-- for the trivial modulus 1 (ℤ/1ℤ, a singleton) is added here so that
+-- the structure is available for every suc n.
 +-inverseˡ' : ∀ {n} → LeftInverse (_≡_ {A = ℤ (₁₊ n)}) ₀ (-_) _+_
 +-inverseˡ' {zero}  zero = refl
 +-inverseˡ' {suc m}      = +-inverseˡ {m}
@@ -96,29 +96,37 @@ Cn-group : ℕ → Group 0ℓ 0ℓ
 Cn-group zero    = Cn0-group
 Cn-group (suc n) = Cn-suc-group {n}
 
+------------------------------------------------------------------------
+-- The denotation
 
-
-gg : ∀ {n} -> X -> Cn n
-gg {₀} _ = Int.+ 1
-gg {₁} _ = ₀
+-- The generator denotes one step: +1 in ℤ, and ₁ in ℤ/Nℤ.  In the
+-- degenerate case ℤ/1ℤ the only element is ₀.
+gg : ∀ {n} → X → Cn n
+gg {₀}    _ = Int.+ 1
+gg {₁}    _ = ₀
 gg {₂₊ n} _ = ₁
 
+⟦_⟧₀ : ∀ {n} → X → Cn n
 ⟦_⟧₀ = gg
 
 -- The denotation is the monoid homomorphism out of the free monoid
--- sending the generator to gg.  Extend is lifted to these top-level
--- modules rather than kept in a where-block, so that ⟦_⟧ computes and
--- its homomorphism laws (homo, ε-homo) are in scope.  The n-split keeps
--- the codomain Cn n reducing (Cn-group 0 = ℤ, Cn-group (suc _) =
--- ℤ/(suc _)ℤ), so the monoid carrier matches Cn n on the nose.
-module Interp0 where
-  open import Normalization.StarInterp (0 Cn,_===_)
-  open Extend (Group.monoid (Cn-group 0)) (gg {0}) public
+-- sending the generator to gg.  Extend is applied in these top-level
+-- modules rather than in a where-block, so that ⟦_⟧ computes and its
+-- homomorphism laws are available.  The n-split keeps the codomain
+-- Cn n reducing (Cn-group 0 = ℤ, Cn-group (suc _) = ℤ/(suc _)ℤ), so
+-- the monoid carrier matches Cn n on the nose.
+private
 
-module Interpₛ (n' : ℕ) where
-  open import Normalization.StarInterp (suc n' Cn,_===_)
-  open Extend (Group.monoid (Cn-group (suc n'))) (gg {suc n'}) public
+  module Interp₀ where
+    open import Normalization.StarInterp (0 Cn,_===_)
+    open Extend (Group.monoid (Cn-group 0)) (gg {0}) public
+
+
+  module Interpₛ (n : ℕ) where
+    open import Normalization.StarInterp (suc n Cn,_===_)
+    open Extend (Group.monoid (Cn-group (suc n))) (gg {suc n}) public
+
 
 ⟦_⟧ : ∀ {n} → Word X → Cn n
-⟦_⟧ {0}      = Interp0.⟦_⟧
-⟦_⟧ {suc n'} = Interpₛ.⟦_⟧ n'
+⟦_⟧ {0}     = Interp₀.⟦_⟧
+⟦_⟧ {suc n} = Interpₛ.⟦_⟧ n

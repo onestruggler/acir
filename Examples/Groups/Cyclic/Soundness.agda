@@ -7,25 +7,26 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+module Examples.Groups.Cyclic.Soundness where
+
 open import Data.Nat using (ℕ ; zero ; suc)
 open import Relation.Binary.PropositionalEquality as Eq
   using (_≡_ ; refl ; sym ; trans ; cong ; cong₂)
 
-import Presentation.Base as PB
-open import Notations
-open import Word.Base using (Word ; _^'_ ; ε)
-
-module Examples.Groups.Cyclic.Soundness where
-
-open import Examples.Groups.Cyclic.Normalization
-open import Examples.Groups.Cyclic.Semantics
-open import Examples.Groups.Cyclic.Uniqueness using (sem-suc ; pow-id)
-
 import Data.Integer as Int
 import Data.Integer.Properties as IntP
+
 open import ForStdlib.Data.Fin.Mod
   using (_+_ ; ₋₁ ; ₊₁ ; +-assoc ; +-identityˡ ; +-identityʳ
         ; ₋₁+₊₁≡₀ ; lemma-toℕ₋₁)
+open import Notations
+import Presentation.Base as PB
+open import Word.Base using (Word ; _^'_ ; ε)
+
+open import Examples.Groups.Cyclic.Semantics using (⟦_⟧)
+open import Examples.Groups.Cyclic.Syntactics
+  using (X ; T ; pres ; order)
+open import Examples.Groups.Cyclic.Uniqueness using (sem-suc ; pow-id)
 
 ------------------------------------------------------------------------
 -- Soundness of the order axiom
@@ -40,7 +41,8 @@ order-sound (suc zero)    = refl
 order-sound (suc (suc N)) =
   trans (sem-suc {N} (₁₊ N))
   (trans (cong (_+ ₁)
-            (trans (cong (λ z → ⟦_⟧ {₂₊ N} (T ^' z)) (sym (lemma-toℕ₋₁ {₁₊ N})))
+            (trans (cong (λ z → ⟦_⟧ {₂₊ N} (T ^' z))
+                         (sym (lemma-toℕ₋₁ {₁₊ N})))
                    (pow-id {N} ₋₁)))
          ₋₁+₊₁≡₀)
 
@@ -51,30 +53,31 @@ order-sound (suc (suc N)) =
 -- the proof is split by whether that group is ℤ (n = 0) or ℤ/nℤ.
 
 -- Free monoid semantics (n = 0), valued in ℤ.
-go0 : ∀ {w v : Word X} → PB._≈_ (pres 0) w v → ⟦_⟧ {0} w ≡ ⟦_⟧ {0} v
-go0 PB.refl         = refl
-go0 (PB.sym p)      = sym (go0 p)
-go0 (PB.trans p q)  = trans (go0 p) (go0 q)
-go0 (PB.cong p q)   = cong₂ Int._+_ (go0 p) (go0 q)
-go0 (PB.assoc {w} {v} {u}) =
+sound₀ : ∀ {w v : Word X} → PB._≈_ (pres 0) w v → ⟦_⟧ {0} w ≡ ⟦_⟧ {0} v
+sound₀ PB.refl           = refl
+sound₀ (PB.sym p)        = sym (sound₀ p)
+sound₀ (PB.trans p q)    = trans (sound₀ p) (sound₀ q)
+sound₀ (PB.cong p q)     = cong₂ Int._+_ (sound₀ p) (sound₀ q)
+sound₀ (PB.assoc {w} {v} {u}) =
   IntP.+-assoc (⟦_⟧ {0} w) (⟦_⟧ {0} v) (⟦_⟧ {0} u)
-go0 PB.left-unit    = IntP.+-identityˡ _
-go0 PB.right-unit   = IntP.+-identityʳ _
-go0 (PB.axiom order) = refl
+sound₀ PB.left-unit      = IntP.+-identityˡ _
+sound₀ PB.right-unit     = IntP.+-identityʳ _
+sound₀ (PB.axiom order)  = refl
 
 -- Cyclic semantics (n = suc _), valued in ℤ/(suc _)ℤ.
-goₛ : ∀ {n} {w v : Word X} → PB._≈_ (pres (suc n)) w v
-    → ⟦_⟧ {suc n} w ≡ ⟦_⟧ {suc n} v
-goₛ PB.refl            = refl
-goₛ (PB.sym p)         = sym (goₛ p)
-goₛ (PB.trans p q)     = trans (goₛ p) (goₛ q)
-goₛ (PB.cong p q)      = cong₂ _+_ (goₛ p) (goₛ q)
-goₛ {n} (PB.assoc {w} {v} {u}) =
+soundₛ : ∀ {n} {w v : Word X} → PB._≈_ (pres (suc n)) w v →
+         ⟦_⟧ {suc n} w ≡ ⟦_⟧ {suc n} v
+soundₛ PB.refl              = refl
+soundₛ (PB.sym p)           = sym (soundₛ p)
+soundₛ (PB.trans p q)       = trans (soundₛ p) (soundₛ q)
+soundₛ (PB.cong p q)        = cong₂ _+_ (soundₛ p) (soundₛ q)
+soundₛ {n} (PB.assoc {w} {v} {u}) =
   +-assoc (⟦_⟧ {suc n} w) (⟦_⟧ {suc n} v) (⟦_⟧ {suc n} u)
-goₛ PB.left-unit       = +-identityˡ _
-goₛ PB.right-unit      = +-identityʳ _
-goₛ {n} (PB.axiom order) = order-sound (suc n)
+soundₛ PB.left-unit         = +-identityˡ _
+soundₛ PB.right-unit        = +-identityʳ _
+soundₛ {n} (PB.axiom order) = order-sound (suc n)
 
-sound : ∀ {n} {w v : Word X} → PB._≈_ (pres n) w v → ⟦_⟧ {n} w ≡ ⟦_⟧ {n} v
-sound {zero}  = go0
-sound {suc n} = goₛ
+sound : ∀ {n} {w v : Word X} →
+        PB._≈_ (pres n) w v → ⟦_⟧ {n} w ≡ ⟦_⟧ {n} v
+sound {zero}  = sound₀
+sound {suc n} = soundₛ

@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Cyclic groups Z/NZ and their normal form
+-- Syntactics of the cyclic groups ℤ/Nℤ: the single generator, the
+-- defining relation Tᴺ = ε, and grouplikeness at positive order.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -12,17 +13,15 @@ open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Product using (_,_)
 open import Data.Unit using (⊤ ; tt)
 
-
 import Presentation.Base as PB
 open import Presentation.GroupLike using (Grouplike)
-import Normalization.NormalForm.Propositional as NFBase
-open NFBase using (NormalFormInjective ; NormalForm)
-open import Word.Base hiding (wfoldl)
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _^'_)
 
 ------------------------------------------------------------------------
 -- Generators and relation
 
 -- The generating set is a singleton: the only generator is tt.
+X : Set
 X = ⊤
 
 -- The word consisting of the single generator.
@@ -30,13 +29,17 @@ T : Word X
 T = [ tt ]ʷ
 
 -- There is only one relation for a cyclic group: the generator has
--- order N. rel is indexed by the order of the cyclic group.
+-- order N.  The relation is indexed by that order.
 infix 4 _Cn,_===_
 data _Cn,_===_ (N : ℕ) : WRel X where
   order : N Cn, T ^' N === ε
 
+-- The presentation of the cyclic group of order N.
+pres : ℕ → WRel X
+pres = _Cn,_===_
+
 ------------------------------------------------------------------------
--- The presentation is group-like (for a nonzero order)
+-- The presentation is grouplike (for a nonzero order)
 
 -- Appending one more generator: Tᵏ • T ≈ Tᵏ⁺¹.  Holds for any relation,
 -- using only the left-unit law (k = 0) and the definition of _^'_.
@@ -50,4 +53,3 @@ pow-suc Γ (suc k) = PB.refl
 grouplike : ∀ N → Grouplike (suc N Cn,_===_)
 grouplike N tt =
   T ^' N , PB.trans (pow-suc (suc N Cn,_===_) N) (PB.axiom order)
-

@@ -6,35 +6,34 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+module Examples.Groups.Cyclic.Theorems where
 
-import Normalization.NormalForm.Propositional as NFBase
-import Presentation.Properties as PP
-open import Relation.Binary.PropositionalEquality as Eq
 open import Function.Definitions using (Congruent ; Injective)
 open import Relation.Binary.Bundles using (Setoid)
 
 import Data.Nat.Properties as NP
+import Normalization.NormalForm.Propositional as NFBase
+import Presentation.Properties as PP
+import Relation.Binary.PropositionalEquality as Eq
+
+open import Notations using (₁₊)
 open import Presentation.Definitions
   using (_IsPresentationOf_ ; _IsMonoidPresentationOf_)
 
-module Examples.Groups.Cyclic.Theorems where
-
 open import Examples.Groups.Cyclic.Normalization
-open import Examples.Groups.Cyclic.Semantics
-import Examples.Groups.Cyclic.Soundness as LS
-import Examples.Groups.Cyclic.Completeness as LC
-import Examples.Groups.Cyclic.Uniqueness as LU
-import Examples.Groups.Cyclic.Presentation as LP
+  using (NF ; nfp' ; _Cn,_===_)
+open import Examples.Groups.Cyclic.Semantics using (Cn ; Cn-group ; ⟦_⟧)
 
-open import Notations using (₁₊)
+import Examples.Groups.Cyclic.Completeness as LC
+import Examples.Groups.Cyclic.Presentation as LP
+import Examples.Groups.Cyclic.Soundness as LS
+import Examples.Groups.Cyclic.Uniqueness as LU
 
 ------------------------------------------------------------------------
 -- Unique normal form, soundness, completeness and presentation
 
-unique-nf : ∀ n →
-
-  NFBase.UniqueNormalForm (n Cn,_===_) (NF n) (Eq.setoid (Cn n)) (⟦_⟧ {n}) (nfp' n)
-
+unique-nf : ∀ n → NFBase.UniqueNormalForm
+  (n Cn,_===_) (NF n) (Eq.setoid (Cn n)) (⟦_⟧ {n}) (nfp' n)
 unique-nf = LU.unique-nf
 
 soundness : ∀ n →
@@ -43,9 +42,7 @@ soundness : ∀ n →
   Syn        = PPV.word-setoid
   Sem        = Eq.setoid (Cn n)
   in
-
   Congruent (Setoid._≈_ Syn) (Setoid._≈_ Sem) ⟦_⟧
-
 soundness n = LS.sound
 
 completeness : ∀ n →
@@ -54,12 +51,11 @@ completeness : ∀ n →
   Syn        = PPV.word-setoid
   Sem        = Eq.setoid (Cn n)
   in
-
   Injective (Setoid._≈_ Syn) (Setoid._≈_ Sem) ⟦_⟧
-
 completeness = LC.completeness
 
-presentation : ∀ {n} → (₁₊ n Cn,_===_) IsPresentationOf (Cn-group (₁₊ n))
+presentation : ∀ {n} →
+               (₁₊ n Cn,_===_) IsPresentationOf (Cn-group (₁₊ n))
 presentation = LP.presentation
 
 -- At order 0 the relation T ^' 0 = ε is trivial, so the presented

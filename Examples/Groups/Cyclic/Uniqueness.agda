@@ -11,25 +11,23 @@ module Examples.Groups.Cyclic.Uniqueness where
 
 open import Data.Fin using (Fin ; zero ; suc ; toℕ ; inject₁)
 open import Data.Fin.Induction using (<-weakInduction)
-import Data.Fin.Properties as FP
-open import Data.Nat using (ℕ ; zero ; suc ; _<_ ; s≤s) renaming (_+_ to _+ℕ_)
-import Data.Nat.Properties as NP
+open import Data.Nat using (ℕ ; zero ; suc ; _<_ ; s≤s)
+  renaming (_+_ to _+ℕ_)
 open import Data.Nat.DivMod using (_%_ ; m%n<n ; m<n⇒m%n≡m)
 open import Relation.Binary.PropositionalEquality as Eq
   using (_≡_ ; refl ; trans ; sym ; cong ; subst)
 
+import Data.Fin.Properties as FP
 import Data.Integer as Int
+import Data.Nat.Properties as NP
+
+open import ForStdlib.Data.Fin.Mod using (_+_ ; +-identityˡ)
+import Normalization.NormalForm.Propositional as NFBase
+open import Notations
+open import Word.Base using (_^'_)
 
 open import Examples.Groups.Cyclic.Normalization
 open import Examples.Groups.Cyclic.Semantics
-open import Notations
-import Normalization.NormalForm.Propositional as NFBase
-open import Word.Base using (_^'_)
-open import ForStdlib.Data.Fin.Mod using (ℤ ; _+_ ; +-identityˡ)
-
-
-private variable n : ℕ
-
 
 ------------------------------------------------------------------------
 -- Reading the denotation of a power back off as its exponent
@@ -70,7 +68,8 @@ pow-id {N} = <-weakInduction P refl step
   step i ih =
     trans (sem-suc (toℕ i))
     (trans (cong (_+ ₁)
-              (subst (λ z → ⟦_⟧ {₂₊ N} (T ^' z) ≡ inject₁ i) (FP.toℕ-inject₁ i) ih))
+              (subst (λ z → ⟦_⟧ {₂₊ N} (T ^' z) ≡ inject₁ i)
+                     (FP.toℕ-inject₁ i) ih))
            (inj+1 i))
 
 ------------------------------------------------------------------------
@@ -89,11 +88,11 @@ unique-lemma (suc (suc N)) {u} {v}       eq =
 ------------------------------------------------------------------------
 -- Unique normal form for the semantics
 
--- The normal form of Examples.Groups.Cyclic.Normalization is unique for the
--- ℤ/Nℤ semantics: the NormalForm witness is packaged together with
--- uniqueness, given by unique-lemma.
-unique-nf : ∀ n →
-  NFBase.UniqueNormalForm (pres n) (NF n) (Eq.setoid (Cn n)) (⟦_⟧ {n}) (nfp' n)
+-- The normal form of Examples.Groups.Cyclic.Normalization is unique
+-- for the ℤ/Nℤ semantics: the NormalForm witness is packaged together
+-- with uniqueness, given by unique-lemma.
+unique-nf : ∀ n → NFBase.UniqueNormalForm
+  (pres n) (NF n) (Eq.setoid (Cn n)) (⟦_⟧ {n}) (nfp' n)
 unique-nf n = record
   { unique = unique-lemma n
   }
