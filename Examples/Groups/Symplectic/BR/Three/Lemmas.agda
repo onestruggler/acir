@@ -44,7 +44,6 @@ open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
---open import Examples.Groups.Symplectic.Lemmas.Ex-Sym5 p-2 p-prime hiding (module L0)
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n p-2 p-prime
@@ -52,7 +51,6 @@ open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n p-2 p-prime
 open Lemmas0a1
 open Lemmas-Sym
 
---open import Examples.Groups.Symplectic.Lemmas.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to CP2) using ()
 
 
 open PB (3 QRel,_===_)

@@ -54,7 +54,6 @@ open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n p-2 p-prime 0
 open Lemmas0c
 open Lemmas-Sym
 
---open import Examples.Groups.Symplectic.Lemmas.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to CP2) using ()
 
 
 open PB ((₂₊ n) QRel,_===_)

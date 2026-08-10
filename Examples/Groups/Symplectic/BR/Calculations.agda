@@ -30,10 +30,8 @@ open import Algebra.Properties.Ring (+-*-ring p-2)
 
 --open Lemmas-2Q 2
 
---open import Examples.Groups.Symplectic.Lemmas.Ex-Sym5 p-2 p-prime hiding (module L0)
 
 
---open import Examples.Groups.Symplectic.Lemmas.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to CP2) using ()
 open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime
 

@@ -52,7 +52,6 @@ open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 
 open Lemmas0a1
 
---open import Examples.Groups.Symplectic.Lemmas.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to CP2) using ()
 open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-3Q p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime

@@ -55,7 +55,6 @@ open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
---open import Examples.Groups.Symplectic.Lemmas.Ex-Sym5 p-2 p-prime hiding (module L0)
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n p-2 p-prime
@@ -68,7 +67,6 @@ open Lemmas0c
 open Lemmas-Sym
 open Duality
 
---open import Examples.Groups.Symplectic.Lemmas.Coset2-Update-Sym p-2 p-prime renaming (module Completeness to CP2) using ()
 open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime as L4
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-3Q p-2 p-prime
 open import Examples.Groups.Symplectic.BR.Calculations p-2 p-prime
@@ -100,7 +98,6 @@ open Rewriting-EX 2
 open Homo 2 renaming (lemma-f* to lemma-f*-EX)
 open Commuting-Symplectic 1
 open import Examples.Groups.Symplectic.BR.Two.Lemmas p-2 p-prime hiding (sa)
---open import Examples.Groups.Symplectic.BR.TwoQupit p-2 p-prime
 
 
 

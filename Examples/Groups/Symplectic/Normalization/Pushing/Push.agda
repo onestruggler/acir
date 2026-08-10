@@ -27,7 +27,6 @@ import Normalization.NormalForm.Propositional as NFBase
 open NFBase using (NormalFormInjective ; NormalForm)
 
 
---open import Examples.Groups.Symplectic.NewCosets p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic hiding (M)
 
