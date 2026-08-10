@@ -344,51 +344,51 @@ module Symplectic-Sim-GroupLike where
   open Lemmas-Sim
 
 
-  -- Inverses for the gates only.  Both the shift case and its width-1
-  -- absurd companion (a shifted generator over Gen 0, where this gate
-  -- set has nothing) are supplied once by Grouplike-Lift.
-  private
+  grouplike : Grouplike (n QRel,_===_)
+  grouplike {₁₊ n} (H-gen) = (H ) ^ 3 , claim
+    where
+    open PB ((₁₊ n) QRel,_===_)
+    open PP ((₁₊ n) QRel,_===_)
+    open SR word-setoid
+    open Lemmas1 n
+    claim : (H ) ^ 3 • H ≈ ε
+    claim = begin
+      (H) ^ 3 • H ≈⟨ by-assoc auto ⟩
+      (H) ^ 4 ≈⟨ lemma-order-H ⟩
+      ε ∎
 
-    gl₁ : ∀ {n} h → ∃ λ (ih : Circuit (₁₊ n)) →
-            PB._≈_ ((₁₊ n) QRel,_===_) (ih • [ gate₁ h ]ʷ) ε
-    gl₁ {n} H-gate = (H ) ^ 3 , claim
-      where
-      open PB ((₁₊ n) QRel,_===_)
-      open PP ((₁₊ n) QRel,_===_)
-      open SR word-setoid
-      open Lemmas1 n
-      claim : (H ) ^ 3 • H ≈ ε
-      claim = begin
-        (H) ^ 3 • H ≈⟨ by-assoc auto ⟩
-        (H) ^ 4 ≈⟨ lemma-order-H ⟩
-        ε ∎
-    gl₁ {n} S-gate = (S) ^ p-1 ,  claim
-      where
-      open PB ((₁₊ n) QRel,_===_)
-      open PP ((₁₊ n) QRel,_===_)
-      open SR word-setoid
-      claim : (S) ^ p-1 • S ≈ ε
-      claim = begin
-        (S) ^ p-1 • S ≈⟨ sym (^-+ (S) p-1 1) ⟩
-        (S) ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (S ^_) ( NP.+-comm p-1 1) ⟩
-        (S ^ p) ≈⟨ (axiom (srel order-S)) ⟩
-        (ε) ∎
+  grouplike {₁₊ n} (S-gen) = (S) ^ p-1 ,  claim
+    where
+    open PB ((₁₊ n) QRel,_===_)
+    open PP ((₁₊ n) QRel,_===_)
+    open SR word-setoid
+    claim : (S) ^ p-1 • S ≈ ε
+    claim = begin
+      (S) ^ p-1 • S ≈⟨ sym (^-+ (S) p-1 1) ⟩
+      (S) ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (S ^_) ( NP.+-comm p-1 1) ⟩
+      (S ^ p) ≈⟨ (axiom (srel order-S)) ⟩
+      (ε) ∎
 
-    gl₂ : ∀ {n} h → ∃ λ (ih : Circuit (₂₊ n)) →
-            PB._≈_ ((₂₊ n) QRel,_===_) (ih • [ gate₂ h ]ʷ) ε
-    gl₂ {n} CZ-gate = (CZ) ^ p-1 ,  claim
-      where
-      open PB ((₂₊ n) QRel,_===_)
-      open PP ((₂₊ n) QRel,_===_)
-      open SR word-setoid
-      claim : (CZ) ^ p-1 • CZ ≈ ε
-      claim = begin
-        (CZ) ^ p-1 • CZ ≈⟨ sym (^-+ (CZ) p-1 1) ⟩
-        (CZ) ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (CZ ^_) ( NP.+-comm p-1 1) ⟩
-        (CZ ^ p) ≈⟨ (axiom (srel order-CZ)) ⟩
-        (ε) ∎
+  grouplike {₂₊ n} (CZ-gen) = (CZ) ^ p-1 ,  claim
+    where
+    open PB ((₂₊ n) QRel,_===_)
+    open PP ((₂₊ n) QRel,_===_)
+    open SR word-setoid
+    claim : (CZ) ^ p-1 • CZ ≈ ε
+    claim = begin
+      (CZ) ^ p-1 • CZ ≈⟨ sym (^-+ (CZ) p-1 1) ⟩
+      (CZ) ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (CZ ^_) ( NP.+-comm p-1 1) ⟩
+      (CZ ^ p) ≈⟨ (axiom (srel order-CZ)) ⟩
+      (ε) ∎
 
-  open LR.Grouplike-Lift (λ ()) gl₁ gl₂ public using (grouplike)
+  grouplike {₂₊ n} (g ↥) with grouplike g
+  ... | ig , prf = (ig ↑) , lemma-cong↑ (ig • [ g ]ʷ) ε prf
+    where
+    open PB ((₂₊ n) QRel,_===_)
+    open PP ((₂₊ n) QRel,_===_)
+  -- Width 1: the shifted generator would live in Gen 0, which holds only
+  -- gate₀, and this gate set has no 0-ary gate.
+  grouplike (gate₀ () ↥)
 
 module Lemmas1b (n : ℕ) where
 

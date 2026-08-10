@@ -10,12 +10,10 @@ open import Data.Nat using (ℕ ; zero ; suc ; _+_)
 
 module Circuit.Base (Gate : ℕ → Set) where
 
-open import Data.Product using (∃ ; _,_)
 open import Level using (0ℓ)
 open import Relation.Binary using (Rel)
 
 open import Notations
-open import Presentation.GroupLike using (Grouplike)
 open import Word.Base
 import Presentation.Base as PB
 
@@ -189,7 +187,6 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
   lemma-cong↑ w v PB.right-unit       = PB.right-unit
   lemma-cong↑ w v (PB.axiom x)        = PB.axiom (cong↑ x)
 
-
   ------------------------------------------------------------------------
   -- The comm rules, extended from generators to whole circuits
   --
@@ -240,60 +237,3 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
     (PB.trans (PB.sym PB.assoc)
     (PB.trans (PB.cong (comm-gate₂-w↑↑ g u) PB.refl)
               PB.assoc)))
-
-  ------------------------------------------------------------------------
-  -- The group-specific congruence sits inside the full one
-
-  -- srel embeds the raw axioms; this is the same embedding one level up,
-  -- on the congruences they generate.  Everything but the axiom case is
-  -- rebuilt verbatim.
-  lemma-srel : ∀ {n} {w v : Circuit n}
-    → PB._≈_ (n SRel,_===_) w v → PB._≈_ (n VRel,_===_) w v
-  lemma-srel PB.refl          = PB.refl
-  lemma-srel (PB.sym p)       = PB.sym (lemma-srel p)
-  lemma-srel (PB.trans p q)   = PB.trans (lemma-srel p) (lemma-srel q)
-  lemma-srel (PB.cong p q)    = PB.cong (lemma-srel p) (lemma-srel q)
-  lemma-srel PB.assoc         = PB.assoc
-  lemma-srel PB.left-unit     = PB.left-unit
-  lemma-srel PB.right-unit    = PB.right-unit
-  lemma-srel (PB.axiom x)     = PB.axiom (srel x)
-
-  ------------------------------------------------------------------------
-  -- Grouplike is structural in the shift
-  --
-  -- A presentation over Gen has four kinds of generator, but only three
-  -- of them carry information: _↥ is not a gate, it is a relabelling, and
-  -- an inverse for g relabels to an inverse for g ↥.  So a client owes
-  -- inverses for its GATES only, and the tower of shifts above them is
-  -- handled once, here.
-  --
-  --     ig • [ g ]ʷ ≈ ε      at width n
-  --   ⟹ (ig • [ g ]ʷ) ↑ ≈ ε ↑   by lemma-cong↑
-  --   ≡   ig ↑ • [ g ↥ ]ʷ ≈ ε    both sides by computation
-  --
-  -- The last line is why nothing has to be proved: _↑ is a wmap, so it
-  -- distributes over • and fixes ε definitionally, and [ g ]ʷ ↑ is
-  -- literally [ g ↥ ]ʷ.
-  --
-  -- The hypotheses are stated in the FULL congruence, which is the weaker
-  -- demand: a gate whose inverse needs a structural rule (a shift or a
-  -- comm) can still be discharged.  A client working purely in the
-  -- group-specific relation lifts its proofs with lemma-srel above.
-  --
-  -- Where a gate arity is uninhabited -- Gate 0 is empty for most
-  -- presentations -- the corresponding argument is the absurd `λ ()`.
-  module Grouplike-Lift
-    (gl₀ : ∀ {n} (h : Gate 0) → ∃ λ (ih : Circuit n) →
-             PB._≈_ (n VRel,_===_) (ih • [ gate₀ h ]ʷ) ε)
-    (gl₁ : ∀ {n} (h : Gate 1) → ∃ λ (ih : Circuit (₁₊ n)) →
-             PB._≈_ ((₁₊ n) VRel,_===_) (ih • [ gate₁ h ]ʷ) ε)
-    (gl₂ : ∀ {n} (h : Gate 2) → ∃ λ (ih : Circuit (₂₊ n)) →
-             PB._≈_ ((₂₊ n) VRel,_===_) (ih • [ gate₂ h ]ʷ) ε)
-    where
-
-    grouplike : ∀ {n} → Grouplike (n VRel,_===_)
-    grouplike (gate₀ h)     = gl₀ h
-    grouplike (gate₁ h)     = gl₁ h
-    grouplike (gate₂ h)     = gl₂ h
-    grouplike {₁₊ n} (g ↥) with grouplike {n} g
-    ... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf

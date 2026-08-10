@@ -69,47 +69,21 @@ private module LR = SC.Lift-Relation _SRel,_===_
 -- have to be re-exported, or a client cannot name them to discharge
 -- them when it cases on the relation.
 open LR public
-  using (srel ; cong↑ ; comm₀ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
-        ; _VRel,_===_)
+  using ( srel ; cong↑ ; comm₀ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
+        ; comm-gate₂-w↑↑ ; _VRel,_===_ )
 
 ------------------------------------------------------------------------
 -- Grouplike (each generator has a two-sided inverse)
 
--- Only the gate needs an inverse, and σ is its own: the shift tower is
--- handled once and for all by Grouplike-Lift.  Gate 0 and Gate 1 are
--- uninhabited here, so those two arguments are absurd.
-open LR.Grouplike-Lift
-  (λ ())
-  (λ ())
-  (λ { σ-gate → σ , PB.axiom (srel order) })
-  public using (grouplike)
+grouplike : Grouplike (_VRel,_===_ n)
+grouplike {₂₊ k} (gate₂ σ-gate) = σ , PB.axiom (srel order)
+grouplike {₁₊ n} (g ↥) with grouplike {n} g
+... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf
 
 ------------------------------------------------------------------------
 -- Doubly-shifted circuits commute with σ
-
--- lemma-comm : w ↑ ↑ • σ ≈ σ • w ↑ ↑   (at _VRel,_===_ (₂₊ n))
-lemma-comm : let open PB ( (₂₊ n) VRel,_===_ ) in
-
-  ∀ (w : Circuit n) → w ↑ ↑ • σ ≈ σ • w ↑ ↑
-
-lemma-comm {n} ε = _≈_.trans _≈_.left-unit (_≈_.sym _≈_.right-unit)
-  where
-  P = _VRel,_===_ (₂₊ n)
-  open PB P
-lemma-comm {n} [ g ]ʷ = _≈_.axiom (comm₂ σ-gate g)
-  where
-  P = _VRel,_===_ (₂₊ n)
-  open PB P
-lemma-comm {n} (w • v) = begin
-  (w • v) ↑ ↑ • σ ≡⟨ auto ⟩
-  (w ↑ ↑ • v ↑ ↑) • σ ≈⟨ _≈_.assoc ⟩
-  w ↑ ↑ • v ↑ ↑ • σ ≈⟨ cong refl (lemma-comm v) ⟩
-  w ↑ ↑ • σ • v ↑ ↑ ≈⟨ _≈_.sym _≈_.assoc ⟩
-  (w ↑ ↑ • σ) • v ↑ ↑ ≈⟨ cong (lemma-comm w) refl ⟩
-  (σ • w ↑ ↑) • v ↑ ↑ ≈⟨ _≈_.assoc ⟩
-  σ • (w • v) ↑ ↑ ∎
-  where
-  P = _VRel,_===_ (₂₊ n)
-  open PB P
-  open PP P
-  open SR word-setoid
+--
+-- comm-gate₂-w↑↑ σ-gate is exactly that: since σ is [ gate₂ σ-gate ]ʷ,
+-- the framework's lemma above already states w ↑ ↑ • σ ≈ σ • w ↑ ↑.
+-- The hand-rolled induction that used to stand here was the same proof
+-- and has been dropped.
