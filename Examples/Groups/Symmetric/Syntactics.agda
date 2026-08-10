@@ -8,22 +8,23 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+module Examples.Groups.Symmetric.Syntactics where
+
 open import Data.Nat using (ℕ)
 open import Data.Product using (_,_)
-import Relation.Binary.Reasoning.Setoid as SR
+open import Notations using (auto ; ₂₊ ; ₃₊ ; ₁₊)
+open import Presentation.GroupLike using (Grouplike)
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_)
 
-open import Notations
-open import Word.Base
-
-open import Presentation.GroupLike
 import Circuit.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
+import Relation.Binary.Reasoning.Setoid as SR
 
-module Examples.Groups.Symmetric.Syntactics where
+private
+  variable
+    n : ℕ
 
-private variable
-  n : ℕ
 
 ------------------------------------------------------------------------
 -- Gate type
@@ -37,9 +38,12 @@ data Gate : ℕ → Set where
 -- Syntactic framework
 
 private module SC = Circuit.Base Gate
+
 -- gate₀ is exported so clients can discharge it: this gate set has no
 -- 0-ary gate, so every gate₀ case is the absurd `gate₀ ()`.
-open SC using (Gen ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_; Circuit) public
+open SC public
+  using ( Gen ; gate₀ ; gate₁ ; gate₂ ; Circuit
+        ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_ )
 
 pattern σ-gen = gate₂ σ-gate
 
@@ -84,10 +88,14 @@ lemma-comm : let open PB ( (₂₊ n) VRel,_===_ ) in
 
   ∀ (w : Circuit n) → w ↑ ↑ • σ ≈ σ • w ↑ ↑
 
-lemma-comm {n} ε = PB._≈_.trans PB._≈_.left-unit (PB._≈_.sym PB._≈_.right-unit)
-  where P = _VRel,_===_ (₂₊ n) ; open PB P
-lemma-comm {n} [ g ]ʷ = PB._≈_.axiom (comm₂ σ-gate g)
-  where P = _VRel,_===_ (₂₊ n) ; open PB P
+lemma-comm {n} ε = _≈_.trans _≈_.left-unit (_≈_.sym _≈_.right-unit)
+  where
+  P = _VRel,_===_ (₂₊ n)
+  open PB P
+lemma-comm {n} [ g ]ʷ = _≈_.axiom (comm₂ σ-gate g)
+  where
+  P = _VRel,_===_ (₂₊ n)
+  open PB P
 lemma-comm {n} (w • v) = begin
   (w • v) ↑ ↑ • σ ≡⟨ auto ⟩
   (w ↑ ↑ • v ↑ ↑) • σ ≈⟨ _≈_.assoc ⟩

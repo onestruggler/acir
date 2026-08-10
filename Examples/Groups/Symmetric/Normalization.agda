@@ -16,30 +16,32 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Data.Unit using (⊤ ; tt)
 open import Function using (_∘_)
 open import Level using (0ℓ)
+open import Notations
 open import Relation.Binary using (Rel)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.Morphism.Definitions using (Homomorphic₂)
-import Relation.Binary.PropositionalEquality as Eq
-open Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]ₑ)
-import Relation.Binary.Reasoning.Setoid as SR
 open import Relation.Nullary.Decidable using (yes ; no)
-
 open import Word.Base
 open import Word.Properties
-import Presentation.Base as PB
-import Presentation.Properties as PP
+
+import Normalization.CosetNF as CosetNF
 import Normalization.NormalForm.Propositional as NFBase
 import Normalization.NormalForm.Setoid as SNF
+import Presentation.Base as PB
+import Presentation.Properties as PP
+import Relation.Binary.PropositionalEquality as Eq
+import Relation.Binary.Reasoning.Setoid as SR
+
+open Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]ₑ)
 open NFBase using (NormalFormInjective ; NormalForm)
-import Normalization.CosetNF as CosetNF
 
-open import Notations
-
-open import Examples.Groups.Symmetric.Syntactics
 open import Examples.Groups.Symmetric.Cosets
+open import Examples.Groups.Symmetric.Syntactics
 
-private variable
-  n : ℕ
+private
+  variable
+    n : ℕ
+
 
 ------------------------------------------------------------------------
 -- Right coset action
@@ -48,13 +50,14 @@ private variable
 -- residual circuit b' and the coset c' reached from c by b, so that
 -- [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ (see ract-sound below).
 ract : C (₁₊ n) → Gen (₂₊ n) → Circuit (₁₊ n) × C (₁₊ n)
-ract {n}     ε         σ-gen       = ε , σ• ε
-ract {n}     (σ• ε)    σ-gen       = ε , ε
-ract {₁₊ n}  (σ• σ• c) σ-gen       = (σ {n = n}) , σ• σ• c
-ract {n}     ε         (g ↥)       = [ g ]ʷ , ε
-ract {0}     (σ• ε)    (gate₁ () ↥)
-ract {0}     (σ• ε)    (gate₀ () ↥ ↥)
-ract {₁₊ n}  (σ• c)    (g ↥)   = proj₁ (ract {n} c g) ↑ , σ• (proj₂ (ract {n} c g))
+ract {n}    ε         σ-gen = ε , σ• ε
+ract {n}    (σ• ε)    σ-gen = ε , ε
+ract {₁₊ n} (σ• σ• c) σ-gen = (σ {n = n}) , σ• σ• c
+ract {n}    ε         (g ↥) = [ g ]ʷ , ε
+ract {0}    (σ• ε)    (gate₁ () ↥)
+ract {0}    (σ• ε)    (gate₀ () ↥ ↥)
+ract {₁₊ n} (σ• c)    (g ↥) =
+  proj₁ (ract {n} c g) ↑ , σ• (proj₂ (ract {n} c g))
 
 -- Extension of ract to whole circuits: the stateful fold _ᵗ threads
 -- the coset through the word.
@@ -126,7 +129,8 @@ ract-sound {₁₊ n} (σ• ε) (b@σ-gen ↥) = begin
   ih = ract-sound {n} ε b
 ract-sound {₁₊ n} (σ• ε) (b@(b' ↥) ↥) = begin
   [ σ• ε ]ᶜ • [ b ↥ ]ʷ ≈⟨ assoc ⟩
-  σ • (ε • [ b ]ʷ) ↑ ≈⟨ cong refl (lemma-cong↑ (ε • [ b ]ʷ) (b0 ↑ • [ c0 ]ᶜ) ih) ⟩
+  σ • (ε • [ b ]ʷ) ↑
+    ≈⟨ cong refl (lemma-cong↑ (ε • [ b ]ʷ) (b0 ↑ • [ c0 ]ᶜ) ih) ⟩
   σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
   σ • (b0 ↑ ↑ • [ c0 ]ᶜ ↑) ≈⟨ sym assoc ⟩
   (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (lemma-comm b0)) refl ⟩
@@ -290,7 +294,8 @@ ract-σ•1s {n} c (w • v)
   with ract-σ•1s c w | (ract ᵗ) c w | inspect ((ract ᵗ) c) w
 ... | ih1 | w' , c0 | [ eq1 ]ₑ rewrite ih1 | eq1
   with ract-σ•1s c0 v | (ract ᵗ) c0 v | inspect ((ract ᵗ) c0) v
-... | ih2 | v' , c1 | [ eq2 ]ₑ rewrite eq2 | Eq.cong proj₁ ih2 | Eq.cong proj₂ ih2 = Eq.refl
+... | ih2 | v' , c1 | [ eq2 ]ₑ
+  rewrite eq2 | Eq.cong proj₁ ih2 | Eq.cong proj₂ ih2 = Eq.refl
 
 -- A doubly lifted generator passes through the coset σ• ε unchanged.
 -- The n = 0 case is vacuous: Gen 0 holds only gate₀, and this gate set
@@ -400,8 +405,9 @@ ext k = record
   ; [_]       = [_]ᶜ
   ; h=⁻¹f-gen = ⁻¹[⇑]-gen'
   ; h-wd-ax   = ⁻¹[⇑]-wd''
-  ; f-wd-ax   = λ x → Eq.subst₂ _≈_ (Eq.sym (wconcatmap-[f]ʷ _)) (Eq.sym (wconcatmap-[f]ʷ _))
-                                (PB.axiom (cong↑ x))
+  ; f-wd-ax   = λ x → Eq.subst₂ _≈_ (Eq.sym (wconcatmap-[f]ʷ _))
+                                    (Eq.sym (wconcatmap-[f]ʷ _))
+                                    (PB.axiom (cong↑ x))
   ; [I]≈ε     = _≈_.refl
   ; h=ract    = λ c b →
       Eq.subst (λ x → _≈_ ([ c ]ᶜ • [ b ]ʷ) (x • [ ract c b .proj₂ ]ᶜ))
@@ -484,17 +490,17 @@ nf-cong : ∀ {n} → let _≈_ = PB._≈_ (_VRel,_===_ n) in
   Homomorphic₂ _≈_ _≡_ (nf-of {n})
 nf-cong {n} = SNF.NormalForm.nf-cong (nfp'-t n)
 
-inv-nf∘nf≈id : (n : ℕ) → let _≈_ = PB._≈_ (_VRel,_===_ n) in {w : Circuit n} →
-  inv-nf {n} (nf-of w) ≈ w
+inv-nf∘nf≈id : (n : ℕ) → let _≈_ = PB._≈_ (_VRel,_===_ n) in
+  {w : Circuit n} → inv-nf {n} (nf-of w) ≈ w
 inv-nf∘nf≈id n = SNF.NormalForm.inv-nf∘nf=id (nfp'-t n)
 
 ------------------------------------------------------------------------
 -- Decidable equality on normal forms
 
 deceq : DecidableEquality (NF n)
-deceq {zero}    tt      tt       = yes Eq.refl
-deceq {₁₊ zero} tt      tt       = yes Eq.refl
-deceq {₂₊ n}   (a , b) (a' , b') with deceq {₁₊ n} a a' | deceqC b b'
+deceq {₀}     tt      tt      = yes Eq.refl
+deceq {₁₊ ₀}  tt      tt      = yes Eq.refl
+deceq {₂₊ n} (a , b) (a' , b') with deceq {₁₊ n} a a' | deceqC b b'
 ... | yes p1 | yes p2 = yes (≡×≡⇒≡ (p1 , p2))
 ... | yes p1 | no  p2 = no (λ { x → p2 (proj₂ (≡⇒≡×≡ x)) })
 ... | no  p1 | yes p2 = no (λ { x → p1 (proj₁ (≡⇒≡×≡ x)) })

@@ -9,42 +9,38 @@
 
 module Examples.Groups.Symmetric.Tight.Presentation where
 
-import Relation.Binary.PropositionalEquality as Eq
-open Eq using (sym ; trans ; cong)
-
 open import Algebra.Bundles using (Group)
-
-
-open import Examples.Groups.Symmetric.Syntactics
-import Examples.Groups.Symmetric.Tight.Semantics as ST
-open ST using (Permutation′-group)
-open import Notations
-open import Word.Base
-
-
-import Presentation.Base as PB
-import Presentation.Properties as PP
-open import Presentation.Definitions
-
-open import Examples.Groups.Symmetric.Tight.Semantics
-open import Examples.Groups.Symmetric.Tight.Soundness
+open import Data.Fin using (Fin ; zero ; suc)
 open import Data.Fin.Permutation
   using ( Permutation′ ; _⟨$⟩ʳ_ ; _⟨$⟩ˡ_ ; _∘ₚ_ ; flip
-        ; inverseˡ ; inverseʳ ; lift₀ ; lift₀-cong ; remove ; lift₀-remove)
-open import Data.Product using (∃ ; _,_ ; proj₁ ; proj₂)
-import Data.Fin as F
-
+        ; inverseˡ ; inverseʳ ; lift₀ ; lift₀-cong ; remove ; lift₀-remove )
 open import Data.Nat using (zero ; suc)
-open import Data.Fin using (Fin ; zero ; suc)
-open import Examples.Groups.Symmetric.Cosets
-import Examples.Groups.Symmetric.Tight.Uniqueness as TU
-import Examples.Groups.Symmetric.Normalization as SN
-
-open Eq using (_≡_ ; refl)
-
+open import Data.Product using (∃ ; _,_ ; proj₁ ; proj₂)
 open import Normalization.StarPresentation
+open import Notations
+open import Presentation.Definitions
+open import Word.Base
 
-subpresentation : ∀ {n} -> let open PP (n VRel,_===_) in
+import Data.Fin as F
+import Presentation.Base as PB
+import Presentation.Properties as PP
+import Relation.Binary.PropositionalEquality as Eq
+
+open Eq using (_≡_ ; refl ; sym ; trans ; cong)
+
+open import Examples.Groups.Symmetric.Cosets
+open import Examples.Groups.Symmetric.Syntactics
+open import Examples.Groups.Symmetric.Tight.Semantics
+open import Examples.Groups.Symmetric.Tight.Soundness
+
+import Examples.Groups.Symmetric.Normalization as SN
+import Examples.Groups.Symmetric.Tight.Uniqueness as TU
+
+
+------------------------------------------------------------------------
+-- The presentation, as a sub-presentation refined by surjectivity
+
+subpresentation : ∀ {n} → let open PP (n VRel,_===_) in
   (n VRel,_===_) IsSubPresentationOf (Permutation′-group n)
 subpresentation {n} =
   GS.GetSubPresentation.groupSubPres sound-ax grouplike (SN.nfp'-t n)
@@ -54,16 +50,15 @@ subpresentation {n} =
                        (Permutation′-group n) (⟦_⟧ᵍ {n})
 
 
-
-presentation : ∀ {n} -> let open PP (n VRel,_===_) in
+presentation : ∀ {n} → let open PP (n VRel,_===_) in
   (n VRel,_===_) IsPresentationOf (Permutation′-group n)
-presentation {n} = isPresentationOf subpresentation  claim
+presentation {n} = isPresentationOf subpresentation claim
   where
   open PB (n VRel,_===_)
   open import Function.Definitions using (Surjective)
 
   fin-to-C : ∀ {m} → Fin (₁₊ m) → C m
-  fin-to-C           F.zero    = ε
+  fin-to-C        F.zero    = ε
   fin-to-C {₁₊ m} (F.suc j) = σ• (fin-to-C j)
 
   depth : ∀ {m} → C m → Fin (₁₊ m)
@@ -71,7 +66,7 @@ presentation {n} = isPresentationOf subpresentation  claim
   depth (σ• c) = F.suc (depth c)
 
   depth-fin-to-C : ∀ {m} (j : Fin (₁₊ m)) → depth (fin-to-C j) ≡ j
-  depth-fin-to-C           F.zero    = refl
+  depth-fin-to-C        F.zero    = refl
   depth-fin-to-C {₁₊ m} (F.suc j) = Eq.cong F.suc (depth-fin-to-C j)
 
   ⟦[r]ᶜ⟧-zero : ∀ {m} (r : C m) → ⟦ [ r ]ᶜ ⟧ ⟨$⟩ʳ F.zero ≡ depth r
@@ -105,6 +100,6 @@ presentation {n} = isPresentationOf subpresentation  claim
                     (lift₀-remove χ χ₀ k))))
         (inverseʳ ρ_r)
 
-  claim : Surjective _≈_ (Group._≈_ ((Permutation′-group n))) ⟦_⟧
-  claim y = let w , ih = go n y in w , λ {z} z≈w k → Eq.trans (sound z≈w k) (ih k)
-  
+  claim : Surjective _≈_ (Group._≈_ (Permutation′-group n)) ⟦_⟧
+  claim y = let w , ih = go n y
+            in w , λ {z} z≈w k → Eq.trans (sound z≈w k) (ih k)

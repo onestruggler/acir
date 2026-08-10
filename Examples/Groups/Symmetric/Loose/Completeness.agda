@@ -7,18 +7,19 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+module Examples.Groups.Symmetric.Loose.Completeness where
 
-import Normalization.NormalForm.Propositional as NFBase
-import Presentation.Properties as PP
 open import Function.Definitions using (Injective)
 open import Relation.Binary.Bundles using (Setoid)
 
-module Examples.Groups.Symmetric.Loose.Completeness where
+import Normalization.NormalForm.Propositional as NFBase
+import Presentation.Properties as PP
 
-open import Examples.Groups.Symmetric.Syntactics using (_VRel,_===_)
 open import Examples.Groups.Symmetric.Loose.Semantics using (Endo-setoid ; ⟦_⟧)
 open import Examples.Groups.Symmetric.Loose.Soundness using (sound)
 open import Examples.Groups.Symmetric.Normalization using (NF)
+open import Examples.Groups.Symmetric.Syntactics using (_VRel,_===_)
+
 import Examples.Groups.Symmetric.Loose.Uniqueness as LU
 
 

@@ -8,20 +8,21 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Nat using (ℕ ; zero)
+module Examples.Groups.Symmetric.Cosets where
+
+open import Data.Nat using (ℕ)
+open import Notations using (₀ ; ₁₊)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Relation.Nullary.Decidable using (yes ; no)
+open import Word.Base using (ε ; _•_)
 
-open import Notations
-open import Word.Base
+open import Examples.Groups.Symmetric.Syntactics using (Circuit ; σ ; _↑)
 
-module Examples.Groups.Symmetric.Cosets where
+private
+  variable
+    n : ℕ
 
-open import Examples.Groups.Symmetric.Syntactics
-
-private variable
-  n : ℕ
 
 ------------------------------------------------------------------------
 -- Coset type
@@ -39,8 +40,8 @@ data C : ℕ → Set where
 -- [ c ]ᶜ realises the coset c as a circuit (shifted by 1 because
 -- gate₂ σ-gate needs at least 2 wires).
 [_]ᶜ : C n → Circuit (₁₊ n)
-[_]ᶜ         ε      = ε
-[_]ᶜ {₁₊ n} (σ• c)  = σ • ([ c ]ᶜ ↑)
+[_]ᶜ        ε      = ε
+[_]ᶜ {₁₊ n} (σ• c) = σ • ([ c ]ᶜ ↑)
 
 ------------------------------------------------------------------------
 -- Decidable equality on cosets
@@ -50,10 +51,10 @@ data C : ℕ → Set where
 σ•-injective x y Eq.refl = Eq.refl
 
 deceqC : DecidableEquality (C n)
-deceqC {zero}  ε      ε       = yes Eq.refl
-deceqC {₁₊ n} ε      ε       = yes Eq.refl
-deceqC {₁₊ n} ε      (σ• y)  = no (λ ())
-deceqC {₁₊ n} (σ• x) ε       = no (λ ())
+deceqC {₀}    ε      ε      = yes Eq.refl
+deceqC {₁₊ n} ε      ε      = yes Eq.refl
+deceqC {₁₊ n} ε      (σ• y) = no (λ ())
+deceqC {₁₊ n} (σ• x) ε      = no (λ ())
 deceqC {₁₊ n} (σ• x) (σ• y) with deceqC x y
 ... | yes p  = yes (Eq.cong σ•_ p)
 ... | no  np = no (λ { eq → np (σ•-injective _ _ eq) })

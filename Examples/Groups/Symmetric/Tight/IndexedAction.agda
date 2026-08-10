@@ -67,7 +67,9 @@ open import Examples.Groups.Symmetric.Tight.Semantics
   using (Perm ; ⟦_⟧ ; ⟦↑⟧ ; Permutation′-group)
 open import Examples.Groups.Symmetric.Tight.Soundness using (sound)
 
-private variable n : ℕ
+private
+  variable
+    n : ℕ
 
 
 ------------------------------------------------------------------------

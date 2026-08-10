@@ -6,20 +6,21 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
+module Examples.Groups.Symmetric.Theorems where
+
 open import Algebra.Bundles using (Group)
+open import Function.Definitions using (Congruent ; Injective)
+open import Presentation.Definitions using (_IsPresentationOf_)
+open import Relation.Binary.Bundles using (Setoid)
 
 import Normalization.NormalForm.Propositional as NFBase
 import Normalization.NormalForm.Uniqueness.Propositional as NFU
 import Presentation.Properties as PP
-open import Presentation.Definitions using (_IsPresentationOf_)
-open import Function.Definitions using (Congruent ; Injective)
-open import Relation.Binary.Bundles using (Setoid)
 
-module Examples.Groups.Symmetric.Theorems where
-
-open import Examples.Groups.Symmetric.Syntactics
 open import Examples.Groups.Symmetric.Normalization
   using (NF ; inv-nf ; nfp'-t)
+open import Examples.Groups.Symmetric.Syntactics
+
 
 ------------------------------------------------------------------------
 -- Unique normal form, soundness, completeness and presentation
@@ -32,9 +33,10 @@ module Loose where
   import Examples.Groups.Symmetric.Loose.Uniqueness as LU
 
   unique-nf : ∀ n →
-  
-    NFBase.UniqueNormalForm (n VRel,_===_) (NF n) (Endo-setoid n) (⟦_⟧ {n}) (nfp'-t n)
-    
+
+    NFBase.UniqueNormalForm (n VRel,_===_) (NF n) (Endo-setoid n)
+                            (⟦_⟧ {n}) (nfp'-t n)
+
   unique-nf = LU.unique-nf
 
   soundness : ∀ n →

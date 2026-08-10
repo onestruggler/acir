@@ -6,18 +6,20 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Fin using (Fin ; zero ; suc)
-open import Data.Nat using (ℕ ; zero ; suc)
-open import Function using (_∘_ ; id)
-open import Relation.Binary.Bundles using (Setoid)
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl ; _≗_)
-
-open import Notations using (₁₊ ; ₂₊)
-open import Word.Base using (Word ; ε ; [_]ʷ ; _•_)
-
 module Examples.Groups.Symmetric.Loose.Semantics where
 
+open import Data.Fin using (Fin ; zero ; suc)
+open import Data.Nat using (ℕ)
+open import Function using (_∘_ ; id)
+open import Notations using (₁₊ ; ₂₊)
+open import Relation.Binary.Bundles using (Setoid)
+open import Relation.Binary.PropositionalEquality as Eq
+  using (_≡_ ; refl ; _≗_)
+open import Word.Base using (Word ; ε ; [_]ʷ ; _•_)
+
 open import Examples.Groups.Symmetric.Syntactics
+  using (Gen ; gate₁ ; gate₂ ; σ-gate ; _↥ ; _↑)
+
 
 ------------------------------------------------------------------------
 -- Endofunctions on Fin n
@@ -76,8 +78,8 @@ shift-id zero   = refl
 shift-id (₁₊ k) = refl
 
 -- shift distributes over composition.
-shift-hom : ∀ {n} (f g : Endo n) (k : Fin (₁₊ n))
-          → shift (f ∘ g) k ≡ (shift f ∘ shift g) k
+shift-hom : ∀ {n} (f g : Endo n) (k : Fin (₁₊ n)) →
+            shift (f ∘ g) k ≡ (shift f ∘ shift g) k
 shift-hom f g zero   = refl
 shift-hom f g (₁₊ k) = refl
 
@@ -93,4 +95,3 @@ shift-cong eq (₁₊ k) = Eq.cong suc (eq k)
 ⟦↑⟧ (w • v) k =
   Eq.trans (Eq.cong (⟦ v ↑ ⟧) (⟦↑⟧ w k))
   (Eq.trans (⟦↑⟧ v _) (Eq.sym (shift-hom _ _ k)))
-

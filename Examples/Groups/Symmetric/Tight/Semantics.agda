@@ -9,23 +9,23 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Nat using (ℕ ; zero)
+module Examples.Groups.Symmetric.Tight.Semantics where
+
+open import Algebra.Bundles using (Group)
 open import Data.Fin using (Fin ; zero)
 open import Data.Fin.Permutation
   using ( Permutation′ ; permutation ; _⟨$⟩ʳ_ ; _∘ₚ_
         ; lift₀ ; lift₀-id ; lift₀-comp )
-  renaming (id to idP)
+open import Data.Nat using (ℕ)
+open import Notations using (₁₊ ; ₂₊)
+open import Word.Base using (Word ; ε ; [_]ʷ ; _•_)
 
 import Relation.Binary.PropositionalEquality as Eq
-open Eq using (_≡_ ; refl ; cong ; sym ; trans)
 
-open import Word.Base
-open import Notations
-
-module Examples.Groups.Symmetric.Tight.Semantics where
+open Eq using (_≡_ ; refl)
 
 open import Examples.Groups.Symmetric.Syntactics
-open import Algebra.Bundles using (Group)
+
 
 ------------------------------------------------------------------------
 -- Permutation type
@@ -41,8 +41,10 @@ Perm n = Permutation′ n
 -- ∘ₚ-id-group).  Re-exported here as Permutation′-group so that the
 -- tight semantics keeps a single, readable home for "the meaning of
 -- the syntax".
-open import ForStdlib.Data.Fin.Permutation.Properties
-  using () renaming (∘ₚ-id-group to Permutation′-group) public
+import ForStdlib.Data.Fin.Permutation.Properties as PermProperties
+
+open PermProperties public
+  using () renaming (∘ₚ-id-group to Permutation′-group)
 
 ------------------------------------------------------------------------
 -- Semantic building blocks
@@ -84,11 +86,10 @@ shift = lift₀
 -- Lemmas about shift (= lift₀)
 
 -- ⟦ w ↑ ⟧ agrees with shift ⟦ w ⟧ pointwise.
-⟦↑⟧ : ∀ {n} (w : Word (Gen n)) (k : Fin (₁₊ n))
-     → ⟦ w ↑ ⟧ ⟨$⟩ʳ k ≡ shift ⟦ w ⟧ ⟨$⟩ʳ k
+⟦↑⟧ : ∀ {n} (w : Word (Gen n)) (k : Fin (₁₊ n)) →
+      ⟦ w ↑ ⟧ ⟨$⟩ʳ k ≡ shift ⟦ w ⟧ ⟨$⟩ʳ k
 ⟦↑⟧ ε       k = Eq.sym (lift₀-id k)
 ⟦↑⟧ [ g ]ʷ  k = refl
 ⟦↑⟧ (w • v) k =
   Eq.trans (Eq.cong (⟦ v ↑ ⟧ ⟨$⟩ʳ_) (⟦↑⟧ w k))
   (Eq.trans (⟦↑⟧ v _) (lift₀-comp ⟦ w ⟧ ⟦ v ⟧ k))
-
