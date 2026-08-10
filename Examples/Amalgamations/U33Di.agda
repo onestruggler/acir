@@ -30,17 +30,72 @@ import Presentation.Base as PB
 import Presentation.Construct.Properties.DirectProduct as DP
 import Presentation.Construct.Properties.NDirectProduct as NDP
 
-open import Presentation.Groups.SnD
-
-import Presentation.Groups.Sn as Sn
+-- The wreath product ℤ/4ℤ ≀ Sₙ now comes from the semi-direct-product
+-- CONSTRUCTION rather than from the hand-rolled Presentation.Groups.SnD.
+-- The two present the same group, but over different alphabets: the old
+-- acting factor was the inductive Sn.X, the new one is the symmetric
+-- group's circuit generators.
+import Examples.Construct.SemiDirectProduct.SnD as NSnD
 open import Notations
 
+import Examples.Groups.Symmetric.Syntactics as SymS
 
 -- ----------------------------------------------------------------------
 -- * Generators and relations for U₈(ℤ[1/2, i])
 
 
 module Examples.Amalgamations.U33Di where
+
+-- A compatibility layer, so that the ~180 uses of the old generator
+-- names below do not all have to change.  These are PATTERN SYNONYMS,
+-- not definitions: the file matches on them as well as building with
+-- them, and only a pattern synonym works in both positions.  (The same
+-- device Symplectic.Syntactics uses for H-gen / S-gen / CZ-gen.)
+--
+-- The index shifts by one: the old X k generated S_{k+1}, the circuit
+-- Gen n generates Sₙ.
+module Sn where
+  open SymS public
+    using (Gen ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; srel ; cong↑
+          ; comm₀ ; comm₁ ; comm₂ ; _VRel,_===_)
+  open SymS using (σ-gate)
+    renaming (order to order-ax ; yang-baxter to yb-ax)
+
+  X : ℕ → Set
+  X k = Gen (₁₊ k)
+
+  pattern swap        = gate₂ σ-gate
+  pattern _ₛ x        = x ↥
+  pattern order       = srel order-ax
+  pattern yang-baxter = srel yb-ax
+  pattern congₛ r     = cong↑ r
+
+  -- The old [_⇑] was ([_]ʷ ∘ _ₛ) ʷ; the circuit framework's _↑ is the
+  -- same map, and it is the one cong↑ produces, so the dot patterns
+  -- below elaborate against it.
+  [_⇑] : ∀ {k} → Word (X k) → Word (X (₁₊ k))
+  [_⇑] {k} = _↑ {₁₊ k}
+
+-- The wreath presentation and its normal form, at the old indexing:
+-- pres-SnD k has ₁₊ k coordinates, so it is Wreath (₁₊ k) 3 (m = 3
+-- because the base is ℤ/4ℤ).
+pres-SnD : (k : ℕ) → WRel ((⊤ ⊎^ ₁₊ k) ⊎ Sn.X k)
+pres-SnD k = NSnD.Wreath.pres (₁₊ k) 3
+
+nfp : (k : ℕ) →
+      NFBase.NormalFormInjective (pres-SnD k) (NSnD.Wreath.SnD-NF (₁₊ k) 3)
+nfp k = NSnD.Wreath.nfp (₁₊ k) 3
+
+conj : ∀ k → Sn.X k → (⊤ ⊎^ ₁₊ k) → Word (⊤ ⊎^ ₁₊ k)
+conj k = NSnD.conj {₁₊ k}
+
+-- The cyclic order of the base group, and its n-fold direct product:
+-- both were exported by the old module, and the file uses them directly.
+N : ℕ
+N = 4
+
+C^n : (n : ℕ) → WRel (⊤ ⊎^ n)
+C^n n = Cyclic.pres N ⊕^ n
 
 
 module TwoLevel-Simplified-Amal where
@@ -623,6 +678,11 @@ module TwoLevel-Simplified-Amal where
       f (inj₁ (inj₁ (inj₂ tt))) = i₁
       f (inj₁ (inj₂ Sn.swap)) = swap₀₁
       f (inj₂ tt) = i₂
+      -- Gen carries a shift tower the old X did not; below the bottom
+      -- transposition there is nothing, so these are absurd.  (Agda
+      -- discharges gate₀ / gate₁ itself — their argument types are
+      -- empty — but the ↥ spine has to be spelled out.)
+      f (inj₁ (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)))
 
       ract : C ⊎ ⊤ → (⊤ ⊎ ⊤ ⊎ ⊤) ⊎ Sn.X 2 → Word (((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤) × (C ⊎ ⊤)
       ract (inj₁ X12) (inj₁ (inj₁ tt)) = i₀' , (inj₁ X12)
@@ -641,6 +701,7 @@ module TwoLevel-Simplified-Amal where
       ract (inj₂ tt) (inj₁ (inj₂ (inj₂ tt))) = i₂' , (inj₂ tt)
       ract (inj₂ tt) (inj₂ (Sn.swap Sn.ₛ)) = ε , (inj₁ X12)
       ract (inj₂ tt) (inj₂ Sn.swap) = X₀₁' , (inj₂ tt)
+      ract _ (inj₂ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ))
 
       [_]ₒ : C → Word ((⊤ ⊎ ⊤ ⊎ ⊤) ⊎ Sn.X 2)
       [ X12 ]ₒ = X₁₂
@@ -655,12 +716,14 @@ module TwoLevel-Simplified-Amal where
       hcme X12X01 (inj₁ (inj₁ (inj₂ tt))) = i₀' , (X12X01 , Eq.refl)
       hcme X12X01 (inj₁ (inj₂ Sn.swap)) = ε , (X12 , Eq.refl)
       hcme X12X01 (inj₂ tt) = i₁' , (X12X01 , Eq.refl)
+      hcme _ (inj₁ (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)))
 
       htme : (m : ((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤) → (ract ᵗ) (inj₂ tt) (f m) ≡ ([ m ]ʷ , inj₂ tt)
       htme (inj₁ (inj₁ (inj₁ tt))) = Eq.refl
       htme (inj₁ (inj₁ (inj₂ tt))) = Eq.refl
       htme (inj₁ (inj₂ Sn.swap)) = Eq.refl
       htme (inj₂ tt) = Eq.refl
+      htme (inj₁ (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)))
 
       infix 4 _~_
       _~_ = PW.Pointwise _≈₀_ (_≡_ {A = C ⊎ ⊤})
@@ -670,6 +733,7 @@ module TwoLevel-Simplified-Amal where
       htme~ (inj₁ (inj₁ (inj₂ tt))) = _≈₀_.refl , Eq.refl
       htme~ (inj₁ (inj₂ Sn.swap)) = _≈₀_.refl , Eq.refl
       htme~ (inj₂ tt) = _≈₀_.refl , Eq.refl
+      htme~ (inj₁ (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)))
 
       open PB
       open SNF.NormalFormInjective (PD.pres-nfp) using (by-equal-nf)
@@ -684,6 +748,7 @@ module TwoLevel-Simplified-Amal where
       hcme~ X12X01 (inj₁ (inj₁ (inj₂ tt))) = by-equal-nf Eq.refl
       hcme~ X12X01 (inj₁ (inj₂ Sn.swap)) = by-equal-nf Eq.refl
       hcme~ X12X01 (inj₂ tt) = by-equal-nf Eq.refl
+      hcme~ _ (inj₁ (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)))
 
 
       h-wd-ax : (c : C ⊎ ⊤) {u t : Word ((⊤ ⊎ ⊤ ⊎ ⊤) ⊎ Sn.X 2)} → u ===₁ t → (ract ᵗ) c u ~ ((ract ᵗ) c t)
@@ -696,12 +761,12 @@ module TwoLevel-Simplified-Amal where
       h-wd-ax (inj₂ tt) {.([ [ Sn.swap ]ʷ • [ Sn.swap ]ʷ ]ᵣ)} {.([ ε ]ᵣ)} (right Sn.order) = bef Eq.refl , Eq.refl
       h-wd-ax (inj₂ tt) {.([ [ Sn.swap ]ʷ • [ Sn.swap Sn.ₛ ]ʷ • [ Sn.swap ]ʷ ]ᵣ)} {.([ [ Sn.swap Sn.ₛ ]ʷ • [ Sn.swap ]ʷ • [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (right Sn.yang-baxter) = bef Eq.refl , Eq.refl
       h-wd-ax (inj₂ tt) {.([ Sn.[ [ Sn.swap ]ʷ • [ Sn.swap ]ʷ ⇑] ]ᵣ)} {.([ Sn.[ ε ⇑] ]ᵣ)} (right (Sn.congₛ Sn.order)) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₂ tt) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₁ tt ]ʷ ]ₗ)} {.([ [ conj 2 Sn.swap (inj₁ tt) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₁ tt) Sn.swap)) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₂ tt) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₁ tt ]ʷ ]ₗ)} {.([ [ conj 2 (Sn.swap Sn.ₛ) (inj₁ tt) ]ʷ ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₁ tt) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₂ tt) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ (inj₁ tt) ]ʷ ]ₗ)} {.([ [ conj 2 Sn.swap (inj₂ (inj₁ tt)) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ tt)) Sn.swap)) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₂ tt) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ)} {.([ [ conj 2 Sn.swap (inj₂ (inj₂ tt)) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ tt)) Sn.swap)) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₂ tt) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₁ x) ]ʷ ]ₗ)} {.([ [ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₁ x)) ]ʷ ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ x)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₂ tt) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₂ y) ]ʷ ]ₗ)} {.([ [ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₂ y)) ]ʷ ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ y)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₂ tt) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₁ tt ]ʷ ]ₗ)} {.([ conj 2 Sn.swap (inj₁ tt) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₁ tt) Sn.swap)) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₂ tt) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₁ tt ]ʷ ]ₗ)} {.([ conj 2 (Sn.swap Sn.ₛ) (inj₁ tt) ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₁ tt) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₂ tt) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ (inj₁ tt) ]ʷ ]ₗ)} {.([ conj 2 Sn.swap (inj₂ (inj₁ tt)) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ tt)) Sn.swap)) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₂ tt) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ)} {.([ conj 2 Sn.swap (inj₂ (inj₂ tt)) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ tt)) Sn.swap)) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₂ tt) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₁ x) ]ʷ ]ₗ)} {.([ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₁ x)) ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ x)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₂ tt) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₂ y) ]ʷ ]ₗ)} {.([ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₂ y)) ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ y)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
 
       h-wd-ax (inj₁ X12) {.([ [ Cyclic.T ^' N ]ₗ ]ₗ)} {.([ [ ε ]ₗ ]ₗ)} (left (left Cyclic.order)) = bef Eq.refl , Eq.refl
       h-wd-ax (inj₁ X12) {.([ [ [ Cyclic.T ^' N ]ₗ ]ᵣ ]ₗ)} {.([ [ [ ε ]ₗ ]ᵣ ]ₗ)} (left (right (left Cyclic.order))) = bef Eq.refl , Eq.refl
@@ -712,12 +777,12 @@ module TwoLevel-Simplified-Amal where
       h-wd-ax (inj₁ X12) {.([ [ Sn.swap ]ʷ • [ Sn.swap ]ʷ ]ᵣ)} {.([ ε ]ᵣ)} (right Sn.order) = bef Eq.refl , Eq.refl
       h-wd-ax (inj₁ X12) {.([ [ Sn.swap ]ʷ • [ Sn.swap Sn.ₛ ]ʷ • [ Sn.swap ]ʷ ]ᵣ)} {.([ [ Sn.swap Sn.ₛ ]ʷ • [ Sn.swap ]ʷ • [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (right Sn.yang-baxter) = bef Eq.refl , Eq.refl
       h-wd-ax (inj₁ X12) {.([ Sn.[ [ Sn.swap ]ʷ • [ Sn.swap ]ʷ ⇑] ]ᵣ)} {.([ Sn.[ ε ⇑] ]ᵣ)} (right (Sn.congₛ Sn.order)) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₁ X12) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₁ tt ]ʷ ]ₗ)} {.([ [ conj 2 Sn.swap (inj₁ tt) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₁ tt) Sn.swap)) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₁ X12) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₁ tt ]ʷ ]ₗ)} {.([ [ conj 2 (Sn.swap Sn.ₛ) (inj₁ tt) ]ʷ ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₁ tt) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₁ X12) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ (inj₁ tt) ]ʷ ]ₗ)} {.([ [ conj 2 Sn.swap (inj₂ (inj₁ tt)) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ tt)) Sn.swap)) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₁ X12) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ)} {.([ [ conj 2 Sn.swap (inj₂ (inj₂ tt)) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ tt)) Sn.swap)) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₁ X12) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₁ x) ]ʷ ]ₗ)} {.([ [ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₁ x)) ]ʷ ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ x)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl 
-      h-wd-ax (inj₁ X12) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₂ y) ]ʷ ]ₗ)} {.([ [ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₂ y)) ]ʷ ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ y)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₁ X12) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₁ tt ]ʷ ]ₗ)} {.([ conj 2 Sn.swap (inj₁ tt) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₁ tt) Sn.swap)) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₁ X12) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₁ tt ]ʷ ]ₗ)} {.([ conj 2 (Sn.swap Sn.ₛ) (inj₁ tt) ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₁ tt) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₁ X12) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ (inj₁ tt) ]ʷ ]ₗ)} {.([ conj 2 Sn.swap (inj₂ (inj₁ tt)) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ tt)) Sn.swap)) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₁ X12) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ)} {.([ conj 2 Sn.swap (inj₂ (inj₂ tt)) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ tt)) Sn.swap)) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₁ X12) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₁ x) ]ʷ ]ₗ)} {.([ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₁ x)) ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ x)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl 
+      h-wd-ax (inj₁ X12) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₂ y) ]ʷ ]ₗ)} {.([ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₂ y)) ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ y)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
 
 
       h-wd-ax (inj₁ X12X01) {.([ [ Cyclic.T ^' N ]ₗ ]ₗ)} {.([ [ ε ]ₗ ]ₗ)} (left (left Cyclic.order)) = bef Eq.refl , Eq.refl
@@ -729,24 +794,46 @@ module TwoLevel-Simplified-Amal where
       h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap ]ʷ • [ Sn.swap ]ʷ ]ᵣ)} {.([ ε ]ᵣ)} (right Sn.order) = bef Eq.refl , Eq.refl
       h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap ]ʷ • [ Sn.swap Sn.ₛ ]ʷ • [ Sn.swap ]ʷ ]ᵣ)} {.([ [ Sn.swap Sn.ₛ ]ʷ • [ Sn.swap ]ʷ • [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (right Sn.yang-baxter) = bef Eq.refl , Eq.refl
       h-wd-ax (inj₁ X12X01) {.([ Sn.[ [ Sn.swap ]ʷ • [ Sn.swap ]ʷ ⇑] ]ᵣ)} {.([ Sn.[ ε ⇑] ]ᵣ)} (right (Sn.congₛ Sn.order)) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₁ tt ]ʷ ]ₗ)} {.([ [ conj 2 Sn.swap (inj₁ tt) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₁ tt) Sn.swap)) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₁ tt ]ʷ ]ₗ)} {.([ [ conj 2 (Sn.swap Sn.ₛ) (inj₁ tt) ]ʷ ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₁ tt) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ (inj₁ tt) ]ʷ ]ₗ)} {.([ [ conj 2 Sn.swap (inj₂ (inj₁ tt)) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ tt)) Sn.swap)) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ)} {.([ [ conj 2 Sn.swap (inj₂ (inj₂ tt)) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ tt)) Sn.swap)) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₁ x) ]ʷ ]ₗ)} {.([ [ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₁ x)) ]ʷ ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ x)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
-      h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₂ y) ]ʷ ]ₗ)} {.([ [ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₂ y)) ]ʷ ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ y)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₁ tt ]ʷ ]ₗ)} {.([ conj 2 Sn.swap (inj₁ tt) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₁ tt) Sn.swap)) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₁ tt ]ʷ ]ₗ)} {.([ conj 2 (Sn.swap Sn.ₛ) (inj₁ tt) ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₁ tt) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ (inj₁ tt) ]ʷ ]ₗ)} {.([ conj 2 Sn.swap (inj₂ (inj₁ tt)) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ tt)) Sn.swap)) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ (inj₂ tt) ]ʷ ]ₗ)} {.([ conj 2 Sn.swap (inj₂ (inj₂ tt)) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ tt)) Sn.swap)) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₁ x) ]ʷ ]ₗ)} {.([ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₁ x)) ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₁ x)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
+      h-wd-ax (inj₁ X12X01) {.([ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ • [ [ inj₂ (inj₂ y) ]ʷ ]ₗ)} {.([ conj 2 (Sn.swap Sn.ₛ) (inj₂ (inj₂ y)) ]ₗ • [ [ Sn.swap Sn.ₛ ]ʷ ]ᵣ)} (mid (comm (inj₂ (inj₂ y)) (Sn.swap Sn.ₛ))) = bef Eq.refl , Eq.refl
+
+      -- The circuit-framework Sₙ relation carries constructors the old
+      -- inductive one did not — comm₂ for the bottom transposition
+      -- against a shifted generator, and deeper cong↑ towers.  Below
+      -- width 2 there are neither generators nor relations, so every one
+      -- of these bottoms out absurd.
+      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.srel ()))))
+      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.comm₀ () _))))
+      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.srel ())))))
+      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.comm₀ () _)))))
+      h-wd-ax _ (right (Sn.cong↑ (Sn.comm₂ _ (Sn.gate₀ ()))))
+      h-wd-ax _ (right (Sn.comm₂ _ ((Sn.gate₀ ()) Sn.ₛ)))
+      h-wd-ax _ (mid (comm _ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ)))
 
       f-wd-ax : {w v : Word (((⊤ ⊎ ⊤) ⊎ Sn.X 1) ⊎ ⊤)} → w ===₀ v → (f ʷ) w ≈₁ (f ʷ) v
       f-wd-ax {.([ [ [ Cyclic.T ^' N ]ₗ ]ₗ ]ₗ)} {.([ [ [ ε ]ₗ ]ₗ ]ₗ)} (left (left (left Cyclic.order))) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ [ Cyclic.T ^' N ]ᵣ ]ₗ ]ₗ)} {.([ [ [ ε ]ᵣ ]ₗ ]ₗ)} (left (left (right Cyclic.order))) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ [ [ tt ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ ]ₗ ]ₗ)} {.([ [ [ [ tt ]ʷ ]ᵣ • [ [ tt ]ʷ ]ₗ ]ₗ ]ₗ)} (left (left (mid (comm tt tt)))) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ [ Sn.swap ]ʷ • [ Sn.swap ]ʷ ]ᵣ ]ₗ)} {.([ [ ε ]ᵣ ]ₗ)} (left (right Sn.order)) = by-equal-nf Eq.refl
-      f-wd-ax {.([ [ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₁ x ]ʷ ]ₗ ]ₗ)} {.([ [ [ conj 1 Sn.swap (inj₁ x) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ ]ₗ)} (left (mid (comm (inj₁ x) Sn.swap))) = by-equal-nf Eq.refl
-      f-wd-ax {.([ [ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ y ]ʷ ]ₗ ]ₗ)} {.([ [ [ conj 1 Sn.swap (inj₂ y) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ ]ₗ)} (left (mid (comm (inj₂ y) Sn.swap))) = by-equal-nf Eq.refl
+      f-wd-ax {.([ [ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₁ x ]ʷ ]ₗ ]ₗ)} {.([ [ conj 1 Sn.swap (inj₁ x) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ ]ₗ)} (left (mid (comm (inj₁ x) Sn.swap))) = by-equal-nf Eq.refl
+      f-wd-ax {.([ [ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ y ]ʷ ]ₗ ]ₗ)} {.([ [ conj 1 Sn.swap (inj₂ y) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ ]ₗ)} (left (mid (comm (inj₂ y) Sn.swap))) = by-equal-nf Eq.refl
       f-wd-ax {.([ Cyclic.T ^' 4 ]ᵣ)} {.([ ε ]ᵣ)} (right Cyclic.order) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ inj₁ (inj₁ tt) ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₁ (inj₁ tt) ]ʷ ]ₗ)} (mid (comm (inj₁ (inj₁ tt)) tt)) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ inj₁ (inj₂ tt) ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₁ (inj₂ tt) ]ʷ ]ₗ)} (mid (comm (inj₁ (inj₂ tt)) tt)) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ inj₂ Sn.swap ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₂ Sn.swap ]ʷ ]ₗ)} (mid (comm (inj₂ Sn.swap) tt)) = by-equal-nf Eq.refl
+
+      -- Same story one level down, at Sn.X 1 = Gen 2.
+      f-wd-ax (left (right (Sn.cong↑ (Sn.srel ()))))
+      f-wd-ax (left (right (Sn.cong↑ (Sn.comm₀ () _))))
+      f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel ())))))
+      f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.comm₀ () _)))))
+      f-wd-ax (left (right (Sn.comm₂ _ (Sn.gate₀ ()))))
+      f-wd-ax (left (mid (comm _ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ))))
+      f-wd-ax (mid (comm (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)) _))
 
       [_] : C ⊎ ⊤ -> Word ((⊤ ⊎ ⊤ ⊎ ⊤) ⊎ Sn.X 2)
       [_] = [_,_] [_]ₒ (λ v → ε)
@@ -769,6 +856,7 @@ module TwoLevel-Simplified-Amal where
       h=ract (inj₁ X12X01) (inj₁ (inj₂ (inj₂ tt))) = by-equal-nf Eq.refl
       h=ract (inj₁ X12X01) (inj₂ Sn.swap) = by-equal-nf Eq.refl
       h=ract (inj₁ X12X01) (inj₂ (Sn.swap Sn.ₛ)) = by-equal-nf Eq.refl
+      h=ract _ (inj₂ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ))
 
     module CA2 where
       data C : Set where
@@ -808,6 +896,11 @@ module TwoLevel-Simplified-Amal where
       f (inj₁ (inj₁ (inj₂ tt))) = i₁
       f (inj₁ (inj₂ Sn.swap)) = swap₀₁
       f (inj₂ tt) = i₂
+      -- Gen carries a shift tower the old X did not; below the bottom
+      -- transposition there is nothing, so these are absurd.  (Agda
+      -- discharges gate₀ / gate₁ itself — their argument types are
+      -- empty — but the ↥ spine has to be spelled out.)
+      f (inj₁ (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)))
 
       pattern I = inj₂ tt
 
@@ -855,12 +948,14 @@ module TwoLevel-Simplified-Amal where
                                           [ inj₁ (inj₁ (inj₂ tt)) ]ʷ •
                                           [ inj₁ (inj₁ (inj₂ tt)) ]ʷ • [ inj₁ (inj₁ (inj₂ tt)) ]ʷ , (K01I0 , Eq.refl)
       hcme K01I0 I = [ inj₂ tt ]ʷ , (K01I0 , Eq.refl)
+      hcme _ (inj₁ (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)))
 
       htme : (m : M) → (ract ᵗ) (inj₂ tt) (f m) ≡ ([ m ]ʷ , inj₂ tt)
       htme (inj₁ (inj₁ (inj₁ tt))) = Eq.refl
       htme (inj₁ (inj₁ (inj₂ tt))) = Eq.refl
       htme (inj₁ (inj₂ Sn.swap)) = Eq.refl
       htme (inj₂ tt) = Eq.refl
+      htme (inj₁ (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)))
 
 
       infix 4 _~_
@@ -871,6 +966,7 @@ module TwoLevel-Simplified-Amal where
       htme~ (inj₁ (inj₁ (inj₂ tt))) = _≈₀_.refl , Eq.refl
       htme~ (inj₁ (inj₂ Sn.swap)) = _≈₀_.refl , Eq.refl
       htme~ (inj₂ tt) = _≈₀_.refl , Eq.refl
+      htme~ (inj₁ (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)))
 
       open PB
       open SNF.NormalFormInjective (Ki.nfp-a) using (by-equal-nf)
@@ -885,6 +981,7 @@ module TwoLevel-Simplified-Amal where
       hcme~ K01I0 (inj₁ (inj₁ (inj₂ tt))) = by-equal-nf Eq.refl
       hcme~ K01I0 (inj₁ (inj₂ Sn.swap)) = by-equal-nf Eq.refl
       hcme~ K01I0 (inj₂ tt) = by-equal-nf Eq.refl
+      hcme~ _ (inj₁ (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)))
       
 
       h-wd-ax : (c : C ⊎ ⊤) {u t : Word B} → u ===₂ t → (ract ᵗ) c u ~ ((ract ᵗ) c t)
@@ -939,13 +1036,21 @@ module TwoLevel-Simplified-Amal where
       f-wd-ax {.([ [ [ Cyclic.T ^' N ]ᵣ ]ₗ ]ₗ)} {.([ [ [ ε ]ᵣ ]ₗ ]ₗ)} (left (left (right Cyclic.order))) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ [ [ tt ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ ]ₗ ]ₗ)} {.([ [ [ [ tt ]ʷ ]ᵣ • [ [ tt ]ʷ ]ₗ ]ₗ ]ₗ)} (left (left (mid (comm tt tt)))) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ [ Sn.swap ]ʷ • [ Sn.swap ]ʷ ]ᵣ ]ₗ)} {.([ [ ε ]ᵣ ]ₗ)} (left (right Sn.order)) = by-equal-nf Eq.refl
-      f-wd-ax {.([ [ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₁ x ]ʷ ]ₗ ]ₗ)} {.([ [ [ conj 1 Sn.swap (inj₁ x) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ ]ₗ)} (left (mid (comm (inj₁ x) Sn.swap))) = by-equal-nf Eq.refl
-      f-wd-ax {.([ [ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ y ]ʷ ]ₗ ]ₗ)} {.([ [ [ conj 1 Sn.swap (inj₂ y) ]ʷ ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ ]ₗ)} (left (mid (comm (inj₂ y) Sn.swap))) = by-equal-nf Eq.refl
+      f-wd-ax {.([ [ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₁ x ]ʷ ]ₗ ]ₗ)} {.([ [ conj 1 Sn.swap (inj₁ x) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ ]ₗ)} (left (mid (comm (inj₁ x) Sn.swap))) = by-equal-nf Eq.refl
+      f-wd-ax {.([ [ [ Sn.swap ]ʷ ]ᵣ • [ [ inj₂ y ]ʷ ]ₗ ]ₗ)} {.([ [ conj 1 Sn.swap (inj₂ y) ]ₗ • [ [ Sn.swap ]ʷ ]ᵣ ]ₗ)} (left (mid (comm (inj₂ y) Sn.swap))) = by-equal-nf Eq.refl
       f-wd-ax {.([ Cyclic.T ^' 4 ]ᵣ)} {.([ ε ]ᵣ)} (right Cyclic.order) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ inj₁ (inj₁ tt) ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₁ (inj₁ tt) ]ʷ ]ₗ)} (mid (comm (inj₁ (inj₁ tt)) tt)) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ inj₁ I ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₁ I ]ʷ ]ₗ)} (mid (comm (inj₁ I) tt)) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ inj₂ Sn.swap ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₂ Sn.swap ]ʷ ]ₗ)} (mid (comm (inj₂ Sn.swap) tt)) = by-equal-nf Eq.refl
       
+      f-wd-ax (left (right (Sn.cong↑ (Sn.srel ()))))
+      f-wd-ax (left (right (Sn.cong↑ (Sn.comm₀ () _))))
+      f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel ())))))
+      f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.comm₀ () _)))))
+      f-wd-ax (left (right (Sn.comm₂ _ (Sn.gate₀ ()))))
+      f-wd-ax (left (mid (comm _ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ))))
+      f-wd-ax (mid (comm (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)) _))
+
       [_] : C ⊎ ⊤ -> Word B
       [_] = [_,_] [_]ₒ (λ v → ε)
 
@@ -1056,6 +1161,7 @@ module TwoLevel-Simplified-Amal where
     g i₀'-gen = Sim.i₀
     g i₁'-gen = Sim.i₁
     g i₂'-gen = Sim.i₂
+    g (inj₁ (inj₂ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ)))
 
 
 
@@ -1365,6 +1471,16 @@ module TwoLevel-Simplified-Amal where
     g-well-defined {w} {v} (mid (amal {inj₁ (inj₁ (inj₂ tt))})) = _≈₁_.refl
     g-well-defined {w} {v} (mid (amal {X₀₁'-gen})) = _≈₁_.refl
     g-well-defined {w} {v} (mid (amal {inj₂ tt})) = _≈₁_.refl
+    -- The Sₙ factor's shift tower and its structural rules, all absurd
+    -- below width 2 (see the identical block in CA1/CA2 above).
+    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel ())))))
+    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.comm₀ () _)))))
+    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.srel ()))))))
+    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.comm₀ () _))))))
+    g-well-defined (left (right (Sn.cong↑ (Sn.comm₂ _ (Sn.gate₀ ())))))
+    g-well-defined (left (right (Sn.comm₂ _ ((Sn.gate₀ ()) Sn.ₛ))))
+    g-well-defined (left (mid (comm _ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ))))
+    g-well-defined (mid (amal {inj₁ (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ))}))
 
 
     f-left-inv-gen : ∀ x -> [ x ]ʷ ≈₂ (f ʷ) (g x)
@@ -1379,6 +1495,7 @@ module TwoLevel-Simplified-Amal where
     f-left-inv-gen i₀'-gen = _≈₂_.refl
     f-left-inv-gen i₁'-gen = by-equal-nf Eq.refl
     f-left-inv-gen i₂'-gen = by-equal-nf Eq.refl
+    f-left-inv-gen (inj₁ (inj₂ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ)))
 
     g-left-inv-gen : ∀ x -> [ x ]ʷ ≈₁ (g ʷ) (f x)
     g-left-inv-gen Simplified.i₀-gen = refl

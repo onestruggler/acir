@@ -60,7 +60,13 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
 -- comm₂)
 
 private module LR = SC.Lift-Relation _SRel,_===_
-open LR public using (srel ; cong↑ ; comm₁ ; comm₂ ; lemma-cong↑ ; _VRel,_===_)
+-- comm₀ and ω↑=ω are the 0-ary gate's structural rules.  This gate set
+-- has no 0-ary gate, so they are never inhabited here — but they still
+-- have to be re-exported, or a client cannot name them to discharge
+-- them when it cases on the relation.
+open LR public
+  using (srel ; cong↑ ; comm₀ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
+        ; _VRel,_===_)
 
 ------------------------------------------------------------------------
 -- Grouplike (each generator has a two-sided inverse)

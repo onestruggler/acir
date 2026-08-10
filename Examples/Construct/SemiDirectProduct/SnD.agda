@@ -344,9 +344,13 @@ module Wreath (n m : ℕ) where
   wreath-group : Group 0ℓ 0ℓ
   wreath-group = SDPP.G1⋊G2
 
+  -- The wreath-product relation itself.  Named, because Γ₀ is private
+  -- and clients cannot otherwise spell it.
+  pres : WRel ((⊤ ⊎^ n) ⊎ Gen n)
+  pres = (Γ₀ m ⊕^ n) ⋄ (n VRel,_===_) ⋄ ConjRelʷ (conj {n})
+
   -- Γ₀ ⊕^ n ⋊ (n VRel) ⋆ conj presents it.
-  presentation :
-    ((Γ₀ m ⊕^ n) ⋄ (n VRel,_===_) ⋄ ConjRelʷ (conj {n})) IsPresentationOf wreath-group
+  presentation : pres IsPresentationOf wreath-group
   presentation = SDPP.dpres
 
   ------------------------------------------------------------------
@@ -375,11 +379,9 @@ module Wreath (n m : ℕ) where
   SnD-NF : Set
   SnD-NF = NDP.⊗-carrier (Γ₀ m) n (Cyc.NF (suc m)) × SN.NF n
 
-  nfp : NormalFormInjective
-          ((Γ₀ m ⊕^ n) ⋄ (n VRel,_===_) ⋄ ConjRelʷ (conj {n})) SnD-NF
+  nfp : NormalFormInjective pres SnD-NF
   nfp = NFP₀.nfp (NDP.nfp (Γ₀ m) n (Cyc.nfp (suc m))) (SN.nfp n)
 
   -- Like nfp, but also carrying the section.
-  nfp' : NormalForm
-           ((Γ₀ m ⊕^ n) ⋄ (n VRel,_===_) ⋄ ConjRelʷ (conj {n})) SnD-NF
+  nfp' : NormalForm pres SnD-NF
   nfp' = NFP'₀.nfp' (NDP.nfp' (Γ₀ m) n (Cyc.nfp' (suc m))) (SN.nfp'-t n)
