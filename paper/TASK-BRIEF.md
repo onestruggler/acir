@@ -129,7 +129,7 @@ forms. Layers (details in CLAUDE.md):
   built from an `SDP.Action`), `NDirectProduct.agda` (`⊗-group`, n-fold
   `presentation` by induction, trivial group at 0).
 - **WIP / not to be leaned on**: `Examples/Groups/Symplectic/` tree and
-  `Examples/Groups/Pauli/` (Pauli/Semantics.agda has unsolved metas at 257–304 as
+  `Examples/Groups/ProjectivePauli/` (Pauli/Semantics.agda has unsolved metas at 257–304 as
   of 2026-07-09; the Symplectic tree is not in the verified 4-root closure). If
   they still fail to typecheck, either fix cheaply (≤1 short attempt) or describe
   as "work in progress towards the multi-qudit Clifford presentation" — the repo

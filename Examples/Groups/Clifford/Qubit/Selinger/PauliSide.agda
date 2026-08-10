@@ -41,8 +41,8 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
 open Symplectic using (Gen ; gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate ; _↥)
 
-open import Examples.Groups.Pauli.Presentation p-2 p-prime using (Γ-H)
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime using (Γ-H)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; pI ; pX ; pZ ; pIₙ)
 import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem
 open SympSem.Interpretation using (actg)

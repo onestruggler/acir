@@ -32,7 +32,7 @@ p-prime = from-yes (prime? 2)
 
 open PrimeModulus p-2 p-prime
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; _+ₚ_ ; _+₁_ ; pIₙ)
 import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem
 open SympSem.Interpretation using (actg ; actg-+)

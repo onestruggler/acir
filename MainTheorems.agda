@@ -62,7 +62,7 @@ import Examples.Groups.Symmetric.Normalization as SymNF
 import Examples.Groups.Symmetric.Loose.Semantics as SymLoose
 import Examples.Groups.Symmetric.Tight.Semantics as SymTight
 import Examples.Groups.Symmetric.Theorems as SymThm
-import Examples.Groups.Pauli.Presentation as Pauli
+import Examples.Groups.ProjectivePauli.Presentation as Pauli
 import Examples.Groups.Symplectic.Syntactics as SympSyn
 import Examples.Groups.Symplectic.Semantics as SympSem
 import Examples.Groups.Symplectic.Normalization as SympNrm
@@ -245,7 +245,7 @@ symmetric-completeness n = SymThm.Loose.completeness n
 ------------------------------------------------------------------------
 -- Concrete presentations: Pauli groups, compositionally
 --
--- Home: Examples.Groups.Pauli.Presentation.  For an odd prime p, the
+-- Home: Examples.Groups.ProjectivePauli.Presentation.  For an odd prime p, the
 -- n-qupit Pauli quotient (ℤ/pℤ × ℤ/pℤ)ⁿ is presented by assembling the
 -- cyclic presentation with the binary and n-fold direct-product
 -- constructions; no fresh coset enumeration is needed.

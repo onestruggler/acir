@@ -35,7 +35,7 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli)
 open import Zp.Mod-Lemmas p-2 p-prime
   using (mult ; mult-toℕ ; mult-p)
 

@@ -29,7 +29,7 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Presentation.GroupLike using (word-act)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli)
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic using (Gen ; Circuit ; _QRel,_===_)

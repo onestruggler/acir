@@ -66,7 +66,7 @@ import Normalization.NormalForm.Uniqueness.Propositional as NFU
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic

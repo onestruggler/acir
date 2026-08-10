@@ -66,7 +66,7 @@ open MS using (X ; Z ; _CRel,_===_ ; lemma-cong↑)
 
 open import Examples.Groups.Clifford.Qubit.Presentation
   using (PauliGen ; _Clifford,_===_ ; conj ; corr)
-open import Examples.Groups.Pauli.Presentation p-2 p-prime using (Γ-H)
+open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime using (Γ-H)
 
 -- The supporting modules.
 open import Examples.Groups.Clifford.Qubit.Selinger.Translation

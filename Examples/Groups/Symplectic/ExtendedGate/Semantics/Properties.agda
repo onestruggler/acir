@@ -37,7 +37,7 @@ open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 
 
 open Symplectic-Derived-Gen
-open import Examples.Groups.Pauli.Semantics p-2 p-prime public
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime public
 
 -- The action definitions act1 / act now live in the Base submodule,
 -- re-exported here so downstream (which imports Action) is unaffected.

@@ -49,7 +49,7 @@ open MS using (X ; Z ; _CRel,_===_ ; lemma-cong↑)
 
 open import Examples.Groups.Clifford.Qubit.Presentation
   using (PauliGen ; Z₀ ; genToVec ; vecToWord)
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; pI ; pX ; pZ ; pIₙ)
 import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem
 open SympSem.Interpretation using (actg)

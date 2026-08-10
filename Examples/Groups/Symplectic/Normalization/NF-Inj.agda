@@ -37,7 +37,7 @@ open import Word.Base using ([_]ʷ ; ε ; _•_)
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli ; pI)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli ; pI)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic using (Circuit ; Gen ; _↑)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem using (_≈ˢ_)
@@ -74,7 +74,7 @@ lemma-act-↑ (w • v) p ps =
 -- act-nf peels the normal form one wire at a time: the ML coset factor
 -- acts, the resulting head is fixed, and the inner NF acts on the tail.
 act-nf : ∀ {n} → NF n → Pauli n → Pauli n
-act-nf {0}    tt        = id
+act-nf {0}    _        = id
 act-nf {₁₊ n} (ih , lm) ps = head s ∷ act-nf ih (tail s)
   where s = act [ lm ]ᵐˡ ps
 
@@ -86,7 +86,7 @@ lemma-aux-vec (₁₊ n) (x ∷ v) = Eq.refl
 -- The circuit [ nf ] acts exactly as act-nf.  Structural induction on nf,
 -- using lemma-act-↑ for the lifted prefix.
 lemma-act-nf : ∀ {n} (nf : NF n) → act [ nf ] ≗ act-nf nf
-lemma-act-nf {0}    tt        [] = Eq.refl
+lemma-act-nf {0}    _        [] = Eq.refl
 lemma-act-nf {₁₊ n} (ih , lm) ps =
   let s = act [ lm ]ᵐˡ ps in
   begin
@@ -130,7 +130,7 @@ lemma-lm-tail-surj {n} lm qs =
 --     surjectivity of tail ∘ act [ lm ]ᵐˡ (lemma-lm-tail-surj), so the
 --     induction hypothesis applies.
 lemma-nf-inj : ∀ {n} (nf₁ nf₂ : NF n) → act-nf nf₁ ≗ act-nf nf₂ → nf₁ ≡ nf₂
-lemma-nf-inj {0}    tt tt _ = Eq.refl
+lemma-nf-inj {0}    _ _ _ = Eq.refl
 lemma-nf-inj {₁₊ n} (ih₁ , lm₁) (ih₂ , lm₂) hyp = ≡×≡⇒≡ (ih-eq , lm-eq)
   where
   open Eq.≡-Reasoning

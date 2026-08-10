@@ -60,8 +60,8 @@ open import Presentation.Definitions using (_IsPresentationOf_)
 import Presentation.Construct.Properties.SemiDirectProduct2 as SDP2
 
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (+ₚ-group)
-import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime as XZ
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (+ₚ-group)
+import Examples.Groups.ProjectivePauli.Presentation-Alt p-2 p-prime as XZ
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen as SimPres
 open import Examples.Groups.Clifford.Qupit.SemiDirect.Syntactics p-3 p-prime g* g-gen

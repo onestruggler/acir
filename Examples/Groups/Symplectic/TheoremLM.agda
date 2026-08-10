@@ -36,7 +36,7 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; sform ; sform1 ; pZ ; pX ; pI ; pZ₀ ; pX₀ ; pIₙ)
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
@@ -44,7 +44,7 @@ open Symplectic using (Circuit ; Gen)
 
 open import Data.Vec using (_∷ʳ_)
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (pZₙ)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (pZₙ)
 
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using (ML ; [_]ᵐˡ ; [_]ᵈ ; [_]ᵐ ; [_]ᵛᵇ ; [_]ᵃ ; A ; B ; E ; D ; M)

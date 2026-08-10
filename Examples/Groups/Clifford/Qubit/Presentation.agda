@@ -13,7 +13,7 @@
 --     extension-presentation S R̄ conj corr
 --
 -- where
---   * S    = the Pauli presentation      (Examples.Groups.Pauli.Presentation),
+--   * S    = the Pauli presentation      (Examples.Groups.ProjectivePauli.Presentation),
 --   * R̄    = the symplectic relations, taken from the SIMPLIFIED rule set
 --            (Symplectic.Simplified.Syntactics.Simplified-Relations),
 --   * conj = the symplectic action of a quotient generator on a Pauli
@@ -73,10 +73,10 @@ open import Presentation.Construct.Properties.Extension using (extension-present
 
 -- S : the Pauli presentation, over the generators (⊤ ⊎ ⊤) ⊎^ n
 -- (an X- and a Z-generator per qubit).
-open import Examples.Groups.Pauli.Presentation p-2 p-prime using (Γ-H)
+open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime using (Γ-H)
 
 -- The Pauli group as vectors, and the symplectic action actg.
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; pX ; pZ ; pI ; pIₙ)
 import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem
 open SympSem.Interpretation using (actg)
@@ -194,7 +194,7 @@ import Presentation.Base as PB
 open import Word.Base using (_ⁿ' ; _ʰ')
 open import Presentation.Construct.Properties.SemiDirectProduct2 as SD2
 
-open import Examples.Groups.Pauli.Presentation p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime
   using (Pauli-group ; Pauli-presentation)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
 open import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen

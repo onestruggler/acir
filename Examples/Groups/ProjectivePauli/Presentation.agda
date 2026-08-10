@@ -14,7 +14,7 @@
 open import Data.Nat using (ℕ ; suc ; 2+)
 open import Data.Nat.Primality using (Prime)
 
-module Examples.Groups.Pauli.Presentation (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
+module Examples.Groups.ProjectivePauli.Presentation (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Algebra.Bundles using (Group)
 open import Level using (0ℓ)

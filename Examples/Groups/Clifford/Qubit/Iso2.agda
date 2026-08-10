@@ -56,7 +56,7 @@ open import Examples.Groups.Clifford.Qubit.VSp
 
 open PrimeModulus p-2 p-prime
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli ; sform)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli ; sform)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime
   using (Symplectic ; _≈ˢ_ ; εˢ)
 open Symplectic using (ap ; ap⁻¹ ; invˡ ; invʳ)

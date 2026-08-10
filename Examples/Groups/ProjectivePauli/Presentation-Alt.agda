@@ -15,7 +15,7 @@
 -- normalising a word is just collecting exponents, which the
 -- commutation lemmas below already support.
 --
--- This file is `Presentation-Alt` because Examples.Groups.Pauli
+-- This file is `Presentation-Alt` because Examples.Groups.ProjectivePauli
 -- .Presentation presents the same group by other means.
 ------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ open import Presentation.GroupLike
 open import Presentation.Tactic.Rewriting hiding ([_])
 open import Data.Nat.Primality
 
-module Examples.Groups.Pauli.Presentation-Alt
+module Examples.Groups.ProjectivePauli.Presentation-Alt
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
 open import Zp.ModularArithmetic
@@ -372,7 +372,7 @@ import Normalization.NormalForm.Setoid as SNF
 import Normalization.StarPresentation
 
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using ( Pauli ; Pauli1 ; pI ; pIₙ ; pX ; pZ ; pX₀ ; pZ₀
         ; _+₁_ ; _+ₚ_ ; +ₚ-group
         ; +₁-identityˡ ; +₁-identityʳ

@@ -56,7 +56,7 @@ open import Examples.Groups.Clifford.Qupit.Simplified-V1.Forward p-3 p-prime g* 
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasCZ p-3 p-prime g* g-gen hiding (module CL ; module CLb)
 
 import Examples.Groups.Symplectic.Simplified.Lemmas p-2 p-prime g* g-gen as NSimL
-import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime as XZ
+import Examples.Groups.ProjectivePauli.Presentation-Alt p-2 p-prime as XZ
 
 
 module Iso-Inverse-Direction (n : ℕ) where

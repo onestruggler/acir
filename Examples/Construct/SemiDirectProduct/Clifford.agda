@@ -5,7 +5,7 @@
 --
 --   Pauli n ⋊ Sp(2n, ℤ/pℤ).
 --
--- The Pauli group Pauli n (Examples.Groups.Pauli.Semantics) carries the
+-- The Pauli group Pauli n (Examples.Groups.ProjectivePauli.Semantics) carries the
 -- linear action of the symplectic group Sp(2n, ℤ/pℤ)
 -- (Examples.Groups.Symplectic.Semantics): a symplectic transformation S
 -- acts on a Pauli by its underlying linear map `ap S`.  For a Clifford
@@ -27,7 +27,7 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; module �
 
 open import ForStdlib.Algebra.Construct.SemiDirectProduct as SDP using (Action)
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; _+ₚ_ ; pIₙ ; -ₚ_ ; +ₚ-group ; +ₚ-assoc ; +ₚ-identityˡ ; +ₚ-inverseˡ)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime
   using (Symplectic ; _≈ˢ_ ; εˢ ; _∘ˢ_ ; Sp-group)

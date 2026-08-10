@@ -13,7 +13,7 @@
 -- Proposition 2.55 (Presentation.Construct.Properties.Extension) asks for
 -- an Extension record whose kernel group is presented by the left factor
 -- of that relation — here Pauli-group n, the iterated direct product of
--- Examples.Groups.Pauli.Presentation.
+-- Examples.Groups.ProjectivePauli.Presentation.
 --
 -- The semantic extension assembled in Qubit.CliffordGroup has for kernel
 -- the Vec-based Pauli group +ₚ-group n instead.  The two are the same
@@ -56,9 +56,9 @@ p-2 = 0
 p-prime : Prime 2
 p-prime = from-yes (prime? 2)
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; pI ; pIₙ ; _+ₚ_ ; +ₚ-group)
-open import Examples.Groups.Pauli.Presentation p-2 p-prime using (Pauli-group)
+open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime using (Pauli-group)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
 open import Examples.Groups.Clifford.Qubit.Semantics
   using (CMS-extension ; CMS-group)

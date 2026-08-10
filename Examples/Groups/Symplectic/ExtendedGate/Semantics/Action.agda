@@ -18,7 +18,7 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open Symplectic-Derived-Gen
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
 
 -- The action of a single generator on a Pauli, and its extension to
 -- circuit words (act = word-act act1).

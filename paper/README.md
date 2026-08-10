@@ -68,7 +68,7 @@ Remaining pre-submission checklist:
   ```
 
 - The paper deliberately claims nothing from `Examples/Groups/Symplectic/`
-  or `Examples/Groups/Pauli/Semantics.agda` (work in progress, does not
+  or `Examples/Groups/ProjectivePauli/Semantics.agda` (work in progress, does not
   typecheck as of writing); if that changes, `sections/examples.tex`
   (\S "Work in progress") and `sections/conclusion.tex` are the places to
   update.

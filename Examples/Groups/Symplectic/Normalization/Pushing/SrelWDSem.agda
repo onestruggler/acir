@@ -56,7 +56,6 @@ open import Examples.Groups.Symplectic.Semantics p-2 p-prime
   using (_≈ˢ_ ; module Interpretation) renaming (Symplectic to Sym)
 open Sym using (ap)
 open Interpretation using (⟦_⟧)
-  using ([_]ᵐˡ)
 -- ract / ract-sound / [_]ᶜ are taken from PushML rather than from
 -- Normalization, which aliases them: Normalization still has open
 -- holes, so a --safe module cannot import it.
@@ -64,7 +63,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.PushML
   p-2 p-prime using (ract ; ract-sound ; [_]ᶜ)
 open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime
   using (ML)
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli)
 open import Examples.Groups.Symplectic.Normalization.NF-Inj p-2 p-prime
   using (lemma-lm-head-inj)
 open import Examples.Groups.Symplectic.Normalization.Uniqueness

@@ -192,7 +192,7 @@ open import Notations
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; sform ; sform1)
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; ι ; ι-+)
 -- The Pauli words X, Z as SYMPLECTIC circuits.  Figure 8 has its own
@@ -324,7 +324,7 @@ cact-pauliWord ((a , b) ∷ ps) s ((c , d) ∷ qs) = begin
 ------------------------------------------------------------------------
 -- Bilinearity and nondegeneracy of sform
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (_+ₚ_ ; _+₁_ ; pIₙ ; pX ; pZ ; pI ; +ₚ-group ; +ₚ-identityˡ)
 open import Examples.Groups.Clifford.Qubit.SignedPauli using (+-swap-middle)
 open import Algebra.Properties.Ring (+-*-ring p-2) using (-‿+-comm)

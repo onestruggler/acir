@@ -74,7 +74,7 @@ open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem
   using (_≈ˢ_ ; _∘ˢ_ ; εˢ ; Sp-isGroup)
 open Sem.Symplectic using (ap)
 open Sem.Interpretation using (⟦_⟧)
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1)
 
 open import Examples.Groups.Symplectic.SoundnessDirect p-2 p-prime

@@ -51,7 +51,7 @@ open MS using (_CRel,_===_ ; srel ; lemma-cong↑)
 
 open import Examples.Groups.Clifford.Qubit.Presentation
   using (PauliGen ; _Clifford,_===_ ; conj ; corr)
-open import Examples.Groups.Pauli.Presentation p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime
   using (Γ-H ; Pauli-presentation)
 open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
   using (module Simplified-Relations)

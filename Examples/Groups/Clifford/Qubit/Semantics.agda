@@ -56,7 +56,7 @@ p-prime = from-yes (prime? 2)
 
 open import ForStdlib.Algebra.Construct.Extension using (Extension)
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (+ₚ-group)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (+ₚ-group)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
 
 import Examples.Groups.Clifford.Qubit.CliffordGroup as CG

@@ -73,7 +73,7 @@ p-prime = from-yes (prime? 2)
 
 open PrimeModulus p-2 p-prime
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using ( Pauli ; Pauli1 ; pI ; pX ; pZ ; pIₙ ; sform ; sform1
         ; _+₁_ ; _+ₚ_ ; -ₚ_ ; +₁-identityʳ
         ; +ₚ-assoc ; +ₚ-identityˡ ; +ₚ-identityʳ ; +ₚ-inverseʳ ; +ₚ-group )

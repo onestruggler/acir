@@ -95,7 +95,7 @@ open import Examples.Groups.Clifford.Qubit.Presentation
 open import Examples.Groups.Clifford.Qubit.ExtensionSoundness
   using (pw ; conj-sound ; twisted-sound)
 
-open import Examples.Groups.Pauli.Presentation p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime
   using (Γ-H ; Pauli-group ; Pauli-presentation)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
@@ -112,7 +112,7 @@ import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen
 open import Data.Unit using (tt)
 open import Data.Vec using (_∷_)
 open import Notations
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (Pauli ; pI ; pX ; pZ)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli ; pI ; pX ; pZ)
 open import Examples.Groups.Clifford.Qubit.CMS
   using ( Clifford-extension ; Clifford-group ; pauliIncl
         ; vec ; nest ; vec∘nest ; vec-cong ; vec-injective ; vec-ε )

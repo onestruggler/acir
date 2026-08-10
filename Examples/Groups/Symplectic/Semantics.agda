@@ -8,8 +8,8 @@
 -- of the phase space (ℤ/pℤ)²ⁿ = Pauli n that preserve the symplectic
 -- form sform.  The pieces are collected from the scattered definitions:
 --
---   * the phase space  Pauli n            (Examples.Groups.Pauli.Semantics),
---   * the symplectic form  sform          (Examples.Groups.Pauli.Semantics),
+--   * the phase space  Pauli n            (Examples.Groups.ProjectivePauli.Semantics),
+--   * the symplectic form  sform          (Examples.Groups.ProjectivePauli.Semantics),
 --   * "acts symplectically" = linear + sform-preserving; every Clifford
 --     circuit acts this way — its action `act` (Action.agda) is linear
 --     and preserves sform (Symplectic-Derived.lemma-sform-fix).
@@ -38,7 +38,7 @@ open import ForStdlib.Algebra.IndexedGroups using (IndexedGroup ; Embedding)
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; sform ; sform1 ; _+ₚ_ ; _*ₚ_ ; _+₁_ ; _*₁_ ; pI)
 
 ------------------------------------------------------------------------

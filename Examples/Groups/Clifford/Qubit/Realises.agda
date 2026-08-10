@@ -39,9 +39,9 @@ open import Presentation.Construct.Base using (_⊕^_ ; _⊎^_)
 
 open import Examples.Groups.Clifford.Qubit.Presentation
   using (p-2 ; p-prime ; PauliGen ; genToVec)
-open import Examples.Groups.Pauli.Presentation p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime
   using (Γ-H ; Pauli-group ; Pauli-presentation)
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; pI ; pX ; pZ)
 open import Examples.Groups.Clifford.Qubit.CMS using (vec ; vec-ε)
 

@@ -10,7 +10,7 @@ GREEN (verified, citable as theorems):
 - Examples/Amalgamations/CliffordT1.agda    (root 2)
 - Examples/Amalgamations/QutritCliffordT1.agda (root 3)
 - Examples/Amalgamations/U33Di.agda         (root 4)
-- Examples/Groups/Pauli/Presentation.agda   (EXIT=0 checked)
+- Examples/Groups/ProjectivePauli/Presentation.agda   (EXIT=0 checked)
 - Examples/Construct/SemiDirectProduct/SnD.agda (wreath; EXIT=0)
 - Presentation/Construct/Properties/Extension.agda (EXIT=0; despite a stale
   "remaining goal" comment at line ~101 the file typechecks under --safe)
@@ -19,7 +19,7 @@ GREEN (verified, citable as theorems):
 - Examples/Groups/Cyclic/Theorems.agda, Examples/Groups/Trivial.agda (in root closures)
 
 STATUS FLIPS (2026-07-10, after user's Clifford-pres addition):
-- Examples/Groups/Pauli/Semantics.agda — NOW GREEN (user fixed the metas).
+- Examples/Groups/ProjectivePauli/Semantics.agda — NOW GREEN (user fixed the metas).
 - Examples/Groups/Clifford/Qubit/Presentation.agda — NEW, GREEN (143 lines):
   Clifford-pres n = extension-presentation (Γ-H ⊕^ n) (n QRel,_===_) conj corr
   — the n-qubit Clifford relation set as a group extension (Selinger
@@ -41,7 +41,7 @@ STATUS FLIPS (2026-07-10, after user's Clifford-pres addition):
 RED / WIP (do NOT claim; may mention as work-in-progress):
 - Examples/Construct/DirectProduct/S3xC5/Presentation.agda — ParseError 47.40
   (presentation upgrade commented out; sub-presentation WIP)
-- Examples/Groups/Pauli/Semantics.agda — UnsolvedMetaVariables 257–304
+- Examples/Groups/ProjectivePauli/Semantics.agda — UnsolvedMetaVariables 257–304
   (relating ⊗-group to the Vec-based Pauli carrier)
 - Examples/Groups/Symplectic/** — 100+ files, depends on Pauli/Semantics →
   blocked. This is the in-progress multi-qudit Clifford/symplectic completeness
@@ -278,7 +278,7 @@ Circuit n = Word (Gen n)
 | 2 | TrivialRel over any A | Terminal.group | ibid. P2.Presentation.presentation (233) |
 | 3 | (₁₊ n) Cn,_===_ (T^{n+1} = ε) | Cn-group (₁₊ n) (= ℤ/(n+1)ℤ on Fin) | Examples/Groups/Cyclic/Theorems.agda presentation (61) |
 | 4 | n VRel,_===_ (circuit Coxeter: order, yang-baxter + cong↑/comm₂) | Permutation′-group n (stdlib permutations of Fin n) | Examples/Groups/Symmetric/Theorems.agda Tight.presentation (74) |
-| 5 | Cₚ ⋄ Cₚ ⋄ CommRel | H-group = ℤ/p × ℤ/p | Examples/Groups/Pauli/Presentation.agda H-pres (58) |
+| 5 | Cₚ ⋄ Cₚ ⋄ CommRel | H-group = ℤ/p × ℤ/p | Examples/Groups/ProjectivePauli/Presentation.agda H-pres (58) |
 | 6 | Γ-H ⊕^ n | Pauli-group n = (ℤ/p×ℤ/p)ⁿ | ibid. Pauli-presentation (71) — p an odd prime param (Prime (2+ p-2)) |
 | 7 | (Γ₀ m ⊕^ n) ⋄ (n VRel,_===_) ⋄ ConjRelʷ conj | wreath-group = (ℤ/(m+1)ℤ)ⁿ ⋊ Sₙ = ℤ/(m+1)ℤ ≀ Sₙ | Examples/Construct/SemiDirectProduct/SnD.agda Wreath.presentation (337) — SIGNED PERMUTATIONS at m+1=2; generalized symmetric group G(N,1,n) generally |
 plus the conditional construction theorems above (dpres for ⊕, ⋊, *⋆⋆, ext, ⊕^).

@@ -64,7 +64,7 @@ open import ForStdlib.Algebra.Construct.Extension using (Extension)
 open import ForStdlib.Algebra.Morphism.Consequences
   using (isMonoidHomomorphism⇒isGroupHomomorphism)
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using ( Pauli ; Pauli1 ; sform ; sform1 ; sform1-antisym ; pI ; pIₙ
         ; _+₁_ ; -₁_ ; _+ₚ_ ; -ₚ_ ; +ₚ-comm )
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime
@@ -215,7 +215,7 @@ half-half x = begin
 --
 -- sform is ℤ/pℤ-bilinear, vanishes on the identity Pauli and is
 -- alternating.  (These belong next to sform in
--- Examples.Groups.Pauli.Semantics; they live here while only this
+-- Examples.Groups.ProjectivePauli.Semantics; they live here while only this
 -- development needs them.)
 
 private

@@ -55,7 +55,7 @@ module Examples.Groups.Clifford.Qupit.Simplified-V1.Forward
 open import Examples.Groups.Clifford.Qupit.SemiDirect.Syntactics p-3 p-prime g* g-gen
 open import Examples.Groups.Clifford.Qupit.Simplified-V1.LemmasCZ p-3 p-prime g* g-gen hiding (module CL ; module CLb)
 
-import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime as XZ
+import Examples.Groups.ProjectivePauli.Presentation-Alt p-2 p-prime as XZ
 
 module Iso (n : ℕ) where
 

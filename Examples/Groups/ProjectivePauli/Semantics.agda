@@ -10,7 +10,7 @@ open import Data.Vec hiding ([_])
 open import Notations
 open import Data.Nat.Primality
 
-module Examples.Groups.Pauli.Semantics (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
+module Examples.Groups.ProjectivePauli.Semantics (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime

@@ -55,7 +55,7 @@ import Presentation.Properties as PP
 import Relation.Binary.PropositionalEquality as Eq
 import Relation.Binary.Reasoning.Setoid as SR
 
-import Examples.Groups.Pauli.Presentation-Alt p-2 p-prime as XZ
+import Examples.Groups.ProjectivePauli.Presentation-Alt p-2 p-prime as XZ
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 -- Lemmas1 / Lemmas1b / Symplectic-Sim-GroupLike moved here when
 -- Simplified.Syntactics was split up.

@@ -54,7 +54,7 @@ open Symplectic using (Gen ; gate₁ ; H-gate ; _↥ ; _↑ ; S ; H)
 import Examples.Groups.Clifford.Qubit.Selinger.Figure8-Mod-Scalar p-2 p-prime as MS
 open MS using (X ; Z)
 
-open import Examples.Groups.Pauli.Presentation p-2 p-prime using (Γ-H)
+open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime using (Γ-H)
 
 open import Examples.Groups.Clifford.Qubit.Presentation
   using (PauliGen ; _Clifford,_===_ ; conj ; corr ; shift-gen ; shiftPauli)

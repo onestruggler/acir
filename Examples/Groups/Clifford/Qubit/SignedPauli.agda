@@ -44,7 +44,7 @@ p-prime = from-yes (prime? 2)
 
 open PrimeModulus p-2 p-prime
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using ( Pauli ; Pauli1 ; pIₙ ; _+ₚ_ ; -ₚ_
         ; +ₚ-assoc ; +ₚ-identityˡ ; +ₚ-identityʳ ; +ₚ-inverseˡ ; +ₚ-inverseʳ )
 

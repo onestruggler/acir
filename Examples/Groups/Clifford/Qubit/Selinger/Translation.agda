@@ -43,7 +43,7 @@ open MS using (X ; Z)
 
 open import Examples.Groups.Clifford.Qubit.Presentation
   using (PauliGen ; vecToWord)
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (pIₙ)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (pIₙ)
 
 private
   variable

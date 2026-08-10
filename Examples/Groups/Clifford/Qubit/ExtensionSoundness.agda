@@ -44,9 +44,7 @@
 
 -- --call-by-name: the axiom-sound clauses for selinger-c14 / c15 have
 -- long words in their goals, and call-by-need normalisation of cact
--- along them exhausts memory (see the note at axiom-sound).  The heavy
--- symplectic files carry the same flag for the same reason -- the whole
--- of BR/Two and BR/Three, e.g. BR.Three.DD-CZ.
+-- along them exhausts memory (see the note at axiom-sound). 
 {-# OPTIONS --cubical-compatible --safe --call-by-name #-}
 
 module Examples.Groups.Clifford.Qubit.ExtensionSoundness where
@@ -85,7 +83,7 @@ open import Examples.Groups.Clifford.Qubit.CliffordGroup using (identityˡᶜ)
 
 open PrimeModulus p-2 p-prime
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using ( Pauli ; Pauli1 ; pI ; pIₙ ; sform ; sform1 ; _+ₚ_
         ; +₁-identityˡ ; +ₚ-identityˡ )
 import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem

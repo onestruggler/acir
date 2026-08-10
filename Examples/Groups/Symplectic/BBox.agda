@@ -24,7 +24,7 @@ open import Zp.ModularArithmetic
 open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; sform1 ; sform ; pZ ; pX ; pI ; pIₙ ; pZ₀ ; pX₀)
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
@@ -113,7 +113,7 @@ lemma-bbox (₁₊ va' , vb) t = begin
 ------------------------------------------------------------------------
 -- The b-vector clears the whole row:  act [ ps ]ᵛᵇ (pZ ∷ ps) = pZₙ.
 
-open import Examples.Groups.Pauli.Semantics p-2 p-prime using (pZₙ)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (pZₙ)
 
 lemma-bboxes : ∀ (ps : Pauli n) → act [ ps ]ᵛᵇ (pZ ∷ ps) ≡ pZₙ
 lemma-bboxes {0}    []       = Eq.refl
