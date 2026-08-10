@@ -288,8 +288,12 @@ c8-sound {n} (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.trans lhs (Eq.sym rhs)
   rhs = Eq.trans (Eq.cong (λ y → cact CZ (cact (X ↓) y)) (cact-Z↑ s a b a' b' ps))
                  (Eq.cong (cact CZ) (cact-X↓ (s + R) a b ((a' , b') ∷ ps)))
 
--- C9:  X↑·CZ = CZ·Z↓·X↑.  Mirror of C8 with the wires exchanged.
-c9-sound : (x : P4Carrier (₂₊ n)) → cact (X ↑ • CZ) x ≡ cact (CZ • Z ↓ • X ↑) x
+-- C9:  X↑·CZ = CZ·X↑·Z↓.  Mirror of C8 with the wires exchanged — the
+-- right-hand side lists the acted Pauli first, as C8's does, so the two
+-- proofs now have the same shape as well as the same content.  (It used
+-- to read CZ·Z↓·X↑; the two differ by commuting Paulis on disjoint
+-- wires, so only the bookkeeping order of their two phases changes.)
+c9-sound : (x : P4Carrier (₂₊ n)) → cact (X ↑ • CZ) x ≡ cact (CZ • X ↑ • Z ↓) x
 c9-sound {n} (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.trans lhs (Eq.sym rhs)
   where
   P Q R : Φ
@@ -297,20 +301,21 @@ c9-sound {n} (s , (a , b) ∷ (a' , b') ∷ ps) = Eq.trans lhs (Eq.sym rhs)
   Q = ι b'
   R = ι a
   mid : P4Carrier (₂₊ n)
-  mid = ((s + Q) + R) + P , (a , b + a') ∷ (a' , b' + a) ∷ ps
-  phase : (s + P) + ι (b' + a) ≡ ((s + Q) + R) + P
+  mid = ((s + R) + Q) + P , (a , b + a') ∷ (a' , b' + a) ∷ ps
+  phase : (s + P) + ι (b' + a) ≡ ((s + R) + Q) + P
   phase = begin
     (s + P) + ι (b' + a)
       ≡⟨ Eq.cong ((s + P) +_) (ι-+ b' a) ⟩
     (s + P) + (Q + R)
-      ≡⟨ rearrangeQRP s P Q R ⟩
-    ((s + Q) + R) + P ∎
+      ≡⟨ rearrangeRQP s P Q R ⟩
+    ((s + R) + Q) + P ∎
   lhs : cact (X ↑ • CZ) (s , (a , b) ∷ (a' , b') ∷ ps) ≡ mid
   lhs = Eq.trans (cact-X↑ (s + P) a (b + a') a' (b' + a) ps)
                  (Eq.cong₂ _,_ phase Eq.refl)
-  rhs : cact (CZ • Z ↓ • X ↑) (s , (a , b) ∷ (a' , b') ∷ ps) ≡ mid
-  rhs = Eq.trans (Eq.cong (λ y → cact CZ (cact (Z ↓) y)) (cact-X↑ s a b a' b' ps))
-                 (Eq.cong (cact CZ) (cact-Z↓ (s + Q) a b ((a' , b') ∷ ps)))
+  rhs : cact (CZ • X ↑ • Z ↓) (s , (a , b) ∷ (a' , b') ∷ ps) ≡ mid
+  rhs = Eq.trans (Eq.cong (λ y → cact CZ (cact (X ↑) y))
+                          (cact-Z↓ s a b ((a' , b') ∷ ps)))
+                 (Eq.cong (cact CZ) (cact-X↑ (s + R) a b a' b' ps))
 
 ------------------------------------------------------------------------
 -- C12:  CZ↑·CZ = CZ·CZ↑.  Both CZ's are diagonal, hence commute; on the

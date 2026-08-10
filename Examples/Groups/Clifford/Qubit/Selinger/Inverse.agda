@@ -71,7 +71,7 @@ open import Examples.Groups.Clifford.Qubit.Selinger.Translation
   using (f ; g ; gʷ≡ᵣ ; pauliGen→word ; X-gen ; Z-gen)
 open import Examples.Groups.Clifford.Qubit.Selinger.PauliVec using (P-X ; P-Z)
 open import Examples.Groups.Clifford.Qubit.Selinger.PauliSide
-  using (Z-order ; c8-pauli ; c9-pauli)
+  using (Z-order ; c8-pauli ; c9-pauli ; comm-Z₀-X₁)
 open import Examples.Groups.Clifford.Qubit.Selinger.Extension
   using ( twist ; conj-ax ; lefts ; M≈ε ; H²≈ε ; Z-gen-eq ; X-gen-eq
         ; ⇑ ; ⇑ᵣ ; lemma-shift ; pauli-eq)
@@ -180,9 +180,13 @@ module Two (m : ℕ) where
     [ CZ ]ᵣ • ([ X {₁₊ m} ]ᵣ • [ Z {m} ↑ ]ᵣ)
       ∎
 
-  -- C9: the mirror image, CZ X₁ CZ = Z₀ X₁.
+  -- C9: the mirror image, CZ X₁ CZ = X₁ Z₀.  The chain is unchanged up
+  -- to its last two steps: conj-CZ-X↑ produces the Pauli pair as Z₀·X₁,
+  -- and C9's right-hand side now lists them the other way round, so the
+  -- two are swapped on the Pauli side (comm-Z₀-X₁ — disjoint wires)
+  -- before being read back as gate words.
   c9 : ([ X {m} ↑ ]ᵣ • [ CZ ]ᵣ)
-       ≈ ([ CZ ]ᵣ • ([ Z {₁₊ m} ]ᵣ • [ X {m} ↑ ]ᵣ))
+       ≈ ([ CZ ]ᵣ • ([ X {m} ↑ ]ᵣ • [ Z {₁₊ m} ]ᵣ))
   c9 = begin
     [ X {m} ↑ ]ᵣ • [ CZ ]ᵣ
       ≈⟨ cleft (sym (X↑-eq {m})) ⟩
@@ -203,8 +207,10 @@ module Two (m : ℕ) where
     ([ CZ ]ᵣ • [ inj₁ (Z-gen {₁₊ m}) ]ʷ) • [ inj₁ (inj₂ (X-gen {m})) ]ʷ
       ≈⟨ assoc ⟩
     [ CZ ]ᵣ • ([ inj₁ (Z-gen {₁₊ m}) ]ʷ • [ inj₁ (inj₂ (X-gen {m})) ]ʷ)
-      ≈⟨ cright (cong (Z-gen-eq {₁₊ m}) (X↑-eq {m})) ⟩
-    [ CZ ]ᵣ • ([ Z {₁₊ m} ]ᵣ • [ X {m} ↑ ]ᵣ)
+      ≈⟨ cright (lefts (comm-Z₀-X₁ {m})) ⟩
+    [ CZ ]ᵣ • ([ inj₁ (inj₂ (X-gen {m})) ]ʷ • [ inj₁ (Z-gen {₁₊ m}) ]ʷ)
+      ≈⟨ cright (cong (X↑-eq {m}) (Z-gen-eq {₁₊ m})) ⟩
+    [ CZ ]ᵣ • ([ X {m} ↑ ]ᵣ • [ Z {₁₊ m} ]ᵣ)
       ∎
 
   -- C10 and C11: the simplified relators, then one CZ/S transposition.

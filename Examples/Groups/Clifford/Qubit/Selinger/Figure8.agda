@@ -28,28 +28,12 @@
 -- other structural fact — that it does not depend on the wire it is
 -- written on, so that ω ↑ and ω name the same generator — is
 -- Circuit.Base's ω↑=ω.  This module used to state that itself, as cω↑;
--- both it and centrality now come from Lift-Relation, and C1 and C4 are
--- the only relations Figure 8 states about ω.
---
--- An earlier version of this module had no 0-ary gates and made ω the
--- derived one-qubit word (SH)³.  Centrality then had to be an axiom
--- (cω), because nothing else made a derived word commute; without it the
--- presentation was too weak — at width 1 the relations were exactly
--- C1–C4, i.e. ⟨S , H ∣ H² , S⁴ , (SH)²⁴⟩, the von Dyck group D(4,2,24),
--- which is infinite (¼ + ½ + ¹⁄₂₄ < 1), whereas C(1) has order 192.  With
--- a central ω of order 8 the width-1 quotient by ⟨ω⟩ is
--- ⟨S , H ∣ H² , S⁴ , (SH)³⟩ ≅ S₄, and 24 · 8 = 192.  That axiom was also
--- larger than it needed to be: quantified over every generator, its
--- shifted instances followed from comm₁ (ω was a word of 1-ary gates on
--- wire 0) and its S instance from the H instance and C2 (a power
--- commutes with its base, so ω commuted with SH for free, and S = SHH).
--- Only the H and CZ instances carried content.  All of it goes away
--- here.  C4, likewise, was an identity there and is a genuine relation
--- here.
+-- both it and centrality now come from Lift-Relation.
 --
 -- This is the *exact* Clifford group (with the order-8 scalar ω and
 -- S⁴ = 1, not the phaseless S² = 1 of the symplectic quotient).  The
--- structural rules (cong↑, comm₀, comm₁, comm₂) come from Lift-Relation.
+-- structural rules (cong↑, comm₀, comm₁, comm₂, ω↑=ω) come from
+-- Lift-Relation.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -143,42 +127,33 @@ infix 4 _Sel,_===_
 data _Sel,_===_ : (n : ℕ) → CRel n where
 
   -- (a) n ≥ 0.  The scalar is 0-ary, so this really is every width.
-  c1  : ∀ {n} → n Sel,  ω ^ 8 === ε
+  c1  : n Sel,  ω ^ 8 === ε
 
   -- (b) n ≥ 1
-  c2  : ∀ {n} → (₁₊ n) Sel,  H ^ 2 === ε
-  c3  : ∀ {n} → (₁₊ n) Sel,  S ^ 4 === ε
-
-  -- C4 names the scalar: the one-qubit word (SH)³ IS ω.  With ω a
-  -- generator this is a genuine relation (it was an identity in the
-  -- version that defined ω to be (SH)³), and it is the only place the
-  -- scalar meets the wire-consuming gates.
-  c4  : ∀ {n} → (₁₊ n) Sel,  SH ^ 3 === ω
+  c2  : (₁₊ n) Sel,  H ^ 2 === ε
+  c3  : (₁₊ n) Sel,  S ^ 4 === ε
+  c4  : (₁₊ n) Sel,  SH ^ 3 === ω
 
   -- (c) n ≥ 2
-  c5  : ∀ {n} → (₂₊ n) Sel,  CZ ^ 2 === ε
-  c6  : ∀ {n} → (₂₊ n) Sel,  S ↓ • CZ === CZ • S ↓
-  c7  : ∀ {n} → (₂₊ n) Sel,  S ↑ • CZ === CZ • S ↑
-  c8  : ∀ {n} → (₂₊ n) Sel,  X ↓ • CZ === CZ • X ↓ • Z ↑
-  c9  : ∀ {n} → (₂₊ n) Sel,  X ↑ • CZ === CZ • Z ↓ • X ↑
-  c10 : ∀ {n} → (₂₊ n) Sel,  CZ • H ↑ • CZ ===
-                             SH ↑ • CZ • (S • H • S) ↑ • S ↓ • ω⁻¹
-  c11 : ∀ {n} → (₂₊ n) Sel,  CZ • H ↓ • CZ ===
-                             SH ↓ • CZ • (S • H • S) ↓ • S ↑ • ω⁻¹
-
-  -- (Neither of the scalar's two structural facts needs an axiom here:
-  -- centrality is Circuit.Base's comm₀ and width-independence is its
-  -- ω↑=ω.  C1 and C4 are the only relations Figure 8 states about ω.)
+  c5  : (₂₊ n) Sel,  CZ ^ 2 === ε
+  c6  : (₂₊ n) Sel,  S ↓ • CZ === CZ • S ↓
+  c7  : (₂₊ n) Sel,  S ↑ • CZ === CZ • S ↑
+  c8  : (₂₊ n) Sel,  X ↓ • CZ === CZ • X ↓ • Z ↑
+  c9  : (₂₊ n) Sel,  X ↑ • CZ === CZ • X ↑ • Z ↓
+  c10 : (₂₊ n) Sel,
+    CZ • H ↑ • CZ === SH ↑ • CZ • (S • H • S) ↑ • S ↓ • ω⁻¹
+  c11 : (₂₊ n) Sel,
+    CZ • H ↓ • CZ === SH ↓ • CZ • (S • H • S) ↓ • S ↑ • ω⁻¹
 
   -- (d) n ≥ 3
-  c12 : ∀ {n} → (₃₊ n) Sel,  CZ ↑ • CZ === CZ • CZ ↑
-  c13 : ∀ {n} → (₃₊ n) Sel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
-  c14 : ∀ {n} → (₃₊ n) Sel,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
-  c15 : ∀ {n} → (₃₊ n) Sel,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
+  c12 : (₃₊ n) Sel,  CZ ↑ • CZ === CZ • CZ ↑
+  c13 : (₃₊ n) Sel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
+  c14 : (₃₊ n) Sel,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
+  c15 : (₃₊ n) Sel,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
 
 ------------------------------------------------------------------------
 -- The full relation, with the structural rules
--- srel / cong↑ / comm₀ / comm₁ / comm₂.
+-- srel / cong↑ / comm₀ / comm₁ / comm₂ / ω↑=ω.
 
 open Lift-Relation _Sel,_===_ public
 

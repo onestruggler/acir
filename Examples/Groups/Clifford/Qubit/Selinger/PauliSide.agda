@@ -28,8 +28,10 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Notations
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^'_ ; wmap ; WRel)
 
+open import Data.Unit using (tt)
+
 import Presentation.Base as PB
-open import Presentation.Construct.Base using (_⋄_⋄_ ; _⊕^_)
+open import Presentation.Construct.Base using (_⋄_⋄_ ; _⊕^_ ; CommRel)
 
 import Examples.Groups.Cyclic.Syntactics as CyS
 
@@ -231,3 +233,13 @@ c9-pauli {m} =
   PB.trans (PB.cong conj-CZ-Z conj-CZ-X↑)
            (PB.trans (PB.sym PB.assoc)
                      (PB.trans (PB.cong (Z-order {₁₊ m}) PB.refl) PB.left-unit))
+
+-- Z on wire 0 and X on wire 1 are Paulis on disjoint wires, so they
+-- commute outright: this is the CommRel component of the n-fold direct
+-- product.  C9's right-hand side lists them the other way round from
+-- the order conj-CZ-X↑ produces, so Selinger.Inverse needs this step.
+comm-Z₀-X₁ : PB._≈_ (Γ-H ⊕^ (₂₊ m))
+                    ([ Z-gen {₁₊ m} ]ʷ • [ inj₂ (X-gen {m}) ]ʷ)
+                    ([ inj₂ (X-gen {m}) ]ʷ • [ Z-gen {₁₊ m} ]ʷ)
+comm-Z₀-X₁ {m} =
+  PB.axiom (_⋄_⋄_.mid (CommRel.comm (inj₂ tt) (X-gen {m})))

@@ -136,6 +136,10 @@ module Wire01 (m : ℕ) where
     (CZ • X ↑) • ε                ≈⟨ cright (sym (axiom (srel MS.c5))) ⟩
     (CZ • X ↑) • (CZ • CZ)        ≈⟨ by-assoc auto ⟩
     (CZ • (X ↑ • CZ)) • CZ        ≈⟨ cleft (cright (axiom (srel MS.c9))) ⟩
+    -- C9 lists the acted Pauli first (X↑ then Z), as C8 does; the shape
+    -- this lemma feeds downstream wants them the other way round, and
+    -- they are on disjoint wires, so ↑-comm-Z swaps them.
+    (CZ • (CZ • (X ↑ • Z))) • CZ  ≈⟨ cleft (cright (cright (↑Comm.↑-comm-Z (₁₊ m) X))) ⟩
     (CZ • (CZ • (Z • X ↑))) • CZ  ≈⟨ cleft (sym assoc) ⟩
     ((CZ • CZ) • (Z • X ↑)) • CZ  ≈⟨ cleft (cleft (axiom (srel MS.c5))) ⟩
     (ε • (Z • X ↑)) • CZ          ≈⟨ cleft left-unit ⟩

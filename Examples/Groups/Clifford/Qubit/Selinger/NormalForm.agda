@@ -116,7 +116,12 @@ open import Examples.Groups.Symplectic.Normalization p-2 p-prime
   using (nfp'-sec ; nfp'-sec-agree)
 open import Examples.Groups.Symplectic.Normalization.Uniqueness p-2 p-prime
   using (⟦[]⟧-injective)
-open import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime using (ω)
+-- The scalar as a SYMPLECTIC word.  Figure 8 has its own gate set now,
+-- in which ω is a 0-ary generator, so its ω is a word over a different
+-- alphabet; everything here is a symplectic circuit, and what it needs
+-- is the word that generator names.
+ω : ∀ {n} → Word (Gen (₁₊ n))
+ω = (S • H) ^ 3
 
 -- The simplified rule set, and its identification with the original one.
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as Sim

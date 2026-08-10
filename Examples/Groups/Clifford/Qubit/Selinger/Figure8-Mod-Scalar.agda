@@ -8,15 +8,13 @@
 --
 -- The scalars form the central subgroup ⟨ω⟩ ≅ ℤ/8, so the quotient is
 -- presented by the same generators and the same relations plus ω = 1.
--- Adding that one relation is what "removing the scalars" means; simply
--- deleting the ω's would present a different (larger) group, since the
--- ω-free forms of C10 and C11 are not consequences of Figure 8 on their
--- own.  Concretely, against Figure8.agda:
+-- Adding that one relation is what "removing the scalars" means: by
+-- applying direct consequences of ω = 1, we get the mod-scalar
+-- version of Figure 8, oncretely:
 --
---   * C4, which is definitional there (SHSHSH = ω), becomes SHSHSH = 1.
---     This is the only relation added, and it is the quotient map.
---   * C1 (ω⁸ = 1) is dropped: it now follows from C4 by congruence.
---   * The ω⁻¹ tails of C10 and C11 are dropped, as is ω⁻¹ itself.
+--   * C4, becomes SHSHSH = 1.
+--   * C1 (ω⁸ = 1) is dropped, so is the generator ω.
+--   * The ω⁻¹ tails of C10 and C11 are dropped.
 --   * Everything else — C2, C3, C5–C9, C12–C15, and the derived words
 --     X = HSSH, Z = SS — is verbatim.
 --
@@ -79,32 +77,28 @@ infix 4 _Sel,_===_
 data _Sel,_===_ : (n : ℕ) → CRel n where
 
   -- (b) n ≥ 1
-  c2  : ∀ {n} → (₁₊ n) Sel,  H ^ 2 === ε
-  c3  : ∀ {n} → (₁₊ n) Sel,  S ^ 4 === ε
-
-  -- C4 is SHSHSH = ω in Figure 8, where it defines the scalar.  Modulo
-  -- scalars ω is the identity, so the same relation reads SHSHSH = 1.
-  -- This replaces C1 (ω⁸ = 1), which follows from it.
-  c4  : ∀ {n} → (₁₊ n) Sel,  SH ^ 3 === ε
+  c2  : (₁₊ n) Sel,  H ^ 2 === ε
+  c3  : (₁₊ n) Sel,  S ^ 4 === ε
+  c4  : (₁₊ n) Sel,  SH ^ 3 === ε
 
   -- (c) n ≥ 2
-  c5  : ∀ {n} → (₂₊ n) Sel,  CZ ^ 2 === ε
-  c6  : ∀ {n} → (₂₊ n) Sel,  S ↓ • CZ === CZ • S ↓
-  c7  : ∀ {n} → (₂₊ n) Sel,  S ↑ • CZ === CZ • S ↑
-  c8  : ∀ {n} → (₂₊ n) Sel,  X ↓ • CZ === CZ • X ↓ • Z ↑
-  c9  : ∀ {n} → (₂₊ n) Sel,  X ↑ • CZ === CZ • Z ↓ • X ↑
+  c5  : (₂₊ n) Sel,  CZ ^ 2 === ε
+  c6  : (₂₊ n) Sel,  S ↓ • CZ === CZ • S ↓
+  c7  : (₂₊ n) Sel,  S ↑ • CZ === CZ • S ↑
+  c8  : (₂₊ n) Sel,  X ↓ • CZ === CZ • X ↓ • Z ↑
+  c9  : (₂₊ n) Sel,  X ↑ • CZ === CZ • X ↑ • Z ↓
 
   -- C10 and C11 lose their trailing ω⁻¹.
-  c10 : ∀ {n} → (₂₊ n) Sel,  CZ • H ↑ • CZ ===
+  c10 : (₂₊ n) Sel,  CZ • H ↑ • CZ ===
                              SH ↑ • CZ • (S • H • S) ↑ • S ↓
-  c11 : ∀ {n} → (₂₊ n) Sel,  CZ • H ↓ • CZ ===
+  c11 : (₂₊ n) Sel,  CZ • H ↓ • CZ ===
                              SH ↓ • CZ • (S • H • S) ↓ • S ↑
 
   -- (d) n ≥ 3
-  c12 : ∀ {n} → (₃₊ n) Sel,  CZ ↑ • CZ === CZ • CZ ↑
-  c13 : ∀ {n} → (₃₊ n) Sel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
-  c14 : ∀ {n} → (₃₊ n) Sel,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
-  c15 : ∀ {n} → (₃₊ n) Sel,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
+  c12 : (₃₊ n) Sel,  CZ ↑ • CZ === CZ • CZ ↑
+  c13 : (₃₊ n) Sel,  ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
+  c14 : (₃₊ n) Sel,  (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
+  c15 : (₃₊ n) Sel,  (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
 
 ------------------------------------------------------------------------
 -- The full relation, with the structural rules srel/cong↑/comm₁/comm₂.
