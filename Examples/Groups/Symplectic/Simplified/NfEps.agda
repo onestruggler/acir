@@ -30,7 +30,7 @@
 --              needs more than ≈q, because conjss recurses on the word:
 --              it wants conj to respect ≈q in its acting argument, which
 --              is exactly the conj-hyph hypothesis that
---              SemiDirectProduct2 already takes.  With it,
+--              SemiDirectProduct already takes.  With it,
 --              conjss (rep Iᶜ) w ≈s conjss ε w = w.
 ------------------------------------------------------------------------
 

@@ -17,7 +17,7 @@
 -- conjugate x⁻¹ y x ∈ N and of the lift r ∈ N of each quotient relator.
 --
 -- This is the general (possibly non-split) analogue of the semi-direct
--- product in Presentation.Construct.Properties.SemiDirectProduct2: the
+-- product in Presentation.Construct.Properties.SemiDirectProduct: the
 -- split case is exactly the one in which every correction word w_r is
 -- trivial, so that the quotient relations R̄ hold on the nose on the
 -- representatives (the trivial correction `no-twist` below).
@@ -80,7 +80,7 @@ extension-presentation S R̄ conj corr =
 -- trivial correction the twisted relators degenerate to pure right-hand
 -- relations, and the extension presentation is the semi-direct product
 --    S ⋄ R̄ ⋄ ConjRelʷ conj
--- studied in Presentation.Construct.Properties.SemiDirectProduct2.
+-- studied in Presentation.Construct.Properties.SemiDirectProduct.
 
 no-twist : ∀ {R̄ : WRel X} {u v} → R̄ u v → Word N
 no-twist {u = u} _ = ε
@@ -97,7 +97,7 @@ no-twist {u = u} _ = ε
 -- record the conjugates and relator-lifts computed in G — this is the
 -- content of "G is an extension realising the recipe".  The proof
 -- extends the Reidemeister–Schreier coset enumeration of the semi-direct
--- product (SemiDirectProduct2) so that closing a twisted relator emits
+-- product (SemiDirectProduct) so that closing a twisted relator emits
 -- its correction word; it is the remaining goal.
 
 module _ {N X : Set}
@@ -459,7 +459,7 @@ module _ {N X : Set}
     -- With `real : Realises`, the raw-axiom soundness needed by
     -- StarPresentation.GroupSem.GetSubPresentation is
     --     sound-t (sound-s real) sound-ax
-    -- exactly as `sound-ax` is used in SemiDirectProduct2.Presentation.
+    -- exactly as `sound-ax` is used in SemiDirectProduct.Presentation.
     -- What remains — following that file's subpres/dpres structure — is
     -- the coset normal form for the *twisted* relators: a group-likeness
     -- witness, a Reidemeister–Schreier NormalForm (nfp) and its

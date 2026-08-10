@@ -57,7 +57,7 @@
 -- nothing and keeps the definition uniform.
 --
 -- The corrections are not all trivial, so this instance is not the split
--- one that Presentation.Construct.Properties.SemiDirectProduct2 covers;
+-- one that Presentation.Construct.Properties.SemiDirectProduct covers;
 -- the twisted relators are what the extension recipe adds.
 ------------------------------------------------------------------------
 

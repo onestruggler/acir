@@ -170,7 +170,7 @@ open import Presentation.Definitions
 --
 -- Dropping the cocycle (corr ≡ ε) turns the extension relation into
 -- Γ ⋄ Δ ⋄ ConjRelʷ conj, which is exactly the relation
--- Presentation.Construct.Properties.SemiDirectProduct2 presents.  Both
+-- Presentation.Construct.Properties.SemiDirectProduct presents.  Both
 -- factor presentations are already available:
 --
 --   * Pauli.Pauli-presentation n : (Γ-H ⊕^ n) IsPresentationOf Pauli-group n
@@ -185,7 +185,7 @@ open import Presentation.Definitions
 
 import Presentation.Base as PB
 open import Word.Base using (_ⁿ' ; _ʰ')
-open import Presentation.Construct.Properties.SemiDirectProduct2 as SD2
+open import Presentation.Construct.Properties.SemiDirectProduct as SD'
 
 open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime
   using (Pauli-group ; Pauli-presentation)
@@ -210,7 +210,7 @@ ConjHypN n = ∀ (c : Gen n) {u v : Word (PauliGen n)} →
 module SemiDirect (n : ℕ) (hyph : ConjHypH n) (hypn : ConjHypN n) where
 
   private
-    module SD = SD2 (Γ-H ⊕^ n) (n QRel,_===_) (conj {n})
+    module SD = SD' (Γ-H ⊕^ n) (n QRel,_===_) (conj {n})
     module P  = SD.Presentation hyph hypn
                   (Pauli-group n) (Sp-group n)
                   (Pauli-presentation n) (SimP.presentation {n})

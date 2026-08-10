@@ -32,7 +32,7 @@ open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
 open import Presentation.Construct.Base hiding (_*_)
-import Presentation.Construct.Properties.SemiDirectProduct2 as SDP2
+import Presentation.Construct.Properties.SemiDirectProduct as SDP
 open import Presentation.Tactic.Rewriting hiding ([_])
 
 open import Presentation.GroupLike

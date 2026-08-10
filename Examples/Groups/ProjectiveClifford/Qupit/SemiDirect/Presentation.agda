@@ -10,7 +10,7 @@
 -- over the generators XZ.Gen n ⊎ Sym.Gen n: the Pauli rules on the
 -- left, the simplified symplectic rules on the right, and the
 -- conjugation rule h·n = (conj h n)·h in the middle.  The generic
--- machinery of Presentation.Construct.Properties.SemiDirectProduct2
+-- machinery of Presentation.Construct.Properties.SemiDirectProduct
 -- turns presentations of the two factors into a presentation of their
 -- semidirect product, so all that is needed here is to feed it the
 -- pieces.
@@ -57,7 +57,7 @@ open import Level using (0ℓ)
 
 import Presentation.Base as PB
 open import Presentation.Definitions using (_IsPresentationOf_)
-import Presentation.Construct.Properties.SemiDirectProduct2 as SDP2
+import Presentation.Construct.Properties.SemiDirectProduct as SDP'
 
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
 open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (+ₚ-group)
@@ -74,13 +74,13 @@ import Examples.Groups.ProjectiveClifford.Qupit.SemiDirect.ConjAction p-3 p-prim
 module Semidirect (n : ℕ) where
 
   -- The two factor relations and the conjugation action, as
-  -- SemiDirectProduct2 expects them.
+  -- SemiDirectProduct expects them.
   Γ = XZ._QRel,_===_ n
   Δ = NSim.Simplified-Relations._QRel,_===_ n
   cj = SemiDirect.conj {n}
 
   private
-    module SDP = SDP2 Γ Δ cj
+    module SDP = SDP' Γ Δ cj
 
   open PB Γ using () renaming (_≈_ to _≈₁_)
 

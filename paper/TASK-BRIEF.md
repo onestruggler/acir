@@ -125,7 +125,7 @@ forms. Layers (details in CLAUDE.md):
   presentation theorems for constructions —
   `Presentation/Construct/Properties/DirectProduct.agda` `module Presentation`
   (product presents G₁×G₂, target `Algebra.Construct.DirectProduct.group`),
-  `SemiDirectProduct2.agda` `module Presentation` (presents the semidirect product
+  `SemiDirectProduct.agda` `module Presentation` (presents the semidirect product
   built from an `SDP.Action`), `NDirectProduct.agda` (`⊗-group`, n-fold
   `presentation` by induction, trivial group at 0).
 - **WIP / not to be leaned on**: `Examples/Groups/Symplectic/` tree and

@@ -48,7 +48,7 @@ import Normalization.NormalForm.Uniqueness.Propositional as NFU
 
 import Presentation.Construct.Properties.DirectProduct as DirectProduct
 import Presentation.Construct.Properties.NDirectProduct as NDirectProduct
-import Presentation.Construct.Properties.SemiDirectProduct2 as SemiDirectProduct
+import Presentation.Construct.Properties.SemiDirectProduct as SemiDirectProduct
 import Presentation.Construct.Properties.Amalgamation as Amalgamation
 import Presentation.Construct.Properties.Extension as Extension
 
@@ -147,7 +147,7 @@ module N-fold-Direct-Product-Presentation = NDirectProduct.Presentation
 --     .dpres : (Γ ⋄ Δ ⋄ ConjRelʷ conj) IsPresentationOf G1⋊G2
 --     .LiftUNF nfp₁ nfp₂ unfp₁ unfp₂ .unfp' : the pair normal form is
 --       unique for the semi-direct product semantics
---   Home: Presentation.Construct.Properties.SemiDirectProduct2
+--   Home: Presentation.Construct.Properties.SemiDirectProduct
 module Semidirect-Product-Presentation = SemiDirectProduct.Presentation
 
 --   Amalgamated-Product-Presentation P₁ P₂ ad G₀ G₁ G₂ p₀ p₁ p₂

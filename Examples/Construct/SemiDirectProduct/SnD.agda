@@ -36,7 +36,8 @@ open import Normalization.NormalForm.Propositional
   using (NormalFormInjective ; NormalForm)
 import Presentation.Base as PB
 import Presentation.Construct.Properties.NDirectProduct as NDP
-import Presentation.Construct.Properties.SemiDirectProduct2 as SDP2
+-- Primed: the construction itself.  SDP below is this instance of it.
+import Presentation.Construct.Properties.SemiDirectProduct as SDP'
 open import Examples.Groups.Cyclic.Normalization as Cyc using (_Cn,_===_)
 open import Examples.Groups.Cyclic.Semantics using (Cn-group)
 import Examples.Groups.Cyclic.Presentation as CyP
@@ -334,7 +335,7 @@ module Wreath (n m : ℕ) where
 
   private
     module ND⊗ = NDP.Presentation (Γ₀ m) (Cn-group (suc m)) (CyP.presentation {m})
-    module SDP = SDP2 (Γ₀ m ⊕^ n) (n VRel,_===_) (conj {n})
+    module SDP = SDP' (Γ₀ m ⊕^ n) (n VRel,_===_) (conj {n})
     module SDPP =
       SDP.Presentation (conj-hyph {n} {m}) (conj-hypn {n} {m})
         (ND⊗.⊗-group n) (Permutation′-group n)

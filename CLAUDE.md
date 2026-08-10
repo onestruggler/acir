@@ -40,7 +40,7 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 
 ### Layer 3 — Constructions (`Presentation/Construct/`)
 - **`Base.agda`**: amalgamated product `_⊕_` and related combinators on `WRel`.
-- **`Properties/DirectProduct.agda`**, **`SemiDirectProduct.agda`**, **`SemiDirectProduct2.agda`**, **`NDirectProduct.agda`**, **`SugarProduct.agda`**: lift normal-form witnesses through the constructions.
+- **`Properties/DirectProduct.agda`**, **`SemiDirectProduct.agda`**, **`NDirectProduct.agda`**, **`SugarProduct.agda`**: lift normal-form witnesses through the constructions. `SemiDirectProduct` takes a **word-valued** action `conj : H → N → Word N` (the relation `ConjRelʷ conj`); an earlier element-valued version, `conj : H → N → N`, was deleted once nothing imported it.
 - **`Properties/Amalgamation.agda`**: amalgamated free product with coset normal form (`AmalDataNF`, `ANF`).
 
 ### Layer — Circuits (`Circuit/`)
