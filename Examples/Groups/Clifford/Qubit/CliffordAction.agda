@@ -48,7 +48,7 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
 open Symplectic
   using (Gen ; gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate ; _↥)
-open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι)
+open import Examples.Groups.SignedPauli-Qubit.SignedPauli using (Φ ; P4Carrier ; ι)
 
 private
   variable

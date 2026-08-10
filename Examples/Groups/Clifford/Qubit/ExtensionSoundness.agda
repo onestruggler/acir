@@ -94,7 +94,7 @@ open Symplectic
   using ( Gen ; Circuit ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓
         ; S ; S⁻¹ ; H ; CZ ; ⊤⊥ ; ⊥⊤ )
 
-open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
+open import Examples.Groups.SignedPauli-Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; δ ; incl)
 open import Examples.Groups.Clifford.Qubit.CliffordGroup using (incl-2)
 

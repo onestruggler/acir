@@ -21,7 +21,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.Clifford.Qubit.SignedPauli where
+module Examples.Groups.SignedPauli-Qubit.SignedPauli where
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Structures using (IsGroup)

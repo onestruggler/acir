@@ -43,7 +43,7 @@ open Syn.Symplectic
   using (Gen ; gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate ; S ; H ; CZ ; ⊤⊥ ; ⊥⊤ ; _↑ ; _↓)
 
 open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli)
-open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
+open import Examples.Groups.SignedPauli-Qubit.SignedPauli using (Φ ; P4Carrier ; ι ; ι-+)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; cact1 ; δ ; incl)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime as Sem using ()
 open Sem.Symplectic using (ap)

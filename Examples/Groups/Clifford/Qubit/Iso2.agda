@@ -67,7 +67,7 @@ open Syn.Symplectic
   using (Gen ; Circuit ; gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate ; _↥)
 open import Examples.Groups.Symplectic.Surjectivity p-2 p-prime using (surj-nf)
 
-import Examples.Groups.Clifford.Qubit.SignedPauli as SP
+import Examples.Groups.SignedPauli-Qubit.SignedPauli as SP
 import Examples.Groups.Clifford.Qubit.CliffordAction as CA
 import Examples.Groups.Clifford.Qubit.CliffordGroup as CG
 

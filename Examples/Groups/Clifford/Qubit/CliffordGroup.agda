@@ -71,7 +71,7 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
 open Symplectic using (Gen ; _↑)
 
-open import Examples.Groups.Clifford.Qubit.SignedPauli using (P4Carrier)
+open import Examples.Groups.SignedPauli-Qubit.SignedPauli using (P4Carrier)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact)
 open import Examples.Groups.Clifford.Qubit.CliffordAut using (g4-id)
 
@@ -194,7 +194,7 @@ open PrimeModulus p-2 p-prime
 
 open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; sform ; sform1)
-open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; ι ; ι-+)
+open import Examples.Groups.SignedPauli-Qubit.SignedPauli using (Φ ; ι ; ι-+)
 -- The Pauli words X, Z as SYMPLECTIC circuits.  Figure 8 has its own
 -- gate set now, so its copies live over a different alphabet; the
 -- mod-scalar rule set keeps them over SympGate, which is what the
@@ -326,7 +326,7 @@ cact-pauliWord ((a , b) ∷ ps) s ((c , d) ∷ qs) = begin
 
 open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (_+ₚ_ ; _+₁_ ; pIₙ ; pX ; pZ ; pI ; +ₚ-group ; +ₚ-identityˡ)
-open import Examples.Groups.Clifford.Qubit.SignedPauli using (+-swap-middle)
+open import Examples.Groups.SignedPauli-Qubit.SignedPauli using (+-swap-middle)
 open import Algebra.Properties.Ring (+-*-ring p-2) using (-‿+-comm)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (≡×≡⇒≡)
 
@@ -581,7 +581,7 @@ X₀≢Z₀ ()
 -- so factors as ι ∘ g with g : Pauli n → ℤ/2 additive.  Nondegeneracy of
 -- sform then realises g as sform v, and w agrees with conjugation by v.
 
-open import Examples.Groups.Clifford.Qubit.SignedPauli using (γ ; γ-εˡ ; _·_)
+open import Examples.Groups.SignedPauli-Qubit.SignedPauli using (γ ; γ-εˡ ; _·_)
 -- CliffordAction's phase map ℤ/2 → ℤ/4 is renamed so that it does not
 -- clash with `incl`, the inclusion of the extension above.
 open import Examples.Groups.Clifford.Qubit.CliffordAction

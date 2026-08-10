@@ -42,7 +42,7 @@ open Symplectic
   using (Gen ; gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate ; _↥)
 
 
-open import Examples.Groups.Clifford.Qubit.SignedPauli
+open import Examples.Groups.SignedPauli-Qubit.SignedPauli
   using (Φ ; P4Carrier ; β ; γ ; ι ; ι-+ ; _·_ ; +-swap-middle)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (δ ; incl ; cact1 ; cact)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)

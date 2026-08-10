@@ -82,7 +82,7 @@ open Syn.Symplectic
         ; S ; H ; CZ ; ⊤⊥ ; ⊥⊤ ; _↥ ; _↑ ; _↓)
 
 open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli)
-open import Examples.Groups.Clifford.Qubit.SignedPauli using (Φ ; P4Carrier ; ι)
+open import Examples.Groups.SignedPauli-Qubit.SignedPauli using (Φ ; P4Carrier ; ι)
 open import Examples.Groups.Clifford.Qubit.CliffordAction using (cact ; δ ; incl)
 open import Examples.Groups.Clifford.Qubit.CliffordGroup
   using (_≈ᶜ_ ; cact-↑ ; ≈ᶜ-refl ; ≈ᶜ-sym ; ≈ᶜ-trans ; ∙-congᶜ)
