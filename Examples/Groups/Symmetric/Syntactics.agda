@@ -79,11 +79,3 @@ grouplike : Grouplike (_VRel,_===_ n)
 grouplike {₂₊ k} (gate₂ σ-gate) = σ , PB.axiom (srel order)
 grouplike {₁₊ n} (g ↥) with grouplike {n} g
 ... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf
-
-------------------------------------------------------------------------
--- Doubly-shifted circuits commute with σ
---
--- comm-gate₂-w↑↑ σ-gate is exactly that: since σ is [ gate₂ σ-gate ]ʷ,
--- the framework's lemma above already states w ↑ ↑ • σ ≈ σ • w ↑ ↑.
--- The hand-rolled induction that used to stand here was the same proof
--- and has been dropped.

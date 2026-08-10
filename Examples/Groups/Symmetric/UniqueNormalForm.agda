@@ -31,9 +31,11 @@ open import Examples.Groups.Symmetric.Normalization
   using (NF ; inv-nf ; nfp'-t)
 open import Examples.Groups.Symmetric.Syntactics
 
-import Examples.Groups.Symmetric.Semantics as TightSem
+-- The tight denotation, qualified throughout: the unqualified ⟦_⟧ and
+-- ⟦_⟧ᵍ in this file are the endofunction ones, opened above.
+import Examples.Groups.Symmetric.Interpretation as TightSem
 
-open TightSem using (Permutation′-group)
+open import Examples.Groups.Symmetric.Semantics using (Permutation′-group)
 
 private
   variable

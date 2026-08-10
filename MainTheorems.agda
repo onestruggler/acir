@@ -62,6 +62,7 @@ open import Examples.Groups.Symmetric.Syntactics using (_VRel,_===_)
 import Examples.Groups.Symmetric.Normalization as SymNF
 import Examples.Groups.Symmetric.SubPresentation.Semantics as SymLoose
 import Examples.Groups.Symmetric.Semantics as SymTight
+import Examples.Groups.Symmetric.Interpretation as SymTightI
 import Examples.Groups.Symmetric.Theorems as SymThm
 import Examples.Groups.ProjectivePauli.Presentation as Pauli
 import Examples.Groups.Symplectic.Syntactics as SympSyn
@@ -228,7 +229,7 @@ symmetric-presentation n = SymThm.Tight.presentation n
 symmetric-unique-nf :
   ∀ n → let open NFU (n VRel,_===_) (SymNF.NF n)
                      (Group.setoid (SymTight.Permutation′-group n))
-                     (SymTight.⟦_⟧ {n})
+                     (SymTightI.⟦_⟧ {n})
         in UniqueNormalForm (SymNF.inv-nf {n})
 symmetric-unique-nf n = SymThm.Tight.unique-nf n
 

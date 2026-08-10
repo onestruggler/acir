@@ -64,8 +64,9 @@ open import Examples.Groups.Symmetric.Cosets
   using (C ; [_]ᶜ ; σ•_) renaming (ε to εᶜ)
 open import Examples.Groups.Symmetric.Syntactics
 open import Examples.Groups.Symmetric.Semantics
-  using (Perm ; ⟦_⟧ ; ⟦↑⟧ ; Permutation′-group)
-open import Examples.Groups.Symmetric.Interpretation using (sound)
+  using (Perm ; Permutation′-group)
+open import Examples.Groups.Symmetric.Interpretation using (⟦_⟧ ; ⟦↑⟧)
+open import Examples.Groups.Symmetric.Soundness using (sound)
 
 private
   variable

@@ -32,6 +32,7 @@ import Relation.Binary.PropositionalEquality as Eq
 
 open import Examples.Groups.Symmetric.Interpretation
 open import Examples.Groups.Symmetric.Semantics
+open import Examples.Groups.Symmetric.Soundness
 open import Examples.Groups.Symmetric.Syntactics
 
 import Examples.Groups.Symmetric.Normalization as SN

@@ -44,6 +44,7 @@ open Eq using (_≡_ ; refl)
 open import Examples.Groups.Symmetric.Cosets
 open import Examples.Groups.Symmetric.Interpretation
 open import Examples.Groups.Symmetric.Semantics
+open import Examples.Groups.Symmetric.Soundness
 open import Examples.Groups.Symmetric.Syntactics
 
 ------------------------------------------------------------------------

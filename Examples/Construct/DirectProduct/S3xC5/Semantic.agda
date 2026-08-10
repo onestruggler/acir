@@ -18,6 +18,7 @@ open import Notations
 
 import Examples.Groups.Cyclic.Semantics as CS
 import Examples.Groups.Symmetric.Semantics as TS
+import Examples.Groups.Symmetric.Interpretation as TI
 
 open import Examples.Construct.DirectProduct.S3xC5.Syntactics
 open import Algebra.Bundles using (Group)
@@ -32,7 +33,7 @@ S₃×C₅-group = ADP.group (TS.Permutation′-group 3) (CS.Cn-group 5)
 open import Function.Construct.Identity using (↔-id)
 
 ⟦_⟧₀ : Y → Group.Carrier S₃×C₅-group
-⟦ inj₁ x  ⟧₀ = TS.⟦ x  ⟧ᵍ , ₀
+⟦ inj₁ x  ⟧₀ = TI.⟦ x  ⟧ᵍ , ₀
 ⟦ inj₂ y  ⟧₀ = ↔-id (Fin 3) , CS.⟦_⟧₀ {5} y
 
 

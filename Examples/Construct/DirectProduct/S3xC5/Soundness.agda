@@ -32,8 +32,8 @@ open import Examples.Construct.DirectProduct.S3xC5.Syntactics using (_===_)
 open import Examples.Construct.DirectProduct.S3xC5.Semantic
 
 open import Examples.Groups.Symmetric.Syntactics using (Gen)
-import Examples.Groups.Symmetric.Semantics as TS
-import Examples.Groups.Symmetric.Interpretation as TSnd
+import Examples.Groups.Symmetric.Interpretation as TS
+import Examples.Groups.Symmetric.Soundness as TSnd
 open import Examples.Groups.Cyclic.Normalization using (X)
 import Examples.Groups.Cyclic.Semantics as CS
 import Examples.Groups.Cyclic.Soundness as CSnd

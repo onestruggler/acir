@@ -97,7 +97,8 @@ ract-sound {₁₊ n} (σ• σ• c) σ-gen = begin
   [ σ• σ• c ]ᶜ • σ ≈⟨ assoc ⟩
   σ • [ σ• c ]ᶜ ↑ • σ ≡⟨ Eq.refl ⟩
   σ • (σ ↑ • [ c ]ᶜ ↑ ↑) • σ ≈⟨ cong refl assoc ⟩
-  σ • σ ↑ • [ c ]ᶜ ↑ ↑ • σ ≈⟨ cong refl (cong refl (lemma-comm ([ c ]ᶜ))) ⟩
+  σ • σ ↑ • [ c ]ᶜ ↑ ↑ • σ
+    ≈⟨ cong refl (cong refl (comm-gate₂-w↑↑ σ-gate ([ c ]ᶜ))) ⟩
   σ • σ ↑ • σ • [ c ]ᶜ ↑ ↑ ≈⟨ sym (cong refl assoc) ⟩
   σ • (σ ↑ • σ) • [ c ]ᶜ ↑ ↑ ≈⟨ sym assoc ⟩
   (σ • (σ ↑ • σ)) • [ c ]ᶜ ↑ ↑ ≈⟨ cong (axiom (srel yang-baxter)) refl ⟩
@@ -116,7 +117,7 @@ ract-sound {₁₊ n} (σ• ε) (b@σ-gen ↥) = begin
   σ • (ε • [ b ]ʷ) ↑ ≈⟨ cright (lemma-cong↑ (ε • [ b ]ʷ) (b0 ↑ • [ c0 ]ᶜ) ih) ⟩
   σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
   σ • (b0 ↑ ↑ • [ c0 ]ᶜ ↑) ≈⟨ sym assoc ⟩
-  (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (lemma-comm b0)) refl ⟩
+  (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (comm-gate₂-w↑↑ σ-gate b0)) refl ⟩
   (b0 ↑ ↑ • σ) • [ c0 ]ᶜ ↑ ≈⟨ assoc ⟩
   b0 ↑ ↑ • [ σ• c0 ]ᶜ ∎
   where
@@ -133,7 +134,7 @@ ract-sound {₁₊ n} (σ• ε) (b@(b' ↥) ↥) = begin
     ≈⟨ cong refl (lemma-cong↑ (ε • [ b ]ʷ) (b0 ↑ • [ c0 ]ᶜ) ih) ⟩
   σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
   σ • (b0 ↑ ↑ • [ c0 ]ᶜ ↑) ≈⟨ sym assoc ⟩
-  (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (lemma-comm b0)) refl ⟩
+  (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (comm-gate₂-w↑↑ σ-gate b0)) refl ⟩
   (b0 ↑ ↑ • σ) • [ c0 ]ᶜ ↑ ≈⟨ assoc ⟩
   b0 ↑ ↑ • [ σ• c0 ]ᶜ ∎
   where
@@ -150,7 +151,7 @@ ract-sound {₁₊ n} (σ• σ• c) (b@σ-gen ↥) = begin
   σ • ([ σ• c ]ᶜ • [ b ]ʷ) ↑ ≈⟨ cong refl (lemma-cong↑ _ _ ih) ⟩
   σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
   σ • (b0 ↑ ↑ • [ c0 ]ᶜ ↑) ≈⟨ sym assoc ⟩
-  (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (lemma-comm b0)) refl ⟩
+  (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (comm-gate₂-w↑↑ σ-gate b0)) refl ⟩
   (b0 ↑ ↑ • σ) • [ c0 ]ᶜ ↑ ≈⟨ assoc ⟩
   b0 ↑ ↑ • [ σ• c0 ]ᶜ ∎
   where
@@ -166,7 +167,7 @@ ract-sound {₁₊ n} (σ• σ• c) (b@(bb ↥) ↥) = begin
   σ • ([ σ• c ]ᶜ • [ b ]ʷ) ↑ ≈⟨ cong refl (lemma-cong↑ _ _ ih) ⟩
   σ • (b0 ↑ • [ c0 ]ᶜ) ↑ ≡⟨ Eq.refl ⟩
   σ • (b0 ↑ ↑ • [ c0 ]ᶜ ↑) ≈⟨ sym assoc ⟩
-  (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (lemma-comm b0)) refl ⟩
+  (σ • b0 ↑ ↑) • [ c0 ]ᶜ ↑ ≈⟨ cong (sym (comm-gate₂-w↑↑ σ-gate b0)) refl ⟩
   (b0 ↑ ↑ • σ) • [ c0 ]ᶜ ↑ ≈⟨ assoc ⟩
   b0 ↑ ↑ • [ σ• c0 ]ᶜ ∎
   where
@@ -379,7 +380,7 @@ ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (gate₀ () ↥))
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {₁₊ m} c) (comm₂ σ-gate g)
   rewrite ract-σ•1 c g
-  = lemma-comm (proj₁ (ract c g)) , Eq.refl
+  = comm-gate₂-w↑↑ σ-gate (proj₁ (ract c g)) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} c) (cong↑ {w = w} {v} eq)
   with ⁻¹[⇑]-wd'' (σ• c) eq
 ... | (wv , eq0)

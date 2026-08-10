@@ -24,9 +24,9 @@ import Presentation.Properties as PP
 
 open import Examples.Groups.Symmetric.Normalization using (NF ; nfp'-t)
 open import Examples.Groups.Symmetric.Syntactics using (_VRel,_===_)
-open import Examples.Groups.Symmetric.Semantics
-  using (⟦_⟧ ; Permutation′-group)
-open import Examples.Groups.Symmetric.Interpretation using (sound)
+open import Examples.Groups.Symmetric.Semantics using (Permutation′-group)
+open import Examples.Groups.Symmetric.Interpretation using (⟦_⟧)
+open import Examples.Groups.Symmetric.Soundness using (sound)
 
 import Examples.Groups.Symmetric.UniqueNormalForm as TU
 

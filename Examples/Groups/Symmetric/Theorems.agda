@@ -77,6 +77,7 @@ module Loose where
 module Tight where
 
   open import Examples.Groups.Symmetric.Semantics
+  open import Examples.Groups.Symmetric.Interpretation
   import Examples.Groups.Symmetric.UniqueNormalForm as TU
   import Examples.Groups.Symmetric.Presentation as TP
 

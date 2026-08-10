@@ -10,27 +10,25 @@
 -- can be promoted to a presentation.
 -- Re-exports the group structure on Permutation′ n (whose generic
 -- definition lives in ForStdlib.Data.Fin.Permutation.Properties).
+--
+-- Nothing here mentions the syntax.  swap01 and shift are named after
+-- the generators they will interpret, but they are permutations, not
+-- denotations; the map from circuits to them is Interpretation, and
+-- that it respects the relations is Soundness.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Symmetric.Semantics where
 
-open import Algebra.Bundles using (Group)
 open import Data.Fin using (Fin ; zero)
-open import Data.Fin.Permutation
-  using ( Permutation′ ; permutation ; _⟨$⟩ʳ_ ; _∘ₚ_
-        ; lift₀ ; lift₀-id ; lift₀-comp )
+open import Data.Fin.Permutation using (Permutation′ ; permutation ; lift₀)
 open import Data.Nat using (ℕ)
 open import Notations using (₁₊ ; ₂₊)
-open import Word.Base using (Word ; ε ; [_]ʷ ; _•_)
 
 import Relation.Binary.PropositionalEquality as Eq
 
-open Eq using (_≡_ ; refl)
-
-open import Examples.Groups.Symmetric.Syntactics
-
+open Eq using (refl)
 
 ------------------------------------------------------------------------
 -- Permutation type
@@ -61,40 +59,12 @@ private
   swap01-fun (₁₊ zero) = zero
   swap01-fun (₂₊ k)    = ₂₊ k
 
--- Swap positions 0 and 1: the denotation of σ-gate.
+-- Swap positions 0 and 1: what σ-gate will denote.
 swap01 : ∀ {n} → Perm (₂₊ n)
 swap01 = permutation swap01-fun swap01-fun
   (λ { zero → refl ; (₁₊ zero) → refl ; (₂₊ _) → refl })
   (λ { zero → refl ; (₁₊ zero) → refl ; (₂₊ _) → refl })
 
--- Shift a permutation up by one wire: the action of _↥.
+-- Shift a permutation up by one wire: what _↥ will act as.
 shift : ∀ {n} → Perm n → Perm (₁₊ n)
 shift = lift₀
-
-------------------------------------------------------------------------
--- Denotation of generators and words
-
-⟦_⟧ᵍ : ∀ {n} → Gen n → Perm n
-⟦ gate₁ () ⟧ᵍ
-⟦ gate₂ σ-gate ⟧ᵍ = swap01
-⟦ g ↥ ⟧ᵍ          = shift ⟦ g ⟧ᵍ
-
--- Words are read left-to-right: w • v applies w first, then v.
-⟦_⟧ : ∀ {n} → Word (Gen n) → Perm n
-⟦_⟧ {n} = E.⟦_⟧
-  where
-  open import Normalization.StarInterp (n VRel,_===_)
-  module E = Extend (Group.monoid (Permutation′-group n)) ⟦_⟧ᵍ
-
-
-------------------------------------------------------------------------
--- Lemmas about shift (= lift₀)
-
--- ⟦ w ↑ ⟧ agrees with shift ⟦ w ⟧ pointwise.
-⟦↑⟧ : ∀ {n} (w : Word (Gen n)) (k : Fin (₁₊ n)) →
-      ⟦ w ↑ ⟧ ⟨$⟩ʳ k ≡ shift ⟦ w ⟧ ⟨$⟩ʳ k
-⟦↑⟧ ε       k = Eq.sym (lift₀-id k)
-⟦↑⟧ [ g ]ʷ  k = refl
-⟦↑⟧ (w • v) k =
-  Eq.trans (Eq.cong (⟦ v ↑ ⟧ ⟨$⟩ʳ_) (⟦↑⟧ w k))
-  (Eq.trans (⟦↑⟧ v _) (lift₀-comp ⟦ w ⟧ ⟦ v ⟧ k))
