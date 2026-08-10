@@ -34,7 +34,7 @@ module Examples.Groups.Symplectic.Lemmas.Ex-Sym2 (p-2 : ℕ) (p-prime : Prime (2
 
 
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
@@ -1367,7 +1367,7 @@ module Lemmas where
     n : ℕ
 
   open Symplectic
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
 
 
   lemma-Ex-Ex↑-CZ : let open PB ((₃₊ n) QRel,_===_) in
@@ -1762,7 +1762,7 @@ module Lemmas2 where
     n : ℕ
 
   open Symplectic
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
 
 
   lemma-Ex-H↑ : let open PB ((₂₊ n) QRel,_===_) in
@@ -2260,7 +2260,7 @@ module Lemmas3 where
     n : ℕ
 
   open Symplectic
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
   open Rewriting-Symplectic
   open Rewriting
 

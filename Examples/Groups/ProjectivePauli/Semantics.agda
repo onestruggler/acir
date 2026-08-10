@@ -12,7 +12,7 @@ open import Data.Nat.Primality
 
 module Examples.Groups.ProjectivePauli.Semantics (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 
 Pauli1 = ℤ ₚ × ℤ ₚ
@@ -126,7 +126,7 @@ _*ₚ_ {n} k = map (k *₁_)
 --
 -- Pauli n is the n-fold direct power of ℤ/pℤ × ℤ/pℤ, so the group laws
 -- reduce, componentwise and coordinatewise, to those of ℤ/pℤ (which live
--- in Zp.ModularArithmetic).
+-- in ForStdlib.Data.Fin.Mod).
 
 open import Algebra.Structures using (IsAbelianGroup)
 open import Algebra.Bundles   using (AbelianGroup ; Group)

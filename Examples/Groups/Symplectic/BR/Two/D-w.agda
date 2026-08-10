@@ -33,8 +33,8 @@ open import Notations
 
 module Examples.Groups.Symplectic.BR.Two.D-w (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
-open import Zp.ModularArithmetic
-open import Zp.Mod-Lemmas p-2 p-prime
+open import ForStdlib.Data.Fin.Mod
+open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)

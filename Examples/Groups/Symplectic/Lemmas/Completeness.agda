@@ -48,7 +48,7 @@ private
 
 
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
@@ -63,7 +63,7 @@ open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 open LM2
 
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
 open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 --open Lemmas-2Q 2

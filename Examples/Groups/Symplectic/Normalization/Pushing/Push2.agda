@@ -16,7 +16,6 @@ open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 
 open import Data.Nat using (ℕ ; zero)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
-  using (≡×≡⇒≡ ; Pointwise ; ≡⇒≡×≡)
 open import Data.Unit using (tt)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]ₑ)
@@ -29,12 +28,10 @@ import Presentation.Properties as PP
 import Normalization.NormalForm.Propositional as NFBase
 open NFBase using (NormalFormInjective ; NormalForm)
 
-
---open import Examples.Groups.Symplectic.NewCosets p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Data.Sum
 
@@ -56,7 +53,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.PushMBword p-2 p-pr
   using (push-MBvec-word)
 open import Examples.Groups.Symplectic.CongDownK p-2 p-prime
   using (M-↓ᵏ ; S^-↓ᵏ ; cong↓ᵏ ; ↑↓ᵏ-comm ; ↓ᵏ-↓ᵏ-1)
-open import Zp.Mod-Lemmas p-2 p-prime using (b-c=0⇒b=c)
+open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime using (b-c=0⇒b=c)
 open import Data.Fin using (toℕ ; _≟_)
 open import Data.Empty using (⊥-elim)
 open import Presentation.GroupLike

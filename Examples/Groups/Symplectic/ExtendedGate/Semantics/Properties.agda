@@ -31,7 +31,7 @@ module Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties (p-2 : ℕ) 
 
 
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 

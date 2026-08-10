@@ -37,8 +37,8 @@ open import Presentation.Tactic.Rewriting
 open import Data.Nat.Primality
 open import Data.Nat.GCD
 open Bézout
-open import Zp.ModularArithmetic
-open import Zp.Fermats-little-theorem
+open import ForStdlib.Data.Fin.Mod
+open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
 module Examples.Groups.Symplectic.Simplified.Tactics
   (p-2 : ℕ)

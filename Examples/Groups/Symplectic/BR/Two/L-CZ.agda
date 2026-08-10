@@ -36,8 +36,8 @@ n = 0
 
 
 
-open import Zp.ModularArithmetic
-open import Zp.Mod-Lemmas p-2 p-prime
+open import ForStdlib.Data.Fin.Mod
+open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic

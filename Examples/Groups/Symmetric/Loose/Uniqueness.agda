@@ -133,8 +133,8 @@ private
   ⟦inv-nf⟧-injective : ∀ n {u v : NF n}
     → (∀ k → ⟦ inv-nf {n} u ⟧ k ≡ ⟦ inv-nf {n} v ⟧ k)
     → u ≡ v
-  ⟦inv-nf⟧-injective 0       {tt}     {tt}      _   = Eq.refl
-  ⟦inv-nf⟧-injective 1       {tt}     {tt}      _   = Eq.refl
+  ⟦inv-nf⟧-injective 0       {_}     {_}      _   = Eq.refl
+  ⟦inv-nf⟧-injective 1       {_}     {_}      _   = Eq.refl
   ⟦inv-nf⟧-injective (₂₊ n') {l , r} {l' , r'} eq  =
     ≡×≡⇒≡ (⟦inv-nf⟧-injective (₁₊ n') (dir-unique n' l l' r r' r≡r' eq↑) , r≡r')
     where

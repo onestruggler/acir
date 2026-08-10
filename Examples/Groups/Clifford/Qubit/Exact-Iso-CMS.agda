@@ -87,7 +87,7 @@ open import Presentation.Tactic.AssociativitySolver using (module Assoc)
 
 import Examples.Groups.Cyclic.Syntactics as CyS
 
-open import Examples.Groups.Clifford.Qubit.PrimitiveRoot using (p-2 ; p-prime)
+open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime)
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
@@ -96,7 +96,7 @@ open Symplectic using (SympGate) renaming (Gen to GenS ; _↥ to _↥ˢ ; _↑ t
 import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
 open F8 using (ExactGate ; ω-gate ; _CRel,_===_ ; _≈ᶠ_ ; srel ; comm₀)
 
-import Examples.Groups.Clifford.Qubit.Selinger.Figure8-Mod-Scalar p-2 p-prime
+import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Figure8-Mod-Scalar p-2 p-prime
   as MS
 
 open import Examples.Groups.Clifford.Qubit.Exact-Presentation

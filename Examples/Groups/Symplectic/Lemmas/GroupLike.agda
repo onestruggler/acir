@@ -46,7 +46,7 @@ module Examples.Groups.Symplectic.Lemmas.GroupLike (p-2 : ℕ) (p-prime : Prime 
 
 
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 
 

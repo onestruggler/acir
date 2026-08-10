@@ -25,7 +25,7 @@ open import Examples.Groups.Cyclic.Semantics
 open import Notations
 import Normalization.NormalForm.Propositional as NFBase
 open import Word.Base using (_^'_)
-open import Zp.ModularArithmetic using (ℤ ; _+_ ; +-identityˡ)
+open import ForStdlib.Data.Fin.Mod using (ℤ ; _+_ ; +-identityˡ)
 
 
 private variable n : ℕ

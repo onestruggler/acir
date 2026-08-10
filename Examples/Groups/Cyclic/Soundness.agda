@@ -23,7 +23,7 @@ open import Examples.Groups.Cyclic.Uniqueness using (sem-suc ; pow-id)
 
 import Data.Integer as Int
 import Data.Integer.Properties as IntP
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
   using (_+_ ; ₋₁ ; ₊₁ ; +-assoc ; +-identityˡ ; +-identityʳ
         ; ₋₁+₊₁≡₀ ; lemma-toℕ₋₁)
 

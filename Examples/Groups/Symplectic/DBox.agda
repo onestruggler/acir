@@ -26,7 +26,7 @@ open Eq using (_≡_ ; module ≡-Reasoning)
 open import Notations
 open import Word.Base using (_•_)
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 

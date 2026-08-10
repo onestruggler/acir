@@ -18,8 +18,8 @@ open import Notations
 import Presentation.Base as PB
 open import Presentation.GroupLike using (module Group-Lemmas)
 open import Relation.Binary.PropositionalEquality using (_≡_)
-open import Zp.Fermats-little-theorem
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod.Prime.Fermat
+open import ForStdlib.Data.Fin.Mod
 
 module Examples.Groups.Symplectic.Sim-Ext-Sym-Iso
   (p-2 : ℕ)

@@ -34,7 +34,7 @@ open Eq using (_≡_ ; _≗_)
 open import Notations
 open import Word.Base using ([_]ʷ ; ε ; _•_)
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 
 open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli ; pI)

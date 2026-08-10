@@ -37,7 +37,7 @@ module Examples.Groups.Symplectic.ExtendedGate.Syntactics (p-2 : ℕ) (p-prime :
 
 
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 
 module Symplectic-Derived-Gen where
@@ -1448,7 +1448,7 @@ module Lemmas00 where
   -- open Lemmas2 hiding (n)
   -- open Lemmas3 hiding (n)
 
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
   open Rewriting
 
   -- lemma-semi-CZ-HH↓ : let open PB ((₂₊ n) QRel,_===_) in
@@ -1518,7 +1518,7 @@ module Lemmas0 (n : ℕ) where
 
   open Symplectic-Derived-Gen
   open Symplectic-Derived-GroupLike
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
 
   open PB ((₁₊ n) QRel,_===_) hiding (_===_)
   open PP ((₁₊ n) QRel,_===_)
@@ -1824,7 +1824,7 @@ module Lemmas-1 (n : ℕ) where
 
   open Symplectic-Derived-Gen
   open Symplectic-Derived-GroupLike
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
 
   open PB ((₂₊ n) QRel,_===_) hiding (_===_)
   open PP ((₂₊ n) QRel,_===_)

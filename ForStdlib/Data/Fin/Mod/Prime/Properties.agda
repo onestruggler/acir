@@ -1,0 +1,233 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Further properties of modular arithmetic with a prime modulus
+--
+-- Consequences of invertibility in ℤ/pℤ that do not fit in
+-- ForStdlib.Data.Fin.Mod.Prime, together with mult, the residue map
+-- ℕ → ℤ/pℤ taking k to the k-fold sum of ₁.
+--
+-- (Staged in ForStdlib for upstreaming into
+-- Data.Fin.Mod.Prime.Properties.)
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+open import Data.Nat.Base using (ℕ ; 2+)
+open import Data.Nat.Primality using (Prime)
+
+module ForStdlib.Data.Fin.Mod.Prime.Properties
+  (p-2 : ℕ) (p-prime : Prime (2+ p-2))
+  where
+
+open import Agda.Builtin.FromNat using (fromNat)
+open import Data.Fin.Base using (Fin ; toℕ ; inject₁)
+open import Data.Fin.Properties
+  using (0≢1+n ; toℕ-injective ; toℕ-fromℕ< ; toℕ<n)
+open import Data.Nat.Base as Nat using ()
+open import Data.Nat.DivMod
+  using (_%_ ; m%n<n ; n%n≡0 ; m%n%n≡m%n ; m<n⇒m%n≡m ; %-distribˡ-+)
+open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Unit.Base using (⊤)
+open import Notations using (auto ; ₀ ; ₁ ; ₁₊ ; ₂₊)
+open import Relation.Binary.PropositionalEquality as Eq
+  using (_≡_ ; _≢_ ; refl ; sym ; trans ; cong ; cong₂ ; module ≡-Reasoning)
+
+open import ForStdlib.Data.Fin.Mod
+
+open PrimeModulus p-2 p-prime
+open import Algebra.Properties.Ring (+-*-ring p-2)
+
+open Eq.≡-Reasoning
+
+------------------------------------------------------------------------
+-- Units that are not ₁
+
+
+
+
+
+
+aux4a : ∀ (k* : ℤ* ₚ) →
+  let
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  in
+  k ≢ ₁ → k⁻¹ ≢ ₁
+aux4a k* hyp h2 = hyp step1
+  where
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  step1 : k ≡ ₁
+  step1 = begin
+    k ≡⟨ Eq.sym (*-identityʳ k) ⟩
+    k * ₁ ≡⟨ Eq.cong (k *_) (Eq.sym h2) ⟩
+    k * k⁻¹ ≡⟨ lemma-⁻¹ʳ k {{nztoℕ {y = k} {neq0 = k* .proj₂}}} ⟩
+    ₁ ∎
+
+aux4a' : ∀ (k* : ℤ* ₚ) →
+  let
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  in
+  k ≢ ₁ → k⁻¹ + - ₁ ≢ ₀
+aux4a' k* hyp h2 = aux4a k* hyp step1
+  where
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  step1 : k⁻¹ ≡ ₁
+  step1 = begin
+    k⁻¹ ≡⟨ Eq.sym (+-identityʳ k⁻¹) ⟩
+    k⁻¹ + ₀ ≡⟨ Eq.cong (k⁻¹ +_) (Eq.sym (+-inverseˡ ₁)) ⟩
+    k⁻¹ + (- ₁ + ₁) ≡⟨ Eq.sym (+-assoc k⁻¹ (- ₁) ₁) ⟩
+    k⁻¹ + - ₁ + ₁ ≡⟨ Eq.cong (_+ ₁) h2 ⟩
+    ₀ + ₁ ≡⟨ +-identityˡ ₁ ⟩
+    ₁ ∎
+
+
+aux4a'' : ∀ (k*@(k , nz) : ℤ* ₚ) →
+  k ≢ ₁ → k + - ₁ ≢ ₀
+aux4a'' k*@(k , nz) hyp h2 = hyp claim
+  where
+  claim : k ≡ ₁
+  claim = begin
+    k ≡⟨ Eq.sym (+-identityʳ k) ⟩
+    k + ₀ ≡⟨ Eq.cong (k +_) (Eq.sym (+-inverseˡ ₁)) ⟩
+    k + (- ₁ + ₁) ≡⟨ Eq.sym (+-assoc k (- ₁) ₁) ⟩
+    k + - ₁ + ₁ ≡⟨ Eq.cong (_+ ₁) h2 ⟩
+    ₀ + ₁ ≡⟨ auto ⟩
+    ₁ ∎
+
+
+aux-ob1 : ∀ (b*@(b , nz) : ℤ* ₚ) (neq1 : b ≢ ₁) →
+  let
+  b⁻¹ = (b* ⁻¹) .proj₁
+  ob* : ℤ* ₚ
+  ob* = b⁻¹ + - ₁ , aux4a' (b*) neq1
+  -ob⁻¹ = ((-' ob*) ⁻¹ ) .proj₁
+  in
+  (b⁻¹ + - ₁) * -ob⁻¹ ≡ - ₁ × (-' ob*  *' b*) .proj₁ ≡ b + - ₁
+aux-ob1 b*@(b , nz) neq1 = claim1 , claim2
+  where
+  b⁻¹ = (b* ⁻¹) .proj₁
+  ob* : ℤ* ₚ
+  ob* = b⁻¹ + - ₁ , aux4a' (b*) neq1
+  -ob⁻¹ = ((-' ob*) ⁻¹ ) .proj₁
+  ob⁻¹ = (( ob*) ⁻¹ ) .proj₁
+  
+  claim1 : (b⁻¹ + - ₁) * -ob⁻¹ ≡ - ₁
+  claim1 = begin
+    (b⁻¹ + - ₁) * -ob⁻¹ ≡⟨ cong ((b⁻¹ + - ₁) *_) (inv-neg-comm ob*) ⟩
+    (b⁻¹ + - ₁) * - ob⁻¹ ≡⟨ sym (-‿distribʳ-* (b⁻¹ + - ₁) ob⁻¹) ⟩
+    - ((b⁻¹ + - ₁) * ob⁻¹) ≡⟨ cong -_ (lemma-⁻¹ʳ (b⁻¹ + - ₁) {{nztoℕ {y = (b⁻¹ + - ₁)} {neq0 = ob* .proj₂}}}) ⟩
+    - ₁ ∎
+
+  claim2 : (-' ob*  *' b*) .proj₁ ≡ b + - ₁
+  claim2 = begin
+    (-' ob*  *' b*) .proj₁ ≡⟨ auto ⟩
+    - (b⁻¹ + - ₁) * b ≡⟨ sym (-‿distribˡ-* ((b⁻¹ + - ₁)) b) ⟩
+    - ((b⁻¹ + - ₁) * b) ≡⟨ cong -_ (*-distribʳ-+ b b⁻¹ (- ₁)) ⟩
+    - (b⁻¹ * b + - ₁ * b) ≡⟨ cong -_ (cong₂ _+_ (lemma-⁻¹ˡ (b) {{nztoℕ {y = b} {neq0 = nz}}}) (-1*x≈-x b)) ⟩
+    - (₁ + - b) ≡⟨ sym (-‿+-comm ₁ (- b)) ⟩
+    - ₁ + - - b ≡⟨ cong (- ₁ +_) (-‿involutive b) ⟩
+    - ₁ + b ≡⟨ +-comm (- ₁) b ⟩
+    b + - ₁ ∎
+
+
+aux5a : ∀ (k* l* : ℤ* ₚ) →
+  let
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  [kl]⁻¹ = ((k* *' l*) ⁻¹) .proj₁
+  l⁻¹ = (l* ⁻¹) .proj₁
+  -l⁻¹ = - (l* ⁻¹) .proj₁
+  in
+  k ≢ ₁ → [kl]⁻¹ + -l⁻¹ ≢ ₀
+aux5a k* l* hyp h2 = (((k⁻¹ + - ₁ , aux4a' k* hyp) *' l* ⁻¹) .proj₂) claim
+  where
+  k = k* .proj₁
+  l⁻¹ = (l* ⁻¹) .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  [kl]⁻¹ = ((k* *' l*) ⁻¹) .proj₁
+  -l⁻¹ = - (l* ⁻¹) .proj₁
+  absurd : [kl]⁻¹ + -l⁻¹ ≡ (k⁻¹ + - ₁) * l⁻¹
+  absurd = Eq.trans (Eq.cong₂ (_+_) (inv-distrib k* l*) (Eq.sym (-1*x≈-x l⁻¹))) (Eq.trans (Eq.sym (*-distribʳ-+ l⁻¹ k⁻¹ (- ₁))) auto)
+  claim : (k⁻¹ + - ₁) * l⁻¹ ≡ ₀
+  claim = Eq.trans (Eq.sym (absurd)) h2
+    
+
+prede : ℤ* ₚ → ℤ ₚ
+prede (₀ , nz) with nz auto
+... | ()
+prede (₁₊ x , nz) = inject₁ x
+
+aux-k*≠1 : ∀ (k* : ℤ* ₚ) → let k = k* .proj₁ in k ≢ ₁ → prede k* ≢ ₀
+aux-k*≠1 k*@(₀ , snd) eq1 eq0 with snd auto
+... | ()
+aux-k*≠1 k*@(₁ , snd) eq1 eq0 with eq1 auto
+... | ()
+aux-k*≠1 k*@(₂₊ fst , snd) eq1 eq0 = 0≢1+n (Eq.sym eq0)
+  where
+  k = k* .proj₁
+
+aux-k*≠1⇒k⁻¹≠1 : ∀ (k* : ℤ* ₚ) →
+  let
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  in
+  k ≢ ₁ → k⁻¹ ≢ ₁
+
+aux-k*≠1⇒k⁻¹≠1 k* eq1 eq1' = eq1 aux
+  where
+  k = k* .proj₁
+  k⁻¹ = (k* ⁻¹) .proj₁
+  aux : k* .proj₁ ≡ ₁
+  aux = begin
+    k* .proj₁ ≡⟨ Eq.sym (*-identityʳ k) ⟩
+    k* .proj₁ * ₁ ≡⟨ Eq.cong (k *_) (Eq.sym eq1') ⟩
+    k* .proj₁ * k⁻¹ ≡⟨ lemma-⁻¹ʳ k {{nztoℕ {y = k} {neq0 = k* .proj₂}}} ⟩
+    ₁ ∎
+
+b-c=0⇒b=c : ∀ (b c : ℤ ₚ) (eq0 : b + - c ≡ ₀) → b ≡ c
+b-c=0⇒b=c b c eq0 = begin
+  b ≡⟨ sym (+-identityʳ b) ⟩
+  b + ₀ ≡⟨ cong (b +_) (sym (+-inverseˡ c)) ⟩
+  b + (- c + c) ≡⟨ sym (+-assoc b (- c) c) ⟩
+  b + - c + c ≡⟨ cong (_+ c) eq0 ⟩
+  ₀ + c ≡⟨ +-identityˡ c ⟩
+  c ∎
+
+------------------------------------------------------------------------
+-- ℤ/pℤ as the image of ℕ
+--
+-- mult k is the k-fold sum of ₁; it is the residue of k, so it is the
+-- identity on representatives of ℤ/pℤ and vanishes at p.
+
+mult : ℕ → ℤ ₚ
+mult ₀      = ₀
+mult (₁₊ k) = ₁ + mult k
+
+toℕ-+ : ∀ (a b : ℤ ₚ) → toℕ (a + b) ≡ (toℕ a Nat.+ toℕ b) % p
+toℕ-+ a b = toℕ-fromℕ< (m%n<n (toℕ a Nat.+ toℕ b) p)
+
+private
+  0%p≡0 : 0 % p ≡ 0
+  0%p≡0 = Eq.refl
+
+  mult-% : ∀ k → toℕ (mult k) ≡ k % p
+  mult-% ₀      = Eq.sym 0%p≡0
+  mult-% (₁₊ k) = begin
+    toℕ (₁ + mult k)               ≡⟨ toℕ-+ ₁ (mult k) ⟩
+    (1 Nat.+ toℕ (mult k)) % p     ≡⟨ Eq.cong (λ z → (1 Nat.+ z) % p) (mult-% k) ⟩
+    (1 Nat.+ k % p) % p            ≡⟨ %-distribˡ-+ 1 (k % p) p ⟩
+    (1 % p Nat.+ (k % p) % p) % p  ≡⟨ Eq.cong (λ z → (1 % p Nat.+ z) % p) (m%n%n≡m%n k p) ⟩
+    (1 % p Nat.+ k % p) % p        ≡⟨ Eq.sym (%-distribˡ-+ 1 k p) ⟩
+    (1 Nat.+ k) % p                ∎
+    where open Eq.≡-Reasoning
+
+-- mult undoes toℕ, and kills p.
+mult-toℕ : ∀ (a : ℤ ₚ) → mult (toℕ a) ≡ a
+mult-toℕ a = toℕ-injective (Eq.trans (mult-% (toℕ a)) (m<n⇒m%n≡m (toℕ<n a)))
+
+mult-p : mult p ≡ ₀
+mult-p = toℕ-injective (Eq.trans (mult-% p) (n%n≡0 p))

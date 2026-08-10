@@ -37,7 +37,7 @@ import Examples.Groups.Symmetric.Tight.Soundness as TSnd
 open import Examples.Groups.Cyclic.Normalization using (X)
 import Examples.Groups.Cyclic.Semantics as CS
 import Examples.Groups.Cyclic.Soundness as CSnd
-open import Zp.ModularArithmetic using (_+_ ; +-identityˡ ; +-identityʳ)
+open import ForStdlib.Data.Fin.Mod using (_+_ ; +-identityˡ ; +-identityʳ)
 
 ------------------------------------------------------------------------
 -- Componentwise denotation of embedded words

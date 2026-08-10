@@ -46,8 +46,8 @@ open import Data.Nat.GCD
 open Bézout
 open import Data.Empty
 open import Algebra.Properties.Group
-open import Zp.ModularArithmetic
-open import Zp.Fermats-little-theorem
+open import ForStdlib.Data.Fin.Mod
+open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
 module Examples.Groups.Symplectic.Lemmas.Symplectic-Alternative
   (p-2 : ℕ)
@@ -550,7 +550,7 @@ module Lemmas1 (n : ℕ) where
     Mg ^ p-1 ≡⟨ Eq.cong (Mg ^_) (Eq.sym (toℕ-fromℕ< (NP.n<1+n p-1))) ⟩
     Mg^ (fromℕ< (NP.n<1+n p-1)) ≈⟨ axiom (M-power (₁₊ (fromℕ< _))) ⟩
     M (g^ p-1') ≡⟨ aux-M≡M (g^ p-1') ((g ^′ p-1 , lemma-g^′k≠0 p-1)) (Eq.cong (g ^′_) (toℕ-fromℕ< (NP.n<1+n p-1))) ⟩
-    M (g ^′ p-1 , lemma-g^′k≠0 p-1) ≡⟨ aux-M≡M ((g ^′ p-1 , lemma-g^′k≠0 p-1)) (1ₚ , λ ()) Zp.Fermats-little-theorem' ⟩
+    M (g ^′ p-1 , lemma-g^′k≠0 p-1) ≡⟨ aux-M≡M ((g ^′ p-1 , lemma-g^′k≠0 p-1)) (1ₚ , λ ()) ForStdlib.Data.Fin.Mod.Prime.Fermat' ⟩
     M (1ₚ , λ ()) ≈⟨ sym (axiom (M-power ₀)) ⟩
     ε ∎
     where

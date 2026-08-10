@@ -27,7 +27,7 @@ module Examples.Groups.Cyclic.Semantics where
 
 open import Examples.Groups.Cyclic.Normalization
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 ------------------------------------------------------------------------
 -- The carrier
 
@@ -99,9 +99,9 @@ Cn-group (suc n) = Cn-suc-group {n}
 
 
 gg : ∀ {n} -> X -> Cn n
-gg {₀} tt = Int.+ 1
-gg {₁} tt = ₀
-gg {₂₊ n} tt = ₁
+gg {₀} _ = Int.+ 1
+gg {₁} _ = ₀
+gg {₂₊ n} _ = ₁
 
 ⟦_⟧₀ = gg
 

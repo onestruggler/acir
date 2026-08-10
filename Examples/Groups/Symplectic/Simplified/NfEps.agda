@@ -43,8 +43,8 @@ open import Data.Product using (∃ ; _,_)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
 open import Notations
-open import Zp.ModularArithmetic
-open import Zp.Fermats-little-theorem
+open import ForStdlib.Data.Fin.Mod
+open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 
 module Examples.Groups.Symplectic.Simplified.NfEps
   (p-2 : ℕ)

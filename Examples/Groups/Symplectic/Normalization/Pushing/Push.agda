@@ -15,7 +15,6 @@ module Examples.Groups.Symplectic.Normalization.Pushing.Push (p-2 : ℕ) (p-prim
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
-  using (≡×≡⇒≡ ; Pointwise ; ≡⇒≡×≡)
 open import Data.Unit using (tt)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]ₑ)
@@ -32,7 +31,7 @@ open NFBase using (NormalFormInjective ; NormalForm)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic hiding (M)
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 
 
@@ -42,8 +41,6 @@ private variable
 open import Examples.Groups.Symplectic.BR.One.A p-2 p-prime as OA
 import Examples.Groups.Symplectic.BR.Two.ML'-Top p-2 p-prime as ML'T
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushLM1 p-2 p-prime
-  using (push-LM1 ; A-dir-S-power)
-  using (push-E-S^)
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushMbS p-2 p-prime
   using (mbSⁿ)
 open import Data.Fin using (toℕ)

@@ -16,7 +16,7 @@ module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 open import Data.Nat.Primality
 open import Notations
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 module Examples.Groups.Symplectic.NF1-Sym (p-2 : ℕ) (p-prime : Prime (2+ p-2))
   where
 open PrimeModulus p-2 p-prime

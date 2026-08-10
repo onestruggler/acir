@@ -1,95 +1,45 @@
-﻿------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The n-qubit Clifford group (p = 2) as group extensions, semantic side.
--- Two layers, neither of them split:
+-- The scalar layer of the n-qubit Clifford group (p = 2), semantic side:
 --
---     1 ─→ Pauli n ─→ CMS n   ─→ Sp(2n, 2) ─→ 1        (below)
---     1 ─→ ⟨ω⟩     ─→ Exact n ─→ CMS n     ─→ 1        (scalar layer)
+--     1 ─→ ⟨ω⟩ ─→ Exact n ─→ CMS n ─→ 1
 --
--- CMS n is the Clifford group modulo scalars, C(n)/⟨ω⟩; Exact n is the
--- Clifford group itself.  Note that the kernel of the first layer is the
--- *plain* Pauli group Pauli n = (ℤ/2 × ℤ/2)ⁿ, with no phase: the ℤ/4
--- phase of SignedPauli is used only to define equality of Clifford words,
--- never as the kernel.  See the header of Qubit.CliffordGroup for why it
--- cannot be dropped from that role.
+-- Exact n is the Clifford group itself; the layer below it, the
+-- non-split extension 1 → Pauli n → CMS n → Sp(2n, 2) → 1 presenting the
+-- Clifford group modulo scalars, is
+-- Examples.Groups.ProjectiveClifford.Qubit.Semantics, from which CMS-group
+-- is taken here.
 --
--- The first layer is re-exported from Examples.Groups.Clifford.Qubit.
--- CliffordGroup, where the total group is the quotient of Clifford words
--- by equal action on the phased Pauli group P4, and incl / proj /
--- exactness are proved from that action.  It is NOT a semidirect
--- product: `semidirect` would force S² = 1, whereas
--- CliffordGroup.S²=Z proves
+-- ⟨ω⟩ ≅ ℤ/8, written additively in the exponent of ω: ωʲ · ωᵏ = ω^{j+k}.
+-- The extension is an ordinary one, assembled by hand exactly as the
+-- layer below is: the total group is Clifford words modulo the *exact*
+-- congruence — the one Selinger's Figure 8 presents, which unlike ≈ᶜ
+-- still sees the global scalar — with incl k = ωᵏ and proj the identity
+-- on words.  See Qubit.ExactExtension, and the note at the end of this
+-- file for what it still takes as input and why the P4-action cannot
+-- supply it.
 --
---     S • S  ≈ᶜ  incl (pZ ∷ pIₙ),
---
--- i.e. the phase gate projects to an involution of Sp(2n,2) but squares
--- to the Pauli Z.  So proj admits no section taking that involution to
--- an involution, and the extension is genuinely non-split.  (This is the
--- semantic counterpart of corr (order-S) = Z₀, the single nontrivial
--- entry of the cocycle in Qubit.Presentation.)
---
--- The second layer restores the global scalar ω of order 8.  Its total
--- group is the one Figure 8 presents — Clifford words modulo the exact
--- congruence — so it is assembled by hand, like the first; see
--- Qubit.ExactExtension, and the note at the end of this file for what it
--- still takes as input and why the P4-action cannot supply it.
+-- The scalar layer needs at least one qubit, ω living on the first wire.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Clifford.Qubit.Semantics where
 
-open import Data.Nat using (ℕ)
-open import Data.Nat.Primality using (Prime ; prime?)
 open import Notations using (₁₊)
-open import Relation.Nullary.Decidable using (from-yes)
-open import Level using (0ℓ)
-open import Algebra.Bundles using (Group)
-
--- Qubit case: fix the prime to 2.
-p-2 : ℕ
-p-2 = 0
-
-p-prime : Prime 2
-p-prime = from-yes (prime? 2)
 
 open import ForStdlib.Algebra.Construct.Extension using (Extension)
 
-open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (+ₚ-group)
-open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
-
-import Examples.Groups.Clifford.Qubit.CliffordGroup as CG
-
-------------------------------------------------------------------------
--- Layer 1: the Clifford group as a non-split extension of Sp(2n, 2)
-
--- 1 → Pauli n → CMS n → Sp(2n, 2) → 1.
-CMS-extension : (n : ℕ) → Extension (+ₚ-group n) (Sp-group n)
-CMS-extension = CG.CMS-extension
-
--- The total group: Clifford words modulo equal action on P4.
-CMS-group : (n : ℕ) → Group 0ℓ 0ℓ
-CMS-group n = Extension.total (CMS-extension n)
-
--- The witness that it does not split, re-exported for convenience.
-open CG using (S²=Z) public
-
-------------------------------------------------------------------------
--- Layer 2: the scalars ⟨ω⟩, and the exact Clifford group
---
--- ⟨ω⟩ ≅ ℤ/8, written additively in the exponent of ω: ωʲ · ωᵏ = ω^{j+k}.
--- The extension is an ordinary one, assembled by hand exactly as layer 1
--- is: the total group is Clifford words modulo the *exact* congruence —
--- the one Selinger's Figure 8 presents, which unlike ≈ᶜ still sees the
--- global scalar — with incl k = ωᵏ and proj the identity on words.  See
--- Qubit.ExactExtension.
---
--- The scalar layer needs at least one qubit, ω living on the first wire.
+open import Examples.Groups.ProjectiveClifford.Qubit.Semantics
+  using (CMS-group)
 
 open import Examples.Groups.Clifford.Qubit.ExactExtension
   using (Scalar-group ; Exact-group ; ExactData)
   renaming (Exact to Exact-of)
+
+------------------------------------------------------------------------
+-- The scalars ⟨ω⟩, and the exact Clifford group
 
 -- 1 → ⟨ω⟩ → Exact n → CMS n → 1.
 Exact : ∀ {n} → ExactData n → Extension Scalar-group (CMS-group (₁₊ n))

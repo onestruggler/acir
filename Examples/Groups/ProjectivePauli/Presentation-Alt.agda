@@ -68,9 +68,9 @@ open import Data.Nat.Primality
 module Examples.Groups.ProjectivePauli.Presentation-Alt
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
-open import Zp.Mod-Lemmas p-2 p-prime
+open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime
   using (mult ; toℕ-+ ; mult-toℕ ; mult-p)
 
 

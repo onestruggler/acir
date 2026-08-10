@@ -15,12 +15,10 @@ open import Level
 module Normalization.StarPresentation {A : Set} (Γ : WRel A) (NF : Setoid 0ℓ 0ℓ) where
 
 open import Algebra.Bundles using (Monoid ; Group)
-  using (module MonoidMorphisms ; module GroupMorphisms)
 
 import Presentation.Base as PB
 open import Presentation.GroupLike
 import Presentation.Properties as PP
-  using (isMonoidHomomorphism⇒isGroupHomomorphism)
 
 open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_)
 open PP Γ renaming (•-ε-monoid to monoid₁)

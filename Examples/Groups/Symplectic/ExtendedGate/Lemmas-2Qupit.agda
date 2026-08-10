@@ -32,14 +32,14 @@ module Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit (p-2 : ℕ) (p-prim
 
 
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 
 module Lemmas-2Q (n : ℕ) where
 
   open Symplectic-Derived-Gen
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
 
   open PB ((₂₊ n) QRel,_===_) hiding (_===_)
   open PP ((₂₊ n) QRel,_===_)

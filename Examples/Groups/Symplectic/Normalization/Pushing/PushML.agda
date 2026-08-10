@@ -15,7 +15,6 @@ module Examples.Groups.Symplectic.Normalization.Pushing.PushML (p-2 : ℕ) (p-pr
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
 
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
-  using (≡×≡⇒≡ ; Pointwise ; ≡⇒≡×≡)
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; inspect ; module ≡-Reasoning) renaming ([_] to [_]ₑ)
 import Relation.Binary.Reasoning.Setoid as SR
@@ -31,7 +30,7 @@ open NFBase using (NormalFormInjective ; NormalForm)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Data.Sum
 

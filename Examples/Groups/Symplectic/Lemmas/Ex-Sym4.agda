@@ -35,7 +35,7 @@ private
   n : ℕ
   n = 0
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
@@ -279,7 +279,7 @@ aux-NF2' l pf@(sp , mc2 , mc1) = bbc (H ↑ • S^ l ↑) ε aux
     where
     module L0 = Lemmas0 0
 
-open import Zp.Mod-Lemmas p-2 p-prime
+open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime
 
 
 

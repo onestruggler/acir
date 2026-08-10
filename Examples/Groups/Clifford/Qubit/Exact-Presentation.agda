@@ -87,13 +87,13 @@ import Examples.Groups.Cyclic.Semantics as CycSem
 -- The qubit case, p = 2.  Taken from PrimitiveRoot rather than
 -- CliffordGroup: the two agree definitionally, and this one does not go
 -- through the P4-action layer.
-open import Examples.Groups.Clifford.Qubit.PrimitiveRoot using (p-2 ; p-prime)
+open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime)
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
 open Symplectic using (Gen)
 
-import Examples.Groups.Clifford.Qubit.Selinger.Figure8-Mod-Scalar p-2 p-prime
+import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Figure8-Mod-Scalar p-2 p-prime
   as MS
 
 private

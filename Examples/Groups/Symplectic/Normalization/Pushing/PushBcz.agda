@@ -17,7 +17,7 @@ module Examples.Groups.Symplectic.Normalization.Pushing.PushBcz (p-2 : ℕ) (p-p
 
 import Relation.Binary.PropositionalEquality as Eq
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic hiding (M)

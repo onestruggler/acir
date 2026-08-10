@@ -2,15 +2,12 @@
 open import Data.Product using (_,_ ; proj₂)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 import Relation.Binary.PropositionalEquality as Eq
-
 import Relation.Binary.Reasoning.Setoid as SR
-
 open import Function using (id ; _∘_) 
 open import Algebra.Morphism.Structures using (module MonoidMorphisms ; module GroupMorphisms)
 open import Function.Definitions using (Injective ; Surjective)
 open import Algebra.Bundles using (Monoid ; Group)
 open import Algebra.Bundles.Raw using (RawGroup)
-
 
 open import Word.Base
 import Presentation.Base as PB
@@ -25,7 +22,6 @@ open PB Δ renaming (_===_ to _===₂_ ; _≈_ to _≈₂_ ; refl to refl₂ ; c
 open PP Δ renaming (•-ε-monoid to m₂ ; word-setoid to ws₂)
 
 open PB
-
 
 lemma-id* : ∀ {B : Set} {w : Word B} -> (([_]ʷ ∘ id) ʷ) w ≡ w
 lemma-id* {B} {[ x ]ʷ} = Eq.refl
@@ -141,8 +137,6 @@ module StarIsomorphism
     surjective = id-surj  }
 
 
-
-
 open import Presentation.GroupLike
 
 module GroupMorphs
@@ -210,7 +204,6 @@ module GroupMorphs
     isGroupMonomorphism = record {
       isGroupHomomorphism = isGroupHomomorphism ;
       injective = id-inj  } -- 
-
 
 
   -- A way to show id* is an isomorphism.

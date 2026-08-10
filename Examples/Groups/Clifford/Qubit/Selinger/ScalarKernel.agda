@@ -59,7 +59,7 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic using (Gen ; Circuit ; _↑)
 
 import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
-import Examples.Groups.Clifford.Qubit.Selinger.Figure8-Mod-Scalar p-2 p-prime as MS
+import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Figure8-Mod-Scalar p-2 p-prime as MS
 open F8 using (ω ; _≈ᶠ_ ; ω^-central ; ω^↑≈ω^ ; ↑-^)
 
 -- Figure 8 and its mod-scalar quotient no longer share an alphabet: the

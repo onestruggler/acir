@@ -30,7 +30,7 @@ module Examples.Groups.Symplectic.Lemmas.Embeding-2n (p-2 : ℕ) (p-prime : Prim
 
 
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime

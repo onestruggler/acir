@@ -63,7 +63,7 @@ import Circuit.CosetNF as CosetNF
 import Circuit.Uniqueness as CU
 import Normalization.NormalForm.Uniqueness.Propositional as NFU
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 
 open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime

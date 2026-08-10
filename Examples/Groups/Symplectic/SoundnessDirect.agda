@@ -31,12 +31,12 @@ import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_ ; module ≡-Reasoning)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
 open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli)
-open import Zp.Mod-Lemmas p-2 p-prime
+open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime
   using (mult ; mult-toℕ ; mult-p)
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime

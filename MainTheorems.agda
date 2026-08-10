@@ -31,8 +31,8 @@ open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.PropositionalEquality as Eq
 
 open import Notations using (₁₊)
-open import Zp.ModularArithmetic using (ℤ ; ℤ* ; _^′_)
-open import Zp.Fermats-little-theorem using (module PrimeModulus')
+open import ForStdlib.Data.Fin.Mod using (ℤ ; ℤ* ; _^′_)
+open import ForStdlib.Data.Fin.Mod.Prime.Fermat using (module PrimeModulus')
 open import Word.Base using (Word ; WRel ; _ʷ)
 import Presentation.Base as PB
 import Presentation.Properties as PP

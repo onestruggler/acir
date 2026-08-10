@@ -17,7 +17,7 @@ open import Data.Nat.Primality using (Prime)
 
 module Examples.Groups.Symplectic.ExtendedGate.Semantics.ZpCalculation (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 

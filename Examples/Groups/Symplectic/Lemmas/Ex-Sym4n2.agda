@@ -31,7 +31,7 @@ module Examples.Groups.Symplectic.Lemmas.Ex-Sym4n2 (p-2 : ℕ) (p-prime : Prime 
 
 
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
@@ -194,7 +194,7 @@ lemma-comm-Ex-S↑ = bbc Ex Ex claim
     (Ex • Ex) • S ↑ • Ex ≈⟨ by-assoc auto ⟩
     Ex • (Ex • S ↑) • Ex ∎
 
-open import Zp.Mod-Lemmas p-2 p-prime
+open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime
 
 lemma-CZ^-pred : ∀ (k* : ℤ* ₚ) ->
   let

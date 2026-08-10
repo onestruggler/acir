@@ -31,7 +31,7 @@ import Presentation.Properties as PP
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 
 import Examples.Groups.Symplectic.Normalization.Pushing.PushML p-2 p-prime as PushML

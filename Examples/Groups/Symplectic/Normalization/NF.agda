@@ -14,7 +14,7 @@ open import Data.Unit using (⊤)
 open import Data.Vec using (Vec)
 open import Notations
 open import Relation.Binary.PropositionalEquality using (_≢_)
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 
 module Examples.Groups.Symplectic.Normalization.NF
   (p-2 : ℕ) (p-prime : Prime (2+ p-2))

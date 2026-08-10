@@ -20,7 +20,7 @@ GREEN (verified, citable as theorems):
 
 STATUS FLIPS (2026-07-10, after user's Clifford-pres addition):
 - Examples/Groups/ProjectivePauli/Semantics.agda — NOW GREEN (user fixed the metas).
-- Examples/Groups/Clifford/Qubit/Presentation.agda — NEW, GREEN (143 lines):
+- Examples/Groups/ProjectiveClifford/Qubit/Presentation.agda — NEW, GREEN (143 lines):
   Clifford-pres n = extension-presentation (Γ-H ⊕^ n) (n QRel,_===_) conj corr
   — the n-qubit Clifford relation set as a group extension (Selinger
   1310.6813 structure: 1 → phaseless Pauli → Clifford → Sp(2n,2) → 1);

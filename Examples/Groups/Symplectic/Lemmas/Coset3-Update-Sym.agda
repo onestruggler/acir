@@ -36,7 +36,7 @@ open import Data.Nat.Primality
 
 module Examples.Groups.Symplectic.Lemmas.Coset3-Update-Sym (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
@@ -94,7 +94,7 @@ module Completeness where
   open Lemmas0 1
   module L0 = Lemmas0 0
   open import Algebra.Properties.Ring (+-*-ring p-2)
-  open import Zp.Mod-Lemmas p-2 p-prime
+  open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime
 
   Lemma-three-qupit-completeness :
 

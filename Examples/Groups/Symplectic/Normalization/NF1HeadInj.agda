@@ -31,7 +31,7 @@ open ≡-Reasoning
 open import Data.Fin using (Fin)
 open import Notations
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 

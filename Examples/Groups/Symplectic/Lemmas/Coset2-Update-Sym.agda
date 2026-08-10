@@ -135,7 +135,7 @@ module Completeness where
   open Lemmas0 1
   module L0 = Lemmas0 0
   open import Algebra.Properties.Ring (+-*-ring p-2)
-  open import Zp.Mod-Lemmas p-2 p-prime
+  open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime
 
   Lemma-two-qupit-completeness :
 
@@ -314,7 +314,7 @@ module Completeness where
 
   ... | ₁ | [ ieq ]' = lm'' , (w • w'') , claim
     where
-    open import Zp.Mod-Lemmas p-2 p-prime
+    open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime
     open import Data.Fin.Properties
 
     m'⁻¹ = (m'* ⁻¹) .proj₁

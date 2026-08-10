@@ -23,7 +23,7 @@ open import Word.Base hiding (wfoldl)
 
 module Examples.Groups.Symplectic.ExtendedGate.Soundness (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open import Algebra.Properties.Ring (+-*-ring p-2)
 open import Examples.Groups.Symplectic.ExtendedGate.NF1 p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Semantics.Properties p-2 p-prime

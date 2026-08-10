@@ -32,13 +32,12 @@ import Presentation.Base as PB
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 
 import Examples.Groups.Symplectic.Normalization.Pushing.PushML p-2 p-prime as PushML
 open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime
   using (dir-of-DS ; d-of-DS)
-  using (S^-↓ᵏ ; ↑↓ᵏ-comm)
 open Lemmas-Sym using (lemma-comm-S-w↑ ; lemma-comm-H-w↑)
 
 open import Data.Nat using (zero ; suc) renaming (_+_ to _+ℕ_ ; _*_ to _*ℕ_)

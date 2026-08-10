@@ -36,7 +36,7 @@ import Circuit.Base
 
 module Examples.Groups.Symplectic.Syntactics (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 
 
@@ -1967,7 +1967,7 @@ module Lemmas00 where
   -- open Lemmas2 hiding (n)
   -- open Lemmas3 hiding (n)
   open Symplectic
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
   open Rewriting
 
   -- lemma-semi-CZ-HH↓ : let open PB ((₂₊ n) QRel,_===_) in
@@ -2079,7 +2079,7 @@ module Lemmas0 (n : ℕ) where
 
   open Symplectic
 --  open Symplectic-GroupLike
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
 
   open PB ((₁₊ n) QRel,_===_) hiding (_===_)
   open PP ((₁₊ n) QRel,_===_)
@@ -2605,7 +2605,7 @@ module Lemmas0 (n : ℕ) where
 
   open Symplectic-Derived-Gen
   open Symplectic-Derived-GroupLike
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
 
   open PB ((₁₊ n) QRel,_===_) hiding (_===_)
   open PP ((₁₊ n) QRel,_===_)
@@ -3987,7 +3987,7 @@ module Lemmas where
     n : ℕ
 
   open Symplectic
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
 
 
   lemma-Ex-Ex↑-CZ : let open PB ((₃₊ n) QRel,_===_) in
@@ -4384,7 +4384,7 @@ module Lemmas2 where
     n : ℕ
 
   open Symplectic
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
 
 
   lemma-Ex-H↑ : let open PB ((₂₊ n) QRel,_===_) in
@@ -4882,7 +4882,7 @@ module Lemmas3 where
     n : ℕ
 
   open Symplectic
-  open import Zp.ModularArithmetic
+  open import ForStdlib.Data.Fin.Mod
 --  open Rewriting-Symplectic
   open Rewriting
 

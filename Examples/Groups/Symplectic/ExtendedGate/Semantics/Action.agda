@@ -14,7 +14,7 @@ open import Data.Nat.Primality
 module Examples.Groups.Symplectic.ExtendedGate.Semantics.Action (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
 
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open Symplectic-Derived-Gen

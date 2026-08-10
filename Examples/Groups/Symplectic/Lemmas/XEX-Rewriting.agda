@@ -34,7 +34,7 @@ module Examples.Groups.Symplectic.Lemmas.XEX-Rewriting (p-2 : ℕ) (p-prime : Pr
 
 
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 
 

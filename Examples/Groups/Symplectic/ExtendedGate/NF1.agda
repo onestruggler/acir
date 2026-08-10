@@ -27,7 +27,7 @@ module Examples.Groups.Symplectic.ExtendedGate.NF1 (p-2 : ℕ) (p-prime : Prime 
 
 
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Syntactics p-2 p-prime
 open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime

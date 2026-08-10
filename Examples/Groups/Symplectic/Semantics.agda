@@ -35,7 +35,7 @@ open import Word.Base using ([_]ʷ ; ε ; _•_)
 
 open import ForStdlib.Algebra.IndexedGroups using (IndexedGroup ; Embedding)
 
-open import Zp.ModularArithmetic
+open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime

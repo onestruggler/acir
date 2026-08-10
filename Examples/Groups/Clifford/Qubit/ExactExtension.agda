@@ -59,14 +59,16 @@ open import Word.Properties using (lemma-fʷ-w^n)
 import Presentation.Base as PB
 open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
 
-open import Zp.ModularArithmetic using (ℤ ; +-0-group)
+open import ForStdlib.Data.Fin.Mod using (ℤ ; +-0-group)
 
 open import ForStdlib.Algebra.Construct.Extension using (Extension)
 open import ForStdlib.Algebra.Morphism.Consequences
   using (isMonoidHomomorphism⇒isGroupHomomorphism)
 
-open import Examples.Groups.Clifford.Qubit.CliffordGroup
-  using (p-2 ; p-prime ; _≈ᶜ_ ; CMS-group ; ≈ᶜ-refl)
+open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime)
+
+open import Examples.Groups.ProjectiveClifford.Qubit.CliffordGroup
+  using (_≈ᶜ_ ; CMS-group ; ≈ᶜ-refl)
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
@@ -82,7 +84,7 @@ open F8 using (ω ; _CRel,_===_ ; srel ; lemma-cong↑)
 open import Examples.Groups.Clifford.Qubit.Selinger.Relabel p-2 p-prime
   using (D ; E ; D∘E)
 
-open import Examples.Groups.Clifford.Qubit.Selinger.Action using (cact-ω ; cact-ω^)
+open import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Action using (cact-ω ; cact-ω^)
 
 private
   variable
