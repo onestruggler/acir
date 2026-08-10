@@ -8,6 +8,6 @@ open import Notations
 
 module Examples.Groups.Symplectic.NewCosets (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
 
-open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime using (ML) public
+open import Examples.Groups.Symplectic.Normalization.Boxes p-2 p-prime using (ML) public
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime using ([_]ᵐˡ) public
 

@@ -75,7 +75,7 @@ open import Examples.Groups.Symplectic.Semantics p-2 p-prime
   renaming (Symplectic to Sym)
 open Sym using (ap)
 open Interpretation using (⟦_⟧)
-open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Boxes p-2 p-prime
   using (ML)
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using ([_]ᵐˡ) renaming (NF to NFˢ ; [_] to [_]ˢ)

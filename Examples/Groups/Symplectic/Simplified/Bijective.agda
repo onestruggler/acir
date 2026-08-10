@@ -62,7 +62,7 @@ import Normalization.NormalForm.Setoid as SNF
 
 import Examples.Groups.Symplectic.Syntactics p-2 p-prime as Syn
 open Syn.Symplectic using (Circuit)
-open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime using (NF)
+open import Examples.Groups.Symplectic.Normalization.Boxes p-2 p-prime using (NF)
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using () renaming ([_] to nf→word)
 open import Examples.Groups.Symplectic.Normalization p-2 p-prime

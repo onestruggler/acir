@@ -40,7 +40,7 @@ open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic renaming (M to ZM)
 open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime public
+open import Examples.Groups.Symplectic.Normalization.Boxes p-2 p-prime public
 
 
 open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime

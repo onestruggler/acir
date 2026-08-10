@@ -6,7 +6,7 @@
 -- The symplectic (phaseless) normal form N(n) — Selinger's Definitions
 -- 4.3–4.4 and Lemma 5.5 — is already formalised in the symplectic layer:
 --
---   * NF n              the normal-form data (Symplectic.Normalization.NF)
+--   * NF n              the normal-form data (Symplectic.Normalization.Boxes)
 --   * nf→word : NF n → Word (Gen n)   the realising circuit; it satisfies
 --       nf→word (nf , lm) = nf→word nf ↑ • [ lm ]ᵐˡ,
 --     which is exactly Selinger's recursion N(n) = (N(n-1) ⊗ I)·M(n)·L(n)
@@ -104,7 +104,7 @@ open import Examples.Groups.Symplectic.Semantics p-2 p-prime
 open Interpretation using (⟦_⟧)
 open import Examples.Groups.Symplectic.Normalization.Faithful1 p-2 p-prime
   using (⟦⟧-sound)
-open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime using (NF)
+open import Examples.Groups.Symplectic.Normalization.Boxes p-2 p-prime using (NF)
 -- The realising circuit [ nf ] : NF n → Word (Gen n) (Selinger's N(n)) is
 -- built in Normalization.Section, avoiding the WIP Surjectivity chain.
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime

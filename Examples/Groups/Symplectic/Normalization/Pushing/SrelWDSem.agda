@@ -61,7 +61,7 @@ open Interpretation using (⟦_⟧)
 -- holes, so a --safe module cannot import it.
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushML
   p-2 p-prime using (ract ; ract-sound ; [_]ᶜ)
-open import Examples.Groups.Symplectic.Normalization.NF p-2 p-prime
+open import Examples.Groups.Symplectic.Normalization.Boxes p-2 p-prime
   using (ML)
 open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli)
 open import Examples.Groups.Symplectic.Normalization.NF-Inj p-2 p-prime

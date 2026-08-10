@@ -16,7 +16,7 @@ open import Notations
 open import Relation.Binary.PropositionalEquality using (_≢_)
 open import ForStdlib.Data.Fin.Mod
 
-module Examples.Groups.Symplectic.Normalization.NF
+module Examples.Groups.Symplectic.Normalization.Boxes
   (p-2 : ℕ) (p-prime : Prime (2+ p-2))
   where
 
