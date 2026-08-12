@@ -61,7 +61,7 @@ open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Syntactics
   p-3 p-prime g* g-gen
 
 open Clifford-Relations
-open Lemmas-Clifford using (lemma-↑^ ; lemma-↓^)
+open Lemmas-Clifford using (lemma-↑^ ; lemma-↓^ ; lemma-Induction)
 
 private
   variable
@@ -308,6 +308,37 @@ module Paper-GroupLike where
   -- can appear on one wire too.  The witness is width-generic.
   grouplike {₁₊ n} (g ↥) with grouplike g
   ... | ig , prf = (ig ↑) , lemma-cong↑ (ig • [ g ]ʷ) ε prf
+
+------------------------------------------------------------------------
+-- Powers of a word of order p depend only on the exponent mod p
+--
+-- Stated at an arbitrary width, since the multiplier rescalings produce
+-- natural-number exponents at both two and three wires.
+
+lemma-pow-mod : ∀ {n} {w : Word (Gen n)} →
+                let open PB (n QRel,_===_) using (_≈_) in
+                w ^ p ≈ ε → ∀ m → w ^ m ≈ w ^ (m Nat.% p)
+lemma-pow-mod {n} {w} op m = begin
+  w ^ m
+    ≡⟨ Eq.cong (w ^_) (m≡m%n+[m/n]*n m p) ⟩
+  w ^ (m Nat.% p Nat.+ (m Nat./ p) Nat.* p)
+    ≈⟨ ^-+ w (m Nat.% p) ((m Nat./ p) Nat.* p) ⟩
+  w ^ (m Nat.% p) • w ^ ((m Nat./ p) Nat.* p)
+    ≈⟨ cright aux ⟩
+  w ^ (m Nat.% p) • ε
+    ≈⟨ right-unit ⟩
+  w ^ (m Nat.% p) ∎
+  where
+  open PB (n QRel,_===_)
+  open PP (n QRel,_===_)
+  open SR word-setoid
+  aux : w ^ ((m Nat./ p) Nat.* p) ≈ ε
+  aux = begin
+    w ^ ((m Nat./ p) Nat.* p)  ≈⟨ refl' (Eq.cong (w ^_) (NP.*-comm (m Nat./ p) p)) ⟩
+    w ^ (p Nat.* (m Nat./ p))  ≈⟨ sym (^^ w p (m Nat./ p)) ⟩
+    (w ^ p) ^ (m Nat./ p)      ≈⟨ ^-cong (w ^ p) ε (m Nat./ p) op ⟩
+    ε ^ (m Nat./ p)            ≈⟨ ε^k=ε (m Nat./ p) ⟩
+    ε ∎
 
 ------------------------------------------------------------------------
 -- Ex is its own inverse
@@ -737,6 +768,25 @@ module Ex-Conjugation (n : ℕ) where
     CZ^ g • (Ex • (Mg ↑ • Ex))    ≈⟨ cright lemma-conj-Ex-Mg↑ ⟩
     CZ^ g • Mg ∎
 
+  ------------------------------------------------------------------------
+  -- Pushing the multiplier past a CZ power rescales the exponent
+  --
+  -- Iterating the rule over the power multiplies the exponent by g.  The
+  -- product is taken in ℕ, so lemma-pow-mod brings it back into range and
+  -- lemma-toℕ-% identifies it with the product in ℤ/pℤ.
+
+  lemma-Mg-CZ^ : ∀ (a : ℤ ₚ) → Mg • CZ^ a ≈ CZ^ (g * a) • Mg
+  lemma-Mg-CZ^ a = begin
+    Mg • CZ ^ toℕ a
+      ≈⟨ lemma-Induction lemma-semi-Mg-CZ (toℕ a) ⟩
+    (CZ ^ toℕ g) ^ toℕ a • Mg
+      ≈⟨ cleft (^^ CZ (toℕ g) (toℕ a)) ⟩
+    CZ ^ (toℕ g Nat.* toℕ a) • Mg
+      ≈⟨ cleft (lemma-pow-mod (axiom order-CZ) (toℕ g Nat.* toℕ a)) ⟩
+    CZ ^ ((toℕ g Nat.* toℕ a) Nat.% p) • Mg
+      ≈⟨ cleft refl' (Eq.cong (CZ ^_) (lemma-toℕ-% g a)) ⟩
+    CZ ^ toℕ (g * a) • Mg ∎
+
 ------------------------------------------------------------------------
 -- The shift down is the identity on the one-wire words
 --
@@ -826,29 +876,6 @@ module Three-Wire (n : ℕ) where
 
   open Group-Lemmas ((₃₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₃₊ n})
     using (•-cancelʳ)
-
-  ------------------------------------------------------------------------
-  -- Powers of a word of order p depend only on the exponent mod p
-
-  lemma-pow-mod : ∀ {w} → w ^ p ≈ ε → ∀ m → w ^ m ≈ w ^ (m Nat.% p)
-  lemma-pow-mod {w} op m = begin
-    w ^ m
-      ≡⟨ Eq.cong (w ^_) (m≡m%n+[m/n]*n m p) ⟩
-    w ^ (m Nat.% p Nat.+ (m Nat./ p) Nat.* p)
-      ≈⟨ ^-+ w (m Nat.% p) ((m Nat./ p) Nat.* p) ⟩
-    w ^ (m Nat.% p) • w ^ ((m Nat./ p) Nat.* p)
-      ≈⟨ cright aux ⟩
-    w ^ (m Nat.% p) • ε
-      ≈⟨ right-unit ⟩
-    w ^ (m Nat.% p) ∎
-    where
-    aux : w ^ ((m Nat./ p) Nat.* p) ≈ ε
-    aux = begin
-      w ^ ((m Nat./ p) Nat.* p)  ≈⟨ refl' (Eq.cong (w ^_) (NP.*-comm (m Nat./ p) p)) ⟩
-      w ^ (p Nat.* (m Nat./ p))  ≈⟨ sym (^^ w p (m Nat./ p)) ⟩
-      (w ^ p) ^ (m Nat./ p)      ≈⟨ ^-cong (w ^ p) ε (m Nat./ p) op ⟩
-      ε ^ (m Nat./ p)            ≈⟨ ε^k=ε (m Nat./ p) ⟩
-      ε ∎
 
   -- CZ on the upper pair has order p, inherited from order-CZ one wire
   -- down.  (ε ↑ is ε definitionally, so the shift leaves no residue.)
