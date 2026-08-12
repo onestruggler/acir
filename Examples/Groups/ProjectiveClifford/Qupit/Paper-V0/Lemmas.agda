@@ -1616,6 +1616,74 @@ module Three-Wire (n : ℕ) where
     (CZ • CZ ↑) • (Ex • Ex ↑) ∎)
 
   ------------------------------------------------------------------------
+  -- The third commuting pair, by conjugating c12 with the 3-cycle
+  --
+  -- σ = Ex • Ex ↑ conjugates CZ to CZ ↑ (that is cz-slide) and CZ02 back
+  -- to CZ (lemma-σ-CZ02).  Since σ ³ ≈ ε, the missing third leg follows:
+  -- σ carries CZ ↑ to CZ02, because two steps forward is one step back.
+  -- Conjugating c12 by σ then turns "CZ ↑ against CZ" into "CZ02 against
+  -- CZ ↑", the pair the other half of c13 needs.
+
+  private
+    lemma-σ-CZ : (Ex • Ex ↑) • CZ ≈ CZ ↑ • (Ex • Ex ↑)
+    lemma-σ-CZ = begin
+      (Ex • Ex ↑) • CZ    ≈⟨ by-assoc auto ⟩
+      Ex ↓ • Ex ↑ • CZ    ≈⟨ axiom cz-slide ⟩
+      CZ ↑ • Ex ↓ • Ex ↑  ≈⟨ by-assoc auto ⟩
+      CZ ↑ • (Ex • Ex ↑) ∎
+
+    lemma-σ-CZ↑ : (Ex • Ex ↑) • CZ ↑ ≈ CZ02 • (Ex • Ex ↑)
+    lemma-σ-CZ↑ =
+      •-cancelʳ {h = (Ex • Ex ↑) • (Ex • Ex ↑)} (begin
+        ((Ex • Ex ↑) • CZ ↑) • ((Ex • Ex ↑) • (Ex • Ex ↑))
+          ≈⟨ by-assoc auto ⟩
+        (Ex • Ex ↑) • (((CZ ↑ • (Ex • Ex ↑))) • (Ex • Ex ↑))
+          ≈⟨ cright cleft sym lemma-σ-CZ ⟩
+        (Ex • Ex ↑) • (((Ex • Ex ↑) • CZ) • (Ex • Ex ↑))
+          ≈⟨ cright assoc ⟩
+        (Ex • Ex ↑) • ((Ex • Ex ↑) • (CZ • (Ex • Ex ↑)))
+          ≈⟨ cright cright sym lemma-σ-CZ02 ⟩
+        (Ex • Ex ↑) • ((Ex • Ex ↑) • ((Ex • Ex ↑) • CZ02))
+          ≈⟨ by-assoc auto ⟩
+        (((Ex • Ex ↑) • (Ex • Ex ↑)) • (Ex • Ex ↑)) • CZ02
+          ≈⟨ cleft lemma-σ³ ⟩
+        ε • CZ02
+          ≈⟨ left-unit ⟩
+        CZ02
+          ≈⟨ sym right-unit ⟩
+        CZ02 • ε
+          ≈⟨ cright sym lemma-σ³ ⟩
+        CZ02 • (((Ex • Ex ↑) • (Ex • Ex ↑)) • (Ex • Ex ↑))
+          ≈⟨ by-assoc auto ⟩
+        (CZ02 • (Ex • Ex ↑)) • ((Ex • Ex ↑) • (Ex • Ex ↑)) ∎)
+
+  lemma-comm-CZ↑-CZ02 : CZ ↑ • CZ02 ≈ CZ02 • CZ ↑
+  lemma-comm-CZ↑-CZ02 = •-cancelʳ {h = Ex • Ex ↑} (begin
+    (CZ ↑ • CZ02) • (Ex • Ex ↑)
+      ≈⟨ assoc ⟩
+    CZ ↑ • (CZ02 • (Ex • Ex ↑))
+      ≈⟨ cright sym lemma-σ-CZ↑ ⟩
+    CZ ↑ • ((Ex • Ex ↑) • CZ ↑)
+      ≈⟨ sym assoc ⟩
+    (CZ ↑ • (Ex • Ex ↑)) • CZ ↑
+      ≈⟨ cleft sym lemma-σ-CZ ⟩
+    ((Ex • Ex ↑) • CZ) • CZ ↑
+      ≈⟨ assoc ⟩
+    (Ex • Ex ↑) • (CZ • CZ ↑)
+      ≈⟨ cright sym lemma-selinger-c12 ⟩
+    (Ex • Ex ↑) • (CZ ↑ • CZ)
+      ≈⟨ sym assoc ⟩
+    ((Ex • Ex ↑) • CZ ↑) • CZ
+      ≈⟨ cleft lemma-σ-CZ↑ ⟩
+    (CZ02 • (Ex • Ex ↑)) • CZ
+      ≈⟨ assoc ⟩
+    CZ02 • ((Ex • Ex ↑) • CZ)
+      ≈⟨ cright lemma-σ-CZ ⟩
+    CZ02 • (CZ ↑ • (Ex • Ex ↑))
+      ≈⟨ sym assoc ⟩
+    (CZ02 • CZ ↑) • (Ex • Ex ↑) ∎)
+
+  ------------------------------------------------------------------------
   -- The lower half-swap commutes with the upper CZ
   --
   -- ₕ|ₕ is H • CZ • H, all on wires 0 and 1.  The H commutes with CZ ↑
@@ -1652,6 +1720,65 @@ module Three-Wire (n : ℕ) where
   -- Semantically both sides of c13 are CZ02 — that is how this shape was
   -- found — so the other half is the same statement about the upper pair.
 
+  ------------------------------------------------------------------------
+  -- The upper half-swap commutes with CZ02
+  --
+  -- The mirror of lemma-comm-ₕ|ₕ-CZ↑, one wire up.  ₕ|ₕ ↑ is
+  -- H ↑ • CZ ↑ • H ↑; the two CZs commute by the lemma above, and H ↑
+  -- against CZ02 is a conjugation: writing CZ02 as Ex ↑ • CZ • Ex ↑, the
+  -- swap carries H ↑ to H ↑ ↑, which clears CZ structurally, and the
+  -- second swap carries it back.
+
+  private
+    ex↑-H↑↑ : Ex ↑ • H ↑ ↑ ≈ H ↑ • Ex ↑
+    ex↑-H↑↑ = lemma-cong↑ _ _ (Ex-Conjugation.lemma-Ex-H↑ n)
+
+    ex↑-H↑ : Ex ↑ • H ↑ ≈ H ↑ ↑ • Ex ↑
+    ex↑-H↑ = lemma-cong↑ _ _ (Ex-Conjugation.lemma-Ex-H n)
+
+  lemma-comm-H↑-CZ02 : H ↑ • CZ02 ≈ CZ02 • H ↑
+  lemma-comm-H↑-CZ02 = begin
+    H ↑ • CZ02
+      ≈⟨ cright sym lemma-CZ02' ⟩
+    H ↑ • (Ex ↑ • (CZ • Ex ↑))
+      ≈⟨ sym assoc ⟩
+    (H ↑ • Ex ↑) • (CZ • Ex ↑)
+      ≈⟨ cleft sym ex↑-H↑↑ ⟩
+    (Ex ↑ • H ↑ ↑) • (CZ • Ex ↑)
+      ≈⟨ by-assoc auto ⟩
+    Ex ↑ • ((H ↑ ↑ • CZ) • Ex ↑)
+      ≈⟨ cright cleft axiom comm-CZ ⟩
+    Ex ↑ • ((CZ • H ↑ ↑) • Ex ↑)
+      ≈⟨ cright assoc ⟩
+    Ex ↑ • (CZ • (H ↑ ↑ • Ex ↑))
+      ≈⟨ cright cright sym ex↑-H↑ ⟩
+    Ex ↑ • (CZ • (Ex ↑ • H ↑))
+      ≈⟨ by-assoc auto ⟩
+    (Ex ↑ • (CZ • Ex ↑)) • H ↑
+      ≈⟨ cleft lemma-CZ02' ⟩
+    CZ02 • H ↑ ∎
+
+  lemma-comm-ₕ|ₕ↑-CZ02 :
+    (H ↑ • CZ ↑ • H ↑) • CZ02 ≈ CZ02 • (H ↑ • CZ ↑ • H ↑)
+  lemma-comm-ₕ|ₕ↑-CZ02 = begin
+    (H ↑ • CZ ↑ • H ↑) • CZ02
+      ≈⟨ by-assoc auto ⟩
+    H ↑ • (CZ ↑ • (H ↑ • CZ02))
+      ≈⟨ cright cright lemma-comm-H↑-CZ02 ⟩
+    H ↑ • (CZ ↑ • (CZ02 • H ↑))
+      ≈⟨ cright sym assoc ⟩
+    H ↑ • ((CZ ↑ • CZ02) • H ↑)
+      ≈⟨ cright cleft lemma-comm-CZ↑-CZ02 ⟩
+    H ↑ • ((CZ02 • CZ ↑) • H ↑)
+      ≈⟨ sym assoc ⟩
+    (H ↑ • (CZ02 • CZ ↑)) • H ↑
+      ≈⟨ cleft sym assoc ⟩
+    ((H ↑ • CZ02) • CZ ↑) • H ↑
+      ≈⟨ cleft cleft lemma-comm-H↑-CZ02 ⟩
+    ((CZ02 • H ↑) • CZ ↑) • H ↑
+      ≈⟨ by-assoc auto ⟩
+    CZ02 • (H ↑ • CZ ↑ • H ↑) ∎
+
   lemma-c13-right : ⊥⊤ • (CZ ↑ • ⊤⊥) ≈ CZ02
   lemma-c13-right = begin
     ⊥⊤ • (CZ ↑ • ⊤⊥)
@@ -1669,3 +1796,36 @@ module Three-Wire (n : ℕ) where
     Ex • ((CZ ↑ • ε) • Ex)
       ≈⟨ cright cleft right-unit ⟩
     Ex • (CZ ↑ • Ex) ∎
+
+  ------------------------------------------------------------------------
+  -- The other half of c13, and c13 itself
+  --
+  -- One wire up, with lemma-comm-ₕ|ₕ↑-CZ02 in place of lemma-comm-ₕ|ₕ-CZ↑
+  -- and lemma-CZ02' in place of the definition of CZ02.  Both sides of
+  -- c13 are CZ02, so the rule is the two halves glued.
+
+  lemma-c13-left : ⊤⊥ {n} ↑ • (CZ • ⊥⊤ {n} ↑) ≈ CZ02
+  lemma-c13-left = begin
+    ⊤⊥ {n} ↑ • (CZ • ⊥⊤ {n} ↑)
+      ≈⟨ cleft (lemma-cong↑ _ _ (Ex-Conjugation.lemma-⊤⊥-simple n)) ⟩
+    ((H ↑ • CZ ↑ • H ↑) • Ex ↑) • (CZ • ⊥⊤ {n} ↑)
+      ≈⟨ cright cright (lemma-cong↑ _ _ (Ex-Conjugation.lemma-⊥⊤-simple n)) ⟩
+    ((H ↑ • CZ ↑ • H ↑) • Ex ↑) • (CZ • (Ex ↑ • (H ↑ • CZ ↑ • H ↑)))
+      ≈⟨ by-assoc auto ⟩
+    (H ↑ • CZ ↑ • H ↑) • ((Ex ↑ • (CZ • Ex ↑)) • (H ↑ • CZ ↑ • H ↑))
+      ≈⟨ cright cleft lemma-CZ02' ⟩
+    (H ↑ • CZ ↑ • H ↑) • (CZ02 • (H ↑ • CZ ↑ • H ↑))
+      ≈⟨ sym assoc ⟩
+    ((H ↑ • CZ ↑ • H ↑) • CZ02) • (H ↑ • CZ ↑ • H ↑)
+      ≈⟨ cleft lemma-comm-ₕ|ₕ↑-CZ02 ⟩
+    (CZ02 • (H ↑ • CZ ↑ • H ↑)) • (H ↑ • CZ ↑ • H ↑)
+      ≈⟨ assoc ⟩
+    CZ02 • ((H ↑ • CZ ↑ • H ↑) • (H ↑ • CZ ↑ • H ↑))
+      ≈⟨ cright (lemma-cong↑ _ _ (Ex-Conjugation.lemma-ₕ|ₕ-invol n)) ⟩
+    CZ02 • ε
+      ≈⟨ right-unit ⟩
+    CZ02 ∎
+
+  lemma-selinger-c13 :
+    ⊤⊥ {n} ↑ • CZ ↓ • ⊥⊤ {n} ↑ ≈ ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
+  lemma-selinger-c13 = trans lemma-c13-left (sym lemma-c13-right)
