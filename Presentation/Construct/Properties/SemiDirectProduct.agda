@@ -42,6 +42,7 @@ open import Presentation.Construct.Base
 open import Presentation.Properties as PP
 open import Normalization.NormalForm.Propositional using (NormalForm ; NormalFormInjective)
 import Normalization.NormalForm.Setoid as SNF
+import Normalization.NormalForm.Uniqueness as NFU
 open import Normalization.Reidemeister-Schreier
 open import Word.Properties
 
@@ -658,7 +659,8 @@ module _
 
     -- (4) Normal forms with equal denotations are equal, reducing factor
     -- by factor to injectivity of the two factor interpretations.
-    unfp₃ : NF₃.UniqueNormalForm (Group.setoid G1⋊G2) GS.⟦_⟧ nfp₃
+    unfp₃ : NFU.UniqueNormalForm (Γ ⋄ Δ ⋄ ConjRelʷ conj) nf-setoid
+              (Group.setoid G1⋊G2) GS.⟦_⟧ (NF₃.NormalForm.inv-nf nfp₃)
     unfp₃ = record
       { unique = λ { {a , c} {a' , c'} eq →
           let p = D.trans (D.sym (sem-⁻¹nf a c)) (D.trans eq (sem-⁻¹nf a' c'))
@@ -700,18 +702,20 @@ module _
       {NF₁ NF₂ : Set}
       (nfp-Γ : NormalForm Γ NF₁)
       (nfp-Δ : NormalForm Δ NF₂)
-      (unfp-Γ : SNF.UniqueNormalForm Γ (Eq.setoid NF₁)
-                  (Group.setoid G1) ⟦_⟧₁ nfp-Γ)
-      (unfp-Δ : SNF.UniqueNormalForm Δ (Eq.setoid NF₂)
-                  (Group.setoid G2) ⟦_⟧₂ nfp-Δ)
+      (unfp-Γ : NFU.UniqueNormalForm Γ (Eq.setoid NF₁)
+                  (Group.setoid G1) ⟦_⟧₁ (SNF.NormalForm.inv-nf nfp-Γ))
+      (unfp-Δ : NFU.UniqueNormalForm Δ (Eq.setoid NF₂)
+                  (Group.setoid G2) ⟦_⟧₂ (SNF.NormalForm.inv-nf nfp-Δ))
       where
 
       open NFP' nfp-Γ nfp-Δ using (nfp' ; gg)
 
-      open SNF.UniqueNormalForm unfp-Γ
-        renaming (unique to unique₁ ; inv-nf to inv-nf₁) using ()
-      open SNF.UniqueNormalForm unfp-Δ
-        renaming (unique to unique₂ ; inv-nf to inv-nf₂) using ()
+      -- The sections come off the normal forms themselves: uniqueness is
+      -- a property of the section, and no longer carries the normal form.
+      open SNF.NormalForm nfp-Γ renaming (inv-nf to inv-nf₁) using ()
+      open SNF.NormalForm nfp-Δ renaming (inv-nf to inv-nf₂) using ()
+      open NFU.UniqueNormalForm unfp-Γ renaming (unique to unique₁) using ()
+      open NFU.UniqueNormalForm unfp-Δ renaming (unique to unique₂) using ()
 
       -- The interpretation of a pair section is the pair of factor
       -- interpretations of the factor sections.
@@ -723,8 +727,9 @@ module _
                     (Group.identityʳ G1 ⟦ inv-nf₁ u₁ ⟧₁)
           , Group.identityˡ G2 ⟦ inv-nf₂ u₂ ⟧₂ )
 
-      unfp' : SNF.UniqueNormalForm (Γ ⋄ Δ ⋄ ConjRelʷ conj)
-                (Eq.setoid (NF₁ × NF₂)) (Group.setoid G1⋊G2) GS.⟦_⟧ nfp'
+      unfp' : NFU.UniqueNormalForm (Γ ⋄ Δ ⋄ ConjRelʷ conj)
+                (Eq.setoid (NF₁ × NF₂)) (Group.setoid G1⋊G2) GS.⟦_⟧
+                (SNF.NormalForm.inv-nf nfp')
       unfp' = record
         { unique = λ { {u₁ , u₂} {v₁ , v₂} eq →
             let p = D.trans (D.sym (sem-gg u₁ u₂)) (D.trans eq (sem-gg v₁ v₂))

@@ -68,7 +68,7 @@ open import Examples.Groups.Symplectic.Normalization p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Uniqueness p-2 p-prime
   using (⟦[]⟧-injective) renaming (sound to soundQ)
 
-open SNF using (UniqueNormalForm)
+open import Normalization.NormalForm.Uniqueness using (UniqueNormalForm)
 
 ------------------------------------------------------------------------
 -- Soundness and surjectivity (both proven)
@@ -123,7 +123,8 @@ private
 
     -- Uniqueness for GS.⟦_⟧ = uniqueness for ⟦_⟧ conjugated by agree.
     unfp : UniqueNormalForm (n QRel,_===_) (Eq.setoid (NF n))
-                            (Group.setoid (Sp-group n)) GS.⟦_⟧ (nfp'-t n)
+                            (Group.setoid (Sp-group n)) GS.⟦_⟧
+                            (SNF.NormalForm.inv-nf (nfp'-t n))
     -- The section is now the tower's, which is [_] only up to the
     -- congruence, so the chain is bridged through that agreement.
     bridge : ∀ (u : NF n) p →

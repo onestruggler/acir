@@ -44,6 +44,7 @@ open import Presentation.Construct.Base
   using (_⋄_⋄_ ; CommRel ; ConjRelʷ ; EmptyRel ; TrivialRel ; _⊕_ ; _⊕^_)
 import Normalization.NormalForm.Setoid as SNF
 import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Uniqueness as NFUS
 import Normalization.NormalForm.Uniqueness.Propositional as NFU
 
 import Presentation.Construct.Properties.DirectProduct as DirectProduct
@@ -95,10 +96,11 @@ completeness-by-normalization :
   ∀ {X : Set} (Γ : WRel X) (NFs : Setoid 0ℓ 0ℓ)
     {c d : Level} (Sem : Setoid c d) (⟦_⟧ : Word X → Setoid.Carrier Sem)
     {nf : SNF.NormalForm Γ NFs}
-    (unf : SNF.UniqueNormalForm Γ NFs Sem ⟦_⟧ nf) →
+    (unf : NFUS.UniqueNormalForm Γ NFs Sem ⟦_⟧ (SNF.NormalForm.inv-nf nf)) →
     Congruent (PB._≈_ Γ) (Setoid._≈_ Sem) ⟦_⟧ →
     Injective (PB._≈_ Γ) (Setoid._≈_ Sem) ⟦_⟧
-completeness-by-normalization Γ NFs Sem ⟦_⟧ = SNF.by-normalization Γ NFs Sem ⟦_⟧
+completeness-by-normalization Γ NFs Sem ⟦_⟧ {nf} =
+  NFUS.by-normalization Γ NFs Sem ⟦_⟧ {nf}
 
 -- Conversely, completeness plus an exact section (nf ∘ inv-nf ≗ id)
 -- makes a normal form unique for ⟦_⟧.
@@ -110,8 +112,8 @@ unique-nf-by-completeness :
     (∀ {u} → Setoid._≈_ NFs
        (SNF.NormalForm.nf nf (SNF.NormalForm.inv-nf nf u)) u) →
     Injective (PB._≈_ Γ) (Setoid._≈_ Sem) ⟦_⟧ →
-    SNF.UniqueNormalForm Γ NFs Sem ⟦_⟧ nf
-unique-nf-by-completeness Γ NFs Sem ⟦_⟧ nf = SNF.by-completeness Γ NFs Sem ⟦_⟧ nf
+    NFUS.UniqueNormalForm Γ NFs Sem ⟦_⟧ (SNF.NormalForm.inv-nf nf)
+unique-nf-by-completeness Γ NFs Sem ⟦_⟧ nf = NFUS.by-completeness Γ NFs Sem ⟦_⟧ nf
 
 ------------------------------------------------------------------------
 -- A grouplike monoid presentation is a group presentation
@@ -214,8 +216,9 @@ cyclic-monoid-presentation :
 cyclic-monoid-presentation = CycThm.monoid-presentation
 
 cyclic-unique-nf :
-  ∀ n → NFBase.UniqueNormalForm (n Cn,_===_) (CycNF.NF n)
-          (Eq.setoid (CycSem.Cn n)) (CycSem.⟦_⟧ {n}) (CycNF.nfp' n)
+  ∀ n → NFU.UniqueNormalForm (n Cn,_===_) (CycNF.NF n)
+          (Eq.setoid (CycSem.Cn n)) (CycSem.⟦_⟧ {n})
+          (SNF.NormalForm.inv-nf (CycNF.nfp' n))
 cyclic-unique-nf = CycThm.unique-nf
 
 ------------------------------------------------------------------------
@@ -244,8 +247,9 @@ symmetric-unique-nf :
 symmetric-unique-nf n = SymUNF.unique-nf-tight {n}
 
 symmetric-unique-nf-loose :
-  ∀ n → NFBase.UniqueNormalForm (n VRel,_===_) (SymNF.NF n)
-          (SymLoose.Endo-setoid n) (SymLoose.⟦_⟧ {n}) (SymNF.nfp'-t n)
+  ∀ n → NFU.UniqueNormalForm (n VRel,_===_) (SymNF.NF n)
+          (SymLoose.Endo-setoid n) (SymLoose.⟦_⟧ {n})
+          (SNF.NormalForm.inv-nf (SymNF.nfp'-t n))
 symmetric-unique-nf-loose n = SymLooseUNF.unique-nf n
 
 symmetric-soundness :
@@ -307,10 +311,10 @@ clifford+T-qubit-isomorphism = CliffordT1.CliffordT1.CliffordT1-isomorphism
 -- Home: Examples.Amalgamations.CliffordT1BaseUNF.
 
 clifford+T-base-unique-nf :
-  SNF.UniqueNormalForm (CliffordT1.Sω.Pω ⊕ CliffordT1.Sω.PS)
+  NFUS.UniqueNormalForm (CliffordT1.Sω.Pω ⊕ CliffordT1.Sω.PS)
     (Eq.setoid (CycNF.NF 8 × CycNF.NF 4))
     (Group.setoid CliffordT1Base.Z8×Z4)
-    CliffordT1Base.⟦_⟧ CliffordT1.Sω.nfp'
+    CliffordT1Base.⟦_⟧ (SNF.NormalForm.inv-nf CliffordT1.Sω.nfp')
 clifford+T-base-unique-nf = CliffordT1Base.unfp'
 
 ------------------------------------------------------------------------

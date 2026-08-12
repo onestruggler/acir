@@ -30,6 +30,7 @@ import Presentation.Tactic.AssociativitySolver as AS
 open import Presentation.Construct.Base
 open import Normalization.CosetNF
 import Normalization.NormalForm.Setoid as SNF
+import Normalization.NormalForm.Uniqueness as NFU
 open import Normalization.NormalForm.Propositional using (NormalForm)
 
 open import Algebra.Bundles using (Group)
@@ -1811,8 +1812,9 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
       open SNF.NormalForm (nfp' nfp0)
         renaming (nf-cong to nf'-cong ; inv-nf to gg') using ()
 
-      unfp : SNF.UniqueNormalForm mypres (Eq.setoid (NF₀ × CD))
-               (Group.setoid amalgamation) ⟦_⟧ᴬ (nfp' nfp0)
+      unfp : NFU.UniqueNormalForm mypres (Eq.setoid (NF₀ × CD))
+               (Group.setoid amalgamation) ⟦_⟧ᴬ
+               (SNF.NormalForm.inv-nf (nfp' nfp0))
       unfp = record
         { unique = λ {u} {v} eq →
             Eq.trans (Eq.sym (U.nf'∘gg=id u))

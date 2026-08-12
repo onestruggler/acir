@@ -21,7 +21,8 @@ open import Word.Base using (_•_)
 open import Word.Properties using (wconcatmap-[f]ʷ)
 
 import Data.Fin.Properties as FP
-import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
+import Normalization.NormalForm.Uniqueness.Propositional as NFU
 
 open import Examples.Groups.Symmetric.Cosets
 open import Examples.Groups.Symmetric.SubPresentation.Semantics
@@ -167,8 +168,8 @@ private
 -- the endofunction semantics: the NormalForm witness is packaged together
 -- with uniqueness, given by ⟦inv-nf⟧-injective.
 unique-nf : ∀ n →
-  NFBase.UniqueNormalForm (_VRel,_===_ n) (NF n) (Endo-setoid n)
-                          (⟦_⟧ {n}) (nfp'-t n)
+  NFU.UniqueNormalForm (_VRel,_===_ n) (NF n) (Endo-setoid n)
+                       (⟦_⟧ {n}) (SNF.NormalForm.inv-nf (nfp'-t n))
 unique-nf n = record
   { unique = ⟦inv-nf⟧-injective n
   }

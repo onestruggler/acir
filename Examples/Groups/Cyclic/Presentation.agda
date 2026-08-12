@@ -19,7 +19,8 @@ open import Relation.Binary.PropositionalEquality as Eq
 
 import Data.Nat.Properties as NP
 
-import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
+import Normalization.NormalForm.Uniqueness.Propositional as NFU
 open import Normalization.StarPresentation
 open import Notations
 import Presentation.Base as PB
@@ -89,8 +90,9 @@ sem-ℕ (suc (suc k)) =
   trans (cong (_+ 1) (sem-ℕ (suc k))) (NP.+-comm (suc k) 1)
 
 -- Distinct normal forms (word counts) have distinct denotations.
-unique-nf₀ : NFBase.UniqueNormalForm
-  (0 Cn,_===_) (SN.NF 0) (Eq.setoid ℕ) MS₀.⟦_⟧ (SN.nfp' 0)
+unique-nf₀ : NFU.UniqueNormalForm
+  (0 Cn,_===_) (SN.NF 0) (Eq.setoid ℕ) MS₀.⟦_⟧
+  (SNF.NormalForm.inv-nf (SN.nfp' 0))
 unique-nf₀ = record
   { unique = λ {u} {v} eq → trans (sym (sem-ℕ u)) (trans eq (sem-ℕ v)) }
 

@@ -13,11 +13,12 @@ module Examples.Groups.Cyclic.Completeness where
 open import Function.Definitions using (Injective)
 open import Relation.Binary.Bundles using (Setoid)
 
-import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
+import Normalization.NormalForm.Uniqueness.Propositional as NFU
 import Presentation.Properties as PP
 import Relation.Binary.PropositionalEquality as Eq
 
-open import Examples.Groups.Cyclic.Normalization using (NF ; _Cn,_===_)
+open import Examples.Groups.Cyclic.Normalization using (NF ; nfp' ; _Cn,_===_)
 open import Examples.Groups.Cyclic.Semantics using (Cn ; ⟦_⟧)
 open import Examples.Groups.Cyclic.Soundness using (sound)
 import Examples.Groups.Cyclic.Uniqueness as LU
@@ -32,6 +33,9 @@ completeness : ∀ n →
   Sem        = Eq.setoid (Cn n)
   in
   Injective (Setoid._≈_ Syn) (Setoid._≈_ Sem) ⟦_⟧
-completeness n = NFBase.by-normalization
+-- The normal form is passed explicitly: by-normalization takes it
+-- implicitly, but uniqueness now mentions only the section, so nothing
+-- determines it.
+completeness n = NFU.by-normalization
   (n Cn,_===_) (NF n) (Eq.setoid (Cn n)) (⟦_⟧ {n})
-  (LU.unique-nf n) sound
+  {nfp' n} (LU.unique-nf n) sound

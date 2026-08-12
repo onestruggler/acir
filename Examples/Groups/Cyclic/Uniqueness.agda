@@ -22,7 +22,8 @@ import Data.Integer as Int
 import Data.Nat.Properties as NP
 
 open import ForStdlib.Data.Fin.Mod using (_+_ ; +-identityˡ)
-import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
+import Normalization.NormalForm.Uniqueness.Propositional as NFU
 open import Notations
 open import Word.Base using (_^'_)
 
@@ -91,8 +92,9 @@ unique-lemma (suc (suc N)) {u} {v}       eq =
 -- The normal form of Examples.Groups.Cyclic.Normalization is unique
 -- for the ℤ/Nℤ semantics: the NormalForm witness is packaged together
 -- with uniqueness, given by unique-lemma.
-unique-nf : ∀ n → NFBase.UniqueNormalForm
-  (pres n) (NF n) (Eq.setoid (Cn n)) (⟦_⟧ {n}) (nfp' n)
+unique-nf : ∀ n → NFU.UniqueNormalForm
+  (pres n) (NF n) (Eq.setoid (Cn n)) (⟦_⟧ {n})
+  (SNF.NormalForm.inv-nf (nfp' n))
 unique-nf n = record
   { unique = unique-lemma n
   }

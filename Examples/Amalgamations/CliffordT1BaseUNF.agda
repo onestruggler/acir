@@ -19,6 +19,7 @@ open import Data.Product using (_×_)
 import Relation.Binary.PropositionalEquality as Eq
 
 import Normalization.NormalForm.Setoid as SNF
+import Normalization.NormalForm.Uniqueness as NFU
 open import Presentation.Construct.Base using (_⊕_)
 import Presentation.Construct.Properties.DirectProduct as DP
 
@@ -39,8 +40,9 @@ Z8×Z4 = DPres.dp
 -- The interpretation of base words in ℤ/8ℤ × ℤ/4ℤ.
 ⟦_⟧ = DPres.⟦_⟧
 
-unfp' : SNF.UniqueNormalForm (Sω.Pω ⊕ Sω.PS)
+unfp' : NFU.UniqueNormalForm (Sω.Pω ⊕ Sω.PS)
           (Eq.setoid (Cyclic.NF 8 × Cyclic.NF 4))
-          (Group.setoid Z8×Z4) DPres.⟦_⟧ Sω.nfp'
+          (Group.setoid Z8×Z4) DPres.⟦_⟧
+          (SNF.NormalForm.inv-nf Sω.nfp')
 unfp' = DPres.LiftUNF.unfp' (Cyclic.nfp' 8) (Cyclic.nfp' 4)
           (CycThm.unique-nf 8) (CycThm.unique-nf 4)

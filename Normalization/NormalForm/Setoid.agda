@@ -160,47 +160,10 @@ record WeakNormalForm : Set where
 ------------------------------------------------------------------------
 -- Unique normal form and completeness by normalization
 --
--- The syntactic setoid is the setoid of words of Γ modulo ≈; ⟦_⟧ is a
--- semantics into some setoid Sem.
-
-module _ {c d} (Sem : Setoid c d)
-  (let open Setoid Sem using () renaming (Carrier to Cₛ ; _≈_ to _≈₂_ ; sym to sym₂))
-  (⟦_⟧ : Word X → Cₛ)
-  where
-
-  -- A normal form with inverse whose section is separated by the
-  -- semantics ⟦_⟧: normal forms with equal denotations are equal.
-  record UniqueNormalForm (normalForm : NormalForm) : Set (c ⊔ d) where
-    open NormalForm normalForm public
-    field
-      unique : ∀ {u v : |NF|} → ⟦ inv-nf u ⟧ ≈₂ ⟦ inv-nf v ⟧ → u ≈ₙ v
-
-  -- Soundness together with a unique normal form gives adequacy.
-  by-normalization : {normalForm : NormalForm} →
-                     UniqueNormalForm normalForm → Congruent _≈_ _≈₂_ ⟦_⟧ → Injective _≈_ _≈₂_ ⟦_⟧
-  by-normalization uni sound {x} {y} eq = nf-injective (unique claim)
-    where
-    open UniqueNormalForm uni
-    claim : ⟦ inv-nf (nf x) ⟧ ≈₂ ⟦ inv-nf (nf y) ⟧
-    claim = begin
-      ⟦ inv-nf (nf x) ⟧ ≈⟨ sound inv-nf∘nf=id ⟩
-      ⟦ x ⟧             ≈⟨ eq ⟩
-      ⟦ y ⟧             ≈⟨ sym₂ (sound inv-nf∘nf=id) ⟩
-      ⟦ inv-nf (nf y) ⟧ ∎
-      where open SR Sem
-
-  -- Conversely, completeness (semantic injectivity of ⟦_⟧) together
-  -- with an exact section (nf ∘ inv-nf ≗ id) makes a normal form
-  -- unique for ⟦_⟧.
-  module _ (normalForm : NormalForm) where
-    open NormalForm normalForm
-
-    by-completeness : (∀ {u} → nf (inv-nf u) ≈ₙ u) →
-                      Injective _≈_ _≈₂_ ⟦_⟧ →
-                      UniqueNormalForm normalForm
-    by-completeness nf∘inv-nf=id complete = record
-      { unique = λ eq →
-          transₙ (symₙ nf∘inv-nf=id)
-            (transₙ (nf-cong (complete eq)) nf∘inv-nf=id) }
+-- Both live in Normalization.NormalForm.Uniqueness, which states
+-- uniqueness against the SECTION inv-nf rather than against a whole
+-- NormalForm record: uniqueness is a property of the section, and
+-- indexing it by the record made every client that already had the
+-- record carry it twice.  This module used to hold a second copy.
 
 

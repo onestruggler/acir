@@ -19,11 +19,13 @@ open import Examples.Construct.DirectProduct.Sn-Sn
 open import Examples.Construct.DirectProduct.S3xC5.Semantic
 
 
-import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
+import Normalization.NormalForm.Uniqueness.Propositional as NFU
 
 
-unique-nf : 
-  NFBase.UniqueNormalForm (_===_) (NF n) (Eq.setoid (Cn n)) (⟦_⟧ {n}) (nfp' n)
+unique-nf :
+  NFU.UniqueNormalForm (_===_) (NF n) (Eq.setoid (Cn n)) (⟦_⟧ {n})
+    (SNF.NormalForm.inv-nf (nfp' n))
 unique-nf n = record
   { unique     = unique-lemma n
   }

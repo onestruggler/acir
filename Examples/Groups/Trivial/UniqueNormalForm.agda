@@ -25,7 +25,9 @@ open import Algebra.Bundles using (Group)
 open import Data.Unit using (⊤)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
-open import Normalization.NormalForm.Setoid using (UniqueNormalForm)
+open import Normalization.NormalForm.Uniqueness using (UniqueNormalForm)
+
+import Normalization.NormalForm.Setoid as SNF
 
 open import Examples.Groups.Trivial.Semantics using (gp)
 
@@ -39,5 +41,6 @@ private
 ------------------------------------------------------------------------
 -- Any two normal forms coincide
 
-unfp : UniqueNormalForm Γ (Eq.setoid ⊤) (Group.setoid gp) I.GS.⟦_⟧ N.nfp'
+unfp : UniqueNormalForm Γ (Eq.setoid ⊤) (Group.setoid gp) I.GS.⟦_⟧
+         (SNF.NormalForm.inv-nf N.nfp')
 unfp = record { unique = λ _ → Eq.refl }

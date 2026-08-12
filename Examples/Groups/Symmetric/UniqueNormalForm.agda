@@ -80,21 +80,15 @@ private
     UniqueNormalForm.unique (unique-nf n)
       (λ k → Eq.trans (Eq.sym (⟦⟧-agree (inv-nf {n} u) k))
              (Eq.trans (eq k) (⟦⟧-agree (inv-nf {n} v) k)))
-    where open SNF using (UniqueNormalForm)
+    where open import Normalization.NormalForm.Uniqueness using (UniqueNormalForm)
 
--- Uniqueness in the sense of Normalization.NormalForm.Uniqueness,
--- which states it against the section inv-nf alone.
+-- Uniqueness states its claim against the section inv-nf alone, so one
+-- witness serves both readers: this is also the form
+-- Normalization.StarPresentation's groupSubPres consumes.  (It used to
+-- take a whole NormalForm record, which is why a second, "bundled"
+-- copy of this proof lived here.)
 unique-nf-tight : ∀ {n} →
   let open NFU (_VRel,_===_ n) (NF n)
                (Group.setoid (Permutation′-group n)) (TightSem.⟦_⟧ {n})
   in UniqueNormalForm (inv-nf {n})
 unique-nf-tight = record { unique = transfer }
-
--- The same content in the packaging of
--- Normalization.NormalForm.Setoid, which states uniqueness against a
--- whole NormalForm record.  Kept because that is the form
--- Normalization.StarPresentation's groupSubPres consumes.
-unique-nf-tight-bundled : ∀ {n} →
-  NFBase.UniqueNormalForm (_VRel,_===_ n) (NF n)
-    (Group.setoid (Permutation′-group n)) (TightSem.⟦_⟧ {n}) (nfp'-t n)
-unique-nf-tight-bundled = record { unique = transfer }

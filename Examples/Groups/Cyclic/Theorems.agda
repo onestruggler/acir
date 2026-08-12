@@ -12,7 +12,8 @@ open import Function.Definitions using (Congruent ; Injective)
 open import Relation.Binary.Bundles using (Setoid)
 
 import Data.Nat.Properties as NP
-import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Setoid as SNF
+import Normalization.NormalForm.Uniqueness.Propositional as NFU
 import Presentation.Properties as PP
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -32,8 +33,9 @@ import Examples.Groups.Cyclic.Uniqueness as LU
 ------------------------------------------------------------------------
 -- Unique normal form, soundness, completeness and presentation
 
-unique-nf : ∀ n → NFBase.UniqueNormalForm
-  (n Cn,_===_) (NF n) (Eq.setoid (Cn n)) (⟦_⟧ {n}) (nfp' n)
+unique-nf : ∀ n → NFU.UniqueNormalForm
+  (n Cn,_===_) (NF n) (Eq.setoid (Cn n)) (⟦_⟧ {n})
+  (SNF.NormalForm.inv-nf (nfp' n))
 unique-nf = LU.unique-nf
 
 soundness : ∀ n →

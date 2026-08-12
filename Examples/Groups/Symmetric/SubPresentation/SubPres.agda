@@ -22,12 +22,12 @@ module Examples.Groups.Symmetric.SubPresentation.SubPres where
 open import Function.Definitions using (Congruent ; Injective)
 open import Relation.Binary.Bundles using (Setoid)
 
-import Normalization.NormalForm.Propositional as NFBase
+import Normalization.NormalForm.Uniqueness.Propositional as NFU
 import Presentation.Properties as PP
 
 open import Examples.Groups.Symmetric.SubPresentation.Semantics using (Endo-setoid ; ⟦_⟧)
 open import Examples.Groups.Symmetric.SubPresentation.Interpretation using (sound)
-open import Examples.Groups.Symmetric.Normalization using (NF)
+open import Examples.Groups.Symmetric.Normalization using (NF ; nfp'-t)
 open import Examples.Groups.Symmetric.Syntactics using (_VRel,_===_)
 
 import Examples.Groups.Symmetric.SubPresentation.UniqueNormalForm as LU
@@ -55,6 +55,9 @@ completeness : ∀ n →
   Sem        = Endo-setoid n
   in
   Injective (Setoid._≈_ Syn) (Setoid._≈_ Sem) ⟦_⟧
+-- The normal form is passed explicitly: by-normalization takes it
+-- implicitly, but uniqueness now mentions only the section, so nothing
+-- determines it.
 completeness n =
-  NFBase.by-normalization (_VRel,_===_ n) (NF n) (Endo-setoid n) (⟦_⟧ {n})
-    (LU.unique-nf n) sound
+  NFU.by-normalization (_VRel,_===_ n) (NF n) (Endo-setoid n) (⟦_⟧ {n})
+    {nfp'-t n} (LU.unique-nf n) sound

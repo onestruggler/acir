@@ -24,6 +24,7 @@ open PB Γ renaming (_===_ to _===₁_ ; _≈_ to _≈₁_)
 open PP Γ renaming (•-ε-monoid to monoid₁)
 open import Presentation.Definitions
 open import Normalization.NormalForm.Setoid as NFS
+import Normalization.NormalForm.Uniqueness as NFU
 
 module MonoidSem
   (mon : Monoid 0ℓ 0ℓ)
@@ -38,13 +39,21 @@ module MonoidSem
     ( fʷ-cong-ax : ∀ {w v : Word A} → w ===₁ v → ⟦ w ⟧ ≈₂ ⟦ v ⟧ )
     {nf-setoid : Setoid 0ℓ 0ℓ}
     (nfp : NormalForm Γ nf-setoid)
-    (unfp : UniqueNormalForm Γ nf-setoid (Monoid.setoid mon) ⟦_⟧ nfp)
+    (unfp : NFU.UniqueNormalForm Γ nf-setoid (Monoid.setoid mon) ⟦_⟧
+              (NormalForm.inv-nf nfp))
     where
 
     open Cong fʷ-cong-ax public
 
     monoidSubPres : Γ IsSubMonoidPresentationOf mon
-    monoidSubPres = record { ⟦_⟧ = ⟦_⟧ ; mono = record { isMonoidHomomorphism = isMonoidHomomorphism ; injective = by-normalization Γ  nf-setoid (Monoid.setoid mon) ⟦_⟧ unfp fʷ-cong } }
+    monoidSubPres = record
+      { ⟦_⟧  = ⟦_⟧
+      ; mono = record
+        { isMonoidHomomorphism = isMonoidHomomorphism
+        ; injective = NFU.by-normalization Γ nf-setoid (Monoid.setoid mon) ⟦_⟧
+                        {nfp} unfp fʷ-cong
+        }
+      }
 
 ------------------------------------------------------------------------
 -- Group version
@@ -68,7 +77,8 @@ module GroupSem
     ( grouplike  : Grouplike Γ )
     {nf-setoid : Setoid 0ℓ 0ℓ}
     ( nfp  : NormalForm Γ nf-setoid )
-    ( unfp : UniqueNormalForm Γ nf-setoid (Group.setoid grp) ⟦_⟧ nfp )
+    ( unfp : NFU.UniqueNormalForm Γ nf-setoid (Group.setoid grp) ⟦_⟧
+               (NormalForm.inv-nf nfp) )
     where
 
     open MS.GetSubPresentation fʷ-cong-ax nfp unfp using (monoidSubPres)

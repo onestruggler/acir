@@ -332,6 +332,7 @@ module _ {N X : Set}
     -- representative and keeps the coset.
 
     import Normalization.NormalForm.Setoid as SNF
+    import Normalization.NormalForm.Uniqueness as NFU
     import Normalization.CosetNF as CNF
     open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
     import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
@@ -625,8 +626,8 @@ module _ {N X : Set}
             (GQm.trans (GQm.identityˡ (proj ⟦ [ rep c ]ᵣ ⟧)) (emb-r-Q (rep c)))))
 
       -- Unique normal form: equal denotations force equal NF pairs.
-      unfp : SNF.UniqueNormalForm ext (Eq.setoid (NFS × NFQ))
-               (Group.setoid G) ⟦_⟧ nfp
+      unfp : NFU.UniqueNormalForm ext (Eq.setoid (NFS × NFQ))
+               (Group.setoid G) ⟦_⟧ (SNF.NormalForm.inv-nf nfp)
       unfp = record { unique = uniq }
         where
         uniq : ∀ {u v : NFS × NFQ} →

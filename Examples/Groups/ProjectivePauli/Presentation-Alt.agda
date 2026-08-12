@@ -369,6 +369,7 @@ open import Relation.Binary.Bundles using (Setoid)
 open import Presentation.Definitions
   using (_IsPresentationOf_ ; _IsSubPresentationOf_ ; isPresentationOf)
 import Normalization.NormalForm.Setoid as SNF
+import Normalization.NormalForm.Uniqueness as NFU
 import Normalization.StarPresentation
 
 
@@ -720,7 +721,8 @@ module Build (n : ℕ) where
       sound (PB.right-unit {v})    = +ₚ-identityʳ (sem v)
       sound (PB.axiom ax)      = sound-ax ax
 
-    unfp : NF.UniqueNormalForm (Group.setoid (+ₚ-group n)) GS.⟦_⟧ nfp
+    unfp : NFU.UniqueNormalForm Γ (Eq.setoid (Pauli n))
+             (Group.setoid (+ₚ-group n)) GS.⟦_⟧ (NF.NormalForm.inv-nf nfp)
     unfp = record
       { unique = λ { {P} {Q} eq →
           Eq.trans (Eq.sym (sem-inv P))
