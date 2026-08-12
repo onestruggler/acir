@@ -71,7 +71,7 @@ open import Examples.Groups.Symplectic.Lemmas.XEX-Rewriting p-2 p-prime
 open Rewriting-EX 2
 open Homo 2
 open import Examples.Groups.Symplectic.BR.Two.Lemmas p-2 p-prime hiding (sa)
-open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime 1 as Em
+open import Examples.Groups.Symplectic.Lemmas.Embedding-2n p-2 p-prime 1 as Em
 open Commuting-Symplectic 1
 
 --module EX = Symplectic-EX

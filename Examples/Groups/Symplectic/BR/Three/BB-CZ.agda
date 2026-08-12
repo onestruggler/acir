@@ -62,7 +62,7 @@ open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime as L4
 open import Examples.Groups.Symplectic.Lemmas.Duality p-2 p-prime
 open import Examples.Groups.Symplectic.BR.Three.Lemmas p-2 p-prime
 open import Examples.Groups.Symplectic.BR.Three.Lemmas3 p-2 p-prime hiding (module L02)
-open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime 1 renaming (f* to emb ; by-emb' to lemma-cong⇣' ; by-emb to lemma-cong⇣ )
+open import Examples.Groups.Symplectic.Lemmas.Embedding-2n p-2 p-prime 1 renaming (f* to emb ; by-emb' to lemma-cong⇣' ; by-emb to lemma-cong⇣ )
 
 open PB (3 QRel,_===_)
 open PP (3 QRel,_===_)

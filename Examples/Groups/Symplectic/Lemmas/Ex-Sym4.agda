@@ -54,7 +54,7 @@ open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime as Sym2n hidi
 open import Examples.Groups.Symplectic.Lemmas.Ex-Rewriting p-2 p-prime
 open Rewriting-Ex n
 
-open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n p-2 p-prime 0
+open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm p-2 p-prime 0
 open import Examples.Groups.Symplectic.Lemmas.Duality p-2 p-prime hiding (module L0)
 open Lemmas0a
 open Lemmas0a1

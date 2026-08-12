@@ -86,7 +86,7 @@ open Rewriting-Swap 2
 open Symplectic-GroupLike
 open Basis-Change _ (3 QRel,_===_) grouplike
 open import Examples.Groups.Symplectic.BR.Two.Lemmas p-2 p-prime hiding (sa)
-open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime 1
+open import Examples.Groups.Symplectic.Lemmas.Embedding-2n p-2 p-prime 1
 
 aux-comm-CZ-CZ^k↑ : ∀ k → CZ • CZ^ k ↑ ≈ CZ^ k ↑ • CZ
 aux-comm-CZ-CZ^k↑ k = begin

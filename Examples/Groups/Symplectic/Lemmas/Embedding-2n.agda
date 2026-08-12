@@ -24,7 +24,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Lemmas.Embeding-2n (p-2 : ℕ) (p-prime : Prime (2+ p-2)) (n : ℕ)  where
+module Examples.Groups.Symplectic.Lemmas.Embedding-2n (p-2 : ℕ) (p-prime : Prime (2+ p-2)) (n : ℕ)  where
 
 
 

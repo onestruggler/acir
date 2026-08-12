@@ -49,7 +49,7 @@ open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 
-open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n p-2 p-prime 0
+open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm p-2 p-prime 0
 open Lemmas0a
 open Lemmas0a1
 open Lemmas0b

@@ -910,7 +910,7 @@ lemma-semi-CXCZ^ {n} k@(₁₊ k') = by-emb' (lemma-semi-CXCZ^k (k , (λ ()))) (
   where
   open PB ((₂₊ n) QRel,_===_)
   open PP ((₂₊ n) QRel,_===_)
-  open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime n
+  open import Examples.Groups.Symplectic.Lemmas.Embedding-2n p-2 p-prime n
 
 
 lemma-semi-CXCZ^-alt : let open PB ((₂₊ n) QRel,_===_) in ∀ (k : ℤ ₚ) →
@@ -932,4 +932,4 @@ lemma-semi-CXCZ^-alt {n} k@(₁₊ k') = by-emb' (lemma-CXCZ^k (k , (λ ()))) (c
   open PB ((₂₊ n) QRel,_===_)
   open PP ((₂₊ n) QRel,_===_)
 
-  open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime n
+  open import Examples.Groups.Symplectic.Lemmas.Embedding-2n p-2 p-prime n

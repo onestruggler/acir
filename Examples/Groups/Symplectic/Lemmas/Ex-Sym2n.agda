@@ -773,7 +773,7 @@ lemma-comm-Ex-H' {n} = begin
     S ∎
 
 
-open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Embedding-2n p-2 p-prime
 open Lemmas0b hiding (lemma-comm-Ex-H')
 
 lemma-comm-Ex-H↑'-n : let open PB ((₂₊ n) QRel,_===_) in

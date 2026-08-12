@@ -42,7 +42,7 @@ open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n p-2 p-prime 0
+open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm p-2 p-prime 0
 open Lemmas0a
 open Lemmas0b
 open Lemmas0 1

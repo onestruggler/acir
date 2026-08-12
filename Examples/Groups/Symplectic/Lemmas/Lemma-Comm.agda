@@ -22,7 +22,7 @@ open import Data.Nat.Primality
 
 
 
-module Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n (p-2 : ℕ) (p-prime : Prime (2+ p-2)) (n : ℕ)  where
+module Examples.Groups.Symplectic.Lemmas.Lemma-Comm (p-2 : ℕ) (p-prime : Prime (2+ p-2)) (n : ℕ)  where
 
 
 

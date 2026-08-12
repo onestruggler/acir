@@ -51,7 +51,7 @@ open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4 p-2 p-prime
 
-open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm p-2 p-prime
 open Lemmas0a
 open Lemmas0a1
 open Lemmas0b
@@ -475,7 +475,7 @@ lemma-Ex-M-n {n} m@x' = by-emb' (lemma-Ex-M m) aux aux2
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
   open Pattern-Assoc
-  open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime n
+  open import Examples.Groups.Symplectic.Lemmas.Embedding-2n p-2 p-prime n
 
   aux : f* (Ex • ZM m) ≈ Ex • ZM m
   aux = cong refl (lemma-f*-M m)
