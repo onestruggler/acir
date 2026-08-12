@@ -22,6 +22,34 @@
 -- here, is what keeps it from being spread over sixty-five rules -- the
 -- same discipline that kept the paper's qubit numbering out of the
 -- tables.
+--
+-- THE WIRE SHOULD BE A Fin, AND IS NOT YET.  The staircase traversal in
+-- PushingM indexes its level by a Fin, so that a level above the top
+-- wire is not a case anyone has to answer; a Placed gate carries a
+-- natural, so handing one to that traversal needs a bound the types do
+-- not have.  That is the one thing keeping h from composing (see the
+-- note in PushingCM), and the fix is to index Placed by the width.
+--
+-- The obstacle to doing so is that a rule can emit dirt ABOVE its own
+-- box -- subscript 2, or a controlled-Z on (1,2) -- which needs wires
+-- the box itself does not guarantee.  Reading the tables for which
+-- rules actually do this gives exactly three, and all three are
+-- controlled-Z rules:
+--
+--   pushZZ₁₂B   emits ZZ₁₂        (Pushing, one B box)
+--   pushZZ-BB   emits H₂, S₂, ZZ₁₂ (PushingZ, two B boxes)
+--   pushZZ-DD   emits S₂          (PushingD, two D boxes)
+--
+-- and in every one of them the headroom is supplied by the rule's own
+-- firing condition.  pushZZ₁₂B fires for a controlled-Z on (1,2), so
+-- wire 2 exists because the gate is on it.  The other two fire only when
+-- a second box is present, so wire 2 exists because that box occupies
+-- it.  Nothing else in the sixty-nine rules reaches past its own pair.
+--
+-- So the refactor needs no new invariant: at each of those three call
+-- sites the pattern match that chooses the rule also fixes the width,
+-- and the Fin can be built there.  That is what makes indexing Placed
+-- feasible rather than merely desirable.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
