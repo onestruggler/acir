@@ -498,3 +498,21 @@ sec-trivial-1 = sec-trivial sec-reduction-1
 -- symplectic presentation, uniformly in n rather than width by width.
 -- Qubit.ExtensionSoundness.conj-sound is the same statement read in
 -- CMS n; this is its Pauli-side twin.
+--
+-- There is a worked template for it, and it is the same semantic move
+-- that sec-trivial-semantic turns on.  The odd-prime development proves
+-- exactly these two facts —
+--
+--   Qupit.SemiDirect.ConjAction.respects-Γ  (the acted-on argument)
+--   Qupit.SemiDirect.ConjAction.respects-Δ  (the acting argument)
+--
+-- — as the hyph / hypn that SemiDirectProduct.Presentation asks for,
+-- and respects-Δ applied to rep Iᶜ ≈q ε with conjss ε w = w IS
+-- Conj-trivial.  Its proof is three steps: conj-sem (conj computes the
+-- action), soundness of the rule set (a symplectic rule has equal
+-- denotations, hence equal actions), and completeness of the Pauli
+-- presentation.  As its header puts it, the long relators — M-power,
+-- semi-M↑CZ, semi-M↓CZ, selinger-c10 … c15 — are never conjugated by
+-- hand.  That module is parameterised by p-3, so p ≥ 3 and it cannot be
+-- instantiated here directly, but the argument does not use oddness and
+-- should port verbatim.
