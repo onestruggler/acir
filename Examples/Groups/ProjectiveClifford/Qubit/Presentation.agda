@@ -68,10 +68,12 @@ open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2) using (-0#≈0#)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
-open Symplectic using (H ; S^ ; XM ; Circuit ; _↑)
+open import Notations using (₁₊ ; ₂₊)
+open Symplectic using (H ; S^ ; XM ; CZ ; Circuit ; _↑)
 open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
   using (module Simplified-Relations)
-open Simplified-Relations using (srel ; cong↑ ; order-H ; M₋₁ ; M-power)
+open Simplified-Relations
+  using (srel ; cong↑ ; order-H ; order-CZ ; M₋₁ ; M-power)
 
 open import Examples.Groups.ProjectiveClifford.Qubit.Semantics using (CMS-group)
 import Examples.Groups.ProjectiveClifford.Qubit.ExtensionPresentation as EP
@@ -219,6 +221,17 @@ H²-free = PB.trans (PB.axiom (srel order-H , Eq.refl)) a-box-free
 ↑-free PB.right-unit        = PB.right-unit
 ↑-free (PB.axiom (r , triv)) =
   PB.axiom (cong↑ r , Eq.cong shiftPauli triv)
+
+-- The involution kit for Ex = (CZ • H • H ↑)³.  At p = 2 all three of
+-- its letters square to ε in the correction-free calculus: H by H²-free,
+-- H ↑ by shifting that, and CZ by order-CZ, whose p is 2.
+H↑²-free : ∀ {n} →
+  PB._≈_ (EP.Clifford.Corr-free (₂₊ n)) ((H ↑) ^ 2) ε
+H↑²-free = ↑-free H²-free
+
+CZ²-free : ∀ {n} →
+  PB._≈_ (EP.Clifford.Corr-free (₂₊ n)) (CZ ^ 2) ε
+CZ²-free = PB.axiom (srel order-CZ , Eq.refl)
 
 sec-reduction-1 : Sec-reduction 1
 sec-reduction-1 =
