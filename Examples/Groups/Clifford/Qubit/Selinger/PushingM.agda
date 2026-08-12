@@ -38,12 +38,16 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Clifford.Qubit.Selinger.PushingM
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
+open import Data.Fin using (Fin) renaming (zero to fz ; suc to fs)
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Product using (_×_ ; _,_)
 
 open import Notations using (₁₊)
+open import Word.Base using (ε ; _•_)
 
 open import Examples.Groups.Clifford.Qubit.Selinger.Boxes p-2 p-prime
+open import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime
+  using (Circuit ; H ; S ; X ; _↑)
 open import Examples.Groups.Clifford.Qubit.Selinger.Normal p-2 p-prime
   using (Mx)
 open import ForStdlib.Data.Fin.Mod using (ℤ)
@@ -171,6 +175,64 @@ pushS₁-Mx = push-bottom pushS₁D
 -- An H arriving on the upper wire of the bottom box (altIHDD).
 pushH₁-Mx : Mx (₁₊ n) → ℤ 8 × List Dirty × Mx (₁₊ n)
 pushH₁-Mx = push-bottom pushH₁D
+
+------------------------------------------------------------------------
+-- Escaping dirt, as a circuit
+--
+-- What escapes a box does so on its lower wire, and nothing the
+-- staircase has left touches that wire again, so it can be realised
+-- straight away.  X is the derived word HS²H of §4.
+--
+-- Only the subscript-0 gates are realised; S₁ has already been counted
+-- by ascS, and the remaining seven cannot occur (see the note on that
+-- split).  Every constructor is listed for the same reason it is there.
+
+escAt0 : List Dirty → Circuit (₁₊ n)
+escAt0 []         = ε
+escAt0 (H₀ ∷ ds) = H • escAt0 ds
+escAt0 (S₀ ∷ ds) = S • escAt0 ds
+escAt0 (X₀ ∷ ds) = X • escAt0 ds
+-- ascending, counted by ascS
+escAt0 (S₁ ∷ ds) = escAt0 ds
+-- not emitted by any D rule
+escAt0 (H₁ ∷ ds) = escAt0 ds
+escAt0 (X₁ ∷ ds) = escAt0 ds
+escAt0 (H₂ ∷ ds) = escAt0 ds
+escAt0 (S₂ ∷ ds) = escAt0 ds
+escAt0 (ZZ₀₁ ∷ ds) = escAt0 ds
+escAt0 (ZZ₁₂ ∷ ds) = escAt0 ds
+
+------------------------------------------------------------------------
+-- An S arriving anywhere on the staircase
+--
+-- pushS-Mx handles an S that arrives at the bottom.  One arriving at
+-- wire j does something different: it meets D(j-1,j) at that box's
+-- qubit 1, which is altISDD, and only what that rule sends upwards
+-- ascends to the E box.  What it sends down escapes at wire j-1.
+--
+-- Three cases, and the level decides which:
+--
+--   level 0     no box has the S at its qubit 1, so it just ascends
+--   level 1     the bottom box meets it, by altISDD
+--   level 2+    the bottom box does not touch wire j at all, so the S
+--               commutes past it and the same question is asked one
+--               wire up
+--
+-- The level is a Fin, so "above the top wire" is not a case that has to
+-- be answered: a staircase on ₁₊ n wires admits levels 0 to n, which is
+-- Fin (₁₊ n) exactly.  With ℕ there would be an unreachable clause to
+-- fill in, and filling it in with anything at all would be a place for a
+-- silent wrong answer to hide.
+--
+-- All of altISDD is phase-free, so no ω is returned.
+
+pushS-at : Fin (₁₊ n) → Mx n → Circuit n × Mx n
+pushS-at {0}     fz          e       = ε , stepE 1 e
+pushS-at {₁₊ n} fz          m       = ε , pushS-Mx 1 m
+pushS-at {₁₊ n} (fs fz)     (d , m) with pushS₁D d
+... | _ , d′ , out = escAt0 out , (d′ , pushS-Mx (ascS out) m)
+pushS-at {₁₊ n} (fs (fs j)) (d , m) with pushS-at (fs j) m
+... | e , m′ = e ↑ , (d , m′)
 
 ------------------------------------------------------------------------
 -- What cannot arrive at the BOTTOM
