@@ -225,7 +225,7 @@ lemma-CZ-ₕ|ₕ↑ {n} = begin
 
 
 aux-CZ02 : let open PB ((₃₊ n) QRel,_===_) in
-  ∀ k -> CZ02 ^ k ≈ CZ02k k
+  ∀ k → CZ02 ^ k ≈ CZ02k k
 aux-CZ02 {n} k@₀ = rewrite-powers 100 auto
   where
   open Rewriting-Powers (₂₊ n)
@@ -245,7 +245,7 @@ aux-CZ02 {n} k@(₁₊ k'@(₁₊ k'')) = begin
 
 
 aux-CZ02-alt : let open PB ((₃₊ n) QRel,_===_) in
-  ∀ k -> CZ02' ^ k ≈ CZ02'k k
+  ∀ k → CZ02' ^ k ≈ CZ02'k k
 aux-CZ02-alt {n} k@₀ = rewrite-powers 100 auto
   where
   open Rewriting-Powers (₂₊ n)
@@ -323,7 +323,7 @@ lemma-comm-CZ-CZ02 {n} = begin
   open Basis-Change _ ((₃₊ n) QRel,_===_) grouplike
 
 
-aux-comm-CZ02 : let open PB ((₃₊ n) QRel,_===_) in ∀ k l m ->
+aux-comm-CZ02 : let open PB ((₃₊ n) QRel,_===_) in ∀ k l m →
   (Ex • (CZ ^ k) ↑ • Ex) • (CZ ^ l) ^ m ≈ (CZ ^ l) ^ m • (Ex • (CZ ^ k) ↑ • Ex)
 aux-comm-CZ02 {n} k l m = begin
   (Ex • (CZ ^ k) ↑ • Ex) • (CZ ^ l) ^ m ≈⟨ cong (cright cleft refl' (Eq.sym (lemma-^-↑ CZ k))) (^^ CZ l m) ⟩
@@ -358,7 +358,7 @@ lemma-comm-CZ-CZ02⁻¹ {n} = begin
   open Pattern-Assoc
 
 aux-CZ02k : let open PB ((₃₊ n) QRel,_===_) in
-  ∀ k -> CZ02 • CZ02k k ≈ CZ02k (₁₊ k)
+  ∀ k → CZ02 • CZ02k k ≈ CZ02k (₁₊ k)
 aux-CZ02k {n} k = begin
   CZ02 • CZ02k k ≈⟨ by-passoc (□ ^ 3 • □ ^ 3) (□ • □ • □ ^ 2 • □ ^ 2) auto ⟩
   Ex • CZ ↑ • (Ex • Ex) • CZ ↑ ^ k • Ex ≈⟨ (cright cright cleft lemma-order-Ex-n) ⟩
@@ -373,7 +373,7 @@ aux-CZ02k {n} k = begin
   open Pattern-Assoc
 
 aux-CZ02'k : let open PB ((₃₊ n) QRel,_===_) in
-  ∀ k -> CZ02' • CZ02'k k ≈ CZ02'k (₁₊ k)
+  ∀ k → CZ02' • CZ02'k k ≈ CZ02'k (₁₊ k)
 aux-CZ02'k {n} k = begin
   CZ02' • CZ02'k k ≈⟨ by-passoc (□ ^ 3 • □ ^ 3) (□ • □ • □ ^ 2 • □ ^ 2) auto ⟩
   Ex ↑ • CZ • (Ex ↑ • Ex ↑) • CZ ^ k • Ex ↑ ≈⟨ (cright cright cleft lemma-cong↑ _ _ lemma-order-Ex-n) ⟩
@@ -388,7 +388,7 @@ aux-CZ02'k {n} k = begin
   open Pattern-Assoc
 
 
-lemma-CZ02k-alt : let open PB ((₃₊ n) QRel,_===_) in ∀ k -> CZ02k k ≈ CZ02'k k
+lemma-CZ02k-alt : let open PB ((₃₊ n) QRel,_===_) in ∀ k → CZ02k k ≈ CZ02'k k
 lemma-CZ02k-alt {n} k@0 = rewrite-powers 100 auto
   where
   open Rewriting-Powers (₂₊ n)
@@ -419,7 +419,7 @@ lemma-CZ02k-alt {n} k@(₁₊ k'@(₁₊ k'')) = begin
 
 
 aux-CZ02⁻ᵏ : let open PB ((₃₊ n) QRel,_===_) in
-  ∀ k -> CZ02⁻¹ • CZ02⁻ᵏ k ≈ CZ02⁻ᵏ (₁₊ k)
+  ∀ k → CZ02⁻¹ • CZ02⁻ᵏ k ≈ CZ02⁻ᵏ (₁₊ k)
 aux-CZ02⁻ᵏ {n} k = begin
   CZ02⁻¹ • CZ02⁻ᵏ k ≈⟨ by-passoc (□ ^ 3 • □ ^ 3) (□ • □ • □ ^ 2 • □ ^ 2) auto ⟩
   Ex • CZ⁻¹ ↑ • (Ex • Ex) • CZ⁻¹ ↑ ^ k • Ex ≈⟨ (cright cright cleft lemma-order-Ex-n) ⟩
@@ -435,7 +435,7 @@ aux-CZ02⁻ᵏ {n} k = begin
 
 
 aux-CZ02'⁻ᵏ : let open PB ((₃₊ n) QRel,_===_) in
-  ∀ k -> CZ02'⁻¹ • CZ02'⁻ᵏ k ≈ CZ02'⁻ᵏ (₁₊ k)
+  ∀ k → CZ02'⁻¹ • CZ02'⁻ᵏ k ≈ CZ02'⁻ᵏ (₁₊ k)
 aux-CZ02'⁻ᵏ {n} k = begin
   CZ02'⁻¹ • CZ02'⁻ᵏ k ≈⟨ by-passoc (□ ^ 3 • □ ^ 3) (□ • □ • □ ^ 2 • □ ^ 2) auto ⟩
   Ex ↑ • CZ⁻¹ • (Ex ↑ • Ex ↑) • CZ⁻¹ ^ k • Ex ↑ ≈⟨ (cright cright cleft (lemma-cong↑ _ _ lemma-order-Ex-n)) ⟩
@@ -451,7 +451,7 @@ aux-CZ02'⁻ᵏ {n} k = begin
 
 
 
-lemma-CZ02⁻ᵏ-alt : let open PB ((₃₊ n) QRel,_===_) in ∀ k -> CZ02⁻ᵏ k ≈ CZ02'⁻ᵏ k
+lemma-CZ02⁻ᵏ-alt : let open PB ((₃₊ n) QRel,_===_) in ∀ k → CZ02⁻ᵏ k ≈ CZ02'⁻ᵏ k
 lemma-CZ02⁻ᵏ-alt {n} k@0 = rewrite-powers 100 auto
   where
   open Rewriting-Powers (₂₊ n)
@@ -485,7 +485,7 @@ lemma-CZ02⁻ᵏ-alt {n} k@(₁₊ k'@(₁₊ k'')) = begin
 
 
 lemma-CZ^k-ₕ|ₕ↑ : let open PB ((₃₊ n) QRel,_===_) in
-  ∀ k -> CZ ^ k • ₕ|ₕ ↑ ≈ ₕ|ₕ ↑ • CZ⁻¹ ^ k • Ex • (CZ⁻¹ ^ k) ↑ • Ex
+  ∀ k → CZ ^ k • ₕ|ₕ ↑ ≈ ₕ|ₕ ↑ • CZ⁻¹ ^ k • Ex • (CZ⁻¹ ^ k) ↑ • Ex
 lemma-CZ^k-ₕ|ₕ↑ {n} k@₀ = rewrite-powers 100 auto
   where
   open Rewriting-Powers (₂₊ n)
@@ -655,7 +655,7 @@ lemma-CX↑-CZ {n} = bbc CZ02 ε aux
     CZ02 • (CZ • CZ02⁻¹ • (CX ↑)) • ε ∎
 
 lemma-CX↑-CZ^k : let open PB ((₃₊ n) QRel,_===_) in
-  ∀ k -> CX ↑ • CZ ^ k ≈ CZ ^ k • CZ02⁻ᵏ k • CX ↑
+  ∀ k → CX ↑ • CZ ^ k ≈ CZ ^ k • CZ02⁻ᵏ k • CX ↑
 lemma-CX↑-CZ^k {n} k@0 = rewrite-powers 100 auto
   where
   open Rewriting-Powers (₂₊ n)

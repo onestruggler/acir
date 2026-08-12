@@ -101,7 +101,7 @@ open import Examples.Groups.Symplectic.BR.Two.Lemmas p-2 p-prime hiding (sa)
 
 
 
-aux-Ex-D↑ : ∀ b (nz : b ≢ ₀) -> let b⁻¹ = ((b , nz) ⁻¹) .proj₁ in
+aux-Ex-D↑ : ∀ b (nz : b ≢ ₀) → let b⁻¹ = ((b , nz) ⁻¹) .proj₁ in
 
   Ex • [ ₀ , b ]ᵈ ↑ • CZ ≈ CZ ↑ • Ex • [ ₀ , b ]ᵈ ↑
 
@@ -117,7 +117,7 @@ aux-Ex-D↑ b@(₁₊ _) nz = begin
   CZ ↑ • Ex • [ ₀ , b ]ᵈ ↑ ∎
 
 
-aux-D-Ex↑-CZ^k : ∀ k b (nz : b ≢ ₀) -> let b⁻¹ = ((b , nz) ⁻¹) .proj₁ in
+aux-D-Ex↑-CZ^k : ∀ k b (nz : b ≢ ₀) → let b⁻¹ = ((b , nz) ⁻¹) .proj₁ in
 
   [ ₀ , b ]ᵈ • Ex ↑ • CZ^ k ≈ CZ^ k ↑ • [ ₀ , b ]ᵈ • Ex ↑
 
@@ -136,7 +136,7 @@ aux-D-Ex↑-CZ^k k b@(₁₊ _) nz = begin
   CZ^ (k) ↑ • [ ₀ , b ]ᵈ • Ex ↑ ∎
 
 
-aux-swap-DD : ∀ b d ->  Ex ↑ • ([ ₀ , b ]ᵈ • [ ₀ , d ]ᵈ ↑) • Ex ≈ [ ₀ , d ]ᵈ • [ ₀ , b ]ᵈ ↑
+aux-swap-DD : ∀ b d →  Ex ↑ • ([ ₀ , b ]ᵈ • [ ₀ , d ]ᵈ ↑) • Ex ≈ [ ₀ , d ]ᵈ • [ ₀ , b ]ᵈ ↑
 aux-swap-DD b d = begin
   Ex ↑ • ([ ₀ , b ]ᵈ • [ ₀ , d ]ᵈ ↑) • Ex ≈⟨ refl ⟩
   Ex ↑ • ((Ex • CZ^ (- b)) • (Ex • CZ^ (- d)) ↑) • Ex ≈⟨ sa (□ • (□ ^ 2 • □ ^ 2) • □) (□ ^ 6) auto ⟩
@@ -156,7 +156,7 @@ aux-swap-DD b d = begin
   [ ₀ , d ]ᵈ • [ ₀ , b ]ᵈ ↑ ∎
 
 
-lemma-swap-DD : ∀ d1 d2 -> Ex ↑ • ([ d1 ∷ d2 ∷ [] ]ᵛᵈ) • Ex ≈ [ d2 ∷ d1 ∷ [] ]ᵛᵈ
+lemma-swap-DD : ∀ d1 d2 → Ex ↑ • ([ d1 ∷ d2 ∷ [] ]ᵛᵈ) • Ex ≈ [ d2 ∷ d1 ∷ [] ]ᵛᵈ
 lemma-swap-DD d1@(₀ , b) d2@(₀ , d) = begin
   Ex ↑ • ([ d1 ∷ d2 ∷ [] ]ᵛᵈ) • Ex ≈⟨ cright cleft cong refl right-unit ⟩
   Ex ↑ • ([ d1 ]ᵈ • [ d2 ]ᵈ ↑) • Ex ≈⟨ aux-swap-DD b d ⟩
@@ -233,10 +233,10 @@ lemma-swap-DD d1@(a@(₁₊ _) , b) d2@(c@(₁₊ _) , d) = begin
 
 
 
-vd'-of : Vec D 2 -> Vec D 2
+vd'-of : Vec D 2 → Vec D 2
 vd'-of ((a , b) ∷ (c , d) ∷ []) =  (a , b + - c) ∷ (c , d + - a) ∷ []
 
-dir-of : Vec D 2 -> Word (Gen 2)
+dir-of : Vec D 2 → Word (Gen 2)
 dir-of ((₀ , b) ∷ (₀ , d) ∷ [])                   =  CZ
 dir-of ((₀ , b) ∷ (₁₊ _ , d) ∷ [])                =  H ↑ • CZ • H ↑ ^ 3
 dir-of ((₁₊ _ , b) ∷ (₀ , d) ∷ [])                =  H ↓ • CZ • H ↓ ^ 3
@@ -246,7 +246,7 @@ dir-of ((a@(₁₊ _) , b) ∷ (c@(₁₊ _) , d) ∷ [])     =  H • H ↑ •
   c⁻¹ = ((c , λ ()) ⁻¹) .proj₁
 
 
-lemma-dir-and-vd' : ∀ (vd : Vec D 2) ->
+lemma-dir-and-vd' : ∀ (vd : Vec D 2) →
   let
   dir = dir-of vd
   vd' = vd'-of vd
@@ -265,7 +265,7 @@ lemma-dir-and-vd' vd@((₀ , b) ∷ (₀ , d) ∷ []) = begin
   (CZ ↑ • CZ^ (- b)) • Ex • Ex ↑ • CZ^ (- d) ↑ ≈⟨ sa (□ ^ 2 • □ ^ 3) (□ • □ ^ 2 • □ ^ 2) auto ⟩
   CZ ↑ • (CZ^ (- b) • Ex) • Ex ↑ • CZ^ (- d) ↑ ≈⟨ cright cleft comm⇒pow-comm (toℕ (- b)) 1 lemma-comm-Ex-CZ-n ⟩
   CZ ↑ • (Ex • CZ^ (- b)) • Ex ↑ • CZ^ (- d) ↑ ≈⟨ cright cong refl (sym right-unit) ⟩
-  CZ ↑ • [ (₀ , b) ∷ (₀ , d) ∷ [] ]ᵛᵈ ≈⟨ sym (cright refl' (Eq.cong₂ (\ xx yy -> [ (₀ , xx) ∷ (₀ , yy) ∷ [] ]ᵛᵈ) (Eq.trans (Eq.cong (b +_) -0#≈0#
+  CZ ↑ • [ (₀ , b) ∷ (₀ , d) ∷ [] ]ᵛᵈ ≈⟨ sym (cright refl' (Eq.cong₂ (\ xx yy → [ (₀ , xx) ∷ (₀ , yy) ∷ [] ]ᵛᵈ) (Eq.trans (Eq.cong (b +_) -0#≈0#
  ) (+-identityʳ b)) ((Eq.trans (Eq.cong (d +_) -0#≈0# ) (+-identityʳ d))))) ⟩
   CZ ↑ • [ (₀ , b + - ₀) ∷ (₀ , d + - ₀) ∷ [] ]ᵛᵈ ∎
   where
@@ -323,7 +323,7 @@ lemma-dir-and-vd' vd@(d1@(₀ , b) ∷ d2@(c@(₁₊ _) , d) ∷ []) = begin
   (H ↑ ↑ • CZ ↑) • (Ex • H ↑ ↑ ^ 3) • CZ^ (- b + c) • Ex ↑ • CZ^ (- c) ↑ • H ↑ • S^ -d/c ↑ ≈⟨ cright cleft rewrite-swap 100 auto ⟩
   (H ↑ ↑ • CZ ↑) • (H ↑ ↑ ^ 3 • Ex) • CZ^ (- b + c) • Ex ↑ • CZ^ (- c) ↑ • H ↑ • S^ -d/c ↑ ≈⟨ sa (□ ^ 2 • □ ^ 2 • □ ^ 2) (□ ^ 3 • □ ^ 2 • □) auto ⟩
   (H ↑ ↑ • CZ ↑ • H ↑ ↑ ^ 3) • (Ex • CZ^ (- b + c)) • Ex ↑ • CZ^ (- c) ↑ • H ↑ • S^ -d/c ↑ ≈⟨ cright cleft cright refl' (Eq.cong CZ^ (Eq.sym (Eq.trans (Eq.sym (-‿+-comm b (- c))) (Eq.cong (- b +_) (-‿involutive c))))) ⟩
-  (H ↑ ↑ • CZ ↑ • H ↑ ↑ ^ 3) • (Ex • CZ^ (- (b + - c))) • Ex ↑ • CZ^ (- c) ↑ • H ↑ • S^ -d/c ↑ ≈⟨ cright (cright (cright cright cright refl' (Eq.cong (\ xx -> S^ xx ↑) (Eq.sym (Eq.cong (\ xx -> - xx * c⁻¹) (Eq.trans (Eq.cong (d +_) -0#≈0#) (+-identityʳ d))))))) ⟩
+  (H ↑ ↑ • CZ ↑ • H ↑ ↑ ^ 3) • (Ex • CZ^ (- (b + - c))) • Ex ↑ • CZ^ (- c) ↑ • H ↑ • S^ -d/c ↑ ≈⟨ cright (cright (cright cright cright refl' (Eq.cong (\ xx → S^ xx ↑) (Eq.sym (Eq.cong (\ xx → - xx * c⁻¹) (Eq.trans (Eq.cong (d +_) -0#≈0#) (+-identityʳ d))))))) ⟩
   (H ↑ ↑ • CZ ↑ • H ↑ ↑ ^ 3) • (Ex • CZ^ (- (b + - c))) • Ex ↑ • CZ^ (- c) ↑ • H ↑ • S^ -d'/c ↑ ≈⟨ cright (cright sym right-unit) ⟩
   dir ↑ • [ vd' ]ᵛᵈ ∎
   where
@@ -363,7 +363,7 @@ lemma-dir-and-vd' vd@(d1@(a1@(₁₊ _) , b1) ∷ d2@(a2@(₁₊ _) , b2) ∷ []
   (H ↑ • H ↑ ↑ • CZ ↑ • S^ (- a2 * a1⁻¹) ↑ • H ↑ ^ 3) • (Ex • CZ^ (- a1)) • (S^ (- a1 * a2⁻¹) ↑ ↑ • H) • (S^ (a2 * a1⁻¹ + -b1/a1) • Ex ↑) • CX^ (- a2) ↑ • S^ (a1 * a2⁻¹ + -b2/a2) ↑ ≈⟨ sa (□ • □ • □ ^ 2 • □ ^ 2 • □) (□ • □ ^ 2 • □ ^ 4) auto ⟩
   (H ↑ • H ↑ ↑ • CZ ↑ • S^ (- a2 * a1⁻¹) ↑ • H ↑ ^ 3) • ((Ex • CZ^ (- a1)) • S^ (- a1 * a2⁻¹) ↑ ↑) • H • S^ (a2 * a1⁻¹ + -b1/a1) • Ex ↑ • CX^ (- a2) ↑ • S^ (a1 * a2⁻¹ + -b2/a2) ↑ ≈⟨ cright cong (comm-dbox-w↑↑ ((₀ , a1)) (S^ (- a1 * a2⁻¹))) (cright cright cright cleft lemma-cong↑ _ _ (aux-CX^-CX'^ (- a2))) ⟩
   (H ↑ • H ↑ ↑ • CZ ↑ • S^ (- a2 * a1⁻¹) ↑ • H ↑ ^ 3) • (S^ (- a1 * a2⁻¹) ↑ ↑ • (Ex • CZ^ (- a1))) • H • S^ (a2 * a1⁻¹ + -b1/a1) • Ex ↑ • CX'^ (- a2) ↑ • S^ (a1 * a2⁻¹ + -b2/a2) ↑ ≈⟨ sa (□ ^ 5 • □ ^ 3 • □ • □ • □ • □ ^ 3 • □ ) (□ ^ 6 • □ ^ 4 • □ ^ 2 • □ ^ 3) auto ⟩
-  (H ↑ • H ↑ ↑ • CZ ↑ • S^ (- a2 * a1⁻¹) ↑ • H ↑ ^ 3 • S^ (- a1 * a2⁻¹) ↑ ↑) • (Ex • CZ^ (- a1) • H • S^ (a2 * a1⁻¹ + -b1/a1)) • (Ex ↑ • H ↑ ^ 3) • CZ^ (- a2) ↑ • H ↑ • S^ (a1 * a2⁻¹ + -b2/a2) ↑ ≈⟨ cright cong (cright cright cright refl' (Eq.cong S^ ( (cal-b1-a2' a1 a2 b1 (λ ()) λ ())))) (cong (rewrite-swap 100 auto) (cright cright refl' (Eq.cong (\ xx -> S^ xx ↑) (cal-b1-a2' a2 a1 b2 (λ ()) (λ ())))))  ⟩
+  (H ↑ • H ↑ ↑ • CZ ↑ • S^ (- a2 * a1⁻¹) ↑ • H ↑ ^ 3 • S^ (- a1 * a2⁻¹) ↑ ↑) • (Ex • CZ^ (- a1) • H • S^ (a2 * a1⁻¹ + -b1/a1)) • (Ex ↑ • H ↑ ^ 3) • CZ^ (- a2) ↑ • H ↑ • S^ (a1 * a2⁻¹ + -b2/a2) ↑ ≈⟨ cright cong (cright cright cright refl' (Eq.cong S^ ( (cal-b1-a2' a1 a2 b1 (λ ()) λ ())))) (cong (rewrite-swap 100 auto) (cright cright refl' (Eq.cong (\ xx → S^ xx ↑) (cal-b1-a2' a2 a1 b2 (λ ()) (λ ())))))  ⟩
   (H ↑ • H ↑ ↑ • CZ ↑ • S^ (- a2 * a1⁻¹) ↑ • H ↑ ^ 3 • S^ (- a1 * a2⁻¹) ↑ ↑) • (Ex • CZ^ (- a1) • H • S^ (- (b1 + - a2) * a1⁻¹)) • (H ↑ ↑ ^ 3 • Ex ↑) • CZ^ (- a2) ↑ • H ↑ • S^ (-(b2 + - a1) * a2⁻¹) ↑ ≈⟨ cright sa (□ • □ ^ 2 • □ ^ 3) (□ ^ 2 • □ ^ 4) auto ⟩
   (H ↑ • H ↑ ↑ • CZ ↑ • S^ (- a2 * a1⁻¹) ↑ • H ↑ ^ 3 • S^ (- a1 * a2⁻¹) ↑ ↑) • ([ a1 , b1 + - a2 ]ᵈ • H ↑ ↑ ^ 3) • [ a2 , b2 + - a1 ]ᵈ ↑ ≈⟨ cright (cleft comm-dbox-w↑↑ (a1 , b1 + - a2) (H ^ 3)) ⟩
   (H ↑ • H ↑ ↑ • CZ ↑ • S^ (- a2 * a1⁻¹) ↑ • H ↑ ^ 3 • S^ (- a1 * a2⁻¹) ↑ ↑) • (H ↑ ↑ ^ 3 • [ a1 , b1 + - a2 ]ᵈ) • [ a2 , b2 + - a1 ]ᵈ ↑ ≈⟨ sa (□ ^ 6 • □ ^ 2 • □) (□ ^ 7 • □ ^ 2) auto ⟩

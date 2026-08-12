@@ -91,7 +91,7 @@ lemma-Ex-Ex↑-CZ'a {n@₀} = begin
   aux : CZ^ (₋₁) ↑ • CZ ↑ ≈ ε
   aux = begin
     CZ^ (₋₁) ↑ • CZ ↑ ≈⟨ lemma-cong↑ _ _ (P1.comm⇒pow-comm (toℕ ₋₁) 1 B1.refl) ⟩
-    CZ ↑ • CZ^ (₋₁) ↑ ≡⟨ Eq.cong (\ xx -> CZ ↑ • (CZ ^ xx) ↑) (toℕ-fromℕ< (NP.n<1+n (₁₊ p-2))) ⟩
+    CZ ↑ • CZ^ (₋₁) ↑ ≡⟨ Eq.cong (\ xx → CZ ↑ • (CZ ^ xx) ↑) (toℕ-fromℕ< (NP.n<1+n (₁₊ p-2))) ⟩
     CZ ↑ • (CZ ^ p-1) ↑ ≈⟨ lemma-cong↑ _ _ (B1.axiom order-CZ) ⟩
     ε ∎
 
@@ -122,7 +122,7 @@ lemma-Ex-Ex↑-CZ'a {n@(₁₊ _)} = begin
   aux : CZ^ (₋₁) ↑ • CZ ↑ ≈ ε
   aux = begin
     CZ^ (₋₁) ↑ • CZ ↑ ≈⟨ lemma-cong↑ _ _ (P1.comm⇒pow-comm (toℕ ₋₁) 1 B1.refl) ⟩
-    CZ ↑ • CZ^ (₋₁) ↑ ≡⟨ Eq.cong (\ xx -> CZ ↑ • (CZ ^ xx) ↑) (toℕ-fromℕ< (NP.n<1+n (₁₊ p-2))) ⟩
+    CZ ↑ • CZ^ (₋₁) ↑ ≡⟨ Eq.cong (\ xx → CZ ↑ • (CZ ^ xx) ↑) (toℕ-fromℕ< (NP.n<1+n (₁₊ p-2))) ⟩
     CZ ↑ • (CZ ^ p-1) ↑ ≈⟨ lemma-cong↑ _ _ (B1.axiom order-CZ) ⟩
     ε ∎
 
@@ -154,7 +154,7 @@ lemma-Ex-Ex↑-CZ'b {n} = begin
   aux : CZ^ (₋₁)  • CZ  ≈ ε
   aux = begin
     CZ^ (₋₁)  • CZ  ≈⟨ (comm⇒pow-comm (toℕ ₋₁) 1 refl) ⟩
-    CZ  • CZ^ (₋₁)  ≡⟨ Eq.cong (\ xx -> CZ  • (CZ ^ xx) ) (toℕ-fromℕ< (NP.n<1+n (₁₊ p-2))) ⟩
+    CZ  • CZ^ (₋₁)  ≡⟨ Eq.cong (\ xx → CZ  • (CZ ^ xx) ) (toℕ-fromℕ< (NP.n<1+n (₁₊ p-2))) ⟩
     CZ  • (CZ ^ p-1)  ≈⟨ (axiom order-CZ) ⟩
     ε ∎
 
@@ -208,7 +208,7 @@ module Powers-Rewriting where
     open Commuting-Symplectic (₁₊ n)
 
 
-  step-powers : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) hiding (_===_) in Step-Function (Gen (₁₊ n))  ((₁₊ n) QRel,_===_)
+  step-powers : ∀ {n} → let open PB ((₁₊ n) QRel,_===_) hiding (_===_) in Step-Function (Gen (₁₊ n))  ((₁₊ n) QRel,_===_)
 
   -- Order of generators.
   step-powers ((H-gen) ∷ (H-gen) ∷ (H-gen) ∷ (H-gen) ∷ xs) = just (xs , at-head (PB.axiom order-H))
@@ -726,7 +726,7 @@ lemma-comm-Ex↑-H {n} = general-comm auto
   open Commuting-Symplectic (₁₊ n)
 
 
-step-swap : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) hiding (_===_) in Step-Function (Gen (₁₊ n))  ((₁₊ n) QRel,_===_)
+step-swap : ∀ {n} → let open PB ((₁₊ n) QRel,_===_) hiding (_===_) in Step-Function (Gen (₁₊ n))  ((₁₊ n) QRel,_===_)
 
 -- Order of generators.
 step-swap ((H-gen) ∷ (H-gen) ∷ (H-gen) ∷ (H-gen) ∷ xs) = just (xs , at-head (PB.axiom order-H))
@@ -892,14 +892,14 @@ lemma-comm-Ex-w↑↑ {n} (w • v) = begin
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
-lemma-semi-CXCZ^ : let open PB ((₂₊ n) QRel,_===_) in ∀ (k : ℤ ₚ) ->
+lemma-semi-CXCZ^ : let open PB ((₂₊ n) QRel,_===_) in ∀ (k : ℤ ₚ) →
 
   CX • CZ^ k ≈ S^ (- k + - k) ↑ • CZ^ k • CX
 
 lemma-semi-CXCZ^ {n} k@₀ = begin
   CX • CZ^ k ≈⟨ right-unit ⟩
   CX ≈⟨ sym left-unit ⟩
-  S^ ₀ ↑ • CX ≡⟨ Eq.cong (\ xx -> S^ xx ↑ • CX) (Eq.sym (Eq.trans (Eq.cong₂ _+_ -0#≈0# -0#≈0#) auto)) ⟩
+  S^ ₀ ↑ • CX ≡⟨ Eq.cong (\ xx → S^ xx ↑ • CX) (Eq.sym (Eq.trans (Eq.cong₂ _+_ -0#≈0# -0#≈0#) auto)) ⟩
   S^ (- k + - k) ↑ • CX ≈⟨ sym (cong refl left-unit) ⟩
   S^ (- k + - k) ↑ • CZ^ k • CX ∎
   where
@@ -913,14 +913,14 @@ lemma-semi-CXCZ^ {n} k@(₁₊ k') = by-emb' (lemma-semi-CXCZ^k (k , (λ ()))) (
   open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime n
 
 
-lemma-semi-CXCZ^-alt : let open PB ((₂₊ n) QRel,_===_) in ∀ (k : ℤ ₚ) ->
+lemma-semi-CXCZ^-alt : let open PB ((₂₊ n) QRel,_===_) in ∀ (k : ℤ ₚ) →
 
   CX • CZ^ k ≈ S^ k • CX • S^ (- k) • S^ (- k) ↑ 
 
 lemma-semi-CXCZ^-alt {n} k@₀ = begin
   CX • CZ^ k ≈⟨ right-unit ⟩
   CX ≈⟨ by-assoc auto ⟩
-  CX • S^ (₀) • S^ (₀) ↑ ≡⟨ Eq.cong (\ xx -> CX • S^ (xx) • S^ (xx) ↑) (Eq.sym -0#≈0#) ⟩
+  CX • S^ (₀) • S^ (₀) ↑ ≡⟨ Eq.cong (\ xx → CX • S^ (xx) • S^ (xx) ↑) (Eq.sym -0#≈0#) ⟩
   CX • S^ (- k) • S^ (- k) ↑ ≈⟨ sym left-unit ⟩
   S^ k • CX • S^ (- k) • S^ (- k) ↑ ∎
   where

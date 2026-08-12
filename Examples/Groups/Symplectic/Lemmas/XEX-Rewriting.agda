@@ -135,33 +135,33 @@ module Symplectic-EX where
   ⊤⊥ : ∀ {n} → Word (Gen (₂₊ n))
   ⊤⊥ = ʰ|ʰ • ₕ|ₕ
 
-  H^ : ∀ {n} → ℤ ₄ -> Word (Gen (₁₊ n))
+  H^ : ∀ {n} → ℤ ₄ → Word (Gen (₁₊ n))
   H^ k = H ^ toℕ k
 
-  S^ : ∀ {n} → ℤ ₚ -> Word (Gen (₁₊ n))
+  S^ : ∀ {n} → ℤ ₚ → Word (Gen (₁₊ n))
   S^ k = S ^ toℕ k
 
-  CZ^ : ∀ {n} → ℤ ₚ -> Word (Gen (₂₊ n))
+  CZ^ : ∀ {n} → ℤ ₚ → Word (Gen (₂₊ n))
   CZ^ k = CZ ^ toℕ k
   
-  CX^ : ∀ {n} → ℤ ₚ -> Word (Gen (₂₊ n))
+  CX^ : ∀ {n} → ℤ ₚ → Word (Gen (₂₊ n))
   CX^ k = CX ^ toℕ k
 
-  M : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
+  M : ∀ {n} → ℤ* ₚ → Word (Gen (₁₊ n))
   M x' = S^ x • H • S^ x⁻¹ • H • S^ x • H
     where
     x = x' .proj₁
     x⁻¹ = ((x' ⁻¹) .proj₁ )
 
-  M₁ : ∀ {n} -> Word (Gen (₁₊ n))
+  M₁ : ∀ {n} → Word (Gen (₁₊ n))
   M₁ = M ₁ₚ
 
   infixr 9 _^2
-  _^2 : ℤ* ₚ -> ℤ ₚ
+  _^2 : ℤ* ₚ → ℤ ₚ
   _^2 x' = let x = x' .proj₁ in x * x 
 
   infixr 9 _^1
-  _^1 : ℤ* ₚ -> ℤ ₚ
+  _^1 : ℤ* ₚ → ℤ ₚ
   _^1 x' = let x = x' .proj₁ in x
 
 
@@ -193,7 +193,7 @@ module Symplectic-EX where
   CZ02'⁻ᵏ : ∀ {n} k → Word (Gen (₃₊ n))
   CZ02'⁻ᵏ k = Ex ↑ • CZ⁻¹ ^ k • Ex ↑
 
-  CZ02'⁻¹ : ∀ {n} -> Word (Gen (₃₊ n))
+  CZ02'⁻¹ : ∀ {n} → Word (Gen (₃₊ n))
   CZ02'⁻¹ = Ex ↑ • CZ⁻¹ • Ex ↑
 
   XC02 : ∀ {n} → Word (Gen (₃₊ n))
@@ -202,10 +202,10 @@ module Symplectic-EX where
   CX02 : ∀ {n} → Word (Gen (₃₊ n))
   CX02 = H ^ 3 • CZ02 • H
 
-  CX'^ : ∀ {n} → ℤ ₚ -> Word (Gen (₂₊ n))
+  CX'^ : ∀ {n} → ℤ ₚ → Word (Gen (₂₊ n))
   CX'^ k = H ^ 3 • CZ^ k • H
 
-  XC'^ : ∀ {n} → ℤ ₚ -> Word (Gen (₂₊ n))
+  XC'^ : ∀ {n} → ℤ ₚ → Word (Gen (₂₊ n))
   XC'^ k = H ↑ ^ 3 • CZ^ k • H ↑
 
   
@@ -262,7 +262,7 @@ module XEX-Rewriting where
   open Rewriting
   open PB
 
-  step-EX : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) hiding (_===_) in Step-Function (Gen (₁₊ n))  ((₁₊ n) QRel,_===_)
+  step-EX : ∀ {n} → let open PB ((₁₊ n) QRel,_===_) hiding (_===_) in Step-Function (Gen (₁₊ n))  ((₁₊ n) QRel,_===_)
 
   -- Order of generators.
   step-EX ((H-gen) ∷ (H-gen) ∷ (H-gen) ∷ (H-gen) ∷ xs) = just (xs , at-head (PB.axiom order-H))
@@ -371,7 +371,7 @@ module Homo (m : ℕ) where
 --  open PB (n EX.QRel,_===_)renaming (_===_ to _===₀_ ; _≈_ to _≈₀_) using ()
 
 
-  f : EX.Gen n -> Word (Gen (n))
+  f : EX.Gen n → Word (Gen (n))
   f EX.H-gen  = H
   f EX.S-gen  = S
   f EX.CZ-gen = CZ
@@ -379,11 +379,11 @@ module Homo (m : ℕ) where
   f (x EX.↥)  = f x ↑
 
 
-  f* : Word (EX.Gen n) -> Word (Gen (n))
+  f* : Word (EX.Gen n) → Word (Gen (n))
   f* {n} = f {n} WB.ʷ
 
   lemma-f* : let open PB ((n) QRel,_===_) in
-    ∀ w k -> f* (w ^ k) ≈ f* w ^ k
+    ∀ w k → f* (w ^ k) ≈ f* w ^ k
   lemma-f* {n} w k@0 = PB.refl
   lemma-f* {n} w k@1 = PB.refl
   lemma-f* {n} w k@(₂₊ k') = begin
@@ -399,7 +399,7 @@ module Homo (m : ℕ) where
 
 
   lemma-f*-↥ : let open PB ((₁₊ n) QRel,_===_) in
-    ∀ g -> f* ([ g ↥ ]ʷ) ≈ f* [ g ]ʷ ↑
+    ∀ g → f* ([ g ↥ ]ʷ) ≈ f* [ g ]ʷ ↑
   lemma-f*-↥ {n} g = begin
     f* ([ g ↥ ]ʷ) ≈⟨ refl ⟩
     f* [ g ]ʷ ↑ ∎
@@ -409,7 +409,7 @@ module Homo (m : ℕ) where
     open SR word-setoid
 
   lemma-f*-↑ : let open PB ((₁₊ n) QRel,_===_) in
-    ∀ w -> f* (w EX.↑) ≈ f* w ↑
+    ∀ w → f* (w EX.↑) ≈ f* w ↑
   lemma-f*-↑ {n} [ x ]ʷ = PB.refl
   lemma-f*-↑ {n} ε = PB.refl
   lemma-f*-↑ {n} (w • w₁) = begin
@@ -426,7 +426,7 @@ module Homo (m : ℕ) where
 
 
 {-
-  lemma-f*-Sᵏ↑ : ∀ k -> f* ((EX.S ^ k) EX.↑) ≈ (S ^ k) ↑
+  lemma-f*-Sᵏ↑ : ∀ k → f* ((EX.S ^ k) EX.↑) ≈ (S ^ k) ↑
   lemma-f*-Sᵏ↑ ₀ = refl
   lemma-f*-Sᵏ↑ ₁ = refl
   lemma-f*-Sᵏ↑ k@(₂₊ k') = begin
@@ -437,7 +437,7 @@ module Homo (m : ℕ) where
     where
     k'' = ₁₊ k'
 
-  lemma-f*-M : ∀ m -> f* (M m) ≈ M m
+  lemma-f*-M : ∀ m → f* (M m) ≈ M m
   lemma-f*-M m = begin
     f* (M m) ≈⟨ cong (lemma-f* S (toℕ x)) (cright cong (lemma-f* S (toℕ x⁻¹)) (cright (cleft lemma-f* S (toℕ x)))) ⟩
     S^ x • H • S^ x⁻¹ • H • S^ x • H ≈⟨ refl ⟩
@@ -447,7 +447,7 @@ module Homo (m : ℕ) where
     x = x' .proj₁
     x⁻¹ = ((x' ⁻¹) .proj₁ )
 
-  lemma-f*-M↑ : ∀ m -> f* (M m ↑) ≈ M m ↑
+  lemma-f*-M↑ : ∀ m → f* (M m ↑) ≈ M m ↑
   lemma-f*-M↑ m = begin
     f* (M m ↑) ≈⟨ cong (lemma-f*-Sᵏ↑ (toℕ x)) (cright cong (lemma-f*-Sᵏ↑ (toℕ x⁻¹)) (cright (cleft lemma-f*-Sᵏ↑ (toℕ x)))) ⟩
     M m ↑ ∎
@@ -463,7 +463,7 @@ module Homo (m : ℕ) where
   f-wd-ax :
     let open PB (n EX.QRel,_===_)renaming (_===_ to _===₀_ ; _≈_ to _≈₀_) using () in
     let open PB (n QRel,_===_) in
-    ∀ {w v} -> w ===₀ v -> (f*) w ≈ (f*) v
+    ∀ {w v} → w ===₀ v → (f*) w ≈ (f*) v
   f-wd-ax {₁₊ n} EX.order-S = begin
     f* (EX.S ^ p) ≈⟨ lemma-f* EX.S p ⟩
     f* (EX.S) ^ p ≈⟨ PB.axiom order-S ⟩
@@ -506,7 +506,7 @@ module Homo (m : ℕ) where
     open PB (n EX.QRel,_===_)renaming (_≈_ to _≈₀_) using ()
     open PB (n QRel,_===_)
     in
-    ∀ {w v} -> w ≈₀ v -> (f*) w ≈ (f*) v
+    ∀ {w v} → w ≈₀ v → (f*) w ≈ (f*) v
   by-ex {n} {w} {v} eq = Star-Congruence.fʷ-cong ((n EX.QRel,_===_)) ((n QRel,_===_)) f f-wd-ax eq 
 
 
@@ -515,7 +515,7 @@ module Homo (m : ℕ) where
     open PB (n EX.QRel,_===_)renaming (_≈_ to _≈₀_) using ()
     open PB (n QRel,_===_)
     in
-    ∀ {w v w' v'} -> w ≈₀ v -> (f*) w ≈ w' -> (f*) v ≈ v' -> w' ≈ v'
+    ∀ {w v w' v'} → w ≈₀ v → (f*) w ≈ w' → (f*) v ≈ v' → w' ≈ v'
   by-ex' {n} {w} {v} {w'} {v'} eq eqw eqv = begin
     w' ≈⟨ PB.sym eqw ⟩
     (f*) w ≈⟨ by-ex eq ⟩
@@ -527,7 +527,7 @@ module Homo (m : ℕ) where
     open SR word-setoid
 
 {-
-  lemma-f*^^ : ∀ w k l -> f* ((w ^ k) ^ l) ≈ ((f* w) ^ k) ^ l
+  lemma-f*^^ : ∀ w k l → f* ((w ^ k) ^ l) ≈ ((f* w) ^ k) ^ l
   lemma-f*^^ w k l = begin
     f* ((w ^ k) ^ l) ≈⟨ (by-emb (P2.^^ w k l)) ⟩
     f* (w ^ (k Nat.* l)) ≈⟨ lemma-f* w (k Nat.* l) ⟩
@@ -536,7 +536,7 @@ module Homo (m : ℕ) where
     where
     module P2 = PP (2 QRel,_===_)
 
-  lemma-f*S^^↑  : ∀ k l -> f* (((S ^ k) ^ l) ↑) ≈ (((S) ^ k) ^ l) ↑
+  lemma-f*S^^↑  : ∀ k l → f* (((S ^ k) ^ l) ↑) ≈ (((S) ^ k) ^ l) ↑
   lemma-f*S^^↑ k l = begin
     f* (((S ^ k) ^ l) ↑) ≈⟨ (by-emb (lemma-cong↑ _ _ (P1.^^ S k l))) ⟩
     f* ((S ^ (k Nat.* l)) ↑) ≈⟨ lemma-f*-Sᵏ↑ (k Nat.* l) ⟩

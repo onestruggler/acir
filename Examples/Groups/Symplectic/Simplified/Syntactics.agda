@@ -47,7 +47,7 @@ module Examples.Groups.Symplectic.Simplified.Syntactics
   (p-prime : Prime (suc (₁₊ p-2)))
   (let open PrimeModulus' p-2 p-prime)
   (g*@(g , g≠0) : ℤ* ₚ)
-  (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
+  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ \ (k : ℤ ₚ-₁) → x ≡ g ^′ toℕ k )
   where
 
 open Primitive-Root-Modp' g* g-gen
@@ -65,13 +65,13 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 module Simplified-Relations where
 
   
-  M₋₁ : ∀ {n} -> Word (Gen (₁₊ n))
+  M₋₁ : ∀ {n} → Word (Gen (₁₊ n))
   M₋₁ = M -'₁
 
-  Mg :  ∀ {n} -> Word (Gen (₁₊ n))
+  Mg :  ∀ {n} → Word (Gen (₁₊ n))
   Mg = M g′
 
-  Mg^ : ℤ ₚ ->  ∀ {n} -> Word (Gen (₁₊ n))
+  Mg^ : ℤ ₚ →  ∀ {n} → Word (Gen (₁₊ n))
   Mg^ k = Mg ^ toℕ k
 
   private variable
@@ -133,51 +133,51 @@ module Lemmas-Sim where
     where open ≡-Reasoning
 
 
-  lemma-cong↓-S^ : ∀ {n} k -> let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-S^ : ∀ {n} k → let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (S ^ k) ↓ ≈↓ S ^ k
   lemma-cong↓-S^ {n} ₀ = PB.refl
   lemma-cong↓-S^ {n} ₁ = PB.refl
   lemma-cong↓-S^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S^ {n} (₁₊ k))
 
-  lemma-cong↑-S^ : ∀ {n} k -> let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↑_) using () in
+  lemma-cong↑-S^ : ∀ {n} k → let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↑_) using () in
     (S ^ k) ↑ ≈↑ S ↑ ^ k
   lemma-cong↑-S^ {n} ₀ = PB.refl
   lemma-cong↑-S^ {n} ₁ = PB.refl
   lemma-cong↑-S^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↑-S^ {n} (₁₊ k))
 
 
-  lemma-cong↓-S↓^ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-S↓^ : ∀ {n} k → let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (S ↓ ^ k) ↓ ≈↓ S ↓ ^ k
   lemma-cong↓-S↓^ {n} ₀ = PB.refl
   lemma-cong↓-S↓^ {n} ₁ = PB.refl
   lemma-cong↓-S↓^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S↓^ {n} (₁₊ k))
 
-  lemma-cong↓-S↑^ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-S↑^ : ∀ {n} k → let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     ((S ↑) ^ k) ↓ ≈↓ (S ↑) ^ k
   lemma-cong↓-S↑^ {n} ₀ = PB.refl
   lemma-cong↓-S↑^ {n} ₁ = PB.refl
   lemma-cong↓-S↑^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S↑^ {n} (₁₊ k))
 
 
-  lemma-cong↓-S^↓ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-S^↓ : ∀ {n} k → let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (S ^ k) ↓ ↓ ≈↓ (S ^ k) ↓
   lemma-cong↓-S^↓ {n} ₀ = PB.refl
   lemma-cong↓-S^↓ {n} ₁ = PB.refl
   lemma-cong↓-S^↓ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S^↓ {n} (₁₊ k))
 
-  lemma-cong↓-S^↑ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-S^↑ : ∀ {n} k → let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (S ^ k) ↑ ↓ ≈↓ (S ^ k) ↑
   lemma-cong↓-S^↑ {n} ₀ = PB.refl
   lemma-cong↓-S^↑ {n} ₁ = PB.refl
   lemma-cong↓-S^↑ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S^↑ {n} (₁₊ k))
 
-  lemma-cong↓-H^ : ∀ {n} k -> let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-H^ : ∀ {n} k → let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (H ^ k) ↓ ≈↓ H ^ k
   lemma-cong↓-H^ {n} ₀ = PB.refl
   lemma-cong↓-H^ {n} ₁ = PB.refl
   lemma-cong↓-H^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-H^ {n} (₁₊ k))
 
-  lemma-cong↓-CZ^ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-CZ^ : ∀ {n} k → let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (CZ ^ k) ↓ ≈↓ CZ ^ k
   lemma-cong↓-CZ^ {n} ₀ = PB.refl
   lemma-cong↓-CZ^ {n} ₁ = PB.refl
@@ -199,7 +199,7 @@ module Lemmas-Sim where
   lemma-↓^ {n} ₁ w = auto
   lemma-↓^ {n} (₂₊ k) w = Eq.cong₂ _•_ auto (lemma-↓^ {n} (₁₊ k) w)
 
-  lemma-M↓ : ∀ {n} x -> let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-M↓ : ∀ {n} x → let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     M x ↓ ≈↓ M x
   lemma-M↓ {n} x' = begin
     (S^ x • H • S^ x⁻¹ • H • S^ x • H) ↓ ≈⟨ cong (refl' (lemma-↓^ (toℕ x) S)) (cright cong (refl' (lemma-↓^ (toℕ x⁻¹) S)) (cright (cleft refl' (lemma-↓^ (toℕ x) S)))) ⟩
@@ -211,7 +211,7 @@ module Lemmas-Sim where
     x = x' .proj₁
     x⁻¹ = ((x' ⁻¹) .proj₁ )
     
-  lemma-M↑↓ : ∀ {n} x -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-M↑↓ : ∀ {n} x → let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     M x ↑ ↓ ≈↓ M x ↑
   lemma-M↑↓ {n} x' = begin
     ((M x' ↑) ↓) ≡⟨ lemma-↑↓ (M x') ⟩
@@ -224,12 +224,12 @@ module Lemmas-Sim where
 
 
 
-  lemma-M↓↓ : ∀ {n} x -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-M↓↓ : ∀ {n} x → let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     M x ↓ ↓ ≈↓ M x ↓
   lemma-M↓↓ {n} x' = begin
     (S^ x • H • S^ x⁻¹ • H • S^ x • H) ↓ ↓ ≡⟨ auto ⟩
-    (S^ x ↓ • H • S^ x⁻¹ ↓ • H • S^ x ↓ • H) ↓ ≡⟨ Eq.cong₂ (\ xx yy -> (xx • H • yy • H • S^ x ↓ • H) ↓) (lemma-↓^ (toℕ x) S) (lemma-↓^ (toℕ x⁻¹) S) ⟩
-    (S^ x • H • S^ x⁻¹ • H • S^ x ↓ • H) ↓ ≡⟨ Eq.cong (\ xx -> (S^ x • H • S^ x⁻¹ • H • xx • H) ↓) (lemma-↓^ (toℕ x) S) ⟩
+    (S^ x ↓ • H • S^ x⁻¹ ↓ • H • S^ x ↓ • H) ↓ ≡⟨ Eq.cong₂ (\ xx yy → (xx • H • yy • H • S^ x ↓ • H) ↓) (lemma-↓^ (toℕ x) S) (lemma-↓^ (toℕ x⁻¹) S) ⟩
+    (S^ x • H • S^ x⁻¹ • H • S^ x ↓ • H) ↓ ≡⟨ Eq.cong (\ xx → (S^ x • H • S^ x⁻¹ • H • xx • H) ↓) (lemma-↓^ (toℕ x) S) ⟩
     (S^ x • H • S^ x⁻¹ • H • S^ x • H) ↓ ≡⟨ auto ⟩
     M x' ↓ ∎
     where
@@ -356,7 +356,7 @@ module Lemmas-Sim where
     open PP ((₃₊ n) QRel,_===_)
     open SR word-setoid
 
-  aux-MM : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in ∀ {x y : ℤ ₚ} (nzx : x ≢ ₀) (nzy : y ≢ ₀) -> x ≡ y -> M (x , nzx) ≈ M (y , nzy)
+  aux-MM : ∀ {n} → let open PB ((₁₊ n) QRel,_===_) in ∀ {x y : ℤ ₚ} (nzx : x ≢ ₀) (nzy : y ≢ ₀) → x ≡ y → M (x , nzx) ≈ M (y , nzy)
   aux-MM {n} {x} {y} nz1 nz2 eq rewrite eq = refl
     where
     open PB ((₁₊ n) QRel,_===_)

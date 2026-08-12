@@ -63,11 +63,11 @@ open Symplectic-GroupLike
 
 open Duality
 
-aux-dual-M : ∀ m -> dual (M m) ≡ M m ↑ 
+aux-dual-M : ∀ m → dual (M m) ≡ M m ↑ 
 aux-dual-M m@x' = begin
   dual (M m) ≡⟨ auto ⟩
-  dual (S^ x • H • S^ x⁻¹ • H • S^ x • H) ≡⟨ Eq.cong₂ (\ xx yy -> xx • dual H • yy • dual (H • S^ x • H)) (aux-dual-S^k (toℕ (m .proj₁))) (aux-dual-S^k (toℕ x⁻¹)) ⟩
-  S^ x ↑ • H ↑ • S^ x⁻¹ ↑ • dual (H • S^ x • H) ≡⟨ Eq.cong (\ xx -> S^ x ↑ • H ↑ • S^ x⁻¹ ↑ • dual H • xx • dual H) (aux-dual-S^k (toℕ x)) ⟩
+  dual (S^ x • H • S^ x⁻¹ • H • S^ x • H) ≡⟨ Eq.cong₂ (\ xx yy → xx • dual H • yy • dual (H • S^ x • H)) (aux-dual-S^k (toℕ (m .proj₁))) (aux-dual-S^k (toℕ x⁻¹)) ⟩
+  S^ x ↑ • H ↑ • S^ x⁻¹ ↑ • dual (H • S^ x • H) ≡⟨ Eq.cong (\ xx → S^ x ↑ • H ↑ • S^ x⁻¹ ↑ • dual H • xx • dual H) (aux-dual-S^k (toℕ x)) ⟩
   S^ x ↑ • H ↑ • S^ x⁻¹ ↑ • (H ↑ • S^ x ↑ • H ↑) ≡⟨ auto ⟩
   M m ↑ ∎
   where
@@ -76,26 +76,26 @@ aux-dual-M m@x' = begin
   x⁻¹ = ((x' ⁻¹) .proj₁ )  
 
 
-aux-dual-C : ∀ c -> dual ⟦ c ⟧ₕₛ ≡ ⟦ c ⟧ₕₛ ↑ 
+aux-dual-C : ∀ c → dual ⟦ c ⟧ₕₛ ≡ ⟦ c ⟧ₕₛ ↑ 
 aux-dual-C c@ε = begin
   dual ⟦ c ⟧ₕₛ ≡⟨ auto ⟩
   ⟦ c ⟧ₕₛ ↑ ∎
   where
   open ≡-Reasoning
 aux-dual-C c@(HS^ k) = begin
-  dual ⟦ c ⟧ₕₛ ≡⟨ Eq.cong (\ xx -> dual H • xx) (aux-dual-S^k (toℕ k)) ⟩
+  dual ⟦ c ⟧ₕₛ ≡⟨ Eq.cong (\ xx → dual H • xx) (aux-dual-S^k (toℕ k)) ⟩
   ⟦ c ⟧ₕₛ ↑ ∎
   where
   open ≡-Reasoning
 
-aux-dual-MC : ∀ mc -> dual ⟦ mc ⟧ₘ₊ ≡ ⟦ mc ⟧ₘ₊ ↑ 
+aux-dual-MC : ∀ mc → dual ⟦ mc ⟧ₘ₊ ≡ ⟦ mc ⟧ₘ₊ ↑ 
 aux-dual-MC mc@(m , c) = begin
   dual ⟦ mc ⟧ₘ₊ ≡⟨ Eq.cong₂ _•_ (aux-dual-M m) (aux-dual-C c) ⟩
   ⟦ mc ⟧ₘ₊ ↑ ∎
   where
   open ≡-Reasoning
 
-aux-dual-M↑ : ∀ m -> dual (⟦ m ⟧ₘ ↑) ≡ ⟦ m ⟧ₘ
+aux-dual-M↑ : ∀ m → dual (⟦ m ⟧ₘ ↑) ≡ ⟦ m ⟧ₘ
 aux-dual-M↑ m = begin
   dual (⟦ m ⟧ₘ ↑) ≡⟨ Eq.cong dual (Eq.sym (aux-dual-M m)) ⟩
   dual (dual ⟦ m ⟧ₘ) ≡⟨ Eq.sym (lemma-double-dual ⟦ m ⟧ₘ) ⟩
@@ -103,7 +103,7 @@ aux-dual-M↑ m = begin
   where
   open ≡-Reasoning
 
-aux-dual-MC↑ : ∀ mc -> dual (⟦ mc ⟧ₘ₊ ↑) ≡ ⟦ mc ⟧ₘ₊
+aux-dual-MC↑ : ∀ mc → dual (⟦ mc ⟧ₘ₊ ↑) ≡ ⟦ mc ⟧ₘ₊
 aux-dual-MC↑ mc = begin
   dual (⟦ mc ⟧ₘ₊ ↑) ≡⟨ Eq.cong dual (Eq.sym (aux-dual-MC mc)) ⟩
   dual (dual ⟦ mc ⟧ₘ₊) ≡⟨ Eq.sym (lemma-double-dual ⟦ mc ⟧ₘ₊) ⟩
@@ -112,7 +112,7 @@ aux-dual-MC↑ mc = begin
   open ≡-Reasoning
 
 
-aux-dual-SMC : ∀ smc -> dual ⟦ smc ⟧₁ ≡ ⟦ smc ⟧₁ ↑ 
+aux-dual-SMC : ∀ smc → dual ⟦ smc ⟧₁ ≡ ⟦ smc ⟧₁ ↑ 
 aux-dual-SMC smc@(s , m , c) = begin
   dual ⟦ smc ⟧₁ ≡⟨ Eq.cong₂ _•_ (aux-dual-S^k (toℕ s)) (aux-dual-MC (m , c)) ⟩
   ⟦ smc ⟧₁ ↑ ∎
@@ -120,7 +120,7 @@ aux-dual-SMC smc@(s , m , c) = begin
   open ≡-Reasoning
 
 
-aux-dual-SMC↑ : ∀ smc -> dual (⟦ smc ⟧₁ ↑) ≡ ⟦ smc ⟧₁
+aux-dual-SMC↑ : ∀ smc → dual (⟦ smc ⟧₁ ↑) ≡ ⟦ smc ⟧₁
 aux-dual-SMC↑ smc = begin
   dual (⟦ smc ⟧₁ ↑) ≡⟨ Eq.cong dual (Eq.sym (aux-dual-SMC smc)) ⟩
   dual (dual ⟦ smc ⟧₁) ≡⟨ Eq.sym (lemma-double-dual ⟦ smc ⟧₁) ⟩
@@ -140,7 +140,7 @@ open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
 open import Examples.Groups.Symplectic.Lemmas.Ex-Rewriting p-2 p-prime
 open Rewriting-Ex n
 
-lemma-Ex-dual-gen : ∀ g -> [ dual-gen g ]ʷ ≈ Ex • [ g ]ʷ • Ex
+lemma-Ex-dual-gen : ∀ g → [ dual-gen g ]ʷ ≈ Ex • [ g ]ʷ • Ex
 lemma-Ex-dual-gen H-gen = rewrite-ex 100 auto
 lemma-Ex-dual-gen S-gen = rewrite-ex 100 auto
 lemma-Ex-dual-gen CZ-gen = rewrite-ex 100 auto
@@ -150,7 +150,7 @@ lemma-Ex-dual-gen (S-gen ↥) = rewrite-ex 100 auto
 lemma-Ex-dual-gen (gate₀ () ↥ ↥)
 
 
-lemma-Ex-dual : ∀ w -> dual w ≈ Ex • w • Ex
+lemma-Ex-dual : ∀ w → dual w ≈ Ex • w • Ex
 lemma-Ex-dual [ x ]ʷ = lemma-Ex-dual-gen x
 lemma-Ex-dual ε = rewrite-ex 100 auto
 lemma-Ex-dual (w • w₁) = begin
@@ -161,7 +161,7 @@ lemma-Ex-dual (w • w₁) = begin
   (Ex • w) • w₁ • Ex ≈⟨ sym (trans (by-assoc auto) assoc) ⟩
   Ex • (w • w₁) • Ex ∎
 
-lemma-Ex-dual' : ∀ w -> Ex • dual w • Ex ≈ w
+lemma-Ex-dual' : ∀ w → Ex • dual w • Ex ≈ w
 lemma-Ex-dual' w = bbc Ex Ex aux
   where
   aux : Ex • (Ex • dual w • Ex) • Ex ≈ Ex • w • Ex

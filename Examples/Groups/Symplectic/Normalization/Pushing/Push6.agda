@@ -59,7 +59,7 @@ import Examples.Groups.Symplectic.Normalization.Pushing.Push2 p-2 p-prime as Pus
 -- exactly as in Push2.  The residual A box may collapse the L' into the
 -- sum (Push2.coset-n).
 
-ract : ∀ {n} -> ML' (₂₊ n) -> D → SympGate 2 → Circuit (₂₊ n) × ML (₃₊ n)
+ract : ∀ {n} → ML' (₂₊ n) → D → SympGate 2 → Circuit (₂₊ n) × ML (₃₊ n)
 ract {n} ((dvec , e) , (bv , a)) d CZ-gate =
   proj₁ r , Push2.coset-n l'' (proj₁ (proj₂ r)) bv
   where

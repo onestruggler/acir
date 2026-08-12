@@ -154,7 +154,7 @@ lemma-ML'-Bot {n} ((dv , e) , (bv , a)) x = proof
 -- The right action of a generator on a coset: ract c b returns the
 -- residual circuit b' and the coset c' reached from c by b, so that
 -- [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ (see ract-sound below).
-ract : ∀ {n} -> ML' (₁₊ n) → SympGate 1 → Circuit n × ML' (₁₊ n)
+ract : ∀ {n} → ML' (₁₊ n) → SympGate 1 → Circuit n × ML' (₁₊ n)
 -- Width 1 (no B boxes): the bottom gate enters the single A box, emitting
 -- a power of S that the E box of M absorbs (PushLM1.push-LM1).  Nothing
 -- escapes upward, so the residual circuit is ε and the coset update is

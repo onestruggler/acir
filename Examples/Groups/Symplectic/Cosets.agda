@@ -26,10 +26,10 @@ SPowers = ℤ ₚ
 
 data Cosets1 : Set where
   ε : Cosets1
-  HS^ : ℤ ₚ -> Cosets1
+  HS^ : ℤ ₚ → Cosets1
 
 data Cosets1-noε : Set where
-  HS^ : ℤ ₚ -> Cosets1-noε
+  HS^ : ℤ ₚ → Cosets1-noε
 
 MC = ZMultiplier × Cosets1
 MC' = ZMultiplier × Cosets1-noε
@@ -43,10 +43,10 @@ CZPowers² = CZPowers × CZPowers
 Postfix = SPowers × MC × MC
 
 data Cosets2 : Set where
-  case-||ₐ : CZPowers -> Postfix -> Cosets2
-  case-|| : CZPowers* -> SPowers -> Postfix -> Cosets2
-  case-Ex-| : NF1 -> MC -> Cosets2
-  case-| : MC -> NF1 -> Cosets2
-  case-nf1 : NF1 -> Cosets2
-  case-Ex-nf1 : NF1 -> Cosets2
+  case-||ₐ : CZPowers → Postfix → Cosets2
+  case-|| : CZPowers* → SPowers → Postfix → Cosets2
+  case-Ex-| : NF1 → MC → Cosets2
+  case-| : MC → NF1 → Cosets2
+  case-nf1 : NF1 → Cosets2
+  case-Ex-nf1 : NF1 → Cosets2
 

@@ -66,13 +66,13 @@ open Symplectic-GroupLike renaming (grouplike to grouplike₁) using ()
 open Symplectic-Derived-GroupLike renaming (grouplike to grouplike₂) using ()
 
 
-f : Sym.Gen n -> SymDerived.Gen n
+f : Sym.Gen n → SymDerived.Gen n
 f {₁₊ n} Sym.H-gen = gate₁ (SymDerived.H-gen ₁)
 f {₁₊ n} Sym.S-gen = gate₁ (SymDerived.S-gen ₁)
 f {₂₊ n} Sym.CZ-gen = gate₂ (SymDerived.CZ-gen ₁)
 f {₁₊ n} (x Sym.↥) = (f x) SymDerived.↥
 
-g : SymDerived.Gen n -> Word (Sym.Gen n)
+g : SymDerived.Gen n → Word (Sym.Gen n)
 g {₁₊ n} (gate₁ (SymDerived.H-gen k)) = Sym.H ^ toℕ k
 g {₁₊ n} (gate₁ (SymDerived.S-gen k)) = Sym.S ^ toℕ k
 g {₂₊ n} (gate₂ (SymDerived.CZ-gen k)) = Sym.CZ ^ toℕ k
@@ -93,13 +93,13 @@ g {₁₊ n} (x SymDerived.↥) = (g x) Sym.↑
 -- open PB hiding (_===_)
 -- open SymDerived hiding (p)
 
-f* : Word (Gen₁ n) -> Word (Gen₂ n)
+f* : Word (Gen₁ n) → Word (Gen₂ n)
 f* {n} = wmap (f {n})
 
-f' : (Gen₁ n) -> Word (Gen₂ n)
+f' : (Gen₁ n) → Word (Gen₂ n)
 f' = [_]ʷ ∘ f
 
-f'* : Word (Gen₁ n) -> Word (Gen₂ n)
+f'* : Word (Gen₁ n) → Word (Gen₂ n)
 f'* = f' WB.ʷ
 
 -- (([_]ʷ ∘ f) ʷ) fuses with wmap f : f'* agrees with f* = wmap f.
@@ -110,56 +110,56 @@ lemma-* (w • w₁)  = Eq.cong₂ _•_ (lemma-* w) (lemma-* w₁)
 
 open PB
 
-lemma-f'*-^ : ∀ k w v ->
+lemma-f'*-^ : ∀ k w v →
   let open PB ((₁₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in
-  f'* w ≈₂ v -> f'* (w ^ k) ≈₂ v ^ k
+  f'* w ≈₂ v → f'* (w ^ k) ≈₂ v ^ k
 lemma-f'*-^ ₀ w v eq = refl
 lemma-f'*-^ ₁ w v eq = eq
 lemma-f'*-^ (₂₊ k) w v eq = cong eq (lemma-f'*-^ (₁₊ k) w v eq)
 
-lemma-f'*-^↑ : ∀ k w v ->
+lemma-f'*-^↑ : ∀ k w v →
   let open PB ((₂₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in
-  f'* (w Sym.↑) ≈₂ v ↑ -> f'* ((w ^ k) Sym.↑) ≈₂ (v ^ k) ↑
+  f'* (w Sym.↑) ≈₂ v ↑ → f'* ((w ^ k) Sym.↑) ≈₂ (v ^ k) ↑
 lemma-f'*-^↑ {n} ₀ w v eq = refl
 lemma-f'*-^↑ {n} ₁ w v eq = eq
 lemma-f'*-^↑ {n} (₂₊ k) w v eq = cong eq (lemma-f'*-^↑ {n} (₁₊ k) w v eq)
 
-lemma-f'*-^↓ : ∀ k w v ->
+lemma-f'*-^↓ : ∀ k w v →
   let open PB ((₂₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in
-  f'* (w Sym.↓) ≈₂ v ↓ -> f'* ((w ^ k) Sym.↓) ≈₂ (v ^ k) ↓
+  f'* (w Sym.↓) ≈₂ v ↓ → f'* ((w ^ k) Sym.↓) ≈₂ (v ^ k) ↓
 lemma-f'*-^↓ {n} ₀ w v eq = refl
 lemma-f'*-^↓ {n} ₁ w v eq = eq
 lemma-f'*-^↓ {n} (₂₊ k) w v eq = cong eq (lemma-f'*-^↓ {n} (₁₊ k) w v eq)
 
-lemma-f* : ∀ k -> let open PB ((₁₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f* (Sym.S ^ k) ≈₂ SymDerived.S ^ k
+lemma-f* : ∀ k → let open PB ((₁₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f* (Sym.S ^ k) ≈₂ SymDerived.S ^ k
 lemma-f* ₀ = refl
 lemma-f* ₁ = refl
 lemma-f* (₂₊ k) = cong refl (lemma-f* (₁₊ k))
 
-lemma-f*-CZ : ∀ k -> let open PB ((₂₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f* (Sym.CZ ^ k) ≈₂ SymDerived.CZ ^ k
+lemma-f*-CZ : ∀ k → let open PB ((₂₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f* (Sym.CZ ^ k) ≈₂ SymDerived.CZ ^ k
 lemma-f*-CZ ₀ = refl
 lemma-f*-CZ ₁ = refl
 lemma-f*-CZ (₂₊ k) = cong refl (lemma-f*-CZ (₁₊ k))
 
-lemma-f'*-CZ : ∀ k -> let open PB ((₂₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f'* (Sym.CZ ^ k) ≈₂ SymDerived.CZ ^ k
+lemma-f'*-CZ : ∀ k → let open PB ((₂₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f'* (Sym.CZ ^ k) ≈₂ SymDerived.CZ ^ k
 lemma-f'*-CZ ₀ = refl
 lemma-f'*-CZ ₁ = refl
 lemma-f'*-CZ (₂₊ k) = cong refl (lemma-f'*-CZ (₁₊ k))
 
 
-lemma-f'* : ∀ k -> let open PB ((₁₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f'* (Sym.S ^ k) ≈₂ SymDerived.S ^ k
+lemma-f'* : ∀ k → let open PB ((₁₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f'* (Sym.S ^ k) ≈₂ SymDerived.S ^ k
 lemma-f'* ₀ = refl
 lemma-f'* ₁ = refl
 lemma-f'* (₂₊ k) = cong refl (lemma-f'* (₁₊ k))
 
 
-lemma-f'*-H : ∀ k -> let open PB ((₁₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f'* (Sym.H ^ k) ≈₂ SymDerived.H ^ k
+lemma-f'*-H : ∀ k → let open PB ((₁₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f'* (Sym.H ^ k) ≈₂ SymDerived.H ^ k
 lemma-f'*-H ₀ = refl
 lemma-f'*-H ₁ = refl
 lemma-f'*-H (₂₊ k) = cong refl (lemma-f'*-H (₁₊ k))
 
 
-lemma-f'*-M : ∀ x -> let open PB ((₁₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f'* (Sym.M x) ≈₂ SymDerived.M x
+lemma-f'*-M : ∀ x → let open PB ((₁₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f'* (Sym.M x) ≈₂ SymDerived.M x
 lemma-f'*-M {n} x' = begin
   f'* (Sym.M x') ≈⟨ refl ⟩
   f'* (Sym.S^ x • Sym.H • Sym.S^ x⁻¹ • Sym.H • Sym.S^ x • Sym.H) ≈⟨ refl ⟩
@@ -174,12 +174,12 @@ lemma-f'*-M {n} x' = begin
   x = x' .proj₁
   x⁻¹ = ((x' ⁻¹) .proj₁ )
 
-lemma-f'*-↑ : ∀ w -> let open PB ((₁₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f'* {₁₊ n} (w Sym.↑) ≈₂ f'* w ↑
+lemma-f'*-↑ : ∀ w → let open PB ((₁₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f'* {₁₊ n} (w Sym.↑) ≈₂ f'* w ↑
 lemma-f'*-↑ {n} [ x ]ʷ = refl
 lemma-f'*-↑ {n} ε = refl
 lemma-f'*-↑ {n} (w • w₁) = cong (lemma-f'*-↑ w) (lemma-f'*-↑ w₁)
 
-lemma-f'*-M↑ : ∀ x -> let open PB ((₂₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f'* {₂₊ n} (Sym.M x Sym.↑) ≈₂ SymDerived.M x ↑
+lemma-f'*-M↑ : ∀ x → let open PB ((₂₊ n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in f'* {₂₊ n} (Sym.M x Sym.↑) ≈₂ SymDerived.M x ↑
 lemma-f'*-M↑ {n} x' = begin
   f'* (Sym.M x' Sym.↑) ≈⟨ lemma-f'*-↑ (Sym.M x') ⟩
   (f'* (Sym.M x')) ↑ ≈⟨ lemma-cong↑ _ _ (lemma-f'*-M x') ⟩
@@ -195,7 +195,7 @@ lemma-f'*-M↑ {n} x' = begin
 f-well-defined :
   let open PB ((n) QRel,_===₁_) renaming (_===_ to _===₁_) in
   let open PB ((n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in
-  ∀ {w v} -> w ===₁ v -> f'* w ≈₂ f'* v
+  ∀ {w v} → w ===₁ v → f'* w ≈₂ f'* v
 f-well-defined {₁₊ n} (Sym.srel Sym.Base.order-S) = begin
   f'* (Sym.S • Sym.S ^ ₁₊ p-2) ≡⟨ lemma-* ([ Sym.S-gen ]ʷ • Sym.S ^ ₁₊ p-2) ⟩
   (wmap f) (Sym.S • Sym.S ^ ₁₊ p-2) ≈⟨ lemma-f* (₂₊ p-2) ⟩
@@ -332,34 +332,34 @@ f-well-defined {₁₊ n} (Sym.cong↑ {w = w} {v = v} x) = begin
   open SR word-setoid
 
 
-g* : Word (Gen₂ n) -> Word (Gen₁ n)
+g* : Word (Gen₂ n) → Word (Gen₁ n)
 g* {n} = g WB.ʷ
 
 lemma-g* : let open PB ((₁₊ n) QRel,_===₁_) renaming (_≈_ to _≈₁_) in
-  ∀ k -> g* (S ^ k) ≈₁ Sym.S ^ k
+  ∀ k → g* (S ^ k) ≈₁ Sym.S ^ k
 lemma-g* ₀ = refl
 lemma-g* ₁ = refl
 lemma-g* (₂₊ k) = cong refl (lemma-g* (₁₊ k))
 
 lemma-g*-CZ : let open PB ((₂₊ n) QRel,_===₁_) renaming (_≈_ to _≈₁_) in
-  ∀ k -> g* (CZ ^ k) ≈₁ Sym.CZ ^ k
+  ∀ k → g* (CZ ^ k) ≈₁ Sym.CZ ^ k
 lemma-g*-CZ ₀ = refl
 lemma-g*-CZ ₁ = refl
 lemma-g*-CZ (₂₊ k) = cong refl (lemma-g*-CZ (₁₊ k))
 
 
-lemma-g*-H : let open PB ((₁₊ n) QRel,_===₁_) renaming (_≈_ to _≈₁_) in ∀ k -> g* (H ^ k) ≈₁ Sym.H ^ k
+lemma-g*-H : let open PB ((₁₊ n) QRel,_===₁_) renaming (_≈_ to _≈₁_) in ∀ k → g* (H ^ k) ≈₁ Sym.H ^ k
 lemma-g*-H ₀ = refl
 lemma-g*-H ₁ = refl
 lemma-g*-H (₂₊ k) = cong refl (lemma-g*-H (₁₊ k))
 
-lemma-g*'-H : let open PB ((₁₊ n) QRel,_===₁_) renaming (_≈_ to _≈₁_) in ∀ k -> g* (H^ k) ≈₁ Sym.H ^ toℕ k
+lemma-g*'-H : let open PB ((₁₊ n) QRel,_===₁_) renaming (_≈_ to _≈₁_) in ∀ k → g* (H^ k) ≈₁ Sym.H ^ toℕ k
 lemma-g*'-H ₀ = refl
 lemma-g*'-H ₁ = refl
 lemma-g*'-H ₂ = refl
 lemma-g*'-H ₃ = refl
 
-lemma-g*-↑ : ∀ w -> let open PB ((₁₊ n) QRel,_===₁_) renaming (_≈_ to _≈₁_) in g* {₁₊ n} (w SymDerived.↑) ≈₁ g* w Sym.↑
+lemma-g*-↑ : ∀ w → let open PB ((₁₊ n) QRel,_===₁_) renaming (_≈_ to _≈₁_) in g* {₁₊ n} (w SymDerived.↑) ≈₁ g* w Sym.↑
 lemma-g*-↑ {n} [ x ]ʷ = refl
 lemma-g*-↑ {n} ε = refl
 lemma-g*-↑ {n} (w • w₁) = cong (lemma-g*-↑ w) (lemma-g*-↑ w₁)
@@ -383,7 +383,7 @@ lemma-comm-CZᵏ-w↑↑ {m} (₂₊ k) w = begin
   open SR word-setoid
 
 
-lemma-g*-M : let open PB ((₁₊ n) QRel,_===₁_) renaming (_≈_ to _≈₁_) in ∀ x -> g* (M x) ≈₁ Sym.M x
+lemma-g*-M : let open PB ((₁₊ n) QRel,_===₁_) renaming (_≈_ to _≈₁_) in ∀ x → g* (M x) ≈₁ Sym.M x
 lemma-g*-M {n} x' = begin
   g* (M x') ≈⟨ refl₁ ⟩
   g* (S^ x • H • S^ x⁻¹ • H • S^ x • H) ≈⟨ refl₁ ⟩
@@ -403,7 +403,7 @@ lemma-g*-M {n} x' = begin
 g-well-defined :
   let open PB (( n) QRel,_===₁_) renaming (_≈_ to _≈₁_) in
   let open PB ((n) QRel,_===₂_) renaming (_≈_ to _≈₂_ ; _===_ to _===₂_) in
-  ∀ {w v} -> w ===₂ v -> g* w ≈₁ g* v
+  ∀ {w v} → w ===₂ v → g* w ≈₁ g* v
 g-well-defined {₁₊ n} (srel order-S) = begin
   g* (S • S ^ ₁₊ p-2) ≈⟨ lemma-g* p ⟩
   (Sym.S ^ p) ≈⟨ axiom₁ (Sym.srel Sym.Base.order-S) ⟩
@@ -562,7 +562,7 @@ g-well-defined {(₁₊ n)} (cong↑ {w = w} {v = v} x) = begin
 
 
 f-left-inv-gen : let open PB ((n) QRel,_===₂_) renaming (_≈_ to _≈₂_) in
-  ∀ x -> [ x ]ʷ ≈₂ (f'*) (g x)
+  ∀ x → [ x ]ʷ ≈₂ (f'*) (g x)
 f-left-inv-gen {₁₊ n} (gate₁ (SymDerived.H-gen k)) = begin
   [ gate₁ (H-gen k) ]ʷ ≈⟨ axiom (srel (derived-H k)) ⟩
   H ^ toℕ k ≈⟨ sym (lemma-f'*-H (toℕ k)) ⟩
@@ -599,7 +599,7 @@ f-left-inv-gen {(₁₊ n)} (x SymDerived.↥) = begin
 
 
 g-left-inv-gen : let open PB ((n) QRel,_===₁_) renaming (_≈_ to _≈₁_) in
-  ∀ x -> [ x ]ʷ ≈₁ (g*) (f' x)
+  ∀ x → [ x ]ʷ ≈₁ (g*) (f' x)
 g-left-inv-gen Sym.S-gen = refl
 g-left-inv-gen Sym.H-gen = refl
 g-left-inv-gen Sym.CZ-gen = refl

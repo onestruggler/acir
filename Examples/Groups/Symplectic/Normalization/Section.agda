@@ -96,7 +96,7 @@ lemma-jth-bboxes : ∀ {n} (vb : Vec B n) → jth-bboxes (z≤n {n}) vb ≡ [ vb
 lemma-jth-bboxes {₀} vb = auto
 lemma-jth-bboxes {₁₊ j} vb = auto
 
-jth-babox : ∀ {j n} → j ≤ n → Vec B (n ∸ j) -> A → Word (Gen (₁₊ n))
+jth-babox : ∀ {j n} → j ≤ n → Vec B (n ∸ j) → A → Word (Gen (₁₊ n))
 jth-babox {₀} {n} j≤n v a = [ v ]ᵛᵇ • jth-abox j≤n a
 jth-babox {₁₊ j} {₁₊ n} (s≤s j≤n) v a = jth-babox j≤n v a ↑
 
@@ -136,7 +136,7 @@ data BoxType : Set where
   ᵛᵈ : BoxType
   ⁿᶠ : BoxType
 
-Box : ∀ {n : ℕ} -> BoxType -> Set
+Box : ∀ {n : ℕ} → BoxType → Set
 Box ᵃ = A
 Box ᵇ = B
 Box ᵈ = D
@@ -149,14 +149,14 @@ Box {n} ᵛᵇ = Vec B n
 Box {n} ᵛᵈ = Vec D n
 Box {n} ⁿᶠ = NF n
 
-BIndex : BoxType -> Rel ℕ 0ℓ
+BIndex : BoxType → Rel ℕ 0ℓ
 BIndex ᵃ = _≤_
 BIndex ᵉ = _≤_
 BIndex ᵇ = _<_
 BIndex ᵈ = _<_
-BIndex _ = \ _ _ -> ⊤
+BIndex _ = \ _ _ → ⊤
 
-BWidth : BoxType -> ℕ
+BWidth : BoxType → ℕ
 BWidth ⁿᶠ = 0
 BWidth ˡ = 0
 BWidth ˡ' = 0
@@ -167,7 +167,7 @@ BWidth ᵈ = 2
 BWidth _ = 1
 
 -- A unified way to call all box interpretation.
-⟦_⟧ : ∀ {j n} (bt : BoxType) -> Box {n} bt -> BIndex bt j n -> Word (Gen (BWidth bt Nat.+ n))
+⟦_⟧ : ∀ {j n} (bt : BoxType) → Box {n} bt → BIndex bt j n → Word (Gen (BWidth bt Nat.+ n))
 ⟦_⟧ {j} {n} ᵃ x j≤n = jth-abox j≤n x
 ⟦_⟧ {j} {₁₊ n} ᵇ x j<n = jth-bbox j<n x
 ⟦_⟧ {j} {n} ᵈ x j<n = jth-dbox j<n x

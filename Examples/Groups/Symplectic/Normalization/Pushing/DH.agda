@@ -68,10 +68,10 @@ aux-mc1ε {n} = PB.trans (PB.cong (PB.sym lemma-M1) PB.refl) PB.left-unit
   open Lemmas0 n
 
 
-aux-b≠0⇒ab≠0 : ∀ (a b : ℤ ₚ) (nz : b ≢ ₀) -> _≢_ {A = ℤ ₚ × ℤ ₚ} (a , b) (₀ , ₀)
+aux-b≠0⇒ab≠0 : ∀ (a b : ℤ ₚ) (nz : b ≢ ₀) → _≢_ {A = ℤ ₚ × ℤ ₚ} (a , b) (₀ , ₀)
 aux-b≠0⇒ab≠0 a b nz eq0 = ⊥-elim (nz (Eq.cong proj₂ eq0))
 
-aux-abox-nza : let open PB ((₁₊ n) QRel,_===_) in ∀ a b -> (nz : a ≢ ₀) ->
+aux-abox-nza : let open PB ((₁₊ n) QRel,_===_) in ∀ a b → (nz : a ≢ ₀) →
   let
   a⁻¹ = ((a , nz) ⁻¹) .proj₁
   -b/a = - b * a⁻¹
@@ -88,7 +88,7 @@ aux-abox-nza {n} a@(₁₊ a-1) b nz =
   -b/a = - b * a⁻¹
 
 
-aux-abox-nzb : let open PB ((₁₊ n) QRel,_===_) in ∀ b -> (nz : b ≢ ₀) ->
+aux-abox-nzb : let open PB ((₁₊ n) QRel,_===_) in ∀ b → (nz : b ≢ ₀) →
   [ (₀ , b) , aux-b≠0⇒ab≠0 ₀ b nz ]ᵃ ≈  ⟦ (b , nz) ⁻¹ ⟧ₘ
 aux-abox-nzb {n} b@₀ nz = ⊥-elim (nz auto)
 aux-abox-nzb {n} b@(₁₊ b-1) nz = refl' (XM≡ZM⁻¹ (b , nz))
@@ -97,34 +97,34 @@ aux-abox-nzb {n} b@(₁₊ b-1) nz = refl' (XM≡ZM⁻¹ (b , nz))
 
 
 {- old
-aux-dbox-nza : let open PB ((₂₊ n) QRel,_===_) in ∀ a b -> (nz : a ≢ ₀) ->
+aux-dbox-nza : let open PB ((₂₊ n) QRel,_===_) in ∀ a b → (nz : a ≢ ₀) →
   [ (a , b) ]ᵈ ≈ Ex • CZ^ (- ₁) • [ (a , b) , aux-a≠0⇒ab≠0 a b nz ]ᵃ
 aux-dbox-nza {n} a@₀ b nz = ⊥-elim (nz auto)
 aux-dbox-nza {n} a@(₁₊ a-1) b nz = PB.refl
 
-aux-dbox-nzb : let open PB ((₂₊ n) QRel,_===_) in ∀ b -> (nz : b ≢ ₀) ->
+aux-dbox-nzb : let open PB ((₂₊ n) QRel,_===_) in ∀ b → (nz : b ≢ ₀) →
   [ (₀ , b) ]ᵈ ≈ Ex • CZ^ (- ₁) • [ (₀ , b) , aux-b≠0⇒ab≠0 ₀ b nz ]ᵃ
 aux-dbox-nzb {n} b@₀ nz = ⊥-elim (nz auto)
 aux-dbox-nzb {n} b@(₁₊ b-1) nz = PB.refl
 
-aux-dbox-nzb' : let open PB ((₂₊ n) QRel,_===_) in ∀ b -> (nz : b ≢ ₀) ->
+aux-dbox-nzb' : let open PB ((₂₊ n) QRel,_===_) in ∀ b → (nz : b ≢ ₀) →
   [ (₀ , b) ]ᵈ ≈ Ex • CZ^ (- ₁) • ⟦ (b , nz) ⁻¹ ⟧ₘ
 aux-dbox-nzb' {n} b@₀ nz = ⊥-elim (nz auto)
 aux-dbox-nzb' {n} b@(₁₊ b-1) nz = PB.trans (aux-dbox-nzb b nz) (PB.cong PB.refl (PB.cong PB.refl (aux-abox-nzb b nz)))
 
 
-aux-dbox'-nzb : let open PB ((₂₊ n) QRel,_===_) in ∀ b -> (nz : b ≢ ₀) ->
+aux-dbox'-nzb : let open PB ((₂₊ n) QRel,_===_) in ∀ b → (nz : b ≢ ₀) →
   [ (₀ , b) ]ᵈ' ≈ CZ^ (- ₁) • [ (₀ , b) , aux-b≠0⇒ab≠0 ₀ b nz ]ᵃ ↑ • Ex
 aux-dbox'-nzb {n} b@₀ nz = ⊥-elim (nz auto)
 aux-dbox'-nzb {n} b@(₁₊ b-1) nz = PB.refl
 
-aux-dbox'-nzb' : let open PB ((₂₊ n) QRel,_===_) in ∀ b -> (nz : b ≢ ₀) ->
+aux-dbox'-nzb' : let open PB ((₂₊ n) QRel,_===_) in ∀ b → (nz : b ≢ ₀) →
   [ (₀ , b) ]ᵈ' ≈ CZ^ (- ₁) • ⟦ (b , nz) ⁻¹ ⟧ₘ ↑ • Ex
 aux-dbox'-nzb' {n} b@₀ nz = ⊥-elim (nz auto)
 aux-dbox'-nzb' {n} b@(₁₊ b-1) nz = PB.trans (aux-dbox'-nzb b nz) (PB.cong PB.refl (PB.cong (lemma-cong↑ _ _ (aux-abox-nzb b nz)) PB.refl))
 
 
-aux-dbox-nza' : let open PB ((₂₊ n) QRel,_===_) in ∀ a b -> (nz : a ≢ ₀) ->
+aux-dbox-nza' : let open PB ((₂₊ n) QRel,_===_) in ∀ a b → (nz : a ≢ ₀) →
   let
   a⁻¹ = ((a , nz) ⁻¹) .proj₁
   -b/a = - b * a⁻¹
@@ -135,22 +135,22 @@ aux-dbox-nza' {n} a@(₁₊ a-1) b nz = PB.trans (aux-dbox-nza a b nz) (PB.cong 
 
 
 
-aux-bbox-nza : let open PB ((₂₊ n) QRel,_===_) in ∀ a b -> (nz : a ≢ ₀) ->
+aux-bbox-nza : let open PB ((₂₊ n) QRel,_===_) in ∀ a b → (nz : a ≢ ₀) →
   [ (a , b) ]ᵇ ≈ Ex • CX • [ (a , b) , aux-a≠0⇒ab≠0 a b nz ]ᵃ ↑
 aux-bbox-nza {n} a@₀ b nz = ⊥-elim (nz auto)
 aux-bbox-nza {n} a@(₁₊ a-1) b nz = PB.refl
 
-aux-bbox-nzb : let open PB ((₂₊ n) QRel,_===_) in ∀ b -> (nz : b ≢ ₀) ->
+aux-bbox-nzb : let open PB ((₂₊ n) QRel,_===_) in ∀ b → (nz : b ≢ ₀) →
   [ (₀ , b) ]ᵇ ≈ Ex • CX • [ (₀ , b) , aux-b≠0⇒ab≠0 ₀ b nz ]ᵃ ↑
 aux-bbox-nzb {n} b@₀ nz = ⊥-elim (nz auto)
 aux-bbox-nzb {n} b@(₁₊ b-1) nz = PB.refl
 
-aux-bbox-nzb' : let open PB ((₂₊ n) QRel,_===_) in ∀ b -> (nz : b ≢ ₀) ->
+aux-bbox-nzb' : let open PB ((₂₊ n) QRel,_===_) in ∀ b → (nz : b ≢ ₀) →
   [ (₀ , b) ]ᵇ ≈ Ex • CX • ⟦ (b , nz) ⁻¹ ⟧ₘ ↑
 aux-bbox-nzb' {n} b@₀ nz = ⊥-elim (nz auto)
 aux-bbox-nzb' {n} b@(₁₊ b-1) nz = PB.trans (aux-bbox-nzb b nz) (PB.cong PB.refl (PB.cong PB.refl (lemma-cong↑ _ _ (aux-abox-nzb b nz))))
 
-aux-bbox-nza' : let open PB ((₂₊ n) QRel,_===_) in ∀ a b -> (nz : a ≢ ₀) ->
+aux-bbox-nza' : let open PB ((₂₊ n) QRel,_===_) in ∀ a b → (nz : a ≢ ₀) →
   let
   a⁻¹ = ((a , nz) ⁻¹) .proj₁
   -b/a = - b * a⁻¹
@@ -163,7 +163,7 @@ aux-bbox-nza' {n} a@(₁₊ a-1) b nz = PB.trans (aux-bbox-nza a b nz) (PB.cong 
 
 
 
-dir-of-DH : D -> Word (Gen (₁₊ n))
+dir-of-DH : D → Word (Gen (₁₊ n))
 dir-of-DH (₀ , ₀) = H
 dir-of-DH (₀ , ₁₊ _) = ε
 dir-of-DH (₁₊ _ , ₀) = ε
@@ -173,7 +173,7 @@ dir-of-DH (a@(₁₊ _) , b@(₁₊ _)) = S^ [ab]⁻¹
   [ab]⁻¹ = [ab]⁻¹* .proj₁
 
 
-d-of-DH : D -> D
+d-of-DH : D → D
 d-of-DH (₀ , ₀) = ₀ , ₀
 d-of-DH (₀ , b@(₁₊ _)) = b , ₀
 d-of-DH (a@(₁₊ _) , ₀) = ₀ , - a
@@ -181,7 +181,7 @@ d-of-DH (a@(₁₊ _) , b@(₁₊ _)) = (b , - a)
 
 aux-DH : let open PB ((₂₊ n) QRel,_===_) in
 
-  ∀ d ->
+  ∀ d →
   let
   d' = d-of-DH d
   w = dir-of-DH d
@@ -253,8 +253,8 @@ aux-DH {n} d@(a@(₁₊ _) , b@(₁₊ _)) = trans claim claim'
   aux1 : -y/x ≡ a'⁻¹
   aux1 = Eq.sym ( begin
     ((- x * y⁻¹ , nza') ⁻¹) .proj₁ ≡⟨ (inv-distrib ((- x , mnz)) (((y , nzy) ⁻¹))) ⟩
-    (((- x , mnz) ⁻¹) .proj₁ * y⁻¹⁻¹) ≡⟨ Eq.cong (\ xx -> (((- x , mnz) ⁻¹) .proj₁ * xx)) (inv-involutive (y , nzy)) ⟩
-    (((- x , mnz) ⁻¹) .proj₁ * y) ≡⟨ Eq.cong (\ xx -> (xx * y)) (inv-neg-comm (x , nz)) ⟩
+    (((- x , mnz) ⁻¹) .proj₁ * y⁻¹⁻¹) ≡⟨ Eq.cong (\ xx → (((- x , mnz) ⁻¹) .proj₁ * xx)) (inv-involutive (y , nzy)) ⟩
+    (((- x , mnz) ⁻¹) .proj₁ * y) ≡⟨ Eq.cong (\ xx → (xx * y)) (inv-neg-comm (x , nz)) ⟩
     ((-' (x , nz) ⁻¹) .proj₁ * y) ≡⟨ (*-comm -x⁻¹ y) ⟩
     (y * -x⁻¹) ≡⟨ Eq.sym (-‿distribʳ-* y x⁻¹) ⟩
     - (y * x⁻¹) ≡⟨ Eq.sym (-1*x≈-x ((y * x⁻¹))) ⟩
@@ -269,8 +269,8 @@ aux-DH {n} d@(a@(₁₊ _) , b@(₁₊ _)) = trans claim claim'
   aux2a = begin
     -b'/a' ≡⟨ Eq.cong (_* ((- x * y⁻¹ , nza') ⁻¹) .proj₁) ( -‿involutive y⁻¹) ⟩
     y⁻¹ * ((- x * y⁻¹ , nza') ⁻¹) .proj₁ ≡⟨ Eq.cong (y⁻¹ *_) (inv-distrib ((- x , mnz)) (((y , nzy) ⁻¹))) ⟩
-    y⁻¹ * (((- x , mnz) ⁻¹) .proj₁ * y⁻¹⁻¹) ≡⟨ Eq.cong (\ xx -> y⁻¹ * (((- x , mnz) ⁻¹) .proj₁ * xx)) (inv-involutive (y , nzy)) ⟩
-    y⁻¹ * (((- x , mnz) ⁻¹) .proj₁ * y) ≡⟨ Eq.cong (\ xx -> y⁻¹ * (xx * y)) (inv-neg-comm (x , nz)) ⟩
+    y⁻¹ * (((- x , mnz) ⁻¹) .proj₁ * y⁻¹⁻¹) ≡⟨ Eq.cong (\ xx → y⁻¹ * (((- x , mnz) ⁻¹) .proj₁ * xx)) (inv-involutive (y , nzy)) ⟩
+    y⁻¹ * (((- x , mnz) ⁻¹) .proj₁ * y) ≡⟨ Eq.cong (\ xx → y⁻¹ * (xx * y)) (inv-neg-comm (x , nz)) ⟩
     y⁻¹ * ((-' (x , nz) ⁻¹) .proj₁ * y) ≡⟨ Eq.cong (y⁻¹ *_) (*-comm -x⁻¹ y) ⟩
     y⁻¹ * (y * -x⁻¹) ≡⟨ Eq.sym (*-assoc (y⁻¹) y -x⁻¹) ⟩
     y⁻¹ * y * -x⁻¹ ≡⟨ Eq.cong (_* -x⁻¹) (lemma-⁻¹ˡ y {{nztoℕ {y = y} {neq0 = nzy}}}) ⟩
@@ -293,7 +293,7 @@ aux-DH {n} d@(a@(₁₊ _) , b@(₁₊ _)) = trans claim claim'
   aux'-2 = begin
     - x * y⁻¹ ≡⟨ Eq.cong (- x *_) (inv-involutive (a , (λ ()))) ⟩
     - -b/a * a ≡⟨ Eq.cong (_* a) (-‿distribˡ-* (- b) a⁻¹) ⟩
-    (- - b * a⁻¹) * a ≡⟨ Eq.cong (\ xx -> (xx * a⁻¹) * a) (-‿involutive b) ⟩
+    (- - b * a⁻¹) * a ≡⟨ Eq.cong (\ xx → (xx * a⁻¹) * a) (-‿involutive b) ⟩
     (b * a⁻¹) * a ≡⟨ *-assoc b a⁻¹ a ⟩
     b * (a⁻¹ * a) ≡⟨ Eq.cong (b *_) (lemma-⁻¹ˡ a {{nztoℕ {y = a} {neq0 = λ ()}}}) ⟩
     b * ₁ ≡⟨ *-identityʳ b ⟩
@@ -317,13 +317,13 @@ aux-DH {n} d@(a@(₁₊ _) , b@(₁₊ _)) = trans claim claim'
   
   aux'-1 : -x⁻¹ * (y * y) ≡ [ab]⁻¹
   aux'-1 = begin
-    -x⁻¹ * (y * y) ≡⟨ Eq.cong (\ xx -> - xx * (y * y)) (inv-distrib (-' b*) (a* ⁻¹)) ⟩
+    -x⁻¹ * (y * y) ≡⟨ Eq.cong (\ xx → - xx * (y * y)) (inv-distrib (-' b*) (a* ⁻¹)) ⟩
     - (((-' b*) ⁻¹) .proj₁ * (a* ⁻¹ ⁻¹) .proj₁) * (a⁻¹ * a⁻¹) ≡⟨ Eq.cong (_* (a⁻¹ * a⁻¹)) (-‿distribˡ-* (((-' b*) ⁻¹) .proj₁) ((a* ⁻¹ ⁻¹) .proj₁)) ⟩
-    (- ((-' b*) ⁻¹) .proj₁ * (a* ⁻¹ ⁻¹) .proj₁) * (a⁻¹ * a⁻¹) ≡⟨ Eq.cong₂ (\ xx yy -> (xx * yy) * (a⁻¹ * a⁻¹)) (Eq.cong -_ (inv-neg-comm b*)) (inv-involutive a*) ⟩
-    (- - (b⁻¹) * a) * (a⁻¹ * a⁻¹) ≡⟨ Eq.cong (\ xx -> (xx * a) * (a⁻¹ * a⁻¹)) (-‿involutive ((b⁻¹))) ⟩
+    (- ((-' b*) ⁻¹) .proj₁ * (a* ⁻¹ ⁻¹) .proj₁) * (a⁻¹ * a⁻¹) ≡⟨ Eq.cong₂ (\ xx yy → (xx * yy) * (a⁻¹ * a⁻¹)) (Eq.cong -_ (inv-neg-comm b*)) (inv-involutive a*) ⟩
+    (- - (b⁻¹) * a) * (a⁻¹ * a⁻¹) ≡⟨ Eq.cong (\ xx → (xx * a) * (a⁻¹ * a⁻¹)) (-‿involutive ((b⁻¹))) ⟩
     ((b⁻¹) * a) * (a⁻¹ * a⁻¹) ≡⟨ *-assoc b⁻¹ a (a⁻¹ * a⁻¹) ⟩
     (b⁻¹) * (a * (a⁻¹ * a⁻¹)) ≡⟨ Eq.cong ((b⁻¹) *_) (Eq.sym (*-assoc a a⁻¹ a⁻¹)) ⟩
-    (b⁻¹) * ((a * a⁻¹) * a⁻¹) ≡⟨ Eq.cong (\ xx -> (b⁻¹) * (xx * a⁻¹)) (lemma-⁻¹ʳ a {{nztoℕ {y = a} {neq0 = λ ()}}} ) ⟩
+    (b⁻¹) * ((a * a⁻¹) * a⁻¹) ≡⟨ Eq.cong (\ xx → (b⁻¹) * (xx * a⁻¹)) (lemma-⁻¹ʳ a {{nztoℕ {y = a} {neq0 = λ ()}}} ) ⟩
     (b⁻¹) * (₁ * a⁻¹) ≡⟨ Eq.cong ((b⁻¹) *_) (*-identityˡ ((a⁻¹))) ⟩
     (b⁻¹) * a⁻¹ ≡⟨ *-comm ((b⁻¹)) a⁻¹ ⟩
     a⁻¹ * (b⁻¹) ≡⟨ Eq.sym (inv-distrib a* b*) ⟩
@@ -340,7 +340,7 @@ aux-DH {n} d@(a@(₁₊ _) , b@(₁₊ _)) = trans claim claim'
 
   claim' : S^ (-x⁻¹ * (y * y)) ↑ • [ a' , b' ]ᵈ ≈ w' ↑ • [ d'' ]ᵈ
   claim' = begin
-    S^ (-x⁻¹ * (y * y)) ↑ • [ a' , b' ]ᵈ ≈⟨ cong (refl' (Eq.cong (\ xx -> S^ xx ↑) aux'-1)) (refl' (Eq.cong₂ (\ xx yy -> [ ( xx , yy) ]ᵈ ) aux'-2 aux'-3)) ⟩
+    S^ (-x⁻¹ * (y * y)) ↑ • [ a' , b' ]ᵈ ≈⟨ cong (refl' (Eq.cong (\ xx → S^ xx ↑) aux'-1)) (refl' (Eq.cong₂ (\ xx yy → [ ( xx , yy) ]ᵈ ) aux'-2 aux'-3)) ⟩
     w' ↑ • [ d'' ]ᵈ ∎
 
   claim : [ d ]ᵈ • H ≈ w ↑ • [ d' ]ᵈ
@@ -416,7 +416,7 @@ aux-DH {n} d@(a@(₁₊ _) , b@₀) = claim
 
 {-
 
-dir-of-DH^2 : D -> Word (Gen (₁₊ n))
+dir-of-DH^2 : D → Word (Gen (₁₊ n))
 dir-of-DH^2 (₀ , ₀) = H ^ 2
 dir-of-DH^2 (₀ , ₁₊ _) = ε
 dir-of-DH^2 (₁₊ _ , ₀) = ε
@@ -426,21 +426,21 @@ dir-of-DH^2 (a@(₁₊ _) , b@(₁₊ _)) = ε
   [ab]⁻¹ = [ab]⁻¹* .proj₁
 
 
-d-of-DH^2 : D -> D
+d-of-DH^2 : D → D
 d-of-DH^2 (₀ , ₀) = ₀ , ₀
 d-of-DH^2 (₀ , b@(₁₊ _)) = ₀ , - b
 d-of-DH^2 (a@(₁₊ _) , ₀) = - a , ₀
 d-of-DH^2 (a@(₁₊ _) , b@(₁₊ _)) = (- a , - b)
 
 
-aux-mnz : ∀ (b : ℤ ₚ) -> (nz : b ≢ ₀) -> ∃ \ x -> - b ≡ ₁₊ x
+aux-mnz : ∀ (b : ℤ ₚ) → (nz : b ≢ ₀) → ∃ \ x → - b ≡ ₁₊ x
 aux-mnz b nz with - b | inspect -_ b
 ... | ₀ | [ eq ]' = ⊥-elim ((-' (b , nz)) .proj₂ eq)
 ... | ₁₊ x' | [ eq ]' = x' , auto
 
 aux-DH^2 : let open PB ((₂₊ n) QRel,_===_) in
 
-  ∀ d ->
+  ∀ d →
   let
   d' = d-of-DH^2 d
   w = dir-of-DH^2 d
@@ -465,9 +465,9 @@ aux-DH^2 {n} d@(a@(₁₊ _) , ₀) = begin
   ([ d ]ᵈ • H) • H ≈⟨ (cleft aux-DH d) ⟩
   (ε • [ ₀ , - a ]ᵈ) • H ≈⟨ (cleft left-unit) ⟩
   ([ ₀ , - a ]ᵈ) • H ≈⟨ aux-DH (₀ , - a) ⟩
-  (dir-of-DH (₀ , - a)) ↑ • [ d-of-DH (₀ , - a) ]ᵈ ≈⟨ refl' (Eq.cong (\ xx -> (dir-of-DH (₀ , xx)) ↑ • [ d-of-DH (₀ , xx) ]ᵈ) eqx) ⟩
+  (dir-of-DH (₀ , - a)) ↑ • [ d-of-DH (₀ , - a) ]ᵈ ≈⟨ refl' (Eq.cong (\ xx → (dir-of-DH (₀ , xx)) ↑ • [ d-of-DH (₀ , xx) ]ᵈ) eqx) ⟩
   (dir-of-DH (₀ , ₁₊ x)) ↑ • [ d-of-DH (₀ , ₁₊ x) ]ᵈ ≈⟨ refl ⟩
-  ε ↑ • [ ₁₊ x , ₀ ]ᵈ ≈⟨ refl' (Eq.cong (\ xx -> ε ↑ • [ xx , ₀ ]ᵈ) (Eq.sym eqx)) ⟩
+  ε ↑ • [ ₁₊ x , ₀ ]ᵈ ≈⟨ refl' (Eq.cong (\ xx → ε ↑ • [ xx , ₀ ]ᵈ) (Eq.sym eqx)) ⟩
   ε ↑ • [ - a , ₀ ]ᵈ ∎
   where
   open PB ((₂₊ n) QRel,_===_)  
@@ -485,12 +485,12 @@ aux-DH^2 {n} d@(a@(₁₊ _) , b@(₁₊ _)) = begin
   ([ d ]ᵈ • H) • H ≈⟨ (cleft aux-DH d) ⟩
   (S^ [ab]⁻¹ ↑ • [ b , - a ]ᵈ) • H ≈⟨ assoc ⟩
   S^ [ab]⁻¹ ↑ • ([ b , - a ]ᵈ) • H ≈⟨ cright aux-DH (b , - a) ⟩
-  S^ [ab]⁻¹ ↑ • ((dir-of-DH (b , - a)) ↑ • [ d-of-DH (b , - a) ]ᵈ) ≈⟨ cright refl' (Eq.cong (\ xx -> (dir-of-DH (b , xx)) ↑ • [ d-of-DH (b , xx) ]ᵈ) eqx) ⟩
+  S^ [ab]⁻¹ ↑ • ((dir-of-DH (b , - a)) ↑ • [ d-of-DH (b , - a) ]ᵈ) ≈⟨ cright refl' (Eq.cong (\ xx → (dir-of-DH (b , xx)) ↑ • [ d-of-DH (b , xx) ]ᵈ) eqx) ⟩
   S^ [ab]⁻¹ ↑ • ((dir-of-DH (b , ₁₊ x)) ↑ • [ d-of-DH (b , ₁₊ x) ]ᵈ) ≈⟨ refl ⟩
-  S^ [ab]⁻¹ ↑  • (S^ [ba]⁻¹ ↑ • [ ₁₊ x , - b ]ᵈ) ≈⟨ cright refl' (Eq.cong (\ xx -> S^ [ba]⁻¹ ↑ • [ xx , - b ]ᵈ) (Eq.sym eqx)) ⟩
+  S^ [ab]⁻¹ ↑  • (S^ [ba]⁻¹ ↑ • [ ₁₊ x , - b ]ᵈ) ≈⟨ cright refl' (Eq.cong (\ xx → S^ [ba]⁻¹ ↑ • [ xx , - b ]ᵈ) (Eq.sym eqx)) ⟩
   S^ [ab]⁻¹ ↑ • (S^ [ba]⁻¹ ↑ • [ - a , - b ]ᵈ) ≈⟨ sym assoc ⟩
   (S^ [ab]⁻¹ ↑ • S^ [ba]⁻¹ ↑) • [ - a , - b ]ᵈ ≈⟨  (cleft lemma-cong↑ _ _ (L0.lemma-S^k+l [ab]⁻¹ [ba]⁻¹)) ⟩
-  S^ ([ab]⁻¹ + [ba]⁻¹) ↑ • [ - a , - b ]ᵈ ≈⟨ (cleft refl' (Eq.cong (\ xx -> S^ xx ↑) aux2)) ⟩
+  S^ ([ab]⁻¹ + [ba]⁻¹) ↑ • [ - a , - b ]ᵈ ≈⟨ (cleft refl' (Eq.cong (\ xx → S^ xx ↑) aux2)) ⟩
   ε ↑ • [ - a , - b ]ᵈ ∎
   where
   ma = aux-mnz a λ ()
@@ -504,7 +504,7 @@ aux-DH^2 {n} d@(a@(₁₊ _) , b@(₁₊ _)) = begin
   aux : [ba]⁻¹ ≡ - [ab]⁻¹
   aux = begin
     ((  (b , λ ()) *' (₁₊ x , λ ())  ) ⁻¹) .proj₁ ≡⟨ inv-distrib (b , λ ()) (₁₊ x , λ ()) ⟩
-    (  (b , λ ()) ⁻¹) .proj₁  * (((₁₊ x , λ ())  ) ⁻¹) .proj₁ ≡⟨ Eq.cong (\ xx -> (  (b , λ ()) ⁻¹) .proj₁  * xx) (inv-cong ((₁₊ x , λ ())) (-' (a , λ ())) (Eq.sym eqx)) ⟩
+    (  (b , λ ()) ⁻¹) .proj₁  * (((₁₊ x , λ ())  ) ⁻¹) .proj₁ ≡⟨ Eq.cong (\ xx → (  (b , λ ()) ⁻¹) .proj₁  * xx) (inv-cong ((₁₊ x , λ ())) (-' (a , λ ())) (Eq.sym eqx)) ⟩
     (  (b , λ ()) ⁻¹) .proj₁  * (( -' (a , λ ())  ) ⁻¹) .proj₁ ≡⟨ *-comm ((  (b , λ ()) ⁻¹) .proj₁) ((( -' (a , λ ())  ) ⁻¹) .proj₁) ⟩
     (( -' (a , λ ())  ) ⁻¹) .proj₁ * (  (b , λ ()) ⁻¹) .proj₁  ≡⟨ Eq.cong (_* (  (b , λ ()) ⁻¹) .proj₁) (inv-neg-comm (a , λ ())) ⟩
     - (( (a , λ ())  ) ⁻¹) .proj₁ * (  (b , λ ()) ⁻¹) .proj₁  ≡⟨ Eq.sym (-‿distribˡ-* ((( (a , λ ())  ) ⁻¹) .proj₁) ((  (b , λ ()) ⁻¹) .proj₁)) ⟩
@@ -532,7 +532,7 @@ aux-DH^2 {n} d@(a@(₁₊ _) , b@(₁₊ _)) = begin
 
 
 
-dir-of-DH^3 : D -> Word (Gen (₁₊ n))
+dir-of-DH^3 : D → Word (Gen (₁₊ n))
 dir-of-DH^3 (₀ , ₀) = H ^ 3
 dir-of-DH^3 (₀ , ₁₊ _) = ε
 dir-of-DH^3 (₁₊ _ , ₀) = ε
@@ -542,7 +542,7 @@ dir-of-DH^3 (a@(₁₊ _) , b@(₁₊ _)) = S^ [ab]⁻¹
   [ab]⁻¹ = [ab]⁻¹* .proj₁
 
 
-d-of-DH^3 : D -> D
+d-of-DH^3 : D → D
 d-of-DH^3 (₀ , ₀) = ₀ , ₀
 d-of-DH^3 (₀ , b@(₁₊ _)) = - b , ₀
 d-of-DH^3 (a@(₁₊ _) , ₀) = ₀ , a
@@ -551,7 +551,7 @@ d-of-DH^3 (a@(₁₊ _) , b@(₁₊ _)) = (- b , a)
 
 aux-DH^3 : let open PB ((₂₊ n) QRel,_===_) in
 
-  ∀ d ->
+  ∀ d →
   let
   d' = d-of-DH^3 d
   w = dir-of-DH^3 d
@@ -579,10 +579,10 @@ aux-DH^3 {n} d@(a@(₁₊ _) , ₀) = begin
   ([ d ]ᵈ • H) • H ^ 2 ≈⟨ (cleft aux-DH d) ⟩
   (ε • [ ₀ , - a ]ᵈ) • H ^ 2 ≈⟨ (cleft left-unit) ⟩
   ([ ₀ , - a ]ᵈ) • H ^ 2 ≈⟨ aux-DH^2 (₀ , - a) ⟩
-  (dir-of-DH^2 (₀ , - a)) ↑ • [ d-of-DH^2 (₀ , - a) ]ᵈ ≈⟨ refl' (Eq.cong (\ xx -> (dir-of-DH^2 (₀ , xx)) ↑ • [ d-of-DH^2 (₀ , xx) ]ᵈ) eqx) ⟩
+  (dir-of-DH^2 (₀ , - a)) ↑ • [ d-of-DH^2 (₀ , - a) ]ᵈ ≈⟨ refl' (Eq.cong (\ xx → (dir-of-DH^2 (₀ , xx)) ↑ • [ d-of-DH^2 (₀ , xx) ]ᵈ) eqx) ⟩
   (dir-of-DH^2 (₀ , ₁₊ x)) ↑ • [ d-of-DH^2 (₀ , ₁₊ x) ]ᵈ ≈⟨ refl ⟩
-  ε ↑ • [ ₀ , - (₁₊ x) ]ᵈ ≈⟨ refl' (Eq.cong (\ xx -> ε ↑ • [ ₀ , - xx ]ᵈ) (Eq.sym eqx)) ⟩
-  ε ↑ • [ ₀ , - - a ]ᵈ ≡⟨ Eq.cong (\ xx -> ε ↑ • [ ₀ , xx ]ᵈ) (-‿involutive a) ⟩
+  ε ↑ • [ ₀ , - (₁₊ x) ]ᵈ ≈⟨ refl' (Eq.cong (\ xx → ε ↑ • [ ₀ , - xx ]ᵈ) (Eq.sym eqx)) ⟩
+  ε ↑ • [ ₀ , - - a ]ᵈ ≡⟨ Eq.cong (\ xx → ε ↑ • [ ₀ , xx ]ᵈ) (-‿involutive a) ⟩
   ε ↑ • [ ₀ , a ]ᵈ ∎
   where
   open PB ((₂₊ n) QRel,_===_)  
@@ -600,12 +600,12 @@ aux-DH^3 {n} d@(a@(₁₊ _) , b@(₁₊ _)) = begin
   ([ d ]ᵈ • H) • H ^ 2 ≈⟨ (cleft aux-DH d) ⟩
   (S^ [ab]⁻¹ ↑ • [ b , - a ]ᵈ) • H ^ 2 ≈⟨ assoc ⟩
   S^ [ab]⁻¹ ↑ • ([ b , - a ]ᵈ) • H ^ 2 ≈⟨ cright aux-DH^2 (b , - a) ⟩
-  S^ [ab]⁻¹ ↑ • ((dir-of-DH^2 (b , - a)) ↑ • [ d-of-DH^2 (b , - a) ]ᵈ) ≈⟨ cright refl' (Eq.cong (\ xx -> (dir-of-DH^2 (b , xx)) ↑ • [ d-of-DH^2 (b , xx) ]ᵈ) eqx) ⟩
+  S^ [ab]⁻¹ ↑ • ((dir-of-DH^2 (b , - a)) ↑ • [ d-of-DH^2 (b , - a) ]ᵈ) ≈⟨ cright refl' (Eq.cong (\ xx → (dir-of-DH^2 (b , xx)) ↑ • [ d-of-DH^2 (b , xx) ]ᵈ) eqx) ⟩
   S^ [ab]⁻¹ ↑ • ((dir-of-DH^2 (b , ₁₊ x)) ↑ • [ d-of-DH^2 (b , ₁₊ x) ]ᵈ) ≈⟨ refl ⟩
-  S^ [ab]⁻¹ ↑  • (ε ↑ • [ - b ,  - (₁₊ x) ]ᵈ) ≈⟨ cright refl' (Eq.cong (\ xx -> ε ↑ • [ - b , - xx  ]ᵈ) (Eq.sym eqx)) ⟩
+  S^ [ab]⁻¹ ↑  • (ε ↑ • [ - b ,  - (₁₊ x) ]ᵈ) ≈⟨ cright refl' (Eq.cong (\ xx → ε ↑ • [ - b , - xx  ]ᵈ) (Eq.sym eqx)) ⟩
   S^ [ab]⁻¹ ↑ • (ε ↑ • [ - b  ,  - - a ]ᵈ) ≈⟨ sym assoc ⟩
   (S^ [ab]⁻¹ ↑ • ε ↑) • [ - b , - - a ]ᵈ ≈⟨  (cleft right-unit) ⟩
-  S^ ([ab]⁻¹) ↑ • [ - b , - - a ]ᵈ ≡⟨ Eq.cong (\ xx -> S^ ([ab]⁻¹) ↑ • [ - b , xx ]ᵈ) (-‿involutive a) ⟩
+  S^ ([ab]⁻¹) ↑ • [ - b , - - a ]ᵈ ≡⟨ Eq.cong (\ xx → S^ ([ab]⁻¹) ↑ • [ - b , xx ]ᵈ) (-‿involutive a) ⟩
   S^ ([ab]⁻¹) ↑ • [ - b , a ]ᵈ ∎
   where
   ma = aux-mnz a λ ()
@@ -619,7 +619,7 @@ aux-DH^3 {n} d@(a@(₁₊ _) , b@(₁₊ _)) = begin
   aux : [ba]⁻¹ ≡ - [ab]⁻¹
   aux = begin
     ((  (b , λ ()) *' (₁₊ x , λ ())  ) ⁻¹) .proj₁ ≡⟨ inv-distrib (b , λ ()) (₁₊ x , λ ()) ⟩
-    (  (b , λ ()) ⁻¹) .proj₁  * (((₁₊ x , λ ())  ) ⁻¹) .proj₁ ≡⟨ Eq.cong (\ xx -> (  (b , λ ()) ⁻¹) .proj₁  * xx) (inv-cong ((₁₊ x , λ ())) (-' (a , λ ())) (Eq.sym eqx)) ⟩
+    (  (b , λ ()) ⁻¹) .proj₁  * (((₁₊ x , λ ())  ) ⁻¹) .proj₁ ≡⟨ Eq.cong (\ xx → (  (b , λ ()) ⁻¹) .proj₁  * xx) (inv-cong ((₁₊ x , λ ())) (-' (a , λ ())) (Eq.sym eqx)) ⟩
     (  (b , λ ()) ⁻¹) .proj₁  * (( -' (a , λ ())  ) ⁻¹) .proj₁ ≡⟨ *-comm ((  (b , λ ()) ⁻¹) .proj₁) ((( -' (a , λ ())  ) ⁻¹) .proj₁) ⟩
     (( -' (a , λ ())  ) ⁻¹) .proj₁ * (  (b , λ ()) ⁻¹) .proj₁  ≡⟨ Eq.cong (_* (  (b , λ ()) ⁻¹) .proj₁) (inv-neg-comm (a , λ ())) ⟩
     - (( (a , λ ())  ) ⁻¹) .proj₁ * (  (b , λ ()) ⁻¹) .proj₁  ≡⟨ Eq.sym (-‿distribˡ-* ((( (a , λ ())  ) ⁻¹) .proj₁) ((  (b , λ ()) ⁻¹) .proj₁)) ⟩

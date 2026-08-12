@@ -69,7 +69,7 @@ open Duality
 open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime
 
 
-rm-mc2 : Cosets2 ->  Cosets2
+rm-mc2 : Cosets2 →  Cosets2
 rm-mc2 (case-||ₐ x x₁@(s , mc↑ , mc)) = case-||ₐ x (s , mc↑ , (₁* , ε))
 rm-mc2 (case-|| x x₁ x₂@(s , mc↑ , mc)) = case-|| x x₁ (s , mc↑ , (₁* , ε))
 rm-mc2 (case-| x x₁@(s , mc)) = case-| x ((s , ₁* , ε))
@@ -77,7 +77,7 @@ rm-mc2 (case-nf1 x@(s , mc)) = case-nf1 (s , ₁* , ε)
 rm-mc2 x@(case-Ex-nf1 nf1) = x
 rm-mc2 x@(case-Ex-| mc nf1) = x
 
-mc-of2 : Cosets2 -> MC
+mc-of2 : Cosets2 → MC
 mc-of2 (case-||ₐ x x₁@(s , mc↑ , mc)) = mc
 mc-of2 (case-|| x x₁ x₂@(s , mc↑ , mc)) = mc
 mc-of2 (case-| x x₁@(s , mc)) = mc
@@ -85,7 +85,7 @@ mc-of2 (case-nf1 x@(s , mc)) = mc
 mc-of2 (case-Ex-nf1 nf1) = ₁* , ε
 mc-of2 (case-Ex-| mc nf1) = ₁* , ε
 
-aux-mc-of2 : let open PB ((₂₊ n) QRel,_===_) in ∀ c2 -> ⟦ c2 ⟧₂ ≈ ⟦ rm-mc2 c2 ⟧₂ • ⟦ mc-of2 c2 ⟧ₘ₊
+aux-mc-of2 : let open PB ((₂₊ n) QRel,_===_) in ∀ c2 → ⟦ c2 ⟧₂ ≈ ⟦ rm-mc2 c2 ⟧₂ • ⟦ mc-of2 c2 ⟧ₘ₊
 aux-mc-of2 {n} (case-||ₐ x x₁@(s , mc↑ , mc)) = begin
   ⟦ case-||ₐ x (s , mc↑ , mc) ⟧₂ ≈⟨ by-passoc (□ ^ 5) (□ ^ 4 • □) auto ⟩
   (CZ^ x  • S^ s  • CX • ⟦ mc↑ ⟧ₘ₊ ↑) • ⟦ mc ⟧ₘ₊ ≈⟨ sym (cleft cright cright cright right-unit) ⟩
@@ -151,7 +151,7 @@ aux-mc-of2 {n} (case-Ex-| nf1 mc) = begin
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
 
-aux-dd : let open PB ((₂₊ n) QRel,_===_) in ∀ d -> [ d ]ᵈ ≈ [ d ]ᵈ'
+aux-dd : let open PB ((₂₊ n) QRel,_===_) in ∀ d → [ d ]ᵈ ≈ [ d ]ᵈ'
 aux-dd {n} d@(a@₀ , b) = begin
   Ex • CZ^ (- b) ≈⟨ ( comm⇒pow-comm 1 (toℕ (- b)) (sym lemma-comm-Ex-CZ-n)) ⟩
   CZ^ (- b) • Ex ∎
@@ -178,7 +178,7 @@ aux-dd {n} d@(a@(₁₊ _) , b) = begin
 
 
 {-
-aux-dd : let open PB ((₂₊ n) QRel,_===_) in ∀ d -> [ d ]ᵈ ≈ [ d ]ᵈ'
+aux-dd : let open PB ((₂₊ n) QRel,_===_) in ∀ d → [ d ]ᵈ ≈ [ d ]ᵈ'
 aux-dd {n} d@(₀ , ₀) = PB.refl
 aux-dd {n} d@(a@₀ , b@(₁₊ _)) = begin
   Ex • CZ^ (- ₁) • [ (a , b) , (λ ()) ]ᵃ ≈⟨ sym assoc ⟩
@@ -206,7 +206,7 @@ aux-dd {n} d@(a@(₁₊ _) , b) = begin
 -}
 
 aux-comm-CZ-S^k↑ : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ k -> CZ • S^ k ↑ ≈ S^ k ↑ • CZ
+  ∀ k → CZ • S^ k ↑ ≈ S^ k ↑ • CZ
 aux-comm-CZ-S^k↑ {n} k = begin
    CZ • S^ k ↑ ≈⟨ (cright sym (refl' (lemma-^-↑ S (toℕ k)))) ⟩
    CZ • S ↑ ^ toℕ k ≈⟨ comm⇒pow-comm 1 (toℕ k) (axiom comm-CZ-S↑) ⟩
@@ -219,13 +219,13 @@ aux-comm-CZ-S^k↑ {n} k = begin
 
 
 aux-CZ^-k : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ k -> CZ⁻¹ ^ toℕ k ≈ CZ^ (- k)
+  ∀ k → CZ⁻¹ ^ toℕ k ≈ CZ^ (- k)
 aux-CZ^-k {n} k = begin
   CZ⁻¹ ^ toℕ k ≈⟨ ^^ CZ p-1 (toℕ k) ⟩
   CZ ^ (p-1 Nat.* toℕ k) ≈⟨ lemma-CZ^k-% (p-1 Nat.* toℕ k) ⟩
   CZ ^ ((p-1 Nat.* toℕ k) Nat.% p) ≡⟨ Eq.cong (CZ ^_) (Eq.sym (toℕ-fromℕ< (m%n<n (p-1 Nat.* toℕ k) p))) ⟩
   CZ ^ toℕ (fromℕ< (m%n<n (p-1 Nat.* toℕ k) p)) ≡⟨ auto ⟩
-  CZ^ (fromℕ< (m%n<n (p-1 Nat.* toℕ k) p)) ≡⟨ Eq.cong (\ xx -> CZ^ (fromℕ< (m%n<n (xx Nat.* toℕ k) p))) (Eq.sym lemma-toℕ-1ₚ) ⟩
+  CZ^ (fromℕ< (m%n<n (p-1 Nat.* toℕ k) p)) ≡⟨ Eq.cong (\ xx → CZ^ (fromℕ< (m%n<n (xx Nat.* toℕ k) p))) (Eq.sym lemma-toℕ-1ₚ) ⟩
   CZ^ (fromℕ< (m%n<n (toℕ (- 1ₚ) Nat.* toℕ k) p)) ≡⟨ auto ⟩
   CZ^ (- 1ₚ * k) ≡⟨ Eq.cong CZ^ (-1*x≈-x k) ⟩
   CZ^ (- k) ∎
@@ -244,7 +244,7 @@ aux-CZ^-k {n} k = begin
 {-
 
 lemma-coset-update-I-Ex-| : let open PB (3 QRel,_===_) in
-  ∀ a' b nf1 m ->
+  ∀ a' b nf1 m →
   let
   a = ₁₊ a'
   lm = case-I (a , b) (case-Ex-| nf1 (m , ε))

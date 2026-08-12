@@ -1,4 +1,4 @@
-﻿------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Presentations of groups
 --
 -- The single-level box-existence theorem `Theorem-LM` for the plain gate

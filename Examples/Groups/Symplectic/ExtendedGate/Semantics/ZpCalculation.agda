@@ -23,7 +23,7 @@ open import Algebra.Properties.Ring (+-*-ring p-2)
 
 
 -- Recover the first coordinate a' from the nested-negation form.
-recover-a' : ∀ a' a'' -> - (- (- a' + - a'') + - a') + - (- a' + - a'') ≡ a'
+recover-a' : ∀ a' a'' → - (- (- a' + - a'') + - a') + - (- a' + - a'') ≡ a'
 recover-a' a' a'' = begin
   - (- (- a' + - a'') + - a') + - (- a' + - a'') ≡⟨ cong (_+ - (- a' + - a'')) (sym (-‿+-comm (- (- a' + - a'')) (- a'))) ⟩
   (- - (- a' + - a'') + - - a') + - (- a' + - a'') ≡⟨ cong (_+ - (- a' + - a'')) (+-comm (- - (- a' + - a'')) (- - a')) ⟩
@@ -37,7 +37,7 @@ recover-a' a' a'' = begin
 
 
 -- Recover the first coordinate b' from the split-negation form.
-recover-b' : ∀ b'' b' a ->  - (- (- b'' + (b' + a)) + (- b'' + a)) ≡ b'
+recover-b' : ∀ b'' b' a →  - (- (- b'' + (b' + a)) + (- b'' + a)) ≡ b'
 recover-b' b'' b' a = begin
   - (- (- b'' + (b' + a)) + (- b'' + a)) ≡⟨ (sym (-‿+-comm (- (- b'' + (b' + a))) ((- b'' + a)))) ⟩
   - - (- b'' + (b' + a)) + - (- b'' + a) ≡⟨ cong (_+ - (- b'' + a)) (-‿involutive ((- b'' + (b' + a)))) ⟩
@@ -52,12 +52,12 @@ recover-b' b'' b' a = begin
 
 
 -- Recover the second coordinate b'' from the split-negation form.
-recover-b'' : ∀ b'' b' a -> - (- (- b'' + (b' + a)) + (- b'' + a)) + (- (- b'' + (b' + a)) + a) ≡ b''
+recover-b'' : ∀ b'' b' a → - (- (- b'' + (b' + a)) + (- b'' + a)) + (- (- b'' + (b' + a)) + a) ≡ b''
 recover-b'' b'' b' a = begin
   - (- (- b'' + (b' + a)) + (- b'' + a)) + (- (- b'' + (b' + a)) + a) ≡⟨ cong (_+ (- (- b'' + (b' + a)) + a)) (sym (-‿+-comm (- (- b'' + (b' + a))) ((- b'' + a)))) ⟩
   (- - (- b'' + (b' + a)) + - (- b'' + a)) + (- (- b'' + (b' + a)) + a) ≡⟨ cong (_+ (- (- b'' + (b' + a)) + a)) (+-comm (- - (- b'' + (b' + a))) (- (- b'' + a))) ⟩
   (- (- b'' + a) + - - (- b'' + (b' + a))) + (- (- b'' + (b' + a)) + a) ≡⟨ trans (+-assoc (- (- b'' + a)) (- - (- b'' + (b' + a))) ((- (- b'' + (b' + a)) + a))) (cong (- (- b'' + a) +_) (sym (+-assoc (- - (- b'' + (b' + a))) (- (- b'' + (b' + a))) a))) ⟩
-  - (- b'' + a) + ((- - (- b'' + (b' + a)) + - (- b'' + (b' + a))) + a) ≡⟨ cong (\ xx -> - (- b'' + a) + (xx + a)) (+-inverseˡ (- (- b'' + (b' + a)))) ⟩
+  - (- b'' + a) + ((- - (- b'' + (b' + a)) + - (- b'' + (b' + a))) + a) ≡⟨ cong (\ xx → - (- b'' + a) + (xx + a)) (+-inverseˡ (- (- b'' + (b' + a)))) ⟩
   - (- b'' + a) + (₀ + a) ≡⟨ cong₂ _+_ (sym (-‿+-comm (- b'') a)) (+-identityˡ a) ⟩
   - - b'' + - a + a ≡⟨ +-assoc (- - b'') (- a) a ⟩
   - - b'' + (- a + a) ≡⟨ cong₂ _+_ (-‿involutive b'') (+-inverseˡ a) ⟩
@@ -68,7 +68,7 @@ recover-b'' b'' b' a = begin
 
 
 -- Recover the second coordinate a'' from the nested-negation form.
-recover-a'' : ∀ a' a'' -> - (- a' + - a'') + - a' ≡ a''
+recover-a'' : ∀ a' a'' → - (- a' + - a'') + - a' ≡ a''
 recover-a'' a' a'' = begin
   - (- a' + - a'') + - a' ≡⟨ cong (_+ - a') (sym (-‿+-comm (- a') (- a''))) ⟩
   (- - a' + - - a'') + - a' ≡⟨ cong (_+ - a') (+-comm (- - a') (- - a'')) ⟩
@@ -82,10 +82,10 @@ recover-a'' a' a'' = begin
 
 
 -- Swap the roles of a and a' across a subtraction of  · - ₁  scalings.
-mul-neg1-swap : ∀ b a b' a' -> (b + a * - ₁) + - (b' + a' * - ₁) ≡ (b + a') + - (b' + a) * ₁
+mul-neg1-swap : ∀ b a b' a' → (b + a * - ₁) + - (b' + a' * - ₁) ≡ (b + a') + - (b' + a) * ₁
 mul-neg1-swap b a b' a' = begin
   (b + a * - ₁) + - (b' + a' * - ₁) ≡⟨ Eq.cong₂ _+_ (Eq.cong (b +_) (Eq.trans (*-comm a (- ₁)) (-1*x≈-x a))) (Eq.sym (-‿+-comm b' (a' * - ₁))) ⟩
-  (b + - a) + (- b' + - (a' * - ₁)) ≡⟨ Eq.cong (\ xx -> (b + - a) + (- b' + xx)) (-‿distribʳ-* a' (- ₁)) ⟩
+  (b + - a) + (- b' + - (a' * - ₁)) ≡⟨ Eq.cong (\ xx → (b + - a) + (- b' + xx)) (-‿distribʳ-* a' (- ₁)) ⟩
   (b + - a) + (- b' + (a' * - - ₁)) ≡⟨ Eq.cong (λ xx → b + - a + (- b' + a' * xx)) (-‿involutive ₁) ⟩
   (b + - a) + (- b' + (a' * ₁)) ≡⟨ Eq.cong (λ xx → b + - a + (- b' + xx)) (*-identityʳ a') ⟩
   (b + - a) + (- b' + (a')) ≡⟨ Eq.cong ((b + - a) +_) (+-comm (- b') a') ⟩
@@ -103,7 +103,7 @@ mul-neg1-swap b a b' a' = begin
 
 
 -- Recover the coordinate a' + a · 1 from a doubly-scaled  · - ₁  form.
-mul-neg1-recover : ∀ b' a' a ->  - (b' + a' * - ₁) + - ((a' + a) + - (b' + a' * - ₁) * - ₁) * - ₁ ≡ a' + a * ₁
+mul-neg1-recover : ∀ b' a' a →  - (b' + a' * - ₁) + - ((a' + a) + - (b' + a' * - ₁) * - ₁) * - ₁ ≡ a' + a * ₁
 mul-neg1-recover b' a' a = begin
   - (b' + a' * - ₁) + - ((a' + a) + - (b' + a' * - ₁) * - ₁) * - ₁ ≡⟨ cong (- (b' + a' * - ₁) +_) (Eq.trans (*-comm (- ((a' + a) + - (b' + a' * - ₁) * - ₁)) (- ₁)) (-1*x≈-x (- ((a' + a) + - (b' + a' * - ₁) * - ₁)))) ⟩
   - (b' + a' * - ₁) + - - ((a' + a) + - (b' + a' * - ₁) * - ₁) ≡⟨ cong (- (b' + a' * - ₁) +_) (-‿involutive (((a' + a) + - (b' + a' * - ₁) * - ₁))) ⟩
@@ -120,7 +120,7 @@ mul-neg1-recover b' a' a = begin
 
 
 -- -a + -(-a' + -a) collapses the double negation to a'.
-neg-neg-cancelˡ : ∀ a a' -> - a + - (- a' + - a) ≡ a'
+neg-neg-cancelˡ : ∀ a a' → - a + - (- a' + - a) ≡ a'
 neg-neg-cancelˡ a a' = begin
   - a + - (- a' + - a) ≡⟨ Eq.cong (- a +_) (Eq.sym (-‿+-comm (- a') (- a))) ⟩
   - a + (- - a' + - - a) ≡⟨ Eq.cong (- a +_) (+-comm (- - a') (- - a)) ⟩
@@ -134,7 +134,7 @@ neg-neg-cancelˡ a a' = begin
 
 
 -- -a + -(a' + -a) collapses the double negation to -a'.
-neg-neg-cancelʳ : ∀ a a' -> - a + - (a' + - a) ≡ - a'
+neg-neg-cancelʳ : ∀ a a' → - a + - (a' + - a) ≡ - a'
 neg-neg-cancelʳ a a' = begin
   - a + - (a' + - a) ≡⟨ Eq.cong (- a +_) (Eq.sym (-‿+-comm (a') (- a))) ⟩
   - a + (- a' + - - a) ≡⟨ Eq.cong (- a +_) (+-comm (- a') (- - a)) ⟩
@@ -147,5 +147,5 @@ neg-neg-cancelʳ a a' = begin
 
 
 -- Negation of a difference:  -(b + -b') ≡ -b + b'.
-neg-sub : ∀ b b' -> - (b + - b') ≡ - b + b'
+neg-sub : ∀ b b' → - (b + - b') ≡ - b + b'
 neg-sub b b' = Eq.trans (Eq.sym (-‿+-comm b (- b'))) (Eq.cong (- b +_) (-‿involutive b'))

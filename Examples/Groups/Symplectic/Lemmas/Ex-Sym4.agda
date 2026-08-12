@@ -99,7 +99,7 @@ open Sym0-Rewriting (₁₊ n)
 open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
 import Examples.Groups.Symplectic.Lemmas.Duality p-2 p-prime as ND
 
-lemma-Ex-M : ∀ m -> Ex • M m ≈ M m ↑ • Ex
+lemma-Ex-M : ∀ m → Ex • M m ≈ M m ↑ • Ex
 lemma-Ex-M m@x' = begin
   Ex • M m ≈⟨ refl ⟩
   Ex • S^ x • H • S^ x⁻¹ • H • S^ x • H ≈⟨ sym assoc ⟩
@@ -204,7 +204,7 @@ lemma-comm-Ex-S↑ = bbc Ex Ex claim
     Ex • (Ex • S ↑) • Ex ∎
 
 
-aux-NF2 : ∀ l (pf : Postfix) -> let (sp , mc2 , mc1) = pf in let pf' = (sp + l , mc1 , mc2) in let w = H • S^ l in
+aux-NF2 : ∀ l (pf : Postfix) → let (sp , mc2 , mc1) = pf in let pf' = (sp + l , mc1 , mc2) in let w = H • S^ l in
   ⟦ case-|| (₁ , λ ()) l pf ⟧₂ ≈ w ↑ • Ex • dual ⟦ case-||ₐ (- l) pf' ⟧₂
 aux-NF2 l pf@(sp , mc2 , mc1) = claim
   where
@@ -259,7 +259,7 @@ aux-NF2 l pf@(sp , mc2 , mc1) = claim
 
 
 
-aux-NF2' : ∀ l (pf : Postfix) -> let (sp , mc2 , mc1) = pf in let pf' = (sp + l , mc1 , mc2) in let w = S^ (- l) • H ^ 3 in
+aux-NF2' : ∀ l (pf : Postfix) → let (sp , mc2 , mc1) = pf in let pf' = (sp + l , mc1 , mc2) in let w = S^ (- l) • H ^ 3 in
   w ↑ • ⟦ case-|| (₁ , λ ()) l pf ⟧₂ ≈ Ex • dual ⟦ case-||ₐ (- l) pf' ⟧₂
 aux-NF2' l pf@(sp , mc2 , mc1) = bbc (H ↑ • S^ l ↑) ε aux
   where
@@ -284,12 +284,12 @@ open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime
 
 
 
-aux-NF2'' : ∀ l (pf : Postfix) -> let (sp , mc2 , mc1) = pf in let pf' = (sp + l , mc1 , mc2) in let w = S^ l • H ^ 3 in
+aux-NF2'' : ∀ l (pf : Postfix) → let (sp , mc2 , mc1) = pf in let pf' = (sp + l , mc1 , mc2) in let w = S^ l • H ^ 3 in
   w ↑ • ⟦ case-|| (₁ , λ ()) (- l) pf' ⟧₂ ≈ Ex • dual ⟦ case-||ₐ l pf ⟧₂
 aux-NF2'' l pf@(sp , mc2 , mc1) = begin
-  w ↑ • ⟦ case-|| (₁ , λ ()) (- l) pf' ⟧₂ ≈⟨ cleft (cleft refl' (Eq.cong (\ xx -> S^ xx ↑) (Eq.sym (-‿involutive l)))) ⟩
+  w ↑ • ⟦ case-|| (₁ , λ ()) (- l) pf' ⟧₂ ≈⟨ cleft (cleft refl' (Eq.cong (\ xx → S^ xx ↑) (Eq.sym (-‿involutive l)))) ⟩
   w' ↑ • ⟦ case-|| (₁ , λ ()) (- l) pf' ⟧₂ ≈⟨ aux-NF2' (- l) pf' ⟩
-  Ex • dual ⟦ case-||ₐ (- - l) pf'' ⟧₂ ≈⟨ cright refl' (Eq.cong₂ (\ xx yy -> dual ⟦ case-||ₐ xx yy ⟧₂) (-‿involutive l) (Eq.cong ((_, mc2 , mc1)) aux)) ⟩
+  Ex • dual ⟦ case-||ₐ (- - l) pf'' ⟧₂ ≈⟨ cright refl' (Eq.cong₂ (\ xx yy → dual ⟦ case-||ₐ xx yy ⟧₂) (-‿involutive l) (Eq.cong ((_, mc2 , mc1)) aux)) ⟩
   Ex • dual ⟦ case-||ₐ l pf ⟧₂ ∎
   where
   w = (S^ l • H ^ 3)
@@ -300,7 +300,7 @@ aux-NF2'' l pf@(sp , mc2 , mc1) = begin
   aux = Eq.trans (+-assoc sp l (- l)) (Eq.trans (Eq.cong (sp +_) (+-inverseʳ l)) (+-identityʳ sp))
   
 
-lemma-CZ^-pred : ∀ (k* : ℤ* ₚ) ->
+lemma-CZ^-pred : ∀ (k* : ℤ* ₚ) →
   let
   (k , nzk) = k*
   kp = prede k*
@@ -377,7 +377,7 @@ aux-hEx′ = bbc ε (H) aux
 
 
                
-aux-NF2′ : ∀ l (pf : Postfix) -> let (sp , mc2 , mc1) = pf in let pf' = (sp + l , mc1 , mc2) in let w = H • S^ l in
+aux-NF2′ : ∀ l (pf : Postfix) → let (sp , mc2 , mc1) = pf in let pf' = (sp + l , mc1 , mc2) in let w = H • S^ l in
   ⟦ case-|| (₁ , λ ()) l pf ⟧₂ ≈ w ↑ • ⟦ case-||ₐ (- l) pf' ⟧₂ • Ex
 aux-NF2′ l pf@(sp , mc2 , mc1) = begin
   ⟦ case-|| (₁ , λ ()) l pf ⟧₂ ≈⟨ aux-NF2 l pf ⟩
@@ -390,7 +390,7 @@ aux-NF2′ l pf@(sp , mc2 , mc1) = begin
   pf' = (sp + l , mc1 , mc2)
   w = H • S^ l
 
-aux-|| : ∀ k* l* sp pf -> k* .proj₁ ≡ l* .proj₁ -> ⟦ case-|| k* sp pf ⟧₂ ≈ ⟦ case-|| l*  sp pf ⟧₂
+aux-|| : ∀ k* l* sp pf → k* .proj₁ ≡ l* .proj₁ → ⟦ case-|| k* sp pf ⟧₂ ≈ ⟦ case-|| l*  sp pf ⟧₂
 aux-|| k*@(k , _) l*@(l , _) sp pf eq = begin
   ⟦ case-|| k* sp pf ⟧₂ ≈⟨ refl ⟩
   CZ^ k • H^ ₃ ↑ • S^ sp ↑ • ⟦ pf ⟧ₚ ≈⟨ cleft refl' (Eq.cong CZ^ eq) ⟩
@@ -398,7 +398,7 @@ aux-|| k*@(k , _) l*@(l , _) sp pf eq = begin
   ⟦ case-|| l*  sp pf ⟧₂ ∎
 
 
-case-duality' : ∀ mc nf1 -> Ex • dual ⟦ case-| mc nf1 ⟧₂ ≈ ⟦ case-Ex-| nf1 mc ⟧₂
+case-duality' : ∀ mc nf1 → Ex • dual ⟦ case-| mc nf1 ⟧₂ ≈ ⟦ case-Ex-| nf1 mc ⟧₂
 case-duality' mc nf1 = begin
   Ex • dual ⟦ case-| mc nf1 ⟧₂ ≈⟨ cright cright cong (refl' (aux-dual-MC↑ mc)) (refl' (aux-dual-SMC nf1)) ⟩
   Ex • CZ • ⟦ mc ⟧ₘ₊ • ⟦ nf1 ⟧₁ ↑ ≈⟨ cright cright aux-comm-MCSMC mc nf1 ⟩
@@ -406,7 +406,7 @@ case-duality' mc nf1 = begin
   ⟦ case-Ex-| nf1 mc ⟧₂ ∎
 
 
-case-duality : ∀ mc nf1 -> ⟦ case-Ex-| nf1 mc ⟧₂ ≈ ⟦ case-| mc nf1 ⟧₂ • Ex
+case-duality : ∀ mc nf1 → ⟦ case-Ex-| nf1 mc ⟧₂ ≈ ⟦ case-| mc nf1 ⟧₂ • Ex
 case-duality mc nf1 = begin
   ⟦ case-Ex-| nf1 mc ⟧₂ ≈⟨ sym (case-duality' mc nf1) ⟩
   Ex • dual ⟦ case-| mc nf1 ⟧₂ ≈⟨ cright lemma-Ex-dual ⟦ case-| mc nf1 ⟧₂ ⟩
@@ -415,7 +415,7 @@ case-duality mc nf1 = begin
   ε • ⟦ case-| mc nf1 ⟧₂ • Ex ≈⟨ left-unit ⟩
   ⟦ case-| mc nf1 ⟧₂ • Ex ∎
 
-lemma-Ex-M' : ∀ m -> Ex • M m ↑ ≈ M m • Ex
+lemma-Ex-M' : ∀ m → Ex • M m ↑ ≈ M m • Ex
 lemma-Ex-M' m = by-duality' (lemma-Ex-M m) aux1 aux2
   where
   aux1 : dual (Ex • M m) ≈ Ex • M m ↑
@@ -423,7 +423,7 @@ lemma-Ex-M' m = by-duality' (lemma-Ex-M m) aux1 aux2
   aux2 : dual (M m ↑ • Ex) ≈ M m • Ex
   aux2 = cong (refl' (aux-dual-Mx↑ m)) aux-dual-Ex
 
-lemma-Ex-S^ᵏ↑ : ∀ k ->
+lemma-Ex-S^ᵏ↑ : ∀ k →
 
   Ex • S^ k ↑ ≈ S^ k • Ex
 
@@ -436,7 +436,7 @@ lemma-Ex-S^ᵏ↑ k = by-duality' (lemma-Ex-S^ᵏ k) aux1 aux2
 
 
 
-lemma-Ex-C : ∀ c -> Ex • ⟦ c ⟧ₕₛ ≈ ⟦ c ⟧ₕₛ ↑ • Ex
+lemma-Ex-C : ∀ c → Ex • ⟦ c ⟧ₕₛ ≈ ⟦ c ⟧ₕₛ ↑ • Ex
 lemma-Ex-C c@ε = trans right-unit (sym left-unit)
 lemma-Ex-C c@(HS^ k) = begin
   Ex • ⟦ c ⟧ₕₛ ≈⟨ sym assoc ⟩
@@ -446,7 +446,7 @@ lemma-Ex-C c@(HS^ k) = begin
   H ↑ • S^ k ↑ • Ex ≈⟨ sym assoc ⟩
   ⟦ c ⟧ₕₛ ↑ • Ex ∎
 
-lemma-Ex-C↑ : ∀ c -> Ex • ⟦ c ⟧ₕₛ ↑ ≈ ⟦ c ⟧ₕₛ • Ex
+lemma-Ex-C↑ : ∀ c → Ex • ⟦ c ⟧ₕₛ ↑ ≈ ⟦ c ⟧ₕₛ • Ex
 lemma-Ex-C↑ c@ε = trans right-unit (sym left-unit)
 lemma-Ex-C↑ c@(HS^ k) = begin
   Ex • ⟦ c ⟧ₕₛ ↑ ≈⟨ sym assoc ⟩
@@ -459,7 +459,7 @@ lemma-Ex-C↑ c@(HS^ k) = begin
 
 
 
-lemma-Ex-MC : ∀ mc -> Ex • ⟦ mc ⟧ₘ₊ ≈ ⟦ mc ⟧ₘ₊ ↑ • Ex
+lemma-Ex-MC : ∀ mc → Ex • ⟦ mc ⟧ₘ₊ ≈ ⟦ mc ⟧ₘ₊ ↑ • Ex
 lemma-Ex-MC mc@(m , c) = begin
   Ex • ⟦ mc ⟧ₘ₊ ≈⟨ sym assoc ⟩
   (Ex • ⟦ m ⟧ₘ) • ⟦ c ⟧ₕₛ ≈⟨ cleft lemma-Ex-M m ⟩
@@ -470,7 +470,7 @@ lemma-Ex-MC mc@(m , c) = begin
 
 
 
-lemma-Ex-MC↑ : ∀ mc -> Ex • ⟦ mc ⟧ₘ₊ ↑ ≈ ⟦ mc ⟧ₘ₊ • Ex
+lemma-Ex-MC↑ : ∀ mc → Ex • ⟦ mc ⟧ₘ₊ ↑ ≈ ⟦ mc ⟧ₘ₊ • Ex
 lemma-Ex-MC↑ mc@(m , c) = begin
   Ex • ⟦ mc ⟧ₘ₊ ↑ ≈⟨ sym assoc ⟩
   (Ex • ⟦ m ⟧ₘ ↑) • ⟦ c ⟧ₕₛ ↑ ≈⟨ cleft lemma-Ex-M' m ⟩
@@ -480,7 +480,7 @@ lemma-Ex-MC↑ mc@(m , c) = begin
   ⟦ mc ⟧ₘ₊ • Ex ∎
 
 
-lemma-Ex-SMC : ∀ nf1 -> ⟦ case-Ex-nf1 nf1 ⟧₂ ≈ ⟦ case-nf1 nf1 ⟧₂ • Ex
+lemma-Ex-SMC : ∀ nf1 → ⟦ case-Ex-nf1 nf1 ⟧₂ ≈ ⟦ case-nf1 nf1 ⟧₂ • Ex
 lemma-Ex-SMC nf1@(s , mc) = begin
   ⟦ case-Ex-nf1 nf1 ⟧₂ ≈⟨ sym assoc ⟩
   (Ex • S^ s ↑) • ⟦ mc ⟧ₘ₊ ↑ ≈⟨ cleft lemma-Ex-S^ᵏ↑ s ⟩

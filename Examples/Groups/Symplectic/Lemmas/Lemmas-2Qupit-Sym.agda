@@ -43,7 +43,7 @@ open Lemmas-Sym
 
 open Symplectic-GroupLike
 
-lemma-Induction : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in ∀ {w v v'} -> w • v ≈ v' • w -> ∀ k -> w • v ^ k ≈ v' ^ k • w
+lemma-Induction : ∀ {n} → let open PB ((₁₊ n) QRel,_===_) in ∀ {w v v'} → w • v ≈ v' • w → ∀ k → w • v ^ k ≈ v' ^ k • w
 lemma-Induction {n} {w} {v} {v'} eq k@0 = trans right-unit (sym left-unit)
   where open PB ((₁₊ n) QRel,_===_)
 lemma-Induction {n} {w} {v} {v'} eq k@1 = eq
@@ -71,7 +71,7 @@ module Lemmas-2Q (n : ℕ) where
   open import Data.Fin.Properties
 
 
-  lemma-CZ^k+l : ∀ k l -> CZ^ k • CZ^ l ≈ CZ^ (k + l)
+  lemma-CZ^k+l : ∀ k l → CZ^ k • CZ^ l ≈ CZ^ (k + l)
   lemma-CZ^k+l k l = begin
     CZ^ k • CZ^ l ≈⟨ refl ⟩
     CZ ^ toℕ k • CZ ^ toℕ l ≈⟨ sym (^-+ CZ (toℕ k) (toℕ l)) ⟩
@@ -88,7 +88,7 @@ module Lemmas-2Q (n : ℕ) where
     open SR word-setoid
 
 
-  lemma-CZ^k-% : ∀ k -> CZ ^ k ≈ CZ ^ (k % p)
+  lemma-CZ^k-% : ∀ k → CZ ^ k ≈ CZ ^ (k % p)
   lemma-CZ^k-% k = begin
     CZ ^ k ≡⟨ Eq.cong (CZ ^_) (m≡m%n+[m/n]*n k p) ⟩
     CZ ^ (k Nat.% p Nat.+ k Nat./ p Nat.* p) ≈⟨ ^-+ CZ (k Nat.% p) (k Nat./ p Nat.* p) ⟩
@@ -101,7 +101,7 @@ module Lemmas-2Q (n : ℕ) where
     where
     open SR word-setoid
 
-  derived-M↑CZ : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  derived-M↑CZ : ∀ x k → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     M (x , nz) ↑ • CZ ^ k ≈ CZ ^ (k Nat.* toℕ (x)) • M (x , nz) ↑
   derived-M↑CZ x k@0 nz = trans right-unit (sym left-unit)
   derived-M↑CZ x k@1 nz = begin  
@@ -129,7 +129,7 @@ module Lemmas-2Q (n : ℕ) where
 
 
 
-  derived-M↓CZ : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  derived-M↓CZ : ∀ x k → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     M (x , nz) ↓ • CZ ^ k ≈ CZ ^ (k Nat.* toℕ (x)) • M (x , nz) ↓
   derived-M↓CZ x k@0 nz = trans right-unit (sym left-unit)
   derived-M↓CZ x k@1 nz = begin  
@@ -155,7 +155,7 @@ module Lemmas-2Q (n : ℕ) where
     open SR word-setoid
 
 
-  lemma-M↑CZ^k : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  lemma-M↑CZ^k : ∀ x k → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     M (x , nz) ↑ • CZ^ k ≈ CZ^ (k * (x)) • M (x , nz) ↑
   lemma-M↑CZ^k x k nz = begin 
     M (x , nz) ↑ • CZ^ k ≈⟨ cong refl refl ⟩
@@ -171,7 +171,7 @@ module Lemmas-2Q (n : ℕ) where
 
 
 
-  lemma-M↓CZ^k : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  lemma-M↓CZ^k : ∀ x k → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     M (x , nz) ↓ • CZ^ k ≈ CZ^ (k * (x)) • M (x , nz) ↓
   lemma-M↓CZ^k x k nz = begin 
     M (x , nz) ↓ • CZ^ k ≈⟨ cong refl refl ⟩
@@ -186,7 +186,7 @@ module Lemmas-2Q (n : ℕ) where
     -x⁻¹ = - x⁻¹
 
 
-  lemma-CZ^kM↑ : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  lemma-CZ^kM↑ : ∀ x k → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     CZ^ k • M (x , nz) ↑ ≈ M (x , nz) ↑ • CZ^ (k * x⁻¹)
   lemma-CZ^kM↑ x k nz = bbc (M ((x , nz) ⁻¹) ↑) (M ((x , nz) ⁻¹) ↑) aux
     where
@@ -215,7 +215,7 @@ module Lemmas-2Q (n : ℕ) where
 
 
 
-  lemma-CZM↑ : ∀ x -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  lemma-CZM↑ : ∀ x → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     CZ • M (x , nz) ↑ ≈ M (x , nz) ↑ • CZ^ x⁻¹
   lemma-CZM↑ x nz = begin
     CZ • M (x , nz) ↑ ≈⟨ lemma-CZ^kM↑ x ₁ nz ⟩
@@ -233,7 +233,7 @@ module Lemmas-2Q (n : ℕ) where
 
 
 
-  lemma-CZ^kM↓ : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  lemma-CZ^kM↓ : ∀ x k → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     CZ^ k • M (x , nz) ↓ ≈ M (x , nz) ↓ • CZ^ (k * x⁻¹)
   lemma-CZ^kM↓ x k nz = bbc (M ((x , nz) ⁻¹) ↓) (M ((x , nz) ⁻¹) ↓) aux
     where
@@ -259,7 +259,7 @@ module Lemmas-2Q (n : ℕ) where
       open Lemmas0 (₁₊ n)
 
 
-  lemma-CZM↓ : ∀ x -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  lemma-CZM↓ : ∀ x → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     CZ • M (x , nz) ↓ ≈ M (x , nz) ↓ • CZ^ x⁻¹
   lemma-CZM↓ x nz = begin
     CZ • M (x , nz) ↓ ≈⟨ lemma-CZ^kM↓ x ₁ nz ⟩
@@ -277,8 +277,8 @@ module Lemmas-2Q (n : ℕ) where
   lemma-semi-CZ-HH↓ = begin
     CZ • H ↓ ^ 2 ≈⟨ (cright lemma-HH-M-1) ⟩
     CZ • M -'₁ ≈⟨ (cright refl) ⟩
-    CZ^ ₁ • M -'₁ ↓ ≡⟨ Eq.cong (\ xx -> CZ^ xx • M -'₁ ↓) (Eq.sym aux-₋₁*₋₁=₁) ⟩
-    CZ^ (₋₁ * ₋₁) • M -'₁ ↓ ≡⟨ Eq.cong (\ xx -> CZ^ (₋₁ * xx) • M -'₁ ↓) (Eq.sym aux-1=-1) ⟩
+    CZ^ ₁ • M -'₁ ↓ ≡⟨ Eq.cong (\ xx → CZ^ xx • M -'₁ ↓) (Eq.sym aux-₋₁*₋₁=₁) ⟩
+    CZ^ (₋₁ * ₋₁) • M -'₁ ↓ ≡⟨ Eq.cong (\ xx → CZ^ (₋₁ * xx) • M -'₁ ↓) (Eq.sym aux-1=-1) ⟩
     CZ^ (₋₁ * -'₁ .proj₁) • M -'₁ ↓ ≈⟨ sym (lemma-M↓CZ^k (-'₁ .proj₁) ₋₁ (-'₁ .proj₂)) ⟩
     M -'₁ ↓ • CZ^ ₋₁ ≈⟨ (cleft refl) ⟩
     M -'₁ • CZ^ ₋₁ ≈⟨ (cleft sym lemma-HH-M-1) ⟩
@@ -295,8 +295,8 @@ module Lemmas-2Q (n : ℕ) where
     
   lemma-semi-CZ-HH↑ = begin
     CZ • H ↑ ^ 2 ≈⟨ (cright (lemma-cong↑ _ _ lemma-HH-M-1)) ⟩
-    CZ^ ₁ • M -'₁ ↑ ≡⟨ Eq.cong (\ xx -> CZ^ xx • M -'₁ ↑) (Eq.sym aux-₋₁*₋₁=₁) ⟩
-    CZ^ (₋₁ * ₋₁) • M -'₁ ↑ ≡⟨ Eq.cong (\ xx -> CZ^ (₋₁ * xx) • M -'₁ ↑) (Eq.sym aux-1=-1) ⟩
+    CZ^ ₁ • M -'₁ ↑ ≡⟨ Eq.cong (\ xx → CZ^ xx • M -'₁ ↑) (Eq.sym aux-₋₁*₋₁=₁) ⟩
+    CZ^ (₋₁ * ₋₁) • M -'₁ ↑ ≡⟨ Eq.cong (\ xx → CZ^ (₋₁ * xx) • M -'₁ ↑) (Eq.sym aux-1=-1) ⟩
     CZ^ (₋₁ * -'₁ .proj₁) • M -'₁ ↑ ≈⟨ sym (lemma-M↑CZ^k (-'₁ .proj₁) ₋₁ (-'₁ .proj₂)) ⟩
     M -'₁ ↑ • CZ^ ₋₁ ≈⟨ (cleft sym (lemma-cong↑ _ _ lemma-HH-M-1)) ⟩
     H ↑ ^ 2 • CZ^ ₋₁ ∎
@@ -418,14 +418,14 @@ module Lemmas-2Q (n : ℕ) where
 
 
 
-  lemma-semi-HH↓-CZ^k : ∀ k ->
+  lemma-semi-HH↓-CZ^k : ∀ k →
 
     H ↓ ^ 2 • CZ ^ k ≈ (CZ^ ₋₁) ^ (k) • H ↓ ^ 2
 
   lemma-semi-HH↓-CZ^k = lemma-Induction lemma-semi-HH↓-CZ
 
 
-  lemma-semi-HH↑-CZ^k′ : ∀ k ->
+  lemma-semi-HH↑-CZ^k′ : ∀ k →
 
     H ↑ ^ 2 • CZ ^ k ≈ (CZ^ ₋₁) ^ (k) • H ↑ ^ 2
 
@@ -433,19 +433,19 @@ module Lemmas-2Q (n : ℕ) where
 
   open import Algebra.Properties.Ring (+-*-ring p-2)
 
-  aux-CZ^-k : ∀ k -> (CZ^ ₋₁) ^ toℕ k ≈ CZ^ (- k)
+  aux-CZ^-k : ∀ k → (CZ^ ₋₁) ^ toℕ k ≈ CZ^ (- k)
   aux-CZ^-k k = begin
     (CZ^ ₋₁) ^ toℕ k ≈⟨ ^^ CZ (toℕ (ₚ₋₁)) (toℕ k) ⟩
     CZ ^ (toℕ (ₚ₋₁) Nat.* toℕ k) ≈⟨ lemma-CZ^k-% (toℕ (ₚ₋₁) Nat.* toℕ k) ⟩
     CZ ^ ((toℕ (ₚ₋₁) Nat.* toℕ k) Nat.% p) ≡⟨ Eq.cong (CZ ^_) (Eq.sym (toℕ-fromℕ< (m%n<n (toℕ (ₚ₋₁) Nat.* toℕ k) p))) ⟩
-    CZ^ (₋₁ * k) ≡⟨ Eq.cong ( \ xx -> CZ^ (xx * k)) p-1=-1ₚ ⟩
+    CZ^ (₋₁ * k) ≡⟨ Eq.cong ( \ xx → CZ^ (xx * k)) p-1=-1ₚ ⟩
     CZ^ (- ₁ * k) ≈⟨ refl' (Eq.cong CZ^ ( -1*x≈-x k)) ⟩
     CZ^ (- k) ∎
     where
     open SR word-setoid
 
 
-  lemma-semi-HH↓-CZ^k' : ∀ k ->
+  lemma-semi-HH↓-CZ^k' : ∀ k →
 
     H ↓ ^ 2 • CZ^ k ≈ CZ^ (- k) • H ↓ ^ 2
 
@@ -454,7 +454,7 @@ module Lemmas-2Q (n : ℕ) where
 
 
 
-  lemma-semi-HH↑-CZ^k : ∀ k ->
+  lemma-semi-HH↑-CZ^k : ∀ k →
 
     HH ↑ • CZ^ k ≈ CZ^ (- k) • HH ↑
     
@@ -469,7 +469,7 @@ module Lemmas-2Q (n : ℕ) where
     open Lemmas0 (n)
 
 
-  lemma-semi-HH↓-CZ^k'' : ∀ k ->
+  lemma-semi-HH↓-CZ^k'' : ∀ k →
 
     HH ↓ • CZ^ (- k) ≈ CZ^ k • HH ↓
     
@@ -483,7 +483,7 @@ module Lemmas-2Q (n : ℕ) where
     module L1 = Lemmas0 (₁₊ n)
 
 
-  lemma-semi-HH↑-CZ^k'' : ∀ k ->
+  lemma-semi-HH↑-CZ^k'' : ∀ k →
 
     HH ↑ • CZ^ (- k) ≈ CZ^ k • HH ↑
     
@@ -498,7 +498,7 @@ module Lemmas-2Q (n : ℕ) where
 
 
 
-  lemma-semi-CZ^k-HH↑ : ∀ k ->
+  lemma-semi-CZ^k-HH↑ : ∀ k →
 
     CZ^ k • HH ↑ ≈ HH ↑ • CZ^ (- k)
     
@@ -510,7 +510,7 @@ module Lemmas-2Q (n : ℕ) where
     open Lemmas0 (n)
     module L1 = Lemmas0 (₁₊ n)
 
-  lemma-semi-CZ^k-HH↓ : ∀ k ->
+  lemma-semi-CZ^k-HH↓ : ∀ k →
 
     CZ^ k • HH ↓ ≈ HH ↓ • CZ^ (- k)
     

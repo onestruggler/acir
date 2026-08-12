@@ -44,7 +44,7 @@ module Examples.Groups.Symplectic.Simplified.Iso
   (p-prime : Prime (suc (₁₊ p-2)))
   (let open PrimeModulus' p-2 p-prime)
   (g*@(g , g≠0) : ℤ* ₚ)
-  (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
+  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ \ (k : ℤ ₚ-₁) → x ≡ g ^′ toℕ k )
   where
 
 open Primitive-Root-Modp' g* g-gen
@@ -70,7 +70,7 @@ open Symplectic-Sim-GroupLike renaming (grouplike to grouplike₂) using ()
 
 
 f-well-defined : let open PB (n QRel,_===₂_) renaming (_≈_ to _≈₂_) in
-  ∀ {w v} -> n QRel, w ===₁ v -> id w ≈₂ id v
+  ∀ {w v} → n QRel, w ===₁ v → id w ≈₂ id v
 f-well-defined {n} (Sym.srel Sym.Base.order-S) = PB.axiom (Sim.srel Sim.order-S)
 f-well-defined {₁₊ n} (Sym.srel Sym.Base.order-H) = lemma-order-H
   where
@@ -107,7 +107,7 @@ f-well-defined {n} (Sym.comm₂ h g) = PB.axiom (Sim.comm₂ h g)
 f-well-defined {n} (Sym.cong↑ eq) = Sim.lemma-cong↑ _ _ (f-well-defined eq)
 
 g-well-defined : let open PB (n QRel,_===₁_) renaming (_≈_ to _≈₁_) in
-  ∀ {u t} -> n QRel, u ===₂ t -> id u ≈₁ id t
+  ∀ {u t} → n QRel, u ===₂ t → id u ≈₁ id t
 g-well-defined (Sim.srel Sim.order-S) = PB.axiom (Sym.srel Sym.Base.order-S)
 g-well-defined {₁₊ n} (Sim.srel Sim.order-H) = lemma-HH-M-1
   where
@@ -149,7 +149,7 @@ open import Algebra.Morphism.Structures using (module GroupMorphisms)
 open GroupMorphisms
 
 
-Theorem-Sym-iso-Sim : ∀ {n} ->
+Theorem-Sym-iso-Sim : ∀ {n} →
   let
   module G1 = Group-Lemmas (n QRel,_===₁_) grouplike₁
   module G2 = Group-Lemmas (n QRel,_===₂_) grouplike₂
@@ -162,7 +162,7 @@ Theorem-Sym-iso-Sim {n}  = StarGroupIsomorphism.isGroupIsomorphism f-well-define
 
 
 
-Theorem-Sym-iso-Sim' : ∀ {n} ->
+Theorem-Sym-iso-Sim' : ∀ {n} →
   let
   module G1 = Group-Lemmas (n QRel,_===₁_) grouplike₁
   module G2 = Group-Lemmas (n QRel,_===₂_) grouplike₂

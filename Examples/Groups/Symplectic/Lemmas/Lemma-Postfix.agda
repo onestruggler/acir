@@ -60,7 +60,7 @@ open Pattern-Assoc
 open Duality
 
 
-SingleQGen : Gen 2 -> Set
+SingleQGen : Gen 2 → Set
 SingleQGen (H-gen) = ⊤
 SingleQGen (S-gen) = ⊤
 SingleQGen (H-gen ↥) = ⊤
@@ -72,9 +72,9 @@ SingleQGen (EX-gen) = ⊥
 
 Lemma-Postfix-SingleQ :
 
-  ∀ (pf : Postfix) (g : Gen 2) -> (SingleQGen g) ->
+  ∀ (pf : Postfix) (g : Gen 2) → (SingleQGen g) →
   ---------------------------------------------------------
-  ∃ \ cz -> ∃ \ s -> ∃ \ pf' -> ⟦ pf ⟧ₚ • [ g ]ʷ ≈ CZ^ cz • S^ s ↑ • ⟦ pf' ⟧ₚ
+  ∃ \ cz → ∃ \ s → ∃ \ pf' → ⟦ pf ⟧ₚ • [ g ]ʷ ≈ CZ^ cz • S^ s ↑ • ⟦ pf' ⟧ₚ
 
 Lemma-Postfix-SingleQ pf@(k , mc1 , mc0) H-gen sg = cz , s , pf' , claim
   where
@@ -108,7 +108,7 @@ Lemma-Postfix-SingleQ pf@(k , mc1 , mc0) H-gen sg = cz , s , pf' , claim
     (CZ^ (- k0) • S^ k0 ↑) • S^ (k + k0) • (H^ ₃ • CZ • H) • ⟦ mc1 ⟧ₘ₊ ↑ • ⟦ mc0' ⟧ₘ₊ ≈⟨ assoc ⟩
     CZ^ cz • S^ s ↑ • ⟦ k' , mc1 , mc0' ⟧ₚ ∎
     where
-    aux : ∀ a b -> CZ^ a • S^ b ↑ ≈ S^ b ↑ • CZ^ a
+    aux : ∀ a b → CZ^ a • S^ b ↑ ≈ S^ b ↑ • CZ^ a
     aux a b = begin
       CZ^ a • S^ b ↑ ≈⟨ (cright sym (refl' (aux-↑ S (toℕ b)))) ⟩
       CZ^ a • S ↑ ^ toℕ b ≈⟨ comm⇒pow-comm (toℕ a) (toℕ b) (axiom comm-CZ-S↑) ⟩
@@ -147,7 +147,7 @@ Lemma-Postfix-SingleQ pf@(k , mc1 , mc0) S-gen sg = cz , s , pf' , claim
     (CZ^ (- k0) • S^ k0 ↑) • S^ (k + k0) • (H^ ₃ • CZ • H) • ⟦ mc1 ⟧ₘ₊ ↑ • ⟦ mc0' ⟧ₘ₊ ≈⟨ assoc ⟩
     CZ^ cz • S^ s ↑ • ⟦ k' , mc1 , mc0' ⟧ₚ ∎
     where
-    aux : ∀ a b -> CZ^ a • S^ b ↑ ≈ S^ b ↑ • CZ^ a
+    aux : ∀ a b → CZ^ a • S^ b ↑ ≈ S^ b ↑ • CZ^ a
     aux a b = begin
       CZ^ a • S^ b ↑ ≈⟨ (cright sym (refl' (aux-↑ S (toℕ b)))) ⟩
       CZ^ a • S ↑ ^ toℕ b ≈⟨ comm⇒pow-comm (toℕ a) (toℕ b) (axiom comm-CZ-S↑) ⟩
@@ -210,9 +210,9 @@ Lemma-Postfix-SingleQ pf CZ-gen ()
 
 Lemma-Postfix-SingleQ-S↑ :
 
-  ∀ (pf : Postfix) ->
+  ∀ (pf : Postfix) →
   ---------------------------------------------------------------
-  ∃ \ s -> ∃ \ pf' -> ⟦ pf ⟧ₚ • S ↑ ≈ S^ s ↑ • ⟦ pf' ⟧ₚ
+  ∃ \ s → ∃ \ pf' → ⟦ pf ⟧ₚ • S ↑ ≈ S^ s ↑ • ⟦ pf' ⟧ₚ
 
 Lemma-Postfix-SingleQ-S↑ pf@(k , mc1 , mc0) = s , pf' , claim
   where
@@ -241,9 +241,9 @@ Lemma-Postfix-SingleQ-S↑ pf@(k , mc1 , mc0) = s , pf' , claim
 
 Lemma-Postfix-SingleQ-H↑ :
 
-  ∀ (pf : Postfix) ->
+  ∀ (pf : Postfix) →
   ---------------------------------------------------------------
-  ∃ \ s -> ∃ \ pf' -> ⟦ pf ⟧ₚ • H ↑ ≈ S^ s ↑ • ⟦ pf' ⟧ₚ
+  ∃ \ s → ∃ \ pf' → ⟦ pf ⟧ₚ • H ↑ ≈ S^ s ↑ • ⟦ pf' ⟧ₚ
 
 Lemma-Postfix-SingleQ-H↑ pf@(k , mc1 , mc0) = s , pf' , claim
   where
@@ -271,9 +271,9 @@ Lemma-Postfix-SingleQ-H↑ pf@(k , mc1 , mc0) = s , pf' , claim
 
 Lemma-Postfix-SingleQ-H :
 
-  ∀ (pf : Postfix) ->
+  ∀ (pf : Postfix) →
   ---------------------------------------------------------
-  ∃ \ cz -> ∃ \ s -> ∃ \ pf' -> ⟦ pf ⟧ₚ • H ≈ CZ^ cz • S^ s ↑ • ⟦ pf' ⟧ₚ
+  ∃ \ cz → ∃ \ s → ∃ \ pf' → ⟦ pf ⟧ₚ • H ≈ CZ^ cz • S^ s ↑ • ⟦ pf' ⟧ₚ
 
 Lemma-Postfix-SingleQ-H pf@(k , mc1 , mc0) = cz , s , pf' , claim
   where
@@ -307,7 +307,7 @@ Lemma-Postfix-SingleQ-H pf@(k , mc1 , mc0) = cz , s , pf' , claim
     (CZ^ (- k0) • S^ k0 ↑) • S^ (k + k0) • (H^ ₃ • CZ • H) • ⟦ mc1 ⟧ₘ₊ ↑ • ⟦ mc0' ⟧ₘ₊ ≈⟨ assoc ⟩
     CZ^ cz • S^ s ↑ • ⟦ k' , mc1 , mc0' ⟧ₚ ∎
     where
-    aux : ∀ a b -> CZ^ a • S^ b ↑ ≈ S^ b ↑ • CZ^ a
+    aux : ∀ a b → CZ^ a • S^ b ↑ ≈ S^ b ↑ • CZ^ a
     aux a b = begin
       CZ^ a • S^ b ↑ ≈⟨ (cright sym (refl' (aux-↑ S (toℕ b)))) ⟩
       CZ^ a • S ↑ ^ toℕ b ≈⟨ comm⇒pow-comm (toℕ a) (toℕ b) (axiom comm-CZ-S↑) ⟩
@@ -317,7 +317,7 @@ Lemma-Postfix-SingleQ-H pf@(k , mc1 , mc0) = cz , s , pf' , claim
 
 Lemma-Postfix-SingleQ-S-ε :
 
-  ∀ k pmc1 m -> let pf = (k , pmc1 , (m , ε)) in let cz = - m ^2 in
+  ∀ k pmc1 m → let pf = (k , pmc1 , (m , ε)) in let cz = - m ^2 in
   ---------------------------------------------------------
   let s = m ^2 in let k' = k + s in ⟦ pf ⟧ₚ • S ≈ CZ^ cz • S^ s ↑ • ⟦ (k' , pmc1 , (m , ε)) ⟧ₚ
 
@@ -352,7 +352,7 @@ Lemma-Postfix-SingleQ-S-ε k mc1 m  = claim
     (CZ^ (- k0) • S^ k0 ↑) • S^ (k + k0) • (H^ ₃ • CZ • H) • ⟦ mc1 ⟧ₘ₊ ↑ • ⟦ mc0' ⟧ₘ₊ ≈⟨ assoc ⟩
     CZ^ cz • S^ s ↑ • ⟦ k' , mc1 , mc0' ⟧ₚ ∎
     where
-    aux : ∀ a b -> CZ^ a • S^ b ↑ ≈ S^ b ↑ • CZ^ a
+    aux : ∀ a b → CZ^ a • S^ b ↑ ≈ S^ b ↑ • CZ^ a
     aux a b = begin
       CZ^ a • S^ b ↑ ≈⟨ (cright sym (refl' (aux-↑ S (toℕ b)))) ⟩
       CZ^ a • S ↑ ^ toℕ b ≈⟨ comm⇒pow-comm (toℕ a) (toℕ b) (axiom comm-CZ-S↑) ⟩
@@ -362,7 +362,7 @@ Lemma-Postfix-SingleQ-S-ε k mc1 m  = claim
 
 Lemma-Postfix-SingleQ-S-HS :
 
-  ∀ k pmc1 m cc -> let pf = (k , pmc1 , (m , HS^ cc)) in 
+  ∀ k pmc1 m cc → let pf = (k , pmc1 , (m , HS^ cc)) in 
   ---------------------------------------------------------
   ⟦ pf ⟧ₚ • S ≈ ⟦ (k , pmc1 , (m , HS^ (1ₚ + cc))) ⟧ₚ
 
@@ -384,7 +384,7 @@ Lemma-Postfix-SingleQ-S-HS k mc1 m cc  = claim
 
 Lemma-Postfix-SingleQ-H-ε :
 
-  ∀ k pmc1 m -> let pf = (k , pmc1 , (m , ε)) in 
+  ∀ k pmc1 m → let pf = (k , pmc1 , (m , ε)) in 
   ---------------------------------------------------------
   ⟦ pf ⟧ₚ • H ≈ ⟦ (k , pmc1 , (m , HS^ ₀)) ⟧ₚ
 
@@ -403,7 +403,7 @@ Lemma-Postfix-SingleQ-H-ε k mc1 m  = claim
 
 Lemma-Postfix-SingleQ-H-HS⁰ :
 
-  ∀ k pmc1 m -> let pf = (k , pmc1 , (m , HS^ ₀)) in let mc' = (m *' -'₁ , ε) in 
+  ∀ k pmc1 m → let pf = (k , pmc1 , (m , HS^ ₀)) in let mc' = (m *' -'₁ , ε) in 
   ---------------------------------------------------------
   ⟦ pf ⟧ₚ • H ≈ ⟦ (k , pmc1 , mc') ⟧ₚ
 
@@ -424,7 +424,7 @@ Lemma-Postfix-SingleQ-H-HS⁰ k mc1 m  = claim
 
 Lemma-Postfix-SingleQ-H-HS :
 
-  ∀ k mc1 m kk* -> let pf = (k , mc1 , (m , HS^ (kk* .proj₁))) in 
+  ∀ k mc1 m kk* → let pf = (k , mc1 , (m , HS^ (kk* .proj₁))) in 
   ---------------------------------------------------------
   let k* = (-' (kk* ⁻¹) *' (m *' m)) in
   let sk = k* .proj₁ in
@@ -472,7 +472,7 @@ Lemma-Postfix-SingleQ-H-HS k mc1 m kk* = claim
     (CZ^ (- sk) • S^ sk ↑) • S^ (k + sk) • (H^ ₃ • CZ • H) • ⟦ mc1 ⟧ₘ₊ ↑ • ⟦ mc0' ⟧ₘ₊ ≈⟨ assoc ⟩
     CZ^ cz • S^ sk ↑ • ⟦ k' , mc1 , mc0' ⟧ₚ ∎
     where
-    aux : ∀ a b -> CZ^ a • S^ b ↑ ≈ S^ b ↑ • CZ^ a
+    aux : ∀ a b → CZ^ a • S^ b ↑ ≈ S^ b ↑ • CZ^ a
     aux a b = begin
       CZ^ a • S^ b ↑ ≈⟨ (cright sym (refl' (aux-↑ S (toℕ b)))) ⟩
       CZ^ a • S ↑ ^ toℕ b ≈⟨ comm⇒pow-comm (toℕ a) (toℕ b) (axiom comm-CZ-S↑) ⟩

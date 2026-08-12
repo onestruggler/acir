@@ -72,7 +72,7 @@ open import Examples.Groups.Symplectic.BR.Two.Lemmas p-2 p-prime hiding (sa)
 module L00 = Lemmas0 0
 
 
-aux-CZ02^-alt-N : ∀ k -> CZ02 ^ k ≈ Ex ↑ • CZ ^ k • Ex ↑
+aux-CZ02^-alt-N : ∀ k → CZ02 ^ k ≈ Ex ↑ • CZ ^ k • Ex ↑
 aux-CZ02^-alt-N k@0 = rewrite-swap 100 auto
 aux-CZ02^-alt-N k@1 = sym lemma-CZ02-alt
 aux-CZ02^-alt-N k@(₁₊ k'@(₁₊ k'')) = begin
@@ -84,7 +84,7 @@ aux-CZ02^-alt-N k@(₁₊ k'@(₁₊ k'')) = begin
   Ex ↑ • (CZ • CZ ^ k') • Ex ↑ ≈⟨ refl ⟩
   Ex ↑ • CZ ^ k • Ex ↑ ∎
 
-aux-CZ02^-alt-def-N : ∀ k -> Ex • (CZ ^ k) ↑ • Ex ≈ CZ02 ^ k
+aux-CZ02^-alt-def-N : ∀ k → Ex • (CZ ^ k) ↑ • Ex ≈ CZ02 ^ k
 aux-CZ02^-alt-def-N k@0 = rewrite-swap 100 auto
 aux-CZ02^-alt-def-N k@1 = rewrite-swap 100 auto
 aux-CZ02^-alt-def-N k@(₁₊ k'@(₁₊ k'')) = begin
@@ -96,17 +96,17 @@ aux-CZ02^-alt-def-N k@(₁₊ k'@(₁₊ k'')) = begin
   CZ02 • CZ02 ^ k' ≈⟨ refl ⟩
   CZ02 ^ k ∎
 
-aux-CZ02^-alt-def : ∀ k -> CZ02^ k ≈ CZ02 ^ toℕ k
+aux-CZ02^-alt-def : ∀ k → CZ02^ k ≈ CZ02 ^ toℕ k
 aux-CZ02^-alt-def k = aux-CZ02^-alt-def-N (toℕ k)
 
-aux-CZ02^-alt : ∀ k -> CZ02^ k ≈ Ex ↑ • CZ^ k • Ex ↑
+aux-CZ02^-alt : ∀ k → CZ02^ k ≈ Ex ↑ • CZ^ k • Ex ↑
 aux-CZ02^-alt k = begin
   CZ02^ k ≈⟨ aux-CZ02^-alt-def k ⟩
   CZ02 ^ toℕ k ≈⟨ aux-CZ02^-alt-N (toℕ k) ⟩
   Ex ↑ • CZ^ k • Ex ↑ ∎
 
 
-aux-CZ-H↑-CZ↑^k : ∀ k -> CZ • H ↑ • CZ^ k ↑ ≈ CX^ (- k) ↑ • CZ02^ (- k) • CZ • H ↑
+aux-CZ-H↑-CZ↑^k : ∀ k → CZ • H ↑ • CZ^ k ↑ ≈ CX^ (- k) ↑ • CZ02^ (- k) • CZ • H ↑
 aux-CZ-H↑-CZ↑^k k = bbc (Ex ↑) (Ex ↑) claim
   where
   claim : Ex ↑ • (CZ • H ↑ • CZ^ k ↑) • Ex ↑ ≈ Ex ↑ • (CX^ (- k) ↑ • CZ02^ (- k) • CZ • H ↑) • Ex ↑
@@ -142,7 +142,7 @@ lemma-comm-CZ02-CX = bbc (Ex ↑) (Ex ↑) claim
     Ex ↑ • (CX ↑ • (Ex ↑ • CZ • Ex ↑)) • Ex ↑ ≈⟨ cright cleft cright lemma-CZ02-alt ⟩
     Ex ↑ • (CX ↑ • CZ02) • Ex ↑ ∎
 
-aux-comm-CZ02-CZ02^ : ∀ k -> CZ02 • CZ02^ k ≈ CZ02^ k • CZ02
+aux-comm-CZ02-CZ02^ : ∀ k → CZ02 • CZ02^ k ≈ CZ02^ k • CZ02
 aux-comm-CZ02-CZ02^ k = begin
   CZ02 •  Ex • CZ^ k ↑ • Ex ≈⟨ refl ⟩
   (Ex • CZ ↑ • Ex) • Ex • CZ^ k ↑ • Ex ≈⟨ sa (□ ^ 3 • □ ^ 3) (□ ^ 4 • □ ^ 2) auto ⟩
@@ -155,7 +155,7 @@ aux-comm-CZ02-CZ02^ k = begin
   CZ02^ k • CZ02 ∎
 
 
-lemma-|||-mmh : ∀ m↑ k m ->
+lemma-|||-mmh : ∀ m↑ k m →
   let
   m⁻¹ = (m ⁻¹) .proj₁
   m↑/m = m⁻¹ * m↑ .proj₁
@@ -192,13 +192,13 @@ lemma-|||-mmh m↑@(m↑' , nz↑) k  m@(m' , nz) = begin
   m⁻¹ = (m ⁻¹) .proj₁
   m↑/m = m⁻¹ * m↑ .proj₁
 
-aux-EX-S^k : ∀ k -> Ex • S^ k ≈ S^ k ↑ • Ex
+aux-EX-S^k : ∀ k → Ex • S^ k ≈ S^ k ↑ • Ex
 aux-EX-S^k k = begin
   Ex • S^ k ≈⟨ lemma-Induction lemma-Ex-S (toℕ k) ⟩
   S ↑ ^ toℕ k • Ex ≈⟨ cleft refl' (lemma-^-↑ S (toℕ k)) ⟩
   S^ k ↑ • Ex ∎
 
-aux-CZ02H↑↑CZ02^k : ∀ (k*@(k , nz) : ℤ* ₚ) -> let -2k = - k + - k in
+aux-CZ02H↑↑CZ02^k : ∀ (k*@(k , nz) : ℤ* ₚ) → let -2k = - k + - k in
   CZ02 • H ↑ ↑ • CZ02^ k ≈ (S^ -2k • H ↑ ↑ • CZ02^ k • H ↑ ↑ ^ 3) • CZ02 • H ↑ ↑
 aux-CZ02H↑↑CZ02^k k*@(k , nz) = bbc Ex Ex claim
   where
@@ -217,7 +217,7 @@ aux-CZ02H↑↑CZ02^k k*@(k , nz) = bbc Ex Ex claim
     (Ex • S^ -2k) • (H ↑ ↑ • Ex) • CZ^ k ↑ • Ex • H ↑ ↑ ^ 3 • CZ02 • H ↑ ↑ • Ex ≈⟨ sa (□ ^ 2 • □ ^ 2 • □ ^ 6) (□ • ((□ • □ • □ ^ 3 • □) • □ • □) • □) auto ⟩
     Ex • ((S^ -2k • H ↑ ↑ • CZ02^ k • H ↑ ↑ ^ 3) • CZ02 • H ↑ ↑) • Ex ∎
 
-aux-||hh| : ∀ (k*@(k , nz) : ℤ* ₚ) -> let 2k =  k +  k in
+aux-||hh| : ∀ (k*@(k , nz) : ℤ* ₚ) → let 2k =  k +  k in
   CZ02 • CZ • H ↑ • H ↑ ↑ • CZ^ k ↑ ≈ (S^ 2k • H ↑ ↑ • CZ02^ (- k) • CX^ (- k) ↑ • XC^ k • H ↑ ↑ ^ 3) • CZ02 • H ↑ ↑ • CZ • H ↑ 
 aux-||hh| k*@(k , nz) = begin
   CZ02 • CZ • H ↑ • H ↑ ↑ • CZ^ k ↑ ≈⟨ sa (□ ^ 5) (□ ^ 4 • □) auto ⟩
@@ -243,7 +243,7 @@ aux-||hh| k*@(k , nz) = begin
   2k' =  k +  k
 
 
-lemma-|||-mhmh : ∀ m↑ k m l ->
+lemma-|||-mhmh : ∀ m↑ k m l →
   let
   m⁻¹ = (m ⁻¹) .proj₁
   m↑/m = m⁻¹ * m↑ .proj₁

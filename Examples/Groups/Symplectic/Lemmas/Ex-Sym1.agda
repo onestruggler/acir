@@ -71,7 +71,7 @@ module Lemmas0a1 where
     open Pattern-Assoc
 
 
-  lemma-CZ^kHCZ : let open PB ((₂₊ n) QRel,_===_) in ∀ k' -> let k = ₁₊ k' in
+  lemma-CZ^kHCZ : let open PB ((₂₊ n) QRel,_===_) in ∀ k' → let k = ₁₊ k' in
     CZ ^ k • H • CZ ≈ (S⁻¹ ^ k) • H • CZ • (S⁻¹ • H • S⁻¹) ^ k • S⁻¹ ↑ ^ k
   lemma-CZ^kHCZ {n} k'@0 = let k = ₁₊ k' in lemma-selinger-c11
     where
@@ -114,7 +114,7 @@ module Lemmas0a1 where
   open import Algebra.Properties.Ring (+-*-ring p-2)
   
 
-  lemma-Euler : let open PB ((₁₊ n) QRel,_===_) in ∀ b' -> let b = b' .proj₁ in let -b⁻¹ = - ((b' ⁻¹) .proj₁) in
+  lemma-Euler : let open PB ((₁₊ n) QRel,_===_) in ∀ b' → let b = b' .proj₁ in let -b⁻¹ = - ((b' ⁻¹) .proj₁) in
     H • S^ b • H ≈ (S^ -b⁻¹ • H ^ 3 • S^ (- b)) • M b'
   lemma-Euler {n} b' = begin    
     H • S^ b • H ≈⟨ sym left-unit ⟩
@@ -145,7 +145,7 @@ module Lemmas0a1 where
 
 
 
-  lemma-Euler' : let open PB ((₂₊ n) QRel,_===_) in ∀ b' -> let b = b' .proj₁ in let -b⁻¹ = - ((b' ⁻¹) .proj₁) in
+  lemma-Euler' : let open PB ((₂₊ n) QRel,_===_) in ∀ b' → let b = b' .proj₁ in let -b⁻¹ = - ((b' ⁻¹) .proj₁) in
     H ^ 3 • S^ b • H ≈ (S^ -b⁻¹ • H • S^ (- b)) • M b'
   lemma-Euler' {n} b' = begin
     H ^ 3 • S^ b • H ≈⟨ by-assoc auto ⟩
@@ -170,7 +170,7 @@ module Lemmas0a1 where
     b⁻¹ = ((b' ⁻¹) .proj₁)
 
 
-  lemma-Euler-v2 : let open PB ((₂₊ n) QRel,_===_) in ∀ b' -> let b = b' .proj₁ in let b⁻¹ = ((b' ⁻¹) .proj₁) in let -b⁻¹ = - b⁻¹ in
+  lemma-Euler-v2 : let open PB ((₂₊ n) QRel,_===_) in ∀ b' → let b = b' .proj₁ in let b⁻¹ = ((b' ⁻¹) .proj₁) in let -b⁻¹ = - b⁻¹ in
   
     H • S^ b • H ≈ (S^ -b⁻¹ • H • S^ (- b)) • M (-' b')
 
@@ -203,7 +203,7 @@ module Lemmas0a1 where
 
 
 
-  semi-HM' : let open PB ((₁₊ n) QRel,_===_) in ∀ (x : ℤ* ₚ) -> H • M (x ⁻¹) ≈ M x • H
+  semi-HM' : let open PB ((₁₊ n) QRel,_===_) in ∀ (x : ℤ* ₚ) → H • M (x ⁻¹) ≈ M x • H
   semi-HM' {n} x@(x' , nzx) = begin
     H • M (x ⁻¹) ≈⟨ semi-HM (x ⁻¹) ⟩
     M (x ⁻¹ ⁻¹) • H ≈⟨ (cleft aux-MM ((x ⁻¹ ⁻¹) .proj₂) nzx (inv-involutive x)) ⟩
@@ -216,7 +216,7 @@ module Lemmas0a1 where
     open Lemmas0 n
     x⁻¹ = x ⁻¹
 
-  aux-comm-HH-M : let open PB ((₁₊ n) QRel,_===_) in ∀ x ->
+  aux-comm-HH-M : let open PB ((₁₊ n) QRel,_===_) in ∀ x →
     H ^ 2 • M x ≈ M x • H ^ 2
   aux-comm-HH-M {n} x = begin
     (H ^ 2 • M x) ≈⟨ (cleft lemma-HH-M-1) ⟩
@@ -234,7 +234,7 @@ module Lemmas0a1 where
     x⁻¹ = x ⁻¹
 
 
-  semi-MH³ : let open PB ((₁₊ n) QRel,_===_) in ∀ (x : ℤ* ₚ) -> H ^ 3 • M (x ⁻¹) ≈ M x • H ^ 3
+  semi-MH³ : let open PB ((₁₊ n) QRel,_===_) in ∀ (x : ℤ* ₚ) → H ^ 3 • M (x ⁻¹) ≈ M x • H ^ 3
   semi-MH³ {n} x@(x' , nzx) = begin
     H ^ 3 • M (x ⁻¹) ≈⟨ by-assoc auto ⟩
     H ^ 2 • H • M (x ⁻¹) ≈⟨ (cright semi-HM' (x)) ⟩
@@ -253,7 +253,7 @@ module Lemmas0a1 where
 
 
 
-  semi-H³M : let open PB ((₁₊ n) QRel,_===_) in ∀ (x : ℤ* ₚ) -> H ^ 3 • M x ≈ M (x ⁻¹) • H ^ 3
+  semi-H³M : let open PB ((₁₊ n) QRel,_===_) in ∀ (x : ℤ* ₚ) → H ^ 3 • M x ≈ M (x ⁻¹) • H ^ 3
   semi-H³M {n} x@(x' , nzx) = begin
     H ^ 3 • M (x) ≈⟨ by-assoc auto ⟩
     H ^ 2 • H • M (x) ≈⟨ (cright semi-HM (x)) ⟩
@@ -271,12 +271,12 @@ module Lemmas0a1 where
     x⁻¹ = x ⁻¹
 
 
-  lemma-S⁻¹^k : let open PB ((₁₊ n) QRel,_===_) in ∀ k -> let k' = toℕ k in S⁻¹ ^ k' ≈ S^ (- k)
+  lemma-S⁻¹^k : let open PB ((₁₊ n) QRel,_===_) in ∀ k → let k' = toℕ k in S⁻¹ ^ k' ≈ S^ (- k)
   lemma-S⁻¹^k {n} k = begin
     S⁻¹ ^ k' ≈⟨ (^^ S p-1 k') ⟩
     S ^ (p-1 Nat.* k') ≈⟨ (lemma-S^k-% (p-1 Nat.* k')) ⟩
-    S ^ ((p-1 Nat.* k') Nat.% p) ≈⟨ (refl' (Eq.cong (\ xx -> S ^ ((xx Nat.* toℕ k) Nat.% p)) (Eq.sym (toℕ-fromℕ< (NP.≤-refl {p}))))) ⟩
-    S ^ ((toℕ (ₚ₋₁) Nat.* k') Nat.% p) ≈⟨ (refl' (Eq.cong (\ xx -> S ^ ((toℕ xx Nat.* toℕ k) Nat.% p)) (p-1=-1ₚ))) ⟩
+    S ^ ((p-1 Nat.* k') Nat.% p) ≈⟨ (refl' (Eq.cong (\ xx → S ^ ((xx Nat.* toℕ k) Nat.% p)) (Eq.sym (toℕ-fromℕ< (NP.≤-refl {p}))))) ⟩
+    S ^ ((toℕ (ₚ₋₁) Nat.* k') Nat.% p) ≈⟨ (refl' (Eq.cong (\ xx → S ^ ((toℕ xx Nat.* toℕ k) Nat.% p)) (p-1=-1ₚ))) ⟩
     S ^ ((toℕ (- 1ₚ) Nat.* toℕ k) Nat.% p) ≈⟨ (refl' (Eq.cong (S ^_) (Eq.sym (toℕ-fromℕ< (m%n<n (toℕ (- 1ₚ) Nat.* toℕ k)  p))))) ⟩
     S^ (- 1ₚ * k) ≈⟨ (refl' (Eq.cong S^ (-1*x≈-x k))) ⟩
     S^ -k ∎
@@ -291,7 +291,7 @@ module Lemmas0a1 where
 
 
 
-  aux-ww^k : ∀ w k -> let open PB ((₁₊ n) QRel,_===_) in 
+  aux-ww^k : ∀ w k → let open PB ((₁₊ n) QRel,_===_) in 
     w • w ^ k ≈ w ^ (₁₊ k)
   aux-ww^k {n} w ₀ = right-unit
     where
@@ -301,7 +301,7 @@ module Lemmas0a1 where
     open PB ((₁₊ n) QRel,_===_)
 
 
-  aux-S^-^  : let open PB ((₁₊ n) QRel,_===_) in  ∀ a k -> (nza : a ≢ ₀) -> let j = toℕ a in
+  aux-S^-^  : let open PB ((₁₊ n) QRel,_===_) in  ∀ a k → (nza : a ≢ ₀) → let j = toℕ a in
     S^ k ^ j ≈ S^ (k * a)
   aux-S^-^ {n} a k nza = begin
     S^ k ^ j ≈⟨ refl ⟩
@@ -322,7 +322,7 @@ module Lemmas0a1 where
 
 
 
-  lemma-Euler′ : let open PB ((₁₊ n) QRel,_===_) in ∀ b' -> let b = b' .proj₁ in let -b⁻¹ = - ((b' ⁻¹) .proj₁) in
+  lemma-Euler′ : let open PB ((₁₊ n) QRel,_===_) in ∀ b' → let b = b' .proj₁ in let -b⁻¹ = - ((b' ⁻¹) .proj₁) in
     H • S^ b • H ≈ M (-' b' ⁻¹) • (S^ (- b) • H • S^ (-b⁻¹))
   lemma-Euler′ {n} b' = begin
     (H • S^ b • H) ≈⟨ ( lemma-Euler b') ⟩
@@ -368,7 +368,7 @@ module Lemmas0a1 where
 
 
 
-  lemma-Euler′' : let open PB ((₁₊ n) QRel,_===_) in ∀ b' -> let b = b' .proj₁ in let -b⁻¹ = - ((b' ⁻¹) .proj₁) in
+  lemma-Euler′' : let open PB ((₁₊ n) QRel,_===_) in ∀ b' → let b = b' .proj₁ in let -b⁻¹ = - ((b' ⁻¹) .proj₁) in
     H • S^ b • H ^ 3 ≈ M (-' b' ⁻¹) • (S^ (- b) • H ^ 3 • S^ (-b⁻¹))
   lemma-Euler′' {n} b' = begin
     H • S^ b • H ^ 3 ≈⟨ by-passoc (□ ^ 4) (□ ^ 3 • □) auto ⟩
@@ -394,7 +394,7 @@ module Lemmas0a1 where
     aux = inv-inv-neg b'
 
 
-  lemma-Euler-Mˡ : let open PB ((₁₊ n) QRel,_===_) in ∀ b' -> let b = b' .proj₁ in let -b⁻¹ = - ((b' ⁻¹) .proj₁) in let -b = - b in
+  lemma-Euler-Mˡ : let open PB ((₁₊ n) QRel,_===_) in ∀ b' → let b = b' .proj₁ in let -b⁻¹ = - ((b' ⁻¹) .proj₁) in let -b = - b in
     H • S^ b • H ^ 3 ≈ M (b' ⁻¹) • S^ -b • H • S^ -b⁻¹ 
   lemma-Euler-Mˡ {n} b' = begin
     H • S^ b • H ^ 3 ≈⟨ lemma-Euler′' b' ⟩
@@ -421,7 +421,7 @@ module Lemmas0a1 where
     aux = inv-inv-neg b'
 
 
-  lemma-Euler-Mˡ' : let open PB ((₁₊ n) QRel,_===_) in ∀ b' -> let b = b' .proj₁ in let -b⁻¹ = - ((b' ⁻¹) .proj₁) in let -b = - b in
+  lemma-Euler-Mˡ' : let open PB ((₁₊ n) QRel,_===_) in ∀ b' → let b = b' .proj₁ in let -b⁻¹ = - ((b' ⁻¹) .proj₁) in let -b = - b in
     H ^ 3 • S^ b • H ≈ M (b' ⁻¹) • S^ -b • H • S^ -b⁻¹ 
   lemma-Euler-Mˡ' {n} b' = begin
     H ^ 3 • S^ b • H ≈⟨ by-assoc auto ⟩
@@ -448,7 +448,7 @@ module Lemmas0a1 where
 
 
 
-  aux--2k-2k' : let open PB ((₁₊ n) QRel,_===_) in ∀ k ->
+  aux--2k-2k' : let open PB ((₁₊ n) QRel,_===_) in ∀ k →
     let
       -k = (p-1) Nat.* k
       -2k = -k Nat.+ -k
@@ -499,8 +499,8 @@ module Lemmas0a1 where
       S ^ toℕ (fromℕ< (m%n<n (toℕ (- 1ₚ) Nat.* toℕ k') p)) ≈⟨  refl' (Eq.cong (S ^_) (toℕ-fromℕ< (m%n<n (toℕ (- 1ₚ) Nat.* toℕ k') p))) ⟩
       S ^ ((toℕ (- 1ₚ) Nat.* toℕ k') Nat.% p) ≈⟨  sym (lemma-S^k-% (toℕ (- 1ₚ) Nat.* toℕ k')) ⟩
       S ^ (toℕ (- 1ₚ) Nat.* toℕ k') ≈⟨  sym (^^ S (toℕ (- 1ₚ)) (toℕ k')) ⟩
-      (S ^ toℕ (- 1ₚ)) ^ toℕ k' ≈⟨  refl' (Eq.cong (\ xx -> (S ^ toℕ xx) ^ toℕ k') (Eq.sym p-1=-1ₚ)) ⟩
-      (S ^ toℕ (ₚ₋₁)) ^ toℕ k' ≈⟨   refl' (Eq.cong (\ xx -> (S ^ xx) ^ toℕ k') lemma-toℕ-ₚ₋₁) ⟩
+      (S ^ toℕ (- 1ₚ)) ^ toℕ k' ≈⟨  refl' (Eq.cong (\ xx → (S ^ toℕ xx) ^ toℕ k') (Eq.sym p-1=-1ₚ)) ⟩
+      (S ^ toℕ (ₚ₋₁)) ^ toℕ k' ≈⟨   refl' (Eq.cong (\ xx → (S ^ xx) ^ toℕ k') lemma-toℕ-ₚ₋₁) ⟩
       (S ^ p-1) ^ toℕ k' ≈⟨  refl' (Eq.cong ((S ^ p-1) ^_) (toℕ-fromℕ< (m%n<n k p))) ⟩
       (S ^ p-1) ^ (k Nat.% p) ≈⟨  ^^' S p-1 ((k Nat.% p)) ⟩
       (S ^ (k Nat.% p)) ^ p-1 ≈⟨  ^-cong (S ^ (k Nat.% p)) (S ^ k) p-1 (sym (lemma-S^k-% k)) ⟩

@@ -38,7 +38,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime
 open ≡-Reasoning
 open Eq
 
-fig-24-3-cal-1 : ∀ (a* b* : ℤ* ₚ) ->
+fig-24-3-cal-1 : ∀ (a* b* : ℤ* ₚ) →
   let
   a = a* .proj₁
   b = b* .proj₁
@@ -93,13 +93,13 @@ fig-24-3-cal-1 a* b* = aux'-1 , claim2 , claim3
   
   aux'-1 : -x⁻¹ * (y * y) ≡ [ab]⁻¹
   aux'-1 = begin
-    -x⁻¹ * (y * y) ≡⟨ Eq.cong (\ xx -> - xx * (y * y)) (inv-distrib (-' b*) (a* ⁻¹)) ⟩
+    -x⁻¹ * (y * y) ≡⟨ Eq.cong (\ xx → - xx * (y * y)) (inv-distrib (-' b*) (a* ⁻¹)) ⟩
     - (((-' b*) ⁻¹) .proj₁ * (a* ⁻¹ ⁻¹) .proj₁) * (a⁻¹ * a⁻¹) ≡⟨ Eq.cong (_* (a⁻¹ * a⁻¹)) (-‿distribˡ-* (((-' b*) ⁻¹) .proj₁) ((a* ⁻¹ ⁻¹) .proj₁)) ⟩
-    (- ((-' b*) ⁻¹) .proj₁ * (a* ⁻¹ ⁻¹) .proj₁) * (a⁻¹ * a⁻¹) ≡⟨ Eq.cong₂ (\ xx yy -> (xx * yy) * (a⁻¹ * a⁻¹)) (Eq.cong -_ (inv-neg-comm b*)) (inv-involutive a*) ⟩
-    (- - (b⁻¹) * a) * (a⁻¹ * a⁻¹) ≡⟨ Eq.cong (\ xx -> (xx * a) * (a⁻¹ * a⁻¹)) (-‿involutive ((b⁻¹))) ⟩
+    (- ((-' b*) ⁻¹) .proj₁ * (a* ⁻¹ ⁻¹) .proj₁) * (a⁻¹ * a⁻¹) ≡⟨ Eq.cong₂ (\ xx yy → (xx * yy) * (a⁻¹ * a⁻¹)) (Eq.cong -_ (inv-neg-comm b*)) (inv-involutive a*) ⟩
+    (- - (b⁻¹) * a) * (a⁻¹ * a⁻¹) ≡⟨ Eq.cong (\ xx → (xx * a) * (a⁻¹ * a⁻¹)) (-‿involutive ((b⁻¹))) ⟩
     ((b⁻¹) * a) * (a⁻¹ * a⁻¹) ≡⟨ *-assoc b⁻¹ a (a⁻¹ * a⁻¹) ⟩
     (b⁻¹) * (a * (a⁻¹ * a⁻¹)) ≡⟨ Eq.cong ((b⁻¹) *_) (Eq.sym (*-assoc a a⁻¹ a⁻¹)) ⟩
-    (b⁻¹) * ((a * a⁻¹) * a⁻¹) ≡⟨ Eq.cong (\ xx -> (b⁻¹) * (xx * a⁻¹)) (lemma-⁻¹ʳ a {{nztoℕ {y = a} {neq0 = a* .proj₂}}} ) ⟩
+    (b⁻¹) * ((a * a⁻¹) * a⁻¹) ≡⟨ Eq.cong (\ xx → (b⁻¹) * (xx * a⁻¹)) (lemma-⁻¹ʳ a {{nztoℕ {y = a} {neq0 = a* .proj₂}}} ) ⟩
     (b⁻¹) * (₁ * a⁻¹) ≡⟨ Eq.cong ((b⁻¹) *_) (*-identityˡ ((a⁻¹))) ⟩
     (b⁻¹) * a⁻¹ ≡⟨ *-comm ((b⁻¹)) a⁻¹ ⟩
     a⁻¹ * (b⁻¹) ≡⟨ Eq.sym (inv-distrib a* b*) ⟩
@@ -111,9 +111,9 @@ fig-24-3-cal-1 a* b* = aux'-1 , claim2 , claim3
     -y/x ≡⟨ auto ⟩
     a⁻¹ * ((-' b* *' a* ⁻¹) ⁻¹).proj₁ * - ₁ ≡⟨ *-comm (a⁻¹ * ((-' b* *' a* ⁻¹) ⁻¹).proj₁) (- ₁) ⟩
     - ₁ * (a⁻¹ * ((-' b* *' a* ⁻¹) ⁻¹).proj₁) ≡⟨ -1*x≈-x ((a⁻¹ * ((-' b* *' a* ⁻¹) ⁻¹).proj₁)) ⟩
-    - (a⁻¹ * ((-' b* *' a* ⁻¹) ⁻¹).proj₁) ≡⟨ Eq.cong (\ xx -> - (a⁻¹ * xx)) (inv-distrib (-' b*) (a* ⁻¹)) ⟩
-    - (a⁻¹ * (((-' b*) ⁻¹).proj₁ * (a* ⁻¹ ⁻¹).proj₁)) ≡⟨ Eq.cong (\ xx -> - (a⁻¹ * (((-' b*) ⁻¹).proj₁ * xx))) (inv-involutive a*) ⟩
-    - (a⁻¹ * (((-' b*) ⁻¹).proj₁ * a)) ≡⟨ Eq.cong (\ xx -> - (a⁻¹ * xx)) (*-comm (((-' b*) ⁻¹).proj₁) a) ⟩
+    - (a⁻¹ * ((-' b* *' a* ⁻¹) ⁻¹).proj₁) ≡⟨ Eq.cong (\ xx → - (a⁻¹ * xx)) (inv-distrib (-' b*) (a* ⁻¹)) ⟩
+    - (a⁻¹ * (((-' b*) ⁻¹).proj₁ * (a* ⁻¹ ⁻¹).proj₁)) ≡⟨ Eq.cong (\ xx → - (a⁻¹ * (((-' b*) ⁻¹).proj₁ * xx))) (inv-involutive a*) ⟩
+    - (a⁻¹ * (((-' b*) ⁻¹).proj₁ * a)) ≡⟨ Eq.cong (\ xx → - (a⁻¹ * xx)) (*-comm (((-' b*) ⁻¹).proj₁) a) ⟩
     - (a⁻¹ * (a * ((-' b*) ⁻¹).proj₁)) ≡⟨ Eq.cong -_ (sym (*-assoc a⁻¹ a (((-' b*) ⁻¹).proj₁))) ⟩
     - (a⁻¹ * a * ((-' b*) ⁻¹).proj₁) ≡⟨ Eq.cong -_  (cong (_* ((-' b*) ⁻¹).proj₁) (lemma-⁻¹ˡ a {{nztoℕ {y = a} {neq0 = a* .proj₂}}})) ⟩
     - (₁ * ((-' b*) ⁻¹).proj₁) ≡⟨ Eq.cong -_ (*-identityˡ (((-' b*) ⁻¹).proj₁)) ⟩
@@ -124,7 +124,7 @@ fig-24-3-cal-1 a* b* = aux'-1 , claim2 , claim3
   claim3 : -x⁻¹ ≡ - - a * b⁻¹
   claim3 = begin
     - ((-' b* *' a* ⁻¹) ⁻¹).proj₁ ≡⟨ Eq.cong -_ (inv-distrib (-' b*) (a* ⁻¹)) ⟩
-    - (((-' b*) ⁻¹).proj₁ * (a* ⁻¹ ⁻¹).proj₁) ≡⟨ Eq.cong (\ xx -> - ((((-' b*) ⁻¹).proj₁ * xx))) (inv-involutive a*)  ⟩
+    - (((-' b*) ⁻¹).proj₁ * (a* ⁻¹ ⁻¹).proj₁) ≡⟨ Eq.cong (\ xx → - ((((-' b*) ⁻¹).proj₁ * xx))) (inv-involutive a*)  ⟩
     - (((-' b*) ⁻¹).proj₁ * a) ≡⟨ -‿distribˡ-* (((-' b*) ⁻¹).proj₁) a ⟩
     - ((-' b*) ⁻¹).proj₁ * a ≡⟨ cong (_* a) (cong -_ (inv-neg-comm b*)) ⟩
     - - ((b*) ⁻¹).proj₁ * a ≡⟨ cong (_* a) ( -‿involutive b⁻¹) ⟩
@@ -133,7 +133,7 @@ fig-24-3-cal-1 a* b* = aux'-1 , claim2 , claim3
     - - a * b⁻¹ ∎
 
 
-fig-25-2-cal : ∀ (a*@(a , nza) : ℤ* ₚ) (b : ℤ ₚ) ->
+fig-25-2-cal : ∀ (a*@(a , nza) : ℤ* ₚ) (b : ℤ ₚ) →
   let
   nz : (a , b) ≢ (₀ , ₀)
   nz = aux-a≠0⇒ab≠0 a b nza
@@ -153,7 +153,7 @@ fig-25-2-cal a*@(a , nza) b = aux
   aux : -b/a + ₁ ≡ - (b + - a) * a⁻¹
   aux = Eq.sym ( begin
     - (b + - a) * a⁻¹ ≡⟨ Eq.cong (_* a⁻¹) (Eq.sym (-‿+-comm b (- a))) ⟩
-    (- b + - - a) * a⁻¹ ≡⟨ Eq.cong (\ xx -> (- b + xx) * a⁻¹) (-‿involutive a) ⟩
+    (- b + - - a) * a⁻¹ ≡⟨ Eq.cong (\ xx → (- b + xx) * a⁻¹) (-‿involutive a) ⟩
     (- b + a) * a⁻¹ ≡⟨ *-distribʳ-+ a⁻¹ (- b) a ⟩
     - b * a⁻¹ + a * a⁻¹ ≡⟨ Eq.cong (- b * a⁻¹ +_) (lemma-⁻¹ʳ a {{nztoℕ {y = a} {neq0 = nza}}}) ⟩
     - b * a⁻¹ + ₁ ≡⟨ auto ⟩
@@ -161,7 +161,7 @@ fig-25-2-cal a*@(a , nza) b = aux
     )
 
 
-cal-b1-a2' : ∀ (a1 a2 b1 : ℤ ₚ) (nz1 : a1 ≢ ₀) (nz2 : a2 ≢ ₀) ->
+cal-b1-a2' : ∀ (a1 a2 b1 : ℤ ₚ) (nz1 : a1 ≢ ₀) (nz2 : a2 ≢ ₀) →
   let
   a1⁻¹ = ((a1 , nz1) ⁻¹) .proj₁
   -b1/a1 = - b1 * a1⁻¹
@@ -183,11 +183,11 @@ cal-b1-a2' a1 a2 b1 nz1 nz2 = begin
   [a2-b1]/a1 = - (b1 + - a2) * a1⁻¹
 
 
-aux-M≡M' : ∀ {n} y y' -> y .proj₁ ≡ y' .proj₁ -> ZM {n = n} y ≡ ZM y'
+aux-M≡M' : ∀ {n} y y' → y .proj₁ ≡ y' .proj₁ → ZM {n = n} y ≡ ZM y'
 aux-M≡M' {n} y y' eq = begin
   ZM y ≡⟨ auto ⟩
-  S^ x • H • S^ x⁻¹ • H • S^ x • H ≡⟨ Eq.cong₂ (\ xx yy -> S^ xx • H • S^ yy • H • S^ x • H) eq aux-eq ⟩
-  S^ x' • H • S^ x'⁻¹ • H • S^ x • H ≡⟨ Eq.cong (\ xx -> S^ x' • H • S^ x'⁻¹ • H • S^ xx • H) eq ⟩
+  S^ x • H • S^ x⁻¹ • H • S^ x • H ≡⟨ Eq.cong₂ (\ xx yy → S^ xx • H • S^ yy • H • S^ x • H) eq aux-eq ⟩
+  S^ x' • H • S^ x'⁻¹ • H • S^ x • H ≡⟨ Eq.cong (\ xx → S^ x' • H • S^ x'⁻¹ • H • S^ xx • H) eq ⟩
   S^ x' • H • S^ x'⁻¹ • H • S^ x' • H ≡⟨ auto ⟩
   ZM y' ∎
   where
@@ -201,13 +201,13 @@ aux-M≡M' {n} y y' eq = begin
     x⁻¹ ≡⟨  Eq.sym  (*-identityʳ x⁻¹) ⟩
     x⁻¹ * ₁ ≡⟨ Eq.cong (x⁻¹ *_) (Eq.sym (lemma-⁻¹ʳ x' {{nztoℕ {y = x'} {neq0 = y' .proj₂} }})) ⟩
     x⁻¹ * (x' * x'⁻¹) ≡⟨ Eq.sym (*-assoc x⁻¹ x' x'⁻¹) ⟩
-    (x⁻¹ * x') * x'⁻¹ ≡⟨ Eq.cong (\ xx -> (x⁻¹ * xx) * x'⁻¹) (Eq.sym eq) ⟩
+    (x⁻¹ * x') * x'⁻¹ ≡⟨ Eq.cong (\ xx → (x⁻¹ * xx) * x'⁻¹) (Eq.sym eq) ⟩
     (x⁻¹ * x) * x'⁻¹ ≡⟨ Eq.cong (_* x'⁻¹) (lemma-⁻¹ˡ x {{nztoℕ {y = x} {neq0 = y .proj₂} }}) ⟩
     ₁ * x'⁻¹ ≡⟨ *-identityˡ x'⁻¹ ⟩
     x'⁻¹ ∎
 
 
-aux--k*-k⁻¹ : ∀ (k*@(k , nz) : ℤ* ₚ) ->
+aux--k*-k⁻¹ : ∀ (k*@(k , nz) : ℤ* ₚ) →
   let
   k⁻¹ = (k* ⁻¹) .proj₁
   in
@@ -224,7 +224,7 @@ aux--k*-k⁻¹ k*@(k , nz) = begin
   k⁻¹ = (k* ⁻¹) .proj₁
   
 
-aux--b/a+₁ : ∀ (a*@(a , nz) : ℤ* ₚ) b ->
+aux--b/a+₁ : ∀ (a*@(a , nz) : ℤ* ₚ) b →
   let
   a⁻¹ = (a* ⁻¹) .proj₁
   -b/a = - b * a⁻¹
@@ -233,7 +233,7 @@ aux--b/a+₁ : ∀ (a*@(a , nz) : ℤ* ₚ) b ->
   
 aux--b/a+₁ a*@(a , nz) b = Eq.sym ( begin
   - (b + - a) * a⁻¹ ≡⟨ Eq.cong (_* a⁻¹) (Eq.sym (-‿+-comm b (- a))) ⟩
-  (- b + - - a) * a⁻¹ ≡⟨ Eq.cong (\ xx -> (- b + xx) * a⁻¹) (-‿involutive a) ⟩
+  (- b + - - a) * a⁻¹ ≡⟨ Eq.cong (\ xx → (- b + xx) * a⁻¹) (-‿involutive a) ⟩
   (- b + a) * a⁻¹ ≡⟨ *-distribʳ-+ a⁻¹ (- b) a ⟩
   - b * a⁻¹ + a * a⁻¹ ≡⟨ Eq.cong (- b * a⁻¹ +_) (lemma-⁻¹ʳ a {{nztoℕ {y = a} {neq0 = nz}}}) ⟩
   - b * a⁻¹ + ₁ ≡⟨ auto ⟩
@@ -244,7 +244,7 @@ aux--b/a+₁ a*@(a , nz) b = Eq.sym ( begin
   -b/a = - b * a⁻¹
 
 
-aux--k⁻¹ : ∀ (a*@(a , nza)  b*@(b , nzb) : ℤ* ₚ) ->
+aux--k⁻¹ : ∀ (a*@(a , nza)  b*@(b , nzb) : ℤ* ₚ) →
   let
   a⁻¹ = (a* ⁻¹) .proj₁
   b⁻¹ = (b* ⁻¹) .proj₁
@@ -313,7 +313,7 @@ aux--k⁻¹ a*@(a , nza) b*@(b , nzb) = claim1 , claim2 , claim3 , claim4
     a * b⁻¹ ≡⟨ sym (cong (_* b⁻¹) (-‿involutive a)) ⟩ 
     - - a * b⁻¹ ∎
 
-aux-lkkk : ∀ (k*@(k , nzk) l*@(l , nzl) : ℤ* ₚ) ->
+aux-lkkk : ∀ (k*@(k , nzk) l*@(l , nzl) : ℤ* ₚ) →
   let
   k⁻¹ = (k* ⁻¹) .proj₁
   l⁻¹ = (l* ⁻¹) .proj₁
@@ -331,7 +331,7 @@ aux-lkkk k*@(k , nzk) l*@(l , nzl) = begin
   open ≡-Reasoning
 
 
-aux-lkkk' : ∀ (k*@(k , nzk) : ℤ* ₚ) l ->
+aux-lkkk' : ∀ (k*@(k , nzk) : ℤ* ₚ) l →
   let
   k⁻¹ = (k* ⁻¹) .proj₁
   in
@@ -346,7 +346,7 @@ aux-lkkk' k*@(k , nzk) l = begin
   k⁻¹ = (k* ⁻¹) .proj₁
   open ≡-Reasoning
 
-aux-lkkk'' : ∀ (k*@(k , nzk) : ℤ* ₚ) l ->
+aux-lkkk'' : ∀ (k*@(k , nzk) : ℤ* ₚ) l →
   let
   k⁻¹ = (k* ⁻¹) .proj₁
   in

@@ -44,11 +44,11 @@ open PB (₂ QRel,_===_)
 open PP (₂ QRel,_===_)
 open SR word-setoid
 
-b'-of : ∀ (d : B) (x₁ : SympGate 1) -> B
+b'-of : ∀ (d : B) (x₁ : SympGate 1) → B
 b'-of (a , b) H-gate = b , - a
 b'-of (a , b) S-gate = a , b + - a
 
-dir-of : ∀ (d : B) (x₁ : SympGate 1) -> Word (Gen 1)
+dir-of : ∀ (d : B) (x₁ : SympGate 1) → Word (Gen 1)
 dir-of (₀ , ₀)    H-gate = H
 dir-of (₀ , ₁₊ b) H-gate = ε
 dir-of (₁₊ a , ₀) H-gate = H ^ 2
@@ -65,7 +65,7 @@ dir-of (₁₊ a , b) S-gate = ε
 
 -- A Gen-1 word has only gate₁ letters (Gen 0 is empty), so on each
 -- letter dual (gate₁ h ↥) = gate₁ h = gate₁ h ↧ᵏ 1.
-lemma-dual↑ : ∀ (w : Word (Gen 1)) -> dual (w ↑) ≡ w ↓ᵏ 1
+lemma-dual↑ : ∀ (w : Word (Gen 1)) → dual (w ↑) ≡ w ↓ᵏ 1
 lemma-dual↑ [ gate₁ H-gate ]ʷ = Eq.refl
 lemma-dual↑ [ gate₁ S-gate ]ʷ = Eq.refl
 lemma-dual↑ [ gate₀ () ↥ ]ʷ
@@ -75,13 +75,13 @@ lemma-dual↑ (w • v)           = Eq.cong₂ _•_ (lemma-dual↑ w) (lemma-du
 -- BR.Two.B's direction for a top gate is dual (S^ ₀ • w ↑); since
 -- dual (S^ ₀) = dual ε = ε this reduces to ε • dual (w ↑), and
 -- lemma-dual↑ turns dual (w ↑) into w ↓ᵏ 1.
-bridge : ∀ (w : Word (Gen 1)) -> ε • dual (w ↑) ≈ w ↓ᵏ 1
+bridge : ∀ (w : Word (Gen 1)) → ε • dual (w ↑) ≈ w ↓ᵏ 1
 bridge w = trans (refl' (Eq.cong (ε •_) (lemma-dual↑ w))) left-unit
 
 ------------------------------------------------------------------------
 -- The push lemma.
 
-lemma-B-br : ∀ (b : B) (x₁ : SympGate 1) ->
+lemma-B-br : ∀ (b : B) (x₁ : SympGate 1) →
   let
   dir = dir-of b x₁
   b' = b'-of b x₁

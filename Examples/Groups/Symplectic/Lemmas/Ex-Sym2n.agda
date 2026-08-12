@@ -151,7 +151,7 @@ lemma-HCZHS-dual {n} = begin
     S⁻¹ ↓ • CZ ∎
 
 
-lemma-HCZHS^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k -> 
+lemma-HCZHS^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k → 
   S ↑ ^ k • S ^ k • CZ ^ k • H ↑ • CZ • H ↑ ≈ H ↑ • CZ • H ↑ • S ↑ ^ k
 lemma-HCZHS^k {n} k@0 = by-assoc auto
   where
@@ -181,7 +181,7 @@ lemma-HCZHS^k {n} k@(₂₊ k') = begin
   open Pattern-Assoc
 
 
-lemma-semi-HH↑-CZ^k' : let open PB ((₂₊ n) QRel,_===_) in ∀ k ->
+lemma-semi-HH↑-CZ^k' : let open PB ((₂₊ n) QRel,_===_) in ∀ k →
 
   H ↑ ^ 2 • CZ^ k ≈ CZ^ (- k) • H ↑ ^ 2
 
@@ -191,7 +191,7 @@ lemma-semi-HH↑-CZ^k' {n} k = lemma-semi-HH↑-CZ^k k
   open Q2.Lemmas-2Q n
 
 
-lemma-semi-HH↑-CZ^k'-ℕ : let open PB ((₂₊ n) QRel,_===_) in ∀ k -> let -k = p-1 Nat.* k in 
+lemma-semi-HH↑-CZ^k'-ℕ : let open PB ((₂₊ n) QRel,_===_) in ∀ k → let -k = p-1 Nat.* k in 
 
   H ↑ ^ 2 • CZ ^ k ≈ CZ ^ -k • H ↑ ^ 2
 
@@ -215,7 +215,7 @@ lemma-semi-HH↑-CZ^k'-ℕ {n} k = begin
   open Q2.Lemmas-2Q n
 
 
-lemma-XCS^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k -> 
+lemma-XCS^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k → 
   S^ k ↑ • S^ k • CZ^ (- k) • H ↑ ^ 3 • CZ • H ↑ ≈ H ↑ ^ 3 • CZ • H ↑ • S^ k ↑
 lemma-XCS^k {n} k = bbc (HH ↑) ε auxn
   where
@@ -244,7 +244,7 @@ lemma-XCS^k {n} k = bbc (HH ↑) ε auxn
     S^ k ↑ • (S^ k • HH ↑) • CZ^ (- k) • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) ≈⟨ by-passoc (□ • □ ^ 2 • □ • □) (□ ^ 2 • □ ^ 2 • □ ) auto  ⟩
     (S^ k ↑ • S^ k) • (HH ↑ • CZ^ (- k)) • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) ≈⟨ (cright cleft (lemma-semi-HH↑-CZ^k' (- k))) ⟩
     (S^ k ↑ • S^ k) • (CZ^ (- - k) • HH ↑) • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) ≈⟨ by-passoc (□ ^ 2 • □ ^ 2 • □) (□ ^ 3 • □ • □) auto ⟩
-    (S^ k ↑ • S^ k • CZ^ (- - k)) • HH ↑ • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) ≡⟨ Eq.cong (\ xx -> (S^ k ↑ • S^ k • CZ^ (xx)) • HH ↑ • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑)) (-‿involutive k) ⟩
+    (S^ k ↑ • S^ k • CZ^ (- - k)) • HH ↑ • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) ≡⟨ Eq.cong (\ xx → (S^ k ↑ • S^ k • CZ^ (xx)) • HH ↑ • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑)) (-‿involutive k) ⟩
     (S^ k ↑ • S^ k • CZ^ (k)) • HH ↑ • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) ≈⟨ (cright rewrite-sym0 100 auto) ⟩
     (S^ k ↑ • S^ k • CZ^ (k)) • H ↑ • CZ • (H ↑) ≈⟨ by-passoc (□ ^ 3 • □ ^ 3) (□ ^ 6) auto ⟩
     S^ k ↑ • S^ k • CZ^ (k) • H ↑ • CZ • (H ↑) ≈⟨ (cleft sym (refl' (aux-↑ S (toℕ k)))) ⟩
@@ -257,7 +257,7 @@ lemma-XCS^k {n} k = bbc (HH ↑) ε auxn
 
 
 
-lemma-XCS^k-ℕ : let open PB ((₂₊ n) QRel,_===_) in ∀ k -> let -k = p-1 Nat.* k in 
+lemma-XCS^k-ℕ : let open PB ((₂₊ n) QRel,_===_) in ∀ k → let -k = p-1 Nat.* k in 
   (S ^ k) ↑ • S ^ k • CZ ^ -k • XC ≈ XC • (S ^ k) ↑
 lemma-XCS^k-ℕ {n} k = bbc (HH ↑) ε aux0
   where
@@ -304,10 +304,10 @@ lemma-XCS^k-ℕ {n} k = bbc (HH ↑) ε aux0
     aux3 :  CZ ^ (p-1 Nat.* p-1) ≈ CZ
     aux3 = begin
       CZ ^ (p-1 Nat.* p-1) ≈⟨ lemma-CZ^k-% (p-1 Nat.* p-1) ⟩
-      CZ ^ ((p-1 Nat.* p-1) Nat.% p) ≡⟨ Eq.cong (CZ ^_) (Eq.sym (Eq.cong₂ (\ xx yy -> ((xx Nat.* yy) Nat.% p)) (lemma-toℕ₋₁ {p-1}) (lemma-toℕ₋₁ {p-1}))) ⟩
+      CZ ^ ((p-1 Nat.* p-1) Nat.% p) ≡⟨ Eq.cong (CZ ^_) (Eq.sym (Eq.cong₂ (\ xx yy → ((xx Nat.* yy) Nat.% p)) (lemma-toℕ₋₁ {p-1}) (lemma-toℕ₋₁ {p-1}))) ⟩
       CZ ^ ((toℕ (₋₁ {p-1}) Nat.* toℕ (₋₁ {p-1})) Nat.% p) ≡⟨ Eq.cong (CZ ^_) (Eq.sym (toℕ-fromℕ< (m%n<n (toℕ (₋₁ {p-1}) Nat.* toℕ (₋₁ {p-1})) p))) ⟩
       CZ ^ (toℕ (fromℕ< (m%n<n (toℕ (₋₁ {p-1}) Nat.* toℕ (₋₁ {p-1})) p))) ≈⟨ refl ⟩
-      CZ ^ (toℕ (₋₁ {p-1} * ₋₁)) ≡⟨ Eq.cong (\ xx -> CZ ^ (toℕ xx)) aux-₋₁*₋₁=₁ ⟩
+      CZ ^ (toℕ (₋₁ {p-1} * ₋₁)) ≡⟨ Eq.cong (\ xx → CZ ^ (toℕ xx)) aux-₋₁*₋₁=₁ ⟩
       CZ ^ (toℕ 1ₚ) ≈⟨ refl ⟩
       CZ ∎
 
@@ -322,7 +322,7 @@ lemma-XCS^k-ℕ {n} k = bbc (HH ↑) ε aux0
 
 
 
-lemma-XCS^k' : let open PB ((₂₊ n) QRel,_===_) in ∀ k -> 
+lemma-XCS^k' : let open PB ((₂₊ n) QRel,_===_) in ∀ k → 
   S^ k ↑ • S^ k • CZ^ (- k) • H ↑ ^ 3 • CZ • H ↑ ≈ (H ↑ ^ 3 • CZ • H ↑) • S^ k ↑
 lemma-XCS^k' {n} k = trans (lemma-XCS^k k) (by-passoc (□ ^ 4) (□ ^ 3 • □) auto)
   where
@@ -332,7 +332,7 @@ lemma-XCS^k' {n} k = trans (lemma-XCS^k k) (by-passoc (□ ^ 4) (□ ^ 3 • □
 
 {-
 
-lemma-CXS^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k -> 
+lemma-CXS^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k → 
   S^ k • S^ k ↑ • CZ^ (- k) • H^ ₃ • CZ • H ≈ (H^ ₃ • CZ • H) • S^ k
 lemma-CXS^k {n} k = {!!}
   where
@@ -363,7 +363,7 @@ lemma-CXS^k {n} k = {!!}
     (H ^ 3 • CZ • H) • S^ k ∎
 
 
-lemma-CXS^k-ℕ : let open PB ((₂₊ 0) QRel,_===_) in ∀ k -> let -k = p-1 Nat.* k in 
+lemma-CXS^k-ℕ : let open PB ((₂₊ 0) QRel,_===_) in ∀ k → let -k = p-1 Nat.* k in 
   S ^ k • (S ^ k) ↑ • CZ ^ -k • H^ ₃ • CZ • H ≈ (H^ ₃ • CZ • H) • S ^ k
 lemma-CXS^k-ℕ k = by-duality' (lemma-XCS^k-ℕ k) aux1 aux2
   where
@@ -703,7 +703,7 @@ lemma-HSHS {n} = begin
 
 
 
-lemma-CZH↓CZ^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k' -> let k = ₁₊ k' in
+lemma-CZH↓CZ^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k' → let k = ₁₊ k' in
   CZ • H ↓ • CZ ^ k ≈ (S⁻¹ ↓ • H ↓ • S⁻¹ ↓) ^ k • CZ • H ↓ • S⁻¹ ↓ ^ k • S⁻¹ ↑ ^ k
 lemma-CZH↓CZ^k {n} k'@0 = let k = ₁₊ k' in begin
   CZ • H ↓ • CZ ^ k ≈⟨ axiom selinger-c11 ⟩
@@ -887,7 +887,7 @@ lemma-eqn17↓ {n@(₁₊ _)} = begin
     CZ • S ↑ ^  p-1 ≈⟨ (cright refl' (lemma-^-↑ S p-1)) ⟩
     CZ • S⁻¹ ↑ ∎
 
-lemma-S^kHCZH'-dual : let open PB ((₂₊ n) QRel,_===_) in  ∀ k' -> let k = ₁₊ k' in
+lemma-S^kHCZH'-dual : let open PB ((₂₊ n) QRel,_===_) in  ∀ k' → let k = ₁₊ k' in
   (S ^ k) ↓ • H ↓ • CZ • H ↓ ≈ H ↓ • CZ • H ↓ • CZ ^ k • (S ^ k) ↑ • (S ^ k) ↓
 lemma-S^kHCZH'-dual {n} ₀ = lemma-SHCZH
   where
@@ -1155,10 +1155,10 @@ lemma-comm-Ex-H' {n} = begin
   aux3 = begin
     S⁻¹ ^ p-1 ≈⟨ ^^ S p-1 p-1 ⟩
     S ^ (p-1 Nat.* p-1) ≈⟨ lemma-S^k-% (p-1 Nat.* p-1) ⟩
-    S ^ ((p-1 Nat.* p-1) Nat.% p) ≡⟨ Eq.cong (S ^_) (Eq.sym (Eq.cong₂ (\ xx yy -> ((xx Nat.* yy) Nat.% p)) (lemma-toℕ₋₁ {p-1}) (lemma-toℕ₋₁ {p-1}))) ⟩
+    S ^ ((p-1 Nat.* p-1) Nat.% p) ≡⟨ Eq.cong (S ^_) (Eq.sym (Eq.cong₂ (\ xx yy → ((xx Nat.* yy) Nat.% p)) (lemma-toℕ₋₁ {p-1}) (lemma-toℕ₋₁ {p-1}))) ⟩
     S ^ ((toℕ (₋₁ {p-1}) Nat.* toℕ (₋₁ {p-1})) Nat.% p) ≡⟨ Eq.cong (S ^_) (Eq.sym (toℕ-fromℕ< (m%n<n (toℕ (₋₁ {p-1}) Nat.* toℕ (₋₁ {p-1})) p))) ⟩
     S ^ (toℕ (fromℕ< (m%n<n (toℕ (₋₁ {p-1}) Nat.* toℕ (₋₁ {p-1})) p))) ≈⟨ refl ⟩
-    S ^ (toℕ (₋₁ {p-1} * ₋₁)) ≡⟨ Eq.cong (\ xx -> S ^ (toℕ xx)) aux-₋₁*₋₁=₁ ⟩
+    S ^ (toℕ (₋₁ {p-1} * ₋₁)) ≡⟨ Eq.cong (\ xx → S ^ (toℕ xx)) aux-₋₁*₋₁=₁ ⟩
     S ^ (toℕ 1ₚ) ≈⟨ refl ⟩
     S ∎
 
@@ -1198,7 +1198,7 @@ open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open Lemmas0a1
 
 
-lemma-CZCZ^aHCZ^k-n : let open PB ((₂₊ n) QRel,_===_) in ∀ a k -> (nzk : k ≢ ₀) -> 
+lemma-CZCZ^aHCZ^k-n : let open PB ((₂₊ n) QRel,_===_) in ∀ a k → (nzk : k ≢ ₀) → 
   let
   j = ₁₊ a
   k' = toℕ k
@@ -1233,7 +1233,7 @@ lemma-CZCZ^aHCZ^k-n {n} a k nzk = by-emb' n (lemma-CZCZ^aHCZ^k a k nzk) aux aux2
 
 
 
-lemma-CZCZ^aHCZ^k'-n : let open PB ((₂₊ n) QRel,_===_) in ∀ a k -> (nzk : k ≢ ₀) -> 
+lemma-CZCZ^aHCZ^k'-n : let open PB ((₂₊ n) QRel,_===_) in ∀ a k → (nzk : k ≢ ₀) → 
   let
     j = ₁₊ a
     k' = toℕ k
@@ -1267,7 +1267,7 @@ lemma-CZCZ^aHCZ^k'-n {n} a k nzk = by-emb' n (lemma-CZCZ^aHCZ^k' a k nzk) aux au
 
 abstract
 
-  lemma-CZCZ^aH³CZ^k'-n : let open PB ((₂₊ n) QRel,_===_) in ∀ (a : ℕ) (k : ℤ ₚ) -> (nzk : k ≢ ₀) -> 
+  lemma-CZCZ^aH³CZ^k'-n : let open PB ((₂₊ n) QRel,_===_) in ∀ (a : ℕ) (k : ℤ ₚ) → (nzk : k ≢ ₀) → 
     let
       j : ℕ
       j = ₁₊ a

@@ -67,7 +67,7 @@ module Lemmas0c where
   abstract
 
 
-    lemma-CZ^-aHCZ^k' : ∀ (a* k* : ℤ* ₚ) ->
+    lemma-CZ^-aHCZ^k' : ∀ (a* k* : ℤ* ₚ) →
       let
         k : ℤ ₚ
         k = k* .proj₁
@@ -100,7 +100,7 @@ module Lemmas0c where
       -k⁻¹ = - k⁻¹
 
 
-    lemma-CZ^-aHCZ^k-selinger : ∀ (a* k* : ℤ* ₚ) ->
+    lemma-CZ^-aHCZ^k-selinger : ∀ (a* k* : ℤ* ₚ) →
       let
         k : ℤ ₚ
         k = k* .proj₁
@@ -141,7 +141,7 @@ module Lemmas0c where
       aux2 = Eq.trans (Eq.cong -_ (aux )) (-‿distribˡ-* k a⁻¹ )
 
 
-    lemma-CZ^-aHCZ^k-selinger' : ∀ (a* k* : ℤ* ₚ) ->
+    lemma-CZ^-aHCZ^k-selinger' : ∀ (a* k* : ℤ* ₚ) →
       let
         k : ℤ ₚ
         k = k* .proj₁
@@ -199,19 +199,19 @@ module Lemmas0c where
       aux3 : (k* ⁻¹ *' (k* *' a* ⁻¹)) .proj₁ ≡ (a* ⁻¹) .proj₁
       aux3 = Eq.trans (Eq.sym (*-assoc k⁻¹ k a⁻¹)) (Eq.trans (Eq.cong (_* a⁻¹) (lemma-⁻¹ˡ k {{nztoℕ {y = k} {neq0 = k* .proj₂}}})) (*-identityˡ a⁻¹))
       aux4 : k⁻¹ * a * (k⁻¹⁻¹ * k⁻¹⁻¹) ≡ k * a
-      aux4 = Eq.trans (Eq.cong (_* (k⁻¹⁻¹ * k⁻¹⁻¹)) (*-comm k⁻¹ a) ) (Eq.trans (*-assoc a k⁻¹ (k⁻¹⁻¹ * k⁻¹⁻¹)) (Eq.trans (Eq.cong (a *_) (Eq.sym (*-assoc k⁻¹ k⁻¹⁻¹  k⁻¹⁻¹))) (Eq.trans (Eq.cong (\ xx -> a * (xx * k⁻¹⁻¹)) (lemma-⁻¹ʳ k⁻¹ {{nztoℕ {y = k⁻¹} {neq0 = (k* ⁻¹) .proj₂}}})) (Eq.trans (Eq.cong (\ xx -> a * xx) (*-identityˡ k⁻¹⁻¹)) (Eq.trans (Eq.cong (\ xx -> a * xx) (inv-involutive k*)) (*-comm a k)))))) 
+      aux4 = Eq.trans (Eq.cong (_* (k⁻¹⁻¹ * k⁻¹⁻¹)) (*-comm k⁻¹ a) ) (Eq.trans (*-assoc a k⁻¹ (k⁻¹⁻¹ * k⁻¹⁻¹)) (Eq.trans (Eq.cong (a *_) (Eq.sym (*-assoc k⁻¹ k⁻¹⁻¹  k⁻¹⁻¹))) (Eq.trans (Eq.cong (\ xx → a * (xx * k⁻¹⁻¹)) (lemma-⁻¹ʳ k⁻¹ {{nztoℕ {y = k⁻¹} {neq0 = (k* ⁻¹) .proj₂}}})) (Eq.trans (Eq.cong (\ xx → a * xx) (*-identityˡ k⁻¹⁻¹)) (Eq.trans (Eq.cong (\ xx → a * xx) (inv-involutive k*)) (*-comm a k)))))) 
       aux5 : -k⁻¹ * a * (k⁻¹⁻¹ * k⁻¹⁻¹) ≡ -k * a
       aux5 = Eq.trans (Eq.cong (_* (k⁻¹⁻¹ * k⁻¹⁻¹)) (Eq.sym (-‿distribˡ-* k⁻¹ a))) (Eq.trans (Eq.sym (-‿distribˡ-* (k⁻¹ * a) (k⁻¹⁻¹ * k⁻¹⁻¹))) (Eq.trans (Eq.cong -_ aux4) (-‿distribˡ-* k a)))
 
       aux6 : -k⁻¹ * a * (a⁻¹ * a⁻¹) ≡ -k⁻¹ * a⁻¹
-      aux6 = Eq.trans (*-assoc -k⁻¹ a (a⁻¹ * a⁻¹)) (Eq.trans (Eq.cong (-k⁻¹ *_) (Eq.sym (*-assoc a a⁻¹ a⁻¹))) (Eq.trans (Eq.cong (\ xx -> -k⁻¹ * (xx * a⁻¹)) (lemma-⁻¹ʳ a {{nztoℕ {y = a} {neq0 = (a*) .proj₂}}})) (Eq.cong (-k⁻¹ *_) (*-identityˡ a⁻¹))))
+      aux6 = Eq.trans (*-assoc -k⁻¹ a (a⁻¹ * a⁻¹)) (Eq.trans (Eq.cong (-k⁻¹ *_) (Eq.sym (*-assoc a a⁻¹ a⁻¹))) (Eq.trans (Eq.cong (\ xx → -k⁻¹ * (xx * a⁻¹)) (lemma-⁻¹ʳ a {{nztoℕ {y = a} {neq0 = (a*) .proj₂}}})) (Eq.cong (-k⁻¹ *_) (*-identityˡ a⁻¹))))
 
 
       aux7 : -k * a⁻¹ * (a * a) ≡ -k * a
-      aux7 = Eq.trans (*-assoc -k a⁻¹ (a * a)) (Eq.trans (Eq.cong (-k *_) (Eq.sym (*-assoc a⁻¹ a a))) (Eq.trans (Eq.cong (\ xx -> -k * (xx * a)) (lemma-⁻¹ˡ a {{nztoℕ {y = a} {neq0 = (a*) .proj₂}}})) (Eq.cong (-k *_) (*-identityˡ a))))
+      aux7 = Eq.trans (*-assoc -k a⁻¹ (a * a)) (Eq.trans (Eq.cong (-k *_) (Eq.sym (*-assoc a⁻¹ a a))) (Eq.trans (Eq.cong (\ xx → -k * (xx * a)) (lemma-⁻¹ˡ a {{nztoℕ {y = a} {neq0 = (a*) .proj₂}}})) (Eq.cong (-k *_) (*-identityˡ a))))
       
 
-    lemma-CXCZ^k : ∀ (k* : ℤ* ₚ) ->
+    lemma-CXCZ^k : ∀ (k* : ℤ* ₚ) →
       let
         k : ℤ ₚ
         k = k* .proj₁
@@ -259,7 +259,7 @@ module Lemmas0c where
       open Sym0-Rewriting 1
       
 
-    lemma-semi-CXCZ^k : ∀ (k* : ℤ* ₚ) ->
+    lemma-semi-CXCZ^k : ∀ (k* : ℤ* ₚ) →
       let
         k : ℤ ₚ
         k = k* .proj₁
@@ -342,7 +342,7 @@ module Lemmas0c where
         CZ ∎
 
 
-    lemma-semi-CXCZ^k-ℕ' : ∀ (k : ℕ) -> let 2k = k Nat.* 2 in
+    lemma-semi-CXCZ^k-ℕ' : ∀ (k : ℕ) → let 2k = k Nat.* 2 in
 
       S ↑ ^ 2k • CX • CZ ^ k ≈ CZ ^ k • CX
 
@@ -395,7 +395,7 @@ module Lemmas0c where
         aux0 = Eq.sym (Eq.trans (NP.*-distribʳ-+ k 1 1) (Eq.cong₂ Nat._+_ (NP.*-identityˡ k) (NP.*-identityˡ k)))
 
 
-    lemma-CZ^-aHCZ^k'-dual : ∀ (a* k* : ℤ* ₚ) ->
+    lemma-CZ^-aHCZ^k'-dual : ∀ (a* k* : ℤ* ₚ) →
       let
         k : ℤ ₚ
         k = k* .proj₁

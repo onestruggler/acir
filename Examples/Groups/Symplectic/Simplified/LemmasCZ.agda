@@ -44,7 +44,7 @@ module Examples.Groups.Symplectic.Simplified.LemmasCZ
   (p-prime : Prime (suc (₁₊ p-2)))
   (let open PrimeModulus' p-2 p-prime)
   (g*@(g , g≠0) : ℤ* ₚ)
-  (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
+  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ \ (k : ℤ ₚ-₁) → x ≡ g ^′ toℕ k )
   where
 
 open Primitive-Root-Modp' g* g-gen
@@ -71,7 +71,7 @@ module Lemmas2 (n : ℕ) where
   open Lemmas1b (₁₊ n)
 
 
-  lemma-CZ^k-% : ∀ k -> CZ ^ k ≈ CZ ^ (k % p)
+  lemma-CZ^k-% : ∀ k → CZ ^ k ≈ CZ ^ (k % p)
   lemma-CZ^k-% k = begin
     CZ ^ k ≡⟨ Eq.cong (CZ ^_) (m≡m%n+[m/n]*n k p) ⟩
     CZ ^ (k Nat.% p Nat.+ k Nat./ p Nat.* p) ≈⟨ ^-+ CZ (k Nat.% p) (k Nat./ p Nat.* p) ⟩
@@ -85,7 +85,7 @@ module Lemmas2 (n : ℕ) where
     open SR word-setoid
 
 
-  lemma-Mg↓CZ^k : ∀ k ->  let g⁻¹ = (g′ ⁻¹) .proj₁ in let -g⁻¹ = - g⁻¹ in
+  lemma-Mg↓CZ^k : ∀ k →  let g⁻¹ = (g′ ⁻¹) .proj₁ in let -g⁻¹ = - g⁻¹ in
     Mg • CZ ^ k ≈ CZ ^ (k Nat.* toℕ g) • Mg
   lemma-Mg↓CZ^k k@0 = trans right-unit (sym left-unit)
   lemma-Mg↓CZ^k k@1 = begin  
@@ -110,7 +110,7 @@ module Lemmas2 (n : ℕ) where
     where
     open SR word-setoid
 
-  lemma-Mg↓CZ^k' : ∀ k -> let x⁻¹ = (g′ ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  lemma-Mg↓CZ^k' : ∀ k → let x⁻¹ = (g′ ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     Mg • CZ^ k ≈ CZ^ (k * g) • Mg
   lemma-Mg↓CZ^k' k = begin 
     Mg • CZ^ k ≈⟨ refl ⟩
@@ -124,7 +124,7 @@ module Lemmas2 (n : ℕ) where
     x⁻¹ = (g′ ⁻¹) .proj₁
     -x⁻¹ = - x⁻¹
 
-  lemma-Mg^kCZ : ∀ k -> Mg ^ k • CZ ≈ CZ^ (g ^′ k) • Mg ^ k
+  lemma-Mg^kCZ : ∀ k → Mg ^ k • CZ ≈ CZ^ (g ^′ k) • Mg ^ k
   lemma-Mg^kCZ k@0 = trans left-unit (sym right-unit)
   lemma-Mg^kCZ k@1 = begin
     Mg ^ k • CZ ≈⟨ axiom (srel semi-M↓CZ) ⟩
@@ -137,7 +137,7 @@ module Lemmas2 (n : ℕ) where
     Mg • Mg ^ ₁₊ n • CZ ≈⟨ (cright lemma-Mg^kCZ (₁₊ n)) ⟩
     Mg • CZ^ (g ^′ (₁₊ n)) • Mg ^ (₁₊ n) ≈⟨ sym assoc ⟩
     (Mg • CZ^ (g ^′ (₁₊ n))) • Mg ^ (₁₊ n) ≈⟨ (cleft lemma-Mg↓CZ^k' (g ^′ (₁₊ n))) ⟩
-    (CZ^ ((g ^′ (₁₊ n)) * g) • Mg) • Mg ^ (₁₊ n) ≈⟨ refl' (Eq.cong (\ xx -> (CZ^ xx • Mg) • Mg ^ (₁₊ n)) (*-comm (g ^′ (₁₊ n)) g)) ⟩
+    (CZ^ ((g ^′ (₁₊ n)) * g) • Mg) • Mg ^ (₁₊ n) ≈⟨ refl' (Eq.cong (\ xx → (CZ^ xx • Mg) • Mg ^ (₁₊ n)) (*-comm (g ^′ (₁₊ n)) g)) ⟩
     (CZ^ (g * (g ^′ (₁₊ n))) • Mg) • Mg ^ (₁₊ n) ≈⟨ assoc ⟩
     CZ^ (g ^′ k) • Mg • Mg ^ ₁₊ n ∎
     where
@@ -145,7 +145,7 @@ module Lemmas2 (n : ℕ) where
 
 
 
-  lemma-semi-M↓CZ : ∀ x -> let x' = x .proj₁ in let k = g-gen x .proj₁ in M x • CZ ≈ CZ^ x' • M x
+  lemma-semi-M↓CZ : ∀ x → let x' = x .proj₁ in let k = g-gen x .proj₁ in M x • CZ ≈ CZ^ x' • M x
   lemma-semi-M↓CZ x = begin
     M x • CZ ≈⟨ (cleft refl' (aux-M≡M x (g^ k) (eqk))) ⟩
     M (g^ k) • CZ ≈⟨ cong (sym (axiom (srel (M-power (k))))) refl ⟩
@@ -166,7 +166,7 @@ module Lemmas2 (n : ℕ) where
 
 
 
-  lemma-Mg↑CZ^k : ∀ k ->  let g⁻¹ = (g′ ⁻¹) .proj₁ in let -g⁻¹ = - g⁻¹ in
+  lemma-Mg↑CZ^k : ∀ k →  let g⁻¹ = (g′ ⁻¹) .proj₁ in let -g⁻¹ = - g⁻¹ in
     Mg ↑ • CZ ^ k ≈ CZ ^ (k Nat.* toℕ g) • Mg ↑
   lemma-Mg↑CZ^k k@0 = trans right-unit (sym left-unit)
   lemma-Mg↑CZ^k k@1 = begin  
@@ -191,7 +191,7 @@ module Lemmas2 (n : ℕ) where
     where
     open SR word-setoid
 
-  lemma-Mg↑CZ^k' : ∀ k -> let x⁻¹ = (g′ ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  lemma-Mg↑CZ^k' : ∀ k → let x⁻¹ = (g′ ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     Mg ↑ • CZ^ k ≈ CZ^ (k * g) • Mg ↑
   lemma-Mg↑CZ^k' k = begin 
     Mg ↑ • CZ^ k ≈⟨ refl ⟩
@@ -205,7 +205,7 @@ module Lemmas2 (n : ℕ) where
     x⁻¹ = (g′ ⁻¹) .proj₁
     -x⁻¹ = - x⁻¹
 
-  lemma-Mg^k↑CZ : ∀ k -> Mg ↑ ^ k • CZ ≈ CZ^ (g ^′ k) • Mg ↑ ^ k
+  lemma-Mg^k↑CZ : ∀ k → Mg ↑ ^ k • CZ ≈ CZ^ (g ^′ k) • Mg ↑ ^ k
   lemma-Mg^k↑CZ k@0 = trans left-unit (sym right-unit)
   lemma-Mg^k↑CZ k@1 = begin
     Mg ↑ ^ k • CZ ≈⟨ axiom (srel semi-M↑CZ) ⟩
@@ -218,7 +218,7 @@ module Lemmas2 (n : ℕ) where
     Mg ↑ • Mg ↑ ^ ₁₊ n • CZ ≈⟨ (cright lemma-Mg^k↑CZ (₁₊ n)) ⟩
     Mg ↑ • CZ^ (g ^′ (₁₊ n)) • Mg ↑ ^ (₁₊ n) ≈⟨ sym assoc ⟩
     (Mg ↑ • CZ^ (g ^′ (₁₊ n))) • Mg ↑ ^ (₁₊ n) ≈⟨ (cleft lemma-Mg↑CZ^k' (g ^′ (₁₊ n))) ⟩
-    (CZ^ ((g ^′ (₁₊ n)) * g) • Mg ↑) • Mg ↑ ^ (₁₊ n) ≈⟨ refl' (Eq.cong (\ xx -> (CZ^ xx • Mg ↑) • Mg ↑ ^ (₁₊ n)) (*-comm (g ^′ (₁₊ n)) g)) ⟩
+    (CZ^ ((g ^′ (₁₊ n)) * g) • Mg ↑) • Mg ↑ ^ (₁₊ n) ≈⟨ refl' (Eq.cong (\ xx → (CZ^ xx • Mg ↑) • Mg ↑ ^ (₁₊ n)) (*-comm (g ^′ (₁₊ n)) g)) ⟩
     (CZ^ (g * (g ^′ (₁₊ n))) • Mg ↑) • Mg ↑ ^ (₁₊ n) ≈⟨ assoc ⟩
     CZ^ (g ^′ k) • Mg ↑ • Mg ↑ ^ ₁₊ n ∎
     where
@@ -226,7 +226,7 @@ module Lemmas2 (n : ℕ) where
 
 
 
-  lemma-semi-M↑CZ : ∀ x -> let x' = x .proj₁ in let k = g-gen x .proj₁ in M x ↑ • CZ ≈ CZ^ x' • M x ↑ 
+  lemma-semi-M↑CZ : ∀ x → let x' = x .proj₁ in let k = g-gen x .proj₁ in M x ↑ • CZ ≈ CZ^ x' • M x ↑ 
   lemma-semi-M↑CZ x = begin
     M x ↑ • CZ ≈⟨ (cleft (lemma-cong↑ _ _ ((aux-MM (x .proj₂) (((g^ k) .proj₂))  ( (eqk)))))) ⟩
     M (g^ k) ↑ • CZ ≈⟨ cong (sym (axiom (cong↑ (srel (M-power (k)))))) refl ⟩

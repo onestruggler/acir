@@ -76,7 +76,7 @@ open Commuting-Symplectic 1
 
 --module EX = Symplectic-EX
 
-lemma-|||-mm : ∀ m↑ m -> CZ02 • ⟦ m↑ ⟧ₘ ↑ ↑ • CZ • ⟦ m ⟧ₘ ↑ • CZ ↑ ≈ (CZ^ (m .proj₁ * m↑ .proj₁)) ↑ • CZ02 • ⟦ m↑ ⟧ₘ ↑ ↑ • CZ • ⟦ m ⟧ₘ ↑
+lemma-|||-mm : ∀ m↑ m → CZ02 • ⟦ m↑ ⟧ₘ ↑ ↑ • CZ • ⟦ m ⟧ₘ ↑ • CZ ↑ ≈ (CZ^ (m .proj₁ * m↑ .proj₁)) ↑ • CZ02 • ⟦ m↑ ⟧ₘ ↑ ↑ • CZ • ⟦ m ⟧ₘ ↑
 lemma-|||-mm m↑@(m↑' , nz↑) m@(m' , nz) = begin
   CZ02 • ⟦ m↑ ⟧ₘ ↑ ↑ • CZ • ⟦ m ⟧ₘ ↑ • CZ ↑ ≈⟨ cright cright cright lemma-cong↑ _ _ (B2.axiom (semi-M↓CZ m)) ⟩
   CZ02 • ⟦ m↑ ⟧ₘ ↑ ↑ • CZ • (CZ^ m') ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ cright cright cright sym (cleft refl' (lemma-^-↑ CZ (toℕ m'))) ⟩
@@ -93,7 +93,7 @@ lemma-|||-mm m↑@(m↑' , nz↑) m@(m' , nz) = begin
   (CZ^ (m' * m↑')) ↑ • CZ02 • ⟦ m↑ ⟧ₘ ↑ ↑ • CZ • ⟦ m ⟧ₘ ↑ ∎
 
 
-aux-comm-CZ↑-S↑↑ : ∀ m k -> CZ^ m ↑ • S^ k ↑ ↑ ≈ S^ k ↑ ↑ • CZ^ m ↑
+aux-comm-CZ↑-S↑↑ : ∀ m k → CZ^ m ↑ • S^ k ↑ ↑ ≈ S^ k ↑ ↑ • CZ^ m ↑
 aux-comm-CZ↑-S↑↑ m k = begin
   CZ^ m ↑ • S^ k ↑ ↑ ≈⟨ sym (cong (refl' (lemma-^-↑ CZ (toℕ m))) (lemma-cong↑ _ _ (B2.refl' (lemma-^-↑ S (toℕ k))))) ⟩
   CZ ↑ ^ toℕ m • (S ↑ ^ toℕ k) ↑ ≈⟨ cright sym (refl' (lemma-^-↑ (S ↑) (toℕ k))) ⟩
@@ -106,7 +106,7 @@ aux-comm-CZ↑-S↑↑ m k = begin
 sa = by-passoc
 
 
-aux-EX↑-EX-CZ^k↑ : ∀ k -> Ex ↑ • Ex • CZ^ k ↑ ≈ CZ^ k • Ex ↑ • Ex
+aux-EX↑-EX-CZ^k↑ : ∀ k → Ex ↑ • Ex • CZ^ k ↑ ≈ CZ^ k • Ex ↑ • Ex
 aux-EX↑-EX-CZ^k↑ k = begin
   Ex ↑ • Ex • CZ^ k ↑ ≈⟨ sym assoc ⟩
   (Ex ↑ • Ex) • CZ^ k ↑ ≈⟨ cright sym (refl' (lemma-^-↑ CZ (toℕ k))) ⟩
@@ -115,20 +115,20 @@ aux-EX↑-EX-CZ^k↑ k = begin
   CZ^ k • Ex ↑ • Ex ∎
 
 
-aux-CZ⁻¹↑^k-CZ↑^-k : ∀ (k : ℤ ₚ) -> CZ⁻¹ ↑ ^ toℕ k ≈ CZ ↑ ^ toℕ (- k)
+aux-CZ⁻¹↑^k-CZ↑^-k : ∀ (k : ℤ ₚ) → CZ⁻¹ ↑ ^ toℕ k ≈ CZ ↑ ^ toℕ (- k)
 aux-CZ⁻¹↑^k-CZ↑^-k k = begin
   CZ⁻¹ ↑ ^ toℕ k ≈⟨ refl' (lemma-^-↑ CZ⁻¹ (toℕ k)) ⟩
   (CZ⁻¹ ^ toℕ k) ↑ ≈⟨ lemma-cong↑ _ _ (aux-CZ⁻¹^k-CZ^-k k) ⟩
   (CZ ^ toℕ (- k)) ↑ ≈⟨ sym (refl' (lemma-^-↑ CZ (toℕ (- k)))) ⟩
   CZ ↑ ^ toℕ (- k) ∎
 
-aux-CZ02⁻ᵏ-CZ02k : ∀ (k : ℤ ₚ) -> CZ02⁻ᵏ (toℕ k) ≈ CZ02k (toℕ (- k))
+aux-CZ02⁻ᵏ-CZ02k : ∀ (k : ℤ ₚ) → CZ02⁻ᵏ (toℕ k) ≈ CZ02k (toℕ (- k))
 aux-CZ02⁻ᵏ-CZ02k k = begin
   Ex • CZ⁻¹ ↑ ^ toℕ k • Ex ≈⟨ cright cleft aux-CZ⁻¹↑^k-CZ↑^-k k ⟩
   Ex • CZ ↑ ^ toℕ (- k) • Ex ∎
 
 
-aux-XC02-CZ^k↑ : ∀ k -> XC02 • CZ^ k ↑ ≈ CZ^ k ↑ • CZ^ (- k) • XC02
+aux-XC02-CZ^k↑ : ∀ k → XC02 • CZ^ k ↑ ≈ CZ^ k ↑ • CZ^ (- k) • XC02
 aux-XC02-CZ^k↑ k = bbc (Ex ↑ • Ex) (Ex • Ex ↑) claim
   where
   claim : (Ex ↑ • Ex) • (XC02 • CZ^ k ↑) • Ex • Ex ↑ ≈ (Ex ↑ • Ex) • (CZ^ k ↑ • CZ^ (- k) • XC02) • Ex • Ex ↑
@@ -153,7 +153,7 @@ aux-XC02-CZ^k↑ k = bbc (Ex ↑ • Ex) (Ex • Ex ↑) claim
     (Ex ↑ • Ex • CZ^ k ↑) • CZ^ (- k) • XC02 • Ex • Ex ↑ ≈⟨ sa (□ ^ 3 • □ ^ 4) (□ ^ 2 • □ ^ 3 • □ ^ 2) auto ⟩
     (Ex ↑ • Ex) • (CZ^ k ↑ • CZ^ (- k) • XC02) • Ex • Ex ↑ ∎
 
-aux-CZ02-H-CZ↑ : ∀ k -> CZ02 • H ↑ ↑ • CZ^ k ↑ ≈ XC'^ (- k) ↑ • CZ^ (- k) • CZ02 • H ↑ ↑ 
+aux-CZ02-H-CZ↑ : ∀ k → CZ02 • H ↑ ↑ • CZ^ k ↑ ≈ XC'^ (- k) ↑ • CZ^ (- k) • CZ02 • H ↑ ↑ 
 aux-CZ02-H-CZ↑ k = begin
   CZ02 • H ↑ ↑ • CZ^ k ↑ ≈⟨ sym assoc ⟩
   (CZ02 • H ↑ ↑) • CZ^ k ↑ ≈⟨ cleft rewrite-powers 1000 auto ⟩
@@ -167,7 +167,7 @@ aux-CZ02-H-CZ↑ k = begin
   XC'^ (- k) ↑ • CZ^ (- k) • CZ02 • H ↑ ↑  ∎
 
 
-lemma-|||-mhm : ∀ m↑ k m ->
+lemma-|||-mhm : ∀ m↑ k m →
   let
   m↑⁻¹ = (m↑ ⁻¹) .proj₁
   m/m↑ = m .proj₁ * m↑⁻¹
@@ -206,7 +206,7 @@ aux-comm-XC02-H↑ = begin
   Ex • H • XC ↑ • Ex ≈⟨ rewrite-swap 100 auto ⟩
   H ↑ • XC02 ∎
 
-aux-XC02-CX^k↑ : ∀ k -> XC02 • CX^ k ↑ ≈ CX^ k ↑ • XC^ (- k) • XC02
+aux-XC02-CX^k↑ : ∀ k → XC02 • CX^ k ↑ ≈ CX^ k ↑ • XC^ (- k) • XC02
 aux-XC02-CX^k↑ k = bbc (H ↑) (H ↑ ^ 3) claim
   where
   claim : H ↑ • (XC02 • CX^ k ↑) • H ↑ ^ 3 ≈ H ↑ • (CX^ k ↑ • XC^ (- k) • XC02) • H ↑ ^ 3

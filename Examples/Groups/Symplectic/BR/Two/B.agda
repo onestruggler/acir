@@ -76,7 +76,7 @@ open Basis-Change _ ((₂₊ 0) QRel,_===_) grouplike
 
 
 
-lemma-B~dualD : ∀ (x : B) -> [ x ]ᵇ ≈ H ↑ • dual [ x ]ᵈ • H ^ 3
+lemma-B~dualD : ∀ (x : B) → [ x ]ᵇ ≈ H ↑ • dual [ x ]ᵈ • H ^ 3
 lemma-B~dualD x@(a@₀ , b) = begin
   Ex • CX'^ b ≈⟨ sa (□ • (□ ^ 3 • □ ^ 2)) (□ ^ 2 • (□ ^ 2 • □) • □) auto ⟩
   (Ex • H) • (H ^ 2 • CZ^ b) • H ≈⟨ cright cleft lemma-semi-HH↓-CZ^k' b ⟩
@@ -99,7 +99,7 @@ lemma-B~dualD x@(a@(₁₊ _) , b) = begin
 
 
 
-dir-and-b' : ∀ (d : B) (g : Gen 2) (neqH : g ≢ H-gen) (neqCZ : g ≢ CZ-gen) -> Word (Gen 2) × B
+dir-and-b' : ∀ (d : B) (g : Gen 2) (neqH : g ≢ H-gen) (neqCZ : g ≢ CZ-gen) → Word (Gen 2) × B
 
 dir-and-b' d (gate₀ () ↥ ↥) neqH neqCZ
 dir-and-b' d@(a , b)                   H-gen neqH neqCZ  =  ⊥-elim (neqH  auto)
@@ -119,7 +119,7 @@ dir-and-b' d@(a@₀ , b@(₁₊ _))          S-gen neqH neqCZ  =  S ↑ • S �
 dir-and-b' d@(a@(₁₊ _) , b)            S-gen neqH neqCZ  =  S ↑ • S • CZ^ (- ₁)    ,   (a , b)
 
 
-lemma-CX^k-S : ∀ (k*@(k , nz) : ℤ* ₚ) ->
+lemma-CX^k-S : ∀ (k*@(k , nz) : ℤ* ₚ) →
 
   CX^ k • S ≈ S • S^ (k * k) ↑ • CZ^ (- k) • CX^ k
 
@@ -144,7 +144,7 @@ lemma-CX^k-S k*@(k , nz) = bbc (ZM (k* ⁻¹) ↑) ε claim
     (S • S ↑) • (ZM (k* ⁻¹) ↑ • CZ^ (- ₁ * k⁻¹⁻¹)) • CX^ k ≈⟨ cright cleft cright refl' (Eq.cong CZ^ (Eq.trans (-1*x≈-x k⁻¹⁻¹) (Eq.cong -_ (inv-involutive k*)))) ⟩
     (S • S ↑) • (ZM (k* ⁻¹) ↑ • CZ^ (- k)) • CX^ k ≈⟨ sa (□ ^ 2 • □ ^ 2 • □) (□ • □ ^ 2 • □ ^ 2) auto ⟩
     S • (S ↑ • ZM (k* ⁻¹) ↑) • CZ^ (- k) • CX^ k ≈⟨ cright cleft lemma-cong↑ _ _ (lemma-S^kM k⁻¹ ₁ ((k* ⁻¹) .proj₂)) ⟩
-    S • (ZM (k* ⁻¹) ↑ • S^ (₁ * (k⁻¹⁻¹ * k⁻¹⁻¹)) ↑) • CZ^ (- k) • CX^ k ≈⟨ cright cleft cright refl' (Eq.cong (\ xx -> S^ xx ↑) (Eq.trans (*-identityˡ (k⁻¹⁻¹ * k⁻¹⁻¹)) (Eq.trans (Eq.cong₂ _*_ (inv-involutive k*) (inv-involutive k*)) auto))) ⟩
+    S • (ZM (k* ⁻¹) ↑ • S^ (₁ * (k⁻¹⁻¹ * k⁻¹⁻¹)) ↑) • CZ^ (- k) • CX^ k ≈⟨ cright cleft cright refl' (Eq.cong (\ xx → S^ xx ↑) (Eq.trans (*-identityˡ (k⁻¹⁻¹ * k⁻¹⁻¹)) (Eq.trans (Eq.cong₂ _*_ (inv-involutive k*) (inv-involutive k*)) auto))) ⟩
     S • (ZM (k* ⁻¹) ↑ • S^ (k * k) ↑) • CZ^ (- k) • CX^ k ≈⟨ sa (□ • □ ^ 2 • □ ^ 2) (□ ^ 2 • □ ^ 3) auto ⟩
     (S • ZM (k* ⁻¹) ↑) • S^ (k * k) ↑ • CZ^ (- k) • CX^ k ≈⟨ cleft lemma-comm-S-w↑ (ZM (k* ⁻¹)) ⟩
     (ZM (k* ⁻¹) ↑ • S) • S^ (k * k) ↑ • CZ^ (- k) • CX^ k ≈⟨ assoc ⟩
@@ -153,7 +153,7 @@ lemma-CX^k-S k*@(k , nz) = bbc (ZM (k* ⁻¹) ↑) ε claim
 
 
 
-aux-H↑-MS : ∀ m k -> H ↑ • ZM m • S^ k ≈ (ZM m • S^ k) • H ↑
+aux-H↑-MS : ∀ m k → H ↑ • ZM m • S^ k ≈ (ZM m • S^ k) • H ↑
 aux-H↑-MS m k = begin
   H ↑ • ZM m • S^ k ≈⟨ sym assoc ⟩
   (H ↑ • ZM m) • S^ k ≈⟨ cleft sym (aux-comm-m-H↑ m) ⟩
@@ -164,7 +164,7 @@ aux-H↑-MS m k = begin
 
 
 
-b'-of : ∀ (d : B) (g : Gen 2) (neqH : g ≢ H-gen) (neqCZ : g ≢ CZ-gen) -> B
+b'-of : ∀ (d : B) (g : Gen 2) (neqH : g ≢ H-gen) (neqCZ : g ≢ CZ-gen) → B
 
 b'-of (a , b) (H-gen ↥) _ _  =  (b , - a)
 b'-of (a , b) (S-gen ↥) _ _  =  (a , b + - a)
@@ -175,7 +175,7 @@ b'-of (a , b) H-gen nH nCZ   =  ⊥-elim (nH  auto)
 b'-of (a , b) CZ-gen nH nCZ  =  ⊥-elim (nCZ auto)
 
 
-dir-of : ∀ (d : B) (g : Gen 2) (neqH : g ≢ H-gen) (neqCZ : g ≢ CZ-gen) -> Word (Gen 2)
+dir-of : ∀ (d : B) (g : Gen 2) (neqH : g ≢ H-gen) (neqCZ : g ≢ CZ-gen) → Word (Gen 2)
 
 dir-of d (gate₀ () ↥ ↥) _ _
 dir-of d@(a , b)               (H-gen ↥) _ _  =  dual dir
@@ -194,7 +194,7 @@ dir-of d@(a , b)            H-gen neqH neqCZ  =  ⊥-elim (neqH  auto)
 dir-of d@(a , b)           CZ-gen neqH neqCZ  =  ⊥-elim (neqCZ auto)
 
 
-lemma-B-br : ∀ (b : B) (g : Gen 2) (neqH : g ≢ H-gen) (neqCZ : g ≢ CZ-gen) ->
+lemma-B-br : ∀ (b : B) (g : Gen 2) (neqH : g ≢ H-gen) (neqCZ : g ≢ CZ-gen) →
   let
   dir = dir-of b g neqH neqCZ
   b' = b'-of b g neqH neqCZ

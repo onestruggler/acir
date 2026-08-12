@@ -40,7 +40,7 @@ open PP ((₁₊ n) QRel,_===_)
 open SR word-setoid
 open Lemmas0 n
 
-lemma-single-qupit-br-E : ∀ (b : ℤ ₚ) ->
+lemma-single-qupit-br-E : ∀ (b : ℤ ₚ) →
 
   [ b ]ᵉ • S ≈ [ b + - ₁ ]ᵉ
   

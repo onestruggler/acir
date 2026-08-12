@@ -59,7 +59,7 @@ pushᵈ d (w • v)           = proj₁ r₁ • proj₁ r₂ , proj₂ r₂
 -- D-Bot.lemma-D-br.  Singletons are D-Bot.lemma-D-br; a concatenation
 -- threads the box and fuses the residuals (both distributions of ↓ᵏ 1
 -- and ↑ over • are definitional).
-lemmaᵈ-w : (d : D) (w : Word (Gen 1)) ->
+lemmaᵈ-w : (d : D) (w : Word (Gen 1)) →
   [ d ]ᵈ • (w ↓ᵏ 1) ≈ (proj₁ (pushᵈ d w) ↑) • [ proj₂ (pushᵈ d w) ]ᵈ
 lemmaᵈ-w d [ gate₁ H-gate ]ʷ = DB.lemma-D-br d H-gate
 lemmaᵈ-w d [ gate₁ S-gate ]ʷ = DB.lemma-D-br d S-gate
@@ -86,7 +86,7 @@ lemmaᵈ-w d (w • v) = begin
 ------------------------------------------------------------------------
 -- The chained push.
 
-lemma-BD-Top : (d : D) (b : B) (x₁ : SympGate 1) ->
+lemma-BD-Top : (d : D) (b : B) (x₁ : SympGate 1) →
   let
   dir = BT.dir-of b x₁
   b'  = BT.b'-of b x₁

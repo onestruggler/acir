@@ -118,7 +118,7 @@ module Lemmas0a where
 
 
   aux-[H⁻¹SH]^k : let open PB ((₁₊ n) QRel,_===_) in
-    ∀ k -> (H⁻¹ • S • H) ^ k ≈ H⁻¹ • S ^ k • H
+    ∀ k → (H⁻¹ • S • H) ^ k ≈ H⁻¹ • S ^ k • H
   aux-[H⁻¹SH]^k {n} k@0 = rewrite-sym0 100 auto
     where
     open PB ((₁₊ n) QRel,_===_)
@@ -280,7 +280,7 @@ module Lemmas0a where
       ε ≈⟨ sym (axiom order-CZ) ⟩
       CZ • CZ⁻¹ ∎
 
-  lemma-[S⁻¹HS⁻¹]^k : let open PB ((₁₊ n) QRel,_===_) in ∀ k -> (S⁻¹ • H • S⁻¹) ^ k ≈ H ^ 3 • S ^ k • H
+  lemma-[S⁻¹HS⁻¹]^k : let open PB ((₁₊ n) QRel,_===_) in ∀ k → (S⁻¹ • H • S⁻¹) ^ k ≈ H ^ 3 • S ^ k • H
   lemma-[S⁻¹HS⁻¹]^k {n} k@0 = by-assoc-and (sym (axiom order-H)) auto auto
     where
     open PB ((₁₊ n) QRel,_===_)
@@ -369,11 +369,11 @@ module Lemmas0a where
     open Commuting-Symplectic n
 
 
-  -- lemma-S^k↑ : let open PB ((₂₊ n) QRel,_===_) in  ∀ k ->
+  -- lemma-S^k↑ : let open PB ((₂₊ n) QRel,_===_) in  ∀ k →
   --   (S ^ k) ↑ ≈ (S ↑) ^ k
 
 
-  lemma-S^kHCZH' : let open PB ((₂₊ n) QRel,_===_) in  ∀ k' -> let k = ₁₊ k' in
+  lemma-S^kHCZH' : let open PB ((₂₊ n) QRel,_===_) in  ∀ k' → let k = ₁₊ k' in
     (S ^ k) ↑ • H ↑ • CZ • H ↑ ≈ H ↑ • CZ • H ↑ • CZ ^ k • (S ^ k) ↓ • (S ^ k) ↑
   lemma-S^kHCZH' {n} ₀ = lemma-SHCZH'
     where
@@ -708,7 +708,7 @@ module Lemmas0a where
     open PP ((₂₊ n) QRel,_===_)
     open SR word-setoid
 
-  lemma-CZHCZ^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k' -> let k = ₁₊ k' in
+  lemma-CZHCZ^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k' → let k = ₁₊ k' in
     CZ • H • CZ ^ k ≈ (S⁻¹ • H • S⁻¹) ^ k • CZ • H • S⁻¹ ^ k • S⁻¹ ↑ ^ k
   lemma-CZHCZ^k {n} k'@0 = let k = ₁₊ k' in begin
     CZ • H • CZ ^ k ≈⟨ axiom selinger-c11 ⟩
@@ -749,7 +749,7 @@ module Lemmas0a where
     open Pattern-Assoc
 
 
-  lemma-CZHCZ^-k : let open PB ((₂₊ n) QRel,_===_) in ∀ k' -> let k = toℕ k' in
+  lemma-CZHCZ^-k : let open PB ((₂₊ n) QRel,_===_) in ∀ k' → let k = toℕ k' in
     CZ • H • CZ^ k' ≈ (S⁻¹ • H • S⁻¹) ^ k • CZ • H • S⁻¹ ^ k • S⁻¹ ↑ ^ k
   lemma-CZHCZ^-k {n} k'@₀ = begin
     CZ • H • CZ^ k' ≈⟨ by-assoc auto ⟩
@@ -775,7 +775,7 @@ module Lemmas0a where
     k = toℕ k'
 
 
-  lemma-CZH↑CZ^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k' -> let k = ₁₊ k' in
+  lemma-CZH↑CZ^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k' → let k = ₁₊ k' in
     CZ • H ↑ • CZ ^ k ≈ (S⁻¹ ↑ • H ↑ • S⁻¹ ↑) ^ k • CZ • H ↑ • S⁻¹ ↑ ^ k • S⁻¹ ^ k
   lemma-CZH↑CZ^k {n} k'@0 = let k = ₁₊ k' in begin
     CZ • H ↑ • CZ ^ k ≈⟨ axiom selinger-c10 ⟩

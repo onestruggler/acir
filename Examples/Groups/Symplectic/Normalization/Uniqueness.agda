@@ -1,4 +1,4 @@
-﻿------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Presentations of groups
 --
 -- Uniqueness of the symplectic normal form, via Circuit.Uniqueness

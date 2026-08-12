@@ -82,7 +82,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SectionLMBridge p-2
 
 C = ML
 
-ract : ∀ {n} -> C (₁₊ n) → Gen (₁₊ n) → Circuit n × C (₁₊ n)
+ract : ∀ {n} → C (₁₊ n) → Gen (₁₊ n) → Circuit n × C (₁₊ n)
 -- Width 1 (no B boxes, no sum): ML 1 = ML' 1, only bottom unary gates.
 ract {₀} ml (gate₀ () ↥)
 ract {₀} ml (gate₁ x) = Push.ract ml x

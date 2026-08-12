@@ -68,7 +68,7 @@ open Duality
 
 
 aux-comm-shs-CZ↑ : let open PB ((₃₊ n) QRel,_===_) in
-  ∀ a b -> SHS a b • CZ ↑ ≈ CZ ↑ • SHS a b
+  ∀ a b → SHS a b • CZ ↑ ≈ CZ ↑ • SHS a b
 aux-comm-shs-CZ↑ {n} x x⁻¹ = begin
   SHS x x⁻¹ • CZ ↑ ≈⟨ (cleft refl) ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x • H) • CZ ↑ ≈⟨ by-passoc (□ ^ 6 • □) (□ ^ 5 • □ ^ 2) auto ⟩
@@ -91,11 +91,11 @@ aux-comm-shs-CZ↑ {n} x x⁻¹ = begin
   open SR word-setoid
   open Pattern-Assoc
 
-aux-comm-m-CZ↑ : let open PB ((₃₊ n) QRel,_===_) in ∀ m -> ⟦ m ⟧ₘ • CZ ↑ ≈ CZ ↑ • ⟦ m ⟧ₘ
+aux-comm-m-CZ↑ : let open PB ((₃₊ n) QRel,_===_) in ∀ m → ⟦ m ⟧ₘ • CZ ↑ ≈ CZ ↑ • ⟦ m ⟧ₘ
 aux-comm-m-CZ↑ m = aux-comm-shs-CZ↑ (m .proj₁) ((m ⁻¹) .proj₁)
 
 aux-comm-shs-CZ^ : let open PB ((₃₊ n) QRel,_===_) in
-  ∀ a b k -> SHS a b • CZ^ k ↑ ≈ CZ^ k ↑ • SHS a b
+  ∀ a b k → SHS a b • CZ^ k ↑ ≈ CZ^ k ↑ • SHS a b
 aux-comm-shs-CZ^ {n} a b k = begin
   SHS a b • CZ^ k ↑ ≈⟨ cright sym (refl' (aux-↑ CZ (toℕ k))) ⟩
   SHS a b • CZ ↑ ^ toℕ k ≈⟨ comm⇒pow-comm 1 (toℕ k) (aux-comm-shs-CZ↑ a b) ⟩
@@ -106,11 +106,11 @@ aux-comm-shs-CZ^ {n} a b k = begin
   open PP ((₃₊ n) QRel,_===_)
   open SR word-setoid
 
-aux-comm-m-CZ^ : let open PB ((₃₊ n) QRel,_===_) in ∀ m k -> ⟦ m ⟧ₘ • CZ^ k ↑ ≈ CZ^ k ↑ • ⟦ m ⟧ₘ
+aux-comm-m-CZ^ : let open PB ((₃₊ n) QRel,_===_) in ∀ m k → ⟦ m ⟧ₘ • CZ^ k ↑ ≈ CZ^ k ↑ • ⟦ m ⟧ₘ
 aux-comm-m-CZ^ m = aux-comm-shs-CZ^ (m .proj₁) ((m ⁻¹) .proj₁)
 
 aux-comm-shs-g↥↑ : let open PB ((₃₊ n) QRel,_===_) in
-  ∀ a b g -> SHS a b • [ g ↥ ]ʷ ↑ ≈ [ g ↥ ]ʷ ↑ • SHS a b
+  ∀ a b g → SHS a b • [ g ↥ ]ʷ ↑ ≈ [ g ↥ ]ʷ ↑ • SHS a b
 aux-comm-shs-g↥↑ {n} x x⁻¹ g = begin
   SHS x x⁻¹ • [ g ↥ ]ʷ ↑ ≈⟨ (cleft refl) ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x • H) • [ g ↥ ]ʷ ↑ ≈⟨ by-passoc (□ ^ 6 • □) (□ ^ 5 • □ ^ 2) auto ⟩
@@ -133,12 +133,12 @@ aux-comm-shs-g↥↑ {n} x x⁻¹ g = begin
   open SR word-setoid
   open Pattern-Assoc
 
-aux-comm-m-g↥↑ : let open PB ((₃₊ n) QRel,_===_) in ∀ m g -> ⟦ m ⟧ₘ • [ g ↥ ]ʷ ↑ ≈ [ g ↥ ]ʷ ↑ • ⟦ m ⟧ₘ
+aux-comm-m-g↥↑ : let open PB ((₃₊ n) QRel,_===_) in ∀ m g → ⟦ m ⟧ₘ • [ g ↥ ]ʷ ↑ ≈ [ g ↥ ]ʷ ↑ • ⟦ m ⟧ₘ
 aux-comm-m-g↥↑ m = aux-comm-shs-g↥↑ (m .proj₁) ((m ⁻¹) .proj₁)
 
 
 aux-comm-shs-w↑ : let open PB ((₁₊ n) QRel,_===_) in
-  ∀ a b w -> SHS a b • w ↑ ≈ w ↑ • SHS a b
+  ∀ a b w → SHS a b • w ↑ ≈ w ↑ • SHS a b
 aux-comm-shs-w↑ {₁₊ n} a b [ H-gen ]ʷ = aux-comm-shs-H↑ n a b
 aux-comm-shs-w↑ {₁₊ n} a b [ S-gen ]ʷ = aux-comm-shs-S↑ n a b
 aux-comm-shs-w↑ {₂₊ n} a b [ CZ-gen ]ʷ = aux-comm-shs-CZ↑ a b
@@ -158,12 +158,12 @@ aux-comm-shs-w↑ {n} a b (w • v) = begin
   open PP ((₁₊ n) QRel,_===_)
   open SR word-setoid
 
-aux-comm-m-w↑ : let open PB ((₁₊ n) QRel,_===_) in ∀ m w -> ⟦ m ⟧ₘ • w ↑ ≈ w ↑ • ⟦ m ⟧ₘ
+aux-comm-m-w↑ : let open PB ((₁₊ n) QRel,_===_) in ∀ m w → ⟦ m ⟧ₘ • w ↑ ≈ w ↑ • ⟦ m ⟧ₘ
 aux-comm-m-w↑ m = aux-comm-shs-w↑ (m .proj₁) ((m ⁻¹) .proj₁)
 
 -- The XM instance: the same shape with the two exponents swapped.
 comm-XM-w↑ : let open PB ((₁₊ n) QRel,_===_) in
-  ∀ x w -> XM x • w ↑ ≈ w ↑ • XM x
+  ∀ x w → XM x • w ↑ ≈ w ↑ • XM x
 comm-XM-w↑ x = aux-comm-shs-w↑ ((x ⁻¹) .proj₁) (x .proj₁)
 
 
@@ -187,7 +187,7 @@ comm-•-w↑ {n} {u} {v} w pu pv = begin
   open SR word-setoid
 
 comm-abox-w↑ : let open PB ((₁₊ n) QRel,_===_) in
-  ∀ a (w : Word (Gen n)) -> [ a ]ᵃ • w ↑ ≈ w ↑ • [ a ]ᵃ
+  ∀ a (w : Word (Gen n)) → [ a ]ᵃ • w ↑ ≈ w ↑ • [ a ]ᵃ
 -- At width 0 there are no generators to commute with, so the induction
 -- on w closes without looking at the box at all.
 comm-abox-w↑ {₀} d [ gate₀ () ]ʷ
@@ -217,7 +217,7 @@ comm-abox-w↑ {₁₊ n} ((a@(₁₊ _) , b) , neqI) w =
 
 
 comm-hs-w↑ : let open PB ((₁₊ n) QRel,_===_) in
-  ∀ k (w : Word (Gen n)) -> (H • S^ k) • w ↑ ≈ w ↑ • H • S^ k
+  ∀ k (w : Word (Gen n)) → (H • S^ k) • w ↑ ≈ w ↑ • H • S^ k
 comm-hs-w↑ {₀} k [ gate₀ () ]ʷ
 comm-hs-w↑ {0} k ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
 comm-hs-w↑ {0} k (w • v) = begin
@@ -245,7 +245,7 @@ comm-hs-w↑ {n@(₁₊ _)} k w = begin
   open Pattern-Assoc
 
 comm-Ex-CZ^k-w↑↑ : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ k (w : Word (Gen n)) -> (Ex • CZ^ k) • w ↑ ↑ ≈ w ↑ ↑ • Ex • CZ^ k
+  ∀ k (w : Word (Gen n)) → (Ex • CZ^ k) • w ↑ ↑ ≈ w ↑ ↑ • Ex • CZ^ k
 
 comm-Ex-CZ^k-w↑↑ {₀} k [ gate₀ () ]ʷ
 comm-Ex-CZ^k-w↑↑ {0} l ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
@@ -302,7 +302,7 @@ lemma-comm-CX^k-w↑↑ {n} k w = begin
 
 
 comm-dbox-w↑↑' : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ a b (w : Word (Gen n)) -> [ a , b ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ a , b ]ᵈ
+  ∀ a b (w : Word (Gen n)) → [ a , b ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ a , b ]ᵈ
 comm-dbox-w↑↑' {₀} a b [ gate₀ () ]ʷ
 comm-dbox-w↑↑' {0} a b ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
 comm-dbox-w↑↑' {0} a b' (w • v) = let b = (a , b') in begin
@@ -351,13 +351,13 @@ comm-dbox-w↑↑' {₁₊ n} a@(₁₊ _) b w = let d = (a , b) in  begin
 
 
 comm-dbox-w↑↑ : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ b (w : Word (Gen n)) -> [ b ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ b ]ᵈ
+  ∀ b (w : Word (Gen n)) → [ b ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ b ]ᵈ
 comm-dbox-w↑↑ {n} d@(a , b) w = comm-dbox-w↑↑' a b w
 
 
 
 comm-bbox-w↑↑' : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ a b (w : Word (Gen n)) -> [ a , b ]ᵇ • w ↑ ↑ ≈ w ↑ ↑ • [ a , b ]ᵇ
+  ∀ a b (w : Word (Gen n)) → [ a , b ]ᵇ • w ↑ ↑ ≈ w ↑ ↑ • [ a , b ]ᵇ
 comm-bbox-w↑↑' {₀} a b [ gate₀ () ]ʷ
 comm-bbox-w↑↑' {0} a b ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
 comm-bbox-w↑↑' {0} a b' (w • v) = let b = (a , b') in begin
@@ -411,14 +411,14 @@ comm-bbox-w↑↑' {₁₊ n} a@(₁₊ _) b w = let d = (a , b) in  begin
 
 
 comm-bbox-w↑↑ : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ b (w : Word (Gen n)) -> [ b ]ᵇ • w ↑ ↑ ≈ w ↑ ↑ • [ b ]ᵇ
+  ∀ b (w : Word (Gen n)) → [ b ]ᵇ • w ↑ ↑ ≈ w ↑ ↑ • [ b ]ᵇ
 comm-bbox-w↑↑ {n} d@(a , b) w = comm-bbox-w↑↑' a b w
 
 
 {-
 
 comm-dbox-w↑↑' : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ a d (w : Word (Gen n)) -> [ a , d ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ a , d ]ᵈ
+  ∀ a d (w : Word (Gen n)) → [ a , d ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ a , d ]ᵈ
 comm-dbox-w↑↑' {0} a d ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
 comm-dbox-w↑↑' {0} a d' (w • v) = let d = (a , d') in begin
   [ d ]ᵈ • w ↑ ↑ • v ↑ ↑ ≈⟨ sym assoc ⟩
@@ -480,7 +480,7 @@ comm-dbox-w↑↑' {₁₊ n} a@(₁₊ _) d' w = let d = (a , d') in  begin
 
 
 comm-dbox-w↑↑ : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ d (w : Word (Gen n)) -> [ d ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ d ]ᵈ
+  ∀ d (w : Word (Gen n)) → [ d ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ d ]ᵈ
 comm-dbox-w↑↑ {n} d@(a , b) w = comm-dbox-w↑↑' a b w
 
 -}
@@ -490,9 +490,9 @@ comm-dbox-w↑↑ {n} d@(a , b) w = comm-dbox-w↑↑' a b w
 lemma-XM1 : let open PB ((₁₊ n) QRel,_===_) in XM {n} (₁ , λ ()) ≈ ε
 lemma-XM1 {n} = begin
   XM (₁ , λ ())
-    ≡⟨ Eq.cong (\ z -> S^ z • H • S^ ₁ • H • S^ z • H) inv-₁ ⟩
+    ≡⟨ Eq.cong (\ z → S^ z • H • S^ ₁ • H • S^ z • H) inv-₁ ⟩
   S^ ₁ • H • S^ ₁ • H • S^ ₁ • H
-    ≡⟨ Eq.cong (\ z -> S^ ₁ • H • S^ z • H • S^ ₁ • H) (Eq.sym inv-₁) ⟩
+    ≡⟨ Eq.cong (\ z → S^ ₁ • H • S^ z • H • S^ ₁ • H) (Eq.sym inv-₁) ⟩
   ⟦ (₁ , λ ()) ⟧ₘ ≈⟨ sym lemma-M1 ⟩
   ε ∎
   where
@@ -506,7 +506,7 @@ lemma-A10 : let open PB ((₁₊ n) QRel,_===_) in
 lemma-A10 {n} = begin
   [ (₁ , ₀) , (λ ()) ]ᵃ ≈⟨ refl ⟩
   XM (₁ , λ ()) • H • S^ -b/a
-    ≡⟨ Eq.cong (\ xx -> XM (₁ , λ ()) • H • S^ xx) aux ⟩
+    ≡⟨ Eq.cong (\ xx → XM (₁ , λ ()) • H • S^ xx) aux ⟩
   XM (₁ , λ ()) • H • S^ ₀ ≈⟨ cong refl right-unit ⟩
   XM (₁ , λ ()) • H ≈⟨ (cleft lemma-XM1) ⟩
   ε • H ≈⟨ left-unit ⟩
@@ -523,16 +523,16 @@ lemma-A10 {n} = begin
   open PP ((₁₊ n) QRel,_===_)
   open SR word-setoid
 
-aux-a≠0⇒ab≠0 : ∀ (a b : ℤ ₚ) (nz : a ≢ ₀) -> _≢_ {A = ℤ ₚ × ℤ ₚ} (a , b) (₀ , ₀)
+aux-a≠0⇒ab≠0 : ∀ (a b : ℤ ₚ) (nz : a ≢ ₀) → _≢_ {A = ℤ ₚ × ℤ ₚ} (a , b) (₀ , ₀)
 aux-a≠0⇒ab≠0 a b nz eq0 = ⊥-elim (nz (Eq.cong proj₁ eq0))
 
 
 lemma-Aa0 : let open PB ((₁₊ n) QRel,_===_) in
-  ∀ (a*@(a , nz) : ℤ* ₚ) -> [ (a , ₀) , aux-a≠0⇒ab≠0 a ₀ nz ]ᵃ ≈ ZM (a* ⁻¹) • H
+  ∀ (a*@(a , nz) : ℤ* ₚ) → [ (a , ₀) , aux-a≠0⇒ab≠0 a ₀ nz ]ᵃ ≈ ZM (a* ⁻¹) • H
 lemma-Aa0 {n} a*@(₀ , nz) = ⊥-elim (nz auto)
 lemma-Aa0 {n} a*@(a@(₁₊ _) , nz) = begin
   [ (a , ₀) , aux-a≠0⇒ab≠0 a ₀ nz ]ᵃ ≈⟨ refl ⟩
-  XM a* • H • S^ -b/a ≡⟨ Eq.cong (\ xx -> XM a* • H • S^ xx) aux ⟩
+  XM a* • H • S^ -b/a ≡⟨ Eq.cong (\ xx → XM a* • H • S^ xx) aux ⟩
   XM a* • H • S^ ₀ ≈⟨ cong refl right-unit ⟩
   XM a* • H ≡⟨ Eq.cong (_• H) (XM≡ZM⁻¹ a*) ⟩
   ⟦ a* ⁻¹ ⟧ₘ • H ∎
@@ -549,7 +549,7 @@ lemma-Aa0 {n} a*@(a@(₁₊ _) , nz) = begin
 
 
 lemma-Ex-M-n : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ m -> Ex • ZM m ≈ ZM m ↑ • Ex
+  ∀ m → Ex • ZM m ≈ ZM m ↑ • Ex
 lemma-Ex-M-n {n} m@x' = by-emb' (lemma-Ex-M m) aux aux2
   where
   x = x' .proj₁

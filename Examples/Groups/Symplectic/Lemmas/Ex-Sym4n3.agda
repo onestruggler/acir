@@ -107,7 +107,7 @@ lemma-XC-CZ = bbc (Ex • Ex ↑ • Ex) (Ex • Ex ↑ • Ex) aux
     (Ex • Ex ↑ • Ex • CZ ↑) • CZ02⁻¹ • XC • Ex • Ex ↑ • Ex ≈⟨ by-passoc (□ ^ 4 • □ ^ 5) (□ ^ 3 • □ ^ 3 • □ ^ 3) auto ⟩
     (Ex • Ex ↑ • Ex) • (CZ ↑ • CZ02⁻¹ • XC) • Ex • Ex ↑ • Ex ∎
 
-lemma-XC-CZ^k : ∀ k ->
+lemma-XC-CZ^k : ∀ k →
   XC • CZ ↑ ^ k ≈ CZ ↑ ^ k • CZ02⁻ᵏ k • XC
 lemma-XC-CZ^k k@0 = rewrite-powers 100 auto
 lemma-XC-CZ^k k@1 = lemma-XC-CZ
@@ -157,7 +157,7 @@ aux-XC^p' = begin
   open Lemmas-2Q (₁₊ n)
 
 
-aux-inv-CZ02k : ∀ k -> CZ02k k • CZ02⁻ᵏ k ≈ ε
+aux-inv-CZ02k : ∀ k → CZ02k k • CZ02⁻ᵏ k ≈ ε
 aux-inv-CZ02k k = begin
   CZ02k k • CZ02⁻ᵏ k ≈⟨ refl ⟩
   (Ex • CZ ↑ ^ k • Ex) • (Ex • CZ⁻¹ ↑ ^ k • Ex) ≈⟨ by-passoc (□ ^ 3 • □ ^ 3) ((□ ^ 2) ^ 3) auto ⟩
@@ -182,7 +182,7 @@ comm-CX-CZ⁻¹↑ = begin
   CZ ↑ ^ p-1 • CX ≈⟨ cleft refl' (lemma-^-↑ CZ p-1) ⟩
   CZ⁻¹ ↑ • CX ∎
 
-aux-comm-XC-CZ02⁻ᵏ : ∀ k -> XC • CZ02⁻ᵏ k ≈ CZ02⁻ᵏ k • XC
+aux-comm-XC-CZ02⁻ᵏ : ∀ k → XC • CZ02⁻ᵏ k ≈ CZ02⁻ᵏ k • XC
 aux-comm-XC-CZ02⁻ᵏ k = begin
   XC • Ex • CZ⁻¹ ↑ ^ k • Ex ≈⟨ sym assoc ⟩
   (XC • Ex) • CZ⁻¹ ↑ ^ k • Ex ≈⟨ cleft rewrite-swap 100 auto ⟩
@@ -194,7 +194,7 @@ aux-comm-XC-CZ02⁻ᵏ k = begin
   Ex • (CZ⁻¹ ↑ ^ k • Ex) • XC ≈⟨ by-passoc (□ • □ ^ 2 • □ ) (□ ^ 3 • □) auto ⟩
   CZ02⁻ᵏ k • XC ∎
 
-lemma-XC⁻¹-CZ^k : ∀ k ->
+lemma-XC⁻¹-CZ^k : ∀ k →
   XC⁻¹ • CZ ↑ ^ k ≈ CZ ↑ ^ k • CZ02k k • XC⁻¹
 lemma-XC⁻¹-CZ^k k = bbc XC XC aux
   where
@@ -225,7 +225,7 @@ lemma-XC⁻¹-CZ^k k = bbc XC XC aux
     XC • ((CZ ↑) ^ k • CZ02k k) • XC⁻¹ • XC ≈⟨ cright by-passoc (□ ^ 2 • □ ^ 2) (□ ^ 3 • □) auto ⟩
     XC • ((CZ ↑) ^ k • CZ02k k • XC⁻¹) • XC ∎
 
-lemma-comm-CZ02-H↑ : ∀ k -> CZ02k k • H ↑ ≈ H ↑ • CZ02k k
+lemma-comm-CZ02-H↑ : ∀ k → CZ02k k • H ↑ ≈ H ↑ • CZ02k k
 lemma-comm-CZ02-H↑ k = begin
   CZ02k k • H ↑ ≈⟨ trans assoc (cong refl assoc) ⟩
   Ex • CZ ↑ ^ k • Ex • H ↑ ≈⟨ cright cright lemma-Ex-H↑-n ⟩
@@ -237,7 +237,7 @@ lemma-comm-CZ02-H↑ k = begin
   H ↑ • CZ02k k ∎
 
 
-lemma-CZ02-d : ∀ d k -> CZ02k k • [ d ]ᵈ ≈ [ d ]ᵈ • CZ ↑ ^ k
+lemma-CZ02-d : ∀ d k → CZ02k k • [ d ]ᵈ ≈ [ d ]ᵈ • CZ ↑ ^ k
 
 lemma-CZ02-d d@(₀ , b) k =  begin
   CZ02k k • [ d ]ᵈ ≈⟨ trans (by-assoc auto) assoc ⟩
@@ -267,7 +267,7 @@ lemma-CZ02-d d@(a@(₁₊ _) , b) k = begin
   -b/a = - b * a⁻¹
 
 {-
-lemma-CZ02-d : ∀ d k -> CZ02k k • [ d ]ᵈ ≈ [ d ]ᵈ • CZ ↑ ^ k
+lemma-CZ02-d : ∀ d k → CZ02k k • [ d ]ᵈ ≈ [ d ]ᵈ • CZ ↑ ^ k
 lemma-CZ02-d d@(₀ , ₀) k = begin
   CZ02k k • [ d ]ᵈ ≈⟨ trans (by-assoc auto) assoc ⟩
   (Ex • CZ ↑ ^ k) • Ex • [ d ]ᵈ ≈⟨ cright rewrite-swap 100 auto ⟩

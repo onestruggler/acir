@@ -90,7 +90,7 @@ open Commuting-Symplectic n
 open Sym0-Rewriting (₁₊ n)
 open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
 
-lemma-Ex-M-n : ∀ m -> Ex • M m ≈ M m ↑ • Ex
+lemma-Ex-M-n : ∀ m → Ex • M m ≈ M m ↑ • Ex
 lemma-Ex-M-n m@x' = begin
   Ex • M m ≈⟨ refl ⟩
   Ex • S^ x • H • S^ x⁻¹ • H • S^ x • H ≈⟨ sym assoc ⟩
@@ -196,7 +196,7 @@ lemma-comm-Ex-S↑ = bbc Ex Ex claim
 
 open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime
 
-lemma-CZ^-pred : ∀ (k* : ℤ* ₚ) ->
+lemma-CZ^-pred : ∀ (k* : ℤ* ₚ) →
   let
   (k , nzk) = k*
   kp = prede k*
@@ -275,7 +275,7 @@ aux-hEx′ = bbc ε (H) aux
 
 
 
-lemma-Ex-M'-n : ∀ m -> Ex • M m ↑ ≈ M m • Ex
+lemma-Ex-M'-n : ∀ m → Ex • M m ↑ ≈ M m • Ex
 lemma-Ex-M'-n m = bbc Ex Ex claim
   where
   claim : Ex • (Ex • (M m ↑)) • Ex ≈ Ex • (M m • Ex) • Ex
@@ -290,7 +290,7 @@ lemma-Ex-M'-n m = bbc Ex Ex claim
     Ex • (M m • Ex) • Ex ∎
 
 
-lemma-Ex-S^ᵏ↑ : ∀ k ->
+lemma-Ex-S^ᵏ↑ : ∀ k →
 
   Ex • S^ k ↑ ≈ S^ k • Ex
 
@@ -307,7 +307,7 @@ lemma-Ex-S^ᵏ↑ k = bbc Ex Ex claim
     (Ex • S^ k) • Ex • Ex ≈⟨ sym (by-passoc (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) auto) ⟩
     Ex • (S^ k • Ex) • Ex ∎
 
-lemma-Ex-C : ∀ c -> Ex • ⟦ c ⟧ₕₛ ≈ ⟦ c ⟧ₕₛ ↑ • Ex
+lemma-Ex-C : ∀ c → Ex • ⟦ c ⟧ₕₛ ≈ ⟦ c ⟧ₕₛ ↑ • Ex
 lemma-Ex-C c@ε = trans right-unit (sym left-unit)
 lemma-Ex-C c@(HS^ k) = begin
   Ex • ⟦ c ⟧ₕₛ ≈⟨ sym assoc ⟩
@@ -318,7 +318,7 @@ lemma-Ex-C c@(HS^ k) = begin
   ⟦ c ⟧ₕₛ ↑ • Ex ∎
 
 
-lemma-Ex-C↑ : ∀ c -> Ex • ⟦ c ⟧ₕₛ ↑ ≈ ⟦ c ⟧ₕₛ • Ex
+lemma-Ex-C↑ : ∀ c → Ex • ⟦ c ⟧ₕₛ ↑ ≈ ⟦ c ⟧ₕₛ • Ex
 lemma-Ex-C↑ c@ε = trans right-unit (sym left-unit)
 lemma-Ex-C↑ c@(HS^ k) = begin
   Ex • ⟦ c ⟧ₕₛ ↑ ≈⟨ sym assoc ⟩
@@ -329,7 +329,7 @@ lemma-Ex-C↑ c@(HS^ k) = begin
   ⟦ c ⟧ₕₛ • Ex ∎
 
 
-lemma-Ex-MC : ∀ mc -> Ex • ⟦ mc ⟧ₘ₊ ≈ ⟦ mc ⟧ₘ₊ ↑ • Ex
+lemma-Ex-MC : ∀ mc → Ex • ⟦ mc ⟧ₘ₊ ≈ ⟦ mc ⟧ₘ₊ ↑ • Ex
 lemma-Ex-MC mc@(m , c) = begin
   Ex • ⟦ mc ⟧ₘ₊ ≈⟨ sym assoc ⟩
   (Ex • ⟦ m ⟧ₘ) • ⟦ c ⟧ₕₛ ≈⟨ cleft lemma-Ex-M-n m ⟩
@@ -340,7 +340,7 @@ lemma-Ex-MC mc@(m , c) = begin
 
 
 
-lemma-Ex-MC↑ : ∀ mc -> Ex • ⟦ mc ⟧ₘ₊ ↑ ≈ ⟦ mc ⟧ₘ₊ • Ex
+lemma-Ex-MC↑ : ∀ mc → Ex • ⟦ mc ⟧ₘ₊ ↑ ≈ ⟦ mc ⟧ₘ₊ • Ex
 lemma-Ex-MC↑ mc@(m , c) = begin
   Ex • ⟦ mc ⟧ₘ₊ ↑ ≈⟨ sym assoc ⟩
   (Ex • ⟦ m ⟧ₘ ↑) • ⟦ c ⟧ₕₛ ↑ ≈⟨ cleft lemma-Ex-M'-n m ⟩
@@ -350,7 +350,7 @@ lemma-Ex-MC↑ mc@(m , c) = begin
   ⟦ mc ⟧ₘ₊ • Ex ∎
 
 
-lemma-Ex-SMC : ∀ nf1 -> ⟦ case-Ex-nf1 nf1 ⟧₂ ≈ ⟦ case-nf1 nf1 ⟧₂ • Ex
+lemma-Ex-SMC : ∀ nf1 → ⟦ case-Ex-nf1 nf1 ⟧₂ ≈ ⟦ case-nf1 nf1 ⟧₂ • Ex
 lemma-Ex-SMC nf1@(s , mc) = begin
   ⟦ case-Ex-nf1 nf1 ⟧₂ ≈⟨ sym assoc ⟩
   (Ex • S^ s ↑) • ⟦ mc ⟧ₘ₊ ↑ ≈⟨ cleft lemma-Ex-S^ᵏ↑ s ⟩
@@ -360,7 +360,7 @@ lemma-Ex-SMC nf1@(s , mc) = begin
   ⟦ case-nf1 nf1 ⟧₂ • Ex ∎
 
 
-lemma-Ex-SMC↑ : ∀ nf1 -> Ex • ⟦ nf1 ⟧₁ ≈ ⟦ nf1 ⟧₁ ↑ • Ex
+lemma-Ex-SMC↑ : ∀ nf1 → Ex • ⟦ nf1 ⟧₁ ≈ ⟦ nf1 ⟧₁ ↑ • Ex
 lemma-Ex-SMC↑ nf1 = bbc Ex Ex claim
   where
   claim : Ex • (Ex • ⟦ nf1 ⟧₁) • Ex ≈ Ex • (⟦ nf1 ⟧₁ ↑ • Ex) • Ex

@@ -44,7 +44,7 @@ open SR word-setoid
 open Pattern-Assoc
 open Lemmas0 n
 
-fig-24-1 : ∀ (b* : ℤ* ₚ) ->
+fig-24-1 : ∀ (b* : ℤ* ₚ) →
   let
   b = b* .proj₁
   nz : (₀ , b) ≢ (₀ , ₀)
@@ -62,7 +62,7 @@ fig-24-1 b*@(b@(₁₊ b-1) , nzb) = begin
   ⟦ (b , λ ()) ⁻¹ ⟧ₘ • H • ε ≈⟨ refl ⟩
   ⟦ (b , λ ()) ⁻¹ ⟧ₘ • H • S^ ₀ ≈⟨ cright cright refl' (Eq.cong S^ (Eq.sym (Eq.trans (Eq.cong (_* b⁻¹) -0#≈0#) (*-zeroˡ b⁻¹)))) ⟩
   ⟦ (b , λ ()) ⁻¹ ⟧ₘ • H • S^ (- ₀ * b⁻¹)
-    ≡⟨ Eq.cong (\ z -> z • H • S^ (- ₀ * b⁻¹))
+    ≡⟨ Eq.cong (\ z → z • H • S^ (- ₀ * b⁻¹))
                (Eq.sym (XM≡ZM⁻¹ (b , λ ()))) ⟩
   [ (b , ₀) , aux-a≠0⇒ab≠0 b ₀ nzb  ]ᵃ ∎
   where
@@ -72,7 +72,7 @@ fig-24-1 b*@(b@(₁₊ b-1) , nzb) = begin
   
 
 
-fig-24-2 : ∀ (a* : ℤ* ₚ) ->
+fig-24-2 : ∀ (a* : ℤ* ₚ) →
   let
   a = a* .proj₁
   nz : (a , ₀) ≢ (₀ , ₀)
@@ -86,7 +86,7 @@ fig-24-2 : ∀ (a* : ℤ* ₚ) ->
 fig-24-2 a*@(₀ , nza) = ⊥-elim (nza auto)
 fig-24-2 a*@(a@(₁₊ a-1) , nza) = begin
   [ (a , ₀) , nz ]ᵃ • H
-    ≡⟨ Eq.cong (\ z -> (z • H • S^ -b/a) • H) (XM≡ZM⁻¹ (a , λ ())) ⟩
+    ≡⟨ Eq.cong (\ z → (z • H • S^ -b/a) • H) (XM≡ZM⁻¹ (a , λ ())) ⟩
   ⟦ (a , λ ()) ⁻¹ , HS^ -b/a ⟧ₘ₊ • H ≈⟨ cleft cright cright  refl' (Eq.cong S^ ( (Eq.trans (Eq.cong (_* a⁻¹) -0#≈0#) (*-zeroˡ a⁻¹)))) ⟩
   (⟦ (a , λ ()) ⁻¹ ⟧ₘ • H • S^ ₀ ) • H ≈⟨ cleft cright right-unit ⟩
   (⟦ (a , λ ()) ⁻¹ ⟧ₘ • H) • H ≈⟨ assoc ⟩
@@ -109,7 +109,7 @@ fig-24-2 a*@(a@(₁₊ a-1) , nza) = begin
 
 
 
-fig-24-3 : ∀ (a* b* : ℤ* ₚ) ->
+fig-24-3 : ∀ (a* b* : ℤ* ₚ) →
   let
   a = a* .proj₁
   b = b* .proj₁
@@ -126,7 +126,7 @@ fig-24-3 : ∀ (a* b* : ℤ* ₚ) ->
 fig-24-3 a*@(₀ , nza) b* = ⊥-elim (nza auto)
 fig-24-3 a*@(a@(₁₊ a-1) , nza) b*@(b , nzb) = begin
   [ (a , b) , nz ]ᵃ • H
-    ≡⟨ Eq.cong (\ z -> (z • H • S^ -b/a) • H) (XM≡ZM⁻¹ (a , λ ())) ⟩
+    ≡⟨ Eq.cong (\ z → (z • H • S^ -b/a) • H) (XM≡ZM⁻¹ (a , λ ())) ⟩
   ⟦ (a , λ ()) ⁻¹ , HS^ -b/a ⟧ₘ₊ • H ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 4) auto ⟩
   ⟦ (a , λ ()) ⁻¹ ⟧ₘ • H • S^ -b/a • H ≈⟨ derived-7  x y nzx nzy ⟩
   S^ (-x⁻¹ * (y * y)) • ZM -y/x' • (H • S^ -x⁻¹) ≈⟨ cong (refl' (Eq.cong S^ (cal .proj₁))) (cong (aux-MM  (-y/x' .proj₂) ((b* ⁻¹) .proj₂) (cal .proj₂ .proj₁)) (cright refl' (Eq.cong S^ (cal .proj₂ .proj₂)))) ⟩
@@ -159,7 +159,7 @@ fig-24-3 a*@(a@(₁₊ a-1) , nza) b*@(b , nzb) = begin
 
 
 
-fig-25-1 : ∀ (b*@(b , nzb) : ℤ* ₚ) ->
+fig-25-1 : ∀ (b*@(b , nzb) : ℤ* ₚ) →
   let
   b⁻¹ = (b* ⁻¹) .proj₁
   b⁻² = b⁻¹ * b⁻¹
@@ -181,7 +181,7 @@ fig-25-1 b*@(b , nzb) = begin
   nz = aux-b≠0⇒ab≠0 ₀ b nzb
   
 
-fig-25-2 : ∀ (a*@(a , nza) : ℤ* ₚ) (b : ℤ ₚ) ->
+fig-25-2 : ∀ (a*@(a , nza) : ℤ* ₚ) (b : ℤ ₚ) →
   let
   nz : (a , b) ≢ (₀ , ₀)
   nz = aux-a≠0⇒ab≠0 a b nza
@@ -211,14 +211,14 @@ fig-25-2 a*@(a , nza) b = begin
   nz' = aux-a≠0⇒ab≠0 a (b + - a) nza
   
 
-Bottom-Wire-Single : Gen (₁₊ n) -> Set
+Bottom-Wire-Single : Gen (₁₊ n) → Set
 Bottom-Wire-Single H-gen = ⊤
 Bottom-Wire-Single S-gen = ⊤
 Bottom-Wire-Single CZ-gen = ⊥
 Bottom-Wire-Single (g ↥) = ⊥
 
 
-dir-and-A'-of : A -> (g : Gen (₁₊ n)) (bws : Bottom-Wire-Single g) -> Word (Gen (₁₊ n)) × A
+dir-and-A'-of : A → (g : Gen (₁₊ n)) (bws : Bottom-Wire-Single g) → Word (Gen (₁₊ n)) × A
 dir-and-A'-of x@((a@₀ , b@₀) , nz) _ = ⊥-elim (nz auto)
 dir-and-A'-of x@((a@₀ , b@(₁₊ _)) , nz) H-gen bws          =     ε          ,     (b , ₀) , λ ()
 dir-and-A'-of x@((a@(₁₊ _) , b@₀) , nz) H-gen bws          =     ε          ,     (₀ , - a) , nz'
@@ -238,7 +238,7 @@ dir-and-A'-of x@((a@(₁₊ _) , b) , nz) S-gen bws            =     ε         
 dir-and-A'-of _ CZ-gen ()
 
 
-lemma-single-qupit-br-A : ∀ (x : A) (g : Gen (₁₊ n)) (bws : Bottom-Wire-Single g) ->
+lemma-single-qupit-br-A : ∀ (x : A) (g : Gen (₁₊ n)) (bws : Bottom-Wire-Single g) →
   let (dir , x') = dir-and-A'-of x g bws in
   
   [ x ]ᵃ • [ g ]ʷ ≈ dir • [ x' ]ᵃ
@@ -255,12 +255,12 @@ lemma-single-qupit-br-A _ CZ-gen ()
 
 
 
-aux-x≠0⇒x=₁₊y : ∀ (x : ℤ ₚ) (nz : x ≢ ₀) -> ∃ \ y -> x ≡ ₁₊ y
+aux-x≠0⇒x=₁₊y : ∀ (x : ℤ ₚ) (nz : x ≢ ₀) → ∃ \ y → x ≡ ₁₊ y
 aux-x≠0⇒x=₁₊y ₀ nz = ⊥-elim (nz auto)
 aux-x≠0⇒x=₁₊y (₁₊ x) nz = x , auto
 
 
-aux-AA : ∀ {n} (x y : A) (eq : x .proj₁ ≡ y .proj₁) -> [_]ᵃ {n} x ≡ [ y ]ᵃ
+aux-AA : ∀ {n} (x y : A) (eq : x .proj₁ ≡ y .proj₁) → [_]ᵃ {n} x ≡ [ y ]ᵃ
 aux-AA {n} ((₀ , ₀) , px) ((c , d) , py) eq = ⊥-elim (px auto)
 aux-AA {n} ((a , b) , px) ((₀ , ₀) , py) eq = ⊥-elim (py auto)
 -- Both boxes are now built from XM, so each side is routed through
@@ -271,7 +271,7 @@ aux-AA {n} ((a@₀ , b@(₁₊ _)) , px) ((c@₀ , d@(₁₊ _)) , py) eq =
                       (inv-cong (b , (λ ())) (d , (λ ())) (Eq.cong proj₂ eq)))
             (Eq.sym (XM≡ZM⁻¹ (d , λ ()))))
 aux-AA {n} ((a@(₁₊ _) , b) , px) ((c@(₁₊ _) , d) , py) eq =
-  Eq.cong₂ (\ xx yy -> xx • H • S^ yy )
+  Eq.cong₂ (\ xx yy → xx • H • S^ yy )
     (Eq.trans (XM≡ZM⁻¹ (a , λ ()))
     (Eq.trans (aux-M≡M' ((a , λ ()) ⁻¹) ((c , λ ()) ⁻¹)
                         (inv-cong (a , (λ ())) (c , (λ ())) (Eq.cong proj₁ eq)))
@@ -279,7 +279,7 @@ aux-AA {n} ((a@(₁₊ _) , b) , px) ((c@(₁₊ _) , d) , py) eq =
     (Eq.cong₂ _*_ (Eq.cong -_ (Eq.cong proj₂ eq)) ( (inv-cong (a , (λ ())) (c , (λ ())) (Eq.cong proj₁ eq))))
 
 
-lemma-A-HH : ∀ a b (nz : a ≢ ₀) ->
+lemma-A-HH : ∀ a b (nz : a ≢ ₀) →
   let
   nzp = aux-a≠0⇒ab≠0 a b nz
   nzp' = aux-a≠0⇒ab≠0 (- a) (- b) ((-' (a , nz)) .proj₂)
@@ -338,7 +338,7 @@ lemma-A-HH a@(₁₊ _) b@(₁₊ _) nz = begin
   aux = Eq.trans (Eq.cong ([ab]⁻¹ +_) aux0) (Eq.trans (Eq.cong ([ab]⁻¹ +_) (inv-neg-comm ((a , λ ()) *' (b , λ ())))) (+-inverseʳ [ab]⁻¹))
 
 
-lemma-A-HH' : ∀ b (nz : b ≢ ₀) ->
+lemma-A-HH' : ∀ b (nz : b ≢ ₀) →
   let
   nzp = aux-b≠0⇒ab≠0 ₀ b nz
   nzp' = aux-b≠0⇒ab≠0 ₀ (- b) ((-' (b , nz)) .proj₂)

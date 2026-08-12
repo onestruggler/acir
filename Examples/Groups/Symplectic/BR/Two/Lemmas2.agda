@@ -73,7 +73,7 @@ open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
 
 
 
-lemma-CX^kCZ^l : ∀ (k*@(k , nz) : ℤ* ₚ) l ->
+lemma-CX^kCZ^l : ∀ (k*@(k , nz) : ℤ* ₚ) l →
   let
   l/k = l * (k* ⁻¹) .proj₁
   lk = l * k
@@ -98,8 +98,8 @@ lemma-CX^kCZ^l k*@(k , nz) l = bbc (M (k* ⁻¹) ↑) ε claim
     (CX • CZ^ (l * k⁻¹)) • M (k* ⁻¹) ↑ ≈⟨ cleft lemma-semi-CXCZ^-alt a ⟩
     (S^ a • CX • S^ (- a) • S^ (- a) ↑ ) • M (k* ⁻¹) ↑ ≈⟨ sa (□ ^ 4 • □) (□ ^ 3 • □ ^ 2) auto ⟩
     (S^ a • CX • S^ (- a)) • S^ (- a) ↑ • M (k* ⁻¹) ↑ ≈⟨ cright lemma-cong↑ _ _ (lemma-S^kM k⁻¹ (- a) ((k* ⁻¹) .proj₂)) ⟩
-    (S^ a • CX • S^ (- a)) • M (k* ⁻¹) ↑ • S^ (- a * (k⁻¹⁻¹ * k⁻¹⁻¹)) ↑ ≈⟨ cright cright refl' (Eq.cong (\ xx -> S^ xx ↑) (Eq.cong (- a *_) (Eq.cong (\ xx -> xx * xx) (inv-involutive k*)))) ⟩
-    (S^ a • CX • S^ (- a)) • M (k* ⁻¹) ↑ • S^ (- a * (k * k)) ↑ ≈⟨ cright cright refl' (Eq.cong (\ xx -> S^ xx ↑) (Eq.trans (Eq.sym (-‿distribˡ-* a (k * k))) (Eq.cong -_ (aux-lkkk'' k* l)))) ⟩
+    (S^ a • CX • S^ (- a)) • M (k* ⁻¹) ↑ • S^ (- a * (k⁻¹⁻¹ * k⁻¹⁻¹)) ↑ ≈⟨ cright cright refl' (Eq.cong (\ xx → S^ xx ↑) (Eq.cong (- a *_) (Eq.cong (\ xx → xx * xx) (inv-involutive k*)))) ⟩
+    (S^ a • CX • S^ (- a)) • M (k* ⁻¹) ↑ • S^ (- a * (k * k)) ↑ ≈⟨ cright cright refl' (Eq.cong (\ xx → S^ xx ↑) (Eq.trans (Eq.sym (-‿distribˡ-* a (k * k))) (Eq.cong -_ (aux-lkkk'' k* l)))) ⟩
     (S^ a • CX • S^ (- a)) • M (k* ⁻¹) ↑ • S^ (- (l * k)) ↑ ≈⟨ sa (□ ^ 3 • □ ^ 2) (□ ^ 2 • □ ^ 2 • □) auto ⟩
     (S^ a • CX) • (S^ (- a) • M (k* ⁻¹) ↑) • S^ (- (l * k)) ↑ ≈⟨ cright cleft lemma-comm-Sᵏ-w↑ (toℕ (- a)) (M (k* ⁻¹)) ⟩
     (S^ a • CX) • (M (k* ⁻¹) ↑ • S^ (- a)) • S^ (- (l * k)) ↑ ≈⟨ sym (sa (□ ^ 3 • □ ^ 2) (□ ^ 2 • □ ^ 2 • □) auto) ⟩
@@ -112,7 +112,7 @@ lemma-CX^kCZ^l k*@(k , nz) l = bbc (M (k* ⁻¹) ↑) ε claim
     M (k* ⁻¹) ↑ • (S^ a • CX^ k • S^ (- a) • S^ (- (l * k)) ↑) • ε ∎
 
 
-lemma-CX'^kCZ^l : ∀ (k*@(k , nz) : ℤ* ₚ) l ->
+lemma-CX'^kCZ^l : ∀ (k*@(k , nz) : ℤ* ₚ) l →
   let
   l/k = l * (k* ⁻¹) .proj₁
   lk = l * k
@@ -131,7 +131,7 @@ lemma-CX'^kCZ^l k*@(k , nz) l = begin
   
 
 
-lemma-semi-CX^kCZ^l : ∀ (k*@(k , nz) : ℤ* ₚ) l ->
+lemma-semi-CX^kCZ^l : ∀ (k*@(k , nz) : ℤ* ₚ) l →
   let
   l/k = l * (k* ⁻¹) .proj₁
   lk = l * k
@@ -147,7 +147,7 @@ lemma-semi-CX^kCZ^l k*@(k , nz) l = bbc (M (k* ⁻¹) ↑) ε claim
   k⁻¹⁻¹ = (k* ⁻¹ ⁻¹) .proj₁
   a = l * k⁻¹
   aux : (- lk + - lk) * (k⁻¹ * k⁻¹) ≡ - a + - a
-  aux = Eq.trans (*-distribʳ-+ (k⁻¹ * k⁻¹) (- lk) (- lk)) (Eq.cong (\ xx -> xx + xx) (Eq.trans (Eq.sym (-‿distribˡ-* lk ((k⁻¹ * k⁻¹)))) (Eq.cong -_ (aux-lkkk' k* l))))
+  aux = Eq.trans (*-distribʳ-+ (k⁻¹ * k⁻¹) (- lk) (- lk)) (Eq.cong (\ xx → xx + xx) (Eq.trans (Eq.sym (-‿distribˡ-* lk ((k⁻¹ * k⁻¹)))) (Eq.cong -_ (aux-lkkk' k* l))))
   
   claim : M (k* ⁻¹) ↑ • (CX^ k • CZ^ l) • ε ≈ M (k* ⁻¹) ↑ • (S^ (- lk + - lk) ↑ • CZ^ l • CX^ k) • ε 
   claim = begin
@@ -165,7 +165,7 @@ lemma-semi-CX^kCZ^l k*@(k , nz) l = bbc (M (k* ⁻¹) ↑) ε claim
     (S^ (- a + - a) ↑ • CZ^ a) • M (k* ⁻¹) ↑ • CX^ k  ≈⟨ sa (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
     S^ (- a + - a) ↑ • (CZ^ a • M (k* ⁻¹) ↑) • CX^ k  ≈⟨ cright cleft sym (lemma-M↑CZ^k k⁻¹ l ((k* ⁻¹) .proj₂)) ⟩
     S^ (- a + - a) ↑ • (M (k* ⁻¹) ↑ • CZ^ l) • CX^ k  ≈⟨ sym (sa (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto) ⟩
-    (S^ (- a + - a) ↑ • M (k* ⁻¹) ↑) • CZ^ l • CX^ k  ≈⟨ cleft cleft refl' (Eq.cong (\ xx -> S^ xx ↑) (Eq.sym aux)) ⟩
+    (S^ (- a + - a) ↑ • M (k* ⁻¹) ↑) • CZ^ l • CX^ k  ≈⟨ cleft cleft refl' (Eq.cong (\ xx → S^ xx ↑) (Eq.sym aux)) ⟩
     (S^ ((- lk + - lk) * (k⁻¹ * k⁻¹)) ↑ • M (k* ⁻¹) ↑) • CZ^ l • CX^ k  ≈⟨ sym (cleft lemma-cong↑ _ _ (lemma-MS^k k⁻¹ (- lk + - lk) ((k* ⁻¹) .proj₂))) ⟩
     (M (k* ⁻¹) ↑ • S^ ((- lk + - lk)) ↑) • CZ^ l • CX^ k  ≈⟨ assoc ⟩
     M (k* ⁻¹) ↑ • S^ (- lk + - lk) ↑ • CZ^ l • CX^ k  ≈⟨ sym (cong refl right-unit) ⟩
@@ -173,7 +173,7 @@ lemma-semi-CX^kCZ^l k*@(k , nz) l = bbc (M (k* ⁻¹) ↑) ε claim
 
 
 
-lemma-semi-CX'^kCZ^l : ∀ (k*@(k , nz) : ℤ* ₚ) l ->
+lemma-semi-CX'^kCZ^l : ∀ (k*@(k , nz) : ℤ* ₚ) l →
   let
   l/k = l * (k* ⁻¹) .proj₁
   lk = l * k
@@ -191,7 +191,7 @@ lemma-semi-CX'^kCZ^l k*@(k , nz) l = begin
   lk = l * k
 
 
-aux-Ex-alt : ∀ (b*@(b , nzb) : ℤ* ₚ) ->
+aux-Ex-alt : ∀ (b*@(b , nzb) : ℤ* ₚ) →
   let b⁻¹ = (b* ⁻¹) .proj₁ in
   
   M b* • Ex • M (b*) ≈ CZ^ b • H • H ↑ • CZ^ b⁻¹ • H • H ↑ • CZ^ b • H • H ↑
@@ -231,7 +231,7 @@ aux-Ex-alt b*@(b , nzb) = bbc ε (M b*⁻¹) claim
 
 
 
-aux-hEx-alt : ∀ (b*@(b , nzb) : ℤ* ₚ) ->
+aux-hEx-alt : ∀ (b*@(b , nzb) : ℤ* ₚ) →
   let b⁻¹ = (b* ⁻¹) .proj₁ in
    
   (M b* • Ex • M b*) • H ↑ ^ 3 • H ^ 3 • CZ^ (- b) • H ↑ ^ 3 • H ^ 3 ≈ CZ^ b • H • H ↑ • CZ^ b⁻¹

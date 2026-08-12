@@ -39,12 +39,12 @@ open SR word-setoid
 
 -- The updated box: the same update as B-Top's b'-of (H sends (a,b) to
 -- (b,-a); S sends (a,b) to (a, b-a)), matching D.d'-of on gate₁ x₁.
-d'-of : ∀ (d : D) (x₁ : SympGate 1) -> D
+d'-of : ∀ (d : D) (x₁ : SympGate 1) → D
 d'-of (a , b) H-gate = b , - a
 d'-of (a , b) S-gate = a , b + - a
 
 -- The top-wire residual: proj₂ of D.dir-of on the bottom gate gate₁ x₁.
-dir-of : ∀ (d : D) (x₁ : SympGate 1) -> Word (Gen 1)
+dir-of : ∀ (d : D) (x₁ : SympGate 1) → Word (Gen 1)
 dir-of (₀ , ₀)                 H-gate = H
 dir-of (₀ , ₁₊ b)              H-gate = ε
 dir-of (₁₊ a , ₀)              H-gate = H ^ 2
@@ -57,7 +57,7 @@ dir-of (₀ , b)                 S-gate = S
 dir-of (₁₊ a , b)              S-gate = ε
 
 -- The dual of B-Top.lemma-B-br.
-lemma-D-br : ∀ (d : D) (x₁ : SympGate 1) ->
+lemma-D-br : ∀ (d : D) (x₁ : SympGate 1) →
   let
   dir = dir-of d x₁
   d' = d'-of d x₁

@@ -86,11 +86,11 @@ open Commuting-Symplectic 1
 open import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime renaming (dir-of to dir-of-dd)
 
 infixl 9 _⇣
-_⇣ : Word (Gen 2) -> Word (Gen 3)
+_⇣ : Word (Gen 2) → Word (Gen 3)
 _⇣ = emb
 
 {-
-aux-BB~DD : ∀ b d -> [ (₀ , b) ∷ (₀ , d) ∷ [] ]ᵛᵇ ≈ (H ↑ ↑ • Ex • Ex ↑ • Ex) • ([ (₀ , d) ∷ (₀ , b) ∷ [] ]ᵛᵈ) • Ex • Ex ↑ • Ex • H ^ 3
+aux-BB~DD : ∀ b d → [ (₀ , b) ∷ (₀ , d) ∷ [] ]ᵛᵇ ≈ (H ↑ ↑ • Ex • Ex ↑ • Ex) • ([ (₀ , d) ∷ (₀ , b) ∷ [] ]ᵛᵈ) • Ex • Ex ↑ • Ex • H ^ 3
 aux-BB~DD b d = begin
   [ ab ∷ cd ∷ [] ]ᵛᵇ ≈⟨ cleft left-unit ⟩
   [ cd ]ᵇ ↑ • [ ab ]ᵇ ≈⟨ refl ⟩
@@ -119,7 +119,7 @@ aux-BB~DD b d = begin
 
 
 
-BB~DD' : ∀ b cd -> let ab = (₀ , b) in [ ab ∷ cd ∷ [] ]ᵛᵇ ≈ (H ↑ ↑ • Ex • Ex ↑ • Ex) • ([ reverse (ab ∷ cd ∷ []) ]ᵛᵈ) • Ex • Ex ↑ • Ex • H ^ 3
+BB~DD' : ∀ b cd → let ab = (₀ , b) in [ ab ∷ cd ∷ [] ]ᵛᵇ ≈ (H ↑ ↑ • Ex • Ex ↑ • Ex) • ([ reverse (ab ∷ cd ∷ []) ]ᵛᵈ) • Ex • Ex ↑ • Ex • H ^ 3
 
 BB~DD' b cd@(c@₀ , d) = begin
   [ ab ∷ cd ∷ [] ]ᵛᵇ ≈⟨ cleft left-unit ⟩
@@ -177,7 +177,7 @@ BB~DD' b cd@(c@(₁₊ _) , d) = begin
   ab = (₀ , b)
 
 
-BB~DD : ∀ ab cd -> [ ab ∷ cd ∷ [] ]ᵛᵇ ≈ (H ↑ ↑ • Ex • Ex ↑ • Ex) • ([ cd ∷ ab ∷ [] ]ᵛᵈ) • Ex • Ex ↑ • Ex • H ^ 3
+BB~DD : ∀ ab cd → [ ab ∷ cd ∷ [] ]ᵛᵇ ≈ (H ↑ ↑ • Ex • Ex ↑ • Ex) • ([ cd ∷ ab ∷ [] ]ᵛᵈ) • Ex • Ex ↑ • Ex • H ^ 3
 
 BB~DD ab@(a@₀ , b) cd@(c@₀ , d) = BB~DD' b cd
 BB~DD ab@(a@₀ , b) cd@(c@(₁₊ _) , d) = BB~DD' b cd
@@ -204,7 +204,7 @@ BB~DD ab@(a@(₁₊ _) , b) cd@(c , d) = begin
   a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
   -b/a = - b * a⁻¹
 
-aux-comm-w⇣-v↑↑ : ∀ w v -> w ⇣ • v ↑ ↑ ≈ v ↑ ↑ • w ⇣
+aux-comm-w⇣-v↑↑ : ∀ w v → w ⇣ • v ↑ ↑ ≈ v ↑ ↑ • w ⇣
 aux-comm-w⇣-v↑↑ [ H-gen ]ʷ v = lemma-comm-H-w↑ (v ↑)
 aux-comm-w⇣-v↑↑ [ S-gen ]ʷ v = lemma-comm-S-w↑ (v ↑)
 aux-comm-w⇣-v↑↑ [ CZ-gen ]ʷ v = lemma-comm-CZ-w↑↑ v
@@ -220,7 +220,7 @@ aux-comm-w⇣-v↑↑ (w • w') v = begin
   (v ↑ ↑ • w ⇣) • w' ⇣ ≈⟨ assoc ⟩
   v ↑ ↑ • (w • w') ⇣ ∎
 
-aux-Ex-w⇣-Ex : ∀ w -> Ex • w ⇣ • Ex ≈ (Ex • w • Ex) ⇣
+aux-Ex-w⇣-Ex : ∀ w → Ex • w ⇣ • Ex ≈ (Ex • w • Ex) ⇣
 aux-Ex-w⇣-Ex [ H-gen ]ʷ = refl
 aux-Ex-w⇣-Ex [ S-gen ]ʷ = refl
 aux-Ex-w⇣-Ex [ CZ-gen ]ʷ = refl
@@ -239,7 +239,7 @@ aux-Ex-w⇣-Ex (w • v) = begin
   ((Ex • w) • v • Ex) ⇣ ≈⟨ sa (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
   (Ex • (w • v) • Ex) ⇣ ∎
 
-aux-Ex↑-Ex-w↑ : ∀ w -> (Ex ↑ • Ex) • w ↑ ≈ w ⇣ • Ex ↑ • Ex
+aux-Ex↑-Ex-w↑ : ∀ w → (Ex ↑ • Ex) • w ↑ ≈ w ⇣ • Ex ↑ • Ex
 aux-Ex↑-Ex-w↑ [ H-gen ]ʷ = by-ex {w = ((EX.Ex EX.↑ • EX.Ex) • EX.H EX.↑)} {v = EX.H • EX.Ex EX.↑ • EX.Ex} (rewrite-EX 100 auto)
 aux-Ex↑-Ex-w↑ [ S-gen ]ʷ = rewrite-swap 100 auto
 aux-Ex↑-Ex-w↑ [ CZ-gen ]ʷ = rewrite-swap 100 auto
@@ -260,13 +260,13 @@ aux-vd'-of∘rev : vd'-of ∘ reverse ≗ reverse ∘ vd'-of
 aux-vd'-of∘rev (x ∷ x₁ ∷ []) = auto
 
 
-vb'-of : Vec B 2 -> Vec B 2
+vb'-of : Vec B 2 → Vec B 2
 vb'-of = vd'-of
 
-dir-of : Vec B 2 -> Word (Gen 2)
+dir-of : Vec B 2 → Word (Gen 2)
 dir-of = dual ∘ dir-of-dd ∘ reverse
 
-lemma-dir-and-vb' : ∀ (vb : Vec B 2) ->
+lemma-dir-and-vb' : ∀ (vb : Vec B 2) →
   let
   dir = dir-of vb
   vb' = vb'-of vb

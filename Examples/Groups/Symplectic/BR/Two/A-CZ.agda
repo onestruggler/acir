@@ -68,7 +68,7 @@ open Lemmas-2Q n
 open Rewriting-Swap 1
 
 
-aux-bbox-nza' : ∀ a b -> (nz : a ≢ ₀) ->
+aux-bbox-nza' : ∀ a b → (nz : a ≢ ₀) →
   let
   a⁻¹ = ((a , nz) ⁻¹) .proj₁
   -b/a = - b * a⁻¹
@@ -80,7 +80,7 @@ aux-bbox-nza' a@(₁₊ a-1) b nz = refl
 
 
 
-lemma-A-CZ-1 : ∀ (b*@(b , nzb) : ℤ* ₚ) ->
+lemma-A-CZ-1 : ∀ (b*@(b , nzb) : ℤ* ₚ) →
   let
   b⁻¹ = (b* ⁻¹) .proj₁
   nz = aux-b≠0⇒ab≠0 ₀ b nzb
@@ -99,7 +99,7 @@ lemma-A-CZ-1 b*@(b , nzb) = begin
 
 
 
-lemma-A-CZ-2 : ∀ (a*@(a , nza) : ℤ* ₚ) (b : ℤ ₚ) ->
+lemma-A-CZ-2 : ∀ (a*@(a , nza) : ℤ* ₚ) (b : ℤ ₚ) →
   let
   a⁻¹ = (a* ⁻¹) .proj₁
   -b/a = - b * a⁻¹
@@ -176,7 +176,7 @@ lemma-A-CZ-2 a*@(a , nza) b = begin
 
 
 
-lemma-A-CZ-1-dual : ∀ (b*@(b , nzb) : ℤ* ₚ) ->
+lemma-A-CZ-1-dual : ∀ (b*@(b , nzb) : ℤ* ₚ) →
   let
   b⁻¹ = (b* ⁻¹) .proj₁
   nz = aux-b≠0⇒ab≠0 ₀ b nzb

@@ -117,7 +117,7 @@ module Lemmas0b where
 
 
 
-  lemma-HCZHS^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k -> 
+  lemma-HCZHS^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k → 
     S ↑ ^ k • S ^ k • CZ ^ k • H ↑ • CZ • H ↑ ≈ H ↑ • CZ • H ↑ • S ↑ ^ k
   lemma-HCZHS^k {n} k@0 = by-assoc auto
     where
@@ -148,7 +148,7 @@ module Lemmas0b where
 
 
 
-  lemma-semi-HH↑-CZ^k' : let open PB ((₂₊ 0) QRel,_===_) in ∀ k ->
+  lemma-semi-HH↑-CZ^k' : let open PB ((₂₊ 0) QRel,_===_) in ∀ k →
 
     H ↑ ^ 2 • CZ^ k ≈ CZ^ (- k) • H ↑ ^ 2
 
@@ -167,7 +167,7 @@ module Lemmas0b where
     open Q2.Lemmas-2Q 0
 
 
-  lemma-semi-HH↑-CZ^k'-ℕ : let open PB ((₂₊ 0) QRel,_===_) in ∀ k -> let -k = p-1 Nat.* k in 
+  lemma-semi-HH↑-CZ^k'-ℕ : let open PB ((₂₊ 0) QRel,_===_) in ∀ k → let -k = p-1 Nat.* k in 
 
     H ↑ ^ 2 • CZ ^ k ≈ CZ ^ -k • H ↑ ^ 2
 
@@ -191,7 +191,7 @@ module Lemmas0b where
     open Q2.Lemmas-2Q 0
 
 
-  lemma-XCS^k : let open PB ((₂₊ 0) QRel,_===_) in ∀ k -> 
+  lemma-XCS^k : let open PB ((₂₊ 0) QRel,_===_) in ∀ k → 
     S^ k ↑ • S^ k • CZ^ (- k) • H ↑ ^ 3 • CZ • H ↑ ≈ H ↑ ^ 3 • CZ • H ↑ • S^ k ↑
   lemma-XCS^k k = bbc (HH ↑) ε aux0
     where
@@ -220,7 +220,7 @@ module Lemmas0b where
       S^ k ↑ • (S^ k • HH ↑) • CZ^ (- k) • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) ≈⟨ by-passoc (□ • □ ^ 2 • □ • □) (□ ^ 2 • □ ^ 2 • □ ) auto  ⟩
       (S^ k ↑ • S^ k) • (HH ↑ • CZ^ (- k)) • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) ≈⟨ (cright cleft (lemma-semi-HH↑-CZ^k' (- k))) ⟩
       (S^ k ↑ • S^ k) • (CZ^ (- - k) • HH ↑) • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) ≈⟨ by-passoc (□ ^ 2 • □ ^ 2 • □) (□ ^ 3 • □ • □) auto ⟩
-      (S^ k ↑ • S^ k • CZ^ (- - k)) • HH ↑ • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) ≡⟨ Eq.cong (\ xx -> (S^ k ↑ • S^ k • CZ^ (xx)) • HH ↑ • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑)) (-‿involutive k) ⟩
+      (S^ k ↑ • S^ k • CZ^ (- - k)) • HH ↑ • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) ≡⟨ Eq.cong (\ xx → (S^ k ↑ • S^ k • CZ^ (xx)) • HH ↑ • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑)) (-‿involutive k) ⟩
       (S^ k ↑ • S^ k • CZ^ (k)) • HH ↑ • ((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) ≈⟨ (cright rewrite-sym0 100 auto) ⟩
       (S^ k ↑ • S^ k • CZ^ (k)) • H ↑ • CZ • (H ↑) ≈⟨ by-passoc (□ ^ 3 • □ ^ 3) (□ ^ 6) auto ⟩
       S^ k ↑ • S^ k • CZ^ (k) • H ↑ • CZ • (H ↑) ≈⟨ (cleft sym (refl' (aux-↑ S (toℕ k)))) ⟩
@@ -233,7 +233,7 @@ module Lemmas0b where
 
 
 
-  lemma-XCS^k-ℕ : let open PB ((₂₊ 0) QRel,_===_) in ∀ k -> let -k = p-1 Nat.* k in 
+  lemma-XCS^k-ℕ : let open PB ((₂₊ 0) QRel,_===_) in ∀ k → let -k = p-1 Nat.* k in 
     (S ^ k) ↑ • S ^ k • CZ ^ -k • XC ≈ XC • (S ^ k) ↑
   lemma-XCS^k-ℕ k = bbc (HH ↑) ε aux0
     where
@@ -280,10 +280,10 @@ module Lemmas0b where
       aux3 :  CZ ^ (p-1 Nat.* p-1) ≈ CZ
       aux3 = begin
         CZ ^ (p-1 Nat.* p-1) ≈⟨ lemma-CZ^k-% (p-1 Nat.* p-1) ⟩
-        CZ ^ ((p-1 Nat.* p-1) Nat.% p) ≡⟨ Eq.cong (CZ ^_) (Eq.sym (Eq.cong₂ (\ xx yy -> ((xx Nat.* yy) Nat.% p)) (lemma-toℕ₋₁ {p-1}) (lemma-toℕ₋₁ {p-1}))) ⟩
+        CZ ^ ((p-1 Nat.* p-1) Nat.% p) ≡⟨ Eq.cong (CZ ^_) (Eq.sym (Eq.cong₂ (\ xx yy → ((xx Nat.* yy) Nat.% p)) (lemma-toℕ₋₁ {p-1}) (lemma-toℕ₋₁ {p-1}))) ⟩
         CZ ^ ((toℕ (₋₁ {p-1}) Nat.* toℕ (₋₁ {p-1})) Nat.% p) ≡⟨ Eq.cong (CZ ^_) (Eq.sym (toℕ-fromℕ< (m%n<n (toℕ (₋₁ {p-1}) Nat.* toℕ (₋₁ {p-1})) p))) ⟩
         CZ ^ (toℕ (fromℕ< (m%n<n (toℕ (₋₁ {p-1}) Nat.* toℕ (₋₁ {p-1})) p))) ≈⟨ refl ⟩
-        CZ ^ (toℕ (₋₁ {p-1} * ₋₁)) ≡⟨ Eq.cong (\ xx -> CZ ^ (toℕ xx)) aux-₋₁*₋₁=₁ ⟩
+        CZ ^ (toℕ (₋₁ {p-1} * ₋₁)) ≡⟨ Eq.cong (\ xx → CZ ^ (toℕ xx)) aux-₋₁*₋₁=₁ ⟩
         CZ ^ (toℕ 1ₚ) ≈⟨ refl ⟩
         CZ ∎
 
@@ -298,7 +298,7 @@ module Lemmas0b where
 
 
 
-  lemma-XCS^k' : let open PB ((₂₊ 0) QRel,_===_) in ∀ k -> 
+  lemma-XCS^k' : let open PB ((₂₊ 0) QRel,_===_) in ∀ k → 
     S^ k ↑ • S^ k • CZ^ (- k) • H ↑ ^ 3 • CZ • H ↑ ≈ (H ↑ ^ 3 • CZ • H ↑) • S^ k ↑
   lemma-XCS^k' k = trans (lemma-XCS^k k) (by-passoc (□ ^ 4) (□ ^ 3 • □) auto)
     where
@@ -307,7 +307,7 @@ module Lemmas0b where
     open Pattern-Assoc
 
 
-  lemma-CXS^k : let open PB ((₂₊ 0) QRel,_===_) in ∀ k -> 
+  lemma-CXS^k : let open PB ((₂₊ 0) QRel,_===_) in ∀ k → 
     S^ k • S^ k ↑ • CZ^ (- k) • H^ ₃ • CZ • H ≈ (H^ ₃ • CZ • H) • S^ k
   lemma-CXS^k k = by-duality' (lemma-XCS^k' k) aux1 aux2
     where
@@ -338,7 +338,7 @@ module Lemmas0b where
 
 
 
-  lemma-CXS^k-ℕ : let open PB ((₂₊ 0) QRel,_===_) in ∀ k -> let -k = p-1 Nat.* k in 
+  lemma-CXS^k-ℕ : let open PB ((₂₊ 0) QRel,_===_) in ∀ k → let -k = p-1 Nat.* k in 
     S ^ k • (S ^ k) ↑ • CZ ^ -k • H^ ₃ • CZ • H ≈ (H^ ₃ • CZ • H) • S ^ k
   lemma-CXS^k-ℕ k = by-duality' (lemma-XCS^k-ℕ k) aux1 aux2
     where
@@ -843,10 +843,10 @@ module Lemmas0b where
     aux3 = begin
       S⁻¹ ^ p-1 ≈⟨ ^^ S p-1 p-1 ⟩
       S ^ (p-1 Nat.* p-1) ≈⟨ lemma-S^k-% (p-1 Nat.* p-1) ⟩
-      S ^ ((p-1 Nat.* p-1) Nat.% p) ≡⟨ Eq.cong (S ^_) (Eq.sym (Eq.cong₂ (\ xx yy -> ((xx Nat.* yy) Nat.% p)) (lemma-toℕ₋₁ {p-1}) (lemma-toℕ₋₁ {p-1}))) ⟩
+      S ^ ((p-1 Nat.* p-1) Nat.% p) ≡⟨ Eq.cong (S ^_) (Eq.sym (Eq.cong₂ (\ xx yy → ((xx Nat.* yy) Nat.% p)) (lemma-toℕ₋₁ {p-1}) (lemma-toℕ₋₁ {p-1}))) ⟩
       S ^ ((toℕ (₋₁ {p-1}) Nat.* toℕ (₋₁ {p-1})) Nat.% p) ≡⟨ Eq.cong (S ^_) (Eq.sym (toℕ-fromℕ< (m%n<n (toℕ (₋₁ {p-1}) Nat.* toℕ (₋₁ {p-1})) p))) ⟩
       S ^ (toℕ (fromℕ< (m%n<n (toℕ (₋₁ {p-1}) Nat.* toℕ (₋₁ {p-1})) p))) ≈⟨ refl ⟩
-      S ^ (toℕ (₋₁ {p-1} * ₋₁)) ≡⟨ Eq.cong (\ xx -> S ^ (toℕ xx)) aux-₋₁*₋₁=₁ ⟩
+      S ^ (toℕ (₋₁ {p-1} * ₋₁)) ≡⟨ Eq.cong (\ xx → S ^ (toℕ xx)) aux-₋₁*₋₁=₁ ⟩
       S ^ (toℕ 1ₚ) ≈⟨ refl ⟩
       S ∎
 
@@ -936,7 +936,7 @@ module Lemmas0b where
 
   open import Algebra.Properties.Ring (+-*-ring p-2)
 
-  lemma-CZCZ^aHCZ^k : ∀ a k -> (nzk : k ≢ ₀) -> 
+  lemma-CZCZ^aHCZ^k : ∀ a k → (nzk : k ≢ ₀) → 
     let
       j = ₁₊ a
       k' = toℕ k
@@ -1013,8 +1013,8 @@ module Lemmas0b where
       M (k* ⁻¹) • S⁻¹ ^ k' ≈⟨ (cright lemma-S⁻¹^k k) ⟩
       M (k* ⁻¹) • S^ -k ≈⟨ lemma-MS^k k⁻¹ -k ((k* ⁻¹) .proj₂) ⟩
       S^ (-k * (k⁻¹ * k⁻¹)) • M (k* ⁻¹) ≈⟨ (cleft refl' (Eq.cong S^ (Eq.sym (*-assoc -k k⁻¹ k⁻¹)))) ⟩
-      S^ (-k * k⁻¹ * k⁻¹) • M (k* ⁻¹) ≈⟨ (cleft refl' (Eq.cong (\ xx -> S^ (xx * k⁻¹)) (Eq.sym (-‿distribˡ-* k k⁻¹)))) ⟩
-      S^ (- (k * k⁻¹) * k⁻¹) • M (k* ⁻¹) ≈⟨ (cleft refl' (Eq.cong (\ xx -> S^ (- xx * k⁻¹)) (lemma-⁻¹ʳ k {{nztoℕ {y = k} {nzk}}}))) ⟩
+      S^ (-k * k⁻¹ * k⁻¹) • M (k* ⁻¹) ≈⟨ (cleft refl' (Eq.cong (\ xx → S^ (xx * k⁻¹)) (Eq.sym (-‿distribˡ-* k k⁻¹)))) ⟩
+      S^ (- (k * k⁻¹) * k⁻¹) • M (k* ⁻¹) ≈⟨ (cleft refl' (Eq.cong (\ xx → S^ (- xx * k⁻¹)) (lemma-⁻¹ʳ k {{nztoℕ {y = k} {nzk}}}))) ⟩
       S^ (- (1ₚ) * k⁻¹) • M (k* ⁻¹) ≈⟨ (cleft refl' (Eq.cong S^ (-1*x≈-x k⁻¹))) ⟩
       S^ (-k⁻¹) • M (k* ⁻¹) ≈⟨ refl ⟩
       S^ -k⁻¹ • M (k* ⁻¹) ∎
@@ -1033,7 +1033,7 @@ module Lemmas0b where
 
 
 
-  lemma-CZCZ^aHCZ^k' : ∀ a k -> (nzk : k ≢ ₀) -> 
+  lemma-CZCZ^aHCZ^k' : ∀ a k → (nzk : k ≢ ₀) → 
     let
       j = ₁₊ a
       k' = toℕ k
@@ -1119,7 +1119,7 @@ module Lemmas0b where
 
   abstract
 
-    lemma-CZCZ^aH³CZ^k' : ∀ (a : ℕ) (k : ℤ ₚ) -> (nzk : k ≢ ₀) -> 
+    lemma-CZCZ^aH³CZ^k' : ∀ (a : ℕ) (k : ℤ ₚ) → (nzk : k ≢ ₀) → 
       let
         j : ℕ
         j = ₁₊ a
@@ -1151,7 +1151,7 @@ module Lemmas0b where
         (S^ -k⁻¹' ^ j • H • CZ^ k' • H • S^ k⁻¹' ^ j) • H ^ 2 • H • H ^ 2 • (S^ -k' ^ j) ↑ ≈⟨ (cright rewrite-sym0 100 auto) ⟩
         (S^ -k⁻¹' ^ j • H • CZ^ k' • H • S^ k⁻¹' ^ j) • (H ^ 2 • H • H ^ 2) • (S^ -k' ^ j) ↑ ≈⟨ (cright cleft rewrite-sym0 100 auto) ⟩
         (S^ -k⁻¹' ^ j • H • CZ^ k' • H • S^ k⁻¹' ^ j) • H • (S^ -k' ^ j) ↑ ≈⟨ by-passoc (□ ^ 5 • □ ^ 2) (□ ^ 7) auto ⟩
-        S^ -k⁻¹' ^ j • H • CZ^ k' • H • S^ k⁻¹' ^ j • H • (S^ -k' ^ j) ↑ ≈⟨ cong (refl' (Eq.cong (\ xx -> S^ xx ^ j) (Eq.sym (aux-k⁻¹=-[-k⁻¹] k*)))) (cright cong refl (cright  cong (refl' (Eq.cong (\ xx -> S^ xx ^ j) (inv-neg-comm k*))) (cright refl' (Eq.cong (\ xx -> ((S^ xx ^ j) ↑)) (-‿involutive k))))) ⟩
+        S^ -k⁻¹' ^ j • H • CZ^ k' • H • S^ k⁻¹' ^ j • H • (S^ -k' ^ j) ↑ ≈⟨ cong (refl' (Eq.cong (\ xx → S^ xx ^ j) (Eq.sym (aux-k⁻¹=-[-k⁻¹] k*)))) (cright cong refl (cright  cong (refl' (Eq.cong (\ xx → S^ xx ^ j) (inv-neg-comm k*))) (cright refl' (Eq.cong (\ xx → ((S^ xx ^ j) ↑)) (-‿involutive k))))) ⟩
 
         S^ k⁻¹ ^ j • H • CZ^ -k • H • S^ -k⁻¹ ^ j • H • (S^ k ^ j) ↑ ∎
       where
@@ -1969,7 +1969,7 @@ module Lemmas2 where
     Ex • (S ↑ ^ k) ≈ (S ^ k) • Ex
     
   lemma-Ex-S↑ᵏ {n} k = begin
-    Ex • (S ↑ ^ k) ≈⟨ refl' (Eq.cong (\ xx -> Ex • xx) (lemma-^-↑ S k)) ⟩
+    Ex • (S ↑ ^ k) ≈⟨ refl' (Eq.cong (\ xx → Ex • xx) (lemma-^-↑ S k)) ⟩
     Ex • (S ^ k) ↑ ≈⟨ lemma-Ex-Sᵏ↑ k ⟩
     (S ^ k) • Ex ∎
     where

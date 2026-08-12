@@ -64,7 +64,7 @@ open Symplectic-GroupLike
 open Duality
 
 
-lemma-semi-CZ^k-CX : let open PB ((₂₊ n) QRel,_===_) in ∀ (k : ℤ ₚ) ->
+lemma-semi-CZ^k-CX : let open PB ((₂₊ n) QRel,_===_) in ∀ (k : ℤ ₚ) →
 
   CZ^ k • CX ≈ S^ (k + k) ↑ • CX • CZ^ k
 
@@ -91,13 +91,13 @@ lemma-semi-CZ^k-CX  {n} k = bbc (S^ (- k + - k) ↑) ε claim
     S^ (- k + - k) ↑ • (CZ^ k • CX) • ε ≈⟨ (cright right-unit) ⟩
     S^ (- k + - k) ↑ • (CZ^ k • CX) ≈⟨ sym (lemma-semi-CXCZ^ k) ⟩
     CX • CZ^ k ≈⟨ sym left-unit ⟩
-    S^ ₀ ↑ • CX • CZ^ k ≈⟨ (cleft refl' (Eq.cong (\ xx -> S^ xx ↑) (Eq.sym aux))) ⟩
+    S^ ₀ ↑ • CX • CZ^ k ≈⟨ (cleft refl' (Eq.cong (\ xx → S^ xx ↑) (Eq.sym aux))) ⟩
     S^ (- k + - k + (k + k)) ↑ • CX • CZ^ k ≈⟨ sym (cleft lemma-cong↑ _ _ ( lemma-S^k+l (- k + - k) (k + k))) ⟩
     (S^ (- k + - k) ↑ • S^ (k + k) ↑) • CX • CZ^ k ≈⟨ assoc ⟩
     S^ (- k + - k) ↑ • (S^ (k + k) ↑ • CX • CZ^ k) ≈⟨ (cright sym right-unit) ⟩
     S^ (- k + - k) ↑ • (S^ (k + k) ↑ • CX • CZ^ k) • ε ∎
 
-lemma-CZ^k-CX : let open PB ((₂₊ n) QRel,_===_) in ∀ (k : ℤ ₚ) ->
+lemma-CZ^k-CX : let open PB ((₂₊ n) QRel,_===_) in ∀ (k : ℤ ₚ) →
 
   CZ^ k • CX ≈ S^ k • CX • S^ (- k) • S^ k ↑
 
@@ -112,7 +112,7 @@ lemma-CZ^k-CX {n} k = begin
   S^ k • CX • (S^ (k + k) ↑ • S^ (- k)) • S^ (- k) ↑ ≈⟨ (cright cright cleft sym (lemma-comm-Sᵏ-w↑ (toℕ (- k)) (S^ (k + k)))) ⟩
   S^ k • CX • (S^ (- k) • S^ (k + k) ↑) • S^ (- k) ↑ ≈⟨ (cright cright assoc) ⟩
   S^ k • CX • S^ (- k) • S^ (k + k) ↑ • S^ (- k) ↑ ≈⟨ (cright cright cright lemma-cong↑ _ _ (lemma-S^k+l (k + k) (- k))) ⟩
-  S^ k • CX • S^ (- k) • S^ (k + k + - k) ↑ ≈⟨ (cright cright cright refl' (Eq.cong (\ xx -> S^ xx ↑) (Eq.trans (Eq.trans (+-assoc k k (- k)) (Eq.cong (k +_) (+-inverseʳ k))) (+-identityʳ k)))) ⟩
+  S^ k • CX • S^ (- k) • S^ (k + k + - k) ↑ ≈⟨ (cright cright cright refl' (Eq.cong (\ xx → S^ xx ↑) (Eq.trans (Eq.trans (+-assoc k k (- k)) (Eq.cong (k +_) (+-inverseʳ k))) (+-identityʳ k)))) ⟩
   S^ k • CX • S^ (- k) • S^ k ↑ ∎
   where
   open PB ((₂₊ n) QRel,_===_)
@@ -121,7 +121,7 @@ lemma-CZ^k-CX {n} k = begin
   open Pattern-Assoc
   open Lemmas0 n
 
-lemma-CZ^k-CX-alt : let open PB ((₂₊ n) QRel,_===_) in ∀ (k : ℤ ₚ) ->
+lemma-CZ^k-CX-alt : let open PB ((₂₊ n) QRel,_===_) in ∀ (k : ℤ ₚ) →
 
   CZ^ k • CX ≈ S^ k ↑ • S^ k • CX • S^ (- k)
 

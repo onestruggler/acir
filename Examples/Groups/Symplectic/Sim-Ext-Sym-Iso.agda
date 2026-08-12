@@ -26,7 +26,7 @@ module Examples.Groups.Symplectic.Sim-Ext-Sym-Iso
   (p-prime : Prime (suc (₁₊ p-2)))
   (let open PrimeModulus' p-2 p-prime hiding (act))
   (g*@(g , g≠0) : ℤ* ₚ)
-  (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
+  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ \ (k : ℤ ₚ-₁) → x ≡ g ^′ toℕ k )
   where
 open Primitive-Root-Modp' g* g-gen
 
@@ -59,7 +59,7 @@ open Symplectic-Derived-GroupLike renaming (grouplike to grouplike₃) using ()
 
 open GroupMorphisms
 
-Theorem-Sim-iso-Der : ∀ {n} ->
+Theorem-Sim-iso-Der : ∀ {n} →
   let
   module G1 = Group-Lemmas (n QRel,_===₁_) grouplike₁
   module G2 = Group-Lemmas (n QRel,_===₂_) grouplike₂

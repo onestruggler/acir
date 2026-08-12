@@ -124,30 +124,30 @@ module Symplectic-Derived-Gen where
   ⊤⊥ : ∀ {n} → Word (Gen (₂₊ n))
   ⊤⊥ = ʰ|ʰ • ₕ|ₕ
 
-  H^ : ∀ {n} → ℤ ₄ -> Word (Gen (₁₊ n))
+  H^ : ∀ {n} → ℤ ₄ → Word (Gen (₁₊ n))
   H^ k = [ gate₁ (H-gen k) ]ʷ
 
-  S^ : ∀ {n} → ℤ ₚ -> Word (Gen (₁₊ n))
+  S^ : ∀ {n} → ℤ ₚ → Word (Gen (₁₊ n))
   S^ k = [ gate₁ (S-gen k) ]ʷ
 
-  CZ^ : ∀ {n} → ℤ ₚ -> Word (Gen (₂₊ n))
+  CZ^ : ∀ {n} → ℤ ₚ → Word (Gen (₂₊ n))
   CZ^ k = [ gate₂ (CZ-gen k) ]ʷ
 
-  M : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
+  M : ∀ {n} → ℤ* ₚ → Word (Gen (₁₊ n))
   M x' = S^ x • H • S^ x⁻¹ • H • S^ x • H
     where
     x = x' .proj₁
     x⁻¹ = ((x' ⁻¹) .proj₁ )
 
-  M₁ : ∀ {n} -> Word (Gen (₁₊ n))
+  M₁ : ∀ {n} → Word (Gen (₁₊ n))
   M₁ = M (₁ , λ ())
 
   infixr 9 _^2
-  _^2 : ℤ* ₚ -> ℤ ₚ
+  _^2 : ℤ* ₚ → ℤ ₚ
   _^2 x' = let x = x' .proj₁ in x * x 
 
   infixr 9 _^1
-  _^1 : ℤ* ₚ -> ℤ ₚ
+  _^1 : ℤ* ₚ → ℤ ₚ
   _^1 x' = let x = x' .proj₁ in x
 
   -- The qupit-specific relations.  The structural rules — congruence
@@ -195,45 +195,45 @@ module Symplectic-Derived-Gen where
   _QRel,_===_ : (n : ℕ) → CRel n
   _QRel,_===_ = _VRel,_===_
 
-  lemma-cong↓-S^ : ∀ {n} k -> let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-S^ : ∀ {n} k → let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (S ^ k) ↓ ≈↓ S ^ k
   lemma-cong↓-S^ {n} ₀ = PB.refl
   lemma-cong↓-S^ {n} ₁ = PB.refl
   lemma-cong↓-S^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S^ {n} (₁₊ k))
 
 
-  lemma-cong↓-S↓^ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-S↓^ : ∀ {n} k → let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (S ↓ ^ k) ↓ ≈↓ S ↓ ^ k
   lemma-cong↓-S↓^ {n} ₀ = PB.refl
   lemma-cong↓-S↓^ {n} ₁ = PB.refl
   lemma-cong↓-S↓^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S↓^ {n} (₁₊ k))
 
-  lemma-cong↓-S↑^ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-S↑^ : ∀ {n} k → let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     ((S ↑) ^ k) ↓ ≈↓ (S ↑) ^ k
   lemma-cong↓-S↑^ {n} ₀ = PB.refl
   lemma-cong↓-S↑^ {n} ₁ = PB.refl
   lemma-cong↓-S↑^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S↑^ {n} (₁₊ k))
 
 
-  lemma-cong↓-S^↓ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-S^↓ : ∀ {n} k → let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (S ^ k) ↓ ↓ ≈↓ (S ^ k) ↓
   lemma-cong↓-S^↓ {n} ₀ = PB.refl
   lemma-cong↓-S^↓ {n} ₁ = PB.refl
   lemma-cong↓-S^↓ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S^↓ {n} (₁₊ k))
 
-  lemma-cong↓-S^↑ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-S^↑ : ∀ {n} k → let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (S ^ k) ↑ ↓ ≈↓ (S ^ k) ↑
   lemma-cong↓-S^↑ {n} ₀ = PB.refl
   lemma-cong↓-S^↑ {n} ₁ = PB.refl
   lemma-cong↓-S^↑ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S^↑ {n} (₁₊ k))
 
-  lemma-cong↓-H^ : ∀ {n} k -> let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-H^ : ∀ {n} k → let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (H ^ k) ↓ ≈↓ H ^ k
   lemma-cong↓-H^ {n} ₀ = PB.refl
   lemma-cong↓-H^ {n} ₁ = PB.refl
   lemma-cong↓-H^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-H^ {n} (₁₊ k))
 
-  lemma-cong↓-CZ^ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
+  lemma-cong↓-CZ^ : ∀ {n} k → let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
     (CZ ^ k) ↓ ≈↓ CZ ^ k
   lemma-cong↓-CZ^ {n} ₀ = PB.refl
   lemma-cong↓-CZ^ {n} ₁ = PB.refl
@@ -714,34 +714,34 @@ module Symplectic-Derived-GroupLike where
 
 
 {-
-  sform1-antisym' : ∀ (p q : Pauli1) -> sform1 p q ≡ - sform1 q p
+  sform1-antisym' : ∀ (p q : Pauli1) → sform1 p q ≡ - sform1 q p
   sform1-antisym' p@(a , b) q@(c , d) = begin
     sform1 (a , b) (c , d) ≡⟨ solve p-2 {!4!} {!!} {!!} ⟩
-    (- a) * d + c * b ≡⟨ {!\ a b c d -> (solve p-2 4 ? ?)!} ⟩
+    (- a) * d + c * b ≡⟨ {!\ a b c d → (solve p-2 4 ? ?)!} ⟩
     - ((- c) * b + a * d) ≡⟨ solve p-2 {!4!} {!!} {!!} ⟩
     - sform1 (c , d) (a , b) ∎
     where
     open ≡-Reasoning
-    aux2 : ∀ a b c d e -> - e * ((a) * d + c * b) ≡ - e * (c * b + (a) * d)
-    aux2 = solve p-2 5 (\ a b c d e -> (⊝ e) ⊗ ((a) ⊗ d ⊕ c ⊗ b) , (⊝ e) ⊗ (c ⊗ b ⊕ (a) ⊗ d)) λ {x} {x = x₁} {x = x₂} {x = x₃} {x = x₄} → Eq.refl
+    aux2 : ∀ a b c d e → - e * ((a) * d + c * b) ≡ - e * (c * b + (a) * d)
+    aux2 = solve p-2 5 (\ a b c d e → (⊝ e) ⊗ ((a) ⊗ d ⊕ c ⊗ b) , (⊝ e) ⊗ (c ⊗ b ⊕ (a) ⊗ d)) λ {x} {x = x₁} {x = x₂} {x = x₃} {x = x₄} → Eq.refl
 
-    aux3 : ∀ a b -> a * b ≡ b * a
-    aux3 = solve p-2 2 (\ a b -> a ⊗ b , b ⊗ a) λ {x} {x = x₁} → Eq.refl
+    aux3 : ∀ a b → a * b ≡ b * a
+    aux3 = solve p-2 2 (\ a b → a ⊗ b , b ⊗ a) λ {x} {x = x₁} → Eq.refl
 
 -}
 
   module Two-Qupit-Completeness where
 
 {-
-    aux1 : ∀ (p : Pauli 1) -> sform pIₙ p ≡ 0
+    aux1 : ∀ (p : Pauli 1) → sform pIₙ p ≡ 0
     aux1 p = {!!}
 
     Theorem-NF :
     
-      ∀ (p q : Pauli 1) ->
-      sform p q ≡ 1 ->
+      ∀ (p q : Pauli 1) →
+      sform p q ≡ 1 →
       -------------------------------
-      ∃ \ nf -> act ⟦ nf ⟧ p ≡ pZ₀ ×
+      ∃ \ nf → act ⟦ nf ⟧ p ≡ pZ₀ ×
                 act ⟦ nf ⟧ q ≡ pX₀
       
     Theorem-NF p@((₀ , ₀) ∷ []) q@(q1 ∷ []) eq with 0ₚ≢1ₚ (Eq.trans (Eq.sym (aux1 q)) eq)
@@ -1527,7 +1527,7 @@ module Lemmas0 (n : ℕ) where
   open import Data.Fin.Properties
 
 
-  lemma-S^k+l : ∀ k l -> S^ k • S^ l ≈ S^ (k + l)
+  lemma-S^k+l : ∀ k l → S^ k • S^ l ≈ S^ (k + l)
   lemma-S^k+l k l = begin
     S^ k • S^ l ≈⟨ cong (axiom (srel (derived-S k))) (axiom (srel (derived-S l))) ⟩
     S ^ toℕ k • S ^ toℕ l ≈⟨ sym (^-+ S (toℕ k) (toℕ l)) ⟩
@@ -1545,7 +1545,7 @@ module Lemmas0 (n : ℕ) where
 
 
 
-  lemma-S^k-k : ∀ k -> S^ k • S^ (- k) ≈ ε
+  lemma-S^k-k : ∀ k → S^ k • S^ (- k) ≈ ε
   lemma-S^k-k k = begin
     S^ k • S^ (- k) ≈⟨ lemma-S^k+l k (- k) ⟩
     S^ (k + - k) ≡⟨ Eq.cong S^ (+-inverseʳ k) ⟩
@@ -1555,7 +1555,7 @@ module Lemmas0 (n : ℕ) where
     open SR word-setoid
     k-k = toℕ k Nat.+ toℕ (- k)
 
-  lemma-S^-k+k : ∀ k -> S^ (- k) • S^ k ≈ ε
+  lemma-S^-k+k : ∀ k → S^ (- k) • S^ k ≈ ε
   lemma-S^-k+k k = begin
     S^ (- k) • S^ k ≈⟨ cong (axiom (srel (derived-S (- k)))) (axiom (srel (derived-S k))) ⟩
     S ^ toℕ (- k) • S ^ toℕ k ≈⟨ comm⇒pow-comm (toℕ (- k)) (toℕ ( k)) refl ⟩
@@ -1575,7 +1575,7 @@ module Lemmas0 (n : ℕ) where
     ε ≈⟨ _≈_.sym (axiom (srel order-SH)) ⟩
     (S • H) ^ 3 ≈⟨ by-assoc auto ⟩
     S • H • S • H • S • H ≡⟨ auto ⟩
-    S^ ₁ • H • S^ ₁ • H • S^ ₁ • H ≡⟨ Eq.cong (\ xx -> S^ ₁ • H • S^ xx • H • S^ ₁ • H) (Eq.sym inv-₁) ⟩
+    S^ ₁ • H • S^ ₁ • H • S^ ₁ • H ≡⟨ Eq.cong (\ xx → S^ ₁ • H • S^ xx • H • S^ ₁ • H) (Eq.sym inv-₁) ⟩
     S^ ₁ • H • S^ ₁⁻¹ • H • S^ ₁ • H ≈⟨ refl ⟩
     M (₁ , λ ()) ∎
     where
@@ -1627,9 +1627,9 @@ module Lemmas0 (n : ℕ) where
     ε • (S⁻¹ • H) • (S⁻¹ • H) • S⁻¹ • H ≈⟨ left-unit ⟩
     (S⁻¹ • H) • (S⁻¹ • H) • S⁻¹ • H ≈⟨ by-passoc ((□ ^ 2) ^ 3) (□ ^ 6) auto ⟩
     S⁻¹ • H • S⁻¹ • H • S⁻¹ • H ≈⟨ cong lemma-S⁻¹ (cright cong lemma-S⁻¹ (cright (cleft lemma-S⁻¹))) ⟩
-    S^ ₚ₋₁ • H • S^ ₚ₋₁ • H • S^ ₚ₋₁ • H ≡⟨ Eq.cong (\ xx -> S^ ₚ₋₁ • H • S^ ₚ₋₁ • H • S^ xx • H) p-1=-1ₚ ⟩
-    S^ ₚ₋₁ • H • S^ ₚ₋₁ • H • S^ -₁ • H ≡⟨ Eq.cong₂ (\ xx yy -> S^ xx • H • S^ yy • H • S^ -₁ • H) (p-1=-1ₚ) p-1=-1ₚ ⟩
-    S^ -₁ • H • S^ -₁ • H • S^ -₁ • H ≡⟨ Eq.cong (\ xx -> S^ -₁ • H • S^ xx • H • S^ -₁ • H) (Eq.sym aux-₁⁻¹) ⟩
+    S^ ₚ₋₁ • H • S^ ₚ₋₁ • H • S^ ₚ₋₁ • H ≡⟨ Eq.cong (\ xx → S^ ₚ₋₁ • H • S^ ₚ₋₁ • H • S^ xx • H) p-1=-1ₚ ⟩
+    S^ ₚ₋₁ • H • S^ ₚ₋₁ • H • S^ -₁ • H ≡⟨ Eq.cong₂ (\ xx yy → S^ xx • H • S^ yy • H • S^ -₁ • H) (p-1=-1ₚ) p-1=-1ₚ ⟩
+    S^ -₁ • H • S^ -₁ • H • S^ -₁ • H ≡⟨ Eq.cong (\ xx → S^ -₁ • H • S^ xx • H • S^ -₁ • H) (Eq.sym aux-₁⁻¹) ⟩
     S^ -₁ • H • S^ -₁⁻¹ • H • S^ -₁ • H ≈⟨ refl ⟩
     S^ x • H • S^ x⁻¹ • H • S^ x • H ≡⟨ Eq.refl ⟩
     M x' ∎
@@ -1645,7 +1645,7 @@ module Lemmas0 (n : ℕ) where
 
 
 
-  derived-D : ∀ x -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  derived-D : ∀ x → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     H • S^ x • H ≈ H • S^ x • H • S^ x⁻¹ • H • H ^ 3 • S^ -x⁻¹
   derived-D  x nz = begin
     H • S^ x • H ≈⟨ (cright cright sym right-unit) ⟩
@@ -1659,7 +1659,7 @@ module Lemmas0 (n : ℕ) where
     -x⁻¹ = - x⁻¹ 
     open SR word-setoid
 
-  derived-5 : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  derived-5 : ∀ x k → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     M (x , nz) • S ^ k ≈ S ^ (k Nat.* toℕ (x * x)) • M (x , nz)
   derived-5 x k@0 nz = trans right-unit (sym left-unit)
   derived-5 x k@1 nz = begin  
@@ -1684,7 +1684,7 @@ module Lemmas0 (n : ℕ) where
     where
     open SR word-setoid
 
-  lemma-S^k-% : ∀ k -> S ^ k ≈ S ^ (k % p)
+  lemma-S^k-% : ∀ k → S ^ k ≈ S ^ (k % p)
   lemma-S^k-% k = begin
     S ^ k ≡⟨ Eq.cong (S ^_) (m≡m%n+[m/n]*n k p) ⟩
     S ^ (k Nat.% p Nat.+ k Nat./ p Nat.* p) ≈⟨ ^-+ S (k Nat.% p) (k Nat./ p Nat.* p) ⟩
@@ -1697,7 +1697,7 @@ module Lemmas0 (n : ℕ) where
     where
     open SR word-setoid
 
-  lemma-MS^k : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  lemma-MS^k : ∀ x k → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     M (x , nz) • S^ k ≈ S^ (k * (x * x)) • M (x , nz)
   lemma-MS^k x k nz = begin 
     M (x , nz) • S^ k ≈⟨ cong refl (axiom (srel (derived-S k))) ⟩
@@ -1711,7 +1711,7 @@ module Lemmas0 (n : ℕ) where
     x⁻¹ = ((x , nz) ⁻¹) .proj₁
     -x⁻¹ = - x⁻¹
 
-  lemma-S^ab : ∀ (a b : ℤ ₚ) -> S ^ toℕ (a * b) ≈ S ^ (toℕ a Nat.* toℕ b)
+  lemma-S^ab : ∀ (a b : ℤ ₚ) → S ^ toℕ (a * b) ≈ S ^ (toℕ a Nat.* toℕ b)
   lemma-S^ab a b = begin
     S ^ toℕ (a * b) ≡⟨ auto ⟩
     S ^ toℕ (fromℕ< (m%n<n (toℕ a Nat.* toℕ b) p)) ≡⟨ Eq.cong (S ^_) (toℕ-fromℕ< (m%n<n (toℕ a Nat.* toℕ b) p)) ⟩
@@ -1728,7 +1728,7 @@ module Lemmas0 (n : ℕ) where
     open SR word-setoid
 
 
-  derived-7 : ∀ x y -> (nz : x ≢ ₀) -> (nzy : y ≢ ₀) -> let -'₁ = -' ((₁ , λ ())) in let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in let -y/x' = (((y , nzy) *' ((x , nz) ⁻¹)) *' -'₁) in let -y/x = -y/x' .proj₁ in
+  derived-7 : ∀ x y → (nz : x ≢ ₀) → (nzy : y ≢ ₀) → let -'₁ = -' ((₁ , λ ())) in let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in let -y/x' = (((y , nzy) *' ((x , nz) ⁻¹)) *' -'₁) in let -y/x = -y/x' .proj₁ in
   
     M (y , nzy) • H • S^ x • H ≈ S^ (-x⁻¹ * (y * y)) • M -y/x' • (H • S^ -x⁻¹)
     
@@ -1758,11 +1758,11 @@ module Lemmas0 (n : ℕ) where
     -y/x' = (((y , nzy) *' ((x , nz) ⁻¹)) *' -'₁)
     -y/x = -y/x' .proj₁
 
-  aux-MM : ∀ {x y : ℤ ₚ} (nzx : x ≢ ₀) (nzy : y ≢ ₀) -> x ≡ y -> M (x , nzx) ≈ M (y , nzy)
+  aux-MM : ∀ {x y : ℤ ₚ} (nzx : x ≢ ₀) (nzy : y ≢ ₀) → x ≡ y → M (x , nzx) ≈ M (y , nzy)
   aux-MM {x} {y} nz1 nz2 eq rewrite eq = refl
 
 
-  semi-HM : ∀ (x : ℤ* ₚ) -> H • M x ≈ M (x ⁻¹) • H
+  semi-HM : ∀ (x : ℤ* ₚ) → H • M x ≈ M (x ⁻¹) • H
   semi-HM x' = begin
     H • (S^ x • H • S^ x⁻¹ • H • S^ x • H) ≈⟨ by-assoc auto ⟩
     (H • S^ x • H) • S^ x⁻¹ • H • S^ x • H ≈⟨ (trans (sym left-unit) (cong lemma-M1 refl)) ⟩
@@ -1791,7 +1791,7 @@ module Lemmas0 (n : ℕ) where
     -x⁻¹ = - x⁻¹
     aux-a1 : ₁ * x⁻¹ * (-'₁ .proj₁) ≡ -x⁻¹
     aux-a1 = begin
-      ₁ * x⁻¹ * (-'₁ .proj₁) ≡⟨ Eq.cong (\ xx -> xx * (-'₁ .proj₁)) (*-identityˡ x⁻¹) ⟩
+      ₁ * x⁻¹ * (-'₁ .proj₁) ≡⟨ Eq.cong (\ xx → xx * (-'₁ .proj₁)) (*-identityˡ x⁻¹) ⟩
       x⁻¹ * (-'₁ .proj₁) ≡⟨ Eq.cong (x⁻¹ *_) (Eq.sym p-1=-1ₚ) ⟩
       x⁻¹ * ₋₁ ≡⟨ *-comm x⁻¹ ₋₁ ⟩
       ₋₁ * x⁻¹ ≡⟨ auto ⟩
@@ -1833,7 +1833,7 @@ module Lemmas-1 (n : ℕ) where
   open import Data.Fin.Properties
 
 
-  lemma-CZ^k-% : ∀ k -> CZ ^ k ≈ CZ ^ (k % p)
+  lemma-CZ^k-% : ∀ k → CZ ^ k ≈ CZ ^ (k % p)
   lemma-CZ^k-% k = begin
     CZ ^ k ≡⟨ Eq.cong (CZ ^_) (m≡m%n+[m/n]*n k p) ⟩
     CZ ^ (k Nat.% p Nat.+ k Nat./ p Nat.* p) ≈⟨ ^-+ CZ (k Nat.% p) (k Nat./ p Nat.* p) ⟩

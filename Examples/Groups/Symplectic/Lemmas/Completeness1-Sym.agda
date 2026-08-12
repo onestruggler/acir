@@ -49,48 +49,48 @@ module Completeness where
       n : ℕ
       
 
-  TopwGen : Gen (₁₊ n) -> Set
+  TopwGen : Gen (₁₊ n) → Set
   TopwGen (H-gen) = ⊤
   TopwGen (S-gen) = ⊤
   TopwGen _ = ⊥
 
-  TopwWord : Word(Gen (₁₊ n)) -> Set
+  TopwWord : Word(Gen (₁₊ n)) → Set
   TopwWord [ x ]ʷ = TopwGen x
   TopwWord ε = ⊤
   TopwWord (w • w₁) = TopwWord w × TopwWord w₁
 
-  -- desugar-gen :(Gen (₁₊ n)) -> Word(Gen (₁₊ n))
+  -- desugar-gen :(Gen (₁₊ n)) → Word(Gen (₁₊ n))
   -- desugar-gen (H-gen x) = H ^ toℕ x
   -- desugar-gen (S-gen x) = S ^ toℕ x
   -- desugar-gen (CZ-gen x) = CZ ^ toℕ x
   -- desugar-gen {₁₊ n} (x ↥) = (desugar-gen x) ↑
 
-  -- desugar-word : Word (Gen (₁₊ n)) -> Word(Gen (₁₊ n))
+  -- desugar-word : Word (Gen (₁₊ n)) → Word(Gen (₁₊ n))
   -- desugar-word = desugar-gen WB.ʷ
 
 
-  -- lemma-H^-Prim : ∀ x -> TopwWord {n} (H ^ x)
+  -- lemma-H^-Prim : ∀ x → TopwWord {n} (H ^ x)
   -- lemma-H^-Prim ₀ = tt
   -- lemma-H^-Prim ₁ = tt
   -- lemma-H^-Prim (₂₊ k) = tt , (lemma-H^-Prim (₁₊ k))
 
-  -- lemma-S^-Prim : ∀ x -> TopwWord {n} (S ^ x)
+  -- lemma-S^-Prim : ∀ x → TopwWord {n} (S ^ x)
   -- lemma-S^-Prim ₀ = tt
   -- lemma-S^-Prim ₁ = tt
   -- lemma-S^-Prim (₂₊ k) = tt , (lemma-S^-Prim (₁₊ k))
 
-  -- lemma-desugar-gen : (g :(Gen (₁₊ n))) -> TopwGen g -> TopwWord (desugar-gen g)
+  -- lemma-desugar-gen : (g :(Gen (₁₊ n))) → TopwGen g → TopwWord (desugar-gen g)
   -- lemma-desugar-gen (H-gen x) pg = lemma-H^-Prim (toℕ x)
   -- lemma-desugar-gen (S-gen x) pg = lemma-S^-Prim (toℕ x)
   
-  -- lemma-desugar-word : (w : Word(Gen (₁₊ n))) ->  TopwWord w -> TopwWord (desugar-word w)
+  -- lemma-desugar-word : (w : Word(Gen (₁₊ n))) →  TopwWord w → TopwWord (desugar-word w)
   -- lemma-desugar-word [ x ]ʷ pg = lemma-desugar-gen x pg
   -- lemma-desugar-word ε pg = tt
   -- lemma-desugar-word (w • w₁) (pgl , pgr)= (lemma-desugar-word w pgl) , (lemma-desugar-word w₁ pgr)
 
 
   -- lemma-desugar-gen-≈ : let open PB ((₁₊ n) QRel,_===_) in
-  --   (g :(Gen (₁₊ n))) -> desugar-gen g ≈ [ g ]ʷ
+  --   (g :(Gen (₁₊ n))) → desugar-gen g ≈ [ g ]ʷ
   -- lemma-desugar-gen-≈ (H-gen x) = PB.sym (PB.axiom (derived-H x))
   -- lemma-desugar-gen-≈ (S-gen x) = PB.sym (PB.axiom (derived-S x))
   -- lemma-desugar-gen-≈ (CZ-gen x) = PB.sym (PB.axiom (derived-CZ x))
@@ -98,7 +98,7 @@ module Completeness where
 
 
   -- lemma-desugar-word-≈ : let open PB ((₁₊ n) QRel,_===_) in
-  --   (w : Word(Gen (₁₊ n))) -> desugar-word w ≈ w
+  --   (w : Word(Gen (₁₊ n))) → desugar-word w ≈ w
   -- lemma-desugar-word-≈ [ x ]ʷ = lemma-desugar-gen-≈ x
   -- lemma-desugar-word-≈ ε = PB.refl
   -- lemma-desugar-word-≈ (w • w₁) = PB.cong (lemma-desugar-word-≈ w) (lemma-desugar-word-≈ w₁)
@@ -108,9 +108,9 @@ module Completeness where
 
   Lemma-single-qupit-completeness : let open PB ((₁₊ n) QRel,_===_) in
     
-    ∀ (nf : NF1) (g : Gen (₁₊ n)) -> (tg : TopwGen g) ->
+    ∀ (nf : NF1) (g : Gen (₁₊ n)) → (tg : TopwGen g) →
     -----------------------------------------------
-    ∃ \ nf' -> ⟦ nf ⟧₁ • [ g ]ʷ ≈ ⟦ nf' ⟧₁
+    ∃ \ nf' → ⟦ nf ⟧₁ • [ g ]ʷ ≈ ⟦ nf' ⟧₁
     
   Lemma-single-qupit-completeness {n} nf@(s , m , ε) (H-gen) tg = (s , m , HS^ ₀) , claim
     where
@@ -215,9 +215,9 @@ module Completeness where
 
   Corollary-single-qupit-completeness : let open PB ((₁₊ n) QRel,_===_) in
     
-    ∀ (nf : NF1) (w : Word (Gen (₁₊ n))) -> (tg : TopwWord w) ->
+    ∀ (nf : NF1) (w : Word (Gen (₁₊ n))) → (tg : TopwWord w) →
     --------------------------------------------------------
-    ∃ \ nf' -> ⟦ nf ⟧₁ • w ≈ ⟦ nf' ⟧₁
+    ∃ \ nf' → ⟦ nf ⟧₁ • w ≈ ⟦ nf' ⟧₁
 
   Corollary-single-qupit-completeness nf [ x ]ʷ tg = Lemma-single-qupit-completeness nf x tg
   Corollary-single-qupit-completeness nf ε tg = nf , PB.right-unit
@@ -256,9 +256,9 @@ module Completeness where
 
   Theorem-single-qupit-completeness : let open PB ((₁₊ n) QRel,_===_) in
     
-    ∀ (w : Word (Gen (₁₊ n))) -> (tg : TopwWord w) ->
+    ∀ (w : Word (Gen (₁₊ n))) → (tg : TopwWord w) →
     --------------------------------------------------------
-    ∃ \ nf' -> w ≈ ⟦ nf' ⟧₁
+    ∃ \ nf' → w ≈ ⟦ nf' ⟧₁
 
   Theorem-single-qupit-completeness {n} [ x ]ʷ tg with Corollary-single-qupit-completeness nf₀ [ x ]ʷ tg
   ... | (nf' , hyp) = nf' , claim
@@ -297,9 +297,9 @@ module Completeness where
 
   Lemma-single-qupit-completeness-mc-H : let open PB ((₁₊ n) QRel,_===_) in
     
-    ∀ (mc : MC) ->
+    ∀ (mc : MC) →
     -----------------------------------------------
-    ∃ \ k -> ∃ \ mc' -> ⟦ mc ⟧ₘ₊ • H ≈ S^ k • ⟦ mc' ⟧ₘ₊
+    ∃ \ k → ∃ \ mc' → ⟦ mc ⟧ₘ₊ • H ≈ S^ k • ⟦ mc' ⟧ₘ₊
     
   Lemma-single-qupit-completeness-mc-H {n} mc@(m , ε) = ₀ , (m , HS^ ₀) , claim
     where
@@ -366,9 +366,9 @@ module Completeness where
 
   Lemma-single-qupit-completeness-mc-S : let open PB ((₁₊ n) QRel,_===_) in
     
-    ∀ (mc : MC) ->
+    ∀ (mc : MC) →
     -----------------------------------------------
-    ∃ \ k -> ∃ \ mc' -> ⟦ mc ⟧ₘ₊ • S ≈ S^ k • ⟦ mc' ⟧ₘ₊
+    ∃ \ k → ∃ \ mc' → ⟦ mc ⟧ₘ₊ • S ≈ S^ k • ⟦ mc' ⟧ₘ₊
     
   Lemma-single-qupit-completeness-mc-S {n} mc@(m , ε) = (m ^2) , mc ,  claim
     where
@@ -392,7 +392,7 @@ module Completeness where
     open Pattern-Assoc
     open Lemmas0 n
     
-    aux-S^ : ∀ a b -> S^ a • S^ b ≈ S^ (a + b)
+    aux-S^ : ∀ a b → S^ a • S^ b ≈ S^ (a + b)
     aux-S^ a b = begin
       S^ a • S^ b ≈⟨ sym (^-+ S (toℕ a) (toℕ b)) ⟩
       S ^ (toℕ a Nat.+ toℕ b) ≈⟨ lemma-S^k-% (toℕ a Nat.+ toℕ b) ⟩
@@ -413,7 +413,7 @@ module Completeness where
 
   Lemma-single-qupit-completeness-mc-S-ε : let open PB ((₁₊ n) QRel,_===_) in
     
-    ∀ m -> let mc = (m , ε) in
+    ∀ m → let mc = (m , ε) in
     -----------------------------------------------
     let k = (m *' m) .proj₁ in  ⟦ mc ⟧ₘ₊ • S ≈ S^ k • ⟦ mc ⟧ₘ₊
     
@@ -433,7 +433,7 @@ module Completeness where
 
   Lemma-single-qupit-completeness-mc-S-HS : let open PB ((₁₊ n) QRel,_===_) in
     
-    ∀ m k -> let mc = (m , HS^ k) in let mc' = m , HS^ (1ₚ + k) in
+    ∀ m k → let mc = (m , HS^ k) in let mc' = m , HS^ (1ₚ + k) in
     ---------------------------------------------------------------
     ⟦ mc ⟧ₘ₊ • S ≈ ⟦ mc' ⟧ₘ₊
     
@@ -445,7 +445,7 @@ module Completeness where
     open Pattern-Assoc
     open Lemmas0 n
     
-    aux-S^ : ∀ a b -> S^ a • S^ b ≈ S^ (a + b)
+    aux-S^ : ∀ a b → S^ a • S^ b ≈ S^ (a + b)
     aux-S^ a b = begin
       S^ a • S^ b ≈⟨ sym (^-+ S (toℕ a) (toℕ b)) ⟩
       S ^ (toℕ a Nat.+ toℕ b) ≈⟨ lemma-S^k-% (toℕ a Nat.+ toℕ b) ⟩
@@ -465,7 +465,7 @@ module Completeness where
 
   Lemma-single-qupit-completeness-mc-H-ε : let open PB ((₁₊ n) QRel,_===_) in
     
-    ∀ m -> let mc = (m , ε) in
+    ∀ m → let mc = (m , ε) in
     -----------------------------------------------
     let mc' = (m , HS^ ₀) in ⟦ mc ⟧ₘ₊ • H ≈ ⟦ mc' ⟧ₘ₊
     
@@ -480,7 +480,7 @@ module Completeness where
 
   Lemma-single-qupit-completeness-mc-H-HS⁰ : let open PB ((₁₊ n) QRel,_===_) in
     
-    ∀ m -> let mc = (m , HS^ ₀) in
+    ∀ m → let mc = (m , HS^ ₀) in
     -------------------------------------------------
     let mc' = (m *' -'₁ , ε) in ⟦ mc ⟧ₘ₊ • H ≈ ⟦ mc' ⟧ₘ₊
 
@@ -508,7 +508,7 @@ module Completeness where
 
   Lemma-single-qupit-completeness-mc-H-HS : let open PB ((₁₊ n) QRel,_===_) in
     
-    ∀ m (kk* : ℤ* ₚ) -> let mc = (m , HS^ (kk* .proj₁)) in
+    ∀ m (kk* : ℤ* ₚ) → let mc = (m , HS^ (kk* .proj₁)) in
     ----------------------------------------------------------------------------------
     let k* = (-' (kk* ⁻¹) *' (m *' m)) in
     let k = k* .proj₁ in
@@ -544,12 +544,12 @@ module Completeness where
 
 
 
-  top-S^k : ∀ k -> TopwWord {n} (S ^ k)
+  top-S^k : ∀ k → TopwWord {n} (S ^ k)
   top-S^k ₀ = tt
   top-S^k ₁ = tt
   top-S^k (₂₊ k) = tt , (top-S^k (₁₊ k))
 
-  top-M : ∀ m -> TopwWord {n} (M m)
+  top-M : ∀ m → TopwWord {n} (M m)
   top-M m@x' = top-S^k (toℕ x) , tt , top-S^k (toℕ x⁻¹) , tt , top-S^k (toℕ x) , tt
     where
     x = x' .proj₁

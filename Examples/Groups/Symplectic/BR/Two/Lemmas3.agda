@@ -86,10 +86,10 @@ aux-hEx-4 = bbc (H ↑ ^ 2) (Ex • H ^ 2) claim
     H ↑ ^ 2 • (H ↓ • H ↑ • CZ • H ↓ • H ↑) • (H ↑ ^ 2 • Ex) ≈⟨ cright cright rewrite-swap 100 auto ⟩
     H ↑ ^ 2 • (H ↓ • H ↑ • CZ • H ↓ • H ↑) • (Ex • H ^ 2) ∎
 
-y≠1⇒1-y≠0 : ∀ (y : ℤ ₚ) -> y ≢ ₁ -> ₁ + - y ≢ ₀
+y≠1⇒1-y≠0 : ∀ (y : ℤ ₚ) → y ≢ ₁ → ₁ + - y ≢ ₀
 y≠1⇒1-y≠0 y neq1 eq0 = neq1 ((Eq.trans (Eq.trans (Eq.sym (+-identityˡ y)) (Eq.cong (_+ y) (Eq.sym eq0))) (Eq.trans (+-assoc ₁ (- y ) y) (Eq.trans (Eq.cong (₁ +_) (+-inverseˡ y)) (+-identityʳ ₁)))))
 
-aux-M|| : ∀ (y*@(y , nz) : ℤ* ₚ) -> M (y* ⁻¹) ↑ • CZ^ y • H • H ↑ • CZ • M (y* ⁻¹) ↑ ≈ CZ • H • H ↑ • CZ^ y
+aux-M|| : ∀ (y*@(y , nz) : ℤ* ₚ) → M (y* ⁻¹) ↑ • CZ^ y • H • H ↑ • CZ • M (y* ⁻¹) ↑ ≈ CZ • H • H ↑ • CZ^ y
 aux-M|| y*@(y , nz) = begin
   M (y* ⁻¹) ↑ • CZ^ y • H • H ↑ • CZ • M (y* ⁻¹) ↑ ≈⟨ sym assoc ⟩
   (M (y* ⁻¹) ↑ • CZ^ y) • H • H ↑ • CZ • M (y* ⁻¹) ↑ ≈⟨ cleft lemma-M↑CZ^k y⁻¹ y ((y* ⁻¹) .proj₂) ⟩
@@ -106,7 +106,7 @@ aux-M|| y*@(y , nz) = begin
   where
   y⁻¹ = (y* ⁻¹) .proj₁
 
-lemma-⌶-CZ^y : ∀ (y*@(y , nz) : ℤ* ₚ) (neq1 : y ≢ ₁) ->
+lemma-⌶-CZ^y : ∀ (y*@(y , nz) : ℤ* ₚ) (neq1 : y ≢ ₁) →
   let
   nzm : ₁ + - y ≢ ₀
   nzm = y≠1⇒1-y≠0 y neq1

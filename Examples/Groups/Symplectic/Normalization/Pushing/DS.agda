@@ -67,17 +67,17 @@ open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
 
 
 
-dir-of-DS : D -> Word (Gen (₁₊ n))
+dir-of-DS : D → Word (Gen (₁₊ n))
 dir-of-DS (₀ , b) = S
 dir-of-DS (₁₊ _ , _) = ε
 
-d-of-DS : D -> D
+d-of-DS : D → D
 d-of-DS (₀ , b) = ₀ , b
 d-of-DS (a@(₁₊ _) , b) = a , b + - a
 
 aux-DS : let open PB ((₂₊ n) QRel,_===_) in
 
-  ∀ d ->
+  ∀ d →
   let
   d' = d-of-DS d
   w = dir-of-DS d
@@ -107,7 +107,7 @@ aux-DS {n} d@(a@(₁₊ _) , b) = claim
   aux : -b/a + ₁ ≡ - (b + - a) * a⁻¹
   aux = Eq.sym ( begin
     - (b + - a) * a⁻¹ ≡⟨ Eq.cong (_* a⁻¹) (Eq.sym (-‿+-comm b (- a))) ⟩
-    (- b + - - a) * a⁻¹ ≡⟨ Eq.cong (\ xx -> (- b + xx) * a⁻¹) (-‿involutive a) ⟩
+    (- b + - - a) * a⁻¹ ≡⟨ Eq.cong (\ xx → (- b + xx) * a⁻¹) (-‿involutive a) ⟩
     (- b + a) * a⁻¹ ≡⟨ *-distribʳ-+ a⁻¹ (- b) a ⟩
     - b * a⁻¹ + a * a⁻¹ ≡⟨ Eq.cong (- b * a⁻¹ +_) (lemma-⁻¹ʳ a {{nztoℕ {y = a} {neq0 = λ ()}}}) ⟩
     - b * a⁻¹ + ₁ ≡⟨ auto ⟩
@@ -139,7 +139,7 @@ aux-DS {n} d@(a@(₁₊ _) , b) = claim
 
 aux-DS↑ : let open PB ((₂₊ n) QRel,_===_) in
 
-  ∀ d -> [ d ]ᵈ • S ↑ ≈ S • [ d ]ᵈ
+  ∀ d → [ d ]ᵈ • S ↑ ≈ S • [ d ]ᵈ
 
 aux-DS↑ {n} d@(a@₀ , b) = begin
   ([ d ]ᵈ • S ↑) ≈⟨ assoc ⟩
@@ -189,7 +189,7 @@ aux-DS↑ {n} d@(a@(₁₊ _) , b) = begin
 -- Twisted power: (S ↑)^m slides rightward through a D-box, each S↑
 -- descending to a bottom S.
 aux-DS↑-pow : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ d m -> [ d ]ᵈ • (S ↑) ^ m ≈ (S ^ m) • [ d ]ᵈ
+  ∀ d m → [ d ]ᵈ • (S ↑) ^ m ≈ (S ^ m) • [ d ]ᵈ
 aux-DS↑-pow {n} d zero      = trans right-unit (sym left-unit)
   where open PB ((₂₊ n) QRel,_===_) ; open PP ((₂₊ n) QRel,_===_)
 aux-DS↑-pow {n} d (₁₊ zero) = aux-DS↑ d

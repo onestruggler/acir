@@ -1,5 +1,4 @@
 {-# OPTIONS --cubical-compatible --safe #-}
-{-# OPTIONS --termination-depth=2 #-}
 
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; inspect ; setoid ; module ≡-Reasoning ; _≗_) renaming ([_] to [_]')

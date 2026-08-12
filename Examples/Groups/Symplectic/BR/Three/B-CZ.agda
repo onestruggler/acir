@@ -84,12 +84,12 @@ lemma-CX↑-CZ' :
   CX ↑ • CZ ≈ CZ • CZ02^ (- ₁) • CX ↑
 lemma-CX↑-CZ' = begin
   CX ↑ • CZ ≈⟨ lemma-CX↑-CZ ⟩
-  CZ • CZ02⁻¹ • CX ↑ ≈⟨ cright cleft (cright cleft refl' (Eq.cong (\ xx -> (CZ ^ xx) ↑) (Eq.sym lemma-toℕ-1ₚ))) ⟩
+  CZ • CZ02⁻¹ • CX ↑ ≈⟨ cright cleft (cright cleft refl' (Eq.cong (\ xx → (CZ ^ xx) ↑) (Eq.sym lemma-toℕ-1ₚ))) ⟩
   CZ • CZ02^ (- ₁) • CX ↑ ∎
 
 
 {-
-lemma-M↑CX'^k : ∀ (x*@(x , nz) : ℤ* ₚ) k ->  let x⁻¹ = (x* ⁻¹) .proj₁ in
+lemma-M↑CX'^k : ∀ (x*@(x , nz) : ℤ* ₚ) k →  let x⁻¹ = (x* ⁻¹) .proj₁ in
   M x* ↑ • CX'^ k ≈ CX'^ (k * x) • M (x , nz) ↑
 lemma-M↑CX'^k x*@(x , nz) k = begin
   M x* ↑ • H ^ 3 • CZ^ k • H ≈⟨ by-passoc (□ ^ 4) (□ ^ 2 • □ ^ 2) auto ⟩
@@ -103,7 +103,7 @@ lemma-M↑CX'^k x*@(x , nz) k = begin
 -}
 
 
-lemma-CX'^k↑-CZ :  ∀ (k*@(k , nz) : ℤ* ₚ) ->
+lemma-CX'^k↑-CZ :  ∀ (k*@(k , nz) : ℤ* ₚ) →
 
   CX'^ k ↑ • CZ ≈ CZ • CZ02^ (- k) • CX'^ k ↑
   
@@ -116,7 +116,7 @@ lemma-CX'^k↑-CZ k*@(k , nz) = bbc (M (k* ⁻¹) ↑ ↑) ε claim
     M (k* ⁻¹) ↑ ↑ • (CX'^ k ↑ • CZ) • ε ≈⟨ cong refl right-unit ⟩
     M (k* ⁻¹) ↑ ↑ • (CX'^ k ↑ • CZ) ≈⟨ sym assoc ⟩
     (M (k* ⁻¹) ↑ ↑ • CX'^ k ↑) • CZ ≈⟨ cleft lemma-cong↑ _ _ (lemma-M↑CX'^k (k* ⁻¹) k) ⟩
-    (CX'^ (k * k⁻¹) ↑ • M (k* ⁻¹) ↑ ↑) • CZ ≈⟨ cleft cleft (cright cleft refl' (Eq.cong (\ xx -> CZ^ xx ↑) (lemma-⁻¹ʳ k {{nztoℕ {y = k} {neq0 = nz}}}))) ⟩
+    (CX'^ (k * k⁻¹) ↑ • M (k* ⁻¹) ↑ ↑) • CZ ≈⟨ cleft cleft (cright cleft refl' (Eq.cong (\ xx → CZ^ xx ↑) (lemma-⁻¹ʳ k {{nztoℕ {y = k} {neq0 = nz}}}))) ⟩
     (CX ↑ • M (k* ⁻¹) ↑ ↑) • CZ ≈⟨ assoc ⟩
     CX ↑ • M (k* ⁻¹) ↑ ↑ • CZ ≈⟨ cright sym (lemma-comm-CZ-w↑↑ (M (k* ⁻¹))) ⟩
     CX ↑ • CZ • M (k* ⁻¹) ↑ ↑ ≈⟨ sym assoc ⟩
@@ -135,7 +135,7 @@ lemma-CX'^k↑-CZ k*@(k , nz) = bbc (M (k* ⁻¹) ↑ ↑) ε claim
 
 
 
-aux-Ex↑-CZ^k : ∀ k -> CZ02^ k • Ex ↑ ≈ Ex ↑ • CZ^ k
+aux-Ex↑-CZ^k : ∀ k → CZ02^ k • Ex ↑ ≈ Ex ↑ • CZ^ k
 aux-Ex↑-CZ^k k = bbc (Ex ↑) (Ex ↑) claim
   where
   claim : Ex ↑ • (CZ02^ k • Ex ↑) • Ex ↑ ≈ Ex ↑ • (Ex ↑ • CZ^ k) • Ex ↑
@@ -149,14 +149,14 @@ aux-Ex↑-CZ^k k = bbc (Ex ↑) (Ex ↑) claim
 
 
 
-b'-of : B -> B
+b'-of : B → B
 b'-of = id
 
-dir-of : B -> Word (Gen 3)
+dir-of : B → Word (Gen 3)
 dir-of (₀ , b) = CZ02 • CZ^ (- b)
 dir-of (a@(₁₊ _) , b) = CZ02 • CZ^ (- a)
 
-lemma-dir-and-b'-cz : ∀ (b : B) ->
+lemma-dir-and-b'-cz : ∀ (b : B) →
   let
   dir = dir-of b
   b' = b'-of b

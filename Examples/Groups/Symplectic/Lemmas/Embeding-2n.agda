@@ -67,7 +67,7 @@ open SR word-setoid
 open PB (₂ QRel,_===_)renaming (_===_ to _===₀_ ; _≈_ to _≈₀_) using ()
 
 
-f : Gen 2 -> (Gen (₂₊ n))
+f : Gen 2 → (Gen (₂₊ n))
 f H-gen = H-gen
 f S-gen = S-gen
 f CZ-gen = CZ-gen
@@ -78,7 +78,7 @@ f (((gate₀ ()) ↥) ↥)
 
 f* = wmap f
 
-lemma-f* : ∀ w k -> f* (w ^ k) ≈ f* w ^ k
+lemma-f* : ∀ w k → f* (w ^ k) ≈ f* w ^ k
 lemma-f* w k@0 = refl
 lemma-f* w k@1 = refl
 lemma-f* w k@(₂₊ k') = begin
@@ -88,7 +88,7 @@ lemma-f* w k@(₂₊ k') = begin
   f* w ^ k ∎
 
 
-lemma-f*-Sᵏ↑ : ∀ k -> f* ((S ^ k) ↑) ≈ (S ^ k) ↑
+lemma-f*-Sᵏ↑ : ∀ k → f* ((S ^ k) ↑) ≈ (S ^ k) ↑
 lemma-f*-Sᵏ↑ ₀ = refl
 lemma-f*-Sᵏ↑ ₁ = refl
 lemma-f*-Sᵏ↑ k@(₂₊ k') = begin
@@ -99,7 +99,7 @@ lemma-f*-Sᵏ↑ k@(₂₊ k') = begin
   where
   k'' = ₁₊ k'
 
-lemma-f*-M : ∀ m -> f* (M m) ≈ M m
+lemma-f*-M : ∀ m → f* (M m) ≈ M m
 lemma-f*-M m = begin
   f* (M m) ≈⟨ cong (lemma-f* S (toℕ x)) (cright cong (lemma-f* S (toℕ x⁻¹)) (cright (cleft lemma-f* S (toℕ x)))) ⟩
   S^ x • H • S^ x⁻¹ • H • S^ x • H ≈⟨ refl ⟩
@@ -109,7 +109,7 @@ lemma-f*-M m = begin
   x = x' .proj₁
   x⁻¹ = ((x' ⁻¹) .proj₁ )
 
-lemma-f*-M↑ : ∀ m -> f* (M m ↑) ≈ M m ↑
+lemma-f*-M↑ : ∀ m → f* (M m ↑) ≈ M m ↑
 lemma-f*-M↑ m = begin
   f* (M m ↑) ≈⟨ cong (lemma-f*-Sᵏ↑ (toℕ x)) (cright cong (lemma-f*-Sᵏ↑ (toℕ x⁻¹)) (cright (cleft lemma-f*-Sᵏ↑ (toℕ x)))) ⟩
   M m ↑ ∎
@@ -119,7 +119,7 @@ lemma-f*-M↑ m = begin
   x⁻¹ = ((x' ⁻¹) .proj₁ )
 
 
-f-wd-ax : ∀ {w v} -> w ===₀ v -> (f*) w ≈ (f*) v
+f-wd-ax : ∀ {w v} → w ===₀ v → (f*) w ≈ (f*) v
 -- f-wd-ax def-EX = axiom def-EX
 -- f-wd-ax order-EX = axiom order-EX
 f-wd-ax (srel Base.order-S) = begin
@@ -193,17 +193,17 @@ f-wd-ax (cong↑ (cong↑ (srel ())))
 
 open import Presentation.Morphism _===₀_ ((₂₊ n) QRel,_===_)
 
-by-emb : ∀ {w v} -> w ≈₀ v -> (f*) w ≈ (f*) v
+by-emb : ∀ {w v} → w ≈₀ v → (f*) w ≈ (f*) v
 by-emb {w} {v} eq = Congruence.fʷ-cong f f-wd-ax eq 
 
-by-emb' : ∀ {w v w' v'} -> w ≈₀ v -> (f*) w ≈ w' -> (f*) v ≈ v' -> w' ≈ v'
+by-emb' : ∀ {w v w' v'} → w ≈₀ v → (f*) w ≈ w' → (f*) v ≈ v' → w' ≈ v'
 by-emb' {w} {v} {w'} {v'} eq eqw eqv = begin
   w' ≈⟨ sym eqw ⟩
   (f*) w ≈⟨ by-emb eq ⟩
   (f*) v ≈⟨ eqv ⟩
   v' ∎
 
-lemma-f*^^ : ∀ w k l -> f* ((w ^ k) ^ l) ≈ ((f* w) ^ k) ^ l
+lemma-f*^^ : ∀ w k l → f* ((w ^ k) ^ l) ≈ ((f* w) ^ k) ^ l
 lemma-f*^^ w k l = begin
   f* ((w ^ k) ^ l) ≈⟨ (by-emb (P2.^^ w k l)) ⟩
   f* (w ^ (k Nat.* l)) ≈⟨ lemma-f* w (k Nat.* l) ⟩
@@ -212,7 +212,7 @@ lemma-f*^^ w k l = begin
   where
   module P2 = PP (2 QRel,_===_)
 
-lemma-f*S^^↑  : ∀ k l -> f* (((S ^ k) ^ l) ↑) ≈ (((S) ^ k) ^ l) ↑
+lemma-f*S^^↑  : ∀ k l → f* (((S ^ k) ^ l) ↑) ≈ (((S) ^ k) ^ l) ↑
 lemma-f*S^^↑ k l = begin
   f* (((S ^ k) ^ l) ↑) ≈⟨ (by-emb (lemma-cong↑ _ _ (P1.^^ S k l))) ⟩
   f* ((S ^ (k Nat.* l)) ↑) ≈⟨ lemma-f*-Sᵏ↑ (k Nat.* l) ⟩

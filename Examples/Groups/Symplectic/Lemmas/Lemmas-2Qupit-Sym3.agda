@@ -50,7 +50,7 @@ private
     n : ℕ
 
 aux-CXᵏ : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ k -> CX ^ k ≈ H ^ 3 • CZ ^ k • H 
+  ∀ k → CX ^ k ≈ H ^ 3 • CZ ^ k • H 
 aux-CXᵏ {n} k@0 = rewrite-sym0 100 auto
   where
   open Sym0-Rewriting (₁₊ n)
@@ -71,12 +71,12 @@ aux-CXᵏ {n} k@(₁₊ k'@(₁₊ k'')) = begin
 
 
 aux-CX^k : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ k -> CX^ k ≈ H ^ 3 • CZ^ k • H 
+  ∀ k → CX^ k ≈ H ^ 3 • CZ^ k • H 
 aux-CX^k {n} k = aux-CXᵏ (toℕ k)
 
 
 aux-XCᵏ : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ k -> XC ^ k ≈ H ↑ ^ 3 • CZ ^ k • H ↑
+  ∀ k → XC ^ k ≈ H ↑ ^ 3 • CZ ^ k • H ↑
 aux-XCᵏ {n} k@0 = rewrite-sym0 100 auto
   where
   open Sym0-Rewriting (₁₊ n)
@@ -95,7 +95,7 @@ aux-XCᵏ {n} k@(₁₊ k'@(₁₊ k'')) = begin
   open Sym0-Rewriting (₁₊ n)
 
 aux-XC^k : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ k -> XC^ k ≈ H ↑ ^ 3 • CZ^ k • H ↑ 
+  ∀ k → XC^ k ≈ H ↑ ^ 3 • CZ^ k • H ↑ 
 aux-XC^k {n} k = aux-XCᵏ (toℕ k)
 
 
@@ -240,7 +240,7 @@ lemma-semi-HH↓-CX⁻¹ {n} = bbc (HH ↓) (HH ↓) claim
 
 lemma-semi-M↓-XC : let open PB ((₂₊ n) QRel,_===_) in
 
-  ∀ m -> ZM m • XC ≈ XC^ (m .proj₁) • ZM m
+  ∀ m → ZM m • XC ≈ XC^ (m .proj₁) • ZM m
 
 lemma-semi-M↓-XC {n} m = begin
   ZM m • H ↑ ^ 3 • CZ • H ↑  ≈⟨ by-passoc (□ ^ 4) (□ ^ 2 • □ ^ 2) auto ⟩
@@ -271,7 +271,7 @@ open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
-A'-of-AZM : A -> ℤ* ₚ -> A
+A'-of-AZM : A → ℤ* ₚ → A
 A'-of-AZM ((₀ , ₀) , nz) m = ⊥-elim (nz auto)
 A'-of-AZM ((₀ , b@(₁₊ _)) , nz) m = (₀ , b') , aux-b≠0⇒ab≠0  ₀ b' nzb'
   where
@@ -284,7 +284,7 @@ A'-of-AZM ((a@(₁₊ _) , b) , nz) m = (a' , b') , aux-a≠0⇒ab≠0  (a') b' 
   nza' = ((a , λ ()) *' m) .proj₂
   b' = b * (m ⁻¹) .proj₁
 
-lemma-abox-m : ∀ x m -> let open PB ((₁₊ n) QRel,_===_) in
+lemma-abox-m : ∀ x m → let open PB ((₁₊ n) QRel,_===_) in
   let x' = A'-of-AZM x m in
   
   [ x ]ᵃ • ZM m ≈ [ x' ]ᵃ
@@ -308,7 +308,7 @@ lemma-abox-m {n} x@((₀ , b@(₁₊ _)) , nz) m = begin
 
 lemma-abox-m {n} x@((a@(₁₊ _), b) , nz) m = begin
   (XM (a , λ ()) • H • S^ -b/a) • ZM m
-    ≡⟨ Eq.cong (\ z -> (z • H • S^ -b/a) • ZM m) (XM≡ZM⁻¹ (a , λ ())) ⟩
+    ≡⟨ Eq.cong (\ z → (z • H • S^ -b/a) • ZM m) (XM≡ZM⁻¹ (a , λ ())) ⟩
   ⟦ (a , λ ()) ⁻¹ , HS^ -b/a  ⟧ₘ₊ • ZM m ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 4) auto ⟩
   ⟦ (a , λ ()) ⁻¹ ⟧ₘ • H • S^ -b/a • ZM m ≈⟨ (cright cright lemma-S^kM (m .proj₁) -b/a (m .proj₂)) ⟩
   ⟦ (a , λ ()) ⁻¹ ⟧ₘ • H • ZM m • S^ (-b/a * m⁻²) ≈⟨ (cright sym assoc) ⟩

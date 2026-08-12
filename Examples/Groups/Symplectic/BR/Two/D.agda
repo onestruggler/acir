@@ -77,7 +77,7 @@ open Rewriting-Swap 1
 
 
 {-
-dir-and-d' : ∀ (d : D) (g : Gen 2) (neq : g ≢ H-gen ↥) -> ℤ ₚ × Word (Gen 1) × D
+dir-and-d' : ∀ (d : D) (g : Gen 2) (neq : g ≢ H-gen ↥) → ℤ ₚ × Word (Gen 1) × D
 
 dir-and-d' d@(a@₀ , b@₀)               H-gen neq = ₀ , H              ,   (b , - a)
 dir-and-d' d@(a@₀ , b@(₁₊ _))          H-gen neq = ₀ , ε              ,   (b , - a)
@@ -103,7 +103,7 @@ dir-and-d' d@(a , b)               (H-gen ↥) neq = ⊥-elim (neq auto)
 
 
 
-d'-of : ∀ (d : D) (g : Gen 2) (neq : g ≢ H-gen ↥) -> D
+d'-of : ∀ (d : D) (g : Gen 2) (neq : g ≢ H-gen ↥) → D
 
 d'-of (a , b) H-gen _       = (b , - a)
 d'-of (a , b) S-gen _       = (a , b + - a)
@@ -114,7 +114,7 @@ d'-of (a , b) (H-gen ↥) neq = ⊥-elim (neq auto)
 d'-of (a , b) (gate₀ () ↥ ↥) neq
 
 
-dir-of : ∀ (d : D) (g : Gen 2) (neq : g ≢ H-gen ↥) -> ℤ ₚ × Word (Gen 1)
+dir-of : ∀ (d : D) (g : Gen 2) (neq : g ≢ H-gen ↥) → ℤ ₚ × Word (Gen 1)
 
 dir-of d (gate₀ () ↥ ↥) neq
 dir-of (₀ , ₀)               H-gen neq = ₀ , H
@@ -137,7 +137,7 @@ dir-of (a@(₁₊ _) , b)       CZ-gen neq = a , H • S^ (- a⁻¹) • H ^ 3
 dir-of (a , b)           (H-gen ↥) neq = ⊥-elim (neq auto)
 
 
-lemma-D-br : ∀ (d : D) (g : Gen 2) (neq : g ≢ H-gen ↥) ->
+lemma-D-br : ∀ (d : D) (g : Gen 2) (neq : g ≢ H-gen ↥) →
   let
   (e , dir) = dir-of d g neq
   d'        = d'-of d g neq
@@ -310,7 +310,7 @@ lemma-D-br d@(a@₀ , b@₀) g@S-gen neq = begin
   (Ex • S ) • CZ^ (- b) ≈⟨ cleft lemma-Ex-S ⟩
   (S ↑ • Ex) • CZ^ (- b) ≈⟨ assoc ⟩
   S ↑ • Ex • CZ^ (- b) ≈⟨ sym left-unit ⟩
-  S^ e • dir ↑ • [ a , b ]ᵈ ≈⟨ cright cright refl' (Eq.cong (\ xx -> [ a , xx ]ᵈ) (Eq.sym (Eq.trans (Eq.cong (b +_) -0#≈0#) (+-identityʳ b)))) ⟩
+  S^ e • dir ↑ • [ a , b ]ᵈ ≈⟨ cright cright refl' (Eq.cong (\ xx → [ a , xx ]ᵈ) (Eq.sym (Eq.trans (Eq.cong (b +_) -0#≈0#) (+-identityʳ b)))) ⟩
   S^ e • dir ↑ • [ a , b + - a ]ᵈ ∎
   where
   ed = dir-of d g neq
@@ -325,7 +325,7 @@ lemma-D-br d@(a@₀ , b@(₁₊ _)) g@S-gen neq = begin
   (Ex • S ) • CZ^ (- b) ≈⟨ cleft lemma-Ex-S ⟩
   (S ↑ • Ex) • CZ^ (- b) ≈⟨ assoc ⟩
   S ↑ • Ex • CZ^ (- b) ≈⟨ sym left-unit ⟩
-  S^ e • dir ↑ • [ a , b ]ᵈ ≈⟨ cright cright refl' (Eq.cong (\ xx -> [ a , xx ]ᵈ) (Eq.sym (Eq.trans (Eq.cong (b +_) -0#≈0#) (+-identityʳ b)))) ⟩
+  S^ e • dir ↑ • [ a , b ]ᵈ ≈⟨ cright cright refl' (Eq.cong (\ xx → [ a , xx ]ᵈ) (Eq.sym (Eq.trans (Eq.cong (b +_) -0#≈0#) (+-identityʳ b)))) ⟩
   S^ e • dir ↑ • [ d' ]ᵈ ∎
   where
   ed = dir-of d g neq
@@ -375,7 +375,7 @@ lemma-D-br d@(a@₀ , b@₀) g@(H-gen) neq = begin
   H ↑ • Ex ≈⟨ cright sym right-unit ⟩
   H ↑ • Ex • ε ≈⟨ cright cright sym (refl' (Eq.cong CZ^ -0#≈0#)) ⟩
   H ↑ • Ex • CZ^ (- b) ≈⟨ sym left-unit ⟩
-  S^ e • dir ↑ • [ ₀ , b ]ᵈ ≈⟨ cright cright refl' (Eq.cong (\ xx -> [ ₀ , xx ]ᵈ) (Eq.sym -0#≈0#) )  ⟩
+  S^ e • dir ↑ • [ ₀ , b ]ᵈ ≈⟨ cright cright refl' (Eq.cong (\ xx → [ ₀ , xx ]ᵈ) (Eq.sym -0#≈0#) )  ⟩
   S^ e • dir ↑ • [ b , - a ]ᵈ ∎
   where
   ed = dir-of d g neq
@@ -389,7 +389,7 @@ lemma-D-br d@(a@₀ , b@(₁₊ _)) g@(H-gen) neq = begin
   Ex • CZ^ (- b) • H ≈⟨ cright cright sym right-unit ⟩
   Ex • CZ^ (- b) • H • S^ ₀ ≈⟨ cright cright cright refl' (Eq.cong S^ (Eq.sym (Eq.trans (Eq.cong (_* b⁻¹) -0#≈0#) (*-zeroˡ b⁻¹)))) ⟩
   Ex • CZ^ (- b) • H • S^ (- ₀ * b⁻¹) ≈⟨ sym (trans left-unit left-unit) ⟩
-  S^ e • dir ↑ • [ b , ₀ ]ᵈ ≈⟨ cright cright refl' (Eq.cong (\ xx -> [ b , xx ]ᵈ) (Eq.sym -0#≈0#) )  ⟩
+  S^ e • dir ↑ • [ b , ₀ ]ᵈ ≈⟨ cright cright refl' (Eq.cong (\ xx → [ b , xx ]ᵈ) (Eq.sym -0#≈0#) )  ⟩
   S^ e • dir ↑ • [ b , - a ]ᵈ ∎
   where
   ed = dir-of d g neq
@@ -431,7 +431,7 @@ lemma-D-br d@(a@(₁₊ _) , b@(₁₊ _)) g@(H-gen) neq = begin
   (ZM (-' k* ⁻¹) ↑ • Ex) • (S^ (- k) • CZ^ (- a * l)) • H • S^ (-k⁻¹) ≈⟨ by-passoc (□ ^ 2 • □ ^ 2 • □) (□ • □ ^ 2 • □ ^ 2) auto ⟩
   ZM (-' k* ⁻¹) ↑ • (Ex • S^ (- k)) • CZ^ (- a * l) • H • S^ (-k⁻¹) ≈⟨ cright cleft lemma-Ex-S^ᵏ (- k) ⟩
   ZM (-' k* ⁻¹) ↑ • (S^ (- k) ↑ • Ex) • CZ^ (- a * l) • H • S^ (-k⁻¹) ≈⟨ by-passoc (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) auto ⟩
-  (ZM (-' k* ⁻¹) ↑ • S^ (- k) ↑) • Ex • CZ^ (- a * l) • H • S^ (-k⁻¹) ≈⟨ cong (cong (lemma-cong↑ _ _ (aux-MM ((-' k* ⁻¹) .proj₂) (a/b .proj₂) (c4 .proj₁))) (refl' (Eq.cong (\ xx -> S^ xx ↑) (c4 .proj₂ .proj₁)))) (cright cong (refl' (Eq.cong CZ^ (c4 .proj₂ .proj₂ .proj₁))) (cright refl' (Eq.cong S^ (c4 .proj₂ .proj₂ .proj₂)))) ⟩
+  (ZM (-' k* ⁻¹) ↑ • S^ (- k) ↑) • Ex • CZ^ (- a * l) • H • S^ (-k⁻¹) ≈⟨ cong (cong (lemma-cong↑ _ _ (aux-MM ((-' k* ⁻¹) .proj₂) (a/b .proj₂) (c4 .proj₁))) (refl' (Eq.cong (\ xx → S^ xx ↑) (c4 .proj₂ .proj₁)))) (cright cong (refl' (Eq.cong CZ^ (c4 .proj₂ .proj₂ .proj₁))) (cright refl' (Eq.cong S^ (c4 .proj₂ .proj₂ .proj₂)))) ⟩
   (ZM a/b ↑ • S^ b/a ↑) • Ex • CZ^ (- b) • H • S^ (- - a * b⁻¹) ≈⟨ sym left-unit ⟩
   S^ e • dir ↑ • [ d' ]ᵈ ∎
   where

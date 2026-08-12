@@ -127,18 +127,18 @@ module _ {n : ℕ} where
 
   -- A bottom-wire Gen-1 word (padded to wire 0 by ↓ᵏ (₁₊ n)) commutes
   -- with any wire-≥1 lifted word.
-  comm-↓ᵏ-w↑ : ∀ (u : Word (Gen 1)) (w : Word (Gen (₁₊ n))) ->
+  comm-↓ᵏ-w↑ : ∀ (u : Word (Gen 1)) (w : Word (Gen (₁₊ n))) →
     (u ↓ᵏ (₁₊ n)) • (w ↑) ≈ (w ↑) • (u ↓ᵏ (₁₊ n))
   -- comm-abox-w↑ / comm-{b,d}box-w↑↑ transported to Section's boxes.
-  comm-abox-w↑-S : ∀ (a : A) (w : Word (Gen (₁₊ n))) -> [ a ]ᵃ • (w ↑) ≈ (w ↑) • [ a ]ᵃ
+  comm-abox-w↑-S : ∀ (a : A) (w : Word (Gen (₁₊ n))) → [ a ]ᵃ • (w ↑) ≈ (w ↑) • [ a ]ᵃ
   comm-abox-w↑-S a w =
     Eq.subst (λ z → z • (w ↑) ≈ (w ↑) • z) (Eq.sym (abox-eq a)) (comm-abox-w↑ a w)
 
-  comm-bbox-w↑↑-S : ∀ (b : B) (w : Word (Gen n)) -> [ b ]ᵇ • (w ↑ ↑) ≈ (w ↑ ↑) • [ b ]ᵇ
+  comm-bbox-w↑↑-S : ∀ (b : B) (w : Word (Gen n)) → [ b ]ᵇ • (w ↑ ↑) ≈ (w ↑ ↑) • [ b ]ᵇ
   comm-bbox-w↑↑-S b w =
     Eq.subst (λ z → z • (w ↑ ↑) ≈ (w ↑ ↑) • z) (Eq.sym (bbox-eq b)) (comm-bbox-w↑↑ b w)
 
-  comm-dbox-w↑↑-S : ∀ (d : D) (w : Word (Gen n)) -> [ d ]ᵈ • (w ↑ ↑) ≈ (w ↑ ↑) • [ d ]ᵈ
+  comm-dbox-w↑↑-S : ∀ (d : D) (w : Word (Gen n)) → [ d ]ᵈ • (w ↑ ↑) ≈ (w ↑ ↑) • [ d ]ᵈ
   comm-dbox-w↑↑-S d w =
     Eq.subst (λ z → z • (w ↑ ↑) ≈ (w ↑ ↑) • z) (Eq.sym (dbox-eq d)) (comm-dbox-w↑↑ d w)
 
@@ -155,7 +155,7 @@ module _ {n : ℕ} where
     (w ↑) • ((u ↓ᵏ (₁₊ n)) • (v ↓ᵏ (₁₊ n)))   ∎
 
   -- B-Top widened to Gen (₂₊ n).
-  lemma-B-br-n : ∀ (b : B) (x₁ : SympGate 1) ->
+  lemma-B-br-n : ∀ (b : B) (x₁ : SympGate 1) →
     [_]ᵇ {n} b • [ gate₁ x₁ ↥ ]ʷ ≈ (BT.dir-of b x₁ ↓ᵏ (₁₊ n)) • [_]ᵇ {n} (BT.b'-of b x₁)
   lemma-B-br-n b x₁ =
     trans (refl' (Eq.cong₂ _•_ (Eq.sym (bbox-↓ᵏ b n)) Eq.refl))
@@ -163,7 +163,7 @@ module _ {n : ℕ} where
         (refl' (Eq.cong₂ _•_ (↓ᵏ-↓ᵏ-1 (BT.dir-of b x₁) n) (bbox-↓ᵏ (BT.b'-of b x₁) n))))
 
   -- BD-Top's word-level D push, widened to Gen (₂₊ n).
-  lemmaᵈ-w-n : ∀ (d : D) (w : Word (Gen 1)) ->
+  lemmaᵈ-w-n : ∀ (d : D) (w : Word (Gen 1)) →
     [_]ᵈ {n} d • (w ↓ᵏ (₁₊ n)) ≈
       ((proj₁ (BD.pushᵈ d w) ↓ᵏ n) ↑) • [_]ᵈ {n} (proj₂ (BD.pushᵈ d w))
   lemmaᵈ-w-n d w =
@@ -177,7 +177,7 @@ module _ {n : ℕ} where
 -- ML', it recurses cleanly (a unary gate commutes past d₁ and b₁; a
 -- gate₂ CZ escapes downward via gen-bb-cz + push-Mʷ-suc).
 
-mbv-push : ∀ {k} (m : M (₁₊ k)) (bv : Vec B k) (g : Gen k) ->
+mbv-push : ∀ {k} (m : M (₁₊ k)) (bv : Vec B k) (g : Gen k) →
   Word (Gen k) × (M (₁₊ k) × Vec B k)
 -- The gate₂ clause is placed first so that `mbv-push m bv (gate₂ …)`
 -- reduces even when the M-column / B-vector are abstract: its first
@@ -193,7 +193,7 @@ mbv-push (d₁ ∷ dr' , e) (b₁ ∷ bv') (h ↥) =
   let (dt , ((dvt , et) , bvt)) = mbv-push (dr' , e) bv' h
   in dt ↑ , ((d₁ ∷ dvt , et) , (b₁ ∷ bvt))
 
-push-MBvec : ∀ {k} (m : M (₁₊ k)) (bv : Vec B k) (g : Gen k) ->
+push-MBvec : ∀ {k} (m : M (₁₊ k)) (bv : Vec B k) (g : Gen k) →
   let open PB ((₁₊ k) QRel,_===_) in
   [ m ]ᵐ • [ bv ]ᵛᵇ • [ g ↥ ]ʷ ≈
     (proj₁ (mbv-push m bv g) ↑) •
@@ -284,14 +284,14 @@ push-MBvec {₁₊ k'} (d₁ ∷ dr' , e) (b₁ ∷ bv') (h ↥) = begin
 -- The ML' push for any generator g ↥: commute the trailing A box out,
 -- push through the M·B-vector, put the A box back.
 
-ml'-of : ∀ {n} (ml : ML' (₂₊ n)) (g : Gen (₁₊ n)) -> ML' (₂₊ n)
+ml'-of : ∀ {n} (ml : ML' (₂₊ n)) (g : Gen (₁₊ n)) → ML' (₂₊ n)
 ml'-of ((dv , e) , (bv , a)) g =
   let (dir , (m' , bv')) = mbv-push (dv , e) bv g in (m' , (bv' , a))
 
-dir-of : ∀ {n} (ml : ML' (₂₊ n)) (g : Gen (₁₊ n)) -> Word (Gen (₁₊ n))
+dir-of : ∀ {n} (ml : ML' (₂₊ n)) (g : Gen (₁₊ n)) → Word (Gen (₁₊ n))
 dir-of ((dv , e) , (bv , a)) g = proj₁ (mbv-push (dv , e) bv g)
 
-lemma-ML'-Top : ∀ {n} (ml : ML' (₂₊ n)) (g : Gen (₁₊ n)) ->
+lemma-ML'-Top : ∀ {n} (ml : ML' (₂₊ n)) (g : Gen (₁₊ n)) →
   let
   open PB ((₂₊ n) QRel,_===_)
   ml' = ml'-of ml g
@@ -322,7 +322,7 @@ lemma-ML'-Top {n} ((dv , e) , (bv , a)) g = begin
 -- The original ML' (₂₊ n) top-gate push is the wire-1 (gate₁) instance.
 
 lemma-ML'-Top-eg1 : ∀ {n} (d₀ : D) (dr : Vec D n) (e : E) (b₀ : B) (lr : Vec B n) (a : A)
-  (x₁ : SympGate 1) ->
+  (x₁ : SympGate 1) →
   let
   open PB ((₂₊ n) QRel,_===_)
   r = BD.pushᵈ d₀ (BT.dir-of b₀ x₁)

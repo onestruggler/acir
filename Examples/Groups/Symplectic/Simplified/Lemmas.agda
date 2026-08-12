@@ -46,7 +46,7 @@ module Examples.Groups.Symplectic.Simplified.Lemmas
   (p-prime : Prime (suc (₁₊ p-2)))
   (let open PrimeModulus' p-2 p-prime)
   (g*@(g , g≠0) : ℤ* ₚ)
-  (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
+  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ \ (k : ℤ ₚ-₁) → x ≡ g ^′ toℕ k )
   where
 
 open Primitive-Root-Modp' g* g-gen
@@ -68,11 +68,11 @@ module Lemmas1 (n : ℕ) where
   open import Data.Fin.Properties
 
 
-  aux-M≡M : ∀ y y' -> y .proj₁ ≡ y' .proj₁ -> M {n = n} y ≡ M y'
+  aux-M≡M : ∀ y y' → y .proj₁ ≡ y' .proj₁ → M {n = n} y ≡ M y'
   aux-M≡M y y' eq = begin
     M y ≡⟨ auto ⟩
-    S^ x • H • S^ x⁻¹ • H • S^ x • H ≡⟨ Eq.cong₂ (\ xx yy -> S^ xx • H • S^ yy • H • S^ x • H) eq aux-eq ⟩
-    S^ x' • H • S^ x'⁻¹ • H • S^ x • H ≡⟨ Eq.cong (\ xx -> S^ x' • H • S^ x'⁻¹ • H • S^ xx • H) eq ⟩
+    S^ x • H • S^ x⁻¹ • H • S^ x • H ≡⟨ Eq.cong₂ (\ xx yy → S^ xx • H • S^ yy • H • S^ x • H) eq aux-eq ⟩
+    S^ x' • H • S^ x'⁻¹ • H • S^ x • H ≡⟨ Eq.cong (\ xx → S^ x' • H • S^ x'⁻¹ • H • S^ xx • H) eq ⟩
     S^ x' • H • S^ x'⁻¹ • H • S^ x' • H ≡⟨ auto ⟩
     M y' ∎
     where
@@ -86,7 +86,7 @@ module Lemmas1 (n : ℕ) where
       x⁻¹ ≡⟨  Eq.sym  (*-identityʳ x⁻¹) ⟩
       x⁻¹ * ₁ ≡⟨ Eq.cong (x⁻¹ *_) (Eq.sym (lemma-⁻¹ʳ x' {{nztoℕ {y = x'} {neq0 = y' .proj₂} }})) ⟩
       x⁻¹ * (x' * x'⁻¹) ≡⟨ Eq.sym (*-assoc x⁻¹ x' x'⁻¹) ⟩
-      (x⁻¹ * x') * x'⁻¹ ≡⟨ Eq.cong (\ xx -> (x⁻¹ * xx) * x'⁻¹) (Eq.sym eq) ⟩
+      (x⁻¹ * x') * x'⁻¹ ≡⟨ Eq.cong (\ xx → (x⁻¹ * xx) * x'⁻¹) (Eq.sym eq) ⟩
       (x⁻¹ * x) * x'⁻¹ ≡⟨ Eq.cong (_* x'⁻¹) (lemma-⁻¹ˡ x {{nztoℕ {y = x} {neq0 = y .proj₂} }}) ⟩
       ₁ * x'⁻¹ ≡⟨ *-identityˡ x'⁻¹ ⟩
       x'⁻¹ ∎
@@ -132,7 +132,7 @@ module Lemmas1 (n : ℕ) where
 
 
 
-  lemma-MgS^k : ∀ k ->  let g⁻¹ = (g′ ⁻¹) .proj₁ in let -g⁻¹ = - g⁻¹ in
+  lemma-MgS^k : ∀ k →  let g⁻¹ = (g′ ⁻¹) .proj₁ in let -g⁻¹ = - g⁻¹ in
     Mg • S ^ k ≈ S ^ (k Nat.* toℕ (g * g)) • Mg
   lemma-MgS^k k@0 = trans right-unit (sym left-unit)
   lemma-MgS^k k@1 = begin  
@@ -157,7 +157,7 @@ module Lemmas1 (n : ℕ) where
     where
     open SR word-setoid
 
-  lemma-S^k-% : ∀ k -> S ^ k ≈ S ^ (k % p)
+  lemma-S^k-% : ∀ k → S ^ k ≈ S ^ (k % p)
   lemma-S^k-% k = begin
     S ^ k ≡⟨ Eq.cong (S ^_) (m≡m%n+[m/n]*n k p) ⟩
     S ^ (k Nat.% p Nat.+ k Nat./ p Nat.* p) ≈⟨ ^-+ S (k Nat.% p) (k Nat./ p Nat.* p) ⟩
@@ -171,7 +171,7 @@ module Lemmas1 (n : ℕ) where
     open SR word-setoid
 
 
-  lemma-MgS^k' : ∀ k -> let x⁻¹ = (g′ ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  lemma-MgS^k' : ∀ k → let x⁻¹ = (g′ ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     Mg • S^ k ≈ S^ (k * (g * g)) • Mg
   lemma-MgS^k' k = begin 
     Mg • S^ k ≈⟨ refl ⟩
@@ -185,7 +185,7 @@ module Lemmas1 (n : ℕ) where
     x⁻¹ = (g′ ⁻¹) .proj₁
     -x⁻¹ = - x⁻¹
 
-  lemma-Mg^kS : ∀ k -> Mg ^ k • S ≈ S^ ((g * g) ^′ k) • Mg ^ k
+  lemma-Mg^kS : ∀ k → Mg ^ k • S ≈ S^ ((g * g) ^′ k) • Mg ^ k
   lemma-Mg^kS k@0 = trans left-unit (sym right-unit)
   lemma-Mg^kS k@1 = begin
     Mg ^ k • S ≈⟨ axiom (srel semi-MS) ⟩
@@ -198,21 +198,21 @@ module Lemmas1 (n : ℕ) where
     Mg • Mg ^ ₁₊ n • S ≈⟨ (cright lemma-Mg^kS (₁₊ n)) ⟩
     Mg • S^ ((g * g) ^′ (₁₊ n)) • Mg ^ (₁₊ n) ≈⟨ sym assoc ⟩
     (Mg • S^ ((g * g) ^′ (₁₊ n))) • Mg ^ (₁₊ n) ≈⟨ (cleft lemma-MgS^k' ((g * g) ^′ (₁₊ n))) ⟩
-    (S^ (((g * g) ^′ (₁₊ n)) * (g * g)) • Mg) • Mg ^ (₁₊ n) ≈⟨ refl' (Eq.cong (\ xx -> (S^ xx • Mg) • Mg ^ (₁₊ n)) (*-comm ((g * g) ^′ (₁₊ n)) (g * g))) ⟩
+    (S^ (((g * g) ^′ (₁₊ n)) * (g * g)) • Mg) • Mg ^ (₁₊ n) ≈⟨ refl' (Eq.cong (\ xx → (S^ xx • Mg) • Mg ^ (₁₊ n)) (*-comm ((g * g) ^′ (₁₊ n)) (g * g))) ⟩
     (S^ ((g * g) * ((g * g) ^′ (₁₊ n))) • Mg) • Mg ^ (₁₊ n) ≈⟨ assoc ⟩
     S^ ((g * g) ^′ k) • Mg • Mg ^ ₁₊ n ∎
     where
     open SR word-setoid
 
 
-  lemma-semi-MS : ∀ x -> let x' = x .proj₁ in let k = g-gen x .proj₁ in M x • S ≈ S^ ((x' * x')) • M x
+  lemma-semi-MS : ∀ x → let x' = x .proj₁ in let k = g-gen x .proj₁ in M x • S ≈ S^ ((x' * x')) • M x
   lemma-semi-MS x = begin
     M x • S ≈⟨ (cleft refl' (aux-M≡M x (g^ k) (eqk))) ⟩
     M (g^ k) • S ≈⟨ cong (sym (axiom (srel (M-power (k))))) refl ⟩
     Mg^ k • S ≈⟨ lemma-Mg^kS (toℕ k) ⟩
     S^ ((g * g) ^′ toℕ k) • Mg^ k ≈⟨ (cright axiom (srel (M-power (k)))) ⟩
     S^ ((g * g) ^′ toℕ k) • M (g^ k) ≈⟨ (cleft refl' (Eq.cong S^ (*-^′-distribʳ g g (toℕ k)))) ⟩
-    S^ ((g ^′ toℕ k) * (g ^′ toℕ k)) • M (g^ k) ≈⟨ sym (cleft refl' (Eq.cong₂ (\ xx yy -> S^ (xx * yy)) (eqk) (eqk))) ⟩
+    S^ ((g ^′ toℕ k) * (g ^′ toℕ k)) • M (g^ k) ≈⟨ sym (cleft refl' (Eq.cong₂ (\ xx yy → S^ (xx * yy)) (eqk) (eqk))) ⟩
     S^ (x' * x') • M (g^ k) ≈⟨ (cright refl' (aux-M≡M (g^ k) x (Eq.sym (eqk)))) ⟩
     S^ (x' * x') • M x ∎
     where
@@ -238,7 +238,7 @@ module Lemmas1 (n : ℕ) where
     open SR word-setoid
     p-1' = fromℕ< (NP.n<1+n p-1)
 
-  aux-Mg^[kp-1] : ∀ k -> Mg ^ (k Nat.* p-1) ≈ ε
+  aux-Mg^[kp-1] : ∀ k → Mg ^ (k Nat.* p-1) ≈ ε
   aux-Mg^[kp-1] k = begin
     Mg ^ (k Nat.* p-1) ≈⟨ refl' (Eq.cong (Mg ^_) (NP.*-comm k p-1)) ⟩
     Mg ^ (p-1 Nat.* k) ≈⟨ sym (^^ Mg p-1 k) ⟩
@@ -248,7 +248,7 @@ module Lemmas1 (n : ℕ) where
     where
     open SR word-setoid
 
-  lemma-M-mul : ∀ x y -> M x • M y ≈ M (x *' y)
+  lemma-M-mul : ∀ x y → M x • M y ≈ M (x *' y)
   lemma-M-mul x y = begin
     M x • M y ≈⟨ cong (refl' (aux-M≡M x (g^ k) eqk)) (refl' (aux-M≡M y (g^ l) eql)) ⟩
     M (g^ k) • M (g^ l) ≈⟨ cong (sym (axiom (srel (M-power k)))) (sym (axiom (srel (M-power l)))) ⟩
@@ -280,7 +280,7 @@ module Lemmas1 (n : ℕ) where
     aux-0 : ((g^′ toℕ k) *' (g^′ toℕ l)) .proj₁ ≡ (x *' y) .proj₁
     aux-0 = begin
       ((g^′ toℕ k) *' (g^′ toℕ l)) .proj₁ ≡⟨ auto ⟩
-      (g^′ toℕ k) .proj₁ * (g^′ toℕ l) .proj₁ ≡⟨ Eq.cong₂ (\ xx yy -> (xx * yy) ) (lemma-log-inject x) (lemma-log-inject y) ⟩
+      (g^′ toℕ k) .proj₁ * (g^′ toℕ l) .proj₁ ≡⟨ Eq.cong₂ (\ xx yy → (xx * yy) ) (lemma-log-inject x) (lemma-log-inject y) ⟩
       x .proj₁ * y .proj₁ ≡⟨ auto ⟩
       (x *' y) .proj₁ ∎
       where
@@ -426,7 +426,7 @@ module Lemmas1b (n : ℕ) where
     open SR word-setoid
     open Pattern-Assoc
 
-  derived-5 : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  derived-5 : ∀ x k → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
 
     M (x , nz) • S ^ k ≈ S ^ (k Nat.* toℕ (x * x)) • M (x , nz)
   derived-5 x k@0 nz = trans right-unit (sym left-unit)
@@ -454,7 +454,7 @@ module Lemmas1b (n : ℕ) where
     open SR word-setoid
 
 
-  lemma-MS^k : ∀ x k -> (nz : x ≢ ₀) -> let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
+  lemma-MS^k : ∀ x k → (nz : x ≢ ₀) → let x⁻¹ = ((x , nz) ⁻¹) .proj₁ in let -x⁻¹ = - x⁻¹ in
     M (x , nz) • S^ k ≈ S^ (k * (x * x)) • M (x , nz)
   lemma-MS^k x k nz = begin 
     M (x , nz) • S^ k ≈⟨ refl ⟩

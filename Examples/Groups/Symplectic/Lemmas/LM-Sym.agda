@@ -88,34 +88,34 @@ B' = B
   -b/a = - b * a⁻¹
 
 data Cosets2-noEx : Set where
-  case-||ₐ : CZPowers -> Postfix -> Cosets2-noEx
-  case-|| : CZPowers* -> SPowers -> Postfix -> Cosets2-noEx
-  case-| : MC -> NF1 -> Cosets2-noEx
-  case-nf1 : NF1 -> Cosets2-noEx
+  case-||ₐ : CZPowers → Postfix → Cosets2-noEx
+  case-|| : CZPowers* → SPowers → Postfix → Cosets2-noEx
+  case-| : MC → NF1 → Cosets2-noEx
+  case-nf1 : NF1 → Cosets2-noEx
 
 data Cosets3 : Set where
-  case-I : D -> Cosets2 -> Cosets3
-  case-II : D -> Cosets2-noEx -> B' -> Cosets3
+  case-I : D → Cosets2 → Cosets3
+  case-II : D → Cosets2-noEx → B' → Cosets3
 
-c2-emb : Cosets2-noEx -> Cosets2
+c2-emb : Cosets2-noEx → Cosets2
 c2-emb (case-||ₐ x x₁) = case-||ₐ x x₁
 c2-emb (case-|| x x₁ x₂) = case-|| x x₁ x₂
 c2-emb (case-| x x₁) = case-| x x₁
 c2-emb (case-nf1 x) = case-nf1 x
 
-c1-emb : Cosets1-noε -> Cosets1
+c1-emb : Cosets1-noε → Cosets1
 c1-emb (HS^ x) = HS^ x
 
 ₁* : ℤ* ₚ
 ₁* = (₁ , λ ())
 
-rm-mc : Cosets2-noEx ->  Cosets2-noEx
+rm-mc : Cosets2-noEx →  Cosets2-noEx
 rm-mc (case-||ₐ x x₁@(s , mc↑ , mc)) = case-||ₐ x (s , mc↑ , (₁* , ε))
 rm-mc (case-|| x x₁ x₂@(s , mc↑ , mc)) = case-|| x x₁ (s , mc↑ , (₁* , ε))
 rm-mc (case-| x x₁@(s , mc)) = case-| x ((s , ₁* , ε))
 rm-mc (case-nf1 x@(s , mc)) = case-nf1 (s , ₁* , ε)
 
-mc-of : Cosets2-noEx -> MC
+mc-of : Cosets2-noEx → MC
 mc-of (case-||ₐ x x₁@(s , mc↑ , mc)) = mc
 mc-of (case-|| x x₁ x₂@(s , mc↑ , mc)) = mc
 mc-of (case-| x x₁@(s , mc)) = mc
@@ -123,24 +123,24 @@ mc-of (case-nf1 x@(s , mc)) = mc
 
 -- update a mc such that if it sent P to Z before updating, then it
 -- send P to X^-1 after updating. But it may produce extra S's.
-update-mc : MC -> SPowers × MC
+update-mc : MC → SPowers × MC
 update-mc (m , ε) = ₀ , (m ⁻¹ , HS^ ₀)
 update-mc (m , HS^ k) = k * m ^2 , (m ⁻¹ , ε)
 
-s-of-HM : MC -> SPowers
+s-of-HM : MC → SPowers
 s-of-HM = proj₁ ∘ update-mc
 
-mc-of-HM : MC -> MC
+mc-of-HM : MC → MC
 mc-of-HM = proj₂ ∘ update-mc
 
 -- used in coset updating.
-update-mc-in-c2 : Cosets2-noEx ->  Cosets2-noEx
+update-mc-in-c2 : Cosets2-noEx →  Cosets2-noEx
 update-mc-in-c2 (case-||ₐ x x₁@(s , mc↑ , mc)) = case-||ₐ x (s + s-of-HM mc , mc↑ , mc-of-HM mc)
 update-mc-in-c2 (case-|| x x₁ x₂@(s , mc↑ , mc)) = case-|| x x₁ (s + s-of-HM mc , mc↑ , mc-of-HM mc)
 update-mc-in-c2 (case-| x x₁@(s , mc)) = case-| x ((s + s-of-HM mc , mc-of-HM mc))
 update-mc-in-c2 (case-nf1 x@(s , mc)) = case-nf1 (s + s-of-HM mc , mc-of-HM mc)
 
-⟦_⟧₃ : Cosets3 -> Word (Gen (₃₊ n))
+⟦_⟧₃ : Cosets3 → Word (Gen (₃₊ n))
 ⟦ case-I d c2 ⟧₃ = [ d ]ᵈ • ⟦ c2 ⟧₂ ↑
 ⟦ case-II d c2 b ⟧₃ = [ d ]ᵈ • ⟦ c2-emb (rm-mc c2) ⟧₂ ↑ • [ b ]ᵇ • ⟦ mc-of c2 ⟧ₘ₊
 

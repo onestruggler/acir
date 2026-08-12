@@ -176,7 +176,7 @@ coset-n (inj₂ ([] , a2))       (d₀' ∷ dr , e)   bv' = inj₂ (d₀' , inj�
 -- The right action of CZ on a coset: ract c CZ returns the residual
 -- circuit b' and the coset c' reached, so that
 -- [ c ]ᵐˡ' • [ gate₂ CZ ]ʷ ≈ b' ↑ • [ c' ]ᵐˡ (see ract-sound below).
-ract : ∀ {n} -> ML' (₂₊ n) → SympGate 2 → Circuit (₁₊ n) × ML (₂₊ n)
+ract : ∀ {n} → ML' (₂₊ n) → SympGate 2 → Circuit (₁₊ n) × ML (₂₊ n)
 ract {0} ((d₀ ∷ [] , e) , l) CZ-gate = dir-M , coset l'' m'
   where
   nt    = TDw.dir-of₂-No-Top-H (inj₁ l)
