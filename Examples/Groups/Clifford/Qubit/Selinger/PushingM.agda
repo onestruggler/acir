@@ -38,13 +38,17 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Clifford.Qubit.Selinger.PushingM
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
-open import Data.Product using (_,_)
+open import Data.List using (List ; [] ; _∷_)
+open import Data.Product using (_×_ ; _,_)
 
 open import Notations using (₁₊)
 
 open import Examples.Groups.Clifford.Qubit.Selinger.Boxes p-2 p-prime
 open import Examples.Groups.Clifford.Qubit.Selinger.Normal p-2 p-prime
   using (Mx)
+open import Examples.Groups.Clifford.Qubit.Selinger.Pushing p-2 p-prime
+  using (Dirty ; H₀ ; S₀ ; X₀ ; H₁ ; S₁ ; X₁ ; H₂ ; S₂ ; ZZ₀₁ ; ZZ₁₂
+        ; pushZZD)
 
 private
   variable
@@ -81,3 +85,59 @@ pushS-Mx {₁₊ n} k (d , m) = d , pushS-Mx k m
 -- Tower.mx-id, and is not repeated here.  Pushing k S gates into it
 -- returns it with E advanced, which is the M-side of the one-qubit
 -- action generalised: at n = 0 this is exactly Rewrite's pushE.
+
+------------------------------------------------------------------------
+-- Splitting the dirt a D box emits
+--
+-- Which way a gate goes is decided by its subscript, and the rules make
+-- the two directions completely different.
+--
+-- Subscript 1 is the box's UPPER wire, and the gate continues into the
+-- rest of the staircase -- where it will meet the next box at ITS qubit
+-- 0.  The only qubit-0 rule is altSIDD, which takes an S, so an S is the
+-- only thing that can ascend; a D box that emitted an H upwards would
+-- have nowhere to send it.  That is why ascending dirt is a COUNT.
+--
+-- Subscript 0 is the lower wire, below everything the staircase has
+-- left, so those gates escape.  They are kept in order, as a word.
+
+ascS : List Dirty → ℕ
+ascS []          = 0
+ascS (S₁ ∷ ds)  = ₁₊ (ascS ds)
+ascS (_  ∷ ds)  = ascS ds
+
+esc : List Dirty → List Dirty
+esc []          = []
+esc (H₀ ∷ ds)  = H₀ ∷ esc ds
+esc (S₀ ∷ ds)  = S₀ ∷ esc ds
+esc (X₀ ∷ ds)  = X₀ ∷ esc ds
+esc (_  ∷ ds)  = esc ds
+
+------------------------------------------------------------------------
+-- A controlled-Z entering the bottom of a staircase
+--
+-- altZZDD rewrites the bottom D box and emits dirt on both its wires:
+-- what goes up is S gates, which pushS-Mx carries to the E box, and
+-- what stays escapes.  All four clauses are phase-free, so no ω is
+-- produced.
+--
+-- D₁ and D₄ simply swap and emit nothing at all, which is the
+-- controlled-Z analogue of the S case above.
+
+pushZZ-Mx : Mx (₁₊ n) → List Dirty × Mx (₁₊ n)
+pushZZ-Mx (d , m) with pushZZD d
+... | _ , d′ , out = esc out , (d′ , pushS-Mx (ascS out) m)
+
+------------------------------------------------------------------------
+-- What cannot arrive
+--
+-- There is no rule for an H, or an X, meeting a D box at its qubit 0,
+-- and the omission is not an oversight of the paper's: nothing ever
+-- delivers one there.  Dirt reaches a staircase from the C box on its
+-- left, and the C rules (commXC, commSC, commZZCI) emit only S gates
+-- and controlled-Zs.  Both are handled above.
+--
+-- That is Definition 6.1's wire labelling doing its work: the wire a
+-- staircase starts on admits S and controlled-Z as dirt, and not H or
+-- X.  When h is assembled this has to become an invariant of the
+-- traversal rather than a remark here.
