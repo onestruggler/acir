@@ -225,14 +225,42 @@ escAt0 (ZZ₁₂ ∷ ds) = escAt0 ds
 -- silent wrong answer to hide.
 --
 -- All of altISDD is phase-free, so no ω is returned.
+--
+-- The three qubit-1 families share this shape completely, because all
+-- of them emit only S gates upward: altISDD's S₁², altIHDD's S₁² and
+-- altZZDD's S₁³ and S₁ are the whole of it.  So the ascending part
+-- always collapses to a count, and the rule is the only thing that
+-- varies -- it becomes a parameter, exactly as at the bottom.
 
-pushS-at : Fin (₁₊ n) → Mx n → Circuit n × Mx n
-pushS-at {0}     fz          e       = ε , stepE 1 e
-pushS-at {₁₊ n} fz          m       = ε , pushS-Mx 1 m
-pushS-at {₁₊ n} (fs fz)     (d , m) with pushS₁D d
+-- The box a gate at wire j+1 meets, counted from the bottom.  A
+-- staircase on ₁₊ n wires has n boxes, so this is Fin n, and at n = 0
+-- there are none -- which is why the recursion below needs no base case
+-- for the empty staircase.
+push-q1-at : (DBox → ℤ 8 × DBox × List Dirty) →
+             Fin n → Mx n → Circuit n × Mx n
+push-q1-at {₁₊ n} rule fz     (d , m) with rule d
 ... | _ , d′ , out = escAt0 out , (d′ , pushS-Mx (ascS out) m)
-pushS-at {₁₊ n} (fs (fs j)) (d , m) with pushS-at (fs j) m
+push-q1-at {₁₊ n} rule (fs j) (d , m) with push-q1-at rule j m
 ... | e , m′ = e ↑ , (d , m′)
+
+-- An S anywhere: at the bottom it ascends untouched, higher up it is a
+-- qubit-1 encounter with the box below it.
+pushS-at : Fin (₁₊ n) → Mx n → Circuit n × Mx n
+pushS-at fz     m = ε , pushS-Mx 1 m
+pushS-at (fs j) m = push-q1-at pushS₁D j m
+
+-- An H, which has no level-0 case at all: there is no rule for an H
+-- meeting a D box at its qubit 0, so an H can only arrive above the
+-- bottom wire.  Fin n says exactly that -- one fewer level than the S
+-- case, and none at all on a one-wire staircase.
+pushH-at : Fin n → Mx n → Circuit n × Mx n
+pushH-at = push-q1-at pushH₁D
+
+-- A controlled-Z at the bottom is pushZZ-Mx above.  One at (j,j+1) for
+-- j ≥ 1 is NOT this shape: it spans the pair of D(j,j+1) while also
+-- sharing a wire with D(j-1,j), so it meets two boxes at once and needs
+-- altIZZDDIIDD, the M-side analogue of commZZIIBBBBI.  Those sixteen
+-- rules are not transcribed yet.
 
 ------------------------------------------------------------------------
 -- What cannot arrive at the BOTTOM
