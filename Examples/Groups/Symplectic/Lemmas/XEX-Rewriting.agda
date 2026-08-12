@@ -21,17 +21,12 @@ open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
 
-
 open import Data.Fin using (toℕ)
 open import Presentation.Tactic.Rewriting hiding ([_])
 open import Data.Nat.Primality
 
 
-
 module Examples.Groups.Symplectic.Lemmas.XEX-Rewriting (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
-
-
-
 
 
 open import ForStdlib.Data.Fin.Mod
@@ -239,7 +234,6 @@ module Symplectic-EX where
     cong↑ : ∀ {n w v} → n QRel,  w === v → (₁₊ n) QRel,  w ↑ === v ↑
 
 
-
   lemma-cong↑ : ∀ {n} w v →
     let open PB (n QRel,_===_) using (_≈_) in
     let open PB ((₁₊ n) QRel,_===_) renaming (_≈_ to _≈↑_) using () in
@@ -304,7 +298,6 @@ module XEX-Rewriting where
   step-EX (EX-gen ∷ H-gen ↥ ↥ ∷ xs) = just (H-gen ↥ ↥ ∷ EX-gen ∷ xs , at-head ( ( sym (axiom comm-EX))))
 
 
-
   -- Catch-all
   step-EX _ = nothing
 
@@ -367,7 +360,6 @@ module Homo (m : ℕ) where
   open EX using (_↥ ; EX-gen)
 
 
-
 --  open PB (n EX.QRel,_===_)renaming (_===_ to _===₀_ ; _≈_ to _≈₀_) using ()
 
 
@@ -397,7 +389,6 @@ module Homo (m : ℕ) where
     open SR word-setoid
     
 
-
   lemma-f*-↥ : let open PB ((₁₊ n) QRel,_===_) in
     ∀ g → f* ([ g ↥ ]ʷ) ≈ f* [ g ]ʷ ↑
   lemma-f*-↥ {n} g = begin
@@ -422,7 +413,6 @@ module Homo (m : ℕ) where
     open PB ((₁₊ n) QRel,_===_)
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
-
 
 
 {-
@@ -525,56 +515,3 @@ module Homo (m : ℕ) where
     open PB (n QRel,_===_)
     open PP (n QRel,_===_)
     open SR word-setoid
-
-{-
-  lemma-f*^^ : ∀ w k l → f* ((w ^ k) ^ l) ≈ ((f* w) ^ k) ^ l
-  lemma-f*^^ w k l = begin
-    f* ((w ^ k) ^ l) ≈⟨ (by-emb (P2.^^ w k l)) ⟩
-    f* (w ^ (k Nat.* l)) ≈⟨ lemma-f* w (k Nat.* l) ⟩
-    ((f* w) ^ (k Nat.* l)) ≈⟨ sym (^^ (f* w) k l) ⟩
-    ((f* w) ^ k) ^ l ∎
-    where
-    module P2 = PP (2 QRel,_===_)
-
-  lemma-f*S^^↑  : ∀ k l → f* (((S ^ k) ^ l) ↑) ≈ (((S) ^ k) ^ l) ↑
-  lemma-f*S^^↑ k l = begin
-    f* (((S ^ k) ^ l) ↑) ≈⟨ (by-emb (lemma-cong↑ _ _ (P1.^^ S k l))) ⟩
-    f* ((S ^ (k Nat.* l)) ↑) ≈⟨ lemma-f*-Sᵏ↑ (k Nat.* l) ⟩
-    ((S) ^ (k Nat.* l)) ↑ ≈⟨ sym (lemma-cong↑ _ _ ( (Pn'.^^ (S) k l))) ⟩
-    (((S) ^ k) ^ l) ↑ ∎
-    where
-    module P1 = PP (1 QRel,_===_)
-    module P2 = PP (2 QRel,_===_)
-    module Pn' = PP ((₁₊ n) QRel,_===_)
-
-
-CZ-gen ∷ H-gen ∷ (H-gen ↥) ∷ CZ-gen ∷ H-gen ∷ (H-gen ↥) ∷ CZ-gen ∷ H-gen ∷ (H-gen ↥) ∷ (CZ-gen ↥) ∷ (H-gen ↥) ∷ ((H-gen ↥) ↥) ∷ (CZ-gen ↥) ∷ (H-gen ↥) ∷ ((H-gen ↥) ↥) ∷ (CZ-gen ↥) ∷ (H-gen ↥) ∷ ((H-gen ↥) ↥) ∷ CZ-gen ∷ H-gen ∷ (H-gen ↥) ∷ CZ-gen ∷ H-gen ∷ (H-gen ↥) ∷ CZ-gen ∷ H-gen ∷ CZ-gen ∷ (H-gen ↥) ∷ (CZ-gen ↥) ∷ CZ-gen ∷ H-gen ∷ (H-gen ↥) ∷ CZ-gen ∷ H-gen ∷ (H-gen ↥) ∷ CZ-gen ∷ H-gen ∷ (H-gen ↥) ∷ (CZ-gen ↥) ∷ (H-gen ↥) ∷ ((H-gen ↥) ↥) ∷ (CZ-gen ↥) ∷ (H-gen ↥) ∷ ((H-gen ↥) ↥) ∷ (CZ-gen ↥) ∷ (H-gen ↥) ∷ ((H-gen ↥) ↥) ∷ CZ-gen ∷ H-gen ∷ (H-gen ↥) ∷ CZ-gen ∷ H-gen ∷ (H-gen ↥) ∷ CZ-gen ∷ H-gen ∷ (H-gen ↥) ∷ [] 
-
-
-
-module Aux where
-
-  private
-    variable
-      n : ℕ
-      
-  open Symplectic-EX
-  
-  lemma-XC-CZ :
-    let
-    open PB ((₃₊ n) QRel,_===_)
-    in
-    XC • CZ ↑ ≈ CZ ↑ • CZ • XC
-  lemma-XC-CZ {n} = {!!}
-    where
-    
-    open PB ((₃₊ n) QRel,_===_)
-    open PP ((₃₊ n) QRel,_===_)
-    open SR word-setoid
-    open Rewriting-EX (₂₊ n)
-    aux : (Ex • Ex ↑ • Ex) • (XC • CZ ↑) • Ex • Ex ↑ • Ex ≈ (Ex • Ex ↑ • Ex) • (CZ ↑ • CZ02⁻¹ • XC) • Ex • Ex ↑ • Ex
-    aux = begin
-      (Ex • Ex ↑ • Ex) • (XC • CZ ↑) • Ex • Ex ↑ • Ex ≈⟨ rewrite-EX 100 auto ⟩
-      CX ↑ • CZ ≈⟨ {!Ex'!} ⟩
-      (Ex • Ex ↑ • Ex) • (CZ ↑ • CZ02⁻¹ • XC) • Ex • Ex ↑ • Ex ∎
-  -}

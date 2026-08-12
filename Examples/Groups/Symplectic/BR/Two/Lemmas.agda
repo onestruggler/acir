@@ -5,7 +5,6 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
 
-
 open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 import Data.Nat as Nat
@@ -19,11 +18,9 @@ import Presentation.Properties as PP
 open import Notations
 
 
-
 import Data.Nat.Properties as NP
 open import Presentation.GroupLike
 open import Data.Nat.Primality
-
 
 
 module Examples.Groups.Symplectic.BR.Two.Lemmas (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
@@ -31,9 +28,6 @@ module Examples.Groups.Symplectic.BR.Two.Lemmas (p-2 : ℕ) (p-prime : Prime (2+
 n : ℕ
 n = 0
     
-
-
-
 
 open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
@@ -55,7 +49,6 @@ open Lemmas0c
 open Lemmas-Sym
 
 
-
 open PB ((₂₊ n) QRel,_===_)
 open PP ((₂₊ n) QRel,_===_)
 open SR word-setoid
@@ -75,7 +68,6 @@ _^ᵖ_ {X} w k = w ^ toℕ k
 
 open import Data.Nat.DivMod
 open import Data.Fin.Properties
-
 
 
 lemma-S^k*l : ∀ k l → S^ k ^ᵖ l ≈ S^ (k * l)
@@ -129,7 +121,6 @@ aux-Ex-CX^k-N k@(₁₊ k'@(₁₊ k'')) = begin
   XC ^ k • Ex ∎
 
 
-
 aux-Ex-CX^k : ∀ k → Ex • CX^ k ≈ XC^ k • Ex
 aux-Ex-CX^k k = aux-Ex-CX^k-N (toℕ k)
 
@@ -171,9 +162,6 @@ aux-CX^-CX'^-N k@(₁₊ k'@(₁₊ k'')) = begin
   (H ^ 3 • CZ) • CZ ^ k' • H ≈⟨ by-passoc (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
   H ^ 3 • (CZ • CZ ^ k') • H ≈⟨ refl ⟩
   H ^ 3 • CZ ^ k • H ∎
-
-
-
 
 
 aux-XC^-XC'^ : ∀ k → XC^ k ≈ XC'^ k
@@ -336,7 +324,6 @@ aux-CZ^-k-H-CZ k*@(k , nz) = bbc (M (k* ⁻¹) ↑) ε claim
     aux = Eq.trans (Eq.cong (k⁻¹ *_) (Eq.cong (\ xx → xx * xx) (inv-involutive k*))) (Eq.trans (Eq.sym (*-assoc k⁻¹ k k)) (Eq.trans (Eq.cong (_* k) (lemma-⁻¹ˡ k {{nztoℕ {y = k} {neq0 = nz}}})) (*-identityˡ k)))
 
 
-
 lemma-M↑CX'^k : ∀ (x*@(x , nz) : ℤ* ₚ) k →  let x⁻¹ = (x* ⁻¹) .proj₁ in
   M x* ↑ • CX'^ k ≈ CX'^ (k * x) • M (x , nz) ↑
 lemma-M↑CX'^k x*@(x , nz) k = begin
@@ -365,360 +352,3 @@ aux-M↑CX^k m k = sym (begin
   M m ↑ • CX^ k ∎)
   where
   m' = (m) .proj₁
-
-
-
-{-
-
-
-
-
---open import Data.List using () hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
-
-
-
-
-
-
-
-
-module Examples.Groups.Symplectic.BR.Two.Lemmas (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
-
-n : ℕ
-n = 0
-    
-
-
-
-
-open PrimeModulus p-2 p-prime
-
-
-
---open Lemmas-2Q 2
-
-
-open Lemmas0c
-open Lemmas-Sym
-open Duality
-
-
-
-open PB ((₂₊ n) QRel,_===_)
-open PP ((₂₊ n) QRel,_===_)
-open SR word-setoid
-open Lemmas0 n
-module L01 = Lemmas0 (₁₊ n)
-open Lemmas-2Q n
-open Sym0-Rewriting (₁₊ n)
-open Symplectic-GroupLike
-open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
-
-
-_^ᵖ_ : ∀ {X : Set} → Word X → ℤ ₚ → Word X
-_^ᵖ_ {X} w k = w ^ toℕ k
-
-
-lemma-S^k*l : ∀ k l → S^ k ^ᵖ l ≈ S^ (k * l)
-lemma-S^k*l k l = begin
-  S^ k ^ᵖ l ≈⟨ refl ⟩
-  (S ^ toℕ k) ^ toℕ l ≈⟨ ^^ S (toℕ k) (toℕ l) ⟩
-  S ^ (toℕ k Nat.* toℕ l) ≡⟨ Eq.cong (S ^_) (m≡m%n+[m/n]*n k*l p) ⟩
-  S ^ (k*l Nat.% p Nat.+ (k*l Nat./ p) Nat.* p) ≈⟨ ^-+ S (k*l Nat.% p) (((k*l Nat./ p) Nat.* p)) ⟩
-  S ^ (k*l Nat.% p) • S ^ ((k*l Nat./ p) Nat.* p) ≈⟨ cong (refl' (Eq.cong (S ^_) (Eq.sym (toℕ-fromℕ< (m%n<n k*l p))))) (refl' (Eq.cong (S ^_) (NP.*-comm ((k*l Nat./ p)) p))) ⟩
-  S ^ toℕ (fromℕ< (m%n<n k*l p)) • S ^ (p Nat.* (k*l Nat./ p) ) ≈⟨ cong (sym (refl)) (sym (^^ S p (k*l Nat./ p))) ⟩
-  S^ (k * l) • (S ^ p) ^ (k*l Nat./ p) ≈⟨ cright (^-cong (S ^ p) ε (k*l Nat./ p) (axiom order-S)) ⟩
-  S^ (k * l) • ε ^ (k*l Nat./ p) ≈⟨ cright ε^k=ε (k*l Nat./ p) ⟩
-  S^ (k * l) • ε ≈⟨ right-unit ⟩
-  S^ (k * l) ∎
-  where
-  k*l = toℕ k Nat.* toℕ l
-
-lemma-CZ^k*l : ∀ k l → CZ^ k ^ᵖ l ≈ CZ^ (k * l)
-lemma-CZ^k*l k l = begin
-  CZ^ k ^ᵖ l ≈⟨ refl ⟩
-  (CZ ^ toℕ k) ^ toℕ l ≈⟨ ^^ CZ (toℕ k) (toℕ l) ⟩
-  CZ ^ (toℕ k Nat.* toℕ l) ≡⟨ Eq.cong (CZ ^_) (m≡m%n+[m/n]*n k*l p) ⟩
-  CZ ^ (k*l Nat.% p Nat.+ (k*l Nat./ p) Nat.* p) ≈⟨ ^-+ CZ (k*l Nat.% p) (((k*l Nat./ p) Nat.* p)) ⟩
-  CZ ^ (k*l Nat.% p) • CZ ^ ((k*l Nat./ p) Nat.* p) ≈⟨ cong (refl' (Eq.cong (CZ ^_) (Eq.sym (toℕ-fromℕ< (m%n<n k*l p))))) (refl' (Eq.cong (CZ ^_) (NP.*-comm ((k*l Nat./ p)) p))) ⟩
-  CZ ^ toℕ (fromℕ< (m%n<n k*l p)) • CZ ^ (p Nat.* (k*l Nat./ p) ) ≈⟨ cong (sym (refl)) (sym (^^ CZ p (k*l Nat./ p))) ⟩
-  CZ^ (k * l) • (CZ ^ p) ^ (k*l Nat./ p) ≈⟨ cright (^-cong (CZ ^ p) ε (k*l Nat./ p) (axiom order-CZ)) ⟩
-  CZ^ (k * l) • ε ^ (k*l Nat./ p) ≈⟨ cright ε^k=ε (k*l Nat./ p) ⟩
-  CZ^ (k * l) • ε ≈⟨ right-unit ⟩
-  CZ^ (k * l) ∎
-  where
-  k*l = toℕ k Nat.* toℕ l
-
-
-{-
-
-^^ᵖ : ∀ w a b → w ^ p 
-  (w ^ᵖ a) ^ᵖ b ≈ w ^ᵖ (a * b)
-^^ᵖ w zero zero = refl
-^^ᵖ w zero (₁₊ zero) = PB.refl
-^^ᵖ w zero (₂₊ b) = trans left-unit (^^ᵖ w zero (₁₊ b))
-^^ᵖ w (₁₊ zero) b = refl' (Eq.cong (w ^_) (Eq.sym (NP.+-identityʳ b)))
-^^ᵖ w (₂₊ a) b = begin
-  (w • w ^ ₁₊ a) ^ b ≈⟨ ^-• w (w ^ ₁₊ a) b (pow-comm w 1 (₁₊ a)) ⟩
-  w ^ b • (w ^ ₁₊ a) ^ b ≈⟨ (cong refl (^^ᵖ w (₁₊ a) b))  ⟩
-  w ^ b • w ^ (₁₊ a Nat.* b) ≈⟨ sym (^-+ w b (₁₊ a Nat.* b)) ⟩
-  w ^ (b Nat.+ (b Nat.+ a Nat.* b)) ∎
-
--}
-
-
-open Rewriting-Swap 1
-
-  
-aux-CZ⁻¹^k-CZ^-k : ∀ (k : ℤ ₚ) → CZ⁻¹ ^ toℕ k ≈ CZ ^ toℕ (- k)
-aux-CZ⁻¹^k-CZ^-k k = begin
-  CZ⁻¹ ^ toℕ k ≈⟨ sym (^-cong _ _ (toℕ k) (refl' (Eq.cong (CZ ^_) lemma-toℕ-1ₚ))) ⟩
-  CZ^ (- ₁) ^ toℕ k ≈⟨ refl ⟩
-  CZ^ (- ₁) ^ᵖ k ≈⟨ lemma-CZ^k*l (- ₁) k  ⟩
-  CZ^ (- ₁ * k)  ≈⟨ refl' (Eq.cong CZ^ (-1*x≈-x k)) ⟩
-  CZ^ (- k) ≈⟨ refl ⟩
-  CZ ^ toℕ (- k) ∎
-
-aux-Ex-CX^k-N : ∀ k → Ex • CX ^ k ≈ XC ^ k • Ex
-aux-Ex-CX^k-N k@0 = trans right-unit (sym left-unit)
-aux-Ex-CX^k-N k@1 = rewrite-swap 100 auto
-aux-Ex-CX^k-N k@(₁₊ k'@(₁₊ k'')) = begin
-  Ex • CX ^ k ≈⟨ sym assoc ⟩
-  (Ex • CX) • CX ^ k' ≈⟨ cleft rewrite-swap 100 auto ⟩
-  (XC • Ex) • CX ^ k' ≈⟨ assoc ⟩
-  XC • Ex • CX ^ k' ≈⟨ cright aux-Ex-CX^k-N k' ⟩
-  XC • XC ^ k' • Ex ≈⟨ sym assoc ⟩
-  XC ^ k • Ex ∎
-
-
-
-aux-Ex-CX^k : ∀ k → Ex • CX^ k ≈ XC^ k • Ex
-aux-Ex-CX^k k = aux-Ex-CX^k-N (toℕ k)
-
-aux-Ex-XC^k : ∀ k → Ex • XC^ k ≈ CX^ k • Ex
-aux-Ex-XC^k k = bbc Ex Ex claim
-  where
-  claim : Ex • (Ex • XC^ k) • Ex ≈ Ex • (CX^ k • Ex) • Ex
-  claim = begin
-    Ex • (Ex • XC^ k) • Ex ≈⟨ by-assoc auto ⟩
-    (Ex • Ex) • XC^ k • Ex ≈⟨ cleft rewrite-swap 100 auto ⟩
-    ε • XC^ k • Ex ≈⟨ left-unit ⟩
-    XC^ k • Ex ≈⟨ sym (aux-Ex-CX^k k) ⟩
-    Ex • CX^ k ≈⟨ cong refl (sym right-unit) ⟩
-    Ex • CX^ k • ε ≈⟨ cright cright rewrite-swap 100 auto ⟩
-    Ex • CX^ k • Ex • Ex ≈⟨ sym (cong refl assoc) ⟩
-    Ex • (CX^ k • Ex) • Ex ∎
-
-
-aux-XC^-XC'^-N : ∀ k → XC ^ k ≈ H ↑ ^ 3 • CZ ^ k • H ↑
-aux-XC^-XC'^-N k@0 = rewrite-swap 100 auto
-aux-XC^-XC'^-N k@1 = refl
-aux-XC^-XC'^-N k@(₁₊ k'@(₁₊ k'')) = begin
-  XC ^ k ≈⟨ refl ⟩
-  XC • XC ^ k' ≈⟨ cright aux-XC^-XC'^-N k' ⟩
-  XC • H ↑ ^ 3 • CZ ^ k' • H ↑ ≈⟨ sym assoc ⟩
-  (XC • H ↑ ^ 3) • CZ ^ k' • H ↑ ≈⟨ cleft rewrite-sym0 100 auto  ⟩
-  (H ↑ ^ 3 • CZ) • CZ ^ k' • H ↑ ≈⟨ sa (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
-  H ↑ ^ 3 • (CZ • CZ ^ k') • H ↑ ≈⟨ refl ⟩
-  H ↑ ^ 3 • CZ ^ k • H ↑ ∎
-
-aux-CX^-CX'^-N : ∀ k → CX ^ k ≈ H ^ 3 • CZ ^ k • H
-aux-CX^-CX'^-N k@0 = rewrite-sym0 100 auto
-aux-CX^-CX'^-N k@1 = refl
-aux-CX^-CX'^-N k@(₁₊ k'@(₁₊ k'')) = begin
-  CX ^ k ≈⟨ refl ⟩
-  CX • CX ^ k' ≈⟨ cright aux-CX^-CX'^-N k' ⟩
-  CX • H ^ 3 • CZ ^ k' • H ≈⟨ sym assoc ⟩
-  (CX • H ^ 3) • CZ ^ k' • H ≈⟨ cleft rewrite-sym0 100 auto  ⟩
-  (H ^ 3 • CZ) • CZ ^ k' • H ≈⟨ sa (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
-  H ^ 3 • (CZ • CZ ^ k') • H ≈⟨ refl ⟩
-  H ^ 3 • CZ ^ k • H ∎
-
-
-
-
-
-aux-XC^-XC'^ : ∀ k → XC^ k ≈ XC'^ k
-aux-XC^-XC'^ k = aux-XC^-XC'^-N (toℕ k)
-
-aux-CX^-CX'^ : ∀ k → CX^ k ≈ CX'^ k
-aux-CX^-CX'^ k = aux-CX^-CX'^-N (toℕ k)
-
-open Duality
-
-lemma-semi-XCCZ^k : ∀ (k*@(k , nz) : ℤ* ₚ) →
-  let
-    -2k : ℤ ₚ
-    -2k = - k + - k
-  in
-
-  XC • CZ^ k ≈ S^ -2k • CZ^ k • XC
-lemma-semi-XCCZ^k k*@(k , nz) = by-duality' (lemma-semi-CXCZ^k k*) c1 c2
-  where
-  -2k : ℤ ₚ
-  -2k = - k + - k
-  c1 : dual (CX • CZ^ k) ≈ XC • CZ^ k
-  c1 = cright refl' (aux-dual-CZ^k (toℕ k))
-  c2 : dual (S^ -2k ↑ • CZ^ k • CX) ≈ S^ -2k • CZ^ k • XC
-  c2 = begin
-    dual (S^ -2k ↑ • CZ^ k • CX) ≈⟨ cong (refl' (aux-dual-S^k↑ (toℕ -2k))) (cleft refl' (aux-dual-CZ^k (toℕ k))) ⟩
-    S^ -2k • CZ^ k • XC ∎
-
-aux-CZ-H↑-CZ^k : ∀ (k*@(k , nz) : ℤ* ₚ) →
-  let -2k = - k + - k in
-  
-  CZ • H ↑ • CZ^ k ≈ (S^ -2k • H ↑ • CZ^ k • H ↑ ^ 3) • CZ • H ↑
-
-aux-CZ-H↑-CZ^k k*@(k , nz) = begin
-  CZ • H ↑ • CZ^ k ≈⟨ sym assoc ⟩
-  (CZ • H ↑) • CZ^ k ≈⟨ cleft rewrite-sym0 100 auto ⟩
-  (H ↑ • XC) • CZ^ k ≈⟨ assoc ⟩
-  H ↑ • XC • CZ^ k ≈⟨ cright lemma-semi-XCCZ^k k* ⟩
-  H ↑ • S^ -2k • CZ^ k • XC ≈⟨ sym assoc ⟩
-  (H ↑ • S^ -2k) • CZ^ k • XC ≈⟨ cleft sym (lemma-comm-Sᵏ-w↑ (toℕ -2k) H) ⟩
-  (S^ -2k • H ↑) • CZ^ k • XC ≈⟨ sa (□ ^ 2 • □ ^ 4) (□ ^ 4 • □ ^ 2) auto ⟩
-  (S^ -2k • H ↑ • CZ^ k • H ↑ ^ 3) • CZ • H ↑ ∎
-  where
-  -2k : ℤ ₚ
-  -2k = - k + - k
-
-
-aux-CZ⁻¹-H-CZ^k : ∀ k → CZ^ (- ₁) • H • CZ^ k ≈ H • S^ k ↑ • S^ (- k) • CX^ (- ₁) • S^ k
-aux-CZ⁻¹-H-CZ^k k = bbc (H ^ 5) ε claim
-  where
-  claim : H ^ 5 • (CZ^ (- ₁) • H • CZ^ k) • ε ≈ H ^ 5 • (H • S^ k ↑ • S^ (- k) • CX^ (- ₁) • S^ k) • ε
-  claim = begin
-    H ^ 5 • (CZ^ (- ₁) • H • CZ^ k) • ε ≈⟨ cong refl right-unit ⟩
-    H ^ 5 • (CZ^ (- ₁) • H • CZ^ k) ≈⟨ sa (□ ^ 5 • □ ^ 3) (□ ^ 3 • (□ ^ 2 • □) • □ ^ 2) auto ⟩
-    H ^ 3 • (H ^ 2 • CZ^ (- ₁)) • H • CZ^ k ≈⟨ cright cleft lemma-semi-CZ-HH↓' ⟩
-    H ^ 3 • (CZ • H ^ 2) • H • CZ^ k ≈⟨ cright sa (□ ^ 3 • □ ^ 2) (□ ^ 2 • □ ^ 2 • □) auto ⟩
-    H ^ 3 • (CZ • H) • H ^ 2 • CZ^ k ≈⟨ cright cright lemma-semi-HH↓-CZ^k' k ⟩
-    H ^ 3 • (CZ • H) • CZ^ (- k) • H ^ 2 ≈⟨ sa (□ • □ ^ 2 • □ ^ 2) ((□ ^ 3 • □) • □) auto ⟩
-    (CX • CZ^ (- k)) • H ^ 2 ≈⟨ cleft lemma-semi-CXCZ^-alt (- k) ⟩
-    (S^ (- k) • CX • S^ (- - k) • S^ (- - k) ↑) • H ^ 2 ≈⟨ cleft cright (cright refl' (Eq.cong (\ xx → S^ xx • S^ xx ↑) (-‿involutive k))) ⟩
-    (S^ (- k) • CX • S^ k • S^ k ↑) • H ^ 2 ≈⟨ cleft cright cright lemma-comm-Sᵏ-w↑ (toℕ k) (S^ k) ⟩
-    (S^ (- k) • CX • S^ k ↑ • S^ k) • H ^ 2 ≈⟨ cleft sa (□ ^ 4) (□ • □ ^ 2 • □) auto ⟩
-    (S^ (- k) • (CX • S^ k ↑) • S^ k) • H ^ 2 ≈⟨ cleft cright cleft aux-comm-CX-S^k↑ k ⟩
-    (S^ (- k) • (S^ k ↑ • CX) • S^ k) • H ^ 2 ≈⟨ cleft sym (sa (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto) ⟩
-    ((S^ (- k) • S^ k ↑) • (CX • S^ k)) • H ^ 2 ≈⟨ cleft cleft lemma-comm-Sᵏ-w↑ (toℕ (- k)) (S^ k) ⟩
-    ((S^ k ↑ • S^ (- k)) • (CX • S^ k)) • H ^ 2 ≈⟨ sa (□ ^ 3 • □) (□ ^ 4) auto ⟩
-    (S^ k ↑ • S^ (- k)) • CX • S^ k • H ^ 2 ≈⟨ cright cright comm⇒pow-comm (toℕ k) 1 (sym (trans assoc (axiom comm-HHS))) ⟩
-    (S^ k ↑ • S^ (- k)) • CX • H ^ 2 • S^ k ≈⟨ sa (□ ^ 4) (□ • □ ^ 2 • □) auto ⟩
-    (S^ k ↑ • S^ (- k)) • (CX • H ^ 2) • S^ k ≈⟨ cright cleft sym lemma-semi-HH↓-CX⁻¹ ⟩
-    (S^ k ↑ • S^ (- k)) • (H ^ 2 • CX^ (- ₁)) • S^ k ≈⟨ sa (□ ^ 2 • □ ^ 2 • □) (□ • □ ^ 2 • □ ^ 2) auto ⟩
-    S^ k ↑ • (S^ (- k) • H ^ 2) • CX^ (- ₁) • S^ k ≈⟨  cright cleft comm⇒pow-comm (toℕ (- k)) 1 (sym (trans assoc (axiom comm-HHS))) ⟩
-    S^ k ↑ • (H ^ 2 • S^ (- k)) • CX^ (- ₁) • S^ k ≈⟨ sa (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) auto ⟩
-    (S^ k ↑ • H ^ 2) • S^ (- k) • CX^ (- ₁) • S^ k ≈⟨ cleft sym (lemma-comm-Hᵏ-w↑ 2 (S^ k)) ⟩
-    (H ^ 2 • S^ k ↑) • S^ (- k) • CX^ (- ₁) • S^ k ≈⟨ assoc ⟩
-    H ^ 2 • S^ k ↑ • S^ (- k) • CX^ (- ₁) • S^ k ≈⟨ cleft rewrite-sym0 100 auto ⟩
-    H ^ 6 • S^ k ↑ • S^ (- k) • CX^ (- ₁) • S^ k ≈⟨ sa (□ ^ 6 • □) (□ ^ 5 • □ ^ 2) auto ⟩
-    H ^ 5 • (H • S^ k ↑ • S^ (- k) • CX^ (- ₁) • S^ k) ≈⟨ cright sym right-unit ⟩
-    H ^ 5 • (H • S^ k ↑ • S^ (- k) • CX^ (- ₁) • S^ k) • ε ∎
-
-
-aux-CX^k-M↑ : ∀ k m →
-  let m⁻¹ = (m ⁻¹) .proj₁ in
-  CX^ k • M m ↑ ≈ M m ↑ • CX^ (k * m⁻¹)
-aux-CX^k-M↑ k m = begin
-  CX^ k • M m ↑ ≈⟨ cleft aux-CX^-CX'^ k ⟩
-  CX'^ k • M m ↑ ≈⟨ sa (□ ^ 3 • □) (□ ^ 4) auto ⟩
-  H ^ 3 • CZ^ k • H • M m ↑ ≈⟨ cright cright lemma-comm-H-w↑ (M m) ⟩
-  H ^ 3 • CZ^ k • M m ↑ • H ≈⟨ sa (□ ^ 4) (□ • □ ^ 2 • □) auto ⟩
-  H ^ 3 • (CZ^ k • M m ↑) • H ≈⟨ cright cleft lemma-CZ^kM↑ (m .proj₁) k (m .proj₂) ⟩
-  H ^ 3 • (M m ↑ • CZ^ (k * m⁻¹)) • H ≈⟨ sa (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) auto ⟩
-  (H ^ 3 • M m ↑) • CZ^ (k * m⁻¹) • H ≈⟨ cleft lemma-comm-Hᵏ-w↑ 3 (M m) ⟩
-  (M m ↑ • H ^ 3) • CZ^ (k * m⁻¹) • H ≈⟨ assoc ⟩
-  M m ↑ • CX'^ (k * m⁻¹)  ≈⟨ cright sym (aux-CX^-CX'^ (k * m⁻¹)) ⟩
-  M m ↑ • CX^ (k * m⁻¹) ∎
-  where
-  m⁻¹ = (m ⁻¹) .proj₁
-
-aux-CZ^-k-H-CZ : ∀ (k*@(k , nz) : ℤ* ₚ) →
-  let   k⁻¹ = (k* ⁻¹) .proj₁ in
-  
-  CZ^ (- k) • H • CZ ≈ H • S^ k ↑ • S^ (- k⁻¹) • CX^ (- k) • S^ k⁻¹
-  
-aux-CZ^-k-H-CZ k*@(k , nz) = bbc (M (k* ⁻¹) ↑) ε claim
-  where
-  k⁻¹ = (k* ⁻¹) .proj₁
-  k⁻¹⁻¹ = (k* ⁻¹ ⁻¹) .proj₁
-  -k⁻¹ = ((-' k*) ⁻¹) .proj₁
-  -k⁻² = -k⁻¹ * -k⁻¹
-  claim : (M (k* ⁻¹) ↑) • (CZ^ (- k) • H • CZ) • ε ≈ M (k* ⁻¹) ↑ • (H • S^ k ↑ • S^ (- k⁻¹) • CX^ (- k) • S^ k⁻¹) • ε
-  claim = begin
-    (M (k* ⁻¹) ↑) • (CZ^ (- k) • H • CZ) • ε ≈⟨ cong refl right-unit ⟩
-    (M (k* ⁻¹) ↑) • (CZ^ (- k) • H • CZ) ≈⟨ sa (□ • □ ^ 3) (□ ^ 2 • □ ^ 2) auto ⟩
-    (M (k* ⁻¹) ↑ • CZ^ (- k)) • H • CZ ≈⟨  cleft lemma-M↑CZ^k (k⁻¹) (- k) (((k* ⁻¹)) .proj₂) ⟩
-    (CZ^ (- k * k⁻¹) • M (k* ⁻¹) ↑) • H • CZ ≈⟨ cleft cleft refl' (Eq.cong CZ^ (Eq.trans (Eq.sym (-‿distribˡ-* k k⁻¹)) (Eq.cong -_ (lemma-⁻¹ʳ k {{nztoℕ {y = k} {neq0 = nz}}})))) ⟩
-    (CZ^ (- ₁) • M (k* ⁻¹) ↑) • H • CZ ≈⟨  sa (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
-    CZ^ (- ₁) • (M (k* ⁻¹) ↑ • H) • CZ ≈⟨ cright  cleft sym (lemma-comm-H-w↑ (M (k* ⁻¹)) ) ⟩
-    CZ^ (- ₁) • (H • M (k* ⁻¹) ↑) • CZ ≈⟨ cright  assoc ⟩
-    CZ^ (- ₁) • H • M (k* ⁻¹) ↑  • CZ ≈⟨  cright cright axiom (semi-M↑CZ (k* ⁻¹)) ⟩
-    CZ^ (- ₁) • H • CZ^ k⁻¹ • M (k* ⁻¹) ↑ ≈⟨ sa (□ ^ 4) ((□ ^ 3 • □)) auto ⟩
-    (CZ^ (- ₁) • H • CZ^ k⁻¹) • M (k* ⁻¹) ↑ ≈⟨ cleft aux-CZ⁻¹-H-CZ^k k⁻¹ ⟩
-    (H • S^ k⁻¹ ↑ • S^ (- k⁻¹) • CX^ (- ₁) • S^ k⁻¹) • M (k* ⁻¹) ↑ ≈⟨ sa (□ ^ 5 • □) (□ ^ 4 • □ ^ 2) auto ⟩
-    (H • S^ k⁻¹ ↑ • S^ (- k⁻¹) • CX^ (- ₁)) • S^ k⁻¹ • M (k* ⁻¹) ↑ ≈⟨ cright lemma-comm-Sᵏ-w↑ (toℕ k⁻¹) (M (k* ⁻¹)) ⟩
-    (H • S^ k⁻¹ ↑ • S^ (- k⁻¹) • CX^ (- ₁)) • M (k* ⁻¹) ↑ • S^ k⁻¹ ≈⟨ sa (□ ^ 4 • □ ^ 2) (□ ^ 3 • □ ^ 2 • □) auto ⟩
-    (H • S^ k⁻¹ ↑ • S^ (- k⁻¹)) • (CX^ (- ₁) • M (k* ⁻¹) ↑) • S^ k⁻¹ ≈⟨ cright cleft aux-CX^k-M↑ (- ₁) (k* ⁻¹) ⟩
-    (H • S^ k⁻¹ ↑ • S^ (- k⁻¹)) • (M (k* ⁻¹) ↑ • CX^ (- ₁ * k⁻¹⁻¹)) • S^ k⁻¹ ≈⟨ cright cleft cright refl' (Eq.cong CX^ (Eq.trans (Eq.cong (- ₁ *_) (inv-involutive k*)) (-1*x≈-x k))) ⟩
-    (H • S^ k⁻¹ ↑ • S^ (- k⁻¹)) • (M (k* ⁻¹) ↑ • CX^ (- k)) • S^ k⁻¹ ≈⟨ sa (□ ^ 3 • □ ^ 2 • □) (□ ^ 2 • □ ^ 2 • □ ^ 2) auto ⟩
-    (H • S^ k⁻¹ ↑) • (S^ (- k⁻¹) • M (k* ⁻¹) ↑) • CX^ (- k) • S^ k⁻¹ ≈⟨ cright cleft lemma-comm-Sᵏ-w↑ (toℕ (- k⁻¹)) (M (k* ⁻¹)) ⟩
-    (H • S^ k⁻¹ ↑) • (M (k* ⁻¹) ↑ • S^ (- k⁻¹)) • CX^ (- k) • S^ k⁻¹ ≈⟨ sa (□ ^ 2 • □ ^ 2 • □ ^ 2) (□ ^ 3 • □ ^ 3) auto ⟩
-    (H • S^ k⁻¹ ↑ • M (k* ⁻¹) ↑) • S^ (- k⁻¹) • CX^ (- k) • S^ k⁻¹ ≈⟨ cleft cright lemma-cong↑ _ _ (lemma-S^kM k⁻¹ k⁻¹ ((k* ⁻¹) .proj₂)) ⟩
-    (H • M (k* ⁻¹) ↑ • S^ (k⁻¹ * (k⁻¹⁻¹ * k⁻¹⁻¹)) ↑) • S^ (- k⁻¹) • CX^ (- k) • S^ k⁻¹ ≈⟨ cleft sym assoc ⟩
-    ((H • M (k* ⁻¹) ↑) • S^ (k⁻¹ * (k⁻¹⁻¹ * k⁻¹⁻¹)) ↑) • S^ (- k⁻¹) • CX^ (- k) • S^ k⁻¹ ≈⟨ cleft cleft lemma-comm-H-w↑ (M (k* ⁻¹)) ⟩
-    ((M (k* ⁻¹) ↑ • H) • S^ (k⁻¹ * (k⁻¹⁻¹ * k⁻¹⁻¹)) ↑) • S^ (- k⁻¹) • CX^ (- k) • S^ k⁻¹ ≈⟨ trans assoc assoc ⟩
-    M (k* ⁻¹) ↑ • H • S^ (k⁻¹ * (k⁻¹⁻¹ * k⁻¹⁻¹)) ↑ • S^ (- k⁻¹) • CX^ (- k) • S^ k⁻¹ ≈⟨ cright cright cleft refl' (Eq.cong (\ xx → S^ xx ↑) aux) ⟩
-    M (k* ⁻¹) ↑ • H • S^ k ↑ • S^ (- k⁻¹) • CX^ (- k) • S^ k⁻¹ ≈⟨ sym (cong refl right-unit) ⟩
-    M (k* ⁻¹) ↑ • (H • S^ k ↑ • S^ (- k⁻¹) • CX^ (- k) • S^ k⁻¹) • ε ∎
-    where
-    aux : (k⁻¹ * (k⁻¹⁻¹ * k⁻¹⁻¹)) ≡ k
-    aux = Eq.trans (Eq.cong (k⁻¹ *_) (Eq.cong (\ xx → xx * xx) (inv-involutive k*))) (Eq.trans (Eq.sym (*-assoc k⁻¹ k k)) (Eq.trans (Eq.cong (_* k) (lemma-⁻¹ˡ k {{nztoℕ {y = k} {neq0 = nz}}})) (*-identityˡ k)))
-
-
-
-{-
-aux-CZ^-k-H-CZ : ∀ (k*@(k , nz) : ℤ* ₚ) → CZ^ (- k) • H • CZ ≈ H • S^ k ↑ • S^ (- k) • CX^ (- ₁) • S^ k
-aux-CZ^-k-H-CZ k*@(k , nz) = bbc (H ^ 3 • M ((-' k*) ⁻¹)) ε {!!}
-  where
-  k⁻¹ = (k* ⁻¹) .proj₁
-  -k⁻¹ = ((- k*) ⁻¹) .proj₁
-  -k⁻² = -k⁻¹ * -k⁻¹
-  claim : (H ^ 3 • M (-' k* ⁻¹)) • (CZ^ (- k) • H • CZ) • ε ≈ (H ^ 3 • M (-' k* ⁻¹)) • (H • S^ k ↑ • S^ (- k) • CX^ (- ₁) • S^ k) • ε
-  claim = begin
-    (H ^ 3 • M (-' k* ⁻¹)) • (CZ^ (- k) • H • CZ) • ε ≈⟨ cong refl right-unit ⟩
-    (H ^ 3 • M (-' k* ⁻¹)) • (CZ^ (- k) • H • CZ) ≈⟨ sa (□ ^ 2 • □ ^ 3) (□ • □ ^ 2 • □ ^ 2) auto ⟩
-    H ^ 3 • (M (-' k* ⁻¹) • CZ^ (- k)) • H • CZ ≈⟨ cright cleft lemma-M↓CZ^k (- k⁻¹) (- k) ((-' (k* ⁻¹)) .proj₂) ⟩
-    H ^ 3 • (CZ^ (- k * - k⁻¹) • M (-' k* ⁻¹)) • H • CZ ≈⟨ cright cleft cleft refl' (Eq.cong CZ^ (aux--k*-k⁻¹ k*)) ⟩
-    H ^ 3 • (CZ • M (-' k* ⁻¹)) • H • CZ ≈⟨ cright sa (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
-    H ^ 3 • CZ • (M (-' k* ⁻¹) • H) • CZ ≈⟨ cright cright cleft cleft L01.aux-MM ((-' k* ⁻¹) .proj₂) (((-' k*) ⁻¹) .proj₂) (Eq.sym (inv-neg-comm k*)) ⟩
-    H ^ 3 • CZ • (M ((-' k*) ⁻¹) • H) • CZ ≈⟨ cright cright cleft sym (L01.semi-HM (-' k*) ) ⟩
-    H ^ 3 • CZ • (H • M ((-' k*))) • CZ ≈⟨ cright cright assoc ⟩
-    H ^ 3 • CZ • H • M ((-' k*)) • CZ ≈⟨ cright cright cright axiom (semi-M↓CZ (-' k*)) ⟩
-    H ^ 3 • CZ • H • CZ^ (- k) • M ((-' k*)) ≈⟨ sa (□ ^ 5) ((□ ^ 3 • □) • □) auto ⟩
-    (CX • CZ^ (- k)) • M ((-' k*)) ≈⟨ cleft lemma-semi-CXCZ^-alt (- k) ⟩
-    (S^ (- k) • CX • S^ (- - k) • S^ (- - k) ↑ ) • M ((-' k* )) ≈⟨ cleft cright (cright refl' (Eq.cong (\ xx → S^ xx • S^ xx ↑) (-‿involutive k))) ⟩
-    (S^ (- k) • CX • S^ k • S^ k ↑ ) • M ((-' k*)) ≈⟨ {!M↓-CX!} ⟩
-
-    (S^ (- k) • CX • S^ k • S^ k ↑) • M ((-' k*)) ≈⟨ cleft cright cright lemma-comm-Sᵏ-w↑ (toℕ k) (S^ k) ⟩
-    (S^ (- k) • CX • S^ k ↑ • S^ k) • M ((-' k*)) ≈⟨ cleft sa (□ ^ 4) (□ • □ ^ 2 • □) auto ⟩
-    (S^ (- k) • (CX • S^ k ↑) • S^ k) • M ((-' k*)) ≈⟨ cleft cright cleft aux-comm-CX-S^k↑ k ⟩
-    (S^ (- k) • (S^ k ↑ • CX) • S^ k) • M ((-' k*)) ≈⟨ cleft sym (sa (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto) ⟩
-    ((S^ (- k) • S^ k ↑) • (CX • S^ k)) • M ((-' k*)) ≈⟨ cleft cleft lemma-comm-Sᵏ-w↑ (toℕ (- k)) (S^ k) ⟩
-    ((S^ k ↑ • S^ (- k)) • (CX • S^ k)) • M ((-' k*)) ≈⟨ sa (□ ^ 3 • □) (□ ^ 4) auto ⟩
-    (S^ k ↑ • S^ (- k)) • CX • S^ k • M ((-' k*)) ≈⟨ cright cright comm⇒pow-comm (toℕ k) 1 (sym (trans assoc (axiom comm-HHS))) ⟩
-    (S^ k ↑ • S^ (- k)) • CX • M ((-' k*)) • S^ (k * -k⁻²) ≈⟨ sa (□ ^ 4) (□ • □ ^ 2 • □) auto ⟩
-    (S^ k ↑ • S^ (- k)) • (CX • M ((-' k*))) • S^ k ≈⟨ cright cleft sym lemma-semi-HH↓-CX⁻¹ ⟩
-    (S^ k ↑ • S^ (- k)) • (M ((-' k*)) • CX^ (- ₁)) • S^ k ≈⟨ sa (□ ^ 2 • □ ^ 2 • □) (□ • □ ^ 2 • □ ^ 2) auto ⟩
-    S^ k ↑ • (S^ (- k) • M ((-' k*))) • CX^ (- ₁) • S^ k ≈⟨  cright cleft comm⇒pow-comm (toℕ (- k)) 1 (sym (trans assoc (axiom comm-HHS))) ⟩
-    S^ k ↑ • (M ((-' k*)) • S^ (- k)) • CX^ (- ₁) • S^ k ≈⟨ sa (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) auto ⟩
-    (S^ k ↑ • M ((-' k*))) • S^ (- k) • CX^ (- ₁) • S^ k ≈⟨ cleft sym (lemma-comm-Hᵏ-w↑ 2 (S^ k)) ⟩
-    (M ((-' k*)) • S^ k ↑) • S^ (- k) • CX^ (- ₁) • S^ k ≈⟨ assoc ⟩
-    M ((-' k*)) • S^ k ↑ • S^ (- k) • CX^ (- ₁) • S^ k ≈⟨ cleft rewrite-sym0 100 auto ⟩
-    H ^ 6 • S^ k ↑ • S^ (- k) • CX^ (- ₁) • S^ k ≈⟨ sa (□ ^ 6 • □) (□ ^ 5 • □ ^ 2) auto ⟩
-    H ^ 5 • (H • S^ k ↑ • S^ (- k) • CX^ (- ₁) • S^ k) ≈⟨ cright sym right-unit ⟩
-
-    (H ^ 3 • M (-' k* ⁻¹)) • (H • S^ k ↑ • S^ (- k) • CX^ (- ₁) • S^ k) • ε ∎
-
--}
--}

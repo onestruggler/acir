@@ -6,7 +6,6 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
 
-
 open import Data.Product using (_,_ ; proj₁)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 import Data.Nat as Nat
@@ -21,17 +20,12 @@ open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
 
-
 import Data.Nat.Properties as NP
 open import Presentation.GroupLike
 open import Data.Nat.Primality
 
 
-
 module Examples.Groups.Symplectic.Lemmas.Ex-Sym2n (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
-
-
-
 
 
 open import ForStdlib.Data.Fin.Mod
@@ -56,7 +50,6 @@ open import Data.Fin.Properties
 
 
 open Duality
-
 
 
 lemma-HCZHS : let open PB ((₂₊ n) QRel,_===_) in
@@ -256,7 +249,6 @@ lemma-XCS^k {n} k = bbc (HH ↑) ε auxn
     HH ↑ • (((H ↑) • (H ↑) • (H ↑)) • CZ • (H ↑) • (S^ k ↑)) • ε ∎
 
 
-
 lemma-XCS^k-ℕ : let open PB ((₂₊ n) QRel,_===_) in ∀ k → let -k = p-1 Nat.* k in 
   (S ^ k) ↑ • S ^ k • CZ ^ -k • XC ≈ XC • (S ^ k) ↑
 lemma-XCS^k-ℕ {n} k = bbc (HH ↑) ε aux0
@@ -319,9 +311,6 @@ lemma-XCS^k-ℕ {n} k = bbc (HH ↑) ε aux0
       CZ ^ k ∎
 
 
-
-
-
 lemma-XCS^k' : let open PB ((₂₊ n) QRel,_===_) in ∀ k → 
   S^ k ↑ • S^ k • CZ^ (- k) • H ↑ ^ 3 • CZ • H ↑ ≈ (H ↑ ^ 3 • CZ • H ↑) • S^ k ↑
 lemma-XCS^k' {n} k = trans (lemma-XCS^k k) (by-passoc (□ ^ 4) (□ ^ 3 • □) auto)
@@ -329,378 +318,6 @@ lemma-XCS^k' {n} k = trans (lemma-XCS^k k) (by-passoc (□ ^ 4) (□ ^ 3 • □
   open PB ((₂₊ n) QRel,_===_)
   open PP ((₂₊ n) QRel,_===_)
   open Pattern-Assoc
-
-{-
-
-lemma-CXS^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k → 
-  S^ k • S^ k ↑ • CZ^ (- k) • H^ ₃ • CZ • H ≈ (H^ ₃ • CZ • H) • S^ k
-lemma-CXS^k {n} k = {!!}
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  module M1P = PP ((₁₊ n) QRel,_===_)
-  module M1B = PB ((₁₊ n) QRel,_===_)
-  open SR word-setoid
-  open Pattern-Assoc
-  open Sym0-Rewriting (₁₊ n)
-  open Commuting-Symplectic n
-  open Symplectic-GroupLike
-  open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
-  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
-  open Q2.Lemmas-2Q n
-  open import Algebra.Properties.Ring (+-*-ring p-2)
-
-  aux1 : dual (S^ k ↑ • S^ k • CZ^ (- k) • H ↑ ^ 3 • CZ • H ↑) ≈ S^ k • S^ k ↑ • CZ^ (- k) • H ^ 3 • CZ • H
-  aux1 = begin
-    dual (S^ k ↑ • S^ k • CZ^ (- k) • H ↑ ^ 3 • CZ • H ↑) ≈⟨ by-passoc (□ ^ 4) (□ ^ 3 • □) auto ⟩
-    dual (S^ k ↑ • S^ k • CZ^ (- k)) • H ^ 3 • CZ • H ≈⟨ (cleft cong (refl' (aux-dual-S^k↑ (toℕ k))) (cong (refl' (aux-dual-S^k (toℕ k))) (refl' (aux-dual-CZ^k (toℕ (- k)))))) ⟩
-    (S^ k • S^ k ↑ • CZ^ (- k)) • H ^ 3 • CZ • H ≈⟨ sym (by-passoc (□ ^ 4) (□ ^ 3 • □) auto) ⟩
-    S^ k • S^ k ↑ • CZ^ (- k) • H ^ 3 • CZ • H ∎
-
-  aux2 : dual ((H ↑ ^ 3 • CZ • H ↑) • S^ k ↑) ≈ (H ^ 3 • CZ • H) • S^ k
-  aux2 = begin
-    dual ((H ↑ ^ 3 • CZ • H ↑) • S^ k ↑) ≈⟨ (cright refl' (aux-dual-S^k↑ (toℕ k))) ⟩
-    (H ^ 3 • CZ • H) • S^ k ∎
-
-
-lemma-CXS^k-ℕ : let open PB ((₂₊ 0) QRel,_===_) in ∀ k → let -k = p-1 Nat.* k in 
-  S ^ k • (S ^ k) ↑ • CZ ^ -k • H^ ₃ • CZ • H ≈ (H^ ₃ • CZ • H) • S ^ k
-lemma-CXS^k-ℕ k = by-duality' (lemma-XCS^k-ℕ k) aux1 aux2
-  where
-  open PB ((₂₊ 0) QRel,_===_)
-  open PP ((₂₊ 0) QRel,_===_)
-  module M1P = PP ((₁₊ 0) QRel,_===_)
-  module M1B = PB ((₁₊ 0) QRel,_===_)
-  open SR word-setoid
-  open Pattern-Assoc
-  open Sym0-Rewriting (suc 0)
-  open Commuting-Symplectic 0
-  open Symplectic-GroupLike
-  open Basis-Change _ ((₂₊ 0) QRel,_===_) grouplike
-  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
-  open Q2.Lemmas-2Q 0
-  open import Algebra.Properties.Ring (+-*-ring p-2)
-  -k = p-1 Nat.* k
-  aux1 : dual ((S ^ k) ↑ • S ^ k • CZ ^ (-k) • H ↑ ^ 3 • CZ • H ↑) ≈ S ^ k • (S ^ k) ↑ • CZ ^ -k • H ^ 3 • CZ • H
-  aux1 = begin
-    dual ((S ^ k) ↑ • S ^ k • CZ ^ -k • H ↑ ^ 3 • CZ • H ↑) ≈⟨ by-passoc (□ ^ 4) (□ ^ 3 • □) auto ⟩
-    dual ((S ^ k) ↑ • S ^ k • CZ ^ -k) • H ^ 3 • CZ • H ≈⟨ (cleft cong (refl' (aux-dual-S^k↑ (k))) (cong (refl' (aux-dual-S^k (k))) (refl' (aux-dual-CZ^k (-k))))) ⟩
-    (S ^ k • (S ^ k) ↑ • CZ ^ -k) • H ^ 3 • CZ • H ≈⟨ sym (by-passoc (□ ^ 4) (□ ^ 3 • □) auto) ⟩
-    S ^ k • (S ^ k) ↑ • CZ ^ -k • H ^ 3 • CZ • H ∎
-
-  aux2 : dual ((H ↑ ^ 3 • CZ • H ↑) • (S ^ k) ↑) ≈ (H ^ 3 • CZ • H) • S ^ k
-  aux2 = begin
-    dual ((H ↑ ^ 3 • CZ • H ↑) • (S ^ k) ↑) ≈⟨ (cright refl' (aux-dual-S^k↑ (k))) ⟩
-    (H ^ 3 • CZ • H) • S ^ k ∎
-
-
-
-lemma-CXS-ℕ : let open PB ((₂₊ 0) QRel,_===_) in 
-  S • S ↑ • CZ ^ p-1 • CX ≈ CX • S
-lemma-CXS-ℕ = begin
-  S • S ↑ • CZ ^ p-1 • CX ≈⟨ (cright cright cong (refl' (Eq.cong (CZ ^_) (Eq.sym (NP.*-identityʳ p-1)))) refl) ⟩
-  S ^ k • (S ^ k) ↑ • CZ ^ -k • H^ ₃ • CZ • H ≈⟨ lemma-CXS^k-ℕ 1 ⟩
-  CX • S ∎
-  where
-  k = 1
-  open PB ((₂₊ 0) QRel,_===_)
-  open PP ((₂₊ 0) QRel,_===_)
-  module M1P = PP ((₁₊ 0) QRel,_===_)
-  module M1B = PB ((₁₊ 0) QRel,_===_)
-  open SR word-setoid
-  open Pattern-Assoc
-  open Sym0-Rewriting (suc 0)
-  open Commuting-Symplectic 0
-  open Symplectic-GroupLike
-  open Basis-Change _ ((₂₊ 0) QRel,_===_) grouplike
-  open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime as Q2
-  open Q2.Lemmas-2Q 0
-  open import Algebra.Properties.Ring (+-*-ring p-2)
-  -k = p-1 Nat.* k
-  aux1 : dual ((S ^ k) ↑ • S ^ k • CZ ^ (-k) • H ↑ ^ 3 • CZ • H ↑) ≈ S ^ k • (S ^ k) ↑ • CZ ^ -k • H ^ 3 • CZ • H
-  aux1 = begin
-    dual ((S ^ k) ↑ • S ^ k • CZ ^ -k • H ↑ ^ 3 • CZ • H ↑) ≈⟨ by-passoc (□ ^ 4) (□ ^ 3 • □) auto ⟩
-    dual ((S ^ k) ↑ • S ^ k • CZ ^ -k) • H ^ 3 • CZ • H ≈⟨ (cleft cong (refl' (aux-dual-S^k↑ (k))) (cong (refl' (aux-dual-S^k (k))) (refl' (aux-dual-CZ^k (-k))))) ⟩
-    (S ^ k • (S ^ k) ↑ • CZ ^ -k) • H ^ 3 • CZ • H ≈⟨ sym (by-passoc (□ ^ 4) (□ ^ 3 • □) auto) ⟩
-    S ^ k • (S ^ k) ↑ • CZ ^ -k • H ^ 3 • CZ • H ∎
-
-  aux2 : dual ((H ↑ ^ 3 • CZ • H ↑) • (S ^ k) ↑) ≈ (H ^ 3 • CZ • H) • S ^ k
-  aux2 = begin
-    dual ((H ↑ ^ 3 • CZ • H ↑) • (S ^ k) ↑) ≈⟨ (cright refl' (aux-dual-S^k↑ (k))) ⟩
-    (H ^ 3 • CZ • H) • S ^ k ∎
--}
-
-
-
-{-
-lemma-H↑CZ↑HS↑ : let open PB ((₂₊ n) QRel,_===_) in
-  S ↑ • S ↓ • CZ • H ↑ • CZ • H ↑ ≈ H ↑ • CZ • H ↑ • S ↑
-lemma-H↑CZ↑HS↑ {n} = begin
-  S ↑ • S ↓ • CZ • H ↑ • CZ • H ↑ ≈⟨ {!!} ⟩
-  S ↑ • (CZ • H ↑ • CZ) • H ↑ • S ↓ ≈⟨ (cright (cleft axiom selinger-c10)) ⟩
-  S ↑ • (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓) • H ↑ • S ↓ ≈⟨ {!!} ⟩
-  (H ↑ • CZ • S⁻¹ ↑) • (H ↑ • S⁻¹ ↑ • H ↑) ≈⟨ (cright lemma-cong↑ _ _ {!!}) ⟩
-  (H ↑ • CZ • S⁻¹ ↑) • (S • H • S) ↑ ≈⟨ {!!} 100 {!!} ⟩
-  H ↑ • CZ • H ↑ • S ↑ ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-
-
-lemma-H↑CZ↑HS↑S↑ : let open PB ((₂₊ n) QRel,_===_) in
-  S⁻¹ ↑ • S⁻¹ ↓ • CZ ^ 2 • H ↑ • CZ • H ↑ ≈ H ↑ • CZ • H ↑ • S⁻¹ ↑
-lemma-H↑CZ↑HS↑S↑ {n} = begin
-  S⁻¹ ↑ • S⁻¹ ↓ • CZ ^ 2 • H ↑ • CZ • H ↑ ≈⟨ rewrite-sym0 100 auto ⟩
-  (S ↑ • S ↓ • CZ) • (S ↑ • S ↓ • CZ • H ↑ • CZ • H ↑) ≈⟨ ( cright lemma-H↑CZ↑HS↑) ⟩
-  (S ↑ • S ↓ • CZ) • (H ↑ • CZ • H ↑ • S ↑) ≈⟨ by-assoc auto ⟩
-  (S ↑ • S ↓ • CZ • H ↑ • CZ • H ↑) • S ↑ ≈⟨ (cleft lemma-H↑CZ↑HS↑) ⟩
-  (H ↑ • CZ • H ↑ • S ↑) • S ↑ ≈⟨ by-assoc auto ⟩
-  H ↑ • CZ • H ↑ • S⁻¹ ↑ ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
---    open Powers0-Symplectic (₁₊ n)
-  open Commuting-Symplectic (n)
-  open Sym0-Rewriting (₁₊ n)    
-
-lemma-S↓H↓CZ↓H : let open PB ((₂₊ n) QRel,_===_) in
-  S • H • CZ • H ≈ H • CZ • H • CZ • S ↑ • S
-lemma-S↓H↓CZ↓H {n} = sym (begin
-  H • CZ • H • CZ • S ↑ • S ≈⟨ by-assoc auto ⟩
-  H • (CZ • H • CZ) • S ↑ • S ≈⟨ (cright (cleft axiom selinger-c11)) ⟩
-  H • (S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑) • S ↑ • S ≈⟨ general-powers0 100 auto ⟩
-  (H • S⁻¹ ↓ • H ↓) • S⁻¹ ↓ • CZ • H ↓ ≈⟨ (cleft lemma-HSSH) ⟩
-  (S • H • S) • S⁻¹ ↓ • CZ • H ↓ ≈⟨ ? ⟩
-  S • H • CZ • H ∎)
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
---    open Powers0-Symplectic (₁₊ n)
-  open Commuting-Symplectic (n)
-
-lemma-S↓²H↓CZ↓H : let open PB ((₂₊ n) QRel,_===_) in
-  S⁻¹ ↓ • H ↓ • CZ • H ↓ ≈ H ↓ • CZ • H ↓ • CZ ^ 2 • S⁻¹ ↑ • S⁻¹ ↓
-lemma-S↓²H↓CZ↓H {n@(₀)} = begin
-  S⁻¹ ↓ • H ↓ • CZ • H ↓ ≈⟨ assoc ⟩
-  S ↓ • S ↓ • H ↓ • CZ • H ↓ ≈⟨ (cright lemma-S↓H↓CZ↓H) ⟩
-  S ↓ • H ↓ • CZ • H ↓ • CZ • S ↑ • S ↓ ≈⟨ by-assoc auto ⟩
-  (S ↓ • H ↓ • CZ • H ↓) • CZ • S ↑ • S ↓ ≈⟨ (cleft lemma-S↓H↓CZ↓H) ⟩
-  (H ↓ • CZ • H ↓ • CZ • S ↑ • S) • CZ • S ↑ • S ↓ ≈⟨ by-assoc auto ⟩
-  (H ↓ • CZ • H ↓) • CZ • S ↑  • S ↓ • CZ • S ↑ • S ↓ ≈⟨ ( general-comm auto) ⟩
-  H ↓ • CZ • H ↓ • CZ ^ 2 • S⁻¹ ↑ • S⁻¹ ↓ ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
---    open Powers0-Symplectic (₁₊ n)
-  open Commuting-Symplectic (n)
-lemma-S↓²H↓CZ↓H {n@(₁₊ _)} = begin
-  S⁻¹ ↓ • H ↓ • CZ • H ↓ ≈⟨ assoc ⟩
-  S ↓ • S ↓ • H ↓ • CZ • H ↓ ≈⟨ (cright lemma-S↓H↓CZ↓H) ⟩
-  S ↓ • H ↓ • CZ • H ↓ • CZ • S ↑ • S ↓ ≈⟨ by-assoc auto ⟩
-  (S ↓ • H ↓ • CZ • H ↓) • CZ • S ↑ • S ↓ ≈⟨ (cleft lemma-S↓H↓CZ↓H) ⟩
-  (H ↓ • CZ • H ↓ • CZ • S ↑ • S) • CZ • S ↑ • S ↓ ≈⟨ by-assoc auto ⟩
-  (H ↓ • CZ • H ↓) • CZ • S ↑  • S ↓ • CZ • S ↑ • S ↓ ≈⟨ ( general-comm auto) ⟩
-  H ↓ • CZ • H ↓ • CZ ^ 2 • S⁻¹ ↑ • S⁻¹ ↓ ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
---    open Powers0-Symplectic (₁₊ n)
-  open Commuting-Symplectic (n)
-
--}
-
-
-
-
-{-
-
-
-lemma-CZHCZCZ : let open PB ((₂₊ n) QRel,_===_) in
-  CZ • H ↑ • CZ • CZ ≈ S • S ↑ • H ↑ ^ 3 • CZ • S ↑ • H ↑ • S ↑
-lemma-CZHCZCZ {n@(₀)} = begin
-  CZ • H ↑ • CZ • CZ ≈⟨ sym (trans assoc (cong refl assoc)) ⟩
-  (CZ • H ↑ • CZ) • CZ ≈⟨ cong (axiom selinger-c10) refl ⟩
-  (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓) • CZ ≈⟨ general-comm auto ⟩
-  (S⁻¹ ↑ • H ↑ • S⁻¹ ↑) • (CZ • H ↑ • CZ) • S⁻¹ ↑ • S⁻¹ ↓ ≈⟨ (cright (cleft axiom selinger-c10)) ⟩
-  (S⁻¹ ↑ • H ↑ • S⁻¹ ↑) • (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓) • S⁻¹ ↑ • S⁻¹ ↓ ≈⟨ rewrite-sym0 100 auto ⟩
-  (S⁻¹ ↑ • H ↑ • S⁻¹ ↑) • (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S ↑ • S ↓)  ≈⟨ rewrite-sym0 100 auto ⟩
-  (S⁻¹ ↑ • H ↑ • S ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S ↑ • S ↓)  ≈⟨ general-powers0 100 auto ⟩
-  S ↑ • (S ↑ • H ↑ • S ↑ • H ↑ • S ↑) • S ↑ • CZ • H ↑ • S ↑ • S ↓  ≈⟨ (cright (cleft lemma-cong↑ _ _ lemma-SHSHS)) ⟩
-  S ↑ • (H ↑ ^ 3) • S ↑ • CZ • H ↑ • S ↑ • S ↓  ≈⟨ general-comm auto ⟩
-  S • S ↑ • H ↑ ^ 3 • CZ • S ↑ • H ↑ • S ↑ ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-  open Powers0-Symplectic (₁₊ n)
-  open Commuting-Symplectic (n)
-  open Sym0-Rewriting (₁₊ n)
-lemma-CZHCZCZ {n@(₁₊ _)} = begin
-  CZ • H ↑ • CZ • CZ ≈⟨ sym (trans assoc (cong refl assoc)) ⟩
-  (CZ • H ↑ • CZ) • CZ ≈⟨ cong (axiom selinger-c10) refl ⟩
-  (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓) • CZ ≈⟨ general-comm auto ⟩
-  (S⁻¹ ↑ • H ↑ • S⁻¹ ↑) • (CZ • H ↑ • CZ) • S⁻¹ ↑ • S⁻¹ ↓ ≈⟨ (cright (cleft axiom selinger-c10)) ⟩
-  (S⁻¹ ↑ • H ↑ • S⁻¹ ↑) • (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓) • S⁻¹ ↑ • S⁻¹ ↓ ≈⟨ rewrite-sym0 100 auto ⟩
-  (S⁻¹ ↑ • H ↑ • S⁻¹ ↑) • (S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S ↑ • S ↓)  ≈⟨ rewrite-sym0 100 auto ⟩
-  (S⁻¹ ↑ • H ↑ • S ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S ↑ • S ↓)  ≈⟨ general-powers0 100 auto ⟩
-  S ↑ • (S ↑ • H ↑ • S ↑ • H ↑ • S ↑) • S ↑ • CZ • H ↑ • S ↑ • S ↓  ≈⟨ (cright (cleft lemma-cong↑ _ _ lemma-SHSHS)) ⟩
-  S ↑ • (H ↑ ^ 3) • S ↑ • CZ • H ↑ • S ↑ • S ↓  ≈⟨ general-comm auto ⟩
-  S • S ↑ • H ↑ ^ 3 • CZ • S ↑ • H ↑ • S ↑ ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-  open Powers0-Symplectic (₁₊ n)
-  open Commuting-Symplectic (n)
-  open Sym0-Rewriting (₁₊ n)
-
-lemma-CZCZH↓CZ : let open PB ((₂₊ n) QRel,_===_) in
-  CZ • CZ • H • CZ ≈ S • H • CZ • S • (H ^ 3) • S • S ↑
-lemma-CZCZH↓CZ {n@(₀)} = begin
-  CZ • CZ • H  • CZ ≈⟨ cong refl (axiom selinger-c11) ⟩
-  CZ • (S  ^ 2 • H  • S  ^ 2 • CZ • H  • S  ^ 2 • S⁻¹ ↑) ≈⟨ general-comm auto ⟩
-  S  ^ 2 • (CZ • H • CZ) • S  ^ 2 • H  • S  ^ 2 • S⁻¹ ↑ ≈⟨ (cright (cleft axiom selinger-c11)) ⟩
-  S  ^ 2 • (S  ^ 2 • H  • S  ^ 2 • CZ • H  • S  ^ 2 • S⁻¹ ↑) • S  ^ 2 • H • S  ^ 2 • S⁻¹ ↑ ≈⟨ general-comm auto ⟩
-  S  ^ 4 • H  • S  ^ 2 • CZ • H  • S ^ 4 • S ↑ ^ 4 • H • S  ^ 2 ≈⟨ general-powers0 100 auto ⟩
-  S  • H  • S  ^ 2 • CZ • H  • S • S ↑ • H • S  ^ 2 ≈⟨ general-comm auto ⟩
-  (S • H • CZ • S) • (S • H • S • H • S) • S • S ↑ ≈⟨ (cright (cleft lemma-SHSHS)) ⟩
-  (S • H • CZ • S) • (H ^ 3) • S • S ↑ ≈⟨ by-assoc auto ⟩
-  S • H • CZ • S • (H ^ 3) • S • S ↑ ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-  open Powers0-Symplectic (₁₊ n)
-  open Commuting-Symplectic (n)
-  open Sym0-Rewriting (₁₊ n)
-lemma-CZCZH↓CZ {n@(₁₊ _)} = begin
-  CZ • CZ • H  • CZ ≈⟨ cong refl (axiom selinger-c11) ⟩
-  CZ • (S  ^ 2 • H  • S  ^ 2 • CZ • H  • S  ^ 2 • S⁻¹ ↑) ≈⟨ general-comm auto ⟩
-  S  ^ 2 • (CZ • H • CZ) • S  ^ 2 • H  • S  ^ 2 • S⁻¹ ↑ ≈⟨ (cright (cleft axiom selinger-c11)) ⟩
-  S  ^ 2 • (S  ^ 2 • H  • S  ^ 2 • CZ • H  • S  ^ 2 • S⁻¹ ↑) • S  ^ 2 • H • S  ^ 2 • S⁻¹ ↑ ≈⟨ general-comm auto ⟩
-  S  ^ 4 • H  • S  ^ 2 • CZ • H  • S ^ 4 • S ↑ ^ 4 • H • S  ^ 2 ≈⟨ general-powers0 100 auto ⟩
-  S  • H  • S  ^ 2 • CZ • H  • S • S ↑ • H • S  ^ 2 ≈⟨ general-comm auto ⟩
-  (S • H • CZ • S) • (S • H • S • H • S) • S • S ↑ ≈⟨ (cright (cleft lemma-SHSHS)) ⟩
-  (S • H • CZ • S) • (H ^ 3) • S • S ↑ ≈⟨ by-assoc auto ⟩
-  S • H • CZ • S • (H ^ 3) • S • S ↑ ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-  open Powers0-Symplectic (₁₊ n)
-  open Commuting-Symplectic (n)
-  open Sym0-Rewriting (₁₊ n)
-
-
-lemma-CZH↓CZCZ : let open PB ((₂₊ n) QRel,_===_) in
-  CZ • H • CZ • CZ ≈ S ↑ • S  • H  ^ 3 • CZ • S  • H  • S 
-lemma-CZH↓CZCZ {n@(₀)} = begin
-  CZ • H  • CZ • CZ ≈⟨ sym (trans assoc (cong refl assoc)) ⟩
-  (CZ • H  • CZ) • CZ ≈⟨ cong (axiom selinger-c11) refl ⟩
-  (S  ^ 2 • H  • S  ^ 2 • CZ • H  • S  ^ 2 • S⁻¹ ↑) • CZ ≈⟨ general-comm auto ⟩
-  (S  ^ 2 • H  • S  ^ 2) • (CZ • H • CZ) • S  ^ 2 • S⁻¹ ↑ ≈⟨ (cright (cleft axiom selinger-c11)) ⟩
-  (S  ^ 2 • H  • S  ^ 2) • (S  ^ 2 • H • S  ^ 2 • CZ • H  • S  ^ 2 • S⁻¹ ↑) • S  ^ 2 • S⁻¹ ↑ ≈⟨ rewrite-sym0 100 auto ⟩
-  (S  ^ 2 • H  • S  ^ 2) • (S  ^ 2 • H  • S  ^ 2 • CZ • H  • S  • S ↑ )  ≈⟨ rewrite-sym0 100 auto ⟩
-  (S  ^ 2 • H  • S  • H  • S  ^ 2 • CZ • H  • S  • S ↑ )  ≈⟨ general-comm auto ⟩
-  S  • (S  • H  • S  • H  • S ) • S  • CZ • H  • S  • S ↑  ≈⟨ (cright cleft (lemma-SHSHS)) ⟩
-  S  • (H  ^ 3) • S  • CZ • H  • S  • S ↑  ≈⟨ general-comm auto ⟩
-  S ↑ • S  • H  ^ 3 • CZ • S  • H  • S  ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-  open Powers0-Symplectic (₁₊ n)
-  open Commuting-Symplectic (n)
-  open Sym0-Rewriting (₁₊ n)
-lemma-CZH↓CZCZ {n@(₁₊ _)} = begin
-  CZ • H  • CZ • CZ ≈⟨ sym (trans assoc (cong refl assoc)) ⟩
-  (CZ • H  • CZ) • CZ ≈⟨ cong (axiom selinger-c11) refl ⟩
-  (S  ^ 2 • H  • S  ^ 2 • CZ • H  • S  ^ 2 • S⁻¹ ↑) • CZ ≈⟨ general-comm auto ⟩
-  (S  ^ 2 • H  • S  ^ 2) • (CZ • H • CZ) • S  ^ 2 • S⁻¹ ↑ ≈⟨ (cright (cleft axiom selinger-c11)) ⟩
-  (S  ^ 2 • H  • S  ^ 2) • (S  ^ 2 • H • S  ^ 2 • CZ • H  • S  ^ 2 • S⁻¹ ↑) • S  ^ 2 • S⁻¹ ↑ ≈⟨ rewrite-sym0 100 auto ⟩
-  (S  ^ 2 • H  • S  ^ 2) • (S  ^ 2 • H  • S  ^ 2 • CZ • H  • S  • S ↑ )  ≈⟨ rewrite-sym0 100 auto ⟩
-  (S  ^ 2 • H  • S  • H  • S  ^ 2 • CZ • H  • S  • S ↑ )  ≈⟨ general-comm auto ⟩
-  S  • (S  • H  • S  • H  • S ) • S  • CZ • H  • S  • S ↑  ≈⟨ (cright cleft (lemma-SHSHS)) ⟩
-  S  • (H  ^ 3) • S  • CZ • H  • S  • S ↑  ≈⟨ general-comm auto ⟩
-  S ↑ • S  • H  ^ 3 • CZ • S  • H  • S  ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-  open Powers0-Symplectic (₁₊ n)
-  open Commuting-Symplectic (n)
-  open Sym0-Rewriting (₁₊ n)
-
--}
-
-
-
-{-
-lemma-SSHSSH : let open PB ((₁₊ n) QRel,_===_) in
-
-  S ^ 2 • H • S ^ 2 • H ≈ H • S
-
-lemma-SSHSSH {n} = begin
-  S ^ 2 • H • S ^ 2 • H ≈⟨ (cright lemma-HSSH) ⟩
-  S ^ 2 • S • H • S ≈⟨ general-powers0 100 auto ⟩
-  H • S ∎
-  where
-  open PB ((₁₊ n) QRel,_===_)
-  open PP ((₁₊ n) QRel,_===_)
-  open SR word-setoid
-  open Powers0-Symplectic n
-
-lemma-SHS : let open PB ((₁₊ n) QRel,_===_) in
-
-  S • H • S ≈ H ^ 3 • S ^ 2 • H ^ 3
-
-lemma-SHS {n} = begin
-  S • H • S ≈⟨ general-powers0 100 auto ⟩
-  (S • H • S • H) • H ^ 3 ≈⟨ (cleft lemma-SHSH') ⟩
-  (H ^ 3 • S ^ 2) • H ^ 3 ≈⟨ assoc ⟩
-  H ^ 3 • S ^ 2 • H ^ 3 ∎
-  where
-  open PB ((₁₊ n) QRel,_===_)
-  open PP ((₁₊ n) QRel,_===_)
-  open SR word-setoid
-  open Powers0-Symplectic n
-
-
-lemma-HSHSH : let open PB ((₁₊ n) QRel,_===_) in
-
-  H • S • H • S • H ≈ S ^ 2
-
-lemma-HSHSH {n} = begin
-  H • S • H • S • H ≈⟨ (cright lemma-SHSH') ⟩
-  H • H ^ 3 • S ^ 2 ≈⟨ general-powers0 100 auto ⟩
-  S ^ 2 ∎
-  where
-  open PB ((₁₊ n) QRel,_===_)
-  open PP ((₁₊ n) QRel,_===_)
-  open SR word-setoid
-  open Powers0-Symplectic n
-
-lemma-HSHS : let open PB ((₁₊ n) QRel,_===_) in
-
-  H • S • H • S ≈ (S • S) • H ^ 3
-
-lemma-HSHS {n} = begin
-  H • S • H • S ≈⟨ by-assoc auto ⟩
-  (H • S • H) • S ≈⟨ (cleft lemma-HSH) ⟩
-  ((S • S) • H ^ 3 • S • S) • S ≈⟨ general-powers0 100 auto ⟩
-  (S • S) • H ^ 3 ∎
-  where
-  open PB ((₁₊ n) QRel,_===_)
-  open PP ((₁₊ n) QRel,_===_)
-  open SR word-setoid
-  open Powers0-Symplectic n
--}
-
 
 
 lemma-CZH↓CZ^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k' → let k = ₁₊ k' in
@@ -755,9 +372,6 @@ lemma-CZH↓CZ^k {n} k'@(₁₊ k'') = begin
     S⁻¹ ↑ • (S⁻¹ ^ k') ↑ ≈⟨ (cright sym (refl' (lemma-^-↑ S⁻¹ k'))) ⟩
     S⁻¹ ↑ • (S⁻¹ ↑ ^ k') ≈⟨ refl ⟩
     S⁻¹ ↑ ^ k  ∎
-
-
-
 
 
 -- eqn 17 in Peter's clifford supplement.
@@ -920,8 +534,6 @@ lemma-S^kHCZH'-dual {n} k'@(₁₊ l) = let k = ₁₊ k' in begin
   open Pattern-Assoc
 
 
-
-
 lemma-comm-S-Ex'↑ : let open PB ((₂₊ n) QRel,_===_) in
   S ↑ • H ↑ • CZ • H ↑ • H • CZ • H ≈ H ↑ • CZ • H ↑ • H • CZ • H • S
 lemma-comm-S-Ex'↑ {n@0}  = begin
@@ -1023,7 +635,6 @@ lemma-comm-S-Ex'↑ {n@(₁₊ _)}  = begin
   module M1B = PB ((₁₊ n) QRel,_===_)
 
 
-
 -- eqn 16 in Peter's clifford supplement.
 lemma-eqn16↑  : let open PB ((₂₊ n) QRel,_===_) in
   S ↑ • H ↑ • CZ • H ↑ • H • CZ ≈ H ↑ • CZ • H ↑ • H • CZ • S⁻¹ • H • S⁻¹
@@ -1049,7 +660,6 @@ lemma-eqn16↑ {n} = bbc ε (H) aux00
     (H ↑ • CZ • H ↑ • H ↓ • CZ) • (S⁻¹ ↓) • (H ↓) • (S⁻¹ ↓) • H ↓ ≈⟨ by-passoc (□ ^ 5 • □ ^ 4) (□ ^ 8 • □) auto ⟩
     (H ↑ • CZ • H ↑ • (H ↓) • CZ • (S⁻¹ ↓) • (H ↓) • (S⁻¹ ↓)) • H ↓ ≈⟨ sym left-unit ⟩
     ε • (H ↑ • CZ • H ↑ • (H ↓) • CZ • (S⁻¹ ↓) • (H ↓) • (S⁻¹ ↓)) • H ↓ ∎
-
 
 
 -- eqn 18 in Peter's clifford supplement.
@@ -1175,8 +785,6 @@ lemma-comm-Ex-H-n : let open PB ((₂₊ n) QRel,_===_) in
 lemma-comm-Ex-H-n {n} = by-emb n lemma-comm-Ex-H
 
 
-
-
 lemma-comm-Ex-CZ'-n : let open PB ((₂₊ n) QRel,_===_) in
   CZ • H ↓ • H ↑ • CZ • H ↓ • H ↑ • CZ • H ↓ • H ↑ ≈ (H ↓ • H ↑ • CZ • H ↓ • H ↑ • CZ • H ↓ • H ↑) • CZ
 lemma-comm-Ex-CZ'-n {n} = by-emb n lemma-comm-Ex-CZ'
@@ -1229,8 +837,6 @@ lemma-CZCZ^aHCZ^k-n {n} a k nzk = by-emb' n (lemma-CZCZ^aHCZ^k a k nzk) aux aux2
   aux = cong (lemma-f* n CZ j) (cright lemma-f* n CZ (toℕ k) )
   aux2 : f* n ((S^ -k⁻¹) ^ a • (CZ • H • CZ^ k) • (H ^ 3 • S^ k⁻¹ ^ a • H) • (S^ -k ^ a) ↑) ≈ (S^ -k⁻¹) ^ a • (CZ • H • CZ^ k) • (H ^ 3 • S^ k⁻¹ ^ a • H) • (S^ -k ^ a) ↑
   aux2 = cong (lemma-f*^^ n S (toℕ (-k⁻¹)) a) (cong (cright cright lemma-f* n CZ (toℕ k)) (cong (cright cleft lemma-f*^^ n S (toℕ k⁻¹) a) (lemma-f*S^^↑ n (toℕ -k) a)))
-
-
 
 
 lemma-CZCZ^aHCZ^k'-n : let open PB ((₂₊ n) QRel,_===_) in ∀ a k → (nzk : k ≢ ₀) → 
@@ -1303,7 +909,6 @@ abstract
     aux2 = cong (lemma-f*^^ n S (toℕ k⁻¹) j) (cright cong (lemma-f* n CZ (toℕ -k)) (cright cong (lemma-f*^^ n S (toℕ -k⁻¹) j) (cright lemma-f*S^^↑ n (toℕ k) j)))
 
 
-
 lemma-Ex-S↑-n : let open PB ((₂₊ n) QRel,_===_) in 
 
   Ex • S ↑ ≈ S • Ex
@@ -1316,6 +921,3 @@ lemma-Ex-H↑-n : let open PB ((₂₊ n) QRel,_===_) in
   Ex • H ↑ ≈ H • Ex
 
 lemma-Ex-H↑-n {n} = by-emb n lemma-Ex-H↑
-
-
-

@@ -4,7 +4,6 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
 
-
 open import Data.Product using (_,_ ; proj₁)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 import Data.Nat as Nat
@@ -20,7 +19,6 @@ open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
 
-
 open import Data.Nat.Primality
 open import Data.Nat.DivMod
 open import Data.Fin.Properties
@@ -32,9 +30,6 @@ private
   variable
     n : ℕ
     
-
-
-
 
 open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
@@ -234,93 +229,3 @@ aux-CZ^-k {n} k = begin
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
   open Lemmas-2Q n
-
-
-
-
-
-
-
-{-
-
-lemma-coset-update-I-Ex-| : let open PB (3 QRel,_===_) in
-  ∀ a' b nf1 m →
-  let
-  a = ₁₊ a'
-  lm = case-I (a , b) (case-Ex-| nf1 (m , ε))
-  k = toℕ (m .proj₁ * a)
-  in
-  [ lm ]ᵐˡ' • CZ ≈ (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ (a , b) ]ᵈ • Ex ↑ • ((CZ ^ ₁₊ k) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε
-lemma-coset-update-I-Ex-| a' b nf1 m = claim
-  where
-  a = ₁₊ a'
-  nz : a ≢ ₀
-  nz = λ ()
-  d = (a , b)
-  mc = (m , ε)
-  c2 = (case-Ex-| nf1 (m , ε))
-  a⁻¹ = ((a , nz) ⁻¹) .proj₁
-  -b/a = - b * a⁻¹
-  lm : Cosets3
-  lm = case-I (a , b) (case-Ex-| nf1 (m , ε))
-  
-  m' = m .proj₁
-  k = toℕ (m' * a)
-  
-
-  open PB (3 QRel,_===_)  
-  open PP (3 QRel,_===_)
-  module B1 = PB ((2) QRel,_===_)
-  module P1 = PP ((2) QRel,_===_)
-  open SR word-setoid
-  open Pattern-Assoc
-  open Lemmas-2Q 0
-  open Lemmas0 1
-  open Sym0-Rewriting 2
-  
-  
-  claim : [ lm ]ᵐˡ' • CZ ≈ (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ (a , b) ]ᵈ • Ex ↑ • ((CZ ^ ₁₊ k) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε
-  claim = begin
-    [ lm ]ᵐˡ' • CZ ≈⟨ refl ⟩
-    ([ d ]ᵈ • ((Ex • CZ • ⟦ nf1 ⟧₁ ↑ • ⟦ mc ⟧ₘ₊) ↑)) • CZ ≈⟨ (cleft (cright cright cright cright right-unit)) ⟩
-    ([ d ]ᵈ • ((Ex • CZ • ⟦ nf1 ⟧₁ ↑ • ⟦ m ⟧ₘ) ↑)) • CZ ≈⟨ by-passoc (□ ^ 5 • □) (□ ^ 4 • □ ^ 2) auto ⟩
-    ([ d ]ᵈ • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑) • ⟦ m ⟧ₘ ↑ • CZ ≈⟨ (cright axiom (semi-M↑CZ m)) ⟩
-    ([ d ]ᵈ • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑) • CZ^ m' • ⟦ m ⟧ₘ ↑ ≈⟨ by-passoc (□ ^ 4 • □ ^ 2) (□ ^ 3 • □ ^ 2 • □) auto ⟩
-    ([ d ]ᵈ • Ex ↑ • CZ ↑) • (⟦ nf1 ⟧₁ ↑ ↑ • CZ^ m') • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cleft comm⇒pow-comm 1 (toℕ m') (sym (lemma-comm-CZ-w↑↑ ⟦ nf1 ⟧₁))) ⟩
-    ([ d ]ᵈ • Ex ↑ • CZ ↑) • (CZ^ m' • ⟦ nf1 ⟧₁ ↑ ↑) • ⟦ m ⟧ₘ ↑ ≈⟨ by-passoc (□ ^ 3 • □ ^ 2 • □) (□ ^ 2 • □ ^ 2 • □ ^ 2) auto ⟩
-    ([ d ]ᵈ • Ex ↑) • (CZ ↑ • CZ^ m') • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cleft comm⇒pow-comm 1 (toℕ m') (axiom selinger-c12)) ⟩
-    ([ d ]ᵈ • Ex ↑) • (CZ^ m' • CZ ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ by-passoc (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) auto ⟩
-    (([ d ]ᵈ • Ex ↑) • CZ^ m') • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cleft (cleft cleft aux-dd d)) ⟩
-    (([ d ]ᵈ' • Ex ↑) • CZ^ m') • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ by-passoc (((□ ^ 3 • □) • □) • □ ^ 3) (□ ^ 2 • (□ ^ 2 • □) • □ ^ 3) auto ⟩
-    (CZ^ (- ₁) • ⟦ (a , λ ()) ⁻¹ , HS^ -b/a ⟧ₘ₊ ↑) • ((Ex • Ex ↑) • CZ^ m') • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cleft lemma-Induction lemma-[Ex-Ex↑]-CZ (toℕ m')) ⟩
-    (CZ^ (- ₁) • ⟦ (a , λ ()) ⁻¹ , HS^ -b/a ⟧ₘ₊ ↑) • (CZ ↑ ^ toℕ m' • (Ex • Ex ↑)) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cleft cright refl) ⟩
-    (CZ^ (- ₁) • (⟦ (a , nz) ⁻¹ ⟧ₘ ↑ • H ↑ • S^ -b/a ↑)) • (CZ ↑ ^ toℕ m' • (Ex • Ex ↑)) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ by-passoc (□ ^ 2 • □ ^ 2 • □) (□ • □ ^  2 • □ • □) auto ⟩
-    CZ^ (- ₁) • ((⟦ (a , nz) ⁻¹ ⟧ₘ ↑ • H ↑ • S^ -b/a ↑) • CZ ↑ ^ toℕ m') • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cleft cright refl' (lemma-^-↑ CZ (toℕ m'))) ⟩
-    CZ^ (- ₁) • ((⟦ (a , nz) ⁻¹ ⟧ₘ ↑ • H ↑ • S^ -b/a ↑) • CZ^ m' ↑) • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cleft by-passoc (□ ^ 3 • □) (□ ^ 2 • □ ^ 2) auto) ⟩
-    CZ^ (- ₁) • ((⟦ (a , nz) ⁻¹ ⟧ₘ ↑ • H ↑) • S^ -b/a ↑ • CZ^ m' ↑) • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cleft (cright sym (lemma-cong↑ _ _  (P1.comm⇒pow-comm (toℕ m') (toℕ -b/a)  (B1.axiom comm-CZ-S↓))))) ⟩
-    CZ^ (- ₁) • ((⟦ (a , nz) ⁻¹ ⟧ₘ ↑ • H ↑) • CZ^ m' ↑ • S^ -b/a ↑) • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cleft cleft  sym (lemma-cong↑ _ _ (semi-HM (a , nz)))) ⟩
-    CZ^ (- ₁) • ((H ↑ • ⟦ (a , nz) ⟧ₘ ↑) • CZ^ m' ↑ • S^ -b/a ↑) • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ by-passoc (□ • (□ ^ 2 • □ ^ 2) • □) (□ ^ 2 • □ ^ 2 • □ ^ 2) auto ⟩
-    (CZ^ (- ₁) • H ↑) • (⟦ (a , nz) ⟧ₘ ↑ • CZ^ m' ↑) • S^ -b/a ↑ • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ cong (sym left-unit) (cleft lemma-cong↑ _ _ ( lemma-M↓CZ^k a m' nz)) ⟩
-    (ε • CZ^ (- ₁) • H ↑) • (CZ^ (m' * a) ↑ • ⟦ (a , nz) ⟧ₘ ↑) • S^ -b/a ↑ • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cleft trans (cleft sym (axiom (cong↑ order-H))) assoc) ⟩
-    (H ↑ • H ↑ ^ 3 • CZ^ (- ₁) • H ↑) • (CZ^ (m' * a) ↑ • ⟦ (a , nz) ⟧ₘ ↑) • S^ -b/a ↑ • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ by-passoc (□ ^ 2 • □ ^ 2 • □) (□ • □ ^ 2 • □ ^ 2) auto ⟩
-    H ↑ • (XC⁻¹ • CZ^ (m' * a) ↑) • ⟦ (a , nz) ⟧ₘ ↑ • S^ -b/a ↑ • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cleft cright sym (refl' (lemma-^-↑ CZ k))) ⟩
-    H ↑ • (XC⁻¹ • CZ ↑ ^ k) • ⟦ (a , nz) ⟧ₘ ↑ • S^ -b/a ↑ • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cleft lemma-XC⁻¹-CZ^k 0 k) ⟩
-    H ↑ • (CZ ↑ ^ k • CZ02k k • XC⁻¹) • ⟦ (a , nz) ⟧ₘ ↑ • S^ -b/a ↑ • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ by-passoc (□ • □ ^ 5 • □ ^ 2) (□ ^ 3 • □ ^ 2 • □ ^ 2 • □) auto ⟩
-    (H ↑ • CZ ↑ ^ k • CZ02k k) • (H ↑ ^ 3 • CZ^ (- ₁)) • (H ↑ • ⟦ (a , nz) ⟧ₘ ↑) • S^ -b/a ↑ • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cright cleft lemma-cong↑ _ _ (semi-HM ((a , nz)))) ⟩
-    (H ↑ • CZ ↑ ^ k • CZ02k k) • (H ↑ ^ 3 • CZ^ (- ₁)) • (⟦ (a , nz) ⁻¹ ⟧ₘ ↑ • H ↑) • S^ -b/a ↑ • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cright by-passoc (□ ^ 2 • □ ^ 2) (□ ^ 3 • □) auto) ⟩
-    (H ↑ • CZ ↑ ^ k • CZ02k k) • (H ↑ ^ 3 • CZ^ (- ₁)) • (⟦ (a , nz) ⁻¹ ⟧ₘ ↑ • H ↑ • S^ -b/a ↑) • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ by-passoc (□ ^ 3 • □ ^ 2 • □) (□ ^ 2 • □ ^ 2 • □ ^ 2) auto ⟩
-    (H ↑ • CZ ↑ ^ k) • (CZ02k k • H ↑ ^ 3) • CZ^ (- ₁) • (⟦ (a , nz) ⁻¹ ⟧ₘ ↑ • H ↑ • S^ -b/a ↑) • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cleft comm⇒pow-comm 1 3 (lemma-comm-CZ02-H↑ 0 k)) ⟩
-    (H ↑ • CZ ↑ ^ k) • (H ↑ ^ 3 • CZ02k k) • CZ^ (- ₁) • (⟦ (a , nz) ⁻¹ ⟧ₘ ↑ • H ↑ • S^ -b/a ↑) • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cright by-passoc (□ ^ 3) (□ ^ 2 • □) auto) ⟩
-    (H ↑ • CZ ↑ ^ k) • (H ↑ ^ 3 • CZ02k k) • (CZ^ (- ₁) • ⟦ (a , nz) ⁻¹ ⟧ₘ ↑ • H ↑ • S^ -b/a ↑) • (Ex • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cright by-passoc (□ ^ 4 • □ ^ 2 • □) ((□ • □ ^ 3 • □) • □ ^ 2) auto) ⟩
-    (H ↑ • CZ ↑ ^ k) • (H ↑ ^ 3 • CZ02k k) • (CZ^ (- ₁) • (⟦ (a , nz) ⁻¹ ⟧ₘ ↑ • H ↑ • S^ -b/a ↑) • Ex) • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cright cleft sym ( ?)) ⟩
-    (H ↑ • CZ ↑ ^ k) • (H ↑ ^ 3 • CZ02k k) • [ d ]ᵈ • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ by-passoc (□ ^ 2 • □ ^ 2 • □ ^ 2) (□ ^ 3 • □ ^ 2 • □) auto ⟩
-    (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • (CZ02k k • [ d ]ᵈ) • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cleft lemma-CZ02-d 0 d k) ⟩
-    (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • ([ d ]ᵈ • CZ ↑ ^ k) • Ex ↑ • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright by-passoc (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto) ⟩
-    (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • (CZ ↑ ^ k • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cright cleft cleft refl' (lemma-^-↑ CZ k)) ⟩
-    (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • ((CZ ^ k) ↑ • Ex ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cright cleft lemma-cong↑ _ _ (P1.comm⇒pow-comm k 1 lemma-comm-Ex-CZ-n)) ⟩
-    (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • (Ex ↑ • (CZ ^ k) ↑) • CZ ↑ • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cright  by-passoc (□ ^ 2 • □ ^ 2) (□  • □ ^ 2 • □) auto) ⟩
-    (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • ((CZ ^ k) ↑ • CZ ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cright cright cleft lemma-cong↑ _ _ (P1.comm⇒pow-comm k 1 B1.refl)) ⟩
-    (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • (CZ ↑ • (CZ ^ k) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ sym (cright cright cright cleft lemma-cong↑ _ _ (P1.^-suc CZ k)) ⟩
-    (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • ((CZ ^ ₁₊ k) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ ≈⟨ (cright cright cright cright cright sym right-unit) ⟩
-    (H ↑ • CZ ↑ ^ k • H ↑ ^ 3) • [ d ]ᵈ • Ex ↑ • ((CZ ^ ₁₊ k) ↑) • ⟦ nf1 ⟧₁ ↑ ↑ • ⟦ m ⟧ₘ ↑ • ε ∎
--}

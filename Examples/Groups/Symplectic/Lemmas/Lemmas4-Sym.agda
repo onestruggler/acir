@@ -5,7 +5,6 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
 
-
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 --open import Data.List using () hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
@@ -20,10 +19,8 @@ open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
 
-
 open import Data.Fin using (toℕ)
 open import Data.Nat.Primality
-
 
 
 module Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
@@ -32,9 +29,6 @@ private
   variable
     n : ℕ
     
-
-
-
 
 open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
@@ -64,7 +58,6 @@ open Lemmas0b
 open Lemmas0c
 open Lemmas-Sym
 open Duality
-
 
 
 aux-comm-shs-CZ↑ : let open PB ((₃₊ n) QRel,_===_) in
@@ -213,9 +206,6 @@ comm-abox-w↑ {₁₊ n} ((a@(₁₊ _) , b) , neqI) w =
   -b/a = - b * a⁻¹
 
 
-
-
-
 comm-hs-w↑ : let open PB ((₁₊ n) QRel,_===_) in
   ∀ k (w : Word (Gen n)) → (H • S^ k) • w ↑ ≈ w ↑ • H • S^ k
 comm-hs-w↑ {₀} k [ gate₀ () ]ʷ
@@ -299,8 +289,6 @@ lemma-comm-CX^k-w↑↑ {n} k w = begin
   open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime hiding (lemma-comm-Ex-w↑↑)
 
 
-
-
 comm-dbox-w↑↑' : let open PB ((₂₊ n) QRel,_===_) in
   ∀ a b (w : Word (Gen n)) → [ a , b ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ a , b ]ᵈ
 comm-dbox-w↑↑' {₀} a b [ gate₀ () ]ʷ
@@ -353,7 +341,6 @@ comm-dbox-w↑↑' {₁₊ n} a@(₁₊ _) b w = let d = (a , b) in  begin
 comm-dbox-w↑↑ : let open PB ((₂₊ n) QRel,_===_) in
   ∀ b (w : Word (Gen n)) → [ b ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ b ]ᵈ
 comm-dbox-w↑↑ {n} d@(a , b) w = comm-dbox-w↑↑' a b w
-
 
 
 comm-bbox-w↑↑' : let open PB ((₂₊ n) QRel,_===_) in
@@ -414,76 +401,6 @@ comm-bbox-w↑↑ : let open PB ((₂₊ n) QRel,_===_) in
   ∀ b (w : Word (Gen n)) → [ b ]ᵇ • w ↑ ↑ ≈ w ↑ ↑ • [ b ]ᵇ
 comm-bbox-w↑↑ {n} d@(a , b) w = comm-bbox-w↑↑' a b w
 
-
-{-
-
-comm-dbox-w↑↑' : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ a d (w : Word (Gen n)) → [ a , d ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ a , d ]ᵈ
-comm-dbox-w↑↑' {0} a d ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
-comm-dbox-w↑↑' {0} a d' (w • v) = let d = (a , d') in begin
-  [ d ]ᵈ • w ↑ ↑ • v ↑ ↑ ≈⟨ sym assoc ⟩
-  ([ d ]ᵈ • w ↑ ↑) • v ↑ ↑ ≈⟨ (cleft comm-dbox-w↑↑' a d' w) ⟩
-  (w ↑ ↑ • [ d ]ᵈ) • v ↑ ↑ ≈⟨ assoc ⟩
-  w ↑ ↑ • [ d ]ᵈ • v ↑ ↑ ≈⟨ (cright comm-dbox-w↑↑' a d' v) ⟩
-  w ↑ ↑ • v ↑ ↑ • [ d ]ᵈ ≈⟨ sym assoc ⟩
-  (w ↑ ↑ • v ↑ ↑) • [ d ]ᵈ ∎
-  where
-  open PB ((2) QRel,_===_)  
-  open PP ((2) QRel,_===_)
-  open SR word-setoid
-comm-dbox-w↑↑' {₁₊ n} a@₀ d'@₀ w = let d = (₀ , d') in  begin
-  [ ₀ , d' ]ᵈ • w ↑ ↑ ≈⟨ refl ⟩
-  (Ex ) • w ↑ ↑ ≈⟨  lemma-comm-Ex-w↑↑ w ⟩
-  w ↑ ↑ • [ d ]ᵈ ∎
-  where
-  open PB ((₃₊ n) QRel,_===_)  
-  open PP ((₃₊ n) QRel,_===_)
-  open SR word-setoid
-  open Lemmas3
-comm-dbox-w↑↑' {₁₊ n} a@₀ d'@(₁₊ _) w = let d = (₀ , d') in  begin
-  [ ₀ , d' ]ᵈ • w ↑ ↑ ≈⟨ refl ⟩
-  (Ex • CZ^ (- ₁) • [ (₀ , d') , (λ ()) ]ᵃ) • w ↑ ↑ ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 4) auto ⟩
-  Ex • CZ^ (- ₁) • [ (₀ , d') , (λ ()) ]ᵃ • w ↑ ↑ ≈⟨ (cright cright comm-abox-w↑ ((₀ , d') , (λ ())) (w ↑)) ⟩
-  Ex • CZ^ (- ₁) • w ↑ ↑ • [ (₀ , d') , (λ ()) ]ᵃ ≈⟨ (cright sym assoc) ⟩
-  Ex • (CZ^ (- ₁) • w ↑ ↑) • [ (₀ , d') , (λ ()) ]ᵃ ≈⟨ (((cright cleft  comm⇒pow-comm (toℕ m1) 1 ( lemma-comm-CZ-w↑ w)))) ⟩
-  Ex • (w ↑ ↑ • CZ^ (- ₁)) • [ (₀ , d') , (λ ()) ]ᵃ ≈⟨ by-passoc (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) auto ⟩
-  (Ex • w ↑ ↑) • CZ^ (- ₁) • [ (₀ , d') , (λ ()) ]ᵃ ≈⟨ ( cleft lemma-comm-Ex-w↑↑ w) ⟩
-  (w ↑ ↑ • Ex) • CZ^ (- ₁) • [ (₀ , d') , (λ ()) ]ᵃ ≈⟨  assoc ⟩
-  w ↑ ↑ • [ d ]ᵈ ∎
-  where
-  open PB ((₃₊ n) QRel,_===_)  
-  open PP ((₃₊ n) QRel,_===_)
-  open SR word-setoid
-  open Lemmas3
-  open Pattern-Assoc
-  m1 : ℤ ₚ
-  m1 = - ₁
-
-comm-dbox-w↑↑' {₁₊ n} a@(₁₊ _) d' w = let d = (a , d') in  begin
-  [ a , d' ]ᵈ • w ↑ ↑ ≈⟨ refl ⟩
-  (Ex • CZ^ (- ₁) • [ (a , d') , (λ ()) ]ᵃ) • w ↑ ↑ ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 4) auto ⟩
-  Ex • CZ^ (- ₁) • [ (a , d') , (λ ()) ]ᵃ • w ↑ ↑ ≈⟨ (cright cright comm-abox-w↑ ((a , d') , (λ ())) (w ↑)) ⟩
-  Ex • CZ^ (- ₁) • w ↑ ↑ • [ (a , d') , (λ ()) ]ᵃ ≈⟨ (cright sym assoc) ⟩
-  Ex • (CZ^ (- ₁) • w ↑ ↑) • [ (a , d') , (λ ()) ]ᵃ ≈⟨ (((cright cleft  comm⇒pow-comm (toℕ m1) 1 ( lemma-comm-CZ-w↑ w)))) ⟩
-  Ex • (w ↑ ↑ • CZ^ (- ₁)) • [ (a , d') , (λ ()) ]ᵃ ≈⟨ by-passoc (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) auto ⟩
-  (Ex • w ↑ ↑) • CZ^ (- ₁) • [ (a , d') , (λ ()) ]ᵃ ≈⟨ ( cleft lemma-comm-Ex-w↑↑ w) ⟩
-  (w ↑ ↑ • Ex) • CZ^ (- ₁) • [ (a , d') , (λ ()) ]ᵃ ≈⟨  assoc ⟩
-  w ↑ ↑ • [ d ]ᵈ ∎
-  where
-  open PB ((₃₊ n) QRel,_===_)  
-  open PP ((₃₊ n) QRel,_===_)
-  open SR word-setoid
-  open Lemmas3
-  open Pattern-Assoc
-  m1 : ℤ ₚ
-  m1 = - ₁
-
-
-comm-dbox-w↑↑ : let open PB ((₂₊ n) QRel,_===_) in
-  ∀ d (w : Word (Gen n)) → [ d ]ᵈ • w ↑ ↑ ≈ w ↑ ↑ • [ d ]ᵈ
-comm-dbox-w↑↑ {n} d@(a , b) w = comm-dbox-w↑↑' a b w
-
--}
 
 -- XM ₁ and ZM ₁ are the same word, since ₁ ⁻¹ is ₁; so XM ₁ collapses
 -- for the same reason ZM ₁ does.
@@ -564,4 +481,3 @@ lemma-Ex-M-n {n} m@x' = by-emb' (lemma-Ex-M m) aux aux2
   aux = cong refl (lemma-f*-M m)
   aux2 : f* (ZM m ↑ • Ex) ≈ ZM m ↑ • Ex
   aux2 = cong (lemma-f*-M↑ m) refl
-
