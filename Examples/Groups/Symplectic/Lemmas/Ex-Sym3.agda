@@ -6,7 +6,6 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
 
-
 open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 import Data.Nat as Nat
@@ -21,16 +20,11 @@ open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
 
-
 import Data.Nat.Properties as NP
 open import Data.Nat.Primality
 
 
-
 module Examples.Groups.Symplectic.Lemmas.Ex-Sym3 (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
-
-
-
 
 
 open import ForStdlib.Data.Fin.Mod
@@ -70,52 +64,6 @@ module Lemmas0c where
   open Lemmas0 1
 
 
-
-
-
-  lemma-CZCZ^-aH³CZ^k'0 : ∀ a k -> (nzk : k ≢ ₀) -> 
-    let
-      k' = toℕ k
-      k* : ℤ* ₚ
-      k* = (k , nzk)
-      -k = - k
-      k⁻¹ = ((k* ⁻¹) .proj₁)
-      -k⁻¹ = - k⁻¹
-    in
-    
-    CZ^ a • H ^ 3 • CZ^ k ≈ S^ (k⁻¹ * a) • H • CZ^ -k • H • S^ (-k⁻¹ * a) • H • S^ (k * a) ↑
-
-  lemma-CZCZ^-aH³CZ^k'0 a@₀ k nzk = begin
-    CZ^ a • H ^ 3 • CZ^ k ≈⟨ left-unit ⟩
-    H ^ 3 • CZ^ k ≈⟨ assoc ⟩
-    H • HH • CZ^ k ≈⟨ (cright lemma-semi-HH↓-CZ^k' k) ⟩
-    H • CZ^ -k • HH ≈⟨ (cright cright by-assoc auto) ⟩
-    H • CZ^ -k • H • S^ (₀) • H • S^ (₀) ↑ ≈⟨ sym left-unit ⟩
-    S^ (₀) • H • CZ^ -k • H • S^ (₀) • H • S^ (₀) ↑ ≈⟨ sym (cong (refl' (Eq.cong S^ (*-zeroʳ k⁻¹))) (cright (cright (cright cong (refl' (Eq.cong S^ (*-zeroʳ -k⁻¹))) (cright refl' (Eq.cong (\ xx -> S^ xx ↑) (*-zeroʳ k))))))) ⟩
-    S^ (k⁻¹ * a) • H • CZ^ -k • H • S^ (-k⁻¹ * a) • H • S^ (k * a) ↑ ∎
-    where
-    j = toℕ a
-    k' = toℕ k
-    k* : ℤ* ₚ
-    k* = (k , nzk)
-    -k = - k
-    k⁻¹ = ((k* ⁻¹) .proj₁)
-    -k⁻¹ = - k⁻¹
-
-
-  lemma-CZCZ^-aH³CZ^k'0 a@(₁₊ a') k nzk = begin
-    CZ^ a • H ^ 3 • CZ^ k ≈⟨ lemma-CZCZ^aH³CZ^k' (toℕ a') k nzk ⟩
-    S^ k⁻¹ ^ j • H • CZ^ -k • H • S^ -k⁻¹ ^ j • H • (S^ k ^ j) ↑ ≈⟨ cong (aux-S^-^ a k⁻¹ λ ()) (cright (cright (cright cong (aux-S^-^ a -k⁻¹ λ ()) (cright lemma-cong↑ _ _ (aux-S^-^ a k λ ()))))) ⟩
-    S^ (k⁻¹ * a) • H • CZ^ -k • H • S^ (-k⁻¹ * a) • H • S^ (k * a) ↑ ∎
-    where
-    j = toℕ a
-    k' = toℕ k
-    k* : ℤ* ₚ
-    k* = (k , nzk)
-    -k = - k
-    k⁻¹ = ((k* ⁻¹) .proj₁)
-    -k⁻¹ = - k⁻¹
-    
   abstract
 
 
@@ -141,41 +89,6 @@ module Lemmas0c where
       CZ^ a • H • CZ^ k ≈⟨ lemma-CZCZ^aHCZ^k' (toℕ a') k nzk ⟩
       S^ -k⁻¹ ^ j • H • CZ^ k • H ^ 3 • S^ k⁻¹ ^ j • H • (S^ -k ^ j) ↑ ≈⟨ cong (aux-S^-^ a -k⁻¹ nza) (cright (cright (cright cong (aux-S^-^ a k⁻¹ nza) (cright lemma-cong↑ _ _ (aux-S^-^ a -k nza))))) ⟩
       S^ (-k⁻¹ * a) • H • CZ^ k • H ^ 3 • S^ (k⁻¹ * a) • H • S^ (-k * a) ↑ ∎
-      where
-      j : ℕ
-      j = toℕ a
-      -k : ℤ ₚ
-      -k = - k
-      k⁻¹ : ℤ ₚ
-      k⁻¹ = ((k* ⁻¹) .proj₁)
-      -k⁻¹ : ℤ ₚ
-      -k⁻¹ = - k⁻¹
-
-
-
-
-    lemma-CZ^-aHCZ^k-CX : ∀ (a* k* : ℤ* ₚ) ->
-      let
-        k : ℤ ₚ
-        k = k* .proj₁
-        a : ℤ ₚ
-        a = a* .proj₁
-        -k : ℤ ₚ
-        -k = - k
-        k⁻¹ : ℤ ₚ
-        k⁻¹ = ((k* ⁻¹) .proj₁)
-        -k⁻¹ : ℤ ₚ
-        -k⁻¹ = - k⁻¹
-      in
-
-      CZ^ a • H • CZ^ k ≈ S^ (-k⁻¹ * a) • H ^ 3 • CZ^ -k • H • S^ (k⁻¹ * a) • H • S^ (-k * a) ↑
-
-    lemma-CZ^-aHCZ^k-CX a*@(a , nza) k*@(k , nzk) = begin
-      CZ^ a • H • CZ^ k ≈⟨ lemma-CZ^-aHCZ^k' a* k* ⟩
-      S^ (-k⁻¹ * a) • H • CZ^ k • H ^ 3 • S^ (k⁻¹ * a) • H • S^ (-k * a) ↑ ≈⟨ (cright cright by-passoc (□ • □ ^ 3 • □) (□ ^ 3 • □ ^ 2) auto) ⟩
-      S^ (-k⁻¹ * a) • H • (CZ^ k • H ^ 2) • H • S^ (k⁻¹ * a) • H • S^ (-k * a) ↑ ≈⟨ (cright cright cleft sym (lemma-semi-HH↓-CZ^k'' k)) ⟩
-      S^ (-k⁻¹ * a) • H • (H ^ 2 • CZ^ -k) • H • S^ (k⁻¹ * a) • H • S^ (-k * a) ↑ ≈⟨ by-passoc (□ • □ • (□ ^ 2 • □) • □ ) (□ • □ ^ 3 • □ ^ 2) auto ⟩
-      S^ (-k⁻¹ * a) • H ^ 3 • CZ^ -k • H • S^ (k⁻¹ * a) • H • S^ (-k * a) ↑ ∎
       where
       j : ℕ
       j = toℕ a
@@ -226,8 +139,6 @@ module Lemmas0c where
       aux = Eq.trans (inv-distrib (k* ⁻¹) a*) (Eq.cong (_* a⁻¹) (inv-involutive k*))
       aux2 : - (((k* ⁻¹ *' a*) ⁻¹) .proj₁) ≡ -k * a⁻¹
       aux2 = Eq.trans (Eq.cong -_ (aux )) (-‿distribˡ-* k a⁻¹ )
-
-
 
 
     lemma-CZ^-aHCZ^k-selinger' : ∀ (a* k* : ℤ* ₚ) ->
@@ -300,8 +211,6 @@ module Lemmas0c where
       aux7 = Eq.trans (*-assoc -k a⁻¹ (a * a)) (Eq.trans (Eq.cong (-k *_) (Eq.sym (*-assoc a⁻¹ a a))) (Eq.trans (Eq.cong (\ xx -> -k * (xx * a)) (lemma-⁻¹ˡ a {{nztoℕ {y = a} {neq0 = (a*) .proj₂}}})) (Eq.cong (-k *_) (*-identityˡ a))))
       
 
-
-
     lemma-CXCZ^k : ∀ (k* : ℤ* ₚ) ->
       let
         k : ℤ ₚ
@@ -350,8 +259,6 @@ module Lemmas0c where
       open Sym0-Rewriting 1
       
 
-
-
     lemma-semi-CXCZ^k : ∀ (k* : ℤ* ₚ) ->
       let
         k : ℤ ₚ
@@ -397,66 +304,6 @@ module Lemmas0c where
         -k⁻¹ = - k⁻¹
       
 
-    lemma-semi-CXCZ^k-ℕ : ∀ (k : ℕ) ->
-      let
-        -k : ℕ
-        -k = (p-1) Nat.* k
-        -2k : ℕ
-        -2k = -k Nat.+ -k
-        k' : ℤ ₚ
-        k' = fromℕ< (m%n<n k p)
-      in k' ≢ ₀ ->
-
-      CX • CZ ^ k ≈ (S ^ -2k) ↑ • CZ ^ k • CX
-
-    lemma-semi-CXCZ^k-ℕ k@0 nzk = begin
-      CX • CZ ^ k ≈⟨ right-unit ⟩
-      CX ≈⟨ sym (trans left-unit left-unit) ⟩
-      ε • ε • CX ≈⟨ cong refl refl ⟩
-      (S ^ 0) ↑ • CZ ^ k • CX ≈⟨ refl' (Eq.cong (\ xx -> (S ^ xx) ↑ • CZ ^ k • CX) (Eq.sym aux2)) ⟩
-      (S ^ -2k) ↑ • CZ ^ k • CX ∎
-      where
-        module L0 = Lemmas0 0
-        module PB1 = PB (1 QRel,_===_)
-        -k : ℕ
-        -k = (p-1) Nat.* k
-        -2k : ℕ
-        -2k = -k Nat.+ -k
-        k' : ℤ ₚ
-        k' = fromℕ< (m%n<n k p)
-        -k' : ℤ ₚ
-        -k' = - k'
-        -2k' : ℤ ₚ
-        -2k' = -k' + -k'
-        aux : -k ≡ 0
-        aux = Eq.trans (NP.*-comm p-1 k) auto
-        aux2 : -2k ≡ 0
-        aux2 rewrite aux = auto
-      
-    lemma-semi-CXCZ^k-ℕ k nzk = begin
-      CX • CZ ^ k ≈⟨ (cright lemma-CZ^k-% k) ⟩
-      CX • CZ ^ (k Nat.% p) ≈⟨ (cright refl' (Eq.cong (CZ ^_) (Eq.sym (toℕ-fromℕ< (m%n<n k p))))) ⟩
-      CX • CZ ^ toℕ k' ≈⟨ refl ⟩
-      CX • CZ^ k' ≈⟨ lemma-semi-CXCZ^k ((k' , nzk)) ⟩
-      S^ -2k' ↑ • CZ^ k' • CX ≈⟨ cong (lemma-cong↑ _ _ (aux--2k-2k' k)) (cleft refl' (Eq.cong (CZ ^_) ( (toℕ-fromℕ< (m%n<n k p))))) ⟩
-      (S ^ (-2k Nat.% p)) ↑ • CZ ^ (k Nat.% p) • CX ≈⟨ sym (cong (lemma-cong↑ _ _ (L0.lemma-S^k-% -2k)) (cleft lemma-CZ^k-% k)) ⟩
-      (S ^ -2k) ↑ • CZ ^ k • CX ∎
-      where
-        module L0 = Lemmas0 0
-        module PB1 = PB (1 QRel,_===_)
-        -k : ℕ
-        -k = (p-1) Nat.* k
-        -2k : ℕ
-        -2k = -k Nat.+ -k
-        k' : ℤ ₚ
-        k' = fromℕ< (m%n<n k p)
-        -k' : ℤ ₚ
-        -k' = - k'
-        -2k' : ℤ ₚ
-        -2k' = -k' + -k'
-
-
-
     lemma-semi-CXCZ : S ↑ ^ 2 • CX • CZ ≈ CZ • CX
     lemma-semi-CXCZ = begin
       S ↑ ^ 2 • CX • CZ ≈⟨ (cright by-assoc auto) ⟩
@@ -493,7 +340,6 @@ module Lemmas0c where
         CZ ^ -k ≈⟨ sym (^^ CZ p-1 p-1) ⟩
         (CZ ^ p-1) ^ p-1 ≈⟨ aux-CZ⁻¹⁻¹ ⟩
         CZ ∎
-
 
 
     lemma-semi-CXCZ^k-ℕ' : ∀ (k : ℕ) -> let 2k = k Nat.* 2 in
@@ -586,142 +432,4 @@ module Lemmas0c where
       aux2 = begin
         dual (S^ (-k⁻¹ * a) • H • CZ^ k • H ^ 3 • S^ (k⁻¹ * a) • H • S^ (-k * a) ↑) ≈⟨ cong (refl' (aux-dual-S^k (toℕ (-k⁻¹ * a)))) (cright cong (refl' (aux-dual-CZ^k (toℕ k))) (cright cong (refl' (aux-dual-S^k (toℕ (k⁻¹ * a)))) (cright refl' (aux-dual-S^k↑ (toℕ (-k * a)))))) ⟩
         S^ (-k⁻¹ * a) ↑ • H ↑ • CZ^ k • H ↑ ^ 3 • S^ (k⁻¹ * a) ↑ • H ↑ • S^ (-k * a) ∎
-
-    lemma-CZCZ^-aH³CZ^k' : ∀ (a* k* : ℤ* ₚ) ->
-      let
-        k : ℤ ₚ
-        k = k* .proj₁
-        a : ℤ ₚ
-        a = a* .proj₁
-        -k : ℤ ₚ
-        -k = - k
-        k⁻¹ : ℤ ₚ
-        k⁻¹ = ((k* ⁻¹) .proj₁)
-        -k⁻¹ : ℤ ₚ
-        -k⁻¹ = - k⁻¹
-      in
-
-      CZ^ a • H ^ 3 • CZ^ k ≈ S^ (k⁻¹ * a) • H • CZ^ -k • H • S^ (-k⁻¹ * a) • H • S^ (k * a) ↑
-
-    lemma-CZCZ^-aH³CZ^k' a*@(a@₀ , nza) k*@(k , nzk) with nza auto
-    ... | ()
-    lemma-CZCZ^-aH³CZ^k' a*@(a@(₁₊ a') , nza) k*@(k , nzk) = begin
-      CZ^ a • H ^ 3 • CZ^ k ≈⟨ lemma-CZCZ^aH³CZ^k' (toℕ a') k nzk ⟩
-      S^ k⁻¹ ^ j • H • CZ^ -k • H • S^ -k⁻¹ ^ j • H • (S^ k ^ j) ↑ ≈⟨ cong (aux-S^-^ a k⁻¹ nza) (cright (cright (cright cong (aux-S^-^ a -k⁻¹ nza) (cright lemma-cong↑ _ _ (aux-S^-^ a k nza))))) ⟩
-      S^ (k⁻¹ * a) • H • CZ^ -k • H • S^ (-k⁻¹ * a) • H • S^ (k * a) ↑ ∎
-      where
-      j : ℕ
-      j = toℕ a
-      -k : ℤ ₚ
-      -k = - k
-      k⁻¹ : ℤ ₚ
-      k⁻¹ = ((k* ⁻¹) .proj₁)
-      -k⁻¹ : ℤ ₚ
-      -k⁻¹ = - k⁻¹
-
-
-
-    lemma-CZCZ^-aH³CZ^k'-dual : ∀ (a* k* : ℤ* ₚ) ->
-      let
-        k : ℤ ₚ
-        k = k* .proj₁
-        a : ℤ ₚ
-        a = a* .proj₁
-        -k : ℤ ₚ
-        -k = - k
-        k⁻¹ : ℤ ₚ
-        k⁻¹ = ((k* ⁻¹) .proj₁)
-        -k⁻¹ : ℤ ₚ
-        -k⁻¹ = - k⁻¹
-      in
-
-      CZ^ a • H ↑ ^ 3 • CZ^ k ≈ S^ (k⁻¹ * a) ↑ • H ↑ • CZ^ -k • H ↑ • S^ (-k⁻¹ * a) ↑ • H ↑ • S^ (k * a)
-
-    lemma-CZCZ^-aH³CZ^k'-dual a*@(a , nza) k*@(k , nzk) = by-duality' (lemma-CZCZ^-aH³CZ^k' a* k*) aux1 aux2
-      where
-      -k : ℤ ₚ
-      -k = - k
-      k⁻¹ : ℤ ₚ
-      k⁻¹ = ((k* ⁻¹) .proj₁)
-      -k⁻¹ : ℤ ₚ
-      -k⁻¹ = - k⁻¹
-      aux1 : dual (CZ^ a) • H ↑ ^ 3 • dual (CZ^ k) ≈ (CZ^ a • ((H ↑) • (H ↑) • (H ↑)) • CZ^ k)
-      aux1 = begin
-        dual (CZ^ a) • H ↑ ^ 3 • dual (CZ^ k) ≈⟨ cong (refl' (aux-dual-CZ^k (toℕ a))) (cright refl' (aux-dual-CZ^k (toℕ k))) ⟩
-        (CZ^ a • ((H ↑) • (H ↑) • (H ↑)) • CZ^ k) ∎
-
-      aux2 : dual (S^ (k⁻¹ * a) • H • CZ^ -k • H • S^ (-k⁻¹ * a) • H • S^ (k * a) ↑) ≈ S^ (k⁻¹ * a) ↑ • H ↑ • CZ^ -k • H ↑ • S^ (-k⁻¹ * a) ↑ • H ↑ • S^ (k * a)
-      aux2 = begin
-        dual (S^ (k⁻¹ * a) • H • CZ^ -k • H • S^ (-k⁻¹ * a) • H • S^ (k * a) ↑) ≈⟨ cong (refl' (aux-dual-S^k (toℕ (k⁻¹ * a)))) (cright cong (refl' (aux-dual-CZ^k (toℕ -k))) (cright cong (refl' (aux-dual-S^k (toℕ (-k⁻¹ * a)))) (cright refl' (aux-dual-S^k↑ (toℕ (k * a)))))) ⟩
-        S^ (k⁻¹ * a) ↑ • H ↑ • CZ^ -k • H ↑ • S^ (-k⁻¹ * a) ↑ • H ↑ • S^ (k * a) ∎
-
-
-    lemma-CZCZ^-aH³CZ^k'-dual' : ∀ (a* k* : ℤ* ₚ) ->
-      let
-        a : ℤ ₚ
-        a = a* .proj₁
-        k : ℤ ₚ
-        k = k* .proj₁
-        -a : ℤ ₚ
-        -a = - a
-        -k : ℤ ₚ
-        -k = - k
-        k⁻¹ : ℤ ₚ
-        k⁻¹ = ((k* ⁻¹) .proj₁)
-        -k⁻¹ : ℤ ₚ
-        -k⁻¹ = - k⁻¹
-        b* : ℤ* ₚ
-        b* = -' (k* ⁻¹) *' a*
-        b : ℤ ₚ
-        b = b* .proj₁
-        -b : ℤ ₚ
-        -b = - b
-        -b⁻¹* : ℤ* ₚ
-        -b⁻¹* =  -' b* ⁻¹
-        -b⁻¹ : ℤ ₚ
-        -b⁻¹ =  -b⁻¹* .proj₁
-
-      in
-
-      CZ^ a • H ↑ ^ 3 • CZ^ k ≈ (S^ (k⁻¹ * a) ↑ • H ↑ • M -b⁻¹* ↑ • S^ -b ↑ • H ↑ ^ 2) • CZ^ a • H ↑ ^ 3 • S^ -b⁻¹ ↑ • S^ (k * a)
-
-    lemma-CZCZ^-aH³CZ^k'-dual' a* k* = sym (begin
-      (S^ (k⁻¹ * a) ↑ • H ↑ • M -b⁻¹* ↑ • S^ -b ↑ • H ↑ ^ 2) • CZ^ a • H ↑ ^ 3 • S^ -b⁻¹ ↑ • S^ (k * a) ≈⟨ by-passoc (□ ^ 5 • □ • □ ^ 3 • □ ) (□ ^ 4 • □ • □ ^ 3 • □ • □) auto ⟩
-      (S^ (k⁻¹ * a) ↑ • H ↑ • M -b⁻¹* ↑ • S^ -b ↑) • H ↑ ^ 2 • (CZ^ a • H ↑ ^ 2) • H ↑ • S^ -b⁻¹ ↑ • S^ (k * a) ≈⟨ (cright cright cleft (cleft refl' (Eq.cong CZ^ (Eq.sym (-‿involutive a))))) ⟩
-      (S^ (k⁻¹ * a) ↑ • H ↑ • M -b⁻¹* ↑ • S^ -b ↑) • H ↑ ^ 2 • (CZ^ (- -a) • H ↑ ^ 2) • H ↑ • S^ -b⁻¹ ↑ • S^ (k * a) ≈⟨ (cright cright cleft sym (lemma-semi-HH↑-CZ^k -a)) ⟩
-      (S^ (k⁻¹ * a) ↑ • H ↑ • M -b⁻¹* ↑ • S^ -b ↑) • H ↑ ^ 2 • (H ↑ ^ 2 • CZ^ -a) • H ↑ • S^ -b⁻¹ ↑ • S^ (k * a) ≈⟨ (cright by-passoc (□ ^ 2 • (□ ^ 2 • □) • □ ^ 3) (□ ^ 4 • □ ^ 4) auto) ⟩
-      (S^ (k⁻¹ * a) ↑ • H ↑ • M -b⁻¹* ↑ • S^ -b ↑) • H ↑ ^ 4 • CZ^ -a • H ↑ • S^ -b⁻¹ ↑ • S^ (k * a) ≈⟨ (cright trans (cong (axiom (cong↑ order-H)) refl) left-unit) ⟩
-      (S^ (k⁻¹ * a) ↑ • H ↑ • M -b⁻¹* ↑ • S^ -b ↑) • CZ^ -a • H ↑ • S^ -b⁻¹ ↑ • S^ (k * a) ≈⟨ by-passoc (□ ^ 4 • □ ^ 4) (□ ^ 3 • □ ^ 2 • □ ^ 3) auto ⟩
-      (S^ (k⁻¹ * a) ↑ • H ↑ • M -b⁻¹* ↑) • (S^ -b ↑ • CZ^ -a) • H ↑ • S^ -b⁻¹ ↑ • S^ (k * a) ≈⟨ (cright cleft sym (aux-comm-CZ^a-S^b↑ (fromℕ< _) (fromℕ< _))) ⟩
-      (S^ (k⁻¹ * a) ↑ • H ↑ • M -b⁻¹* ↑) • (CZ^ -a • S^ -b ↑) • H ↑ • S^ -b⁻¹ ↑ • S^ (k * a) ≈⟨ by-passoc (□ ^ 3 • □ ^ 2 • □ ^ 3) (□ ^ 2 • □ ^ 2 • □ ^ 4) auto ⟩
-      (S^ (k⁻¹ * a) ↑ • H ↑) • (M -b⁻¹* ↑ • CZ^ -a) • S^ -b ↑ • H ↑ • S^ -b⁻¹ ↑ • S^ (k * a) ≈⟨ (cright cleft lemma-M↑CZ^k -b⁻¹ -a (-b⁻¹* .proj₂)) ⟩
-      (S^ (k⁻¹ * a) ↑ • H ↑) • (CZ^ (-a * -b⁻¹) • M -b⁻¹* ↑) • S^ -b ↑ • H ↑ • S^ -b⁻¹ ↑ • S^ (k * a) ≈⟨ (cright cleft (cleft refl' (Eq.cong CZ^ (aux-a*-b⁻¹ k* a*)))) ⟩
-      (S^ (k⁻¹ * a) ↑ • H ↑) • (CZ^ -k • M -b⁻¹* ↑) • S^ -b ↑ • H ↑ • S^ -b⁻¹ ↑ • S^ (k * a) ≈⟨ by-passoc (□ ^ 2 • □ ^ 2 • □ ^ 4) (□ ^ 3 • □ ^ 4 • □) auto ⟩
-      (S^ (k⁻¹ * a) ↑ • H ↑ • CZ^ -k) • (M -b⁻¹* ↑ • S^ -b ↑ • H ↑ • S^ -b⁻¹ ↑) • S^ (k * a) ≈⟨ (cright cleft sym (lemma-cong↑ _ _ (lemma-Euler′ b*))) ⟩
-      (S^ (k⁻¹ * a) ↑ • H ↑ • CZ^ -k) • (H ↑ • S^ (-k⁻¹ * a) ↑ • H ↑) • S^ (k * a) ≈⟨ by-passoc (□ ^ 3 • □ ^ 3 • □) (□ ^ 7) auto ⟩
-      S^ (k⁻¹ * a) ↑ • H ↑ • CZ^ -k • H ↑ • S^ (-k⁻¹ * a) ↑ • H ↑ • S^ (k * a) ≈⟨ sym (lemma-CZCZ^-aH³CZ^k'-dual a* k*) ⟩
-      CZ^ a • H ↑ ^ 3 • CZ^ k ∎)
-      where
-      a : ℤ ₚ
-      a = a* .proj₁
-      k : ℤ ₚ
-      k = k* .proj₁
-      -a : ℤ ₚ
-      -a = - a
-      -k : ℤ ₚ
-      -k = - k
-      k⁻¹ : ℤ ₚ
-      k⁻¹ = ((k* ⁻¹) .proj₁)
-      -k⁻¹ : ℤ ₚ
-      -k⁻¹ = - k⁻¹
-      b* : ℤ* ₚ
-      b* = -' (k* ⁻¹) *' a*
-      b : ℤ ₚ
-      b = b* .proj₁
-      -b : ℤ ₚ
-      -b = - b
-      -b⁻¹* : ℤ* ₚ
-      -b⁻¹* =  -' b* ⁻¹
-      -b⁻¹ : ℤ ₚ
-      -b⁻¹ =  -b⁻¹* .proj₁
 

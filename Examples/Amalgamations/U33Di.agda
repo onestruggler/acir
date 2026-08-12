@@ -120,8 +120,6 @@ module TwoLevel-Simplified-Amal where
     X₁₂ : Word Gen
     X₁₂ = gen X₁₂-gen
 
-    X₀₂ : Word Gen
-    X₀₂ = X₁₂ • X₀₁ • X₁₂
 
     i₀ : Word Gen
     i₀ = gen i₀-gen
@@ -134,12 +132,6 @@ module TwoLevel-Simplified-Amal where
 
     K₀₁ : Word Gen
     K₀₁ = gen K₀₁-gen
-
-    K₀₂ : Word Gen
-    K₀₂ = X₁₂ • K₀₁ • X₁₂
-
-    K₁₂ : Word Gen
-    K₁₂ = X₀₁ • K₀₂ • X₀₁
 
 
     infix 4 _===_
@@ -602,17 +594,6 @@ module TwoLevel-Simplified-Amal where
     fK₀₁ : Word FGen
     fK₀₁ = [ [ [ K₀₁-gen ]ʷ ]ₗ ]ᵣ
 
-    fi₀ : Word FGen
-    fi₀ = [ [ [ i₀-gen ]ʷ ]ₗ ]ᵣ
-
-    fi₁ : Word FGen
-    fi₁ = [ [ [ i₀-gen ]ʷ ]ₗ ]ᵣ
-    
-    fi₂ : Word FGen
-    fi₂ = [ [ [ tt ]ʷ ]ᵣ ]ᵣ
-
-    fX₀₁ : Word FGen
-    fX₀₁ = [ [ tt ]ʷ ]ₗ
 
   module PD where
     pres = pres-SnD 2
@@ -1165,7 +1146,6 @@ module TwoLevel-Simplified-Amal where
     g (inj₁ (inj₂ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ)))
 
 
-
     open myANF using (mypres)
 
     open PB mypres renaming (_===_ to _===₂_ ; _≈_ to _≈₂_) using ()
@@ -1508,5 +1488,4 @@ module TwoLevel-Simplified-Amal where
 
     U33Di-isomorphism : IsMonoidIsomorphism (Monoid.rawMonoid m₂) (Monoid.rawMonoid m₁) (g ʷ)
     U33Di-isomorphism = StarIsomorphism.isMonoidIsomorphism mypres _===₁_ g f g-well-defined g-left-inv-gen f-well-defined f-left-inv-gen
-
 

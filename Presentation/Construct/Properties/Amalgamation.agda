@@ -99,7 +99,6 @@ module InvTools {X : Set} {Γ : WRel X} {G : Group 0ℓ 0ℓ}
   g-ε = injective (CG.trans (sect CG.ε) (CG.sym ε-homo))
 
 
-
 -- C (D) is the set of non-trivial coset representatives.
 amalNFC : (C D : Set) → Set
 amalNFC C D = (D ⊎ ⊤) × List (C × D) × (C ⊎ ⊤)
@@ -189,21 +188,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   ... | (wm'' , cds') = wm'' , (x' ∷ cds')
 
 
-  hcdb : C × D → B → (Word M × (C × D)) ⊎ (Word M × C)
-  hcdb (c , d) b with hdb d b
-  hcdb (c , d) b | wm , inj₁ d' with hcmw c wm
-  ... | (wm' , c') = inj₁ (wm' , c' , d')
-  hcdb (c , d) b | wm , inj₂ tt with hcmw c wm
-  ... | (wm' , c') = inj₂ (wm' , c')
-  
-  hcdbs : List (C × D) → ∀ (c : C) (d : D) → B → (((Word M × List (C × D))) ⊎ ((Word M × List (C × D) × C)))
-  hcdbs cds c d b with hcdb (c , d) b
-  hcdbs cds c d b | inj₁ (wm , c' , d') with hcdws cds wm
-  ... | (wm' , cds') = inj₁ (wm' , cds' ++ (c' , d') ∷ [])
-  hcdbs cds c d b | inj₂ (wm , c') with hcdws cds wm
-  ... | (wm' , cds') = inj₂ (wm' , cds' , c')
-
-
   hma : CD → A → Word M × CD
   hma (d , cds , c) (x) with h₁ c x
   ... | (wm , c') with hcdws cds wm
@@ -256,7 +240,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     [ ((f₁)ʷ) v ]ₗ ≡⟨ aux-f₁ v ⟩
     (f ʷ) v ∎
     where open SR ws₃
-
 
 
   aux-hh1 : ∀ d cds c → [ (d , cds , c) ] ≈₃ [ (d , cds , inj₂ tt) ] • [ [ c ]₁ ]ₗ
@@ -329,8 +312,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     where open SR ws₃
 
 
-
-
   lemma-hcdw : ∀ cd wm → let (wm' , cd') = hcdw cd wm in [ cd ]ᵢ • [ wm ]ₓ ≈₃ [ wm' ]ₓ • [ cd' ]ᵢ
   lemma-hcdw cd wm = lemma-ᵗ-act _===₃_ hcd [_]ᵢ ([_]ₗ ∘ f₁) aux-hh3' cd wm
   
@@ -359,24 +340,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     where open SR ws₃
 
 
-
-  lemma-hdmw1 : ∀ d wm → let (wm' , d') = hdmw d wm in [ [ d ]ₒ₂ ]ᵣ • (f ʷ) wm ≈₃ (f ʷ) wm' • [ [ d' ]ₒ₂ ]ᵣ 
-  lemma-hdmw1 d wm = let (wm' , d') = hdmw d wm in begin
-    [ [ d ]ₒ₂ ]ᵣ • (f ʷ) wm ≈⟨ _≈₃_.cong _≈₃_.refl ( _≈₃_.sym (aux-f₂ wm)) ⟩
-    [ [ d ]ₒ₂  • (f₂ ʷ) wm ]ᵣ ≈⟨ AB.rights (hdmw-hyp d wm) ⟩
-    [ (f₂ ʷ) wm' • [ d' ]ₒ₂ ]ᵣ  ≈⟨ cong (aux-f₂ wm') refl ⟩
-    (f ʷ) wm' • [ [ d' ]ₒ₂ ]ᵣ ∎
-    where open SR ws₃
-
-
-  lemma-hcmw1 : ∀ d wm → let (wm' , d') = hcmw d wm in [ [ d ]ₒ₁ ]ₗ • (f ʷ) wm ≈₃ (f ʷ) wm' • [ [ d' ]ₒ₁ ]ₗ 
-  lemma-hcmw1 d wm = let (wm' , d') = hcmw d wm in begin
-    [ [ d ]ₒ₁ ]ₗ • (f ʷ) wm ≈⟨ _≈₃_.cong _≈₃_.refl ( _≈₃_.sym (refl'₃ (aux-f₁ wm))) ⟩
-    [ [ d ]ₒ₁  • (f₁ ʷ) wm ]ₗ ≈⟨ AB.lefts (hcmw-hyp d wm) ⟩
-    [ (f₁ ʷ) wm' • [ d' ]ₒ₁ ]ₗ  ≈⟨ cong (refl'₃ (aux-f₁ wm')) refl ⟩
-    (f ʷ) wm' • [ [ d' ]ₒ₁ ]ₗ ∎
-    where open SR ws₃
-
   lemma-cdε-m : ∀ m → [ (inj₂ tt , [] , inj₂ tt) ] • [ [ m ]ₓ₁ ]ₗ ≈₃ [ [ m ]ₓ₁ ]ₗ • [ (inj₂ tt , [] , inj₂ tt) ]
   lemma-cdε-m m = begin
     [ (inj₂ tt , [] , inj₂ tt) ] • [ [ m ]ₓ₁ ]ₗ ≈⟨ cong (trans left-unit left-unit) refl ⟩
@@ -394,9 +357,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
 
   hcdmw = hcdm ᵗ
 
-  lemma-hcdm : ∀ d cds m → let (wm' , d' , cds' , c') = hcdm (d , cds , inj₂ tt) m
-    in c' ≡ inj₂ tt
-  lemma-hcdm d cds m = Eq.refl
 
   lemma-hcdmw : ∀ d cds c → c ≡ inj₂ tt → ∀ wm → let (wm' , d' , cds' , c') = (hcdm ᵗ) (d , cds , inj₂ tt) wm
     in c' ≡ inj₂ tt
@@ -510,7 +470,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   hh (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₂ tt) with hcmw c0 wm
   hh (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₂ tt) | (wm1 , c1) with (hcdm ᵗ) (d , tail , inj₂ tt) wm1
   hh (d , ((c0 , d0) ∷ tail) , inj₂ tt) (inj₂ b) | (wm , inj₂ tt) | (wm1 , c1) | (wm3 , d3 , tail3 , c3) = wm3 ,  d3 , tail3 , inj₁ c1
-
 
 
   hh-hyp :  ∀ cd y → let (x' , c') = hh cd y in
@@ -686,8 +645,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
       claim = lemma-hcdmw d tail (inj₂ tt) Eq.refl wm1
 
 
-
-
   hh-hyp-w :  ∀ cd y → let (x' , c') = (hh ᵗ) cd y in
     [ cd ] • y ≈₃ [ x' ]ₓ • [ c' ]
   hh-hyp-w cd [ x ]ʷ = hh-hyp cd x
@@ -709,7 +666,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   open PackedCosetTable CA₂ renaming (h-wd-ax to h-wd-ax₂ ; h-wd to h-wd₂ ; f-wd to f-wd₂ ; h-wd-m to h-wd-m₂ ; hcmw-cong to hdmw-cong ; hcmw-cong2 to hdmw-cong2 ; hcmw-cong' to hdmw-cong' ; hcmw-cong'2 to hdmw-cong'2 ; lemma-hᵗ=hcmw' to lemma-hᵗ=hdmw' ; htme to htme₂ ; hcme to hdme) using () public
 
 
-
   hcxd1-m : (C × D) → Word M → Word M × (C × D)
   hcxd1-m (c , d) wm with hdmw d wm
   hcxd1-m (c , d) wm | (wm1 , d1) with hcmw c wm1
@@ -721,31 +677,12 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   hcxds-m (h ∷ t) wm | (wm1 , cd1) with hcxds-m t wm1
   hcxds-m (h ∷ t) wm | (wm1 , cd1) | (wm2 , cds2) = wm2 , cd1 ∷ cds2
 
-  hcd-m : CD → Word M → Word M × CD
-  hcd-m cd@(d , cds , c) wm with hcmw' c wm
-  hcd-m cd@(d , cds , c) wm | (wm1 , c1) with hcxds-m cds wm1
-  hcd-m cd@(d , cds , c) wm | (wm1 , c1) | wm2 , cds2 with hdmw' d wm2
-  hcd-m cd@(d , cds , c) wm | (wm1 , c1) | wm2 , cds2 | (wm3 , d3) = wm3 , d3 , cds2 , c1
-
 
   hcd-ma : CD → Word A → Word M × CD
   hcd-ma (d , cds , c) w with (h₁ ᵗ) c w
   hcd-ma (d , cds , c) w | (wm1 , c1) with hcxds-m cds wm1
   hcd-ma (d , cds , c) w | (wm1 , c1) | (wm2 , cds2) with hdmw' d wm2
   hcd-ma (d , cds , c) w | (wm1 , c1) | (wm2 , cds2) | (wm3 , d3) = (wm3 , d3 , cds2 , c1)
-
-
-  hcxd1-mb : C × D → Word B → Word M × C × D ⊎ Word M × C
-  hcxd1-mb (c , d) w with (h₂ ᵗ) (inj₁ d) w
-  hcxd1-mb (c , d) w | wm1 , inj₁ d' with hcmw c wm1
-  hcxd1-mb (c , d) w | wm1 , inj₁ d' | (wm2 , c2) = inj₁ (wm2 , c2 , d')
-  hcxd1-mb (c , d) w | wm1 , inj₂ tt with hcmw c wm1
-  hcxd1-mb (c , d) w | wm1 , inj₂ tt | (wm2 , c2) = inj₂ (wm2 , c2)
-
-  hcxd1-mb' : C × D → Word B → Word M × (C × (D ⊎ ⊤))
-  hcxd1-mb' (c , d) w with (h₂ ᵗ) (inj₁ d) w
-  hcxd1-mb' (c , d) w | wm1 , dt1 with hcmw c wm1
-  hcxd1-mb' (c , d) w | wm1 , dt1 | (wm2 , c2) = wm2 , c2 , dt1
 
 
   aux-hcm'=h₁ᵗ2 : ∀ c m → hcm' c m ≡ hcmw' c [ m ]ʷ
@@ -885,8 +822,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     hcdmw (d , cds , inj₂ tt) wm ≡ hcxds-m-hdmw' d cds wm
   aux-hcdmw=hcxds-m-hdmw'2 d cds wm = Eq.trans (lemma-hcdmw-q2 d cds wm) ( (aux104 d cds wm))
 
-  lemma-100 : ∀ cd → hcxd1-m cd ε ≡ (ε , cd)
-  lemma-100 cd = Eq.refl
 
   lemma-101 : ∀ cds → hcxds-m cds ε ≡ (ε , cds) 
   lemma-101 [] = Eq.refl
@@ -895,8 +830,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   lemma-hcd-ma-ε : ∀ d cds c → hcd-ma (d , cds , c) ε ≡ (ε , d , cds , c)
   lemma-hcd-ma-ε d cds c rewrite lemma-101 cds = Eq.refl
 
-  lemma-hcxd1-m-ε : ∀ cd → hcxd1-m cd ε ≡ (ε , cd)
-  lemma-hcxd1-m-ε cd = Eq.refl
 
   lemma-hcxds-m-ε : ∀ cds → hcxds-m cds ε ≡ (ε , cds)
   lemma-hcxds-m-ε [] = Eq.refl
@@ -973,13 +906,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
     w1` • v2` , d2` , cds2` , c3 ≡⟨ Eq.refl ⟩
     (wm1 • wm2 , cd2) ∎
     where open Eq.≡-Reasoning
-
-
-  lemma-hcxd1-m : ∀ cd w v →
-    let (w' , cd') = hcxd1-m cd w in
-    let (v' , cd'') = hcxd1-m cd' v in
-    hcxd1-m cd (w • v) ≡ (w' • v' , cd'')
-  lemma-hcxd1-m cd w v = Eq.refl
 
 
   lemma-hcxds-m : ∀ cds w v →
@@ -1164,19 +1090,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
   hcxds-m-congr [] w v eq = Eq.refl
   hcxds-m-congr (x ∷ cds) w v eq rewrite hcxd1-m-congr x w v eq | hcxds-m-congr cds (hcxd1-m x w .proj₁) (hcxd1-m x v .proj₁) (hcxd1-m-congl x w v eq) = Eq.refl
 
-  lemma-hb : ∀ d b → h₂ d b ≡ (h₂ ᵗ) d [ b ]ʷ
-  lemma-hb (inj₁ x) b = Eq.refl
-  lemma-hb (inj₂ y) b = Eq.refl
-
-  lemma-hdb : ∀ d b → hdb d b ≡ (h₂ ᵗ) (inj₁ d) [ b ]ʷ
-  lemma-hdb d b = Eq.refl
-
-  htb : ⊤ → B → Word M × (D ⊎ ⊤)
-  htb tt b = h₂ (inj₂ tt) b
-
-  lemma-htb : ∀ b → htb tt b .proj₁ ≡ (h₂ ᵗ) (inj₂ tt) [ b ]ʷ .proj₁
-  lemma-htb b = Eq.refl
-
 
   lemma-hh=hcdmb1 : ∀ cd b → hh cd (inj₂ b) ≡ hcd-mb cd [ b ]ʷ
   lemma-hh=hcdmb1 (d , cds , inj₁ c) b with h₂ I₂ b
@@ -1294,8 +1207,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
       claim4 : wm3 ≈₀ wm3'
       claim4 = hdmw-cong' d wm2 wm2' claim3
 
-      claim2' : c1 ≡ c1'
-      claim2' = eq1
       
       claim3' : cds2 ≡ cds2'
       claim3' = hcxds-m-congr cds wm1 wm1' claim2
@@ -1519,7 +1430,6 @@ module ANF {M A B : Set} (P₁ : WRel A) (P₂ : WRel B) (anf : AmalDataNF M P�
       ((hh ᵗ) cd t) ∎
       where
       open SR mcdₛ
-
 
 
   hhh-wd-ax cd@(d , cds , c) {u} {t} (mid (amal {m})) = claim

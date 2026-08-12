@@ -5,7 +5,6 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
 
-
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 import Data.Nat as Nat
 
@@ -18,18 +17,13 @@ open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
 
-
 open import Data.Fin using (toℕ)
 import Data.Nat.Properties as NP
 open import Presentation.GroupLike
 open import Data.Nat.Primality
 
 
-
 module Examples.Groups.Symplectic.Lemmas.Ex-Sym (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
-
-
-
 
 
 open import ForStdlib.Data.Fin.Mod
@@ -123,25 +117,6 @@ module Lemmas0a where
       ε • (H • S) • H ∎
 
 
-  lemma-S⁻¹HS⁻¹' : let open PB ((₂₊ n) QRel,_===_) in
-
-    S⁻¹ ↑ • H ↑ • S⁻¹ ↑ ≈ H⁻¹ ↑ • S ↑ • H ↑
-
-  lemma-S⁻¹HS⁻¹' {n} = begin
-    S⁻¹ ↑ • H ↑ • S⁻¹ ↑ ≈⟨ refl ⟩
-    (S⁻¹ • H • S⁻¹) ↑ ≈⟨ lemma-cong↑ _ _ lemma-S⁻¹HS⁻¹ ⟩
-    (H⁻¹ • S • H) ↑ ≈⟨ refl ⟩
-    H⁻¹ ↑ • S ↑ • H ↑ ∎
-    where
-    open PB ((₂₊ n) QRel,_===_)
-    open PP ((₂₊ n) QRel,_===_)
-    open SR word-setoid
-    open Pattern-Assoc
-    open Sym0-Rewriting (₁₊ n)
-    open Symplectic-GroupLike
-    open Basis-Change _ ((₁₊ n) QRel,_===_) grouplike
-
-
   aux-[H⁻¹SH]^k : let open PB ((₁₊ n) QRel,_===_) in
     ∀ k -> (H⁻¹ • S • H) ^ k ≈ H⁻¹ • S ^ k • H
   aux-[H⁻¹SH]^k {n} k@0 = rewrite-sym0 100 auto
@@ -168,7 +143,6 @@ module Lemmas0a where
     open Sym0-Rewriting n
     open Symplectic-GroupLike
     open Basis-Change _ ((₁₊ n) QRel,_===_) grouplike
-
 
 
   aux-H⁻¹S⁻¹H⁻¹S⁻¹H⁻¹S⁻¹ : let open PB ((₁₊ n) QRel,_===_) in
@@ -333,7 +307,6 @@ module Lemmas0a where
     open Symplectic-GroupLike
 
 
-
   lemma-SHCZH : let open PB ((₂₊ n) QRel,_===_) in
     S • H • CZ • H ≈ H • CZ • H • CZ • S ↑ • S ↓
   lemma-SHCZH {n} = sym (begin
@@ -398,7 +371,6 @@ module Lemmas0a where
 
   -- lemma-S^k↑ : let open PB ((₂₊ n) QRel,_===_) in  ∀ k ->
   --   (S ^ k) ↑ ≈ (S ↑) ^ k
-
 
 
   lemma-S^kHCZH' : let open PB ((₂₊ n) QRel,_===_) in  ∀ k' -> let k = ₁₊ k' in
@@ -662,23 +634,6 @@ module Lemmas0a where
       (H • CZ • H • H ↑ • CZ • H ↑ ) • (H ↑ • CZ • H ↑ • H • CZ • H • S) • H • CZ • H • H ↑ • CZ • H ↑ ∎
 
 
-  lemma-comm-S↑-Ex'' : let open PB ((₂₊ n) QRel,_===_) in
-    S ↑ • H ↑ • CZ • H ↑ • H ↓ • CZ • H ↓ ≈ (H ↑ • CZ • H ↑ • H ↓ • CZ • H ↓) • S ↓
-  lemma-comm-S↑-Ex'' {n}  = begin
-    S ↑ • H ↑ • CZ • H ↑ • H ↓ • CZ • H ↓ ≈⟨ lemma-comm-S↑-Ex' ⟩
-    H ↑ • CZ • H ↑ • H ↓ • CZ • H ↓ • S ↓ ≈⟨ by-assoc auto ⟩
-    (H ↑ • CZ • H ↑ • H ↓ • CZ • H ↓) • S ↓ ∎
-    where
-    open PB ((₂₊ n) QRel,_===_)
-    open PP ((₂₊ n) QRel,_===_)
-    open SR word-setoid
-    open Commuting-Symplectic (n)
-    open Sym0-Rewriting (₁₊ n)    
-    
-    open Symplectic-GroupLike
-    open Basis-Change _ ((₂₊ n) QRel,_===_) grouplike
-
-
   lemma-comm-Ex-S : let open PB ((₂₊ n) QRel,_===_) in
     S ↑ • Ex ≈ Ex • S
   lemma-comm-Ex-S {n@0}  = begin
@@ -724,8 +679,6 @@ module Lemmas0a where
     open PB ((₂₊ n) QRel,_===_)
     open PP ((₂₊ n) QRel,_===_)
     open SR word-setoid
-
-
 
 
   lemma-SHSHS : let open PB ((₁₊ n) QRel,_===_) in
@@ -822,8 +775,6 @@ module Lemmas0a where
     k = toℕ k'
 
 
-
-
   lemma-CZH↑CZ^k : let open PB ((₂₊ n) QRel,_===_) in ∀ k' -> let k = ₁₊ k' in
     CZ • H ↑ • CZ ^ k ≈ (S⁻¹ ↑ • H ↑ • S⁻¹ ↑) ^ k • CZ • H ↑ • S⁻¹ ↑ ^ k • S⁻¹ ^ k
   lemma-CZH↑CZ^k {n} k'@0 = let k = ₁₊ k' in begin
@@ -865,7 +816,6 @@ module Lemmas0a where
     open Commuting-Symplectic (n)
     open Sym0-Rewriting (₁₊ n)
     open Pattern-Assoc
-
 
 
 {-
@@ -989,23 +939,6 @@ module Lemmas0a where
 
 -}
 
-  lemma-SHSH' : let open PB ((₁₊ n) QRel,_===_) in
-
-    S • H • S • H ≈ H ^ 3 • S ^ p-1
-
-  lemma-SHSH' {n} = begin
-    (S • H • S • H) ≈⟨ trans (sym right-unit) (cright sym (axiom order-S)) ⟩
-    (S • H • S • H) • S • S ^ p-1 ≈⟨ (cright cright sym left-unit) ⟩
-    (S • H • S • H) • S • ε • S ^ p-1 ≈⟨ (cright cright cleft sym (axiom order-H)) ⟩
-    (S • H • S • H) • S • (H • H ^ 3) • S ^ p-1 ≈⟨ by-assoc auto ⟩
-    (S • H) ^ 3 • H ^ 3 • S ^ p-1 ≈⟨ (cleft axiom order-SH) ⟩
-    ε • H ^ 3 • S ^ p-1 ≈⟨ left-unit ⟩
-    H ^ 3 • S ^ p-1 ∎
-    where
-    open PB ((₁₊ n) QRel,_===_)
-    open PP ((₁₊ n) QRel,_===_)
-    open SR word-setoid
-
 
   lemma-HSHSH : let open PB ((₁₊ n) QRel,_===_) in
 
@@ -1056,7 +989,6 @@ module Lemmas0a where
     open PP ((₁₊ n) QRel,_===_)
     open SR word-setoid
     open Powers0-Symplectic n
-
 
 
   lemma-HSHS : let open PB ((₁₊ n) QRel,_===_) in

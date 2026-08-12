@@ -5,7 +5,6 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
 
-
 open import Data.Product using (_,_)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_)
 open import Data.List hiding ([_] ; _++_ ; last ; head ; tail ; _∷ʳ_)
@@ -20,7 +19,6 @@ open import Notations
 module RSF = RS.Star-Injective-Full.Reidemeister-Schreier-Full
 
 
-
 open import Data.Fin using (toℕ)
 import Data.Nat.Properties as NP
 open import Presentation.GroupLike
@@ -28,10 +26,7 @@ open import Presentation.Tactic.Rewriting hiding ([_])
 open import Data.Nat.Primality
 
 
-
 module Examples.Groups.Symplectic.Lemmas.Ex-Sym3n (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
-
-
 
 
 private
@@ -132,7 +127,6 @@ lemma-Ex-Ex↑-CZ'a {n@(₁₊ _)} = begin
     ε ∎
 
 
-
 lemma-Ex-Ex↑-CZ'b : let open PB ((₃₊ n) QRel,_===_) in
   Ex • CZ ↑ • Ex ≈ ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
 lemma-Ex-Ex↑-CZ'b {n} = begin
@@ -165,7 +159,6 @@ lemma-Ex-Ex↑-CZ'b {n} = begin
     ε ∎
 
 
-
 lemma-CZ02-alt : let open PB ((₃₊ n) QRel,_===_) in
   Ex ↑ • CZ • Ex ↑ ≈ Ex • CZ ↑ • Ex
 lemma-CZ02-alt {n} = begin
@@ -178,8 +171,6 @@ lemma-CZ02-alt {n} = begin
   open PP ((₃₊ n) QRel,_===_)
   open SR word-setoid
   open Commuting-Symplectic (₁₊ n)
-
-
 
 
 module Powers-Rewriting where
@@ -215,7 +206,6 @@ module Powers-Rewriting where
     open PB ((₂₊ n) QRel,_===_)
     open PP ((₂₊ n) QRel,_===_)
     open Commuting-Symplectic (₁₊ n)
-
 
 
   step-powers : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) hiding (_===_) in Step-Function (Gen (₁₊ n))  ((₁₊ n) QRel,_===_)
@@ -267,7 +257,6 @@ module Rewriting-Powers (m : ℕ) where
   open Rewriting
   open Powers-Rewriting
   open Rewriting.Step (step-cong (step-powers {m})) renaming (general-rewrite to rewrite-powers) public
-
 
 
 -- ----------------------------------------------------------------------
@@ -346,9 +335,6 @@ lemma-Ex-S : let open PB ((₂₊ n) QRel,_===_) in
 lemma-Ex-S = PB.sym (lemma-comm-Ex-S)
 
 
-
-
-
 lemma-Ex-H : let open PB ((₂₊ n) QRel,_===_) in 
 
   Ex • H ≈ H ↑ • Ex
@@ -374,7 +360,6 @@ lemma-Ex-Hᵏ {n} (₂₊ k) = begin
   open PB ((₂₊ n) QRel,_===_)
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
-
 
 
 lemma-comm-H↑-Sᵏ : ∀ {n} k →
@@ -406,8 +391,6 @@ lemma-comm-H↑-Sᵏ {n} (₂₊ k) = begin
   open SR word-setoid
 
 
-
-
 lemma-comm-CZ-w↑↑ : ∀ {n} w → let open PB ((₂₊ n) QRel,_===_) in
 
   CZ • w ↑ ↑ ≈ w ↑ ↑ • CZ
@@ -426,25 +409,6 @@ lemma-comm-CZ-w↑↑ {n} (w • v) = begin
   w ↑ ↑ • CZ • v ↑ ↑ ≈⟨ cong refl (lemma-comm-CZ-w↑↑ v) ⟩
   w ↑ ↑ • v ↑ ↑ • CZ ≈⟨ sym assoc ⟩
   (((w • v) ↑) ↑) • CZ ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-
-
-lemma-comm-CX-w↑↑ : ∀ {n} w → let open PB ((₂₊ n) QRel,_===_) in
-
-  CX • w ↑ ↑ ≈ w ↑ ↑ • CX
-
-lemma-comm-CX-w↑↑ {n} w = begin
-  CX • w ↑ ↑ ≈⟨ by-assoc auto ⟩
-  H ^ 3 • CZ • H • w ↑ ↑ ≈⟨ (cright cright lemma-comm-H-w↑ (w ↑)) ⟩
-  H ^ 3 • CZ • w ↑ ↑ • H ≈⟨ by-assoc auto ⟩
-  H ^ 3 • (CZ • w ↑ ↑) • H ≈⟨ (cright cleft lemma-comm-CZ-w↑↑ w) ⟩
-  H ^ 3 • (w ↑ ↑ • CZ) • H ≈⟨ trans (by-assoc auto) assoc ⟩
-  (H ^ 3 • w ↑ ↑) • CZ • H ≈⟨ (cleft lemma-comm-Hᵏ-w↑ 3 (w ↑)) ⟩
-  (w ↑ ↑ • H ^ 3) • CZ • H ≈⟨ assoc ⟩
-  w ↑ ↑ • CX ∎
   where
   open PB ((₂₊ n) QRel,_===_)
   open PP ((₂₊ n) QRel,_===_)
@@ -592,24 +556,6 @@ lemma-CZᵏ-H↑² {n} ₂ = begin
   open Lemmas-2Q n
 -}
 
-lemma-Ex-HᵏSˡ : let open PB ((₂₊ n) QRel,_===_) in ∀ k l →
-
-  Ex • (H ^ k • S ^ l) ≈ (H ^ k • S ^ l) ↑ • Ex
-
-lemma-Ex-HᵏSˡ {n} k l = begin
-  Ex • H ^ k • S ^ l ≈⟨ sym assoc ⟩
-  (Ex • H ^ k) • S ^ l ≈⟨ cong (lemma-Ex-Hᵏ k) refl ⟩
-  (H ↑ ^ k • Ex) • S ^ l ≈⟨ assoc ⟩
-  H ↑ ^ k • Ex • S ^ l ≈⟨ cong refl (lemma-Ex-Sᵏ l) ⟩
-  H ↑ ^ k • S ↑ ^ l • Ex ≈⟨ sym assoc ⟩
-  (H ↑ ^ k • S ↑ ^ l) • Ex ≈⟨ cong (cong (refl' (lemma-^-↑ H k)) (refl' (lemma-^-↑ S l))) refl ⟩
-  ((H ^ k) ↑ • (S ^ l) ↑) • Ex ≈⟨ cong refl refl ⟩
-  ((H ) ^ k • (S ) ^ l) ↑ • Ex ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-
 
 -- ----------------------------------------------------------------------
 -- * Lemmas
@@ -639,19 +585,6 @@ lemma-CZᵏ-S↑ {n} (₂₊ k) = begin
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
 
-lemma-CZᵏ-S↑² : let open PB ((₂₊ n) QRel,_===_) in ∀  k →
-
-  CZ ^ k • S⁻¹ ↑ ≈ S⁻¹ ↑ • CZ ^ k
-
-lemma-CZᵏ-S↑² {n} k = begin
-  CZ ^ k • (S⁻¹ ↑) ≈⟨ (cright sym (refl' (lemma-^-↑ S p-1))) ⟩
-  CZ ^ k • (S ↑) ^ p-1 ≈⟨  comm⇒pow-comm k p-1 (lemma-CZᵏ-S↑ ₁) ⟩
-  (S ↑) ^ p-1 • CZ ^ k ≈⟨  (cleft refl' (lemma-^-↑ S p-1)) ⟩
-  (S⁻¹ ↑) • CZ ^ k ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
 
 lemma-CZᵏ-Ex : let open PB ((₂₊ n) QRel,_===_) in ∀  k →
 
@@ -733,26 +666,6 @@ lemma-CZᵏ-HH↑ {n} ₂ = begin
 -}
 
 
-
-lemma-Ex-HᵏSˡ' : let open PB ((₂₊ n) QRel,_===_) in ∀ k l →
-
-  Ex • (H ^ k • S ^ l) ↑ ≈ (H ^ k • S ^ l) • Ex
-
-lemma-Ex-HᵏSˡ' {n} k l = begin
-  Ex • ((H ^ k • S ^ l) ↑) ≈⟨ cong refl (sym right-unit) ⟩
-  Ex • (H ^ k • S ^ l) ↑ • ε ≈⟨ cong refl (cong refl (sym lemma-order-Ex-n)) ⟩
-  Ex • (H ^ k • S ^ l) ↑ • Ex • Ex ≈⟨ sym (cong refl assoc) ⟩
-  Ex • ((H ^ k • S ^ l) ↑ • Ex) • Ex ≈⟨ cong refl (cong (sym (lemma-Ex-HᵏSˡ k l)) refl) ⟩
-  Ex • (Ex • (H ^ k • S ^ l)) • Ex ≈⟨ cong refl assoc ⟩
-  Ex • Ex • (H ^ k • S ^ l) • Ex ≈⟨ sym assoc ⟩
-  (Ex • Ex) • (H ^ k • S ^ l) • Ex ≈⟨ cong (lemma-order-Ex-n) refl ⟩
-  ε • (H ^ k • S ^ l) • Ex ≈⟨ left-unit ⟩
-  (H ^ k • S ^ l) • Ex ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-
 lemma-Ex-Sᵏ↑ : ∀ k → let open PB ((₂₊ n) QRel,_===_) in 
 
   Ex • (S ^ k) ↑ ≈ (S ^ k) • Ex
@@ -772,22 +685,6 @@ lemma-Ex-Sᵏ↑ {n} k = begin
   open PB ((₂₊ n) QRel,_===_)
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
-
-
-lemma-Ex-S↑ᵏ : ∀ k → let open PB ((₂₊ n) QRel,_===_) in 
-
-  Ex • (S ↑ ^ k) ≈ (S ^ k) • Ex
-
-lemma-Ex-S↑ᵏ {n} k = begin
-  Ex • (S ↑ ^ k) ≈⟨ refl' (Eq.cong (\ xx -> Ex • xx) (lemma-^-↑ S k)) ⟩
-  Ex • (S ^ k) ↑ ≈⟨ lemma-Ex-Sᵏ↑ k ⟩
-  (S ^ k) • Ex ∎
-  where
-  open PB ((₂₊ n) QRel,_===_)
-  open PP ((₂₊ n) QRel,_===_)
-  open SR word-setoid
-
-
 
 
 module Swap-Rewriting where
@@ -829,7 +726,6 @@ lemma-comm-Ex↑-H {n} = general-comm auto
   open Commuting-Symplectic (₁₊ n)
 
 
-
 step-swap : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) hiding (_===_) in Step-Function (Gen (₁₊ n))  ((₁₊ n) QRel,_===_)
 
 -- Order of generators.
@@ -845,10 +741,8 @@ step-swap (CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷
 step-swap (CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ xs) = just (xs , at-head ( (lemma-cong↑ _ _ lemma-order-Ex-n)))
 
 
-
 step-swap (CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ∷ xs) = just (CZ-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ xs , at-head ( (lemma-Ex-Ex↑-CZ)))
 step-swap (CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ↥ ∷ xs) = just (CZ-gen ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ↥ ∷ H-gen ↥ ∷ H-gen ↥ ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ xs , at-head ( (lemma-Ex↑-Ex-CZ↑)))
-
 
 
 step-swap (CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ xs) = just (CZ-gen ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ CZ-gen ∷ H-gen ∷ H-gen ↥ ∷ xs , at-head (PB.sym (lemma-comm-Ex-CZ-n)))
@@ -934,7 +828,6 @@ module Rewriting-Swap0 (n : ℕ) where
   open Rewriting.Step (step-cong (step-swap0 {n})) renaming (general-rewrite to rewrite-swap0) public
 
 
-
 open Symplectic
 --  open Rewriting-Symplectic
 open Rewriting
@@ -1018,7 +911,6 @@ lemma-semi-CXCZ^ {n} k@(₁₊ k') = by-emb' (lemma-semi-CXCZ^k (k , (λ ()))) (
   open PB ((₂₊ n) QRel,_===_)
   open PP ((₂₊ n) QRel,_===_)
   open import Examples.Groups.Symplectic.Lemmas.Embeding-2n p-2 p-prime n
-
 
 
 lemma-semi-CXCZ^-alt : let open PB ((₂₊ n) QRel,_===_) in ∀ (k : ℤ ₚ) ->

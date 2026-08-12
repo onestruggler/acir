@@ -175,27 +175,6 @@ ntH-ZM x = ntH-S^ _ •ⁿ ntH-H •ⁿ ntH-S^ _ •ⁿ ntH-H •ⁿ ntH-S^ _ �
 ------------------------------------------------------------------------
 -- The output of L-CZ's dir-of is top-H-free
 
--- L-CZ.dir-of pushes CZ through an L box; its residual is always a
--- bottom-wire word (CZ/H/S/M gadgets and group-like inverses of them),
--- so it is a legitimate input to lemma-D-w-br.
-dir-of-No-Top-H : (l : L 2) → No-Top-H (LCZ.dir-of l)
-dir-of-No-Top-H ((₁ , s≤s z≤n) , [] , ((a@₀ , b@(₁₊ _)) , nzx))                 = ntH-CZ^ _
-dir-of-No-Top-H ((₁ , s≤s z≤n) , [] , ((a@(₁₊ _) , b) , nzx))                   = ntH-H •ⁿ ntH-CZ^ _ •ⁿ ntH-^ ntH-H _
-dir-of-No-Top-H ((₀ , z≤n) , ((c@₀ , d@₀) ∷ []) , ((a@₀ , b@(₁₊ _)) , nz)) with b ≟ c
-... | yes ()
-... | no neq = ntH-CZ^ _
-dir-of-No-Top-H ((₀ , z≤n) , ((c@₀ , d@(₁₊ _)) ∷ []) , ((a@₀ , b@(₁₊ _)) , nz)) with b ≟ c
-... | yes ()
-... | no neq = ntH-S^ _ •ⁿ ntH-CZ^ _
-dir-of-No-Top-H ((₀ , z≤n) , ((c@(₁₊ _) , d) ∷ []) , ((a@₀ , b@(₁₊ _)) , nz)) with b ≟ c
-... | yes eq = ntH-⁻¹ʷ (ntH-H •ⁿ ntH-CZ^ (((b , λ ()) ⁻¹) .proj₁) •ⁿ ntH-^ ntH-H 3) •ⁿ ntH-HH
-... | no neq = ntH-ZM ((b + - c , λ eq → neq (b-c=0⇒b=c b c eq)) *' ((b , λ ()) ⁻¹))
-                 •ⁿ ntH-H •ⁿ ntH-CZ^ _ •ⁿ ntH-^ ntH-H _
-dir-of-No-Top-H ((₀ , z≤n) , ((c@₀ , d@₀) ∷ []) , ((a@(₁₊ _) , b) , nz))        = εⁿ
-dir-of-No-Top-H ((₀ , z≤n) , ((c@₀ , d@(₁₊ _)) ∷ []) , ((a@(₁₊ _) , b) , nz))   = εⁿ
-dir-of-No-Top-H ((₀ , z≤n) , ((c@(₁₊ _) , d) ∷ []) , ((a@(₁₊ _) , b) , nz))     = ntH-^ ntH-H _ •ⁿ ntH-S^ _ •ⁿ ntH-H
-dir-of-No-Top-H ((₀ , z≤n) , ((c , d) ∷ []) , ((a@₀ , b@₀) , nzx))              = ⊥-elim (nzx auto)
-dir-of-No-Top-H ((₁ , s≤s z≤n) , [] , ((a@₀ , b@₀) , nzx))                      = ⊥-elim (nzx auto)
 
 ------------------------------------------------------------------------
 -- The output of L2-CZ's dir-of is top-H-free

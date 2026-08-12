@@ -31,7 +31,6 @@ open import Algebra.Properties.Ring (+-*-ring p-2)
 --open Lemmas-2Q 2
 
 
-
 open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime
 
@@ -134,8 +133,6 @@ fig-24-3-cal-1 a* b* = aux'-1 , claim2 , claim3
     - - a * b⁻¹ ∎
 
 
-
-
 fig-25-2-cal : ∀ (a*@(a , nza) : ℤ* ₚ) (b : ℤ ₚ) ->
   let
   nz : (a , b) ≢ (₀ , ₀)
@@ -164,33 +161,6 @@ fig-25-2-cal a*@(a , nza) b = aux
     )
 
 
-cal-b1-a2 : ∀ (a1 a2 b1 : ℤ ₚ) (nz1 : a1 ≢ ₀) (nz2 : a2 ≢ ₀) ->
-  let
-  a1⁻¹ = ((a1 , nz1) ⁻¹) .proj₁
-  -b1/a1 = - b1 * a1⁻¹
-  [a2-b1]/a1 = - (b1 + - a2) * a1⁻¹
-  in
-
-  (a2 * a1) * (a1⁻¹ * a1⁻¹) + -b1/a1 ≡ [a2-b1]/a1
-
-cal-b1-a2 a1 a2 b1 nz1 nz2 = begin
-  (a2 * a1) * (a1⁻¹ * a1⁻¹) + -b1/a1 ≡⟨ cong (_+ -b1/a1) (*-assoc a2 a1 (a1⁻¹ * a1⁻¹)) ⟩
-  a2 * (a1 * (a1⁻¹ * a1⁻¹)) + -b1/a1 ≡⟨ cong (_+ -b1/a1) (cong (a2 *_) (sym (*-assoc a1 a1⁻¹ a1⁻¹))) ⟩
-  a2 * (a1 * a1⁻¹ * a1⁻¹) + -b1/a1 ≡⟨ cong (_+ -b1/a1) (cong (\ xx -> a2 * (xx * a1⁻¹)) (lemma-⁻¹ʳ a1 {{nztoℕ {y = a1} {neq0 = nz1}}})) ⟩
-  a2 * (₁ * a1⁻¹) + -b1/a1 ≡⟨ cong (_+ -b1/a1) (cong (a2 *_) (*-identityˡ a1⁻¹)) ⟩
-  a2 * (a1⁻¹) + -b1/a1 ≡⟨ sym (*-distribʳ-+ a1⁻¹ a2 (- b1)) ⟩
-  (a2 + - b1) * (a1⁻¹) ≡⟨ cong (_* (a1⁻¹)) (+-comm a2 (- b1)) ⟩
-  (- b1 + a2) * (a1⁻¹) ≡⟨ cong (_* a1⁻¹) (cong (- b1 +_) (sym (-‿involutive a2))) ⟩
-  (- b1 + - - a2) * (a1⁻¹) ≡⟨ cong (_* a1⁻¹) ( (-‿+-comm b1 (- a2))) ⟩
-  - (b1 + - a2) * (a1⁻¹) ≡⟨ auto ⟩
-  [a2-b1]/a1 ∎
-  where
-  a1⁻¹ = ((a1 , nz1) ⁻¹) .proj₁
-  -b1/a1 = - b1 * a1⁻¹
-  [a2-b1]/a1 = - (b1 + - a2) * a1⁻¹
-
-
-
 cal-b1-a2' : ∀ (a1 a2 b1 : ℤ ₚ) (nz1 : a1 ≢ ₀) (nz2 : a2 ≢ ₀) ->
   let
   a1⁻¹ = ((a1 , nz1) ⁻¹) .proj₁
@@ -211,58 +181,6 @@ cal-b1-a2' a1 a2 b1 nz1 nz2 = begin
   a1⁻¹ = ((a1 , nz1) ⁻¹) .proj₁
   -b1/a1 = - b1 * a1⁻¹
   [a2-b1]/a1 = - (b1 + - a2) * a1⁻¹
-
-
-
-cal-b2-a1 : ∀ (a1 a2 b2 : ℤ ₚ) (nz1 : a1 ≢ ₀) (nz2 : a2 ≢ ₀) ->
-  let
-  a2⁻¹ = ((a2 , nz2) ⁻¹) .proj₁
-  -b2/a2 = - b2 * a2⁻¹
-  [a1-b2]/a2 = - (b2 + - a1) * a2⁻¹
-  in
-
-  (a2 * a1) * (a2⁻¹ * a2⁻¹) + -b2/a2 ≡ [a1-b2]/a2
-
-cal-b2-a1 a1 a2 b2 nz1 nz2 = begin
-  (a2 * a1) * (a2⁻¹ * a2⁻¹) + -b2/a2 ≡⟨ cong (_+ -b2/a2) (cong (_* (a2⁻¹ * a2⁻¹)) (*-comm a2 a1)) ⟩
-  (a1 * a2) * (a2⁻¹ * a2⁻¹) + -b2/a2 ≡⟨ cong (_+ -b2/a2) (*-assoc a1 a2 (a2⁻¹ * a2⁻¹)) ⟩
-  a1 * (a2 * (a2⁻¹ * a2⁻¹)) + -b2/a2 ≡⟨ cong (_+ -b2/a2) (cong (a1 *_) (sym (*-assoc a2 a2⁻¹ a2⁻¹))) ⟩
-  a1 * (a2 * a2⁻¹ * a2⁻¹) + -b2/a2 ≡⟨ cong (_+ -b2/a2) (cong (\ xx -> a1 * (xx * a2⁻¹)) (lemma-⁻¹ʳ a2 {{nztoℕ {y = a2} {neq0 = nz2}}})) ⟩
-  a1 * (₁ * a2⁻¹) + -b2/a2 ≡⟨ cong (_+ -b2/a2) (cong (a1 *_) (*-identityˡ a2⁻¹)) ⟩
-  a1 * (a2⁻¹) + -b2/a2 ≡⟨ sym (*-distribʳ-+ a2⁻¹ a1 (- b2)) ⟩
-  (a1 + - b2) * (a2⁻¹) ≡⟨ cong (_* (a2⁻¹)) (+-comm a1 (- b2)) ⟩
-  (- b2 + a1) * (a2⁻¹) ≡⟨ cong (_* a2⁻¹) (cong (- b2 +_) (sym (-‿involutive a1))) ⟩
-  (- b2 + - - a1) * (a2⁻¹) ≡⟨ cong (_* a2⁻¹) ( (-‿+-comm b2 (- a1))) ⟩
-  - (b2 + - a1) * (a2⁻¹) ≡⟨ auto ⟩
-  [a1-b2]/a2 ∎
-  where
-  a2⁻¹ = ((a2 , nz2) ⁻¹) .proj₁
-  -b2/a2 = - b2 * a2⁻¹
-  [a1-b2]/a2 = - (b2 + - a1) * a2⁻¹
-
-
-
-cal-b2-a1' : ∀ (a1 a2 b2 : ℤ ₚ) (nz1 : a1 ≢ ₀) (nz2 : a2 ≢ ₀) ->
-  let
-  a2⁻¹ = ((a2 , nz2) ⁻¹) .proj₁
-  -b2/a2 = - b2 * a2⁻¹
-  [a1-b2]/a2 = - (b2 + - a1) * a2⁻¹
-  in
-
-  a1 * (a2⁻¹) + -b2/a2 ≡ [a1-b2]/a2
-
-cal-b2-a1' a1 a2 b2 nz1 nz2 = begin
-  a1 * (a2⁻¹) + -b2/a2 ≡⟨ sym (*-distribʳ-+ a2⁻¹ a1 (- b2)) ⟩
-  (a1 + - b2) * (a2⁻¹) ≡⟨ cong (_* (a2⁻¹)) (+-comm a1 (- b2)) ⟩
-  (- b2 + a1) * (a2⁻¹) ≡⟨ cong (_* a2⁻¹) (cong (- b2 +_) (sym (-‿involutive a1))) ⟩
-  (- b2 + - - a1) * (a2⁻¹) ≡⟨ cong (_* a2⁻¹) ( (-‿+-comm b2 (- a1))) ⟩
-  - (b2 + - a1) * (a2⁻¹) ≡⟨ auto ⟩
-  [a1-b2]/a2 ∎
-  where
-  a2⁻¹ = ((a2 , nz2) ⁻¹) .proj₁
-  -b2/a2 = - b2 * a2⁻¹
-  [a1-b2]/a2 = - (b2 + - a1) * a2⁻¹
-
 
 
 aux-M≡M' : ∀ {n} y y' -> y .proj₁ ≡ y' .proj₁ -> ZM {n = n} y ≡ ZM y'
