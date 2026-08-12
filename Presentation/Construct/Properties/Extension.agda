@@ -258,7 +258,7 @@ module _ {N X : Set}
 
     open PB ext using () renaming (_≈_ to _≈ₑ_)
     open PB R̄  using () renaming (_≈_ to _≈q_)
-    open PB S  using () renaming (_≈_ to _≈s_)
+    open PB S  using () renaming (_≈_ to _≈s_ ; refl' to refl'ₛ)
     open Group-Lemmas S PN.gl using ()
       renaming (_⁻¹ to _⁻¹ₛ ; inverseˡ to inverseˡₛ)
     open LeftRightCongruence S EmptyRel extp using (lefts)
@@ -327,7 +327,7 @@ module _ {N X : Set}
     -- R̄-derivation only `axiom` contributes anything, since refl, assoc
     -- and the two unit laws give ε while trans concatenates, cong
     -- conjugates and sym inverts.  So the accumulated correction is
-    -- ≈s-trivial as soon as every axiom the derivation uses is.
+    -- trivial as soon as every axiom the derivation uses is.
     --
     -- That is a property of a derivation, and a derivation is opaque —
     -- one cannot ask an arbitrary p : a ≈q b which axioms it used.  The
@@ -343,8 +343,16 @@ module _ {N X : Set}
     -- LeftRightCongruence.rights transports the monoid laws and nothing
     -- else, and a genuine quotient axiom can only enter through tw.
 
+    -- The side condition is propositional equality, not just ≈s: it
+    -- costs nothing (corr reduces on the nose for every axiom that lifts
+    -- exactly, so witnesses are refl) and it is what lets a client
+    -- transport a correction-free axiom along a structural rule.  If
+    -- corr r̄ is ε literally, so is any f (corr r̄) with f ε = ε — which
+    -- is how a wire-shift rule keeps its axioms correction-free.
+    open import Relation.Binary.PropositionalEquality using (_≡_)
+
     Corr-free : WRel X
-    Corr-free u v = ∃ λ (r̄ : R̄ u v) → corr r̄ ≈s ε
+    Corr-free u v = ∃ λ (r̄ : R̄ u v) → corr r̄ ≡ ε
 
     open PB Corr-free using () renaming (_≈_ to _≈₀_)
 
@@ -361,7 +369,8 @@ module _ {N X : Set}
     rights₀ _≈₀_.right-unit    = _≈ₑ_.right-unit
     rights₀ (_≈₀_.axiom (r̄ , triv)) =
       _≈ₑ_.trans (_≈ₑ_.axiom (mid (right (tw r̄))))
-        (_≈ₑ_.trans (_≈ₑ_.cong (lefts triv) _≈ₑ_.refl) _≈ₑ_.left-unit)
+        (_≈ₑ_.trans (_≈ₑ_.cong (lefts (refl'ₛ triv)) _≈ₑ_.refl)
+                    _≈ₑ_.left-unit)
 
     ------------------------------------------------------------------
     -- The twisted coset table

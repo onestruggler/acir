@@ -68,10 +68,10 @@ open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2) using (-0#≈0#)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
-open Symplectic using (H ; S^ ; XM)
+open Symplectic using (H ; S^ ; XM ; Circuit ; _↑)
 open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
   using (module Simplified-Relations)
-open Simplified-Relations using (srel ; order-H ; M₋₁ ; M-power)
+open Simplified-Relations using (srel ; cong↑ ; order-H ; M₋₁ ; M-power)
 
 open import Examples.Groups.ProjectiveClifford.Qubit.Semantics using (CMS-group)
 import Examples.Groups.ProjectiveClifford.Qubit.ExtensionPresentation as EP
@@ -110,7 +110,7 @@ sec-trivial {n} = EP.Clifford.sec-trivial-from n
 -- the case that matters: at p = 2 it reads H² = M₋₁ = Mg = ω, and it is
 -- the relator standing between the identity coset's A-box XM ₁ and ε.
 corr-free-order-H : ∀ {n} → EP.Clifford.Corr-free (₁₊ n) (H ^ 2) M₋₁
-corr-free-order-H = srel order-H , PB.refl
+corr-free-order-H = srel order-H , Eq.refl
 
 ------------------------------------------------------------------------
 -- The presentation theorem
@@ -190,7 +190,7 @@ presentation-0 = presentation sec-trivial-0 conj-trivial-0
 -- is a single axiom.
 a-box-free : ∀ {n} →
   PB._≈_ (EP.Clifford.Corr-free (₁₊ n)) (XM {n} (₁ , λ ())) ε
-a-box-free = PB.sym (PB.axiom (srel (M-power ₀) , PB.refl))
+a-box-free = PB.sym (PB.axiom (srel (M-power ₀) , Eq.refl))
 
 -- H² ≈ ε, correction-free, at every width.  The simplified rule set
 -- only gives H² = M₋₁, and at p = 2 that scalar is Mg = XM ₁, which
@@ -199,7 +199,26 @@ a-box-free = PB.sym (PB.axiom (srel (M-power ₀) , PB.refl))
 -- H-manipulation in Normalization's identity-section chain needs when
 -- replayed here — [₀]ᵇ≈Ex in particular.
 H²-free : ∀ {n} → PB._≈_ (EP.Clifford.Corr-free (₁₊ n)) (H ^ 2) ε
-H²-free = PB.trans (PB.axiom (srel order-H , PB.refl)) a-box-free
+H²-free = PB.trans (PB.axiom (srel order-H , Eq.refl)) a-box-free
+
+-- Wire-shifting preserves correction-freeness.  Structurally this is the
+-- same seven-case induction as rights₀ — _↑ is a wmap, so it takes ε to
+-- ε and • to • on the nose — and the axiom case is where the tightened
+-- side condition pays: cong↑ is a rule of the lifted relation, and
+-- corr (cong↑ r) is shiftPauli (corr r), so a correction that is ε
+-- literally stays ε literally under the shift.
+↑-free : ∀ {n} {w v : Circuit n} →
+  PB._≈_ (EP.Clifford.Corr-free n) w v →
+  PB._≈_ (EP.Clifford.Corr-free (₁₊ n)) (w ↑) (v ↑)
+↑-free PB.refl              = PB.refl
+↑-free (PB.sym p)           = PB.sym (↑-free p)
+↑-free (PB.trans p q)       = PB.trans (↑-free p) (↑-free q)
+↑-free (PB.cong p q)        = PB.cong (↑-free p) (↑-free q)
+↑-free PB.assoc             = PB.assoc
+↑-free PB.left-unit         = PB.left-unit
+↑-free PB.right-unit        = PB.right-unit
+↑-free (PB.axiom (r , triv)) =
+  PB.axiom (cong↑ r , Eq.cong shiftPauli triv)
 
 sec-reduction-1 : Sec-reduction 1
 sec-reduction-1 =
