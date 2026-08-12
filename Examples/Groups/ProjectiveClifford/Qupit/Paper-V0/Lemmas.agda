@@ -63,7 +63,8 @@ open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Syntactics
 open Clifford-Relations
 open Lemmas-Clifford
   using (lemma-↑^ ; lemma-↓^ ; lemma-Induction
-        ; lemma-comm-S-w↑ ; lemma-comm-H-w↑ ; lemma-comm-Z-w↑)
+        ; lemma-comm-S-w↑ ; lemma-comm-H-w↑ ; lemma-comm-Z-w↑
+        ; lemma-comm-CZ-w↑)
 
 private
   variable
@@ -260,6 +261,31 @@ module One-Wire (n : ℕ) where
     aux : ((₂* ⁻¹) *' ₂*) .proj₁ ≡ ₁
     aux = lemma-⁻¹ˡ 2ₚ {{nztoℕ {y = 2ₚ} {neq0 = λ ()} }}
     open SR word-setoid
+
+  ------------------------------------------------------------------------
+  -- The multiplier by -1 as a power of the generating multiplier
+  --
+  -- Stated here, at one wire, rather than where it is used: the callers
+  -- need it at two different widths — as it stands for the wire-0
+  -- multiplier, and lifted through lemma-cong↑ for the wire-1 one — and
+  -- `axiom` is fixed to the ambient width by the open, so it cannot
+  -- produce the lower-width statement from inside a two-wire module.
+
+  k₋ : ℤ ₚ
+  k₋ = inject₁ (g-gen -'₁ .proj₁)
+
+  j₋ : ℕ
+  j₋ = toℕ k₋
+
+  e₋ : (g^ k₋) .proj₁ ≡ -'₁ .proj₁
+  e₋ = lemma-log-inject -'₁
+
+  lemma-M₋₁-pow : Mg ^ j₋ ≈ M₋₁
+  lemma-M₋₁-pow = begin
+    Mg ^ j₋    ≈⟨ axiom (M-power k₋) ⟩
+    M (g^ k₋)  ≡⟨ aux-M≡M (g^ k₋) -'₁ e₋ ⟩
+    M₋₁ ∎
+    where open SR word-setoid
 
 ------------------------------------------------------------------------
 -- Group-likeness
@@ -900,27 +926,65 @@ module Ex-Conjugation (n : ℕ) where
     (CZ ^ toℕ (g * (g ^′ ₁₊ j)) • Mg) • Mg ^ ₁₊ j
       ≈⟨ assoc ⟩
     CZ ^ toℕ (g * (g ^′ ₁₊ j)) • (Mg • Mg ^ ₁₊ j) ∎
+
+  ------------------------------------------------------------------------
+  -- The same chain one wire up
+  --
+  -- semi-M↑CZ is an axiom, so the wire-1 multiplier needs no derivation
+  -- for its base case; from there the induction is word-for-word the
+  -- wire-0 one.  A multiplier on either wire of a CZ rescales it by the
+  -- same factor, which is what makes c14's cancellation work.
+
+  lemma-Mg↑-CZ^ : ∀ (a : ℤ ₚ) → Mg ↑ • CZ^ a ≈ CZ^ (g * a) • Mg ↑
+  lemma-Mg↑-CZ^ a = begin
+    Mg ↑ • CZ ^ toℕ a
+      ≈⟨ lemma-Induction (axiom semi-M↑CZ) (toℕ a) ⟩
+    (CZ ^ toℕ g) ^ toℕ a • Mg ↑
+      ≈⟨ cleft (^^ CZ (toℕ g) (toℕ a)) ⟩
+    CZ ^ (toℕ g Nat.* toℕ a) • Mg ↑
+      ≈⟨ cleft (lemma-pow-mod (axiom order-CZ) (toℕ g Nat.* toℕ a)) ⟩
+    CZ ^ ((toℕ g Nat.* toℕ a) Nat.% p) • Mg ↑
+      ≈⟨ cleft refl' (Eq.cong (CZ ^_) (lemma-toℕ-% g a)) ⟩
+    CZ ^ toℕ (g * a) • Mg ↑ ∎
+
+  lemma-Mgᵏ↑-CZ : ∀ j → (Mg ↑) ^ j • CZ ≈ CZ ^ toℕ (g ^′ j) • (Mg ↑) ^ j
+  lemma-Mgᵏ↑-CZ ₀ = begin
+    ε • CZ  ≈⟨ left-unit ⟩
+    CZ      ≈⟨ sym right-unit ⟩
+    CZ • ε ∎
+  lemma-Mgᵏ↑-CZ ₁ = begin
+    Mg ↑ • CZ            ≈⟨ axiom semi-M↑CZ ⟩
+    CZ ^ toℕ g • Mg ↑
+      ≡⟨ Eq.cong (λ z → CZ ^ toℕ z • Mg ↑) (Eq.sym (lemma-x^′1=x g)) ⟩
+    CZ ^ toℕ (g ^′ 1) • Mg ↑ ∎
+  lemma-Mgᵏ↑-CZ (₂₊ j) = begin
+    (Mg ↑ • (Mg ↑) ^ ₁₊ j) • CZ
+      ≈⟨ assoc ⟩
+    Mg ↑ • ((Mg ↑) ^ ₁₊ j • CZ)
+      ≈⟨ cright lemma-Mgᵏ↑-CZ (₁₊ j) ⟩
+    Mg ↑ • (CZ ^ toℕ (g ^′ ₁₊ j) • (Mg ↑) ^ ₁₊ j)
+      ≈⟨ sym assoc ⟩
+    (Mg ↑ • CZ ^ toℕ (g ^′ ₁₊ j)) • (Mg ↑) ^ ₁₊ j
+      ≈⟨ cleft lemma-Mg↑-CZ^ (g ^′ ₁₊ j) ⟩
+    (CZ ^ toℕ (g * (g ^′ ₁₊ j)) • Mg ↑) • (Mg ↑) ^ ₁₊ j
+      ≈⟨ assoc ⟩
+    CZ ^ toℕ (g * (g ^′ ₁₊ j)) • (Mg ↑ • (Mg ↑) ^ ₁₊ j) ∎
+
   ------------------------------------------------------------------------
   -- (moved below, after the multiplier lemmas it depends on)
 
   private
-    -- The power of g that is -1, and M₋₁ as that power of Mg.  M-power
-    -- indexes by ℤ ₚ while g-gen's witness is a ℤ ₚ₋₁, so it goes through
-    -- inject₁, exactly as lemma-M-mul does.
-    k₋ : ℤ ₚ
-    k₋ = inject₁ (g-gen -'₁ .proj₁)
-
+    -- The power of g that is -1, and M₋₁ as that power of Mg, taken from
+    -- One-Wire at both widths: as it stands for the wire-0 multiplier,
+    -- and lifted for the wire-1 one.
     j₋ : ℕ
-    j₋ = toℕ k₋
+    j₋ = One-Wire.j₋ n
 
-    e₋ : (g^ k₋) .proj₁ ≡ -'₁ .proj₁
-    e₋ = lemma-log-inject -'₁
+    e₋ : (g^ (One-Wire.k₋ n)) .proj₁ ≡ -'₁ .proj₁
+    e₋ = One-Wire.e₋ n
 
     Mg^j₋≈M₋₁ : Mg ^ j₋ ≈ M₋₁
-    Mg^j₋≈M₋₁ = begin
-      Mg ^ j₋    ≈⟨ axiom (M-power k₋) ⟩
-      M (g^ k₋)  ≡⟨ One-Wire.aux-M≡M (₁₊ n) (g^ k₋) -'₁ e₋ ⟩
-      M₋₁ ∎
+    Mg^j₋≈M₋₁ = One-Wire.lemma-M₋₁-pow (₁₊ n)
 
     lemma-M₋₁-CZ : M₋₁ • CZ ≈ CZ ^ toℕ (-'₁ .proj₁) • M₋₁
     lemma-M₋₁-CZ = begin
@@ -930,14 +994,33 @@ module Ex-Conjugation (n : ℕ) where
       CZ ^ toℕ (-'₁ .proj₁) • Mg ^ j₋ ≈⟨ cright Mg^j₋≈M₋₁ ⟩
       CZ ^ toℕ (-'₁ .proj₁) • M₋₁ ∎
 
-    -- CZ • CZ⁻¹ is CZ ^ p.
-    lemma-CZ-CZ₋₁ : CZ • CZ ^ toℕ (-'₁ .proj₁) ≈ ε
-    lemma-CZ-CZ₋₁ = begin
-      CZ • CZ ^ toℕ (-'₁ .proj₁)
-        ≡⟨ Eq.cong (λ m → CZ • CZ ^ m) lemma-toℕ-1ₚ ⟩
-      CZ • CZ ^ p-1        ≈⟨ sym (^-+ CZ 1 p-1) ⟩
-      CZ ^ (1 Nat.+ p-1)   ≈⟨ axiom order-CZ ⟩
-      ε ∎
+    -- The same, one wire up.  M-power and aux-M≡M are one-wire facts, so
+    -- the ↑ version is the ↓ one lifted, modulo (Mg ^ j) ↑ ≡ (Mg ↑) ^ j.
+    Mg↑^j₋≈M₋₁↑ : (Mg ↑) ^ j₋ ≈ M₋₁ ↑
+    Mg↑^j₋≈M₋₁↑ = begin
+      (Mg ↑) ^ j₋  ≡⟨ Eq.sym (lemma-↑^ j₋ Mg) ⟩
+      (Mg ^ j₋) ↑  ≈⟨ lemma-cong↑ _ _ (One-Wire.lemma-M₋₁-pow n) ⟩
+      M₋₁ ↑ ∎
+
+  -- Exposed rather than private: Three-Wire needs this one for c14.
+  lemma-M₋₁↑-CZ : M₋₁ ↑ • CZ ≈ CZ ^ toℕ (-'₁ .proj₁) • M₋₁ ↑
+  lemma-M₋₁↑-CZ = begin
+    M₋₁ ↑ • CZ                       ≈⟨ cleft sym Mg↑^j₋≈M₋₁↑ ⟩
+    (Mg ↑) ^ j₋ • CZ                 ≈⟨ lemma-Mgᵏ↑-CZ j₋ ⟩
+    CZ ^ toℕ (g ^′ j₋) • (Mg ↑) ^ j₋
+      ≡⟨ Eq.cong (λ z → CZ ^ toℕ z • (Mg ↑) ^ j₋) e₋ ⟩
+    CZ ^ toℕ (-'₁ .proj₁) • (Mg ↑) ^ j₋ ≈⟨ cright Mg↑^j₋≈M₋₁↑ ⟩
+    CZ ^ toℕ (-'₁ .proj₁) • M₋₁ ↑ ∎
+
+  -- CZ • CZ⁻¹ is CZ ^ p.  Exposed rather than private: Three-Wire needs
+  -- it for c14, where the same cancellation closes the chain.
+  lemma-CZ-CZ₋₁ : CZ • CZ ^ toℕ (-'₁ .proj₁) ≈ ε
+  lemma-CZ-CZ₋₁ = begin
+    CZ • CZ ^ toℕ (-'₁ .proj₁)
+      ≡⟨ Eq.cong (λ m → CZ • CZ ^ m) lemma-toℕ-1ₚ ⟩
+    CZ • CZ ^ p-1        ≈⟨ sym (^-+ CZ 1 p-1) ⟩
+    CZ ^ (1 Nat.+ p-1)   ≈⟨ axiom order-CZ ⟩
+    ε ∎
 
   lemma-ₕ|ₕ-invol : ₕ|ₕ • ₕ|ₕ ≈ ε
   lemma-ₕ|ₕ-invol = begin
@@ -1861,6 +1944,137 @@ module Three-Wire (n : ℕ) where
   -- CZ02.  This is the form c14 uses: its element ⊤⊥ ↑ • CZ becomes
   -- CZ02 • ⊤⊥ ↑, so cubing it is a question about how ⊤⊥ ↑ moves across
   -- CZ02 — the one step c14 still lacks.
+
+  ------------------------------------------------------------------------
+  -- The identity c14 turns on
+  --
+  --     CZ • ₕ|ₕ ↑ • CZ • ₕ|ₕ ↑ ≈ CZ02
+  --
+  -- i.e. conjugating CZ by the upper half-swap gives CZ⁻¹ • CZ02.  This
+  -- is where C18 enters, and it is the only place in the c13/c14 story
+  -- that needs an axiom beyond what c13 used.
+  --
+  -- The half-swap is M₋₁ • CX (lemma-ₕ|ₕ-CX), so C18 applies directly:
+  -- it moves CX ↑ across the CZ at the cost of a CZ02.  The two CX ↑ that
+  -- are left sandwich a multiplier, and that sandwich collapses back to
+  -- the multiplier because the half-swap is an involution.  What remains
+  -- is a multiplier passing two CZs, rescaling one of them to its inverse
+  -- and commuting with the other.
+
+  private
+    -- The multiplier on wire 1 commutes with CZ02, which lives on wires
+    -- 0 and 2.  Syntactically: write CZ02 with the upper swap, which
+    -- carries the multiplier to wire 2, where it clears CZ by the
+    -- word-level structural rule, and carry it back.
+    ex↑-M↑↑ : Ex ↑ • (M₋₁ {n}) ↑ ↑ ≈ M₋₁ ↑ • Ex ↑
+    ex↑-M↑↑ = lemma-cong↑ _ _ (Ex-Conjugation.lemma-Ex-M↑ n -'₁)
+
+    M↑↑-ex↑ : (M₋₁ {n}) ↑ ↑ • Ex ↑ ≈ Ex ↑ • M₋₁ ↑
+    M↑↑-ex↑ = begin
+      (M₋₁ {n}) ↑ ↑ • Ex ↑
+        ≈⟨ sym left-unit ⟩
+      ε • ((M₋₁ {n}) ↑ ↑ • Ex ↑)
+        ≈⟨ cleft sym lemma-Ex↑-Ex↑ ⟩
+      (Ex ↑ • Ex ↑) • ((M₋₁ {n}) ↑ ↑ • Ex ↑)
+        -- explicit assoc throughout this section: M₋₁ carries a symbolic
+        -- power, so to-list is stuck and by-assoc cannot re-bracket it
+        ≈⟨ assoc ⟩
+      Ex ↑ • (Ex ↑ • ((M₋₁ {n}) ↑ ↑ • Ex ↑))
+        ≈⟨ cright sym assoc ⟩
+      Ex ↑ • ((Ex ↑ • (M₋₁ {n}) ↑ ↑) • Ex ↑)
+        ≈⟨ cright cleft ex↑-M↑↑ ⟩
+      Ex ↑ • ((M₋₁ ↑ • Ex ↑) • Ex ↑)
+        ≈⟨ cright assoc ⟩
+      Ex ↑ • (M₋₁ ↑ • (Ex ↑ • Ex ↑))
+        ≈⟨ cright cright lemma-Ex↑-Ex↑ ⟩
+      Ex ↑ • (M₋₁ ↑ • ε)
+        ≈⟨ cright right-unit ⟩
+      Ex ↑ • M₋₁ ↑ ∎
+
+    lemma-M₋₁↑-CZ02 : M₋₁ ↑ • CZ02 ≈ CZ02 • M₋₁ ↑
+    lemma-M₋₁↑-CZ02 = begin
+      M₋₁ ↑ • CZ02
+        ≈⟨ cright sym lemma-CZ02' ⟩
+      M₋₁ ↑ • (Ex ↑ • (CZ • Ex ↑))
+        ≈⟨ sym assoc ⟩
+      (M₋₁ ↑ • Ex ↑) • (CZ • Ex ↑)
+        ≈⟨ cleft sym ex↑-M↑↑ ⟩
+      (Ex ↑ • (M₋₁ {n}) ↑ ↑) • (CZ • Ex ↑)
+        ≈⟨ assoc ⟩
+      Ex ↑ • ((M₋₁ {n}) ↑ ↑ • (CZ • Ex ↑))
+        ≈⟨ cright sym assoc ⟩
+      Ex ↑ • (((M₋₁ {n}) ↑ ↑ • CZ) • Ex ↑)
+        ≈⟨ cright cleft sym (lemma-comm-CZ-w↑ (M₋₁ {n})) ⟩
+      Ex ↑ • ((CZ • (M₋₁ {n}) ↑ ↑) • Ex ↑)
+        ≈⟨ cright assoc ⟩
+      Ex ↑ • (CZ • ((M₋₁ {n}) ↑ ↑ • Ex ↑))
+        ≈⟨ cright cright M↑↑-ex↑ ⟩
+      Ex ↑ • (CZ • (Ex ↑ • M₋₁ ↑))
+        ≈⟨ cright sym assoc ⟩
+      Ex ↑ • ((CZ • Ex ↑) • M₋₁ ↑)
+        ≈⟨ sym assoc ⟩
+      (Ex ↑ • (CZ • Ex ↑)) • M₋₁ ↑
+        ≈⟨ cleft lemma-CZ02' ⟩
+      CZ02 • M₋₁ ↑ ∎
+
+    -- The half-swap is an involution, and it is M₋₁ ↑ • CX ↑, so the two
+    -- CX ↑ sandwiching a multiplier collapse back to that multiplier.
+    ₕ|ₕ↑-CX : M₋₁ ↑ • CX ↑ ≈ ₕ|ₕ ↑
+    ₕ|ₕ↑-CX = lemma-cong↑ _ _ (Ex-Conjugation.lemma-ₕ|ₕ-CX n)
+
+    M₋₁↑-invol : M₋₁ ↑ • M₋₁ ↑ ≈ ε
+    M₋₁↑-invol = lemma-cong↑ _ _ (One-Wire.lemma-M₋₁^2 (₁₊ n))
+
+    lemma-CX↑-M₋₁↑ : CX ↑ • (M₋₁ ↑ • CX ↑) ≈ M₋₁ ↑
+    lemma-CX↑-M₋₁↑ = •-cancelˡ {g = M₋₁ ↑} (begin
+      M₋₁ ↑ • (CX ↑ • (M₋₁ ↑ • CX ↑))
+        ≈⟨ sym assoc ⟩
+      (M₋₁ ↑ • CX ↑) • (M₋₁ ↑ • CX ↑)
+        ≈⟨ cong ₕ|ₕ↑-CX ₕ|ₕ↑-CX ⟩
+      ₕ|ₕ ↑ • ₕ|ₕ ↑
+        ≈⟨ lemma-cong↑ _ _ (Ex-Conjugation.lemma-ₕ|ₕ-invol n) ⟩
+      ε
+        ≈⟨ sym M₋₁↑-invol ⟩
+      M₋₁ ↑ • M₋₁ ↑ ∎)
+
+  lemma-c14-key : CZ • (ₕ|ₕ ↑ • (CZ • ₕ|ₕ ↑)) ≈ CZ02
+  lemma-c14-key = begin
+    CZ • (ₕ|ₕ ↑ • (CZ • ₕ|ₕ ↑))
+      ≈⟨ cright cong (sym ₕ|ₕ↑-CX) (cright sym ₕ|ₕ↑-CX) ⟩
+    CZ • ((M₋₁ ↑ • CX ↑) • (CZ • (M₋₁ ↑ • CX ↑)))
+      -- explicit assoc, not by-assoc: M₋₁'s symbolic power blocks to-list
+      ≈⟨ cright assoc ⟩
+    CZ • (M₋₁ ↑ • (CX ↑ • (CZ • (M₋₁ ↑ • CX ↑))))
+      ≈⟨ cright cright sym assoc ⟩
+    CZ • (M₋₁ ↑ • ((CX ↑ • CZ) • (M₋₁ ↑ • CX ↑)))
+      ≈⟨ cright cright cleft axiom semi-CX↑-CZ↓ ⟩
+    CZ • (M₋₁ ↑ • ((CZ • (CZ02 • CX ↑)) • (M₋₁ ↑ • CX ↑)))
+      ≈⟨ cright cright assoc ⟩
+    CZ • (M₋₁ ↑ • (CZ • ((CZ02 • CX ↑) • (M₋₁ ↑ • CX ↑))))
+      ≈⟨ cright cright cright assoc ⟩
+    CZ • (M₋₁ ↑ • (CZ • (CZ02 • (CX ↑ • (M₋₁ ↑ • CX ↑)))))
+      ≈⟨ cright cright cright cright lemma-CX↑-M₋₁↑ ⟩
+    CZ • (M₋₁ ↑ • (CZ • (CZ02 • M₋₁ ↑)))
+      ≈⟨ cright cright cright sym lemma-M₋₁↑-CZ02 ⟩
+    CZ • (M₋₁ ↑ • (CZ • (M₋₁ ↑ • CZ02)))
+      ≈⟨ cright sym assoc ⟩
+    CZ • ((M₋₁ ↑ • CZ) • (M₋₁ ↑ • CZ02))
+      ≈⟨ cright cleft lemma-M₋₁↑-CZ ⟩
+    CZ • ((CZ ^ toℕ (-'₁ .proj₁) • M₋₁ ↑) • (M₋₁ ↑ • CZ02))
+      ≈⟨ cright assoc ⟩
+    CZ • (CZ ^ toℕ (-'₁ .proj₁) • (M₋₁ ↑ • (M₋₁ ↑ • CZ02)))
+      ≈⟨ cright cright sym assoc ⟩
+    CZ • (CZ ^ toℕ (-'₁ .proj₁) • ((M₋₁ ↑ • M₋₁ ↑) • CZ02))
+      ≈⟨ cright cright cleft M₋₁↑-invol ⟩
+    CZ • (CZ ^ toℕ (-'₁ .proj₁) • (ε • CZ02))
+      ≈⟨ cright cright left-unit ⟩
+    CZ • (CZ ^ toℕ (-'₁ .proj₁) • CZ02)
+      ≈⟨ sym assoc ⟩
+    (CZ • CZ ^ toℕ (-'₁ .proj₁)) • CZ02
+      ≈⟨ cleft lemma-CZ-CZ₋₁ ⟩
+    ε • CZ02
+      ≈⟨ left-unit ⟩
+    CZ02 ∎
 
   lemma-⊤⊥↑-CZ : ⊤⊥ {n} ↑ • CZ ≈ CZ02 • ⊤⊥ {n} ↑
   lemma-⊤⊥↑-CZ = begin
