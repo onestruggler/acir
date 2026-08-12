@@ -724,6 +724,57 @@ module Ex-Conjugation (n : ℕ) where
       ≈⟨ by-assoc auto ⟩
     H • Ex • (H ↑) ^ 3 ∎
 
+  ------------------------------------------------------------------------
+  -- A half-swap times a swap has order 3
+  --
+  -- Ex carries ₕ|ₕ to ʰ|ʰ, so ⊥⊤ = ₕ|ₕ • ʰ|ʰ is (ₕ|ₕ • Ex) squared, and
+  -- ⊤⊥ is the same element conjugated.  Cubing that element is
+  -- ⊥⊤ • ₕ|ₕ • Ex, which lemma-half-swaps rewrites to H • Ex • (H ↑)³ • Ex;
+  -- the two swaps then cancel and H ⁴ is ε.
+  --
+  -- Both c14 and c15 assert that an element cubes to ε, and Paper-V0's
+  -- axioms supply exactly two such elements: this one and the 3-cycle of
+  -- lemma-σ³.
+
+  lemma-ʰ|ʰ-conj : Ex • (ₕ|ₕ • Ex) ≈ ʰ|ʰ
+  lemma-ʰ|ʰ-conj = begin
+    Ex • (ₕ|ₕ • Ex)  ≈⟨ sym assoc ⟩
+    (Ex • ₕ|ₕ) • Ex  ≈⟨ cleft lemma-Ex-ₕ|ₕ ⟩
+    (ʰ|ʰ • Ex) • Ex  ≈⟨ assoc ⟩
+    ʰ|ʰ • (Ex • Ex)  ≈⟨ cright lemma-Ex-Ex ⟩
+    ʰ|ʰ • ε          ≈⟨ right-unit ⟩
+    ʰ|ʰ ∎
+
+  lemma-⊥⊤-square : ⊥⊤ ≈ (ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)
+  lemma-⊥⊤-square = begin
+    ₕ|ₕ • ʰ|ʰ                    ≈⟨ cright sym lemma-ʰ|ʰ-conj ⟩
+    ₕ|ₕ • (Ex • (ₕ|ₕ • Ex))      ≈⟨ sym assoc ⟩
+    (ₕ|ₕ • Ex) • (ₕ|ₕ • Ex) ∎
+
+  lemma-half-swap-cube : ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • (ₕ|ₕ • Ex) ≈ ε
+  lemma-half-swap-cube = begin
+    ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • (ₕ|ₕ • Ex)
+      ≈⟨ cleft sym lemma-⊥⊤-square ⟩
+    ⊥⊤ • (ₕ|ₕ • Ex)
+      ≈⟨ by-assoc auto ⟩
+    (ₕ|ₕ • ʰ|ʰ • ₕ|ₕ) • Ex
+      ≈⟨ cleft lemma-half-swaps ⟩
+    (H • Ex • (H ↑) ^ 3) • Ex
+      ≈⟨ by-assoc auto ⟩
+    H • Ex • ((H ↑) ^ 3 • Ex)
+      ≈⟨ cright cright sym (lemma-Ex-Hᵏ 3) ⟩
+    H • Ex • (Ex • H ^ 3)
+      ≈⟨ by-assoc auto ⟩
+    H • (Ex • Ex) • H ^ 3
+      ≈⟨ cright cleft lemma-Ex-Ex ⟩
+    H • ε • H ^ 3
+      ≈⟨ cright left-unit ⟩
+    H • H ^ 3
+      ≈⟨ by-assoc auto ⟩
+    H ^ 4
+      ≈⟨ One-Wire.lemma-order-H (₁₊ n) ⟩
+    ε ∎
+
   lemma-conj-Ex-Mg↑ : Ex • Mg ↑ • Ex ≈ Mg
   lemma-conj-Ex-Mg↑ = begin
     Ex • Mg ↑ • Ex   ≈⟨ sym assoc ⟩
