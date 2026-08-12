@@ -183,21 +183,66 @@ presentation-0 = presentation sec-trivial-0 conj-trivial-0
 -- reaches XM ₁ ≈ ε through order-SH (lemma-M1); the simplified set has
 -- no order-SH, and M-power turns out to be the cleaner road anyway.
 
+-- The identity A-box collapses correction-free, at EVERY width: nothing
+-- in the argument is special to width 1.  This is Normalization's
+-- [Ia]≈ε, done in the correction-free calculus and by a shorter route —
+-- that file goes through XM≡ZM⁻¹, aux-MM and aux-mc1ε, where M-power ₀
+-- is a single axiom.
+a-box-free : ∀ {n} →
+  PB._≈_ (EP.Clifford.Corr-free (₁₊ n)) (XM {n} (₁ , λ ())) ε
+a-box-free = PB.sym (PB.axiom (srel (M-power ₀) , PB.refl))
+
+-- H² ≈ ε, correction-free, at every width.  The simplified rule set
+-- only gives H² = M₋₁, and at p = 2 that scalar is Mg = XM ₁, which
+-- a-box-free kills.  This is the fact the ORIGINAL rule set has as an
+-- axiom (order-H there reads H⁴ = ε), so it is the bridge every
+-- H-manipulation in Normalization's identity-section chain needs when
+-- replayed here — [₀]ᵇ≈Ex in particular.
+H²-free : ∀ {n} → PB._≈_ (EP.Clifford.Corr-free (₁₊ n)) (H ^ 2) ε
+H²-free = PB.trans (PB.axiom (srel order-H , PB.refl)) a-box-free
+
 sec-reduction-1 : Sec-reduction 1
 sec-reduction-1 =
   trans left-unit
     (trans (sym assoc)
       (trans (cleft (trans right-unit (refl' (Eq.cong S^ -0#≈0#))))
-        (trans left-unit a-box≈ε)))
+        (trans left-unit a-box-free)))
   where
   open PB (EP.Clifford.Corr-free 1)
 
-  -- ε === XM ₁, correction-free.
-  a-box≈ε : XM {0} (₁ , λ ()) ≈ ε
-  a-box≈ε = sym (axiom (srel (M-power ₀) , PB.refl))
-
 sec-trivial-1 : Sec-trivial 1
 sec-trivial-1 = sec-trivial sec-reduction-1
+
+------------------------------------------------------------------------
+-- Towards width n
+--
+-- Normalization.[I]≈ε' already proves the identity section trivial at
+-- every width, and with the same chain as width 1 — sym assoc, cleft
+-- aux-MB, left-unit, [Ia]≈ε — so the general case is that chain replayed
+-- in Corr-free, plus the tower step.  What each part costs, in the
+-- SIMPLIFIED rule set:
+--
+--   [Ia]≈ε      a-box-free above, at every width.  Done.
+--   [₀]ᵉ≈ε      refl' on -0#≈0#: no axiom, so it ports verbatim.
+--   [₀]ᵈ≈Ex     refl' and right-unit: likewise.
+--   [₀]ᵇ≈Ex     needs H⁴ ≈ ε, which the original rule set has as its
+--               order-H axiom and this one does not.  H²-free supplies
+--               it: H⁴ = H² • H², twice H²-free.
+--   aux-MB      induction on the width, and the one genuinely new step:
+--               lemma-order-Ex-n (Ex • Ex ≈ ε) has to be redone in the
+--               simplified set, and the induction is under lemma-cong↑,
+--               so Corr-free needs its own ↑-congruence.
+--   the tower   at width 1, rep Iᶜ is ε • [ I₀ ]ᵐˡ definitionally.  At
+--               width n it is a nest of levels, so this becomes an
+--               induction: nfˢ ε is the identity NF at each level, and
+--               the transfer's section of a pair is (f ʷ) of the level
+--               below concatenated with that level's coset section.
+--
+-- One design note for the ↑-congruence.  Corr-free asks corr r̄ ≈s ε; if
+-- it asked for corr r̄ ≡ ε instead, lifting an axiom through cong↑ would
+-- be free, since corr (cong↑ r) is shiftPauli (corr r) and shiftPauli ε
+-- reduces to ε.  Every witness built so far proves its side condition by
+-- refl, so nothing would be lost by tightening it.
 
 -- Conj-trivial 1 is still open, and it is a different kind of problem.
 -- Conjugating a Pauli generator by that representative rebuilds it
