@@ -1,226 +1,91 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The n-qubit Clifford group (p = 2), presented as a group extension
--- (Selinger, arXiv:1310.6813).
+-- The presentation theorem for the n-qubit Clifford group mod scalars
+-- (p = 2): _Clifford,_===_ presents CMS n.
 --
---     1 ─→ Pauli n ─→ Clifford n ─→ Sp(2n, 2) ─→ 1
+--     1 ─→ Pauli n ─→ CMS n ─→ Sp(2n, 2) ─→ 1
 --
--- The (phaseless) Pauli group is normal and the quotient is the
--- symplectic group.  Using Presentation.Construct.Properties.Extension
--- (Proposition 2.55), a presentation of the extension is
+-- The relation is Proposition 2.55's extension presentation of the Pauli
+-- rule set by the simplified symplectic one, along the conjugation
+-- action conj and the cocycle corr; all four live in Qubit.Cocycle,
+-- which this module re-exports, so the ten Selinger modules that read
+-- conj / corr / _Clifford,_===_ from here are unaffected.
 --
---     extension-presentation S R̄ conj corr
+-- The proof is assembled in Qubit.ExtensionPresentation (interpretation
+-- of the generators, the two bijective normal forms, soundness of conj
+-- and corr against CMS n, and the realisation conditions).  Two of
+-- Proposition 2.55's inputs are still open, and are the hypotheses of
+-- `presentation` below:
 --
--- where
---   * S    = the Pauli presentation      (Examples.Groups.ProjectivePauli.Presentation),
---   * R̄    = the symplectic relations, taken from the SIMPLIFIED rule set
---            (Symplectic.Simplified.Syntactics.Simplified-Relations),
---   * conj = the symplectic action of a quotient generator on a Pauli
---            generator (the word-valued form of
---            Symplectic.Semantics.Interpretation.actg),
---   * corr = the cocycle: the Pauli correction word carried by each
---            symplectic relator when it is lifted to Clifford.
+--   Sec-trivial   the identity coset's representative is trivial in the
+--                 EXTENSION: [ rep Iᶜ ]ᵣ ≈ ε.  What the coset tower gives
+--                 for free is the weaker rep Iᶜ ≈ ε in the QUOTIENT;
+--                 lifting that into the extension goes through corrOf
+--                 and so picks up the Pauli correction accumulated by
+--                 the reduction, which is exactly what has to vanish.
+--                 (The still weaker rep Iᶜ ≡ ε on the nose is not an
+--                 option: Symplectic.Simplified.NfEps refutes it at
+--                 every positive width, since one level of the tower's
+--                 inverse is a concatenation whatever its arguments.)
+--   Conj-trivial  conjugating a Pauli generator by that representative
+--                 does nothing.
 --
--- The p = 2 cocycle.  Working in the *phaseless* Pauli group (Pauli1 =
--- ℤ/2 × ℤ/2, no phase), the only symplectic relator that fails to lift
--- exactly is order-S: over the qubit phase gate S = diag(1, i) one has
--- S² = Z, so corr(order-S) = Z on the acted qubit.  Every other relator
--- lifts either exactly or up to a global phase, and a global phase is
--- trivial in the phaseless Pauli group.  cong↑ shifts a correction up one
--- qubit.  This was verified numerically against the exact 2×2/4×4/8×8
--- Clifford matrices under the actg conventions.
---
--- On the simplified rule set the global-phase relators are worth naming,
--- because at p = 2 the M-generators degenerate: ℤ*₂ = {1}, so
---
---     Mg = M₋₁ = M 1 = S·H·S·H·S·H = (SH)³ = ω,
---
--- the order-8 scalar.  Hence order-H reads H² = ω, and M-power, semi-MS
--- and semi-M↑CZ / semi-M↓CZ all say that ω is central — each a global
--- phase, so each has corr = ε.  The two-qubit selinger relators lift up
--- to e^{-iπ/4}, likewise ε.
---
--- (For odd p the extension splits — every correction is ε; that case is
--- the odd-prime development under Examples.Groups.ProjectiveClifford.Qupit.)
+-- Both would follow at once from a section sending the identity coset to
+-- ε on the nose.  The tower's section does not, but it may be patched to
+-- at a single point: BijectiveNormalForm's section is recovered from its
+-- surjectivity field, and redefining that field at the one index nfˢ ε
+-- to return ε costs only  ∀ {z} → z ≈ ε → nfˢ z ≡ nfˢ ε,  which is
+-- nf-cong.  The patched witness still satisfies both round trips (at
+-- that index nf ε ≡ nfˢ ε by construction, and inv-nf ∘ nf ≈ id follows
+-- from injectivity of nfˢ), and it makes both hypotheses hold by
+-- computation.  What it needs is a decision procedure for u ≡ nfˢ ε on
+-- NF n; the data components are Fins and Vecs, and the one proof
+-- component (A carries a ≢) is pinned by
+-- Symplectic.Normalization.Uniqueness.⟦[]⟧-injective, which recovers the
+-- full propositional equality from equal denotations.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.ProjectiveClifford.Qubit.Presentation where
 
-open import Data.Nat using (ℕ ; zero)
+open import Data.Nat using (ℕ)
 
--- This module is the qubit case: fix the prime to 2.
-open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime ; g* ; g-gen)
+open import Presentation.Definitions using (_IsPresentationOf_)
 
-open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
-open import Data.Product using (_,_)
-open import Data.Unit using (⊤ ; tt)
-open import Data.Vec using (Vec ; [] ; _∷_)
-open import Data.Fin using (toℕ)
-open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _^'_ ; wmap)
-open import Notations using (₁₊ ; ₂₊)
+open import Examples.Groups.ProjectiveClifford.Qubit.Semantics using (CMS-group)
+import Examples.Groups.ProjectiveClifford.Qubit.ExtensionPresentation as EP
 
-open import Presentation.Construct.Base using (_⊕^_ ; _⊎^_ ; _⋄_⋄_ ; ConjRelʷ)
-open import Presentation.Construct.Properties.Extension using (extension-presentation)
-
--- S : the Pauli presentation, over the generators (⊤ ⊎ ⊤) ⊎^ n
--- (an X- and a Z-generator per qubit).
-open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime using (Γ-H)
-
--- The Pauli group as vectors, and the symplectic action actg.
-open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
-  using (Pauli ; Pauli1 ; pX ; pZ ; pI ; pIₙ)
-import Examples.Groups.Symplectic.Semantics p-2 p-prime as SympSem
-open SympSem.Interpretation using (actg)
-
--- R̄ : the symplectic relations, over the Clifford generators Gen n.
---
--- The rule set is the SIMPLIFIED one (Symplectic.Simplified).  Its
--- syntax — Gen, the gates, and the derived words — is shared with
--- Symplectic.Syntactics, which Simplified.Syntactics itself re-exports;
--- only the relation differs.
-open import Examples.Groups.Symplectic.Syntactics p-2 p-prime using (module Symplectic)
-open Symplectic using (Gen)
-
-open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
-  using (module Simplified-Relations)
-open Simplified-Relations using (_QRel,_===_ ; srel ; cong↑ ; order-S)
+-- The conjugation action, the cocycle, and the relation they generate.
+open import Examples.Groups.ProjectiveClifford.Qubit.Cocycle public
 
 ------------------------------------------------------------------------
--- Generator sets
+-- The two open inputs of Proposition 2.55, named at this width
 
--- The Pauli generators of n qubits: X_i and Z_i for each i.
-PauliGen : ℕ → Set
-PauliGen n = (⊤ ⊎ ⊤) ⊎^ n
+-- The identity coset's representative is trivial in the extension.
+Sec-trivial : ℕ → Set
+Sec-trivial n = EP.Clifford.Sec-trivial n
 
-------------------------------------------------------------------------
--- conj : the word-valued symplectic action
---
--- conj g y :   the word over Pauli generators equal, inside Clifford, to
---              the conjugate g · y · g⁻¹ of the Pauli generator y by the
---              quotient generator g.  Determined by
---              Symplectic.Semantics.Interpretation.actg.
-
--- A Pauli generator names a single-qubit X or Z at one position; read it
--- back as a basis vector of the Pauli group.
-genToVec : ∀ {n} → PauliGen n → Pauli n
-genToVec {₁₊ zero}  (inj₁ tt)        = pX ∷ []
-genToVec {₁₊ zero}  (inj₂ tt)        = pZ ∷ []
-genToVec {₂₊ n} (inj₁ (inj₁ tt)) = pX ∷ pIₙ
-genToVec {₂₊ n} (inj₁ (inj₂ tt)) = pZ ∷ pIₙ
-genToVec {₂₊ n} (inj₂ y)         = pI ∷ genToVec {₁₊ n} y
-
--- Delog a Pauli vector to a word: position i with exponents (a , b) becomes
--- X_i^a • Z_i^b, positions laid out left to right.
-vecToWord : ∀ {n} → Pauli n → Word (PauliGen n)
-vecToWord {zero}     []              = ε
-vecToWord {₁₊ zero}  ((a , b) ∷ []) =
-  [ inj₁ tt ]ʷ ^' toℕ a • [ inj₂ tt ]ʷ ^' toℕ b
-vecToWord {₂₊ n} ((a , b) ∷ ps) =
-  ([ inj₁ (inj₁ tt) ]ʷ ^' toℕ a • [ inj₁ (inj₂ tt) ]ʷ ^' toℕ b)
-  • wmap inj₂ (vecToWord {₁₊ n} ps)
-
-conj : ∀ {n} → Gen n → PauliGen n → Word (PauliGen n)
-conj g y = vecToWord (actg g (genToVec y))
+-- Conjugating a Pauli generator by it does nothing.
+Conj-trivial : ℕ → Set
+Conj-trivial n = EP.Clifford.Conj-trivial n
 
 ------------------------------------------------------------------------
--- corr : the p = 2 cocycle
+-- The presentation theorem
 --
--- corr r :     the Pauli correction word carried by the quotient relator r,
---              i.e. [ lhs ]ᵣ ≈ [ corr r ]ₗ • [ rhs ]ᵣ.
-
--- The Z-generator on qubit 0.
-Z₀ : ∀ {n} → Word (PauliGen (₁₊ n))
-Z₀ {zero}  = [ inj₂ tt ]ʷ
-Z₀ {₁₊ m}  = [ inj₁ (inj₂ tt) ]ʷ
-
--- Shift a Pauli word up one qubit (position i ↦ i+1); used by cong↑.
-shift-gen : ∀ {n} → PauliGen n → PauliGen (₁₊ n)
-shift-gen {zero}  ()
-shift-gen {₁₊ m}  y = inj₂ y
-
-shiftPauli : ∀ {n} → Word (PauliGen n) → Word (PauliGen (₁₊ n))
-shiftPauli = wmap shift-gen
-
--- The only nontrivial correction is S² = Z (order-S); cong↑ shifts a
--- correction up one qubit; every other relator lifts with no Pauli.
-corr : ∀ {n} {u v} → (n QRel,_===_) u v → Word (PauliGen n)
-corr (srel order-S) = Z₀
-corr (cong↑ r)      = shiftPauli (corr r)
-corr _              = ε
-
-------------------------------------------------------------------------
--- The Clifford presentation, as an extension of Pauli by the symplectic
--- group.
-
-infix 4 _Clifford,_===_
-
-_Clifford,_===_ : (n : ℕ) → WRel (PauliGen n ⊎ Gen n)
-_Clifford,_===_ n = extension-presentation (Γ-H ⊕^ n) (n QRel,_===_) conj corr
-
-
-open import Algebra.Bundles using (Group)
-open import Presentation.Definitions
-
-
-------------------------------------------------------------------------
--- The split case: a presentation of Pauli n ⋊ Sp(2n, 2)
+-- Everything else Proposition 2.55 asks for is discharged in
+-- Qubit.ExtensionPresentation: the interpretation ⟦_⟧₀ of the mixed
+-- alphabet in CMS n, the Pauli factor's bijective normal form (its
+-- presentation is already an isomorphism, composed with the coordinate
+-- map vec), the quotient factor's (Simplified.Bijective's coset tower,
+-- upgraded by uniqueness of the section), soundness of conj and corr
+-- (Qubit.ExtensionSoundness), and the two realisation conditions.
 --
--- Dropping the cocycle (corr ≡ ε) turns the extension relation into
--- Γ ⋄ Δ ⋄ ConjRelʷ conj, which is exactly the relation
--- Presentation.Construct.Properties.SemiDirectProduct presents.  Both
--- factor presentations are already available:
---
---   * Pauli.Pauli-presentation n : (Γ-H ⊕^ n) IsPresentationOf Pauli-group n
---   * Simplified.Presentation.presentation : QRel IsPresentationOf Sp-group n
---
--- so the semidirect product needs only the two action-congruence
--- hypotheses below.  Note the resulting group is SDP.group with the
--- action TRANSPORTED from conj through the two presentation
--- isomorphisms; it is the Pauli ⋊ Sp group, but not the same Agda value
--- as Examples.Construct.SemiDirectProduct.Clifford.Pauli⋊Sp-group, whose
--- action is ap and whose Pauli factor is the Vec-based +ₚ-group.
+-- Note CMS-group n is Qubit.CMS.Clifford-group n on the nose: the
+-- transport that puts the Pauli factor in the shape Γ-H ⊕^ n presents
+-- changes only the inclusion, never the total group.
 
-import Presentation.Base as PB
-open import Word.Base using (_ⁿ' ; _ʰ')
-open import Presentation.Construct.Properties.SemiDirectProduct as SD'
-
-open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime
-  using (Pauli-group ; Pauli-presentation)
-open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
-open import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen
-  as SimP using ()
-
--- conj respects the symplectic axioms in its acting argument: related
--- symplectic words conjugate every Pauli word alike.
-ConjHypH : (n : ℕ) → Set
-ConjHypH n = ∀ {c d : Word (Gen n)} (w : Word (PauliGen n)) →
-             (n QRel,_===_) c d →
-             PB._≈_ (Γ-H ⊕^ n) ((conj ʰ') c w) ((conj ʰ') d w)
-
--- conj respects the Pauli axioms in its acted argument: conjugating both
--- sides of a Pauli relation by one gate keeps them related.
-ConjHypN : (n : ℕ) → Set
-ConjHypN n = ∀ (c : Gen n) {u v : Word (PauliGen n)} →
-             (Γ-H ⊕^ n) u v →
-             PB._≈_ (Γ-H ⊕^ n) ((conj ⁿ') c u) ((conj ⁿ') c v)
-
-module SemiDirect (n : ℕ) (hyph : ConjHypH n) (hypn : ConjHypN n) where
-
-  private
-    module SD = SD' (Γ-H ⊕^ n) (n QRel,_===_) (conj {n})
-    module P  = SD.Presentation hyph hypn
-                  (Pauli-group n) (Sp-group n)
-                  (Pauli-presentation n) (SimP.presentation {n})
-
-  -- Pauli n ⋊ Sp(2n, 2), with the action transported from conj.
-  Pauli⋊Sp : Group _ _
-  Pauli⋊Sp = P.G1⋊G2
-
-  -- The headline: the semidirect relation presents it.
-  presentation :
-    ((Γ-H ⊕^ n) ⋄ (n QRel,_===_) ⋄ ConjRelʷ (conj {n}))
-      IsPresentationOf Pauli⋊Sp
-  presentation = P.dpres
+presentation : ∀ {n} → Sec-trivial n → Conj-trivial n →
+               (n Clifford,_===_) IsPresentationOf (CMS-group n)
+presentation {n} = EP.Clifford.presentation n

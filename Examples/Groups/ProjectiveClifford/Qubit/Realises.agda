@@ -39,7 +39,7 @@ open import Presentation.Construct.Base using (_⊕^_ ; _⊎^_)
 
 open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime)
 
-open import Examples.Groups.ProjectiveClifford.Qubit.Presentation
+open import Examples.Groups.ProjectiveClifford.Qubit.Cocycle
   using (PauliGen ; genToVec)
 open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime
   using (Γ-H ; Pauli-group ; Pauli-presentation)

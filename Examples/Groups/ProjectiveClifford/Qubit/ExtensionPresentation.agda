@@ -13,7 +13,7 @@
 --   * the kernel is presented by Γ-H ⊕^ n   (Pauli.Presentation), and
 --   * the quotient by the simplified symplectic rule set
 --     (Symplectic.Simplified.Presentation);
---   * conj and corr are Qubit.Presentation's, and the extension relation
+--   * conj and corr are Qubit.Cocycle's, and the extension relation
 --     _Clifford,_===_ is by definition extension-presentation of exactly
 --     these four.
 --
@@ -92,7 +92,7 @@ import Presentation.Construct.Properties.Extension as Ext
 
 open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime)
 
-open import Examples.Groups.ProjectiveClifford.Qubit.Presentation
+open import Examples.Groups.ProjectiveClifford.Qubit.Cocycle
   using (PauliGen ; genToVec ; conj ; corr ; _Clifford,_===_)
 open import Examples.Groups.ProjectiveClifford.Qubit.ExtensionSoundness
   using (pw ; conj-sound ; twisted-sound)

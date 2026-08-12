@@ -51,8 +51,8 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase
   p-2 p-prime using (C ; ract ; _≋_ ; sing0)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWD1
   p-2 p-prime using (wd1)
-open import Examples.Groups.Symplectic.Normalization.Pushing.DH p-2 p-prime
-  using (aux-mc1ε)
+open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
+  using (lemma-XM1)
 
 ------------------------------------------------------------------------
 -- The identity coset at width 1 and its section identities (the
@@ -65,10 +65,10 @@ Ia = (₀ , ₁) , λ ()
 I₀ : C 1
 I₀ = ([] , ₀) , ([] , Ia)
 
+-- [ Ia ]ᵃ is XM ₁ in the XM form of [_]ᵃ, and XM ₁ collapses for the
+-- same reason ZM ₁ does (₁ ⁻¹ is ₁).
 [Ia]≈ε : let open PB (1 QRel,_===_) in [ Ia ]ᵃ ≈ ε
-[Ia]≈ε = trans (cong (aux-MM (((₁ , λ ()) ⁻¹) .proj₂) (λ ()) inv-₁) refl)
-               aux-mc1ε
-  where open PB (1 QRel,_===_) ; open Lemmas0 0
+[Ia]≈ε = lemma-XM1
 
 [₀]ᵉ≈ε : let open PB (1 QRel,_===_) in [_]ᵉ {0} ₀ ≈ ε
 [₀]ᵉ≈ε = refl' (Eq.cong S^ -0#≈0#)

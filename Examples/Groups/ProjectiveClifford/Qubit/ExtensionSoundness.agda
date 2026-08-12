@@ -62,7 +62,7 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_ ; wmap)
 open import Examples.Groups.ProjectiveClifford.Qubit.CliffordGroup
   using ( _≈ᶜ_ ; pauliWord ; cact-pauliWord ; sform-+ˡ
         ; ≈ᶜ-refl ; ≈ᶜ-sym ; ≈ᶜ-trans ; ∙-congᶜ )
-open import Examples.Groups.ProjectiveClifford.Qubit.Presentation
+open import Examples.Groups.ProjectiveClifford.Qubit.Cocycle
   using (PauliGen ; genToVec ; vecToWord ; conj ; corr ; shiftPauli)
 
 open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime ; g* ; g-gen)

@@ -8,7 +8,7 @@
 --
 -- whose kernel is the group that the Pauli relation Γ-H ⊕^ n presents.
 --
--- Examples.Groups.ProjectiveClifford.Qubit.Presentation builds the syntactic side
+-- Examples.Groups.ProjectiveClifford.Qubit.Cocycle builds the syntactic side
 -- as extension-presentation (Γ-H ⊕^ n) (n QRel,_===_) conj corr, and
 -- Proposition 2.55 (Presentation.Construct.Properties.Extension) asks for
 -- an Extension record whose kernel group is presented by the left factor
