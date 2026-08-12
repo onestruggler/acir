@@ -1,5 +1,4 @@
 {-# OPTIONS --cubical-compatible --safe #-}
---{-# OPTIONS  --call-by-name #-}
 
 open import Level using (0ℓ)
 
@@ -18,16 +17,12 @@ open import Word.Base hiding (wfoldl ; _^'_)
 open import Notations
 open import Data.Nat.Primality
 
-
-
 module Examples.Groups.Symplectic.Normalization.Section (p-2 : ℕ) (p-prime : Prime (2+ p-2))  where
-
 
 open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
-open Symplectic renaming (M to ZM)
+open Symplectic hiding (M)
 open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Normalization.Boxes p-2 p-prime public
 
@@ -38,8 +33,8 @@ private
 -- A box is MC.
 [_]ᵃ : ∀ {n} → A → Word (Gen (₁₊ n))
 [_]ᵃ {n} ((₀ , ₀), pr) = ⊥-elim (pr auto)
-[_]ᵃ {n} ((₀ , b@(₁₊ b-1)), pr) = ⟦ (b , λ ()) ⁻¹ , ε ⟧ₘ₊
-[_]ᵃ {n} ((a@(₁₊ a-1) , b), pr) = ⟦ (a , λ ()) ⁻¹ , HS^ -b/a ⟧ₘ₊
+[_]ᵃ {n} ((₀ , b@(₁₊ b-1)), pr) = XM (b , λ ())
+[_]ᵃ {n} ((a@(₁₊ a-1) , b), pr) = XM (a , λ ()) • H • S^ -b/a
   where
   a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
   -b/a = - b * a⁻¹

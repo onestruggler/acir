@@ -142,11 +142,30 @@ module Symplectic where
   CX^ : ∀ {n} → ℤ ₚ -> Word (Gen (₂₊ n))
   CX^ k = CX ^ toℕ k
 
-  M : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
-  M x' = S^ x • H • S^ x⁻¹ • H • S^ x • H
+  -- The shape both multiplier words have: S-powers and H alternating,
+  -- with the outer two exponents equal.  ZM and XM are the two ways of
+  -- filling it from a unit and its inverse, so every lemma that only
+  -- uses the shape can be stated once, over a and b (see
+  -- Lemmas/Lemma-Comm.aux-comm-shs-* and Lemmas4-Sym.aux-comm-shs-w↑).
+  SHS : ∀ {n} -> ℤ ₚ -> ℤ ₚ -> Word (Gen (₁₊ n))
+  SHS a b = S^ a • H • S^ b • H • S^ a • H
+
+  ZM : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
+  ZM x' = SHS x x⁻¹
     where
     x = x' .proj₁
     x⁻¹ = ((x' ⁻¹) .proj₁ )
+
+  XM : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
+  XM x' = SHS x⁻¹ x
+    where
+    x = x' .proj₁
+    x⁻¹ = ((x' ⁻¹) .proj₁ )
+
+  -- The historical name for ZM, kept so that existing uses of M do not
+  -- have to change.
+  M : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
+  M = ZM
 
   M₁ : ∀ {n} -> Word (Gen (₁₊ n))
   M₁ = M ₁ₚ

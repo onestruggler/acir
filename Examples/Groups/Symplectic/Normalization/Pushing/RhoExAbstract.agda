@@ -76,7 +76,7 @@ open import Presentation.GroupLike using (module Group-Lemmas)
 import Normalization.CosetNF as CosetNF
 
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
-open Symplectic renaming (M to ZM)
+open Symplectic hiding (M)
 open Symplectic-GroupLike using (grouplike)
 
 open import ForStdlib.Data.Fin.Mod

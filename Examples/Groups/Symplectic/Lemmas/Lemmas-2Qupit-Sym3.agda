@@ -39,7 +39,7 @@ open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Lemmas4-Sym p-2 p-prime
 
 
-open Symplectic renaming (M to ZM)
+open Symplectic hiding (M)
 open Lemmas-Sym
 
 open Symplectic-GroupLike

@@ -35,7 +35,6 @@ open import Examples.Groups.Symmetric.Syntactics
 -- Denotation of generators and words
 
 ⟦_⟧ᵍ : ∀ {n} → Gen n → Perm n
-⟦ gate₁ () ⟧ᵍ
 ⟦ gate₂ σ-gate ⟧ᵍ = swap01
 ⟦ g ↥ ⟧ᵍ          = shift ⟦ g ⟧ᵍ
 

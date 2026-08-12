@@ -34,7 +34,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_)
 open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
-open Symplectic renaming (M to ZM)
+open Symplectic hiding (M)
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.BR.One.A p-2 p-prime
   using (dir-and-A'-of ; lemma-single-qupit-br-A ; Bottom-Wire-Single)

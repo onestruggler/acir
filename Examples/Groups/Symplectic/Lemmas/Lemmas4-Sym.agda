@@ -40,7 +40,7 @@ open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
-open Symplectic renaming (M to ZM)
+open Symplectic hiding (M)
 open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 
@@ -67,9 +67,10 @@ open Duality
 
 
 
-aux-comm-m-CZ↑ : let open PB ((₃₊ n) QRel,_===_) in ∀ m -> ⟦ m ⟧ₘ • CZ ↑ ≈ CZ ↑ • ⟦ m ⟧ₘ
-aux-comm-m-CZ↑ {n} m = begin
-  ⟦ m ⟧ₘ • CZ ↑ ≈⟨ (cleft refl) ⟩
+aux-comm-shs-CZ↑ : let open PB ((₃₊ n) QRel,_===_) in
+  ∀ a b -> SHS a b • CZ ↑ ≈ CZ ↑ • SHS a b
+aux-comm-shs-CZ↑ {n} x x⁻¹ = begin
+  SHS x x⁻¹ • CZ ↑ ≈⟨ (cleft refl) ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x • H) • CZ ↑ ≈⟨ by-passoc (□ ^ 6 • □) (□ ^ 5 • □ ^ 2) auto ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x) • H • CZ ↑ ≈⟨ (cright sym (axiom comm-H)) ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x) • CZ ↑ • H ≈⟨ by-passoc (□ ^ 5 • □ ^ 2) (□ ^ 4 • □ ^ 2 • □) auto ⟩
@@ -83,29 +84,35 @@ aux-comm-m-CZ↑ {n} m = begin
   S^ x • (CZ ↑ • H) • S^ x⁻¹ • H • S^ x • H ≈⟨ by-passoc ((□ • □ ^ 2 • □ ^ 4)) ((□ ^ 2 • □ ^ 5)) auto ⟩
   (S^ x • CZ ↑) • H • S^ x⁻¹ • H • S^ x • H ≈⟨ (cleft comm⇒pow-comm (toℕ x) 1 (sym (axiom comm-S))) ⟩
   (CZ ↑ • S^ x) • H • S^ x⁻¹ • H • S^ x • H ≈⟨ assoc ⟩
-  CZ ↑ • ⟦ m ⟧ₘ ∎
+  CZ ↑ • SHS x x⁻¹ ∎
   where
-  x = m .proj₁
-  x⁻¹ = ((m ⁻¹) .proj₁ )
-  open PB ((₃₊ n) QRel,_===_)  
+  open PB ((₃₊ n) QRel,_===_)
   open PP ((₃₊ n) QRel,_===_)
   open SR word-setoid
   open Pattern-Assoc
 
-aux-comm-m-CZ^ : let open PB ((₃₊ n) QRel,_===_) in ∀ m k -> ⟦ m ⟧ₘ • CZ^ k ↑ ≈ CZ^ k ↑ • ⟦ m ⟧ₘ
-aux-comm-m-CZ^ {n} m k = begin
-  ⟦ m ⟧ₘ • CZ^ k ↑ ≈⟨ cright sym (refl' (aux-↑ CZ (toℕ k))) ⟩
-  ⟦ m ⟧ₘ • CZ ↑ ^ toℕ k ≈⟨ comm⇒pow-comm 1 (toℕ k) (aux-comm-m-CZ↑ m) ⟩
-  CZ ↑ ^ toℕ k • ⟦ m ⟧ₘ ≈⟨ cleft refl' (aux-↑ CZ (toℕ k)) ⟩
-  CZ^ k ↑ • ⟦ m ⟧ₘ ∎
+aux-comm-m-CZ↑ : let open PB ((₃₊ n) QRel,_===_) in ∀ m -> ⟦ m ⟧ₘ • CZ ↑ ≈ CZ ↑ • ⟦ m ⟧ₘ
+aux-comm-m-CZ↑ m = aux-comm-shs-CZ↑ (m .proj₁) ((m ⁻¹) .proj₁)
+
+aux-comm-shs-CZ^ : let open PB ((₃₊ n) QRel,_===_) in
+  ∀ a b k -> SHS a b • CZ^ k ↑ ≈ CZ^ k ↑ • SHS a b
+aux-comm-shs-CZ^ {n} a b k = begin
+  SHS a b • CZ^ k ↑ ≈⟨ cright sym (refl' (aux-↑ CZ (toℕ k))) ⟩
+  SHS a b • CZ ↑ ^ toℕ k ≈⟨ comm⇒pow-comm 1 (toℕ k) (aux-comm-shs-CZ↑ a b) ⟩
+  CZ ↑ ^ toℕ k • SHS a b ≈⟨ cleft refl' (aux-↑ CZ (toℕ k)) ⟩
+  CZ^ k ↑ • SHS a b ∎
   where
-  open PB ((₃₊ n) QRel,_===_)  
+  open PB ((₃₊ n) QRel,_===_)
   open PP ((₃₊ n) QRel,_===_)
   open SR word-setoid
 
-aux-comm-m-g↥↑ : let open PB ((₃₊ n) QRel,_===_) in ∀ m g -> ⟦ m ⟧ₘ • [ g ↥ ]ʷ ↑ ≈ [ g ↥ ]ʷ ↑ • ⟦ m ⟧ₘ
-aux-comm-m-g↥↑ {n} m g = begin
-  ⟦ m ⟧ₘ • [ g ↥ ]ʷ ↑ ≈⟨ (cleft refl) ⟩
+aux-comm-m-CZ^ : let open PB ((₃₊ n) QRel,_===_) in ∀ m k -> ⟦ m ⟧ₘ • CZ^ k ↑ ≈ CZ^ k ↑ • ⟦ m ⟧ₘ
+aux-comm-m-CZ^ m = aux-comm-shs-CZ^ (m .proj₁) ((m ⁻¹) .proj₁)
+
+aux-comm-shs-g↥↑ : let open PB ((₃₊ n) QRel,_===_) in
+  ∀ a b g -> SHS a b • [ g ↥ ]ʷ ↑ ≈ [ g ↥ ]ʷ ↑ • SHS a b
+aux-comm-shs-g↥↑ {n} x x⁻¹ g = begin
+  SHS x x⁻¹ • [ g ↥ ]ʷ ↑ ≈⟨ (cleft refl) ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x • H) • [ g ↥ ]ʷ ↑ ≈⟨ by-passoc (□ ^ 6 • □) (□ ^ 5 • □ ^ 2) auto ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x) • H • [ g ↥ ]ʷ ↑ ≈⟨ (cright sym (axiom comm-H)) ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x) • [ g ↥ ]ʷ ↑ • H ≈⟨ by-passoc (□ ^ 5 • □ ^ 2) (□ ^ 4 • □ ^ 2 • □) auto ⟩
@@ -119,52 +126,73 @@ aux-comm-m-g↥↑ {n} m g = begin
   S^ x • ([ g ↥ ]ʷ ↑ • H) • S^ x⁻¹ • H • S^ x • H ≈⟨ by-passoc ((□ • □ ^ 2 • □ ^ 4)) ((□ ^ 2 • □ ^ 5)) auto ⟩
   (S^ x • [ g ↥ ]ʷ ↑) • H • S^ x⁻¹ • H • S^ x • H ≈⟨ (cleft comm⇒pow-comm (toℕ x) 1 (sym (axiom comm-S))) ⟩
   ([ g ↥ ]ʷ ↑ • S^ x) • H • S^ x⁻¹ • H • S^ x • H ≈⟨ assoc ⟩
-  [ g ↥ ]ʷ ↑ • ⟦ m ⟧ₘ ∎
+  [ g ↥ ]ʷ ↑ • SHS x x⁻¹ ∎
   where
-  x = m .proj₁
-  x⁻¹ = ((m ⁻¹) .proj₁ )
-  open PB ((₃₊ n) QRel,_===_)  
+  open PB ((₃₊ n) QRel,_===_)
   open PP ((₃₊ n) QRel,_===_)
   open SR word-setoid
   open Pattern-Assoc
 
+aux-comm-m-g↥↑ : let open PB ((₃₊ n) QRel,_===_) in ∀ m g -> ⟦ m ⟧ₘ • [ g ↥ ]ʷ ↑ ≈ [ g ↥ ]ʷ ↑ • ⟦ m ⟧ₘ
+aux-comm-m-g↥↑ m = aux-comm-shs-g↥↑ (m .proj₁) ((m ⁻¹) .proj₁)
 
-aux-comm-m-w↑ : let open PB ((₁₊ n) QRel,_===_) in ∀ m w -> ⟦ m ⟧ₘ • w ↑ ≈ w ↑ • ⟦ m ⟧ₘ
-aux-comm-m-w↑ {₁₊ n} m [ H-gen ]ʷ = aux-comm-m-H↑ n m
-aux-comm-m-w↑ {₁₊ n} m [ S-gen ]ʷ = aux-comm-m-S↑ n m
-aux-comm-m-w↑ {₂₊ n} m [ CZ-gen ]ʷ = aux-comm-m-CZ↑ m
-aux-comm-m-w↑ {₂₊ n} m [ x ↥ ]ʷ = aux-comm-m-g↥↑ m x
-aux-comm-m-w↑ {₀} m [ gate₀ () ]ʷ
-aux-comm-m-w↑ {₁} m [ gate₀ () ↥ ]ʷ
-aux-comm-m-w↑ {n} m ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
-aux-comm-m-w↑ {n} m (w • v) = begin
-  ⟦ m ⟧ₘ • w ↑ • v ↑ ≈⟨ sym assoc ⟩
-  (⟦ m ⟧ₘ • w ↑) • v ↑ ≈⟨ (cleft aux-comm-m-w↑ m w) ⟩
-  (w ↑ • ⟦ m ⟧ₘ) • v ↑ ≈⟨ assoc ⟩
-  w ↑ • ⟦ m ⟧ₘ • v ↑ ≈⟨ (cright aux-comm-m-w↑ m v) ⟩
-  w ↑ • v ↑ • ⟦ m ⟧ₘ ≈⟨ sym assoc ⟩
-  (w ↑ • v ↑) • ⟦ m ⟧ₘ ∎
+
+aux-comm-shs-w↑ : let open PB ((₁₊ n) QRel,_===_) in
+  ∀ a b w -> SHS a b • w ↑ ≈ w ↑ • SHS a b
+aux-comm-shs-w↑ {₁₊ n} a b [ H-gen ]ʷ = aux-comm-shs-H↑ n a b
+aux-comm-shs-w↑ {₁₊ n} a b [ S-gen ]ʷ = aux-comm-shs-S↑ n a b
+aux-comm-shs-w↑ {₂₊ n} a b [ CZ-gen ]ʷ = aux-comm-shs-CZ↑ a b
+aux-comm-shs-w↑ {₂₊ n} a b [ x ↥ ]ʷ = aux-comm-shs-g↥↑ a b x
+aux-comm-shs-w↑ {₀} a b [ gate₀ () ]ʷ
+aux-comm-shs-w↑ {₁} a b [ gate₀ () ↥ ]ʷ
+aux-comm-shs-w↑ {n} a b ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
+aux-comm-shs-w↑ {n} a b (w • v) = begin
+  SHS a b • w ↑ • v ↑ ≈⟨ sym assoc ⟩
+  (SHS a b • w ↑) • v ↑ ≈⟨ (cleft aux-comm-shs-w↑ a b w) ⟩
+  (w ↑ • SHS a b) • v ↑ ≈⟨ assoc ⟩
+  w ↑ • SHS a b • v ↑ ≈⟨ (cright aux-comm-shs-w↑ a b v) ⟩
+  w ↑ • v ↑ • SHS a b ≈⟨ sym assoc ⟩
+  (w ↑ • v ↑) • SHS a b ∎
   where
-  open PB ((₁₊ n) QRel,_===_)  
+  open PB ((₁₊ n) QRel,_===_)
   open PP ((₁₊ n) QRel,_===_)
   open SR word-setoid
 
+aux-comm-m-w↑ : let open PB ((₁₊ n) QRel,_===_) in ∀ m w -> ⟦ m ⟧ₘ • w ↑ ≈ w ↑ • ⟦ m ⟧ₘ
+aux-comm-m-w↑ m = aux-comm-shs-w↑ (m .proj₁) ((m ⁻¹) .proj₁)
+
+-- The XM instance: the same shape with the two exponents swapped.
+comm-XM-w↑ : let open PB ((₁₊ n) QRel,_===_) in
+  ∀ x w -> XM x • w ↑ ≈ w ↑ • XM x
+comm-XM-w↑ x = aux-comm-shs-w↑ ((x ⁻¹) .proj₁) (x .proj₁)
+
+
+-- Commuting past a shifted circuit is closed under concatenation, so a
+-- box can be handled letter by letter instead of by one long
+-- re-association.
+comm-•-w↑ : let open PB ((₂₊ n) QRel,_===_) in
+  ∀ {u v : Word (Gen (₂₊ n))} (w : Word (Gen (₁₊ n))) →
+  u • w ↑ ≈ w ↑ • u → v • w ↑ ≈ w ↑ • v →
+  (u • v) • w ↑ ≈ w ↑ • (u • v)
+comm-•-w↑ {n} {u} {v} w pu pv = begin
+  (u • v) • w ↑ ≈⟨ assoc ⟩
+  u • v • w ↑   ≈⟨ (cright pv) ⟩
+  u • w ↑ • v   ≈⟨ sym assoc ⟩
+  (u • w ↑) • v ≈⟨ (cleft pu) ⟩
+  (w ↑ • u) • v ≈⟨ assoc ⟩
+  w ↑ • u • v ∎
+  where
+  open PB ((₂₊ n) QRel,_===_)
+  open PP ((₂₊ n) QRel,_===_)
+  open SR word-setoid
 
 comm-abox-w↑ : let open PB ((₁₊ n) QRel,_===_) in
   ∀ a (w : Word (Gen n)) -> [ a ]ᵃ • w ↑ ≈ w ↑ • [ a ]ᵃ
-comm-abox-w↑ {₀} ((₁₊ _ , _) , _) [ gate₀ () ]ʷ
-comm-abox-w↑ {n} a@((₀ , ₀) , neqI) w = ⊥-elim (neqI auto)
-comm-abox-w↑ {n} a@((₀ , b@(₁₊ _)) , neqI) w = begin
-  ⟦ (b , λ ()) ⁻¹ , ε ⟧ₘ₊ • (w ↑) ≈⟨ (cleft right-unit) ⟩
-  ⟦ (b , λ ()) ⁻¹ ⟧ₘ • (w ↑) ≈⟨ aux-comm-m-w↑ ((b , λ ()) ⁻¹) w ⟩
-  w ↑ • ⟦ (b , λ ()) ⁻¹ ⟧ₘ ≈⟨ sym (cong refl right-unit) ⟩
-  (w ↑) • [ (₀ , b) , neqI ]ᵃ ∎
-  where
-  open PB ((₁₊ n) QRel,_===_)  
-  open PP ((₁₊ n) QRel,_===_)
-  open SR word-setoid
-comm-abox-w↑ {0} ((a@(₁₊ _) , b) , neqI) ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
-comm-abox-w↑ {0} d@(((₁₊ _) , b) , neqI) (w • v) = begin
+-- At width 0 there are no generators to commute with, so the induction
+-- on w closes without looking at the box at all.
+comm-abox-w↑ {₀} d [ gate₀ () ]ʷ
+comm-abox-w↑ {₀} d ε = PB.trans PB.right-unit (PB.sym PB.left-unit)
+comm-abox-w↑ {₀} d (w • v) = begin
   [ d ]ᵃ • w ↑ • v ↑ ≈⟨ sym assoc ⟩
   ([ d ]ᵃ • w ↑) • v ↑ ≈⟨ (cleft comm-abox-w↑ d w) ⟩
   (w ↑ • [ d ]ᵃ) • v ↑ ≈⟨ assoc ⟩
@@ -172,23 +200,15 @@ comm-abox-w↑ {0} d@(((₁₊ _) , b) , neqI) (w • v) = begin
   w ↑ • v ↑ • [ d ]ᵃ ≈⟨ sym assoc ⟩
   (w ↑ • v ↑) • [ d ]ᵃ ∎
   where
-  open PB ((1) QRel,_===_)  
+  open PB ((1) QRel,_===_)
   open PP ((1) QRel,_===_)
   open SR word-setoid
-comm-abox-w↑ {n@(₁₊ _)} ((a@(₁₊ _) , b) , neqI) w = begin
-  ⟦ (a , λ ()) ⁻¹ , HS^ -b/a ⟧ₘ₊ • w ↑ ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 4) auto ⟩
-  ⟦ (a , λ ()) ⁻¹ ⟧ₘ • H • S^ -b/a • w ↑ ≈⟨ (cright cright lemma-comm-Sᵏ-w↑ (toℕ -b/a) w) ⟩
-  ⟦ (a , λ ()) ⁻¹ ⟧ₘ • H • w ↑ • S^ -b/a ≈⟨ (cright sym assoc) ⟩
-  ⟦ (a , λ ()) ⁻¹ ⟧ₘ • (H • w ↑) • S^ -b/a ≈⟨ (cright cleft lemma-comm-H-w↑ w) ⟩
-  ⟦ (a , λ ()) ⁻¹ ⟧ₘ • (w ↑ • H) • S^ -b/a ≈⟨ by-passoc (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) auto ⟩
-  (⟦ (a , λ ()) ⁻¹ ⟧ₘ • w ↑) • H • S^ -b/a ≈⟨ (cleft aux-comm-m-w↑ ((a , λ ()) ⁻¹) w) ⟩
-  (w ↑ • ⟦ (a , λ ()) ⁻¹ ⟧ₘ) • H • S^ -b/a ≈⟨ assoc ⟩
-  w ↑ • ⟦ (a , λ ()) ⁻¹ , HS^ -b/a ⟧ₘ₊ ∎
+comm-abox-w↑ {₁₊ n} ((₀ , ₀) , neqI) w = ⊥-elim (neqI auto)
+comm-abox-w↑ {₁₊ n} ((₀ , b@(₁₊ _)) , neqI) w = comm-XM-w↑ (b , λ ()) w
+comm-abox-w↑ {₁₊ n} ((a@(₁₊ _) , b) , neqI) w =
+  comm-•-w↑ w (comm-XM-w↑ (a , λ ()) w)
+  (comm-•-w↑ w (lemma-comm-H-w↑ w) (lemma-comm-Sᵏ-w↑ (toℕ -b/a) w))
   where
-  open PB ((₁₊ n) QRel,_===_)  
-  open PP ((₁₊ n) QRel,_===_)
-  open SR word-setoid
-  open Pattern-Assoc
   a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
   -b/a = - b * a⁻¹
 
@@ -465,14 +485,30 @@ comm-dbox-w↑↑ {n} d@(a , b) w = comm-dbox-w↑↑' a b w
 
 -}
 
+-- XM ₁ and ZM ₁ are the same word, since ₁ ⁻¹ is ₁; so XM ₁ collapses
+-- for the same reason ZM ₁ does.
+lemma-XM1 : let open PB ((₁₊ n) QRel,_===_) in XM {n} (₁ , λ ()) ≈ ε
+lemma-XM1 {n} = begin
+  XM (₁ , λ ())
+    ≡⟨ Eq.cong (\ z -> S^ z • H • S^ ₁ • H • S^ z • H) inv-₁ ⟩
+  S^ ₁ • H • S^ ₁ • H • S^ ₁ • H
+    ≡⟨ Eq.cong (\ z -> S^ ₁ • H • S^ z • H • S^ ₁ • H) (Eq.sym inv-₁) ⟩
+  ⟦ (₁ , λ ()) ⟧ₘ ≈⟨ sym lemma-M1 ⟩
+  ε ∎
+  where
+  open Lemmas0 n
+  open PB ((₁₊ n) QRel,_===_)
+  open PP ((₁₊ n) QRel,_===_)
+  open SR word-setoid
+
 lemma-A10 : let open PB ((₁₊ n) QRel,_===_) in
   [ (₁ , ₀) , (λ ()) ]ᵃ ≈ H
 lemma-A10 {n} = begin
   [ (₁ , ₀) , (λ ()) ]ᵃ ≈⟨ refl ⟩
-  ⟦ (a , λ ()) ⁻¹ , HS^ -b/a ⟧ₘ₊ ≡⟨ Eq.cong (\ xx -> ⟦ (a , λ ()) ⁻¹ , HS^ xx ⟧ₘ₊) aux ⟩
-  ⟦ (a , λ ()) ⁻¹ , HS^ ₀ ⟧ₘ₊ ≈⟨ cong refl right-unit ⟩
-  ⟦ (a , λ ()) ⁻¹ ⟧ₘ • H ≈⟨ (cleft aux-MM (((a , λ ()) ⁻¹) .proj₂) (λ ()) inv-₁) ⟩
-  ⟦ (₁ , λ ()) ⟧ₘ • H ≈⟨ (cleft sym lemma-M1) ⟩
+  XM (₁ , λ ()) • H • S^ -b/a
+    ≡⟨ Eq.cong (\ xx -> XM (₁ , λ ()) • H • S^ xx) aux ⟩
+  XM (₁ , λ ()) • H • S^ ₀ ≈⟨ cong refl right-unit ⟩
+  XM (₁ , λ ()) • H ≈⟨ (cleft lemma-XM1) ⟩
   ε • H ≈⟨ left-unit ⟩
   H ∎
   where
@@ -483,7 +519,7 @@ lemma-A10 {n} = begin
   -b/a = - b * a⁻¹
   aux : -b/a ≡ ₀
   aux = Eq.trans (Eq.cong₂ _*_ (-0#≈0#) inv-₁) auto
-  open PB ((₁₊ n) QRel,_===_)  
+  open PB ((₁₊ n) QRel,_===_)
   open PP ((₁₊ n) QRel,_===_)
   open SR word-setoid
 

@@ -69,9 +69,12 @@ aux-comm-c-H↑ c@(HS^ k) = begin
   (H ↑ • H) • S^ k ≈⟨ assoc ⟩
   H ↑ • ⟦ c ⟧ₕₛ ∎
 
-aux-comm-m-H↑ : ∀ m -> ⟦ m ⟧ₘ • H ↑ ≈ H ↑ • ⟦ m ⟧ₘ
-aux-comm-m-H↑ m = begin
-  ⟦ m ⟧ₘ • H ↑ ≈⟨ refl ⟩
+-- Stated over the shape SHS a b rather than over ⟦ m ⟧ₘ: the proof
+-- never uses that b is a's inverse, only the positions, so ZM and XM
+-- are both instances (see the two specialisations below).
+aux-comm-shs-H↑ : ∀ a b -> SHS a b • H ↑ ≈ H ↑ • SHS a b
+aux-comm-shs-H↑ x x⁻¹ = begin
+  SHS x x⁻¹ • H ↑ ≈⟨ refl ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x • H) • H ↑ ≈⟨ by-passoc (□ ^ 6 • □) (□ ^ 5 • □ ^ 2) auto ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x) • H • H ↑ ≈⟨ (cright sym (axiom comm-H)) ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x) • H ↑ • H ≈⟨ by-passoc (□ ^ 5 • □ ^ 2) (□ ^ 4 • □ ^ 2 • □) auto ⟩
@@ -85,10 +88,13 @@ aux-comm-m-H↑ m = begin
   S^ x • (H ↑ • H) • S^ x⁻¹ • H • S^ x • H ≈⟨ by-passoc ((□ • □ ^ 2 • □ ^ 4)) ((□ ^ 2 • □ ^ 5)) auto ⟩
   (S^ x • H ↑) • H • S^ x⁻¹ • H • S^ x • H ≈⟨ (cleft aux-comm-S^k-H↑ x) ⟩
   (H ↑ • S^ x) • H • S^ x⁻¹ • H • S^ x • H ≈⟨ assoc ⟩
-  H ↑ • ⟦ m ⟧ₘ ∎
-  where
-  x = m .proj₁
-  x⁻¹ = ((m ⁻¹) .proj₁ )
+  H ↑ • SHS x x⁻¹ ∎
+
+aux-comm-m-H↑ : ∀ m -> ⟦ m ⟧ₘ • H ↑ ≈ H ↑ • ⟦ m ⟧ₘ
+aux-comm-m-H↑ m = aux-comm-shs-H↑ (m .proj₁) ((m ⁻¹) .proj₁)
+
+aux-comm-xm-H↑ : ∀ x -> XM x • H ↑ ≈ H ↑ • XM x
+aux-comm-xm-H↑ x = aux-comm-shs-H↑ ((x ⁻¹) .proj₁) (x .proj₁)
 
 
 aux-comm-mc-H↑ : ∀ mc -> ⟦ mc ⟧ₘ₊ • H ↑ ≈ H ↑ • ⟦ mc ⟧ₘ₊
@@ -139,9 +145,9 @@ aux-comm-c-H^k↑ c k = begin
   H^ k ↑ • ⟦ c ⟧ₕₛ ∎
 
 
-aux-comm-m-S↑ : ∀ m -> ⟦ m ⟧ₘ • S ↑ ≈ S ↑ • ⟦ m ⟧ₘ
-aux-comm-m-S↑ m = begin
-  ⟦ m ⟧ₘ • S ↑ ≈⟨ (cleft refl) ⟩
+aux-comm-shs-S↑ : ∀ a b -> SHS a b • S ↑ ≈ S ↑ • SHS a b
+aux-comm-shs-S↑ x x⁻¹ = begin
+  SHS x x⁻¹ • S ↑ ≈⟨ (cleft refl) ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x • H) • S ↑ ≈⟨ by-passoc (□ ^ 6 • □) (□ ^ 5 • □ ^ 2) auto ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x) • H • S ↑ ≈⟨ (cright sym (axiom comm-H)) ⟩
   (S^ x • H • S^ x⁻¹ • H • S^ x) • S ↑ • H ≈⟨ by-passoc (□ ^ 5 • □ ^ 2) (□ ^ 4 • □ ^ 2 • □) auto ⟩
@@ -155,10 +161,13 @@ aux-comm-m-S↑ m = begin
   S^ x • (S ↑ • H) • S^ x⁻¹ • H • S^ x • H ≈⟨ by-passoc ((□ • □ ^ 2 • □ ^ 4)) ((□ ^ 2 • □ ^ 5)) auto ⟩
   (S^ x • S ↑) • H • S^ x⁻¹ • H • S^ x • H ≈⟨ (cleft aux-comm-S^k-S↑ x) ⟩
   (S ↑ • S^ x) • H • S^ x⁻¹ • H • S^ x • H ≈⟨ assoc ⟩
-  S ↑ • ⟦ m ⟧ₘ ∎
-  where
-  x = m .proj₁
-  x⁻¹ = ((m ⁻¹) .proj₁ )
+  S ↑ • SHS x x⁻¹ ∎
+
+aux-comm-m-S↑ : ∀ m -> ⟦ m ⟧ₘ • S ↑ ≈ S ↑ • ⟦ m ⟧ₘ
+aux-comm-m-S↑ m = aux-comm-shs-S↑ (m .proj₁) ((m ⁻¹) .proj₁)
+
+aux-comm-xm-S↑ : ∀ x -> XM x • S ↑ ≈ S ↑ • XM x
+aux-comm-xm-S↑ x = aux-comm-shs-S↑ ((x ⁻¹) .proj₁) (x .proj₁)
 
 aux-comm-m-S^k↑ : ∀ m k -> ⟦ m ⟧ₘ • S^ k ↑ ≈ S^ k ↑ • ⟦ m ⟧ₘ
 aux-comm-m-S^k↑ m k = begin
