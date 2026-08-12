@@ -775,6 +775,41 @@ module Ex-Conjugation (n : ℕ) where
       ≈⟨ One-Wire.lemma-order-H (₁₊ n) ⟩
     ε ∎
 
+  -- The same on the other side.  ⊤⊥ is what c14 is stated over, and it is
+  -- the square of Ex • ₕ|ₕ, which is the previous element conjugated by
+  -- the swap — so its cube is ε for the same reason, with no second
+  -- appeal to lemma-half-swaps.
+
+  lemma-UUₕ|ₕ : ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • ₕ|ₕ ≈ Ex
+  lemma-UUₕ|ₕ = begin
+    ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • ₕ|ₕ
+      ≈⟨ sym right-unit ⟩
+    (((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • ₕ|ₕ) • ε
+      ≈⟨ cright sym lemma-Ex-Ex ⟩
+    (((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • ₕ|ₕ) • (Ex • Ex)
+      ≈⟨ by-assoc auto ⟩
+    (((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • (ₕ|ₕ • Ex)) • Ex
+      ≈⟨ cleft lemma-half-swap-cube ⟩
+    ε • Ex
+      ≈⟨ left-unit ⟩
+    Ex ∎
+
+  lemma-⊤⊥-square : ⊤⊥ ≈ (Ex • ₕ|ₕ) • (Ex • ₕ|ₕ)
+  lemma-⊤⊥-square = begin
+    ʰ|ʰ • ₕ|ₕ                        ≈⟨ cleft sym lemma-ʰ|ʰ-conj ⟩
+    (Ex • (ₕ|ₕ • Ex)) • ₕ|ₕ          ≈⟨ by-assoc auto ⟩
+    (Ex • ₕ|ₕ) • (Ex • ₕ|ₕ) ∎
+
+  lemma-⊤⊥-cube : ((Ex • ₕ|ₕ) • (Ex • ₕ|ₕ)) • (Ex • ₕ|ₕ) ≈ ε
+  lemma-⊤⊥-cube = begin
+    ((Ex • ₕ|ₕ) • (Ex • ₕ|ₕ)) • (Ex • ₕ|ₕ)
+      ≈⟨ by-assoc auto ⟩
+    Ex • (((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • ₕ|ₕ)
+      ≈⟨ cright lemma-UUₕ|ₕ ⟩
+    Ex • Ex
+      ≈⟨ lemma-Ex-Ex ⟩
+    ε ∎
+
   lemma-conj-Ex-Mg↑ : Ex • Mg ↑ • Ex ≈ Mg
   lemma-conj-Ex-Mg↑ = begin
     Ex • Mg ↑ • Ex   ≈⟨ sym assoc ⟩
