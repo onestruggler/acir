@@ -350,8 +350,32 @@ module _ {n : ℕ} where
 --     lemmas are proved generically in p, so their proof terms carry
 --     order-S regardless of the instance, and cannot be reused.
 --
--- So the port is not blocked, but it cannot reuse the generic S-power
--- layer: it has to be redone at p = 2, where S⁻¹ is S and k is 1.
+-- So the port cannot reuse the generic S-power layer: it would have to
+-- be redone at p = 2, where S⁻¹ is S and k is 1.
+--
+-- And that is where this path ends.  Redoing it needs
+-- lemma-[S⁻¹HS⁻¹]^k at k = 1, which at p = 2 reads S H S ≈ H S H, and
+-- that is FALSE at the Clifford level, so no correction-free proof of
+-- it can exist.
+--
+-- Why it is false.  SHS • HSH is (SH)³ ≈ ε, and HSH • SHS is
+-- H • (S H S H S) ≈ H • H ≈ ε, so the two words are mutually inverse
+-- and S H S ≈ H S H holds exactly when (SHS)² ≈ ε.  But mod scalars
+--
+--     (SHS)²  =  S H S² H S  =  S (H Z H) S  =  S X S  =  i·X
+--
+-- using S² = Z, which is precisely the correction corr (srel order-S)
+-- = Z₀ that this fragment refuses to discard.  So (SHS)² is X, not the
+-- identity, and S H S ≉ H S H in CMS n.
+--
+-- The moral is not that Ex² ≈ ε fails — it holds in CMS, being SWAP² —
+-- but that the library's route to it is a SYMPLECTIC route: it passes
+-- through identities that are true in Sp(2n,2) only because S² = ε
+-- there.  A correction-free proof would have to reach Ex² by a path
+-- that never treats S as an involution, and the existing development
+-- offers no such path.  Route 2 (patching the section so that rep Iᶜ is
+-- ε on the nose) avoids the question entirely, and also disposes of
+-- Conj-trivial, which this route never addresses.
 Dihedral-6 : Set
 Dihedral-6 = ∀ {n} →
   PB._≈_ (EP.Clifford.Corr-free (₂₊ n)) ((CZ • (H • (H ↑))) ^ 6) ε
