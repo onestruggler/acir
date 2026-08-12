@@ -103,6 +103,18 @@ pushS₁B b₂ = ₀ , b₂ , H₁ ∷ ZZ₀₁ ∷ S₀ ∷ S₁ ∷ H₁ ∷ [
 pushS₁B b₃ = ₀ , b₃ , H₁ ∷ ZZ₀₁ ∷ S₀ ∷ S₁ ∷ H₁ ∷ []
 pushS₁B b₄ = ₀ , b₄ , H₁ ∷ ZZ₀₁ ∷ S₀ ∷ S₁ ∷ H₁ ∷ []
 
+-- commIZZBBI: a controlled-Z on (1,2), which shares the box's UPPER
+-- wire and so meets it -- on one wire only, unlike the controlled-Z on
+-- the box's own pair, which spans it and is PushingZ's business.  The
+-- box never changes; what comes out is a long word of controlled-Zs and
+-- H gates on both pairs.
+pushZZ₁₂B : BBox → ℤ 8 × BBox × List Dirty
+pushZZ₁₂B b₁ = ₀ , b₁
+             , ZZ₀₁ ∷ H₁ ∷ ZZ₁₂ ∷ H₁ ∷ ZZ₀₁ ∷ H₁ ∷ ZZ₁₂ ∷ H₁ ∷ []
+pushZZ₁₂B b₂ = ₀ , b₂ , ZZ₀₁ ∷ H₁ ∷ ZZ₁₂ ∷ H₁ ∷ ZZ₀₁ ∷ []
+pushZZ₁₂B b₃ = ₀ , b₃ , ZZ₀₁ ∷ H₁ ∷ ZZ₁₂ ∷ H₁ ∷ ZZ₀₁ ∷ []
+pushZZ₁₂B b₄ = ₀ , b₄ , ZZ₀₁ ∷ H₁ ∷ ZZ₁₂ ∷ H₁ ∷ ZZ₀₁ ∷ []
+
 -- commIXB: X on the box's upper wire.  Uniformly, the box is unchanged
 -- and the X drops to the lower wire.
 pushX₁B : BBox → ℤ 8 × BBox × List Dirty
