@@ -47,7 +47,6 @@ open SR word-setoid
 open Lemmas-Sym
 open Symplectic-GroupLike
 open Group-Lemmas ((₂₊ n) QRel,_===_) grouplike renaming (_⁻¹ to _⁻¹ʷ)
-import Examples.Groups.Symplectic.BR.Two.L-CZ p-2 p-prime as LCZ
 import Examples.Groups.Symplectic.BR.Two.L2-CZ p-2 p-prime as LCZ2
 
 infixr 7 _•ⁿ_

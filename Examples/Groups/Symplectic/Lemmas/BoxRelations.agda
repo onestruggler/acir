@@ -29,7 +29,6 @@ open Symplectic
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 import Examples.Groups.Symplectic.BR.One.A p-2 p-prime 0 as OA
 import Examples.Groups.Symplectic.BR.One.E p-2 p-prime 0 as OE
-import Examples.Groups.Symplectic.BR.Two.L-CZ p-2 p-prime as TLCZ
 import Examples.Groups.Symplectic.BR.Two.B p-2 p-prime as TB
 import Examples.Groups.Symplectic.BR.Two.D p-2 p-prime as TD
 import Examples.Groups.Symplectic.BR.Three.BB-CZ p-2 p-prime as TBB
@@ -73,15 +72,6 @@ module One where
 module Two where
 
   open PB (₂ QRel,_===_)
-
-  -- Pushing CZ through an L box.
-  L←CZ : ∀ (l : L 2) →
-    let dir = TLCZ.dir-of l in
-    let l' = TLCZ.l'-of l in
-
-    [ l ]ˡ • CZ ≈ dir • [ l' ]ˡ
-
-  L←CZ = TLCZ.lemma-dir-and-l'
 
 
   -- Pushing H ↑ , S ↑ , S  through an B box.
