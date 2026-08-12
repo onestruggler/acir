@@ -278,6 +278,22 @@ module _ {n : ℕ} where
           (trans (cleft (trans (by-assoc auto) SHSHSH-free)) left-unit)))
     where open PP (EP.Clifford.Corr-free (₂₊ n))
 
+  -- The two semi-CZ-HH lemmas the live Ex proof leans on (Ex-Sym2, at
+  -- the CZ • H ↑ ^ 2 steps).  In the original rule set they say CZ
+  -- conjugates to CZ^₋₁ past a squared H — note ₋₁, not ^2; the ^2
+  -- spelling is in the commented-out relator block and is what made the
+  -- p = 2 reading look degenerate.  Here they are trivial: H² and (H↑)²
+  -- are already ε, so both sides are CZ.
+  semi-CZ-HH↑-free : CZ • ((H ↑) • (H ↑)) ≈ ((H ↑) • (H ↑)) • CZ
+  semi-CZ-HH↑-free =
+    trans (cong refl H↑•H↑-free)
+      (trans right-unit (trans (sym left-unit) (cleft (sym H↑•H↑-free))))
+
+  semi-CZ-HH↓-free : CZ • (H • H) ≈ (H • H) • CZ
+  semi-CZ-HH↓-free =
+    trans (cong refl H•H-free)
+      (trans right-unit (trans (sym left-unit) (cleft (sym H•H-free))))
+
   b•b-free : (H • (H ↑)) • (H • (H ↑)) ≈ ε
   b•b-free =
     trans assoc
