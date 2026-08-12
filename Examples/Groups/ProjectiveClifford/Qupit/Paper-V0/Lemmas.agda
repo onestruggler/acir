@@ -39,6 +39,7 @@ open import Word.Base as WB hiding (wfoldl ; _^'_)
 open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
+open import Presentation.GroupLike
 open import Notations
 
 open import Data.Nat.Primality
@@ -257,6 +258,56 @@ module One-Wire (n : ℕ) where
     aux : ((₂* ⁻¹) *' ₂*) .proj₁ ≡ ₁
     aux = lemma-⁻¹ˡ 2ₚ {{nztoℕ {y = 2ₚ} {neq0 = λ ()} }}
     open SR word-setoid
+
+------------------------------------------------------------------------
+-- Group-likeness
+--
+-- Every generator has a left inverse, from the three order axioms.  The
+-- same construction as Simplified-V1.Lemmas.Clifford-GroupLike, and for
+-- the same reason: the axioms it uses are shared.  Iso.agda gets its
+-- witness by transporting V1's along g-well-defined, which is fine there
+-- but unusable here — the chains below need right-cancellation, and
+-- deriving it from the transported witness would be circular.
+
+module Paper-GroupLike where
+
+  grouplike : Grouplike (n QRel,_===_)
+  grouplike {₁₊ n} H-gen = H ^ 3 , claim
+    where
+    open PB ((₁₊ n) QRel,_===_)
+    open PP ((₁₊ n) QRel,_===_)
+    open SR word-setoid
+    claim : H ^ 3 • H ≈ ε
+    claim = begin
+      H ^ 3 • H ≈⟨ by-assoc auto ⟩
+      H ^ 4     ≈⟨ One-Wire.lemma-order-H n ⟩
+      ε ∎
+  grouplike {₁₊ n} S-gen = S ^ p-1 , claim
+    where
+    open PB ((₁₊ n) QRel,_===_)
+    open PP ((₁₊ n) QRel,_===_)
+    open SR word-setoid
+    claim : S ^ p-1 • S ≈ ε
+    claim = begin
+      S ^ p-1 • S       ≈⟨ sym (^-+ S p-1 1) ⟩
+      S ^ (p-1 Nat.+ 1) ≡⟨ Eq.cong (S ^_) (NP.+-comm p-1 1) ⟩
+      S ^ p             ≈⟨ axiom order-S ⟩
+      ε ∎
+  grouplike {₂₊ n} CZ-gen = CZ ^ p-1 , claim
+    where
+    open PB ((₂₊ n) QRel,_===_)
+    open PP ((₂₊ n) QRel,_===_)
+    open SR word-setoid
+    claim : CZ ^ p-1 • CZ ≈ ε
+    claim = begin
+      CZ ^ p-1 • CZ       ≈⟨ sym (^-+ CZ p-1 1) ⟩
+      CZ ^ (p-1 Nat.+ 1)  ≡⟨ Eq.cong (CZ ^_) (NP.+-comm p-1 1) ⟩
+      CZ ^ p              ≈⟨ axiom order-CZ ⟩
+      ε ∎
+  -- Width ₁₊ n rather than ₂₊ n: gate₀ makes Gen 0 inhabited, so a shift
+  -- can appear on one wire too.  The witness is width-generic.
+  grouplike {₁₊ n} (g ↥) with grouplike g
+  ... | ig , prf = (ig ↑) , lemma-cong↑ (ig • [ g ]ʷ) ε prf
 
 ------------------------------------------------------------------------
 -- Ex is its own inverse
@@ -731,6 +782,32 @@ module Three-Wire (n : ℕ) where
   -- The relation one wire down, for the arguments of lemma-cong↑.
   private module PB₂ = PB ((₂₊ n) QRel,_===_)
 
+  open Group-Lemmas ((₃₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₃₊ n})
+    using (•-cancelʳ)
+
+  ------------------------------------------------------------------------
+  -- Powers of a word of order p depend only on the exponent mod p
+
+  lemma-pow-mod : ∀ {w} → w ^ p ≈ ε → ∀ m → w ^ m ≈ w ^ (m Nat.% p)
+  lemma-pow-mod {w} op m = begin
+    w ^ m
+      ≡⟨ Eq.cong (w ^_) (m≡m%n+[m/n]*n m p) ⟩
+    w ^ (m Nat.% p Nat.+ (m Nat./ p) Nat.* p)
+      ≈⟨ ^-+ w (m Nat.% p) ((m Nat./ p) Nat.* p) ⟩
+    w ^ (m Nat.% p) • w ^ ((m Nat./ p) Nat.* p)
+      ≈⟨ cright aux ⟩
+    w ^ (m Nat.% p) • ε
+      ≈⟨ right-unit ⟩
+    w ^ (m Nat.% p) ∎
+    where
+    aux : w ^ ((m Nat./ p) Nat.* p) ≈ ε
+    aux = begin
+      w ^ ((m Nat./ p) Nat.* p)  ≈⟨ refl' (Eq.cong (w ^_) (NP.*-comm (m Nat./ p) p)) ⟩
+      w ^ (p Nat.* (m Nat./ p))  ≈⟨ sym (^^ w p (m Nat./ p)) ⟩
+      (w ^ p) ^ (m Nat./ p)      ≈⟨ ^-cong (w ^ p) ε (m Nat./ p) op ⟩
+      ε ^ (m Nat./ p)            ≈⟨ ε^k=ε (m Nat./ p) ⟩
+      ε ∎
+
   -- CZ on the upper pair has order p, inherited from order-CZ one wire
   -- down.  (ε ↑ is ε definitionally, so the shift leaves no residue.)
   lemma-order-CZ↑ : (CZ ↑) ^ p ≈ ε
@@ -820,6 +897,20 @@ module Three-Wire (n : ℕ) where
     (CZ • (CZ02 • (CZ • CZ02) ^ ₁₊ k)) • CX ↑
       ≈⟨ cleft sym assoc ⟩
     ((CZ • CZ02) • (CZ • CZ02) ^ ₁₊ k) • CX ↑ ∎
+
+  ------------------------------------------------------------------------
+  -- The alternating product has order p as well
+  --
+  -- CX ↑ • CZ ^ p is CX ↑ on the nose, so lemma-C18ᵏ at p says
+  -- (CZ • CZ02) ^ p • CX ↑ is too, and CX ↑ cancels on the right.
+
+  lemma-order-CZ·CZ02 : (CZ • CZ02) ^ p ≈ ε
+  lemma-order-CZ·CZ02 = •-cancelʳ {h = CX ↑} (begin
+    (CZ • CZ02) ^ p • CX ↑  ≈⟨ sym (lemma-C18ᵏ p) ⟩
+    CX ↑ • CZ ^ p           ≈⟨ cright axiom order-CZ ⟩
+    CX ↑ • ε                ≈⟨ right-unit ⟩
+    CX ↑                    ≈⟨ sym left-unit ⟩
+    ε • CX ↑ ∎)
 
   T : Word (Gen (₃₊ n))
   T = Ex • Ex ↑ • Ex
