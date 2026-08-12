@@ -46,9 +46,11 @@ open import Notations using (₁₊)
 open import Examples.Groups.Clifford.Qubit.Selinger.Boxes p-2 p-prime
 open import Examples.Groups.Clifford.Qubit.Selinger.Normal p-2 p-prime
   using (Mx)
+open import ForStdlib.Data.Fin.Mod using (ℤ)
+
 open import Examples.Groups.Clifford.Qubit.Selinger.Pushing p-2 p-prime
   using (Dirty ; H₀ ; S₀ ; X₀ ; H₁ ; S₁ ; X₁ ; H₂ ; S₂ ; ZZ₀₁ ; ZZ₁₂
-        ; pushZZD)
+        ; pushZZD ; pushS₁D ; pushH₁D)
 
 private
   variable
@@ -101,32 +103,74 @@ pushS-Mx {₁₊ n} k (d , m) = d , pushS-Mx k m
 -- Subscript 0 is the lower wire, below everything the staircase has
 -- left, so those gates escape.  They are kept in order, as a word.
 
+-- Every constructor is listed rather than caught by a wildcard.  The D
+-- rules emit only H₀, S₀ and S₁ -- checked against all sixteen clauses
+-- of altIHDD, altISDD, altSIDD and altZZDD -- so the other seven cases
+-- cannot arise; but a wildcard would DROP one silently if a rule were
+-- ever mistranscribed, and dropping a gate is a soundness bug that
+-- nothing here would catch.  Written out, a surprise shows up instead
+-- as a clause that is visibly wrong.
+
 ascS : List Dirty → ℕ
-ascS []          = 0
-ascS (S₁ ∷ ds)  = ₁₊ (ascS ds)
-ascS (_  ∷ ds)  = ascS ds
+ascS []         = 0
+ascS (S₁ ∷ ds) = ₁₊ (ascS ds)
+-- escaping, counted by esc
+ascS (H₀ ∷ ds) = ascS ds
+ascS (S₀ ∷ ds) = ascS ds
+ascS (X₀ ∷ ds) = ascS ds
+-- not emitted by any D rule
+ascS (H₁ ∷ ds) = ascS ds
+ascS (X₁ ∷ ds) = ascS ds
+ascS (H₂ ∷ ds) = ascS ds
+ascS (S₂ ∷ ds) = ascS ds
+ascS (ZZ₀₁ ∷ ds) = ascS ds
+ascS (ZZ₁₂ ∷ ds) = ascS ds
 
 esc : List Dirty → List Dirty
-esc []          = []
-esc (H₀ ∷ ds)  = H₀ ∷ esc ds
-esc (S₀ ∷ ds)  = S₀ ∷ esc ds
-esc (X₀ ∷ ds)  = X₀ ∷ esc ds
-esc (_  ∷ ds)  = esc ds
+esc []         = []
+esc (H₀ ∷ ds) = H₀ ∷ esc ds
+esc (S₀ ∷ ds) = S₀ ∷ esc ds
+esc (X₀ ∷ ds) = X₀ ∷ esc ds
+-- ascending, counted by ascS
+esc (S₁ ∷ ds) = esc ds
+-- not emitted by any D rule
+esc (H₁ ∷ ds) = esc ds
+esc (X₁ ∷ ds) = esc ds
+esc (H₂ ∷ ds) = esc ds
+esc (S₂ ∷ ds) = esc ds
+esc (ZZ₀₁ ∷ ds) = esc ds
+esc (ZZ₁₂ ∷ ds) = esc ds
 
 ------------------------------------------------------------------------
--- A controlled-Z entering the bottom of a staircase
+-- A dirty gate meeting the bottom box of a staircase
 --
--- altZZDD rewrites the bottom D box and emits dirt on both its wires:
--- what goes up is S gates, which pushS-Mx carries to the E box, and
--- what stays escapes.  All four clauses are phase-free, so no ω is
--- produced.
+-- All four D families have the same shape once the split above is in
+-- place: rewrite the bottom box by the rule, carry the ascending S
+-- gates to the E box with pushS-Mx, and hand back what escapes.  The
+-- rule is the only thing that differs, so it is a parameter.
 --
--- D₁ and D₄ simply swap and emit nothing at all, which is the
--- controlled-Z analogue of the S case above.
+-- The phase is returned rather than dropped even though every D rule is
+-- phase-free, so that the caller is not relying on that.
 
-pushZZ-Mx : Mx (₁₊ n) → List Dirty × Mx (₁₊ n)
-pushZZ-Mx (d , m) with pushZZD d
-... | _ , d′ , out = esc out , (d′ , pushS-Mx (ascS out) m)
+push-bottom : (DBox → ℤ 8 × DBox × List Dirty) →
+              Mx (₁₊ n) → ℤ 8 × List Dirty × Mx (₁₊ n)
+push-bottom rule (d , m) with rule d
+... | k , d′ , out = k , esc out , (d′ , pushS-Mx (ascS out) m)
+
+-- A controlled-Z on the staircase's bottom pair (altZZDD).  D₁ and D₄
+-- simply swap and emit nothing at all.
+pushZZ-Mx : Mx (₁₊ n) → ℤ 8 × List Dirty × Mx (₁₊ n)
+pushZZ-Mx = push-bottom pushZZD
+
+-- An S arriving on the upper wire of the bottom box (altISDD).  This is
+-- what a C₂ box sends into the staircase, via commZZCI's trailing S
+-- gates.
+pushS₁-Mx : Mx (₁₊ n) → ℤ 8 × List Dirty × Mx (₁₊ n)
+pushS₁-Mx = push-bottom pushS₁D
+
+-- An H arriving on the upper wire of the bottom box (altIHDD).
+pushH₁-Mx : Mx (₁₊ n) → ℤ 8 × List Dirty × Mx (₁₊ n)
+pushH₁-Mx = push-bottom pushH₁D
 
 ------------------------------------------------------------------------
 -- What cannot arrive
