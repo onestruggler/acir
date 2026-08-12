@@ -514,5 +514,13 @@ sec-trivial-1 = sec-trivial sec-reduction-1
 -- presentation.  As its header puts it, the long relators — M-power,
 -- semi-M↑CZ, semi-M↓CZ, selinger-c10 … c15 — are never conjugated by
 -- hand.  That module is parameterised by p-3, so p ≥ 3 and it cannot be
--- instantiated here directly, but the argument does not use oddness and
--- should port verbatim.
+-- instantiated here directly.
+--
+-- Do not expect a re-parameterisation to be enough, though: p-3 occurs
+-- in ConjAction only as the parameter, as the definition p-2 = ₁₊ p-3,
+-- and where it is passed on to Qupit.SemiDirect.Syntactics.  So the
+-- obstacle is not arithmetic but the RULE SET — it is written against
+-- the qupit semidirect syntax, whereas the qubit conj lives over the
+-- simplified relators and Γ-H ⊕^ n.  The three-step argument carries
+-- over; the text has to be rewritten against this rule set rather than
+-- instantiated.
