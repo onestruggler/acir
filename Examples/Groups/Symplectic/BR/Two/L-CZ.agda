@@ -211,6 +211,8 @@ lemma-dir-and-l' ((₁ , s≤s z≤n) , [] , ((a@₀ , b@₀) , nzx))         = 
 
 lemma-dir-and-l' l@((₀ , z≤n) , ((c@(₁₊ _) , d) ∷ []) , ((a@(₁₊ _) , b) , nzx)) = begin
   [ l ]ˡ • CZ ≈⟨ cleft cong left-unit refl ⟩
+  ([ c , d ]ᵇ • XM a* • H • S^ -b/a) • CZ
+    ≡⟨ Eq.cong (\ z -> ([ c , d ]ᵇ • z • H • S^ -b/a) • CZ) (XM≡ZM⁻¹ a*) ⟩
   ([ c , d ]ᵇ • M a*⁻¹ • H • S^ -b/a) • CZ ≈⟨ sa (□ ^ 4 • □) (□ • □ ^ 2 • □ ^ 2) auto ⟩
   [ c , d ]ᵇ • (M a*⁻¹ • H) • S^ -b/a • CZ ≈⟨ cright cong (sym (L01.semi-HM a*)) (comm⇒pow-comm (toℕ -b/a) 1 (sym (axiom comm-CZ-S↓))) ⟩
   [ c , d ]ᵇ • (H • M a*) • CZ • S^ -b/a ≈⟨ cright sa (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
@@ -244,7 +246,9 @@ lemma-dir-and-l' l@((₀ , z≤n) , ((c@(₁₊ _) , d) ∷ []) , ((a@(₁₊ _)
   ((H ^ 2 • S^ (- ((-' (a* *' c* ⁻¹))⁻¹) .proj₁)) • H • S^ (- - ac⁻¹) • M (-' -' (a* *' c* ⁻¹))) • (Ex • CX'^ c • H ↑ • S^ (- (d + - a) * c⁻¹) ↑) • M (a* ⁻¹) • H • S^ (- (b + - c) * a⁻¹) ≈⟨ cleft sa (□ ^ 2 • □ ^ 3) (□ • □ ^ 3 • □) auto ⟩
   (H ^ 2 • (S^ (- ((-' (a* *' c* ⁻¹))⁻¹) .proj₁) • H • S^ (- - ac⁻¹)) • M (-' -' (a* *' c* ⁻¹))) • (Ex • CX'^ c • H ↑ • S^ (- (d + - a) * c⁻¹) ↑) • M (a* ⁻¹) • H • S^ (- (b + - c) * a⁻¹) ≈⟨ cleft cright sym (lemma-Euler-v2 (-' (a* *' c* ⁻¹))) ⟩
   (H ^ 2 • H • S^ (- ac⁻¹) • H) • (Ex • CX'^ c • H ↑ • S^ (- (d + - a) * c⁻¹) ↑) • M (a* ⁻¹) • H • S^ (- (b + - c) * a⁻¹) ≈⟨ cleft sa (□ ^ 2 • □ ^ 3) (□ ^ 3 • □ ^ 2) auto ⟩
-  (H ^ 3 • S^ (- ac⁻¹) • H) • (Ex • CX'^ c • H ↑ • S^ (- (d + - a) * c⁻¹) ↑) • M (a* ⁻¹) • H • S^ (- (b + - c) * a⁻¹) ≈⟨ cright (cleft sym left-unit) ⟩
+  (H ^ 3 • S^ (- ac⁻¹) • H) • (Ex • CX'^ c • H ↑ • S^ (- (d + - a) * c⁻¹) ↑) • M (a* ⁻¹) • H • S^ (- (b + - c) * a⁻¹)
+    ≡⟨ Eq.cong (\ z -> (H ^ 3 • S^ (- ac⁻¹) • H) • (Ex • CX'^ c • H ↑ • S^ (- (d + - a) * c⁻¹) ↑) • z • H • S^ (- (b + - c) * a⁻¹)) (Eq.sym (XM≡ZM⁻¹ a*)) ⟩
+  (H ^ 3 • S^ (- ac⁻¹) • H) • (Ex • CX'^ c • H ↑ • S^ (- (d + - a) * c⁻¹) ↑) • XM a* • H • S^ (- (b + - c) * a⁻¹) ≈⟨ cright (cleft sym left-unit) ⟩
   dir • [ l' ]ˡ ∎
   where
   a* = (a , λ ())
@@ -287,6 +291,8 @@ lemma-dir-and-l' l@((₀ , z≤n) , ((c@(₁₊ _) , d) ∷ []) , ((a@(₁₊ _)
 
 lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@₀) ∷ []) , ((a@(₁₊ _) , b@₀) , nzx)) =  begin
   [ l ]ˡ • CZ ≈⟨  cleft cong left-unit refl ⟩
+  ([ c , d ]ᵇ • XM a* • H • S^ -b/a) • CZ
+    ≡⟨ Eq.cong (\ z -> ([ c , d ]ᵇ • z • H • S^ -b/a) • CZ) (XM≡ZM⁻¹ a*) ⟩
   ([ c , d ]ᵇ • M a*⁻¹ • H • S^ -b/a) • CZ ≈⟨ sa (□ ^ 4 • □) (□ • □ ^ 2 • □ ^ 2) auto ⟩
   [ c , d ]ᵇ • (M a*⁻¹ • H) • S^ -b/a • CZ ≈⟨ cright cong (sym (L01.semi-HM a*)) (comm⇒pow-comm (toℕ -b/a) 1 (sym (axiom comm-CZ-S↓))) ⟩
   [ c , d ]ᵇ • (H • M a*) • CZ • S^ -b/a ≈⟨ sa (□ ^ 4 • □ ^ 2 • □ ^ 2) (□ ^ 5 • □ ^ 2 • □) auto ⟩
@@ -300,7 +306,8 @@ lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@₀) ∷ []) , ((a@(₁₊ _) , 
   Ex • (H ^ 3 • CZ^ (d + - a) • H) • (H • M a*) • S^ -b/a ≈⟨ cright cright cleft L01.semi-HM a* ⟩
   Ex • (H ^ 3 • CZ^ (d + - a) • H) • (M (a* ⁻¹) • H) • S^ -b/a ≈⟨ sa (□ • □ ^ 3 • □ ^ 2 • □) (□ ^ 4 • □ ^ 3) auto ⟩
   (Ex • H ^ 3 • CZ^ (d + - a) • H) • M (a* ⁻¹) • H • S^ -b/a ≈⟨ sym left-unit ⟩
-  dir • (Ex • H ^ 3 • CZ^ (d + - a) • H) • M (a* ⁻¹) • H • S^ -b/a ≈⟨ refl ⟩
+  dir • (Ex • H ^ 3 • CZ^ (d + - a) • H) • M (a* ⁻¹) • H • S^ -b/a
+    ≡⟨ Eq.cong (\ z -> dir • (Ex • H ^ 3 • CZ^ (d + - a) • H) • z • H • S^ -b/a) (Eq.sym (XM≡ZM⁻¹ a*)) ⟩
   dir • ([ c , d + - a ]ᵇ • [ ((a , b) , λ ()) ]ᵃ) ≈⟨ cright cright refl' (aux-AA p-2 (((a , b) , λ ())) (((a , b + - c) , λ ())) (Eq.cong ((a ,_)) (Eq.sym (Eq.trans (Eq.cong (\ xx -> b + xx) -0#≈0#) (+-identityʳ b))))) ⟩
   dir • ([ c , d + - a ]ᵇ • [ ((a , b + - c) , λ ()) ]ᵃ) ≈⟨ sym (trans left-unit assoc) ⟩
   dir • [ l' ]ˡ ∎
@@ -317,6 +324,8 @@ lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@₀) ∷ []) , ((a@(₁₊ _) , 
 
 lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@(₁₊ _)) ∷ []) , ((a@(₁₊ _) , b@₀) , nzx)) =  begin
   [ l ]ˡ • CZ ≈⟨  cleft cong left-unit refl ⟩
+  ([ c , d ]ᵇ • XM a* • H • S^ -b/a) • CZ
+    ≡⟨ Eq.cong (\ z -> ([ c , d ]ᵇ • z • H • S^ -b/a) • CZ) (XM≡ZM⁻¹ a*) ⟩
   ([ c , d ]ᵇ • M a*⁻¹ • H • S^ -b/a) • CZ ≈⟨ sa (□ ^ 4 • □) (□ • □ ^ 2 • □ ^ 2) auto ⟩
   [ c , d ]ᵇ • (M a*⁻¹ • H) • S^ -b/a • CZ ≈⟨ cright cong (sym (L01.semi-HM a*)) (comm⇒pow-comm (toℕ -b/a) 1 (sym (axiom comm-CZ-S↓))) ⟩
   [ c , d ]ᵇ • (H • M a*) • CZ • S^ -b/a ≈⟨ sa (□ ^ 4 • □ ^ 2 • □ ^ 2) (□ ^ 5 • □ ^ 2 • □) auto ⟩
@@ -330,7 +339,8 @@ lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@(₁₊ _)) ∷ []) , ((a@(₁�
   Ex • (H ^ 3 • CZ^ (d + - a) • H) • (H • M a*) • S^ -b/a ≈⟨ cright cright cleft L01.semi-HM a* ⟩
   Ex • (H ^ 3 • CZ^ (d + - a) • H) • (M (a* ⁻¹) • H) • S^ -b/a ≈⟨ sa (□ • □ ^ 3 • □ ^ 2 • □) (□ ^ 4 • □ ^ 3) auto ⟩
   (Ex • H ^ 3 • CZ^ (d + - a) • H) • M (a* ⁻¹) • H • S^ -b/a ≈⟨ sym left-unit ⟩
-  dir • (Ex • H ^ 3 • CZ^ (d + - a) • H) • M (a* ⁻¹) • H • S^ -b/a ≈⟨ refl ⟩
+  dir • (Ex • H ^ 3 • CZ^ (d + - a) • H) • M (a* ⁻¹) • H • S^ -b/a
+    ≡⟨ Eq.cong (\ z -> dir • (Ex • H ^ 3 • CZ^ (d + - a) • H) • z • H • S^ -b/a) (Eq.sym (XM≡ZM⁻¹ a*)) ⟩
   dir • ([ c , d + - a ]ᵇ • [ ((a , b) , λ ()) ]ᵃ) ≈⟨ cright cright refl' (aux-AA p-2 (((a , b) , λ ())) (((a , b + - c) , λ ())) (Eq.cong ((a ,_)) (Eq.sym (Eq.trans (Eq.cong (\ xx -> b + xx) -0#≈0#) (+-identityʳ b))))) ⟩
   dir • ([ c , d + - a ]ᵇ • [ ((a , b + - c) , λ ()) ]ᵃ) ≈⟨ sym (trans left-unit assoc) ⟩
   dir • [ l' ]ˡ ∎
@@ -347,6 +357,8 @@ lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@(₁₊ _)) ∷ []) , ((a@(₁�
 
 lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@(₁₊ _)) ∷ []) , ((a@(₁₊ _) , b@(₁₊ _)) , nzx)) =  begin
   [ l ]ˡ • CZ ≈⟨  cleft cong left-unit refl ⟩
+  ([ c , d ]ᵇ • XM a* • H • S^ -b/a) • CZ
+    ≡⟨ Eq.cong (\ z -> ([ c , d ]ᵇ • z • H • S^ -b/a) • CZ) (XM≡ZM⁻¹ a*) ⟩
   ([ c , d ]ᵇ • M a*⁻¹ • H • S^ -b/a) • CZ ≈⟨ sa (□ ^ 4 • □) (□ • □ ^ 2 • □ ^ 2) auto ⟩
   [ c , d ]ᵇ • (M a*⁻¹ • H) • S^ -b/a • CZ ≈⟨ cright cong (sym (L01.semi-HM a*)) (comm⇒pow-comm (toℕ -b/a) 1 (sym (axiom comm-CZ-S↓))) ⟩
   [ c , d ]ᵇ • (H • M a*) • CZ • S^ -b/a ≈⟨ sa (□ ^ 4 • □ ^ 2 • □ ^ 2) (□ ^ 5 • □ ^ 2 • □) auto ⟩
@@ -360,7 +372,8 @@ lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@(₁₊ _)) ∷ []) , ((a@(₁�
   Ex • (H ^ 3 • CZ^ (d + - a) • H) • (H • M a*) • S^ -b/a ≈⟨ cright cright cleft L01.semi-HM a* ⟩
   Ex • (H ^ 3 • CZ^ (d + - a) • H) • (M (a* ⁻¹) • H) • S^ -b/a ≈⟨ sa (□ • □ ^ 3 • □ ^ 2 • □) (□ ^ 4 • □ ^ 3) auto ⟩
   (Ex • H ^ 3 • CZ^ (d + - a) • H) • M (a* ⁻¹) • H • S^ -b/a ≈⟨ sym left-unit ⟩
-  dir • (Ex • H ^ 3 • CZ^ (d + - a) • H) • M (a* ⁻¹) • H • S^ -b/a ≈⟨ refl ⟩
+  dir • (Ex • H ^ 3 • CZ^ (d + - a) • H) • M (a* ⁻¹) • H • S^ -b/a
+    ≡⟨ Eq.cong (\ z -> dir • (Ex • H ^ 3 • CZ^ (d + - a) • H) • z • H • S^ -b/a) (Eq.sym (XM≡ZM⁻¹ a*)) ⟩
   dir • ([ c , d + - a ]ᵇ • [ ((a , b) , λ ()) ]ᵃ) ≈⟨ cright cright refl' (aux-AA p-2 (((a , b) , λ ())) (((a , b + - c) , λ ())) (Eq.cong ((a ,_)) (Eq.sym (Eq.trans (Eq.cong (\ xx -> b + xx) -0#≈0#) (+-identityʳ b))))) ⟩
   dir • ([ c , d + - a ]ᵇ • [ ((a , b + - c) , λ ()) ]ᵃ) ≈⟨ sym (trans left-unit assoc) ⟩
   dir • [ l' ]ˡ ∎
@@ -377,6 +390,8 @@ lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@(₁₊ _)) ∷ []) , ((a@(₁�
 
 lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@₀) ∷ []) , ((a@(₁₊ _) , b@(₁₊ _)) , nzx)) =  begin
   [ l ]ˡ • CZ ≈⟨  cleft cong left-unit refl ⟩
+  ([ c , d ]ᵇ • XM a* • H • S^ -b/a) • CZ
+    ≡⟨ Eq.cong (\ z -> ([ c , d ]ᵇ • z • H • S^ -b/a) • CZ) (XM≡ZM⁻¹ a*) ⟩
   ([ c , d ]ᵇ • M a*⁻¹ • H • S^ -b/a) • CZ ≈⟨ sa (□ ^ 4 • □) (□ • □ ^ 2 • □ ^ 2) auto ⟩
   [ c , d ]ᵇ • (M a*⁻¹ • H) • S^ -b/a • CZ ≈⟨ cright cong (sym (L01.semi-HM a*)) (comm⇒pow-comm (toℕ -b/a) 1 (sym (axiom comm-CZ-S↓))) ⟩
   [ c , d ]ᵇ • (H • M a*) • CZ • S^ -b/a ≈⟨ sa (□ ^ 4 • □ ^ 2 • □ ^ 2) (□ ^ 5 • □ ^ 2 • □) auto ⟩
@@ -390,7 +405,8 @@ lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@₀) ∷ []) , ((a@(₁₊ _) , 
   Ex • (H ^ 3 • CZ^ (d + - a) • H) • (H • M a*) • S^ -b/a ≈⟨ cright cright cleft L01.semi-HM a* ⟩
   Ex • (H ^ 3 • CZ^ (d + - a) • H) • (M (a* ⁻¹) • H) • S^ -b/a ≈⟨ sa (□ • □ ^ 3 • □ ^ 2 • □) (□ ^ 4 • □ ^ 3) auto ⟩
   (Ex • H ^ 3 • CZ^ (d + - a) • H) • M (a* ⁻¹) • H • S^ -b/a ≈⟨ sym left-unit ⟩
-  dir • (Ex • H ^ 3 • CZ^ (d + - a) • H) • M (a* ⁻¹) • H • S^ -b/a ≈⟨ refl ⟩
+  dir • (Ex • H ^ 3 • CZ^ (d + - a) • H) • M (a* ⁻¹) • H • S^ -b/a
+    ≡⟨ Eq.cong (\ z -> dir • (Ex • H ^ 3 • CZ^ (d + - a) • H) • z • H • S^ -b/a) (Eq.sym (XM≡ZM⁻¹ a*)) ⟩
   dir • ([ c , d + - a ]ᵇ • [ ((a , b) , λ ()) ]ᵃ) ≈⟨ cright cright refl' (aux-AA p-2 (((a , b) , λ ())) (((a , b + - c) , λ ())) (Eq.cong ((a ,_)) (Eq.sym (Eq.trans (Eq.cong (\ xx -> b + xx) -0#≈0#) (+-identityʳ b))))) ⟩
   dir • ([ c , d + - a ]ᵇ • [ ((a , b + - c) , λ ()) ]ᵃ) ≈⟨ sym (trans left-unit assoc) ⟩
   dir • [ l' ]ˡ ∎
@@ -409,7 +425,7 @@ lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@₀) ∷ []) , ((a@(₁₊ _) , 
 lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@₀) ∷ []) , ((a@₀ , b@(₁₊ _)) , nzx)) with b ≟ c
 ... | yes ()
 ... | no neq = begin
-  [ l ]ˡ • CZ ≈⟨  cleft cong left-unit right-unit ⟩
+  [ l ]ˡ • CZ ≈⟨  cleft cong left-unit (refl' (XM≡ZM⁻¹ (b , λ ()))) ⟩
   ([ c , d ]ᵇ • M b*⁻¹) • CZ ≈⟨ assoc ⟩
   [ c , d ]ᵇ • M b*⁻¹ • CZ ≈⟨ cright axiom (semi-M↓CZ b*⁻¹) ⟩
   [ c , d ]ᵇ • CZ^ b⁻¹ • M b*⁻¹ ≈⟨ cleft rewrite-sym0 100 auto ⟩
@@ -439,7 +455,7 @@ lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@₀) ∷ []) , ((a@₀ , b@(₁�
 lemma-dir-and-l' l@((₀ , z≤n) , ((c@₀ , d@(₁₊ _)) ∷ []) , ((a@₀ , b@(₁₊ _)) , nzx)) with b ≟ c
 ... | yes ()
 ... | no neq = begin
-  [ l ]ˡ • CZ ≈⟨  cleft cong left-unit right-unit ⟩
+  [ l ]ˡ • CZ ≈⟨  cleft cong left-unit (refl' (XM≡ZM⁻¹ (b , λ ()))) ⟩
   ([ c , d ]ᵇ • M b*⁻¹) • CZ ≈⟨ assoc ⟩
   [ c , d ]ᵇ • M b*⁻¹ • CZ ≈⟨ cright axiom (semi-M↓CZ b*⁻¹) ⟩
   [ c , d ]ᵇ • CZ^ b⁻¹ • M b*⁻¹ ≈⟨ cleft rewrite-sym0 100 auto ⟩
@@ -520,7 +536,7 @@ lemma-dir-and-l' l@((₀ , z≤n) , ((c@(₁₊ _) , d) ∷ []) , ((a@₀ , b@(�
     dir-acz • (dir • [ l' ]ˡ) • CZ^ (- ₁) ∎
 
 ... | no neq = begin
-  [ l ]ˡ • CZ ≈⟨ cleft cong left-unit right-unit ⟩
+  [ l ]ˡ • CZ ≈⟨ cleft cong left-unit (refl' (XM≡ZM⁻¹ b*)) ⟩
   ([ c , d ]ᵇ • M (b* ⁻¹)) • CZ ≈⟨ assoc ⟩
   [ c , d ]ᵇ • M (b* ⁻¹) • CZ ≈⟨ cright axiom (semi-M↓CZ (b* ⁻¹)) ⟩
   [ c , d ]ᵇ • CZ^ b⁻¹ • M (b* ⁻¹) ≈⟨ sa (□ ^ 4 • □ ^ 2) (□ ^ 3 • □ ^ 2 • □) auto ⟩

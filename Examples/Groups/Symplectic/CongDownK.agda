@@ -78,12 +78,19 @@ S^-↓ᵏ j k = pow-↓ᵏ S (toℕ j) k
 CZ^-↓ᵏ : ∀ (j : ℤ ₚ) (k : ℕ) → (CZ^ {n} j) ↓ᵏ k ≡ CZ^ j
 CZ^-↓ᵏ j k = pow-↓ᵏ CZ (toℕ j) k
 
-M-↓ᵏ : ∀ (x : ℤ* ₚ) (k : ℕ) → (M {n} x) ↓ᵏ k ≡ M x
-M-↓ᵏ x k = Eq.cong₂ _•_ (S^-↓ᵏ (x .proj₁) k)
-             (Eq.cong₂ _•_ Eq.refl
-               (Eq.cong₂ _•_ (S^-↓ᵏ ((x ⁻¹) .proj₁) k)
+-- Stated over the shape, so that ZM and XM are both instances.
+SHS-↓ᵏ : ∀ (a b : ℤ ₚ) (k : ℕ) → (SHS {n} a b) ↓ᵏ k ≡ SHS a b
+SHS-↓ᵏ a b k = Eq.cong₂ _•_ (S^-↓ᵏ a k)
                  (Eq.cong₂ _•_ Eq.refl
-                   (Eq.cong₂ _•_ (S^-↓ᵏ (x .proj₁) k) Eq.refl))))
+                   (Eq.cong₂ _•_ (S^-↓ᵏ b k)
+                     (Eq.cong₂ _•_ Eq.refl
+                       (Eq.cong₂ _•_ (S^-↓ᵏ a k) Eq.refl))))
+
+M-↓ᵏ : ∀ (x : ℤ* ₚ) (k : ℕ) → (M {n} x) ↓ᵏ k ≡ M x
+M-↓ᵏ x k = SHS-↓ᵏ (x .proj₁) ((x ⁻¹) .proj₁) k
+
+XM-↓ᵏ : ∀ (x : ℤ* ₚ) (k : ℕ) → (XM {n} x) ↓ᵏ k ≡ XM x
+XM-↓ᵏ x k = SHS-↓ᵏ ((x ⁻¹) .proj₁) (x .proj₁) k
 
 M↑-↓ᵏ : ∀ (x : ℤ* ₚ) (k : ℕ) → (M {n} x ↑) ↓ᵏ k ≡ M x ↑
 M↑-↓ᵏ x k = Eq.trans (↑↓ᵏ-comm (M x) k) (Eq.cong _↑ (M-↓ᵏ x k))

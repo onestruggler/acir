@@ -94,12 +94,19 @@ neg-suc-nz x h = suc≢₀
 -- S^ (- e) ∘ M inv (x = ₀ shape) or S^ (- e) ∘ M inv ∘ (H • S^ k)
 -- (x ≠ ₀ shape, k = - y * x⁻¹).
 
+-- The A-box is built from XM, whereas the act-M lemmas are stated for
+-- ZM.  XM x is ZM (x ⁻¹), so one congruence bridges the two.
+act-XM : ∀ {n} (x : ℤ* ₚ) ps →
+         act {₁₊ n} (Symplectic.XM x) ps ≡ act (Symplectic.ZM (x ⁻¹)) ps
+act-XM x ps = cong (λ w → act w ps) (Symplectic.XM≡ZM⁻¹ x)
+
 -- x = ₀ branch (a = (₀ , ₁₊ y')).
 hdZ0 : ∀ e y' (pr : _≡_ {A = ℤ ₚ × ℤ ₚ} (₀ , ₁₊ y') (₀ , ₀) → ⊥) →
   head (act [ (([] , e) , ([] , ((₀ , ₁₊ y') , pr))) ]ᵐˡ (pZ ∷ []))
     ≡ (₀ , ((₁₊ y' , λ ()) ⁻¹) .proj₁)
 hdZ0 e y' pr = cong head
-  (trans (cong (act (S^ (- e))) (act-M inv ₀ ₁ []))
+  (trans (cong (act (S^ (- e)))
+            (trans (act-XM (₁₊ y' , λ ()) _) (act-M inv ₀ ₁ [])))
   (trans (act-S^ (- e) (₀ * invI) (₁ * xI) [])
          (cong (_∷ []) (≡×≡⇒≡ (z1 , z2)))))
   where
@@ -117,7 +124,8 @@ hdX0 : ∀ e y' (pr : _≡_ {A = ℤ ₚ × ℤ ₚ} (₀ , ₁₊ y') (₀ , �
   head (act [ (([] , e) , ([] , ((₀ , ₁₊ y') , pr))) ]ᵐˡ (pX ∷ []))
     ≡ (₁₊ y' , (₁₊ y') * (- e))
 hdX0 e y' pr = cong head
-  (trans (cong (act (S^ (- e))) (act-M inv ₁ ₀ []))
+  (trans (cong (act (S^ (- e)))
+            (trans (act-XM (₁₊ y' , λ ()) _) (act-M inv ₁ ₀ [])))
   (trans (act-S^ (- e) (₁ * invI) (₀ * xI) [])
          (cong (_∷ []) (≡×≡⇒≡ (p1 , p2)))))
   where
@@ -137,6 +145,9 @@ hdZ1 : ∀ e x' y (pr : _≡_ {A = ℤ ₚ × ℤ ₚ} (₁₊ x' , y) (₀ , �
     ≡ (- (₁₊ x') , (₁₊ x') * e)
 hdZ1 e x' y pr = cong head
   (trans (cong (λ v → act (S^ (- e)) (act-M-chain v)) (act-HS^ k ₀ ₁ []))
+  -- TODO: still on the ZM form.  Unlike the x = ₀ branches above, the
+  -- act-XM bridge cannot go here: act-M-chain has already consumed the
+  -- H • S^ k tail, so the conversion belongs inside that composition.
   (trans (cong (act (S^ (- e))) (act-M inv (- (₁ + ₀ * k)) ₀ []))
   (trans (act-S^ (- e) ((- (₁ + ₀ * k)) * invI) (₀ * xI) [])
          (cong (_∷ []) (≡×≡⇒≡ (q1 , q2))))))
@@ -169,6 +180,7 @@ hdX1 : ∀ e x' y (pr : _≡_ {A = ℤ ₚ × ℤ ₚ} (₁₊ x' , y) (₀ , �
 hdX1 e x' y pr = trans
   (cong proj₁ (cong head
     (trans (cong (λ v → act (S^ (- e)) (act-M-chain v)) (act-HS^ k ₁ ₀ []))
+    -- TODO: as in hdZ1, still on the ZM form.
     (trans (cong (act (S^ (- e))) (act-M inv (- (₀ + ₁ * k)) ₁ []))
            (act-S^ (- e) ((- (₀ + ₁ * k)) * invI) (₁ * xI) [])))))
   r1

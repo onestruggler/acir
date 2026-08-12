@@ -52,7 +52,7 @@ open import Examples.Groups.Symplectic.Normalization.Pushing.PushBword p-2 p-pri
 open import Examples.Groups.Symplectic.Normalization.Pushing.PushMBword p-2 p-prime
   using (push-MBvec-word)
 open import Examples.Groups.Symplectic.CongDownK p-2 p-prime
-  using (M-↓ᵏ ; S^-↓ᵏ ; cong↓ᵏ ; ↑↓ᵏ-comm ; ↓ᵏ-↓ᵏ-1)
+  using (M-↓ᵏ ; XM-↓ᵏ ; S^-↓ᵏ ; cong↓ᵏ ; ↑↓ᵏ-comm ; ↓ᵏ-↓ᵏ-1)
 open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime using (b-c=0⇒b=c)
 open import Data.Fin using (toℕ ; _≟_)
 open import Data.Empty using (⊥-elim)
@@ -125,9 +125,9 @@ module _ where
 -- (padding wires on top) leaves it fixed up to the width index.
 abox-↓ᵏ : ∀ {n' : ℕ} (a : A) (k : ℕ) → [_]ᵃ {n = n'} a ↓ᵏ k ≡ [_]ᵃ {n = Data.Nat._+_ n' k} a
 abox-↓ᵏ ((₀ , ₀) , pr) k    = ⊥-elim (pr auto)
-abox-↓ᵏ ((₀ , b₀@(₁₊ b)) , pr) k = Eq.cong₂ _•_ (M-↓ᵏ ((b₀ , λ ()) ⁻¹) k) Eq.refl
+abox-↓ᵏ ((₀ , b₀@(₁₊ b)) , pr) k = XM-↓ᵏ (b₀ , λ ()) k
 abox-↓ᵏ ((a₀@(₁₊ a) , b) , pr) k =
-  Eq.cong₂ _•_ (M-↓ᵏ ((a₀ , λ ()) ⁻¹) k)
+  Eq.cong₂ _•_ (XM-↓ᵏ (a₀ , λ ()) k)
     (Eq.cong₂ _•_ Eq.refl (S^-↓ᵏ (- b * ((a₀ , λ ()) ⁻¹) .proj₁) k))
 
 ------------------------------------------------------------------------
