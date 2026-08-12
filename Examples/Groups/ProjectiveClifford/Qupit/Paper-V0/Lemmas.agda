@@ -789,6 +789,38 @@ module Three-Wire (n : ℕ) where
   -- is a word of gate letters with no symbolic power, so cz-slide can be
   -- used against Ex directly.
 
+  ------------------------------------------------------------------------
+  -- Iterating C18
+  --
+  -- Each CZ pushed leftwards through CX ↑ leaves a CZ02 behind, so a
+  -- power of CZ leaves the alternating product (CZ • CZ02) ^ k.  No
+  -- commutation between CZ and CZ02 is assumed — the two stay
+  -- interleaved, which is the whole point: comparing this against the
+  -- multiplier-rescaled form of the same word is what proves they
+  -- commute.
+
+  lemma-C18ᵏ : ∀ k → CX ↑ • CZ ^ k ≈ (CZ • CZ02) ^ k • CX ↑
+  lemma-C18ᵏ ₀ = trans right-unit (sym left-unit)
+  lemma-C18ᵏ ₁ = trans (axiom semi-CX↑-CZ↓) (sym assoc)
+  lemma-C18ᵏ (₂₊ k) = begin
+    CX ↑ • (CZ • CZ ^ ₁₊ k)
+      ≈⟨ sym assoc ⟩
+    (CX ↑ • CZ) • CZ ^ ₁₊ k
+      ≈⟨ cleft axiom semi-CX↑-CZ↓ ⟩
+    (CZ • (CZ02 • CX ↑)) • CZ ^ ₁₊ k
+      ≈⟨ assoc ⟩
+    CZ • ((CZ02 • CX ↑) • CZ ^ ₁₊ k)
+      ≈⟨ cright assoc ⟩
+    CZ • (CZ02 • (CX ↑ • CZ ^ ₁₊ k))
+      ≈⟨ cright cright lemma-C18ᵏ (₁₊ k) ⟩
+    CZ • (CZ02 • ((CZ • CZ02) ^ ₁₊ k • CX ↑))
+      ≈⟨ cright sym assoc ⟩
+    CZ • ((CZ02 • (CZ • CZ02) ^ ₁₊ k) • CX ↑)
+      ≈⟨ sym assoc ⟩
+    (CZ • (CZ02 • (CZ • CZ02) ^ ₁₊ k)) • CX ↑
+      ≈⟨ cleft sym assoc ⟩
+    ((CZ • CZ02) • (CZ • CZ02) ^ ₁₊ k) • CX ↑ ∎
+
   T : Word (Gen (₃₊ n))
   T = Ex • Ex ↑ • Ex
 
