@@ -31,7 +31,7 @@ import Presentation.Properties as PP
 
 -- The first presentation's collapse lemma, which is what makes (g ʷ)
 -- well-defined below.
-import Examples.Groups.Trivial.Presentation1.Normalization as N
+import Examples.Groups.Trivial.Presentation1 as N
 
 open PB (EmptyRel {⊥}) using ()
   renaming (_===_ to _===₁_ ; _≈_ to _≈₁_)

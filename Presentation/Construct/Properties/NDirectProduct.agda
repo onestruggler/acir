@@ -27,7 +27,7 @@ open import Notations using (₁₊ ; ₂₊)
 open import Presentation.Construct.Base using (_⊕^_)
 open import Presentation.Definitions using (_IsPresentationOf_)
 import Presentation.Construct.Properties.DirectProduct as DP
-import Examples.Groups.Trivial.Presentation1.Presentation as Trivial
+import Examples.Groups.Trivial.Presentation1 as Trivial
 
 ------------------------------------------------------------------------
 -- Normal forms for n-fold direct products

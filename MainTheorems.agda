@@ -52,8 +52,8 @@ import Presentation.Construct.Properties.SemiDirectProduct as SemiDirectProduct
 import Presentation.Construct.Properties.Amalgamation as Amalgamation
 import Presentation.Construct.Properties.Extension as Extension
 
-import Examples.Groups.Trivial.Presentation1.Presentation as Trivial
-import Examples.Groups.Trivial.Presentation2.Presentation as TrivialAlt
+import Examples.Groups.Trivial.Presentation1 as Trivial
+import Examples.Groups.Trivial.Presentation2 as TrivialAlt
 open import Examples.Groups.Cyclic.Normalization using (_Cn,_===_)
 import Examples.Groups.Cyclic.Normalization as CycNF
 import Examples.Groups.Cyclic.Semantics as CycSem
@@ -175,8 +175,9 @@ module Group-Extension-Presentation = Extension.Presentation
 --
 -- Home: Examples.Groups.Trivial.Presentation1 (over the empty alphabet,
 -- no axioms) and .Presentation2 (over any alphabet, the coarsest
--- relation); each is a directory whose Presentation module states the
--- theorem.  That the two present isomorphic monoids is
+-- relation); each states its theorem directly, over the generic
+-- collapse argument in Examples.Groups.Trivial.*.  That the two present
+-- isomorphic monoids is
 -- Examples.Groups.Trivial.Presentation-Equivalence.
 
 trivial-presentation :
