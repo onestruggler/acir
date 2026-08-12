@@ -70,7 +70,7 @@ open import Algebra.Properties.Ring (+-*-ring p-2) using (-0#≈0#)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
 open import Notations using (₁₊ ; ₂₊ ; auto)
-open Symplectic using (H ; S ; S^ ; XM ; CZ ; Circuit ; _↑)
+open Symplectic using (H ; S ; S⁻¹ ; S^ ; XM ; CZ ; Circuit ; _↑)
 open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
   using (module Simplified-Relations)
 open Simplified-Relations
@@ -268,6 +268,16 @@ module _ {n : ℕ} where
   -- comm-CZ-S and semi-MS only move S about.
   SHSHSH-free : S • (H • (S • (H • (S • H)))) ≈ ε
   SHSHSH-free = a-box-free
+
+  -- The S-power layer really does collapse at p = 2, syntactically: S⁻¹
+  -- is S ^ (p-1) = S ^ 1 = S, on the nose.  So every S⁻¹ in the
+  -- right-hand sides of selinger-c10/c11 — and every S⁻¹ ^ k and
+  -- (S⁻¹ H S⁻¹) ^ k in the lemmas the Ex chain reaches for — is already
+  -- an S-free-of-arithmetic word here.  That is what makes the p = 2
+  -- re-proof possible where the generic one, which carries order-S in
+  -- its exponent reductions, cannot be reused.
+  S⁻¹≡S : _≡_ {A = Circuit (₂₊ n)} S⁻¹ S
+  S⁻¹≡S = Eq.refl
 
   -- Its usual working form: S H S H S ≈ H, since H is its own inverse.
   SHSHS-free : S • (H • (S • (H • S))) ≈ H
