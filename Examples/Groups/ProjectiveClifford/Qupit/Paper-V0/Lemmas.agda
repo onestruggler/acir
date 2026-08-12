@@ -399,3 +399,72 @@ module Down-Rules (n : ℕ) where
     Mg • CZ       ≈⟨ lemma-semi-Mg-CZ ⟩
     CZ^ g • Mg    ≈⟨ refl' (Eq.cong (CZ^ g •_) (Eq.sym lemma-Mg↓)) ⟩
     CZ^ g • Mg ↓ ∎
+
+------------------------------------------------------------------------
+-- The remote CZ, at three wires
+--
+-- CZ02 is *defined* as Ex • CZ ↑ • Ex — the CZ on wires 1-2 carried onto
+-- wires 0-2 by the swap of wires 0-1 — so conjugation facts about it are
+-- definitional, and its order follows from the order of CZ.
+--
+-- This is the correction term of the paper's C18
+-- (semi-CX↑-CZ↓ : CX ↑ • CZ ↓ === CZ ↓ • CZ02 • CX ↑): CX ↑ retargets
+-- wire 1, which is what a CZ on wires 0-1 reads, so pushing that CZ
+-- through picks up a CZ on wires 0-2.  Deriving selinger-c12 turns on
+-- those corrections cancelling, and they cancel because CX ↑ occurs in
+-- the C6-expansion of a CZ with total exponent 1 + (p-1) = p, leaving
+-- CZ02 ^ p ≈ ε.
+
+module Three-Wire (n : ℕ) where
+
+  open PB ((₃₊ n) QRel,_===_)
+  open PP ((₃₊ n) QRel,_===_)
+  open SR word-setoid
+  open Ex-Conjugation (₁₊ n)
+
+  -- The relation one wire down, for the arguments of lemma-cong↑.
+  private module PB₂ = PB ((₂₊ n) QRel,_===_)
+
+  -- CZ on the upper pair has order p, inherited from order-CZ one wire
+  -- down.  (ε ↑ is ε definitionally, so the shift leaves no residue.)
+  lemma-order-CZ↑ : (CZ ↑) ^ p ≈ ε
+  lemma-order-CZ↑ = begin
+    (CZ ↑) ^ p  ≈⟨ refl' (Eq.sym (lemma-↑^ p CZ)) ⟩
+    (CZ ^ p) ↑  ≈⟨ lemma-cong↑ _ _ (PB₂.axiom order-CZ) ⟩
+    ε ∎
+
+  -- Conjugation commutes with powers.  Stated over an arbitrary u so it
+  -- serves CZ02 and anything else conjugated by the swap.
+  lemma-conj-pow : ∀ (u : Word (Gen (₃₊ n))) k →
+                   (Ex • (u • Ex)) ^ k ≈ Ex • (u ^ k • Ex)
+  lemma-conj-pow u ₀ = begin
+    ε              ≈⟨ sym lemma-Ex-Ex ⟩
+    Ex • Ex        ≈⟨ cright sym left-unit ⟩
+    Ex • (ε • Ex) ∎
+  lemma-conj-pow u ₁ = refl
+  lemma-conj-pow u (₂₊ k) = begin
+    (Ex • (u • Ex)) • (Ex • (u • Ex)) ^ ₁₊ k
+      ≈⟨ cright lemma-conj-pow u (₁₊ k) ⟩
+    (Ex • (u • Ex)) • (Ex • (u ^ ₁₊ k • Ex))
+      ≈⟨ assoc ⟩
+    Ex • ((u • Ex) • (Ex • (u ^ ₁₊ k • Ex)))
+      ≈⟨ cright assoc ⟩
+    Ex • (u • (Ex • (Ex • (u ^ ₁₊ k • Ex))))
+      ≈⟨ cright cright sym assoc ⟩
+    Ex • (u • ((Ex • Ex) • (u ^ ₁₊ k • Ex)))
+      ≈⟨ cright cright cleft lemma-Ex-Ex ⟩
+    Ex • (u • (ε • (u ^ ₁₊ k • Ex)))
+      ≈⟨ cright cright left-unit ⟩
+    Ex • (u • (u ^ ₁₊ k • Ex))
+      ≈⟨ cright sym assoc ⟩
+    Ex • ((u • u ^ ₁₊ k) • Ex) ∎
+
+  -- The remote CZ has order p as well: p copies of it are p copies of
+  -- CZ ↑ with the two swaps cancelling.
+  lemma-order-CZ02 : CZ02 ^ p ≈ ε
+  lemma-order-CZ02 = begin
+    CZ02 ^ p                ≈⟨ lemma-conj-pow (CZ ↑) p ⟩
+    Ex • ((CZ ↑) ^ p • Ex)  ≈⟨ cright cleft lemma-order-CZ↑ ⟩
+    Ex • (ε • Ex)           ≈⟨ cright left-unit ⟩
+    Ex • Ex                 ≈⟨ lemma-Ex-Ex ⟩
+    ε ∎
