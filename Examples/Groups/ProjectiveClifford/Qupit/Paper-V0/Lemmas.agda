@@ -1281,3 +1281,75 @@ module Three-Wire (n : ℕ) where
     CZ ↑ • ε
       ≈⟨ right-unit ⟩
     CZ ↑ ∎
+
+  ------------------------------------------------------------------------
+  -- selinger-c12, by moving the commutation onto the other pair
+  --
+  -- Simplified-V1 states c12 over the CZs sharing wire 1, whereas
+  -- lemma-comm-CZ-CZ02 has the pair sharing wire 0.  The 3-cycle
+  -- σ = Ex • Ex ↑ carries one to the other: cz-slide IS the statement
+  -- that σ conjugates CZ to CZ ↑, and the companion fact — that it
+  -- conjugates CZ02 back to CZ — follows once CZ02 is rewritten with the
+  -- other swap, which is again cz-slide.
+
+  private
+    -- CZ02 through the upper swap rather than the lower one.
+    lemma-CZ02' : Ex ↑ • (CZ • Ex ↑) ≈ CZ02
+    lemma-CZ02' = •-cancelˡ {g = Ex} (begin
+      Ex • (Ex ↑ • (CZ • Ex ↑))   ≈⟨ by-assoc auto ⟩
+      (Ex ↓ • Ex ↑ • CZ) • Ex ↑   ≈⟨ cleft axiom cz-slide ⟩
+      (CZ ↑ • Ex ↓ • Ex ↑) • Ex ↑ ≈⟨ by-assoc auto ⟩
+      (CZ ↑ • Ex) • (Ex ↑ • Ex ↑) ≈⟨ cright lemma-Ex↑-Ex↑ ⟩
+      (CZ ↑ • Ex) • ε             ≈⟨ right-unit ⟩
+      CZ ↑ • Ex                   ≈⟨ sym left-unit ⟩
+      ε • (CZ ↑ • Ex)             ≈⟨ cleft sym lemma-Ex-Ex ⟩
+      (Ex • Ex) • (CZ ↑ • Ex)     ≈⟨ assoc ⟩
+      Ex • (Ex • (CZ ↑ • Ex)) ∎)
+
+    -- The 3-cycle sends the remote CZ back to the lower pair.
+    lemma-σ-CZ02 : (Ex • Ex ↑) • CZ02 ≈ CZ • (Ex • Ex ↑)
+    lemma-σ-CZ02 = begin
+      (Ex • Ex ↑) • CZ02
+        ≈⟨ cright sym lemma-CZ02' ⟩
+      (Ex • Ex ↑) • (Ex ↑ • (CZ • Ex ↑))
+        ≈⟨ by-assoc auto ⟩
+      Ex • ((Ex ↑ • Ex ↑) • (CZ • Ex ↑))
+        ≈⟨ cright cleft lemma-Ex↑-Ex↑ ⟩
+      Ex • (ε • (CZ • Ex ↑))
+        ≈⟨ cright left-unit ⟩
+      Ex • (CZ • Ex ↑)
+        ≈⟨ sym assoc ⟩
+      (Ex • CZ) • Ex ↑
+        ≈⟨ cleft lemma-Ex-CZ ⟩
+      (CZ • Ex) • Ex ↑
+        ≈⟨ assoc ⟩
+      CZ • (Ex • Ex ↑) ∎
+
+    aux-left : (Ex • Ex ↑) • (CZ • CZ02) ≈ (CZ ↑ • CZ) • (Ex • Ex ↑)
+    aux-left = begin
+      (Ex • Ex ↑) • (CZ • CZ02)     ≈⟨ sym assoc ⟩
+      ((Ex • Ex ↑) • CZ) • CZ02     ≈⟨ cleft by-assoc auto ⟩
+      (Ex ↓ • Ex ↑ • CZ) • CZ02     ≈⟨ cleft axiom cz-slide ⟩
+      (CZ ↑ • Ex ↓ • Ex ↑) • CZ02   ≈⟨ cleft by-assoc auto ⟩
+      (CZ ↑ • (Ex • Ex ↑)) • CZ02   ≈⟨ assoc ⟩
+      CZ ↑ • ((Ex • Ex ↑) • CZ02)   ≈⟨ cright lemma-σ-CZ02 ⟩
+      CZ ↑ • (CZ • (Ex • Ex ↑))     ≈⟨ sym assoc ⟩
+      (CZ ↑ • CZ) • (Ex • Ex ↑) ∎
+
+    aux-right : (Ex • Ex ↑) • (CZ02 • CZ) ≈ (CZ • CZ ↑) • (Ex • Ex ↑)
+    aux-right = begin
+      (Ex • Ex ↑) • (CZ02 • CZ)     ≈⟨ sym assoc ⟩
+      ((Ex • Ex ↑) • CZ02) • CZ     ≈⟨ cleft lemma-σ-CZ02 ⟩
+      (CZ • (Ex • Ex ↑)) • CZ       ≈⟨ assoc ⟩
+      CZ • ((Ex • Ex ↑) • CZ)       ≈⟨ cright by-assoc auto ⟩
+      CZ • (Ex ↓ • Ex ↑ • CZ)       ≈⟨ cright axiom cz-slide ⟩
+      CZ • (CZ ↑ • Ex ↓ • Ex ↑)     ≈⟨ cright by-assoc auto ⟩
+      CZ • (CZ ↑ • (Ex • Ex ↑))     ≈⟨ sym assoc ⟩
+      (CZ • CZ ↑) • (Ex • Ex ↑) ∎
+
+  lemma-selinger-c12 : CZ ↑ • CZ ≈ CZ • CZ ↑
+  lemma-selinger-c12 = •-cancelʳ {h = Ex • Ex ↑} (begin
+    (CZ ↑ • CZ) • (Ex • Ex ↑)   ≈⟨ sym aux-left ⟩
+    (Ex • Ex ↑) • (CZ • CZ02)   ≈⟨ cright lemma-comm-CZ-CZ02 ⟩
+    (Ex • Ex ↑) • (CZ02 • CZ)   ≈⟨ aux-right ⟩
+    (CZ • CZ ↑) • (Ex • Ex ↑) ∎)

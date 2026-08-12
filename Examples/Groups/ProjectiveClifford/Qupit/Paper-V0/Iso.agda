@@ -137,9 +137,9 @@ record BridgeData : Set where
         PapR.R ↓ ^ p-1 • H ↓ • PapR.R ↓ ^ p-1 • CZ • H ↓ • PapR.R ↓ ^ p-1 • PapR.R ↑ ^ p-1
 
     -- B. Simplified-V1's three-wire axioms, inside Paper-V0.
-    pap-selinger-c12 :
-      ∀ {n} → let open PB (PapR._QRel,_===_ (₃₊ n)) using (_≈_) in
-      CZ ↑ • CZ ≈ CZ • CZ ↑
+    --
+    -- selinger-c12 used to sit here; it is now proved in Paper-V0.Lemmas,
+    -- by the progress report's Lemma 9.
     pap-selinger-c13 :
       ∀ {n} → let open PB (PapR._QRel,_===_ (₃₊ n)) using (_≈_) in
       ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ ≈ ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
@@ -214,7 +214,7 @@ module Theorem (bd : BridgeData) where
   g-well-defined {₂₊ n} V1R.comm-CZ-S↓ = PapL.Down-Rules.lemma-comm-CZ-S↓ n
   g-well-defined V1R.selinger-c10   = pap-selinger-c10
   g-well-defined V1R.selinger-c11   = pap-selinger-c11
-  g-well-defined V1R.selinger-c12   = pap-selinger-c12
+  g-well-defined {₃₊ n} V1R.selinger-c12 = PapL.Three-Wire.lemma-selinger-c12 n
   g-well-defined V1R.selinger-c13   = pap-selinger-c13
   g-well-defined V1R.selinger-c14   = pap-selinger-c14
   g-well-defined V1R.selinger-c15   = pap-selinger-c15
