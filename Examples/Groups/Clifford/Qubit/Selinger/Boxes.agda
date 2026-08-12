@@ -15,26 +15,28 @@
 -- qubits, which by Remark 4.1 is the only two-qubit case that has to be
 -- considered.
 --
--- Qubit numbering.  The paper numbers qubits from the top, so a
--- two-qubit box sits on qubits 0 and 1 and its generators are written
--- Hx 0, Hx 1, ZZx 0 1.  The wire order is REVERSED here: paper qubit j
--- of an N-qubit circuit is wire N-1-j, so paper qubit 0 is the top wire
--- and the paper's last qubit is the un-shifted wire 0.  Within a
--- two-qubit box that makes paper qubit 0 the UPPER wire, written `w ↑`,
--- and paper qubit 1 the lower, written `w ↓`.
+-- Qubit numbering.  The paper's qubit j is wire j here, directly: a
+-- two-qubit box sits on qubits 0 and 1, and its generators Hx 0, Sx 0
+-- are the un-shifted wire (`w ↓`) while Hx 1, Sx 1 are one shift up
+-- (`w ↑`), with the controlled-Z of Circuit.Base spanning both.
 --
--- The reversal is forced by Definition 4.3, not chosen here: the paper's
--- L(n) runs its B boxes UP from the A to its last qubit and puts C
--- there, while its M(n) runs D boxes DOWN to qubit 0 and puts E there.
--- Reading the last qubit as wire 0 is what lets both recursions in
--- Normal descend towards the un-shifted wire, which is the direction
--- _↑ supports.
+-- A trap in reading the source, worth recording because it caught this
+-- file once.  The qcircuit macros of Definition 4.3 take a Y-COORDINATE,
+-- not a qubit number, and the two run opposite ways: the paper numbers
+-- qubits from the TOP (§4), while y increases upward, so for an N-wire
+-- picture qubit = (N-1) - y.  In L(n) the A is drawn at y=2 and the C at
+-- y=6, which is qubit 4 and qubit 0 -- the C is on qubit 0 and the B
+-- boxes run away from it through (0,1), (1,2), ...  Read as qubit
+-- numbers those coordinates say the opposite of what they appear to say,
+-- and an earlier version of this file reversed the B and D boxes on the
+-- strength of it.
 --
 -- For a box in isolation the choice would be immaterial -- relabelling
 -- the two wires of a single box gives an isomorphic circuit, and CZ is
 -- symmetric.  It stops being immaterial as soon as boxes are composed,
--- because then their orientation must agree with the direction the
--- chain and the staircase run.
+-- because then their orientation has to agree with the direction the
+-- chain of Normal.Chain and the staircase of Normal.Mx run.  Both run
+-- away from wire 0, matching the paper's qubit numbering exactly.
 --
 -- Word order is the circuit order: `w • v` runs w first, then v, which
 -- is how the paper reads its diagrams ("from left to right, i.e., in the
@@ -108,16 +110,16 @@ data EBox : Set where
 -- B₁ and B₄ differ only in their opening gates, as do D₁ and D₄; the
 -- four D boxes share the trailing H on qubit 1.
 
--- Paper qubit 0 is the upper wire, so Hx 0 reads as H ↑ and Hx 1 as
--- H ↓.
+-- Paper qubit 0 is the un-shifted wire, so Hx 0 reads as H ↓ and Hx 1
+-- as H ↑.
 [_]ᴮ : BBox → Circuit (₂₊ n)
-[ b₁ ]ᴮ = H ↓ • CZ • H ↓ • H ↑ • CZ • H ↑ • H ↓ • CZ
-[ b₂ ]ᴮ = CZ • H ↑ • H ↓ • CZ
-[ b₃ ]ᴮ = H ↑ • S ↑ • CZ • H ↑ • H ↓ • CZ
-[ b₄ ]ᴮ = H ↑ • CZ • H ↑ • H ↓ • CZ
+[ b₁ ]ᴮ = H ↑ • CZ • H ↑ • H ↓ • CZ • H ↓ • H ↑ • CZ
+[ b₂ ]ᴮ = CZ • H ↓ • H ↑ • CZ
+[ b₃ ]ᴮ = H ↓ • S ↓ • CZ • H ↓ • H ↑ • CZ
+[ b₄ ]ᴮ = H ↓ • CZ • H ↓ • H ↑ • CZ
 
 [_]ᴰ : DBox → Circuit (₂₊ n)
-[ d₁ ]ᴰ = CZ • H ↑ • H ↓ • CZ • H ↑ • H ↓ • CZ • H ↓
-[ d₂ ]ᴰ = H ↑ • CZ • H ↑ • H ↓ • CZ • H ↓
-[ d₃ ]ᴰ = H ↑ • H ↓ • S ↓ • CZ • H ↑ • H ↓ • CZ • H ↓
-[ d₄ ]ᴰ = H ↑ • H ↓ • CZ • H ↑ • H ↓ • CZ • H ↓
+[ d₁ ]ᴰ = CZ • H ↓ • H ↑ • CZ • H ↓ • H ↑ • CZ • H ↑
+[ d₂ ]ᴰ = H ↓ • CZ • H ↓ • H ↑ • CZ • H ↑
+[ d₃ ]ᴰ = H ↓ • H ↑ • S ↑ • CZ • H ↓ • H ↑ • CZ • H ↑
+[ d₄ ]ᴰ = H ↓ • H ↑ • CZ • H ↓ • H ↑ • CZ • H ↑

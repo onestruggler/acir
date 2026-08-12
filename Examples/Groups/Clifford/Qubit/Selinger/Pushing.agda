@@ -28,12 +28,10 @@
 -- box's own pair -- which is why Dirty carries a ZZ₀₁ constructor and
 -- why the B side is the one that keeps generating work.
 --
--- Wire numbering follows the PAPER, as the rule names do: the subscript
--- on H₀, S₁ and so on is the paper's qubit number.  Boxes reverses wire
--- order, so paper qubit 0 is the upper wire of a box and paper qubit 1
--- the lower; the constructors below keep the paper's names so that each
--- clause can be checked against the source, and the reversal is applied
--- once, where these are realised as circuits.
+-- Wire numbering follows the paper, as the rule names do: the subscript
+-- on H₀, S₁ and so on is the paper's qubit number, which is this
+-- development's wire number too (see Boxes).  So subscript 0 is a box's
+-- lower, un-shifted wire and subscript 1 the one above it.
 --
 -- Transcribed from the arXiv source of Figures 3-7, each rule carrying
 -- its phase and word, e.g.
@@ -82,26 +80,22 @@ data Dirty : Set where
 --
 -- The dirty gate is the one immediately to the box's left; the result is
 -- a phase, the new box, and the dirt emerging on its right.
---
--- Subscripts are the paper's qubit numbers throughout, so subscript 0 is
--- the box's UPPER wire and subscript 1 its lower one.  The function
--- names follow the subscripts, not the geometry.
 
--- commHIB: H on the box's upper wire (paper qubit 0).
+-- commHIB: H on the box's lower wire (qubit 0).
 pushHB : BBox → ℤ 8 × BBox × List Dirty
 pushHB b₁ = ₀ , b₁ , H₁ ∷ []
 pushHB b₂ = ₀ , b₄ , []
 pushHB b₃ = ₀ , b₃ , X₀ ∷ S₁ ∷ S₁ ∷ S₁ ∷ H₁ ∷ S₁ ∷ []
 pushHB b₄ = ₀ , b₂ , []
 
--- commSIB: S on the box's upper wire.
+-- commSIB: S on the box's lower wire.
 pushS₀B : BBox → ℤ 8 × BBox × List Dirty
 pushS₀B b₁ = ₀ , b₁ , H₁ ∷ S₁ ∷ H₁ ∷ []
 pushS₀B b₂ = ₀ , b₃ , X₀ ∷ S₁ ∷ S₁ ∷ S₁ ∷ H₁ ∷ S₁ ∷ []
 pushS₀B b₃ = ₀ , b₂ , S₁ ∷ H₁ ∷ S₁ ∷ []
 pushS₀B b₄ = ₀ , b₄ , H₁ ∷ S₁ ∷ H₁ ∷ []
 
--- commISB: S on the box's lower wire.  This is the family that emits a
+-- commISB: S on the box's upper wire.  This is the family that emits a
 -- controlled-Z, so B boxes keep the normalization going.
 pushS₁B : BBox → ℤ 8 × BBox × List Dirty
 pushS₁B b₁ = ₀ , b₁ , S₀ ∷ []
@@ -109,8 +103,8 @@ pushS₁B b₂ = ₀ , b₂ , H₁ ∷ ZZ₀₁ ∷ S₀ ∷ S₁ ∷ H₁ ∷ [
 pushS₁B b₃ = ₀ , b₃ , H₁ ∷ ZZ₀₁ ∷ S₀ ∷ S₁ ∷ H₁ ∷ []
 pushS₁B b₄ = ₀ , b₄ , H₁ ∷ ZZ₀₁ ∷ S₀ ∷ S₁ ∷ H₁ ∷ []
 
--- commIXB: X on the box's lower wire.  Uniformly, the box is unchanged
--- and the X rises to the upper wire.
+-- commIXB: X on the box's upper wire.  Uniformly, the box is unchanged
+-- and the X drops to the lower wire.
 pushX₁B : BBox → ℤ 8 × BBox × List Dirty
 pushX₁B b₁ = ₀ , b₁ , X₀ ∷ []
 pushX₁B b₂ = ₀ , b₂ , X₀ ∷ []
@@ -123,22 +117,22 @@ pushX₁B b₄ = ₀ , b₄ , X₀ ∷ []
 -- These four families are closed: no rule emits a controlled-Z, so dirt
 -- entering the X-normal staircase leaves it as H and S alone.
 
--- altIHDD: H on the box's lower wire (paper qubit 1).
+-- altIHDD: H on the box's upper wire (qubit 1).
 pushH₁D : DBox → ℤ 8 × DBox × List Dirty
 pushH₁D d₁ = ₀ , d₁ , H₀ ∷ []
 pushH₁D d₂ = ₀ , d₄ , []
 pushH₁D d₃ = ₀ , d₃ , S₀ ∷ S₀ ∷ S₀ ∷ H₀ ∷ S₀ ∷ S₁ ∷ S₁ ∷ []
 pushH₁D d₄ = ₀ , d₂ , []
 
--- altISDD: S on the box's lower wire.
+-- altISDD: S on the box's upper wire.
 pushS₁D : DBox → ℤ 8 × DBox × List Dirty
 pushS₁D d₁ = ₀ , d₁ , H₀ ∷ S₀ ∷ H₀ ∷ []
 pushS₁D d₂ = ₀ , d₃ , S₀ ∷ S₀ ∷ S₀ ∷ H₀ ∷ S₀ ∷ S₁ ∷ S₁ ∷ []
 pushS₁D d₃ = ₀ , d₂ , S₀ ∷ H₀ ∷ S₀ ∷ []
 pushS₁D d₄ = ₀ , d₄ , H₀ ∷ S₀ ∷ H₀ ∷ []
 
--- altSIDD: S on the box's upper wire.  Uniformly, the box is unchanged
--- and the S drops to the lower wire.
+-- altSIDD: S on the box's lower wire.  Uniformly, the box is unchanged
+-- and the S rises to the upper wire.
 pushS₀D : DBox → ℤ 8 × DBox × List Dirty
 pushS₀D d₁ = ₀ , d₁ , S₁ ∷ []
 pushS₀D d₂ = ₀ , d₂ , S₁ ∷ []
@@ -157,7 +151,7 @@ pushZZD d₄ = ₀ , d₁ , []
 ------------------------------------------------------------------------
 -- Into a C box, from the wire below it
 --
--- commZZCI: a controlled-Z whose upper wire carries the C box (the
+-- commZZCI: a controlled-Z whose lower wire carries the C box (the
 -- paper's ZZx 0 1 with C on qubit 0).  Local, and the only C rule not
 -- already in Rewrite.
 
