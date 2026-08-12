@@ -54,6 +54,7 @@ open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Syntactics
   p-3 p-prime g* g-gen
 
 open Clifford-Relations
+open Lemmas-Clifford using (lemma-↑^ ; lemma-↓^)
 
 private
   variable
@@ -200,3 +201,201 @@ module Ex-Conjugation (n : ℕ) where
     S • Ex • (S ↑) ^ ₁₊ k      ≈⟨ cright lemma-Ex-Sᵏ↑ (₁₊ k) ⟩
     S • S ^ ₁₊ k • Ex          ≈⟨ sym assoc ⟩
     S ^ ₂₊ k • Ex ∎
+
+  ------------------------------------------------------------------------
+  -- Conjugation is a monoid homomorphism
+  --
+  -- Stated as "Ex • u ≈ u' • Ex", the form the chains below compose in.
+  -- These two are what lift the gate-level axioms to the derived words Z,
+  -- R, M and Mg, which are just products and powers of S and H.
+
+  lemma-Ex-• : ∀ {u u' v v'} → Ex • u ≈ u' • Ex → Ex • v ≈ v' • Ex →
+               Ex • (u • v) ≈ (u' • v') • Ex
+  lemma-Ex-• {u} {u'} {v} {v'} eu ev = begin
+    Ex • (u • v)   ≈⟨ sym assoc ⟩
+    (Ex • u) • v   ≈⟨ cleft eu ⟩
+    (u' • Ex) • v  ≈⟨ assoc ⟩
+    u' • Ex • v    ≈⟨ cright ev ⟩
+    u' • v' • Ex   ≈⟨ sym assoc ⟩
+    (u' • v') • Ex ∎
+
+  lemma-Ex-pow : ∀ {u u'} → Ex • u ≈ u' • Ex → ∀ k → Ex • u ^ k ≈ u' ^ k • Ex
+  lemma-Ex-pow e ₀      = trans right-unit (sym left-unit)
+  lemma-Ex-pow e ₁      = e
+  lemma-Ex-pow e (₂₊ k) = lemma-Ex-• e (lemma-Ex-pow e (₁₊ k))
+
+  ------------------------------------------------------------------------
+  -- CZ is symmetric in its two wires, so conjugation leaves it alone
+
+  lemma-Ex-CZ : Ex • CZ ≈ CZ • Ex
+  lemma-Ex-CZ = axiom comm-Ex-CZ
+
+  lemma-Ex-CZᵏ : ∀ k → Ex • CZ ^ k ≈ CZ ^ k • Ex
+  lemma-Ex-CZᵏ = lemma-Ex-pow lemma-Ex-CZ
+
+  lemma-conj-Ex-CZ : Ex • CZ • Ex ≈ CZ
+  lemma-conj-Ex-CZ = begin
+    Ex • CZ • Ex    ≈⟨ sym assoc ⟩
+    (Ex • CZ) • Ex  ≈⟨ cleft lemma-Ex-CZ ⟩
+    (CZ • Ex) • Ex  ≈⟨ assoc ⟩
+    CZ • Ex • Ex    ≈⟨ lemma-cancel-Ex ⟩
+    CZ ∎
+
+  ------------------------------------------------------------------------
+  -- The derived one-wire words, carried from the upper wire to the lower
+  --
+  -- Each is a product of powers of S and H, so it is assembled from the
+  -- two axioms by lemma-Ex-• and lemma-Ex-pow.  The `refl'` steps are
+  -- the shift commuting with a power — definitional for a literal
+  -- exponent, but p-1 and toℕ k are symbolic, so lemma-↑^ is needed.
+
+  lemma-Ex-S⁻¹↑ : Ex • S⁻¹ ↑ ≈ S⁻¹ • Ex
+  lemma-Ex-S⁻¹↑ = begin
+    Ex • S⁻¹ ↑          ≈⟨ refl' (Eq.cong (Ex •_) (lemma-↑^ p-1 S)) ⟩
+    Ex • (S ↑) ^ p-1    ≈⟨ lemma-Ex-Sᵏ↑ p-1 ⟩
+    S⁻¹ • Ex ∎
+
+  lemma-Ex-Z↑ : Ex • Z ↑ ≈ Z • Ex
+  lemma-Ex-Z↑ =
+    lemma-Ex-• lemma-Ex-H↑
+      (lemma-Ex-• lemma-Ex-H↑
+        (lemma-Ex-• lemma-Ex-S↑
+          (lemma-Ex-• lemma-Ex-H↑
+            (lemma-Ex-• lemma-Ex-H↑ lemma-Ex-S⁻¹↑))))
+
+  lemma-Ex-Z^↑ : ∀ k → Ex • (Z^ k) ↑ ≈ Z^ k • Ex
+  lemma-Ex-Z^↑ k = begin
+    Ex • (Z ^ toℕ k) ↑       ≈⟨ refl' (Eq.cong (Ex •_) (lemma-↑^ (toℕ k) Z)) ⟩
+    Ex • (Z ↑) ^ toℕ k       ≈⟨ lemma-Ex-pow lemma-Ex-Z↑ (toℕ k) ⟩
+    Z ^ toℕ k • Ex ∎
+
+  lemma-Ex-R↑ : Ex • R ↑ ≈ R • Ex
+  lemma-Ex-R↑ = lemma-Ex-• lemma-Ex-S↑ (lemma-Ex-Z^↑ 1/2)
+
+  lemma-Ex-R^↑ : ∀ k → Ex • (R^ k) ↑ ≈ R^ k • Ex
+  lemma-Ex-R^↑ k = begin
+    Ex • (R ^ toℕ k) ↑       ≈⟨ refl' (Eq.cong (Ex •_) (lemma-↑^ (toℕ k) R)) ⟩
+    Ex • (R ↑) ^ toℕ k       ≈⟨ lemma-Ex-pow lemma-Ex-R↑ (toℕ k) ⟩
+    R ^ toℕ k • Ex ∎
+
+  lemma-Ex-M↑ : ∀ (x' : ℤ* ₚ) → Ex • M x' ↑ ≈ M x' • Ex
+  lemma-Ex-M↑ x' =
+    lemma-Ex-• (lemma-Ex-R^↑ x)
+      (lemma-Ex-• lemma-Ex-H↑
+        (lemma-Ex-• (lemma-Ex-R^↑ x⁻¹)
+          (lemma-Ex-• lemma-Ex-H↑
+            (lemma-Ex-• (lemma-Ex-R^↑ x) lemma-Ex-H↑))))
+    where
+    x   = x' .proj₁
+    x⁻¹ = ((x' ⁻¹) .proj₁)
+
+  lemma-Ex-Mg↑ : Ex • Mg ↑ ≈ Mg • Ex
+  lemma-Ex-Mg↑ = lemma-Ex-M↑ g′
+
+  lemma-conj-Ex-Mg↑ : Ex • Mg ↑ • Ex ≈ Mg
+  lemma-conj-Ex-Mg↑ = begin
+    Ex • Mg ↑ • Ex   ≈⟨ sym assoc ⟩
+    (Ex • Mg ↑) • Ex ≈⟨ cleft lemma-Ex-Mg↑ ⟩
+    (Mg • Ex) • Ex   ≈⟨ assoc ⟩
+    Mg • Ex • Ex     ≈⟨ lemma-cancel-Ex ⟩
+    Mg ∎
+
+  ------------------------------------------------------------------------
+  -- The ↓-rules, obtained by conjugating the ↑-rules
+  --
+  -- This is what the new comm-Ex-CZ axiom buys.  Each proof is the same
+  -- three moves: replace the lower-wire word by its Ex-conjugate, push
+  -- the CZ through both copies of Ex, and apply the ↑-rule in the middle.
+
+  lemma-comm-CZ-S : CZ • S ≈ S • CZ
+  lemma-comm-CZ-S = begin
+    CZ • S                ≈⟨ cright sym lemma-conj-Ex-S↑ ⟩
+    CZ • (Ex • S ↑ • Ex)  ≈⟨ by-assoc auto ⟩
+    (CZ • Ex) • S ↑ • Ex  ≈⟨ cleft sym lemma-Ex-CZ ⟩
+    (Ex • CZ) • S ↑ • Ex  ≈⟨ by-assoc auto ⟩
+    Ex • (CZ • S ↑) • Ex  ≈⟨ cright cleft axiom comm-CZ-S↑ ⟩
+    Ex • (S ↑ • CZ) • Ex  ≈⟨ by-assoc auto ⟩
+    (Ex • S ↑) • CZ • Ex  ≈⟨ cright sym lemma-Ex-CZ ⟩
+    (Ex • S ↑) • Ex • CZ  ≈⟨ by-assoc auto ⟩
+    (Ex • S ↑ • Ex) • CZ  ≈⟨ cleft lemma-conj-Ex-S↑ ⟩
+    S • CZ ∎
+
+  -- Every re-bracketing here is an explicit assoc rather than by-assoc:
+  -- the tactic compares to-list, and to-list is stuck on CZ^ g = CZ ^ toℕ g,
+  -- whose exponent is symbolic.
+  lemma-semi-Mg-CZ : Mg • CZ ≈ CZ^ g • Mg
+  lemma-semi-Mg-CZ = begin
+    Mg • CZ                       ≈⟨ cleft sym lemma-conj-Ex-Mg↑ ⟩
+    (Ex • (Mg ↑ • Ex)) • CZ       ≈⟨ assoc ⟩
+    Ex • ((Mg ↑ • Ex) • CZ)       ≈⟨ cright assoc ⟩
+    Ex • (Mg ↑ • (Ex • CZ))       ≈⟨ cright cright lemma-Ex-CZ ⟩
+    Ex • (Mg ↑ • (CZ • Ex))       ≈⟨ cright sym assoc ⟩
+    Ex • ((Mg ↑ • CZ) • Ex)       ≈⟨ cright cleft axiom semi-M↑CZ ⟩
+    Ex • ((CZ^ g • Mg ↑) • Ex)    ≈⟨ cright assoc ⟩
+    Ex • (CZ^ g • (Mg ↑ • Ex))    ≈⟨ sym assoc ⟩
+    (Ex • CZ^ g) • (Mg ↑ • Ex)    ≈⟨ cleft lemma-Ex-CZᵏ (toℕ g) ⟩
+    (CZ^ g • Ex) • (Mg ↑ • Ex)    ≈⟨ assoc ⟩
+    CZ^ g • (Ex • (Mg ↑ • Ex))    ≈⟨ cright lemma-conj-Ex-Mg↑ ⟩
+    CZ^ g • Mg ∎
+
+------------------------------------------------------------------------
+-- The shift down is the identity on the one-wire words
+--
+-- _↓ maps every gate to itself, so it is definitionally the identity on
+-- a word built from gate letters — but it is stuck on a power with a
+-- symbolic exponent, which is what these propositional equations step
+-- over.  They are needed because Simplified-V1 states semi-M↓CZ over
+-- Mg ↓ rather than Mg.
+
+module Down-Identity where
+
+  lemma-S⁻¹↓ : (S⁻¹ {n}) ↓ ≡ S⁻¹
+  lemma-S⁻¹↓ = lemma-↓^ p-1 S
+
+  lemma-Z↓ : (Z {n}) ↓ ≡ Z
+  lemma-Z↓ = Eq.cong (λ w → H • H • S • H • H • w) lemma-S⁻¹↓
+
+  lemma-Z^↓ : ∀ k → (Z^ k {n}) ↓ ≡ Z^ k
+  lemma-Z^↓ k =
+    Eq.trans (lemma-↓^ (toℕ k) Z) (Eq.cong (_^ toℕ k) lemma-Z↓)
+
+  lemma-R↓ : (R {n}) ↓ ≡ R
+  lemma-R↓ = Eq.cong (S •_) (lemma-Z^↓ 1/2)
+
+  lemma-R^↓ : ∀ k → (R^ {n} k) ↓ ≡ R^ k
+  lemma-R^↓ k =
+    Eq.trans (lemma-↓^ (toℕ k) R) (Eq.cong (_^ toℕ k) lemma-R↓)
+
+  lemma-M↓ : ∀ (x' : ℤ* ₚ) → (M {n} x') ↓ ≡ M x'
+  lemma-M↓ x' = Eq.cong₂ (λ a b → a • H • b • H • a • H)
+                         (lemma-R^↓ x) (lemma-R^↓ x⁻¹)
+    where
+    x   = x' .proj₁
+    x⁻¹ = ((x' ⁻¹) .proj₁)
+
+  lemma-Mg↓ : (Mg {n}) ↓ ≡ Mg
+  lemma-Mg↓ = lemma-M↓ g′
+
+------------------------------------------------------------------------
+-- The two Simplified-V1 axioms that Paper-V0 lacked
+--
+-- Both are now consequences of comm-Ex-CZ: the ↑-rule conjugated by the
+-- swap, with the ↓ on the outside stepped over by Down-Identity.
+
+module Down-Rules (n : ℕ) where
+
+  open PB ((₂₊ n) QRel,_===_)
+  open PP ((₂₊ n) QRel,_===_)
+  open SR word-setoid
+  open Ex-Conjugation n
+  open Down-Identity
+
+  lemma-comm-CZ-S↓ : CZ • S ↓ ≈ S ↓ • CZ
+  lemma-comm-CZ-S↓ = lemma-comm-CZ-S
+
+  lemma-semi-M↓CZ : Mg ↓ • CZ ≈ CZ^ g • Mg ↓
+  lemma-semi-M↓CZ = begin
+    Mg ↓ • CZ     ≈⟨ refl' (Eq.cong (_• CZ) lemma-Mg↓) ⟩
+    Mg • CZ       ≈⟨ lemma-semi-Mg-CZ ⟩
+    CZ^ g • Mg    ≈⟨ refl' (Eq.cong (CZ^ g •_) (Eq.sym lemma-Mg↓)) ⟩
+    CZ^ g • Mg ↓ ∎

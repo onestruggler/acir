@@ -78,6 +78,8 @@ import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.Syntactics
   p-3 p-prime g* g-gen as V1
 import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.Lemmas
   p-3 p-prime g* g-gen as V1L
+import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Lemmas
+  p-3 p-prime g* g-gen as PapL
 
 module PapR = Clifford-Relations
 module V1R  = V1.Clifford-Relations
@@ -108,6 +110,9 @@ record BridgeData : Set where
     v1-blake-c12 :
       ∀ {n} → let open PB (V1R._QRel,_===_ (₂₊ n)) using (_≈_) in
       CX • S ↓ • CX ^ p-1 • (S ^ p-1) ↑ • (S ^ p-1) ↓ ≈ CZ
+    v1-comm-Ex-CZ :
+      ∀ {n} → let open PB (V1R._QRel,_===_ (₂₊ n)) using (_≈_) in
+      Ex • CZ ≈ CZ • Ex
 
     -- A. Paper-V0's three-wire axioms, inside Simplified-V1.
     v1-yang-baxter :
@@ -121,12 +126,10 @@ record BridgeData : Set where
       CX ↑ • CZ ↓ ≈ CZ ↓ • CZ02 • CX ↑
 
     -- B. Simplified-V1's two-wire axioms, inside Paper-V0.
-    pap-semi-M↓CZ :
-      ∀ {n} → let open PB (PapR._QRel,_===_ (₂₊ n)) using (_≈_) in
-      PapR.Mg ↓ • CZ ≈ CZ^ g • PapR.Mg ↓
-    pap-comm-CZ-S↓ :
-      ∀ {n} → let open PB (PapR._QRel,_===_ (₂₊ n)) using (_≈_) in
-      CZ • S ↓ ≈ S ↓ • CZ
+    --
+    -- semi-M↓CZ and comm-CZ-S↓ used to sit here too; both are now proved
+    -- in Paper-V0.Lemmas, by conjugating their ↑-counterparts with the
+    -- swap.  That is what the comm-Ex-CZ axiom was added for.
     pap-selinger-c10 :
       ∀ {n} → let open PB (PapR._QRel,_===_ (₂₊ n)) using (_≈_) in
       CZ • H ↑ • CZ ≈
@@ -177,6 +180,7 @@ module Theorem (bd : BridgeData) where
   f-well-defined PapR.semi-Ex-S↑    = v1-semi-Ex-S↑
   f-well-defined PapR.semi-Ex-H↑    = v1-semi-Ex-H↑
   f-well-defined PapR.blake-c12     = v1-blake-c12
+  f-well-defined PapR.comm-Ex-CZ    = v1-comm-Ex-CZ
   f-well-defined PapR.yang-baxter   = v1-yang-baxter
   f-well-defined PapR.cz-slide      = v1-cz-slide
   f-well-defined PapR.semi-CX↑-CZ↓  = v1-semi-CX↑-CZ↓
@@ -210,8 +214,8 @@ module Theorem (bd : BridgeData) where
   g-well-defined V1R.rel-X↑-CZ      = PB.axiom PapR.rel-X↑-CZ
   g-well-defined V1R.rel-X↓-CZ      = PB.axiom PapR.rel-X↓-CZ
   -- The eight Simplified-V1-only axioms.
-  g-well-defined V1R.semi-M↓CZ      = pap-semi-M↓CZ
-  g-well-defined V1R.comm-CZ-S↓     = pap-comm-CZ-S↓
+  g-well-defined {₂₊ n} V1R.semi-M↓CZ  = PapL.Down-Rules.lemma-semi-M↓CZ n
+  g-well-defined {₂₊ n} V1R.comm-CZ-S↓ = PapL.Down-Rules.lemma-comm-CZ-S↓ n
   g-well-defined V1R.selinger-c10   = pap-selinger-c10
   g-well-defined V1R.selinger-c11   = pap-selinger-c11
   g-well-defined V1R.selinger-c12   = pap-selinger-c12

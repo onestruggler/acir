@@ -137,6 +137,17 @@ module Clifford-Relations where
       semi-Ex-S↑ :    (₂₊ n) SRel,  Ex • S ↑ === S • Ex
       semi-Ex-H↑ :    (₂₊ n) SRel,  Ex • H ↑ === H • Ex
 
+      -- The swap commutes with CZ, CZ being symmetric in its two wires.
+      -- Figure 1 of the paper has no two-wire rule for this — its C10-C11
+      -- commute a *one-wire* generator through the swap, and its C14
+      -- slides a CZ through swaps at three wires — so it is stated here
+      -- as an axiom rather than derived.  Everything about the lower
+      -- wire follows from it: conjugating by Ex is what turns each ↑-rule
+      -- into its ↓-counterpart, and without it that duality is circular
+      -- (Symplectic.Duality discharges the dual of comm-CZ-S↑ using
+      -- comm-CZ-S↓, which Paper-V0 does not have).
+      comm-Ex-CZ :    (₂₊ n) SRel,  Ex • CZ === CZ • Ex
+
       rel-X↑-CZ :     (₂₊ n) SRel,  CZ • X ↑ === X ↑ • Z ↓ • CZ
       rel-X↓-CZ :     (₂₊ n) SRel,  CZ • X ↓ === X ↓ • Z ↑ • CZ
 
@@ -177,6 +188,7 @@ module Clifford-Relations where
 
   pattern semi-Ex-S↑ = srel (Base.semi-Ex-S↑)
   pattern semi-Ex-H↑ = srel (Base.semi-Ex-H↑)
+  pattern comm-Ex-CZ = srel (Base.comm-Ex-CZ)
 
   pattern rel-X↑-CZ = srel (Base.rel-X↑-CZ)
   pattern rel-X↓-CZ = srel (Base.rel-X↓-CZ)
