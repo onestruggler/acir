@@ -60,11 +60,11 @@ then DO NOT retry; write compile-clean LaTeX without local compilation, and add 
 - The user allows **modifying library code for the paper's needs** (chiefly: a new
   module collecting the headline results). Any library edit ⇒ re-typecheck ALL of:
   ```
-  wsl --exec /home/onest/.cabal/bin/agda Examples/Groups/Symmetric/Theorems.agda
-  wsl --exec /home/onest/.cabal/bin/agda Examples/Amalgamations/CliffordT1.agda
-  wsl --exec /home/onest/.cabal/bin/agda Examples/Amalgamations/QutritCliffordT1.agda
-  wsl --exec /home/onest/.cabal/bin/agda Examples/Amalgamations/U33Di.agda
+  wsl --exec /home/onest/.cabal/bin/agda MainTheorems.agda
   ```
+  (that single root now reaches every development; the four former roots
+  Symmetric/Theorems, CliffordT1, QutritCliffordT1 and U33Di are all
+  below it, and Symmetric/Theorems no longer exists)
   (run from PowerShell/Bash tool with `wsl --exec`; Git-Bash mangles Linux paths in
   other invocation forms — this exact form works). Plus the new collection module.
 - Do not weaken `--safe`; do not leave holes in checked-in code.
@@ -150,7 +150,7 @@ re-export/restate in one place every headline result, grouped with banner commen
 presentations, (c) the completeness theorems (Sₙ etc.), (d) the construction
 lifting theorems (direct/semidirect/n-fold/amalgamation), (e) the monoid isos of
 the three Amalgamations examples. Follow the style of
-`Examples/Groups/Symmetric/Theorems.agda` (72-char banners, `open import ... using`
+`MainTheorems.agda` itself (72-char banners, `open import ... using`
 lists). It must typecheck; add it to the roots you re-check. The paper's Examples
 section then mirrors this module table-style, and the artifact section points to it.
 

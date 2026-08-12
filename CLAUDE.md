@@ -10,9 +10,9 @@ This is the Agda formalisation accompanying the paper *"A Complete and Natural R
 
 ```bash
 # Typecheck via WSL (Agda 2.8, resolves dependencies automatically).
-# This single root covers the whole live library (it imports the index
-# module of every development, including the four former roots
-# Symmetric/Theorems, CliffordT1, QutritCliffordT1, U33Di):
+# This single root covers the whole live library (it reaches every
+# development through the results it states, including CliffordT1,
+# QutritCliffordT1 and U33Di):
 wsl --exec /home/onest/.cabal/bin/agda MainTheorems.agda
 ```
 
@@ -64,7 +64,7 @@ Numeral patterns `₀`–`₉`, successor patterns `₁₊`/`₂₊`/`₃₊`/`�
 There is no longer a `Presentation/Groups/`: it held a second Sₙ and a hand-rolled ℤ/4ℤ ≀ Sₙ, both over an inductive alphabet rather than circuit generators, and both are gone. The wreath product now comes from `Examples/Construct/SemiDirectProduct/SnD.agda`, which supplies `pres`, `nfp` and `nfp'` over the `Examples/Groups/Symmetric` alphabet.
 
 ### Layer 5 — Examples (`Examples/`)
-- **`Groups/Symmetric/`**: completeness of the circuit presentation of Sₙ. `Theorems.agda` collects the main results (unique normal form, soundness, completeness for the loose endofunction semantics and the tight permutation semantics, and `IsPresentationOf`); its submodules are still named `Loose`/`Tight` after the two semantics. The layout follows the two chains: the **permutation** one is at the top level (`Semantics`, `Interpretation`, `Soundness`, `UniqueNormalForm`, `Surjectivity`, `Presentation`) and reaches a full presentation — `Semantics` is the target group alone and mentions no syntax, `Interpretation` is `⟦_⟧`/`⟦_⟧ᵍ`/`⟦↑⟧`, and `Soundness` is that `⟦_⟧` respects the relations; the **endofunction** one is `SubPresentation/` (`Semantics`, `Interpretation`, `UniqueNormalForm`, `SubPres`) and stops at a setoid embedding, since endofunctions are not all denotations. `Presentation` splits like Symplectic's: `subpresentation` needs only normalization, and `Surjectivity` is what promotes it. Shared support: `Syntactics`, `Cosets`, `Normalization`. `Completeness.agda` and `IndexedAction.agda` typecheck but nothing imports them.
+- **`Groups/Symmetric/`**: completeness of the circuit presentation of Sₙ. There is no `Theorems.agda` façade — `MainTheorems` takes the five results (presentation, unique normal form for each semantics, soundness, completeness) straight from the modules that prove them. The layout follows the two chains: the **permutation** one is at the top level (`Semantics`, `Interpretation`, `Soundness`, `UniqueNormalForm`, `Surjectivity`, `Presentation`) and reaches a full presentation — `Semantics` is the target group alone and mentions no syntax, `Interpretation` is `⟦_⟧`/`⟦_⟧ᵍ`/`⟦↑⟧`, and `Soundness` is that `⟦_⟧` respects the relations; the **endofunction** one is `SubPresentation/` (`Semantics`, `Interpretation`, `UniqueNormalForm`, `SubPres`) and stops at a setoid embedding, since endofunctions are not all denotations. `Presentation` splits like Symplectic's: `subpresentation` needs only normalization, and `Surjectivity` is what promotes it. Shared support: `Syntactics`, `Cosets`, `Normalization`. `Completeness.agda` and `IndexedAction.agda` typecheck but nothing imports them.
 - **`Amalgamations/CliffordT1.agda`**: the qubit Clifford+T gate set as an amalgamated product, ending in a monoid isomorphism.
 - **`Amalgamations/QutritCliffordT1.agda`**: the qutrit Clifford+T analogue.
 - **`Amalgamations/U33Di.agda`**: U₃(ℤ[½,i]) presented as a two-level amalgamated product.
@@ -78,7 +78,7 @@ There is no longer a `Presentation/Groups/`: it held a second Sₙ and a hand-ro
 - `nfp` (`NormalFormInjective`) and `nfp'` (`NormalForm`) are the standard names for normal-form witnesses.
 - `by-equal-nf` proves `w ≈ v` from `nf w ≡ nf v`; `by-assoc` proves `w ≈ v` from `to-list w ≡ to-list v`; `by-passoc` re-brackets guided by pattern words built from `□`.
 - Files follow the agda-stdlib style guide (see `style-guide.md`): 72-char banner headers with library line `-- Presentations of groups`, `{-# OPTIONS --safe #-}`, imports sorted with `using` lists, `private variable` blocks, sentence-case section separators.
-- `Examples/Groups/Symmetric/Theorems.agda` is the style exemplar: it re-states the main theorems with definitions imported openly and proofs imported qualified.
+- `MainTheorems.agda` is the style exemplar: it re-states the main theorems with definitions imported openly and proofs imported qualified, each section's banner naming the module the proof lives in. It is also the only façade — the per-development `Theorems.agda` layer was removed for the symmetric group, whose results MainTheorems now takes straight from `Presentation`, `UniqueNormalForm` and `SubPresentation/*`.
 
 ## Stdlib compatibility notes
 

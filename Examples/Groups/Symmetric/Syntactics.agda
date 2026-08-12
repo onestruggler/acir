@@ -76,6 +76,6 @@ open LR public
 -- Grouplike (each generator has a two-sided inverse)
 
 grouplike : Grouplike (_VRel,_===_ n)
-grouplike {₂₊ k} (gate₂ σ-gate) = σ , PB.axiom (srel order)
+grouplike {₂₊ k} (gate₂ σ-gate) = σ , (PB.axiom (_VRel,_===_.srel order)) -- σ , PB.axiom (srel order)
 grouplike {₁₊ n} (g ↥) with grouplike {n} g
 ... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf

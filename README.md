@@ -16,14 +16,13 @@ includes the repository root (`.`) and depends on `standard-library`.
 
 ## Typechecking
 
-Any of the following roots covers the whole live library:
+`MainTheorems.agda` restates the headline theorems and covers the whole
+live library on its own:
 
 ```bash
-agda Examples/Groups/Symmetric/Theorems.agda
-agda Examples/Amalgamations/CliffordT1.agda
-agda Examples/Amalgamations/QutritCliffordT1.agda
-agda Examples/Amalgamations/U33Di.agda
+agda MainTheorems.agda
 ```
 
-`MainTheorems.agda` restates the headline theorems and typechecks
-together with the roots above.
+It reaches the symmetric, Clifford+T and U₃(ℤ[½,i]) developments
+through the results it states, so there is nothing left to check
+separately.

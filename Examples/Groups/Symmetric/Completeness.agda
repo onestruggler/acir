@@ -34,7 +34,6 @@ private
   variable
     n : ℕ
 
-
 ------------------------------------------------------------------------
 -- Completeness of the tight semantics
 

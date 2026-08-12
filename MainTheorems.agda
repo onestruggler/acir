@@ -63,7 +63,11 @@ import Examples.Groups.Symmetric.Normalization as SymNF
 import Examples.Groups.Symmetric.SubPresentation.Semantics as SymLoose
 import Examples.Groups.Symmetric.Semantics as SymTight
 import Examples.Groups.Symmetric.Interpretation as SymTightI
-import Examples.Groups.Symmetric.Theorems as SymThm
+import Examples.Groups.Symmetric.Presentation as SymPres
+import Examples.Groups.Symmetric.UniqueNormalForm as SymUNF
+import Examples.Groups.Symmetric.SubPresentation.Interpretation as SymLooseInt
+import Examples.Groups.Symmetric.SubPresentation.SubPres as SymLooseSub
+import Examples.Groups.Symmetric.SubPresentation.UniqueNormalForm as SymLooseUNF
 import Examples.Groups.ProjectivePauli.Presentation as Pauli
 import Examples.Groups.Symplectic.Syntactics as SympSyn
 import Examples.Groups.Symplectic.Semantics as SympSem
@@ -216,37 +220,42 @@ cyclic-unique-nf = CycThm.unique-nf
 ------------------------------------------------------------------------
 -- Concrete presentations: symmetric groups as circuits
 --
--- Home: Examples.Groups.Symmetric.*.  The one-gate circuit presentation
--- (order, yang-baxter, plus the structural rules cong↑/comm₂ added by
--- Circuit.Base.Lift-Relation) presents the group of permutations of
--- Fin n, and the coset-tower normal form is unique for both the loose
--- endofunction semantics and the tight permutation semantics.
+-- The one-gate circuit presentation (order, yang-baxter, plus the
+-- structural rules cong↑/comm₂ added by Circuit.Base.Lift-Relation)
+-- presents the group of permutations of Fin n, and the coset-tower
+-- normal form is unique for both the loose endofunction semantics and
+-- the tight permutation semantics.
+--
+-- Homes, one per result: the permutation chain is at the top level of
+-- Examples.Groups.Symmetric and reaches a presentation; the
+-- endofunction chain is SubPresentation/ and stops at a setoid
+-- embedding, its semantics not being onto.
 
 symmetric-presentation :
   ∀ n → (n VRel,_===_) IsPresentationOf (SymTight.Permutation′-group n)
-symmetric-presentation n = SymThm.Tight.presentation n
+symmetric-presentation n = SymPres.presentation {n}
 
 symmetric-unique-nf :
   ∀ n → let open NFU (n VRel,_===_) (SymNF.NF n)
                      (Group.setoid (SymTight.Permutation′-group n))
                      (SymTightI.⟦_⟧ {n})
         in UniqueNormalForm (SymNF.inv-nf {n})
-symmetric-unique-nf n = SymThm.Tight.unique-nf n
+symmetric-unique-nf n = SymUNF.unique-nf-tight {n}
 
 symmetric-unique-nf-loose :
   ∀ n → NFBase.UniqueNormalForm (n VRel,_===_) (SymNF.NF n)
           (SymLoose.Endo-setoid n) (SymLoose.⟦_⟧ {n}) (SymNF.nfp'-t n)
-symmetric-unique-nf-loose n = SymThm.Loose.unique-nf n
+symmetric-unique-nf-loose n = SymLooseUNF.unique-nf n
 
 symmetric-soundness :
   ∀ n → Congruent (PB._≈_ (n VRel,_===_))
           (Setoid._≈_ (SymLoose.Endo-setoid n)) (SymLoose.⟦_⟧ {n})
-symmetric-soundness n = SymThm.Loose.soundness n
+symmetric-soundness n = SymLooseInt.sound
 
 symmetric-completeness :
   ∀ n → Injective (PB._≈_ (n VRel,_===_))
           (Setoid._≈_ (SymLoose.Endo-setoid n)) (SymLoose.⟦_⟧ {n})
-symmetric-completeness n = SymThm.Loose.completeness n
+symmetric-completeness n = SymLooseSub.completeness n
 
 ------------------------------------------------------------------------
 -- Concrete presentations: Pauli groups, compositionally
