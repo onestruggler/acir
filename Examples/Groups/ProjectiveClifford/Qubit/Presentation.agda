@@ -57,7 +57,7 @@ open import Data.Unit using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Notations using (₁₊)
-open import Word.Base using (_^_ ; ε)
+open import Word.Base using (_^_ ; _•_ ; ε)
 import Presentation.Base as PB
 import Normalization.NormalForm.Setoid as SNF
 open import Presentation.Definitions using (_IsPresentationOf_)
@@ -73,7 +73,7 @@ open Symplectic using (H ; S^ ; XM ; CZ ; Circuit ; _↑)
 open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
   using (module Simplified-Relations)
 open Simplified-Relations
-  using (srel ; cong↑ ; order-H ; order-CZ ; M₋₁ ; M-power)
+  using (srel ; cong↑ ; comm₁ ; order-H ; order-CZ ; M₋₁ ; M-power)
 
 open import Examples.Groups.ProjectiveClifford.Qubit.Semantics using (CMS-group)
 import Examples.Groups.ProjectiveClifford.Qubit.ExtensionPresentation as EP
@@ -232,6 +232,63 @@ H↑²-free = ↑-free H²-free
 CZ²-free : ∀ {n} →
   PB._≈_ (EP.Clifford.Corr-free (₂₊ n)) (CZ ^ 2) ε
 CZ²-free = PB.axiom (srel order-CZ , Eq.refl)
+
+-- The same three as products.  _^ 2 is already w • w, so these are the
+-- powers verbatim; they are named for readability in the chains below.
+module _ {n : ℕ} where
+
+  open PB (EP.Clifford.Corr-free (₂₊ n))
+
+  H•H-free : H • H ≈ ε
+  H•H-free = H²-free
+
+  H↑•H↑-free : (H ↑) • (H ↑) ≈ ε
+  H↑•H↑-free = H↑²-free
+
+  CZ•CZ-free : CZ • CZ ≈ ε
+  CZ•CZ-free = CZ²-free
+
+  -- H and H ↑ act on disjoint wires, so they commute by the structural
+  -- comm₁ rule — no group-specific relator, hence correction-free.
+  H↑H-comm-free : (H ↑) • H ≈ H • (H ↑)
+  H↑H-comm-free = axiom (comm₁ _ _ , Eq.refl)
+
+  -- Ex is (CZ • H • H ↑)³.  Writing a = CZ and b = H • H ↑, both are
+  -- involutions: a by order-CZ, and b because its two letters commute
+  -- and each squares away.  So Ex² ≈ ε is the dihedral statement that
+  -- ab has order dividing 6 — the one fact still missing, and the only
+  -- place selinger-c10/c11 can enter.
+  b•b-free : (H • (H ↑)) • (H • (H ↑)) ≈ ε
+  b•b-free =
+    trans assoc
+      (trans (cong refl (sym assoc))
+        (trans (cong refl (cong H↑H-comm-free refl))
+          (trans (cong refl assoc)
+            (trans (sym assoc)
+              (trans (cong H•H-free H↑•H↑-free) left-unit)))))
+
+-- The one fact still missing, stated so the next attempt has a target.
+--
+-- With a = CZ and b = H • H ↑ both involutions (CZ•CZ-free, b•b-free),
+-- Ex is (ab)³ and Ex² is (ab)⁶, so Ex² ≈ ε says exactly that ab has
+-- order dividing 6 — the dihedral relation between the two involutions.
+--
+-- It has to come from selinger-c10/c11: they are the only relators
+-- linking CZ to H, and without one of them the fragment sees only
+-- a² = b² = ε, which presents the infinite dihedral group.  The
+-- difficulty is that c10/c11 introduce S-powers on their right-hand
+-- sides, and order-S — the only relator that shortens an S-power, and
+-- at p = 2 the only way even to cancel S⁻¹ • S, since S⁻¹ is S — is
+-- exactly the excluded one.  So the S's have to be introduced and
+-- retired by paired applications of selinger itself.
+--
+-- Two checks say this is open rather than blocked: Ex² is the identity
+-- in CMS n (SWAP² = I, so nothing forbids it), and an S-exponent count
+-- yields no invariant to obstruct it (order-H moves the count by 3,
+-- selinger by 4, so no modulus survives).
+Dihedral-6 : Set
+Dihedral-6 = ∀ {n} →
+  PB._≈_ (EP.Clifford.Corr-free (₂₊ n)) ((CZ • (H • (H ↑))) ^ 6) ε
 
 sec-reduction-1 : Sec-reduction 1
 sec-reduction-1 =
