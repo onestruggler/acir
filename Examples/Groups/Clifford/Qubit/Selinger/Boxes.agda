@@ -17,12 +17,24 @@
 --
 -- Qubit numbering.  The paper numbers qubits from the top, so a
 -- two-qubit box sits on qubits 0 and 1 and its generators are written
--- Hx 0, Hx 1, ZZx 0 1.  Here qubit 0 is the un-shifted wire, written
--- `w ↓`, and qubit 1 is one shift up, written `w ↑`; the controlled-Z of
--- Circuit.Base spans both.  The words below therefore say exactly what
--- Figure 1 says, gate for gate and qubit for qubit -- only the drawing
--- convention (which wire is on top) differs, and CZ is symmetric so
--- nothing turns on it.
+-- Hx 0, Hx 1, ZZx 0 1.  The wire order is REVERSED here: paper qubit j
+-- of an N-qubit circuit is wire N-1-j, so paper qubit 0 is the top wire
+-- and the paper's last qubit is the un-shifted wire 0.  Within a
+-- two-qubit box that makes paper qubit 0 the UPPER wire, written `w ↑`,
+-- and paper qubit 1 the lower, written `w ↓`.
+--
+-- The reversal is forced by Definition 4.3, not chosen here: the paper's
+-- L(n) runs its B boxes UP from the A to its last qubit and puts C
+-- there, while its M(n) runs D boxes DOWN to qubit 0 and puts E there.
+-- Reading the last qubit as wire 0 is what lets both recursions in
+-- Normal descend towards the un-shifted wire, which is the direction
+-- _↑ supports.
+--
+-- For a box in isolation the choice would be immaterial -- relabelling
+-- the two wires of a single box gives an isomorphic circuit, and CZ is
+-- symmetric.  It stops being immaterial as soon as boxes are composed,
+-- because then their orientation must agree with the direction the
+-- chain and the staircase run.
 --
 -- Word order is the circuit order: `w • v` runs w first, then v, which
 -- is how the paper reads its diagrams ("from left to right, i.e., in the
@@ -96,14 +108,16 @@ data EBox : Set where
 -- B₁ and B₄ differ only in their opening gates, as do D₁ and D₄; the
 -- four D boxes share the trailing H on qubit 1.
 
+-- Paper qubit 0 is the upper wire, so Hx 0 reads as H ↑ and Hx 1 as
+-- H ↓.
 [_]ᴮ : BBox → Circuit (₂₊ n)
-[ b₁ ]ᴮ = H ↑ • CZ • H ↑ • H ↓ • CZ • H ↓ • H ↑ • CZ
-[ b₂ ]ᴮ = CZ • H ↓ • H ↑ • CZ
-[ b₃ ]ᴮ = H ↓ • S ↓ • CZ • H ↓ • H ↑ • CZ
-[ b₄ ]ᴮ = H ↓ • CZ • H ↓ • H ↑ • CZ
+[ b₁ ]ᴮ = H ↓ • CZ • H ↓ • H ↑ • CZ • H ↑ • H ↓ • CZ
+[ b₂ ]ᴮ = CZ • H ↑ • H ↓ • CZ
+[ b₃ ]ᴮ = H ↑ • S ↑ • CZ • H ↑ • H ↓ • CZ
+[ b₄ ]ᴮ = H ↑ • CZ • H ↑ • H ↓ • CZ
 
 [_]ᴰ : DBox → Circuit (₂₊ n)
-[ d₁ ]ᴰ = CZ • H ↓ • H ↑ • CZ • H ↓ • H ↑ • CZ • H ↑
-[ d₂ ]ᴰ = H ↓ • CZ • H ↓ • H ↑ • CZ • H ↑
-[ d₃ ]ᴰ = H ↓ • H ↑ • S ↑ • CZ • H ↓ • H ↑ • CZ • H ↑
-[ d₄ ]ᴰ = H ↓ • H ↑ • CZ • H ↓ • H ↑ • CZ • H ↑
+[ d₁ ]ᴰ = CZ • H ↑ • H ↓ • CZ • H ↑ • H ↓ • CZ • H ↓
+[ d₂ ]ᴰ = H ↑ • CZ • H ↑ • H ↓ • CZ • H ↓
+[ d₃ ]ᴰ = H ↑ • H ↓ • S ↓ • CZ • H ↑ • H ↓ • CZ • H ↓
+[ d₄ ]ᴰ = H ↑ • H ↓ • CZ • H ↑ • H ↓ • CZ • H ↓

@@ -28,8 +28,12 @@
 -- box's own pair -- which is why Dirty carries a ZZ₀₁ constructor and
 -- why the B side is the one that keeps generating work.
 --
--- Wire numbering is relative to the box: wire 0 is the box's lower
--- (un-shifted) wire and wire 1 the upper one, matching Boxes.
+-- Wire numbering follows the PAPER, as the rule names do: the subscript
+-- on H₀, S₁ and so on is the paper's qubit number.  Boxes reverses wire
+-- order, so paper qubit 0 is the upper wire of a box and paper qubit 1
+-- the lower; the constructors below keep the paper's names so that each
+-- clause can be checked against the source, and the reversal is applied
+-- once, where these are realised as circuits.
 --
 -- Transcribed from the arXiv source of Figures 3-7, each rule carrying
 -- its phase and word, e.g.
