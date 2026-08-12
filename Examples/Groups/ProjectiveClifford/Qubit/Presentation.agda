@@ -123,3 +123,34 @@ corr-free-order-H = srel order-H , PB.refl
 presentation : ∀ {n} → Sec-trivial n → Conj-trivial n →
                (n Clifford,_===_) IsPresentationOf (CMS-group n)
 presentation {n} = EP.Clifford.presentation n
+
+------------------------------------------------------------------------
+-- Width 0, unconditionally
+--
+-- At width 0 the coset tower's section IS the empty word on the nose —
+-- Simplified.NfEps.nf-ε-zero, the one width at which it is, since the
+-- base level sends everything to ε — so rep Iᶜ reduces to ε and both
+-- hypotheses hold by computation.  (Conj-trivial is doubly free here:
+-- the Pauli alphabet (⊤ ⊎ ⊤) ⊎^ 0 is ⊥.)
+--
+-- This is Proposition 2.55 discharged in full at one width: the
+-- interpretation, both bijective normal forms, soundness of conj and
+-- corr, the realisation conditions and the Reidemeister–Schreier engine
+-- all run with nothing assumed.  The group is trivial, so the content
+-- is in the plumbing rather than the mathematics — but it is the first
+-- instance to close end to end, and a width-n proof reuses every part
+-- of it.
+--
+-- Above width 0 rep Iᶜ does not even reduce to a word: it is stuck on
+-- CosetNF.SingleLevel.Transfer's section applied to the coset, so no
+-- amount of computation will discharge these two.  That is what makes
+-- the tower's own identity-section lemma the next thing needed.
+
+sec-trivial-0 : Sec-trivial 0
+sec-trivial-0 = PB.refl
+
+conj-trivial-0 : Conj-trivial 0
+conj-trivial-0 ()
+
+presentation-0 : (0 Clifford,_===_) IsPresentationOf (CMS-group 0)
+presentation-0 = presentation sec-trivial-0 conj-trivial-0
