@@ -5,24 +5,37 @@
 -- into the staircase.
 --
 -- A Z-normal circuit ends with its C box, on the un-shifted wire, and
--- the X-normal staircase begins immediately to its right.  So the C box
--- is the join, and everything the chain sends rightwards passes through
--- it before reaching M(n).
+-- the X-normal staircase begins immediately to its right.
 --
--- Which is a narrowing.  The C rules are commXC, commSC and commZZCI,
--- and between them they emit only S gates and controlled-Zs -- an X
--- meeting a C box is absorbed by it (X·C₁ = C₂, X·C₂ = C₁), and nothing
--- emits an H on the un-shifted wire.  So of the ten dirty gates only
--- four can enter a staircase, which is what AtM records:
+-- The C rules are commXC, commSC and commZZCI, and between them they
+-- emit only S gates and controlled-Zs -- an X meeting a C box is
+-- absorbed by it (X·C₁ = C₂, X·C₂ = C₁), and nothing emits an H on the
+-- un-shifted wire.  So what the C BOX sends into a staircase is just
+-- four things, which is what AtM records:
 --
 --   S on the un-shifted wire      ascends to the E box (altSIDD)
 --   S on the wire above           meets the bottom box (altISDD)
 --   H on the wire above           meets the bottom box (altIHDD)
 --   a controlled-Z on the pair    meets the bottom box (altZZDD)
 --
--- and an H or an X on the un-shifted wire cannot, which is exactly why
--- the paper has no rule for either.  That was a remark in PushingM; here
--- it is a type.
+-- An H or an X on the un-shifted wire is not among them, which is why
+-- the paper has no rule for either meeting a D box at its qubit 0.
+--
+-- WHAT THIS DOES NOT COVER.  Not everything reaching M(n) comes through
+-- the C box.  Dirt on wires above the un-shifted one COMMUTES PAST the C
+-- box rather than meeting it, and so arrives at the staircase directly:
+-- commZZIIBBBBI, for one, leaves H gates on wire 2 and a controlled-Z on
+-- (1,2) to the right of the whole chain, and those meet M(n) at their own
+-- level rather than at its bottom.  An earlier draft of this banner
+-- claimed the C box was the only way in and that AtM was therefore
+-- exhaustive; it is not, and the four constructors are only the C box's
+-- own output.
+--
+-- Closing that needs the staircase traversal to be indexed by the wire
+-- the dirt arrives on, since a controlled-Z can enter the chain at any
+-- adjacent pair and its rewrite emits dirt two wires up from there.  The
+-- functions below are the level-0 case, which is what the C box needs
+-- and no more.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

@@ -173,15 +173,20 @@ pushH₁-Mx : Mx (₁₊ n) → ℤ 8 × List Dirty × Mx (₁₊ n)
 pushH₁-Mx = push-bottom pushH₁D
 
 ------------------------------------------------------------------------
--- What cannot arrive
+-- What cannot arrive at the BOTTOM
 --
 -- There is no rule for an H, or an X, meeting a D box at its qubit 0,
--- and the omission is not an oversight of the paper's: nothing ever
--- delivers one there.  Dirt reaches a staircase from the C box on its
--- left, and the C rules (commXC, commSC, commZZCI) emit only S gates
--- and controlled-Zs.  Both are handled above.
+-- and the omission is not an oversight of the paper's: nothing delivers
+-- one to the bottom of a staircase.  Dirt arriving there comes from the
+-- C box on its left, and the C rules (commXC, commSC, commZZCI) emit
+-- only S gates and controlled-Zs.  Both are handled above.
 --
--- That is Definition 6.1's wire labelling doing its work: the wire a
--- staircase starts on admits S and controlled-Z as dirt, and not H or
--- X.  When h is assembled this has to become an invariant of the
--- traversal rather than a remark here.
+-- This says nothing about the rest of the staircase.  Dirt on higher
+-- wires commutes past the C box and meets M(n) at its own level, so the
+-- boxes above the bottom one can be met by gates this module does not
+-- treat; see the note in PushingCM.  Everything here is the level-0
+-- case.
+--
+-- Definition 6.1's wire labelling is what will make the general case
+-- finite, and when h is assembled it has to become an invariant of the
+-- traversal rather than a remark in a comment.
