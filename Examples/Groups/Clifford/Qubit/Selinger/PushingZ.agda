@@ -11,19 +11,29 @@
 --
 -- The pair it meets is determined by where the CZ sits in the Z-normal
 -- chain of Definition 4.3, and the three possibilities are exactly the
--- paper's three macros:
+-- paper's three macros, stated here in the paper's own qubit numbering:
 --
---   commZZAI       the A box is on the CZ's lower wire and nothing of
---                  the chain is above it -- the chain has no B boxes.
---   commZZIABB     a B box on the CZ's pair, with the A directly above.
---   commZZIIBBBBI  a B box on the CZ's pair, with another B above.
+--   commZZAI       ZZ on (j,j+1) meeting an A on qubit j, with no B
+--                  box -- the chain stops at the A.
+--   commZZIABB     ZZ on (j,j+1) meeting an A on qubit j+1 and a B on
+--                  the pair.
+--   commZZIIBBBBI  ZZ on (j,j+1) meeting a B on (j+1,j+2) and a B on
+--                  the pair.
 --
--- Read against Normal.Chain -- either the A sits on the un-shifted wire,
--- or a B holds the bottom pair and the rest stands above it -- that is a
--- three-way split on the chain's first two layers, and each case is one
--- macro.  The correspondence is not a coincidence: the chain is the
--- data the paper's picture records, so a rule that consumes two boxes is
--- a rule that consumes two layers.
+-- These are a three-way split on the first two layers of Normal.Chain,
+-- and that is not a coincidence: the chain is the data the paper's
+-- picture records, so a rule consuming two boxes consumes two layers.
+--
+-- NOT YET VERIFIED: which layer of Chain each macro attaches to, in
+-- THIS development's wire order.  Boxes reverses the paper's numbering,
+-- and the three macros are distinguished by where the A or the second B
+-- sits relative to the controlled-Z, so the correspondence has to be
+-- checked against the reversal rather than assumed.  The rule contents
+-- below are transcribed by paper subscript and are independent of that
+-- question; only the attachment is open, and it is what the coset
+-- action needs.  Getting a geometric claim like this wrong once already
+-- cost a commit (see the orientation fix to Boxes), so it is left
+-- flagged rather than guessed.
 --
 -- The chain CHANGES LENGTH.  commZZAI can turn an A on the bottom wire
 -- into a B with the A above it, and commZZIABB can do the reverse, so
