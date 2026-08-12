@@ -1829,3 +1829,44 @@ module Three-Wire (n : ℕ) where
   lemma-selinger-c13 :
     ⊤⊥ {n} ↑ • CZ ↓ • ⊥⊤ {n} ↑ ≈ ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
   lemma-selinger-c13 = trans lemma-c13-left (sym lemma-c13-right)
+
+  ------------------------------------------------------------------------
+  -- c13 as a commutation rule
+  --
+  -- Since ⊥⊤ ↑ inverts ⊤⊥ ↑, the conjugation form of c13 is equivalently
+  -- a rule for moving ⊤⊥ ↑ across a CZ, which turns it from CZ into
+  -- CZ02.  This is the form c14 uses: its element ⊤⊥ ↑ • CZ becomes
+  -- CZ02 • ⊤⊥ ↑, so cubing it is a question about how ⊤⊥ ↑ moves across
+  -- CZ02 — the one step c14 still lacks.
+
+  lemma-⊤⊥↑-CZ : ⊤⊥ {n} ↑ • CZ ≈ CZ02 • ⊤⊥ {n} ↑
+  lemma-⊤⊥↑-CZ = begin
+    ⊤⊥ {n} ↑ • CZ
+      ≈⟨ sym right-unit ⟩
+    (⊤⊥ {n} ↑ • CZ) • ε
+      ≈⟨ cright sym (lemma-cong↑ _ _ (Ex-Conjugation.lemma-⊥⊤-⊤⊥ n)) ⟩
+    (⊤⊥ {n} ↑ • CZ) • (⊥⊤ {n} ↑ • ⊤⊥ {n} ↑)
+      ≈⟨ by-assoc auto ⟩
+    (⊤⊥ {n} ↑ • (CZ • ⊥⊤ {n} ↑)) • ⊤⊥ {n} ↑
+      ≈⟨ cleft lemma-c13-left ⟩
+    CZ02 • ⊤⊥ {n} ↑ ∎
+
+  lemma-⊥⊤↑-CZ02 : ⊥⊤ {n} ↑ • CZ02 ≈ CZ • ⊥⊤ {n} ↑
+  lemma-⊥⊤↑-CZ02 = •-cancelˡ {g = ⊤⊥ {n} ↑} (begin
+    ⊤⊥ {n} ↑ • (⊥⊤ {n} ↑ • CZ02)
+      ≈⟨ sym assoc ⟩
+    (⊤⊥ {n} ↑ • ⊥⊤ {n} ↑) • CZ02
+      ≈⟨ cleft (lemma-cong↑ _ _ (Ex-Conjugation.lemma-⊤⊥-⊥⊤ n)) ⟩
+    ε • CZ02
+      ≈⟨ left-unit ⟩
+    CZ02
+      ≈⟨ sym right-unit ⟩
+    CZ02 • ε
+      ≈⟨ cright sym (lemma-cong↑ _ _ (Ex-Conjugation.lemma-⊤⊥-⊥⊤ n)) ⟩
+    CZ02 • (⊤⊥ {n} ↑ • ⊥⊤ {n} ↑)
+      ≈⟨ sym assoc ⟩
+    (CZ02 • ⊤⊥ {n} ↑) • ⊥⊤ {n} ↑
+      ≈⟨ cleft sym lemma-⊤⊥↑-CZ ⟩
+    (⊤⊥ {n} ↑ • CZ) • ⊥⊤ {n} ↑
+      ≈⟨ assoc ⟩
+    ⊤⊥ {n} ↑ • (CZ • ⊥⊤ {n} ↑) ∎)
