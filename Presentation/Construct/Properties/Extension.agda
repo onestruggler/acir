@@ -556,6 +556,56 @@ module _ {N X : Set}
     sec-trivial-from : Sec-reduction → Sec-trivial
     sec-trivial-from = rights₀
 
+    -- ... but demanding every axiom be correction-free is stronger than
+    -- necessary, and sometimes too strong.  The corrections are elements
+    -- of N, so a derivation may use corrected axioms freely as long as
+    -- what they accumulate CANCELS.  And whether it cancels need not be
+    -- read off the derivation at all: corrOf-eq says
+    --
+    --     [ rep Iᶜ ]ᵣ  ≈ₑ  [ corrOf p ]ₗ • [ ε ]ᵣ,
+    --
+    -- so pushing that through the semantics pins incl ⟦ corrOf p ⟧N to
+    -- the value of the representative in G.  If that value is the
+    -- identity, then incl-injective and completeness of pN force
+    -- corrOf p ≈s ε, whatever derivation p happened to be.
+    --
+    -- So Sec-trivial reduces to a SEMANTIC fact — the identity coset's
+    -- representative denotes the identity of G — with no syntactic
+    -- reduction to replay and no restriction on which axioms may be
+    -- used.  Note this is strictly weaker than asking rep Iᶜ ≈q ε (which
+    -- is free but says only that its QUOTIENT image is trivial): it says
+    -- the lift is trivial too, which is exactly the content of
+    -- Sec-trivial, now stated where it can be checked by evaluation.
+    sec-trivial-semantic :
+      (real : Realises) →
+      (sound-ax : ∀ {w v} → extp w v → Gm._≈_ ⟦ w ⟧ ⟦ v ⟧) →
+      Gm._≈_ ⟦ secᶜ Iᶜ ⟧ Gm.ε →
+      Sec-trivial
+    sec-trivial-semantic real sound-ax triv =
+      _≈ₑ_.trans (corrOf-eq p)
+        (_≈ₑ_.trans (_≈ₑ_.cong (lefts corr≈ε) _≈ₑ_.refl) _≈ₑ_.left-unit)
+      where
+      module EC = E.Cong (sound-t (sound-s real) sound-ax)
+
+      p : rep Iᶜ ≈q ε
+      p = NQ.inv-nf∘nf=id
+
+      -- incl of the accumulated correction is the representative's value.
+      incl-corr : Gm._≈_ (incl ⟦ corrOf p ⟧N) Gm.ε
+      incl-corr =
+        Gm.trans (Gm.sym (emb-l real (corrOf p)))
+          (Gm.trans (Gm.sym (Gm.identityʳ ⟦ [ corrOf p ]ₗ ⟧))
+            (Gm.trans (Gm.sym (EC.fʷ-cong (corrOf-eq p))) triv))
+
+      -- so the correction is trivial in N, hence as a word.
+      corr≈ε : corrOf p ≈s ε
+      corr≈ε =
+        πG.IsGroupMonomorphism.injective
+          (πG.IsGroupIsomorphism.isGroupMonomorphism PN.iso)
+          (GNm.trans (Extension.incl-injective et
+                       (Gm.trans incl-corr (Gm.sym incl-ε)))
+                     (GNm.sym PN-ε))
+
     dpres :
       Realises →
       (sound-ax : ∀ {w v} → extp w v → Group._≈_ G ⟦ w ⟧ ⟦ v ⟧) →
