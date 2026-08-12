@@ -146,9 +146,9 @@ record BridgeData : Set where
     -- Both of its sides are CZ02: the half-swaps are involutions, so each
     -- side is a conjugation of a CZ, and the conjugating half-swap is
     -- transparent to it by selinger-c12 and its 3-cycle conjugate.
-    pap-selinger-c14 :
-      ∀ {n} → let open PB (PapR._QRel,_===_ (₃₊ n)) using (_≈_) in
-      (⊤⊥ ↑ • CZ ↓) ^ 3 ≈ ε
+    -- selinger-c14 used to sit here; it is now proved in Paper-V0.Lemmas.
+    -- Conjugation by ⊤⊥ ↑ sends CZ to CZ02 (c13) and CZ02 to the inverse
+    -- of CZ • CZ02 (C18), and ⊤⊥ ↑ has order 3, so the cube telescopes.
     pap-selinger-c15 :
       ∀ {n} → let open PB (PapR._QRel,_===_ (₃₊ n)) using (_≈_) in
       (⊥⊤ ↓ • CZ ↑) ^ 3 ≈ ε
@@ -219,7 +219,7 @@ module Theorem (bd : BridgeData) where
   g-well-defined V1R.selinger-c11   = pap-selinger-c11
   g-well-defined {₃₊ n} V1R.selinger-c12 = PapL.Three-Wire.lemma-selinger-c12 n
   g-well-defined {₃₊ n} V1R.selinger-c13 = PapL.Three-Wire.lemma-selinger-c13 n
-  g-well-defined V1R.selinger-c14   = pap-selinger-c14
+  g-well-defined {₃₊ n} V1R.selinger-c14 = PapL.Three-Wire.lemma-selinger-c14 n
   g-well-defined V1R.selinger-c15   = pap-selinger-c15
   -- Structural rules.
   g-well-defined {₁₊ ₀} (V1R.comm₁ H-gate (gate₀ ()))

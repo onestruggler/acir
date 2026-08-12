@@ -1150,6 +1150,15 @@ module Ex-Conjugation (n : ℕ) where
     (ₕ|ₕ • Ex) • (Ex • ₕ|ₕ)  ≈⟨ cright sym lemma-⊥⊤-simple ⟩
     (ₕ|ₕ • Ex) • ⊥⊤ ∎)
 
+  -- The cube, stated over ⊤⊥ itself rather than over ₕ|ₕ • Ex.
+  lemma-⊤⊥-cube3 : (⊤⊥ • ⊤⊥) • ⊤⊥ ≈ ε
+  lemma-⊤⊥-cube3 = begin
+    (⊤⊥ • ⊤⊥) • ⊤⊥
+      ≈⟨ cong (cong lemma-⊤⊥-simple lemma-⊤⊥-simple) lemma-⊤⊥-simple ⟩
+    ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • (ₕ|ₕ • Ex)
+      ≈⟨ lemma-half-swap-cube ⟩
+    ε ∎
+
 
 ------------------------------------------------------------------------
 -- The shift down is the identity on the one-wire words
@@ -2170,6 +2179,217 @@ module Three-Wire (n : ℕ) where
     (⊤⊥ {n} ↑ • (CZ • ⊥⊤ {n} ↑)) • ⊤⊥ {n} ↑
       ≈⟨ cleft lemma-c13-left ⟩
     CZ02 • ⊤⊥ {n} ↑ ∎
+
+  ------------------------------------------------------------------------
+  -- c14
+  --
+  -- Write A for ⊤⊥ ↑.  Conjugation by A sends CZ to CZ02 (that is c13,
+  -- as lemma-⊤⊥↑-CZ) and CZ02 to the inverse of CZ • CZ02 (that is
+  -- lemma-c14-key).  A has order 3, so cubing A • CZ telescopes: pushing
+  -- the three A's rightwards leaves CZ02 • (CZ • CZ02)⁻¹ • CZ, which is ε.
+  --
+  -- The inverses are real words here — CZ ⁻¹ is CZ ^ p-1 — so this section
+  -- uses explicit assoc throughout, to-list being stuck on them.
+
+  private
+    CZ⁻ : Word (Gen (₃₊ n))
+    CZ⁻ = CZ ^ p-1
+
+    lemma-CZ-CZ⁻ : CZ • CZ⁻ ≈ ε
+    lemma-CZ-CZ⁻ = begin
+      CZ • CZ ^ p-1       ≈⟨ sym (^-+ CZ 1 p-1) ⟩
+      CZ ^ (1 Nat.+ p-1)  ≈⟨ axiom order-CZ ⟩
+      ε ∎
+
+    lemma-CZ⁻-CZ : CZ⁻ • CZ ≈ ε
+    lemma-CZ⁻-CZ = begin
+      CZ ^ p-1 • CZ       ≈⟨ sym (^-+ CZ p-1 1) ⟩
+      CZ ^ (p-1 Nat.+ 1)  ≡⟨ Eq.cong (CZ ^_) (NP.+-comm p-1 1) ⟩
+      CZ ^ (1 Nat.+ p-1)  ≈⟨ axiom order-CZ ⟩
+      ε ∎
+
+    -- lemma-c14-key with one half-swap cancelled off the right.
+    key' : CZ • (CZ02 • (ₕ|ₕ ↑ • CZ)) ≈ ₕ|ₕ ↑
+    key' = •-cancelʳ {h = ₕ|ₕ ↑} (begin
+      (CZ • (CZ02 • (ₕ|ₕ ↑ • CZ))) • ₕ|ₕ ↑
+        ≈⟨ assoc ⟩
+      CZ • ((CZ02 • (ₕ|ₕ ↑ • CZ)) • ₕ|ₕ ↑)
+        ≈⟨ cright assoc ⟩
+      CZ • (CZ02 • ((ₕ|ₕ ↑ • CZ) • ₕ|ₕ ↑))
+        ≈⟨ cright cright assoc ⟩
+      CZ • (CZ02 • (ₕ|ₕ ↑ • (CZ • ₕ|ₕ ↑)))
+        ≈⟨ lemma-c14-key ⟩
+      ε
+        ≈⟨ sym (lemma-cong↑ _ _ (Ex-Conjugation.lemma-ₕ|ₕ-invol n)) ⟩
+      ₕ|ₕ ↑ • ₕ|ₕ ↑ ∎)
+
+    -- Ex ↑ carries CZ02 to CZ, since CZ02 is Ex ↑ • CZ • Ex ↑.
+    ex↑-CZ02 : Ex ↑ • CZ02 ≈ CZ • Ex ↑
+    ex↑-CZ02 = begin
+      Ex ↑ • CZ02
+        ≈⟨ cright sym lemma-CZ02' ⟩
+      Ex ↑ • (Ex ↑ • (CZ • Ex ↑))
+        ≈⟨ sym assoc ⟩
+      (Ex ↑ • Ex ↑) • (CZ • Ex ↑)
+        ≈⟨ cleft lemma-Ex↑-Ex↑ ⟩
+      ε • (CZ • Ex ↑)
+        ≈⟨ left-unit ⟩
+      CZ • Ex ↑ ∎
+
+    ⊤⊥↑-split : ⊤⊥ {n} ↑ ≈ ₕ|ₕ ↑ • Ex ↑
+    ⊤⊥↑-split = lemma-cong↑ _ _ (Ex-Conjugation.lemma-⊤⊥-simple n)
+
+  -- Conjugation by ⊤⊥ ↑ sends CZ02 to the inverse of CZ • CZ02.
+  lemma-⊤⊥↑-CZ02 : CZ • (CZ02 • (⊤⊥ {n} ↑ • CZ02)) ≈ ⊤⊥ {n} ↑
+  lemma-⊤⊥↑-CZ02 = begin
+    CZ • (CZ02 • (⊤⊥ {n} ↑ • CZ02))
+      ≈⟨ cright cright cleft ⊤⊥↑-split ⟩
+    CZ • (CZ02 • ((ₕ|ₕ ↑ • Ex ↑) • CZ02))
+      ≈⟨ cright cright assoc ⟩
+    CZ • (CZ02 • (ₕ|ₕ ↑ • (Ex ↑ • CZ02)))
+      ≈⟨ cright cright cright ex↑-CZ02 ⟩
+    CZ • (CZ02 • (ₕ|ₕ ↑ • (CZ • Ex ↑)))
+      ≈⟨ cright cright sym assoc ⟩
+    CZ • (CZ02 • ((ₕ|ₕ ↑ • CZ) • Ex ↑))
+      ≈⟨ cright sym assoc ⟩
+    CZ • ((CZ02 • (ₕ|ₕ ↑ • CZ)) • Ex ↑)
+      ≈⟨ sym assoc ⟩
+    (CZ • (CZ02 • (ₕ|ₕ ↑ • CZ))) • Ex ↑
+      ≈⟨ cleft key' ⟩
+    ₕ|ₕ ↑ • Ex ↑
+      ≈⟨ sym ⊤⊥↑-split ⟩
+    ⊤⊥ {n} ↑ ∎
+
+  private
+    -- The three ways ⊤⊥ ↑ moves across the two CZs and their inverses.
+    A·CZ02 : ⊤⊥ {n} ↑ • CZ02 ≈ (CZ02⁻ • CZ⁻) • ⊤⊥ {n} ↑
+    A·CZ02 = begin
+      ⊤⊥ {n} ↑ • CZ02
+        ≈⟨ sym left-unit ⟩
+      ε • (⊤⊥ {n} ↑ • CZ02)
+        ≈⟨ cleft sym lemma-CZ02⁻-CZ02 ⟩
+      (CZ02⁻ • CZ02) • (⊤⊥ {n} ↑ • CZ02)
+        ≈⟨ cleft cright sym left-unit ⟩
+      (CZ02⁻ • (ε • CZ02)) • (⊤⊥ {n} ↑ • CZ02)
+        ≈⟨ cleft cright cleft sym lemma-CZ⁻-CZ ⟩
+      (CZ02⁻ • ((CZ⁻ • CZ) • CZ02)) • (⊤⊥ {n} ↑ • CZ02)
+        ≈⟨ cleft cright assoc ⟩
+      (CZ02⁻ • (CZ⁻ • (CZ • CZ02))) • (⊤⊥ {n} ↑ • CZ02)
+        ≈⟨ cleft sym assoc ⟩
+      ((CZ02⁻ • CZ⁻) • (CZ • CZ02)) • (⊤⊥ {n} ↑ • CZ02)
+        ≈⟨ assoc ⟩
+      (CZ02⁻ • CZ⁻) • ((CZ • CZ02) • (⊤⊥ {n} ↑ • CZ02))
+        ≈⟨ cright assoc ⟩
+      (CZ02⁻ • CZ⁻) • (CZ • (CZ02 • (⊤⊥ {n} ↑ • CZ02)))
+        ≈⟨ cright lemma-⊤⊥↑-CZ02 ⟩
+      (CZ02⁻ • CZ⁻) • ⊤⊥ {n} ↑ ∎
+
+    -- Right-multiplying lemma-⊤⊥↑-CZ02 by CZ02 ⁻¹.
+    A·CZ02⁻ : ⊤⊥ {n} ↑ • CZ02⁻ ≈ (CZ • CZ02) • ⊤⊥ {n} ↑
+    A·CZ02⁻ = begin
+      ⊤⊥ {n} ↑ • CZ02⁻
+        ≈⟨ cleft sym lemma-⊤⊥↑-CZ02 ⟩
+      (CZ • (CZ02 • (⊤⊥ {n} ↑ • CZ02))) • CZ02⁻
+        ≈⟨ assoc ⟩
+      CZ • ((CZ02 • (⊤⊥ {n} ↑ • CZ02)) • CZ02⁻)
+        ≈⟨ cright assoc ⟩
+      CZ • (CZ02 • ((⊤⊥ {n} ↑ • CZ02) • CZ02⁻))
+        ≈⟨ cright cright assoc ⟩
+      CZ • (CZ02 • (⊤⊥ {n} ↑ • (CZ02 • CZ02⁻)))
+        ≈⟨ cright cright cright lemma-CZ02-CZ02⁻ ⟩
+      CZ • (CZ02 • (⊤⊥ {n} ↑ • ε))
+        ≈⟨ cright cright right-unit ⟩
+      CZ • (CZ02 • ⊤⊥ {n} ↑)
+        ≈⟨ sym assoc ⟩
+      (CZ • CZ02) • ⊤⊥ {n} ↑ ∎
+
+    -- c13 iterated: A moves across CZ ⁻¹ turning it into CZ02 ⁻¹.
+    A·CZ⁻ : ⊤⊥ {n} ↑ • CZ⁻ ≈ CZ02⁻ • ⊤⊥ {n} ↑
+    A·CZ⁻ = lemma-Induction lemma-⊤⊥↑-CZ p-1
+
+    tb : Word (Gen (₃₊ n))
+    tb = ⊤⊥ {n} ↑
+
+    tb³ : (tb • tb) • tb ≈ ε
+    tb³ = lemma-cong↑ _ _ (Ex-Conjugation.lemma-⊤⊥-cube3 n)
+
+    -- The collapse.  Each A meeting a CZ02 on its right emits
+    -- CZ02 ⁻¹ • CZ ⁻¹ and moves past it; the emitted factors cancel
+    -- against the CZ02 and CZ already standing to the left, and after
+    -- three such moves only the cube of A is left.
+    cube-collapse : (CZ02 • tb) • ((CZ02 • tb) • (CZ02 • tb)) ≈ ε
+    cube-collapse = begin
+      (CZ02 • tb) • ((CZ02 • tb) • (CZ02 • tb))
+        ≈⟨ assoc ⟩
+      CZ02 • (tb • ((CZ02 • tb) • (CZ02 • tb)))
+        ≈⟨ cright sym assoc ⟩
+      CZ02 • ((tb • (CZ02 • tb)) • (CZ02 • tb))
+        ≈⟨ cright cleft sym assoc ⟩
+      CZ02 • (((tb • CZ02) • tb) • (CZ02 • tb))
+        ≈⟨ cright cleft cleft A·CZ02 ⟩
+      CZ02 • ((((CZ02⁻ • CZ⁻) • tb) • tb) • (CZ02 • tb))
+        ≈⟨ cright cleft assoc ⟩
+      CZ02 • (((CZ02⁻ • CZ⁻) • (tb • tb)) • (CZ02 • tb))
+        ≈⟨ cright assoc ⟩
+      CZ02 • ((CZ02⁻ • CZ⁻) • ((tb • tb) • (CZ02 • tb)))
+        ≈⟨ cright assoc ⟩
+      CZ02 • (CZ02⁻ • (CZ⁻ • ((tb • tb) • (CZ02 • tb))))
+        ≈⟨ sym assoc ⟩
+      (CZ02 • CZ02⁻) • (CZ⁻ • ((tb • tb) • (CZ02 • tb)))
+        ≈⟨ cleft lemma-CZ02-CZ02⁻ ⟩
+      ε • (CZ⁻ • ((tb • tb) • (CZ02 • tb)))
+        ≈⟨ left-unit ⟩
+      CZ⁻ • ((tb • tb) • (CZ02 • tb))
+        ≈⟨ cright assoc ⟩
+      CZ⁻ • (tb • (tb • (CZ02 • tb)))
+        ≈⟨ cright cright sym assoc ⟩
+      CZ⁻ • (tb • ((tb • CZ02) • tb))
+        ≈⟨ cright cright cleft A·CZ02 ⟩
+      CZ⁻ • (tb • (((CZ02⁻ • CZ⁻) • tb) • tb))
+        ≈⟨ cright cright cleft assoc ⟩
+      CZ⁻ • (tb • ((CZ02⁻ • (CZ⁻ • tb)) • tb))
+        ≈⟨ cright cright assoc ⟩
+      CZ⁻ • (tb • (CZ02⁻ • ((CZ⁻ • tb) • tb)))
+        ≈⟨ cright sym assoc ⟩
+      CZ⁻ • ((tb • CZ02⁻) • ((CZ⁻ • tb) • tb))
+        ≈⟨ cright cleft A·CZ02⁻ ⟩
+      CZ⁻ • (((CZ • CZ02) • tb) • ((CZ⁻ • tb) • tb))
+        ≈⟨ cright assoc ⟩
+      CZ⁻ • ((CZ • CZ02) • (tb • ((CZ⁻ • tb) • tb)))
+        ≈⟨ cright assoc ⟩
+      CZ⁻ • (CZ • (CZ02 • (tb • ((CZ⁻ • tb) • tb))))
+        ≈⟨ sym assoc ⟩
+      (CZ⁻ • CZ) • (CZ02 • (tb • ((CZ⁻ • tb) • tb)))
+        ≈⟨ cleft lemma-CZ⁻-CZ ⟩
+      ε • (CZ02 • (tb • ((CZ⁻ • tb) • tb)))
+        ≈⟨ left-unit ⟩
+      CZ02 • (tb • ((CZ⁻ • tb) • tb))
+        ≈⟨ cright cright assoc ⟩
+      CZ02 • (tb • (CZ⁻ • (tb • tb)))
+        ≈⟨ cright sym assoc ⟩
+      CZ02 • ((tb • CZ⁻) • (tb • tb))
+        ≈⟨ cright cleft A·CZ⁻ ⟩
+      CZ02 • ((CZ02⁻ • tb) • (tb • tb))
+        ≈⟨ cright assoc ⟩
+      CZ02 • (CZ02⁻ • (tb • (tb • tb)))
+        ≈⟨ sym assoc ⟩
+      (CZ02 • CZ02⁻) • (tb • (tb • tb))
+        ≈⟨ cleft lemma-CZ02-CZ02⁻ ⟩
+      ε • (tb • (tb • tb))
+        ≈⟨ left-unit ⟩
+      tb • (tb • tb)
+        ≈⟨ sym assoc ⟩
+      (tb • tb) • tb
+        ≈⟨ tb³ ⟩
+      ε ∎
+
+  lemma-selinger-c14 : (⊤⊥ {n} ↑ • CZ ↓) ^ 3 ≈ ε
+  lemma-selinger-c14 = begin
+    (tb • CZ) • ((tb • CZ) • (tb • CZ))
+      ≈⟨ cong lemma-⊤⊥↑-CZ (cong lemma-⊤⊥↑-CZ lemma-⊤⊥↑-CZ) ⟩
+    (CZ02 • tb) • ((CZ02 • tb) • (CZ02 • tb))
+      ≈⟨ cube-collapse ⟩
+    ε ∎
 
   lemma-⊥⊤↑-CZ02 : ⊥⊤ {n} ↑ • CZ02 ≈ CZ • ⊥⊤ {n} ↑
   lemma-⊥⊤↑-CZ02 = •-cancelˡ {g = ⊤⊥ {n} ↑} (begin
