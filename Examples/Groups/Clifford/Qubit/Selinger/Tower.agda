@@ -47,15 +47,19 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Clifford.Qubit.Selinger.Tower
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
+open import Data.Fin using (toℕ)
 open import Data.Product using (_×_ ; _,_)
 open import Data.Sum using (inj₂)
+open import Data.Unit using (⊤ ; tt)
 
+open import ForStdlib.Data.Fin.Mod using (₀)
 open import Notations using (₁₊)
-open import Word.Base using ([_]ʷ ; Word ; _•_)
+open import Word.Base using ([_]ʷ ; Word ; _•_ ; _^_)
 
 open import Examples.Groups.Clifford.Qubit.Selinger.Boxes p-2 p-prime
 open import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime
-  using (Circuit ; Gen)
+  using (Circuit ; Gen ; ω)
+import Examples.Groups.Clifford.Qubit.Selinger.Rewrite p-2 p-prime as Rw
 open import Examples.Groups.Clifford.Qubit.Selinger.Normal p-2 p-prime
   using (Chain ; Lz ; Mx ; [_]ᴸ ; [_]ᴹ ; widen-gen)
 
@@ -133,3 +137,31 @@ embed g = [ widen-gen g ]ʷ
 
 CosetAction : ℕ → Set
 CosetAction n = Coset n → Gen (₁₊ n) → Circuit n × Coset n
+
+------------------------------------------------------------------------
+-- The action at the bottom of the tower
+--
+-- At n = 0 the coset is the whole of a one-qubit normal form's boxes --
+-- an A, a C and an E -- and the generators are H, S and the scalar.
+-- That is exactly what Rewrite computes, so the base case of h is the
+-- one-qubit action with its phase read off.
+--
+-- Where the phase goes is the point.  Rewrite carries it in the normal
+-- form, because at one qubit there is nowhere else for it to be.  In the
+-- tower it belongs to the level BELOW: ω is 0-ary, so it is a generator
+-- at every width including width 0, and an ω emitted here escapes as
+-- part of the Circuit 0 that h returns.  Feeding Rewrite a starting
+-- phase of ₀ and reading the result is what converts between the two.
+--
+-- Circuit 0 is words over Gen 0, and Gen 0 holds only gate₀ -- so the
+-- escaping word can be nothing BUT a power of ω, which is why the
+-- bottom of the tower is where all the phases end up.  Selinger's (4.5)
+-- puts ωᵖ at the end of the normal form for the same reason.
+
+-- The coset and the normal-form body bracket differently -- Coset 0 is
+-- Lz 0 × Mx 0 while NFbody 1 is Lz 0 × (Mx 0 × NFbody 0) -- so the two
+-- halves are taken apart and put back rather than passed along whole.
+-- The trailing tt is NFbody 0, the empty normal form at width 0.
+h₀ : CosetAction 0
+h₀ (l , m) g with Rw.actGen g ((l , m , tt) , ₀)
+... | (l′ , m′ , tt) , p = ω ^ toℕ p , (l′ , m′)
