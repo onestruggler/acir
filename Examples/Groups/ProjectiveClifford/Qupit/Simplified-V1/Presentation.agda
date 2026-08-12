@@ -24,7 +24,7 @@
 -- symplectic presentation along the same kind of isomorphism.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --termination-depth=4 #-}
+{-# OPTIONS --cubical-compatible --safe --termination-depth=4 #-}
 
 open import Data.Fin using (toℕ)
 open import Data.Nat using (ℕ ; suc)

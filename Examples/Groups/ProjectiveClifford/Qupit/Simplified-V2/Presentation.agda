@@ -23,7 +23,7 @@
 -- level down.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible #-}
+{-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Fin using (toℕ)
 open import Data.Nat using (ℕ ; suc)
