@@ -2391,6 +2391,168 @@ module Three-Wire (n : ℕ) where
       ≈⟨ cube-collapse ⟩
     ε ∎
 
+  ------------------------------------------------------------------------
+  -- c15, by transporting c14 along the transposition of wires 0 and 2
+  --
+  -- T = Ex • Ex ↑ • Ex exchanges wires 0 and 2 and fixes wire 1.  So it
+  -- fixes H ↑, exchanges CZ with CZ ↑ (lemma-T-CZ) and exchanges the two
+  -- swaps, hence carries ⊤⊥ ↑ to ⊥⊤ — which turns c14's element into
+  -- c15's.  Since T is an involution, conjugating a cube is the cube of
+  -- the conjugate, so c15 is c14 read through T.
+
+  private
+    -- Conjugation by T merges: it is a homomorphism, T • T being ε.
+    merge : ∀ {X Y} → (T • (X • T)) • (T • (Y • T)) ≈ T • ((X • Y) • T)
+    merge {X} {Y} = begin
+      (T • (X • T)) • (T • (Y • T))
+        ≈⟨ assoc ⟩
+      T • ((X • T) • (T • (Y • T)))
+        ≈⟨ cright assoc ⟩
+      T • (X • (T • (T • (Y • T))))
+        ≈⟨ cright cright sym assoc ⟩
+      T • (X • ((T • T) • (Y • T)))
+        ≈⟨ cright cright cleft lemma-T-T ⟩
+      T • (X • (ε • (Y • T)))
+        ≈⟨ cright cright left-unit ⟩
+      T • (X • (Y • T))
+        ≈⟨ cright sym assoc ⟩
+      T • ((X • Y) • T) ∎
+
+    -- T fixes wire 1, so it commutes with H ↑.
+    lemma-T-H↑ : T • H ↑ ≈ H ↑ • T
+    lemma-T-H↑ = begin
+      (Ex • Ex ↑ • Ex) • H ↑
+        ≈⟨ by-assoc auto ⟩
+      Ex • (Ex ↑ • (Ex • H ↑))
+        ≈⟨ cright cright lemma-Ex-H↑ ⟩
+      Ex • (Ex ↑ • (H • Ex))
+        ≈⟨ cright sym assoc ⟩
+      Ex • ((Ex ↑ • H) • Ex)
+        ≈⟨ cright cleft sym (lemma-comm-H-w↑ Ex) ⟩
+      Ex • ((H • Ex ↑) • Ex)
+        ≈⟨ by-assoc auto ⟩
+      (Ex • H) • (Ex ↑ • Ex)
+        ≈⟨ cleft lemma-Ex-H ⟩
+      (H ↑ • Ex) • (Ex ↑ • Ex)
+        ≈⟨ by-assoc auto ⟩
+      H ↑ • (Ex • Ex ↑ • Ex) ∎
+
+    lemma-T-CZ↑ : T • (CZ ↑ • T) ≈ CZ
+    lemma-T-CZ↑ = begin
+      T • (CZ ↑ • T)
+        ≈⟨ cright cleft sym lemma-T-CZ ⟩
+      T • ((T • (CZ • T)) • T)
+        ≈⟨ cright assoc ⟩
+      T • (T • ((CZ • T) • T))
+        ≈⟨ sym assoc ⟩
+      (T • T) • ((CZ • T) • T)
+        ≈⟨ cleft lemma-T-T ⟩
+      ε • ((CZ • T) • T)
+        ≈⟨ left-unit ⟩
+      (CZ • T) • T
+        ≈⟨ assoc ⟩
+      CZ • (T • T)
+        ≈⟨ cright lemma-T-T ⟩
+      CZ • ε
+        ≈⟨ right-unit ⟩
+      CZ ∎
+
+    -- yang-baxter gives the other spelling of T, and the two swaps then
+    -- cancel in pairs.
+    lemma-T-Ex↑ : T • (Ex ↑ • T) ≈ Ex
+    lemma-T-Ex↑ = begin
+      T • (Ex ↑ • T)
+        ≈⟨ cleft sym (axiom yang-baxter) ⟩
+      (Ex ↑ • Ex ↓ • Ex ↑) • (Ex ↑ • T)
+        ≈⟨ by-assoc auto ⟩
+      Ex ↑ • (Ex • ((Ex ↑ • Ex ↑) • T))
+        ≈⟨ cright cright cleft lemma-Ex↑-Ex↑ ⟩
+      Ex ↑ • (Ex • (ε • T))
+        ≈⟨ cright cright left-unit ⟩
+      Ex ↑ • (Ex • T)
+        ≈⟨ by-assoc auto ⟩
+      Ex ↑ • ((Ex • Ex) • (Ex ↑ • Ex))
+        ≈⟨ cright cleft lemma-Ex-Ex ⟩
+      Ex ↑ • (ε • (Ex ↑ • Ex))
+        ≈⟨ cright left-unit ⟩
+      Ex ↑ • (Ex ↑ • Ex)
+        ≈⟨ sym assoc ⟩
+      (Ex ↑ • Ex ↑) • Ex
+        ≈⟨ cleft lemma-Ex↑-Ex↑ ⟩
+      ε • Ex
+        ≈⟨ left-unit ⟩
+      Ex ∎
+
+    lemma-T-ₕ|ₕ↑ : T • ((H ↑ • CZ ↑ • H ↑) • T) ≈ ʰ|ʰ
+    lemma-T-ₕ|ₕ↑ = begin
+      T • ((H ↑ • CZ ↑ • H ↑) • T)
+        ≈⟨ cright cleft sym assoc ⟩
+      T • (((H ↑ • CZ ↑) • H ↑) • T)
+        ≈⟨ cright assoc ⟩
+      T • ((H ↑ • CZ ↑) • (H ↑ • T))
+        ≈⟨ cright cright sym lemma-T-H↑ ⟩
+      T • ((H ↑ • CZ ↑) • (T • H ↑))
+        ≈⟨ cright assoc ⟩
+      T • (H ↑ • (CZ ↑ • (T • H ↑)))
+        ≈⟨ sym assoc ⟩
+      (T • H ↑) • (CZ ↑ • (T • H ↑))
+        ≈⟨ cleft lemma-T-H↑ ⟩
+      (H ↑ • T) • (CZ ↑ • (T • H ↑))
+        ≈⟨ assoc ⟩
+      H ↑ • (T • (CZ ↑ • (T • H ↑)))
+        ≈⟨ cright cright sym assoc ⟩
+      H ↑ • (T • ((CZ ↑ • T) • H ↑))
+        ≈⟨ cright sym assoc ⟩
+      H ↑ • ((T • (CZ ↑ • T)) • H ↑)
+        ≈⟨ cright cleft lemma-T-CZ↑ ⟩
+      H ↑ • (CZ • H ↑) ∎
+
+    lemma-T-⊤⊥↑ : T • (⊤⊥ {n} ↑ • T) ≈ ⊥⊤
+    lemma-T-⊤⊥↑ = begin
+      T • (⊤⊥ {n} ↑ • T)
+        ≈⟨ cright cleft ⊤⊥↑-split ⟩
+      T • ((ₕ|ₕ ↑ • Ex ↑) • T)
+        ≈⟨ sym merge ⟩
+      (T • (ₕ|ₕ ↑ • T)) • (T • (Ex ↑ • T))
+        ≈⟨ cong lemma-T-ₕ|ₕ↑ lemma-T-Ex↑ ⟩
+      ʰ|ʰ • Ex
+        ≈⟨ cleft sym lemma-ʰ|ʰ-conj ⟩
+      (Ex • (ₕ|ₕ • Ex)) • Ex
+        ≈⟨ assoc ⟩
+      Ex • ((ₕ|ₕ • Ex) • Ex)
+        ≈⟨ cright assoc ⟩
+      Ex • (ₕ|ₕ • (Ex • Ex))
+        ≈⟨ cright cright lemma-Ex-Ex ⟩
+      Ex • (ₕ|ₕ • ε)
+        ≈⟨ cright right-unit ⟩
+      Ex • ₕ|ₕ
+        ≈⟨ sym lemma-⊥⊤-simple ⟩
+      ⊥⊤ ∎
+
+  lemma-selinger-c15 : (⊥⊤ ↓ • CZ ↑) ^ 3 ≈ ε
+  lemma-selinger-c15 = begin
+    (⊥⊤ • CZ ↑) • ((⊥⊤ • CZ ↑) • (⊥⊤ • CZ ↑))
+      ≈⟨ cong conj (cong conj conj) ⟩
+    (T • ((tb • CZ) • T)) • ((T • ((tb • CZ) • T)) • (T • ((tb • CZ) • T)))
+      ≈⟨ cright merge ⟩
+    (T • ((tb • CZ) • T)) • (T • (((tb • CZ) • (tb • CZ)) • T))
+      ≈⟨ merge ⟩
+    T • (((tb • CZ) • ((tb • CZ) • (tb • CZ))) • T)
+      ≈⟨ cright cleft lemma-selinger-c14 ⟩
+    T • (ε • T)
+      ≈⟨ cright left-unit ⟩
+    T • T
+      ≈⟨ lemma-T-T ⟩
+    ε ∎
+    where
+    conj : ⊥⊤ • CZ ↑ ≈ T • ((tb • CZ) • T)
+    conj = begin
+      ⊥⊤ • CZ ↑
+        ≈⟨ cong (sym lemma-T-⊤⊥↑) (sym lemma-T-CZ) ⟩
+      (T • (tb • T)) • (T • (CZ • T))
+        ≈⟨ merge ⟩
+      T • ((tb • CZ) • T) ∎
+
   lemma-⊥⊤↑-CZ02 : ⊥⊤ {n} ↑ • CZ02 ≈ CZ • ⊥⊤ {n} ↑
   lemma-⊥⊤↑-CZ02 = •-cancelˡ {g = ⊤⊥ {n} ↑} (begin
     ⊤⊥ {n} ↑ • (⊥⊤ {n} ↑ • CZ02)
