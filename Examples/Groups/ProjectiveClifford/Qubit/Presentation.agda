@@ -322,6 +322,26 @@ module _ {n : ℕ} where
 -- in CMS n (SWAP² = I, so nothing forbids it), and an S-exponent count
 -- yields no invariant to obstruct it (order-H moves the count by 3,
 -- selinger by 4, so no modulus survives).
+--
+-- Audit of the live chain (Ex-Sym2.lemma-order-Ex → lemma-comm-Ex-H' /
+-- -H↑' / -CZ' → lemma-CZHCZ^k, where selinger enters), for anyone
+-- picking this up:
+--
+--   * the rewriting engines are FINE.  Sym0-Rewriting.step-sym0 and
+--     step-order have their order-S clauses commented out (Syntactics
+--     2022-2024, 2601-2603), so rewrite-sym0 can only emit order-SH,
+--     order-CZ, comm-CZ-S↓/↑ and comm-HHS — all correction-free here.
+--     In lemma-order-Ex its three uses are H-power cancellations, which
+--     H²-free covers.
+--   * the S-power ARITHMETIC is not.  Reducing S ^ k modulo p is where
+--     axiom order-S lives (Syntactics 1165, 2125, 2334, 2375), and that
+--     is what general-powers0 rests on.  At p = 2 every exponent in
+--     sight is 0 or 1 and those reductions are vacuous — but the
+--     lemmas are proved generically in p, so their proof terms carry
+--     order-S regardless of the instance, and cannot be reused.
+--
+-- So the port is not blocked, but it cannot reuse the generic S-power
+-- layer: it has to be redone at p = 2, where S⁻¹ is S and k is 1.
 Dihedral-6 : Set
 Dihedral-6 = ∀ {n} →
   PB._≈_ (EP.Clifford.Corr-free (₂₊ n)) ((CZ • (H • (H ↑))) ^ 6) ε
