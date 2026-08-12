@@ -218,6 +218,35 @@ module One-Wire (n : ℕ) where
   ₂* : ℤ* ₚ
   ₂* = (2ₚ , λ ())
 
+  -- H has order 4: order-H makes H² the multiplier by -1, and squaring
+  -- that multiplies by 1.
+  lemma-M₋₁^2 : M₋₁ ^ 2 ≈ ε
+  lemma-M₋₁^2 = begin
+    M₋₁ ^ 2 ≈⟨ lemma-M-mul -'₁ -'₁ ⟩
+    M (-'₁ *' -'₁) ≡⟨ aux-M≡M (-'₁ *' -'₁) (₁ , (λ ())) aux-0 ⟩
+    M₁ ≈⟨ lemma-M1 ⟩
+    ε ∎
+    where
+    open import Algebra.Properties.Ring (+-*-ring p-2)
+
+    aux-0 : (-'₁ *' -'₁) .proj₁ ≡ ₁
+    aux-0 = begin
+      (- ₁ * - ₁) ≡⟨ -1*x≈-x (- ₁) ⟩
+      (- - ₁) ≡⟨ -‿involutive ₁ ⟩
+      ₁ ∎
+      where
+      open ≡-Reasoning
+    open SR word-setoid
+
+  lemma-order-H : H ^ 4 ≈ ε
+  lemma-order-H = begin
+    H ^ 4 ≈⟨ sym assoc ⟩
+    HH ^ 2 ≈⟨ cong (axiom order-H) (axiom order-H) ⟩
+    M₋₁ ^ 2 ≈⟨ lemma-M₋₁^2 ⟩
+    ε ∎
+    where
+    open SR word-setoid
+
   lemma-M½·M₂ : M (₂* ⁻¹) • M ₂* ≈ ε
   lemma-M½·M₂ = begin
     M (₂* ⁻¹) • M ₂*   ≈⟨ lemma-M-mul (₂* ⁻¹) ₂* ⟩
@@ -536,6 +565,38 @@ module Ex-Conjugation (n : ℕ) where
     (⊥⊤ • Ex) • Ex  ≈⟨ assoc ⟩
     ⊥⊤ • Ex • Ex    ≈⟨ lemma-cancel-Ex ⟩
     ⊥⊤ ∎
+
+  ------------------------------------------------------------------------
+  -- Three half-swaps make the swap
+  --
+  --     ₕ|ₕ • ʰ|ʰ • ₕ|ₕ  ≈  H • Ex • (H ↑) ^ 3
+  --
+  -- the classical "SWAP is three CNOTs", in the form the two rule sets
+  -- actually write.  Both sides are the same nine letters
+  -- H CZ H H↑ CZ H H↑ CZ H once the H's are sorted: on the left the
+  -- adjacent H↑ • H is flipped by the structural comm-H, and on the right
+  -- Ex's trailing H↑ absorbs the (H ↑) ^ 3 into (H ↑) ^ 4 ≈ ε.
+  --
+  -- This is the dictionary c13, c14 and c15 need, since those are stated
+  -- over ⊤⊥ / ⊥⊤ while Paper-V0's own three-wire axioms are stated over
+  -- Ex.
+
+  lemma-order-H↑ : (H ↑) ^ 4 ≈ ε
+  lemma-order-H↑ = lemma-cong↑ _ _ (One-Wire.lemma-order-H n)
+
+  lemma-half-swaps : ₕ|ₕ • ʰ|ʰ • ₕ|ₕ ≈ H • Ex • (H ↑) ^ 3
+  lemma-half-swaps = begin
+    ₕ|ₕ • ʰ|ʰ • ₕ|ₕ
+      ≈⟨ by-assoc auto ⟩
+    (H • CZ • H • H ↑ • CZ) • (H ↑ • H) • CZ • H
+      ≈⟨ cright cleft axiom comm-H ⟩
+    (H • CZ • H • H ↑ • CZ) • (H • H ↑) • CZ • H
+      ≈⟨ sym right-unit ⟩
+    ((H • CZ • H • H ↑ • CZ) • (H • H ↑) • CZ • H) • ε
+      ≈⟨ cright sym lemma-order-H↑ ⟩
+    ((H • CZ • H • H ↑ • CZ) • (H • H ↑) • CZ • H) • (H ↑) ^ 4
+      ≈⟨ by-assoc auto ⟩
+    H • Ex • (H ↑) ^ 3 ∎
 
   lemma-conj-Ex-Mg↑ : Ex • Mg ↑ • Ex ≈ Mg
   lemma-conj-Ex-Mg↑ = begin
