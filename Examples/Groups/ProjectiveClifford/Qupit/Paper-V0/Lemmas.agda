@@ -1034,6 +1034,29 @@ module Ex-Conjugation (n : ℕ) where
       ≈⟨ lemma-ʰ|ʰ-invol ⟩
     ε ∎
 
+  ------------------------------------------------------------------------
+  -- The half-swap is a multiplier times a CX
+  --
+  -- CX is H ^ 3 • CZ • H by definition, so M₋₁ • CX is H ^ 5 • CZ • H,
+  -- and H ^ 4 ≈ ε leaves H • CZ • H, which is ₕ|ₕ.  Purely syntactic —
+  -- it needs only the definition of CX, order-H and lemma-M₋₁^2.
+  --
+  -- This is the bridge to C18: C18 tells us how CX ↑ moves across a CZ,
+  -- and this lemma turns that into a statement about the half-swap, which
+  -- is what c14 is stated over.
+
+  lemma-ₕ|ₕ-CX : M₋₁ • CX ≈ ₕ|ₕ
+  lemma-ₕ|ₕ-CX = begin
+    M₋₁ • CX
+      ≈⟨ cleft sym (axiom order-H) ⟩
+    H ^ 2 • CX
+      ≈⟨ by-assoc auto ⟩
+    (H ^ 4 • H) • (CZ • H)
+      ≈⟨ cleft cleft One-Wire.lemma-order-H (₁₊ n) ⟩
+    (ε • H) • (CZ • H)
+      ≈⟨ cleft left-unit ⟩
+    H • (CZ • H) ∎
+
   lemma-⊤⊥-simple : ⊤⊥ ≈ ₕ|ₕ • Ex
   lemma-⊤⊥-simple = •-cancelʳ {h = ⊥⊤} (begin
     ⊤⊥ • ⊥⊤                  ≈⟨ lemma-⊤⊥-⊥⊤ ⟩
