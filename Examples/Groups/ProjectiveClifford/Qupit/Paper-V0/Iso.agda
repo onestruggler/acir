@@ -110,9 +110,6 @@ record BridgeData : Set where
     v1-blake-c12 :
       ∀ {n} → let open PB (V1R._QRel,_===_ (₂₊ n)) using (_≈_) in
       CX • S ↓ • CX ^ p-1 • (S ^ p-1) ↑ • (S ^ p-1) ↓ ≈ CZ
-    v1-comm-Ex-CZ :
-      ∀ {n} → let open PB (V1R._QRel,_===_ (₂₊ n)) using (_≈_) in
-      Ex • CZ ≈ CZ • Ex
 
     -- A. Paper-V0's three-wire axioms, inside Simplified-V1.
     v1-yang-baxter :
@@ -180,7 +177,6 @@ module Theorem (bd : BridgeData) where
   f-well-defined PapR.semi-Ex-S↑    = v1-semi-Ex-S↑
   f-well-defined PapR.semi-Ex-H↑    = v1-semi-Ex-H↑
   f-well-defined PapR.blake-c12     = v1-blake-c12
-  f-well-defined PapR.comm-Ex-CZ    = v1-comm-Ex-CZ
   f-well-defined PapR.yang-baxter   = v1-yang-baxter
   f-well-defined PapR.cz-slide      = v1-cz-slide
   f-well-defined PapR.semi-CX↑-CZ↓  = v1-semi-CX↑-CZ↓

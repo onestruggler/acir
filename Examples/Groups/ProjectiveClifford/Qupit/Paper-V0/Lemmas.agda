@@ -318,6 +318,9 @@ module Ex-Conjugation (n : ℕ) where
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
 
+  open Group-Lemmas ((₂₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₂₊ n})
+    using (•-cancelʳ)
+
   -- order-Ex with the power unfolded: Ex ^ 2 is Ex • (Ex ^ 1) is
   -- Ex • Ex definitionally, so this is the axiom itself.
   lemma-Ex-Ex : Ex • Ex ≈ ε
@@ -474,10 +477,49 @@ module Ex-Conjugation (n : ℕ) where
   lemma-Ex-pow e (₂₊ k) = lemma-Ex-• e (lemma-Ex-pow e (₁₊ k))
 
   ------------------------------------------------------------------------
-  -- CZ is symmetric in its two wires, so conjugation leaves it alone
+  -- CZ is symmetric in its two wires, so the swap leaves it alone
+  --
+  -- This is Lemma 2 of ProgressReport14, which shows the swap-vs-CZ
+  -- commutation (its C12) is derivable and need not be an axiom.  The
+  -- argument turns on the two ways of writing the swap.  Write A = H • H↑
+  -- for the Hadamard on both wires.  A commutes with Ex, because Ex
+  -- carries each Hadamard to the other wire (Lemma 1 = lemma-Ex-H, itself
+  -- just semi-Ex-H↑ conjugated) and the two Hadamards commute with each
+  -- other; cancelling one A then rewrites
+  --
+  --     Ex = CZ • A • CZ • A • CZ • A      (the definition here)
+  --     Ex = A • CZ • A • CZ • A • CZ      (the report's D4)
+  --
+  -- and with both in hand the commutation is pure associativity: the CZ
+  -- at the right end of the first form is the CZ at the left end of the
+  -- second.
+
+  lemma-Ex-A : Ex • (H • H ↑) ≈ (H • H ↑) • Ex
+  lemma-Ex-A = begin
+    Ex • (H • H ↑)  ≈⟨ sym assoc ⟩
+    (Ex • H) • H ↑  ≈⟨ cleft lemma-Ex-H ⟩
+    (H ↑ • Ex) • H ↑ ≈⟨ assoc ⟩
+    H ↑ • (Ex • H ↑) ≈⟨ cright lemma-Ex-H↑ ⟩
+    H ↑ • (H • Ex)  ≈⟨ sym assoc ⟩
+    (H ↑ • H) • Ex  ≈⟨ cleft axiom comm-H ⟩
+    (H • H ↑) • Ex ∎
+
+  -- The report's D4: the same swap with the Hadamards leading.
+  lemma-D4 : Ex ≈ (H • H ↑) • CZ • ((H • H ↑) • CZ • ((H • H ↑) • CZ))
+  lemma-D4 = •-cancelʳ {h = H • H ↑} (begin
+    Ex • (H • H ↑)
+      ≈⟨ lemma-Ex-A ⟩
+    (H • H ↑) • Ex
+      ≈⟨ by-assoc auto ⟩
+    ((H • H ↑) • CZ • ((H • H ↑) • CZ • ((H • H ↑) • CZ))) • (H • H ↑) ∎)
 
   lemma-Ex-CZ : Ex • CZ ≈ CZ • Ex
-  lemma-Ex-CZ = axiom comm-Ex-CZ
+  lemma-Ex-CZ = begin
+    Ex • CZ
+      ≈⟨ by-assoc auto ⟩
+    CZ • ((H • H ↑) • CZ • ((H • H ↑) • CZ • ((H • H ↑) • CZ)))
+      ≈⟨ cright sym lemma-D4 ⟩
+    CZ • Ex ∎
 
   lemma-Ex-CZᵏ : ∀ k → Ex • CZ ^ k ≈ CZ ^ k • Ex
   lemma-Ex-CZᵏ = lemma-Ex-pow lemma-Ex-CZ
