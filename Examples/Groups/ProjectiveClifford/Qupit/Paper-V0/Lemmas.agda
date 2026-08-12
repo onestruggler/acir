@@ -292,6 +292,82 @@ module Ex-Conjugation (n : ℕ) where
   lemma-Ex-Mg↑ : Ex • Mg ↑ ≈ Mg • Ex
   lemma-Ex-Mg↑ = lemma-Ex-M↑ g′
 
+  ------------------------------------------------------------------------
+  -- The controlled-X and its mirror
+  --
+  -- CX = H ↓ ^ 3 • CZ • H ↓ conjugates CZ by an H on wire 0, so its
+  -- target is wire 0 and its control wire 1; XC = H ↑ ^ 3 • CZ • H ↑ is
+  -- the same with the wires exchanged.  Conjugating by the swap therefore
+  -- exchanges the two, and since CZ is symmetric the proof is just the
+  -- homomorphism applied to the three factors.
+
+  lemma-Ex-CX : Ex • CX ≈ XC • Ex
+  lemma-Ex-CX = lemma-Ex-• (lemma-Ex-Hᵏ 3) (lemma-Ex-• lemma-Ex-CZ lemma-Ex-H)
+
+  lemma-Ex-XC : Ex • XC ≈ CX • Ex
+  lemma-Ex-XC = lemma-Ex-• (lemma-Ex-Hᵏ↑ 3) (lemma-Ex-• lemma-Ex-CZ lemma-Ex-H↑)
+
+  lemma-conj-Ex-CX : Ex • CX • Ex ≈ XC
+  lemma-conj-Ex-CX = begin
+    Ex • CX • Ex    ≈⟨ sym assoc ⟩
+    (Ex • CX) • Ex  ≈⟨ cleft lemma-Ex-CX ⟩
+    (XC • Ex) • Ex  ≈⟨ assoc ⟩
+    XC • Ex • Ex    ≈⟨ lemma-cancel-Ex ⟩
+    XC ∎
+
+  lemma-conj-Ex-XC : Ex • XC • Ex ≈ CX
+  lemma-conj-Ex-XC = begin
+    Ex • XC • Ex    ≈⟨ sym assoc ⟩
+    (Ex • XC) • Ex  ≈⟨ cleft lemma-Ex-XC ⟩
+    (CX • Ex) • Ex  ≈⟨ assoc ⟩
+    CX • Ex • Ex    ≈⟨ lemma-cancel-Ex ⟩
+    CX ∎
+
+  -- …and on to powers, which is the form blake-c12 needs (it writes
+  -- CX ^ p-1 for the inverse).
+  lemma-Ex-CXᵏ : ∀ k → Ex • CX ^ k ≈ XC ^ k • Ex
+  lemma-Ex-CXᵏ = lemma-Ex-pow lemma-Ex-CX
+
+  lemma-Ex-XCᵏ : ∀ k → Ex • XC ^ k ≈ CX ^ k • Ex
+  lemma-Ex-XCᵏ = lemma-Ex-pow lemma-Ex-XC
+
+  ------------------------------------------------------------------------
+  -- The half-swaps, and ⊤⊥ / ⊥⊤
+  --
+  -- ₕ|ₕ = H ↓ • CZ • H ↓ and ʰ|ʰ = H ↑ • CZ • H ↑ are the same word on
+  -- the two wires, so the swap exchanges them; ⊥⊤ = ₕ|ₕ • ʰ|ʰ and
+  -- ⊤⊥ = ʰ|ʰ • ₕ|ₕ are their two orders, so the swap exchanges those
+  -- too.  Selinger's c13, c14 and c15 are all stated over ⊤⊥ / ⊥⊤, and
+  -- c14 and c15 are mirror images of one another.
+
+  lemma-Ex-ₕ|ₕ : Ex • ₕ|ₕ ≈ ʰ|ʰ • Ex
+  lemma-Ex-ₕ|ₕ = lemma-Ex-• lemma-Ex-H (lemma-Ex-• lemma-Ex-CZ lemma-Ex-H)
+
+  lemma-Ex-ʰ|ʰ : Ex • ʰ|ʰ ≈ ₕ|ₕ • Ex
+  lemma-Ex-ʰ|ʰ = lemma-Ex-• lemma-Ex-H↑ (lemma-Ex-• lemma-Ex-CZ lemma-Ex-H↑)
+
+  lemma-Ex-⊥⊤ : Ex • ⊥⊤ ≈ ⊤⊥ • Ex
+  lemma-Ex-⊥⊤ = lemma-Ex-• lemma-Ex-ₕ|ₕ lemma-Ex-ʰ|ʰ
+
+  lemma-Ex-⊤⊥ : Ex • ⊤⊥ ≈ ⊥⊤ • Ex
+  lemma-Ex-⊤⊥ = lemma-Ex-• lemma-Ex-ʰ|ʰ lemma-Ex-ₕ|ₕ
+
+  lemma-conj-Ex-⊥⊤ : Ex • ⊥⊤ • Ex ≈ ⊤⊥
+  lemma-conj-Ex-⊥⊤ = begin
+    Ex • ⊥⊤ • Ex    ≈⟨ sym assoc ⟩
+    (Ex • ⊥⊤) • Ex  ≈⟨ cleft lemma-Ex-⊥⊤ ⟩
+    (⊤⊥ • Ex) • Ex  ≈⟨ assoc ⟩
+    ⊤⊥ • Ex • Ex    ≈⟨ lemma-cancel-Ex ⟩
+    ⊤⊥ ∎
+
+  lemma-conj-Ex-⊤⊥ : Ex • ⊤⊥ • Ex ≈ ⊥⊤
+  lemma-conj-Ex-⊤⊥ = begin
+    Ex • ⊤⊥ • Ex    ≈⟨ sym assoc ⟩
+    (Ex • ⊤⊥) • Ex  ≈⟨ cleft lemma-Ex-⊤⊥ ⟩
+    (⊥⊤ • Ex) • Ex  ≈⟨ assoc ⟩
+    ⊥⊤ • Ex • Ex    ≈⟨ lemma-cancel-Ex ⟩
+    ⊥⊤ ∎
+
   lemma-conj-Ex-Mg↑ : Ex • Mg ↑ • Ex ≈ Mg
   lemma-conj-Ex-Mg↑ = begin
     Ex • Mg ↑ • Ex   ≈⟨ sym assoc ⟩
