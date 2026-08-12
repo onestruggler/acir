@@ -35,24 +35,25 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Clifford.Qubit.Selinger.PushingChain
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
-open import Data.List using (List ; map)
+open import Data.List using (List ; [] ; _∷_ ; map)
 open import Data.Product using (_×_ ; _,_)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 
-open import ForStdlib.Data.Fin.Mod using (ℤ)
+open import ForStdlib.Data.Fin.Mod using (ℤ ; _+_ ; ₀)
 open import Notations using (₁₊)
 
 open import Examples.Groups.Clifford.Qubit.Selinger.Boxes p-2 p-prime
 open import Examples.Groups.Clifford.Qubit.Selinger.Normal p-2 p-prime
   using (Chain)
 open import Examples.Groups.Clifford.Qubit.Selinger.Pushing p-2 p-prime
-  using (Dirty ; S₀ ; X₀ ; pushHB ; pushS₀B)
+  using (Dirty ; S₀ ; X₀)
 -- dS belongs to both DirtA and DirtC in Rewrite -- the two alphabets
 -- share a name for the S gate -- so it is imported once and left
 -- overloaded; Agda picks the right one from the expected type at each
 -- use, which is what that feature is for.
 open import Examples.Groups.Clifford.Qubit.Selinger.Placed p-2 p-prime
-  using (Placed ; places)
+  using ( Placed ; _at_ ; Kind ; kH ; kS ; kX ; kZZ
+        ; places ; lifts ; pushB1 ; pushBs )
 open import Examples.Groups.Clifford.Qubit.Selinger.PushingZ p-2 p-prime
   using (Top ; pushZZ-A ; pushZZ-AB ; pushZZ-BB)
 open import Examples.Groups.Clifford.Qubit.Selinger.Rewrite p-2 p-prime
@@ -74,24 +75,6 @@ private
 fromDirtC : DirtC → Dirty
 fromDirtC dX = X₀
 fromDirtC dS = S₀
-
-------------------------------------------------------------------------
--- An H or an S on the un-shifted wire
---
--- Straight to the bottom of the chain.  The A case is commHA/commSA and
--- the B case commHIB/commSIB, and in the B case the rest of the chain
--- is returned untouched, which is the whole content of "it commutes
--- past".
-
-push₀-Chain : DirtA → Chain n → ℤ 8 × Chain n × List Dirty
-push₀-Chain {0}     d  a with pushA d a
-... | k , a′ , o = k , a′ , map fromDirtC o
-push₀-Chain {₁₊ n} d  (inj₁ a) with pushA d a
-... | k , a′ , o = k , inj₁ a′ , map fromDirtC o
-push₀-Chain {₁₊ n} dH (inj₂ (b , r)) with pushHB b
-... | k , b′ , o = k , inj₂ (b′ , r) , o
-push₀-Chain {₁₊ n} dS (inj₂ (b , r)) with pushS₀B b
-... | k , b′ , o = k , inj₂ (b′ , r) , o
 
 ------------------------------------------------------------------------
 -- Putting an A box back into a chain
@@ -138,3 +121,60 @@ pushZZ₀-Chain {₁₊ n} (inj₂ (b , inj₁ a)) with pushZZ-AB a b
 ... | k , t , o = k , top→chain t , places 0 o
 pushZZ₀-Chain {₁₊ n} (inj₂ (b , inj₂ (b′ , r))) with pushZZ-BB b′ b
 ... | k , (bu , bl) , o = k , inj₂ (bl , inj₂ (bu , r)) , places 0 o
+
+------------------------------------------------------------------------
+-- Any gate, anywhere on the chain
+--
+-- The recursion runs the way the chain is written: the layers above the
+-- bottom box come FIRST in the word, so a gate on a higher wire meets
+-- them before it meets the bottom box.  Hence the shape
+--
+--   descend into the layers above, at one wire lower;
+--   lift what comes back out by one wire;
+--   push all of that through the bottom box.
+--
+-- One gate can leave a layer as several, which is why the second step
+-- pushes a LIST (pushBs) and not a gate.  The recursion itself is on the
+-- chain, which shrinks, so it terminates for the same reason the chain
+-- is finite.
+--
+-- Cases that pass the gate through are those where the box is not on
+-- its wire, plus the two with no rule: an X meeting an A box, and an X
+-- meeting a B box on the lower wire.  Nothing delivers either.
+
+placesC : ℕ → List DirtC → List Placed
+placesC w o = places w (map fromDirtC o)
+
+push-Chain : Placed → Chain n → ℤ 8 × Chain n × List Placed
+
+-- A bare A on the un-shifted wire.
+push-Chain {0} (kH at 0)      a with pushA dH a
+... | k , a′ , o = k , a′ , placesC 0 o
+push-Chain {0} (kS at 0)      a with pushA dS a
+... | k , a′ , o = k , a′ , placesC 0 o
+push-Chain {0} (kX at 0)      a = ₀ , a , (kX at 0) ∷ []
+-- a one-wire chain has no pair for a controlled-Z to span
+push-Chain {0} (kZZ at 0)     a = ₀ , a , (kZZ at 0) ∷ []
+push-Chain {0} (k at ₁₊ w)   a = ₀ , a , (k at ₁₊ w) ∷ []
+
+-- An A with room above it: the A is still on the un-shifted wire, so
+-- only a gate there meets anything.
+push-Chain {₁₊ n} (kH at 0)    (inj₁ a) with pushA dH a
+... | k , a′ , o = k , inj₁ a′ , placesC 0 o
+push-Chain {₁₊ n} (kS at 0)    (inj₁ a) with pushA dS a
+... | k , a′ , o = k , inj₁ a′ , placesC 0 o
+push-Chain {₁₊ n} (kX at 0)    (inj₁ a) = ₀ , inj₁ a , (kX at 0) ∷ []
+push-Chain {₁₊ n} (kZZ at 0)   (inj₁ a) = pushZZ₀-Chain (inj₁ a)
+push-Chain {₁₊ n} (k at ₁₊ w) (inj₁ a) = ₀ , inj₁ a , (k at ₁₊ w) ∷ []
+
+-- A B box at the bottom.  On the un-shifted wire the gate reaches it
+-- directly; on the pair it spans it, and that is the two-box case.
+push-Chain {₁₊ n} (kZZ at 0)   (inj₂ (b , r)) = pushZZ₀-Chain (inj₂ (b , r))
+push-Chain {₁₊ n} (kH at 0)    (inj₂ (b , r)) with pushB1 (kH at 0) b
+... | k , b′ , o = k , inj₂ (b′ , r) , o
+push-Chain {₁₊ n} (kS at 0)    (inj₂ (b , r)) with pushB1 (kS at 0) b
+... | k , b′ , o = k , inj₂ (b′ , r) , o
+push-Chain {₁₊ n} (kX at 0)    (inj₂ (b , r)) = ₀ , inj₂ (b , r) , (kX at 0) ∷ []
+push-Chain {₁₊ n} (k at ₁₊ w) (inj₂ (b , r)) with push-Chain (k at w) r
+... | k₁ , r′ , out with pushBs (lifts out) b
+...   | k₂ , b′ , out′ = k₁ + k₂ , inj₂ (b′ , r′) , out′

@@ -32,10 +32,10 @@ open import Data.Nat.Primality using (Prime)
 module Examples.Groups.Clifford.Qubit.Selinger.Placed
   (p-2 : ℕ) (p-prime : Prime (2+ p-2)) where
 
-open import Data.List using (List ; [] ; _∷_ ; map)
+open import Data.List using (List ; [] ; _∷_ ; map ; _++_)
 open import Data.Product using (_×_ ; _,_)
 
-open import ForStdlib.Data.Fin.Mod using (ℤ ; ₀)
+open import ForStdlib.Data.Fin.Mod using (ℤ ; _+_ ; ₀)
 open import Notations using (₁₊ ; ₂₊)
 
 open import Examples.Groups.Clifford.Qubit.Selinger.Boxes p-2 p-prime
@@ -81,6 +81,15 @@ place w ZZ₁₂ = kZZ at ₁₊ w
 
 places : ℕ → List Dirty → List Placed
 places w = map (place w)
+
+-- Raising a gate by one wire.  The chain's recursion works inside the
+-- layers above the bottom box, where wire w means wire w+1 outside, so
+-- everything coming back out is lifted once.
+lift1 : Placed → Placed
+lift1 (k at w) = k at ₁₊ w
+
+lifts : List Placed → List Placed
+lifts = map lift1
 
 ------------------------------------------------------------------------
 -- A placed gate meeting one B box
@@ -128,3 +137,12 @@ pushB1 (kX at 0)       b = ₀ , b , (kX at 0) ∷ []
 pushB1 (kH at ₁₊ 0)   b = ₀ , b , (kH at ₁₊ 0) ∷ []
 -- the precondition above: spans the box, handled by PushingZ
 pushB1 (kZZ at 0)      b = ₀ , b , (kZZ at 0) ∷ []
+
+-- A word of gates through one B box.  The gate nearest the box is the
+-- LAST of the list, as everywhere in §6, so it is consumed from the
+-- right and what comes out keeps that order.
+pushBs : List Placed → BBox → ℤ 8 × BBox × List Placed
+pushBs []       b = ₀ , b , []
+pushBs (g ∷ gs) b with pushBs gs b
+... | k₂ , b′ , o₂ with pushB1 g b′
+...   | k₁ , b″ , o₁ = k₁ + k₂ , b″ , o₁ ++ o₂
