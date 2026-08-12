@@ -42,12 +42,14 @@ open import Data.Fin using (Fin) renaming (zero to fz ; suc to fs)
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Product using (_×_ ; _,_)
 
-open import Notations using (₁₊)
+open import Notations using (₁₊ ; ₂₊)
 open import Word.Base using (ε ; _•_)
 
 open import Examples.Groups.Clifford.Qubit.Selinger.Boxes p-2 p-prime
 open import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime
-  using (Circuit ; H ; S ; X ; _↑)
+  using (Circuit ; H ; S ; X ; CZ ; _↑)
+open import Examples.Groups.Clifford.Qubit.Selinger.PushingD p-2 p-prime
+  using (pushZZ-DD)
 open import Examples.Groups.Clifford.Qubit.Selinger.Normal p-2 p-prime
   using (Mx)
 open import ForStdlib.Data.Fin.Mod using (ℤ)
@@ -256,11 +258,60 @@ pushS-at (fs j) m = push-q1-at pushS₁D j m
 pushH-at : Fin n → Mx n → Circuit n × Mx n
 pushH-at = push-q1-at pushH₁D
 
--- A controlled-Z at the bottom is pushZZ-Mx above.  One at (j,j+1) for
--- j ≥ 1 is NOT this shape: it spans the pair of D(j,j+1) while also
--- sharing a wire with D(j-1,j), so it meets two boxes at once and needs
--- altIZZDDIIDD, the M-side analogue of commZZIIBBBBI.  Those sixteen
--- rules are not transcribed yet.
+------------------------------------------------------------------------
+-- Escaping dirt across two wires
+--
+-- The two-box rules leave dirt on both wires of the lower box and a
+-- controlled-Z on that pair, all of which is below everything the
+-- staircase has left, so all of it escapes.  Only the wire-2 gates
+-- continue, and those are S gates, counted separately.
+
+escAt01 : List Dirty → Circuit (₂₊ n)
+escAt01 []         = ε
+escAt01 (H₀ ∷ ds) = H • escAt01 ds
+escAt01 (S₀ ∷ ds) = S • escAt01 ds
+escAt01 (X₀ ∷ ds) = X • escAt01 ds
+escAt01 (H₁ ∷ ds) = H ↑ • escAt01 ds
+escAt01 (S₁ ∷ ds) = S ↑ • escAt01 ds
+escAt01 (X₁ ∷ ds) = X ↑ • escAt01 ds
+escAt01 (ZZ₀₁ ∷ ds) = CZ • escAt01 ds
+-- ascending, counted by ascS₂
+escAt01 (S₂ ∷ ds) = escAt01 ds
+-- not emitted by altIZZDDIIDD
+escAt01 (H₂ ∷ ds) = escAt01 ds
+escAt01 (ZZ₁₂ ∷ ds) = escAt01 ds
+
+ascS₂ : List Dirty → ℕ
+ascS₂ []         = 0
+ascS₂ (S₂ ∷ ds) = ₁₊ (ascS₂ ds)
+ascS₂ (_  ∷ ds) = ascS₂ ds
+
+------------------------------------------------------------------------
+-- A controlled-Z arriving anywhere on the staircase
+--
+-- At the bottom it spans the pair of D(0,1) and meets that box alone,
+-- which is the local altZZDD.  At (j,j+1) for j ≥ 1 it spans D(j,j+1)
+-- while also sharing wire j with D(j-1,j), so it meets both and needs
+-- altIZZDDIIDD.  Higher still it touches neither of the bottom boxes and
+-- commutes past.
+--
+-- The levels are Fin n: a controlled-Z needs a box on its own pair, and
+-- a staircase on ₁₊ n wires has boxes on (0,1) up to (n-1,n), so j runs
+-- to n-1.  A one-wire staircase has none, and Fin 0 is empty.
+
+pushZZ-at : Fin n → Mx n → ℤ 8 × Circuit n × Mx n
+pushZZ-at {₁₊ n} fz m with pushZZ-Mx m
+... | k , o , m′ = k , escAt0 o , m′
+-- The two boxes are named dl and du, not d₀ and d₁: d₁ is a DBox
+-- CONSTRUCTOR, so a pattern variable of that name silently matches only
+-- the d₁ box and the other three clauses go missing.  The coverage
+-- checker caught it, which on this development is worth recording --
+-- it is the first of these mistakes the types have found.
+pushZZ-at {₂₊ n} (fs fz) (dl , du , m) with pushZZ-DD dl du
+... | k , (dl′ , du′) , out =
+  k , escAt01 out , (dl′ , du′ , pushS-Mx (ascS₂ out) m)
+pushZZ-at {₂₊ n} (fs (fs j)) (d , m) with pushZZ-at (fs j) m
+... | k , e , m′ = k , e ↑ , (d , m′)
 
 ------------------------------------------------------------------------
 -- What cannot arrive at the BOTTOM
