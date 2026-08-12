@@ -64,10 +64,14 @@ open import Examples.Groups.Clifford.Qubit.Selinger.Boxes p-2 p-prime
 -- controlled-Z spans the pair.  Definition 6.1 permits no other dirt
 -- here, and the rules below emit no other.
 
+-- The two-box rules of PushingZ reach one wire further, so wire 2 and
+-- the controlled-Z on the pair above are included here; no rule in this
+-- module emits them.
 data Dirty : Set where
   H₀ S₀ X₀ : Dirty
   H₁ S₁ X₁ : Dirty
-  ZZ₀₁     : Dirty
+  H₂ S₂    : Dirty
+  ZZ₀₁ ZZ₁₂ : Dirty
 
 ------------------------------------------------------------------------
 -- Into a B box
