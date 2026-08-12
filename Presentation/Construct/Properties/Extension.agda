@@ -321,6 +321,49 @@ module _ {N X : Set}
     corrOf-eq p = proj₂ (corr-witness p)
 
     ------------------------------------------------------------------
+    -- The correction-free part of the quotient relation
+    --
+    -- Reading corr-witness backwards: of the eight ways to build an
+    -- R̄-derivation only `axiom` contributes anything, since refl, assoc
+    -- and the two unit laws give ε while trans concatenates, cong
+    -- conjugates and sym inverts.  So the accumulated correction is
+    -- ≈s-trivial as soon as every axiom the derivation uses is.
+    --
+    -- That is a property of a derivation, and a derivation is opaque —
+    -- one cannot ask an arbitrary p : a ≈q b which axioms it used.  The
+    -- fix is to name the correction-free axioms as a relation in their
+    -- own right and work in the congruence THEY generate: Corr-free is
+    -- the sub-relation of R̄ carrying, with each axiom, the proof that it
+    -- lifts exactly.  A Corr-free derivation is then by construction one
+    -- whose corrections all vanish, and rights₀ below says such a
+    -- derivation crosses into the extension with nothing left behind.
+    --
+    -- Note this is exactly the extra strength the right embedding lacks
+    -- in general: the right factor of ext carries EmptyRel, so
+    -- LeftRightCongruence.rights transports the monoid laws and nothing
+    -- else, and a genuine quotient axiom can only enter through tw.
+
+    Corr-free : WRel X
+    Corr-free u v = ∃ λ (r̄ : R̄ u v) → corr r̄ ≈s ε
+
+    open PB Corr-free using () renaming (_≈_ to _≈₀_)
+
+    -- The right embedding is a congruence for the correction-free part.
+    -- Only the axiom case has content: tw emits the correction, and the
+    -- axiom's own triviality proof cancels it against left-unit.
+    rights₀ : ∀ {a b} → a ≈₀ b → [ a ]ᵣ ≈ₑ [ b ]ᵣ
+    rights₀ _≈₀_.refl          = _≈ₑ_.refl
+    rights₀ (_≈₀_.sym p)       = _≈ₑ_.sym (rights₀ p)
+    rights₀ (_≈₀_.trans p q)   = _≈ₑ_.trans (rights₀ p) (rights₀ q)
+    rights₀ (_≈₀_.cong p q)    = _≈ₑ_.cong (rights₀ p) (rights₀ q)
+    rights₀ _≈₀_.assoc         = _≈ₑ_.assoc
+    rights₀ _≈₀_.left-unit     = _≈ₑ_.left-unit
+    rights₀ _≈₀_.right-unit    = _≈ₑ_.right-unit
+    rights₀ (_≈₀_.axiom (r̄ , triv)) =
+      _≈ₑ_.trans (_≈ₑ_.axiom (mid (right (tw r̄))))
+        (_≈ₑ_.trans (_≈ₑ_.cong (lefts triv) _≈ₑ_.refl) _≈ₑ_.left-unit)
+
+    ------------------------------------------------------------------
     -- The twisted coset table
     --
     -- Cosets are the canonical quotient representatives NFQ (the normal
@@ -489,6 +532,20 @@ module _ {N X : Set}
 
     Conj-trivial : Set
     Conj-trivial = ∀ (x : N) → conjss (rep Iᶜ) [ x ]ʷ ≈s [ x ]ʷ
+
+    -- The identity coset's representative reduces to ε using only
+    -- axioms that lift exactly.  This is a statement purely about the
+    -- QUOTIENT presentation: no extension, no corrections, no coset
+    -- machinery — just a derivation in a restricted calculus.
+    Sec-reduction : Set
+    Sec-reduction = rep Iᶜ ≈₀ ε
+
+    -- ... and it suffices.  This is what rights₀ buys: the quotient fact
+    -- rep Iᶜ ≈q ε is free (inv-nf∘nf=id) but useless here, whereas the
+    -- same reduction carried out in Corr-free lands in the extension
+    -- with no Pauli left over.
+    sec-trivial-from : Sec-reduction → Sec-trivial
+    sec-trivial-from = rights₀
 
     dpres :
       Realises →

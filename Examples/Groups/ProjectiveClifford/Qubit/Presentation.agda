@@ -51,8 +51,20 @@
 module Examples.Groups.ProjectiveClifford.Qubit.Presentation where
 
 open import Data.Nat using (ℕ)
+open import Data.Product using (_,_)
 
+open import Notations using (₁₊)
+open import Word.Base using (_^_)
+import Presentation.Base as PB
 open import Presentation.Definitions using (_IsPresentationOf_)
+
+open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime ; g* ; g-gen)
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+  using (module Symplectic)
+open Symplectic using (H)
+open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
+  using (module Simplified-Relations)
+open Simplified-Relations using (srel ; order-H ; M₋₁)
 
 open import Examples.Groups.ProjectiveClifford.Qubit.Semantics using (CMS-group)
 import Examples.Groups.ProjectiveClifford.Qubit.ExtensionPresentation as EP
@@ -70,6 +82,28 @@ Sec-trivial n = EP.Clifford.Sec-trivial n
 -- Conjugating a Pauli generator by it does nothing.
 Conj-trivial : ℕ → Set
 Conj-trivial n = EP.Clifford.Conj-trivial n
+
+-- Sec-trivial has an elementary sufficient condition, and at p = 2 it
+-- is sharp enough to name the single obstruction.  Only one simplified
+-- relator carries a correction — corr (srel order-S) = Z₀, everything
+-- else falls in corr's catch-all — so Extension.Corr-free is the whole
+-- rule set minus order-S, and Sec-reduction asks for the identity
+-- coset's representative to reduce to ε without ever using S² = ε.
+-- That is a statement about the SYMPLECTIC calculus alone: no
+-- extension, no cocycle, no coset machinery.
+Sec-reduction : ℕ → Set
+Sec-reduction n = EP.Clifford.Sec-reduction n
+
+sec-trivial : ∀ {n} → Sec-reduction n → Sec-trivial n
+sec-trivial {n} = EP.Clifford.sec-trivial-from n
+
+-- A relator is admitted into the correction-free calculus by pairing it
+-- with the proof that it lifts exactly, and for anything but order-S
+-- that proof is refl, since corr reduces to ε on the nose.  order-H is
+-- the case that matters: at p = 2 it reads H² = M₋₁ = Mg = ω, and it is
+-- the relator standing between the identity coset's A-box XM ₁ and ε.
+corr-free-order-H : ∀ {n} → EP.Clifford.Corr-free (₁₊ n) (H ^ 2) M₋₁
+corr-free-order-H = srel order-H , PB.refl
 
 ------------------------------------------------------------------------
 -- The presentation theorem
