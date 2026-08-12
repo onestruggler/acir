@@ -118,9 +118,11 @@ record BridgeData : Set where
     v1-cz-slide :
       ∀ {n} → let open PB (V1R._QRel,_===_ (₃₊ n)) using (_≈_) in
       Ex ↓ • Ex ↑ • CZ ≈ CZ ↑ • Ex ↓ • Ex ↑
+    -- Stated in Word order, matching Paper-V0's corrected axiom.  The
+    -- old spelling was the circuit-order reading of the same relation.
     v1-semi-CX↑-CZ↓ :
       ∀ {n} → let open PB (V1R._QRel,_===_ (₃₊ n)) using (_≈_) in
-      CX ↑ • CZ ↓ ≈ CZ ↓ • CZ02 • CX ↑
+      CZ ↓ • CX ↑ ≈ CZ02 • CX ↑ • CZ ↓
 
     -- B. Simplified-V1's two-wire axioms, inside Paper-V0.
     --

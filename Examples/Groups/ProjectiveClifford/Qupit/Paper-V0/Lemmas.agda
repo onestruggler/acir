@@ -1402,37 +1402,63 @@ module Three-Wire (n : ℕ) where
   -- multiplier-rescaled form of the same word is what proves they
   -- commute.
 
-  lemma-C18ᵏ : ∀ k → CX ↑ • CZ ^ k ≈ (CZ • CZ02) ^ k • CX ↑
+  -- C18 read with CX ↑ on the left of the CZ.  The axiom as stated emits
+  -- its CZ02 on the far left when a CZ crosses CX ↑ leftwards; read the
+  -- other way it emits CZ02 ⁻¹, and it is that form the iteration needs,
+  -- because the emitted factor lands outside CX ↑ and so does not block
+  -- the next step.  (The axiom used to be stated in circuit order, which
+  -- is the reverse of Word order; this is the same relation read the
+  -- right way round.)
+
+  private
+    CZ02⁻ : Word (Gen (₃₊ n))
+    CZ02⁻ = CZ02 ^ p-1
+
+    lemma-CZ02-CZ02⁻ : CZ02 • CZ02⁻ ≈ ε
+    lemma-CZ02-CZ02⁻ = begin
+      CZ02 • CZ02 ^ p-1     ≈⟨ sym (^-+ CZ02 1 p-1) ⟩
+      CZ02 ^ (1 Nat.+ p-1)  ≈⟨ lemma-order-CZ02 ⟩
+      ε ∎
+
+  lemma-C18' : CX ↑ • CZ ≈ (CZ02⁻ • CZ) • CX ↑
+  lemma-C18' = •-cancelˡ {g = CZ02} (begin
+    CZ02 • (CX ↑ • CZ)
+      ≈⟨ sym (axiom semi-CX↑-CZ↓) ⟩
+    CZ • CX ↑
+      ≈⟨ cleft sym left-unit ⟩
+    (ε • CZ) • CX ↑
+      ≈⟨ cleft cleft sym lemma-CZ02-CZ02⁻ ⟩
+    ((CZ02 • CZ02⁻) • CZ) • CX ↑
+      ≈⟨ cleft assoc ⟩
+    (CZ02 • (CZ02⁻ • CZ)) • CX ↑
+      ≈⟨ assoc ⟩
+    CZ02 • ((CZ02⁻ • CZ) • CX ↑) ∎)
+
+  lemma-C18ᵏ : ∀ k → CX ↑ • CZ ^ k ≈ (CZ02⁻ • CZ) ^ k • CX ↑
   lemma-C18ᵏ ₀ = trans right-unit (sym left-unit)
-  lemma-C18ᵏ ₁ = trans (axiom semi-CX↑-CZ↓) (sym assoc)
+  lemma-C18ᵏ ₁ = lemma-C18'
   lemma-C18ᵏ (₂₊ k) = begin
     CX ↑ • (CZ • CZ ^ ₁₊ k)
       ≈⟨ sym assoc ⟩
     (CX ↑ • CZ) • CZ ^ ₁₊ k
-      ≈⟨ cleft axiom semi-CX↑-CZ↓ ⟩
-    (CZ • (CZ02 • CX ↑)) • CZ ^ ₁₊ k
+      ≈⟨ cleft lemma-C18' ⟩
+    ((CZ02⁻ • CZ) • CX ↑) • CZ ^ ₁₊ k
       ≈⟨ assoc ⟩
-    CZ • ((CZ02 • CX ↑) • CZ ^ ₁₊ k)
-      ≈⟨ cright assoc ⟩
-    CZ • (CZ02 • (CX ↑ • CZ ^ ₁₊ k))
-      ≈⟨ cright cright lemma-C18ᵏ (₁₊ k) ⟩
-    CZ • (CZ02 • ((CZ • CZ02) ^ ₁₊ k • CX ↑))
-      ≈⟨ cright sym assoc ⟩
-    CZ • ((CZ02 • (CZ • CZ02) ^ ₁₊ k) • CX ↑)
+    (CZ02⁻ • CZ) • (CX ↑ • CZ ^ ₁₊ k)
+      ≈⟨ cright lemma-C18ᵏ (₁₊ k) ⟩
+    (CZ02⁻ • CZ) • ((CZ02⁻ • CZ) ^ ₁₊ k • CX ↑)
       ≈⟨ sym assoc ⟩
-    (CZ • (CZ02 • (CZ • CZ02) ^ ₁₊ k)) • CX ↑
-      ≈⟨ cleft sym assoc ⟩
-    ((CZ • CZ02) • (CZ • CZ02) ^ ₁₊ k) • CX ↑ ∎
+    ((CZ02⁻ • CZ) • (CZ02⁻ • CZ) ^ ₁₊ k) • CX ↑ ∎
 
   ------------------------------------------------------------------------
   -- The alternating product has order p as well
   --
   -- CX ↑ • CZ ^ p is CX ↑ on the nose, so lemma-C18ᵏ at p says
-  -- (CZ • CZ02) ^ p • CX ↑ is too, and CX ↑ cancels on the right.
+  -- (CZ02 ⁻¹ • CZ) ^ p • CX ↑ is too, and CX ↑ cancels on the right.
 
-  lemma-order-CZ·CZ02 : (CZ • CZ02) ^ p ≈ ε
+  lemma-order-CZ·CZ02 : (CZ02⁻ • CZ) ^ p ≈ ε
   lemma-order-CZ·CZ02 = •-cancelʳ {h = CX ↑} (begin
-    (CZ • CZ02) ^ p • CX ↑  ≈⟨ sym (lemma-C18ᵏ p) ⟩
+    (CZ02⁻ • CZ) ^ p • CX ↑ ≈⟨ sym (lemma-C18ᵏ p) ⟩
     CX ↑ • CZ ^ p           ≈⟨ cright axiom order-CZ ⟩
     CX ↑ • ε                ≈⟨ right-unit ⟩
     CX ↑                    ≈⟨ sym left-unit ⟩
@@ -1484,9 +1510,11 @@ module Three-Wire (n : ℕ) where
   lemma-Mgᵏ-CX↑ : ∀ j → Mg ^ j • CX ↑ ≈ CX ↑ • Mg ^ j
   lemma-Mgᵏ-CX↑ = comm-pow lemma-Mg-CX↑
 
-  -- (A): C18 with every CZ exponent rescaled by g ^′ j.
+  -- (A): C18 with every CZ exponent rescaled by g ^′ j.  The multiplier
+  -- rescales the emitted CZ02 ⁻¹ too, so its exponent picks up the same
+  -- factor: CZ02 ^ (p-1) becomes CZ02 ^ ((p-1) * e).
   lemma-A : ∀ j → let e = toℕ (g ^′ j) in
-            CX ↑ • CZ ^ e ≈ (CZ ^ e • CZ02 ^ e) • CX ↑
+            CX ↑ • CZ ^ e ≈ (CZ02 ^ (p-1 Nat.* e) • CZ ^ e) • CX ↑
   lemma-A j = •-cancelʳ {h = Mg ^ j} (begin
     (CX ↑ • CZ ^ e) • Mg ^ j
       ≈⟨ assoc ⟩
@@ -1499,37 +1527,45 @@ module Three-Wire (n : ℕ) where
     (Mg ^ j • CX ↑) • CZ
       ≈⟨ assoc ⟩
     Mg ^ j • (CX ↑ • CZ)
-      ≈⟨ cright axiom semi-CX↑-CZ↓ ⟩
-    Mg ^ j • (CZ • (CZ02 • CX ↑))
+      ≈⟨ cright lemma-C18' ⟩
+    Mg ^ j • ((CZ02⁻ • CZ) • CX ↑)
       ≈⟨ sym assoc ⟩
-    (Mg ^ j • CZ) • (CZ02 • CX ↑)
-      ≈⟨ cleft (lemma-Mgᵏ-CZ j) ⟩
-    (CZ ^ e • Mg ^ j) • (CZ02 • CX ↑)
-      ≈⟨ assoc ⟩
-    CZ ^ e • (Mg ^ j • (CZ02 • CX ↑))
-      ≈⟨ cright sym assoc ⟩
-    CZ ^ e • ((Mg ^ j • CZ02) • CX ↑)
-      ≈⟨ cright cleft (lemma-Mgᵏ-CZ02 j) ⟩
-    CZ ^ e • ((CZ02 ^ e • Mg ^ j) • CX ↑)
-      ≈⟨ cright assoc ⟩
-    CZ ^ e • (CZ02 ^ e • (Mg ^ j • CX ↑))
-      ≈⟨ cright cright (lemma-Mgᵏ-CX↑ j) ⟩
-    CZ ^ e • (CZ02 ^ e • (CX ↑ • Mg ^ j))
-      ≈⟨ cright sym assoc ⟩
-    CZ ^ e • ((CZ02 ^ e • CX ↑) • Mg ^ j)
-      ≈⟨ sym assoc ⟩
-    (CZ ^ e • (CZ02 ^ e • CX ↑)) • Mg ^ j
+    (Mg ^ j • (CZ02⁻ • CZ)) • CX ↑
       ≈⟨ cleft sym assoc ⟩
-    ((CZ ^ e • CZ02 ^ e) • CX ↑) • Mg ^ j ∎)
-    where e = toℕ (g ^′ j)
+    ((Mg ^ j • CZ02⁻) • CZ) • CX ↑
+      ≈⟨ cleft cleft rescale ⟩
+    ((CZ02 ^ (p-1 Nat.* e) • Mg ^ j) • CZ) • CX ↑
+      ≈⟨ cleft assoc ⟩
+    (CZ02 ^ (p-1 Nat.* e) • (Mg ^ j • CZ)) • CX ↑
+      ≈⟨ cleft cright (lemma-Mgᵏ-CZ j) ⟩
+    (CZ02 ^ (p-1 Nat.* e) • (CZ ^ e • Mg ^ j)) • CX ↑
+      ≈⟨ cleft sym assoc ⟩
+    ((CZ02 ^ (p-1 Nat.* e) • CZ ^ e) • Mg ^ j) • CX ↑
+      ≈⟨ assoc ⟩
+    (CZ02 ^ (p-1 Nat.* e) • CZ ^ e) • (Mg ^ j • CX ↑)
+      ≈⟨ cright (lemma-Mgᵏ-CX↑ j) ⟩
+    (CZ02 ^ (p-1 Nat.* e) • CZ ^ e) • (CX ↑ • Mg ^ j)
+      ≈⟨ sym assoc ⟩
+    ((CZ02 ^ (p-1 Nat.* e) • CZ ^ e) • CX ↑) • Mg ^ j ∎)
+    where
+    e = toℕ (g ^′ j)
+    rescale : Mg ^ j • CZ02⁻ ≈ CZ02 ^ (p-1 Nat.* e) • Mg ^ j
+    rescale = begin
+      Mg ^ j • CZ02 ^ p-1
+        ≈⟨ lemma-Induction (lemma-Mgᵏ-CZ02 j) p-1 ⟩
+      (CZ02 ^ e) ^ p-1 • Mg ^ j
+        ≈⟨ cleft (^^ CZ02 e p-1) ⟩
+      CZ02 ^ (e Nat.* p-1) • Mg ^ j
+        ≡⟨ Eq.cong (λ m → CZ02 ^ m • Mg ^ j) (NP.*-comm e p-1) ⟩
+      CZ02 ^ (p-1 Nat.* e) • Mg ^ j ∎
 
   -- (C): the two CZs distribute over the rescaled power.
   lemma-C : ∀ j → let e = toℕ (g ^′ j) in
-            (CZ • CZ02) ^ e ≈ CZ ^ e • CZ02 ^ e
+            (CZ02⁻ • CZ) ^ e ≈ CZ02 ^ (p-1 Nat.* e) • CZ ^ e
   lemma-C j = •-cancelʳ {h = CX ↑} (begin
-    (CZ • CZ02) ^ e • CX ↑     ≈⟨ sym (lemma-C18ᵏ e) ⟩
-    CX ↑ • CZ ^ e              ≈⟨ lemma-A j ⟩
-    (CZ ^ e • CZ02 ^ e) • CX ↑ ∎)
+    (CZ02⁻ • CZ) ^ e • CX ↑                 ≈⟨ sym (lemma-C18ᵏ e) ⟩
+    CX ↑ • CZ ^ e                           ≈⟨ lemma-A j ⟩
+    (CZ02 ^ (p-1 Nat.* e) • CZ ^ e) • CX ↑ ∎)
     where e = toℕ (g ^′ j)
 
   ------------------------------------------------------------------------
@@ -1560,23 +1596,67 @@ module Three-Wire (n : ℕ) where
     e₂ = Eq.cong toℕ (Eq.sym (g-gen ₂ᵤ .proj₂))
 
     -- (C) with the exponent evaluated.
-    lemma-C₂ : (CZ • CZ02) • (CZ • CZ02) ≈ (CZ • CZ) • (CZ02 • CZ02)
+    lemma-C₂ : (CZ02⁻ • CZ) • (CZ02⁻ • CZ) ≈ (CZ02⁻ • CZ02⁻) • (CZ • CZ)
     lemma-C₂ = begin
-      (CZ • CZ02) • (CZ • CZ02)
-        ≡⟨ Eq.cong ((CZ • CZ02) ^_) (Eq.sym e₂) ⟩
-      (CZ • CZ02) ^ toℕ (g ^′ j₂)
+      (CZ02⁻ • CZ) • (CZ02⁻ • CZ)
+        ≡⟨ Eq.cong ((CZ02⁻ • CZ) ^_) (Eq.sym e₂) ⟩
+      (CZ02⁻ • CZ) ^ toℕ (g ^′ j₂)
         ≈⟨ lemma-C j₂ ⟩
-      CZ ^ toℕ (g ^′ j₂) • CZ02 ^ toℕ (g ^′ j₂)
-        ≡⟨ Eq.cong₂ (λ a b → CZ ^ a • CZ02 ^ b) e₂ e₂ ⟩
-      (CZ • CZ) • (CZ02 • CZ02) ∎
+      CZ02 ^ (p-1 Nat.* toℕ (g ^′ j₂)) • CZ ^ toℕ (g ^′ j₂)
+        ≡⟨ Eq.cong₂ (λ a b → CZ02 ^ (p-1 Nat.* a) • CZ ^ b) e₂ e₂ ⟩
+      CZ02 ^ (p-1 Nat.* 2) • (CZ • CZ)
+        ≈⟨ cleft sym (^^ CZ02 p-1 2) ⟩
+      (CZ02⁻ • CZ02⁻) • (CZ • CZ) ∎
 
+    -- Cancelling one CZ02 ⁻¹ on the left and one CZ on the right.  All
+    -- explicit assoc: CZ02 ⁻¹ is a symbolic power, so to-list is stuck.
+    lemma-comm-CZ-CZ02⁻ : CZ • CZ02⁻ ≈ CZ02⁻ • CZ
+    lemma-comm-CZ-CZ02⁻ =
+      •-cancelˡ {g = CZ02⁻} (•-cancelʳ {h = CZ} (begin
+        (CZ02⁻ • (CZ • CZ02⁻)) • CZ
+          ≈⟨ cleft sym assoc ⟩
+        ((CZ02⁻ • CZ) • CZ02⁻) • CZ
+          ≈⟨ assoc ⟩
+        (CZ02⁻ • CZ) • (CZ02⁻ • CZ)
+          ≈⟨ lemma-C₂ ⟩
+        (CZ02⁻ • CZ02⁻) • (CZ • CZ)
+          ≈⟨ assoc ⟩
+        CZ02⁻ • (CZ02⁻ • (CZ • CZ))
+          ≈⟨ cright sym assoc ⟩
+        CZ02⁻ • ((CZ02⁻ • CZ) • CZ)
+          ≈⟨ sym assoc ⟩
+        (CZ02⁻ • (CZ02⁻ • CZ)) • CZ ∎))
+
+    lemma-CZ02⁻-CZ02 : CZ02⁻ • CZ02 ≈ ε
+    lemma-CZ02⁻-CZ02 = begin
+      CZ02 ^ p-1 • CZ02
+        ≈⟨ sym (^-+ CZ02 p-1 1) ⟩
+      CZ02 ^ (p-1 Nat.+ 1)
+        ≡⟨ Eq.cong (CZ02 ^_) (NP.+-comm p-1 1) ⟩
+      CZ02 ^ (1 Nat.+ p-1)
+        ≈⟨ lemma-order-CZ02 ⟩
+      ε ∎
+
+  -- CZ commutes with CZ02 ⁻¹, hence with CZ02.
   lemma-comm-CZ-CZ02 : CZ • CZ02 ≈ CZ02 • CZ
-  lemma-comm-CZ-CZ02 =
-    sym (•-cancelʳ {h = CZ02} (•-cancelˡ {g = CZ} (begin
-      CZ • ((CZ02 • CZ) • CZ02)  ≈⟨ by-assoc auto ⟩
-      (CZ • CZ02) • (CZ • CZ02)  ≈⟨ lemma-C₂ ⟩
-      (CZ • CZ) • (CZ02 • CZ02)  ≈⟨ by-assoc auto ⟩
-      CZ • ((CZ • CZ02) • CZ02) ∎)))
+  lemma-comm-CZ-CZ02 = begin
+    CZ • CZ02
+      ≈⟨ cleft sym left-unit ⟩
+    (ε • CZ) • CZ02
+      ≈⟨ cleft cleft sym lemma-CZ02-CZ02⁻ ⟩
+    ((CZ02 • CZ02⁻) • CZ) • CZ02
+      ≈⟨ cleft assoc ⟩
+    (CZ02 • (CZ02⁻ • CZ)) • CZ02
+      ≈⟨ cleft cright sym lemma-comm-CZ-CZ02⁻ ⟩
+    (CZ02 • (CZ • CZ02⁻)) • CZ02
+      ≈⟨ cleft sym assoc ⟩
+    ((CZ02 • CZ) • CZ02⁻) • CZ02
+      ≈⟨ assoc ⟩
+    (CZ02 • CZ) • (CZ02⁻ • CZ02)
+      ≈⟨ cright lemma-CZ02⁻-CZ02 ⟩
+    (CZ02 • CZ) • ε
+      ≈⟨ right-unit ⟩
+    CZ02 • CZ ∎
 
   T : Word (Gen (₃₊ n))
   T = Ex • Ex ↑ • Ex
@@ -2037,44 +2117,47 @@ module Three-Wire (n : ℕ) where
         ≈⟨ sym M₋₁↑-invol ⟩
       M₋₁ ↑ • M₋₁ ↑ ∎)
 
-  lemma-c14-key : CZ • (ₕ|ₕ ↑ • (CZ • ₕ|ₕ ↑)) ≈ CZ02
+  -- Conjugating CZ by the upper half-swap gives the inverse of CZ • CZ02.
+  -- Stated inverse-free, that is this.
+  lemma-c14-key : CZ • (CZ02 • (ₕ|ₕ ↑ • (CZ • ₕ|ₕ ↑))) ≈ ε
   lemma-c14-key = begin
-    CZ • (ₕ|ₕ ↑ • (CZ • ₕ|ₕ ↑))
-      ≈⟨ cright cong (sym ₕ|ₕ↑-CX) (cright sym ₕ|ₕ↑-CX) ⟩
-    CZ • ((M₋₁ ↑ • CX ↑) • (CZ • (M₋₁ ↑ • CX ↑)))
+    CZ • (CZ02 • (ₕ|ₕ ↑ • (CZ • ₕ|ₕ ↑)))
+      ≈⟨ cright cright cong (sym ₕ|ₕ↑-CX) (cright sym ₕ|ₕ↑-CX) ⟩
+    CZ • (CZ02 • ((M₋₁ ↑ • CX ↑) • (CZ • (M₋₁ ↑ • CX ↑))))
       -- explicit assoc, not by-assoc: M₋₁'s symbolic power blocks to-list
-      ≈⟨ cright assoc ⟩
-    CZ • (M₋₁ ↑ • (CX ↑ • (CZ • (M₋₁ ↑ • CX ↑))))
-      ≈⟨ cright cright sym assoc ⟩
-    CZ • (M₋₁ ↑ • ((CX ↑ • CZ) • (M₋₁ ↑ • CX ↑)))
-      ≈⟨ cright cright cleft axiom semi-CX↑-CZ↓ ⟩
-    CZ • (M₋₁ ↑ • ((CZ • (CZ02 • CX ↑)) • (M₋₁ ↑ • CX ↑)))
-      ≈⟨ cright cright assoc ⟩
-    CZ • (M₋₁ ↑ • (CZ • ((CZ02 • CX ↑) • (M₋₁ ↑ • CX ↑))))
-      ≈⟨ cright cright cright assoc ⟩
-    CZ • (M₋₁ ↑ • (CZ • (CZ02 • (CX ↑ • (M₋₁ ↑ • CX ↑)))))
-      ≈⟨ cright cright cright cright lemma-CX↑-M₋₁↑ ⟩
-    CZ • (M₋₁ ↑ • (CZ • (CZ02 • M₋₁ ↑)))
-      ≈⟨ cright cright cright sym lemma-M₋₁↑-CZ02 ⟩
-    CZ • (M₋₁ ↑ • (CZ • (M₋₁ ↑ • CZ02)))
       ≈⟨ cright sym assoc ⟩
-    CZ • ((M₋₁ ↑ • CZ) • (M₋₁ ↑ • CZ02))
-      ≈⟨ cright cleft lemma-M₋₁↑-CZ ⟩
-    CZ • ((CZ ^ toℕ (-'₁ .proj₁) • M₋₁ ↑) • (M₋₁ ↑ • CZ02))
+    CZ • ((CZ02 • (M₋₁ ↑ • CX ↑)) • (CZ • (M₋₁ ↑ • CX ↑)))
+      ≈⟨ cright cleft sym assoc ⟩
+    CZ • (((CZ02 • M₋₁ ↑) • CX ↑) • (CZ • (M₋₁ ↑ • CX ↑)))
+      ≈⟨ cright cleft cleft sym lemma-M₋₁↑-CZ02 ⟩
+    CZ • (((M₋₁ ↑ • CZ02) • CX ↑) • (CZ • (M₋₁ ↑ • CX ↑)))
+      ≈⟨ cright cleft assoc ⟩
+    CZ • ((M₋₁ ↑ • (CZ02 • CX ↑)) • (CZ • (M₋₁ ↑ • CX ↑)))
       ≈⟨ cright assoc ⟩
-    CZ • (CZ ^ toℕ (-'₁ .proj₁) • (M₋₁ ↑ • (M₋₁ ↑ • CZ02)))
+    CZ • (M₋₁ ↑ • ((CZ02 • CX ↑) • (CZ • (M₋₁ ↑ • CX ↑))))
       ≈⟨ cright cright sym assoc ⟩
-    CZ • (CZ ^ toℕ (-'₁ .proj₁) • ((M₋₁ ↑ • M₋₁ ↑) • CZ02))
-      ≈⟨ cright cright cleft M₋₁↑-invol ⟩
-    CZ • (CZ ^ toℕ (-'₁ .proj₁) • (ε • CZ02))
-      ≈⟨ cright cright left-unit ⟩
-    CZ • (CZ ^ toℕ (-'₁ .proj₁) • CZ02)
-      ≈⟨ sym assoc ⟩
-    (CZ • CZ ^ toℕ (-'₁ .proj₁)) • CZ02
-      ≈⟨ cleft lemma-CZ-CZ₋₁ ⟩
-    ε • CZ02
-      ≈⟨ left-unit ⟩
-    CZ02 ∎
+    CZ • (M₋₁ ↑ • (((CZ02 • CX ↑) • CZ) • (M₋₁ ↑ • CX ↑)))
+      ≈⟨ cright cright cleft assoc ⟩
+    CZ • (M₋₁ ↑ • ((CZ02 • (CX ↑ • CZ)) • (M₋₁ ↑ • CX ↑)))
+      -- the axiom, right to left
+      ≈⟨ cright cright cleft sym (axiom semi-CX↑-CZ↓) ⟩
+    CZ • (M₋₁ ↑ • ((CZ • CX ↑) • (M₋₁ ↑ • CX ↑)))
+      ≈⟨ cright cright assoc ⟩
+    CZ • (M₋₁ ↑ • (CZ • (CX ↑ • (M₋₁ ↑ • CX ↑))))
+      ≈⟨ cright cright cright lemma-CX↑-M₋₁↑ ⟩
+    CZ • (M₋₁ ↑ • (CZ • M₋₁ ↑))
+      ≈⟨ cright sym assoc ⟩
+    CZ • ((M₋₁ ↑ • CZ) • M₋₁ ↑)
+      ≈⟨ cright cleft lemma-M₋₁↑-CZ ⟩
+    CZ • ((CZ ^ toℕ (-'₁ .proj₁) • M₋₁ ↑) • M₋₁ ↑)
+      ≈⟨ cright assoc ⟩
+    CZ • (CZ ^ toℕ (-'₁ .proj₁) • (M₋₁ ↑ • M₋₁ ↑))
+      ≈⟨ cright cright M₋₁↑-invol ⟩
+    CZ • (CZ ^ toℕ (-'₁ .proj₁) • ε)
+      ≈⟨ cright right-unit ⟩
+    CZ • CZ ^ toℕ (-'₁ .proj₁)
+      ≈⟨ lemma-CZ-CZ₋₁ ⟩
+    ε ∎
 
   lemma-⊤⊥↑-CZ : ⊤⊥ {n} ↑ • CZ ≈ CZ02 • ⊤⊥ {n} ↑
   lemma-⊤⊥↑-CZ = begin

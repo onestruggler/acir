@@ -149,7 +149,7 @@ module Clifford-Relations where
 
       yang-baxter :   (₃₊ n) SRel,  Ex ↑ • Ex ↓ • Ex ↑ === Ex ↓ • Ex ↑ • Ex ↓
       cz-slide :      (₃₊ n) SRel,  Ex ↓ • Ex ↑ • CZ === CZ ↑ • Ex ↓ • Ex ↑
-      semi-CX↑-CZ↓ :  (₃₊ n) SRel,  CX ↑ • CZ ↓ === CZ ↓ • CZ02 • CX ↑
+      semi-CX↑-CZ↓ :  (₃₊ n) SRel,  CZ ↓ • CX ↑ === CZ02 • CX ↑ • CZ ↓
 
   -- Full relation: the axioms above plus the structural rules.
   private module SC = Circuit.Base SympGate
