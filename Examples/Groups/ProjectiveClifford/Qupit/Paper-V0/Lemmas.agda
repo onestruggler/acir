@@ -713,3 +713,60 @@ module Three-Wire (n : ℕ) where
     Ex • (ε • Ex)           ≈⟨ cright left-unit ⟩
     Ex • Ex                 ≈⟨ lemma-Ex-Ex ⟩
     ε ∎
+
+  ------------------------------------------------------------------------
+  -- The transposition of wires 0 and 2
+  --
+  -- Ex swaps wires 0-1 and Ex ↑ swaps 1-2, so Ex • Ex ↑ • Ex transposes
+  -- 0 and 2.  It carries CZ (wires 0-1) to CZ ↑ (wires 1-2), which is the
+  -- transport between the progress report's form of C15 —
+  -- CZ₁₂ • CZ₀₂ = CZ₀₂ • CZ₁₂, stated "up to qubit wire permutation" —
+  -- and selinger-c12 as Simplified-V1 states it.  It is also the mirror
+  -- that exchanges c14 and c15, since it swaps ⊤⊥ ↑ with ⊥⊤ as well.
+  --
+  -- Note Ex ↓ is Ex definitionally: _↓ maps every gate to itself and Ex
+  -- is a word of gate letters with no symbolic power, so cz-slide can be
+  -- used against Ex directly.
+
+  T : Word (Gen (₃₊ n))
+  T = Ex • Ex ↑ • Ex
+
+  lemma-Ex↑-Ex↑ : Ex ↑ • Ex ↑ ≈ ε
+  lemma-Ex↑-Ex↑ = lemma-cong↑ _ _ (PB₂.axiom order-Ex)
+
+  lemma-T-T : T • T ≈ ε
+  lemma-T-T = begin
+    (Ex • Ex ↑ • Ex) • (Ex • Ex ↑ • Ex)  ≈⟨ by-assoc auto ⟩
+    (Ex • Ex ↑) • (Ex • Ex) • (Ex ↑ • Ex) ≈⟨ cright cleft lemma-Ex-Ex ⟩
+    (Ex • Ex ↑) • ε • (Ex ↑ • Ex)         ≈⟨ cright left-unit ⟩
+    (Ex • Ex ↑) • (Ex ↑ • Ex)             ≈⟨ by-assoc auto ⟩
+    Ex • (Ex ↑ • Ex ↑) • Ex               ≈⟨ cright cleft lemma-Ex↑-Ex↑ ⟩
+    Ex • ε • Ex                           ≈⟨ cright left-unit ⟩
+    Ex • Ex                               ≈⟨ lemma-Ex-Ex ⟩
+    ε ∎
+
+  lemma-T-CZ : T • CZ • T ≈ CZ ↑
+  lemma-T-CZ = begin
+    (Ex • Ex ↑ • Ex) • CZ • (Ex • Ex ↑ • Ex)
+      ≈⟨ by-assoc auto ⟩
+    (Ex • Ex ↑) • (Ex • CZ) • (Ex • Ex ↑ • Ex)
+      ≈⟨ cright cleft lemma-Ex-CZ ⟩
+    (Ex • Ex ↑) • (CZ • Ex) • (Ex • Ex ↑ • Ex)
+      ≈⟨ by-assoc auto ⟩
+    (Ex ↓ • Ex ↑ • CZ) • (Ex • Ex) • (Ex ↑ • Ex)
+      ≈⟨ cleft axiom cz-slide ⟩
+    (CZ ↑ • Ex ↓ • Ex ↑) • (Ex • Ex) • (Ex ↑ • Ex)
+      ≈⟨ cright cleft lemma-Ex-Ex ⟩
+    (CZ ↑ • Ex ↓ • Ex ↑) • ε • (Ex ↑ • Ex)
+      ≈⟨ cright left-unit ⟩
+    (CZ ↑ • Ex ↓ • Ex ↑) • (Ex ↑ • Ex)
+      ≈⟨ by-assoc auto ⟩
+    CZ ↑ • Ex • (Ex ↑ • Ex ↑) • Ex
+      ≈⟨ cright cright cleft lemma-Ex↑-Ex↑ ⟩
+    CZ ↑ • Ex • ε • Ex
+      ≈⟨ cright cright left-unit ⟩
+    CZ ↑ • Ex • Ex
+      ≈⟨ cright lemma-Ex-Ex ⟩
+    CZ ↑ • ε
+      ≈⟨ right-unit ⟩
+    CZ ↑ ∎
