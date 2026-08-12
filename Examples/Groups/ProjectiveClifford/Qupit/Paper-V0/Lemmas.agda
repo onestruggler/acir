@@ -61,7 +61,9 @@ open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Syntactics
   p-3 p-prime g* g-gen
 
 open Clifford-Relations
-open Lemmas-Clifford using (lemma-↑^ ; lemma-↓^ ; lemma-Induction)
+open Lemmas-Clifford
+  using (lemma-↑^ ; lemma-↓^ ; lemma-Induction
+        ; lemma-comm-S-w↑ ; lemma-comm-H-w↑ ; lemma-comm-Z-w↑)
 
 private
   variable
@@ -920,6 +922,92 @@ module Three-Wire (n : ℕ) where
     Ex • (ε • Ex)           ≈⟨ cright left-unit ⟩
     Ex • Ex                 ≈⟨ lemma-Ex-Ex ⟩
     ε ∎
+
+  ------------------------------------------------------------------------
+  -- The multiplier commutes with anything on the wires above it
+  --
+  -- Mg is a product of powers of S, H and Z on wire 0, and each of those
+  -- commutes with a shifted word; the two combinators below lift that
+  -- through the products and powers Mg is built from.  Taking w = CX
+  -- gives what the rescaled C18 needs.
+
+  private
+    comm-• : ∀ {u v} {w : Word (Gen (₂₊ n))} →
+             u • w ↑ ≈ w ↑ • u → v • w ↑ ≈ w ↑ • v →
+             (u • v) • w ↑ ≈ w ↑ • (u • v)
+    comm-• {u} {v} {w} cu cv = begin
+      (u • v) • w ↑  ≈⟨ assoc ⟩
+      u • (v • w ↑)  ≈⟨ cright cv ⟩
+      u • (w ↑ • v)  ≈⟨ sym assoc ⟩
+      (u • w ↑) • v  ≈⟨ cleft cu ⟩
+      (w ↑ • u) • v  ≈⟨ assoc ⟩
+      w ↑ • (u • v) ∎
+
+    comm-pow : ∀ {u} {w : Word (Gen (₂₊ n))} →
+               u • w ↑ ≈ w ↑ • u → ∀ k → u ^ k • w ↑ ≈ w ↑ • u ^ k
+    comm-pow cu ₀      = trans left-unit (sym right-unit)
+    comm-pow cu ₁      = cu
+    comm-pow cu (₂₊ k) = comm-• cu (comm-pow cu (₁₊ k))
+
+  lemma-Mg-w↑ : ∀ (w : Word (Gen (₂₊ n))) → Mg • w ↑ ≈ w ↑ • Mg
+  lemma-Mg-w↑ w =
+    comm-• cR^ (comm-• cH (comm-• cR^' (comm-• cH (comm-• cR^ cH))))
+    where
+    cH = lemma-comm-H-w↑ w
+    cZ^ = comm-pow (lemma-comm-Z-w↑ w) (toℕ 1/2)
+    cR  = comm-• (lemma-comm-S-w↑ w) cZ^
+    cR^ = comm-pow cR (toℕ g)
+    cR^' = comm-pow cR (toℕ ((g′ ⁻¹) .proj₁))
+
+  lemma-Mg-CX↑ : Mg • CX ↑ ≈ CX ↑ • Mg
+  lemma-Mg-CX↑ = lemma-Mg-w↑ CX
+
+  ------------------------------------------------------------------------
+  -- The multiplier on wire 0 rescales the remote CZ too
+  --
+  -- CZ02 is Ex • CZ ↑ • Ex, so the multiplier passes onto the upper wire
+  -- with the swap, rescales there against CZ ↑, and comes back; the
+  -- power is carried through the swap by lemma-conj-pow.
+
+  private
+    -- semi-M↓CZ one wire up: Mg on wire 1 against CZ on wires 1-2.
+    -- The instance one wire down, so that cong↑ lands at this width.
+    semi↑ : Mg ↑ • CZ ↑ ≈ (CZ ↑) ^ toℕ g • Mg ↑
+    semi↑ = trans (lemma-cong↑ _ _ (Ex-Conjugation.lemma-semi-Mg-CZ n))
+                  (refl' (Eq.cong (_• Mg ↑) (lemma-↑^ (toℕ g) CZ)))
+
+    -- The swap carries the multiplier from wire 1 down to wire 0.
+    mg↑Ex : Mg ↑ • Ex ≈ Ex • Mg
+    mg↑Ex = begin
+      Mg ↑ • Ex               ≈⟨ sym left-unit ⟩
+      ε • (Mg ↑ • Ex)         ≈⟨ cleft sym lemma-Ex-Ex ⟩
+      (Ex • Ex) • (Mg ↑ • Ex) ≈⟨ assoc ⟩
+      Ex • (Ex • (Mg ↑ • Ex)) ≈⟨ cright lemma-conj-Ex-Mg↑ ⟩
+      Ex • Mg ∎
+
+  lemma-Mg-CZ02 : Mg • CZ02 ≈ CZ02 ^ toℕ g • Mg
+  lemma-Mg-CZ02 = begin
+    Mg • (Ex • (CZ ↑ • Ex))
+      ≈⟨ sym assoc ⟩
+    (Mg • Ex) • (CZ ↑ • Ex)
+      ≈⟨ cleft sym lemma-Ex-Mg↑ ⟩
+    (Ex • Mg ↑) • (CZ ↑ • Ex)
+      ≈⟨ assoc ⟩
+    Ex • (Mg ↑ • (CZ ↑ • Ex))
+      ≈⟨ cright sym assoc ⟩
+    Ex • ((Mg ↑ • CZ ↑) • Ex)
+      ≈⟨ cright cleft semi↑ ⟩
+    Ex • (((CZ ↑) ^ toℕ g • Mg ↑) • Ex)
+      ≈⟨ cright assoc ⟩
+    Ex • ((CZ ↑) ^ toℕ g • (Mg ↑ • Ex))
+      ≈⟨ cright cright mg↑Ex ⟩
+    Ex • ((CZ ↑) ^ toℕ g • (Ex • Mg))
+      ≈⟨ cright sym assoc ⟩
+    Ex • (((CZ ↑) ^ toℕ g • Ex) • Mg)
+      ≈⟨ sym assoc ⟩
+    (Ex • ((CZ ↑) ^ toℕ g • Ex)) • Mg
+      ≈⟨ cleft sym (lemma-conj-pow (CZ ↑) (toℕ g)) ⟩
+    CZ02 ^ toℕ g • Mg ∎
 
   ------------------------------------------------------------------------
   -- The transposition of wires 0 and 2
