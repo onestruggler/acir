@@ -50,6 +50,7 @@
 
 module Examples.Groups.ProjectiveClifford.Qubit.Presentation where
 
+open import Algebra.Bundles using (Group)
 open import Data.Nat using (ℕ)
 open import Data.Product using (_,_)
 open import Data.Sum using (inj₁ ; inj₂)
@@ -70,7 +71,7 @@ open import Algebra.Properties.Ring (+-*-ring p-2) using (-0#≈0#)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
 open import Notations using (₁₊ ; ₂₊ ; auto)
-open Symplectic using (H ; S ; S^ ; XM ; CZ ; Circuit ; _↑)
+open Symplectic using (H ; S ; S⁻¹ ; S^ ; XM ; CZ ; Circuit ; _↑)
 open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
   using (module Simplified-Relations)
 open Simplified-Relations
@@ -269,6 +270,16 @@ module _ {n : ℕ} where
   SHSHSH-free : S • (H • (S • (H • (S • H)))) ≈ ε
   SHSHSH-free = a-box-free
 
+  -- The S-power layer really does collapse at p = 2, syntactically: S⁻¹
+  -- is S ^ (p-1) = S ^ 1 = S, on the nose.  So every S⁻¹ in the
+  -- right-hand sides of selinger-c10/c11 — and every S⁻¹ ^ k and
+  -- (S⁻¹ H S⁻¹) ^ k in the lemmas the Ex chain reaches for — is already
+  -- an S-free-of-arithmetic word here.  That is what makes the p = 2
+  -- re-proof possible where the generic one, which carries order-S in
+  -- its exponent reductions, cannot be reused.
+  S⁻¹≡S : _≡_ {A = Circuit (₂₊ n)} S⁻¹ S
+  S⁻¹≡S = Eq.refl
+
   -- Its usual working form: S H S H S ≈ H, since H is its own inverse.
   SHSHS-free : S • (H • (S • (H • S))) ≈ H
   SHSHS-free =
@@ -277,6 +288,22 @@ module _ {n : ℕ} where
         (trans (sym assoc)
           (trans (cleft (trans (by-assoc auto) SHSHSH-free)) left-unit)))
     where open PP (EP.Clifford.Corr-free (₂₊ n))
+
+  -- The two semi-CZ-HH lemmas the live Ex proof leans on (Ex-Sym2, at
+  -- the CZ • H ↑ ^ 2 steps).  In the original rule set they say CZ
+  -- conjugates to CZ^₋₁ past a squared H — note ₋₁, not ^2; the ^2
+  -- spelling is in the commented-out relator block and is what made the
+  -- p = 2 reading look degenerate.  Here they are trivial: H² and (H↑)²
+  -- are already ε, so both sides are CZ.
+  semi-CZ-HH↑-free : CZ • ((H ↑) • (H ↑)) ≈ ((H ↑) • (H ↑)) • CZ
+  semi-CZ-HH↑-free =
+    trans (cong refl H↑•H↑-free)
+      (trans right-unit (trans (sym left-unit) (cleft (sym H↑•H↑-free))))
+
+  semi-CZ-HH↓-free : CZ • (H • H) ≈ (H • H) • CZ
+  semi-CZ-HH↓-free =
+    trans (cong refl H•H-free)
+      (trans right-unit (trans (sym left-unit) (cleft (sym H•H-free))))
 
   b•b-free : (H • (H ↑)) • (H • (H ↑)) ≈ ε
   b•b-free =
@@ -306,9 +333,86 @@ module _ {n : ℕ} where
 -- in CMS n (SWAP² = I, so nothing forbids it), and an S-exponent count
 -- yields no invariant to obstruct it (order-H moves the count by 3,
 -- selinger by 4, so no modulus survives).
+--
+-- Audit of the live chain (Ex-Sym2.lemma-order-Ex → lemma-comm-Ex-H' /
+-- -H↑' / -CZ' → lemma-CZHCZ^k, where selinger enters), for anyone
+-- picking this up:
+--
+--   * the rewriting engines are FINE.  Sym0-Rewriting.step-sym0 and
+--     step-order have their order-S clauses commented out (Syntactics
+--     2022-2024, 2601-2603), so rewrite-sym0 can only emit order-SH,
+--     order-CZ, comm-CZ-S↓/↑ and comm-HHS — all correction-free here.
+--     In lemma-order-Ex its three uses are H-power cancellations, which
+--     H²-free covers.
+--   * the S-power ARITHMETIC is not.  Reducing S ^ k modulo p is where
+--     axiom order-S lives (Syntactics 1165, 2125, 2334, 2375), and that
+--     is what general-powers0 rests on.  At p = 2 every exponent in
+--     sight is 0 or 1 and those reductions are vacuous — but the
+--     lemmas are proved generically in p, so their proof terms carry
+--     order-S regardless of the instance, and cannot be reused.
+--
+-- So the port cannot reuse the generic S-power layer: it would have to
+-- be redone at p = 2, where S⁻¹ is S and k is 1.
+--
+-- And that is where this path ends.  Redoing it needs
+-- lemma-[S⁻¹HS⁻¹]^k at k = 1, which at p = 2 reads S H S ≈ H S H, and
+-- that is FALSE at the Clifford level, so no correction-free proof of
+-- it can exist.
+--
+-- Why it is false.  SHS • HSH is (SH)³ ≈ ε, and HSH • SHS is
+-- H • (S H S H S) ≈ H • H ≈ ε, so the two words are mutually inverse
+-- and S H S ≈ H S H holds exactly when (SHS)² ≈ ε.  But mod scalars
+--
+--     (SHS)²  =  S H S² H S  =  S (H Z H) S  =  S X S  =  i·X
+--
+-- using S² = Z, which is precisely the correction corr (srel order-S)
+-- = Z₀ that this fragment refuses to discard.  So (SHS)² is X, not the
+-- identity, and S H S ≉ H S H in CMS n.
+--
+-- The moral is not that Ex² ≈ ε fails — it holds in CMS, being SWAP² —
+-- but that the library's route to it is a SYMPLECTIC route: it passes
+-- through identities that are true in Sp(2n,2) only because S² = ε
+-- there.  A correction-free proof would have to reach Ex² by a path
+-- that never treats S as an involution, and the existing development
+-- offers no such path.  Route 2 (patching the section so that rep Iᶜ is
+-- ε on the nose) avoids the question entirely, and also disposes of
+-- Conj-trivial, which this route never addresses.
+-- SUPERSEDED by Sec-semantic below.  Kept because the analysis above
+-- records why this target is unreachable, not merely hard: the fragment
+-- cannot prove S ⁴ ≈ ε, so it is strictly bigger than CMS n and Ex²'s
+-- truth in CMS does not make it derivable here.
 Dihedral-6 : Set
 Dihedral-6 = ∀ {n} →
   PB._≈_ (EP.Clifford.Corr-free (₂₊ n)) ((CZ • (H • (H ↑))) ^ 6) ε
+
+------------------------------------------------------------------------
+-- What Sec-trivial actually costs
+--
+-- Extension.sec-trivial-semantic replaces the whole syntactic programme
+-- — the correction-free reduction, aux-MB, Ex², the tower induction —
+-- with one semantic fact: the identity coset's representative denotes
+-- the identity of CMS n.  Since ⟦ [ w ]ᵣ ⟧ is the Clifford word w
+-- itself (ExtensionPresentation.embʳ) and CMS equality is equal action
+-- on P4, this is a statement about a circuit's action, checkable by
+-- evaluation, and it is uniform in n.
+--
+-- Its content, spelled out: rep Iᶜ ≈q ε already gives that the
+-- representative's SYMPLECTIC image is trivial, so its value in CMS n
+-- lies in ker proj = im incl, i.e. it is conjugation by some Pauli.
+-- Sec-semantic says that Pauli is trivial — the representative is a
+-- scalar, not a genuine Pauli.  At width 1 that is (SH)³ = ω, which is
+-- exactly what a-box-free witnesses on the syntactic side.
+
+Sec-semantic : ℕ → Set
+Sec-semantic n =
+  Group._≈_ (CMS-group n)
+    (EP.Clifford.⟦_⟧ n (EP.Clifford.secᶜ n (EP.Clifford.Iᶜ n)))
+    (Group.ε (CMS-group n))
+
+sec-trivial-sem : ∀ {n} → Sec-semantic n → Sec-trivial n
+sec-trivial-sem {n} =
+  EP.Clifford.sec-trivial-semantic n
+    (EP.Clifford.realises n) (EP.Clifford.sound-ax n)
 
 sec-reduction-1 : Sec-reduction 1
 sec-reduction-1 =
@@ -394,3 +498,29 @@ sec-trivial-1 = sec-trivial sec-reduction-1
 -- symplectic presentation, uniformly in n rather than width by width.
 -- Qubit.ExtensionSoundness.conj-sound is the same statement read in
 -- CMS n; this is its Pauli-side twin.
+--
+-- There is a worked template for it, and it is the same semantic move
+-- that sec-trivial-semantic turns on.  The odd-prime development proves
+-- exactly these two facts —
+--
+--   Qupit.SemiDirect.ConjAction.respects-Γ  (the acted-on argument)
+--   Qupit.SemiDirect.ConjAction.respects-Δ  (the acting argument)
+--
+-- — as the hyph / hypn that SemiDirectProduct.Presentation asks for,
+-- and respects-Δ applied to rep Iᶜ ≈q ε with conjss ε w = w IS
+-- Conj-trivial.  Its proof is three steps: conj-sem (conj computes the
+-- action), soundness of the rule set (a symplectic rule has equal
+-- denotations, hence equal actions), and completeness of the Pauli
+-- presentation.  As its header puts it, the long relators — M-power,
+-- semi-M↑CZ, semi-M↓CZ, selinger-c10 … c15 — are never conjugated by
+-- hand.  That module is parameterised by p-3, so p ≥ 3 and it cannot be
+-- instantiated here directly.
+--
+-- Do not expect a re-parameterisation to be enough, though: p-3 occurs
+-- in ConjAction only as the parameter, as the definition p-2 = ₁₊ p-3,
+-- and where it is passed on to Qupit.SemiDirect.Syntactics.  So the
+-- obstacle is not arithmetic but the RULE SET — it is written against
+-- the qupit semidirect syntax, whereas the qubit conj lives over the
+-- simplified relators and Γ-H ⊕^ n.  The three-step argument carries
+-- over; the text has to be rewritten against this rule set rather than
+-- instantiated.

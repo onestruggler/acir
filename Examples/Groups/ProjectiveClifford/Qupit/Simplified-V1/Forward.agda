@@ -450,11 +450,13 @@ module Iso (n : ℕ) where
   f-well-defined (mid (comm XZ.X-gen (Sym.gate₀ ())))
   f-well-defined (mid (comm XZ.Z-gen (Sym.gate₀ ())))
   f-well-defined (mid (comm (n₁ XZ.↥) (Sym.gate₀ ())))
-  -- STILL INCOMPLETE: two `mid (comm n h)` cases remain, both fallout
-  -- from gate₀ inhabiting Gen ₀.  They need Agda's own case split to
-  -- locate; the absurd pattern has to sit exactly where the case tree
-  -- branches, and the clauses above cover every position I could find
-  -- by hand.
+  -- The two that were missing: at width ₁ the symplectic side can be a
+  -- *shifted* 0-ary gate as well as a bare one, and the clauses above
+  -- only rule out the bare shape.  The real X-gen/Z-gen clauses below
+  -- are stated at ₁₊ n' against H-gen and S-gen and at ₂₊ n' against a
+  -- shift, so width ₁ with a shifted gate₀ falls between them.
+  f-well-defined (mid (comm XZ.X-gen ((Sym.gate₀ ()) Sym.↥)))
+  f-well-defined (mid (comm XZ.Z-gen ((Sym.gate₀ ()) Sym.↥)))
   f-well-defined {n@(₁₊ n')} (mid (comm XZ.X-gen Sym.H-gen)) = begin
     (f ʷ) ([ [ Sym.H-gen ]ʷ ]ᵣ • [ [ XZ.X-gen ]ʷ ]ₗ) ≡⟨ auto ⟩
     Cli.H • Clifford.X ≈⟨ CLb.conj-H-X n' ⟩

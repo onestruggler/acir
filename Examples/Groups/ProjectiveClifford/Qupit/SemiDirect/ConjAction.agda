@@ -131,6 +131,14 @@ conj-gen {₂₊ n} S-gen (xz XZ.↥) =
 conj-gen {₃₊ n} CZ-gen (xz XZ.↥ XZ.↥) =
   Eq.cong₂ _∷_ (Eq.cong (₀ ,_) (Eq.sym (+-identityʳ ₀)))
     (Eq.cong (λ z → (₀ , z) ∷ ⟦ xz ⟧₀) (Eq.sym (+-identityʳ ₀)))
+-- The three clauses above each leave their lowest width uncovered: a
+-- shifted Pauli generator on one wire, or twice-shifted on two, comes
+-- from XZ.Gen ₀, which only gate₀ inhabits.  The Pauli gate set has no
+-- 0-ary gate, so those cases are vacuous.  (Before Circuit.Base gained
+-- gate₀ this was invisible, XZ.Gen ₀ having had no constructor at all.)
+conj-gen {₁} H-gen ((XZ.gate₀ ()) XZ.↥)
+conj-gen {₁} S-gen ((XZ.gate₀ ()) XZ.↥)
+conj-gen {₂} CZ-gen (((XZ.gate₀ ()) XZ.↥) XZ.↥)
 -- A gate on a higher wire fixes the bottom wire's generators.
 conj-gen {₁₊ n} (c ↥) XZ.X-gen = Eq.cong ((₁ , ₀) ∷_) (Eq.sym (actg-pI c))
 conj-gen {₁₊ n} (c ↥) XZ.Z-gen = Eq.cong ((₀ , ₁) ∷_) (Eq.sym (actg-pI c))

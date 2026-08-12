@@ -352,7 +352,7 @@ module Ex-Conjugation (n : ℕ) where
   open SR word-setoid
 
   open Group-Lemmas ((₂₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₂₊ n})
-    using (•-cancelʳ)
+    using (•-cancelʳ ; •-cancelˡ)
 
   -- order-Ex with the power unfolded: Ex ^ 2 is Ex • (Ex ^ 1) is
   -- Ex • Ex definitionally, so this is the axiom itself.
@@ -724,6 +724,92 @@ module Ex-Conjugation (n : ℕ) where
       ≈⟨ by-assoc auto ⟩
     H • Ex • (H ↑) ^ 3 ∎
 
+  ------------------------------------------------------------------------
+  -- A half-swap times a swap has order 3
+  --
+  -- Ex carries ₕ|ₕ to ʰ|ʰ, so ⊥⊤ = ₕ|ₕ • ʰ|ʰ is (ₕ|ₕ • Ex) squared, and
+  -- ⊤⊥ is the same element conjugated.  Cubing that element is
+  -- ⊥⊤ • ₕ|ₕ • Ex, which lemma-half-swaps rewrites to H • Ex • (H ↑)³ • Ex;
+  -- the two swaps then cancel and H ⁴ is ε.
+  --
+  -- Both c14 and c15 assert that an element cubes to ε, and Paper-V0's
+  -- axioms supply exactly two such elements: this one and the 3-cycle of
+  -- lemma-σ³.
+
+  lemma-ʰ|ʰ-conj : Ex • (ₕ|ₕ • Ex) ≈ ʰ|ʰ
+  lemma-ʰ|ʰ-conj = begin
+    Ex • (ₕ|ₕ • Ex)  ≈⟨ sym assoc ⟩
+    (Ex • ₕ|ₕ) • Ex  ≈⟨ cleft lemma-Ex-ₕ|ₕ ⟩
+    (ʰ|ʰ • Ex) • Ex  ≈⟨ assoc ⟩
+    ʰ|ʰ • (Ex • Ex)  ≈⟨ cright lemma-Ex-Ex ⟩
+    ʰ|ʰ • ε          ≈⟨ right-unit ⟩
+    ʰ|ʰ ∎
+
+  lemma-⊥⊤-square : ⊥⊤ ≈ (ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)
+  lemma-⊥⊤-square = begin
+    ₕ|ₕ • ʰ|ʰ                    ≈⟨ cright sym lemma-ʰ|ʰ-conj ⟩
+    ₕ|ₕ • (Ex • (ₕ|ₕ • Ex))      ≈⟨ sym assoc ⟩
+    (ₕ|ₕ • Ex) • (ₕ|ₕ • Ex) ∎
+
+  lemma-half-swap-cube : ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • (ₕ|ₕ • Ex) ≈ ε
+  lemma-half-swap-cube = begin
+    ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • (ₕ|ₕ • Ex)
+      ≈⟨ cleft sym lemma-⊥⊤-square ⟩
+    ⊥⊤ • (ₕ|ₕ • Ex)
+      ≈⟨ by-assoc auto ⟩
+    (ₕ|ₕ • ʰ|ʰ • ₕ|ₕ) • Ex
+      ≈⟨ cleft lemma-half-swaps ⟩
+    (H • Ex • (H ↑) ^ 3) • Ex
+      ≈⟨ by-assoc auto ⟩
+    H • Ex • ((H ↑) ^ 3 • Ex)
+      ≈⟨ cright cright sym (lemma-Ex-Hᵏ 3) ⟩
+    H • Ex • (Ex • H ^ 3)
+      ≈⟨ by-assoc auto ⟩
+    H • (Ex • Ex) • H ^ 3
+      ≈⟨ cright cleft lemma-Ex-Ex ⟩
+    H • ε • H ^ 3
+      ≈⟨ cright left-unit ⟩
+    H • H ^ 3
+      ≈⟨ by-assoc auto ⟩
+    H ^ 4
+      ≈⟨ One-Wire.lemma-order-H (₁₊ n) ⟩
+    ε ∎
+
+  -- The same on the other side.  ⊤⊥ is what c14 is stated over, and it is
+  -- the square of Ex • ₕ|ₕ, which is the previous element conjugated by
+  -- the swap — so its cube is ε for the same reason, with no second
+  -- appeal to lemma-half-swaps.
+
+  lemma-UUₕ|ₕ : ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • ₕ|ₕ ≈ Ex
+  lemma-UUₕ|ₕ = begin
+    ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • ₕ|ₕ
+      ≈⟨ sym right-unit ⟩
+    (((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • ₕ|ₕ) • ε
+      ≈⟨ cright sym lemma-Ex-Ex ⟩
+    (((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • ₕ|ₕ) • (Ex • Ex)
+      ≈⟨ by-assoc auto ⟩
+    (((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • (ₕ|ₕ • Ex)) • Ex
+      ≈⟨ cleft lemma-half-swap-cube ⟩
+    ε • Ex
+      ≈⟨ left-unit ⟩
+    Ex ∎
+
+  lemma-⊤⊥-square : ⊤⊥ ≈ (Ex • ₕ|ₕ) • (Ex • ₕ|ₕ)
+  lemma-⊤⊥-square = begin
+    ʰ|ʰ • ₕ|ₕ                        ≈⟨ cleft sym lemma-ʰ|ʰ-conj ⟩
+    (Ex • (ₕ|ₕ • Ex)) • ₕ|ₕ          ≈⟨ by-assoc auto ⟩
+    (Ex • ₕ|ₕ) • (Ex • ₕ|ₕ) ∎
+
+  lemma-⊤⊥-cube : ((Ex • ₕ|ₕ) • (Ex • ₕ|ₕ)) • (Ex • ₕ|ₕ) ≈ ε
+  lemma-⊤⊥-cube = begin
+    ((Ex • ₕ|ₕ) • (Ex • ₕ|ₕ)) • (Ex • ₕ|ₕ)
+      ≈⟨ by-assoc auto ⟩
+    Ex • (((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • ₕ|ₕ)
+      ≈⟨ cright lemma-UUₕ|ₕ ⟩
+    Ex • Ex
+      ≈⟨ lemma-Ex-Ex ⟩
+    ε ∎
+
   lemma-conj-Ex-Mg↑ : Ex • Mg ↑ • Ex ≈ Mg
   lemma-conj-Ex-Mg↑ = begin
     Ex • Mg ↑ • Ex   ≈⟨ sym assoc ⟩
@@ -788,6 +874,176 @@ module Ex-Conjugation (n : ℕ) where
     CZ ^ ((toℕ g Nat.* toℕ a) Nat.% p) • Mg
       ≈⟨ cleft refl' (Eq.cong (CZ ^_) (lemma-toℕ-% g a)) ⟩
     CZ ^ toℕ (g * a) • Mg ∎
+
+  -- Mg ^ j rescales by g ^′ j.  The induction costs only associativity,
+  -- since x ^′ (suc k) is x * (x ^′ k) definitionally; the ₀/₁/₂₊ split
+  -- is forced by w ^ 1 being w rather than w • w ^ 0.
+  lemma-Mgᵏ-CZ : ∀ j → Mg ^ j • CZ ≈ CZ ^ toℕ (g ^′ j) • Mg ^ j
+  lemma-Mgᵏ-CZ ₀ = begin
+    ε • CZ  ≈⟨ left-unit ⟩
+    CZ      ≈⟨ sym right-unit ⟩
+    CZ • ε ∎
+  lemma-Mgᵏ-CZ ₁ = begin
+    Mg • CZ                ≈⟨ lemma-semi-Mg-CZ ⟩
+    CZ ^ toℕ g • Mg
+      ≡⟨ Eq.cong (λ z → CZ ^ toℕ z • Mg) (Eq.sym (lemma-x^′1=x g)) ⟩
+    CZ ^ toℕ (g ^′ 1) • Mg ∎
+  lemma-Mgᵏ-CZ (₂₊ j) = begin
+    (Mg • Mg ^ ₁₊ j) • CZ
+      ≈⟨ assoc ⟩
+    Mg • (Mg ^ ₁₊ j • CZ)
+      ≈⟨ cright lemma-Mgᵏ-CZ (₁₊ j) ⟩
+    Mg • (CZ ^ toℕ (g ^′ ₁₊ j) • Mg ^ ₁₊ j)
+      ≈⟨ sym assoc ⟩
+    (Mg • CZ ^ toℕ (g ^′ ₁₊ j)) • Mg ^ ₁₊ j
+      ≈⟨ cleft lemma-Mg-CZ^ (g ^′ ₁₊ j) ⟩
+    (CZ ^ toℕ (g * (g ^′ ₁₊ j)) • Mg) • Mg ^ ₁₊ j
+      ≈⟨ assoc ⟩
+    CZ ^ toℕ (g * (g ^′ ₁₊ j)) • (Mg • Mg ^ ₁₊ j) ∎
+  ------------------------------------------------------------------------
+  -- (moved below, after the multiplier lemmas it depends on)
+
+  private
+    -- The power of g that is -1, and M₋₁ as that power of Mg.  M-power
+    -- indexes by ℤ ₚ while g-gen's witness is a ℤ ₚ₋₁, so it goes through
+    -- inject₁, exactly as lemma-M-mul does.
+    k₋ : ℤ ₚ
+    k₋ = inject₁ (g-gen -'₁ .proj₁)
+
+    j₋ : ℕ
+    j₋ = toℕ k₋
+
+    e₋ : (g^ k₋) .proj₁ ≡ -'₁ .proj₁
+    e₋ = lemma-log-inject -'₁
+
+    Mg^j₋≈M₋₁ : Mg ^ j₋ ≈ M₋₁
+    Mg^j₋≈M₋₁ = begin
+      Mg ^ j₋    ≈⟨ axiom (M-power k₋) ⟩
+      M (g^ k₋)  ≡⟨ One-Wire.aux-M≡M (₁₊ n) (g^ k₋) -'₁ e₋ ⟩
+      M₋₁ ∎
+
+    lemma-M₋₁-CZ : M₋₁ • CZ ≈ CZ ^ toℕ (-'₁ .proj₁) • M₋₁
+    lemma-M₋₁-CZ = begin
+      M₋₁ • CZ                        ≈⟨ cleft sym Mg^j₋≈M₋₁ ⟩
+      Mg ^ j₋ • CZ                    ≈⟨ lemma-Mgᵏ-CZ j₋ ⟩
+      CZ ^ toℕ (g ^′ j₋) • Mg ^ j₋    ≡⟨ Eq.cong (λ z → CZ ^ toℕ z • Mg ^ j₋) e₋ ⟩
+      CZ ^ toℕ (-'₁ .proj₁) • Mg ^ j₋ ≈⟨ cright Mg^j₋≈M₋₁ ⟩
+      CZ ^ toℕ (-'₁ .proj₁) • M₋₁ ∎
+
+    -- CZ • CZ⁻¹ is CZ ^ p.
+    lemma-CZ-CZ₋₁ : CZ • CZ ^ toℕ (-'₁ .proj₁) ≈ ε
+    lemma-CZ-CZ₋₁ = begin
+      CZ • CZ ^ toℕ (-'₁ .proj₁)
+        ≡⟨ Eq.cong (λ m → CZ • CZ ^ m) lemma-toℕ-1ₚ ⟩
+      CZ • CZ ^ p-1        ≈⟨ sym (^-+ CZ 1 p-1) ⟩
+      CZ ^ (1 Nat.+ p-1)   ≈⟨ axiom order-CZ ⟩
+      ε ∎
+
+  lemma-ₕ|ₕ-invol : ₕ|ₕ • ₕ|ₕ ≈ ε
+  lemma-ₕ|ₕ-invol = begin
+    (H • CZ • H) • (H • CZ • H)
+      ≈⟨ by-assoc auto ⟩
+    H • CZ • (H ^ 2 • (CZ • H))
+      ≈⟨ cright cright cleft axiom order-H ⟩
+    H • CZ • (M₋₁ • (CZ • H))
+      ≈⟨ cright cright sym assoc ⟩
+    H • CZ • ((M₋₁ • CZ) • H)
+      ≈⟨ cright cright cleft lemma-M₋₁-CZ ⟩
+    H • CZ • ((CZ ^ toℕ (-'₁ .proj₁) • M₋₁) • H)
+      -- explicit assoc, not by-assoc: to-list is stuck on the symbolic
+      -- exponent of CZ ^ toℕ (-'₁ .proj₁)
+      ≈⟨ cright cright assoc ⟩
+    H • CZ • (CZ ^ toℕ (-'₁ .proj₁) • (M₋₁ • H))
+      ≈⟨ cright sym assoc ⟩
+    H • ((CZ • CZ ^ toℕ (-'₁ .proj₁)) • (M₋₁ • H))
+      ≈⟨ cright cleft lemma-CZ-CZ₋₁ ⟩
+    H • (ε • (M₋₁ • H))
+      ≈⟨ cright left-unit ⟩
+    H • (M₋₁ • H)
+      ≈⟨ cright cleft sym (axiom order-H) ⟩
+    H • (H ^ 2 • H)
+      ≈⟨ by-assoc auto ⟩
+    H ^ 4
+      ≈⟨ One-Wire.lemma-order-H (₁₊ n) ⟩
+    ε ∎
+
+  lemma-ʰ|ʰ-invol : ʰ|ʰ • ʰ|ʰ ≈ ε
+  lemma-ʰ|ʰ-invol = begin
+    ʰ|ʰ • ʰ|ʰ
+      ≈⟨ cong (sym lemma-ʰ|ʰ-conj) (sym lemma-ʰ|ʰ-conj) ⟩
+    (Ex • (ₕ|ₕ • Ex)) • (Ex • (ₕ|ₕ • Ex))
+      ≈⟨ by-assoc auto ⟩
+    Ex • (ₕ|ₕ • ((Ex • Ex) • (ₕ|ₕ • Ex)))
+      ≈⟨ cright cright cleft lemma-Ex-Ex ⟩
+    Ex • (ₕ|ₕ • (ε • (ₕ|ₕ • Ex)))
+      ≈⟨ cright cright left-unit ⟩
+    Ex • (ₕ|ₕ • (ₕ|ₕ • Ex))
+      ≈⟨ cright sym assoc ⟩
+    Ex • ((ₕ|ₕ • ₕ|ₕ) • Ex)
+      ≈⟨ cright cleft lemma-ₕ|ₕ-invol ⟩
+    Ex • (ε • Ex)
+      ≈⟨ cright left-unit ⟩
+    Ex • Ex
+      ≈⟨ lemma-Ex-Ex ⟩
+    ε ∎
+
+  -- ⊥⊤ and ⊤⊥ are the two products of the same pair of involutions.
+  lemma-⊥⊤-⊤⊥ : ⊥⊤ • ⊤⊥ ≈ ε
+  lemma-⊥⊤-⊤⊥ = begin
+    (ₕ|ₕ • ʰ|ʰ) • (ʰ|ʰ • ₕ|ₕ)
+      ≈⟨ by-assoc auto ⟩
+    ₕ|ₕ • ((ʰ|ʰ • ʰ|ʰ) • ₕ|ₕ)
+      ≈⟨ cright cleft lemma-ʰ|ʰ-invol ⟩
+    ₕ|ₕ • (ε • ₕ|ₕ)
+      ≈⟨ cright left-unit ⟩
+    ₕ|ₕ • ₕ|ₕ
+      ≈⟨ lemma-ₕ|ₕ-invol ⟩
+    ε ∎
+
+  -- With both involutions in hand the two half-swap words collapse to a
+  -- single half-swap times a swap: ⊥⊤ • (Ex • ₕ|ₕ) is ₕ|ₕ • ₕ|ₕ after the
+  -- two swaps cancel, and likewise on the other side.  These are the
+  -- forms c13 is proved in.
+  lemma-⊥⊤-simple : ⊥⊤ ≈ Ex • ₕ|ₕ
+  lemma-⊥⊤-simple = •-cancelˡ {g = ₕ|ₕ • Ex} (begin
+    (ₕ|ₕ • Ex) • ⊥⊤
+      ≈⟨ cright lemma-⊥⊤-square ⟩
+    (ₕ|ₕ • Ex) • ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex))
+      ≈⟨ sym assoc ⟩
+    ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • (ₕ|ₕ • Ex)
+      ≈⟨ lemma-half-swap-cube ⟩
+    ε
+      ≈⟨ sym lemma-ₕ|ₕ-invol ⟩
+    ₕ|ₕ • ₕ|ₕ
+      ≈⟨ by-assoc auto ⟩
+    ₕ|ₕ • (ε • ₕ|ₕ)
+      ≈⟨ cright cleft sym lemma-Ex-Ex ⟩
+    ₕ|ₕ • ((Ex • Ex) • ₕ|ₕ)
+      ≈⟨ by-assoc auto ⟩
+    (ₕ|ₕ • Ex) • (Ex • ₕ|ₕ) ∎)
+
+  lemma-⊤⊥-⊥⊤ : ⊤⊥ • ⊥⊤ ≈ ε
+  lemma-⊤⊥-⊥⊤ = begin
+    (ʰ|ʰ • ₕ|ₕ) • (ₕ|ₕ • ʰ|ʰ)
+      ≈⟨ by-assoc auto ⟩
+    ʰ|ʰ • ((ₕ|ₕ • ₕ|ₕ) • ʰ|ʰ)
+      ≈⟨ cright cleft lemma-ₕ|ₕ-invol ⟩
+    ʰ|ʰ • (ε • ʰ|ʰ)
+      ≈⟨ cright left-unit ⟩
+    ʰ|ʰ • ʰ|ʰ
+      ≈⟨ lemma-ʰ|ʰ-invol ⟩
+    ε ∎
+
+  lemma-⊤⊥-simple : ⊤⊥ ≈ ₕ|ₕ • Ex
+  lemma-⊤⊥-simple = •-cancelʳ {h = ⊥⊤} (begin
+    ⊤⊥ • ⊥⊤                  ≈⟨ lemma-⊤⊥-⊥⊤ ⟩
+    ε                        ≈⟨ sym lemma-ₕ|ₕ-invol ⟩
+    ₕ|ₕ • ₕ|ₕ                ≈⟨ by-assoc auto ⟩
+    ₕ|ₕ • (ε • ₕ|ₕ)          ≈⟨ cright cleft sym lemma-Ex-Ex ⟩
+    ₕ|ₕ • ((Ex • Ex) • ₕ|ₕ)  ≈⟨ by-assoc auto ⟩
+    (ₕ|ₕ • Ex) • (Ex • ₕ|ₕ)  ≈⟨ cright sym lemma-⊥⊤-simple ⟩
+    (ₕ|ₕ • Ex) • ⊥⊤ ∎)
+
 
 ------------------------------------------------------------------------
 -- The shift down is the identity on the one-wire words
@@ -877,7 +1133,7 @@ module Three-Wire (n : ℕ) where
   private module PB₂ = PB ((₂₊ n) QRel,_===_)
 
   open Group-Lemmas ((₃₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₃₊ n})
-    using (•-cancelʳ)
+    using (•-cancelʳ ; •-cancelˡ)
 
   -- CZ on the upper pair has order p, inherited from order-CZ one wire
   -- down.  (ε ↑ is ε definitionally, so the shift leaves no residue.)
@@ -1010,6 +1266,13 @@ module Three-Wire (n : ℕ) where
     CZ02 ^ toℕ g • Mg ∎
 
   ------------------------------------------------------------------------
+  -- Iterating the multiplier: from the fixed generator to any unit
+  --
+  -- Mg ^ j rescales by g ^′ j.  The induction costs only associativity,
+  -- because x ^′ (suc k) is x * (x ^′ k) definitionally; the ₀/₁/₂₊ split
+  -- is forced by w ^ 1 being w rather than w • w ^ 0.
+
+  ------------------------------------------------------------------------
   -- The transposition of wires 0 and 2
   --
   -- Ex swaps wires 0-1 and Ex ↑ swaps 1-2, so Ex • Ex ↑ • Ex transposes
@@ -1069,11 +1332,179 @@ module Three-Wire (n : ℕ) where
     CX ↑                    ≈⟨ sym left-unit ⟩
     ε • CX ↑ ∎)
 
+  ------------------------------------------------------------------------
+  -- The rescaled C18, and the exponent identity it forces
+  --
+  -- Conjugating C18 by Mg ^ j — which commutes with CX ↑ and rescales
+  -- both CZ and CZ02 by g ^′ j — gives (A).  Comparing it against the
+  -- interleaved form (B) of lemma-C18ᵏ at the same exponent, and
+  -- cancelling CX ↑, leaves (C): the two CZs distribute over that power.
+
+  lemma-Mg-CZ02^ : ∀ (a : ℤ ₚ) → Mg • CZ02 ^ toℕ a ≈ CZ02 ^ toℕ (g * a) • Mg
+  lemma-Mg-CZ02^ a = begin
+    Mg • CZ02 ^ toℕ a
+      ≈⟨ lemma-Induction lemma-Mg-CZ02 (toℕ a) ⟩
+    (CZ02 ^ toℕ g) ^ toℕ a • Mg
+      ≈⟨ cleft (^^ CZ02 (toℕ g) (toℕ a)) ⟩
+    CZ02 ^ (toℕ g Nat.* toℕ a) • Mg
+      ≈⟨ cleft (lemma-pow-mod lemma-order-CZ02 (toℕ g Nat.* toℕ a)) ⟩
+    CZ02 ^ ((toℕ g Nat.* toℕ a) Nat.% p) • Mg
+      ≈⟨ cleft refl' (Eq.cong (CZ02 ^_) (lemma-toℕ-% g a)) ⟩
+    CZ02 ^ toℕ (g * a) • Mg ∎
+
+  lemma-Mgᵏ-CZ02 : ∀ j → Mg ^ j • CZ02 ≈ CZ02 ^ toℕ (g ^′ j) • Mg ^ j
+  lemma-Mgᵏ-CZ02 ₀ = begin
+    ε • CZ02  ≈⟨ left-unit ⟩
+    CZ02      ≈⟨ sym right-unit ⟩
+    CZ02 • ε ∎
+  lemma-Mgᵏ-CZ02 ₁ = begin
+    Mg • CZ02             ≈⟨ lemma-Mg-CZ02 ⟩
+    CZ02 ^ toℕ g • Mg
+      ≡⟨ Eq.cong (λ z → CZ02 ^ toℕ z • Mg) (Eq.sym (lemma-x^′1=x g)) ⟩
+    CZ02 ^ toℕ (g ^′ 1) • Mg ∎
+  lemma-Mgᵏ-CZ02 (₂₊ j) = begin
+    (Mg • Mg ^ ₁₊ j) • CZ02
+      ≈⟨ assoc ⟩
+    Mg • (Mg ^ ₁₊ j • CZ02)
+      ≈⟨ cright lemma-Mgᵏ-CZ02 (₁₊ j) ⟩
+    Mg • (CZ02 ^ toℕ (g ^′ ₁₊ j) • Mg ^ ₁₊ j)
+      ≈⟨ sym assoc ⟩
+    (Mg • CZ02 ^ toℕ (g ^′ ₁₊ j)) • Mg ^ ₁₊ j
+      ≈⟨ cleft lemma-Mg-CZ02^ (g ^′ ₁₊ j) ⟩
+    (CZ02 ^ toℕ (g * (g ^′ ₁₊ j)) • Mg) • Mg ^ ₁₊ j
+      ≈⟨ assoc ⟩
+    CZ02 ^ toℕ (g * (g ^′ ₁₊ j)) • (Mg • Mg ^ ₁₊ j) ∎
+
+  lemma-Mgᵏ-CX↑ : ∀ j → Mg ^ j • CX ↑ ≈ CX ↑ • Mg ^ j
+  lemma-Mgᵏ-CX↑ = comm-pow lemma-Mg-CX↑
+
+  -- (A): C18 with every CZ exponent rescaled by g ^′ j.
+  lemma-A : ∀ j → let e = toℕ (g ^′ j) in
+            CX ↑ • CZ ^ e ≈ (CZ ^ e • CZ02 ^ e) • CX ↑
+  lemma-A j = •-cancelʳ {h = Mg ^ j} (begin
+    (CX ↑ • CZ ^ e) • Mg ^ j
+      ≈⟨ assoc ⟩
+    CX ↑ • (CZ ^ e • Mg ^ j)
+      ≈⟨ cright sym (lemma-Mgᵏ-CZ j) ⟩
+    CX ↑ • (Mg ^ j • CZ)
+      ≈⟨ sym assoc ⟩
+    (CX ↑ • Mg ^ j) • CZ
+      ≈⟨ cleft sym (lemma-Mgᵏ-CX↑ j) ⟩
+    (Mg ^ j • CX ↑) • CZ
+      ≈⟨ assoc ⟩
+    Mg ^ j • (CX ↑ • CZ)
+      ≈⟨ cright axiom semi-CX↑-CZ↓ ⟩
+    Mg ^ j • (CZ • (CZ02 • CX ↑))
+      ≈⟨ sym assoc ⟩
+    (Mg ^ j • CZ) • (CZ02 • CX ↑)
+      ≈⟨ cleft (lemma-Mgᵏ-CZ j) ⟩
+    (CZ ^ e • Mg ^ j) • (CZ02 • CX ↑)
+      ≈⟨ assoc ⟩
+    CZ ^ e • (Mg ^ j • (CZ02 • CX ↑))
+      ≈⟨ cright sym assoc ⟩
+    CZ ^ e • ((Mg ^ j • CZ02) • CX ↑)
+      ≈⟨ cright cleft (lemma-Mgᵏ-CZ02 j) ⟩
+    CZ ^ e • ((CZ02 ^ e • Mg ^ j) • CX ↑)
+      ≈⟨ cright assoc ⟩
+    CZ ^ e • (CZ02 ^ e • (Mg ^ j • CX ↑))
+      ≈⟨ cright cright (lemma-Mgᵏ-CX↑ j) ⟩
+    CZ ^ e • (CZ02 ^ e • (CX ↑ • Mg ^ j))
+      ≈⟨ cright sym assoc ⟩
+    CZ ^ e • ((CZ02 ^ e • CX ↑) • Mg ^ j)
+      ≈⟨ sym assoc ⟩
+    (CZ ^ e • (CZ02 ^ e • CX ↑)) • Mg ^ j
+      ≈⟨ cleft sym assoc ⟩
+    ((CZ ^ e • CZ02 ^ e) • CX ↑) • Mg ^ j ∎)
+    where e = toℕ (g ^′ j)
+
+  -- (C): the two CZs distribute over the rescaled power.
+  lemma-C : ∀ j → let e = toℕ (g ^′ j) in
+            (CZ • CZ02) ^ e ≈ CZ ^ e • CZ02 ^ e
+  lemma-C j = •-cancelʳ {h = CX ↑} (begin
+    (CZ • CZ02) ^ e • CX ↑     ≈⟨ sym (lemma-C18ᵏ e) ⟩
+    CX ↑ • CZ ^ e              ≈⟨ lemma-A j ⟩
+    (CZ ^ e • CZ02 ^ e) • CX ↑ ∎)
+    where e = toℕ (g ^′ j)
+
+  ------------------------------------------------------------------------
+  -- The two CZs sharing a wire commute
+  --
+  -- This is the progress report's C15, its Lemma 9.  Since g generates
+  -- the units, some power of it is 2, and (C) at that exponent reads
+  --
+  --     (CZ • CZ02) • (CZ • CZ02)  ≈  (CZ • CZ) • (CZ02 • CZ02)
+  --
+  -- Cancelling a CZ on the left and a CZ02 on the right is the whole of
+  -- the rest.  Nothing here is circular: the multiplier rescaling is an
+  -- input from outside the CZ/CZ02 family, which is exactly why the
+  -- report inserts M₂ • M½.
+
+  private
+    ₂ᵤ : ℤ* ₚ
+    ₂ᵤ = (2ₚ , λ ())
+      where
+      2ₚ : ℤ ₚ
+      2ₚ = ₂
+
+    -- The power of g that is 2.
+    j₂ : ℕ
+    j₂ = toℕ (g-gen ₂ᵤ .proj₁)
+
+    e₂ : toℕ (g ^′ j₂) ≡ 2
+    e₂ = Eq.cong toℕ (Eq.sym (g-gen ₂ᵤ .proj₂))
+
+    -- (C) with the exponent evaluated.
+    lemma-C₂ : (CZ • CZ02) • (CZ • CZ02) ≈ (CZ • CZ) • (CZ02 • CZ02)
+    lemma-C₂ = begin
+      (CZ • CZ02) • (CZ • CZ02)
+        ≡⟨ Eq.cong ((CZ • CZ02) ^_) (Eq.sym e₂) ⟩
+      (CZ • CZ02) ^ toℕ (g ^′ j₂)
+        ≈⟨ lemma-C j₂ ⟩
+      CZ ^ toℕ (g ^′ j₂) • CZ02 ^ toℕ (g ^′ j₂)
+        ≡⟨ Eq.cong₂ (λ a b → CZ ^ a • CZ02 ^ b) e₂ e₂ ⟩
+      (CZ • CZ) • (CZ02 • CZ02) ∎
+
+  lemma-comm-CZ-CZ02 : CZ • CZ02 ≈ CZ02 • CZ
+  lemma-comm-CZ-CZ02 =
+    sym (•-cancelʳ {h = CZ02} (•-cancelˡ {g = CZ} (begin
+      CZ • ((CZ02 • CZ) • CZ02)  ≈⟨ by-assoc auto ⟩
+      (CZ • CZ02) • (CZ • CZ02)  ≈⟨ lemma-C₂ ⟩
+      (CZ • CZ) • (CZ02 • CZ02)  ≈⟨ by-assoc auto ⟩
+      CZ • ((CZ • CZ02) • CZ02) ∎)))
+
   T : Word (Gen (₃₊ n))
   T = Ex • Ex ↑ • Ex
 
   lemma-Ex↑-Ex↑ : Ex ↑ • Ex ↑ ≈ ε
   lemma-Ex↑-Ex↑ = lemma-cong↑ _ _ (PB₂.axiom order-Ex)
+
+  ------------------------------------------------------------------------
+  -- The swaps generate S₃
+  --
+  -- order-Ex makes each swap an involution and yang-baxter is the braid
+  -- relation, so the 3-cycle σ = Ex • Ex ↑ has order 3.  Both c14 and c15
+  -- assert that some element cubes to ε, so this is the shape they have
+  -- to be matched against.
+
+  lemma-σ³ : ((Ex • Ex ↑) • (Ex • Ex ↑)) • (Ex • Ex ↑) ≈ ε
+  lemma-σ³ = begin
+    ((Ex • Ex ↑) • (Ex • Ex ↑)) • (Ex • Ex ↑)
+      ≈⟨ by-assoc auto ⟩
+    Ex • (Ex ↑ • Ex • Ex ↑) • (Ex • Ex ↑)
+      ≈⟨ cright cleft axiom yang-baxter ⟩
+    Ex • (Ex ↓ • Ex ↑ • Ex ↓) • (Ex • Ex ↑)
+      ≈⟨ by-assoc auto ⟩
+    (Ex • Ex) • Ex ↑ • (Ex • Ex) • Ex ↑
+      ≈⟨ cleft lemma-Ex-Ex ⟩
+    ε • Ex ↑ • (Ex • Ex) • Ex ↑
+      ≈⟨ left-unit ⟩
+    Ex ↑ • (Ex • Ex) • Ex ↑
+      ≈⟨ cright cleft lemma-Ex-Ex ⟩
+    Ex ↑ • ε • Ex ↑
+      ≈⟨ cright left-unit ⟩
+    Ex ↑ • Ex ↑
+      ≈⟨ lemma-Ex↑-Ex↑ ⟩
+    ε ∎
 
   lemma-T-T : T • T ≈ ε
   lemma-T-T = begin
@@ -1111,3 +1542,130 @@ module Three-Wire (n : ℕ) where
     CZ ↑ • ε
       ≈⟨ right-unit ⟩
     CZ ↑ ∎
+
+  ------------------------------------------------------------------------
+  -- selinger-c12, by moving the commutation onto the other pair
+  --
+  -- Simplified-V1 states c12 over the CZs sharing wire 1, whereas
+  -- lemma-comm-CZ-CZ02 has the pair sharing wire 0.  The 3-cycle
+  -- σ = Ex • Ex ↑ carries one to the other: cz-slide IS the statement
+  -- that σ conjugates CZ to CZ ↑, and the companion fact — that it
+  -- conjugates CZ02 back to CZ — follows once CZ02 is rewritten with the
+  -- other swap, which is again cz-slide.
+
+  private
+    -- CZ02 through the upper swap rather than the lower one.
+    lemma-CZ02' : Ex ↑ • (CZ • Ex ↑) ≈ CZ02
+    lemma-CZ02' = •-cancelˡ {g = Ex} (begin
+      Ex • (Ex ↑ • (CZ • Ex ↑))   ≈⟨ by-assoc auto ⟩
+      (Ex ↓ • Ex ↑ • CZ) • Ex ↑   ≈⟨ cleft axiom cz-slide ⟩
+      (CZ ↑ • Ex ↓ • Ex ↑) • Ex ↑ ≈⟨ by-assoc auto ⟩
+      (CZ ↑ • Ex) • (Ex ↑ • Ex ↑) ≈⟨ cright lemma-Ex↑-Ex↑ ⟩
+      (CZ ↑ • Ex) • ε             ≈⟨ right-unit ⟩
+      CZ ↑ • Ex                   ≈⟨ sym left-unit ⟩
+      ε • (CZ ↑ • Ex)             ≈⟨ cleft sym lemma-Ex-Ex ⟩
+      (Ex • Ex) • (CZ ↑ • Ex)     ≈⟨ assoc ⟩
+      Ex • (Ex • (CZ ↑ • Ex)) ∎)
+
+    -- The 3-cycle sends the remote CZ back to the lower pair.
+    lemma-σ-CZ02 : (Ex • Ex ↑) • CZ02 ≈ CZ • (Ex • Ex ↑)
+    lemma-σ-CZ02 = begin
+      (Ex • Ex ↑) • CZ02
+        ≈⟨ cright sym lemma-CZ02' ⟩
+      (Ex • Ex ↑) • (Ex ↑ • (CZ • Ex ↑))
+        ≈⟨ by-assoc auto ⟩
+      Ex • ((Ex ↑ • Ex ↑) • (CZ • Ex ↑))
+        ≈⟨ cright cleft lemma-Ex↑-Ex↑ ⟩
+      Ex • (ε • (CZ • Ex ↑))
+        ≈⟨ cright left-unit ⟩
+      Ex • (CZ • Ex ↑)
+        ≈⟨ sym assoc ⟩
+      (Ex • CZ) • Ex ↑
+        ≈⟨ cleft lemma-Ex-CZ ⟩
+      (CZ • Ex) • Ex ↑
+        ≈⟨ assoc ⟩
+      CZ • (Ex • Ex ↑) ∎
+
+    aux-left : (Ex • Ex ↑) • (CZ • CZ02) ≈ (CZ ↑ • CZ) • (Ex • Ex ↑)
+    aux-left = begin
+      (Ex • Ex ↑) • (CZ • CZ02)     ≈⟨ sym assoc ⟩
+      ((Ex • Ex ↑) • CZ) • CZ02     ≈⟨ cleft by-assoc auto ⟩
+      (Ex ↓ • Ex ↑ • CZ) • CZ02     ≈⟨ cleft axiom cz-slide ⟩
+      (CZ ↑ • Ex ↓ • Ex ↑) • CZ02   ≈⟨ cleft by-assoc auto ⟩
+      (CZ ↑ • (Ex • Ex ↑)) • CZ02   ≈⟨ assoc ⟩
+      CZ ↑ • ((Ex • Ex ↑) • CZ02)   ≈⟨ cright lemma-σ-CZ02 ⟩
+      CZ ↑ • (CZ • (Ex • Ex ↑))     ≈⟨ sym assoc ⟩
+      (CZ ↑ • CZ) • (Ex • Ex ↑) ∎
+
+    aux-right : (Ex • Ex ↑) • (CZ02 • CZ) ≈ (CZ • CZ ↑) • (Ex • Ex ↑)
+    aux-right = begin
+      (Ex • Ex ↑) • (CZ02 • CZ)     ≈⟨ sym assoc ⟩
+      ((Ex • Ex ↑) • CZ02) • CZ     ≈⟨ cleft lemma-σ-CZ02 ⟩
+      (CZ • (Ex • Ex ↑)) • CZ       ≈⟨ assoc ⟩
+      CZ • ((Ex • Ex ↑) • CZ)       ≈⟨ cright by-assoc auto ⟩
+      CZ • (Ex ↓ • Ex ↑ • CZ)       ≈⟨ cright axiom cz-slide ⟩
+      CZ • (CZ ↑ • Ex ↓ • Ex ↑)     ≈⟨ cright by-assoc auto ⟩
+      CZ • (CZ ↑ • (Ex • Ex ↑))     ≈⟨ sym assoc ⟩
+      (CZ • CZ ↑) • (Ex • Ex ↑) ∎
+
+  lemma-selinger-c12 : CZ ↑ • CZ ≈ CZ • CZ ↑
+  lemma-selinger-c12 = •-cancelʳ {h = Ex • Ex ↑} (begin
+    (CZ ↑ • CZ) • (Ex • Ex ↑)   ≈⟨ sym aux-left ⟩
+    (Ex • Ex ↑) • (CZ • CZ02)   ≈⟨ cright lemma-comm-CZ-CZ02 ⟩
+    (Ex • Ex ↑) • (CZ02 • CZ)   ≈⟨ aux-right ⟩
+    (CZ • CZ ↑) • (Ex • Ex ↑) ∎)
+
+  ------------------------------------------------------------------------
+  -- The lower half-swap commutes with the upper CZ
+  --
+  -- ₕ|ₕ is H • CZ • H, all on wires 0 and 1.  The H commutes with CZ ↑
+  -- structurally — it is a one-wire gate against a gate shifted off wire
+  -- 0 — and the two CZs commute by c12, which is now available.  This is
+  -- what makes c13 collapse.
+
+  lemma-comm-ₕ|ₕ-CZ↑ : ₕ|ₕ • CZ ↑ ≈ CZ ↑ • ₕ|ₕ
+  lemma-comm-ₕ|ₕ-CZ↑ = begin
+    (H • CZ • H) • CZ ↑
+      ≈⟨ by-assoc auto ⟩
+    H • (CZ • (H • CZ ↑))
+      ≈⟨ cright cright sym (axiom comm-H) ⟩
+    H • (CZ • (CZ ↑ • H))
+      ≈⟨ cright sym assoc ⟩
+    H • ((CZ • CZ ↑) • H)
+      ≈⟨ cright cleft sym lemma-selinger-c12 ⟩
+    H • ((CZ ↑ • CZ) • H)
+      ≈⟨ by-assoc auto ⟩
+    (H • CZ ↑) • (CZ • H)
+      ≈⟨ cleft sym (axiom comm-H) ⟩
+    (CZ ↑ • H) • (CZ • H)
+      ≈⟨ by-assoc auto ⟩
+    CZ ↑ • (H • CZ • H) ∎
+
+  ------------------------------------------------------------------------
+  -- Half of c13: conjugating the upper CZ by the half-swaps gives CZ02
+  --
+  -- With ⊥⊤ = Ex • ₕ|ₕ and ⊤⊥ = ₕ|ₕ • Ex, the word ⊥⊤ • CZ ↑ • ⊤⊥ is
+  -- Ex • (ₕ|ₕ • CZ ↑ • ₕ|ₕ) • Ex; the previous lemma moves CZ ↑ out
+  -- through one ₕ|ₕ, the involution kills the pair, and what is left is
+  -- Ex • CZ ↑ • Ex, which is CZ02 by definition.
+  --
+  -- Semantically both sides of c13 are CZ02 — that is how this shape was
+  -- found — so the other half is the same statement about the upper pair.
+
+  lemma-c13-right : ⊥⊤ • (CZ ↑ • ⊤⊥) ≈ CZ02
+  lemma-c13-right = begin
+    ⊥⊤ • (CZ ↑ • ⊤⊥)
+      ≈⟨ cleft lemma-⊥⊤-simple ⟩
+    (Ex • ₕ|ₕ) • (CZ ↑ • ⊤⊥)
+      ≈⟨ cright cright lemma-⊤⊥-simple ⟩
+    (Ex • ₕ|ₕ) • (CZ ↑ • (ₕ|ₕ • Ex))
+      ≈⟨ by-assoc auto ⟩
+    Ex • (((ₕ|ₕ • CZ ↑) • ₕ|ₕ) • Ex)
+      ≈⟨ cright cleft cleft lemma-comm-ₕ|ₕ-CZ↑ ⟩
+    Ex • (((CZ ↑ • ₕ|ₕ) • ₕ|ₕ) • Ex)
+      ≈⟨ cright cleft assoc ⟩
+    Ex • ((CZ ↑ • (ₕ|ₕ • ₕ|ₕ)) • Ex)
+      ≈⟨ cright cleft cright lemma-ₕ|ₕ-invol ⟩
+    Ex • ((CZ ↑ • ε) • Ex)
+      ≈⟨ cright cleft right-unit ⟩
+    Ex • (CZ ↑ • Ex) ∎
