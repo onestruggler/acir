@@ -50,6 +50,7 @@
 
 module Examples.Groups.ProjectiveClifford.Qubit.Presentation where
 
+open import Algebra.Bundles using (Group)
 open import Data.Nat using (ℕ)
 open import Data.Product using (_,_)
 open import Data.Sum using (inj₁ ; inj₂)
@@ -376,9 +377,42 @@ module _ {n : ℕ} where
 -- offers no such path.  Route 2 (patching the section so that rep Iᶜ is
 -- ε on the nose) avoids the question entirely, and also disposes of
 -- Conj-trivial, which this route never addresses.
+-- SUPERSEDED by Sec-semantic below.  Kept because the analysis above
+-- records why this target is unreachable, not merely hard: the fragment
+-- cannot prove S ⁴ ≈ ε, so it is strictly bigger than CMS n and Ex²'s
+-- truth in CMS does not make it derivable here.
 Dihedral-6 : Set
 Dihedral-6 = ∀ {n} →
   PB._≈_ (EP.Clifford.Corr-free (₂₊ n)) ((CZ • (H • (H ↑))) ^ 6) ε
+
+------------------------------------------------------------------------
+-- What Sec-trivial actually costs
+--
+-- Extension.sec-trivial-semantic replaces the whole syntactic programme
+-- — the correction-free reduction, aux-MB, Ex², the tower induction —
+-- with one semantic fact: the identity coset's representative denotes
+-- the identity of CMS n.  Since ⟦ [ w ]ᵣ ⟧ is the Clifford word w
+-- itself (ExtensionPresentation.embʳ) and CMS equality is equal action
+-- on P4, this is a statement about a circuit's action, checkable by
+-- evaluation, and it is uniform in n.
+--
+-- Its content, spelled out: rep Iᶜ ≈q ε already gives that the
+-- representative's SYMPLECTIC image is trivial, so its value in CMS n
+-- lies in ker proj = im incl, i.e. it is conjugation by some Pauli.
+-- Sec-semantic says that Pauli is trivial — the representative is a
+-- scalar, not a genuine Pauli.  At width 1 that is (SH)³ = ω, which is
+-- exactly what a-box-free witnesses on the syntactic side.
+
+Sec-semantic : ℕ → Set
+Sec-semantic n =
+  Group._≈_ (CMS-group n)
+    (EP.Clifford.⟦_⟧ n (EP.Clifford.secᶜ n (EP.Clifford.Iᶜ n)))
+    (Group.ε (CMS-group n))
+
+sec-trivial-sem : ∀ {n} → Sec-semantic n → Sec-trivial n
+sec-trivial-sem {n} =
+  EP.Clifford.sec-trivial-semantic n
+    (EP.Clifford.realises n) (EP.Clifford.sound-ax n)
 
 sec-reduction-1 : Sec-reduction 1
 sec-reduction-1 =
