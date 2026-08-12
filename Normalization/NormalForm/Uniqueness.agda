@@ -12,13 +12,10 @@ module Normalization.NormalForm.Uniqueness
   (⟦_⟧ : Word X → Setoid.Carrier Sem)
   where
 
-open import Data.Product using (_,_ ; proj₁ ; proj₂)
-open import Function using (_∘_)
 import Relation.Binary.Reasoning.Setoid as SR
 
 open import Presentation.Base Γ
-open import Function.Definitions using (Congruent ; Injective ; Surjective ; StrictlySurjective)
-open import Function.Consequences using (surjective⇒strictlySurjective ; strictlySurjective⇒surjective)
+open import Function.Definitions using (Congruent ; Injective)
 
 open import Normalization.NormalForm.Setoid Γ NF using (NormalForm)
 
@@ -68,22 +65,4 @@ module _ (normalForm : NormalForm) where
         transₙ (symₙ nf∘inv-nf=id)
           (transₙ (nf-cong (complete eq)) nf∘inv-nf=id) }
 
-
-module SurjSem (normalForm : NormalForm) 
-  (let open NormalForm normalForm using (inv-nf))
-  (surj : Surjective _≈ₙ_ _≈₂_ (⟦_⟧ ∘ inv-nf))
-  where
-
-  -- The general fact "f ∘ g surjective ⇒ f surjective".  Since ⟦_⟧ ∘
-  -- inv-nf is surjective, ⟦_⟧ is strictly surjective (every y is hit by
-  -- some word inv-nf u); soundness (⟦_⟧ congruent) then upgrades that to
-  -- the setoid-respecting Surjective.  The congruence is unavoidable —
-  -- stdlib's strictlySurjective⇒surjective requires it.
-  by-normalization-wsurj : Congruent _≈_ _≈₂_ ⟦_⟧ → Surjective _≈_ _≈₂_ ⟦_⟧
-  by-normalization-wsurj sound =
-    strictlySurjective⇒surjective (Setoid.trans Sem) sound strict-⟦⟧
-    where
-    strict-⟦⟧ : StrictlySurjective _≈₂_ ⟦_⟧
-    strict-⟦⟧ y = inv-nf (proj₁ ss) , proj₂ ss
-      where ss = surjective⇒strictlySurjective _≈₂_ reflₙ surj y
 

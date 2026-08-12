@@ -24,7 +24,7 @@ open import Relation.Binary using (Setoid)
 module Normalization.NormalForm.Setoid
   {X : Set} (Γ : WRel X) (NF : Setoid 0ℓ 0ℓ) where
 
-open import Data.Product using (_,_ ; proj₁ ; proj₂)
+open import Data.Product using (proj₁ ; proj₂)
 open import Function using (_∘_)
 open import Function.Bundles using (Injection ; Bijection ; RightInverse ; _⟶ₛ_)
 open import Relation.Binary.Definitions using (Decidable)
@@ -33,8 +33,7 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 open import Presentation.Base Γ
 open import Presentation.Core Γ using (word-setoid)
-open import Function.Definitions using (Congruent ; Injective ; Surjective ; StrictlySurjective)
-open import Function.Consequences using (surjective⇒strictlySurjective ; strictlySurjective⇒surjective)
+open import Function.Definitions using (Congruent ; Injective)
 
 private
   variable
@@ -205,22 +204,3 @@ module _ {c d} (Sem : Setoid c d)
             (transₙ (nf-cong (complete eq)) nf∘inv-nf=id) }
 
 
-module SurjSem {c d} (normalForm : NormalForm) (Sem : Setoid c d)
-  (let open Setoid Sem using () renaming (Carrier to Cₛ ; _≈_ to _≈₂_ ; sym to sym₂))
-  (let open NormalForm normalForm using () renaming (inv-nf to sec))
-  (⟦_⟧ : Word X → Cₛ)
-  (surj : Surjective _≈ₙ_ _≈₂_ (⟦_⟧ ∘ sec))
-  where
-
-  -- The general fact "f ∘ g surjective ⇒ f surjective".  Since ⟦_⟧ ∘
-  -- inv-nf is surjective, ⟦_⟧ is strictly surjective (every y is hit by
-  -- some word inv-nf u); soundness (⟦_⟧ congruent) then upgrades that to
-  -- the setoid-respecting Surjective.  The congruence is unavoidable —
-  -- stdlib's strictlySurjective⇒surjective requires it.
-  by-normalization-wsurj : Congruent _≈_ _≈₂_ ⟦_⟧ → Surjective _≈_ _≈₂_ ⟦_⟧
-  by-normalization-wsurj sound =
-    strictlySurjective⇒surjective (Setoid.trans Sem) sound strict-⟦⟧
-    where
-    strict-⟦⟧ : StrictlySurjective _≈₂_ ⟦_⟧
-    strict-⟦⟧ y = sec (proj₁ ss) , proj₂ ss
-      where ss = surjective⇒strictlySurjective _≈₂_ reflₙ surj y
