@@ -59,6 +59,7 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Notations using (₁₊)
 open import Word.Base using (_^_ ; _•_ ; ε)
 import Presentation.Base as PB
+import Presentation.Properties as PP
 import Normalization.NormalForm.Setoid as SNF
 open import Presentation.Definitions using (_IsPresentationOf_)
 
@@ -68,8 +69,8 @@ open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2) using (-0#≈0#)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
-open import Notations using (₁₊ ; ₂₊)
-open Symplectic using (H ; S^ ; XM ; CZ ; Circuit ; _↑)
+open import Notations using (₁₊ ; ₂₊ ; auto)
+open Symplectic using (H ; S ; S^ ; XM ; CZ ; Circuit ; _↑)
 open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
   using (module Simplified-Relations)
 open Simplified-Relations
@@ -258,6 +259,25 @@ module _ {n : ℕ} where
   -- and each squares away.  So Ex² ≈ ε is the dihedral statement that
   -- ab has order dividing 6 — the one fact still missing, and the only
   -- place selinger-c10/c11 can enter.
+  -- (SH)³ ≈ ε, correction-free.  This is the ORIGINAL rule set's
+  -- order-SH — an axiom there, and absent from the simplified set — but
+  -- at p = 2 it is a-box-free verbatim: Mg is M ₁ is XM ₁ is S H S H S H.
+  -- It is the relation that makes S and H generate a finite group, so it
+  -- is the natural workhorse for any Dihedral-6 attempt, and it is the
+  -- only correction-free handle on S there is: order-S is excluded, and
+  -- comm-CZ-S and semi-MS only move S about.
+  SHSHSH-free : S • (H • (S • (H • (S • H)))) ≈ ε
+  SHSHSH-free = a-box-free
+
+  -- Its usual working form: S H S H S ≈ H, since H is its own inverse.
+  SHSHS-free : S • (H • (S • (H • S))) ≈ H
+  SHSHS-free =
+    trans (sym right-unit)
+      (trans (cong refl (sym H•H-free))
+        (trans (sym assoc)
+          (trans (cleft (trans (by-assoc auto) SHSHSH-free)) left-unit)))
+    where open PP (EP.Clifford.Corr-free (₂₊ n))
+
   b•b-free : (H • (H ↑)) • (H • (H ↑)) ≈ ε
   b•b-free =
     trans assoc
