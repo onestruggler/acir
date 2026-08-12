@@ -50,7 +50,7 @@ open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using (ML ; [_]ᵐˡ ; [_]ᵈ ; [_]ᵐ ; [_]ᵛᵇ ; [_]ᵃ ; A ; B ; E ; D ; M)
 
 open import Examples.Groups.Symplectic.BoxAction p-2 p-prime
-  using (act ; act-S^ ; act-M ; act-HS^ ; lemma-act-↑)
+  using (act ; act-S^ ; act-M ; act-XM ; act-HS^ ; lemma-act-↑)
 
 open import Examples.Groups.Symplectic.DBox p-2 p-prime
   using (lemma-dbox-IZ ; lemma-dbox)
@@ -166,7 +166,9 @@ Theorem-LM {1} ((₀ , ₁₊ b') ∷ []) ((c , d) ∷ []) sf = lm , claim1 , cl
   claim1 : act [ lm ]ᵐˡ ((₀ , ₁₊ b') ∷ []) ≡ pZ₀
   claim1 = begin
     act [ lm ]ᵐˡ ((₀ , ₁₊ b') ∷ [])
-      ≡⟨ Eq.cong (act (Symplectic.S^ (- e))) (act-M bb ₀ (₁₊ b') []) ⟩
+      ≡⟨ Eq.cong (act (Symplectic.S^ (- e)))
+           (Eq.trans (act-XM (₁₊ b' , λ ()) ((₀ , ₁₊ b') ∷ []))
+                     (act-M bb ₀ (₁₊ b') [])) ⟩
     act (Symplectic.S^ (- e)) ((₀ * (bb ⁻¹) .proj₁ , (₁₊ b') * x) ∷ [])
       ≡⟨ Eq.cong (λ z → act (Symplectic.S^ (- e)) ((z , (₁₊ b') * x) ∷ [])) (*-zeroˡ ((bb ⁻¹) .proj₁)) ⟩
     act (Symplectic.S^ (- e)) ((₀ , (₁₊ b') * x) ∷ [])
@@ -182,7 +184,9 @@ Theorem-LM {1} ((₀ , ₁₊ b') ∷ []) ((c , d) ∷ []) sf = lm , claim1 , cl
   claim2 : act [ lm ]ᵐˡ ((c , d) ∷ []) ≡ pX₀
   claim2 = begin
     act [ lm ]ᵐˡ ((c , d) ∷ [])
-      ≡⟨ Eq.cong (act (Symplectic.S^ (- e))) (act-M bb c d []) ⟩
+      ≡⟨ Eq.cong (act (Symplectic.S^ (- e)))
+           (Eq.trans (act-XM (₁₊ b' , λ ()) ((c , d) ∷ []))
+                     (act-M bb c d [])) ⟩
     act (Symplectic.S^ (- e)) ((c * (bb ⁻¹) .proj₁ , d * x) ∷ [])
       ≡⟨ Eq.cong (λ z → act (Symplectic.S^ (- e)) ((c * z , d * x) ∷ [])) (inv-involutive (₁₊ b' , λ ())) ⟩
     act (Symplectic.S^ (- e)) ((c * (₁₊ b') , d * x) ∷ [])
@@ -253,13 +257,15 @@ Theorem-LM {1} ((₁₊ a' , b) ∷ []) ((c , d) ∷ []) sf = lm , claim1 , clai
   claim1 : act [ lm ]ᵐˡ ((₁₊ a' , b) ∷ []) ≡ pZ₀
   claim1 = begin
     act [ lm ]ᵐˡ ((₁₊ a' , b) ∷ [])
-      ≡⟨ Eq.cong (λ z → act (Symplectic.S^ (- e)) (act (Symplectic.M aa) z)) (act-HS^ -b/a (₁₊ a') b []) ⟩
-    act (Symplectic.S^ (- e)) (act (Symplectic.M aa) ((- (b + (₁₊ a') * -b/a) , ₁₊ a') ∷ []))
-      ≡⟨ Eq.cong (λ z → act (Symplectic.S^ (- e)) (act (Symplectic.M aa) ((- z , ₁₊ a') ∷ []))) aux-p ⟩
-    act (Symplectic.S^ (- e)) (act (Symplectic.M aa) ((- ₀ , ₁₊ a') ∷ []))
-      ≡⟨ Eq.cong (λ z → act (Symplectic.S^ (- e)) (act (Symplectic.M aa) ((z , ₁₊ a') ∷ []))) -0#≈0# ⟩
-    act (Symplectic.S^ (- e)) (act (Symplectic.M aa) ((₀ , ₁₊ a') ∷ []))
-      ≡⟨ Eq.cong (act (Symplectic.S^ (- e))) (act-M aa ₀ (₁₊ a') []) ⟩
+      ≡⟨ Eq.cong (λ z → act (Symplectic.S^ (- e)) (act (Symplectic.XM (₁₊ a' , λ ())) z)) (act-HS^ -b/a (₁₊ a') b []) ⟩
+    act (Symplectic.S^ (- e)) (act (Symplectic.XM (₁₊ a' , λ ())) ((- (b + (₁₊ a') * -b/a) , ₁₊ a') ∷ []))
+      ≡⟨ Eq.cong (λ z → act (Symplectic.S^ (- e)) (act (Symplectic.XM (₁₊ a' , λ ())) ((- z , ₁₊ a') ∷ []))) aux-p ⟩
+    act (Symplectic.S^ (- e)) (act (Symplectic.XM (₁₊ a' , λ ())) ((- ₀ , ₁₊ a') ∷ []))
+      ≡⟨ Eq.cong (λ z → act (Symplectic.S^ (- e)) (act (Symplectic.XM (₁₊ a' , λ ())) ((z , ₁₊ a') ∷ []))) -0#≈0# ⟩
+    act (Symplectic.S^ (- e)) (act (Symplectic.XM (₁₊ a' , λ ())) ((₀ , ₁₊ a') ∷ []))
+      ≡⟨ Eq.cong (act (Symplectic.S^ (- e)))
+           (Eq.trans (act-XM (₁₊ a' , λ ()) ((₀ , ₁₊ a') ∷ []))
+                     (act-M aa ₀ (₁₊ a') [])) ⟩
     act (Symplectic.S^ (- e)) ((₀ * (aa ⁻¹) .proj₁ , (₁₊ a') * x) ∷ [])
       ≡⟨ Eq.cong (λ z → act (Symplectic.S^ (- e)) ((z , (₁₊ a') * x) ∷ [])) (*-zeroˡ ((aa ⁻¹) .proj₁)) ⟩
     act (Symplectic.S^ (- e)) ((₀ , (₁₊ a') * x) ∷ [])
@@ -275,9 +281,11 @@ Theorem-LM {1} ((₁₊ a' , b) ∷ []) ((c , d) ∷ []) sf = lm , claim1 , clai
   claim2 : act [ lm ]ᵐˡ ((c , d) ∷ []) ≡ pX₀
   claim2 = begin
     act [ lm ]ᵐˡ ((c , d) ∷ [])
-      ≡⟨ Eq.cong (λ z → act (Symplectic.S^ (- e)) (act (Symplectic.M aa) z)) (act-HS^ -b/a c d []) ⟩
-    act (Symplectic.S^ (- e)) (act (Symplectic.M aa) ((- (d + c * -b/a) , c) ∷ []))
-      ≡⟨ Eq.cong (act (Symplectic.S^ (- e))) (act-M aa (- (d + c * -b/a)) c []) ⟩
+      ≡⟨ Eq.cong (λ z → act (Symplectic.S^ (- e)) (act (Symplectic.XM (₁₊ a' , λ ())) z)) (act-HS^ -b/a c d []) ⟩
+    act (Symplectic.S^ (- e)) (act (Symplectic.XM (₁₊ a' , λ ())) ((- (d + c * -b/a) , c) ∷ []))
+      ≡⟨ Eq.cong (act (Symplectic.S^ (- e)))
+           (Eq.trans (act-XM (₁₊ a' , λ ()) ((- (d + c * -b/a) , c) ∷ []))
+                     (act-M aa (- (d + c * -b/a)) c [])) ⟩
     act (Symplectic.S^ (- e)) (((- (d + c * -b/a)) * (aa ⁻¹) .proj₁ , c * x) ∷ [])
       ≡⟨ Eq.cong (λ z → act (Symplectic.S^ (- e)) (((- (d + c * -b/a)) * z , c * x) ∷ [])) (inv-involutive (₁₊ a' , λ ())) ⟩
     act (Symplectic.S^ (- e)) (((- (d + c * -b/a)) * (₁₊ a') , c * x) ∷ [])

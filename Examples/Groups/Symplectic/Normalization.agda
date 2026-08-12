@@ -108,10 +108,15 @@ Iᶜ : ∀ {n} → C (₁₊ n)
 Iᶜ {zero}  = ([] , ₀) , ([] , Ia)
 Iᶜ {suc m} = inj₁ ((replicate (₁₊ m) (₀ , ₀) , ₀) , (replicate (₁₊ m) (₀ , ₀) , Ia))
 
--- The identity A box interprets to ε: [ Ia ]ᵃ = M ((₁,λ())⁻¹) • ⟦ε⟧ₕₛ,
--- and (₁,λ())⁻¹ has value ₁ (inv-₁), so aux-MM + aux-mc1ε finish.
+-- The identity A box interprets to ε.  [ Ia ]ᵃ is XM (₁,λ()), which is
+-- M ((₁,λ())⁻¹) by XM≡ZM⁻¹; (₁,λ())⁻¹ has value ₁ (inv-₁), so aux-MM +
+-- aux-mc1ε finish as before, once the trailing ε is put back.
 [Ia]≈ε : ∀ {n} → let open PB ((₁₊ n) QRel,_===_) in [ Ia ]ᵃ ≈ ε
-[Ia]≈ε {n} = trans (cong (aux-MM (((₁ , λ ()) ⁻¹) .proj₂) (λ ()) inv-₁) refl) aux-mc1ε
+[Ia]≈ε {n} =
+  trans (refl' (Symplectic.XM≡ZM⁻¹ (₁ , λ ())))
+  (trans (sym right-unit)
+  (trans (cong (aux-MM (((₁ , λ ()) ⁻¹) .proj₂) (λ ()) inv-₁) refl)
+         aux-mc1ε))
   where open PB ((₁₊ n) QRel,_===_) ; open Lemmas0 n
 
 -- Zero boxes reduce to ε / Ex (the CZ^/CX'^/S^ powers vanish; -0 ≡ 0).

@@ -51,7 +51,7 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic using (S^ ; CZ^ ; S ; H ; CZ ; Ex ; Circuit ; Gen ;
   gate₁ ; gate₂ ; _↥ ; _↑ ; H-gate ; S-gate ; CZ-gate)
 open import Examples.Groups.Symplectic.BoxAction p-2 p-prime
-  using (act ; sc ; sc-toℕ ; sc-suc ; act-S^ ; act-H ; act-HS^ ; act-M ;
+  using (act ; sc ; sc-toℕ ; sc-suc ; act-S^ ; act-H ; act-HS^ ; act-M ; act-XM ;
          act-Ex)
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using (A ; B ; D ; E ; M ; L' ; ML ; ML' ;
@@ -294,10 +294,12 @@ abox-hd : ∀ (a : A) (q : Pauli1) (t : Pauli n) →
   act ([_]ᵃ {n} a) (q ∷ t) ≡ aHd a q ∷ t
 abox-hd ((₀ , ₀) , pr) q t = ⊥-elim (pr refl)
 abox-hd ((₀ , ₁₊ b') , pr) (q₁ , q₂) t =
-  act-M ((₁₊ b' , λ ()) ⁻¹) q₁ q₂ t
+  trans (act-XM (₁₊ b' , λ ()) ((q₁ , q₂) ∷ t))
+        (act-M ((₁₊ b' , λ ()) ⁻¹) q₁ q₂ t)
 abox-hd ((₁₊ a' , b) , pr) (q₁ , q₂) t =
-  trans (cong (act (Symplectic.M inv)) (act-HS^ k q₁ q₂ t))
-        (act-M inv (- (q₂ + q₁ * k)) q₁ t)
+  trans (cong (act (Symplectic.XM (₁₊ a' , λ ()))) (act-HS^ k q₁ q₂ t))
+        (trans (act-XM (₁₊ a' , λ ()) ((- (q₂ + q₁ * k) , q₁) ∷ t))
+               (act-M inv (- (q₂ + q₁ * k)) q₁ t))
   where
   inv = (₁₊ a' , λ ()) ⁻¹
   k   = - b * (inv .proj₁)

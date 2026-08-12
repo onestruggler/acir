@@ -147,6 +147,13 @@ act-HS^ κ a b t = Eq.cong (act H) (act-S^ κ a b t)
 -- The pure-algebra tail is ported from the (commented) NF1-Sym.lemma-M;
 -- the S-power peels use act-S^ (the plain S^ κ does not reduce on its own).
 
+-- The A-box column is built from XM, whereas act-M below is stated for
+-- ZM.  XM x is ZM (x ⁻¹), so one congruence carries the action across;
+-- callers chain this in front of act-M.
+act-XM : ∀ (x : ℤ* ₚ) (ps : Pauli (₁₊ n)) →
+  act (Symplectic.XM x) ps ≡ act (M (x ⁻¹)) ps
+act-XM x ps = Eq.cong (λ w → act w ps) (Symplectic.XM≡ZM⁻¹ x)
+
 act-M : ∀ (x' : ℤ* ₚ) (a b : ℤ ₚ) (t : Pauli n) →
   act (M x') ((a , b) ∷ t) ≡ (a * ((x' ⁻¹) .proj₁) , b * (x' .proj₁)) ∷ t
 act-M x' a b t = begin

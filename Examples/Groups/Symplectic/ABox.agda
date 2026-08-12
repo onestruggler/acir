@@ -37,7 +37,7 @@ open Symplectic using (M ; H ; S^)
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime using (A ; [_]ᵃ)
 
 open import Examples.Groups.Symplectic.BoxAction p-2 p-prime
-  using (act ; act-M ; act-HS^)
+  using (act ; act-M ; act-XM ; act-HS^)
 
 private
   variable
@@ -47,6 +47,8 @@ lemma-abox : ∀ (p : ℤ ₚ × ℤ ₚ) (pr : p ≢ (₀ , ₀)) (t : Pauli n)
   act [ (p , pr) ]ᵃ (p ∷ t) ≡ pZ ∷ t
 lemma-abox (₀ , ₀)     pr t = ⊥-elim (pr Eq.refl)
 lemma-abox (₀ , ₁₊ b') pr t = begin
+  act (Symplectic.XM (₁₊ b' , λ ())) ((₀ , ₁₊ b') ∷ t)
+    ≡⟨ act-XM (₁₊ b' , λ ()) ((₀ , ₁₊ b') ∷ t) ⟩
   act (M bb) ((₀ , ₁₊ b') ∷ t)
     ≡⟨ act-M bb ₀ (₁₊ b') t ⟩
   (₀ * (bb ⁻¹) .proj₁ , (₁₊ b') * (bb .proj₁)) ∷ t
@@ -57,8 +59,12 @@ lemma-abox (₀ , ₁₊ b') pr t = begin
   open ≡-Reasoning
   bb = (₁₊ b' , λ ()) ⁻¹
 lemma-abox (₁₊ a' , b) pr t = begin
-  act (M aa • (H • S^ (- b * x))) ((₁₊ a' , b) ∷ t)
-    ≡⟨ Eq.cong (act (M aa)) (act-HS^ (- b * x) (₁₊ a') b t) ⟩
+  act (Symplectic.XM (₁₊ a' , λ ()) • (H • S^ (- b * x))) ((₁₊ a' , b) ∷ t)
+    ≡⟨ Eq.cong (act (Symplectic.XM (₁₊ a' , λ ())))
+               (act-HS^ (- b * x) (₁₊ a') b t) ⟩
+  act (Symplectic.XM (₁₊ a' , λ ()))
+      ((- (b + (₁₊ a') * (- b * x)) , ₁₊ a') ∷ t)
+    ≡⟨ act-XM (₁₊ a' , λ ()) ((- (b + (₁₊ a') * (- b * x)) , ₁₊ a') ∷ t) ⟩
   act (M aa) ((- (b + (₁₊ a') * (- b * x)) , ₁₊ a') ∷ t)
     ≡⟨ Eq.cong (λ z → act (M aa) ((- z , ₁₊ a') ∷ t)) top=0 ⟩
   act (M aa) ((- ₀ , ₁₊ a') ∷ t)
@@ -96,6 +102,8 @@ lemma-abox-X : ∀ (p1 : ℤ ₚ × ℤ ₚ) (pr : p1 ≢ (₀ , ₀)) (q : Paul
   act [ (p1 , pr) ]ᵃ (q ∷ t) ≡ (sform1 p1 q , e-after-abox p1 pr q) ∷ t
 lemma-abox-X (₀ , ₀)     pr q        t = ⊥-elim (pr Eq.refl)
 lemma-abox-X (₀ , ₁₊ b') pr (qa , qb) t = begin
+  act (Symplectic.XM (₁₊ b' , λ ())) ((qa , qb) ∷ t)
+    ≡⟨ act-XM (₁₊ b' , λ ()) ((qa , qb) ∷ t) ⟩
   act (M bb) ((qa , qb) ∷ t)
     ≡⟨ act-M bb qa qb t ⟩
   (qa * (bb ⁻¹) .proj₁ , qb * (bb .proj₁)) ∷ t
@@ -110,8 +118,11 @@ lemma-abox-X (₀ , ₁₊ b') pr (qa , qb) t = begin
   sform-eq = Eq.trans (Eq.cong (_+ qa * (₁₊ b')) (Eq.trans (Eq.cong (_* qb) -0#≈0#) (*-zeroˡ qb)))
                       (+-identityˡ (qa * (₁₊ b')))
 lemma-abox-X (₁₊ a' , b) pr (qa , qb) t = begin
-  act (M aa • (H • S^ (- b * x))) ((qa , qb) ∷ t)
-    ≡⟨ Eq.cong (act (M aa)) (act-HS^ (- b * x) qa qb t) ⟩
+  act (Symplectic.XM (₁₊ a' , λ ()) • (H • S^ (- b * x))) ((qa , qb) ∷ t)
+    ≡⟨ Eq.cong (act (Symplectic.XM (₁₊ a' , λ ())))
+               (act-HS^ (- b * x) qa qb t) ⟩
+  act (Symplectic.XM (₁₊ a' , λ ())) ((- (qb + qa * (- b * x)) , qa) ∷ t)
+    ≡⟨ act-XM (₁₊ a' , λ ()) ((- (qb + qa * (- b * x)) , qa) ∷ t) ⟩
   act (M aa) ((- (qb + qa * (- b * x)) , qa) ∷ t)
     ≡⟨ act-M aa (- (qb + qa * (- b * x))) qa t ⟩
   ((- (qb + qa * (- b * x))) * (aa ⁻¹) .proj₁ , qa * (aa .proj₁)) ∷ t
