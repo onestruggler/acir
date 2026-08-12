@@ -337,7 +337,7 @@ module Homo (m : ℕ) where
   open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n p-2 p-prime
   open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n2 p-2 p-prime
 
-  open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm p-2 p-prime 0
+  open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm-n p-2 p-prime 0
   open import Examples.Groups.Symplectic.Lemmas.Lemma-Postfix p-2 p-prime
   open Lemmas0a
   open Lemmas0a1
