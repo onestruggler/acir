@@ -875,6 +875,144 @@ module Ex-Conjugation (n : ℕ) where
       ≈⟨ cleft refl' (Eq.cong (CZ ^_) (lemma-toℕ-% g a)) ⟩
     CZ ^ toℕ (g * a) • Mg ∎
 
+  -- Mg ^ j rescales by g ^′ j.  The induction costs only associativity,
+  -- since x ^′ (suc k) is x * (x ^′ k) definitionally; the ₀/₁/₂₊ split
+  -- is forced by w ^ 1 being w rather than w • w ^ 0.
+  lemma-Mgᵏ-CZ : ∀ j → Mg ^ j • CZ ≈ CZ ^ toℕ (g ^′ j) • Mg ^ j
+  lemma-Mgᵏ-CZ ₀ = begin
+    ε • CZ  ≈⟨ left-unit ⟩
+    CZ      ≈⟨ sym right-unit ⟩
+    CZ • ε ∎
+  lemma-Mgᵏ-CZ ₁ = begin
+    Mg • CZ                ≈⟨ lemma-semi-Mg-CZ ⟩
+    CZ ^ toℕ g • Mg
+      ≡⟨ Eq.cong (λ z → CZ ^ toℕ z • Mg) (Eq.sym (lemma-x^′1=x g)) ⟩
+    CZ ^ toℕ (g ^′ 1) • Mg ∎
+  lemma-Mgᵏ-CZ (₂₊ j) = begin
+    (Mg • Mg ^ ₁₊ j) • CZ
+      ≈⟨ assoc ⟩
+    Mg • (Mg ^ ₁₊ j • CZ)
+      ≈⟨ cright lemma-Mgᵏ-CZ (₁₊ j) ⟩
+    Mg • (CZ ^ toℕ (g ^′ ₁₊ j) • Mg ^ ₁₊ j)
+      ≈⟨ sym assoc ⟩
+    (Mg • CZ ^ toℕ (g ^′ ₁₊ j)) • Mg ^ ₁₊ j
+      ≈⟨ cleft lemma-Mg-CZ^ (g ^′ ₁₊ j) ⟩
+    (CZ ^ toℕ (g * (g ^′ ₁₊ j)) • Mg) • Mg ^ ₁₊ j
+      ≈⟨ assoc ⟩
+    CZ ^ toℕ (g * (g ^′ ₁₊ j)) • (Mg • Mg ^ ₁₊ j) ∎
+  ------------------------------------------------------------------------
+  -- (moved below, after the multiplier lemmas it depends on)
+
+  private
+    -- The power of g that is -1, and M₋₁ as that power of Mg.  M-power
+    -- indexes by ℤ ₚ while g-gen's witness is a ℤ ₚ₋₁, so it goes through
+    -- inject₁, exactly as lemma-M-mul does.
+    k₋ : ℤ ₚ
+    k₋ = inject₁ (g-gen -'₁ .proj₁)
+
+    j₋ : ℕ
+    j₋ = toℕ k₋
+
+    e₋ : (g^ k₋) .proj₁ ≡ -'₁ .proj₁
+    e₋ = lemma-log-inject -'₁
+
+    Mg^j₋≈M₋₁ : Mg ^ j₋ ≈ M₋₁
+    Mg^j₋≈M₋₁ = begin
+      Mg ^ j₋    ≈⟨ axiom (M-power k₋) ⟩
+      M (g^ k₋)  ≡⟨ One-Wire.aux-M≡M (₁₊ n) (g^ k₋) -'₁ e₋ ⟩
+      M₋₁ ∎
+
+    lemma-M₋₁-CZ : M₋₁ • CZ ≈ CZ ^ toℕ (-'₁ .proj₁) • M₋₁
+    lemma-M₋₁-CZ = begin
+      M₋₁ • CZ                        ≈⟨ cleft sym Mg^j₋≈M₋₁ ⟩
+      Mg ^ j₋ • CZ                    ≈⟨ lemma-Mgᵏ-CZ j₋ ⟩
+      CZ ^ toℕ (g ^′ j₋) • Mg ^ j₋    ≡⟨ Eq.cong (λ z → CZ ^ toℕ z • Mg ^ j₋) e₋ ⟩
+      CZ ^ toℕ (-'₁ .proj₁) • Mg ^ j₋ ≈⟨ cright Mg^j₋≈M₋₁ ⟩
+      CZ ^ toℕ (-'₁ .proj₁) • M₋₁ ∎
+
+    -- CZ • CZ⁻¹ is CZ ^ p.
+    lemma-CZ-CZ₋₁ : CZ • CZ ^ toℕ (-'₁ .proj₁) ≈ ε
+    lemma-CZ-CZ₋₁ = begin
+      CZ • CZ ^ toℕ (-'₁ .proj₁)
+        ≡⟨ Eq.cong (λ m → CZ • CZ ^ m) lemma-toℕ-1ₚ ⟩
+      CZ • CZ ^ p-1        ≈⟨ sym (^-+ CZ 1 p-1) ⟩
+      CZ ^ (1 Nat.+ p-1)   ≈⟨ axiom order-CZ ⟩
+      ε ∎
+
+  lemma-ₕ|ₕ-invol : ₕ|ₕ • ₕ|ₕ ≈ ε
+  lemma-ₕ|ₕ-invol = begin
+    (H • CZ • H) • (H • CZ • H)
+      ≈⟨ by-assoc auto ⟩
+    H • CZ • (H ^ 2 • (CZ • H))
+      ≈⟨ cright cright cleft axiom order-H ⟩
+    H • CZ • (M₋₁ • (CZ • H))
+      ≈⟨ cright cright sym assoc ⟩
+    H • CZ • ((M₋₁ • CZ) • H)
+      ≈⟨ cright cright cleft lemma-M₋₁-CZ ⟩
+    H • CZ • ((CZ ^ toℕ (-'₁ .proj₁) • M₋₁) • H)
+      -- explicit assoc, not by-assoc: to-list is stuck on the symbolic
+      -- exponent of CZ ^ toℕ (-'₁ .proj₁)
+      ≈⟨ cright cright assoc ⟩
+    H • CZ • (CZ ^ toℕ (-'₁ .proj₁) • (M₋₁ • H))
+      ≈⟨ cright sym assoc ⟩
+    H • ((CZ • CZ ^ toℕ (-'₁ .proj₁)) • (M₋₁ • H))
+      ≈⟨ cright cleft lemma-CZ-CZ₋₁ ⟩
+    H • (ε • (M₋₁ • H))
+      ≈⟨ cright left-unit ⟩
+    H • (M₋₁ • H)
+      ≈⟨ cright cleft sym (axiom order-H) ⟩
+    H • (H ^ 2 • H)
+      ≈⟨ by-assoc auto ⟩
+    H ^ 4
+      ≈⟨ One-Wire.lemma-order-H (₁₊ n) ⟩
+    ε ∎
+
+  lemma-ʰ|ʰ-invol : ʰ|ʰ • ʰ|ʰ ≈ ε
+  lemma-ʰ|ʰ-invol = begin
+    ʰ|ʰ • ʰ|ʰ
+      ≈⟨ cong (sym lemma-ʰ|ʰ-conj) (sym lemma-ʰ|ʰ-conj) ⟩
+    (Ex • (ₕ|ₕ • Ex)) • (Ex • (ₕ|ₕ • Ex))
+      ≈⟨ by-assoc auto ⟩
+    Ex • (ₕ|ₕ • ((Ex • Ex) • (ₕ|ₕ • Ex)))
+      ≈⟨ cright cright cleft lemma-Ex-Ex ⟩
+    Ex • (ₕ|ₕ • (ε • (ₕ|ₕ • Ex)))
+      ≈⟨ cright cright left-unit ⟩
+    Ex • (ₕ|ₕ • (ₕ|ₕ • Ex))
+      ≈⟨ cright sym assoc ⟩
+    Ex • ((ₕ|ₕ • ₕ|ₕ) • Ex)
+      ≈⟨ cright cleft lemma-ₕ|ₕ-invol ⟩
+    Ex • (ε • Ex)
+      ≈⟨ cright left-unit ⟩
+    Ex • Ex
+      ≈⟨ lemma-Ex-Ex ⟩
+    ε ∎
+
+  -- ⊥⊤ and ⊤⊥ are the two products of the same pair of involutions.
+  lemma-⊥⊤-⊤⊥ : ⊥⊤ • ⊤⊥ ≈ ε
+  lemma-⊥⊤-⊤⊥ = begin
+    (ₕ|ₕ • ʰ|ʰ) • (ʰ|ʰ • ₕ|ₕ)
+      ≈⟨ by-assoc auto ⟩
+    ₕ|ₕ • ((ʰ|ʰ • ʰ|ʰ) • ₕ|ₕ)
+      ≈⟨ cright cleft lemma-ʰ|ʰ-invol ⟩
+    ₕ|ₕ • (ε • ₕ|ₕ)
+      ≈⟨ cright left-unit ⟩
+    ₕ|ₕ • ₕ|ₕ
+      ≈⟨ lemma-ₕ|ₕ-invol ⟩
+    ε ∎
+
+  lemma-⊤⊥-⊥⊤ : ⊤⊥ • ⊥⊤ ≈ ε
+  lemma-⊤⊥-⊥⊤ = begin
+    (ʰ|ʰ • ₕ|ₕ) • (ₕ|ₕ • ʰ|ʰ)
+      ≈⟨ by-assoc auto ⟩
+    ʰ|ʰ • ((ₕ|ₕ • ₕ|ₕ) • ʰ|ʰ)
+      ≈⟨ cright cleft lemma-ₕ|ₕ-invol ⟩
+    ʰ|ʰ • (ε • ʰ|ʰ)
+      ≈⟨ cright left-unit ⟩
+    ʰ|ʰ • ʰ|ʰ
+      ≈⟨ lemma-ʰ|ʰ-invol ⟩
+    ε ∎
+
+
 ------------------------------------------------------------------------
 -- The shift down is the identity on the one-wire words
 --
@@ -1101,29 +1239,6 @@ module Three-Wire (n : ℕ) where
   -- Mg ^ j rescales by g ^′ j.  The induction costs only associativity,
   -- because x ^′ (suc k) is x * (x ^′ k) definitionally; the ₀/₁/₂₊ split
   -- is forced by w ^ 1 being w rather than w • w ^ 0.
-
-  lemma-Mgᵏ-CZ : ∀ j → Mg ^ j • CZ ≈ CZ ^ toℕ (g ^′ j) • Mg ^ j
-  lemma-Mgᵏ-CZ ₀ = begin
-    ε • CZ  ≈⟨ left-unit ⟩
-    CZ      ≈⟨ sym right-unit ⟩
-    CZ • ε ∎
-  lemma-Mgᵏ-CZ ₁ = begin
-    Mg • CZ                ≈⟨ lemma-semi-Mg-CZ ⟩
-    CZ ^ toℕ g • Mg
-      ≡⟨ Eq.cong (λ z → CZ ^ toℕ z • Mg) (Eq.sym (lemma-x^′1=x g)) ⟩
-    CZ ^ toℕ (g ^′ 1) • Mg ∎
-  lemma-Mgᵏ-CZ (₂₊ j) = begin
-    (Mg • Mg ^ ₁₊ j) • CZ
-      ≈⟨ assoc ⟩
-    Mg • (Mg ^ ₁₊ j • CZ)
-      ≈⟨ cright lemma-Mgᵏ-CZ (₁₊ j) ⟩
-    Mg • (CZ ^ toℕ (g ^′ ₁₊ j) • Mg ^ ₁₊ j)
-      ≈⟨ sym assoc ⟩
-    (Mg • CZ ^ toℕ (g ^′ ₁₊ j)) • Mg ^ ₁₊ j
-      ≈⟨ cleft lemma-Mg-CZ^ (g ^′ ₁₊ j) ⟩
-    (CZ ^ toℕ (g * (g ^′ ₁₊ j)) • Mg) • Mg ^ ₁₊ j
-      ≈⟨ assoc ⟩
-    CZ ^ toℕ (g * (g ^′ ₁₊ j)) • (Mg • Mg ^ ₁₊ j) ∎
 
   ------------------------------------------------------------------------
   -- The transposition of wires 0 and 2
