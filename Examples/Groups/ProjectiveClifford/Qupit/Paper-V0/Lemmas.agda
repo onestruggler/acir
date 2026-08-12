@@ -22,15 +22,21 @@
 -- CZ-H-CZ relations c10 and c11 that Paper-V0 does not have.
 ------------------------------------------------------------------------
 
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
+open import Relation.Binary.PropositionalEquality
+  using (_≡_ ; _≢_ ; setoid ; module ≡-Reasoning)
 import Relation.Binary.Reasoning.Setoid as SR
 import Relation.Binary.PropositionalEquality as Eq
 
-open import Data.Product using (_,_ ; proj₁ ; ∃)
+open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
+open import Data.Nat.DivMod
+import Data.Nat as Nat
+import Data.Nat.Properties as NP
 open import Data.Fin hiding (_+_ ; _-_)
+open import Data.Fin.Properties using (toℕ-inject₁ ; toℕ-fromℕ<)
 
 open import Word.Base as WB hiding (wfoldl ; _^'_)
+open import Word.Properties
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open import Notations
@@ -59,6 +65,169 @@ open Lemmas-Clifford using (lemma-↑^ ; lemma-↓^)
 private
   variable
     n : ℕ
+
+------------------------------------------------------------------------
+-- Multiplier arithmetic on one wire
+--
+-- Paper-V0 and Simplified-V1 have the SAME six one-wire axioms —
+-- order-S, order-H, M-power, semi-MR, order-SH, comm-HHSHHS — so every
+-- one-wire lemma of Simplified-V1.Lemmas.Lemmas1 holds here by the same
+-- proof.  The ones below are ported verbatim from there, because the
+-- proof terms are tied to a particular relation and cannot be reused
+-- across the two.
+--
+-- lemma-M-mul is what the three-wire derivations need: M ½ • M 2 is
+-- M 1 is ε, and inserting that resolution of the identity is the step
+-- that lets R¹⁴/R¹⁵ rescale a CZ exponent.
+
+module One-Wire (n : ℕ) where
+
+  open PB ((₁₊ n) QRel,_===_) hiding (_===_)
+  open PP ((₁₊ n) QRel,_===_)
+
+  aux-M≡M : ∀ y y' -> y .proj₁ ≡ y' .proj₁ -> M {n = n} y ≡ M y'
+  aux-M≡M y y' eq = begin
+    M y ≡⟨ auto ⟩
+    R^ x • H • R^ x⁻¹ • H • R^ x • H ≡⟨ Eq.cong₂ (\ xx yy -> R^ xx • H • R^ yy • H • R^ x • H) eq aux-eq ⟩
+    R^ x' • H • R^ x'⁻¹ • H • R^ x • H ≡⟨ Eq.cong (\ xx -> R^ x' • H • R^ x'⁻¹ • H • R^ xx • H) eq ⟩
+    R^ x' • H • R^ x'⁻¹ • H • R^ x' • H ≡⟨ auto ⟩
+    M y' ∎
+    where
+    open ≡-Reasoning
+    x = y .proj₁
+    x⁻¹ = ((y ⁻¹) .proj₁ )
+    x' = y' .proj₁
+    x'⁻¹ = ((y' ⁻¹) .proj₁ )
+    aux-eq : x⁻¹ ≡ x'⁻¹
+    aux-eq  = begin
+      x⁻¹ ≡⟨  Eq.sym  (*-identityʳ x⁻¹) ⟩
+      x⁻¹ * ₁ ≡⟨ Eq.cong (x⁻¹ *_) (Eq.sym (lemma-⁻¹ʳ x' {{nztoℕ {y = x'} {neq0 = y' .proj₂} }})) ⟩
+      x⁻¹ * (x' * x'⁻¹) ≡⟨ Eq.sym (*-assoc x⁻¹ x' x'⁻¹) ⟩
+      (x⁻¹ * x') * x'⁻¹ ≡⟨ Eq.cong (\ xx -> (x⁻¹ * xx) * x'⁻¹) (Eq.sym eq) ⟩
+      (x⁻¹ * x) * x'⁻¹ ≡⟨ Eq.cong (_* x'⁻¹) (lemma-⁻¹ˡ x {{nztoℕ {y = x} {neq0 = y .proj₂} }}) ⟩
+      ₁ * x'⁻¹ ≡⟨ *-identityˡ x'⁻¹ ⟩
+      x'⁻¹ ∎
+
+  lemma-M1 : M (₁ , λ ()) ≈ ε
+  lemma-M1 = begin
+    M (₁ , λ ()) ≡⟨ aux-M≡M ((₁ , λ ())) (g^ ₀) auto ⟩
+    M (g^ ₀) ≈⟨ sym (axiom (M-power ₀)) ⟩
+    Mg^ ₀ ≈⟨ refl ⟩
+    ε ∎
+    where
+    open SR word-setoid
+
+  lemma-Mg^p-1=ε : Mg ^ p-1 ≈ ε
+  lemma-Mg^p-1=ε = begin
+    Mg ^ p-1 ≡⟨ Eq.cong (Mg ^_) (Eq.sym (toℕ-fromℕ< (NP.n<1+n p-1))) ⟩
+    Mg^ (fromℕ< (NP.n<1+n p-1)) ≈⟨ axiom (M-power (₂₊ (fromℕ< _))) ⟩
+    M (g^ p-1') ≡⟨ aux-M≡M (g^ p-1') ((g ^′ p-1 , lemma-g^′k≠0 p-1)) (Eq.cong (g ^′_) (toℕ-fromℕ< (NP.n<1+n p-1))) ⟩
+    M (g ^′ p-1 , lemma-g^′k≠0 p-1) ≡⟨ aux-M≡M ((g ^′ p-1 , lemma-g^′k≠0 p-1)) (1ₚ , λ ()) Fermat's-little-theorem' ⟩
+    M (1ₚ , λ ()) ≈⟨ sym (axiom (M-power ₀)) ⟩
+    ε ∎
+    where
+    open SR word-setoid
+    p-1' = fromℕ< (NP.n<1+n p-1)
+
+  aux-Mg^[kp-1] : ∀ k -> Mg ^ (k Nat.* p-1) ≈ ε
+  aux-Mg^[kp-1] k = begin
+    Mg ^ (k Nat.* p-1) ≈⟨ refl' (Eq.cong (Mg ^_) (NP.*-comm k p-1)) ⟩
+    Mg ^ (p-1 Nat.* k) ≈⟨ sym (^^ Mg p-1 k) ⟩
+    (Mg ^ p-1) ^ k ≈⟨ ^-cong (Mg ^ p-1) ε k lemma-Mg^p-1=ε ⟩
+    ε ^ k ≈⟨ ε^k=ε k ⟩
+    ε ∎
+    where
+    open SR word-setoid
+
+  lemma-M-mul : ∀ x y -> M x • M y ≈ M (x *' y)
+  lemma-M-mul x y = begin
+    M x • M y ≈⟨ cong (refl' (aux-M≡M x (g^ k) eqk)) (refl' (aux-M≡M y (g^ l) eql)) ⟩
+    M (g^ k) • M (g^ l) ≈⟨ cong (sym (axiom (M-power k))) (sym (axiom (M-power l))) ⟩
+    Mg ^ toℕ k • Mg ^ toℕ l ≈⟨ sym (^-+ Mg (toℕ k) (toℕ l)) ⟩
+    Mg ^ [k+l] ≡⟨ Eq.cong (Mg ^_) (m≡m%n+[m/n]*n [k+l] p-1) ⟩
+    Mg ^ ([k+l]%p-1 Nat.+ [k+l]/p-1 Nat.* p-1) ≈⟨ ^-+ Mg [k+l]%p-1 (([k+l]/p-1 Nat.* p-1)) ⟩
+    Mg ^ [k+l]%p-1 • Mg ^ ([k+l]/p-1 Nat.* p-1) ≈⟨ (cright trans refl (aux-Mg^[kp-1] [k+l]/p-1)) ⟩
+    Mg ^ [k+l]%p-1 • ε ≈⟨ right-unit ⟩
+    Mg ^ [k+l]%p-1 ≡⟨ Eq.cong (Mg ^_) (Eq.sym (toℕ-fromℕ< (m%n<n [k+l] p-1))) ⟩
+    Mg ^ toℕ ( (fromℕ< (m%n<n [k+l] p-1))) ≡⟨ Eq.cong (Mg ^_) (Eq.sym (toℕ-inject₁ ((fromℕ< (m%n<n [k+l] p-1))))) ⟩
+    Mg ^ toℕ (inject₁ (fromℕ< (m%n<n [k+l] p-1))) ≈⟨ refl ⟩
+    Mg^ (inject₁ (fromℕ< (m%n<n [k+l] p-1))) ≈⟨ axiom (M-power (inject₁ (fromℕ< (m%n<n [k+l] p-1)))) ⟩
+    M (g^ (inject₁ (fromℕ< (m%n<n [k+l] p-1)))) ≡⟨ aux-M≡M (g^ (inject₁ (fromℕ< (m%n<n [k+l] p-1)))) (g^′ [k+l]) aux-2 ⟩
+    M (g^′ [k+l]) ≡⟨ aux-M≡M (g^′ [k+l]) (g^′ toℕ k *' g^′ toℕ l) aux-1 ⟩
+    M (g^′ toℕ k *' g^′ toℕ l) ≡⟨ aux-M≡M (g^′ toℕ k *' g^′ toℕ l) (x *' y) aux-0 ⟩
+    M (x *' y) ∎
+    where
+    k = inject₁ (g-gen x .proj₁)
+    l = inject₁ (g-gen y .proj₁)
+    eqk : x .proj₁ ≡ (g^ k) .proj₁
+    eqk = Eq.sym (lemma-log-inject x)
+    eql : y .proj₁ ≡ (g^ l) .proj₁
+    eql = Eq.sym (lemma-log-inject y)
+
+    [k+l] = toℕ k Nat.+ toℕ l
+    [k+l]%p-1 = [k+l] Nat.% p-1
+    [k+l]/p-1 = [k+l] Nat./ p-1
+
+    aux-0 : ((g^′ toℕ k) *' (g^′ toℕ l)) .proj₁ ≡ (x *' y) .proj₁
+    aux-0 = begin
+      ((g^′ toℕ k) *' (g^′ toℕ l)) .proj₁ ≡⟨ auto ⟩
+      (g^′ toℕ k) .proj₁ * (g^′ toℕ l) .proj₁ ≡⟨ Eq.cong₂ (\ xx yy -> (xx * yy) ) (lemma-log-inject x) (lemma-log-inject y) ⟩
+      x .proj₁ * y .proj₁ ≡⟨ auto ⟩
+      (x *' y) .proj₁ ∎
+      where
+      open ≡-Reasoning
+
+    aux-1 : (g^′ [k+l]) .proj₁ ≡ ((g^′ toℕ k) *' (g^′ toℕ l)) .proj₁
+    aux-1 = begin
+      (g^′ [k+l]) .proj₁ ≡⟨ auto ⟩
+      (g ^′ [k+l]) ≡⟨ Eq.sym (+-^′-distribʳ g (toℕ k) (toℕ l)) ⟩
+      ((g ^′ toℕ k) * (g ^′ toℕ l)) ≡⟨ auto ⟩
+      ((g^′ toℕ k) *' (g^′ toℕ l)) .proj₁ ∎
+      where
+      open ≡-Reasoning
+
+    aux-2 : g ^′ toℕ (inject₁ (fromℕ< (m%n<n [k+l] p-1))) ≡ g ^′ (toℕ k Nat.+ toℕ l)
+    aux-2 = begin
+      g ^′ toℕ (inject₁ (fromℕ< (m%n<n [k+l] p-1))) ≡⟨ Eq.cong (g ^′_) (toℕ-inject₁ ((fromℕ< (m%n<n [k+l] p-1)))) ⟩
+      g ^′ toℕ ( (fromℕ< (m%n<n [k+l] p-1))) ≡⟨ Eq.cong (g ^′_) (toℕ-fromℕ< ((m%n<n [k+l] p-1))) ⟩
+      g ^′ [k+l]%p-1 ≡⟨ Eq.sym (aux-g^′-% [k+l]) ⟩
+      g ^′ (toℕ k Nat.+ toℕ l) ∎
+      where
+      open ≡-Reasoning
+
+    -- Opened last, as in Simplified-V1: an `open` in a where-block is
+    -- scoped from its own position onward, so putting the setoid
+    -- reasoning here keeps `begin_` unambiguous inside the aux-blocks
+    -- above, which use ≡-Reasoning instead.
+    open SR word-setoid
+
+  ------------------------------------------------------------------------
+  -- The resolution of the identity that Lemma 9 inserts
+  --
+  -- M ½ • M 2 is M (½·2) is M 1 is ε.  Inserting this in the middle of a
+  -- word is the unlabelled step of the progress report's Lemma 9: once
+  -- the two multipliers are there, semi-M↑CZ / semi-M↓CZ push them
+  -- outwards and rescale the exponent of every CZ they pass, which is
+  -- what makes the C18 corrections cancel.
+
+  -- The modulus of a bare ₂ is not inferable inside the instance
+  -- argument below, so it is pinned down once here.
+  2ₚ : ℤ ₚ
+  2ₚ = ₂
+
+  ₂* : ℤ* ₚ
+  ₂* = (2ₚ , λ ())
+
+  lemma-M½·M₂ : M (₂* ⁻¹) • M ₂* ≈ ε
+  lemma-M½·M₂ = begin
+    M (₂* ⁻¹) • M ₂*   ≈⟨ lemma-M-mul (₂* ⁻¹) ₂* ⟩
+    M ((₂* ⁻¹) *' ₂*)  ≡⟨ aux-M≡M ((₂* ⁻¹) *' ₂*) (₁ , λ ()) aux ⟩
+    M (₁ , λ ())       ≈⟨ lemma-M1 ⟩
+    ε ∎
+    where
+    aux : ((₂* ⁻¹) *' ₂*) .proj₁ ≡ ₁
+    aux = lemma-⁻¹ˡ 2ₚ {{nztoℕ {y = 2ₚ} {neq0 = λ ()} }}
+    open SR word-setoid
 
 ------------------------------------------------------------------------
 -- Ex is its own inverse
