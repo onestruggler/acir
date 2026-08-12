@@ -81,6 +81,13 @@ f-well-defined CliR.selinger-c15   = PB.axiom SimR.selinger-c15
 -- Matched through comm₁/comm₂: on the Clifford side these three are now
 -- instances of the framework's structural rules, so there is no
 -- constructor named comm-H to match on any more.
+-- comm₁ concludes at ₁₊ n and comm₂ at ₂₊ n, one width below where
+-- comm-H / comm-S / comm-CZ are stated.  At that width the shifted
+-- generator comes from Gen ₀, which only gate₀ inhabits, and SympGate has
+-- no 0-ary gate, so those cases are vacuous.
+f-well-defined {₁₊ ₀} (CliR.comm₁ H-gate (gate₀ ()))
+f-well-defined {₁₊ ₀} (CliR.comm₁ S-gate (gate₀ ()))
+f-well-defined {₂₊ ₀} (CliR.comm₂ CZ-gate (gate₀ ()))
 f-well-defined {₂₊ n} (CliR.comm₁ H-gate _)  = PB.axiom SimR.comm-H
 f-well-defined {₂₊ n} (CliR.comm₁ S-gate _)  = PB.axiom SimR.comm-S
 f-well-defined {₃₊ n} (CliR.comm₂ CZ-gate _) = PB.axiom SimR.comm-CZ
@@ -113,6 +120,9 @@ g-well-defined SimR.selinger-c13   = PB.axiom CliR.selinger-c13
 g-well-defined SimR.selinger-c14   = PB.axiom CliR.selinger-c14
 g-well-defined SimR.selinger-c15   = PB.axiom CliR.selinger-c15
 -- Both sides are on the framework now, so these match comm₁/comm₂ here too.
+g-well-defined {₁₊ ₀} (SimR.comm₁ H-gate (gate₀ ()))
+g-well-defined {₁₊ ₀} (SimR.comm₁ S-gate (gate₀ ()))
+g-well-defined {₂₊ ₀} (SimR.comm₂ CZ-gate (gate₀ ()))
 g-well-defined {₂₊ n} (SimR.comm₁ H-gate _)  = PB.axiom CliR.comm-H
 g-well-defined {₂₊ n} (SimR.comm₁ S-gate _)  = PB.axiom CliR.comm-S
 g-well-defined {₃₊ n} (SimR.comm₂ CZ-gate _) = PB.axiom CliR.comm-CZ
