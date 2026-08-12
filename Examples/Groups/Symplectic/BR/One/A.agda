@@ -57,11 +57,13 @@ fig-24-1 : ∀ (b* : ℤ* ₚ) ->
   
 fig-24-1 b*@(₀ , nzb) = ⊥-elim (nzb auto)
 fig-24-1 b*@(b@(₁₊ b-1) , nzb) = begin
-  ⟦ (b , λ ()) ⁻¹ , ε ⟧ₘ₊ • H ≈⟨ cleft right-unit ⟩
+  XM (b , λ ()) • H ≡⟨ Eq.cong (_• H) (XM≡ZM⁻¹ (b , λ ())) ⟩
   ⟦ (b , λ ()) ⁻¹ ⟧ₘ • H ≈⟨ cright sym right-unit ⟩
   ⟦ (b , λ ()) ⁻¹ ⟧ₘ • H • ε ≈⟨ refl ⟩
   ⟦ (b , λ ()) ⁻¹ ⟧ₘ • H • S^ ₀ ≈⟨ cright cright refl' (Eq.cong S^ (Eq.sym (Eq.trans (Eq.cong (_* b⁻¹) -0#≈0#) (*-zeroˡ b⁻¹)))) ⟩
-  ⟦ (b , λ ()) ⁻¹ ⟧ₘ • H • S^ (- ₀ * b⁻¹) ≈⟨ refl ⟩
+  ⟦ (b , λ ()) ⁻¹ ⟧ₘ • H • S^ (- ₀ * b⁻¹)
+    ≡⟨ Eq.cong (\ z -> z • H • S^ (- ₀ * b⁻¹))
+               (Eq.sym (XM≡ZM⁻¹ (b , λ ()))) ⟩
   [ (b , ₀) , aux-a≠0⇒ab≠0 b ₀ nzb  ]ᵃ ∎
   where
   nz : (₀ , b) ≢ (₀ , ₀)
@@ -83,7 +85,8 @@ fig-24-2 : ∀ (a* : ℤ* ₚ) ->
   
 fig-24-2 a*@(₀ , nza) = ⊥-elim (nza auto)
 fig-24-2 a*@(a@(₁₊ a-1) , nza) = begin
-  [ (a , ₀) , nz ]ᵃ • H ≈⟨ refl ⟩
+  [ (a , ₀) , nz ]ᵃ • H
+    ≡⟨ Eq.cong (\ z -> (z • H • S^ -b/a) • H) (XM≡ZM⁻¹ (a , λ ())) ⟩
   ⟦ (a , λ ()) ⁻¹ , HS^ -b/a ⟧ₘ₊ • H ≈⟨ cleft cright cright  refl' (Eq.cong S^ ( (Eq.trans (Eq.cong (_* a⁻¹) -0#≈0#) (*-zeroˡ a⁻¹)))) ⟩
   (⟦ (a , λ ()) ⁻¹ ⟧ₘ • H • S^ ₀ ) • H ≈⟨ cleft cright right-unit ⟩
   (⟦ (a , λ ()) ⁻¹ ⟧ₘ • H) • H ≈⟨ assoc ⟩
@@ -122,7 +125,8 @@ fig-24-3 : ∀ (a* b* : ℤ* ₚ) ->
   
 fig-24-3 a*@(₀ , nza) b* = ⊥-elim (nza auto)
 fig-24-3 a*@(a@(₁₊ a-1) , nza) b*@(b , nzb) = begin
-  [ (a , b) , nz ]ᵃ • H ≈⟨ refl ⟩
+  [ (a , b) , nz ]ᵃ • H
+    ≡⟨ Eq.cong (\ z -> (z • H • S^ -b/a) • H) (XM≡ZM⁻¹ (a , λ ())) ⟩
   ⟦ (a , λ ()) ⁻¹ , HS^ -b/a ⟧ₘ₊ • H ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 4) auto ⟩
   ⟦ (a , λ ()) ⁻¹ ⟧ₘ • H • S^ -b/a • H ≈⟨ derived-7  x y nzx nzy ⟩
   S^ (-x⁻¹ * (y * y)) • ZM -y/x' • (H • S^ -x⁻¹) ≈⟨ cong (refl' (Eq.cong S^ (cal .proj₁))) (cong (aux-MM  (-y/x' .proj₂) ((b* ⁻¹) .proj₂) (cal .proj₂ .proj₁)) (cright refl' (Eq.cong S^ (cal .proj₂ .proj₂)))) ⟩
@@ -259,8 +263,20 @@ aux-x≠0⇒x=₁₊y (₁₊ x) nz = x , auto
 aux-AA : ∀ {n} (x y : A) (eq : x .proj₁ ≡ y .proj₁) -> [_]ᵃ {n} x ≡ [ y ]ᵃ
 aux-AA {n} ((₀ , ₀) , px) ((c , d) , py) eq = ⊥-elim (px auto)
 aux-AA {n} ((a , b) , px) ((₀ , ₀) , py) eq = ⊥-elim (py auto)
-aux-AA {n} ((a@₀ , b@(₁₊ _)) , px) ((c@₀ , d@(₁₊ _)) , py) eq = Eq.cong (_• ε) (aux-M≡M' ((b , λ ()) ⁻¹) ((d , λ ()) ⁻¹) (inv-cong (b , (λ ())) (d , (λ ())) (Eq.cong proj₂ eq)))
-aux-AA {n} ((a@(₁₊ _) , b) , px) ((c@(₁₊ _) , d) , py) eq = Eq.cong₂ (\ xx yy -> xx • H • S^ yy ) (aux-M≡M' ((a , λ ()) ⁻¹) ((c , λ ()) ⁻¹) (inv-cong (a , (λ ())) (c , (λ ())) (Eq.cong proj₁ eq))) (Eq.cong₂ _*_ (Eq.cong -_ (Eq.cong proj₂ eq)) ( (inv-cong (a , (λ ())) (c , (λ ())) (Eq.cong proj₁ eq))))
+-- Both boxes are now built from XM, so each side is routed through
+-- XM≡ZM⁻¹ before aux-M≡M' compares the two ZM's.
+aux-AA {n} ((a@₀ , b@(₁₊ _)) , px) ((c@₀ , d@(₁₊ _)) , py) eq =
+  Eq.trans (XM≡ZM⁻¹ (b , λ ()))
+  (Eq.trans (aux-M≡M' ((b , λ ()) ⁻¹) ((d , λ ()) ⁻¹)
+                      (inv-cong (b , (λ ())) (d , (λ ())) (Eq.cong proj₂ eq)))
+            (Eq.sym (XM≡ZM⁻¹ (d , λ ()))))
+aux-AA {n} ((a@(₁₊ _) , b) , px) ((c@(₁₊ _) , d) , py) eq =
+  Eq.cong₂ (\ xx yy -> xx • H • S^ yy )
+    (Eq.trans (XM≡ZM⁻¹ (a , λ ()))
+    (Eq.trans (aux-M≡M' ((a , λ ()) ⁻¹) ((c , λ ()) ⁻¹)
+                        (inv-cong (a , (λ ())) (c , (λ ())) (Eq.cong proj₁ eq)))
+              (Eq.sym (XM≡ZM⁻¹ (c , λ ())))))
+    (Eq.cong₂ _*_ (Eq.cong -_ (Eq.cong proj₂ eq)) ( (inv-cong (a , (λ ())) (c , (λ ())) (Eq.cong proj₁ eq))))
 
 
 lemma-A-HH : ∀ a b (nz : a ≢ ₀) ->

@@ -78,13 +78,22 @@ aux-abox-nza : let open PB ((₁₊ n) QRel,_===_) in ∀ a b -> (nz : a ≢ ₀
   in
   [ (a , b) , aux-a≠0⇒ab≠0 a b nz ]ᵃ ≈  ⟦ (a , nz) ⁻¹ , HS^ -b/a ⟧ₘ₊
 aux-abox-nza {n} a@₀ b nz = ⊥-elim (nz auto)
-aux-abox-nza {n} a@(₁₊ a-1) b nz = PB.refl
+-- [_]ᵃ is built from XM; the ⟦_⟧ₘ₊ form on the right is the ZM one, and
+-- the two are exchanged by inversion.
+aux-abox-nza {n} a@(₁₊ a-1) b nz =
+  refl' (Eq.cong (_• (H • S^ -b/a)) (XM≡ZM⁻¹ (a , nz)))
+  where
+  open PB ((₁₊ n) QRel,_===_)
+  a⁻¹ = ((a , nz) ⁻¹) .proj₁
+  -b/a = - b * a⁻¹
 
 
 aux-abox-nzb : let open PB ((₁₊ n) QRel,_===_) in ∀ b -> (nz : b ≢ ₀) ->
   [ (₀ , b) , aux-b≠0⇒ab≠0 ₀ b nz ]ᵃ ≈  ⟦ (b , nz) ⁻¹ ⟧ₘ
 aux-abox-nzb {n} b@₀ nz = ⊥-elim (nz auto)
-aux-abox-nzb {n} b@(₁₊ b-1) nz = PB.right-unit
+aux-abox-nzb {n} b@(₁₊ b-1) nz = refl' (XM≡ZM⁻¹ (b , nz))
+  where
+  open PB ((₁₊ n) QRel,_===_)
 
 
 {- old

@@ -162,6 +162,13 @@ module Symplectic where
     x = x' .proj₁
     x⁻¹ = ((x' ⁻¹) .proj₁ )
 
+  -- The two fillings are exchanged by inversion.  Over SHS this is one
+  -- congruence in the second exponent, since (x ⁻¹) ⁻¹ is x; proofs
+  -- that state a box in ZM form but read it off a definition in XM form
+  -- go through here.
+  XM≡ZM⁻¹ : ∀ {n} (x : ℤ* ₚ) -> XM {n} x ≡ ZM (x ⁻¹)
+  XM≡ZM⁻¹ x = Eq.cong (SHS ((x ⁻¹) .proj₁)) (Eq.sym (inv-involutive x))
+
   -- The historical name for ZM, kept so that existing uses of M do not
   -- have to change.
   M : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))

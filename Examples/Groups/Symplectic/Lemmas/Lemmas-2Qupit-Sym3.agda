@@ -291,7 +291,7 @@ lemma-abox-m : ∀ x m -> let open PB ((₁₊ n) QRel,_===_) in
 
 lemma-abox-m ((₀ , ₀) , nz) m = ⊥-elim (nz auto)
 lemma-abox-m {n} x@((₀ , b@(₁₊ _)) , nz) m = begin
-  ⟦ (b , λ ()) ⁻¹ , ε ⟧ₘ₊ • ZM m ≈⟨ (cleft right-unit) ⟩
+  XM (b , λ ()) • ZM m ≡⟨ Eq.cong (_• ZM m) (XM≡ZM⁻¹ (b , λ ())) ⟩
   ⟦ (b , λ ()) ⁻¹ ⟧ₘ • ZM m ≈⟨ axiom (M-mul ((b , λ ()) ⁻¹) m) ⟩
   ⟦ (b , λ ()) ⁻¹ *' m ⟧ₘ ≈⟨ aux-MM (((b , λ ()) ⁻¹ *' m) .proj₂) (((b , λ ()) ⁻¹ *' m ⁻¹ ⁻¹) .proj₂) (Eq.cong (b⁻¹ *_) (Eq.sym (inv-involutive m))) ⟩
   ⟦ (b , λ ()) ⁻¹ *' m ⁻¹ ⁻¹ ⟧ₘ ≈⟨ aux-MM (((b , λ ()) ⁻¹ *' m ⁻¹ ⁻¹) .proj₂) ((((b , λ ()) *' m  ⁻¹) ⁻¹) .proj₂) (Eq.sym (inv-distrib (b , λ ()) (m ⁻¹))) ⟩
@@ -307,6 +307,8 @@ lemma-abox-m {n} x@((₀ , b@(₁₊ _)) , nz) m = begin
   b⁻¹ = ((b , λ ()) ⁻¹) .proj₁
 
 lemma-abox-m {n} x@((a@(₁₊ _), b) , nz) m = begin
+  (XM (a , λ ()) • H • S^ -b/a) • ZM m
+    ≡⟨ Eq.cong (\ z -> (z • H • S^ -b/a) • ZM m) (XM≡ZM⁻¹ (a , λ ())) ⟩
   ⟦ (a , λ ()) ⁻¹ , HS^ -b/a  ⟧ₘ₊ • ZM m ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 4) auto ⟩
   ⟦ (a , λ ()) ⁻¹ ⟧ₘ • H • S^ -b/a • ZM m ≈⟨ (cright cright lemma-S^kM (m .proj₁) -b/a (m .proj₂)) ⟩
   ⟦ (a , λ ()) ⁻¹ ⟧ₘ • H • ZM m • S^ (-b/a * m⁻²) ≈⟨ (cright sym assoc) ⟩

@@ -532,8 +532,9 @@ lemma-Aa0 : let open PB ((₁₊ n) QRel,_===_) in
 lemma-Aa0 {n} a*@(₀ , nz) = ⊥-elim (nz auto)
 lemma-Aa0 {n} a*@(a@(₁₊ _) , nz) = begin
   [ (a , ₀) , aux-a≠0⇒ab≠0 a ₀ nz ]ᵃ ≈⟨ refl ⟩
-  ⟦ a* ⁻¹ , HS^ -b/a ⟧ₘ₊ ≡⟨ Eq.cong (\ xx -> ⟦ a* ⁻¹ , HS^ xx ⟧ₘ₊) aux ⟩
-  ⟦ a* ⁻¹ , HS^ ₀ ⟧ₘ₊ ≈⟨ cong refl right-unit ⟩
+  XM a* • H • S^ -b/a ≡⟨ Eq.cong (\ xx -> XM a* • H • S^ xx) aux ⟩
+  XM a* • H • S^ ₀ ≈⟨ cong refl right-unit ⟩
+  XM a* • H ≡⟨ Eq.cong (_• H) (XM≡ZM⁻¹ a*) ⟩
   ⟦ a* ⁻¹ ⟧ₘ • H ∎
   where
   open Lemmas0 n
