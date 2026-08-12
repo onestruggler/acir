@@ -247,10 +247,28 @@ sec-trivial-1 = sec-trivial sec-reduction-1
 --   [₀]ᵇ≈Ex     needs H⁴ ≈ ε, which the original rule set has as its
 --               order-H axiom and this one does not.  H²-free supplies
 --               it: H⁴ = H² • H², twice H²-free.
---   aux-MB      induction on the width, and the one genuinely new step:
---               lemma-order-Ex-n (Ex • Ex ≈ ε) has to be redone in the
---               simplified set, and the induction is under lemma-cong↑,
---               so Corr-free needs its own ↑-congruence.
+--   aux-MB      induction on the width.  The ↑-congruence it needs is
+--               ↑-free above.  What is left is lemma-order-Ex-n
+--               (Ex • Ex ≈ ε), and that one is not a leaf: it is
+--               by-emb n lemma-order-Ex, and lemma-order-Ex sits on the
+--               Ex-Sym1/2/2n/3n/4/4n family together with Ex-Rewriting
+--               and XEX-Rewriting.  Porting the identity-section chain
+--               therefore means auditing that whole family for order-S,
+--               not discharging one lemma — which is the main reason to
+--               weigh the alternative route below.
+--
+-- The alternative.  Patch the quotient section to send the identity
+-- coset to ε on the nose, and Sec-trivial and Conj-trivial both become
+-- refl at EVERY width, with no reduction to replay and no Ex lemmas
+-- involved.  A BijectiveNormalForm's section comes from its surjectivity
+-- field, and redefining that field at the single index nfˢ ε costs only
+-- nf-cong; the round trips survive (nf ε ≡ nfˢ ε there by construction,
+-- and inv-nf ∘ nf ≈ id by injectivity of nfˢ).  Its price is a decision
+-- procedure for u ≡ nfˢ ε on NF n: the data components are Fins and
+-- Vecs, and the ≢-proof that A carries — the one part not decidable on
+-- its own — is pinned by Normalization.Uniqueness.⟦[]⟧-injective, which
+-- recovers the full propositional equality from equal denotations.
+-- Bounded, mechanical, and it closes all widths at once.
 --   the tower   at width 1, rep Iᶜ is ε • [ I₀ ]ᵐˡ definitionally.  At
 --               width n it is a nest of levels, so this becomes an
 --               induction: nfˢ ε is the identity NF at each level, and
