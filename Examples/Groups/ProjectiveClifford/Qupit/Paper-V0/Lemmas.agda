@@ -352,7 +352,7 @@ module Ex-Conjugation (n : ℕ) where
   open SR word-setoid
 
   open Group-Lemmas ((₂₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₂₊ n})
-    using (•-cancelʳ)
+    using (•-cancelʳ ; •-cancelˡ)
 
   -- order-Ex with the power unfolded: Ex ^ 2 is Ex • (Ex ^ 1) is
   -- Ex • Ex definitionally, so this is the axiom itself.
@@ -1000,6 +1000,28 @@ module Ex-Conjugation (n : ℕ) where
       ≈⟨ lemma-ₕ|ₕ-invol ⟩
     ε ∎
 
+  -- With both involutions in hand the two half-swap words collapse to a
+  -- single half-swap times a swap: ⊥⊤ • (Ex • ₕ|ₕ) is ₕ|ₕ • ₕ|ₕ after the
+  -- two swaps cancel, and likewise on the other side.  These are the
+  -- forms c13 is proved in.
+  lemma-⊥⊤-simple : ⊥⊤ ≈ Ex • ₕ|ₕ
+  lemma-⊥⊤-simple = •-cancelˡ {g = ₕ|ₕ • Ex} (begin
+    (ₕ|ₕ • Ex) • ⊥⊤
+      ≈⟨ cright lemma-⊥⊤-square ⟩
+    (ₕ|ₕ • Ex) • ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex))
+      ≈⟨ sym assoc ⟩
+    ((ₕ|ₕ • Ex) • (ₕ|ₕ • Ex)) • (ₕ|ₕ • Ex)
+      ≈⟨ lemma-half-swap-cube ⟩
+    ε
+      ≈⟨ sym lemma-ₕ|ₕ-invol ⟩
+    ₕ|ₕ • ₕ|ₕ
+      ≈⟨ by-assoc auto ⟩
+    ₕ|ₕ • (ε • ₕ|ₕ)
+      ≈⟨ cright cleft sym lemma-Ex-Ex ⟩
+    ₕ|ₕ • ((Ex • Ex) • ₕ|ₕ)
+      ≈⟨ by-assoc auto ⟩
+    (ₕ|ₕ • Ex) • (Ex • ₕ|ₕ) ∎)
+
   lemma-⊤⊥-⊥⊤ : ⊤⊥ • ⊥⊤ ≈ ε
   lemma-⊤⊥-⊥⊤ = begin
     (ʰ|ʰ • ₕ|ₕ) • (ₕ|ₕ • ʰ|ʰ)
@@ -1011,6 +1033,16 @@ module Ex-Conjugation (n : ℕ) where
     ʰ|ʰ • ʰ|ʰ
       ≈⟨ lemma-ʰ|ʰ-invol ⟩
     ε ∎
+
+  lemma-⊤⊥-simple : ⊤⊥ ≈ ₕ|ₕ • Ex
+  lemma-⊤⊥-simple = •-cancelʳ {h = ⊥⊤} (begin
+    ⊤⊥ • ⊥⊤                  ≈⟨ lemma-⊤⊥-⊥⊤ ⟩
+    ε                        ≈⟨ sym lemma-ₕ|ₕ-invol ⟩
+    ₕ|ₕ • ₕ|ₕ                ≈⟨ by-assoc auto ⟩
+    ₕ|ₕ • (ε • ₕ|ₕ)          ≈⟨ cright cleft sym lemma-Ex-Ex ⟩
+    ₕ|ₕ • ((Ex • Ex) • ₕ|ₕ)  ≈⟨ by-assoc auto ⟩
+    (ₕ|ₕ • Ex) • (Ex • ₕ|ₕ)  ≈⟨ cright sym lemma-⊥⊤-simple ⟩
+    (ₕ|ₕ • Ex) • ⊥⊤ ∎)
 
 
 ------------------------------------------------------------------------
@@ -1582,3 +1614,58 @@ module Three-Wire (n : ℕ) where
     (Ex • Ex ↑) • (CZ • CZ02)   ≈⟨ cright lemma-comm-CZ-CZ02 ⟩
     (Ex • Ex ↑) • (CZ02 • CZ)   ≈⟨ aux-right ⟩
     (CZ • CZ ↑) • (Ex • Ex ↑) ∎)
+
+  ------------------------------------------------------------------------
+  -- The lower half-swap commutes with the upper CZ
+  --
+  -- ₕ|ₕ is H • CZ • H, all on wires 0 and 1.  The H commutes with CZ ↑
+  -- structurally — it is a one-wire gate against a gate shifted off wire
+  -- 0 — and the two CZs commute by c12, which is now available.  This is
+  -- what makes c13 collapse.
+
+  lemma-comm-ₕ|ₕ-CZ↑ : ₕ|ₕ • CZ ↑ ≈ CZ ↑ • ₕ|ₕ
+  lemma-comm-ₕ|ₕ-CZ↑ = begin
+    (H • CZ • H) • CZ ↑
+      ≈⟨ by-assoc auto ⟩
+    H • (CZ • (H • CZ ↑))
+      ≈⟨ cright cright sym (axiom comm-H) ⟩
+    H • (CZ • (CZ ↑ • H))
+      ≈⟨ cright sym assoc ⟩
+    H • ((CZ • CZ ↑) • H)
+      ≈⟨ cright cleft sym lemma-selinger-c12 ⟩
+    H • ((CZ ↑ • CZ) • H)
+      ≈⟨ by-assoc auto ⟩
+    (H • CZ ↑) • (CZ • H)
+      ≈⟨ cleft sym (axiom comm-H) ⟩
+    (CZ ↑ • H) • (CZ • H)
+      ≈⟨ by-assoc auto ⟩
+    CZ ↑ • (H • CZ • H) ∎
+
+  ------------------------------------------------------------------------
+  -- Half of c13: conjugating the upper CZ by the half-swaps gives CZ02
+  --
+  -- With ⊥⊤ = Ex • ₕ|ₕ and ⊤⊥ = ₕ|ₕ • Ex, the word ⊥⊤ • CZ ↑ • ⊤⊥ is
+  -- Ex • (ₕ|ₕ • CZ ↑ • ₕ|ₕ) • Ex; the previous lemma moves CZ ↑ out
+  -- through one ₕ|ₕ, the involution kills the pair, and what is left is
+  -- Ex • CZ ↑ • Ex, which is CZ02 by definition.
+  --
+  -- Semantically both sides of c13 are CZ02 — that is how this shape was
+  -- found — so the other half is the same statement about the upper pair.
+
+  lemma-c13-right : ⊥⊤ • (CZ ↑ • ⊤⊥) ≈ CZ02
+  lemma-c13-right = begin
+    ⊥⊤ • (CZ ↑ • ⊤⊥)
+      ≈⟨ cleft lemma-⊥⊤-simple ⟩
+    (Ex • ₕ|ₕ) • (CZ ↑ • ⊤⊥)
+      ≈⟨ cright cright lemma-⊤⊥-simple ⟩
+    (Ex • ₕ|ₕ) • (CZ ↑ • (ₕ|ₕ • Ex))
+      ≈⟨ by-assoc auto ⟩
+    Ex • (((ₕ|ₕ • CZ ↑) • ₕ|ₕ) • Ex)
+      ≈⟨ cright cleft cleft lemma-comm-ₕ|ₕ-CZ↑ ⟩
+    Ex • (((CZ ↑ • ₕ|ₕ) • ₕ|ₕ) • Ex)
+      ≈⟨ cright cleft assoc ⟩
+    Ex • ((CZ ↑ • (ₕ|ₕ • ₕ|ₕ)) • Ex)
+      ≈⟨ cright cleft cright lemma-ₕ|ₕ-invol ⟩
+    Ex • ((CZ ↑ • ε) • Ex)
+      ≈⟨ cright cleft right-unit ⟩
+    Ex • (CZ ↑ • Ex) ∎
