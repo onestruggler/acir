@@ -37,7 +37,7 @@ module Examples.Groups.Clifford.Qubit.Selinger.PushingChain
 
 open import Data.List using (List ; map)
 open import Data.Product using (_×_ ; _,_)
-open import Data.Sum using (inj₁ ; inj₂)
+open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 
 open import ForStdlib.Data.Fin.Mod using (ℤ)
 open import Notations using (₁₊)
@@ -51,6 +51,10 @@ open import Examples.Groups.Clifford.Qubit.Selinger.Pushing p-2 p-prime
 -- share a name for the S gate -- so it is imported once and left
 -- overloaded; Agda picks the right one from the expected type at each
 -- use, which is what that feature is for.
+open import Examples.Groups.Clifford.Qubit.Selinger.Placed p-2 p-prime
+  using (Placed ; places)
+open import Examples.Groups.Clifford.Qubit.Selinger.PushingZ p-2 p-prime
+  using (Top ; pushZZ-A ; pushZZ-AB ; pushZZ-BB)
 open import Examples.Groups.Clifford.Qubit.Selinger.Rewrite p-2 p-prime
   using (DirtA ; dH ; dS ; DirtC ; dX ; pushA)
 
@@ -88,3 +92,49 @@ push₀-Chain {₁₊ n} dH (inj₂ (b , r)) with pushHB b
 ... | k , b′ , o = k , inj₂ (b′ , r) , o
 push₀-Chain {₁₊ n} dS (inj₂ (b , r)) with pushS₀B b
 ... | k , b′ , o = k , inj₂ (b′ , r) , o
+
+------------------------------------------------------------------------
+-- Putting an A box back into a chain
+--
+-- A chain of no B boxes is just the A -- Chain 0 is ABox, not a sum --
+-- so at the bottom of the recursion the A is bare and higher up it is
+-- inj₁.  chainA is that one-line difference, and it is needed because
+-- the controlled-Z rules can CHANGE the number of B boxes and so have
+-- to rebuild the chain rather than patch it.
+
+chainA : ∀ n → ABox → Chain n
+chainA 0       a = a
+chainA (₁₊ n) a = inj₁ a
+
+-- PushingZ returns the chain's top two layers as a sum: either the A
+-- alone, or a B with the A above it.  Reading that back as a chain is
+-- where a rule that grew or shrank the chain takes effect.
+top→chain : Top → Chain (₁₊ n)
+top→chain          (inj₁ a)       = inj₁ a
+top→chain {n} (inj₂ (b , a)) = inj₂ (b , chainA n a)
+
+------------------------------------------------------------------------
+-- A controlled-Z on the un-shifted pair
+--
+-- This is the one gate that never has the simple shape: on (0,1) it
+-- spans the bottom box AND reaches the layer above, so it consumes two
+-- layers at once.  Which of PushingZ's three families fires is decided
+-- by the chain's first two layers, exactly as verified there:
+--
+--   a bare A                    commZZAI       and the chain may GROW
+--   a B with the A above it     commZZIABB     and it may SHRINK
+--   a B with another B above    commZZIIBBBBI  and it keeps its length
+--
+-- The middle case appears twice below because a chain of exactly one B
+-- box stores its A bare (Chain 0 is ABox), while a longer one stores it
+-- as inj₁ -- the same configuration written two ways.
+
+pushZZ₀-Chain : Chain (₁₊ n) → ℤ 8 × Chain (₁₊ n) × List Placed
+pushZZ₀-Chain (inj₁ a) with pushZZ-A a
+... | k , t , o = k , top→chain t , places 0 o
+pushZZ₀-Chain {0} (inj₂ (b , a)) with pushZZ-AB a b
+... | k , t , o = k , top→chain t , places 0 o
+pushZZ₀-Chain {₁₊ n} (inj₂ (b , inj₁ a)) with pushZZ-AB a b
+... | k , t , o = k , top→chain t , places 0 o
+pushZZ₀-Chain {₁₊ n} (inj₂ (b , inj₂ (b′ , r))) with pushZZ-BB b′ b
+... | k , (bu , bl) , o = k , inj₂ (bl , inj₂ (bu , r)) , places 0 o
