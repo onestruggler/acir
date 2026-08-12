@@ -52,19 +52,26 @@ module Examples.Groups.ProjectiveClifford.Qubit.Presentation where
 
 open import Data.Nat using (ℕ)
 open import Data.Product using (_,_)
+open import Data.Sum using (inj₁ ; inj₂)
+open import Data.Unit using (tt)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Notations using (₁₊)
-open import Word.Base using (_^_)
+open import Word.Base using (_^_ ; ε)
 import Presentation.Base as PB
+import Normalization.NormalForm.Setoid as SNF
 open import Presentation.Definitions using (_IsPresentationOf_)
 
+open import ForStdlib.Data.Fin.Mod
 open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime ; g* ; g-gen)
+open PrimeModulus p-2 p-prime
+open import Algebra.Properties.Ring (+-*-ring p-2) using (-0#≈0#)
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
   using (module Symplectic)
-open Symplectic using (H)
+open Symplectic using (H ; S^ ; XM)
 open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
   using (module Simplified-Relations)
-open Simplified-Relations using (srel ; order-H ; M₋₁)
+open Simplified-Relations using (srel ; order-H ; M₋₁ ; M-power)
 
 open import Examples.Groups.ProjectiveClifford.Qubit.Semantics using (CMS-group)
 import Examples.Groups.ProjectiveClifford.Qubit.ExtensionPresentation as EP
@@ -154,3 +161,64 @@ conj-trivial-0 ()
 
 presentation-0 : (0 Clifford,_===_) IsPresentationOf (CMS-group 0)
 presentation-0 = presentation sec-trivial-0 conj-trivial-0
+
+------------------------------------------------------------------------
+-- Width 1: the identity section reduces without order-S
+--
+-- rep Iᶜ does compute here: it is ε • [ I₀ ]ᵐˡ on the nose, Tower01's
+-- identity section with the coset-transfer's leading unit.  So the
+-- reduction to ε is Tower01's [I]≈ε₀ chain, and the question is only
+-- whether it can be replayed using correction-free axioms.
+--
+-- It can, and with room to spare — the chain needs exactly one axiom.
+-- The M-part contributes nothing: [ ([] , ₀) ]ᵐ • [ [] ]ᵛᵇ is
+-- S^ (- ₀) • ε, which right-unit and a ≡-congruence on -0#≈0# take to
+-- S^ ₀ = ε.  What is left is the A-box XM ₁, and at p = 2 that is
+-- literally the right-hand side of M-power at k = ₀: ℤ*₂ = {1} forces
+-- g^ ₀ = ₁, so M (g^ ₀) and XM (₁ , _) are the same word, while the
+-- left-hand side Mg^ ₀ = Mg ^ 0 is ε.  So the A-box collapses by the
+-- single axiom M-power ₀ — which is not order-S, hence lifts exactly.
+--
+-- Note this is a different route from the original rule set's, which
+-- reaches XM ₁ ≈ ε through order-SH (lemma-M1); the simplified set has
+-- no order-SH, and M-power turns out to be the cleaner road anyway.
+
+sec-reduction-1 : Sec-reduction 1
+sec-reduction-1 =
+  trans left-unit
+    (trans (sym assoc)
+      (trans (cleft (trans right-unit (refl' (Eq.cong S^ -0#≈0#))))
+        (trans left-unit a-box≈ε)))
+  where
+  open PB (EP.Clifford.Corr-free 1)
+
+  -- ε === XM ₁, correction-free.
+  a-box≈ε : XM {0} (₁ , λ ()) ≈ ε
+  a-box≈ε = sym (axiom (srel (M-power ₀) , PB.refl))
+
+sec-trivial-1 : Sec-trivial 1
+sec-trivial-1 = sec-trivial sec-reduction-1
+
+-- Conj-trivial 1 is still open, and it is a different kind of problem.
+-- Conjugating a Pauli generator by that representative rebuilds it
+-- letterwise: (SH)³ is the identity symplectic map, so the vector comes
+-- back unchanged, but conj is applied one gate at a time and each step
+-- re-expands through vecToWord, so after the six letters of XM ₁ the
+-- word is a tree of X/Z leaves rather than the generator it started as.
+--
+-- Two routes are closed.  Structural reasoning is hopeless by hand (the
+-- tree roughly doubles per step).  Comparing the two sides through the
+-- Pauli normal form — nf-injective (bijectiveᴾ 1) Eq.refl — fails
+-- because nfᴾ is vec ∘ ⟦_⟧N, and ⟦_⟧N is the direct-product
+-- presentation's interpretation: a Group-bundle term that does not
+-- reduce to a vector by computation.
+--
+-- What is wanted is the lemma that conj computes the action, at the
+-- level of the PAULI group rather than of CMS:
+--
+--     ⟦ conjss w u ⟧N  ≈  actg-of w applied to ⟦ u ⟧N
+--
+-- with which Conj-trivial follows from rep Iᶜ ≈q ε and soundness of the
+-- symplectic presentation, uniformly in n rather than width by width.
+-- Qubit.ExtensionSoundness.conj-sound is the same statement read in
+-- CMS n; this is its Pauli-side twin.
