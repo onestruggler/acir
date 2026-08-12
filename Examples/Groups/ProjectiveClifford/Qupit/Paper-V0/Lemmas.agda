@@ -877,7 +877,7 @@ module Three-Wire (n : ℕ) where
   private module PB₂ = PB ((₂₊ n) QRel,_===_)
 
   open Group-Lemmas ((₃₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₃₊ n})
-    using (•-cancelʳ)
+    using (•-cancelʳ ; •-cancelˡ)
 
   -- CZ on the upper pair has order p, inherited from order-CZ one wire
   -- down.  (ε ↑ is ε definitionally, so the shift leaves no residue.)
@@ -1010,6 +1010,36 @@ module Three-Wire (n : ℕ) where
     CZ02 ^ toℕ g • Mg ∎
 
   ------------------------------------------------------------------------
+  -- Iterating the multiplier: from the fixed generator to any unit
+  --
+  -- Mg ^ j rescales by g ^′ j.  The induction costs only associativity,
+  -- because x ^′ (suc k) is x * (x ^′ k) definitionally; the ₀/₁/₂₊ split
+  -- is forced by w ^ 1 being w rather than w • w ^ 0.
+
+  lemma-Mgᵏ-CZ : ∀ j → Mg ^ j • CZ ≈ CZ ^ toℕ (g ^′ j) • Mg ^ j
+  lemma-Mgᵏ-CZ ₀ = begin
+    ε • CZ  ≈⟨ left-unit ⟩
+    CZ      ≈⟨ sym right-unit ⟩
+    CZ • ε ∎
+  lemma-Mgᵏ-CZ ₁ = begin
+    Mg • CZ                ≈⟨ lemma-semi-Mg-CZ ⟩
+    CZ ^ toℕ g • Mg
+      ≡⟨ Eq.cong (λ z → CZ ^ toℕ z • Mg) (Eq.sym (lemma-x^′1=x g)) ⟩
+    CZ ^ toℕ (g ^′ 1) • Mg ∎
+  lemma-Mgᵏ-CZ (₂₊ j) = begin
+    (Mg • Mg ^ ₁₊ j) • CZ
+      ≈⟨ assoc ⟩
+    Mg • (Mg ^ ₁₊ j • CZ)
+      ≈⟨ cright lemma-Mgᵏ-CZ (₁₊ j) ⟩
+    Mg • (CZ ^ toℕ (g ^′ ₁₊ j) • Mg ^ ₁₊ j)
+      ≈⟨ sym assoc ⟩
+    (Mg • CZ ^ toℕ (g ^′ ₁₊ j)) • Mg ^ ₁₊ j
+      ≈⟨ cleft lemma-Mg-CZ^ (g ^′ ₁₊ j) ⟩
+    (CZ ^ toℕ (g * (g ^′ ₁₊ j)) • Mg) • Mg ^ ₁₊ j
+      ≈⟨ assoc ⟩
+    CZ ^ toℕ (g * (g ^′ ₁₊ j)) • (Mg • Mg ^ ₁₊ j) ∎
+
+  ------------------------------------------------------------------------
   -- The transposition of wires 0 and 2
   --
   -- Ex swaps wires 0-1 and Ex ↑ swaps 1-2, so Ex • Ex ↑ • Ex transposes
@@ -1068,6 +1098,146 @@ module Three-Wire (n : ℕ) where
     CX ↑ • ε                ≈⟨ right-unit ⟩
     CX ↑                    ≈⟨ sym left-unit ⟩
     ε • CX ↑ ∎)
+
+  ------------------------------------------------------------------------
+  -- The rescaled C18, and the exponent identity it forces
+  --
+  -- Conjugating C18 by Mg ^ j — which commutes with CX ↑ and rescales
+  -- both CZ and CZ02 by g ^′ j — gives (A).  Comparing it against the
+  -- interleaved form (B) of lemma-C18ᵏ at the same exponent, and
+  -- cancelling CX ↑, leaves (C): the two CZs distribute over that power.
+
+  lemma-Mg-CZ02^ : ∀ (a : ℤ ₚ) → Mg • CZ02 ^ toℕ a ≈ CZ02 ^ toℕ (g * a) • Mg
+  lemma-Mg-CZ02^ a = begin
+    Mg • CZ02 ^ toℕ a
+      ≈⟨ lemma-Induction lemma-Mg-CZ02 (toℕ a) ⟩
+    (CZ02 ^ toℕ g) ^ toℕ a • Mg
+      ≈⟨ cleft (^^ CZ02 (toℕ g) (toℕ a)) ⟩
+    CZ02 ^ (toℕ g Nat.* toℕ a) • Mg
+      ≈⟨ cleft (lemma-pow-mod lemma-order-CZ02 (toℕ g Nat.* toℕ a)) ⟩
+    CZ02 ^ ((toℕ g Nat.* toℕ a) Nat.% p) • Mg
+      ≈⟨ cleft refl' (Eq.cong (CZ02 ^_) (lemma-toℕ-% g a)) ⟩
+    CZ02 ^ toℕ (g * a) • Mg ∎
+
+  lemma-Mgᵏ-CZ02 : ∀ j → Mg ^ j • CZ02 ≈ CZ02 ^ toℕ (g ^′ j) • Mg ^ j
+  lemma-Mgᵏ-CZ02 ₀ = begin
+    ε • CZ02  ≈⟨ left-unit ⟩
+    CZ02      ≈⟨ sym right-unit ⟩
+    CZ02 • ε ∎
+  lemma-Mgᵏ-CZ02 ₁ = begin
+    Mg • CZ02             ≈⟨ lemma-Mg-CZ02 ⟩
+    CZ02 ^ toℕ g • Mg
+      ≡⟨ Eq.cong (λ z → CZ02 ^ toℕ z • Mg) (Eq.sym (lemma-x^′1=x g)) ⟩
+    CZ02 ^ toℕ (g ^′ 1) • Mg ∎
+  lemma-Mgᵏ-CZ02 (₂₊ j) = begin
+    (Mg • Mg ^ ₁₊ j) • CZ02
+      ≈⟨ assoc ⟩
+    Mg • (Mg ^ ₁₊ j • CZ02)
+      ≈⟨ cright lemma-Mgᵏ-CZ02 (₁₊ j) ⟩
+    Mg • (CZ02 ^ toℕ (g ^′ ₁₊ j) • Mg ^ ₁₊ j)
+      ≈⟨ sym assoc ⟩
+    (Mg • CZ02 ^ toℕ (g ^′ ₁₊ j)) • Mg ^ ₁₊ j
+      ≈⟨ cleft lemma-Mg-CZ02^ (g ^′ ₁₊ j) ⟩
+    (CZ02 ^ toℕ (g * (g ^′ ₁₊ j)) • Mg) • Mg ^ ₁₊ j
+      ≈⟨ assoc ⟩
+    CZ02 ^ toℕ (g * (g ^′ ₁₊ j)) • (Mg • Mg ^ ₁₊ j) ∎
+
+  lemma-Mgᵏ-CX↑ : ∀ j → Mg ^ j • CX ↑ ≈ CX ↑ • Mg ^ j
+  lemma-Mgᵏ-CX↑ = comm-pow lemma-Mg-CX↑
+
+  -- (A): C18 with every CZ exponent rescaled by g ^′ j.
+  lemma-A : ∀ j → let e = toℕ (g ^′ j) in
+            CX ↑ • CZ ^ e ≈ (CZ ^ e • CZ02 ^ e) • CX ↑
+  lemma-A j = •-cancelʳ {h = Mg ^ j} (begin
+    (CX ↑ • CZ ^ e) • Mg ^ j
+      ≈⟨ assoc ⟩
+    CX ↑ • (CZ ^ e • Mg ^ j)
+      ≈⟨ cright sym (lemma-Mgᵏ-CZ j) ⟩
+    CX ↑ • (Mg ^ j • CZ)
+      ≈⟨ sym assoc ⟩
+    (CX ↑ • Mg ^ j) • CZ
+      ≈⟨ cleft sym (lemma-Mgᵏ-CX↑ j) ⟩
+    (Mg ^ j • CX ↑) • CZ
+      ≈⟨ assoc ⟩
+    Mg ^ j • (CX ↑ • CZ)
+      ≈⟨ cright axiom semi-CX↑-CZ↓ ⟩
+    Mg ^ j • (CZ • (CZ02 • CX ↑))
+      ≈⟨ sym assoc ⟩
+    (Mg ^ j • CZ) • (CZ02 • CX ↑)
+      ≈⟨ cleft (lemma-Mgᵏ-CZ j) ⟩
+    (CZ ^ e • Mg ^ j) • (CZ02 • CX ↑)
+      ≈⟨ assoc ⟩
+    CZ ^ e • (Mg ^ j • (CZ02 • CX ↑))
+      ≈⟨ cright sym assoc ⟩
+    CZ ^ e • ((Mg ^ j • CZ02) • CX ↑)
+      ≈⟨ cright cleft (lemma-Mgᵏ-CZ02 j) ⟩
+    CZ ^ e • ((CZ02 ^ e • Mg ^ j) • CX ↑)
+      ≈⟨ cright assoc ⟩
+    CZ ^ e • (CZ02 ^ e • (Mg ^ j • CX ↑))
+      ≈⟨ cright cright (lemma-Mgᵏ-CX↑ j) ⟩
+    CZ ^ e • (CZ02 ^ e • (CX ↑ • Mg ^ j))
+      ≈⟨ cright sym assoc ⟩
+    CZ ^ e • ((CZ02 ^ e • CX ↑) • Mg ^ j)
+      ≈⟨ sym assoc ⟩
+    (CZ ^ e • (CZ02 ^ e • CX ↑)) • Mg ^ j
+      ≈⟨ cleft sym assoc ⟩
+    ((CZ ^ e • CZ02 ^ e) • CX ↑) • Mg ^ j ∎)
+    where e = toℕ (g ^′ j)
+
+  -- (C): the two CZs distribute over the rescaled power.
+  lemma-C : ∀ j → let e = toℕ (g ^′ j) in
+            (CZ • CZ02) ^ e ≈ CZ ^ e • CZ02 ^ e
+  lemma-C j = •-cancelʳ {h = CX ↑} (begin
+    (CZ • CZ02) ^ e • CX ↑     ≈⟨ sym (lemma-C18ᵏ e) ⟩
+    CX ↑ • CZ ^ e              ≈⟨ lemma-A j ⟩
+    (CZ ^ e • CZ02 ^ e) • CX ↑ ∎)
+    where e = toℕ (g ^′ j)
+
+  ------------------------------------------------------------------------
+  -- The two CZs sharing a wire commute
+  --
+  -- This is the progress report's C15, its Lemma 9.  Since g generates
+  -- the units, some power of it is 2, and (C) at that exponent reads
+  --
+  --     (CZ • CZ02) • (CZ • CZ02)  ≈  (CZ • CZ) • (CZ02 • CZ02)
+  --
+  -- Cancelling a CZ on the left and a CZ02 on the right is the whole of
+  -- the rest.  Nothing here is circular: the multiplier rescaling is an
+  -- input from outside the CZ/CZ02 family, which is exactly why the
+  -- report inserts M₂ • M½.
+
+  private
+    ₂ᵤ : ℤ* ₚ
+    ₂ᵤ = (2ₚ , λ ())
+      where
+      2ₚ : ℤ ₚ
+      2ₚ = ₂
+
+    -- The power of g that is 2.
+    j₂ : ℕ
+    j₂ = toℕ (g-gen ₂ᵤ .proj₁)
+
+    e₂ : toℕ (g ^′ j₂) ≡ 2
+    e₂ = Eq.cong toℕ (Eq.sym (g-gen ₂ᵤ .proj₂))
+
+    -- (C) with the exponent evaluated.
+    lemma-C₂ : (CZ • CZ02) • (CZ • CZ02) ≈ (CZ • CZ) • (CZ02 • CZ02)
+    lemma-C₂ = begin
+      (CZ • CZ02) • (CZ • CZ02)
+        ≡⟨ Eq.cong ((CZ • CZ02) ^_) (Eq.sym e₂) ⟩
+      (CZ • CZ02) ^ toℕ (g ^′ j₂)
+        ≈⟨ lemma-C j₂ ⟩
+      CZ ^ toℕ (g ^′ j₂) • CZ02 ^ toℕ (g ^′ j₂)
+        ≡⟨ Eq.cong₂ (λ a b → CZ ^ a • CZ02 ^ b) e₂ e₂ ⟩
+      (CZ • CZ) • (CZ02 • CZ02) ∎
+
+  lemma-comm-CZ-CZ02 : CZ • CZ02 ≈ CZ02 • CZ
+  lemma-comm-CZ-CZ02 =
+    sym (•-cancelʳ {h = CZ02} (•-cancelˡ {g = CZ} (begin
+      CZ • ((CZ02 • CZ) • CZ02)  ≈⟨ by-assoc auto ⟩
+      (CZ • CZ02) • (CZ • CZ02)  ≈⟨ lemma-C₂ ⟩
+      (CZ • CZ) • (CZ02 • CZ02)  ≈⟨ by-assoc auto ⟩
+      CZ • ((CZ • CZ02) • CZ02) ∎)))
 
   T : Word (Gen (₃₊ n))
   T = Ex • Ex ↑ • Ex
