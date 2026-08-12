@@ -1245,6 +1245,34 @@ module Three-Wire (n : ℕ) where
   lemma-Ex↑-Ex↑ : Ex ↑ • Ex ↑ ≈ ε
   lemma-Ex↑-Ex↑ = lemma-cong↑ _ _ (PB₂.axiom order-Ex)
 
+  ------------------------------------------------------------------------
+  -- The swaps generate S₃
+  --
+  -- order-Ex makes each swap an involution and yang-baxter is the braid
+  -- relation, so the 3-cycle σ = Ex • Ex ↑ has order 3.  Both c14 and c15
+  -- assert that some element cubes to ε, so this is the shape they have
+  -- to be matched against.
+
+  lemma-σ³ : ((Ex • Ex ↑) • (Ex • Ex ↑)) • (Ex • Ex ↑) ≈ ε
+  lemma-σ³ = begin
+    ((Ex • Ex ↑) • (Ex • Ex ↑)) • (Ex • Ex ↑)
+      ≈⟨ by-assoc auto ⟩
+    Ex • (Ex ↑ • Ex • Ex ↑) • (Ex • Ex ↑)
+      ≈⟨ cright cleft axiom yang-baxter ⟩
+    Ex • (Ex ↓ • Ex ↑ • Ex ↓) • (Ex • Ex ↑)
+      ≈⟨ by-assoc auto ⟩
+    (Ex • Ex) • Ex ↑ • (Ex • Ex) • Ex ↑
+      ≈⟨ cleft lemma-Ex-Ex ⟩
+    ε • Ex ↑ • (Ex • Ex) • Ex ↑
+      ≈⟨ left-unit ⟩
+    Ex ↑ • (Ex • Ex) • Ex ↑
+      ≈⟨ cright cleft lemma-Ex-Ex ⟩
+    Ex ↑ • ε • Ex ↑
+      ≈⟨ cright left-unit ⟩
+    Ex ↑ • Ex ↑
+      ≈⟨ lemma-Ex↑-Ex↑ ⟩
+    ε ∎
+
   lemma-T-T : T • T ≈ ε
   lemma-T-T = begin
     (Ex • Ex ↑ • Ex) • (Ex • Ex ↑ • Ex)  ≈⟨ by-assoc auto ⟩
