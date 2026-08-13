@@ -48,13 +48,11 @@ open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n2 p-2 p-prime
 
 
-open Lemmas0c
 open Lemmas-Sym
 open Duality
 

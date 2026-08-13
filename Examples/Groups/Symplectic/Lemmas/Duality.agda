@@ -35,24 +35,14 @@ module Examples.Groups.Symplectic.Lemmas.Duality (p-2 : ℕ) (p-prime : Prime (2
 open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
-open Lemmas-2Q 0
 open Symplectic
 open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 
-open Lemmas0a
-open Lemmas0a1
 open Lemmas0b
-open Lemmas0c
 module L0 = Lemmas0 0
 
-open LM2
 
 private
   n : ℕ

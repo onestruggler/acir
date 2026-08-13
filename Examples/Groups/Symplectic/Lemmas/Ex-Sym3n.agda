@@ -52,9 +52,7 @@ open Symplectic-GroupLike
 open import Data.Fin.Properties
 
 
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
-open Lemmas0a1
 open Lemmas0c
 
 open Lemmas0b hiding (lemma-comm-Ex-H')

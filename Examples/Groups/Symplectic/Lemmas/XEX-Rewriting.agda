@@ -317,10 +317,8 @@ module Homo (m : ℕ) where
 
   open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
   open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
-  open import Examples.Groups.Symplectic.Cosets p-2 p-prime
   open Lemmas-2Q 0
 
-  open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
   open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
   open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
   open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
@@ -328,10 +326,7 @@ module Homo (m : ℕ) where
   open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
   open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
   open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n p-2 p-prime
-  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n2 p-2 p-prime
 
-  open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm p-2 p-prime 0
-  open import Examples.Groups.Symplectic.Lemmas.Lemma-Postfix p-2 p-prime
   open Lemmas0a
   open Lemmas0a1
   open Lemmas0b
@@ -343,7 +338,6 @@ module Homo (m : ℕ) where
 
 
   open LM2
-  open import Examples.Groups.Symplectic.Lemmas.Completeness1-Sym p-2 p-prime renaming (module Completeness to CP1) using ()
 
   -- open Symplectic
   -- open Symplectic-GroupLike

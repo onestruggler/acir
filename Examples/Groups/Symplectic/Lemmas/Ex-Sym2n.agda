@@ -802,8 +802,6 @@ lemma-order-Ex-n : let open PB ((₂₊ n) QRel,_===_) in
 lemma-order-Ex-n {n} = by-emb n lemma-order-Ex
 
 
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
-open Lemmas0a1
 
 
 lemma-CZCZ^aHCZ^k-n : let open PB ((₂₊ n) QRel,_===_) in ∀ a k → (nzk : k ≢ ₀) → 

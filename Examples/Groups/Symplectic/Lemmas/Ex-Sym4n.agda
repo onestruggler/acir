@@ -39,11 +39,9 @@ open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 open Lemmas0a
-open Lemmas0b hiding (lemma-comm-Ex-H')
 
 
 open Symplectic
@@ -54,10 +52,7 @@ open Symplectic-GroupLike
 open import Data.Fin.Properties
 
 
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
-open Lemmas0a1
 
-open Lemmas0b hiding (lemma-comm-Ex-H')
 
 open Duality
 

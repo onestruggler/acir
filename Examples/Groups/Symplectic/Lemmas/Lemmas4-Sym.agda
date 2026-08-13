@@ -32,30 +32,19 @@ private
 
 open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
-open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic hiding (M)
 open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
-open LM2
 
 
 --open Lemmas-2Q 2
 
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4 p-2 p-prime
 
 open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm p-2 p-prime
-open Lemmas0a
-open Lemmas0a1
-open Lemmas0b
-open Lemmas0c
 open Lemmas-Sym
 open Duality
 
@@ -370,7 +359,6 @@ comm-bbox-w↑↑' {₁₊ n} a@₀ b' w = let b = (₀ , b') in  begin
   open PP ((₃₊ n) QRel,_===_)
   open SR word-setoid
   open Lemmas3
-  open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime hiding (lemma-comm-Ex-w↑↑)
 
 
 comm-bbox-w↑↑' {₁₊ n} a@(₁₊ _) b w = let d = (a , b) in  begin

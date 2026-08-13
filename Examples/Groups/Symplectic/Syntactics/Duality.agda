@@ -47,7 +47,6 @@ open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 
 open import Examples.Groups.Symplectic.Syntactics.Gates p-2 p-prime
-open import Examples.Groups.Symplectic.Syntactics.Derived p-2 p-prime
 
 module Lemmas3 where
   variable

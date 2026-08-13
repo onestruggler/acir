@@ -43,8 +43,6 @@ open Symplectic
 open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime as Sym2n hiding (lemma-XCS^k')
 
 open import Examples.Groups.Symplectic.Lemmas.Ex-Rewriting p-2 p-prime
@@ -52,8 +50,6 @@ open Rewriting-Ex n
 
 open Lemmas0a
 open Lemmas0a1
-open Lemmas0b
-open Lemmas0c
 
 open LM2
 

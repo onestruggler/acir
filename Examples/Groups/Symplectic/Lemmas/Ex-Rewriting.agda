@@ -31,13 +31,9 @@ open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
-open Lemmas0b
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open Lemmas0a
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
-open Lemmas0a1
 
 module Ex-Rewriting where
 

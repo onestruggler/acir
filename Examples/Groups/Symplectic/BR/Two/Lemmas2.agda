@@ -39,20 +39,16 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
-open LM2
 
 
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 
 open import Examples.Groups.Symplectic.Lemmas.Lemma-Comm p-2 p-prime 0
 open Lemmas0a1
-open Lemmas0c
 open Lemmas-Sym
 
 open import Examples.Groups.Symplectic.BR.Calculations p-2 p-prime

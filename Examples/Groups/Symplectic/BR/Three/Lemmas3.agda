@@ -40,8 +40,6 @@ open Symplectic
 open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 
 open import Algebra.Properties.Ring (+-*-ring p-2)
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
-open LM2
 
 
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
@@ -51,7 +49,6 @@ open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym3 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n p-2 p-prime
@@ -61,7 +58,6 @@ open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n3 p-2 p-prime
 open Lemmas0a
 open Lemmas0a1
 open Lemmas0b
-open Lemmas0c
 open Lemmas-Sym
 open Duality
 

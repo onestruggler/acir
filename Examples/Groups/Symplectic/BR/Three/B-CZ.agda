@@ -44,15 +44,12 @@ open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime hiding (M)
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
 
-open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 --open Lemmas-2Q 2
 
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n p-2 p-prime
 
 
-open Lemmas0c
 open Lemmas-Sym
 
 open import Examples.Groups.Symplectic.BR.Three.Lemmas p-2 p-prime
@@ -68,14 +65,11 @@ open SR word-setoid
 open Pattern-Assoc
 open Lemmas0 1
 module L02 = Lemmas0 2
-open Lemmas-2Q 1
 --module L2Q0 = Lemmas-2Q 0
 open Sym0-Rewriting 2
 open Rewriting-Swap 2
 open Symplectic-GroupLike
 open Basis-Change _ (3 QRel,_===_) grouplike
-open import Examples.Groups.Symplectic.Lemmas.XEX-Rewriting p-2 p-prime
-open Rewriting-EX 2
 open Commuting-Symplectic 1
 open import Examples.Groups.Symplectic.BR.Two.Lemmas p-2 p-prime hiding (sa)
 

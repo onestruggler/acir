@@ -35,21 +35,11 @@ open Symplectic hiding (M)
 open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
 
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
-open LM2
 
 
 --open Lemmas-2Q 2
 
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym1 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2 p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3 p-2 p-prime
 
-open Lemmas0a
-open Lemmas0a1
-open Lemmas0b
-open Lemmas0c
 open Lemmas-Sym
 open Duality
 

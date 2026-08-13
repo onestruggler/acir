@@ -34,11 +34,8 @@ open Symplectic hiding (M)
 open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 
-import Examples.Groups.Symplectic.Normalization.Pushing.PushML p-2 p-prime as PushML
 open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime
   using (dir-of-DS ; d-of-DS)
-import Examples.Groups.Symplectic.BR.Three.DD-CZ p-2 p-prime as DDCZ
-open import Examples.Groups.Symplectic.CongDownK p-2 p-prime
   using (S^-↓ᵏ ; ↑↓ᵏ-comm)
 import Relation.Binary.Reasoning.Setoid as SR
 open Lemmas-Sym using (lemma-comm-S-w↑ ; lemma-comm-H-w↑)

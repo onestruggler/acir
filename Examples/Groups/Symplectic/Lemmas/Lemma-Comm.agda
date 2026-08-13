@@ -31,18 +31,12 @@ module Examples.Groups.Symplectic.Lemmas.Lemma-Comm (p-2 : ℕ) (p-prime : Prime
 open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
 open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
-open import Examples.Groups.Symplectic.ExtendedGate.Lemmas-2Qupit p-2 p-prime
-open import Examples.Groups.Symplectic.NF2-Sym p-2 p-prime
-open Lemmas-2Q 2
 open Symplectic
 open Lemmas-Sym
 
 open import Examples.Groups.Symplectic.NF1-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime
-open Lemmas0a
 open import Examples.Groups.Symplectic.Cosets p-2 p-prime
 
-open LM2
 
 open PB ((₂₊ n) QRel,_===_)
 open PP ((₂₊ n) QRel,_===_)
