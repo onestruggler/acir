@@ -1222,6 +1222,51 @@ module Ex-Conjugation (n : ℕ) where
   -- (The swap-dual of CX that the core then needs is already available:
   -- lemma-conj-Ex-CX turns blake-c12 into its XC form.)
 
+  ------------------------------------------------------------------------
+  -- A power of the upper X across CZ
+  --
+  -- rel-X↑-CZ moves one X ↑ across CZ at the cost of a Z on wire 0.
+  -- Iterating collects one Z per crossing; the Z's slide back past the
+  -- remaining X ↑ because they sit on different wires (lemma-comm-Z-w↑),
+  -- so the corrections gather into a single power.
+
+  lemma-CZ-X↑ᵏ : ∀ m → CZ • (X ↑) ^ m ≈ (X ↑) ^ m • ((Z ↓) ^ m • CZ)
+  lemma-CZ-X↑ᵏ ₀ = begin
+    CZ • ε              ≈⟨ right-unit ⟩
+    CZ                  ≈⟨ sym left-unit ⟩
+    ε • CZ              ≈⟨ sym left-unit ⟩
+    ε • (ε • CZ) ∎
+  lemma-CZ-X↑ᵏ ₁ = axiom rel-X↑-CZ
+  lemma-CZ-X↑ᵏ (₂₊ k) = begin
+    CZ • (X ↑ • (X ↑) ^ ₁₊ k)
+      ≈⟨ sym assoc ⟩
+    (CZ • X ↑) • (X ↑) ^ ₁₊ k
+      ≈⟨ cleft axiom rel-X↑-CZ ⟩
+    (X ↑ • (Z ↓ • CZ)) • (X ↑) ^ ₁₊ k
+      ≈⟨ assoc ⟩
+    X ↑ • ((Z ↓ • CZ) • (X ↑) ^ ₁₊ k)
+      ≈⟨ cright assoc ⟩
+    X ↑ • (Z ↓ • (CZ • (X ↑) ^ ₁₊ k))
+      ≈⟨ cright cright lemma-CZ-X↑ᵏ (₁₊ k) ⟩
+    X ↑ • (Z ↓ • ((X ↑) ^ ₁₊ k • ((Z ↓) ^ ₁₊ k • CZ)))
+      ≈⟨ cright sym assoc ⟩
+    X ↑ • ((Z ↓ • (X ↑) ^ ₁₊ k) • ((Z ↓) ^ ₁₊ k • CZ))
+      ≈⟨ cright cleft slide ⟩
+    X ↑ • (((X ↑) ^ ₁₊ k • Z ↓) • ((Z ↓) ^ ₁₊ k • CZ))
+      ≈⟨ cright assoc ⟩
+    X ↑ • ((X ↑) ^ ₁₊ k • (Z ↓ • ((Z ↓) ^ ₁₊ k • CZ)))
+      ≈⟨ sym assoc ⟩
+    (X ↑ • (X ↑) ^ ₁₊ k) • (Z ↓ • ((Z ↓) ^ ₁₊ k • CZ))
+      ≈⟨ cright sym assoc ⟩
+    (X ↑ • (X ↑) ^ ₁₊ k) • ((Z ↓ • (Z ↓) ^ ₁₊ k) • CZ) ∎
+    where
+    slide : Z ↓ • (X ↑) ^ ₁₊ k ≈ (X ↑) ^ ₁₊ k • Z ↓
+    slide = begin
+      Z ↓ • (X ↑) ^ ₁₊ k  ≡⟨ Eq.cong (λ w → Z ↓ • w) (Eq.sym (lemma-↑^ (₁₊ k) X)) ⟩
+      Z ↓ • (X ^ ₁₊ k) ↑  ≈⟨ lemma-comm-Z-w↑ (X ^ ₁₊ k) ⟩
+      (X ^ ₁₊ k) ↑ • Z ↓  ≡⟨ Eq.cong (λ w → w • Z ↓) (lemma-↑^ (₁₊ k) X) ⟩
+      (X ↑) ^ ₁₊ k • Z ↓ ∎
+
   lemma-CZ-H↑ : CZ • H ↑ ≈ H ↑ • XC
   lemma-CZ-H↑ = begin
     CZ • H ↑
