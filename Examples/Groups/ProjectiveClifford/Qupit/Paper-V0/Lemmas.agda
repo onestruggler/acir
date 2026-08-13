@@ -1364,87 +1364,73 @@ module Ex-Conjugation (n : ℕ) where
   -- from which the commutator [XC , S ↑] ≈ CZ • S falls out.
 
   lemma-Ex-blake :
-    XC • (S ↑ • (XC ^ p-1 • (S ^ p-1 • (S ↑) ^ p-1))) ≈ CZ
+    S ^ p-1 • ((S ↑) ^ p-1 • (XC ^ p-1 • (S ↑ • XC))) ≈ CZ
   lemma-Ex-blake = •-cancelʳ {h = Ex} (begin
-    (XC • (S ↑ • (XC ^ p-1 • (S ^ p-1 • (S ↑) ^ p-1)))) • Ex
+    (S ^ p-1 • ((S ↑) ^ p-1 • (XC ^ p-1 • (S ↑ • XC)))) • Ex
       ≈⟨ sym hom ⟩
-    Ex • (CX • (S • (CX ^ p-1 • ((S ↑) ^ p-1 • S ^ p-1))))
+    Ex • ((S ↑) ^ p-1 • (S ^ p-1 • (CX ^ p-1 • (S • CX))))
       ≈⟨ cright blake ⟩
     Ex • CZ
       ≈⟨ lemma-Ex-CZ ⟩
     CZ • Ex ∎)
     where
-    hom : Ex • (CX • (S • (CX ^ p-1 • ((S ↑) ^ p-1 • S ^ p-1))))
-        ≈ (XC • (S ↑ • (XC ^ p-1 • (S ^ p-1 • (S ↑) ^ p-1)))) • Ex
-    hom = lemma-Ex-• lemma-Ex-CX
-            (lemma-Ex-• lemma-Ex-S
+    hom : Ex • ((S ↑) ^ p-1 • (S ^ p-1 • (CX ^ p-1 • (S • CX))))
+        ≈ (S ^ p-1 • ((S ↑) ^ p-1 • (XC ^ p-1 • (S ↑ • XC)))) • Ex
+    hom = lemma-Ex-• (lemma-Ex-pow lemma-Ex-S↑ p-1)
+            (lemma-Ex-• (lemma-Ex-pow lemma-Ex-S p-1)
               (lemma-Ex-• (lemma-Ex-pow lemma-Ex-CX p-1)
-                (lemma-Ex-• (lemma-Ex-pow lemma-Ex-S↑ p-1)
-                            (lemma-Ex-pow lemma-Ex-S p-1))))
+                (lemma-Ex-• lemma-Ex-S lemma-Ex-CX)))
 
-    blake : CX • (S • (CX ^ p-1 • ((S ↑) ^ p-1 • S ^ p-1))) ≈ CZ
+    blake : (S ↑) ^ p-1 • (S ^ p-1 • (CX ^ p-1 • (S • CX))) ≈ CZ
     blake = begin
-      CX • (S • (CX ^ p-1 • ((S ↑) ^ p-1 • S ^ p-1)))
-        ≡⟨ Eq.cong (λ w → CX • (S • (CX ^ p-1 • (w • S ^ p-1))))
+      (S ↑) ^ p-1 • (S ^ p-1 • (CX ^ p-1 • (S • CX)))
+        ≡⟨ Eq.cong (λ w → w • (S ^ p-1 • (CX ^ p-1 • (S • CX))))
                    (Eq.sym (lemma-↑^ p-1 S)) ⟩
-      CX • (S • (CX ^ p-1 • ((S ^ p-1) ↑ • S ^ p-1)))
+      (S ^ p-1) ↑ • (S ^ p-1 • (CX ^ p-1 • (S • CX)))
         ≈⟨ axiom blake-c12 ⟩
       CZ ∎
 
   ------------------------------------------------------------------------
   -- The commutator of XC with the upper phase gate
   --
-  -- Multiplying lemma-Ex-blake on the right by S ↑ • S completes both
-  -- trailing powers to a full p-th power, and order-S kills them.  What
-  -- is left says XC conjugates S ↑ to CZ • S ↑ • S — the relation c10's
-  -- reduced core is built from.
+  -- Multiplying lemma-Ex-blake on the left by S ↑ • S completes both of
+  -- its leading powers to a full p-th power, and order-S kills them.
+  -- What is left is the conjugation rule c10's reduced core is built
+  -- from.  (The axiom is stated in Word order, so the powers lead and
+  -- the cancellation is on the left.)
 
   private
-    lemma-Sᵖ⁻¹-S : S ^ p-1 • S ≈ ε
-    lemma-Sᵖ⁻¹-S = begin
-      S ^ p-1 • S        ≈⟨ sym (^-+ S p-1 1) ⟩
-      S ^ (p-1 Nat.+ 1)  ≡⟨ Eq.cong (S ^_) (NP.+-comm p-1 1) ⟩
+    lemma-S-Sᵖ⁻¹ : S • S ^ p-1 ≈ ε
+    lemma-S-Sᵖ⁻¹ = begin
+      S • S ^ p-1        ≈⟨ sym (^-+ S 1 p-1) ⟩
       S ^ (1 Nat.+ p-1)  ≈⟨ axiom order-S ⟩
       ε ∎
 
-    lemma-S↑ᵖ⁻¹-S↑ : (S ↑) ^ p-1 • S ↑ ≈ ε
-    lemma-S↑ᵖ⁻¹-S↑ = begin
-      (S ↑) ^ p-1 • S ↑      ≈⟨ sym (^-+ (S ↑) p-1 1) ⟩
-      (S ↑) ^ (p-1 Nat.+ 1)  ≡⟨ Eq.cong ((S ↑) ^_) (NP.+-comm p-1 1) ⟩
+    lemma-S↑-S↑ᵖ⁻¹ : S ↑ • (S ↑) ^ p-1 ≈ ε
+    lemma-S↑-S↑ᵖ⁻¹ = begin
+      S ↑ • (S ↑) ^ p-1      ≈⟨ sym (^-+ (S ↑) 1 p-1) ⟩
       (S ↑) ^ (1 Nat.+ p-1)  ≡⟨ Eq.sym (lemma-↑^ p S) ⟩
       (S ^ p) ↑              ≈⟨ lemma-cong↑ _ _ (One-Wire.lemma-order-S n) ⟩
       ε ∎
 
-    lemma-tail : S ^ p-1 • ((S ↑) ^ p-1 • (S ↑ • S)) ≈ ε
-    lemma-tail = begin
-      S ^ p-1 • ((S ↑) ^ p-1 • (S ↑ • S))
-        ≈⟨ cright sym assoc ⟩
-      S ^ p-1 • (((S ↑) ^ p-1 • S ↑) • S)
-        ≈⟨ cright cleft lemma-S↑ᵖ⁻¹-S↑ ⟩
-      S ^ p-1 • (ε • S)
-        ≈⟨ cright left-unit ⟩
-      S ^ p-1 • S
-        ≈⟨ lemma-Sᵖ⁻¹-S ⟩
-      ε ∎
-
-  lemma-comm-XC-S↑ : XC • (S ↑ • XC ^ p-1) ≈ CZ • (S ↑ • S)
+  lemma-comm-XC-S↑ : XC ^ p-1 • (S ↑ • XC) ≈ S ↑ • (S • CZ)
   lemma-comm-XC-S↑ = begin
-    XC • (S ↑ • XC ^ p-1)
-      ≈⟨ cright cright sym right-unit ⟩
-    XC • (S ↑ • (XC ^ p-1 • ε))
-      ≈⟨ cright cright cright sym lemma-tail ⟩
-    XC • (S ↑ • (XC ^ p-1 • (S ^ p-1 • ((S ↑) ^ p-1 • (S ↑ • S)))))
+    XC ^ p-1 • (S ↑ • XC)
+      ≈⟨ sym left-unit ⟩
+    ε • (XC ^ p-1 • (S ↑ • XC))
+      ≈⟨ cleft sym lemma-S↑-S↑ᵖ⁻¹ ⟩
+    (S ↑ • (S ↑) ^ p-1) • (XC ^ p-1 • (S ↑ • XC))
       -- explicit assoc: the powers are symbolic, so to-list is stuck
-      ≈⟨ cright cright cright sym assoc ⟩
-    XC • (S ↑ • (XC ^ p-1 • ((S ^ p-1 • (S ↑) ^ p-1) • (S ↑ • S))))
-      ≈⟨ cright cright sym assoc ⟩
-    XC • (S ↑ • ((XC ^ p-1 • (S ^ p-1 • (S ↑) ^ p-1)) • (S ↑ • S)))
-      ≈⟨ cright sym assoc ⟩
-    XC • ((S ↑ • (XC ^ p-1 • (S ^ p-1 • (S ↑) ^ p-1))) • (S ↑ • S))
-      ≈⟨ sym assoc ⟩
-    (XC • (S ↑ • (XC ^ p-1 • (S ^ p-1 • (S ↑) ^ p-1)))) • (S ↑ • S)
-      ≈⟨ cleft lemma-Ex-blake ⟩
-    CZ • (S ↑ • S) ∎
+      ≈⟨ assoc ⟩
+    S ↑ • ((S ↑) ^ p-1 • (XC ^ p-1 • (S ↑ • XC)))
+      ≈⟨ cright sym left-unit ⟩
+    S ↑ • (ε • ((S ↑) ^ p-1 • (XC ^ p-1 • (S ↑ • XC))))
+      ≈⟨ cright cleft sym lemma-S-Sᵖ⁻¹ ⟩
+    S ↑ • ((S • S ^ p-1) • ((S ↑) ^ p-1 • (XC ^ p-1 • (S ↑ • XC))))
+      ≈⟨ cright assoc ⟩
+    S ↑ • (S • (S ^ p-1 • ((S ↑) ^ p-1 • (XC ^ p-1 • (S ↑ • XC)))))
+      ≈⟨ cright cright lemma-Ex-blake ⟩
+    S ↑ • (S • CZ) ∎
 
   lemma-⊤⊥-cube3 : (⊤⊥ • ⊤⊥) • ⊤⊥ ≈ ε
   lemma-⊤⊥-cube3 = begin

@@ -145,7 +145,7 @@ module Clifford-Relations where
       rel-X↑-CZ :     (₂₊ n) SRel,  CZ • X ↑ === X ↑ • Z ↓ • CZ
       rel-X↓-CZ :     (₂₊ n) SRel,  CZ • X ↓ === X ↓ • Z ↑ • CZ
 
-      blake-c12 :     (₂₊ n) SRel,  CX • S ↓ • CX ^ p-1 • (S ^ p-1) ↑ • (S ^ p-1) ↓ === CZ
+      blake-c12 :     (₂₊ n) SRel,  (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX === CZ
 
       yang-baxter :   (₃₊ n) SRel,  Ex ↑ • Ex ↓ • Ex ↑ === Ex ↓ • Ex ↑ • Ex ↓
       cz-slide :      (₃₊ n) SRel,  Ex ↓ • Ex ↑ • CZ === CZ ↑ • Ex ↓ • Ex ↑

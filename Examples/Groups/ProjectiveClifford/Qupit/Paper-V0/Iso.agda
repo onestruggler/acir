@@ -107,9 +107,11 @@ record BridgeData : Set where
     v1-semi-Ex-H↑ :
       ∀ {n} → let open PB (V1R._QRel,_===_ (₂₊ n)) using (_≈_) in
       Ex • H ↑ ≈ H • Ex
+    -- Stated in Word order, matching Paper-V0's corrected axiom; the old
+    -- spelling was the circuit-order reading of the same relation.
     v1-blake-c12 :
       ∀ {n} → let open PB (V1R._QRel,_===_ (₂₊ n)) using (_≈_) in
-      CX • S ↓ • CX ^ p-1 • (S ^ p-1) ↑ • (S ^ p-1) ↓ ≈ CZ
+      (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX ≈ CZ
 
     -- A. Paper-V0's three-wire axioms, inside Simplified-V1.
     v1-yang-baxter :
