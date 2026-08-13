@@ -1034,6 +1034,25 @@ module Ex-Conjugation (n : ℕ) where
           (lemma-Ex-• lemma-Ex-H
             (lemma-Ex-• lemma-Ex-H lemma-Ex-S⁻¹))))
 
+  -- The other Pauli, both ways.  X = H • S • H • H • S ⁻¹ • H, so these
+  -- are the same six factors as for Z in a different order.
+
+  lemma-Ex-X : Ex • X ≈ X ↑ • Ex
+  lemma-Ex-X =
+    lemma-Ex-• lemma-Ex-H
+      (lemma-Ex-• lemma-Ex-S
+        (lemma-Ex-• lemma-Ex-H
+          (lemma-Ex-• lemma-Ex-H
+            (lemma-Ex-• lemma-Ex-S⁻¹ lemma-Ex-H))))
+
+  lemma-Ex-X↑ : Ex • X ↑ ≈ X • Ex
+  lemma-Ex-X↑ =
+    lemma-Ex-• lemma-Ex-H↑
+      (lemma-Ex-• lemma-Ex-S↑
+        (lemma-Ex-• lemma-Ex-H↑
+          (lemma-Ex-• lemma-Ex-H↑
+            (lemma-Ex-• lemma-Ex-S⁻¹↑ lemma-Ex-H↑))))
+
   lemma-Ex-Z^ : ∀ k → Ex • Z^ k ≈ (Z^ k) ↑ • Ex
   lemma-Ex-Z^ k = begin
     Ex • Z ^ toℕ k      ≈⟨ lemma-Ex-pow lemma-Ex-Z (toℕ k) ⟩
@@ -2340,6 +2359,38 @@ module Ex-Conjugation (n : ℕ) where
                   (lemma-Ex-• lemma-Ex-H↑
                     (lemma-Ex-• (lemma-Ex-pow lemma-Ex-R↑ p-1)
                                 (lemma-Ex-pow lemma-Ex-R p-1))))))
+
+  ------------------------------------------------------------------------
+  -- One of the two Pauli-versus-CZ axioms is redundant
+  --
+  -- The swap fixes CZ (lemma-Ex-CZ) and exchanges the wires, so it
+  -- carries rel-X↓-CZ to rel-X↑-CZ verbatim — the same transport that
+  -- takes c10 to c11.  Nothing in the Ex calculus it uses touches either
+  -- Pauli rule, so this is not circular: lemma-Ex-CZ comes from
+  -- semi-Ex-H↑ and the two spellings of the swap, and lemma-Ex-X /
+  -- lemma-Ex-Z↑ are built from semi-Ex-S↑ and semi-Ex-H↑ alone.
+  --
+  -- So Figure 1 could state either rule and derive the other.  (Not
+  -- both: dropping the pair would lose all the Pauli content of CZ.)
+
+  lemma-rel-X↑-CZ : CZ • X ↑ ≈ X ↑ • (Z • CZ)
+  lemma-rel-X↑-CZ = transport-Ex lhs rhs (axiom rel-X↓-CZ)
+    where
+    lhs : Ex • (CZ • X) ≈ (CZ • X ↑) • Ex
+    lhs = lemma-Ex-• lemma-Ex-CZ lemma-Ex-X
+
+    rhs : Ex • (X • (Z ↑ • CZ)) ≈ (X ↑ • (Z • CZ)) • Ex
+    rhs = lemma-Ex-• lemma-Ex-X (lemma-Ex-• lemma-Ex-Z↑ lemma-Ex-CZ)
+
+  -- …and in the other direction, by the same transport.
+  lemma-rel-X↓-CZ : CZ • X ≈ X • (Z ↑ • CZ)
+  lemma-rel-X↓-CZ = transport-Ex lhs rhs (axiom rel-X↑-CZ)
+    where
+    lhs : Ex • (CZ • X ↑) ≈ (CZ • X) • Ex
+    lhs = lemma-Ex-• lemma-Ex-CZ lemma-Ex-X↑
+
+    rhs : Ex • (X ↑ • (Z • CZ)) ≈ (X • (Z ↑ • CZ)) • Ex
+    rhs = lemma-Ex-• lemma-Ex-X↑ (lemma-Ex-• lemma-Ex-Z lemma-Ex-CZ)
 
   lemma-⊤⊥-cube3 : (⊤⊥ • ⊤⊥) • ⊤⊥ ≈ ε
   lemma-⊤⊥-cube3 = begin
