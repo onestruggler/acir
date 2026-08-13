@@ -1174,6 +1174,28 @@ module Ex-Conjugation (n : ℕ) where
     (ₕ|ₕ • Ex) • ⊥⊤ ∎)
 
   -- The cube, stated over ⊤⊥ itself rather than over ₕ|ₕ • Ex.
+  ------------------------------------------------------------------------
+  -- CZ against H ↑
+  --
+  -- XC is H ↑ ^ 3 • CZ • H ↑ by definition, so H ↑ • XC is CZ • H ↑ once
+  -- H ↑ ^ 4 ≈ ε closes the loop.  This is what peels a leading H ↑ off
+  -- both sides of c10, leaving the reduced core
+  --
+  --     XC • CZ ≈ R ↑ • XC • R ↑ ⁻¹ • R ↓ ⁻¹.
+  --
+  -- (The swap-dual of CX that the core then needs is already available:
+  -- lemma-conj-Ex-CX turns blake-c12 into its XC form.)
+
+  lemma-CZ-H↑ : CZ • H ↑ ≈ H ↑ • XC
+  lemma-CZ-H↑ = begin
+    CZ • H ↑
+      ≈⟨ cleft sym left-unit ⟩
+    (ε • CZ) • H ↑
+      ≈⟨ cleft cleft sym lemma-order-H↑ ⟩
+    ((H ↑) ^ 4 • CZ) • H ↑
+      ≈⟨ by-assoc auto ⟩
+    H ↑ • ((H ↑) ^ 3 • (CZ • H ↑)) ∎
+
   lemma-⊤⊥-cube3 : (⊤⊥ • ⊤⊥) • ⊤⊥ ≈ ε
   lemma-⊤⊥-cube3 = begin
     (⊤⊥ • ⊤⊥) • ⊤⊥
