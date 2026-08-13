@@ -106,19 +106,18 @@ private
 
 record BridgeData : Set where
   field
-    -- A. Paper-V0's axioms that mention S, inside Simplified-V1.
+    -- A. Paper-V0's blake-c12, inside Simplified-V1.
     --
-    -- These two are what is left.  The other five — order-Ex,
-    -- semi-Ex-H↑, yang-baxter, cz-slide and semi-CX↑-CZ↓ — are proved in
+    -- This is the last one.  Six of the seven are proved in
     -- Simplified-V1.ExRules, by transporting the symplectic tree's Ex
-    -- calculus along Simplified-V1.Forward's f.  That transport does not
-    -- reach these two, because f sends the symplectic S to R = S • Z ^ ½:
-    -- a rule with no S in it is carried to itself, but one with an S in
-    -- it comes out in the R-spelling, and the difference is a Pauli that
-    -- has to be tracked separately.
-    v1-semi-Ex-S↑ :
-      ∀ {n} → let open PB (V1R._QRel,_===_ (₂₊ n)) using (_≈_) in
-      Ex • S ↑ ≈ S • Ex
+    -- calculus along Simplified-V1.Forward's f.  That transport is the
+    -- identity on any rule with no S in it; f sends the symplectic S to
+    -- R = S • Z ^ ½, so a rule that does mention S comes back in the
+    -- R-spelling and the difference is a Pauli.  For semi-Ex-S↑ that
+    -- Pauli is a single Z ^ ½, which ExRules moves across the swap and
+    -- cancels.  blake-c12 carries four of them, two of which have to
+    -- cross a CX, and that crossing is not proved yet.
+    --
     -- Stated in Word order, matching Paper-V0's corrected axiom; the old
     -- spelling was the circuit-order reading of the same relation.
     v1-blake-c12 :
@@ -173,10 +172,10 @@ module Theorem (bd : BridgeData) where
   f-well-defined PapR.semi-M↑CZ     = PB.axiom V1R.semi-M↑CZ
   f-well-defined PapR.rel-X↑-CZ     = PB.axiom V1R.rel-X↑-CZ
   f-well-defined PapR.rel-X↓-CZ     = PB.axiom V1R.rel-X↓-CZ
-  -- The seven Paper-V0-only axioms: five transported from the symplectic
-  -- tree in Simplified-V1.ExRules, two still taken as input.
+  -- The seven Paper-V0-only axioms: six proved in Simplified-V1.ExRules,
+  -- one still taken as input.
   f-well-defined {₂₊ n} PapR.order-Ex     = ExR.lemma-order-Ex
-  f-well-defined PapR.semi-Ex-S↑          = v1-semi-Ex-S↑
+  f-well-defined {₂₊ n} PapR.semi-Ex-S↑   = ExR.Ex-S.lemma-semi-Ex-S↑ n
   f-well-defined {₂₊ n} PapR.semi-Ex-H↑   = ExR.lemma-semi-Ex-H↑
   f-well-defined PapR.blake-c12           = v1-blake-c12
   f-well-defined {₃₊ n} PapR.yang-baxter  = ExR.lemma-yang-baxter
