@@ -294,6 +294,36 @@ module One-Wire (n : ℕ) where
     where open SR word-setoid
 
   ------------------------------------------------------------------------
+  -- Pauli conjugation by H
+  --
+  -- Z and X are derived words in H and S (see Syntactics):
+  --
+  --     Z = H • H • S • H • H • S ⁻¹        X = H • S • H • H • S ⁻¹ • H
+  --
+  -- chosen so that H • X and Z • H are literally the same letter
+  -- sequence.  The conjugation is therefore pure associativity, and the
+  -- power version follows by induction on the exponent.
+  --
+  -- Groundwork for c10: moving a Pauli across XC = H ↑ ^ 3 • CZ • H ↑
+  -- means moving it across the two H ↑, which is this, and across CZ,
+  -- which is rel-X↑-CZ.
+
+  conj-H-X : H • X ≈ Z • H
+  conj-H-X = by-assoc auto
+
+  conj-H-X^k : ∀ k → H • X ^ k ≈ Z ^ k • H
+  conj-H-X^k ₀ = trans right-unit (sym left-unit)
+  conj-H-X^k ₁ = conj-H-X
+  conj-H-X^k (₂₊ k) = begin
+    H • (X • X ^ ₁₊ k)  ≈⟨ sym assoc ⟩
+    (H • X) • X ^ ₁₊ k  ≈⟨ cleft conj-H-X ⟩
+    (Z • H) • X ^ ₁₊ k  ≈⟨ assoc ⟩
+    Z • (H • X ^ ₁₊ k)  ≈⟨ cright conj-H-X^k (₁₊ k) ⟩
+    Z • (Z ^ ₁₊ k • H)  ≈⟨ sym assoc ⟩
+    (Z • Z ^ ₁₊ k) • H ∎
+    where open SR word-setoid
+
+  ------------------------------------------------------------------------
   -- The multiplier by -1, spelled out in R and H
   --
   -- M is *defined* as R ^ x • H • R ^ x⁻¹ • H • R ^ x • H, so M₋₁ unfolds
