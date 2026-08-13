@@ -25,11 +25,13 @@
 -- words at all (Simplified-V1 never writes Ex, CX or CZ02 anywhere), so
 -- there is nothing to inherit in either direction.
 --
--- The Paper-V0 ⟶ Simplified-V1 direction is now complete: every
--- Simplified-V1 axiom is derived in Paper-V0.Lemmas.  What is left, and
--- what `BridgeData` below still carries, is the seven axioms of the
--- other direction — Paper-V0's Ex, blake-c12 and three-wire rules,
--- inside Simplified-V1.
+-- One direction is complete: every Simplified-V1 axiom is derived in
+-- Paper-V0.Lemmas.  Of the other direction, the five Paper-V0 rules that
+-- do not mention S are derived in Simplified-V1.ExRules, by transporting
+-- the symplectic tree's Ex calculus along the morphism that sends the
+-- symplectic S to R.  `BridgeData` below is what is left: the two
+-- Paper-V0 rules that do mention S, where that transport gives the
+-- R-spelling and the difference is a Pauli.
 --
 -- Why a record rather than holes.  The library is postulate-free and
 -- every file typechecks under --safe, so the outstanding derivations are
@@ -85,6 +87,8 @@ import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.Lemmas
   p-3 p-prime g* g-gen as V1L
 import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Lemmas
   p-3 p-prime g* g-gen as PapL
+import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.ExRules
+  p-3 p-prime g* g-gen as ExR
 
 module PapR = Clifford-Relations
 module V1R  = V1.Clifford-Relations
@@ -102,34 +106,24 @@ private
 
 record BridgeData : Set where
   field
-    -- A. Paper-V0's two-wire axioms, inside Simplified-V1.
-    v1-order-Ex :
-      ∀ {n} → let open PB (V1R._QRel,_===_ (₂₊ n)) using (_≈_) in
-      Ex ^ 2 ≈ ε
+    -- A. Paper-V0's axioms that mention S, inside Simplified-V1.
+    --
+    -- These two are what is left.  The other five — order-Ex,
+    -- semi-Ex-H↑, yang-baxter, cz-slide and semi-CX↑-CZ↓ — are proved in
+    -- Simplified-V1.ExRules, by transporting the symplectic tree's Ex
+    -- calculus along Simplified-V1.Forward's f.  That transport does not
+    -- reach these two, because f sends the symplectic S to R = S • Z ^ ½:
+    -- a rule with no S in it is carried to itself, but one with an S in
+    -- it comes out in the R-spelling, and the difference is a Pauli that
+    -- has to be tracked separately.
     v1-semi-Ex-S↑ :
       ∀ {n} → let open PB (V1R._QRel,_===_ (₂₊ n)) using (_≈_) in
       Ex • S ↑ ≈ S • Ex
-    v1-semi-Ex-H↑ :
-      ∀ {n} → let open PB (V1R._QRel,_===_ (₂₊ n)) using (_≈_) in
-      Ex • H ↑ ≈ H • Ex
     -- Stated in Word order, matching Paper-V0's corrected axiom; the old
     -- spelling was the circuit-order reading of the same relation.
     v1-blake-c12 :
       ∀ {n} → let open PB (V1R._QRel,_===_ (₂₊ n)) using (_≈_) in
       (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX ≈ CZ
-
-    -- A. Paper-V0's three-wire axioms, inside Simplified-V1.
-    v1-yang-baxter :
-      ∀ {n} → let open PB (V1R._QRel,_===_ (₃₊ n)) using (_≈_) in
-      Ex ↑ • Ex ↓ • Ex ↑ ≈ Ex ↓ • Ex ↑ • Ex ↓
-    v1-cz-slide :
-      ∀ {n} → let open PB (V1R._QRel,_===_ (₃₊ n)) using (_≈_) in
-      Ex ↓ • Ex ↑ • CZ ≈ CZ ↑ • Ex ↓ • Ex ↑
-    -- Stated in Word order, matching Paper-V0's corrected axiom.  The
-    -- old spelling was the circuit-order reading of the same relation.
-    v1-semi-CX↑-CZ↓ :
-      ∀ {n} → let open PB (V1R._QRel,_===_ (₃₊ n)) using (_≈_) in
-      CZ ↓ • CX ↑ ≈ CZ02 • CX ↑ • CZ ↓
 
     -- B. Simplified-V1's two- and three-wire axioms, inside Paper-V0.
     --
@@ -179,14 +173,15 @@ module Theorem (bd : BridgeData) where
   f-well-defined PapR.semi-M↑CZ     = PB.axiom V1R.semi-M↑CZ
   f-well-defined PapR.rel-X↑-CZ     = PB.axiom V1R.rel-X↑-CZ
   f-well-defined PapR.rel-X↓-CZ     = PB.axiom V1R.rel-X↓-CZ
-  -- The seven Paper-V0-only axioms.
-  f-well-defined PapR.order-Ex      = v1-order-Ex
-  f-well-defined PapR.semi-Ex-S↑    = v1-semi-Ex-S↑
-  f-well-defined PapR.semi-Ex-H↑    = v1-semi-Ex-H↑
-  f-well-defined PapR.blake-c12     = v1-blake-c12
-  f-well-defined PapR.yang-baxter   = v1-yang-baxter
-  f-well-defined PapR.cz-slide      = v1-cz-slide
-  f-well-defined PapR.semi-CX↑-CZ↓  = v1-semi-CX↑-CZ↓
+  -- The seven Paper-V0-only axioms: five transported from the symplectic
+  -- tree in Simplified-V1.ExRules, two still taken as input.
+  f-well-defined {₂₊ n} PapR.order-Ex     = ExR.lemma-order-Ex
+  f-well-defined PapR.semi-Ex-S↑          = v1-semi-Ex-S↑
+  f-well-defined {₂₊ n} PapR.semi-Ex-H↑   = ExR.lemma-semi-Ex-H↑
+  f-well-defined PapR.blake-c12           = v1-blake-c12
+  f-well-defined {₃₊ n} PapR.yang-baxter  = ExR.lemma-yang-baxter
+  f-well-defined {₃₊ n} PapR.cz-slide     = ExR.lemma-cz-slide
+  f-well-defined {₃₊ n} PapR.semi-CX↑-CZ↓ = ExR.lemma-semi-CX↑-CZ↓
   -- Structural rules.
   -- comm₁ concludes at ₁₊ n and comm₂ at ₂₊ n, so the lowest width of
   -- each is one below what comm-H / comm-S / comm-CZ are stated at.  At
