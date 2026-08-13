@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- ω has order 8 in Figure 8, at widths 0 and 1
+-- ω has order 8 in Figure 8, at every width
 --
 -- Qubit.ExactExtension.ExactData is a one-field record: ω-faithful, the
 -- statement that Figure 8 does not collapse the scalars.  Its two
@@ -18,234 +18,215 @@
 --   * and the coset route is circular, Reidemeister–Schreier's
 --     left-embedding faithfulness being ω-faithful itself.
 --
--- So it wants a MODEL, and this file builds one: the defining
--- representation, reduced modulo 17.  A Clifford operator on one qubit
--- is a 2 × 2 matrix over ℤ[1/√2, i]; over ℤ/17ℤ the constants i, √2 and
--- ω all survive as residues (Model.Mat2), ω becoming 2, whose order in
--- ℤ/17ℤ is exactly 8.  So the model still sees the scalar, which is the
--- one thing asked of it.
+-- So it wants a MODEL, and the model is the defining representation,
+-- reduced modulo 17: a Clifford operator on n qubits is a 2ⁿ × 2ⁿ matrix
+-- over ℤ[1/√2, i], and over ℤ/17ℤ the constants i, √2 and ω all survive
+-- as residues, ω becoming 2, whose order there is exactly 8.  The model
+-- therefore still sees the scalar, which is the one thing asked of it.
 --
---     ω ↦ 2 · I         S ↦ diag(1 , i)         H ↦ (1/√2) [1  1 ]
---                                                          [1 −1 ]
+-- This module is the soundness proof.  Model.Gates has already checked
+-- the fifteen relations as matrix identities at widths 0 to 3; what is
+-- left is
 --
--- Two widths are covered, which are the two where Figure 8 has no CZ:
+--   * to lift each of them to every width, which is Gates.localise: a
+--     relator at width k + n is the relator at width k with idle wires
+--     on top, so one matrix identity settles all widths at once;
+--   * the structural rules, which are the tensor calculus of Model.Local
+--     rather than computations — comm₀ is centrality of a scalar, comm₁
+--     and comm₂ are both the mixed product law, cong↑ is functoriality
+--     of I₂ ⊗ −, and ω↑=ω is that a scalar does not depend on the width;
+--   * and faithfulness itself, which is `log`: the eight powers of 2 in
+--     ℤ/17ℤ are distinct, so the exponent can be read back off.
 --
---   width 0   the alphabet is the scalar alone (Gen 0 is the singleton
---             gate₀ ω-gate, gate₁ and gate₂ needing wires and _↥ a width
---             below), and the only axiom in scope is C1.  So width 0 is
---             ⟨ ω ∣ ω⁸ ⟩ ≅ ℤ/8 and the model is not really needed — but
---             it is what the width-1 cong↑ case recurses into, so it is
---             proved first and reused;
---
---   width 1   the alphabet adds H and S, and the axioms in scope are C1
---             to C4 — C5 to C15 all mention CZ, hence live at ₂₊ n or
---             above, and Agda discards them here by unification.
---
--- Width ≥ 2 is exactly what this file does not do: CZ is a 4 × 4 matrix,
--- so the model has to become 2ⁿ × 2ⁿ with Kronecker products, _↑ read as
--- I₂ ⊗ −, and comm₁ / comm₂ read as the mixed-product law.  That is the
--- rest of the same model, not a different one.
+-- Nothing here is width-specific, so `exact-data` gives ExactData n for
+-- every n, and Qubit.Presentation.presentation becomes unconditional.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Clifford.Qubit.Model.Faithful where
 
+open import Data.Bool using (Bool ; true ; false)
+open import Data.Fin using (toℕ)
+open import Data.Nat using (ℕ)
+open import Data.Vec using (Vec ; [] ; _∷_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
-open import Notations
-open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
+-- Only the numerals ForStdlib.Data.Fin.Mod does not already re-export
+-- (it gives ₀ to ₄); the rest name residues of 17 and exponents mod 8.
+open import Notations using (₁₊ ; ₂₊ ; ₅ ; ₆ ; ₇ ; ₈ ; ₉ ; ₁₃ ; ₁₅)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
 
 import Presentation.Base as PB
 
-open import ForStdlib.Data.Fin.Mod using (ℤ)
 open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime)
 
-open import Examples.Groups.Clifford.Qubit.Model.Mat2
-  using (𝔽 ; M2 ; ⟪_,_,_,_⟫ ; m₁₁ ; _⊙_ ; Id
-        ; ⊙-assoc ; ⊙-identityˡ ; ⊙-identityʳ)
+open import Examples.Groups.Clifford.Qubit.Model.Algebra
+open import Examples.Groups.Clifford.Qubit.Model.Local
+open import Examples.Groups.Clifford.Qubit.Model.Gates
 
 import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
 open F8
-  using ( Gen ; Circuit ; gate₀ ; gate₁ ; _↥ ; _↑ ; _≈ᶠ_
-        ; ω-gate ; H-gate ; S-gate
-        ; _CRel,_===_ ; srel ; cong↑ ; comm₀ ; comm₁ ; ω↑=ω
-        ; c1 ; c2 ; c3 ; c4)
+  using ( Gen ; Circuit ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; _≈ᶠ_
+        ; ω-gate ; H-gate ; S-gate ; CZ-gate ; ω
+        ; _CRel,_===_ ; srel ; cong↑ ; comm₀ ; comm₁ ; comm₂ ; ω↑=ω
+        ; c1 ; c2 ; c3 ; c4 ; c5 ; c6 ; c7 ; c8
+        ; c9 ; c10 ; c11 ; c12 ; c13 ; c14 ; c15)
+
+open import Circuit.Base F8.ExactGate using (_↓ᵏ_)
 
 import Examples.Groups.Clifford.Qubit.ExactExtension as EE
 
-------------------------------------------------------------------------
--- The gate matrices
---
--- Written with the Fin numerals rather than overloaded literals, so
--- that nothing here depends on the Number instances.  In ℤ/17ℤ the
--- constants are i = 4, √2 = 11 and 1/√2 = 14, and −14 = 3.
-
--- ω · I, the scalar.  ω = 2 has order exactly 8, since 2⁴ = 16 = −1.
-Ω : M2
-Ω = ⟪ ₂ , ₀ , ₀ , ₂ ⟫
-
--- diag(1 , i).
-S₂ : M2
-S₂ = ⟪ ₁ , ₀ , ₀ , ₄ ⟫
-
--- (1/√2) · [[1 , 1] , [1 , −1]].
-H₂ : M2
-H₂ = ⟪ ₁₄ , ₁₄ , ₁₄ , ₃ ⟫
+private
+  variable
+    k n : ℕ
 
 ------------------------------------------------------------------------
--- The interpretation
---
--- A generator goes to its matrix and a circuit to the product, ε to the
--- identity.  At width 1 a shifted generator is one of width 0 — the
--- scalar, which is the same matrix there — so the two levels agree on
--- shifts, which is what lift-⟦⟧ below records.
+-- Reading a relator at any width
 
-val₀ : Gen 0 → M2
-val₀ (gate₀ ω-gate) = Ω
+private
 
-val₁ : Gen 1 → M2
-val₁ (gate₀ ω-gate) = Ω
-val₁ (gate₁ H-gate) = H₂
-val₁ (gate₁ S-gate) = S₂
-val₁ (g ↥)          = val₀ g
+  emb-≡ : {M N : Mat k} → M ≡ N → emb {k} {n} M ≐ emb N
+  emb-≡ {M = M} Eq.refl = ≐-refl (emb M)
 
-⟦_⟧₀ : Circuit 0 → M2
-⟦ [ g ]ʷ ⟧₀ = val₀ g
-⟦ ε ⟧₀      = Id
-⟦ w • v ⟧₀  = ⟦ w ⟧₀ ⊙ ⟦ v ⟧₀
+  -- One matrix identity, at every width: this is what makes the fifteen
+  -- computations of Model.Gates enough.
+  by-matrix : (u v : Circuit k) → ⟦ u ⟧M ≡ ⟦ v ⟧M →
+              ⟦ u ↓ᵏ n ⟧ ≐ ⟦ v ↓ᵏ n ⟧
+  by-matrix u v eq =
+    ≐-trans (localise u) (≐-trans (emb-≡ eq) (≐-sym (localise v)))
 
-⟦_⟧₁ : Circuit 1 → M2
-⟦ [ g ]ʷ ⟧₁ = val₁ g
-⟦ ε ⟧₁      = Id
-⟦ w • v ⟧₁  = ⟦ w ⟧₁ ⊙ ⟦ v ⟧₁
+  -- Shifting a circuit is tensoring with I₂ on the new wire.
+  up-word : (w : Circuit n) → ⟦ w ↑ ⟧ ≐ up ⟦ w ⟧
+  up-word [ g ]ʷ  = ≐-refl (up (valOp g))
+  up-word ε       = ≐-sym up-Id
+  up-word (w • v) =
+    ≐-trans (⊙-cong (up-word w) (up-word v)) (up-⊙ ⟦ w ⟧ ⟦ v ⟧)
 
 ------------------------------------------------------------------------
--- Soundness at width 0
+-- Soundness of the axioms
 --
--- The alphabet is the scalar alone, so C1 (ω⁸ = ε, i.e. 2⁸ = 1 in
--- ℤ/17ℤ) and one instance of comm₀ are the whole axiom list: cong↑ and
--- ω↑=ω conclude at ₁₊ n and comm₁ / comm₂ at ₁₊ n / ₂₊ n, so Agda has
--- nothing to ask for at width 0.
+-- The fifteen relators go through by-matrix; the structural rules are
+-- the tensor lemmas of Model.Local.
 
-ax₀ : {w v : Circuit 0} → 0 CRel, w === v → ⟦ w ⟧₀ ≡ ⟦ v ⟧₀
-ax₀ (srel c1)                     = Eq.refl
-ax₀ (comm₀ ω-gate (gate₀ ω-gate)) = Eq.refl
+axiom-sound : {w v : Circuit n} → n CRel, w === v → ⟦ w ⟧ ≐ ⟦ v ⟧
+axiom-sound (srel c1)  = by-matrix c1ˡ  c1ʳ  r1
+axiom-sound (srel c2)  = by-matrix c2ˡ  c2ʳ  r2
+axiom-sound (srel c3)  = by-matrix c3ˡ  c3ʳ  r3
+axiom-sound (srel c4)  = by-matrix c4ˡ  c4ʳ  r4
+axiom-sound (srel c5)  = by-matrix c5ˡ  c5ʳ  r5
+axiom-sound (srel c6)  = by-matrix c6ˡ  c6ʳ  r6
+axiom-sound (srel c7)  = by-matrix c7ˡ  c7ʳ  r7
+axiom-sound (srel c8)  = by-matrix c8ˡ  c8ʳ  r8
+axiom-sound (srel c9)  = by-matrix c9ˡ  c9ʳ  r9
+axiom-sound (srel c10) = by-matrix c10ˡ c10ʳ r10
+axiom-sound (srel c11) = by-matrix c11ˡ c11ʳ r11
+axiom-sound (srel c12) = by-matrix c12ˡ c12ʳ r12
+axiom-sound (srel c13) = by-matrix c13ˡ c13ʳ r13
+axiom-sound (srel c14) = by-matrix c14ˡ c14ʳ r14
+axiom-sound (srel c15) = by-matrix c15ˡ c15ʳ r15
 
-sound₀ : {w v : Circuit 0} → w ≈ᶠ v → ⟦ w ⟧₀ ≡ ⟦ v ⟧₀
--- The matrices are a record type, so a metavariable of matrix type
--- eta-expands and the product then reduces on its entries; the three
--- monoid-law cases therefore name their words rather than leaving the
--- arguments of ⊙-assoc and friends to be inferred.
-sound₀ PB.refl        = Eq.refl
-sound₀ (PB.sym e)     = Eq.sym (sound₀ e)
-sound₀ (PB.trans e f) = Eq.trans (sound₀ e) (sound₀ f)
-sound₀ (PB.cong e f)  = Eq.cong₂ _⊙_ (sound₀ e) (sound₀ f)
-sound₀ (PB.assoc {w = w} {v = v} {u = u}) =
-  ⊙-assoc ⟦ w ⟧₀ ⟦ v ⟧₀ ⟦ u ⟧₀
-sound₀ (PB.left-unit {w = w})  = ⊙-identityˡ ⟦ w ⟧₀
-sound₀ (PB.right-unit {w = w}) = ⊙-identityʳ ⟦ w ⟧₀
-sound₀ (PB.axiom r)   = ax₀ r
+-- The derivation moves up a wire, and so does its operator.
+axiom-sound (cong↑ {w = w} {v = v} r) =
+  ≐-trans (up-word w)
+          (≐-trans (up-cong (axiom-sound r)) (≐-sym (up-word v)))
+
+-- A 0-ary gate is a scalar, and scalars are central.
+axiom-sound (comm₀ ω-gate g) = ≐-sym (scal-central 2 (valOp g))
+
+-- comm₁ and comm₂ are both the mixed product law: a gate on the bottom
+-- wires and an operator shifted past them are A ⊗ B either way round.
+axiom-sound (comm₁ H-gate g) = ≐-sym (emb-up-comm hM (valOp g))
+axiom-sound (comm₁ S-gate g) = ≐-sym (emb-up-comm sM (valOp g))
+axiom-sound (comm₂ CZ-gate g) =
+  ≐-trans (⊙-cong (up-up (valOp g)) (≐-refl (emb czM)))
+    (≐-trans (≐-sym (emb-up-comm czM (valOp g)))
+             (⊙-cong (≐-refl (emb czM)) (≐-sym (up-up (valOp g)))))
+
+-- The scalar is the same on every wire.
+axiom-sound (ω↑=ω ω-gate) = up-scal 2
 
 ------------------------------------------------------------------------
--- Soundness at width 1
---
--- C1–C4 hold in the model by computation, which is the whole content of
--- the choice of residues: 2⁸ = 1, H² = I, S⁴ = I, and (SH)³ = 2 · I,
--- that last being C4, the relation that names the scalar.  The
--- structural rules are equally computational — comm₀ and comm₁ hold
--- because 2 · I is central, and ω↑=ω because val₁ reads a shifted
--- scalar as val₀ does.
+-- Soundness of the congruence
 
--- A shifted circuit reads the same at either width.
-lift-⟦⟧ : (w : Circuit 0) → ⟦ w ↑ ⟧₁ ≡ ⟦ w ⟧₀
-lift-⟦⟧ [ g ]ʷ  = Eq.refl
-lift-⟦⟧ ε       = Eq.refl
-lift-⟦⟧ (w • v) = Eq.cong₂ _⊙_ (lift-⟦⟧ w) (lift-⟦⟧ v)
-
-ax₁ : {w v : Circuit 1} → 1 CRel, w === v → ⟦ w ⟧₁ ≡ ⟦ v ⟧₁
-ax₁ (srel c1) = Eq.refl
-ax₁ (srel c2) = Eq.refl
-ax₁ (srel c3) = Eq.refl
-ax₁ (srel c4) = Eq.refl
-ax₁ (cong↑ {w = w} {v = v} r) =
-  Eq.trans (lift-⟦⟧ w) (Eq.trans (ax₀ r) (Eq.sym (lift-⟦⟧ v)))
-ax₁ (comm₀ ω-gate (gate₀ ω-gate))  = Eq.refl
-ax₁ (comm₀ ω-gate (gate₁ H-gate))  = Eq.refl
-ax₁ (comm₀ ω-gate (gate₁ S-gate))  = Eq.refl
-ax₁ (comm₀ ω-gate (gate₀ ω-gate ↥)) = Eq.refl
-ax₁ (comm₁ H-gate (gate₀ ω-gate))  = Eq.refl
-ax₁ (comm₁ S-gate (gate₀ ω-gate))  = Eq.refl
-ax₁ (ω↑=ω ω-gate)                  = Eq.refl
-
-sound₁ : {w v : Circuit 1} → w ≈ᶠ v → ⟦ w ⟧₁ ≡ ⟦ v ⟧₁
-sound₁ PB.refl        = Eq.refl
-sound₁ (PB.sym e)     = Eq.sym (sound₁ e)
-sound₁ (PB.trans e f) = Eq.trans (sound₁ e) (sound₁ f)
-sound₁ (PB.cong e f)  = Eq.cong₂ _⊙_ (sound₁ e) (sound₁ f)
-sound₁ (PB.assoc {w = w} {v = v} {u = u}) =
-  ⊙-assoc ⟦ w ⟧₁ ⟦ v ⟧₁ ⟦ u ⟧₁
-sound₁ (PB.left-unit {w = w})  = ⊙-identityˡ ⟦ w ⟧₁
-sound₁ (PB.right-unit {w = w}) = ⊙-identityʳ ⟦ w ⟧₁
-sound₁ (PB.axiom r)   = ax₁ r
+sound : {w v : Circuit n} → w ≈ᶠ v → ⟦ w ⟧ ≐ ⟦ v ⟧
+sound PB.refl        = ≐-refl _
+sound (PB.sym e)     = ≐-sym (sound e)
+sound (PB.trans e f) = ≐-trans (sound e) (sound f)
+sound (PB.cong e f)  = ⊙-cong (sound e) (sound f)
+sound (PB.assoc {w = w} {v = v} {u = u}) = ⊙-assoc ⟦ w ⟧ ⟦ v ⟧ ⟦ u ⟧
+sound (PB.left-unit {w = w})  = ⊙-identityˡ ⟦ w ⟧
+sound (PB.right-unit {w = w}) = ⊙-identityʳ ⟦ w ⟧
+sound (PB.axiom r)   = axiom-sound r
 
 ------------------------------------------------------------------------
 -- ω has order 8
 --
--- The eight powers of 2 in ℤ/17ℤ are 1, 2, 4, 8, 16, 15, 13, 9 — all
--- distinct, which is the order-8 statement.  Rather than compare them
--- pairwise (64 cases), invert: `log` is a left inverse of k ↦ 2ᵏ on
--- those eight residues, so it recovers the exponent from the top-left
--- entry of the interpreted scalar word, and faithfulness is a
--- congruence.  The value on the other nine residues is never looked at.
+-- ⟦ ωᵏ ⟧ is the scalar 2ᵏ, and the eight powers of 2 in ℤ/17ℤ — 1, 2, 4,
+-- 8, 16, 15, 13, 9 — are distinct.  Rather than compare them pairwise,
+-- `log` reads the exponent back; the nine other residues are never
+-- looked at.
 
-log : 𝔽 → ℤ 8
-log ₁        = ₀
-log ₂        = ₁
-log ₄        = ₂
-log ₈        = ₃
-log (₁₊ ₁₅) = ₄
-log ₁₅       = ₅
-log ₁₃       = ₆
-log ₉        = ₇
-log _        = ₀
+private
 
--- ωᵏ is read as the matrix 2ᵏ · I, whose top-left entry logs back to k.
-scalar-log₀ : (j : ℤ 8) → log (m₁₁ ⟦ EE.scalar {0} j ⟧₀) ≡ j
-scalar-log₀ ₀ = Eq.refl
-scalar-log₀ ₁ = Eq.refl
-scalar-log₀ ₂ = Eq.refl
-scalar-log₀ ₃ = Eq.refl
-scalar-log₀ ₄ = Eq.refl
-scalar-log₀ ₅ = Eq.refl
-scalar-log₀ ₆ = Eq.refl
-scalar-log₀ ₇ = Eq.refl
+  zeros : Bits n
+  zeros {₀}    = []
+  zeros {₁₊ n} = false ∷ zeros
 
-scalar-log₁ : (j : ℤ 8) → log (m₁₁ ⟦ EE.scalar {1} j ⟧₁) ≡ j
-scalar-log₁ ₀ = Eq.refl
-scalar-log₁ ₁ = Eq.refl
-scalar-log₁ ₂ = Eq.refl
-scalar-log₁ ₃ = Eq.refl
-scalar-log₁ ₄ = Eq.refl
-scalar-log₁ ₅ = Eq.refl
-scalar-log₁ ₆ = Eq.refl
-scalar-log₁ ₇ = Eq.refl
+  δb-refl : (x : Bits n) → δb x x ≡ 1
+  δb-refl []           = Eq.refl
+  δb-refl (true ∷ xs)  = δb-refl xs
+  δb-refl (false ∷ xs) = δb-refl xs
 
-ω-faithful₀ : {j k : ℤ 8} → EE.scalar {0} j ≈ᶠ EE.scalar k → j ≡ k
-ω-faithful₀ {j} {k} e =
-  Eq.trans (Eq.sym (scalar-log₀ j))
-    (Eq.trans (Eq.cong (λ M → log (m₁₁ M)) (sound₀ e)) (scalar-log₀ k))
+  -- Two scalars that agree as operators agree as residues: read off the
+  -- diagonal, where the delta is 1.
+  scal-inj : {a b : 𝔽} → scal {n} a ≐ scal b → a ≡ b
+  scal-inj {n} {a} {b} e =
+    Eq.trans (Eq.sym (Eq.trans (Eq.cong (a *_) (δb-refl (zeros {n})))
+                               (*-identityʳ a)))
+      (Eq.trans (e zeros zeros)
+                (Eq.trans (Eq.cong (b *_) (δb-refl (zeros {n})))
+                          (*-identityʳ b)))
 
-ω-faithful₁ : {j k : ℤ 8} → EE.scalar {1} j ≈ᶠ EE.scalar k → j ≡ k
-ω-faithful₁ {j} {k} e =
-  Eq.trans (Eq.sym (scalar-log₁ j))
-    (Eq.trans (Eq.cong (λ M → log (m₁₁ M)) (sound₁ e)) (scalar-log₁ k))
+  pow-val : (j : ℕ) → ⟦ ω ^ j ⟧ ≐ scal {n} (2 ^′ j)
+  pow-val ₀       = ≐-sym scal-1
+  pow-val (₁₊ ₀)  = ≐-refl (scal 2)
+  pow-val (₂₊ j)  =
+    ≐-trans (⊙-cong (≐-refl (scal 2)) (pow-val (₁₊ j)))
+            (scal-⊙ 2 (2 ^′ (₁₊ j)))
+
+  -- The discrete logarithm of a power of 2, base 2.
+  log : 𝔽 → ℤ 8
+  log ₁         = ₀
+  log ₂         = ₁
+  log ₄         = ₂
+  log ₈         = ₃
+  log (₁₊ ₁₅)  = ₄
+  log ₁₅        = ₅
+  log ₁₃        = ₆
+  log ₉         = ₇
+  log _         = ₀
+
+  log-pow : (j : ℤ 8) → log (2 ^′ toℕ j) ≡ j
+  log-pow ₀ = Eq.refl
+  log-pow ₁ = Eq.refl
+  log-pow ₂ = Eq.refl
+  log-pow ₃ = Eq.refl
+  log-pow ₄ = Eq.refl
+  log-pow ₅ = Eq.refl
+  log-pow ₆ = Eq.refl
+  log-pow ₇ = Eq.refl
+
+ω-faithful : {j k : ℤ 8} → EE.scalar {n} j ≈ᶠ EE.scalar k → j ≡ k
+ω-faithful {n} {j} {k} e =
+  Eq.trans (Eq.sym (log-pow j))
+    (Eq.trans (Eq.cong log
+                (scal-inj {n} (≐-trans (≐-sym (pow-val (toℕ j)))
+                                (≐-trans (sound e) (pow-val (toℕ k))))))
+              (log-pow k))
 
 ------------------------------------------------------------------------
--- The ExactData of the two widths
+-- The ExactData, at every width
 
-exact-data₀ : EE.ExactData 0
-exact-data₀ = record { ω-faithful = ω-faithful₀ }
-
-exact-data₁ : EE.ExactData 1
-exact-data₁ = record { ω-faithful = ω-faithful₁ }
+exact-data : (n : ℕ) → EE.ExactData n
+exact-data n = record { ω-faithful = ω-faithful }
