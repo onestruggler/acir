@@ -1196,6 +1196,45 @@ module Ex-Conjugation (n : ℕ) where
       ≈⟨ by-assoc auto ⟩
     H ↑ • ((H ↑) ^ 3 • (CZ • H ↑)) ∎
 
+  ------------------------------------------------------------------------
+  -- The swap-dual of blake-c12
+  --
+  -- Conjugating blake-c12 by Ex exchanges CX with XC and the two wires'
+  -- phase gates, and fixes CZ.  Every step is an instance of the
+  -- Ex-conjugation homomorphism lemma-Ex-• and its power version
+  -- lemma-Ex-pow, so the proof is just those applied factor by factor.
+  --
+  -- This is the form c10's reduced core needs: it is the XC statement
+  -- from which the commutator [XC , S ↑] ≈ CZ • S falls out.
+
+  lemma-Ex-blake :
+    XC • (S ↑ • (XC ^ p-1 • (S ^ p-1 • (S ↑) ^ p-1))) ≈ CZ
+  lemma-Ex-blake = •-cancelʳ {h = Ex} (begin
+    (XC • (S ↑ • (XC ^ p-1 • (S ^ p-1 • (S ↑) ^ p-1)))) • Ex
+      ≈⟨ sym hom ⟩
+    Ex • (CX • (S • (CX ^ p-1 • ((S ↑) ^ p-1 • S ^ p-1))))
+      ≈⟨ cright blake ⟩
+    Ex • CZ
+      ≈⟨ lemma-Ex-CZ ⟩
+    CZ • Ex ∎)
+    where
+    hom : Ex • (CX • (S • (CX ^ p-1 • ((S ↑) ^ p-1 • S ^ p-1))))
+        ≈ (XC • (S ↑ • (XC ^ p-1 • (S ^ p-1 • (S ↑) ^ p-1)))) • Ex
+    hom = lemma-Ex-• lemma-Ex-CX
+            (lemma-Ex-• lemma-Ex-S
+              (lemma-Ex-• (lemma-Ex-pow lemma-Ex-CX p-1)
+                (lemma-Ex-• (lemma-Ex-pow lemma-Ex-S↑ p-1)
+                            (lemma-Ex-pow lemma-Ex-S p-1))))
+
+    blake : CX • (S • (CX ^ p-1 • ((S ↑) ^ p-1 • S ^ p-1))) ≈ CZ
+    blake = begin
+      CX • (S • (CX ^ p-1 • ((S ↑) ^ p-1 • S ^ p-1)))
+        ≡⟨ Eq.cong (λ w → CX • (S • (CX ^ p-1 • (w • S ^ p-1))))
+                   (Eq.sym (lemma-↑^ p-1 S)) ⟩
+      CX • (S • (CX ^ p-1 • ((S ^ p-1) ↑ • S ^ p-1)))
+        ≈⟨ axiom blake-c12 ⟩
+      CZ ∎
+
   lemma-⊤⊥-cube3 : (⊤⊥ • ⊤⊥) • ⊤⊥ ≈ ε
   lemma-⊤⊥-cube3 = begin
     (⊤⊥ • ⊤⊥) • ⊤⊥
