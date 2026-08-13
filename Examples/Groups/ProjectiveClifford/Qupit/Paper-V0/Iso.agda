@@ -19,33 +19,28 @@
 --     order-S  order-H  M-power  semi-MR  order-SH  comm-HHSHHS
 --     order-CZ  comm-CZ-S↑  semi-M↑CZ  rel-X↑-CZ  rel-X↓-CZ
 --
--- The rest are the real mathematics.  Paper-V0 axiomatises the two- and
--- three-wire layer through the swap Ex and the controlled-X, where
--- Simplified-V1 uses Selinger's c10–c15; neither set mentions the other's
--- words at all (Simplified-V1 never writes Ex, CX or CZ02 anywhere), so
--- there is nothing to inherit in either direction.
+-- The remaining fifteen are the real mathematics.  Paper-V0 axiomatises
+-- the two- and three-wire layer through the swap Ex and the controlled-X,
+-- where Simplified-V1 uses Selinger's c10–c15; neither set mentions the
+-- other's words at all (Simplified-V1 never writes Ex, CX or CZ02
+-- anywhere), so there was nothing to inherit in either direction.
 --
--- One direction is complete: every Simplified-V1 axiom is derived in
--- Paper-V0.Lemmas.  Of the other direction, the five Paper-V0 rules that
--- do not mention S are derived in Simplified-V1.ExRules, by transporting
--- the symplectic tree's Ex calculus along the morphism that sends the
--- symplectic S to R.  `BridgeData` below is what is left: the two
--- Paper-V0 rules that do mention S, where that transport gives the
--- R-spelling and the difference is a Pauli.
+-- All fifteen are now theorems, so `Theorem-PaperV0-iso-V1` below is
+-- unconditional.  (A `BridgeData` record used to carry whichever of them
+-- were still open, the way Qubit.ExactExtension carries ExactData; it is
+-- gone.)  The eight Simplified-V1 rules are derived in Paper-V0.Lemmas,
+-- and the seven Paper-V0 rules in Simplified-V1.ExRules; the note before
+-- `module Theorem` says how each one goes.
 --
--- Why a record rather than holes.  The library is postulate-free and
--- every file typechecks under --safe, so the outstanding derivations are
--- taken as an explicit input, the way Qubit.ExactExtension takes
--- ExactData: `theorem` below is a definition, not a hole, and each field
--- is a precisely stated lemma to be discharged.  Discharging a field is
--- a local edit that cannot silently weaken the theorem.
---
--- The three-wire fields are the ones Proposition 2.55 bears on.  Both
--- rule sets are extension presentations of Pauli n ⋊ Sp(2n, ℤ/pℤ) over
--- the same kernel, and their three-wire relators are pure symplectic
+-- The three-wire rules are the ones Proposition 2.55 bears on.  Both rule
+-- sets are extension presentations of Pauli n ⋊ Sp(2n, ℤ/pℤ) over the
+-- same kernel, and their three-wire relators are pure symplectic
 -- relators — no Pauli content — so they are the R-part of the recipe,
--- lifted along the same section.  Simplified-V1.Presentation already
--- proves the V1 side presents that group.
+-- lifted along the same section.  That is exactly why they transport:
+-- ExRules carries them from the symplectic tree along the morphism that
+-- sends the symplectic S to R, and a relator with no S in it is carried
+-- to itself.  Simplified-V1.Presentation proves the V1 side presents
+-- that group.
 ------------------------------------------------------------------------
 
 open import Relation.Binary.PropositionalEquality using (_≡_)
@@ -98,64 +93,38 @@ private
     n : ℕ
 
 ------------------------------------------------------------------------
--- The outstanding derivations
+-- Where the two halves are proved
 --
--- Group A: the Paper-V0 axioms that Simplified-V1 does not have, stated
--- in Simplified-V1's congruence.  Group B: the Simplified-V1 axioms that
--- Paper-V0 does not have, stated in Paper-V0's congruence.
-
-record BridgeData : Set where
-  field
-    -- A. Paper-V0's blake-c12, inside Simplified-V1.
-    --
-    -- This is the last one.  Six of the seven are proved in
-    -- Simplified-V1.ExRules, by transporting the symplectic tree's Ex
-    -- calculus along Simplified-V1.Forward's f.  That transport is the
-    -- identity on any rule with no S in it; f sends the symplectic S to
-    -- R = S • Z ^ ½, so a rule that does mention S comes back in the
-    -- R-spelling and the difference is a Pauli.  For semi-Ex-S↑ that
-    -- Pauli is a single Z ^ ½, which ExRules moves across the swap and
-    -- cancels.  blake-c12 carries four of them, two of which have to
-    -- cross a CX, and that crossing is not proved yet.
-    --
-    -- Stated in Word order, matching Paper-V0's corrected axiom; the old
-    -- spelling was the circuit-order reading of the same relation.
-    v1-blake-c12 :
-      ∀ {n} → let open PB (V1R._QRel,_===_ (₂₊ n)) using (_≈_) in
-      (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX ≈ CZ
-
-    -- B. Simplified-V1's two- and three-wire axioms, inside Paper-V0.
-    --
-    -- There are none left.  semi-M↓CZ and comm-CZ-S↓ are proved in
-    -- Paper-V0.Lemmas by conjugating their ↑-counterparts with the swap;
-    -- so are c10 and c11, and c12–c15 (see below).
-    --
-    -- selinger-c10 used to sit here; it is now proved in Paper-V0.Lemmas.
-    -- Both sides shed a leading H ↑ — the left by lemma-CZ-H↑, the right
-    -- by the Euler decomposition of the multiplier by −1 — leaving the
-    -- conjugation of R ↑ by XC.  That is blake-c12's commutator with R in
-    -- place of S, and the two are reconciled by the Pauli-versus-XC rule
-    -- lemma-conj-XC-Z↑, since R = S • Z ^ ½.
-    -- selinger-c11 used to sit here; it is c10 conjugated by the swap,
-    -- which exchanges the wires and fixes CZ.
-    -- selinger-c12 used to sit here; it is now proved in Paper-V0.Lemmas,
-    -- by the progress report's Lemma 9.
-    -- selinger-c13 used to sit here; it is now proved in Paper-V0.Lemmas.
-    -- Both of its sides are CZ02: the half-swaps are involutions, so each
-    -- side is a conjugation of a CZ, and the conjugating half-swap is
-    -- transparent to it by selinger-c12 and its 3-cycle conjugate.
-    -- selinger-c14 used to sit here; it is now proved in Paper-V0.Lemmas.
-    -- Conjugation by ⊤⊥ ↑ sends CZ to CZ02 (c13) and CZ02 to the inverse
-    -- of CZ • CZ02 (C18), and ⊤⊥ ↑ has order 3, so the cube telescopes.
-    -- selinger-c15 used to sit here; it is now proved in Paper-V0.Lemmas,
-    -- as c14 transported along the transposition of wires 0 and 2.
+-- Nothing is outstanding; a `BridgeData` record of obligations used to
+-- stand here, and the last of its fields is gone.  For the record, where
+-- each half now lives:
+--
+--   * Simplified-V1's axioms, as Paper-V0 theorems — Paper-V0.Lemmas.
+--     semi-M↓CZ and comm-CZ-S↓ are the ↑-rules conjugated by the swap.
+--     c10 sheds a leading H ↑ off each side (the left by lemma-CZ-H↑,
+--     the right by the Euler decomposition of the multiplier by −1) and
+--     is then blake-c12's commutator with R for S, the two reconciled by
+--     the Pauli-versus-XC rule lemma-conj-XC-Z↑ since R = S • Z ^ ½.
+--     c11 is c10 conjugated by the swap.  c12 is the progress report's
+--     Lemma 9.  Both sides of c13 are CZ02.  c14 telescopes, because
+--     conjugation by ⊤⊥ ↑ sends CZ to CZ02 and CZ02 to the inverse of
+--     CZ • CZ02, and ⊤⊥ ↑ has order 3.  c15 is c14 transported along the
+--     transposition of wires 0 and 2.
+--
+--   * Paper-V0's axioms, as Simplified-V1 theorems —
+--     Simplified-V1.ExRules.  The five with no S in them are transported
+--     from the symplectic tree along Simplified-V1.Forward's f, which
+--     sends the symplectic S to R = S • Z ^ ½ and fixes everything else.
+--     The two that do mention S come back from that transport in the
+--     R-spelling, and the difference is a Pauli: for semi-Ex-S↑ a single
+--     Z ^ ½, moved across the swap and cancelled; for blake-c12 four of
+--     them, one of which crosses the CX and is doubled onto the other
+--     wire, after which each wire's exponent is h • p.
 
 ------------------------------------------------------------------------
 -- The isomorphism
 
-module Theorem (bd : BridgeData) where
-
-  open BridgeData bd
+module Theorem where
 
   -- f : Paper-V0 → Simplified-V1.
   f-well-defined : ∀ {n} → let open PB (V1R._QRel,_===_ n) renaming (_≈_ to _≈₂_) in
@@ -172,12 +141,11 @@ module Theorem (bd : BridgeData) where
   f-well-defined PapR.semi-M↑CZ     = PB.axiom V1R.semi-M↑CZ
   f-well-defined PapR.rel-X↑-CZ     = PB.axiom V1R.rel-X↑-CZ
   f-well-defined PapR.rel-X↓-CZ     = PB.axiom V1R.rel-X↓-CZ
-  -- The seven Paper-V0-only axioms: six proved in Simplified-V1.ExRules,
-  -- one still taken as input.
+  -- The seven Paper-V0-only axioms, all proved in Simplified-V1.ExRules.
   f-well-defined {₂₊ n} PapR.order-Ex     = ExR.lemma-order-Ex
   f-well-defined {₂₊ n} PapR.semi-Ex-S↑   = ExR.Ex-S.lemma-semi-Ex-S↑ n
   f-well-defined {₂₊ n} PapR.semi-Ex-H↑   = ExR.lemma-semi-Ex-H↑
-  f-well-defined PapR.blake-c12           = v1-blake-c12
+  f-well-defined {₂₊ n} PapR.blake-c12    = ExR.Blake.lemma-blake-c12 n
   f-well-defined {₃₊ n} PapR.yang-baxter  = ExR.lemma-yang-baxter
   f-well-defined {₃₊ n} PapR.cz-slide     = ExR.lemma-cz-slide
   f-well-defined {₃₊ n} PapR.semi-CX↑-CZ↓ = ExR.lemma-semi-CX↑-CZ↓

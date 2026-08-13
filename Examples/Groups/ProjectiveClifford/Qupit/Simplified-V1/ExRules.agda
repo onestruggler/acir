@@ -31,16 +31,20 @@
 -- relators are all words in H and CZ alone — is therefore carried to
 -- itself, and the transport is the identity on the statement.
 --
--- Rules that DO mention S are not covered here: f sends them to their
--- R-spelling, and the difference is a Pauli that has to be tracked
--- separately.  That is why blake-c12 and semi-Ex-S↑ are absent.
+-- Two of the seven rules — semi-Ex-S↑ and blake-c12 — DO mention S, so
+-- the transport gives them in the R-spelling and the difference is a
+-- Pauli.  Those are the two places where this module has to do its own
+-- work, and it is the same work both times: move a Z ^ ½ across the
+-- two-wire gate (Pauli-Ex for the swap, Pauli-CX for the controlled-X)
+-- and watch the exponents add up to a multiple of p.  The symplectic
+-- tree cannot help there — it has no Pauli generators at all.
 ------------------------------------------------------------------------
 
 open import Relation.Binary.PropositionalEquality using (_≡_)
 import Relation.Binary.PropositionalEquality as Eq
 import Relation.Binary.Reasoning.Setoid as SR
 
-open import Data.Product using (_,_ ; ∃)
+open import Data.Product using (_,_ ; ∃ ; proj₁)
 open import Data.Nat hiding (_^_ ; _+_ ; _*_ ; _%_ ; _/_)
 import Data.Nat as Nat
 import Data.Nat.Properties as NP
@@ -85,6 +89,7 @@ import Examples.Groups.Symplectic.Simplified.Iso p-2 p-prime g* g-gen as SimIso
 import Examples.Groups.Symplectic.Lemmas.Ex-Sym p-2 p-prime as ExSym0
 import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime as ExSym2
 import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n p-2 p-prime as ExSym4
+import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n.Swap p-2 p-prime as ExSwap
 
 private
   variable
@@ -93,8 +98,9 @@ private
 module V1R = Clifford-Relations
 private module FI = FWD.Iso 0
 
--- The Pauli words and R are Clifford-Relations', not the gate layer's.
-open Clifford-Relations using (Z ; X ; Z⁻¹ ; X⁻¹ ; R)
+-- The Pauli words, R and the multiplier are Clifford-Relations', not the
+-- gate layer's.
+open Clifford-Relations using (Z ; X ; Z⁻¹ ; X⁻¹ ; R ; M₋₁)
 
 ------------------------------------------------------------------------
 -- The three transport steps
@@ -622,3 +628,578 @@ module Ex-S (n : ℕ) where
     (ε • S) • Ex
       ≈⟨ cleft left-unit ⟩
     S • Ex ∎
+
+------------------------------------------------------------------------
+-- A Pauli through the controlled-X
+--
+-- The mirror of Paper-V0.Lemmas' lemma-conj-XC-Z↑, and the last thing
+-- the transport cannot give.  CX = H ↓ ^ 3 • CZ • H ↓ has its TARGET on
+-- wire 0, so it conjugates the wire-0 Z to Z • Z ↑.  As on the other
+-- side, the crossings are taken in the directions that emit positive
+-- powers, so no exponent is ever negative.
+
+module Pauli-CX (n : ℕ) where
+
+  open PB (V1R._QRel,_===_ (₂₊ n))
+  open PP (V1R._QRel,_===_ (₂₊ n))
+  open SR word-setoid
+  open Group-Lemmas (V1R._QRel,_===_ (₂₊ n)) (V1L.Clifford-GroupLike.grouplike {₂₊ n})
+    using (•-cancelˡ ; •-cancelʳ)
+  open Lemmas-Clifford
+    using (lemma-↑^ ; lemma-Inductionˡ ; lemma-comm-Hᵏ-w↑ ; lemma-comm-Z-w↑)
+
+  private
+    module XZ₁ = XZL.Lemmas1b (₁₊ n)
+    module CL₁ = V1L.Lemmas1 (₁₊ n)
+    module CL₀ = V1L.Lemmas1 n
+
+    H³H : H ^ 3 • H ≈ ε
+    H³H = begin
+      H ^ 3 • H  ≈⟨ sym (^-+ H 3 1) ⟩
+      H ^ 4      ≈⟨ CL₁.lemma-order-H ⟩
+      ε ∎
+
+    H⁶ : H ^ 3 • H ^ 3 ≈ M₋₁
+    H⁶ = begin
+      H ^ 3 • H ^ 3  ≈⟨ sym (^-+ H 3 3) ⟩
+      H ^ 6          ≈⟨ ^-+ H 4 2 ⟩
+      H ^ 4 • H ^ 2  ≈⟨ cleft CL₁.lemma-order-H ⟩
+      ε • H ^ 2      ≈⟨ left-unit ⟩
+      H ^ 2          ≈⟨ axiom V1R.order-H ⟩
+      M₋₁ ∎
+
+    M₋₁H : M₋₁ • H ≈ H ^ 3
+    M₋₁H = begin
+      M₋₁ • H    ≈⟨ cleft sym (axiom V1R.order-H) ⟩
+      H ^ 2 • H  ≈⟨ sym (^-+ H 2 1) ⟩
+      H ^ 3 ∎
+
+    M₋₁-CZ' : M₋₁ • CZ ≈ CZ ^ p-1 • M₋₁
+    M₋₁-CZ' = begin
+      M₋₁ • CZ                       ≈⟨ CZL.lemma-M₋₁-CZ ⟩
+      CZ ^ toℕ ((-'₁) .proj₁) • M₋₁  ≡⟨ Eq.cong (λ m → CZ ^ m • M₋₁) lemma-toℕ-1ₚ ⟩
+      CZ ^ p-1 • M₋₁ ∎
+
+    Z-conj : Z ≈ H • (X • H ^ 3)
+    Z-conj = •-cancelʳ {h = H} (begin
+      Z • H                  ≈⟨ sym XZ₁.conj-H-X ⟩
+      H • X                  ≈⟨ cright sym right-unit ⟩
+      H • (X • ε)            ≈⟨ cright cright sym CL₁.lemma-order-H ⟩
+      H • (X • H ^ 4)        ≈⟨ cright cright ^-+ H 3 1 ⟩
+      H • (X • (H ^ 3 • H))  ≈⟨ cright sym assoc ⟩
+      H • ((X • H ^ 3) • H)  ≈⟨ sym assoc ⟩
+      (H • (X • H ^ 3)) • H ∎)
+
+    Z↑ᵖ : (Z ↑) ^ p-1 • Z ↑ ≈ ε
+    Z↑ᵖ = begin
+      (Z ↑) ^ p-1 • Z ↑      ≈⟨ sym (^-+ (Z ↑) p-1 1) ⟩
+      (Z ↑) ^ (p-1 Nat.+ 1)  ≡⟨ Eq.cong ((Z ↑) ^_) (NP.+-comm p-1 1) ⟩
+      (Z ↑) ^ p              ≡⟨ Eq.sym (lemma-↑^ p Z) ⟩
+      (Z ^ p) ↑              ≈⟨ V1R.lemma-cong↑ _ _ CL₀.lemma-order-Z ⟩
+      ε ∎
+
+    -- rel-X↓-CZ iterated in the CZ exponent.  The emitted Z ↑'s gather,
+    -- because they pass the CZ's still to come.
+    czᵏ-x : ∀ j → CZ ^ j • X ≈ X • ((Z ↑) ^ j • CZ ^ j)
+    czᵏ-x ₀ = begin
+      ε • X        ≈⟨ left-unit ⟩
+      X            ≈⟨ sym right-unit ⟩
+      X • ε        ≈⟨ cright sym left-unit ⟩
+      X • (ε • ε) ∎
+    czᵏ-x ₁ = axiom V1R.rel-X↓-CZ
+    czᵏ-x (₂₊ j) = begin
+      (CZ • CZ ^ ₁₊ j) • X
+        ≈⟨ assoc ⟩
+      CZ • (CZ ^ ₁₊ j • X)
+        ≈⟨ cright czᵏ-x (₁₊ j) ⟩
+      CZ • (X • ((Z ↑) ^ ₁₊ j • CZ ^ ₁₊ j))
+        ≈⟨ sym assoc ⟩
+      (CZ • X) • ((Z ↑) ^ ₁₊ j • CZ ^ ₁₊ j)
+        ≈⟨ cleft axiom V1R.rel-X↓-CZ ⟩
+      (X • (Z ↑ • CZ)) • ((Z ↑) ^ ₁₊ j • CZ ^ ₁₊ j)
+        ≈⟨ assoc ⟩
+      X • ((Z ↑ • CZ) • ((Z ↑) ^ ₁₊ j • CZ ^ ₁₊ j))
+        ≈⟨ cright assoc ⟩
+      X • (Z ↑ • (CZ • ((Z ↑) ^ ₁₊ j • CZ ^ ₁₊ j)))
+        ≈⟨ cright cright sym assoc ⟩
+      X • (Z ↑ • ((CZ • (Z ↑) ^ ₁₊ j) • CZ ^ ₁₊ j))
+        ≈⟨ cright cright cleft sym (comm⇒pow-comm (₁₊ j) 1 CZL.lemma-comm-Z↑-CZ) ⟩
+      X • (Z ↑ • (((Z ↑) ^ ₁₊ j • CZ) • CZ ^ ₁₊ j))
+        ≈⟨ cright cright assoc ⟩
+      X • (Z ↑ • ((Z ↑) ^ ₁₊ j • (CZ • CZ ^ ₁₊ j)))
+        ≈⟨ cright sym assoc ⟩
+      X • ((Z ↑ • (Z ↑) ^ ₁₊ j) • (CZ • CZ ^ ₁₊ j)) ∎
+
+    x-czᵉ : X • CZ ^ p-1 ≈ CZ ^ p-1 • (X • Z ↑)
+    x-czᵉ = sym (begin
+      CZ ^ p-1 • (X • Z ↑)
+        ≈⟨ sym assoc ⟩
+      (CZ ^ p-1 • X) • Z ↑
+        ≈⟨ cleft czᵏ-x p-1 ⟩
+      (X • ((Z ↑) ^ p-1 • CZ ^ p-1)) • Z ↑
+        ≈⟨ assoc ⟩
+      X • (((Z ↑) ^ p-1 • CZ ^ p-1) • Z ↑)
+        ≈⟨ cright assoc ⟩
+      X • ((Z ↑) ^ p-1 • (CZ ^ p-1 • Z ↑))
+        ≈⟨ cright cright sym (comm⇒pow-comm 1 p-1 CZL.lemma-comm-Z↑-CZ) ⟩
+      X • ((Z ↑) ^ p-1 • (Z ↑ • CZ ^ p-1))
+        ≈⟨ cright sym assoc ⟩
+      X • (((Z ↑) ^ p-1 • Z ↑) • CZ ^ p-1)
+        ≈⟨ cright cleft Z↑ᵖ ⟩
+      X • (ε • CZ ^ p-1)
+        ≈⟨ cright left-unit ⟩
+      X • CZ ^ p-1 ∎)
+
+    -- CX read from the other side: the H ^ 2 the two spellings differ by
+    -- is the multiplier by −1, which inverts the CZ it passes.
+    CX-flip : H • (CZ ^ p-1 • H ^ 3) ≈ CX
+    CX-flip = •-cancelˡ {g = H ^ 3} (begin
+      H ^ 3 • (H • (CZ ^ p-1 • H ^ 3))
+        ≈⟨ sym assoc ⟩
+      (H ^ 3 • H) • (CZ ^ p-1 • H ^ 3)
+        ≈⟨ cleft H³H ⟩
+      ε • (CZ ^ p-1 • H ^ 3)
+        ≈⟨ left-unit ⟩
+      CZ ^ p-1 • H ^ 3
+        ≈⟨ cright sym M₋₁H ⟩
+      CZ ^ p-1 • (M₋₁ • H)
+        ≈⟨ sym assoc ⟩
+      (CZ ^ p-1 • M₋₁) • H
+        ≈⟨ cleft sym M₋₁-CZ' ⟩
+      (M₋₁ • CZ) • H
+        ≈⟨ cleft cleft sym H⁶ ⟩
+      ((H ^ 3 • H ^ 3) • CZ) • H
+        ≈⟨ cleft assoc ⟩
+      (H ^ 3 • (H ^ 3 • CZ)) • H
+        ≈⟨ assoc ⟩
+      H ^ 3 • ((H ^ 3 • CZ) • H)
+        ≈⟨ cright assoc ⟩
+      H ^ 3 • (H ^ 3 • (CZ • H)) ∎)
+
+  lemma-Z-CX : Z • CX ≈ CX • (Z • Z ↑)
+  lemma-Z-CX = begin
+    Z • CX
+      ≈⟨ cleft Z-conj ⟩
+    (H • (X • H ^ 3)) • (H ^ 3 • (CZ • H))
+      ≈⟨ assoc ⟩
+    H • ((X • H ^ 3) • (H ^ 3 • (CZ • H)))
+      ≈⟨ cright assoc ⟩
+    H • (X • (H ^ 3 • (H ^ 3 • (CZ • H))))
+      ≈⟨ cright cright sym assoc ⟩
+    H • (X • ((H ^ 3 • H ^ 3) • (CZ • H)))
+      ≈⟨ cright cright cleft H⁶ ⟩
+    H • (X • (M₋₁ • (CZ • H)))
+      ≈⟨ cright cright sym assoc ⟩
+    H • (X • ((M₋₁ • CZ) • H))
+      ≈⟨ cright cright cleft M₋₁-CZ' ⟩
+    H • (X • ((CZ ^ p-1 • M₋₁) • H))
+      ≈⟨ cright cright assoc ⟩
+    H • (X • (CZ ^ p-1 • (M₋₁ • H)))
+      ≈⟨ cright cright cright M₋₁H ⟩
+    H • (X • (CZ ^ p-1 • H ^ 3))
+      ≈⟨ cright sym assoc ⟩
+    H • ((X • CZ ^ p-1) • H ^ 3)
+      ≈⟨ cright cleft x-czᵉ ⟩
+    H • ((CZ ^ p-1 • (X • Z ↑)) • H ^ 3)
+      ≈⟨ cright assoc ⟩
+    H • (CZ ^ p-1 • ((X • Z ↑) • H ^ 3))
+      ≈⟨ cright cright assoc ⟩
+    H • (CZ ^ p-1 • (X • (Z ↑ • H ^ 3)))
+      ≈⟨ cright cright cright sym (lemma-comm-Hᵏ-w↑ 3 Z) ⟩
+    H • (CZ ^ p-1 • (X • (H ^ 3 • Z ↑)))
+      ≈⟨ cright cright sym assoc ⟩
+    H • (CZ ^ p-1 • ((X • H ^ 3) • Z ↑))
+      ≈⟨ cright cright cleft XZ₁.aux-X-H³ ⟩
+    H • (CZ ^ p-1 • ((H ^ 3 • Z) • Z ↑))
+      ≈⟨ cright cright assoc ⟩
+    H • (CZ ^ p-1 • (H ^ 3 • (Z • Z ↑)))
+      ≈⟨ cright sym assoc ⟩
+    H • ((CZ ^ p-1 • H ^ 3) • (Z • Z ↑))
+      ≈⟨ sym assoc ⟩
+    (H • (CZ ^ p-1 • H ^ 3)) • (Z • Z ↑)
+      ≈⟨ cleft CX-flip ⟩
+    CX • (Z • Z ↑) ∎
+
+  lemma-Zᵏ-CX : ∀ k → Z ^ k • CX ≈ CX • (Z ^ k • (Z ↑) ^ k)
+  lemma-Zᵏ-CX k = begin
+    Z ^ k • CX
+      ≈⟨ lemma-Inductionˡ lemma-Z-CX k ⟩
+    CX • (Z • Z ↑) ^ k
+      ≈⟨ cright ^-• Z (Z ↑) k (lemma-comm-Z-w↑ Z) ⟩
+    CX • (Z ^ k • (Z ↑) ^ k) ∎
+
+------------------------------------------------------------------------
+-- blake-c12
+--
+-- Paper-V0's path-sum decomposition of CZ.  The symplectic tree proves
+-- it as Ex-Sym3n.Swap.lemma-semi-CXCZ^-alt; at k = 1 that reads
+--
+--     CX • CZ ≈ S • CX • S ⁻¹ • S ⁻¹ ↑
+--
+-- and Paper-V0's spelling is the same relation with the CX moved to the
+-- other side.  The transport gives it over R, and the conversion to S is
+-- where the Pauli rule above is spent: R = S • Z ^ ½, so the RHS carries
+-- four Z ^ ½ factors, and exactly one of them stands to the LEFT of the
+-- single CX.  Crossing it doubles that one onto the other wire, and the
+-- exponents then add to h • p on each wire, which is zero.
+
+module Blake (n : ℕ) where
+
+  open PB (V1R._QRel,_===_ (₂₊ n))
+  open PP (V1R._QRel,_===_ (₂₊ n))
+  open SR word-setoid
+  open Group-Lemmas (V1R._QRel,_===_ (₂₊ n)) (V1L.Clifford-GroupLike.grouplike {₂₊ n})
+    using (•-cancelˡ)
+  open Lemmas-Clifford
+    using (lemma-↑^ ; lemma-Inductionˡ ; lemma-comm-S-w↑ ; lemma-comm-Z-w↑)
+  open Pauli-CX n using (lemma-Zᵏ-CX)
+
+  private
+    module T = Transport (₂₊ n)
+    module CL₁ = V1L.Lemmas1 (₁₊ n)
+    module CL₀ = V1L.Lemmas1 n
+    module PP₁ = PP (V1R._QRel,_===_ (₁₊ n))
+
+    h : ℕ
+    h = toℕ 1/2
+
+    ------------------------------------------------------------------
+    -- CX has order p, being a CZ conjugated by H.
+
+    cxᵏ : ∀ k → CX ^ k ≈ H ^ 3 • (CZ ^ k • H)
+    cxᵏ ₀ = begin
+      ε                  ≈⟨ sym h³h ⟩
+      H ^ 3 • H          ≈⟨ cright sym left-unit ⟩
+      H ^ 3 • (ε • H) ∎
+      where
+      h³h : H ^ 3 • H ≈ ε
+      h³h = trans (sym (^-+ H 3 1)) CL₁.lemma-order-H
+    cxᵏ ₁ = refl
+    cxᵏ (₂₊ k) = begin
+      CX • CX ^ ₁₊ k
+        ≈⟨ cright cxᵏ (₁₊ k) ⟩
+      (H ^ 3 • (CZ • H)) • (H ^ 3 • (CZ ^ ₁₊ k • H))
+        ≈⟨ assoc ⟩
+      H ^ 3 • ((CZ • H) • (H ^ 3 • (CZ ^ ₁₊ k • H)))
+        ≈⟨ cright assoc ⟩
+      H ^ 3 • (CZ • (H • (H ^ 3 • (CZ ^ ₁₊ k • H))))
+        ≈⟨ cright cright sym assoc ⟩
+      H ^ 3 • (CZ • ((H • H ^ 3) • (CZ ^ ₁₊ k • H)))
+        ≈⟨ cright cright cleft CL₁.lemma-order-H ⟩
+      H ^ 3 • (CZ • (ε • (CZ ^ ₁₊ k • H)))
+        ≈⟨ cright cright left-unit ⟩
+      H ^ 3 • (CZ • (CZ ^ ₁₊ k • H))
+        ≈⟨ cright sym assoc ⟩
+      H ^ 3 • ((CZ • CZ ^ ₁₊ k) • H) ∎
+
+    CXᵉ-CX : CX ^ p-1 • CX ≈ ε
+    CXᵉ-CX = begin
+      CX ^ p-1 • CX
+        ≈⟨ sym (^-+ CX p-1 1) ⟩
+      CX ^ (p-1 Nat.+ 1)
+        ≡⟨ Eq.cong (CX ^_) (NP.+-comm p-1 1) ⟩
+      CX ^ p
+        ≈⟨ cxᵏ p ⟩
+      H ^ 3 • (CZ ^ p • H)
+        ≈⟨ cright cleft axiom V1R.order-CZ ⟩
+      H ^ 3 • (ε • H)
+        ≈⟨ cright left-unit ⟩
+      H ^ 3 • H
+        ≈⟨ sym (^-+ H 3 1) ⟩
+      H ^ 4
+        ≈⟨ CL₁.lemma-order-H ⟩
+      ε ∎
+
+    ------------------------------------------------------------------
+    -- The transported symplectic rule, at k = 1.
+
+    T-R : CX • CZ ≈ R • (CX • (R ^ p-1 • (R ↑) ^ p-1))
+    T-R = begin
+      CX • CZ
+        ≡⟨ auto ⟩
+      (FI.f ʷ) [ CX • CZ^ 1ₚ ]ᵣ
+        ≈⟨ T.sd⇒v1 (T.sim⇒sd (T.sym⇒sim (ExSwap.lemma-semi-CXCZ^-alt {n} 1ₚ))) ⟩
+      (FI.f ʷ) [ S^ 1ₚ • CX • S^ (- 1ₚ) • S^ (- 1ₚ) ↑ ]ᵣ
+        ≡⟨ Eq.cong₂ (λ a b → R • (CX • (a • b)))
+                    (FI.lemma-f*-^ᵣ S (toℕ (- 1ₚ)))
+                    (Eq.trans (FI.lemma-f*-[w]ᵣ {w = S ^ toℕ (- 1ₚ)})
+                      (Eq.trans (Eq.cong _↑ (FI.lemma-f*-^ᵣ S (toℕ (- 1ₚ))))
+                                (lemma-↑^ (toℕ (- 1ₚ)) R))) ⟩
+      R • (CX • (R ^ toℕ (- 1ₚ) • (R ↑) ^ toℕ (- 1ₚ)))
+        ≡⟨ Eq.cong₂ (λ a b → R • (CX • (R ^ a • (R ↑) ^ b)))
+                    lemma-toℕ-1ₚ lemma-toℕ-1ₚ ⟩
+      R • (CX • (R ^ p-1 • (R ↑) ^ p-1)) ∎
+
+    ------------------------------------------------------------------
+    -- R = S • Z ^ ½ split out of the three places it occurs.
+
+    comm-S-Zʰ : S • Z ^ h ≈ Z ^ h • S
+    comm-S-Zʰ = sym (comm⇒pow-comm h 1 CL₁.lemma-comm-Z-S)
+
+    comm-S↑-Z↑ʰ : S ↑ • (Z ↑) ^ h ≈ (Z ↑) ^ h • S ↑
+    comm-S↑-Z↑ʰ = begin
+      S ↑ • (Z ↑) ^ h    ≡⟨ Eq.cong (S ↑ •_) (Eq.sym (lemma-↑^ h Z)) ⟩
+      S ↑ • (Z ^ h) ↑    ≈⟨ V1R.lemma-cong↑ _ _ (PB.sym (PP₁.comm⇒pow-comm h 1 CL₀.lemma-comm-Z-S)) ⟩
+      (Z ^ h) ↑ • S ↑    ≡⟨ Eq.cong (_• S ↑) (lemma-↑^ h Z) ⟩
+      (Z ↑) ^ h • S ↑ ∎
+
+    R-split : R ^ p-1 ≈ S ^ p-1 • Z ^ (h Nat.* p-1)
+    R-split = begin
+      (S • Z ^ h) ^ p-1        ≈⟨ ^-• S (Z ^ h) p-1 comm-S-Zʰ ⟩
+      S ^ p-1 • (Z ^ h) ^ p-1  ≈⟨ cright ^^ Z h p-1 ⟩
+      S ^ p-1 • Z ^ (h Nat.* p-1) ∎
+
+    R↑-split : (R ↑) ^ p-1 ≈ (S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1)
+    R↑-split = begin
+      (R ↑) ^ p-1
+        ≡⟨ Eq.cong (λ w → (S ↑ • w) ^ p-1) (lemma-↑^ h Z) ⟩
+      (S ↑ • (Z ↑) ^ h) ^ p-1
+        ≈⟨ ^-• (S ↑) ((Z ↑) ^ h) p-1 comm-S↑-Z↑ʰ ⟩
+      (S ↑) ^ p-1 • ((Z ↑) ^ h) ^ p-1
+        ≈⟨ cright ^^ (Z ↑) h p-1 ⟩
+      (S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1) ∎
+
+    -- h + h(p-1) = h·p, so each wire's Pauli exponent is a multiple of p.
+    arith : h Nat.+ h Nat.* p-1 ≡ p Nat.* h
+    arith = Eq.trans (Eq.cong (Nat._+ (h Nat.* p-1)) (Eq.sym (NP.*-identityʳ h)))
+                     (Eq.trans (Eq.sym (NP.*-distribˡ-+ h 1 p-1)) (NP.*-comm h p))
+
+    pauli-cancel : ∀ (w : Word (Gen (₂₊ n))) → w ^ p ≈ ε →
+                   w ^ h • w ^ (h Nat.* p-1) ≈ ε
+    pauli-cancel w wp = begin
+      w ^ h • w ^ (h Nat.* p-1)  ≈⟨ sym (^-+ w h (h Nat.* p-1)) ⟩
+      w ^ (h Nat.+ h Nat.* p-1)  ≡⟨ Eq.cong (w ^_) arith ⟩
+      w ^ (p Nat.* h)            ≈⟨ sym (^^ w p h) ⟩
+      (w ^ p) ^ h                ≈⟨ ^-cong (w ^ p) ε h wp ⟩
+      ε ^ h                      ≈⟨ ε^k=ε h ⟩
+      ε ∎
+
+    Zᵖ : Z ^ p ≈ ε
+    Zᵖ = CL₁.lemma-order-Z
+
+    Z↑ᵖ : (Z ↑) ^ p ≈ ε
+    Z↑ᵖ = begin
+      (Z ↑) ^ p  ≡⟨ Eq.sym (lemma-↑^ p Z) ⟩
+      (Z ^ p) ↑  ≈⟨ V1R.lemma-cong↑ _ _ CL₀.lemma-order-Z ⟩
+      ε ∎
+
+    S↑ᵉ-S↑ : (S ↑) ^ p-1 • S ↑ ≈ ε
+    S↑ᵉ-S↑ = begin
+      (S ↑) ^ p-1 • S ↑      ≈⟨ sym (^-+ (S ↑) p-1 1) ⟩
+      (S ↑) ^ (p-1 Nat.+ 1)  ≡⟨ Eq.cong ((S ↑) ^_) (NP.+-comm p-1 1) ⟩
+      (S ↑) ^ p              ≡⟨ Eq.sym (lemma-↑^ p S) ⟩
+      (S ^ p) ↑              ≈⟨ V1R.lemma-cong↑ _ _ (PB.axiom V1R.order-S) ⟩
+      ε ∎
+
+    Sᵉ-S : S ^ p-1 • S ≈ ε
+    Sᵉ-S = begin
+      S ^ p-1 • S      ≈⟨ sym (^-+ S p-1 1) ⟩
+      S ^ (p-1 Nat.+ 1)  ≡⟨ Eq.cong (S ^_) (NP.+-comm p-1 1) ⟩
+      S ^ p            ≈⟨ axiom V1R.order-S ⟩
+      ε ∎
+
+    comm-Sᵉ-S↑ : S ^ p-1 • S ↑ ≈ S ↑ • S ^ p-1
+    comm-Sᵉ-S↑ = lemma-Inductionˡ (lemma-comm-S-w↑ S) p-1
+
+    ------------------------------------------------------------------
+    -- The R-spelling becomes the S-spelling.
+    --
+    -- Only the Z ^ ½ of the leading R stands to the left of the CX, so
+    -- only that one crosses; it comes out doubled onto the upper wire,
+    -- and each wire's total exponent is then h + h(p-1) = h·p.
+
+    T-S : CX • CZ ≈ S • (CX • (S ^ p-1 • (S ↑) ^ p-1))
+    T-S = begin
+      CX • CZ
+        ≈⟨ T-R ⟩
+      (S • Z ^ h) • (CX • (R ^ p-1 • (R ↑) ^ p-1))
+        ≈⟨ cright cright cong R-split R↑-split ⟩
+      (S • Z ^ h) • (CX • ((S ^ p-1 • Z ^ (h Nat.* p-1))
+                            • ((S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1))))
+        ≈⟨ assoc ⟩
+      S • (Z ^ h • (CX • tail))
+        ≈⟨ cright sym assoc ⟩
+      S • ((Z ^ h • CX) • tail)
+        ≈⟨ cright cleft lemma-Zᵏ-CX h ⟩
+      S • ((CX • (Z ^ h • (Z ↑) ^ h)) • tail)
+        ≈⟨ cright assoc ⟩
+      S • (CX • ((Z ^ h • (Z ↑) ^ h) • tail))
+        ≈⟨ cright cright core ⟩
+      S • (CX • (S ^ p-1 • (S ↑) ^ p-1)) ∎
+      where
+      tail : Word (Gen (₂₊ n))
+      tail = (S ^ p-1 • Z ^ (h Nat.* p-1)) • ((S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1))
+
+      -- Z ^ h and (Z ↑) ^ h walk right past the phase gates to meet the
+      -- powers left over from R ^ (p-1), and annihilate them.
+      core : (Z ^ h • (Z ↑) ^ h) • tail ≈ S ^ p-1 • (S ↑) ^ p-1
+      core = begin
+        (Z ^ h • (Z ↑) ^ h)
+          • ((S ^ p-1 • Z ^ (h Nat.* p-1)) • ((S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1)))
+          ≈⟨ cright assoc ⟩
+        (Z ^ h • (Z ↑) ^ h)
+          • (S ^ p-1 • (Z ^ (h Nat.* p-1) • ((S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1))))
+          ≈⟨ assoc ⟩
+        Z ^ h • ((Z ↑) ^ h
+          • (S ^ p-1 • (Z ^ (h Nat.* p-1) • ((S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1)))))
+          ≈⟨ cright sym assoc ⟩
+        Z ^ h • (((Z ↑) ^ h • S ^ p-1)
+          • (Z ^ (h Nat.* p-1) • ((S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1))))
+          ≈⟨ cright cleft sym (comm⇒pow-comm p-1 h (lemma-comm-S-w↑ Z)) ⟩
+        Z ^ h • ((S ^ p-1 • (Z ↑) ^ h)
+          • (Z ^ (h Nat.* p-1) • ((S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1))))
+          ≈⟨ cright assoc ⟩
+        Z ^ h • (S ^ p-1 • ((Z ↑) ^ h
+          • (Z ^ (h Nat.* p-1) • ((S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1)))))
+          ≈⟨ cright cright sym assoc ⟩
+        Z ^ h • (S ^ p-1 • (((Z ↑) ^ h • Z ^ (h Nat.* p-1))
+          • ((S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1))))
+          ≈⟨ cright cright cleft sym (comm⇒pow-comm (h Nat.* p-1) h (lemma-comm-Z-w↑ Z)) ⟩
+        Z ^ h • (S ^ p-1 • ((Z ^ (h Nat.* p-1) • (Z ↑) ^ h)
+          • ((S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1))))
+          ≈⟨ cright cright assoc ⟩
+        Z ^ h • (S ^ p-1 • (Z ^ (h Nat.* p-1)
+          • ((Z ↑) ^ h • ((S ↑) ^ p-1 • (Z ↑) ^ (h Nat.* p-1)))))
+          ≈⟨ cright cright cright sym assoc ⟩
+        Z ^ h • (S ^ p-1 • (Z ^ (h Nat.* p-1)
+          • (((Z ↑) ^ h • (S ↑) ^ p-1) • (Z ↑) ^ (h Nat.* p-1))))
+          ≈⟨ cright cright cright cleft comm-Z↑ʰ-S↑ᵉ ⟩
+        Z ^ h • (S ^ p-1 • (Z ^ (h Nat.* p-1)
+          • (((S ↑) ^ p-1 • (Z ↑) ^ h) • (Z ↑) ^ (h Nat.* p-1))))
+          ≈⟨ cright cright cright assoc ⟩
+        Z ^ h • (S ^ p-1 • (Z ^ (h Nat.* p-1)
+          • ((S ↑) ^ p-1 • ((Z ↑) ^ h • (Z ↑) ^ (h Nat.* p-1)))))
+          ≈⟨ cright cright cright cright pauli-cancel (Z ↑) Z↑ᵖ ⟩
+        Z ^ h • (S ^ p-1 • (Z ^ (h Nat.* p-1) • ((S ↑) ^ p-1 • ε)))
+          ≈⟨ cright cright cright right-unit ⟩
+        Z ^ h • (S ^ p-1 • (Z ^ (h Nat.* p-1) • (S ↑) ^ p-1))
+          ≈⟨ cright cright comm⇒pow-comm (h Nat.* p-1) p-1 (lemma-comm-Z-w↑ S) ⟩
+        Z ^ h • (S ^ p-1 • ((S ↑) ^ p-1 • Z ^ (h Nat.* p-1)))
+          ≈⟨ cright sym assoc ⟩
+        Z ^ h • ((S ^ p-1 • (S ↑) ^ p-1) • Z ^ (h Nat.* p-1))
+          ≈⟨ sym assoc ⟩
+        (Z ^ h • (S ^ p-1 • (S ↑) ^ p-1)) • Z ^ (h Nat.* p-1)
+          ≈⟨ cleft comm-Zʰ-SS↑ ⟩
+        ((S ^ p-1 • (S ↑) ^ p-1) • Z ^ h) • Z ^ (h Nat.* p-1)
+          ≈⟨ assoc ⟩
+        (S ^ p-1 • (S ↑) ^ p-1) • (Z ^ h • Z ^ (h Nat.* p-1))
+          ≈⟨ cright pauli-cancel Z Zᵖ ⟩
+        (S ^ p-1 • (S ↑) ^ p-1) • ε
+          ≈⟨ right-unit ⟩
+        S ^ p-1 • (S ↑) ^ p-1 ∎
+        where
+        -- Same wire, so this is lemma-comm-Z-S lifted and iterated.
+        comm-Z↑ʰ-S↑ᵉ : (Z ↑) ^ h • (S ↑) ^ p-1 ≈ (S ↑) ^ p-1 • (Z ↑) ^ h
+        comm-Z↑ʰ-S↑ᵉ = begin
+          (Z ↑) ^ h • (S ↑) ^ p-1
+            ≡⟨ Eq.cong₂ (λ a b → a • b) (Eq.sym (lemma-↑^ h Z)) (Eq.sym (lemma-↑^ p-1 S)) ⟩
+          (Z ^ h) ↑ • (S ^ p-1) ↑
+            ≈⟨ V1R.lemma-cong↑ _ _ (PP₁.comm⇒pow-comm h p-1 CL₀.lemma-comm-Z-S) ⟩
+          (S ^ p-1) ↑ • (Z ^ h) ↑
+            ≡⟨ Eq.cong₂ (λ a b → a • b) (lemma-↑^ p-1 S) (lemma-↑^ h Z) ⟩
+          (S ↑) ^ p-1 • (Z ↑) ^ h ∎
+
+        -- Z ^ h passes S ^ (p-1) on its own wire and (S ↑) ^ (p-1) on the
+        -- other one.
+        comm-Zʰ-SS↑ : Z ^ h • (S ^ p-1 • (S ↑) ^ p-1)
+                    ≈ (S ^ p-1 • (S ↑) ^ p-1) • Z ^ h
+        comm-Zʰ-SS↑ = begin
+          Z ^ h • (S ^ p-1 • (S ↑) ^ p-1)
+            ≈⟨ sym assoc ⟩
+          (Z ^ h • S ^ p-1) • (S ↑) ^ p-1
+            ≈⟨ cleft comm⇒pow-comm h p-1 CL₁.lemma-comm-Z-S ⟩
+          (S ^ p-1 • Z ^ h) • (S ↑) ^ p-1
+            ≈⟨ assoc ⟩
+          S ^ p-1 • (Z ^ h • (S ↑) ^ p-1)
+            ≈⟨ cright comm⇒pow-comm h p-1 (lemma-comm-Z-w↑ S) ⟩
+          S ^ p-1 • ((S ↑) ^ p-1 • Z ^ h)
+            ≈⟨ sym assoc ⟩
+          (S ^ p-1 • (S ↑) ^ p-1) • Z ^ h ∎
+
+    ------------------------------------------------------------------
+    -- …and blake-c12 is that, with the CX moved to the other side.
+
+    A' : Word (Gen (₂₊ n))
+    A' = CX ^ p-1 • (S • CX)
+
+    CZ-split : CZ ≈ A' • (S ^ p-1 • (S ↑) ^ p-1)
+    CZ-split = begin
+      CZ
+        ≈⟨ sym left-unit ⟩
+      ε • CZ
+        ≈⟨ cleft sym CXᵉ-CX ⟩
+      (CX ^ p-1 • CX) • CZ
+        ≈⟨ assoc ⟩
+      CX ^ p-1 • (CX • CZ)
+        ≈⟨ cright T-S ⟩
+      CX ^ p-1 • (S • (CX • (S ^ p-1 • (S ↑) ^ p-1)))
+        ≈⟨ cright sym assoc ⟩
+      CX ^ p-1 • ((S • CX) • (S ^ p-1 • (S ↑) ^ p-1))
+        ≈⟨ sym assoc ⟩
+      (CX ^ p-1 • (S • CX)) • (S ^ p-1 • (S ↑) ^ p-1) ∎
+
+    A'-conj : A' ≈ CZ • (S ↑ • S)
+    A'-conj = begin
+      A'
+        ≈⟨ sym right-unit ⟩
+      A' • ε
+        ≈⟨ cright sym cancel ⟩
+      A' • ((S ^ p-1 • (S ↑) ^ p-1) • (S ↑ • S))
+        ≈⟨ sym assoc ⟩
+      (A' • (S ^ p-1 • (S ↑) ^ p-1)) • (S ↑ • S)
+        ≈⟨ cleft sym CZ-split ⟩
+      CZ • (S ↑ • S) ∎
+      where
+      cancel : (S ^ p-1 • (S ↑) ^ p-1) • (S ↑ • S) ≈ ε
+      cancel = begin
+        (S ^ p-1 • (S ↑) ^ p-1) • (S ↑ • S)
+          ≈⟨ assoc ⟩
+        S ^ p-1 • ((S ↑) ^ p-1 • (S ↑ • S))
+          ≈⟨ cright sym assoc ⟩
+        S ^ p-1 • (((S ↑) ^ p-1 • S ↑) • S)
+          ≈⟨ cright cleft S↑ᵉ-S↑ ⟩
+        S ^ p-1 • (ε • S)
+          ≈⟨ cright left-unit ⟩
+        S ^ p-1 • S
+          ≈⟨ Sᵉ-S ⟩
+        ε ∎
+
+  lemma-blake-c12 : (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX ≈ CZ
+  lemma-blake-c12 = begin
+    (S ^ p-1) ↑ • (S ^ p-1 • A')
+      ≡⟨ Eq.cong (λ w → w • (S ^ p-1 • A')) (lemma-↑^ p-1 S) ⟩
+    (S ↑) ^ p-1 • (S ^ p-1 • A')
+      ≈⟨ cright cright A'-conj ⟩
+    (S ↑) ^ p-1 • (S ^ p-1 • (CZ • (S ↑ • S)))
+      ≈⟨ cright sym assoc ⟩
+    (S ↑) ^ p-1 • ((S ^ p-1 • CZ) • (S ↑ • S))
+      ≈⟨ cright cleft sym (comm⇒pow-comm 1 p-1 (axiom V1R.comm-CZ-S↓)) ⟩
+    (S ↑) ^ p-1 • ((CZ • S ^ p-1) • (S ↑ • S))
+      ≈⟨ sym assoc ⟩
+    ((S ↑) ^ p-1 • (CZ • S ^ p-1)) • (S ↑ • S)
+      ≈⟨ cleft sym assoc ⟩
+    (((S ↑) ^ p-1 • CZ) • S ^ p-1) • (S ↑ • S)
+      ≈⟨ cleft cleft sym (comm⇒pow-comm 1 p-1 (axiom V1R.comm-CZ-S↑)) ⟩
+    ((CZ • (S ↑) ^ p-1) • S ^ p-1) • (S ↑ • S)
+      ≈⟨ cleft assoc ⟩
+    (CZ • ((S ↑) ^ p-1 • S ^ p-1)) • (S ↑ • S)
+      ≈⟨ assoc ⟩
+    CZ • (((S ↑) ^ p-1 • S ^ p-1) • (S ↑ • S))
+      ≈⟨ cright assoc ⟩
+    CZ • ((S ↑) ^ p-1 • (S ^ p-1 • (S ↑ • S)))
+      ≈⟨ cright cright sym assoc ⟩
+    CZ • ((S ↑) ^ p-1 • ((S ^ p-1 • S ↑) • S))
+      ≈⟨ cright cright cleft comm-Sᵉ-S↑ ⟩
+    CZ • ((S ↑) ^ p-1 • ((S ↑ • S ^ p-1) • S))
+      ≈⟨ cright cright assoc ⟩
+    CZ • ((S ↑) ^ p-1 • (S ↑ • (S ^ p-1 • S)))
+      ≈⟨ cright sym assoc ⟩
+    CZ • (((S ↑) ^ p-1 • S ↑) • (S ^ p-1 • S))
+      ≈⟨ cright cleft S↑ᵉ-S↑ ⟩
+    CZ • (ε • (S ^ p-1 • S))
+      ≈⟨ cright left-unit ⟩
+    CZ • (S ^ p-1 • S)
+      ≈⟨ cright Sᵉ-S ⟩
+    CZ • ε
+      ≈⟨ right-unit ⟩
+    CZ ∎
