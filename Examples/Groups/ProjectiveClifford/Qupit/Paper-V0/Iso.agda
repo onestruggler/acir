@@ -19,12 +19,17 @@
 --     order-S  order-H  M-power  semi-MR  order-SH  comm-HHSHHS
 --     order-CZ  comm-CZ-S↑  semi-M↑CZ  rel-X↑-CZ  rel-X↓-CZ
 --
--- The remaining fifteen are the real mathematics, and they are the
--- fields of `BridgeData` below.  Paper-V0 axiomatises the two- and
+-- The rest are the real mathematics.  Paper-V0 axiomatises the two- and
 -- three-wire layer through the swap Ex and the controlled-X, where
 -- Simplified-V1 uses Selinger's c10–c15; neither set mentions the other's
 -- words at all (Simplified-V1 never writes Ex, CX or CZ02 anywhere), so
 -- there is nothing to inherit in either direction.
+--
+-- The Paper-V0 ⟶ Simplified-V1 direction is now complete: every
+-- Simplified-V1 axiom is derived in Paper-V0.Lemmas.  What is left, and
+-- what `BridgeData` below still carries, is the seven axioms of the
+-- other direction — Paper-V0's Ex, blake-c12 and three-wire rules,
+-- inside Simplified-V1.
 --
 -- Why a record rather than holes.  The library is postulate-free and
 -- every file typechecks under --safe, so the outstanding derivations are
@@ -126,22 +131,20 @@ record BridgeData : Set where
       ∀ {n} → let open PB (V1R._QRel,_===_ (₃₊ n)) using (_≈_) in
       CZ ↓ • CX ↑ ≈ CZ02 • CX ↑ • CZ ↓
 
-    -- B. Simplified-V1's two-wire axioms, inside Paper-V0.
+    -- B. Simplified-V1's two- and three-wire axioms, inside Paper-V0.
     --
-    -- semi-M↓CZ and comm-CZ-S↓ used to sit here too; both are now proved
-    -- in Paper-V0.Lemmas, by conjugating their ↑-counterparts with the
-    -- swap.  That is what the comm-Ex-CZ axiom was added for.
-    pap-selinger-c10 :
-      ∀ {n} → let open PB (PapR._QRel,_===_ (₂₊ n)) using (_≈_) in
-      CZ • H ↑ • CZ ≈
-        PapR.R ↑ ^ p-1 • H ↑ • PapR.R ↑ ^ p-1 • CZ • H ↑ • PapR.R ↑ ^ p-1 • PapR.R ↓ ^ p-1
-    pap-selinger-c11 :
-      ∀ {n} → let open PB (PapR._QRel,_===_ (₂₊ n)) using (_≈_) in
-      CZ • H ↓ • CZ ≈
-        PapR.R ↓ ^ p-1 • H ↓ • PapR.R ↓ ^ p-1 • CZ • H ↓ • PapR.R ↓ ^ p-1 • PapR.R ↑ ^ p-1
-
-    -- B. Simplified-V1's three-wire axioms, inside Paper-V0.
+    -- There are none left.  semi-M↓CZ and comm-CZ-S↓ are proved in
+    -- Paper-V0.Lemmas by conjugating their ↑-counterparts with the swap;
+    -- so are c10 and c11, and c12–c15 (see below).
     --
+    -- selinger-c10 used to sit here; it is now proved in Paper-V0.Lemmas.
+    -- Both sides shed a leading H ↑ — the left by lemma-CZ-H↑, the right
+    -- by the Euler decomposition of the multiplier by −1 — leaving the
+    -- conjugation of R ↑ by XC.  That is blake-c12's commutator with R in
+    -- place of S, and the two are reconciled by the Pauli-versus-XC rule
+    -- lemma-conj-XC-Z↑, since R = S • Z ^ ½.
+    -- selinger-c11 used to sit here; it is c10 conjugated by the swap,
+    -- which exchanges the wires and fixes CZ.
     -- selinger-c12 used to sit here; it is now proved in Paper-V0.Lemmas,
     -- by the progress report's Lemma 9.
     -- selinger-c13 used to sit here; it is now proved in Paper-V0.Lemmas.
@@ -216,8 +219,8 @@ module Theorem (bd : BridgeData) where
   -- The eight Simplified-V1-only axioms.
   g-well-defined {₂₊ n} V1R.semi-M↓CZ  = PapL.Down-Rules.lemma-semi-M↓CZ n
   g-well-defined {₂₊ n} V1R.comm-CZ-S↓ = PapL.Down-Rules.lemma-comm-CZ-S↓ n
-  g-well-defined V1R.selinger-c10   = pap-selinger-c10
-  g-well-defined V1R.selinger-c11   = pap-selinger-c11
+  g-well-defined {₂₊ n} V1R.selinger-c10 = PapL.Ex-Conjugation.lemma-selinger-c10 n
+  g-well-defined {₂₊ n} V1R.selinger-c11 = PapL.Ex-Conjugation.lemma-selinger-c11 n
   g-well-defined {₃₊ n} V1R.selinger-c12 = PapL.Three-Wire.lemma-selinger-c12 n
   g-well-defined {₃₊ n} V1R.selinger-c13 = PapL.Three-Wire.lemma-selinger-c13 n
   g-well-defined {₃₊ n} V1R.selinger-c14 = PapL.Three-Wire.lemma-selinger-c14 n
