@@ -485,7 +485,7 @@ module One-Wire (n : ℕ) where
   --
   -- Groundwork for c10: moving a Pauli across XC = H ↑ ^ 3 • CZ • H ↑
   -- means moving it across the two H ↑, which is this, and across CZ,
-  -- which is rel-X↑-CZ.
+  -- which is lemma-rel-X↑-CZ.
 
   conj-H-X : H • X ≈ Z • H
   conj-H-X = by-assoc auto
@@ -1053,6 +1053,56 @@ module Ex-Conjugation (n : ℕ) where
           (lemma-Ex-• lemma-Ex-H↑
             (lemma-Ex-• lemma-Ex-S⁻¹↑ lemma-Ex-H↑))))
 
+  ------------------------------------------------------------------------
+  -- Transporting a whole relation along the swap
+  --
+  -- Ex is an involution, so a relation between two words is equivalent to
+  -- the relation between their conjugates.  This is used twice: here for
+  -- the upper Pauli rule, and much later to turn c10 into c11.
+
+  private
+    transport-Ex : ∀ {u u' v v'} →
+                   Ex • u ≈ u' • Ex → Ex • v ≈ v' • Ex → u ≈ v → u' ≈ v'
+    transport-Ex {u} {u'} {v} {v'} eu ev eq = begin
+      u'              ≈⟨ sym lemma-cancel-Ex ⟩
+      u' • Ex • Ex    ≈⟨ sym assoc ⟩
+      (u' • Ex) • Ex  ≈⟨ cleft sym eu ⟩
+      (Ex • u) • Ex   ≈⟨ cleft cright eq ⟩
+      (Ex • v) • Ex   ≈⟨ cleft ev ⟩
+      (v' • Ex) • Ex  ≈⟨ assoc ⟩
+      v' • Ex • Ex    ≈⟨ lemma-cancel-Ex ⟩
+      v' ∎
+
+  ------------------------------------------------------------------------
+  -- The upper Pauli-versus-CZ rule
+  --
+  -- Figure 1 states this one alongside its mirror; only the mirror is an
+  -- axiom here, because the swap derives one from the other.  Ex fixes CZ
+  -- (lemma-Ex-CZ) and exchanges the wires, so conjugating
+  --
+  --     CZ • X ↓ === X ↓ • Z ↑ • CZ
+  --
+  -- by it gives exactly CZ • X ↑ ≈ X ↑ • Z ↓ • CZ.
+  --
+  -- Not circular, and not an accident of ordering: lemma-Ex-CZ comes from
+  -- semi-Ex-H↑ and the two spellings of the swap, lemma-Ex-X and
+  -- lemma-Ex-Z↑ are built from semi-Ex-S↑ and semi-Ex-H↑ alone, and
+  -- transport-Ex uses only lemma-cancel-Ex.  None of them sees a Pauli
+  -- rule, and all of them are declared above.
+  --
+  -- Only ONE of the pair is redundant.  Dropping both would lose all of
+  -- CZ's Pauli content, and the rule set would no longer present the
+  -- extension.
+
+  lemma-rel-X↑-CZ : CZ • X ↑ ≈ X ↑ • (Z • CZ)
+  lemma-rel-X↑-CZ = transport-Ex lhs rhs (axiom rel-X↓-CZ)
+    where
+    lhs : Ex • (CZ • X) ≈ (CZ • X ↑) • Ex
+    lhs = lemma-Ex-• lemma-Ex-CZ lemma-Ex-X
+
+    rhs : Ex • (X • (Z ↑ • CZ)) ≈ (X ↑ • (Z • CZ)) • Ex
+    rhs = lemma-Ex-• lemma-Ex-X (lemma-Ex-• lemma-Ex-Z↑ lemma-Ex-CZ)
+
   lemma-Ex-Z^ : ∀ k → Ex • Z^ k ≈ (Z^ k) ↑ • Ex
   lemma-Ex-Z^ k = begin
     Ex • Z ^ toℕ k      ≈⟨ lemma-Ex-pow lemma-Ex-Z (toℕ k) ⟩
@@ -1597,12 +1647,12 @@ module Ex-Conjugation (n : ℕ) where
     CZ                  ≈⟨ sym left-unit ⟩
     ε • CZ              ≈⟨ sym left-unit ⟩
     ε • (ε • CZ) ∎
-  lemma-CZ-X↑ᵏ ₁ = axiom rel-X↑-CZ
+  lemma-CZ-X↑ᵏ ₁ = lemma-rel-X↑-CZ
   lemma-CZ-X↑ᵏ (₂₊ k) = begin
     CZ • (X ↑ • (X ↑) ^ ₁₊ k)
       ≈⟨ sym assoc ⟩
     (CZ • X ↑) • (X ↑) ^ ₁₊ k
-      ≈⟨ cleft axiom rel-X↑-CZ ⟩
+      ≈⟨ cleft lemma-rel-X↑-CZ ⟩
     (X ↑ • (Z ↓ • CZ)) • (X ↑) ^ ₁₊ k
       ≈⟨ assoc ⟩
     X ↑ • ((Z ↓ • CZ) • (X ↑) ^ ₁₊ k)
@@ -1844,7 +1894,7 @@ module Ex-Conjugation (n : ℕ) where
     X ↑            ≈⟨ sym right-unit ⟩
     X ↑ • ε        ≈⟨ cright sym left-unit ⟩
     X ↑ • (ε • ε) ∎
-  lemma-CZᵏ-X↑ ₁ = axiom rel-X↑-CZ
+  lemma-CZᵏ-X↑ ₁ = lemma-rel-X↑-CZ
   lemma-CZᵏ-X↑ (₂₊ j) = begin
     (CZ • CZ ^ ₁₊ j) • X ↑
       ≈⟨ assoc ⟩
@@ -2329,19 +2379,8 @@ module Ex-Conjugation (n : ℕ) where
   -- Ex exchanges the two wires and fixes CZ, so it carries each factor of
   -- c10 to the corresponding factor of c11.  Nothing is reproved here:
   -- the statement is transported, factor by factor, by lemma-Ex-•.
-
-  private
-    transport-Ex : ∀ {u u' v v'} →
-                   Ex • u ≈ u' • Ex → Ex • v ≈ v' • Ex → u ≈ v → u' ≈ v'
-    transport-Ex {u} {u'} {v} {v'} eu ev eq = begin
-      u'              ≈⟨ sym lemma-cancel-Ex ⟩
-      u' • Ex • Ex    ≈⟨ sym assoc ⟩
-      (u' • Ex) • Ex  ≈⟨ cleft sym eu ⟩
-      (Ex • u) • Ex   ≈⟨ cleft cright eq ⟩
-      (Ex • v) • Ex   ≈⟨ cleft ev ⟩
-      (v' • Ex) • Ex  ≈⟨ assoc ⟩
-      v' • Ex • Ex    ≈⟨ lemma-cancel-Ex ⟩
-      v' ∎
+  -- (transport-Ex itself is declared much earlier, since rel-X↑-CZ is
+  -- transported the same way and is needed long before this.)
 
   lemma-selinger-c11 :
     CZ • H ↓ • CZ ≈ R ↓ ^ p-1 • H ↓ • R ↓ ^ p-1 • CZ • H ↓ • R ↓ ^ p-1 • R ↑ ^ p-1
@@ -2359,38 +2398,6 @@ module Ex-Conjugation (n : ℕ) where
                   (lemma-Ex-• lemma-Ex-H↑
                     (lemma-Ex-• (lemma-Ex-pow lemma-Ex-R↑ p-1)
                                 (lemma-Ex-pow lemma-Ex-R p-1))))))
-
-  ------------------------------------------------------------------------
-  -- One of the two Pauli-versus-CZ axioms is redundant
-  --
-  -- The swap fixes CZ (lemma-Ex-CZ) and exchanges the wires, so it
-  -- carries rel-X↓-CZ to rel-X↑-CZ verbatim — the same transport that
-  -- takes c10 to c11.  Nothing in the Ex calculus it uses touches either
-  -- Pauli rule, so this is not circular: lemma-Ex-CZ comes from
-  -- semi-Ex-H↑ and the two spellings of the swap, and lemma-Ex-X /
-  -- lemma-Ex-Z↑ are built from semi-Ex-S↑ and semi-Ex-H↑ alone.
-  --
-  -- So Figure 1 could state either rule and derive the other.  (Not
-  -- both: dropping the pair would lose all the Pauli content of CZ.)
-
-  lemma-rel-X↑-CZ : CZ • X ↑ ≈ X ↑ • (Z • CZ)
-  lemma-rel-X↑-CZ = transport-Ex lhs rhs (axiom rel-X↓-CZ)
-    where
-    lhs : Ex • (CZ • X) ≈ (CZ • X ↑) • Ex
-    lhs = lemma-Ex-• lemma-Ex-CZ lemma-Ex-X
-
-    rhs : Ex • (X • (Z ↑ • CZ)) ≈ (X ↑ • (Z • CZ)) • Ex
-    rhs = lemma-Ex-• lemma-Ex-X (lemma-Ex-• lemma-Ex-Z↑ lemma-Ex-CZ)
-
-  -- …and in the other direction, by the same transport.
-  lemma-rel-X↓-CZ : CZ • X ≈ X • (Z ↑ • CZ)
-  lemma-rel-X↓-CZ = transport-Ex lhs rhs (axiom rel-X↑-CZ)
-    where
-    lhs : Ex • (CZ • X ↑) ≈ (CZ • X) • Ex
-    lhs = lemma-Ex-• lemma-Ex-CZ lemma-Ex-X↑
-
-    rhs : Ex • (X ↑ • (Z • CZ)) ≈ (X • (Z ↑ • CZ)) • Ex
-    rhs = lemma-Ex-• lemma-Ex-X↑ (lemma-Ex-• lemma-Ex-Z lemma-Ex-CZ)
 
   lemma-⊤⊥-cube3 : (⊤⊥ • ⊤⊥) • ⊤⊥ ≈ ε
   lemma-⊤⊥-cube3 = begin

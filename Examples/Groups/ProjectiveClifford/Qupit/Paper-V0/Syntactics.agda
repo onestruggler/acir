@@ -142,7 +142,14 @@ module Clifford-Relations where
       -- semi-Ex-H↑ and the two ways of writing the swap.  Figure 1 has no
       -- two-wire rule for it, and none is needed.
 
-      rel-X↑-CZ :     (₂₊ n) SRel,  CZ • X ↑ === X ↑ • Z ↓ • CZ
+      -- Only ONE of the two Pauli-versus-CZ rules is taken.  Figure 1
+      -- states both, but the swap derives either from the other: Ex fixes
+      -- CZ and exchanges the wires, so conjugating this one by it gives
+      --
+      --     CZ • X ↑ === X ↑ • Z ↓ • CZ
+      --
+      -- which is Paper-V0.Lemmas' lemma-rel-X↑-CZ.  Dropping BOTH would
+      -- lose all of CZ's Pauli content, so exactly one is redundant.
       rel-X↓-CZ :     (₂₊ n) SRel,  CZ • X ↓ === X ↓ • Z ↑ • CZ
 
       blake-c12 :     (₂₊ n) SRel,  (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX === CZ
@@ -183,7 +190,6 @@ module Clifford-Relations where
   pattern semi-Ex-S↑ = srel (Base.semi-Ex-S↑)
   pattern semi-Ex-H↑ = srel (Base.semi-Ex-H↑)
 
-  pattern rel-X↑-CZ = srel (Base.rel-X↑-CZ)
   pattern rel-X↓-CZ = srel (Base.rel-X↓-CZ)
 
   pattern blake-c12 = srel (Base.blake-c12)

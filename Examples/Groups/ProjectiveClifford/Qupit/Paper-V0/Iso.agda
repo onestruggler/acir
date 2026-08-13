@@ -13,11 +13,15 @@
 --   f-well-defined : every Paper-V0 axiom holds in Simplified-V1;
 --   g-well-defined : every Simplified-V1 axiom holds in Paper-V0.
 --
--- Eleven axioms are shared verbatim and discharge by `axiom` on the other
+-- Ten axioms are shared verbatim and discharge by `axiom` on the other
 -- side:
 --
 --     order-S  order-H  M-power  semi-MR  order-SH  comm-HHSHHS
---     order-CZ  comm-CZ-S↑  semi-M↑CZ  rel-X↑-CZ  rel-X↓-CZ
+--     order-CZ  comm-CZ-S↑  semi-M↑CZ  rel-X↓-CZ
+--
+-- Simplified-V1's rel-X↑-CZ is nearly an eleventh: Paper-V0 no longer
+-- takes it, since the swap derives it from rel-X↓-CZ, so it goes through
+-- Paper-V0.Lemmas' lemma-rel-X↑-CZ instead.
 --
 -- The remaining fifteen are the real mathematics.  Paper-V0 axiomatises
 -- the two- and three-wire layer through the swap Ex and the controlled-X,
@@ -139,7 +143,6 @@ module Theorem where
   f-well-defined PapR.order-CZ      = PB.axiom V1R.order-CZ
   f-well-defined PapR.comm-CZ-S↑    = PB.axiom V1R.comm-CZ-S↑
   f-well-defined PapR.semi-M↑CZ     = PB.axiom V1R.semi-M↑CZ
-  f-well-defined PapR.rel-X↑-CZ     = PB.axiom V1R.rel-X↑-CZ
   f-well-defined PapR.rel-X↓-CZ     = PB.axiom V1R.rel-X↓-CZ
   -- The seven Paper-V0-only axioms, all proved in Simplified-V1.ExRules.
   f-well-defined {₂₊ n} PapR.order-Ex     = ExR.lemma-order-Ex
@@ -176,7 +179,9 @@ module Theorem where
   g-well-defined V1R.order-CZ       = PB.axiom PapR.order-CZ
   g-well-defined V1R.comm-CZ-S↑     = PB.axiom PapR.comm-CZ-S↑
   g-well-defined V1R.semi-M↑CZ      = PB.axiom PapR.semi-M↑CZ
-  g-well-defined V1R.rel-X↑-CZ      = PB.axiom PapR.rel-X↑-CZ
+  -- Not shared: Paper-V0 takes only the lower Pauli rule and derives
+  -- this one by conjugating it with the swap.
+  g-well-defined {₂₊ n} V1R.rel-X↑-CZ = PapL.Ex-Conjugation.lemma-rel-X↑-CZ n
   g-well-defined V1R.rel-X↓-CZ      = PB.axiom PapR.rel-X↓-CZ
   -- The eight Simplified-V1-only axioms.
   g-well-defined {₂₊ n} V1R.semi-M↓CZ  = PapL.Down-Rules.lemma-semi-M↓CZ n
