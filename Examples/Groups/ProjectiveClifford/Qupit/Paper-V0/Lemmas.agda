@@ -294,6 +294,81 @@ module One-Wire (n : ℕ) where
     where open SR word-setoid
 
   ------------------------------------------------------------------------
+  -- Moving S through the H-H-S-H-H block, and Z as a power
+  --
+  -- Ported from Simplified-V1.Lemmas: both are one-wire facts over
+  -- comm-HHSHHS and order-H, which Paper-V0 shares verbatim.  They are
+  -- what the HH-conjugation of the Paulis is built from.
+
+  lemma-comm-SHHS^kHH :
+    ∀ k → S • H • H • S ^ k • H • H ≈ (H • H • S ^ k • H • H) • S
+  lemma-comm-SHHS^kHH k@0 = begin
+    S • H • H • ε • H • H      ≈⟨ by-assoc auto ⟩
+    S • H • H • H • H          ≈⟨ cright lemma-order-H ⟩
+    S • ε                      ≈⟨ trans right-unit (sym left-unit) ⟩
+    ε • S                      ≈⟨ cleft sym lemma-order-H ⟩
+    (H • H • H • H) • S        ≈⟨ by-assoc auto ⟩
+    (H • H • ε • H • H) • S ∎
+    where
+    open SR word-setoid
+    open Pattern-Assoc
+  lemma-comm-SHHS^kHH k@1 = sym (by-assoc-and (axiom comm-HHSHHS) auto auto)
+  lemma-comm-SHHS^kHH k@(₁₊ k'@(₁₊ k'')) = begin
+    S • H • H • S ^ k • H • H
+      ≈⟨ refl ⟩
+    S • H • H • (S • S ^ k') • H • H
+      ≈⟨ cright cright cright cleft cright sym left-unit ⟩
+    S • H • H • (S • ε • S ^ k') • H • H
+      ≈⟨ cright cright cright cleft cright cleft sym lemma-order-H ⟩
+    S • H • H • (S • (H • H • H • H) • S ^ k') • H • H
+      ≈⟨ by-passoc (□ • □ • □ • (□ • □ ^ 4 • □) • □ ^ 2) (□ ^ 6 • □ ^ 5) auto ⟩
+    (S • H • H • S • H • H) • H • H • S ^ k' • H • H
+      ≈⟨ cleft sym (axiom comm-HHSHHS) ⟩
+    (H • H • S • H • H • S) • H • H • S ^ k' • H • H
+      ≈⟨ by-passoc (□ ^ 6 • □ ^ 5) (□ ^ 5 • □ ^ 6) auto ⟩
+    (H • H • S • H • H) • S • H • H • S ^ k' • H • H
+      ≈⟨ cright lemma-comm-SHHS^kHH k' ⟩
+    (H • H • S • H • H) • (H • H • S ^ k' • H • H) • S
+      ≈⟨ by-passoc (□ ^ 5 • □ ^ 5 • □) (□ ^ 7 • □ ^ 4) auto ⟩
+    (H • H • S • H • H • H • H) • S ^ k' • H • H • S
+      ≈⟨ cleft (cright cright trans (cright lemma-order-H) right-unit) ⟩
+    (H • H • S) • S ^ k' • H • H • S
+      ≈⟨ by-passoc (□ ^ 3 • □ ^ 4) (□ • □ • □ ^ 2 • □ ^ 3) auto ⟩
+    H • H • (S • S ^ k') • H • H • S
+      ≈⟨ by-passoc (□ ^ 6) (□ ^ 5 • □) auto ⟩
+    (H • H • S ^ k • H • H) • S ∎
+    where
+    open SR word-setoid
+    open Pattern-Assoc
+
+  lemma-Z^k-ℕ : ∀ k → Z ^ k ≈ H • H • S ^ k • H • H • S⁻¹ ^ k
+  lemma-Z^k-ℕ k@0 = sym (by-assoc-and lemma-order-H auto auto)
+  lemma-Z^k-ℕ k@1 = refl
+  lemma-Z^k-ℕ k@(₁₊ k'@(₁₊ k'')) = begin
+    Z • Z ^ k'
+      ≈⟨ cright lemma-Z^k-ℕ k' ⟩
+    Z • H • H • S ^ k' • H • H • S⁻¹ ^ k'
+      ≈⟨ refl ⟩
+    (H • H • S • H • H • S⁻¹) • H • H • S ^ k' • H • H • S⁻¹ ^ k'
+      ≈⟨ by-passoc (□ ^ 6 • □ ^ 6) (□ ^ 5 • □ ^ 6 • □) auto ⟩
+    (H • H • S • H • H) • (S⁻¹ • H • H • S ^ k' • H • H) • S⁻¹ ^ k'
+      ≈⟨ cright cleft comm⇒pow-comm p-1 1 (lemma-comm-SHHS^kHH k') ⟩
+    (H • H • S • H • H) • ((H • H • S ^ k' • H • H) • S⁻¹) • S⁻¹ ^ k'
+      ≈⟨ by-passoc (□ ^ 5 • (□ ^ 5 • □) • □) (□ ^ 7 • □ ^ 3 • □ ^ 2) auto ⟩
+    (H • H • S • H • H • H • H) • (S ^ k' • H • H) • S⁻¹ • S⁻¹ ^ k'
+      ≈⟨ cleft (cright cright trans (cright lemma-order-H) right-unit) ⟩
+    (H • H • S) • (S ^ k' • H • H) • S⁻¹ ^ ₁₊ k'
+      ≈⟨ by-passoc (□ ^ 3 • □ ^ 3 • □) (□ ^ 2 • □ ^ 2 • □ ^ 3) auto ⟩
+    (H • H) • (S • S ^ k') • H • H • S⁻¹ ^ ₁₊ k'
+      ≈⟨ refl ⟩
+    (H • H) • S ^ ₁₊ k' • H • H • S⁻¹ ^ ₁₊ k'
+      ≈⟨ assoc ⟩
+    H • H • S ^ k • H • H • S⁻¹ ^ k ∎
+    where
+    open SR word-setoid
+    open Pattern-Assoc
+
+  ------------------------------------------------------------------------
   -- Pauli conjugation by H
   --
   -- Z and X are derived words in H and S (see Syntactics):
