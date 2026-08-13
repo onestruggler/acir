@@ -505,6 +505,94 @@ lemma-pow-mod {n} {w} op m = begin
 ------------------------------------------------------------------------
 -- Ex is its own inverse
 
+------------------------------------------------------------------------
+-- Pauli conjugation by H ^ 2, and the second direction of conj-H
+--
+-- These need right cancellation and the basis-change tactic, so they
+-- cannot live in One-Wire: Paper-GroupLike is declared after it, so no
+-- Group-Lemmas instance is in scope there.  Ported verbatim from
+-- Simplified-V1.LemmasXZ, on the same grounds as the One-Wire ports —
+-- the one-wire axioms are shared, so the proof terms transfer unchanged.
+--
+-- conj-H-Z is the direction conj-H-X does not give.  Together they say
+-- how a Pauli crosses either H in XC = H ↑ ^ 3 • CZ • H ↑, which with
+-- lemma-CZ-X↑ᵏ for the middle CZ is the whole Pauli-vs-XC rule.
+
+module One-Wire-Group (n : ℕ) where
+
+  open PB ((₁₊ n) QRel,_===_) hiding (_===_)
+  open PP ((₁₊ n) QRel,_===_)
+  open SR word-setoid
+  open Pattern-Assoc
+  open One-Wire n
+  open Group-Lemmas ((₁₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₁₊ n})
+    using (•-cancelʳ)
+  open Basis-Change _ ((₁₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₁₊ n})
+
+  aux-S⁻¹⁻¹ : S⁻¹ ^ p-1 ≈ S
+  aux-S⁻¹⁻¹ = •-cancelʳ {h = S⁻¹} aux00
+    where
+    aux00 : S⁻¹ ^ p-1 • S⁻¹ ≈ S • S⁻¹
+    aux00 = begin
+      S⁻¹ ^ p-1 • S⁻¹    ≈⟨ comm⇒pow-comm p-1 1 refl ⟩
+      S⁻¹ • S⁻¹ ^ p-1    ≈⟨ refl ⟩
+      S⁻¹ ^ p            ≈⟨ ^^ S p-1 p ⟩
+      S ^ (p-1 Nat.* p)  ≡⟨ Eq.cong (S ^_) (NP.*-comm p-1 p) ⟩
+      S ^ (p Nat.* p-1)  ≈⟨ sym (^^ S p p-1) ⟩
+      (S ^ p) ^ p-1      ≈⟨ ^-cong (S ^ p) ε p-1 (axiom order-S) ⟩
+      ε ^ p-1            ≈⟨ ε^k=ε (₁₊ p-2) ⟩
+      ε                  ≈⟨ sym (axiom order-S) ⟩
+      S • S⁻¹ ∎
+
+  lemma-HH-Z : HH • Z ≈ Z^ (- ₁) • HH
+  lemma-HH-Z = begin
+    HH • H • H • S • H • H • S⁻¹
+      ≈⟨ by-passoc (□ ^ 2 • □ ^ 6) (□ • □ • □ ^ 5 • □) auto ⟩
+    H • H • (H • H • S • H • H) • S⁻¹
+      ≈⟨ cright cright sym (comm⇒pow-comm p-1 1 (lemma-comm-SHHS^kHH 1)) ⟩
+    H • H • S⁻¹ • (H • H • S • H • H)
+      ≈⟨ by-passoc (□ ^ 8) (□ ^ 6 • □ ^ 2) auto ⟩
+    (H • H • S⁻¹ • H • H • S) • H • H
+      ≈⟨ cleft (cright cright cong (refl' (Eq.cong (S ^_) (Eq.sym lemma-toℕ-1ₚ)))
+                                   (cright cright sym aux-S⁻¹⁻¹)) ⟩
+    (H • H • S ^ (toℕ (- 1ₚ)) • H • H • S⁻¹ ^ p-1) • HH
+      ≈⟨ cleft cright cright cright cright cright
+           refl' (Eq.cong (S⁻¹ ^_) (Eq.sym lemma-toℕ-1ₚ)) ⟩
+    (H • H • S ^ (toℕ (- 1ₚ)) • H • H • S⁻¹ ^ (toℕ (- 1ₚ))) • HH
+      ≈⟨ cleft sym (lemma-Z^k-ℕ (toℕ (- 1ₚ))) ⟩
+    Z^ (- ₁) • HH ∎
+
+  lemma-HH-X : HH • X ≈ X^ (- ₁) • HH
+  lemma-HH-X = bbc H ε claim
+    where
+    claim : H • (HH • X) • ε ≈ H • (X^ (- ₁) • HH) • ε
+    claim = begin
+      H • (HH • X) • ε     ≈⟨ cong refl right-unit ⟩
+      H • (HH • X)         ≈⟨ by-passoc (□ • □ ^ 2 • □) (□ ^ 2 • □ ^ 2) auto ⟩
+      HH • H • X           ≈⟨ cright conj-H-X ⟩
+      HH • Z • H           ≈⟨ sym assoc ⟩
+      (HH • Z) • H         ≈⟨ cleft lemma-HH-Z ⟩
+      (Z^ (- ₁) • HH) • H  ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 2 • □ ^ 2) auto ⟩
+      (Z^ (- ₁) • H) • HH  ≈⟨ cleft sym (conj-H-X^k (toℕ (- ₁))) ⟩
+      (H • X^ (- ₁)) • HH  ≈⟨ assoc ⟩
+      H • (X^ (- ₁) • HH)  ≈⟨ sym (cong refl right-unit) ⟩
+      H • (X^ (- ₁) • HH) • ε ∎
+
+  conj-H-Z : H • Z ≈ X^ (- ₁) • H
+  conj-H-Z = bbc (H ^ 3) H claim
+    where
+    claim : H ^ 3 • (H • Z) • H ≈ H ^ 3 • (X^ (- ₁) • H) • H
+    claim = begin
+      H ^ 3 • (H • Z) • H  ≈⟨ by-assoc auto ⟩
+      (H ^ 4) • Z • H      ≈⟨ trans (cleft lemma-order-H) left-unit ⟩
+      Z • H                ≈⟨ sym conj-H-X ⟩
+      H • X                ≈⟨ cleft (sym (trans (cright lemma-order-H) right-unit)) ⟩
+      H ^ 5 • X            ≈⟨ by-passoc (□ ^ 5 • □) (□ ^ 3 • □ ^ 2 • □) auto ⟩
+      H ^ 3 • HH • X       ≈⟨ cright lemma-HH-X ⟩
+      H ^ 3 • X^ (- ₁) • H • H
+        ≈⟨ by-passoc (□ ^ 4) (□ • □ ^ 2 • □) auto ⟩
+      H ^ 3 • (X^ (- ₁) • H) • H ∎
+
 module Ex-Conjugation (n : ℕ) where
 
   open PB ((₂₊ n) QRel,_===_)
