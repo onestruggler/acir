@@ -287,6 +287,29 @@ module One-Wire (n : ℕ) where
     M₋₁ ∎
     where open SR word-setoid
 
+  ------------------------------------------------------------------------
+  -- The multiplier by -1, spelled out in R and H
+  --
+  -- M is *defined* as R ^ x • H • R ^ x⁻¹ • H • R ^ x • H, so M₋₁ unfolds
+  -- definitionally once both exponents are identified with p-1: the first
+  -- by lemma-toℕ-1ₚ, the second because -1 is its own inverse, which is
+  -- aux-₁⁻¹ in ForStdlib.  order-H then says the whole word is H ^ 2.
+  --
+  -- This is the Euler decomposition c10 turns on: cancelling the trailing
+  -- H gives R ⁻¹ H R ⁻¹ H R ⁻¹ ≈ H, and hence R ⁻¹ H R ⁻¹ ≈ H R H ⁻¹,
+  -- which is what rewrites c10's right-hand side.
+
+  lemma-M₋₁-R : R ^ p-1 • (H • (R ^ p-1 • (H • (R ^ p-1 • H)))) ≈ H ^ 2
+  lemma-M₋₁-R = begin
+    R ^ p-1 • (H • (R ^ p-1 • (H • (R ^ p-1 • H))))
+      ≡⟨ Eq.sym (Eq.cong₂ (λ a b → R ^ a • (H • (R ^ b • (H • (R ^ a • H)))))
+                          lemma-toℕ-1ₚ
+                          (Eq.trans (Eq.cong toℕ aux-₁⁻¹) lemma-toℕ-1ₚ)) ⟩
+    M₋₁
+      ≈⟨ sym (axiom order-H) ⟩
+    H ^ 2 ∎
+    where open SR word-setoid
+
 ------------------------------------------------------------------------
 -- Group-likeness
 --
