@@ -593,6 +593,22 @@ module One-Wire-Group (n : ℕ) where
         ≈⟨ by-passoc (□ ^ 4) (□ • □ ^ 2 • □) auto ⟩
       H ^ 3 • (X^ (- ₁) • H) • H ∎
 
+  conj-H-Z^k : ∀ k → H • Z ^ k ≈ (X^ (- ₁)) ^ k • H
+  conj-H-Z^k ₀ = trans right-unit (sym left-unit)
+  conj-H-Z^k ₁ = conj-H-Z
+  conj-H-Z^k (₂₊ k) = begin
+    H • (Z • Z ^ ₁₊ k)
+      ≈⟨ sym assoc ⟩
+    (H • Z) • Z ^ ₁₊ k
+      ≈⟨ cleft conj-H-Z ⟩
+    (X^ (- ₁) • H) • Z ^ ₁₊ k
+      ≈⟨ assoc ⟩
+    X^ (- ₁) • (H • Z ^ ₁₊ k)
+      ≈⟨ cright conj-H-Z^k (₁₊ k) ⟩
+    X^ (- ₁) • ((X^ (- ₁)) ^ ₁₊ k • H)
+      ≈⟨ sym assoc ⟩
+    (X^ (- ₁) • (X^ (- ₁)) ^ ₁₊ k) • H ∎
+
 module Ex-Conjugation (n : ℕ) where
 
   open PB ((₂₊ n) QRel,_===_)
