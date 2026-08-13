@@ -48,7 +48,7 @@ open import Algebra.Properties.Ring (+-*-ring p-2)
 --open Lemmas-2Q 2
 
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n.Powers p-2 p-prime
 
 open Lemmas-Sym
 open Duality

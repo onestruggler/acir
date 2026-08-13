@@ -34,7 +34,7 @@ open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
 open Symplectic hiding (M)
 open Lemmas-Sym
 open import Examples.Groups.Symplectic.Lemmas.LM-Sym p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime using (lemma-comm-CZ-w↑↑)
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n.Powers p-2 p-prime using (lemma-comm-CZ-w↑↑)
 open import Examples.Groups.Symplectic.CongDownK p-2 p-prime
 import Examples.Groups.Symplectic.BR.Three.BB-CZ p-2 p-prime as TBB
 open TBB using (_⇣)

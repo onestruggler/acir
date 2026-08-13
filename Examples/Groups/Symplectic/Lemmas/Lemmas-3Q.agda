@@ -47,7 +47,7 @@ open LM2
 open import Examples.Groups.Symplectic.Lemmas.Lemmas-2Qupit-Sym p-2 p-prime
 
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym2n p-2 p-prime
-open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n p-2 p-prime
+open import Examples.Groups.Symplectic.Lemmas.Ex-Sym3n.Powers p-2 p-prime
 open import Examples.Groups.Symplectic.Lemmas.Ex-Sym4n2 p-2 p-prime as Sym4n
 
 open Lemmas-Sym
