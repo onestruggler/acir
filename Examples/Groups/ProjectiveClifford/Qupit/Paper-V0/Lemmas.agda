@@ -62,7 +62,7 @@ open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Syntactics
 
 open Clifford-Relations
 open Lemmas-Clifford
-  using (lemma-↑^ ; lemma-↓^ ; lemma-Induction ; lemma-Inductionˡ
+  using (lemma-↑^ ; lemma-Induction ; lemma-Inductionˡ
         ; lemma-comm-S-w↑ ; lemma-comm-H-w↑ ; lemma-comm-Z-w↑
         ; lemma-comm-CZ-w↑)
 
@@ -2351,48 +2351,14 @@ module Ex-Conjugation (n : ℕ) where
 
 
 ------------------------------------------------------------------------
--- The shift down is the identity on the one-wire words
---
--- _↓ maps every gate to itself, so it is definitionally the identity on
--- a word built from gate letters — but it is stuck on a power with a
--- symbolic exponent, which is what these propositional equations step
--- over.  They are needed because Simplified-V1 states semi-M↓CZ over
--- Mg ↓ rather than Mg.
-
-module Down-Identity where
-
-  lemma-S⁻¹↓ : (S⁻¹ {n}) ↓ ≡ S⁻¹
-  lemma-S⁻¹↓ = lemma-↓^ p-1 S
-
-  lemma-Z↓ : (Z {n}) ↓ ≡ Z
-  lemma-Z↓ = Eq.cong (λ w → H • H • S • H • H • w) lemma-S⁻¹↓
-
-  lemma-Z^↓ : ∀ k → (Z^ k {n}) ↓ ≡ Z^ k
-  lemma-Z^↓ k =
-    Eq.trans (lemma-↓^ (toℕ k) Z) (Eq.cong (_^ toℕ k) lemma-Z↓)
-
-  lemma-R↓ : (R {n}) ↓ ≡ R
-  lemma-R↓ = Eq.cong (S •_) (lemma-Z^↓ 1/2)
-
-  lemma-R^↓ : ∀ k → (R^ {n} k) ↓ ≡ R^ k
-  lemma-R^↓ k =
-    Eq.trans (lemma-↓^ (toℕ k) R) (Eq.cong (_^ toℕ k) lemma-R↓)
-
-  lemma-M↓ : ∀ (x' : ℤ* ₚ) → (M {n} x') ↓ ≡ M x'
-  lemma-M↓ x' = Eq.cong₂ (λ a b → a • H • b • H • a • H)
-                         (lemma-R^↓ x) (lemma-R^↓ x⁻¹)
-    where
-    x   = x' .proj₁
-    x⁻¹ = ((x' ⁻¹) .proj₁)
-
-  lemma-Mg↓ : (Mg {n}) ↓ ≡ Mg
-  lemma-Mg↓ = lemma-M↓ g′
-
-------------------------------------------------------------------------
 -- The two Simplified-V1 axioms that Paper-V0 lacked
 --
--- Both are now consequences of comm-Ex-CZ: the ↑-rule conjugated by the
--- swap, with the ↓ on the outside stepped over by Down-Identity.
+-- Both are the ↑-rule conjugated by the swap.  The ↓ that Simplified-V1
+-- writes on them needs no stepping over: _↓ is the identity function on
+-- circuits (Circuit.Base), a wire-count annotation and nothing more, so
+-- Mg ↓ and Mg are the same term.  (A `Down-Identity` module used to sit
+-- here proving that ↓ commutes with the derived words; every one of its
+-- equations was refl, and it is gone.)
 
 module Down-Rules (n : ℕ) where
 
@@ -2400,17 +2366,12 @@ module Down-Rules (n : ℕ) where
   open PP ((₂₊ n) QRel,_===_)
   open SR word-setoid
   open Ex-Conjugation n
-  open Down-Identity
 
   lemma-comm-CZ-S↓ : CZ • S ↓ ≈ S ↓ • CZ
   lemma-comm-CZ-S↓ = lemma-comm-CZ-S
 
   lemma-semi-M↓CZ : Mg ↓ • CZ ≈ CZ^ g • Mg ↓
-  lemma-semi-M↓CZ = begin
-    Mg ↓ • CZ     ≈⟨ refl' (Eq.cong (_• CZ) lemma-Mg↓) ⟩
-    Mg • CZ       ≈⟨ lemma-semi-Mg-CZ ⟩
-    CZ^ g • Mg    ≈⟨ refl' (Eq.cong (CZ^ g •_) (Eq.sym lemma-Mg↓)) ⟩
-    CZ^ g • Mg ↓ ∎
+  lemma-semi-M↓CZ = lemma-semi-Mg-CZ
 
 ------------------------------------------------------------------------
 -- The remote CZ, at three wires

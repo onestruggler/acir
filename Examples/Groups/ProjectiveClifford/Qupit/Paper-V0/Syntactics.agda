@@ -287,11 +287,9 @@ module Lemmas-Clifford where
   lemma-↑^ {n} (₂₊ k) w = Eq.cong₂ _•_ auto (lemma-↑^ {n} (₁₊ k) w)
 
 
-  lemma-↓^ : ∀ {n} k (w : Word (Gen n)) → (w ^ k) ↓ ≡ w ↓ ^ k
-  lemma-↓^ {n} ₀ w = auto
-  lemma-↓^ {n} ₁ w = auto
-  lemma-↓^ {n} (₂₊ k) w = Eq.cong₂ _•_ auto (lemma-↓^ {n} (₁₊ k) w)
-
+  -- (There was a lemma-↓^ here, the same statement for _↓.  It is not
+  -- needed: _↓ is the identity function on circuits, so (w ^ k) ↓ and
+  -- w ↓ ^ k are the same term and nothing has to be stepped over.)
 
   lemma-comm-S-w↑ : ∀ {n} w → let open PB ((₂₊ n) QRel,_===_) in
     
