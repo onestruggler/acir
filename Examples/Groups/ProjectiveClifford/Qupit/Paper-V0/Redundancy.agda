@@ -44,6 +44,28 @@
 -- bookkeeping (k, k², k(p-1), all mod p) is a chunk of work on its own.
 -- It is the half that makes the rule true rather than merely consistent:
 -- it is what fails for k = -1, the one deformation order-Ex alone allows.
+--
+-- The second half of the file takes the other route, and gets to a
+-- SMALLER gap by a different reduction.  Decompose X into H's and S's
+-- and push CZ through the six letters one at a time: the S's cost
+-- nothing (lemma-comm-CZ-S), so the whole cost is four copies of one
+-- unknown, K = CZ • H • CZ ⁻¹.  Pushing gives
+--
+--     CZ • X ≈ (K • S • K • K • S ⁻¹ • K) • CZ         (lemma-push)
+--
+-- and K ² is then FORCED — it is CZ • H ² • CZ ⁻¹, and H ² is the
+-- multiplier by −1, which inverts the CZ it passes (lemma-K²).
+-- Substituting it, and reading Z's definition backwards to collapse
+-- S • M₋₁ • S ⁻¹, leaves (lemma-reduce)
+--
+--     K • (M₋₁ • Z) • (CZ ^ (p-2) • K) ≈ X • Z ↑       (the gap)
+--
+-- with two occurrences of K and nothing else unknown.  Explicit-Crossing
+-- instantiates K at CZ • H • CZ ⁻¹ and shows the gap is EQUIVALENT to the
+-- axiom, so nothing was thrown away on the way down.  Closing it means
+-- knowing K as a word, which is exactly Simplified-V1's c11 — and
+-- Paper-V0.Lemmas derives c10/c11 the other way round, out of this very
+-- axiom, so it cannot be borrowed from there.
 ------------------------------------------------------------------------
 
 open import Relation.Binary.PropositionalEquality
@@ -353,3 +375,263 @@ module Theorem (fd : Faithful) where
     open PP ((₂₊ n) QRel,_===_)
     open SR word-setoid
     open Analysis n using (P)
+
+------------------------------------------------------------------------
+-- The other decomposition: push CZ through X letter by letter
+--
+-- X = H • S • H • H • S ⁻¹ • H, and CZ crosses S and S ⁻¹ outright
+-- (comm-CZ-S↑ conjugated by the swap).  So the ONLY thing missing is
+-- what CZ costs when it crosses a single H, and that cost is used four
+-- times.  Everything below is parametric in it: K is whatever
+--
+--     CZ • H ≈ K • CZ
+--
+-- produces — K is CZ • H • CZ ⁻¹, so it always exists, and naming it
+-- turns the axiom into a statement about K alone.
+--
+-- Two things then come for free.  Pushing CZ through all six letters
+-- gives lemma-push, and K ^ 2 is forced: it is CZ • H ^ 2 • CZ ⁻¹, and
+-- H ^ 2 is the multiplier by −1, which inverts the CZ it passes.  So the
+-- axiom reduces to lemma-gap below — one equation, two occurrences of K,
+-- no CZ left on either side except the one K ² leaves behind.
+--
+-- Filling that in is what remains.  The K in it is opaque: what it is
+-- as a word is precisely Simplified-V1's c11, which Paper-V0 does not
+-- have (Paper-V0.Lemmas derives c10/c11 the other way round, out of
+-- this very axiom).
+
+module Crossing (n : ℕ)
+                (K : Word (Gen (₂₊ n)))
+                (let open PB ((₂₊ n) QRel,_===_))
+                (cross : CZ • H ≈ K • CZ) where
+
+  open PP ((₂₊ n) QRel,_===_)
+  open SR word-setoid
+  open Group-Lemmas ((₂₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₂₊ n})
+    using (•-cancelʳ)
+  open Ex-Conjugation n using (lemma-comm-CZ-S ; lemma-CZ-M₋₁ ; Z-split ; e₁)
+
+  private
+    module CL = One-Wire (₁₊ n)
+
+    -- CZ crosses a phase gate, and a phase gate's inverse, untouched.
+    cross-S : CZ • S ≈ S • CZ
+    cross-S = lemma-comm-CZ-S
+
+    cross-S⁻¹ : CZ • S⁻¹ ≈ S⁻¹ • CZ
+    cross-S⁻¹ = comm⇒pow-comm 1 p-1 lemma-comm-CZ-S
+
+  ----------------------------------------------------------------------
+  -- Six letters, four crossings
+
+  lemma-push : CZ • X ≈ (K • (S • (K • (K • (S⁻¹ • K))))) • CZ
+  lemma-push = begin
+    CZ • (H • (S • (H • (H • (S⁻¹ • H)))))
+      ≈⟨ sym assoc ⟩
+    (CZ • H) • (S • (H • (H • (S⁻¹ • H))))
+      ≈⟨ cleft cross ⟩
+    (K • CZ) • (S • (H • (H • (S⁻¹ • H))))
+      ≈⟨ assoc ⟩
+    K • (CZ • (S • (H • (H • (S⁻¹ • H)))))
+      ≈⟨ cright sym assoc ⟩
+    K • ((CZ • S) • (H • (H • (S⁻¹ • H))))
+      ≈⟨ cright cleft cross-S ⟩
+    K • ((S • CZ) • (H • (H • (S⁻¹ • H))))
+      ≈⟨ cright assoc ⟩
+    K • (S • (CZ • (H • (H • (S⁻¹ • H)))))
+      ≈⟨ cright cright sym assoc ⟩
+    K • (S • ((CZ • H) • (H • (S⁻¹ • H))))
+      ≈⟨ cright cright cleft cross ⟩
+    K • (S • ((K • CZ) • (H • (S⁻¹ • H))))
+      ≈⟨ cright cright assoc ⟩
+    K • (S • (K • (CZ • (H • (S⁻¹ • H)))))
+      ≈⟨ cright cright cright sym assoc ⟩
+    K • (S • (K • ((CZ • H) • (S⁻¹ • H))))
+      ≈⟨ cright cright cright cleft cross ⟩
+    K • (S • (K • ((K • CZ) • (S⁻¹ • H))))
+      ≈⟨ cright cright cright assoc ⟩
+    K • (S • (K • (K • (CZ • (S⁻¹ • H)))))
+      ≈⟨ cright cright cright cright sym assoc ⟩
+    K • (S • (K • (K • ((CZ • S⁻¹) • H))))
+      ≈⟨ cright cright cright cright cleft cross-S⁻¹ ⟩
+    K • (S • (K • (K • ((S⁻¹ • CZ) • H))))
+      ≈⟨ cright cright cright cright assoc ⟩
+    K • (S • (K • (K • (S⁻¹ • (CZ • H)))))
+      ≈⟨ cright cright cright cright cright cross ⟩
+    K • (S • (K • (K • (S⁻¹ • (K • CZ)))))
+      ≈⟨ cright cright cright cright sym assoc ⟩
+    K • (S • (K • (K • ((S⁻¹ • K) • CZ))))
+      ≈⟨ cright cright cright sym assoc ⟩
+    K • (S • (K • ((K • (S⁻¹ • K)) • CZ)))
+      ≈⟨ cright cright sym assoc ⟩
+    K • (S • ((K • (K • (S⁻¹ • K))) • CZ))
+      ≈⟨ cright sym assoc ⟩
+    K • ((S • (K • (K • (S⁻¹ • K)))) • CZ)
+      ≈⟨ sym assoc ⟩
+    (K • (S • (K • (K • (S⁻¹ • K))))) • CZ ∎
+
+  ----------------------------------------------------------------------
+  -- The square of the crossing is forced
+  --
+  -- K ² is CZ • H ² • CZ ⁻¹, and H ² is the multiplier by −1, which
+  -- inverts the CZ it passes — so K ² is M₋₁ with a CZ-power attached.
+
+  private
+    e₁≡ : e₁ ≡ p-1
+    e₁≡ = lemma-toℕ-1ₚ
+
+    CZᵉ : CZ ^ e₁ ≈ CZ ^ p-2 • CZ
+    CZᵉ = begin
+      CZ ^ e₁             ≡⟨ Eq.cong (CZ ^_) e₁≡ ⟩
+      CZ ^ p-1            ≡⟨ Eq.cong (CZ ^_) (NP.+-comm 1 p-2) ⟩
+      CZ ^ (p-2 Nat.+ 1)  ≈⟨ ^-+ CZ p-2 1 ⟩
+      CZ ^ p-2 • CZ ∎
+
+  lemma-K² : K • K ≈ M₋₁ • CZ ^ p-2
+  lemma-K² = •-cancelʳ {h = CZ} (begin
+    (K • K) • CZ
+      ≈⟨ assoc ⟩
+    K • (K • CZ)
+      ≈⟨ cright sym cross ⟩
+    K • (CZ • H)
+      ≈⟨ sym assoc ⟩
+    (K • CZ) • H
+      ≈⟨ cleft sym cross ⟩
+    (CZ • H) • H
+      ≈⟨ assoc ⟩
+    CZ • (H • H)
+      ≈⟨ cright axiom order-H ⟩
+    CZ • M₋₁
+      ≈⟨ lemma-CZ-M₋₁ ⟩
+    M₋₁ • CZ ^ e₁
+      ≈⟨ cright CZᵉ ⟩
+    M₋₁ • (CZ ^ p-2 • CZ)
+      ≈⟨ sym assoc ⟩
+    (M₋₁ • CZ ^ p-2) • CZ ∎)
+
+  ----------------------------------------------------------------------
+  -- …so the axiom is this one equation
+
+  private
+    -- S conjugates the multiplier by −1 into itself times a Z; this is
+    -- Z's definition read backwards.
+    S-M₋₁ : S • (M₋₁ • S⁻¹) ≈ M₋₁ • Z
+    S-M₋₁ = begin
+      S • (M₋₁ • S⁻¹)
+        ≈⟨ sym left-unit ⟩
+      ε • (S • (M₋₁ • S⁻¹))
+        ≈⟨ cleft sym (CL.lemma-M₋₁^2) ⟩
+      (M₋₁ • M₋₁) • (S • (M₋₁ • S⁻¹))
+        ≈⟨ assoc ⟩
+      M₋₁ • (M₋₁ • (S • (M₋₁ • S⁻¹)))
+        ≈⟨ cright sym Z-split ⟩
+      M₋₁ • Z ∎
+
+  -- The reduced form: two occurrences of the unknown crossing, and
+  -- nothing else that is not already derivable.
+  lemma-reduce : K • (S • (K • (K • (S⁻¹ • K))))
+               ≈ K • ((M₋₁ • Z) • (CZ ^ p-2 • K))
+  lemma-reduce = begin
+    K • (S • (K • (K • (S⁻¹ • K))))
+      ≈⟨ cright cright sym assoc ⟩
+    K • (S • ((K • K) • (S⁻¹ • K)))
+      ≈⟨ cright cright cleft lemma-K² ⟩
+    K • (S • ((M₋₁ • CZ ^ p-2) • (S⁻¹ • K)))
+      ≈⟨ cright cright assoc ⟩
+    K • (S • (M₋₁ • (CZ ^ p-2 • (S⁻¹ • K))))
+      ≈⟨ cright cright cright sym assoc ⟩
+    K • (S • (M₋₁ • ((CZ ^ p-2 • S⁻¹) • K)))
+      ≈⟨ cright cright cright cleft comm⇒pow-comm p-2 p-1 lemma-comm-CZ-S ⟩
+    K • (S • (M₋₁ • ((S⁻¹ • CZ ^ p-2) • K)))
+      ≈⟨ cright cright cright assoc ⟩
+    K • (S • (M₋₁ • (S⁻¹ • (CZ ^ p-2 • K))))
+      ≈⟨ cright cright sym assoc ⟩
+    K • (S • ((M₋₁ • S⁻¹) • (CZ ^ p-2 • K)))
+      ≈⟨ cright sym assoc ⟩
+    K • ((S • (M₋₁ • S⁻¹)) • (CZ ^ p-2 • K))
+      ≈⟨ cright cleft S-M₋₁ ⟩
+    K • ((M₋₁ • Z) • (CZ ^ p-2 • K)) ∎
+
+  ----------------------------------------------------------------------
+  -- GAP.  Everything above is proved; this is what is left.
+  --
+  --   K • ((M₋₁ • Z) • (CZ ^ (p-2) • K)) ≈ X • Z ↑
+  --
+  -- Both sides are the conjugate of X by CZ: the left is what the push
+  -- produced, the right is what the axiom claims.  It cannot be closed
+  -- without knowing K as a word — which is Simplified-V1's c11.
+
+  module From-Gap
+    (gap : K • ((M₋₁ • Z) • (CZ ^ p-2 • K)) ≈ X • Z ↑) where
+
+    lemma-rel-X↓-CZ : CZ • X ↓ ≈ X ↓ • (Z ↑ • CZ)
+    lemma-rel-X↓-CZ = begin
+      CZ • X
+        ≈⟨ lemma-push ⟩
+      (K • (S • (K • (K • (S⁻¹ • K))))) • CZ
+        ≈⟨ cleft lemma-reduce ⟩
+      (K • ((M₋₁ • Z) • (CZ ^ p-2 • K))) • CZ
+        ≈⟨ cleft gap ⟩
+      (X • Z ↑) • CZ
+        ≈⟨ assoc ⟩
+      X • (Z ↑ • CZ) ∎
+
+------------------------------------------------------------------------
+-- The crossing exists, so the gap is a closed statement
+--
+-- Crossing is parametric in K only so that the four uses of it stay
+-- visibly the same word.  Instantiating it at the obvious witness
+-- K₀ = CZ • H • CZ ⁻¹ turns lemma-gap into an equation with no
+-- parameters left, and the two directions below say it is EQUIVALENT to
+-- the axiom — the reduction throws nothing away.
+
+module Explicit-Crossing (n : ℕ) where
+
+  open PB ((₂₊ n) QRel,_===_)
+  open PP ((₂₊ n) QRel,_===_)
+  open SR word-setoid
+  open Group-Lemmas ((₂₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₂₊ n})
+    using (•-cancelʳ)
+
+  K₀ : Word (Gen (₂₊ n))
+  K₀ = CZ • (H • CZ ^ p-1)
+
+  private
+    CZᵖ : CZ ^ p-1 • CZ ≈ ε
+    CZᵖ = begin
+      CZ ^ p-1 • CZ       ≈⟨ sym (^-+ CZ p-1 1) ⟩
+      CZ ^ (p-1 Nat.+ 1)  ≡⟨ Eq.cong (CZ ^_) (NP.+-comm p-1 1) ⟩
+      CZ ^ p              ≈⟨ axiom order-CZ ⟩
+      ε ∎
+
+  cross₀ : CZ • H ≈ K₀ • CZ
+  cross₀ = sym (begin
+    (CZ • (H • CZ ^ p-1)) • CZ   ≈⟨ assoc ⟩
+    CZ • ((H • CZ ^ p-1) • CZ)   ≈⟨ cright assoc ⟩
+    CZ • (H • (CZ ^ p-1 • CZ))   ≈⟨ cright cright CZᵖ ⟩
+    CZ • (H • ε)                 ≈⟨ cright right-unit ⟩
+    CZ • H ∎)
+
+  module C = Crossing n K₀ cross₀
+
+  -- The gap, with nothing free in it.
+  Gap : Set
+  Gap = K₀ • ((M₋₁ • Z) • (CZ ^ p-2 • K₀)) ≈ X • Z ↑
+
+  -- Gap ⇒ axiom.
+  from-gap : Gap → CZ • X ↓ ≈ X ↓ • (Z ↑ • CZ)
+  from-gap gap = C.From-Gap.lemma-rel-X↓-CZ gap
+
+  -- Axiom ⇒ Gap: nothing was lost on the way down.  (This is the ONLY
+  -- place in the file that uses rel-X↓-CZ.)
+  to-gap : Gap
+  to-gap = •-cancelʳ {h = CZ} (begin
+    (K₀ • ((M₋₁ • Z) • (CZ ^ p-2 • K₀))) • CZ
+      ≈⟨ cleft sym C.lemma-reduce ⟩
+    (K₀ • (S • (K₀ • (K₀ • (S⁻¹ • K₀))))) • CZ
+      ≈⟨ sym C.lemma-push ⟩
+    CZ • X
+      ≈⟨ axiom rel-X↓-CZ ⟩
+    X • (Z ↑ • CZ)
+      ≈⟨ sym assoc ⟩
+    (X • Z ↑) • CZ ∎)

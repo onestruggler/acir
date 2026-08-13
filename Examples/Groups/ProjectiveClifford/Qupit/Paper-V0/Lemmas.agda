@@ -1782,16 +1782,20 @@ module Ex-Conjugation (n : ℕ) where
   -- an eight-lemma chain over the H • H • S • H • H block; going through
   -- M₋₁ directly is shorter and needs nothing V1-only.
 
-  private
-    e₁ : ℕ
-    e₁ = toℕ (-'₁ .proj₁)
+  -- The exponent CZ picks up when the multiplier by −1 crosses it, i.e.
+  -- p − 1 (lemma-toℕ-1ₚ).  Exposed alongside lemma-CZ-M₋₁ below.
+  e₁ : ℕ
+  e₁ = toℕ (-'₁ .proj₁)
 
+  private
     M₋₁M₋₁ : M₋₁ • M₋₁ ≈ ε
     M₋₁M₋₁ = One-Wire.lemma-M₋₁^2 (₁₊ n)
 
-    -- lemma-M₋₁-CZ read from the other side, by conjugating with M₋₁.
-    lemma-CZ-M₋₁ : CZ • M₋₁ ≈ M₋₁ • CZ ^ e₁
-    lemma-CZ-M₋₁ = begin
+  -- lemma-M₋₁-CZ read from the other side, by conjugating with M₋₁.
+  -- Exposed rather than private: Redundancy needs it to see that the
+  -- square of the missing CZ-versus-H crossing is forced.
+  lemma-CZ-M₋₁ : CZ • M₋₁ ≈ M₋₁ • CZ ^ e₁
+  lemma-CZ-M₋₁ = begin
       CZ • M₋₁
         ≈⟨ cleft sym left-unit ⟩
       (ε • CZ) • M₋₁
@@ -1810,15 +1814,17 @@ module Ex-Conjugation (n : ℕ) where
         ≈⟨ right-unit ⟩
       M₋₁ • CZ ^ e₁ ∎
 
-    Z-split : Z ≈ M₋₁ • (S • (M₋₁ • S⁻¹))
-    Z-split = begin
-      H • (H • (S • (H • (H • S⁻¹))))
-        ≈⟨ sym assoc ⟩
-      (H • H) • (S • (H • (H • S⁻¹)))
-        ≈⟨ cright cright sym assoc ⟩
-      (H • H) • (S • ((H • H) • S⁻¹))
-        ≈⟨ cong (axiom order-H) (cright cleft axiom order-H) ⟩
-      M₋₁ • (S • (M₋₁ • S⁻¹)) ∎
+  -- Z is two multipliers and two phase gates.  Exposed for the same
+  -- reason as lemma-CZ-M₋₁.
+  Z-split : Z ≈ M₋₁ • (S • (M₋₁ • S⁻¹))
+  Z-split = begin
+    H • (H • (S • (H • (H • S⁻¹))))
+      ≈⟨ sym assoc ⟩
+    (H • H) • (S • (H • (H • S⁻¹)))
+      ≈⟨ cright cright sym assoc ⟩
+    (H • H) • (S • ((H • H) • S⁻¹))
+      ≈⟨ cong (axiom order-H) (cright cleft axiom order-H) ⟩
+    M₋₁ • (S • (M₋₁ • S⁻¹)) ∎
 
   lemma-comm-CZ-Z : CZ • Z ≈ Z • CZ
   lemma-comm-CZ-Z = begin
