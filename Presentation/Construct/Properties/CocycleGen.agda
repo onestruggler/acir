@@ -43,6 +43,14 @@
 -- set R can actually provide: `gen-comm`, that any two GENERATORS
 -- commute.  `word-comm` lifts it to words, and that is what makes K an
 -- AbelianGroup — the kernel of a factor-set extension has to be one.
+--
+-- The final section, `Pairs`, narrows the data further to a map on
+-- pairs of generators, f₀ : X → X → Word Y, by extending it letterwise.
+-- That is a genuine choice — the cocycle identity leaves
+-- f [ a ]ʷ (v • v′) free — and it is the one that makes f
+-- bimultiplicative, as the Weyl cocycle ½·sform is.  It pays for itself:
+-- normalisation becomes definitional and G-cong drops to a condition on
+-- the relators of S.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -395,3 +403,65 @@ module _ {X Y : Set}
             { f                   = f
             ; isNormalisedCocycle = isNormalisedCocycle
             }
+
+    ------------------------------------------------------------------
+    -- Generator pairs
+    --
+    -- G's second argument can be narrowed from Word X to X, at the cost
+    -- of one choice.  The cocycle identity does NOT determine
+    -- f [ a ]ʷ (v • v′): it holds by construction whatever that value
+    -- is, so nothing forces it.  Extending letterwise,
+    --
+    --     pair-word a (v • v′) = pair-word a v • pair-word a v′,
+    --
+    -- is the choice that makes f bimultiplicative — with the twist, it
+    -- gives f (u • u′) v ≈ act u (f u′ v) • f u v and
+    -- f u (v • v′) ≈ f u v • f u v′ — and it is the one the Weyl cocycle
+    -- ½·sform makes, that form being bilinear.
+    --
+    -- What it buys: normalisation is then free, and the congruence
+    -- G-cong drops to a condition on the RELATORS of S, proved here by
+    -- induction on the derivation.  So from
+    --
+    --     f₀ : X → X → Word Y
+    --
+    -- the whole factor set needs only two relator-level hypotheses, one
+    -- per argument.
+
+    module Pairs (f₀ : X → X → Word Y) where
+
+      pair-word : X → Word X → Word Y
+      pair-word a ε        = ε
+      pair-word a [ c ]ʷ   = f₀ a c
+      pair-word a (v • v') = pair-word a v • pair-word a v'
+
+      -- Normalisation, on the nose.
+      pair-word-ε : ∀ a → pair-word a ε K.≈ K.ε
+      pair-word-ε a = K.refl
+
+      module _ (pair-axiom : ∀ a {v v'} → ΓQ v v' →
+                             pair-word a v K.≈ pair-word a v')
+               where
+
+        -- Letterwise extension turns the monoid laws of Q into those of
+        -- K, so only the relators are left to assume.
+        pair-word-cong : ∀ a {v v'} → v Q.≈ v' →
+                         pair-word a v K.≈ pair-word a v'
+        pair-word-cong a QB.refl          = K.refl
+        pair-word-cong a (QB.sym e)       = K.sym (pair-word-cong a e)
+        pair-word-cong a (QB.trans e₁ e₂) =
+          K.trans (pair-word-cong a e₁) (pair-word-cong a e₂)
+        pair-word-cong a (QB.cong e₁ e₂)  =
+          K.∙-cong (pair-word-cong a e₁) (pair-word-cong a e₂)
+        pair-word-cong a QB.assoc         = K.assoc _ _ _
+        pair-word-cong a QB.left-unit     = K.identityˡ _
+        pair-word-cong a QB.right-unit    = K.identityʳ _
+        pair-word-cong a (QB.axiom r)     = pair-axiom a r
+
+        module _ (f-axiom : ∀ {u u' : Word X} → ΓQ u u' →
+                            ∀ v → f pair-word u v K.≈ f pair-word u' v)
+                 where
+
+          pairFactorSet : FactorSet K Q φ
+          pairFactorSet =
+            factorSet pair-word pair-word-cong pair-word-ε f-axiom
