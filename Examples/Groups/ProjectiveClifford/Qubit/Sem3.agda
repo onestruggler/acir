@@ -61,6 +61,7 @@ module Examples.Groups.ProjectiveClifford.Qubit.Sem3 where
 open import Algebra.Bundles using (AbelianGroup ; Group)
 open import Algebra.Morphism.Structures using (module GroupMorphisms)
 open import Data.Nat using (ℕ)
+open import Data.Product using (Σ-syntax ; proj₂)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≗_)
 
@@ -253,25 +254,55 @@ module _ (n : ℕ) where
   ------------------------------------------------------------------------
   -- γ: the factor set
   --
-  -- OPEN.  f u v is the Pauli word by which the chosen lifts of u and v
-  -- fail to compose, so writing it down means choosing a lifting of Q —
-  -- a normal form for symplectic words — and reading off the correction.
-  -- Its generator-level shadow is Qubit.Cocycle.corr, whose one
-  -- nontrivial entry is corr (order-S) = Z₀.
+  -- The four cocycle laws are not separate obligations: by Theorem 9.8's
+  -- necessity direction, an extension of Q by K realising φ, together
+  -- with a unit-preserving lifting, determines its factor set and proves
+  -- them all.  So the whole of γ reduces to one record.
 
-  f : Word (SGen n) → Word (SGen n) → Word (PGen n)
-  f = {!!}
+  γ-of-lifting : {f : Word (SGen n) → Word (SGen n) → Word (PGen n)} →
+                 FSE.IsFactorSet K Q φ f → FactorSet K Q φ
+  γ-of-lifting {f} ifs = record
+    { f                   = f
+    ; isNormalisedCocycle = FSE.isFactorSet⇒isNormalisedCocycle K Q φ ifs
+    }
+
+  -- OPEN — the one remaining obligation.  What has to go in the hole is
+  -- the Clifford group as an extension of Q by K, with a lifting.  The
+  -- pieces exist and the shape is forced:
+  --
+  --   total    = CMS n, the Clifford group mod scalars
+  --              (Qubit.CliffordGroup);
+  --   incl     = CliffordGroup.incl ∘ sem — a Pauli WORD conjugates by
+  --              the vector it reads as; injective by incl-injective and
+  --              Build.complete;
+  --   proj     = secn ∘ CliffordGroup.proj, where secn : Symplectic n →
+  --              Word (SGen n) is Surjectivity.surj-nf.  It respects the
+  --              congruence because the simplified presentation is
+  --              complete: two symplectic words with ≈ˢ-equal denotations
+  --              are ≈-equal;
+  --   lifting  = inv-nf ∘ nf, the SYNTACTIC symplectic normal form.  It
+  --              must factor through the normal-form datatype, not
+  --              through Symplectic n: lifting-cong needs nf u ≡ nf v
+  --              propositionally, which UniqueNormalForm gives and ≈ˢ
+  --              (a pointwise equality of maps) does not;
+  --   f        = proj₁ of ker⊆im-incl applied to ℓu • ℓv • (ℓ(u•v))⁻¹,
+  --              which lies in the kernel because the three projections
+  --              agree — this is what makes `factors` hold by
+  --              construction.
+  --
+  -- Two lemmas are missing for it: that conjugating incl P by a Clifford
+  -- word is incl of the symplectic action (`realizes`; CliffordGroup
+  -- proves incl-∙, incl-ε, incl-injective and ker-witness, but not this),
+  -- and a UniqueNormalForm for the SIMPLIFIED rule set, which
+  -- Simplified.Iso should carry over from the plain one.
+
+  clifford-isFactorSet :
+    Σ[ f ∈ (Word (SGen n) → Word (SGen n) → Word (PGen n)) ]
+      FSE.IsFactorSet K Q φ f
+  clifford-isFactorSet = {!!}
 
   γ : FactorSet K Q φ
-  γ = record
-    { f                   = f
-    ; isNormalisedCocycle = record
-      { f-cong  = {!!}
-      ; f-εˡ    = {!!}
-      ; f-εʳ    = {!!}
-      ; cocycle = {!!}
-      }
-    }
+  γ = γ-of-lifting (proj₂ clifford-isFactorSet)
 
   ------------------------------------------------------------------------
   -- The twisted product K ×_f Q
