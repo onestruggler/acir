@@ -50,12 +50,15 @@
 -- CocycleGen, which also supplies K and Q here: give the correction one
 -- symplectic generator carries against a word and it extends that along
 -- the first argument, the recursion being the cocycle identity itself.
--- So the identity and the left normalisation are free, and what is left
--- open — the four holes below — is generator- and relator-level data:
--- G, its congruence and normalisation, and that each relator of the
--- simplified rule set carries the same correction on either side.  Its
--- shadow is `corr` of Qubit.Cocycle, whose single nontrivial entry is
--- corr (order-S) = Z₀ — the syntactic counterpart of S² = Z.
+-- So the identity and the left normalisation are free.  The correction
+-- itself is built here, out of the ε-patched symplectic normal form
+-- (Simplified.Bijective) as a lifting and the Clifford group's kernel
+-- witness (CliffordGroup.ker-witness) to read off the Pauli part; its
+-- congruence and its normalisation follow.  One hole is left, f-axiom:
+-- that each relator of the simplified rule set carries the same
+-- correction on either side.  Its shadow is `corr` of Qubit.Cocycle,
+-- whose single nontrivial entry is corr (order-S) = Z₀ — the syntactic
+-- counterpart of S² = Z.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -64,13 +67,14 @@ module Examples.Groups.ProjectiveClifford.Qubit.Sem3 where
 
 open import Algebra.Bundles using (AbelianGroup ; Group)
 open import Algebra.Morphism.Structures using (module GroupMorphisms)
-open import Data.Nat using (ℕ)
-open import Data.Product using (Σ-syntax ; proj₂)
+open import Data.Nat using (ℕ ; zero)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≗_)
 
+open import Notations using (₁₊)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _ⁿ' ; _ʰ')
 
+import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Presentation.Base as PB
 import Presentation.Construct.Properties.CocycleGen as CG
 open import Presentation.Definitions using (_IsPresentationOf_)
@@ -84,9 +88,10 @@ open FSE using (FactorSet)
 -- being trivial).
 open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime ; g* ; g-gen)
 
-open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (_+ₚ_)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
+  using (_+ₚ_ ; pIₙ)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime
-  using (Symplectic ; _∘ˢ_ ; module Interpretation)
+  using (Symplectic ; _≈ˢ_ ; _∘ˢ_ ; εˢ ; _⁻¹ˢ ; module Interpretation)
 open import Examples.Construct.SemiDirectProduct.Clifford p-2 p-prime
   using (ap-ε)
 import Examples.Groups.ProjectivePauli.Presentation-Alt p-2 p-prime as PA
@@ -95,8 +100,11 @@ import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen
 import Examples.Groups.Symplectic.Simplified.Lemmas p-2 p-prime g* g-gen as SL
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen
   as SimPres
+import Examples.Groups.Symplectic.Simplified.Bijective p-2 p-prime g* g-gen as SB
+import Examples.Groups.ProjectiveClifford.Qubit.CliffordGroup as CLG
+import Normalization.NormalForm.Setoid as SNF
 
-open Symplectic using (ap ; linear-+)
+open Symplectic using (ap ; ap⁻¹ ; invʳ ; linear-+)
 open Interpretation using (actg ; ⟦_⟧ᵍ ; ⟦_⟧)
 
 ------------------------------------------------------------------------
@@ -281,16 +289,27 @@ module _ (n : ℕ) where
   -- CocycleGen: give the corrections carried by ONE symplectic generator
   -- against a word and let it extend them along the first argument.  The
   -- recursion there is the cocycle identity, so the identity and
-  -- normalisation on the left come for free; what stays open is
+  -- normalisation on the left come for free.  Of what it asks for,
   --
   --   G       the Pauli word by which the lifts of a and of v fail to
-  --           compose.  S²=Z is what makes it nontrivial: the lift of
-  --           S-gen against [ S-gen ]ʷ is Z on the acted wire (compare
-  --           corr (order-S) = Z₀ in Qubit.Cocycle);
-  --   G-cong  G a descends to Q;
-  --   G-ε     G a ε ≈ ε;
+  --           compose — built below out of the symplectic normal form
+  --           and the Clifford group's kernel witness;
+  --   G-cong  G a descends to Q — because the section's congruence is
+  --           propositional and the kernel witness is unique;
+  --   G-ε     G a ε ≈ ε — because the section takes ε to ε;
+  --
+  -- are proved, and what stays open is
+  --
   --   f-axiom each relator of the simplified rule set carries the same
   --           correction on either side.
+  --
+  -- f-axiom needs one lemma this development does not have: that
+  -- conjugating incl P by a Clifford word is incl of the symplectic
+  -- action, i.e. secn u • incl P • (secn u) ⁻¹ᶜ ≈ᶜ incl (ap ⟦ u ⟧ P).
+  -- With it, CocycleGen's f agrees with the defect of secn at every pair
+  -- of words (induction on the first, both satisfying the cocycle
+  -- identity), and f-axiom then follows from secn-cong exactly as
+  -- G-cong does.
   --
   -- NOT CocycleGen.Pairs, which would narrow G to a map on pairs of
   -- generators: extending letterwise makes each `pair-word a` a
@@ -299,15 +318,148 @@ module _ (n : ℕ) where
   -- correction to be ε and the extension to split.  The Clifford cocycle
   -- has to sit in the general G.
 
+  ------------------------------------------------------------------------
+  -- The lifting, and the correction it carries
+  --
+  -- secn is the ε-patched bijective normal form of the simplified rule
+  -- set (Simplified.Bijective), read as a map on words: it picks one
+  -- word out of each ≈-class, sends ε to ε, and — this is what matters —
+  -- respects the congruence PROPOSITIONALLY, since the normal forms are
+  -- a datatype.  That is the lifting of Q into the Clifford group.
+
+  private
+    nfQ  = SNF.BijectiveNormalForm.nf      (SB.bijective₂ε n)
+    invQ = SNF.BijectiveNormalForm.inv-nf  (SB.bijective₂ε n)
+
+    module C = Group (CLG.CMS-group n)
+
+  secn : Word (SGen n) → Word (SGen n)
+  secn u = invQ (nfQ u)
+
+  -- secn u is ≈-equal to u, …
+  secn-≈ : ∀ (u : Word (SGen n)) → QB._≈_ (secn u) u
+  secn-≈ u = SNF.BijectiveNormalForm.inv-nf∘nf=id (SB.bijective₂ε n)
+
+  -- … equal on the nose on ≈-equal words, …
+  secn-cong : ∀ {u v : Word (SGen n)} → QB._≈_ u v → secn u ≡ secn v
+  secn-cong e = Eq.cong invQ (SNF.BijectiveNormalForm.nf-cong (SB.bijective₂ε n) e)
+
+  -- … and it takes the empty word to the empty word (the ε-patch).
+  secn-ε : secn ε ≡ ε
+  secn-ε = SB.rep-ε
+
+  -- The Clifford word by which the lifts of a and of v fail to compose.
+  -- Its symplectic image is trivial, so it lies in the image of the
+  -- Pauli group, and G reads off which Pauli it is.
+  defect : SGen n → Word (SGen n) → Word (SGen n)
+  defect a v = (secn [ a ]ʷ • secn v) • CLG._⁻¹ᶜ (secn ([ a ]ʷ • v))
+
+  private
+    proj-⁻¹ᶜ : ∀ (w : Word (SGen n)) →
+               _≈ˢ_ (CLG.proj (CLG._⁻¹ᶜ w)) (CLG.proj w ⁻¹ˢ)
+    proj-⁻¹ᶜ = GroupMorphisms.IsGroupHomomorphism.⁻¹-homo
+                 (Extension.proj-homo (CLG.CMS-extension n))
+
+  defect-triv : ∀ (a : SGen n) (v : Word (SGen n)) →
+                _≈ˢ_ (CLG.proj (defect a v)) εˢ
+  defect-triv a v x = begin
+    ap ⟦ secn [ a ]ʷ ⟧ (ap ⟦ secn v ⟧ (ap ⟦ CLG._⁻¹ᶜ (secn ([ a ]ʷ • v)) ⟧ x))
+      ≡⟨ Eq.cong (λ z → ap ⟦ secn [ a ]ʷ ⟧ (ap ⟦ secn v ⟧ z))
+                 (proj-⁻¹ᶜ (secn ([ a ]ʷ • v)) x) ⟩
+    ap ⟦ secn [ a ]ʷ ⟧ (ap ⟦ secn v ⟧ (ap⁻¹ ⟦ secn ([ a ]ʷ • v) ⟧ x))
+      ≡⟨ denote-eq (secn-≈ [ a ]ʷ) _ ⟩
+    ap ⟦ [ a ]ʷ ⟧ (ap ⟦ secn v ⟧ (ap⁻¹ ⟦ secn ([ a ]ʷ • v) ⟧ x))
+      ≡⟨ Eq.cong (ap ⟦ [ a ]ʷ ⟧) (denote-eq (secn-≈ v) _) ⟩
+    ap ⟦ [ a ]ʷ • v ⟧ (ap⁻¹ ⟦ secn ([ a ]ʷ • v) ⟧ x)
+      ≡⟨ Eq.sym (denote-eq (secn-≈ ([ a ]ʷ • v)) _) ⟩
+    ap ⟦ secn ([ a ]ʷ • v) ⟧ (ap⁻¹ ⟦ secn ([ a ]ʷ • v) ⟧ x)
+      ≡⟨ invʳ ⟦ secn ([ a ]ʷ • v) ⟧ x ⟩
+    x ∎
+    where open Eq.≡-Reasoning
+
   G : SGen n → Word (SGen n) → Word (PGen n)
-  G = {!!}
+  G a v = PA.inv-nf (CLG.ker-witness (defect a v) (defect-triv a v))
+
+  ------------------------------------------------------------------------
+  -- G's congruence and normalisation
+  --
+  -- The Pauli witness of a kernel element is unique, incl being
+  -- injective, so it depends on neither the triviality proof nor the
+  -- representative of the ≈ᶜ-class.
+
+  private
+    kw-unique : ∀ (w w' : Word (SGen n))
+                  (t : _≈ˢ_ (CLG.proj w) εˢ) (t' : _≈ˢ_ (CLG.proj w') εˢ) →
+                w C.≈ w' →
+                CLG.ker-witness w t ≡ CLG.ker-witness w' t'
+    kw-unique w w' t t' e = CLG.incl-injective chain
+      where
+      open ≈-Reasoning C.setoid
+      chain : CLG._≈ᶜ_ (CLG.incl (CLG.ker-witness w t))
+                       (CLG.incl (CLG.ker-witness w' t'))
+      chain = begin
+        CLG.incl (CLG.ker-witness w t)    ≈⟨ CLG.ker-witness-correct w t ⟩
+        w                                 ≈⟨ e ⟩
+        w'                                ≈⟨ CLG.ker-witness-correct w' t' ⟨
+        CLG.incl (CLG.ker-witness w' t')  ∎
+
+    -- The identity Pauli's normal form is the empty word: on each wire
+    -- it contributes X ^ 0 • Z ^ 0, and the tail is shifted up.
+    inv-nf-pIₙ : ∀ {m : ℕ} → PB._≈_ (ΓK m) (PA.inv-nf (pIₙ {m})) ε
+    inv-nf-pIₙ {zero}  = PB.refl
+    inv-nf-pIₙ {₁₊ m} = PB.trans (PB.cong PB.refl tail≈ε) PB.left-unit
+      where
+      tail≈ε : PB._≈_ (ΓK (₁₊ m)) (ε • PA._↑ (PA.inv-nf (pIₙ {m}))) ε
+      tail≈ε = PB.trans PB.left-unit
+                        (PA.lemma-cong↑ (PA.inv-nf pIₙ) ε inv-nf-pIₙ)
 
   G-cong : ∀ (a : SGen n) {v v' : Word (SGen n)} →
            QB._≈_ v v' → KB._≈_ (G a v) (G a v')
-  G-cong = {!!}
+  G-cong a {v} {v'} e =
+    KB.refl' (Eq.cong PA.inv-nf
+      (kw-unique (defect a v) (defect a v')
+                 (defect-triv a v) (defect-triv a v')
+                 (C.reflexive defect-≡)))
+    where
+    -- Both normal forms are hit by secn-cong, so the two defects are the
+    -- same word — the congruence of the section is propositional.
+    defect-≡ : defect a v ≡ defect a v'
+    defect-≡ = Eq.cong₂ (λ z w → (secn [ a ]ʷ • z) • CLG._⁻¹ᶜ w)
+                        (secn-cong e)
+                        (secn-cong (QB.cong QB.refl e))
 
   G-ε : ∀ (a : SGen n) → KB._≈_ (G a ε) ε
-  G-ε = {!!}
+  G-ε a = KB.trans (KB.refl' (Eq.cong PA.inv-nf witness-pIₙ)) inv-nf-pIₙ
+    where
+    -- secn ε is ε and secn (a • ε) is secn a, so defect a ε is
+    -- (secn a • ε) • (secn a) ⁻¹ᶜ, which cancels in CMS.
+    defect-≡ : defect a ε ≡ (secn [ a ]ʷ • ε) • CLG._⁻¹ᶜ (secn [ a ]ʷ)
+    defect-≡ = Eq.cong₂ (λ z w → (secn [ a ]ʷ • z) • CLG._⁻¹ᶜ w)
+                        secn-ε (secn-cong QB.right-unit)
+
+    open ≈-Reasoning C.setoid
+
+    defect-ε : defect a ε C.≈ C.ε
+    defect-ε = begin
+      defect a ε
+        ≈⟨ C.reflexive defect-≡ ⟩
+      (secn [ a ]ʷ • ε) • CLG._⁻¹ᶜ (secn [ a ]ʷ)
+        -- the empty word acts as the identity, so this step is by
+        -- computation
+        ≈⟨ (λ _ → Eq.refl) ⟩
+      secn [ a ]ʷ • CLG._⁻¹ᶜ (secn [ a ]ʷ)
+        ≈⟨ C.inverseʳ (secn [ a ]ʷ) ⟩
+      C.ε ∎
+
+    witness-pIₙ : CLG.ker-witness (defect a ε) (defect-triv a ε) ≡ pIₙ
+    witness-pIₙ = CLG.incl-injective (begin
+      CLG.incl (CLG.ker-witness (defect a ε) (defect-triv a ε))
+        ≈⟨ CLG.ker-witness-correct (defect a ε) (defect-triv a ε) ⟩
+      defect a ε
+        ≈⟨ defect-ε ⟩
+      C.ε
+        ≈⟨ CLG.incl-ε ⟨
+      CLG.incl pIₙ ∎)
 
   f-axiom : ∀ {u u' : Word (SGen n)} → ΓQ n u u' → ∀ (v : Word (SGen n)) →
             KB._≈_ (CGn.f φ G u v) (CGn.f φ G u' v)
