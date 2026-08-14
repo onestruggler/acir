@@ -32,10 +32,23 @@
 --     a convention, so scalar-central below states it;
 --   * γ = a factor set for φ.
 --
--- φ is built here in full.  γ is built here in full too, over a single
--- named hypothesis: a NORMALISED SECTION of the quotient (the record
--- `Section`), i.e. a choice rep of one word per mod-scalar class, taking
--- ε to ε.  Given that, everything else is proved:
+-- φ and γ are both built here in full, with no hypotheses left.
+--
+-- γ is the factor set of a LIFTING, and a lifting needs a section of the
+-- quotient: a choice rep of one word per mod-scalar class, taking ε to ε
+-- (the record `Section`).  That record is the construction's only input,
+-- and it is discharged at the end of the file from
+--
+--   * ProjectiveClifford.Qubit.Selinger.Presentation.bijective-ms, the
+--     bijective normal form of exactly this rule set, together with
+--   * Normalization.NormalForm.Setoid.ε-section, which moves a
+--     Bijection's section to ε at the identity class.  A section is not
+--     part of a Bijection's data — inv-nf y is proj₁ (surjective y) — so
+--     it can be changed at one index without touching the map, its
+--     congruence or its injectivity; NF-ms-dec is what it takes to see
+--     that index, and the decision never has to reduce.
+--
+-- Given the section, everything else is proved:
 --
 --   ℓ = E ∘ rep   is a lifting of Q into Figure 8 (E is Selinger.Relabel's
 --                 relabelling, which is where the two alphabets differ),
@@ -49,14 +62,9 @@
 --                 by the mod-17 matrix model) together with cancellation
 --                 in the grouplike Figure-8 presentation.
 --
--- So the hole is not the cocycle: it is the choice of representatives,
--- and it is a choice rather than a construction only because a section
--- is.  One is available in principle — ProjectiveClifford.Qubit.Selinger.
--- Presentation.bijective-ms is a bijective normal form for exactly this
--- rule set, and NF-ms-dec decides equality of its values, which is what
--- it takes to patch a section at the identity class so that rep ε ≡ ε.
--- Wiring that up is the remaining work; nothing below depends on how the
--- section is obtained.
+-- Nothing in the construction depends on how the section is obtained, so
+-- the two halves stay separate: the factor set is developed against the
+-- record, and discharged once at the end.
 --
 -- What the trivial factor set gives here, by contrast, is the DIRECT
 -- product ℤ/8 × Q (the action being trivial as well): the split
@@ -75,7 +83,7 @@ open import Data.Fin.Properties using (toℕ-fromℕ<)
 open import Data.Nat as Nat using (ℕ ; _%_ ; _/_)
 open import Data.Nat.DivMod using (m%n<n ; m≡m%n+[m/n]*n)
 open import Data.Nat.Properties using (*-comm)
-open import Data.Product using (_,_ ; ∃ ; proj₁ ; proj₂)
+open import Data.Product using (_×_ ; _,_ ; ∃ ; proj₁ ; proj₂)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
@@ -84,6 +92,7 @@ open import Word.Base using (Word ; ε ; _•_ ; _^_)
 
 import Presentation.Base as PB
 open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
+import Normalization.NormalForm.Setoid as SNF
 
 open import ForStdlib.Data.Fin.Mod using (ℤ ; +-0-abelianGroup)
 
@@ -109,6 +118,14 @@ import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Figure8-Mod-Scalar
 -- left inverse, cong↑ shifts one up a wire.
 open import Examples.Groups.ProjectiveClifford.Qubit.Selinger.GroupLike
   using (grouplike-MS)
+
+-- The bijective normal form of that same rule set, and decidability of
+-- its values: between them they discharge the section, at the end.
+open import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Presentation
+  using (bijective-ms ; NF-ms-dec)
+open import Examples.Groups.Symplectic.Normalization.Boxes p-2 p-prime
+  using (NF)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli)
 
 -- The kernel of the quotient: two words equal mod scalars have E-images
 -- equal in Figure 8 up to a power of ω.  This is what makes the defect
@@ -273,11 +290,10 @@ scalar-unique {n} e₁ e₂ =
 -- sends a mod-scalar derivation to a Figure-8 one only up to a scalar,
 -- which is precisely the defect f measures.
 --
--- Every field is available in principle from
--- ProjectiveClifford.Qubit.Selinger.Presentation.bijective-ms, the
--- bijective normal form of this rule set: rep = inv-nf ∘ nf gives rep-≈
--- and rep-cong outright, and rep-ε is arranged by patching the section
--- at the identity class, which NF-ms-dec makes possible.
+-- It is an input to the factor set below and a theorem at the end of the
+-- file (`section`), so that the two halves do not have to be read
+-- together: rep = inv-nf ∘ nf for the bijective normal form of this rule
+-- set, with its section moved to ε at the identity class.
 
 record Section (n : ℕ) : Set where
   field
@@ -429,8 +445,8 @@ module _ {n : ℕ} (σ : Section n) where
                        (Eq.sym (ℓ-cong (PB.assoc {w = x} {v = y} {u = z})))))))
 
   -- The factor set of the section.
-  γ : FactorSet K (Q n) (φ n)
-  γ = record
+  factor-set : FactorSet K (Q n) (φ n)
+  factor-set = record
     { f                   = f
     ; isNormalisedCocycle = record
       { f-cong  = f-cong
@@ -440,13 +456,56 @@ module _ {n : ℕ} (σ : Section n) where
       }
     }
 
-  -- ... and the twisted product it names: the exact Clifford group,
-  -- presented as pairs (scalar , circuit mod scalars).
-  Exact-twisted : Group 0ℓ 0ℓ
-  Exact-twisted = Twisted n γ
+------------------------------------------------------------------------
+-- Discharging the section
+--
+-- rep = inv-nf ∘ nf, for the bijective normal form of the mod-scalar
+-- rule set (Selinger.Presentation.bijective-ms — obtained there by
+-- transporting the extension presentation's normal form along the
+-- translation g).  Two of the three fields come with the record: rep-≈
+-- is inv-nf∘nf=id and rep-cong is nf-cong under inv-nf.
+--
+-- The third, rep ε ≡ ε, is what ε-section supplies.  A Bijection's
+-- section is not part of its data, so it may be redefined at the single
+-- index nf ε, where the empty word discharges the surjectivity
+-- obligation by nf-cong alone; NF-ms-dec is the decidability that lets
+-- that index be seen.  Note the decision never has to REDUCE — rep-ε
+-- comes from the two arguments being equal, not from computing with
+-- them — which is why this works at a variable width, where nf ε is
+-- stuck.
 
-  Exact-twisted-extension : Extension (AbelianGroup.group K) (Q n)
-  Exact-twisted-extension = Twisted-extension n γ
+private
+  module SNFms (n : ℕ) =
+    SNF (n MS.CRel,_===_) (Eq.setoid (Pauli n × NF n))
+
+  -- The normal form, with ε put at the identity class.
+  bnf : (n : ℕ) → SNFms.BijectiveNormalForm n
+  bnf n = SNFms.ε-section n (bijective-ms n) (NF-ms-dec n)
+
+section : (n : ℕ) → Section n
+section n = record
+  { rep      = λ w → B.inv-nf (B.nf w)
+  ; rep-≈    = λ w → B.inv-nf∘nf=id
+  ; rep-cong = λ e → Eq.cong B.inv-nf (B.nf-cong e)
+  ; rep-ε    = SNFms.ε-section-rep n (bijective-ms n) (NF-ms-dec n)
+  }
+  where module B = SNFms.BijectiveNormalForm n (bnf n)
+
+------------------------------------------------------------------------
+-- The factor set, and the twisted product it names
+--
+-- No hypotheses: γ n is the factor set of the qubit Clifford group's
+-- scalar layer, and ℤ/8 ×_γ Q is that layer presented as pairs
+-- (scalar , circuit mod scalars).
+
+γ : (n : ℕ) → FactorSet K (Q n) (φ n)
+γ n = factor-set (section n)
+
+Exact-twisted : (n : ℕ) → Group 0ℓ 0ℓ
+Exact-twisted n = Twisted n (γ n)
+
+Exact-twisted-extension : (n : ℕ) → Extension (AbelianGroup.group K) (Q n)
+Exact-twisted-extension n = Twisted-extension n (γ n)
 
 ------------------------------------------------------------------------
 -- The split instance
