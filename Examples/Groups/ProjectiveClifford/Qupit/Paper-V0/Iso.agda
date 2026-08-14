@@ -143,7 +143,6 @@ module Theorem where
   f-well-defined PapR.order-CZ      = PB.axiom V1R.order-CZ
   f-well-defined PapR.comm-CZ-S↑    = PB.axiom V1R.comm-CZ-S↑
   f-well-defined PapR.semi-M↑CZ     = PB.axiom V1R.semi-M↑CZ
-  f-well-defined PapR.rel-X↓-CZ     = PB.axiom V1R.rel-X↓-CZ
   -- The seven Paper-V0-only axioms, all proved in Simplified-V1.ExRules.
   f-well-defined {₂₊ n} PapR.order-Ex     = ExR.lemma-order-Ex
   f-well-defined {₂₊ n} PapR.semi-Ex-S↑   = ExR.Ex-S.lemma-semi-Ex-S↑ n
@@ -179,10 +178,11 @@ module Theorem where
   g-well-defined V1R.order-CZ       = PB.axiom PapR.order-CZ
   g-well-defined V1R.comm-CZ-S↑     = PB.axiom PapR.comm-CZ-S↑
   g-well-defined V1R.semi-M↑CZ      = PB.axiom PapR.semi-M↑CZ
-  -- Not shared: Paper-V0 takes only the lower Pauli rule and derives
-  -- this one by conjugating it with the swap.
+  -- Not shared: Paper-V0 takes NEITHER Pauli-versus-CZ rule.  The lower
+  -- one follows from blake-c12 and the multiplier calculus, and the
+  -- upper one is the lower one conjugated by the swap.
   g-well-defined {₂₊ n} V1R.rel-X↑-CZ = PapL.Ex-Conjugation.lemma-rel-X↑-CZ n
-  g-well-defined V1R.rel-X↓-CZ      = PB.axiom PapR.rel-X↓-CZ
+  g-well-defined {₂₊ n} V1R.rel-X↓-CZ = PapL.Ex-Conjugation.lemma-rel-X↓-CZ n
   -- The eight Simplified-V1-only axioms.
   g-well-defined {₂₊ n} V1R.semi-M↓CZ  = PapL.Down-Rules.lemma-semi-M↓CZ n
   g-well-defined {₂₊ n} V1R.comm-CZ-S↓ = PapL.Down-Rules.lemma-comm-CZ-S↓ n

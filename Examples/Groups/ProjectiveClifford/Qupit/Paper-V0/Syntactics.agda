@@ -142,15 +142,12 @@ module Clifford-Relations where
       -- semi-Ex-H↑ and the two ways of writing the swap.  Figure 1 has no
       -- two-wire rule for it, and none is needed.
 
-      -- Only ONE of the two Pauli-versus-CZ rules is taken.  Figure 1
-      -- states both, but the swap derives either from the other: Ex fixes
-      -- CZ and exchanges the wires, so conjugating this one by it gives
-      --
-      --     CZ • X ↑ === X ↑ • Z ↓ • CZ
-      --
-      -- which is Paper-V0.Lemmas' lemma-rel-X↑-CZ.  Dropping BOTH would
-      -- lose all of CZ's Pauli content, so exactly one is redundant.
-      rel-X↓-CZ :     (₂₊ n) SRel,  CZ • X ↓ === X ↓ • Z ↑ • CZ
+      -- NEITHER Pauli-versus-CZ rule is an axiom.  Figure 1 states both,
+      -- but the swap derives either from the other, and the survivor is
+      -- a consequence of blake-c12 and the multiplier calculus: see
+      -- Paper-V0.Lemmas.Ex-Conjugation.lemma-rel-X↓-CZ (and its mirror
+      -- lemma-rel-X↑-CZ).  A deliberate departure from Figure 1, and the
+      -- second one after rel-X↑-CZ went: 16 group-specific axioms remain.
 
       blake-c12 :     (₂₊ n) SRel,  (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX === CZ
 
@@ -189,8 +186,6 @@ module Clifford-Relations where
 
   pattern semi-Ex-S↑ = srel (Base.semi-Ex-S↑)
   pattern semi-Ex-H↑ = srel (Base.semi-Ex-H↑)
-
-  pattern rel-X↓-CZ = srel (Base.rel-X↓-CZ)
 
   pattern blake-c12 = srel (Base.blake-c12)
 
