@@ -55,3 +55,20 @@ comm-bot w (t • u) =
     (PB.trans (PB.cong (comm-bot w t) PB.refl)
       (PB.trans PB.assoc
         (PB.trans (PB.cong PB.refl (comm-bot w u)) (PB.sym PB.assoc))))
+
+------------------------------------------------------------------------
+-- Lifting an equation onto higher wires
+--
+-- Lift-Relation's lemma-cong↑ takes its two words EXPLICITLY, because the
+-- congruence's implicit arguments cannot be inferred from the proof
+-- alone.  A rule of Figures 3-7 is applied at whatever wire offset the
+-- step calls for, so the replay lifts a lemma k times; writing the two
+-- words out at each of those k stages is exactly the sort of bulk the
+-- generator should not have to produce.  `up` is the same lemma with the
+-- words implicit, so a lift reads `up (up lem)` however deep it goes.
+
+up : ∀ {w v : Circuit n} →
+  let open PB (n CRel,_===_)        using (_≈_)
+      open PB ((₁₊ n) CRel,_===_) renaming (_≈_ to _≈↑_) using ()
+  in w ≈ v → w ↑ ≈↑ v ↑
+up {w = w} {v = v} = lemma-cong↑ w v
