@@ -1203,3 +1203,188 @@ module Blake (n : ℕ) where
     CZ • ε
       ≈⟨ right-unit ⟩
     CZ ∎
+
+------------------------------------------------------------------------
+-- The three multiplier rules in their XM form
+--
+-- Paper-V0 states M-power, semi-MR and semi-M↑CZ over XMg = XM g′, which
+-- is M at the INVERSE unit.  Here they are as Simplified-V1 theorems, so
+-- that the identity on words is still a morphism the other way.
+--
+-- Everything rests on one fact: M (g′ ⁻¹) is Mg's inverse, because
+-- M g′ • M (g′ ⁻¹) is M ₁ is ε (lemma-M-mul and lemma-M1, both already in
+-- V1's Lemmas1).  Conjugating an axiom by an inverse flips it, which is
+-- what turns each Mg rule into its XMg counterpart.
+
+module XM-Rules (n : ℕ) where
+
+  open PB (V1R._QRel,_===_ (₁₊ n))
+  open PP (V1R._QRel,_===_ (₁₊ n))
+  open SR word-setoid
+  open Primitive-Root-Modp' g* g-gen
+
+  private module L1 = V1L.Lemmas1 n
+
+  -- M at the inverse unit — the word Paper-V0 calls XMg.
+  Mh : Word (Gen (₁₊ n))
+  Mh = V1R.M (g′ ⁻¹)
+
+  MgMh : V1R.Mg • Mh ≈ ε
+  MgMh = begin
+    V1R.M g′ • V1R.M (g′ ⁻¹)
+      ≈⟨ L1.lemma-M-mul g′ (g′ ⁻¹) ⟩
+    V1R.M (g′ *' (g′ ⁻¹))
+      ≡⟨ L1.aux-M≡M (g′ *' (g′ ⁻¹)) (₁ , λ ())
+                    (lemma-⁻¹ʳ g {{nztoℕ {y = g} {neq0 = g≠0} }}) ⟩
+    V1R.M (₁ , λ ())
+      ≈⟨ L1.lemma-M1 ⟩
+    ε ∎
+
+  MhMg : Mh • V1R.Mg ≈ ε
+  MhMg = begin
+    V1R.M (g′ ⁻¹) • V1R.M g′
+      ≈⟨ L1.lemma-M-mul (g′ ⁻¹) g′ ⟩
+    V1R.M ((g′ ⁻¹) *' g′)
+      ≡⟨ L1.aux-M≡M ((g′ ⁻¹) *' g′) (₁ , λ ())
+                    (lemma-⁻¹ˡ g {{nztoℕ {y = g} {neq0 = g≠0} }}) ⟩
+    V1R.M (₁ , λ ())
+      ≈⟨ L1.lemma-M1 ⟩
+    ε ∎
+
+  comm-Mh-Mg : Mh • V1R.Mg ≈ V1R.Mg • Mh
+  comm-Mh-Mg = trans MhMg (sym MgMh)
+
+  ----------------------------------------------------------------------
+  -- semi-MR, flipped
+
+  lemma-semi-MR : Mh • V1R.R^ (g * g) ≈ R • Mh
+  lemma-semi-MR = sym (begin
+    R • Mh
+      ≈⟨ cleft sym left-unit ⟩
+    (ε • R) • Mh
+      ≈⟨ cleft cleft sym MhMg ⟩
+    ((Mh • V1R.Mg) • R) • Mh
+      ≈⟨ cleft assoc ⟩
+    (Mh • (V1R.Mg • R)) • Mh
+      ≈⟨ cleft cright axiom V1R.semi-MR ⟩
+    (Mh • (V1R.R^ (g * g) • V1R.Mg)) • Mh
+      ≈⟨ cleft sym assoc ⟩
+    ((Mh • V1R.R^ (g * g)) • V1R.Mg) • Mh
+      ≈⟨ assoc ⟩
+    (Mh • V1R.R^ (g * g)) • (V1R.Mg • Mh)
+      ≈⟨ cright MgMh ⟩
+    (Mh • V1R.R^ (g * g)) • ε
+      ≈⟨ right-unit ⟩
+    Mh • V1R.R^ (g * g) ∎)
+
+  ----------------------------------------------------------------------
+  -- M-power, flipped
+  --
+  -- Mh ^ m is what kills Mg ^ m, and so is M ((g ^ m) ⁻¹); inverses are
+  -- unique, so the two agree.
+
+  lemma-Mgⁿ : ∀ (m : ℕ) -> V1R.Mg ^ m ≈ V1R.M (g^′ m)
+  lemma-Mgⁿ ₀ = begin
+    ε                       ≈⟨ sym L1.lemma-M1 ⟩
+    V1R.M (₁ , λ ())        ≡⟨ L1.aux-M≡M (₁ , λ ()) (g^′ 0) auto ⟩
+    V1R.M (g^′ 0) ∎
+  lemma-Mgⁿ ₁ = refl' (L1.aux-M≡M g′ (g^′ 1) (Eq.sym (*-identityʳ g)))
+  lemma-Mgⁿ (₂₊ m) = begin
+    V1R.Mg • V1R.Mg ^ ₁₊ m           ≈⟨ cright lemma-Mgⁿ (₁₊ m) ⟩
+    V1R.M g′ • V1R.M (g^′ ₁₊ m)      ≈⟨ L1.lemma-M-mul g′ (g^′ ₁₊ m) ⟩
+    V1R.M (g′ *' g^′ ₁₊ m)
+      ≡⟨ L1.aux-M≡M (g′ *' g^′ ₁₊ m) (g^′ ₂₊ m) auto ⟩
+    V1R.M (g^′ ₂₊ m) ∎
+
+  lemma-MhMg-pow : ∀ (m : ℕ) -> Mh ^ m • V1R.Mg ^ m ≈ ε
+  lemma-MhMg-pow ₀ = left-unit
+  lemma-MhMg-pow ₁ = MhMg
+  lemma-MhMg-pow (₂₊ m) = begin
+    (Mh • Mh ^ ₁₊ m) • (V1R.Mg • V1R.Mg ^ ₁₊ m)
+      ≈⟨ assoc ⟩
+    Mh • (Mh ^ ₁₊ m • (V1R.Mg • V1R.Mg ^ ₁₊ m))
+      ≈⟨ cright sym assoc ⟩
+    Mh • ((Mh ^ ₁₊ m • V1R.Mg) • V1R.Mg ^ ₁₊ m)
+      ≈⟨ cright cleft comm⇒pow-comm (₁₊ m) 1 comm-Mh-Mg ⟩
+    Mh • ((V1R.Mg • Mh ^ ₁₊ m) • V1R.Mg ^ ₁₊ m)
+      ≈⟨ cright assoc ⟩
+    Mh • (V1R.Mg • (Mh ^ ₁₊ m • V1R.Mg ^ ₁₊ m))
+      ≈⟨ cright cright lemma-MhMg-pow (₁₊ m) ⟩
+    Mh • (V1R.Mg • ε)
+      ≈⟨ cright right-unit ⟩
+    Mh • V1R.Mg
+      ≈⟨ MhMg ⟩
+    ε ∎
+
+  lemma-M-power : ∀ (k : ℤ ₚ) -> Mh ^ toℕ k ≈ V1R.M ((g^ k) ⁻¹)
+  lemma-M-power k = begin
+    Mh ^ toℕ k
+      ≈⟨ sym right-unit ⟩
+    Mh ^ toℕ k • ε
+      ≈⟨ cright sym killer ⟩
+    Mh ^ toℕ k • (V1R.Mg ^ toℕ k • V1R.M ((g^ k) ⁻¹))
+      ≈⟨ sym assoc ⟩
+    (Mh ^ toℕ k • V1R.Mg ^ toℕ k) • V1R.M ((g^ k) ⁻¹)
+      ≈⟨ cleft lemma-MhMg-pow (toℕ k) ⟩
+    ε • V1R.M ((g^ k) ⁻¹)
+      ≈⟨ left-unit ⟩
+    V1R.M ((g^ k) ⁻¹) ∎
+    where
+    killer : V1R.Mg ^ toℕ k • V1R.M ((g^ k) ⁻¹) ≈ ε
+    killer = begin
+      V1R.Mg ^ toℕ k • V1R.M ((g^ k) ⁻¹)
+        ≈⟨ cleft lemma-Mgⁿ (toℕ k) ⟩
+      V1R.M (g^′ toℕ k) • V1R.M ((g^ k) ⁻¹)
+        ≡⟨ Eq.cong (_• V1R.M ((g^ k) ⁻¹))
+                   (L1.aux-M≡M (g^′ toℕ k) (g^ k) auto) ⟩
+      V1R.M (g^ k) • V1R.M ((g^ k) ⁻¹)
+        ≈⟨ L1.lemma-M-mul (g^ k) ((g^ k) ⁻¹) ⟩
+      V1R.M ((g^ k) *' ((g^ k) ⁻¹))
+        ≡⟨ L1.aux-M≡M ((g^ k) *' ((g^ k) ⁻¹)) (₁ , λ ())
+                      (lemma-⁻¹ʳ ((g^ k) .proj₁)
+                        {{nztoℕ {y = (g^ k) .proj₁}
+                                {neq0 = lemma-g^′k≠0 (toℕ k)} }}) ⟩
+      V1R.M (₁ , λ ())
+        ≈⟨ L1.lemma-M1 ⟩
+      ε ∎
+
+------------------------------------------------------------------------
+-- semi-M↑CZ, flipped
+--
+-- The same cancellation one wire up; the two inverse facts are the
+-- one-wire ones lifted.
+
+module XM-Rules↑ (n : ℕ) where
+
+  open PB (V1R._QRel,_===_ (₂₊ n))
+  open PP (V1R._QRel,_===_ (₂₊ n))
+  open SR word-setoid
+  open Primitive-Root-Modp' g* g-gen
+
+  private module X1 = XM-Rules n
+
+  Mg↑Mh↑ : V1R.Mg ↑ • X1.Mh ↑ ≈ ε
+  Mg↑Mh↑ = V1R.lemma-cong↑ _ _ X1.MgMh
+
+  Mh↑Mg↑ : X1.Mh ↑ • V1R.Mg ↑ ≈ ε
+  Mh↑Mg↑ = V1R.lemma-cong↑ _ _ X1.MhMg
+
+  lemma-semi-M↑CZ : X1.Mh ↑ • CZ^ g ≈ CZ • X1.Mh ↑
+  lemma-semi-M↑CZ = sym (begin
+    CZ • X1.Mh ↑
+      ≈⟨ cleft sym left-unit ⟩
+    (ε • CZ) • X1.Mh ↑
+      ≈⟨ cleft cleft sym Mh↑Mg↑ ⟩
+    ((X1.Mh ↑ • V1R.Mg ↑) • CZ) • X1.Mh ↑
+      ≈⟨ cleft assoc ⟩
+    (X1.Mh ↑ • (V1R.Mg ↑ • CZ)) • X1.Mh ↑
+      ≈⟨ cleft cright axiom V1R.semi-M↑CZ ⟩
+    (X1.Mh ↑ • (CZ^ g • V1R.Mg ↑)) • X1.Mh ↑
+      ≈⟨ cleft sym assoc ⟩
+    ((X1.Mh ↑ • CZ^ g) • V1R.Mg ↑) • X1.Mh ↑
+      ≈⟨ assoc ⟩
+    (X1.Mh ↑ • CZ^ g) • (V1R.Mg ↑ • X1.Mh ↑)
+      ≈⟨ cright Mg↑Mh↑ ⟩
+    (X1.Mh ↑ • CZ^ g) • ε
+      ≈⟨ right-unit ⟩
+    X1.Mh ↑ • CZ^ g ∎)

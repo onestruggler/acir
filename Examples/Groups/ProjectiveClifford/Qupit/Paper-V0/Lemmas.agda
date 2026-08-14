@@ -112,72 +112,196 @@ module One-Wire (n : ℕ) where
       ₁ * x'⁻¹ ≡⟨ *-identityˡ x'⁻¹ ⟩
       x'⁻¹ ∎
 
+  ------------------------------------------------------------------------
+  -- From the XMg axioms to the Mg forms
+  --
+  -- The multiplier axioms are stated over XMg = XM g′, and XM y is M at
+  -- the INVERSE unit (Syntactics.XM≡M⁻¹).  So M-power reads
+  --
+  --     XMg ^ toℕ k ≈ M ((g^ k) ⁻¹),
+  --
+  -- which is the Mg power law run at g ⁻¹ — a primitive root as well, so
+  -- no strength is lost, but the Mg forms have to be recovered before
+  -- anything downstream can use them.  That recovery is this section.
+  --
+  -- lemma-M-mul never needed more than "every M x is a power of the
+  -- generator", so it is proved from the XMg form directly (lemma-M-log);
+  -- the Mg power law then follows from it by induction, and the two
+  -- semi-rules by cancellation, once Mg and XMg are known to be mutually
+  -- inverse.
+
+  -- The inverse of a unit depends only on its value.  This is exactly
+  -- aux-M≡M's own side condition, named so the XM side can reuse it.
+  aux-inv≡ : ∀ (y y' : ℤ* ₚ) -> y .proj₁ ≡ y' .proj₁
+           -> (y ⁻¹) .proj₁ ≡ (y' ⁻¹) .proj₁
+  aux-inv≡ y y' eq = begin
+    x⁻¹ ≡⟨  Eq.sym  (*-identityʳ x⁻¹) ⟩
+    x⁻¹ * ₁ ≡⟨ Eq.cong (x⁻¹ *_) (Eq.sym (lemma-⁻¹ʳ x' {{nztoℕ {y = x'} {neq0 = y' .proj₂} }})) ⟩
+    x⁻¹ * (x' * x'⁻¹) ≡⟨ Eq.sym (*-assoc x⁻¹ x' x'⁻¹) ⟩
+    (x⁻¹ * x') * x'⁻¹ ≡⟨ Eq.cong (\ xx -> (x⁻¹ * xx) * x'⁻¹) (Eq.sym eq) ⟩
+    (x⁻¹ * x) * x'⁻¹ ≡⟨ Eq.cong (_* x'⁻¹) (lemma-⁻¹ˡ x {{nztoℕ {y = x} {neq0 = y .proj₂} }}) ⟩
+    ₁ * x'⁻¹ ≡⟨ *-identityˡ x'⁻¹ ⟩
+    x'⁻¹ ∎
+    where
+    open ≡-Reasoning
+    x = y .proj₁
+    x⁻¹ = ((y ⁻¹) .proj₁ )
+    x' = y' .proj₁
+    x'⁻¹ = ((y' ⁻¹) .proj₁ )
+
+  -- The axiom with the bridge applied: a power of XMg is an M.
+  lemma-XMg^ : ∀ (k : ℤ ₚ) -> XMg {n} ^ toℕ k ≈ M ((g^ k) ⁻¹)
+  lemma-XMg^ k = begin
+    XMg ^ toℕ k    ≈⟨ axiom (M-power k) ⟩
+    XM (g^ k)      ≡⟨ XM≡M⁻¹ (g^ k) ⟩
+    M ((g^ k) ⁻¹) ∎
+    where
+    open SR word-setoid
+
+  -- The modulus of a bare ₁ is not inferable inside the instance argument
+  -- below (cf. 2ₚ further down), so it is pinned down here.
+  1ₚ' : ℤ ₚ
+  1ₚ' = ₁
+
+  -- 1 is its own inverse.
+  aux-1⁻¹ : (((₁ , λ ())) ⁻¹) .proj₁ ≡ ₁
+  aux-1⁻¹ = begin
+    ((₁ , λ ()) ⁻¹) .proj₁
+      ≡⟨ Eq.sym (*-identityˡ ((((₁ , λ ())) ⁻¹) .proj₁)) ⟩
+    ₁ * ((₁ , λ ()) ⁻¹) .proj₁
+      ≡⟨ lemma-⁻¹ʳ 1ₚ' {{nztoℕ {y = 1ₚ'} {neq0 = λ ()}}} ⟩
+    ₁ ∎
+    where open ≡-Reasoning
+
   lemma-M1 : M (₁ , λ ()) ≈ ε
   lemma-M1 = begin
-    M (₁ , λ ()) ≡⟨ aux-M≡M ((₁ , λ ())) (g^ ₀) auto ⟩
-    M (g^ ₀) ≈⟨ sym (axiom (M-power ₀)) ⟩
-    Mg^ ₀ ≈⟨ refl ⟩
+    M (₁ , λ ()) ≡⟨ aux-M≡M ((₁ , λ ())) ((g^ ₀) ⁻¹) (Eq.sym aux) ⟩
+    M ((g^ ₀) ⁻¹) ≈⟨ sym (lemma-XMg^ ₀) ⟩
+    XMg ^ 0 ≈⟨ refl ⟩
     ε ∎
     where
+    -- g ^ 0 is 1, and 1 is its own inverse.
+    aux : ((g^ ₀) ⁻¹) .proj₁ ≡ ₁
+    aux = Eq.trans (aux-inv≡ (g^ ₀) (₁ , λ ()) auto) aux-1⁻¹
+
     open SR word-setoid
 
-  lemma-Mg^p-1=ε : Mg ^ p-1 ≈ ε
-  lemma-Mg^p-1=ε = begin
-    Mg ^ p-1 ≡⟨ Eq.cong (Mg ^_) (Eq.sym (toℕ-fromℕ< (NP.n<1+n p-1))) ⟩
-    Mg^ (fromℕ< (NP.n<1+n p-1)) ≈⟨ axiom (M-power (₂₊ (fromℕ< _))) ⟩
-    M (g^ p-1') ≡⟨ aux-M≡M (g^ p-1') ((g ^′ p-1 , lemma-g^′k≠0 p-1)) (Eq.cong (g ^′_) (toℕ-fromℕ< (NP.n<1+n p-1))) ⟩
-    M (g ^′ p-1 , lemma-g^′k≠0 p-1) ≡⟨ aux-M≡M ((g ^′ p-1 , lemma-g^′k≠0 p-1)) (1ₚ , λ ()) Fermat's-little-theorem' ⟩
-    M (1ₚ , λ ()) ≈⟨ sym (axiom (M-power ₀)) ⟩
+  -- g ^ (p-1) is 1 (Fermat), so it and its inverse are both trivial.
+  aux-g^p-1 : (g^ (fromℕ< (NP.n<1+n p-1))) .proj₁ ≡ ₁
+  aux-g^p-1 = begin
+    (g^ (fromℕ< (NP.n<1+n p-1))) .proj₁
+      ≡⟨ Eq.cong (g ^′_) (toℕ-fromℕ< (NP.n<1+n p-1)) ⟩
+    g ^′ p-1  ≡⟨ Fermat's-little-theorem' ⟩
+    ₁ ∎
+    where open ≡-Reasoning
+
+  lemma-XMg^p-1=ε : XMg {n} ^ p-1 ≈ ε
+  lemma-XMg^p-1=ε = begin
+    XMg ^ p-1
+      ≡⟨ Eq.cong (XMg ^_) (Eq.sym (toℕ-fromℕ< (NP.n<1+n p-1))) ⟩
+    XMg ^ toℕ p-1'
+      ≈⟨ lemma-XMg^ p-1' ⟩
+    M ((g^ p-1') ⁻¹)
+      ≡⟨ aux-M≡M ((g^ p-1') ⁻¹) (₁ , λ ())
+                 (Eq.trans (aux-inv≡ (g^ p-1') (₁ , λ ()) aux-g^p-1) aux-1⁻¹) ⟩
+    M (₁ , λ ())
+      ≈⟨ lemma-M1 ⟩
     ε ∎
     where
-    open SR word-setoid
     p-1' = fromℕ< (NP.n<1+n p-1)
+    open SR word-setoid
 
-  aux-Mg^[kp-1] : ∀ k -> Mg ^ (k Nat.* p-1) ≈ ε
-  aux-Mg^[kp-1] k = begin
-    Mg ^ (k Nat.* p-1) ≈⟨ refl' (Eq.cong (Mg ^_) (NP.*-comm k p-1)) ⟩
-    Mg ^ (p-1 Nat.* k) ≈⟨ sym (^^ Mg p-1 k) ⟩
-    (Mg ^ p-1) ^ k ≈⟨ ^-cong (Mg ^ p-1) ε k lemma-Mg^p-1=ε ⟩
+  aux-XMg^[kp-1] : ∀ k -> XMg {n} ^ (k Nat.* p-1) ≈ ε
+  aux-XMg^[kp-1] k = begin
+    XMg ^ (k Nat.* p-1) ≈⟨ refl' (Eq.cong (XMg ^_) (NP.*-comm k p-1)) ⟩
+    XMg ^ (p-1 Nat.* k) ≈⟨ sym (^^ XMg p-1 k) ⟩
+    (XMg ^ p-1) ^ k ≈⟨ ^-cong (XMg ^ p-1) ε k lemma-XMg^p-1=ε ⟩
     ε ^ k ≈⟨ ε^k=ε k ⟩
     ε ∎
     where
     open SR word-setoid
 
+  -- Inversion is multiplicative.  Not in ForStdlib, and the XM side of
+  -- lemma-M-mul needs it: the discrete logs there are taken of inverses.
+  aux-mul-inv : ∀ (x y : ℤ* ₚ)
+              -> ((x *' y) ⁻¹) .proj₁ ≡ (x ⁻¹) .proj₁ * (y ⁻¹) .proj₁
+  aux-mul-inv x y = begin
+    a                    ≡⟨ Eq.sym (*-identityʳ a) ⟩
+    a * ₁                ≡⟨ Eq.cong (a *_) (Eq.sym claim) ⟩
+    a * ((xv * yv) * (u * v))
+      ≡⟨ Eq.sym (*-assoc a (xv * yv) (u * v)) ⟩
+    (a * (xv * yv)) * (u * v)
+      ≡⟨ Eq.cong (_* (u * v)) (lemma-⁻¹ˡ (xv * yv) {{nztoℕ {y = xv * yv} {neq0 = (x *' y) .proj₂} }}) ⟩
+    ₁ * (u * v)          ≡⟨ *-identityˡ (u * v) ⟩
+    u * v ∎
+    where
+    open ≡-Reasoning
+    xv = x .proj₁
+    yv = y .proj₁
+    u = (x ⁻¹) .proj₁
+    v = (y ⁻¹) .proj₁
+    a = ((x *' y) ⁻¹) .proj₁
+
+    claim : (xv * yv) * (u * v) ≡ ₁
+    claim = begin
+      (xv * yv) * (u * v)  ≡⟨ *-assoc xv yv (u * v) ⟩
+      xv * (yv * (u * v))  ≡⟨ Eq.cong (xv *_) (Eq.sym (*-assoc yv u v)) ⟩
+      xv * ((yv * u) * v)  ≡⟨ Eq.cong (\ w -> xv * (w * v)) (*-comm yv u) ⟩
+      xv * ((u * yv) * v)  ≡⟨ Eq.cong (xv *_) (*-assoc u yv v) ⟩
+      xv * (u * (yv * v))
+        ≡⟨ Eq.cong (\ w -> xv * (u * w)) (lemma-⁻¹ʳ yv {{nztoℕ {y = yv} {neq0 = y .proj₂} }}) ⟩
+      xv * (u * ₁)         ≡⟨ Eq.cong (xv *_) (*-identityʳ u) ⟩
+      xv * u               ≡⟨ lemma-⁻¹ʳ xv {{nztoℕ {y = xv} {neq0 = x .proj₂} }} ⟩
+      ₁ ∎
+
+  -- Every M is a power of XMg: the axiom says XMg ^ n is M at the inverse
+  -- of g ^ n, so take the discrete log of x ⁻¹ rather than of x.
+  lemma-M-log : ∀ (x : ℤ* ₚ)
+              -> M {n = n} x ≈ XMg ^ toℕ (inject₁ (g-gen (x ⁻¹) .proj₁))
+  lemma-M-log x = begin
+    M x               ≡⟨ aux-M≡M x ((g^ k) ⁻¹) (Eq.sym eqk) ⟩
+    M ((g^ k) ⁻¹)     ≈⟨ sym (lemma-XMg^ k) ⟩
+    XMg ^ toℕ k ∎
+    where
+    k = inject₁ (g-gen (x ⁻¹) .proj₁)
+
+    -- ((g ^ k) ⁻¹) is x, because g ^ k is x ⁻¹ and inversion is involutive.
+    eqk : ((g^ k) ⁻¹) .proj₁ ≡ x .proj₁
+    eqk = Eq.trans (aux-inv≡ (g^ k) (x ⁻¹) (lemma-log-inject (x ⁻¹)))
+                   (inv-involutive x)
+
+    open SR word-setoid
+
   lemma-M-mul : ∀ x y -> M x • M y ≈ M (x *' y)
   lemma-M-mul x y = begin
-    M x • M y ≈⟨ cong (refl' (aux-M≡M x (g^ k) eqk)) (refl' (aux-M≡M y (g^ l) eql)) ⟩
-    M (g^ k) • M (g^ l) ≈⟨ cong (sym (axiom (M-power k))) (sym (axiom (M-power l))) ⟩
-    Mg ^ toℕ k • Mg ^ toℕ l ≈⟨ sym (^-+ Mg (toℕ k) (toℕ l)) ⟩
-    Mg ^ [k+l] ≡⟨ Eq.cong (Mg ^_) (m≡m%n+[m/n]*n [k+l] p-1) ⟩
-    Mg ^ ([k+l]%p-1 Nat.+ [k+l]/p-1 Nat.* p-1) ≈⟨ ^-+ Mg [k+l]%p-1 (([k+l]/p-1 Nat.* p-1)) ⟩
-    Mg ^ [k+l]%p-1 • Mg ^ ([k+l]/p-1 Nat.* p-1) ≈⟨ (cright trans refl (aux-Mg^[kp-1] [k+l]/p-1)) ⟩
-    Mg ^ [k+l]%p-1 • ε ≈⟨ right-unit ⟩
-    Mg ^ [k+l]%p-1 ≡⟨ Eq.cong (Mg ^_) (Eq.sym (toℕ-fromℕ< (m%n<n [k+l] p-1))) ⟩
-    Mg ^ toℕ ( (fromℕ< (m%n<n [k+l] p-1))) ≡⟨ Eq.cong (Mg ^_) (Eq.sym (toℕ-inject₁ ((fromℕ< (m%n<n [k+l] p-1))))) ⟩
-    Mg ^ toℕ (inject₁ (fromℕ< (m%n<n [k+l] p-1))) ≈⟨ refl ⟩
-    Mg^ (inject₁ (fromℕ< (m%n<n [k+l] p-1))) ≈⟨ axiom (M-power (inject₁ (fromℕ< (m%n<n [k+l] p-1)))) ⟩
-    M (g^ (inject₁ (fromℕ< (m%n<n [k+l] p-1)))) ≡⟨ aux-M≡M (g^ (inject₁ (fromℕ< (m%n<n [k+l] p-1)))) (g^′ [k+l]) aux-2 ⟩
-    M (g^′ [k+l]) ≡⟨ aux-M≡M (g^′ [k+l]) (g^′ toℕ k *' g^′ toℕ l) aux-1 ⟩
-    M (g^′ toℕ k *' g^′ toℕ l) ≡⟨ aux-M≡M (g^′ toℕ k *' g^′ toℕ l) (x *' y) aux-0 ⟩
+    M x • M y ≈⟨ cong (lemma-M-log x) (lemma-M-log y) ⟩
+    XMg ^ toℕ k • XMg ^ toℕ l ≈⟨ sym (^-+ XMg (toℕ k) (toℕ l)) ⟩
+    XMg ^ [k+l] ≡⟨ Eq.cong (XMg ^_) (m≡m%n+[m/n]*n [k+l] p-1) ⟩
+    XMg ^ ([k+l]%p-1 Nat.+ [k+l]/p-1 Nat.* p-1) ≈⟨ ^-+ XMg [k+l]%p-1 (([k+l]/p-1 Nat.* p-1)) ⟩
+    XMg ^ [k+l]%p-1 • XMg ^ ([k+l]/p-1 Nat.* p-1) ≈⟨ (cright trans refl (aux-XMg^[kp-1] [k+l]/p-1)) ⟩
+    XMg ^ [k+l]%p-1 • ε ≈⟨ right-unit ⟩
+    XMg ^ [k+l]%p-1 ≡⟨ Eq.cong (XMg ^_) (Eq.sym (toℕ-fromℕ< (m%n<n [k+l] p-1))) ⟩
+    XMg ^ toℕ ( (fromℕ< (m%n<n [k+l] p-1))) ≡⟨ Eq.cong (XMg ^_) (Eq.sym (toℕ-inject₁ ((fromℕ< (m%n<n [k+l] p-1))))) ⟩
+    XMg ^ toℕ c ≈⟨ lemma-XMg^ c ⟩
+    M ((g^ c) ⁻¹) ≡⟨ aux-M≡M ((g^ c) ⁻¹) (x *' y) aux-3 ⟩
     M (x *' y) ∎
     where
-    k = inject₁ (g-gen x .proj₁)
-    l = inject₁ (g-gen y .proj₁)
-    eqk : x .proj₁ ≡ (g^ k) .proj₁
-    eqk = Eq.sym (lemma-log-inject x)
-    eql : y .proj₁ ≡ (g^ l) .proj₁
-    eql = Eq.sym (lemma-log-inject y)
+    -- The logs are of the INVERSES, which is what the XMg form gives.
+    k = inject₁ (g-gen (x ⁻¹) .proj₁)
+    l = inject₁ (g-gen (y ⁻¹) .proj₁)
 
     [k+l] = toℕ k Nat.+ toℕ l
     [k+l]%p-1 = [k+l] Nat.% p-1
     [k+l]/p-1 = [k+l] Nat./ p-1
 
-    aux-0 : ((g^′ toℕ k) *' (g^′ toℕ l)) .proj₁ ≡ (x *' y) .proj₁
+    c = inject₁ (fromℕ< (m%n<n [k+l] p-1))
+
+    aux-0 : ((g^′ toℕ k) *' (g^′ toℕ l)) .proj₁ ≡ ((x *' y) ⁻¹) .proj₁
     aux-0 = begin
       ((g^′ toℕ k) *' (g^′ toℕ l)) .proj₁ ≡⟨ auto ⟩
-      (g^′ toℕ k) .proj₁ * (g^′ toℕ l) .proj₁ ≡⟨ Eq.cong₂ (\ xx yy -> (xx * yy) ) (lemma-log-inject x) (lemma-log-inject y) ⟩
-      x .proj₁ * y .proj₁ ≡⟨ auto ⟩
-      (x *' y) .proj₁ ∎
+      (g^′ toℕ k) .proj₁ * (g^′ toℕ l) .proj₁ ≡⟨ Eq.cong₂ (\ xx yy -> (xx * yy) ) (lemma-log-inject (x ⁻¹)) (lemma-log-inject (y ⁻¹)) ⟩
+      (x ⁻¹) .proj₁ * (y ⁻¹) .proj₁ ≡⟨ Eq.sym (aux-mul-inv x y) ⟩
+      ((x *' y) ⁻¹) .proj₁ ∎
       where
       open ≡-Reasoning
 
@@ -199,11 +323,94 @@ module One-Wire (n : ℕ) where
       where
       open ≡-Reasoning
 
+    -- g ^ c is the inverse of x · y, so its own inverse is x · y.
+    aux-3 : ((g^ c) ⁻¹) .proj₁ ≡ (x *' y) .proj₁
+    aux-3 = Eq.trans (aux-inv≡ (g^ c) ((x *' y) ⁻¹)
+                               (Eq.trans aux-2 (Eq.trans aux-1 aux-0)))
+                     (inv-involutive (x *' y))
+
     -- Opened last, as in Simplified-V1: an `open` in a where-block is
     -- scoped from its own position onward, so putting the setoid
     -- reasoning here keeps `begin_` unambiguous inside the aux-blocks
     -- above, which use ≡-Reasoning instead.
     open SR word-setoid
+
+  ------------------------------------------------------------------------
+  -- The Mg forms of the three axioms
+  --
+  -- With lemma-M-mul in hand the rest is short.  The power law is an
+  -- induction on the exponent, and XMg is Mg's inverse — M g′ • M (g′ ⁻¹)
+  -- is M ₁ is ε — so the two semi-rules come back by cancelling XMg off
+  -- both sides of the axiom.
+
+  -- The power law over ℕ; lemma-M-power is this at an exponent from ℤ ₚ.
+  lemma-Mgⁿ : ∀ (m : ℕ) -> Mg {n} ^ m ≈ M (g^′ m)
+  lemma-Mgⁿ ₀ = begin
+    ε                ≈⟨ sym lemma-M1 ⟩
+    M (₁ , λ ())     ≡⟨ aux-M≡M (₁ , λ ()) (g^′ 0) auto ⟩
+    M (g^′ 0) ∎
+    where open SR word-setoid
+  lemma-Mgⁿ ₁ = refl' (aux-M≡M g′ (g^′ 1) (Eq.sym (*-identityʳ g)))
+  lemma-Mgⁿ (₂₊ m) = begin
+    Mg • Mg ^ ₁₊ m          ≈⟨ cright lemma-Mgⁿ (₁₊ m) ⟩
+    M g′ • M (g^′ ₁₊ m)     ≈⟨ lemma-M-mul g′ (g^′ ₁₊ m) ⟩
+    M (g′ *' g^′ ₁₊ m)      ≡⟨ aux-M≡M (g′ *' g^′ ₁₊ m) (g^′ ₂₊ m) auto ⟩
+    M (g^′ ₂₊ m) ∎
+    where open SR word-setoid
+
+  lemma-M-power : ∀ (k : ℤ ₚ) -> Mg^ k ≈ M (g^ k)
+  lemma-M-power k = begin
+    Mg ^ toℕ k     ≈⟨ lemma-Mgⁿ (toℕ k) ⟩
+    M (g^′ toℕ k)  ≡⟨ aux-M≡M (g^′ toℕ k) (g^ k) auto ⟩
+    M (g^ k) ∎
+    where open SR word-setoid
+
+  -- Mg and XMg are mutually inverse.
+  lemma-Mg-XMg : Mg {n} • XMg ≈ ε
+  lemma-Mg-XMg = begin
+    Mg • XMg            ≡⟨ Eq.cong (Mg •_) (XM≡M⁻¹ g′) ⟩
+    M g′ • M (g′ ⁻¹)    ≈⟨ lemma-M-mul g′ (g′ ⁻¹) ⟩
+    M (g′ *' (g′ ⁻¹))   ≡⟨ aux-M≡M (g′ *' (g′ ⁻¹)) (₁ , λ ())
+                                   (lemma-⁻¹ʳ g {{nztoℕ {y = g} {neq0 = g≠0} }}) ⟩
+    M (₁ , λ ())        ≈⟨ lemma-M1 ⟩
+    ε ∎
+    where open SR word-setoid
+
+  lemma-XMg-Mg : XMg {n} • Mg ≈ ε
+  lemma-XMg-Mg = begin
+    XMg • Mg            ≡⟨ Eq.cong (_• Mg) (XM≡M⁻¹ g′) ⟩
+    M (g′ ⁻¹) • M g′    ≈⟨ lemma-M-mul (g′ ⁻¹) g′ ⟩
+    M ((g′ ⁻¹) *' g′)   ≡⟨ aux-M≡M ((g′ ⁻¹) *' g′) (₁ , λ ())
+                                   (lemma-⁻¹ˡ g {{nztoℕ {y = g} {neq0 = g≠0} }}) ⟩
+    M (₁ , λ ())        ≈⟨ lemma-M1 ⟩
+    ε ∎
+    where open SR word-setoid
+
+  -- semi-MR, back in the Mg spelling.  The axiom says conjugating by XMg
+  -- takes R ^ (g·g) to R; cancelling XMg on both sides turns that into
+  -- "conjugating by Mg takes R to R ^ (g·g)", which is the original rule.
+  lemma-semi-MR : Mg {n} • R ≈ R^ (g * g) • Mg
+  lemma-semi-MR = begin
+    Mg • R
+      ≈⟨ sym right-unit ⟩
+    (Mg • R) • ε
+      ≈⟨ cright sym lemma-XMg-Mg ⟩
+    (Mg • R) • (XMg • Mg)
+      ≈⟨ assoc ⟩
+    Mg • (R • (XMg • Mg))
+      ≈⟨ cright sym assoc ⟩
+    Mg • ((R • XMg) • Mg)
+      ≈⟨ cright cleft sym (axiom semi-MR) ⟩
+    Mg • ((XMg • R^ (g * g)) • Mg)
+      ≈⟨ cright assoc ⟩
+    Mg • (XMg • (R^ (g * g) • Mg))
+      ≈⟨ sym assoc ⟩
+    (Mg • XMg) • (R^ (g * g) • Mg)
+      ≈⟨ cleft lemma-Mg-XMg ⟩
+    ε • (R^ (g * g) • Mg)
+      ≈⟨ left-unit ⟩
+    R^ (g * g) • Mg ∎
+    where open SR word-setoid
 
   ------------------------------------------------------------------------
   -- The resolution of the identity that Lemma 9 inserts
@@ -288,7 +495,7 @@ module One-Wire (n : ℕ) where
 
   lemma-M₋₁-pow : Mg ^ j₋ ≈ M₋₁
   lemma-M₋₁-pow = begin
-    Mg ^ j₋    ≈⟨ axiom (M-power k₋) ⟩
+    Mg ^ j₋    ≈⟨ lemma-M-power k₋ ⟩
     M (g^ k₋)  ≡⟨ aux-M≡M (g^ k₋) -'₁ e₋ ⟩
     M₋₁ ∎
     where open SR word-setoid
@@ -811,6 +1018,40 @@ module Ex-Conjugation (n : ℕ) where
 
   -- The relation one wire down, for the arguments of lemma-cong↑.
   private module PB₁ = PB ((₁₊ n) QRel,_===_)
+
+  -- semi-M↑CZ, back in the Mg spelling.  Like semi-MR one wire down, the
+  -- axiom is stated over XMg = Mg ⁻¹ and says conjugation by it takes
+  -- CZ ^ g to CZ; inserting XMg ↑ • Mg ↑ = ε and cancelling turns that
+  -- into the original rule.  The two inverse facts are the one-wire ones
+  -- lifted, since Mg and XMg both live on wire 1 here.
+  private
+    Mg↑XMg↑ : Mg ↑ • XMg ↑ ≈ ε
+    Mg↑XMg↑ = lemma-cong↑ _ _ (One-Wire.lemma-Mg-XMg n)
+
+    XMg↑Mg↑ : XMg ↑ • Mg ↑ ≈ ε
+    XMg↑Mg↑ = lemma-cong↑ _ _ (One-Wire.lemma-XMg-Mg n)
+
+  lemma-semi-M↑CZ : Mg ↑ • CZ ≈ CZ^ g • Mg ↑
+  lemma-semi-M↑CZ = begin
+    Mg ↑ • CZ
+      ≈⟨ sym right-unit ⟩
+    (Mg ↑ • CZ) • ε
+      ≈⟨ cright sym XMg↑Mg↑ ⟩
+    (Mg ↑ • CZ) • (XMg ↑ • Mg ↑)
+      ≈⟨ assoc ⟩
+    Mg ↑ • (CZ • (XMg ↑ • Mg ↑))
+      ≈⟨ cright sym assoc ⟩
+    Mg ↑ • ((CZ • XMg ↑) • Mg ↑)
+      ≈⟨ cright cleft sym (axiom semi-M↑CZ) ⟩
+    Mg ↑ • ((XMg ↑ • CZ^ g) • Mg ↑)
+      ≈⟨ cright assoc ⟩
+    Mg ↑ • (XMg ↑ • (CZ^ g • Mg ↑))
+      ≈⟨ sym assoc ⟩
+    (Mg ↑ • XMg ↑) • (CZ^ g • Mg ↑)
+      ≈⟨ cleft Mg↑XMg↑ ⟩
+    ε • (CZ^ g • Mg ↑)
+      ≈⟨ left-unit ⟩
+    CZ^ g • Mg ↑ ∎
 
   -- order-Ex with the power unfolded: Ex ^ 2 is Ex • (Ex ^ 1) is
   -- Ex • Ex definitionally, so this is the axiom itself.
@@ -1378,7 +1619,7 @@ module Ex-Conjugation (n : ℕ) where
     Ex • ((Mg ↑ • Ex) • CZ)       ≈⟨ cright assoc ⟩
     Ex • (Mg ↑ • (Ex • CZ))       ≈⟨ cright cright lemma-Ex-CZ ⟩
     Ex • (Mg ↑ • (CZ • Ex))       ≈⟨ cright sym assoc ⟩
-    Ex • ((Mg ↑ • CZ) • Ex)       ≈⟨ cright cleft axiom semi-M↑CZ ⟩
+    Ex • ((Mg ↑ • CZ) • Ex)       ≈⟨ cright cleft lemma-semi-M↑CZ ⟩
     Ex • ((CZ^ g • Mg ↑) • Ex)    ≈⟨ cright assoc ⟩
     Ex • (CZ^ g • (Mg ↑ • Ex))    ≈⟨ sym assoc ⟩
     (Ex • CZ^ g) • (Mg ↑ • Ex)    ≈⟨ cleft lemma-Ex-CZᵏ (toℕ g) ⟩
@@ -1442,7 +1683,7 @@ module Ex-Conjugation (n : ℕ) where
   lemma-Mg↑-CZ^ : ∀ (a : ℤ ₚ) → Mg ↑ • CZ^ a ≈ CZ^ (g * a) • Mg ↑
   lemma-Mg↑-CZ^ a = begin
     Mg ↑ • CZ ^ toℕ a
-      ≈⟨ lemma-Induction (axiom semi-M↑CZ) (toℕ a) ⟩
+      ≈⟨ lemma-Induction lemma-semi-M↑CZ (toℕ a) ⟩
     (CZ ^ toℕ g) ^ toℕ a • Mg ↑
       ≈⟨ cleft (^^ CZ (toℕ g) (toℕ a)) ⟩
     CZ ^ (toℕ g Nat.* toℕ a) • Mg ↑
@@ -1457,7 +1698,7 @@ module Ex-Conjugation (n : ℕ) where
     CZ      ≈⟨ sym right-unit ⟩
     CZ • ε ∎
   lemma-Mgᵏ↑-CZ ₁ = begin
-    Mg ↑ • CZ            ≈⟨ axiom semi-M↑CZ ⟩
+    Mg ↑ • CZ            ≈⟨ lemma-semi-M↑CZ ⟩
     CZ ^ toℕ g • Mg ↑
       ≡⟨ Eq.cong (λ z → CZ ^ toℕ z • Mg ↑) (Eq.sym (lemma-x^′1=x g)) ⟩
     CZ ^ toℕ (g ^′ 1) • Mg ↑ ∎

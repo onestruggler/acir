@@ -46,7 +46,7 @@ open import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-ge
 -- constructors below), the structural rules, and the raw relation itself.
 -- Reach for the symplectic version as NSim.Symplectic.… if ever needed.
 open Symplectic hiding
-  ( _QRel,_===_ ; M ; M₁ ; module Base
+  ( _QRel,_===_ ; M ; M₁ ; XM ; ZM ; module Base
   ; order-S ; order-H ; order-SH
   ; semi-M↑CZ ; semi-M↓CZ ; order-CZ
   ; comm-CZ-S↓ ; comm-CZ-S↑
@@ -65,6 +65,7 @@ module Clifford-Relations where
 
   private variable
     n : ℕ
+    k : ℤ ₚ
 
   Z : ∀ {n} -> Word (Gen (₁₊ n))
   Z = H • H • S • H • H • S⁻¹
@@ -90,23 +91,51 @@ module Clifford-Relations where
   R^ : ∀ {n} ->  ℤ ₚ ->  Word (Gen (₁₊ n))
   R^ k = R ^ toℕ k
 
+  -- The shape both multiplier words have, over R rather than S: this is
+  -- Gates' SHS with S^ replaced by R^, which is what makes the identity
+  -- on words a morphism to Simplified-V1 (V1 states everything over
+  -- R = S • Z^½).  M and XM are the two ways of filling it from a unit
+  -- and its inverse, exactly as Gates' ZM and XM are.
+  RHR : ∀ {n} -> ℤ ₚ -> ℤ ₚ -> Word (Gen (₁₊ n))
+  RHR a b = R^ a • H • R^ b • H • R^ a • H
+
   M : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
-  M x' = R^ x • H • R^ x⁻¹ • H • R^ x • H
+  M x' = RHR x x⁻¹
     where
     x = x' .proj₁
     x⁻¹ = ((x' ⁻¹) .proj₁ )
 
-  M₋₁ : ∀ {n} -> Word (Gen (₁₊ n))
-  M₋₁ = M -'₁
+  XM : ∀ {n} -> ℤ* ₚ -> Word (Gen (₁₊ n))
+  XM x' = RHR x⁻¹ x
+    where
+    x = x' .proj₁
+    x⁻¹ = ((x' ⁻¹) .proj₁ )
+
+  -- The two fillings are exchanged by inversion.  This is the R-spelled
+  -- copy of Gates' XM≡ZM⁻¹, with the same one-line proof: over RHR it is
+  -- one congruence in the second exponent, since (x ⁻¹) ⁻¹ is x.  It is
+  -- the bridge between the axioms, which are stated over XMg, and the
+  -- Mg forms that everything downstream is written in.
+  XM≡M⁻¹ : ∀ {n} (x : ℤ* ₚ) → XM {n} x ≡ M (x ⁻¹)
+  XM≡M⁻¹ x = Eq.cong (RHR ((x ⁻¹) .proj₁)) (Eq.sym (inv-involutive x))
 
   M₁ : ∀ {n} -> Word (Gen (₁₊ n))
   M₁ = M (₁ , λ ())
+
+  M₋₁ : ∀ {n} -> Word (Gen (₁₊ n))
+  M₋₁ = M -'₁
 
   Mg :  ∀ {n} -> Word (Gen (₁₊ n))
   Mg = M g′
 
   Mg^ : ℤ ₚ ->  ∀ {n} -> Word (Gen (₁₊ n))
   Mg^ k = Mg ^ toℕ k
+
+  XMg :  ∀ {n} -> Word (Gen (₁₊ n))
+  XMg = XM g′
+
+  XMg^ : ℤ ₚ ->  ∀ {n} -> Word (Gen (₁₊ n))
+  XMg^ k = XMg ^ toℕ k
 
 
   -- Group-specific axioms only.  The structural rules — congruence
@@ -122,21 +151,26 @@ module Clifford-Relations where
     infix 4 _SRel,_===_
     data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
 
-      order-S :       (₁₊ n) SRel,  S ^ p === ε
-      order-H :       (₁₊ n) SRel,  H ^ 2 === M₋₁
-      M-power : ∀ k → (₁₊ n) SRel,  Mg^ k === M (g^ k)
-      semi-MR :       (₁₊ n) SRel,  Mg • R === R^ (g * g) • Mg
-      order-SH :      (₁₊ n) SRel,  (S • H) ^ 3 === ε
-      comm-HHSHHS :   (₁₊ n) SRel,  H • H • S • H • H • S === S • H • H • S • H • H
+      order-S :      (₁₊ n) SRel,  S ^ p === ε
+      order-H :      (₁₊ n) SRel,  H ^ 2 === M₋₁
+      M-power : ∀ k → (₁₊ n) SRel,  XMg^ k === XM (g^ k)
+      semi-MR :      (₁₊ n) SRel,  XMg • R^ (g * g) === R • XMg
+      order-SH :     (₁₊ n) SRel,  (S • H) ^ 3 === ε
+      comm-HHSHHS :  (₁₊ n) SRel,  H • H • S • H • H • S === S • H • H • S • H • H
 
-      order-CZ :      (₂₊ n) SRel,  CZ ^ p === ε
-      order-Ex :      (₂₊ n) SRel,  Ex ^ 2 === ε
-      comm-CZ-S↑ :    (₂₊ n) SRel,  CZ • S ↑ === S ↑ • CZ
-      semi-M↑CZ :     (₂₊ n) SRel,  Mg ↑ • CZ === CZ^ g • Mg ↑
+      order-CZ :     (₂₊ n) SRel,  CZ ^ p === ε
+      order-Ex :     (₂₊ n) SRel,  Ex ^ 2 === ε
+      comm-CZ-S↑ :   (₂₊ n) SRel,  CZ • S ↑ === S ↑ • CZ
+      semi-M↑CZ :    (₂₊ n) SRel,  XMg ↑ • CZ^ g === CZ • XMg ↑
+      semi-Ex-S↑ :   (₂₊ n) SRel,  Ex • S ↑ === S ↓ • Ex
+      semi-Ex-H↑ :   (₂₊ n) SRel,  Ex • H ↑ === H ↓ • Ex
+      blake-c12 :    (₂₊ n) SRel,  (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX === CZ
 
-      semi-Ex-S↑ :    (₂₊ n) SRel,  Ex • S ↑ === S • Ex
-      semi-Ex-H↑ :    (₂₊ n) SRel,  Ex • H ↑ === H • Ex
+      yang-baxter :  (₃₊ n) SRel,  Ex ↑ • Ex ↓ • Ex ↑ === Ex ↓ • Ex ↑ • Ex ↓
+      cz-slide :     (₃₊ n) SRel,  Ex ↓ • Ex ↑ • CZ === CZ ↑ • Ex ↓ • Ex ↑
+      semi-CX↑-CZ↓ : (₃₊ n) SRel,  CZ ↓ • CX ↑ === CZ02 • CX ↑ • CZ ↓
 
+  -- Full relation: the axioms above plus the structural rules.
       -- The swap commuting with CZ is NOT an axiom: it is Lemma 2 of
       -- ProgressReport14, derived in Paper-V0.Lemmas as lemma-Ex-CZ from
       -- semi-Ex-H↑ and the two ways of writing the swap.  Figure 1 has no
@@ -148,14 +182,7 @@ module Clifford-Relations where
       -- Paper-V0.Lemmas.Ex-Conjugation.lemma-rel-X↓-CZ (and its mirror
       -- lemma-rel-X↑-CZ).  A deliberate departure from Figure 1, and the
       -- second one after rel-X↑-CZ went: 16 group-specific axioms remain.
-
-      blake-c12 :     (₂₊ n) SRel,  (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX === CZ
-
-      yang-baxter :   (₃₊ n) SRel,  Ex ↑ • Ex ↓ • Ex ↑ === Ex ↓ • Ex ↑ • Ex ↓
-      cz-slide :      (₃₊ n) SRel,  Ex ↓ • Ex ↑ • CZ === CZ ↑ • Ex ↓ • Ex ↑
-      semi-CX↑-CZ↓ :  (₃₊ n) SRel,  CZ ↓ • CX ↑ === CZ02 • CX ↑ • CZ ↓
-
-  -- Full relation: the axioms above plus the structural rules.
+  
   private module SC = Circuit.Base SympGate
   private module LR = SC.Lift-Relation Base._SRel,_===_
 

@@ -64,6 +64,8 @@ open import ForStdlib.Data.Fin.Mod
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 open import Notations
 
+import Relation.Binary.PropositionalEquality as Eq
+
 module Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Iso
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
@@ -136,13 +138,26 @@ module Theorem where
   -- The eleven shared axioms.
   f-well-defined PapR.order-S       = PB.axiom V1R.order-S
   f-well-defined PapR.order-H       = PB.axiom V1R.order-H
-  f-well-defined (PapR.M-power k)   = PB.axiom (V1R.M-power k)
-  f-well-defined PapR.semi-MR       = PB.axiom V1R.semi-MR
+  -- Not shared: Paper-V0 states these over XMg = XM g′, which is M at the
+  -- inverse unit (XM≡M⁻¹), so V1 has to prove them — Simplified-V1.ExRules
+  -- does, by cancelling against Mg.  The refl' steps are just the bridge
+  -- rewriting XM into M.
+  f-well-defined {₁₊ n} (PapR.M-power k) =
+    PB.trans (PB.refl' _ (Eq.cong (_^ toℕ k) (PapR.XM≡M⁻¹ g′)))
+      (PB.trans (ExR.XM-Rules.lemma-M-power n k)
+                (PB.refl' _ (Eq.sym (PapR.XM≡M⁻¹(g^ k)))))
+  f-well-defined {₁₊ n} PapR.semi-MR =
+    PB.trans (PB.refl' _ (Eq.cong (_• PapR.R^ (g * g)) (PapR.XM≡M⁻¹ g′)))
+      (PB.trans (ExR.XM-Rules.lemma-semi-MR n)
+                (PB.refl' _ (Eq.sym (Eq.cong (PapR.R •_) (PapR.XM≡M⁻¹ g′)))))
   f-well-defined PapR.order-SH      = PB.axiom V1R.order-SH
   f-well-defined PapR.comm-HHSHHS   = PB.axiom V1R.comm-HHSHHS
   f-well-defined PapR.order-CZ      = PB.axiom V1R.order-CZ
   f-well-defined PapR.comm-CZ-S↑    = PB.axiom V1R.comm-CZ-S↑
-  f-well-defined PapR.semi-M↑CZ     = PB.axiom V1R.semi-M↑CZ
+  f-well-defined {₂₊ n} PapR.semi-M↑CZ =
+    PB.trans (PB.refl' _ (Eq.cong (λ w → w ↑ • CZ^ g) (PapR.XM≡M⁻¹ g′)))
+      (PB.trans (ExR.XM-Rules↑.lemma-semi-M↑CZ n)
+                (PB.refl' _ (Eq.sym (Eq.cong (λ w → CZ • w ↑) (PapR.XM≡M⁻¹ g′)))))
   -- The seven Paper-V0-only axioms, all proved in Simplified-V1.ExRules.
   f-well-defined {₂₊ n} PapR.order-Ex     = ExR.lemma-order-Ex
   f-well-defined {₂₊ n} PapR.semi-Ex-S↑   = ExR.Ex-S.lemma-semi-Ex-S↑ n
@@ -171,13 +186,15 @@ module Theorem where
   -- The eleven shared axioms.
   g-well-defined V1R.order-S        = PB.axiom PapR.order-S
   g-well-defined V1R.order-H        = PB.axiom PapR.order-H
-  g-well-defined (V1R.M-power k)    = PB.axiom (PapR.M-power k)
-  g-well-defined V1R.semi-MR        = PB.axiom PapR.semi-MR
+  -- Not shared: Paper-V0 states these three over XMg = Mg ⁻¹, and gets
+  -- the Mg forms back in One-Wire / Ex-Conjugation.
+  g-well-defined {₁₊ n} (V1R.M-power k) = PapL.One-Wire.lemma-M-power n k
+  g-well-defined {₁₊ n} V1R.semi-MR     = PapL.One-Wire.lemma-semi-MR n
   g-well-defined V1R.order-SH       = PB.axiom PapR.order-SH
   g-well-defined V1R.comm-HHSHHS    = PB.axiom PapR.comm-HHSHHS
   g-well-defined V1R.order-CZ       = PB.axiom PapR.order-CZ
   g-well-defined V1R.comm-CZ-S↑     = PB.axiom PapR.comm-CZ-S↑
-  g-well-defined V1R.semi-M↑CZ      = PB.axiom PapR.semi-M↑CZ
+  g-well-defined {₂₊ n} V1R.semi-M↑CZ = PapL.Ex-Conjugation.lemma-semi-M↑CZ n
   -- Not shared: Paper-V0 takes NEITHER Pauli-versus-CZ rule.  The lower
   -- one follows from blake-c12 and the multiplier calculus, and the
   -- upper one is the lower one conjugated by the swap.
