@@ -1,57 +1,109 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The scalar layer of the qubit Clifford group as a CENTRAL extension:
+-- The scalar layer of the qubit Clifford group as a CENTRAL extension of
+-- PRESENTED groups:
 --
---     1 ─→ ℤ/8 ─→ ℤ/8 ×_c Q ─→ Q ─→ 1,
+--     1 ─→ K ─→ K ×_c Q ─→ Q ─→ 1,
 --
--- from ForStdlib.Algebra.Construct.CentralExtension, with K = ⟨ω⟩ ≅ ℤ/8
--- and Q the group presented by Figure8-Mod-Scalar.  This is the same
--- extension Qubit.SemFE builds as a twisted product ℤ/8 ×_f Q, said in
--- the vocabulary that fits it: the scalars are central, so there is no
--- action to carry and a factor set is just a 2-cocycle.
+-- where both sides are groups of words modulo a congruence:
 --
--- Nothing is reproved here.  A Cocycle's four fields are exactly a
--- FactorSet's for the TRIVIAL action — `act x u` reduces to `u`, so even
--- the cocycle identity has the same type on the nose — and SemFE's φ IS
--- that trivial action.  So γᶜ below is SemFE.γ, projected; and what this
--- file adds is the part the twisted-product vocabulary cannot state:
+--   * K = the cyclic group of order 8, presented by
+--     Examples.Groups.Cyclic.Syntactics — words over a single generator
+--     T modulo T⁸ = ε.  It is abelian because its alphabet is a
+--     singleton, so `gen-comm` is refl, which is what CocycleGen's
+--     word-comm needs of a kernel;
+--   * Q = the group presented by Figure8-Mod-Scalar — words over the
+--     symplectic gates modulo the mod-scalar rule set.  This is Qubit.
+--     SemFE's Q on the nose: both are `•-ε-group` of the same relation
+--     and the same Grouplike witness.
+--
+-- φ, the action of Q on K, is TRIVIAL: ω commutes with every Figure-8
+-- circuit (comm₀ of the circuit framework, via Figure8.ω^-central), so
+-- the extension is central and a factor set is just a 2-cocycle.  That
+-- is `ω-central` below; it is a fact about Figure 8, not a convention,
+-- and it is what makes K ×_c Q the right model of the scalar layer
+-- rather than merely a group.
+--
+-- γᶜ, the cocycle, is derived HERE, through Presentation.Construct.
+-- Properties.CocycleGen, rather than projected out of Qubit.SemFE's
+-- finished factor set — which is why this file depends on neither SemFE
+-- nor anything the exact layer proves.  CocycleGen asks only for the
+-- correction that a single gate carries against a word,
+--
+--     G : Gen n → Circuit n → Word ⊤,
+--
+-- and extends it along the first argument by the cocycle identity
+-- itself.  So of Cocycle's four fields, two are free for ANY G at all —
+-- the identity and the left normalisation, both of which SemFE proved by
+-- hand out of ω-faithfulness — one needs only that G is congruent and
+-- normalised, and just one, c-cong, reaches the relators.  That is the
+-- whole point of coming this way.
+--
+-- What is left open is the generator data itself, the record
+-- `GeneratorData`: G together with
+--
+--   G-cong   G a descends to Q;
+--   G-ε      G a ε ≈ ε;
+--   f-axiom  each relator of the mod-scalar rule set carries the same
+--            correction on either side.
+--
+-- f-axiom is the hole Qubit.Sem3 leaves at the Pauli layer, for the same
+-- reason and wanting the same missing lemma: that CocycleGen's f agrees
+-- with the defect of a section at every pair of words (induction on the
+-- first, both satisfying the cocycle identity), after which f-axiom
+-- follows from that section's congruence exactly as G-cong does.  It is
+-- kept as a record field rather than an interaction hole so the file
+-- stays green and every consequence is stated against a named
+-- hypothesis.
+--
+-- Why G is open too, which is NOT obvious.  SemFE has the defect
+-- already: G a v ought to be T ^ toℕ (SemFE.f (section n) [ a ]ʷ v).
+-- That definition typechecks nowhere.  `_^'_` recurses on its exponent,
+-- so reducing G a v to weak head normal form forces toℕ of the defect,
+-- which forces SemFE's `defect`, the section, the bijective normal form
+-- and the whole of ScalarKernel; and conversion reduces both sides to
+-- whnf before comparing, so EVERY check that so much as mentions G a v
+-- detonates.  Measured: OOM under a 12 GB cap.  Supplying G needs a
+-- defect that computes rather than one extracted from an existence
+-- proof — reading the scalar off the mod-17 matrix model (Qubit.Model.
+-- Faithful, whose `log` is exactly such a read-off) is the route.
+--
+-- NOT CocycleGen.Pairs, which would narrow G to a map on pairs of gates:
+-- extending letterwise makes each `pair-word a` a homomorphism Q → K, so
+-- it factors through the abelianisation of Q — and C2 and C3 force
+-- 2h = 4s = 0 there, so 3(s+h) is never odd and ω would be forced to ε
+-- (the argument in Qubit.ExactExtension's header, for why no abelian
+-- invariant can see ω).  The scalar cocycle has to sit in the general G.
+--
+-- What this file adds beyond the cocycle.  The three results below are
+-- stated for an ARBITRARY cocycle over arbitrary A and H, and hold of γᶜ
+-- by instantiation.  That is not fastidiousness about generality: stated
+-- at a concrete cocycle they do not typecheck, for the same reason G
+-- does not — the terms compared mention c applied to arguments,
+-- conversion stops being syntactic, and the cocycle is normalised.  With
+-- the cocycle a variable, nothing can unfold and each proof is a few
+-- lines.
 --
 --   * incl-central — the image of the kernel really is central in the
 --     total group.  ForStdlib's CentralExtension says so in its header
 --     and builds the group accordingly, but never proves it; the proof
---     is two normalisations (c ε y = ε = c y ε) and commutativity of the
---     kernel, and it belongs upstream rather than here;
+--     is two normalisations and commutativity of the kernel, and it
+--     belongs upstream rather than here;
 --
 --   * same-∙ and same-⁻¹ — the central extension and the twisted product
 --     over the same cocycle carry the very same multiplication and the
 --     same inverse, by `refl`.  This is the claim FactorSetExtension's
---     header makes ("a trivial action gives exactly the multiplication of
---     the central extension"), checked rather than asserted.  The inverse
---     is where the two look different on paper: the twisted product's is
---     act (x⁻¹) ((a · f x x⁻¹)⁻¹), and the action is what disappears.
+--     header makes ("a trivial action gives exactly the multiplication
+--     of the central extension"), checked rather than asserted.  The
+--     inverse is where the two look different on paper: the twisted
+--     product's is act (x⁻¹) ((a · f x x⁻¹)⁻¹), and the action is what
+--     disappears.
 --
--- All three are stated for an ARBITRARY cocycle over arbitrary A and H,
--- and hold of γᶜ by instantiation.  That is not fastidiousness about
--- generality: stated at γᶜ they do not typecheck.  The terms being
--- compared contain c applied to arguments, conversion stops being
--- syntactic, and Agda normalises the cocycle — which at this instance
--- means unfolding the section, the bijective normal form and the whole
--- of ScalarKernel, at a cost of tens of gigabytes.  With the cocycle a
--- variable, nothing can unfold and each proof is a few lines.  γᶜ-is-γ
--- is the bridge back, and it is safe because it compares the two by one
--- projection rather than through their values.
---
--- Why the extension is central is, at bottom, a fact about Figure 8 and
--- not about this construction: ω commutes with every circuit (comm₀ of
--- the circuit framework, via Figure8.ω^-central).  That is SemFE's
--- scalar-central, re-exported below, and it is what makes ℤ/8 ×_c Q the
--- right model of the scalar layer rather than merely a group.
---
--- The contrast that gives the file its point: with c ≡ 0 the same
--- construction returns the DIRECT product ℤ/8 × Q (Direct-group), the
--- split extension in which a word's scalar can be read off the word.
--- Figure 8 is not of that form, so γᶜ is not a coboundary.
+-- The contrast that gives the file its point: with c ≡ ε the same
+-- construction returns the DIRECT product K × Q (Direct-group), the
+-- split extension in which a word's scalar can be read off the word.  It
+-- needs no generator data, the trivial cocycle carrying none.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -61,76 +113,160 @@ module Examples.Groups.Clifford.Qubit.SemCentralExt where
 open import Algebra.Bundles using (AbelianGroup ; Group)
 open import Data.Nat using (ℕ)
 open import Data.Product using (_×_ ; _,_)
+open import Data.Unit using (tt)
 open import Level using (Level ; 0ℓ ; _⊔_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _^_)
+import Presentation.Base as PB
+open import Presentation.Construct.Properties.CocycleGen
+  using (module Generator-Data)
+
 open import ForStdlib.Algebra.Construct.Extension using (Extension)
+open import ForStdlib.Algebra.Construct.SemiDirectProduct using (Action)
 import ForStdlib.Algebra.Construct.CentralExtension as CE
 open CE using (Cocycle)
 import ForStdlib.Algebra.Construct.FactorSetExtension as FSE
-open FSE using (FactorSet)
 
--- K, Q and the trivial action are SemFE's, not copies: the whole point
--- is that this is the same extension.  γ is its factor set, `section`
--- having discharged the only hypothesis it had.
-open import Examples.Groups.Clifford.Qubit.SemFE
-  using (K ; Q ; φ ; γ)
+-- Qubit case: fix the prime to 2.
+open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime)
 
--- Centrality of the scalar, re-exported: ω commutes with every Figure-8
--- circuit.  This is what says the extension below is the scalar layer,
--- and it is why there is no action in sight — the quotient would act on
--- ⟨ω⟩ by conjugation, and ω is central.
-open import Examples.Groups.Clifford.Qubit.SemFE
-  using (scalar-central) public
+open import Examples.Groups.Symplectic.Syntactics p-2 p-prime
+  using (module Symplectic)
+open Symplectic using (Gen ; Circuit)
+
+import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Figure8-Mod-Scalar
+  p-2 p-prime as MS
+open import Examples.Groups.ProjectiveClifford.Qubit.Selinger.GroupLike
+  using (grouplike-MS)
+
+-- Only for ω-central, the fact that makes the action trivial.
+import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
+open F8 using (ω ; _≈ᶠ_ ; ω^-central)
+
+-- The kernel's presentation: ⟨ T ∣ T⁸ ⟩.
+import Examples.Groups.Cyclic.Syntactics as Cy
+open Cy using (T ; _Cn,_===_)
+
+private
+  variable
+    n : ℕ
+
+------------------------------------------------------------------------
+-- Why the action is trivial
+--
+-- ω commutes with every Figure-8 circuit, so the scalars are central and
+-- the quotient — which would act on them by conjugation — acts trivially.
+-- Stated here because the choice of φ below is otherwise a convention.
+
+ω-central : (k : ℕ) (w : F8.Circuit n) → ((ω ^ k) • w) ≈ᶠ (w • (ω ^ k))
+ω-central = ω^-central
+
+------------------------------------------------------------------------
+-- The two presentations
+--
+-- The cyclic alphabet is a singleton, so any two of its generators are
+-- the same one and commutativity of K is refl.
+
+private
+  ΓK : WRel Cy.X
+  ΓK = 8 Cn,_===_
+
+  gen-comm : ∀ (x y : Cy.X) →
+             PB._≈_ ΓK ([ x ]ʷ • [ y ]ʷ) ([ y ]ʷ • [ x ]ʷ)
+  gen-comm tt tt = PB.refl
+
+  -- Both presented groups, and the machinery that turns generator-level
+  -- data into a factor set, come from CocycleGen.
+  module CGn (m : ℕ) =
+    Generator-Data ΓK (m MS.CRel,_===_) (Cy.grouplike 7) (grouplike-MS {m})
+                   gen-comm
+
+  module KB = PB ΓK
+
+-- K: the cyclic group of order 8, as words over T.
+K : (n : ℕ) → AbelianGroup 0ℓ 0ℓ
+K n = CGn.K n
+
+-- Q: the mod-scalar rule set, as words over the gates.
+Q : (n : ℕ) → Group 0ℓ 0ℓ
+Q n = CGn.Q n
+
+------------------------------------------------------------------------
+-- φ: the action of Q on the scalars, trivial by ω-central
+
+φ : (n : ℕ) → Action (AbelianGroup.rawMonoid (K n)) (Group.rawMonoid (Q n))
+φ n = FSE.trivialAction (K n) (Q n)
+
+------------------------------------------------------------------------
+-- The hole: the generator data
+--
+-- The correction one gate carries against a word, and the three
+-- conditions CocycleGen asks of it.  Everything below is stated against
+-- this record rather than an interaction hole, so the file stays green
+-- and the hypothesis is visible in every type that depends on it.  See
+-- the header for what discharging each field needs — G itself is open
+-- for a reason that is not the usual one.
+
+record GeneratorData (n : ℕ) : Set where
+  field
+    -- The scalar by which the lifts of a and of v fail to compose.
+    G       : Gen n → Circuit n → Word Cy.X
+    -- It descends to Q …
+    G-cong  : (a : Gen n) {v v' : Circuit n} →
+              PB._≈_ (n MS.CRel,_===_) v v' → KB._≈_ (G a v) (G a v')
+    -- … and it is normalised.
+    G-ε     : (a : Gen n) → KB._≈_ (G a ε) ε
+    -- Each relator carries the same correction on either side.
+    f-axiom : {u u' : Circuit n} → (n MS.CRel,_===_) u u' →
+              (v : Circuit n) →
+              KB._≈_ (CGn.f n (φ n) G u v) (CGn.f n (φ n) G u' v)
 
 ------------------------------------------------------------------------
 -- γᶜ: the 2-cocycle
 --
--- SemFE's factor set, read as a cocycle.  Every field transfers with no
--- adjustment because the action is trivial: IsNormalisedCocycle's
--- cocycle identity is
+-- Assembled from CocycleGen's own lemmas rather than from the FactorSet
+-- it packages them into, since a central extension wants a Cocycle.  The
+-- two records have the same four fields: with the action trivial,
+-- IsNormalisedCocycle's identity
 --
 --     f x y ∙ f (x·y) z ≈ act x (f y z) ∙ f x (y·z)
 --
--- and `act x` is the identity by definition, which is Cocycle's identity
--- verbatim.
---
--- Concretely, c x y is the exponent of the scalar by which the chosen
--- lifts of x and y fail to multiply: pick the representative word of
--- each class, read both in Figure 8's alphabet, and compare their
--- product with the representative of the product.  It exists because the
--- kernel of the quotient is the scalars (Selinger.ScalarKernel.kernel)
--- and it is well defined because ω has order exactly 8
--- (Model.Faithful.ω-faithful).
+-- has `act x` the identity by definition, which is Cocycle's identity
+-- verbatim.  Note how little of the data each field costs: f-cocycle and
+-- f-εˡ take G alone, f-εʳ takes G-cong and G-ε, and only f-cong reaches
+-- the relators.
 
-γᶜ : (n : ℕ) → Cocycle K (Q n)
-γᶜ n = record
-  { c       = FS.f
-  ; c-cong  = FS.f-cong
-  ; c-εˡ    = FS.f-εˡ
-  ; c-εʳ    = FS.f-εʳ
-  ; cocycle = FS.cocycle
+γᶜ : (n : ℕ) → GeneratorData n → Cocycle (K n) (Q n)
+γᶜ n gd = record
+  { c         = CGn.f         n (φ n) G
+  ; c-cong    = CGn.f-cong    n (φ n) G G-cong G-ε f-axiom
+  ; c-εˡ      = CGn.f-εˡ      n (φ n) G
+  ; c-εʳ      = CGn.f-εʳ      n (φ n) G G-cong G-ε
+  ; cocycle   = CGn.f-cocycle n (φ n) G
   }
-  where module FS = FactorSet (γ n)
+  where open GeneratorData gd
 
 ------------------------------------------------------------------------
 -- The central extension
 
 -- The total group: pairs (scalar , circuit mod scalars), multiplied with
 -- the cocycle correction.
-Central-group : (n : ℕ) → Group 0ℓ 0ℓ
-Central-group n = CE.group K (Q n) (γᶜ n)
+Central-group : (n : ℕ) → GeneratorData n → Group 0ℓ 0ℓ
+Central-group n gd = CE.group (K n) (Q n) (γᶜ n gd)
 
-Central-extension : (n : ℕ) → Extension (AbelianGroup.group K) (Q n)
-Central-extension n = CE.centralExtension K (Q n) (γᶜ n)
+Central-extension : (n : ℕ) (gd : GeneratorData n) →
+                    Extension (AbelianGroup.group (K n)) (Q n)
+Central-extension n gd = CE.centralExtension (K n) (Q n) (γᶜ n gd)
 
 ------------------------------------------------------------------------
 -- What the construction gives, for any cocycle
 --
 -- Centrality of the kernel, and agreement with the twisted product.
--- Generic for the reason given in the header: at γᶜ these do not
--- typecheck, because comparing terms that mention c forces the cocycle
--- to be normalised.  Each holds of γᶜ by instantiating A, H and γ'.
+-- Generic for the reason given in the header: at a concrete cocycle
+-- these do not typecheck, because comparing terms that mention c forces
+-- the cocycle to be normalised.  Each holds of γᶜ by instantiating A, H
+-- and γ'.
 
 module _ {a b ℓ₁ ℓ₂ : Level} (A : AbelianGroup a ℓ₁) (H : Group b ℓ₂)
          (γ' : Cocycle A H) where
@@ -190,41 +326,36 @@ module _ {a b ℓ₁ ℓ₂ : Level} (A : AbelianGroup a ℓ₁) (H : Group b �
   same-⁻¹ (a₁ , x) = Eq.refl
 
 ------------------------------------------------------------------------
--- The bridge back to SemFE
+-- The three at the scalar layer
 --
--- The cocycle of the central extension IS the factor set of the twisted
--- product — one projection of a record literal on each side, so this
--- never has to look at what either function computes.
+-- Applying a generic lemma at γᶜ costs nothing — an application never
+-- has to look inside the cocycle — so these are the concrete statements,
+-- obtained the only way they can be.  Their types are left to be
+-- inferred: writing one out would name c at arguments, which is the
+-- thing that does not check.
 
-γᶜ-is-γ : (n : ℕ) → Cocycle.c (γᶜ n) ≡ FactorSet.f (γ n)
-γᶜ-is-γ n = Eq.refl
+incl-central-ms = λ (n : ℕ) (gd : GeneratorData n) →
+                  incl-central (K n) (Q n) (γᶜ n gd)
 
--- The three generic results at the scalar layer.  Applying a generic
--- lemma at γᶜ costs nothing — an application never has to look inside
--- the cocycle — so these are the concrete statements, obtained the only
--- way they can be.  Their types are left to be inferred: writing one out
--- would name c at arguments, which is the thing that does not check.
+same-∙-ms       = λ (n : ℕ) (gd : GeneratorData n) →
+                  same-∙ (K n) (Q n) (γᶜ n gd)
 
-incl-central-ms = λ (n : ℕ) → incl-central K (Q n) (γᶜ n)
-
-same-∙-ms       = λ (n : ℕ) → same-∙ K (Q n) (γᶜ n)
-
-same-⁻¹-ms      = λ (n : ℕ) → same-⁻¹ K (Q n) (γᶜ n)
+same-⁻¹-ms      = λ (n : ℕ) (gd : GeneratorData n) →
+                  same-⁻¹ (K n) (Q n) (γᶜ n gd)
 
 ------------------------------------------------------------------------
 -- The split instance
 --
--- c ≡ 0 is a cocycle, and the extension it names is the DIRECT product
--- ℤ/8 × Q: the one in which the scalar of a product is the sum of the
--- scalars, i.e. in which w ↦ (0 , w) is a homomorphic section.  Figure 8
--- is not of that form — that is what γᶜ being cohomologically nontrivial
--- means, and it is why ω-faithfulness had to come from a model.
+-- c ≡ ε is a cocycle, and the extension it names is the DIRECT product
+-- K × Q: the one in which the scalar of a product is the sum of the
+-- scalars, i.e. in which w ↦ (ε , w) is a homomorphic section.  It needs
+-- no generator data, the trivial cocycle carrying none.
 
-γᶜ-split : (n : ℕ) → Cocycle K (Q n)
-γᶜ-split n = CE.trivialCocycle K (Q n)
+γᶜ-split : (n : ℕ) → Cocycle (K n) (Q n)
+γᶜ-split n = CE.trivialCocycle (K n) (Q n)
 
 Direct-group : (n : ℕ) → Group 0ℓ 0ℓ
-Direct-group n = CE.group K (Q n) (γᶜ-split n)
+Direct-group n = CE.group (K n) (Q n) (γᶜ-split n)
 
-Direct-extension : (n : ℕ) → Extension (AbelianGroup.group K) (Q n)
-Direct-extension n = CE.centralExtension K (Q n) (γᶜ-split n)
+Direct-extension : (n : ℕ) → Extension (AbelianGroup.group (K n)) (Q n)
+Direct-extension n = CE.centralExtension (K n) (Q n) (γᶜ-split n)
