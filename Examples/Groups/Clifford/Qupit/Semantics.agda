@@ -26,6 +26,15 @@
 -- product is associative.  The payoff is `heisenberg` below — two
 -- Paulis commute only up to ω^(sform P Q) — so this extension really is
 -- the Clifford group, not the direct product ⟨ω⟩ × (Pauli ⋊ Sp).
+--
+-- The third group is built as an instance of
+-- ForStdlib.Algebra.Construct.CentralExtension: the content of this file
+-- is the Cocycle record `weyl` — that ½·sform is normalised and
+-- satisfies the cocycle identity — and the group, its laws and its short
+-- exact sequence then come from the library.  That is also what pins
+-- down where the scalars sit: a central extension is exactly one whose
+-- kernel is central, and `incl-central` is the library's construction
+-- read back here.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -35,23 +44,20 @@ open import Data.Nat.Primality using (Prime)
 
 open import Notations
 
-module Examples.Groups.ProjectiveClifford.Qupit.Semantics
+module Examples.Groups.Clifford.Qupit.Semantics
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
   (p-prime : Prime (suc (₁₊ p-2)))
   where
 
-open import Algebra.Bundles using (Group)
-open import Algebra.Morphism.Structures using (module MonoidMorphisms)
+open import Algebra.Bundles using (AbelianGroup ; Group)
 open import Algebra.Structures using (IsGroup)
 open import Data.Fin using (toℕ)
 open import Data.Fin.Properties using (toℕ-injective ; toℕ-fromℕ<)
 import Data.Nat as Nat
 open import Data.Nat.DivMod
   using (_%_ ; m%n<n ; n%n≡0 ; %-distribˡ-+ ; m%n%n≡m%n ; m<n⇒m%n≡m)
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent
-  using (Pointwise ; ×-isEquivalence)
+open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Data.Vec using ([] ; _∷_)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
@@ -61,8 +67,8 @@ open PrimeModulus p-2 p-prime
 open import Algebra.Properties.Ring (+-*-ring p-2)
 
 open import ForStdlib.Algebra.Construct.Extension using (Extension)
-open import ForStdlib.Algebra.Morphism.Consequences
-  using (isMonoidHomomorphism⇒isGroupHomomorphism)
+import ForStdlib.Algebra.Construct.CentralExtension as CE
+open CE using (Cocycle)
 
 open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using ( Pauli ; Pauli1 ; sform ; sform1 ; sform1-antisym ; pI ; pIₙ
@@ -121,8 +127,18 @@ Scalar-isGroup = record
   ; ⁻¹-cong = Eq.cong _⁻¹ω
   }
 
+-- The scalars are abelian, which is what the kernel of a central
+-- extension has to be.
+Scalar-abelianGroup : AbelianGroup 0ℓ 0ℓ
+Scalar-abelianGroup = record
+  { isAbelianGroup = record
+    { isGroup = Scalar-isGroup
+    ; comm    = λ (ω^ i) (ω^ j) → Eq.cong ω^_ (+-comm i j)
+    }
+  }
+
 Scalar-group : Group 0ℓ 0ℓ
-Scalar-group = record { isGroup = Scalar-isGroup }
+Scalar-group = AbelianGroup.group Scalar-abelianGroup
 
 ------------------------------------------------------------------------
 -- ω has order p
@@ -387,15 +403,6 @@ module _ (n : ℕ) where
     ₀                     ∎
     where open Eq.≡-Reasoning
 
-  cocy-invˡ : ∀ g → cocy (g H.⁻¹) g ≡ ₀
-  cocy-invˡ (P , S) = begin
-    1/2 * sform (ap⁻¹ S (-ₚ P)) (ap⁻¹ S P)
-      ≡⟨ Eq.cong (1/2 *_) (preserves (S ⁻¹ˢ) (-ₚ P) P) ⟩
-    1/2 * sform (-ₚ P) P  ≡⟨ Eq.cong (1/2 *_) (sform-negˡ P) ⟩
-    1/2 * ₀               ≡⟨ *-zeroʳ 1/2 ⟩
-    ₀                     ∎
-    where open Eq.≡-Reasoning
-
   -- The cocycle identity.  This is where symplectic invariance of sform
   -- is used, and it is exactly what makes the product below associative.
   cocy-assoc : ∀ g h k →
@@ -428,181 +435,59 @@ module _ (n : ℕ) where
     z = 1/2 * sform P₂ (ap S₂ P₃)
 
   ----------------------------------------------------------------------
-  -- The group
+  -- The Weyl cocycle
+  --
+  -- The three laws above, packaged for
+  -- ForStdlib.Algebra.Construct.CentralExtension.  This record is the
+  -- whole content of the extension; everything below it is library.
 
-  Clifford : Set
-  Clifford = Scalar × H.Carrier
-
-  infix 4 _≈ᶜ_
-  _≈ᶜ_ : Clifford → Clifford → Set
-  _≈ᶜ_ = Pointwise _≡_ H._≈_
-
-  infixl 7 _·ᶜ_
-  infix  8 _⁻¹ᶜ
-
-  _·ᶜ_ : Clifford → Clifford → Clifford
-  (ω^ e , g) ·ᶜ (ω^ f , h) = ω^ (e + f + cocy g h) , g H.∙ h
-
-  εᶜ : Clifford
-  εᶜ = 1ω , H.ε
-
-  _⁻¹ᶜ : Clifford → Clifford
-  (ω^ e , g) ⁻¹ᶜ = ω^ (- e) , g H.⁻¹
-
-  private
-    -- The scalar half of each group law.
-    assocˢᶜ : ∀ (e f l : ℤ ₚ) (g h k : H.Carrier) →
-              ((e + f + cocy g h) + l + cocy (g H.∙ h) k)
-                ≡ (e + (f + l + cocy h k) + cocy g (h H.∙ k))
-    assocˢᶜ e f l g h k = begin
-      ((e + f) + X) + l + Y   ≡⟨ Eq.cong (_+ Y) (+-swap-right (e + f) X l) ⟩
-      ((e + f) + l) + X + Y   ≡⟨ +-assoc ((e + f) + l) X Y ⟩
-      ((e + f) + l) + (X + Y) ≡⟨ Eq.cong (((e + f) + l) +_) (cocy-assoc g h k) ⟩
-      ((e + f) + l) + (Z + W) ≡⟨ Eq.sym (+-assoc ((e + f) + l) Z W) ⟩
-      (((e + f) + l) + Z) + W ≡⟨ Eq.cong (_+ W) (Eq.cong (_+ Z) (+-assoc e f l)) ⟩
-      ((e + (f + l)) + Z) + W ≡⟨ Eq.cong (_+ W) (+-assoc e (f + l) Z) ⟩
-      (e + ((f + l) + Z)) + W ∎
-      where
-      open Eq.≡-Reasoning
-      X = cocy g h
-      Y = cocy (g H.∙ h) k
-      Z = cocy h k
-      W = cocy g (h H.∙ k)
-
-    identityˡˢᶜ : ∀ (e : ℤ ₚ) (g : H.Carrier) → ₀ + e + cocy H.ε g ≡ e
-    identityˡˢᶜ e g = begin
-      ₀ + e + cocy H.ε g  ≡⟨ Eq.cong (₀ + e +_) (cocy-εˡ g) ⟩
-      ₀ + e + ₀           ≡⟨ +-identityʳ (₀ + e) ⟩
-      ₀ + e               ≡⟨ +-identityˡ e ⟩
-      e                   ∎
-      where open Eq.≡-Reasoning
-
-    identityʳˢᶜ : ∀ (e : ℤ ₚ) (g : H.Carrier) → e + ₀ + cocy g H.ε ≡ e
-    identityʳˢᶜ e g = begin
-      e + ₀ + cocy g H.ε  ≡⟨ Eq.cong (e + ₀ +_) (cocy-εʳ g) ⟩
-      e + ₀ + ₀           ≡⟨ +-identityʳ (e + ₀) ⟩
-      e + ₀               ≡⟨ +-identityʳ e ⟩
-      e                   ∎
-      where open Eq.≡-Reasoning
-
-    inverseˡˢᶜ : ∀ (e : ℤ ₚ) (g : H.Carrier) → (- e) + e + cocy (g H.⁻¹) g ≡ ₀
-    inverseˡˢᶜ e g = begin
-      (- e) + e + cocy (g H.⁻¹) g  ≡⟨ Eq.cong ((- e) + e +_) (cocy-invˡ g) ⟩
-      (- e) + e + ₀                ≡⟨ +-identityʳ ((- e) + e) ⟩
-      (- e) + e                    ≡⟨ +-inverseˡ e ⟩
-      ₀                            ∎
-      where open Eq.≡-Reasoning
-
-    inverseʳˢᶜ : ∀ (e : ℤ ₚ) (g : H.Carrier) → e + (- e) + cocy g (g H.⁻¹) ≡ ₀
-    inverseʳˢᶜ e g = begin
-      e + (- e) + cocy g (g H.⁻¹)  ≡⟨ Eq.cong (e + (- e) +_) (cocy-invʳ g) ⟩
-      e + (- e) + ₀                ≡⟨ +-identityʳ (e + (- e)) ⟩
-      e + (- e)                    ≡⟨ +-inverseʳ e ⟩
-      ₀                            ∎
-      where open Eq.≡-Reasoning
-
-  -- The laws, each stated on its own so that no implicit is left to
-  -- inference inside the record.
-  ·ᶜ-cong : ∀ {u u' v v'} → u ≈ᶜ u' → v ≈ᶜ v' → (u ·ᶜ v) ≈ᶜ (u' ·ᶜ v')
-  ·ᶜ-cong {ω^ e , g} {ω^ _ , g'} {ω^ f , h} {ω^ _ , h'}
-          (Eq.refl , g≈g') (Eq.refl , h≈h') =
-      Eq.cong (λ z → ω^ (e + f + z)) (cocy-cong {g} {g'} {h} {h'} g≈g' h≈h')
-    , H.∙-cong {g} {g'} {h} {h'} g≈g' h≈h'
-
-  ·ᶜ-assoc : ∀ u v w → ((u ·ᶜ v) ·ᶜ w) ≈ᶜ (u ·ᶜ (v ·ᶜ w))
-  ·ᶜ-assoc (ω^ e , g) (ω^ f , h) (ω^ l , k) =
-    Eq.cong ω^_ (assocˢᶜ e f l g h k) , H.assoc g h k
-
-  ·ᶜ-identityˡ : ∀ u → (εᶜ ·ᶜ u) ≈ᶜ u
-  ·ᶜ-identityˡ (ω^ e , g) = Eq.cong ω^_ (identityˡˢᶜ e g) , H.identityˡ g
-
-  ·ᶜ-identityʳ : ∀ u → (u ·ᶜ εᶜ) ≈ᶜ u
-  ·ᶜ-identityʳ (ω^ e , g) = Eq.cong ω^_ (identityʳˢᶜ e g) , H.identityʳ g
-
-  ·ᶜ-inverseˡ : ∀ u → ((u ⁻¹ᶜ) ·ᶜ u) ≈ᶜ εᶜ
-  ·ᶜ-inverseˡ (ω^ e , g) = Eq.cong ω^_ (inverseˡˢᶜ e g) , H.inverseˡ g
-
-  ·ᶜ-inverseʳ : ∀ u → (u ·ᶜ (u ⁻¹ᶜ)) ≈ᶜ εᶜ
-  ·ᶜ-inverseʳ (ω^ e , g) = Eq.cong ω^_ (inverseʳˢᶜ e g) , H.inverseʳ g
-
-  ⁻¹ᶜ-cong : ∀ {u v} → u ≈ᶜ v → (u ⁻¹ᶜ) ≈ᶜ (v ⁻¹ᶜ)
-  ⁻¹ᶜ-cong {ω^ e , g} {ω^ _ , g'} (Eq.refl , g≈g') =
-    Eq.refl , H.⁻¹-cong {g} {g'} g≈g'
-
-  Clifford-isGroup : IsGroup _≈ᶜ_ _·ᶜ_ εᶜ _⁻¹ᶜ
-  Clifford-isGroup = record
-    { isMonoid = record
-      { isSemigroup = record
-        { isMagma = record
-          { isEquivalence = ×-isEquivalence Eq.isEquivalence H.isEquivalence
-          ; ∙-cong        = λ {u} {u'} {v} {v'} → ·ᶜ-cong {u} {u'} {v} {v'}
-          }
-        ; assoc = ·ᶜ-assoc
-        }
-      ; identity = ·ᶜ-identityˡ , ·ᶜ-identityʳ
-      }
-    ; inverse = ·ᶜ-inverseˡ , ·ᶜ-inverseʳ
-    ; ⁻¹-cong = λ {u} {v} → ⁻¹ᶜ-cong {u} {v}
+  weyl : Cocycle Scalar-abelianGroup (Pauli⋊Sp-group n)
+  weyl = record
+    { c       = λ g h → ω^ (cocy g h)
+    ; c-cong  = λ {g} {g'} {h} {h'} eg eh →
+                  Eq.cong ω^_ (cocy-cong {g} {g'} {h} {h'} eg eh)
+    ; c-εˡ    = λ g → Eq.cong ω^_ (cocy-εˡ g)
+    ; c-εʳ    = λ g → Eq.cong ω^_ (cocy-εʳ g)
+    ; cocycle = λ g h k → Eq.cong ω^_ (cocy-assoc g h k)
     }
 
-  Clifford-group : Group 0ℓ 0ℓ
-  Clifford-group = record { isGroup = Clifford-isGroup }
-
   ----------------------------------------------------------------------
-  -- …as an extension of Pauli n ⋊ Sp(2n, ℤ/pℤ) by the scalars
+  -- The group and the extension
+  --
+  -- Both are the library's, at the cocycle above.  The multiplication is
+  --
+  --   (ω^e , g) ·ᶜ (ω^f , h) = (ω^(e + f + cocy g h) , g ∙ h),
+  --
+  -- the twisted product ⟨ω⟩ ×_c (Pauli n ⋊ Sp(2n, ℤ/pℤ)), and the short
+  -- exact sequence is its centralExtension — so the associativity,
+  -- identity and inverse laws that used to be discharged here by hand
+  -- are now the library's, and the cocycle identity is what buys them.
 
+  Clifford-group : Group 0ℓ 0ℓ
+  Clifford-group = CE.group Scalar-abelianGroup (Pauli⋊Sp-group n) weyl
+
+  open Group Clifford-group public using ()
+    renaming ( Carrier to Clifford ; _≈_ to _≈ᶜ_ ; _∙_ to _·ᶜ_
+             ; ε to εᶜ ; _⁻¹ to _⁻¹ᶜ ; isGroup to Clifford-isGroup )
+
+  Clifford-extension : Extension Scalar-group (Pauli⋊Sp-group n)
+  Clifford-extension =
+    CE.centralExtension Scalar-abelianGroup (Pauli⋊Sp-group n) weyl
+
+  -- The inclusion of the scalars, as the extension supplies it.
   incl : Scalar → Clifford
   incl s = s , H.ε
 
-  private
-    module MI = MonoidMorphisms (Group.rawMonoid Scalar-group)
-                                (Group.rawMonoid Clifford-group)
-    module MP = MonoidMorphisms (Group.rawMonoid Clifford-group)
-                                (Group.rawMonoid (Pauli⋊Sp-group n))
-
-    incl-homoˢ : ∀ (s t : Scalar) → incl (s ·ω t) ≈ᶜ (incl s ·ᶜ incl t)
-    incl-homoˢ (ω^ i) (ω^ j) =
-        Eq.cong ω^_ (Eq.trans (Eq.sym (+-identityʳ (i + j)))
-                              (Eq.cong ((i + j) +_) (Eq.sym (cocy-εʳ H.ε))))
-      , H.sym {x = H.ε H.∙ H.ε} {y = H.ε} (H.identityˡ H.ε)
-
-    incl-mon : MI.IsMonoidHomomorphism incl
-    incl-mon = record
-      { isMagmaHomomorphism = record
-        { isRelHomomorphism = record
-            { cong = λ eq → eq , H.refl {x = H.ε} }
-        ; homo = incl-homoˢ
-        }
-      ; ε-homo = Eq.refl , H.refl {x = H.ε}
-      }
-
-    proj-homoᶜ : ∀ (u v : Clifford) →
-                 proj₂ (u ·ᶜ v) H.≈ (proj₂ u H.∙ proj₂ v)
-    proj-homoᶜ (ω^ _ , g) (ω^ _ , h) = H.refl {x = g H.∙ h}
-
-    proj-mon : MP.IsMonoidHomomorphism proj₂
-    proj-mon = record
-      { isMagmaHomomorphism = record
-        { isRelHomomorphism = record { cong = proj₂ }
-        ; homo = proj-homoᶜ
-        }
-      ; ε-homo = H.refl {x = H.ε}
-      }
-
-  Clifford-extension : Extension Scalar-group (Pauli⋊Sp-group n)
-  Clifford-extension = record
-    { total           = Clifford-group
-    ; incl            = incl
-    ; proj            = proj₂
-    ; incl-homo       = isMonoidHomomorphism⇒isGroupHomomorphism
-                          Scalar-group Clifford-group incl-mon
-    ; proj-homo       = isMonoidHomomorphism⇒isGroupHomomorphism
-                          Clifford-group (Pauli⋊Sp-group n) proj-mon
-    ; incl-injective  = proj₁
-    ; proj-surjective = λ h → (1ω , h) , H.refl {x = h}
-    ; proj-kills-incl = λ _ → H.refl {x = H.ε}
-    ; ker⊆im-incl     = λ { (s , g) eq → s , (Eq.refl , H.sym {x = g} {y = H.ε} eq) }
-    }
+  -- The library's inverse has to undo the cocycle defect as well as the
+  -- scalar.  Here that defect vanishes, by cocy-invʳ, so the inverse is
+  -- just the negated exponent — the formula this file used to take as
+  -- the definition.
+  ⁻¹ᶜ-exponent : ∀ (e : ℤ ₚ) (g : H.Carrier) →
+                 ((ω^ e , g) ⁻¹ᶜ) ≈ᶜ (ω^ (- e) , g H.⁻¹)
+  ⁻¹ᶜ-exponent e g =
+      Eq.cong (λ z → ω^ (- z))
+              (Eq.trans (Eq.cong (e +_) (cocy-invʳ g)) (+-identityʳ e))
+    , H.refl {x = g H.⁻¹}
 
   ----------------------------------------------------------------------
   -- The extension is central, and non-trivially so
