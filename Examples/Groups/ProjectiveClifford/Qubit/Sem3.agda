@@ -52,13 +52,20 @@
 -- the first argument, the recursion being the cocycle identity itself.
 -- So the identity and the left normalisation are free.  The correction
 -- itself is built here, out of the ε-patched symplectic normal form
--- (Simplified.Bijective) as a lifting and the Clifford group's kernel
--- witness (CliffordGroup.ker-witness) to read off the Pauli part; its
--- congruence and its normalisation follow.  One hole is left, f-axiom:
--- that each relator of the simplified rule set carries the same
--- correction on either side.  Its shadow is `corr` of Qubit.Cocycle,
--- whose single nontrivial entry is corr (order-S) = Z₀ — the syntactic
--- counterpart of S² = Z.
+-- (Simplified.Bijective) as a lifting ℓ = secn and the Clifford group's
+-- kernel witness (CliffordGroup.ker-witness) to read off the Pauli part
+-- of ℓ u · ℓ v · ℓ (u • v)⁻¹.  Its congruence and normalisation follow
+-- from the section's congruence, which is PROPOSITIONAL — the normal
+-- forms are a datatype — and from the uniqueness of the kernel witness.
+--
+-- That the extension really is the Clifford group is what makes the last
+-- condition true: CocycleGen's recursion, applied to a correction that
+-- is a defect at generators, produces the defect at every pair of words
+-- (incl-sem-defect), because conjugating incl P by a Clifford word is
+-- incl of the symplectic action (CliffordGroup.conj-incl).  The relator
+-- condition f-axiom is then immediate, the defect seeing only secn.  Its
+-- shadow is `corr` of Qubit.Cocycle, whose single nontrivial entry is
+-- corr (order-S) = Z₀ — the syntactic counterpart of S² = Z.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -66,7 +73,8 @@
 module Examples.Groups.ProjectiveClifford.Qubit.Sem3 where
 
 open import Algebra.Bundles using (AbelianGroup ; Group)
-open import Algebra.Morphism.Structures using (module GroupMorphisms)
+open import Algebra.Morphism.Structures
+  using (module GroupMorphisms ; module MonoidMorphisms)
 open import Data.Nat using (ℕ ; zero)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≗_)
@@ -74,6 +82,7 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≗_)
 open import Notations using (₁₊)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _ⁿ' ; _ʰ')
 
+import Algebra.Properties.Group as GroupProperties
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 import Presentation.Base as PB
 import Presentation.Construct.Properties.CocycleGen as CG
@@ -81,6 +90,8 @@ open import Presentation.Definitions using (_IsPresentationOf_)
 
 open import ForStdlib.Algebra.Construct.Extension using (Extension)
 open import ForStdlib.Algebra.Construct.SemiDirectProduct using (Action)
+open import ForStdlib.Algebra.Morphism.Consequences
+  using (isMonoidHomomorphism⇒isGroupHomomorphism)
 import ForStdlib.Algebra.Construct.FactorSetExtension as FSE
 open FSE using (FactorSet)
 
@@ -101,6 +112,7 @@ import Examples.Groups.Symplectic.Simplified.Lemmas p-2 p-prime g* g-gen as SL
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen
   as SimPres
 import Examples.Groups.Symplectic.Simplified.Bijective p-2 p-prime g* g-gen as SB
+open import Examples.Groups.ProjectiveClifford.Qubit.CliffordAction using (cact)
 import Examples.Groups.ProjectiveClifford.Qubit.CliffordGroup as CLG
 import Normalization.NormalForm.Setoid as SNF
 
@@ -236,6 +248,9 @@ module _ (n : ℕ) where
   Q : Group 0ℓ 0ℓ
   Q = CGn.Q
 
+  private
+    module KA = AbelianGroup K
+
   -- act u respects the Pauli rules: equal Pauli words go in, words with
   -- equal readings come out, and the Pauli presentation is complete.
   act-congʳ : ∀ (u : Word (SGen n)) {w w′ : Word (PGen n)} →
@@ -289,7 +304,8 @@ module _ (n : ℕ) where
   -- CocycleGen: give the corrections carried by ONE symplectic generator
   -- against a word and let it extend them along the first argument.  The
   -- recursion there is the cocycle identity, so the identity and
-  -- normalisation on the left come for free.  Of what it asks for,
+  -- normalisation on the left come for free, and the four things it asks
+  -- for are all proved below:
   --
   --   G       the Pauli word by which the lifts of a and of v fail to
   --           compose — built below out of the symplectic normal form
@@ -297,19 +313,10 @@ module _ (n : ℕ) where
   --   G-cong  G a descends to Q — because the section's congruence is
   --           propositional and the kernel witness is unique;
   --   G-ε     G a ε ≈ ε — because the section takes ε to ε;
-  --
-  -- are proved, and what stays open is
-  --
   --   f-axiom each relator of the simplified rule set carries the same
-  --           correction on either side.
-  --
-  -- f-axiom needs one lemma this development does not have: that
-  -- conjugating incl P by a Clifford word is incl of the symplectic
-  -- action, i.e. secn u • incl P • (secn u) ⁻¹ᶜ ≈ᶜ incl (ap ⟦ u ⟧ P).
-  -- With it, CocycleGen's f agrees with the defect of secn at every pair
-  -- of words (induction on the first, both satisfying the cocycle
-  -- identity), and f-axiom then follows from secn-cong exactly as
-  -- G-cong does.
+  --           correction on either side — because the recursion extends
+  --           the defect at generators to the defect at all word pairs
+  --           (incl-sem-defect), and the defect sees only secn.
   --
   -- NOT CocycleGen.Pairs, which would narrow G to a map on pairs of
   -- generators: extending letterwise makes each `pair-word a` a
@@ -351,8 +358,8 @@ module _ (n : ℕ) where
   -- The Clifford word by which the lifts of a and of v fail to compose.
   -- Its symplectic image is trivial, so it lies in the image of the
   -- Pauli group, and G reads off which Pauli it is.
-  defect : SGen n → Word (SGen n) → Word (SGen n)
-  defect a v = (secn [ a ]ʷ • secn v) • CLG._⁻¹ᶜ (secn ([ a ]ʷ • v))
+  defect : Word (SGen n) → Word (SGen n) → Word (SGen n)
+  defect u v = (secn u • secn v) • CLG._⁻¹ᶜ (secn (u • v))
 
   private
     proj-⁻¹ᶜ : ∀ (w : Word (SGen n)) →
@@ -360,25 +367,25 @@ module _ (n : ℕ) where
     proj-⁻¹ᶜ = GroupMorphisms.IsGroupHomomorphism.⁻¹-homo
                  (Extension.proj-homo (CLG.CMS-extension n))
 
-  defect-triv : ∀ (a : SGen n) (v : Word (SGen n)) →
-                _≈ˢ_ (CLG.proj (defect a v)) εˢ
-  defect-triv a v x = begin
-    ap ⟦ secn [ a ]ʷ ⟧ (ap ⟦ secn v ⟧ (ap ⟦ CLG._⁻¹ᶜ (secn ([ a ]ʷ • v)) ⟧ x))
-      ≡⟨ Eq.cong (λ z → ap ⟦ secn [ a ]ʷ ⟧ (ap ⟦ secn v ⟧ z))
-                 (proj-⁻¹ᶜ (secn ([ a ]ʷ • v)) x) ⟩
-    ap ⟦ secn [ a ]ʷ ⟧ (ap ⟦ secn v ⟧ (ap⁻¹ ⟦ secn ([ a ]ʷ • v) ⟧ x))
-      ≡⟨ denote-eq (secn-≈ [ a ]ʷ) _ ⟩
-    ap ⟦ [ a ]ʷ ⟧ (ap ⟦ secn v ⟧ (ap⁻¹ ⟦ secn ([ a ]ʷ • v) ⟧ x))
-      ≡⟨ Eq.cong (ap ⟦ [ a ]ʷ ⟧) (denote-eq (secn-≈ v) _) ⟩
-    ap ⟦ [ a ]ʷ • v ⟧ (ap⁻¹ ⟦ secn ([ a ]ʷ • v) ⟧ x)
-      ≡⟨ Eq.sym (denote-eq (secn-≈ ([ a ]ʷ • v)) _) ⟩
-    ap ⟦ secn ([ a ]ʷ • v) ⟧ (ap⁻¹ ⟦ secn ([ a ]ʷ • v) ⟧ x)
-      ≡⟨ invʳ ⟦ secn ([ a ]ʷ • v) ⟧ x ⟩
+  defect-triv : ∀ (u v : Word (SGen n)) →
+                _≈ˢ_ (CLG.proj (defect u v)) εˢ
+  defect-triv u v x = begin
+    ap ⟦ secn u ⟧ (ap ⟦ secn v ⟧ (ap ⟦ CLG._⁻¹ᶜ (secn (u • v)) ⟧ x))
+      ≡⟨ Eq.cong (λ z → ap ⟦ secn u ⟧ (ap ⟦ secn v ⟧ z))
+                 (proj-⁻¹ᶜ (secn (u • v)) x) ⟩
+    ap ⟦ secn u ⟧ (ap ⟦ secn v ⟧ (ap⁻¹ ⟦ secn (u • v) ⟧ x))
+      ≡⟨ denote-eq (secn-≈ u) _ ⟩
+    ap ⟦ u ⟧ (ap ⟦ secn v ⟧ (ap⁻¹ ⟦ secn (u • v) ⟧ x))
+      ≡⟨ Eq.cong (ap ⟦ u ⟧) (denote-eq (secn-≈ v) _) ⟩
+    ap ⟦ u • v ⟧ (ap⁻¹ ⟦ secn (u • v) ⟧ x)
+      ≡⟨ Eq.sym (denote-eq (secn-≈ (u • v)) _) ⟩
+    ap ⟦ secn (u • v) ⟧ (ap⁻¹ ⟦ secn (u • v) ⟧ x)
+      ≡⟨ invʳ ⟦ secn (u • v) ⟧ x ⟩
     x ∎
     where open Eq.≡-Reasoning
 
   G : SGen n → Word (SGen n) → Word (PGen n)
-  G a v = PA.inv-nf (CLG.ker-witness (defect a v) (defect-triv a v))
+  G a v = PA.inv-nf (CLG.ker-witness (defect [ a ]ʷ v) (defect-triv [ a ]ʷ v))
 
   ------------------------------------------------------------------------
   -- G's congruence and normalisation
@@ -417,13 +424,13 @@ module _ (n : ℕ) where
            QB._≈_ v v' → KB._≈_ (G a v) (G a v')
   G-cong a {v} {v'} e =
     KB.refl' (Eq.cong PA.inv-nf
-      (kw-unique (defect a v) (defect a v')
-                 (defect-triv a v) (defect-triv a v')
+      (kw-unique (defect [ a ]ʷ v) (defect [ a ]ʷ v')
+                 (defect-triv [ a ]ʷ v) (defect-triv [ a ]ʷ v')
                  (C.reflexive defect-≡)))
     where
     -- Both normal forms are hit by secn-cong, so the two defects are the
     -- same word — the congruence of the section is propositional.
-    defect-≡ : defect a v ≡ defect a v'
+    defect-≡ : defect [ a ]ʷ v ≡ defect [ a ]ʷ v'
     defect-≡ = Eq.cong₂ (λ z w → (secn [ a ]ʷ • z) • CLG._⁻¹ᶜ w)
                         (secn-cong e)
                         (secn-cong (QB.cong QB.refl e))
@@ -433,15 +440,15 @@ module _ (n : ℕ) where
     where
     -- secn ε is ε and secn (a • ε) is secn a, so defect a ε is
     -- (secn a • ε) • (secn a) ⁻¹ᶜ, which cancels in CMS.
-    defect-≡ : defect a ε ≡ (secn [ a ]ʷ • ε) • CLG._⁻¹ᶜ (secn [ a ]ʷ)
+    defect-≡ : defect [ a ]ʷ ε ≡ (secn [ a ]ʷ • ε) • CLG._⁻¹ᶜ (secn [ a ]ʷ)
     defect-≡ = Eq.cong₂ (λ z w → (secn [ a ]ʷ • z) • CLG._⁻¹ᶜ w)
                         secn-ε (secn-cong QB.right-unit)
 
     open ≈-Reasoning C.setoid
 
-    defect-ε : defect a ε C.≈ C.ε
+    defect-ε : defect [ a ]ʷ ε C.≈ C.ε
     defect-ε = begin
-      defect a ε
+      defect [ a ]ʷ ε
         ≈⟨ C.reflexive defect-≡ ⟩
       (secn [ a ]ʷ • ε) • CLG._⁻¹ᶜ (secn [ a ]ʷ)
         -- the empty word acts as the identity, so this step is by
@@ -451,19 +458,188 @@ module _ (n : ℕ) where
         ≈⟨ C.inverseʳ (secn [ a ]ʷ) ⟩
       C.ε ∎
 
-    witness-pIₙ : CLG.ker-witness (defect a ε) (defect-triv a ε) ≡ pIₙ
+    witness-pIₙ : CLG.ker-witness (defect [ a ]ʷ ε) (defect-triv [ a ]ʷ ε) ≡ pIₙ
     witness-pIₙ = CLG.incl-injective (begin
-      CLG.incl (CLG.ker-witness (defect a ε) (defect-triv a ε))
-        ≈⟨ CLG.ker-witness-correct (defect a ε) (defect-triv a ε) ⟩
-      defect a ε
+      CLG.incl (CLG.ker-witness (defect [ a ]ʷ ε) (defect-triv [ a ]ʷ ε))
+        ≈⟨ CLG.ker-witness-correct (defect [ a ]ʷ ε) (defect-triv [ a ]ʷ ε) ⟩
+      defect [ a ]ʷ ε
         ≈⟨ defect-ε ⟩
       C.ε
         ≈⟨ CLG.incl-ε ⟨
       CLG.incl pIₙ ∎)
 
+  ------------------------------------------------------------------------
+  -- f is the defect of the lifting
+  --
+  -- G was read off the defect of secn at a generator; CocycleGen's
+  -- recursion extends it along the first argument.  What it extends to
+  -- is again a defect — of the same lifting, at arbitrary word pairs.
+  -- That is incl-sem-defect below, and f-axiom falls out of it: the
+  -- defect only ever sees secn, and secn is congruent on the nose.
+
+  private
+    -- A Pauli word read into the Clifford group.  It is a group
+    -- homomorphism: sem is one by computation, incl by incl-∙ / incl-ε.
+    IS : Word (PGen n) → Word (SGen n)
+    IS w = CLG.incl (PA.sem w)
+
+    IS-∙ : ∀ (w w' : Word (PGen n)) → CLG._≈ᶜ_ (IS (w • w')) (IS w • IS w')
+    IS-∙ w w' = CLG.incl-∙ (PA.sem w) (PA.sem w')
+
+    IS-cong : ∀ {w w' : Word (PGen n)} →
+              KB._≈_ w w' → CLG._≈ᶜ_ (IS w) (IS w')
+    IS-cong e = C.reflexive (Eq.cong CLG.incl (BK.sound e))
+
+    module MIS = MonoidMorphisms (Group.rawMonoid (AbelianGroup.group K))
+                                 (Group.rawMonoid (CLG.CMS-group n))
+
+    IS-mon : MIS.IsMonoidHomomorphism IS
+    IS-mon = record
+      { isMagmaHomomorphism = record
+        { isRelHomomorphism = record { cong = IS-cong }
+        ; homo              = IS-∙
+        }
+      ; ε-homo = CLG.incl-ε
+      }
+
+    IS-⁻¹ : ∀ (w : Word (PGen n)) →
+            CLG._≈ᶜ_ (IS (KA._⁻¹ w)) (CLG._⁻¹ᶜ (IS w))
+    IS-⁻¹ = GroupMorphisms.IsGroupHomomorphism.⁻¹-homo
+              (isMonoidHomomorphism⇒isGroupHomomorphism
+                (AbelianGroup.group K) (CLG.CMS-group n) IS-mon)
+
+    -- Acting on a Pauli word is conjugating its image by the lift: this
+    -- is CliffordGroup.conj-incl, with ⟦ secn u ⟧ traded for ⟦ u ⟧.
+    IS-act : ∀ (u : Word (SGen n)) (w : Word (PGen n)) →
+             CLG._≈ᶜ_ (IS (act u w)) ((secn u • IS w) • CLG._⁻¹ᶜ (secn u))
+    IS-act u w =
+      C.trans {i = IS (act u w)}
+              {j = CLG.incl (ap ⟦ secn u ⟧ (PA.sem w))}
+              {k = (secn u • IS w) • CLG._⁻¹ᶜ (secn u)}
+        (C.reflexive (Eq.cong CLG.incl
+          (Eq.trans (actw-sem u w)
+                    (Eq.sym (denote-eq (secn-≈ u) (PA.sem w))))))
+        (C.sym {x = (secn u • IS w) • CLG._⁻¹ᶜ (secn u)}
+               {y = CLG.incl (ap ⟦ secn u ⟧ (PA.sem w))}
+          (CLG.conj-incl (secn u) (PA.sem w)))
+
+    -- The defining property of the defect: it is what the two lifts
+    -- overshoot the lift of the product by.
+    defect-· : ∀ (u v : Word (SGen n)) →
+               CLG._≈ᶜ_ (defect u v • secn (u • v)) (secn u • secn v)
+    defect-· u v x =
+      Eq.cong (λ z → cact (secn u) (cact (secn v) z))
+              (CLG.invˡ-lemma (secn (u • v)) x)
+
+  incl-sem-defect : ∀ (u v : Word (SGen n)) →
+                    CLG._≈ᶜ_ (IS (CGn.f φ G u v)) (defect u v)
+
+  -- The empty word lifts to the empty word, so there is no defect.
+  incl-sem-defect ε v = begin
+    IS (CGn.f φ G ε v)                          ≈⟨ CLG.incl-ε ⟩
+    ε                                           ≈⟨ cancel ⟩
+    (ε • secn v) • CLG._⁻¹ᶜ (secn v)            ≈⟨ C.reflexive (Eq.sym shape) ⟩
+    defect ε v                                  ∎
+    where
+    open ≈-Reasoning C.setoid
+    cancel : CLG._≈ᶜ_ ε ((ε • secn v) • CLG._⁻¹ᶜ (secn v))
+    cancel x = Eq.sym (CLG.invʳ-lemma (secn v) x)
+    shape : defect ε v ≡ (ε • secn v) • CLG._⁻¹ᶜ (secn v)
+    shape = Eq.cong₂ (λ z w → (z • secn v) • CLG._⁻¹ᶜ w)
+                     secn-ε (secn-cong (QB.left-unit {w = v}))
+
+  -- At a generator this is what G was defined to be.
+  incl-sem-defect [ a ]ʷ v =
+    C.trans {i = IS (CGn.f φ G [ a ]ʷ v)}
+            {j = CLG.incl witness}
+            {k = defect [ a ]ʷ v}
+      (C.reflexive (Eq.cong CLG.incl (PA.sem-inv witness)))
+      (CLG.ker-witness-correct (defect [ a ]ʷ v) (defect-triv [ a ]ʷ v))
+    where
+    witness = CLG.ker-witness (defect [ a ]ʷ v) (defect-triv [ a ]ʷ v)
+
+  -- The step.  The recursion's three terms are three defects; multiplying
+  -- back by the lift of the product cancels them down to the two lifts,
+  -- which is the defect of the product.
+  incl-sem-defect (u₁ • u₂) v =
+    ∙-cancelʳ (secn ((u₁ • u₂) • v))
+              (IS (CGn.f φ G (u₁ • u₂) v)) (defect (u₁ • u₂) v) (begin
+      IS (CGn.f φ G (u₁ • u₂) v) • secn ((u₁ • u₂) • v)
+        ≈⟨ (λ x → step-IS (cact (secn ((u₁ • u₂) • v)) x)) ⟩
+      ((CLG._⁻¹ᶜ D₁ • ((a • D₂) • CLG._⁻¹ᶜ a)) • D₃) • secn ((u₁ • u₂) • v)
+        ≈⟨ C.reflexive (Eq.cong (λ z → M • z) (secn-cong (QB.assoc {w = u₁} {v = u₂} {u = v}))) ⟩
+      ((CLG._⁻¹ᶜ D₁ • ((a • D₂) • CLG._⁻¹ᶜ a)) • D₃) • secn (u₁ • (u₂ • v))
+        ≈⟨ (λ x → Eq.cong (λ z → cact (CLG._⁻¹ᶜ D₁)
+                                   (cact ((a • D₂) • CLG._⁻¹ᶜ a) z))
+                          (defect-· u₁ (u₂ • v) x)) ⟩
+      (CLG._⁻¹ᶜ D₁ • ((a • D₂) • CLG._⁻¹ᶜ a)) • (a • secn (u₂ • v))
+        ≈⟨ (λ x → Eq.cong (λ z → cact (CLG._⁻¹ᶜ D₁) (cact a (cact D₂ z)))
+                          (CLG.invˡ-lemma a (cact (secn (u₂ • v)) x))) ⟩
+      CLG._⁻¹ᶜ D₁ • (a • (D₂ • secn (u₂ • v)))
+        ≈⟨ (λ x → Eq.cong (λ z → cact (CLG._⁻¹ᶜ D₁) (cact a z))
+                          (defect-· u₂ v x)) ⟩
+      CLG._⁻¹ᶜ D₁ • (a • (b • c))
+        ≈⟨ (λ x → Eq.cong (cact (CLG._⁻¹ᶜ D₁))
+                          (Eq.sym (defect-· u₁ u₂ (cact c x)))) ⟩
+      CLG._⁻¹ᶜ D₁ • ((D₁ • secn (u₁ • u₂)) • c)
+        ≈⟨ (λ x → CLG.invˡ-lemma D₁ (cact (secn (u₁ • u₂)) (cact c x))) ⟩
+      secn (u₁ • u₂) • c
+        ≈⟨ (λ x → Eq.sym (defect-· (u₁ • u₂) v x)) ⟩
+      defect (u₁ • u₂) v • secn ((u₁ • u₂) • v) ∎)
+    where
+    open ≈-Reasoning C.setoid
+    open GroupProperties (CLG.CMS-group n) using (∙-cancelʳ)
+
+    a  = secn u₁
+    b  = secn u₂
+    c  = secn v
+    F₁ = CGn.f φ G u₁ u₂
+    F₂ = CGn.f φ G u₂ v
+    F₃ = CGn.f φ G u₁ (u₂ • v)
+    D₁ = defect u₁ u₂
+    D₂ = defect u₂ v
+    D₃ = defect u₁ (u₂ • v)
+    M  = (CLG._⁻¹ᶜ D₁ • ((a • D₂) • CLG._⁻¹ᶜ a)) • D₃
+
+    -- The recursion's term, with each factor replaced by its defect.
+    step-IS : CLG._≈ᶜ_ (IS (CGn.f φ G (u₁ • u₂) v)) M
+    step-IS = begin
+      IS ((KA._⁻¹ F₁ • act u₁ F₂) • F₃)
+        ≈⟨ IS-∙ (KA._⁻¹ F₁ • act u₁ F₂) F₃ ⟩
+      IS (KA._⁻¹ F₁ • act u₁ F₂) • IS F₃
+        ≈⟨ (λ x → IS-∙ (KA._⁻¹ F₁) (act u₁ F₂) (cact (IS F₃) x)) ⟩
+      (IS (KA._⁻¹ F₁) • IS (act u₁ F₂)) • IS F₃
+        ≈⟨ (λ x → IS-⁻¹ F₁ (cact (IS (act u₁ F₂)) (cact (IS F₃) x))) ⟩
+      (CLG._⁻¹ᶜ (IS F₁) • IS (act u₁ F₂)) • IS F₃
+        ≈⟨ (λ x → Eq.cong (cact (CLG._⁻¹ᶜ (IS F₁)))
+                          (IS-act u₁ F₂ (cact (IS F₃) x))) ⟩
+      (CLG._⁻¹ᶜ (IS F₁) • ((a • IS F₂) • CLG._⁻¹ᶜ a)) • IS F₃
+        ≈⟨ (λ x → Eq.cong (λ z → cact (CLG._⁻¹ᶜ (IS F₁))
+                                   (cact ((a • IS F₂) • CLG._⁻¹ᶜ a) z))
+                          (incl-sem-defect u₁ (u₂ • v) x)) ⟩
+      (CLG._⁻¹ᶜ (IS F₁) • ((a • IS F₂) • CLG._⁻¹ᶜ a)) • D₃
+        ≈⟨ (λ x → Eq.cong (λ z → cact (CLG._⁻¹ᶜ (IS F₁)) (cact a z))
+                          (incl-sem-defect u₂ v
+                            (cact (CLG._⁻¹ᶜ a) (cact D₃ x)))) ⟩
+      (CLG._⁻¹ᶜ (IS F₁) • ((a • D₂) • CLG._⁻¹ᶜ a)) • D₃
+        ≈⟨ (λ x → CLG.⁻¹-congᶜ {w = IS F₁} {v = D₁} (incl-sem-defect u₁ u₂)
+                    (cact ((a • D₂) • CLG._⁻¹ᶜ a) (cact D₃ x))) ⟩
+      M ∎
+
   f-axiom : ∀ {u u' : Word (SGen n)} → ΓQ n u u' → ∀ (v : Word (SGen n)) →
             KB._≈_ (CGn.f φ G u v) (CGn.f φ G u' v)
-  f-axiom = {!!}
+  f-axiom {u} {u'} r v = BK.complete (CLG.incl-injective
+    {P = PA.sem (CGn.f φ G u v)} {P' = PA.sem (CGn.f φ G u' v)} (begin
+    CLG.incl (PA.sem (CGn.f φ G u v))   ≈⟨ incl-sem-defect u v ⟩
+    defect u v                          ≈⟨ C.reflexive shape ⟩
+    defect u' v                         ≈⟨ incl-sem-defect u' v ⟨
+    CLG.incl (PA.sem (CGn.f φ G u' v))  ∎))
+    where
+    open ≈-Reasoning C.setoid
+    shape : defect u v ≡ defect u' v
+    shape = Eq.cong₂ (λ z w → (z • secn v) • CLG._⁻¹ᶜ w)
+                     (secn-cong (QB.axiom r))
+                     (secn-cong (QB.cong (QB.axiom r) (QB.refl {w = v})))
 
   γ : FactorSet K Q φ
   γ = CGn.factorSet φ G G-cong G-ε f-axiom
