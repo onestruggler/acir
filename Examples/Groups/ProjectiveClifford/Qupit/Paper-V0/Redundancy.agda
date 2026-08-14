@@ -5,6 +5,14 @@
 --
 -- rel-X↓-CZ is redundant — modulo faithfulness.
 --
+-- SUPERSEDED by Paper-V0.Derivation, which proves the rule outright.
+-- Both reductions here stop at a gap; Derivation gets past them by
+-- conjugating the other way round, so that the two-wire gate alternates
+-- between CZ and CX and blake-c12 supplies every crossing.  What is kept
+-- below is the analysis, not the conclusion: the four facts about P are
+-- still the shortest statement of WHY the rule holds, and lemma-push /
+-- lemma-reduce still record how far the K-route gets.
+--
 -- Paper-V0 takes one Pauli-versus-CZ rule as an axiom (the other is
 -- derived from it by the swap; see Paper-V0.Lemmas.lemma-rel-X↑-CZ).
 -- The survivor is redundant too: a coset enumeration of the two-wire
