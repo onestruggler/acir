@@ -76,7 +76,8 @@ open import ForStdlib.Algebra.Morphism.Consequences
 ------------------------------------------------------------------------
 -- The two presented groups
 
-module _ {X Y : Set}
+module Generator-Data
+         {X Y : Set}
          (ΓK : WRel Y) (ΓQ : WRel X)
          (glK : Grouplike ΓK) (glQ : Grouplike ΓQ)
          (gen-comm : ∀ (x y : Y) →

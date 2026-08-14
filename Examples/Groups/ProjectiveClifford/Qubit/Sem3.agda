@@ -46,12 +46,16 @@
 -- Simplified.Presentation.presentation (which rests in turn on
 -- Symplectic.PresentationFull).
 --
--- γ, the factor set, is left open — the four holes below.  It is the
--- Pauli correction carried by a lifting of Q, so writing it down means
--- choosing a lifting, i.e. a normal form for symplectic words, and
--- reading off the defect.  Its generator-level shadow is `corr` of
--- Qubit.Cocycle, whose single nontrivial entry is corr (order-S) = Z₀ —
--- the syntactic counterpart of S² = Z.
+-- γ, the factor set, comes from Presentation.Construct.Properties.
+-- CocycleGen, which also supplies K and Q here: give the correction one
+-- symplectic generator carries against a word and it extends that along
+-- the first argument, the recursion being the cocycle identity itself.
+-- So the identity and the left normalisation are free, and what is left
+-- open — the four holes below — is generator- and relator-level data:
+-- G, its congruence and normalisation, and that each relator of the
+-- simplified rule set carries the same correction on either side.  Its
+-- shadow is `corr` of Qubit.Cocycle, whose single nontrivial entry is
+-- corr (order-S) = Z₀ — the syntactic counterpart of S² = Z.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -68,8 +72,8 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≗_)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _ⁿ' ; _ʰ')
 
 import Presentation.Base as PB
+import Presentation.Construct.Properties.CocycleGen as CG
 open import Presentation.Definitions using (_IsPresentationOf_)
-open import Presentation.GroupLike using (module Group-Lemmas)
 
 open import ForStdlib.Algebra.Construct.Extension using (Extension)
 open import ForStdlib.Algebra.Construct.SemiDirectProduct using (Action)
@@ -204,24 +208,25 @@ private
 module _ (n : ℕ) where
 
   private
-    module KL = Group-Lemmas (ΓK n) (PA.XZ-GroupLike.grouplike {n})
-    module QL = Group-Lemmas (ΓQ n) (SL.Symplectic-Sim-GroupLike.grouplike {n})
+    -- Both presented groups, and the machinery that turns generator-level
+    -- cocycle data into a factor set, come from CocycleGen: K is its
+    -- abelian group of Pauli words (abelian by PA.gen-comm, lifted there
+    -- to words), Q its group of symplectic words.
+    module CGn = CG.Generator-Data (ΓK n) (ΓQ n)
+                   (PA.XZ-GroupLike.grouplike {n})
+                   (SL.Symplectic-Sim-GroupLike.grouplike {n})
+                   (PA.gen-comm {n})
     module KB = PB (ΓK n)
     module QB = PB (ΓQ n)
     module BK = PA.Build n
 
   -- K: the Pauli presentation, an abelian group of words.
   K : AbelianGroup 0ℓ 0ℓ
-  K = record
-    { isAbelianGroup = record
-      { isGroup = Group.isGroup KL.•-ε-group
-      ; comm    = PA.word-comm
-      }
-    }
+  K = CGn.K
 
   -- Q: the simplified symplectic presentation, a group of words.
   Q : Group 0ℓ 0ℓ
-  Q = QL.•-ε-group
+  Q = CGn.Q
 
   -- act u respects the Pauli rules: equal Pauli words go in, words with
   -- equal readings come out, and the Pauli presentation is complete.
@@ -266,43 +271,50 @@ module _ (n : ℕ) where
     ; isNormalisedCocycle = FSE.isFactorSet⇒isNormalisedCocycle K Q φ ifs
     }
 
-  -- OPEN — the one remaining obligation.  What has to go in the hole is
-  -- the Clifford group as an extension of Q by K, with a lifting.  The
-  -- pieces exist and the shape is forced:
+  -- That route needs the Clifford group as an extension of Q by K
+  -- together with a lifting, i.e. a symplectic normal form; two lemmas
+  -- are missing for it (that conjugating incl P by a Clifford word is
+  -- incl of the symplectic action, and a UniqueNormalForm for the
+  -- SIMPLIFIED rule set).
   --
-  --   total    = CMS n, the Clifford group mod scalars
-  --              (Qubit.CliffordGroup);
-  --   incl     = CliffordGroup.incl ∘ sem — a Pauli WORD conjugates by
-  --              the vector it reads as; injective by incl-injective and
-  --              Build.complete;
-  --   proj     = secn ∘ CliffordGroup.proj, where secn : Symplectic n →
-  --              Word (SGen n) is Surjectivity.surj-nf.  It respects the
-  --              congruence because the simplified presentation is
-  --              complete: two symplectic words with ≈ˢ-equal denotations
-  --              are ≈-equal;
-  --   lifting  = inv-nf ∘ nf, the SYNTACTIC symplectic normal form.  It
-  --              must factor through the normal-form datatype, not
-  --              through Symplectic n: lifting-cong needs nf u ≡ nf v
-  --              propositionally, which UniqueNormalForm gives and ≈ˢ
-  --              (a pointwise equality of maps) does not;
-  --   f        = proj₁ of ker⊆im-incl applied to ℓu • ℓv • (ℓ(u•v))⁻¹,
-  --              which lies in the kernel because the three projections
-  --              agree — this is what makes `factors` hold by
-  --              construction.
+  -- The second route, taken here, is Presentation.Construct.Properties.
+  -- CocycleGen: give the corrections carried by ONE symplectic generator
+  -- against a word and let it extend them along the first argument.  The
+  -- recursion there is the cocycle identity, so the identity and
+  -- normalisation on the left come for free; what stays open is
   --
-  -- Two lemmas are missing for it: that conjugating incl P by a Clifford
-  -- word is incl of the symplectic action (`realizes`; CliffordGroup
-  -- proves incl-∙, incl-ε, incl-injective and ker-witness, but not this),
-  -- and a UniqueNormalForm for the SIMPLIFIED rule set, which
-  -- Simplified.Iso should carry over from the plain one.
+  --   G       the Pauli word by which the lifts of a and of v fail to
+  --           compose.  S²=Z is what makes it nontrivial: the lift of
+  --           S-gen against [ S-gen ]ʷ is Z on the acted wire (compare
+  --           corr (order-S) = Z₀ in Qubit.Cocycle);
+  --   G-cong  G a descends to Q;
+  --   G-ε     G a ε ≈ ε;
+  --   f-axiom each relator of the simplified rule set carries the same
+  --           correction on either side.
+  --
+  -- NOT CocycleGen.Pairs, which would narrow G to a map on pairs of
+  -- generators: extending letterwise makes each `pair-word a` a
+  -- HOMOMORPHISM Q → K, so it factors through the abelianisation of
+  -- Sp(2n, 2).  That group is perfect once n ≥ 3, which would force the
+  -- correction to be ε and the extension to split.  The Clifford cocycle
+  -- has to sit in the general G.
 
-  clifford-isFactorSet :
-    Σ[ f ∈ (Word (SGen n) → Word (SGen n) → Word (PGen n)) ]
-      FSE.IsFactorSet K Q φ f
-  clifford-isFactorSet = {!!}
+  G : SGen n → Word (SGen n) → Word (PGen n)
+  G = {!!}
+
+  G-cong : ∀ (a : SGen n) {v v' : Word (SGen n)} →
+           QB._≈_ v v' → KB._≈_ (G a v) (G a v')
+  G-cong = {!!}
+
+  G-ε : ∀ (a : SGen n) → KB._≈_ (G a ε) ε
+  G-ε = {!!}
+
+  f-axiom : ∀ {u u' : Word (SGen n)} → ΓQ n u u' → ∀ (v : Word (SGen n)) →
+            KB._≈_ (CGn.f φ G u v) (CGn.f φ G u' v)
+  f-axiom = {!!}
 
   γ : FactorSet K Q φ
-  γ = γ-of-lifting (proj₂ clifford-isFactorSet)
+  γ = CGn.factorSet φ G G-cong G-ε f-axiom
 
   ------------------------------------------------------------------------
   -- The twisted product K ×_f Q
