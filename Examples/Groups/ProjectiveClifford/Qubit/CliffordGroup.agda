@@ -581,7 +581,7 @@ open import Examples.Groups.Pauli.Qubit.SignedPauli using (γ ; γ-εˡ ; _·_)
 open import Examples.Groups.ProjectiveClifford.Qubit.CliffordAction
   using (δ) renaming (incl to inclΦ)
 open import Examples.Groups.ProjectiveClifford.Qubit.CliffordAut using (cact-homo ; neg-id)
-open import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Action using (cact-phase ; x+x)
+open import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Action using (cact-phase ; pauli-indep ; x+x)
 open Symplectic using (gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate ; _↥ ; S)
 open Sem.Interpretation using (actg)
 
@@ -798,6 +798,90 @@ module _ {n : ℕ} (w : Word (Gen n)) (triv : proj w ≈ˢ εˢ) where
     where open Eq.≡-Reasoning
 
 ------------------------------------------------------------------------
+------------------------------------------------------------------------
+-- Conjugation by a Clifford word is the symplectic action
+--
+-- cact1 g (s , P) = (s + δ g P , actg g P): the phase is shifted by an
+-- amount depending only on the Pauli component, so cact w commutes with
+-- phase shifts.  Conjugating incl P by w therefore carries the phase
+-- defect of incl P through untouched, while the probe it is measured
+-- against travels by ⟦ w ⟧; symplectic invariance of sform turns that
+-- into the defect of incl (ap ⟦ w ⟧ P).
+--
+-- This is the `realizes` condition of a group extension: it says the
+-- conjugation action of CMS n on the image of the Pauli group is the
+-- symplectic one, which is what makes CMS n an extension REALISING the
+-- operators and not merely an extension.
+
+private
+  -- (x + y) + z ≡ (x + z) + y, in the phase group.
+  phase-swap : (x y z : Φ) → (x + y) + z ≡ (x + z) + y
+  phase-swap x y z = begin
+    (x + y) + z  ≡⟨ +-assoc x y z ⟩
+    x + (y + z)  ≡⟨ Eq.cong (x +_) (+-comm y z) ⟩
+    x + (z + y)  ≡⟨ Eq.sym (+-assoc x z y) ⟩
+    (x + z) + y  ∎
+    where open Eq.≡-Reasoning
+
+-- cact w commutes with phase shifts.  Both components are Selinger.
+-- Action's: the phase runs from s by cact-phase, the Pauli does not see
+-- the phase at all by pauli-indep.
+cact-shift : (w : Word (Gen n)) (s t : Φ) (P : Pauli n) →
+             cact w (s + t , P)
+             ≡ (proj₁ (cact w (s , P)) + t , proj₂ (cact w (s , P)))
+cact-shift w s t P = Eq.cong₂ _,_ phase-eq pauli-eq
+  where
+  open Eq.≡-Reasoning
+
+  phase-eq : proj₁ (cact w (s + t , P)) ≡ proj₁ (cact w (s , P)) + t
+  phase-eq = begin
+    proj₁ (cact w (s + t , P))
+      ≡⟨ cact-phase w (s + t) P ⟩
+    (s + t) + proj₁ (cact w (₀ , P))
+      ≡⟨ phase-swap s t (proj₁ (cact w (₀ , P))) ⟩
+    (s + proj₁ (cact w (₀ , P))) + t
+      ≡⟨ Eq.cong (_+ t) (Eq.sym (cact-phase w s P)) ⟩
+    proj₁ (cact w (s , P)) + t ∎
+
+  pauli-eq : proj₂ (cact w (s + t , P)) ≡ proj₂ (cact w (s , P))
+  pauli-eq = Eq.trans (pauli-indep w (s + t) P) (Eq.sym (pauli-indep w s P))
+
+-- Conjugating incl P by w is incl of the symplectic action of w on P.
+conj-incl : (w : Word (Gen n)) (P : Pauli n) →
+            ((w • incl P) • (w ⁻¹ᶜ)) ≈ᶜ incl (ap ⟦ w ⟧ P)
+conj-incl w P (s , Q) = begin
+  cact w (cact (incl P) (cact (w ⁻¹ᶜ) (s , Q)))
+    ≡⟨ Eq.cong (cact w) (cact-pauliWord P s₁ Q₁) ⟩
+  cact w (s₁ + ι (sform P Q₁) , Q₁)
+    ≡⟨ cact-shift w s₁ (ι (sform P Q₁)) Q₁ ⟩
+  proj₁ (cact w (s₁ , Q₁)) + ι (sform P Q₁) , proj₂ (cact w (s₁ , Q₁))
+    ≡⟨ Eq.cong (λ z → proj₁ z + ι (sform P Q₁) , proj₂ z) back ⟩
+  s + ι (sform P Q₁) , Q
+    ≡⟨ Eq.cong (λ z → s + ι z , Q) form ⟩
+  s + ι (sform (ap ⟦ w ⟧ P) Q) , Q
+    ≡⟨ Eq.sym (cact-pauliWord (ap ⟦ w ⟧ P) s Q) ⟩
+  cact (incl (ap ⟦ w ⟧ P)) (s , Q) ∎
+  where
+  open Eq.≡-Reasoning
+
+  s₁ = proj₁ (cact (w ⁻¹ᶜ) (s , Q))
+  Q₁ = proj₂ (cact (w ⁻¹ᶜ) (s , Q))
+
+  -- w undoes w ⁻¹ᶜ, …
+  back : cact w (s₁ , Q₁) ≡ (s , Q)
+  back = invʳ-lemma w (s , Q)
+
+  -- … so the probe Q₁ is carried back to Q, …
+  apQ₁ : ap ⟦ w ⟧ Q₁ ≡ Q
+  apQ₁ = Eq.trans (Eq.sym (cact-proj₂ w (cact (w ⁻¹ᶜ) (s , Q))))
+                  (Eq.cong proj₂ back)
+
+  -- … and sform is symplectically invariant.
+  form : sform P Q₁ ≡ sform (ap ⟦ w ⟧ P) Q
+  form = Eq.trans (Eq.sym (Sem.Symplectic.preserves ⟦ w ⟧ P Q₁))
+                  (Eq.cong (sform (ap ⟦ w ⟧ P)) apQ₁)
+
+
 -- The Clifford group as a group extension
 --
 --     1 ─→ Pauli n ─→ CMS n ─→ Sp(2n, 2) ─→ 1
