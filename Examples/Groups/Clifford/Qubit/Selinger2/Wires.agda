@@ -72,3 +72,28 @@ up : ∀ {w v : Circuit n} →
       open PB ((₁₊ n) CRel,_===_) renaming (_≈_ to _≈↑_) using ()
   in w ≈ v → w ↑ ≈↑ v ↑
 up {w = w} {v = v} = lemma-cong↑ w v
+
+------------------------------------------------------------------------
+-- Rewriting inside a right-nested word
+--
+-- Words are right-nested, so in g • h • post the subterm (g • h) does
+-- not occur: the term is g • (h • post).  swap1 re-brackets, applies the
+-- commutation, and brackets back, so a transposition at position i of a
+-- word is `cright … cright (swap1 e)` with i crights and nothing else.
+-- With one of these per swap the replay of Figures 3-7 needs no
+-- associativity steps of its own for its commutation legs.
+
+swap1 : ∀ {g h post : Circuit n} →
+  let open PB (n CRel,_===_) using (_≈_)
+  in g • h ≈ h • g → g • h • post ≈ h • g • post
+swap1 e = PB.trans (PB.sym PB.assoc)
+            (PB.trans (PB.cong e PB.refl) PB.assoc)
+
+-- Apply an equation inside a context, with the context given EXPLICITLY.
+-- `cright cleft e` leaves the two context words as metas that by-assoc's
+-- to-list equation cannot solve, so the replay names them: the emitter
+-- knows both, and printing them is cheaper than making Agda guess.
+at : ∀ (pre : Circuit n) {u v : Circuit n} (post : Circuit n) →
+  let open PB (n CRel,_===_) using (_≈_)
+  in u ≈ v → pre • u • post ≈ pre • v • post
+at pre post e = PB.cong PB.refl (PB.cong e PB.refl)
