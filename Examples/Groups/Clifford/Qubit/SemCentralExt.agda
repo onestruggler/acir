@@ -40,34 +40,36 @@
 -- normalised, and just one, c-cong, reaches the relators.  That is the
 -- whole point of coming this way.
 --
--- What is left open is the generator data itself, the record
--- `GeneratorData`: G together with
+-- The generator data itself is the record `GeneratorData`: G together
+-- with
 --
 --   G-cong   G a descends to Q;
 --   G-ε      G a ε ≈ ε;
 --   f-axiom  each relator of the mod-scalar rule set carries the same
 --            correction on either side.
 --
--- f-axiom is the hole Qubit.Sem3 leaves at the Pauli layer, for the same
--- reason and wanting the same missing lemma: that CocycleGen's f agrees
--- with the defect of a section at every pair of words (induction on the
--- first, both satisfying the cocycle identity), after which f-axiom
--- follows from that section's congruence exactly as G-cong does.  It is
--- kept as a record field rather than an interaction hole so the file
--- stays green and every consequence is stated against a named
--- hypothesis.
+-- It is a record rather than an interaction hole so that this file
+-- depends on nothing the exact layer proves, and every consequence is
+-- stated against a named hypothesis.  It is DISCHARGED, at every width,
+-- in Qubit.SemGeneratorData (`generator-data`), which also gives the
+-- cocycle, the group and the extension with no hypothesis left; so what
+-- is a parameter here is a theorem one file away.
 --
--- Why G is open too, which is NOT obvious.  SemFE has the defect
--- already: G a v ought to be T ^ toℕ (SemFE.f (section n) [ a ]ʷ v).
--- That definition typechecks nowhere.  `_^'_` recurses on its exponent,
--- so reducing G a v to weak head normal form forces toℕ of the defect,
--- which forces SemFE's `defect`, the section, the bijective normal form
--- and the whole of ScalarKernel; and conversion reduces both sides to
--- whnf before comparing, so EVERY check that so much as mentions G a v
--- detonates.  Measured: OOM under a 12 GB cap.  Supplying G needs a
--- defect that computes rather than one extracted from an existence
--- proof — reading the scalar off the mod-17 matrix model (Qubit.Model.
--- Faithful, whose `log` is exactly such a read-off) is the route.
+-- How that file fills it, since the obvious route does not work.  SemFE
+-- has the defect already, and G a v ought to be
+-- T ^ toℕ (SemFE.f (section n) [ a ]ʷ v).  Writing that DEFINITION here
+-- typechecks nowhere: `_^_` recurses on its exponent, so reducing G a v
+-- to weak head normal form forces toℕ of the defect, which forces
+-- SemFE's `defect`, the section, the bijective normal form and the whole
+-- of ScalarKernel; and conversion reduces both sides to whnf before
+-- comparing, so every check that so much as mentions G a v detonates
+-- (measured: OOM under a 12 GB cap).  What works is to keep the factor
+-- set a module PARAMETER, prove everything against its four laws — where
+-- each term mentioning it is neutral and nothing can unfold — and apply
+-- it once, at a result type that mentions no cocycle.  That is the same
+-- discipline the three generic lemmas at the foot of this file use, and
+-- it needs no computing defect, so the mod-17 model is not called on
+-- after all.
 --
 -- NOT CocycleGen.Pairs, which would narrow G to a map on pairs of gates:
 -- extending letterwise makes each `pair-word a` a homomorphism Q → K, so
@@ -168,21 +170,23 @@ private
 -- The cyclic alphabet is a singleton, so any two of its generators are
 -- the same one and commutativity of K is refl.
 
-private
-  ΓK : WRel Cy.X
-  ΓK = 8 Cn,_===_
+ΓK : WRel Cy.X
+ΓK = 8 Cn,_===_
 
+private
   gen-comm : ∀ (x y : Cy.X) →
              PB._≈_ ΓK ([ x ]ʷ • [ y ]ʷ) ([ y ]ʷ • [ x ]ʷ)
   gen-comm tt tt = PB.refl
 
-  -- Both presented groups, and the machinery that turns generator-level
-  -- data into a factor set, come from CocycleGen.
-  module CGn (m : ℕ) =
-    Generator-Data ΓK (m MS.CRel,_===_) (Cy.grouplike 7) (grouplike-MS {m})
-                   gen-comm
+-- Both presented groups, and the machinery that turns generator-level
+-- data into a factor set, come from CocycleGen.  Public: the field types
+-- of GeneratorData below mention CGn.f, so a client supplying the record
+-- has to be able to name it.
+module CGn (m : ℕ) =
+  Generator-Data ΓK (m MS.CRel,_===_) (Cy.grouplike 7) (grouplike-MS {m})
+                 gen-comm
 
-  module KB = PB ΓK
+module KB = PB ΓK
 
 -- K: the cyclic group of order 8, as words over T.
 K : (n : ℕ) → AbelianGroup 0ℓ 0ℓ
@@ -203,10 +207,11 @@ Q n = CGn.Q n
 --
 -- The correction one gate carries against a word, and the three
 -- conditions CocycleGen asks of it.  Everything below is stated against
--- this record rather than an interaction hole, so the file stays green
--- and the hypothesis is visible in every type that depends on it.  See
--- the header for what discharging each field needs — G itself is open
--- for a reason that is not the usual one.
+-- this record rather than an interaction hole, so that the file rests on
+-- nothing the exact layer proves and the hypothesis is visible in every
+-- type that depends on it.  Qubit.SemGeneratorData supplies the record
+-- at every width, out of SemFE's factor set; see the header for why that
+-- has to happen there and not here.
 
 record GeneratorData (n : ℕ) : Set where
   field
