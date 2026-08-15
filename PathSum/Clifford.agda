@@ -86,12 +86,6 @@ private
   ... | yes p = contradiction p γ≢
   ... | no  _ = refl
 
-  liftXor-1ᵐ : (c : Bool) (S : Mon n m) →
-               liftXor c S 1ᵐ ≡ (if c then 1ℤ else 0ℤ)
-  liftXor-1ᵐ {n} {m} c S with (1ᵐ {n} {m}) ≟ᵐ 1ᵐ
-  ... | yes _ = refl
-  ... | no ¬p = contradiction refl ¬p
-
   liftXor-∈ : (c : Bool) (S : Mon n m) {γ : Mon n m} → γ ≢ 1ᵐ → γ ⊆ᵐ S →
               liftXor c S γ ≡ sgn c * negpow (∥ γ ∥ ∸ 1)
   liftXor-∈ c S {γ} γ≢ γ⊆ with γ ≟ᵐ 1ᵐ
