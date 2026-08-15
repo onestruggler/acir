@@ -57,10 +57,18 @@ open import Data.Fin.Properties using (toℕ-injective ; toℕ-fromℕ<)
 import Data.Nat as Nat
 open import Data.Nat.DivMod
   using (_%_ ; m%n<n ; n%n≡0 ; %-distribˡ-+ ; m%n%n≡m%n ; m<n⇒m%n≡m)
-open import Data.Product using (_,_ ; proj₁ ; proj₂)
+open import Data.Product using (_,_ ; proj₁ ; proj₂ ; ∃)
+open import Data.Unit using (tt)
 open import Data.Vec using ([] ; _∷_)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _^_)
+import Presentation.Base as PB
+open import Presentation.Construct.Properties.CocycleGen
+  using (module Generator-Data)
+open import ForStdlib.Algebra.Construct.SemiDirectProduct using (Action)
+import ForStdlib.Algebra.Construct.FactorSetExtension as FSE
 
 open import ForStdlib.Data.Fin.Mod
 open PrimeModulus p-2 p-prime
@@ -564,3 +572,228 @@ module _ (n : ℕ) where
                    (H.sym {x = H.ε H.∙ (Q +ₚ P , εˢ ∘ˢ εˢ)}
                           {y = Q +ₚ P , εˢ ∘ˢ εˢ}
                           (H.identityˡ (Q +ₚ P , εˢ ∘ˢ εˢ)))
+
+------------------------------------------------------------------------
+-- The same extension over PRESENTED groups
+--
+--     1 ─→ A ─→ A ×_γᶜ H ─→ H ─→ 1
+--
+-- Everything above builds the Clifford group over the STRUCTURAL model
+-- of the quotient, Pauli n ⋊ Sp(2n, ℤ/pℤ), with the Weyl cocycle written
+-- out.  This section builds it over the SYNTACTIC one instead: both
+-- factors are groups of words modulo a congruence, and the cocycle comes
+-- from the correction data of Clifford.Qupit.Syntactics.  The two
+-- QUOTIENTS are already known to agree — that is Paper-V0.Presentation,
+-- H ≅ Pauli⋊Sp — but that the two total groups do is NOT proved here:
+-- it needs the generator data below, after which the two cocycles have
+-- to be compared.
+--
+--   * A — the scalars, presented by ⟨ ω ∣ ωᵖ = 1 ⟩ (Cyclic.Syntactics).
+--     Abelian because its alphabet is a singleton, so CocycleGen's
+--     `gen-comm` is refl;
+--   * H — the Clifford group modulo scalars, presented by the Paper-V0
+--     rule set: words over the gates modulo (n QRel,_===_).
+--
+-- φ, the action of H on A, is TRIVIAL, which is what makes the extension
+-- central and a factor set a plain 2-cocycle.  Syntactically that is
+-- Syntactics.conj, the constant ω; semantically it is the scalar being a
+-- scalar.
+--
+-- γᶜ, the cocycle, is derived through Presentation.Construct.Properties.
+-- CocycleGen, exactly as Clifford.Qubit.SemCentralExt derives the qubit
+-- one.  CocycleGen asks only for the correction that a single GATE
+-- carries against a word,
+--
+--     G : Gen n → Circuit n → Word ScalarGen,
+--
+-- and extends it along the first argument by the cocycle identity
+-- itself, so two of Cocycle's four fields are free for any G at all, one
+-- needs only that G is congruent and normalised, and just one reaches
+-- the relators.  G itself is left open, in the record `GeneratorData`,
+-- for the qubit development's reason: a G extracted from an existence
+-- proof does not compute, and every conversion check that mentions it
+-- detonates.  Supplying it needs a scalar that can be read off — the
+-- matrix model, whose corrections are what `corr` records.
+--
+-- Where corr comes in.  A cocycle alone does not know which extension it
+-- names: `γᶜ-split` below is also one, and it gives the DIRECT product,
+-- in which a word's scalar is the sum of its letters' scalars.  What
+-- picks out the right one is that its lifts satisfy the twisted
+-- relators, i.e. that reading a circuit in the total group with each
+-- gate lifted trivially makes the two sides of every Paper-V0 relation
+-- differ by exactly corr:
+--
+--     Realises-corr :  scal u ≈ corr r • scal v   for every r : u === v.
+--
+-- That is Proposition 2.55's `sound-ax` for the twisted part of
+-- Syntactics._Exact,_===_, stated here as a property of a cocycle.  Its
+-- whole content is the one non-trivial correction: `split-forces` shows
+-- that a split cocycle could realise corr only if ω^((p²-1)/8) were ε,
+-- and it is not — ω has order p, and (p²-1)/8 ≡ -1/8 mod p is never 0.
+-- So order-SH alone is what makes the scalar layer a non-split
+-- extension.
+
+module Presented-Extension
+  (g*@(g , g≠0) : ℤ* ₚ)
+  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ λ (k : ℤ ₚ-₁) → x ≡ g ^′ toℕ k)
+  where
+
+  -- The scalar alphabet and its grouplike witness.
+  import Examples.Groups.Cyclic.Syntactics as Cy
+  -- The quotient's rule set: the gates it is written over, and (in
+  -- Lemmas) its grouplike witness.
+  import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Syntactics
+    p-3 p-prime g* g-gen as Pap
+  import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Lemmas
+    p-3 p-prime g* g-gen as PapL
+  -- The syntax of the scalar layer: ScalarGen, ω, Scalar-relation, corr.
+  import Examples.Groups.Clifford.Qupit.Syntactics
+    p-3 p-prime g* g-gen as QS
+
+  private
+    module KB = PB QS.Scalar-relation
+
+    -- One generator, so any two of them are the same one.
+    gen-comm : ∀ (x y : QS.ScalarGen) →
+               PB._≈_ QS.Scalar-relation ([ x ]ʷ • [ y ]ʷ) ([ y ]ʷ • [ x ]ʷ)
+    gen-comm tt tt = PB.refl
+
+    -- Both presented groups, and the machinery that turns generator-level
+    -- data into a factor set, come from CocycleGen.
+    module CGn (m : ℕ) =
+      Generator-Data QS.Scalar-relation (QS.CR._QRel,_===_ m)
+                     (Cy.grouplike p-1) (PapL.Paper-GroupLike.grouplike {m})
+                     gen-comm
+
+  ----------------------------------------------------------------------
+  -- A and H
+
+  -- A: the scalars ⟨ω⟩ ≅ ℤ/pℤ, as words over ω.
+  A : (n : ℕ) → AbelianGroup 0ℓ 0ℓ
+  A n = CGn.K n
+
+  -- H: the Paper-V0 rule set, as words over the gates.
+  H : (n : ℕ) → Group 0ℓ 0ℓ
+  H n = CGn.Q n
+
+  -- φ: trivial, ω being central.
+  φ : (n : ℕ) → Action (AbelianGroup.rawMonoid (A n)) (Group.rawMonoid (H n))
+  φ n = FSE.trivialAction (A n) (H n)
+
+  ----------------------------------------------------------------------
+  -- The generator data
+  --
+  -- The correction one gate carries against a word, and the three
+  -- conditions CocycleGen asks of it.  Kept as a record rather than an
+  -- interaction hole, so that the file stays green and the hypothesis is
+  -- visible in every type that depends on it.
+
+  record GeneratorData (n : ℕ) : Set where
+    field
+      -- The scalar by which the lifts of a and of v fail to compose.
+      G       : QS.Gen n → QS.Circuit n → Word QS.ScalarGen
+      -- It descends to H …
+      G-cong  : (a : QS.Gen n) {v v' : QS.Circuit n} →
+                PB._≈_ (QS.CR._QRel,_===_ n) v v' →
+                KB._≈_ (G a v) (G a v')
+      -- … and it is normalised.
+      G-ε     : (a : QS.Gen n) → KB._≈_ (G a ε) ε
+      -- Each relator carries the same correction on either side.
+      f-axiom : {u u' : QS.Circuit n} → (QS.CR._QRel,_===_ n) u u' →
+                (v : QS.Circuit n) →
+                KB._≈_ (CGn.f n (φ n) G u v) (CGn.f n (φ n) G u' v)
+
+  ----------------------------------------------------------------------
+  -- γᶜ: the 2-cocycle
+  --
+  -- Assembled from CocycleGen's own lemmas rather than from the FactorSet
+  -- they are packaged into, since a central extension wants a Cocycle.
+  -- With the action trivial, IsNormalisedCocycle's identity has `act x`
+  -- the identity by definition, which is Cocycle's identity verbatim.
+
+  γᶜ : (n : ℕ) → GeneratorData n → Cocycle (A n) (H n)
+  γᶜ n gd = record
+    { c       = CGn.f         n (φ n) G
+    ; c-cong  = CGn.f-cong    n (φ n) G G-cong G-ε f-axiom
+    ; c-εˡ    = CGn.f-εˡ      n (φ n) G
+    ; c-εʳ    = CGn.f-εʳ      n (φ n) G G-cong G-ε
+    ; cocycle = CGn.f-cocycle n (φ n) G
+    }
+    where open GeneratorData gd
+
+  ----------------------------------------------------------------------
+  -- The central extension
+
+  -- The total group: pairs (scalar , circuit mod scalars), multiplied
+  -- with the cocycle correction.
+  Presented-group : (n : ℕ) → GeneratorData n → Group 0ℓ 0ℓ
+  Presented-group n gd = CE.group (A n) (H n) (γᶜ n gd)
+
+  Presented-extension : (n : ℕ) (gd : GeneratorData n) →
+                        Extension (AbelianGroup.group (A n)) (H n)
+  Presented-extension n gd = CE.centralExtension (A n) (H n) (γᶜ n gd)
+
+  ----------------------------------------------------------------------
+  -- Reading a circuit in the total group
+  --
+  -- Each gate lifts with trivial scalar; multiplying the lifts is what
+  -- accumulates the cocycle.  Generic in the cocycle, as everything that
+  -- mentions c must be: at a concrete γᶜ nothing may be unfolded.
+
+  module Evaluation (n : ℕ) (γ : Cocycle (A n) (H n)) where
+
+    private
+      module E = Group (CE.group (A n) (H n) γ)
+
+    ⟦_⟧ : QS.Circuit n → E.Carrier
+    ⟦ [ a ]ʷ ⟧ = ε , [ a ]ʷ
+    ⟦ ε ⟧      = E.ε
+    ⟦ u • v ⟧  = ⟦ u ⟧ E.∙ ⟦ v ⟧
+
+    -- The scalar a circuit picks up.
+    scal : QS.Circuit n → Word QS.ScalarGen
+    scal u = proj₁ ⟦ u ⟧
+
+    -- The cocycle realises corr: every Paper-V0 relation holds in the
+    -- total group up to exactly the correction word Syntactics.corr
+    -- gives it.  This is the twisted half of Proposition 2.55's
+    -- sound-ax; the other two halves are free here, the scalar relation
+    -- holding in A and the action being trivial.
+    Realises-corr : Set
+    Realises-corr = ∀ {u v} (r : (QS.CR._QRel,_===_ n) u v) →
+                    KB._≈_ (scal u) (QS.corr r • scal v)
+
+  Realises : (n : ℕ) → GeneratorData n → Set
+  Realises n gd = Evaluation.Realises-corr n (γᶜ n gd)
+
+  ----------------------------------------------------------------------
+  -- The split instance, and why corr rules it out
+  --
+  -- c ≡ ε is a cocycle, and the extension it names is the DIRECT product
+  -- A × H: the one in which w ↦ (ε , w) is a homomorphic section.  It
+  -- needs no generator data — and it cannot realise corr.
+
+  γᶜ-split : (n : ℕ) → Cocycle (A n) (H n)
+  γᶜ-split n = CE.trivialCocycle (A n) (H n)
+
+  Direct-group : (n : ℕ) → Group 0ℓ 0ℓ
+  Direct-group n = CE.group (A n) (H n) (γᶜ-split n)
+
+  -- With the trivial cocycle nothing accumulates: every circuit has
+  -- scalar ε.
+  split-scal : ∀ n u → KB._≈_ (Evaluation.scal n (γᶜ-split n) u) ε
+  split-scal n [ a ]ʷ  = PB.refl
+  split-scal n ε       = PB.refl
+  split-scal n (u • v) =
+    KB.trans KB.right-unit
+      (KB.trans (KB.cong (split-scal n u) (split-scal n v)) KB.left-unit)
+
+  -- So a split cocycle realises corr only if the one correction word is
+  -- itself trivial.  It is not: ω has order p, and (p² - 1)/8 ≡ -1/8 is
+  -- never 0 mod p.  order-SH alone makes the extension non-split.
+  split-forces : ∀ n → Evaluation.Realises-corr (₁₊ n) (γᶜ-split (₁₊ n)) →
+                 KB._≈_ ε QS.ω^SH
+  split-forces n real =
+    KB.trans (KB.sym (split-scal (₁₊ n) ((Pap.S • Pap.H) ^ 3)))
+      (KB.trans (real QS.CR.order-SH)
+        (KB.trans (KB.cong KB.refl (split-scal (₁₊ n) ε)) KB.right-unit))
