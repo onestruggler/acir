@@ -406,6 +406,109 @@ module Generator-Data
             }
 
     ------------------------------------------------------------------
+    -- Generator data from a factor set
+    --
+    -- The converse direction, and the cheap one: a factor set that is
+    -- already known — measured, say, as the defect of a lifting — hands
+    -- over the generator data, hence the whole cocycle.
+    --
+    -- The given factor set need not be valued in K.  It is valued in an
+    -- abelian group A, transported by any homomorphic `emb`, which is
+    -- what lets a defect counted in ℤ/N feed a K whose elements are
+    -- WORDS.  Its four laws are taken as arguments rather than as a
+    -- FactorSet record, so that no action on A has to be produced to
+    -- state them.
+    --
+    -- The action must be trivial: `f`'s third clause acts on the
+    -- recursive call, and a transported factor set has nothing to act
+    -- with.  Both central extensions this serves satisfy it definitionally.
+    --
+    -- The content is `agree`: f, extended from G by the cocycle identity,
+    -- IS the given factor set at every pair of words.  Induction on the
+    -- first argument — ε and [ a ]ʷ are the factor set's left
+    -- normalisation and the definition of G, and for u • u' the third
+    -- clause of f is the cocycle identity solved for f (u • u') v, which
+    -- the factor set satisfies too, so the two agree by cancellation.
+    -- Nothing in it inspects the factor set: only the four laws.  G-cong
+    -- and f-axiom then both come from its congruence, and G-ε from its
+    -- right normalisation.
+    --
+    -- Note for clients: name the factor set in a MODULE PARAMETER, not
+    -- in a definition.  If its value comes from an existence proof, a
+    -- definition mentioning it forces the proof to weak head normal form
+    -- at every conversion check; as a parameter it stays neutral, and
+    -- the one application at the end is only type-checked.
+
+    module From-FactorSet
+      (act-trivial : ∀ u w → act u w K.≈ w)
+      (A : AbelianGroup 0ℓ 0ℓ)
+      (let module A = AbelianGroup A)
+      (emb    : A.Carrier → Word Y)
+      (emb-cong : ∀ {j k} → j A.≈ k → emb j K.≈ emb k)
+      (emb-ε  : emb A.ε K.≈ K.ε)
+      (emb-∙  : ∀ j k → emb (j A.∙ k) K.≈ (emb j K.∙ emb k))
+      (fa     : Word X → Word X → A.Carrier)
+      (fa-cong : ∀ {u u' v v'} → u Q.≈ u' → v Q.≈ v' → fa u v A.≈ fa u' v')
+      (fa-εˡ  : ∀ v → fa ε v A.≈ A.ε)
+      (fa-εʳ  : ∀ u → fa u ε A.≈ A.ε)
+      (fa-cocycle : ∀ u v w →
+                    (fa u v A.∙ fa (u • v) w) A.≈ (fa v w A.∙ fa u (v • w)))
+      where
+
+      -- The correction one generator carries against a word.
+      G : X → Word X → Word Y
+      G a v = emb (fa [ a ]ʷ v)
+
+      -- f, extended from that, is the given factor set.
+      agree : ∀ u v → f G u v K.≈ emb (fa u v)
+      agree ε        v = K.sym (K.trans (emb-cong (fa-εˡ v)) emb-ε)
+      agree [ a ]ʷ   v = K.refl
+      agree (u • u') v = begin
+        ((f G u u') K.⁻¹ K.∙ act u (f G u' v)) K.∙ f G u (u' • v)
+          ≈⟨ K.∙-congʳ (K.∙-congˡ (act-trivial u (f G u' v))) ⟩
+        ((f G u u') K.⁻¹ K.∙ f G u' v) K.∙ f G u (u' • v)
+          ≈⟨ K.∙-cong (K.∙-cong (K.⁻¹-cong (agree u u')) (agree u' v))
+                      (agree u (u' • v)) ⟩
+        (a₁ K.⁻¹ K.∙ b₁) K.∙ c₁       ≈⟨ K.assoc _ _ _ ⟩
+        a₁ K.⁻¹ K.∙ (b₁ K.∙ c₁)       ≈⟨ K.∙-congˡ (K.sym split) ⟩
+        a₁ K.⁻¹ K.∙ (a₁ K.∙ d₁)       ≈⟨ K.sym (K.assoc _ _ _) ⟩
+        (a₁ K.⁻¹ K.∙ a₁) K.∙ d₁       ≈⟨ K.∙-congʳ (K.inverseˡ a₁) ⟩
+        K.ε K.∙ d₁                    ≈⟨ K.identityˡ d₁ ⟩
+        d₁ ∎
+        where
+        a₁ = emb (fa u u')
+        b₁ = emb (fa u' v)
+        c₁ = emb (fa u (u' • v))
+        d₁ = emb (fa (u • u') v)
+
+        -- The factor set's cocycle identity, transported.
+        split : (a₁ K.∙ d₁) K.≈ (b₁ K.∙ c₁)
+        split = begin
+          a₁ K.∙ d₁                        ≈⟨ K.sym (emb-∙ (fa u u') (fa (u • u') v)) ⟩
+          emb (fa u u' A.∙ fa (u • u') v)  ≈⟨ emb-cong (fa-cocycle u u' v) ⟩
+          emb (fa u' v A.∙ fa u (u' • v))  ≈⟨ emb-∙ (fa u' v) (fa u (u' • v)) ⟩
+          b₁ K.∙ c₁ ∎
+
+      -- The three conditions the generator data has to meet.
+
+      G-cong : ∀ a {v v'} → v Q.≈ v' → G a v K.≈ G a v'
+      G-cong a e = emb-cong (fa-cong Q.refl e)
+
+      G-ε : ∀ a → G a ε K.≈ K.ε
+      G-ε a = K.trans (emb-cong (fa-εʳ [ a ]ʷ)) emb-ε
+
+      G-axiom : ∀ {u u'} → ΓQ u u' → ∀ v → f G u v K.≈ f G u' v
+      G-axiom {u} {u'} r v = begin
+        f G u v         ≈⟨ agree u v ⟩
+        emb (fa u v)    ≈⟨ emb-cong (fa-cong (QB.axiom r) Q.refl) ⟩
+        emb (fa u' v)   ≈⟨ K.sym (agree u' v) ⟩
+        f G u' v ∎
+
+      -- … and hence the factor set over K itself.
+      factorSet-of : FactorSet K Q φ
+      factorSet-of = factorSet G G-cong G-ε G-axiom
+
+    ------------------------------------------------------------------
     -- Generator pairs
     --
     -- G's second argument can be narrowed from Word X to X, at the cost

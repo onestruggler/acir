@@ -650,20 +650,22 @@ module Presented-Extension
   import Examples.Groups.Clifford.Qupit.Syntactics
     p-3 p-prime g* g-gen as QS
 
-  private
-    module KB = PB QS.Scalar-relation
+  module KB = PB QS.Scalar-relation
 
+  private
     -- One generator, so any two of them are the same one.
     gen-comm : ∀ (x y : QS.ScalarGen) →
                PB._≈_ QS.Scalar-relation ([ x ]ʷ • [ y ]ʷ) ([ y ]ʷ • [ x ]ʷ)
     gen-comm tt tt = PB.refl
 
-    -- Both presented groups, and the machinery that turns generator-level
-    -- data into a factor set, come from CocycleGen.
-    module CGn (m : ℕ) =
-      Generator-Data QS.Scalar-relation (QS.CR._QRel,_===_ m)
-                     (Cy.grouplike p-1) (PapL.Paper-GroupLike.grouplike {m})
-                     gen-comm
+  -- Both presented groups, and the machinery that turns generator-level
+  -- data into a factor set, come from CocycleGen.  Public: the field
+  -- types of GeneratorData below mention CGn.f, so a client supplying the
+  -- record has to be able to name it.
+  module CGn (m : ℕ) =
+    Generator-Data QS.Scalar-relation (QS.CR._QRel,_===_ m)
+                   (Cy.grouplike p-1) (PapL.Paper-GroupLike.grouplike {m})
+                   gen-comm
 
   ----------------------------------------------------------------------
   -- A and H
