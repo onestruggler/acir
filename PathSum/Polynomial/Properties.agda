@@ -19,10 +19,12 @@ open import Data.Fin.Subset.Properties using
   (∣⊥∣≡0; ∣⁅x⁆∣≡1; ∪-identityʳ; drop-not-there; drop-∷-⊆; q⊆p∪q;
    x∈⁅x⁆; _⊆?_)
 open import Data.Integer.Base using (ℤ; 0ℤ; 1ℤ; +_)
-  renaming (-_ to -ℤ_; _^_ to _^ℤ_; _+_ to _+ℤ_; _*_ to _*ℤ_)
+  renaming (-_ to -ℤ_; _^_ to _^ℤ_; _+_ to _+ℤ_; _*_ to _*ℤ_;
+            _-_ to _-ℤ_)
 open import Data.Integer.Properties using
   (+-identityˡ; +-identityʳ; *-identityˡ; *-identityʳ; *-assoc; *-zeroʳ;
-   *-distribˡ-+; *-distribʳ-+; *-cancelˡ-≡; +-assoc; +-inverseˡ; pos-*)
+   *-distribˡ-+; *-distribʳ-+; *-cancelˡ-≡; +-assoc; +-inverseˡ;
+   neg-distrib-+; pos-*)
 open import Data.Integer.Divisibility.Signed using
   (_∣_; ∣-refl; ∣-trans; ∣ᵤ⇒∣; ∣m∣n⇒∣m+n; ∣n⇒∣m*n; ∣m⇒∣m*n)
 open import Data.Nat.Base using
@@ -554,6 +556,113 @@ subset-sum {suc k} (outside ∷ A) =
   trans (cong (_+ℤ Σsub (λ γ → if (γ ⊆ᵇ A) then negpow (∣ γ ∣) else 0ℤ))
               (Σsub-0 {k}))
         (trans (+-identityˡ _) (subset-sum A))
+
+
+------------------------------------------------------------------------
+-- Evaluation is a homomorphism
+
+Σmon-0 : Σmon {n} {m} (λ _ → 0ℤ) ≡ 0ℤ
+Σmon-0 {n} {m} = trans
+  (Σsub-cong {k = n} {f = λ _ → Σsub {m} (λ _ → 0ℤ)} {g = λ _ → 0ℤ}
+             (λ _ → Σsub-0 {m}))
+  (Σsub-0 {n})
+
+Σmon-+ : (f g : Mon n m → ℤ) →
+         Σmon (λ γ → f γ +ℤ g γ) ≡ Σmon f +ℤ Σmon g
+Σmon-+ {n} {m} f g = trans
+  (Σsub-cong (λ α → Σsub-+ (λ β → f (α , β)) (λ β → g (α , β))))
+  (Σsub-+ (λ α → Σsub (λ β → f (α , β)))
+          (λ α → Σsub (λ β → g (α , β))))
+
+Σsub-neg : (f : Subset k → ℤ) → Σsub (λ s → -ℤ f s) ≡ -ℤ Σsub f
+Σsub-neg {k = zero}  f = refl
+Σsub-neg {k = suc k} f = trans
+  (cong₂ _+ℤ_ (Σsub-neg (λ s → f (inside ∷ s)))
+              (Σsub-neg (λ s → f (outside ∷ s))))
+  (sym (neg-distrib-+ (Σsub (λ s → f (inside ∷ s)))
+                      (Σsub (λ s → f (outside ∷ s)))))
+
+Σmon-neg : (f : Mon n m → ℤ) → Σmon (λ γ → -ℤ f γ) ≡ -ℤ Σmon f
+Σmon-neg f = trans (Σsub-cong (λ α → Σsub-neg (λ β → f (α , β))))
+                   (Σsub-neg (λ α → Σsub (λ β → f (α , β))))
+
+private
+  if-0 : ∀ (b : Bool) → (if b then 0ℤ else 0ℤ) ≡ 0ℤ
+  if-0 true  = refl
+  if-0 false = refl
+
+eval-+ᴾ : (P Q : Poly n m) (x : Fin n → Bool) (y : Fin m → Bool) →
+          eval (P +ᴾ Q) x y ≡ eval P x y +ℤ eval Q x y
+eval-+ᴾ P Q x y = trans (Σmon-cong per)
+  (Σmon-+ (λ γ → if satᵐ γ x y then P γ else 0ℤ)
+          (λ γ → if satᵐ γ x y then Q γ else 0ℤ))
+  where
+  per : ∀ γ → (if satᵐ γ x y then (P γ +ℤ Q γ) else 0ℤ) ≡
+              (if satᵐ γ x y then P γ else 0ℤ) +ℤ
+              (if satᵐ γ x y then Q γ else 0ℤ)
+  per γ with satᵐ γ x y
+  ... | true  = refl
+  ... | false = refl
+
+eval-neg : (P : Poly n m) (x : Fin n → Bool) (y : Fin m → Bool) →
+           eval (λ γ → -ℤ P γ) x y ≡ -ℤ eval P x y
+eval-neg P x y = trans (Σmon-cong per)
+  (Σmon-neg (λ γ → if satᵐ γ x y then P γ else 0ℤ))
+  where
+  per : ∀ γ → (if satᵐ γ x y then (-ℤ P γ) else 0ℤ) ≡
+              -ℤ (if satᵐ γ x y then P γ else 0ℤ)
+  per γ with satᵐ γ x y
+  ... | true  = refl
+  ... | false = refl
+
+eval-−ᴾ : (P Q : Poly n m) (x : Fin n → Bool) (y : Fin m → Bool) →
+          eval (P -ᴾ Q) x y ≡ eval P x y -ℤ eval Q x y
+eval-−ᴾ P Q x y = trans (eval-+ᴾ P (λ γ → -ℤ Q γ) x y)
+                        (cong (eval P x y +ℤ_) (eval-neg Q x y))
+
+eval-·ᴾ : (z : ℤ) (P : Poly n m) (x : Fin n → Bool) (y : Fin m → Bool) →
+          eval (z ·ᴾ P) x y ≡ z *ℤ eval P x y
+eval-·ᴾ z P x y = trans (Σmon-cong (λ γ → if-scale (satᵐ γ x y) z (P γ)))
+  (Σmon-scale {z = z} (λ γ → if satᵐ γ x y then P γ else 0ℤ))
+
+eval-κ : (z : ℤ) (x : Fin n → Bool) (y : Fin m → Bool) →
+         eval (κ z) x y ≡ z
+eval-κ {n} {m} z x y = trans
+  (Σmon-⊥ (λ γ → if satᵐ γ x y then κ z γ else 0ℤ))
+  (trans (cong₂ _+ℤ_ head tail) (+-identityʳ z))
+  where
+  head : (if satᵐ (1ᵐ {n} {m}) x y then κ z 1ᵐ else 0ℤ) ≡ z
+  head = trans (cong (λ b → if b then κ z (1ᵐ {n} {m}) else 0ℤ)
+                     (satᵐ-1ᵐ x y)) at-1ᵐ
+    where
+    at-1ᵐ : κ z (1ᵐ {n} {m}) ≡ z
+    at-1ᵐ with (1ᵐ {n} {m}) ≟ᵐ 1ᵐ
+    ... | yes _  = refl
+    ... | no  ¬p = contradiction refl ¬p
+
+  tail : Σmon (λ γ → if emptyᵐ γ then 0ℤ
+                     else (if satᵐ γ x y then κ z γ else 0ℤ)) ≡ 0ℤ
+  tail = trans (Σmon-cong per) (Σmon-0 {n} {m})
+    where
+    per : ∀ γ → (if emptyᵐ γ then 0ℤ
+                 else (if satᵐ γ x y then κ z γ else 0ℤ)) ≡ 0ℤ
+    per γ = aux γ (emptyᵐ γ) refl
+      where
+      aux : ∀ γ b → emptyᵐ γ ≡ b →
+            (if b then 0ℤ else (if satᵐ γ x y then κ z γ else 0ℤ)) ≡ 0ℤ
+      aux γ true  eq = refl
+      aux γ false eq = trans
+        (cong (λ w → if satᵐ γ x y then w else 0ℤ)
+              (cong (λ b → if b then z else 0ℤ) (trans (⌊≟ᵐ1ᵐ⌋ γ) eq)))
+        (if-0 (satᵐ γ x y))
+
+-- Congruent polynomials have congruent values.
+
+eval-≈ : ∀ {d} (P Q : Poly n m) → P ≈[ d ] Q →
+         (x : Fin n → Bool) (y : Fin m → Bool) →
+         d ∣ (eval P x y -ℤ eval Q x y)
+eval-≈ {d = d} P Q P≈Q x y = Eq.subst (d ∣_) (eval-−ᴾ P Q x y)
+  (eval-∣ (P -ᴾ Q) P≈Q x y)
 
 
 Σsub-scaleʳ : ∀ {z} (f : Subset k → ℤ) →

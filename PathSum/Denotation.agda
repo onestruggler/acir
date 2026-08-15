@@ -22,6 +22,11 @@
 -- PathSum.Cyclotomic.scale-injective.
 ------------------------------------------------------------------------
 
+-- The interference proofs below normalise sums over every assignment
+-- to the path variables; under call-by-need the shared subterms of
+-- those sums are duplicated and the module exhausts memory, so this
+-- file is checked call-by-name.
+
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat.Base using (ℕ)
@@ -33,14 +38,17 @@ open import Data.Bool.Base using (Bool; true; false; not; _∧_; _xor_;
 open import Data.Bool.Properties using (∧-zeroʳ)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Fin.Subset using (Subset; inside)
-open import Data.Integer.Base using (ℤ; 0ℤ; +_; _-_; _*_)
+open import Data.Integer.Base using (ℤ; 0ℤ; +_; -_; _-_; _*_)
   renaming (_+_ to _+ℤ_)
 open import Data.Integer.Divisibility.Signed using
-  (_∣_; _∣?_; ∣m∣n⇒∣m+n; ∣m+n∣m⇒∣n)
-open import Data.Integer.Properties using (+-identityˡ; +-identityʳ)
+  (_∣_; _∣?_; ∣-refl; ∣m∣n⇒∣m+n; ∣m+n∣m⇒∣n)
+open import Data.Integer.Properties using
+  (+-assoc; +-identityˡ; +-identityʳ; +-inverseˡ; +-inverseʳ;
+   *-identityʳ; *-zeroʳ; neg-involutive)
 open import Data.Integer.Solver using (module +-*-Solver)
 open import Data.Nat.Base using (zero; suc) renaming (_+_ to _ℕ+_)
 open import Data.Product.Base using (_,_)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Vec.Base using (_∷_; here)
 open import Relation.Binary.PropositionalEquality using
   (_≡_; refl; sym; trans; cong; cong₂)
@@ -222,32 +230,39 @@ private
   twice : ∀ q → q +ℤ q ≡ (+ 2) * q
   twice = solve 1 (λ q → q :+ q := con (+ 2) :* q) refl
 
+-- The outputs of every reduct are the y₀-free parts of ξ's, so the
+-- set of paths hitting a given output does not change.
+
+module _ {n k m : ℕ} (ξ : PathSum n k (suc m))
+         (eqf : ∀ w → NoVar (+ 2) y₀ (out ξ w))
+         where
+
+  head-out : ∀ w γ → (+ 2) ∣ head-part (out ξ w) γ
+  head-out w (α , β) = eqf w (α , inside ∷ β) here
+
+  out-bit : ∀ (b : Bool) (x : Assign n) (y : Assign m) w →
+            bit (eval (out ξ w) x (extend b y)) ≡
+            bit (eval (tail-part (out ξ w)) x y)
+  out-bit false x y w = cong bit (eval-false (out ξ w) x y)
+  out-bit true  x y w = trans (cong bit (eval-true (out ξ w) x y))
+    (bit-even _ (eval-∣ (head-part (out ξ w)) (head-out w) x y))
+
+  same-hits : ∀ (b : Bool) (x z : Assign n) (y : Assign m) →
+              hits ξ x (extend b y) z ≡
+              allFin (λ w → eqᵇ (bit (eval (tail-part (out ξ w)) x y)) (z w))
+  same-hits b x z y =
+    allFin-cong (λ w → cong (λ v → eqᵇ v (z w)) (out-bit b x y w))
+
+
 module _ {n k m : ℕ} (ξ : PathSum n (suc (suc k)) (suc m))
          (eqP : head-part (phase ξ) ≈[ pow M ] 0ᴾ)
          (eqf : ∀ w → NoVar (+ 2) y₀ (out ξ w))
          where
 
   private
-    -- Every coefficient of the y₀-part of an output is even, and of
-    -- the y₀-part of the phase is zero modulo 2^M.
-    head-out : ∀ w γ → (+ 2) ∣ head-part (out ξ w) γ
-    head-out w (α , β) = eqf w (α , inside ∷ β) here
-
     head-phase : ∀ γ → pow M ∣ head-part (phase ξ) γ
     head-phase γ = Eq.subst (pow M ∣_)
       (+-identityʳ (head-part (phase ξ) γ)) (eqP γ)
-
-    out-bit : ∀ (b : Bool) (x : Assign n) (y : Assign m) w →
-              bit (eval (out ξ w) x (extend b y)) ≡
-              bit (eval (tail-part (out ξ w)) x y)
-    out-bit false x y w = cong bit (eval-false (out ξ w) x y)
-    out-bit true  x y w = trans (cong bit (eval-true (out ξ w) x y))
-      (bit-even _ (eval-∣ (head-part (out ξ w)) (head-out w) x y))
-
-    same-hits : ∀ (b : Bool) (x z : Assign n) (y : Assign m) →
-                hits ξ x (extend b y) z ≡ hits (elim-reduct ξ) x y z
-    same-hits b x z y =
-      allFin-cong (λ w → cong (λ v → eqᵇ v (z w)) (out-bit b x y w))
 
     same-phase : ∀ (b : Bool) (x : Assign n) (y : Assign m) →
                  zpow (eval (phase ξ) x (extend b y)) ≐
@@ -276,7 +291,7 @@ module _ {n k m : ℕ} (ξ : PathSum n (suc (suc k)) (suc m))
             then zpow (eval (phase ξ) x (extend b y)) else 0ᴬ)
            ≐ (if hits (elim-reduct ξ) x y z
               then zpow (eval (tail-part (phase ξ)) x y) else 0ᴬ)
-  branch b x z y = if-cong (same-hits b x z y) (same-phase b x y)
+  branch b x z y = if-cong (same-hits ξ eqf b x z y) (same-phase b x y)
 
   amp-elim : ∀ x z → amp ξ x z ≐ (+ 2) ·ᴬ amp (elim-reduct ξ) x z
   amp-elim x z i = trans
@@ -288,3 +303,212 @@ module _ {n k m : ℕ} (ξ : PathSum n (suc (suc k)) (suc m))
   elim-sound x z i = trans (scale-map k (amp-elim x z) i)
     (trans (scale-·ᴬ k (+ 2) (amp (elim-reduct ξ) x z) i)
            (sym (√2·-twice (scale k (amp (elim-reduct ξ) x z)) i)))
+
+
+------------------------------------------------------------------------
+-- Soundness of [ω]
+
+-- Summing the two branches of y₀ over a phase ¼y₀ + ½y₀Q + R gives
+-- 1 + i(-1)^Q times e^{2πiR}, which is √2 e^{2πi(⅛ - ¼Q)} times it.
+-- That is the identity below, once Q is known to be 0 or 1.
+
+private
+  ⅛+⅛ : ⅛ +ℤ ⅛ ≡ ¼
+  ⅛+⅛ = trans (double ⅛) (sym (pow-suc M₀))
+    where
+    double : ∀ u → u +ℤ u ≡ u * (+ 2)
+    double = solve 1 (λ u → u :+ u := u :* con (+ 2)) refl
+
+  ¼+¼ : ¼ +ℤ ¼ ≡ ½
+  ¼+¼ = trans (double ¼) (sym (pow-suc (suc M₀)))
+    where
+    double : ∀ u → u +ℤ u ≡ u * (+ 2)
+    double = solve 1 (λ u → u :+ u := u :* con (+ 2)) refl
+
+  ½+½ : ½ +ℤ ½ ≡ pow M
+  ½+½ = trans (double ½) (sym (pow-suc (suc (suc M₀))))
+    where
+    double : ∀ u → u +ℤ u ≡ u * (+ 2)
+    double = solve 1 (λ u → u :+ u := u :* con (+ 2)) refl
+
+  drop-t : ∀ a b t → (a +ℤ t) - (b +ℤ t) ≡ a - b
+  drop-t = solve 3 (λ a b t → (a :+ t) :- (b :+ t) := a :- b) refl
+
+  pull : ∀ u t → u +ℤ (u +ℤ t) ≡ (u +ℤ u) +ℤ t
+  pull = solve 2 (λ u t → u :+ (u :+ t) := (u :+ u) :+ t) refl
+
+  pull′ : ∀ w u v t → w +ℤ ((u - v) +ℤ t) ≡ ((w +ℤ u) - v) +ℤ t
+  pull′ = solve 4 (λ w u v t →
+    w :+ ((u :- v) :+ t) := ((w :+ u) :- v) :+ t) refl
+
+  cancel-neg : ∀ u t → (- u) +ℤ (u +ℤ t) ≡ t
+  cancel-neg u t = trans (sym (+-assoc (- u) u t))
+    (trans (cong (_+ℤ t) (+-inverseˡ u)) (+-identityˡ t))
+
+  -- √2 · ζ^(⅛+t) = ζ^(¼+t) + ζ^t
+  ω-split₀ : ∀ t → √2· (zpow (⅛ +ℤ t)) ≐ zpow (¼ +ℤ t) +ᴬ zpow t
+  ω-split₀ t i = trans (√2·-zpow (⅛ +ℤ t) i)
+    (Eq.cong₂ _+ℤ_
+      (cong (λ w → zpow w i) (trans (pull ⅛ t) (cong (_+ℤ t) ⅛+⅛)))
+      (cong (λ w → zpow w i) (cancel-neg ⅛ t)))
+
+  -- √2 · ζ^(⅛-¼+t) = ζ^t + ζ^(-¼+t)
+  ω-split₁ : ∀ t → √2· (zpow ((⅛ - ¼) +ℤ t)) ≐
+                   zpow t +ᴬ zpow ((- ¼) +ℤ t)
+  ω-split₁ t i = trans (√2·-zpow ((⅛ - ¼) +ℤ t) i)
+    (Eq.cong₂ _+ℤ_ (cong (λ w → zpow w i) fst) (cong (λ w → zpow w i) snd))
+    where
+    fst : ⅛ +ℤ ((⅛ - ¼) +ℤ t) ≡ t
+    fst = trans (pull′ ⅛ ⅛ ¼ t)
+      (trans (cong (λ w → (w - ¼) +ℤ t) ⅛+⅛)
+        (trans (cong (_+ℤ t) (+-inverseʳ ¼)) (+-identityˡ t)))
+
+    snd : (- ⅛) +ℤ ((⅛ - ¼) +ℤ t) ≡ (- ¼) +ℤ t
+    snd = trans (pull′ (- ⅛) ⅛ ¼ t)
+      (trans (cong (λ w → (w - ¼) +ℤ t) (+-inverseˡ ⅛))
+             (cong (_+ℤ t) (+-identityˡ (- ¼))))
+
+  interfere₀ : (hv t : ℤ) → pow M ∣ (hv - ¼) →
+               (zpow (hv +ℤ t) +ᴬ zpow t) ≐ √2· (zpow (⅛ +ℤ t))
+  interfere₀ hv t div i = trans
+    (Eq.cong₂ _+ℤ_
+      (zpow-cong {hv +ℤ t} {¼ +ℤ t}
+        (Eq.subst ((+ N) ∣_) (sym (drop-t hv ¼ t)) div) i)
+      refl)
+    (sym (ω-split₀ t i))
+
+  interfere₁ : (hv t : ℤ) → pow M ∣ (hv - (¼ +ℤ ½)) →
+               (zpow (hv +ℤ t) +ᴬ zpow t) ≐ √2· (zpow ((⅛ - ¼) +ℤ t))
+  interfere₁ hv t div i = trans
+    (Eq.cong₂ _+ℤ_
+      (trans (zpow-cong {hv +ℤ t} {(¼ +ℤ ½) +ℤ t}
+               (Eq.subst ((+ N) ∣_) (sym (drop-t hv (¼ +ℤ ½) t)) div) i)
+             (zpow-cong {(¼ +ℤ ½) +ℤ t} {(- ¼) +ℤ t} big i))
+      refl)
+    (trans (+ᴬ-comm (zpow ((- ¼) +ℤ t)) (zpow t) i) (sym (ω-split₁ t i)))
+    where
+    reshape : ∀ a b w t′ → ((a +ℤ b) +ℤ t′) - (w +ℤ t′) ≡ (a +ℤ b) - w
+    reshape = solve 4 (λ a b w t′ →
+      ((a :+ b) :+ t′) :- (w :+ t′) := (a :+ b) :- w) refl
+
+    regroup : ∀ a b → (a +ℤ b) +ℤ a ≡ (a +ℤ a) +ℤ b
+    regroup = solve 2 (λ a b → (a :+ b) :+ a := (a :+ a) :+ b) refl
+
+    value : ((¼ +ℤ ½) +ℤ t) - ((- ¼) +ℤ t) ≡ pow M
+    value = trans (reshape ¼ ½ (- ¼) t)
+      (trans (cong ((¼ +ℤ ½) +ℤ_) (neg-involutive ¼))
+        (trans (regroup ¼ ½) (trans (cong (_+ℤ ½) ¼+¼) ½+½)))
+
+    big : (+ N) ∣ (((¼ +ℤ ½) +ℤ t) - ((- ¼) +ℤ t))
+    big = Eq.subst ((+ N) ∣_) (sym value) ∣-refl
+
+module _ {n k m : ℕ} (ξ : PathSum n (suc k) (suc m)) (c : Bool)
+         (S : Mon n m)
+         (eqP : head-part (phase ξ) ≈[ pow M ] (κ ¼ +ᴾ (½ ·ᴾ liftXor c S)))
+         (eqf : ∀ w → NoVar (+ 2) y₀ (out ξ w))
+         where
+
+  private
+    red : PathSum n k m
+    red = ω-reduct ξ c S
+
+    qv : Assign n → Assign m → ℤ
+    qv x y = eval (liftXor c S) x y
+
+    tv : Assign n → Assign m → ℤ
+    tv x y = eval (tail-part (phase ξ)) x y
+
+    red-eval : ∀ x y → eval (phase red) x y ≡
+               (⅛ - (¼ * qv x y)) +ℤ tv x y
+    red-eval x y = trans
+      (eval-+ᴾ (κ ⅛ -ᴾ (¼ ·ᴾ liftXor c S)) (tail-part (phase ξ)) x y)
+      (cong (_+ℤ tv x y)
+        (trans (eval-−ᴾ (κ ⅛) (¼ ·ᴾ liftXor c S) x y)
+          (cong₂ _-_ (eval-κ ⅛ x y) (eval-·ᴾ ¼ (liftXor c S) x y))))
+
+    head-eval : ∀ x y →
+                pow M ∣ (eval (head-part (phase ξ)) x y -
+                         (¼ +ℤ (½ * qv x y)))
+    head-eval x y = Eq.subst
+      (λ w → pow M ∣ (eval (head-part (phase ξ)) x y - w))
+      (trans (eval-+ᴾ (κ ¼) (½ ·ᴾ liftXor c S) x y)
+             (cong₂ _+ℤ_ (eval-κ ¼ x y) (eval-·ᴾ ½ (liftXor c S) x y)))
+      (eval-≈ (head-part (phase ξ)) (κ ¼ +ᴾ (½ ·ᴾ liftXor c S)) eqP x y)
+
+    -- The two branches of y₀ interfere into √2 times the reduct.
+
+    core : ∀ x y →
+           (zpow (eval (head-part (phase ξ)) x y +ℤ tv x y) +ᴬ zpow (tv x y))
+           ≐ √2· (zpow ((⅛ - (¼ * qv x y)) +ℤ tv x y))
+    core x y with liftXor-value c S x y
+    ... | inj₁ q≡0 = λ i → trans
+      (interfere₀ (eval (head-part (phase ξ)) x y) (tv x y) div i)
+      (cong (λ w → √2· (zpow (w +ℤ tv x y)) i) (sym at0))
+      where
+      at0 : ⅛ - (¼ * qv x y) ≡ ⅛
+      at0 = trans (cong (λ w → ⅛ - (¼ * w)) q≡0)
+                  (trans (cong (λ v → ⅛ - v) (*-zeroʳ ¼)) (+-identityʳ ⅛))
+
+      div : pow M ∣ (eval (head-part (phase ξ)) x y - ¼)
+      div = Eq.subst (λ w → pow M ∣ (eval (head-part (phase ξ)) x y - w))
+        (trans (cong (λ w → ¼ +ℤ (½ * w)) q≡0)
+               (trans (cong (λ v → ¼ +ℤ v) (*-zeroʳ ½)) (+-identityʳ ¼)))
+        (head-eval x y)
+    ... | inj₂ q≡1 = λ i → trans
+      (interfere₁ (eval (head-part (phase ξ)) x y) (tv x y) div i)
+      (cong (λ w → √2· (zpow (w +ℤ tv x y)) i) (sym at1))
+      where
+      at1 : ⅛ - (¼ * qv x y) ≡ ⅛ - ¼
+      at1 = trans (cong (λ w → ⅛ - (¼ * w)) q≡1)
+                  (cong (λ v → ⅛ - v) (*-identityʳ ¼))
+
+      div : pow M ∣ (eval (head-part (phase ξ)) x y - (¼ +ℤ ½))
+      div = Eq.subst (λ w → pow M ∣ (eval (head-part (phase ξ)) x y - w))
+        (trans (cong (λ w → ¼ +ℤ (½ * w)) q≡1)
+               (cong (λ v → ¼ +ℤ v) (*-identityʳ ½)))
+        (head-eval x y)
+
+    -- Stated over an arbitrary ζ carrying the reduct's denotational
+    -- data, so that ω-reduct never unfolds inside the proof.
+
+    if-guard : ∀ {p q : Bool} {a : Amp} → p ≡ q →
+               (if p then a else 0ᴬ) ≐ (if q then a else 0ᴬ)
+    if-guard refl _ = refl
+
+    if-sum : ∀ (p : Bool) (a b r : Amp) → (a +ᴬ b) ≐ √2· r →
+             ((if p then a else 0ᴬ) +ᴬ (if p then b else 0ᴬ)) ≐
+             √2· (if p then r else 0ᴬ)
+    if-sum true  a b r h = h
+    if-sum false a b r h = λ i → sym (√2·-0ᴬ i)
+
+    ω-step : (ζ : PathSum n k m) →
+             (∀ x y z → hits ζ x y z ≡
+                allFin (λ w → eqᵇ (bit (eval (tail-part (out ξ w)) x y))
+                                  (z w))) →
+             (∀ x y → eval (phase ζ) x y ≡
+                      (⅛ - (¼ * qv x y)) +ℤ tv x y) →
+             ∀ (x z : Assign n) (y : Assign m) →
+             ((if hits ξ x (extend true y) z
+               then zpow (eval (phase ξ) x (extend true y)) else 0ᴬ)
+              +ᴬ
+              (if hits ξ x (extend false y) z
+               then zpow (eval (phase ξ) x (extend false y)) else 0ᴬ))
+             ≐ √2· (if hits ζ x y z then zpow (eval (phase ζ) x y) else 0ᴬ)
+    ω-step ζ hζ pζ x z y i = trans
+      (Eq.cong₂ _+ℤ_
+        (if-guard (trans (same-hits ξ eqf true x z y) (sym (hζ x y z))) i)
+        (if-guard (trans (same-hits ξ eqf false x z y) (sym (hζ x y z))) i))
+      (if-sum (hits ζ x y z)
+        (zpow (eval (phase ξ) x (extend true y)))
+        (zpow (eval (phase ξ) x (extend false y)))
+        (zpow (eval (phase ζ) x y)) inner i)
+      where
+      inner : (zpow (eval (phase ξ) x (extend true y)) +ᴬ
+               zpow (eval (phase ξ) x (extend false y)))
+              ≐ √2· (zpow (eval (phase ζ) x y))
+      inner i″ = trans
+        (Eq.cong₂ _+ℤ_
+          (cong (λ w → zpow w i″) (eval-true (phase ξ) x y))
+          (cong (λ w → zpow w i″) (eval-false (phase ξ) x y)))
+        (trans (core x y i″)
+               (cong (λ w → √2· (zpow w) i″) (sym (pζ x y))))

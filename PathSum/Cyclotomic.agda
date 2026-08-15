@@ -31,7 +31,7 @@ open import Data.Integer.Divisibility.Signed using
   (_∣_; _∣?_; divides; ∣-refl; ∣ᵤ⇒∣; ∣⇒∣ᵤ; ∣m∣n⇒∣m+n; ∣m∣n⇒∣m-n;
    ∣m+n∣m⇒∣n; ∣m+n∣n⇒∣m)
 open import Data.Integer.Properties using
-  (+-identityˡ; +-identityʳ; +-inverseˡ; +-inverseʳ; neg-involutive;
+  (+-comm; +-identityˡ; +-identityʳ; +-inverseˡ; +-inverseʳ; neg-involutive;
    neg-distrib-+; neg-distribʳ-*; *-distribˡ-+; pos-+; *-cancelˡ-≡;
    ∣i∣≡0⇒i≡0; [+m]-[+n]≡m⊖n;
    i-j≡0⇒i≡j; [1+m]⊖[1+n]≡m⊖n)
@@ -584,6 +584,39 @@ scale-map : ∀ j {a b} → a ≐ b → scale j a ≐ scale j b
 scale-map zero    a≐b = a≐b
 scale-map (suc j) a≐b = √2·-map (scale-map j a≐b)
 
++ᴬ-comm : ∀ a b → a +ᴬ b ≐ b +ᴬ a
++ᴬ-comm a b i = +-comm (a i) (b i)
+
+rot-0ᴬ : ∀ e → rot e 0ᴬ ≐ 0ᴬ
+rot-0ᴬ e i with classify ((+ toℕ i) - e)
+... | pos _ _ = refl
+... | neg _ _ = refl
+
+Σᴮ-+ : ∀ {k} (f g : (Fin k → Bool) → Amp) →
+       Σᴮ (λ y → f y +ᴬ g y) ≐ Σᴮ f +ᴬ Σᴮ g
+Σᴮ-+ {zero}  f g i = refl
+Σᴮ-+ {suc k} f g i = trans
+  (Eq.cong₂ _+_
+    (Σᴮ-+ (λ y → f (extend true y)) (λ y → g (extend true y)) i)
+    (Σᴮ-+ (λ y → f (extend false y)) (λ y → g (extend false y)) i))
+  (shuffle (Σᴮ (λ y → f (extend true y)) i)
+           (Σᴮ (λ y → g (extend true y)) i)
+           (Σᴮ (λ y → f (extend false y)) i)
+           (Σᴮ (λ y → g (extend false y)) i))
+  where
+  shuffle : ∀ p q r s → (p + q) + (r + s) ≡ (p + r) + (q + s)
+  shuffle = solve 4 (λ p q r s →
+    (p :+ q) :+ (r :+ s) := (p :+ r) :+ (q :+ s)) refl
+
+rot-Σᴮ : ∀ {k} e (f : (Fin k → Bool) → Amp) →
+         rot e (Σᴮ f) ≐ Σᴮ (λ y → rot e (f y))
+rot-Σᴮ {zero}  e f i = refl
+rot-Σᴮ {suc k} e f i = trans
+  (rot-+ᴬ e (Σᴮ (λ y → f (extend true y)))
+            (Σᴮ (λ y → f (extend false y))) i)
+  (Eq.cong₂ _+_ (rot-Σᴮ e (λ y → f (extend true y)) i)
+                (rot-Σᴮ e (λ y → f (extend false y)) i))
+
 -- Multiplying a single power of ζ by √2 splits it in two.
 
 √2·-zpow : ∀ e → √2· (zpow e) ≐ zpow ((+ c) + e) +ᴬ zpow ((- (+ c)) + e)
@@ -593,6 +626,15 @@ scale-map (suc j) a≐b = √2·-map (scale-map j a≐b)
 scale-√2 : ∀ j a → scale j (√2· a) ≐ √2· (scale j a)
 scale-√2 zero    a _ = refl
 scale-√2 (suc j) a   = √2·-map (scale-√2 j a)
+
+√2·-0ᴬ : √2· 0ᴬ ≐ 0ᴬ
+√2·-0ᴬ i = Eq.cong₂ _+_ (rot-0ᴬ (+ c) i) (rot-0ᴬ (- (+ c)) i)
+
+√2·-Σᴮ : ∀ {k} (f : (Fin k → Bool) → Amp) →
+         √2· (Σᴮ f) ≐ Σᴮ (λ y → √2· (f y))
+√2·-Σᴮ f i = trans
+  (Eq.cong₂ _+_ (rot-Σᴮ (+ c) f i) (rot-Σᴮ (- (+ c)) f i))
+  (sym (Σᴮ-+ (λ y → rot (+ c) (f y)) (λ y → rot (- (+ c)) (f y)) i))
 
 √2·-·ᴬ : ∀ (z : ℤ) a → √2· (z ·ᴬ a) ≐ z ·ᴬ √2· a
 √2·-·ᴬ z a i = trans
