@@ -17,14 +17,14 @@ open import Data.Fin.Subset using
   (Subset; inside; outside; ⁅_⁆; ⊥; _∪_; _∩_; _∈_; _∉_; _⊆_; ∣_∣)
 open import Data.Fin.Subset.Properties using
   (∣⊥∣≡0; ∣⁅x⁆∣≡1; ∪-identityʳ; drop-not-there; drop-∷-⊆; q⊆p∪q;
-   x∈⁅x⁆; _⊆?_)
+   x∈⁅x⁆; _⊆?_; _∈?_)
 open import Data.Integer.Base using (ℤ; 0ℤ; 1ℤ; +_)
   renaming (-_ to -ℤ_; _^_ to _^ℤ_; _+_ to _+ℤ_; _*_ to _*ℤ_;
             _-_ to _-ℤ_)
 open import Data.Integer.Properties using
   (+-identityˡ; +-identityʳ; *-identityˡ; *-identityʳ; *-assoc; *-zeroʳ;
    *-distribˡ-+; *-distribʳ-+; *-cancelˡ-≡; +-assoc; +-inverseˡ;
-   neg-distrib-+; pos-*; *-comm)
+   neg-distrib-+; pos-*; *-comm; +-comm; *-zeroˡ)
 open import Data.Integer.Divisibility.Signed using
   (_∣_; ∣-refl; ∣-trans; ∣ᵤ⇒∣; ∣m∣n⇒∣m+n; ∣n⇒∣m*n; ∣m⇒∣m*n)
 open import Data.Nat.Base using
@@ -1203,3 +1203,180 @@ eval-subst {n} {m} P v c S x y =
         (trans (Σmon-cong (λ δ → factor P v c S x y δ))
                (Σmon-scale {z = eval (liftXor c S) x y}
                  (λ δ → if satᵐ δ x y then (P /ᵛ v) δ else 0ℤ)))))
+
+
+------------------------------------------------------------------------
+-- Splitting a sum at a variable
+
+-- The dual of the substitution lemma: a sum splits at any variable,
+-- the subsets omitting it each contributing twice, once with it and
+-- once without.  Combined with the substitution lemma this says that
+-- evaluating subst P v c S at an assignment is evaluating P at the
+-- assignment updated to give v the value of the form.
+
+private
+  ⌊∈?⌋-suc : ∀ {k} (i : Fin k) (b : Bool) (s : Subset k) →
+             ⌊ suc i ∈? (b ∷ s) ⌋ ≡ ⌊ i ∈? s ⌋
+  ⌊∈?⌋-suc i b s with i ∈? s
+  ... | yes _ = refl
+  ... | no  _ = refl
+
+  if-pullᵉ : ∀ (b : Bool) (g : Subset k → ℤ) →
+             Σsub (λ s → if b then 0ℤ else g s) ≡ (if b then 0ℤ else Σsub g)
+  if-pullᵉ {k = k} true  g = Σsub-0 {k}
+  if-pullᵉ         false g = refl
+
+Σsub-at : ∀ {k} (i : Fin k) (f : Subset k → ℤ) →
+          Σsub f ≡
+          Σsub (λ s → if ⌊ i ∈? s ⌋ then 0ℤ else (f s +ℤ f (s ∪ ⁅ i ⁆)))
+Σsub-at {suc k} zero f = sym (trans
+  (cong₂ _+ℤ_ (Σsub-0 {k})
+              (trans (Σsub-cong (λ s →
+                        cong (λ t → f (outside ∷ s) +ℤ f (inside ∷ t))
+                             (∪-identityʳ s)))
+                     (Σsub-+ (λ s → f (outside ∷ s))
+                             (λ s → f (inside ∷ s)))))
+  (trans (+-identityˡ (Σsub (λ s → f (outside ∷ s)) +ℤ
+                       Σsub (λ s → f (inside ∷ s))))
+         (+-comm (Σsub (λ s → f (outside ∷ s)))
+                 (Σsub (λ s → f (inside ∷ s))))))
+Σsub-at {suc k} (suc i) f = trans
+  (cong₂ _+ℤ_ (Σsub-at i (λ s → f (inside  ∷ s)))
+              (Σsub-at i (λ s → f (outside ∷ s))))
+  (cong₂ _+ℤ_ (Σsub-cong (λ s → adjust inside  s))
+              (Σsub-cong (λ s → adjust outside s)))
+  where
+  adjust : ∀ (b : Bool) (s : Subset k) →
+           (if ⌊ i ∈? s ⌋ then 0ℤ
+            else (f (b ∷ s) +ℤ f (b ∷ (s ∪ ⁅ i ⁆)))) ≡
+           (if ⌊ suc i ∈? (b ∷ s) ⌋ then 0ℤ
+            else (f (b ∷ s) +ℤ f (b ∷ (s ∪ ⁅ i ⁆))))
+  adjust b s = cong (λ t → if t then 0ℤ
+                           else (f (b ∷ s) +ℤ f (b ∷ (s ∪ ⁅ i ⁆))))
+                    (sym (⌊∈?⌋-suc i b s))
+
+Σmon-at : ∀ {n m} (v : Var n m) (g : Mon n m → ℤ) →
+          Σmon g ≡
+          Σmon (λ δ → if ⌊ v ∈ᵐ? δ ⌋ then 0ℤ
+                      else (g δ +ℤ g (δ ∪ᵐ ⟪ v ⟫)))
+Σmon-at {n} {m} x[ i ] g = trans
+  (Σsub-at i (λ α → Σsub (λ β → g (α , β))))
+  (Σsub-cong (λ α → sym (trans
+    (Σsub-cong (λ β →
+      cong (λ t → if ⌊ i ∈? α ⌋ then 0ℤ
+                  else (g (α , β) +ℤ g (α ∪ ⁅ i ⁆ , t)))
+           (∪-identityʳ β)))
+    (trans (if-pullᵉ ⌊ i ∈? α ⌋
+             (λ β → g (α , β) +ℤ g (α ∪ ⁅ i ⁆ , β)))
+           (cong (λ z → if ⌊ i ∈? α ⌋ then 0ℤ else z)
+                 (Σsub-+ (λ β → g (α , β))
+                         (λ β → g (α ∪ ⁅ i ⁆ , β))))))))
+Σmon-at {n} {m} y[ j ] g =
+  Σsub-cong (λ α → trans
+    (Σsub-at j (λ β → g (α , β)))
+    (Σsub-cong (λ β →
+      cong (λ t → if ⌊ j ∈? β ⌋ then 0ℤ
+                  else (g (α , β) +ℤ g (t , β ∪ ⁅ j ⁆)))
+           (sym (∪-identityʳ α)))))
+
+-- The value of a variable at an assignment.
+
+valᵛ : Var n m → (Fin n → Bool) → (Fin m → Bool) → Bool
+valᵛ x[ i ] x y = x i
+valᵛ y[ j ] x y = y j
+
+sat-⁅⁆ : (i : Fin k) (f : Fin k → Bool) → sat ⁅ i ⁆ f ≡ f i
+sat-⁅⁆ zero    f = trans (cong (f zero ∧_) (sat-⊥ (λ i → f (suc i))))
+                         (Bool.∧-identityʳ (f zero))
+sat-⁅⁆ (suc i) f = sat-⁅⁆ i (λ j → f (suc j))
+
+satᵐ-⟪⟫ : (v : Var n m) (x : Fin n → Bool) (y : Fin m → Bool) →
+          satᵐ ⟪ v ⟫ x y ≡ valᵛ v x y
+satᵐ-⟪⟫ x[ i ] x y = trans (cong₂ _∧_ (sat-⁅⁆ i x) (sat-⊥ y))
+                           (Bool.∧-identityʳ (x i))
+satᵐ-⟪⟫ y[ j ] x y = cong₂ _∧_ (sat-⊥ x) (sat-⁅⁆ j y)
+
+private
+  if-e+ : ∀ (p : Bool) (a b : ℤ) →
+          (if p then 0ℤ else (a +ℤ b)) ≡
+          (if p then 0ℤ else a) +ℤ (if p then 0ℤ else b)
+  if-e+ true  a b = refl
+  if-e+ false a b = refl
+
+  if-eswap : ∀ (p q : Bool) (a : ℤ) →
+             (if p then 0ℤ else (if q then a else 0ℤ)) ≡
+             (if q then (if p then 0ℤ else a) else 0ℤ)
+  if-eswap true  true  a = refl
+  if-eswap true  false a = refl
+  if-eswap false true  a = refl
+  if-eswap false false a = refl
+
+  partB : ∀ {n m} (P : Poly n m) (v : Var n m)
+          (x : Fin n → Bool) (y : Fin m → Bool) →
+          Σmon (λ δ → if ⌊ v ∈ᵐ? δ ⌋ then 0ℤ
+                      else (if (satᵐ δ x y ∧ valᵛ v x y)
+                            then P (δ ∪ᵐ ⟪ v ⟫) else 0ℤ)) ≡
+          (if valᵛ v x y then 1ℤ else 0ℤ) *ℤ eval (P /ᵛ v) x y
+  partB {n} {m} P v x y with valᵛ v x y
+  ... | true  = trans
+        (Σmon-cong (λ δ → trans
+          (cong (λ b → if ⌊ v ∈ᵐ? δ ⌋ then 0ℤ
+                       else (if b then P (δ ∪ᵐ ⟪ v ⟫) else 0ℤ))
+                (Bool.∧-identityʳ (satᵐ δ x y)))
+          (if-eswap ⌊ v ∈ᵐ? δ ⌋ (satᵐ δ x y) (P (δ ∪ᵐ ⟪ v ⟫)))))
+        (sym (*-identityˡ (eval (P /ᵛ v) x y)))
+  ... | false = trans
+        (trans
+          (Σmon-cong {g = λ _ → 0ℤ} (λ δ → trans
+            (cong (λ b → if ⌊ v ∈ᵐ? δ ⌋ then 0ℤ
+                         else (if b then P (δ ∪ᵐ ⟪ v ⟫) else 0ℤ))
+                  (∧-zeroʳ (satᵐ δ x y)))
+            (if-0 ⌊ v ∈ᵐ? δ ⌋)))
+          (Σmon-0 {n} {m}))
+        (sym (*-zeroˡ (eval (P /ᵛ v) x y)))
+
+-- Evaluation splits at a variable: the terms free of it, plus its
+-- value times the value of the quotient.
+
+eval-split : ∀ {n m} (P : Poly n m) (v : Var n m)
+             (x : Fin n → Bool) (y : Fin m → Bool) →
+             eval P x y ≡
+             eval (P ∖ᵛ v) x y +ℤ
+             ((if valᵛ v x y then 1ℤ else 0ℤ) *ℤ eval (P /ᵛ v) x y)
+eval-split {n} {m} P v x y = trans
+  (Σmon-at v (λ γ → if satᵐ γ x y then P γ else 0ℤ))
+  (trans (Σmon-cong (λ δ → if-e+ ⌊ v ∈ᵐ? δ ⌋ (g δ) (g (δ ∪ᵐ ⟪ v ⟫))))
+  (trans (Σmon-+ (λ δ → if ⌊ v ∈ᵐ? δ ⌋ then 0ℤ else g δ)
+                 (λ δ → if ⌊ v ∈ᵐ? δ ⌋ then 0ℤ else g (δ ∪ᵐ ⟪ v ⟫)))
+         (cong₂ _+ℤ_ partA partB′)))
+  where
+  g : Mon n m → ℤ
+  g γ = if satᵐ γ x y then P γ else 0ℤ
+
+  partA : Σmon (λ δ → if ⌊ v ∈ᵐ? δ ⌋ then 0ℤ else g δ) ≡ eval (P ∖ᵛ v) x y
+  partA = Σmon-cong (λ δ → if-eswap ⌊ v ∈ᵐ? δ ⌋ (satᵐ δ x y) (P δ))
+
+  partB′ : Σmon (λ δ → if ⌊ v ∈ᵐ? δ ⌋ then 0ℤ else g (δ ∪ᵐ ⟪ v ⟫)) ≡
+           (if valᵛ v x y then 1ℤ else 0ℤ) *ℤ eval (P /ᵛ v) x y
+  partB′ = trans
+    (Σmon-cong (λ δ →
+      cong (λ b → if ⌊ v ∈ᵐ? δ ⌋ then 0ℤ
+                  else (if b then P (δ ∪ᵐ ⟪ v ⟫) else 0ℤ))
+           (trans (satᵐ-∪ δ ⟪ v ⟫ x y)
+                  (cong (satᵐ δ x y ∧_) (satᵐ-⟪⟫ v x y)))))
+    (partB P v x y)
+
+-- Hence the two agree wherever the assignment already gives v the
+-- value of the form -- which is exactly where [HH]'s branches survive
+-- interference, so no assignment ever has to be updated.
+
+eval-subst-fixed :
+  ∀ {n m} (P : Poly n m) (v : Var n m) (c : Bool) (S : Mon n m)
+  (x : Fin n → Bool) (y : Fin m → Bool) →
+  (if valᵛ v x y then 1ℤ else 0ℤ) ≡ eval (liftXor c S) x y →
+  eval (subst P v c S) x y ≡ eval P x y
+eval-subst-fixed P v c S x y eq = trans
+  (eval-subst P v c S x y)
+  (sym (trans (eval-split P v x y)
+              (cong (λ z → eval (P ∖ᵛ v) x y +ℤ (z *ℤ eval (P /ᵛ v) x y))
+                    eq)))
