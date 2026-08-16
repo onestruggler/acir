@@ -25,9 +25,11 @@ open import Data.Bool.Base using (Bool)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Fin.Subset using (outside)
 open import Data.Integer.Base using (ℤ; +_)
-open import Data.Nat.Base using (zero; suc; _∸_)
+open import Data.Nat.Base using (zero; suc; _∸_; _+_; _≤_)
 open import Data.Product.Base using (_,_)
 open import Data.Vec.Base using (_∷_)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
+import Data.Nat.Properties as ℕ
 
 open import PathSum.Base
 open import PathSum.Order M
@@ -35,7 +37,7 @@ open import PathSum.Polynomial
 
 private
   variable
-    d k n m : ℕ
+    d k n m k′ m′ : ℕ
 
 
 ------------------------------------------------------------------------
@@ -113,3 +115,32 @@ data _⟶*_ {n : ℕ} : ∀ {k m k′ m′} →
 
 tail-Ord≤ : {P : Poly n (suc m)} → Ord≤ d P → Ord≤ d (tail-part P)
 tail-Ord≤ ordP (α , β) = ordP (α , outside ∷ β)
+
+
+------------------------------------------------------------------------
+-- Proposition 3.2: strong normalization
+
+-- Every rule removes exactly one path variable, and the type of _⟶_
+-- records it, so the number of path variables is a measure that
+-- strictly decreases along a rewrite.  The count of a chain is
+-- therefore not merely bounded but determined: it is the number of
+-- path variables the chain removes.
+
+len : {ξ : PathSum n k m} {ζ : PathSum n k′ m′} → ξ ⟶* ζ → ℕ
+len ε           = 0
+len (_ ◅ steps) = suc (len steps)
+
+⟶*-length : {ξ : PathSum n k m} {ζ : PathSum n k′ m′}
+            (steps : ξ ⟶* ζ) → len steps + m′ ≡ m
+⟶*-length ε                        = refl
+⟶*-length (elim _ _ _        ◅ ss) = cong suc (⟶*-length ss)
+⟶*-length (ω    _ _ _ _ _    ◅ ss) = cong suc (⟶*-length ss)
+⟶*-length (hh   _ _ _ _ _ _ _ ◅ ss) = cong suc (⟶*-length ss)
+
+-- Hence no chain out of ξ is longer than its number of path
+-- variables, so there is no infinite one.
+
+⟶*-bounded : {ξ : PathSum n k m} {ζ : PathSum n k′ m′}
+             (steps : ξ ⟶* ζ) → len steps ≤ m
+⟶*-bounded {m = m} steps =
+  ℕ.≤-trans (ℕ.m≤m+n (len steps) _) (ℕ.≤-reflexive (⟶*-length steps))

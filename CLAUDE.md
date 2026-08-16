@@ -70,6 +70,24 @@ There is no longer a `Presentation/Groups/`: it held a second Sₙ and a hand-ro
 - **`Amalgamations/QutritCliffordT1.agda`**: the qutrit Clifford+T analogue.
 - **`Amalgamations/U33Di.agda`**: U₃(ℤ[½,i]) presented as a two-level amalgamated product.
 
+### Separate development — Path-sums (`PathSum/`)
+
+Amy's path-sum calculus (QPL 2018), as far as §4.3. **Not reached by `MainTheorems.agda`**; its own root is `PathSum/Theorems.agda`, which covers the whole directory. Typecheck it the same way (`wsl --exec /usr/bin/agda PathSum/Theorems.agda`); a from-scratch run is ~260 s, `Denotation` and `Cyclotomic` being the slow files (~90–105 s each).
+
+- **`Polynomial.agda`** / **`Polynomial/Properties.agda`**: multilinear polynomials over the dyadic rationals. `Mon n m = Subset n × Subset m` (input and path variables), `Poly n m = Mon n m → ℤ` (numerators over 2^M), `Σsub`/`Σmon`, `eval`, `liftXor` (the lifting of a Z₂-linear form), `subst`. Properties holds lemma 2.5 (`liftXor-value`), the evaluation homomorphism, and the substitution theory: `eval-subst`, `eval-split`, `eval-subst-fixed`, `Σsub-at`/`Σmon-at` (a sum splits at *any* index, not only the head), `liftXor-split`, `hh-case`.
+- **`Order.agda`**: the order of a phase polynomial (def. 2.11) as a 2-adic divisibility predicate, and lemma 2.13 (`subst-Ord≤`).
+- **`Base.agda`**: `record PathSum (n k m : ℕ)`, `idPS`, `y₀`, `head-part`/`tail-part`, `Internal`.
+- **`Reduction.agda`**: `⅛`/`¼`/`½`, the reducts, and `_⟶_` with constructors `elim`, `ω`, `hh`. `[Case]` is deliberately absent.
+- **`Cyclotomic.agda`**: ℤ[ζ] = ℤ[X]/(X^H+1) with `H = 2^(2+M₀)`, `N = 2H`, `c = N/8`. `Amp = Fin H → ℤ`, `_≐_`, `zpow`, `rot`, `√2·`, `scale`, `Σᴮ` (sums over assignments), `Σᴮ-at`, `scale-injective`, and the coordinate facts `zpow0-at-0`, `√2·zpow0-at-c`, `2·≢scale-zpow0`.
+- **`Denotation.agda`** (checked `--call-by-name`): `amp`, `hits`, `_≋_`, the three soundness proofs, lemma 4.2, the undersized lemmas, and `semantics`. Layered in modules by *what premise they need*: `Branches ξ eqf` (the pair of y₀ branches, no premise), `Cancel ξ c S eqP eqf` (head ≈ ½·form), `ωBranches` (head ≈ ¼ + ½·form). Each re-exports the one below with `open … public`.
+- **`Semantics.agda`**: the interface `record Semantics` — `_≋_` and its equivalence, `⟶-sound`, `interference`, `undersized-elim`, `undersized-ω`.
+- **`Clifford.agda`**: §4.3 over that interface — `progress`, `lemma-4-3`, `corollary-4-4`.
+- **`Theorems.agda`**: instantiates `Clifford` at `Denotation.semantics` and states everything unconditionally.
+
+Two departures from the paper, both in the module headers: a path-sum carries its normalisation `k` **and** its path-variable count `m` separately, because def. 2.1 ties them but fig. 2's rules do not; and lemma 4.3's implicit side condition (the rule may cost more normalisation than the path-sum has) is *proved* here rather than assumed, via the coordinate facts above.
+
+**Pitfall.** `_≋_` matches on both normalisations, so nothing can be recovered through it by unification: every statement mentioning it must be given its path-sums explicitly (`≋-trans {ξ = a} {ζ = b} {χ = d}`), including in the `Semantics` record fields.
+
 ## Key conventions
 
 - `_===_` always means the raw relation (the axioms); `_≈_` always means the monoid congruence it generates (a congruence for `•`, closed under the monoid laws).
