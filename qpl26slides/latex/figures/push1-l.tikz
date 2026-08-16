@@ -25,8 +25,8 @@
 \node [style=none] (x1b) at (2.85, 6.0){};
 \node [style=none] (x1c) at (4.35, 4.0){};
 \node [style=none] (x1d) at (4.35, 6.0){};
-\draw [] (-0.7, -0.75) rectangle (2.3, 6.75);
-\node [style=none] at (0.79999995, 7.3) {\scriptsize $c$};
+\draw [] (-0.3, -0.75) rectangle (2.3, 6.75);
+\node [style=none] at (1.0, 7.3) {\scriptsize $c$};
 \draw [dashed] (2.65, 3.25) rectangle (4.55, 6.75);
 \node [style=none] at (3.6000001, 7.3) {\scriptsize $b$};
 \end{pgfonlayer}
