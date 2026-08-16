@@ -34,7 +34,7 @@ open import Data.Integer.Properties using
   (+-comm; +-identityˡ; +-identityʳ; +-inverseˡ; +-inverseʳ; neg-involutive;
    neg-distrib-+; neg-distribʳ-*; *-distribˡ-+; pos-+; *-cancelˡ-≡;
    ∣i∣≡0⇒i≡0; [+m]-[+n]≡m⊖n;
-   i-j≡0⇒i≡j; [1+m]⊖[1+n]≡m⊖n; ∣-i∣≡∣i∣)
+   i-j≡0⇒i≡j; [1+m]⊖[1+n]≡m⊖n; ∣-i∣≡∣i∣; ∣i*j∣≡∣i∣*∣j∣)
 open import Data.Integer.Solver using (module +-*-Solver)
 open import Data.Nat.Base using (zero; suc; _≤_; _<_; _∸_; s≤s; z≤n)
   renaming (_+_ to _ℕ+_; _*_ to _ℕ*_; _^_ to _ℕ^_; _⊔_ to _ℕ⊔_;
@@ -922,3 +922,30 @@ cᶠ = fromℕ< c<H
                        (cong (λ u → χ (((- (+ c)) + 0ℤ) - (+ u)))
                              (toℕ-fromℕ< c<H)))
          (Eq.cong₂ _+_ (trans (cong χ e₊≡0) (χ-1 N∣0)) χ-e₋))
+
+-- Hence 2·a is never ζ^0 and never √2·ζ^0: an amplitude all of whose
+-- coordinates are even has no odd one.
+
+private
+  2z≢1 : ∀ (z : ℤ) → ¬ ((+ 2) * z ≡ 1ℤ)
+  2z≢1 z eq = contradiction
+    (ℕ.m*n≡1⇒m≡1 2 ∣ z ∣
+      (trans (sym (∣i*j∣≡∣i∣*∣j∣ (+ 2) z)) (cong ∣_∣ eq)))
+    λ ()
+
+2·≢scale-zpow0 : ∀ (a : Amp) (j : ℕ) → j < 2 →
+                 ¬ ((+ 2) ·ᴬ a ≐ scale j (zpow 0ℤ))
+2·≢scale-zpow0 a zero _ eq =
+  2z≢1 (a 0ᶠ) (trans (eq 0ᶠ) zpow0-at-0)
+2·≢scale-zpow0 a (suc zero) _ eq =
+  2z≢1 (a cᶠ) (trans (eq cᶠ) √2·zpow0-at-c)
+2·≢scale-zpow0 a (suc (suc j)) (s≤s (s≤s ())) eq
+
+·ᴬ-Σᴮ : ∀ {k} (z : ℤ) (f : (Fin k → Bool) → Amp) →
+        z ·ᴬ (Σᴮ f) ≐ Σᴮ (λ y → z ·ᴬ f y)
+·ᴬ-Σᴮ {zero}  z f i = refl
+·ᴬ-Σᴮ {suc k} z f i = trans
+  (*-distribˡ-+ z (Σᴮ (λ y → f (extend true y)) i)
+                  (Σᴮ (λ y → f (extend false y)) i))
+  (Eq.cong₂ _+_ (·ᴬ-Σᴮ z (λ y → f (extend true  y)) i)
+                (·ᴬ-Σᴮ z (λ y → f (extend false y)) i))

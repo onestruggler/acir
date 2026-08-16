@@ -48,7 +48,8 @@ open import Data.Integer.Properties using
   (+-assoc; +-identityˡ; +-identityʳ; +-inverseˡ; +-inverseʳ;
    *-identityʳ; *-identityˡ; *-zeroʳ; *-zeroˡ; neg-involutive)
 open import Data.Integer.Solver using (module +-*-Solver)
-open import Data.Nat.Base using (zero; suc) renaming (_+_ to _ℕ+_)
+open import Data.Nat.Base using (zero; suc; _<_; s≤s; z≤n)
+  renaming (_+_ to _ℕ+_)
 open import Data.Product.Base using (_×_; _,_; ∃; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Vec.Base using (_∷_; here)
@@ -664,6 +665,27 @@ module Cancel {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool)
   twiceᴬ : ∀ (a : Amp) → (a +ᴬ a) ≐ ((+ 2) ·ᴬ a)
   twiceᴬ a w = twice (a w)
 
+  -- Where the form vanishes at every path the branches double, so
+  -- every coordinate of the amplitude is even.
+
+  F-double : ∀ x z y → eval (liftXor c S) x y ≡ 0ℤ →
+             F x z y ≐
+             ((+ 2) ·ᴬ (if hitsT x y z then zpow (tv x y) else 0ᴬ))
+  F-double x z y q0 w = trans
+    (trans (F-form x z y w)
+           (if-cong {p = hitsT x y z} refl (pairA x y q0) w))
+    (sym (·ᴬ-if (hitsT x y z) (zpow (tv x y)) w))
+
+  amp-even : (∀ x y → eval (liftXor c S) x y ≡ 0ℤ) → ∀ x z →
+             amp ξ x z ≐
+             (+ 2) ·ᴬ Σᴮ (λ y → if hitsT x y z then zpow (tv x y) else 0ᴬ)
+  amp-even h x z w = trans
+    (sym (Σᴮ-+ (λ y → Fξ x z (extend true y))
+               (λ y → Fξ x z (extend false y)) w))
+    (trans (Σᴮ-cong (λ y → F-double x z y (h x y)) w)
+           (sym (·ᴬ-Σᴮ (+ 2)
+                  (λ y → if hitsT x y z then zpow (tv x y) else 0ᴬ) w)))
+
 module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (i : Fin m) (c : Bool)
          (S : Mon n m) (i∈S : y[ i ] ∈ᵐ S)
          (eqP : head-part (phase ξ) ≈[ pow M ] (½ ·ᴾ liftXor c S))
@@ -1020,6 +1042,22 @@ module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool) (S : Mon n m)
     no-id (proj₁ w) (proj₂ w)
     where
     w = witness′ c S S-noy nontriv
+
+  -- The undersized case of lemma 4.3 for [Elim]: if the form vanishes
+  -- identically the branches double, and an amplitude every
+  -- coordinate of which is even is not the identity's.
+
+  undersized-elim : (∀ x y → eval (liftXor c S) x y ≡ 0ℤ) → k < 2 →
+                    ¬ (ξ ≋ idPS)
+  undersized-elim h k<2 ξ≋id = 2·≢scale-zpow0 B k k<2 (λ w →
+    trans (sym (amp-even h x₀ x₀ w))
+          (trans (ξ≋id x₀ x₀ w) (scale-map k (amp-id x₀) w)))
+    where
+    x₀ : Assign n
+    x₀ _ = false
+
+    B : Amp
+    B = Σᴮ (λ y → if hitsT x₀ y x₀ then zpow (tv x₀ y) else 0ᴬ)
 
 
 ------------------------------------------------------------------------
