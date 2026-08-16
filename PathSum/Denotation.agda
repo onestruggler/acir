@@ -850,3 +850,14 @@ module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (i : Fin m) (c : Bool)
 
   hh-sound : ξ ≋ hh-reduct ξ i c S
   hh-sound x z = scale-map k (amp-hh x z)
+
+
+------------------------------------------------------------------------
+-- Proposition 3.1
+
+-- Every rule of figure 2 preserves the denotation.
+
+⟶-sound : {ξ : PathSum n k m} {ζ : PathSum n k′ m′} → ξ ⟶ ζ → ξ ≋ ζ
+⟶-sound (elim ξ eqP eqf)         = elim-sound ξ eqP eqf
+⟶-sound (ω    ξ c S eqP eqf)     = ω-sound ξ c S eqP eqf
+⟶-sound (hh   ξ i c S i∈S eqP eqf) = hh-sound ξ i c S i∈S eqP eqf
