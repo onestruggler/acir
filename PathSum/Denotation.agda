@@ -1047,9 +1047,9 @@ module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool) (S : Mon n m)
   -- identically the branches double, and an amplitude every
   -- coordinate of which is even is not the identity's.
 
-  undersized-elim : (∀ x y → eval (liftXor c S) x y ≡ 0ℤ) → k < 2 →
-                    ¬ (ξ ≋ idPS)
-  undersized-elim h k<2 ξ≋id = 2·≢scale-zpow0 B k k<2 (λ w →
+  not-id-even : (∀ x y → eval (liftXor c S) x y ≡ 0ℤ) → k < 2 →
+                ¬ (ξ ≋ idPS)
+  not-id-even h k<2 ξ≋id = 2·≢scale-zpow0 B k k<2 (λ w →
     trans (sym (amp-even h x₀ x₀ w))
           (trans (ξ≋id x₀ x₀ w) (scale-map k (amp-id x₀) w)))
     where
@@ -1058,6 +1058,28 @@ module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool) (S : Mon n m)
 
     B : Amp
     B = Σᴮ (λ y → if hitsT x₀ y x₀ then zpow (tv x₀ y) else 0ᴬ)
+
+
+
+------------------------------------------------------------------------
+-- The undersized case of lemma 4.3 for [Elim]
+
+-- [Elim] applies to the phase but the normalisation cannot pay for
+-- it.  The premise is the cancellation module at the form on the
+-- empty set with constant 0, which is identically 0.
+
+undersized-elim :
+  (ξ : PathSum n k (suc m)) →
+  head-part (phase ξ) ≈[ pow M ] 0ᴾ →
+  (∀ w → NoVar (+ 2) y₀ (out ξ w)) →
+  k < 2 → ¬ (ξ ≋ idPS)
+undersized-elim {n} {k} {m} ξ eq eqf =
+  not-id-even ξ false 1ᵐ eqP eqf (λ x y → eval-liftXor-1ᵐ-0 x y)
+  where
+  eqP : head-part (phase ξ) ≈[ pow M ] (½ ·ᴾ liftXor false 1ᵐ)
+  eqP γ = Eq.subst (λ z → pow M ∣ (head-part (phase ξ) γ - z))
+    (sym (trans (cong (λ u → ½ * u) (liftXor-1ᵐ-0 γ)) (*-zeroʳ ½)))
+    (eq γ)
 
 
 ------------------------------------------------------------------------
@@ -1073,4 +1095,6 @@ Semantics.≋-sym   semantics {ξ = a} {ζ = b} = ≋-sym {ξ = a} {ζ = b}
 Semantics.≋-trans semantics {ξ = a} {ζ = b} {χ = d} =
   ≋-trans {ξ = a} {ζ = b} {χ = d}
 Semantics.⟶-sound semantics {ξ = a} {ζ = b} = ⟶-sound {ξ = a} {ζ = b}
-Semantics.interference semantics = interference-lemma
+Semantics.interference    semantics = interference-lemma
+Semantics.undersized-elim semantics = undersized-elim
+

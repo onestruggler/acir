@@ -122,18 +122,6 @@ private
   ⟪v⟫⊄ x[ i ] (α , β) v∉S (p , _) = v∉S (p (x∈⁅x⁆ i))
   ⟪v⟫⊄ y[ j ] (α , β) v∉S (_ , q) = v∉S (q (x∈⁅x⁆ j))
 
-  ⊆1ᵐ : {γ : Mon n m} → γ ⊆ᵐ 1ᵐ → γ ≡ 1ᵐ
-  ⊆1ᵐ {γ = α , β} (p , q) = cong₂ _,_
-    (Empty-unique (λ (_ , x∈α) → ∉⊥ (p x∈α)))
-    (Empty-unique (λ (_ , x∈β) → ∉⊥ (q x∈β)))
-
-  liftXor-1ᵐ-0 : (γ : Mon n m) → liftXor false 1ᵐ γ ≡ 0ℤ
-  liftXor-1ᵐ-0 γ with γ ≟ᵐ 1ᵐ
-  ... | yes _  = refl
-  ... | no  γ≢ with γ ⊆ᵐ? 1ᵐ
-  ...   | yes γ⊆ = contradiction (⊆1ᵐ γ⊆) γ≢
-  ...   | no  _  = refl
-
 data Shape {n m : ℕ} (γ : Mon n m) : Set where
   const  : γ ≡ 1ᵐ → Shape γ
   single : (v : Var n m) → γ ≡ ⟪ v ⟫ → Shape γ
@@ -408,8 +396,10 @@ private
   -- [Elim] consumes two units of normalisation.
   case-elim : (ξ : PathSum n k (suc m)) → Internal ξ → Ord≤ 2 (phase ξ) →
               head-part (phase ξ) ≈[ pow M ] 0ᴾ → Progress ξ
-  case-elim {k = zero}          ξ int ordP eq = undersized (s≤s z≤n)
-  case-elim {k = suc zero}      ξ int ordP eq = undersized (s≤s (s≤s z≤n))
+  case-elim {k = zero}          ξ int ordP eq =
+    not-id (undersized-elim ξ eq (int zero) (s≤s z≤n))
+  case-elim {k = suc zero}      ξ int ordP eq =
+    not-id (undersized-elim ξ eq (int zero) (s≤s (s≤s z≤n)))
   case-elim {k = suc (suc k)}   ξ int ordP eq =
     reduces (elim-reduct ξ) (elim ξ eq (int zero))
             (tail-Internal ξ int) (tail-Ord≤ ordP)

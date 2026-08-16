@@ -18,7 +18,7 @@ open import Data.Fin.Subset using
   renaming (_-_ to _∖_)
 open import Data.Fin.Subset.Properties using
   (∣⊥∣≡0; ∣⁅x⁆∣≡1; ∪-identityʳ; drop-not-there; drop-∷-⊆; q⊆p∪q;
-   x∈⁅x⁆; _⊆?_; _∈?_; ∉⊥; x∈p∪q⁻; drop-there)
+   x∈⁅x⁆; _⊆?_; _∈?_; ∉⊥; x∈p∪q⁻; drop-there; Empty-unique)
 open import Data.Integer.Base using (ℤ; 0ℤ; 1ℤ; +_)
   renaming (-_ to -ℤ_; _^_ to _^ℤ_; _+_ to _+ℤ_; _*_ to _*ℤ_;
             _-_ to _-ℤ_)
@@ -1892,3 +1892,26 @@ liftXor-off {n} {m} c T x y hx hy = trans
         (cong (λ z → if satᵐ γ x y then z else 0ℤ)
               (liftXor-⊄ c T γ eq ¬⊆))
         (if-0 (satᵐ γ x y))
+
+-- The form on the empty set with constant 0 is identically 0: the
+-- only monomial contained in the empty one is itself.
+
+⊆1ᵐ : {γ : Mon n m} → γ ⊆ᵐ 1ᵐ → γ ≡ 1ᵐ
+⊆1ᵐ {γ = α , β} (p , q) = cong₂ _,_
+  (Empty-unique (λ (_ , x∈α) → ∉⊥ (p x∈α)))
+  (Empty-unique (λ (_ , x∈β) → ∉⊥ (q x∈β)))
+
+liftXor-1ᵐ-0 : (γ : Mon n m) → liftXor false (1ᵐ {n} {m}) γ ≡ 0ℤ
+liftXor-1ᵐ-0 γ with γ ≟ᵐ 1ᵐ
+... | yes _  = refl
+... | no  γ≢ with γ ⊆ᵐ? 1ᵐ
+...   | yes γ⊆ = contradiction (⊆1ᵐ γ⊆) γ≢
+...   | no  _  = refl
+
+eval-liftXor-1ᵐ-0 : ∀ {n m} (x : Fin n → Bool) (y : Fin m → Bool) →
+                    eval (liftXor false (1ᵐ {n} {m})) x y ≡ 0ℤ
+eval-liftXor-1ᵐ-0 {n} {m} x y = trans
+  (Σmon-cong {g = λ _ → 0ℤ} (λ γ → trans
+    (cong (λ z → if satᵐ γ x y then z else 0ℤ) (liftXor-1ᵐ-0 γ))
+    (if-0 (satᵐ γ x y))))
+  (Σmon-0 {n} {m})

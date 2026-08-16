@@ -22,7 +22,7 @@ module PathSum.Semantics (M : ℕ) where
 open import Data.Bool.Base using (Bool; false)
 open import Data.Fin.Subset using (⊥)
 open import Data.Integer.Base using (+_)
-open import Data.Nat.Base using (suc)
+open import Data.Nat.Base using (suc; _<_)
 open import Data.Product.Base using (_×_; proj₂)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Relation.Nullary.Negation using (¬_)
@@ -65,3 +65,13 @@ record Semantics : Set₁ where
       (∀ w → NoVar (+ 2) y₀ (out ξ w)) →
       proj₂ S ≡ ⊥ → ¬ (c ≡ false × S ≡ 1ᵐ) →
       ¬ (ξ ≋ idPS)
+
+    -- The case lemma 4.3 leaves implicit: [Elim] applies to the phase
+    -- but the normalisation cannot pay for it.  Summing a path
+    -- variable away without paying doubles every amplitude, and the
+    -- identity's, at a normalisation below 2, is not even.
+    undersized-elim :
+      (ξ : PathSum n k (suc m)) →
+      head-part (phase ξ) ≈[ pow M ] 0ᴾ →
+      (∀ w → NoVar (+ 2) y₀ (out ξ w)) →
+      k < 2 → ¬ (ξ ≋ idPS)
