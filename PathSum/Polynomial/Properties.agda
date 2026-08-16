@@ -51,7 +51,7 @@ import Relation.Binary.PropositionalEquality as Eq
 open +-*-Solver using (solve; _:+_; _:=_)
 open ℤSolver.+-*-Solver using ()
   renaming (solve to solveℤ; con to conℤ; _:+_ to _:+ℤ_; _:*_ to _:*ℤ_;
-            _:=_ to _:=ℤ_)
+            _:=_ to _:=ℤ_; _:-_ to _:-ℤ_)
 
 private
   variable
@@ -1584,3 +1584,226 @@ private
 ∣∪⁅⁆∣ (inside  ∷ p) (suc i) i∉p =
   cong suc (∣∪⁅⁆∣ p i (λ i∈p → i∉p (there i∈p)))
 ∣∪⁅⁆∣ (outside ∷ p) (suc i) i∉p = ∣∪⁅⁆∣ p i (λ i∈p → i∉p (there i∈p))
+
+∉∖ : (q : Subset k) (i : Fin k) → ¬ (i ∈ (q ∖ i))
+∉∖ (b ∷ q) zero    ()
+∉∖ (b ∷ q) (suc i) p = ∉∖ q i (drop-there p)
+
+v∉S∖v : (S : Mon n m) (v : Var n m) → ¬ (v ∈ᵐ (S ∖ᵐ v))
+v∉S∖v (α , β) x[ i ] = ∉∖ α i
+v∉S∖v (α , β) y[ j ] = ∉∖ β j
+
+⊆ᵐᵇ-∖ : (γ S : Mon n m) (v : Var n m) → ¬ (v ∈ᵐ γ) →
+        γ ⊆ᵐᵇ (S ∖ᵐ v) ≡ γ ⊆ᵐᵇ S
+⊆ᵐᵇ-∖ (α , β) (α′ , β′) x[ i ] v∉γ =
+  cong (_∧ (β ⊆ᵇ β′)) (⊆ᵇ-∖ α α′ i v∉γ)
+⊆ᵐᵇ-∖ (α , β) (α′ , β′) y[ j ] v∉γ =
+  cong ((α ⊆ᵇ α′) ∧_) (⊆ᵇ-∖ β β′ j v∉γ)
+
+⊆ᵐᵇ-∪⟪⟫ : (δ S : Mon n m) (v : Var n m) → ¬ (v ∈ᵐ δ) → v ∈ᵐ S →
+          (δ ∪ᵐ ⟪ v ⟫) ⊆ᵐᵇ S ≡ δ ⊆ᵐᵇ (S ∖ᵐ v)
+⊆ᵐᵇ-∪⟪⟫ (α , β) (α′ , β′) x[ i ] v∉δ v∈S = cong₂ _∧_
+  (⊆ᵇ-∪⁅⁆ α α′ i v∉δ v∈S)
+  (cong (_⊆ᵇ β′) (∪-identityʳ β))
+⊆ᵐᵇ-∪⟪⟫ (α , β) (α′ , β′) y[ j ] v∉δ v∈S = cong₂ _∧_
+  (cong (_⊆ᵇ α′) (∪-identityʳ α))
+  (⊆ᵇ-∪⁅⁆ β β′ j v∉δ v∈S)
+
+∥∪⟪⟫∥ : (δ : Mon n m) (v : Var n m) → ¬ (v ∈ᵐ δ) →
+        ∥ δ ∪ᵐ ⟪ v ⟫ ∥ ≡ suc ∥ δ ∥
+∥∪⟪⟫∥ (α , β) x[ i ] v∉δ =
+  cong₂ _+_ (∣∪⁅⁆∣ α i v∉δ) (cong ∣_∣ (∪-identityʳ β))
+∥∪⟪⟫∥ (α , β) y[ j ] v∉δ = trans
+  (cong₂ _+_ (cong ∣_∣ (∪-identityʳ α)) (∣∪⁅⁆∣ β j v∉δ))
+  (ℕ.+-suc ∣ α ∣ ∣ β ∣)
+
+∪⟪⟫≢1ᵐ : (δ : Mon n m) (v : Var n m) → ¬ ((δ ∪ᵐ ⟪ v ⟫) ≡ 1ᵐ)
+∪⟪⟫≢1ᵐ δ v eq = v∉1ᵐ v (Eq.subst (v ∈ᵐ_) eq (v∈δ∪⟪v⟫ δ v))
+
+-- The lifting of  c ⊕ ⨁S  is the lifting of the form on S ∖ v, plus
+-- v times one minus twice it: the recursion  P ⊕ Q = P + Q - 2PQ
+-- applied to the single variable v.
+
+liftXor-∖ᵛ : (c : Bool) (S : Mon n m) (v : Var n m) → ∀ γ →
+             (liftXor c S ∖ᵛ v) γ ≡ liftXor c (S ∖ᵐ v) γ
+liftXor-∖ᵛ c S v γ with v ∈ᵐ? γ
+... | yes v∈γ = sym (liftXor-0 c (S ∖ᵐ v) γ v v∈γ (v∉S∖v S v))
+... | no  v∉γ with γ ≟ᵐ 1ᵐ
+...   | yes _ = refl
+...   | no  _ = cong (λ b → if b then sgn c *ℤ negpow (∥ γ ∥ ∸ 1) else 0ℤ)
+        (trans (⌊⊆ᵐ?⌋ γ S)
+               (trans (sym (⊆ᵐᵇ-∖ γ S v v∉γ)) (sym (⌊⊆ᵐ?⌋ γ (S ∖ᵐ v)))))
+
+private
+  neg2 : ∀ (u : ℤ) (k : ℕ) →
+         0ℤ -ℤ ((+ 2) *ℤ (u *ℤ negpow k)) ≡ u *ℤ negpow (suc k)
+  neg2 u k = trans (reshape u (negpow k))
+                   (sym (cong (u *ℤ_) (negpow-suc k)))
+    where
+    reshape : ∀ a b → 0ℤ -ℤ ((+ 2) *ℤ (a *ℤ b)) ≡
+                      a *ℤ (((-ℤ 1ℤ) *ℤ (+ 2)) *ℤ b)
+    reshape = solveℤ 2 (λ a b →
+      conℤ 0ℤ :-ℤ (conℤ (+ 2) :*ℤ (a :*ℤ b)) :=ℤ
+      (a :*ℤ ((conℤ (-ℤ 1ℤ) :*ℤ conℤ (+ 2)) :*ℤ b))) refl
+
+
+  ⌊no⌋ : ∀ {p} {P : Set p} (d : Dec P) → ¬ P → ⌊ d ⌋ ≡ false
+  ⌊no⌋ (yes q) ¬p = contradiction q ¬p
+  ⌊no⌋ (no  _) _  = refl
+
+liftXor-/ᵛ : ∀ {n m} (c : Bool) (S : Mon n m) (v : Var n m) → v ∈ᵐ S →
+             ∀ δ →
+             (liftXor c S /ᵛ v) δ ≡
+             (κ 1ℤ -ᴾ ((+ 2) ·ᴾ liftXor c (S ∖ᵐ v))) δ
+liftXor-/ᵛ {n} {m} c S v v∈S δ with v ∈ᵐ? δ
+... | yes v∈δ = sym (cong₂ _-ℤ_ κ0
+      (trans (cong (λ w → (+ 2) *ℤ w)
+               (liftXor-0 c (S ∖ᵐ v) δ v v∈δ (v∉S∖v S v)))
+             (*-zeroʳ (+ 2))))
+  where
+  κ0 : κ 1ℤ δ ≡ 0ℤ
+  κ0 = cong (λ b → if b then 1ℤ else 0ℤ)
+            (⌊no⌋ (δ ≟ᵐ 1ᵐ) (λ eq → v∉1ᵐ v (Eq.subst (v ∈ᵐ_) eq v∈δ)))
+... | no v∉δ = trans lhs (sym rhs)
+  where
+  T : Bool
+  T = δ ⊆ᵐᵇ (S ∖ᵐ v)
+
+  lhs : liftXor c S (δ ∪ᵐ ⟪ v ⟫) ≡
+        (if T then sgn c *ℤ negpow ∥ δ ∥ else 0ℤ)
+  lhs = trans
+    (cong (λ b → if b then (if c then 1ℤ else 0ℤ)
+                 else (if ⌊ (δ ∪ᵐ ⟪ v ⟫) ⊆ᵐ? S ⌋
+                       then sgn c *ℤ negpow (∥ δ ∪ᵐ ⟪ v ⟫ ∥ ∸ 1)
+                       else 0ℤ))
+          (⌊no⌋ ((δ ∪ᵐ ⟪ v ⟫) ≟ᵐ 1ᵐ) (∪⟪⟫≢1ᵐ δ v)))
+    (cong₂ (λ b e → if b then sgn c *ℤ negpow e else 0ℤ)
+           (trans (⌊⊆ᵐ?⌋ (δ ∪ᵐ ⟪ v ⟫) S) (⊆ᵐᵇ-∪⟪⟫ δ S v v∉δ v∈S))
+           (cong (_∸ 1) (∥∪⟪⟫∥ δ v v∉δ)))
+
+  rhs : (κ 1ℤ δ -ℤ ((+ 2) *ℤ liftXor c (S ∖ᵐ v) δ)) ≡
+        (if T then sgn c *ℤ negpow ∥ δ ∥ else 0ℤ)
+  rhs = trans (cong₂ (λ u w → u -ℤ ((+ 2) *ℤ w)) κ-form L-form)
+              (final (emptyᵐ δ) refl)
+    where
+    κ-form : κ 1ℤ δ ≡ (if emptyᵐ δ then 1ℤ else 0ℤ)
+    κ-form = cong (λ b → if b then 1ℤ else 0ℤ) (⌊≟ᵐ1ᵐ⌋ δ)
+
+    L-form : liftXor c (S ∖ᵐ v) δ ≡
+             (if emptyᵐ δ then (if c then 1ℤ else 0ℤ)
+              else (if T then sgn c *ℤ negpow (∥ δ ∥ ∸ 1) else 0ℤ))
+    L-form = cong₂ (λ b b′ → if b then (if c then 1ℤ else 0ℤ)
+                             else (if b′ then sgn c *ℤ negpow (∥ δ ∥ ∸ 1)
+                                   else 0ℤ))
+                   (⌊≟ᵐ1ᵐ⌋ δ) (⌊⊆ᵐ?⌋ δ (S ∖ᵐ v))
+
+    atc : ∀ b → (1ℤ -ℤ ((+ 2) *ℤ (if b then 1ℤ else 0ℤ))) ≡
+                sgn b *ℤ negpow 0
+    atc true  = refl
+    atc false = refl
+
+    final : ∀ b → emptyᵐ δ ≡ b →
+            ((if b then 1ℤ else 0ℤ) -ℤ
+             ((+ 2) *ℤ (if b then (if c then 1ℤ else 0ℤ)
+                        else (if T then sgn c *ℤ negpow (∥ δ ∥ ∸ 1)
+                              else 0ℤ)))) ≡
+            (if T then sgn c *ℤ negpow ∥ δ ∥ else 0ℤ)
+    final true  eq = trans (atc c) (sym (trans
+      (cong (λ b → if b then sgn c *ℤ negpow ∥ δ ∥ else 0ℤ) T≡true)
+      (cong (λ e → sgn c *ℤ negpow e) ∥δ∥≡0)))
+      where
+      δ≡1ᵐ : δ ≡ 1ᵐ
+      δ≡1ᵐ = emptyᵐ⇒≡1ᵐ δ eq
+
+      T≡true : T ≡ true
+      T≡true = trans (cong (_⊆ᵐᵇ (S ∖ᵐ v)) δ≡1ᵐ) (1ᵐ⊆ᵐᵇ (S ∖ᵐ v))
+
+      ∥δ∥≡0 : ∥ δ ∥ ≡ 0
+      ∥δ∥≡0 = trans (cong ∥_∥ δ≡1ᵐ) (∥1ᵐ∥≡0 {n} {m})
+    final false eq = pull T
+      where
+      deg : ∥ δ ∥ ≡ suc (∥ δ ∥ ∸ 1)
+      deg = emptyᵐ-false δ eq
+
+      pull : ∀ b → (0ℤ -ℤ ((+ 2) *ℤ
+                     (if b then sgn c *ℤ negpow (∥ δ ∥ ∸ 1) else 0ℤ))) ≡
+                   (if b then sgn c *ℤ negpow ∥ δ ∥ else 0ℤ)
+      pull true  = trans (neg2 (sgn c) (∥ δ ∥ ∸ 1))
+                         (cong (λ e → sgn c *ℤ negpow e) (sym deg))
+      pull false = refl
+
+
+------------------------------------------------------------------------
+-- The constraint imposed by [HH]
+
+-- Splitting the lifted form at the eliminated variable: the form on S
+-- is the form on S ∖ v, plus v times one minus twice it.
+
+eval-ext : (P Q : Poly n m) → (∀ γ → P γ ≡ Q γ) →
+           (x : Fin n → Bool) (y : Fin m → Bool) →
+           eval P x y ≡ eval Q x y
+eval-ext P Q h x y =
+  Σmon-cong (λ γ → cong (λ z → if satᵐ γ x y then z else 0ℤ) (h γ))
+
+liftXor-split : ∀ {n m} (c : Bool) (S : Mon n m) (v : Var n m) → v ∈ᵐ S →
+                (x : Fin n → Bool) (y : Fin m → Bool) →
+                eval (liftXor c S) x y ≡
+                eval (liftXor c (S ∖ᵐ v)) x y +ℤ
+                ((if valᵛ v x y then 1ℤ else 0ℤ) *ℤ
+                 (1ℤ -ℤ ((+ 2) *ℤ eval (liftXor c (S ∖ᵐ v)) x y)))
+liftXor-split c S v v∈S x y = trans
+  (eval-split (liftXor c S) v x y)
+  (cong₂ _+ℤ_
+    (eval-ext (liftXor c S ∖ᵛ v) (liftXor c (S ∖ᵐ v))
+              (liftXor-∖ᵛ c S v) x y)
+    (cong (λ z → (if valᵛ v x y then 1ℤ else 0ℤ) *ℤ z)
+      (trans
+        (eval-ext (liftXor c S /ᵛ v)
+                  (κ 1ℤ -ᴾ ((+ 2) ·ᴾ liftXor c (S ∖ᵐ v)))
+                  (liftXor-/ᵛ c S v v∈S) x y)
+        (trans (eval-−ᴾ (κ 1ℤ) ((+ 2) ·ᴾ liftXor c (S ∖ᵐ v)) x y)
+               (cong₂ _-ℤ_ (eval-κ 1ℤ x y)
+                           (eval-·ᴾ (+ 2) (liftXor c (S ∖ᵐ v)) x y))))))
+
+private
+  hh-calc : ∀ (bz q V : ℤ) →
+            V ≡ q +ℤ (bz *ℤ (1ℤ -ℤ ((+ 2) *ℤ q))) →
+            (bz ≡ 0ℤ) ⊎ (bz ≡ 1ℤ) → (q ≡ 0ℤ) ⊎ (q ≡ 1ℤ) →
+            ((bz ≡ q) × (V ≡ 0ℤ)) ⊎ (V ≡ 1ℤ)
+  hh-calc bz q V eq bc qc = go bc qc
+    where
+    plug : ∀ {b′ q′} → bz ≡ b′ → q ≡ q′ →
+           V ≡ q′ +ℤ (b′ *ℤ (1ℤ -ℤ ((+ 2) *ℤ q′)))
+    plug {b′} {q′} eb eq′ = trans eq
+      (cong₂ _+ℤ_ eq′
+        (cong₂ _*ℤ_ eb (cong (λ z → 1ℤ -ℤ ((+ 2) *ℤ z)) eq′)))
+
+    go : (bz ≡ 0ℤ) ⊎ (bz ≡ 1ℤ) → (q ≡ 0ℤ) ⊎ (q ≡ 1ℤ) →
+         ((bz ≡ q) × (V ≡ 0ℤ)) ⊎ (V ≡ 1ℤ)
+    go (inj₁ b0) (inj₁ q0) = inj₁ (trans b0 (sym q0) , plug b0 q0)
+    go (inj₁ b0) (inj₂ q1) = inj₂ (plug b0 q1)
+    go (inj₂ b1) (inj₁ q0) = inj₂ (plug b1 q0)
+    go (inj₂ b1) (inj₂ q1) = inj₁ (trans b1 (sym q1) , plug b1 q1)
+
+-- Either the assignment satisfies the constraint the rule imposes, in
+-- which case the form on S vanishes there and the two branches of y₀
+-- carry the same phase, or the form is 1 and they cancel.
+
+hh-case : ∀ {n m} (c : Bool) (S : Mon n m) (v : Var n m) → v ∈ᵐ S →
+          (x : Fin n → Bool) (y : Fin m → Bool) →
+          (((if valᵛ v x y then 1ℤ else 0ℤ) ≡
+            eval (liftXor c (S ∖ᵐ v)) x y) ×
+           (eval (liftXor c S) x y ≡ 0ℤ)) ⊎
+          (eval (liftXor c S) x y ≡ 1ℤ)
+hh-case c S v v∈S x y = hh-calc
+  (if valᵛ v x y then 1ℤ else 0ℤ)
+  (eval (liftXor c (S ∖ᵐ v)) x y)
+  (eval (liftXor c S) x y)
+  (liftXor-split c S v v∈S x y)
+  (bz-cases (valᵛ v x y))
+  (liftXor-value c (S ∖ᵐ v) x y)
+  where
+  bz-cases : ∀ b → ((if b then 1ℤ else 0ℤ) ≡ 0ℤ) ⊎
+                   ((if b then 1ℤ else 0ℤ) ≡ 1ℤ)
+  bz-cases true  = inj₂ refl
+  bz-cases false = inj₁ refl
