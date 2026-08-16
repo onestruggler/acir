@@ -24,7 +24,7 @@ open import Data.Integer.Base using (ℤ; 0ℤ; 1ℤ; +_)
 open import Data.Integer.Properties using
   (+-identityˡ; +-identityʳ; *-identityˡ; *-identityʳ; *-assoc; *-zeroʳ;
    *-distribˡ-+; *-distribʳ-+; *-cancelˡ-≡; +-assoc; +-inverseˡ;
-   neg-distrib-+; pos-*)
+   neg-distrib-+; pos-*; *-comm)
 open import Data.Integer.Divisibility.Signed using
   (_∣_; ∣-refl; ∣-trans; ∣ᵤ⇒∣; ∣m∣n⇒∣m+n; ∣n⇒∣m*n; ∣m⇒∣m*n)
 open import Data.Nat.Base using
@@ -720,6 +720,49 @@ if-pull {k = k} false g = Σsub-0 {k}
 
 
 ------------------------------------------------------------------------
+-- Splitting a polynomial at a variable
+
+-- P ∖ᵛ v collects the terms free of v; P /ᵛ v is the quotient by v,
+-- so that P is (P ∖ᵛ v) + v · (P /ᵛ v).  Stating substitution this way
+-- avoids having to update an assignment at a variable whose position
+-- depends on whether it is an input or a path variable.
+
+infixl 6 _∖ᵛ_ _/ᵛ_
+
+_∖ᵛ_ : Poly n m → Var n m → Poly n m
+(P ∖ᵛ v) γ = if ⌊ v ∈ᵐ? γ ⌋ then 0ℤ else P γ
+
+_/ᵛ_ : Poly n m → Var n m → Poly n m
+(P /ᵛ v) δ = if ⌊ v ∈ᵐ? δ ⌋ then 0ℤ else P (δ ∪ᵐ ⟪ v ⟫)
+
+if-pullᵐ : ∀ (b : Bool) (g : Mon n m → ℤ) →
+           Σmon (λ γ → if b then g γ else 0ℤ) ≡ (if b then Σmon g else 0ℤ)
+if-pullᵐ         true  g = refl
+if-pullᵐ {n} {m} false g = trans
+  (Σsub-cong {k = n} {f = λ _ → Σsub {m} (λ _ → 0ℤ)} {g = λ _ → 0ℤ}
+             (λ _ → Σsub-0 {m}))
+  (Σsub-0 {n})
+
+if-swap : ∀ (p q : Bool) (a : ℤ) →
+          (if p then (if q then a else 0ℤ) else 0ℤ) ≡
+          (if q then (if p then a else 0ℤ) else 0ℤ)
+if-swap true  true  a = refl
+if-swap true  false a = refl
+if-swap false true  a = refl
+if-swap false false a = refl
+
+≡ᵇ-sym : (p q : Subset k) → p ≡ᵇ q ≡ q ≡ᵇ p
+≡ᵇ-sym []            []            = refl
+≡ᵇ-sym (inside  ∷ p) (inside  ∷ q) = ≡ᵇ-sym p q
+≡ᵇ-sym (inside  ∷ p) (outside ∷ q) = refl
+≡ᵇ-sym (outside ∷ p) (inside  ∷ q) = refl
+≡ᵇ-sym (outside ∷ p) (outside ∷ q) = ≡ᵇ-sym p q
+
+≡ᵐᵇ-sym : (γ δ : Mon n m) → γ ≡ᵐᵇ δ ≡ δ ≡ᵐᵇ γ
+≡ᵐᵇ-sym (α , β) (α′ , β′) = cong₂ _∧_ (≡ᵇ-sym α α′) (≡ᵇ-sym β β′)
+
+
+------------------------------------------------------------------------
 -- Evaluation is a homomorphism
 
 Σmon-0 : Σmon {n} {m} (λ _ → 0ℤ) ≡ 0ℤ
@@ -1024,3 +1067,139 @@ liftXor-∣ {n} {m} c S γ with γ ≟ᵐ 1ᵐ
 ... | no  _    with γ ⊆ᵐ? S
 ...   | yes _ = ∣n⇒∣m*n (sgn c) (∣n⇒∣m*n ((-ℤ 1ℤ) ^ℤ (∥ γ ∥ ∸ 1)) ∣-refl)
 ...   | no  _ = i∣0
+
+
+------------------------------------------------------------------------
+-- Evaluating a substitution
+
+-- The coefficient of subst P at γ sums over the ways of splitting γ,
+-- so evaluating it moves the sum over γ inside and collapses it: only
+-- the splitting δ ∪ β = γ survives.
+
+private
+  collapse : ∀ {n m} (P : Poly n m) (v : Var n m) (c : Bool) (S : Mon n m)
+             (x : Fin n → Bool) (y : Fin m → Bool) (δ β : Mon n m) →
+             Σmon (λ γ → if satᵐ γ x y
+                         then substTerm P v c S γ δ β else 0ℤ) ≡
+             (if ⌊ v ∈ᵐ? δ ⌋ then 0ℤ
+              else (if satᵐ (δ ∪ᵐ β) x y
+                    then P (δ ∪ᵐ ⟪ v ⟫) *ℤ liftXor c S β else 0ℤ))
+  collapse {n} {m} P v c S x y δ β with v ∈ᵐ? δ
+  ... | yes _ = trans (Σmon-cong {g = λ _ → 0ℤ} (λ γ → if-0 (satᵐ γ x y)))
+                      (Σmon-0 {n} {m})
+  ... | no  _ = trans (Σmon-cong step)
+        (Σmon-delta (δ ∪ᵐ β)
+          (λ γ → if satᵐ γ x y
+                 then P (δ ∪ᵐ ⟪ v ⟫) *ℤ liftXor c S β else 0ℤ))
+    where
+    X : ℤ
+    X = P (δ ∪ᵐ ⟪ v ⟫) *ℤ liftXor c S β
+
+    step : ∀ γ →
+      (if satᵐ γ x y
+       then (if ⌊ (δ ∪ᵐ β) ≟ᵐ γ ⌋ then X else 0ℤ) else 0ℤ) ≡
+      (if (γ ≡ᵐᵇ (δ ∪ᵐ β))
+       then (if satᵐ γ x y then X else 0ℤ) else 0ℤ)
+    step γ = trans
+      (cong (λ b → if satᵐ γ x y then (if b then X else 0ℤ) else 0ℤ)
+            (trans (⌊≟ᵐ⌋ (δ ∪ᵐ β) γ) (≡ᵐᵇ-sym (δ ∪ᵐ β) γ)))
+      (if-swap (satᵐ γ x y) (γ ≡ᵐᵇ (δ ∪ᵐ β)) X)
+
+-- With the inner sum collapsed, the sum over β factors: the part of P
+-- depending on the substituted variable comes out, and what is left is
+-- the evaluation of the lifted form.
+
+private
+  if-+ : ∀ (p : Bool) (a b : ℤ) →
+         (if p then (a +ℤ b) else 0ℤ) ≡
+         (if p then a else 0ℤ) +ℤ (if p then b else 0ℤ)
+  if-+ true  a b = refl
+  if-+ false a b = refl
+
+  factor : ∀ {n m} (P : Poly n m) (v : Var n m) (c : Bool) (S : Mon n m)
+           (x : Fin n → Bool) (y : Fin m → Bool) (δ : Mon n m) →
+           Σmon (λ β → if ⌊ v ∈ᵐ? δ ⌋ then 0ℤ
+                       else (if satᵐ (δ ∪ᵐ β) x y
+                             then P (δ ∪ᵐ ⟪ v ⟫) *ℤ liftXor c S β
+                             else 0ℤ)) ≡
+           eval (liftXor c S) x y *ℤ
+           (if satᵐ δ x y then (P /ᵛ v) δ else 0ℤ)
+  factor {n} {m} P v c S x y δ with v ∈ᵐ? δ
+  ... | yes _ = trans (Σmon-0 {n} {m})
+        (sym (trans (cong (eval (liftXor c S) x y *ℤ_) (if-0 (satᵐ δ x y)))
+                    (*-zeroʳ (eval (liftXor c S) x y))))
+  ... | no  _ = trans inner outer
+    where
+    L : Mon n m → ℤ
+    L = liftXor c S
+
+    Pv : ℤ
+    Pv = P (δ ∪ᵐ ⟪ v ⟫)
+
+    inner : Σmon (λ β → if satᵐ (δ ∪ᵐ β) x y then Pv *ℤ L β else 0ℤ) ≡
+            (if satᵐ δ x y then (Pv *ℤ eval L x y) else 0ℤ)
+    inner = trans
+      (Σmon-cong (λ β → trans
+        (cong (λ b → if b then Pv *ℤ L β else 0ℤ) (satᵐ-∪ δ β x y))
+        (sym (if-∧ (satᵐ δ x y) (satᵐ β x y) (Pv *ℤ L β)))))
+      (trans
+        (if-pullᵐ (satᵐ δ x y)
+                  (λ β → if satᵐ β x y then Pv *ℤ L β else 0ℤ))
+        (cong (λ z → if satᵐ δ x y then z else 0ℤ)
+          (trans (Σmon-cong (λ β → if-scale (satᵐ β x y) Pv (L β)))
+                 (Σmon-scale {z = Pv}
+                   (λ β → if satᵐ β x y then L β else 0ℤ)))))
+
+    outer : (if satᵐ δ x y then (Pv *ℤ eval L x y) else 0ℤ) ≡
+            eval L x y *ℤ (if satᵐ δ x y then Pv else 0ℤ)
+    outer = trans (cong (λ z → if satᵐ δ x y then z else 0ℤ)
+                        (*-comm Pv (eval L x y)))
+                  (if-scale (satᵐ δ x y) (eval L x y) Pv)
+
+-- Lemma 2.13's companion at the level of values: substituting the form
+-- c ⊕ ⨁S for v is, under evaluation, multiplying the quotient by the
+-- value of the form.
+
+eval-subst : ∀ {n m} (P : Poly n m) (v : Var n m) (c : Bool) (S : Mon n m)
+             (x : Fin n → Bool) (y : Fin m → Bool) →
+             eval (subst P v c S) x y ≡
+             eval (P ∖ᵛ v) x y +ℤ
+             (eval (liftXor c S) x y *ℤ eval (P /ᵛ v) x y)
+eval-subst {n} {m} P v c S x y =
+  trans step1 (cong (eval (P ∖ᵛ v) x y +ℤ_) step2)
+  where
+  T : Mon n m → Mon n m → Mon n m → ℤ
+  T = substTerm P v c S
+
+  U : Mon n m → Mon n m → Mon n m → ℤ
+  U γ δ β = if satᵐ γ x y then T γ δ β else 0ℤ
+
+  step1 : eval (subst P v c S) x y ≡
+          eval (P ∖ᵛ v) x y +ℤ
+          Σmon (λ γ → if satᵐ γ x y
+                      then Σmon (λ δ → Σmon (T γ δ)) else 0ℤ)
+  step1 = trans
+    (Σmon-cong (λ γ → if-+ (satᵐ γ x y) ((P ∖ᵛ v) γ)
+                           (Σmon (λ δ → Σmon (T γ δ)))))
+    (Σmon-+ (λ γ → if satᵐ γ x y then (P ∖ᵛ v) γ else 0ℤ)
+            (λ γ → if satᵐ γ x y
+                   then Σmon (λ δ → Σmon (T γ δ)) else 0ℤ))
+
+  step2 : Σmon (λ γ → if satᵐ γ x y
+                      then Σmon (λ δ → Σmon (T γ δ)) else 0ℤ) ≡
+          eval (liftXor c S) x y *ℤ eval (P /ᵛ v) x y
+  step2 = trans
+    -- push the guard through both inner sums
+    (Σmon-cong (λ γ → sym (trans
+      (Σmon-cong (λ δ → if-pullᵐ (satᵐ γ x y) (T γ δ)))
+      (if-pullᵐ (satᵐ γ x y) (λ δ → Σmon (T γ δ))))))
+    (trans
+      -- move the γ sum innermost
+      (trans (Σmon-swap (λ γ δ → Σmon (λ β → U γ δ β)))
+             (Σmon-cong (λ δ → Σmon-swap (λ γ β → U γ δ β))))
+      (trans
+        -- collapse it against the splitting, then factor
+        (Σmon-cong (λ δ → Σmon-cong (λ β → collapse P v c S x y δ β)))
+        (trans (Σmon-cong (λ δ → factor P v c S x y δ))
+               (Σmon-scale {z = eval (liftXor c S) x y}
+                 (λ δ → if satᵐ δ x y then (P /ᵛ v) δ else 0ℤ)))))
