@@ -793,3 +793,22 @@ private
   ... | true  = λ _ → refl
   ... | false = λ w′ → cong (λ z → f (extend b g) w′ + z)
         (resp (extend b (setᵗ i g)) (setᵗ (suc i) (extend b g)) (pt b g) w′)
+
+
+------------------------------------------------------------------------
+-- ζ^0 is not zero
+
+-- Lemma 4.2 ends by contradicting the identity's amplitude, so it
+-- needs one amplitude known to be non-zero.
+
+zpow-0≢0ᴬ : ¬ (zpow 0ℤ ≐ 0ᴬ)
+zpow-0≢0ᴬ eq = contradiction (trans (sym val) (eq i₀)) λ ()
+  where
+  i₀ : Fin H
+  i₀ = fromℕ< H>0
+
+  N∣0 : (+ N) ∣ 0ℤ
+  N∣0 = ∣ᵤ⇒∣ (ℕDiv.divides 0 refl)
+
+  val : zpow 0ℤ i₀ ≡ 1ℤ
+  val = trans (cong (λ u → χ (0ℤ - (+ u))) (toℕ-fromℕ< H>0)) (χ-1 N∣0)

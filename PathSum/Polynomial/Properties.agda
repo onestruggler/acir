@@ -1807,3 +1807,88 @@ hh-case c S v v∈S x y = hh-calc
                    ((if b then 1ℤ else 0ℤ) ≡ 1ℤ)
   bz-cases true  = inj₂ refl
   bz-cases false = inj₁ refl
+
+-- An assignment making no variable of T true gives the form on T its
+-- constant value.  Lemma 4.2 needs one such assignment, and one that
+-- makes exactly one variable of T true.
+
+sat-false : (p : Subset k) (j : Fin k) (f : Fin k → Bool) →
+            j ∈ p → f j ≡ false → sat p f ≡ false
+sat-false (inside ∷ p) zero f here ef =
+  cong (_∧ sat p (λ u → f (suc u))) ef
+sat-false (inside ∷ p) (suc j) f (there j∈p) ef = trans
+  (cong (f zero ∧_) (sat-false p j (λ u → f (suc u)) j∈p ef))
+  (∧-zeroʳ (f zero))
+sat-false (outside ∷ p) (suc j) f (there j∈p) ef =
+  sat-false p j (λ u → f (suc u)) j∈p ef
+
+emptyᵇ-witness : (p : Subset k) → emptyᵇ p ≡ false → ∃ λ j → j ∈ p
+emptyᵇ-witness (inside  ∷ p) eq = zero , here
+emptyᵇ-witness (outside ∷ p) eq =
+  suc (proj₁ rec) , there (proj₂ rec)
+  where
+  rec = emptyᵇ-witness p eq
+
+liftXor-⊄ : (c : Bool) (T γ : Mon n m) → emptyᵐ γ ≡ false →
+            ¬ (γ ⊆ᵐ T) → liftXor c T γ ≡ 0ℤ
+liftXor-⊄ c T γ ne ¬⊆ with γ ≟ᵐ 1ᵐ
+... | yes eq = contradiction (trans (sym (≡1ᵐ⇒emptyᵐ γ eq)) ne) λ ()
+... | no  _ with γ ⊆ᵐ? T
+...   | yes sub = contradiction sub ¬⊆
+...   | no  _ = refl
+
+liftXor-off : ∀ {n m} (c : Bool) (T : Mon n m)
+              (x : Fin n → Bool) (y : Fin m → Bool) →
+              (∀ j → j ∈ proj₁ T → x j ≡ false) →
+              (∀ j → j ∈ proj₂ T → y j ≡ false) →
+              eval (liftXor c T) x y ≡ (if c then 1ℤ else 0ℤ)
+liftXor-off {n} {m} c T x y hx hy = trans
+  (Σmon-⊥ (λ γ → if satᵐ γ x y then liftXor c T γ else 0ℤ))
+  (trans (cong₂ _+ℤ_ head-val
+                     (trans (Σmon-cong {g = λ _ → 0ℤ} tail0) (Σmon-0 {n} {m})))
+         (+-identityʳ (if c then 1ℤ else 0ℤ)))
+  where
+  head-val : (if satᵐ (1ᵐ {n} {m}) x y then liftXor c T 1ᵐ else 0ℤ) ≡
+             (if c then 1ℤ else 0ℤ)
+  head-val = trans
+    (cong (λ b → if b then liftXor c T 1ᵐ else 0ℤ) (satᵐ-1ᵐ x y))
+    (liftXor-1ᵐ c T)
+
+  -- A non-empty monomial contained in T has a variable of T in it,
+  -- which the assignment makes false.
+  unsat : ∀ γ → emptyᵐ γ ≡ false → γ ⊆ᵐ T → satᵐ γ x y ≡ false
+  unsat (α , β) ne (α⊆ , β⊆) with emptyᵇ α in eα
+  ... | false = trans
+        (cong (_∧ sat β y)
+          (sat-false α (proj₁ wα) x (proj₂ wα)
+                     (hx (proj₁ wα) (α⊆ (proj₂ wα)))))
+        refl
+    where
+    wα = emptyᵇ-witness α eα
+  ... | true  = trans
+        (cong (sat α x ∧_)
+          (sat-false β (proj₁ wβ) y (proj₂ wβ)
+                     (hy (proj₁ wβ) (β⊆ (proj₂ wβ)))))
+        (∧-zeroʳ (sat α x))
+    where
+    wβ = emptyᵇ-witness β ne
+
+  tail0 : ∀ γ → (if emptyᵐ γ then 0ℤ
+                 else (if satᵐ γ x y then liftXor c T γ else 0ℤ)) ≡ 0ℤ
+  tail0 γ = aux (emptyᵐ γ) refl
+    where
+    aux : ∀ b → emptyᵐ γ ≡ b →
+          (if b then 0ℤ else (if satᵐ γ x y then liftXor c T γ else 0ℤ)) ≡ 0ℤ
+    aux true  eq = refl
+    aux false eq = step (γ ⊆ᵐ? T)
+      where
+      -- Taken as an argument rather than by `with`: abstracting the
+      -- decision would rewrite the copy of it inside liftXor too.
+      step : Dec (γ ⊆ᵐ T) →
+             (if satᵐ γ x y then liftXor c T γ else 0ℤ) ≡ 0ℤ
+      step (yes sub) =
+        cong (λ b → if b then liftXor c T γ else 0ℤ) (unsat γ eq sub)
+      step (no ¬⊆) = trans
+        (cong (λ z → if satᵐ γ x y then z else 0ℤ)
+              (liftXor-⊄ c T γ eq ¬⊆))
+        (if-0 (satᵐ γ x y))

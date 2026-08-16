@@ -21,6 +21,7 @@ module PathSum.Semantics (M : ℕ) where
 
 open import Data.Bool.Base using (Bool; false)
 open import Data.Fin.Subset using (⊥)
+open import Data.Integer.Base using (+_)
 open import Data.Nat.Base using (suc)
 open import Data.Product.Base using (_×_; proj₂)
 open import Relation.Binary.PropositionalEquality using (_≡_)
@@ -61,5 +62,6 @@ record Semantics : Set₁ where
     interference :
       (ξ : PathSum n k (suc m)) (c : Bool) (S : Mon n m) →
       head-part (phase ξ) ≈[ pow M ] (½ ·ᴾ liftXor c S) →
+      (∀ w → NoVar (+ 2) y₀ (out ξ w)) →
       proj₂ S ≡ ⊥ → ¬ (c ≡ false × S ≡ 1ᵐ) →
       ¬ (ξ ≋ idPS)

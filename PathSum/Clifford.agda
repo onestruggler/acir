@@ -427,9 +427,9 @@ private
     (subst-Ord≤ (tail-part (phase ξ)) y[ i ] c (S ∖ᵐ y[ i ])
                 (tail-Ord≤ ordP))
   finish ξ int ordP true  S eq | inj₂ β≡⊥ =
-    not-id (interference ξ true S eq β≡⊥ λ ())
+    not-id (interference ξ true S eq (int zero) β≡⊥ λ ())
   finish ξ int ordP false S eq | inj₂ β≡⊥ with proj₁ S ≟ˢ ⊥
-  ... | no ¬α≡⊥ = not-id (interference ξ false S eq β≡⊥
+  ... | no ¬α≡⊥ = not-id (interference ξ false S eq (int zero) β≡⊥
                            λ (_ , S≡1ᵐ) → ¬α≡⊥ (cong proj₁ S≡1ᵐ))
   ... | yes α≡⊥ = case-elim ξ int ordP elim-eq
     where
