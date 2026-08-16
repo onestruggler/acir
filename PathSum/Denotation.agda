@@ -545,66 +545,134 @@ module _ {n k m : ℕ} (ξ : PathSum n (suc k) (suc m)) (c : Bool)
 -- the two branches of y₀ carry the same phase where the form vanishes
 -- and opposite phases where it is 1.
 
+------------------------------------------------------------------------
+-- Cancellation of the two branches of y₀
+
+-- Shared by [HH] and by lemma 4.2: when the head of the phase is a
+-- half times the form on S, the two branches of y₀ double where the
+-- form vanishes and cancel where it is 1.
+
+module Cancel {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool)
+              (S : Mon n m)
+              (eqP : head-part (phase ξ) ≈[ pow M ] (½ ·ᴾ liftXor c S))
+              (eqf : ∀ w → NoVar (+ 2) y₀ (out ξ w))
+              where
+
+  tv hd : Assign n → Assign m → ℤ
+  tv x y = eval (tail-part (phase ξ)) x y
+  hd x y = eval (head-part (phase ξ)) x y
+
+  head-eval : ∀ x y →
+              pow M ∣ (hd x y - (½ * eval (liftXor c S) x y))
+  head-eval x y = Eq.subst (λ w → pow M ∣ (hd x y - w))
+    (eval-·ᴾ ½ (liftXor c S) x y)
+    (eval-≈ (head-part (phase ξ)) (½ ·ᴾ liftXor c S) eqP x y)
+
+  -- Where the form vanishes the branches double.
+
+  pairA : ∀ x y → eval (liftXor c S) x y ≡ 0ℤ →
+          (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y)) ≐
+          (+ 2) ·ᴬ zpow (tv x y)
+  pairA x y q0 w = trans
+    (Eq.cong₂ _+ℤ_ (zpow-cong {hd x y +ℤ tv x y} {tv x y} same w) refl)
+    (twice (zpow (tv x y) w))
+    where
+    hd0 : pow M ∣ (hd x y - 0ℤ)
+    hd0 = Eq.subst (λ u → pow M ∣ (hd x y - u))
+      (trans (cong (½ *_) q0) (*-zeroʳ ½)) (head-eval x y)
+
+    shift : ∀ a t → (a +ℤ t) - t ≡ a - 0ℤ
+    shift = solve 2 (λ a t → (a :+ t) :- t := a :- con 0ℤ) refl
+
+    same : (+ N) ∣ ((hd x y +ℤ tv x y) - tv x y)
+    same = Eq.subst ((+ N) ∣_) (sym (shift (hd x y) (tv x y))) hd0
+
+  -- Where it is 1 they cancel: ζ^(½) = -1.
+
+  pairB : ∀ x y → eval (liftXor c S) x y ≡ 1ℤ →
+          (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y)) ≐ 0ᴬ
+  pairB x y q1 w = trans
+    (Eq.cong₂ _+ℤ_
+      (trans (zpow-cong {hd x y +ℤ tv x y} {tv x y +ℤ ½} same w)
+             (zpow-anti (tv x y) w))
+      refl)
+    (+-inverseˡ (zpow (tv x y) w))
+    where
+    hd½ : pow M ∣ (hd x y - ½)
+    hd½ = Eq.subst (λ u → pow M ∣ (hd x y - u))
+      (trans (cong (½ *_) q1) (*-identityʳ ½)) (head-eval x y)
+
+    shuffle : ∀ a b t → (a +ℤ t) - (t +ℤ b) ≡ a - b
+    shuffle = solve 3 (λ a b t → (a :+ t) :- (t :+ b) := a :- b) refl
+
+    same : (+ N) ∣ ((hd x y +ℤ tv x y) - (tv x y +ℤ ½))
+    same = Eq.subst ((+ N) ∣_)
+      (sym (shuffle (hd x y) ½ (tv x y))) hd½
+
+
+  hitsT : Assign n → Assign m → Assign n → Bool
+  hitsT x y z = allFin (λ w → eqᵇ (bit (eval (tail-part (out ξ w)) x y)) (z w))
+
+  -- ξ's two branches of y₀, as a single summand over Assign m.
+
+  Fξ : Assign n → Assign n → Assign (suc m) → Amp
+  Fξ x z y′ = if hits ξ x y′ z then zpow (eval (phase ξ) x y′) else 0ᴬ
+
+  F : Assign n → Assign n → Assign m → Amp
+  F x z y = Fξ x z (extend true y) +ᴬ Fξ x z (extend false y)
+
+  if-pair : ∀ (p : Bool) (a b : Amp) →
+            ((if p then a else 0ᴬ) +ᴬ (if p then b else 0ᴬ)) ≐
+            (if p then (a +ᴬ b) else 0ᴬ)
+  if-pair true  a b _ = refl
+  if-pair false a b _ = refl
+
+  if-0ᴬ : ∀ (p : Bool) → (if p then 0ᴬ else 0ᴬ) ≐ 0ᴬ
+  if-0ᴬ true  _ = refl
+  if-0ᴬ false _ = refl
+
+  ·ᴬ-if : ∀ (p : Bool) (a : Amp) →
+          ((+ 2) ·ᴬ (if p then a else 0ᴬ)) ≐
+          (if p then ((+ 2) ·ᴬ a) else 0ᴬ)
+  ·ᴬ-if true  a _ = refl
+  ·ᴬ-if false a _ = *-zeroʳ (+ 2)
+
+  ·ᴬ-map : ∀ (a b : Amp) → a ≐ b → ((+ 2) ·ᴬ a) ≐ ((+ 2) ·ᴬ b)
+  ·ᴬ-map a b a≐b w = cong ((+ 2) *_) (a≐b w)
+
+  F-form : ∀ x z y → F x z y ≐
+           (if hitsT x y z
+            then (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y)) else 0ᴬ)
+  F-form x z y w = trans
+    (Eq.cong₂ _+ℤ_
+      (if-cong (same-hits ξ eqf true x z y)
+               (λ w′ → cong (λ u → zpow u w′) (eval-true (phase ξ) x y)) w)
+      (if-cong (same-hits ξ eqf false x z y)
+               (λ w′ → cong (λ u → zpow u w′) (eval-false (phase ξ) x y)) w))
+    (if-pair (hitsT x y z)
+             (zpow (hd x y +ℤ tv x y)) (zpow (tv x y)) w)
+
+  F-cancel : ∀ x z u → eval (liftXor c S) x u ≡ 1ℤ → F x z u ≐ 0ᴬ
+  F-cancel x z u q1 w = trans
+    (trans (F-form x z u w)
+             (if-cong {p = hitsT x u z} refl (pairB x u q1) w))
+    (if-0ᴬ (hitsT x u z) w)
+
+  twiceᴬ : ∀ (a : Amp) → (a +ᴬ a) ≐ ((+ 2) ·ᴬ a)
+  twiceᴬ a w = twice (a w)
+
 module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (i : Fin m) (c : Bool)
          (S : Mon n m) (i∈S : y[ i ] ∈ᵐ S)
          (eqP : head-part (phase ξ) ≈[ pow M ] (½ ·ᴾ liftXor c S))
          (eqf : ∀ w → NoVar (+ 2) y₀ (out ξ w))
          where
+  open Cancel ξ c S eqP eqf
+
 
   private
     S′ : Mon n m
     S′ = S ∖ᵐ y[ i ]
 
-    tv hd : Assign n → Assign m → ℤ
-    tv x y = eval (tail-part (phase ξ)) x y
-    hd x y = eval (head-part (phase ξ)) x y
-
-    head-eval : ∀ x y →
-                pow M ∣ (hd x y - (½ * eval (liftXor c S) x y))
-    head-eval x y = Eq.subst (λ w → pow M ∣ (hd x y - w))
-      (eval-·ᴾ ½ (liftXor c S) x y)
-      (eval-≈ (head-part (phase ξ)) (½ ·ᴾ liftXor c S) eqP x y)
-
-    -- Where the form vanishes the branches double.
-
-    pairA : ∀ x y → eval (liftXor c S) x y ≡ 0ℤ →
-            (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y)) ≐
-            (+ 2) ·ᴬ zpow (tv x y)
-    pairA x y q0 w = trans
-      (Eq.cong₂ _+ℤ_ (zpow-cong {hd x y +ℤ tv x y} {tv x y} same w) refl)
-      (twice (zpow (tv x y) w))
-      where
-      hd0 : pow M ∣ (hd x y - 0ℤ)
-      hd0 = Eq.subst (λ u → pow M ∣ (hd x y - u))
-        (trans (cong (½ *_) q0) (*-zeroʳ ½)) (head-eval x y)
-
-      shift : ∀ a t → (a +ℤ t) - t ≡ a - 0ℤ
-      shift = solve 2 (λ a t → (a :+ t) :- t := a :- con 0ℤ) refl
-
-      same : (+ N) ∣ ((hd x y +ℤ tv x y) - tv x y)
-      same = Eq.subst ((+ N) ∣_) (sym (shift (hd x y) (tv x y))) hd0
-
-    -- Where it is 1 they cancel: ζ^(½) = -1.
-
-    pairB : ∀ x y → eval (liftXor c S) x y ≡ 1ℤ →
-            (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y)) ≐ 0ᴬ
-    pairB x y q1 w = trans
-      (Eq.cong₂ _+ℤ_
-        (trans (zpow-cong {hd x y +ℤ tv x y} {tv x y +ℤ ½} same w)
-               (zpow-anti (tv x y) w))
-        refl)
-      (+-inverseˡ (zpow (tv x y) w))
-      where
-      hd½ : pow M ∣ (hd x y - ½)
-      hd½ = Eq.subst (λ u → pow M ∣ (hd x y - u))
-        (trans (cong (½ *_) q1) (*-identityʳ ½)) (head-eval x y)
-
-      shuffle : ∀ a b t → (a +ℤ t) - (t +ℤ b) ≡ a - b
-      shuffle = solve 3 (λ a b t → (a :+ t) :- (t :+ b) := a :- b) refl
-
-      same : (+ N) ∣ ((hd x y +ℤ tv x y) - (tv x y +ℤ ½))
-      same = Eq.subst ((+ N) ∣_)
-        (sym (shuffle (hd x y) ½ (tv x y))) hd½
 
     -- The value of the form on S ∖ y i, which the reduct substitutes.
 
@@ -685,81 +753,34 @@ module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (i : Fin m) (c : Bool)
     -- Where the assignment satisfies the constraint, substituting
     -- changes no value, so the reduct's summand is ξ's tail.
 
-    hitsT : Assign n → Assign m → Assign n → Bool
-    hitsT x y z = allFin (λ w → eqᵇ (bit (eval (tail-part (out ξ w)) x y)) (z w))
-
     kept-phase : ∀ x u → (if u i then 1ℤ else 0ℤ) ≡ q x u →
                  eval (phase red) x u ≡ tv x u
-    kept-phase x u con =
-      eval-subst-fixed (tail-part (phase ξ)) y[ i ] c S′ x u con
+    kept-phase x u cn =
+      eval-subst-fixed (tail-part (phase ξ)) y[ i ] c S′ x u cn
 
     kept-hits : ∀ x u z → (if u i then 1ℤ else 0ℤ) ≡ q x u →
                 hits red x u z ≡ hitsT x u z
-    kept-hits x u z con = allFin-cong (λ w →
+    kept-hits x u z cn = allFin-cong (λ w →
       cong (λ vv → eqᵇ (bit vv) (z w))
-        (eval-subst-fixed (tail-part (out ξ w)) y[ i ] c S′ x u con))
+        (eval-subst-fixed (tail-part (out ξ w)) y[ i ] c S′ x u cn))
 
-    -- ξ's two branches of y₀, as a single summand over Assign m.
-
-    Fξ : Assign n → Assign n → Assign (suc m) → Amp
-    Fξ x z y′ = if hits ξ x y′ z then zpow (eval (phase ξ) x y′) else 0ᴬ
-
-    F : Assign n → Assign n → Assign m → Amp
-    F x z y = Fξ x z (extend true y) +ᴬ Fξ x z (extend false y)
-
-    if-pair : ∀ (p : Bool) (a b : Amp) →
-              ((if p then a else 0ᴬ) +ᴬ (if p then b else 0ᴬ)) ≐
-              (if p then (a +ᴬ b) else 0ᴬ)
-    if-pair true  a b _ = refl
-    if-pair false a b _ = refl
-
-    if-0ᴬ : ∀ (p : Bool) → (if p then 0ᴬ else 0ᴬ) ≐ 0ᴬ
-    if-0ᴬ true  _ = refl
-    if-0ᴬ false _ = refl
-
-    ·ᴬ-if : ∀ (p : Bool) (a : Amp) →
-            ((+ 2) ·ᴬ (if p then a else 0ᴬ)) ≐
-            (if p then ((+ 2) ·ᴬ a) else 0ᴬ)
-    ·ᴬ-if true  a _ = refl
-    ·ᴬ-if false a _ = *-zeroʳ (+ 2)
-
-    ·ᴬ-map : ∀ (a b : Amp) → a ≐ b → ((+ 2) ·ᴬ a) ≐ ((+ 2) ·ᴬ b)
-    ·ᴬ-map a b a≐b w = cong ((+ 2) *_) (a≐b w)
-
-    F-form : ∀ x z y → F x z y ≐
-             (if hitsT x y z
-              then (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y)) else 0ᴬ)
-    F-form x z y w = trans
-      (Eq.cong₂ _+ℤ_
-        (if-cong (same-hits ξ eqf true x z y)
-                 (λ w′ → cong (λ u → zpow u w′) (eval-true (phase ξ) x y)) w)
-        (if-cong (same-hits ξ eqf false x z y)
-                 (λ w′ → cong (λ u → zpow u w′) (eval-false (phase ξ) x y)) w))
-      (if-pair (hitsT x y z)
-               (zpow (hd x y +ℤ tv x y)) (zpow (tv x y)) w)
 
     G-kept : ∀ x z u → (if u i then 1ℤ else 0ℤ) ≡ q x u →
              G x z u ≐ (if hitsT x u z then zpow (tv x u) else 0ᴬ)
-    G-kept x z u con = if-cong (kept-hits x u z con)
-      (λ w → cong (λ vv → zpow vv w) (kept-phase x u con))
+    G-kept x z u cn = if-cong (kept-hits x u z cn)
+      (λ w → cong (λ vv → zpow vv w) (kept-phase x u cn))
 
     F-kept : ∀ x z u → (if u i then 1ℤ else 0ℤ) ≡ q x u →
              eval (liftXor c S) x u ≡ 0ℤ →
              F x z u ≐ ((+ 2) ·ᴬ G x z u)
-    F-kept x z u con q0 w = trans
-      (trans (F-form x z u w) (if-cong refl (pairA x u q0) w))
+    F-kept x z u cn q0 w = trans
+      (trans (F-form x z u w)
+             (if-cong {p = hitsT x u z} refl (pairA x u q0) w))
       (sym (trans (·ᴬ-map (G x z u)
                           (if hitsT x u z then zpow (tv x u) else 0ᴬ)
-                          (G-kept x z u con) w)
+                          (G-kept x z u cn) w)
                   (·ᴬ-if (hitsT x u z) (zpow (tv x u)) w)))
 
-    F-cancel : ∀ x z u → eval (liftXor c S) x u ≡ 1ℤ → F x z u ≐ 0ᴬ
-    F-cancel x z u q1 w = trans
-      (trans (F-form x z u w) (if-cong refl (pairB x u q1) w))
-      (if-0ᴬ (hitsT x u z) w)
-
-    twiceᴬ : ∀ (a : Amp) → (a +ᴬ a) ≐ ((+ 2) ·ᴬ a)
-    twiceᴬ a w = twice (a w)
 
     -- Of the two assignments differing at i, exactly one satisfies the
     -- constraint: the value of the form on S ∖ y i is the same at both,
@@ -769,14 +790,14 @@ module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (i : Fin m) (c : Bool)
               (F x z y +ᴬ F x z (setᵗ i y)) ≐
               (G x z y +ᴬ G x z (setᵗ i y))
     pair-q0 x z y ey q0 w = trans
-      (trans (Eq.cong₂ _+ℤ_ (F-kept x z y con-y Qy0 w)
+      (trans (Eq.cong₂ _+ℤ_ (F-kept x z y cn-y Qy0 w)
                             (F-cancel x z (setᵗ i y) Qy′1 w))
              (+-identityʳ (((+ 2) ·ᴬ G x z y) w)))
       (sym (trans (cong (λ u → G x z y w +ℤ u) (sym (G-off x z y w)))
                   (twiceᴬ (G x z y) w)))
       where
-      con-y : (if y i then 1ℤ else 0ℤ) ≡ q x y
-      con-y = trans (cong (λ b → if b then 1ℤ else 0ℤ) ey) (sym q0)
+      cn-y : (if y i then 1ℤ else 0ℤ) ≡ q x y
+      cn-y = trans (cong (λ b → if b then 1ℤ else 0ℤ) ey) (sym q0)
 
       Qy0 : eval (liftXor c S) x y ≡ 0ℤ
       Qy0 = trans (Q-false x y ey) q0
@@ -790,13 +811,13 @@ module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (i : Fin m) (c : Bool)
               (G x z y +ᴬ G x z (setᵗ i y))
     pair-q1 x z y ey q1 w = trans
       (trans (Eq.cong₂ _+ℤ_ (F-cancel x z y Qy1 w)
-                            (F-kept x z (setᵗ i y) con-y′ Qy′0 w))
+                            (F-kept x z (setᵗ i y) cn-y′ Qy′0 w))
              (+-identityˡ (((+ 2) ·ᴬ G x z (setᵗ i y)) w)))
       (sym (trans (cong (λ u → u +ℤ G x z (setᵗ i y) w) (G-off x z y w))
                   (twiceᴬ (G x z (setᵗ i y)) w)))
       where
-      con-y′ : (if setᵗ i y i then 1ℤ else 0ℤ) ≡ q x (setᵗ i y)
-      con-y′ = trans (cong (λ b → if b then 1ℤ else 0ℤ) (setᵗ-i y))
+      cn-y′ : (if setᵗ i y i then 1ℤ else 0ℤ) ≡ q x (setᵗ i y)
+      cn-y′ = trans (cong (λ b → if b then 1ℤ else 0ℤ) (setᵗ-i y))
                      (trans (sym q1) (q-off x y))
 
       Qy1 : eval (liftXor c S) x y ≡ 1ℤ
