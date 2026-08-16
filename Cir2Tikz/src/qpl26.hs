@@ -186,7 +186,7 @@ items =
 
   ------------------------------------------------------------------
   -- The A, B, D, E boxes as circuits (representative a ≠ 0 cases)
-  , R "box-A" [A 0 "a,b"] [Mul 0 "XM_a", H 0, Se 0 "-b/a"] ""
+  , R "box-A" [A 0 "a,b"] [Mul 0 "M_{a^{-1}}", H 0, Se 0 "-b/a"] ""
   , R "box-B" [B 0 "a,b"] [Ex 0, CXe 1 0 "a", H 1, Se 1 "-b/a"] ""
   , R "box-D" [D 0 "a,b"] [Ex 0, CZe 0 1 "-a", H 0, Se 0 "-b/a"] ""
   , R "box-E" [E 0 "b"]   [Se 0 "-b"] ""

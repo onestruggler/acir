@@ -479,6 +479,8 @@ module What-presents-means {a ℓ : Level} {X : Set} where
   Symplectic operators are Clifford mod Pauli: the ``proper'' part.
   Normal forms are \alert{data}, built from four atomic boxes:
 
+  \begin{columns}[T]
+    \begin{column}{0.46\textwidth}
 \begin{code}[hide]
 module Normal-form-boxes where
 \end{code}
@@ -491,14 +493,17 @@ module Normal-form-boxes where
   E : Set
   E = ℤ ₚ
 \end{code}
-  \vfill
-  \setlength{\figwidth}{0.32\textwidth}
-  \begin{center}\tiny
-    \begin{tabular}{@{}r@{\;\,}l@{\quad}r@{\;\,}l@{}}
-      $A_{a,b}$, $a\neq0$ & \fitfig{box-A} & $D_{a,b}$, $a\neq0$ & \fitfig{box-D}\\[1pt]
-      $B_{a,b}$, $a\neq0$ & \fitfig{box-B} & $E_{b}$ & \fitfig{box-E}\\
-    \end{tabular}
-  \end{center}
+    \end{column}
+    \begin{column}{0.54\textwidth}\tiny
+      \vspace{2ex}
+      \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
+        $A_{a,b}$, $a\neq0$ & \ufig[0.7]{box-A-l} & $\equiv$ & \ufig[0.7]{box-A-r}\\[1pt]
+        $B_{a,b}$, $a\neq0$ & \ufig[0.7]{box-B-l} & $\equiv$ & \ufig[0.7]{box-B-r}\\[1pt]
+        $D_{a,b}$, $a\neq0$ & \ufig[0.7]{box-D-l} & $\equiv$ & \ufig[0.7]{box-D-r}\\[1pt]
+        $E_{b}$ & \ufig[0.7]{box-E-l} & $\equiv$ & \ufig[0.7]{box-E-r}\\
+      \end{tabular}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{Rows, and the staircase}
