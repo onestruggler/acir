@@ -47,6 +47,7 @@ open import Relation.Nullary.Negation using (¬_; contradiction)
 import Data.Nat.Divisibility as ℕDiv
 import Data.Nat.Properties as ℕ
 import Relation.Binary.PropositionalEquality as Eq
+import Data.Fin.Properties as Fin
 
 open +-*-Solver using (solve; con; _:+_; _:-_; :-_; _:*_; _:=_)
 
@@ -717,3 +718,78 @@ scale-injective : ∀ j a b → scale j a ≐ scale j b → a ≐ b
 scale-injective zero    a b eq = eq
 scale-injective (suc j) a b eq =
   scale-injective j a b (√2·-injective (scale j a) (scale j b) eq)
+
+
+------------------------------------------------------------------------
+-- Splitting a sum over assignments at an index
+
+-- The assignments giving the index false each contribute twice: once
+-- as they are, and once with the index set to true.  An assignment is
+-- a function, so the updated one is only pointwise equal to the one
+-- the recursion produces, and the summand has to respect that.
+
+Respects : ∀ {k} → ((Fin k → Bool) → Amp) → Set
+Respects f = ∀ g h → (∀ j → g j ≡ h j) → f g ≐ f h
+
+setᵗ : ∀ {k} → Fin k → (Fin k → Bool) → (Fin k → Bool)
+setᵗ i g j = if ⌊ j Fin.≟ i ⌋ then true else g j
+
+private
+  Σᴮ-0 : ∀ {k} → Σᴮ {k} (λ _ → 0ᴬ) ≐ 0ᴬ
+  Σᴮ-0 {zero}  i = refl
+  Σᴮ-0 {suc k} i = Eq.cong₂ _+_ (Σᴮ-0 {k} i) (Σᴮ-0 {k} i)
+
+  ⌊≟⌋-suc : ∀ {k} (j i : Fin k) →
+            ⌊ suc j Fin.≟ suc i ⌋ ≡ ⌊ j Fin.≟ i ⌋
+  ⌊≟⌋-suc j i with j Fin.≟ i
+  ... | yes _ = refl
+  ... | no  _ = refl
+
+  extend-cong : ∀ {k} (b : Bool) (g h : Fin k → Bool) →
+                (∀ j → g j ≡ h j) → ∀ j → extend b g j ≡ extend b h j
+  extend-cong b g h g≗h zero    = refl
+  extend-cong b g h g≗h (suc j) = g≗h j
+
+Σᴮ-at : ∀ {k} (i : Fin k) (f : (Fin k → Bool) → Amp) → Respects f →
+        Σᴮ f ≐ Σᴮ (λ g → if g i then 0ᴬ else (f g +ᴬ f (setᵗ i g)))
+Σᴮ-at {suc k} zero f resp w = sym (trans
+  (Eq.cong₂ _+_ (Σᴮ-0 {k} w)
+    (trans (Σᴮ-+ (λ g → f (extend false g))
+                 (λ g → f (setᵗ zero (extend false g))) w)
+           (cong (λ z → Σᴮ (λ g → f (extend false g)) w + z)
+             (Σᴮ-cong {f = λ g → f (setᵗ zero (extend false g))}
+                      {g = λ g → f (extend true g)}
+                      (λ g → resp (setᵗ zero (extend false g))
+                                  (extend true g) (pt g)) w))))
+  (trans (+-identityˡ (Σᴮ (λ g → f (extend false g)) w +
+                       Σᴮ (λ g → f (extend true g)) w))
+         (+-comm (Σᴮ (λ g → f (extend false g)) w)
+                 (Σᴮ (λ g → f (extend true g)) w))))
+  where
+  pt : ∀ g j → setᵗ zero (extend false g) j ≡ extend true g j
+  pt g zero    = refl
+  pt g (suc j) = refl
+Σᴮ-at {suc k} (suc i) f resp w = trans
+  (Eq.cong₂ _+_
+    (Σᴮ-at i (λ g → f (extend true  g)) (respExt true)  w)
+    (Σᴮ-at i (λ g → f (extend false g)) (respExt false) w))
+  (Eq.cong₂ _+_ (Σᴮ-cong (adjust true)  w)
+                (Σᴮ-cong (adjust false) w))
+  where
+  respExt : ∀ b → Respects (λ g → f (extend b g))
+  respExt b g h g≗h = resp (extend b g) (extend b h) (extend-cong b g h g≗h)
+
+  pt : ∀ b g j → extend b (setᵗ i g) j ≡ setᵗ (suc i) (extend b g) j
+  pt b g zero    = refl
+  pt b g (suc j) =
+    cong (λ t → if t then true else g j) (sym (⌊≟⌋-suc j i))
+
+  adjust : ∀ b g →
+    (if g i then 0ᴬ else
+     (f (extend b g) +ᴬ f (extend b (setᵗ i g)))) ≐
+    (if extend b g (suc i) then 0ᴬ else
+     (f (extend b g) +ᴬ f (setᵗ (suc i) (extend b g))))
+  adjust b g with g i
+  ... | true  = λ _ → refl
+  ... | false = λ w′ → cong (λ z → f (extend b g) w′ + z)
+        (resp (extend b (setᵗ i g)) (setᵗ (suc i) (extend b g)) (pt b g) w′)

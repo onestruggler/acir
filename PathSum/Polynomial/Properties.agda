@@ -1380,3 +1380,30 @@ eval-subst-fixed P v c S x y eq = trans
   (sym (trans (eval-split P v x y)
               (cong (λ z → eval (P ∖ᵛ v) x y +ℤ (z *ℤ eval (P /ᵛ v) x y))
                     eq)))
+
+
+------------------------------------------------------------------------
+-- Evaluation respects pointwise equality of assignments
+
+-- An assignment is a function, so two assignments agreeing everywhere
+-- need not be equal.  Splitting a sum over assignments at an index
+-- produces exactly such a pair, so evaluation has to be known to
+-- respect the pointwise relation.
+
+sat-cong : (p : Subset k) {f g : Fin k → Bool} → (∀ i → f i ≡ g i) →
+           sat p f ≡ sat p g
+sat-cong []            f≗g = refl
+sat-cong (inside  ∷ p) f≗g =
+  cong₂ _∧_ (f≗g zero) (sat-cong p (λ i → f≗g (suc i)))
+sat-cong (outside ∷ p) f≗g = sat-cong p (λ i → f≗g (suc i))
+
+satᵐ-cong : (γ : Mon n m) {x x′ : Fin n → Bool} {y y′ : Fin m → Bool} →
+            (∀ i → x i ≡ x′ i) → (∀ j → y j ≡ y′ j) →
+            satᵐ γ x y ≡ satᵐ γ x′ y′
+satᵐ-cong (α , β) x≗ y≗ = cong₂ _∧_ (sat-cong α x≗) (sat-cong β y≗)
+
+eval-cong : (P : Poly n m) {x x′ : Fin n → Bool} {y y′ : Fin m → Bool} →
+            (∀ i → x i ≡ x′ i) → (∀ j → y j ≡ y′ j) →
+            eval P x y ≡ eval P x′ y′
+eval-cong P x≗ y≗ = Σmon-cong (λ γ →
+  cong (λ b → if b then P γ else 0ℤ) (satᵐ-cong γ x≗ y≗))
