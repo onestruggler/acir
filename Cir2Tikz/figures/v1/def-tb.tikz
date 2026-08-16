@@ -1,0 +1,36 @@
+\begin{tikzpicture}
+\path [use as bounding box] (-0.3, -1.0) rectangle (20.3, 3.7);
+\begin{pgfonlayer}{nodelayer}
+\node [style=gate] (n0y00) at (2.25, 2.0) {$\top$};
+\node [style=gate] (n0y01) at (2.25, 0.0) {$\bot$};
+\node [style=none] (lm0el00) at (0.0, 0.0){};
+\node [style=none] (lm0el10) at (0.0, 2.0){};
+\node [style=none] (lm0er00) at (4.0, 0.0){};
+\node [style=none] (lm0er10) at (4.0, 2.0){};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm0el00.center) to (lm0er00.center);
+\draw (lm0el10.center) to (lm0er10.center);
+\end{pgfonlayer}
+\node [style=none] (equiv) at (5.0, 1.0) {$\equiv$};
+\begin{pgfonlayer}{nodelayer}
+\node [style=gate] (n6y00) at (7.75, 2.0) {$H$};
+\node [style=cnot ctrl, label={above:$$}] (n6y01) at (10.25, 2.0) {};
+\node [style=cnot ctrl] (n6y01t) at (10.25, 0.0) {$$};
+\node [style=gate] (n6y02) at (12.75, 2.0) {$H$};
+\node [style=gate] (n6y03) at (12.75, 0.0) {$H$};
+\node [style=cnot ctrl, label={above:$$}] (n6y04) at (15.25, 2.0) {};
+\node [style=cnot ctrl] (n6y04t) at (15.25, 0.0) {$$};
+\node [style=gate] (n6y05) at (17.75, 0.0) {$H$};
+\node [style=none] (lm6el00) at (6.0, 0.0){};
+\node [style=none] (lm6el10) at (6.0, 2.0){};
+\node [style=none] (lm6er00) at (19.5, 0.0){};
+\node [style=none] (lm6er10) at (19.5, 2.0){};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm6el00.center) to (lm6er00.center);
+\draw (lm6el10.center) to (lm6er10.center);
+\draw (n6y01.center) to (n6y01t.center);
+\draw (n6y04.center) to (n6y04t.center);
+\end{pgfonlayer}
+\end{tikzpicture}

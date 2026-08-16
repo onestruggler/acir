@@ -1,0 +1,22 @@
+\begin{tikzpicture}
+\path [use as bounding box] (-0.3, -1.0) rectangle (14.8, 1.7);
+\begin{pgfonlayer}{nodelayer}
+\node [style=gate] (n0y00) at (1.75, 0.0) {$M_g$};
+\node [style=gate] (n0y01) at (4.25, 0.0) {$R$};
+\node [style=none] (lm0el00) at (0.0, 0.0){};
+\node [style=none] (lm0er00) at (6.0, 0.0){};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm0el00.center) to (lm0er00.center);
+\end{pgfonlayer}
+\node [style=none] (equiv) at (7.0, 0.0) {$\equiv$};
+\begin{pgfonlayer}{nodelayer}
+\node [style=gate] (n8y00) at (9.75, 0.0) {$R^{g^2}$};
+\node [style=gate] (n8y01) at (12.25, 0.0) {$M_g$};
+\node [style=none] (lm8el00) at (8.0, 0.0){};
+\node [style=none] (lm8er00) at (14.0, 0.0){};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm8el00.center) to (lm8er00.center);
+\end{pgfonlayer}
+\end{tikzpicture}

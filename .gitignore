@@ -27,10 +27,29 @@ paper/*.pdf
 *.prof
 *.hp
 *.exe
-Cir2Tikz/main_local
+# Compiler and LaTeX droppings from Cir2Tikz/build.sh
+Cir2Tikz/build/
 
 # cabal / stack
 dist/
 dist-newstyle/
 .stack-work/
 *.cabal.project.local
+
+# Local reference material (papers, supplements, notes) -- never tracked
+local/
+
+# qpl26slides build artifacts.  Tracked under latex/: agda.sty,
+# circuits.tikzstyles, figures/, selinger-clifford.pdf, talk.pdf.
+qpl26slides/latex/qpl26slides/
+qpl26slides/latex/preview/
+qpl26slides/latex/*.aux
+qpl26slides/latex/*.fdb_latexmk
+qpl26slides/latex/*.fls
+qpl26slides/latex/*.log
+qpl26slides/latex/*.nav
+qpl26slides/latex/*.out
+qpl26slides/latex/*.snm
+qpl26slides/latex/*.toc
+qpl26slides/latex/*.vrb
+qpl26slides/latex/*.ptb
