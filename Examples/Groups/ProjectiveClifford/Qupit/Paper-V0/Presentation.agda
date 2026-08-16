@@ -125,12 +125,15 @@ private
       ; iso = iso
       }
 
+open Pap using (module Clifford-Relations)
+open SDPres using (module Semidirect)
+open Clifford-Relations renaming (_QRel,_===_ to _CRel,_===_)
+open Semidirect using (Pauli⋊Sp)
+
 ------------------------------------------------------------------------
 -- The theorem
 
--- The Paper-V0 Clifford rules — the paper's Figure 1 — present the
--- semidirect product of the Pauli group by Sp(2n, ℤ/pℤ).
-presentation : ∀ {n} →
-               (Pap.Clifford-Relations._QRel,_===_ n)
-                 IsPresentationOf (SDPres.Semidirect.Pauli⋊Sp n)
-presentation {n} = Build.pres n
+-- The Paper-V0 Clifford rules — the paper's Figure 1 mod scalars —
+-- present the semidirect product of the Pauli group and Sp(2n, ℤ/pℤ).
+presentation : ∀ (n : ℕ) → (n CRel,_===_) IsPresentationOf (Pauli⋊Sp n)
+presentation = Build.pres
