@@ -172,6 +172,9 @@ items =
   , C "c1-0" (eps 2) ""
   , C "c1-1" [Ex 0] ""
 
+  -- The single coset representative of S₁ / S₀
+  , C "c0-0" (eps 1) ""
+
   ------------------------------------------------------------------
   -- The four cases of pushing a generator through a coset rep
   -- (expanded staircase form, verified permutation identities)
@@ -294,12 +297,13 @@ mlAtoms = handPicture (-0.8, -1.2, 16.2, 7.7) nodes edges
 
 -- Generic staircase NF for Sₙ (the S₄ instance): c⁽¹⁾ ↑↑ • c⁽²⁾ ↑ • c⁽³⁾.
 snStair :: String
-snStair = handPicture (-0.8, -1.0, 8.4, 7.7) nodes edges
+snStair = handPicture (-1.3, -1.0, 12.7, 7.7) nodes edges
   where
-    nodes = concat [ wire ("w" ++ show w) (-0.5) 8.1 w | w <- [0..3] ]
-         ++ spanBox "c1" 1.0 2 2 "c^{(1)}"
-         ++ spanBox "c2" 3.3 1 3 "c^{(2)}"
-         ++ spanBox "c3" 5.9 0 4 "c^{(3)}"
+    nodes = concat [ wire ("w" ++ show w) (-1.0) 12.4 w | w <- [0..3] ]
+         ++ spanBox "c0" 1.2 3 1 "c^{(0)}"
+         ++ spanBox "c1" 4.2 2 2 "c^{(1)}"
+         ++ spanBox "c2" 7.2 1 3 "c^{(2)}"
+         ++ spanBox "c3" 10.2 0 4 "c^{(3)}"
     edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
 
 -- A lone 4-wire row box, the left-hand side of the expansions.

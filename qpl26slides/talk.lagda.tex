@@ -647,25 +647,26 @@ module NF-as-circuits where
 \end{frame}
 
 \begin{frame}{Coset representatives, and the normal form}
-  Representatives of $S_3/S_2$ (and of $S_2/S_1$): the staircases
+  Representatives of $S_3/S_2$ (and of $S_2/S_1$, $S_1/S_0$): the staircases
   \vfill
   \begin{center}
-  \begin{tabular}{ccc@{\qquad\qquad}cc}
+  \begin{tabular}{ccc@{\qquad\qquad}cc@{\qquad\qquad}c}
     \ufig[0.8]{c2-0} & \ufig[0.8]{c2-1} &
     \ufig[0.8]{c2-2} &
-    \ufig[0.8]{c1-0} & \ufig[0.8]{c1-1}\\
-    $c^{(2)}_0$ & $c^{(2)}_1$ & $c^{(2)}_2$ & $c^{(1)}_0$ & $c^{(1)}_1$
+    \ufig[0.8]{c1-0} & \ufig[0.8]{c1-1} & \ufig[0.8]{c0-0}\\
+    $c^{(2)}_0$ & $c^{(2)}_1$ & $c^{(2)}_2$ & $c^{(1)}_0$ & $c^{(1)}_1$ &
+    $c^{(0)}_0$
   \end{tabular}
   \end{center}
   \vfill
   \begin{columns}[T]
-    \begin{column}{0.62\textwidth}
+    \begin{column}{0.68\textwidth}
       \begin{itemize}\small
-        \item For $f \in S_3$ there is a unique $c \in C_2$ with
-              $f^{-1}c$ fixing the bottom wire: $c$ must send
-              $f^{-1}(0)$ to $0$.
-        \item Recurse on $f^{-1}c \in S_2$: every $f$ is uniquely
-              $c^{(2)} \cdot (c^{(1)}\!\uparrow)$.
+        \item For $f \in S_3$ there is a unique $c \in C_2$ with $c
+          \circ f^{-1}$ fixing the bottom wire, i.e., $c$ sends
+          $f^{-1}(0)$ to $0$.
+        \item Recurse on $c \circ f^{-1} \in S_2$: every $f$ is
+          uniquely $c^{(0)} \cdot c^{(1)} \cdot c^{(2)}$.
         \item Group theory: given $G_0 < \dots < G_n$ and coset reps
               $C_k$ of $G_k/G_{k-1}$, elements of $G_n$ factor uniquely
               as $\prod_k c_k$ --- a \alert{mixed-radix encoding}:
