@@ -91,10 +91,14 @@
 
 \title{A Complete and Natural Rule Set for Multi-Qudit Clifford Circuits
        in All Odd Prime Dimensions}
-\author{Xiaoning Bian \and Sarah Meng Li \and Neil J.\ Ross \and
-        John van de Wetering \and Yuming Zhao}
-\institute{Tsinghua University \and University of Amsterdam, QuSoft \and
-           Dalhousie University \and University of Copenhagen}
+\author{Xiaoning Bian$^{*}$ \and Sarah Meng Li$^{\dagger\ddagger}$ \and
+        Neil J.\ Ross$^{\S}$ \and John van de Wetering$^{\dagger\ddagger}$ \and
+        Yuming Zhao$^{\P}$}
+\institute{$^{*}$Tsinghua University \quad
+           $^{\dagger}$University of Amsterdam \quad
+           $^{\ddagger}$QuSoft \quad
+           $^{\S}$Dalhousie University \\
+           $^{\P}$University of Copenhagen}
 \date{QPL 2026}
 
 \begin{document}
@@ -171,7 +175,7 @@ open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 module qpl26slides.talk
   (p-3 : ℕ)
   (let p-2 = ₁₊ p-3)
-  (p-prime : Prime (suc (₁₊ p-2)))
+  (p-prime : Prime (₃₊ p-3))
   (let open PrimeModulus' p-2 p-prime)
   (g*@(g , g≠0) : ℤ* ₚ)
   (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ \ (k : ℤ ₚ-₁) → x ≡ g ^′ toℕ k)
