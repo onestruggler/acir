@@ -82,7 +82,10 @@ Amy's path-sum calculus (QPL 2018), as far as §4.3. **Not reached by `MainTheor
 - **`Denotation.agda`** (checked `--call-by-name`): `amp`, `hits`, `_≋_`, the three soundness proofs, lemma 4.2, the undersized lemmas, and `semantics`. Layered in modules by *what premise they need*: `Branches ξ eqf` (the pair of y₀ branches, no premise), `Cancel ξ c S eqP eqf` (head ≈ ½·form), `ωBranches` (head ≈ ¼ + ½·form). Each re-exports the one below with `open … public`.
 - **`Semantics.agda`**: the interface `record Semantics` — `_≋_` and its equivalence, `⟶-sound`, `interference`, `undersized-elim`, `undersized-ω`.
 - **`Clifford.agda`**: §4.3 over that interface — `progress`, `lemma-4-3`, `corollary-4-4`.
-- **`Theorems.agda`**: instantiates `Clifford` at `Denotation.semantics` and states everything unconditionally.
+- **`Circuit.agda`**: the two hypotheses of corollary 4.4, discharged. Clifford circuits over `H`, `S`, `CZ` (`Gate`, `Circuit`), and `⟦_⟧ᴿ`, the isometry restriction of §4.1 already reified — a Hadamard allocates a path variable only when a later one touches its wire, since otherwise `f (x , y) = x` forces that variable to be `x_w`. Hence `norm C` counts every Hadamard while `paths C` counts only those, and `⟦⟧ᴿ-Internal`/`⟦⟧ᴿ-Ord≤` are theorems. Semantics-free: it imports only `Base`, `Order`, `Polynomial` and `Reduction` (for `¼`/`½`).
+- **`Theorems.agda`**: instantiates `Clifford` at `Denotation.semantics` and states everything unconditionally, `corollary-4-4-circuit` included.
+
+What corollary 4.4 still assumes is lemma 4.1 alone: that a *well-formed* path-sum is the identity exactly when its restriction is. That is a statement about isometries, and `Denotation` — a matrix entry in ℤ[ζ], carrying no norm — cannot express it. Nor does `Reduces` decide equivalence on its own: its `done` outcome says the path variables are exhausted, not that what is left is the identity, which is a separate test on the phase and the leftover normalisation.
 
 Two departures from the paper, both in the module headers: a path-sum carries its normalisation `k` **and** its path-variable count `m` separately, because def. 2.1 ties them but fig. 2's rules do not; and lemma 4.3's implicit side condition (the rule may cost more normalisation than the path-sum has) is *proved* here rather than assumed, via the coordinate facts above.
 
