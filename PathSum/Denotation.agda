@@ -44,7 +44,7 @@ open import Data.Integer.Divisibility.Signed using
   (_∣_; _∣?_; ∣-refl; ∣m∣n⇒∣m+n; ∣m+n∣m⇒∣n)
 open import Data.Integer.Properties using
   (+-assoc; +-identityˡ; +-identityʳ; +-inverseˡ; +-inverseʳ;
-   *-identityʳ; *-zeroʳ; neg-involutive)
+   *-identityʳ; *-identityˡ; *-zeroʳ; *-zeroˡ; neg-involutive)
 open import Data.Integer.Solver using (module +-*-Solver)
 open import Data.Nat.Base using (zero; suc) renaming (_+_ to _ℕ+_)
 open import Data.Product.Base using (_,_)
@@ -52,8 +52,8 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Vec.Base using (_∷_; here)
 open import Relation.Binary.PropositionalEquality using
   (_≡_; refl; sym; trans; cong; cong₂)
-open import Relation.Nullary.Decidable using (yes; no; ⌊_⌋)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Decidable using (Dec; yes; no; ⌊_⌋)
+open import Relation.Nullary.Negation using (¬_; contradiction)
 
 open import PathSum.Base
 open import PathSum.Cyclotomic M₀
@@ -62,6 +62,7 @@ open import PathSum.Polynomial
 open import PathSum.Polynomial.Properties
 open import PathSum.Reduction (suc (suc (suc M₀)))
 
+import Data.Fin.Properties as Fin
 import Data.Nat.Properties as ℕ
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -604,3 +605,248 @@ module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (i : Fin m) (c : Bool)
       same : (+ N) ∣ ((hd x y +ℤ tv x y) - (tv x y +ℤ ½))
       same = Eq.subst ((+ N) ∣_)
         (sym (shuffle (hd x y) ½ (tv x y))) hd½
+
+    -- The value of the form on S ∖ y i, which the reduct substitutes.
+
+    q : Assign n → Assign m → ℤ
+    q x y = eval (liftXor c S′) x y
+
+    ⌊no⌋ : ∀ {p} {P : Set p} (d : Dec P) → ¬ P → ⌊ d ⌋ ≡ false
+    ⌊no⌋ (yes p) ¬p = contradiction p ¬p
+    ⌊no⌋ (no  _) _  = refl
+
+    ⌊≟⌋-refl : ⌊ i Fin.≟ i ⌋ ≡ true
+    ⌊≟⌋-refl with i Fin.≟ i
+    ... | yes _ = refl
+    ... | no ¬p = contradiction refl ¬p
+
+    setᵗ-i : ∀ (y : Assign m) → setᵗ i y i ≡ true
+    setᵗ-i y = cong (λ b → if b then true else y i) ⌊≟⌋-refl
+
+    setᵗ-off : ∀ (y : Assign m) j → ¬ (j ≡ i) → y j ≡ setᵗ i y j
+    setᵗ-off y j j≢i =
+      sym (cong (λ b → if b then true else y j) (⌊no⌋ (j Fin.≟ i) j≢i))
+
+    novS′ : ∀ γ → y[ i ] ∈ᵐ γ → liftXor c S′ γ ≡ 0ℤ
+    novS′ γ v∈γ = liftXor-0 c S′ γ y[ i ] v∈γ (v∉S∖v S y[ i ])
+
+    q-off : ∀ x y → q x y ≡ q x (setᵗ i y)
+    q-off x y =
+      eval-off (liftXor c S′) i novS′ x y (setᵗ i y) (setᵗ-off y)
+
+    -- The form on S at an assignment, in terms of it.
+
+    Qval : ∀ x y → eval (liftXor c S) x y ≡
+           q x y +ℤ ((if y i then 1ℤ else 0ℤ) *
+                     (1ℤ - ((+ 2) * q x y)))
+    Qval x y = liftXor-split c S y[ i ] i∈S x y
+
+    Q-false : ∀ x y → y i ≡ false → eval (liftXor c S) x y ≡ q x y
+    Q-false x y ef = trans (Qval x y) (trans
+      (cong (λ b → q x y +ℤ ((if b then 1ℤ else 0ℤ) *
+                             (1ℤ - ((+ 2) * q x y)))) ef)
+      (trans (cong (q x y +ℤ_) (*-zeroˡ (1ℤ - ((+ 2) * q x y))))
+             (+-identityʳ (q x y))))
+
+    Q-true : ∀ x y → y i ≡ true → eval (liftXor c S) x y ≡
+             q x y +ℤ (1ℤ - ((+ 2) * q x y))
+    Q-true x y et = trans (Qval x y) (trans
+      (cong (λ b → q x y +ℤ ((if b then 1ℤ else 0ℤ) *
+                             (1ℤ - ((+ 2) * q x y)))) et)
+      (cong (q x y +ℤ_) (*-identityˡ (1ℤ - ((+ 2) * q x y)))))
+
+    -- The reduct's polynomials mention no y i, so its summand is
+    -- constant along the index the rule eliminates.
+
+    red : PathSum n k m
+    red = hh-reduct ξ i c S
+
+    nov-red : ∀ (P : Poly n (suc m)) γ →
+              y[ i ] ∈ᵐ γ → subst (tail-part P) y[ i ] c S′ γ ≡ 0ℤ
+    nov-red P = subst-0 (tail-part P) y[ i ] c S′ (v∉S∖v S y[ i ])
+
+    phase-off : ∀ x y → eval (phase red) x y ≡ eval (phase red) x (setᵗ i y)
+    phase-off x y = eval-off (phase red) i (nov-red (phase ξ))
+                             x y (setᵗ i y) (setᵗ-off y)
+
+    hits-off : ∀ x y z → hits red x y z ≡ hits red x (setᵗ i y) z
+    hits-off x y z = allFin-cong (λ w →
+      cong (λ u → eqᵇ (bit u) (z w))
+        (eval-off (out red w) i (nov-red (out ξ w))
+                  x y (setᵗ i y) (setᵗ-off y)))
+
+    G : Assign n → Assign n → Assign m → Amp
+    G x z y = if hits red x y z then zpow (eval (phase red) x y) else 0ᴬ
+
+    G-off : ∀ x z y → G x z y ≐ G x z (setᵗ i y)
+    G-off x z y = if-cong (hits-off x y z)
+      (λ w → cong (λ u → zpow u w) (phase-off x y))
+
+    -- Where the assignment satisfies the constraint, substituting
+    -- changes no value, so the reduct's summand is ξ's tail.
+
+    hitsT : Assign n → Assign m → Assign n → Bool
+    hitsT x y z = allFin (λ w → eqᵇ (bit (eval (tail-part (out ξ w)) x y)) (z w))
+
+    kept-phase : ∀ x u → (if u i then 1ℤ else 0ℤ) ≡ q x u →
+                 eval (phase red) x u ≡ tv x u
+    kept-phase x u con =
+      eval-subst-fixed (tail-part (phase ξ)) y[ i ] c S′ x u con
+
+    kept-hits : ∀ x u z → (if u i then 1ℤ else 0ℤ) ≡ q x u →
+                hits red x u z ≡ hitsT x u z
+    kept-hits x u z con = allFin-cong (λ w →
+      cong (λ vv → eqᵇ (bit vv) (z w))
+        (eval-subst-fixed (tail-part (out ξ w)) y[ i ] c S′ x u con))
+
+    -- ξ's two branches of y₀, as a single summand over Assign m.
+
+    Fξ : Assign n → Assign n → Assign (suc m) → Amp
+    Fξ x z y′ = if hits ξ x y′ z then zpow (eval (phase ξ) x y′) else 0ᴬ
+
+    F : Assign n → Assign n → Assign m → Amp
+    F x z y = Fξ x z (extend true y) +ᴬ Fξ x z (extend false y)
+
+    if-pair : ∀ (p : Bool) (a b : Amp) →
+              ((if p then a else 0ᴬ) +ᴬ (if p then b else 0ᴬ)) ≐
+              (if p then (a +ᴬ b) else 0ᴬ)
+    if-pair true  a b _ = refl
+    if-pair false a b _ = refl
+
+    if-0ᴬ : ∀ (p : Bool) → (if p then 0ᴬ else 0ᴬ) ≐ 0ᴬ
+    if-0ᴬ true  _ = refl
+    if-0ᴬ false _ = refl
+
+    ·ᴬ-if : ∀ (p : Bool) (a : Amp) →
+            ((+ 2) ·ᴬ (if p then a else 0ᴬ)) ≐
+            (if p then ((+ 2) ·ᴬ a) else 0ᴬ)
+    ·ᴬ-if true  a _ = refl
+    ·ᴬ-if false a _ = *-zeroʳ (+ 2)
+
+    ·ᴬ-map : ∀ (a b : Amp) → a ≐ b → ((+ 2) ·ᴬ a) ≐ ((+ 2) ·ᴬ b)
+    ·ᴬ-map a b a≐b w = cong ((+ 2) *_) (a≐b w)
+
+    F-form : ∀ x z y → F x z y ≐
+             (if hitsT x y z
+              then (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y)) else 0ᴬ)
+    F-form x z y w = trans
+      (Eq.cong₂ _+ℤ_
+        (if-cong (same-hits ξ eqf true x z y)
+                 (λ w′ → cong (λ u → zpow u w′) (eval-true (phase ξ) x y)) w)
+        (if-cong (same-hits ξ eqf false x z y)
+                 (λ w′ → cong (λ u → zpow u w′) (eval-false (phase ξ) x y)) w))
+      (if-pair (hitsT x y z)
+               (zpow (hd x y +ℤ tv x y)) (zpow (tv x y)) w)
+
+    G-kept : ∀ x z u → (if u i then 1ℤ else 0ℤ) ≡ q x u →
+             G x z u ≐ (if hitsT x u z then zpow (tv x u) else 0ᴬ)
+    G-kept x z u con = if-cong (kept-hits x u z con)
+      (λ w → cong (λ vv → zpow vv w) (kept-phase x u con))
+
+    F-kept : ∀ x z u → (if u i then 1ℤ else 0ℤ) ≡ q x u →
+             eval (liftXor c S) x u ≡ 0ℤ →
+             F x z u ≐ ((+ 2) ·ᴬ G x z u)
+    F-kept x z u con q0 w = trans
+      (trans (F-form x z u w) (if-cong refl (pairA x u q0) w))
+      (sym (trans (·ᴬ-map (G x z u)
+                          (if hitsT x u z then zpow (tv x u) else 0ᴬ)
+                          (G-kept x z u con) w)
+                  (·ᴬ-if (hitsT x u z) (zpow (tv x u)) w)))
+
+    F-cancel : ∀ x z u → eval (liftXor c S) x u ≡ 1ℤ → F x z u ≐ 0ᴬ
+    F-cancel x z u q1 w = trans
+      (trans (F-form x z u w) (if-cong refl (pairB x u q1) w))
+      (if-0ᴬ (hitsT x u z) w)
+
+    twiceᴬ : ∀ (a : Amp) → (a +ᴬ a) ≐ ((+ 2) ·ᴬ a)
+    twiceᴬ a w = twice (a w)
+
+    -- Of the two assignments differing at i, exactly one satisfies the
+    -- constraint: the value of the form on S ∖ y i is the same at both,
+    -- and the two give y i opposite values.
+
+    pair-q0 : ∀ x z y → y i ≡ false → q x y ≡ 0ℤ →
+              (F x z y +ᴬ F x z (setᵗ i y)) ≐
+              (G x z y +ᴬ G x z (setᵗ i y))
+    pair-q0 x z y ey q0 w = trans
+      (trans (Eq.cong₂ _+ℤ_ (F-kept x z y con-y Qy0 w)
+                            (F-cancel x z (setᵗ i y) Qy′1 w))
+             (+-identityʳ (((+ 2) ·ᴬ G x z y) w)))
+      (sym (trans (cong (λ u → G x z y w +ℤ u) (sym (G-off x z y w)))
+                  (twiceᴬ (G x z y) w)))
+      where
+      con-y : (if y i then 1ℤ else 0ℤ) ≡ q x y
+      con-y = trans (cong (λ b → if b then 1ℤ else 0ℤ) ey) (sym q0)
+
+      Qy0 : eval (liftXor c S) x y ≡ 0ℤ
+      Qy0 = trans (Q-false x y ey) q0
+
+      Qy′1 : eval (liftXor c S) x (setᵗ i y) ≡ 1ℤ
+      Qy′1 = trans (Q-true x (setᵗ i y) (setᵗ-i y))
+        (cong (λ u → u +ℤ (1ℤ - ((+ 2) * u))) (trans (sym (q-off x y)) q0))
+
+    pair-q1 : ∀ x z y → y i ≡ false → q x y ≡ 1ℤ →
+              (F x z y +ᴬ F x z (setᵗ i y)) ≐
+              (G x z y +ᴬ G x z (setᵗ i y))
+    pair-q1 x z y ey q1 w = trans
+      (trans (Eq.cong₂ _+ℤ_ (F-cancel x z y Qy1 w)
+                            (F-kept x z (setᵗ i y) con-y′ Qy′0 w))
+             (+-identityˡ (((+ 2) ·ᴬ G x z (setᵗ i y)) w)))
+      (sym (trans (cong (λ u → u +ℤ G x z (setᵗ i y) w) (G-off x z y w))
+                  (twiceᴬ (G x z (setᵗ i y)) w)))
+      where
+      con-y′ : (if setᵗ i y i then 1ℤ else 0ℤ) ≡ q x (setᵗ i y)
+      con-y′ = trans (cong (λ b → if b then 1ℤ else 0ℤ) (setᵗ-i y))
+                     (trans (sym q1) (q-off x y))
+
+      Qy1 : eval (liftXor c S) x y ≡ 1ℤ
+      Qy1 = trans (Q-false x y ey) q1
+
+      Qy′0 : eval (liftXor c S) x (setᵗ i y) ≡ 0ℤ
+      Qy′0 = trans (Q-true x (setᵗ i y) (setᵗ-i y))
+        (cong (λ u → u +ℤ (1ℤ - ((+ 2) * u))) (trans (sym (q-off x y)) q1))
+
+    pair-eq : ∀ x z y →
+      (if y i then 0ᴬ else (F x z y +ᴬ F x z (setᵗ i y))) ≐
+      (if y i then 0ᴬ else (G x z y +ᴬ G x z (setᵗ i y)))
+    pair-eq x z y with y i in ey
+    ... | true  = λ _ → refl
+    ... | false with liftXor-value c S′ x y
+    ...   | inj₁ q0 = pair-q0 x z y ey q0
+    ...   | inj₂ q1 = pair-q1 x z y ey q1
+
+    ext-cong : ∀ (b : Bool) (y y′ : Assign m) → (∀ j → y j ≡ y′ j) →
+               ∀ j → extend b y j ≡ extend b y′ j
+    ext-cong b y y′ agree zero    = refl
+    ext-cong b y y′ agree (suc j) = agree j
+
+    Fresp : ∀ x z → Respects (F x z)
+    Fresp x z y y′ agree w = Eq.cong₂ _+ℤ_ (br true) (br false)
+      where
+      br : ∀ b → Fξ x z (extend b y) w ≡ Fξ x z (extend b y′) w
+      br b = if-cong
+        (allFin-cong (λ u → cong (λ vv → eqᵇ (bit vv) (z u))
+          (eval-cong (out ξ u) (λ _ → refl) (ext-cong b y y′ agree))))
+        (λ w′ → cong (λ vv → zpow vv w′)
+          (eval-cong (phase ξ) (λ _ → refl) (ext-cong b y y′ agree))) w
+
+    Gresp : ∀ x z → Respects (G x z)
+    Gresp x z y y′ agree = if-cong
+      (allFin-cong (λ u → cong (λ vv → eqᵇ (bit vv) (z u))
+        (eval-cong (out red u) (λ _ → refl) agree)))
+      (λ w → cong (λ vv → zpow vv w)
+        (eval-cong (phase red) (λ _ → refl) agree))
+
+    -- Summing the two branches of y₀, then splitting the remaining sum
+    -- at i, matches the reduct pair by pair.
+
+    amp-hh : ∀ x z → amp ξ x z ≐ amp red x z
+    amp-hh x z w = trans
+      (sym (Σᴮ-+ (λ y → Fξ x z (extend true y))
+                 (λ y → Fξ x z (extend false y)) w))
+      (trans (Σᴮ-at i (F x z) (Fresp x z) w)
+      (trans (Σᴮ-cong (pair-eq x z) w)
+             (sym (Σᴮ-at i (G x z) (Gresp x z) w))))
+
+  hh-sound : ξ ≋ hh-reduct ξ i c S
+  hh-sound x z = scale-map k (amp-hh x z)
