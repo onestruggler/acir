@@ -53,14 +53,23 @@ module Examples.Groups.ProjectiveClifford.Qupit.SemiDirect.Presentation
   where
 
 open import Algebra.Bundles using (Group)
+open import Data.Product using (_×_)
 open import Level using (0ℓ)
+import Relation.Binary.PropositionalEquality as Eq
 
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 import Presentation.Base as PB
 open import Presentation.Definitions using (_IsPresentationOf_)
 import Presentation.Construct.Properties.SemiDirectProduct as SDP'
 
-open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
-open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (+ₚ-group)
+open import Examples.Groups.Symplectic.Semantics p-2 p-prime
+  using (Sp-group ; Symplectic ; _≈ˢ_ ; _∘ˢ_ ; module Interpretation)
+open Symplectic using (ap)
+open Interpretation using () renaming (⟦_⟧ to ⟦_⟧ˢ)
+open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
+  using (Pauli ; _+ₚ_ ; +ₚ-group)
+open import Examples.Construct.SemiDirectProduct.Clifford p-2 p-prime
+  using (Pauli⋊Sp-group ; act-cong-ap)
 import Examples.Groups.ProjectivePauli.Presentation-Alt p-2 p-prime as XZ
 import Examples.Groups.Symplectic.Simplified.Syntactics p-2 p-prime g* g-gen as NSim
 import Examples.Groups.Symplectic.Simplified.Presentation p-2 p-prime g* g-gen as SimPres
@@ -105,6 +114,66 @@ module Semidirect (n : ℕ) where
   presentation : (SemiDirect._QRel,_===_ n) IsPresentationOf Pauli⋊Sp
   presentation = P.dpres
 
+  --------------------------------------------------------------------
+  -- The transported action is the linear action
+  --
+  -- This is the identification the note at the foot of the file records
+  -- as outstanding, and it has to be stated here: `act` is a definition
+  -- of the private module P, so no other file can name it.
+  --
+  -- `act S Q` conjugates REPRESENTATIVE words — inv₂ S and inv₁ Q,
+  -- chosen by the two presentations' surjectivity — and reads the result
+  -- back into the Pauli group.  ConjAction.conjw-sem says that reading
+  -- is `ap` of the acting representative's denotation, and the two
+  -- correction lemmas inv₁-corr / inv₂-corr then replace those
+  -- denotations by the elements themselves.  Nothing has to be computed:
+  -- the representatives stay abstract throughout.
+
+  private
+    -- The Pauli presentation's interpretation is Presentation-Alt's
+    -- `sem`, and the simplified symplectic one is Interpretation.⟦_⟧;
+    -- both are the extension of the same generator map, written out.
+    pauli-sem : ∀ (w : Word (XZ.Gen n)) → P.⟦ w ⟧₁ ≡ XZ.sem w
+    pauli-sem [ x ]ʷ  = Eq.refl
+    pauli-sem ε       = Eq.refl
+    pauli-sem (u • v) = Eq.cong₂ _+ₚ_ (pauli-sem u) (pauli-sem v)
+
+    symp-sem : ∀ (c : Word (NSim.Symplectic.Gen n)) → P.⟦ c ⟧₂ ≡ ⟦ c ⟧ˢ
+    symp-sem [ x ]ʷ  = Eq.refl
+    symp-sem ε       = Eq.refl
+    symp-sem (u • v) = Eq.cong₂ _∘ˢ_ (symp-sem u) (symp-sem v)
+
+  -- ABSTRACT, and this matters to clients.  Both proofs go through
+  -- P.inv₁ and P.inv₂, which are the SURJECTIVITY WITNESSES of the two
+  -- factor presentations — existence proofs.  Left transparent, any
+  -- conversion check a client makes that so much as considers unfolding
+  -- `∙-agrees` drags those in and detonates (measured: a two-line lemma
+  -- about Z ^ j went from 27 s to OOM at 12 GB).  Sealed, only the two
+  -- TYPES escape, which is all anyone wants.
+  abstract
+
+    act≡ap : ∀ (S : Symplectic n) (Q : Pauli n) → P.act S Q ≡ ap S Q
+    act≡ap S Q =
+      Eq.trans (pauli-sem (SDP.conjss (P.inv₂ S) (P.inv₁ Q)))
+        (Eq.trans (CA.conjw-sem (P.inv₂ S) (P.inv₁ Q))
+                  (act-cong-ap {S = ⟦ P.inv₂ S ⟧ˢ} {T = S} symp-eq pauli-eq))
+      where
+      -- {S} and {T} are given by hand: _≈ˢ_ compares transformations
+      -- through their ACTIONS, so unification eta-expands a Symplectic
+      -- meta and leaves every field but `ap` unsolved.
+      symp-eq : ⟦ P.inv₂ S ⟧ˢ ≈ˢ S
+      symp-eq = Eq.subst (_≈ˢ S) (symp-sem (P.inv₂ S)) (P.inv₂-corr S)
+      pauli-eq : XZ.sem (P.inv₁ Q) ≡ Q
+      pauli-eq = Eq.trans (Eq.sym (pauli-sem (P.inv₁ Q))) (P.inv₁-corr Q)
+
+    -- ... so the two semidirect products carry the very same
+    -- multiplication.  Both are SDP.group (+ₚ-group n) (Sp-group n) at
+    -- their respective actions, so carrier, equality, unit and inverse
+    -- already agree definitionally, and this is all that was missing.
+    ∙-agrees : ∀ (x y : Pauli n × Symplectic n) →
+               Group._∙_ Pauli⋊Sp x y ≡ Group._∙_ (Pauli⋊Sp-group n) x y
+    ∙-agrees (a , S) (b , T) = Eq.cong (λ z → (a +ₚ z) , (S ∘ˢ T)) (act≡ap S b)
+
 ------------------------------------------------------------------------
 -- The theorem, at every width
 
@@ -123,8 +192,9 @@ presentation {n} = Semidirect.presentation n
 -- that group rather than definitionally the `Pauli⋊Sp-group` of
 -- Semantics.agda, whose action is `ap`.  ConjAction.conjw-sem is
 -- exactly the statement that the two actions agree on representatives,
--- so the two groups are isomorphic; identifying them is a transport
--- along that isomorphism.
+-- and `act≡ap` above turns that into the identification: the two
+-- actions are equal outright, so by `∙-agrees` the two groups carry the
+-- same multiplication and no transport is left to do.
 --
 -- For the record, the route the two obligations took (ConjAction) was
 --

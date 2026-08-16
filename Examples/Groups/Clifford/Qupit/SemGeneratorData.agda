@@ -21,10 +21,19 @@
 -- action, and the quotient being the Paper-V0 rule set rather than the
 -- mod-scalar Figure 8.
 --
--- What is NOT here, and is the whole remaining gap: the factor set
--- itself.  For qubits that is Qubit.SemFE, and it is unconditional; the
--- qupit analogue does not exist yet.  Building it needs three things,
--- exactly as SemFE's header lists them:
+-- What is NOT here: the factor set itself.  For qubits that is
+-- Qubit.SemFE; for qupits it is now Clifford.Qupit.SemFE, which is
+-- unconditional and takes a route none of what follows describes — it
+-- pulls the WEYL cocycle of Clifford.Qupit.Semantics back along
+-- Paper-V0's presentation, so no section is chosen, no scalar kernel is
+-- computed, and ω-faithfulness is not needed (in that model ω is
+-- faithful by construction).  What remains open is not the factor set
+-- but Presented-Extension.Realises: that the corrections it accumulates
+-- are the ones `corr` records.
+--
+-- The rest of this note describes the OTHER route, the one the qubit
+-- development took — a factor set built as the defect of a lifting.  It
+-- needs three things, exactly as the qubit SemFE's header lists them:
 --
 --   * a normalised SECTION of the quotient — one word per class, taking
 --     ε to ε — which for qubits comes from a bijective normal form of
