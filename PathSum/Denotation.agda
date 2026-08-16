@@ -556,15 +556,157 @@ module _ {n k m : ℕ} (ξ : PathSum n (suc k) (suc m)) (c : Bool)
 -- half times the form on S, the two branches of y₀ double where the
 -- form vanishes and cancel where it is 1.
 
+------------------------------------------------------------------------
+-- The two branches of y₀ as a single summand
+
+-- What depends on ξ alone, before any premise about its phase: the
+-- pair of branches of y₀ over an assignment to the rest, and the set
+-- of paths hitting a given output, which the premise never touches.
+
+module Branches {n k m : ℕ} (ξ : PathSum n k (suc m))
+                (eqf : ∀ w → NoVar (+ 2) y₀ (out ξ w))
+                where
+
+  tv hd : Assign n → Assign m → ℤ
+  tv x y = eval (tail-part (phase ξ)) x y
+  hd x y = eval (head-part (phase ξ)) x y
+
+  hitsT : Assign n → Assign m → Assign n → Bool
+  hitsT x y z = allFin (λ w → eqᵇ (bit (eval (tail-part (out ξ w)) x y)) (z w))
+
+  -- ξ's two branches of y₀, as a single summand over Assign m.
+
+  Fξ : Assign n → Assign n → Assign (suc m) → Amp
+  Fξ x z y′ = if hits ξ x y′ z then zpow (eval (phase ξ) x y′) else 0ᴬ
+
+  F : Assign n → Assign n → Assign m → Amp
+  F x z y = Fξ x z (extend true y) +ᴬ Fξ x z (extend false y)
+
+  if-pair : ∀ (p : Bool) (a b : Amp) →
+            ((if p then a else 0ᴬ) +ᴬ (if p then b else 0ᴬ)) ≐
+            (if p then (a +ᴬ b) else 0ᴬ)
+  if-pair true  a b _ = refl
+  if-pair false a b _ = refl
+
+  if-0ᴬ : ∀ (p : Bool) → (if p then 0ᴬ else 0ᴬ) ≐ 0ᴬ
+  if-0ᴬ true  _ = refl
+  if-0ᴬ false _ = refl
+
+  ·ᴬ-if : ∀ (p : Bool) (a : Amp) →
+          ((+ 2) ·ᴬ (if p then a else 0ᴬ)) ≐
+          (if p then ((+ 2) ·ᴬ a) else 0ᴬ)
+  ·ᴬ-if true  a _ = refl
+  ·ᴬ-if false a _ = *-zeroʳ (+ 2)
+
+  ·ᴬ-map : ∀ (a b : Amp) → a ≐ b → ((+ 2) ·ᴬ a) ≐ ((+ 2) ·ᴬ b)
+  ·ᴬ-map a b a≐b w = cong ((+ 2) *_) (a≐b w)
+
+  F-form : ∀ x z y → F x z y ≐
+           (if hitsT x y z
+            then (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y)) else 0ᴬ)
+  F-form x z y w = trans
+    (Eq.cong₂ _+ℤ_
+      (if-cong (same-hits ξ eqf true x z y)
+               (λ w′ → cong (λ u → zpow u w′) (eval-true (phase ξ) x y)) w)
+      (if-cong (same-hits ξ eqf false x z y)
+               (λ w′ → cong (λ u → zpow u w′) (eval-false (phase ξ) x y)) w))
+    (if-pair (hitsT x y z)
+             (zpow (hd x y +ℤ tv x y)) (zpow (tv x y)) w)
+
+
+------------------------------------------------------------------------
+-- The two branches of y₀ under the premise of [ω]
+
+-- Where the head of the phase is ¼ + ½Q the branches interfere into
+-- √2 times a single power of ζ.  The statement mentions no reduct, so
+-- unlike [ω]'s soundness it does not need a normalisation to spend.
+
+module ωBranches {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool)
+                 (S : Mon n m)
+                 (eqP : head-part (phase ξ) ≈[ pow M ]
+                        (κ ¼ +ᴾ (½ ·ᴾ liftXor c S)))
+                 (eqf : ∀ w → NoVar (+ 2) y₀ (out ξ w))
+                 where
+  open Branches ξ eqf public
+
+  qv : Assign n → Assign m → ℤ
+  qv x y = eval (liftXor c S) x y
+
+  head-eval : ∀ x y →
+              pow M ∣ (hd x y -
+                       (¼ +ℤ (½ * qv x y)))
+  head-eval x y = Eq.subst
+    (λ w → pow M ∣ (hd x y - w))
+    (trans (eval-+ᴾ (κ ¼) (½ ·ᴾ liftXor c S) x y)
+           (cong₂ _+ℤ_ (eval-κ ¼ x y) (eval-·ᴾ ½ (liftXor c S) x y)))
+    (eval-≈ (head-part (phase ξ)) (κ ¼ +ᴾ (½ ·ᴾ liftXor c S)) eqP x y)
+
+  -- The two branches of y₀ interfere into √2 times the reduct.
+
+  core : ∀ x y →
+         (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y))
+         ≐ √2· (zpow ((⅛ - (¼ * qv x y)) +ℤ tv x y))
+  core x y with liftXor-value c S x y
+  ... | inj₁ q≡0 = λ i → trans
+    (interfere₀ (hd x y) (tv x y) div i)
+    (cong (λ w → √2· (zpow (w +ℤ tv x y)) i) (sym at0))
+    where
+    at0 : ⅛ - (¼ * qv x y) ≡ ⅛
+    at0 = trans (cong (λ w → ⅛ - (¼ * w)) q≡0)
+                (trans (cong (λ v → ⅛ - v) (*-zeroʳ ¼)) (+-identityʳ ⅛))
+
+    div : pow M ∣ (hd x y - ¼)
+    div = Eq.subst (λ w → pow M ∣ (hd x y - w))
+      (trans (cong (λ w → ¼ +ℤ (½ * w)) q≡0)
+             (trans (cong (λ v → ¼ +ℤ v) (*-zeroʳ ½)) (+-identityʳ ¼)))
+      (head-eval x y)
+  ... | inj₂ q≡1 = λ i → trans
+    (interfere₁ (hd x y) (tv x y) div i)
+    (cong (λ w → √2· (zpow (w +ℤ tv x y)) i) (sym at1))
+    where
+    at1 : ⅛ - (¼ * qv x y) ≡ ⅛ - ¼
+    at1 = trans (cong (λ w → ⅛ - (¼ * w)) q≡1)
+                (cong (λ v → ⅛ - v) (*-identityʳ ¼))
+
+    div : pow M ∣ (hd x y - (¼ +ℤ ½))
+    div = Eq.subst (λ w → pow M ∣ (hd x y - w))
+      (trans (cong (λ w → ¼ +ℤ (½ * w)) q≡1)
+             (cong (λ v → ¼ +ℤ v) (*-identityʳ ½)))
+      (head-eval x y)
+
+
+  -- The exponent the pair collapses to.
+
+  Eω : Assign n → Assign m → ℤ
+  Eω x y = (⅛ - (¼ * qv x y)) +ℤ tv x y
+
+  √2·-if : ∀ (p : Bool) (a : Amp) →
+           (if p then (√2· a) else 0ᴬ) ≐ √2· (if p then a else 0ᴬ)
+  √2·-if true  a _ = refl
+  √2·-if false a w = sym (√2·-0ᴬ w)
+
+  F-√2 : ∀ x z y → F x z y ≐ √2· (if hitsT x y z then zpow (Eω x y) else 0ᴬ)
+  F-√2 x z y w = trans
+    (trans (F-form x z y w) (if-cong {p = hitsT x y z} refl (core x y) w))
+    (√2·-if (hitsT x y z) (zpow (Eω x y)) w)
+
+  amp-√2 : ∀ x z →
+           amp ξ x z ≐
+           √2· (Σᴮ (λ y → if hitsT x y z then zpow (Eω x y) else 0ᴬ))
+  amp-√2 x z w = trans
+    (sym (Σᴮ-+ (λ y → Fξ x z (extend true y))
+               (λ y → Fξ x z (extend false y)) w))
+    (trans (Σᴮ-cong (λ y → F-√2 x z y) w)
+           (sym (√2·-Σᴮ (λ y → if hitsT x y z then zpow (Eω x y) else 0ᴬ) w)))
+
 module Cancel {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool)
               (S : Mon n m)
               (eqP : head-part (phase ξ) ≈[ pow M ] (½ ·ᴾ liftXor c S))
               (eqf : ∀ w → NoVar (+ 2) y₀ (out ξ w))
               where
+  open Branches ξ eqf public
 
-  tv hd : Assign n → Assign m → ℤ
-  tv x y = eval (tail-part (phase ξ)) x y
-  hd x y = eval (head-part (phase ξ)) x y
+
 
   head-eval : ∀ x y →
               pow M ∣ (hd x y - (½ * eval (liftXor c S) x y))
@@ -614,47 +756,6 @@ module Cancel {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool)
       (sym (shuffle (hd x y) ½ (tv x y))) hd½
 
 
-  hitsT : Assign n → Assign m → Assign n → Bool
-  hitsT x y z = allFin (λ w → eqᵇ (bit (eval (tail-part (out ξ w)) x y)) (z w))
-
-  -- ξ's two branches of y₀, as a single summand over Assign m.
-
-  Fξ : Assign n → Assign n → Assign (suc m) → Amp
-  Fξ x z y′ = if hits ξ x y′ z then zpow (eval (phase ξ) x y′) else 0ᴬ
-
-  F : Assign n → Assign n → Assign m → Amp
-  F x z y = Fξ x z (extend true y) +ᴬ Fξ x z (extend false y)
-
-  if-pair : ∀ (p : Bool) (a b : Amp) →
-            ((if p then a else 0ᴬ) +ᴬ (if p then b else 0ᴬ)) ≐
-            (if p then (a +ᴬ b) else 0ᴬ)
-  if-pair true  a b _ = refl
-  if-pair false a b _ = refl
-
-  if-0ᴬ : ∀ (p : Bool) → (if p then 0ᴬ else 0ᴬ) ≐ 0ᴬ
-  if-0ᴬ true  _ = refl
-  if-0ᴬ false _ = refl
-
-  ·ᴬ-if : ∀ (p : Bool) (a : Amp) →
-          ((+ 2) ·ᴬ (if p then a else 0ᴬ)) ≐
-          (if p then ((+ 2) ·ᴬ a) else 0ᴬ)
-  ·ᴬ-if true  a _ = refl
-  ·ᴬ-if false a _ = *-zeroʳ (+ 2)
-
-  ·ᴬ-map : ∀ (a b : Amp) → a ≐ b → ((+ 2) ·ᴬ a) ≐ ((+ 2) ·ᴬ b)
-  ·ᴬ-map a b a≐b w = cong ((+ 2) *_) (a≐b w)
-
-  F-form : ∀ x z y → F x z y ≐
-           (if hitsT x y z
-            then (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y)) else 0ᴬ)
-  F-form x z y w = trans
-    (Eq.cong₂ _+ℤ_
-      (if-cong (same-hits ξ eqf true x z y)
-               (λ w′ → cong (λ u → zpow u w′) (eval-true (phase ξ) x y)) w)
-      (if-cong (same-hits ξ eqf false x z y)
-               (λ w′ → cong (λ u → zpow u w′) (eval-false (phase ξ) x y)) w))
-    (if-pair (hitsT x y z)
-             (zpow (hd x y +ℤ tv x y)) (zpow (tv x y)) w)
 
   F-cancel : ∀ x z u → eval (liftXor c S) x u ≡ 1ℤ → F x z u ≐ 0ᴬ
   F-cancel x z u q1 w = trans
@@ -1082,6 +1183,41 @@ undersized-elim {n} {k} {m} ξ eq eqf =
     (eq γ)
 
 
+
+
+------------------------------------------------------------------------
+-- The undersized case of lemma 4.3 for [ω]
+
+-- [ω] applies to the phase but there is no normalisation to spend.
+-- The amplitude is then √2 times something, so √2 times it is twice
+-- something -- and √2·ζ^0, which it must equal, has an odd
+-- coordinate.
+
+undersized-ω :
+  ∀ {n m} (ξ : PathSum n 0 (suc m)) (c : Bool) (S : Mon n m) →
+  head-part (phase ξ) ≈[ pow M ] (κ ¼ +ᴾ (½ ·ᴾ liftXor c S)) →
+  (∀ w → NoVar (+ 2) y₀ (out ξ w)) →
+  ¬ (ξ ≋ idPS)
+undersized-ω {n} {m} ξ c S eqP eqf ξ≋id =
+  2·≢scale-zpow0 B 1 (s≤s (s≤s z≤n)) even
+  where
+  open ωBranches ξ c S eqP eqf
+
+  x₀ : Assign n
+  x₀ _ = false
+
+  B : Amp
+  B = Σᴮ (λ y → if hitsT x₀ y x₀ then zpow (Eω x₀ y) else 0ᴬ)
+
+  base : amp ξ x₀ x₀ ≐ zpow 0ℤ
+  base w = trans (ξ≋id x₀ x₀ w) (amp-id x₀ w)
+
+  even : ((+ 2) ·ᴬ B) ≐ scale 1 (zpow 0ℤ)
+  even w = trans (sym (√2·-twice B w))
+    (trans (√2·-map (λ w′ → sym (amp-√2 x₀ x₀ w′)) w) (√2·-map base w))
+
+
+------------------------------------------------------------------------
 ------------------------------------------------------------------------
 -- The denotation as a semantics
 
@@ -1097,4 +1233,4 @@ Semantics.≋-trans semantics {ξ = a} {ζ = b} {χ = d} =
 Semantics.⟶-sound semantics {ξ = a} {ζ = b} = ⟶-sound {ξ = a} {ζ = b}
 Semantics.interference    semantics = interference-lemma
 Semantics.undersized-elim semantics = undersized-elim
-
+Semantics.undersized-ω    semantics = undersized-ω

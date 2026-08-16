@@ -75,3 +75,11 @@ record Semantics : Set₁ where
       head-part (phase ξ) ≈[ pow M ] 0ᴾ →
       (∀ w → NoVar (+ 2) y₀ (out ξ w)) →
       k < 2 → ¬ (ξ ≋ idPS)
+
+    -- And the same for [ω], which needs one unit: the amplitude is
+    -- then root 2 times something, and the identity's is not.
+    undersized-ω :
+      (ξ : PathSum n 0 (suc m)) (c : Bool) (S : Mon n m) →
+      head-part (phase ξ) ≈[ pow M ] (κ ¼ +ᴾ (½ ·ᴾ liftXor c S)) →
+      (∀ w → NoVar (+ 2) y₀ (out ξ w)) →
+      ¬ (ξ ≋ idPS)

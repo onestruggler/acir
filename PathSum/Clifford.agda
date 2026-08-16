@@ -372,21 +372,19 @@ private
 -- Either a rule of figure 2 applies, preserving both the order bound
 -- and internality of the path variables, or ξ is not the identity.
 --
--- With the normalisation exponent explicit there is a third
--- possibility, which the paper's lemma 4.3 does not discuss: the
--- interference pattern of the phase calls for [ω] or for [Elim], but
--- the normalisation of ξ is smaller than the rule consumes -- one
--- unit for [ω], two for [Elim] -- so no rule applies.  Such a ξ is
--- not the identity either, since summing away a path variable
--- without paying for it leaves entries of magnitude √2 or 2; but
--- that is an argument about magnitudes rather than about rewriting,
--- and it is not formalised here.
+-- With the normalisation exponent explicit there is a case the
+-- paper's lemma 4.3 does not discuss: the interference pattern of the
+-- phase calls for [ω] or for [Elim], but the normalisation of ξ is
+-- smaller than the rule consumes -- one unit for [ω], two for
+-- [Elim].  No rule applies, but such a ξ is not the identity either,
+-- since summing a path variable away without paying for it leaves an
+-- amplitude divisible by √2 or by 2 where the identity's is not.  So
+-- it falls under the second outcome, not a third.
 
 data Progress {n k m : ℕ} (ξ : PathSum n k (suc m)) : Set where
   reduces    : ∀ {k′} (ξ′ : PathSum n k′ m) → ξ ⟶ ξ′ → Internal ξ′ →
                Ord≤ 2 (phase ξ′) → Progress ξ
   not-id     : ¬ (ξ ≋ idPS) → Progress ξ
-  undersized : k < 2 → Progress ξ
 
 private
   -- Cases 1 and 2 of lemma 4.3: the quotient is ½Q₀.  If Q₀ contains
@@ -439,7 +437,8 @@ private
           (∃ λ c → head-part (phase ξ) ≈[ pow M ]
              (κ ¼ +ᴾ (½ ·ᴾ liftXor c (supp (head-part (phase ξ)))))) →
           Progress ξ
-  caseω {k = zero}  ξ int ordP _ = undersized (s≤s z≤n)
+  caseω {k = zero}  ξ int ordP (c , eq) =
+    not-id (undersized-ω ξ c (supp (head-part (phase ξ))) eq (int zero))
   caseω {k = suc k} ξ int ordP (c , eq) = reduces
     (ω-reduct ξ c (supp (head-part (phase ξ))))
     (ω ξ c (supp (head-part (phase ξ))) eq (int zero))
@@ -474,18 +473,16 @@ progress ξ int ordP with pow (M ∸ 1) ∣? head-part (phase ξ) 1ᵐ
     (Eq.subst (pow (M ∸ 1) ∣_)
       (sym (+-identityʳ (head-part (phase ξ) 1ᵐ))) a))
 
--- Lemma 4.3 as stated in the paper, together with the side condition
--- on the normalisation that the paper leaves implicit.
+-- Lemma 4.3 exactly as stated in the paper: the side condition on
+-- the normalisation is discharged rather than reported.
 
 lemma-4-3 : (ξ : PathSum n k (suc m)) → Internal ξ → Ord≤ 2 (phase ξ) →
             ξ ≋ idPS →
-            (∃ λ k′ → ∃ λ (ξ′ : PathSum n k′ m) →
-               (ξ ⟶ ξ′) × Ord≤ 2 (phase ξ′))
-            ⊎ (k < 2)
+            ∃ λ k′ → ∃ λ (ξ′ : PathSum n k′ m) →
+              (ξ ⟶ ξ′) × Ord≤ 2 (phase ξ′)
 lemma-4-3 ξ int ordP ξ≋id with progress ξ int ordP
-... | reduces {k′} ξ′ step _ ord′ = inj₁ (k′ , ξ′ , step , ord′)
+... | reduces {k′} ξ′ step _ ord′ = k′ , ξ′ , step , ord′
 ... | not-id ¬id                  = contradiction ξ≋id ¬id
-... | undersized k<2              = inj₂ k<2
 
 
 ------------------------------------------------------------------------
@@ -502,17 +499,13 @@ lemma-4-3 ξ int ordP ξ≋id with progress ξ int ordP
 data Reduces {n k m : ℕ} (ξ : PathSum n k m) : Set where
   done  : ∀ {k′} {ξ′ : PathSum n k′ 0} → ξ ⟶* ξ′ → Reduces ξ
   no-id : ¬ (ξ ≋ idPS) → Reduces ξ
-  stuck : ∀ {k′ m′} {ξ′ : PathSum n k′ (suc m′)} → ξ ⟶* ξ′ → k′ < 2 →
-          Reduces ξ
 
 corollary-4-4 : (ξ : PathSum n k m) → Internal ξ → Ord≤ 2 (phase ξ) →
                 Reduces ξ
 corollary-4-4 {m = zero}  ξ int ordP = done ε
 corollary-4-4 {m = suc m} ξ int ordP with progress ξ int ordP
 ... | not-id ¬id      = no-id ¬id
-... | undersized k<2  = stuck ε k<2
 ... | reduces ξ′ step int′ ord′ with corollary-4-4 ξ′ int′ ord′
 ...   | done steps       = done (step ◅ steps)
-...   | stuck steps k<2  = stuck (step ◅ steps) k<2
 ...   | no-id ¬id        =
         no-id λ ξ≋id → ¬id (≋-trans (≋-sym (⟶-sound step)) ξ≋id)
