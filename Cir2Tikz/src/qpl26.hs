@@ -238,13 +238,13 @@ handPicture (x0, y0, x1, y1) nodes edges =
 
 -- NF 4 = (ML₁ ↑↑↑) • (ML₂ ↑↑) • (ML₃ ↑) • ML₄ : the staircase.
 nf4 :: String
-nf4 = handPicture (-0.8, -1.0, 9.6, 7.7) nodes edges
+nf4 = handPicture (-1.3, -1.0, 12.7, 7.7) nodes edges
   where
-    nodes = concat [ wire ("w" ++ show w) (-0.5) 9.3 w | w <- [0..3] ]
-         ++ spanBox "ml1" 1.0 3 1 "ML_1"
-         ++ spanBox "ml2" 3.3 2 2 "ML_2"
-         ++ spanBox "ml3" 5.6 1 3 "ML_3"
-         ++ spanBox "ml4" 7.9 0 4 "ML_4"
+    nodes = concat [ wire ("w" ++ show w) (-1.0) 12.4 w | w <- [0..3] ]
+         ++ spanBox "ml1" 1.2 3 1 "ML_1"
+         ++ spanBox "ml2" 4.2 2 2 "ML_2"
+         ++ spanBox "ml3" 7.2 1 3 "ML_3"
+         ++ spanBox "ml4" 10.2 0 4 "ML_4"
     edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
 
 -- The two right-hand sides of the ML₄ tower (the ≡ is typeset in

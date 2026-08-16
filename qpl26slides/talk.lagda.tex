@@ -523,12 +523,12 @@ module Normal-form-boxes where
 
   ML 0 = ⊤
   ML 1 = M 1 × L 1
-  ML (₂₊ n) = let n' = ₂₊ n in
-    M n' × L n' ⊎ D × ML (₁₊ n)
+  ML m@(₂₊ n) = 
+    M m × L m ⊎ D × ML (₁₊ n)
 
 \end{code}
     \end{column}
-    \begin{column}{0.34\textwidth}
+    \begin{column}{0.31\textwidth}
       \begin{center}
         \begin{tabular}{@{}r@{\,}c@{\,}l@{}}
           \ufig[0.68]{m4-box} & \scalebox{0.7}{$\equiv$} & \ufig[0.68]{m4-atoms}\\[1ex]
@@ -536,7 +536,7 @@ module Normal-form-boxes where
         \end{tabular}
       \end{center}
     \end{column}
-    \begin{column}{0.30\textwidth}
+    \begin{column}{0.31\textwidth}
       \begin{center}
         \begin{tabular}{@{}r@{\,}c@{\,}l@{}}
           \ufig[0.68]{ml4-box} & \scalebox{0.7}{$\equiv$} & \ufig[0.68]{ml-tower-a-r}\\[1ex]
@@ -550,6 +550,8 @@ module Normal-form-boxes where
 \begin{frame}{The normal form, as a circuit}
   Reading normal forms back as circuits is structural recursion:
 
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
 \begin{code}[hide]
 module NF-as-circuits where
   open Boxes using (ML)
@@ -560,15 +562,18 @@ module NF-as-circuits where
   NF : ℕ → Set
   NF 0 = ⊤
   NF (₁₊ n) = NF n × ML (₁₊ n)
-  
+
   [_]ⁿᶠ : ∀ {n} → NF n → Word (Gen n)
   [_]ⁿᶠ {0}     tt         = ε
   [_]ⁿᶠ {₁₊ n}  (nf , ml)  = [ nf ]ⁿᶠ ↑ • [ ml ]ᵐˡ
 \end{code}
-  \vfill
-  \begin{center}
-    \fitfig[0.34\textwidth]{nf4}
-  \end{center}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{center}
+        \ufig[0.75]{nf4}
+      \end{center}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{Everything on these slides is Agda-checked}
