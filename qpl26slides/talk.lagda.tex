@@ -221,6 +221,8 @@ module SymSem = SymSemantics p-2 p-prime
 open SymSem using (Sp-group)
 import Examples.Groups.Symplectic.Normalization.Section as NSection
 module Sect = NSection p-2 p-prime
+import Examples.Groups.Symplectic.Normalization.Boxes as NBox
+module Boxes = NBox p-2 p-prime
 import Examples.Groups.Symplectic.Normalization.Uniqueness as NUniq
 module U = NUniq p-2 p-prime
 import Examples.Groups.Symplectic.Simplified.Syntactics as SimSyntactics
@@ -485,13 +487,11 @@ module What-presents-means {a ℓ : Level} {X : Set} where
 module Normal-form-boxes where
 \end{code}
 \begin{code}
-  A : Set
+  A B D E : Set
   A = Σ[ ab ∈ (ℤ ₚ × ℤ ₚ) ]
     (ab ≢ (₀ , ₀))
-  B D : Set
   B = ℤ ₚ × ℤ ₚ
   D = ℤ ₚ × ℤ ₚ
-  E : Set
   E = ℤ ₚ
 \end{code}
     \end{column}
@@ -511,35 +511,41 @@ module Normal-form-boxes where
 
 \begin{frame}{Rows, and the staircase}
   \begin{columns}[T]
-    \begin{column}{0.52\textwidth}
+    \begin{column}{0.40\textwidth}
 \begin{code}
-  M L′ ML′ ML : ℕ → Set
+  M L ML : ℕ → Set
+  
   M 0 = ⊤
   M (₁₊ n) = Vec D n × E
-  L′ 0 = ⊤
-  L′ (₁₊ n) = Vec B n × A
-  ML′ 0 = ⊤
-  ML′ n@(₁₊ _) = M n × L′ n
+  
+  L 0 = ⊤
+  L (₁₊ n) = Vec B n × A
+  
   ML 0 = ⊤
-  ML 1 = ML′ 1
-  ML (₂₊ n) = ML′ (₂₊ n) ⊎ D × ML (₁₊ n)
+  ML 1 = M 1 × L 1
+  ML (₂₊ n) = M n × L n ⊎ D × ML (₁₊ n)
 
-  NF : ℕ → Set
-  NF 0 = ⊤
-  NF (₁₊ n) = NF n × ML (₁₊ n)
 \end{code}
     \end{column}
-    \begin{column}{0.44\textwidth}
+    \begin{column}{0.26\textwidth}
       \begin{center}
-        \ufig[0.85]{ml-tower-a}\\[3ex]
-        \ufig[0.85]{ml-tower-b}
+        \begin{tabular}{@{}r@{\,}c@{\,}l@{}}
+          \ufig[0.68]{m4-box} & $\equiv$ & \ufig[0.68]{m4-atoms}\\[1ex]
+          \ufig[0.68]{l4-box} & $\equiv$ & \ufig[0.68]{l4-atoms}\\
+        \end{tabular}
+      \end{center}
+      \vspace{1ex}
+      {\footnotesize A double induction: the rows \AgdaFunction{M},
+      \AgdaFunction{L} and the boxes \AgdaFunction{ML} all recurse on
+      the width.}
+    \end{column}
+    \begin{column}{0.30\textwidth}
+      \begin{center}
+        \ufig[0.68]{ml-tower-a}\\[1ex]
+        \ufig[0.68]{ml-tower-b}
       \end{center}
     \end{column}
   \end{columns}
-  \vfill
-  A double induction: \AgdaFunction{NF} is a staircase of
-  \AgdaFunction{ML} boxes, and each \AgdaFunction{ML} box is itself
-  defined by recursion on the width.
 \end{frame}
 
 \begin{frame}{The normal form, as a circuit}
@@ -547,10 +553,15 @@ module Normal-form-boxes where
 
 \begin{code}[hide]
 module NF-as-circuits where
-  open Sect using (NF ; [_]ᵐˡ)
+  open Boxes using (ML)
+  open Sect using ([_]ᵐˡ)
   open Sym using (Gen ; _↑)
 \end{code}
 \begin{code}
+  NF : ℕ → Set
+  NF 0 = ⊤
+  NF (₁₊ n) = NF n × ML (₁₊ n)
+  
   [_]ⁿᶠ : ∀ {n} → NF n → Word (Gen n)
   [_]ⁿᶠ {0}     tt         = ε
   [_]ⁿᶠ {₁₊ n}  (nf , ml)  = [ nf ]ⁿᶠ ↑ • [ ml ]ᵐˡ

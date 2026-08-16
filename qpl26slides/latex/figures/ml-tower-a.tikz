@@ -23,7 +23,7 @@
 \draw [fill=white] (4.0, -0.75) rectangle (6.0, 6.75);
 \node [style=none] (m4) at (5.0, 3.0) {\scriptsize $M_4$};
 \draw [fill=white] (6.2, -0.75) rectangle (8.2, 6.75);
-\node [style=none] (l4) at (7.2, 3.0) {\scriptsize $L_4'$};
+\node [style=none] (l4) at (7.2, 3.0) {\scriptsize $L_4$};
 \end{pgfonlayer}
 \begin{pgfonlayer}{edgelayer}
 \draw (w0l.center) to (w0r.center);
