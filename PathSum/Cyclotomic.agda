@@ -34,9 +34,9 @@ open import Data.Integer.Properties using
   (+-comm; +-identityˡ; +-identityʳ; +-inverseˡ; +-inverseʳ; neg-involutive;
    neg-distrib-+; neg-distribʳ-*; *-distribˡ-+; pos-+; *-cancelˡ-≡;
    ∣i∣≡0⇒i≡0; [+m]-[+n]≡m⊖n;
-   i-j≡0⇒i≡j; [1+m]⊖[1+n]≡m⊖n)
+   i-j≡0⇒i≡j; [1+m]⊖[1+n]≡m⊖n; ∣-i∣≡∣i∣)
 open import Data.Integer.Solver using (module +-*-Solver)
-open import Data.Nat.Base using (zero; suc; _≤_; _<_; _∸_; s≤s)
+open import Data.Nat.Base using (zero; suc; _≤_; _<_; _∸_; s≤s; z≤n)
   renaming (_+_ to _ℕ+_; _*_ to _ℕ*_; _^_ to _ℕ^_; _⊔_ to _ℕ⊔_;
             ≢-nonZero to ≢-nonZeroℕ)
 open import Relation.Binary.PropositionalEquality using
@@ -801,14 +801,124 @@ private
 -- Lemma 4.2 ends by contradicting the identity's amplitude, so it
 -- needs one amplitude known to be non-zero.
 
+0ᶠ : Fin H
+0ᶠ = fromℕ< H>0
+
+zpow0-at-0 : zpow 0ℤ 0ᶠ ≡ 1ℤ
+zpow0-at-0 = trans (cong (λ u → χ (0ℤ - (+ u))) (toℕ-fromℕ< H>0))
+                   (χ-1 (∣ᵤ⇒∣ (ℕDiv.divides 0 refl)))
+
 zpow-0≢0ᴬ : ¬ (zpow 0ℤ ≐ 0ᴬ)
-zpow-0≢0ᴬ eq = contradiction (trans (sym val) (eq i₀)) λ ()
-  where
-  i₀ : Fin H
-  i₀ = fromℕ< H>0
+zpow-0≢0ᴬ eq = contradiction (trans (sym zpow0-at-0) (eq 0ᶠ)) λ ()
+
+
+------------------------------------------------------------------------
+-- √2·ζ^0 has an odd coordinate
+
+-- The undersized cases of lemma 4.3 all come down to an amplitude
+-- every coordinate of which is even being equal to ζ^0 or to √2·ζ^0.
+-- The coordinate of the first at 0 is 1, and of the second at c.
+
+private
+  4c : H ≡ 4 ℕ* c
+  -- 2^(M₀+2) = 2^M₀ · 2^2, and the factors are the other way round.
+  4c = trans (cong (2 ℕ^_) (ℕ.+-comm 2 M₀))
+         (trans (ℕ.^-distribˡ-+-* 2 M₀ 2) (ℕ.*-comm (2 ℕ^ M₀) 4))
+
+  c<H : c < H
+  c<H = ℕ.≤-trans
+    (ℕ.m<m*n c 4 {{≢-nonZeroℕ (ℕ.>⇒≢ (2^k>0 M₀))}} (s≤s (s≤s z≤n)))
+    (ℕ.≤-reflexive (trans (ℕ.*-comm c 4) (sym 4c)))
+    where
+    2^k>0 : ∀ j → 0 < 2 ℕ^ j
+    2^k>0 zero    = ℕ.≤-refl
+    2^k>0 (suc j) = ℕ.≤-trans (2^k>0 j) (ℕ.m≤m+n (2 ℕ^ j) _)
+
+  -- N does not divide a non-zero integer of magnitude below it.
+  N∤ : ∀ (z : ℤ) (j : ℕ) → ∣ z ∣ ≡ j → 0 < j → j < N → ¬ ((+ N) ∣ z)
+  N∤ z j eq 0<j j<N d with ∣⇒∣ᵤ d
+  ... | ℕDiv.divides zero    e = contradiction (trans (sym eq) e) (ℕ.>⇒≢ 0<j)
+  ... | ℕDiv.divides (suc q) e = contradiction
+        (ℕ.≤-trans (ℕ.m≤m+n N (q ℕ* N))
+                   (ℕ.≤-reflexive (trans (sym e) eq)))
+        (ℕ.<⇒≱ j<N)
+
+  N≡8c : N ≡ 8 ℕ* c
+  N≡8c = trans (cong (2 ℕ*_) 4c) (sym (ℕ.*-assoc 2 4 c))
+
+  c>0 : 0 < c
+  c>0 = 2^k>0 M₀
+    where
+    2^k>0 : ∀ j → 0 < 2 ℕ^ j
+    2^k>0 zero    = ℕ.≤-refl
+    2^k>0 (suc j) = ℕ.≤-trans (2^k>0 j) (ℕ.m≤m+n (2 ℕ^ j) _)
+
+  0<kc : ∀ j → 0 < suc j ℕ* c
+  0<kc j = ℕ.≤-trans c>0 (ℕ.m≤m+n c (j ℕ* c))
+
+  2c<N : 2 ℕ* c < N
+  2c<N = ℕ.≤-trans (ℕ.m<m+n (2 ℕ* c) (0<kc 5))
+    (ℕ.≤-reflexive (trans (sym (ℕ.*-distribʳ-+ c 2 6)) (sym N≡8c)))
+
+  6c<N : 6 ℕ* c < N
+  6c<N = ℕ.≤-trans (ℕ.m<m+n (6 ℕ* c) (0<kc 1))
+    (ℕ.≤-reflexive (trans (sym (ℕ.*-distribʳ-+ c 6 2)) (sym N≡8c)))
+
+  double : ∀ (j : ℕ) → 2 ℕ* j ≡ j ℕ+ j
+  double j = cong (j ℕ+_) (ℕ.+-identityʳ j)
 
   N∣0 : (+ N) ∣ 0ℤ
   N∣0 = ∣ᵤ⇒∣ (ℕDiv.divides 0 refl)
 
-  val : zpow 0ℤ i₀ ≡ 1ℤ
-  val = trans (cong (λ u → χ (0ℤ - (+ u))) (toℕ-fromℕ< H>0)) (χ-1 N∣0)
+  -- The two exponents √2·ζ^0 splits into, read at the coordinate c.
+
+  e₊ e₋ : ℤ
+  e₊ = ((+ c) + 0ℤ) - (+ c)
+  e₋ = ((- (+ c)) + 0ℤ) - (+ c)
+
+  e₊≡0 : e₊ ≡ 0ℤ
+  e₊≡0 = drop (+ c)
+    where
+    drop : ∀ u → (u + 0ℤ) - u ≡ 0ℤ
+    drop = solve 1 (λ u → (u :+ con 0ℤ) :- u := con 0ℤ) refl
+
+  e₋≡ : e₋ ≡ - (+ (2 ℕ* c))
+  e₋≡ = trans (fold (+ c))
+    (cong -_ (trans (pos-+ c c) (cong +_ (sym (double c)))))
+    where
+    fold : ∀ u → ((- u) + 0ℤ) - u ≡ - (u + u)
+    fold = solve 1 (λ u → ((:- u) :+ con 0ℤ) :- u := :- (u :+ u)) refl
+
+  e₋-H≡ : e₋ - (+ H) ≡ - (+ (6 ℕ* c))
+  e₋-H≡ = trans (cong (λ u → u - (+ H)) e₋≡)
+    (trans (cong (λ u → (- (+ (2 ℕ* c))) - (+ u)) 4c)
+      (trans (fold (+ (2 ℕ* c)) (+ (4 ℕ* c)))
+        (cong -_ (trans (pos-+ (2 ℕ* c) (4 ℕ* c))
+                        (cong +_ (sym (ℕ.*-distribʳ-+ c 2 4)))))))
+    where
+    fold : ∀ u v → (- u) - v ≡ - (u + v)
+    fold = solve 2 (λ u v → (:- u) :- v := :- (u :+ v)) refl
+
+  absneg : ∀ (j : ℕ) → ∣ - (+ j) ∣ ≡ j
+  absneg j = ∣-i∣≡∣i∣ (+ j)
+
+  χ-e₋ : χ e₋ ≡ 0ℤ
+  χ-e₋ = χ-0
+    (N∤ e₋ (2 ℕ* c)
+       (trans (cong ∣_∣ e₋≡) (absneg (2 ℕ* c))) (0<kc 1) 2c<N)
+    (N∤ (e₋ - (+ H)) (6 ℕ* c)
+       (trans (cong ∣_∣ e₋-H≡) (absneg (6 ℕ* c))) (0<kc 5) 6c<N)
+
+-- The coordinate of √2·ζ^0 at c is 1, so √2·ζ^0 is not twice
+-- anything -- which is what the undersized cases turn on.
+
+cᶠ : Fin H
+cᶠ = fromℕ< c<H
+
+√2·zpow0-at-c : √2· (zpow 0ℤ) cᶠ ≡ 1ℤ
+√2·zpow0-at-c = trans (√2·-zpow 0ℤ cᶠ)
+  (trans (Eq.cong₂ _+_ (cong (λ u → χ (((+ c) + 0ℤ) - (+ u)))
+                             (toℕ-fromℕ< c<H))
+                       (cong (λ u → χ (((- (+ c)) + 0ℤ) - (+ u)))
+                             (toℕ-fromℕ< c<H)))
+         (Eq.cong₂ _+_ (trans (cong χ e₊≡0) (χ-1 N∣0)) χ-e₋))
