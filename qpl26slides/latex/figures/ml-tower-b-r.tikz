@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+\path [use as bounding box] (-1.3, -1.0) rectangle (6.7, 7.7);
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (w0l) at (-1.0, 0.0){};
+\node [style=none] (w0r) at (6.4, 0.0){};
+\node [style=none] (w1l) at (-1.0, 2.0){};
+\node [style=none] (w1r) at (6.4, 2.0){};
+\node [style=none] (w2l) at (-1.0, 4.0){};
+\node [style=none] (w2r) at (6.4, 4.0){};
+\node [style=none] (w3l) at (-1.0, 6.0){};
+\node [style=none] (w3r) at (6.4, 6.0){};
+\draw [fill=white] (0.20000005, -0.75) rectangle (2.2, 2.75);
+\node [style=none] (d0) at (1.2, 1.0) {\scriptsize $D$};
+\draw [fill=white] (3.1999998, 1.25) rectangle (5.2, 6.75);
+\node [style=none] (ml3) at (4.2, 4.0) {\scriptsize $ML_3$};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (w0l.center) to (w0r.center);
+\draw (w1l.center) to (w1r.center);
+\draw (w2l.center) to (w2r.center);
+\draw (w3l.center) to (w3r.center);
+\end{pgfonlayer}
+\end{tikzpicture}

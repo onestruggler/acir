@@ -247,32 +247,25 @@ nf4 = handPicture (-0.8, -1.0, 9.6, 7.7) nodes edges
          ++ spanBox "ml4" 7.9 0 4 "ML_4"
     edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
 
--- ML₄ tower, split into its two cases, with room around the ≡:
--- ML₄ is either M₄ · L₄' ...
-mlTowerA :: String
-mlTowerA = handPicture (-0.8, -1.0, 9.2, 7.7) nodes edges
+-- The two right-hand sides of the ML₄ tower (the ≡ is typeset in
+-- LaTeX, in the same table column as the atom expansions').
+-- Box edge gap 1.0 unit, matching the tool's gate spacing; wire stubs
+-- 1.2 units past the outer boxes.
+mlTowerAr :: String
+mlTowerAr = handPicture (-1.3, -1.0, 6.7, 7.7) nodes edges
   where
-    nodes = concat [ wire ("w" ++ show w) (-0.5) 2.3 w | w <- [0..3] ]
-         ++ spanBox "ml4" 1.0 0 4 "ML_4"
-         ++ "\\node [style=none] (eq1) at (3.0, 3.0) {\\scriptsize $\\equiv$};\n"
-         ++ concat [ wire ("v" ++ show w) 3.7 8.9 w | w <- [0..3] ]
-         ++ spanBox "m4" 5.0 0 4 "M_4"
-         ++ spanBox "l4" 7.2 0 4 "L_4"
+    nodes = concat [ wire ("w" ++ show w) (-1.0) 6.4 w | w <- [0..3] ]
+         ++ spanBox "m4" 1.2 0 4 "M_4"
+         ++ spanBox "l4" 4.2 0 4 "L_4"
     edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
-         ++ concat [ wireDraw ("v" ++ show w) | w <- [0..3] ]
 
--- ... or D · (ML₃ ↑).
-mlTowerB :: String
-mlTowerB = handPicture (-0.8, -1.0, 9.4, 7.7) nodes edges
+mlTowerBr :: String
+mlTowerBr = handPicture (-1.3, -1.0, 6.7, 7.7) nodes edges
   where
-    nodes = concat [ wire ("w" ++ show w) (-0.5) 2.3 w | w <- [0..3] ]
-         ++ spanBox "ml4" 1.0 0 4 "ML_4"
-         ++ "\\node [style=none] (eq2) at (3.0, 3.0) {\\scriptsize $\\equiv$};\n"
-         ++ concat [ wire ("v" ++ show w) 3.7 9.1 w | w <- [0..3] ]
-         ++ spanBox "d0" 5.0 0 2 "D"
-         ++ spanBox "ml3" 7.4 1 3 "ML_3"
+    nodes = concat [ wire ("w" ++ show w) (-1.0) 6.4 w | w <- [0..3] ]
+         ++ spanBox "d0" 1.2 0 2 "D"
+         ++ spanBox "ml3" 4.2 1 3 "ML_3"
     edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
-         ++ concat [ wireDraw ("v" ++ show w) | w <- [0..3] ]
 
 -- M₄ and L₄' unfolded into atomic boxes: M₄ = D•(D↑)•(E↑↑) wait, M 4 on
 -- 4 wires: D(0,1) D(1,2) D(2,3) E(3); L₄' = B(2,3) B(1,2) B(0,1) A(0).
@@ -307,22 +300,23 @@ snStair = handPicture (-0.8, -1.0, 8.4, 7.7) nodes edges
          ++ spanBox "c3" 5.9 0 4 "c^{(3)}"
     edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
 
--- A lone 4-wire row box, the left-hand side of the atom expansions.
+-- A lone 4-wire row box, the left-hand side of the expansions.
 rowBox :: String -> String
-rowBox lbl = handPicture (-0.8, -1.0, 2.6, 7.7) nodes edges
+rowBox lbl = handPicture (-1.5, -1.0, 3.5, 7.7) nodes edges
   where
-    nodes = concat [ wire ("w" ++ show w) (-0.5) 2.3 w | w <- [0..3] ]
+    nodes = concat [ wire ("w" ++ show w) (-1.2) 3.2 w | w <- [0..3] ]
          ++ spanBox "b" 1.0 0 4 lbl
     edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
 
 handItems :: [(String, String)]
 handItems =
-  [ ("nf4",        nf4)
-  , ("ml-tower-a", mlTowerA)
-  , ("ml-tower-b", mlTowerB)
-  , ("m4-box",     rowBox "M_4")
-  , ("l4-box",     rowBox "L_4")
-  , ("sn-stair",   snStair)
+  [ ("nf4",          nf4)
+  , ("ml-tower-a-r", mlTowerAr)
+  , ("ml-tower-b-r", mlTowerBr)
+  , ("m4-box",       rowBox "M_4")
+  , ("l4-box",       rowBox "L_4")
+  , ("ml4-box",      rowBox "ML_4")
+  , ("sn-stair",     snStair)
   ]
 
 ------------------------------------------------------------------------

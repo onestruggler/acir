@@ -10,7 +10,7 @@
 \node [style=none] (w3l) at (-1.2, 6.0){};
 \node [style=none] (w3r) at (3.2, 6.0){};
 \draw [fill=white] (0.0, -0.75) rectangle (2.0, 6.75);
-\node [style=none] (b) at (1.0, 3.0) {\scriptsize $M_4$};
+\node [style=none] (b) at (1.0, 3.0) {\scriptsize $ML_4$};
 \end{pgfonlayer}
 \begin{pgfonlayer}{edgelayer}
 \draw (w0l.center) to (w0r.center);

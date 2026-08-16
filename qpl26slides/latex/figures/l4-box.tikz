@@ -1,14 +1,14 @@
 \begin{tikzpicture}
-\path [use as bounding box] (-0.8, -1.0) rectangle (2.6, 7.7);
+\path [use as bounding box] (-1.5, -1.0) rectangle (3.5, 7.7);
 \begin{pgfonlayer}{nodelayer}
-\node [style=none] (w0l) at (-0.5, 0.0){};
-\node [style=none] (w0r) at (2.3, 0.0){};
-\node [style=none] (w1l) at (-0.5, 2.0){};
-\node [style=none] (w1r) at (2.3, 2.0){};
-\node [style=none] (w2l) at (-0.5, 4.0){};
-\node [style=none] (w2r) at (2.3, 4.0){};
-\node [style=none] (w3l) at (-0.5, 6.0){};
-\node [style=none] (w3r) at (2.3, 6.0){};
+\node [style=none] (w0l) at (-1.2, 0.0){};
+\node [style=none] (w0r) at (3.2, 0.0){};
+\node [style=none] (w1l) at (-1.2, 2.0){};
+\node [style=none] (w1r) at (3.2, 2.0){};
+\node [style=none] (w2l) at (-1.2, 4.0){};
+\node [style=none] (w2r) at (3.2, 4.0){};
+\node [style=none] (w3l) at (-1.2, 6.0){};
+\node [style=none] (w3r) at (3.2, 6.0){};
 \draw [fill=white] (0.0, -0.75) rectangle (2.0, 6.75);
 \node [style=none] (b) at (1.0, 3.0) {\scriptsize $L_4$};
 \end{pgfonlayer}
