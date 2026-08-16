@@ -262,8 +262,10 @@ mlTowerAr = handPicture (-1.3, -1.0, 6.7, 7.7) nodes edges
 mlTowerBr :: String
 mlTowerBr = handPicture (-1.3, -1.0, 6.7, 7.7) nodes edges
   where
+    -- the D box exactly as the tool draws it (style, position, label),
+    -- so it matches the D boxes of the atom expansions
     nodes = concat [ wire ("w" ++ show w) (-1.0) 6.4 w | w <- [0..3] ]
-         ++ spanBox "d0" 1.2 0 2 "D"
+         ++ "\\node [style=D box] (d0) at (1.2, 1.0) {$D_{}$};\n"
          ++ spanBox "ml3" 4.2 1 3 "ML_3"
     edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
 

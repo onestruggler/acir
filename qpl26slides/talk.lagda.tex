@@ -523,24 +523,24 @@ module Normal-form-boxes where
 
   ML 0 = ⊤
   ML 1 = M 1 × L 1
-  ML (₂₊ n) =
-    M n × L n ⊎ D × ML (₁₊ n)
+  ML (₂₊ n) = let n' = ₂₊ n in
+    M n' × L n' ⊎ D × ML (₁₊ n)
 
 \end{code}
     \end{column}
     \begin{column}{0.34\textwidth}
       \begin{center}
         \begin{tabular}{@{}r@{\,}c@{\,}l@{}}
-          \ufig[0.68]{m4-box} & $\equiv$ & \ufig[0.68]{m4-atoms}\\[1ex]
-          \ufig[0.68]{l4-box} & $\equiv$ & \ufig[0.68]{l4-atoms}\\
+          \ufig[0.68]{m4-box} & \scalebox{0.7}{$\equiv$} & \ufig[0.68]{m4-atoms}\\[1ex]
+          \ufig[0.68]{l4-box} & \scalebox{0.7}{$\equiv$} & \ufig[0.68]{l4-atoms}\\
         \end{tabular}
       \end{center}
     \end{column}
     \begin{column}{0.30\textwidth}
       \begin{center}
         \begin{tabular}{@{}r@{\,}c@{\,}l@{}}
-          \ufig[0.68]{ml4-box} & $\equiv$ & \ufig[0.68]{ml-tower-a-r}\\[1ex]
-          \ufig[0.68]{ml4-box} & $\equiv$ & \ufig[0.68]{ml-tower-b-r}\\
+          \ufig[0.68]{ml4-box} & \scalebox{0.7}{$\equiv$} & \ufig[0.68]{ml-tower-a-r}\\[1ex]
+          \ufig[0.68]{ml4-box} & \scalebox{0.7}{$\equiv$} & \ufig[0.68]{ml-tower-b-r}\\
         \end{tabular}
       \end{center}
     \end{column}

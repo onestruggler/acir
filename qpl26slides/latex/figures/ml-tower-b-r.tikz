@@ -9,8 +9,7 @@
 \node [style=none] (w2r) at (6.4, 4.0){};
 \node [style=none] (w3l) at (-1.0, 6.0){};
 \node [style=none] (w3r) at (6.4, 6.0){};
-\draw [fill=white] (0.20000005, -0.75) rectangle (2.2, 2.75);
-\node [style=none] (d0) at (1.2, 1.0) {\scriptsize $D$};
+\node [style=D box] (d0) at (1.2, 1.0) {$D_{}$};
 \draw [fill=white] (3.1999998, 1.25) rectangle (5.2, 6.75);
 \node [style=none] (ml3) at (4.2, 4.0) {\scriptsize $ML_3$};
 \end{pgfonlayer}
