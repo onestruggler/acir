@@ -31,10 +31,10 @@
 \node [style=none] (x2b) at (5.25, 4.0){};
 \node [style=none] (x2c) at (6.75, 2.0){};
 \node [style=none] (x2d) at (6.75, 4.0){};
-\draw [] (0.25, -0.75) rectangle (2.15, 4.75);
+\draw [] (0.25, 1.25) rectangle (2.15, 4.75);
 \node [style=none] at (1.2, 5.3) {\scriptsize $b'$};
-\draw [] (2.65, -0.75) rectangle (8.25, 4.75);
-\node [style=none] at (5.45, 5.3) {\scriptsize $c'$};
+\draw [] (2.65, -0.75) rectangle (7.3, 4.75);
+\node [style=none] at (4.9750004, 5.3) {\scriptsize $c'$};
 \end{pgfonlayer}
 \begin{pgfonlayer}{edgelayer}
 \draw (w0s0l.center) to (w0s0r.center);

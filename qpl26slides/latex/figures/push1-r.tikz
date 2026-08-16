@@ -27,8 +27,8 @@
 \node [style=none] (x1d) at (4.35, 2.0){};
 \draw [] (0.25, 1.25) rectangle (2.15, 6.75);
 \node [style=none] at (1.2, 7.3) {\scriptsize $b'$};
-\draw [] (2.65, -0.75) rectangle (5.85, 6.75);
-\node [style=none] at (4.25, 7.3) {\scriptsize $c'$};
+\draw [] (2.65, -0.75) rectangle (4.9, 6.75);
+\node [style=none] at (3.775, 7.3) {\scriptsize $c'$};
 \end{pgfonlayer}
 \begin{pgfonlayer}{edgelayer}
 \draw (w0s0l.center) to (w0s0r.center);

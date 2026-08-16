@@ -15,8 +15,8 @@
 \node [style=none] (x0b) at (0.45000005, 2.0){};
 \node [style=none] (x0c) at (1.95, 0.0){};
 \node [style=none] (x0d) at (1.95, 2.0){};
-\draw [] (-0.7, -0.75) rectangle (3.45, 4.75);
-\node [style=none] at (1.375, 5.3) {\scriptsize $c'$};
+\draw [] (-0.7, -0.75) rectangle (2.5, 4.75);
+\node [style=none] at (0.9, 5.3) {\scriptsize $c'$};
 \end{pgfonlayer}
 \begin{pgfonlayer}{edgelayer}
 \draw (w0s0l.center) to (w0s0r.center);

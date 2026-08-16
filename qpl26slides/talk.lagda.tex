@@ -645,6 +645,8 @@ module NF-as-circuits where
 
 \subsection{Symplectic presentation}
 
+\subsubsection{Normal form}
+
 \begin{frame}{Warm-up: the symmetric group $S_n$}
   Swap circuits on $n$ wires present $S_n$.  All of $S_3$:
   \vfill
@@ -668,7 +670,7 @@ module NF-as-circuits where
 
 \begin{frame}{Coset representatives, and the normal form}
   Representatives $C_2$ of $S_3/S_2$ (and of $S_2/S_1$, $S_1/S_0$):
-  the staircases \vfill
+  the staircases 
   \begin{center}
   \begin{tabular}{ccc@{\qquad\qquad}cc@{\qquad\qquad}c}
     \ufig[0.8]{c2-0} & \ufig[0.8]{c2-1} &
@@ -702,7 +704,7 @@ module NF-as-circuits where
   \end{columns}
 \end{frame}
 
-\subsection{Rewrite to the normal form}
+\subsubsection{Rewrite to the normal form}
 \begin{frame}{Rewriting to the normal form: the coset updating table}
 \begin{code}[hide]
 module Pushing-through-a-coset where
@@ -809,6 +811,7 @@ module Sn-presented where
 \end{code}
 \end{frame}
 
+\subsubsection{From Symmetric to Symplectic}
 \begin{frame}{From $S_n$ to $\mathrm{Sp}(2n,\mathbb{Z}_p)$: change the action}
   The same framework, three ways of looking at the wires:
   \vfill
@@ -830,7 +833,7 @@ module Sn-presented where
   (\texttt{Circuit.CosetNF}, \texttt{Circuit.Uniqueness}).
 \end{frame}
 
-\begin{frame}{Uniqueness, in Agda}
+\begin{frame}{Uniqueness of normal form}
 \begin{code}[hide]
 module Uniqueness-of-NF where
   open Sect using (NF ; [_])
@@ -859,13 +862,13 @@ module Uniqueness-of-NF where
   \emph{coset factor is determined by the action} on Pauli states.
 \end{frame}
 
-\begin{frame}{From 66 relations to 18}
+\begin{frame}{From 67 relations to 18}
   \begin{enumerate}
     \item Rewrite \emph{every} circuit to normal form; collect every
-          relation the rewrite ever uses: \alert{66 relations}
+          relation the rewrite ever uses: \alert{67 relations}
           (box-vs-gate commutations, case by case).
     \item By inspection, find a small set of \alert{primitive,
-          bidirectional} relations that derive all 66.
+          bidirectional} relations that derive all 67.
     \item The choice is not canonical --- pick the set you find natural.
   \end{enumerate}
   \vfill
@@ -956,7 +959,7 @@ module Symplectic-presentation where
   \end{columns}
 \end{frame}
 
-\section{Composition}
+\subsection{Composition}
 
 \begin{frame}{Composing: the Pauli factor}
   The projective Pauli group $(\mathbb{Z}_p \times \mathbb{Z}_p)^n$ has an
