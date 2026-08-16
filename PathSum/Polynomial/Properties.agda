@@ -40,8 +40,10 @@ open import Relation.Nullary.Negation using (¬_; contradiction)
 
 open import PathSum.Polynomial
 
+import Data.Bool.Properties as Bool
 import Data.Integer.Solver as ℤSolver
 import Data.Nat.Divisibility as ℕDiv
+import Data.Vec.Properties as Vec
 import Data.Nat.Properties as ℕ
 import Relation.Binary.PropositionalEquality as Eq
 
@@ -556,6 +558,108 @@ subset-sum {suc k} (outside ∷ A) =
   trans (cong (_+ℤ Σsub (λ γ → if (γ ⊆ᵇ A) then negpow (∣ γ ∣) else 0ℤ))
               (Σsub-0 {k}))
         (trans (+-identityˡ _) (subset-sum A))
+
+
+------------------------------------------------------------------------
+-- Exchanging and collapsing sums
+
+-- Both are needed to evaluate a substitution: its coefficient at γ is
+-- a sum over the ways of splitting γ, so the outer sum over γ has to
+-- be moved inside and then collapsed against that split.
+
+Σsub-swap : ∀ {l} (f : Subset k → Subset l → ℤ) →
+            Σsub (λ s → Σsub (λ t → f s t)) ≡
+            Σsub (λ t → Σsub (λ s → f s t))
+Σsub-swap {k = zero}  f = refl
+Σsub-swap {k = suc k} f = trans
+  (cong₂ _+ℤ_ (Σsub-swap (λ s t → f (inside ∷ s) t))
+              (Σsub-swap (λ s t → f (outside ∷ s) t)))
+  (sym (Σsub-+ (λ t → Σsub (λ s → f (inside ∷ s) t))
+               (λ t → Σsub (λ s → f (outside ∷ s) t))))
+
+-- Equality of subsets as a Boolean test, so that it computes on a
+-- cons and a delta sum collapses.
+
+infix 5 _≡ᵇ_
+
+_≡ᵇ_ : Subset k → Subset k → Bool
+[]            ≡ᵇ []            = true
+(inside  ∷ p) ≡ᵇ (inside  ∷ q) = p ≡ᵇ q
+(inside  ∷ p) ≡ᵇ (outside ∷ q) = false
+(outside ∷ p) ≡ᵇ (inside  ∷ q) = false
+(outside ∷ p) ≡ᵇ (outside ∷ q) = p ≡ᵇ q
+
+≡ᵇ⇒≡ : (p q : Subset k) → p ≡ᵇ q ≡ true → p ≡ q
+≡ᵇ⇒≡ []            []            _  = refl
+≡ᵇ⇒≡ (inside  ∷ p) (inside  ∷ q) eq = cong (inside ∷_) (≡ᵇ⇒≡ p q eq)
+≡ᵇ⇒≡ (outside ∷ p) (outside ∷ q) eq = cong (outside ∷_) (≡ᵇ⇒≡ p q eq)
+
+≡⇒≡ᵇ : (p : Subset k) → p ≡ᵇ p ≡ true
+≡⇒≡ᵇ []            = refl
+≡⇒≡ᵇ (inside  ∷ p) = ≡⇒≡ᵇ p
+≡⇒≡ᵇ (outside ∷ p) = ≡⇒≡ᵇ p
+
+⌊≟ˢ⌋ : (p q : Subset k) → ⌊ Vec.≡-dec Bool._≟_ p q ⌋ ≡ p ≡ᵇ q
+⌊≟ˢ⌋ p q with Vec.≡-dec Bool._≟_ p q | p ≡ᵇ q in eq
+... | yes _   | true  = refl
+... | yes p≡q | false = contradiction
+      (trans (sym (trans (cong (_≡ᵇ q) p≡q) (≡⇒≡ᵇ q))) eq) λ ()
+... | no  ¬p  | true  = contradiction (≡ᵇ⇒≡ p q eq) ¬p
+... | no  _   | false = refl
+
+-- A sum whose summand vanishes away from one point is that point's
+-- value.
+
+Σsub-delta : (p : Subset k) (h : Subset k → ℤ) →
+             Σsub (λ s → if (s ≡ᵇ p) then h s else 0ℤ) ≡ h p
+Σsub-delta {k = zero}  []            h = refl
+Σsub-delta {k = suc k} (inside ∷ p)  h = trans
+  (cong₂ _+ℤ_ (Σsub-delta p (λ s → h (inside ∷ s))) (Σsub-0 {k}))
+  (+-identityʳ (h (inside ∷ p)))
+Σsub-delta {k = suc k} (outside ∷ p) h = trans
+  (cong₂ _+ℤ_ (Σsub-0 {k}) (Σsub-delta p (λ s → h (outside ∷ s))))
+  (+-identityˡ (h (outside ∷ p)))
+
+
+infix 5 _≡ᵐᵇ_
+
+_≡ᵐᵇ_ : Mon n m → Mon n m → Bool
+(α , β) ≡ᵐᵇ (α′ , β′) = (α ≡ᵇ α′) ∧ (β ≡ᵇ β′)
+
+≡ᵐᵇ⇒≡ : (γ δ : Mon n m) → γ ≡ᵐᵇ δ ≡ true → γ ≡ δ
+≡ᵐᵇ⇒≡ (α , β) (α′ , β′) eq with ∧-true (α ≡ᵇ α′) (β ≡ᵇ β′) eq
+... | e₁ , e₂ = cong₂ _,_ (≡ᵇ⇒≡ α α′ e₁) (≡ᵇ⇒≡ β β′ e₂)
+
+≡⇒≡ᵐᵇ : (γ : Mon n m) → γ ≡ᵐᵇ γ ≡ true
+≡⇒≡ᵐᵇ (α , β) = cong₂ _∧_ (≡⇒≡ᵇ α) (≡⇒≡ᵇ β)
+
+⌊≟ᵐ⌋ : (γ δ : Mon n m) → ⌊ γ ≟ᵐ δ ⌋ ≡ γ ≡ᵐᵇ δ
+⌊≟ᵐ⌋ γ δ with γ ≟ᵐ δ | γ ≡ᵐᵇ δ in eq
+... | yes _   | true  = refl
+... | yes γ≡δ | false = contradiction
+      (trans (sym (trans (cong (_≡ᵐᵇ δ) γ≡δ) (≡⇒≡ᵐᵇ δ))) eq) λ ()
+... | no  ¬p  | true  = contradiction (≡ᵐᵇ⇒≡ γ δ eq) ¬p
+... | no  _   | false = refl
+
+if-pull : ∀ (b : Bool) (g : Subset k → ℤ) →
+          Σsub (λ s → if b then g s else 0ℤ) ≡ (if b then Σsub g else 0ℤ)
+if-pull         true  g = refl
+if-pull {k = k} false g = Σsub-0 {k}
+
+Σmon-delta : (γ₀ : Mon n m) (h : Mon n m → ℤ) →
+             Σmon (λ γ → if (γ ≡ᵐᵇ γ₀) then h γ else 0ℤ) ≡ h γ₀
+Σmon-delta (α₀ , β₀) h =
+  trans (Σsub-cong inner) (Σsub-delta α₀ (λ α → h (α , β₀)))
+  where
+  inner : ∀ α →
+    Σsub (λ β → if ((α ≡ᵇ α₀) ∧ (β ≡ᵇ β₀)) then h (α , β) else 0ℤ) ≡
+    (if (α ≡ᵇ α₀) then h (α , β₀) else 0ℤ)
+  inner α = trans
+    (Σsub-cong (λ β → sym (if-∧ (α ≡ᵇ α₀) (β ≡ᵇ β₀) (h (α , β)))))
+    (trans (if-pull (α ≡ᵇ α₀)
+             (λ β → if (β ≡ᵇ β₀) then h (α , β) else 0ℤ))
+           (cong (λ w → if (α ≡ᵇ α₀) then w else 0ℤ)
+                 (Σsub-delta β₀ (λ β → h (α , β)))))
 
 
 ------------------------------------------------------------------------
