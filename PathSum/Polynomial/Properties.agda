@@ -11,7 +11,7 @@
 module PathSum.Polynomial.Properties where
 
 open import Data.Bool.Base using (Bool; true; false; if_then_else_; _∧_)
-open import Data.Bool.Properties using (∧-zeroʳ)
+open import Data.Bool.Properties using (∧-zeroʳ; ∧-assoc)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Fin.Subset using
   (Subset; inside; outside; ⁅_⁆; ⊥; _∪_; _∩_; _∈_; _∉_; _⊆_; ∣_∣)
@@ -32,7 +32,7 @@ open import Data.Nat.Base using
 open import Data.Nat.Solver using (module +-*-Solver)
 open import Data.Product.Base using (_×_; _,_; ∃; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Data.Vec.Base using (Vec; []; _∷_; here; there; tabulate)
+open import Data.Vec.Base using (Vec; []; _∷_; here; there; tabulate; insertAt)
 open import Relation.Binary.PropositionalEquality using
   (_≡_; refl; sym; trans; cong; cong₂)
 open import Relation.Nullary.Decidable using (Dec; yes; no; ⌊_⌋; _×?_)
@@ -620,6 +620,63 @@ _≡ᵇ_ : Subset k → Subset k → Bool
   (cong₂ _+ℤ_ (Σsub-0 {k}) (Σsub-delta p (λ s → h (outside ∷ s))))
   (+-identityˡ (h (outside ∷ p)))
 
+
+Σmon-swap : (F : Mon n m → Mon n m → ℤ) →
+            Σmon (λ γ → Σmon (λ δ → F γ δ)) ≡
+            Σmon (λ δ → Σmon (λ γ → F γ δ))
+Σmon-swap F =
+  trans (Σsub-cong (λ α →
+          Σsub-swap (λ β α′ → Σsub (λ β′ → F (α , β) (α′ , β′)))))
+  (trans (Σsub-swap (λ α α′ →
+          Σsub (λ β → Σsub (λ β′ → F (α , β) (α′ , β′)))))
+  (trans (Σsub-cong (λ α′ → Σsub-cong (λ α →
+          Σsub-swap (λ β β′ → F (α , β) (α′ , β′)))))
+         (Σsub-cong (λ α′ →
+          Σsub-swap (λ α β′ → Σsub (λ β → F (α , β) (α′ , β′)))))))
+
+-- Σsub splits on the head of a subset; [HH] substitutes for a
+-- variable at an arbitrary index, so the split is needed there too.
+
+Σsub-splitAt : ∀ {k} (i : Fin (suc k)) (f : Subset (suc k) → ℤ) →
+               Σsub f ≡
+               Σsub (λ s → f (insertAt s i inside) +ℤ f (insertAt s i outside))
+Σsub-splitAt zero f =
+  sym (Σsub-+ (λ s → f (inside ∷ s)) (λ s → f (outside ∷ s)))
+Σsub-splitAt {suc k} (suc i) f =
+  cong₂ _+ℤ_ (Σsub-splitAt i (λ s → f (inside ∷ s)))
+             (Σsub-splitAt i (λ s → f (outside ∷ s)))
+
+-- Satisfaction distributes over unions of monomials.
+
+private
+  ∧-dup : ∀ b p q → b ∧ (p ∧ q) ≡ (b ∧ p) ∧ (b ∧ q)
+  ∧-dup true  p q = refl
+  ∧-dup false p q = refl
+
+  ∧-mid : ∀ b p q → b ∧ (p ∧ q) ≡ p ∧ (b ∧ q)
+  ∧-mid true  p q = refl
+  ∧-mid false p q = sym (∧-zeroʳ p)
+
+sat-∪ : (p q : Subset k) (f : Fin k → Bool) →
+        sat (p ∪ q) f ≡ sat p f ∧ sat q f
+sat-∪ []            []            f = refl
+sat-∪ (inside  ∷ p) (inside  ∷ q) f = trans
+  (cong (f zero ∧_) (sat-∪ p q (λ i → f (suc i))))
+  (∧-dup (f zero) (sat p (λ i → f (suc i))) (sat q (λ i → f (suc i))))
+sat-∪ (inside  ∷ p) (outside ∷ q) f = trans
+  (cong (f zero ∧_) (sat-∪ p q (λ i → f (suc i))))
+  (sym (∧-assoc (f zero) (sat p (λ i → f (suc i)))
+                (sat q (λ i → f (suc i)))))
+sat-∪ (outside ∷ p) (inside  ∷ q) f = trans
+  (cong (f zero ∧_) (sat-∪ p q (λ i → f (suc i))))
+  (∧-mid (f zero) (sat p (λ i → f (suc i))) (sat q (λ i → f (suc i))))
+sat-∪ (outside ∷ p) (outside ∷ q) f = sat-∪ p q (λ i → f (suc i))
+
+satᵐ-∪ : (γ δ : Mon n m) (x : Fin n → Bool) (y : Fin m → Bool) →
+         satᵐ (γ ∪ᵐ δ) x y ≡ satᵐ γ x y ∧ satᵐ δ x y
+satᵐ-∪ (α , β) (α′ , β′) x y = trans
+  (cong₂ _∧_ (sat-∪ α α′ x) (sat-∪ β β′ y))
+  (∧-shuffle (sat α x) (sat α′ x) (sat β y) (sat β′ y))
 
 infix 5 _≡ᵐᵇ_
 
