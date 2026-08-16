@@ -175,6 +175,10 @@ items =
   -- The single coset representative of S₁ / S₀
   , C "c0-0" (eps 1) ""
 
+  -- The Sₙ rule set: order and Yang–Baxter
+  , R "sn-order" [Ex 0, Ex 0]        (eps 2) ""
+  , R "sn-yb"    [Ex 0, Ex 1, Ex 0]  [Ex 1, Ex 0, Ex 1] ""
+
   ------------------------------------------------------------------
   -- The A, B, D, E boxes as circuits (representative a ≠ 0 cases)
   , R "box-A"  [A 0 "a,b"] [Mul 0 "M_{a^{-1}}", H 0, Se 0 "-b/a"] ""

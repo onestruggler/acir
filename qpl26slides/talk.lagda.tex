@@ -211,6 +211,8 @@ import Relation.Binary.PropositionalEquality as Eq
 import Examples.Groups.Symmetric.Syntactics as SymS
 import Examples.Groups.Symmetric.Cosets as SymC
 import Examples.Groups.Symmetric.Normalization as SymN
+import Examples.Groups.Symmetric.Semantics as PermSem
+import Examples.Groups.Symmetric.Presentation as SymP
 open import Data.Vec using (Vec)
 open import Relation.Binary.PropositionalEquality using (_≢_)
 open import Algebra.Bundles using (Group)
@@ -763,19 +765,48 @@ module Pushing-through-a-coset where
   Multiply a normal form by a generator; push it through the staircase:
   \begin{center}\small
   \begin{tabular}{r@{\,}c@{\,}l@{\qquad}l}
-    \ufig[0.62]{push1-l} & \scalebox{0.7}{$\equiv$} & \ufig[0.62]{push1-r} &
+    \ufig[0.62]{push1-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.62]{push1-r} &
       disjoint wires: commute past \\
-    \ufig[0.62]{push2-l} & \scalebox{0.7}{$\equiv$} & \ufig[0.62]{push2-r} &
+    \ufig[0.62]{push2-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.62]{push2-r} &
       Yang--Baxter: pass through, shift up \\
-    \ufig[0.62]{push3-l} & \scalebox{0.7}{$\equiv$} & \ufig[0.62]{push3-r} &
+    \ufig[0.62]{push3-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.62]{push3-r} &
       $\sigma^2 = e$: staircase shrinks \\
-    \ufig[0.62]{push4-l} & \scalebox{0.7}{$\equiv$} & \ufig[0.62]{push4-r} &
+    \ufig[0.62]{push4-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.62]{push4-r} &
       staircase grows \\
   \end{tabular}
   \end{center}
-  Every case has the shape $c \cdot b \equiv b' \cdot c'$ --- the coset
-  table.  Each is a \emph{relation}; collecting them all gives a rewrite
-  system that normalises every circuit.
+  %% Every case has the shape $c \cdot b \equiv b' \cdot c'$ --- the coset
+  %% table.  Each is a \emph{relation}; collecting them all gives a rewrite
+  %% system that normalises every circuit.
+\end{frame}
+
+\begin{frame}{A presentation of $S_n$}
+  Collecting the push-through relations and simplifying leaves just two
+  rules (plus the structural ones):
+
+\begin{code}[hide]
+module Sn-presented where
+  open SymS using (Gen ; σ ; _↑ ; _VRel,_===_)
+  open PermSem using (Permutation′-group)
+  private variable n : ℕ
+  infix 4 _SRel,_===_
+\end{code}
+\begin{code}
+  data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
+    order        : (₂₊ n) SRel,  σ • σ === ε
+    yang-baxter  : (₃₊ n) SRel,  σ • σ ↑ • σ === σ ↑ • σ • σ ↑
+\end{code}
+  \vfill
+  \begin{center}\small
+    \begin{tabular}{r@{\;\,}r@{\,}c@{\,}l@{}}
+      order & \ufig[0.62]{sn-order-l} & \scalebox{0.7}{$\equiv$} & \ufig[0.62]{sn-order-r}\\[1pt]
+      yang-baxter & \ufig[0.62]{sn-yb-l} & \scalebox{0.7}{$\equiv$} & \ufig[0.62]{sn-yb-r}\\
+    \end{tabular}
+  \end{center}
+\begin{code}
+  Theorem-Sn : ∀ {n} → (n VRel,_===_) IsPresentationOf (Permutation′-group n)
+  Theorem-Sn = SymP.presentation
+\end{code}
 \end{frame}
 
 \begin{frame}{From $S_n$ to $\mathrm{Sp}(2n,\mathbb{Z}_p)$: change the action}

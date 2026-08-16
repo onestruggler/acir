@@ -1,0 +1,84 @@
+\begin{tikzpicture}
+\path [use as bounding box] (-0.3, -1.0) rectangle (19.8, 5.7);
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (n0y00tl) at (1.0, 2.0) {$$};
+\node [style=none] (n0y00bl) at (1.0, 0.0) {$$};
+\node [style=none] (n0y00br) at (2.5, 0.0) {$$};
+\node [style=none] (n0y00tr) at (2.5, 2.0) {$$};
+\node [style=none] (n0y00ftl) at (1.0, 2.15) {};
+\node [style=none] (n0y00fbr) at (2.5, -0.15) {};
+\node [style=none] (n0y01tl) at (3.5, 4.0) {$$};
+\node [style=none] (n0y01bl) at (3.5, 2.0) {$$};
+\node [style=none] (n0y01br) at (5.0, 2.0) {$$};
+\node [style=none] (n0y01tr) at (5.0, 4.0) {$$};
+\node [style=none] (n0y01ftl) at (3.5, 4.15) {};
+\node [style=none] (n0y01fbr) at (5.0, 1.85) {};
+\node [style=none] (n0y02tl) at (6.0, 2.0) {$$};
+\node [style=none] (n0y02bl) at (6.0, 0.0) {$$};
+\node [style=none] (n0y02br) at (7.5, 0.0) {$$};
+\node [style=none] (n0y02tr) at (7.5, 2.0) {$$};
+\node [style=none] (n0y02ftl) at (6.0, 2.15) {};
+\node [style=none] (n0y02fbr) at (7.5, -0.15) {};
+\node [style=none] (lm0el00) at (0.0, 0.0){};
+\node [style=none] (lm0el10) at (0.0, 2.0){};
+\node [style=none] (lm0el20) at (0.0, 4.0){};
+\node [style=none] (lm0er00) at (8.5, 0.0){};
+\node [style=none] (lm0er10) at (8.5, 2.0){};
+\node [style=none] (lm0er20) at (8.5, 4.0){};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm0el00.center) to (lm0er00.center);
+\draw (lm0el10.center) to (lm0er10.center);
+\draw (lm0el20.center) to (lm0er20.center);
+\fill [white] (n0y00ftl.center) rectangle (n0y00fbr.center);
+\draw (n0y00bl.center) to (n0y00tr.center);
+\draw (n0y00tl.center) to (n0y00br.center);
+\fill [white] (n0y01ftl.center) rectangle (n0y01fbr.center);
+\draw (n0y01bl.center) to (n0y01tr.center);
+\draw (n0y01tl.center) to (n0y01br.center);
+\fill [white] (n0y02ftl.center) rectangle (n0y02fbr.center);
+\draw (n0y02bl.center) to (n0y02tr.center);
+\draw (n0y02tl.center) to (n0y02br.center);
+\end{pgfonlayer}
+\node [style=none] (equiv) at (9.5, 2.0) {$\equiv$};
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (n10y00tl) at (11.5, 4.0) {$$};
+\node [style=none] (n10y00bl) at (11.5, 2.0) {$$};
+\node [style=none] (n10y00br) at (13.0, 2.0) {$$};
+\node [style=none] (n10y00tr) at (13.0, 4.0) {$$};
+\node [style=none] (n10y00ftl) at (11.5, 4.15) {};
+\node [style=none] (n10y00fbr) at (13.0, 1.85) {};
+\node [style=none] (n10y01tl) at (14.0, 2.0) {$$};
+\node [style=none] (n10y01bl) at (14.0, 0.0) {$$};
+\node [style=none] (n10y01br) at (15.5, 0.0) {$$};
+\node [style=none] (n10y01tr) at (15.5, 2.0) {$$};
+\node [style=none] (n10y01ftl) at (14.0, 2.15) {};
+\node [style=none] (n10y01fbr) at (15.5, -0.15) {};
+\node [style=none] (n10y02tl) at (16.5, 4.0) {$$};
+\node [style=none] (n10y02bl) at (16.5, 2.0) {$$};
+\node [style=none] (n10y02br) at (18.0, 2.0) {$$};
+\node [style=none] (n10y02tr) at (18.0, 4.0) {$$};
+\node [style=none] (n10y02ftl) at (16.5, 4.15) {};
+\node [style=none] (n10y02fbr) at (18.0, 1.85) {};
+\node [style=none] (lm10el00) at (10.5, 0.0){};
+\node [style=none] (lm10el10) at (10.5, 2.0){};
+\node [style=none] (lm10el20) at (10.5, 4.0){};
+\node [style=none] (lm10er00) at (19.0, 0.0){};
+\node [style=none] (lm10er10) at (19.0, 2.0){};
+\node [style=none] (lm10er20) at (19.0, 4.0){};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm10el00.center) to (lm10er00.center);
+\draw (lm10el10.center) to (lm10er10.center);
+\draw (lm10el20.center) to (lm10er20.center);
+\fill [white] (n10y00ftl.center) rectangle (n10y00fbr.center);
+\draw (n10y00bl.center) to (n10y00tr.center);
+\draw (n10y00tl.center) to (n10y00br.center);
+\fill [white] (n10y01ftl.center) rectangle (n10y01fbr.center);
+\draw (n10y01bl.center) to (n10y01tr.center);
+\draw (n10y01tl.center) to (n10y01br.center);
+\fill [white] (n10y02ftl.center) rectangle (n10y02fbr.center);
+\draw (n10y02bl.center) to (n10y02tr.center);
+\draw (n10y02tl.center) to (n10y02br.center);
+\end{pgfonlayer}
+\end{tikzpicture}
