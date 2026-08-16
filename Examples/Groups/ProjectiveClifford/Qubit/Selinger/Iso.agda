@@ -101,19 +101,19 @@ pauli-rel : ∀ {n u v} → (Γ-H ⊕^ n) u v →
             PB._≈_ (n CRel,_===_) (Pw u) (Pw v)
 pauli-rel {₁₊ zero} (_⋄_⋄_.left  CyS.order) = X²≈ε
 pauli-rel {₁₊ zero} (_⋄_⋄_.right CyS.order) = Z²≈ε
-pauli-rel {₁₊ zero} (_⋄_⋄_.mid (CommRel.comm tt tt)) = XZ.XZ≈ZX zero
+pauli-rel {₁₊ zero} (_⋄_⋄_.mid (CommRel.comm _ _)) = XZ.XZ≈ZX zero
 pauli-rel {₂₊ m} (_⋄_⋄_.left (_⋄_⋄_.left  CyS.order)) = X²≈ε
 pauli-rel {₂₊ m} (_⋄_⋄_.left (_⋄_⋄_.right CyS.order)) = Z²≈ε
-pauli-rel {₂₊ m} (_⋄_⋄_.left (_⋄_⋄_.mid (CommRel.comm tt tt))) = XZ.XZ≈ZX (₁₊ m)
+pauli-rel {₂₊ m} (_⋄_⋄_.left (_⋄_⋄_.mid (CommRel.comm _ _))) = XZ.XZ≈ZX (₁₊ m)
 -- subst rather than rewrite: rewriting here hides the structural
 -- recursion from the termination checker.
 pauli-rel {₂₊ m} (_⋄_⋄_.right {u} {v} x) =
   Eq.subst₂ (PB._≈_ ((₂₊ m) CRel,_===_))
             (Eq.sym (Pw-↑ m u)) (Eq.sym (Pw-↑ m v))
             (lemma-cong↑ (Pw {₁₊ m} u) (Pw {₁₊ m} v) (pauli-rel x))
-pauli-rel {₂₊ m} (_⋄_⋄_.mid (CommRel.comm (inj₁ tt) b)) =
+pauli-rel {₂₊ m} (_⋄_⋄_.mid (CommRel.comm (inj₁ _) b)) =
   PB.sym (↑Comm.↑-comm-X (₁₊ m) (pauliGen→word b))
-pauli-rel {₂₊ m} (_⋄_⋄_.mid (CommRel.comm (inj₂ tt) b)) =
+pauli-rel {₂₊ m} (_⋄_⋄_.mid (CommRel.comm (inj₂ _) b)) =
   PB.sym (↑Comm.↑-comm-Z (₁₊ m) (pauliGen→word b))
 
 fwd-pauli : ∀ {n u v} → (Γ-H ⊕^ n) u v →

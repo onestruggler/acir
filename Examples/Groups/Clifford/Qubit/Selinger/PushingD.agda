@@ -44,7 +44,7 @@ open import Notations using (₀ ; ₆ ; ₇)
 
 open import Examples.Groups.Clifford.Qubit.Selinger.Boxes p-2 p-prime
 open import Examples.Groups.Clifford.Qubit.Selinger.Pushing p-2 p-prime
-  using (Dirty ; H₀ ; S₀ ; H₁ ; S₁ ; S₂ ; ZZ₀₁)
+  using (Dirty⁺ ; H₀ ; S₀ ; H₁ ; S₁ ; S₂ ; ZZ₀₁)
 
 ------------------------------------------------------------------------
 -- The rules
@@ -52,7 +52,7 @@ open import Examples.Groups.Clifford.Qubit.Selinger.Pushing p-2 p-prime
 -- Arguments are (lower , upper): the box on the controlled-Z's lower
 -- pair first, as the paper writes them.
 
-pushZZ-DD : DBox → DBox → ℤ 8 × (DBox × DBox) × List Dirty
+pushZZ-DD : DBox → DBox → ℤ 8 × (DBox × DBox) × List Dirty⁺
 pushZZ-DD d₁ d₁ = ₀ , (d₁ , d₁) , H₀ ∷ H₁ ∷ ZZ₀₁ ∷ H₀ ∷ H₁ ∷ []
 pushZZ-DD d₁ d₂ = ₀ , (d₄ , d₂) , H₀ ∷ ZZ₀₁ ∷ H₀ ∷ []
 pushZZ-DD d₁ d₃ = ₇ , (d₄ , d₃)

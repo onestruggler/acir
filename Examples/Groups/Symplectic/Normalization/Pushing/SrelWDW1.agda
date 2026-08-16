@@ -36,7 +36,6 @@ open PrimeModulus p-2 p-prime
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime
   using (dir-of-DS ; d-of-DS)
-  using (S^-↓ᵏ ; ↑↓ᵏ-comm)
 import Relation.Binary.Reasoning.Setoid as SR
 open Lemmas-Sym using (lemma-comm-S-w↑ ; lemma-comm-H-w↑)
 

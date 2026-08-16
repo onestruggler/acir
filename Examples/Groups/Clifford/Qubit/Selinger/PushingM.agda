@@ -55,8 +55,9 @@ open import Examples.Groups.Clifford.Qubit.Selinger.Normal p-2 p-prime
 open import ForStdlib.Data.Fin.Mod using (ℤ)
 
 open import Examples.Groups.Clifford.Qubit.Selinger.Pushing p-2 p-prime
-  using (Dirty ; H₀ ; S₀ ; X₀ ; H₁ ; S₁ ; X₁ ; H₂ ; S₂ ; ZZ₀₁ ; ZZ₁₂
-        ; pushZZD ; pushS₁D ; pushH₁D)
+  using ( Dirty ; Dirty⁺
+        ; H₀ ; S₀ ; X₀ ; H₁ ; S₁ ; X₁ ; H₂ ; S₂ ; ZZ₀₁ ; ZZ₁₂
+        ; pushZZD ; pushS₁D ; pushH₁D )
 
 private
   variable
@@ -127,10 +128,7 @@ ascS (X₀ ∷ ds) = ascS ds
 -- not emitted by any D rule
 ascS (H₁ ∷ ds) = ascS ds
 ascS (X₁ ∷ ds) = ascS ds
-ascS (H₂ ∷ ds) = ascS ds
-ascS (S₂ ∷ ds) = ascS ds
 ascS (ZZ₀₁ ∷ ds) = ascS ds
-ascS (ZZ₁₂ ∷ ds) = ascS ds
 
 esc : List Dirty → List Dirty
 esc []         = []
@@ -142,10 +140,7 @@ esc (S₁ ∷ ds) = esc ds
 -- not emitted by any D rule
 esc (H₁ ∷ ds) = esc ds
 esc (X₁ ∷ ds) = esc ds
-esc (H₂ ∷ ds) = esc ds
-esc (S₂ ∷ ds) = esc ds
 esc (ZZ₀₁ ∷ ds) = esc ds
-esc (ZZ₁₂ ∷ ds) = esc ds
 
 ------------------------------------------------------------------------
 -- A dirty gate meeting the bottom box of a staircase
@@ -199,10 +194,7 @@ escAt0 (S₁ ∷ ds) = escAt0 ds
 -- not emitted by any D rule
 escAt0 (H₁ ∷ ds) = escAt0 ds
 escAt0 (X₁ ∷ ds) = escAt0 ds
-escAt0 (H₂ ∷ ds) = escAt0 ds
-escAt0 (S₂ ∷ ds) = escAt0 ds
 escAt0 (ZZ₀₁ ∷ ds) = escAt0 ds
-escAt0 (ZZ₁₂ ∷ ds) = escAt0 ds
 
 ------------------------------------------------------------------------
 -- An S arriving anywhere on the staircase
@@ -266,7 +258,7 @@ pushH-at = push-q1-at pushH₁D
 -- staircase has left, so all of it escapes.  Only the wire-2 gates
 -- continue, and those are S gates, counted separately.
 
-escAt01 : List Dirty → Circuit (₂₊ n)
+escAt01 : List Dirty⁺ → Circuit (₂₊ n)
 escAt01 []         = ε
 escAt01 (H₀ ∷ ds) = H • escAt01 ds
 escAt01 (S₀ ∷ ds) = S • escAt01 ds
@@ -281,7 +273,7 @@ escAt01 (S₂ ∷ ds) = escAt01 ds
 escAt01 (H₂ ∷ ds) = escAt01 ds
 escAt01 (ZZ₁₂ ∷ ds) = escAt01 ds
 
-ascS₂ : List Dirty → ℕ
+ascS₂ : List Dirty⁺ → ℕ
 ascS₂ []         = 0
 ascS₂ (S₂ ∷ ds) = ₁₊ (ascS₂ ds)
 ascS₂ (_  ∷ ds) = ascS₂ ds

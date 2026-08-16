@@ -61,7 +61,10 @@
 --             concatenation whatever its arguments.  Note that
 --             rep Iᶜ ≈ ε in the QUOTIENT is free and does not suffice:
 --             lifting it into the extension picks up corrOf, so what is
---             being asked is that that correction vanishes.
+--             being asked is that that correction vanishes.  Both are
+--             discharged in Qubit.Presentation: nfpQ below is the
+--             ε-patched section bijective₂ε, whose rep Iᶜ IS ε on the
+--             nose, so each reduces to a reflexivity.
 --
 -- Why this module exists: with `presentation` in hand, completeness of
 -- _Clifford,_===_ for CMS n is one projection away, and composing it
@@ -140,8 +143,12 @@ open import Examples.Groups.ProjectiveClifford.Qubit.CMS
 -- normal form upgraded to a bijection, using uniqueness of the section
 -- for the round trip nf ∘ inv-nf ≡ id.
 
+-- The section is the ε-patched one (bijective₂ε): same normal-form map
+-- as bijective₂, but the identity coset's representative is the empty
+-- word on the nose, which is what makes Sec-trivial and Conj-trivial
+-- hold at every width instead of only at 0 and 1.
 open import Examples.Groups.Symplectic.Simplified.Bijective p-2 p-prime g* g-gen
-  using (bijective₂)
+  using (bijective₂ε)
 
 -- The Pauli factor's needs no normal-form development at all: its
 -- presentation IS an isomorphism onto Pauli-group n, so composing with
@@ -191,7 +198,7 @@ open import Examples.Groups.ProjectiveClifford.Qubit.Realises using (vec-gen)
 module Clifford (n : ℕ) where
 
   nfpS = bijectiveᴾ n
-  nfpQ = bijective₂ n
+  nfpQ = bijective₂ε n
 
   -- (The proposition's own module is opened publicly; it internally
   -- names a module E, so this one is EP.)

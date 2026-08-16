@@ -70,7 +70,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.ProjectiveClifford.Qubit.Sem3 where
+module Examples.Groups.ProjectiveClifford.Qubit.Semantics.Sem3 where
 
 open import Algebra.Bundles using (AbelianGroup ; Group)
 open import Algebra.Morphism.Structures
@@ -208,19 +208,31 @@ private
   module SIso {n : ℕ} = GroupMorphisms.IsGroupIsomorphism
                           (_IsPresentationOf_.iso (SimPres.presentation {n}))
 
-  denote-agrees : ∀ {n} (u : Word (SGen n)) → SimP.⟦ u ⟧ ≡ ⟦ u ⟧
-  denote-agrees [ g ]ʷ  = Eq.refl
-  denote-agrees ε       = Eq.refl
-  denote-agrees (u • v) = Eq.cong₂ _∘ˢ_ (denote-agrees u) (denote-agrees v)
+denote-agrees : ∀ {n} (u : Word (SGen n)) → SimP.⟦ u ⟧ ≡ ⟦ u ⟧
+denote-agrees [ g ]ʷ  = Eq.refl
+denote-agrees ε       = Eq.refl
+denote-agrees (u • v) = Eq.cong₂ _∘ˢ_ (denote-agrees u) (denote-agrees v)
 
-  denote-eq : ∀ {n} {u v : Word (SGen n)} →
-              PB._≈_ (ΓQ n) u v → ap ⟦ u ⟧ ≗ ap ⟦ v ⟧
-  denote-eq {n} {u} {v} e x = begin
-    ap ⟦ u ⟧ x       ≡⟨ Eq.cong (λ S → ap S x) (Eq.sym (denote-agrees u)) ⟩
-    ap SimP.⟦ u ⟧ x  ≡⟨ SIso.⟦⟧-cong e x ⟩
-    ap SimP.⟦ v ⟧ x  ≡⟨ Eq.cong (λ S → ap S x) (denote-agrees v) ⟩
-    ap ⟦ v ⟧ x       ∎
-    where open Eq.≡-Reasoning
+denote-eq : ∀ {n} {u v : Word (SGen n)} →
+            PB._≈_ (ΓQ n) u v → ap ⟦ u ⟧ ≗ ap ⟦ v ⟧
+denote-eq {n} {u} {v} e x = begin
+  ap ⟦ u ⟧ x       ≡⟨ Eq.cong (λ S → ap S x) (Eq.sym (denote-agrees u)) ⟩
+  ap SimP.⟦ u ⟧ x  ≡⟨ SIso.⟦⟧-cong e x ⟩
+  ap SimP.⟦ v ⟧ x  ≡⟨ Eq.cong (λ S → ap S x) (denote-agrees v) ⟩
+  ap ⟦ v ⟧ x       ∎
+  where open Eq.≡-Reasoning
+
+-- Conversely, words that denote the same transformation are equal: the
+-- simplified rule set is complete, so the presentation's isomorphism is
+-- injective.
+denote-injective : ∀ {n} {u v : Word (SGen n)} →
+                   ap ⟦ u ⟧ ≗ ap ⟦ v ⟧ → PB._≈_ (ΓQ n) u v
+denote-injective {n} {u} {v} e = SIso.injective (λ x → begin
+  ap SimP.⟦ u ⟧ x  ≡⟨ Eq.cong (λ S → ap S x) (denote-agrees u) ⟩
+  ap ⟦ u ⟧ x       ≡⟨ e x ⟩
+  ap ⟦ v ⟧ x       ≡⟨ Eq.cong (λ S → ap S x) (Eq.sym (denote-agrees v)) ⟩
+  ap SimP.⟦ v ⟧ x  ∎)
+  where open Eq.≡-Reasoning
 
 ------------------------------------------------------------------------
 -- K, Q and φ

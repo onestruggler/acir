@@ -51,17 +51,23 @@ module Examples.Groups.Symplectic.Simplified.Bijective
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Morphism.Structures using (module GroupMorphisms)
+open import Data.Empty using (⊥-elim)
 open import Function.Bundles using (Bijection)
+open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality as Eq using (setoid)
+open import Relation.Nullary.Decidable using (yes ; no)
 
 open import Word.Base using (ε)
+open import Word.Properties using (≡-dec)
 import Presentation.Base as PB
 open import Presentation.GroupLike using (module Group-Lemmas)
 open import Normalization.NormalForm.Propositional using (BijectiveNormalForm)
 import Normalization.NormalForm.Setoid as SNF
 
 import Examples.Groups.Symplectic.Syntactics p-2 p-prime as Syn
-open Syn.Symplectic using (Circuit)
+open Syn.Symplectic using
+  ( Circuit ; Gen ; SympGate ; H-gate ; S-gate ; CZ-gate
+  ; gate₀ ; gate₁ ; gate₂ ; _↥ )
 open import Examples.Groups.Symplectic.Normalization.Boxes p-2 p-prime using (NF)
 open import Examples.Groups.Symplectic.Normalization.Section p-2 p-prime
   using () renaming ([_] to nf→word)
@@ -145,10 +151,11 @@ bijective₁ n = record
 
 -- NOTE for Proposition 2.55's `nf-ε` (invˢ (nfˢ ε) ≡ ε).  It does NOT
 -- hold by computation at a variable width: the tower's section is stuck
--- on n, so the term does not reduce.  It wants an induction on n showing
--- that each level's section sends the identity coset to ε — the base
--- case is base0', and the step is the Extension level's inv-nf at the
--- pair (identity, identity).
+-- on n, so the term does not reduce.  Nor does it hold at all for this
+-- section — Simplified.NfEps refutes it at every positive width, one
+-- level of the tower's inverse being a concatenation whatever its
+-- arguments.  What CAN be done is to change the section at that one
+-- point; bijective₂ε below does, and rep-ε is the resulting nf-ε.
 
 -- The same maps, with both congruences routed through Simplified.Iso.
 bijective₂ : (n : ℕ) → BijectiveNormalForm (n QRel,_===₂_) (NF n)
@@ -162,3 +169,89 @@ bijective₂ n = record
           Eq.trans (SNF.NormalForm.nf-cong (nfp'-sec n) (≈₂⇒≈₁ z≈)) (nf∘inv u)
     }
   }
+
+------------------------------------------------------------------------
+-- Decidable equality of normal forms
+--
+-- NF n is nested Fins, Vecs and sums with one exception: an A box
+-- carries a proof that its pair is not (₀ , ₀), and two proofs of a
+-- negation cannot be compared without function extensionality.  So the
+-- structural route to a decision procedure stops at the A boxes.
+--
+-- The section goes round them.  [_] turns a normal form into a word over
+-- Gen n — a finite gate set, so words are decidable — equal words have
+-- equal denotations, and Uniqueness.⟦[]⟧-injective recovers the FULL
+-- propositional equality of normal forms from equal denotations, proof
+-- component included.  That is exactly what makes the ≢ harmless: it is
+-- pinned by the rest of the box rather than compared.
+
+-- The gate set: three constructors, none of them at arity 0.
+gate-dec : ∀ {k} → DecidableEquality (SympGate k)
+gate-dec H-gate  H-gate  = yes Eq.refl
+gate-dec H-gate  S-gate  = no λ ()
+gate-dec S-gate  H-gate  = no λ ()
+gate-dec S-gate  S-gate  = yes Eq.refl
+gate-dec CZ-gate CZ-gate = yes Eq.refl
+
+-- Wire-indexed generators: a gate at the bottom of the circuit, or a
+-- generator shifted up one wire.  (gate₀ is absurd — SympGate 0 is
+-- empty — and the mixed cases differ in head constructor.)
+gen-dec : ∀ {n} → DecidableEquality (Gen n)
+gen-dec (gate₀ ()) _
+gen-dec (gate₁ h)  (gate₀ ())
+gen-dec (gate₁ h)  (gate₁ h') with gate-dec h h'
+... | yes Eq.refl = yes Eq.refl
+... | no  h≢      = no λ { Eq.refl → h≢ Eq.refl }
+gen-dec (gate₁ h)  (gate₂ h') = no λ ()
+gen-dec (gate₁ h)  (y ↥)      = no λ ()
+gen-dec (gate₂ h)  (gate₀ ())
+gen-dec (gate₂ h)  (gate₁ h') = no λ ()
+gen-dec (gate₂ h)  (gate₂ h') with gate-dec h h'
+... | yes Eq.refl = yes Eq.refl
+... | no  h≢      = no λ { Eq.refl → h≢ Eq.refl }
+gen-dec (gate₂ h)  (y ↥)      = no λ ()
+gen-dec (x ↥)      (gate₀ ())
+gen-dec (x ↥)      (gate₁ h)  = no λ ()
+gen-dec (x ↥)      (gate₂ h)  = no λ ()
+gen-dec (x ↥)      (y ↥)      with gen-dec x y
+... | yes Eq.refl = yes Eq.refl
+... | no  x≢      = no λ { Eq.refl → x≢ Eq.refl }
+
+NF-dec : ∀ n → DecidableEquality (NF n)
+NF-dec n u v with ≡-dec gen-dec (nf→word u) (nf→word v)
+... | yes eq  = yes (⟦[]⟧-injective n (⟦⟧-sound (PB.refl' (n QRel,_===₁_) eq)))
+... | no  eq≢ = no λ { Eq.refl → eq≢ Eq.refl }
+
+------------------------------------------------------------------------
+-- The section patched at the identity
+--
+-- Proposition 2.55 wants the identity coset's representative to be the
+-- empty word, and the tower's section cannot oblige.  But the section is
+-- not part of the Bijection's data: it is recovered from the SURJECTIVITY
+-- field, whose obligation at a normal form u is
+--
+--     ∃ w. ∀ z. z ≈ w → nfˢ z ≡ u,
+--
+-- and any w with that property will do.  At u = nfˢ ε the empty word has
+-- it — nfˢ z ≡ nfˢ ε is nf-cong — so the witness may simply be replaced
+-- there, and NF-dec is what lets the definition see when it is there.
+--
+-- Nothing else changes: `to`, its congruence and injectivity are
+-- bijective₂'s, so the two normal forms agree as maps and differ only in
+-- which word they pick out of the identity coset.
+
+-- The patch itself is generic — it uses nothing about this rule set —
+-- so it is NormalForm.Setoid.ε-section, and all that happens here is
+-- supplying the decision procedure.
+bijective₂ε : (n : ℕ) → BijectiveNormalForm (n QRel,_===₂_) (NF n)
+bijective₂ε n =
+  SNF.ε-section (n QRel,_===₂_) (setoid (NF n)) (bijective₂ n) (NF-dec n)
+
+-- Proposition 2.55's nf-ε, at every width: the identity coset's
+-- representative is the empty word, on the nose.  The decision cannot
+-- reduce at a variable width — nfˢ ε is stuck — but it does not have to:
+-- what settles the branch is that the two arguments ARE equal.
+rep-ε : ∀ {n} →
+        SNF.BijectiveNormalForm.inv-nf (bijective₂ε n) (nfˢ {n} ε) ≡ ε
+rep-ε {n} =
+  SNF.ε-section-rep (n QRel,_===₂_) (setoid (NF n)) (bijective₂ n) (NF-dec n)

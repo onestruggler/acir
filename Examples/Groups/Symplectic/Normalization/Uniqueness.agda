@@ -253,9 +253,8 @@ private
   claim rewrite toNF-section u | toNF-section v = eq
 
 -- Normal forms with equal denotations are equal.
-unique-nf : ∀ n →
-            let open NFU (n QRel,_===_) (NF n)
-                         (Monoid.setoid (Group.monoid (Sp-group n)))
-                         (⟦_⟧ {n})
-            in UniqueNormalForm (inv-nf {n})
+unique-nf : ∀ n → let Sem = Group.setoid (Sp-group n) in
+
+  NFU.UniqueNormalForm (n QRel,_===_) (NF n) Sem ⟦_⟧ (inv-nf {n})
+  
 unique-nf = Uniq.unique-nf

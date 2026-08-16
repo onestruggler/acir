@@ -151,24 +151,24 @@ module Clifford-Relations where
     infix 4 _SRel,_===_
     data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
 
-      order-S :      (₁₊ n) SRel,  S ^ p === ε
-      order-H :      (₁₊ n) SRel,  H ^ 2 === M₋₁
+      order-S :       (₁₊ n) SRel,  S ^ p === ε
+      order-H :       (₁₊ n) SRel,  H ^ 2 === M₋₁
       M-power : ∀ k → (₁₊ n) SRel,  XMg^ k === XM (g^ k)
-      semi-MR :      (₁₊ n) SRel,  XMg • R^ (g * g) === R • XMg
-      order-SH :     (₁₊ n) SRel,  (S • H) ^ 3 === ε
-      comm-HHSHHS :  (₁₊ n) SRel,  H • H • S • H • H • S === S • H • H • S • H • H
+      semi-MR :       (₁₊ n) SRel,  XMg • R^  (g * g) === R • XMg
+      order-SH :      (₁₊ n) SRel,  (S • H) ^ 3 === ε
+      comm-HHSHHS :   (₁₊ n) SRel,  H • H • S • H • H • S === S • H • H • S • H • H
 
-      order-CZ :     (₂₊ n) SRel,  CZ ^ p === ε
-      order-Ex :     (₂₊ n) SRel,  Ex ^ 2 === ε
-      comm-CZ-S↑ :   (₂₊ n) SRel,  CZ • S ↑ === S ↑ • CZ
-      semi-M↑CZ :    (₂₊ n) SRel,  XMg ↑ • CZ^ g === CZ • XMg ↑
-      semi-Ex-S↑ :   (₂₊ n) SRel,  Ex • S ↑ === S ↓ • Ex
-      semi-Ex-H↑ :   (₂₊ n) SRel,  Ex • H ↑ === H ↓ • Ex
-      blake-c12 :    (₂₊ n) SRel,  (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX === CZ
+      order-CZ :      (₂₊ n) SRel,  CZ ^ p === ε
+      order-Ex :      (₂₊ n) SRel,  Ex ^ 2 === ε
+      comm-CZ-S↑ :    (₂₊ n) SRel,  CZ • S ↑ === S ↑ • CZ
+      semi-M↑CZ :     (₂₊ n) SRel,  XMg ↑ • CZ^ g === CZ • XMg ↑
+      semi-Ex-S↑ :    (₂₊ n) SRel,  Ex • S ↑ === S ↓ • Ex
+      semi-Ex-H↑ :    (₂₊ n) SRel,  Ex • H ↑ === H ↓ • Ex
+      blake-c12 :     (₂₊ n) SRel,  (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX === CZ
 
-      yang-baxter :  (₃₊ n) SRel,  Ex ↑ • Ex ↓ • Ex ↑ === Ex ↓ • Ex ↑ • Ex ↓
-      cz-slide :     (₃₊ n) SRel,  Ex ↓ • Ex ↑ • CZ === CZ ↑ • Ex ↓ • Ex ↑
-      semi-CX↑-CZ↓ : (₃₊ n) SRel,  CZ ↓ • CX ↑ === CZ02 • CX ↑ • CZ ↓
+      yang-baxter :   (₃₊ n) SRel,  Ex ↑ • Ex ↓ • Ex ↑ === Ex ↓ • Ex ↑ • Ex ↓
+      cz-slide :      (₃₊ n) SRel,  Ex ↓ • Ex ↑ • CZ === CZ ↑ • Ex ↓ • Ex ↑
+      semi-CX↑-CZ↓ :  (₃₊ n) SRel,  CZ ↓ • CX ↑ === CZ02 • CX ↑ • CZ ↓
 
   -- Full relation: the axioms above plus the structural rules.
       -- The swap commuting with CZ is NOT an axiom: it is Lemma 2 of

@@ -32,7 +32,6 @@ open PrimeModulus p-2 p-prime
 
 open import Examples.Groups.Symplectic.Normalization.Pushing.DS p-2 p-prime
   using (dir-of-DS ; d-of-DS)
-  using (S^-↓ᵏ ; ↑↓ᵏ-comm)
 open Lemmas-Sym using (lemma-comm-S-w↑ ; lemma-comm-H-w↑)
 
 open import Data.Nat using (zero ; suc) renaming (_+_ to _+ℕ_ ; _*_ to _*ℕ_)
@@ -41,7 +40,6 @@ open import Data.Fin using (Fin ; toℕ)
 open import Data.Fin.Properties using (toℕ-injective ; toℕ-fromℕ<)
 open import Algebra.Properties.Ring (+-*-ring p-2)
   using (-0#≈0# ; -‿involutive ; -‿distribˡ-* ; -‿distribʳ-* ; -‿+-comm)
-  using (A-dir-S-power)
 open import Relation.Binary.PropositionalEquality using (_≢_)
 open import Data.Empty using (⊥-elim)
 open import Examples.Groups.Symplectic.Normalization.Pushing.SrelWDBase p-2 p-prime

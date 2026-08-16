@@ -8,7 +8,7 @@
 -- Exact n is the Clifford group itself; the layer below it, the
 -- non-split extension 1 → Pauli n → VSp n → Sp(2n, 2) → 1 presenting the
 -- Clifford group modulo scalars, is
--- Examples.Groups.ProjectiveClifford.Qubit.VSp, from which VSp-group is
+-- Examples.Groups.ProjectiveClifford.Qubit.Semantics.VSp, from which VSp-group is
 -- taken here.  VSp n is the structural model — pairs (S , φ) of a
 -- symplectic map and a phase function refining it — and is isomorphic to
 -- the syntactic CMS n by Qubit.Iso2.CMS≅VSp.
@@ -47,7 +47,7 @@ open import ForStdlib.Algebra.Construct.Extension using (Extension)
 
 open import Examples.Groups.Cyclic.Semantics using (Cn-group)
 
-open import Examples.Groups.ProjectiveClifford.Qubit.VSp
+open import Examples.Groups.ProjectiveClifford.Qubit.Semantics.VSp
   using (VSp-group)
 
 open import Examples.Groups.Clifford.Qubit.ExactExtension
@@ -96,22 +96,16 @@ Exact-total {n} d = Extension.total (Exact-extension d)
 -- The group structure of the Figure-8 words, that k ↦ ωᵏ is a
 -- homomorphism ℤ/8 → Exact n, surjectivity of proj and that proj kills
 -- the scalars are all proved in Qubit.ExactExtension.  So `Exact` is a
--- definition, not a hole; what remains is to supply one ExactData n.
--- Soundness — Figure-8-equal words act equally on P4 — used to be a
--- third field and is now a theorem, Selinger.Soundness.sound, which
--- ExactExtension imports.  The two that are left are Selinger's:
+-- definition, not a hole; what remains is to supply one ExactData n, and
+-- that record now has a SINGLE field.  Two of Selinger's three theorems
+-- have been discharged: soundness — Figure-8-equal words act equally on
+-- P4 — is Selinger.Soundness.sound, and `scalars` — a word acting
+-- trivially on P4 is some ωᵏ — is ExactExtension.scalars, proved once
+-- the projective presentation became unconditional.  What is left is
 --
---   scalars    — a word acting trivially on P4 is some ωᵏ;
 --   ω-faithful — ω has order exactly 8 in the presented group.
 --
--- `scalars` is in reach: Selinger.ScalarKernel.kernel-ε already proves
--- that a word trivial MOD SCALARS is a power of ω, so what is missing is
--- completeness of Figure 8 mod scalars for the P4 action — the
--- projective presentation theorem (ProjectiveClifford.Qubit.Presentation,
--- still conditional on Sec-trivial above width 0) read through
--- Selinger.Iso.
---
--- Neither can come from the action, and ExactExtension.
+-- It cannot come from the action, and ExactExtension.
 -- action-blind makes that precise: ω acts trivially on P4
 -- (Selinger.Action.cact-ω), so if ≈ᶜ implied the Figure-8 congruence then
 -- ω = ω¹ and ε = ω⁰ would be identified and ω-faithful would force
@@ -120,6 +114,12 @@ Exact-total {n} d = Extension.total (Exact-extension d)
 -- candidates in reach are Selinger's exact normal form
 -- (Qubit.Selinger.NormalForm, ExactNF n = NF n × Fin 8, uniqueness still
 -- WIP) and matrices over ℤ[1/√2, i].
+--
+-- The second is now built, over ℤ/17ℤ, where ω = 2 has order exactly 8
+-- (Qubit.Model.Faithful): an n-qubit circuit is read as a 2ⁿ × 2ⁿ matrix,
+-- the tensor structure coming from indexing by bit vectors.  So the
+-- layer takes no input at all — ExactData n is a theorem at every width,
+-- and Qubit.Presentation.presentation-n is unconditional.
 --
 -- Group-theoretically the extension is the non-split 2^{1+2n}·Sp(2n,2);
 -- in particular a direct product ℤ/8 × VSp n would be the wrong

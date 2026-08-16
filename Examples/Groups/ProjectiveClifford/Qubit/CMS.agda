@@ -54,7 +54,7 @@ open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime
   using (Pauli ; Pauli1 ; pI ; pIₙ ; _+ₚ_ ; +ₚ-group)
 open import Examples.Groups.ProjectivePauli.Presentation p-2 p-prime using (Pauli-group)
 open import Examples.Groups.Symplectic.Semantics p-2 p-prime using (Sp-group)
-open import Examples.Groups.ProjectiveClifford.Qubit.Semantics
+open import Examples.Groups.ProjectiveClifford.Qubit.Semantics.Semantics
   using (CMS-extension ; CMS-group)
 
 ------------------------------------------------------------------------

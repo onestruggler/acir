@@ -66,14 +66,31 @@ open import Examples.Groups.Clifford.Qubit.Selinger.Boxes p-2 p-prime
 -- controlled-Z spans the pair.  Definition 6.1 permits no other dirt
 -- here, and the rules below emit no other.
 
--- The two-box rules of PushingZ reach one wire further, so wire 2 and
--- the controlled-Z on the pair above are included here; no rule in this
--- module emits them.
+-- Dirt that stays within the box's own pair.  Sixty-six of the
+-- sixty-nine rules emit only this.
 data Dirty : Set where
   H₀ S₀ X₀ : Dirty
   H₁ S₁ X₁ : Dirty
-  H₂ S₂    : Dirty
-  ZZ₀₁ ZZ₁₂ : Dirty
+  ZZ₀₁     : Dirty
+
+-- Dirt that also reaches one wire ABOVE the pair.  Exactly three rules
+-- emit it -- pushZZ₁₂B below, PushingZ's pushZZ-BB and PushingD's
+-- pushZZ-DD -- and each of them fires only when that wire is known to
+-- exist, either because the incoming controlled-Z sits on it or because
+-- a second box occupies it.
+--
+-- The split is what lets a gate be placed on a wire whose range the
+-- types can check: a rule emitting only Dirty needs no headroom beyond
+-- its own pair, while one emitting Dirty⁺ needs a wire more, and the
+-- two can no longer be confused.
+-- The constructor names are shared with Dirty deliberately: the rule
+-- tables then read the same whichever alphabet they emit into, and
+-- Agda picks by the expected type.  Only the three signatures differ.
+data Dirty⁺ : Set where
+  H₀ S₀ X₀  : Dirty⁺
+  H₁ S₁ X₁  : Dirty⁺
+  H₂ S₂     : Dirty⁺
+  ZZ₀₁ ZZ₁₂ : Dirty⁺
 
 ------------------------------------------------------------------------
 -- Into a B box
@@ -108,7 +125,7 @@ pushS₁B b₄ = ₀ , b₄ , H₁ ∷ ZZ₀₁ ∷ S₀ ∷ S₁ ∷ H₁ ∷ [
 -- the box's own pair, which spans it and is PushingZ's business.  The
 -- box never changes; what comes out is a long word of controlled-Zs and
 -- H gates on both pairs.
-pushZZ₁₂B : BBox → ℤ 8 × BBox × List Dirty
+pushZZ₁₂B : BBox → ℤ 8 × BBox × List Dirty⁺
 pushZZ₁₂B b₁ = ₀ , b₁
              , ZZ₀₁ ∷ H₁ ∷ ZZ₁₂ ∷ H₁ ∷ ZZ₀₁ ∷ H₁ ∷ ZZ₁₂ ∷ H₁ ∷ []
 pushZZ₁₂B b₂ = ₀ , b₂ , ZZ₀₁ ∷ H₁ ∷ ZZ₁₂ ∷ H₁ ∷ ZZ₀₁ ∷ []

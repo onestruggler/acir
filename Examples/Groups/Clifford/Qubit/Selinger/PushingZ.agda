@@ -72,7 +72,8 @@ open import Notations using (₀ ; ₁ ; ₆ ; ₇)
 
 open import Examples.Groups.Clifford.Qubit.Selinger.Boxes p-2 p-prime
 open import Examples.Groups.Clifford.Qubit.Selinger.Pushing p-2 p-prime
-  using (Dirty ; H₀ ; S₀ ; X₀ ; H₁ ; S₁ ; X₁ ; H₂ ; S₂ ; ZZ₀₁ ; ZZ₁₂)
+  using ( Dirty ; Dirty⁺
+        ; H₀ ; S₀ ; X₀ ; H₁ ; S₁ ; X₁ ; H₂ ; S₂ ; ZZ₀₁ ; ZZ₁₂ )
 
 ------------------------------------------------------------------------
 -- The top of a chain, after the rewrite
@@ -132,7 +133,7 @@ pushZZ-AB a₃ b₄ = ₀ , inj₂ (b₁ , a₃)
 --
 -- The arguments are (upper , lower): the paper writes ZZ·B_j¹²·B_j'⁰¹.
 
-pushZZ-BB : BBox → BBox → ℤ 8 × (BBox × BBox) × List Dirty
+pushZZ-BB : BBox → BBox → ℤ 8 × (BBox × BBox) × List Dirty⁺
 pushZZ-BB b₁ b₁ = ₀ , (b₁ , b₁) , H₁ ∷ H₂ ∷ ZZ₁₂ ∷ H₁ ∷ H₂ ∷ []
 pushZZ-BB b₁ b₂ = ₀ , (b₄ , b₂) , H₂ ∷ ZZ₁₂ ∷ H₂ ∷ []
 pushZZ-BB b₁ b₃ = ₇ , (b₄ , b₃)

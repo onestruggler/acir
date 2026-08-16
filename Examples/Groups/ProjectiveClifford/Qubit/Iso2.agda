@@ -8,7 +8,7 @@
 -- CMS n (Qubit.CliffordGroup) is the SYNTACTIC model: Clifford words over
 -- the generators H, S, CZ, quotiented by equality of their sign-tracking
 -- action on the phased Pauli group P4 n = ℤ/4 × Pauli n.  VSp n
--- (Qubit.VSp) is the STRUCTURAL model: pairs (S , φ) of a symplectic map
+-- (Qubit.Semantics.VSp) is the STRUCTURAL model: pairs (S , φ) of a symplectic map
 -- and a ℤ/4 phase function refining its twist.
 --
 -- The isomorphism is the denotation ⟦_⟧ᵛ that VSp already defines on
@@ -52,7 +52,7 @@ open import ForStdlib.Algebra.Morphism.Consequences
 -- The structural model, opened wholesale: it supplies Φ, ι, inc, Cliff,
 -- _≈ᵛ_, _∙ᵛ_, εᵛ, _⁻¹ᵛ, incl, φᵍ, ⟦_⟧ᵛ, symp-⟦⟧ᵛ, ker⊆im-incl and the
 -- group bundle.
-open import Examples.Groups.ProjectiveClifford.Qubit.VSp
+open import Examples.Groups.ProjectiveClifford.Qubit.Semantics.VSp
 
 open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime)
 

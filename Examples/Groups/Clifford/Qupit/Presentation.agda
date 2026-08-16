@@ -14,7 +14,9 @@
 -- by ⟨ ω ∣ ωᵖ = 1 ⟩, whose quotient H is the Paper-V0 rule set, and
 -- whose cocycle γᶜ comes from the generator data through CocycleGen.
 --
--- Two hypotheses, both already named by Semantics, and no others:
+-- The general statement below takes two hypotheses, both already named
+-- by Semantics, and no others — and BOTH ARE NOW SUPPLIED, so the
+-- theorem at the end of the file (`presentation-exact`) has none:
 --
 --   gd    the generator data, which is what γᶜ — hence the group — is
 --         built from, so it cannot be dispensed with here;
@@ -132,6 +134,10 @@ module PE = Sem.Presented-Extension g* g-gen
 -- Realises to arithmetic in ℤ/pℤ.
 import Examples.Groups.Clifford.Qupit.SemFE p-3 p-prime g* g-gen as FE
 import Examples.Groups.Clifford.Qupit.SemRealises p-3 p-prime g* g-gen as RL
+
+-- ... and the sixteen equations in ℤ/pℤ that Realises reduces to,
+-- proved.
+import Examples.Groups.Clifford.Qupit.SemSRel p-3 p-prime g* g-gen as SR
 
 ------------------------------------------------------------------------
 -- The two grouplike witnesses
@@ -611,3 +617,24 @@ presentation-srel : RL.SRel-Φ → ∀ (n : ℕ) →
                     (QS._Exact,_===_ n) IsPresentationOf
                       (PE.Presented-group n (exact-generator-data n))
 presentation-srel sr n = presentation-n n (RL.realises-srel sr n)
+
+------------------------------------------------------------------------
+-- ... and with nothing left
+--
+-- SemSRel proves those sixteen equations, so `Realises` is discharged
+-- and the theorem holds outright.  Ten of the sixteen are Pauli
+-- arithmetic in SemRealises itself; of the rest, three are the
+-- multiplier rules, which vanish because R = S·Z^½ has no Pauli
+-- (SemLocal), one is blake-c12, which vanishes because every Pauli in
+-- it is pure-Z (SemZBlock), and one is order-SH, whose phase is -⅛ —
+-- the residue of (p² - 1)/8, which is what `corr` assigns it
+-- (SemLocal's has-SH3, with SemSHExp for the arithmetic).
+--
+-- So: at every width, over every primitive root, the exact qupit
+-- Clifford rule set presents the central extension of the mod-scalar
+-- group by the scalars, on no hypothesis at all.
+
+presentation-exact : ∀ (n : ℕ) →
+                     (QS._Exact,_===_ n) IsPresentationOf
+                       (PE.Presented-group n (exact-generator-data n))
+presentation-exact n = presentation-n n (SR.realises n)

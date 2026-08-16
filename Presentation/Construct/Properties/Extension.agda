@@ -491,6 +491,18 @@ module _ {N X : Set}
             | lemma-adv (NQ.nf (rep c • a)) a₁ =
       NQ.nf-cong (_≈q_.trans (_≈q_.cong NQ.inv-nf∘nf=id _≈q_.refl) _≈q_.assoc)
 
+    -- The coset table is exact on sections: threading a coset's own
+    -- section from the identity returns that coset.  This needs nothing
+    -- but the two round trips nfpQ already has — the representative of
+    -- the identity coset is ≈q ε, so the advance is nf ∘ inv-nf.
+    sect-coset : ∀ c → proj₂ ((hᶜ ᵗ) Iᶜ (secᶜ c)) ≡ c
+    sect-coset c =
+      Eq.trans (lemma-adv Iᶜ (rep c))
+        (Eq.trans
+          (NQ.nf-cong
+            (_≈q_.trans (_≈q_.cong NQ.inv-nf∘nf=id _≈q_.refl) _≈q_.left-unit))
+          (nf∘inv c))
+
     -- ext is group-like.  An N-generator's inverse lifts from S; a
     -- quotient generator's inverse is its R̄-inverse corrected by the
     -- reduction word corrOf (proj₂ (PQ.gl x)) — the "corr-gl" data.
@@ -606,17 +618,20 @@ module _ {N X : Set}
                        (Gm.trans incl-corr (Gm.sym incl-ε)))
                      (GNm.sym PN-ε))
 
-    dpres :
-      Realises →
-      (sound-ax : ∀ {w v} → extp w v → Group._≈_ G ⟦ w ⟧ ⟦ v ⟧) →
-      (sec-triv : Sec-trivial) →
-      (conj-triv : Conj-trivial) →
-      -- The quotient realisation: each rep generator projects to its
-      -- quotient value in GQ.
-      (real-Q : ∀ x → GQm._≈_ (proj ⟦ inj₂ x ⟧₀) ⟦ [ x ]ʷ ⟧Q) →
-      ext IsPresentationOf G
-    dpres real sound-ax sec-triv conj-triv real-Q = isPresentationOf subpres claim
+    -- The Reidemeister–Schreier data of the extension, assembled from the
+    -- two triviality inputs and the semantics.  This is a module rather
+    -- than part of dpres's where-block because what it ends in — the
+    -- normal form on NF_ext = NFS × NFQ — is wanted on its own:
+    -- Normalization.Construction upgrades it to a BIJECTIVE normal form,
+    -- which is what a further extension stacked on this one asks of its
+    -- quotient factor.
+    module Normal-Form
+      (real : Realises)
+      (sound-ax : ∀ {w v} → extp w v → Group._≈_ G ⟦ w ⟧ ⟦ v ⟧)
+      (sec-triv : Sec-trivial)
+      (conj-triv : Conj-trivial)
       where
+
       -- RS hypothesis (4): the identity coset's section is trivial.
       [I]≈ε : secᶜ Iᶜ ≈ₑ ε
       [I]≈ε = sec-triv
@@ -701,8 +716,21 @@ module _ {N X : Set}
       module CTT = CT.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax [I]≈ε h=ract
       nfp = CTT.nfp' NS.normalForm
 
-      ----------------------------------------------------------------
-      -- Assembly: nfp + soundness + surjectivity  ⇒  presentation.
+    ------------------------------------------------------------------
+    -- Assembly: nfp + soundness + surjectivity  ⇒  presentation.
+
+    dpres :
+      Realises →
+      (sound-ax : ∀ {w v} → extp w v → Group._≈_ G ⟦ w ⟧ ⟦ v ⟧) →
+      (sec-triv : Sec-trivial) →
+      (conj-triv : Conj-trivial) →
+      -- The quotient realisation: each rep generator projects to its
+      -- quotient value in GQ.
+      (real-Q : ∀ x → GQm._≈_ (proj ⟦ inj₂ x ⟧₀) ⟦ [ x ]ʷ ⟧Q) →
+      ext IsPresentationOf G
+    dpres real sound-ax sec-triv conj-triv real-Q = isPresentationOf subpres claim
+      where
+      open Normal-Form real sound-ax sec-triv conj-triv
 
       -- A right-embedded word projects to its quotient value.
       emb-r-Q : ∀ w → GQm._≈_ (proj ⟦ [ w ]ᵣ ⟧) ⟦ w ⟧Q

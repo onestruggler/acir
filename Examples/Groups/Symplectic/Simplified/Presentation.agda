@@ -134,6 +134,8 @@ private
       ; mono = IsGroupIsomorphism.isGroupMonomorphism iso
       }
 
+_SRel,_===_ = _QRel,_===₂_
+
 ------------------------------------------------------------------------
 -- The simplified presentation
 
@@ -143,5 +145,5 @@ subpresentation : ∀ {n} → (n QRel,_===₂_) IsSubPresentationOf (Sp-group n)
 subpresentation {n} = Build.subpres n
 
 -- The simplified rules present the symplectic group.
-presentation : ∀ {n} → (n QRel,_===₂_) IsPresentationOf (Sp-group n)
+presentation : ∀ {n} → (n SRel,_===_) IsPresentationOf (Sp-group n)
 presentation {n} = Build.pres n

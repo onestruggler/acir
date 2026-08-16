@@ -27,10 +27,12 @@
 -- functions.  The scalar layer above (Clifford.Qubit.ExactExtension)
 -- takes its quotient in VSp for that reason.
 --
--- The hypotheses are inherited verbatim from Qubit.Presentation, which
--- still owes Proposition 2.55 two inputs — Sec-trivial and Conj-trivial,
--- both discharged at width 0 and open above it.  Transporting along an
--- isomorphism cannot retire them.
+-- The hypothetical form `presentation` inherits its two inputs verbatim
+-- from Qubit.Presentation — Proposition 2.55's Sec-trivial and
+-- Conj-trivial — since transporting along an isomorphism can neither
+-- introduce nor retire them.  Both are theorems at every width (rep-ε,
+-- below; Qubit.Presentation proves them the same way for CMS n), whence
+-- presentation-n with nothing assumed.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -59,8 +61,15 @@ open import Examples.Groups.ProjectiveClifford.Qubit.Presentation
   using (Sec-trivial ; Conj-trivial)
   renaming (presentation to presentation-CMS)
 
+-- The identity coset's representative is the empty word: the section of
+-- the quotient factor's normal form is patched at that one index, and
+-- the Clifford instance is built on the patched one.
+open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime ; g* ; g-gen)
+open import Examples.Groups.Symplectic.Simplified.Bijective p-2 p-prime g* g-gen
+  using (rep-ε)
+
 -- The structural model, and the isomorphism between the two.
-open import Examples.Groups.ProjectiveClifford.Qubit.VSp
+open import Examples.Groups.ProjectiveClifford.Qubit.Semantics.VSp
   using (Cliff ; _≈ᵛ_ ; ⟦_⟧ᵛ ; VSp-group)
 open import Examples.Groups.ProjectiveClifford.Qubit.Iso2
   using (CMS≅VSp ; ≈ᵛ-trans)
@@ -113,16 +122,30 @@ presentation : ∀ {n} → Sec-trivial n → Conj-trivial n →
                (n Clifford,_===_) IsPresentationOf (VSp-group n)
 presentation {n} sec cnj = Build.pres n sec cnj
 
--- Width 0, unconditionally.  Both inputs hold by computation there: the
--- identity coset's representative is ε on the nose, and the Pauli
--- alphabet (⊤ ⊎ ⊤) ⊎^ 0 is empty.  They are proved here rather than
--- imported because the syntactic side keeps only the general statement.
-private
-  sec-trivial-0 : Sec-trivial 0
-  sec-trivial-0 = PB.refl
+------------------------------------------------------------------------
+-- The two inputs, discharged
+--
+-- Both are statements about ONE word, the identity coset's
+-- representative rep Iᶜ, and the ε-patched section makes that word the
+-- empty one at every width: Simplified.Bijective.rep-ε, which the
+-- Clifford instance is built on (its nfpQ is bijective₂ε).  So neither
+-- condition needs a derivation replayed — rewriting by rep-ε leaves a
+-- reflexivity in both cases.
+--
+-- Sec-trivial: [ ε ]ᵣ ≈ₑ ε, and the embedding of the empty word is the
+-- empty word.
+--
+-- Conj-trivial: conjugation by the empty word is the identity on the
+-- nose — conj ʰ' has ε as its unit clause — so the Pauli generator comes
+-- back unchanged.  This is the condition that would carry the Pauli
+-- correction if the representative were any other word.
 
-  conj-trivial-0 : Conj-trivial 0
-  conj-trivial-0 ()
+sec-trivial-n : ∀ {n} → Sec-trivial n
+sec-trivial-n {n} rewrite rep-ε {n} = PB.refl
 
-presentation-0 : (0 Clifford,_===_) IsPresentationOf (VSp-group 0)
-presentation-0 = presentation sec-trivial-0 conj-trivial-0
+conj-trivial-n : ∀ {n} → Conj-trivial n
+conj-trivial-n {n} x rewrite rep-ε {n} = PB.refl
+
+-- Hence the presentation theorem with nothing assumed, at every width.
+presentation-n : ∀ {n} → (n Clifford,_===_) IsPresentationOf (VSp-group n)
+presentation-n = presentation sec-trivial-n conj-trivial-n

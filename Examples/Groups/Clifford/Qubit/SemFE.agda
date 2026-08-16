@@ -27,7 +27,7 @@
 --     that rule set is grouplike (Selinger.GroupLike.grouplike-MS);
 --   * φ = the action of Q on K, which is TRIVIAL: ω is central in
 --     Figure 8, so the extension is central.  Unlike the Pauli layer
---     (Qubit.Sem3, where φ is the linear action of a symplectic map)
+--     (Qubit.Semantics.Sem3, where φ is the linear action of a symplectic map)
 --     there is nothing to compute — but it is a fact about Figure 8, not
 --     a convention, so scalar-central below states it;
 --   * γ = a factor set for φ.

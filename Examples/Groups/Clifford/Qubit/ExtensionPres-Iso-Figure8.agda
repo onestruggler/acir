@@ -8,7 +8,7 @@
 --
 --   1) _CRel,_===_ of Qubit.Selinger.Figure8, over ExactGate — the
 --      scalar ω is a 0-ary generator alongside H, S and CZ;
---   2) _Exact,_===_ (Qubit.Exact-Presentation), over ScalarGen ⊎ Gen n —
+--   2) _Exact,_===_ (Qubit.Presentation), over ScalarGen ⊎ Gen n —
 --      the extension presentation of ⟨ω⟩ ≅ ℤ/8 by the Clifford group mod
 --      scalars, with ω the generator of the cyclic factor and the gates
 --      taken from SympGate.
@@ -63,7 +63,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.Clifford.Qubit.Exact-Iso-CMS where
+module Examples.Groups.Clifford.Qubit.ExtensionPres-Iso-Figure8 where
 
 open import Data.Nat using (ℕ ; zero)
 open import Data.Product using (_,_ ; proj₁ ; proj₂)
@@ -99,7 +99,7 @@ open F8 using (ExactGate ; ω-gate ; _CRel,_===_ ; _≈ᶠ_ ; srel ; comm₀)
 import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Figure8-Mod-Scalar p-2 p-prime
   as MS
 
-open import Examples.Groups.Clifford.Qubit.Exact-Presentation
+open import Examples.Groups.Clifford.Qubit.Presentation
   using (ScalarGen ; Scalar-relation ; _Exact,_===_ ; conj ; corr ; ω ; ω⁻¹)
 
 private

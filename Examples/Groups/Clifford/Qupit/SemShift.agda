@@ -86,6 +86,8 @@ import Examples.Groups.ProjectiveClifford.Qupit.SemiDirect.Presentation
   p-3 p-prime g* g-gen as SDPres
 import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.Forward
   p-3 p-prime g* g-gen as Fwd
+import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.Syntactics
+  p-3 p-prime g* g-gen as Cli
 import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Syntactics
   p-3 p-prime g* g-gen as Pap
 import Examples.Groups.Clifford.Qupit.Syntactics
@@ -569,31 +571,45 @@ ZS-val {n} w b e sy =
     (Eq.trans (Eq.cong (proj₁ (⟦_⟧ˢᵈ {₁₊ n} w) +ₚ_) (sy pIₙ))
               (Eq.trans (+ₚ-identityʳ (proj₁ (⟦_⟧ˢᵈ {₁₊ n} w))) e))
 
--- NOT YET: the VALUE of P⟦S⟧, which is what all five remaining rules
--- need (order-SH above all — the only rule whose answer is not ₀; its
--- phase is -x²/2 for x the Z-exponent, and that is -⅛ exactly when
--- x = -½).  Z^-val and ZS-val above carry the value as far as it goes
--- without naming the exponent.
+------------------------------------------------------------------------
+-- The S gate's Pauli, with its value
 --
--- Both ways of naming it fail, in OPPOSITE directions:
---
---   * `∃ λ x → h (gate₁ S-gate) ≡ (Z ^ toℕ x) • S`, solved by a meta —
---     `toℕ ?x` is not solvable by matching (toℕ is not injective for the
---     unifier), so Agda normalises and unfolds Bézout.  364 s, then
---     UnequalTerms naming Data.Nat.GCD.Bézout.gcd″;
---   * `h (gate₁ S-gate) ≡ (Z ^ toℕ Cli.-1/2) • S` by `refl`, with the
---     constant written out on BOTH sides and no meta at all — worse,
---     OOM at 419 s.  `_^_` is a defined function, so conversion reduces
---     both sides to whnf before comparing, and that forces toℕ of the
---     inverse regardless.
---
--- So the meta was the thing keeping the earlier `hS` cheap: with `Z ^ ?j`
--- the unifier takes the same-head shortcut and never reduces.  That
--- shortcut is unavailable once the exponent is written.
---
--- The fix is therefore at the DEFINITION: make Simplified-V1.Syntactics'
--- `1/2` / `-1/2` abstract, exporting `₂ * 1/2 ≡ ₁` beside them, so the
--- constant is stuck everywhere and `hS`'s meta route still applies.
--- That file is imported by the whole qupit chain and some existing proof
--- may well be computing 1/2 today, so expect fallout and do it when
--- nobody else is editing Simplified-V1 or Paper-V0.
+-- The trick is to keep every term SYNTACTICALLY as the translation
+-- writes it.  `Z^ x` is a definition, `Z^ x = Z ^ toℕ x`; unfolding it
+-- is one cheap delta step, but REDUCING the `_^_` underneath is not,
+-- because `_^_` matches on its exponent and -½ is a Bezout-based
+-- modular inverse.  So the equation below is stated over `Z^ -1/2`, the
+-- form Simplified-V1.Forward's clause actually uses, and `refl` closes
+-- it by syntactic equality with nothing to reduce.  Stating the same
+-- fact over `Z ^ toℕ -1/2` — with or without a meta for the exponent —
+-- costs 364 s and an error, or 419 s and 8 GB.
+
+-- Z^ x carries its value at ℤ/pℤ, not as a numeral.
+Z^-val' : (x : ℤ ₚ) →
+          proj₁ (⟦_⟧ˢᵈ {₁₊ n} (SemiDirect.Z^ x)) ≡ (₀ , x) ∷ pIₙ
+Z^-val' x =
+  Eq.trans (Z^-val (toℕ x)) (Eq.cong (λ z → (₀ , z) ∷ pIₙ) (mult-toℕ x))
+
+-- The translation of S, in exactly the form the clause writes it.
+hS' : (m k : ℕ) →
+      Fwd.Iso.h m (Pap.gate₁ Pap.S-gate)
+        ≡ SemiDirect.Z^ {k} Cli.-1/2 • SemiDirect.S
+hS' m k = Eq.refl
+
+gate₁S-Pauli : Pᵂ {₁₊ n} [ Pap.gate₁ Pap.S-gate ]ʷ ≡ (₀ , Cli.-1/2) ∷ pIₙ
+gate₁S-Pauli {n} =
+  Eq.subst MotiveV (Eq.sym (hS' (₁₊ n) n))
+    (ZS-val (SemiDirect.Z^ Cli.-1/2) Cli.-1/2
+            (Z^-val' Cli.-1/2) (proj₂ (Z^-bot (toℕ Cli.-1/2))))
+  where
+  MotiveV : Word (SemiDirect.Gen (₁₊ n)) → Set
+  MotiveV w = proj₁ (⟦_⟧ˢᵈ {₁₊ n} w) ≡ (₀ , Cli.-1/2) ∷ pIₙ
+
+-- The doubling law that order-SH's arithmetic wants — `Cli.-1/2 +
+-- Cli.-1/2 ≡ - ₁`, its phase being -x²/2, which is -⅛ exactly when
+-- 2x = -1 — needs nothing new: `Cli.-1/2` is `- Sem.1/2` ON THE NOSE.
+-- Simplified-V1, Paper-V0 and Semantics all write ½ as
+-- `((₂ , λ ()) ⁻¹) .proj₁` at the SAME inverse (PrimeModulus', which
+-- re-exports PrimeModulus), so the three are one term and no two Bezout
+-- derivations are ever compared.  SemLocal's `σ≡-h` is that, by refl,
+-- and its `σ+σ` is Semantics' `half+half` under `-‿+-comm`.

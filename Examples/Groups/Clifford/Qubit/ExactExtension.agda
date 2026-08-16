@@ -26,31 +26,44 @@
 -- Taking the total group this way makes proj a *denotation of words*,
 -- which is what one wants downstream, and makes the residual obligations
 -- recognisable as Selinger's theorems rather than as bookkeeping.  There
--- were three; the first is now discharged:
+-- were three; two are now discharged:
 --
 --   sound      — Figure 8 is sound for the P4-action, so the denotation
 --                descends to the quotient.  PROVED, in
 --                ProjectiveClifford.Qubit.Selinger.Soundness.sound, and
 --                imported below rather than assumed;
 --   scalars    — a word acting trivially on P4 is a power of ω
---                (completeness, restricted to the scalars);
+--                (completeness, restricted to the scalars).  PROVED
+--                below, once the projective presentation became
+--                unconditional: it is Selinger.Presentation.complete-ms
+--                (trivial action ⇒ trivial mod scalars) composed with
+--                Selinger.ScalarKernel.kernel-ε (trivial mod scalars ⇒ a
+--                power of ω), with ED to pay for the translation;
 --   ω-faithful — ω has order exactly 8, i.e. the scalars are not
 --                collapsed by Figure 8.
 --
--- So ExactData has shrunk to the last two.  Everything else — the group
+-- So ExactData has shrunk to the last one.  Everything else — the group
 -- structure of the Figure-8 words, that k ↦ ωᵏ is a homomorphism
 -- ℤ/8 → Exact n, surjectivity of proj, and that proj kills the scalars —
 -- is proved here.
 --
--- What each of the two still needs.  `scalars` is
--- Selinger.ScalarKernel.kernel-ε (a word trivial MOD SCALARS is a power
--- of ω, proved) composed with completeness of Figure 8 mod scalars for
--- the P4 action — which is ProjectiveClifford.Qubit.ExtensionPresentation
--- .Clifford.presentation read through Selinger.Iso, and that presentation
--- still takes Sec-trivial and Conj-trivial.  `ω-faithful` is the one the
--- P4-action cannot help with at all: action-blind at the end shows that
--- if ≈ᶜ implied the Figure-8 congruence then ω would equal ε, so it has
--- to come from a faithful model of the exact Clifford group.
+-- What is left, and why it is a different KIND of statement.  ω-faithful
+-- is the one the P4-action cannot help with at all: action-blind at the
+-- end shows that if ≈ᶜ implied the Figure-8 congruence then ω would
+-- equal ε.  Nor can any abelian invariant supply it — a homomorphism to
+-- ℤ/8 with ω ↦ 1 would need 3(s+h) = 1 on the abelianisation, and C2 and
+-- C3 force 2h = 4s = 0, so s+h is even and 3(s+h) never odd.  And the
+-- coset route is circular: Reidemeister–Schreier's word-component
+-- well-definedness asks for faithfulness of the left embedding, which at
+-- this layer IS ω-faithful.  It has to come from a faithful MODEL of the
+-- exact Clifford group — matrices over ℤ[1/√2, i], where ω is e^{iπ/4}
+-- and has order 8 by computation.
+--
+-- That model is now built: Qubit.Model.Faithful reads an n-qubit
+-- circuit as a 2ⁿ × 2ⁿ matrix over ℤ/17ℤ, where i = 4, √2 = 11 and
+-- ω = 2, and 2 has order exactly 8.  So ExactData n is a THEOREM at
+-- every width (Model.Faithful.exact-data), and the record below is a
+-- shape the extension is built with rather than an assumption.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -97,7 +110,7 @@ open import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Soundness
 -- The structural model of the projective Clifford group, and the
 -- isomorphism CMS n ≅ VSp n that lets the action-stated results
 -- discharge obligations phrased in it.
-open import Examples.Groups.ProjectiveClifford.Qubit.VSp
+open import Examples.Groups.ProjectiveClifford.Qubit.Semantics.VSp
   using (Cliff ; _≈ᵛ_ ; εᵛ ; ⟦_⟧ᵛ ; VSp-group)
 open import Examples.Groups.ProjectiveClifford.Qubit.Iso2
   using (≈ᵛ-refl ; ⟦⟧ᵛ-cong ; ⟦⟧ᵛ-injective ; ⟦⟧ᵛ-surjective)
@@ -114,7 +127,14 @@ open F8 using (ω ; _CRel,_===_ ; srel ; lemma-cong↑)
 -- translation, and it is what proj has become — it used to be the
 -- identity on words, back when both sides were symplectic circuits.
 open import Examples.Groups.Clifford.Qubit.Selinger.Relabel p-2 p-prime
-  using (D ; E ; D∘E)
+  using (D ; E ; D∘E ; ex→sym ; E-↑)
+
+-- The scalar kernel of the quotient map, and completeness of the
+-- mod-scalar rule set: between them they say that a word trivial in the
+-- projective group is a power of ω.
+import Examples.Groups.Clifford.Qubit.Selinger.ScalarKernel p-2 p-prime as SK
+open import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Presentation
+  using (complete-ms)
 
 open import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Action using (cact-ω ; cact-ω^)
 
@@ -226,21 +246,115 @@ private
   cact-Dω^ {₁₊ _} k = cact-ω^ k
 
 ------------------------------------------------------------------------
+-- E ∘ D is the identity modulo scalars
+--
+-- D reads a Figure-8 word symplectically and E reads it back, but the
+-- two are not inverse: D sends the scalar to the word (SH)³ where there
+-- is a wire for it and to ε at width 0.  So a letter returns either as
+-- itself — the gates on the nose, ω at positive width by C4 — or as ε,
+-- and every discrepancy is a power of ω.  The shift case carries its
+-- discrepancy up a wire unchanged (ω^↑≈ω^), and concatenation adds the
+-- two exponents, which is where centrality is spent.
+
+private
+
+  ED-gen : (x : F8.Gen n) → ∃ λ j → E (D [ x ]ʷ) ≈ᶠ ([ x ]ʷ • (ω ^ j))
+  -- At width 0 there is no (SH)³ to come back as, so ω is lost entirely
+  -- and the discrepancy is ω⁻¹ = ω⁷ — which is C1 read backwards.
+  ED-gen {₀}    (F8.gate₀ F8.ω-gate) = 7 , PB.sym (PB.axiom (srel F8.c1))
+  ED-gen {₁₊ _} (F8.gate₀ F8.ω-gate) =
+    0 , PB.trans (PB.axiom (srel F8.c4)) (PB.sym PB.right-unit)
+  ED-gen (F8.gate₁ F8.H-gate)  = 0 , PB.sym PB.right-unit
+  ED-gen (F8.gate₁ F8.S-gate)  = 0 , PB.sym PB.right-unit
+  ED-gen (F8.gate₂ F8.CZ-gate) = 0 , PB.sym PB.right-unit
+  ED-gen (y F8.↥) with ED-gen y
+  ... | j , e = j ,
+    Eq.subst (λ z → z ≈ᶠ ([ y F8.↥ ]ʷ • (ω ^ j)))
+      (Eq.sym (E-↑ (ex→sym y)))
+      (PB.trans (lemma-cong↑ _ _ e) (PB.cong PB.refl (F8.ω^↑≈ω^ j)))
+
+  ED : (w : F8.Circuit n) → ∃ λ j → E (D w) ≈ᶠ (w • (ω ^ j))
+  ED [ x ]ʷ = ED-gen x
+  ED ε      = 0 , PB.sym PB.right-unit
+  ED (u • v) with ED u | ED v
+  ... | j , e | k , f = j Nat.+ k ,
+    PB.trans (PB.cong e f)
+      (PB.trans PB.assoc
+        (PB.trans (PB.cong PB.refl (PB.sym PB.assoc))
+          (PB.trans (PB.cong PB.refl (PB.cong (F8.ω^-central j v) PB.refl))
+            (PB.trans (PB.cong PB.refl PB.assoc)
+              (PB.trans (PB.cong PB.refl (PB.cong PB.refl (PB.sym (pow-+ j k))))
+                        (PB.sym PB.assoc))))))
+
+------------------------------------------------------------------------
+-- Completeness on the scalars
+--
+-- A word acting trivially on P4 is a power of ω.  This used to be an
+-- assumption (ExactData's `scalars` field); it is now a theorem, and the
+-- three pieces it composes were each the last one standing at some
+-- point:
+--
+--   complete-ms   trivial action ⇒ trivial MOD SCALARS.  This is
+--                 Selinger.Presentation.complete-ms, i.e. the projective
+--                 presentation theorem read through Selinger.Iso;
+--   kernel-ε      trivial mod scalars ⇒ a power of ω, on the translated
+--                 word (Selinger.ScalarKernel);
+--   ED            and the translation costs only another power of ω.
+--
+-- The exponent lands in ℕ, so the last step is the reduction mod 8 that
+-- ℤ/8 wants: k + 7j, since ω⁻¹ = ω⁷.
+
+-- The two exponents are taken as ARGUMENTS rather than `with`-abstracted.
+-- The hypothesis is an equality of P4 actions, and generalising a goal
+-- over a term of that type invites Agda to normalise cact on a symbolic
+-- word — which is where this layer's elaboration blows up.  Naming them
+-- keeps the arithmetic first-order and the check cheap.
+private
+  from-exponents :
+    (w : F8.Circuit n) →
+    (∃ λ k → E (D w) ≈ᶠ (ω ^ k)) →
+    (∃ λ j → E (D w) ≈ᶠ (w • (ω ^ j))) →
+    ∃ λ (κ : ℤ 8) → scalar κ ≈ᶠ w
+  from-exponents {n} w (k , e) (j , f) = fromℕ< (m%n<n m 8) , claim
+    where
+    m : ℕ
+    m = k Nat.+ 7 Nat.* j
+
+    -- w, with its scalar tail divided out.
+    w≈ : (ω ^ m) ≈ᶠ w
+    w≈ =
+      PB.trans (pow-+ k (7 Nat.* j))
+        (PB.trans (PB.cong (PB.trans (PB.sym e) f) PB.refl)
+          (PB.trans PB.assoc
+            (PB.trans (PB.cong PB.refl (SK.Ω-inv n j)) PB.right-unit)))
+
+    claim : scalar (fromℕ< (m%n<n m 8)) ≈ᶠ w
+    claim =
+      PB.trans (PB.refl' _ (Eq.cong (ω ^_) (toℕ-fromℕ< (m%n<n m 8))))
+               (PB.trans (pow-mod m) w≈)
+
+scalars : (w : F8.Circuit n) → D w ≈ᶜ ε → ∃ λ (k : ℤ 8) → scalar k ≈ᶠ w
+scalars {n} w h =
+  from-exponents w (SK.kernel-ε (complete-ms n h)) (ED w)
+
+------------------------------------------------------------------------
 -- What the extension still takes as input
 --
--- Both are Selinger's theorems, not bookkeeping, and both say that
--- Figure 8 is exactly right on the scalars — something the P4-action
--- alone cannot see, since the scalar is precisely what it discards.
--- (The third field, `sound`, is gone: it is now the imported theorem
--- Selinger.Soundness.sound.)
+-- One thing: that Figure 8 is FAITHFUL on the scalars.  It is Selinger's
+-- theorem, not bookkeeping, and the P4-action cannot see it — the scalar
+-- is precisely what that action discards (action-blind, at the end of
+-- this file).  Its two companions have both become theorems: `sound` is
+-- Selinger.Soundness.sound, imported above, and `scalars` is proved
+-- just above.
+--
+-- It is a theorem too, at every width: Qubit.Model.Faithful.exact-data.
+-- The record is kept because the extension and its presentation are
+-- stated with it, and because it names what the model is FOR — but
+-- nothing assumes it any more, so `Exact` and everything downstream can
+-- be instantiated outright.
 
--- Each is stated across the translation D, since a Figure-8 word and
--- its P4-action live over different alphabets.
 record ExactData (n : ℕ) : Set where
   field
-    -- Completeness on the scalars: a word acting trivially on P4 is ωᵏ.
-    scalars    : (w : F8.Circuit n) → D w ≈ᶜ ε →
-                 ∃ λ (k : ℤ 8) → scalar k ≈ᶠ w
     -- Faithfulness on the scalars: ω has order exactly 8.
     ω-faithful : {j k : ℤ 8} → scalar {n} j ≈ᶠ scalar k → j ≡ k
 
@@ -364,7 +478,8 @@ module _ {n : ℕ} (d : ExactData n) where
 -- discards; ω-faithful has to come from a faithful model of the exact
 -- Clifford group — Selinger's exact normal form (Qubit.Selinger.
 -- NormalForm, ExactNF n = NF n × Fin 8, uniqueness still WIP) or
--- matrices over ℤ[1/√2, i].
+-- matrices over ℤ[1/√2, i].  Qubit.Model.Faithful takes the second
+-- route, over ℤ/17ℤ, at every width.
 
 -- Stated at ₁₊ n, the widths where ω has a symplectic reading to act
 -- by: at width 0 D ω is ε, which is what makes ExactData 0 consistent

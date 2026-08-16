@@ -24,13 +24,16 @@ open import Relation.Binary using (Setoid)
 module Normalization.NormalForm.Setoid
   {X : Set} (Γ : WRel X) (NF : Setoid 0ℓ 0ℓ) where
 
-open import Data.Product using (proj₁ ; proj₂)
+open import Data.Empty using (⊥-elim)
+open import Data.Product using (∃ ; _,_ ; proj₁ ; proj₂)
 open import Function using (_∘_)
 open import Function.Bundles using (Injection ; Bijection ; RightInverse ; _⟶ₛ_)
 open import Relation.Binary.Definitions using (Decidable)
-open import Relation.Nullary.Decidable using (via-injection)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Relation.Nullary.Decidable using (yes ; no ; via-injection)
 import Relation.Binary.Reasoning.Setoid as SR
 
+open import Word.Base using (ε)
 open import Presentation.Base Γ
 open import Presentation.Core Γ using (word-setoid)
 open import Function.Definitions using (Congruent ; Injective)
@@ -143,6 +146,54 @@ record BijectiveNormalForm : Set where
             nf-injective (transₙ (proj₂ (surjective y) refl) eq)
         }
     }
+
+
+------------------------------------------------------------------------
+-- Fixing the section at the identity
+--
+-- A coset construction usually wants the identity coset's representative
+-- to be the empty word ON THE NOSE, and a normal form built by iterating
+-- levels cannot oblige: one level's inverse is a concatenation whatever
+-- its arguments, so it differs from ε in head constructor.
+--
+-- It does not have to.  A Bijection's section is not part of its data —
+-- inv-nf y is proj₁ (surjective y) — so it may be changed at any single
+-- index without touching the map, its congruence or its injectivity.  At
+-- the index nf ε the empty word discharges the surjectivity obligation
+--
+--     ∃ w. ∀ z. z ≈ w → nf z ≈ₙ u
+--
+-- by nf-cong alone, so it can simply be put there.  What that costs is
+-- the ability to SEE that index, hence the decidability hypothesis.
+--
+-- The decision never has to reduce: a client gets ε-section-rep from the
+-- fact that the two arguments are equal, not by computing with them, so
+-- this works at a variable width where nf ε is stuck.
+
+module _ (nfp : BijectiveNormalForm) (_≟_ : Decidable _≈ₙ_) where
+
+  open BijectiveNormalForm nfp
+
+  private
+    surj-ε : (u : |NF|) → ∃ λ w → ∀ {z} → z ≈ w → nf z ≈ₙ u
+    surj-ε u with u ≟ nf ε
+    ... | yes u≈ε = ε , λ z≈ → transₙ (nf-cong z≈) (symₙ u≈ε)
+    ... | no  _   = inv-nf u , proj₂ (surjective u)
+
+  -- The same normal form, with ε as the identity's representative.
+  ε-section : BijectiveNormalForm
+  ε-section = record
+    { bijection = record
+      { to        = nf
+      ; cong      = nf-cong
+      ; bijective = nf-injective , surj-ε
+      }
+    }
+
+  ε-section-rep : BijectiveNormalForm.inv-nf ε-section (nf ε) ≡ ε
+  ε-section-rep with nf ε ≟ nf ε
+  ... | yes _   = Eq.refl
+  ... | no  ≢ε  = ⊥-elim (≢ε reflₙ)
 
 
 -- A weaker witness: an invariant into NF that is merely injective — the

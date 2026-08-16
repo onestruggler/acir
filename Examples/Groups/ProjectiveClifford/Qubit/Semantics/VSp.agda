@@ -43,7 +43,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-module Examples.Groups.ProjectiveClifford.Qubit.VSp where
+module Examples.Groups.ProjectiveClifford.Qubit.Semantics.VSp where
 
 open import Algebra.Bundles using (Group)
 open import Algebra.Morphism.Structures using (module MonoidMorphisms)

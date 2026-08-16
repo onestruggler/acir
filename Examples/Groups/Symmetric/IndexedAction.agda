@@ -250,10 +250,8 @@ module Uniq =
 open CosetNF C εᶜ Gate [_]ᶜ using (NF ; inv-nf)
 
 -- Normal forms of the coset tower with equal denotations are equal.
-unique-nf : ∀ n →
-            let open NFU (n VRel,_===_) (NF n)
-                         (Monoid.setoid
-                            (Group.monoid (Permutation′-group n)))
-                         (⟦_⟧ {n})
-            in UniqueNormalForm (inv-nf {n})
+unique-nf : ∀ n → let Sem = (Group.setoid (Permutation′-group n)) in
+
+            NFU.UniqueNormalForm (n VRel,_===_) (NF n) Sem ⟦_⟧ (inv-nf {n})
+            
 unique-nf = Uniq.unique-nf
