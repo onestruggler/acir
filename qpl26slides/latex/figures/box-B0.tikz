@@ -1,0 +1,37 @@
+\begin{tikzpicture}
+\path [use as bounding box] (-0.3, -1.0) rectangle (12.55, 3.7);
+\begin{pgfonlayer}{nodelayer}
+\node [style=B box] (n0y00) at (2.0, 1.0) {$B_{0,b}$};
+\node [style=none] (lm0el00) at (0.0, 0.0){};
+\node [style=none] (lm0el10) at (0.0, 2.0){};
+\node [style=none] (lm0er00) at (3.75, 0.0){};
+\node [style=none] (lm0er10) at (3.75, 2.0){};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm0el00.center) to (lm0er00.center);
+\draw (lm0el10.center) to (lm0er10.center);
+\end{pgfonlayer}
+\node [style=none] (equiv) at (4.75, 1.0) {$\equiv$};
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (n6y00tl) at (6.75, 2.0) {$$};
+\node [style=none] (n6y00bl) at (6.75, 0.0) {$$};
+\node [style=none] (n6y00br) at (8.25, 0.0) {$$};
+\node [style=none] (n6y00tr) at (8.25, 2.0) {$$};
+\node [style=none] (n6y00ftl) at (6.75, 2.15) {};
+\node [style=none] (n6y00fbr) at (8.25, -0.15) {};
+\node [style=cnot ctrl, label={above:$b$}] (n6y01) at (10.0, 2.0) {};
+\node [style=cnot targ] (n6y01t) at (10.0, 0.0) {$$};
+\node [style=none] (lm6el00) at (5.75, 0.0){};
+\node [style=none] (lm6el10) at (5.75, 2.0){};
+\node [style=none] (lm6er00) at (11.75, 0.0){};
+\node [style=none] (lm6er10) at (11.75, 2.0){};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm6el00.center) to (lm6er00.center);
+\draw (lm6el10.center) to (lm6er10.center);
+\fill [white] (n6y00ftl.center) rectangle (n6y00fbr.center);
+\draw (n6y00bl.center) to (n6y00tr.center);
+\draw (n6y00tl.center) to (n6y00br.center);
+\draw (n6y01.center) to (n6y01t.center);
+\end{pgfonlayer}
+\end{tikzpicture}

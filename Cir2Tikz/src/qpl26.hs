@@ -186,10 +186,13 @@ items =
 
   ------------------------------------------------------------------
   -- The A, B, D, E boxes as circuits (representative a ≠ 0 cases)
-  , R "box-A" [A 0 "a,b"] [Mul 0 "M_{a^{-1}}", H 0, Se 0 "-b/a"] ""
-  , R "box-B" [B 0 "a,b"] [Ex 0, CXe 1 0 "a", H 1, Se 1 "-b/a"] ""
-  , R "box-D" [D 0 "a,b"] [Ex 0, CZe 0 1 "-a", H 0, Se 0 "-b/a"] ""
-  , R "box-E" [E 0 "b"]   [Se 0 "-b"] ""
+  , R "box-A"  [A 0 "a,b"] [Mul 0 "M_{a^{-1}}", H 0, Se 0 "-b/a"] ""
+  , R "box-A0" [A 0 "0,b"] [Mul 0 "M_{b^{-1}}"] ""
+  , R "box-B"  [B 0 "a,b"] [Ex 0, CXe 1 0 "a", H 1, Se 1 "-b/a"] ""
+  , R "box-B0" [B 0 "0,b"] [Ex 0, CXe 1 0 "b"] ""
+  , R "box-D"  [D 0 "a,b"] [Ex 0, CZe 0 1 "-a", H 0, Se 0 "-b/a"] ""
+  , R "box-D0" [D 0 "0,b"] [Ex 0, CZe 0 1 "-b"] ""
+  , R "box-E"  [E 0 "b"]   [Se 0 "-b"] ""
   ]
 
 ------------------------------------------------------------------------

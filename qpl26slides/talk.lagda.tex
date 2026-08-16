@@ -486,7 +486,8 @@ module Normal-form-boxes where
 \end{code}
 \begin{code}
   A : Set
-  A = Σ[ ab ∈ (ℤ ₚ × ℤ ₚ) ] (ab ≢ (₀ , ₀))
+  A = Σ[ ab ∈ (ℤ ₚ × ℤ ₚ) ]
+    (ab ≢ (₀ , ₀))
   B D : Set
   B = ℤ ₚ × ℤ ₚ
   D = ℤ ₚ × ℤ ₚ
@@ -495,12 +496,14 @@ module Normal-form-boxes where
 \end{code}
     \end{column}
     \begin{column}{0.54\textwidth}\tiny
-      \vspace{2ex}
       \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
-        $A_{a,b}$, $a\neq0$ & \ufig[0.7]{box-A-l} & $\equiv$ & \ufig[0.7]{box-A-r}\\[1pt]
-        $B_{a,b}$, $a\neq0$ & \ufig[0.7]{box-B-l} & $\equiv$ & \ufig[0.7]{box-B-r}\\[1pt]
-        $D_{a,b}$, $a\neq0$ & \ufig[0.7]{box-D-l} & $\equiv$ & \ufig[0.7]{box-D-r}\\[1pt]
-        $E_{b}$ & \ufig[0.7]{box-E-l} & $\equiv$ & \ufig[0.7]{box-E-r}\\
+        $A_{a,b}$, $a\neq0$ & \ufig[0.58]{box-A-l} & $\equiv$ & \ufig[0.58]{box-A-r}\\
+        $A_{0,b}$, $b\neq0$ & \ufig[0.58]{box-A0-l} & $\equiv$ & \ufig[0.58]{box-A0-r}\\
+        $B_{a,b}$, $a\neq0$ & \ufig[0.58]{box-B-l} & $\equiv$ & \ufig[0.58]{box-B-r}\\
+        $B_{0,b}$ & \ufig[0.58]{box-B0-l} & $\equiv$ & \ufig[0.58]{box-B0-r}\\
+        $D_{a,b}$, $a\neq0$ & \ufig[0.58]{box-D-l} & $\equiv$ & \ufig[0.58]{box-D-r}\\
+        $D_{0,b}$ & \ufig[0.58]{box-D0-l} & $\equiv$ & \ufig[0.58]{box-D0-r}\\
+        $E_{b}$ & \ufig[0.58]{box-E-l} & $\equiv$ & \ufig[0.58]{box-E-r}\\
       \end{tabular}
     \end{column}
   \end{columns}
