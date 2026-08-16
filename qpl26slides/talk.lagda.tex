@@ -201,7 +201,13 @@ open Primitive-Root-Modp' g* g-gen
 open import Level using (Level ; _⊔_)
 open import Data.Unit using (⊤ ; tt)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
-open import Data.Product using (Σ-syntax ; _×_)
+open import Data.Product using (Σ-syntax ; _×_ ; proj₁ ; proj₂)
+import Relation.Binary.PropositionalEquality as Eq
+
+-- The symmetric-group development (for the coset-table frame).
+import Examples.Groups.Symmetric.Syntactics as SymS
+import Examples.Groups.Symmetric.Cosets as SymC
+import Examples.Groups.Symmetric.Normalization as SymN
 open import Data.Vec using (Vec)
 open import Relation.Binary.PropositionalEquality using (_≢_)
 open import Algebra.Bundles using (Group)
@@ -680,6 +686,63 @@ module NF-as-circuits where
       \begin{center}\ufig[0.8]{sn-stair}\end{center}
     \end{column}
   \end{columns}
+\end{frame}
+
+\begin{frame}{The coset table, in Agda}
+\begin{code}[hide]
+module Pushing-through-a-coset where
+  open SymS using (Gen ; Circuit ; σ ; σ-gen ; gate₀ ; gate₁ ; _↥ ; _↑ ; _VRel,_===_)
+  open SymC using (C ; ε ; σ•_ ; [_]ᶜ)
+  private variable n : ℕ
+\end{code}
+  \begin{columns}[T]
+    \begin{column}{0.58\textwidth}
+\begin{code}
+  ract : C (₁₊ n) → Gen (₂₊ n) → Circuit (₁₊ n) × C (₁₊ n)
+  ract {n}    ε         σ-gen  = ε , σ• ε
+  ract {n}    (σ• ε)    σ-gen  = ε , ε
+  ract {₁₊ n} (σ• σ• c) σ-gen  = (σ {n = n}) , σ• σ• c
+  ract {n}    ε         (g ↥)  = [ g ]ʷ , ε
+\end{code}
+\begin{code}[hide]
+  ract {0}    (σ• ε)    (gate₁ () ↥)
+  ract {0}    (σ• ε)    (gate₀ () ↥ ↥)
+\end{code}
+\begin{code}
+  ract {₁₊ n} (σ• c)    (g ↥)  =
+    proj₁ (ract {n} c g) ↑ , σ• (proj₂ (ract {n} c g))
+\end{code}
+    \end{column}
+    \begin{column}{0.38\textwidth}
+      \vspace{3ex}
+      \begin{center}
+        \ufig[0.62]{ract-l}\;\scalebox{0.7}{$\equiv$}\;\ufig[0.62]{ract-r}
+      \end{center}
+      {\footnotesize Pushing a generator $b$ through $c_3 \in C_3$:
+       a new coset $c_3'$, and a residual \alert{dirty} circuit $b'$
+       on the wires above.}
+    \end{column}
+  \end{columns}
+  \vspace{-1.5ex}
+\begin{code}
+  ract-sound : ∀ {n} c b →
+    let open PB ((₂₊ n) VRel,_===_)
+        (b' , c') = ract {n} c b
+    in  [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ
+\end{code}
+\begin{code}[hide]
+  private
+    agree : ∀ {n} c b → ract {n} c b ≡ SymN.ract {n} c b
+    agree ε         σ-gen = Eq.refl
+    agree (σ• ε)    σ-gen = Eq.refl
+    agree {₁₊ n} (σ• σ• c) σ-gen = Eq.refl
+    agree ε         (g ↥) = Eq.refl
+    agree {0} (σ• ε) (gate₁ () ↥)
+    agree {0} (σ• ε) (gate₀ () ↥ ↥)
+    agree {₁₊ n} (σ• ε) (g ↥) rewrite agree {n} ε g = Eq.refl
+    agree {₁₊ n} (σ• (σ• c)) (g ↥) rewrite agree {n} (σ• c) g = Eq.refl
+  ract-sound {n} c b rewrite agree {n} c b = SymN.ract-sound {n} c b
+\end{code}
 \end{frame}
 
 \begin{frame}{Rewriting to the normal form: push a generator through}

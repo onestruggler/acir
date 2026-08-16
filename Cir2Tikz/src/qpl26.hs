@@ -306,6 +306,33 @@ snStair = handPicture (-1.3, -1.0, 12.7, 7.7) nodes edges
          ++ spanBox "c3" 10.2 0 4 "c^{(3)}"
     edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
 
+-- The coset table, schematically: c₃ · b  ≡  b′ ↑ · c₃′ on 4 wires.
+-- Left side: the c₃ box followed by a generator (a swap on wires 1,2).
+ractL :: String
+ractL = handPicture (-1.3, -1.0, 6.2, 7.7) nodes edges
+  where
+    nodes = concat [ wire ("w" ++ show w) (-1.0) 5.9 w | w <- [0, 3] ]
+         ++ wire "w1a" (-1.0) 3.2 1 ++ wire "w1b" 4.7 5.9 1
+         ++ wire "w2a" (-1.0) 3.2 2 ++ wire "w2b" 4.7 5.9 2
+         ++ spanBox "c3" 1.2 0 4 "c_3"
+         ++ "\\node [style=none] (xa) at (3.2, 2.0){};\n"
+         ++ "\\node [style=none] (xb) at (3.2, 4.0){};\n"
+         ++ "\\node [style=none] (xc) at (4.7, 2.0){};\n"
+         ++ "\\node [style=none] (xd) at (4.7, 4.0){};\n"
+    edges = concat [ wireDraw ("w" ++ show w) | w <- [0, 3 :: Int] ]
+         ++ concatMap wireDraw ["w1a", "w1b", "w2a", "w2b"]
+         ++ "\\draw (xa.center) to (xd.center);\n"
+         ++ "\\draw (xb.center) to (xc.center);\n"
+
+-- Right side: the residual dirty circuit b′ one wire up, then c₃′.
+ractR :: String
+ractR = handPicture (-1.3, -1.0, 6.7, 7.7) nodes edges
+  where
+    nodes = concat [ wire ("w" ++ show w) (-1.0) 6.4 w | w <- [0..3] ]
+         ++ spanBox "bp" 1.2 1 3 "b'"
+         ++ spanBox "c3p" 4.2 0 4 "c_3'"
+    edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
+
 -- A lone 4-wire row box, the left-hand side of the expansions.
 rowBox :: String -> String
 rowBox lbl = handPicture (-1.5, -1.0, 3.5, 7.7) nodes edges
@@ -323,6 +350,8 @@ handItems =
   , ("l4-box",       rowBox "L_4")
   , ("ml4-box",      rowBox "ML_4")
   , ("sn-stair",     snStair)
+  , ("ract-l",       ractL)
+  , ("ract-r",       ractR)
   ]
 
 ------------------------------------------------------------------------
