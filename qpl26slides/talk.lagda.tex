@@ -82,6 +82,10 @@
   \fi
   $\vcenter{\hbox{\usebox{\figbox}}}$}
 
+% Scale a circuit by a FIXED factor instead: on a grid of relations,
+% every picture shares one scale, so gate boxes stay proportionate.
+\newcommand{\ufig}[2][1]{$\vcenter{\hbox{\scalebox{#1}{\tikzfig{figures/#2}}}}$}
+
 % ---------------------------------------------------------------------
 % 4. Beamer theme.
 % ---------------------------------------------------------------------
@@ -120,7 +124,6 @@ open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 \end{code}
 
 \maketitle
-
 \begin{frame}{This talk}
   \begin{itemize}
     \item A \alert{presentation by generators and relations} of the
@@ -128,16 +131,15 @@ open import ForStdlib.Data.Fin.Mod.Prime.Fermat
           16 relations, none involving more than 3 qudits.
     \item A \alert{unique normal form} for symplectic
           (= Clifford modulo Pauli) circuits.
-    \item The computational content is \alert{formalised in Agda}.
+    \item All, except for two math facts, are \alert{formalised in Agda}.
   \end{itemize}
   \vfill
-  \begin{block}{Two disclaimers, one per author group}
+  \begin{block}{About this slides}
     \begin{itemize}
-      \item Every Agda code block in these slides is \emph{real}: the slides
-            are one literate Agda file, typechecked against the development
-            each time they are built.
-      \item These slides were written by Xiaoning Bian \emph{and Claude}:
-            a $\sim$200-line outline prompt in, this deck out.
+      \item Every Agda code block is typechecked by Agda.
+      \item Written by \emph{Claude} and Xiaoning Bian ($\sim$200-line
+        outline prompt and slides checking $\&$ improvement).
+        
     \end{itemize}
   \end{block}
 \end{frame}
@@ -162,9 +164,9 @@ open import ForStdlib.Data.Fin.Mod.Prime.Fermat
     \bottomrule
   \end{tabular}
   \end{center}
-  \vfill
-  Note the $/2$ in the qudit $S$: it is the inverse of $2$ in
-  $\mathbb{Z}_p$, so odd $p$ really is a different (and more uniform) world.
+  \vfill Note the $/2$ in the qudit $S$ is the inverse of $2$ in
+  $\mathbb{Z}_p$. A global phase can be added to the defition of $H$
+  to facilitate computation.
 \end{frame}
 
 \begin{frame}{The setting: one Agda module}
@@ -342,6 +344,9 @@ module Main-result-1 where
 module The-sixteen-relations where
   open PapSyn using (Gen ; S ; S⁻¹ ; H ; CZ ; Ex ; CX ; CZ02 ; S^ ; CZ^ ; _↑ ; _↓)
   open PapSyn.Clifford-Relations using (M₋₁ ; XM ; XMg ; XMg^ ; R ; R^)
+  Mg = XMg
+  Mg^ = XMg^
+  M = XM
   private variable n : ℕ
   infix 4 _CRel,_===_
 \end{code}
@@ -349,16 +354,15 @@ module The-sixteen-relations where
   data _CRel,_===_ : (n : ℕ) → WRel (Gen n) where
     order-S      :        (₁₊ n) CRel,  S ^ p === ε
     order-H      :        (₁₊ n) CRel,  H ^ 2 === M₋₁
-    M-power      : ∀ k →  (₁₊ n) CRel,  XMg^ k === XM (g^ k)
-    semi-MR      :        (₁₊ n) CRel,  XMg • R^ (g * g) === R • XMg
+    M-power      : ∀ k →  (₁₊ n) CRel,  Mg^ k === M (g^ k)
+    semi-MR      :        (₁₊ n) CRel,  R • Mg === Mg • R^ (g * g)
     order-SH     :        (₁₊ n) CRel,  (S • H) ^ 3 === ε
     comm-HHSHHS  :        (₁₊ n) CRel,  H • H • S • H • H • S === S • H • H • S • H • H
 \end{code}
   \vfill
   \begin{itemize}
     \item $M_x$ is the multiplier $\ket{j} \mapsto \ket{xj}$, spelled as the
-          word $R^x\, H\, R^{x^{-1}} H\, R^x\, H$ with $R = S \cdot Z^{1/2}$
-          (and $\mathit{XM}_x = M_{x^{-1}}$).
+          word $R^{x^{-1}}\, H\, R^x H\, R^{x^{-1}}\, H$ with $R = S \cdot Z^{1/2}$.
     \item One-qudit relations talk about the powers of a \alert{fixed
           primitive root} $g$ --- this is where odd primes differ from
           the qubit case.
@@ -370,7 +374,7 @@ module The-sixteen-relations where
     order-CZ     :        (₂₊ n) CRel,  CZ ^ p === ε
     order-Ex     :        (₂₊ n) CRel,  Ex ^ 2 === ε
     comm-CZ-S↑   :        (₂₊ n) CRel,  CZ • S ↑ === S ↑ • CZ
-    semi-M↑CZ    :        (₂₊ n) CRel,  XMg ↑ • CZ^ g === CZ • XMg ↑
+    semi-M↑CZ    :        (₂₊ n) CRel,  CZ • Mg ↑ === Mg ↑ • CZ^ g
     semi-Ex-S↑   :        (₂₊ n) CRel,  Ex • S ↑ === S ↓ • Ex
     semi-Ex-H↑   :        (₂₊ n) CRel,  Ex • H ↑ === H ↓ • Ex
     blake-c12    :        (₂₊ n) CRel,  (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX === CZ
@@ -390,48 +394,50 @@ module The-sixteen-relations where
 \end{code}
   \vfill
   \begin{itemize}
-    \item Only \alert{these 16} are axioms.  $XZ = ZX\,(\text{mod } \omega)$,
-          $\mathit{Ex}$-vs-$CZ$, and both Pauli-vs-$CZ$ rules of the paper's
-          Figure~1 are \emph{derived} --- each deletion is itself
-          Agda-checked.
-    \item Plus, for every gate set, the same three structural rules:
-          congruence under $\uparrow$, and gates on disjoint wires commute.
+    \item Only \alert{these 16} are axioms.  $XZ = ZX\,(\text{mod }
+      \omega)$, $\mathit{Ex}$-vs-$CZ$, and both Pauli-vs-$CZ$ rules
+      are \emph{derived} --- each deletion is itself Agda-checked.
+    \item Plus, for every gate set, the same three monoidal structural
+      rules: congruence under $\uparrow$, gates on disjoint wires
+      commute, and scalars commutes with every gate.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{The 16 relations, as circuits (1--2 qudits)}
-  \setlength{\figwidth}{0.33\textwidth}
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}\tiny
+    \begin{column}{0.46\textwidth}\tiny
       \begin{tabular}{@{}r@{\;\,}l@{}}
-        order-S & \fitfig{pv0-order-S}\\[1pt]
-        order-H & \fitfig{pv0-order-H}\\[1pt]
-        M-power & \fitfig{pv0-M-power}\\[1pt]
-        semi-MR & \fitfig{pv0-semi-MR}\\[1pt]
-        order-SH & \fitfig{pv0-order-SH}\\[1pt]
-        comm-HHSHHS & \fitfig{pv0-comm-HHSHHS}\\
+        order-S & \ufig[0.7]{pv0-order-S}\\[1pt]
+        order-H & \ufig[0.7]{pv0-order-H}\\[1pt]
+        M-power & \ufig[0.7]{pv0-M-power}\\[1pt]
+        semi-MR & \ufig[0.7]{pv0-semi-MR}\\[1pt]
+        order-CZ & \ufig[0.7]{pv0-order-CZ}\\[1pt]
+        order-Ex & \ufig[0.7]{pv0-order-Ex}\\
       \end{tabular}
     \end{column}
-    \begin{column}{0.5\textwidth}\tiny
+    \begin{column}{0.54\textwidth}\tiny
       \begin{tabular}{@{}r@{\;\,}l@{}}
-        order-CZ & \fitfig{pv0-order-CZ}\\[1pt]
-        order-Ex & \fitfig{pv0-order-Ex}\\[1pt]
-        comm-CZ-S↑ & \fitfig{pv0-comm-CZ-Sup}\\[1pt]
-        semi-M↑CZ & \fitfig{pv0-semi-Mup-CZ}\\[1pt]
-        semi-Ex-S↑ & \fitfig{pv0-semi-Ex-Sup}\\[1pt]
-        semi-Ex-H↑ & \fitfig{pv0-semi-Ex-Hup}\\
+        comm-CZ-S↑ & \ufig[0.7]{pv0-comm-CZ-Sup}\\[1pt]
+        semi-M↑CZ & \ufig[0.7]{pv0-semi-Mup-CZ}\\[1pt]
+        semi-Ex-S↑ & \ufig[0.7]{pv0-semi-Ex-Sup}\\[1pt]
+        semi-Ex-H↑ & \ufig[0.7]{pv0-semi-Ex-Hup}\\[1pt]
+        order-SH & \ufig[0.7]{pv0-order-SH}\\
       \end{tabular}
     \end{column}
   \end{columns}
+  \vspace{1pt}
+  \begin{center}\tiny
+    comm-HHSHHS\;\,\ufig[0.7]{pv0-comm-HHSHHS}
+  \end{center}
 \end{frame}
 
 \begin{frame}{The 16 relations, as circuits (2--3 qudits)}
-  \begin{center}\scriptsize
-    \begin{tabular}{@{}r@{\;\;}l@{}}
-      blake-c12 & \fitfig[0.42\textwidth]{pv0-blake-c12}\\[2pt]
-      yang-baxter & \fitfig[0.38\textwidth]{pv0-yang-baxter}\\[2pt]
-      cz-slide & \fitfig[0.38\textwidth]{pv0-cz-slide}\\[2pt]
-      semi-CX↑-CZ↓ & \fitfig[0.38\textwidth]{pv0-semi-CXup-CZdn}\\
+  \begin{center}\tiny
+    \begin{tabular}{@{}r@{\;\,}l@{}}
+      blake-c12 & \ufig[0.7]{pv0-blake-c12}\\[2pt]
+      yang-baxter & \ufig[0.7]{pv0-yang-baxter}\\[2pt]
+      cz-slide & \ufig[0.7]{pv0-cz-slide}\\[2pt]
+      semi-CX↑-CZ↓ & \ufig[0.7]{pv0-semi-CXup-CZdn}\\
     \end{tabular}
   \end{center}
 \end{frame}
