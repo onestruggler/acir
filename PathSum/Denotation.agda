@@ -214,7 +214,6 @@ private
                    (sym (scale-+ b a C i)))))))
 
 
-
 ------------------------------------------------------------------------
 -- Soundness of [Elim]
 
@@ -707,7 +706,6 @@ module Cancel {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool)
   open Branches ξ eqf public
 
 
-
   head-eval : ∀ x y →
               pow M ∣ (hd x y - (½ * eval (liftXor c S) x y))
   head-eval x y = Eq.subst (λ w → pow M ∣ (hd x y - w))
@@ -754,7 +752,6 @@ module Cancel {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool)
     same : (+ N) ∣ ((hd x y +ℤ tv x y) - (tv x y +ℤ ½))
     same = Eq.subst ((+ N) ∣_)
       (sym (shuffle (hd x y) ½ (tv x y))) hd½
-
 
 
   F-cancel : ∀ x z u → eval (liftXor c S) x u ≡ 1ℤ → F x z u ≐ 0ᴬ
@@ -1161,7 +1158,6 @@ module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool) (S : Mon n m)
     B = Σᴮ (λ y → if hitsT x₀ y x₀ then zpow (tv x₀ y) else 0ᴬ)
 
 
-
 ------------------------------------------------------------------------
 -- The undersized case of lemma 4.3 for [Elim]
 
@@ -1181,8 +1177,6 @@ undersized-elim {n} {k} {m} ξ eq eqf =
   eqP γ = Eq.subst (λ z → pow M ∣ (head-part (phase ξ) γ - z))
     (sym (trans (cong (λ u → ½ * u) (liftXor-1ᵐ-0 γ)) (*-zeroʳ ½)))
     (eq γ)
-
-
 
 
 ------------------------------------------------------------------------
@@ -1215,6 +1209,33 @@ undersized-ω {n} {m} ξ c S eqP eqf ξ≋id =
   even : ((+ 2) ·ᴬ B) ≐ scale 1 (zpow 0ℤ)
   even w = trans (sym (√2·-twice B w))
     (trans (√2·-map (λ w′ → sym (amp-√2 x₀ x₀ w′)) w) (√2·-map base w))
+
+
+------------------------------------------------------------------------
+-- Hitting the identity
+
+-- Two facts about the identity path-sum that deciding whether a
+-- reduced path-sum is the identity needs (PathSum.Identity): its
+-- diagonal amplitude, and that outputs agreeing modulo 2 hit the same
+-- states -- the outputs being read modulo 2, only their residues
+-- matter.
+
+amp-idPS : ∀ {n} (x : Assign n) → amp idPS x x ≐ zpow 0ℤ
+amp-idPS = amp-id
+
+hits-cong : ∀ {n k k′ m} (ξ : PathSum n k m) (ζ : PathSum n k′ m) →
+            (∀ w → out ξ w ≈[ + 2 ] out ζ w) →
+            ∀ x y z → hits ξ x y z ≡ hits ζ x y z
+hits-cong ξ ζ eqf x y z = allFin-cong (λ w →
+  cong (λ b → eqᵇ b (z w))
+       (bit-cong (eval (out ξ w) x y) (eval (out ζ w) x y)
+                 (eval-≈ (out ξ w) (out ζ w) (eqf w) x y)))
+  where
+  fill : ∀ i j → (i - j) +ℤ j ≡ i
+  fill = solve 2 (λ i j → (i :- j) :+ j := i) refl
+
+  bit-cong : ∀ u v → (+ 2) ∣ (u - v) → bit u ≡ bit v
+  bit-cong u v d = trans (cong bit (sym (fill u v))) (bit-even v d)
 
 
 ------------------------------------------------------------------------

@@ -500,6 +500,15 @@ data Reduces {n k m : ℕ} (ξ : PathSum n k m) : Set where
   done  : ∀ {k′} {ξ′ : PathSum n k′ 0} → ξ ⟶* ξ′ → Reduces ξ
   no-id : ¬ (ξ ≋ idPS) → Reduces ξ
 
+-- Proposition 3.1 along a whole chain, which is what carries a
+-- verdict on the reduct back to the path-sum it came from.
+
+⟶*-sound : ∀ {n k m k′ m′} {ξ : PathSum n k m} {ζ : PathSum n k′ m′} →
+           ξ ⟶* ζ → ξ ≋ ζ
+⟶*-sound {ξ = a} ε = ≋-refl {ξ = a}
+⟶*-sound {ξ = a} {ζ = d} (_◅_ {ζ = b} step steps) =
+  ≋-trans {ξ = a} {ζ = b} {χ = d} (⟶-sound step) (⟶*-sound steps)
+
 corollary-4-4 : (ξ : PathSum n k m) → Internal ξ → Ord≤ 2 (phase ξ) →
                 Reduces ξ
 corollary-4-4 {m = zero}  ξ int ordP = done ε

@@ -18,11 +18,12 @@ open import Data.Nat.Base using (ℕ; suc; _<_)
 
 module PathSum.Theorems (M₀ : ℕ) where
 
-open import Data.Bool.Base using (Bool; false)
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat.Base using (_+_)
 open import Data.Fin.Base using (Fin)
 open import Data.Fin.Subset using (⊥)
 open import Data.Integer.Base using (+_)
+open import Data.Integer.Divisibility.Signed using (_∣_)
 open import Data.Product.Base using (_×_; ∃; proj₂)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Relation.Nullary.Negation using (¬_)
@@ -46,10 +47,13 @@ module Red = PathSum.Reduction M
 import PathSum.Denotation
 module Den = PathSum.Denotation M₀
 
-open Den using (_≋_; semantics)
+open Den using (Assign; hits; _≋_; semantics)
 
 import PathSum.Clifford
 module Cliff = PathSum.Clifford M₀ semantics
+
+import PathSum.Identity
+module Idn = PathSum.Identity M₀
 
 private
   variable
@@ -149,3 +153,60 @@ circuit-Ord≤ = Circ.⟦⟧ᴿ-Ord≤
 corollary-4-4-circuit : (C : Circuit n) → Cliff.Reduces ⟦ C ⟧ᴿ
 corollary-4-4-circuit C =
   Cliff.corollary-4-4 ⟦ C ⟧ᴿ (circuit-Internal C) (circuit-Ord≤ C)
+
+
+------------------------------------------------------------------------
+-- Proposition 3.1 along a chain (PathSum.Clifford)
+
+⟶*-sound : {ξ : PathSum n k m} {ζ : PathSum n k′ m′} → ξ ⟶* ζ → ξ ≋ ζ
+⟶*-sound = Cliff.⟶*-sound
+
+
+------------------------------------------------------------------------
+-- Whether a reduced path-sum is the identity (PathSum.Identity)
+
+-- What the corollary stops short of: `done` says the path variables
+-- are exhausted, not that what is left is the identity.  These settle
+-- it -- one criterion and three refutations, between them covering
+-- every path-sum with no path variables.
+
+id-if : (ξ : PathSum n 0 0) →
+        (∀ w → out ξ w ≈[ + 2 ] μ x[ w ]) →
+        phase ξ ≈[ pow M ] 0ᴾ →
+        ξ ≋ idPS
+id-if = Idn.id-if
+
+not-id-out : (ξ : PathSum n k 0) (x : Assign n) →
+             (∀ y → hits ξ x y x ≡ false) → ¬ (ξ ≋ idPS)
+not-id-out = Idn.not-id-out
+
+not-id-norm : (ξ : PathSum n (suc k) 0) (x : Assign n) (y : Assign 0) →
+              hits ξ x y x ≡ true → ¬ (ξ ≋ idPS)
+not-id-norm = Idn.not-id-norm
+
+not-id-phase : (ξ : PathSum n 0 0) (x : Assign n) (y : Assign 0) →
+               hits ξ x y x ≡ true →
+               ¬ (pow M ∣ eval (phase ξ) x y) → ¬ (ξ ≋ idPS)
+not-id-phase = Idn.not-id-phase
+
+
+------------------------------------------------------------------------
+-- The verdict, transported back to the circuit
+
+-- A reduction that lands on the identity proves the circuit's
+-- restricted path-sum is one, and a reduct that is not the identity
+-- proves it is not.  Only the step from ⟦ C ⟧ᴿ back to C is left --
+-- lemma 4.1, which holds of isometries and is not formalised.
+
+circuit-id : (C : Circuit n) {ξ′ : PathSum n 0 0} → ⟦ C ⟧ᴿ ⟶* ξ′ →
+             (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) →
+             phase ξ′ ≈[ pow M ] 0ᴾ →
+             ⟦ C ⟧ᴿ ≋ idPS
+circuit-id C {ξ′} steps eqf eqP = ≋-trans
+  {ξ = ⟦ C ⟧ᴿ} {ζ = ξ′} {χ = idPS} (⟶*-sound steps) (id-if ξ′ eqf eqP)
+
+circuit-not-id : (C : Circuit n) {ξ′ : PathSum n k′ 0} → ⟦ C ⟧ᴿ ⟶* ξ′ →
+                 ¬ (ξ′ ≋ idPS) → ¬ (⟦ C ⟧ᴿ ≋ idPS)
+circuit-not-id C {ξ′ = ξ′} steps ¬id C≋id = ¬id (≋-trans
+  {ξ = ξ′} {ζ = ⟦ C ⟧ᴿ} {χ = idPS}
+  (≋-sym {ξ = ⟦ C ⟧ᴿ} {ζ = ξ′} (⟶*-sound steps)) C≋id)
