@@ -14,7 +14,7 @@
 ------------------------------------------------------------------------
 
 import Prelude hiding (Right, Left)
-import Data.List (intercalate)
+import Data.List (intercalate, sort)
 import System.Directory (createDirectoryIfMissing)
 
 import NewBoxRel (Cir (Cir), Rel (Rel), Spec (Spec), rel_trans, cir_trans,
@@ -176,18 +176,6 @@ items =
   , C "c0-0" (eps 1) ""
 
   ------------------------------------------------------------------
-  -- The four cases of pushing a generator through a coset rep
-  -- (expanded staircase form, verified permutation identities)
-  , R "push-commute" [Ex 0, Sep, Ex 2, I 0]     [Ex 2, Sep, Ex 0, I 3]
-      ""
-  , R "push-pass"    [Ex 0, Ex 1, Sep, Ex 0]    [Ex 1, Sep, Ex 0, Ex 1]
-      ""
-  , R "push-absorb"  [Ex 0, Ex 1, Sep, Ex 1]    [Ex 0, I 2]
-      ""
-  , R "push-extend"  [Ex 0, Sep, Ex 1]          [Ex 0, Ex 1]
-      ""
-
-  ------------------------------------------------------------------
   -- The A, B, D, E boxes as circuits (representative a ≠ 0 cases)
   , R "box-A"  [A 0 "a,b"] [Mul 0 "M_{a^{-1}}", H 0, Se 0 "-b/a"] ""
   , R "box-A0" [A 0 "0,b"] [Mul 0 "M_{b^{-1}}"] ""
@@ -306,6 +294,77 @@ snStair = handPicture (-1.3, -1.0, 12.7, 7.7) nodes edges
          ++ spanBox "c3" 10.2 0 4 "c^{(3)}"
     edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
 
+-- A hand-drawn swap circuit: nw wires from x0 to x1, a crossing at
+-- each (column, lower-wire), and overlay boxes (dashed?, rectangle,
+-- label above) that group the picture into the c · b = b′ · c′ shape.
+swapFig :: Float -> Float -> Int
+        -> [(Float, Int)]
+        -> [(Bool, (Float, Float, Float, Float), String)]
+        -> String
+swapFig x0 x1 nw crossings boxes =
+  handPicture (x0 - 0.3, -1.0, x1 + 0.3, fromIntegral (2 * (nw - 1)) + 1.7)
+              nodes edges
+  where
+    hw = 0.75
+    cutsFor w = sort [ cx | (cx, lw) <- crossings, lw == w || lw + 1 == w ]
+    segsFor w = go x0 (cutsFor w)
+      where
+        go l []       = [(l, x1)]
+        go l (c : cs) = (l, c - hw) : go (c + hw) cs
+    wireNodes = concat
+      [ wire ("w" ++ show w ++ "s" ++ show i) a b w
+      | w <- [0 .. nw - 1], ((a, b), i) <- zip (segsFor w) [0 :: Int ..] ]
+    wireEdges = concat
+      [ wireDraw ("w" ++ show w ++ "s" ++ show i)
+      | w <- [0 .. nw - 1], (_, i) <- zip (segsFor w) [0 :: Int ..] ]
+    corner nm x y = "\\node [style=none] (" ++ nm ++ ") at ("
+                    ++ show x ++ ", " ++ show y ++ "){};\n"
+    crossNodes = concat
+      [    corner (nm ++ "a") (cx - hw) ylo ++ corner (nm ++ "b") (cx - hw) yhi
+        ++ corner (nm ++ "c") (cx + hw) ylo ++ corner (nm ++ "d") (cx + hw) yhi
+      | ((cx, lw), j) <- zip crossings [0 :: Int ..]
+      , let nm = "x" ++ show j
+      , let ylo = fromIntegral (2 * lw) :: Float
+      , let yhi = fromIntegral (2 * (lw + 1)) :: Float ]
+    crossEdges = concat
+      [    "\\draw (" ++ nm ++ "a.center) to (" ++ nm ++ "d.center);\n"
+        ++ "\\draw (" ++ nm ++ "b.center) to (" ++ nm ++ "c.center);\n"
+      | ((_, _), j) <- zip crossings [0 :: Int ..]
+      , let nm = "x" ++ show j ]
+    obox (dashed, (bx0, by0, bx1, by1), lbl) =
+      "\\draw [" ++ (if dashed then "dashed" else "") ++ "] ("
+      ++ show bx0 ++ ", " ++ show by0 ++ ") rectangle ("
+      ++ show bx1 ++ ", " ++ show by1 ++ ");\n"
+      ++ "\\node [style=none] at (" ++ show ((bx0 + bx1) / 2) ++ ", "
+      ++ show (by1 + 0.55) ++ ") {\\scriptsize $" ++ lbl ++ "$};\n"
+    nodes = wireNodes ++ crossNodes ++ concatMap obox boxes
+    edges = wireEdges ++ crossEdges
+
+-- The four push-through cases, grouped as c · b ≡ b′ · c′.
+push1l, push1r, push2l, push2r, push3l, push3r, push4l, push4r :: String
+push1l = swapFig (-1.0) 5.6 4 [(1.2, 0), (3.6, 2)]
+  [ (False, (-0.7, -0.75, 2.3, 6.75), "c")
+  , (True,  (2.65, 3.25, 4.55, 6.75), "b") ]
+push1r = swapFig (-1.0) 5.6 4 [(1.2, 2), (3.6, 0)]
+  [ (False, (0.25, 1.25, 2.15, 6.75), "b'")
+  , (False, (2.65, -0.75, 5.85, 6.75), "c'") ]
+push2l = swapFig (-1.0) 8.0 3 [(1.2, 0), (3.6, 1), (6.0, 0)]
+  [ (False, (-0.7, -0.75, 4.7, 4.75), "c")
+  , (True,  (5.05, -0.75, 6.95, 2.75), "b") ]
+push2r = swapFig (-1.0) 8.0 3 [(1.2, 1), (3.6, 0), (6.0, 1)]
+  [ (False, (0.25, -0.75, 2.15, 4.75), "b'")
+  , (False, (2.65, -0.75, 8.25, 4.75), "c'") ]
+push3l = swapFig (-1.0) 8.0 3 [(1.2, 0), (3.6, 1), (6.0, 1)]
+  [ (False, (-0.7, -0.75, 4.7, 4.75), "c")
+  , (True,  (5.05, 1.25, 6.95, 4.75), "b") ]
+push3r = swapFig (-1.0) 3.2 3 [(1.2, 0)]
+  [ (False, (-0.7, -0.75, 3.45, 4.75), "c'") ]
+push4l = swapFig (-1.0) 5.6 3 [(1.2, 0), (3.6, 1)]
+  [ (False, (-0.7, -0.75, 2.3, 4.75), "c")
+  , (True,  (2.65, 1.25, 4.55, 4.75), "b") ]
+push4r = swapFig (-1.0) 5.6 3 [(1.2, 0), (3.6, 1)]
+  [ (False, (-0.7, -0.75, 5.85, 4.75), "c'") ]
+
 -- The coset table, schematically: c₃ · b  ≡  b′ ↑ · c₃′ on 4 wires.
 -- Left side: the c₃ box followed by a generator (a swap on wires 1,2).
 ractL :: String
@@ -352,6 +411,14 @@ handItems =
   , ("sn-stair",     snStair)
   , ("ract-l",       ractL)
   , ("ract-r",       ractR)
+  , ("push1-l",      push1l)
+  , ("push1-r",      push1r)
+  , ("push2-l",      push2l)
+  , ("push2-r",      push2r)
+  , ("push3-l",      push3l)
+  , ("push3-r",      push3r)
+  , ("push4-l",      push4l)
+  , ("push4-r",      push4r)
   ]
 
 ------------------------------------------------------------------------
