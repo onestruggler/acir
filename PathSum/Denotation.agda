@@ -38,7 +38,7 @@ open import Data.Bool.Base using (Bool; true; false; not; _∧_; _xor_;
 open import Data.Bool.Properties using (∧-zeroʳ)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Fin.Subset using (Subset; inside)
-open import Data.Integer.Base using (ℤ; 0ℤ; +_; -_; _-_; _*_)
+open import Data.Integer.Base using (ℤ; 0ℤ; 1ℤ; +_; -_; _-_; _*_)
   renaming (_+_ to _+ℤ_)
 open import Data.Integer.Divisibility.Signed using
   (_∣_; _∣?_; ∣-refl; ∣m∣n⇒∣m+n; ∣m+n∣m⇒∣n)
@@ -535,3 +535,72 @@ module _ {n k m : ℕ} (ξ : PathSum n (suc k) (suc m)) (c : Bool)
   ω-sound x z i = trans
     (scale-map k (amp-gen (ω-reduct ξ c S) (λ _ _ _ → refl) red-eval x z) i)
     (scale-√2 k (amp (ω-reduct ξ c S) x z) i)
+
+
+------------------------------------------------------------------------
+-- Soundness of [HH]
+
+-- The premise makes the head of the phase ½ times the form on S, so
+-- the two branches of y₀ carry the same phase where the form vanishes
+-- and opposite phases where it is 1.
+
+module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (i : Fin m) (c : Bool)
+         (S : Mon n m) (i∈S : y[ i ] ∈ᵐ S)
+         (eqP : head-part (phase ξ) ≈[ pow M ] (½ ·ᴾ liftXor c S))
+         (eqf : ∀ w → NoVar (+ 2) y₀ (out ξ w))
+         where
+
+  private
+    S′ : Mon n m
+    S′ = S ∖ᵐ y[ i ]
+
+    tv hd : Assign n → Assign m → ℤ
+    tv x y = eval (tail-part (phase ξ)) x y
+    hd x y = eval (head-part (phase ξ)) x y
+
+    head-eval : ∀ x y →
+                pow M ∣ (hd x y - (½ * eval (liftXor c S) x y))
+    head-eval x y = Eq.subst (λ w → pow M ∣ (hd x y - w))
+      (eval-·ᴾ ½ (liftXor c S) x y)
+      (eval-≈ (head-part (phase ξ)) (½ ·ᴾ liftXor c S) eqP x y)
+
+    -- Where the form vanishes the branches double.
+
+    pairA : ∀ x y → eval (liftXor c S) x y ≡ 0ℤ →
+            (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y)) ≐
+            (+ 2) ·ᴬ zpow (tv x y)
+    pairA x y q0 w = trans
+      (Eq.cong₂ _+ℤ_ (zpow-cong {hd x y +ℤ tv x y} {tv x y} same w) refl)
+      (twice (zpow (tv x y) w))
+      where
+      hd0 : pow M ∣ (hd x y - 0ℤ)
+      hd0 = Eq.subst (λ u → pow M ∣ (hd x y - u))
+        (trans (cong (½ *_) q0) (*-zeroʳ ½)) (head-eval x y)
+
+      shift : ∀ a t → (a +ℤ t) - t ≡ a - 0ℤ
+      shift = solve 2 (λ a t → (a :+ t) :- t := a :- con 0ℤ) refl
+
+      same : (+ N) ∣ ((hd x y +ℤ tv x y) - tv x y)
+      same = Eq.subst ((+ N) ∣_) (sym (shift (hd x y) (tv x y))) hd0
+
+    -- Where it is 1 they cancel: ζ^(½) = -1.
+
+    pairB : ∀ x y → eval (liftXor c S) x y ≡ 1ℤ →
+            (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y)) ≐ 0ᴬ
+    pairB x y q1 w = trans
+      (Eq.cong₂ _+ℤ_
+        (trans (zpow-cong {hd x y +ℤ tv x y} {tv x y +ℤ ½} same w)
+               (zpow-anti (tv x y) w))
+        refl)
+      (+-inverseˡ (zpow (tv x y) w))
+      where
+      hd½ : pow M ∣ (hd x y - ½)
+      hd½ = Eq.subst (λ u → pow M ∣ (hd x y - u))
+        (trans (cong (½ *_) q1) (*-identityʳ ½)) (head-eval x y)
+
+      shuffle : ∀ a b t → (a +ℤ t) - (t +ℤ b) ≡ a - b
+      shuffle = solve 3 (λ a b t → (a :+ t) :- (t :+ b) := a :- b) refl
+
+      same : (+ N) ∣ ((hd x y +ℤ tv x y) - (tv x y +ℤ ½))
+      same = Eq.subst ((+ N) ∣_)
+        (sym (shuffle (hd x y) ½ (tv x y))) hd½
