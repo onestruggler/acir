@@ -512,13 +512,13 @@ module Normal-form-boxes where
     \end{column}
     \begin{column}{0.54\textwidth}\tiny
       \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
-        $A_{a,b}$, $a\neq0$ & \ufig[0.58]{box-A-l} & $\equiv$ & \ufig[0.58]{box-A-r}\\
-        $A_{0,b}$, $b\neq0$ & \ufig[0.58]{box-A0-l} & $\equiv$ & \ufig[0.58]{box-A0-r}\\
-        $B_{a,b}$, $a\neq0$ & \ufig[0.58]{box-B-l} & $\equiv$ & \ufig[0.58]{box-B-r}\\
-        $B_{0,b}$ & \ufig[0.58]{box-B0-l} & $\equiv$ & \ufig[0.58]{box-B0-r}\\
-        $D_{a,b}$, $a\neq0$ & \ufig[0.58]{box-D-l} & $\equiv$ & \ufig[0.58]{box-D-r}\\
-        $D_{0,b}$ & \ufig[0.58]{box-D0-l} & $\equiv$ & \ufig[0.58]{box-D0-r}\\
-        $E_{b}$ & \ufig[0.58]{box-E-l} & $\equiv$ & \ufig[0.58]{box-E-r}\\
+        $A_{a,b}$, $a\neq0$ & \ufig[0.58]{box-A-l} & $=$ & \ufig[0.58]{box-A-r}\\
+        $A_{0,b}$, $b\neq0$ & \ufig[0.58]{box-A0-l} & $=$ & \ufig[0.58]{box-A0-r}\\
+        $B_{a,b}$, $a\neq0$ & \ufig[0.58]{box-B-l} & $=$ & \ufig[0.58]{box-B-r}\\
+        $B_{0,b}$ & \ufig[0.58]{box-B0-l} & $=$ & \ufig[0.58]{box-B0-r}\\
+        $D_{a,b}$, $a\neq0$ & \ufig[0.58]{box-D-l} & $=$ & \ufig[0.58]{box-D-r}\\
+        $D_{0,b}$ & \ufig[0.58]{box-D0-l} & $=$ & \ufig[0.58]{box-D0-r}\\
+        $E_{b}$ & \ufig[0.58]{box-E-l} & $=$ & \ufig[0.58]{box-E-r}\\
       \end{tabular}
     \end{column}
   \end{columns}
@@ -546,16 +546,16 @@ module Normal-form-boxes where
     \begin{column}{0.31\textwidth}
       \begin{center}
         \begin{tabular}{@{}r@{\,}c@{\,}l@{}}
-          \ufig[0.68]{m4-box} & \scalebox{0.7}{$\equiv$} & \ufig[0.68]{m4-atoms}\\[1ex]
-          \ufig[0.68]{l4-box} & \scalebox{0.7}{$\equiv$} & \ufig[0.68]{l4-atoms}\\
+          \ufig[0.68]{m4-box} & \scalebox{0.7}{$=$} & \ufig[0.68]{m4-atoms}\\[1ex]
+          \ufig[0.68]{l4-box} & \scalebox{0.7}{$=$} & \ufig[0.68]{l4-atoms}\\
         \end{tabular}
       \end{center}
     \end{column}
     \begin{column}{0.31\textwidth}
       \begin{center}
         \begin{tabular}{@{}r@{\,}c@{\,}l@{}}
-          \ufig[0.68]{ml4-box} & \scalebox{0.7}{$\equiv$} & \ufig[0.68]{ml-tower-a-r}\\[1ex]
-          \ufig[0.68]{ml4-box} & \scalebox{0.7}{$\equiv$} & \ufig[0.68]{ml-tower-b-r}\\
+          \ufig[0.68]{ml4-box} & \scalebox{0.7}{$=$} & \ufig[0.68]{ml-tower-a-r}\\[1ex]
+          \ufig[0.68]{ml4-box} & \scalebox{0.7}{$=$} & \ufig[0.68]{ml-tower-b-r}\\
         \end{tabular}
       \end{center}
     \end{column}
@@ -798,13 +798,14 @@ module Sn-presented where
     order        : (₂₊ n) SRel,  σ • σ === ε
     yang-baxter  : (₃₊ n) SRel,  σ • σ ↑ • σ === σ ↑ • σ • σ ↑
 \end{code}
-  \vfill
+\vspace{-0.3cm}
   \begin{center}\small
     \begin{tabular}{r@{\;\,}r@{\,}c@{\,}l@{}}
       order & \ufig[0.62]{sn-order-l} & \scalebox{0.7}{$\equiv$} & \ufig[0.62]{sn-order-r}\\[1pt]
       yang-baxter & \ufig[0.62]{sn-yb-l} & \scalebox{0.7}{$\equiv$} & \ufig[0.62]{sn-yb-r}\\
     \end{tabular}
   \end{center}
+\vspace{-0.3cm}
 \begin{code}
   Theorem-Sn : ∀ {n} → (n VRel,_===_) IsPresentationOf (Permutation′-group n)
   Theorem-Sn = SymP.presentation
@@ -812,26 +813,34 @@ module Sn-presented where
 \end{frame}
 
 \subsubsection{From Symmetric to Symplectic}
+
 \begin{frame}{From $S_n$ to $\mathrm{Sp}(2n,\mathbb{Z}_p)$: change the action}
   The same framework, three ways of looking at the wires:
   \vfill
   \begin{enumerate}
-    \item $S_n$ acts on $\{0, \dots, n-1\}$: a wire is a \emph{position};
-          $c$ sends $f^{-1}(0)$ to $0$.
+    \item $S_n$ acts on $\{0, \dots, n-1\}$: a wire is a
+      \emph{position}; $c \circ f^{-1}$ fixes $0$ represented by the
+      bottom wire.
     \item $S_n$ acts on $\mathsf{Vec}\;\mathsf{Bit}\;n$: a wire is a
-          \emph{bit}; $f^{-1}c$ fixes the linear subspace of the bottom wire.
+      \emph{bit}; $c \circ f^{-1}$ fixes the $\mathbb{Z}_2$-linear
+      subspace represented by the bottom wire.
     \item Adding $H, S, CZ$: the group acts on
-          $\mathsf{Vec}\;\mathsf{Pauli}_1\;n$ --- a $2n$-dimensional
-          \alert{symplectic} $\mathbb{Z}_p$-vector space.  A wire is a
-          $\mathrm{Pauli}_1$; enlarging the coset layer from staircases to
-          $\mathit{ML}$ boxes, $f^{-1}c$ fixes the symplectic subspace
-          of the bottom wire.
+      $\mathsf{Vec}\;\mathsf{Pauli}_1\;n$ --- a $2n$-dimensional
+      \alert{symplectic} $\mathbb{Z}_p$-vector space; a wire is
+      $\mathrm{Pauli}_1$, a $2$-dimensional \alert{symplectic}
+      $\mathbb{Z}_p$-vector space.
+      \item Enlarging the coset layer from staircases to $\mathit{ML}$
+        boxes, for each $f \in \mathrm{Sp}(2n,\mathbb{Z}_p)$, there
+        exists $c \circ f^{-1}$ fixes the symplectic subspace of the
+        bottom wire.
   \end{enumerate}
   \vfill
   The framework applies to \emph{any} $\mathbb{N}$-indexed family of
   groups with such a layered structure
   (\texttt{Circuit.CosetNF}, \texttt{Circuit.Uniqueness}).
 \end{frame}
+
+\subsubsection{Uniqueness of normal form}
 
 \begin{frame}{Uniqueness of normal form}
 \begin{code}[hide]
@@ -846,21 +855,26 @@ module Uniqueness-of-NF where
 \end{code}
   \vfill
   \begin{center}
-  \begin{tikzpicture}[scale=1.1]
+  \begin{tikzpicture}[scale=0.95]
     \node (cir) at (0,2)   {$\mathsf{Cir}\,n\,/\,{\approx}$};
     \node (sp)  at (5.5,2) {$\mathrm{Sp}(2n,\mathbb{Z}_p)$};
     \node (nf)  at (0,0)   {$\mathit{NF}\;n$};
     \draw[->, thick] (cir) -- node[above]{{\AgdaCodeFont ⟦\_⟧}} (sp);
-    \draw[->, thick, bend left=15] (cir) to node[left]{$\mathit{nf}$} (nf);
-    \draw[->, thick, bend left=15] (nf) to node[right]{$[\_]$} (cir);
+    \draw[->, thick, bend left=15] (cir) to node[right]{$\mathit{nf}$} (nf);
+    \draw[->, thick, bend left=15] (nf) to node[left]{$[\_]$} (cir);
     \draw[->, thick, dashed] (nf) -- node[below right]{injective} (sp);
   \end{tikzpicture}
   \end{center}
-  \vfill
-  Soundness $+$ unique normal forms $\Rightarrow$ completeness
-  (\texttt{by-normalization}); the interesting content is that the
-  \emph{coset factor is determined by the action} on Pauli states.
+  
+  \begin{itemize}
+  \item Soundness $+$ unique normal forms $\Rightarrow$ completeness
+  (\texttt{by-normalization}).
+  \item The hard and interesting part is to find such \emph{coset
+  representatives} parameterized by the number of wires.
+  \end{itemize}
 \end{frame}
+
+\subsubsection{Relation reduction}
 
 \begin{frame}{From 67 relations to 18}
   \begin{enumerate}
@@ -876,6 +890,7 @@ module Uniqueness-of-NF where
   \begin{center}
     \fitfig[0.3\textwidth]{mm-stmt}
   \end{center}
+  
 \begin{code}[hide]
 module Multiplier-law where
   open Sym using (M)
@@ -886,42 +901,45 @@ module Multiplier-law where
   M-mul n = SimL.Lemmas1.lemma-M-mul n
 \end{code}
   {\small ($x = g^k$, $y = g^l$; \texttt{M-power} twice; add exponents
-  mod $p-1$.)}
+  mod $p$.)}
 \end{frame}
 
 \begin{frame}{The simplified symplectic rule set (1--2 qudits)}
-  \setlength{\figwidth}{0.32\textwidth}
   \begin{columns}[T]
-    \begin{column}{0.5\textwidth}\tiny
-      \begin{tabular}{@{}r@{\;\,}l@{}}
-        order-S & \fitfig{simp-order-S}\\[1pt]
-        order-H & \fitfig{simp-order-H}\\[1pt]
-        M-power & \fitfig{simp-M-power}\\[1pt]
-        semi-MS & \fitfig{simp-semi-MS}\\[1pt]
-        order-CZ & \fitfig{simp-order-CZ}\\[1pt]
-        comm-CZ-S↓ & \fitfig{simp-comm-CZ-Sdn}\\
+    \begin{column}{0.46\textwidth}\tiny
+      \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
+        order-S & \ufig[0.62]{simp-order-S-l} & $\equiv$ & \ufig[0.62]{simp-order-S-r}\\[1pt]
+        order-H & \ufig[0.62]{simp-order-H-l} & $\equiv$ & \ufig[0.62]{simp-order-H-r}\\[1pt]
+        M-power & \ufig[0.62]{simp-M-power-l} & $\equiv$ & \ufig[0.62]{simp-M-power-r}\\[1pt]
+        semi-MS & \ufig[0.62]{simp-semi-MS-l} & $\equiv$ & \ufig[0.62]{simp-semi-MS-r}\\[1pt]
+        order-CZ & \ufig[0.62]{simp-order-CZ-l} & $\equiv$ & \ufig[0.62]{simp-order-CZ-r}\\
       \end{tabular}
     \end{column}
-    \begin{column}{0.5\textwidth}\tiny
-      \begin{tabular}{@{}r@{\;\,}l@{}}
-        comm-CZ-S↑ & \fitfig{simp-comm-CZ-Sup}\\[1pt]
-        semi-M↑CZ & \fitfig{simp-semi-Mup-CZ}\\[1pt]
-        semi-M↓CZ & \fitfig{simp-semi-Mdn-CZ}\\[1pt]
-        selinger-c10 & \fitfig[0.4\textwidth]{simp-selinger-c10}\\[1pt]
-        selinger-c11 & \fitfig[0.4\textwidth]{simp-selinger-c11}\\[1pt]
-        selinger-c12 & \fitfig{simp-selinger-c12}\\
+    \begin{column}{0.54\textwidth}\tiny
+      \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
+        comm-CZ-S↓ & \ufig[0.62]{simp-comm-CZ-Sdn-l} & $\equiv$ & \ufig[0.62]{simp-comm-CZ-Sdn-r}\\[1pt]
+        comm-CZ-S↑ & \ufig[0.62]{simp-comm-CZ-Sup-l} & $\equiv$ & \ufig[0.62]{simp-comm-CZ-Sup-r}\\[1pt]
+        semi-M↑CZ & \ufig[0.62]{simp-semi-Mup-CZ-l} & $\equiv$ & \ufig[0.62]{simp-semi-Mup-CZ-r}\\[1pt]
+        semi-M↓CZ & \ufig[0.62]{simp-semi-Mdn-CZ-l} & $\equiv$ & \ufig[0.62]{simp-semi-Mdn-CZ-r}\\
       \end{tabular}
     \end{column}
   \end{columns}
+  \vspace{1pt}
+  \begin{center}\tiny
+    \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
+      selinger-c10 & \ufig[0.62]{simp-selinger-c10-l} & $\equiv$ & \ufig[0.62]{simp-selinger-c10-r}\\[1pt]
+      selinger-c11 & \ufig[0.62]{simp-selinger-c11-l} & $\equiv$ & \ufig[0.62]{simp-selinger-c11-r}\\
+    \end{tabular}
+  \end{center}
 \end{frame}
 
 \begin{frame}{The simplified symplectic rule set (3 qudits), and the theorem}
-  \setlength{\figwidth}{0.95\textwidth}
-  \begin{center}\scriptsize
-    \begin{tabular}{@{}r@{\;\;}l@{}}
-      selinger-c13 & \fitfig[0.6\textwidth]{simp-selinger-c13}\\
-      selinger-c14 & \fitfig[0.75\textwidth]{simp-selinger-c14}\\
-      selinger-c15 & \fitfig[0.75\textwidth]{simp-selinger-c15}\\
+  \begin{center}\tiny
+    \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
+      selinger-c12 & \ufig[0.5]{simp-selinger-c12-l} & $\equiv$ & \ufig[0.5]{simp-selinger-c12-r}\\[1pt]
+      selinger-c13 & \ufig[0.5]{simp-selinger-c13-l} & $\equiv$ & \ufig[0.5]{simp-selinger-c13-r}\\[1pt]
+      selinger-c14 & \ufig[0.5]{simp-selinger-c14-l} & $\equiv$ & \ufig[0.5]{simp-selinger-c14-r}\\[1pt]
+      selinger-c15 & \ufig[0.5]{simp-selinger-c15-l} & $\equiv$ & \ufig[0.5]{simp-selinger-c15-r}\\
     \end{tabular}
   \end{center}
   \vfill
