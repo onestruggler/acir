@@ -3,13 +3,15 @@
 --
 -- Selinger's Figures 3-7, replayed from the supplement (GENERATED).
 --
--- Produced by local/tools/emit2.py from the machine-readable proof file
--- of arXiv:1310.6813.  Do not edit by hand.
+-- Produced by emit2.py from the machine-readable proof file of
+-- arXiv:1310.6813.  Do not edit by hand.  The generator, the extracted
+-- rule tables and the paper's own source all live untracked in
+-- local/qubit-clifford/, tools in local/qubit-clifford/tools/.
 --
 -- Every link is one congruence step: `by-assoc` for a bracketing, `at`
 -- for a rule inside an explicit context, and `swap1` under some crights
--- for a transposition of gates on disjoint wires (which Selinger never
--- writes down, working as he does in a strict spatial monoidal groupoid).
+-- for a transposition of gates on disjoint wires -- which Selinger never
+-- writes down, working in a strict spatial monoidal groupoid.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

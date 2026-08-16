@@ -834,8 +834,8 @@ module TwoQubit {n : ℕ} where
 -- Lemma 1.2, the one rule still to be proved
 --
 -- Taken from the supplement's own proof file, in the spelling it uses
--- there (local/tools/minctx.py finds the minimal-context instance of a
--- rule, which states it); confirmed by check_words.py.  Its proof is on
+-- there (minctx.py finds the minimal-context instance of a rule, which
+-- states it); confirmed by check_words.py.  Its proof is on
 -- the supplement's page 3, and is four steps: (11), (13), (15), (17).
 --
 --   (18)  H₀·CZ·H₁H₀·CZ·H₁H₀·CZ  =  CZ·H₁H₀·CZ·H₁H₀·CZ·H₁
@@ -891,7 +891,7 @@ module TwoQubit {n : ℕ} where
 -- (route: (12) to pull S₀ left of the first CZ, (11), (13), then C8 --
 -- the wire-0 prefix has become the Pauli X -- then HSSHSHS; the second
 -- block is halfB followed by (14)↑, (2) and (6)).  Both words are
--- correct -- local/tools/check_words.py evaluates them and they agree --
+-- correct -- check_words.py evaluates them and they agree --
 -- so this is not a misreading; they are two spellings of the same
 -- operator.  Prove the FORM ABOVE, not the easier derived one: the
 -- supplement's Section 3 proofs use (17) in Selinger's spelling, and a
@@ -919,9 +919,9 @@ module TwoQubit {n : ℕ} where
 -- wires are past what a rendered page can be read off reliably.  They
 -- are read off the supplement's own proof file instead: the instance of
 -- a rule with the least surrounding context states it, and
--- local/tools/minctx.py finds it.  For `Ri` that is equation 3.65 and
+-- minctx.py finds it.  For `Ri` that is equation 3.65 and
 -- for `Rii` equations 3.40 / 3.54 (3.57 uses it backwards).  Both are
--- confirmed by local/tools/check_words.py.  Writing CZ for the
+-- confirmed by check_words.py.  Writing CZ for the
 -- controlled-Z on wires 0-1 and CZ' for the one on wires 1-2:
 --
 --   (20)  CZ · V · CZ' = V,   where                        [supplement: Ri]
