@@ -481,6 +481,15 @@ module _ {n k m : ℕ} (ξ : PathSum n (suc k) (suc m)) (c : Bool)
     if-sum true  a b r h = h
     if-sum false a b r h = λ i → sym (√2·-0ᴬ i)
 
+    -- Naming the summand of each amplitude keeps the goals below from
+    -- carrying the whole body as a lambda.
+
+    bξ : Assign n → Assign n → Assign (suc m) → Amp
+    bξ x z y′ = if hits ξ x y′ z then zpow (eval (phase ξ) x y′) else 0ᴬ
+
+    bζ : (ζ : PathSum n k m) → Assign n → Assign n → Assign m → Amp
+    bζ ζ x z y = if hits ζ x y z then zpow (eval (phase ζ) x y) else 0ᴬ
+
     ω-step : (ζ : PathSum n k m) →
              (∀ x y z → hits ζ x y z ≡
                 allFin (λ w → eqᵇ (bit (eval (tail-part (out ξ w)) x y))
@@ -488,12 +497,8 @@ module _ {n k m : ℕ} (ξ : PathSum n (suc k) (suc m)) (c : Bool)
              (∀ x y → eval (phase ζ) x y ≡
                       (⅛ - (¼ * qv x y)) +ℤ tv x y) →
              ∀ (x z : Assign n) (y : Assign m) →
-             ((if hits ξ x (extend true y) z
-               then zpow (eval (phase ξ) x (extend true y)) else 0ᴬ)
-              +ᴬ
-              (if hits ξ x (extend false y) z
-               then zpow (eval (phase ξ) x (extend false y)) else 0ᴬ))
-             ≐ √2· (if hits ζ x y z then zpow (eval (phase ζ) x y) else 0ᴬ)
+             (bξ x z (extend true y) +ᴬ bξ x z (extend false y))
+             ≐ √2· (bζ ζ x z y)
     ω-step ζ hζ pζ x z y i = trans
       (Eq.cong₂ _+ℤ_
         (if-guard (trans (same-hits ξ eqf true x z y) (sym (hζ x y z))) i)
@@ -512,3 +517,21 @@ module _ {n k m : ℕ} (ξ : PathSum n (suc k) (suc m)) (c : Bool)
           (cong (λ w → zpow w i″) (eval-false (phase ξ) x y)))
         (trans (core x y i″)
                (cong (λ w → √2· (zpow w) i″) (sym (pζ x y))))
+
+    amp-gen : (ζ : PathSum n k m) →
+              (∀ x y z → hits ζ x y z ≡
+                 allFin (λ w → eqᵇ (bit (eval (tail-part (out ξ w)) x y))
+                                   (z w))) →
+              (∀ x y → eval (phase ζ) x y ≡
+                       (⅛ - (¼ * qv x y)) +ℤ tv x y) →
+              ∀ x z → amp ξ x z ≐ √2· (amp ζ x z)
+    amp-gen ζ hζ pζ x z i = trans
+      (sym (Σᴮ-+ (λ y → bξ x z (extend true y))
+                 (λ y → bξ x z (extend false y)) i))
+      (trans (Σᴮ-cong (ω-step ζ hζ pζ x z) i)
+             (sym (√2·-Σᴮ (bζ ζ x z) i)))
+
+  ω-sound : ξ ≋ ω-reduct ξ c S
+  ω-sound x z i = trans
+    (scale-map k (amp-gen (ω-reduct ξ c S) (λ _ _ _ → refl) red-eval x z) i)
+    (scale-√2 k (amp (ω-reduct ξ c S) x z) i)
