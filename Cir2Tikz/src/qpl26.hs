@@ -178,7 +178,7 @@ items =
   ------------------------------------------------------------------
   -- The four cases of pushing a generator through a coset rep
   -- (expanded staircase form, verified permutation identities)
-  , R "push-commute" [Ex 0, I 3, Sep, Ex 2]     [Ex 2, Sep, Ex 0, I 3]
+  , R "push-commute" [Ex 0, Sep, Ex 2, I 0]     [Ex 2, Sep, Ex 0, I 3]
       ""
   , R "push-pass"    [Ex 0, Ex 1, Sep, Ex 0]    [Ex 1, Sep, Ex 0, Ex 1]
       ""

@@ -1,5 +1,5 @@
 \begin{tikzpicture}
-\path [use as bounding box] (-0.3, -1.0) rectangle (4.8, 7.7);
+\path [use as bounding box] (-0.3, -1.0) rectangle (6.3, 7.7);
 \begin{pgfonlayer}{nodelayer}
 \node [style=none] (n0y00tl) at (1.0, 2.0) {$$};
 \node [style=none] (n0y00bl) at (1.0, 0.0) {$$};
@@ -7,21 +7,21 @@
 \node [style=none] (n0y00tr) at (2.5, 2.0) {$$};
 \node [style=none] (n0y00ftl) at (1.0, 2.15) {};
 \node [style=none] (n0y00fbr) at (2.5, -0.15) {};
-\node [style=none] (n0y02) at (1.0, 0.0) {$$};
-\node [style=none] (n0y03tl) at (2.0, 6.0) {$$};
-\node [style=none] (n0y03bl) at (2.0, 4.0) {$$};
-\node [style=none] (n0y03br) at (3.5, 4.0) {$$};
-\node [style=none] (n0y03tr) at (3.5, 6.0) {$$};
-\node [style=none] (n0y03ftl) at (2.0, 6.15) {};
-\node [style=none] (n0y03fbr) at (3.5, 3.85) {};
+\node [style=none] (n0y01) at (2.5, 0.0) {$$};
+\node [style=none] (n0y02tl) at (3.5, 6.0) {$$};
+\node [style=none] (n0y02bl) at (3.5, 4.0) {$$};
+\node [style=none] (n0y02br) at (5.0, 4.0) {$$};
+\node [style=none] (n0y02tr) at (5.0, 6.0) {$$};
+\node [style=none] (n0y02ftl) at (3.5, 6.15) {};
+\node [style=none] (n0y02fbr) at (5.0, 3.85) {};
 \node [style=none] (lm0el00) at (0.0, 0.0){};
 \node [style=none] (lm0el10) at (0.0, 2.0){};
 \node [style=none] (lm0el20) at (0.0, 4.0){};
 \node [style=none] (lm0el30) at (0.0, 6.0){};
-\node [style=none] (lm0er00) at (4.5, 0.0){};
-\node [style=none] (lm0er10) at (4.5, 2.0){};
-\node [style=none] (lm0er20) at (4.5, 4.0){};
-\node [style=none] (lm0er30) at (4.5, 6.0){};
+\node [style=none] (lm0er00) at (6.0, 0.0){};
+\node [style=none] (lm0er10) at (6.0, 2.0){};
+\node [style=none] (lm0er20) at (6.0, 4.0){};
+\node [style=none] (lm0er30) at (6.0, 6.0){};
 \end{pgfonlayer}
 \begin{pgfonlayer}{edgelayer}
 \draw (lm0el00.center) to (lm0er00.center);
@@ -31,8 +31,8 @@
 \fill [white] (n0y00ftl.center) rectangle (n0y00fbr.center);
 \draw (n0y00bl.center) to (n0y00tr.center);
 \draw (n0y00tl.center) to (n0y00br.center);
-\fill [white] (n0y03ftl.center) rectangle (n0y03fbr.center);
-\draw (n0y03bl.center) to (n0y03tr.center);
-\draw (n0y03tl.center) to (n0y03br.center);
+\fill [white] (n0y02ftl.center) rectangle (n0y02fbr.center);
+\draw (n0y02bl.center) to (n0y02tr.center);
+\draw (n0y02tl.center) to (n0y02br.center);
 \end{pgfonlayer}
 \end{tikzpicture}

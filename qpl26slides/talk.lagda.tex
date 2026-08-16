@@ -647,8 +647,8 @@ module NF-as-circuits where
 \end{frame}
 
 \begin{frame}{Coset representatives, and the normal form}
-  Representatives of $S_3/S_2$ (and of $S_2/S_1$, $S_1/S_0$): the staircases
-  \vfill
+  Representatives $C_2$ of $S_3/S_2$ (and of $S_2/S_1$, $S_1/S_0$):
+  the staircases \vfill
   \begin{center}
   \begin{tabular}{ccc@{\qquad\qquad}cc@{\qquad\qquad}c}
     \ufig[0.8]{c2-0} & \ufig[0.8]{c2-1} &
@@ -659,18 +659,21 @@ module NF-as-circuits where
   \end{tabular}
   \end{center}
   \vfill
+  \vspace{0.2cm}
   \begin{columns}[T]
     \begin{column}{0.68\textwidth}
       \begin{itemize}\small
         \item For $f \in S_3$ there is a unique $c \in C_2$ with $c
-          \circ f^{-1}$ fixing the bottom wire, i.e., $c$ sends
-          $f^{-1}(0)$ to $0$.
+          \circ f^{-1}$ fixing the bottom wire, i.e., the $c$ that
+          sends $f^{-1}(0)$ to $0$.
+          \vspace{0.07cm}
         \item Recurse on $c \circ f^{-1} \in S_2$: every $f$ is
           uniquely $c^{(0)} \cdot c^{(1)} \cdot c^{(2)}$.
-        \item Group theory: given $G_0 < \dots < G_n$ and coset reps
-              $C_k$ of $G_k/G_{k-1}$, elements of $G_n$ factor uniquely
-              as $\prod_k c_k$ --- a \alert{mixed-radix encoding}:
-              $|S_3| = 3 \cdot 2 \cdot 1$.
+          \vspace{0.07cm}
+        \item In general, given $G_0 < \dots < G_n$ and coset reps
+          $C_k$ of $G_k/G_{k-1}$, elements of $G_n$ factor uniquely as
+          $\prod_k c_k$ --- a \alert{mixed-radix encoding}: $|S_3| = 3
+          \cdot 2 \cdot 1$.
       \end{itemize}
     \end{column}
     \begin{column}{0.34\textwidth}
@@ -681,13 +684,12 @@ module NF-as-circuits where
 
 \begin{frame}{Rewriting to the normal form: push a generator through}
   Multiply a normal form by a generator; push it through the staircase:
-  \setlength{\figwidth}{0.34\textwidth}
   \begin{center}\small
   \begin{tabular}{r@{\qquad}l}
-    \fitfig{push-commute} & disjoint wires: commute past \\
-    \fitfig{push-pass}    & Yang--Baxter: pass through, shift up \\
-    \fitfig{push-absorb}  & $\sigma^2 = e$: staircase shrinks \\
-    \fitfig{push-extend}  & staircase grows \\
+    \ufig[0.62]{push-commute} & disjoint wires: commute past \\
+    \ufig[0.62]{push-pass}    & Yang--Baxter: pass through, shift up \\
+    \ufig[0.62]{push-absorb}  & $\sigma^2 = e$: staircase shrinks \\
+    \ufig[0.62]{push-extend}  & staircase grows \\
   \end{tabular}
   \end{center}
   Each case is a \emph{relation}; collecting them all gives a rewrite
