@@ -14,10 +14,11 @@ open import Data.Bool.Base using (Bool; true; false; if_then_else_; _∧_)
 open import Data.Bool.Properties using (∧-zeroʳ; ∧-assoc)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Fin.Subset using
-  (Subset; inside; outside; ⁅_⁆; ⊥; _∪_; _∩_; _∈_; _∉_; _⊆_; ∣_∣)
+  (Subset; inside; outside; ⁅_⁆; ⊥; _∪_; _∩_; _─_; _∈_; _∉_; _⊆_; ∣_∣)
+  renaming (_-_ to _∖_)
 open import Data.Fin.Subset.Properties using
   (∣⊥∣≡0; ∣⁅x⁆∣≡1; ∪-identityʳ; drop-not-there; drop-∷-⊆; q⊆p∪q;
-   x∈⁅x⁆; _⊆?_; _∈?_; ∉⊥; x∈p∪q⁻)
+   x∈⁅x⁆; _⊆?_; _∈?_; ∉⊥; x∈p∪q⁻; drop-there)
 open import Data.Integer.Base using (ℤ; 0ℤ; 1ℤ; +_)
   renaming (-_ to -ℤ_; _^_ to _^ℤ_; _+_ to _+ℤ_; _*_ to _*ℤ_;
             _-_ to _-ℤ_)
@@ -1507,3 +1508,79 @@ subst-0 {n} {m} P v c S v∉S γ v∈γ = cong₂ _+ℤ_ first
             (liftXor-0 c S β v
               (∈ᵐ-∪ v δ β v∉δ (Eq.subst (v ∈ᵐ_) (sym eq) v∈γ)) v∉S))
           (*-zeroʳ (P (δ ∪ᵐ ⟪ v ⟫)))
+
+
+------------------------------------------------------------------------
+-- Removing a variable from the set of a linear form
+
+-- [HH] substitutes the form on S with the eliminated variable removed,
+-- so the lifting of the form on S has to be related to the lifting of
+-- the form on S ∖ v.  Everything reduces to how inclusion and degree
+-- see the removal.
+
+private
+  ─-⊥ : (r : Subset k) → r ─ ⊥ ≡ r
+  ─-⊥ []      = refl
+  ─-⊥ (a ∷ r) = cong (a ∷_) (─-⊥ r)
+
+  ∖-head : (b : Bool) (q : Subset k) → (b ∷ q) ∖ zero ≡ outside ∷ q
+  ∖-head b q = cong (outside ∷_) (─-⊥ q)
+
+  ∖-tail : (b : Bool) (q : Subset k) (i : Fin k) →
+           (b ∷ q) ∖ (suc i) ≡ b ∷ (q ∖ i)
+  ∖-tail b q i = refl
+
+-- A subset avoiding i is contained in q ∖ i exactly when it is
+-- contained in q.
+
+⊆ᵇ-∖ : (p q : Subset k) (i : Fin k) → ¬ (i ∈ p) →
+       p ⊆ᵇ (q ∖ i) ≡ p ⊆ᵇ q
+⊆ᵇ-∖ (inside  ∷ p) (b ∷ q) zero    i∉p = contradiction here i∉p
+⊆ᵇ-∖ (outside ∷ p) (b ∷ q) zero    i∉p =
+  cong ((outside ∷ p) ⊆ᵇ_) (∖-head b q)
+⊆ᵇ-∖ (a ∷ p) (b ∷ q) (suc i) i∉p = trans
+  (cong ((a ∷ p) ⊆ᵇ_) (∖-tail b q i))
+  (step a b)
+  where
+  rec : p ⊆ᵇ (q ∖ i) ≡ p ⊆ᵇ q
+  rec = ⊆ᵇ-∖ p q i (λ i∈p → i∉p (there i∈p))
+
+  step : ∀ a b → (a ∷ p) ⊆ᵇ (b ∷ (q ∖ i)) ≡ (a ∷ p) ⊆ᵇ (b ∷ q)
+  step inside  inside  = rec
+  step inside  outside = refl
+  step outside inside  = rec
+  step outside outside = rec
+
+-- Adjoining i to a subset avoiding it: inclusion in q trades for
+-- inclusion in q ∖ i, and the size goes up by one.
+
+⊆ᵇ-∪⁅⁆ : (p q : Subset k) (i : Fin k) → ¬ (i ∈ p) → i ∈ q →
+         (p ∪ ⁅ i ⁆) ⊆ᵇ q ≡ p ⊆ᵇ (q ∖ i)
+⊆ᵇ-∪⁅⁆ (inside  ∷ p) (b       ∷ q) zero    i∉p i∈q =
+  contradiction here i∉p
+⊆ᵇ-∪⁅⁆ (outside ∷ p) (inside  ∷ q) zero    i∉p i∈q = trans
+  (cong (λ r → r ⊆ᵇ q) (∪-identityʳ p))
+  (sym (cong ((outside ∷ p) ⊆ᵇ_) (∖-head inside q)))
+⊆ᵇ-∪⁅⁆ (outside ∷ p) (outside ∷ q) zero    i∉p i∈q =
+  contradiction i∈q (λ ())
+⊆ᵇ-∪⁅⁆ (a ∷ p) (b ∷ q) (suc i) i∉p i∈q = trans
+  (step a b)
+  (sym (cong ((a ∷ p) ⊆ᵇ_) (∖-tail b q i)))
+  where
+  rec : (p ∪ ⁅ i ⁆) ⊆ᵇ q ≡ p ⊆ᵇ (q ∖ i)
+  rec = ⊆ᵇ-∪⁅⁆ p q i (λ i∈p → i∉p (there i∈p)) (drop-there i∈q)
+
+  step : ∀ a b → ((a ∷ p) ∪ (outside ∷ ⁅ i ⁆)) ⊆ᵇ (b ∷ q) ≡
+                 (a ∷ p) ⊆ᵇ (b ∷ (q ∖ i))
+  step inside  inside  = rec
+  step inside  outside = refl
+  step outside inside  = rec
+  step outside outside = rec
+
+∣∪⁅⁆∣ : (p : Subset k) (i : Fin k) → ¬ (i ∈ p) →
+        ∣ p ∪ ⁅ i ⁆ ∣ ≡ suc ∣ p ∣
+∣∪⁅⁆∣ (inside  ∷ p) zero    i∉p = contradiction here i∉p
+∣∪⁅⁆∣ (outside ∷ p) zero    i∉p = cong suc (cong ∣_∣ (∪-identityʳ p))
+∣∪⁅⁆∣ (inside  ∷ p) (suc i) i∉p =
+  cong suc (∣∪⁅⁆∣ p i (λ i∈p → i∉p (there i∈p)))
+∣∪⁅⁆∣ (outside ∷ p) (suc i) i∉p = ∣∪⁅⁆∣ p i (λ i∈p → i∉p (there i∈p))
