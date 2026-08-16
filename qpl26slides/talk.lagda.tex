@@ -576,23 +576,25 @@ module NF-as-circuits where
   \end{columns}
 \end{frame}
 
-\begin{frame}{Everything on these slides is Agda-checked}
+\begin{frame}{Everything is Agda-checked}
   \begin{itemize}
-    \item $\approx 320$ files, $\approx 100\,000$ lines of Agda,
+    \item $\approx 330$ files, $\approx 74\,000$ lines of Agda,
           all \texttt{--safe}, \alert{no postulates}.
-    \item Agda 2.8, standard library 2.3.
-    \item One root (\texttt{MainTheorems.agda}) reaches the whole library;
-          these slides import the library and \emph{re-state} the main
-          theorems --- if a statement on a slide did not match the
-          formalisation, the slides would not build.
+    \item \alert{Claude} did the semantic side code and the
+      refactorization and improvment of the syntactic side.
   \end{itemize}
   \vfill
   \begin{block}{What the formalisation covers}
-    All group-theoretic computation: presentations, normal forms,
-    completeness.  The two glue facts --- that the projective Clifford
-    group is $\mathrm{Pauli} \rtimes \mathrm{Sp}$, and that the Clifford
-    group is a central extension of it by
-    $\langle\omega\rangle$ --- are classical and are \emph{not} formalised.
+    \vspace{0.2cm}
+    Presentations, normal forms, rewriting to normal forms,
+    completeness.
+  \end{block}
+  \begin{block}{What it does not}
+    \vspace{0.2cm}
+    The two glue facts that the projective Clifford group is
+    $\mathrm{Pauli} \rtimes \mathrm{Sp}$, and that the Clifford group
+    is a central extension of it by $\langle\omega\rangle$, which
+    well-known.
   \end{block}
 \end{frame}
 
@@ -617,9 +619,9 @@ module NF-as-circuits where
     \item Doesn't this just move the difficulty around?  \alert{No}: the
           symplectic factor is where the real rewriting happens, and
           keeping the Pauli part out of it pays off everywhere.
-    \item Prior work (qubit: Selinger; qutrit) worked with the whole
-          Clifford group at once --- the derivations drag a ``messy''
-          Pauli correction through every step.
+    \item Prior work (qubit: Selinger; qutrit: Li et al.) worked with
+      the whole Clifford group at once --- the derivations drag a
+      ``messy'' Pauli correction through every step.
   \end{itemize}
 \end{frame}
 
@@ -628,9 +630,9 @@ module NF-as-circuits where
   \vfill
   \begin{center}
   \begin{tabular}{cccccc}
-    \fitfig[0.11\textwidth]{s3-e} & \fitfig[0.11\textwidth]{s3-s0} &
-    \fitfig[0.11\textwidth]{s3-s1} & \fitfig[0.13\textwidth]{s3-s01} &
-    \fitfig[0.13\textwidth]{s3-s10} & \fitfig[0.15\textwidth]{s3-s010}\\
+    \ufig[0.8]{s3-e} & \ufig[0.8]{s3-s0} &
+    \ufig[0.8]{s3-s1} & \ufig[0.8]{s3-s01} &
+    \ufig[0.8]{s3-s10} & \ufig[0.8]{s3-s010}\\
     $e$ & $\sigma_0$ & $\sigma_1$ & $\sigma_0\sigma_1$ &
     $\sigma_1\sigma_0$ & $\sigma_0\sigma_1\sigma_0$
   \end{tabular}
