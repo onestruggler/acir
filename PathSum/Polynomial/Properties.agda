@@ -17,7 +17,7 @@ open import Data.Fin.Subset using
   (Subset; inside; outside; ⁅_⁆; ⊥; _∪_; _∩_; _∈_; _∉_; _⊆_; ∣_∣)
 open import Data.Fin.Subset.Properties using
   (∣⊥∣≡0; ∣⁅x⁆∣≡1; ∪-identityʳ; drop-not-there; drop-∷-⊆; q⊆p∪q;
-   x∈⁅x⁆; _⊆?_; _∈?_)
+   x∈⁅x⁆; _⊆?_; _∈?_; ∉⊥; x∈p∪q⁻)
 open import Data.Integer.Base using (ℤ; 0ℤ; 1ℤ; +_)
   renaming (-_ to -ℤ_; _^_ to _^ℤ_; _+_ to _+ℤ_; _*_ to _*ℤ_;
             _-_ to _-ℤ_)
@@ -1407,3 +1407,103 @@ eval-cong : (P : Poly n m) {x x′ : Fin n → Bool} {y y′ : Fin m → Bool} �
             eval P x y ≡ eval P x′ y′
 eval-cong P x≗ y≗ = Σmon-cong (λ γ →
   cong (λ b → if b then P γ else 0ℤ) (satᵐ-cong γ x≗ y≗))
+
+-- Satisfaction reads the assignment only at the variables of the
+-- monomial, so a polynomial mentioning no monomial containing v has a
+-- value insensitive to the assignment at v.
+
+sat-cong-⊆ : (p : Subset k) {f g : Fin k → Bool} →
+             (∀ j → j ∈ p → f j ≡ g j) → sat p f ≡ sat p g
+sat-cong-⊆ []            h = refl
+sat-cong-⊆ (inside  ∷ p) h =
+  cong₂ _∧_ (h zero here) (sat-cong-⊆ p (λ j j∈p → h (suc j) (there j∈p)))
+sat-cong-⊆ (outside ∷ p) h =
+  sat-cong-⊆ p (λ j j∈p → h (suc j) (there j∈p))
+
+eval-off : ∀ {n m} (Q : Poly n m) (i : Fin m) →
+           (∀ γ → y[ i ] ∈ᵐ γ → Q γ ≡ 0ℤ) →
+           (x : Fin n → Bool) (y y′ : Fin m → Bool) →
+           (∀ j → ¬ (j ≡ i) → y j ≡ y′ j) →
+           eval Q x y ≡ eval Q x y′
+eval-off {n} {m} Q i hyp x y y′ agree =
+  trans (kill y) (trans (Σmon-cong step) (sym (kill y′)))
+  where
+  kill : ∀ w → eval Q x w ≡
+         Σmon (λ δ → if ⌊ y[ i ] ∈ᵐ? δ ⌋ then 0ℤ
+                     else (if satᵐ δ x w then Q δ else 0ℤ))
+  kill w = trans
+    (Σmon-at y[ i ] (λ γ → if satᵐ γ x w then Q γ else 0ℤ))
+    (Σmon-cong (λ δ →
+      cong (λ z → if ⌊ y[ i ] ∈ᵐ? δ ⌋ then 0ℤ else z)
+        (trans
+          (cong (λ z → (if satᵐ δ x w then Q δ else 0ℤ) +ℤ z)
+            (trans
+              (cong (λ z → if satᵐ (δ ∪ᵐ ⟪ y[ i ] ⟫) x w then z else 0ℤ)
+                    (hyp (δ ∪ᵐ ⟪ y[ i ] ⟫) (v∈δ∪⟪v⟫ δ y[ i ])))
+              (if-0 (satᵐ (δ ∪ᵐ ⟪ y[ i ] ⟫) x w))))
+          (+-identityʳ (if satᵐ δ x w then Q δ else 0ℤ)))))
+
+  step : ∀ δ →
+         (if ⌊ y[ i ] ∈ᵐ? δ ⌋ then 0ℤ
+          else (if satᵐ δ x y then Q δ else 0ℤ)) ≡
+         (if ⌊ y[ i ] ∈ᵐ? δ ⌋ then 0ℤ
+          else (if satᵐ δ x y′ then Q δ else 0ℤ))
+  step (α , β) with i ∈? β
+  ... | yes _   = refl
+  ... | no  i∉β = cong (λ b → if b then Q (α , β) else 0ℤ)
+        (cong (sat α x ∧_)
+          (sat-cong-⊆ β (λ j j∈β →
+            agree j (λ j≡i → i∉β (Eq.subst (_∈ β) j≡i j∈β)))))
+
+-- A substituted polynomial mentions no monomial containing the
+-- substituted variable, provided the form does not contain it either:
+-- the only surviving splittings put the variable in the part read by
+-- the form, whose lifting is supported on subsets of S.
+
+v∉1ᵐ : (v : Var n m) → ¬ (v ∈ᵐ 1ᵐ)
+v∉1ᵐ x[ i ] = ∉⊥
+v∉1ᵐ y[ j ] = ∉⊥
+
+∈ᵐ-mono : (v : Var n m) {γ δ : Mon n m} → γ ⊆ᵐ δ → v ∈ᵐ γ → v ∈ᵐ δ
+∈ᵐ-mono x[ i ] (α⊆ , _) v∈ = α⊆ v∈
+∈ᵐ-mono y[ j ] (_ , β⊆) v∈ = β⊆ v∈
+
+∈ᵐ-∪ : (v : Var n m) (δ β : Mon n m) →
+       ¬ (v ∈ᵐ δ) → v ∈ᵐ (δ ∪ᵐ β) → v ∈ᵐ β
+∈ᵐ-∪ x[ i ] (α , _) (α′ , _) v∉δ v∈ with x∈p∪q⁻ α α′ v∈
+... | inj₁ p = contradiction p v∉δ
+... | inj₂ q = q
+∈ᵐ-∪ y[ j ] (_ , β) (_ , β′) v∉δ v∈ with x∈p∪q⁻ β β′ v∈
+... | inj₁ p = contradiction p v∉δ
+... | inj₂ q = q
+
+liftXor-0 : (c : Bool) (S γ : Mon n m) (v : Var n m) →
+            v ∈ᵐ γ → ¬ (v ∈ᵐ S) → liftXor c S γ ≡ 0ℤ
+liftXor-0 c S γ v v∈γ v∉S with γ ≟ᵐ 1ᵐ
+... | yes refl = contradiction v∈γ (v∉1ᵐ v)
+... | no  _ with γ ⊆ᵐ? S
+...   | yes γ⊆S = contradiction (∈ᵐ-mono v γ⊆S v∈γ) v∉S
+...   | no  _   = refl
+
+subst-0 : ∀ {n m} (P : Poly n m) (v : Var n m) (c : Bool) (S : Mon n m) →
+          ¬ (v ∈ᵐ S) → ∀ γ → v ∈ᵐ γ → subst P v c S γ ≡ 0ℤ
+subst-0 {n} {m} P v c S v∉S γ v∈γ = cong₂ _+ℤ_ first
+  (trans (Σmon-cong {g = λ _ → 0ℤ} (λ δ →
+           trans (Σmon-cong {g = λ _ → 0ℤ} (each δ)) (Σmon-0 {n} {m})))
+         (Σmon-0 {n} {m}))
+  where
+  first : (if ⌊ v ∈ᵐ? γ ⌋ then 0ℤ else P γ) ≡ 0ℤ
+  first with v ∈ᵐ? γ
+  ... | yes _ = refl
+  ... | no ¬p = contradiction v∈γ ¬p
+
+  each : ∀ δ β → substTerm P v c S γ δ β ≡ 0ℤ
+  each δ β with v ∈ᵐ? δ
+  ... | yes _ = refl
+  ... | no v∉δ with (δ ∪ᵐ β) ≟ᵐ γ
+  ...   | no  _  = refl
+  ...   | yes eq = trans
+          (cong (λ z → P (δ ∪ᵐ ⟪ v ⟫) *ℤ z)
+            (liftXor-0 c S β v
+              (∈ᵐ-∪ v δ β v∉δ (Eq.subst (v ∈ᵐ_) (sym eq) v∈γ)) v∉S))
+          (*-zeroʳ (P (δ ∪ᵐ ⟪ v ⟫)))
