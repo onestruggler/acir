@@ -241,21 +241,30 @@ nf4 = handPicture (-0.8, -1.0, 9.6, 7.7) nodes edges
          ++ spanBox "ml4" 7.9 0 4 "ML_4"
     edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
 
--- ML₄ tower: ML₄ is either M₄ · L₄' or D · (ML₃ ↑).
-mlTower :: String
-mlTower = handPicture (-0.8, -1.2, 18.8, 7.7) nodes edges
+-- ML₄ tower, split into its two cases, with room around the ≡:
+-- ML₄ is either M₄ · L₄' ...
+mlTowerA :: String
+mlTowerA = handPicture (-0.8, -1.0, 9.2, 7.7) nodes edges
   where
-    nodes = concat [ wire ("w" ++ show w) (-0.5) 7.6 w | w <- [0..3] ]
+    nodes = concat [ wire ("w" ++ show w) (-0.5) 2.3 w | w <- [0..3] ]
          ++ spanBox "ml4" 1.0 0 4 "ML_4"
-         ++ "\\node [style=none] (eq1) at (2.6, 3.0) {\\scriptsize $\\equiv$};\n"
-         ++ spanBox "m4" 4.2 0 4 "M_4"
-         ++ spanBox "l4" 6.4 0 4 "L_4'"
-         ++ "\\node [style=none] (orr) at (8.7, 3.0) {\\scriptsize or};\n"
-         ++ concat [ wire ("v" ++ show w) 9.8 18.5 w | w <- [0..3] ]
-         ++ spanBox "ml4b" 11.3 0 4 "ML_4"
-         ++ "\\node [style=none] (eq2) at (12.9, 3.0) {\\scriptsize $\\equiv$};\n"
-         ++ spanBox "d0" 14.5 0 2 "D"
-         ++ spanBox "ml3" 16.9 1 3 "ML_3"
+         ++ "\\node [style=none] (eq1) at (3.0, 3.0) {\\scriptsize $\\equiv$};\n"
+         ++ concat [ wire ("v" ++ show w) 3.7 8.9 w | w <- [0..3] ]
+         ++ spanBox "m4" 5.0 0 4 "M_4"
+         ++ spanBox "l4" 7.2 0 4 "L_4'"
+    edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
+         ++ concat [ wireDraw ("v" ++ show w) | w <- [0..3] ]
+
+-- ... or D · (ML₃ ↑).
+mlTowerB :: String
+mlTowerB = handPicture (-0.8, -1.0, 9.4, 7.7) nodes edges
+  where
+    nodes = concat [ wire ("w" ++ show w) (-0.5) 2.3 w | w <- [0..3] ]
+         ++ spanBox "ml4" 1.0 0 4 "ML_4"
+         ++ "\\node [style=none] (eq2) at (3.0, 3.0) {\\scriptsize $\\equiv$};\n"
+         ++ concat [ wire ("v" ++ show w) 3.7 9.1 w | w <- [0..3] ]
+         ++ spanBox "d0" 5.0 0 2 "D"
+         ++ spanBox "ml3" 7.4 1 3 "ML_3"
     edges = concat [ wireDraw ("w" ++ show w) | w <- [0..3] ]
          ++ concat [ wireDraw ("v" ++ show w) | w <- [0..3] ]
 
@@ -294,9 +303,10 @@ snStair = handPicture (-0.8, -1.0, 8.4, 7.7) nodes edges
 
 handItems :: [(String, String)]
 handItems =
-  [ ("nf4",      nf4)
-  , ("ml-tower", mlTower)
-  , ("sn-stair", snStair)
+  [ ("nf4",        nf4)
+  , ("ml-tower-a", mlTowerA)
+  , ("ml-tower-b", mlTowerB)
+  , ("sn-stair",   snStair)
   ]
 
 ------------------------------------------------------------------------

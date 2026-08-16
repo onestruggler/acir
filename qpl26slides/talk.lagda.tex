@@ -510,6 +510,8 @@ module Normal-form-boxes where
 \end{frame}
 
 \begin{frame}{Rows, and the staircase}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
 \begin{code}
   M L′ ML′ ML : ℕ → Set
   M 0 = ⊤
@@ -526,6 +528,14 @@ module Normal-form-boxes where
   NF 0 = ⊤
   NF (₁₊ n) = NF n × ML (₁₊ n)
 \end{code}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{center}
+        \ufig[0.85]{ml-tower-a}\\[3ex]
+        \ufig[0.85]{ml-tower-b}
+      \end{center}
+    \end{column}
+  \end{columns}
   \vfill
   A double induction: \AgdaFunction{NF} is a staircase of
   \AgdaFunction{ML} boxes, and each \AgdaFunction{ML} box is itself
@@ -547,8 +557,7 @@ module NF-as-circuits where
 \end{code}
   \vfill
   \begin{center}
-    \fitfig[0.3\textwidth]{nf4}\qquad
-    \fitfig[0.55\textwidth]{ml-tower}
+    \fitfig[0.34\textwidth]{nf4}
   \end{center}
 \end{frame}
 
