@@ -734,11 +734,11 @@ Respects f = ∀ g h → (∀ j → g j ≡ h j) → f g ≐ f h
 setᵗ : ∀ {k} → Fin k → (Fin k → Bool) → (Fin k → Bool)
 setᵗ i g j = if ⌊ j Fin.≟ i ⌋ then true else g j
 
-private
-  Σᴮ-0 : ∀ {k} → Σᴮ {k} (λ _ → 0ᴬ) ≐ 0ᴬ
-  Σᴮ-0 {zero}  i = refl
-  Σᴮ-0 {suc k} i = Eq.cong₂ _+_ (Σᴮ-0 {k} i) (Σᴮ-0 {k} i)
+Σᴮ-0 : ∀ {k} → Σᴮ {k} (λ _ → 0ᴬ) ≐ 0ᴬ
+Σᴮ-0 {zero}  i = refl
+Σᴮ-0 {suc k} i = Eq.cong₂ _+_ (Σᴮ-0 {k} i) (Σᴮ-0 {k} i)
 
+private
   ⌊≟⌋-suc : ∀ {k} (j i : Fin k) →
             ⌊ suc j Fin.≟ suc i ⌋ ≡ ⌊ j Fin.≟ i ⌋
   ⌊≟⌋-suc j i with j Fin.≟ i

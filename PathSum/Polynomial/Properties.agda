@@ -386,17 +386,17 @@ private
   ∧-true : ∀ a b → a ∧ b ≡ true → (a ≡ true) × (b ≡ true)
   ∧-true true true _ = refl , refl
 
-  emptyᵇ⇒≡⊥ : (p : Subset k) → emptyᵇ p ≡ true → p ≡ ⊥
-  emptyᵇ⇒≡⊥ []            _  = refl
-  emptyᵇ⇒≡⊥ (outside ∷ p) eq = cong (outside ∷_) (emptyᵇ⇒≡⊥ p eq)
+emptyᵇ⇒≡⊥ : (p : Subset k) → emptyᵇ p ≡ true → p ≡ ⊥
+emptyᵇ⇒≡⊥ []            _  = refl
+emptyᵇ⇒≡⊥ (outside ∷ p) eq = cong (outside ∷_) (emptyᵇ⇒≡⊥ p eq)
 
-  emptyᵐ⇒≡1ᵐ : (γ : Mon n m) → emptyᵐ γ ≡ true → γ ≡ 1ᵐ
-  emptyᵐ⇒≡1ᵐ (α , β) eq with ∧-true (emptyᵇ α) (emptyᵇ β) eq
-  ... | eα , eβ = cong₂ _,_ (emptyᵇ⇒≡⊥ α eα) (emptyᵇ⇒≡⊥ β eβ)
+emptyᵐ⇒≡1ᵐ : (γ : Mon n m) → emptyᵐ γ ≡ true → γ ≡ 1ᵐ
+emptyᵐ⇒≡1ᵐ (α , β) eq with ∧-true (emptyᵇ α) (emptyᵇ β) eq
+... | eα , eβ = cong₂ _,_ (emptyᵇ⇒≡⊥ α eα) (emptyᵇ⇒≡⊥ β eβ)
 
-  ≡1ᵐ⇒emptyᵐ : (γ : Mon n m) → γ ≡ 1ᵐ → emptyᵐ γ ≡ true
-  ≡1ᵐ⇒emptyᵐ {n} {m} γ eq = trans (cong emptyᵐ eq)
-    (cong₂ _∧_ (emptyᵇ-⊥ {n}) (emptyᵇ-⊥ {m}))
+≡1ᵐ⇒emptyᵐ : (γ : Mon n m) → γ ≡ 1ᵐ → emptyᵐ γ ≡ true
+≡1ᵐ⇒emptyᵐ {n} {m} γ eq = trans (cong emptyᵐ eq)
+  (cong₂ _∧_ (emptyᵇ-⊥ {n}) (emptyᵇ-⊥ {m}))
 
 ⌊≟ᵐ1ᵐ⌋ : (γ : Mon n m) → ⌊ γ ≟ᵐ 1ᵐ ⌋ ≡ emptyᵐ γ
 ⌊≟ᵐ1ᵐ⌋ γ with γ ≟ᵐ 1ᵐ | emptyᵐ γ in eq

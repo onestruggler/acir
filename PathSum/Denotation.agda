@@ -37,7 +37,9 @@ open import Data.Bool.Base using (Bool; true; false; not; _∧_; _xor_;
   if_then_else_)
 open import Data.Bool.Properties using (∧-zeroʳ)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.Fin.Subset using (Subset; inside)
+open import Data.Fin.Subset using (Subset; inside; ⊥; _∈_)
+  renaming (_-_ to _∖ᶠ_)
+open import Data.Fin.Subset.Properties using (∉⊥)
 open import Data.Integer.Base using (ℤ; 0ℤ; 1ℤ; +_; -_; _-_; _*_)
   renaming (_+_ to _+ℤ_)
 open import Data.Integer.Divisibility.Signed using
@@ -47,7 +49,7 @@ open import Data.Integer.Properties using
    *-identityʳ; *-identityˡ; *-zeroʳ; *-zeroˡ; neg-involutive)
 open import Data.Integer.Solver using (module +-*-Solver)
 open import Data.Nat.Base using (zero; suc) renaming (_+_ to _ℕ+_)
-open import Data.Product.Base using (_,_)
+open import Data.Product.Base using (_×_; _,_; ∃; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Vec.Base using (_∷_; here)
 open import Relation.Binary.PropositionalEquality using
@@ -61,6 +63,7 @@ open import PathSum.Order (suc (suc (suc M₀)))
 open import PathSum.Polynomial
 open import PathSum.Polynomial.Properties
 open import PathSum.Reduction (suc (suc (suc M₀)))
+open import PathSum.Semantics (suc (suc (suc M₀))) using (Semantics)
 
 import Data.Fin.Properties as Fin
 import Data.Nat.Properties as ℕ
@@ -882,3 +885,154 @@ module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (i : Fin m) (c : Bool)
 ⟶-sound (elim ξ eqP eqf)         = elim-sound ξ eqP eqf
 ⟶-sound (ω    ξ c S eqP eqf)     = ω-sound ξ c S eqP eqf
 ⟶-sound (hh   ξ i c S i∈S eqP eqf) = hh-sound ξ i c S i∈S eqP eqf
+
+
+------------------------------------------------------------------------
+-- Lemma 4.2
+
+-- Where the form on S is 1 the two branches of y₀ cancel, so an input
+-- making it 1 at every path kills every amplitude -- which the
+-- identity's is not.  Such an input exists whenever the form is not
+-- identically 0: all-false does it when the constant is 1, and a
+-- single variable of S set to true does it otherwise.
+
+private
+  allFin-true : ∀ {j} {f : Fin j → Bool} → (∀ w → f w ≡ true) →
+                allFin f ≡ true
+  allFin-true {zero}  h = refl
+  allFin-true {suc j} h =
+    cong₂ _∧_ (h zero) (allFin-true (λ w → h (suc w)))
+
+  eqᵇ-refl : ∀ b → eqᵇ b b ≡ true
+  eqᵇ-refl true  = refl
+  eqᵇ-refl false = refl
+
+  bit-if : ∀ b → bit (if b then 1ℤ else 0ℤ) ≡ b
+  bit-if true  = refl
+  bit-if false = refl
+
+  if-0ℤ : ∀ (p : Bool) → (if p then 0ℤ else 0ℤ) ≡ 0ℤ
+  if-0ℤ true  = refl
+  if-0ℤ false = refl
+
+  dec-false : ∀ {p} {P : Set p} (d : Dec P) → ¬ P → ⌊ d ⌋ ≡ false
+  dec-false (yes q) ¬p = contradiction q ¬p
+  dec-false (no  _) _  = refl
+
+  dec-refl : ∀ {j} (u : Fin j) → ⌊ u Fin.≟ u ⌋ ≡ true
+  dec-refl u with u Fin.≟ u
+  ... | yes _ = refl
+  ... | no ¬p = contradiction refl ¬p
+
+  eval-0ᴾ : ∀ {n m} (x : Assign n) (y : Assign m) →
+            eval (0ᴾ {n} {m}) x y ≡ 0ℤ
+  eval-0ᴾ {n} {m} x y = trans
+    (Σmon-cong {g = λ _ → 0ℤ} (λ γ → if-0ℤ (satᵐ γ x y))) (Σmon-0 {n} {m})
+
+  eval-μ : ∀ {n m} (v : Var n m) (x : Assign n) (y : Assign m) →
+           eval (μ v) x y ≡ (if valᵛ v x y then 1ℤ else 0ℤ)
+  eval-μ v x y = trans
+    (Σmon-cong (λ γ → trans
+      (cong (λ b → if satᵐ γ x y then (if b then 1ℤ else 0ℤ) else 0ℤ)
+            (⌊≟ᵐ⌋ γ ⟪ v ⟫))
+      (if-swap (satᵐ γ x y) (γ ≡ᵐᵇ ⟪ v ⟫) 1ℤ)))
+    (trans (Σmon-delta ⟪ v ⟫ (λ γ → if satᵐ γ x y then 1ℤ else 0ℤ))
+           (cong (λ b → if b then 1ℤ else 0ℤ) (satᵐ-⟪⟫ v x y)))
+
+  -- The identity path-sum has a single path, of phase 0, and it hits.
+
+  amp-id : ∀ {n} (x : Assign n) → amp idPS x x ≐ zpow 0ℤ
+  amp-id {n} x w = trans
+    (cong (λ b → (if b then zpow (eval (0ᴾ {n} {0}) x (λ ())) else 0ᴬ) w)
+      (allFin-true (λ u → trans
+        (cong (λ z → eqᵇ (bit z) (x u)) (eval-μ {n} {0} x[ u ] x (λ ())))
+        (trans (cong (λ b → eqᵇ b (x u)) (bit-if (x u))) (eqᵇ-refl (x u))))))
+    (cong (λ z → zpow z w) (eval-0ᴾ {n} {0} x (λ ())))
+
+  scale-0ᴬ : ∀ j → scale j 0ᴬ ≐ 0ᴬ
+  scale-0ᴬ zero    _ = refl
+  scale-0ᴬ (suc j) w = trans (√2·-map (scale-0ᴬ j) w) (√2·-0ᴬ w)
+
+  witness′ : ∀ {n m} (c : Bool) (S : Mon n m) → proj₂ S ≡ ⊥ →
+             ¬ (c ≡ false × S ≡ 1ᵐ) →
+             ∃ λ (x : Assign n) → ∀ (y : Assign m) →
+               eval (liftXor c S) x y ≡ 1ℤ
+  witness′ {n} {m} c S S-noy nontriv with c
+  ... | true  = (λ _ → false) , λ y →
+        liftXor-off true S (λ _ → false) y (λ j _ → refl)
+          (λ j j∈ → contradiction (Eq.subst (j ∈_) S-noy j∈) ∉⊥)
+  ... | false with emptyᵇ (proj₁ S) in eS
+  ...   | true  = contradiction (refl , emptyᵐ⇒≡1ᵐ S
+          (cong₂ _∧_ eS (trans (cong emptyᵇ S-noy) (emptyᵇ-⊥ {m})))) nontriv
+  ...   | false = char , value
+    where
+    i₀ : Fin n
+    i₀ = proj₁ (emptyᵇ-witness (proj₁ S) eS)
+
+    i₀∈ : x[ i₀ ] ∈ᵐ S
+    i₀∈ = proj₂ (emptyᵇ-witness (proj₁ S) eS)
+
+    char : Assign n
+    char j = ⌊ j Fin.≟ i₀ ⌋
+
+    rest0 : ∀ y → eval (liftXor false (S ∖ᵐ x[ i₀ ])) char y ≡ 0ℤ
+    rest0 y = liftXor-off false (S ∖ᵐ x[ i₀ ]) char y
+      (λ j j∈ → dec-false (j Fin.≟ i₀)
+        (λ eq → ∉∖ (proj₁ S) i₀ (Eq.subst (_∈ (proj₁ S ∖ᶠ i₀)) eq j∈)))
+      (λ j j∈ → contradiction (Eq.subst (j ∈_) S-noy j∈) ∉⊥)
+
+    value : ∀ y → eval (liftXor false S) char y ≡ 1ℤ
+    value y = trans (liftXor-split false S x[ i₀ ] i₀∈ char y)
+      (trans
+        (cong (λ u → u +ℤ ((if char i₀ then 1ℤ else 0ℤ) *
+                           (1ℤ - ((+ 2) * u)))) (rest0 y))
+        (cong (λ b → 0ℤ +ℤ ((if b then 1ℤ else 0ℤ) *
+                            (1ℤ - ((+ 2) * 0ℤ)))) (dec-refl i₀)))
+
+module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool) (S : Mon n m)
+         (eqP : head-part (phase ξ) ≈[ pow M ] (½ ·ᴾ liftXor c S))
+         (eqf : ∀ w → NoVar (+ 2) y₀ (out ξ w))
+         where
+  open Cancel ξ c S eqP eqf
+
+  private
+    -- An input making the form 1 kills every amplitude of ξ.
+
+    amp-0 : ∀ x → (∀ y → eval (liftXor c S) x y ≡ 1ℤ) →
+            ∀ z → amp ξ x z ≐ 0ᴬ
+    amp-0 x h z w = trans
+      (sym (Σᴮ-+ (λ y → Fξ x z (extend true y))
+                 (λ y → Fξ x z (extend false y)) w))
+      (trans (Σᴮ-cong (λ y → F-cancel x z y (h y)) w) (Σᴮ-0 {m} w))
+
+    no-id : ∀ x → (∀ y → eval (liftXor c S) x y ≡ 1ℤ) → ¬ (ξ ≋ idPS)
+    no-id x h ξ≋id =
+      zpow-0≢0ᴬ (λ w → trans (sym (amp-id x w)) (idzero w))
+      where
+      idzero : amp idPS x x ≐ 0ᴬ
+      idzero = scale-injective k (amp idPS x x) 0ᴬ
+        (λ w → trans (sym (ξ≋id x x w))
+                     (trans (amp-0 x h x w) (sym (scale-0ᴬ k w))))
+
+
+  interference-lemma : proj₂ S ≡ ⊥ → ¬ (c ≡ false × S ≡ 1ᵐ) → ¬ (ξ ≋ idPS)
+  interference-lemma S-noy nontriv =
+    no-id (proj₁ w) (proj₂ w)
+    where
+    w = witness′ c S S-noy nontriv
+
+
+------------------------------------------------------------------------
+-- The denotation as a semantics
+
+-- Every field of the interface is now proved, so section 4.3 holds of
+-- this denotation rather than of a hypothetical one.
+
+semantics : Semantics
+Semantics._≋_          semantics = _≋_
+Semantics.≋-refl  semantics {ξ = a} = ≋-refl {ξ = a}
+Semantics.≋-sym   semantics {ξ = a} {ζ = b} = ≋-sym {ξ = a} {ζ = b}
+Semantics.≋-trans semantics {ξ = a} {ζ = b} {χ = d} =
+  ≋-trans {ξ = a} {ζ = b} {χ = d}
+Semantics.⟶-sound semantics {ξ = a} {ζ = b} = ⟶-sound {ξ = a} {ζ = b}
+Semantics.interference semantics = interference-lemma
