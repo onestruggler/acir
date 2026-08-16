@@ -396,7 +396,7 @@ module The-sixteen-relations where
   \begin{itemize}
     \item Only \alert{these 16} are axioms.  $XZ = ZX\,(\text{mod }
       \omega)$, $\mathit{Ex}$-vs-$CZ$, and both Pauli-vs-$CZ$ rules
-      are \emph{derived} --- each deletion is itself Agda-checked.
+      are \emph{derived}.
     \item Plus, for every gate set, the same three monoidal structural
       rules: congruence under $\uparrow$, gates on disjoint wires
       commute, and scalars commutes with every gate.
@@ -406,13 +406,13 @@ module The-sixteen-relations where
 \begin{frame}{The 16 relations, as circuits (1--2 qudits)}
   \begin{columns}[T]
     \begin{column}{0.46\textwidth}\tiny
-      \begin{tabular}{@{}r@{\;\,}l@{}}
-        order-S & \ufig[0.7]{pv0-order-S}\\[1pt]
-        order-H & \ufig[0.7]{pv0-order-H}\\[1pt]
-        M-power & \ufig[0.7]{pv0-M-power}\\[1pt]
-        semi-MR & \ufig[0.7]{pv0-semi-MR}\\[1pt]
-        order-CZ & \ufig[0.7]{pv0-order-CZ}\\[1pt]
-        order-Ex & \ufig[0.7]{pv0-order-Ex}\\
+      \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
+        order-S & \ufig[0.7]{pv0-order-S-l} & $\equiv$ & \ufig[0.7]{pv0-order-S-r}\\[1pt]
+        order-H & \ufig[0.7]{pv0-order-H-l} & $\equiv$ & \ufig[0.7]{pv0-order-H-r}\\[1pt]
+        M-power & \ufig[0.7]{pv0-M-power-l} & $\equiv$ & \ufig[0.7]{pv0-M-power-r}\\[1pt]
+        semi-MR & \ufig[0.7]{pv0-semi-MR-l} & $\equiv$ & \ufig[0.7]{pv0-semi-MR-r}\\[1pt]
+        order-CZ & \ufig[0.7]{pv0-order-CZ-l} & $\equiv$ & \ufig[0.7]{pv0-order-CZ-r}\\[1pt]
+        order-Ex & \ufig[0.7]{pv0-order-Ex-l} & $\equiv$ & \ufig[0.7]{pv0-order-Ex-r}\\
       \end{tabular}
     \end{column}
     \begin{column}{0.54\textwidth}\tiny
@@ -420,14 +420,16 @@ module The-sixteen-relations where
         comm-CZ-S↑ & \ufig[0.7]{pv0-comm-CZ-Sup}\\[1pt]
         semi-M↑CZ & \ufig[0.7]{pv0-semi-Mup-CZ}\\[1pt]
         semi-Ex-S↑ & \ufig[0.7]{pv0-semi-Ex-Sup}\\[1pt]
-        semi-Ex-H↑ & \ufig[0.7]{pv0-semi-Ex-Hup}\\[1pt]
-        order-SH & \ufig[0.7]{pv0-order-SH}\\
+        semi-Ex-H↑ & \ufig[0.7]{pv0-semi-Ex-Hup}\\
       \end{tabular}
     \end{column}
   \end{columns}
   \vspace{1pt}
   \begin{center}\tiny
-    comm-HHSHHS\;\,\ufig[0.7]{pv0-comm-HHSHHS}
+    \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
+        order-SH & \ufig[0.7]{pv0-order-SH-l} & $\equiv$ & \ufig[0.7]{pv0-order-SH-r}\\
+        comm-HHSHHS & \ufig[0.7]{pv0-comm-HHSHHS-l} & $\equiv$ & \ufig[0.7]{pv0-comm-HHSHHS-r}
+     \end{tabular}
   \end{center}
 \end{frame}
 

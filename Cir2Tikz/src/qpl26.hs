@@ -321,12 +321,21 @@ withBBox (x0, y0, x1, y1) body = unlines (h : bb : t)
     bb = "\\path [use as bounding box] (" ++ show x0 ++ ", " ++ show y0
          ++ ") rectangle (" ++ show x1 ++ ", " ++ show y1 ++ ");"
 
-tikzOf :: Item -> (String, String)
-tikzOf (R nm l r sp) = (nm, withBBox (bboxR rl) (CT.tikz_of_rel rl))
-  where rl = rel_trans (Rel CT.Def (Cir l (Spec "")) (Cir r (Spec "")) (Spec sp))
-tikzOf (C nm gs sp) = (nm, withBBox (bboxC c) (CT.tikz_of_cir c))
+-- A relation item also yields its two sides as standalone pictures
+-- (NAME-l, NAME-r), so a table can align the ≡ column across rows.
+tikzOf :: Item -> [(String, String)]
+tikzOf (R nm l r sp) =
+  [ (nm, withBBox (bboxR rl) (CT.tikz_of_rel rl))
+  , (nm ++ "-l", side l)
+  , (nm ++ "-r", side r)
+  ]
+  where
+    rl = rel_trans (Rel CT.Def (Cir l (Spec "")) (Cir r (Spec "")) (Spec sp))
+    side gs = let c = cir_trans (Cir gs (Spec "")) in
+              withBBox (bboxC c) (CT.tikz_of_cir c)
+tikzOf (C nm gs sp) = [(nm, withBBox (bboxC c) (CT.tikz_of_cir c))]
   where c = cir_trans (Cir gs (Spec sp))
-tikzOf (Raw nm body) = (nm, body)
+tikzOf (Raw nm body) = [(nm, body)]
 
 figDir :: FilePath
 figDir = "../qpl26slides/latex/figures/"
@@ -334,9 +343,8 @@ figDir = "../qpl26slides/latex/figures/"
 main :: IO ()
 main = do
   createDirectoryIfMissing True figDir
-  mapM_ (write . tikzOf) items
-  mapM_ write handItems
-  putStrLn ("wrote " ++ show (length items + length handItems)
-            ++ " figures to " ++ figDir)
+  let outs = concatMap tikzOf items ++ handItems
+  mapM_ write outs
+  putStrLn ("wrote " ++ show (length outs) ++ " figures to " ++ figDir)
   where
     write (nm, body) = writeFile (figDir ++ nm ++ ".tikz") body
