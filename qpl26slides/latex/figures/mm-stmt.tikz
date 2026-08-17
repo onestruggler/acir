@@ -9,7 +9,7 @@
 \begin{pgfonlayer}{edgelayer}
 \draw (lm0el00.center) to (lm0er00.center);
 \end{pgfonlayer}
-\node [style=none] (equiv) at (7.0, 0.0) {$\equiv$};
+\node [style=none] (equiv) at (7.0, 0.0) {$\approx$};
 \begin{pgfonlayer}{nodelayer}
 \node [style=gate] (n8y00) at (9.75, 0.0) {$M_{xy}$};
 \node [style=none] (lm8el00) at (8.0, 0.0){};

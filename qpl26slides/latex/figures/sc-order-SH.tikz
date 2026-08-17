@@ -15,11 +15,8 @@
 \end{pgfonlayer}
 \node [style=none] (equiv) at (17.0, 0.0) {$\equiv$};
 \begin{pgfonlayer}{nodelayer}
-\node [style=gate] (n18y00) at (20.25, 0.0) {$\omega^{(p^2-1)/8}\,I$};
+\node [style=none] (n18y00) at (20, 0.0) {$\omega^{-1/8}$};
 \node [style=none] (lm18el00) at (18.0, 0.0){};
 \node [style=none] (lm18er00) at (22.0, 0.0){};
-\end{pgfonlayer}
-\begin{pgfonlayer}{edgelayer}
-\draw (lm18el00.center) to (lm18er00.center);
 \end{pgfonlayer}
 \end{tikzpicture}
