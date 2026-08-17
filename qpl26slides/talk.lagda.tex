@@ -645,6 +645,23 @@ module NF-as-circuits where
 
 \subsection{Symplectic presentation}
 
+\begin{frame}{Symplectic presentation: the plan}
+  Finding a complete rule set for $\mathrm{Sp}(2n,\mathbb{Z}_p)$, in
+  seven steps:
+  \begin{enumerate}
+    \item \alert{Normal form} --- boxes, rows, and the staircase;
+    \item \alert{Rewrite to the normal form} --- the coset updating
+          table, warming up with $S_n$;
+    \item \alert{From symmetric to symplectic} --- the same framework,
+          under a richer action;
+    \item \alert{Uniqueness of the normal form};
+    \item \alert{Relation reduction} --- the 67 relations the rewrite
+          uses, derived from 18;
+    \item \alert{The symplectic presentation} --- the theorem;
+    \item \alert{Comparison with the qubit case}.
+  \end{enumerate}
+\end{frame}
+
 \subsubsection{Normal form}
 
 \begin{frame}{Warm-up: the symmetric group $S_n$}
@@ -938,7 +955,8 @@ module Multiplier-law where
 \begin{frame}{The simplified symplectic rule set (3 qudits), and the theorem}
   \begin{center}\tiny
     \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
-      selinger-c12 & \ufig[0.5]{simp-selinger-c12-l} & $\equiv$ & \ufig[0.5]{simp-selinger-c12-r}\\[1pt]
+%      selinger-c12 & \ufig[0.5]{simp-selinger-c12-l} & $\equiv$ & \ufig[0.5]{simp-selinger-c12-r}\\[1pt]
+      selinger-c12 & \multicolumn{3}{@{}l@{}}{\ufig[0.5]{simp-selinger-c12-l}\,$\equiv$\,\ufig[0.5]{simp-selinger-c12-r}}\\[1pt]
       selinger-c13 & \multicolumn{3}{@{}l@{}}{\ufig[0.5]{simp-selinger-c13-l}\,$\equiv$\,\ufig[0.5]{simp-selinger-c13-r}}\\[1pt]
       selinger-c14 & \ufig[0.5]{simp-selinger-c14-l} & $\equiv$ & \ufig[0.5]{simp-selinger-c14-r}\\[1pt]
       selinger-c15 & \ufig[0.5]{simp-selinger-c15-l} & $\equiv$ & \ufig[0.5]{simp-selinger-c15-r}\\
@@ -955,31 +973,52 @@ module Symplectic-presentation where
 \end{code}
 \end{frame}
 
+\subsubsection{Comparison with qubit case}
+
 \begin{frame}{Comparison with the qubit rule set (Selinger)}
   \begin{columns}[T]
-    \begin{column}{0.42\textwidth}
+    \begin{column}{0.45\textwidth}
       \vspace{2ex}
       \begin{itemize}\small
         \item \alert{identical} 3-qudit relations (C12--C15);
-        \item \alert{almost identical} 2-qudit relations;
-        \item \alert{more complicated} 1-qudit relations --- the odd-prime
-              multiplier calculus ($M_x$, primitive root $g$) has no qubit
-              counterpart.
+        \item \alert{similar} 2-qudit relations;
+        \item \alert{more complicated} 1-qudit relations --- the
+          odd-prime multiplier calculus of $M_g$ has no qubit
+          counterpart.
       \end{itemize}
       \vspace{2ex}
       {\footnotesize Figure 8 of Selinger,
       \emph{Generators and relations for $n$-qubit Clifford operators} →}
     \end{column}
-    \begin{column}{0.56\textwidth}
+    \begin{column}{0.7\textwidth}
+      \vspace{-0.45cm}
       \begin{center}
-        \includegraphics[page=17, clip, trim=2.5cm 2.8cm 2.5cm 2.6cm,
-                         height=0.88\textheight]{selinger-clifford.pdf}
+        \includegraphics[page=17, clip, trim=3cm 3.75cm 3cm 3.3cm,
+                         height=1.1\textheight]{selinger-clifford.pdf}
       \end{center}
     \end{column}
   \end{columns}
 \end{frame}
 
-\subsection{Composition}
+
+\subsection{Composing}
+
+\begin{frame}{Composing: the plan}
+  From the symplectic presentation to the Clifford presentation, in
+  four steps:
+  \begin{enumerate}
+    \item \alert{The Pauli factor} --- presenting
+          $(\mathbb{Z}_p \times \mathbb{Z}_p)^n$;
+    \item \alert{The semidirect product} --- gluing the Pauli and
+          symplectic presentations along the conjugation action;
+    \item \alert{Plumbing} --- simplifying to the 16-relation
+          presentation over $H$, $S$, $CZ$ alone;
+    \item \alert{Getting the scalars back} --- the central extension
+          by $\langle\omega\rangle$.
+  \end{enumerate}
+\end{frame}
+
+\subsubsection{The Pauli factor}
 
 \begin{frame}{Composing: the Pauli factor}
   The projective Pauli group $(\mathbb{Z}_p \times \mathbb{Z}_p)^n$ has an
@@ -1007,6 +1046,8 @@ module Pauli-relations where
     \fitfig[0.28\textwidth]{pl-comm-ZX}
   \end{center}
 \end{frame}
+
+\subsubsection{The semidirect product}
 
 \begin{frame}{Composing: the semidirect product}
   Semidirect product: relations of both factors, plus twisted commuting,
@@ -1045,6 +1086,8 @@ module Semidirect-glue where
   symplectic circuits and their relations \alert{lift} unchanged.
 \end{frame}
 
+\subsubsection{Plumbing: presentation simplification}
+
 \begin{frame}{Plumbing: presentation simplification}
   Two presentations are \alert{equivalent} when the presented groups are
   isomorphic over the same interpretation --- each side's axioms derived
@@ -1068,6 +1111,8 @@ module Semidirect-glue where
   \end{tabular}
   \end{center}
 \end{frame}
+
+\subsubsection{Getting the scalars back}
 
 \begin{frame}{Getting the scalars back}
   The Clifford group itself is a central extension by
