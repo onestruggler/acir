@@ -635,6 +635,11 @@ presentation-srel sr n = presentation-n n (RL.realises-srel sr n)
 -- group by the scalars, on no hypothesis at all.
 
 presentation-exact : ∀ (n : ℕ) →
-                     (QS._Exact,_===_ n) IsPresentationOf
-                       (PE.Presented-group n (exact-generator-data n))
+  let
+    open QS
+    Clifford-group = \ n → PE.Presented-group n (exact-generator-data n)
+  in
+  
+  (n Exact,_===_) IsPresentationOf (Clifford-group n)
+  
 presentation-exact n = presentation-n n (SR.realises n)
