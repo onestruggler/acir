@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is the Agda formalisation accompanying the paper *"A Complete and Natural Rule Set for Multi-Qudit Clifford Circuits in All Odd Prime Dimensions"*. It is being prepared for submission to the Agda standard library. Tested with **Agda 2.8 + stdlib 2.3** (also works with Agda 2.7 + stdlib 2.2).
+This is the Agda formalisation accompanying the paper *"A Complete and Natural Rule Set for Multi-Qudit Clifford Circuits in All Odd Prime Dimensions"*. It is being prepared for submission to the Agda standard library. Tested with **Agda 2.8.0 + stdlib 2.4**, which is what the tagged submission artifact is verified against (earlier versions of the library were reported to work with Agda 2.7 + stdlib 2.2).
 
 ## Typechecking
 
