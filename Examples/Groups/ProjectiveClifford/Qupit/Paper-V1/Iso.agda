@@ -94,6 +94,8 @@ import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.Lemmas
   p-3 p-prime g* g-gen as SimL
 import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.Syntactics
   p-3 p-prime g* g-gen as SimS
+import Examples.Groups.ProjectiveClifford.Qupit.Simplified-V1.ExRules
+  p-3 p-prime g* g-gen as SimExR
 import Examples.Groups.ProjectiveClifford.Qupit.Shared.PauliBase
   p-3 p-prime g* g-gen as Shared
 
@@ -115,10 +117,16 @@ module SimBridge (n : ℕ) =
 module PapR = Clifford-Relations
 module PapV0R  = PapV0.Clifford-Relations
 
-v0-XM-bridge : ∀ n (x : ℤ* ₚ) →
-               let open PB (PapV0R._QRel,_===_ (₁₊ n)) using (_≈_) in
-               PapV0R.XM x ≈ PapR.XM x
-v0-XM-bridge n x = PapV0Iso.Theorem.v1⇒pap (₁₊ n) sim
+-- The bridge as a Simplified-V1 theorem.  Stated separately from its
+-- transport below because semi-MR needs it there too, on the way to
+-- rewriting the multiplier's R-word into its S-word before the two
+-- spellings of that axiom can be compared.
+sim-XM-bridge : ∀ n (x : ℤ* ₚ) →
+                let open PB (SimS.Clifford-Relations._QRel,_===_ (₁₊ n))
+                      using (_≈_) in
+                PapV0R.XM x ≈ PapR.XM x
+sim-XM-bridge n x = trans (refl' eq₁)
+                      (trans (SimBridge.Bridge.bridge n (x ⁻¹)) (refl' eq₂))
   where
   open PB (SimS.Clifford-Relations._QRel,_===_ (₁₊ n))
 
@@ -143,9 +151,42 @@ v0-XM-bridge n x = PapV0Iso.Theorem.v1⇒pap (₁₊ n) sim
           • (H • (Shared.S^' b • H)))))))
           (inv-involutive x)
 
-  sim : PapV0R.XM x ≈ PapR.XM x
-  sim = trans (refl' eq₁)
-          (trans (SimBridge.Bridge.bridge n (x ⁻¹)) (refl' eq₂))
+v0-XM-bridge : ∀ n (x : ℤ* ₚ) →
+               let open PB (PapV0R._QRel,_===_ (₁₊ n)) using (_≈_) in
+               PapV0R.XM x ≈ PapR.XM x
+v0-XM-bridge n x = PapV0Iso.Theorem.v1⇒pap (₁₊ n) (sim-XM-bridge n x)
+
+-- Paper-V1's semi-MR, as a Simplified-V1 theorem.
+--
+-- Paper-V0 states the rule over R and Paper-V1 over S, and Shared's
+-- SemiMR.R⇒S is the step between them — but it is stated over the S-word
+-- for the multiplier, while Simplified-V1's XM rule is over the R-word.
+-- So the R-form is rewritten across the bridge first, and R⇒S then does
+-- the rest: split R^(g·g), carry the R on the right's Z^½ across the
+-- multiplier, and cancel the Z^(½g) both sides are left with.
+sim-semi-MS : ∀ n →
+              let open PB (SimS.Clifford-Relations._QRel,_===_ (₁₊ n))
+                    using (_≈_) in
+              PapR.XM g′ • (S^ (g * g) • Shared.Z^ ((g * g + - g) * Shared.1/2))
+              ≈ S • PapR.XM g′
+sim-semi-MS n = SimBridge.SemiMR.R⇒S n g′ rform
+  where
+  open PB (SimS.Clifford-Relations._QRel,_===_ (₁₊ n))
+
+  bridge-g = sim-XM-bridge n g′
+
+  -- Simplified-V1's XM-form of semi-MR is about the R-word; move it onto
+  -- the S-word, which is what R⇒S expects.  The refl' steps in the middle
+  -- are XM≡M⁻¹: ExRules states the rule over M (g′ ⁻¹), and reaching that
+  -- from XM g′ by unfolding alone would make Agda normalise the Bézout
+  -- witness inside g′ ⁻¹ ⁻¹, which does not terminate in any useful time.
+  rform : PapR.XM g′ • Shared.R^ (g * g) ≈ Shared.R • PapR.XM g′
+  rform =
+    trans (cleft (sym bridge-g))
+      (trans (refl' (Eq.cong (_• Shared.R^ (g * g)) (PapV0R.XM≡M⁻¹ g′)))
+        (trans (SimExR.XM-Rules.lemma-semi-MR n)
+          (trans (refl' (Eq.sym (Eq.cong (Shared.R •_) (PapV0R.XM≡M⁻¹ g′))))
+            (cright bridge-g))))
 
 -- The same for M, where no rewriting is needed at all: Paper-V0's M x is
 -- the shared bridge's left-hand side and Paper-V1's is its right-hand
@@ -208,12 +249,12 @@ module Theorem where
     open PP (PapV0R._QRel,_===_ (₁₊ n)) using (^-cong)
     bridge-g = v0-XM-bridge n g′
 
+  -- semi-MR is the one case where the two sides do not state the same
+  -- rule the same way: Paper-V1 spells it over S with a Pauli correction,
+  -- Paper-V0 over R.  sim-semi-MS is the S-form proved at Simplified-V1,
+  -- so all that is left is to carry it across.
   f-well-defined {₁₊ n} PapR.semi-MR =
-    trans (cleft (sym bridge-g))
-      (trans (axiom PapV0R.semi-MR) (cright bridge-g))
-    where
-    open PB (PapV0R._QRel,_===_ (₁₊ n))
-    bridge-g = v0-XM-bridge n g′
+    PapV0Iso.Theorem.v1⇒pap (₁₊ n) (sim-semi-MS n)
 
   f-well-defined {₂₊ n} PapR.semi-M↑CZ =
     trans (cleft (sym bridge-g↑))
@@ -273,8 +314,11 @@ module Theorem where
     open PP (PapR._QRel,_===_ (₁₊ n)) using (^-cong)
     bridge-g = PapL.One-Wire-Group.XM-bridge n g′
 
+  -- …and back: lemma-semi-MR-R is Paper-V1's axiom put back into the
+  -- R-spelling, by the same Shared.SemiMR step run the other way.
   g-well-defined {₁₊ n} PapV0R.semi-MR =
-    trans (cleft bridge-g) (trans (axiom PapR.semi-MR) (cright (sym bridge-g)))
+    trans (cleft bridge-g)
+      (trans (PapL.One-Wire-Group.lemma-semi-MR-R n) (cright (sym bridge-g)))
     where
     open PB (PapR._QRel,_===_ (₁₊ n))
     bridge-g = PapL.One-Wire-Group.XM-bridge n g′

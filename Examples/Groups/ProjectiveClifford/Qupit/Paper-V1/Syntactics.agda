@@ -161,7 +161,15 @@ module Clifford-Relations where
       order-S :       (₁₊ n) SRel,  S ^ p === ε
       order-H :       (₁₊ n) SRel,  H ^ 2 === M₋₁
       M-power : ∀ k → (₁₊ n) SRel,  XMg^ k === XM (g^ k)
-      semi-MR :       (₁₊ n) SRel,  XMg • R^  (g * g) === R • XMg
+      -- Paper-V0 states this over R, as XMg • R^(g·g) === R • XMg.  Over S
+      -- the two R's have to be split, and they do not cancel: R^(g·g)
+      -- contributes Z^(½g²) on the left, while the R on the right
+      -- contributes a Z^½ that must cross the multiplier to get there,
+      -- picking up a factor of g on the way (conjugating by XMg sends Z to
+      -- Z^g).  What is left is Z^(½g² - ½g), the exponent below.
+      -- Shared.PauliBase.SemiMR proves the two forms equivalent.
+      semi-MR :       (₁₊ n) SRel,  XMg • S^ (g * g) • Z^ ((g * g + - g) * 1/2)
+                                    === S • XMg
       comm-HHSHHS :   (₁₊ n) SRel,  H • H • S • H • H • S === S • H • H • S • H • H
 
       order-CZ :      (₂₊ n) SRel,  CZ ^ p === ε

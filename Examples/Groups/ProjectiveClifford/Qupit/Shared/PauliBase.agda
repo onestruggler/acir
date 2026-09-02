@@ -288,6 +288,13 @@ module BridgeCalc
     X ^ ((toℕ a Nat.+ toℕ b) % p)  ≈⟨ refl' (Eq.cong (X ^_) (Eq.sym (toℕ-+ a b))) ⟩
     X ^ toℕ (a + b) ∎
 
+  Z^-+ : ∀ a b -> Z^ a • Z^ b ≈ Z^ (a + b)
+  Z^-+ a b = begin
+    Z ^ toℕ a • Z ^ toℕ b          ≈⟨ sym (^-+ Z (toℕ a) (toℕ b)) ⟩
+    Z ^ (toℕ a Nat.+ toℕ b)        ≈⟨ pow-mod Z order-Z (toℕ a Nat.+ toℕ b) ⟩
+    Z ^ ((toℕ a Nat.+ toℕ b) % p)  ≈⟨ refl' (Eq.cong (Z ^_) (Eq.sym (toℕ-+ a b))) ⟩
+    Z ^ toℕ (a + b) ∎
+
   Z^-* : ∀ a b -> (Z^ a) ^ toℕ b ≈ Z^ (a * b)
   Z^-* a b = begin
     (Z ^ toℕ a) ^ toℕ b            ≈⟨ ^^ Z (toℕ a) (toℕ b) ⟩
@@ -445,6 +452,255 @@ module BridgeCalc
     w • ((S^' m • H) • (X^ ((β + - (α * m)) + (1/2 * m)) • Z^ (- α)))
       ≈⟨ sym assoc ⟩
     (w • (S^' m • H)) • (X^ ((β + - (α * m)) + (1/2 * m)) • Z^ (- α)) ∎
+
+  ------------------------------------------------------------------------
+  -- A Z-power crossing the whole multiplier
+  --
+  -- The three blocks of the multiplier's S-word, in the order the XM
+  -- spelling has them — S^b, S^a, S^b — carry a Z-power across and leave
+  -- it scaled by a.  Each application of P-Bm turns the Z into an X and
+  -- back; what makes this a Z-rule rather than a general Pauli one is
+  -- that the X-part cancels at the third block, and that is exactly where
+  -- a · b ≡ ₁ is used.  With any other pair of exponents an X-power would
+  -- survive.
+  --
+  -- This is the diagonal action of the multiplier on the Pauli group:
+  -- conjugating by XM x sends Z to Z^x.  Simplified-V1.SemiM proves the
+  -- same thing of its own spelling, and calls the factor β = g⁻¹ there
+  -- because it states it for M g rather than for XM g.
+
+  Z-blocks : ∀ a b → a * b ≡ 1ₚ → ∀ k →
+             Z^ k • ((S^' b • H) • ((S^' a • H) • (S^' b • H)))
+             ≈ ((S^' b • H) • ((S^' a • H) • (S^' b • H))) • Z^ (a * k)
+  Z-blocks a b ab≡1 k = begin
+    Z^ k • ((S^' b • H) • ((S^' a • H) • (S^' b • H)))
+      ≈⟨ cleft (sym left-unit) ⟩
+    (X^ ₀ • Z^ k) • ((S^' b • H) • ((S^' a • H) • (S^' b • H)))
+      ≈⟨ sym assoc ⟩
+    ((X^ ₀ • Z^ k) • (S^' b • H)) • ((S^' a • H) • (S^' b • H))
+      ≈⟨ cleft (P-Bm b ₀ k) ⟩
+    ((S^' b • H) • (X^ (k + - (₀ * b)) • Z^ (- ₀)))
+      • ((S^' a • H) • (S^' b • H))
+      ≈⟨ cleft cright (cong (refl' (Eq.cong (λ z → X^ z) e1))
+                            (refl' (Eq.cong (λ z → Z^ z) neg0))) ⟩
+    ((S^' b • H) • (X^ k • Z^ ₀)) • ((S^' a • H) • (S^' b • H))
+      ≈⟨ assoc ⟩
+    (S^' b • H) • ((X^ k • Z^ ₀) • ((S^' a • H) • (S^' b • H)))
+      ≈⟨ cright sym assoc ⟩
+    (S^' b • H) • (((X^ k • Z^ ₀) • (S^' a • H)) • (S^' b • H))
+      ≈⟨ cright cleft (P-Bm a k ₀) ⟩
+    (S^' b • H)
+      • (((S^' a • H) • (X^ (₀ + - (k * a)) • Z^ (- k))) • (S^' b • H))
+      ≈⟨ cright cleft cright cleft (refl' (Eq.cong (λ z → X^ z) e2)) ⟩
+    (S^' b • H)
+      • (((S^' a • H) • (X^ (- (k * a)) • Z^ (- k))) • (S^' b • H))
+      ≈⟨ cright assoc ⟩
+    (S^' b • H)
+      • ((S^' a • H) • ((X^ (- (k * a)) • Z^ (- k)) • (S^' b • H)))
+      ≈⟨ cright cright (P-Bm b (- (k * a)) (- k)) ⟩
+    (S^' b • H)
+      • ((S^' a • H) • ((S^' b • H)
+        • (X^ ((- k) + - ((- (k * a)) * b)) • Z^ (- (- (k * a))))))
+      ≈⟨ cright cright cright (cong (refl' (Eq.cong (λ z → X^ z) e3))
+                                    (refl' (Eq.cong (λ z → Z^ z) e4))) ⟩
+    (S^' b • H) • ((S^' a • H) • ((S^' b • H) • (X^ ₀ • Z^ (a * k))))
+      ≈⟨ cright cright cright left-unit ⟩
+    (S^' b • H) • ((S^' a • H) • ((S^' b • H) • Z^ (a * k)))
+      ≈⟨ cright sym assoc ⟩
+    (S^' b • H) • (((S^' a • H) • (S^' b • H)) • Z^ (a * k))
+      ≈⟨ sym assoc ⟩
+    ((S^' b • H) • ((S^' a • H) • (S^' b • H))) • Z^ (a * k) ∎
+    where
+    -- The first block leaves the exponent alone: it entered with no
+    -- X-part, so P-Bm's correction -(₀ · b) is zero.
+    e1 : k + - (₀ * b) ≡ k
+    e1 = Eq.trans (Eq.cong (λ z → k + - z) (*-zeroˡ b))
+           (Eq.trans (Eq.cong (k +_) neg0) (+-identityʳ k))
+
+    e2 : ₀ + - (k * a) ≡ - (k * a)
+    e2 = +-identityˡ (- (k * a))
+
+    -- The third block's X-correction is -((-(k·a))·b) = k·a·b = k, which
+    -- cancels the -k the second block left.  This is the a · b ≡ ₁ step.
+    u≡-k : (- (k * a)) * b ≡ - k
+    u≡-k = Eq.trans (neg-* (k * a) b)
+             (Eq.cong (λ z → - z)
+               (Eq.trans (*-assoc k a b)
+                 (Eq.trans (Eq.cong (k *_) ab≡1) (*-identityʳ k))))
+
+    e3 : (- k) + - ((- (k * a)) * b) ≡ ₀
+    e3 = Eq.trans (Eq.cong (λ z → (- k) + - z) u≡-k)
+           (Eq.trans (Eq.cong ((- k) +_) (neg-involutive k)) (+-inverseˡ k))
+
+    e4 : - (- (k * a)) ≡ a * k
+    e4 = Eq.trans (neg-involutive (k * a)) (*-comm k a)
+
+  -- …and the same across the whole multiplier, prefix included.  W is the
+  -- word Paper-V1 spells XM x by — SHS' x x⁻¹, blocks b, a, b — and a Z
+  -- commutes with the Pauli prefix in front of the blocks outright: with
+  -- its Z-part trivially, with its X-part by comm-X-Z.
+  module MulZ (x : ℤ* ₚ) where
+
+    private
+      a : ℤ ₚ
+      a = x .proj₁
+
+      b : ℤ ₚ
+      b = (x ⁻¹) .proj₁
+
+      γ : ℤ ₚ
+      γ = (b + - ₁) * 1/2
+
+      δ : ℤ ₚ
+      δ = (₁ + - a) * 1/2
+
+      ab≡1 : a * b ≡ 1ₚ
+      ab≡1 = lemma-⁻¹ʳ a {{nztoℕ {y = a} {neq0 = x .proj₂}}}
+
+      Blocks : Word (Gen (₁₊ n))
+      Blocks = S^' b • (H • (S^' a • (H • (S^' b • H))))
+
+      through : ∀ k → Z^ k • Blocks ≈ Blocks • Z^ (a * k)
+      through k = begin
+        Z^ k • (S^' b • (H • (S^' a • (H • (S^' b • H)))))
+          ≈⟨ cright (by-passoc (□ ^ 6) (□ ^ 2 • □ ^ 2 • □ ^ 2) auto) ⟩
+        Z^ k • ((S^' b • H) • ((S^' a • H) • (S^' b • H)))
+          ≈⟨ Z-blocks a b ab≡1 k ⟩
+        ((S^' b • H) • ((S^' a • H) • (S^' b • H))) • Z^ (a * k)
+          ≈⟨ cleft sym (by-passoc (□ ^ 6) (□ ^ 2 • □ ^ 2 • □ ^ 2) auto) ⟩
+        (S^' b • (H • (S^' a • (H • (S^' b • H))))) • Z^ (a * k) ∎
+
+    W : Word (Gen (₁₊ n))
+    W = Z^ γ • (X^ δ • Blocks)
+
+    Z-W : ∀ k → Z^ k • W ≈ W • Z^ (a * k)
+    Z-W k = begin
+      Z^ k • (Z^ γ • (X^ δ • Blocks))
+        ≈⟨ sym assoc ⟩
+      (Z^ k • Z^ γ) • (X^ δ • Blocks)
+        ≈⟨ cleft (comm⇒pow-comm (toℕ k) (toℕ γ) refl) ⟩
+      (Z^ γ • Z^ k) • (X^ δ • Blocks)
+        ≈⟨ assoc ⟩
+      Z^ γ • (Z^ k • (X^ δ • Blocks))
+        ≈⟨ cright sym assoc ⟩
+      Z^ γ • ((Z^ k • X^ δ) • Blocks)
+        ≈⟨ cright cleft sym (comm-X^k-Z^l (toℕ δ) (toℕ k)) ⟩
+      Z^ γ • ((X^ δ • Z^ k) • Blocks)
+        ≈⟨ cright assoc ⟩
+      Z^ γ • (X^ δ • (Z^ k • Blocks))
+        ≈⟨ cright cright (through k) ⟩
+      Z^ γ • (X^ δ • (Blocks • Z^ (a * k)))
+        ≈⟨ cright sym assoc ⟩
+      Z^ γ • ((X^ δ • Blocks) • Z^ (a * k))
+        ≈⟨ sym assoc ⟩
+      (Z^ γ • (X^ δ • Blocks)) • Z^ (a * k) ∎
+
+  ------------------------------------------------------------------------
+  -- The two spellings of semi-MR
+  --
+  -- Paper-V0 states the rule over R:
+  --
+  --     XM x • R^(a·a)  ≈  R • XM x,
+  --
+  -- and Paper-V1 over S, with the Pauli that the change of spelling
+  -- leaves behind written out on the left:
+  --
+  --     XM x • (S^(a·a) • Z^((a·a - a)·½))  ≈  S • XM x.
+  --
+  -- They are the same rule.  R^(a·a) splits into S^(a·a) • Z^(½·a²), and
+  -- the Z^½ that the R on the right contributes crosses the multiplier by
+  -- MulZ, picking up the factor a.  Both sides then carry a trailing
+  -- Z^(½·a), and cancelling it is the entire difference between the two
+  -- statements — which is why the S-form's exponent is ½a² - ½a rather
+  -- than the ½a² that R-splitting alone would give.
+
+  module SemiMR (x : ℤ* ₚ) where
+
+    private
+      a : ℤ ₚ
+      a = x .proj₁
+
+      W : Word (Gen (₁₊ n))
+      W = MulZ.W x
+
+      e : ℤ ₚ
+      e = (a * a + - a) * 1/2
+
+      R^-split : R^ (a * a) ≈ S^' (a * a) • Z^ (1/2 * (a * a))
+      R^-split = trans (R-split (toℕ (a * a))) (cright (Z^-* 1/2 (a * a)))
+
+      -- ½a² is the axiom's exponent plus the ½a the R on the right leaves.
+      split-e : e + 1/2 * a ≡ 1/2 * (a * a)
+      split-e =
+        Eq.trans (Eq.cong (_+ (1/2 * a)) distr)
+          (Eq.trans (+-assoc (1/2 * (a * a)) (- (1/2 * a)) (1/2 * a))
+            (Eq.trans (Eq.cong ((1/2 * (a * a)) +_) (+-inverseˡ (1/2 * a)))
+              (+-identityʳ (1/2 * (a * a)))))
+        where
+        distr : e ≡ 1/2 * (a * a) + - (1/2 * a)
+        distr = Eq.trans (*-distribʳ-+ 1/2 (a * a) (- a))
+                  (Eq.cong₂ (λ s t → s + t) (*-comm (a * a) 1/2)
+                    (Eq.trans (neg-* a 1/2)
+                      (Eq.cong (λ z → - z) (*-comm a 1/2))))
+
+      -- Both sides of the R-form, with the trailing Z^(½a) exposed.
+      L : W • R^ (a * a) ≈ (W • (S^' (a * a) • Z^ e)) • Z^ (1/2 * a)
+      L = begin
+        W • R^ (a * a)
+          ≈⟨ cright R^-split ⟩
+        W • (S^' (a * a) • Z^ (1/2 * (a * a)))
+          ≈⟨ cright cright (refl' (Eq.cong (λ z → Z^ z) (Eq.sym split-e))) ⟩
+        W • (S^' (a * a) • Z^ (e + 1/2 * a))
+          ≈⟨ cright cright sym (Z^-+ e (1/2 * a)) ⟩
+        W • (S^' (a * a) • (Z^ e • Z^ (1/2 * a)))
+          ≈⟨ cright sym assoc ⟩
+        W • ((S^' (a * a) • Z^ e) • Z^ (1/2 * a))
+          ≈⟨ sym assoc ⟩
+        (W • (S^' (a * a) • Z^ e)) • Z^ (1/2 * a) ∎
+
+      Rt : R • W ≈ (S • W) • Z^ (1/2 * a)
+      Rt = begin
+        (S • Z^ 1/2) • W
+          ≈⟨ assoc ⟩
+        S • (Z^ 1/2 • W)
+          ≈⟨ cright (MulZ.Z-W x 1/2) ⟩
+        S • (W • Z^ (a * 1/2))
+          ≈⟨ cright cright (refl' (Eq.cong (λ z → Z^ z) (*-comm a 1/2))) ⟩
+        S • (W • Z^ (1/2 * a))
+          ≈⟨ sym assoc ⟩
+        (S • W) • Z^ (1/2 * a) ∎
+
+      -- Right cancellation of a Z-power, by hand: BridgeCalc takes no
+      -- grouplike witness, and Z^u • Z^(-u) is ε by Z^-+ alone.
+      cancel : ∀ {u v} → u • Z^ (1/2 * a) ≈ v • Z^ (1/2 * a) → u ≈ v
+      cancel {u} {v} eq = begin
+        u
+          ≈⟨ sym right-unit ⟩
+        u • ε
+          ≈⟨ cright sym zz ⟩
+        u • (Z^ (1/2 * a) • Z^ (- (1/2 * a)))
+          ≈⟨ sym assoc ⟩
+        (u • Z^ (1/2 * a)) • Z^ (- (1/2 * a))
+          ≈⟨ cleft eq ⟩
+        (v • Z^ (1/2 * a)) • Z^ (- (1/2 * a))
+          ≈⟨ assoc ⟩
+        v • (Z^ (1/2 * a) • Z^ (- (1/2 * a)))
+          ≈⟨ cright zz ⟩
+        v • ε
+          ≈⟨ right-unit ⟩
+        v ∎
+        where
+        zz : Z^ (1/2 * a) • Z^ (- (1/2 * a)) ≈ ε
+        zz = trans (Z^-+ (1/2 * a) (- (1/2 * a)))
+               (refl' (Eq.cong (λ z → Z^ z) (+-inverseʳ (1/2 * a))))
+
+    -- Paper-V1's spelling gives Paper-V0's …
+    S⇒R : W • (S^' (a * a) • Z^ e) ≈ S • W → W • R^ (a * a) ≈ R • W
+    S⇒R h = trans L (trans (cleft h) (sym Rt))
+
+    -- … and back.
+    R⇒S : W • R^ (a * a) ≈ R • W → W • (S^' (a * a) • Z^ e) ≈ S • W
+    R⇒S h = cancel (trans (sym L) (trans h Rt))
 
   ------------------------------------------------------------------------
   -- The bridge

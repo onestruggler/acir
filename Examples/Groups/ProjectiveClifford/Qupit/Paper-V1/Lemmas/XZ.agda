@@ -317,7 +317,7 @@ module One-Wire-Group (n : ℕ) where
   -- make x, and negation is involutive — mentions no relation at all, so
   -- it is Shared.PauliBase's, at that file's top level.  The two facts
   -- below are the only ones specific to the exponents M₋₁ produces.
-  open Shared using (aux-half-half ; neg-involutive)
+  open Shared using (aux-half-half ; neg-involutive ; neg-* ; neg0)
 
   -- The two exponents M₋₁'s Pauli prefix collapses to: at x = -1 the
   -- shape's Z-exponent is (-1-1)·½ = -1 and its X-exponent is
@@ -666,6 +666,33 @@ module One-Wire-Group (n : ℕ) where
     M (x ⁻¹)
       ≈⟨ refl' (Eq.sym (XM≡M⁻¹ x)) ⟩
     XM x ∎
+
+  ------------------------------------------------------------------------
+  -- A Z-power crossing the multiplier
+  --
+  -- SB.Z-blocks does the three S-blocks; all that is left is the Pauli
+  -- prefix SHS' carries in front of them, and a Z commutes with that
+  -- outright — with its Z-part trivially, with its X-part by
+  -- lemma-comm-X-Z.  So conjugating by XM x sends Z to Z^x.
+  --
+  -- This is what semi-MR needs: the axiom is stated with a Z on one side
+  -- of the multiplier and none on the other, so the two spellings of it
+  -- differ by exactly one application of this.
+  Z-XM : ∀ (x : ℤ* ₚ) (k : ℤ ₚ) → Z^ k • XM x ≈ XM x • Z^ ((x .proj₁) * k)
+  Z-XM x = SB.MulZ.Z-W x
+
+  ------------------------------------------------------------------------
+  -- semi-MR, back in the R-spelling
+  --
+  -- Paper-V1 states semi-MR over S, with the Pauli that the change of
+  -- spelling leaves behind written out on the left.  Paper-V0 states it
+  -- over R.  The two are the same rule: R^(g·g) splits as S^(g·g) • Z^(½g²),
+  -- and the Z^½ that R contributes on the right crosses the multiplier by
+  -- Z-XM, picking up the factor g.  What is left over on each side is
+  -- Z^(½g), and cancelling it is the difference between the two
+  -- statements.
+  lemma-semi-MR-R : XMg {n} • R^ (g * g) ≈ R • XMg
+  lemma-semi-MR-R = SB.SemiMR.S⇒R g′ (axiom semi-MR)
 
 
   ------------------------------------------------------------------------
