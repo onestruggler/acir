@@ -68,9 +68,12 @@ private
 -- there, because the proof terms are tied to a particular relation and
 -- cannot be reused across the two.
 --
--- lemma-M-mul is what the three-wire derivations need: M ½ • M 2 is
--- M 1 is ε, and inserting that resolution of the identity is the step
--- that lets R¹⁴/R¹⁵ rescale a CZ exponent.
+-- Only what Iso needs survives here.  That is lemma-order-SH, the two
+-- Pauli orders, Z-versus-S commutation and conjugation by H — the
+-- hypotheses of the shared bridge — together with lemma-order-H, which
+-- reaches them through lemma-M-mul.  Paper-V0's fuller multiplier
+-- arithmetic (the Mg power law, the semi-rules in Mg form, M ½ • M 2)
+-- is not reproved: the isomorphism transports it.
 
 module One-Wire (n : ℕ) where
 
@@ -362,101 +365,19 @@ module One-Wire (n : ℕ) where
     open SR word-setoid
 
   ------------------------------------------------------------------------
-  -- The Mg forms of the three axioms
+  -- What the multiplier arithmetic is for here: order-H as H ^ 4 ≈ ε
   --
-  -- With lemma-M-mul in hand the rest is short.  The power law is an
-  -- induction on the exponent, and XMg is Mg's inverse — M g′ • M (g′ ⁻¹)
-  -- is M ₁ is ε — so the two semi-rules come back by cancelling XMg off
-  -- both sides of the axiom.
-
-  -- The power law over ℕ; lemma-M-power is this at an exponent from ℤ ₚ.
-  lemma-Mgⁿ : ∀ (m : ℕ) -> Mg {n} ^ m ≈ M (g^′ m)
-  lemma-Mgⁿ ₀ = begin
-    ε                ≈⟨ sym lemma-M1 ⟩
-    M (₁ , λ ())     ≡⟨ aux-M≡M (₁ , λ ()) (g^′ 0) auto ⟩
-    M (g^′ 0) ∎
-    where open SR word-setoid
-  lemma-Mgⁿ ₁ = refl' (aux-M≡M g′ (g^′ 1) (Eq.sym (*-identityʳ g)))
-  lemma-Mgⁿ (₂₊ m) = begin
-    Mg • Mg ^ ₁₊ m          ≈⟨ cright lemma-Mgⁿ (₁₊ m) ⟩
-    M g′ • M (g^′ ₁₊ m)     ≈⟨ lemma-M-mul g′ (g^′ ₁₊ m) ⟩
-    M (g′ *' g^′ ₁₊ m)      ≡⟨ aux-M≡M (g′ *' g^′ ₁₊ m) (g^′ ₂₊ m) auto ⟩
-    M (g^′ ₂₊ m) ∎
-    where open SR word-setoid
-
-  lemma-M-power : ∀ (k : ℤ ₚ) -> Mg^ k ≈ M (g^ k)
-  lemma-M-power k = begin
-    Mg ^ toℕ k     ≈⟨ lemma-Mgⁿ (toℕ k) ⟩
-    M (g^′ toℕ k)  ≡⟨ aux-M≡M (g^′ toℕ k) (g^ k) auto ⟩
-    M (g^ k) ∎
-    where open SR word-setoid
-
-  -- Mg and XMg are mutually inverse.
-  lemma-Mg-XMg : Mg {n} • XMg ≈ ε
-  lemma-Mg-XMg = begin
-    Mg • XMg            ≡⟨ Eq.cong (Mg •_) (XM≡M⁻¹ g′) ⟩
-    M g′ • M (g′ ⁻¹)    ≈⟨ lemma-M-mul g′ (g′ ⁻¹) ⟩
-    M (g′ *' (g′ ⁻¹))   ≡⟨ aux-M≡M (g′ *' (g′ ⁻¹)) (₁ , λ ())
-                                   (lemma-⁻¹ʳ g {{nztoℕ {y = g} {neq0 = g≠0} }}) ⟩
-    M (₁ , λ ())        ≈⟨ lemma-M1 ⟩
-    ε ∎
-    where open SR word-setoid
-
-  lemma-XMg-Mg : XMg {n} • Mg ≈ ε
-  lemma-XMg-Mg = begin
-    XMg • Mg            ≡⟨ Eq.cong (_• Mg) (XM≡M⁻¹ g′) ⟩
-    M (g′ ⁻¹) • M g′    ≈⟨ lemma-M-mul (g′ ⁻¹) g′ ⟩
-    M ((g′ ⁻¹) *' g′)   ≡⟨ aux-M≡M ((g′ ⁻¹) *' g′) (₁ , λ ())
-                                   (lemma-⁻¹ˡ g {{nztoℕ {y = g} {neq0 = g≠0} }}) ⟩
-    M (₁ , λ ())        ≈⟨ lemma-M1 ⟩
-    ε ∎
-    where open SR word-setoid
-
-  -- semi-MR, back in the Mg spelling.  The axiom says conjugating by XMg
-  -- takes R ^ (g·g) to R; cancelling XMg on both sides turns that into
-  -- "conjugating by Mg takes R to R ^ (g·g)", which is the original rule.
-  lemma-semi-MR : Mg {n} • R ≈ R^ (g * g) • Mg
-  lemma-semi-MR = begin
-    Mg • R
-      ≈⟨ sym right-unit ⟩
-    (Mg • R) • ε
-      ≈⟨ cright sym lemma-XMg-Mg ⟩
-    (Mg • R) • (XMg • Mg)
-      ≈⟨ assoc ⟩
-    Mg • (R • (XMg • Mg))
-      ≈⟨ cright sym assoc ⟩
-    Mg • ((R • XMg) • Mg)
-      ≈⟨ cright cleft sym (axiom semi-MR) ⟩
-    Mg • ((XMg • R^ (g * g)) • Mg)
-      ≈⟨ cright assoc ⟩
-    Mg • (XMg • (R^ (g * g) • Mg))
-      ≈⟨ sym assoc ⟩
-    (Mg • XMg) • (R^ (g * g) • Mg)
-      ≈⟨ cleft lemma-Mg-XMg ⟩
-    ε • (R^ (g * g) • Mg)
-      ≈⟨ left-unit ⟩
-    R^ (g * g) • Mg ∎
-    where open SR word-setoid
-
-  ------------------------------------------------------------------------
-  -- The resolution of the identity that Lemma 9 inserts
+  -- (-1)·(-1) is 1, so squaring the multiplier by -1 gives M ₁, which
+  -- lemma-M1 says is ε.  order-H reads H ^ 2 ≈ M₋₁, so that squares to
+  -- H ^ 4 ≈ ε — the form Shared.PauliBase.Calculus takes, and the point
+  -- past which the two spellings of the multiplier stop mattering.
   --
-  -- M ½ • M 2 is M (½·2) is M 1 is ε.  Inserting this in the middle of a
-  -- word is the unlabelled step of the progress report's Lemma 9: once
-  -- the two multipliers are there, semi-M↑CZ / semi-M↓CZ push them
-  -- outwards and rescale the exponent of every CZ they pass, which is
-  -- what makes the C18 corrections cancel.
+  -- This is the only client lemma-M-mul has left.  Paper-V0 uses it for a
+  -- good deal more (the Mg power law, the two semi-rules in Mg form, the
+  -- resolution of the identity M ½ • M 2 ≈ ε that its Lemma 9 inserts);
+  -- none of that is needed here, since Iso transports those results
+  -- rather than reproving them.
 
-  -- The modulus of a bare ₂ is not inferable inside the instance
-  -- argument below, so it is pinned down once here.
-  2ₚ : ℤ ₚ
-  2ₚ = ₂
-
-  ₂* : ℤ* ₚ
-  ₂* = (2ₚ , λ ())
-
-  -- H has order 4: order-H makes H² the multiplier by -1, and squaring
-  -- that multiplies by 1.
   lemma-M₋₁^2 : M₋₁ ^ 2 ≈ ε
   lemma-M₋₁^2 = begin
     M₋₁ ^ 2 ≈⟨ lemma-M-mul -'₁ -'₁ ⟩
@@ -475,11 +396,6 @@ module One-Wire (n : ℕ) where
       open ≡-Reasoning
     open SR word-setoid
 
-  -- Stated here rather than used as `axiom order-S` at the point of use:
-  -- callers need it at width ₁₊ n to feed lemma-cong↑, and `axiom` is
-  -- pinned to the ambient width by the open.
-  lemma-order-S : S ^ p ≈ ε
-  lemma-order-S = axiom order-S
 
   lemma-order-H : H ^ 4 ≈ ε
   lemma-order-H = begin
@@ -490,16 +406,6 @@ module One-Wire (n : ℕ) where
     where
     open SR word-setoid
 
-  lemma-M½·M₂ : M (₂* ⁻¹) • M ₂* ≈ ε
-  lemma-M½·M₂ = begin
-    M (₂* ⁻¹) • M ₂*   ≈⟨ lemma-M-mul (₂* ⁻¹) ₂* ⟩
-    M ((₂* ⁻¹) *' ₂*)  ≡⟨ aux-M≡M ((₂* ⁻¹) *' ₂*) (₁ , λ ()) aux ⟩
-    M (₁ , λ ())       ≈⟨ lemma-M1 ⟩
-    ε ∎
-    where
-    aux : ((₂* ⁻¹) *' ₂*) .proj₁ ≡ ₁
-    aux = lemma-⁻¹ˡ 2ₚ {{nztoℕ {y = 2ₚ} {neq0 = λ ()} }}
-    open SR word-setoid
 
   ------------------------------------------------------------------------
   -- The multiplier by -1 as a power of the generating multiplier
@@ -510,21 +416,6 @@ module One-Wire (n : ℕ) where
   -- `axiom` is fixed to the ambient width by the open, so it cannot
   -- produce the lower-width statement from inside a two-wire module.
 
-  k₋ : ℤ ₚ
-  k₋ = inject₁ (g-gen -'₁ .proj₁)
-
-  j₋ : ℕ
-  j₋ = toℕ k₋
-
-  e₋ : (g^ k₋) .proj₁ ≡ -'₁ .proj₁
-  e₋ = lemma-log-inject -'₁
-
-  lemma-M₋₁-pow : Mg ^ j₋ ≈ M₋₁
-  lemma-M₋₁-pow = begin
-    Mg ^ j₋    ≈⟨ lemma-M-power k₋ ⟩
-    M (g^ k₋)  ≡⟨ aux-M≡M (g^ k₋) -'₁ e₋ ⟩
-    M₋₁ ∎
-    where open SR word-setoid
 
   ------------------------------------------------------------------------
   -- Moving S through the H-H-S-H-H block, and Z as a power
@@ -634,7 +525,7 @@ module One-Wire (n : ℕ) where
   -- comm-HHSHHS, which the two rule sets share.  lemma-order-Z is what
   -- lets a Pauli exponent be completed to a full p-th power, and
   -- lemma-comm-Z-S is what takes R = S • Z ^ ½ apart and puts it back
-  -- together — the S-versus-R bookkeeping c10 runs on.
+  -- together, which is how the bridge turns an R-word into an S-word.
 
   lemma-order-w^k : ∀ (w : Word (Gen (₁₊ n))) o k → w ^ o ≈ ε → (w ^ k) ^ o ≈ ε
   lemma-order-w^k w o k eq = begin
@@ -689,79 +580,6 @@ module One-Wire (n : ℕ) where
     open SR word-setoid
     open Pattern-Assoc
 
-  -- The multiplier by −1 conjugates S into S • Z.
-  --
-  -- This is Z's own definition, Z = H ² • S • H ² • S ⁻¹, read as a
-  -- statement about M₋₁ • S • M₋₁ — the S ⁻¹ cancels and what is left is
-  -- Z • S.  Ex-Conjugation needs it one wire up: it is the reason the
-  -- wire-1 multiplier drops a Z ↑ when it flips blake-c12, and that Z ↑
-  -- is the one in rel-X↓-CZ (see Ex-Conjugation.lemma-rel-X↓-CZ).
-  lemma-M₋₁-S : M₋₁ • S ≈ (S • Z) • M₋₁
-  lemma-M₋₁-S = begin
-    M₋₁ • S
-      ≈⟨ sym right-unit ⟩
-    (M₋₁ • S) • ε
-      ≈⟨ cright sym lemma-M₋₁^2 ⟩
-    (M₋₁ • S) • (M₋₁ • M₋₁)
-      ≈⟨ sym assoc ⟩
-    ((M₋₁ • S) • M₋₁) • M₋₁
-      ≈⟨ cleft assoc ⟩
-    (M₋₁ • (S • M₋₁)) • M₋₁
-      ≈⟨ cleft lemma-ZS ⟩
-    (Z • S) • M₋₁
-      ≈⟨ cleft lemma-comm-Z-S ⟩
-    (S • Z) • M₋₁ ∎
-    where
-    open SR word-setoid
-
-    S⁻¹S : S⁻¹ • S ≈ ε
-    S⁻¹S = begin
-      S ^ p-1 • S        ≈⟨ sym (^-+ S p-1 1) ⟩
-      S ^ (p-1 Nat.+ 1)  ≡⟨ Eq.cong (S ^_) (NP.+-comm p-1 1) ⟩
-      S ^ p              ≈⟨ lemma-order-S ⟩
-      ε ∎
-
-    Z-split : Z ≈ M₋₁ • (S • (M₋₁ • S⁻¹))
-    Z-split = begin
-      H • (H • (S • (H • (H • S⁻¹))))
-        ≈⟨ sym assoc ⟩
-      (H • H) • (S • (H • (H • S⁻¹)))
-        ≈⟨ cright cright sym assoc ⟩
-      (H • H) • (S • ((H • H) • S⁻¹))
-        ≈⟨ cong (axiom order-H) (cright cleft axiom order-H) ⟩
-      M₋₁ • (S • (M₋₁ • S⁻¹)) ∎
-
-    lemma-ZS : M₋₁ • (S • M₋₁) ≈ Z • S
-    lemma-ZS = sym (begin
-      Z • S
-        ≈⟨ cleft Z-split ⟩
-      (M₋₁ • (S • (M₋₁ • S⁻¹))) • S
-        ≈⟨ assoc ⟩
-      M₋₁ • ((S • (M₋₁ • S⁻¹)) • S)
-        ≈⟨ cright assoc ⟩
-      M₋₁ • (S • ((M₋₁ • S⁻¹) • S))
-        ≈⟨ cright cright assoc ⟩
-      M₋₁ • (S • (M₋₁ • (S⁻¹ • S)))
-        ≈⟨ cright cright cright S⁻¹S ⟩
-      M₋₁ • (S • (M₋₁ • ε))
-        ≈⟨ cright cright right-unit ⟩
-      M₋₁ • (S • M₋₁) ∎)
-
-  lemma-order-R : R ^ p ≈ ε
-  lemma-order-R = begin
-    (S • Z^ 1/2) ^ p
-      ≈⟨ ^-cong (S • Z^ 1/2) (Z^ 1/2 • S) p
-                (comm⇒pow-comm 1 (toℕ 1/2) (sym lemma-comm-Z-S)) ⟩
-    (Z^ 1/2 • S) ^ p
-      ≈⟨ ^-• (Z^ 1/2) S p (comm⇒pow-comm (toℕ 1/2) 1 lemma-comm-Z-S) ⟩
-    Z^ 1/2 ^ p • S ^ p
-      ≈⟨ cright axiom order-S ⟩
-    Z^ 1/2 ^ p • ε
-      ≈⟨ right-unit ⟩
-    Z^ 1/2 ^ p
-      ≈⟨ lemma-order-w^k Z p (toℕ 1/2) lemma-order-Z ⟩
-    ε ∎
-    where open SR word-setoid
 
   ------------------------------------------------------------------------
   -- Pauli conjugation by H
@@ -774,9 +592,7 @@ module One-Wire (n : ℕ) where
   -- sequence.  The conjugation is therefore pure associativity, and the
   -- power version follows by induction on the exponent.
   --
-  -- Groundwork for c10: moving a Pauli across XC = H ↑ ^ 3 • CZ • H ↑
-  -- means moving it across the two H ↑, which is this, and across CZ,
-  -- which is lemma-rel-X↑-CZ.
+  -- This is one of the hypotheses Shared.PauliBase.BridgeCalc takes.
 
   conj-H-X : H • X ≈ Z • H
   conj-H-X = by-assoc auto
@@ -796,9 +612,8 @@ module One-Wire (n : ℕ) where
   ------------------------------------------------------------------------
   -- The multiplier by -1, spelled out in R and H
   --
-  -- (lemma-M₋₁-R has moved to Lemmas.XZ.  Under the old RHR spelling it
-  -- was immediate — M₋₁ *was* that R-word, so order-H closed it — but
-  -- with the SHS' spelling M₋₁ is an S-word with a Pauli prefix, so the
-  -- two spellings have to be reconciled, and that needs the Pauli
-  -- calculus.  Its one client, ExConjC, imports XZ anyway.)
+  -- (lemma-M₋₁-R lives in Lemmas.XZ.  Under the old RHR spelling it was
+  -- immediate — M₋₁ *was* that R-word, so order-H closed it — but with
+  -- the SHS' spelling M₋₁ is an S-word with a Pauli prefix, so the two
+  -- spellings have to be reconciled, and that needs the Pauli calculus.)
 

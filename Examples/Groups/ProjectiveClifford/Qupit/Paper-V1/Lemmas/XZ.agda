@@ -73,9 +73,8 @@ import Examples.Groups.ProjectiveClifford.Qupit.Shared.PauliBase
 -- Simplified-V1.LemmasXZ, on the same grounds as the One-Wire ports —
 -- the one-wire axioms are shared, so the proof terms transfer unchanged.
 --
--- conj-H-Z is the direction conj-H-X does not give.  Together they say
--- how a Pauli crosses either H in XC = H ↑ ^ 3 • CZ • H ↑, which with
--- lemma-CZ-X↑ᵏ for the middle CZ is the whole Pauli-vs-XC rule.
+-- conj-H-Z is the direction conj-H-X does not give.  Both are needed to
+-- carry a Pauli through the H's the bridge's blocks are built from.
 
 module One-Wire-Group (n : ℕ) where
 
@@ -162,43 +161,6 @@ module One-Wire-Group (n : ℕ) where
   --
   --     Z ≈ H • X • H ^ 3        X • H ^ 3 ≈ H ^ 3 • Z.
 
-  lemma-Z-conj : Z ≈ H • (X • H ^ 3)
-  lemma-Z-conj = •-cancelʳ {h = H} (begin
-    Z • H                  ≈⟨ sym conj-H-X ⟩
-    H • X                  ≈⟨ cright sym right-unit ⟩
-    H • (X • ε)            ≈⟨ cright cright sym lemma-order-H ⟩
-    H • (X • H ^ 4)        ≈⟨ cright cright ^-+ H 3 1 ⟩
-    H • (X • (H ^ 3 • H))  ≈⟨ cright sym assoc ⟩
-    H • ((X • H ^ 3) • H)  ≈⟨ sym assoc ⟩
-    (H • (X • H ^ 3)) • H ∎)
-
-  lemma-X-H³ : X • H ^ 3 ≈ H ^ 3 • Z
-  lemma-X-H³ = •-cancelˡ {g = H} (begin
-    H • (X • H ^ 3)  ≈⟨ sym assoc ⟩
-    (H • X) • H ^ 3  ≈⟨ cleft conj-H-X ⟩
-    (Z • H) • H ^ 3  ≈⟨ assoc ⟩
-    Z • H ^ 4        ≈⟨ cright lemma-order-H ⟩
-    Z • ε            ≈⟨ right-unit ⟩
-    Z                ≈⟨ sym left-unit ⟩
-    ε • Z            ≈⟨ cleft sym lemma-order-H ⟩
-    H ^ 4 • Z        ≈⟨ assoc ⟩
-    H • (H ^ 3 • Z) ∎)
-
-  conj-H-Z^k : ∀ k → H • Z ^ k ≈ (X^ (- ₁)) ^ k • H
-  conj-H-Z^k ₀ = trans right-unit (sym left-unit)
-  conj-H-Z^k ₁ = conj-H-Z
-  conj-H-Z^k (₂₊ k) = begin
-    H • (Z • Z ^ ₁₊ k)
-      ≈⟨ sym assoc ⟩
-    (H • Z) • Z ^ ₁₊ k
-      ≈⟨ cleft conj-H-Z ⟩
-    (X^ (- ₁) • H) • Z ^ ₁₊ k
-      ≈⟨ assoc ⟩
-    X^ (- ₁) • (H • Z ^ ₁₊ k)
-      ≈⟨ cright conj-H-Z^k (₁₊ k) ⟩
-    X^ (- ₁) • ((X^ (- ₁)) ^ ₁₊ k • H)
-      ≈⟨ sym assoc ⟩
-    (X^ (- ₁) • (X^ (- ₁)) ^ ₁₊ k) • H ∎
 
   ------------------------------------------------------------------------
   -- Moving a Pauli past S
@@ -278,16 +240,7 @@ module One-Wire-Group (n : ℕ) where
   conj-S-X : S • X ≈ (X • Z) • S
   conj-S-X = trans lemma-SX (sym assoc)
 
-  conj-S-X^k : ∀ k -> S • X ^ k ≈ (X • Z) ^ k • S
-  conj-S-X^k k = lemma-Induction conj-S-X k
 
-  conj-S^l-X : ∀ l -> S ^ l • X ≈ X • Z ^ l • S ^ l
-  conj-S^l-X l = begin
-    S ^ l • X          ≈⟨ lemma-Inductionˡ lemma-SX l ⟩
-    X • (Z • S) ^ l    ≈⟨ cright ^-• Z S l lemma-comm-Z-S ⟩
-    X • Z ^ l • S ^ l ∎
-
-  -- Z-powers commute with S outright.
   comm-Z^k-S : ∀ k -> Z ^ k • S ≈ S • Z ^ k
   comm-Z^k-S k = lemma-Inductionˡ lemma-comm-Z-S k
 
@@ -303,11 +256,6 @@ module One-Wire-Group (n : ℕ) where
     X • ε • S            ≈⟨ cright left-unit ⟩
     X • S ∎)
 
-  -- …and so an X-power costs a Z⁻¹-power.
-  conj-X^k-S : ∀ k -> X ^ k • S ≈ S • (X • Z⁻¹) ^ k
-  conj-X^k-S k = lemma-Inductionˡ lemma-XS k
-
-  -- X^(-1) spelled as a Z-power exponent is X⁻¹: toℕ (- ₁) is p-1.
   aux-X^-₁ : X^ (- ₁) ≈ X⁻¹
   aux-X^-₁ = refl' (Eq.cong (X ^_)
                (Eq.trans (Eq.cong toℕ (Eq.sym p-1=-1ₚ)) lemma-toℕ-ₚ₋₁))
@@ -365,55 +313,18 @@ module One-Wire-Group (n : ℕ) where
   -- SHS' spelling makes M ₁ the S-spelling instead.  So this replaces
   -- that derivation rather than porting it.
 
-  -- (2ₚ comes from One-Wire, opened above.)
-  aux-half*2 : 1/2 * 2ₚ ≡ ₁
-  aux-half*2 = lemma-⁻¹ˡ 2ₚ {{nztoℕ {y = 2ₚ} {neq0 = λ ()}}}
+  -- The half-exponent arithmetic this needs — ½ + ½ ≡ ₁, two halves of x
+  -- make x, and negation is involutive — mentions no relation at all, so
+  -- it is Shared.PauliBase's, at that file's top level.  The two facts
+  -- below are the only ones specific to the exponents M₋₁ produces.
+  open Shared using (aux-half-half ; neg-involutive)
 
   -- The two exponents M₋₁'s Pauli prefix collapses to: at x = -1 the
   -- shape's Z-exponent is (-1-1)·½ = -1 and its X-exponent is
-  -- (1-(-1))·½ = 1.  Both are ℤₚ ring facts on top of aux-half*2; not
-  -- refl, since 1/2 is a Bézout witness and does not reduce.  The chain
-  -- for the first is
-  --
-  --   (-₁ + -₁) * ½ ≡ (-(₁ + ₁)) * ½     -‿distrib-+
-  --                 ≡ -((₁ + ₁) * ½)     sym -‿distribˡ-*
-  --                 ≡ -(2ₚ * ½)          ₁ + ₁ ≡ 2ₚ
-  --                 ≡ -(½ * 2ₚ)          *-comm
-  --                 ≡ -₁                 aux-half*2
-  --
-  -- and the second is the same with the signs the other way up.  The
-  -- ring is ForStdlib.Data.Fin.Mod.Properties.+-*-ring p-2, so these
-  -- come from Algebra.Properties.Ring at that instance.
-  private
-    2<p : 2 Nat.< p
-    2<p = s≤s (s≤s (s≤s z≤n))
-
-    -- ForStdlib's toℕ-+, inlined: it lives in Mod.Prime.Properties,
-
-    1+1≡2 : ₁ + ₁ ≡ 2ₚ
-    1+1≡2 = toℕ-injective (Eq.trans (toℕ-+ ₁ ₁) (m<n⇒m%n≡m 2<p))
-
-  -- These are ≡-chains, but `begin` here would clash with the setoid
-  -- reasoning this module already has open, so they are spelled with
-  -- Eq.trans.  Read each as the chain named in its comment.
-
-  -- ½ + ½ ≡ ½·₁ + ½·₁ ≡ ½·(₁+₁) ≡ ½·2ₚ ≡ ₁
-  aux-half+half : 1/2 + 1/2 ≡ ₁
-  aux-half+half =
-    Eq.trans (Eq.sym (Eq.cong₂ _+_ (*-identityʳ 1/2) (*-identityʳ 1/2)))
-      (Eq.trans (Eq.sym (*-distribˡ-+ 1/2 ₁ ₁))
-        (Eq.trans (Eq.cong (1/2 *_) 1+1≡2) aux-half*2))
-
-  -- Two halves of x make x:  ½x + ½x ≡ (½+½)·x ≡ ₁·x ≡ x
-  aux-half-half : ∀ (x : ℤ ₚ) → 1/2 * x + 1/2 * x ≡ x
-  aux-half-half x =
-    Eq.trans (Eq.sym (*-distribʳ-+ x 1/2 1/2))
-      (Eq.trans (Eq.cong (_* x) aux-half+half) (*-identityˡ x))
-
-  -- -(-x) ≡ -(-x) + 0 ≡ -(-x) + (-x + x) ≡ (-(-x) + -x) + x ≡ 0 + x ≡ x
-  neg-involutive : ∀ (x : ℤ ₚ) → - (- x) ≡ x
-  neg-involutive x =
-    Shared.neg-involutive x
+  -- (1-(-1))·½ = 1.  Both are ℤₚ ring facts on top of aux-half-half; not
+  -- refl, since 1/2 is a Bézout witness and does not reduce.  These are
+  -- ≡-chains, but `begin` here would clash with the setoid reasoning this
+  -- module already has open, so they are spelled with Eq.trans.
 
   -- (-₁ + -₁)·½ ≡ ½·(-₁ + -₁) ≡ ½·(-₁) + ½·(-₁) ≡ -₁
   aux-e₁ : (- ₁ + - ₁) * 1/2 ≡ - ₁
@@ -659,8 +570,6 @@ module One-Wire-Group (n : ℕ) where
     Z • (W • Z)    ≈⟨ cright lemma-WZ ⟩
     Z • X ∎
 
-  comm-X-Z^k : ∀ k -> X • Z ^ k ≈ Z ^ k • X
-  comm-X-Z^k k = lemma-Induction lemma-comm-X-Z k
 
   ------------------------------------------------------------------------
   -- The shared bridge calculus
@@ -689,35 +598,6 @@ module One-Wire-Group (n : ℕ) where
   -- Z-power alongside, and reconciling the R-spelling of the multiplier
   -- with the S-spelling is a matter of moving those Z's out.
 
-  split-XZ⁻¹^k : ∀ k -> (X • Z⁻¹) ^ k ≈ X ^ k • Z⁻¹ ^ k
-  split-XZ⁻¹^k k = ^-• X Z⁻¹ k (comm-X-Z^k p-1)
-
-  -- Z-powers commute with S⁻¹ as well as with S.
-  comm-Z^k-S⁻¹ : ∀ k -> Z ^ k • S⁻¹ ≈ S⁻¹ • Z ^ k
-  comm-Z^k-S⁻¹ k = comm⇒pow-comm k p-1 lemma-comm-Z-S
-
-  -- Moving a single X right past S⁻¹ costs a Z⁻¹ …
-  conj-S⁻¹-X : S⁻¹ • X ≈ (X • Z⁻¹) • S⁻¹
-  conj-S⁻¹-X = trans (conj-S^l-X p-1) (sym assoc)
-
-  -- … and so an X-power costs a Z⁻¹-power.
-  conj-S⁻¹-X^k : ∀ k -> S⁻¹ • X ^ k ≈ (X • Z⁻¹) ^ k • S⁻¹
-  conj-S⁻¹-X^k k = lemma-Induction conj-S⁻¹-X k
-
-  -- R = S • Z^½, and the two factors commute, so an R-power splits.
-  R-split : ∀ k -> R ^ k ≈ S ^ k • (Z^ 1/2) ^ k
-  R-split = SB.R-split
-
-
-  -- Moving X rightward past S, with the X kept on the right: X S X⁻¹ is
-  -- S • Z⁻¹, which needs X and Z to commute (lemma-XS leaves the Z⁻¹ on
-  -- the far side of the X).
-  conj-X-S : X • S ≈ (S • Z⁻¹) • X
-  conj-X-S = SB.conj-X-S
-
-  conj-X-S^l : ∀ l -> X • S ^ l ≈ (S • Z⁻¹) ^ l • X
-  conj-X-S^l = SB.conj-X-S^l
-
 
   ------------------------------------------------------------------------
   -- Pauli powers with ℤₚ exponents
@@ -728,20 +608,8 @@ module One-Wire-Group (n : ℕ) where
   -- keeps the collapse below arithmetic-free: X^ a • X^ b is X^ (a + b)
   -- on the nose, with the wraparound absorbed there.
 
-  X^-+ : ∀ a b -> X^ a • X^ b ≈ X^ (a + b)
-  X^-+ = SB.X^-+
 
-  comm-X^k-Z^l : ∀ k l -> X ^ k • Z ^ l ≈ Z ^ l • X ^ k
-  comm-X^k-Z^l = SB.comm-X^k-Z^l
-
-  -- The ℤₚ negation facts the bookkeeping needs: (-₁)·k is -k, and
-  -- negation passes through both operations.  These mention no relation
-  -- at all, so they sit at the top level of Shared.PauliBase.
   open Shared using (neg-mul ; neg-* ; neg-+)
-
-  -- A Z⁻¹-power at a ℤₚ exponent is a Z-power at the negated one.
-  Z⁻¹^ : ∀ (k : ℤ ₚ) → Z⁻¹ ^ toℕ k ≈ Z^ (- k)
-  Z⁻¹^ = SB.Z⁻¹^
 
 
   ------------------------------------------------------------------------
@@ -757,37 +625,6 @@ module One-Wire-Group (n : ℕ) where
   -- Paper-V1 uses — and so that the restatement checks, by conversion,
   -- that Shared's spelling of each word is Paper-V1's.
 
-  Z^-* : ∀ a b -> (Z^ a) ^ toℕ b ≈ Z^ (a * b)
-  Z^-* = SB.Z^-*
-
-  -- Moving a single X past an S-power costs a Z-power …
-  X-S^ : ∀ m -> X • S^ m ≈ S^ m • (X • Z^ (- m))
-  X-S^ = SB.X-S^
-
-  -- … and an X-power costs a Z-power at the product of the exponents.
-  X^-S^ : ∀ k m -> X^ k • S^ m ≈ S^ m • (X^ k • Z^ (- (k * m)))
-  X^-S^ = SB.X^-S^
-
-  -- A whole Pauli crossing one block S^m • H: P-B at an arbitrary m.
-  P-Bm : ∀ m α β -> (X^ α • Z^ β) • (S^ m • H)
-                    ≈ (S^ m • H) • (X^ (β + - (α * m)) • Z^ (- α))
-  P-Bm = SB.P-Bm
-
-  -- Absorbing a trailing X-power into the Pauli in front (Pu, general).
-  Pu' : ∀ γ δ η -> (X^ γ • Z^ δ) • X^ η ≈ X^ (γ + η) • Z^ δ
-  Pu' = SB.Pu'
-
-  -- One R-power with its H is one block with an X-power on the right —
-  -- RH, at an arbitrary exponent.
-  R^-H : ∀ c -> R^ c • H ≈ (S^ c • H) • X^ (1/2 * c)
-  R^-H = SB.R^-H
-
-  -- One block of the general collapse, matching `step` but with the
-  -- block's own exponent m rather than -₁ throughout.
-  stepm : ∀ w m α β -> (w • (X^ α • Z^ β)) • ((S^ m • H) • X^ (1/2 * m))
-          ≈ (w • (S^ m • H))
-            • (X^ ((β + - (α * m)) + (1/2 * m)) • Z^ (- α))
-  stepm = SB.stepm
 
   ------------------------------------------------------------------------
   -- The bridge between the two spellings of the multiplier
@@ -848,9 +685,10 @@ module One-Wire-Group (n : ℕ) where
   -- calculus — three copies of S⁻¹ • H rather than S^a • H, S^b • H,
   -- S^a • H.  That copy is gone: the general bridge subsumes it.
   --
-  -- This is the Euler decomposition c10 turns on: cancelling the trailing
-  -- H gives R ⁻¹ H R ⁻¹ H R ⁻¹ ≈ H, and hence R ⁻¹ H R ⁻¹ ≈ H R H ⁻¹,
-  -- which is what rewrites c10's right-hand side.
+  -- It is also the Euler decomposition of the multiplier by -1:
+  -- cancelling the trailing H gives R ⁻¹ H R ⁻¹ H R ⁻¹ ≈ H, and hence
+  -- R ⁻¹ H R ⁻¹ ≈ H R H ⁻¹.  Paper-V0's derivation of Selinger's c10
+  -- turns on that reading; Paper-V1 needs only order-H here.
 
   lemma-M₋₁-R : R ^ p-1 • (H • (R ^ p-1 • (H • (R ^ p-1 • H)))) ≈ H ^ 2
   lemma-M₋₁-R = begin

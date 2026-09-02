@@ -58,8 +58,6 @@ open Symplectic hiding
 
 1/2 = ((₂ , λ ()) ⁻¹) .proj₁
 
--1/2 = - ((₂ , λ ()) ⁻¹) .proj₁
-
 
 module Clifford-Relations where
 
@@ -91,21 +89,6 @@ module Clifford-Relations where
   R^ : ∀ {n} ->  ℤ ₚ ->  Word (Gen (₁₊ n))
   R^ k = R ^ toℕ k
 
-  -- Gates' SHS with S^ replaced by R^.  Paper-V0 spells M and XM over
-  -- this shape; Paper-V1 spells them over SHS' below instead, and RHR
-  -- stays because the axioms semi-MR and semi-M↑CZ are still stated in
-  -- R, and the one-wire lemmas still read M off it (see
-  -- Lemmas.lemma-M₋₁-R, which is where the two spellings meet).
-  RHR : ∀ {n} -> ℤ ₚ -> ℤ ₚ -> Word (Gen (₁₊ n))
-  RHR a b = R^ a • H • R^ b • H • R^ a • H
-
-  -- The same shape over S rather than R, with the Pauli prefix that the
-  -- change of spelling leaves in front.  Factored through its two
-  -- exponents, exactly as RHR above and Gates' SHS are: the unit-level
-  -- SHS below fills it from a unit and its inverse, and stating the
-  -- shape separately is what lets XM≡M⁻¹ and aux-M≡M be congruences in
-  -- the exponents rather than in the unit (units carry a ≢0 proof, and
-  -- inv-involutive only identifies their proj₁).
   SHS' : ∀ {n} -> ℤ ₚ -> ℤ ₚ -> Word (Gen (₁₊ n))
   SHS' a b = Z^ ((b + - ₁) * 1/2) • X^ ((₁ + - a) * 1/2) • S^ b • H • S^ a • H • S^ b • H
 
@@ -149,11 +132,6 @@ module Clifford-Relations where
   M₋₁ : ∀ {n} -> Word (Gen (₁₊ n))
   M₋₁ = M -'₁
 
-  Mg :  ∀ {n} -> Word (Gen (₁₊ n))
-  Mg = M g′
-
-  Mg^ : ℤ ₚ ->  ∀ {n} -> Word (Gen (₁₊ n))
-  Mg^ k = Mg ^ toℕ k
 
   XMg :  ∀ {n} -> Word (Gen (₁₊ n))
   XMg = XM g′
@@ -200,17 +178,19 @@ module Clifford-Relations where
 
   -- Full relation: the axioms above plus the structural rules.
       -- The swap commuting with CZ is NOT an axiom: it is Lemma 2 of
-      -- ProgressReport14, derived in Paper-V1.Lemmas as lemma-Ex-CZ from
-      -- semi-Ex-H↑ and the two ways of writing the swap.  Figure 1 has no
-      -- two-wire rule for it, and none is needed.
+      -- ProgressReport14, derivable from semi-Ex-H↑ and the two ways of
+      -- writing the swap.  Figure 1 has no two-wire rule for it, and none
+      -- is needed.
 
       -- NEITHER Pauli-versus-CZ rule is an axiom.  Figure 1 states both,
-      -- but the swap derives either from the other, and the survivor is
-      -- a consequence of blake-c12 and the multiplier calculus: see
-      -- Paper-V1.Lemmas.Ex-Conjugation.lemma-rel-X↓-CZ (and its mirror
-      -- lemma-rel-X↑-CZ).  A deliberate departure from Figure 1, and the
-      -- second one after rel-X↑-CZ went.  With order-SH gone as well
-      -- (see above), 15 group-specific axioms remain.
+      -- but the swap derives either from the other, and the survivor is a
+      -- consequence of blake-c12 and the multiplier calculus.  A
+      -- deliberate departure from Figure 1, and the second one after
+      -- rel-X↑-CZ went.  With order-SH gone as well (see above), 15
+      -- group-specific axioms remain.
+      --
+      -- Those derivations are Paper-V0's (Paper-V0.Lemmas), not repeated
+      -- here: Iso makes every Paper-V0 theorem a Paper-V1 theorem.
   
   private module SC = Circuit.Base SympGate
   private module LR = SC.Lift-Relation Base._SRel,_===_
@@ -272,70 +252,6 @@ module Lemmas-Clifford where
   -- by Clifford-Relations; the hand-written copy that stood here was
   -- the same induction and has been dropped.
 
-  lemma-^-↑ : ∀ {n} (w : Word (Gen n)) k → w ↑ ^ k ≡ (w ^ k) ↑
-  lemma-^-↑ w ₀ = auto
-  lemma-^-↑ w ₁ = auto
-  lemma-^-↑ w (₂₊ k) = begin
-    (w ↑) • (w ↑) ^ ₁₊ k ≡⟨ Eq.cong ((w ↑) •_) (lemma-^-↑ w (₁₊ k)) ⟩
-    (w ↑) • (w ^ ₁₊ k) ↑ ≡⟨ auto ⟩
-    ((w • w ^ ₁₊ k) ↑) ∎
-    where open ≡-Reasoning
-
-
-  lemma-cong↓-S^ : ∀ {n} k -> let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
-    (S ^ k) ↓ ≈↓ S ^ k
-  lemma-cong↓-S^ {n} ₀ = PB.refl
-  lemma-cong↓-S^ {n} ₁ = PB.refl
-  lemma-cong↓-S^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S^ {n} (₁₊ k))
-
-  lemma-cong↑-S^ : ∀ {n} k -> let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↑_) using () in
-    (S ^ k) ↑ ≈↑ S ↑ ^ k
-  lemma-cong↑-S^ {n} ₀ = PB.refl
-  lemma-cong↑-S^ {n} ₁ = PB.refl
-  lemma-cong↑-S^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↑-S^ {n} (₁₊ k))
-
-
-  lemma-cong↓-S↓^ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
-    (S ↓ ^ k) ↓ ≈↓ S ↓ ^ k
-  lemma-cong↓-S↓^ {n} ₀ = PB.refl
-  lemma-cong↓-S↓^ {n} ₁ = PB.refl
-  lemma-cong↓-S↓^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S↓^ {n} (₁₊ k))
-
-  lemma-cong↓-S↑^ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
-    ((S ↑) ^ k) ↓ ≈↓ (S ↑) ^ k
-  lemma-cong↓-S↑^ {n} ₀ = PB.refl
-  lemma-cong↓-S↑^ {n} ₁ = PB.refl
-  lemma-cong↓-S↑^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S↑^ {n} (₁₊ k))
-
-
-  lemma-cong↓-S^↓ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
-    (S ^ k) ↓ ↓ ≈↓ (S ^ k) ↓
-  lemma-cong↓-S^↓ {n} ₀ = PB.refl
-  lemma-cong↓-S^↓ {n} ₁ = PB.refl
-  lemma-cong↓-S^↓ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S^↓ {n} (₁₊ k))
-
-  lemma-cong↓-S^↑ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
-    (S ^ k) ↑ ↓ ≈↓ (S ^ k) ↑
-  lemma-cong↓-S^↑ {n} ₀ = PB.refl
-  lemma-cong↓-S^↑ {n} ₁ = PB.refl
-  lemma-cong↓-S^↑ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-S^↑ {n} (₁₊ k))
-
-  lemma-cong↓-H^ : ∀ {n} k -> let open PB ((₂₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
-    (H ^ k) ↓ ≈↓ H ^ k
-  lemma-cong↓-H^ {n} ₀ = PB.refl
-  lemma-cong↓-H^ {n} ₁ = PB.refl
-  lemma-cong↓-H^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-H^ {n} (₁₊ k))
-
-  lemma-cong↓-CZ^ : ∀ {n} k -> let open PB ((₃₊ n) QRel,_===_) renaming (_≈_ to _≈↓_) using () in
-    (CZ ^ k) ↓ ≈↓ CZ ^ k
-  lemma-cong↓-CZ^ {n} ₀ = PB.refl
-  lemma-cong↓-CZ^ {n} ₁ = PB.refl
-  lemma-cong↓-CZ^ {n} (₂₊ k) = PB.cong PB.refl (lemma-cong↓-CZ^ {n} (₁₊ k))
-
-  lemma-↑↓ : ∀ {n} (w : Word (Gen n)) → w ↑ ↓ ≡ w ↓ ↑
-  lemma-↑↓ [ x ]ʷ = auto
-  lemma-↑↓ ε = auto
-  lemma-↑↓ (w • w₁) = Eq.cong₂ _•_ (lemma-↑↓ w) (lemma-↑↓ w₁)
 
   lemma-↑^ : ∀ {n} k (w : Word (Gen n)) → (w ^ k) ↑ ≡ w ↑ ^ k
   lemma-↑^ {n} ₀ w = auto
@@ -417,7 +333,6 @@ module Lemmas-Clifford where
     open SR word-setoid
 
 
-
   lemma-comm-Hᵏ-w↑ : ∀ {n} k w → let open PB ((₂₊ n) QRel,_===_) in
     
     H ^ k • w ↑ ≈ w ↑ • H ^ k
@@ -487,7 +402,6 @@ module Lemmas-Clifford where
     open Pattern-Assoc
 
 
-
   lemma-comm-CZ-w↑ : ∀ {n} w → let open PB ((₃₊ n) QRel,_===_) in
     
     CZ • w ↑ ↑ ≈ w ↑ ↑ • CZ
@@ -510,13 +424,6 @@ module Lemmas-Clifford where
     open PB ((₃₊ n) QRel,_===_)
     open PP ((₃₊ n) QRel,_===_)
     open SR word-setoid
-
-
-  aux-MM : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in ∀ {x y : ℤ ₚ} (nzx : x ≢ ₀) (nzy : y ≢ ₀) -> x ≡ y -> M (x , nzx) ≈ M (y , nzy)
-  aux-MM {n} {x} {y} nz1 nz2 eq rewrite eq = refl
-    where
-    open PB ((₁₊ n) QRel,_===_)
-
 
 
   lemma-Induction : ∀ {n} -> let open PB ((₁₊ n) QRel,_===_) in ∀ {w v v'} -> w • v ≈ v' • w -> ∀ k -> w • v ^ k ≈ v' ^ k • w
@@ -551,5 +458,4 @@ module Lemmas-Clifford where
     open PP ((₁₊ n) QRel,_===_)
     open PB ((₁₊ n) QRel,_===_)
     open SR word-setoid
-
 

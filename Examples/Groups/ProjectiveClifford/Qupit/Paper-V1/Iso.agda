@@ -115,16 +115,6 @@ module SimBridge (n : ℕ) =
 module PapR = Clifford-Relations
 module PapV0R  = PapV0.Clifford-Relations
 
--- Sanity check that the transport really lands where it should: X and Z
--- commute in Paper-V0's theory, borrowed from Simplified-V1.
-v0-comm-X-Z : ∀ n → let open PB (PapV0R._QRel,_===_ (₁₊ n)) in
-              PapV0R.X • PapV0R.Z ≈ PapV0R.Z • PapV0R.X
-v0-comm-X-Z n = PapV0Iso.Theorem.v1⇒pap (₁₊ n) (SimXZ.Lemmas1b.lemma-comm-X-Z n)
-
--- The bridge, in Paper-V0's theory: proved in Simplified-V1 (which has
--- the calculus) and carried across by the same transport.  XM x is
--- M (x ⁻¹) on both sides, so this is the bridge at x ⁻¹ with the middle
--- exponent identified by inv-involutive.
 v0-XM-bridge : ∀ n (x : ℤ* ₚ) →
                let open PB (PapV0R._QRel,_===_ (₁₊ n)) using (_≈_) in
                PapV0R.XM x ≈ PapR.XM x
@@ -168,35 +158,6 @@ v0-M-bridge n x = PapV0Iso.Theorem.v1⇒pap (₁₊ n) (SimBridge.Bridge.bridge 
 private
   variable
     n : ℕ
-
-------------------------------------------------------------------------
--- Where the two halves are proved
---
--- Nothing is outstanding; a `BridgeData` record of obligations used to
--- stand here, and the last of its fields is gone.  For the record, where
--- each half now lives:
---
---   * Paper-V0's axioms, as Paper-V1 theorems — Paper-V1.Lemmas.
---     semi-M↓CZ and comm-CZ-S↓ are the ↑-rules conjugated by the swap.
---     c10 sheds a leading H ↑ off each side (the left by lemma-CZ-H↑,
---     the right by the Euler decomposition of the multiplier by −1) and
---     is then blake-c12's commutator with R for S, the two reconciled by
---     the Pauli-versus-XC rule lemma-conj-XC-Z↑ since R = S • Z ^ ½.
---     c11 is c10 conjugated by the swap.  c12 is the progress report's
---     Lemma 9.  Both sides of c13 are CZ02.  c14 telescopes, because
---     conjugation by ⊤⊥ ↑ sends CZ to CZ02 and CZ02 to the inverse of
---     CZ • CZ02, and ⊤⊥ ↑ has order 3.  c15 is c14 transported along the
---     transposition of wires 0 and 2.
---
---   * Paper-V1's axioms, as Paper-V0 theorems —
---     Paper-V0.ExRules.  The five with no S in them are transported
---     from the symplectic tree along Paper-V0.Forward's f, which
---     sends the symplectic S to R = S • Z ^ ½ and fixes everything else.
---     The two that do mention S come back from that transport in the
---     R-spelling, and the difference is a Pauli: for semi-Ex-S↑ a single
---     Z ^ ½, moved across the swap and cancelled; for blake-c12 four of
---     them, one of which crosses the CX and is doubled onto the other
---     wire, after which each wire's exponent is h • p.
 
 ------------------------------------------------------------------------
 -- The isomorphism
