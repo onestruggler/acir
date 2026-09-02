@@ -10,11 +10,14 @@ This is the Agda formalisation accompanying the paper *"A Complete and Natural R
 
 ```bash
 # Typecheck via WSL (Agda 2.8, resolves dependencies automatically).
-# This single root covers the whole live library (it reaches every
-# development through the results it states, including CliffordT1,
-# QutritCliffordT1 and U33Di):
+# This single root reaches most of the library through the results it
+# states, including CliffordT1, QutritCliffordT1, U33Di, and the qupit
+# projective Clifford chain (Paper-V1 → Paper-V0 → Simplified-V1 →
+# SemiDirect, plus Shared/PauliBase):
 wsl --exec /home/onest/.cabal/bin/agda MainTheorems.agda
 ```
+
+What the root does **not** reach, as of the last check: `ProjectiveClifford/Qupit/Simplified-V2`, `ProjectiveClifford/Qubit/` and `Clifford/Qupit/` — nothing `MainTheorems` states depends on them, so they need typechecking separately if you touch them.
 
 Use WSL Agda 2.8 (`wsl --exec /home/onest/.cabal/bin/agda`) for all files. The WSL install uses its own stdlib at `/home/onest/.agda/lib/agda-stdlib/`. The `.agda-lib` file (`qupit.agda-lib`) includes `.` and depends on `standard-library`.
 
@@ -66,6 +69,14 @@ There is no longer a `Presentation/Groups/`: it held a second Sₙ and a hand-ro
 
 ### Layer 5 — Examples (`Examples/`)
 - **`Groups/Symmetric/`**: completeness of the circuit presentation of Sₙ. There is no `Theorems.agda` façade — `MainTheorems` takes the five results (presentation, unique normal form for each semantics, soundness, completeness) straight from the modules that prove them. The layout follows the two chains: the **permutation** one is at the top level (`Semantics`, `Interpretation`, `Soundness`, `UniqueNormalForm`, `Surjectivity`, `Presentation`) and reaches a full presentation — `Semantics` is the target group alone and mentions no syntax, `Interpretation` is `⟦_⟧`/`⟦_⟧ᵍ`/`⟦↑⟧`, and `Soundness` is that `⟦_⟧` respects the relations; the **endofunction** one is `SubPresentation/` (`Semantics`, `Interpretation`, `UniqueNormalForm`, `SubPres`) and stops at a setoid embedding, since endofunctions are not all denotations. `Presentation` splits like Symplectic's: `subpresentation` needs only normalization, and `Surjectivity` is what promotes it. Shared support: `Syntactics`, `Cosets`, `Normalization`. `Completeness.agda` and `IndexedAction.agda` typecheck but nothing imports them.
+- **`Groups/ProjectiveClifford/Qupit/`**: the paper's own subject. For an odd prime p, the qupit Clifford circuits read **modulo scalars** present `Pauli n ⋊ Sp(2n, ℤ/pℤ)`. Four rule sets over the same alphabet (Symplectic's `H`, `S`, `CZ`) — Simplified-V1, Simplified-V2, Paper-V0, Paper-V1 — each shown to present that group by transport from the one below it, over a base (`SemiDirect/`, on a different alphabet) that does the real work. Every layer above the base is an isomorphism plus a composition, which is why the stack is cheap to extend and why no rule set re-proves what another already has.
+  - **`SemiDirect/`** is the base and defines `Pauli⋊Sp`. `Presentation` feeds the generic `SemiDirectProduct` machinery its two factors — `Symplectic.Simplified` for the symplectic part, `ProjectivePauli` for the Pauli part — together with `ConjAction`'s two well-definedness proofs for the conjugation action. Every input is a theorem, so it is unconditional.
+  - **`Simplified-V1/`** is where the mathematics lives: the Pauli calculus (`Lemmas`, `LemmasXZ`, `LemmasCZ`, `SemiM`), the Ex-conjugation rules (`ExRules`), `Forward`, `Soundness`, a rewriting tactic layer (`Tactics`), and `Iso` onto the semidirect relation.
+  - **`Paper-V0/`** is Figure 1 with the multiplier spelled over `R = S • Z^½`, as `RHR x x⁻¹`; 16 group-specific rules. Its `Iso` proves it isomorphic to Simplified-V1 and exports **`v1⇒pap`**, which transports Simplified-V1 theorems into its theory — which is why its `Lemmas` derives Selinger's c10–c15, the lower-wire rules and the swap calculus natively.
+  - **`Paper-V1/`** is the same rules with the multiplier spelled over `S`, as `SHS' x⁻¹ x`, and 15 rules rather than 16: `(S • H) ^ 3 = ε` is a theorem here, not an axiom, because under that spelling `M₁` *is* that word and `M-power` at `k = 0` already gives it. `Iso` is the identity on words onto Paper-V0. `Lemmas/` carries only what that needs (`OneWire`, `GroupLike`, `XZ`) — the Ex-conjugation and three-wire layers it inherited from Paper-V0 were removed, since the isomorphism transports all of it.
+  - **`Shared/PauliBase.agda`** is the relation-agnostic Pauli calculus, instantiated at whichever rule set needs it. `Calculus` rests on the axioms both spellings share; `BridgeCalc` adds `X • Z ≈ Z • X` as a *hypothesis* — the one fact whose proof genuinely differs between them — and builds the bridge between the R- and S-spellings of the multiplier, plus `MulZ`/`SemiMR` for carrying a Pauli across it.
+  - **`Simplified-V2/`** transports the V1 theorem once more along an identity isomorphism. Nothing imports it.
+- **`Groups/ProjectiveClifford/Qubit/`**: the qubit analogue (`CliffordExtension`, `Cocycle`, `ExtensionPresentation`, a `Selinger/` subtree). Self-contained — nothing outside the directory imports it.
 - **`Amalgamations/CliffordT1.agda`**: the qubit Clifford+T gate set as an amalgamated product, ending in a monoid isomorphism.
 - **`Amalgamations/QutritCliffordT1.agda`**: the qutrit Clifford+T analogue.
 - **`Amalgamations/U33Di.agda`**: U₃(ℤ[½,i]) presented as a two-level amalgamated product.
