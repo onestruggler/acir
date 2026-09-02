@@ -10,14 +10,15 @@ This is the Agda formalisation accompanying the paper *"A Complete and Natural R
 
 ```bash
 # Typecheck via WSL (Agda 2.8, resolves dependencies automatically).
-# This single root reaches most of the library through the results it
-# states, including CliffordT1, QutritCliffordT1, U33Di, and the qupit
-# projective Clifford chain (Paper-V1 → Paper-V0 → Simplified-V1 →
-# SemiDirect, plus Shared/PauliBase):
+# On this branch the root states only the qupit chain, so that is all it
+# reaches: the symplectic development and its simplified rules, the
+# ProjectivePauli factor, the semidirect construction that assembles
+# them, and the Clifford rule sets on top (Simplified-V1 → Paper-V0 →
+# Paper-V1, plus Shared/PauliBase).
 wsl --exec /home/onest/.cabal/bin/agda MainTheorems.agda
 ```
 
-What the root does **not** reach, as of the last check: `ProjectiveClifford/Qupit/Simplified-V2`, `ProjectiveClifford/Qubit/` and `Clifford/Qupit/` — nothing `MainTheorems` states depends on them, so they need typechecking separately if you touch them.
+Everything else in the tree is **not** reached from the root here, and needs typechecking separately if you touch it: the symmetric, trivial and cyclic groups, the wreath product, the Clifford+T and U₃(ℤ[½,i]) amalgamations, `ProjectiveClifford/Qupit/Simplified-V2`, `ProjectiveClifford/Qubit/` and `Clifford/Qupit/`.
 
 Use WSL Agda 2.8 (`wsl --exec /home/onest/.cabal/bin/agda`) for all files. The WSL install uses its own stdlib at `/home/onest/.agda/lib/agda-stdlib/`. The `.agda-lib` file (`qupit.agda-lib`) includes `.` and depends on `standard-library`.
 
@@ -80,30 +81,6 @@ There is no longer a `Presentation/Groups/`: it held a second Sₙ and a hand-ro
 - **`Amalgamations/CliffordT1.agda`**: the qubit Clifford+T gate set as an amalgamated product, ending in a monoid isomorphism.
 - **`Amalgamations/QutritCliffordT1.agda`**: the qutrit Clifford+T analogue.
 - **`Amalgamations/U33Di.agda`**: U₃(ℤ[½,i]) presented as a two-level amalgamated product.
-
-### Separate development — Path-sums (`PathSum/`)
-
-Amy's path-sum calculus (QPL 2018), as far as §4.3. **Not reached by `MainTheorems.agda`**; its own root is `PathSum/Theorems.agda`, which covers the whole directory. Typecheck it the same way (`wsl --exec /usr/bin/agda PathSum/Theorems.agda`); a from-scratch run is ~260 s, `Denotation` and `Cyclotomic` being the slow files (~90–105 s each).
-
-- **`Polynomial.agda`** / **`Polynomial/Properties.agda`**: multilinear polynomials over the dyadic rationals. `Mon n m = Subset n × Subset m` (input and path variables), `Poly n m = Mon n m → ℤ` (numerators over 2^M), `Σsub`/`Σmon`, `eval`, `liftXor` (the lifting of a Z₂-linear form), `subst`. Properties holds lemma 2.5 (`liftXor-value`), the evaluation homomorphism, and the substitution theory: `eval-subst`, `eval-split`, `eval-subst-fixed`, `Σsub-at`/`Σmon-at` (a sum splits at *any* index, not only the head), `liftXor-split`, `hh-case`.
-- **`Order.agda`**: the order of a phase polynomial (def. 2.11) as a 2-adic divisibility predicate, and lemma 2.13 (`subst-Ord≤`).
-- **`Base.agda`**: `record PathSum (n k m : ℕ)`, `idPS`, `y₀`, `head-part`/`tail-part`, `Internal`.
-- **`Reduction.agda`**: `⅛`/`¼`/`½`, the reducts, and `_⟶_` with constructors `elim`, `ω`, `hh`. `[Case]` is deliberately absent.
-- **`Cyclotomic.agda`**: ℤ[ζ] = ℤ[X]/(X^H+1) with `H = 2^(2+M₀)`, `N = 2H`, `c = N/8`. `Amp = Fin H → ℤ`, `_≐_`, `zpow`, `rot`, `√2·`, `scale`, `Σᴮ` (sums over assignments), `Σᴮ-at`, `scale-injective`, and the coordinate facts `zpow0-at-0`, `√2·zpow0-at-c`, `2·≢scale-zpow0`.
-- **`Denotation.agda`** (checked `--call-by-name`): `amp`, `hits`, `_≋_`, the three soundness proofs, lemma 4.2, the undersized lemmas, and `semantics`. Layered in modules by *what premise they need*: `Branches ξ eqf` (the pair of y₀ branches, no premise), `Cancel ξ c S eqP eqf` (head ≈ ½·form), `ωBranches` (head ≈ ¼ + ½·form). Each re-exports the one below with `open … public`.
-- **`Semantics.agda`**: the interface `record Semantics` — `_≋_` and its equivalence, `⟶-sound`, `interference`, `undersized-elim`, `undersized-ω`.
-- **`Clifford.agda`**: §4.3 over that interface — `progress`, `lemma-4-3`, `corollary-4-4`, and `⟶*-sound`, proposition 3.1 along a whole chain.
-- **`Circuit.agda`**: the two hypotheses of corollary 4.4, discharged. Clifford circuits over `H`, `S`, `CZ` (`Gate`, `Circuit`), and `⟦_⟧ᴿ`, the isometry restriction of §4.1 already reified — a Hadamard allocates a path variable only when a later one touches its wire, since otherwise `f (x , y) = x` forces that variable to be `x_w`. Hence `norm C` counts every Hadamard while `paths C` counts only those, and `⟦⟧ᴿ-Internal`/`⟦⟧ᴿ-Ord≤` are theorems. Semantics-free: it imports only `Base`, `Order`, `Polynomial` and `Reduction` (for `¼`/`½`).
-- **`Identity.agda`**: what `Reduces` stops short of — whether a path-sum with no path variables left is the identity. Such a sum has a single path, so its amplitude is `0` or the single power `ζ^P(x)`, and the question is one about coordinates in ℤ[ζ]: `id-if` (the criterion — no normalisation, outputs the inputs mod 2, phase `0` mod `2^M`) together with `not-id-out`, `not-id-norm` and `not-id-phase` (the three ways it fails) settle every case. The refutations rest on `zpow≢scale`, that a power of ζ is never `√2^(1+j)`, proved by rotating back to `ζ^0` and appealing to `Cyclotomic.2·≢scale-zpow0`.
-- **`Theorems.agda`**: instantiates `Clifford` at `Denotation.semantics` and states everything unconditionally — `corollary-4-4-circuit`, and `circuit-id`/`circuit-not-id`, which carry the verdict on a reduct back along the chain.
-
-What corollary 4.4 still assumes is lemma 4.1 alone: that a *well-formed* path-sum is the identity exactly when its restriction is. That is a statement about isometries, and `Denotation` — a matrix entry in ℤ[ζ], carrying no norm — cannot express it. Everything else is proved: the hypotheses of the corollary by `Circuit`, the verdict at the end of a reduction by `Identity`.
-
-**Denotation's public surface.** `Identity` needs two facts out of `Denotation` that the interference proofs kept private: `amp-idPS` (the identity's diagonal amplitude) and `hits-cong` (outputs agreeing modulo 2 hit the same states). Adding to that file costs a ~2 min recheck per iteration, so prototype against it, not in it.
-
-Two departures from the paper, both in the module headers: a path-sum carries its normalisation `k` **and** its path-variable count `m` separately, because def. 2.1 ties them but fig. 2's rules do not; and lemma 4.3's implicit side condition (the rule may cost more normalisation than the path-sum has) is *proved* here rather than assumed, via the coordinate facts above.
-
-**Pitfall.** `_≋_` matches on both normalisations, so nothing can be recovered through it by unification: every statement mentioning it must be given its path-sums explicitly (`≋-trans {ξ = a} {ζ = b} {χ = d}`), including in the `Semantics` record fields.
 
 ## Key conventions
 
