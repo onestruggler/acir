@@ -132,6 +132,18 @@ module Clifford-Relations where
   M₋₁ : ∀ {n} -> Word (Gen (₁₊ n))
   M₋₁ = M -'₁
 
+  XM₋₁ : ∀ {n} -> Word (Gen (₁₊ n))
+  XM₋₁ = XM -'₁
+
+  -- The two fillings coincide at -1, since -1 is its own inverse: both
+  -- are SHS' (-₁) (-₁).  Not refl, though — aux-₁⁻¹ identifies the proj₁
+  -- of two units rather than the units, and ⁻¹ computes a Bézout witness,
+  -- so nothing reduces.  order-H is stated over XM₋₁ and everything
+  -- downstream is written over M₋₁, so this conversion is what the
+  -- one-wire lemmas apply once, as One-Wire.order-H'.
+  XM₋₁≡M₋₁ : ∀ {n} → XM₋₁ {n} ≡ M₋₁
+  XM₋₁≡M₋₁ = Eq.cong₂ SHS' (Eq.sym aux-₁⁻¹) aux-₁⁻¹
+
 
   XMg :  ∀ {n} -> Word (Gen (₁₊ n))
   XMg = XM g′
@@ -159,7 +171,7 @@ module Clifford-Relations where
     data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
 
       order-S :       (₁₊ n) SRel,  S ^ p === ε
-      order-H :       (₁₊ n) SRel,  H ^ 2 === M₋₁
+      order-H :       (₁₊ n) SRel,  H ^ 2 === XM₋₁
       M-power : ∀ k → (₁₊ n) SRel,  XMg^ k === XM (g^ k)
       -- Paper-V0 states this over R, as XMg • R^(g·g) === R • XMg.  Over S
       -- the two R's have to be split, and they do not cancel: R^(g·g)

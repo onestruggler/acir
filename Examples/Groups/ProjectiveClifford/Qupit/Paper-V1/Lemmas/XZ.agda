@@ -370,7 +370,7 @@ module One-Wire-Group (n : ℕ) where
     Z⁻¹ • X • S⁻¹ • H • S⁻¹ • H • S⁻¹ • H
       ≈⟨ sym lemma-M₋₁-unfold ⟩
     M₋₁
-      ≈⟨ sym (axiom order-H) ⟩
+      ≈⟨ sym order-H' ⟩
     H ^ 2
       ≈⟨ sym rhs ⟩
     (H • S • H ^ 3 • S • H ^ 3 • S) • (S⁻¹ • H • S⁻¹ • H • S⁻¹ • H) ∎)
@@ -727,7 +727,7 @@ module One-Wire-Group (n : ℕ) where
     R^ -₁ • (H • (R^ ((-'₁ ⁻¹) .proj₁) • (H • (R^ -₁ • H))))
       ≈⟨ Bridge.bridge -'₁ ⟩
     M₋₁
-      ≈⟨ sym (axiom order-H) ⟩
+      ≈⟨ sym order-H' ⟩
     H ^ 2 ∎
     where
     -₁ : ℤ ₚ

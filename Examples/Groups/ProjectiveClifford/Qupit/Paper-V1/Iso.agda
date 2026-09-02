@@ -212,7 +212,7 @@ module Theorem where
   -- layer is shared outright (the same Lift-Relation over the same
   -- gates), so comm₁ / comm₂ / cong↑ map constructor to constructor.
   --
-  -- That leaves exactly four, the ones stated over M₋₁ or XMg:
+  -- That leaves exactly four, the ones stated over XM₋₁ or XMg:
   --
   --     order-H   M-power   semi-MR   semi-M↑CZ
   --
@@ -235,10 +235,13 @@ module Theorem where
   f-well-defined PapR.cz-slide       = PB.axiom PapV0R.cz-slide
   f-well-defined PapR.semi-CX↑-CZ↓   = PB.axiom PapV0R.semi-CX↑-CZ↓
   -- The four stated over the multiplier.  Each is Paper-V0's own axiom
-  -- with XMg rewritten across the bridge; M₋₁ needs no XM detour, since
-  -- both sides spell it as M at -1.
+  -- with XMg rewritten across the bridge.  order-H needs the M-bridge at
+  -- -1 rather than the XM one, since Paper-V0 spells its right-hand side
+  -- as M at -1; the trailing rewrite is XM₋₁≡M₋₁, putting the result into
+  -- the XM spelling Paper-V1 states the axiom over.
   f-well-defined {₁₊ n} PapR.order-H =
-    trans (axiom PapV0R.order-H) (v0-M-bridge n -'₁)
+    trans (axiom PapV0R.order-H)
+      (trans (v0-M-bridge n -'₁) (refl' (Eq.sym PapR.XM₋₁≡M₋₁)))
     where open PB (PapV0R._QRel,_===_ (₁₊ n))
 
   f-well-defined {₁₊ n} (PapR.M-power k) =

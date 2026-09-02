@@ -368,9 +368,10 @@ module One-Wire (n : ℕ) where
   -- What the multiplier arithmetic is for here: order-H as H ^ 4 ≈ ε
   --
   -- (-1)·(-1) is 1, so squaring the multiplier by -1 gives M ₁, which
-  -- lemma-M1 says is ε.  order-H reads H ^ 2 ≈ M₋₁, so that squares to
-  -- H ^ 4 ≈ ε — the form Shared.PauliBase.Calculus takes, and the point
-  -- past which the two spellings of the multiplier stop mattering.
+  -- lemma-M1 says is ε.  order-H reads H ^ 2 ≈ XM₋₁, which is M₋₁ by
+  -- order-H' above, so that squares to H ^ 4 ≈ ε — the form
+  -- Shared.PauliBase.Calculus takes, and the point past which the two
+  -- spellings of the multiplier stop mattering.
   --
   -- This is the only client lemma-M-mul has left.  Paper-V0 uses it for a
   -- good deal more (the Mg power law, the two semi-rules in Mg form, the
@@ -397,10 +398,17 @@ module One-Wire (n : ℕ) where
     open SR word-setoid
 
 
+  -- order-H with its right-hand side put back into the M-spelling.  The
+  -- axiom is stated over XM₋₁, everything below is written over M₋₁, and
+  -- XM₋₁≡M₋₁ says those are the same word — propositionally, so the
+  -- rewrite has to be applied by hand.  Done once here.
+  order-H' : H ^ 2 ≈ M₋₁ {n}
+  order-H' = trans (axiom order-H) (refl' XM₋₁≡M₋₁)
+
   lemma-order-H : H ^ 4 ≈ ε
   lemma-order-H = begin
     H ^ 4 ≈⟨ sym assoc ⟩
-    HH ^ 2 ≈⟨ cong (axiom order-H) (axiom order-H) ⟩
+    HH ^ 2 ≈⟨ cong order-H' order-H' ⟩
     M₋₁ ^ 2 ≈⟨ lemma-M₋₁^2 ⟩
     ε ∎
     where
