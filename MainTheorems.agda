@@ -79,6 +79,9 @@ import Examples.Groups.Symplectic.Presentation as SympPres
 import Examples.Groups.Symplectic.PresentationFull as SympFull
 import Examples.Groups.Symplectic.Simplified.Syntactics as SympSimSyn
 import Examples.Groups.Symplectic.Simplified.Presentation as SympSimPres
+import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Syntactics as QupitSyn
+import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Presentation as QupitPres
+import Examples.Groups.ProjectiveClifford.Qupit.SemiDirect.Presentation as QupitSD
 import Examples.Construct.SemiDirectProduct.SnD as SnD
 import Examples.Amalgamations.CliffordT1 as CliffordT1
 import Examples.Amalgamations.CliffordT1BaseUNF as CliffordT1Base
@@ -426,3 +429,48 @@ module Symplectic-Simplified-Theorems
   simplified-presentation :
     ∀ n → (n QRel,_===_) IsPresentationOf (Sp-group n)
   simplified-presentation n = Pres.presentation {n}
+
+------------------------------------------------------------------------
+-- Concrete presentations: the projective qupit Clifford group
+--
+-- Home: Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Presentation.
+-- For an odd prime p, the paper's Figure 1 rules — read modulo scalars,
+-- over the gate set H, S, CZ — present the semidirect product of the
+-- n-qupit Pauli group and Sp(2n, ℤ/pℤ), which is the projective Clifford
+-- group.  Like the simplified symplectic rules above they are stated
+-- relative to a primitive root g of ℤ/pℤ, which the multiplier rules
+-- name.
+--
+-- Paper-V1 spells the multiplier over S rather than R, and needs one
+-- rule fewer than Paper-V0 to do it: (S • H) ^ 3 = ε is a theorem here
+-- rather than an axiom, since under that spelling M₁ *is* that word and
+-- the multiplier power rule at k = 0 already says it is ε.  Fifteen
+-- group-specific rules remain.
+--
+-- Nothing is proved in Paper-V1 that Paper-V0 proves: the theorem is the
+-- composite of Paper-V1.Iso — the two rule sets are isomorphic, by the
+-- identity on words, since they are relations over the same alphabet —
+-- with Paper-V0's presentation theorem.
+
+module Qupit-Clifford-Theorems
+  (p-3 : ℕ)
+  (let p-2 = ₁₊ p-3)
+  (p-prime : Prime (2+ p-2))
+  (let open PrimeModulus' p-2 p-prime)
+  (g*@(g , g≠0) : ℤ* ₚ)
+  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ λ (k : ℤ ₚ-₁) → x Eq.≡ g ^′ toℕ k)
+  where
+
+  private
+    module Syn  = QupitSyn  p-3 p-prime g* g-gen
+    module Pres = QupitPres p-3 p-prime g* g-gen
+    module SD   = QupitSD   p-3 p-prime g* g-gen
+
+  open Syn.Clifford-Relations using (_QRel,_===_)
+  open SD.Semidirect using (Pauli⋊Sp)
+
+  -- The presentation theorem: the Figure 1 rules, modulo scalars,
+  -- present Pauli n ⋊ Sp(2n, ℤ/pℤ).
+  clifford-presentation :
+    ∀ n → (n QRel,_===_) IsPresentationOf (Pauli⋊Sp n)
+  clifford-presentation = Pres.presentation
