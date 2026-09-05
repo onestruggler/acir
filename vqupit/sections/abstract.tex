@@ -1,0 +1,35 @@
+A recent paper by Bian, Li, Ross, van de Wetering, and Zhao gives a
+complete set of sixteen rewrite rules for multi-qudit Clifford circuits
+in every odd prime dimension $p$: two circuits over the gates $H$, $S$,
+and $CZ$ implement the same unitary exactly when the rules prove them
+equal.  The completeness proof is a normal-form argument in the tradition
+of Selinger's presentation of the qubit Clifford group; its heart is a
+case analysis pushing every generator through every normal box, and its
+supporting derivations run to roughly a hundred pages.  This paper
+reports a machine-checked proof of the result, in safe, axiom-free Agda,
+against an independently constructed semantics.  The formalisation does
+not follow the paper's proof.  The paper works with one rule set for the
+whole Clifford group and applies it, implicitly, ``up to Paulis''; the
+step that promotes a symplectically complete rule set to a projectively
+complete one (its Proposition~4.9) is convincing on paper but hard to
+turn into a verified normalisation procedure.  We instead factor the
+projective Clifford group as a semidirect product $\overline{\mathcal
+P}_n \rtimes \mathrm{Sp}(2n,\mathbb{Z}_p)$ of the projective Pauli group
+by the symplectic group, present the two factors separately, and glue the
+presentations with a generic, verified semidirect-product theorem.  The
+symplectic factor carries all the mathematics: a unique normal form for
+$\mathrm{Sp}(2n,\mathbb{Z}_p)$, refined here into a doubly inductive
+datatype of \emph{normal boxes} and \emph{rows}, is realised as a tower
+of verified coset tables in the style of Reidemeister and Schreier, its
+uniqueness is proved by induction on the width against the symplectic
+action on Pauli vectors, and the paper's 66 box relations, which the
+rewriting uses, are derived from eighteen natural ones.  The projective Pauli factor is assembled
+compositionally.  Presentation-level ``plumbing'' then reduces the glued
+alphabet and relations to the paper's own generators and rules, and a
+verified isomorphism of presentations connects the two routes: the
+paper's Figure~1 read modulo scalars and the semidirect presentation
+present the same group.  Finally, the scalars are restored by a central
+extension, verified against a cocycle construction.  Everything is
+parametric in the prime $p$ and typechecks with no postulates; the Agda
+development is about 100\,000 lines, of which 60\,000 are specific to
+the qupit Clifford groups.

@@ -1,0 +1,182 @@
+\section{Two Routes to Completeness}\label{sec:two-routes}
+
+This section summarises the qupit paper's proof, explains why we did not
+formalise it as written, and describes the route we took instead.  The
+two routes share their mathematics --- the same normal boxes, the same
+symplectic normal form, essentially the same eighteen symplectic
+relations --- and differ in the \emph{organisation} of the completeness
+argument, which is what a proof assistant cares about.
+
+\subsection{The paper's route}
+
+The qupit paper~\cite{bian2026qudit} proves Theorem~4.10 --- the sixteen
+rules of its Figure~1 are sound and complete for the unitary
+interpretation --- in three moves.
+
+\paragraph{A normal form.}  Its Section~3 defines a normal form for an
+$n$-qupit Clifford circuit as a \emph{symplectic normal form} followed
+by a \emph{Pauli normal form}: the former, built from the normal boxes
+$A$, $B$, $D$, $E$ in alternating $Z$-normal and $X$-normal layers,
+represents the stabiliser tableau; the latter, $\bigotimes_j Z^{b_j}
+X^{a_j}$, is the Pauli correction.  Proposition~3.8 shows that symplectic
+normal forms are in bijection with $\Sp$, and Proposition~3.13 that every
+Clifford operator has a unique normal form up to global phase.  The
+proofs (its Appendix~E) are ``analogous to those for the qutrit case''.
+
+\paragraph{Symplectic completeness.}  Its Section~4.1 rewrites any
+circuit to symplectic normal form: append the normal form of the identity
+and push the gates in one by one.  Pushing a gate through a normal box
+yields an updated box and residual \emph{dirty} gates, which are pushed
+further in (its Figure~7).  Collecting every case gives 66 parametrised
+\emph{box relations} (its Appendix~F).  The argument that this
+terminates, and terminates in a clean normal form, is Lemma~4.2, proved
+by inspecting which dirty gates each box can absorb (its Definition~4.1
+and Figure~8), ``entirely analogous to'' the qutrit paper's Lemma~4.2.
+Theorem~4.4 then reduces the 66 box relations to 18 symplectic relations
+(its Figure~9), and here the paper does use Agda: ``All proofs have been
+formalised.''  Throughout Section~4.1 relations are applied \emph{up to
+Paulis} --- the symplectic interpretation $\sem{\_}_s$ identifies a
+circuit with the same circuit followed by any Pauli --- so the box
+relations, the dirty normal forms and the eighteen rules are all
+statements about $\Cliff/\Pauli$.
+
+\paragraph{Boosting.}  Its Section~4.2 lifts symplectic completeness to
+projective and unitary completeness.  Lemma~4.5 says that two circuits
+with the same symplectic matrix differ by a unique Pauli;
+Definition~4.7 and Proposition~4.8 say that Figure~1 is \emph{Pauli
+complete} --- it derives the commutation and cancellation identities for
+Paulis and the six rules for pushing a Pauli through a generator; and
+Proposition~4.9 is the general boost: given a symplectically complete
+rule set $R_s$ and a Pauli complete rule set $R_p$, correct each rule
+$C_l = C_r$ of $R_s$ to $C_l = C_r\,;P$ for the unique Pauli $P$ that
+makes it projectively sound, and then $R'_s \cup R_p$ is projectively
+complete.  The proof takes a sequence of symplectic rewrites from $C_1$
+to $C_2$, replays it with the corrected rules, and after each step
+pushes the newly created Pauli to the end of the circuit with $R_p$,
+where it turns into ``a potentially different Pauli''; at the end
+$C_1$ has been rewritten to $C_2\,;P$ with $\sem{P}_u = \mathrm{id}$, so
+$R_p$ removes $P$.  The same argument, run once more with
+$\langle\omega\rangle$ in place of $\Pauli$, gives unitary
+completeness.
+
+\subsection{Why we did not formalise that}
+
+Each move is correct, and each was stated at exactly the level of
+precision a careful reader needs.  A proof assistant needs more, and the
+gap is widest at the places where the paper says ``analogous'',
+``by inspection'' and ``potentially different''.
+
+First, the rewriting procedure is not a function.  ``Push the gates in
+one by one'' and ``push the dirty gates further in'' describe a
+non-deterministic rewrite relation whose termination is argued by an
+invariant on the placement of dirty gates (its Definition~4.1), verified
+by reading the 66 box relations.  To formalise Proposition~4.3 one would
+define the normalisation as a structurally recursive function on
+circuits, prove it sound with respect to the relations, and prove that
+its result is a clean normal form --- and at that point one has written
+a coset table, which is what we do (\S\ref{sec:pushing}), except that
+the coset table also has to say what happens to the Pauli.
+
+Second, and more seriously, the ``projective'' use of relations in
+Section~4.1 means that the objects the rewriting manipulates are not
+circuits but circuits modulo Paulis, without any syntactic
+representation of the quotient.  A box relation $g\,M = M'\,\mathit{dir}$
+holds \emph{up to a Pauli} that the relation does not name.  Formalising
+this faithfully means either carrying the Pauli explicitly through every
+box relation --- turning each of the 66 relations into a relation with a
+computed Pauli correction, and re-doing the reductions $66 \to 18 \to 16$
+with corrections --- or working in a syntax where Paulis are genuinely
+trivial.  The paper does the former informally, in Proposition~4.9, by
+observing that the corrections \emph{can} be computed and pushed to the
+end.  We found that the honest formal counterpart of that observation
+is a normalisation procedure on the semidirect product, whose
+well-definedness (that congruent inputs give equal cosets and congruent
+residuals) is exactly what the ``potentially different Pauli'' glosses
+over: the Pauli produced depends on the rewrite path, and one must prove
+that all paths agree.  We know this works; we did not see how to
+implement it and verify its properties at reasonable cost.
+
+Third, the uniqueness proof, Proposition~3.8, is by reference to the
+qutrit paper.  Its content is that the action of a normal form on the
+Pauli generators determines the normal form; formalised, this is a
+statement about the coset representatives at each level of a tower, and
+it is where the doubly inductive structure of our normal form pays off
+(\S\ref{sec:uniqueness}).
+
+\subsection{Our route}
+
+We work in a syntax where Paulis are genuinely trivial --- the
+symplectic circuits of \S\ref{sec:symplectic} have \emph{no} Pauli
+generators, only $H$, $S$, $CZ$, and their semantics is $\Sp$ itself
+--- and reintroduce Paulis and scalars afterwards by construction.
+Figure~\ref{fig:route} shows the chain.  Reading upward:
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[x=1cm,y=0.9cm,
+  box/.style={draw,rounded corners,align=center,font=\small,inner sep=4pt},
+  lab/.style={font=\footnotesize,align=center}]
+  \node[box] (sp)  at (0,0)   {$\mathrm{Sp}$: full rules (17)\\ coset tower, unique NF};
+  \node[box] (spsim) at (0,1.7) {$\mathrm{Sp}$: simplified rules (15)};
+  \node[box] (pauli) at (6.4,1.7) {$\overline{\mathcal P}$: $X^p, Z^p, XZ{=}ZX$};
+  \node[box] (sd)  at (3.2,3.4) {$\overline{\mathcal P}\rtimes\mathrm{Sp}$: semidirect relation\\ alphabet $X,Z,H,S,CZ$};
+  \node[box] (v1)  at (3.2,5.0) {Simplified-V1 (19 rules, $H,S,CZ$)};
+  \node[box] (v0)  at (3.2,6.6) {Paper-V0 (16 rules): the talk's Figure~1};
+  \node[box] (pv1) at (3.2,8.2) {Paper-V1 (15 rules): Figure~1 mod scalars};
+  \node[box] (ex)  at (10.2,6.6) {Exact: Paper-V0 $+\ \omega$,\\ one correction};
+  \draw[->] (sp) -- node[lab,right]{identity iso} (spsim);
+  \draw[->] (spsim.north) -- node[lab,left,pos=0.5]{semidirect thm\ } (sd.south west);
+  \draw[->] (pauli.north) -- node[lab,right,pos=0.5]{\ semidirect thm} (sd.south east);
+  \draw[->] (sd) -- node[lab,right]{generator reduction: $X,Z\mapsto$ words; $(f\,\aid{ʷ})$} (v1);
+  \draw[->] (v1) -- node[lab,right]{identity iso} (v0);
+  \draw[->] (v0) -- node[lab,right]{identity iso} (pv1);
+  \draw[->] (v0) -- node[lab,above]{central extension thm} (ex);
+\end{tikzpicture}
+\caption{The chain of presentations.  Every arrow is a verified
+presentation theorem or a verified isomorphism of presentations; the
+semantic group is $\mathrm{Sp}(2n,\mathbb Z_p)$ at the bottom,
+$\overline{\mathcal P}_n \rtimes \mathrm{Sp}(2n,\mathbb Z_p)$ from the
+semidirect level up, and a central extension of it by
+$\langle\omega\rangle$ at the top right.}
+\label{fig:route}
+\end{figure}
+
+\begin{enumerate}
+\item The symplectic group is presented by a coset tower whose cosets
+  are the normal boxes of the paper, arranged as a doubly inductive
+  type; the coset table is the paper's ``push a gate through a box'',
+  now a structurally recursive function with a verified section; the
+  well-definedness of the table is proved \emph{semantically}, by
+  uniqueness of the normal form one level down; and the box relations
+  the table uses are derived from seventeen full symplectic rules, which
+  are in turn derived from fifteen simplified ones
+  (\S\ref{sec:symplectic}).
+\item The projective Pauli group is presented by three rules and the
+  semidirect product by the generic theorem of \S\ref{sec:constructions};
+  the only new obligation is that the conjugation action respects both
+  factors' rules, and that is discharged by soundness and completeness
+  of the two factor presentations rather than by hand
+  (\S\ref{sec:semidirect}).
+\item ``Plumbing'' reduces the semidirect alphabet and relations to the
+  paper's: $X$ and $Z$ become words in $H$ and $S$, the Pauli rules and
+  the conjugation rules become theorems, and two further identity
+  isomorphisms carry the result to the talk's sixteen rules and to the
+  paper's fifteen (\S\ref{sec:plumbing}).  This is where the two routes
+  meet: \emph{the mod-scalar Figure~1 and the semidirect presentation
+  present the same group}.
+\item The scalars are restored by the extension theorem, with the one
+  correction computed and verified against a cocycle
+  (\S\ref{sec:scalars}).
+\end{enumerate}
+
+Does this just move the difficulty around?  No.  The symplectic factor
+is where the real rewriting happens, and keeping the Pauli part out of
+it pays off everywhere: every box relation is an honest equation, every
+coset-table entry is a function, and the Pauli bookkeeping that the
+paper's Proposition~4.9 performs by hand is performed once, by the
+semidirect-product theorem, in a form that was proved for arbitrary
+groups before this project began.  Prior work on the qubit and qutrit
+Clifford groups~\cite{selinger2015clifford,li2025qutrit} worked with the
+whole Clifford group at once, and their derivations drag a ``messy''
+Pauli correction through every step; the divide-and-conquer route is,
+we think, the right way to organise such proofs even on paper.

@@ -1,0 +1,109 @@
+\section{Related Work}\label{sec:related}
+
+\paragraph{Generators and relations for quantum gate groups.}
+The programme of presenting quantum gate groups by generators and
+relations, with completeness proved through normal forms, was opened by
+Selinger's presentation of the $n$-qubit Clifford
+group~\cite{selinger2015clifford}, whose staircase normal form and
+``push a generator through a box'' rewrite system are the direct
+ancestors of the symplectic normal form verified here.  The line
+continued with presentations of $U_n(\mathbb{Z}[\tfrac12,i])$ by Bian and
+Selinger~\cite{bian2021un} (building on Greylyn's presentation of
+$U_4(\mathbb{Z}[1/\sqrt2,i])$~\cite{greylyn2014}), of the orthogonal
+groups $O_n(\mathbb{Z}[\tfrac12])$ by Li, Ross, and
+Selinger~\cite{li2021on}, of the real stabilizer operators by Makary,
+Ross, and Selinger~\cite{makary2021realstabilizer}, of the $2$-qubit
+Clifford+$T$ and $3$-qubit Clifford+$CS$ groups by Bian and
+Selinger~\cite{bian2023cliffordt2,bian2023cliffordcs3,bian2023thesis}, of
+the CNOT-dihedral operators by Amy, Chen, and
+Ross~\cite{amy2018cnotdihedral}, and of $3$-qubit Toffoli--Hadamard
+circuits by Amy, Ross, and Wesley~\cite{amy2024toffolihadamard}.  The
+first such result in an odd prime dimension is the qutrit Clifford rule
+set of Li, Mosca, Ross, van de Wetering, and Zhao~\cite{li2025qutrit},
+and its generalisation to all odd primes is the paper this work
+verifies~\cite{bian2026qudit}.  In every one of these papers the
+completeness proof is a normal-form argument checked by hand, and the
+supporting derivations occupy tens of pages; the Bian--Selinger papers
+are the exception in that their \emph{syntactic} relation-simplification
+steps were checked in Agda.  We have discussed the relation between the
+paper's proof and ours in \S\ref{sec:two-routes}.
+
+\paragraph{Complete equational theories for circuits.}
+A parallel programme, phrased in terms of PROPs and string diagrams rather
+than groups, seeks complete equational theories for quantum circuits.
+Cl\'ement, Heurtel, Mansfield, Perdrix, and Valiron gave the first
+complete equational theory for arbitrary quantum
+circuits~\cite{clement2023complete}; Cl\'ement, Delorme, Perdrix, and
+Vilmart simplified it and extended it to circuits with ancillae and
+discarding~\cite{clement2024extensions}; Cl\'ement, Delorme, and Perdrix
+made it minimal~\cite{clement2024minimal}; and Cl\'ement's complete
+theory for Real-Clifford+$CH$ circuits --- the first for a finitely
+generated universal fragment without parameters or ancillae --- comes with
+an appendix of 264 pages of equational
+derivations~\cite{clement2026realcliffordch}.  Blake's recent work
+treats many near-Clifford fragments uniformly as PROPs, transferring
+completeness results and obtaining simpler and often minimal rule sets
+for qubit Clifford, real Clifford, Clifford+$T$ ($\le 2$ qubits),
+Clifford+$CS$ ($\le 3$ qubits), CNOT-dihedral and qutrit Clifford
+circuits~\cite{blake2026simpler}; gives a finite, dimension-uniform
+complete presentation of qudit circuits via polycontrolled
+PROPs~\cite{blake2026polycontrolled}; and proves completeness for
+prime-dimensional phase-affine circuits through unique normal
+forms~\cite{blake2026phaseaffine}.  All of these are pen-and-paper.
+Behind circuit presentations of this kind stands Lafont's algebraic theory
+of Boolean circuits~\cite{lafont2003boolean}, which presented the monoidal
+categories of reversible and of quantum Boolean circuits by generators and
+relations and introduced the normal forms for linear and affine
+permutation circuits that the circuit-level normal forms above
+generalise.  On the graphical side, the ZX-calculus has complete
+axiomatisations for the qubit stabilizer fragment, for Clifford+$T$,
+and --- most relevant here --- for the stabilizer fragment in odd prime
+dimensions~\cite{backens2014zx,jeandel2018zx,booth2022qupitzx,
+poor2023travaganza}; as the paper we verify points out, completeness of
+a graphical calculus for \emph{linear maps} does not yield a complete
+calculus for \emph{unitary circuits}, which is why the circuit rule set
+needs its own proof.
+
+\paragraph{Mechanised completeness.}
+To our knowledge, machine-checked completeness proofs for quantum circuit
+rule sets are rare.  Bian and Selinger's Agda developments
+\cite{bian2023cliffordt2,bian2023cliffordcs3} verify that two
+\emph{syntactic} presentations are equivalent and never mention a
+semantics.  Choudhury, Karwowski, and Sabry mechanised, in HoTT-Agda,
+the presentation of the classical reversible language $\Pi$ as a free
+symmetric rig groupoid~\cite{choudhury2022symmetries}, and Carette,
+Heunen, Kaarsgaard, and Sabry partially mechanised their square-root
+extension, including the complete completeness proof for the two-qubit
+Clifford fragment~\cite{carette2024squareroots}; both are categorical
+coherence arguments rather than presentations of concrete groups.  The
+Agda library this paper builds on~\cite{qupit-code,bian2026framework} was designed to close
+exactly this gap --- completeness of concrete relation sets against
+independently constructed groups --- and its earlier case studies
+(symmetric groups, wreath products, Pauli groups, and the single-qubit
+and single-qutrit Clifford+$T$ monoids as amalgamated products) are its
+first validation; the present paper is its first application to a
+research-level completeness theorem.  Verified quantum compilers and
+program logics --- \textsc{Qwire}~\cite{paykin2017qwire},
+\textsc{sqir}/\textsc{voqc}~\cite{hietala2021voqc},
+VyZX~\cite{lehmann2025vyzx}, CoqQ~\cite{zhou2023coqq},
+Qbricks~\cite{chareton2021qbricks} --- prove the \emph{soundness} of
+rewrites against a matrix semantics, never the completeness of a rule
+set; connecting our presented groups to such a semantics is discussed
+in \S\ref{sec:conclusion}.
+
+\paragraph{Group theory in proof assistants.}
+Lean's mathlib defines presented groups as quotients of free groups and
+builds Coxeter groups on them~\cite{mathlib2020,mathlib-doc-presented};
+Isabelle's Archive of Formal Proofs has free groups and the
+Nielsen--Schreier theorem~\cite{breitner2010freegroups,kharim2023freegroups};
+the Coq/MathComp school culminating in the Odd Order
+theorem~\cite{gonthier2013oddorder} develops deep finite group theory over
+concrete permutation groups.  None of these provides what this paper
+needs: verified coset enumeration for a \emph{given} finite relation set
+against a \emph{given} concrete group, packaged so that the certificate
+(a coset table, a section, five equations per level) is separated from
+the search that found it.  The classical algorithms are described by
+Sims~\cite{sims1994computation} and in the Handbook of Computational Group
+Theory~\cite{holt2005handbook}, whose Proposition~2.55 --- a presentation
+of a group from presentations of a normal subgroup and the quotient ---
+is the pen-and-paper form of the extension theorems we use.

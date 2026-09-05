@@ -1,0 +1,41 @@
+\section{Conclusion and Future Work}\label{sec:conclusion}
+
+We have given a machine-checked proof that the qupit paper's rule set
+presents the multi-qupit Clifford group in every odd prime dimension:
+modulo scalars, the paper's Figure~1 presents $\PPauli \rtimes \Sp$, and
+with the scalar $\omega$ and its single correction it presents a central
+extension of that group by $\langle\omega\rangle$; along the way, the
+simplified symplectic rules present $\Sp$, and the symplectic normal form
+--- refined into a doubly inductive datatype of boxes and rows --- is
+unique.  All relations involve at most three qupits, and every result is
+parametric in $p$, $n$ and a primitive root.  The proof does not follow
+the paper: it factors the group, presents the factors, and composes the
+presentations with generic verified theorems, and it connects back to
+the paper's route by a verified isomorphism of presentations.  We have
+argued that this organisation is not merely convenient for Agda but is
+the right way to structure such proofs: it confines the rewriting to the
+symplectic factor, where every rule is an honest equation, and it
+replaces the paper's hand-performed Pauli bookkeeping by one theorem
+proved for arbitrary semidirect products.
+
+\paragraph{Future work.}  The immediate target is the remaining glue: a
+verified matrix semantics for the qupit gates, against which the
+constructed groups of \S\ref{sec:discussion} would be shown isomorphic
+to the groups of unitaries, closing the chain from Figure~1 to
+$U_{p^n}(\mathbb{Z}[1/p, \omega])$ end to end.  Beyond that, we intend
+to verify the other presentations by generators and relations of quantum
+gate groups in the literature (\S\ref{sec:related}).  The qubit Clifford
+group~\cite{selinger2015clifford} is under way: the tree already contains
+the qubit analogue of the projective chain, with its own semidirect and
+extension presentations, and the two-qubit Clifford+$T$ and three-qubit
+Clifford+$CS$ presentations~\cite{bian2023cliffordt2,bian2023cliffordcs3},
+whose syntactic halves were checked in Agda by their authors, are natural
+next instances for the amalgamation machinery of the library.  The
+qutrit rule set~\cite{li2025qutrit} is a special case of what is proved
+here at $p = 3$, though with its own spelling of the rules, and its
+verification is a plumbing step.  Finally, the presentation-level
+constructions used here --- semidirect products, central extensions from
+cocycles, and the extension recipe of Proposition~2.55 --- and the
+supporting algebra (semidirect products, extensions, cocycles, and
+$\Zp$ arithmetic with Fermat's theorem) are being prepared for
+submission to the Agda standard library.

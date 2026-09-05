@@ -1,0 +1,135 @@
+\section{Introduction}\label{sec:intro}
+
+A \emph{presentation by generators and relations} of a group of quantum
+operators is a finite list of circuit equations that is \emph{sound} ---
+each equation holds in the intended semantics --- and \emph{complete} ---
+every semantic equality between circuits is derivable from the list.
+Soundness is a finite collection of matrix identities.  Completeness is a
+different animal: the standard proof defines a \emph{normal form} for
+circuits, shows that every circuit rewrites to a normal form using the
+relations, and shows that distinct normal forms denote distinct
+operators.  The middle step is a case analysis --- every generator
+against every piece of every normal form --- that is mechanical,
+unforgiving and enormous.  Selinger's presentation of the $n$-qubit
+Clifford group~\cite{selinger2015clifford} runs a substantial rewrite
+system through such an analysis; its qutrit
+successor~\cite{li2025qutrit}, the first completeness result for
+circuits in an odd prime dimension, needs more than fifty pages; and its
+generalisation to all odd primes by Bian, Li, Ross, van de Wetering, and
+Zhao~\cite{bian2026qudit} --- sixteen rewrite rules for multi-qudit
+Clifford circuits in every odd prime dimension $p$, henceforth ``the
+qupit paper'' --- rests on roughly a hundred pages of derivations spread
+over its appendices and a supplement~\cite{bian2026supplement}: sixty-six
+box relations, the conjugation tables of every normal box, the pushing
+lemmas, and the reductions of the box relations to eighteen symplectic
+relations and of those to the final sixteen.  Proofs of this shape ---
+long, regular and computational --- are exactly the proofs that a proof
+assistant with a strong evaluator can check largely \emph{by
+computation}, and exactly the proofs whose hand-checked versions one
+would like to see machine-checked.
+
+This paper reports such a machine-checked proof.  We formalise, in safe,
+axiom-free Agda~\cite{norell2007thesis,agdastdlib}, that the qupit
+paper's rule set presents the multi-qupit Clifford group, at every width
+$n$ and every odd prime $p$, against a semantics constructed
+independently of the syntax.  The formalisation is built on a library for
+presentations, normal forms and completeness of circuit relation sets
+that the authors developed for this purpose~\cite{qupit-code}; the
+library's design --- inductively defined circuits, presented monoids as
+inductive congruences, normal forms as function bundles, a verified
+Reidemeister--Schreier engine, and presentation theorems for products and
+extensions --- is described in a companion paper~\cite{bian2026framework},
+and we recall the parts we use in \S\ref{sec:framework}.
+
+\paragraph{A different proof.}
+The formalisation does \emph{not} follow the qupit paper's proof, and
+the reasons are instructive.  The paper works with a single rule set for
+the whole Clifford group and organises its completeness proof around the
+symplectic group $\Sp$, the Clifford group modulo Paulis: it shows that
+every circuit rewrites, \emph{up to Paulis}, to a symplectic normal form,
+and then boosts symplectic completeness to projective and unitary
+completeness by a general argument (its Proposition~4.9) in which each
+rewrite is repaired by pushing a Pauli correction to the end of the
+circuit.  Throughout, relations are used ``projectively'': Paulis and
+scalars are silently dropped and later restored.  This is sound
+mathematics, and we believe it; but it is a poor specification for a
+verified normalisation procedure.  The rewriting steps do not preserve any
+one syntactic invariant, the correction Paulis are not part of the data
+the rewrites compute with, and the termination and well-definedness
+arguments (its Lemma~4.2 and Proposition~4.9) are stated at a level of
+abstraction --- ``push the Pauli to the right, it changes to some other
+Pauli'' --- that a proof assistant would have to reconstruct from scratch.
+
+We therefore chose a route that a proof assistant likes.  The projective
+Clifford group is a \emph{semidirect product} of the projective Pauli
+group by the symplectic group, and the Clifford group is a \emph{central
+extension} of that by the scalars.  We present the three factors
+separately --- the symplectic group by a coset-table normal form, the
+Pauli group compositionally, the scalars as a cyclic group --- and glue
+the presentations together with generic, verified presentation theorems
+for semidirect products and central extensions.  On this route the
+Paulis are never ``implicit'': the symplectic development never mentions
+them, and they enter only through the conjugation action of the
+semidirect product, which is verified once, by semantics, rather than
+threaded through every rewrite.  A final layer of presentation-level
+``plumbing'' reduces the glued alphabet and relations to the paper's
+generators $H$, $S$, $CZ$ and its rules, and a verified isomorphism of
+presentations connects the two routes: the paper's Figure~1 read modulo
+scalars presents the same group as our semidirect presentation.
+
+\subsection{Contributions}\label{sec:contributions}
+
+\begin{enumerate}
+\item[(1)] \textbf{A machine-checked presentation of the projective
+  qupit Clifford groups.}  For every odd prime $p$ and every width $n$,
+  the paper's Figure~1 read modulo scalars presents
+  $\PPauli \rtimes \Sp$ (Theorem~\ref{thm:main}, \S\ref{sec:background}),
+  via a chain of verified isomorphisms of presentations from a semidirect
+  presentation on the alphabet $X, Z, H, S, CZ$ down to the paper's
+  fifteen rules on $H, S, CZ$ (\S\ref{sec:composing}).
+\item[(2)] \textbf{A machine-checked presentation of $\Sp$ and a
+  verified unique normal form.}  Eighteen relations (fifteen
+  group-specific and three structural) present the symplectic groups;
+  the normal form is the paper's symplectic normal form refined into a
+  doubly inductive datatype of \emph{normal boxes} and \emph{rows},
+  realised as a Reidemeister--Schreier coset tower, and proved unique
+  against the symplectic action on Pauli vectors
+  (Theorem~\ref{thm:unique}, \S\ref{sec:symplectic}).
+\item[(3)] \textbf{The relation reductions, verified.}  The box
+  relations that the normalisation uses are derived from the full
+  symplectic rules, those from the simplified ones, the semidirect
+  relations from the Clifford ones, and the paper's rules from ours; each
+  reduction is an isomorphism of presentations and each is checked
+  (\S\ref{sec:reduction}, \S\ref{sec:plumbing}).
+\item[(4)] \textbf{The scalars restored.}  The exact rule set --- the
+  sixteen rules corrected by the phase each actually picks up, which is a
+  single power of $\omega$ on one rule --- presents a central extension of
+  the projective group by $\langle\omega\rangle$, verified against the
+  Weyl cocycle $\tfrac12\,\mathrm{sform}$ (\S\ref{sec:scalars}).
+\item[(5)] \textbf{A methodological comparison.}  We explain precisely
+  where the paper's proof resists formalisation and how the
+  divide-and-conquer route avoids each difficulty
+  (\S\ref{sec:two-routes}), and we report what the formalisation covers
+  and what it does not (\S\ref{sec:discussion}).
+\end{enumerate}
+
+Everything stated as a theorem in this paper typechecks under
+\texttt{--safe}: there are no postulates, no holes and no classical
+axioms.  The two facts that are \emph{not} formalised are the glue
+between our constructed groups and the physicist's: that the projective
+Clifford group of unitaries is $\PPauli \rtimes \Sp$, and that the
+Clifford group is a central extension of it by $\langle\omega\rangle$.
+Both are classical~\cite{bian2026qudit}, and neither involves circuits;
+\S\ref{sec:discussion} states exactly what our semantic groups are.
+
+\subsection{Outline}
+
+Section~\ref{sec:background} recalls qupit Clifford operators, states
+the paper's theorem, and states our two main theorems as Agda types.
+Section~\ref{sec:framework} recalls the framework.
+Section~\ref{sec:two-routes} contrasts the two proofs.
+Sections~\ref{sec:symplectic} and~\ref{sec:composing} are the method:
+the symplectic presentation, then the composition of the three factors.
+Section~\ref{sec:discussion} gives statistics, engineering lessons and
+caveats; \S\ref{sec:related} surveys related work; \S\ref{sec:conclusion}
+concludes.

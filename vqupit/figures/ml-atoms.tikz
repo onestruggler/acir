@@ -1,0 +1,44 @@
+\begin{tikzpicture}
+\path [use as bounding box] (-0.8, -1.2) rectangle (16.2, 7.7);
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (w0l) at (-0.5, 0.0){};
+\node [style=none] (w0r) at (7.4, 0.0){};
+\node [style=none] (w1l) at (-0.5, 2.0){};
+\node [style=none] (w1r) at (7.4, 2.0){};
+\node [style=none] (w2l) at (-0.5, 4.0){};
+\node [style=none] (w2r) at (7.4, 4.0){};
+\node [style=none] (w3l) at (-0.5, 6.0){};
+\node [style=none] (w3r) at (7.4, 6.0){};
+\node [style=gate, minimum height=39mm, minimum width=9mm] (m4) at (0.7, 3.0) {$M_4$};
+\node [style=none] (eq1) at (1.9, 3.0) {$\equiv$};
+\node [style=gate, minimum height=19mm, minimum width=9mm] (d1) at (3.0, 1.0) {$D$};
+\node [style=gate, minimum height=19mm, minimum width=9mm] (d2) at (4.2, 3.0) {$D$};
+\node [style=gate, minimum height=19mm, minimum width=9mm] (d3) at (5.4, 5.0) {$D$};
+\node [style=gate, minimum height=9mm, minimum width=9mm] (e1) at (6.6, 6.0) {$E$};
+\node [style=none] (blank) at (8.4, 3.0) {};
+\node [style=none] (v0l) at (9.0, 0.0){};
+\node [style=none] (v0r) at (16.0, 0.0){};
+\node [style=none] (v1l) at (9.0, 2.0){};
+\node [style=none] (v1r) at (16.0, 2.0){};
+\node [style=none] (v2l) at (9.0, 4.0){};
+\node [style=none] (v2r) at (16.0, 4.0){};
+\node [style=none] (v3l) at (9.0, 6.0){};
+\node [style=none] (v3r) at (16.0, 6.0){};
+\node [style=gate, minimum height=39mm, minimum width=9mm] (l4) at (10.2, 3.0) {$L_4'$};
+\node [style=none] (eq2) at (11.4, 3.0) {$\equiv$};
+\node [style=gate, minimum height=19mm, minimum width=9mm] (b3) at (12.5, 5.0) {$B$};
+\node [style=gate, minimum height=19mm, minimum width=9mm] (b2) at (13.7, 3.0) {$B$};
+\node [style=gate, minimum height=19mm, minimum width=9mm] (b1) at (14.9, 1.0) {$B$};
+\node [style=gate, minimum height=9mm, minimum width=9mm] (a1) at (15.7, 0.0) {$A$};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (w0l.center) to (w0r.center);
+\draw (w1l.center) to (w1r.center);
+\draw (w2l.center) to (w2r.center);
+\draw (w3l.center) to (w3r.center);
+\draw (v0l.center) to (v0r.center);
+\draw (v1l.center) to (v1r.center);
+\draw (v2l.center) to (v2r.center);
+\draw (v3l.center) to (v3r.center);
+\end{pgfonlayer}
+\end{tikzpicture}

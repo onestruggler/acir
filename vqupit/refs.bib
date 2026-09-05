@@ -1,0 +1,783 @@
+%% refs.bib — bibliography for "Normal Forms and Complete Relations for
+%% Circuits in Agda".
+%%
+%% RULE: every entry below was verified against a live web source
+%% (arXiv, DBLP, publisher, or project page) on 2026-07-09/10 during
+%% phase P3.  Entries marked %% VERIFY-DETAIL have verified existence/
+%% authors but one detail (page range etc.) taken from standard
+%% knowledge — re-check before camera-ready.
+
+%% ===================================================================
+%% Generators and relations for quantum gate groups (the paper-maths
+%% line this library mechanizes)
+%% ===================================================================
+
+@article{selinger2015clifford,
+  author  = {Selinger, Peter},
+  title   = {Generators and relations for $n$-qubit {Clifford} operators},
+  journal = {Logical Methods in Computer Science},
+  volume  = {11},
+  number  = {2:10},
+  year    = {2015},
+  note    = {arXiv:1310.6813}
+}
+
+@inproceedings{bian2021un,
+  author    = {Bian, Xiaoning and Selinger, Peter},
+  title     = {Generators and Relations for $U_n(\mathbb{Z}[1/2,i])$},
+  booktitle = {Proceedings of the 18th International Conference on Quantum
+               Physics and Logic (QPL 2021)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {343},
+  pages     = {145--164},
+  year      = {2021},
+  note      = {arXiv:2105.14047}
+}
+
+@inproceedings{bian2023cliffordt2,
+  author    = {Bian, Xiaoning and Selinger, Peter},
+  title     = {Generators and Relations for 2-Qubit {Clifford+T} Operators},
+  booktitle = {Proceedings of the 19th International Conference on Quantum
+               Physics and Logic (QPL 2022)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {394},
+  pages     = {13--28},
+  year      = {2023},
+  note      = {arXiv:2204.02217}
+}
+
+@inproceedings{bian2023cliffordcs3,
+  author    = {Bian, Xiaoning and Selinger, Peter},
+  title     = {Generators and Relations for 3-Qubit {Clifford+CS} Operators},
+  booktitle = {Proceedings of the 20th International Conference on Quantum
+               Physics and Logic (QPL 2023)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {384},
+  pages     = {114--126},
+  year      = {2023},
+  note      = {arXiv:2306.08530}
+}
+
+@phdthesis{bian2023thesis,
+  author = {Bian, Xiaoning},
+  title  = {Generators and Relations for Some Classes of Quantum Circuits},
+  school = {Dalhousie University},
+  year   = {2023}
+}
+
+@inproceedings{li2025qutrit,
+  author    = {Li, Sarah Meng and Mosca, Michele and Ross, Neil J. and
+               van de Wetering, John and Zhao, Yuming},
+  title     = {A Complete and Natural Rule Set for Multi-Qutrit {Clifford}
+               Circuits},
+  booktitle = {Proceedings of the 22nd International Conference on Quantum
+               Physics and Logic (QPL 2025)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {426},
+  pages     = {23--78},
+  year      = {2025},
+  note      = {arXiv:2508.14670}
+}
+
+@misc{greylyn2014,
+  author = {Greylyn, Seth E. M.},
+  title  = {Generators and relations for the group
+            $U_4(\mathbb{Z}[1/\sqrt{2},i])$},
+  year   = {2014},
+  note   = {MSc thesis, Dalhousie University. arXiv:1408.6204}
+}
+
+@inproceedings{li2021on,
+  author    = {Li, Sarah Meng and Ross, Neil J. and Selinger, Peter},
+  title     = {Generators and Relations for the Group $O_n(\mathbb{Z}[1/2])$},
+  booktitle = {Proceedings of the 18th International Conference on Quantum
+               Physics and Logic (QPL 2021)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {343},
+  pages     = {210--264},
+  year      = {2021},
+  note      = {arXiv:2106.01175}
+}
+
+@article{amy2020numbertheoretic,
+  author  = {Amy, Matthew and Glaudell, Andrew N. and Ross, Neil J.},
+  title   = {Number-Theoretic Characterizations of Some Restricted
+             {Clifford+T} Circuits},
+  journal = {Quantum},
+  volume  = {4},
+  pages   = {252},
+  year    = {2020}
+}
+
+@misc{matsumoto2008representation,
+  author = {Matsumoto, Ken and Amano, Kazuyuki},
+  title  = {Representation of Quantum Circuits with {Clifford} and $\pi/8$
+            Gates},
+  year   = {2008},
+  note   = {arXiv:0806.3834}
+}
+
+@misc{giles2013remarks,
+  author = {Giles, Brett and Selinger, Peter},
+  title  = {Remarks on {Matsumoto} and {Amano}'s normal form for single-qubit
+            {Clifford+T} operators},
+  year   = {2013},
+  note   = {arXiv:1312.6584}
+}
+
+@article{glaudell2019qutrit,
+  author  = {Glaudell, Andrew N. and Ross, Neil J. and Taylor, Jacob M.},
+  title   = {Canonical forms for single-qutrit {Clifford+T} operators},
+  journal = {Annals of Physics},
+  volume  = {406},
+  pages   = {54--70},
+  year    = {2019},
+  note    = {arXiv:1803.05047}
+}
+
+@article{prakash2018qutrit,
+  author  = {Prakash, Shiroman and Jain, Akalank and Kapur, Bhakti and
+             Seth, Shubhangi},
+  title   = {Normal form for single-qutrit {Clifford+T} operators and
+             synthesis of single-qutrit gates},
+  journal = {Physical Review A},
+  volume  = {98},
+  pages   = {032304},
+  year    = {2018}
+}
+
+@misc{jain2020qudit,
+  author = {Jain, Akalank and Kalra, Amolak Ratan and Prakash, Shiroman},
+  title  = {A Normal Form for Single-Qudit {Clifford+T} Operators},
+  year   = {2020},
+  note   = {arXiv:2011.07970}
+}
+
+%% ===================================================================
+%% Complete equational theories for quantum circuits and graphical
+%% calculi (paper mathematics; motivates mechanization)
+%% ===================================================================
+
+@inproceedings{clement2023complete,
+  author    = {Cl{\'e}ment, Alexandre and Heurtel, Nicolas and
+               Mansfield, Shane and Perdrix, Simon and Valiron, Beno{\^i}t},
+  title     = {A Complete Equational Theory for Quantum Circuits},
+  booktitle = {Proceedings of the 38th Annual ACM/IEEE Symposium on Logic in
+               Computer Science (LICS 2023)},
+  year      = {2023},
+  note      = {arXiv:2206.10577}
+}
+
+@inproceedings{clement2024minimal,
+  author    = {Cl{\'e}ment, Alexandre and Delorme, No{\'e} and
+               Perdrix, Simon},
+  title     = {Minimal Equational Theories for Quantum Circuits},
+  booktitle = {Proceedings of the 39th Annual ACM/IEEE Symposium on Logic in
+               Computer Science (LICS 2024)},
+  year      = {2024},
+  note      = {arXiv:2311.07476}
+}
+
+@misc{clement2026realcliffordch,
+  author = {Cl{\'e}ment, Alexandre},
+  title  = {A Complete Equational Theory for {Real-Clifford+CH} Quantum
+            Circuits},
+  year   = {2026},
+  note   = {arXiv:2602.06644. Main text 13 pages, appendix of 264 pages of
+            equational derivations}
+}
+
+@article{backens2014zx,
+  author  = {Backens, Miriam},
+  title   = {The {ZX}-calculus is complete for stabilizer quantum mechanics},
+  journal = {New Journal of Physics},
+  volume  = {16},
+  pages   = {093021},
+  year    = {2014},
+  note    = {arXiv:1307.7025}
+}
+%% VERIFY-DETAIL: NJP volume/article number
+
+@inproceedings{jeandel2018zx,
+  author    = {Jeandel, Emmanuel and Perdrix, Simon and Vilmart, Renaud},
+  title     = {A Complete Axiomatisation of the {ZX}-Calculus for
+               {Clifford+T} Quantum Mechanics},
+  booktitle = {Proceedings of the 33rd Annual ACM/IEEE Symposium on Logic in
+               Computer Science (LICS 2018)},
+  year      = {2018}
+}
+
+@inproceedings{booth2022qupitzx,
+  author    = {Booth, Robert I. and Carette, Titouan},
+  title     = {Complete {ZX}-Calculi for the Stabiliser Fragment in Odd Prime
+               Dimensions},
+  booktitle = {47th International Symposium on Mathematical Foundations of
+               Computer Science (MFCS 2022)},
+  series    = {LIPIcs},
+  volume    = {241},
+  pages     = {24:1--24:15},
+  year      = {2022},
+  note      = {arXiv:2204.12531}
+}
+%% VERIFY-DETAIL: LIPIcs volume/pages
+
+@inproceedings{poor2023travaganza,
+  author    = {Po{\'o}r, Boldizs{\'a}r and Booth, Robert I. and
+               Carette, Titouan and van de Wetering, John and Yeh, Lia},
+  title     = {The Qupit Stabiliser {ZX}-travaganza: Simplified Axioms,
+               Normal Forms and Graph-Theoretic Simplification},
+  booktitle = {Proceedings of the 20th International Conference on Quantum
+               Physics and Logic (QPL 2023)},
+  year      = {2023},
+  note      = {arXiv:2306.05204}
+}
+
+@inproceedings{blake2026simpler,
+  author    = {Blake, Colin},
+  title     = {Simpler Presentations for Many Fragments of Quantum Circuits},
+  booktitle = {11th International Conference on Formal Structures for
+               Computation and Deduction (FSCD 2026)},
+  series    = {LIPIcs},
+  year      = {2026},
+  note      = {To appear. arXiv:2602.09874}
+}
+
+@article{choudhury2022symmetries,
+  author  = {Choudhury, Vikraman and Karwowski, Jacek and Sabry, Amr},
+  title   = {Symmetries in Reversible Programming: From Symmetric Rig
+             Groupoids to Reversible Programming Languages},
+  journal = {Proceedings of the ACM on Programming Languages},
+  volume  = {6},
+  number  = {POPL},
+  pages   = {6:1--6:32},
+  year    = {2022}
+}
+
+@article{carette2024squareroots,
+  author  = {Carette, Jacques and Heunen, Chris and Kaarsgaard, Robin and
+             Sabry, Amr},
+  title   = {With a Few Square Roots, Quantum Computing Is as Easy as $\Pi$},
+  journal = {Proceedings of the ACM on Programming Languages},
+  volume  = {8},
+  number  = {POPL},
+  year    = {2024},
+  note    = {arXiv:2310.14056}
+}
+
+@article{fang2026hadamard,
+  author  = {Fang, Wang and Heunen, Chris and Kaarsgaard, Robin},
+  title   = {{Hadamard-$\Pi$}: Equational Quantum Programming},
+  journal = {Proceedings of the ACM on Programming Languages},
+  volume  = {10},
+  number  = {POPL},
+  pages   = {5:1--5:31},
+  year    = {2026},
+  note    = {arXiv:2506.06835}
+}
+%% VERIFY-DETAIL: page range of article 5
+
+@inproceedings{heunen2026onerig,
+  author    = {Heunen, Chris and Kaarsgaard, Robin and Lemonnier, Louis},
+  title     = {One rig to control them all},
+  booktitle = {Proceedings of the 41st Annual ACM/IEEE Symposium on Logic in
+               Computer Science (LICS 2026)},
+  year      = {2026},
+  note      = {To appear. arXiv:2510.05032}
+}
+
+@article{lafont2003boolean,
+  author  = {Lafont, Yves},
+  title   = {Towards an algebraic theory of {Boolean} circuits},
+  journal = {Journal of Pure and Applied Algebra},
+  volume  = {184},
+  number  = {2--3},
+  pages   = {257--310},
+  year    = {2003}
+}
+%% VERIFY-DETAIL: page range
+
+%% ===================================================================
+%% Presentations, rewriting, and computational group theory (classical)
+%% ===================================================================
+
+@article{squier1987word,
+  author  = {Squier, Craig C.},
+  title   = {Word problems and a homological finiteness condition for
+             monoids},
+  journal = {Journal of Pure and Applied Algebra},
+  volume  = {49},
+  number  = {1--2},
+  pages   = {201--217},
+  year    = {1987}
+}
+
+@article{squier1994finiteness,
+  author  = {Squier, Craig C. and Otto, Friedrich and Kobayashi, Yuji},
+  title   = {A finiteness condition for rewriting systems},
+  journal = {Theoretical Computer Science},
+  volume  = {131},
+  number  = {2},
+  pages   = {271--294},
+  year    = {1994}
+}
+%% VERIFY-DETAIL: volume/pages
+
+@article{guiraud2018polygraphs,
+  author  = {Guiraud, Yves and Malbos, Philippe},
+  title   = {Polygraphs of finite derivation type},
+  journal = {Mathematical Structures in Computer Science},
+  volume  = {28},
+  number  = {2},
+  pages   = {155--201},
+  year    = {2018}
+}
+%% VERIFY-DETAIL: volume/pages
+
+@book{ara2025polygraphs,
+  author    = {Ara, Dimitri and Burroni, Albert and Guiraud, Yves and
+               Malbos, Philippe and M{\'e}tayer, Fran{\c{c}}ois and
+               Mimram, Samuel},
+  title     = {Polygraphs: From Rewriting to Higher Categories},
+  series    = {London Mathematical Society Lecture Note Series},
+  volume    = {495},
+  publisher = {Cambridge University Press},
+  year      = {2025}
+}
+
+@book{sims1994computation,
+  author    = {Sims, Charles C.},
+  title     = {Computation with Finitely Presented Groups},
+  series    = {Encyclopedia of Mathematics and its Applications},
+  volume    = {48},
+  publisher = {Cambridge University Press},
+  year      = {1994}
+}
+
+@book{holt2005handbook,
+  author    = {Holt, Derek F. and Eick, Bettina and O'Brien, Eamonn A.},
+  title     = {Handbook of Computational Group Theory},
+  publisher = {Chapman \& Hall/CRC},
+  year      = {2005}
+}
+
+@book{magnus2004combinatorial,
+  author    = {Magnus, Wilhelm and Karrass, Abraham and Solitar, Donald},
+  title     = {Combinatorial Group Theory: Presentations of Groups in Terms
+               of Generators and Relations},
+  publisher = {Dover Publications},
+  edition   = {2nd revised},
+  year      = {2004}
+}
+
+%% ===================================================================
+%% Quantum circuits and programs in proof assistants
+%% ===================================================================
+
+@inproceedings{paykin2017qwire,
+  author    = {Paykin, Jennifer and Rand, Robert and Zdancewic, Steve},
+  title     = {{QWIRE}: A Core Language for Quantum Circuits},
+  booktitle = {Proceedings of the 44th ACM SIGPLAN Symposium on Principles of
+               Programming Languages (POPL 2017)},
+  pages     = {846--858},
+  year      = {2017}
+}
+%% VERIFY-DETAIL: pages
+
+@article{hietala2021voqc,
+  author  = {Hietala, Kesha and Rand, Robert and Hung, Shih-Han and
+             Wu, Xiaodi and Hicks, Michael},
+  title   = {A Verified Optimizer for Quantum Circuits},
+  journal = {Proceedings of the ACM on Programming Languages},
+  volume  = {5},
+  number  = {POPL},
+  pages   = {37:1--37:29},
+  year    = {2021}
+}
+%% VERIFY-DETAIL: article/pages
+
+@inproceedings{hietala2021proving,
+  author    = {Hietala, Kesha and Rand, Robert and Hung, Shih-Han and
+               Li, Liyi and Hicks, Michael},
+  title     = {Proving Quantum Programs Correct},
+  booktitle = {12th International Conference on Interactive Theorem Proving
+               (ITP 2021)},
+  series    = {LIPIcs},
+  volume    = {193},
+  pages     = {21:1--21:19},
+  year      = {2021}
+}
+%% VERIFY-DETAIL: LIPIcs volume/pages
+
+@article{lehmann2025vyzx,
+  author  = {Lehmann, Adrian and Caldwell, Ben and Shah, Bhakti and
+             Rand, Robert},
+  title   = {{VyZX}: Formal Verification of a Graphical Quantum Language},
+  journal = {ACM Transactions on Programming Languages and Systems},
+  year    = {2025},
+  note    = {arXiv:2311.11571}
+}
+
+@article{zhou2023coqq,
+  author  = {Zhou, Li and Barthe, Gilles and Strub, Pierre-Yves and
+             Liu, Junyi and Ying, Mingsheng},
+  title   = {{CoqQ}: Foundational Verification of Quantum Programs},
+  journal = {Proceedings of the ACM on Programming Languages},
+  volume  = {7},
+  number  = {POPL},
+  pages   = {29:1--29:33},
+  year    = {2023}
+}
+%% VERIFY-DETAIL: article/pages
+
+@inproceedings{chareton2021qbricks,
+  author    = {Chareton, Christophe and Bardin, S{\'e}bastien and
+               Bobot, Fran{\c{c}}ois and Perrelle, Valentin and
+               Valiron, Beno{\^i}t},
+  title     = {An Automated Deductive Verification Framework for
+               Circuit-Building Quantum Programs},
+  booktitle = {Programming Languages and Systems: 30th European Symposium on
+               Programming (ESOP 2021)},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {12648},
+  pages     = {148--177},
+  year      = {2021}
+}
+%% VERIFY-DETAIL: LNCS volume/pages
+
+@inproceedings{liu2019quantum,
+  author    = {Liu, Junyi and Zhan, Bohua and Wang, Shuling and
+               Ying, Shenggang and Liu, Tao and Li, Yangjia and
+               Ying, Mingsheng and Zhan, Naijun},
+  title     = {Formal Verification of Quantum Algorithms Using Quantum
+               {Hoare} Logic},
+  booktitle = {Computer Aided Verification (CAV 2019)},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {11562},
+  pages     = {187--207},
+  year      = {2019},
+  note      = {Isabelle/HOL formalization QHLProver in the Archive of Formal
+               Proofs}
+}
+%% VERIFY-DETAIL: author list order, LNCS volume/pages
+
+@misc{bordg2020dirac,
+  author = {Bordg, Anthony and Lachnitt, Hanna and He, Yijun},
+  title  = {Isabelle Marries {Dirac}: a Library for Quantum Computation and
+            Quantum Information},
+  year   = {2020},
+  note   = {Archive of Formal Proofs,
+            \url{https://www.isa-afp.org/entries/Isabelle_Marries_Dirac.html}}
+}
+
+%% ===================================================================
+%% Group theory and rewriting in proof assistants
+%% ===================================================================
+
+@inproceedings{mathlib2020,
+  author    = {{The mathlib Community}},
+  title     = {The {Lean} mathematical library},
+  booktitle = {Proceedings of the 9th ACM SIGPLAN International Conference on
+               Certified Programs and Proofs (CPP 2020)},
+  pages     = {367--381},
+  year      = {2020}
+}
+
+@inproceedings{gonthier2013oddorder,
+  author    = {Gonthier, Georges and Asperti, Andrea and Avigad, Jeremy and
+               Bertot, Yves and Cohen, Cyril and Garillot, Fran{\c{c}}ois and
+               Le Roux, St{\'e}phane and Mahboubi, Assia and O'Connor, Russell
+               and Ould Biha, Sidi and Pasca, Ioana and Rideau, Laurence and
+               Solovyev, Alexey and Tassi, Enrico and Th{\'e}ry, Laurent},
+  title     = {A Machine-Checked Proof of the Odd Order Theorem},
+  booktitle = {Interactive Theorem Proving (ITP 2013)},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {7998},
+  pages     = {163--179},
+  year      = {2013}
+}
+
+@inproceedings{kharim2023freegroups,
+  author    = {Kharim, Aabid Seeyal Abdul and Prathamesh, Turga Venkata
+               Hanumantha and Rajiv, Shweta and Vyas, Rishi},
+  title     = {Formalizing Free Groups in {Isabelle/HOL}: The
+               {Nielsen-Schreier} Theorem and the Conjugacy Problem},
+  booktitle = {Intelligent Computer Mathematics (CICM 2023)},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {14101},
+  year      = {2023}
+}
+%% VERIFY-DETAIL: author first names (initials verified: Kharim, A.S.A.;
+%% Prathamesh, T.V.H.; Rajiv, S.; Vyas, R.)
+
+@misc{breitner2010freegroups,
+  author = {Breitner, Joachim},
+  title  = {Free Groups},
+  year   = {2010},
+  note   = {Archive of Formal Proofs,
+            \url{https://www.isa-afp.org/entries/Free-Groups.html}}
+}
+
+@inproceedings{sternagel2013kb,
+  author    = {Sternagel, Christian and Thiemann, Ren{\'e}},
+  title     = {Formalizing {Knuth-Bendix} Orders and {Knuth-Bendix}
+               Completion},
+  booktitle = {24th International Conference on Rewriting Techniques and
+               Applications (RTA 2013)},
+  series    = {LIPIcs},
+  volume    = {21},
+  pages     = {287--302},
+  year      = {2013}
+}
+
+@article{hirokawa2019abstract,
+  author  = {Hirokawa, Nao and Middeldorp, Aart and Sternagel, Christian and
+             Winkler, Sarah},
+  title   = {Abstract Completion, Formalized},
+  journal = {Logical Methods in Computer Science},
+  volume  = {15},
+  number  = {3},
+  year    = {2019},
+  note    = {arXiv:1802.08437}
+}
+%% VERIFY-DETAIL: LMCS volume/issue
+
+@misc{mathlib-doc-presented,
+  author = {{The mathlib Community}},
+  title  = {Mathlib documentation: {PresentedGroup}, {CoxeterGroup},
+            and the {Nielsen-Schreier} theorem},
+  year   = {2026},
+  note   = {\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/GroupTheory/FreeGroup/NielsenSchreier.html}}
+}
+
+%% ===================================================================
+%% Agda and type-theoretic foundations
+%% ===================================================================
+
+@phdthesis{norell2007thesis,
+  author = {Norell, Ulf},
+  title  = {Towards a Practical Programming Language Based on Dependent Type
+            Theory},
+  school = {Chalmers University of Technology},
+  year   = {2007}
+}
+
+@inproceedings{bove2009agda,
+  author    = {Bove, Ana and Dybjer, Peter and Norell, Ulf},
+  title     = {A Brief Overview of {Agda} -- A Functional Language with
+               Dependent Types},
+  booktitle = {Theorem Proving in Higher Order Logics (TPHOLs 2009)},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {5674},
+  pages     = {73--78},
+  year      = {2009}
+}
+%% VERIFY-DETAIL: LNCS volume/pages
+
+@article{vezzosi2019cubical,
+  author  = {Vezzosi, Andrea and M{\"o}rtberg, Anders and Abel, Andreas},
+  title   = {Cubical {Agda}: A Dependently Typed Programming Language with
+             Univalence and Higher Inductive Types},
+  journal = {Proceedings of the ACM on Programming Languages},
+  volume  = {3},
+  number  = {ICFP},
+  pages   = {87:1--87:29},
+  year    = {2019}
+}
+
+@misc{agdastdlib,
+  author = {{The Agda Community}},
+  title  = {The {Agda} standard library, version 2.3},
+  year   = {2026},
+  note   = {\url{https://github.com/agda/agda-stdlib}}
+}
+
+@misc{cubicallibrary,
+  author = {{The Agda Community}},
+  title  = {The cubical {Agda} library},
+  year   = {2026},
+  note   = {\url{https://github.com/agda/cubical}}
+}
+
+@misc{agdaunimath,
+  author = {Rijke, Egbert and Stenholm, Elisabeth and Prieto-Cubides, Jonathan
+            and Bakke, Fredrik and others},
+  title  = {The agda-unimath library},
+  year   = {2026},
+  note   = {\url{https://github.com/UniMath/agda-unimath}}
+}
+%% VERIFY-DETAIL: maintainer list
+
+@misc{mangel2023sign,
+  author = {Mangel, {\'E}l{\'e}onore and Rijke, Egbert},
+  title  = {Delooping the sign homomorphism in univalent mathematics},
+  year   = {2023},
+  note   = {arXiv:2301.10011}
+}
+
+@article{barthe2003setoids,
+  author  = {Barthe, Gilles and Capretta, Venanzio and Pons, Olivier},
+  title   = {Setoids in type theory},
+  journal = {Journal of Functional Programming},
+  volume  = {13},
+  number  = {2},
+  pages   = {261--293},
+  year    = {2003}
+}
+%% VERIFY-DETAIL: volume/pages
+
+%% ===================================================================
+%% Companion tools and artifact
+%% ===================================================================
+
+@misc{lafontlp-tool,
+  author = {Bian, Xiaoning},
+  title  = {A normalizer to {Lafont} normal form for linear permutation
+            circuits},
+  year   = {2026},
+  note   = {Web tool, \url{https://www.mathstat.dal.ca/~xbian/LafontLP/}}
+}
+
+@misc{qupit-tool,
+  author = {Bian, Xiaoning},
+  title  = {{Selinger}-style normal forms for the symplectic group
+            $Sp(2n,\mathbb{Z}_p)$},
+  year   = {2026},
+  note   = {Web tool, \url{https://www.mathstat.dal.ca/~xbian/qupit/index.php}}
+}
+
+@misc{qupit-code,
+  author = {Bian, Xiaoning and Feng, Yuan},
+  title  = {An {Agda} library for normal forms and complete relations for
+            circuits},
+  year   = {2026},
+  note   = {\url{https://github.com/onestruggler/qupit}}
+}
+
+@misc{bian2026framework,
+  author = {Bian, Xiaoning and Feng, Yuan},
+  title  = {Normal Forms and Complete Relations for Circuits in {Agda}},
+  year   = {2026},
+  note   = {Under submission}
+}
+
+@misc{paper-outline,
+  author = {{Anonymous}},
+  title  = {Outline for this paper},
+  year   = {2026},
+  note   = {Included in the anonymous supplementary material}
+}
+
+%% ------------------------------------------------------------------
+%% Entries added for the vqupit paper (2026-09-04).  Entries marked
+%% %% VERIFY-DETAIL have one detail taken from standard knowledge;
+%% re-check before camera-ready.
+%% ------------------------------------------------------------------
+
+@misc{bian2026qudit,
+  author = {Bian, Xiaoning and Li, Sarah Meng and Ross, Neil J. and
+            van de Wetering, John and Zhao, Yuming},
+  title  = {A Complete and Natural Rule Set for Multi-Qudit {Clifford}
+            Circuits in All Odd Prime Dimensions},
+  year   = {2026},
+  note   = {Manuscript, July 2026. Agda code at
+            \url{https://github.com/onestruggler/qupit}}
+}
+
+@misc{bian2026supplement,
+  author = {Bian, Xiaoning and Li, Sarah Meng and Ross, Neil J. and
+            van de Wetering, John and Zhao, Yuming},
+  title  = {A Complete and Natural Rule Set for Multi-Qudit {Clifford}
+            Circuits in All Odd Prime Dimensions: Derived Relations and
+            Supplemental Proofs},
+  year   = {2026},
+  note   = {Supplement to \cite{bian2026qudit}, July 2026}
+}
+
+@inproceedings{makary2021realstabilizer,
+  author    = {Makary, Justin and Ross, Neil J. and Selinger, Peter},
+  title     = {Generators and Relations for Real Stabilizer Operators},
+  booktitle = {Proceedings of the 18th International Conference on Quantum
+               Physics and Logic (QPL 2021)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {343},
+  pages     = {14--36},
+  year      = {2021},
+  note      = {arXiv:2109.05655}
+}
+
+@inproceedings{amy2018cnotdihedral,
+  author    = {Amy, Matthew and Chen, Jianxin and Ross, Neil J.},
+  title     = {A Finite Presentation of {CNOT}-Dihedral Operators},
+  booktitle = {Proceedings of the 14th International Conference on Quantum
+               Physics and Logic (QPL 2017)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {266},
+  pages     = {84--97},
+  year      = {2018}
+}
+
+@inproceedings{amy2024toffolihadamard,
+  author    = {Amy, Matthew and Ross, Neil J. and Wesley, Scott},
+  title     = {A Sound and Complete Equational Theory for 3-Qubit
+               {Toffoli-Hadamard} Circuits},
+  booktitle = {Proceedings of the 21st International Conference on Quantum
+               Physics and Logic (QPL 2024)},
+  series    = {Electronic Proceedings in Theoretical Computer Science},
+  volume    = {406},
+  pages     = {1--43},
+  year      = {2024},
+  note      = {arXiv:2407.11152}
+}
+
+@inproceedings{clement2024extensions,
+  author    = {Cl{\'e}ment, Alexandre and Delorme, No{\'e} and Perdrix, Simon
+               and Vilmart, Renaud},
+  title     = {Quantum Circuit Completeness: Extensions and Simplifications},
+  booktitle = {32nd EACSL Annual Conference on Computer Science Logic
+               (CSL 2024)},
+  series    = {LIPIcs},
+  volume    = {288},
+  pages     = {20:1--20:23},
+  year      = {2024},
+  doi       = {10.4230/LIPIcs.CSL.2024.20}
+}
+
+@inproceedings{blake2026polycontrolled,
+  author    = {Blake, Colin},
+  title     = {A Complete Equational Presentation of Qudit Circuits via
+               Polycontrolled {PROPs}},
+  booktitle = {51st International Symposium on Mathematical Foundations of
+               Computer Science (MFCS 2026)},
+  series    = {LIPIcs},
+  year      = {2026},
+  note      = {arXiv:2602.09873}
+}  %% VERIFY-DETAIL (volume, pages)
+
+@misc{blake2026phaseaffine,
+  author = {Blake, Colin},
+  title  = {Completeness for Prime-Dimensional Phase-Affine Circuits},
+  year   = {2026},
+  note   = {arXiv:2603.06466}
+}
+
+@misc{claude,
+  author = {{Anthropic}},
+  title  = {Claude},
+  year   = {2026},
+  note   = {\url{https://claude.ai}}
+}
+
+@misc{vqupit-code,
+  author = {Bian, Xiaoning and Feng, Yuan and Li, Sarah Meng and
+            van de Wetering, John},
+  title  = {Agda formalisation of the qupit {Clifford} presentations},
+  year   = {2026},
+  note   = {Branch \texttt{qupit} of \url{https://github.com/onestruggler/qupit}}
+}
+
+@misc{vqupit-prompt,
+  author = {Bian, Xiaoning},
+  title  = {Outline prompt for this paper},
+  year   = {2026},
+  note   = {Included in the supplementary material}
+}

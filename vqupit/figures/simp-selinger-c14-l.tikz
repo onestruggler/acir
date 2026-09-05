@@ -1,0 +1,55 @@
+\begin{tikzpicture}
+\path [use as bounding box] (-0.3, -1.0) rectangle (41.3, 5.7);
+\begin{pgfonlayer}{nodelayer}
+\node [style=gate] (n0y00) at (1.75, 4.0) {$H$};
+\node [style=cnot ctrl, label={above:$$}] (n0y01) at (4.25, 4.0) {};
+\node [style=cnot ctrl] (n0y01t) at (4.25, 2.0) {$$};
+\node [style=gate] (n0y02) at (6.75, 4.0) {$H$};
+\node [style=gate] (n0y03) at (6.75, 2.0) {$H$};
+\node [style=cnot ctrl, label={above:$$}] (n0y04) at (9.25, 4.0) {};
+\node [style=cnot ctrl] (n0y04t) at (9.25, 2.0) {$$};
+\node [style=gate] (n0y05) at (11.75, 2.0) {$H$};
+\node [style=cnot ctrl, label={above:$$}] (n0y06) at (14.25, 2.0) {};
+\node [style=cnot ctrl] (n0y06t) at (14.25, 0.0) {$$};
+\node [style=gate] (n0y07) at (11.75, 4.0) {$H$};
+\node [style=cnot ctrl, label={above:$$}] (n0y08) at (16.75, 4.0) {};
+\node [style=cnot ctrl] (n0y08t) at (16.75, 2.0) {$$};
+\node [style=gate] (n0y09) at (19.25, 4.0) {$H$};
+\node [style=gate] (n0y010) at (19.25, 2.0) {$H$};
+\node [style=cnot ctrl, label={above:$$}] (n0y011) at (21.75, 4.0) {};
+\node [style=cnot ctrl] (n0y011t) at (21.75, 2.0) {$$};
+\node [style=gate] (n0y012) at (24.25, 2.0) {$H$};
+\node [style=cnot ctrl, label={above:$$}] (n0y013) at (26.75, 2.0) {};
+\node [style=cnot ctrl] (n0y013t) at (26.75, 0.0) {$$};
+\node [style=gate] (n0y014) at (24.25, 4.0) {$H$};
+\node [style=cnot ctrl, label={above:$$}] (n0y015) at (29.25, 4.0) {};
+\node [style=cnot ctrl] (n0y015t) at (29.25, 2.0) {$$};
+\node [style=gate] (n0y016) at (31.75, 4.0) {$H$};
+\node [style=gate] (n0y017) at (31.75, 2.0) {$H$};
+\node [style=cnot ctrl, label={above:$$}] (n0y018) at (34.25, 4.0) {};
+\node [style=cnot ctrl] (n0y018t) at (34.25, 2.0) {$$};
+\node [style=gate] (n0y019) at (36.75, 2.0) {$H$};
+\node [style=cnot ctrl, label={above:$$}] (n0y020) at (39.25, 2.0) {};
+\node [style=cnot ctrl] (n0y020t) at (39.25, 0.0) {$$};
+\node [style=none] (lm0el00) at (0.0, 0.0){};
+\node [style=none] (lm0el10) at (0.0, 2.0){};
+\node [style=none] (lm0el20) at (0.0, 4.0){};
+\node [style=none] (lm0er00) at (41.0, 0.0){};
+\node [style=none] (lm0er10) at (41.0, 2.0){};
+\node [style=none] (lm0er20) at (41.0, 4.0){};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm0el00.center) to (lm0er00.center);
+\draw (lm0el10.center) to (lm0er10.center);
+\draw (lm0el20.center) to (lm0er20.center);
+\draw (n0y01.center) to (n0y01t.center);
+\draw (n0y04.center) to (n0y04t.center);
+\draw (n0y06.center) to (n0y06t.center);
+\draw (n0y08.center) to (n0y08t.center);
+\draw (n0y011.center) to (n0y011t.center);
+\draw (n0y013.center) to (n0y013t.center);
+\draw (n0y015.center) to (n0y015t.center);
+\draw (n0y018.center) to (n0y018t.center);
+\draw (n0y020.center) to (n0y020t.center);
+\end{pgfonlayer}
+\end{tikzpicture}
