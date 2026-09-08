@@ -28,18 +28,18 @@ assistant with a strong evaluator can check largely \emph{by
 computation}, and exactly the proofs whose hand-checked versions one
 would like to see machine-checked.
 
-This paper reports such a machine-checked proof.  We formalise, in safe,
-axiom-free Agda~\cite{norell2007thesis,agdastdlib}, that the qupit
-paper's rule set presents the multi-qupit Clifford group, at every width
-$n$ and every odd prime $p$, against a semantics constructed
-independently of the syntax.  The formalisation is built on a library for
-presentations, normal forms and completeness of circuit relation sets
-that the authors developed for this purpose~\cite{qupit-code}; the
-library's design --- inductively defined circuits, presented monoids as
-inductive congruences, normal forms as function bundles, a verified
-Reidemeister--Schreier engine, and presentation theorems for products and
-extensions --- is described in a companion paper~\cite{bian2026framework},
-and we recall the parts we use in \S\ref{sec:framework}.
+This paper reports such a machine-checked proof.  We formalise, in
+safe, axiom-free Agda~\cite{norell2007thesis,agdastdlib}, that the
+qupit paper's rule set presents the multi-qupit Clifford group, at
+every width $n$ and every odd prime $p$, against a semantics
+constructed independently of the syntax.  The formalisation is built
+on a library for presentations, normal forms and completeness of
+circuit relation sets developed for this purpose; the library's design
+--- inductively defined circuits, presented monoids as inductive
+congruences, normal forms as function bundles, a verified
+Reidemeister--Schreier engine, and presentation theorems for products
+and extensions --- is described in paper~\cite{bian2026framework}, and
+we recall the parts we use in \S\ref{sec:framework}.
 
 \paragraph{A different proof.}
 The formalisation does \emph{not} follow the qupit paper's proof, and
@@ -116,11 +116,12 @@ scalars presents the same group as our semidirect presentation.
 Everything stated as a theorem in this paper typechecks under
 \texttt{--safe}: there are no postulates, no holes and no classical
 axioms.  The two facts that are \emph{not} formalised are the glue
-between our constructed groups and the physicist's: that the projective
-Clifford group of unitaries is $\PPauli \rtimes \Sp$, and that the
-Clifford group is a central extension of it by $\langle\omega\rangle$.
-Both are classical~\cite{bian2026qudit}, and neither involves circuits;
-\S\ref{sec:discussion} states exactly what our semantic groups are.
+between our constructed groups and the physicist's: that the
+projective Clifford group of unitaries is $\PPauli \rtimes \Sp$, and
+that the Clifford group is a central extension of it by
+$\langle\omega\rangle$.  Both are well-known~\cite{bian2026qudit}, and
+neither involves circuits; \S\ref{sec:discussion} states exactly what
+our semantic groups are.
 
 \subsection{Outline}
 

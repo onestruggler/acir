@@ -188,8 +188,8 @@ h CZ-gen = SemiDirect.CZ
 
 (both maps commute with $\uparrow$).  The symplectic $S$ is carried to
 $R = S \cdot Z^{1/2}$ and $h$ compensates, because the target rule set,
-\texttt{Simplified-V1}, spells the multiplier over $R$, as the talk
-does: $M_x = R^{x}HR^{x^{-1}}HR^{x}H$ exactly, with no Pauli
+\texttt{Simplified-V1}, spells the multiplier over $R$, as
+\S\ref{sec:background} does: $M_x = R^{x}HR^{x^{-1}}HR^{x}H$ exactly, with no Pauli
 correction.  \texttt{Simplified-V1} has nineteen group-specific rules:
 the simplified symplectic rules of \S\ref{sec:reduction} with $R$ in
 place of $S$ in the multiplier rules and in c10, c11, plus
@@ -216,7 +216,7 @@ the generators and a step function of some sixty clauses --- that
 discharges the bookkeeping the paper's hand derivations spend most of
 their length on.
 
-\paragraph{From Simplified-V1 to the talk's sixteen rules.}
+\paragraph{From Simplified-V1 to our sixteen rules.}
 \texttt{Paper-V0} is the rule set of \S\ref{sec:background}: the same
 alphabet, so the identity on words is the candidate isomorphism, and
 the theorem is again \aid{StarGroupIsomorphism} with \aid{id}.  Ten of
@@ -240,10 +240,10 @@ v1⇒pap : ∀ {w v} → let open PB (V1R._QRel,_===_ n) using (_≈_) in
          w ≈ v → let open PB (PapR._QRel,_===_ n) renaming (_≈_ to _≈'_) in w ≈' v
 \end{agdacode}
 
-which transports any Simplified-V1 theorem into the talk's theory; it is
+which transports any Simplified-V1 theorem into \texttt{Paper-V0}'s theory; it is
 what lets later layers reuse the calculi rather than re-prove them.
 
-\paragraph{From the talk's sixteen rules to the paper's fifteen: connecting
+\paragraph{From our sixteen rules to the paper's fifteen: connecting
 the two routes.}  The paper's Figure~1 spells the multiplier over
 $S$, with an explicit Pauli prefix (its Lemma~2.14):
 \begin{agdacode}
@@ -256,7 +256,7 @@ $M_g \bullet S^{g^2} \bullet Z^{(g^2-g)/2} = S \bullet M_g$ (its rule
 C4), the $Z$-exponent being what is left after the $Z^{1/2}$ hidden in
 each $R$ is split off and carried across the multiplier, where it picks
 up a factor of $g$.  \texttt{Paper-V1} is Figure~1 modulo scalars in
-this spelling: the talk's sixteen rules with \aid{order-H},
+this spelling: our sixteen rules with \aid{order-H},
 \aid{M-power}, \aid{semi-MR} and \aid{semi-M↑CZ} restated over
 \aid{SHS'}, and \emph{fifteen} rules rather than sixteen, because
 $(SH)^3 = \varepsilon$ is now a theorem:
@@ -270,7 +270,7 @@ lemma-order-SH  = trans (sym lemma-M1-unfold) lemma-M1
 Under the $S$-spelling, $M_1$ \emph{is} the word $(SH)^3$ --- at $x = 1$
 both prefix exponents are $(1-1)/2 = 0$ and the Pauli prefix vanishes ---
 and \aid{M-power} at $k = 0$ already gives $M_1 \approx \varepsilon$.
-Under the talk's $R$-spelling $M_1$ is $(RH)^3$, a different word, which
+Under our $R$-spelling $M_1$ is $(RH)^3$, a different word, which
 is why the axiom had to stay there.  The isomorphism with
 \texttt{Paper-V0} is again the identity on words; eleven axioms cross
 directly, and the four multiplier rules need the bridge between the two
@@ -335,7 +335,7 @@ where $1/8$ is the inverse of $8$ in $\Zp$.  Every other rule holds
 exactly: the three multiplier rules and \aid{order-H} because $R = S
 \cdot Z^{1/2}$ has no Pauli part, \aid{blake-c12} because every Pauli in
 it is pure-$Z$, and pure-$Z$ Paulis have vanishing symplectic form.  Note that the quotient here is
-the talk's sixteen-rule set; correcting the paper's fifteen would give
+our sixteen-rule set; correcting the paper's fifteen would give
 Figure~1 itself.
 
 \paragraph{The semantic side.}  A central extension of a group $Q$ by

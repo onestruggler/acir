@@ -89,16 +89,16 @@ XC = H ↑ ^ 3 • CZ • H ↑
 \end{center}
 
 Here $S^{-1} = S^{p-1}$, $H^{-1} = H^{3}$ and $CZ^{-1} = CZ^{p-1}$ are
-the words that the relations make inverses; \aid{{\_}↓} is the identity
-on circuits and exists to make ``the lower copy of a gate'' visible in a
-rule.  One more derived gate has no qubit counterpart: the
-\emph{multiplier} $M_x\ket{j} = \ket{xj}$ for a unit $x \in \Zp^{*}$.
-The qupit paper spells it (its Lemma~2.14) as $H S^{g^{-1}} H S^{g} H
-S^{g^{-1}}$ followed by a Pauli correction and a phase; the QPL talk on
-the paper spells it as $R^{x}\,H\,R^{x^{-1}}H\,R^{x}H$ with $R =
-S\cdot Z^{1/2}$, which absorbs the Pauli.  We shall meet several
-spellings, one per rule set, and one of the results below is that they
-are all interderivable.
+the words that the relations make inverses; \aid{{\_}↓} is the
+identity on circuits and exists to make ``the lower copy of a gate''
+visible in a rule.  One more derived gate has no qubit counterpart:
+the \emph{multiplier} $M_x\ket{j} = \ket{xj}$ for a unit $x \in
+\Zp^{*}$.  The qupit paper spells it (its Lemma~2.14) as $H S^{g^{-1}}
+H S^{g} H S^{g^{-1}}$ followed by a Pauli correction and a global
+phase; here we use another definition $R^{x}\,H\,R^{x^{-1}}H\,R^{x}H$
+with $R = S\cdot Z^{1/2}$, which absorbs the Pauli and drops the
+global phase.  We shall meet several spellings, one per rule set, and
+one of the results below is that they are all interderivable.
 
 \subsection{The whole development is one parameterised module}
 
@@ -126,8 +126,8 @@ chosen.
 
 \subsection{Main result 1: a presentation of the projective qupit Clifford group}
 
-The rule set of the QPL~2026 talk on the qupit paper --- Figure~1 read
-modulo scalars, with the multiplier spelled over $R$ and with $(SH)^3 =
+Our primary rule set --- the qupit paper's Figure~1 read modulo
+scalars, with the multiplier spelled over $R$ and with $(SH)^3 =
 \varepsilon$ kept as an axiom --- is, in Agda, one inductive family
 with sixteen constructors, one per rule, each stated at the smallest
 number of wires at which it makes sense:
@@ -157,7 +157,7 @@ data _CRel,_===_ : (n : ℕ) → WRel (Gen n) where
 
 (In the source the multiplier is \aid{XMg}, the ``$X$-filling''
 $R^{x^{-1}}HR^{x}HR^{x^{-1}}H$ of the shape $R^{a}HR^{b}HR^{a}H$; we write
-\aid{Mg} here for readability, as the talk did.)  Figures~\ref{fig:rules12}
+\aid{Mg} here for readability.)  Figures~\ref{fig:rules12}
 and~\ref{fig:rules23} show the same sixteen rules as circuit equations,
 drawn from the Agda terms.  Beyond these, \emph{every} circuit theory in
 the framework gets the same three structural rules for free: congruence
@@ -166,7 +166,7 @@ one) a global scalar gate commutes with everything.  Nothing else is an
 axiom: $XZ = ZX$ modulo scalars, the commutation of $\mathit{Ex}$ with
 $CZ$, and both rules for pushing a Pauli through $CZ$ are \emph{derived}.
 The count is sixteen where the paper's Figure~1 has fifteen non-scalar
-rules because the talk kept $(SH)^3 = \varepsilon$ as an axiom under the
+rules because we keep $(SH)^3 = \varepsilon$ as an axiom under the
 $R$-spelling; \S\ref{sec:plumbing} shows that under the paper's own
 $S$-spelling it is a theorem, and verifies the paper's fifteen.
 

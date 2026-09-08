@@ -58,9 +58,15 @@ could shrink to two by pointing at the companion paper), the $S_n$
 warm-up in §5.4, and the code quotations in §6.
 
 ```
-latexmk -pdf main.tex        # pdflatex route (Unicode via the literate tables)
-latexmk -lualatex main.tex   # fallback
+make                                   # from a WSL shell in this directory
+wsl bash -lc "make -C /mnt/d/work/acir/vqupit"   # from PowerShell
 ```
+
+`make` reruns latexmk only when `main.tex`, `sections/*.tex`, `figures/*.tikz`,
+`refs.bib` or the style files changed; `make png` renders the pages to `png/`
+for a quick look; `make clean` / `make cleanall` tidy up.  (`make` and
+`gs` are user-local installs in `~/.local/bin`; TeX Live is in
+`~/texlive`, which the Makefile puts on the PATH itself.)
 
 Debian/Ubuntu packages: `texlive-latex-recommended texlive-latex-extra
 texlive-fonts-recommended texlive-fonts-extra texlive-publishers
