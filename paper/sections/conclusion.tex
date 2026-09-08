@@ -18,7 +18,7 @@ amalgam's alternating normal form.  Every theorem is collected, fully
 typed, in one index module, and the whole verified development is safe,
 axiom-free Agda.
 
-The work continues in three directions.  \emph{Odd-prime Clifford
+The work continues in four directions.  \emph{Odd-prime Clifford
 completeness.}  The multi-qupit Clifford groups sit above the Pauli
 groups formalized here as extensions by the symplectic groups
 $Sp(2n,\mathbb{Z}_p)$; with the Pauli presentations and the
@@ -37,7 +37,15 @@ $\mathbb{Z}[\tfrac12,i]$ family~\cite{bian2021un,li2021on} --- including
 the orthogonal groups over $\mathbb{Z}[1/\sqrt2]$ whose finite
 presentation underpins the completeness of the quantum programming
 language Hadamard-$\Pi$~\cite{fang2026hadamard}, an inviting target for
-this engine.
+this engine.  \emph{Towards compilers.}  The normal-form functions are
+executable Agda; compiled, a verified normalizer is a decision procedure
+for circuit equivalence that an optimizer can call as an oracle, and
+connecting the presented gate groups to the matrix semantics of
+\textsc{sqir}/\textsc{voqc} or VyZX (\S\ref{sec:related}) would turn our
+completeness theorems into end-to-end guarantees about such optimizers:
+that a rewrite engine equipped with one of our rule sets misses no valid
+rewrite, and that two circuits it fails to identify are genuinely
+different.
 \emph{Upstreaming.}  The \texttt{ForStdlib} constructions (semidirect
 products, monoid amalgamations, extensions, epimorphisms, the permutation
 group) are being prepared for the Agda standard library, and the

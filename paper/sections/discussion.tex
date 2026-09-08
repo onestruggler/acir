@@ -1,20 +1,22 @@
 \section{Discussion}\label{sec:discussion}
 
-\subsection{Mechanization statistics}
+\subsection{Size and typechecking cost}\label{sec:stats}
 
-Table~\ref{tab:stats} gives the shape of the development (line counts of
-Agda source, July 2026).  Two observations.  The reusable core ---
-words, presentations, normal forms, the engine, the constructions, the
-circuit layer --- is roughly ten thousand lines; the verified examples add
-about the same again, and the largest single objects are the two
-amalgamation case studies.  Second, everything is uniformly
-\texttt{--safe} (and the core \texttt{--cubical-compatible}),
-with zero postulates; the only axioms in the development are the
-\aid{axiom} constructors of the relation sets themselves.
+Table~\ref{tab:stats} gives the shape of the development: about
+22\,000 lines of Agda in 74 files.  Roughly half is the reusable core ---
+words, presentations with their constructions and solvers, the
+normal-form zoo and the Reidemeister--Schreier engine, the circuit layer,
+the \texttt{ForStdlib} additions, and a support library of modular
+arithmetic --- and the other half is the verified examples of
+\S\ref{sec:examples}, of which the qutrit Clifford+$T$ and
+$U_3(\mathbb{Z}[\tfrac12,i])$ studies alone account for almost half.
+Everything is \texttt{--safe} with zero postulates; the only axioms in the
+development are the \aid{axiom} constructors of the relation sets
+themselves.
 
 \begin{table}[h]
-\caption{Size of the development (non-blank lines of Agda incl.\
-comments; \texttt{wc -l}).}
+\caption{Size of the development (lines of Agda incl.\ comments;
+\texttt{wc -l}, September 2026).}
 \label{tab:stats}
 \centering
 \small
@@ -29,7 +31,7 @@ Layer & Files & Lines \\
 \texttt{ForStdlib} (staged stdlib additions) & 7 & 865 \\
 $\mathbb{Z}_p$ modular arithmetic (support) & 3 & 2\,944 \\
 \midrule
-Verified examples (\S\ref{sec:examples}) & 36 & 9\,236 \\
+Verified examples (\S\ref{sec:examples}) and the index module & 36 & 9\,236 \\
 \quad of which qutrit Clifford+$T$ / $U_3(\mathbb{Z}[\frac12,i])$ & 2 & 4\,262 \\
 \midrule
 Total & 74 & 22\,230 \\
@@ -37,7 +39,40 @@ Total & 74 & 22\,230 \\
 \end{tabular}
 \end{table}
 
-\subsection{Setoids versus quotients, revisited}
+The size of the core deserves a word, since seven thousand lines of
+``presentations'' sounds like a lot.  Of the lines under
+\texttt{Presentation}, only about a thousand are the core proper --- words
+modulo $\approx$, the presentation records, grouplikeness, and the
+morphism builders.  Some 4\,300 are the five product constructions with
+their two-sided theorems, the amalgamation alone accounting for 1\,800; six
+hundred are the solvers; and the remainder is two group developments (the
+symmetric group and its wreath products) that predate the
+\texttt{Examples} tree.  We expect the figure to shrink rather than grow:
+the version of the library developed since this paper was written has
+already retired one of two semidirect-product modules and moved those
+group developments out, and the amalgamation module is the obvious next
+candidate for the transport-based simplification that the construction
+theorems make possible.
+
+Typechecking cost is modest, and concentrated where one would expect.
+Checking the entire development from scratch with Agda~2.8.0 --- all 61
+modules reachable from the index module, with the standard library's
+interfaces already cached --- takes 1\,min\,42\,s of wall-clock time
+(90\,s of CPU) and peaks at 3.5\,GB of resident memory.  A third of
+that time is one module, the amalgamated-product construction (31\,s),
+whose normal-form transport is checked once and for all; the three
+amalgamation case studies together take 19\,s (qutrit Clifford+$T$ 8\,s,
+$U_3$ 9\,s, qubit Clifford+$T$ 2\,s), the symmetric-group tower 3.5\,s,
+and every other module under 4\,s.  Moving the case analyses into the
+evaluator has therefore not made checking slow: the seventy-two
+\aid{refl}-discharged obligations of the nine-coset qutrit level
+(\S\ref{sec:examples}) are among the eight seconds of their module.  The
+costs to watch are instead memory, which grows with the size of the terms
+the evaluator unfolds, and the edit--check loop of the largest modules;
+we mitigate the latter by keeping each case study a separate module whose
+interface is cached independently.
+
+\subsection{Setoids versus quotients, revisited}\label{sec:setoids}
 
 The deliberate design decision of \S\ref{sec:presentations} --- presented
 monoids as setoids over inductive congruences, not as quotient types ---
@@ -52,9 +87,9 @@ quotient before computing; (ii) sections --- maps \emph{into} the syntax
 choosing representatives, the load-bearing ingredient of
 \aid{NormalForm}, Schreier transversals, and amalgamation tails --- are
 natural for setoids and awkward for quotients, where they are not in
-general definable; (iii) the library remains inside plain
-\texttt{--safe} Agda and the standard library's algebra hierarchy, a
-requirement for upstreaming.  The univalent alternative
+general definable; (iii) the library remains inside plain Agda and the
+standard library's algebra hierarchy, a requirement for upstreaming.  The
+univalent alternative
 \cite{vezzosi2019cubical,cubicallibrary} would erase cost (i)'s
 congruence fields but forfeit (ii) definitionally and (iii) by
 foundation.  For this problem domain --- where the whole game is
@@ -62,7 +97,7 @@ computing canonical representatives --- we found the setoid side of the
 trade clearly favourable; the standard library's function bundles meant
 the ``zoo'' of \S\ref{sec:nfproperty} needed no new theory at all.
 
-\subsection{What the standard library lacked}
+\subsection{What the standard library lacked}\label{sec:stdlib-gap}
 
 The \texttt{ForStdlib} layer (\S\ref{sec:forstdlib}) is a measure of the
 gap between textbook group theory and what a widely used dependently
@@ -77,7 +112,34 @@ library's algebra hierarchy is rich in \emph{structures} but thin in
 \emph{constructions}, and presentation-level results force the
 constructions into existence.
 
-\subsection{Proof engineering lessons}
+\subsection{Why Agda, and why not a tactic language}\label{sec:whyagda}
+
+Agda has no tactic language in the sense of Rocq, Lean, or Isabelle, and
+one might expect a development of this kind --- hundreds of case-split
+obligations, long equational chains --- to miss one.  Our experience is
+the opposite, and the reason is the shape of the obligations.  Everything
+the library asks its user to prove is either a finite case split whose
+cases are closed by evaluation, or an equational derivation written in
+the standard library's setoid-reasoning style; neither benefits much from
+proof search, and both benefit from a strong, predictable evaluator and
+from dependent pattern matching that keeps wire indices in step
+(\S\ref{sec:circuits}).  The ``solvers'' of \S\ref{sec:solvers} are not
+tactics but verified functions --- \aid{by-assoc} normalizes both sides to
+lists, \aid{by-equal-nf} to normal forms, and the comparison is
+\aid{refl} --- so the development uses no metaprogramming at all, and
+nothing in it depends on the behaviour of a search procedure.  Two places
+would profit from automation, and both are future work: generating the
+hypothesis records of a coset table from the table alone (currently a
+mechanical but hand-written case split, one clause per coset and axiom),
+for which Agda's reflection mechanism would suffice; and finding the
+tables, which we deliberately keep outside the checker
+(\S\ref{sec:lessons}).  Conversely, nothing in the design is specific to
+Agda: it would transfer to Rocq or Lean with their evaluators, provided
+the setoid discipline is kept --- the quotient-based presented groups of
+mathlib (\S\ref{sec:related}) would need exactly the sections we build,
+and those are what quotients make awkward.
+
+\subsection{Proof engineering lessons}\label{sec:lessons}
 
 Four lessons generalize beyond this library.  \emph{Choose indices for
 the unifier.}  The circuit layer's successor-only indexing
@@ -96,14 +158,22 @@ free.  This inverts the usual economy of formalization --- effort
 concentrates in setting up the next normal form, after which the
 typechecker absorbs the case explosion that dominates the pen-and-paper
 proofs of~\cite{selinger2015clifford,li2025qutrit,
-clement2026realcliffordch}.  \emph{Separate search from checking.}  Coset
-tables were found by ordinary computation (and, for the larger studies,
-by the companion web tools of \S\ref{sec:tools}); the library only ever
-verifies them.  Nothing in the formal development depends on how a table
-was produced, which kept the trusted story simple and the exploration
-loop fast.
+clement2026realcliffordch}.  \emph{Separate search from checking.}\label{sec:tools}
+Coset tables were found by ordinary computation and, for the larger
+studies, by two web tools that implement the mathematics this library
+mechanizes: a normalizer to \emph{Lafont normal form} for linear
+permutation circuits, implementing the normalization lemmas of Lafont's
+algebraic theory of Boolean circuits~\cite{lafont2003boolean,lafontlp-tool},
+and a normalizer for the symplectic groups $Sp(2n,\mathbb{Z}_p)$ that
+computes Selinger-style staircase normal forms~\cite{qupit-tool}.  Both
+tools compute normal forms of exactly the kind this library is built to
+prove correct and complete, and the library only ever verifies what they
+found; for the symplectic case the formalized proofs are ongoing and
+close to being finished.  Nothing in the formal development depends on how a
+table was produced, which kept the trusted story simple and the
+exploration loop fast.
 
-\subsection{Threats to the interpretation}
+\subsection{Threats to the interpretation}\label{sec:threats}
 
 Two honest caveats.  First, our completeness theorems are stated against
 semantic groups built compositionally ($\mathbb{Z}_N \wr S_n$, product
@@ -118,7 +188,30 @@ presentation theorem of \S\ref{sec:constructions} closes this gap
 whenever presentations of the three constituent groups are supplied, but
 we have not yet formalized the matrix side itself.  Connecting to a
 verified matrix semantics (\S\ref{sec:related}) would discharge this end
-to end.  Second, statistics like ``every obligation closed by
-\aid{refl}'' describe our case studies, not a theorem about the method;
-gate sets whose coset structure is not finitely enumerable per level
-would need genuinely new ideas.
+to end.
+
+Second, statistics like ``every obligation closed by \aid{refl}''
+describe our case studies, not a theorem about the method, and they rest
+on a finiteness assumption: at every level of a tower the cosets form a
+finite inductive type, so the five hypotheses are finite case splits.
+Three kinds of gate sets escape this.  Gate sets with continuous
+parameters --- the phase and rotation gates of the complete equational
+theories for full quantum
+circuits~\cite{clement2023complete,clement2024minimal}, whose normal
+forms carry real angles --- have no finite coset structure at all; their
+completeness proofs are genuinely analytic, and the library offers them
+its presentation vocabulary but not its engine.  Subgroup steps of
+infinite index, such as the step from the base group to the lamplighter
+group $\mathbb{Z}_N \wr \mathbb{Z}$ of \S\ref{sec:conclusion}, have
+cosets indexed by an infinite type; the coset-table hypotheses are still
+statable, but they would have to be proved by induction rather than by
+finitely many evaluations, and nothing in our engine yet automates that.
+(The amalgamation construction already handles one shape of infinite
+index --- alternating words of arbitrary length --- which is why the
+Clifford+$T$ monoids, of infinite index over their Clifford subgroups,
+are within reach.)  Finally, finite but large tables, of the size that
+computer search produces for multi-qubit gate
+sets~\cite{bian2023cliffordt2,bian2023cliffordcs3}, remain within the
+method in principle but will stress the evaluator; \S\ref{sec:stats}
+gives the current costs, and the odd-prime Clifford development in
+progress is the first real measurement of how they scale.

@@ -1,0 +1,939 @@
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{paper.sections.permutations}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Nat}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{ℕ}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Product}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}×\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{},\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaField{proj₁}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaField{proj₂}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Level}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{0ℓ}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Relation.Binary}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Rel}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Notations}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{₃₊}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Word.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[\AgdaUnderscore{}]ʷ}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}•\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{wmap}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Definitions}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaRecord{\AgdaUnderscore{}IsPresentationOf\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Groups.Symmetric.Tight.Semantics}\AgdaSpace{}%
+\AgdaSymbol{as}\AgdaSpace{}%
+\AgdaModule{SymTight}\<%
+\\
+\>[0]\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Groups.Symmetric.Theorems}\AgdaSpace{}%
+\AgdaSymbol{as}\AgdaSpace{}%
+\AgdaModule{SymThm}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaPostulate{proof-elided}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{ℓ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{A}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaBound{ℓ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{A}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{private}\AgdaSpace{}%
+\AgdaKeyword{variable}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\end{code}
+\section{A Worked Example: Permutation Circuits}\label{sec:permutations}
+
+We begin with the smallest complete case study in the library: circuits
+built from a single two-wire gate, the swap $\sigma$, which present the
+symmetric groups.  The point of the walkthrough is to exhibit the pipeline
+--- gates, relations, cosets, tower, semantics, uniqueness, completeness,
+presentation --- that every later case study instantiates, concretely
+enough that the general machinery of \S\ref{sec:design} can be read as
+``the same thing, with the gates abstracted''.  The statement quoted at
+the end appears verbatim in the index module \texttt{MainTheorems.agda}.
+
+\subsection{Gates, generators, and circuits}
+
+A gate set is a family $\aid{Gate} : \mathbb{N} \to \mathsf{Set}$ giving,
+for each arity, the gates that act on that many adjacent wires.  For
+permutations there is exactly one gate, on two wires:
+
+\begin{code}%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{σ-gate}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaNumber{2}\<%
+\end{code}
+
+The generic circuit layer (\S\ref{sec:circuits}) turns any such family into
+wire-indexed \emph{generators}: a gate placed at the bottom of the wires, or
+a generator shifted up by one wire.
+
+\begin{code}%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{gate₁}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaNumber{1}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}%
+\>[34]\AgdaComment{--\ a\ 1-ary\ gate\ on\ the\ bottom\ wire}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{gate₂}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaNumber{2}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}%
+\>[34]\AgdaComment{--\ a\ 2-ary\ gate\ on\ the\ bottom\ two\ wires}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}↥}}%
+\>[7]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}%
+\>[34]\AgdaComment{--\ the\ same\ generator,\ one\ wire\ higher}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+\>[0]\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaFunction{CRel}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set₁}\<%
+\\
+\>[0]\AgdaFunction{CRel}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{Rel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaFunction{0ℓ}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}↑}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}↑}}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{wmap}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}↥}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{pattern}\AgdaSpace{}%
+\AgdaInductiveConstructor{σ-gen}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{gate₂}\AgdaSpace{}%
+\AgdaInductiveConstructor{σ-gate}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaInductiveConstructor{σ-gen}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{infix}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}VRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\<%
+\\
+\>[0]\AgdaKeyword{infixr}\AgdaSpace{}%
+\AgdaNumber{10}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•\AgdaUnderscore{}}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{private}\AgdaSpace{}%
+\AgdaKeyword{variable}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaGeneralizable{w}\AgdaSpace{}%
+\AgdaGeneralizable{v}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaGeneralizable{n}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\end{code}
+
+Here $\aid{₁₊}\;n$ and $\aid{₂₊}\;n$ are the library's patterns for
+$1{+}n$ and $2{+}n$, and $n$ is an implicit argument, so
+$\aid{gate₂}\;\aid{σ-gate}$ is a generator at any width from two upward.
+An $n$-wire \emph{circuit} is a word of generators, $\aid{Circuit}\;n =
+\aid{Word}\;(\aid{Gen}\;n)$.  Words (\S\ref{sec:words}) form the free
+monoid: a circuit is a single generator $[\,g\,]$\aid{ʷ}, the empty circuit
+\aid{ε}, or a sequential composition $c \aid{•} c'$.  The empty circuit on
+$n$ wires is the identity circuit, $n$ bare wires and no gate; like every
+circuit it carries its wire count as a type index.  We write $\sigma :
+\aid{Circuit}\;(2{+}n)$ for the one-letter circuit
+$[\,\aid{gate₂}\;\aid{σ-gate}\,]$\aid{ʷ} and $c{\uparrow}$ for the circuit
+$c$ shifted up one wire ($\aid{{\_}↑} = \aid{wmap}\;\aid{{\_}↥}$ shifts
+every generator).
+
+The reading is diagrammatic.  On three wires, the two generators and a
+composite correspond to circuit diagrams as follows (wires drawn bottom-up,
+composition left to right):
+
+\begin{figure}[h]
+\centering
+\scalebox{0.75}{\tikzfig{figures/fig1_sigma}}
+\caption{Circuit code and diagrams for three-wire permutation circuits:
+the Agda values \aid{σ}, \aid{σ ↑}, and \aid{σ • σ ↑ • σ} of type
+\aid{Circuit 3}.}
+\label{fig:sigma}
+\end{figure}
+
+\subsection{Relations: two axioms, structure for free}
+
+The group-specific relations are an inductive family indexed by the wire
+count.  Each axiom is stated once, with its gates at the bottom of the
+wires and the wire count left open (the implicit $n$), so that a single
+constructor covers every width at which the axiom fits; the structural
+rule \aid{cong↑} below then moves it to any height:
+
+\begin{code}%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{order}%
+\>[14]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{yang-baxter}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₃₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\<%
+\end{code}
+
+(The name \aid{{\_}SRel,{\_}==={\_}} is a \emph{mixfix} identifier: in
+Agda, underscores in a name mark argument positions, so the type
+$n\;\aid{SRel,}\;w \aid{===} v$ reads ``$w = v$ is an axiom at $n$
+wires''.)  These two axioms are the Coxeter presentation of $S_n$ in
+circuit clothing: $\sigma^2 = \varepsilon$ and the braid (Yang--Baxter)
+relation.
+
+What about the relations every circuit theory needs, whatever its gates?
+By a \emph{circuit theory} we mean a gate set together with gate-specific
+relations, presenting for each width $n$ a monoid of $n$-wire circuits
+under sequential composition.  Such circuits are the fixed-width slices of
+a symmetric monoidal category of circuits (a PROP), and the monoidal
+structure leaves exactly two traces at fixed width.  The shift $c \mapsto
+c{\uparrow}$ is ``tensoring with an identity wire'', so equations must be
+preserved by it; and the interchange law says that gates acting on
+disjoint wires commute.  These structural rules are what every circuit
+theory shares --- they are what a pen-and-paper presentation leaves
+implicit in the phrase ``a congruence compatible with composition and
+tensor product'' --- and writing them into every gate set would be
+repetitive and error-prone.  The circuit layer therefore adds them
+generically: \aid{Lift-Relation} (\S\ref{sec:circuits}) extends any
+gate-specific family with three structural rules, yielding the full
+relation set \aid{{\_}VRel,{\_}==={\_}}:
+
+\begin{code}%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}VRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{CRel}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{srel}%
+\>[8]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}\AgdaSpace{}%
+\AgdaGeneralizable{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaGeneralizable{v}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{VRel,}}\AgdaSpace{}%
+\AgdaGeneralizable{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaGeneralizable{v}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{cong↑}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{VRel,}}\AgdaSpace{}%
+\AgdaGeneralizable{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaGeneralizable{v}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{VRel,}}\AgdaSpace{}%
+\AgdaGeneralizable{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaGeneralizable{v}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{comm₁}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{h}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaNumber{1}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{g}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{VRel,}}\<%
+\\
+\>[2][@{}l@{\AgdaIndent{0}}]%
+\>[4]\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaInductiveConstructor{gate₁}\AgdaSpace{}%
+\AgdaBound{h}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaInductiveConstructor{gate₁}\AgdaSpace{}%
+\AgdaBound{h}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{comm₂}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{h}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaNumber{2}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{g}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{VRel,}}\<%
+\\
+\>[2][@{}l@{\AgdaIndent{0}}]%
+\>[4]\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaInductiveConstructor{gate₂}\AgdaSpace{}%
+\AgdaBound{h}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaInductiveConstructor{gate₂}\AgdaSpace{}%
+\AgdaBound{h}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\<%
+\end{code}
+
+The far-commutation instance of \aid{comm₂} and the braid relation are the
+two diagram equalities of Figure~\ref{fig:relations}.  From here on,
+$\approx$ denotes the monoid congruence generated by
+$n\;\aid{VRel},{=}{=}{=}$ (\S\ref{sec:presentations}): the least relation
+containing the axioms and closed under reflexivity, symmetry, transitivity,
+congruence of \aid{•}, associativity, and the unit laws.  Two circuits are
+equal in the presented monoid exactly when $\approx$ relates them, and
+deciding $\approx$ is the word problem.
+
+\begin{figure}[h]
+\centering
+\begin{minipage}[c]{0.41\linewidth}\centering
+\scalebox{0.75}{\tikzfig{figures/fig2_comm2}}\\[2pt]
+{\small \aid{comm₂}: disjoint gates commute}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.55\linewidth}\centering
+\scalebox{0.75}{\tikzfig{figures/fig2_yb}}\\[2pt]
+{\small \aid{yang-baxter}}
+\end{minipage}
+\caption{The generic far-commutation rule and the gate-specific braid
+relation as diagram equalities.}
+\label{fig:relations}
+\end{figure}
+
+Because $\sigma$ is its own inverse and shifts of invertible generators are
+invertible, the presented monoid is a group; we witness this by a
+\aid{Grouplike} proof (every generator has a left inverse), constructed by
+induction on generators.
+
+\subsection{Cosets and the staircase normal form}\label{sec:sn-cosets}
+
+The engine behind the normal form is coset enumeration along the chain of
+subgroups
+\[
+  S_1 \;<\; S_2 \;<\; \dots \;<\; S_n \;<\; S_{n+1},
+\]
+where $S_n$ sits inside $S_{n+1}$ as the permutations fixing the bottom
+wire --- syntactically, the circuits of the form $c{\uparrow}$.  Read as
+permutations, two circuits lie in the same right coset of $S_n$ exactly
+when they bring the same wire to the bottom position.  There are $n{+}1$
+choices, so $S_n$ has index $n{+}1$ in $S_{n+1}$, and a natural
+representative of each coset is the \emph{descending staircase} of swaps
+that carries that wire down.  On three, two, and one wires the
+representatives are:
+\begin{center}
+\begin{tabular}{ccc@{\qquad\qquad}cc@{\qquad\qquad}c}
+  \ufig[0.6]{c2-0} & \ufig[0.6]{c2-1} & \ufig[0.6]{c2-2} &
+  \ufig[0.6]{c1-0} & \ufig[0.6]{c1-1} & \ufig[0.6]{c0-0}\\[2pt]
+  $\varepsilon$ & $\sigma{\bullet}\varepsilon$ &
+  $\sigma{\bullet}\sigma{\bullet}\varepsilon$ &
+  $\varepsilon$ & $\sigma{\bullet}\varepsilon$ & $\varepsilon$
+\end{tabular}
+\end{center}
+In Agda a coset is a \emph{descriptor} --- the length of the staircase,
+as a unary numeral bounded by the wire count --- and the \emph{section}
+$[\,\_\,]^{\mathsf c}$ realizes a descriptor as the staircase circuit:
+
+\begin{code}%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{ε}%
+\>[6]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaGeneralizable{n}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaInductiveConstructor{σ•\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaOperator{\AgdaFunction{[\AgdaUnderscore{}]ᶜ}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{]ᶜ}}%
+\>[11]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\\
+\>[0]\AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{]ᶜ}}%
+\>[11]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{]ᶜ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\AgdaSymbol{)}\<%
+\end{code}
+
+So $\aid{C}\;n$ has exactly $n{+}1$ elements --- $\varepsilon$,
+$\sigma{\bullet}\varepsilon$, up to a staircase of $n$ swaps --- matching
+the index of $S_n$ in $S_{n+1}$; the table above lists $\aid{C}\;2$,
+$\aid{C}\;1$, and $\aid{C}\;0$.
+
+Why this yields a normal form is the classical argument recalled in
+\S\ref{sec:preliminaries}.  Every $f \in S_{n+1}$ lies in exactly one
+coset, say the one represented by $c_n$; then $f$ factors uniquely as
+$f = f' \cdot c_n$ with $f' \in S_n$, and recursing on $f'$ writes $f$ as
+a product of one representative per level, $c_1 c_2 \cdots c_n$ with $c_k
+\in \aid{C}\;k$.  Counting representatives, $|S_{n+1}| = (n{+}1) \cdot n
+\cdots 2$: the tuple $(c_1, \dots, c_n)$ is a numeral in the
+\emph{factorial number system}, one digit per level.
+
+\emph{Computing} this factorization is the job of the coset table: a right
+action that pushes one generator past a staircase, emitting a residual
+circuit on the wires above and a successor coset.  Pushing $\sigma$ into a
+staircase can lengthen it, absorb it ($\sigma^2 = \varepsilon$), or pass
+it through and shift it up (Yang--Baxter); a generator that does not touch
+the bottom wire simply commutes past.  The residual is therefore a
+\emph{circuit} rather than a single generator --- either nothing or one
+swap, on the wires above --- which is why the table returns a word.  The
+four cases are the four pictures of Figure~\ref{fig:pushing}:
+
+\medskip\noindent
+\begin{minipage}[c]{0.66\linewidth}
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}%
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}%
+\>[15]\AgdaInductiveConstructor{σ-gen}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}%
+\>[38]\AgdaComment{--\ staircase\ grows}\<%
+\\
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSymbol{)}%
+\>[15]\AgdaInductiveConstructor{σ-gen}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}%
+\>[38]\AgdaComment{--\ σ²\ =\ ε\ absorbs}\<%
+\\
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaInductiveConstructor{σ-gen}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaBound{c}%
+\>[38]\AgdaComment{--\ Yang-Baxter\ passes}\<%
+\\
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}%
+\>[15]\AgdaSymbol{(}\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}%
+\>[38]\AgdaComment{--\ disjoint:\ commute}\<%
+\\
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSymbol{)}%
+\>[15]\AgdaSymbol{(}\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaField{proj₁}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaField{proj₂}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSymbol{))}\<%
+\end{code}
+\endgroup
+\end{minipage}\hfill
+\begin{minipage}[c]{0.32\linewidth}\centering
+  \ufig[0.4]{ract-l}\;\scalebox{0.7}{$\approx$}\;\ufig[0.4]{ract-r}
+\end{minipage}
+
+\medskip\noindent
+(\aid{σ-gen} abbreviates $\aid{gate₂}\;\aid{σ-gate}$; two further clauses
+dispose of vacuous low-arity cases.)  The last clause is the recursion: a
+shifted generator meets a staircase by meeting its tail one wire down.
+Each clause is certified by the \emph{soundness law}, proved once per
+table by a short equational derivation from the axioms and pictured on
+the right --- in Agda,
+
+\begin{code}%
+\>[0]\AgdaFunction{ract-sound}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSpace{}%
+\AgdaSymbol{→}%
+\>[398I]\AgdaKeyword{let}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{b'}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{c'}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{b}\<%
+\\
+\>[.][@{}l@{}]\<[398I]%
+\>[21]\AgdaKeyword{in}%
+\>[25]\AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{]ᶜ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{≈}}\AgdaSpace{}%
+\AgdaBound{b'}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
+\AgdaBound{c'}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{]ᶜ}}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{ract-sound}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\end{code}
+
+The library's stateful word traversal \aid{{\_}ᵗ} (\S\ref{sec:words})
+extends \aid{ract} to whole circuits, threading the coset from left to
+right and concatenating the residuals.  Running it from the identity coset
+maps an $(n{+}2)$-wire circuit to a pair of an $(n{+}1)$-wire circuit and a
+coset --- one level of normalization, and, in the vocabulary of
+\S\ref{sec:engine}, the normal-form transport that a verified coset table
+provides.
+
+\begin{figure}[t]
+\centering
+\begin{tabular}{r@{\,}c@{\,}l@{\qquad}l}
+  \ufig[0.4]{push1-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push1-r} &
+    disjoint wires: commute past \\
+  \ufig[0.4]{push2-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push2-r} &
+    Yang--Baxter: pass through, shift up \\
+  \ufig[0.4]{push3-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push3-r} &
+    $\sigma^2 = \varepsilon$: staircase shrinks \\
+  \ufig[0.4]{push4-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push4-r} &
+    staircase grows \\
+\end{tabular}
+\caption{Pushing a swap through a staircase: the four cases of the coset
+table \aid{ract}, as circuit rewrites.}
+\label{fig:pushing}
+\end{figure}
+
+\emph{Iterating} this is the coset tower (\S\ref{sec:engine}).  For each
+level, the symmetric-group development (module
+\texttt{Examples.Groups.Symmetric}) supplies the coset type $\aid{C}\;k$,
+the table \aid{ract}, the section $[\,\_\,]^{\mathsf c}$, and the five
+hypotheses that make a coset table verified --- \aid{ract-sound} is one of
+them; the others are finite case splits closed by evaluation --- packaged
+as a single record.  The tower folds these records upward, starting from
+the trivial normal form of the one-wire theory, in which every circuit is
+empty.  The carrier grows by one digit per level,
+\[
+  \aid{NF}\;n \;=\; \top \times \aid{C}\;1 \times \aid{C}\;2 \times
+  \dots \times \aid{C}\;(n{-}1),
+\]
+and has exactly $2 \cdot 3 \cdots n = n!$ elements, as it must.  The
+normal-form function $\aid{nf} : \aid{Circuit}\;n \to \aid{NF}\;n$ runs
+the tables; its \emph{section} $\aid{inv-nf} : \aid{NF}\;n \to
+\aid{Circuit}\;n$ rebuilds a circuit from its digits by concatenating the
+staircases $[\,c_k\,]^{\mathsf c}$, suitably shifted; and the witness that
+this is a normal form (\S\ref{sec:nfproperty}) is the proof that
+$\aid{inv-nf}\;(\aid{nf}\;c) \approx c$ for every circuit $c$.
+Figure~\ref{fig:staircase} shows the section of one normal form on four
+wires: a ``staircase of staircases'', exactly Selinger's normal-form
+picture for Clifford circuits restricted to
+swaps~\cite{selinger2015clifford}.
+
+\begin{figure}[h]
+\centering
+\scalebox{0.75}{\tikzfig{figures/fig3_staircase}}
+\caption{The section of the normal form
+$(\mathsf{tt},\, \sigma{\bullet}\varepsilon,\,
+\sigma{\bullet}\sigma{\bullet}\varepsilon,\,
+\sigma{\bullet}\varepsilon) \in \aid{NF}\;4$: reading right to left, one
+descending staircase per tower level.}
+\label{fig:staircase}
+\end{figure}
+
+\subsection{Two semantics, uniqueness, and completeness}
+
+So far everything was syntax.  The development interprets circuits twice:
+
+\begin{itemize}
+\item a \emph{loose} semantics
+  $\aid{⟦\_⟧} : \aid{Circuit}\;n \to (\mathsf{Fin}\;n \to \mathsf{Fin}\;n)$
+  into endofunctions of $\mathsf{Fin}\;n$ under composition ($\sigma$ swaps
+  the bottom two elements), a monoid that is \emph{not} a group; and
+\item a \emph{tight} semantics into
+  $\aid{Permutation′-group}\;n$, the group of permutations of
+  $\mathsf{Fin}\;n$ --- the standard library's \aid{Permutation′} bundled
+  as a \aid{Group} by our \texttt{ForStdlib} layer
+  (\S\ref{sec:forstdlib}).
+\end{itemize}
+
+\emph{Soundness} --- $w \approx v$ implies
+$\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ --- is, as always, a small case
+analysis over the axioms: the two Coxeter relations hold for the swap
+function, and the structural rules hold because shifted circuits act only on
+shifted points.  The heart of the matter is the \emph{unique normal form}
+property (\S\ref{sec:nfproperty}): normal forms with equal denotations are
+equal,
+\[
+  \aid{⟦}\,\aid{inv-nf}\;u\,\aid{⟧} \doteq \aid{⟦}\,\aid{inv-nf}\;v\,\aid{⟧}
+  \;\longrightarrow\; u \equiv v \qquad (u, v \in \aid{NF}\;n),
+\]
+proved by induction on the tower: two staircase sections that agree as
+functions must peel off equal top digits (they send the top point to the
+same place), and the rest agree by induction.  Soundness and uniqueness are
+exactly the premises of the library's generic lemma
+\aid{by-normalization}, which concludes \emph{completeness}:
+$\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ implies $w \approx v$.  The index
+module states three theorems of this kind, for every $n$: soundness and
+completeness of the loose semantics, and uniqueness of the tower normal
+form for the tight semantics.  In \texttt{MainTheorems.agda} they are
+named \aid{symmetric-soundness}, \aid{symmetric-completeness}, and
+\aid{symmetric-unique-nf}, and their Agda types are the statements above
+with the setoids spelled out.
+
+Completeness for the \emph{loose} semantics is the stronger, perhaps
+surprising fact: even read as mere endofunctions, circuits that are equal
+as functions are provably equal --- the relation set does not need
+invertibility of the model.  For the tight semantics, soundness,
+completeness, and surjectivity (every permutation is a product of adjacent
+transpositions --- realized by \aid{inv-nf} composed with a semantic normal
+form) assemble into the \emph{presentation record} of
+\S\ref{sec:presentations}, which packages a \aid{Grouplike} witness with a
+group isomorphism from the presented group onto the target whose
+underlying function is the semantics.  This is the one statement we quote
+in Agda, since every presentation theorem in the paper has its shape:
+
+\begin{code}%
+\>[0]\AgdaFunction{symmetric-presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{VRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{SymTight.Permutation′-group}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{symmetric-presentation}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{SymThm.Tight.presentation}\AgdaSpace{}%
+\AgdaBound{n}\<%
+\end{code}
+
+read: the monoid of swap circuits modulo \{\aid{order},
+\aid{yang-baxter}\} and the structural rules \emph{is} the group of
+permutations of $\mathsf{Fin}\;n$, via a group isomorphism whose
+underlying map is the semantics.  (\aid{IsPresentationOf} is the mixfix
+record name \aid{{\_}IsPresentationOf{\_}} used infix, between the
+relation set and the group.)  Everything later in the paper is this
+pipeline again, with richer gates, longer towers, and amalgamations where
+the chain branches.

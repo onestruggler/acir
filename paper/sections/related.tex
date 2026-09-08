@@ -2,9 +2,9 @@
 
 We compare along the three axes the library combines --- (i) presentations
 and normal forms of groups and monoids, (ii) completeness of equational
-theories, (iii) circuits --- across Agda, Lean, Coq, and Isabelle.
-Table~\ref{tab:compare} summarizes; the prose gives the details and the
-precise deltas.  Claims of absence are stated to the best of our
+theories, (iii) circuits --- across Agda, Lean, Rocq (formerly Coq), and
+Isabelle.  Table~\ref{tab:compare} summarizes; the prose gives the details
+and the precise deltas.  Claims of absence are stated to the best of our
 knowledge.
 
 \begin{table}
@@ -22,16 +22,16 @@ Development & Prover & Circuits & Pres. & NF & Compl. \\
 \midrule
 This library & Agda & \ding{51} & \ding{51} & \ding{51} & \ding{51} \\
 Bian--Selinger developments & Agda & \ding{51} & \ding{51} & \ding{51} & syntactic \\
-\textsc{sqir}/\textsc{voqc} & Coq & \ding{51} & -- & -- & sound only \\
-\textsc{Qwire} & Coq & \ding{51} & -- & -- & -- \\
-VyZX & Coq & \ding{51} & -- & -- & sound only \\
-CoqQ & Coq & \ding{51} & -- & -- & -- \\
+\textsc{sqir}/\textsc{voqc} & Rocq & \ding{51} & -- & -- & sound only \\
+\textsc{Qwire} & Rocq & \ding{51} & -- & -- & -- \\
+VyZX & Rocq & \ding{51} & -- & -- & sound only \\
+CoqQ & Rocq & \ding{51} & -- & -- & -- \\
 Qbricks & Why3 & \ding{51} & -- & -- & -- \\
 QHLProver, Isabelle-Marries-Dirac & Isabelle & \ding{51} & -- & -- & -- \\
 $\Pi$ as free rig groupoid & Agda (HoTT) & \ding{51} & categorical & \ding{51} & classical \\
 Quantum $\Pi$ with square roots & Agda (partial) & \ding{51} & categorical & -- & 2q Clifford \\
 mathlib group theory & Lean & -- & \ding{51} & -- & -- \\
-MathComp / Odd Order & Coq & -- & -- & -- & -- \\
+MathComp / Odd Order & Rocq & -- & -- & -- & -- \\
 Free groups (AFP, CICM~2023) & Isabelle & -- & \ding{51} & \ding{51} & -- \\
 IsaFoR completion & Isabelle & -- & -- & \ding{51} & -- \\
 cubical / agda-unimath & Agda & -- & partial & -- & -- \\
@@ -74,12 +74,12 @@ structured as per-paper proofs.
 \subsection{Quantum circuits in proof assistants: soundness, not completeness}
 
 A rich ecosystem verifies quantum \emph{programs} and \emph{compilers}.
-\textsc{Qwire}~\cite{paykin2017qwire} embeds a circuit language in Coq
+\textsc{Qwire}~\cite{paykin2017qwire} embeds a circuit language in Rocq
 with a denotational semantics; \textsc{sqir}/\textsc{voqc}
-\cite{hietala2021voqc,hietala2021proving} defines a quantum IR in Coq and
+\cite{hietala2021voqc,hietala2021proving} defines a quantum IR in Rocq and
 verifies an optimizing compiler --- every rewrite the optimizer performs
 is proved \emph{sound} against the matrix semantics.
-VyZX~\cite{lehmann2025vyzx} inductively represents ZX diagrams in Coq and
+VyZX~\cite{lehmann2025vyzx} inductively represents ZX diagrams in Rocq and
 proves the ZX rewrite rules sound.  CoqQ~\cite{zhou2023coqq} builds
 Dirac-notation program logics over MathComp;
 Qbricks~\cite{chareton2021qbricks} verifies circuit-building programs
@@ -114,7 +114,7 @@ natural next verification target for this library.  We see the two
 ecosystems as complementary: a natural target is to connect our presented
 gate groups to the matrix semantics of \textsc{sqir} or VyZX, obtaining
 end-to-end completeness against matrices rather than against abstract
-product groups.
+product groups (\S\ref{sec:conclusion}).
 
 \subsection{Complete equational theories via rig categories}
 
@@ -181,7 +181,7 @@ concrete group --- no coset enumeration, no verified Schreier
 transversals, no normal-form transports; the Coxeter development, for
 instance, axiomatizes the presentation rather than verifying completeness
 of specific relation sets for specific permutation groups.  Conversely,
-the deep results of the Coq/MathComp school --- most famously the Odd
+the deep results of the Rocq/MathComp school --- most famously the Odd
 Order theorem~\cite{gonthier2013oddorder} --- concern finite groups
 represented concretely (as subgroups of permutation groups over finite
 types), and presentations play no role.  In Isabelle, the AFP has free
@@ -207,10 +207,9 @@ devices are \emph{maps into} the syntax (sections of normal forms,
 Schreier transversals), which quotients complicate: a section
 $\mathit{NF} \to \aid{Word}\;X$ picking canonical representatives is
 setoid-natural and quotient-hostile.  Since the library also targets the
-(non-cubical) standard library and must remain
-\texttt{--cubical-compatible} rather than cubical, the setoid design
-is the pragmatic point in the space; \S\ref{sec:discussion} reflects
-further.
+non-cubical standard library and must stay compatible with it rather
+than become cubical, the setoid design is the pragmatic point in the
+space; \S\ref{sec:setoids} reflects further.
 
 \subsection{Formalized rewriting and completion}
 

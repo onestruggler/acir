@@ -42,32 +42,76 @@ this shape --- long, regular, and computational --- are precisely the proofs
 that should be machine-checked, and precisely the proofs that a proof assistant with a
 strong evaluator can check largely \emph{by computation}.
 
-This paper reports on an Agda library built for exactly this purpose: a
-general, reusable formal framework for \emph{presentations of monoids and
-groups by generators and relations}, for \emph{normal forms}, and for
+This paper reports on an Agda library built for exactly this purpose, and
+on the design decisions that make it work.  The library is a general,
+reusable framework for \emph{presentations of monoids and groups by
+generators and relations}, for \emph{normal forms}, and for
 \emph{completeness} of finite relation sets, with circuits --- words of
-wire-indexed gates --- as the motivating instance.  The library is written in
-safe, axiom-free Agda~\cite{norell2007thesis,bove2009agda} against the Agda
-standard library~\cite{agdastdlib}, is compatible with the
-\texttt{--cubical-compatible} discipline, and is being prepared for
-submission to the standard library; the semantic constructions it needed and
-the standard library lacked (semidirect products, amalgamated free products
-of monoids, group extensions, epimorphisms, the permutation group bundled as
-a group) are staged in a dedicated \texttt{ForStdlib} hierarchy.
+wire-indexed gates --- as the motivating instance.  Its approach can be
+stated without formal vocabulary.  A circuit is a word of gates, and a rule
+set is a datatype of axioms; the equational theory is the congruence these
+axioms generate, itself an inductive datatype, so that a derivation is a
+first-class object.  A normal form is an ordinary function on words, paired
+with a function back from normal forms to words that picks a canonical
+representative; completeness then follows from soundness together with one
+further property, that normal forms with equal denotations are equal ---
+and this reduction is proved once, as a generic lemma, never per example.
+Normal forms themselves are built one wire at a time.  The circuits on $n$
+wires sit inside those on $n{+}1$ wires as the circuits that leave the
+bottom wire alone, and a \emph{coset table} --- a small first-order function
+recording how a gate moves past the representative of each coset of that
+subgroup --- adds one ``digit'' to the normal form per wire.  The table is
+not searched for inside the proof assistant; it is supplied, and
+\emph{verified} by checking five equations.  Because tables and normal
+forms are structurally recursive programs, those equations, and the
+hundreds of case-split obligations they expand into, are closed by Agda's
+evaluator: the case explosion still happens, but inside the typechecker.
+Section~\ref{sec:permutations} shows the whole route on the smallest
+example, permutation circuits presenting the symmetric groups.
+
+Two design decisions deserve to be announced up front, since the paper
+returns to them repeatedly.  First, the library is written in plain,
+setoid-based Agda on top of the standard
+library~\cite{daggitt2025stdlib,agdastdlib}, not in cubical Agda or a
+HoTT library: a presented monoid is a setoid on words, not a quotient type.
+The reason is that our central devices are maps \emph{into} the syntax ---
+sections of normal forms, coset representatives, amalgamation tails ---
+which are natural for setoids and awkward for quotients;
+\S\ref{sec:presentations} and \S\ref{sec:setoids} weigh the trade.
+Second, the library verifies rather than searches: coset tables are found
+offline and certified inside Agda, which keeps the obligations first-order
+and the trusted story simple (\S\ref{sec:lessons}).
+
+\paragraph{Why this is a programming-languages problem.}
+Circuit calculi are programming languages of a particular kind, and
+completeness of their equational theories is a programming-languages
+question: it is what licenses normal-form-based decision procedures, what
+tells the author of an optimizer that no valid rewrite is missing, and what
+underlies the rig-categorical completeness theorems for reversible and
+quantum languages of recent
+POPLs~\cite{choudhury2022symmetries,carette2024squareroots,fang2026hadamard}.
+The contribution of this paper is not a single theorem but a \emph{design}:
+a way of organizing presentations, normal forms, and completeness in a
+dependently typed language so that the same objects both compute and
+prove, validated on examples large enough --- the qutrit Clifford+$T$
+monoid, $U_3(\mathbb{Z}[\tfrac12,i])$ --- to exercise every part of it.
+The techniques that carry the design are this community's: inductive
+congruences, specifications as function bundles, index engineering for
+the unifier, and proof by evaluation.
 
 \subsection{Contributions}\label{sec:contributions}
 
 \begin{enumerate}
 \item[(0)] \textbf{A library for circuit normal forms and complete relation
-  sets.}  A layered Agda library in which a relation set is an inductive
-  family on words, the presented monoid is the inductively generated
-  congruence closure (\S\ref{sec:design}), normal-form witnesses are the
-  standard library's function bundles out of the word setoid, and a single
-  generic lemma, \aid{by-normalization}, turns soundness plus a \emph{unique
-  normal form} into completeness (\S\ref{sec:nfproperty}).  A verified,
-  monoid-level Reidemeister--Schreier engine constructs normal forms by coset
-  enumeration, one verified coset table per level
-  (\S\ref{sec:engine}).
+  sets.}  An Agda library, organized in layers, in which a relation set is
+  an inductive family on words and the presented monoid is the inductively
+  generated congruence closure (\S\ref{sec:presentations}); normal-form
+  witnesses are the standard library's function bundles out of the setoid
+  of words (\S\ref{sec:nfproperty}); and a single generic lemma,
+  \aid{by-normalization}, turns soundness plus a \emph{unique normal form}
+  into completeness.  A verified, monoid-level Reidemeister--Schreier
+  engine constructs normal forms from coset tables, one verified table per
+  level of a subgroup tower (\S\ref{sec:engine}).
 
 \item[(1)] \textbf{Inductively defined circuits, for easy normalization and
   completeness proofs.}  A generic circuit layer represents $n$-wire circuits
@@ -75,9 +119,9 @@ a group) are staged in a dedicated \texttt{ForStdlib} hierarchy.
   relation set with the structural rules --- shift congruence and
   far-commutation --- shared by every circuit presentation
   (\S\ref{sec:circuits}).  The indexing discipline is chosen so that Agda's
-  evaluator, not the human, discharges the case analyses: in our case
-  studies, coset-table obligations close by \aid{refl} after computation of
-  both sides.
+  evaluator, rather than the human, carries out the case analyses: in our
+  case studies, every coset-table obligation closes by \aid{refl} once both
+  sides have computed.
 
 \item[(2)] \textbf{A catalogue of verified presentations}
   (\S\ref{sec:examples}).  Seven nontrivial example families, several of them
@@ -101,7 +145,7 @@ a group) are staged in a dedicated \texttt{ForStdlib} hierarchy.
 \item[(3)] \textbf{Monoid-level amalgamation and Reidemeister--Schreier.}
   Following the methodology that Bian and Selinger introduced for their
   syntactic verifications~\cite{bian2023cliffordt2,bian2023cliffordcs3,
-  bian2023thesis}, the library generalizes the group-theoretic notions ---
+  bian2023thesis}, we generalize the group-theoretic notions ---
   coset enumeration, the Reidemeister--Schreier subgroup presentation, and
   amalgamated free products --- from groups to monoid presentations, where
   inverses are not primitive.  Beyond the syntactic side, we prove the
@@ -123,107 +167,55 @@ a group) are staged in a dedicated \texttt{ForStdlib} hierarchy.
 \end{enumerate}
 
 Everything stated as a theorem in this paper typechecks under
-\texttt{--safe}: there are no postulates, no unfinished holes, and no
-appeals to classical axioms anywhere in the development described here.  The
-driving next target --- machine-checked completeness for multi-qudit
-Clifford circuits in all odd prime dimensions, the formal counterpart of
-the qutrit rule set of~\cite{li2025qutrit} and its odd-prime
-generalization --- is discussed as future work (\S\ref{sec:conclusion}).
+\texttt{--safe} and \texttt{--cubical-compatible} (the discipline the
+standard library calls \texttt{--without-K} again from its version 3.0):
+there are no postulates, no unfinished holes, and no appeals to classical
+axioms anywhere in the development described here.  Wherever a statement
+in this paper is \emph{not} formalized, the text says so explicitly, and
+\S\ref{sec:threats} collects these places.  The driving next target ---
+machine-checked completeness for multi-qudit Clifford circuits in all odd
+prime dimensions, the formal counterpart of the qutrit rule set
+of~\cite{li2025qutrit} and its odd-prime generalization --- is discussed
+as future work (\S\ref{sec:conclusion}).
 
-\subsection{A first taste: permutations}\label{sec:taste}
-
-Section~\ref{sec:permutations} develops the smallest interesting instance
-end to end, and it is worth previewing here.  Take circuits over a single
-two-wire gate $\sigma$ (swap).  The gate-specific relations are the two
-classics --- $\sigma^2 = \varepsilon$ and the Yang--Baxter relation $\sigma
-\cdot (\sigma{\uparrow}) \cdot \sigma = (\sigma{\uparrow}) \cdot \sigma \cdot
-(\sigma{\uparrow})$ --- and the framework adds, once and for all, the
-structural rules every circuit theory shares.  The library's coset-tower
-engine then produces a normal form whose carrier at $n$ wires has exactly
-$n!$ elements --- a factorial number system, with one ``digit'' per level of
-the subgroup chain $S_1 < S_2 < \dots < S_n$ --- together with proofs that
-normalization is sound and that the normal form is unique for the semantics
-of permutations of $\mathsf{Fin}\;n$.  Soundness plus uniqueness yields, by
-the generic lemma, the completeness theorem: two circuits denote the same
-permutation exactly when the two relations above (plus structural rules)
-prove them equal.  Packaged as a record, this is the statement that the
-relation set \emph{presents} the permutation group:
-\begin{agdacode}
-symmetric-presentation :
-  ∀ n → (n VRel,_===_) IsPresentationOf (Permutation′-group n)
-\end{agdacode}
-The same pipeline, run on larger towers, yields the Clifford+$T$ and
-$U_3(\mathbb{Z}[\tfrac12,i])$ case studies.
-
-\subsection{Related work}\label{sec:related-intro}
+\subsection{Related work in brief}\label{sec:related-intro}
 
 The closest prior work is the line of Agda verifications accompanying Bian
 and Selinger's presentations of quantum gate
 groups~\cite{bian2023cliffordt2,bian2023cliffordcs3,bian2023thesis}.  Those
 developments verify that two \emph{syntactic} presentations of a group are
 equivalent --- an isomorphism of finitely presented monoids obtained by
-Reidemeister--Schreier steps --- and never mention a semantics: no
-independent model of the group appears, so soundness and completeness with
-respect to an interpretation are not stated.  The present library grew out
-of that methodology and subsumes it: our amalgamation case studies
-(\S\ref{sec:examples}) end in exactly such syntactic isomorphisms, but the
-framework additionally relates presentations to independently constructed
-semantic groups (permutations, product groups, extension groups), which is
-what licenses the words ``sound'' and ``complete''.  The engine is also
-reusable: coset tables, towers, and product constructions are library
-modules with explicit hypothesis records, not per-paper proofs.
-
-In the proof-assistant landscape more broadly, quantum-circuit developments
---- \textsc{Qwire}~\cite{paykin2017qwire}, \textsc{sqir}/\textsc{voqc}
-\cite{hietala2021voqc,hietala2021proving}, VyZX~\cite{lehmann2025vyzx},
-CoqQ~\cite{zhou2023coqq}, Qbricks~\cite{chareton2021qbricks}, and the
-Isabelle libraries~\cite{liu2019quantum,bordg2020dirac} --- verify
-\emph{programs}, \emph{compilers}, or the \emph{soundness} of rewrite rules
-against a fixed semantics.  Completeness of a rule set --- the meta-theoretic
-statement that the rules derive every semantic equality --- is not addressed
-by any of them; to our knowledge the only mechanized completeness results in
-the vicinity are the Bian--Selinger line above and, in categorical form, the
-rig-groupoid school's: Choudhury, Karwowski, and Sabry's univalent
-presentation of the classical reversible language $\Pi$ as a free rig
-groupoid~\cite{choudhury2022symmetries}, and the partial Agda formalization
---- complete for the two-qubit Clifford fragment --- accompanying its
-quantum square-root extension~\cite{carette2024squareroots}.  The most
-recent rig-categorical completeness theorems for quantum circuit languages
-\cite{fang2026hadamard,heunen2026onerig} remain pen-and-paper.  On the algebra side, Lean's mathlib defines presented groups as
-quotients of free groups and builds Coxeter groups on top of
-them~\cite{mathlib2020,mathlib-doc-presented}, Isabelle's Archive of Formal
-Proofs contains free groups and the Nielsen--Schreier
-theorem~\cite{breitner2010freegroups,kharim2023freegroups}, and the
-Coq/MathComp tradition culminating in the Odd Order
-theorem~\cite{gonthier2013oddorder} develops deep finite group theory ---
-but none of these provide coset-enumeration infrastructure for proving that
-a \emph{concrete} relation set presents a \emph{concrete} group, which is
-the bread and butter of this library.  Section~\ref{sec:related} makes these
-comparisons in detail, including the univalent
-alternatives~\cite{vezzosi2019cubical,cubicallibrary,agdaunimath,
-mangel2023sign} and formalized rewriting~\cite{sternagel2013kb,
-hirokawa2019abstract}.
-
-\subsubsection{Related tools}\label{sec:tools}
-
-Two web tools implement the mathematics this library mechanizes.  A
-normalizer to \emph{Lafont normal form} for linear permutation circuits
-implements the normalization lemmas of Lafont's algebraic theory of Boolean
-circuits~\cite{lafont2003boolean,lafontlp-tool}; and a normalizer for the
-symplectic groups $Sp(2n,\mathbb{Z}_p)$ computes Selinger-style staircase
-normal forms~\cite{qupit-tool}.  Both tools compute normal forms of
-exactly the kind this library is built to prove correct and complete; the formalized proofs are on-going and close to finish.
+Reidemeister--Schreier steps --- and never mention a semantics, so
+soundness and completeness with respect to an interpretation are not
+stated.  The present library grew out of that methodology and subsumes it:
+our amalgamation case studies end in exactly such syntactic isomorphisms,
+but the framework additionally relates presentations to independently
+constructed semantic groups, which is what licenses the words ``sound''
+and ``complete''.  To our knowledge the only other mechanized completeness
+results in the vicinity are categorical: the univalent presentation of
+the reversible language $\Pi$ as a free rig
+groupoid~\cite{choudhury2022symmetries} and the partial formalization ---
+complete for the two-qubit Clifford fragment --- accompanying its quantum
+square-root extension~\cite{carette2024squareroots}.  The quantum-circuit
+verification ecosystems in Rocq and Isabelle verify programs, compilers,
+or the soundness of rewrites, not completeness; and the group-theory
+libraries of Lean, Rocq, and Isabelle develop presentation theory in the
+abstract, without infrastructure for proving that a concrete relation set
+presents a concrete group.  Section~\ref{sec:related} makes all of these
+comparisons in detail.
 
 \subsection{Paper outline}
 
 Section~\ref{sec:permutations} walks through the permutation case study.
 Section~\ref{sec:preliminaries} recalls the group theory behind the design:
 normal forms from subgroup chains and transversals, and their mixed-radix
-reading.  Section~\ref{sec:design} presents the library layer by layer:
-words and presentations, the zoo of normal-form witnesses, inductively
-defined circuits, the Reidemeister--Schreier engine, and the product
-constructions with their presentation theorems.  Section~\ref{sec:examples}
-is the catalogue of verified results, with pointers into
+reading.  Section~\ref{sec:design} presents the library layer by layer,
+with the design rationale first: words and presentations, the zoo of
+normal-form witnesses, inductively defined circuits, the
+Reidemeister--Schreier engine, and the product constructions with their
+presentation theorems.  Section~\ref{sec:examples} is the catalogue of
+verified results and what each was chosen to exercise, with pointers into
 \texttt{MainTheorems.agda}.  Section~\ref{sec:related} compares with other
-formalizations.  Section~\ref{sec:discussion} discusses design decisions,
-statistics, and lessons learned, and Section~\ref{sec:conclusion} concludes.
+formalizations.  Section~\ref{sec:discussion} discusses statistics and
+typechecking cost, design decisions, the choice of Agda, lessons learned,
+and limitations, and Section~\ref{sec:conclusion} concludes.

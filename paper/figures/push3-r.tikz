@@ -1,0 +1,30 @@
+\begin{tikzpicture}
+\path [use as bounding box] (-1.3, -1.0) rectangle (3.5, 5.7);
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (w0s0l) at (-1.0, 0.0){};
+\node [style=none] (w0s0r) at (0.45000005, 0.0){};
+\node [style=none] (w0s1l) at (1.95, 0.0){};
+\node [style=none] (w0s1r) at (3.2, 0.0){};
+\node [style=none] (w1s0l) at (-1.0, 2.0){};
+\node [style=none] (w1s0r) at (0.45000005, 2.0){};
+\node [style=none] (w1s1l) at (1.95, 2.0){};
+\node [style=none] (w1s1r) at (3.2, 2.0){};
+\node [style=none] (w2s0l) at (-1.0, 4.0){};
+\node [style=none] (w2s0r) at (3.2, 4.0){};
+\node [style=none] (x0a) at (0.45000005, 0.0){};
+\node [style=none] (x0b) at (0.45000005, 2.0){};
+\node [style=none] (x0c) at (1.95, 0.0){};
+\node [style=none] (x0d) at (1.95, 2.0){};
+\draw [] (-0.3, -0.75) rectangle (2.5, 4.75);
+\node [style=none] at (1.1, 5.3) {\scriptsize $c'$};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (w0s0l.center) to (w0s0r.center);
+\draw (w0s1l.center) to (w0s1r.center);
+\draw (w1s0l.center) to (w1s0r.center);
+\draw (w1s1l.center) to (w1s1r.center);
+\draw (w2s0l.center) to (w2s0r.center);
+\draw (x0a.center) to (x0d.center);
+\draw (x0b.center) to (x0c.center);
+\end{pgfonlayer}
+\end{tikzpicture}

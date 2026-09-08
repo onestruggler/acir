@@ -1,0 +1,47 @@
+\begin{tikzpicture}
+\path [use as bounding box] (-1.3, -1.0) rectangle (5.9, 7.7);
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (w0s0l) at (-1.0, 0.0){};
+\node [style=none] (w0s0r) at (0.45000005, 0.0){};
+\node [style=none] (w0s1l) at (1.95, 0.0){};
+\node [style=none] (w0s1r) at (5.6, 0.0){};
+\node [style=none] (w1s0l) at (-1.0, 2.0){};
+\node [style=none] (w1s0r) at (0.45000005, 2.0){};
+\node [style=none] (w1s1l) at (1.95, 2.0){};
+\node [style=none] (w1s1r) at (5.6, 2.0){};
+\node [style=none] (w2s0l) at (-1.0, 4.0){};
+\node [style=none] (w2s0r) at (2.85, 4.0){};
+\node [style=none] (w2s1l) at (4.35, 4.0){};
+\node [style=none] (w2s1r) at (5.6, 4.0){};
+\node [style=none] (w3s0l) at (-1.0, 6.0){};
+\node [style=none] (w3s0r) at (2.85, 6.0){};
+\node [style=none] (w3s1l) at (4.35, 6.0){};
+\node [style=none] (w3s1r) at (5.6, 6.0){};
+\node [style=none] (x0a) at (0.45000005, 0.0){};
+\node [style=none] (x0b) at (0.45000005, 2.0){};
+\node [style=none] (x0c) at (1.95, 0.0){};
+\node [style=none] (x0d) at (1.95, 2.0){};
+\node [style=none] (x1a) at (2.85, 4.0){};
+\node [style=none] (x1b) at (2.85, 6.0){};
+\node [style=none] (x1c) at (4.35, 4.0){};
+\node [style=none] (x1d) at (4.35, 6.0){};
+\draw [] (-0.3, -0.75) rectangle (2.3, 6.75);
+\node [style=none] at (1.0, 7.3) {\scriptsize $c$};
+\draw [dashed] (2.65, 3.25) rectangle (4.55, 6.75);
+\node [style=none] at (3.6000001, 7.3) {\scriptsize $b$};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (w0s0l.center) to (w0s0r.center);
+\draw (w0s1l.center) to (w0s1r.center);
+\draw (w1s0l.center) to (w1s0r.center);
+\draw (w1s1l.center) to (w1s1r.center);
+\draw (w2s0l.center) to (w2s0r.center);
+\draw (w2s1l.center) to (w2s1r.center);
+\draw (w3s0l.center) to (w3s0r.center);
+\draw (w3s1l.center) to (w3s1r.center);
+\draw (x0a.center) to (x0d.center);
+\draw (x0b.center) to (x0c.center);
+\draw (x1a.center) to (x1d.center);
+\draw (x1b.center) to (x1c.center);
+\end{pgfonlayer}
+\end{tikzpicture}

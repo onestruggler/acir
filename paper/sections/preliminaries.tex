@@ -38,8 +38,8 @@ are finite, $|G| = r_1 r_2 \cdots r_n$, and the normal form is literally a
 values, and enumerating tuples lexicographically enumerates the group.  For
 the chain $S_1 < S_2 < \dots < S_n$ of symmetric groups the radices are
 $2, 3, \dots, n$ and the numeral system is the factorial number system ---
-which is exactly the carrier $\aid{NF}\;n = \top \times C\,2 \times \dots
-\times C\,n$ built by the coset tower in \S\ref{sec:permutations}.  For a
+which is exactly the carrier $\aid{NF}\;n = \top \times C\,1 \times \dots
+\times C\,(n{-}1)$ built by the coset tower in \S\ref{sec:permutations}.  For a
 group of order $8 \cdot 4$ presented as a product of cyclic groups of
 orders $8$ and $4$ (the base of the Clifford+$T$ tower,
 \S\ref{sec:examples}) the radices are $8$ and $4$.  This digit reading of
@@ -52,15 +52,20 @@ arithmetic is the same.
 \subsection{Words, presentations, and the word problem}
 
 A \emph{presentation} $\langle X \mid R \rangle$ consists of a set $X$ of
-generators and a set $R$ of pairs of words over $X$ (we work with monoid
-presentations, so words are finite sequences with concatenation, and there
-are no formal inverses).  The presented monoid is the quotient of the free
-monoid $X^{*}$ by the least congruence $\approx$ containing $R$; the
-\emph{word problem} asks to decide $w \approx v$.  A presentation
-\emph{presents} a monoid or group $G$ (relative to an interpretation of
-generators) when the induced homomorphism $X^{*}/{\approx} \to G$ is an
-isomorphism; its injectivity is \emph{completeness} of $R$ for $G$, its
-surjectivity says the generators generate.  A group presentation in the
+generators and a relation $R$ on the free monoid $X^{*}$ --- a set of pairs
+of words over $X$, the axioms.  We work with monoid presentations, so
+words are finite sequences with concatenation and there are no formal
+inverses.  The presented monoid is the quotient of $X^{*}$ by the least
+congruence $\approx$ containing $R$; the \emph{word problem} asks to decide
+$w \approx v$.  An interpretation of the generators in a monoid or group
+$G$ extends, by freeness of $X^{*}$, to a unique monoid homomorphism
+$X^{*} \to G$; when every axiom in $R$ holds in $G$ --- \emph{soundness}
+--- this homomorphism respects $\approx$ and so descends to the quotient,
+and it is this \emph{induced} homomorphism $X^{*}/{\approx} \to G$ that we
+ask to be an isomorphism.  A presentation \emph{presents} $G$ (relative to
+the interpretation) when it is; its injectivity is \emph{completeness} of
+$R$ for $G$, its surjectivity says that the images of the generators
+generate $G$.  A group presentation in the
 classical sense is recovered by adding, for each generator, a generator
 playing the role of its inverse together with the cancellation relations
 --- in the library this is the \aid{Grouplike} condition of
@@ -77,8 +82,8 @@ $\tau : \text{cosets} \times Y \to \text{cosets}$ recording $Hty = H\tau(t,y)$,
 together with, for each step, the element of $H$ by which $ty$ differs from
 its representative.  Classical treatments run this as an algorithm
 (Todd--Coxeter coset enumeration~\cite{sims1994computation,
-holt2005handbook}); the library instead takes a \emph{claimed} coset table
-as input and \emph{verifies} it, by exhibiting five equational
+holt2005handbook}); we instead take a \emph{claimed} coset table
+as input and \emph{verify} it, by exhibiting five equational
 hypotheses relating the table, the section, and the relations
 (\S\ref{sec:engine}).  Verification rather than search is the right
 division of labour in a proof assistant: tables are found offline (by
@@ -86,7 +91,7 @@ computation, or on paper), and the checked artifact certifies them.
 Bian and Selinger pioneered this monoid-level, verified use of
 Reidemeister--Schreier in Agda for their gate-group
 presentations~\cite{bian2023cliffordt2,bian2023cliffordcs3,bian2023thesis};
-the library turns it into a reusable module with the hypotheses packaged as
+we turned it into a reusable module with the hypotheses packaged as
 a record.
 
 \subsection{Specialization to circuits}
@@ -102,7 +107,7 @@ $c \mapsto c{\uparrow}$ embeds
 as ``the circuits that do not touch the bottom wire''.  A normal form for
 $\mathsf{Cir}\,(k{+}1)$ over $\mathsf{Cir}\,k$ is then a transversal of
 this subgroup --- for permutations, the staircases of
-Figure~\ref{fig:staircase}; for Clifford-style groups, Selinger's
+\S\ref{sec:sn-cosets}; for Clifford-style groups, Selinger's
 staircase normal forms~\cite{selinger2015clifford} and their qutrit
 analogues~\cite{li2025qutrit} --- and a normal form for the whole group is
 a tower of such levels.  The library's \aid{CosetTower}
@@ -112,5 +117,5 @@ level, folded into a normal form whose carrier grows by one digit per
 level.  Where the subgroup chain branches instead of nesting --- two
 subgroups sharing a common base, as for the Clifford+$T$ groups ---
 the appropriate gluing is the \emph{amalgamated free product}, whose
-classical alternating normal form~\cite{magnus2004combinatorial} the
-library also verifies (\S\ref{sec:constructions}).
+classical alternating normal form~\cite{magnus2004combinatorial} we
+also verify (\S\ref{sec:constructions}).

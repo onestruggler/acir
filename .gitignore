@@ -15,6 +15,7 @@ paper/*.fdb_latexmk
 paper/*.fls
 paper/*.log
 paper/*.out
+paper/*.ptb
 paper/*.pdf
 
 # Haskell / GHC build artifacts (Cir2Tikz tool)

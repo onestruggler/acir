@@ -23,6 +23,13 @@
 \RequirePackage{graphicx}
 \newcommand{\AgdaMapsUp}{\rotatebox[origin=c]{90}{\ensuremath{\mapsto}}}
 
+%% Colours in the style of agda.sty: keywords, comments, and the
+%% type-level names that listings can recognise as whole identifiers.
+\RequirePackage{xcolor}
+\definecolor{AgdaKeyword}{HTML}{CD6600}
+\definecolor{AgdaComment}{HTML}{B22222}
+\definecolor{AgdaDatatype}{HTML}{0000CD}
+
 \lstdefinelanguage{Agda}{
   sensitive=true,
   morekeywords={abstract,constructor,data,do,field,hiding,import,in,
@@ -37,8 +44,13 @@
 \lstset{
   language=Agda,
   basicstyle=\small\ttfamily,
-  keywordstyle=\bfseries,
-  commentstyle=\itshape\color[gray]{0.35},
+  keywordstyle=\color{AgdaKeyword}\bfseries,
+  commentstyle=\itshape\color{AgdaComment},
+  emph={[1]Set,Word,Gen,Gate,Circuit,WRel,CRel,NF,Group,Monoid,Setoid,
+    RawMonoid,Injection,RightInverse,Bijection,NormalForm,
+    NormalFormInjective,UniqueNormalForm,Grouplike,Action,Prime,List,
+    Extension,PackedCosetTable},
+  emphstyle={[1]\color{AgdaDatatype}},
   columns=fullflexible,
   keepspaces=true,
   showstringspaces=false,
