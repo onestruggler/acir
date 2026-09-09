@@ -1,54 +1,75 @@
+% The section inv-nf of the normal form (tt , σ•ε , σ•σ•ε , σ•ε) ∈ NF 4.
+% Composition is drawn left to right and wires bottom-up (wire 0 at
+% y = 0).  At each tower level the section is (lower level)↑ • [c]ᶜ, so
+% the word is  swap(2,3) • swap(1,2) • swap(2,3) • swap(0,1):
+%   [σ•ε]ᶜ↑↑  = swap(2,3)                 (level 2, digit c₁)
+%   [σ•σ•ε]ᶜ↑ = swap(1,2) • swap(2,3)     (level 3, digit c₂)
+%   [σ•ε]ᶜ    = swap(0,1)                 (level 4, digit c₃)
+% Each digit's staircase is boxed.
 \begin{tikzpicture}
+\path [use as bounding box] (-0.3, -3.4) rectangle (10.8, 6.7);
 \begin{pgfonlayer}{nodelayer}
-\node [style=none] (n0y00tl) at (1.0, 2.0) {$$};
-\node [style=none] (n0y00bl) at (1.0, 0.0) {$$};
-\node [style=none] (n0y00br) at (2.5, 0.0) {$$};
-\node [style=none] (n0y00tr) at (2.5, 2.0) {$$};
-\node [style=none] (n0y00ftl) at (1.0, 2.15) {};
-\node [style=none] (n0y00fbr) at (2.5, -0.15) {};
-\node [style=none] (n0y01tl) at (3.5, 4.0) {$$};
-\node [style=none] (n0y01bl) at (3.5, 2.0) {$$};
-\node [style=none] (n0y01br) at (5.0, 2.0) {$$};
-\node [style=none] (n0y01tr) at (5.0, 4.0) {$$};
-\node [style=none] (n0y01ftl) at (3.5, 4.15) {};
-\node [style=none] (n0y01fbr) at (5.0, 1.85) {};
-\node [style=none] (n0y02tl) at (6.0, 6.0) {$$};
-\node [style=none] (n0y02bl) at (6.0, 4.0) {$$};
-\node [style=none] (n0y02br) at (7.5, 4.0) {$$};
-\node [style=none] (n0y02tr) at (7.5, 6.0) {$$};
-\node [style=none] (n0y02ftl) at (6.0, 6.15) {};
-\node [style=none] (n0y02fbr) at (7.5, 3.85) {};
-\node [style=none] (n0y03tl) at (8.5, 4.0) {$$};
-\node [style=none] (n0y03bl) at (8.5, 2.0) {$$};
-\node [style=none] (n0y03br) at (10.0, 2.0) {$$};
-\node [style=none] (n0y03tr) at (10.0, 4.0) {$$};
-\node [style=none] (n0y03ftl) at (8.5, 4.15) {};
-\node [style=none] (n0y03fbr) at (10.0, 1.85) {};
-\node [style=none] (lm0el00) at (0.0, 0.0){};
-\node [style=none] (lm0el10) at (0.0, 2.0){};
-\node [style=none] (lm0el20) at (0.0, 4.0){};
-\node [style=none] (lm0el30) at (0.0, 6.0){};
-\node [style=none] (lm0er00) at (11.0, 0.0){};
-\node [style=none] (lm0er10) at (11.0, 2.0){};
-\node [style=none] (lm0er20) at (11.0, 4.0){};
-\node [style=none] (lm0er30) at (11.0, 6.0){};
+% level 2: swap(2,3) at x 1.0-2.5
+\node [style=none] (a-tl) at (1.0, 6.0) {};
+\node [style=none] (a-bl) at (1.0, 4.0) {};
+\node [style=none] (a-br) at (2.5, 4.0) {};
+\node [style=none] (a-tr) at (2.5, 6.0) {};
+\node [style=none] (a-ftl) at (1.0, 6.15) {};
+\node [style=none] (a-fbr) at (2.5, 3.85) {};
+% level 3: swap(1,2) at x 3.5-5.0, then swap(2,3) at x 5.5-7.0
+\node [style=none] (b-tl) at (3.5, 4.0) {};
+\node [style=none] (b-bl) at (3.5, 2.0) {};
+\node [style=none] (b-br) at (5.0, 2.0) {};
+\node [style=none] (b-tr) at (5.0, 4.0) {};
+\node [style=none] (b-ftl) at (3.5, 4.15) {};
+\node [style=none] (b-fbr) at (5.0, 1.85) {};
+\node [style=none] (c-tl) at (5.5, 6.0) {};
+\node [style=none] (c-bl) at (5.5, 4.0) {};
+\node [style=none] (c-br) at (7.0, 4.0) {};
+\node [style=none] (c-tr) at (7.0, 6.0) {};
+\node [style=none] (c-ftl) at (5.5, 6.15) {};
+\node [style=none] (c-fbr) at (7.0, 3.85) {};
+% level 4: swap(0,1) at x 8.0-9.5
+\node [style=none] (d-tl) at (8.0, 2.0) {};
+\node [style=none] (d-bl) at (8.0, 0.0) {};
+\node [style=none] (d-br) at (9.5, 0.0) {};
+\node [style=none] (d-tr) at (9.5, 2.0) {};
+\node [style=none] (d-ftl) at (8.0, 2.15) {};
+\node [style=none] (d-fbr) at (9.5, -0.15) {};
+% wire ends
+\node [style=none] (l0) at (0.0, 0.0) {};
+\node [style=none] (l1) at (0.0, 2.0) {};
+\node [style=none] (l2) at (0.0, 4.0) {};
+\node [style=none] (l3) at (0.0, 6.0) {};
+\node [style=none] (r0) at (10.5, 0.0) {};
+\node [style=none] (r1) at (10.5, 2.0) {};
+\node [style=none] (r2) at (10.5, 4.0) {};
+\node [style=none] (r3) at (10.5, 6.0) {};
+% digit labels
+\node [style=none] at (1.75, -1.2) {\Huge $c_1 = \sigma{\bullet}\:\varepsilon$};
+\node [style=none] at (5.25, -2.7) {\Huge $c_2 = \sigma{\bullet}\:\sigma{\bullet}\:\varepsilon$};
+\node [style=none] at (8.75, -1.2) {\Huge $c_3 = \sigma{\bullet}\:\varepsilon$};
 \end{pgfonlayer}
 \begin{pgfonlayer}{edgelayer}
-\draw (lm0el00.center) to (lm0er00.center);
-\draw (lm0el10.center) to (lm0er10.center);
-\draw (lm0el20.center) to (lm0er20.center);
-\draw (lm0el30.center) to (lm0er30.center);
-\fill [white] (n0y00ftl.center) rectangle (n0y00fbr.center);
-\draw (n0y00bl.center) to (n0y00tr.center);
-\draw (n0y00tl.center) to (n0y00br.center);
-\fill [white] (n0y01ftl.center) rectangle (n0y01fbr.center);
-\draw (n0y01bl.center) to (n0y01tr.center);
-\draw (n0y01tl.center) to (n0y01br.center);
-\fill [white] (n0y02ftl.center) rectangle (n0y02fbr.center);
-\draw (n0y02bl.center) to (n0y02tr.center);
-\draw (n0y02tl.center) to (n0y02br.center);
-\fill [white] (n0y03ftl.center) rectangle (n0y03fbr.center);
-\draw (n0y03bl.center) to (n0y03tr.center);
-\draw (n0y03tl.center) to (n0y03br.center);
+\draw (l0.center) to (r0.center);
+\draw (l1.center) to (r1.center);
+\draw (l2.center) to (r2.center);
+\draw (l3.center) to (r3.center);
+\fill [white] (a-ftl.center) rectangle (a-fbr.center);
+\draw (a-bl.center) to (a-tr.center);
+\draw (a-tl.center) to (a-br.center);
+\fill [white] (b-ftl.center) rectangle (b-fbr.center);
+\draw (b-bl.center) to (b-tr.center);
+\draw (b-tl.center) to (b-br.center);
+\fill [white] (c-ftl.center) rectangle (c-fbr.center);
+\draw (c-bl.center) to (c-tr.center);
+\draw (c-tl.center) to (c-br.center);
+\fill [white] (d-ftl.center) rectangle (d-fbr.center);
+\draw (d-bl.center) to (d-tr.center);
+\draw (d-tl.center) to (d-br.center);
+% boxes around the three coset representatives
+\draw [dashed] (0.7, 3.5) rectangle (2.8, 6.5);
+\draw [dashed] (3.2, 1.5) rectangle (7.3, 6.5);
+\draw [dashed] (7.7, -0.5) rectangle (9.8, 6.5);
 \end{pgfonlayer}
 \end{tikzpicture}

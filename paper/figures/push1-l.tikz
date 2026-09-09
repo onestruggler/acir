@@ -26,9 +26,9 @@
 \node [style=none] (x1c) at (4.35, 4.0){};
 \node [style=none] (x1d) at (4.35, 6.0){};
 \draw [] (-0.3, -0.75) rectangle (2.3, 6.75);
-\node [style=none] at (1.0, 7.3) {\scriptsize $c$};
+\node [style=none] at (1.0, 7.3) {\Huge $c$};
 \draw [dashed] (2.65, 3.25) rectangle (4.55, 6.75);
-\node [style=none] at (3.6000001, 7.3) {\scriptsize $b$};
+\node [style=none] at (3.6000001, 7.3) {\Huge $b$};
 \end{pgfonlayer}
 \begin{pgfonlayer}{edgelayer}
 \draw (w0s0l.center) to (w0s0r.center);

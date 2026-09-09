@@ -2,75 +2,37 @@
 
 \subsection{Size and typechecking cost}\label{sec:stats}
 
-Table~\ref{tab:stats} gives the shape of the development: about
-22\,000 lines of Agda in 74 files.  Roughly half is the reusable core ---
-words, presentations with their constructions and solvers, the
-normal-form zoo and the Reidemeister--Schreier engine, the circuit layer,
-the \texttt{ForStdlib} additions, and a support library of modular
-arithmetic --- and the other half is the verified examples of
-\S\ref{sec:examples}, of which the qutrit Clifford+$T$ and
-$U_3(\mathbb{Z}[\tfrac12,i])$ studies alone account for almost half.
-Everything is \texttt{--safe} with zero postulates; the only axioms in the
-development are the \aid{axiom} constructors of the relation sets
-themselves.
+The verified development is about 22\,000 lines of Agda in 74 files
+(September 2026; \texttt{wc -l}, comments included), half of it the
+reusable core --- words, presentations with their constructions and
+solvers, the normal-form zoo and the Reidemeister--Schreier engine, the
+circuit layer, the \texttt{ForStdlib} additions, and a support library of
+modular arithmetic --- and half the verified examples of
+\S\ref{sec:examples}, of which the qutrit Clifford+$T$ and $U_3$ studies
+alone account for 4\,300 lines.  Everything is \texttt{--safe} with zero
+postulates.  Of the seven thousand lines under \texttt{Presentation},
+only about a thousand are the core proper (words modulo $\approx$, the
+presentation records, grouplikeness, morphism builders); 4\,300 are the
+five product constructions with their two-sided theorems, the
+amalgamation alone 1\,800; six hundred are the solvers; and the rest is
+two group developments that predate the \texttt{Examples} tree.  We
+expect the figure to shrink: the version of the library developed since
+this paper was written has already retired one of two semidirect-product
+modules and moved those developments out.
 
-\begin{table}[h]
-\caption{Size of the development (lines of Agda incl.\ comments;
-\texttt{wc -l}, September 2026).}
-\label{tab:stats}
-\centering
-\small
-\begin{tabular}{@{}lrr@{}}
-\toprule
-Layer & Files & Lines \\
-\midrule
-\texttt{Word}, \texttt{Notations} & 3 & 308 \\
-\texttt{Presentation} (core, constructions, solvers) & 18 & 7\,028 \\
-\texttt{Normalization} (NF zoo, R--S engine, towers) & 6 & 1\,728 \\
-\texttt{Circuit} & 1 & 121 \\
-\texttt{ForStdlib} (staged stdlib additions) & 7 & 865 \\
-$\mathbb{Z}_p$ modular arithmetic (support) & 3 & 2\,944 \\
-\midrule
-Verified examples (\S\ref{sec:examples}) and the index module & 36 & 9\,236 \\
-\quad of which qutrit Clifford+$T$ / $U_3(\mathbb{Z}[\frac12,i])$ & 2 & 4\,262 \\
-\midrule
-Total & 74 & 22\,230 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-The size of the core deserves a word, since seven thousand lines of
-``presentations'' sounds like a lot.  Of the lines under
-\texttt{Presentation}, only about a thousand are the core proper --- words
-modulo $\approx$, the presentation records, grouplikeness, and the
-morphism builders.  Some 4\,300 are the five product constructions with
-their two-sided theorems, the amalgamation alone accounting for 1\,800; six
-hundred are the solvers; and the remainder is two group developments (the
-symmetric group and its wreath products) that predate the
-\texttt{Examples} tree.  We expect the figure to shrink rather than grow:
-the version of the library developed since this paper was written has
-already retired one of two semidirect-product modules and moved those
-group developments out, and the amalgamation module is the obvious next
-candidate for the transport-based simplification that the construction
-theorems make possible.
-
-Typechecking cost is modest, and concentrated where one would expect.
-Checking the entire development from scratch with Agda~2.8.0 --- all 61
-modules reachable from the index module, with the standard library's
-interfaces already cached --- takes 1\,min\,42\,s of wall-clock time
-(90\,s of CPU) and peaks at 3.5\,GB of resident memory.  A third of
-that time is one module, the amalgamated-product construction (31\,s),
-whose normal-form transport is checked once and for all; the three
-amalgamation case studies together take 19\,s (qutrit Clifford+$T$ 8\,s,
-$U_3$ 9\,s, qubit Clifford+$T$ 2\,s), the symmetric-group tower 3.5\,s,
-and every other module under 4\,s.  Moving the case analyses into the
-evaluator has therefore not made checking slow: the seventy-two
-\aid{refl}-discharged obligations of the nine-coset qutrit level
-(\S\ref{sec:examples}) are among the eight seconds of their module.  The
-costs to watch are instead memory, which grows with the size of the terms
-the evaluator unfolds, and the edit--check loop of the largest modules;
-we mitigate the latter by keeping each case study a separate module whose
-interface is cached independently.
+Typechecking cost is modest and concentrated where one would expect.
+Checking the whole development from scratch with Agda~2.8.0 (61 modules,
+the standard library's interfaces cached) takes 1\,min\,42\,s of
+wall-clock time and peaks at 3.5\,GB of memory.  A third of that is one
+module, the amalgamated-product construction (31\,s), checked once and
+for all; the three amalgamation case studies together take 19\,s, the
+symmetric-group tower 3.5\,s, and every other module under 4\,s.  Moving
+the case analyses into the evaluator has therefore not made checking
+slow --- the seventy-two \aid{refl}-discharged obligations of the
+nine-coset qutrit level are among the eight seconds of their module; the
+costs to watch are memory, which grows with the terms the evaluator
+unfolds, and the edit--check loop of the largest modules, which separate
+modules with independently cached interfaces keep short.
 
 \subsection{Setoids versus quotients, revisited}\label{sec:setoids}
 
@@ -158,19 +120,11 @@ free.  This inverts the usual economy of formalization --- effort
 concentrates in setting up the next normal form, after which the
 typechecker absorbs the case explosion that dominates the pen-and-paper
 proofs of~\cite{selinger2015clifford,li2025qutrit,
-clement2026realcliffordch}.  \emph{Separate search from checking.}\label{sec:tools}
-Coset tables were found by ordinary computation and, for the larger
-studies, by two web tools that implement the mathematics this library
-mechanizes: a normalizer to \emph{Lafont normal form} for linear
-permutation circuits, implementing the normalization lemmas of Lafont's
-algebraic theory of Boolean circuits~\cite{lafont2003boolean,lafontlp-tool},
-and a normalizer for the symplectic groups $Sp(2n,\mathbb{Z}_p)$ that
-computes Selinger-style staircase normal forms~\cite{qupit-tool}.  Both
-tools compute normal forms of exactly the kind this library is built to
-prove correct and complete, and the library only ever verifies what they
-found; for the symplectic case the formalized proofs are ongoing and
-close to being finished.  Nothing in the formal development depends on how a
-table was produced, which kept the trusted story simple and the
+clement2026realcliffordch}.  \emph{Separate search from checking.}
+Coset tables were found by ordinary computation (and, for the larger
+studies, by the companion web tools of \S\ref{sec:tools}); the library
+only ever verifies them.  Nothing in the formal development depends on
+how a table was produced, which kept the trusted story simple and the
 exploration loop fast.
 
 \subsection{Threats to the interpretation}\label{sec:threats}

@@ -31,8 +31,9 @@ and `notes/` are the working notes the first draft was written from.
   the code blocks), plus a `listings` language for Agda that is no longer
   used by the sections but kept as a fallback (`agdacode` environment).
 - `figures/*.tikz`, `circuits.tikzstyles` — circuit diagrams generated
-  by the Cir2Tikz tool; the `c*`, `push*`, `ract-*` and `sn-stair` figures
-  were taken from the vqupit paper on the `qupit` branch.
+  by the Cir2Tikz tool; the `c*` (staircase representatives) and
+  `ract-*` figures were taken from the vqupit paper on the `qupit`
+  branch.
 - `refs.bib` — every entry verified against a live source during writing;
   entries marked `%% VERIFY-DETAIL` have one detail (page range, volume)
   taken from standard knowledge — re-check before camera-ready.

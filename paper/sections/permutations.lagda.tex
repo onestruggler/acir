@@ -1,15 +1,16 @@
 \begin{code}[hide]
 module paper.sections.permutations where
 
-open import Data.Nat using (ℕ)
+open import Data.Nat using (ℕ ; suc)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Unit using (⊤)
 open import Level using (0ℓ)
 open import Relation.Binary using (Rel)
 
 open import Notations using (₁₊ ; ₂₊ ; ₃₊)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; wmap)
 open import Presentation.Definitions using (_IsPresentationOf_)
-import Examples.Groups.Symmetric.Tight.Semantics as SymTight
+open import Examples.Groups.Symmetric.Tight.Semantics using (Permutation′-group)
 import Examples.Groups.Symmetric.Theorems as SymThm
 
 postulate
@@ -22,29 +23,24 @@ private variable
 
 We begin with the smallest complete case study in the library: circuits
 built from a single two-wire gate, the swap $\sigma$, which present the
-symmetric groups.  The point of the walkthrough is to exhibit the pipeline
---- gates, relations, cosets, tower, semantics, uniqueness, completeness,
+symmetric groups.  The walkthrough exhibits the pipeline --- gates,
+relations, cosets, tower, semantics, uniqueness, completeness,
 presentation --- that every later case study instantiates, concretely
-enough that the general machinery of \S\ref{sec:design} can be read as
-``the same thing, with the gates abstracted''.  The statement quoted at
-the end appears verbatim in the index module \texttt{MainTheorems.agda}.
+enough that \S\ref{sec:design} can be read as ``the same thing, with the
+gates abstracted''.
 
 \subsection{Gates, generators, and circuits}
 
 A gate set is a family $\aid{Gate} : \mathbb{N} \to \mathsf{Set}$ giving,
-for each arity, the gates that act on that many adjacent wires.  For
-permutations there is exactly one gate, on two wires:
+for each arity, the gates on that many adjacent wires; for permutations
+there is one gate, on two wires.  The generic circuit layer
+(\S\ref{sec:circuits}) turns any such family into wire-indexed
+\emph{generators}: a gate placed at the bottom of the wires, or a
+generator shifted up by one wire.
 
 \begin{code}
 data Gate : ℕ → Set where
   σ-gate : Gate 2
-\end{code}
-
-The generic circuit layer (\S\ref{sec:circuits}) turns any such family into
-wire-indexed \emph{generators}: a gate placed at the bottom of the wires, or
-a generator shifted up by one wire.
-
-\begin{code}
 data Gen : ℕ → Set where
   gate₁ : Gate 1 → Gen (₁₊ n)     -- a 1-ary gate on the bottom wire
   gate₂ : Gate 2 → Gen (₂₊ n)     -- a 2-ary gate on the bottom two wires
@@ -76,320 +72,260 @@ postulate
 \end{code}
 
 Here $\aid{₁₊}\;n$ and $\aid{₂₊}\;n$ are the library's patterns for
-$1{+}n$ and $2{+}n$, and $n$ is an implicit argument, so
+$1 + n$ and $2 + n$, and $n$ is an implicit argument, so
 $\aid{gate₂}\;\aid{σ-gate}$ is a generator at any width from two upward.
 An $n$-wire \emph{circuit} is a word of generators, $\aid{Circuit}\;n =
-\aid{Word}\;(\aid{Gen}\;n)$.  Words (\S\ref{sec:words}) form the free
-monoid: a circuit is a single generator $[\,g\,]$\aid{ʷ}, the empty circuit
-\aid{ε}, or a sequential composition $c \aid{•} c'$.  The empty circuit on
-$n$ wires is the identity circuit, $n$ bare wires and no gate; like every
-circuit it carries its wire count as a type index.  We write $\sigma :
-\aid{Circuit}\;(2{+}n)$ for the one-letter circuit
-$[\,\aid{gate₂}\;\aid{σ-gate}\,]$\aid{ʷ} and $c{\uparrow}$ for the circuit
-$c$ shifted up one wire ($\aid{{\_}↑} = \aid{wmap}\;\aid{{\_}↥}$ shifts
-every generator).
-
-The reading is diagrammatic.  On three wires, the two generators and a
-composite correspond to circuit diagrams as follows (wires drawn bottom-up,
-composition left to right):
-
-\begin{figure}[h]
-\centering
-\scalebox{0.75}{\tikzfig{figures/fig1_sigma}}
-\caption{Circuit code and diagrams for three-wire permutation circuits:
-the Agda values \aid{σ}, \aid{σ ↑}, and \aid{σ • σ ↑ • σ} of type
-\aid{Circuit 3}.}
-\label{fig:sigma}
-\end{figure}
+\aid{Word}\;(\aid{Gen}\;n)$ (\S\ref{sec:words}): a single generator
+$[\,g\,]$\aid{ʷ}, the empty circuit \aid{ε} --- $n$ bare wires, the
+identity circuit at that width --- or a sequential composition
+$c \aidop{•} c'$.  We write $\sigma$ for the one-letter circuit
+$[\,\aid{gate₂}\;\aid{σ-gate}\;]$\aid{ʷ} and $c\;{\uparrow}$ for $c$ shifted
+up one wire ($\aid{{\_}↑} = \aid{wmap}\;\aid{{\_}↥}$).  Read
+diagrammatically, with wires drawn bottom-up and composition left to
+right, $\sigma$ is a crossing of the bottom two wires, $\sigma\;{\uparrow}$
+the same crossing one wire higher, and $\sigma \aidop{•} \sigma\;{\uparrow}
+\aidop{•} \sigma$ the three-wire braid on the left of the
+\aid{yang-baxter} equation drawn beside its axiom below.
 
 \subsection{Relations: two axioms, structure for free}
 
 The group-specific relations are an inductive family indexed by the wire
 count.  Each axiom is stated once, with its gates at the bottom of the
-wires and the wire count left open (the implicit $n$), so that a single
-constructor covers every width at which the axiom fits; the structural
-rule \aid{cong↑} below then moves it to any height:
+wires and the width left open (the implicit $n$), so that one constructor
+covers every width at which the axiom fits; the structural rule
+\aid{cong↑} below moves it to any height.  (In Agda, underscores in a
+name mark argument positions: the mixfix \aid{{\_}SRel,{\_}==={\_}} is
+written $n\;\aid{SRel,}\;w \aidrel{===} v$, ``$w = v$ is an axiom at $n$
+wires''.)
 
+\begin{center}
+\begin{minipage}[c]{0.58\linewidth}
+\begingroup\setlength{\mathindent}{0pt}
 \begin{code}
 data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
   order       : (₂₊ n) SRel, σ • σ === ε
   yang-baxter : (₃₊ n) SRel, σ • σ ↑ • σ === σ ↑ • σ • σ ↑
 \end{code}
+\endgroup
+\end{minipage}\hspace{2.5em}%
+\begin{minipage}[c]{0.28\linewidth}\centering
+  \ufig[0.35]{sn-order}\\[4pt]
+  \ufig[0.35]{sn-yb}
+\end{minipage}
+\end{center}
 
-(The name \aid{{\_}SRel,{\_}==={\_}} is a \emph{mixfix} identifier: in
-Agda, underscores in a name mark argument positions, so the type
-$n\;\aid{SRel,}\;w \aid{===} v$ reads ``$w = v$ is an axiom at $n$
-wires''.)  These two axioms are the Coxeter presentation of $S_n$ in
-circuit clothing: $\sigma^2 = \varepsilon$ and the braid (Yang--Baxter)
-relation.
-
-What about the relations every circuit theory needs, whatever its gates?
-By a \emph{circuit theory} we mean a gate set together with gate-specific
-relations, presenting for each width $n$ a monoid of $n$-wire circuits
-under sequential composition.  Such circuits are the fixed-width slices of
-a symmetric monoidal category of circuits (a PROP), and the monoidal
-structure leaves exactly two traces at fixed width.  The shift $c \mapsto
-c{\uparrow}$ is ``tensoring with an identity wire'', so equations must be
-preserved by it; and the interchange law says that gates acting on
-disjoint wires commute.  These structural rules are what every circuit
-theory shares --- they are what a pen-and-paper presentation leaves
-implicit in the phrase ``a congruence compatible with composition and
-tensor product'' --- and writing them into every gate set would be
-repetitive and error-prone.  The circuit layer therefore adds them
+\noindent These are the Coxeter presentation of $S_n$ in circuit clothing:
+$\sigma^2 = \varepsilon$ and the braid (Yang--Baxter) relation.  What
+about the relations every circuit theory needs, whatever its gates?  By a
+\emph{circuit theory} we mean a gate set with gate-specific relations,
+presenting for each width $n$ a monoid of $n$-wire circuits under
+sequential composition.  Such circuits are the fixed-width slices of a
+symmetric monoidal category (a PROP), and the monoidal structure leaves
+exactly two traces at fixed width: the shift $c \mapsto c\;{\uparrow}$ is
+``tensoring with an identity wire'', so equations must be preserved by
+it, and the interchange law says that gates on disjoint wires commute.
+(The version of the library developed since this paper was written also
+admits $0$-ary gates --- global scalars, available at every width --- and
+adds the rule they need: a scalar commutes with every generator and is
+identified with its own shift.)  These are the structural rules every
+circuit theory shares --- what a
+pen-and-paper presentation leaves implicit in ``a congruence compatible
+with composition and tensor product'' --- and the circuit layer adds them
 generically: \aid{Lift-Relation} (\S\ref{sec:circuits}) extends any
-gate-specific family with three structural rules, yielding the full
-relation set \aid{{\_}VRel,{\_}==={\_}}:
+gate-specific family to the full relation set \aid{{\_}VRel,{\_}==={\_}}:
 
 \begin{code}
 data _VRel,_===_ : (n : ℕ) → CRel n where
   srel  : n SRel, w === v → n VRel, w === v
   cong↑ : n VRel, w === v → (₁₊ n) VRel, w ↑ === v ↑
-  comm₁ : (h : Gate 1) (g : Gen n) → (₁₊ n) VRel,
-    [ g ↥ ]ʷ • [ gate₁ h ]ʷ === [ gate₁ h ]ʷ • [ g ↥ ]ʷ
-  comm₂ : (h : Gate 2) (g : Gen n) → (₂₊ n) VRel,
-    [ g ↥ ↥ ]ʷ • [ gate₂ h ]ʷ === [ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ
+  comm₁ : (h : Gate 1) (g : Gen n) → (₁₊ n) VRel, [ g ↥ ]ʷ • [ gate₁ h ]ʷ === [ gate₁ h ]ʷ • [ g ↥ ]ʷ
+  comm₂ : (h : Gate 2) (g : Gen n) → (₂₊ n) VRel, [ g ↥ ↥ ]ʷ • [ gate₂ h ]ʷ === [ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ
 \end{code}
 
-The far-commutation instance of \aid{comm₂} and the braid relation are the
-two diagram equalities of Figure~\ref{fig:relations}.  From here on,
+From here on,
 $\approx$ denotes the monoid congruence generated by
-$n\;\aid{VRel},{=}{=}{=}$ (\S\ref{sec:presentations}): the least relation
+$n\;\aid{VRel,{\_}==={\_}}$ (\S\ref{sec:presentations}): the least relation
 containing the axioms and closed under reflexivity, symmetry, transitivity,
-congruence of \aid{•}, associativity, and the unit laws.  Two circuits are
-equal in the presented monoid exactly when $\approx$ relates them, and
-deciding $\approx$ is the word problem.
-
-\begin{figure}[h]
-\centering
-\begin{minipage}[c]{0.41\linewidth}\centering
-\scalebox{0.75}{\tikzfig{figures/fig2_comm2}}\\[2pt]
-{\small \aid{comm₂}: disjoint gates commute}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.55\linewidth}\centering
-\scalebox{0.75}{\tikzfig{figures/fig2_yb}}\\[2pt]
-{\small \aid{yang-baxter}}
-\end{minipage}
-\caption{The generic far-commutation rule and the gate-specific braid
-relation as diagram equalities.}
-\label{fig:relations}
-\end{figure}
-
-Because $\sigma$ is its own inverse and shifts of invertible generators are
-invertible, the presented monoid is a group; we witness this by a
-\aid{Grouplike} proof (every generator has a left inverse), constructed by
-induction on generators.
+congruence of \aidop{•}, associativity, and the unit laws; deciding it is
+the word problem.  Because $\sigma$ is its own inverse and shifts of
+invertible generators are invertible, the presented monoid is a group; we
+witness this by a \aid{Grouplike} proof (every generator has a left
+inverse), by induction on generators.
 
 \subsection{Cosets and the staircase normal form}\label{sec:sn-cosets}
 
-The engine behind the normal form is coset enumeration along the chain of
-subgroups
-\[
-  S_1 \;<\; S_2 \;<\; \dots \;<\; S_n \;<\; S_{n+1},
-\]
-where $S_n$ sits inside $S_{n+1}$ as the permutations fixing the bottom
-wire --- syntactically, the circuits of the form $c{\uparrow}$.  Read as
-permutations, two circuits lie in the same right coset of $S_n$ exactly
-when they bring the same wire to the bottom position.  There are $n{+}1$
-choices, so $S_n$ has index $n{+}1$ in $S_{n+1}$, and a natural
-representative of each coset is the \emph{descending staircase} of swaps
-that carries that wire down.  On three, two, and one wires the
-representatives are:
-\begin{center}
-\begin{tabular}{ccc@{\qquad\qquad}cc@{\qquad\qquad}c}
-  \ufig[0.6]{c2-0} & \ufig[0.6]{c2-1} & \ufig[0.6]{c2-2} &
-  \ufig[0.6]{c1-0} & \ufig[0.6]{c1-1} & \ufig[0.6]{c0-0}\\[2pt]
-  $\varepsilon$ & $\sigma{\bullet}\varepsilon$ &
-  $\sigma{\bullet}\sigma{\bullet}\varepsilon$ &
-  $\varepsilon$ & $\sigma{\bullet}\varepsilon$ & $\varepsilon$
-\end{tabular}
-\end{center}
-In Agda a coset is a \emph{descriptor} --- the length of the staircase,
-as a unary numeral bounded by the wire count --- and the \emph{section}
-$[\,\_\,]^{\mathsf c}$ realizes a descriptor as the staircase circuit:
+The engine behind the normal form is coset enumeration along the chain
+$S_1 < S_2 < \dots < S_n < S_{n+1}$, where $S_n$ sits inside $S_{n+1}$ as
+the permutations fixing the bottom wire --- syntactically, the circuits
+of the form $c\;{\uparrow}$.  Read as permutations, two circuits lie in the
+same right coset of $S_n$ exactly when they bring the same wire to the
+bottom position; there are $n{+}1$ choices, so $S_n$ has index $n{+}1$,
+and a natural representative of each coset is the \emph{descending
+staircase} of swaps that carries that wire down.  In Agda a coset is a
+\emph{descriptor}, the length of the staircase as a unary numeral bounded
+by the width, and the \emph{section} $[\,\_\,]^{\mathsf c}$ realizes it
+as the staircase circuit; the representatives on three, two, and one
+wires are drawn on the right:
 
+\begin{center}
+\begin{minipage}[c]{0.30\linewidth}
+\begingroup\setlength{\mathindent}{0pt}
 \begin{code}
 data C : ℕ → Set where
   ε   : C n
   σ•_ : C n → C (₁₊ n)
-
 [_]ᶜ : C n → Circuit (₁₊ n)
 [ ε ]ᶜ     = ε
 [ σ• c ]ᶜ  = σ • ([ c ]ᶜ ↑)
 \end{code}
+\endgroup
+\end{minipage}\hspace{2.5em}%
+\begin{minipage}[c]{0.42\linewidth}\centering
+\begin{tabular}{@{}l@{\;\;}ccc@{}}
+  $\aid{C}\;2$: & \ufig[0.35]{c2-0} & \ufig[0.35]{c2-1} & \ufig[0.35]{c2-2}\\
+  & $\varepsilon$ & $\sigma{\bullet}\:\varepsilon$ &
+    $\sigma{\bullet}\:\sigma{\bullet}\:\varepsilon$\\[4pt]
+  $\aid{C}\;1$, $\aid{C}\;0$: & \ufig[0.35]{c1-0} & \ufig[0.35]{c1-1} & \ufig[0.35]{c0-0}\\
+  & $\varepsilon$ & $\sigma{\bullet}\:\varepsilon$ & $\varepsilon$
+\end{tabular}
+\end{minipage}
+\end{center}
 
-So $\aid{C}\;n$ has exactly $n{+}1$ elements --- $\varepsilon$,
-$\sigma{\bullet}\varepsilon$, up to a staircase of $n$ swaps --- matching
-the index of $S_n$ in $S_{n+1}$; the table above lists $\aid{C}\;2$,
-$\aid{C}\;1$, and $\aid{C}\;0$.
+\noindent So $\aid{C}\;n$ has exactly the $n{+}1$ elements drawn above
+for $n = 2, 1, 0$, matching the index of $S_n$ in $S_{n+1}$.  Why this yields
+a normal form is the classical argument of \S\ref{sec:preliminaries}:
+every $f \in S_{n+1}$ lies in one coset, say with representative $c_n$,
+so $f = f' \cdot c_n$ with $f' \in S_n$, and recursing on $f'$ writes $f$
+uniquely as $c_1 c_2 \cdots c_n$ with $c_k \in \aid{C}\;k$ --- a numeral
+in the \emph{factorial number system}, one digit per level, since
+$|S_{n+1}| = (n{+}1) \cdot n \cdots 2$.
 
-Why this yields a normal form is the classical argument recalled in
-\S\ref{sec:preliminaries}.  Every $f \in S_{n+1}$ lies in exactly one
-coset, say the one represented by $c_n$; then $f$ factors uniquely as
-$f = f' \cdot c_n$ with $f' \in S_n$, and recursing on $f'$ writes $f$ as
-a product of one representative per level, $c_1 c_2 \cdots c_n$ with $c_k
-\in \aid{C}\;k$.  Counting representatives, $|S_{n+1}| = (n{+}1) \cdot n
-\cdots 2$: the tuple $(c_1, \dots, c_n)$ is a numeral in the
-\emph{factorial number system}, one digit per level.
+\emph{Computing} this factorization is the job of the coset table, a
+right action that pushes one generator past a staircase and returns a
+residual circuit on the wires above together with the updated coset.
+Pushing $\sigma$ into a staircase can lengthen it, absorb it ($\sigma^2 =
+\varepsilon$), or pass it through and shift it up (Yang--Baxter), or
+commute past; for a generator that does not touch the bottom wire we can
+recurse.  What is
+left behind is nothing, one swap on the wires above, or in the other case
+studies a proper circuit on the wires above, which is why the table
+returns a circuit on one wire fewer rather than a generator
+(Figure~\ref{fig:pushing} draws the four cases):
 
-\emph{Computing} this factorization is the job of the coset table: a right
-action that pushes one generator past a staircase, emitting a residual
-circuit on the wires above and a successor coset.  Pushing $\sigma$ into a
-staircase can lengthen it, absorb it ($\sigma^2 = \varepsilon$), or pass
-it through and shift it up (Yang--Baxter); a generator that does not touch
-the bottom wire simply commutes past.  The residual is therefore a
-\emph{circuit} rather than a single generator --- either nothing or one
-swap, on the wires above --- which is why the table returns a word.  The
-four cases are the four pictures of Figure~\ref{fig:pushing}:
-
-\medskip\noindent
-\begin{minipage}[c]{0.66\linewidth}
-\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{center}
+\begin{minipage}[c]{0.72\linewidth}
+\begingroup\setlength{\mathindent}{0pt}
 \begin{code}
 ract : C (₁₊ n) → Gen (₂₊ n) → Circuit (₁₊ n) × C (₁₊ n)
-ract ε         σ-gen = ε , σ• ε       -- staircase grows
-ract (σ• ε)    σ-gen = ε , ε          -- σ² = ε absorbs
-ract (σ• σ• c) σ-gen = σ , σ• σ• c    -- Yang-Baxter passes
-ract ε         (g ↥) = [ g ]ʷ , ε     -- disjoint: commute
-ract (σ• c)    (g ↥) = proj₁ (ract c g) ↑ , σ• (proj₂ (ract c g))
+ract ε σ-gen = ε , σ• ε             -- grows
+ract (σ• ε) σ-gen = ε , ε           -- absorbs (σ² = ε)
+ract (σ• σ• c) σ-gen = σ , σ• σ• c  -- passes (Yang-Baxter)
+ract ε (g ↥) = [ g ]ʷ , ε           -- commutes past / recurses
+ract (σ• c) (g ↥) = proj₁ (ract c g) ↑ , σ• (proj₂ (ract c g))  -- recurses
 \end{code}
 \endgroup
-\end{minipage}\hfill
-\begin{minipage}[c]{0.32\linewidth}\centering
-  \ufig[0.4]{ract-l}\;\scalebox{0.7}{$\approx$}\;\ufig[0.4]{ract-r}
+\end{minipage}\hspace{1em}%
+\begin{minipage}[c]{0.24\linewidth}\centering
+  \ufig[0.35]{ract-l}\;\scalebox{0.7}{$\approx$}\;\ufig[0.35]{ract-r}
 \end{minipage}
+\end{center}
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{@{}r@{\,}c@{\,}l@{\;\;}l@{\qquad}r@{\,}c@{\,}l@{\;\;}l@{}}
+  \ufig[0.35]{push4-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.35]{push4-r} &
+    \small grows &
+  \ufig[0.35]{push3-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.35]{push3-r} &
+    \small absorbs ($\sigma^2 = \varepsilon$)\\[4pt]
+  \ufig[0.35]{push2-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.35]{push2-r} &
+    \small passes (Yang--Baxter) &
+  \ufig[0.35]{push1-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.35]{push1-r} &
+    \small far-commutation
+\end{tabular}
+\caption{Pushing a swap through a staircase: the four cases of the coset
+table \aid{ract} as circuit rewrites, in the order of its clauses.}
+\label{fig:pushing}
+\end{figure}
 
 \medskip\noindent
-(\aid{σ-gen} abbreviates $\aid{gate₂}\;\aid{σ-gate}$; two further clauses
-dispose of vacuous low-arity cases.)  The last clause is the recursion: a
+\aid{σ-gen} abbreviates $\aid{gate₂}\;\aid{σ-gate}$.  The last clause is the recursion: a
 shifted generator meets a staircase by meeting its tail one wire down.
-Each clause is certified by the \emph{soundness law}, proved once per
-table by a short equational derivation from the axioms and pictured on
-the right --- in Agda,
+Each clause is certified by the \emph{soundness law}, pictured on the
+right and proved once per table by a short equational derivation from
+the axioms:
 
 \begin{code}
-ract-sound : ∀ c b → let (b' , c') = ract c b
-                     in  [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ
+ract-sound : ∀ c b → let (b' , c') = ract c b in [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ
 \end{code}
 \begin{code}[hide]
 ract-sound = proof-elided
 \end{code}
 
-The library's stateful word traversal \aid{{\_}ᵗ} (\S\ref{sec:words})
-extends \aid{ract} to whole circuits, threading the coset from left to
-right and concatenating the residuals.  Running it from the identity coset
-maps an $(n{+}2)$-wire circuit to a pair of an $(n{+}1)$-wire circuit and a
-coset --- one level of normalization, and, in the vocabulary of
-\S\ref{sec:engine}, the normal-form transport that a verified coset table
-provides.
+The stateful word traversal \aid{{\_}ᵗ} (\S\ref{sec:words}) extends
+\aid{ract} to whole circuits, threading the coset from left to right and
+concatenating the residuals; run from the identity coset, it maps an
+$(n{+}2)$-wire circuit to an $(n{+}1)$-wire circuit and a coset --- one
+level of normalization, the normal-form transport of
+\S\ref{sec:engine}.  \emph{Iterating} this is the coset tower, whose
+carrier grows by one digit per level:
 
-\begin{figure}[t]
-\centering
-\begin{tabular}{r@{\,}c@{\,}l@{\qquad}l}
-  \ufig[0.4]{push1-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push1-r} &
-    disjoint wires: commute past \\
-  \ufig[0.4]{push2-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push2-r} &
-    Yang--Baxter: pass through, shift up \\
-  \ufig[0.4]{push3-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push3-r} &
-    $\sigma^2 = \varepsilon$: staircase shrinks \\
-  \ufig[0.4]{push4-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push4-r} &
-    staircase grows \\
-\end{tabular}
-\caption{Pushing a swap through a staircase: the four cases of the coset
-table \aid{ract}, as circuit rewrites.}
-\label{fig:pushing}
-\end{figure}
+\begin{center}
+\begin{minipage}[c]{0.56\linewidth}
+\begingroup\setlength{\mathindent}{0pt}
+\begin{code}
+NF : ℕ → Set
+NF 0       = ⊤
+NF (suc k) = NF k × C k   -- ⊤ × C 0 × C 1 × ⋯ × C k
+\end{code}
+\endgroup
+\end{minipage}\hspace{2.5em}%
+\begin{minipage}[c]{0.16\linewidth}\centering
+  \ufig[0.35]{fig3_staircase}
+\end{minipage}
+\end{center}
 
-\emph{Iterating} this is the coset tower (\S\ref{sec:engine}).  For each
-level, the symmetric-group development (module
-\texttt{Examples.Groups.Symmetric}) supplies the coset type $\aid{C}\;k$,
-the table \aid{ract}, the section $[\,\_\,]^{\mathsf c}$, and the five
-hypotheses that make a coset table verified --- \aid{ract-sound} is one of
-them; the others are finite case splits closed by evaluation --- packaged
-as a single record.  The tower folds these records upward, starting from
-the trivial normal form of the one-wire theory, in which every circuit is
-empty.  The carrier grows by one digit per level,
-\[
-  \aid{NF}\;n \;=\; \top \times \aid{C}\;1 \times \aid{C}\;2 \times
-  \dots \times \aid{C}\;(n{-}1),
-\]
-and has exactly $2 \cdot 3 \cdots n = n!$ elements, as it must.  The
-normal-form function $\aid{nf} : \aid{Circuit}\;n \to \aid{NF}\;n$ runs
-the tables; its \emph{section} $\aid{inv-nf} : \aid{NF}\;n \to
-\aid{Circuit}\;n$ rebuilds a circuit from its digits by concatenating the
-staircases $[\,c_k\,]^{\mathsf c}$, suitably shifted; and the witness that
-this is a normal form (\S\ref{sec:nfproperty}) is the proof that
-$\aid{inv-nf}\;(\aid{nf}\;c) \approx c$ for every circuit $c$.
-Figure~\ref{fig:staircase} shows the section of one normal form on four
-wires: a ``staircase of staircases'', exactly Selinger's normal-form
-picture for Clifford circuits restricted to
-swaps~\cite{selinger2015clifford}.
-
-\begin{figure}[h]
-\centering
-\scalebox{0.75}{\tikzfig{figures/fig3_staircase}}
-\caption{The section of the normal form
-$(\mathsf{tt},\, \sigma{\bullet}\varepsilon,\,
-\sigma{\bullet}\sigma{\bullet}\varepsilon,\,
-\sigma{\bullet}\varepsilon) \in \aid{NF}\;4$: reading right to left, one
-descending staircase per tower level.}
-\label{fig:staircase}
-\end{figure}
+\noindent so $\aid{NF}\;n$ has exactly $n!$ elements.  The normal-form
+function $\aid{nf} : \aid{Circuit}\;n \to \aid{NF}\;n$ runs the tables;
+its \emph{section} $\aid{inv-nf} : \aid{NF}\;n \to \aid{Circuit}\;n$
+rebuilds a circuit from its digits by concatenating the staircases,
+suitably shifted, as drawn on the right for $(\mathsf{tt}, c_1, c_2, c_3)
+\in \aid{NF}\;4$ --- one staircase per level, each shifted up to the
+wires of its level: a ``staircase of staircases''.
 
 \subsection{Two semantics, uniqueness, and completeness}
 
 So far everything was syntax.  The development interprets circuits twice:
-
-\begin{itemize}
-\item a \emph{loose} semantics
-  $\aid{⟦\_⟧} : \aid{Circuit}\;n \to (\mathsf{Fin}\;n \to \mathsf{Fin}\;n)$
-  into endofunctions of $\mathsf{Fin}\;n$ under composition ($\sigma$ swaps
-  the bottom two elements), a monoid that is \emph{not} a group; and
-\item a \emph{tight} semantics into
-  $\aid{Permutation′-group}\;n$, the group of permutations of
-  $\mathsf{Fin}\;n$ --- the standard library's \aid{Permutation′} bundled
-  as a \aid{Group} by our \texttt{ForStdlib} layer
-  (\S\ref{sec:forstdlib}).
-\end{itemize}
-
-\emph{Soundness} --- $w \approx v$ implies
-$\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ --- is, as always, a small case
-analysis over the axioms: the two Coxeter relations hold for the swap
-function, and the structural rules hold because shifted circuits act only on
-shifted points.  The heart of the matter is the \emph{unique normal form}
-property (\S\ref{sec:nfproperty}): normal forms with equal denotations are
-equal,
-\[
-  \aid{⟦}\,\aid{inv-nf}\;u\,\aid{⟧} \doteq \aid{⟦}\,\aid{inv-nf}\;v\,\aid{⟧}
-  \;\longrightarrow\; u \equiv v \qquad (u, v \in \aid{NF}\;n),
-\]
-proved by induction on the tower: two staircase sections that agree as
-functions must peel off equal top digits (they send the top point to the
-same place), and the rest agree by induction.  Soundness and uniqueness are
-exactly the premises of the library's generic lemma
-\aid{by-normalization}, which concludes \emph{completeness}:
+by a \emph{loose} semantics $\aid{⟦\_⟧} : \aid{Circuit}\;n \to
+(\mathsf{Fin}\;n \to \mathsf{Fin}\;n)$ into endofunctions of
+$\mathsf{Fin}\;n$ ($\sigma$ swaps the bottom two elements), a monoid that
+is \emph{not} a group; and by a \emph{tight} semantics into
+$\aid{Permutation′-group}\;n$, the standard library's permutations of
+$\mathsf{Fin}\;n$ bundled as a \aid{Group} by our \texttt{ForStdlib}
+layer (\S\ref{sec:forstdlib}).  \emph{Soundness} --- $w \approx v$
+implies $\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ --- is a small case
+analysis over the axioms.  The heart of the matter is the \emph{unique
+normal form} property (\S\ref{sec:nfproperty}), that normal forms with
+equal denotations are equal: $\aid{⟦}\;\aid{inv-nf}\;u\,\aid{⟧} \doteq
+\aid{⟦}\;\aid{inv-nf}\;v\,\aid{⟧}$ implies $u \equiv v$, proved by
+induction on the tower, since two staircase sections that agree as
+functions send the top point to the same place and so peel off equal top
+digits.  Soundness and uniqueness are exactly the premises of the generic
+lemma \aid{by-normalization}, which concludes \emph{completeness}:
 $\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ implies $w \approx v$.  The index
-module states three theorems of this kind, for every $n$: soundness and
-completeness of the loose semantics, and uniqueness of the tower normal
-form for the tight semantics.  In \texttt{MainTheorems.agda} they are
-named \aid{symmetric-soundness}, \aid{symmetric-completeness}, and
-\aid{symmetric-unique-nf}, and their Agda types are the statements above
-with the setoids spelled out.
-
-Completeness for the \emph{loose} semantics is the stronger, perhaps
-surprising fact: even read as mere endofunctions, circuits that are equal
-as functions are provably equal --- the relation set does not need
-invertibility of the model.  For the tight semantics, soundness,
-completeness, and surjectivity (every permutation is a product of adjacent
-transpositions --- realized by \aid{inv-nf} composed with a semantic normal
-form) assemble into the \emph{presentation record} of
-\S\ref{sec:presentations}, which packages a \aid{Grouplike} witness with a
-group isomorphism from the presented group onto the target whose
-underlying function is the semantics.  This is the one statement we quote
-in Agda, since every presentation theorem in the paper has its shape:
+module states these for every $n$ (\aid{symmetric-soundness},
+\aid{symmetric-completeness}, \aid{symmetric-unique-nf}).  Completeness
+for the \emph{loose} semantics is the stronger, perhaps surprising fact:
+even read as mere endofunctions, circuits that are equal as functions are
+provably equal.  For the tight semantics, soundness, completeness, and
+surjectivity (every permutation is a product of adjacent transpositions)
+assemble into the \emph{presentation record} of \S\ref{sec:presentations}
+--- a \aid{Grouplike} witness with a group isomorphism from the presented
+group onto the target whose underlying function is the semantics --- the
+one statement we quote in Agda, since every presentation theorem in the
+paper has its shape:
 
 \begin{code}
-symmetric-presentation :
-  ∀ n → (n VRel,_===_) IsPresentationOf (SymTight.Permutation′-group n)
+symmetric-presentation : ∀ n → (n VRel,_===_) IsPresentationOf (Permutation′-group n)
 \end{code}
 \begin{code}[hide]
 symmetric-presentation n = SymThm.Tight.presentation n
@@ -397,9 +333,7 @@ symmetric-presentation n = SymThm.Tight.presentation n
 
 read: the monoid of swap circuits modulo \{\aid{order},
 \aid{yang-baxter}\} and the structural rules \emph{is} the group of
-permutations of $\mathsf{Fin}\;n$, via a group isomorphism whose
-underlying map is the semantics.  (\aid{IsPresentationOf} is the mixfix
-record name \aid{{\_}IsPresentationOf{\_}} used infix, between the
-relation set and the group.)  Everything later in the paper is this
-pipeline again, with richer gates, longer towers, and amalgamations where
-the chain branches.
+permutations of $\mathsf{Fin}\;n$ (\aid{IsPresentationOf} is the mixfix
+record name \aid{{\_}IsPresentationOf{\_}} used infix).  Everything later
+in the paper is this pipeline again, with richer gates, longer towers,
+and amalgamations where the chain branches.

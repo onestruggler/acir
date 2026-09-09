@@ -7,57 +7,47 @@ Reidemeister--Schreier engine.  Completeness --- the expensive half of
 every equational theory of circuits --- is factored, once and for all,
 into soundness plus a unique-normal-form witness; normal forms are built
 by verified coset tables, one mixed-radix digit per level of a subgroup
-tower, or glued by amalgamation when the tower branches.  The catalogue of
-verified instances spans the symmetric groups as circuits (complete for
-two semantics), cyclic groups, signed permutations and general wreath
+tower, or glued by amalgamation when the tower branches.  The verified
+instances span symmetric groups as circuits, cyclic groups, wreath
 products $\mathbb{Z}_N \wr S_n$, Pauli groups in every odd prime
-dimension, and the single-qubit and single-qutrit Clifford+$T$ monoids and
-$U_3(\mathbb{Z}[\tfrac12,i])$ as amalgamated free products --- with the
+dimension, and the single-qubit and single-qutrit Clifford+$T$ monoids
+and $U_3(\mathbb{Z}[\tfrac12,i])$ as amalgamated free products, with the
 classical Matsumoto--Amano syllable structure falling out as the
-amalgam's alternating normal form.  Every theorem is collected, fully
-typed, in one index module, and the whole verified development is safe,
-axiom-free Agda.
+amalgam's alternating normal form.
 
 The work continues in four directions.  \emph{Odd-prime Clifford
 completeness.}  The multi-qupit Clifford groups sit above the Pauli
 groups formalized here as extensions by the symplectic groups
 $Sp(2n,\mathbb{Z}_p)$; with the Pauli presentations and the
-extension-presentation theorem verified, the framework is aimed squarely
-at machine-checked completeness proofs for multi-qubit and multi-qupit
-Clifford circuits --- the formal counterparts of Selinger's qubit
+extension-presentation theorem verified, the framework is aimed at
+machine-checked completeness for multi-qubit and multi-qupit Clifford
+circuits --- the formal counterparts of Selinger's qubit
 presentation~\cite{selinger2015clifford}, the qutrit rule set
-of~\cite{li2025qutrit}, and its generalization to all odd primes ---
-whose pen-and-paper versions are exactly the long, regular case-analysis
-proofs this framework absorbs.  \emph{More groups.}  The
-compositional toolkit invites further families --- the lamplighter groups
-$\mathbb{Z}_N \wr \mathbb{Z}$ as a first infinite-index stress test of
-the wreath machinery, HNN-style extensions to complement amalgamations,
-and the remaining gate groups of the
-$\mathbb{Z}[\tfrac12,i]$ family~\cite{bian2021un,li2021on} --- including
-the orthogonal groups over $\mathbb{Z}[1/\sqrt2]$ whose finite
-presentation underpins the completeness of the quantum programming
-language Hadamard-$\Pi$~\cite{fang2026hadamard}, an inviting target for
-this engine.  \emph{Towards compilers.}  The normal-form functions are
-executable Agda; compiled, a verified normalizer is a decision procedure
-for circuit equivalence that an optimizer can call as an oracle, and
-connecting the presented gate groups to the matrix semantics of
-\textsc{sqir}/\textsc{voqc} or VyZX (\S\ref{sec:related}) would turn our
-completeness theorems into end-to-end guarantees about such optimizers:
-that a rewrite engine equipped with one of our rule sets misses no valid
-rewrite, and that two circuits it fails to identify are genuinely
-different.
-\emph{Upstreaming.}  The \texttt{ForStdlib} constructions (semidirect
-products, monoid amalgamations, extensions, epimorphisms, the permutation
-group) are being prepared for the Agda standard library, and the
-presentation framework itself is written to its conventions with that
-destination in mind.
+of~\cite{li2025qutrit}, and its generalization to all odd primes.
+\emph{More groups.}  The lamplighter groups $\mathbb{Z}_N \wr
+\mathbb{Z}$ as an infinite-index stress test of the wreath machinery,
+HNN-style extensions to complement amalgamations, and the remaining gate
+groups of the $\mathbb{Z}[\tfrac12,i]$ family~\cite{bian2021un,li2021on},
+including the orthogonal groups over $\mathbb{Z}[1/\sqrt2]$ whose
+presentation underpins the completeness of
+Hadamard-$\Pi$~\cite{fang2026hadamard}.  \emph{Towards compilers.}  The
+normal-form functions are executable Agda; compiled, a verified
+normalizer is a decision procedure for circuit equivalence that an
+optimizer can call as an oracle, and connecting the presented gate groups
+to the matrix semantics of \textsc{sqir}/\textsc{voqc} or VyZX
+(\S\ref{sec:related}) would turn our completeness theorems into
+end-to-end guarantees that a rewrite engine equipped with one of our
+rule sets misses no valid rewrite.  \emph{Upstreaming.}  The
+\texttt{ForStdlib} constructions are being prepared for the Agda
+standard library, and the presentation framework is written to its
+conventions with that destination in mind.
 
 The broader hope is methodological.  Completeness proofs for circuit
 calculi are growing --- three hundred pages of appendix is no longer
 exceptional~\cite{clement2026realcliffordch} --- while their structure
-remains what it always was: normal forms, towers, and case analyses.
-That is a shape a proof assistant with a strong evaluator handles
-natively.  This library is evidence that the right infrastructure ---
-presentations as data, normal forms as bundles, coset tables as
-certificates --- turns such proofs from heroic manuscripts into ordinary,
-reusable, machine-checked mathematics.
+remains what it always was: normal forms, towers, and case analyses, a
+shape a proof assistant with a strong evaluator handles natively.  This
+library is evidence that the right infrastructure --- presentations as
+data, normal forms as bundles, coset tables as certificates --- turns
+such proofs from heroic manuscripts into ordinary, reusable,
+machine-checked mathematics.

@@ -14,7 +14,9 @@
 \node [style=none] (w2bl) at (4.7, 4.0){};
 \node [style=none] (w2br) at (5.9, 4.0){};
 \draw [fill=white] (0.20000005, -0.75) rectangle (2.2, 6.75);
-\node [style=none] (c3) at (1.2, 3.0) {\scriptsize $c_3$};
+\node [style=none] (c3) at (1.2, 3.0) {\Huge $c_3$};
+\draw [dashed] (2.7, 1.25) rectangle (5.2, 4.75);
+\node [style=none] (b) at (3.95, 5.35) {\Huge $b$};
 \node [style=none] (xa) at (3.2, 2.0){};
 \node [style=none] (xb) at (3.2, 4.0){};
 \node [style=none] (xc) at (4.7, 2.0){};

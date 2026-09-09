@@ -72,7 +72,6 @@ infixr 7 _•_
 infixl 9 _ʷ _ᵗ
 infix 4 _≈_ _===_ _≈ₙ_ _≈₂_ _~_ _===₁_ _===₂_
 infix 5 _⋄_⋄_
-infixl 8 _↥ᵏ_
 
 WRel : Set → Set₁
 WRel X = Rel (Word X) 0ℓ
@@ -136,17 +135,13 @@ data _≈_ : WRel X where
 $\approx$ \emph{is} the word problem of $\langle X \mid \Gamma \rangle$,
 and a derivation is a first-class syntactic object --- one can compute
 with it, induct on it, and translate it (the congruence-lifting lemmas of
-\S\ref{sec:constructions} are inductions on this type).  Compared to
-quotient-based designs (e.g.\ mathlib's \aid{PresentedGroup} as a quotient
-of a free group by a normal
-closure~\cite{mathlib2020,mathlib-doc-presented}, or higher inductive
-types in cubical Agda~\cite{vezzosi2019cubical,cubicallibrary}), the
-setoid design pays a congruence obligation per function out of the type,
-but keeps the normal-form maps of \S\ref{sec:nfproperty} \emph{ordinary
-computable functions on words}, with no quotient to eliminate through ---
-crucial for the proof-by-evaluation style of the case studies, and
-compatible with a standard-library-first policy
-(cf.~\cite{barthe2003setoids} for the tradition).
+\S\ref{sec:constructions} are inductions on this type).  The presented
+monoid is thus a setoid on words in the tradition
+of~\cite{barthe2003setoids}, not a quotient type as in mathlib's
+\aid{PresentedGroup}~\cite{mathlib2020,mathlib-doc-presented} or a higher
+inductive type in cubical Agda~\cite{vezzosi2019cubical,cubicallibrary};
+\S\ref{sec:setoids} weighs that choice once the case studies are on the
+table.
 \texttt{Presentation.Properties} packages $\approx$ as an equivalence,
 hence as a setoid on words --- the \emph{word setoid}, the domain of every
 normal form in \S\ref{sec:nfproperty} --- and as the monoid
@@ -161,13 +156,11 @@ Presentations of concrete algebras are records
 
 \begin{code}
 record _IsPresentationOf_ (_===_ : WRel X) (G : Group a ℓ) : Set (a ⊔ ℓ) where
-  field
-    gl : Grouplike _===_
+  field gl : Grouplike _===_
   module GL = Group-Lemmas _===_ gl
   open GroupMorphisms (Group.rawGroup GL.•-ε-group) (Group.rawGroup G)
-  field
-    ⟦_⟧ : Word X → Group.Carrier G
-    iso : IsGroupIsomorphism ⟦_⟧
+  field ⟦_⟧ : Word X → Group.Carrier G
+        iso : IsGroupIsomorphism ⟦_⟧
 \end{code}
 \begin{code}[hide]
 postulate
@@ -218,8 +211,8 @@ play:
 \end{array}
 \]
 An \aid{Injection} bundles the map $\aid{nf}$, its congruence, and
-injectivity: $w \approx v \iff \aid{nf}\,w \approx_{\mathit{NF}}
-\aid{nf}\,v$.  Two consequences ship with it: the workhorse
+injectivity: $w \approx v \iff \aid{nf}\;w \approx_{\mathit{NF}}
+\aid{nf}\;v$.  Two consequences ship with it: the workhorse
 \begin{code}
 by-equal-nf : nf w ≈ₙ nf v → w ≈ v
 \end{code}
@@ -284,11 +277,8 @@ with equal denotations are equal normal forms:
 
 \begin{code}
 record UniqueNormalForm (normalForm : NormalForm) : Set (c ⊔ d) where
-  field
-    unique : ∀ {u v : |NF|} → ⟦ inv-nf u ⟧ ≈₂ ⟦ inv-nf v ⟧ → u ≈ₙ v
-
-by-normalization : {normalForm : NormalForm} →
-  UniqueNormalForm normalForm →
+  field unique : ∀ {u v : |NF|} → ⟦ inv-nf u ⟧ ≈₂ ⟦ inv-nf v ⟧ → u ≈ₙ v
+by-normalization : {normalForm : NormalForm} → UniqueNormalForm normalForm →
   Congruent _≈_ _≈₂_ ⟦_⟧ → Injective _≈_ _≈₂_ ⟦_⟧
 \end{code}
 \begin{code}[hide]
@@ -297,7 +287,7 @@ by-normalization = proof-elided
 
 \emph{Soundness plus a unique normal form yields completeness}: given
 $\aid{⟦}w\aid{⟧} \approx_2 \aid{⟦}v\aid{⟧}$, soundness transports along
-$w \approx \aid{normalize}\,w$, uniqueness identifies the normal forms,
+$w \approx \aid{normalize}\;w$, uniqueness identifies the normal forms,
 and injectivity of \aid{nf} closes the loop.  The proof is five lines; its
 value is that every case study only ever proves \aid{unique} --- a
 statement about \emph{normal forms}, i.e.\ about concrete first-order data
@@ -319,47 +309,29 @@ the injectivity field being literally \aid{by-normalization}.
 
 The circuit layer (\texttt{Circuit.Base}) is parameterized by a gate
 family $\aid{Gate} : \mathbb{N} \to \mathsf{Set}$ and defines the
-wire-indexed generators \aid{Gen} and the circuits $\aid{Circuit}\;n =
-\aid{Word}\;(\aid{Gen}\;n)$ exactly as shown in \S\ref{sec:permutations}:
-a generator is a 1- or 2-ary gate at the bottom of the wires, shifted up
-by some number of \aid{{\_}↥}s, and $c{\uparrow} = \aid{wmap}\;\aid{{\_}↥}$
-shifts a whole circuit.  Two design choices matter more than they look.
-First, the indices are built from successors only --- \aid{gate₂} lands in
-$\aid{Gen}\,(2{+}n)$, not in $\aid{Gen}\,k$ with a side condition $k \ge
-2$ --- and the $k$-fold shift puts $k$ on the \emph{left} of $+$, mirroring
-the left-biased inductive definition of addition.  The module's own
-comment states the reason:
-
-\begin{code}
--- Indices begin with suc (no top-level addition) so Agda's coverage
--- checker can solve unification goals by injectivity of ₁₊ alone,
--- avoiding stuck Diophantine equations of the form arity + k ≟ target.
-data Gen : ℕ → Set where
-  -- gate₁, gate₂ and _↥, as in Section 2.1
-
-_↥ᵏ_ : Gen n → (k : ℕ) → Gen (k + n)     -- k on the left of +
-\end{code}
-\begin{code}[hide]
-g ↥ᵏ k = g
-\end{code}
-
-Downstream, this is why the coset tables of the case studies can be
-defined by direct pattern matching and verified by \aid{refl}:
-unification alone discharges the well-formedness constraints that arise,
-and no arithmetic side condition ever contaminates a table.  Second, the
-structural rules common to \emph{all} circuit theories are factored out
-once, by \aid{Lift-Relation}, whose permutation instance
-\aid{{\_}VRel,{\_}==={\_}} appeared in \S\ref{sec:permutations}: given any
-gate-specific family $\aid{{\_}SRel,{\_}==={\_}} : (n : \mathbb{N}) \to
-\aid{CRel}\;n$, it adds shift-congruence and far-commutation (a bottom
-gate commutes with any generator shifted past its arity).  The
-accompanying lemma \aid{lemma-cong↑} lifts the \emph{entire congruence}
-one wire up --- proved once, by induction over the eight constructors of
-$\approx$ --- so equational developments can move freely along the wire
-chain $\mathsf{Cir}\,k \le \mathsf{Cir}\,(k{+}1)$ of
+generators \aid{Gen} and circuits $\aid{Circuit}\;n =
+\aid{Word}\;(\aid{Gen}\;n)$ exactly as in \S\ref{sec:permutations}.  Two
+design choices matter more than they look.  First, the indices are
+engineered for the unifier.  Addition on naturals recurses on its first
+argument, so $k + n$ computes as soon as $k$ is a successor pattern while
+$n + k$ is stuck; given that $+$ is left-biased, we make our indices
+left-biased too: \aid{gate₂} lands in $\aid{Gen}\;(2 + n)$, not in
+$\aid{Gen}\;k$ with a side condition $k \ge 2$, and the $k$-fold shift
+has type $\aid{Gen}\;n \to \aid{Gen}\;(k + n)$.  Unification is then all
+that is needed to verify the well-formedness constraints that arise ---
+every index equation the coverage checker meets is solved by injectivity
+of \aid{₁₊}, never by arithmetic, avoiding stuck Diophantine equations of
+the form $\mathit{arity} + k \doteq \mathit{target}$ --- and downstream it
+is why the coset tables of the
+case studies can be defined by direct pattern matching and verified by
+\aid{refl}.  Second, the structural rules common to all circuit theories
+are factored out once, by \aid{Lift-Relation}, whose permutation
+instance appeared in \S\ref{sec:permutations}; its lemma
+\aid{lemma-cong↑} lifts the \emph{entire congruence} one wire up ---
+proved once, by induction over the eight constructors of $\approx$ ---
+so equational developments move freely along the wire chain of
 \S\ref{sec:preliminaries}.  Instantiating \aid{Gate} is all it takes to
-define a new circuit theory: the permutation instance has one gate and two
-axioms.
+define a new circuit theory.
 
 \subsection{The Reidemeister--Schreier engine}\label{sec:engine}
 
@@ -381,14 +353,8 @@ The \emph{full} form is coset enumeration.  Its packaging
 (\aid{SingleLevel} shown; a setoid-coset variant exists):
 
 \begin{code}
-module SingleLevel
-  (Γ   : WRel X)               -- subgroup presentation  (letters X)
-  (Δ   : WRel Y)               -- group presentation     (letters Y)
-  (C   : Set)                  -- set of right cosets
-  (I   : C)                    -- identity coset
-  (f   : X → Word Y)           -- generator embedding  H ↪ G
-  (h   : C → Y → Word X × C)   -- coset action (Schreier table)
-  ([_] : C → Word Y)           -- Schreier section
+module SingleLevel (Γ : WRel X) (Δ : WRel Y) (C : Set) (I : C)
+  (f : X → Word Y) (h : C → Y → Word X × C) ([_] : C → Word Y)
 \end{code}
 \begin{code}[hide]
   where
@@ -404,25 +370,24 @@ postulate
 \end{code}
 
 Think of $\Gamma$ as presenting a subgroup $H$ of the group $G$ presented
-by $\Delta$.  The table $h$ pushes one letter of $G$ past a coset,
-emitting a word of $H$ and the successor coset --- so
+by $\Delta$, over the letters $X$ and $Y$ respectively; $C$ is the set of
+right cosets, $I$ the identity coset, $f$ the embedding of generators, and
+$[\,\_\,]$ the Schreier section.  The table $h$ pushes one letter of $G$
+past a coset, emitting a word of $H$ and the updated coset --- so
 $\aid{nf} = (h\,\aid{ᵗ})\,I : \aid{Word}\;Y \to \aid{Word}\;X \times C$
 runs the whole word from the identity coset.  A submodule
 \aid{Transfer} takes the five hypotheses that make the data a genuine
 coset presentation --- quoted from the source, numbered as in the
 explanation that follows:
 
-\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
 \begin{code}
 module Transfer
-  (h=⁻¹f-gen : ∀ (x : X) → ([ x ]ʷ , I) ~ ((h ᵗ) I (f x)))                    -- (1)
-  (h-wd-ax : ∀ (c : C){u t : Word Y} → u ===₂ t → ((h ᵗ) c u) ~ ((h ᵗ) c t))  -- (2)
-  (f-wd-ax : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)                          -- (3)
-  ([I]≈ε : [ I ] ≈₂ ε)                                                        -- (4)
-  (h=ract :  ∀ c b → let (b' , c') = h c b in                                  -- (5)
-    [ c ] • [ b ]ʷ ≈₂ (f ʷ) b' • [ c' ])
+  (h=⁻¹f-gen : ∀ (x : X) → ([ x ]ʷ , I) ~ ((h ᵗ) I (f x)))                   -- 1
+  (h-wd-ax : ∀ (c : C){u t : Word Y} → u ===₂ t → ((h ᵗ) c u) ~ ((h ᵗ) c t)) -- 2
+  (f-wd-ax : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)                         -- 3
+  ([I]≈ε : [ I ] ≈₂ ε)                                                       -- 4
+  (h=ract : ∀ c b → let (b' , c') = h c b in [ c ] • [ b ]ʷ ≈₂ (f ʷ) b' • [ c' ]) -- 5
 \end{code}
-\endgroup
 \begin{code}[hide]
   where
 \end{code}
@@ -434,7 +399,7 @@ $\varepsilon$; (5) sliding one letter past a coset's representative
 matches the table (the law \aid{ract-sound} of \S\ref{sec:permutations}).
 From these, \aid{Transfer} derives well-definedness of
 \aid{nf} on $\approx_2$, the factorization
-$[c] \aid{•} b \approx_2 (f\,\aid{ʷ})\,b' \aid{•} [c']$ for whole words,
+$[c] \aidop{•} b \approx_2 (f\,\aid{ʷ})\,b' \aidop{•} [c']$ for whole words,
 injectivity --- and the payoff, the \emph{normal-form transport}
 \[
   \aid{nf-transp} : \mathrm{NormalForm}\;\Gamma\;\mathit{NF}
@@ -482,7 +447,7 @@ free product ($\aid{EmptyRel}$), direct product ($\aid{CommRel}$:
 generators of the two sides commute), semidirect product
 ($\aid{ConjRel}$/$\aid{ConjRelʷ}$: moving $h$ past $n$ conjugates $n$,
 by a generator or by a word), amalgamated free product
-($\aid{AmalgRel}\,f_1\,f_2$: the two images of a shared alphabet are
+($\aid{AmalgRel}\;f_1\,f_2$: the two images of a shared alphabet are
 identified), and definitional extension ($\aid{SugarRel}$: a new
 generator desugars to a word) --- plus $n$-fold iterations
 $\Gamma \mathrel{\aid{⊕\char94}} n$.  Congruence-lifting lemmas (\aid{lefts},
@@ -507,9 +472,9 @@ constructed group.  With their premise telescopes elided, the direct,
 semidirect, $n$-fold, and amalgamated statements read:
 \[
 \begin{array}{l}
-\aid{dpres} : (\Gamma \mathrel{\aid{⋄}} \Delta \mathrel{\aid{⋄}} \aid{CommRel})
+\aid{dpres} : (\Gamma \mathrel{\aidop{⋄}} \Delta \mathrel{\aidop{⋄}} \aid{CommRel})
    \ \aid{IsPresentationOf}\ (G_1 \times G_2) \\[3pt]
-\aid{dpres} : (\Gamma \mathrel{\aid{⋄}} \Delta \mathrel{\aid{⋄}} \aid{ConjRelʷ}\;\mathit{conj})
+\aid{dpres} : (\Gamma \mathrel{\aidop{⋄}} \Delta \mathrel{\aidop{⋄}} \aid{ConjRelʷ}\;\mathit{conj})
    \ \aid{IsPresentationOf}\ (G_1 \rtimes G_2) \\[3pt]
 \aid{presentation} : \forall n \to (\Gamma \mathrel{\aid{⊕\char94}} n)
    \ \aid{IsPresentationOf}\ (\otimes\aid{-group}\;n) \\[3pt]

@@ -1,4 +1,5 @@
 \begin{tikzpicture}
+\path [use as bounding box] (-0.3, -1.0) rectangle (19.8, 5.7);
 \begin{pgfonlayer}{nodelayer}
 \node [style=none] (n0y00tl) at (1.0, 2.0) {$$};
 \node [style=none] (n0y00bl) at (1.0, 0.0) {$$};
@@ -39,7 +40,7 @@
 \draw (n0y02bl.center) to (n0y02tr.center);
 \draw (n0y02tl.center) to (n0y02br.center);
 \end{pgfonlayer}
-\node [style=none] (equiv) at (9.5, 2.0) {$=$};
+\node [style=none] (equiv) at (9.5, 2.0) {\Huge $\equiv$};
 \begin{pgfonlayer}{nodelayer}
 \node [style=none] (n10y00tl) at (11.5, 4.0) {$$};
 \node [style=none] (n10y00bl) at (11.5, 2.0) {$$};

@@ -126,6 +126,40 @@
 \AgdaModule{Examples.Amalgamations.CliffordT1}\AgdaSpace{}%
 \AgdaSymbol{as}\AgdaSpace{}%
 \AgdaModule{CliffordT1}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{SnD}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{Wreath}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{Monoid}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{rawMonoid}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{MonoidMorphisms}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaRecord{IsMonoidIsomorphism}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{PP}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{•-ε-monoid}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{CliffordT1.CliffordT1}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{amalPres}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{f}\AgdaSymbol{)}\<%
 \end{code}
 \section{Examples: A Catalogue of Verified Presentations}\label{sec:examples}
 
@@ -174,9 +208,9 @@ Relation set & Presents & Index name \\
 $T^{\,n+1} = \varepsilon$ & $\mathbb{Z}/(n{+}1)\mathbb{Z}$ & \aid{cyclic-presentation} \\
 $T^{\,0} = \varepsilon$ & the \emph{monoid} $(\mathbb{N}, +, 0)$ & \aid{cyclic-monoid-presentation} \\
 \aid{order}, \aid{yang-baxter} + structural & permutations of $\mathsf{Fin}\;n$ & \aid{symmetric-presentation} \\
-$C_p \aid{⋄} C_p \aid{⋄} \aid{CommRel}$ & $\mathbb{Z}_p \times \mathbb{Z}_p$ & (\aid{H-pres}, Pauli development) \\
-$(C_p \aid{⋄} C_p \aid{⋄} \aid{CommRel})\,\aid{⊕\char94}\,n$ & Pauli quotient $(\mathbb{Z}_p{\times}\mathbb{Z}_p)^n$ & \aid{pauli-presentation} \\
-$(C_N\,\aid{⊕\char94}\,n) \aid{⋄} S_n\text{-circuits} \aid{⋄} \aid{ConjRelʷ}$ & $\mathbb{Z}_N \wr S_n$ (signed permutations) & \aid{wreath-presentation} \\
+$C_p \aidop{⋄} C_p \aidop{⋄} \aid{CommRel}$ & $\mathbb{Z}_p \times \mathbb{Z}_p$ & (\aid{H-pres}, Pauli development) \\
+$(C_p \aidop{⋄} C_p \aidop{⋄} \aid{CommRel}) \aidop{⊕\char94} n$ & Pauli quotient $(\mathbb{Z}_p{\times}\mathbb{Z}_p)^n$ & \aid{pauli-presentation} \\
+$(C_N \aidop{⊕\char94} n) \aidop{⋄} S_n\text{-circuits} \aidop{⋄} \aid{ConjRelʷ}$ & $\mathbb{Z}_N \wr S_n$ (signed permutations) & \aid{wreath-presentation} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -258,7 +292,7 @@ direct power $(C_N)^{\oplus n}$ presents $(\mathbb{Z}_N)^n$; the circuit
 presentation of $S_n$ acts on it by permuting coordinates --- an action
 specified \emph{syntactically} as a word-valued conjugation
 $\mathit{conj} : \aid{Gen}\;n \to (\top \uplus^n) \to
-\aid{Word}\,(\top \uplus^n)$ sending a generator and a coordinate to the
+\aid{Word}\;(\top \uplus^n)$ sending a generator and a coordinate to the
 permuted coordinate.  Two finite compatibility lemmas (the action
 respects the Coxeter relations pointwise, and respects the product
 relations) feed the semidirect-product presentation theorem, giving
@@ -268,11 +302,9 @@ relations) feed the semidirect-product presentation theorem, giving
 \AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaBound{n}\AgdaSpace{}%
 \AgdaBound{m}\AgdaSpace{}%
-\AgdaSymbol{→}\<%
-\\
-\>[0][@{}l@{\AgdaIndent{0}}]%
-\>[2]\AgdaSymbol{((((}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
-\AgdaBound{m}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}%
+\>[111I]\AgdaSymbol{(((}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{Cn,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{⊕\textasciicircum{}}}\AgdaSpace{}%
 \AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
@@ -281,12 +313,11 @@ relations) feed the semidirect-product presentation theorem, giving
 \AgdaOperator{\AgdaDatatype{VRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
 \AgdaDatatype{ConjRelʷ}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaFunction{SnD.conj}\AgdaSpace{}%
-\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}))}\<%
+\AgdaFunction{conj}\AgdaSymbol{)}\<%
 \\
-\>[2][@{}l@{\AgdaIndent{0}}]%
-\>[4]\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaFunction{SnD.Wreath.wreath-group}\AgdaSpace{}%
+\>[111I][@{}l@{\AgdaIndent{0}}]%
+\>[32]\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Wreath.wreath-group}\AgdaSpace{}%
 \AgdaBound{n}\AgdaSpace{}%
 \AgdaBound{m}\AgdaSymbol{)}\<%
 \end{code}
@@ -295,7 +326,7 @@ relations) feed the semidirect-product presentation theorem, giving
 \AgdaBound{n}\AgdaSpace{}%
 \AgdaBound{m}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
-\AgdaFunction{SnD.Wreath.presentation}\AgdaSpace{}%
+\AgdaFunction{Wreath.presentation}\AgdaSpace{}%
 \AgdaBound{n}\AgdaSpace{}%
 \AgdaBound{m}\<%
 \end{code}
@@ -325,10 +356,8 @@ is \emph{no} coset enumeration in it at all:
 
 \begin{code}%
 \>[0]\AgdaFunction{pauli-presentation}\AgdaSpace{}%
-\AgdaSymbol{:}\<%
-\\
-\>[0][@{}l@{\AgdaIndent{0}}]%
-\>[2]\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{p-2}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{ℕ}\AgdaSymbol{)}\AgdaSpace{}%
@@ -337,12 +366,10 @@ is \emph{no} coset enumeration in it at all:
 \AgdaRecord{Prime}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaInductiveConstructor{2+}\AgdaSpace{}%
 \AgdaBound{p-2}\AgdaSymbol{))}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaDatatype{ℕ}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-%
+\>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaSymbol{(}\AgdaFunction{Pauli.Γ-H}\AgdaSpace{}%
 \AgdaBound{p-2}\AgdaSpace{}%
 \AgdaBound{p-prime}\AgdaSpace{}%
@@ -371,143 +398,10 @@ which commute in the quotient of the Pauli group by its phase subgroup),
 and the $n$-qupit relation set is its $n$-fold power.  The semantic group
 $(\mathbb{Z}_p \times \mathbb{Z}_p)^n$ is assembled by the standard
 library's binary direct product and our $n$-fold iteration, and the
-presentation is literally three construction theorems composed.  The
-whole proof, with the module instantiations that supply the factor
-presentations, is:
-
-\begin{code}[hide]%
-\>[0]\AgdaKeyword{postulate}\<%
-\\
-\>[0][@{}l@{\AgdaIndent{0}}]%
-\>[2]\AgdaPostulate{p-2}%
-\>[10]\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaDatatype{ℕ}\<%
-\\
-%
-\>[2]\AgdaPostulate{p-prime}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaRecord{Prime}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaInductiveConstructor{2+}\AgdaSpace{}%
-\AgdaPostulate{p-2}\AgdaSymbol{)}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
-\>[0]\AgdaKeyword{private}\<%
-\\
-\>[0][@{}l@{\AgdaIndent{0}}]%
-\>[2]\AgdaFunction{m}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaDatatype{ℕ}\<%
-\\
-%
-\>[2]\AgdaFunction{m}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaInductiveConstructor{suc}\AgdaSpace{}%
-\AgdaPostulate{p-2}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
-\>[0]\AgdaFunction{Cₚ}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
-\AgdaFunction{m}\AgdaSpace{}%
-\AgdaOperator{\AgdaDatatype{Cn,\AgdaUnderscore{}===\AgdaUnderscore{}}}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
-\>[0]\AgdaFunction{Gₚ}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaRecord{Group}\AgdaSpace{}%
-\AgdaFunction{0ℓ}\AgdaSpace{}%
-\AgdaFunction{0ℓ}\<%
-\\
-\>[0]\AgdaFunction{Gₚ}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaFunction{Cn-group}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
-\AgdaFunction{m}\AgdaSymbol{)}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
-\>[0]\AgdaFunction{Γ-H}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaFunction{Cₚ}\AgdaSpace{}%
-\AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
-\AgdaFunction{Cₚ}\AgdaSpace{}%
-\AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
-\AgdaDatatype{CommRel}\<%
-\end{code}
-\begin{code}%
-\>[0]\AgdaFunction{ℤ/p-pres}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaFunction{Cₚ}\AgdaSpace{}%
-\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
-\AgdaFunction{Gₚ}%
-\>[56]\AgdaComment{--\ cyclic,\ order\ p}\<%
-\\
-\>[0]\AgdaFunction{ℤ/p-pres}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaFunction{CyP.presentation}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
-\>[0]\AgdaKeyword{private}\AgdaSpace{}%
-\AgdaKeyword{module}\AgdaSpace{}%
-\AgdaModule{DPₚ}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaModule{DP.Presentation}\AgdaSpace{}%
-\AgdaFunction{Cₚ}\AgdaSpace{}%
-\AgdaFunction{Cₚ}\AgdaSpace{}%
-\AgdaFunction{Gₚ}\AgdaSpace{}%
-\AgdaFunction{Gₚ}\AgdaSpace{}%
-\AgdaFunction{ℤ/p-pres}\AgdaSpace{}%
-\AgdaFunction{ℤ/p-pres}\<%
-\\
-\>[0]\AgdaFunction{H-pres}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaFunction{Cₚ}\AgdaSpace{}%
-\AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
-\AgdaFunction{Cₚ}\AgdaSpace{}%
-\AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
-\AgdaDatatype{CommRel}\AgdaSymbol{)}\AgdaSpace{}%
-\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
-\AgdaPostulate{DPₚ.dp}%
-\>[55]\AgdaComment{--\ binary\ product}\<%
-\\
-\>[0]\AgdaFunction{H-pres}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaPostulate{DPₚ.dpres}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
-\>[0]\AgdaKeyword{private}\AgdaSpace{}%
-\AgdaKeyword{module}\AgdaSpace{}%
-\AgdaModule{NDₚ}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaModule{NDP.Presentation}\AgdaSpace{}%
-\AgdaFunction{Γ-H}\AgdaSpace{}%
-\AgdaPostulate{DPₚ.dp}\AgdaSpace{}%
-\AgdaFunction{H-pres}\<%
-\\
-\>[0]\AgdaFunction{Pauli-presentation}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaSymbol{∀}\AgdaSpace{}%
-\AgdaBound{n}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaFunction{Γ-H}\AgdaSpace{}%
-\AgdaOperator{\AgdaFunction{⊕\textasciicircum{}}}\AgdaSpace{}%
-\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
-\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaPostulate{NDₚ.⊗-group}\AgdaSpace{}%
-\AgdaBound{n}\AgdaSymbol{)}\<%
-\\
-\>[0]\AgdaFunction{Pauli-presentation}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaPostulate{NDₚ.presentation}%
-\>[57]\AgdaComment{--\ n-fold\ product}\<%
-\end{code}
-
-The normal form is correspondingly a tuple of $n$ pairs of exponents
+presentation is literally three construction theorems composed --- the
+cyclic presentation, the binary-product theorem, and the $n$-fold-product
+theorem, in three lines of Agda.  The normal form is correspondingly a
+tuple of $n$ pairs of exponents
 $(a_i, b_i) \in \mathsf{Fin}\,p \times \mathsf{Fin}\,p$, one per wire,
 with section $X^{a_1} Z^{b_1} \cdots X^{a_n} Z^{b_n}$; nothing about it
 was proved for the Pauli group specifically.  The full Pauli group with
@@ -517,15 +411,14 @@ work (\S\ref{sec:conclusion}).
 \subsection{Single-qubit Clifford+$T$, as an amalgamated free product}\label{sec:cliffordt1}
 
 The first amalgamation case study presents the single-qubit Clifford+$T$
-\emph{monoid}.  This is the flagship example of the completeness
-literature for good reasons: Clifford+$T$ is the smallest universal gate
-set in common use, its single-qubit fragment has the first and best-known
-canonical form --- the Matsumoto--Amano normal
+\emph{monoid}, the flagship example of the completeness literature for
+good reasons: Clifford+$T$ is the smallest universal gate set in common
+use, its single-qubit fragment has the first and best-known canonical
+form --- the Matsumoto--Amano normal
 form~\cite{matsumoto2008representation,giles2013remarks}, which underlies
 exact synthesis and $T$-count optimality --- and every later normal form
-for Clifford-style gate sets, from Selinger's staircases to the qutrit
-forms below, is modelled on it.  The relation set (over generators
-$T, H, S, \omega$, with $X := H S S H$ as an abbreviation) is
+for Clifford-style gate sets is modelled on it.  The relation set, over
+generators $T, H, S, \omega$ with $X := H S S H$ as an abbreviation, is
 \[
   \omega^8 = \varepsilon,\quad
   T^2 = S,\quad
@@ -533,52 +426,47 @@ $T, H, S, \omega$, with $X := H S S H$ as an abbreviation) is
   H^2 = \varepsilon,\quad
   (SH)^3 = \omega,\quad
   (TX)^2 = \omega,\quad
-  \omega\ \text{central}.
+  \omega\ \text{central},
 \]
-The development builds a tower whose base is the direct product
-$\langle \omega \rangle \times \langle S \rangle$ of cyclic groups of
-orders $8$ and $4$ (normal-form radices $8 \cdot 4$), extends it by one
-verified coset table to the subgroup
-$\mathit{XS\omega} = \langle X, S, \omega \rangle$ (two cosets:
-$\varepsilon$ and $X$), and then extends \emph{twice from the same base}:
-by a two-coset table to
-$\mathit{TXS\omega} = \langle T, X, S, \omega \rangle$, and by a
-three-coset table (cosets $\varepsilon, H, HS$) to the Clifford group
-$\langle H, X, S, \omega \rangle$.  The two \aid{PackedCosetTable}s over
-the shared $\mathit{XS\omega}$ form an \aid{AmalDataNF}, and the
-amalgamation module produces the normal form for the amalgamated product
---- alternating $T$-side and $H$-side coset representatives around a
-common-subgroup tail.  It is instructive to see what this carrier
-\emph{is}: with a one-element $C$ ($T$-coset) and two-element $D$
-($H, HS$), an element of $\aid{amalNFC}\;C\;D$ is an optional leading
-$H$-syllable, a list of alternations, and an optional trailing $T$ ---
-precisely the Matsumoto--Amano normal form
-$(\varepsilon \mid T)\,(HT \mid SHT)^{*}\,\mathcal{C}$ read
-group-theoretically: the alternating normal form of an amalgamated free
-product, as observed for this group in the Bian--Selinger
-line~\cite{bian2023cliffordt2,bian2023thesis}. The final theorem is the
+and the verified structure exhibits the monoid as an amalgamated free
+product over the subgroup $M$ generated by $X$, $S$, and $\omega$:
+\[
+  \mathrm{Clifford}{+}T \;\cong\;
+  \langle T, M \rangle \,\ast_{M}\, \langle H, M \rangle,
+  \qquad M = \langle X, S, \omega \rangle .
+\]
+The tower starts from the direct product $\langle \omega \rangle \times
+\langle S \rangle$ of cyclic groups of orders $8$ and $4$ (normal-form
+radices $8 \cdot 4$), extends it by a two-coset table ($\varepsilon$,
+$X$) to $M$, and then extends \emph{twice from $M$}: by a two-coset
+table to the $T$-side factor, and by a three-coset table ($\varepsilon$,
+$H$, $HS$) to the Clifford group on the $H$-side.  The two
+\aid{PackedCosetTable}s over $M$ form an \aid{AmalDataNF}, and the
+amalgamation module produces the alternating normal form: with $C$ the
+one proper $T$-coset and $D = \{H, HS\}$, an element of
+$\aid{amalNFC}\;C\;D$ is an optional leading $H$-syllable, a list of
+alternations, and an optional trailing $T$ --- precisely the
+Matsumoto--Amano form $(\varepsilon \mid T)\,(HT \mid SHT)^{*}\,\mathcal{C}$
+read group-theoretically, as observed for this group in the Bian--Selinger
+line~\cite{bian2023cliffordt2,bian2023thesis}.  The final theorem is the
 syntactic isomorphism assembled by \aid{StarIsomorphism} from
-generator-level translations both ways:
+generator-level translations both ways (with \aid{{\_}==={\_}} the
+gate-set relations, \aid{amalPres} the amalgamated presentation, and
+\aid{f} the translation):
 
 \begin{code}%
 \>[0]\AgdaFunction{clifford+T-qubit-isomorphism}\AgdaSpace{}%
-\AgdaSymbol{:}\<%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaRecord{IsMonoidIsomorphism}\<%
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
-\>[2]\AgdaRecord{MonoidMorphisms.IsMonoidIsomorphism}\<%
-\\
-\>[2][@{}l@{\AgdaIndent{0}}]%
-\>[4]\AgdaSymbol{(}\AgdaFunction{Monoid.rawMonoid}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaFunction{PP.•-ε-monoid}\AgdaSpace{}%
-\AgdaOperator{\AgdaDatatype{CliffordT1.CliffordT1.\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{))}\<%
-\\
-%
-\>[4]\AgdaSymbol{(}\AgdaFunction{Monoid.rawMonoid}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaFunction{PP.•-ε-monoid}\AgdaSpace{}%
-\AgdaFunction{CliffordT1.CliffordT1.amalPres}\AgdaSymbol{))}\<%
-\\
-%
-\>[4]\AgdaSymbol{(}\AgdaFunction{CliffordT1.CliffordT1.f}\AgdaSpace{}%
+\>[2]\AgdaSymbol{(}\AgdaFunction{rawMonoid}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{•-ε-monoid}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{rawMonoid}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{•-ε-monoid}\AgdaSpace{}%
+\AgdaFunction{amalPres}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{f}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{ʷ}}\AgdaSymbol{)}\<%
 \end{code}
 \begin{code}[hide]%
@@ -587,26 +475,17 @@ generator-level translations both ways:
 \AgdaFunction{CliffordT1.CliffordT1.CliffordT1-isomorphism}\<%
 \end{code}
 
---- the flat gate-set presentation and the amalgamated-product
-presentation define isomorphic monoids, and both carry the verified
-normal form.  Every coset-table obligation in the tower (well-definedness
-on all axioms at all cosets --- several dozen cases) is discharged by
+Every coset-table obligation in the tower --- well-definedness on all
+axioms at all cosets, several dozen cases --- is discharged by
 \aid{by-equal-nf Eq.refl}: the typechecker computes both coset
-descriptors and observes they are equal.
+descriptors and observes that they are equal.
 
 \subsection{Single-qutrit Clifford+$T$}
 
-The qutrit analogue replaces $\omega$ by a ninth root $\zeta$ and runs a
-longer tower: from the cyclic base $\langle \zeta \rangle$,
-$\zeta^9 = \varepsilon$, through
-$\langle S, \zeta \rangle$ ($S^3 = \zeta^6$; three cosets), then a
-\emph{nine}-coset table to $\langle S, X, \zeta \rangle$
-($X^3 = \varepsilon$, $(SX)^3 = \varepsilon$, and a twisted commutation
-$(XS)(SX) = \zeta^6 (SX)(XS)$), then a two-coset table adjoining the
-squared Hadamard $H\!H$, and finally an amalgamation of a $T$-side and an
-$H$-side extension over the common subgroup.  The presented gate-set
-relations (generators $T, H, S, \zeta$; abbreviations
-$X := \zeta^3 (HSH)(HSSH)$ and $Z := \zeta^3 S^2 H^2 S H^2$):
+The qutrit analogue replaces $\omega$ by a ninth root $\zeta$.  The
+gate-set relations (generators $T, H, S, \zeta$; abbreviations
+$X := \zeta^3 (HSH)(HSSH)$ and $Z := \zeta^3 S^2 H^2 S H^2$), derived and
+verified in this development, are
 \[
   \zeta^9 = \varepsilon,\;\;
   S^3 = \zeta^6,\;\;
@@ -621,84 +500,69 @@ $X := \zeta^3 (HSH)(HSSH)$ and $Z := \zeta^3 S^2 H^2 S H^2$):
   TX = \zeta^3 S^2 X\, T,\;\;
   \zeta\ \text{central},
 \]
-a presentation derived and verified in this development.  The qutrit
-counterpart of the Matsumoto--Amano form is the canonical form of
-Glaudell, Ross, and Taylor~\cite{glaudell2019qutrit} (obtained
-independently by Prakash, Jain, Kapur, and
-Seth~\cite{prakash2018qutrit}, and extended to qudits
-in~\cite{jain2020qudit}): every single-qutrit Clifford+$T$ operator is
-represented by exactly one word
+and the verified structure is again an amalgamated free product,
 \[
-  (\varepsilon \mid T \mid H^2T)\,
-  (HT \mid H^3T \mid SHT \mid SH^3T \mid S^2HT \mid S^2H^3T)^{*}\,
-  \mathcal{C}
+  \mathrm{Clifford}{+}T_3 \;\cong\;
+  \langle T, M \rangle \,\ast_{M}\, \langle H, M \rangle,
+  \qquad M = \langle S, X, \zeta, H^2 \rangle,
 \]
-with $\mathcal{C}$ Clifford, and the representation is $T$-optimal.
-Our amalgam carrier is this canonical form read group-theoretically,
-with the bookkeeping redistributed.  The common subgroup of our
-amalgamation, $\langle S, X, \zeta, H^2 \rangle$, is their subgroup
-$\mathcal{S}\mathcal{M}$ of generalized permutation matrices
-(together with the central phase $\zeta$); the $T$-side extension
-contributes two proper cosets, represented by $T$ and $TH^2$ ---
-their optional leading factor $(\varepsilon \mid T \mid H^2T)$; the
-$H$-side extension contributes three, represented by $H$, $HS$,
-$HS^2$ --- their Clifford prefixes $H$, $SH$, $S^2H$ in the mirrored
-reading; and the $2 \times 3$ alternation letters $C \times D$ are
-their six syllables, the inner $H^2$ of a syllable migrating between
-the $T$-side representative and the common subgroup. The final theorem has the same shape as
-the qubit one --- \aid{clifford+T-qutrit-isomorphism} in the index ---
-and the same proof economy: the nine-coset level alone imposes
-seventy-two axiom-preservation obligations (nine cosets against eight
-axiom cases), every one closed by \aid{refl} after evaluation.  We know of no prior machine-checked completeness
-result for a qutrit gate-set presentation.
+reached by a longer tower: from $\langle \zeta \rangle$ through
+$\langle S, \zeta \rangle$ (three cosets) and a \emph{nine}-coset table
+to $\langle S, X, \zeta \rangle$ (with the twisted commutation
+$(XS)(SX) = \zeta^6 (SX)(XS)$), then a two-coset table adjoining $H^2$ to
+reach $M$, and finally the two extensions over $M$.  The common subgroup
+$M$ is the subgroup $\mathcal{S}\mathcal{M}$ of generalized permutation
+matrices (with the central phase) in the canonical form of Glaudell,
+Ross, and Taylor~\cite{glaudell2019qutrit} (obtained independently by
+Prakash, Jain, Kapur, and Seth~\cite{prakash2018qutrit}, and extended to
+qudits in~\cite{jain2020qudit}), by which every single-qutrit
+Clifford+$T$ operator is uniquely
+$(\varepsilon \mid T \mid H^2T)\,
+ (HT \mid H^3T \mid SHT \mid SH^3T \mid S^2HT \mid S^2H^3T)^{*}\,
+ \mathcal{C}$, $T$-optimally.  Our alternating carrier is this form read
+group-theoretically: the $T$-side contributes the proper cosets $T$ and
+$TH^2$ (their leading factor), the $H$-side the cosets $H$, $HS$, $HS^2$
+(their Clifford prefixes, in the mirrored reading), and the $2 \times 3$
+alternation letters are their six syllables.  The final theorem,
+\aid{clifford+T-qutrit-isomorphism} in the index, has the same shape as
+the qubit one and the same proof economy: the nine-coset level alone
+imposes seventy-two axiom-preservation obligations, every one closed by
+\aid{refl} after evaluation.  We know of no prior machine-checked
+completeness result for a qutrit gate-set presentation.
 
 \subsection{\texorpdfstring{$U_3(\mathbb{Z}[\tfrac12,i])$}{U3(Z[1/2,i])}, a two-level amalgamation}
 
-The third case study formalizes the case $n = 3$ of the presentation, due
-to Bian and Selinger, of the groups
-$U_n(\mathbb{Z}[\tfrac12,i])$~\cite{bian2021un} --- unitary matrices over
-the ring $\mathbb{Z}[\tfrac12,i]$.
-Generators are $i_0$ (a local phase), $K_{01}$ (a scaled $2{\times}2$
-Hadamard-type block), and the two transpositions $X_{01}, X_{12}$;
-derived generators $i_1, i_2, K_{02}, K_{12}$ are conjugates.  The eleven
-relations ($\mathrm{S1}$--$\mathrm{S14}$ in the development, following the
-paper's numbering) include the orders $i_0^4 = X_{01}^2 = X_{12}^2 =
-\varepsilon$, braid and commutation laws for the transpositions and
-phases, and the genuinely quantum interactions of $K_{01}$ with the
-phases, e.g.
-$K_{01} i_1^2 = X_{01} K_{01}$ and
-$K_{01}^2\, i_0\, i_1 = \varepsilon$.  The verified structure exhibits
-$U_3(\mathbb{Z}[\tfrac12,i])$ as an amalgamated free product
+The third case study formalizes the case $n = 3$ of Bian and Selinger's
+presentation of the groups $U_n(\mathbb{Z}[\tfrac12,i])$~\cite{bian2021un}
+of unitary matrices over $\mathbb{Z}[\tfrac12,i]$.  Generators are $i_0$
+(a local phase), $K_{01}$ (a scaled $2{\times}2$ Hadamard-type block),
+and the transpositions $X_{01}, X_{12}$; derived generators $i_1, i_2,
+K_{02}, K_{12}$ are conjugates.  The eleven relations include the orders
+$i_0^4 = X_{01}^2 = X_{12}^2 = \varepsilon$, braid and commutation laws,
+and the interactions of $K_{01}$ with the phases, e.g.\
+$K_{01} i_1^2 = X_{01} K_{01}$ and $K_{01}^2\, i_0\, i_1 = \varepsilon$.
+The verified structure is
 \[
   U_3(\mathbb{Z}[\tfrac12,i]) \;\cong\;
-  (\mathbb{Z}_4 \wr S_3)
-  \,\ast_{M}\,
-  \langle M, K_{01} \rangle,
-  \qquad
-  M = (\mathbb{Z}_4 \wr S_2) \times \mathbb{Z}_4 :
+  (\mathbb{Z}_4 \wr S_3) \,\ast_{M}\, \langle M, K_{01} \rangle,
+  \qquad M = (\mathbb{Z}_4 \wr S_2) \times \mathbb{Z}_4 :
 \]
-the left factor is the subgroup of \emph{monomial} matrices (entries in
-$\{\pm 1, \pm i\}$) --- the generalized symmetric group $G(4,1,3)$,
-taken verbatim from the wreath development above --- and the right
-factor adjoins the block $K_{01}$ to the common subgroup $M$ of
-monomial matrices supported on wires $0, 1$ times a phase on wire $2$.
-(The right factor is itself presented by a six-coset
-Reidemeister--Schreier level presenting $\langle K_{01}, i_0, i_1
-\rangle$ over $\langle i_0 \rangle \times \langle i_1 \rangle$ --- the
-tower's second level, whence \emph{two-level} --- with the derived
-generators introduced by definitional extensions, \aid{SugarRel}.)
-Each factor has index $3$ over $M$, with proper coset representatives
-$\{X_{12},\, X_{12}X_{01}\}$ and $\{K_{01},\, K_{01} i_0\}$, so the
-alternating carrier of Table~\ref{tab:nfs} reads: every element of
-$U_3(\mathbb{Z}[\tfrac12,i])$ is, uniquely, an optional $K$-syllable, a
-list of alternations from
-$\{X_{12}, X_{12}X_{01}\} \times \{K_{01}, K_{01} i_0\}$, an optional
-trailing $X$-syllable, and a tail in $M$ carried by $M$'s own
-(wreath $\times$ cyclic) normal form.  The final theorem,
+the left factor is the subgroup of \emph{monomial} matrices --- the
+generalized symmetric group $G(4,1,3)$, taken verbatim from the wreath
+development above --- and the right factor adjoins $K_{01}$ to the common
+subgroup $M$ of monomial matrices supported on wires $0, 1$ times a phase
+on wire $2$; the right factor is itself presented by a six-coset
+Reidemeister--Schreier level over $\langle i_0 \rangle \times \langle
+i_1 \rangle$ (the tower's second level, whence \emph{two-level}), with
+the derived generators introduced by definitional extensions.  Each
+factor has index $3$ over $M$, with proper coset representatives
+$\{X_{12},\, X_{12}X_{01}\}$ and $\{K_{01},\, K_{01} i_0\}$, so every
+element is uniquely an optional $K$-syllable, a list of alternations
+from their product, an optional trailing $X$-syllable, and a tail in $M$
+carried by the normal form of $M$ itself.  The final theorem,
 \aid{U₃-presentation-isomorphism}, is again a monoid isomorphism between
-the flat eleven-relation presentation and the amalgamated-product
-presentation, with the alternating normal form on the amalgam side.  At
-$2\,868$ and $1\,394$ source lines, the qutrit and $U_3$ studies are the
-largest verified objects in the library, and both consist mostly of
-first-order tables and \aid{refl}-discharged obligations --- the shape of
-proof this framework was designed to make routine.
+the flat presentation and the amalgamated one.  At $2\,868$ and $1\,394$
+source lines, the qutrit and $U_3$ studies are the largest verified
+objects in the library, and both consist mostly of first-order tables
+and \aid{refl}-discharged obligations --- the shape of proof this
+framework was designed to make routine.

@@ -1,10 +1,26 @@
-\section{Comparison with Other Formalizations}\label{sec:related}
+\section{Related Work and Comparison}\label{sec:related}
 
-We compare along the three axes the library combines --- (i) presentations
-and normal forms of groups and monoids, (ii) completeness of equational
-theories, (iii) circuits --- across Agda, Lean, Rocq (formerly Coq), and
-Isabelle.  Table~\ref{tab:compare} summarizes; the prose gives the details
-and the precise deltas.  Claims of absence are stated to the best of our
+The closest prior work is the line of Agda verifications accompanying
+Bian and Selinger's presentations of quantum gate
+groups~\cite{bian2023cliffordt2,bian2023cliffordcs3,bian2023thesis},
+which relate two \emph{syntactic} presentations of a group and never
+mention a semantics; the present library grew out of that methodology
+and adds the semantic half.  To our knowledge the only other mechanized
+completeness results in the vicinity are categorical --- the univalent
+presentation of the reversible language $\Pi$ as a free rig
+groupoid~\cite{choudhury2022symmetries} and the partial formalization
+accompanying its quantum square-root
+extension~\cite{carette2024squareroots}; the quantum-circuit
+verification ecosystems in Rocq and Isabelle verify programs, compilers,
+or the soundness of rewrites, not completeness; and the group-theory
+libraries of Lean, Rocq, and Isabelle develop presentation theory in the
+abstract, without infrastructure for proving that a concrete relation
+set presents a concrete group.  We compare along the three axes the
+library combines --- (i) presentations and normal forms of groups and
+monoids, (ii) completeness of equational theories, (iii) circuits ---
+across Agda, Lean, Rocq, and Isabelle.
+Table~\ref{tab:compare} summarizes; the subsections give the details and
+the precise deltas.  Claims of absence are stated to the best of our
 knowledge.
 
 \begin{table}
@@ -53,7 +69,7 @@ case, recursively in the CS case --- to derive subgroup presentations,
 amalgamated products of monoids, and machine-checked simplification of
 ``thousands of relations'' down to a small set (seventeen, for
 Clifford+CS).  The crucial
-limitation, called out in our introduction, is that these developments
+limitation is that these developments
 work entirely on the \emph{syntactic side}: the theorems relate two
 \emph{presentations} of a group --- the isomorphism of two finitely
 presented monoids --- and no independent semantic object (a matrix group,
@@ -232,6 +248,19 @@ algebraic theory of Boolean circuits~\cite{lafont2003boolean} as an early
 landmark directly ancestral to circuit presentations like ours; those
 developments are pen-and-paper, and mechanizing polygraphic coherence
 along the lines of this library is an attractive direction.
+
+\subsection{Related tools}\label{sec:tools}
+
+Two web tools compute normal forms of exactly the kind this library
+proves correct and complete: a normalizer to \emph{Lafont normal form}
+for linear permutation circuits, implementing the normalization lemmas
+of Lafont's algebraic theory of Boolean
+circuits~\cite{lafont2003boolean,lafontlp-tool}, and a normalizer for
+the symplectic groups $Sp(2n,\mathbb{Z}_p)$ computing Selinger-style
+staircase normal forms~\cite{qupit-tool}.  The coset tables of the larger
+case studies were found with them and then verified
+(\S\ref{sec:lessons}); for the symplectic case the formalization is
+ongoing and close to being finished.
 
 \subsection{Summary of the niche}
 

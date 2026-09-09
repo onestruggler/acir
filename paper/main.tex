@@ -68,6 +68,11 @@
 % Unicode in the argument is handled by the \DeclareUnicodeCharacter
 % block in agda-style.sty.  \mbox makes it usable in both text and math.
 \newcommand{\aid}[1]{\mbox{\textsf{\small #1}}}
+% The same for an identifier used as an infix operator or relation: in
+% math mode it gets the spacing of a binary operator / relation, so that
+% $c \aidop{•} c'$ is set like c • c' rather than c•c'.
+\newcommand{\aidop}[1]{\ifmmode\mathbin{\aid{#1}}\else\aid{#1}\fi}
+\newcommand{\aidrel}[1]{\ifmmode\mathrel{\aid{#1}}\else\aid{#1}\fi}
 
 \begin{document}
 

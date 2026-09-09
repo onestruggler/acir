@@ -10,9 +10,9 @@
 \node [style=none] (w3l) at (-1.0, 6.0){};
 \node [style=none] (w3r) at (6.4, 6.0){};
 \draw [fill=white] (0.20000005, 1.25) rectangle (2.2, 6.75);
-\node [style=none] (bp) at (1.2, 4.0) {\scriptsize $b'$};
+\node [style=none] (bp) at (1.2, 4.0) {\Huge $b'$};
 \draw [fill=white] (3.1999998, -0.75) rectangle (5.2, 6.75);
-\node [style=none] (c3p) at (4.2, 3.0) {\scriptsize $c_3'$};
+\node [style=none] (c3p) at (4.2, 3.0) {\Huge $c_3'$};
 \end{pgfonlayer}
 \begin{pgfonlayer}{edgelayer}
 \draw (w0l.center) to (w0r.center);

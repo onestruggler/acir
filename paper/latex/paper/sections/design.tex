@@ -256,10 +256,6 @@ syntax tree --- deliberately \emph{not} a list:
 \AgdaNumber{5}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}⋄\AgdaUnderscore{}⋄\AgdaUnderscore{}}}\<%
 \\
-\>[0]\AgdaKeyword{infixl}\AgdaSpace{}%
-\AgdaNumber{8}\AgdaSpace{}%
-\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}↥ᵏ\AgdaUnderscore{}}}\<%
-\\
 %
 \\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{WRel}\AgdaSpace{}%
@@ -479,17 +475,13 @@ an inductive family with eight constructors:
 $\approx$ \emph{is} the word problem of $\langle X \mid \Gamma \rangle$,
 and a derivation is a first-class syntactic object --- one can compute
 with it, induct on it, and translate it (the congruence-lifting lemmas of
-\S\ref{sec:constructions} are inductions on this type).  Compared to
-quotient-based designs (e.g.\ mathlib's \aid{PresentedGroup} as a quotient
-of a free group by a normal
-closure~\cite{mathlib2020,mathlib-doc-presented}, or higher inductive
-types in cubical Agda~\cite{vezzosi2019cubical,cubicallibrary}), the
-setoid design pays a congruence obligation per function out of the type,
-but keeps the normal-form maps of \S\ref{sec:nfproperty} \emph{ordinary
-computable functions on words}, with no quotient to eliminate through ---
-crucial for the proof-by-evaluation style of the case studies, and
-compatible with a standard-library-first policy
-(cf.~\cite{barthe2003setoids} for the tradition).
+\S\ref{sec:constructions} are inductions on this type).  The presented
+monoid is thus a setoid on words in the tradition
+of~\cite{barthe2003setoids}, not a quotient type as in mathlib's
+\aid{PresentedGroup}~\cite{mathlib2020,mathlib-doc-presented} or a higher
+inductive type in cubical Agda~\cite{vezzosi2019cubical,cubicallibrary};
+\S\ref{sec:setoids} weighs that choice once the case studies are on the
+table.
 \texttt{Presentation.Properties} packages $\approx$ as an equivalence,
 hence as a setoid on words --- the \emph{word setoid}, the domain of every
 normal form in \S\ref{sec:nfproperty} --- and as the monoid
@@ -522,10 +514,8 @@ Presentations of concrete algebras are records
 \AgdaKeyword{where}\<%
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
-\>[2]\AgdaKeyword{field}\<%
-\\
-\>[2][@{}l@{\AgdaIndent{0}}]%
-\>[4]\AgdaField{gl}\AgdaSpace{}%
+\>[2]\AgdaKeyword{field}\AgdaSpace{}%
+\AgdaField{gl}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaFunction{Grouplike}\AgdaSpace{}%
 \AgdaOperator{\AgdaBound{\AgdaUnderscore{}===\AgdaUnderscore{}}}\<%
@@ -547,10 +537,8 @@ Presentations of concrete algebras are records
 \AgdaBound{G}\AgdaSymbol{)}\<%
 \\
 %
-\>[2]\AgdaKeyword{field}\<%
-\\
-\>[2][@{}l@{\AgdaIndent{0}}]%
-\>[4]\AgdaOperator{\AgdaField{⟦\AgdaUnderscore{}⟧}}\AgdaSpace{}%
+\>[2]\AgdaKeyword{field}%
+\>[295I]\AgdaOperator{\AgdaField{⟦\AgdaUnderscore{}⟧}}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{Word}\AgdaSpace{}%
 \AgdaPostulate{X}\AgdaSpace{}%
@@ -558,8 +546,8 @@ Presentations of concrete algebras are records
 \AgdaField{Group.Carrier}\AgdaSpace{}%
 \AgdaBound{G}\<%
 \\
-%
-\>[4]\AgdaField{iso}\AgdaSpace{}%
+\>[.][@{}l@{}]\<[295I]%
+\>[8]\AgdaField{iso}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaPostulate{IsGroupIsomorphism}\AgdaSpace{}%
 \AgdaOperator{\AgdaField{⟦\AgdaUnderscore{}⟧}}\<%
@@ -662,8 +650,8 @@ play:
 \end{array}
 \]
 An \aid{Injection} bundles the map $\aid{nf}$, its congruence, and
-injectivity: $w \approx v \iff \aid{nf}\,w \approx_{\mathit{NF}}
-\aid{nf}\,v$.  Two consequences ship with it: the workhorse
+injectivity: $w \approx v \iff \aid{nf}\;w \approx_{\mathit{NF}}
+\aid{nf}\;v$.  Two consequences ship with it: the workhorse
 \begin{code}%
 \>[0]\AgdaFunction{by-equal-nf}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -760,10 +748,8 @@ with equal denotations are equal normal forms:
 \AgdaKeyword{where}\<%
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
-\>[2]\AgdaKeyword{field}\<%
-\\
-\>[2][@{}l@{\AgdaIndent{0}}]%
-\>[4]\AgdaField{unique}\AgdaSpace{}%
+\>[2]\AgdaKeyword{field}\AgdaSpace{}%
+\AgdaField{unique}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaSymbol{\{}\AgdaBound{u}\AgdaSpace{}%
@@ -785,21 +771,17 @@ with equal denotations are equal normal forms:
 \AgdaOperator{\AgdaPostulate{≈ₙ}}\AgdaSpace{}%
 \AgdaBound{v}\<%
 \\
-%
-\\[\AgdaEmptyExtraSkip]%
 \>[0]\AgdaFunction{by-normalization}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaSymbol{\{}\AgdaBound{normalForm}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaPostulate{NormalForm}\AgdaSymbol{\}}\AgdaSpace{}%
-\AgdaSymbol{→}\<%
-\\
-\>[0][@{}l@{\AgdaIndent{0}}]%
-\>[2]\AgdaRecord{UniqueNormalForm}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaRecord{UniqueNormalForm}\AgdaSpace{}%
 \AgdaBound{normalForm}\AgdaSpace{}%
 \AgdaSymbol{→}\<%
 \\
-%
+\>[0][@{}l@{\AgdaIndent{0}}]%
 \>[2]\AgdaFunction{Congruent}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\AgdaSpace{}%
 \AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈₂\AgdaUnderscore{}}}\AgdaSpace{}%
@@ -818,7 +800,7 @@ with equal denotations are equal normal forms:
 
 \emph{Soundness plus a unique normal form yields completeness}: given
 $\aid{⟦}w\aid{⟧} \approx_2 \aid{⟦}v\aid{⟧}$, soundness transports along
-$w \approx \aid{normalize}\,w$, uniqueness identifies the normal forms,
+$w \approx \aid{normalize}\;w$, uniqueness identifies the normal forms,
 and injectivity of \aid{nf} closes the loop.  The proof is five lines; its
 value is that every case study only ever proves \aid{unique} --- a
 statement about \emph{normal forms}, i.e.\ about concrete first-order data
@@ -840,77 +822,29 @@ the injectivity field being literally \aid{by-normalization}.
 
 The circuit layer (\texttt{Circuit.Base}) is parameterized by a gate
 family $\aid{Gate} : \mathbb{N} \to \mathsf{Set}$ and defines the
-wire-indexed generators \aid{Gen} and the circuits $\aid{Circuit}\;n =
-\aid{Word}\;(\aid{Gen}\;n)$ exactly as shown in \S\ref{sec:permutations}:
-a generator is a 1- or 2-ary gate at the bottom of the wires, shifted up
-by some number of \aid{{\_}↥}s, and $c{\uparrow} = \aid{wmap}\;\aid{{\_}↥}$
-shifts a whole circuit.  Two design choices matter more than they look.
-First, the indices are built from successors only --- \aid{gate₂} lands in
-$\aid{Gen}\,(2{+}n)$, not in $\aid{Gen}\,k$ with a side condition $k \ge
-2$ --- and the $k$-fold shift puts $k$ on the \emph{left} of $+$, mirroring
-the left-biased inductive definition of addition.  The module's own
-comment states the reason:
-
-\begin{code}%
-\>[0]\AgdaComment{--\ Indices\ begin\ with\ suc\ (no\ top-level\ addition)\ so\ Agda's\ coverage}\<%
-\\
-\>[0]\AgdaComment{--\ checker\ can\ solve\ unification\ goals\ by\ injectivity\ of\ ₁₊\ alone,}\<%
-\\
-\>[0]\AgdaComment{--\ avoiding\ stuck\ Diophantine\ equations\ of\ the\ form\ arity\ +\ k\ ≟\ target.}\<%
-\\
-\>[0]\AgdaKeyword{data}\AgdaSpace{}%
-\AgdaDatatype{Gen}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaDatatype{ℕ}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
-\AgdaPrimitive{Set}\AgdaSpace{}%
-\AgdaKeyword{where}\<%
-\\
-\>[0][@{}l@{\AgdaIndent{0}}]%
-\>[2]\AgdaComment{--\ gate₁,\ gate₂\ and\ \AgdaUnderscore{}↥,\ as\ in\ Section\ 2.1}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
-\>[0]\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}↥ᵏ\AgdaUnderscore{}}}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaDatatype{Gen}\AgdaSpace{}%
-\AgdaPostulate{n}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaBound{k}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaDatatype{ℕ}\AgdaSymbol{)}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
-\AgdaDatatype{Gen}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaBound{k}\AgdaSpace{}%
-\AgdaOperator{\AgdaPrimitive{+}}\AgdaSpace{}%
-\AgdaPostulate{n}\AgdaSymbol{)}%
-\>[41]\AgdaComment{--\ k\ on\ the\ left\ of\ +}\<%
-\end{code}
-\begin{code}[hide]%
-\>[0]\AgdaBound{g}\AgdaSpace{}%
-\AgdaOperator{\AgdaFunction{↥ᵏ}}\AgdaSpace{}%
-\AgdaBound{k}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaBound{g}\<%
-\end{code}
-
-Downstream, this is why the coset tables of the case studies can be
-defined by direct pattern matching and verified by \aid{refl}:
-unification alone discharges the well-formedness constraints that arise,
-and no arithmetic side condition ever contaminates a table.  Second, the
-structural rules common to \emph{all} circuit theories are factored out
-once, by \aid{Lift-Relation}, whose permutation instance
-\aid{{\_}VRel,{\_}==={\_}} appeared in \S\ref{sec:permutations}: given any
-gate-specific family $\aid{{\_}SRel,{\_}==={\_}} : (n : \mathbb{N}) \to
-\aid{CRel}\;n$, it adds shift-congruence and far-commutation (a bottom
-gate commutes with any generator shifted past its arity).  The
-accompanying lemma \aid{lemma-cong↑} lifts the \emph{entire congruence}
-one wire up --- proved once, by induction over the eight constructors of
-$\approx$ --- so equational developments can move freely along the wire
-chain $\mathsf{Cir}\,k \le \mathsf{Cir}\,(k{+}1)$ of
+generators \aid{Gen} and circuits $\aid{Circuit}\;n =
+\aid{Word}\;(\aid{Gen}\;n)$ exactly as in \S\ref{sec:permutations}.  Two
+design choices matter more than they look.  First, the indices are
+engineered for the unifier.  Addition on naturals recurses on its first
+argument, so $k + n$ computes as soon as $k$ is a successor pattern while
+$n + k$ is stuck; given that $+$ is left-biased, we make our indices
+left-biased too: \aid{gate₂} lands in $\aid{Gen}\;(2 + n)$, not in
+$\aid{Gen}\;k$ with a side condition $k \ge 2$, and the $k$-fold shift
+has type $\aid{Gen}\;n \to \aid{Gen}\;(k + n)$.  Unification is then all
+that is needed to verify the well-formedness constraints that arise ---
+every index equation the coverage checker meets is solved by injectivity
+of \aid{₁₊}, never by arithmetic, avoiding stuck Diophantine equations of
+the form $\mathit{arity} + k \doteq \mathit{target}$ --- and downstream it
+is why the coset tables of the
+case studies can be defined by direct pattern matching and verified by
+\aid{refl}.  Second, the structural rules common to all circuit theories
+are factored out once, by \aid{Lift-Relation}, whose permutation
+instance appeared in \S\ref{sec:permutations}; its lemma
+\aid{lemma-cong↑} lifts the \emph{entire congruence} one wire up ---
+proved once, by induction over the eight constructors of $\approx$ ---
+so equational developments move freely along the wire chain of
 \S\ref{sec:preliminaries}.  Instantiating \aid{Gate} is all it takes to
-define a new circuit theory: the permutation instance has one gate and two
-axioms.
+define a new circuit theory.
 
 \subsection{The Reidemeister--Schreier engine}\label{sec:engine}
 
@@ -933,46 +867,31 @@ The \emph{full} form is coset enumeration.  Its packaging
 
 \begin{code}%
 \>[0]\AgdaKeyword{module}\AgdaSpace{}%
-\AgdaModule{SingleLevel}\<%
+\AgdaModule{SingleLevel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{Γ}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{Δ}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaPostulate{Y}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{C}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{I}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaBound{C}\AgdaSymbol{)}\<%
 \\
 \>[0][@{}l@{\AgdaIndent{0}}]%
-\>[2]\AgdaSymbol{(}\AgdaBound{Γ}%
-\>[7]\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaFunction{WRel}\AgdaSpace{}%
-\AgdaPostulate{X}\AgdaSymbol{)}%
-\>[31]\AgdaComment{--\ subgroup\ presentation\ \ (letters\ X)}\<%
-\\
-%
-\>[2]\AgdaSymbol{(}\AgdaBound{Δ}%
-\>[7]\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaFunction{WRel}\AgdaSpace{}%
-\AgdaPostulate{Y}\AgdaSymbol{)}%
-\>[31]\AgdaComment{--\ group\ presentation\ \ \ \ \ (letters\ Y)}\<%
-\\
-%
-\>[2]\AgdaSymbol{(}\AgdaBound{C}%
-\>[7]\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaPrimitive{Set}\AgdaSymbol{)}%
-\>[31]\AgdaComment{--\ set\ of\ right\ cosets}\<%
-\\
-%
-\>[2]\AgdaSymbol{(}\AgdaBound{I}%
-\>[7]\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaBound{C}\AgdaSymbol{)}%
-\>[31]\AgdaComment{--\ identity\ coset}\<%
-\\
-%
-\>[2]\AgdaSymbol{(}\AgdaBound{f}%
-\>[7]\AgdaSymbol{:}\AgdaSpace{}%
+\>[2]\AgdaSymbol{(}\AgdaBound{f}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
 \AgdaPostulate{X}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Word}\AgdaSpace{}%
-\AgdaPostulate{Y}\AgdaSymbol{)}%
-\>[31]\AgdaComment{--\ generator\ embedding\ \ H\ ↪\ G}\<%
-\\
-%
-\>[2]\AgdaSymbol{(}\AgdaBound{h}%
-\>[7]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{Y}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{h}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
 \AgdaBound{C}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaPostulate{Y}\AgdaSpace{}%
@@ -980,17 +899,13 @@ The \emph{full} form is coset enumeration.  Its packaging
 \AgdaDatatype{Word}\AgdaSpace{}%
 \AgdaPostulate{X}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
-\AgdaBound{C}\AgdaSymbol{)}%
-\>[31]\AgdaComment{--\ coset\ action\ (Schreier\ table)}\<%
-\\
-%
-\>[2]\AgdaSymbol{(}\AgdaOperator{\AgdaBound{[\AgdaUnderscore{}]}}\AgdaSpace{}%
+\AgdaBound{C}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaBound{[\AgdaUnderscore{}]}}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaBound{C}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaDatatype{Word}\AgdaSpace{}%
-\AgdaPostulate{Y}\AgdaSymbol{)}%
-\>[31]\AgdaComment{--\ Schreier\ section}\<%
+\AgdaPostulate{Y}\AgdaSymbol{)}\<%
 \end{code}
 \begin{code}[hide]%
 %
@@ -1062,15 +977,16 @@ The \emph{full} form is coset enumeration.  Its packaging
 \end{code}
 
 Think of $\Gamma$ as presenting a subgroup $H$ of the group $G$ presented
-by $\Delta$.  The table $h$ pushes one letter of $G$ past a coset,
-emitting a word of $H$ and the successor coset --- so
+by $\Delta$, over the letters $X$ and $Y$ respectively; $C$ is the set of
+right cosets, $I$ the identity coset, $f$ the embedding of generators, and
+$[\,\_\,]$ the Schreier section.  The table $h$ pushes one letter of $G$
+past a coset, emitting a word of $H$ and the updated coset --- so
 $\aid{nf} = (h\,\aid{ᵗ})\,I : \aid{Word}\;Y \to \aid{Word}\;X \times C$
 runs the whole word from the identity coset.  A submodule
 \aid{Transfer} takes the five hypotheses that make the data a genuine
 coset presentation --- quoted from the source, numbered as in the
 explanation that follows:
 
-\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
 \begin{code}%
 \>[0]\AgdaKeyword{module}\AgdaSpace{}%
 \AgdaModule{Transfer}\<%
@@ -1094,7 +1010,7 @@ explanation that follows:
 \AgdaPostulate{I}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaPostulate{f}\AgdaSpace{}%
 \AgdaBound{x}\AgdaSymbol{)))}%
-\>[78]\AgdaComment{--\ (1)}\<%
+\>[77]\AgdaComment{--\ 1}\<%
 \\
 %
 \>[2]\AgdaSymbol{(}\AgdaBound{h-wd-ax}\AgdaSpace{}%
@@ -1120,8 +1036,8 @@ explanation that follows:
 \AgdaSymbol{((}\AgdaPostulate{h}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{ᵗ}}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaBound{c}\AgdaSpace{}%
-\AgdaBound{t}\AgdaSymbol{))}%
-\>[78]\AgdaComment{--\ (2)}\<%
+\AgdaBound{t}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaComment{--\ 2}\<%
 \\
 %
 \>[2]\AgdaSymbol{(}\AgdaBound{f-wd-ax}\AgdaSpace{}%
@@ -1141,7 +1057,7 @@ explanation that follows:
 \AgdaSymbol{(}\AgdaPostulate{f}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{ʷ}}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSymbol{)}%
-\>[79]\AgdaComment{--\ (3)}\<%
+\>[78]\AgdaComment{--\ 3}\<%
 \\
 %
 \>[2]\AgdaSymbol{(}\AgdaBound{[I]≈ε}\AgdaSpace{}%
@@ -1151,12 +1067,12 @@ explanation that follows:
 \AgdaOperator{\AgdaPostulate{]}}\AgdaSpace{}%
 \AgdaOperator{\AgdaPostulate{≈₂}}\AgdaSpace{}%
 \AgdaInductiveConstructor{ε}\AgdaSymbol{)}%
-\>[78]\AgdaComment{--\ (4)}\<%
+\>[77]\AgdaComment{--\ 4}\<%
 \\
 %
 \>[2]\AgdaSymbol{(}\AgdaBound{h=ract}\AgdaSpace{}%
-\AgdaSymbol{:}%
-\>[13]\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
 \AgdaBound{c}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -1168,11 +1084,8 @@ explanation that follows:
 \AgdaPostulate{h}\AgdaSpace{}%
 \AgdaBound{c}\AgdaSpace{}%
 \AgdaBound{b}\AgdaSpace{}%
-\AgdaKeyword{in}%
-\>[79]\AgdaComment{--\ (5)}\<%
-\\
-\>[2][@{}l@{\AgdaIndent{0}}]%
-\>[4]\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
+\AgdaKeyword{in}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
 \AgdaBound{c}\AgdaSpace{}%
 \AgdaOperator{\AgdaPostulate{]}}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
@@ -1186,9 +1099,9 @@ explanation that follows:
 \AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
 \AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
 \AgdaBound{c'}\AgdaSpace{}%
-\AgdaOperator{\AgdaPostulate{]}}\AgdaSymbol{)}\<%
+\AgdaOperator{\AgdaPostulate{]}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaComment{--\ 5}\<%
 \end{code}
-\endgroup
 \begin{code}[hide]%
 %
 \>[2]\AgdaKeyword{where}\<%
@@ -1201,7 +1114,7 @@ $\varepsilon$; (5) sliding one letter past a coset's representative
 matches the table (the law \aid{ract-sound} of \S\ref{sec:permutations}).
 From these, \aid{Transfer} derives well-definedness of
 \aid{nf} on $\approx_2$, the factorization
-$[c] \aid{•} b \approx_2 (f\,\aid{ʷ})\,b' \aid{•} [c']$ for whole words,
+$[c] \aidop{•} b \approx_2 (f\,\aid{ʷ})\,b' \aidop{•} [c']$ for whole words,
 injectivity --- and the payoff, the \emph{normal-form transport}
 \[
   \aid{nf-transp} : \mathrm{NormalForm}\;\Gamma\;\mathit{NF}
@@ -1320,7 +1233,7 @@ free product ($\aid{EmptyRel}$), direct product ($\aid{CommRel}$:
 generators of the two sides commute), semidirect product
 ($\aid{ConjRel}$/$\aid{ConjRelʷ}$: moving $h$ past $n$ conjugates $n$,
 by a generator or by a word), amalgamated free product
-($\aid{AmalgRel}\,f_1\,f_2$: the two images of a shared alphabet are
+($\aid{AmalgRel}\;f_1\,f_2$: the two images of a shared alphabet are
 identified), and definitional extension ($\aid{SugarRel}$: a new
 generator desugars to a word) --- plus $n$-fold iterations
 $\Gamma \mathrel{\aid{⊕\char94}} n$.  Congruence-lifting lemmas (\aid{lefts},
@@ -1366,9 +1279,9 @@ constructed group.  With their premise telescopes elided, the direct,
 semidirect, $n$-fold, and amalgamated statements read:
 \[
 \begin{array}{l}
-\aid{dpres} : (\Gamma \mathrel{\aid{⋄}} \Delta \mathrel{\aid{⋄}} \aid{CommRel})
+\aid{dpres} : (\Gamma \mathrel{\aidop{⋄}} \Delta \mathrel{\aidop{⋄}} \aid{CommRel})
    \ \aid{IsPresentationOf}\ (G_1 \times G_2) \\[3pt]
-\aid{dpres} : (\Gamma \mathrel{\aid{⋄}} \Delta \mathrel{\aid{⋄}} \aid{ConjRelʷ}\;\mathit{conj})
+\aid{dpres} : (\Gamma \mathrel{\aidop{⋄}} \Delta \mathrel{\aidop{⋄}} \aid{ConjRelʷ}\;\mathit{conj})
    \ \aid{IsPresentationOf}\ (G_1 \rtimes G_2) \\[3pt]
 \aid{presentation} : \forall n \to (\Gamma \mathrel{\aid{⊕\char94}} n)
    \ \aid{IsPresentationOf}\ (\otimes\aid{-group}\;n) \\[3pt]
