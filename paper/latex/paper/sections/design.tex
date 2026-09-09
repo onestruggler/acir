@@ -177,8 +177,10 @@ proof effort should go.
   no new lemmas to maintain, and completeness is a five-line lemma.
 \item \emph{Certificates are first-order.}  A verified coset table is finite
   data plus five equations quantified over finite types
-  (\S\ref{sec:engine}); obligations are therefore finite case splits, and in
-  the case studies they close by evaluation.
+  (\S\ref{sec:engine}); obligations are therefore finite case splits ---
+  which must still be made --- whose cases are closed goals, discharged by
+  evaluation where they reduce to a computation and by short equational
+  derivations otherwise.
 \item \emph{Indices are chosen for the unifier.}  Wire counts are built from
   successors only, so coverage checking succeeds by injectivity of
   constructors rather than by arithmetic (\S\ref{sec:circuits}).
@@ -842,19 +844,23 @@ are factored out once, by \aid{Lift-Relation}, whose permutation
 instance appeared in \S\ref{sec:permutations}; its lemma
 \aid{lemma-cong↑} lifts the \emph{entire congruence} one wire up ---
 proved once, by induction over the eight constructors of $\approx$ ---
-so equational developments move freely along the wire chain of
-\S\ref{sec:preliminaries}.  Instantiating \aid{Gate} is all it takes to
-define a new circuit theory.
+so equational developments move freely along the chain
+$\mathsf{Cir}\,k \le \mathsf{Cir}\,(k{+}1)$ of \S\ref{sec:circuit-chain}.  A new circuit theory is thus a gate family
+\aid{Gate} together with its gate-specific relation set; the structural
+rules and their lemmas come for free.
 
 \subsection{The Reidemeister--Schreier engine}\label{sec:engine}
 
 The module \path{Normalization.Reidemeister-Schreier} provides
-injectivity theorems for extensions of generator maps, in two strengths.
-The \emph{simplified} form needs no cosets: if $f : X \to \aid{Word}\;Y$
-has a generator-level retraction $g : Y \to \aid{Word}\;X$ ---
-$(g\,\aid{ʷ})$ respects $\Delta$'s axioms and
-$[x]\aid{ʷ} \approx_1 (g\,\aid{ʷ})(f\,x)$ --- then $(f\,\aid{ʷ})$ is
-injective and $(g\,\aid{ʷ})$ surjective.  This is the tool for
+injectivity theorems for the homomorphisms $(f\,\aid{ʷ})$ induced by
+generator maps $f : X \to \aid{Word}\;Y$, in two strengths.
+The \emph{simplified} form needs no cosets.  Let $\Gamma$ be a relation
+set over $X$ and $\Delta$ one over $Y$, with congruences $\approx_\Gamma$
+and $\approx_\Delta$.  If $f$ has a generator-level retraction $g : Y \to
+\aid{Word}\;X$ --- $(g\,\aid{ʷ})$ sends each axiom of $\Delta$ to a
+$\approx_\Gamma$-equation, and $[x]\aid{ʷ} \approx_\Gamma
+(g\,\aid{ʷ})(f\,x)$ for every $x$ --- then $(f\,\aid{ʷ})$ is injective
+and $(g\,\aid{ʷ})$ surjective.  This is the tool for
 \emph{isomorphisms} of presentations, and powers the final step of each
 amalgamation case study via the \aid{StarIsomorphism} builder of
 \texttt{Presentation.\allowbreak Morphism}, which turns the four
@@ -984,8 +990,7 @@ past a coset, emitting a word of $H$ and the updated coset --- so
 $\aid{nf} = (h\,\aid{ᵗ})\,I : \aid{Word}\;Y \to \aid{Word}\;X \times C$
 runs the whole word from the identity coset.  A submodule
 \aid{Transfer} takes the five hypotheses that make the data a genuine
-coset presentation --- quoted from the source, numbered as in the
-explanation that follows:
+coset presentation:
 
 \begin{code}%
 \>[0]\AgdaKeyword{module}\AgdaSpace{}%
@@ -1010,7 +1015,7 @@ explanation that follows:
 \AgdaPostulate{I}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaPostulate{f}\AgdaSpace{}%
 \AgdaBound{x}\AgdaSymbol{)))}%
-\>[77]\AgdaComment{--\ 1}\<%
+\>[83]\AgdaComment{--\ 1}\<%
 \\
 %
 \>[2]\AgdaSymbol{(}\AgdaBound{h-wd-ax}\AgdaSpace{}%
@@ -1036,8 +1041,8 @@ explanation that follows:
 \AgdaSymbol{((}\AgdaPostulate{h}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{ᵗ}}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaBound{c}\AgdaSpace{}%
-\AgdaBound{t}\AgdaSymbol{))}\AgdaSpace{}%
-\AgdaComment{--\ 2}\<%
+\AgdaBound{t}\AgdaSymbol{))}%
+\>[83]\AgdaComment{--\ 2}\<%
 \\
 %
 \>[2]\AgdaSymbol{(}\AgdaBound{f-wd-ax}\AgdaSpace{}%
@@ -1057,7 +1062,7 @@ explanation that follows:
 \AgdaSymbol{(}\AgdaPostulate{f}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{ʷ}}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaBound{v}\AgdaSymbol{)}%
-\>[78]\AgdaComment{--\ 3}\<%
+\>[83]\AgdaComment{--\ 3}\<%
 \\
 %
 \>[2]\AgdaSymbol{(}\AgdaBound{[I]≈ε}\AgdaSpace{}%
@@ -1067,7 +1072,7 @@ explanation that follows:
 \AgdaOperator{\AgdaPostulate{]}}\AgdaSpace{}%
 \AgdaOperator{\AgdaPostulate{≈₂}}\AgdaSpace{}%
 \AgdaInductiveConstructor{ε}\AgdaSymbol{)}%
-\>[77]\AgdaComment{--\ 4}\<%
+\>[83]\AgdaComment{--\ 4}\<%
 \\
 %
 \>[2]\AgdaSymbol{(}\AgdaBound{h=ract}\AgdaSpace{}%
@@ -1099,15 +1104,15 @@ explanation that follows:
 \AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
 \AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
 \AgdaBound{c'}\AgdaSpace{}%
-\AgdaOperator{\AgdaPostulate{]}}\AgdaSymbol{)}\AgdaSpace{}%
-\AgdaComment{--\ 5}\<%
+\AgdaOperator{\AgdaPostulate{]}}\AgdaSymbol{)}%
+\>[83]\AgdaComment{--\ 5}\<%
 \end{code}
 \begin{code}[hide]%
 %
 \>[2]\AgdaKeyword{where}\<%
 \end{code}
 
---- (1) the table inverts the embedding at the identity coset; (2) the
+\noindent (1) the table inverts the embedding at the identity coset; (2) the
 table respects $\Delta$'s axioms, coset by coset; (3) the embedding
 respects $\Gamma$'s axioms; (4) the identity coset is represented by
 $\varepsilon$; (5) sliding one letter past a coset's representative
@@ -1134,15 +1139,18 @@ form of \S\ref{sec:preliminaries}, one verified digit per level.
 Two facts make this engine pleasant in practice.  The hypotheses are
 \emph{quantifier-small}: each ranges over cosets and generators (finite
 data types) and axioms (a finite inductive family), so in every case
-study they are finite case splits.  And the splits close by
-\emph{computation}: with $\Gamma$'s normal form in scope, an obligation
-like (2) becomes \aid{by-equal-nf Eq.refl} --- both sides normalize to the
-same value, and Agda's evaluator checks it.  In the qutrit Clifford+$T$
-tower, a nine-coset level imposes seventy-two such obligations; every
-one is discharged by \aid{refl}.  This is the precise sense in which the
-framework mechanizes the ``gigantic computations'' of
-\S\ref{sec:intro}: the computations still happen, but inside the
-typechecker.
+study they are finite case splits.  And once a normal form for $\Gamma$
+is in scope, the cases of an obligation like (2) close by
+\emph{computation}: each becomes \aid{by-equal-nf Eq.refl} --- both
+sides normalize to the same value, and Agda's evaluator checks it.  In
+the qutrit Clifford+$T$ tower, a nine-coset level imposes seventy-two
+such obligations; every one is discharged by \aid{refl}.  The other
+hypotheses --- the soundness law (5) above all --- are equational
+derivations done by hand, one per case, as \aid{ract-sound} was in
+\S\ref{sec:permutations}.  This is the sense in which the framework
+absorbs part of the ``gigantic computations'' of \S\ref{sec:intro}: the
+case splits remain, but the cases that are mere computation cost
+nothing.
 
 \subsection{Products of presentations, and their presentation theorems}\label{sec:constructions}
 
@@ -1290,18 +1298,20 @@ semidirect, $n$-fold, and amalgamated statements read:
 \end{array}
 \]
 where the semantic groups on the right are built by the
-\texttt{ForStdlib} constructions below (for the amalgamated product, the
-premises are two \aid{PackedCosetTable}s over a common base presentation
---- the record \aid{AmalDataNF} --- plus presentations of the three
+\texttt{ForStdlib} constructions below.  For the amalgamated product the
+elided premises are two \aid{PackedCosetTable}s over a common base
+presentation (the record \aid{AmalDataNF}) and presentations of the three
 groups; the amalgamating homomorphisms $\varphi, \psi$ are then
 \emph{derived} from the syntactic embeddings through the presentation
-isomorphisms).  A further module proves the recipe for arbitrary group
-\emph{extensions}: given a short exact sequence
-$1 \to N \to G \to Q \to 1$ realizing conjugation and relator-correction
-data, the union of $N$'s relations, word-valued conjugation rules, and
-twisted lifts of $Q$'s relators presents $G$
-(cf.\ Proposition~2.55 of~\cite{holt2005handbook}); semidirect products are
-the special case with trivial corrections.  These construction theorems
+isomorphisms.  A further module proves the classical recipe for
+presenting a group \emph{extension}: if $1 \to N \to G \to Q \to 1$ is a
+short exact sequence, and presentations of $N$ and $Q$ are given together
+with the data that realizes it in $G$ --- how $G$ conjugates $N$, and the
+correction in $N$ by which each lifted relator of $Q$ fails to hold ---
+then $N$'s relations, word-valued conjugation rules, and the corrected
+lifts of $Q$'s relators together present $G$ (cf.\ Proposition~2.55
+of~\cite{holt2005handbook}); semidirect products are the special case
+with trivial corrections.  These construction theorems
 are what make the catalogue of \S\ref{sec:examples} cheap: the Pauli
 presentation, for instance, is \emph{assembled} --- cyclic factors, one
 binary product, one $n$-fold product --- with no fresh coset enumeration
@@ -1350,7 +1360,8 @@ with holes, useful when the \emph{next} rule application needs a
 particular association.  \aid{by-equal-nf} (\S\ref{sec:nfproperty})
 closes any goal whose two sides have the same computed normal form; since
 coset tables and normal-form maps are structurally recursive programs,
-this turns table verification into evaluation.  Neither tool is a tactic
+this turns the well-definedness half of table verification into
+evaluation.  Neither tool is a tactic
 in the metaprogramming sense: each is a verified function into a
 canonical data type followed by \aid{refl}, the small-scale-reflection
 recipe with the reflection left to the evaluator (\S\ref{sec:whyagda}).

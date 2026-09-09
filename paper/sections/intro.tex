@@ -38,9 +38,10 @@ languages~\cite{carette2024squareroots,fang2026hadamard}, and behind the
 recent uniform simplification of the rule sets of six near-Clifford circuit
 fragments~\cite{blake2026simpler} --- long, hand-written, hand-checked
 derivations every one of which deserves a machine's scrutiny.  Proofs of
-this shape --- long, regular, and computational --- are precisely the proofs
-that should be machine-checked, and precisely the proofs that a proof assistant with a
-strong evaluator can check largely \emph{by computation}.
+this shape --- long, regular, and mechanical --- are precisely the proofs
+that should be machine-checked: a proof assistant does not tire of case
+splits, and where a case reduces to a computation, its evaluator can
+carry it out.
 
 This paper reports on an Agda library built for exactly this purpose, and
 on the design decisions that make it work: a general, reusable framework
@@ -88,7 +89,8 @@ circuits at every width, the qutrit Clifford+$T$ monoid,
 $U_3(\mathbb{Z}[\tfrac12,i])$ --- to exercise every part of it.
 The techniques that carry the design are this community's: inductive
 congruences, specifications as function bundles, index engineering for
-the unifier, and proof by evaluation.
+the unifier, and, where an obligation reduces to a computation, proof by
+evaluation.
 
 \subsection{Contributions}\label{sec:contributions}
 
@@ -106,8 +108,8 @@ the unifier, and proof by evaluation.
   circuits as words over wire-indexed generators and extends any
   gate-specific relation set with the structural rules every circuit
   presentation shares (\S\ref{sec:circuits}), with indices chosen so that
-  Agda's evaluator, rather than the human, carries out the case analyses:
-  in our case studies every coset-table obligation closes by \aid{refl}.
+  coset tables can be written by direct pattern matching and, where their
+  obligations reduce to computation, checked by Agda's evaluator.
 
 \item[(2)] \textbf{A catalogue of verified presentations}
   (\S\ref{sec:examples}): cyclic groups of every order (at order $0$, the

@@ -223,9 +223,9 @@ form, since the other reviewers engaged with it.
 
 **Tactic language.** A new §7.4 ("Why Agda, and why not a tactic
 language") answers this. In short: everything the library asks a user to
-prove is either a finite case split closed by evaluation or a
-setoid-reasoning derivation, neither of which benefits much from proof
-search; the two solvers are verified functions, not tactics, and the
+prove is a finite case split whose cases are either closed by evaluation
+or filled by a setoid-reasoning derivation, neither of which benefits
+much from proof search; the two solvers are verified functions, not tactics, and the
 development uses no metaprogramming. Two places would profit from
 automation (generating the hypothesis records of a coset table from the
 table alone, and finding the tables), and we say why we keep the second
@@ -239,9 +239,9 @@ scratch in 1 min 42 s of wall-clock time with Agda 2.8.0, peaking at
 a third of that is the amalgamated-product construction, checked once;
 the three amalgamation case studies take 19 s together (the nine-coset
 qutrit level with its seventy-two `refl` obligations is within the 8 s of
-its module). Moving the case analyses into the evaluator has not made
-checking slow; memory and the edit–check loop of the largest modules are
-the costs to watch.
+its module). Discharging by evaluation the obligations that reduce to
+computation has not made checking slow; memory and the edit–check loop
+of the largest modules are the costs to watch.
 
 **HTML rendering with links.** Agreed, and done: the artifact ships an
 `agda --html` rendering in which every identifier links to its

@@ -3,36 +3,31 @@
 \subsection{Size and typechecking cost}\label{sec:stats}
 
 The verified development is about 22\,000 lines of Agda in 74 files
-(September 2026; \texttt{wc -l}, comments included), half of it the
-reusable core --- words, presentations with their constructions and
-solvers, the normal-form zoo and the Reidemeister--Schreier engine, the
-circuit layer, the \texttt{ForStdlib} additions, and a support library of
-modular arithmetic --- and half the verified examples of
-\S\ref{sec:examples}, of which the qutrit Clifford+$T$ and $U_3$ studies
-alone account for 4\,300 lines.  Everything is \texttt{--safe} with zero
-postulates.  Of the seven thousand lines under \texttt{Presentation},
-only about a thousand are the core proper (words modulo $\approx$, the
-presentation records, grouplikeness, morphism builders); 4\,300 are the
-five product constructions with their two-sided theorems, the
-amalgamation alone 1\,800; six hundred are the solvers; and the rest is
-two group developments that predate the \texttt{Examples} tree.  We
-expect the figure to shrink: the version of the library developed since
-this paper was written has already retired one of two semidirect-product
-modules and moved those developments out.
+(September 2026; \texttt{wc -l}, comments included): half the reusable
+core --- words, presentations with their constructions and solvers, the
+normal-form zoo and the Reidemeister--Schreier engine, the circuit layer,
+the \texttt{ForStdlib} additions, and a support library of modular
+arithmetic --- and half the examples of \S\ref{sec:examples}, of which
+the qutrit Clifford+$T$ and $U_3$ studies alone are 4\,300 lines.  Of
+the seven thousand lines under \texttt{Presentation}, only about a
+thousand are the core proper; 4\,300 are the five product constructions
+with their two-sided theorems, the amalgamation alone 1\,800, and six
+hundred are the solvers.  We expect the figure to shrink: the version of
+the library developed since this paper was written has already retired
+one of two semidirect-product modules.
 
-Typechecking cost is modest and concentrated where one would expect.
-Checking the whole development from scratch with Agda~2.8.0 (61 modules,
-the standard library's interfaces cached) takes 1\,min\,42\,s of
-wall-clock time and peaks at 3.5\,GB of memory.  A third of that is one
-module, the amalgamated-product construction (31\,s), checked once and
-for all; the three amalgamation case studies together take 19\,s, the
-symmetric-group tower 3.5\,s, and every other module under 4\,s.  Moving
-the case analyses into the evaluator has therefore not made checking
-slow --- the seventy-two \aid{refl}-discharged obligations of the
-nine-coset qutrit level are among the eight seconds of their module; the
-costs to watch are memory, which grows with the terms the evaluator
-unfolds, and the edit--check loop of the largest modules, which separate
-modules with independently cached interfaces keep short.
+Typechecking cost is modest.  Checking the whole development from
+scratch with Agda~2.8.0 (61 modules, the standard library's interfaces
+cached) takes 1\,min\,42\,s and peaks at 3.5\,GB of memory; a third of
+the time is the amalgamated-product construction (31\,s), checked once
+and for all, the three amalgamation case studies take 19\,s together,
+and every other module is under 4\,s.  Discharging by evaluation the
+obligations that reduce to computation has therefore not made checking
+slow --- the seventy-two
+\aid{refl}-discharged obligations of the nine-coset qutrit level are
+among the eight seconds of their module.  The costs to watch are memory,
+which grows with the terms the evaluator unfolds, and the edit--check
+loop of the largest modules.
 
 \subsection{Setoids versus quotients, revisited}\label{sec:setoids}
 
@@ -80,9 +75,9 @@ Agda has no tactic language in the sense of Rocq, Lean, or Isabelle, and
 one might expect a development of this kind --- hundreds of case-split
 obligations, long equational chains --- to miss one.  Our experience is
 the opposite, and the reason is the shape of the obligations.  Everything
-the library asks its user to prove is either a finite case split whose
-cases are closed by evaluation, or an equational derivation written in
-the standard library's setoid-reasoning style; neither benefits much from
+the library asks its user to prove is a finite case split whose cases are
+either closed by evaluation or filled by an equational derivation written
+in the standard library's setoid-reasoning style; neither benefits much from
 proof search, and both benefit from a strong, predictable evaluator and
 from dependent pattern matching that keeps wire indices in step
 (\S\ref{sec:circuits}).  The ``solvers'' of \S\ref{sec:solvers} are not
@@ -112,15 +107,15 @@ table.  \emph{Make certificates first-order.}  The five coset-table
 hypotheses quantify over finite inductive types only, so obligations
 split into finitely many closed goals --- the precondition for
 \aid{refl}-discharge; hypotheses phrased over all words would have
-demanded inductions in every instance.  \emph{Let evaluation prove.}
-The single most effective tool in the development is
+demanded inductions in every instance.  \emph{Let evaluation prove what
+it can.}  The most effective single tool in the development is
 \aid{by-equal-nf Eq.refl}: once a normal form for a level exists, all
 equational facts \emph{about that level} that happen to be true become
-free.  This inverts the usual economy of formalization --- effort
-concentrates in setting up the next normal form, after which the
-typechecker absorbs the case explosion that dominates the pen-and-paper
-proofs of~\cite{selinger2015clifford,li2025qutrit,
-clement2026realcliffordch}.  \emph{Separate search from checking.}
+free.  This does not remove the case analyses --- the soundness law and
+the uniqueness proof of each level are still proved by hand, case by
+case, and they are most of the work --- but it shifts the effort to
+setting up the next normal form, after which the obligations that are
+mere computation cost nothing.  \emph{Separate search from checking.}
 Coset tables were found by ordinary computation (and, for the larger
 studies, by the companion web tools of \S\ref{sec:tools}); the library
 only ever verifies them.  Nothing in the formal development depends on
@@ -144,8 +139,9 @@ we have not yet formalized the matrix side itself.  Connecting to a
 verified matrix semantics (\S\ref{sec:related}) would discharge this end
 to end.
 
-Second, statistics like ``every obligation closed by \aid{refl}''
-describe our case studies, not a theorem about the method, and they rest
+Second, statistics like ``every well-definedness obligation closed by
+\aid{refl}'' describe our case studies, not a theorem about the method,
+and they rest
 on a finiteness assumption: at every level of a tower the cosets form a
 finite inductive type, so the five hypotheses are finite case splits.
 Three kinds of gate sets escape this.  Gate sets with continuous
