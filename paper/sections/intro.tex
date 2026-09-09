@@ -63,15 +63,20 @@ representative --- adds one ``digit'' per wire.
 Section~\ref{sec:permutations} shows the whole route on the smallest
 example, permutation circuits presenting the symmetric groups.
 
-One design decision deserves to be announced up front, since the paper
-returns to it repeatedly: the library is written in plain, setoid-based
+One design decision deserves to be announced up front: the library is
+written in plain, setoid-based
 Agda on top of the standard
 library~\cite{daggitt2025stdlib,agdastdlib}, not in cubical Agda or a
 HoTT library, so a presented monoid is a setoid on words, not a quotient
-type.  The reason is that our central devices are maps \emph{into} the
-syntax --- sections of normal forms, coset representatives, amalgamation
-tails --- which are natural for setoids and awkward for quotients;
-\S\ref{sec:setoids} weighs the trade.
+type.  The reason is that relations are what this library manipulates:
+the congruence a relation set generates is an inductive family, its
+derivations are data that the lifting and transport lemmas induct on and
+translate, and a quotient would absorb the relation into the identity
+type and leave nothing to induct on.  A second consequence is that our
+central devices are maps \emph{into} the syntax --- sections of normal
+forms, coset representatives, amalgamation tails --- which are natural
+for setoids and awkward for quotients; \S\ref{sec:setoids} weighs the
+trade.
 
 \paragraph{Why this is a programming-languages problem.}
 Circuit calculi are programming languages of a particular kind, and
@@ -174,5 +179,4 @@ presentation theorems.  Section~\ref{sec:examples} is the catalogue of
 verified results and what each was chosen to exercise, with pointers into
 \texttt{MainTheorems.agda}.  Section~\ref{sec:related} surveys related
 work and compares with other formalizations.  Section~\ref{sec:discussion} discusses statistics and
-typechecking cost, design decisions, the choice of Agda, lessons learned,
-and limitations, and Section~\ref{sec:conclusion} concludes.
+typechecking cost, design decisions, and limitations, and Section~\ref{sec:conclusion} concludes.

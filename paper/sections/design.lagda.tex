@@ -538,8 +538,10 @@ has monomorphisms and isomorphisms, but no epimorphisms).  Finally,
 \aid{Permutation′}~$n$ with composition, identity, and \aid{flip} as the
 \aid{Group} used by the tight semantics of \S\ref{sec:permutations}.  None
 of these is deep --- the seven modules total 865 lines --- but each was
-necessary for some semantic side of a presentation theorem;
-\S\ref{sec:stdlib-gap} draws the moral.
+necessary for some semantic side of a presentation theorem.  The moral
+is that the standard library's algebra hierarchy is rich in
+\emph{structures} but thin in \emph{constructions}, and
+presentation-level results force the constructions into existence.
 
 \subsection{Proof engineering: solvers and evaluation}\label{sec:solvers}
 
@@ -554,10 +556,10 @@ particular association.  \aid{by-equal-nf} (\S\ref{sec:nfproperty})
 closes any goal whose two sides have the same computed normal form; since
 coset tables and normal-form maps are structurally recursive programs,
 this turns the well-definedness half of table verification into
-evaluation.  Neither tool is a tactic
-in the metaprogramming sense: each is a verified function into a
-canonical data type followed by \aid{refl}, the small-scale-reflection
-recipe with the reflection left to the evaluator (\S\ref{sec:whyagda}).
+evaluation.  Both are used like tactics, but neither uses
+metaprogramming: each is a verified function into a canonical data type
+followed by \aid{refl}, the small-scale-reflection recipe with the
+reflection left to the evaluator.
 Finally, mundane but effective: a shared \texttt{Notations} module of
 numeral patterns (\aid{₀} … \aid{₁₅}, successor patterns \aid{₁₊} …
 \aid{₄₊} overloaded over $\mathbb{N}$ and $\mathsf{Fin}$, and \aid{auto}

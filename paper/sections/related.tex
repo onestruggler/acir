@@ -88,16 +88,18 @@ tells an optimizer author that no valid rewrite is missing.  We see the two
 ecosystems as complementary: a natural target is to connect our presented
 gate groups to the matrix semantics of \textsc{sqir} or VyZX, obtaining
 end-to-end completeness against matrices rather than against abstract
-product groups (\S\ref{sec:conclusion}).
+product groups.
 
 \subsection{Completeness theorems on paper: gate sets and ZX}\label{sec:rel-paper}
 
 Completeness of a finite rule set for a circuit fragment --- the property
 the verification ecosystem leaves open --- is what the mathematical
-literature proves on paper, for gate
-sets~\cite{selinger2015clifford,clement2023complete,clement2024minimal,
-li2025qutrit,clement2026realcliffordch} and likewise on the graphical
-side, where the completeness results for the ZX-calculus, from the qubit
+literature proves on paper, for gate sets --- from the CNOT-dihedral
+fragment~\cite{amy2018cnotdihedral} and its prime-dimensional
+generalization~\cite{blake2026phaseaffine} through the qubit and qutrit
+Clifford groups~\cite{selinger2015clifford,li2025qutrit} to full
+quantum circuits~\cite{clement2023complete,clement2024minimal,
+clement2026realcliffordch} --- and likewise on the graphical side, where the completeness results for the ZX-calculus, from the qubit
 stabilizer fragment through Clifford+$T$ to the odd-prime-dimensional
 qupit calculi~\cite{backens2014zx,jeandel2018zx,booth2022qupitzx,
 poor2023travaganza}, are all pen-and-paper; mechanizations have so far

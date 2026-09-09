@@ -12,25 +12,28 @@ paper closely, for liking it, and for telling us where it fell short.
 
 Section 1.2 ("A first taste") is gone, as Reviewers A and D asked; in
 its place the introduction now explains the approach in plain language
-before any formal vocabulary, announces up front the design decision the
-paper returns to most (setoids rather than quotients, with a forward
-reference to §7.2), and adds a
+before any formal vocabulary, announces up front the design decision
+(setoids rather than quotients) together with the reason for it, with a
+forward reference to §7.2, and adds a
 paragraph making the case that this is a programming-languages problem
 and a design story (Reviewer B). The introduction's related-work
-subsection is merged into §6, retitled "Related work and comparison",
-so related work is discussed in one place (Reviewer A); the "related
-tools" paragraph lives there too. Section 2 is reworked
-within the same page budget: the generators are defined as data with an
-explanation of `gate₂`, the empty circuit and its width index are
-explained, the notion of *circuit theory* and the origin of the
-structural rules (the fixed-width shadow of the monoidal structure) are
-spelled out, cosets are explained as "where the bottom wire goes" with
-pictures of the staircase representatives, the coset table is explained
-case by case (each case annotated in the code, the pushed swap pictured
-next to it) and its soundness law typeset as Agda, the tower paragraph
-and the three theorem statements are de-formalised, `inv-nf` and
-`_IsPresentationOf_` are defined where they are used, and the mixfix
-underscore convention is explained once (Reviewers A, B, D). Section 4
+subsection is merged into §6, retitled "Related work and comparison"
+and organized along the axes of its comparison table, so related work
+is discussed in one place (Reviewer A); the "related tools" paragraph
+lives there too. Section 2, which Reviewer A found rushed towards its
+end, is revised and expanded in detail: the generators are defined as
+data with an explanation of `gate₂`, the empty circuit and its width
+index are explained, the notion of *circuit theory* and the origin of
+the structural rules (the fixed-width shadow of the monoidal structure)
+are spelled out, cosets are explained as "where the bottom wire goes"
+with pictures of the staircase representatives, the coset table is
+explained case by case (each case annotated in the code, the four
+pushed swaps drawn as circuit rewrites in Figure 1) and its soundness
+law typeset as Agda, the tower paragraph and the three theorem
+statements are de-formalised, `inv-nf` and `_IsPresentationOf_` are
+defined where they are used, and the mixfix underscore convention is
+explained once (Reviewers A, B, D); this also partly answers Reviewer
+D's request for expanded examples. Section 4
 opens with the design rationale
 (Reviewer B), drops the "Module X" phrasing and the repeated `Gen`
 listing, explains the left-biased indices in the text
@@ -41,20 +44,25 @@ the presentation-theorem display, and condenses §4.7. Section 5 opens by
 saying what each example was chosen to exercise, gives the shape of every
 normal form, explains why Clifford+T is the flagship example, names the
 three construction theorems whose composition is the Pauli presentation
-(Reviewers A, B, D), and defines "qupit" at first use. Section 7 gains measured typechecking
-costs, a subsection on why Agda and not a tactic language, an expanded
-limitations paragraph with concrete examples of gate sets outside the
-method, and an explanation of what the seven thousand "core" lines are
-(Reviewers A, D). Code is typeset by Agda's LaTeX backend with its
+(Reviewers A, B, D), and defines "qupit" at first use. Section 7 gains
+measured typechecking costs, an explanation of what the seven thousand
+"core" lines are, and a limitations subsection that states precisely
+what is not formalized (Reviewers A, D); Section 8 is shortened to three
+future directions, including the compiler use Reviewer D asked about.
+The revised text is about 23 pages, within the limit. Code is typeset by Agda's LaTeX backend with its
 natural colours, the standard library is cited properly, Coq is now
 Rocq, and the personification of "the library" is gone (Reviewer B).
 Every typo listed by the reviewers is fixed.
 
 ## Reviewer A
 
-**Sections 1 and 2.** Done as you suggested: §1.2 deleted, §2 expanded
-(see above), and the introduction rewritten to be approachable without
-prior exposure to the field.
+**Sections 1 and 2, and pace.** You felt that the paper became rushed
+towards the end. We acknowledge that, and have revised and expanded §2
+in detail (see above), so that a reader arrives at the design section
+having seen the whole pipeline once, concretely, on the symmetric
+groups; this also partly answers Reviewer D's request for expanded
+examples. As you suggested, §1.2 is deleted and the introduction
+rewritten to be approachable without prior exposure to the field.
 
 **l.203, 207 (`Gen`, `gate₂`).** `Gen` is now defined as data in §2.1,
 with its three constructors explained; `gate₂ σ-gate` is introduced
@@ -81,15 +89,15 @@ extension to whole circuits by the stateful traversal.
 the Agda declaration `ract-sound`.
 
 **l.295–296 ("Symmetric", "one Extension record per level").** The
-capitalised "Symmetric" was the module name; the text now says "the
-symmetric-group development (module `Examples.Groups.Symmetric`)". The
-tower paragraph is rewritten in words: per level, the coset type, the
-table, the section and the five hypotheses, packaged as one record and
-folded upward.
+capitalised "Symmetric" was the module name; §2 no longer names modules
+in its prose. The tower paragraph is rewritten in words: the stateful
+traversal extends the table to whole circuits and gives one level of
+normalization, and iterating it is the coset tower, whose carrier grows
+by one digit per level.
 
 **l.302–305, 336, 344–355, 362–363.** The `nfp'-t` listing is gone;
 only the definition of the carrier `NF` remains, annotated with what it
-unfolds to (`⊤ × C 1 × ⋯ × C k`) and with a worked example, the
+unfolds to (`⊤ × C 0 × C 1 × ⋯ × C k`) and with a worked example, the
 "staircase of staircases" section of a four-wire normal form, drawn
 beside it; `inv-nf` is defined as the section that rebuilds a circuit from
 its digits; the three `MainTheorems` statements are given in words with
@@ -106,7 +114,8 @@ descend to the quotient.
 **Sec. 4 (l.467, 521, 630, 636).** The four helper symbols are gone; the
 text says what the conjugation helpers are for. The word setoid is named
 and explained in §4.2 where `≈` is packaged as a setoid. The five
-hypotheses carry `-- (1)` … `-- (5)` comments. "NormalForma" was a typo.
+hypotheses carry `-- 1` … `-- 5` comments and are explained one by one
+below the listing. "NormalForma" was a typo.
 
 **Sec. 5.** The section now opens with what each example exercises, and
 each subsection says what its normal form is; "flagship" is justified
@@ -117,13 +126,8 @@ all later normal forms).
 seven thousand lines under `Presentation` are: about a thousand are the
 core proper (words modulo `≈`, the presentation records, grouplikeness,
 morphism builders); 4,300 are the five product constructions with their
-two-sided theorems, the amalgamation alone being 1,800; 600 are the
-solvers; the rest are two group developments that predate the `Examples`
-tree. We do expect it to shrink: the branch of the library developed since
-submission has already retired one of two semidirect-product modules and
-moved those group developments out, and the amalgamation module is the
-next candidate for the transport-based simplification the construction
-theorems make possible.
+two-sided theorems, the amalgamation alone being 1,800; and 600 are the
+solvers.
 
 ## Reviewer B
 
@@ -146,11 +150,14 @@ modules, keywords, comments), with the font distinctions kept.
 
 **l.178, 192.** Fixed; the "everything in this section is verified"
 sentence is gone, and the introduction now states that non-formalised
-claims are marked explicitly where they occur and collected in §7.6.
+claims are marked explicitly where they occur and collected in §7.3.
 
 **MLTT rather than cubical/HoTT.** Now foreshadowed in the introduction
-(setoids rather than quotients, because our central devices are maps
-*into* the syntax), with pointers to §4.2, §6.4 and §7.2.
+(setoids rather than quotients, because relations are what the library
+manipulates — the congruence is an inductive family whose derivations
+the lifting and transport lemmas induct on — and because our central
+devices are maps *into* the syntax), with pointers to §4.2, §6.5 and
+§7.2.
 
 **l.344–355, 569–575, 675, 677–680.** De-formalised (see Reviewer A);
 `Gen` is no longer repeated in §4.4, which instead spells out the
@@ -214,53 +221,60 @@ terminology that used to appear before its definition.
 the shape of its normal form (residue; factorial tuple; residues plus
 factorial tuple for wreath products; `n` pairs of exponents for Pauli
 groups; the alternating carriers for the amalgamations), and the section
-opens with what each example exercises.
+opens with what each example exercises. The expanded §2 (see Reviewer A)
+walks through the symmetric-group example in full — generators,
+relations, cosets, the table with its four cases pictured, the tower,
+both semantics, and the presentation theorem — which partly answers
+your request for more expanded examples.
 
 **Unnecessary information.** §4.7 is condensed to a paragraph without the
 record listing, and Table 4 is replaced by prose that gives rounded sizes
 and explains what the numbers consist of. We kept Table 3 in tabular
 form, since the other reviewers engaged with it.
 
-**Tactic language.** A new §7.4 ("Why Agda, and why not a tactic
-language") answers this. In short: everything the library asks a user to
-prove is a finite case split whose cases are either closed by evaluation
-or filled by a setoid-reasoning derivation, neither of which benefits
-much from proof search; the two solvers are verified functions, not tactics, and the
-development uses no metaprogramming. Two places would profit from
-automation (generating the hypothesis records of a coset table from the
-table alone, and finding the tables), and we say why we keep the second
-outside the checker. The design would transfer to Rocq or Lean provided
-the setoid discipline is kept.
+**Tactic language.** We would put it differently: Agda is also a tactic
+language, since its metaprogramming (reflection) is written in Agda
+itself, and in that sense the development does use tactics. The
+associativity solvers `by-assoc` and `by-passoc` of §4.8, which live in
+the `Presentation.Tactic` namespace, are tactics we wrote: each
+normalizes both sides of a goal to a canonical form and closes it by
+`refl`. The modular-arithmetic support library instantiates the standard
+library's ring solver (`Tactic.RingSolver`) to ℤ_p, which is the
+counterpart of the `ring` tactic of Rocq and Lean. What we do not use is
+proof search, because the obligations the library generates are finite
+case splits whose cases are closed by evaluation or by short
+setoid-reasoning derivations. Two places would profit from more
+automation: generating the hypothesis records of a coset table from the
+table alone, for which Agda's reflection would suffice, and finding the
+tables, which we deliberately keep outside the checker (§6.7).
 
 **Typechecking time.** Added to §7.1 with measurements: the whole
 development (61 modules, standard-library interfaces cached) checks from
 scratch in 1 min 42 s of wall-clock time with Agda 2.8.0, peaking at
 3.5 GB;
 a third of that is the amalgamated-product construction, checked once;
-the three amalgamation case studies take 19 s together (the nine-coset
-qutrit level with its seventy-two `refl` obligations is within the 8 s of
-its module). Discharging by evaluation the obligations that reduce to
-computation has not made checking slow; memory and the edit–check loop
-of the largest modules are the costs to watch.
+the three amalgamation case studies take 19 s together, and every other
+module is under 4 s.
 
 **HTML rendering with links.** Agreed, and done: the artifact ships an
 `agda --html` rendering in which every identifier links to its
 definition, and the camera-ready will link module names into it.
 
-**Compiler integration.** A new "Towards compilers" item in §8: the
-normal-form functions are executable, so a compiled normaliser is a
-decision procedure an optimiser can call as an oracle, and connecting the
-presented gate groups to the matrix semantics of sqir/voqc or VyZX would
-turn our completeness theorems into end-to-end guarantees that a rewrite
-engine equipped with one of our rule sets misses no valid rewrite.
+**Compiler integration.** A "Compilers" item in §8: the normal-form
+functions are executable, so a compiled normaliser is a decision
+procedure an optimiser can call as an oracle. §6.2 adds that connecting
+the presented gate groups to the matrix semantics of sqir or VyZX would
+give end-to-end completeness against matrices rather than against
+abstract product groups.
 
-**§7.5 limitations (now §7.6).** Expanded with examples: gate sets with continuous
-parameters (rotation gates, whose complete theories have real-valued
-normal forms and no finite coset structure); subgroup steps of infinite
-index such as the lamplighter groups, where the hypotheses are statable
-but need induction rather than finitely many evaluations; and finite but
-large tables from computer search, which stay within the method but will
-stress the evaluator.
+**§7.5 limitations (now §7.3).** Rewritten to state precisely what is
+not formalized: the amalgamation case studies are syntactic — each ends
+in an isomorphism between the gate-set presentation and an amalgamated
+product of smaller presentations — and the identification of those
+presented monoids with the concrete matrix monoids (Clifford+T, the
+unitaries over ℤ[½,i]) is taken from the literature. The introduction
+points to this subsection as the place where every unformalized claim
+is collected.
 
 **Wording.** "Against the standard library", "layered Agda library" and
 "discharges the case analyses" are gone; "circuit theory" and the
