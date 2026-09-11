@@ -174,19 +174,20 @@ proof effort should go.
 \item \emph{Specifications are standard-library bundles.}  ``Normal form''
   is not a new notion: it is an injection, a right inverse, or a bijection
   out of the setoid of words (\S\ref{sec:nfproperty}).  No new theory means
-  no new lemmas to maintain, and completeness is a five-line lemma.
-\item \emph{Certificates are first-order.}  A verified coset table is finite
-  data plus five equations quantified over finite types
-  (\S\ref{sec:engine}); obligations are therefore finite case splits ---
-  which must still be made --- whose cases are closed goals, discharged by
-  evaluation where they reduce to a computation and by short equational
-  derivations otherwise.
+  no new lemmas to maintain.
+\item \emph{Certificates are finite.}  A verified coset table is finite
+  data plus five equations, three quantified over finite types and two
+  over axiom instances (\S\ref{sec:engine}); obligations are therefore
+  case splits --- which must still be made --- whose cases are closed
+  goals, discharged by evaluation where they reduce to a computation and
+  by short equational derivations otherwise.
 \item \emph{Indices are chosen for the unifier.}  Wire counts are built from
   successors only, so coverage checking succeeds by injectivity of
   constructors rather than by arithmetic (\S\ref{sec:circuits}).
 \item \emph{Constructions come in pairs.}  Every product construction has a
-  syntactic theorem (normal forms lift) and a semantic one (the constructed
-  relation set presents the constructed group), and the semantic groups are
+  syntactic theorem (normal-form witnesses for the factors combine into
+  one for the product) and a semantic one (the constructed relation set
+  presents the constructed group), and the semantic groups are
   standard-library bundles (\S\ref{sec:constructions},
   \S\ref{sec:forstdlib}).
 \end{enumerate}
@@ -323,7 +324,7 @@ postfix,
 \AgdaFunction{wconcatmap}\<%
 \end{code}
 
-so \aid{(f ʷ)} is ``the unique monoid homomorphism extending $f$''.  Two
+\noindent so \aid{(f ʷ)} is ``the unique monoid homomorphism extending $f$''.  Two
 stateful traversals drive everything in \S\ref{sec:engine}: a \emph{coset
 action} on letters extends to words by threading the coset left to right,
 
@@ -355,7 +356,7 @@ action} on letters extends to words by threading the coset left to right,
 \AgdaOperator{\AgdaFunction{WB.\AgdaUnderscore{}ᵗ}}\<%
 \end{code}
 
-together with its right-to-left mirror; and a small family of
+\noindent together with its right-to-left mirror; and a small family of
 \emph{conjugation helpers} lifts an action of one alphabet on another
 through words, which is what the semidirect-product construction of
 \S\ref{sec:constructions} uses to state its word-valued conjugation rule.
@@ -482,8 +483,7 @@ monoid is thus a setoid on words in the tradition
 of~\cite{barthe2003setoids}, not a quotient type as in mathlib's
 \aid{PresentedGroup}~\cite{mathlib2020,mathlib-doc-presented} or a higher
 inductive type in cubical Agda~\cite{vezzosi2019cubical,cubicallibrary};
-\S\ref{sec:setoids} weighs that choice once the case studies are on the
-table.
+\S\ref{sec:setoids} weighs that choice.
 \texttt{Presentation.Properties} packages $\approx$ as an equivalence,
 hence as a setoid on words --- the \emph{word setoid}, the domain of every
 normal form in \S\ref{sec:nfproperty} --- and as the monoid
@@ -615,7 +615,7 @@ Presentations of concrete algebras are records
 \AgdaPrimitive{Set}\<%
 \end{code}
 
-i.e.\ a grouplike witness plus a group isomorphism from the presented
+\noindent i.e.\ a grouplike witness plus a group isomorphism from the presented
 group onto $G$ whose underlying function is the interpretation.  Weaker
 records (\aid{{\_}IsSubPresentationOf{\_}} with a monomorphism;
 monoid-level variants) come with upgrade lemmas: a surjective
@@ -701,7 +701,7 @@ downstream.  An \aid{Inverse} carries an explicit inverse map together
 with \emph{both} inverse laws; what our downstream code consumes is a
 section and the single law $\aid{inv-nf} \circ \aid{nf} \approx
 \mathrm{id}$, i.e.\ a \aid{RightInverse}, and the second law ---
-\emph{exactness}, $\aid{nf} \circ \aid{inv-nf} \equiv \mathrm{id}$ ---
+\emph{exactness}, $\aid{nf} \circ \aid{inv-nf} \approx \mathrm{id}$ ---
 is a hypothesis we deliberately keep separate, because carriers are
 allowed to contain junk that no word reaches (a coset type before
 pruning, a product carrier before a quotient) and because exactness is
@@ -714,9 +714,10 @@ consumes its factor normal forms; an \aid{Inverse} would have forced an
 explicit inverse map and exactness on every such client.
 
 The converse direction is where constructivity bites, a point we were
-careful about.  Classically, any injective $\aid{nf}$ whose image can
-be identified has a section by choosing preimages; constructively,
-\emph{the section is data}.  An \aid{Injection} gives no algorithm
+careful about.  Classically, an injective $\aid{nf}$ has a section on
+its image for free, by choosing a preimage for each normal form;
+constructively, choosing is not free, because \emph{the section is
+data}.  An \aid{Injection} gives no algorithm
 producing, for a normal form $u$, a word realizing it --- that algorithm
 is exactly the extra field of \aid{RightInverse}, and it is what the
 completeness lemma below consumes ($\aid{inv-nf}$ realizes each normal
@@ -805,16 +806,18 @@ $\aid{⟦}w\aid{⟧} \approx_2 \aid{⟦}v\aid{⟧}$, soundness transports along
 $w \approx \aid{normalize}\;w$, uniqueness identifies the normal forms,
 and injectivity of \aid{nf} closes the loop.  The proof is five lines; its
 value is that every case study only ever proves \aid{unique} --- a
-statement about \emph{normal forms}, i.e.\ about concrete first-order data
---- never about arbitrary words.  A companion lemma
-(\aid{by-normalization-wsurj}) similarly reduces surjectivity of the
-semantics to surjectivity on normal forms, and a converse
-(\aid{by-completeness}) recovers \aid{UniqueNormalForm} from
-completeness plus an exact section ($\aid{nf} \circ \aid{inv\text{-}nf}
-\equiv \mathrm{id}$) --- the route by which the construction theorems of
+statement about \emph{normal forms}, i.e.\ about concrete finite data
+--- never about arbitrary words.  Two companion lemmas follow the same
+pattern.  \aid{by-normalization-wsurj} reduces surjectivity of
+$\aid{⟦\_⟧}$ (every group element is denoted by some word) to
+surjectivity on normal forms (every group element is denoted by some
+canonical representative).  \aid{by-completeness} runs the main lemma
+backwards: from completeness plus an exact section ($\aid{nf} \circ
+\aid{inv\text{-}nf} \approx \mathrm{id}$) it recovers
+\aid{UniqueNormalForm}, which is how the construction theorems of
 \S\ref{sec:constructions} lift uniqueness witnesses through products,
-semidirect products, and amalgamations
-(Table~\ref{tab:nfs}).  Sub-presentations then come
+semidirect products, and amalgamations (Table~\ref{tab:nfs}).
+Sub-presentations then come
 for free (\texttt{Normalization.StarPresentation}): given soundness on
 axioms, a \aid{NormalForm}, and a \aid{UniqueNormalForm}, the module
 assembles the monoid (or, with \aid{Grouplike}, group) monomorphism ---
@@ -832,14 +835,13 @@ argument, so $k + n$ computes as soon as $k$ is a successor pattern while
 $n + k$ is stuck; given that $+$ is left-biased, we make our indices
 left-biased too: \aid{gate₂} lands in $\aid{Gen}\;(2 + n)$, not in
 $\aid{Gen}\;k$ with a side condition $k \ge 2$, and the $k$-fold shift
-has type $\aid{Gen}\;n \to \aid{Gen}\;(k + n)$.  Unification is then all
-that is needed to verify the well-formedness constraints that arise ---
-every index equation the coverage checker meets is solved by injectivity
-of \aid{₁₊}, never by arithmetic, avoiding stuck Diophantine equations of
-the form $\mathit{arity} + k \doteq \mathit{target}$ --- and downstream it
-is why the coset tables of the
-case studies can be defined by direct pattern matching and verified by
-\aid{refl}.  Second, the structural rules common to all circuit theories
+has type $\aid{Gen}\;n \to \aid{Gen}\;(k + n)$.  With this choice,
+every index equation the coverage checker meets is solved by
+unification alone, through injectivity of \aid{₁₊}, never by
+arithmetic; the stuck Diophantine equations of the form $\mathit{arity}
++ k \doteq \mathit{target}$ that the other choice produces never arise.
+Downstream, this is why the coset tables of the case studies can be
+defined by direct pattern matching.  Second, the structural rules common to all circuit theories
 are factored out once, by \aid{Lift-Relation}, whose permutation
 instance appeared in \S\ref{sec:permutations}; its lemma
 \aid{lemma-cong↑} lifts the \emph{entire congruence} one wire up ---
@@ -989,8 +991,8 @@ $[\,\_\,]$ the Schreier section.  The table $h$ pushes one letter of $G$
 past a coset, emitting a word of $H$ and the updated coset --- so
 $\aid{nf} = (h\,\aid{ᵗ})\,I : \aid{Word}\;Y \to \aid{Word}\;X \times C$
 runs the whole word from the identity coset.  A submodule
-\aid{Transfer} takes the five hypotheses that make the data a genuine
-coset presentation:
+\aid{Transfer} takes the five hypotheses that certify the data as a
+coset table for $\Gamma$ inside $\Delta$:
 
 \begin{code}%
 \>[0]\AgdaKeyword{module}\AgdaSpace{}%
@@ -1127,11 +1129,12 @@ injectivity --- and the payoff, the \emph{normal-form transport}
 \]
 a normal form for the subgroup yields one for the group, with one more
 coset digit.  A record \aid{PackedCosetTable} bundles the data and
-hypotheses as a single value --- so a whole verified level is an ordinary
-first-class object, two of which make an amalgamation
-(\S\ref{sec:constructions}) --- and \aid{CosetTower} iterates levels up an
-$\mathbb{N}$-indexed family of presentations, one such record
-(\aid{Extension}) per level, with carrier
+hypotheses into a single value, so that a verified level can be passed
+around like any other value; the amalgamation construction of
+\S\ref{sec:constructions} takes two such records as its input, and
+\aid{CosetTower} iterates levels up an
+$\mathbb{N}$-indexed family of presentations, one such record per
+level, with carrier
 $\aid{tower-carrier}\;\mathit{NF}_0\;(k{+}1) =
  \aid{tower-carrier}\;\mathit{NF}_0\;k \times C_k$: the mixed-radix normal
 form of \S\ref{sec:preliminaries}, one verified digit per level.
@@ -1147,10 +1150,12 @@ the qutrit Clifford+$T$ tower, a nine-coset level imposes seventy-two
 such obligations; every one is discharged by \aid{refl}.  The other
 hypotheses --- the soundness law (5) above all --- are equational
 derivations done by hand, one per case, as \aid{ract-sound} was in
-\S\ref{sec:permutations}.  This is the sense in which the framework
-absorbs part of the ``gigantic computations'' of \S\ref{sec:intro}: the
-case splits remain, but the cases that are mere computation cost
-nothing.
+\S\ref{sec:permutations}.  This is how the framework takes over part of
+the ``gigantic computations'' of \S\ref{sec:intro}.  The case splits
+remain and must still be written out, but the machine now carries two
+of their burdens: coverage checking guarantees that no case is missed,
+and the cases that are mere computation are closed by evaluation at no
+cost.
 
 \subsection{Products of presentations, and their presentation theorems}\label{sec:constructions}
 
@@ -1246,13 +1251,22 @@ identified), and definitional extension ($\aid{SugarRel}$: a new
 generator desugars to a word) --- plus $n$-fold iterations
 $\Gamma \mathrel{\aid{⊕\char94}} n$.  Congruence-lifting lemmas (\aid{lefts},
 \aid{rights}) embed the factors' congruences into the join, and
-normal-form transports move witnesses along unions and monomorphisms.
+normal-form transports carry witnesses across these maps: a normal form
+for one factor becomes a weak normal form for the union, and a normal
+form for a presented monoid pulls back along any monoid monomorphism
+into it.
 
 For each construction, \texttt{Presentation.Construct.Properties} proves
-two kinds of theorems.  \emph{Normal-form lifting}: from NF witnesses for
-$\Gamma$ and $\Delta$, an NF witness for the product relation set, with
-product carrier ($\mathit{NF}_1 \times \mathit{NF}_2$ for direct and
-semidirect products; for amalgamations the classical alternating carrier
+two kinds of theorems.  \emph{Normal-form lifting}: given normal-form
+witnesses for the factors $\Gamma$ and $\Delta$, with carriers
+$\mathit{NF}_1$ and $\mathit{NF}_2$, the construction has a normal-form
+witness whose carrier is $\mathit{NF}_1 \times \mathit{NF}_2$ for the
+direct and semidirect products.  The amalgamated product starts not
+from normal forms for the factors but from a normal form for the common
+subgroup, with carrier $\mathit{NF}_0$, together with a verified coset
+table for each factor over that subgroup, with coset types $C$ and $D$;
+its carrier is $\mathit{NF}_0 \times \aid{amalNFC}\;C\;D$, where the
+coset part
 \begin{code}[hide]%
 \>[0]\AgdaFunction{amalNFC}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -1280,8 +1294,9 @@ semidirect products; for amalgamations the classical alternating carrier
 \AgdaOperator{\AgdaDatatype{⊎}}\AgdaSpace{}%
 \AgdaRecord{⊤}\AgdaSymbol{)}\<%
 \end{code}
---- a word of alternating nontrivial coset representatives between two
-tails~\cite{magnus2004combinatorial}).  \emph{Presentation}: if the factors
+is the classical alternating carrier, a word of alternating nontrivial
+coset representatives between two
+tails~\cite{magnus2004combinatorial}.  \emph{Presentation}: if the factors
 present concrete groups, the constructed relation set presents the
 constructed group.  With their premise telescopes elided, the direct,
 semidirect, $n$-fold, and amalgamated statements read:
@@ -1329,7 +1344,7 @@ whose six fields (the action, its congruence, and its preservation of
 units and products on both sides) are exactly the laws that make the
 twisted multiplication associative and unital.
 \path{Algebra.Construct.Amalgamation} builds the amalgamated free product
-$M \ast_C N$ of \emph{monoids} with no concrete carrier: elements are
+$M \ast_C N$ of \emph{monoids} as a setoid rather than a set: elements are
 words over $|M| \uplus |N|$ and equality is the least congruence
 multiplying out same-factor letters, deleting units, and gluing
 $\varphi\,c$ to $\psi\,c$ --- the pushout in the category of monoids when
@@ -1345,12 +1360,14 @@ has monomorphisms and isomorphisms, but no epimorphisms).  Finally,
 \aid{Permutation′}~$n$ with composition, identity, and \aid{flip} as the
 \aid{Group} used by the tight semantics of \S\ref{sec:permutations}.  None
 of these is deep --- the seven modules total 865 lines --- but each was
-necessary for some semantic side of a presentation theorem.  The moral
-is that the standard library's algebra hierarchy is rich in
-\emph{structures} but thin in \emph{constructions}, and
-presentation-level results force the constructions into existence.
+needed for the semantic side of at least one presentation theorem.  The
+pattern is telling: the standard library's algebra hierarchy is rich in
+\emph{structures} --- monoids, groups, their morphisms --- but thin in
+\emph{constructions} that build new ones from old, and a presentation
+theorem cannot be stated without the group it presents, so each
+construction had to be built before its theorem could be.
 
-\subsection{Proof engineering: solvers and evaluation}\label{sec:solvers}
+\subsection{Proof engineering: solvers, evaluation, and notation}\label{sec:solvers}
 
 Three small tools carry a large share of the equational text.
 \aid{by-assoc} proves $w \approx v$ whenever the two words have the same
@@ -1363,10 +1380,12 @@ particular association.  \aid{by-equal-nf} (\S\ref{sec:nfproperty})
 closes any goal whose two sides have the same computed normal form; since
 coset tables and normal-form maps are structurally recursive programs,
 this turns the well-definedness half of table verification into
-evaluation.  Both are used like tactics, but neither uses
-metaprogramming: each is a verified function into a canonical data type
-followed by \aid{refl}, the small-scale-reflection recipe with the
-reflection left to the evaluator.
+evaluation.  All three are used like tactics, but none uses
+metaprogramming: each maps both sides of a goal into a canonical data
+type by a function proved correct once, and then compares the results
+with \aid{refl}, so the evaluator does the work that a reflective tactic
+would do by proof search.
+
 Finally, mundane but effective: a shared \texttt{Notations} module of
 numeral patterns (\aid{₀} … \aid{₁₅}, successor patterns \aid{₁₊} …
 \aid{₄₊} overloaded over $\mathbb{N}$ and $\mathsf{Fin}$, and \aid{auto}

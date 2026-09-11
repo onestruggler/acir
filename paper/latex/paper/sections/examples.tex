@@ -199,14 +199,14 @@ construction theorems of \S\ref{sec:constructions} with their premise
 telescopes.  We then discuss each family, ending with the three
 amalgamation case studies, whose final theorems are monoid
 \emph{isomorphisms} between gate-set presentations and amalgamated
-products.  Throughout, $\bot$ is the empty type and $\top$ the unit
+products of presentations.  Throughout, $\bot$ is the empty type and $\top$ the unit
 type, whose sole element is \aid{tt}; used as alphabets they have no
 generator and a single generator respectively, and we write $T$ for the
 one-letter word $[\,\aid{tt}\,]$\aid{ʷ}.
 
 \begin{table}
 \caption{Concrete presentation theorems (all verified; names as in
-\texttt{MainTheorems.agda}).  $p$ ranges over odd primes, $n, m, N$ over
+\texttt{MainTheorems.agda}).  $p$ ranges over primes, $n, m, N$ over
 naturals.}
 \label{tab:presentations}
 \centering
@@ -229,11 +229,9 @@ $(C_N \aidop{⊕\char94} n) \aidop{⋄} S_n\text{-circuits} \aidop{⋄} \aid{Con
 
 \begin{table}
 \caption{Normal-form and uniqueness witnesses (selection).  NFI =
-\aid{NormalFormInjective}, NF = \aid{NormalForm} (with section), UNF =
-\aid{UniqueNormalForm}.  For the three constructions, UNF is lifted
-from the factor witnesses --- for the amalgam, from two first-order
-exactness certificates (base normal form, coset table on section
-words).}
+\aid{NormalFormInjective}, NF = \aid{NormalForm}, UNF =
+\aid{UniqueNormalForm}; for the constructions, UNF is lifted from the
+factor witnesses.}
 \label{tab:nfs}
 \centering
 \footnotesize
@@ -247,7 +245,7 @@ cyclic, order $0$ & $\mathbb{N}$ & NFI, NF, UNF & presents the monoid $(\mathbb{
 $S_n$ circuits & $\top \times C\,1 \times \dots \times C\,(n{-}1)$ & NFI, NF, UNF$\times 2$ & factorial system, $|{\cdot}| = n!$ \\
 $\Gamma \oplus \Delta$ & $\mathit{NF}_1 \times \mathit{NF}_2$ & NFI, NF, UNF & lifted from factors \\
 $\Gamma \rtimes \Delta \star \mathit{conj}$ & $\mathit{NF}_1 \times \mathit{NF}_2$ & NFI, NF, UNF & twist on the left factor \\
-amalgamated $P_1 \ast P_2$ & $(D \uplus \top) \times \mathsf{List}(C {\times} D) \times (C \uplus \top)$ & NFI, NF, UNF & alternating cosets \\
+amalgamated $P_1 \ast P_2$ & $\mathit{NF}_0 \times \aid{amalNFC}\;C\;D$ & NFI, NF, UNF & base NF, then alternating cosets (\S\ref{sec:constructions}) \\
 Clifford+$T$ base $\langle \omega \rangle {\times} \langle S \rangle$ & $\mathsf{Fin}\,8 \times \mathsf{Fin}\,4$ & NFI, NF, UNF & radices $8, 4$; unique for $\mathbb{Z}_8 {\times} \mathbb{Z}_4$ \\
 \bottomrule
 \end{tabular}
@@ -261,8 +259,8 @@ for every positive order at once (\aid{cyclic-presentation}): the normal
 form of a word is its letter count modulo $n{+}1$, the section sends the
 residue $k$ to $T^{k}$, and uniqueness for
 $\mathbb{Z}/(n{+}1)\mathbb{Z}$ is immediate.  Order $0$ gets a theorem
-of its own, \aid{cyclic-monoid-presentation}: with the same witness
-(carrier $\mathbb{N}$, no wraparound), $T^{\,0} = \varepsilon$
+of its own, \aid{cyclic-monoid-presentation}: the carrier is
+$\mathbb{N}$ and counts never wrap, and $T^{\,0} = \varepsilon$
 \aid{IsMonoidPresentationOf} $(\mathbb{N}, +, 0)$ --- the free monoid
 rather than the group $\mathbb{Z}$, since, as \S\ref{sec:presentations}
 explained, the generator has no inverse there and the \aid{Grouplike}
@@ -332,7 +330,7 @@ and $n$ at once} --- a family of completeness results parameterized over
 two naturals, where a mechanized, compositional treatment clearly outruns
 the per-instance pen-and-paper approach.
 
-\subsection{Pauli groups in all odd prime dimensions}\label{sec:pauli}
+\subsection{Pauli groups in all prime dimensions}\label{sec:pauli}
 
 The Pauli development is the purest showcase of compositionality --- there
 is \emph{no} coset enumeration in it at all:
@@ -372,8 +370,8 @@ is \emph{no} coset enumeration in it at all:
 \AgdaBound{prime}\<%
 \end{code}
 
-For an odd prime $p = 2 + m$, with \aid{prime} its primality proof --- a
-\emph{qupit} is a qudit whose dimension is an odd prime --- the
+For a prime $p = 2 + m$, with \aid{prime} its primality proof --- a
+\emph{qupit} is a qudit whose dimension is a prime --- the
 single-qupit relation set $\aid{Γ-Pauli₁}$ is the direct-product join of
 two order-$p$ cyclic presentations ($X$- and $Z$-type generators, which
 commute in the
@@ -399,8 +397,10 @@ good reasons: Clifford+$T$ is the smallest universal gate set in common
 use, its single-qubit fragment has the first and best-known canonical
 form --- the Matsumoto--Amano normal
 form~\cite{matsumoto2008representation,giles2013remarks}, which underlies
-exact synthesis and $T$-count optimality --- and every later normal form
-for Clifford-style gate sets is modelled on it.  The relation set, over
+exact synthesis and $T$-count optimality --- and the later normal forms
+for single-qutrit and single-qudit
+Clifford+$T$~\cite{glaudell2019qutrit,prakash2018qutrit,jain2020qudit}
+follow its syllable pattern.  The relation set, over
 generators $T, H, S, \omega$ with $X := H S S H$ as an abbreviation, is
 \[
   \omega^8 = \varepsilon,\quad
@@ -422,17 +422,30 @@ The tower starts from the direct product $\langle \omega \rangle \times
 \langle S \rangle$ of cyclic groups of orders $8$ and $4$ (normal-form
 radices $8 \cdot 4$), extends it by a two-coset table ($\varepsilon$,
 $X$) to $M$, and then extends \emph{twice from $M$}: by a two-coset
-table to the $T$-side factor, and by a three-coset table ($\varepsilon$,
+table ($\varepsilon$, $T$) to the $T$-side factor, and by a three-coset table ($\varepsilon$,
 $H$, $HS$) to the Clifford group on the $H$-side.  The two
 \aid{PackedCosetTable}s over $M$ form an \aid{AmalDataNF}, and the
-amalgamation module produces the alternating normal form: with $C$ the
-one proper $T$-coset and $D = \{H, HS\}$, an element of
-$\aid{amalNFC}\;C\;D$ is an optional leading $H$-syllable, a list of
-alternations, and an optional trailing $T$.  This is precisely the
-Matsumoto--Amano normal form, $(\varepsilon \mid T)\,(HT \mid
-SHT)^{*}\,\mathcal{C}$ with $\mathcal{C}$ Clifford, read
-group-theoretically as the alternating normal form of an amalgamated free
-product --- an observation already made for this group in the
+amalgamation module produces the alternating normal form.  With $C =
+\{T\}$ the one proper $T$-coset and $D = \{H, HS\}$ the two proper
+$H$-cosets, a normal form is an element of $\mathit{NF}_0 \times
+\aid{amalNFC}\;C\;D$, and its section spells it out, in the library's
+left-to-right word order, as the regular expression
+\[
+  \mathcal{M}\;(\varepsilon \mid H \mid HS)\;(TH \mid THS)^{*}\;(\varepsilon \mid T),
+\]
+where $\mathcal{M}$ stands for the base normal form of the $M$-part: a
+Clifford prefix, then alternating syllables, each a $T$ followed by a
+proper $H$-coset representative, then an optional final $T$.  Read
+right to left, this is
+\[
+  (\varepsilon \mid T)\;(HT \mid SHT)^{*}\;(\varepsilon \mid H \mid SH)\;\mathcal{M},
+\]
+which is the Matsumoto--Amano normal form $(\varepsilon \mid T)\,(HT
+\mid SHT)^{*}\,\mathcal{C}$~\cite{matsumoto2008representation,giles2013remarks}
+with its single Clifford factor $\mathcal{C}$ split into a coset
+representative and an element of $M$.  The amalgamated free product
+thus recovers the Matsumoto--Amano syllable structure from the group
+theory alone, an observation already made for this group in the
 Bian--Selinger line~\cite{bian2023cliffordt2,bian2023thesis}.  The final
 theorem is the
 syntactic isomorphism assembled by \aid{StarIsomorphism} from
@@ -501,17 +514,20 @@ $(XS)(SX) = \zeta^6 (SX)(XS)$), then a two-coset table adjoining $H^2$ to
 reach $M$, and finally the two extensions over $M$.  The common subgroup
 $M$ is the subgroup $\mathcal{S}\mathcal{M}$ of generalized permutation
 matrices (with the central phase) in the canonical form of Glaudell,
-Ross, and Taylor~\cite{glaudell2019qutrit} (obtained independently by
-Prakash, Jain, Kapur, and Seth~\cite{prakash2018qutrit}, and extended to
-qudits in~\cite{jain2020qudit}), by which every single-qutrit
-Clifford+$T$ operator is uniquely
-$(\varepsilon \mid T \mid H^2T)\,
- (HT \mid H^3T \mid SHT \mid SH^3T \mid S^2HT \mid S^2H^3T)^{*}\,
- \mathcal{C}$, $T$-optimally.  Our alternating carrier is this form read
-group-theoretically: the $T$-side contributes the proper cosets $T$ and
-$TH^2$ (their leading factor), the $H$-side the cosets $H$, $HS$, $HS^2$
-(their Clifford prefixes, in the mirrored reading), and the $2 \times 3$
-alternation letters are their six syllables.  The final theorem,
+Ross, and Taylor~\cite{glaudell2019qutrit}.  With $C = \{T, TH^2\}$ and $D = \{H,
+HS, HS^2\}$, the alternating normal form reads
+\[
+  \mathcal{M}\;(\varepsilon \mid H \mid HS \mid HS^2)\;
+  \bigl((T \mid TH^2)(H \mid HS \mid HS^2)\bigr)^{*}\;
+  (\varepsilon \mid T \mid TH^2),
+\]
+and right to left it is their $T$-optimal canonical form
+$(\varepsilon \mid T \mid H^2T)\,(HT \mid H^3T \mid SHT \mid SH^3T \mid
+S^2HT \mid S^2H^3T)^{*}\,\mathcal{C}$~\cite{glaudell2019qutrit}
+(obtained independently by Prakash, Jain, Kapur, and
+Seth~\cite{prakash2018qutrit}, and extended to qudits
+in~\cite{jain2020qudit}), with $\mathcal{C}$ split as in the qubit
+case.  The final theorem,
 \aid{clifford+T-qutrit-isomorphism} in the index, has the same shape as
 the qubit one and the same proof economy: the nine-coset level alone
 imposes seventy-two axiom-preservation obligations, every one closed by
@@ -545,17 +561,28 @@ $K_{01}$ to $M$: a six-coset Reidemeister--Schreier level presents
 $\langle K_{01}, i_0, i_1 \rangle$ over $\langle i_0 \rangle \times
 \langle i_1 \rangle$, then a direct product adjoins $\langle i_2 \rangle$
 and a definitional extension introduces $X_{01}$ as a word in $K_{01}$,
-$i_0$, $i_1$.  Both factors have index $3$ over $M$, with proper coset
-representatives $\{X_{12},\, X_{12}X_{01}\}$ on the left and
-$\{K_{01},\, K_{01} i_0\}$ on the right, so the alternating carrier of
-Table~\ref{tab:nfs} reads: every element of $U_3(\mathbb{Z}[\tfrac12,i])$
-is uniquely an optional $K$-syllable, a list of alternations from the
-product of the two representative sets, an optional trailing
-$X$-syllable, and a tail in $M$ carried by the normal form of $M$ itself.
+$i_0$, $i_1$.  Both factors have index $3$ over $M$, with $C = \{X_{12},
+X_{12}X_{01}\}$ the proper cosets on the left and $D = \{K_{01}, K_{01}
+i_0\}$ on the right, so the alternating normal form reads
+\[
+  \mathcal{M}\;(\varepsilon \mid K_{01} \mid K_{01} i_0)\;
+  \bigl((X_{12} \mid X_{12}X_{01})(K_{01} \mid K_{01} i_0)\bigr)^{*}\;
+  (\varepsilon \mid X_{12} \mid X_{12}X_{01}),
+\]
+with $\mathcal{M}$ the normal form of $M$: every element of
+$U_3(\mathbb{Z}[\tfrac12,i])$ is uniquely a monomial part, an optional
+$K$-syllable, alternating syllables, and an optional final
+transposition.  Unlike the two Clifford+$T$ studies, this form has no
+counterpart in the literature: the normal form of Bian and
+Selinger~\cite{bian2021un} is the word produced by their exact-synthesis
+algorithm, defined by matrix reduction rather than by a syllable
+pattern, so the regular expression above is a new canonical form for
+$U_3(\mathbb{Z}[\tfrac12,i])$, with the Matsumoto--Amano-style syllable
+structure, and it comes out of the amalgamation construction for free.
 The final theorem, \aid{U₃-presentation-isomorphism}, is again a monoid
 isomorphism between the flat eleven-relation presentation and the
 amalgamated one.  At $2\,868$ and $1\,394$ source lines, the qutrit and
 $U_3$ studies are the largest verified objects in the library, and both
-consist mostly of first-order tables and \aid{refl}-discharged
+consist mostly of finite tables and \aid{refl}-discharged
 obligations --- the shape of proof this framework was designed to make
 routine.

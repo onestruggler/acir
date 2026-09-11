@@ -11,7 +11,7 @@ arithmetic --- and half the examples of \S\ref{sec:examples}, of which
 the qutrit Clifford+$T$ and $U_3$ studies alone are 4\,300 lines.  Of
 the seven thousand lines under \texttt{Presentation}, only about a
 thousand are the core proper; 4\,300 are the five product constructions
-with their two-sided theorems, the amalgamation alone 1\,800, and six
+with their normal-form and presentation theorems, the amalgamation alone 1\,800, and six
 hundred are the solvers.
 
 Typechecking cost is modest.  Checking the whole development from
@@ -26,7 +26,7 @@ and every other module is under 4\,s.
 The decision of \S\ref{sec:presentations} --- presented monoids as
 setoids over inductive congruences, not as quotient types --- deserves a
 balance sheet now that the case studies are on the table.  What it cost:
-every function out of words carries a congruence proof, and the standard
+every function out of the presented monoid carries a congruence proof, and the standard
 library's setoid bundles such as \aid{Injection} carry that bookkeeping.
 What it bought: (i) words are a plain inductive type, so normal-form
 maps, coset tables, and sections are defined by pattern matching and run
@@ -34,19 +34,21 @@ by evaluation, which is how the hundreds of table obligations in
 \S\ref{sec:examples} close by \aid{refl}; (ii) sections --- maps
 \emph{into} the syntax choosing representatives, the load-bearing
 ingredient of \aid{NormalForm}, Schreier transversals, and amalgamation
-tails --- are natural for setoids and not in general definable out of a
-quotient; (iii) the library stays inside plain Agda and the standard
-library's algebra hierarchy, a requirement for upstreaming; (iv) the
-congruence $\approx$ is itself an inductive family, so the
-congruence-lifting and transport lemmas of \S\ref{sec:constructions} and
-the wire-shift lemma of \S\ref{sec:circuits} are inductions on its
-derivations --- relation sets, the objects this library exists to
-manipulate, are first-class, whereas a quotient absorbs the relation into
-the identity type and leaves nothing to induct on.  The univalent
+tails --- are natural when the syntax is a plain inductive type and lose
+their point out of a quotient, whose elements carry no concrete
+representative to compute with; (iii) the library stays inside plain Agda and the standard
+library's algebra hierarchy, a requirement for upstreaming; and, as a
+secondary benefit, (iv) the congruence $\approx$ is itself an inductive
+family, so its derivations are data: the congruence-lifting and
+transport lemmas of \S\ref{sec:constructions} and the wire-shift lemma
+of \S\ref{sec:circuits} are inductions on them, whereas under a quotient
+derivations become paths, which transport for free but cannot be
+inspected.  The univalent
 alternative~\cite{vezzosi2019cubical,cubicallibrary} would replace
-$\approx$ by $\equiv$, so that equational reasoning becomes rewriting,
-but the quotient's eliminator still demands a respect proof for every
-function out of it, and (ii), (iii), and (iv) would be forfeited.  For a
+$\approx$ by $\equiv$, so that equational reasoning becomes rewriting
+and the inductions of (iv) become respect proofs for the raw axioms,
+but the quotient's eliminator still demands such a proof for every
+function out of it, and (ii) and (iii) would be forfeited.  For a
 library whose main goal is to prove completeness of relation sets, we
 found the setoid side clearly favourable.
 
@@ -58,5 +60,11 @@ product of smaller presentations, and the isomorphism between gate-set
 presented monoids and the concrete matrix monoids ---
 Clifford+$T$~\cite{giles2013remarks,glaudell2019qutrit} or the
 unitaries over $\mathbb{Z}[\tfrac12,i]$~\cite{bian2021un} --- is taken
-from the literature, not formalized.
+from the literature, not formalized.  The reason is that the semantic
+side needs objects the standard library does not have --- the rings
+$\mathbb{Z}[\tfrac12,i]$ and $\mathbb{Z}[1/\sqrt2,i]$ and unitary
+matrices over them --- and that, even with a matrix semantics in hand,
+the completeness proof of each paper would have to be formalized
+first.  Both
+are future work.
 

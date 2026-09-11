@@ -58,7 +58,7 @@ normal forms with equal denotations are equal --- a reduction proved
 once, as a generic lemma.  Normal forms are built one wire at a time: the
 circuits on $n$ wires sit inside those on $n{+}1$ wires as the circuits
 that leave the bottom wire alone, and a \emph{coset table} --- a small
-first-order function recording how a gate moves past each coset
+finite table recording how a gate moves past each coset
 representative --- adds one ``digit'' per wire.
 Section~\ref{sec:permutations} shows the whole route on the smallest
 example, permutation circuits presenting the symmetric groups.
@@ -68,15 +68,15 @@ written in plain, setoid-based
 Agda on top of the standard
 library~\cite{daggitt2025stdlib,agdastdlib}, not in cubical Agda or a
 HoTT library, so a presented monoid is a setoid on words, not a quotient
-type.  The reason is that relations are what this library manipulates:
-the congruence a relation set generates is an inductive family, its
-derivations are data that the lifting and transport lemmas induct on and
-translate, and a quotient would absorb the relation into the identity
-type and leave nothing to induct on.  A second consequence is that our
-central devices are maps \emph{into} the syntax --- sections of normal
-forms, coset representatives, amalgamation tails --- which are natural
-for setoids and awkward for quotients; \S\ref{sec:setoids} weighs the
-trade.
+type.  The reason is that the library computes with syntax: words stay
+a plain inductive type, so coset tables and normal-form maps
+pattern-match on concrete representatives and their obligations close
+by evaluation, and our central devices are maps \emph{into} the syntax
+--- sections of normal forms, coset representatives, amalgamation tails
+--- which need concrete representatives to land on and lose their point
+in a quotient.  A secondary benefit is that the congruence a relation
+set generates is an inductive family, so its derivations are data one
+can induct on; \S\ref{sec:setoids} weighs the trade.
 
 \paragraph{Why this is a programming-languages problem.}
 Circuit calculi are programming languages of a particular kind, and
@@ -102,11 +102,12 @@ evaluation.
 \begin{enumerate}
 \item[(0)] \textbf{A library for circuit normal forms and complete relation
   sets}, organized as sketched above: presentations as inductive
-  congruences (\S\ref{sec:presentations}), normal forms as
-  standard-library function bundles (\S\ref{sec:nfproperty}), the generic
-  completeness lemma \aid{by-normalization}, and a verified, monoid-level
-  Reidemeister--Schreier engine of coset tables and towers
-  (\S\ref{sec:engine}).
+  congruences (\S\ref{sec:presentations}); normal forms as
+  standard-library function bundles, with the generic completeness lemma
+  \aid{by-normalization} (\S\ref{sec:nfproperty}); a verified,
+  monoid-level Reidemeister--Schreier engine of coset tables and towers
+  (\S\ref{sec:engine}); and solvers that close associativity and
+  normal-form goals by evaluation (\S\ref{sec:solvers}).
 
 \item[(1)] \textbf{Inductively defined circuits, for easy normalization and
   completeness proofs.}  A generic circuit layer represents $n$-wire
@@ -123,27 +124,28 @@ evaluation.
   for an endofunction semantics and presenting the permutations of
   $\mathsf{Fin}\;n$; wreath products $\mathbb{Z}_N \wr S_n$, the groups of
   \emph{signed permutations}; Pauli groups $(\mathbb{Z}_p \times
-  \mathbb{Z}_p)^n$ for every odd prime $p$, assembled compositionally; and,
+  \mathbb{Z}_p)^n$ for every prime $p$, assembled compositionally; and,
   as amalgamated free products with verified alternating normal forms, the
   single-qubit and single-qutrit Clifford+$T$ monoids and
-  $U_3(\mathbb{Z}[\tfrac12,i])$ from Bian and Selinger's presentation of
-  $U_n(\mathbb{Z}[\tfrac12,i])$~\cite{bian2021un}.  Every headline theorem
-  is restated, with its full type, in one index module
-  \texttt{MainTheorems.agda}.
+  $U_3(\mathbb{Z}[\tfrac12,i])$.
 
 \item[(3)] \textbf{Monoid-level amalgamation and Reidemeister--Schreier.}
   Following Bian and Selinger's
   methodology~\cite{bian2023cliffordt2,bian2023cliffordcs3,bian2023thesis},
   we generalize coset enumeration, the Reidemeister--Schreier subgroup
   presentation, and amalgamated free products from groups to monoid
-  presentations, where inverses are not primitive, and prove the
-  corresponding \emph{semantic} presentation theorems: if $\Gamma$ presents
-  $G_1$ and $\Delta$ presents $G_2$, the constructed relation sets present
-  the direct, semidirect, $n$-fold, and amalgamated products, and (given a
-  realizing short exact sequence) any group extension
+  presentations, where inverses are not primitive
+  (\S\ref{sec:engine}, \S\ref{sec:constructions}).
+
+\item[(4)] \textbf{Presentation theorems for the product constructions.}
+  The direct, semidirect, $n$-fold, and amalgamated products of
+  presentations, and group extensions given a realizing short exact
+  sequence, each come with a presentation theorem against concrete
+  groups: if $\Gamma$ presents $G_1$ and $\Delta$ presents $G_2$, the
+  constructed relation set presents the constructed group
   (\S\ref{sec:constructions}).
 
-\item[(4)] \textbf{New theorems for the standard library}
+\item[(5)] \textbf{New theorems for the standard library}
   (\S\ref{sec:forstdlib}): semidirect products of monoids and groups via a
   bundled \aid{Action} record; amalgamated free products of monoids as a
   pushout; group extensions and split extensions as short exact sequences;
@@ -152,31 +154,34 @@ evaluation.
   bundled as a \aid{Group}.
 \end{enumerate}
 
-Everything stated as a theorem in this paper typechecks under
-\texttt{--safe} and \texttt{--cubical-compatible}: there are no
-postulates, no unfinished holes, and no appeals to classical axioms
-anywhere in the development described here.  The development is
+Everything stated as a theorem in this paper is verified: each headline
+theorem is restated, with its full type, in one index module
+\texttt{MainTheorems.agda}, and the whole development typechecks under
+\texttt{--safe} and \texttt{--cubical-compatible}, with no postulates,
+no unfinished holes, and no classical axioms.  The development is
 constructive throughout, and the constructivity is load-bearing rather
-than incidental: normal forms are computable functions, their sections
-are data, coset tables are executable programs, and completeness is
-obtained by running them --- so every completeness theorem doubles as a
-verified decision procedure for the word problem of its circuit theory,
-and every normal-form witness as a normalizer that can be extracted and
-run.  Wherever a statement
-in this paper is \emph{not} formalized, the text says so explicitly, and
+than incidental.  Normal forms are computable functions, their sections
+are data, and coset tables are executable programs, so every
+completeness theorem doubles as a verified decision procedure for the
+word problem of its circuit theory, and every normal-form witness as a
+normalizer that can be extracted and run.  Wherever a statement in this
+paper is \emph{not} formalized, the text says so explicitly, and
 \S\ref{sec:threats} collects these places.
 
 \subsection{Paper outline}
 
-Section~\ref{sec:permutations} walks through the permutation case study.
-Section~\ref{sec:preliminaries} recalls the group theory behind the design:
-normal forms from subgroup chains and transversals, and their mixed-radix
-reading.  Section~\ref{sec:design} presents the library layer by layer,
-with the design rationale first: words and presentations, the zoo of
+Section~\ref{sec:permutations} walks through the permutation case
+study, the smallest instance of the whole pipeline.
+Section~\ref{sec:preliminaries} recalls the group theory behind the
+design: normal forms from subgroup chains and transversals, and their
+mixed-radix reading.  Section~\ref{sec:design} presents the library
+layer by layer, design rationale first: words and presentations, the
 normal-form witnesses, inductively defined circuits, the
-Reidemeister--Schreier engine, and the product constructions with their
-presentation theorems.  Section~\ref{sec:examples} is the catalogue of
-verified results and what each was chosen to exercise, with pointers into
-\texttt{MainTheorems.agda}.  Section~\ref{sec:related} surveys related
-work and compares with other formalizations.  Section~\ref{sec:discussion} discusses statistics and
-typechecking cost, design decisions, and limitations, and Section~\ref{sec:conclusion} concludes.
+Reidemeister--Schreier engine, the product constructions with their
+presentation theorems, the standard-library additions, and the solvers.
+Section~\ref{sec:examples} is the catalogue of verified results and
+what each was chosen to exercise.  Section~\ref{sec:related} surveys
+related work and compares with other formalizations,
+Section~\ref{sec:discussion} discusses size and typechecking cost, the
+setoid decision, and limitations, and Section~\ref{sec:conclusion}
+concludes.

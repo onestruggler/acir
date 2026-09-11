@@ -319,10 +319,10 @@ The group-specific relations are an inductive family indexed by the wire
 count.  Each axiom is stated once, with its gates at the bottom of the
 wires and the width left open (the implicit $n$), so that one constructor
 covers every width at which the axiom fits; the structural rule
-\aid{cong↑} below moves it to any height.  (In Agda, underscores in a
-name mark argument positions: the mixfix \aid{{\_}SRel,{\_}==={\_}} is
-written $n\;\aid{SRel,}\;w \aidrel{===} v$, ``$w = v$ is an axiom at $n$
-wires''.)
+\aid{cong↑} below moves it to any height.  (Agda names may be mixfix:
+each underscore in \aid{{\_}SRel,{\_}==={\_}} marks an argument
+position, so the family is applied as $n\;\aid{SRel,}\;w \aidrel{===}
+v$, read ``$w = v$ is an axiom on $n$ wires''.)
 
 \begin{center}
 \begin{minipage}[c]{0.58\linewidth}
@@ -381,9 +381,11 @@ wires''.)
 \end{minipage}
 \end{center}
 
-\noindent These are the Coxeter presentation of $S_n$ in circuit clothing:
-$\sigma^2 = \varepsilon$ and the braid (Yang--Baxter) relation.  What
-about the relations every circuit theory needs, whatever its gates?  By a
+\noindent These two axioms are two thirds of the Coxeter presentation of
+$S_n$: $\sigma^2 = \varepsilon$ and the braid (Yang--Baxter) relation.
+The third Coxeter relation, that swaps on disjoint wires commute, is not
+specific to permutations: it is one of the relations every circuit
+theory needs, whatever its gates.  By a
 \emph{circuit theory} we mean a gate set with gate-specific relations,
 presenting for each width $n$ a monoid of $n$-wire circuits under
 sequential composition.  Such circuits are the fixed-width slices of a
@@ -538,11 +540,12 @@ of the form $c\;{\uparrow}$.  Read as permutations, two circuits lie in the
 same right coset of $S_n$ exactly when they bring the same wire to the
 bottom position; there are $n{+}1$ choices, so $S_n$ has index $n{+}1$,
 and a natural representative of each coset is the \emph{descending
-staircase} of swaps that carries that wire down.  In Agda a coset is a
-\emph{descriptor}, the length of the staircase as a unary numeral bounded
-by the width, and the \emph{section} $[\,\_\,]^{\mathsf c}$ realizes it
-as the staircase circuit; the representatives on three, two, and one
-wires are drawn on the right:
+staircase} of swaps that carries that wire down.  In the library a coset
+is not a set of circuits but a label naming one, an element of the finite type
+$\aid{C}\;n$; here the label is the length of the staircase, as a unary
+numeral bounded by the width, and the \emph{section} $[\,\_\,]^{\mathsf
+c}$ maps it to the staircase circuit.  The representatives on three,
+two, and one wires are drawn on the right:
 
 \begin{center}
 \begin{minipage}[c]{0.30\linewidth}
@@ -621,20 +624,22 @@ uniquely as $c_1 c_2 \cdots c_n$ with $c_k \in \aid{C}\;k$ --- a numeral
 in the \emph{factorial number system}, one digit per level, since
 $|S_{n+1}| = (n{+}1) \cdot n \cdots 2$.
 
-\emph{Computing} this factorization is the job of the coset table, a
-right action that pushes one generator past a staircase and returns a
-residual circuit on the wires above together with the updated coset.
-Pushing $\sigma$ into a staircase can lengthen it, absorb it ($\sigma^2 =
+\emph{Computing} this factorization is the job of the coset table.
+Given a coset, represented by its staircase, and one generator, the
+table says where their product lands --- the updated coset --- and what
+is left over on the wires above --- the residual circuit --- so that
+staircase followed by generator equals residual (shifted up) followed by
+updated staircase.
+Pushing $\sigma$ into a staircase can lengthen it, cancel with it ($\sigma^2 =
 \varepsilon$), or pass it through and shift it up (Yang--Baxter), or
 commute past; for a generator that does not touch the bottom wire we can
-recurse.  What is
-left behind is nothing, one swap on the wires above, or in the other case
-studies a proper circuit on the wires above, which is why the table
-returns a circuit on one wire fewer rather than a generator
+recurse.  The residual is empty or a single swap here, but in richer
+gate sets it can be a longer circuit, which is why the table returns a
+circuit on one wire fewer rather than a generator
 (Figure~\ref{fig:pushing} draws the four cases):
 
 \begin{center}
-\begin{minipage}[c]{0.72\linewidth}
+\begin{minipage}[c]{0.65\linewidth}
 \begingroup\setlength{\mathindent}{0pt}
 \begin{code}%
 \>[0]\AgdaFunction{ract}\AgdaSpace{}%
@@ -673,7 +678,7 @@ returns a circuit on one wire fewer rather than a generator
 \AgdaInductiveConstructor{ε}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaInductiveConstructor{ε}%
-\>[36]\AgdaComment{--\ absorbs\ (σ²\ =\ ε)}\<%
+\>[36]\AgdaComment{--\ cancels\ (σ²\ =\ ε)}\<%
 \\
 \>[0]\AgdaFunction{ract}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
@@ -698,7 +703,7 @@ returns a circuit on one wire fewer rather than a generator
 \AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
 \AgdaInductiveConstructor{ε}%
-\>[36]\AgdaComment{--\ commutes\ past\ /\ recurses}\<%
+\>[36]\AgdaComment{--\ commutes\ past}\<%
 \\
 \>[0]\AgdaFunction{ract}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
@@ -720,8 +725,8 @@ returns a circuit on one wire fewer rather than a generator
 \>[64]\AgdaComment{--\ recurses}\<%
 \end{code}
 \endgroup
-\end{minipage}\hspace{1em}%
-\begin{minipage}[c]{0.24\linewidth}\centering
+\end{minipage}\hspace{0.5em}%
+\begin{minipage}[c]{0.30\linewidth}\raggedright
   \ufig[0.35]{ract-l}\;\scalebox{0.7}{$\approx$}\;\ufig[0.35]{ract-r}
 \end{minipage}
 \end{center}
@@ -732,14 +737,14 @@ returns a circuit on one wire fewer rather than a generator
   \ufig[0.35]{push4-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.35]{push4-r} &
     \small grows &
   \ufig[0.35]{push3-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.35]{push3-r} &
-    \small absorbs ($\sigma^2 = \varepsilon$)\\[4pt]
+    \small cancels ($\sigma^2 = \varepsilon$)\\[4pt]
   \ufig[0.35]{push2-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.35]{push2-r} &
     \small passes (Yang--Baxter) &
   \ufig[0.35]{push1-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.35]{push1-r} &
-    \small far-commutation
+    \small commutes past
 \end{tabular}
 \caption{Pushing a swap through a staircase: the four cases of the coset
-table \aid{ract} as circuit rewrites, in the order of its clauses.}
+table \aid{ract} as circuit rewrites.}
 \label{fig:pushing}
 \end{figure}
 
@@ -851,21 +856,35 @@ analysis over the axioms.  The heart of the matter is the \emph{unique
 normal form} property (\S\ref{sec:nfproperty}), that normal forms with
 equal denotations are equal: $\aid{⟦}\;\aid{inv-nf}\;u\,\aid{⟧} \doteq
 \aid{⟦}\;\aid{inv-nf}\;v\,\aid{⟧}$ implies $u \equiv v$, proved by
-induction on the tower, since two staircase sections that agree as
-functions send the top point to the same place and so peel off equal top
-digits.  Soundness and uniqueness are exactly the premises of the generic
+induction on the tower: the lower digits fix the last point, so the top
+digit alone determines where the permutation sends it; equal denotations
+therefore force equal top digits, and cancelling them reduces the claim
+to the level below.  Soundness and uniqueness are exactly the premises of the generic
 lemma \aid{by-normalization}, which concludes \emph{completeness}:
-$\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ implies $w \approx v$.  The index
-module states these for every $n$ (\aid{symmetric-soundness},
+$\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ implies $w \approx v$.
+Unfolding the lemma on this example shows where the axioms enter.  Each
+step of \aid{nf} is one of the rewrites of Figure~\ref{fig:pushing}, and
+each of those is an instance of \aid{order}, of \aid{yang-baxter}, or of
+the structural rules (the far commutation \aid{comm₂}, lifted to the
+wires above by \aid{cong↑}); so $w \approx \aid{inv-nf}\;(\aid{nf}\;w)$
+--- the law of the \aid{NormalForm} witness --- is a derivation from
+exactly those rules.  Now suppose $\aid{⟦}w\aid{⟧} \doteq
+\aid{⟦}v\aid{⟧}$.  By soundness the normal forms of $w$ and $v$ have the
+same denotation, so by uniqueness they are equal, and hence $w \approx
+\aid{inv-nf}\;(\aid{nf}\;w) = \aid{inv-nf}\;(\aid{nf}\;v) \approx v$, a
+derivation assembled from the two normal-form derivations and nothing
+else.  Completeness thus never appeals to a rule beyond the axioms and
+structural rules above.  The index module states these for every $n$ (\aid{symmetric-soundness},
 \aid{symmetric-completeness}, \aid{symmetric-unique-nf}).  Completeness
 for the \emph{loose} semantics is the stronger, perhaps surprising fact:
 even read as mere endofunctions, circuits that are equal as functions are
 provably equal.  For the tight semantics, soundness, completeness, and
 surjectivity (every permutation is a product of adjacent transpositions)
-assemble into the \emph{presentation record} of \S\ref{sec:presentations}
---- a \aid{Grouplike} witness with a group isomorphism from the presented
-group onto the target whose underlying function is the semantics --- the
-one statement we quote in Agda, since every presentation theorem in the
+assemble into the \emph{presentation record} of \S\ref{sec:presentations}.
+The record packages two things: a \aid{Grouplike} witness, which makes
+the presented monoid a group, and a proof that the semantics
+$\aid{⟦\_⟧}$ is a group isomorphism from that group onto the target.  We quote
+this one statement in Agda because every presentation theorem in the
 paper has its shape:
 
 \begin{code}%
@@ -888,7 +907,7 @@ paper has its shape:
 \AgdaBound{n}\<%
 \end{code}
 
-read: the monoid of swap circuits modulo \{\aid{order},
+\noindent read: the monoid of swap circuits modulo \{\aid{order},
 \aid{yang-baxter}\} and the structural rules \emph{is} the group of
 permutations of $\mathsf{Fin}\;n$ (\aid{IsPresentationOf} is the mixfix
 record name \aid{{\_}IsPresentationOf{\_}} used infix).  Everything later

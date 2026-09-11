@@ -8,14 +8,11 @@ all, into soundness plus a unique-normal-form witness; normal forms are
 built by verified coset tables, one digit per level of a subgroup tower,
 or glued by amalgamation when the tower branches.
 
-The work continues in three directions.  \emph{More completeness
+The work continues in two directions.  \emph{More completeness
 results.}  The gate-set rule sets surveyed in \S\ref{sec:rel-paper} are
 finite relation sets with known normal forms, exactly the input the
 library is built to verify, and each still awaits a machine-checked
-proof.  \emph{Compilers.}  Every normal-form function is executable
-Agda, so a compiled normalizer is a decision procedure for circuit
-equivalence that an optimizer can call as an oracle.
-\emph{Upstreaming.}  The \texttt{ForStdlib} constructions are being
+proof.  \emph{Upstreaming.}  The \texttt{ForStdlib} constructions are being
 prepared for the Agda standard library, whose conventions the whole
 library already follows.
 

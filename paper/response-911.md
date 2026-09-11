@@ -47,8 +47,8 @@ three construction theorems whose composition is the Pauli presentation
 (Reviewers A, B, D), and defines "qupit" at first use. Section 7 gains
 measured typechecking costs, an explanation of what the seven thousand
 "core" lines are, and a limitations subsection that states precisely
-what is not formalized (Reviewers A, D); Section 8 is shortened to three
-future directions, including the compiler use Reviewer D asked about.
+what is not formalized (Reviewers A, D); Section 8 is shortened to two
+future directions.
 The revised text is about 23 pages, within the limit. Code is typeset by Agda's LaTeX backend with its
 natural colours, the standard library is cited properly, Coq is now
 Rocq, and the personification of "the library" is gone (Reviewer B).
@@ -81,7 +81,7 @@ drawn.
 **l.280 (`ract`).** Yes: `ract` pushes one generator past a coset
 representative, and the residual is a *circuit* rather than a generator
 because pushing a swap into a staircase can leave nothing, one swap on
-the wires above, or a longer staircase. §2.3 now explains the four cases,
+the wires above, or a proper circuit in other examples. §2.3 now explains the four cases,
 annotated in the code with the pushed swap pictured beside it, and the
 extension to whole circuits by the stateful traversal.
 
@@ -126,15 +126,15 @@ all later normal forms).
 seven thousand lines under `Presentation` are: about a thousand are the
 core proper (words modulo `≈`, the presentation records, grouplikeness,
 morphism builders); 4,300 are the five product constructions with their
-two-sided theorems, the amalgamation alone being 1,800; and 600 are the
+normal-form and presentation theorems, the amalgamation alone being 1,800; and 600 are the
 solvers.
 
 ## Reviewer B
 
 **A design story, and a POPL paper.** The introduction now says so up
 front: a new paragraph explains the approach without formal vocabulary,
-another states the design decision the paper keeps returning to
-(setoids rather than quotients), and a third argues why completeness of
+another states the design decision the paper takes ---
+setoids rather than quotients, and a third argues why completeness of
 circuit calculi is a
 programming-languages problem and what the contribution is (a design,
 validated on large examples). The rationale that you found at l.488–492
@@ -153,10 +153,11 @@ sentence is gone, and the introduction now states that non-formalised
 claims are marked explicitly where they occur and collected in §7.3.
 
 **MLTT rather than cubical/HoTT.** Now foreshadowed in the introduction
-(setoids rather than quotients, because relations are what the library
-manipulates — the congruence is an inductive family whose derivations
-the lifting and transport lemmas induct on — and because our central
-devices are maps *into* the syntax), with pointers to §4.2, §6.5 and
+(setoids rather than quotients, because the library computes with
+syntax — coset tables and normal-form maps pattern-match on concrete
+words, and its central devices are maps *into* the syntax — and,
+secondarily, because the congruence is an inductive family whose
+derivations are data to induct on), with pointers to §4.2, §6.5 and
 §7.2.
 
 **l.344–355, 569–575, 675, 677–680.** De-formalised (see Reviewer A);
@@ -185,31 +186,29 @@ chosen to exercise; l.824 now says which three construction theorems the
 Pauli presentation composes and what normal form results, which is what
 there is to show --- the proof is those three theorems applied in turn.
 
-**l.820 "qupit".** Defined at first use (a qudit of odd prime dimension).
+**l.820 "qupit".** Defined at first use (a qudit of prime dimension).
 
 **Table 3: Coq → Rocq.** Done, throughout.
 
 **Your question: `Bijection`, not `Inverse`?** The two are interderivable
 in the standard library, so the choice is one of style, but it is
-deliberate. What our downstream code consumes is a section `inv-nf`
-together with the single law `inv-nf ∘ nf ≈ id`, that is, a
-`RightInverse` (our `NormalForm`). The other law — exactness,
-`nf ∘ inv-nf ≡ id` — is kept as a separate hypothesis, because carriers
-are allowed to contain junk that no word reaches (a coset type before
-pruning, a product carrier), and because exactness is exactly what the
-converse lemma `by-completeness` trades against uniqueness. An `Inverse`
-would bake an explicit inverse map and both laws into every witness.
-`Bijection` is used where surjectivity onto the carrier is established as
-a *property* and the section is then derived from it, as the first
-projection of the surjectivity witness; this is how the extension
-construction consumes its factor normal forms. The stylistic difference
-you allude to is real: with `Bijection` the inverse map is a projection
-out of a proof and computes only once that proof unfolds, whereas with
-`RightInverse` the section is user-written first-order code that computes
-by pattern matching and can be reasoned about definitionally. We prefer
-the latter wherever a section is written by hand, which is why
-`RightInverse` is the workhorse and `Bijection` the exception. §4.3 now
-says this.
+deliberate, and §4.3 now explains it. In short: what our downstream code
+consumes is a section `inv-nf` with the single law `inv-nf ∘ nf ≈ id`,
+i.e. a `RightInverse` (our `NormalForm`). The other law, exactness
+`nf ∘ inv-nf ≈ id`, is kept as a separate hypothesis: carriers may
+contain junk no word reaches (a coset type before pruning, a product
+carrier before a quotient), and exactness is what `by-completeness`
+trades against uniqueness. An `Inverse` would force an explicit inverse
+map and both laws on every client. `Bijection` is used where
+surjectivity onto the carrier is proved as a *property* and the section
+is then read off as the first projection of the surjectivity witness,
+which is how the extension construction consumes its factor normal
+forms. §4.3 also makes the constructive point behind the whole zoo: an
+`Injection` gives no algorithm producing a word from a normal form,
+whereas the section of a `RightInverse` is exactly that algorithm, so
+the two witnesses differ as *data* even though they coincide
+classically; the weak one serves word-problem reasoning, the strong one
+completeness and presentations.
 
 ## Reviewer D
 
@@ -260,12 +259,15 @@ module is under 4 s.
 `agda --html` rendering in which every identifier links to its
 definition, and the camera-ready will link module names into it.
 
-**Compiler integration.** A "Compilers" item in §8: the normal-form
-functions are executable, so a compiled normaliser is a decision
-procedure an optimiser can call as an oracle. §6.2 adds that connecting
-the presented gate groups to the matrix semantics of sqir or VyZX would
-give end-to-end completeness against matrices rather than against
-abstract product groups.
+**Compiler integration.** Addressed in two places rather than as a
+separate item. §1.1 now says why the constructivity matters for this:
+normal forms and their sections are executable, so every completeness
+theorem doubles as a verified decision procedure for the word problem
+of its circuit theory, and every normal-form witness is a normaliser
+that can be extracted and run. §6.2 names the concrete target:
+connecting the presented gate groups to the matrix semantics of sqir or
+VyZX would give end-to-end completeness against matrices rather than
+against abstract product groups.
 
 **§7.5 limitations (now §7.3).** Rewritten to state precisely what is
 not formalized: the amalgamation case studies are syntactic — each ends

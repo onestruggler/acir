@@ -81,9 +81,11 @@ the element of $H$ left behind --- the residual $h$ with $\bar t\, y = h
 soundness law.  Classical treatments run this as an algorithm
 (Todd--Coxeter coset enumeration~\cite{sims1994computation,
 holt2005handbook}); we instead take a \emph{claimed} coset table
-as input and \emph{verify} it, by exhibiting five equational
-hypotheses relating the table, the section, and the relations
-(\S\ref{sec:engine}).  Bian and Selinger pioneered this monoid-level, verified use of
+as input and \emph{verify} it against five equational hypotheses
+relating the table, the section, and the relations, while the
+Reidemeister--Schreier step itself, from a verified table to a normal
+form one level up, is proved once and for all (\S\ref{sec:engine}).
+Bian and Selinger pioneered this monoid-level, verified use of
 Reidemeister--Schreier in Agda for their gate-group
 presentations~\cite{bian2023cliffordt2,bian2023cliffordcs3,bian2023thesis};
 we turned it into a reusable module with the hypotheses packaged as
