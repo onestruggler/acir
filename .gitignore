@@ -53,3 +53,18 @@ qpl26slides/latex/*.snm
 qpl26slides/latex/*.toc
 qpl26slides/latex/*.vrb
 qpl26slides/latex/*.ptb
+
+# vqupit paper build artifacts (the rendered literate sections under
+# vqupit/latex/vqupit/sections/ are tracked; the agda.sty copy Agda drops
+# next to them is not)
+vqupit/*.aux
+vqupit/*.bbl
+vqupit/*.blg
+vqupit/*.fdb_latexmk
+vqupit/*.fls
+vqupit/*.log
+vqupit/*.out
+vqupit/*.ptb
+vqupit/comment.cut
+vqupit/latex/agda.sty
+vqupit/png/

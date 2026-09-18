@@ -1,3 +1,61 @@
+\begin{code}[hide]
+module vqupit.sections.composing where
+
+open import Data.Nat using (ℕ)
+open import Data.Sum using (_⊎_)
+import Relation.Binary.PropositionalEquality as Eq
+open import Notations using (₁₊)
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _^_ ; _ʰ')
+open import Presentation.Definitions using (_IsPresentationOf_)
+open import Presentation.Construct.Base using (_⋄_⋄_ ; ConjRelʷ)
+
+infixl 9 _↑
+infix 4 _PRel,_===_ _SpRel,_===_ _Exact,_===_
+
+private variable
+  n : ℕ
+
+module Sym where
+  data Gen : ℕ → Set where
+    H-gen S-gen CZ-gen : Gen n
+    _↥ : Gen n → Gen (₁₊ n)
+module XZ where
+  data Gen : ℕ → Set where
+    X-gen Z-gen : Gen n
+    _↥ : Gen n → Gen (₁₊ n)
+  postulate
+    _QRel,_===_ : ℕ → Set
+    presentation : Set
+open XZ using (X-gen ; Z-gen ; _↥)
+open Sym using (_↥)
+module Sim where
+  postulate _QRel,_===_ : ℕ → Set
+module PB where
+  postulate _≈_ : Set
+module PapV1 where
+  module Clifford-Relations where
+    postulate _QRel,_===_ : ℕ → Set
+module V1 where
+  module Clifford-Relations where
+    postulate _QRel,_===_ : ℕ → Set
+open V1
+module Semidirect where
+  postulate Pauli⋊Sp : ℕ → Set
+module PE where
+  postulate Presented-group : ℕ → Set → Set
+
+postulate
+  proof-elided : ∀ {ℓ} {A : Set ℓ} → A
+  Gen : ℕ → Set
+  X Z : ∀ {n} → Word (Gen n)
+  p p-1 : ℕ
+  +ₚ-group Pauli⋊Sp : ℕ → Set
+  _SpRel,_===_ : ℕ → Set
+  _Exact,_===_ : ℕ → Set
+  _↑ : ∀ {n} → Word (Gen n) → Word (Gen (₁₊ n))
+  complete conjw-sem denote-eq sem : Set
+  exact-generator-data : ℕ → Set
+\end{code}
 \section{Composing: Paulis, the Semidirect Product, and Scalars}\label{sec:composing}
 
 From the symplectic presentation to the Clifford presentation there are
@@ -12,7 +70,7 @@ which restores the scalars.
 The projective Pauli group $\PPauli \cong (\Zp \times \Zp)^n$ has an easy
 presentation over generators $X$, $Z$ on each wire:
 
-\begin{agdacode}
+\begin{code}
 data _PRel,_===_ : (n : ℕ) → WRel (Gen n) where
   order-X   : (₁₊ n) PRel,  X ^ p === ε
   order-Z   : (₁₊ n) PRel,  Z ^ p === ε
@@ -20,12 +78,7 @@ data _PRel,_===_ : (n : ℕ) → WRel (Gen n) where
 
 Theorem-Pauli : ∀ {n} → (XZ._QRel,_===_ n) IsPresentationOf (+ₚ-group n)
 Theorem-Pauli = XZ.presentation
-\end{agdacode}
-\begin{center}
-  \fitfig[0.22\textwidth]{pl-order-X}\qquad
-  \fitfig[0.22\textwidth]{pl-order-Z}\qquad
-  \fitfig[0.28\textwidth]{pl-comm-ZX}
-\end{center}
+\end{code}
 
 The semantic group \aid{+ₚ-group}~$n$ is $\aid{Vec}\;(\Zp \times \Zp)\;n$
 under componentwise addition --- the very phase space on which $\Sp$
@@ -41,15 +94,16 @@ qupit chain needs.)
 
 \subsection{The semidirect product}\label{sec:semidirect}
 
-A semidirect product $N \rtimes H$ is presented by the relations of both
-factors plus twisted commutation: $h\,n\,h^{-1} = \mathit{conj}\,h\,n$,
-so that $(n, h)\cdot(n', h') = (n\,(\mathit{conj}\,h\,n'),\; h\,h')$.
-Here the action of a symplectic generator on a Pauli generator is the
+This is the wreath-product example of \S\ref{sec:snd} with $\Sp$ in
+place of $S_n$: the relations of both factors plus twisted commutation
+$h\,n\,h^{-1} = \mathit{conj}\,h\,n$.  Here the action of a symplectic
+generator on a Pauli generator is the
 paper's Lemmas~2.22--2.23, as words --- $H$ swaps $X$ and $Z$ (up to an
 inverse), $S$ sends $X$ to $XZ$, $CZ$ couples the two bottom wires, and
 a shifted gate acts on a shifted Pauli only:
 
-\begin{agdacode}
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
 conj : Sym.Gen n → XZ.Gen n → Word (XZ.Gen n)
 conj Sym.H-gen   X-gen           = Z
 conj Sym.H-gen   Z-gen           = X ^ p-1
@@ -68,7 +122,8 @@ conj (sym ↥)     (xz ↥)          = conj sym xz ↑
 
 Pauli⋊Symplectic : (n : ℕ) → WRel (XZ.Gen n ⊎ Sym.Gen n)
 Pauli⋊Symplectic n = (n PRel,_===_) ⋄ (n SpRel,_===_) ⋄ ConjRelʷ conj
-\end{agdacode}
+\end{code}
+\endgroup
 
 (module qualifiers on the Pauli side elided; the relation is
 \aid{{\_}QRel,{\_}==={\_}} in the source).
@@ -76,65 +131,46 @@ Pauli⋊Symplectic n = (n PRel,_===_) ⋄ (n SpRel,_===_) ⋄ ConjRelʷ conj
 The generic theorem of \S\ref{sec:constructions} asks for two things
 beyond the factor presentations: that \aid{conj} respects the symplectic
 rules in its first argument and the Pauli rules in its second.  Neither
-is proved by hand.  Both go through the semantics: the action of a
-symplectic word $c$ on a Pauli word $w$, computed syntactically by
-$(\mathit{conj}\,\aid{ʰ'})$, denotes $\aid{ap}\;\sem{c}\;(\mathit{sem}\;w)$
-in the phase space (\aid{conjw-sem}), so if $c \approx d$ by a symplectic
-axiom then the two conjugates have equal denotations by symplectic
-soundness, and are therefore congruent Pauli words by Pauli
-completeness:
+is proved by hand, in contrast to the case splits of \S\ref{sec:snd}.
+Both go through the semantics: the action of a symplectic word $c$ on a
+Pauli word $w$, computed syntactically by $(\mathit{conj}\,\aid{ʰ'})$,
+denotes $\aid{ap}\;\sem{c}\;(\mathit{sem}\;w)$ in the phase space, so if
+$c \approx d$ by a symplectic axiom then the two conjugates have equal
+denotations by symplectic soundness, and are therefore congruent Pauli
+words by Pauli \emph{completeness}:
 
-\begin{agdacode}
-respects-Δ : ∀ {n} {c d : Word (Gen n)} (u : Word (XZ.Gen n)) →
-             Sim._QRel,_===_ n c d →
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+respects-Δ : ∀ {n} {c d : Word (Gen n)} (u : Word (XZ.Gen n)) → Sim._QRel,_===_ n c d →
              PB._≈_ (XZ._QRel,_===_ n) ((conj ʰ') c u) ((conj ʰ') d u)
-respects-Δ {n} {c} {d} u ax = complete n
-  (Eq.trans (conjw-sem c u)
-    (Eq.trans (denote-eq ax (sem u)) (Eq.sym (conjw-sem d u))))
-\end{agdacode}
+respects-Δ {n} {c} {d} u ax =
+  complete n (Eq.trans (conjw-sem c u) (Eq.trans (denote-eq ax (sem u)) (Eq.sym (conjw-sem d u))))
+\end{code}
+\endgroup
 
-and symmetrically for \aid{respects-Γ}.  As the module's header puts it,
-the long symplectic rules --- \aid{M-power}, \aid{semi-M↑CZ},
-\aid{selinger-c10} to \aid{c15} --- are never conjugated by hand.  This
-is the first place the divide-and-conquer route pays off in a way the
-paper's route cannot: the paper's ``Pauli complete'' rules (its
-Definition~4.7) are precisely these conjugation rules, and there they
-must be derived syntactically from Figure~1 (its Proposition~4.8).  With
-every premise a theorem, the presentation is unconditional:
-
-\begin{agdacode}
-module Semidirect (n : ℕ) where
-  private module P = SDP.Presentation (CA.respects-Δ {n}) (CA.respects-Γ {n})
-                       (+ₚ-group n) (Sp-group n)
-                       (XZ.presentation {n}) (SimPres.presentation {n})
-
-  Pauli⋊Sp : Group 0ℓ 0ℓ
-  Pauli⋊Sp = P.G1⋊G2
-
-  presentation : (SemiDirect._QRel,_===_ n) IsPresentationOf Pauli⋊Sp
-  presentation = P.dpres
-\end{agdacode}
+\noindent and symmetrically for \aid{respects-Γ}.  The long symplectic
+rules --- \aid{M-power}, \aid{semi-M↑CZ}, \aid{selinger-c10} to
+\aid{c15} --- are never conjugated by hand.  This is the first place the
+factored route pays off in a way the paper's route cannot: the paper's
+``Pauli complete'' rules (its Definition~4.7) are precisely these
+conjugation rules, and there they must be derived syntactically from
+Figure~1 (its Proposition~4.8).  With every premise a theorem, the
+presentation \aid{(SemiDirect.{\_}QRel,{\_}==={\_} n) IsPresentationOf
+Pauli⋊Sp} is unconditional, where \aid{Pauli⋊Sp} is the theorem's
+\aid{G1⋊G2}.
 
 \paragraph{The semantic side.}  \aid{Pauli⋊Sp} is the library's
 semidirect product of the two semantic groups, built from an
 \aid{Action} record (\S\ref{sec:constructions}) whose action is the
 syntactic \aid{conj} transported through the two presentation
-isomorphisms: $\mathit{act}\;g\;x = \sem{\mathit{conj}\;(\mathit{inv}_2\,g)\;(\mathit{inv}_1\,x)}_1$,
-where $\mathit{inv}_i$ pick words representing $g$ and $x$.  The
-\emph{natural} semidirect product, with $\Sp$ acting on $\Zp^{2n}$ by
-\aid{ap} --- the \aid{Action} whose \aid{act-∙-homo} is
-\aid{linear-+} and whose identity and composition laws are \aid{refl}
---- is a different term, and the two are identified by a lemma
-$\aid{act≡ap}$ proving that the transported action is \aid{ap}, so
-that the multiplications agree (\aid{∙-agrees}).  This lemma lives in an
-\aid{abstract} block: with it transparent, the file's header records, a
-two-line lemma about $Z^{j}$ ``went from 27\,s to out-of-memory at
-12\,GB'', because Agda tried to unfold the transported action through
-both presentation isomorphisms.  The semidirect-product structure also
-implies that the projection to $\Sp$ is a homomorphism --- the
-symplectic operators embed into the projective Clifford operators as the
-words over $H$, $S$, $CZ$ --- so the symplectic relations lift to
-Clifford relations unchanged.
+isomorphisms.  The \emph{natural} semidirect product, with $\Sp$ acting
+on $\Zp^{2n}$ by \aid{ap}, is a different term, and the two are
+identified by a lemma $\aid{act≡ap}$ proving that the transported
+action is \aid{ap}.  This lemma lives in an \aid{abstract} block: with
+it transparent, the file's header records, a two-line lemma about
+$Z^{j}$ ``went from 27\,s to out-of-memory at 12\,GB'', because Agda
+tried to unfold the transported action through both presentation
+isomorphisms.
 
 \subsection{Plumbing: presentation simplification}\label{sec:plumbing}
 
@@ -154,7 +190,8 @@ theorem of the Clifford rules.
 \caption{The three presentations of the projective Clifford group and
 the two reductions between them.}
 \label{tab:plumb}
-\centering\footnotesize
+\centering\scriptsize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{llll}
 \toprule
  & \texttt{SemiDirect} & \texttt{Simplified-V1} & \texttt{Paper-V0} / \texttt{Paper-V1} \\
@@ -170,23 +207,10 @@ relations  & Pauli (3) + symplectic (15) + conjugation (14) & 19 & 16 / 15 \\
 
 \paragraph{From the semidirect relation to Simplified-V1.}  The first
 reduction is an isomorphism of presentations on \emph{different}
-alphabets, given by generator maps in both directions:
-
-\begin{agdacode}
-f : ∀ {n} → SemiDirect.Gen n → Word (Gen n)      -- semidirect → Clifford
-f X-gen  = Clifford.X
-f Z-gen  = Clifford.Z
-f H-gen  = H
-f S-gen  = Clifford.R
-f CZ-gen = CZ
-
-h : ∀ {n} → Gen n → Word (SemiDirect.Gen n)      -- Clifford → semidirect
-h H-gen  = SemiDirect.H
-h S-gen  = SemiDirect.Z^ -1/2 • SemiDirect.S
-h CZ-gen = SemiDirect.CZ
-\end{agdacode}
-
-(both maps commute with $\uparrow$).  The symplectic $S$ is carried to
+alphabets, given by generator maps in both directions: $f$ sends $X$
+and $Z$ to their derived words, $H$ and $CZ$ to themselves, and $S$ to
+$R$; $h$ sends $H$ and $CZ$ to themselves and $S$ to $Z^{-1/2} \bullet
+S$; both commute with $\uparrow$.  The symplectic $S$ is carried to
 $R = S \cdot Z^{1/2}$ and $h$ compensates, because the target rule set,
 \texttt{Simplified-V1}, spells the multiplier over $R$, as
 \S\ref{sec:background} does: $M_x = R^{x}HR^{x^{-1}}HR^{x}H$ exactly, with no Pauli
@@ -204,54 +228,42 @@ former containing the derivations of all three Pauli rules and all
 fourteen conjugation rules), and each is a left inverse of the other on
 generators.  Composing with the semidirect theorem:
 
-\begin{agdacode}
+\begin{code}
 presentation : ∀ {n} →
   (Clifford-Relations._QRel,_===_ n) IsPresentationOf (Semidirect.Pauli⋊Sp n)
-\end{agdacode}
+\end{code}
+\begin{code}[hide]
+presentation = proof-elided
+\end{code}
 
 This is where the mathematics of the composition step lives (about
 6\,000 lines): a multiplier calculus, a Pauli-conjugation calculus, the
-$CZ$ layer, and a small rewriting tactic --- a commutation oracle for
-the generators and a step function of some sixty clauses --- that
-discharges the bookkeeping the paper's hand derivations spend most of
-their length on.
+$CZ$ layer, and a small rewriting tactic that discharges the
+bookkeeping the paper's hand derivations spend most of their length
+on.
 
 \paragraph{From Simplified-V1 to our sixteen rules.}
 \texttt{Paper-V0} is the rule set of \S\ref{sec:background}: the same
-alphabet, so the identity on words is the candidate isomorphism, and
-the theorem is again \aid{StarGroupIsomorphism} with \aid{id}.  Ten of
-the axioms are shared verbatim.  The rest is real work in both
-directions.  \texttt{Paper-V0} axiomatises the swap directly
-(\aid{order-Ex}, \aid{semi-Ex-S↑}, \aid{semi-Ex-H↑}, \aid{yang-baxter},
-\aid{cz-slide}) and two-qupit interactions through \aid{blake-c12} and
-\aid{semi-CX↑-CZ↓}; from these its \texttt{Lemmas} (4\,750 lines)
-derives Selinger's c10--c15 natively --- c12 by cancellation against
-$\mathit{Ex} \bullet \mathit{Ex}{\uparrow}$, c13 because both sides are
-$CZ_{02}$, c14 because $\top\!\bot{\uparrow}$ has order three so the
-relation telescopes, c15 as c14 transported along the transposition of
-wires $0$ and $2$ --- together with the lower-wire rules, the two
-Pauli-versus-$CZ$ rules and the swap--$CZ$ commutation.  Conversely the
-seven swap rules are proved in \texttt{Simplified-V1} by transport along
-the chain symplectic $\to$ simplified $\to$ semidirect $\to$ V1 rather
-than by fresh derivations.  The module exports
-
-\begin{agdacode}
-v1⇒pap : ∀ {w v} → let open PB (V1R._QRel,_===_ n) using (_≈_) in
-         w ≈ v → let open PB (PapR._QRel,_===_ n) renaming (_≈_ to _≈'_) in w ≈' v
-\end{agdacode}
-
-which transports any Simplified-V1 theorem into \texttt{Paper-V0}'s theory; it is
-what lets later layers reuse the calculi rather than re-prove them.
+alphabet, so the identity on words is the candidate isomorphism.  Ten of
+the axioms are shared verbatim; the rest is real work in both
+directions.  \texttt{Paper-V0} axiomatises the swap directly and
+two-qupit interactions through \aid{blake-c12} and
+\aid{semi-CX↑-CZ↓}, and from these its \texttt{Lemmas} (4\,750 lines)
+derives Selinger's c10--c15 natively together with the lower-wire
+rules, the two Pauli-versus-$CZ$ rules and the swap--$CZ$ commutation;
+conversely the seven swap rules are proved in \texttt{Simplified-V1} by
+transport along the chain symplectic $\to$ simplified $\to$ semidirect
+$\to$ V1 rather than by fresh derivations.  The module exports \aid{v1⇒pap}, which
+transports any Simplified-V1 theorem into \texttt{Paper-V0}'s theory;
+it is what lets later layers reuse the calculi rather than re-prove
+them.
 
 \paragraph{From our sixteen rules to the paper's fifteen: connecting
 the two routes.}  The paper's Figure~1 spells the multiplier over
-$S$, with an explicit Pauli prefix (its Lemma~2.14):
-\begin{agdacode}
-SHS' a b = Z^ ((b + - ₁) * 1/2) • X^ ((₁ + - a) * 1/2)
-           • S^ b • H • S^ a • H • S^ b • H
-M x  = SHS' x⁻¹ x
-\end{agdacode}
-and correspondingly states \aid{semi-MR} as
+$S$, with an explicit Pauli prefix (its Lemma~2.14): $M_x =
+\aid{SHS'}\;x^{-1}\;x$ where $\aid{SHS'}\;a\;b = Z^{(b-1)/2}
+X^{(1-a)/2} S^{b} H S^{a} H S^{b} H$, and correspondingly states
+\aid{semi-MR} as
 $M_g \bullet S^{g^2} \bullet Z^{(g^2-g)/2} = S \bullet M_g$ (its rule
 C4), the $Z$-exponent being what is left after the $Z^{1/2}$ hidden in
 each $R$ is split off and carried across the multiplier, where it picks
@@ -259,33 +271,25 @@ up a factor of $g$.  \texttt{Paper-V1} is Figure~1 modulo scalars in
 this spelling: our sixteen rules with \aid{order-H},
 \aid{M-power}, \aid{semi-MR} and \aid{semi-M↑CZ} restated over
 \aid{SHS'}, and \emph{fifteen} rules rather than sixteen, because
-$(SH)^3 = \varepsilon$ is now a theorem:
-
-\begin{agdacode}
-lemma-M1-unfold : M₁ {n} ≈ (S • H) ^ 3
-lemma-order-SH  : (S • H) ^ 3 ≈ ε
-lemma-order-SH  = trans (sym lemma-M1-unfold) lemma-M1
-\end{agdacode}
-
+$(SH)^3 = \varepsilon$ is now a theorem.
 Under the $S$-spelling, $M_1$ \emph{is} the word $(SH)^3$ --- at $x = 1$
-both prefix exponents are $(1-1)/2 = 0$ and the Pauli prefix vanishes ---
-and \aid{M-power} at $k = 0$ already gives $M_1 \approx \varepsilon$.
-Under our $R$-spelling $M_1$ is $(RH)^3$, a different word, which
-is why the axiom had to stay there.  The isomorphism with
-\texttt{Paper-V0} is again the identity on words; eleven axioms cross
-directly, and the four multiplier rules need the bridge between the two
-spellings, $R^{a}HR^{b}HR^{a}H \approx \aid{SHS'}\;a\;b$, which is
-proved once, over an abstract relation, in \texttt{Shared.PauliBase} ---
-a Pauli calculus resting on the axioms both spellings share, with
-$XZ \approx ZX$ as a \emph{hypothesis}, the one fact whose proof
-genuinely differs between them --- and transported into
-\texttt{Paper-V0}'s theory by \aid{v1⇒pap}.  The result is the
-theorem the index module states:
+the Pauli prefix vanishes --- and \aid{M-power} at $k = 0$ already
+gives $M_1 \approx \varepsilon$; under our $R$-spelling $M_1$ is
+$(RH)^3$, a different word, which is why the axiom had to stay there.
+The isomorphism with \texttt{Paper-V0} is again the identity on words;
+eleven axioms cross directly, and the four multiplier rules need the
+bridge between the two spellings, $R^{a}HR^{b}HR^{a}H \approx
+\aid{SHS'}\;a\;b$, proved once over an abstract relation in
+\texttt{Shared.PauliBase} and transported by \aid{v1⇒pap}.  The result
+is the theorem the index module states:
 
-\begin{agdacode}
+\begin{code}
 clifford-presentation :
   ∀ n → (PapV1.Clifford-Relations._QRel,_===_ n) IsPresentationOf (Pauli⋊Sp n)
-\end{agdacode}
+\end{code}
+\begin{code}[hide]
+clifford-presentation = proof-elided
+\end{code}
 
 So the paper's Figure~1, read modulo scalars, presents the same group as
 the semidirect presentation of \S\ref{sec:semidirect}: the two routes ---
@@ -301,28 +305,12 @@ modified in four moves: add a generator $\omega$; add the relation
 $\omega^{p} = \varepsilon$; add relations that $\omega$ commutes with
 every gate; and \emph{correct} each projective relation by the scalar it
 actually picks up.  In Agda the recipe is instantiated rather than
-spelled out:
-
-\begin{agdacode}
-Scalar-relation : WRel ScalarGen
-Scalar-relation = p Cn,_===_                 -- ⟨ ω ∣ ωᵖ = ε ⟩, cyclic
-
-conj : Gen n → ScalarGen → Word ScalarGen
-conj _ _ = ω                                 -- ω is central
-
-sh-exponent : ℕ
-sh-exponent = (p Nat.* p Nat.∸ 1) DM./ 8
-
-srel-corr : ∀ {u v} → (n CB.SRel, u === v) → Word ScalarGen
-srel-corr CB.order-SH = ω ^ sh-exponent
-srel-corr _           = ε
-
-_Exact,_===_ : (n : ℕ) → WRel (ScalarGen ⊎ Gen n)
-_Exact,_===_ n =
-  extension-presentation Scalar-relation (n CR.QRel,_===_) conj corr
-\end{agdacode}
-
-Reading the generators as the paper's matrices, with $H$ normalised by
+spelled out: \aid{extension-presentation} is applied to the cyclic
+relation $\langle \omega \mid \omega^{p} = \varepsilon\rangle$, the
+projective rules, the constant conjugation $\mathit{conj}\;\_\;\_ =
+\omega$, and a correction function that is $\varepsilon$ on every rule
+except \aid{order-SH}, where it is $\omega^{(p^2-1)/8}$.  Reading the
+generators as the paper's matrices, with $H$ normalised by
 $\delta_p$ so that all determinants are one, exactly \emph{one} of the
 sixteen rules fails to hold on the nose: $(SH)^3 = \varepsilon$ picks
 up $\omega^{(p^2-1)/8}$ (cf.\ the phase in the paper's (T1)), which is
@@ -342,14 +330,9 @@ Figure~1 itself.
 an abelian group $K$ is determined by a 2-cocycle $c : Q \times Q \to
 K$, with multiplication $(k, g)\cdot(k', h) = (k + k' + c(g,h),\; gh)$.
 The formalisation builds two.  The \emph{structural} one is the Weyl
-cocycle on the natural semidirect product,
-\begin{agdacode}
-cocy (P , S) (Q , _) = 1/2 * sform P (ap S Q)
-
-weyl : Cocycle Scalar-abelianGroup (Pauli⋊Sp-group n)
-Clifford-group = CE.group Scalar-abelianGroup (Pauli⋊Sp-group n) weyl
-\end{agdacode}
-whose cocycle law is symplectic invariance of \aid{sform}, and which
+cocycle $c((P,S),(Q,\_)) = \tfrac12\,\mathrm{sform}(P, \aid{ap}\;S\;Q)$
+on the natural semidirect product, whose cocycle law is symplectic
+invariance of \aid{sform}, and which
 satisfies the Heisenberg law $P \cdot Q = \omega^{\mathrm{sform}(P,Q)}
 \, Q \cdot P$ on Paulis --- what distinguishes it from the direct product
 $\langle\omega\rangle \times (\PPauli \rtimes \Sp)$.  The
@@ -364,28 +347,26 @@ the Weyl cocycle back along the projective presentation theorem, so the
 two cocycles agree by construction.  The theorem, again on no hypothesis,
 is
 
-\begin{agdacode}
+\begin{code}
 presentation-exact : ∀ (n : ℕ) →
   let Clifford-group = λ n → PE.Presented-group n (exact-generator-data n)
   in (n Exact,_===_) IsPresentationOf (Clifford-group n)
-\end{agdacode}
+\end{code}
+\begin{code}[hide]
+presentation-exact = proof-elided
+\end{code}
 
 Its proof needs no normal forms --- since both factors are word groups,
 $\sem{\_}$ is a splitting rather than a normalisation --- but it does
 need, for each of the sixteen rules, that the phase the Weyl cocycle
 assigns to the left-hand side equals the correction plus the phase of
 the right-hand side.  This reduces to nineteen equations in $\Zp$ about
-an explicit phase function $\Phi$ on circuits: ten are Pauli arithmetic;
-the shift case says $\Phi$ ignores wire shifts; the three multiplier
-rules and \aid{order-H} are discharged by a one-wire calculus that
-reads a circuit as a triple (Pauli, $2 \times 2$ symplectic matrix,
-phase) with an explicit concatenation law, so that $\Phi$ is
-\emph{computed}; \aid{blake-c12} by the pure-$Z$ observation; and
-\aid{order-SH} by the number-theoretic fact that the residue of
-$(p^2-1)/8$ is $-1/8$.  The extension is provably non-split: a trivial
-cocycle could realise the corrections only if
-$\omega^{(p^2-1)/8} = \varepsilon$, and it is not.  This is the formal
-counterpart of the paper's last paragraph before Theorem~4.10 (``a
-complete set of rewrite rules for $\langle\omega\rangle$ is easily
-found: we only need $\omega^{d} = 1$''), with the one non-trivial
-correction computed and checked.
+an explicit phase function on circuits, discharged by Pauli arithmetic,
+by a one-wire calculus that reads a circuit as a triple (Pauli, $2
+\times 2$ symplectic matrix, phase) with an explicit concatenation law,
+and, for \aid{order-SH}, by the number-theoretic fact that the residue
+of $(p^2-1)/8$ is $-1/8$.  The extension is provably non-split.  This
+is the formal counterpart of the paper's remark before its Theorem~4.10
+that a complete rule set for $\langle\omega\rangle$ ``only needs
+$\omega^{d} = 1$'', with the one non-trivial correction computed and
+checked.

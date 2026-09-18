@@ -1,16 +1,26 @@
-# Makefile — build the submission PDF.
+# Makefile — build the OOPSLA submission PDF.
 #
-# Usage (from a WSL shell, inside the vqupit/ directory):
-#   make          # build main.pdf via latexmk (pdflatex + bibtex), reruns
-#                 # only what changed in main.tex / sections/ / figures/
+# Usage (from WSL, inside the paper/ directory):
+#   make          # run Agda on the literate sections, then latexmk
+#   make agda     # only regenerate latex/vqupit/sections/*.tex from the
+#                 # sections/*.lagda.tex files (needs the Agda library
+#                 # one directory up: the snippets import it)
 #   make lua      # build via lualatex (fallback for Unicode in running text)
 #   make watch    # continuous rebuild on save (latexmk -pvc)
 #   make png      # render every page to png/pNN.png (needs gs) for a quick look
 #   make clean    # remove latexmk auxiliary files (keeps main.pdf)
-#   make cleanall # also remove main.pdf and png/
+#   make cleanall # also remove main.pdf, png/ and the generated latex/
 #
-# From PowerShell (make and TeX live in WSL, on the login-shell PATH):
+# From PowerShell (make, TeX Live and Agda live in WSL):
 #   wsl bash -lc "make -C /mnt/d/work/acir/vqupit"
+#
+# Code highlighting: the three sections that quote Agda are literate
+# Agda files (sections/*.lagda.tex).  `agda --latex --only-scope-checking`
+# scope-checks their code blocks against the library (so every name is
+# resolved and coloured by kind, without requiring the fragments to
+# typecheck) and writes latex/vqupit/sections/<name>.tex, which main.tex
+# \inputs.  agda.sty is Agda's own style file; the copy in this
+# directory is the one Agda generates into latex/.
 #
 # TeX Live on this machine is a user-local install in WSL
 # (/home/bonest/texlive); it is added to PATH below if present, so no
@@ -25,21 +35,34 @@ endif
 MAIN     := main
 LATEXMK  := latexmk
 LMKFLAGS := -halt-on-error -interaction=nonstopmode
-SECTIONS := $(wildcard sections/*.tex)
-FIGURES  := $(wildcard figures/*.tikz)
-DEPS     := $(MAIN).tex $(SECTIONS) $(FIGURES) refs.bib agda-style.sty circuits.tikzstyles
+AGDA     := agda
+AGDAFLAGS := --latex --only-scope-checking --latex-dir=vqupit/latex
 
-.PHONY: all lua watch png clean cleanall
+SECTIONS := $(wildcard sections/*.tex)
+LAGDA    := $(wildcard sections/*.lagda.tex)
+AGDATEX  := $(patsubst sections/%.lagda.tex,latex/vqupit/sections/%.tex,$(LAGDA))
+FIGURES  := $(wildcard figures/*.tikz)
+DEPS     := $(MAIN).tex $(SECTIONS) $(FIGURES) refs.bib agda-style.sty agda.sty circuits.tikzstyles
+
+.PHONY: all agda lua watch png clean cleanall
 
 all: $(MAIN).pdf
 
-$(MAIN).pdf: $(DEPS)
+agda: $(AGDATEX)
+
+# Agda must run from the repository root, where the .agda-lib file lives
+# and relative to which the literate sections are named
+# vqupit.sections.<name>.
+latex/vqupit/sections/%.tex: sections/%.lagda.tex
+	cd .. && $(AGDA) $(AGDAFLAGS) vqupit/$<
+
+$(MAIN).pdf: $(DEPS) $(AGDATEX)
 	$(LATEXMK) -pdf $(LMKFLAGS) $(MAIN).tex
 
-lua:
+lua: $(AGDATEX)
 	$(LATEXMK) -lualatex $(LMKFLAGS) $(MAIN).tex
 
-watch:
+watch: $(AGDATEX)
 	$(LATEXMK) -pdf -pvc $(MAIN).tex
 
 png: $(MAIN).pdf
@@ -48,7 +71,7 @@ png: $(MAIN).pdf
 
 clean:
 	$(LATEXMK) -c $(MAIN).tex
-	rm -f comment.cut
+	rm -f comment.cut $(MAIN).ptb
 
 cleanall: clean
-	rm -rf $(MAIN).pdf png
+	rm -rf $(MAIN).pdf png latex

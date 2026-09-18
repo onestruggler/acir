@@ -1,3 +1,38 @@
+\begin{code}[hide]
+module vqupit.sections.background where
+
+open import Data.Nat using (ℕ)
+open import Data.Product using (_×_ ; _,_ ; Σ-syntax)
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
+open import Notations using (₀)
+
+infixl 7 _•_
+infixl 9 _↑
+infix 4 _≈ˢ_ _CRel,_===_ _IsPresentationOf_
+
+postulate
+  proof-elided : ∀ {ℓ} {A : Set ℓ} → A
+  n : ℕ
+  Circuit : ℕ → Set
+  CZ H S : Circuit n
+  _•_ : Circuit n → Circuit n → Circuit n
+  _↑ : Circuit n → Circuit n
+  _CRel,_===_ : ℕ → Set
+  _IsPresentationOf_ : Set → Set → Set
+  Pauli⋊Sp : ℕ → Set
+  ℤ : ℕ → Set
+  ₚ : ℕ
+  NF : ℕ → Set
+  Word Sp : Set
+  [_] : ∀ {n} → NF n → Word
+  ⟦_⟧ : Word → Sp
+  _≈ˢ_ : Sp → Sp → Set
+
+module PapPres where
+  postulate presentation : Set
+module U where
+  postulate ⟦[]⟧-injective : Set
+\end{code}
 \section{Qupit Clifford Circuits and the Main Theorems}\label{sec:background}
 
 \subsection{From qubit to qudit Clifford gates}
@@ -43,12 +78,10 @@ operator permutes Paulis and preserves their commutation phases, so
 modulo Paulis a Clifford operator is a symplectic matrix: $\Cliff/\Pauli
 \cong \PCliff/\PPauli \cong \Sp$, the symplectic group of the
 $2n$-dimensional $\Zp$-vector space $\Zp^{2n}$ with its standard
-symplectic form~\cite{bian2026qudit}.  Bringing the Paulis to the other
-side, the projective Clifford group splits: $\PCliff \cong \PPauli
-\rtimes \Sp$, the semidirect product with $\Sp$ acting on $\PPauli$ by
-its defining action on $\Zp^{2n}$.  These are the ``glue facts'' of the
-introduction; our formal development \emph{defines} its semantic groups
-as the right-hand sides.
+symplectic form~\cite{bian2026qudit}, and the projective Clifford group
+splits: $\PCliff \cong \PPauli \rtimes \Sp$.  These are the ``glue
+facts'' of the introduction; our formal development \emph{defines} its
+semantic groups as the right-hand sides.
 
 \subsection{Circuits in Agda}
 
@@ -56,7 +89,7 @@ In the formalisation a gate set is a family of gate types indexed by
 arity, and a circuit on $n$ wires is a \emph{word} over wire-indexed
 generators (\S\ref{sec:framework} gives the generic machinery):
 
-\begin{agdacode}
+\begin{code}
 data SympGate : ℕ → Set where
   H-gate   : SympGate 1
   S-gate   : SympGate 1
@@ -64,102 +97,54 @@ data SympGate : ℕ → Set where
 
 example : Circuit 2
 example = CZ • H ↑ • S
-\end{agdacode}
+\end{code}
 
 $\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$ is the free monoid on
 generators; $\aid{{\_}↑}$ shifts a circuit up one wire.  Diagrams are
 read in matrix-multiplication order, so \aid{example} is
 \fitfig[3cm]{ex-word}.  The remaining usual gates are \emph{words}, not
-extra generators --- $X$, $Z$, the swap $\mathit{Ex}$ and the two
-controlled-$X$ gates:
-
-\begin{agdacode}
-Z X : ∀ {n} → Word (Gen (₁₊ n))
-Z = H • H • S • H • H • S⁻¹
-X = H • S • H • H • S⁻¹ • H
-
-Ex CX XC : ∀ {n} → Word (Gen (₂₊ n))
-Ex = CZ • H ↓ • H ↑ • CZ • H ↓ • H ↑ • CZ • H ↓ • H ↑
-CX = H ↓ ^ 3 • CZ • H ↓
-XC = H ↑ ^ 3 • CZ • H ↑
-\end{agdacode}
-\begin{center}
-  \fitfig[0.3\textwidth]{def-CX}\qquad
-  \fitfig[0.55\textwidth]{def-Ex}
-\end{center}
-
-Here $S^{-1} = S^{p-1}$, $H^{-1} = H^{3}$ and $CZ^{-1} = CZ^{p-1}$ are
-the words that the relations make inverses; \aid{{\_}↓} is the
-identity on circuits and exists to make ``the lower copy of a gate''
-visible in a rule.  One more derived gate has no qubit counterpart:
+extra generators: $Z = H H S H H S^{-1}$, $X = H S H H S^{-1} H$, the
+swap $\mathit{Ex} = (CZ \cdot H{\downarrow} \cdot H{\uparrow})^{3}$, and
+the controlled-$X$ gates $CX = H{\downarrow}^{3} \cdot CZ \cdot
+H{\downarrow}$ and $XC$ with the wires exchanged, where $S^{-1} =
+S^{p-1}$, $H^{-1} = H^{3}$ and $CZ^{-1} = CZ^{p-1}$ are the words that
+the relations make inverses, and \aid{{\_}↓} is the identity on
+circuits and exists to make ``the lower copy of a gate'' visible in a
+rule.  One more derived gate has no qubit counterpart:
 the \emph{multiplier} $M_x\ket{j} = \ket{xj}$ for a unit $x \in
 \Zp^{*}$.  The qupit paper spells it (its Lemma~2.14) as $H S^{g^{-1}}
 H S^{g} H S^{g^{-1}}$ followed by a Pauli correction and a global
-phase; here we use another definition $R^{x}\,H\,R^{x^{-1}}H\,R^{x}H$
-with $R = S\cdot Z^{1/2}$, which absorbs the Pauli and drops the
-global phase.  We shall meet several spellings, one per rule set, and
-one of the results below is that they are all interderivable.
+phase; we mostly use $R^{x}\,H\,R^{x^{-1}}H\,R^{x}H$ with $R = S\cdot
+Z^{1/2}$, which absorbs the Pauli and drops the phase.  One of the
+results below is that the spellings are interderivable.
 
-\subsection{The whole development is one parameterised module}
-
-Everything below is parameterised by the prime and by a
-\emph{multiplicative generator} $g$ of $\Zp^{*}$:
-
-\begin{agdacode}
-module Qupit-Clifford-Theorems
-  (p-3 : ℕ)
-  (let p-2 = ₁₊ p-3)
-  (p-prime : Prime (2+ p-2))
-  (let open PrimeModulus' p-2 p-prime)
-  (g*@(g , g≠0) : ℤ* ₚ)
-  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ λ (k : ℤ ₚ-₁) → x ≡ g ^′ toℕ k)
-  where
-\end{agdacode}
-
-So $p = \aid{p-3} + 3$ ranges over every odd prime, uniformly, and the
-hypothesis \aid{g-gen} says that every unit is a power of $g$, i.e.\ $g$
-is a primitive root.  The existence of a primitive root modulo every
-prime is classical; we take it as a parameter rather than proving it,
-exactly as the qupit paper fixes a generator $g$ of $\Zp^{*}$ in its
-Figure~1.  Every theorem is stated for the multiplicative generator
-chosen.
+Everything below lives in one module parameterised by the prime, as
+$p = \aid{p-3} + 3$ with a primality proof, and by a primitive root
+$g$ of $\Zp^{*}$ with the witness \aid{g-gen} that every unit is a power
+of $g$.  So every theorem holds for every odd prime uniformly, and for
+the multiplicative generator chosen, exactly as the qupit paper fixes a
+generator $g$ in its Figure~1; the existence of a primitive root modulo
+every prime is classical and is taken as a parameter rather than proved.
 
 \subsection{Main result 1: a presentation of the projective qupit Clifford group}
 
 Our primary rule set --- the qupit paper's Figure~1 read modulo
 scalars, with the multiplier spelled over $R$ and with $(SH)^3 =
 \varepsilon$ kept as an axiom --- is, in Agda, one inductive family
-with sixteen constructors, one per rule, each stated at the smallest
-number of wires at which it makes sense:
-
-\begin{agdacode}
-data _CRel,_===_ : (n : ℕ) → WRel (Gen n) where
-  order-S      :        (₁₊ n) CRel,  S ^ p === ε
-  order-H      :        (₁₊ n) CRel,  H ^ 2 === M₋₁
-  M-power      : ∀ k →  (₁₊ n) CRel,  Mg^ k === M (g^ k)
-  semi-MR      :        (₁₊ n) CRel,  R • Mg === Mg • R^ (g * g)
-  order-SH     :        (₁₊ n) CRel,  (S • H) ^ 3 === ε
-  comm-HHSHHS  :        (₁₊ n) CRel,  H • H • S • H • H • S === S • H • H • S • H • H
-
-  order-CZ     :        (₂₊ n) CRel,  CZ ^ p === ε
-  order-Ex     :        (₂₊ n) CRel,  Ex ^ 2 === ε
-  comm-CZ-S↑   :        (₂₊ n) CRel,  CZ • S ↑ === S ↑ • CZ
-  semi-M↑CZ    :        (₂₊ n) CRel,  CZ • Mg ↑ === Mg ↑ • CZ^ g
-  semi-Ex-S↑   :        (₂₊ n) CRel,  Ex • S ↑ === S ↓ • Ex
-  semi-Ex-H↑   :        (₂₊ n) CRel,  Ex • H ↑ === H ↓ • Ex
-  blake-c12    :        (₂₊ n) CRel,
-                          (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX === CZ
-
-  yang-baxter  :        (₃₊ n) CRel,  Ex ↑ • Ex ↓ • Ex ↑ === Ex ↓ • Ex ↑ • Ex ↓
-  cz-slide     :        (₃₊ n) CRel,  Ex ↓ • Ex ↑ • CZ === CZ ↑ • Ex ↓ • Ex ↑
-  semi-CX↑-CZ↓ :        (₃₊ n) CRel,  CZ ↓ • CX ↑ === CZ02 • CX ↑ • CZ ↓
-\end{agdacode}
-
-(In the source the multiplier is \aid{XMg}, the ``$X$-filling''
-$R^{x^{-1}}HR^{x}HR^{x^{-1}}H$ of the shape $R^{a}HR^{b}HR^{a}H$; we write
-\aid{Mg} here for readability.)  Figures~\ref{fig:rules12}
-and~\ref{fig:rules23} show the same sixteen rules as circuit equations,
-drawn from the Agda terms.  Beyond these, \emph{every} circuit theory in
+\aid{{\_}CRel,{\_}==={\_}} with sixteen constructors, one per rule,
+each stated at the smallest number of wires at which it makes sense;
+Figure~\ref{fig:rules} shows them as circuit equations, drawn from the
+Agda terms, under the constructor names used throughout.  Six are
+one-qupit rules: the orders $S^{p} = \varepsilon$, $H^{2} = M_{-1}$ and
+$(SH)^{3} = \varepsilon$, the multiplier calculus \aid{M-power}
+($M_g^{\,k} = M_{g^k}$) and \aid{semi-MR} ($R\,M_g = M_g\,R^{g^2}$),
+and \aid{comm-HHSHHS}.  Seven are two-qupit rules: the orders of $CZ$
+and of the swap $\mathit{Ex}$, the commutations of $CZ$ with $S$ and
+$M_g$ on the upper wire, the two rules moving $S$ and $H$ across the
+swap, and \aid{blake-c12}, which relates two circuits implementing
+controlled-$Z$.  Three are three-qupit rules: the Yang--Baxter and
+\aid{cz-slide} rules of the swap calculus, and \aid{semi-CX↑-CZ↓}.
+Beyond these, \emph{every} circuit theory in
 the framework gets the same three structural rules for free: congruence
 under $\uparrow$, gates on disjoint wires commute, and (when there is
 one) a global scalar gate commutes with everything.  Nothing else is an
@@ -172,47 +157,38 @@ $S$-spelling it is a theorem, and verifies the paper's fifteen.
 
 \begin{figure}
 \centering
-\begin{minipage}[t]{0.46\textwidth}\centering\footnotesize
+\begin{minipage}[t]{0.42\textwidth}\centering\scriptsize
   \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
-    order-S & \ufig[0.6]{pv0-order-S-l} & $=$ & \ufig[0.6]{pv0-order-S-r}\\[1pt]
-    order-H & \ufig[0.6]{pv0-order-H-l} & $=$ & \ufig[0.6]{pv0-order-H-r}\\[1pt]
-    M-power & \ufig[0.6]{pv0-M-power-l} & $=$ & \ufig[0.6]{pv0-M-power-r}\\[1pt]
-    semi-MR & \ufig[0.6]{pv0-semi-MR-l} & $=$ & \ufig[0.6]{pv0-semi-MR-r}\\[1pt]
-    order-CZ & \ufig[0.6]{pv0-order-CZ-l} & $=$ & \ufig[0.6]{pv0-order-CZ-r}\\[1pt]
-    order-Ex & \ufig[0.6]{pv0-order-Ex-l} & $=$ & \ufig[0.6]{pv0-order-Ex-r}\\
+    order-S & \ufig[0.48]{pv0-order-S-l} & $=$ & \ufig[0.48]{pv0-order-S-r}\\[1pt]
+    order-H & \ufig[0.48]{pv0-order-H-l} & $=$ & \ufig[0.48]{pv0-order-H-r}\\[1pt]
+    M-power & \ufig[0.48]{pv0-M-power-l} & $=$ & \ufig[0.48]{pv0-M-power-r}\\[1pt]
+    semi-MR & \ufig[0.48]{pv0-semi-MR-l} & $=$ & \ufig[0.48]{pv0-semi-MR-r}\\[1pt]
+    order-CZ & \ufig[0.48]{pv0-order-CZ-l} & $=$ & \ufig[0.48]{pv0-order-CZ-r}\\[1pt]
+    order-Ex & \ufig[0.48]{pv0-order-Ex-l} & $=$ & \ufig[0.48]{pv0-order-Ex-r}\\[1pt]
+    order-SH & \ufig[0.48]{pv0-order-SH-l} & $=$ & \ufig[0.48]{pv0-order-SH-r}\\
   \end{tabular}
 \end{minipage}\hfill
-\begin{minipage}[t]{0.52\textwidth}\centering\footnotesize
+\begin{minipage}[t]{0.55\textwidth}\centering\scriptsize
   \begin{tabular}{@{}r@{\;\,}l@{}}
-    comm-CZ-S↑ & \ufig[0.6]{pv0-comm-CZ-Sup}\\[1pt]
-    semi-M↑CZ & \ufig[0.6]{pv0-semi-Mup-CZ}\\[1pt]
-    semi-Ex-S↑ & \ufig[0.6]{pv0-semi-Ex-Sup}\\[1pt]
-    semi-Ex-H↑ & \ufig[0.6]{pv0-semi-Ex-Hup}\\
+    comm-CZ-S↑ & \ufig[0.48]{pv0-comm-CZ-Sup}\\[1pt]
+    semi-M↑CZ & \ufig[0.48]{pv0-semi-Mup-CZ}\\[1pt]
+    semi-Ex-S↑ & \ufig[0.48]{pv0-semi-Ex-Sup}\\[1pt]
+    semi-Ex-H↑ & \ufig[0.48]{pv0-semi-Ex-Hup}\\[1pt]
+    comm-HHSHHS & \ufig[0.4]{pv0-comm-HHSHHS-l} $=$ \ufig[0.4]{pv0-comm-HHSHHS-r}\\
   \end{tabular}
-\end{minipage}\\[4pt]
-\footnotesize
-\begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
-  order-SH & \ufig[0.6]{pv0-order-SH-l} & $=$ & \ufig[0.6]{pv0-order-SH-r}\\[1pt]
-  comm-HHSHHS & \ufig[0.6]{pv0-comm-HHSHHS-l} & $=$ & \ufig[0.6]{pv0-comm-HHSHHS-r}
+\end{minipage}\\[3pt]
+\scriptsize
+\begin{tabular}{@{}r@{\;\,}l@{\qquad}r@{\;\,}l@{}}
+  blake-c12 & \ufig[0.48]{pv0-blake-c12} & yang-baxter & \ufig[0.48]{pv0-yang-baxter}\\[2pt]
+  cz-slide & \ufig[0.48]{pv0-cz-slide} & semi-CX↑-CZ↓ & \ufig[0.48]{pv0-semi-CXup-CZdn}\\
 \end{tabular}
-\caption{The one- and two-qupit rules of \protect\aid{{\_}CRel,{\_}==={\_}} as
+\caption{The sixteen rules of \protect\aid{{\_}CRel,{\_}==={\_}} as
 circuit equations.  Diagrams read in matrix-multiplication order, so a
-word $w \bullet v$ is drawn with $v$ on the left.}
-\label{fig:rules12}
-\end{figure}
-
-\begin{figure}
-\centering\footnotesize
-\begin{tabular}{@{}r@{\;\,}l@{}}
-  blake-c12 & \ufig[0.6]{pv0-blake-c12}\\[2pt]
-  yang-baxter & \ufig[0.6]{pv0-yang-baxter}\\[2pt]
-  cz-slide & \ufig[0.6]{pv0-cz-slide}\\[2pt]
-  semi-CX↑-CZ↓ & \ufig[0.6]{pv0-semi-CXup-CZdn}\\
-\end{tabular}
-\caption{The remaining two- and three-qupit rules.  \protect\aid{blake-c12}
-relates two circuits implementing controlled-$Z$; \protect\aid{yang-baxter} and
-\protect\aid{cz-slide} are the swap calculus.}
-\label{fig:rules23}
+word $w \bullet v$ is drawn with $v$ on the left.
+\protect\aid{blake-c12} relates two circuits implementing
+controlled-$Z$; \protect\aid{yang-baxter} and \protect\aid{cz-slide}
+are the swap calculus.}
+\label{fig:rules}
 \end{figure}
 
 The first main theorem says that these rules \emph{present} the
@@ -221,10 +197,10 @@ projective Clifford group, at every width:
 \begin{theorem}[\aid{clifford-presentation}]\label{thm:main}
 For every width $n$, the sixteen rules present the projective Clifford
 group:
-\begin{agdacode}
+\begin{code}
 Theorem-1 : ∀ (n : ℕ) → (n CRel,_===_) IsPresentationOf (Pauli⋊Sp n)
 Theorem-1 = PapPres.presentation
-\end{agdacode}
+\end{code}
 \noindent Home: \texttt{ProjectiveClifford.Qupit.Paper-V0.Presentation}
 and \texttt{Paper-V1.Presentation}.
 \end{theorem}
@@ -256,13 +232,15 @@ normal forms for them are \emph{data}, built from four kinds of atomic
 boxes:
 
 \begin{minipage}[c]{0.46\textwidth}
-\begin{agdacode}[basicstyle=\footnotesize\ttfamily]
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
 A B D E : Set
 A = Σ[ ab ∈ (ℤ ₚ × ℤ ₚ) ] (ab ≢ (₀ , ₀))
 B = ℤ ₚ × ℤ ₚ
 D = ℤ ₚ × ℤ ₚ
 E = ℤ ₚ
-\end{agdacode}
+\end{code}
+\endgroup
 \end{minipage}\hfill
 \begin{minipage}[c]{0.52\textwidth}\centering\footnotesize
   \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
@@ -286,10 +264,10 @@ unique for the symplectic semantics of \S\ref{sec:symplectic}:
 
 \begin{theorem}[\aid{unique-nf}]\label{thm:unique}
 Normal forms with equal symplectic denotations are equal:
-\begin{agdacode}
+\begin{code}
 Theorem-2 : ∀ n {u v : NF n} → ⟦ [ u ] ⟧ ≈ˢ ⟦ [ v ] ⟧ → u ≡ v
 Theorem-2 = U.⟦[]⟧-injective
-\end{agdacode}
+\end{code}
 \noindent Home: \texttt{Symplectic.Normalization.Uniqueness}.
 \end{theorem}
 

@@ -1,0 +1,1169 @@
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{vqupit.sections.symplectic}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Nat}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{ℕ}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Product}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}×\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{},\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{∃}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Sum}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}⊎\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Unit}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaRecord{⊤}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{tt}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Vec}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Vec}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}∷\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{head}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{tail}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Relation.Binary.PropositionalEquality}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}≡\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Notations}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₀}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{₁}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{₂₊}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Word.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}•\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}\textasciicircum{}\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Definitions}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaRecord{\AgdaUnderscore{}IsPresentationOf\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{infixl}\AgdaSpace{}%
+\AgdaNumber{9}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}↓}}\<%
+\\
+\>[0]\AgdaKeyword{infix}\AgdaSpace{}%
+\AgdaNumber{8}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{-\AgdaUnderscore{}}}\<%
+\\
+\>[0]\AgdaKeyword{infixl}\AgdaSpace{}%
+\AgdaNumber{6}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}+\AgdaUnderscore{}}}\<%
+\\
+\>[0]\AgdaKeyword{infixl}\AgdaSpace{}%
+\AgdaNumber{7}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}*\AgdaUnderscore{}}}\<%
+\\
+\>[0]\AgdaKeyword{infix}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{private}\AgdaSpace{}%
+\AgdaKeyword{variable}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{H-gate}\AgdaSpace{}%
+\AgdaInductiveConstructor{S-gate}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaNumber{1}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{CZ-gate}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaNumber{2}\<%
+\\
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{gate₁}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaNumber{1}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{gate₂}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaNumber{2}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}↥}}%
+\>[7]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaPostulate{proof-elided}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{ℓ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{A}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaBound{ℓ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{A}\<%
+\\
+%
+\>[2]\AgdaPostulate{A}\AgdaSpace{}%
+\AgdaPostulate{B}\AgdaSpace{}%
+\AgdaPostulate{D}\AgdaSpace{}%
+\AgdaPostulate{E}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaPostulate{Pauli}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}+\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}*\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{X}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{X}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{X}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{X}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{-\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{X}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{X}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{X}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}↓}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{))}\<%
+\\
+%
+\>[2]\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaPostulate{CZ}\AgdaSpace{}%
+\AgdaPostulate{Mg}\AgdaSpace{}%
+\AgdaPostulate{M₋₁}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaPostulate{CZ\textasciicircum{}}\AgdaSpace{}%
+\AgdaPostulate{S\textasciicircum{}}\AgdaSpace{}%
+\AgdaPostulate{Mg\textasciicircum{}}\AgdaSpace{}%
+\AgdaPostulate{g\textasciicircum{}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaPostulate{-b/a}\AgdaSpace{}%
+\AgdaPostulate{p}\AgdaSpace{}%
+\AgdaPostulate{g}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+%
+\>[2]\AgdaPostulate{act}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{Pauli}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{Pauli}\AgdaSpace{}%
+\AgdaBound{n}\<%
+\\
+%
+\>[2]\AgdaPostulate{sform}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{Pauli}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{Pauli}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+%
+\>[2]\AgdaPostulate{pZ₀}\AgdaSpace{}%
+\AgdaPostulate{pX₀}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{Pauli}\AgdaSpace{}%
+\AgdaBound{n}\<%
+\\
+%
+\>[2]\AgdaPostulate{Sp-group}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{SimPres}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaKeyword{postulate}\AgdaSpace{}%
+\AgdaPostulate{presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\end{code}
+\section{The Symplectic Factor}\label{sec:symplectic}
+
+This section presents the symplectic factor, where the real rewriting
+happens, in five steps: the semantics; the normal form; the coset table
+that rewrites to it, which is the $S_n$ table of \S\ref{sec:sn} under a
+richer action; uniqueness; and the reduction of the relations the table
+uses to the eighteen rules that present $\Sp$.
+
+\subsection{The semantics: symplectic transformations of Pauli vectors}\label{sec:spsem}
+
+Rather than $2n \times 2n$ matrices, the formalisation models $\Sp$ as
+the group of $\Zp$-linear, symplectic-form-preserving bijections of the
+phase space $\aid{Pauli}\;n = \aid{Vec}\;(\Zp \times \Zp)\;n$ --- one
+pair $(a,b)$, the exponents of $Z^{a}X^{b}$ (up to phase), per wire.
+A symplectic transformation is a record \aid{Symplectic}~$n$ carrying
+the action \aid{ap}, its inverse, and proofs that the two are inverse,
+that \aid{ap} is linear, and that it preserves the symplectic form
+\aid{sform}.  Equality is extensional equality of the action alone, so
+the proof fields never obstruct.  Composition is function composition,
+and therefore associativity and the unit laws hold \emph{on the nose},
+by \aid{refl} --- a small choice with large consequences downstream,
+since every monoid case of every soundness proof closes definitionally.
+\aid{Sp-group}~$n$ is the resulting \aid{Group}.  The generators act
+as the qupit paper's conjugation tables (its Lemmas~2.22--2.23) read on
+exponent vectors, and $\sem{\_}$ is the homomorphic extension:
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}%
+\>[0]\AgdaFunction{actg}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{Pauli}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{Pauli}\AgdaSpace{}%
+\AgdaBound{n}\<%
+\\
+\>[0]\AgdaFunction{actg}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{gate₁}\AgdaSpace{}%
+\AgdaInductiveConstructor{H-gate}\AgdaSymbol{)}%
+\>[21]\AgdaSymbol{((}\AgdaBound{a}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{∷}}\AgdaSpace{}%
+\AgdaBound{ps}\AgdaSymbol{)}%
+\>[48]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaPostulate{-}}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{a}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{∷}}\AgdaSpace{}%
+\AgdaBound{ps}\<%
+\\
+\>[0]\AgdaFunction{actg}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{gate₁}\AgdaSpace{}%
+\AgdaInductiveConstructor{S-gate}\AgdaSymbol{)}%
+\>[21]\AgdaSymbol{((}\AgdaBound{a}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{∷}}\AgdaSpace{}%
+\AgdaBound{ps}\AgdaSymbol{)}%
+\>[48]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{a}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{+}}\AgdaSpace{}%
+\AgdaBound{a}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{∷}}\AgdaSpace{}%
+\AgdaBound{ps}\<%
+\\
+\>[0]\AgdaFunction{actg}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{gate₂}\AgdaSpace{}%
+\AgdaInductiveConstructor{CZ-gate}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{((}\AgdaBound{a}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{∷}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{a'}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{b'}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{∷}}\AgdaSpace{}%
+\AgdaBound{ps}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{a}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{+}}\AgdaSpace{}%
+\AgdaBound{a'}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{∷}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{a'}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{b'}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{+}}\AgdaSpace{}%
+\AgdaBound{a}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{∷}}\AgdaSpace{}%
+\AgdaBound{ps}\<%
+\\
+\>[0]\AgdaFunction{actg}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}%
+\>[21]\AgdaSymbol{(}\AgdaBound{x}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{∷}}\AgdaSpace{}%
+\AgdaBound{ps}\AgdaSymbol{)}%
+\>[48]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaBound{x}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{∷}}\AgdaSpace{}%
+\AgdaFunction{actg}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaBound{ps}\<%
+\end{code}
+\endgroup
+
+\noindent Words are read left to right, so $w \bullet v$ applies $w$
+first and its denotation composes on the right.  The seven proof
+obligations per
+generator --- inverses, linearity, preservation of the form --- are
+identities in $\Zp$, discharged with the ring solver.  Soundness of
+every axiom of \S\ref{sec:reduction} in this semantics is one clause per
+axiom in \texttt{SoundnessDirect} (1\,100 lines).
+
+\subsection{The normal form: boxes, rows, and the staircase}\label{sec:nf}
+
+The qupit paper's symplectic normal form is a $Z$-normal layer followed
+by an $X$-normal layer on $n$ wires, then a normal form on $n-1$ wires.
+We refine this into a doubly inductive datatype.  The atomic boxes were
+shown in \S\ref{sec:background}; rows and the staircase are:
+
+\begin{minipage}[c]{0.4\textwidth}
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}%
+\>[0]\AgdaFunction{M}\AgdaSpace{}%
+\AgdaFunction{L}\AgdaSpace{}%
+\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+\>[0]\AgdaFunction{M}\AgdaSpace{}%
+\AgdaNumber{0}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaRecord{⊤}\<%
+\\
+\>[0]\AgdaFunction{M}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaDatatype{Vec}\AgdaSpace{}%
+\AgdaPostulate{D}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaPostulate{E}\<%
+\\
+\>[0]\AgdaFunction{L}\AgdaSpace{}%
+\AgdaNumber{0}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaRecord{⊤}\<%
+\\
+\>[0]\AgdaFunction{L}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaDatatype{Vec}\AgdaSpace{}%
+\AgdaPostulate{B}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaPostulate{A}\<%
+\\
+\>[0]\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaNumber{0}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaRecord{⊤}\<%
+\\
+\>[0]\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaNumber{1}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{M}\AgdaSpace{}%
+\AgdaNumber{1}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaFunction{L}\AgdaSpace{}%
+\AgdaNumber{1}\<%
+\\
+\>[0]\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSymbol{@(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}%
+\>[350I]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{M}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaFunction{L}\AgdaSpace{}%
+\AgdaBound{m}\<%
+\\
+\>[.][@{}l@{}]\<[350I]%
+\>[12]\AgdaOperator{\AgdaDatatype{⊎}}\AgdaSpace{}%
+\AgdaPostulate{D}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\end{code}
+\endgroup
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaOperator{\AgdaPostulate{[\AgdaUnderscore{}]ᵐˡ}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\end{code}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.56\textwidth}\centering
+  \begin{tabular}{@{}r@{\,}c@{\,}l@{\quad}r@{\,}c@{\,}l@{}}
+    \ufig[0.5]{m4-box} & \scalebox{0.7}{$=$} & \ufig[0.5]{m4-atoms} &
+    \ufig[0.5]{ml4-box} & \scalebox{0.7}{$=$} & \ufig[0.5]{ml-tower-a-r}\\[1ex]
+    \ufig[0.5]{l4-box} & \scalebox{0.7}{$=$} & \ufig[0.5]{l4-atoms} &
+    \ufig[0.5]{ml4-box} & \scalebox{0.7}{$=$} & \ufig[0.5]{ml-tower-b-r}\\
+  \end{tabular}
+\end{minipage}
+
+\medskip\noindent
+An $M$-row is a column of $D$ boxes ending in an $E$ box (the paper's
+$X$-normal layer); an $L$-row is a column of $B$ boxes ending in an $A$
+box (its $Z$-normal layer, with the $A$ box at the bottom).  An
+$\ML$ box at width $m \ge 2$ is \emph{either} a full pair of rows
+\emph{or} a bottom $D$ box followed by an $\ML$ box one wire up: a
+spine of $D$ boxes capped by a pair of rows.  This is the first
+induction, on the width of a single coset representative.  The second
+induction is the staircase:
+
+\begin{minipage}[c]{0.54\textwidth}
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}%
+\>[0]\AgdaFunction{NF}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+\>[0]\AgdaFunction{NF}\AgdaSpace{}%
+\AgdaNumber{0}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaRecord{⊤}\<%
+\\
+\>[0]\AgdaFunction{NF}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{NF}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaOperator{\AgdaFunction{[\AgdaUnderscore{}]}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{NF}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaOperator{\AgdaFunction{[\AgdaUnderscore{}]}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaNumber{0}\AgdaSymbol{\}}%
+\>[12]\AgdaInductiveConstructor{tt}%
+\>[23]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\\
+\>[0]\AgdaOperator{\AgdaFunction{[\AgdaUnderscore{}]}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{\}}%
+\>[12]\AgdaSymbol{(}\AgdaBound{nf}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{ml}\AgdaSymbol{)}%
+\>[23]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
+\AgdaBound{nf}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{]}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
+\AgdaBound{ml}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{]ᵐˡ}}\<%
+\end{code}
+\endgroup
+\end{minipage}\hfill
+\begin{minipage}[c]{0.42\textwidth}\centering
+  \ufig[0.7]{nf4}
+\end{minipage}
+
+\medskip\noindent
+Reading normal forms back as circuits is structural recursion, box by
+box.  The box-to-word maps make the pictures of \S\ref{sec:background}
+precise; for instance
+\begin{code}%
+\>[0]\AgdaOperator{\AgdaFunction{[\AgdaUnderscore{}]ᵈ}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{D}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{))}\<%
+\\
+\>[0]\AgdaOperator{\AgdaFunction{[\AgdaUnderscore{}]ᵈ}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₀}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{CZ\textasciicircum{}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaPostulate{-}}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaOperator{\AgdaFunction{[\AgdaUnderscore{}]ᵈ}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{a}\AgdaSymbol{@(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaSymbol{\AgdaUnderscore{})}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{CZ\textasciicircum{}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaPostulate{-}}\AgdaSpace{}%
+\AgdaBound{a}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{S\textasciicircum{}}\AgdaSpace{}%
+\AgdaPostulate{-b/a}\<%
+\end{code}
+where $-b/a = -b \cdot a^{-1}$, and an $A$ box $A_{a,b}$ with $a \ne 0$
+is $\aid{XM}\;a \bullet H \bullet S^{-b/a}$, a multiplier, a Hadamard,
+and an $S$-power.  Why the spine?  The paper's $Z$-normal circuit
+$W_Z^{(n)}$ has its $A$ box on some wire $i$, with $B$ boxes above it
+and nothing below; the position $i$ is an index that the paper's
+normal-form circuits carry implicitly.  The $\ML$ type makes it explicit
+as the length of the $D$-spine, and, crucially, makes the coset type at
+width $m$ a \emph{sum} of the coset type at width $m-1$ and a flat case
+--- exactly the shape the coset table and the uniqueness proof recurse
+on.  The identity coset is the flat one with all exponents zero and
+$A_{0,1}$ at the bottom, and the section sends it to $\varepsilon$ up to
+$\approx$, because $\mathit{Ex}^2 \approx \varepsilon$ collapses each
+$D_{0,0}$ and $B_{0,0}$.
+
+\subsection{From symmetric to symplectic: change the action}\label{sec:pushing}
+
+The coset table of \S\ref{sec:sn} serves the symplectic group under a
+richer action.  There are three ways of looking at the wires.  $S_n$
+acts on $\{0,\dots,n-1\}$: a wire is a position, and $c \circ f^{-1}$
+fixes $0$.  $S_n$ acts on $\aid{Vec}\;\mathsf{Bit}\;n$: a wire is a
+bit, and $c \circ f^{-1}$ fixes the $\mathbb{Z}_2$-linear subspace of
+the bottom wire.  Adding $H$, $S$, $CZ$, the group acts on
+$\aid{Vec}\;\mathrm{Pauli}_1\;n$, a $2n$-dimensional symplectic
+$\Zp$-vector space in which a wire is a two-dimensional symplectic
+subspace; enlarging the coset layer from staircases to $\ML$ boxes, for
+each $f \in \Sp$ there is a $c$ such that $c \circ f^{-1}$ fixes the
+symplectic subspace of the bottom wire.  The cosets at width $1{+}n$
+are the $\ML$ boxes, their section is $[\_]^{\mathsf{ml}}$, and the coset
+table is the paper's ``push a gate through a normal box'', now a
+function $\aid{ract} : \ML\,(1{+}n) \to \aid{Gen}\,(1{+}n) \to
+\aid{Circuit}\;n \times \ML\,(1{+}n)$ with the same soundness law
+$[c]^{\mathsf c} \bullet g \approx b'{\uparrow} \bullet [c']^{\mathsf
+c}$ as in \S\ref{sec:sn}.  \aid{ract} dispatches on the shape of the coset --- a flat box or a
+$D$-spine --- and on the generator --- $S$ or $H$ on the bottom wire,
+$CZ$ on the bottom two, or a lifted gate --- and delegates each case to
+a module of the \texttt{Pushing} directory (26 files, 5\,600 lines):
+$S$ and $H$ through a flat box, $CZ$ through a flat box, $CZ$ meeting a
+$D$ box and a flat box, a lifted gate through the spine.  The residual
+$b'$ lives one wire up, as the type says.  The soundness proof
+\aid{ract-sound} is a chain of $\approx$-steps per clause, each step a
+box relation or a structural rule.  For example, an $S$ on the bottom
+wire meeting a spine $D_{a,b}$ followed by $\mathit{lm}$: $S$ commutes
+past the lifted $\mathit{lm}$, then the box relation
+$D \leftarrow S$ rewrites $D_{a,b} \bullet S$ to $\mathit{dir}{\uparrow}
+\bullet D_{a,b-a}$, and re-association finishes.
+
+So far this is the $S_n$ story with bigger cosets.  The difference is in
+the five hypotheses of \S\ref{sec:engine}.  Four close as before; the
+second, \aid{h-wd-ax} --- that the table respects the axioms, i.e.\
+congruent inputs produce equal cosets and congruent residuals --- does
+\emph{not} close by evaluation, because the axioms of $\Sp$ (unlike
+$\sigma^2 = e$) are not decided by a finite computation on the coset
+data.  The formalisation proves it in two halves.  The \emph{coset half}
+is proved semantically: apply $\sem{\_}$ to \aid{ract-sound} on both
+sides of an axiom, observe that residuals live one wire up and so cannot
+move the bottom wire, and conclude from head-injectivity of the coset
+section (\S\ref{sec:uniqueness}) that the two cosets are equal.  The
+\emph{residual half} then follows by cancellation --- provided the shift
+$\uparrow$ is injective on congruence classes at the lower width, which
+is a consequence of faithfulness (completeness) there.  This makes the
+tower a well-founded induction on the width, \aid{tower : ∀ n →
+TowerLevel n}, where a level packages the normal form at that width
+together with the agreement of its section with the coset sections: a
+normal form at width $k$ gives faithfulness at $k$ (by
+\aid{by-normalization}); faithfulness gives injectivity of $\uparrow$
+on congruence classes (using that a lifted word acts as $\mathrm{id}
+\oplus \sem{w}$); that discharges \aid{h-wd-ax} at width $k$; and the
+generic normal-form transport produces the normal form at width
+$k{+}1$.  The base case, width $1$, is built by hand.  This is the
+formal counterpart
+of the paper's Lemma~4.2 and Proposition~4.3: no termination argument is
+needed beyond structural recursion, and ``the dirty gates eventually get
+removed'' is the type of \aid{ract}.
+
+\subsection{Uniqueness of the normal form}\label{sec:uniqueness}
+
+Theorem~\ref{thm:unique} says that normal forms with equal denotations
+are equal.  The action of a normal form on a Pauli vector peels the
+staircase one wire at a time --- the coset factor acts, the resulting
+bottom entry is fixed, and the inner normal form acts on the tail ---
+and injectivity is a structural induction on the staircase:
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}%
+\>[0]\AgdaFunction{lemma-lm-head-inj}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{lm₁}\AgdaSpace{}%
+\AgdaBound{lm₂}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{(∀}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{ps}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{Pauli}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{head}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{act}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
+\AgdaBound{lm₁}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{]ᵐˡ}}\AgdaSpace{}%
+\AgdaBound{ps}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaFunction{head}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{act}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
+\AgdaBound{lm₂}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{]ᵐˡ}}\AgdaSpace{}%
+\AgdaBound{ps}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{lm₁}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaBound{lm₂}\<%
+\\
+\>[0]\AgdaFunction{lemma-lm-tail-surj}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{lm}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{qs}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{Pauli}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaFunction{∃}\AgdaSpace{}%
+\AgdaSymbol{λ}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{ps}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{Pauli}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{tail}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{act}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
+\AgdaBound{lm}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{]ᵐˡ}}\AgdaSpace{}%
+\AgdaBound{ps}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaBound{qs}\<%
+\end{code}
+\endgroup
+\begin{code}[hide]%
+\>[0]\AgdaFunction{lemma-lm-head-inj}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\\
+\>[0]\AgdaFunction{lemma-lm-tail-surj}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\end{code}
+
+Two obligations.  \emph{Tail surjectivity} is free, because a
+symplectic transformation carries its inverse.  \emph{Head injectivity}
+--- the bottom-wire output determines the coset --- is the crux, and it
+is itself an induction on the $\ML$ type (\texttt{LMHeadInj},
+1\,300 lines): at width $1$ a case analysis on the four shapes of an
+$A$ box using closed forms for the actions of $S^{k}$, $HS^{k}$ and the
+multipliers; a separation lemma showing a flat box and a spine never
+agree on heads; and, for two spines, the $D$ box is read off by probing
+with the two basis Paulis $Z$ and $X$ on the bottom wire and the identity
+above, after which the hypothesis descends one width.  With these two
+lemmas the generic \texttt{Circuit.Uniqueness} module of the library
+assembles \aid{⟦[]⟧-injective} and the \aid{UniqueNormalForm} witness;
+the module's header records the one subtlety, that \aid{ap} is a
+\emph{left} action --- \aid{ap} of a composite applies its right factor
+first --- so the coset factor of a normal form is the one next to the
+input, which is what lets the coset be recovered from every state rather
+than from states of a restricted shape.  This is the paper's
+Proposition~3.8 with its Lemmas~3.4--3.7, now an induction whose
+structure is dictated by the datatype.
+
+\subsection{Relation reduction: box relations and the two rule sets}\label{sec:reduction}
+
+Which relations does \aid{ract-sound} use?  Rewriting \emph{every}
+circuit to normal form and collecting every relation the rewrite ever
+uses gives the paper's box relations --- one per gate per box shape,
+parametrised by the box's labels.  The formalisation organises them as
+nine families of case tables, each a lemma quantified over the box
+parameters with a computed direction \aid{dir-of} and updated box:
+
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+wires & family & pushed \\
+\midrule
+1 & $A \leftarrow H$, $A \leftarrow S$, $E \leftarrow S$ & $H$ or $S$ through an $A$ box; $S$ through an $E$ box \\
+2 & $B \leftarrow H{\uparrow},S{\uparrow},S$; \ $D \leftarrow H,S{\uparrow},S,CZ$; \ $L \leftarrow CZ$ & a gate through a $B$, a $D$, or an $L$-row \\
+3 & $BB \leftarrow CZ{\uparrow}$, $B{\uparrow} \leftarrow CZ$, $DD \leftarrow CZ$ & $CZ$ through two $B$ or two $D$ boxes \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For instance, the two-wire table for a $D$ box states that $[d]^{\mathsf
+d} \bullet g \approx S^{e} \bullet \mathit{dir}{\uparrow} \bullet
+[d']^{\mathsf d}$ with $e$, $\mathit{dir}$ and $d'$ computed from the
+labels of $d$ and the gate $g$ --- the paper's Figure~18, with the
+residual split into an $S$-power on the bottom wire and a word one wire
+up.  The nine families are the paper's
+Figures~15--21; unfolding the case tables gives 42 parametric relations,
+against the paper's count of 66, the difference being only in how cases
+are grouped (the formalisation, for instance, proves each of the
+$\uparrow$/$\downarrow$ pairs of a $B$ box and a $D$ box once and
+obtains the other by a duality lemma).  The width-3 relations are stated
+at width~3 and widened to arbitrary width by a congruence
+$\aid{cong↓ᵏ}$.
+
+The box relations are derived (\texttt{BR}, 7\,000 lines, on top of a
+calculus of $\mathit{Ex}$-conjugations and two-qupit lemmas of 11\,000
+lines) from the \emph{full} symplectic rule set, seventeen group-specific
+axioms whose two- and three-qupit members are Selinger's
+c10--c15~\cite{selinger2015clifford} verbatim and whose one-qupit
+members are the multiplier calculus --- $S^{p} = H^{4} = (SH)^{3} =
+\varepsilon$, $H^{2}S = SH^{2}$, and four \emph{schemes} over units $x,
+y$: $M_x M_y = M_{xy}$, $M_x S = S^{x^2} M_x$, and $M_x$ on either wire
+past $CZ$ gives $CZ^{x}$ --- with $M_x$ spelled $S^{x}HS^{x^{-1}}HS^{x}H$.
+By inspection one finds a smaller set of primitive, bidirectional
+relations that derive all of these: the \emph{simplified} symplectic
+rule set, which replaces the schemes by statements about the single
+multiplier $M_g$ of the primitive root, strengthens $H^4 = \varepsilon$
+to $H^2 = M_{-1}$, and drops $(SH)^{3} = \varepsilon$ and $H^2S =
+SH^2$:
+
+\begin{code}%
+\>[0]\AgdaFunction{order-S}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[20]\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{SRel,}}%
+\>[34]\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaPostulate{p}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{===}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\\
+\>[0]\AgdaFunction{order-H}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[20]\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{SRel,}}%
+\>[34]\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaNumber{2}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{===}}\AgdaSpace{}%
+\AgdaPostulate{M₋₁}\<%
+\\
+\>[0]\AgdaFunction{M-power}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[14]\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{k}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{SRel,}}%
+\>[34]\AgdaPostulate{Mg\textasciicircum{}}\AgdaSpace{}%
+\AgdaBound{k}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{===}}\AgdaSpace{}%
+\AgdaFunction{M}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{g\textasciicircum{}}\AgdaSpace{}%
+\AgdaBound{k}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaFunction{semi-MS}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[20]\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{SRel,}}%
+\>[34]\AgdaPostulate{Mg}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{===}}\AgdaSpace{}%
+\AgdaPostulate{S\textasciicircum{}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{*}}\AgdaSpace{}%
+\AgdaPostulate{g}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Mg}\<%
+\\
+\>[0]\AgdaFunction{semi-M↑CZ}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[20]\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{SRel,}}%
+\>[34]\AgdaPostulate{Mg}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{CZ}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{===}}\AgdaSpace{}%
+\AgdaPostulate{CZ\textasciicircum{}}\AgdaSpace{}%
+\AgdaPostulate{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Mg}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\<%
+\\
+\>[0]\AgdaFunction{semi-M↓CZ}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[20]\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{SRel,}}%
+\>[34]\AgdaPostulate{Mg}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{CZ}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{===}}\AgdaSpace{}%
+\AgdaPostulate{CZ\textasciicircum{}}\AgdaSpace{}%
+\AgdaPostulate{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Mg}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{order-S}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\\
+\>[0]\AgdaFunction{order-H}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\\
+\>[0]\AgdaFunction{M-power}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\\
+\>[0]\AgdaFunction{semi-MS}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\\
+\>[0]\AgdaFunction{semi-M↑CZ}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\\
+\>[0]\AgdaFunction{semi-M↓CZ}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\end{code}
+
+plus the same \aid{order-CZ}, \aid{comm-CZ-S↓}, \aid{comm-CZ-S↑} and
+\aid{selinger-c10} to \aid{c15}: fifteen group-specific rules, or
+eighteen with the three structural ones.  The choice is not canonical;
+one picks the set one finds natural.  The two rule sets generate the
+same congruence, and since they share an alphabet the identity on words
+is an isomorphism of presentations in both directions
+(\texttt{Simplified.Iso}); the substantive direction derives each full
+axiom from the simplified ones.  The multiplier law $M_x \bullet M_y
+\approx M_{xy}$ is typical: write $x = g^{k}$, $y = g^{l}$, use
+\aid{M-power} twice, add the exponents, reduce modulo $p-1$ using
+$M_g^{\,p-1} \approx \varepsilon$, which is Fermat's little theorem, and
+use \aid{M-power} once more.  The whole reduction from seventeen rules
+to fifteen is 900 lines; the reduction from the box relations to the
+seventeen is 18\,000.  This is the formal counterpart of the paper's
+Theorem~4.4, whose proof the paper already delegated to Agda.  Read
+modulo Paulis and scalars, Selinger's three-qubit
+relations~\cite{selinger2015clifford} are \emph{identical} to
+\aid{selinger-c12} to \aid{c15}, which is why the names were kept, and
+his two-qubit relations are similar; the one-qupit relations are where
+the odd prime shows, in the multiplier calculus of $M_g$ with its
+dependence on a primitive root and on Fermat's theorem, which has no
+qubit counterpart.  That the difficulty of the general odd prime
+concentrates on one wire is what makes the factored route affordable:
+the two- and three-wire rewriting is Selinger's, and the one-wire
+arithmetic is arithmetic.
+
+\subsection{The symplectic presentation theorem}\label{sec:sptheorem}
+
+Soundness (one clause per axiom), the normal form of \S\ref{sec:pushing}
+and its uniqueness (\S\ref{sec:uniqueness}) assemble, through
+\aid{by-normalization}, into a sub-presentation: the interpretation is an
+injective homomorphism from the words modulo the full rules into
+\aid{Sp-group}.  Surjectivity --- every symplectic transformation is the
+action of some circuit --- is proved constructively by ``clear the bottom
+wire, recurse on the tail'': the single-level input is
+
+\begin{code}%
+\>[0]\AgdaFunction{Theorem-LM}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{p}\AgdaSpace{}%
+\AgdaBound{q}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{Pauli}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{sform}\AgdaSpace{}%
+\AgdaBound{p}\AgdaSpace{}%
+\AgdaBound{q}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaInductiveConstructor{₁}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaFunction{∃}\AgdaSpace{}%
+\AgdaSymbol{λ}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{lm}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{act}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
+\AgdaBound{lm}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{]ᵐˡ}}\AgdaSpace{}%
+\AgdaBound{p}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaPostulate{pZ₀}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaPostulate{act}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
+\AgdaBound{lm}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{]ᵐˡ}}\AgdaSpace{}%
+\AgdaBound{q}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaPostulate{pX₀}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{Theorem-LM}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\end{code}
+
+--- for any symplectic pair there is a coset box sending it to the
+bottom-wire $Z$ and $X$ --- which is the paper's Lemma~3.7 with the box
+computed rather than asserted.  Composing the sub-presentation of the
+full rules with the identity isomorphism of \S\ref{sec:reduction} gives
+the theorem for the simplified rules, with the \emph{same}
+interpretation:
+
+\begin{code}%
+\>[0]\AgdaFunction{Theorem-Sp}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Sp-group}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaFunction{Theorem-Sp}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{SimPres.presentation}\<%
+\end{code}
+

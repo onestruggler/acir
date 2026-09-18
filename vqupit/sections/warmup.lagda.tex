@@ -1,0 +1,242 @@
+\begin{code}[hide]
+module vqupit.sections.warmup where
+
+open import Data.Nat using (ℕ ; suc)
+open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Sum using (inj₁ ; inj₂)
+open import Data.Unit using (⊤ ; tt)
+open import Notations using (₁₊ ; ₂₊ ; ₃₊)
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; wmap)
+open import Presentation.Definitions using (_IsPresentationOf_)
+open import Presentation.Construct.Base using (_⊎^_ ; _⊕^_ ; _⋄_⋄_ ; ConjRelʷ)
+open import Examples.Groups.Cyclic.Normalization using (_Cn,_===_)
+
+postulate
+  proof-elided : ∀ {ℓ} {A : Set ℓ} → A
+
+private variable
+  n : ℕ
+
+data Gate : ℕ → Set where
+  σ-gate : Gate 2
+data Gen : ℕ → Set where
+  gate₁ : Gate 1 → Gen (₁₊ n)
+  gate₂ : Gate 2 → Gen (₂₊ n)
+  _↥   : Gen n → Gen (₁₊ n)
+
+Circuit : ℕ → Set
+Circuit n = Word (Gen n)
+
+_↑ : Circuit n → Circuit (₁₊ n)
+_↑ = wmap _↥
+
+pattern σ-gen = gate₂ σ-gate
+
+σ : Circuit (₂₊ n)
+σ = [ σ-gen ]ʷ
+
+infix 4 _SRel,_===_ _VRel,_===_ _≈_
+infixr 10 σ•_
+
+postulate
+  _≈_ : Circuit n → Circuit n → Set
+  _VRel,_===_ : (n : ℕ) → WRel (Gen n)
+  sw₂ : ∀ {n} → ⊤ ⊎^ n → ⊤ ⊎^ n
+
+module Wreath where
+  postulate wreath-group : ℕ → ℕ → Set
+\end{code}
+\section{Warm-up: Permutations and Signed Permutations}\label{sec:warmup}
+
+Two small examples from the library exercise everything the symplectic
+development needs.  Swap circuits, which present the symmetric groups,
+show a coset tower whose obligations close by evaluation; the wreath
+products $\mathbb{Z}_N \wr S_n$, the groups of signed permutations, show
+the semidirect-product theorem gluing two presentations along a
+syntactic action.  The symplectic factor of \S\ref{sec:symplectic} is
+the first example with a richer action, and the Clifford group of
+\S\ref{sec:composing} is the second example with $\Sp$ in place of
+$S_n$.
+
+\subsection{Swap circuits and the symmetric groups}\label{sec:sn}
+
+Permutation circuits have one gate, the swap $\sigma$ on two wires, and
+two group-specific axioms, stated once each with the gates at the bottom
+and the width left open, so that \aid{cong↑} moves them to any height:
+
+\begin{minipage}[c]{0.68\textwidth}
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
+  order       : (₂₊ n) SRel, σ • σ === ε
+  yang-baxter : (₃₊ n) SRel, σ • σ ↑ • σ === σ ↑ • σ • σ ↑
+\end{code}
+\endgroup
+\end{minipage}\hfill
+\begin{minipage}[c]{0.28\textwidth}\centering
+  \ufig[0.45]{sn-order}\\[3pt]
+  \ufig[0.45]{sn-yb}
+\end{minipage}
+
+\medskip\noindent These are two thirds of the Coxeter presentation of
+$S_n$; the third Coxeter relation, that swaps on disjoint wires commute,
+is the structural rule \aid{comm₂} and comes for free.  The coset chain
+is $S_1 < S_2 < \dots < S_{n+1}$, where $S_n$ sits inside $S_{n+1}$ as
+the circuits of the form $c{\uparrow}$.  Two circuits lie in the same
+right coset of $S_n$ exactly when they bring the same wire to the
+bottom, so $S_n$ has index $n{+}1$, and a natural representative of each
+coset is the \emph{descending staircase} of swaps that carries that
+wire down.  A coset label is the length of the staircase, and the
+section maps it to the staircase circuit:
+
+\begin{minipage}[c]{0.36\textwidth}
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+data C : ℕ → Set where
+  ε   : C n
+  σ•_ : C n → C (₁₊ n)
+
+[_]ᶜ : C n → Circuit (₁₊ n)
+[ ε ]ᶜ     = ε
+[ σ• c ]ᶜ  = σ • ([ c ]ᶜ ↑)
+\end{code}
+\endgroup
+\end{minipage}\hfill
+\begin{minipage}[c]{0.6\textwidth}\centering\small
+\begin{tabular}{@{}l@{\;\;}ccc@{}}
+  $\aid{C}\;2$: & \ufig[0.45]{c2-0} & \ufig[0.45]{c2-1} & \ufig[0.45]{c2-2}\\
+  & $\varepsilon$ & $\sigma{\bullet}\:\varepsilon$ &
+    $\sigma{\bullet}\:\sigma{\bullet}\:\varepsilon$\\[3pt]
+  $\aid{C}\;1$, $\aid{C}\;0$: & \ufig[0.45]{c1-0} & \ufig[0.45]{c1-1} & \ufig[0.45]{c0-0}\\
+  & $\varepsilon$ & $\sigma{\bullet}\:\varepsilon$ & $\varepsilon$
+\end{tabular}
+\end{minipage}
+
+\medskip\noindent Recursing on the coset writes every $f \in S_{n+1}$
+uniquely as $c_1 c_2 \cdots c_n$ with $c_k \in \aid{C}\;k$, a numeral
+in the factorial number system.  \emph{Computing} this factorisation is
+the coset table: given a staircase and one generator, it says where
+their product lands (the updated coset) and what is left over on the
+wires above (the residual circuit), so that staircase followed by
+generator equals residual, shifted up, followed by updated staircase.
+Pushing $\sigma$ into a staircase can lengthen it, cancel with it, or
+pass through by Yang--Baxter; a generator that does not touch the
+bottom wire commutes past or recurses (Figure~\ref{fig:pushing}):
+
+\begin{minipage}[c]{0.7\textwidth}
+\begingroup\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\begin{code}
+ract : C (₁₊ n) → Gen (₂₊ n) → Circuit (₁₊ n) × C (₁₊ n)
+ract ε         σ-gen = ε , σ• ε                       -- grows
+ract (σ• ε)    σ-gen = ε , ε                          -- cancels
+ract (σ• σ• c) σ-gen = σ , σ• σ• c                    -- passes
+ract ε         (g ↥) = [ g ]ʷ , ε                     -- commutes past
+ract (σ• c)    (g ↥) = proj₁ (ract c g) ↑ , σ• (proj₂ (ract c g))
+
+ract-sound : ∀ c b → let (b' , c') = ract c b
+                     in  [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ
+\end{code}
+\endgroup
+\begin{code}[hide]
+ract-sound = proof-elided
+\end{code}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.27\textwidth}\centering
+  \ufig[0.45]{ract-l}\;\scalebox{0.7}{$\approx$}\;\ufig[0.45]{ract-r}
+\end{minipage}
+
+\begin{figure}
+\centering
+\begin{minipage}[c]{0.72\textwidth}\footnotesize
+\begin{tabular}{@{}r@{\,}c@{\,}l@{\;}l@{\quad}r@{\,}c@{\,}l@{\;}l@{}}
+  \ufig[0.4]{push4-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push4-r} & grows &
+  \ufig[0.4]{push3-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push3-r} & cancels\\[3pt]
+  \ufig[0.4]{push2-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push2-r} & passes &
+  \ufig[0.4]{push1-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push1-r} & commutes past
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.24\textwidth}\centering
+  \ufig[0.55]{sn-stair}
+\end{minipage}
+\caption{Left: pushing a swap through a staircase, the four cases of
+the coset table \aid{ract}, in the order of its clauses.  Right: the
+section of a normal form in $\aid{NF}\;4$, one staircase per level.}
+\label{fig:pushing}
+\end{figure}
+
+\noindent The residual is empty or a single swap here, but for richer
+gate sets it can be a longer circuit, which is why the table returns a
+circuit one wire up rather than a generator.  The soundness law
+\aid{ract-sound} is hypothesis (5) of \S\ref{sec:engine}, proved by a
+short derivation per clause; the other four hypotheses close by
+evaluation.  The tower's carrier is $\aid{NF}\;(k{+}1) = \aid{NF}\;k
+\times \aid{C}\;k$, so $\aid{NF}\;n$ has $n!$ elements, and the section
+concatenates the staircases, suitably shifted (Figure~\ref{fig:pushing},
+right).  Uniqueness against the permutation semantics is an induction on
+the tower, since equal denotations force equal top digits; soundness
+and uniqueness feed \aid{by-normalization}, and the two axioms plus the
+structural rules present the permutation group of $\mathsf{Fin}\;n$.
+
+\subsection{The wreath product \texorpdfstring{$\mathbb{Z}_N \wr S_n$}{Z_N wr S_n} as a semidirect product}\label{sec:snd}
+
+The second example composes two presentations instead of building a
+tower.  Fix a base order $N = m{+}1$ and $n$ wires.  The cyclic
+presentation $\langle T \mid T^{N} = \varepsilon\rangle$, iterated by the
+$n$-fold direct-product construction $\Gamma_0 \aid{⊕\char94} n$,
+presents $(\mathbb{Z}_N)^n$ over the alphabet $\top \aid{⊎\char94} n$
+of $n$ copies of $T$, one per coordinate; the swap circuits of
+\S\ref{sec:sn} present $S_n$.  The wreath product $\mathbb{Z}_N \wr S_n
+= (\mathbb{Z}_N)^n \rtimes S_n$ is $S_n$ acting on the coordinates, and
+the action is specified \emph{syntactically}, generator by generator:
+the bottom swap exchanges the bottom two coordinates, and a shifted swap
+acts on the shifted coordinates and fixes the bottom one.
+
+\begin{code}
+act : ∀ {n} → Gen n → ⊤ ⊎^ n → ⊤ ⊎^ n
+act        (gate₂ σ-gate) x        = sw₂ x
+act {₂₊ n} (g ↥)          (inj₁ tt) = inj₁ tt
+act {₂₊ n} (g ↥)          (inj₂ y)  = inj₂ (act g y)
+
+conj : ∀ {n} → Gen n → ⊤ ⊎^ n → Word (⊤ ⊎^ n)
+conj g x = [ act g x ]ʷ
+\end{code}
+
+\noindent The semidirect theorem of \S\ref{sec:constructions} asks for
+two compatibility lemmas.  \aid{conj-hypn}, that the action respects
+the product relations in its second argument, is a finite case split:
+each generator carries $T^{N} = \varepsilon$ on one coordinate to the
+same relation on another, and the commutation of two coordinates to the
+commutation of their images.  \aid{conj-hyph}, that the action respects
+the Coxeter relations in its first argument, reduces to the fact that
+the permutations induced by the two sides of each axiom are equal as
+functions on coordinates --- $\sigma^2$ is the identity and both sides
+of Yang--Baxter are the same 3-cycle --- after which the two conjugates
+are propositionally equal words.  Feeding the two factor presentations
+and the two lemmas into the theorem gives
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+wreath-presentation : ∀ n m → (((suc m Cn,_===_) ⊕^ n) ⋄ (n VRel,_===_) ⋄ ConjRelʷ conj)
+                                IsPresentationOf (Wreath.wreath-group n m)
+\end{code}
+\endgroup
+\begin{code}[hide]
+wreath-presentation = proof-elided
+\end{code}
+
+\noindent where $\aid{wreath-group}\;n\;m$ is the semantic
+$(\mathbb{Z}_N)^n \rtimes S_n$ built by the library's semidirect
+product from the cyclic groups and the permutation group.  The lifted
+normal form is a pair of $n$ residues modulo $N$ and the factorial tuple
+of a permutation, so its section is a word of $T$-powers, one per
+coordinate, followed by the staircases of \S\ref{sec:sn}.  At $N = 2$
+this is the hyperoctahedral group of signed permutations; at general
+$N$ it is the group $G(N,1,n)$ of monomial matrices with $N$-th roots of
+unity as entries, the ``permutation-and-phase'' part of every Clifford
+group.  The theorem delivers all of these presentations, for every $N$
+and $n$, from two small lemmas: nothing about the wreath product was
+proved by hand.  The Clifford group of \S\ref{sec:composing} is this
+example with $\Sp$ in place of $S_n$ and the projective Pauli group in
+place of $(\mathbb{Z}_N)^n$; there the action is richer and the two
+lemmas are proved by semantics rather than by case split, but the shape
+of the argument is exactly this one.

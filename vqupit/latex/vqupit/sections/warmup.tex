@@ -1,0 +1,773 @@
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{vqupit.sections.warmup}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Nat}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{suc}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Product}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}×\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{},\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaField{proj₁}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaField{proj₂}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Sum}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{inj₁}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{inj₂}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Unit}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaRecord{⊤}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{tt}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Notations}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{₃₊}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Word.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[\AgdaUnderscore{}]ʷ}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}•\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{wmap}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Definitions}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaRecord{\AgdaUnderscore{}IsPresentationOf\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Construct.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}⊎\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}⊕\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}⋄\AgdaUnderscore{}⋄\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaDatatype{ConjRelʷ}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Groups.Cyclic.Normalization}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}Cn,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaPostulate{proof-elided}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{ℓ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{A}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaBound{ℓ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{A}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{private}\AgdaSpace{}%
+\AgdaKeyword{variable}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{σ-gate}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaNumber{2}\<%
+\\
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{gate₁}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaNumber{1}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{gate₂}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gate}\AgdaSpace{}%
+\AgdaNumber{2}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}↥}}%
+\>[7]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+\>[0]\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}↑}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}↑}}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{wmap}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}↥}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{pattern}\AgdaSpace{}%
+\AgdaInductiveConstructor{σ-gen}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{gate₂}\AgdaSpace{}%
+\AgdaInductiveConstructor{σ-gate}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaInductiveConstructor{σ-gen}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{infix}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}VRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\<%
+\\
+\>[0]\AgdaKeyword{infixr}\AgdaSpace{}%
+\AgdaNumber{10}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•\AgdaUnderscore{}}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}VRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaPostulate{sw₂}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaRecord{⊤}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{⊎\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaRecord{⊤}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{⊎\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{n}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{Wreath}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaKeyword{postulate}\AgdaSpace{}%
+\AgdaPostulate{wreath-group}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\end{code}
+\section{Warm-up: Permutations and Signed Permutations}\label{sec:warmup}
+
+Two small examples from the library exercise everything the symplectic
+development needs.  Swap circuits, which present the symmetric groups,
+show a coset tower whose obligations close by evaluation; the wreath
+products $\mathbb{Z}_N \wr S_n$, the groups of signed permutations, show
+the semidirect-product theorem gluing two presentations along a
+syntactic action.  The symplectic factor of \S\ref{sec:symplectic} is
+the first example with a richer action, and the Clifford group of
+\S\ref{sec:composing} is the second example with $\Sp$ in place of
+$S_n$.
+
+\subsection{Swap circuits and the symmetric groups}\label{sec:sn}
+
+Permutation circuits have one gate, the swap $\sigma$ on two wires, and
+two group-specific axioms, stated once each with the gates at the bottom
+and the width left open, so that \aid{cong↑} moves them to any height:
+
+\begin{minipage}[c]{0.68\textwidth}
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{order}%
+\>[14]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{yang-baxter}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₃₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\<%
+\end{code}
+\endgroup
+\end{minipage}\hfill
+\begin{minipage}[c]{0.28\textwidth}\centering
+  \ufig[0.45]{sn-order}\\[3pt]
+  \ufig[0.45]{sn-yb}
+\end{minipage}
+
+\medskip\noindent These are two thirds of the Coxeter presentation of
+$S_n$; the third Coxeter relation, that swaps on disjoint wires commute,
+is the structural rule \aid{comm₂} and comes for free.  The coset chain
+is $S_1 < S_2 < \dots < S_{n+1}$, where $S_n$ sits inside $S_{n+1}$ as
+the circuits of the form $c{\uparrow}$.  Two circuits lie in the same
+right coset of $S_n$ exactly when they bring the same wire to the
+bottom, so $S_n$ has index $n{+}1$, and a natural representative of each
+coset is the \emph{descending staircase} of swaps that carries that
+wire down.  A coset label is the length of the staircase, and the
+section maps it to the staircase circuit:
+
+\begin{minipage}[c]{0.36\textwidth}
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{ε}%
+\>[6]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaGeneralizable{n}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaInductiveConstructor{σ•\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaOperator{\AgdaFunction{[\AgdaUnderscore{}]ᶜ}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{]ᶜ}}%
+\>[11]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\\
+\>[0]\AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{]ᶜ}}%
+\>[11]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{]ᶜ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\AgdaSymbol{)}\<%
+\end{code}
+\endgroup
+\end{minipage}\hfill
+\begin{minipage}[c]{0.6\textwidth}\centering\small
+\begin{tabular}{@{}l@{\;\;}ccc@{}}
+  $\aid{C}\;2$: & \ufig[0.45]{c2-0} & \ufig[0.45]{c2-1} & \ufig[0.45]{c2-2}\\
+  & $\varepsilon$ & $\sigma{\bullet}\:\varepsilon$ &
+    $\sigma{\bullet}\:\sigma{\bullet}\:\varepsilon$\\[3pt]
+  $\aid{C}\;1$, $\aid{C}\;0$: & \ufig[0.45]{c1-0} & \ufig[0.45]{c1-1} & \ufig[0.45]{c0-0}\\
+  & $\varepsilon$ & $\sigma{\bullet}\:\varepsilon$ & $\varepsilon$
+\end{tabular}
+\end{minipage}
+
+\medskip\noindent Recursing on the coset writes every $f \in S_{n+1}$
+uniquely as $c_1 c_2 \cdots c_n$ with $c_k \in \aid{C}\;k$, a numeral
+in the factorial number system.  \emph{Computing} this factorisation is
+the coset table: given a staircase and one generator, it says where
+their product lands (the updated coset) and what is left over on the
+wires above (the residual circuit), so that staircase followed by
+generator equals residual, shifted up, followed by updated staircase.
+Pushing $\sigma$ into a staircase can lengthen it, cancel with it, or
+pass through by Yang--Baxter; a generator that does not touch the
+bottom wire commutes past or recurses (Figure~\ref{fig:pushing}):
+
+\begin{minipage}[c]{0.7\textwidth}
+\begingroup\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\begin{code}%
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{Circuit}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}%
+\>[15]\AgdaInductiveConstructor{σ-gen}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}%
+\>[54]\AgdaComment{--\ grows}\<%
+\\
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSymbol{)}%
+\>[15]\AgdaInductiveConstructor{σ-gen}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}%
+\>[54]\AgdaComment{--\ cancels}\<%
+\\
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaInductiveConstructor{σ-gen}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{σ}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaBound{c}%
+\>[54]\AgdaComment{--\ passes}\<%
+\\
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}%
+\>[15]\AgdaSymbol{(}\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}%
+\>[54]\AgdaComment{--\ commutes\ past}\<%
+\\
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSymbol{)}%
+\>[15]\AgdaSymbol{(}\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaField{proj₁}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{σ•}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaField{proj₂}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSymbol{))}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaFunction{ract-sound}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSpace{}%
+\AgdaSymbol{→}%
+\>[326I]\AgdaKeyword{let}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{b'}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{c'}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{b}\<%
+\\
+\>[.][@{}l@{}]\<[326I]%
+\>[21]\AgdaKeyword{in}%
+\>[25]\AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{]ᶜ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{≈}}\AgdaSpace{}%
+\AgdaBound{b'}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{[}}\AgdaSpace{}%
+\AgdaBound{c'}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{]ᶜ}}\<%
+\end{code}
+\endgroup
+\begin{code}[hide]%
+\>[0]\AgdaFunction{ract-sound}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\end{code}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.27\textwidth}\centering
+  \ufig[0.45]{ract-l}\;\scalebox{0.7}{$\approx$}\;\ufig[0.45]{ract-r}
+\end{minipage}
+
+\begin{figure}
+\centering
+\begin{minipage}[c]{0.72\textwidth}\footnotesize
+\begin{tabular}{@{}r@{\,}c@{\,}l@{\;}l@{\quad}r@{\,}c@{\,}l@{\;}l@{}}
+  \ufig[0.4]{push4-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push4-r} & grows &
+  \ufig[0.4]{push3-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push3-r} & cancels\\[3pt]
+  \ufig[0.4]{push2-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push2-r} & passes &
+  \ufig[0.4]{push1-l} & \scalebox{0.7}{$\rightarrow$} & \ufig[0.4]{push1-r} & commutes past
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.24\textwidth}\centering
+  \ufig[0.55]{sn-stair}
+\end{minipage}
+\caption{Left: pushing a swap through a staircase, the four cases of
+the coset table \aid{ract}, in the order of its clauses.  Right: the
+section of a normal form in $\aid{NF}\;4$, one staircase per level.}
+\label{fig:pushing}
+\end{figure}
+
+\noindent The residual is empty or a single swap here, but for richer
+gate sets it can be a longer circuit, which is why the table returns a
+circuit one wire up rather than a generator.  The soundness law
+\aid{ract-sound} is hypothesis (5) of \S\ref{sec:engine}, proved by a
+short derivation per clause; the other four hypotheses close by
+evaluation.  The tower's carrier is $\aid{NF}\;(k{+}1) = \aid{NF}\;k
+\times \aid{C}\;k$, so $\aid{NF}\;n$ has $n!$ elements, and the section
+concatenates the staircases, suitably shifted (Figure~\ref{fig:pushing},
+right).  Uniqueness against the permutation semantics is an induction on
+the tower, since equal denotations force equal top digits; soundness
+and uniqueness feed \aid{by-normalization}, and the two axioms plus the
+structural rules present the permutation group of $\mathsf{Fin}\;n$.
+
+\subsection{The wreath product \texorpdfstring{$\mathbb{Z}_N \wr S_n$}{Z_N wr S_n} as a semidirect product}\label{sec:snd}
+
+The second example composes two presentations instead of building a
+tower.  Fix a base order $N = m{+}1$ and $n$ wires.  The cyclic
+presentation $\langle T \mid T^{N} = \varepsilon\rangle$, iterated by the
+$n$-fold direct-product construction $\Gamma_0 \aid{⊕\char94} n$,
+presents $(\mathbb{Z}_N)^n$ over the alphabet $\top \aid{⊎\char94} n$
+of $n$ copies of $T$, one per coordinate; the swap circuits of
+\S\ref{sec:sn} present $S_n$.  The wreath product $\mathbb{Z}_N \wr S_n
+= (\mathbb{Z}_N)^n \rtimes S_n$ is $S_n$ acting on the coordinates, and
+the action is specified \emph{syntactically}, generator by generator:
+the bottom swap exchanges the bottom two coordinates, and a shifted swap
+acts on the shifted coordinates and fixes the bottom one.
+
+\begin{code}%
+\>[0]\AgdaFunction{act}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaRecord{⊤}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{⊎\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaRecord{⊤}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{⊎\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{n}\<%
+\\
+\>[0]\AgdaFunction{act}%
+\>[11]\AgdaSymbol{(}\AgdaInductiveConstructor{gate₂}\AgdaSpace{}%
+\AgdaInductiveConstructor{σ-gate}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaBound{x}%
+\>[35]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{sw₂}\AgdaSpace{}%
+\AgdaBound{x}\<%
+\\
+\>[0]\AgdaFunction{act}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}%
+\>[26]\AgdaSymbol{(}\AgdaInductiveConstructor{inj₁}\AgdaSpace{}%
+\AgdaInductiveConstructor{tt}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{inj₁}\AgdaSpace{}%
+\AgdaInductiveConstructor{tt}\<%
+\\
+\>[0]\AgdaFunction{act}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}%
+\>[26]\AgdaSymbol{(}\AgdaInductiveConstructor{inj₂}\AgdaSpace{}%
+\AgdaBound{y}\AgdaSymbol{)}%
+\>[36]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{inj₂}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{act}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaBound{y}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaRecord{⊤}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{⊎\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaRecord{⊤}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{⊎\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaBound{x}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaFunction{act}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaBound{x}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\<%
+\end{code}
+
+\noindent The semidirect theorem of \S\ref{sec:constructions} asks for
+two compatibility lemmas.  \aid{conj-hypn}, that the action respects
+the product relations in its second argument, is a finite case split:
+each generator carries $T^{N} = \varepsilon$ on one coordinate to the
+same relation on another, and the commutation of two coordinates to the
+commutation of their images.  \aid{conj-hyph}, that the action respects
+the Coxeter relations in its first argument, reduces to the fact that
+the permutations induced by the two sides of each axiom are equal as
+functions on coordinates --- $\sigma^2$ is the identity and both sides
+of Yang--Baxter are the same 3-cycle --- after which the two conjugates
+are propositionally equal words.  Feeding the two factor presentations
+and the two lemmas into the theorem gives
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}%
+\>[0]\AgdaFunction{wreath-presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaSymbol{→}%
+\>[412I]\AgdaSymbol{(((}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{Cn,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{⊕\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{VRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
+\AgdaDatatype{ConjRelʷ}\AgdaSpace{}%
+\AgdaFunction{conj}\AgdaSymbol{)}\<%
+\\
+\>[412I][@{}l@{\AgdaIndent{0}}]%
+\>[32]\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Wreath.wreath-group}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSymbol{)}\<%
+\end{code}
+\endgroup
+\begin{code}[hide]%
+\>[0]\AgdaFunction{wreath-presentation}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\end{code}
+
+\noindent where $\aid{wreath-group}\;n\;m$ is the semantic
+$(\mathbb{Z}_N)^n \rtimes S_n$ built by the library's semidirect
+product from the cyclic groups and the permutation group.  The lifted
+normal form is a pair of $n$ residues modulo $N$ and the factorial tuple
+of a permutation, so its section is a word of $T$-powers, one per
+coordinate, followed by the staircases of \S\ref{sec:sn}.  At $N = 2$
+this is the hyperoctahedral group of signed permutations; at general
+$N$ it is the group $G(N,1,n)$ of monomial matrices with $N$-th roots of
+unity as entries, the ``permutation-and-phase'' part of every Clifford
+group.  The theorem delivers all of these presentations, for every $N$
+and $n$, from two small lemmas: nothing about the wreath product was
+proved by hand.  The Clifford group of \S\ref{sec:composing} is this
+example with $\Sp$ in place of $S_n$ and the projective Pauli group in
+place of $(\mathbb{Z}_N)^n$; there the action is richer and the two
+lemmas are proved by semantics rather than by case split, but the shape
+of the argument is exactly this one.

@@ -1,0 +1,969 @@
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{vqupit.sections.composing}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Nat}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{ℕ}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Sum}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}⊎\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Relation.Binary.PropositionalEquality}\AgdaSpace{}%
+\AgdaSymbol{as}\AgdaSpace{}%
+\AgdaModule{Eq}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Notations}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Word.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[\AgdaUnderscore{}]ʷ}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}•\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}ʰ'}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Definitions}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaRecord{\AgdaUnderscore{}IsPresentationOf\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Construct.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}⋄\AgdaUnderscore{}⋄\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaDatatype{ConjRelʷ}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{infixl}\AgdaSpace{}%
+\AgdaNumber{9}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}↑}}\<%
+\\
+\>[0]\AgdaKeyword{infix}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}PRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}SpRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}Exact,\AgdaUnderscore{}===\AgdaUnderscore{}}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{private}\AgdaSpace{}%
+\AgdaKeyword{variable}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{Sym}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[2][@{}l@{\AgdaIndent{0}}]%
+\>[4]\AgdaInductiveConstructor{H-gen}\AgdaSpace{}%
+\AgdaInductiveConstructor{S-gen}\AgdaSpace{}%
+\AgdaInductiveConstructor{CZ-gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\<%
+\\
+%
+\>[4]\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}↥}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{XZ}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[2][@{}l@{\AgdaIndent{0}}]%
+\>[4]\AgdaInductiveConstructor{X-gen}\AgdaSpace{}%
+\AgdaInductiveConstructor{Z-gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\<%
+\\
+%
+\>[4]\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}↥}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaKeyword{postulate}\<%
+\\
+\>[2][@{}l@{\AgdaIndent{0}}]%
+\>[4]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[4]\AgdaPostulate{presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{XZ}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{X-gen}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{Z-gen}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}↥}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{Sym}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}↥}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{Sim}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaKeyword{postulate}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{PB}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaKeyword{postulate}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{PapV1}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{Clifford-Relations}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[2][@{}l@{\AgdaIndent{0}}]%
+\>[4]\AgdaKeyword{postulate}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{V1}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{Clifford-Relations}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[2][@{}l@{\AgdaIndent{0}}]%
+\>[4]\AgdaKeyword{postulate}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{V1}\<%
+\\
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{Semidirect}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaKeyword{postulate}\AgdaSpace{}%
+\AgdaPostulate{Pauli⋊Sp}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{PE}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaKeyword{postulate}\AgdaSpace{}%
+\AgdaPostulate{Presented-group}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaPostulate{proof-elided}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{ℓ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{A}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaBound{ℓ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{A}\<%
+\\
+%
+\>[2]\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaPostulate{Z}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaPostulate{p}\AgdaSpace{}%
+\AgdaPostulate{p-1}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+%
+\>[2]\AgdaPostulate{+ₚ-group}\AgdaSpace{}%
+\AgdaPostulate{Pauli⋊Sp}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}SpRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}Exact,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}↑}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{))}\<%
+\\
+%
+\>[2]\AgdaPostulate{complete}\AgdaSpace{}%
+\AgdaPostulate{conjw-sem}\AgdaSpace{}%
+\AgdaPostulate{denote-eq}\AgdaSpace{}%
+\AgdaPostulate{sem}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaPostulate{exact-generator-data}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\end{code}
+\section{Composing: Paulis, the Semidirect Product, and Scalars}\label{sec:composing}
+
+From the symplectic presentation to the Clifford presentation there are
+four steps: the Pauli factor; the semidirect product, gluing the Pauli
+and symplectic presentations along the conjugation action; plumbing,
+which simplifies the glued presentation to the paper's rules over $H$,
+$S$, $CZ$ alone; and the central extension by $\langle\omega\rangle$,
+which restores the scalars.
+
+\subsection{The Pauli factor}\label{sec:pauli}
+
+The projective Pauli group $\PPauli \cong (\Zp \times \Zp)^n$ has an easy
+presentation over generators $X$, $Z$ on each wire:
+
+\begin{code}%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}PRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{order-X}%
+\>[12]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{PRel,}}%
+\>[28]\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaPostulate{p}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{order-Z}%
+\>[12]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{PRel,}}%
+\>[28]\AgdaPostulate{Z}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaPostulate{p}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{comm-Z-X}%
+\>[12]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{PRel,}}%
+\>[28]\AgdaPostulate{Z}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Z}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaFunction{Theorem-Pauli}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaPostulate{XZ.\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{+ₚ-group}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaFunction{Theorem-Pauli}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{XZ.presentation}\<%
+\end{code}
+
+The semantic group \aid{+ₚ-group}~$n$ is $\aid{Vec}\;(\Zp \times \Zp)\;n$
+under componentwise addition --- the very phase space on which $\Sp$
+acts in \S\ref{sec:spsem}, which is what will make the semidirect action
+definable.  The normal form is $X^{a}Z^{b}$ on each wire, read off the
+exponent vector; soundness, uniqueness and \aid{by-normalization} give the
+presentation, and the module also exports the soundness and completeness
+maps separately, which the next step consumes.  (The library also
+presents the same group compositionally, as an $n$-fold direct product
+of $\Zp \times \Zp$ with no normal-form work at all; that presentation is
+over a different alphabet, and the circuit-alphabet one is the one the
+qupit chain needs.)
+
+\subsection{The semidirect product}\label{sec:semidirect}
+
+This is the wreath-product example of \S\ref{sec:snd} with $\Sp$ in
+place of $S_n$: the relations of both factors plus twisted commutation
+$h\,n\,h^{-1} = \mathit{conj}\,h\,n$.  Here the action of a symplectic
+generator on a Pauli generator is the
+paper's Lemmas~2.22--2.23, as words --- $H$ swaps $X$ and $Z$ (up to an
+inverse), $S$ sends $X$ to $XZ$, $CZ$ couples the two bottom wires, and
+a shifted gate acts on a shifted Pauli only:
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}%
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Sym.Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{XZ.Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{XZ.Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaInductiveConstructor{Sym.H-gen}%
+\>[17]\AgdaInductiveConstructor{X-gen}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{Z}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaInductiveConstructor{Sym.H-gen}%
+\>[17]\AgdaInductiveConstructor{Z-gen}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaPostulate{p-1}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaInductiveConstructor{Sym.S-gen}%
+\>[17]\AgdaInductiveConstructor{X-gen}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Z}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaInductiveConstructor{Sym.S-gen}%
+\>[17]\AgdaInductiveConstructor{Z-gen}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{Z}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaInductiveConstructor{Sym.CZ-gen}%
+\>[17]\AgdaInductiveConstructor{X-gen}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Z}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaInductiveConstructor{Sym.CZ-gen}%
+\>[17]\AgdaInductiveConstructor{Z-gen}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{Z}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaInductiveConstructor{Sym.CZ-gen}%
+\>[17]\AgdaSymbol{(}\AgdaInductiveConstructor{X-gen}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Z}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaInductiveConstructor{Sym.CZ-gen}%
+\>[17]\AgdaSymbol{(}\AgdaInductiveConstructor{Z-gen}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{Z}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaInductiveConstructor{Sym.H-gen}%
+\>[17]\AgdaSymbol{(}\AgdaBound{xz}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{xz}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaInductiveConstructor{Sym.S-gen}%
+\>[17]\AgdaSymbol{(}\AgdaBound{xz}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{xz}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaInductiveConstructor{Sym.CZ-gen}%
+\>[17]\AgdaSymbol{(}\AgdaBound{xz}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{xz}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{sym}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}%
+\>[17]\AgdaInductiveConstructor{X-gen}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{X}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{sym}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}%
+\>[17]\AgdaInductiveConstructor{Z-gen}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{Z}\<%
+\\
+\>[0]\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{sym}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}%
+\>[17]\AgdaSymbol{(}\AgdaBound{xz}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{↥}}\AgdaSymbol{)}%
+\>[33]\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaBound{sym}\AgdaSpace{}%
+\AgdaBound{xz}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaFunction{Pauli⋊Symplectic}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{XZ.Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{⊎}}\AgdaSpace{}%
+\AgdaDatatype{Sym.Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaFunction{Pauli⋊Symplectic}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{PRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{SpRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
+\AgdaDatatype{ConjRelʷ}\AgdaSpace{}%
+\AgdaFunction{conj}\<%
+\end{code}
+\endgroup
+
+(module qualifiers on the Pauli side elided; the relation is
+\aid{{\_}QRel,{\_}==={\_}} in the source).
+
+The generic theorem of \S\ref{sec:constructions} asks for two things
+beyond the factor presentations: that \aid{conj} respects the symplectic
+rules in its first argument and the Pauli rules in its second.  Neither
+is proved by hand, in contrast to the case splits of \S\ref{sec:snd}.
+Both go through the semantics: the action of a symplectic word $c$ on a
+Pauli word $w$, computed syntactically by $(\mathit{conj}\,\aid{ʰ'})$,
+denotes $\aid{ap}\;\sem{c}\;(\mathit{sem}\;w)$ in the phase space, so if
+$c \approx d$ by a symplectic axiom then the two conjugates have equal
+denotations by symplectic soundness, and are therefore congruent Pauli
+words by Pauli \emph{completeness}:
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}%
+\>[0]\AgdaFunction{respects-Δ}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[350I]\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{d}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)\}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{u}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{XZ.Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{Sim.\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{d}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[.][@{}l@{}]\<[350I]%
+\>[13]\AgdaOperator{\AgdaPostulate{PB.\AgdaUnderscore{}≈\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaPostulate{XZ.\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{((}\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{ʰ'}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{((}\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{ʰ'}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaBound{d}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaFunction{respects-Δ}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{c}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{d}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSpace{}%
+\AgdaBound{ax}\AgdaSpace{}%
+\AgdaSymbol{=}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaPostulate{complete}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Eq.trans}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{conjw-sem}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Eq.trans}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{denote-eq}\AgdaSpace{}%
+\AgdaBound{ax}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{sem}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Eq.sym}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{conjw-sem}\AgdaSpace{}%
+\AgdaBound{d}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSymbol{))))}\<%
+\end{code}
+\endgroup
+
+\noindent and symmetrically for \aid{respects-Γ}.  The long symplectic
+rules --- \aid{M-power}, \aid{semi-M↑CZ}, \aid{selinger-c10} to
+\aid{c15} --- are never conjugated by hand.  This is the first place the
+factored route pays off in a way the paper's route cannot: the paper's
+``Pauli complete'' rules (its Definition~4.7) are precisely these
+conjugation rules, and there they must be derived syntactically from
+Figure~1 (its Proposition~4.8).  With every premise a theorem, the
+presentation \aid{(SemiDirect.{\_}QRel,{\_}==={\_} n) IsPresentationOf
+Pauli⋊Sp} is unconditional, where \aid{Pauli⋊Sp} is the theorem's
+\aid{G1⋊G2}.
+
+\paragraph{The semantic side.}  \aid{Pauli⋊Sp} is the library's
+semidirect product of the two semantic groups, built from an
+\aid{Action} record (\S\ref{sec:constructions}) whose action is the
+syntactic \aid{conj} transported through the two presentation
+isomorphisms.  The \emph{natural} semidirect product, with $\Sp$ acting
+on $\Zp^{2n}$ by \aid{ap}, is a different term, and the two are
+identified by a lemma $\aid{act≡ap}$ proving that the transported
+action is \aid{ap}.  This lemma lives in an \aid{abstract} block: with
+it transparent, the file's header records, a two-line lemma about
+$Z^{j}$ ``went from 27\,s to out-of-memory at 12\,GB'', because Agda
+tried to unfold the transported action through both presentation
+isomorphisms.
+
+\subsection{Plumbing: presentation simplification}\label{sec:plumbing}
+
+Two presentations are \emph{equivalent} when the presented groups are
+isomorphic --- when each side's axioms are derivable from the other's.
+The semidirect presentation has five generators per wire, $X, Z, H, S,
+CZ$, and the relations of Table~\ref{tab:plumb}; the paper has three,
+$H, S, CZ$, and sixteen relations.  Getting from one to the other is
+\emph{generator reduction} --- $X$ and $Z$ become the derived words of
+\S\ref{sec:background} --- and \emph{relation reduction} --- the Pauli
+rules and the fourteen conjugation rules become derivable.  For
+example, $CZ \bullet X{\uparrow} \approx X{\uparrow} \bullet
+Z{\downarrow} \bullet CZ$ (\aid{conj CZ-gen (X-gen ↥)}) becomes a
+theorem of the Clifford rules.
+
+\begin{table}[h]
+\caption{The three presentations of the projective Clifford group and
+the two reductions between them.}
+\label{tab:plumb}
+\centering\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llll}
+\toprule
+ & \texttt{SemiDirect} & \texttt{Simplified-V1} & \texttt{Paper-V0} / \texttt{Paper-V1} \\
+\midrule
+generators & $X, Z, H, S, CZ$ & $H, S, CZ$ & $H, S, CZ$ \\
+relations  & Pauli (3) + symplectic (15) + conjugation (14) & 19 & 16 / 15 \\
+\midrule
+\multicolumn{4}{l}{\emph{generator reduction}: $X, Z$ become the derived words; $S \mapsto R = S\cdot Z^{1/2}$}\\
+\multicolumn{4}{l}{\emph{relation reduction}: Pauli $+$ conjugation rules become derivable; c10--c15 and the swap calculus interderivable}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{From the semidirect relation to Simplified-V1.}  The first
+reduction is an isomorphism of presentations on \emph{different}
+alphabets, given by generator maps in both directions: $f$ sends $X$
+and $Z$ to their derived words, $H$ and $CZ$ to themselves, and $S$ to
+$R$; $h$ sends $H$ and $CZ$ to themselves and $S$ to $Z^{-1/2} \bullet
+S$; both commute with $\uparrow$.  The symplectic $S$ is carried to
+$R = S \cdot Z^{1/2}$ and $h$ compensates, because the target rule set,
+\texttt{Simplified-V1}, spells the multiplier over $R$, as
+\S\ref{sec:background} does: $M_x = R^{x}HR^{x^{-1}}HR^{x}H$ exactly, with no Pauli
+correction.  \texttt{Simplified-V1} has nineteen group-specific rules:
+the simplified symplectic rules of \S\ref{sec:reduction} with $R$ in
+place of $S$ in the multiplier rules and in c10, c11, plus
+$(SH)^3 = \varepsilon$, $H^2SH^2S = SH^2SH^2$, and the two rules for
+pushing $X$ through $CZ$.  Notably $XZ = ZX$ is \emph{not} among them;
+it is derived from $(SH)^3 = \varepsilon$ and \aid{M-power}, by the
+paper's own argument (its Proposition~4.8).  The isomorphism theorem
+needs the four generator-level facts of the library's
+\aid{StarGroupIsomorphism}: $f$ and $h$ respect the axioms
+(\aid{f-well-defined}, \aid{h-well-defined}, one clause per axiom, the
+former containing the derivations of all three Pauli rules and all
+fourteen conjugation rules), and each is a left inverse of the other on
+generators.  Composing with the semidirect theorem:
+
+\begin{code}%
+\>[0]\AgdaFunction{presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{(}\AgdaOperator{\AgdaPostulate{Clifford-Relations.\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Semidirect.Pauli⋊Sp}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{presentation}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\end{code}
+
+This is where the mathematics of the composition step lives (about
+6\,000 lines): a multiplier calculus, a Pauli-conjugation calculus, the
+$CZ$ layer, and a small rewriting tactic that discharges the
+bookkeeping the paper's hand derivations spend most of their length
+on.
+
+\paragraph{From Simplified-V1 to our sixteen rules.}
+\texttt{Paper-V0} is the rule set of \S\ref{sec:background}: the same
+alphabet, so the identity on words is the candidate isomorphism.  Ten of
+the axioms are shared verbatim; the rest is real work in both
+directions.  \texttt{Paper-V0} axiomatises the swap directly and
+two-qupit interactions through \aid{blake-c12} and
+\aid{semi-CX↑-CZ↓}, and from these its \texttt{Lemmas} (4\,750 lines)
+derives Selinger's c10--c15 natively together with the lower-wire
+rules, the two Pauli-versus-$CZ$ rules and the swap--$CZ$ commutation;
+conversely the seven swap rules are proved in \texttt{Simplified-V1} by
+transport along the chain symplectic $\to$ simplified $\to$ semidirect
+$\to$ V1 rather than by fresh derivations.  The module exports \aid{v1⇒pap}, which
+transports any Simplified-V1 theorem into \texttt{Paper-V0}'s theory;
+it is what lets later layers reuse the calculi rather than re-prove
+them.
+
+\paragraph{From our sixteen rules to the paper's fifteen: connecting
+the two routes.}  The paper's Figure~1 spells the multiplier over
+$S$, with an explicit Pauli prefix (its Lemma~2.14): $M_x =
+\aid{SHS'}\;x^{-1}\;x$ where $\aid{SHS'}\;a\;b = Z^{(b-1)/2}
+X^{(1-a)/2} S^{b} H S^{a} H S^{b} H$, and correspondingly states
+\aid{semi-MR} as
+$M_g \bullet S^{g^2} \bullet Z^{(g^2-g)/2} = S \bullet M_g$ (its rule
+C4), the $Z$-exponent being what is left after the $Z^{1/2}$ hidden in
+each $R$ is split off and carried across the multiplier, where it picks
+up a factor of $g$.  \texttt{Paper-V1} is Figure~1 modulo scalars in
+this spelling: our sixteen rules with \aid{order-H},
+\aid{M-power}, \aid{semi-MR} and \aid{semi-M↑CZ} restated over
+\aid{SHS'}, and \emph{fifteen} rules rather than sixteen, because
+$(SH)^3 = \varepsilon$ is now a theorem.
+Under the $S$-spelling, $M_1$ \emph{is} the word $(SH)^3$ --- at $x = 1$
+the Pauli prefix vanishes --- and \aid{M-power} at $k = 0$ already
+gives $M_1 \approx \varepsilon$; under our $R$-spelling $M_1$ is
+$(RH)^3$, a different word, which is why the axiom had to stay there.
+The isomorphism with \texttt{Paper-V0} is again the identity on words;
+eleven axioms cross directly, and the four multiplier rules need the
+bridge between the two spellings, $R^{a}HR^{b}HR^{a}H \approx
+\aid{SHS'}\;a\;b$, proved once over an abstract relation in
+\texttt{Shared.PauliBase} and transported by \aid{v1⇒pap}.  The result
+is the theorem the index module states:
+
+\begin{code}%
+\>[0]\AgdaFunction{clifford-presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaPostulate{PapV1.Clifford-Relations.\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Pauli⋊Sp}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{clifford-presentation}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\end{code}
+
+So the paper's Figure~1, read modulo scalars, presents the same group as
+the semidirect presentation of \S\ref{sec:semidirect}: the two routes ---
+the paper's single rule set with its projective use of relations, and
+our factored construction --- provably arrive at the same place.
+
+\subsection{Getting the scalars back}\label{sec:scalars}
+
+The Clifford group is a central extension of the projective Clifford
+group by the scalars $\langle\omega\rangle$.  Following the extension
+recipe of \S\ref{sec:constructions}, the projective presentation is
+modified in four moves: add a generator $\omega$; add the relation
+$\omega^{p} = \varepsilon$; add relations that $\omega$ commutes with
+every gate; and \emph{correct} each projective relation by the scalar it
+actually picks up.  In Agda the recipe is instantiated rather than
+spelled out: \aid{extension-presentation} is applied to the cyclic
+relation $\langle \omega \mid \omega^{p} = \varepsilon\rangle$, the
+projective rules, the constant conjugation $\mathit{conj}\;\_\;\_ =
+\omega$, and a correction function that is $\varepsilon$ on every rule
+except \aid{order-SH}, where it is $\omega^{(p^2-1)/8}$.  Reading the
+generators as the paper's matrices, with $H$ normalised by
+$\delta_p$ so that all determinants are one, exactly \emph{one} of the
+sixteen rules fails to hold on the nose: $(SH)^3 = \varepsilon$ picks
+up $\omega^{(p^2-1)/8}$ (cf.\ the phase in the paper's (T1)), which is
+exact division since $8 \mid p^2 - 1$ for odd $p$, and whose residue
+modulo $p$ is $-1/8$ --- so the corrected rule reads
+\begin{center}
+  \fitfig[0.5\textwidth]{sc-order-SH}
+\end{center}
+where $1/8$ is the inverse of $8$ in $\Zp$.  Every other rule holds
+exactly: the three multiplier rules and \aid{order-H} because $R = S
+\cdot Z^{1/2}$ has no Pauli part, \aid{blake-c12} because every Pauli in
+it is pure-$Z$, and pure-$Z$ Paulis have vanishing symplectic form.  Note that the quotient here is
+our sixteen-rule set; correcting the paper's fifteen would give
+Figure~1 itself.
+
+\paragraph{The semantic side.}  A central extension of a group $Q$ by
+an abelian group $K$ is determined by a 2-cocycle $c : Q \times Q \to
+K$, with multiplication $(k, g)\cdot(k', h) = (k + k' + c(g,h),\; gh)$.
+The formalisation builds two.  The \emph{structural} one is the Weyl
+cocycle $c((P,S),(Q,\_)) = \tfrac12\,\mathrm{sform}(P, \aid{ap}\;S\;Q)$
+on the natural semidirect product, whose cocycle law is symplectic
+invariance of \aid{sform}, and which
+satisfies the Heisenberg law $P \cdot Q = \omega^{\mathrm{sform}(P,Q)}
+\, Q \cdot P$ on Paulis --- what distinguishes it from the direct product
+$\langle\omega\rangle \times (\PPauli \rtimes \Sp)$.  The
+\emph{presented} one, \aid{Presented-group}, has as quotient the word
+group of the sixteen rules and as kernel the word group of
+$\langle\omega \mid \omega^{p}\rangle$, and its cocycle is generated
+from \emph{generator data}: for each gate $a$ and word $v$, the scalar
+by which the lifts of $a$ and $v$ fail to compose, together with the
+proof that this descends to the quotient and assigns each relator the
+same correction on both sides.  The generator data is obtained by pulling
+the Weyl cocycle back along the projective presentation theorem, so the
+two cocycles agree by construction.  The theorem, again on no hypothesis,
+is
+
+\begin{code}%
+\>[0]\AgdaFunction{presentation-exact}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaKeyword{let}\AgdaSpace{}%
+\AgdaBound{Clifford-group}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{λ}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{PE.Presented-group}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{exact-generator-data}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaKeyword{in}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{Exact,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{Clifford-group}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{presentation-exact}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\end{code}
+
+Its proof needs no normal forms --- since both factors are word groups,
+$\sem{\_}$ is a splitting rather than a normalisation --- but it does
+need, for each of the sixteen rules, that the phase the Weyl cocycle
+assigns to the left-hand side equals the correction plus the phase of
+the right-hand side.  This reduces to nineteen equations in $\Zp$ about
+an explicit phase function on circuits, discharged by Pauli arithmetic,
+by a one-wire calculus that reads a circuit as a triple (Pauli, $2
+\times 2$ symplectic matrix, phase) with an explicit concatenation law,
+and, for \aid{order-SH}, by the number-theoretic fact that the residue
+of $(p^2-1)/8$ is $-1/8$.  The extension is provably non-split.  This
+is the formal counterpart of the paper's remark before its Theorem~4.10
+that a complete rule set for $\langle\omega\rangle$ ``only needs
+$\omega^{d} = 1$'', with the one non-trivial correction computed and
+checked.
