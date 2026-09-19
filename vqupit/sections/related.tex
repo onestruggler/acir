@@ -76,6 +76,30 @@ rewrites against a matrix semantics, never the completeness of a rule
 set; connecting our presented groups to such a semantics is the natural
 next step (\S\ref{sec:conclusion}).
 
+\paragraph{Quantum programming and circuit tools.}
+Closer to the programming-languages mainstream, a body of work takes
+circuits and gate-level rewriting as its object without asking for a
+completeness theorem.  The verified compiler for quantum oracles of Li
+et al.~\cite{li2022vqo} proves in Rocq that oracle circuits are compiled
+semantics-preservingly; Proq~\cite{li2020proq} adds projection-based
+runtime assertions to quantum programs; and QbC~\cite{peduri2025qbc}
+derives quantum while-programs from their specifications by refinement
+rules that are sound and complete for the refinement calculus, not for a
+gate set.  Circuit optimisers and synthesisers such as
+Quarl~\cite{li2024quarl}, Synthetiq~\cite{paradis2024synthetiq}, and the
+component-based synthesiser of Kang and Oh~\cite{kang2023modular} search
+over gate-level rewrites and gate sets; a complete relation set is the
+guarantee that every pair of equivalent circuits is joined by a chain of
+such rewrites, so a verified one is a natural input for rewrite-based
+optimisers.  Tower~\cite{yuan2022tower}, the quantum control
+machine~\cite{yuan2024qcm}, and the network language
+PBKAT~\cite{buckley2025pbkat} reason about data structures, control flow,
+and protocols in superposition rather than about unitary groups.  On the
+method side, our use of Agda as a library of reusable verified
+constructions, whose contribution lies in how the mechanisation is
+structured, follows the intrinsically-typed definitional interpreters
+\`a la carte of van der Rest et al.~\cite{vanderrest2022alacarte}.
+
 \paragraph{Group theory in proof assistants.}
 Lean's mathlib defines presented groups as quotients of free
 groups~\cite{mathlib2020,mathlib-doc-presented}, Isabelle's Archive of

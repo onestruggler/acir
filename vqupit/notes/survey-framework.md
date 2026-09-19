@@ -146,8 +146,6 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
   data _VRel,_===_ : (n : ℕ) → CRel n where
     srel  : n SRel, w === v → n VRel, w === v
     cong↑ : n VRel, w === v → (₁₊ n) VRel, w ↑ === v ↑
-    comm₀ : (h : Gate 0) (g : Gen n) → n VRel,
-      [ g ]ʷ • [ gate₀ h ]ʷ === [ gate₀ h ]ʷ • [ g ]ʷ
     comm₁ : (h : Gate 1) (g : Gen n) → (₁₊ n) VRel,
       [ g ↥ ]ʷ • [ gate₁ h ]ʷ === [ gate₁ h ]ʷ • [ g ↥ ]ʷ
     comm₂ : (h : Gate 2) (g : Gen n) → (₂₊ n) VRel,
