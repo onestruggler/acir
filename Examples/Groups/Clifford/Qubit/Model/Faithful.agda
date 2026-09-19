@@ -32,9 +32,10 @@
 --     relator at width k + n is the relator at width k with idle wires
 --     on top, so one matrix identity settles all widths at once;
 --   * the structural rules, which are the tensor calculus of Model.Local
---     rather than computations — comm₀ is centrality of a scalar, comm₁
---     and comm₂ are both the mixed product law, cong↑ is functoriality
---     of I₂ ⊗ −, and ω↑=ω is that a scalar does not depend on the width;
+--     rather than computations — comm₁ and comm₂ are both the mixed
+--     product law, cong↑ is functoriality of I₂ ⊗ −, and ω↑=ω is that a
+--     scalar does not depend on the width (centrality of a scalar,
+--     comm₀, is a theorem of these in Circuit.Base, so needs no case);
 --   * and faithfulness itself, which is `log`: the eight powers of 2 in
 --     ℤ/17ℤ are distinct, so the exponent can be read back off.
 --
@@ -69,7 +70,7 @@ import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
 open F8
   using ( Gen ; Circuit ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; _≈ᶠ_
         ; ω-gate ; H-gate ; S-gate ; CZ-gate ; ω
-        ; _CRel,_===_ ; srel ; cong↑ ; comm₀ ; comm₁ ; comm₂ ; ω↑=ω
+        ; _CRel,_===_ ; srel ; cong↑ ; comm₁ ; comm₂ ; ω↑=ω
         ; c1 ; c2 ; c3 ; c4 ; c5 ; c6 ; c7 ; c8
         ; c9 ; c10 ; c11 ; c12 ; c13 ; c14 ; c15)
 
@@ -130,9 +131,6 @@ axiom-sound (srel c15) = by-matrix c15ˡ c15ʳ r15
 axiom-sound (cong↑ {w = w} {v = v} r) =
   ≐-trans (up-word w)
           (≐-trans (up-cong (axiom-sound r)) (≐-sym (up-word v)))
-
--- A 0-ary gate is a scalar, and scalars are central.
-axiom-sound (comm₀ ω-gate g) = ≐-sym (scal-central 2 (valOp g))
 
 -- comm₁ and comm₂ are both the mixed product law: a gate on the bottom
 -- wires and an operator shifted past them are A ⊗ B either way round.

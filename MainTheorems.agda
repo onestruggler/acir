@@ -29,8 +29,10 @@ open import Function.Definitions using (Congruent ; Injective)
 open import Level using (Level ; 0ℓ)
 open import Relation.Binary.Bundles using (Setoid)
 import Relation.Binary.PropositionalEquality as Eq
+open import Relation.Nullary.Negation using (¬_)
 
 open import Notations using (₁₊)
+open import Word.Base using ([_]ʷ ; _•_)
 open import ForStdlib.Data.Fin.Mod using (ℤ ; ℤ* ; _^′_)
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat using (module PrimeModulus')
 open import Word.Base using (Word ; WRel ; _ʷ)
@@ -52,6 +54,9 @@ import Presentation.Construct.Properties.NDirectProduct as NDirectProduct
 import Presentation.Construct.Properties.SemiDirectProduct as SemiDirectProduct
 import Presentation.Construct.Properties.Amalgamation as Amalgamation
 import Presentation.Construct.Properties.Extension as Extension
+
+import Circuit.Base as CB
+import Circuit.Independence as CI
 
 import Examples.Groups.Trivial.Presentation1 as Trivial
 import Examples.Groups.Trivial.Presentation2 as TrivialAlt
@@ -474,3 +479,57 @@ module Qupit-Clifford-Theorems
   clifford-presentation :
     ∀ n → (n QRel,_===_) IsPresentationOf (Pauli⋊Sp n)
   clifford-presentation = Pres.presentation
+
+------------------------------------------------------------------------
+-- The structural rules are independent
+--
+-- Home: Circuit.Independence, on the support of Presentation.
+-- Independence.  Every circuit theory in the framework gets the same
+-- structural rules from Lift-Relation — cong↑, comm₁ and comm₂ over
+-- the qupit alphabet, which has no scalar gate, plus ω↑=ω where there
+-- is one — and none of them is a consequence of the others.  The
+-- argument is the classical one: a model in which the other rules hold
+-- and the rule in question fails.  The models read a letter by its
+-- depth, into (ℕ, +) or into a free monoid of depths, and are stated
+-- for the pure structural theory, the lift of the empty relation, so
+-- they hold over every gate family.  A scalar's centrality is not a
+-- rule but Circuit.Base's theorem comm₀, derived from these four once
+-- scalars commute with one another; the last result says that
+-- hypothesis is needed.
+
+module Structural-Theorems (Gate : ℕ → Set) where
+
+  private
+    module Pure = CI.Pure Gate
+
+  open CB Gate using (gate₀ ; gate₁ ; gate₂)
+  open Pure using (_IndependentOf_ ; cong↑ ; comm₁ ; comm₂ ; ω↑=ω)
+
+  -- A one-wire gate commuting with its own shift does not follow from
+  -- the other rules once shifted up a wire ...
+  cong↑-independent : ∀ {n} (h : Gate 1) →
+    cong↑ (comm₁ h (gate₁ {n} h)) IndependentOf cong↑
+  cong↑-independent = Pure.cong↑-independent₁
+
+  -- ... nor unshifted, nor its two-wire counterpart.
+  comm₁-independent : ∀ {n} (h : Gate 1) →
+    comm₁ h (gate₁ {n} h) IndependentOf comm₁
+  comm₁-independent = Pure.comm₁-independent
+
+  comm₂-independent : ∀ {n} (h : Gate 2) →
+    comm₂ h (gate₂ {n} h) IndependentOf comm₂
+  comm₂-independent = Pure.comm₂-independent
+
+  -- A scalar need not be its own shift.
+  ω↑=ω-independent : ∀ {n} (ω : Gate 0) →
+    ω↑=ω {n} ω IndependentOf ω↑=ω
+  ω↑=ω-independent = Pure.ω↑=ω-independent
+
+  -- Two distinct scalars need not commute: the four rules alone do not
+  -- make a scalar central, which is why Circuit.Base's comm₀ asks that
+  -- scalars commute with one another (and asks nothing when there is
+  -- one).
+  scalars-comm-needed : ∀ {n} (ω ω' : Gate 0) → ω Eq.≢ ω' →
+    ¬ PB._≈_ (Pure._VRel,_===_ n) ([ gate₀ ω' ]ʷ • [ gate₀ ω ]ʷ)
+                                  ([ gate₀ ω ]ʷ • [ gate₀ ω' ]ʷ)
+  scalars-comm-needed = Pure.scalars-comm-needed

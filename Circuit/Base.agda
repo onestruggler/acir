@@ -12,6 +12,7 @@ module Circuit.Base (Gate : ℕ → Set) where
 
 open import Level using (0ℓ)
 open import Relation.Binary using (Rel)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Notations
 open import Word.Base
@@ -115,16 +116,19 @@ _↓ x = x
 --
 --   cong↑  — equalities are preserved under _↑
 --   comm   — an m-ary gate at the bottom commutes with any generator
---            that has been shifted up m wires.  One rule per arity:
---            comm₀, comm₁, comm₂.  At m = 0 there is nothing to shift,
---            so a global gate commutes with every generator outright.
+--            that has been shifted up m wires.  One rule per
+--            wire-consuming arity: comm₁, comm₂.
 --   ω↑=ω   — a 0-ary gate is the same gate on every wire, so shifting
 --            one leaves it unchanged.
 --
--- The last two are the price and the payoff of admitting global gates:
--- a 0-ary gate is central (comm₀) and width-independent (ω↑=ω), and both
--- facts are uniform enough to belong here rather than being restated by
--- every presentation that has a scalar.
+-- The last is the price of admitting global gates: a 0-ary gate is
+-- width-independent, and that is uniform enough to belong here rather
+-- than being restated by every presentation that has a scalar.  The
+-- payoff, that a 0-ary gate is central, is a theorem rather than a
+-- rule (Central-Scalars.comm₀ below): the rules above already carry a
+-- scalar past every wire gate, and all that is left to say is how
+-- scalars commute with one another — nothing, when there is only one.
+-- Circuit.Independence shows the four rules independent.
 --
 -- Usage: define a group-specific CRel (order relations, braid
 -- relations, etc.), then open Lift-Relation CRel to obtain the full
@@ -143,12 +147,12 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
     -- Structural: a gate at the bottom commutes with any generator
     -- that has been shifted up past it.
     --
-    -- comm₀: a 0-ary gate holds no wires, so it commutes with EVERY
-    --        generator at the same width, with no shift on either side.
     -- comm₁: a 1-ary gate at wire 0 commutes with g shifted up 1 wire.
     -- comm₂: a 2-ary gate at wires 0-1 commutes with g shifted up 2 wires.
-    comm₀ : (h : Gate 0) (g : Gen n) → n VRel,
-      [ g ]ʷ • [ gate₀ h ]ʷ === [ gate₀ h ]ʷ • [ g ]ʷ
+    --
+    -- There is no comm₀: a 0-ary gate holds no wires, so there is
+    -- nothing to shift, and its commuting with every generator is
+    -- derived below (Central-Scalars) rather than postulated.
     comm₁ : (h : Gate 1) (g : Gen n) → (₁₊ n) VRel,
       [ g ↥ ]ʷ • [ gate₁ h ]ʷ === [ gate₁ h ]ʷ • [ g ↥ ]ʷ
     comm₂ : (h : Gate 2) (g : Gen n) → (₂₊ n) VRel,
@@ -190,27 +194,14 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
   ------------------------------------------------------------------------
   -- The comm rules, extended from generators to whole circuits
   --
-  -- comm₀/comm₁/comm₂ commute a gate past a single shifted GENERATOR.
-  -- Each extends to a whole shifted CIRCUIT by the same three-case
+  -- comm₁/comm₂ commute a gate past a single shifted GENERATOR.  Each
+  -- extends to a whole shifted CIRCUIT by the same three-case
   -- induction: ε by the unit laws, a letter by the axiom itself, and a
   -- product by pushing the gate through each factor in turn.  The shift
   -- distributes over • definitionally ((u • t) ↑ is u ↑ • t ↑, since _↑
-  -- is a wmap), so no rewriting is needed to split the product.
-
-  -- A 0-ary gate holds no wires, so it commutes with every circuit at
-  -- the same width -- no shift on either side.
-  comm-gate₀-w : ∀ (g : Gate 0) (w : Circuit n) ->
-    let v = [ gate₀ g ]ʷ
-        open PB ( n VRel,_===_ )
-    in  w • v ≈ v • w
-  comm-gate₀-w g ε       = PB.trans PB.left-unit (PB.sym PB.right-unit)
-  comm-gate₀-w g [ x ]ʷ  = PB.axiom (comm₀ g x)
-  comm-gate₀-w g (u • t) =
-    PB.trans PB.assoc
-    (PB.trans (PB.cong PB.refl (comm-gate₀-w g t))
-    (PB.trans (PB.sym PB.assoc)
-    (PB.trans (PB.cong (comm-gate₀-w g u) PB.refl)
-              PB.assoc)))
+  -- is a wmap), so no rewriting is needed to split the product.  The
+  -- 0-ary case, comm-gate₀-w, is in Central-Scalars below, since its
+  -- letter case is a theorem rather than an axiom.
 
   comm-gate₁-w↑ : ∀ (g : Gate 1) (w : Circuit n) ->
     let v = [ gate₁ g ]ʷ
@@ -237,3 +228,68 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
     (PB.trans (PB.sym PB.assoc)
     (PB.trans (PB.cong (comm-gate₂-w↑↑ g u) PB.refl)
               PB.assoc)))
+
+  ------------------------------------------------------------------------
+  -- Centrality of a scalar
+  --
+  -- A 0-ary gate commutes with every generator.  This used to be a
+  -- structural rule, comm₀; it is a theorem of the other rules once
+  -- scalars are known to commute with one another, which is the one
+  -- hypothesis here.  A scalar meets three kinds of generator: another
+  -- scalar, which is the hypothesis; a wire gate, past which comm₁ or
+  -- comm₂ carries it once ω↑=ω has shifted it up out of the gate's
+  -- way; and a shifted generator, to which ω↑=ω and cong↑ carry the
+  -- claim one wire down.  With a single scalar the hypothesis is refl
+  -- (Single-Scalar); with several, how they commute is for the
+  -- gate-specific relation to say — Circuit.Independence shows the
+  -- four structural rules cannot derive it.
+
+  module Central-Scalars
+    (scalars-comm : ∀ {n} (h h' : Gate 0) → let open PB (n VRel,_===_) in
+       [ gate₀ h' ]ʷ • [ gate₀ h ]ʷ ≈ [ gate₀ h ]ʷ • [ gate₀ h' ]ʷ)
+    where
+
+    comm₀ : ∀ (h : Gate 0) (g : Gen n) → let open PB (n VRel,_===_) in
+            [ g ]ʷ • [ gate₀ h ]ʷ ≈ [ gate₀ h ]ʷ • [ g ]ʷ
+    comm₀ h (gate₀ h') = scalars-comm h h'
+    comm₀ h (gate₁ h₁) =
+      PB.trans (PB.cong PB.refl (PB.sym (PB.axiom (ω↑=ω h))))
+      (PB.trans (PB.sym (PB.axiom (comm₁ h₁ (gate₀ h))))
+                (PB.cong (PB.axiom (ω↑=ω h)) PB.refl))
+    comm₀ h (gate₂ h₂) =
+      PB.trans (PB.cong PB.refl (PB.sym ω↑↑=ω))
+      (PB.trans (PB.sym (PB.axiom (comm₂ h₂ (gate₀ h))))
+                (PB.cong ω↑↑=ω PB.refl))
+      where
+      ω↑↑=ω : ∀ {n} → let open PB ((₂₊ n) VRel,_===_) in
+              [ gate₀ {n} h ]ʷ ↑ ↑ ≈ [ gate₀ h ]ʷ
+      ω↑↑=ω = PB.trans (PB.axiom (cong↑ (ω↑=ω h))) (PB.axiom (ω↑=ω h))
+    comm₀ h (g ↥) =
+      PB.trans (PB.cong PB.refl (PB.sym (PB.axiom (ω↑=ω h))))
+      (PB.trans (lemma-cong↑ _ _ (comm₀ h g))
+                (PB.cong (PB.axiom (ω↑=ω h)) PB.refl))
+
+    -- ... and so with every circuit at the same width — no shift on
+    -- either side, since a 0-ary gate holds no wires.
+    comm-gate₀-w : ∀ (h : Gate 0) (w : Circuit n) →
+      let v = [ gate₀ h ]ʷ
+          open PB (n VRel,_===_)
+      in  w • v ≈ v • w
+    comm-gate₀-w h ε       = PB.trans PB.left-unit (PB.sym PB.right-unit)
+    comm-gate₀-w h [ x ]ʷ  = comm₀ h x
+    comm-gate₀-w h (u • t) =
+      PB.trans PB.assoc
+      (PB.trans (PB.cong PB.refl (comm-gate₀-w h t))
+      (PB.trans (PB.sym PB.assoc)
+      (PB.trans (PB.cong (comm-gate₀-w h u) PB.refl)
+                PB.assoc)))
+
+  -- With a single scalar there is nothing to assume: any two scalars
+  -- are the same one.
+  module Single-Scalar (one : ∀ (h h' : Gate 0) → h ≡ h') =
+    Central-Scalars
+      (λ {n} h h' →
+        Eq.subst (λ x → PB._≈_ (n VRel,_===_)
+                          ([ gate₀ x ]ʷ • [ gate₀ h ]ʷ)
+                          ([ gate₀ h ]ʷ • [ gate₀ x ]ʷ))
+                 (one h h') PB.refl)
