@@ -92,7 +92,7 @@ open import Examples.Groups.ProjectiveClifford.Qubit.CliffordGroup
 
 import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
 open F8
-  using ( _CRel,_===_ ; srel ; cong↑ ; comm₀ ; comm₁ ; comm₂ ; ω-gate
+  using ( _CRel,_===_ ; srel ; cong↑ ; comm₁ ; comm₂ ; ω-gate
         ; c1 ; c2 ; c3 ; c4 ; c5 ; c6 ; c7 ; c8 ; c9 ; c10 ; c11
         ; c12 ; c13 ; c14 ; c15 ; ω↑=ω )
 
@@ -242,9 +242,7 @@ cω-sound : (g : Gen (₁₊ n)) → (ω • [ g ]ʷ) ≈ᶜ ([ g ]ʷ • ω)
 cω-sound g x = Eq.trans (cact-ω (cact [ g ]ʷ x))
                         (Eq.sym (Eq.cong (cact [ g ]ʷ) (cact-ω x)))
 
--- The same for a whole word, which is what the structural comm₀ needs:
--- ω is 0-ary there, so it commutes with an arbitrary generator of the
--- Figure-8 alphabet, whose translation is a word rather than a letter.
+-- The same for a whole word.
 ω-comm-sound : (w : Word (Gen (₁₊ n))) → (ω • w) ≈ᶜ (w • ω)
 ω-comm-sound w x = Eq.trans (cact-ω (cact w x))
                             (Eq.sym (Eq.cong (cact w) (cact-ω x)))
@@ -513,13 +511,9 @@ axiom-soundᶠ (srel c12)     = c12-sound
 axiom-soundᶠ (srel c13)     = c13-sound
 axiom-soundᶠ (srel c14)     = c14-sound
 axiom-soundᶠ (srel c15)     = c15-sound
--- Centrality is structural now (comm₀), and so is width-independence
--- (ω↑=ω); both used to be Figure-8 axioms of its own, cω and cω↑.  At
--- width 0 the only generator IS the scalar, so both sides coincide.
-axiom-soundᶠ {₀}    (comm₀ ω-gate (F8.gate₀ ω-gate)) = λ _ → Eq.refl
-axiom-soundᶠ {₁₊ _} (comm₀ ω-gate g) =
-  ≈ᶜ-sym {w = ω • ex→sym g} {v = ex→sym g • ω}
-         (ω-comm-sound (ex→sym g))
+-- Width-independence is structural now (ω↑=ω); it used to be a Figure-8
+-- axiom of its own, cω↑, as was centrality, cω, which is now
+-- Circuit.Base's theorem comm₀ and so needs no case here.
 -- (ω↑=ω only exists at ₁₊ n: it is about a shift, so there is a wire.
 -- At width 1 the wire below is width 0, where the scalar translates to
 -- ε, so the two sides read ε ≈ᶜ (SH)³ — which is cact-ω backwards.)

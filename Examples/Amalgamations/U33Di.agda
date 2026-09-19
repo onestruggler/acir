@@ -58,7 +58,7 @@ module Examples.Amalgamations.U33Di where
 module Sn where
   open SymS public
     using (Gen ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; srel ; cong↑
-          ; comm₀ ; comm₁ ; comm₂ ; _VRel,_===_)
+          ; comm₁ ; comm₂ ; _VRel,_===_)
   open SymS using (σ-gate)
     renaming (order to order-ax ; yang-baxter to yb-ax)
 
@@ -789,9 +789,7 @@ module TwoLevel-Simplified-Amal where
       -- width 2 there are neither generators nor relations, so every one
       -- of these bottoms out absurd.
       h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.srel ()))))
-      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.comm₀ () _))))
       h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.srel ())))))
-      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.comm₀ () _)))))
       h-wd-ax _ (right (Sn.cong↑ (Sn.comm₂ _ (Sn.gate₀ ()))))
       h-wd-ax _ (right (Sn.comm₂ _ ((Sn.gate₀ ()) Sn.ₛ)))
       h-wd-ax _ (mid (comm _ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ)))
@@ -810,9 +808,7 @@ module TwoLevel-Simplified-Amal where
 
       -- Same story one level down, at Sn.X 1 = Gen 2.
       f-wd-ax (left (right (Sn.cong↑ (Sn.srel ()))))
-      f-wd-ax (left (right (Sn.cong↑ (Sn.comm₀ () _))))
       f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel ())))))
-      f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.comm₀ () _)))))
       f-wd-ax (left (right (Sn.comm₂ _ (Sn.gate₀ ()))))
       f-wd-ax (left (mid (comm _ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ))))
       f-wd-ax (mid (comm (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)) _))
@@ -1026,9 +1022,7 @@ module TwoLevel-Simplified-Amal where
       f-wd-ax {.([ [ inj₂ Sn.swap ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₂ Sn.swap ]ʷ ]ₗ)} (mid (comm (inj₂ Sn.swap) tt)) = by-equal-nf Eq.refl
       
       f-wd-ax (left (right (Sn.cong↑ (Sn.srel ()))))
-      f-wd-ax (left (right (Sn.cong↑ (Sn.comm₀ () _))))
       f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel ())))))
-      f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.comm₀ () _)))))
       f-wd-ax (left (right (Sn.comm₂ _ (Sn.gate₀ ()))))
       f-wd-ax (left (mid (comm _ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ))))
       f-wd-ax (mid (comm (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)) _))
@@ -1455,9 +1449,7 @@ module TwoLevel-Simplified-Amal where
     -- The Sₙ factor's shift tower and its structural rules, all absurd
     -- below width 2 (see the identical block in CA1/CA2 above).
     g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel ())))))
-    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.comm₀ () _)))))
     g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.srel ()))))))
-    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.comm₀ () _))))))
     g-well-defined (left (right (Sn.cong↑ (Sn.comm₂ _ (Sn.gate₀ ())))))
     g-well-defined (left (right (Sn.comm₂ _ ((Sn.gate₀ ()) Sn.ₛ))))
     g-well-defined (left (mid (comm _ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ))))

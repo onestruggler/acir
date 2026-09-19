@@ -19,11 +19,13 @@ Numeral and successor patterns shared by the whole library.
 - Definitions — `_IsPresentationOf_` and friends; soundness / completeness between setoids, i.e. presentation of a sub-setoid (`module SubPresentation`)
 - GroupLike — inverses and the group of words
 - Morphism — homo/mono/isomorphism builders for `(f *)`
+- Independence — selections of axiom instances `Γ ∣ P`, `Derivable`/`Independent`, and independence by a monoid model
 - Construct — products: direct, semidirect, n-fold, sugar, amalgamated
 
 
 # Circuit
 - Base — wire-indexed gates, circuits, and structural lifting rules
+- Independence — the four structural rules are independent of one another
 
 # Normalization
 - Base — normal-form witnesses, `UniqueNormalForm`, `by-normalization`
