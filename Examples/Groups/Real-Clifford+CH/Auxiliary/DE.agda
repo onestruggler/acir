@@ -44,7 +44,26 @@
 -- `DE-XX`, with `DE-XX-o₁` and `DE-XX-o₂` for the two cases where the
 -- index 1 is itself one of the first X's indices.
 --
--- Only (DE-HH) is left.
+-- The same induction, run a third time, gives the square of a mixed
+-- letter (`zx²`, the general (23)) and hence that a letter and the one
+-- with its X indices exchanged are inverse (`zx-inv`, the general
+-- (29)).  So the whole mixed-letter fragment of Figure 8 is available
+-- at arbitrary index pairs, which is what Item (b) will want for the
+-- rules of Figure 7.
+--
+-- The fourth, (DE-HH), is the one obligation that turns on the
+-- Hadamard rules rather than these.  (42) composes a Hadamard pair
+-- through `twoSmallest`, two indices *fresh* for the four given ones,
+-- whereas the coset action routes through the fixed pair 0 1 — and
+-- those agree exactly when neither 0 nor 1 is among the four, which is
+-- the case `DE-HH` proves.  There the work is arithmetic rather than
+-- equational: make the boolean tests inside `twoSmallest` reduce, and
+-- identify (42)'s ℕ-indexed letters with the `Fin`-indexed ones.
+--
+-- What is left of Item (a) is (DE-HH) when the four indices are all
+-- distinct, where (42) does not apply at all, or when 0 or 1 is among
+-- them, where the bridge pair is not the coset pair; both need the
+-- pattern machinery of (35)–(37).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -54,11 +73,12 @@ open import Data.Nat using (ℕ)
 module Examples.Groups.Real-Clifford+CH.Auxiliary.DE (m : ℕ) where
 
 open import Data.Bool using (true ; false)
+open import Data.Maybe using (just)
 open import Data.Empty using (⊥-elim)
-open import Data.Product using (Σ-syntax ; _,_)
+open import Data.Product using (Σ-syntax ; _,_ ; proj₁ ; proj₂)
 open import Data.Fin using (Fin ; toℕ ; fromℕ<)
-open import Data.Fin.Properties using (toℕ-fromℕ< ; toℕ<n ; toℕ-injective ; _≟_)
-open import Data.Nat using (ℕ ; zero ; suc ; pred ; _<_ ; _≤_ ; _∸_ ; _<?_ ; z≤n ; s≤s)
+open import Data.Fin.Properties using (toℕ-fromℕ< ; toℕ<n ; toℕ-injective ; _≟_ ; fromℕ<-toℕ)
+open import Data.Nat using (ℕ ; zero ; suc ; pred ; _<_ ; _≤_ ; _∸_ ; _<?_ ; z≤n ; s≤s ; _≡ᵇ_)
   renaming (_^_ to _^ℕ_)
 open import Data.Nat.Properties
   using (suc-injective ; <-trans ; <-irrefl ; n<1+n ; ≤-pred ; ≤-antisym
@@ -75,8 +95,8 @@ open import Presentation.Base as PB using ()
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Figure8
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Gray using (parity)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.P using (GenP)
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.RS m using (o₁)
-open import Examples.Groups.Real-Clifford+CH.Encoding using (zz ; zx ; xx)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.RS m using (o₁ ; z₀ ; toℕ-z₀ ; toℕ-o₁)
+open import Examples.Groups.Real-Clifford+CH.Encoding using (zz ; zx ; xx ; hh ; hhℕ ; toFin ; twoSmallest ; distinct4)
 
 open PB (m P,_===_)
   using (_≈_ ; refl ; sym ; trans ; cong ; axiom ; assoc ; left-unit ; right-unit)
@@ -886,3 +906,320 @@ DE-XX-o₁ b c d o≢b c≢d =
   (trans (cong refl (DE-ZX-all b c d c≢d))
   (trans (sym assoc)
          (cong (trans (zx-own o₁ b o≢b) (sym (flip-2 o₁ b o≢b))) refl)))
+
+------------------------------------------------------------------------
+-- The square of a mixed letter
+--
+-- (23) says the square of a consecutive mixed letter is the sign pair
+-- on its two indices.  In general it is the same Gray-code induction a
+-- third time, and a short one: in a decomposition L M R the inner R L
+-- cancels between the two copies, leaving L (M M) R; the induction
+-- hypothesis turns the middle into a sign, which the outer letter
+-- carries out, and L R then cancels too.
+
+private
+  sq-fuel : ∀ (k : ℕ) (a c : Fin N) → toℕ a < toℕ c → toℕ c ∸ toℕ a ≤ k →
+            zx a a c • zx a a c ≈ zz a c
+  sq-fuel zero a c lt fu = ⊥-elim (<-irrefl Eq.refl (≤-trans (0<∸ lt) fu))
+  sq-fuel (suc k) a c lt fu with suc (toℕ a) <? toℕ c
+  ... | no ¬p = sym (axiom (r23 a c (≤-antisym (≮⇒≥ ¬p) lt)))
+  ... | yes p with parity (toℕ c ∸ toℕ a) in eq
+  ...         | true =
+    let pa : suc (toℕ a) < N
+        pa = <-trans p (toℕ<n c)
+        a′ = next a pa
+        s : Succ a a′
+        s = next-Succ a pa
+        lt′ : toℕ a′ < toℕ c
+        lt′ = Eq.subst (_< toℕ c) (Eq.sym s) p
+        fu′ : toℕ c ∸ toℕ a′ ≤ k
+        fu′ = Eq.subst (λ z → toℕ c ∸ z ≤ k) (Eq.sym s)
+                (Eq.subst (_≤ k) (Eq.sym (∸suc (toℕ c) (toℕ a))) (pred≤pred fu))
+        c≢a  = λ e → <-irrefl (Eq.sym (Eq.cong toℕ e)) (<-trans (n<1+n (toℕ a)) p)
+        c≢a′ = λ e → <-irrefl (Eq.sym (Eq.cong toℕ e)) lt′
+        dec  = axiom (r25 a a′ c s lt′ eq)
+    in trans (cong dec dec)
+       (trans assoc
+       (trans (cong refl assoc)
+       (trans (cong refl (cong refl (sym assoc)))
+       (trans (cong refl (cong refl (cong (axiom (r29 a a′ s)) refl)))
+       (trans (cong refl (cong refl left-unit))
+       (trans (cong refl (sym assoc))
+       (trans (cong refl (cong (sq-fuel k a′ c lt′ fu′) refl))
+       (trans (sym assoc)
+       (trans (cong (zz-past-L a a′ c s c≢a c≢a′) refl)
+       (trans assoc
+       (trans (cong refl (LR a a′ s)) right-unit)))))))))))
+  ...         | false =
+    let 0<c : 0 < toℕ c
+        0<c = ≤-trans (s≤s z≤n) lt
+        c′ = prev c
+        s : Succ c′ c
+        s = prev-Succ c 0<c
+        lt″ : toℕ a < toℕ c′
+        lt″ = ≤-pred (Eq.subst (suc (toℕ a) <_) s p)
+        fu″ : toℕ c′ ∸ toℕ a ≤ k
+        fu″ = Eq.subst (λ z → z ∸ toℕ a ≤ k) (Eq.sym (prev-toℕ c))
+                (Eq.subst (_≤ k) (Eq.sym (pred∸ (toℕ c) (toℕ a))) (pred≤pred fu))
+        a≢c′ = λ e → <-irrefl (Eq.cong toℕ e) lt″
+        a≢c  = λ e → <-irrefl (Eq.cong toℕ e) (<-trans (n<1+n (toℕ a)) p)
+        dec  = axiom (r27 a c′ c s p eq)
+    in trans (cong dec dec)
+       (trans assoc
+       (trans (cong refl assoc)
+       (trans (cong refl (cong refl (sym assoc)))
+       (trans (cong refl (cong refl (cong (LR c′ c s) refl)))
+       (trans (cong refl (cong refl left-unit))
+       (trans (cong refl (sym assoc))
+       (trans (cong refl (cong (sq-fuel k a c′ lt″ fu″) refl))
+       (trans (sym assoc)
+       (trans (cong (R-act₂ c′ c a c′ a c s (tr-o a≢c′ a≢c Eq.refl)
+                                            (tr-l Eq.refl Eq.refl)) refl)
+       (trans assoc
+       (trans (cong refl (axiom (r29 c′ c s))) right-unit)))))))))))
+
+-- The square of a mixed letter is the sign pair on its X indices.
+zx² : ∀ (a c : Fin N) → toℕ a < toℕ c → zx a a c • zx a a c ≈ zz a c
+zx² a c lt = sq-fuel (toℕ c ∸ toℕ a) a c lt ≤-refl
+
+-- Reading the conjugation action off for the letter's own pair the
+-- other way round.
+private
+  zx-conj′ : ∀ (a c f s : Fin N) → a ≢ c → Tr a c c f → Tr a c a s →
+             zx a a c • zz c a ≈ zz f s • zx a a c →
+             zx a a c • zz c a ≈ zz a c • zx a a c
+  zx-conj′ a c f s a≢c (tr-l c≡a _) _ law = ⊥-elim (a≢c (Eq.sym c≡a))
+  zx-conj′ a c f s a≢c (tr-o _ c≢c _) _ law = ⊥-elim (c≢c Eq.refl)
+  zx-conj′ a c .a s a≢c (tr-r _ Eq.refl) (tr-r a≡c _) law = ⊥-elim (a≢c a≡c)
+  zx-conj′ a c .a s a≢c (tr-r _ Eq.refl) (tr-o a≢a _ _) law = ⊥-elim (a≢a Eq.refl)
+  zx-conj′ a c .a .c a≢c (tr-r _ Eq.refl) (tr-l _ Eq.refl) law = law
+
+zx-conj : ∀ (a c : Fin N) → a ≢ c → zx a a c • zz c a ≈ zz a c • zx a a c
+zx-conj a c a≢c =
+  zx-conj′ a c (Conj.fst cj) (Conj.snd cj) a≢c
+           (Conj.trx cj) (Conj.try cj) (Conj.law cj)
+  where cj = conj-any a c c a a≢c
+
+-- The square, in either order of the pair.
+zx²′ : ∀ (a c : Fin N) → a ≢ c → zx a a c • zx a a c ≈ zz a c
+zx²′ a c a≢c with <-cmp (toℕ a) (toℕ c)
+... | tri< lt _ _ = zx² a c lt
+... | tri≈ _ e _  = ⊥-elim (a≢c (toℕ-injective e))
+... | tri> _ _ gt =
+  let c≢a = λ e → a≢c (Eq.sym e) in
+  trans (cong (flip′ a c a≢c) (flip′ a c a≢c))
+  (trans assoc
+  (trans (cong refl (sym assoc))
+  (trans (cong refl (cong (zx-conj c a c≢a) refl))
+  (trans (cong refl assoc)
+  (trans (cong refl (cong refl (zx² c a gt)))
+  (trans (cong refl (zz² c a)) right-unit))))))
+
+-- Hence a mixed letter and the one with its X indices exchanged are
+-- inverse — the general form of (29).
+zx-inv : ∀ (a c : Fin N) → a ≢ c → zx a a c • zx c c a ≈ ε
+zx-inv a c a≢c =
+  trans (cong refl (flip′ c a (λ e → a≢c (Eq.sym e))))
+  (trans (sym assoc)
+  (trans (cong (zx-conj a c a≢c) refl)
+  (trans assoc
+  (trans (cong refl (zx²′ a c a≢c)) (zz² a c)))))
+
+------------------------------------------------------------------------
+-- (DE-HH), where the pair 0 1 is free
+--
+-- (42) composes a Hadamard pair through `twoSmallest` — the two
+-- smallest naturals not among the four given indices.  When neither 0
+-- nor 1 is among them those two *are* 0 and 1, which is the pair the
+-- coset action routes through, so (42) is the obligation outright.
+-- What has to be done is arithmetic: make the boolean tests inside
+-- `twoSmallest` reduce, and identify the ℕ-indexed letters of (42)
+-- with the `Fin`-indexed ones.
+
+private
+  ≢⇒≡ᵇfalse : ∀ (x y : ℕ) → x ≢ y → (x ≡ᵇ y) ≡ false
+  ≢⇒≡ᵇfalse zero    zero    ne = ⊥-elim (ne Eq.refl)
+  ≢⇒≡ᵇfalse zero    (suc y) ne = Eq.refl
+  ≢⇒≡ᵇfalse (suc x) zero    ne = Eq.refl
+  ≢⇒≡ᵇfalse (suc x) (suc y) ne = ≢⇒≡ᵇfalse x y (λ e → ne (Eq.cong suc e))
+
+  -- The two free indices are 0 and 1 when neither occurs.
+  two01 : ∀ (a b c d : ℕ) → 0 ≢ a → 0 ≢ b → 0 ≢ c → 0 ≢ d →
+                            1 ≢ a → 1 ≢ b → 1 ≢ c → 1 ≢ d →
+          twoSmallest a b c d ≡ (0 , 1)
+  two01 a b c d p q r s p′ q′ r′ s′
+    rewrite ≢⇒≡ᵇfalse 0 a p  | ≢⇒≡ᵇfalse 0 b q  | ≢⇒≡ᵇfalse 0 c r  | ≢⇒≡ᵇfalse 0 d s
+          | ≢⇒≡ᵇfalse 1 a p′ | ≢⇒≡ᵇfalse 1 b q′ | ≢⇒≡ᵇfalse 1 c r′ | ≢⇒≡ᵇfalse 1 d s′
+    = Eq.refl
+
+  -- A Fin index survives the round trip through ℕ.
+  toFin-toℕ : ∀ (a : Fin N) → toFin {₃₊ m} (toℕ a) ≡ just a
+  toFin-toℕ a with toℕ a <? N
+  ... | yes lt  = Eq.cong just (fromℕ<-toℕ a lt)
+  ... | no ¬lt  = ⊥-elim (¬lt (toℕ<n a))
+
+  -- Hence the ℕ-indexed Hadamard letter is the Fin-indexed one.
+  hhℕ-hh : ∀ (a b c d : Fin N) → hhℕ {₃₊ m} (toℕ a) (toℕ b) (toℕ c) (toℕ d) ≡ hh a b c d
+  hhℕ-hh a b c d
+    rewrite toFin-toℕ a | toFin-toℕ b | toFin-toℕ c | toFin-toℕ d = Eq.refl
+
+  -- Distinctness from the two distinguished indices, as numerals.
+  z₀≢⇒0≢ : ∀ {a : Fin N} → z₀ ≢ a → 0 ≢ toℕ a
+  z₀≢⇒0≢ {a} ne e = ne (toℕ-injective (Eq.trans toℕ-z₀ e))
+
+  o₁≢⇒1≢ : ∀ {a : Fin N} → o₁ ≢ a → 1 ≢ toℕ a
+  o₁≢⇒1≢ {a} ne e = ne (toℕ-injective (Eq.trans toℕ-o₁ e))
+
+DE-HH : ∀ (a b c d : Fin N) → (a≢b : a ≢ b) → (c≢d : c ≢ d) →
+        (nd : distinct4 (toℕ a) (toℕ b) (toℕ c) (toℕ d) ≡ false) →
+        z₀ ≢ a → z₀ ≢ b → z₀ ≢ c → z₀ ≢ d →
+        o₁ ≢ a → o₁ ≢ b → o₁ ≢ c → o₁ ≢ d →
+        hh a b c d ≈ hh a b z₀ o₁ • hh z₀ o₁ c d
+DE-HH a b c d a≢b c≢d nd za zb zc zd oa ob oc od =
+  sym (Eq.subst (λ w → w ≈ hh a b c d) bridge (axiom (r42 a b c d a≢b c≢d nd)))
+  where
+  ef : twoSmallest (toℕ a) (toℕ b) (toℕ c) (toℕ d) ≡ (0 , 1)
+  ef = two01 (toℕ a) (toℕ b) (toℕ c) (toℕ d)
+             (z₀≢⇒0≢ za) (z₀≢⇒0≢ zb) (z₀≢⇒0≢ zc) (z₀≢⇒0≢ zd)
+             (o₁≢⇒1≢ oa) (o₁≢⇒1≢ ob) (o₁≢⇒1≢ oc) (o₁≢⇒1≢ od)
+
+  half₁ : hhℕ {₃₊ m} (toℕ a) (toℕ b) 0 1 ≡ hh a b z₀ o₁
+  half₁ = Eq.trans (Eq.cong₂ (hhℕ {₃₊ m} (toℕ a) (toℕ b))
+                             (Eq.sym toℕ-z₀) (Eq.sym toℕ-o₁))
+                   (hhℕ-hh a b z₀ o₁)
+
+  half₂ : hhℕ {₃₊ m} 0 1 (toℕ c) (toℕ d) ≡ hh z₀ o₁ c d
+  half₂ = Eq.trans (Eq.cong₂ (λ u v → hhℕ {₃₊ m} u v (toℕ c) (toℕ d))
+                             (Eq.sym toℕ-z₀) (Eq.sym toℕ-o₁))
+                   (hhℕ-hh z₀ o₁ c d)
+
+  bridge : hhℕ {₃₊ m} (toℕ a) (toℕ b)
+                (proj₁ (twoSmallest (toℕ a) (toℕ b) (toℕ c) (toℕ d)))
+                (proj₂ (twoSmallest (toℕ a) (toℕ b) (toℕ c) (toℕ d)))
+         • hhℕ {₃₊ m} (proj₁ (twoSmallest (toℕ a) (toℕ b) (toℕ c) (toℕ d)))
+                (proj₂ (twoSmallest (toℕ a) (toℕ b) (toℕ c) (toℕ d)))
+                (toℕ c) (toℕ d)
+         ≡ hh a b z₀ o₁ • hh z₀ o₁ c d
+  bridge = Eq.trans
+    (Eq.cong (λ p → hhℕ {₃₊ m} (toℕ a) (toℕ b) (proj₁ p) (proj₂ p)
+                  • hhℕ {₃₊ m} (proj₁ p) (proj₂ p) (toℕ c) (toℕ d)) ef)
+    (Eq.cong₂ _•_ half₁ half₂)
+
+------------------------------------------------------------------------
+-- Item (b): the rules of Figure 7 run through the coset action
+--
+-- For each rule of Figure 7 and each of the four cosets, both sides of
+-- the rule are run through the action and the resulting words over P
+-- have to be identified.  The obligations were computed and checked
+-- against the matrices first (`scratchpad/tB.py`, every rule at every
+-- coset at every admissible index on eight indices, no failures), so
+-- what is written here is known to be what the method asks for.
+--
+-- The first three rules are the orders.  (a1*) gives the same
+-- obligation at all four cosets, since the sign letter only ever moves
+-- between a coset and its partner.
+--
+-- (a3) is worth a note.  At the coset ε it asks for
+--
+--     hh a b 0 1 • hh 0 1 a b  ≈  ε,
+--
+-- and (42) at c d := a b says that product is the single letter
+-- `hh a b a b`, which denotes H_[a,b] H_[a,b] = I.  So the obligation
+-- comes down to `hh a b a b ≈ ε`, and it is not yet clear which rule
+-- of Figure 8 supplies that: (35) wants four distinct indices, (36)
+-- and (37) want the two pattern positions to differ, and (42) relates
+-- the letter to its bridged form rather than to ε.  Worth pinning down
+-- before the Hadamard obligations are attempted.
+
+WD-a1 : zz o₁ z₀ • zz o₁ z₀ ≈ ε
+WD-a1 = zz² o₁ z₀
+
+-- (a2) at the cosets ε and M: the mixed letter on the index 1 is its
+-- own inverse.  (30) peels its sign off, the conjugation action moves
+-- that sign across, and the square of what is left is a sign pair
+-- which the two peeled ones cancel.
+private
+  xx-twist₂′ : ∀ (a b f s : Fin N) → a ≢ b → o₁ ≢ a → o₁ ≢ b →
+               Tr a b o₁ f → Tr a b a s →
+               zx a a b • zz o₁ a ≈ zz f s • zx a a b →
+               zx a a b • zz o₁ a ≈ zz o₁ b • zx a a b
+  xx-twist₂′ a b f s a≢b o≢a o≢b (tr-l o≡a _) _ law = ⊥-elim (o≢a o≡a)
+  xx-twist₂′ a b f s a≢b o≢a o≢b (tr-r o≡b _) _ law = ⊥-elim (o≢b o≡b)
+  xx-twist₂′ a b .o₁ s a≢b o≢a o≢b (tr-o _ _ Eq.refl) (tr-r a≡b _) law =
+    ⊥-elim (a≢b a≡b)
+  xx-twist₂′ a b .o₁ s a≢b o≢a o≢b (tr-o _ _ Eq.refl) (tr-o a≢a _ _) law =
+    ⊥-elim (a≢a Eq.refl)
+  xx-twist₂′ a b .o₁ .b a≢b o≢a o≢b (tr-o _ _ Eq.refl) (tr-l _ Eq.refl) law = law
+
+xx-twist₂ : ∀ (a b : Fin N) → a ≢ b → o₁ ≢ a → o₁ ≢ b →
+            zx a a b • zz o₁ a ≈ zz o₁ b • zx a a b
+xx-twist₂ a b a≢b o≢a o≢b =
+  xx-twist₂′ a b (Conj.fst cj) (Conj.snd cj) a≢b o≢a o≢b
+             (Conj.trx cj) (Conj.try cj) (Conj.law cj)
+  where cj = conj-any a b o₁ a a≢b
+
+WD-a2 : ∀ (a b : Fin N) → (a≢b : a ≢ b) → o₁ ≢ a → o₁ ≢ b →
+        zx o₁ a b • zx o₁ a b ≈ ε
+WD-a2 a b a≢b o≢a o≢b =
+  trans (cong r30′ r30′)
+  (trans assoc
+  (trans (cong refl (sym assoc))
+  (trans (cong refl (cong (xx-twist₂ a b a≢b o≢a o≢b) refl))
+  (trans (cong refl assoc)
+  (trans (sym assoc)
+  (trans (cong (zz-route a b) refl)
+  (trans (cong refl (zx²′ a b a≢b)) (zz² a b))))))))
+  where
+  r30′ : zx o₁ a b ≈ zz o₁ a • zx a a b
+  r30′ = axiom (r30 o₁ a b a≢b o≢a o≢b)
+
+-- (c1) at the coset ε: both sides come down to the same letter, the
+-- sign being carried across by the conjugation action one way and
+-- cancelled by (20) the other.
+WD-c1 : ∀ (a b : Fin N) → (a≢b : a ≢ b) → o₁ ≢ a → o₁ ≢ b →
+        zz o₁ a • zx o₁ a b ≈ zx o₁ a b • zz o₁ b
+WD-c1 a b a≢b o≢a o≢b =
+  trans (cong refl r30′)
+  (trans (sym assoc)
+  (trans (cong (zz-o² a) refl)
+  (trans left-unit
+         (sym (trans (cong r30′ refl)
+              (trans assoc
+              (trans (cong refl (xx-twist a b a≢b o≢a o≢b))
+              (trans (sym assoc)
+              (trans (cong (zz-o² a) refl) left-unit)))))))))
+  where
+  r30′ : zx o₁ a b ≈ zz o₁ a • zx a a b
+  r30′ = axiom (r30 o₁ a b a≢b o≢a o≢b)
+
+------------------------------------------------------------------------
+-- Figure 9
+--
+-- The paper's Appendix A.4 derives a figure of auxiliary equations
+-- from Figure 8 before attacking Item (a), and the general theory
+-- above turns out to be exactly that figure.  Matching them up:
+--
+--   (47)  is `LR`          -- the consecutive letter's inverse
+--   (48)  is `L-cube`      -- that inverse as the letter's cube
+--   (51)  is `zx-inv`      -- the general inverse, through (33)
+--   (52)  is `zx²′`        -- the general square
+--   (53)  is (30) itself
+--   (56)  is `zx-own`      -- a letter commutes with its own sign pair
+--   (57)  is (56) through (21)
+--   (58)–(62) are `conj-any` with one or two spectator indices
+--   (63)  is `zz-comm`
+--
+-- (49), (50), (54) and (55) are the Gray-code transport, which is what
+-- `flip-step` and `flip-step′` do, packaged as equations rather than
+-- as steps of an induction.  Only (64) — that two mixed letters on
+-- disjoint index pairs commute — has no counterpart here yet.
+--
+-- Figure 9 contains no Hadamard equations at all, so the question
+-- raised above, which rule gives `hh a b a b ≈ ε`, is not answered
+-- there either; it belongs to the later part of A.4.2.
+
+-- (48): the inverse of a consecutive letter is its cube, since (23)
+-- makes the sign pair its square.
+L-cube : ∀ (a a′ : Fin N) → Succ a a′ →
+         zx a′ a a′ ≈ (zx a a a′ • zx a a a′) • zx a a a′
+L-cube a a′ s = trans (L-form a a′ s) (cong (axiom (r23 a a′ s)) refl)

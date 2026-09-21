@@ -40,8 +40,14 @@ z₀ o₁ : Fin (2 ^ℕ (₃₊ m))
 z₀ = fin8 {m} ₀
 o₁ = fin8 {m} ₁
 
--- They are distinct: the embedding into a wider index set keeps the
--- numeral.
+-- The embedding into a wider index set keeps the numeral.
+toℕ-z₀ : toℕ z₀ ≡ 0
+toℕ-z₀ = toℕ-inject≤ ₀ _
+
+toℕ-o₁ : toℕ o₁ ≡ 1
+toℕ-o₁ = toℕ-inject≤ ₁ _
+
+-- So they are distinct.
 z₀≢o₁ : z₀ ≢ o₁
 z₀≢o₁ e = 0≢1 (Eq.trans (Eq.sym (toℕ-inject≤ ₀ _))
                (Eq.trans (Eq.cong toℕ e) (toℕ-inject≤ ₁ _)))
