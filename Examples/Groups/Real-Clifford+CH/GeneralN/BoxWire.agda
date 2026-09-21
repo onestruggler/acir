@@ -1,8 +1,9 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The box wire of the multi-controlled box is an identity wire
--- (Clément, Lemma D.8, Equation (274))
+-- The box wire of the multi-controlled box is an identity wire, and
+-- its two lowest controls can be exchanged (Clément, Lemma D.8,
+-- Equations (274) and (275))
 --
 -- The box does not depend on which wire carries its box: the swap of
 -- the box wire with an idle wire below it leaves the gate unchanged.
@@ -21,6 +22,13 @@
 -- the four-qubit (155), and in the paper's induction on the width it
 -- comes from the previous level, which is why the paper cites it as
 -- (285)ₙ₋₁.
+--
+-- (275) is then the generalisation of the four-qubit (157): the box is
+-- W B V B, the swap of the wires 1 2 fixes W and V by (127), and it
+-- carries the letter B — the smaller box met between the transposition
+-- of the wires 0 2 — to the same letter with its box wire moved, which
+-- is (274) one size down.  The transport is the braid relation alone:
+-- Ex ↑ • τ₀₂ ≈ τ₀₂ • Ex ↓, since τ₀₂ is Ex ↓ • Ex ↑ • Ex ↓.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -42,10 +50,16 @@ open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 
 open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation
   using (module Tools ; Ex²)
+open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Auxiliary complete₂
+  using (eq124 ; eq127)
+open import Examples.Groups.Real-Clifford+CH.FourQubit.Blocks complete₂ complete₃
+  using (module S₁₂ ; U-sem)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Box complete₂ complete₃
-  using (eq155)
+  using (eq155 ; eq157)
+open import Examples.Groups.Real-Clifford+CH.FourQubit.Permutations complete₂ complete₃
+  using (braid)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Box complete₂ complete₃
-  using (eq272)
+  using (eq272 ; B□)
 import Examples.Groups.Real-Clifford+CH.WordAlgebra as WordAlgebra
 
 private
@@ -99,3 +113,59 @@ eq274 k e285 = begin
   ((Λ□ (₃₊ k) ↑) • Ex ↓) • Ex ↓     ≈⟨ cancelʳ _ Ex² ⟩
   Λ□ (₃₊ k) ↑ ∎
   where open Tools ((₁₊ (₄₊ k)) VRel,_===_)
+
+------------------------------------------------------------------------
+-- (275): the controls on wires 1 and 2 can be exchanged
+
+-- The four-qubit case, the box with three controls.
+eq275-0 : 4 ⊢ Ex ↑ • Λ□ 3 • Ex ↑ ≈ Λ□ 3
+eq275-0 = eq157
+
+-- Moving the swap of the wires 1 2 across the transposition of the
+-- wires 0 2: the braid relation, since τ₀₂ is Ex ↓ • Ex ↑ • Ex ↓.
+private
+  s-τ : (₃₊ n) ⊢ Ex ↑ • τ₀₂ ≈ τ₀₂ • Ex ↓
+  s-τ {n} = begin
+    Ex ↑ • (Ex ↓ • Ex ↑ • Ex ↓)     ≈⟨ by-passoc (□ • □ • □ • □) ((□ • □ • □) • □) Eq.refl ⟩
+    (Ex ↑ • Ex ↓ • Ex ↑) • Ex ↓     ≈⟨ front _ (sym braid) ⟩
+    (Ex ↓ • Ex ↑ • Ex ↓) • Ex ↓ ∎
+    where open Tools ((₃₊ n) VRel,_===_)
+
+  τ-s : (₃₊ n) ⊢ τ₀₂ • Ex ↑ ≈ Ex ↓ • τ₀₂
+  τ-s {n} = begin
+    (Ex ↓ • Ex ↑ • Ex ↓) • Ex ↑     ≈⟨ by-passoc ((□ • □ • □) • □) (□ • (□ • □ • □)) Eq.refl ⟩
+    Ex ↓ • (Ex ↑ • Ex ↓ • Ex ↑)     ≈⟨ back _ (sym braid) ⟩
+    Ex ↓ • (Ex ↓ • Ex ↑ • Ex ↓) ∎
+    where open Tools ((₃₊ n) VRel,_===_)
+
+eq275 : ∀ j → Eq285 j → (₁₊ (₄₊ j)) ⊢ Ex ↑ • Λ□ (₄₊ j) • Ex ↑ ≈ Λ□ (₄₊ j)
+eq275 j e285 = S₁₂.⟪⟫-•₄ S-W S-B S-V S-B
+  where
+  open Tools ((₁₊ (₄₊ j)) VRel,_===_)
+
+  S-W : S₁₂.⟪ CCZX ⟫ ≈ CCZX
+  S-W = S₁₂.⟪⟫-fix (sym eq127)
+
+  S-d : S₁₂.⟪ CZ ↑ ⟫ ≈ CZ ↑
+  S-d = U-sem (Ex • CZ • Ex) CZ Eq.refl
+
+  S-V : S₁₂.⟪ CCXZ ⟫ ≈ CCXZ
+  S-V = begin
+    S₁₂.⟪ CCXZ ⟫           ≈⟨ S₁₂.⟪⟫-cong (sym eq124) ⟩
+    S₁₂.⟪ CCZX • CZ ↑ ⟫    ≈⟨ S₁₂.⟪⟫-•₂ S-W S-d ⟩
+    CCZX • CZ ↑            ≈⟨ eq124 ⟩
+    CCXZ ∎
+
+  -- The swap of the wires 1 2 moves the smaller box's box wire, which
+  -- (274) undoes.
+  S-B : S₁₂.⟪ B□ (₁₊ j) ⟫ ≈ B□ (₁₊ j)
+  S-B = begin
+    Ex ↑ • (τ₀₂ • (Λ□ (₃₊ j) ↑) • τ₀₂) • Ex ↑
+      ≈⟨ by-passoc (□ • (□ • □ • □) • □) ((□ • □) • □ • (□ • □)) Eq.refl ⟩
+    (Ex ↑ • τ₀₂) • (Λ□ (₃₊ j) ↑) • (τ₀₂ • Ex ↑)
+      ≈⟨ cong s-τ (back _ τ-s) ⟩
+    (τ₀₂ • Ex ↓) • (Λ□ (₃₊ j) ↑) • (Ex ↓ • τ₀₂)
+      ≈⟨ by-passoc ((□ • □) • □ • (□ • □)) (□ • (□ • □ • □) • □) Eq.refl ⟩
+    τ₀₂ • (Ex ↓ • (Λ□ (₃₊ j) ↑) • Ex ↓) • τ₀₂
+      ≈⟨ mid _ _ (eq274 j e285) ⟩
+    τ₀₂ • (Λ□ (₃₊ j) ↑) • τ₀₂ ∎
