@@ -147,16 +147,6 @@ module _ {n : ℕ} where
       (S₀₁.⟪⟫-≈ eq207 (S₀₁.⟪⟫-•₂ S-X↓ refl) (S₀₁.⟪⟫-•₂ refl S-X↓))
       (S₁₂.⟪⟫-•₂ S₁₂-X₁ refl) (S₁₂.⟪⟫-•₂ refl S₁₂-X₁)
 
-    S₂₃-c : S₂₃.⟪ CZ₃₀ ⟫ ≈ CZ₂₀
-    S₂₃-c = trans (S₂₃.⟪⟫-cong CZ₃₀-P) (S₂₃-P₀₃ CZ)
-
-    ZX₃-form₃ : ZX₃ ≈ G₂ • CZ₂₀ • G₂ • CZ₂₀
-    ZX₃-form₃ = trans (sym S₂₃-ZX₃) (trans (S₂₃.⟪⟫-cong eq212)
-      (S₂₃.⟪⟫-•₄ S-G S₂₃-c S-G S₂₃-c))
-      where
-      S-G : S₂₃.⟪ ΛH₂′ ⟫ ≈ G₂
-      S-G = S₂₃.⟪⟫-⟪⟫ G₂
-
     S₀₁-°b : S₀₁.⟪ °CZ₂₀ ⟫ ≈ °c₃
     S₀₁-°b = trans (S₀₁.⟪⟫-cong °CZ₂₀-O) (S₀₁.⟪⟫-⟪⟫ °c₃)
 
@@ -357,6 +347,33 @@ module _ {n : ℕ} where
 
     K′K : K′ • K ≈ ε
     K′K = eq209
+
+  -- The form of K from (212), the lower CZ exchanging K and its inverse,
+  -- and the inverses, for later use.
+  K-as-GcGc : K ≈ S₀₁.⟪ °ΛH₂′ ⟫ • P₁₃ CZ • S₀₁.⟪ °ΛH₂′ ⟫ • P₁₃ CZ
+  K-as-GcGc = K-form₂
+
+  K′-as-cGcG : K′ ≈ P₁₃ CZ • S₀₁.⟪ °ΛH₂′ ⟫ • P₁₃ CZ • S₀₁.⟪ °ΛH₂′ ⟫
+  K′-as-cGcG = K′-form₂
+
+  CZ↓-K : CZ ↓ • K ≈ K′ • CZ ↓
+  CZ↓-K = q-K
+
+  CZ↓-K′ : CZ ↓ • K′ ≈ K • CZ ↓
+  CZ↓-K′ = q-K′
+
+  K-K′ : K • K′ ≈ ε
+  K-K′ = KK′
+
+  -- X on wire 2 passes the H gate H(0, 2; 1, 3), whose box wire it is:
+  -- for later use.
+  X₂-S₁₂ΛH₀₁ : X ↑ ↑ • S₁₂.⟪ ΛH₀₁ ⟫ ≈ S₁₂.⟪ ΛH₀₁ ⟫ • X ↑ ↑
+  X₂-S₁₂ΛH₀₁ = X₂-G₂
+
+  -- The CH from wire 2 onto wire 0 passes the white H gate
+  -- H(1, 3; 0, °2): for later use.
+  CH₂₀-S₀₁°ΛH₂′ : CH₂₀ • S₀₁.⟪ °ΛH₂′ ⟫ ≈ S₀₁.⟪ °ΛH₂′ ⟫ • CH₂₀
+  CH₂₀-S₀₁°ΛH₂′ = p-°G′
 
   -- (216)
   eq216 : K • CCZX ≈ CCZX • K

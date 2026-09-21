@@ -101,59 +101,58 @@ eq204 {n} = begin
 
 -- (205): H(2, 1; 0, 3) against H(0, 2; 1, °3), from (189), on the
 -- triangle 0 1 2.
-private
-  PP₁₂ PP₀₂ : Circuit (₄₊ n)
-  PP₁₂ = PP ↑
-  PP₀₂ = O PP
+PP₁₂ PP₀₂ : Circuit (₄₊ n)
+PP₁₂ = PP ↑
+PP₀₂ = O PP
 
-  PP₁₂² : (₄₊ n) ⊢ PP₁₂ • PP₁₂ ≈ ε
-  PP₁₂² = U-sem (PP • PP) ε Eq.refl
+PP₁₂² : (₄₊ n) ⊢ PP₁₂ • PP₁₂ ≈ ε
+PP₁₂² = U-sem (PP • PP) ε Eq.refl
 
-  PP₀₂² : (₄₊ n) ⊢ PP₀₂ • PP₀₂ ≈ ε
-  PP₀₂² {n} = conj-invol Ex² PP₁₂²
-    where open Tools ((₄₊ n) VRel,_===_)
+PP₀₂² : (₄₊ n) ⊢ PP₀₂ • PP₀₂ ≈ ε
+PP₀₂² {n} = conj-invol Ex² PP₁₂²
+  where open Tools ((₄₊ n) VRel,_===_)
 
-  -- (130)
-  PP-triangle₂ : (₄₊ n) ⊢ PP₀₁ • PP₁₂ ≈ PP₀₂
-  PP-triangle₂ {n} = trans eq130 (O-L PP)
-    where open Tools ((₄₊ n) VRel,_===_)
+-- (130)
+PP-triangle₂ : (₄₊ n) ⊢ PP₀₁ • PP₁₂ ≈ PP₀₂
+PP-triangle₂ {n} = trans eq130 (O-L PP)
+  where open Tools ((₄₊ n) VRel,_===_)
 
-  -- The box with its box wire on wire 2 and its control on wire 3 white.
-  box₃″° : Circuit (₄₊ n)
-  box₃″° = N₃.⟪ S₁₂.⟪ box₃′ ⟫ ⟫
+-- The box with its box wire on wire 2 and its control on wire 3 white.
+box₃″° : Circuit (₄₊ n)
+box₃″° = N₃.⟪ S₁₂.⟪ box₃′ ⟫ ⟫
 
-  -- The two H gates as boxes between P ⊗ P.
-  G-PP : (₄₊ n) ⊢ S₀₁.⟪ S₁₂.⟪ ΛH 2 ↓ᵏ n ⟫ ⟫ ≈ PP₁₂ • box₃′ • PP₁₂
-  G-PP {n} = trans (S₀₁.⟪⟫-cong (S₁₂.⟪⟫-•₃ (O-L PP) eq157 (O-L PP)))
-                   (S₀₁.⟪⟫-•₃ (S₀₁.⟪⟫-⟪⟫ (U PP)) refl (S₀₁.⟪⟫-⟪⟫ (U PP)))
-    where open Tools ((₄₊ n) VRel,_===_)
+-- The two H gates as boxes between P ⊗ P.
+G-PP : (₄₊ n) ⊢ S₀₁.⟪ S₁₂.⟪ ΛH 2 ↓ᵏ n ⟫ ⟫ ≈ PP₁₂ • box₃′ • PP₁₂
+G-PP {n} = trans (S₀₁.⟪⟫-cong (S₁₂.⟪⟫-•₃ (O-L PP) eq157 (O-L PP)))
+                 (S₀₁.⟪⟫-•₃ (S₀₁.⟪⟫-⟪⟫ (U PP)) refl (S₀₁.⟪⟫-⟪⟫ (U PP)))
+  where open Tools ((₄₊ n) VRel,_===_)
 
-  N₃-PP₀₂ : (₄₊ n) ⊢ N₃.⟪ PP₀₂ ⟫ ≈ PP₀₂
-  N₃-PP₀₂ {n} = N₃.⟪⟫-fix (sym (L₃-top (O₀ PP) X))
-    where open Tools ((₄₊ n) VRel,_===_)
+N₃-PP₀₂ : (₄₊ n) ⊢ N₃.⟪ PP₀₂ ⟫ ≈ PP₀₂
+N₃-PP₀₂ {n} = N₃.⟪⟫-fix (sym (L₃-top (O₀ PP) X))
+  where open Tools ((₄₊ n) VRel,_===_)
 
-  G′-PP : (₄₊ n) ⊢ N₃.⟪ S₁₂.⟪ ΛH₀₁ ⟫ ⟫ ≈ PP₀₂ • box₃″° • PP₀₂
-  G′-PP {n} = trans (N₃.⟪⟫-cong (trans (S₁₂.⟪⟫-cong ΛH₀₁-PP) (S₁₂.⟪⟫-•₃ (O-L PP) refl (O-L PP))))
-                    (N₃.⟪⟫-•₃ N₃-PP₀₂ refl N₃-PP₀₂)
-    where open Tools ((₄₊ n) VRel,_===_)
+G′-PP : (₄₊ n) ⊢ N₃.⟪ S₁₂.⟪ ΛH₀₁ ⟫ ⟫ ≈ PP₀₂ • box₃″° • PP₀₂
+G′-PP {n} = trans (N₃.⟪⟫-cong (trans (S₁₂.⟪⟫-cong ΛH₀₁-PP) (S₁₂.⟪⟫-•₃ (O-L PP) refl (O-L PP))))
+                  (N₃.⟪⟫-•₃ N₃-PP₀₂ refl N₃-PP₀₂)
+  where open Tools ((₄₊ n) VRel,_===_)
 
-  -- (189), in these spellings.
-  e189 : (₄₊ n) ⊢ box₃″° • (PP₀₁ • box₃′ • PP₀₁) ≈ (PP₀₁ • box₃′ • PP₀₁) • box₃″°
-  e189 {n} = sym (begin
-    (PP₀₁ • box₃′ • PP₀₁) • box₃″°
-      ≈⟨ sym (cong (trans H-bridge ΛH₀₁-PP) B-bridge) ⟩
-    S₁₂.⟪ S₂₃.⟪ ΛH₂′ ⟫ ⟫ • S₁₂.⟪ S₂₃.⟪ S₀₁.⟪ °box₃ ⟫ ⟫ ⟫
-      ≈⟨ eq189 ⟩
-    S₁₂.⟪ S₂₃.⟪ S₀₁.⟪ °box₃ ⟫ ⟫ ⟫ • S₁₂.⟪ S₂₃.⟪ ΛH₂′ ⟫ ⟫
-      ≈⟨ cong B-bridge (trans H-bridge ΛH₀₁-PP) ⟩
-    box₃″° • (PP₀₁ • box₃′ • PP₀₁) ∎)
-    where
-    open Tools ((₄₊ n) VRel,_===_)
-    H-bridge : (₄₊ n) ⊢ S₁₂.⟪ S₂₃.⟪ ΛH₂′ ⟫ ⟫ ≈ ΛH₀₁
-    H-bridge = trans (S₁₂.⟪⟫-cong (S₂₃.⟪⟫-⟪⟫ (S₁₂.⟪ ΛH₀₁ ⟫))) (S₁₂.⟪⟫-⟪⟫ ΛH₀₁)
-    B-bridge : (₄₊ n) ⊢ S₁₂.⟪ S₂₃.⟪ S₀₁.⟪ °box₃ ⟫ ⟫ ⟫ ≈ box₃″°
-    B-bridge = trans (S₁₂.⟪⟫-cong (trans (S₂₃.⟪⟫-•₃ (L-S₂₃ Ex) S₂₃-°box₃ (L-S₂₃ Ex)) (S₀₁-N₃ box₃)))
-                     (S₁₂-N₃ box₃′)
+-- (189), in these spellings.
+e189 : (₄₊ n) ⊢ box₃″° • (PP₀₁ • box₃′ • PP₀₁) ≈ (PP₀₁ • box₃′ • PP₀₁) • box₃″°
+e189 {n} = sym (begin
+  (PP₀₁ • box₃′ • PP₀₁) • box₃″°
+    ≈⟨ sym (cong (trans H-bridge ΛH₀₁-PP) B-bridge) ⟩
+  S₁₂.⟪ S₂₃.⟪ ΛH₂′ ⟫ ⟫ • S₁₂.⟪ S₂₃.⟪ S₀₁.⟪ °box₃ ⟫ ⟫ ⟫
+    ≈⟨ eq189 ⟩
+  S₁₂.⟪ S₂₃.⟪ S₀₁.⟪ °box₃ ⟫ ⟫ ⟫ • S₁₂.⟪ S₂₃.⟪ ΛH₂′ ⟫ ⟫
+    ≈⟨ cong B-bridge (trans H-bridge ΛH₀₁-PP) ⟩
+  box₃″° • (PP₀₁ • box₃′ • PP₀₁) ∎)
+  where
+  open Tools ((₄₊ n) VRel,_===_)
+  H-bridge : (₄₊ n) ⊢ S₁₂.⟪ S₂₃.⟪ ΛH₂′ ⟫ ⟫ ≈ ΛH₀₁
+  H-bridge = trans (S₁₂.⟪⟫-cong (S₂₃.⟪⟫-⟪⟫ (S₁₂.⟪ ΛH₀₁ ⟫))) (S₁₂.⟪⟫-⟪⟫ ΛH₀₁)
+  B-bridge : (₄₊ n) ⊢ S₁₂.⟪ S₂₃.⟪ S₀₁.⟪ °box₃ ⟫ ⟫ ⟫ ≈ box₃″°
+  B-bridge = trans (S₁₂.⟪⟫-cong (trans (S₂₃.⟪⟫-•₃ (L-S₂₃ Ex) S₂₃-°box₃ (L-S₂₃ Ex)) (S₀₁-N₃ box₃)))
+                   (S₁₂-N₃ box₃′)
 
 eq205 : (₄₊ n) ⊢ S₀₁.⟪ S₁₂.⟪ ΛH 2 ↓ᵏ n ⟫ ⟫ • N₃.⟪ S₁₂.⟪ ΛH₀₁ ⟫ ⟫
                ≈ N₃.⟪ S₁₂.⟪ ΛH₀₁ ⟫ ⟫ • S₀₁.⟪ S₁₂.⟪ ΛH 2 ↓ᵏ n ⟫ ⟫
@@ -503,31 +502,30 @@ module _ {n : ℕ} where
 -- the same P ⊗ P, on the wires 1 2, so the statement is one about their
 -- boxes: (179), a box against a box of the other colour, under the cycle
 -- 0 → 1 → 2 → 3 → 0.
-private
-  e179₃ : (₄₊ n) ⊢ box₃′ • N₃.⟪ box₃ ⟫ ≈ N₃.⟪ box₃ ⟫ • box₃′
-  e179₃ = S₂₃.⟪⟫-≈ eq179 (S₂₃.⟪⟫-•₂ S₂₃-box₃′ S₂₃-°box₃) (S₂₃.⟪⟫-•₂ S₂₃-°box₃ S₂₃-box₃′)
+e179₃ : (₄₊ n) ⊢ box₃′ • N₃.⟪ box₃ ⟫ ≈ N₃.⟪ box₃ ⟫ • box₃′
+e179₃ = S₂₃.⟪⟫-≈ eq179 (S₂₃.⟪⟫-•₂ S₂₃-box₃′ S₂₃-°box₃) (S₂₃.⟪⟫-•₂ S₂₃-°box₃ S₂₃-box₃′)
 
-  S₁₂-box₃³ : (₄₊ n) ⊢ S₁₂.⟪ N₃.⟪ box₃ ⟫ ⟫ ≈ N₃.⟪ box₃ ⟫
-  S₁₂-box₃³ = S₁₂.⟪⟫-•₃ S₁₂-X₃ eq157 S₁₂-X₃
+S₁₂-box₃³ : (₄₊ n) ⊢ S₁₂.⟪ N₃.⟪ box₃ ⟫ ⟫ ≈ N₃.⟪ box₃ ⟫
+S₁₂-box₃³ = S₁₂.⟪⟫-•₃ S₁₂-X₃ eq157 S₁₂-X₃
 
-  e179ᶜ : (₄₊ n) ⊢ S₀₁.⟪ S₁₂.⟪ box₃′ ⟫ ⟫ • N₃.⟪ box₃′ ⟫ ≈ N₃.⟪ box₃′ ⟫ • S₀₁.⟪ S₁₂.⟪ box₃′ ⟫ ⟫
-  e179ᶜ {n} = S₀₁.⟪⟫-≈
-    (S₁₂.⟪⟫-≈ e179₃ (S₁₂.⟪⟫-•₂ refl S₁₂-box₃³) (S₁₂.⟪⟫-•₂ S₁₂-box₃³ refl))
-    (S₀₁.⟪⟫-•₂ refl (S₀₁-N₃ box₃)) (S₀₁.⟪⟫-•₂ (S₀₁-N₃ box₃) refl)
-    where open Tools ((₄₊ n) VRel,_===_)
+e179ᶜ : (₄₊ n) ⊢ S₀₁.⟪ S₁₂.⟪ box₃′ ⟫ ⟫ • N₃.⟪ box₃′ ⟫ ≈ N₃.⟪ box₃′ ⟫ • S₀₁.⟪ S₁₂.⟪ box₃′ ⟫ ⟫
+e179ᶜ {n} = S₀₁.⟪⟫-≈
+  (S₁₂.⟪⟫-≈ e179₃ (S₁₂.⟪⟫-•₂ refl S₁₂-box₃³) (S₁₂.⟪⟫-•₂ S₁₂-box₃³ refl))
+  (S₀₁.⟪⟫-•₂ refl (S₀₁-N₃ box₃)) (S₀₁.⟪⟫-•₂ (S₀₁-N₃ box₃) refl)
+  where open Tools ((₄₊ n) VRel,_===_)
 
-  N₃-PP₁₂ : (₄₊ n) ⊢ N₃.⟪ PP₁₂ ⟫ ≈ PP₁₂
-  N₃-PP₁₂ {n} = N₃.⟪⟫-fix (sym (L₃-top (U₀ PP) X))
-    where open Tools ((₄₊ n) VRel,_===_)
+N₃-PP₁₂ : (₄₊ n) ⊢ N₃.⟪ PP₁₂ ⟫ ≈ PP₁₂
+N₃-PP₁₂ {n} = N₃.⟪⟫-fix (sym (L₃-top (U₀ PP) X))
+  where open Tools ((₄₊ n) VRel,_===_)
 
-  G₆-PP : (₄₊ n) ⊢ S₀₁.⟪ S₁₂.⟪ ΛH₀₁ ⟫ ⟫ ≈ PP₁₂ • S₀₁.⟪ S₁₂.⟪ box₃′ ⟫ ⟫ • PP₁₂
-  G₆-PP {n} = trans (S₀₁.⟪⟫-cong (trans (S₁₂.⟪⟫-cong ΛH₀₁-PP) (S₁₂.⟪⟫-•₃ (O-L PP) refl (O-L PP))))
-                    (S₀₁.⟪⟫-•₃ (S₀₁.⟪⟫-⟪⟫ (U PP)) refl (S₀₁.⟪⟫-⟪⟫ (U PP)))
-    where open Tools ((₄₊ n) VRel,_===_)
+G₆-PP : (₄₊ n) ⊢ S₀₁.⟪ S₁₂.⟪ ΛH₀₁ ⟫ ⟫ ≈ PP₁₂ • S₀₁.⟪ S₁₂.⟪ box₃′ ⟫ ⟫ • PP₁₂
+G₆-PP {n} = trans (S₀₁.⟪⟫-cong (trans (S₁₂.⟪⟫-cong ΛH₀₁-PP) (S₁₂.⟪⟫-•₃ (O-L PP) refl (O-L PP))))
+                  (S₀₁.⟪⟫-•₃ (S₀₁.⟪⟫-⟪⟫ (U PP)) refl (S₀₁.⟪⟫-⟪⟫ (U PP)))
+  where open Tools ((₄₊ n) VRel,_===_)
 
-  G₆′-PP : (₄₊ n) ⊢ N₃.⟪ S₀₁.⟪ S₁₂.⟪ ΛH 2 ↓ᵏ n ⟫ ⟫ ⟫ ≈ PP₁₂ • N₃.⟪ box₃′ ⟫ • PP₁₂
-  G₆′-PP {n} = trans (N₃.⟪⟫-cong G-PP) (N₃.⟪⟫-•₃ N₃-PP₁₂ refl N₃-PP₁₂)
-    where open Tools ((₄₊ n) VRel,_===_)
+G₆′-PP : (₄₊ n) ⊢ N₃.⟪ S₀₁.⟪ S₁₂.⟪ ΛH 2 ↓ᵏ n ⟫ ⟫ ⟫ ≈ PP₁₂ • N₃.⟪ box₃′ ⟫ • PP₁₂
+G₆′-PP {n} = trans (N₃.⟪⟫-cong G-PP) (N₃.⟪⟫-•₃ N₃-PP₁₂ refl N₃-PP₁₂)
+  where open Tools ((₄₊ n) VRel,_===_)
 
 eq206 : (₄₊ n) ⊢ S₀₁.⟪ S₁₂.⟪ ΛH₀₁ ⟫ ⟫ • N₃.⟪ S₀₁.⟪ S₁₂.⟪ ΛH 2 ↓ᵏ n ⟫ ⟫ ⟫
                ≈ N₃.⟪ S₀₁.⟪ S₁₂.⟪ ΛH 2 ↓ᵏ n ⟫ ⟫ ⟫ • S₀₁.⟪ S₁₂.⟪ ΛH₀₁ ⟫ ⟫

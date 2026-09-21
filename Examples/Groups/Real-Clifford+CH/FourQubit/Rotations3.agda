@@ -49,7 +49,7 @@ open import Examples.Groups.Real-Clifford+CH.FourQubit.ControlledH complete₂ c
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Colours2 complete₂ complete₃
   using (eq181ᵇ)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Permutations complete₂ complete₃
-  using (S₁₂-P₀₃ ; S₁₂-ΛH₂′)
+  using (S₁₂-P₀₃ ; S₂₃-P₀₃ ; S₁₂-ΛH₂′ ; ΛH₀₁)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Colours3 complete₂ complete₃
   using (S₂₃-box₃′)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.HGates complete₂ complete₃
@@ -179,6 +179,13 @@ module _ {n : ℕ} where
       °B • °B • B     ≈⟨ back _ °BB ⟩
       °B • c ∎
 
+  -- (170) for the box on wire 1.
+  eq170ᵇ : box₃′ • S₀₁.⟪ °box₃ ⟫ ≈ CZ₃₀
+  eq170ᵇ = B°B
+
+  eq170ᵇ′ : S₀₁.⟪ °box₃ ⟫ • box₃′ ≈ CZ₃₀
+  eq170ᵇ′ = °BB
+
   -- (212)
   eq212 : ZX₃ ≈ G • c • G • c
   eq212 = begin
@@ -236,3 +243,33 @@ module _ {n : ℕ} where
 
   eq215′ : XZ₃ • Ex ↑ ≈ Ex ↑ • XZ₃
   eq215′ = sym (S₁₂.⟪⟫-comm S₁₂-XZ₃)
+
+  ----------------------------------------------------------------------
+  -- The forms again, with the control on wire 2 in the role of wire 3
+
+  -- By (214): the H gate then has its box wire on wire 2.
+  private
+    G₂ : Circuit (₄₊ n)
+    G₂ = S₁₂.⟪ ΛH₀₁ ⟫
+
+    S₂₃-G : S₂₃.⟪ G ⟫ ≈ G₂
+    S₂₃-G = S₂₃.⟪⟫-⟪⟫ G₂
+
+    S₂₃-c : S₂₃.⟪ c ⟫ ≈ CZ₂₀
+    S₂₃-c = trans (S₂₃.⟪⟫-cong CZ₃₀-P) (S₂₃-P₀₃ CZ)
+
+  ZX₃-form₃ : ZX₃ ≈ G₂ • CZ₂₀ • G₂ • CZ₂₀
+  ZX₃-form₃ = trans (sym S₂₃-ZX₃) (trans (S₂₃.⟪⟫-cong eq212)
+    (S₂₃.⟪⟫-•₄ S₂₃-G S₂₃-c S₂₃-G S₂₃-c))
+
+  XZ₃-form₃ : XZ₃ ≈ CZ₂₀ • G₂ • CZ₂₀ • G₂
+  XZ₃-form₃ = trans (sym S₂₃-XZ₃) (trans (S₂₃.⟪⟫-cong eq213)
+    (S₂₃.⟪⟫-•₄ S₂₃-c S₂₃-G S₂₃-c S₂₃-G))
+
+  ZX₃-form₄ : ZX₃ ≈ G₂ • box₃′ • G₂ • box₃′
+  ZX₃-form₄ = trans (sym S₂₃-ZX₃) (trans (S₂₃.⟪⟫-cong eq210)
+    (S₂₃.⟪⟫-•₄ S₂₃-G S₂₃-box₃′ S₂₃-G S₂₃-box₃′))
+
+  XZ₃-form₄ : XZ₃ ≈ box₃′ • G₂ • box₃′ • G₂
+  XZ₃-form₄ = trans (sym S₂₃-XZ₃) (trans (S₂₃.⟪⟫-cong eq211)
+    (S₂₃.⟪⟫-•₄ S₂₃-box₃′ S₂₃-G S₂₃-box₃′ S₂₃-G))
