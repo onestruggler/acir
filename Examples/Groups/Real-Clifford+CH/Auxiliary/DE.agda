@@ -83,7 +83,7 @@ open import Data.Nat using (ℕ ; zero ; suc ; pred ; _<_ ; _≤_ ; _∸_ ; _<?_
 open import Data.Nat.Properties
   using (suc-injective ; <-trans ; <-irrefl ; n<1+n ; ≤-pred ; ≤-antisym
         ; ≮⇒≥ ; ≤-<-trans ; ≤-trans ; ≤-refl ; n≤1+n ; <-cmp)
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_ ; subst₂)
 open import Relation.Binary.Definitions using (tri< ; tri≈ ; tri>)
 open import Relation.Nullary using (yes ; no)
 open import Word.Base using (Word ; ε ; _•_)
@@ -95,11 +95,12 @@ open import Presentation.Base as PB using ()
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Figure8
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Gray using (parity)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.P using (GenP)
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.RS m using (o₁ ; z₀ ; toℕ-z₀ ; toℕ-o₁)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.RS m using (o₁ ; z₀ ; z₀≢o₁ ; toℕ-z₀ ; toℕ-o₁)
 open import Examples.Groups.Real-Clifford+CH.Encoding using (zz ; zx ; xx ; hh ; hhℕ ; toFin ; twoSmallest ; distinct4)
 
-open PB (m P,_===_)
-  using (_≈_ ; refl ; sym ; trans ; cong ; axiom ; assoc ; left-unit ; right-unit)
+open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools)
+open Tools (m P,_===_)
+open import Examples.Groups.Real-Clifford+CH.WordAlgebra (m P,_===_) using (comm-•)
 
 ------------------------------------------------------------------------
 -- (DE-ZZ)
@@ -194,11 +195,10 @@ zx-sym d a a′ s d≢a d≢a′ =
 -- lets the twisted commutation (31) be turned round — the step the
 -- Gray-code induction of (25)–(28) needs at every level.
 
-private
-  -- A sign pair is an involution.
-  zz² : ∀ (a b : Fin _) → zz a b • zz a b ≈ ε
-  zz² a b = trans (cong refl (axiom (r21 a b)))
-                  (trans (axiom (r22 a b a)) (axiom (r20 a)))
+-- A sign pair is an involution.
+zz² : ∀ (a b : Fin _) → zz a b • zz a b ≈ ε
+zz² a b = trans (cong refl (axiom (r21 a b)))
+                (trans (axiom (r22 a b a)) (axiom (r20 a)))
 
 -- The right inverse is the letter itself with its sign moved.
 L-form : ∀ (a a′ : Fin _) → Succ a a′ → zx a′ a a′ ≈ zz a a′ • zx a a a′
@@ -350,6 +350,10 @@ private
   ∸suc zero    (suc x) = Eq.refl
   ∸suc (suc y) zero    = Eq.refl
   ∸suc (suc y) (suc x) = ∸suc y x
+
+  suc∸ : ∀ n → suc n ∸ n ≡ 1
+  suc∸ zero    = Eq.refl
+  suc∸ (suc n) = suc∸ n
 
   pred∸ : ∀ y x → pred y ∸ x ≡ pred (y ∸ x)
   pred∸ zero    zero    = Eq.refl
@@ -1217,9 +1221,527 @@ WD-c1 a b a≢b o≢a o≢b =
 -- Figure 9 contains no Hadamard equations at all, so the question
 -- raised above, which rule gives `hh a b a b ≈ ε`, is not answered
 -- there either; it belongs to the later part of A.4.2.
+--
+-- And that part is not more equations but a *normal form*.  Lemma A.4
+-- gives a unique normal form for words over P containing no Hadamard
+-- letter, from which Corollary A.5 reads off that two such words with
+-- the same semantics are equal, and Corollaries A.7, A.9 and A.10
+-- extend that to words with at most one Hadamard letter.  Appendix
+-- A.4 then derives the Reidemeister–Schreier output "with minimum
+-- effort" by appealing to those, not by writing derivations out.  Even
+-- (64), the one equation of Figure 9 missing here, is proved that way:
+-- its argument in the paper runs six hundred lines and cites Lemma A.4
+-- itself.
+--
+-- How much the Hadamard-free fragment would buy was measured
+-- (`scratchpad/tC.py`): of the obligations of Item (b), only (a1*) and
+-- (b1*) are Hadamard-free at every coset and index, (a2) and (c1) are
+-- so except where an index meets 0 or 1, and every rule of Figure 7
+-- mentioning H produces Hadamard letters at every coset.  So the four
+-- families proved here are essentially what the Hadamard-free fragment
+-- reaches; the rest waits on Lemma A.4.
+--
+-- Lemma A.4's normal form, for the record, is
+--
+--     ((−1)[a₁](−1)[b₁]) ⋯ ((−1)[a_k](−1)[b_k])
+--       ∏_{i=1}^{N−1} ( ∏_{j=d_i}^{N−i−1} ((−1)[j] X[j,j+1]) )
+--
+-- with k ≥ 0, a₁ < b₁ < ⋯ < a_k < b_k, and d_i ∈ {0,…,N−i}, both
+-- products taken in increasing order and an empty one being ε.  So the
+-- sign part is an even-sized subset of the indices, written as its
+-- elements paired off in increasing order, and the permutation part is
+-- a Lehmer code: the vector (d₁,…,d_{N−1}) ranges over ∏(N−i+1) = N!
+-- values, one per permutation, each a product of *consecutive* mixed
+-- letters.  Uniqueness is read off the semantics — a word of that form
+-- denotes a permutation matrix times a diagonal of ±1, the dᵢ being
+-- fixed by the permutation and the aᵢ, bᵢ by the diagonal.
+--
+-- So building it needs: a representation of the two halves (an even
+-- `Vec Bool N` and a Lehmer code), the word each denotes, a reduction
+-- of any Hadamard-free word to that form, and the uniqueness argument.
+-- The general mixed-letter theory above is exactly the rewriting the
+-- reduction wants, and `Normalization/NormalForm/*` the frame for the
+-- uniqueness half.
 
 -- (48): the inverse of a consecutive letter is its cube, since (23)
 -- makes the sign pair its square.
 L-cube : ∀ (a a′ : Fin N) → Succ a a′ →
          zx a′ a a′ ≈ (zx a a a′ • zx a a a′) • zx a a a′
 L-cube a a′ s = trans (L-form a a′ s) (cong (axiom (r23 a a′ s)) refl)
+
+-- (b1*) at all four cosets: the sign letter on the index 1 is the
+-- empty word by (20), so both sides collapse to the same letter.  As
+-- with (a1*), the four cosets give the same obligation.
+WD-b1 : zz o₁ z₀ • zz o₁ o₁ ≈ zz o₁ o₁ • zz o₁ z₀
+WD-b1 = trans (cong refl (axiom (r20 o₁)))
+        (trans right-unit
+               (sym (trans (cong (axiom (r20 o₁)) refl) left-unit)))
+
+------------------------------------------------------------------------
+-- Towards (64): disjoint mixed letters commute
+--
+-- The paper proves (64) by a double induction on the two gaps, with
+-- (54) — which here is (25) together with `L-cube` — shrinking a pair
+-- one index at a time, (51) reversing a pair, and a six-way case
+-- analysis on how the two pairs interleave on the line.  Its base case
+-- is two *consecutive* pairs, which is (32) outright.
+--
+-- What the induction needs at the base is that case with either pair
+-- taken in either order.  One of those is (32); the others follow from
+-- it, because reversing a pair costs only a sign pair (`flip′`) and
+-- the other letter carries a sign pair on two spectator indices
+-- straight through (`R-act₂` with two `tr-o`s).
+
+disj-succ : ∀ (a a′ c c′ : Fin N) → Succ a a′ → Succ c c′ → toℕ a′ < toℕ c →
+            zx a a a′ • zx c′ c′ c ≈ zx c′ c′ c • zx a a a′
+disj-succ a a′ c c′ s t lt =
+  trans (cong refl (flip′ c′ c c′≢c))
+  (trans (sym assoc)
+  (trans (cong (R-act₂ a a′ c′ c c′ c s
+                 (tr-o c′≢a c′≢a′ Eq.refl) (tr-o c≢a c≢a′ Eq.refl)) refl)
+  (trans assoc
+  (trans (cong refl (axiom (r32 a a′ c c′ s t lt)))
+  (trans (sym assoc)
+         (cong (sym (flip′ c′ c c′≢c)) refl))))))
+  where
+  a<a′ : toℕ a < toℕ a′
+  a<a′ = Eq.subst (toℕ a <_) (Eq.sym s) (n<1+n (toℕ a))
+
+  c<c′ : toℕ c < toℕ c′
+  c<c′ = Eq.subst (toℕ c <_) (Eq.sym t) (n<1+n (toℕ c))
+
+  c′≢c : c′ ≢ c
+  c′≢c e = <-irrefl (Eq.sym (Eq.cong toℕ e)) c<c′
+
+  c≢a′ : c ≢ a′
+  c≢a′ e = <-irrefl (Eq.sym (Eq.cong toℕ e)) lt
+
+  c≢a : c ≢ a
+  c≢a e = <-irrefl (Eq.sym (Eq.cong toℕ e)) (<-trans a<a′ lt)
+
+  c′≢a′ : c′ ≢ a′
+  c′≢a′ e = <-irrefl (Eq.sym (Eq.cong toℕ e)) (<-trans lt c<c′)
+
+  c′≢a : c′ ≢ a
+  c′≢a e = <-irrefl (Eq.sym (Eq.cong toℕ e)) (<-trans a<a′ (<-trans lt c<c′))
+
+------------------------------------------------------------------------
+-- Towards (64), continued: a spectator sign pair
+--
+-- The double induction for (64) shrinks a pair with (25) or (27) and
+-- has to move the other letter past each of the three letters that
+-- produces.  Two of them are mixed letters on smaller pairs, which the
+-- induction hypothesis covers; the third is the *reversed* consecutive
+-- letter, and by `L-form` that is the letter times a sign pair on the
+-- two indices being shrunk.  Since those are spectators of the other
+-- pair, that sign pair passes straight through — which is this lemma.
+
+private
+  conj-spect′ : ∀ (c d x y f s : Fin N) → x ≢ c → x ≢ d → y ≢ c → y ≢ d →
+                Tr c d x f → Tr c d y s →
+                zx c c d • zz x y ≈ zz f s • zx c c d →
+                zx c c d • zz x y ≈ zz x y • zx c c d
+  conj-spect′ c d x y .x .y _ _ _ _ (tr-o _ _ Eq.refl) (tr-o _ _ Eq.refl) law = law
+  conj-spect′ c d x y f s x≢c _ _ _ (tr-l x≡c _) _ law = ⊥-elim (x≢c x≡c)
+  conj-spect′ c d x y f s _ x≢d _ _ (tr-r x≡d _) _ law = ⊥-elim (x≢d x≡d)
+  conj-spect′ c d x y f s _ _ y≢c _ _ (tr-l y≡c _) law = ⊥-elim (y≢c y≡c)
+  conj-spect′ c d x y f s _ _ _ y≢d _ (tr-r y≡d _) law = ⊥-elim (y≢d y≡d)
+
+conj-spect : ∀ (c d x y : Fin N) → c ≢ d → x ≢ c → x ≢ d → y ≢ c → y ≢ d →
+             zx c c d • zz x y ≈ zz x y • zx c c d
+conj-spect c d x y c≢d x≢c x≢d y≢c y≢d =
+  conj-spect′ c d x y (Conj.fst cj) (Conj.snd cj) x≢c x≢d y≢c y≢d
+              (Conj.trx cj) (Conj.try cj) (Conj.law cj)
+  where cj = conj-any c d x y c≢d
+
+-- Strict order gives distinctness, in both directions.
+<⇒≢ : ∀ {x y : Fin N} → toℕ x < toℕ y → x ≢ y
+<⇒≢ lt e = <-irrefl (Eq.cong toℕ e) lt
+
+>⇒≢ : ∀ {x y : Fin N} → toℕ y < toℕ x → x ≢ y
+>⇒≢ lt e = <-irrefl (Eq.sym (Eq.cong toℕ e)) lt
+
+-- What remains for (64) is the induction itself.  Note that it needs
+-- *both* decompositions, (25) and (27), as the inductions above do:
+-- which one applies is fixed by the parity of the gap, not by choice.
+-- In the case a < b < c < d that is harmless — (25) shrinks the pair
+-- upwards from a and (27) downwards from b, and either way the new
+-- index stays strictly below c — but it doubles the branches, and the
+-- remaining five interleavings of the two pairs each need their own.
+
+------------------------------------------------------------------------
+-- (64) when the two pairs occupy disjoint intervals
+--
+-- The double induction of the paper's proof, in the case
+-- a < b < c < d.  Whichever pair still has a gap is shrunk by (25) or
+-- (27) — which of the two is fixed by the parity of that gap, not by
+-- choice — and the other letter is moved past each of the three
+-- letters the decomposition produces.  Two of them are mixed letters
+-- on shorter pairs, covered by the induction hypothesis; the third is
+-- the reversed consecutive letter, which by `L-form` is the letter
+-- times a sign pair on the two indices being shrunk, and those are
+-- spectators of the other pair, so `conj-spect` carries it through.
+-- Here the new index always stays inside the interval it came from,
+-- so the two pairs remain disjoint at every level.  Both gaps reach
+-- one, and (32) finishes.
+
+private
+  disj-fuel : ∀ (k₁ k₂ : ℕ) (a b c d : Fin N) →
+              toℕ a < toℕ b → toℕ b < toℕ c → toℕ c < toℕ d →
+              toℕ b ∸ toℕ a ≤ k₁ → toℕ d ∸ toℕ c ≤ k₂ →
+              zx c c d • zx a a b ≈ zx a a b • zx c c d
+  disj-fuel zero k₂ a b c d ab bc cd f₁ f₂ =
+    ⊥-elim (<-irrefl Eq.refl (≤-trans (0<∸ ab) f₁))
+  disj-fuel (suc k₁) zero a b c d ab bc cd f₁ f₂ =
+    ⊥-elim (<-irrefl Eq.refl (≤-trans (0<∸ cd) f₂))
+  disj-fuel (suc k₁) (suc k₂) a b c d ab bc cd f₁ f₂
+    with suc (toℕ a) <? toℕ b
+  -- The first pair still has a gap.
+  disj-fuel (suc k₁) (suc k₂) a b c d ab bc cd f₁ f₂ | yes p
+    with parity (toℕ b ∸ toℕ a) in eq
+  disj-fuel (suc k₁) (suc k₂) a b c d ab bc cd f₁ f₂ | yes p | true =
+    let pa = <-trans p (toℕ<n b)
+        a′ = next a pa
+        s  = next-Succ a pa
+        a<a′ = Eq.subst (toℕ a <_) (Eq.sym s) (n<1+n (toℕ a))
+        a′<b = Eq.subst (_< toℕ b) (Eq.sym s) p
+        a′<c = <-trans a′<b bc
+        a<c  = <-trans a<a′ a′<c
+        1≤k₁ = ≤-trans (Eq.subst (1 ≤_) (∸suc (toℕ b) (toℕ a)) (0<∸ p)) (pred≤pred f₁)
+        f₁R  = Eq.subst (λ z → z ∸ toℕ a ≤ k₁) (Eq.sym s)
+                 (Eq.subst (_≤ k₁) (Eq.sym (suc∸ (toℕ a))) 1≤k₁)
+        f₁M  = Eq.subst (λ z → toℕ b ∸ z ≤ k₁) (Eq.sym s)
+                 (Eq.subst (_≤ k₁) (Eq.sym (∸suc (toℕ b) (toℕ a))) (pred≤pred f₁))
+        cR = disj-fuel k₁ (suc k₂) a a′ c d a<a′ a′<c cd f₁R f₂
+        cM = disj-fuel k₁ (suc k₂) a′ b c d a′<b bc cd f₁M f₂
+        cL = trans (cong refl (L-form a a′ s))
+             (trans (comm-• (conj-spect c d a a′ (<⇒≢ cd)
+                              (<⇒≢ a<c) (<⇒≢ (<-trans a<c cd))
+                              (<⇒≢ a′<c) (<⇒≢ (<-trans a′<c cd))) cR)
+                    (cong (sym (L-form a a′ s)) refl))
+        dec = axiom (r25 a a′ b s a′<b eq)
+    in trans (cong refl dec)
+       (trans (comm-• cL (comm-• cM cR)) (cong (sym dec) refl))
+  disj-fuel (suc k₁) (suc k₂) a b c d ab bc cd f₁ f₂ | yes p | false =
+    let 0<b = ≤-trans (s≤s z≤n) ab
+        b′ = prev b
+        s  = prev-Succ b 0<b
+        b′<b = Eq.subst (toℕ b′ <_) (Eq.sym s) (n<1+n (toℕ b′))
+        a<b′ = ≤-pred (Eq.subst (suc (toℕ a) <_) s p)
+        b′<c = <-trans b′<b bc
+        1≤k₁ = ≤-trans (Eq.subst (1 ≤_) (∸suc (toℕ b) (toℕ a)) (0<∸ p)) (pred≤pred f₁)
+        s′   = Eq.trans s (Eq.cong suc (prev-toℕ b))
+        f₁L  = Eq.subst (λ z → toℕ b ∸ z ≤ k₁) (Eq.sym (prev-toℕ b))
+                 (Eq.subst (λ z → z ∸ pred (toℕ b) ≤ k₁) (Eq.sym s′)
+                   (Eq.subst (_≤ k₁) (Eq.sym (suc∸ (pred (toℕ b)))) 1≤k₁))
+        f₁M  = Eq.subst (λ z → z ∸ toℕ a ≤ k₁) (Eq.sym (prev-toℕ b))
+                 (Eq.subst (_≤ k₁) (Eq.sym (pred∸ (toℕ b) (toℕ a))) (pred≤pred f₁))
+        cLb = disj-fuel k₁ (suc k₂) b′ b c d b′<b bc cd f₁L f₂
+        cM  = disj-fuel k₁ (suc k₂) a b′ c d a<b′ b′<c cd f₁M f₂
+        cRb = trans (cong refl (L-form b′ b s))
+              (trans (comm-• (conj-spect c d b′ b (<⇒≢ cd)
+                               (<⇒≢ b′<c) (<⇒≢ (<-trans b′<c cd))
+                               (<⇒≢ bc) (<⇒≢ (<-trans bc cd))) cLb)
+                     (cong (sym (L-form b′ b s)) refl))
+        dec = axiom (r27 a b′ b s p eq)
+    in trans (cong refl dec)
+       (trans (comm-• cLb (comm-• cM cRb)) (cong (sym dec) refl))
+  -- The first pair is consecutive; shrink the second.
+  disj-fuel (suc k₁) (suc k₂) a b c d ab bc cd f₁ f₂ | no ¬p
+    with suc (toℕ c) <? toℕ d
+  disj-fuel (suc k₁) (suc k₂) a b c d ab bc cd f₁ f₂ | no ¬p | yes q
+    with parity (toℕ d ∸ toℕ c) in eq
+  disj-fuel (suc k₁) (suc k₂) a b c d ab bc cd f₁ f₂ | no ¬p | yes q | true =
+    let pc = <-trans q (toℕ<n d)
+        c′ = next c pc
+        s  = next-Succ c pc
+        c<c′ = Eq.subst (toℕ c <_) (Eq.sym s) (n<1+n (toℕ c))
+        c′<d = Eq.subst (_< toℕ d) (Eq.sym s) q
+        b<c′ = <-trans bc c<c′
+        1≤k₂ = ≤-trans (Eq.subst (1 ≤_) (∸suc (toℕ d) (toℕ c)) (0<∸ q)) (pred≤pred f₂)
+        f₂R  = Eq.subst (λ z → z ∸ toℕ c ≤ k₂) (Eq.sym s)
+                 (Eq.subst (_≤ k₂) (Eq.sym (suc∸ (toℕ c))) 1≤k₂)
+        f₂M  = Eq.subst (λ z → toℕ d ∸ z ≤ k₂) (Eq.sym s)
+                 (Eq.subst (_≤ k₂) (Eq.sym (∸suc (toℕ d) (toℕ c))) (pred≤pred f₂))
+        cR = disj-fuel (suc k₁) k₂ a b c c′ ab bc c<c′ f₁ f₂R
+        cM = disj-fuel (suc k₁) k₂ a b c′ d ab b<c′ c′<d f₁ f₂M
+        cL = trans (cong (L-form c c′ s) refl)
+             (trans (sym (comm-• (conj-spect a b c c′ (<⇒≢ ab)
+                                   (>⇒≢ (<-trans ab bc)) (>⇒≢ bc)
+                                   (>⇒≢ (<-trans ab b<c′)) (>⇒≢ b<c′)) (sym cR)))
+                    (cong refl (sym (L-form c c′ s))))
+        dec = axiom (r25 c c′ d s c′<d eq)
+    in trans (cong dec refl)
+       (trans (sym (comm-• (sym cL) (comm-• (sym cM) (sym cR))))
+              (cong refl (sym dec)))
+  disj-fuel (suc k₁) (suc k₂) a b c d ab bc cd f₁ f₂ | no ¬p | yes q | false =
+    let 0<d = ≤-trans (s≤s z≤n) cd
+        d′ = prev d
+        s  = prev-Succ d 0<d
+        d′<d = Eq.subst (toℕ d′ <_) (Eq.sym s) (n<1+n (toℕ d′))
+        c<d′ = ≤-pred (Eq.subst (suc (toℕ c) <_) s q)
+        b<d′ = <-trans bc c<d′
+        1≤k₂ = ≤-trans (Eq.subst (1 ≤_) (∸suc (toℕ d) (toℕ c)) (0<∸ q)) (pred≤pred f₂)
+        s′   = Eq.trans s (Eq.cong suc (prev-toℕ d))
+        f₂L  = Eq.subst (λ z → toℕ d ∸ z ≤ k₂) (Eq.sym (prev-toℕ d))
+                 (Eq.subst (λ z → z ∸ pred (toℕ d) ≤ k₂) (Eq.sym s′)
+                   (Eq.subst (_≤ k₂) (Eq.sym (suc∸ (pred (toℕ d)))) 1≤k₂))
+        f₂M  = Eq.subst (λ z → z ∸ toℕ c ≤ k₂) (Eq.sym (prev-toℕ d))
+                 (Eq.subst (_≤ k₂) (Eq.sym (pred∸ (toℕ d) (toℕ c))) (pred≤pred f₂))
+        cLd = disj-fuel (suc k₁) k₂ a b d′ d ab b<d′ d′<d f₁ f₂L
+        cM  = disj-fuel (suc k₁) k₂ a b c d′ ab bc c<d′ f₁ f₂M
+        cRd = trans (cong (L-form d′ d s) refl)
+              (trans (sym (comm-• (conj-spect a b d′ d (<⇒≢ ab)
+                                    (>⇒≢ (<-trans ab b<d′)) (>⇒≢ b<d′)
+                                    (>⇒≢ (<-trans ab (<-trans bc (<-trans c<d′ d′<d))))
+                                    (>⇒≢ (<-trans bc (<-trans c<d′ d′<d)))) (sym cLd)))
+                     (cong refl (sym (L-form d′ d s))))
+        dec = axiom (r27 c d′ d s q eq)
+    in trans (cong dec refl)
+       (trans (sym (comm-• (sym cLd) (comm-• (sym cM) (sym cRd))))
+              (cong refl (sym dec)))
+  disj-fuel (suc k₁) (suc k₂) a b c d ab bc cd f₁ f₂ | no ¬p | no ¬q =
+    sym (axiom (r32 a b c d (≤-antisym (≮⇒≥ ¬p) ab) (≤-antisym (≮⇒≥ ¬q) cd) bc))
+
+-- (64) for two pairs lying in disjoint intervals.
+disj-int : ∀ (a b c d : Fin N) →
+           toℕ a < toℕ b → toℕ b < toℕ c → toℕ c < toℕ d →
+           zx c c d • zx a a b ≈ zx a a b • zx c c d
+disj-int a b c d ab bc cd =
+  disj-fuel (toℕ b ∸ toℕ a) (toℕ d ∸ toℕ c) a b c d ab bc cd ≤-refl ≤-refl
+
+------------------------------------------------------------------------
+-- Reading the conjugation action off
+--
+-- `conj-any` produces the transposed indices rather than taking them,
+-- which has meant an extraction lemma at each use.  Since the
+-- transposition is a function of its input, one uniqueness lemma
+-- replaces all of them.
+
+Tr-unique : ∀ {a c x x′ x″ : Fin N} → a ≢ c → Tr a c x x′ → Tr a c x x″ → x′ ≡ x″
+Tr-unique a≢c (tr-l _ e₁)    (tr-l _ e₂)    = Eq.trans e₁ (Eq.sym e₂)
+Tr-unique a≢c (tr-l x≡a _)   (tr-r x≡c _)   = ⊥-elim (a≢c (Eq.trans (Eq.sym x≡a) x≡c))
+Tr-unique a≢c (tr-l x≡a _)   (tr-o x≢a _ _) = ⊥-elim (x≢a x≡a)
+Tr-unique a≢c (tr-r x≡c _)   (tr-l x≡a _)   = ⊥-elim (a≢c (Eq.trans (Eq.sym x≡a) x≡c))
+Tr-unique a≢c (tr-r _ e₁)    (tr-r _ e₂)    = Eq.trans e₁ (Eq.sym e₂)
+Tr-unique a≢c (tr-r x≡c _)   (tr-o _ x≢c _) = ⊥-elim (x≢c x≡c)
+Tr-unique a≢c (tr-o x≢a _ _) (tr-l x≡a _)   = ⊥-elim (x≢a x≡a)
+Tr-unique a≢c (tr-o _ x≢c _) (tr-r x≡c _)   = ⊥-elim (x≢c x≡c)
+Tr-unique a≢c (tr-o _ _ e₁)  (tr-o _ _ e₂)  = Eq.trans e₁ (Eq.sym e₂)
+
+-- The action with both sides named.
+conj-at : ∀ (a b x y x′ y′ : Fin N) → (a≢b : a ≢ b) →
+          Tr a b x x′ → Tr a b y y′ →
+          zx a a b • zz x y ≈ zz x′ y′ • zx a a b
+conj-at a b x y x′ y′ a≢b tx ty =
+  Eq.subst₂ (λ u v → zx a a b • zz x y ≈ zz u v • zx a a b)
+            (Tr-unique a≢b (Conj.trx cj) tx)
+            (Tr-unique a≢b (Conj.try cj) ty)
+            (Conj.law cj)
+  where cj = conj-any a b x y a≢b
+
+------------------------------------------------------------------------
+-- (64) for disjoint intervals, the other way round
+
+disj-int′ : ∀ (a b c d : Fin N) →
+            toℕ c < toℕ d → toℕ d < toℕ a → toℕ a < toℕ b →
+            zx c c d • zx a a b ≈ zx a a b • zx c c d
+disj-int′ a b c d cd da ab = sym (disj-int c d a b cd da ab)
+
+------------------------------------------------------------------------
+-- An X pair on two disjoint intervals is an involution
+--
+-- (34) splits the letter into two mixed ones and (30) puts the second
+-- one's sign outside its pair; the two letters then commute by (64),
+-- each square is a sign pair by the general (23), and what is left is
+-- sign algebra.  This is the obligation (a2) gives at the cosets
+-- H_[0,1] and H_[0,1](−1)_[1].
+
+xx-invol-gen : ∀ (a b c d : Fin N) → (a≢b : a ≢ b) → (c≢d : c ≢ d) →
+               (b≢c : b ≢ c) → (b≢d : b ≢ d) → (c≢a : c ≢ a) → (c≢b : c ≢ b) →
+               zx c c d • zx a a b ≈ zx a a b • zx c c d →
+               xx a b c d • xx a b c d ≈ ε
+xx-invol-gen a b c d a≢b c≢d b≢c b≢d c≢a c≢b comm = begin
+  xx a b c d • xx a b c d
+    ≈⟨ cong form form ⟩
+  (A • (S • C)) • (A • (S • C))
+    ≈⟨ by-passoc ((□ • (□ • □)) • (□ • (□ • □)))
+                 (□ • ((□ • ((□ • □) • (□ • □))))) Eq.refl ⟩
+  A • (S • ((C • A) • (S • C)))
+    ≈⟨ back A (back S (front (S • C) comm)) ⟩
+  A • (S • ((A • C) • (S • C)))
+    ≈⟨ by-passoc (□ • (□ • ((□ • □) • (□ • □))))
+                 (□ • ((□ • □) • (□ • (□ • □)))) Eq.refl ⟩
+  A • ((S • A) • (C • (S • C)))
+    ≈⟨ back A (front (C • (S • C))
+         (sym (conj-at a b a c b c a≢b (tr-l Eq.refl Eq.refl)
+                       (tr-o c≢a c≢b Eq.refl)))) ⟩
+  A • ((A • zz a c) • (C • (S • C)))
+    ≈⟨ by-passoc (□ • ((□ • □) • (□ • (□ • □))))
+                 ((□ • □) • (□ • (□ • (□ • □)))) Eq.refl ⟩
+  (A • A) • (zz a c • (C • (S • C)))
+    ≈⟨ front _ (zx²′ a b a≢b) ⟩
+  zz a b • (zz a c • (C • (S • C)))
+    ≈⟨ back (zz a b) (back (zz a c) tail) ⟩
+  zz a b • (zz a c • (zz b d • zz c d))
+    ≈⟨ by-passoc (□ • (□ • (□ • □))) ((□ • □) • (□ • □)) Eq.refl ⟩
+  (zz a b • zz a c) • (zz b d • zz c d)
+    ≈⟨ cong (zz-split a b a c) (zz-split b d c d) ⟩
+  (zz a a • zz b c) • (zz b c • zz d d)
+    ≈⟨ cong (trans (front _ (axiom (r20 a))) left-unit)
+            (trans (back _ (axiom (r20 d))) right-unit) ⟩
+  zz b c • zz b c
+    ≈⟨ zz² b c ⟩
+  ε ∎
+  where
+  A = zx a a b
+  C = zx c c d
+  S = zz b c
+
+  form : xx a b c d ≈ A • (S • C)
+  form = trans (axiom (r34 a b c d a≢b c≢d))
+               (cong refl (axiom (r30 b c d c≢d b≢c b≢d)))
+
+  tail : C • (S • C) ≈ zz b d • zz c d
+  tail = begin
+    C • (S • C)     ≈⟨ sym assoc ⟩
+    (C • S) • C     ≈⟨ front C (conj-at c d b c b d c≢d
+                                 (tr-o b≢c b≢d Eq.refl) (tr-l Eq.refl Eq.refl)) ⟩
+    (zz b d • C) • C ≈⟨ assoc ⟩
+    zz b d • (C • C) ≈⟨ back (zz b d) (zx²′ c d c≢d) ⟩
+    zz b d • zz c d ∎
+
+-- The two orderings of the intervals.
+xx-invol : ∀ (a b c d : Fin N) →
+           toℕ a < toℕ b → toℕ b < toℕ c → toℕ c < toℕ d →
+           xx a b c d • xx a b c d ≈ ε
+xx-invol a b c d ab bc cd =
+  xx-invol-gen a b c d (<⇒≢ ab) (<⇒≢ cd) (<⇒≢ bc) (<⇒≢ (<-trans bc cd))
+               (>⇒≢ (<-trans ab bc)) (>⇒≢ bc) (disj-int a b c d ab bc cd)
+
+xx-invol′ : ∀ (a b c d : Fin N) →
+            toℕ c < toℕ d → toℕ d < toℕ a → toℕ a < toℕ b →
+            xx a b c d • xx a b c d ≈ ε
+xx-invol′ a b c d cd da ab =
+  xx-invol-gen a b c d (<⇒≢ ab) (<⇒≢ cd)
+               (>⇒≢ (<-trans cd (<-trans da ab))) (>⇒≢ (<-trans da ab))
+               (<⇒≢ (<-trans cd da)) (<⇒≢ (<-trans cd (<-trans da ab)))
+               (disj-int′ a b c d cd da ab)
+
+-- An X pair split into two mixed letters, the second one's sign put
+-- outside its own pair: (34) then (30).
+xx-form : ∀ (a b c d : Fin N) → (a≢b : a ≢ b) → (c≢d : c ≢ d) →
+          b ≢ c → b ≢ d →
+          xx a b c d ≈ zx a a b • (zz b c • zx c c d)
+xx-form a b c d a≢b c≢d b≢c b≢d =
+  trans (axiom (r34 a b c d a≢b c≢d)) (cong refl (axiom (r30 b c d c≢d b≢c b≢d)))
+
+------------------------------------------------------------------------
+-- (a2) and (c1) at the cosets H_[0,1] and H_[0,1](−1)_[1]
+--
+-- There the coset action produces X pairs on {a , b} and {0 , 1}, and
+-- since the indices of Figure 7's rule avoid 0 and 1 the two pairs lie
+-- in disjoint intervals.  (a2) is then `xx-invol′`.  For (c1) both
+-- sides collapse to the same mixed letter: the sign pairs the
+-- conjugation action produces cancel by (22) and (20), and the square
+-- of the letter on {0 , 1} by the general (23).
+
+private
+  -- The indices of the rule sit above 0 and 1.
+  module Above (a b : Fin N) (1<a : 1 < toℕ a) (ab : toℕ a < toℕ b) where
+    z<o : toℕ z₀ < toℕ o₁
+    z<o = Eq.subst₂ _<_ (Eq.sym toℕ-z₀) (Eq.sym toℕ-o₁) (s≤s z≤n)
+
+    o<a : toℕ o₁ < toℕ a
+    o<a = Eq.subst (_< toℕ a) (Eq.sym toℕ-o₁) 1<a
+
+    z<a : toℕ z₀ < toℕ a
+    z<a = <-trans z<o o<a
+
+    o<b = <-trans o<a ab
+    z<b = <-trans z<a ab
+
+    a≢b = <⇒≢ ab
+    z≢o = <⇒≢ z<o
+    a≢z = >⇒≢ z<a
+    a≢o = >⇒≢ o<a
+    b≢z = >⇒≢ z<b
+    b≢o = >⇒≢ o<b
+
+WD-a2-K : ∀ (a b : Fin N) → 1 < toℕ a → toℕ a < toℕ b →
+          xx a b z₀ o₁ • xx a b z₀ o₁ ≈ ε
+WD-a2-K a b 1<a ab = xx-invol′ a b z₀ o₁ z<o o<a ab
+  where open Above a b 1<a ab
+
+WD-c1-K : ∀ (a b : Fin N) → 1 < toℕ a → toℕ a < toℕ b →
+          zx a z₀ o₁ • xx a b z₀ o₁ ≈ xx a b z₀ o₁ • zx b z₀ o₁
+WD-c1-K a b 1<a ab = trans left right
+  where
+  open Above a b 1<a ab
+
+  A = zx a a b
+  Z = zx z₀ z₀ o₁
+
+  xf : xx a b z₀ o₁ ≈ A • (zz b z₀ • Z)
+  xf = xx-form a b z₀ o₁ a≢b z≢o b≢z b≢o
+
+  -- The letter on {0 , 1} passes A, the two pairs being disjoint.
+  ZA : Z • A ≈ A • Z
+  ZA = sym (disj-int z₀ o₁ a b z<o o<a ab)
+
+  -- What the conjugation action does to the signs that turn up.
+  cb : Z • zz b z₀ ≈ zz b o₁ • Z
+  cb = conj-at z₀ o₁ b z₀ b o₁ z≢o (tr-o b≢z b≢o Eq.refl) (tr-l Eq.refl Eq.refl)
+
+  ca : A • zz b o₁ ≈ zz a o₁ • A
+  ca = conj-at a b b o₁ a o₁ a≢b (tr-r Eq.refl Eq.refl)
+                (tr-o (<⇒≢ o<a) (<⇒≢ o<b) Eq.refl)
+
+  czo : A • zz z₀ o₁ ≈ zz z₀ o₁ • A
+  czo = conj-at a b z₀ o₁ z₀ o₁ a≢b (tr-o (<⇒≢ z<a) (<⇒≢ z<b) Eq.refl)
+                 (tr-o (<⇒≢ o<a) (<⇒≢ o<b) Eq.refl)
+
+  left : zx a z₀ o₁ • xx a b z₀ o₁ ≈ A
+  left = begin
+    zx a z₀ o₁ • xx a b z₀ o₁
+      ≈⟨ cong (axiom (r30 a z₀ o₁ z≢o a≢z a≢o)) xf ⟩
+    (zz a z₀ • Z) • (A • (zz b z₀ • Z))
+      ≈⟨ by-passoc ((□ • □) • (□ • (□ • □))) (□ • ((□ • □) • (□ • □))) Eq.refl ⟩
+    zz a z₀ • ((Z • A) • (zz b z₀ • Z))
+      ≈⟨ back _ (front _ ZA) ⟩
+    zz a z₀ • ((A • Z) • (zz b z₀ • Z))
+      ≈⟨ by-passoc (□ • ((□ • □) • (□ • □))) (□ • (□ • ((□ • □) • □))) Eq.refl ⟩
+    zz a z₀ • (A • ((Z • zz b z₀) • Z))
+      ≈⟨ back _ (back _ (front _ cb)) ⟩
+    zz a z₀ • (A • ((zz b o₁ • Z) • Z))
+      ≈⟨ by-passoc (□ • (□ • ((□ • □) • □))) (□ • ((□ • □) • (□ • □))) Eq.refl ⟩
+    zz a z₀ • ((A • zz b o₁) • (Z • Z))
+      ≈⟨ back _ (cong ca (zx²′ z₀ o₁ z≢o)) ⟩
+    zz a z₀ • ((zz a o₁ • A) • zz z₀ o₁)
+      ≈⟨ by-passoc (□ • ((□ • □) • □)) ((□ • □) • (□ • □)) Eq.refl ⟩
+    (zz a z₀ • zz a o₁) • (A • zz z₀ o₁)
+      ≈⟨ cong (trans (zz-split a z₀ a o₁)
+                     (trans (front _ (axiom (r20 a))) left-unit)) czo ⟩
+    zz z₀ o₁ • (zz z₀ o₁ • A)
+      ≈⟨ cancelˡ A (zz² z₀ o₁) ⟩
+    A ∎
+
+  right : A ≈ xx a b z₀ o₁ • zx b z₀ o₁
+  right = sym (begin
+    xx a b z₀ o₁ • zx b z₀ o₁
+      ≈⟨ cong xf (axiom (r30 b z₀ o₁ z≢o b≢z b≢o)) ⟩
+    (A • (zz b z₀ • Z)) • (zz b z₀ • Z)
+      ≈⟨ by-passoc ((□ • (□ • □)) • (□ • □)) (□ • (□ • ((□ • □) • □))) Eq.refl ⟩
+    A • (zz b z₀ • ((Z • zz b z₀) • Z))
+      ≈⟨ back _ (back _ (front _ cb)) ⟩
+    A • (zz b z₀ • ((zz b o₁ • Z) • Z))
+      ≈⟨ by-passoc (□ • (□ • ((□ • □) • □))) (□ • ((□ • □) • (□ • □))) Eq.refl ⟩
+    A • ((zz b z₀ • zz b o₁) • (Z • Z))
+      ≈⟨ back _ (cong (trans (zz-split b z₀ b o₁)
+                             (trans (front _ (axiom (r20 b))) left-unit))
+                      (zx²′ z₀ o₁ z≢o)) ⟩
+    A • (zz z₀ o₁ • zz z₀ o₁)
+      ≈⟨ back _ (zz² z₀ o₁) ⟩
+    A • ε
+      ≈⟨ right-unit ⟩
+    A ∎)
