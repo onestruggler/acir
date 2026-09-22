@@ -92,15 +92,15 @@ open import Notations using (₃₊)
 
 open import Presentation.Base as PB using ()
 
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.Figure8
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.Figure8Free
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Gray using (parity)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.P using (GenP)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.RS m using (o₁ ; z₀ ; z₀≢o₁ ; toℕ-z₀ ; toℕ-o₁)
-open import Examples.Groups.Real-Clifford+CH.Encoding using (zz ; zx ; xx ; hh ; hhℕ ; toFin ; twoSmallest ; distinct4)
+open import Examples.Groups.Real-Clifford+CH.Encoding using (zz ; zx ; xx ; hh ; hhℕ ; zxℕ ; zzℕ ; toFin ; twoSmallest ; distinct4)
 
 open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools)
-open Tools (m P,_===_)
-open import Examples.Groups.Real-Clifford+CH.WordAlgebra (m P,_===_) using (comm-•)
+open Tools (m PF,_===_)
+open import Examples.Groups.Real-Clifford+CH.WordAlgebra (m PF,_===_) using (comm-•)
 
 ------------------------------------------------------------------------
 -- (DE-ZZ)
@@ -316,58 +316,62 @@ flip-step′ a c′ c s lt p ih =
 -- is reached, which is `flip-base`.  The recursion is on a fuel bound
 -- for the gap, the indices being `Fin`s at a width with no literals.
 
+-- The scaffolding is exported: every induction on the distance
+-- between two indices needs the same pieces, and `NF` reuses them
+-- to write a mixed letter as a product of consecutive ones.
+
+N : ℕ
+N = 2 ^ℕ (₃₊ m)
+
+-- Neighbouring indices.
+next : (a : Fin N) → suc (toℕ a) < N → Fin N
+next a p = fromℕ< p
+
+next-Succ : ∀ (a : Fin N) (p : suc (toℕ a) < N) → Succ a (next a p)
+next-Succ a p = toℕ-fromℕ< p
+
+pred≤′ : ∀ k → pred k ≤ k
+pred≤′ zero    = z≤n
+pred≤′ (suc k) = n≤1+n k
+
+prev : Fin N → Fin N
+prev c = fromℕ< (≤-<-trans (pred≤′ (toℕ c)) (toℕ<n c))
+
+prev-toℕ : ∀ (c : Fin N) → toℕ (prev c) ≡ pred (toℕ c)
+prev-toℕ c = toℕ-fromℕ< _
+
+suc-pred′ : ∀ {k} → 0 < k → k ≡ suc (pred k)
+suc-pred′ {zero}  ()
+suc-pred′ {suc k} _ = Eq.refl
+
+prev-Succ : ∀ (c : Fin N) → 0 < toℕ c → Succ (prev c) c
+prev-Succ c p = Eq.trans (suc-pred′ p) (Eq.cong suc (Eq.sym (prev-toℕ c)))
+
+-- Arithmetic of the gap.
+∸suc : ∀ y x → y ∸ suc x ≡ pred (y ∸ x)
+∸suc zero    zero    = Eq.refl
+∸suc zero    (suc x) = Eq.refl
+∸suc (suc y) zero    = Eq.refl
+∸suc (suc y) (suc x) = ∸suc y x
+
+suc∸ : ∀ n → suc n ∸ n ≡ 1
+suc∸ zero    = Eq.refl
+suc∸ (suc n) = suc∸ n
+
+pred∸ : ∀ y x → pred y ∸ x ≡ pred (y ∸ x)
+pred∸ zero    zero    = Eq.refl
+pred∸ zero    (suc x) = Eq.refl
+pred∸ (suc y) x       = ∸suc (suc y) x
+
+pred≤pred : ∀ {x y} → x ≤ suc y → pred x ≤ y
+pred≤pred {zero}  _         = z≤n
+pred≤pred {suc x} (s≤s le)  = le
+
+0<∸ : ∀ {x y} → x < y → 0 < y ∸ x
+0<∸ {zero}  {suc y} (s≤s _)  = s≤s z≤n
+0<∸ {suc x} {suc y} (s≤s lt) = 0<∸ lt
+
 private
-  N : ℕ
-  N = 2 ^ℕ (₃₊ m)
-
-  -- Neighbouring indices.
-  next : (a : Fin N) → suc (toℕ a) < N → Fin N
-  next a p = fromℕ< p
-
-  next-Succ : ∀ (a : Fin N) (p : suc (toℕ a) < N) → Succ a (next a p)
-  next-Succ a p = toℕ-fromℕ< p
-
-  pred≤′ : ∀ k → pred k ≤ k
-  pred≤′ zero    = z≤n
-  pred≤′ (suc k) = n≤1+n k
-
-  prev : Fin N → Fin N
-  prev c = fromℕ< (≤-<-trans (pred≤′ (toℕ c)) (toℕ<n c))
-
-  prev-toℕ : ∀ (c : Fin N) → toℕ (prev c) ≡ pred (toℕ c)
-  prev-toℕ c = toℕ-fromℕ< _
-
-  suc-pred′ : ∀ {k} → 0 < k → k ≡ suc (pred k)
-  suc-pred′ {zero}  ()
-  suc-pred′ {suc k} _ = Eq.refl
-
-  prev-Succ : ∀ (c : Fin N) → 0 < toℕ c → Succ (prev c) c
-  prev-Succ c p = Eq.trans (suc-pred′ p) (Eq.cong suc (Eq.sym (prev-toℕ c)))
-
-  -- Arithmetic of the gap.
-  ∸suc : ∀ y x → y ∸ suc x ≡ pred (y ∸ x)
-  ∸suc zero    zero    = Eq.refl
-  ∸suc zero    (suc x) = Eq.refl
-  ∸suc (suc y) zero    = Eq.refl
-  ∸suc (suc y) (suc x) = ∸suc y x
-
-  suc∸ : ∀ n → suc n ∸ n ≡ 1
-  suc∸ zero    = Eq.refl
-  suc∸ (suc n) = suc∸ n
-
-  pred∸ : ∀ y x → pred y ∸ x ≡ pred (y ∸ x)
-  pred∸ zero    zero    = Eq.refl
-  pred∸ zero    (suc x) = Eq.refl
-  pred∸ (suc y) x       = ∸suc (suc y) x
-
-  pred≤pred : ∀ {x y} → x ≤ suc y → pred x ≤ y
-  pred≤pred {zero}  _         = z≤n
-  pred≤pred {suc x} (s≤s le)  = le
-
-  0<∸ : ∀ {x y} → x < y → 0 < y ∸ x
-  0<∸ {zero}  {suc y} (s≤s _)  = s≤s z≤n
-  0<∸ {suc x} {suc y} (s≤s lt) = 0<∸ lt
-
   -- The recursion.
   flip-fuel : ∀ (k : ℕ) (a c : Fin N) → toℕ a < toℕ c → toℕ c ∸ toℕ a ≤ k →
               zx a a c ≈ zz a c • zx c a c
@@ -1030,84 +1034,25 @@ zx-inv a c a≢c =
   (trans (cong refl (zx²′ a c a≢c)) (zz² a c)))))
 
 ------------------------------------------------------------------------
--- (DE-HH), where the pair 0 1 is free
+-- Natural-number indices
 --
--- (42) composes a Hadamard pair through `twoSmallest` — the two
--- smallest naturals not among the four given indices.  When neither 0
--- nor 1 is among them those two *are* 0 and 1, which is the pair the
--- coset action routes through, so (42) is the obligation outright.
--- What has to be done is arithmetic: make the boolean tests inside
--- `twoSmallest` reduce, and identify the ℕ-indexed letters of (42)
--- with the `Fin`-indexed ones.
+-- A `Fin` index survives the round trip through ℕ, so a letter written
+-- with natural-number indices — which is how `Encoding` writes the ones
+-- whose indices are literals — is the one written with `Fin` indices.
 
-private
-  ≢⇒≡ᵇfalse : ∀ (x y : ℕ) → x ≢ y → (x ≡ᵇ y) ≡ false
-  ≢⇒≡ᵇfalse zero    zero    ne = ⊥-elim (ne Eq.refl)
-  ≢⇒≡ᵇfalse zero    (suc y) ne = Eq.refl
-  ≢⇒≡ᵇfalse (suc x) zero    ne = Eq.refl
-  ≢⇒≡ᵇfalse (suc x) (suc y) ne = ≢⇒≡ᵇfalse x y (λ e → ne (Eq.cong suc e))
+-- A Fin index survives the round trip through ℕ, so a letter written
+-- with natural-number indices is the one written with Fin indices.
+toFin-toℕ : ∀ (a : Fin N) → toFin {₃₊ m} (toℕ a) ≡ just a
+toFin-toℕ a with toℕ a <? N
+... | yes lt  = Eq.cong just (fromℕ<-toℕ a lt)
+... | no ¬lt  = ⊥-elim (¬lt (toℕ<n a))
 
-  -- The two free indices are 0 and 1 when neither occurs.
-  two01 : ∀ (a b c d : ℕ) → 0 ≢ a → 0 ≢ b → 0 ≢ c → 0 ≢ d →
-                            1 ≢ a → 1 ≢ b → 1 ≢ c → 1 ≢ d →
-          twoSmallest a b c d ≡ (0 , 1)
-  two01 a b c d p q r s p′ q′ r′ s′
-    rewrite ≢⇒≡ᵇfalse 0 a p  | ≢⇒≡ᵇfalse 0 b q  | ≢⇒≡ᵇfalse 0 c r  | ≢⇒≡ᵇfalse 0 d s
-          | ≢⇒≡ᵇfalse 1 a p′ | ≢⇒≡ᵇfalse 1 b q′ | ≢⇒≡ᵇfalse 1 c r′ | ≢⇒≡ᵇfalse 1 d s′
-    = Eq.refl
+zxℕ-zx : ∀ (c a b : Fin N) → zxℕ {₃₊ m} (toℕ c) (toℕ a) (toℕ b) ≡ zx c a b
+zxℕ-zx c a b rewrite toFin-toℕ c | toFin-toℕ a | toFin-toℕ b = Eq.refl
 
-  -- A Fin index survives the round trip through ℕ.
-  toFin-toℕ : ∀ (a : Fin N) → toFin {₃₊ m} (toℕ a) ≡ just a
-  toFin-toℕ a with toℕ a <? N
-  ... | yes lt  = Eq.cong just (fromℕ<-toℕ a lt)
-  ... | no ¬lt  = ⊥-elim (¬lt (toℕ<n a))
+zzℕ-zz : ∀ (a b : Fin N) → zzℕ {₃₊ m} (toℕ a) (toℕ b) ≡ zz a b
+zzℕ-zz a b rewrite toFin-toℕ a | toFin-toℕ b = Eq.refl
 
-  -- Hence the ℕ-indexed Hadamard letter is the Fin-indexed one.
-  hhℕ-hh : ∀ (a b c d : Fin N) → hhℕ {₃₊ m} (toℕ a) (toℕ b) (toℕ c) (toℕ d) ≡ hh a b c d
-  hhℕ-hh a b c d
-    rewrite toFin-toℕ a | toFin-toℕ b | toFin-toℕ c | toFin-toℕ d = Eq.refl
-
-  -- Distinctness from the two distinguished indices, as numerals.
-  z₀≢⇒0≢ : ∀ {a : Fin N} → z₀ ≢ a → 0 ≢ toℕ a
-  z₀≢⇒0≢ {a} ne e = ne (toℕ-injective (Eq.trans toℕ-z₀ e))
-
-  o₁≢⇒1≢ : ∀ {a : Fin N} → o₁ ≢ a → 1 ≢ toℕ a
-  o₁≢⇒1≢ {a} ne e = ne (toℕ-injective (Eq.trans toℕ-o₁ e))
-
-DE-HH : ∀ (a b c d : Fin N) → (a≢b : a ≢ b) → (c≢d : c ≢ d) →
-        (nd : distinct4 (toℕ a) (toℕ b) (toℕ c) (toℕ d) ≡ false) →
-        z₀ ≢ a → z₀ ≢ b → z₀ ≢ c → z₀ ≢ d →
-        o₁ ≢ a → o₁ ≢ b → o₁ ≢ c → o₁ ≢ d →
-        hh a b c d ≈ hh a b z₀ o₁ • hh z₀ o₁ c d
-DE-HH a b c d a≢b c≢d nd za zb zc zd oa ob oc od =
-  sym (Eq.subst (λ w → w ≈ hh a b c d) bridge (axiom (r42 a b c d a≢b c≢d nd)))
-  where
-  ef : twoSmallest (toℕ a) (toℕ b) (toℕ c) (toℕ d) ≡ (0 , 1)
-  ef = two01 (toℕ a) (toℕ b) (toℕ c) (toℕ d)
-             (z₀≢⇒0≢ za) (z₀≢⇒0≢ zb) (z₀≢⇒0≢ zc) (z₀≢⇒0≢ zd)
-             (o₁≢⇒1≢ oa) (o₁≢⇒1≢ ob) (o₁≢⇒1≢ oc) (o₁≢⇒1≢ od)
-
-  half₁ : hhℕ {₃₊ m} (toℕ a) (toℕ b) 0 1 ≡ hh a b z₀ o₁
-  half₁ = Eq.trans (Eq.cong₂ (hhℕ {₃₊ m} (toℕ a) (toℕ b))
-                             (Eq.sym toℕ-z₀) (Eq.sym toℕ-o₁))
-                   (hhℕ-hh a b z₀ o₁)
-
-  half₂ : hhℕ {₃₊ m} 0 1 (toℕ c) (toℕ d) ≡ hh z₀ o₁ c d
-  half₂ = Eq.trans (Eq.cong₂ (λ u v → hhℕ {₃₊ m} u v (toℕ c) (toℕ d))
-                             (Eq.sym toℕ-z₀) (Eq.sym toℕ-o₁))
-                   (hhℕ-hh z₀ o₁ c d)
-
-  bridge : hhℕ {₃₊ m} (toℕ a) (toℕ b)
-                (proj₁ (twoSmallest (toℕ a) (toℕ b) (toℕ c) (toℕ d)))
-                (proj₂ (twoSmallest (toℕ a) (toℕ b) (toℕ c) (toℕ d)))
-         • hhℕ {₃₊ m} (proj₁ (twoSmallest (toℕ a) (toℕ b) (toℕ c) (toℕ d)))
-                (proj₂ (twoSmallest (toℕ a) (toℕ b) (toℕ c) (toℕ d)))
-                (toℕ c) (toℕ d)
-         ≡ hh a b z₀ o₁ • hh z₀ o₁ c d
-  bridge = Eq.trans
-    (Eq.cong (λ p → hhℕ {₃₊ m} (toℕ a) (toℕ b) (proj₁ p) (proj₂ p)
-                  • hhℕ {₃₊ m} (proj₁ p) (proj₂ p) (toℕ c) (toℕ d)) ef)
-    (Eq.cong₂ _•_ half₁ half₂)
 
 ------------------------------------------------------------------------
 -- Item (b): the rules of Figure 7 run through the coset action
