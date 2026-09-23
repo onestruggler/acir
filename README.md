@@ -12,7 +12,11 @@ relation sets for multi-qudit Clifford circuits.
 
 
 The library configuration is in [`qupit.agda-lib`](qupit.agda-lib): it
-includes the repository root (`.`) and depends on `standard-library`.
+includes the repository root (`.`) and depends on `standard-library`
+and [`EucDomain`](https://github.com/onestruggler/EucDomain), which is
+a git submodule at `EucDomain/`.  Clone with `--recurse-submodules` (or
+run `git submodule update --init` afterwards) and add
+`EucDomain/EucDomain.agda-lib` to your `~/.agda/libraries`.
 
 ## Typechecking
 

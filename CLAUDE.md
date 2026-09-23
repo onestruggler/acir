@@ -15,12 +15,14 @@ This is the Agda formalisation accompanying the paper *"A Complete and Natural R
 # ProjectivePauli factor, the semidirect construction that assembles
 # them, and the Clifford rule sets on top (Simplified-V1 → Paper-V0 →
 # Paper-V1, plus Shared/PauliBase).
-wsl --exec /home/onest/.cabal/bin/agda MainTheorems.agda
+wsl --exec /home/bonest/.local/bin/agda MainTheorems.agda
 ```
 
 Everything else in the tree is **not** reached from the root here, and needs typechecking separately if you touch it: the symmetric, trivial and cyclic groups, the wreath product, the Clifford+T and U₃(ℤ[½,i]) amalgamations, `ProjectiveClifford/Qupit/Simplified-V2`, `ProjectiveClifford/Qubit/` and `Clifford/Qupit/`.
 
-Use WSL Agda 2.8 (`wsl --exec /home/onest/.cabal/bin/agda`) for all files. The WSL install uses its own stdlib at `/home/onest/.agda/lib/agda-stdlib/`. The `.agda-lib` file (`qupit.agda-lib`) includes `.` and depends on `standard-library`.
+Use WSL Agda 2.8 (`wsl --exec /home/bonest/.local/bin/agda`) for all files. The WSL install uses its own stdlib 2.4 at `/home/bonest/.agda/lib/agda-stdlib/`. The `.agda-lib` file (`qupit.agda-lib`) includes `.` and depends on `standard-library` and `EucDomain`.
+
+**EucDomain dependency.** On this branch, [EucDomain](https://github.com/onestruggler/EucDomain) (Gaussian integers as a Euclidean domain, and an Agda port of newsynth) is a git submodule at `EucDomain/`; it needs stdlib 2.4. Clone with `--recurse-submodules` (or run `git submodule update --init`), and register `EucDomain/EucDomain.agda-lib` in `~/.agda/libraries` — in WSL here that line is `/mnt/d/work2/acir/EucDomain/EucDomain.agda-lib`. Its modules are named from its own root (`GauInt.EucDomain`, `Quantum.Synthesis.Ring`, …), and none clash with this library's.
 
 **Always re-typecheck `MainTheorems.agda` after any edit to library files.** From PowerShell, invoke WSL directly (Git-Bash mangles the Linux path).
 
