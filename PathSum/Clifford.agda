@@ -9,8 +9,9 @@
 -- admits a reduction whose phase again has order at most 2;
 -- corollary 4.4 iterates this until the path variables are exhausted
 -- or ξ is refuted.  Both are proved below, over the semantic
--- interface of PathSum.Semantics.  (Turning that into a decision about
--- a circuit takes lemma 4.1 and a final test: PathSum.Theorems.)
+-- interface of PathSum.Semantics.  (Carrying that back to the circuit
+-- takes lemma 4.1, and reading off the verdict a syntactic test:
+-- PathSum.Theorems.)
 --
 -- The module is parameterised by M₀, the denominator of the phase
 -- being 2^(3 + M₀): three dyadic digits are what an order-2
@@ -500,8 +501,8 @@ lemma-4-3 ξ int ordP ξ≋id with progress ξ int ordP
 -- {H, S, CZ} the restriction is reified by construction
 -- (PathSum.Circuit.⟦_⟧ᴿ), lemma 4.1 carries the verdict back to the
 -- circuit, and PathSum.Syntactic shows that the reduct is the identity
--- exactly when it has the identity's polynomials
--- (PathSum.Theorems.corollary-4-4-syntactic).  Not formalised: the
+-- exactly when it has no normalisation left and the identity's
+-- polynomials (PathSum.Theorems.corollary-4-4-any).  Not formalised: the
 -- polynomial time bound, and Gaussian elimination for gate sets whose
 -- outputs are sums of variables (CNOT).
 

@@ -37,8 +37,9 @@
 -- here in a form at least as strong as the paper's -- granted that
 -- argument, U_ξ read as the matrix of entries amp ξ x z / √2^k that
 -- PathSum.Denotation compares, and for path-sums whose inputs are all
--- variables.  Constant inputs, which are what make an operator only
--- partial, cannot be expressed in PathSum.Base.
+-- variables.  (Constant inputs, the paper's usual source of partial
+-- isometries, cannot be expressed in PathSum.Base; partial isometries
+-- with variable inputs can, and the argument above covers them.)
 --
 -- The proof of the converse splits the sum over the column at z = x.
 -- The diagonal term is ‖√2^k ζ^0‖² = 2^k, the whole budget, so the

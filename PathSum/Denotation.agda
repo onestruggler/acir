@@ -1241,12 +1241,11 @@ hits-cong ξ ζ eqf x y z = allFin-cong (λ w →
 ------------------------------------------------------------------------
 -- Reading the outputs at a path
 
--- What lemma 4.1, the circuit semantics and PathSum.Decide need in
--- order to reason about `hits` from outside this module, whose helpers
--- are private:
--- the bit each output takes at a path, that a path hits z exactly
--- when every one of those bits is z's, and the values of the two
--- polynomials a circuit is built from -- a single variable, and 0.
+-- What lemma 4.1, the circuit semantics, PathSum.Decide and
+-- PathSum.Syntactic need in order to reason about `hits` from outside
+-- this module, whose helpers are private: the bit each output takes at
+-- a path, that a path hits z exactly when every one of those bits is
+-- z's, and the values of a single-variable output and of 0.
 
 outBit : PathSum n k m → Assign n → Assign m → Fin n → Bool
 outBit ξ x y w = bit (eval (out ξ w) x y)

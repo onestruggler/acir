@@ -17,7 +17,9 @@
 -- coefficient by coefficient and the refutations input by input, so
 -- they do not visibly cover every case; PathSum.Decide restates the
 -- criterion input by input (id-if′), and with the three refutations it
--- decides the question (decide-≋-id).
+-- decides the question (decide-≋-id).  PathSum.Syntactic shows that
+-- id-if is also necessary (id⇔syntactic, by Möbius inversion), so at no
+-- normalisation the coefficient-wise criterion is exactly the identity.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

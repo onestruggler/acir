@@ -16,7 +16,8 @@
 -- and its off-diagonal entries vanish as soon as it does return x.  So
 -- it is the identity exactly when it spends no normalisation and, at
 -- every x, its path returns x with P(x) ≡ 0 modulo 2^M: id-if′ is the
--- sufficiency, and the refutations give the necessity (id⇔′).  There
+-- sufficiency, and the refutations give the necessity (id-no-norm,
+-- id-only-if′; with id-if′, id⇔′ at no normalisation).  There
 -- are finitely many inputs, so the question is decidable
 -- (decide-≋-id) -- an elementary fact, since the matrix has finitely
 -- many entries anyway.  PathSum.Syntactic turns the input-by-input

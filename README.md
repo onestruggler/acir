@@ -34,11 +34,12 @@ separately.
 Functional Verification of Universal Quantum Circuits* (QPL 2018): the
 parts of sections 2–4 that corollary 4.4 needs.  That is lemma 4.1
 (isometry restrictions), lemma 4.2, lemma 4.3 (Clifford progress &
-preservation), and corollary 4.4 for circuits over {H, S, CZ} as the
-paper states it, about the circuit itself: a circuit is the identity
+preservation), and the content of corollary 4.4's proof for circuits
+over {H, S, CZ}, about the circuit itself: a circuit is the identity
 exactly when its restriction reduces to a path-sum that is
-syntactically |x⟩ ↦ |x⟩.  The corollary's polynomial time bound is not
-formalised.  Its root is
+syntactically |x⟩ ↦ |x⟩, and any reduction that ends without path
+variables settles it by that test.  The corollary's statement proper,
+decidability in polynomial time, is not formalised.  Its root is
 
 ```bash
 agda +RTS -M10G -RTS PathSum/Theorems.agda
@@ -73,9 +74,10 @@ Corollary 4.4 reduces not the circuit's path-sum but its isometry
 restriction, and lemma 4.1 is what carries the verdict back.
 `Circuit` gives both path-sums of a circuit over {H, S, CZ}: `⟦ C ⟧`
 (definition 2.9) and its restriction `⟦ C ⟧ᴿ`, already reified.
-`CircuitSemantics` proves proposition 2.10 for them — the entries of
-`⟦ C ⟧` are the circuit's matrix, computed gate by gate — and that
-every column has norm 1, the norm being the trace form of `Norm`.
+`CircuitSemantics` proves proposition 2.10 for `⟦ C ⟧` — its entries
+are the circuit's matrix, computed gate by gate — and that every column
+of `⟦ C ⟧` has norm 1 in the trace form of `Norm`; of `⟦ C ⟧ᴿ` it
+proves that it has the same diagonal and no off-diagonal paths.
 `Isometry` proves lemma 4.1 for any path-sum whose columns have
 trace-form norm at most 1; that definition 2.4 implies this is argued
 in prose in its header, and circuits satisfy it by a theorem.  So
@@ -85,8 +87,8 @@ variables whose being the identity is exactly the circuit's.  For
 such a path-sum, `Decide` characterises the identity input by input,
 and `Syntactic` turns that, by Möbius inversion, into the syntactic
 test the paper means: no normalisation, outputs the inputs modulo 2,
-phase 0 modulo 2^M, coefficient by coefficient
-(`corollary-4-4-syntactic`).  `Decide` also gives a decision procedure
+phase 0 modulo 2^M, coefficient by coefficient (`corollary-4-4-any`,
+`corollary-4-4-syntactic`).  `Decide` also gives a decision procedure
 along this route, though decidability by itself is elementary — the
 matrix has finitely many entries.
 
@@ -108,10 +110,12 @@ rather than under definition 2.4 itself, which would need adjoints
 the denotation does not have.
 
 Not formalised: the polynomial time bounds (proposition 3.2,
-corollary 4.4); the rule [Case], and [HH], [ω] and lemma 4.2 for
-quotients that are not Z₂-linear; circuits with CNOT or R_k, with the
-Gaussian elimination their outputs would need; composition of
-path-sums (definition 2.6, proposition 2.7) and propositions
-2.14–2.15; constant inputs; equivalence of two circuits, as opposed to
-one being the identity; unitarity of `⟦ C ⟧` beyond unit trace-form
-column norms; and the implication from definition 2.4 to `WellFormed`.
+corollary 4.4); the rule [Case]; [Elim], [ω] and [HH] at a path
+variable other than the first (reordering path variables); [HH], [ω]
+and lemma 4.2 for quotients that are not Z₂-linear; circuits with CNOT
+(and the Gaussian elimination its outputs would need) or R_k;
+composition of path-sums (definition 2.6, proposition 2.7) and
+propositions 2.14–2.15; constant inputs; equivalence of two circuits,
+as opposed to one being the identity; unitarity of `⟦ C ⟧` beyond unit
+trace-form column norms; and the implication from definition 2.4 to
+`WellFormed`.

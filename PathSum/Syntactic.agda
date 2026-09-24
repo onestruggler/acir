@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- A path-sum without path variables is the identity exactly when it is
--- the identity's polynomials
+-- A path-sum without path variables is the identity exactly when it has
+-- no normalisation and the identity's polynomials
 --
 -- Corollary 4.4 ends when the restriction of a circuit "reduces to
 -- |x⟩ ↦ |x⟩": a statement about the reduct's polynomials, not about
