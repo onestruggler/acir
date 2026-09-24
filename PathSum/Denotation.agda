@@ -27,7 +27,7 @@
 -- those sums are duplicated and the module exhausts memory, so this
 -- file is checked call-by-name.
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible --safe --call-by-name #-}
 
 open import Data.Nat.Base using (ℕ)
 
@@ -1236,6 +1236,75 @@ hits-cong ξ ζ eqf x y z = allFin-cong (λ w →
 
   bit-cong : ∀ u v → (+ 2) ∣ (u - v) → bit u ≡ bit v
   bit-cong u v d = trans (cong bit (sym (fill u v))) (bit-even v d)
+
+
+------------------------------------------------------------------------
+-- Reading the outputs at a path
+
+-- What lemma 4.1 and the circuit semantics need in order to reason
+-- about `hits` from outside this module, whose helpers are private:
+-- the bit each output takes at a path, that a path hits z exactly
+-- when every one of those bits is z's, and the values of the two
+-- polynomials a circuit is built from -- a single variable, and 0.
+
+outBit : PathSum n k m → Assign n → Assign m → Fin n → Bool
+outBit ξ x y w = bit (eval (out ξ w) x y)
+
+private
+  eqᵇ-≡ : ∀ {a b} → eqᵇ a b ≡ true → a ≡ b
+  eqᵇ-≡ {true}  {true}  _ = refl
+  eqᵇ-≡ {false} {false} _ = refl
+  eqᵇ-≡ {true}  {false} ()
+  eqᵇ-≡ {false} {true}  ()
+
+  allFin-elim : ∀ {j} (f : Fin j → Bool) → allFin f ≡ true →
+                ∀ w → f w ≡ true
+  allFin-elim {zero}  f h ()
+  allFin-elim {suc j} f h w with f zero in eq
+  allFin-elim {suc j} f h zero    | true = eq
+  allFin-elim {suc j} f h (suc w) | true = allFin-elim (λ i → f (suc i)) h w
+  allFin-elim {suc j} f () w      | false
+
+hits-intro : (ξ : PathSum n k m) (x : Assign n) (y : Assign m)
+             (z : Assign n) → (∀ w → outBit ξ x y w ≡ z w) →
+             hits ξ x y z ≡ true
+hits-intro ξ x y z h = allFin-true (λ w →
+  trans (cong (λ b → eqᵇ b (z w)) (h w)) (eqᵇ-refl (z w)))
+
+hits-elim : (ξ : PathSum n k m) (x : Assign n) (y : Assign m)
+            (z : Assign n) → hits ξ x y z ≡ true →
+            ∀ w → outBit ξ x y w ≡ z w
+hits-elim ξ x y z h w =
+  eqᵇ-≡ (allFin-elim (λ u → eqᵇ (bit (eval (out ξ u) x y)) (z u)) h w)
+
+-- Only the values of z are read.
+
+hits-≗ : (ξ : PathSum n k m) (x : Assign n) (y : Assign m)
+         {z z′ : Assign n} → (∀ w → z w ≡ z′ w) →
+         hits ξ x y z ≡ hits ξ x y z′
+hits-≗ ξ x y z≗z′ =
+  allFin-cong (λ w → cong (eqᵇ (bit (eval (out ξ w) x y))) (z≗z′ w))
+
+amp-≗ : (ξ : PathSum n k m) (x : Assign n) {z z′ : Assign n} →
+        (∀ w → z w ≡ z′ w) → amp ξ x z ≐ amp ξ x z′
+amp-≗ ξ x z≗z′ = Σᴮ-cong (λ y i →
+  cong (λ b → (if b then zpow (eval (phase ξ) x y) else 0ᴬ) i)
+       (hits-≗ ξ x y z≗z′))
+
+-- An output that is a single variable reads that variable's value.
+
+outBit-μ : (ξ : PathSum n k m) (x : Assign n) (y : Assign m) (w : Fin n)
+           (v : Var n m) → out ξ w ≡ μ v → outBit ξ x y w ≡ valᵛ v x y
+outBit-μ ξ x y w v eq = trans (cong (λ P → bit (eval P x y)) eq)
+  (trans (cong bit (eval-μ v x y)) (bit-if (valᵛ v x y)))
+
+eval-μ-val : ∀ {n m} (v : Var n m) (x : Assign n) (y : Assign m) →
+             eval (μ v) x y ≡ (if valᵛ v x y then 1ℤ else 0ℤ)
+eval-μ-val = eval-μ
+
+eval-0ᴾ-val : ∀ {n m} (x : Assign n) (y : Assign m) →
+              eval (0ᴾ {n} {m}) x y ≡ 0ℤ
+eval-0ᴾ-val = eval-0ᴾ
 
 
 ------------------------------------------------------------------------
