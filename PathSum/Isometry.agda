@@ -14,16 +14,16 @@
 -- most 1, a diagonal entry equal to 1 spends all of it, and so every
 -- entry off the diagonal vanishes.
 --
--- Definition 2.4 asks the operator of ξ to be a partial isometry.
--- Only the operator's entries are formalised (amp, in Z[ζ]; see
+-- Definition 2.4 asks the operator of ξ to be a partial isometry.  Only
+-- the operator's entries are formalised (amp, in Z[ζ]; see
 -- PathSum.Denotation), where adjoints and complex absolute values are
--- not available; what is available is the
--- trace form of PathSum.Norm, ‖a‖² = Tr(a·ā)/H, the average of |σ(a)|²
--- over the H embeddings σ of Q(ζ) into C.  The proof uses one fact
--- about the operator, a bound on the norms of its columns, and
--- WellFormed ξ is that bound read through the trace form: for every
--- input x, Σ_z ‖amp ξ x z‖² ≤ 2^k, that is, every column of U_ξ has
--- norm at most 1.
+-- not available; what is available is the trace form of PathSum.Norm,
+-- ‖a‖² = Tr(a·ā)/H, the average of |σ(a)|² over the H embeddings σ of
+-- Q(ζ) into C.  The proof uses one fact about the operator, a bound on
+-- the norms of its columns, and WellFormed ξ is that bound read through
+-- the trace form: for every input x, Σ_z ‖amp ξ x z‖² ≤ 2^k, that is,
+-- every column of U_ξ has norm at most 1 in the trace form -- averaged
+-- over the embeddings, which is not the same as its complex norm.
 --
 -- The paper's hypothesis implies this one, by the following argument,
 -- which is prose and is not formalised.  If U = U_ξ is a partial
@@ -87,8 +87,9 @@ private
 ------------------------------------------------------------------------
 -- Well-formedness, the restriction, and diagonal path-sums
 
--- Definition 2.4, in the form the proof uses: every column of U_ξ has
--- norm at most 1, measured by the trace form.  The column of x is
+-- A consequence of definition 2.4 (argued in the header), in the form
+-- the proof uses: every column of U_ξ has norm at most 1, measured by
+-- the trace form.  The column of x is
 -- amp ξ x z / √2^k over all z, and the normalisation contributes 2^k
 -- to its norm.
 

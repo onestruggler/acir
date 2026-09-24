@@ -17,15 +17,15 @@
 -- column δ x.
 --
 -- Every column of ⟦ C ⟧ is a unit vector once normalised, the norm
--- being PathSum.Norm's trace form ‖ a ‖² = Σ_i a_i² = Tr(a·ā)/H --
--- the constant coefficient of Σ_z |amp|², which is the form lemma 4.1
--- asks about (PathSum.Isometry).  S and CZ preserve the squared norm of
--- each entry, and a Hadamard doubles the
--- norm of a column: it turns the entries a and b at z[w≔0] and z[w≔1]
--- into a + b and a - b, and the parallelogram law adds those norms up
--- to twice those of a and b.  The basis column has norm 1, so a column
--- of ⟦ C ⟧ has norm 2^k, k the number of Hadamards, which is what the
--- normalisation 1/√2^k divides out.
+-- being PathSum.Norm's trace form ‖ a ‖² = Σ_i a_i² = Tr(a·ā)/H -- the
+-- constant coefficient of Σ_z |amp|², which is the form lemma 4.1 asks
+-- about (PathSum.Isometry).  S and CZ preserve the squared norm of each
+-- entry, and a Hadamard doubles the norm of a column: it turns the
+-- entries a and b at z[w≔0] and z[w≔1] into a + b and a - b, and the
+-- parallelogram law adds those norms up to twice those of a and b.
+-- The basis column has norm 1, so a column of ⟦ C ⟧ has norm 2^k, k the
+-- number of Hadamards, which is what the normalisation 1/√2^k divides
+-- out.  That ⟦ C ⟧ is unitary is true but not stated.
 --
 -- ⟦ C ⟧ᴿ differs from ⟦ C ⟧ only at the last Hadamard on each wire,
 -- where the restriction keeps the entries whose value on that wire is
@@ -419,8 +419,8 @@ private
     rest = trans (Σᶻ-cong (λ z → off (same x z))) Σᶻ-0
 
 -- Every column of ⟦ C ⟧ has trace-form norm 2^k, k = norm C: a unit
--- vector once normalised by 1/√2^k.  (Orthogonality of the columns,
--- which would make the operator unitary, is not needed and not stated.)
+-- vector once normalised by 1/√2^k.  (That ⟦ C ⟧ is unitary is not
+-- needed and not stated.)
 
 ⟦⟧-unit-columns : (C : Circuit n) (x : Assign n) →
                   Σᶻ (λ z → ‖ amp ⟦ C ⟧ x z ‖²) ≡ + (2 ^ norm C)

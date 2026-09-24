@@ -6,7 +6,9 @@
 -- Section 4.3 uses the denotation of a path-sum only through two
 -- results proved earlier in the paper -- the correctness of the
 -- rewrite rules (proposition 3.1) and the destructive-interference
--- criterion (lemma 4.2) -- so those, together with the fact that
+-- criterion (lemma 4.2) -- and two facts the paper leaves implicit
+-- (undersized-elim, undersized-ω: a rule the normalisation cannot pay
+-- for refutes the identity).  Those, together with the fact that
 -- equivalence of path-sums is an equivalence relation, are collected
 -- here as the fields of a record.  Everything in PathSum.Clifford is
 -- proved relative to such a record.  PathSum.Denotation provides one,
@@ -54,14 +56,17 @@ record Semantics : Set₁ where
     ≋-trans : {ξ : PathSum n k m} {ζ : PathSum n k′ m′}
               {χ : PathSum n k″ m″} → ξ ≋ ζ → ζ ≋ χ → ξ ≋ χ
 
-    -- Proposition 3.1 (correctness): the rules of figure 2 preserve
-    -- the denotation.
+    -- Proposition 3.1 (correctness): the rules of PathSum.Reduction --
+    -- [Elim], [ω] and [HH] of figure 2, with Z₂-linear quotients --
+    -- preserve the denotation.
     ⟶-sound : {ξ : PathSum n k m} {ζ : PathSum n k′ m′} → ξ ⟶ ζ → ξ ≋ ζ
 
     -- Lemma 4.2 (destructive interference): if the quotient of the
-    -- phase by an internal path variable is ½Q for a non-zero Q
-    -- containing no path variable, then some input makes the two
-    -- branches of that variable cancel, so ξ is not the identity.
+    -- phase by an internal path variable is ½ times a non-zero
+    -- Z₂-linear form c ⊕ ⨁S in the input variables, then some input
+    -- makes the two branches of that variable cancel, so ξ is not the
+    -- identity.  (The paper allows any Boolean-valued Q; the linear
+    -- case is all lemma 4.3 needs.)
     interference :
       (ξ : PathSum n k (suc m)) (c : Bool) (S : Mon n m) →
       head-part (phase ξ) ≈[ pow M ] (½ ·ᴾ liftXor c S) →

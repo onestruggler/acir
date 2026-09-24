@@ -26,11 +26,10 @@
 --    H w    : |x⟩ ↦ 1/√2 Σ_y (-1)^(x_w y) |x[w←y]⟩ phase  ½ x_w y
 --
 -- and {H , S , CZ} generates the whole Clifford group, Paulis and the
--- global phase e^(iπ/4) = (SH)³ included.  The normalisation of
--- ⟦ C ⟧ᴿ counts every Hadamard,
--- a restricted sum keeping the normalisation of the sum it restricts,
--- while its path variables count only the Hadamards that are not the
--- last on their wire.
+-- global phase e^(iπ/4) = (SH)³ included.  The normalisation of ⟦ C ⟧ᴿ
+-- counts every Hadamard, a restricted sum keeping the normalisation of
+-- the sum it restricts, while its path variables count only the
+-- Hadamards that are not the last on their wire.
 --
 -- The circuit's own path-sum, definition 2.9's ⟦ C ⟧, is here too:
 -- the same run with every Hadamard allocating a fresh variable.  The

@@ -63,8 +63,9 @@ idPS = ⟨ 0ᴾ , (λ i → μ x[ i ]) ⟩
 ------------------------------------------------------------------------
 -- The distinguished path variable y₀
 
--- Every rule of figure 2 eliminates the first path variable, which
--- the paper calls y₀.
+-- Every rule here eliminates the first path variable, the paper's y₀
+-- (which in the paper may be any internal variable; reordering the
+-- path variables is not formalised).
 
 y₀ : Var n (suc m)
 y₀ = y[ zero ]

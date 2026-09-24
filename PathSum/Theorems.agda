@@ -10,12 +10,24 @@
 -- states the results in that form.  Lemma 4.1 (PathSum.Isometry) and
 -- proposition 2.10 over {H, S, CZ} (PathSum.CircuitSemantics) then
 -- carry corollary 4.4 from the restricted path-sum it reduces back to
--- the circuit itself, and PathSum.Decide finishes it as a decision:
--- whether a Clifford circuit is the identity is decidable
--- (circuit-decidable).  The paper's polynomial time bound is not
--- formalised.
+-- the circuit itself, and PathSum.Syntactic shows the end of the
+-- reduction is a syntactic test: a Clifford circuit is the identity
+-- exactly when its restriction reduces to a path-sum with the
+-- identity's polynomials (corollary-4-4-syntactic).
 --
--- Each section's banner names the module the proof lives in.
+-- Not formalised: the polynomial time bounds (proposition 3.2,
+-- corollary 4.4); the rule [Case], and [HH], [ω] and lemma 4.2 for
+-- quotients that are not Z₂-linear; circuits with CNOT or R_k (the
+-- circuit results are over {H, S, CZ}, which generates the Clifford
+-- group), with the Gaussian elimination their outputs would need;
+-- composition of path-sums (definition 2.6, proposition 2.7) and
+-- propositions 2.14-2.15; constant inputs; equivalence of two
+-- circuits, as opposed to one being the identity; unitarity of ⟦ C ⟧
+-- beyond unit trace-form column norms; and that definition 2.4 implies
+-- WellFormed, argued in prose in PathSum.Isometry.
+--
+-- Each section's banner names the module the proof lives in, or none
+-- when it is proved here.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -35,9 +47,9 @@ open import Data.Product.Base using (_×_; _,_; ∃; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔; Equivalence)
 open import Relation.Binary.PropositionalEquality using
-  (_≡_; sym; trans)
+  (_≡_; refl; sym; trans)
 open import Relation.Nullary.Decidable using (Dec; no; map′)
-open import Relation.Nullary.Negation using (¬_)
+open import Relation.Nullary.Negation using (¬_; contradiction)
 
 private
   M : ℕ
@@ -86,6 +98,9 @@ open CSem using (Column; δ; applyᴬ)
 import PathSum.Decide
 module Dcd = PathSum.Decide M₀
 
+import PathSum.Syntactic
+module Syn = PathSum.Syntactic M₀
+
 private
   variable
     n k m k′ m′ k″ m″ : ℕ
@@ -122,8 +137,8 @@ prop-2-10 = CSem.prop-2-10
 
 -- Once divided by √2^(norm C), every column of that operator has norm
 -- 1 in the trace form of PathSum.Norm -- the bound lemma 4.1 asks for
--- (WellFormed).  That the columns are also orthogonal, which would make
--- the operator unitary, is true but not stated.
+-- (WellFormed).  That ⟦ C ⟧ is unitary (true: it is a product of
+-- unitary gate matrices) is not stated.
 
 circuit-unit-columns : (C : Circuit n) (x : Assign n) →
                        Σᶻ (λ z → ‖ amp ⟦ C ⟧ x z ‖²) ≡ + (2 ^ norm C)
@@ -143,8 +158,11 @@ circuit-≋-id C = mk⇔
 
 
 ------------------------------------------------------------------------
--- Proposition 3.1: the rules of figure 2 are correct
--- (PathSum.Denotation)
+-- Proposition 3.1 for [Elim], [ω] and [HH] (PathSum.Denotation)
+
+-- The rules as PathSum.Reduction has them: each eliminates the first
+-- path variable, and the quotients of [ω] and [HH] are Z₂-linear
+-- forms -- all that lemma 4.3 needs.  [Case] is not formalised.
 
 ⟶-sound : {ξ : PathSum n k m} {ζ : PathSum n k′ m′} → ξ ⟶ ζ → ξ ≋ ζ
 ⟶-sound {ξ = a} {ζ = b} = Den.⟶-sound {ξ = a} {ζ = b}
@@ -170,7 +188,8 @@ circuit-≋-id C = mk⇔
 -- the trace-form norm of every column of U_ξ by 1.  The module header
 -- argues, in prose, that definition 2.4 implies it for path-sums whose
 -- inputs are all variables (the only ones PathSum.Base can express),
--- so for those the lemma assumes no more than the paper does.
+-- so, granted that argument, for those the lemma assumes no more than
+-- the paper does.
 
 lemma-4-1 : (ξ : PathSum n k m) → WellFormed ξ →
             (ξ ≋ idPS ⇔ Restriction-id ξ)
@@ -179,6 +198,10 @@ lemma-4-1 = Isom.lemma-4-1
 
 ------------------------------------------------------------------------
 -- Lemma 4.2: destructive interference (PathSum.Denotation)
+
+-- For a quotient ½Q with Q a non-zero Z₂-linear form in the inputs,
+-- liftXor c S; the paper allows any Boolean-valued Q, but the linear
+-- case is all lemma 4.3 needs.
 
 interference :
   (ξ : PathSum n k (suc m)) (c : Bool) (S : Mon n m) →
@@ -205,7 +228,7 @@ lemma-4-3 = Cliff.lemma-4-3
 
 
 ------------------------------------------------------------------------
--- Corollary 4.4: deciding equivalence of Clifford circuits
+-- Corollary 4.4: a path-sum without path variables, or a refutation
 -- (PathSum.Clifford)
 
 corollary-4-4 : (ξ : PathSum n k m) → Internal ξ → Ord≤ 2 (phase ξ) →
@@ -278,11 +301,11 @@ lemma-4-1-circuit C = mk⇔ to from
 -- Whether a reduced path-sum is the identity (PathSum.Identity)
 
 -- What the corollary stops short of: `done` says the path variables
--- are exhausted, not that what is left is the identity.  id-if is a
--- sufficient criterion, stated coefficient by coefficient, and each
--- refutation a sufficient disproof at one input.  That they cover
--- every case needs the input-by-input criterion id-if′ below, which is
--- what decide-≋-id uses.
+-- are exhausted, not that what is left is the identity.  id-if is the
+-- criterion stated coefficient by coefficient, and each refutation a
+-- disproof at one input.  id-if is also necessary (id⇔syntactic
+-- below); the input-by-input form id-if′, with the refutations, covers
+-- every case (decide-≋-id).
 
 id-if : (ξ : PathSum n 0 0) →
         (∀ w → out ξ w ≈[ + 2 ] μ x[ w ]) →
@@ -352,28 +375,88 @@ corollary-4-4-⟦⟧ C with corollary-4-4-circuit C
 
 
 ------------------------------------------------------------------------
--- Deciding the identity (PathSum.Decide)
+-- The identity, syntactically (PathSum.Syntactic)
 
--- A path-sum with no path variables has a single path, so it is the
--- identity exactly when, at every input, it spends no normalisation,
--- its path returns the input, and its phase vanishes modulo 2^M.
--- Every way that fails is one of the refutations above, and there are
--- finitely many inputs.
+-- A path-sum without path variables is the identity exactly when it
+-- has the identity's polynomials: no normalisation, outputs that are
+-- the inputs modulo 2 and a phase that vanishes modulo 2^M,
+-- coefficient by coefficient.  The converse of id-if goes through
+-- Möbius inversion (PathSum.Mobius).
 
-id-if′ : (ξ : PathSum n 0 0) →
-         (∀ x y → hits ξ x y x ≡ true) →
-         (∀ x y → pow M ∣ eval (phase ξ) x y) →
-         ξ ≋ idPS
-id-if′ = Dcd.id-if′
+id⇔syntactic : (ξ : PathSum n k 0) →
+               (ξ ≋ idPS ⇔
+                (k ≡ 0 ×
+                 (∀ w → out ξ w ≈[ + 2 ] μ x[ w ]) ×
+                 phase ξ ≈[ pow M ] 0ᴾ))
+id⇔syntactic = Syn.id⇔syntactic
+
+-- Corollary 4.4 as the paper states it (its proof: "either ⟦C⟧|f(x,y)=x
+-- reduces to |x⟩ ↦ |x⟩ ... or ξ′ ≢ |x⟩ ↦ |x⟩"): a Clifford circuit is
+-- the identity exactly when its restriction reduces to a path-sum that
+-- is syntactically the identity.  The time bound is not formalised.
+
+corollary-4-4-syntactic : (C : Circuit n) →
+  (⟦ C ⟧ ≋ idPS ⇔
+   ∃ λ (ξ′ : PathSum n 0 0) →
+     (⟦ C ⟧ᴿ ⟶* ξ′) ×
+     (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ)
+corollary-4-4-syntactic {n} C = mk⇔ to from
+  where
+  Syntactically : ∀ {k′} → PathSum n k′ 0 → Set
+  Syntactically {k′} ξ′ =
+    k′ ≡ 0 × (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ
+
+  reduced : ∀ {k′} (ξ′ : PathSum n k′ 0) → ⟦ C ⟧ᴿ ⟶* ξ′ →
+            Syntactically ξ′ →
+            ∃ λ (ξ″ : PathSum n 0 0) →
+              (⟦ C ⟧ᴿ ⟶* ξ″) ×
+              (∀ w → out ξ″ w ≈[ + 2 ] μ x[ w ]) × phase ξ″ ≈[ pow M ] 0ᴾ
+  reduced ξ′ steps (refl , outs , ph) = ξ′ , steps , outs , ph
+
+  pick : ⟦ C ⟧ ≋ idPS →
+         (∃ λ k′ → ∃ λ (ξ′ : PathSum n k′ 0) →
+            (⟦ C ⟧ᴿ ⟶* ξ′) × (⟦ C ⟧ ≋ idPS ⇔ ξ′ ≋ idPS))
+         ⊎ ¬ (⟦ C ⟧ ≋ idPS) →
+         ∃ λ (ξ″ : PathSum n 0 0) →
+           (⟦ C ⟧ᴿ ⟶* ξ″) ×
+           (∀ w → out ξ″ w ≈[ + 2 ] μ x[ w ]) × phase ξ″ ≈[ pow M ] 0ᴾ
+  pick eq (inj₁ (_ , ξ′ , steps , C⇔ξ′)) = reduced ξ′ steps
+    (Equivalence.to (id⇔syntactic ξ′) (Equivalence.to C⇔ξ′ eq))
+  pick eq (inj₂ ¬id) = contradiction eq ¬id
+
+  to = λ eq → pick eq (corollary-4-4-⟦⟧ C)
+
+  from : (∃ λ (ξ′ : PathSum n 0 0) →
+            (⟦ C ⟧ᴿ ⟶* ξ′) ×
+            (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ) →
+         ⟦ C ⟧ ≋ idPS
+  from (ξ′ , steps , outs , ph) = circuit-id C steps outs ph
+
+
+------------------------------------------------------------------------
+-- A decision procedure that follows corollary 4.4 (PathSum.Decide)
+
+-- The same test input by input: a path-sum with no path variables is
+-- the identity exactly when it spends no normalisation and, at every
+-- input, its path returns the input with a phase that vanishes modulo
+-- 2^M.  Every way that fails is one of the refutations above.
+
+id⇔′ : (ξ : PathSum n 0 0) →
+       (ξ ≋ idPS ⇔
+        ((∀ x y → hits ξ x y x ≡ true) ×
+         (∀ x y → pow M ∣ eval (phase ξ) x y)))
+id⇔′ = Dcd.id⇔′
 
 decide-≋-id : (ξ : PathSum n k 0) → Dec (ξ ≋ idPS)
 decide-≋-id = Dcd.decide-≋-id
 
--- Corollary 4.4, as a decision: reduce ⟦ C ⟧ᴿ, then test what is left.
--- Whether a Clifford circuit over {H, S, CZ} is the identity is
--- decidable -- both as a path-sum and as a matrix.  (The paper's
--- polynomial time bound is not formalised: the final test visits every
--- input.)
+-- Reduce ⟦ C ⟧ᴿ, then test what is left.  Decidability as such is
+-- elementary -- the matrix has finitely many entries in Z[ζ], each
+-- decidably equal to the identity's -- and the type below does not
+-- record the route; what the route adds is the reduction, whose content
+-- is corollary-4-4-⟦⟧ and corollary-4-4-syntactic above.  (Polynomials
+-- are functions on all 2^(n+m) monomials and the test visits every
+-- input, so nothing here is polynomial-time.)
 
 circuit-decidable : (C : Circuit n) → Dec (⟦ C ⟧ ≋ idPS)
 circuit-decidable C with corollary-4-4-⟦⟧ C

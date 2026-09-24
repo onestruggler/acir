@@ -488,18 +488,20 @@ lemma-4-3 ξ int ordP ξ≋id with progress ξ int ordP
 
 
 ------------------------------------------------------------------------
--- Corollary 4.4: deciding equivalence of Clifford circuits
+-- Corollary 4.4: a path-sum without path variables, or a refutation
 
 -- Iterating lemma 4.3 either exhausts the path variables, leaving a
 -- path-sum with no path variable left to sum over -- and denoting the
 -- same operator as ξ, by proposition 3.1 -- or proves outright that ξ
 -- is not the identity.  The paper's corollary starts from a circuit,
 -- takes the isometry restriction of section 4.1, reifies it by
--- Gaussian elimination, and ends with a decision in polynomial time.
--- For circuits over {H, S, CZ} the restriction is reified by
--- construction (PathSum.Circuit.⟦_⟧ᴿ), lemma 4.1 carries the verdict
--- back to the circuit, and PathSum.Decide finishes the decision
--- (PathSum.Theorems.circuit-decidable).  Not formalised: the
+-- Gaussian elimination, and ends when the restriction reduces to
+-- |x⟩ ↦ |x⟩ or is refuted, in polynomial time.  For circuits over
+-- {H, S, CZ} the restriction is reified by construction
+-- (PathSum.Circuit.⟦_⟧ᴿ), lemma 4.1 carries the verdict back to the
+-- circuit, and PathSum.Syntactic shows that the reduct is the identity
+-- exactly when it has the identity's polynomials
+-- (PathSum.Theorems.corollary-4-4-syntactic).  Not formalised: the
 -- polynomial time bound, and Gaussian elimination for gate sets whose
 -- outputs are sums of variables (CNOT).
 

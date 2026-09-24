@@ -999,7 +999,8 @@ module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (i : Fin m) (c : Bool)
 ------------------------------------------------------------------------
 -- Proposition 3.1
 
--- Every rule of figure 2 preserves the denotation.
+-- Every rule of PathSum.Reduction -- [Elim], [ω] and [HH] of figure 2,
+-- with Z₂-linear quotients -- preserves the denotation.
 
 ⟶-sound : {ξ : PathSum n k m} {ζ : PathSum n k′ m′} → ξ ⟶ ζ → ξ ≋ ζ
 ⟶-sound (elim ξ eqP eqf)         = elim-sound ξ eqP eqf
@@ -1214,11 +1215,10 @@ undersized-ω {n} {m} ξ c S eqP eqf ξ≋id =
 ------------------------------------------------------------------------
 -- Hitting the identity
 
--- Two facts about the identity path-sum that deciding whether a
--- reduced path-sum is the identity needs (PathSum.Identity): its
--- diagonal amplitude, and that outputs agreeing modulo 2 hit the same
--- states -- the outputs being read modulo 2, only their residues
--- matter.
+-- Two facts that PathSum.Identity and PathSum.Isometry need: the
+-- identity's diagonal amplitude, and that outputs agreeing modulo 2
+-- hit the same states -- the outputs being read modulo 2, only their
+-- residues matter.
 
 amp-idPS : ∀ {n} (x : Assign n) → amp idPS x x ≐ zpow 0ℤ
 amp-idPS = amp-id
@@ -1241,8 +1241,9 @@ hits-cong ξ ζ eqf x y z = allFin-cong (λ w →
 ------------------------------------------------------------------------
 -- Reading the outputs at a path
 
--- What lemma 4.1 and the circuit semantics need in order to reason
--- about `hits` from outside this module, whose helpers are private:
+-- What lemma 4.1, the circuit semantics and PathSum.Decide need in
+-- order to reason about `hits` from outside this module, whose helpers
+-- are private:
 -- the bit each output takes at a path, that a path hits z exactly
 -- when every one of those bits is z's, and the values of the two
 -- polynomials a circuit is built from -- a single variable, and 0.
@@ -1277,13 +1278,15 @@ hits-elim : (ξ : PathSum n k m) (x : Assign n) (y : Assign m)
 hits-elim ξ x y z h w =
   eqᵇ-≡ (allFin-elim (λ u → eqᵇ (bit (eval (out ξ u) x y)) (z u)) h w)
 
--- Only the values of z are read -- nor, for that matter, of x and y.
+-- Only the values of z are read.
 
 hits-≗ : (ξ : PathSum n k m) (x : Assign n) (y : Assign m)
          {z z′ : Assign n} → (∀ w → z w ≡ z′ w) →
          hits ξ x y z ≡ hits ξ x y z′
 hits-≗ ξ x y z≗z′ =
   allFin-cong (λ w → cong (eqᵇ (bit (eval (out ξ w) x y))) (z≗z′ w))
+
+-- Nor, of x, y and z together, anything but their values.
 
 hits-≗³ : (ξ : PathSum n k m) {x x′ : Assign n} {y y′ : Assign m}
           {z z′ : Assign n} → (∀ i → x i ≡ x′ i) →
@@ -1314,7 +1317,6 @@ eval-0ᴾ-val : ∀ {n m} (x : Assign n) (y : Assign m) →
 eval-0ᴾ-val = eval-0ᴾ
 
 
-------------------------------------------------------------------------
 ------------------------------------------------------------------------
 -- The denotation as a semantics
 

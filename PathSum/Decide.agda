@@ -7,20 +7,22 @@
 -- no path variable is left, and PathSum.Identity supplies a criterion
 -- and three refutations for what remains.  The criterion there, id-if,
 -- asks for congruences between polynomials, coefficient by
--- coefficient, while the refutations each fail at a single input; to
--- see that between them they cover every case one would need that a
--- multilinear polynomial vanishing at every Boolean point has
--- vanishing coefficients, which is not formalised.
+-- coefficient, while the refutations each fail at a single input, so
+-- they do not visibly cover every case.
 --
--- The gap closes without it.  A path-sum with no path variables has a
--- single path, so at each input x its diagonal entry is ζ^P(x) if that
--- path returns x and 0 if not, and its off-diagonal entries vanish as
--- soon as it does return x.  So the identity is characterised input by
--- input: no normalisation, the path returns x, and P(x) ≡ 0 modulo
--- 2^M, at every x (id-if′).  Each clause failing is exactly one of the
--- refutations.  There are finitely many inputs, so the question is
--- decidable, and that is decide-≋-id.  Nothing here bounds the time a
--- decision takes: the search visits all 2^n inputs.
+-- This module characterises the identity input by input instead.  A
+-- path-sum with no path variables has a single path, so at each input
+-- x its diagonal entry is ζ^P(x) if that path returns x and 0 if not,
+-- and its off-diagonal entries vanish as soon as it does return x.  So
+-- it is the identity exactly when it spends no normalisation and, at
+-- every x, its path returns x with P(x) ≡ 0 modulo 2^M: id-if′ is the
+-- sufficiency, and the refutations give the necessity (id⇔′).  There
+-- are finitely many inputs, so the question is decidable
+-- (decide-≋-id) -- an elementary fact, since the matrix has finitely
+-- many entries anyway.  PathSum.Syntactic turns the input-by-input
+-- characterisation into the coefficient-wise one with Möbius
+-- inversion.  Nothing here is polynomial-time: the search visits all
+-- 2^n inputs, and evaluating a polynomial sums over all its monomials.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -32,11 +34,12 @@ module PathSum.Decide (M₀ : ℕ) where
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Bool.Properties using () renaming (_≟_ to _≟ᵇ_)
 open import Data.Fin.Base using (Fin; zero; suc)
-open import Data.Integer.Base using (ℤ; 0ℤ; _-_)
+open import Data.Integer.Base using (0ℤ)
 open import Data.Integer.Divisibility.Signed using (_∣_; _∣?_)
 open import Data.Integer.Properties using (+-identityʳ)
 open import Data.Product.Base using (_×_; _,_; ∃; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Binary.PropositionalEquality using
   (_≡_; refl; sym; trans; subst)
 open import Relation.Nullary.Decidable using (Dec; yes; no; _×?_)
@@ -226,3 +229,37 @@ private
 decide-≋-id : (ξ : PathSum n k 0) → Dec (ξ ≋ idPS)
 decide-≋-id {k = suc k} ξ = no (spent ξ (hits ξ x₀ y∅ x₀) refl)
 decide-≋-id {k = zero}  ξ = settle ξ (search (Good ξ) (good? ξ) (good-≗ ξ))
+
+
+------------------------------------------------------------------------
+-- The criterion is also necessary
+
+-- The refutations are the other half of id-if′: the identity spends no
+-- normalisation, and at every input its path returns the input with a
+-- phase that vanishes modulo 2^M.
+
+id-no-norm : (ξ : PathSum n (suc k) 0) → ¬ (ξ ≋ idPS)
+id-no-norm ξ = spent ξ (hits ξ x₀ y∅ x₀) refl
+
+private
+  good-of-id : (ξ : PathSum n 0 0) → ξ ≋ idPS →
+               ∀ x → Dec (Good ξ x) → Good ξ x
+  good-of-id ξ ξ≋id x (yes g)   = g
+  good-of-id ξ ξ≋id x (no  bad) =
+    contradiction ξ≋id (fails ξ x bad (hits ξ x y∅ x) refl)
+
+id-only-if′ : (ξ : PathSum n 0 0) → ξ ≋ idPS →
+              (∀ x y → hits ξ x y x ≡ true) ×
+              (∀ x y → pow M ∣ eval (phase ξ) x y)
+id-only-if′ ξ ξ≋id =
+  (λ x y → trans (sym (at-y ξ x x y)) (proj₁ (good x))) ,
+  (λ x y → subst (pow M ∣_) (eval-at-y ξ x y) (proj₂ (good x)))
+  where
+  good : ∀ x → Good ξ x
+  good x = good-of-id ξ ξ≋id x (good? ξ x)
+
+id⇔′ : (ξ : PathSum n 0 0) →
+       (ξ ≋ idPS ⇔
+        ((∀ x y → hits ξ x y x ≡ true) ×
+         (∀ x y → pow M ∣ eval (phase ξ) x y)))
+id⇔′ ξ = mk⇔ (id-only-if′ ξ) (λ (h , d) → id-if′ ξ h d)
