@@ -31,11 +31,12 @@
 -- while its path variables count only the Hadamards that are not the
 -- last on their wire.
 --
--- What is not formalised is the step from ⟦ C ⟧ᴿ back to the circuit:
--- lemma 4.1, that a well-formed path-sum is the identity exactly when
--- its restriction is, holds only for isometries, and the denotation
--- of PathSum.Denotation -- a matrix entry in Z[ζ], carrying no norm
--- -- cannot say that an operator is one.
+-- The circuit's own path-sum, definition 2.9's ⟦ C ⟧, is here too:
+-- the same run with every Hadamard allocating a fresh variable.  The
+-- step from ⟦ C ⟧ᴿ back to it is lemma 4.1, which holds of isometries:
+-- PathSum.Isometry proves it for any path-sum whose columns have norm
+-- at most 1, PathSum.CircuitSemantics shows that ⟦ C ⟧ is one and that
+-- ⟦ C ⟧ᴿ is its restriction, and PathSum.Theorems puts them together.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

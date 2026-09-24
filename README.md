@@ -31,9 +31,11 @@ separately.
 
 [`PathSum/`](PathSum/) is a separate development, not reached by
 `MainTheorems.agda`: a formalisation of M. Amy, *Towards Large-scale
-Functional Verification of Universal Quantum Circuits* (QPL 2018), as
-far as section 4.3 — lemma 4.3 (Clifford progress & preservation) and
-corollary 4.4 — together with everything those rest on.  Its root is
+Functional Verification of Universal Quantum Circuits* (QPL 2018),
+through section 4 — lemma 4.1 (isometry restrictions), lemma 4.2,
+lemma 4.3 (Clifford progress & preservation) and corollary 4.4, stated
+about the circuit itself — together with everything those rest on.
+Its root is
 
 ```bash
 agda PathSum/Theorems.agda
@@ -55,11 +57,24 @@ lemma 4.2, and that equivalence of path-sums is an equivalence
 relation — so `Theorems` states section 4.3 at that denotation rather
 than at a hypothetical one.
 
+Corollary 4.4 reduces not the circuit's path-sum but its isometry
+restriction, and lemma 4.1 is what carries the verdict back.
+`Circuit` gives both path-sums of a circuit over {H, S, CZ}: `⟦ C ⟧`
+(definition 2.9) and its restriction `⟦ C ⟧ᴿ`, already reified.
+`CircuitSemantics` proves proposition 2.10 for them — the entries of
+`⟦ C ⟧` are the circuit's matrix, computed gate by gate — and that
+every column has norm 1, the norm being the trace form of `Norm`.
+`Isometry` proves lemma 4.1 for any path-sum whose columns have norm
+at most 1, which definition 2.4 implies.  So `Theorems` concludes
+about `⟦ C ⟧` itself: reduction of `⟦ C ⟧ᴿ` either refutes the
+circuit or ends at a path-sum with no path variables whose being the
+identity is exactly the circuit's.
+
 Two departures from the paper are recorded in the module headers.
 Definition 2.1 ties the normalisation 1/√2^k to the number of path
 variables, but the rules of figure 2 do not preserve that tie, so a
 path-sum carries both indices; and with the normalisation explicit,
 lemma 4.3 acquires a case the paper does not discuss, namely that the
 rule the phase calls for may cost more normalisation than the
-path-sum has.  That case is returned as a labelled outcome, not
-proved: it is an argument about magnitudes rather than rewriting.
+path-sum has.  That case is proved impossible for a path-sum that is
+the identity, so lemma 4.3 holds as the paper states it.
