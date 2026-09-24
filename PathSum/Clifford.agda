@@ -7,8 +7,10 @@
 -- order at most 2.  Lemma 4.3 says that such a path-sum, if it has
 -- only internal path variables and denotes the identity, always
 -- admits a reduction whose phase again has order at most 2;
--- corollary 4.4 iterates this to a decision procedure.  Both are
--- proved below, over the semantic interface of PathSum.Semantics.
+-- corollary 4.4 iterates this until the path variables are exhausted
+-- or ξ is refuted.  Both are proved below, over the semantic
+-- interface of PathSum.Semantics.  (Turning that into a decision about
+-- a circuit takes lemma 4.1 and a final test: PathSum.Theorems.)
 --
 -- The module is parameterised by M₀, the denominator of the phase
 -- being 2^(3 + M₀): three dyadic digits are what an order-2
@@ -491,10 +493,15 @@ lemma-4-3 ξ int ordP ξ≋id with progress ξ int ordP
 -- Iterating lemma 4.3 either exhausts the path variables, leaving a
 -- path-sum with no path variable left to sum over -- and denoting the
 -- same operator as ξ, by proposition 3.1 -- or proves outright that ξ
--- is not the identity.  Two things the paper's corollary states are
--- not formalised: the polynomial time bound, and the reduction of the
--- general case to this one, which is the isometry restriction of
--- section 4.1 followed by Gaussian elimination.
+-- is not the identity.  The paper's corollary starts from a circuit,
+-- takes the isometry restriction of section 4.1, reifies it by
+-- Gaussian elimination, and ends with a decision in polynomial time.
+-- For circuits over {H, S, CZ} the restriction is reified by
+-- construction (PathSum.Circuit.⟦_⟧ᴿ), lemma 4.1 carries the verdict
+-- back to the circuit, and PathSum.Decide finishes the decision
+-- (PathSum.Theorems.circuit-decidable).  Not formalised: the
+-- polynomial time bound, and Gaussian elimination for gate sets whose
+-- outputs are sums of variables (CNOT).
 
 data Reduces {n k m : ℕ} (ξ : PathSum n k m) : Set where
   done  : ∀ {k′} {ξ′ : PathSum n k′ 0} → ξ ⟶* ξ′ → Reduces ξ

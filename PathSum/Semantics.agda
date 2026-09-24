@@ -3,14 +3,17 @@
 --
 -- The semantic interface a path-sum calculus is required to satisfy
 --
--- The denotation of a path-sum is an exponential sum of complex
--- numbers, which is outside the scope of this development.  Section
--- 4.3 uses that denotation only through two results proved earlier in
--- the paper -- the correctness of the rewrite rules (proposition 3.1)
--- and the destructive-interference criterion (lemma 4.2) -- so those,
--- together with the fact that equivalence of path-sums is an
--- equivalence relation, are collected here as the fields of a record.
--- Everything in PathSum.Clifford is proved relative to such a record.
+-- Section 4.3 uses the denotation of a path-sum only through two
+-- results proved earlier in the paper -- the correctness of the
+-- rewrite rules (proposition 3.1) and the destructive-interference
+-- criterion (lemma 4.2) -- so those, together with the fact that
+-- equivalence of path-sums is an equivalence relation, are collected
+-- here as the fields of a record.  Everything in PathSum.Clifford is
+-- proved relative to such a record.  PathSum.Denotation provides one,
+-- computing the operator's entries exactly in Z[ζ]; lemma 4.1 and
+-- proposition 2.10 (PathSum.Isometry, PathSum.CircuitSemantics) are
+-- proved about that denotation directly rather than through this
+-- interface.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

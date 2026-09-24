@@ -13,8 +13,11 @@
 --
 -- The four results below are the four ways the comparison can go: the
 -- outputs miss, the normalisation is not spent, the phase does not
--- vanish, and everything holds.  Together they decide the question,
--- the three refutations covering the complement of the criterion.
+-- vanish, and everything holds.  The criterion here is stated
+-- coefficient by coefficient and the refutations input by input, so
+-- they do not visibly cover every case; PathSum.Decide restates the
+-- criterion input by input (id-if′), and with the three refutations it
+-- decides the question (decide-≋-id).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

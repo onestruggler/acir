@@ -8,9 +8,13 @@
 --    |x⟩ ↦ 1/√2^m Σ_{y ∈ Z₂^m} e^{2πi P(x,y)} |f (x , y)⟩
 --
 -- and is presented here by its phase polynomial P together with its
--- output polynomials f, one for each output wire.  The analytic
--- content -- the associated operator -- is not formalised; it enters
--- only through the interface of PathSum.Semantics.
+-- output polynomials f, one for each output wire.  The associated
+-- operator is not part of this record: PathSum.Denotation computes its
+-- matrix entries exactly, unnormalised, in Z[ζ] (amp), and defines
+-- equivalence (definition 2.3) by them.  Section 4.3 (PathSum.Clifford)
+-- sees the operator only through the interface of PathSum.Semantics;
+-- lemma 4.1 and proposition 2.10 use Denotation directly.  There are no
+-- constant inputs: every input wire is a variable.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

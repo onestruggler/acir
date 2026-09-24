@@ -18,7 +18,7 @@
 -- Two path-sums are equivalent when their operators agree, which
 -- after clearing denominators is an identity in Z[ζ]: cross-multiply
 -- by the two normalisations.  Transitivity of that relation is not
--- formal: it needs the factor √2^k to be cancellable, which is
+-- immediate: it needs the factor √2^k to be cancellable, which is
 -- PathSum.Cyclotomic.scale-injective.
 ------------------------------------------------------------------------
 
@@ -1277,13 +1277,20 @@ hits-elim : (ξ : PathSum n k m) (x : Assign n) (y : Assign m)
 hits-elim ξ x y z h w =
   eqᵇ-≡ (allFin-elim (λ u → eqᵇ (bit (eval (out ξ u) x y)) (z u)) h w)
 
--- Only the values of z are read.
+-- Only the values of z are read -- nor, for that matter, of x and y.
 
 hits-≗ : (ξ : PathSum n k m) (x : Assign n) (y : Assign m)
          {z z′ : Assign n} → (∀ w → z w ≡ z′ w) →
          hits ξ x y z ≡ hits ξ x y z′
 hits-≗ ξ x y z≗z′ =
   allFin-cong (λ w → cong (eqᵇ (bit (eval (out ξ w) x y))) (z≗z′ w))
+
+hits-≗³ : (ξ : PathSum n k m) {x x′ : Assign n} {y y′ : Assign m}
+          {z z′ : Assign n} → (∀ i → x i ≡ x′ i) →
+          (∀ j → y j ≡ y′ j) → (∀ w → z w ≡ z′ w) →
+          hits ξ x y z ≡ hits ξ x′ y′ z′
+hits-≗³ ξ x≗x′ y≗y′ z≗z′ = allFin-cong (λ w →
+  cong₂ eqᵇ (cong bit (eval-cong (out ξ w) x≗x′ y≗y′)) (z≗z′ w))
 
 amp-≗ : (ξ : PathSum n k m) (x : Assign n) {z z′ : Assign n} →
         (∀ w → z w ≡ z′ w) → amp ξ x z ≐ amp ξ x z′

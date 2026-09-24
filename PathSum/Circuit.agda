@@ -25,8 +25,9 @@
 --    CZ w v : |x⟩ ↦ (-1)^(x_w x_v) |x⟩             phase  ½ x_w x_v
 --    H w    : |x⟩ ↦ 1/√2 Σ_y (-1)^(x_w y) |x[w←y]⟩ phase  ½ x_w y
 --
--- and {H , S , CZ} generates the Clifford group up to Paulis and
--- global phase.  The normalisation of ⟦ C ⟧ᴿ counts every Hadamard,
+-- and {H , S , CZ} generates the whole Clifford group, Paulis and the
+-- global phase e^(iπ/4) = (SH)³ included.  The normalisation of
+-- ⟦ C ⟧ᴿ counts every Hadamard,
 -- a restricted sum keeping the normalisation of the sum it restricts,
 -- while its path variables count only the Hadamards that are not the
 -- last on their wire.
@@ -34,9 +35,10 @@
 -- The circuit's own path-sum, definition 2.9's ⟦ C ⟧, is here too:
 -- the same run with every Hadamard allocating a fresh variable.  The
 -- step from ⟦ C ⟧ᴿ back to it is lemma 4.1, which holds of isometries:
--- PathSum.Isometry proves it for any path-sum whose columns have norm
--- at most 1, PathSum.CircuitSemantics shows that ⟦ C ⟧ is one and that
--- ⟦ C ⟧ᴿ is its restriction, and PathSum.Theorems puts them together.
+-- PathSum.Isometry proves it for any path-sum whose columns have
+-- trace-form norm at most 1, PathSum.CircuitSemantics shows that the
+-- columns of ⟦ C ⟧ are unit vectors and that ⟦ C ⟧ᴿ is its
+-- restriction, and PathSum.Theorems puts them together.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

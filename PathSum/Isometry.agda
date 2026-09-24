@@ -14,9 +14,10 @@
 -- most 1, a diagonal entry equal to 1 spends all of it, and so every
 -- entry off the diagonal vanishes.
 --
--- Definition 2.4 asks the operator of ξ to be a partial isometry.  The
--- operator itself is not formalised (see PathSum.Base), and complex
--- absolute values are not available in Z[ζ]; what is available is the
+-- Definition 2.4 asks the operator of ξ to be a partial isometry.
+-- Only the operator's entries are formalised (amp, in Z[ζ]; see
+-- PathSum.Denotation), where adjoints and complex absolute values are
+-- not available; what is available is the
 -- trace form of PathSum.Norm, ‖a‖² = Tr(a·ā)/H, the average of |σ(a)|²
 -- over the H embeddings σ of Q(ζ) into C.  The proof uses one fact
 -- about the operator, a bound on the norms of its columns, and
@@ -34,8 +35,10 @@
 -- is Σ_z ‖amp ξ x z‖², is at most 2^k.  So the hypothesis of
 -- lemma-4-1⇐ below follows from the paper's, and the lemma is proved
 -- here in a form at least as strong as the paper's -- granted that
--- argument, and U_ξ read as the matrix of entries amp ξ x z / √2^k
--- that PathSum.Denotation compares.
+-- argument, U_ξ read as the matrix of entries amp ξ x z / √2^k that
+-- PathSum.Denotation compares, and for path-sums whose inputs are all
+-- variables.  Constant inputs, which are what make an operator only
+-- partial, cannot be expressed in PathSum.Base.
 --
 -- The proof of the converse splits the sum over the column at z = x.
 -- The diagonal term is ‖√2^k ζ^0‖² = 2^k, the whole budget, so the

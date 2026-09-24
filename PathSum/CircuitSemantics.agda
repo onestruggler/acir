@@ -292,7 +292,7 @@ prop-2-10 C x = runᵁ-amp C init x (δ x) (ampˢ-init x)
 
 
 ------------------------------------------------------------------------
--- ⟦ C ⟧ is an isometry
+-- The columns of ⟦ C ⟧ are unit vectors
 
 -- The squared norm of a column, summed over its entries.
 
@@ -418,12 +418,13 @@ private
     rest : Σᶻ (λ z → if same x z then 0ℤ else ‖ δ x z ‖²) ≡ 0ℤ
     rest = trans (Σᶻ-cong (λ z → off (same x z))) Σᶻ-0
 
--- Every column of ⟦ C ⟧ has norm 2^k, k = norm C: an isometry, once
--- normalised by 1/√2^k.
+-- Every column of ⟦ C ⟧ has trace-form norm 2^k, k = norm C: a unit
+-- vector once normalised by 1/√2^k.  (Orthogonality of the columns,
+-- which would make the operator unitary, is not needed and not stated.)
 
-⟦⟧-isometry : (C : Circuit n) (x : Assign n) →
-              Σᶻ (λ z → ‖ amp ⟦ C ⟧ x z ‖²) ≡ + (2 ^ norm C)
-⟦⟧-isometry C x =
+⟦⟧-unit-columns : (C : Circuit n) (x : Assign n) →
+                  Σᶻ (λ z → ‖ amp ⟦ C ⟧ x z ‖²) ≡ + (2 ^ norm C)
+⟦⟧-unit-columns C x =
   trans (Σᶻ-cong (λ z →
           ‖‖²-cong {amp ⟦ C ⟧ x z} {applyᴬ C (δ x) z} (prop-2-10 C x z)))
     (trans (colN-apply C (δ x) (δ-resp x))
