@@ -219,33 +219,78 @@ paths {n} C = proj₁ (run C (init {n}))
 
 
 ------------------------------------------------------------------------
+-- The path-sum of a circuit
+
+-- Definition 2.9, over these gates: every Hadamard allocates a fresh
+-- path variable, and the outputs are whatever the wires hold once the
+-- circuit has run.  This is the path-sum lemma 4.1 speaks about, and
+-- ⟦_⟧ᴿ above is its isometry restriction, already reified: the two
+-- runs differ only at the last Hadamard on each wire, where ⟦_⟧ᴿ puts
+-- x_w instead of a fresh variable.
+
+runᵁ : Circuit n → State n m → ∃ (State n)
+runᵁ []            st = _ , st
+runᵁ (H w ∷ C)     st = runᵁ C (allocH w st)
+runᵁ (S w ∷ C)     st = runᵁ C (stepS w st)
+runᵁ (CZ w v ∷ C)  st = runᵁ C (stepCZ w v st)
+
+pathsᵁ : Circuit n → ℕ
+pathsᵁ {n} C = proj₁ (runᵁ C (init {n}))
+
+⟦_⟧ : (C : Circuit n) → PathSum n (norm C) (pathsᵁ C)
+⟦_⟧ {n} C = ⟨ poly result , (λ w → μ (sig result w)) ⟩
+  where
+  result : State n (pathsᵁ C)
+  result = proj₂ (runᵁ C init)
+
+-- One path variable for each Hadamard, so the normalisation is 1/√2^m
+-- with m the number of path variables, as definition 2.1 has it.
+
+pathsᵁ≡norm : (C : Circuit n) → pathsᵁ C ≡ norm C
+pathsᵁ≡norm {n} C = trans (count C (init {n})) (ℕ.+-identityʳ (norm C))
+  where
+  count : ∀ {m} (C : Circuit n) (st : State n m) →
+          proj₁ (runᵁ C st) ≡ norm C + m
+  count []            st = refl
+  count (H w ∷ C)     st = trans (count C (allocH w st)) (ℕ.+-suc (norm C) _)
+  count (S w ∷ C)     st = count C (stepS w st)
+  count (CZ w v ∷ C)  st = count C (stepCZ w v st)
+
+
+------------------------------------------------------------------------
 -- Every path variable of ⟦ C ⟧ᴿ is internal
 
 -- After the last Hadamard on a wire the wire holds its own input, so
--- once the whole circuit is interpreted every wire does.
+-- once the whole circuit is interpreted every wire does.  (Public: it
+-- is also what makes ⟦ C ⟧ᴿ diagonal, which lemma 4.1 uses.)
+
+run-sig : (C : Circuit n) (st : State n m) →
+          (∀ w → hasH w C ≡ false → sig st w ≡ x[ w ]) →
+          ∀ w → sig (proj₂ (run C st)) w ≡ x[ w ]
+run-sig []            st h w = h w refl
+run-sig (S v ∷ C)     st h = run-sig C (stepS v st) h
+run-sig (CZ v u ∷ C)  st h = run-sig C (stepCZ v u st) h
+run-sig (H v ∷ C)     st h with hasH v C in eq
+... | true  = run-sig C (allocH v st) alloc-h
+  where
+  alloc-h : ∀ w → hasH w C ≡ false → sig (allocH v st) w ≡ x[ w ]
+  alloc-h w noH with w Fin.≟ v
+  ... | yes refl = contradiction (trans (sym eq) noH) λ ()
+  ... | no  w≢v  =
+    cong wkVar (h w (trans (cong (_∨ hasH w C) (⌊≢⌋ w≢v)) noH))
+... | false = run-sig C (finalH v st) final-h
+  where
+  final-h : ∀ w → hasH w C ≡ false → sig (finalH v st) w ≡ x[ w ]
+  final-h w noH with w Fin.≟ v
+  ... | yes refl = refl
+  ... | no  w≢v  = h w (trans (cong (_∨ hasH w C) (⌊≢⌋ w≢v)) noH)
+
+-- So every output of ⟦ C ⟧ᴿ is its input.
+
+⟦⟧ᴿ-sig : (C : Circuit n) → ∀ w → sig (proj₂ (run C (init {n}))) w ≡ x[ w ]
+⟦⟧ᴿ-sig C = run-sig C init (λ _ _ → refl)
 
 private
-  run-sig : (C : Circuit n) (st : State n m) →
-            (∀ w → hasH w C ≡ false → sig st w ≡ x[ w ]) →
-            ∀ w → sig (proj₂ (run C st)) w ≡ x[ w ]
-  run-sig []            st h w = h w refl
-  run-sig (S v ∷ C)     st h = run-sig C (stepS v st) h
-  run-sig (CZ v u ∷ C)  st h = run-sig C (stepCZ v u st) h
-  run-sig (H v ∷ C)     st h with hasH v C in eq
-  ... | true  = run-sig C (allocH v st) alloc-h
-    where
-    alloc-h : ∀ w → hasH w C ≡ false → sig (allocH v st) w ≡ x[ w ]
-    alloc-h w noH with w Fin.≟ v
-    ... | yes refl = contradiction (trans (sym eq) noH) λ ()
-    ... | no  w≢v  =
-      cong wkVar (h w (trans (cong (_∨ hasH w C) (⌊≢⌋ w≢v)) noH))
-  ... | false = run-sig C (finalH v st) final-h
-    where
-    final-h : ∀ w → hasH w C ≡ false → sig (finalH v st) w ≡ x[ w ]
-    final-h w noH with w Fin.≟ v
-    ... | yes refl = refl
-    ... | no  w≢v  = h w (trans (cong (_∨ hasH w C) (⌊≢⌋ w≢v)) noH)
-
   NoVar-x : (i : Fin n) (j : Fin m) → NoVar (+ 2) y[ j ] (μ {n} {m} x[ i ])
   NoVar-x i j (α , β) j∈β with (α , β) ≟ᵐ ⟪ x[ i ] ⟫
   ... | no  _ = i∣0
