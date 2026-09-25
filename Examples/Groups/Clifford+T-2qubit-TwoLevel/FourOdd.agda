@@ -45,8 +45,7 @@ open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics hiding (_!_ ; U
 open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Syllable using (ω^-action)
 open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Step using (scV-δ²map)
 
-private
-  open ZG using (_:+_ ; _:*_ ; :-_ ; _:-_ ; _:=_ ; con)
+open ZG using (_:+_ ; _:*_ ; :-_ ; _:-_ ; _:=_ ; con)
 
 ------------------------------------------------------------------------
 -- The generators on numerators
