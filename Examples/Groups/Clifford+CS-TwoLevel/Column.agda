@@ -1,0 +1,274 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- The syllables of the exact synthesis algorithm (Algorithm 2.10), as
+-- a function of the data of the pivot column: its index p, its least
+-- denominator exponent k and its numerator w ∈ ℤ[i]ⁿ.
+--
+-- * k = 0: w has a single nonzero entry, a unit u at index m
+--   (Corollary 2.3), and the syllable is i_[m]ᵉ followed by X_[m,p]
+--   (if m < p), where iᵉ u = 1;
+-- * k > 0: with j < ℓ the first two odd entries of w (Lemma 2.5) and
+--   q ∈ {0,1} such that w_j ≡ iᑫ w_ℓ (mod 2), the syllable is
+--   i_[ℓ]ᑫ followed by K†_[j,ℓ] (Lemma 2.6).
+------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
+module Examples.Groups.Clifford+CS-TwoLevel.Column where
+
+open import Data.Bool.Base using (Bool ; true ; false ; not ; _∧_ ; _xor_ ; if_then_else_)
+import Data.Bool.Properties as BoolP
+open import Data.Empty using (⊥-elim)
+open import Data.Fin.Base as Fin using (Fin ; zero ; suc ; _<_)
+import Data.Fin.Properties as FinP
+open import Data.Integer.Base as ℤ using (ℤ ; +_ ; -[1+_])
+import Data.Integer.Properties as ℤP
+open import Data.Maybe.Base using (Maybe ; just ; nothing)
+open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
+open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Vec.Base as Vec using (Vec)
+open import Relation.Binary.PropositionalEquality
+open import Relation.Nullary using (¬_ ; Dec ; yes ; no)
+open import Relation.Nullary.Decidable using (does ; dec-yes ; dec-no ; dec-true ; dec-false)
+import Data.Integer.Solver as ℤSolver
+
+open import Quantum.Synthesis.Ring using (Cplx)
+
+open import Word.Base using (Word ; ε ; _•_ ; _^_)
+open import Examples.Groups.Clifford+CS-TwoLevel.Ring
+open import Examples.Groups.Clifford+CS-TwoLevel.Lde using (_!_ ; Odd ; Even)
+open import Examples.Groups.Clifford+CS-TwoLevel.Search
+open import Examples.Groups.Clifford+CS-TwoLevel.Syntactics
+
+private
+  variable
+    n : ℕ
+  module ℤS = ℤSolver.+-*-Solver
+
+------------------------------------------------------------------------
+-- Odd entries
+
+-- The number of odd entries.
+nodd : Vec Z n → ℕ
+nodd w = count (λ x → oddᶻ (w ! x))
+
+-- The first odd entry.
+firstOdd : Vec Z n → Maybe (Fin n)
+firstOdd w = first (λ x → oddᶻ (w ! x))
+
+-- The first odd entry after j.
+nextOdd : Fin n → Vec Z n → Maybe (Fin n)
+nextOdd j w = first (λ x → does (j FinP.<? x) ∧ oddᶻ (w ! x))
+
+------------------------------------------------------------------------
+-- Units and the exponent that normalises them
+
+-- invExp u = e with iᵉ u = 1, for u ∈ {1, i, -1, -i}.
+invExp : Z → ℕ
+invExp (Cplx (+ 1) (+ 0)) = 0
+invExp (Cplx (+ 0) (+ 1)) = 3
+invExp (Cplx -[1+ 0 ] (+ 0)) = 2
+invExp (Cplx (+ 0) -[1+ 0 ]) = 1
+invExp _ = 0
+
+invExp-unit : ∀ t → t ℕ.< 4 → (ⅈᶻ ^ᶻ invExp (ⅈᶻ ^ᶻ t)) ZR.* (ⅈᶻ ^ᶻ t) ≡ ZR.1#
+invExp-unit 0 _ = refl
+invExp-unit 1 _ = refl
+invExp-unit 2 _ = refl
+invExp-unit 3 _ = refl
+invExp-unit (suc (suc (suc (suc t)))) (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ()))))
+
+invExp-< : ∀ t → t ℕ.< 4 → invExp (ⅈᶻ ^ᶻ t) ℕ.< 4
+invExp-< 0 _ = ℕ.s≤s ℕ.z≤n
+invExp-< 1 _ = ℕ.s≤s (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ℕ.z≤n)))
+invExp-< 2 _ = ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ℕ.z≤n))
+invExp-< 3 _ = ℕ.s≤s (ℕ.s≤s ℕ.z≤n)
+invExp-< (suc (suc (suc (suc t)))) (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ()))))
+
+-- The only unit u with invExp u = 0 is 1.
+invExp-0 : ∀ t → t ℕ.< 4 → invExp (ⅈᶻ ^ᶻ t) ≡ 0 → ⅈᶻ ^ᶻ t ≡ ZR.1#
+invExp-0 0 _ _ = refl
+invExp-0 1 _ ()
+invExp-0 2 _ ()
+invExp-0 3 _ ()
+invExp-0 (suc (suc (suc (suc t)))) (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ())))) _
+
+-- Units are odd.
+unit-odd : ∀ t → t ℕ.< 4 → Odd (ⅈᶻ ^ᶻ t)
+unit-odd 0 _ = refl
+unit-odd 1 _ = refl
+unit-odd 2 _ = refl
+unit-odd 3 _ = refl
+unit-odd (suc (suc (suc (suc t)))) (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ()))))
+
+------------------------------------------------------------------------
+-- Residues modulo 2 of odd Gaussian integers
+--
+-- An odd a + bi has exactly one of a, b odd, so it is ≡ 1 or ≡ i
+-- (mod 2) according to the parity of a (Lemma 2.2).  Two odd numbers
+-- u, v satisfy u ≡ iᑫ v (mod 2) for q = qOf u v.
+
+private
+  re im : Z → ℤ
+  re (Cplx a _) = a
+  im (Cplx _ b) = b
+
+qOf : Z → Z → ℕ
+qOf u v = if oddℤ (re u) xor oddℤ (re v) then 1 else 0
+
+qOf-≤1 : ∀ u v → qOf u v ℕ.≤ 1
+qOf-≤1 u v with oddℤ (re u) xor oddℤ (re v)
+... | true  = ℕ.s≤s ℕ.z≤n
+... | false = ℕ.z≤n
+
+private
+  -- A Gaussian integer with both components even is divisible by 2.
+  2∣-intro : ∀ a b → oddℤ a ≡ false → oddℤ b ≡ false → 2∣ Cplx a b
+  2∣-intro a b ea eb with evenℤ-half a ea | evenℤ-half b eb
+  ... | a′ , refl | b′ , refl = Cplx a′ b′ , cong₂ Cplx (lemA a′ b′) (lemB a′ b′)
+    where
+    open ℤS using (_:+_ ; _:*_ ; :-_ ; _:=_ ; con)
+    lemA : ∀ x y → x ℤ.+ x ≡ + 2 ℤ.* x ℤ.+ ℤ.- (+ 0 ℤ.* y)
+    lemA = ℤS.solve 2 (λ x y → x :+ x := con (+ 2) :* x :+ :- (con (+ 0) :* y)) refl
+    lemB : ∀ x y → y ℤ.+ y ≡ + 2 ℤ.* y ℤ.+ + 0 ℤ.* x
+    lemB = ℤS.solve 2 (λ x y → y :+ y := con (+ 2) :* y :+ con (+ 0) :* x) refl
+
+  -- i v, componentwise.
+  ⅈ*≡ : ∀ c d → ⅈᶻ ZR.* Cplx c d ≡ Cplx (ℤ.- d) c
+  ⅈ*≡ c d = cong₂ Cplx
+    (ℤS.solve 2 (λ c d → con (+ 0) :* c :+ :- (con (+ 1) :* d) := :- d) refl c d)
+    (ℤS.solve 2 (λ c d → con (+ 0) :* d :+ con (+ 1) :* c := c) refl c d)
+    where open ℤS using (_:+_ ; _:*_ ; :-_ ; _:=_ ; con)
+
+  xor-lemma₀ : ∀ oa ob oc od → oa xor ob ≡ true → oc xor od ≡ true → oa xor oc ≡ false →
+               ob xor od ≡ false
+  xor-lemma₀ true  false true  false _ _ _ = refl
+  xor-lemma₀ false true  false true  _ _ _ = refl
+  xor-lemma₀ true  true  _ _ () _ _
+  xor-lemma₀ false false _ _ () _ _
+  xor-lemma₀ _ _ true  true  _ () _
+  xor-lemma₀ _ _ false false _ () _
+  xor-lemma₀ true  false false true  _ _ ()
+  xor-lemma₀ false true  true  false _ _ ()
+
+  xor-lemma₁ : ∀ oa ob oc od → oa xor ob ≡ true → oc xor od ≡ true → oa xor oc ≡ true →
+               (oa xor od ≡ false) × (ob xor oc ≡ false)
+  xor-lemma₁ true  false false true  _ _ _ = refl , refl
+  xor-lemma₁ false true  true  false _ _ _ = refl , refl
+  xor-lemma₁ true  true  _ _ () _ _
+  xor-lemma₁ false false _ _ () _ _
+  xor-lemma₁ _ _ true  true  _ () _
+  xor-lemma₁ _ _ false false _ () _
+  xor-lemma₁ true  false true  false _ _ ()
+  xor-lemma₁ false true  false true  _ _ ()
+
+  odd-sub : ∀ x y → oddℤ (x ℤ.+ ℤ.- y) ≡ oddℤ x xor oddℤ y
+  odd-sub x y = trans (oddℤ-+ x (ℤ.- y)) (cong (oddℤ x xor_) (oddℤ-neg y))
+
+-- u ≡ i^(qOf u v) v (mod 2) for odd u and v.
+qOf-spec : ∀ u v → Odd u → Odd v → 2∣ (u ZR.- (ⅈᶻ ^ᶻ qOf u v) ZR.* v)
+qOf-spec (Cplx a b) (Cplx c d) ou ov
+  with oddℤ a xor oddℤ c in eac
+... | false = subst (λ z → 2∣ (Cplx a b ZR.- z)) (sym (ZR.*-identityˡ (Cplx c d)))
+               (2∣-intro (a ℤ.+ ℤ.- c) (b ℤ.+ ℤ.- d)
+                 (trans (odd-sub a c) eac)
+                 (trans (odd-sub b d)
+                   (xor-lemma₀ (oddℤ a) (oddℤ b) (oddℤ c) (oddℤ d)
+                     (trans (sym (oddℤ-+ a b)) ou) (trans (sym (oddℤ-+ c d)) ov) eac)))
+... | true = subst (λ z → 2∣ (Cplx a b ZR.- z)) (sym (trans (cong (ZR._* Cplx c d) (ZR.*-identityʳ ⅈᶻ)) (ⅈ*≡ c d)))
+               (2∣-intro (a ℤ.+ ℤ.- (ℤ.- d)) (b ℤ.+ ℤ.- c)
+                 (trans (odd-sub a (ℤ.- d)) (trans (cong (oddℤ a xor_) (oddℤ-neg d)) (proj₁ facts)))
+                 (trans (odd-sub b c) (proj₂ facts)))
+  where
+  facts = xor-lemma₁ (oddℤ a) (oddℤ b) (oddℤ c) (oddℤ d)
+            (trans (sym (oddℤ-+ a b)) ou) (trans (sym (oddℤ-+ c d)) ov) eac
+
+------------------------------------------------------------------------
+-- The syllable of a pivot column
+
+-- k = 0: the unit at index m (if found), with invExp e.
+unitSyl : (p m : Fin n) → ℕ → Dec (m < p) → Word (Gen n)
+unitSyl p m e (yes m<p) = X m p m<p • i m ^ e
+unitSyl p m e (no  _)   = i p ^ e
+
+-- k > 0: the first two odd entries j < ℓ.
+pairSyl : (w : Vec Z n) (j ℓ : Fin n) → Dec (j < ℓ) → Word (Gen n)
+pairSyl w j ℓ (yes j<ℓ) = K† j ℓ j<ℓ • i ℓ ^ qOf (w ! j) (w ! ℓ)
+pairSyl w j ℓ (no  _)   = ε
+
+private
+  unitStep : Fin n → Vec Z n → Maybe (Fin n) → Word (Gen n)
+  unitStep p w (just m) = unitSyl p m (invExp (w ! m)) (m FinP.<? p)
+  unitStep p w nothing  = ε
+
+  pairStep₂ : Vec Z n → Fin n → Maybe (Fin n) → Word (Gen n)
+  pairStep₂ w j (just ℓ) = pairSyl w j ℓ (j FinP.<? ℓ)
+  pairStep₂ w j nothing  = ε
+
+  pairStep : Vec Z n → Maybe (Fin n) → Word (Gen n)
+  pairStep w (just j) = pairStep₂ w j (nextOdd j w)
+  pairStep w nothing  = ε
+
+sylData : Fin n → ℕ → Vec Z n → Word (Gen n)
+sylData p zero    w = unitStep p w (firstOdd w)
+sylData p (suc k) w = pairStep w (firstOdd w)
+
+-- The syllable, from the facts that determine it.
+sylData-unit< : ∀ {p m : Fin n} (w : Vec Z n) → firstOdd w ≡ just m → (m<p : m < p) →
+                sylData p 0 w ≡ X m p m<p • i m ^ invExp (w ! m)
+sylData-unit< {p = p} {m} w fo m<p rewrite fo with m FinP.<? p
+... | yes _ = refl
+... | no ¬m<p = ⊥-elim (¬m<p m<p)
+
+sylData-unit≡ : ∀ {p : Fin n} (w : Vec Z n) → firstOdd w ≡ just p →
+                sylData p 0 w ≡ i p ^ invExp (w ! p)
+sylData-unit≡ {p = p} w fo rewrite fo with p FinP.<? p
+... | yes p<p = ⊥-elim (FinP.<-irrefl refl p<p)
+... | no _ = refl
+
+sylData-pair : ∀ {p j ℓ : Fin n} k (w : Vec Z n) → firstOdd w ≡ just j → nextOdd j w ≡ just ℓ →
+               (j<ℓ : j < ℓ) → sylData p (suc k) w ≡ K† j ℓ j<ℓ • i ℓ ^ qOf (w ! j) (w ! ℓ)
+sylData-pair {j = j} {ℓ} k w fo nx j<ℓ rewrite fo | nx with j FinP.<? ℓ
+... | yes _ = refl
+... | no ¬j<ℓ = ⊥-elim (¬j<ℓ j<ℓ)
+
+------------------------------------------------------------------------
+-- Characterising the first odd entries
+
+firstOdd-char : ∀ (w : Vec Z n) {j} → Odd (w ! j) → (∀ x → x < j → Even (w ! x)) → firstOdd w ≡ just j
+firstOdd-char w oj below = first-char (λ x → oddᶻ (w ! x)) oj below
+
+nextOdd-char : ∀ (w : Vec Z n) {j ℓ} → j < ℓ → Odd (w ! ℓ) →
+               (∀ x → j < x → x < ℓ → Even (w ! x)) → nextOdd j w ≡ just ℓ
+nextOdd-char w {j} {ℓ} j<ℓ oℓ between =
+  first-char (λ x → does (j FinP.<? x) ∧ oddᶻ (w ! x))
+    (trans (cong (_∧ oddᶻ (w ! ℓ)) (dec-true (j FinP.<? ℓ) j<ℓ)) oℓ) below
+  where
+  below : ∀ x → x < ℓ → does (j FinP.<? x) ∧ oddᶻ (w ! x) ≡ false
+  below x x<ℓ = aux (j FinP.<? x)
+    where
+    aux : (d : Dec (j < x)) → does d ∧ oddᶻ (w ! x) ≡ false
+    aux (yes j<x) = between x j<x x<ℓ
+    aux (no  _)   = refl
+
+firstOdd-spec : ∀ (w : Vec Z n) {j} → firstOdd w ≡ just j → Odd (w ! j) × (∀ x → x < j → Even (w ! x))
+firstOdd-spec w eq = first-just (λ x → oddᶻ (w ! x)) eq
+
+firstOdd-nothing : ∀ (w : Vec Z n) → firstOdd w ≡ nothing → ∀ x → Even (w ! x)
+firstOdd-nothing w eq = first-nothing (λ x → oddᶻ (w ! x)) eq
+
+nextOdd-spec : ∀ (w : Vec Z n) {j ℓ} → nextOdd j w ≡ just ℓ →
+               j < ℓ × Odd (w ! ℓ) × (∀ x → j < x → x < ℓ → Even (w ! x))
+nextOdd-spec w {j} {ℓ} eq with first-just (λ x → does (j FinP.<? x) ∧ oddᶻ (w ! x)) eq
+... | Pℓ , below = proj₁ (split ℓ (j FinP.<? ℓ) Pℓ) , proj₂ (split ℓ (j FinP.<? ℓ) Pℓ) , between
+  where
+  split : ∀ x (d : Dec (j < x)) → does d ∧ oddᶻ (w ! x) ≡ true → j < x × Odd (w ! x)
+  split x (yes j<x) P = j<x , P
+  split x (no  _)   ()
+  between : ∀ x → j < x → x < ℓ → Even (w ! x)
+  between x j<x x<ℓ = aux (j FinP.<? x) (below x x<ℓ)
+    where
+    aux : (d : Dec (j < x)) → does d ∧ oddᶻ (w ! x) ≡ false → Even (w ! x)
+    aux (yes _) e = e
+    aux (no ¬j<x) _ = ⊥-elim (¬j<x j<x)
