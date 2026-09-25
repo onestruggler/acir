@@ -260,3 +260,32 @@ comm-words u (v • v′) (a , a′) = begin
   v • (u • v′)          ≈⟨ cright comm-words u v′ a′ ⟩
   v • (v′ • u)          ≈⟨ sym assoc ⟩
   (v • v′) • u          ∎
+
+------------------------------------------------------------------------
+-- H_[j,k] ω_[j]⁴ = ω_[j]⁴ ω_[k]⁴ X_[j,k] H_[j,k]
+--
+-- (The thesis, Case 2, writes X_[j,k] H_[j,k]: that is (m) with ω⁴ on
+-- k, and differs from H ω_[j]⁴ by the sign ω_[j]⁴ ω_[k]⁴.)  From (m),
+-- and (17): ω_[j] ω_[k] is a scalar on the indices j and k.
+
+Hω⁴≈ω⁴ω⁴XH : .(p : j < k) → H j k p • ω j ^ 4 ≈ ω j ^ 4 • ω k ^ 4 • X j k p • H j k p
+Hω⁴≈ω⁴ω⁴XH {j} {k} p = begin
+  H′ • ω j ^ 4                                  ≈⟨ sym right-unit ⟩
+  (H′ • ω j ^ 4) • ε                            ≈⟨ cright sym ω⁸ ⟩
+  (H′ • ω j ^ 4) • ω k ^ 8                      ≈⟨ cright ^-+ (ω k) 4 4 ⟩
+  (H′ • ω j ^ 4) • (ω k ^ 4 • ω k ^ 4)          ≈⟨ by-assoc auto ⟩
+  H′ • (ω j ^ 4 • ω k ^ 4) • ω k ^ 4            ≈⟨ cright cleft sym (^-• (ω j) (ω k) 4 jk) ⟩
+  H′ • (ω j • ω k) ^ 4 • ω k ^ 4                ≈⟨ sym assoc ⟩
+  (H′ • (ω j • ω k) ^ 4) • ω k ^ 4              ≈⟨ cleft sym (conj-^ sc 4) ⟩
+  ((ω j • ω k) ^ 4 • H′) • ω k ^ 4              ≈⟨ assoc ⟩
+  (ω j • ω k) ^ 4 • (H′ • ω k ^ 4)              ≈⟨ cright sym (XH≈Hω⁴ p) ⟩
+  (ω j • ω k) ^ 4 • (X′ • H′)                   ≈⟨ cleft ^-• (ω j) (ω k) 4 jk ⟩
+  (ω j ^ 4 • ω k ^ 4) • (X′ • H′)               ≈⟨ by-assoc auto ⟩
+  ω j ^ 4 • ω k ^ 4 • X′ • H′                   ∎
+  where
+  H′ = H j k p
+  X′ = X j k p
+  jk : ω j • ω k ≈ ω k • ω j
+  jk = ωω (<⇒≢ p)
+  sc : (ω j • ω k) • H′ ≈ H′ • (ω j • ω k)
+  sc = trans assoc (axiom (scalar-H p))

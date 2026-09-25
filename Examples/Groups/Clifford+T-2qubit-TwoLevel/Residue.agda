@@ -20,7 +20,9 @@
 
 module Examples.Groups.Clifford+T-2qubit-TwoLevel.Residue where
 
-open import Data.Bool.Base using (Bool ; true ; false ; not ; _∧_ ; _∨_ ; _xor_ ; if_then_else_)
+open import Data.Bool.Base using (Bool ; true ; false ; not ; _∧_ ; _∨_ ; _xor_ ; if_then_else_ ; T)
+open import Data.Unit.Base using (tt)
+import Data.Nat.Properties as ℕP
 open import Data.Integer.Base as ℤ using (ℤ ; +_ ; -[1+_])
 import Data.Integer.Properties as ℤP
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
@@ -373,3 +375,34 @@ zOf-< u v = sub4-< (mP (par v)) (mP (par u))
   sub4-< 1 (suc (suc (suc (suc l)))) = ℕ.s≤s ℕ.z≤n
   sub4-< 2 (suc (suc (suc (suc l)))) = ℕ.s≤s ℕ.z≤n
   sub4-< 3 (suc (suc (suc (suc l)))) = ℕ.s≤s ℕ.z≤n
+
+------------------------------------------------------------------------
+-- The exponent under multiplication by ω
+
+-- (z - 1) mod 4.
+pred4 : ℕ → ℕ
+pred4 0 = 3
+pred4 (suc z) = z
+
+private
+  ≡ᵇ-sound : ∀ m n → (m ℕ.≡ᵇ n) ≡ true → m ≡ n
+  ≡ᵇ-sound m n h = ℕP.≡ᵇ⇒≡ m n (subst T (sym h) tt)
+
+  zOf-ω-test : Vec Bool 8 → Bool
+  zOf-ω-test (a ∷ b ∷ c ∷ d ∷ a′ ∷ b′ ∷ c′ ∷ d′ ∷ []) =
+    imp (oddP P ∧ oddP P′) (zP (par ωᶻ ⊗ P) P′ ℕ.≡ᵇ pred4 (zP P P′))
+    where
+    P = ⟨ a , b , c , d ⟩
+    P′ = ⟨ a′ , b′ , c′ , d′ ⟩
+
+  zOf-ω-all : allB 8 zOf-ω-test ≡ true
+  zOf-ω-all = refl
+
+-- Multiplying the first entry by ω lowers the exponent by one.
+zOf-ω : ∀ u v → oddᶻ u ≡ true → oddᶻ v ≡ true → zOf (ωᶻ ZR.* u) v ≡ pred4 (zOf u v)
+zOf-ω u v ou ov =
+  trans (cong (λ P → zP P (par v)) (par-* ωᶻ u))
+        (≡ᵇ-sound _ _ (imp-sound (allB-sound 8 zOf-ω-test zOf-ω-all
+                                   (pa (par u) ∷ pb (par u) ∷ pc (par u) ∷ pd (par u) ∷
+                                    pa (par v) ∷ pb (par v) ∷ pc (par v) ∷ pd (par v) ∷ []))
+                                 (∧-intro (trans (oddP-par u) ou) (trans (oddP-par v) ov))))
