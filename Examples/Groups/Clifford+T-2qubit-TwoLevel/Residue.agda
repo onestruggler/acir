@@ -623,3 +623,30 @@ zOf-2-c u v ou ov z2 = not-true (∧-l h) , ∧-r {not (c1 (par u ⊕ par v))} h
   (δᶻ ZR.* g1) ZR.* y        ≡⟨ cong (ZR._* y) δg1 ⟩
   2ᶻ ZR.* y                  ∎)
   where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- The exponent with the entries exchanged
+
+-- (-z) mod 4.
+neg4 : ℕ → ℕ
+neg4 0 = 0
+neg4 1 = 3
+neg4 2 = 2
+neg4 3 = 1
+neg4 _ = 0
+
+private
+  sym-test : Vec Bool 8 → Bool
+  sym-test (a ∷ b ∷ c ∷ d ∷ a′ ∷ b′ ∷ c′ ∷ d′ ∷ []) =
+    imp (oddP P ∧ oddP Q) (zP Q P ℕ.≡ᵇ neg4 (zP P Q))
+    where
+    P = ⟨ a , b , c , d ⟩
+    Q = ⟨ a′ , b′ , c′ , d′ ⟩
+
+  sym-all : allB 8 sym-test ≡ true
+  sym-all = refl
+
+zOf-sym : ∀ u v → oddᶻ u ≡ true → oddᶻ v ≡ true → zOf v u ≡ neg4 (zOf u v)
+zOf-sym u v ou ov =
+  ≡ᵇ-sound _ _ (imp-sound (allB-sound 8 sym-test sym-all (vec8 (par u) (par v)))
+                          (∧-intro (trans (oddP-par u) ou) (trans (oddP-par v) ov)))

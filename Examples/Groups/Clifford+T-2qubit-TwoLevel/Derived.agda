@@ -354,3 +354,106 @@ private
 
 Hω²H≈Xω⁷ωHω² : .(p : j < k) → H j k p • ω j ^ 2 • H j k p ≈ X j k p • ω k ^ 7 • ω j • H j k p • ω j ^ 2
 Hω²H≈Xω⁷ωHω² p = trans (rL p) (sym (rR p))
+
+------------------------------------------------------------------------
+-- Table 2, (z₁)–(z₃): H_[j,k] ω_[j]ᵉ X_[j,k] = ω_[j]^(4+e) ω_[k]ᵉ X_[j,k] H_[j,k] ω_[j]^(4-e)
+--
+-- H ω_[j]ᵉ X = ω_[k]⁴ H ω_[k]ᵉ = ω_[k]⁴ X H ω_[k]^(4+e) by (10), (18)
+-- and (m); then ω_[k]^(4+e) = (ω_[j] ω_[k])^(4+e) ω_[j]^(4-e), whose
+-- scalar part moves out through H and X by (16) and (17).
+
+private
+  -- (ω_[j] ω_[k])ᵉ commutes with X_[j,k].
+  scX^ : .(p : j < k) → ∀ e → (ω j • ω k) ^ e • X j k p ≈ X j k p • (ω j • ω k) ^ e
+  scX^ p e = conj-^ (trans assoc (axiom (scalar-X p))) e
+
+  -- H = X H ω_[k]⁴.
+  H≈XHω⁴ : .(p : j < k) → H j k p ≈ X j k p • (H j k p • ω k ^ 4)
+  H≈XHω⁴ p = trans (sym left-unit) (trans (cleft sym (X-X p)) (trans assoc (cright XH≈Hω⁴ p)))
+
+  -- The scalar part moves out: X H (ω_[j]ᵐ ω_[k]ᵐ) ω_[j]ᶠ = ω_[j]ᵐ ω_[k]ᵐ X H ω_[j]ᶠ.
+  sc-out : .(p : j < k) → ∀ m f →
+           X j k p • H j k p • (ω j ^ m • ω k ^ m) • ω j ^ f ≈ (ω j ^ m • ω k ^ m) • X j k p • H j k p • ω j ^ f
+  sc-out {j} {k} p m f = begin
+    X′ • H′ • (ω j ^ m • ω k ^ m) • ω j ^ f        ≈⟨ cright cright cleft sym (^-• (ω j) (ω k) m jk) ⟩
+    X′ • H′ • (ω j • ω k) ^ m • ω j ^ f            ≈⟨ cright sym assoc ⟩
+    X′ • (H′ • (ω j • ω k) ^ m) • ω j ^ f          ≈⟨ cright cleft sym (scH^ p m) ⟩
+    X′ • ((ω j • ω k) ^ m • H′) • ω j ^ f          ≈⟨ cright assoc ⟩
+    X′ • (ω j • ω k) ^ m • H′ • ω j ^ f            ≈⟨ sym assoc ⟩
+    (X′ • (ω j • ω k) ^ m) • H′ • ω j ^ f          ≈⟨ cleft sym (scX^ p m) ⟩
+    ((ω j • ω k) ^ m • X′) • H′ • ω j ^ f          ≈⟨ assoc ⟩
+    (ω j • ω k) ^ m • X′ • H′ • ω j ^ f            ≈⟨ cleft ^-• (ω j) (ω k) m jk ⟩
+    (ω j ^ m • ω k ^ m) • X′ • H′ • ω j ^ f        ∎
+    where
+    X′ = X j k p
+    H′ = H j k p
+    jk = ωω (<⇒≢ p)
+
+  -- H ω_[j]ᵉ X = ω_[k]⁴ X H ω_[k]⁴ ω_[k]ᵉ.
+  HωX-core : .(p : j < k) → ∀ e → H j k p • ω j ^ e • X j k p ≈ ω k ^ 4 • X j k p • H j k p • ω k ^ 4 • ω k ^ e
+  HωX-core {j} {k} p e = begin
+    H′ • ω j ^ e • X′                                  ≈⟨ cright conj-^ (ωX≈Xω′ p) e ⟩
+    H′ • X′ • ω k ^ e                                  ≈⟨ sym assoc ⟩
+    (H′ • X′) • ω k ^ e                                ≈⟨ cleft axiom (rel-18 p) ⟩
+    (ω k ^ 4 • H′) • ω k ^ e                           ≈⟨ cleft cright H≈XHω⁴ p ⟩
+    (ω k ^ 4 • X′ • H′ • ω k ^ 4) • ω k ^ e            ≈⟨ assoc ⟩
+    ω k ^ 4 • ((X′ • H′ • ω k ^ 4) • ω k ^ e)          ≈⟨ cright assoc ⟩
+    ω k ^ 4 • X′ • ((H′ • ω k ^ 4) • ω k ^ e)          ≈⟨ cright cright assoc ⟩
+    ω k ^ 4 • X′ • H′ • ω k ^ 4 • ω k ^ e              ∎
+    where
+    X′ = X j k p
+    H′ = H j k p
+
+-- (z₁): H ω_[j]³ X = ω_[j]⁷ ω_[k]³ X H ω_[j].
+Hω³X : .(p : j < k) → H j k p • ω j ^ 3 • X j k p ≈ ω j ^ 7 • ω k ^ 3 • X j k p • H j k p • ω j
+Hω³X {j} {k} p = begin
+  H′ • ω j ^ 3 • X′                                      ≈⟨ HωX-core p 3 ⟩
+  ω k ^ 4 • X′ • H′ • ω k ^ 4 • ω k ^ 3                  ≈⟨ cright cright cright sym (trans (cleft ω⁸) left-unit) ⟩
+  ω k ^ 4 • X′ • H′ • ω j ^ 8 • ω k ^ 4 • ω k ^ 3        ≈⟨ cright cright cright by-assoc auto ⟩
+  ω k ^ 4 • X′ • H′ • ω j ^ 7 • (ω j • ω k ^ 7)          ≈⟨ cright cright cright cright ωω^ (<⇒≢ p) 1 7 ⟩
+  ω k ^ 4 • X′ • H′ • ω j ^ 7 • (ω k ^ 7 • ω j)          ≈⟨ cright by-assoc auto ⟩
+  ω k ^ 4 • X′ • H′ • (ω j ^ 7 • ω k ^ 7) • ω j          ≈⟨ cright sc-out p 7 1 ⟩
+  ω k ^ 4 • (ω j ^ 7 • ω k ^ 7) • X′ • H′ • ω j          ≈⟨ by-assoc auto ⟩
+  (ω k ^ 4 • ω j ^ 7) • ω k ^ 7 • X′ • H′ • ω j          ≈⟨ cleft ωω^ (>⇒≢ p) 4 7 ⟩
+  (ω j ^ 7 • ω k ^ 4) • ω k ^ 7 • X′ • H′ • ω j          ≈⟨ by-assoc auto ⟩
+  ω j ^ 7 • ω k ^ 11 • X′ • H′ • ω j                     ≈⟨ cright cleft ω^+8 3 ⟩
+  ω j ^ 7 • ω k ^ 3 • X′ • H′ • ω j                      ∎
+  where
+  X′ = X j k p
+  H′ = H j k p
+
+-- (z₂): H ω_[j]² X = ω_[j]⁶ ω_[k]² X H ω_[j]².
+Hω²X : .(p : j < k) → H j k p • ω j ^ 2 • X j k p ≈ ω j ^ 6 • ω k ^ 2 • X j k p • H j k p • ω j ^ 2
+Hω²X {j} {k} p = begin
+  H′ • ω j ^ 2 • X′                                      ≈⟨ HωX-core p 2 ⟩
+  ω k ^ 4 • X′ • H′ • ω k ^ 4 • ω k ^ 2                  ≈⟨ cright cright cright sym (trans (cleft ω⁸) left-unit) ⟩
+  ω k ^ 4 • X′ • H′ • ω j ^ 8 • ω k ^ 4 • ω k ^ 2        ≈⟨ cright cright cright by-assoc auto ⟩
+  ω k ^ 4 • X′ • H′ • ω j ^ 6 • (ω j ^ 2 • ω k ^ 6)      ≈⟨ cright cright cright cright ωω^ (<⇒≢ p) 2 6 ⟩
+  ω k ^ 4 • X′ • H′ • ω j ^ 6 • (ω k ^ 6 • ω j ^ 2)      ≈⟨ cright by-assoc auto ⟩
+  ω k ^ 4 • X′ • H′ • (ω j ^ 6 • ω k ^ 6) • ω j ^ 2      ≈⟨ cright sc-out p 6 2 ⟩
+  ω k ^ 4 • (ω j ^ 6 • ω k ^ 6) • X′ • H′ • ω j ^ 2      ≈⟨ by-assoc auto ⟩
+  (ω k ^ 4 • ω j ^ 6) • ω k ^ 6 • X′ • H′ • ω j ^ 2      ≈⟨ cleft ωω^ (>⇒≢ p) 4 6 ⟩
+  (ω j ^ 6 • ω k ^ 4) • ω k ^ 6 • X′ • H′ • ω j ^ 2      ≈⟨ by-assoc auto ⟩
+  ω j ^ 6 • ω k ^ 10 • X′ • H′ • ω j ^ 2                 ≈⟨ cright cleft ω^+8 2 ⟩
+  ω j ^ 6 • ω k ^ 2 • X′ • H′ • ω j ^ 2                  ∎
+  where
+  X′ = X j k p
+  H′ = H j k p
+
+-- (z₃): H ω_[j] X = ω_[j]⁵ ω_[k] X H ω_[j]³.
+Hω¹X : .(p : j < k) → H j k p • ω j • X j k p ≈ ω j ^ 5 • ω k • X j k p • H j k p • ω j ^ 3
+Hω¹X {j} {k} p = begin
+  H′ • ω j • X′                                          ≈⟨ HωX-core p 1 ⟩
+  ω k ^ 4 • X′ • H′ • ω k ^ 4 • ω k                      ≈⟨ cright cright cright sym (trans (cleft ω⁸) left-unit) ⟩
+  ω k ^ 4 • X′ • H′ • ω j ^ 8 • ω k ^ 4 • ω k            ≈⟨ cright cright cright by-assoc auto ⟩
+  ω k ^ 4 • X′ • H′ • ω j ^ 5 • (ω j ^ 3 • ω k ^ 5)      ≈⟨ cright cright cright cright ωω^ (<⇒≢ p) 3 5 ⟩
+  ω k ^ 4 • X′ • H′ • ω j ^ 5 • (ω k ^ 5 • ω j ^ 3)      ≈⟨ cright by-assoc auto ⟩
+  ω k ^ 4 • X′ • H′ • (ω j ^ 5 • ω k ^ 5) • ω j ^ 3      ≈⟨ cright sc-out p 5 3 ⟩
+  ω k ^ 4 • (ω j ^ 5 • ω k ^ 5) • X′ • H′ • ω j ^ 3      ≈⟨ by-assoc auto ⟩
+  (ω k ^ 4 • ω j ^ 5) • ω k ^ 5 • X′ • H′ • ω j ^ 3      ≈⟨ cleft ωω^ (>⇒≢ p) 4 5 ⟩
+  (ω j ^ 5 • ω k ^ 4) • ω k ^ 5 • X′ • H′ • ω j ^ 3      ≈⟨ by-assoc auto ⟩
+  ω j ^ 5 • ω k ^ 9 • X′ • H′ • ω j ^ 3                  ≈⟨ cright cleft ω^+8 1 ⟩
+  ω j ^ 5 • ω k • X′ • H′ • ω j ^ 3                      ∎
+  where
+  X′ = X j k p
+  H′ = H j k p
