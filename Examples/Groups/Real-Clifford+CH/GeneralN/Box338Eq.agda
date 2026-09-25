@@ -54,11 +54,12 @@ open import Word.Base using (ε ; _•_)
 
 open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 
-open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools ; module Conj ; X² ; Ex²)
+open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools ; module Conj ; X² ; Ex² ; ax)
+open import Examples.Groups.Real-Clifford+CH.MultiControlled using (ΛH)
 open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (same-sem ; Evaluated)
 import Examples.Groups.Real-Clifford+CH.SemanticSteps as SS
 open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Auxiliary complete₂ using (module N₂ ; eq117 ; eq118)
-open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Figure13 complete₂ using (eq111)
+open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Figure13 complete₂ using (eq111 ; eq112)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Blocks complete₂ complete₃ using (module S₀₁)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Rotations3 complete₂ complete₃
   using (ZX₃ ; XZ₃ ; eq208 ; eq208′)
@@ -70,7 +71,8 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Box complete₂ complete�
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxZX complete₂ complete₃ using (B₀₁)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxFull complete₂ complete₃ using (eq299)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxMerge complete₂ complete₃ using (eq301 ; eq302)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Keystone complete₂ complete₃ using (eq284 ; E□²)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Keystone complete₂ complete₃ using (eq284 ; E□² ; eq285ₙ)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Colours complete₂ complete₃ using (conj-swap)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (B₁ ; Hg)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Gadget322 complete₂ complete₃
   using (L ; zx ; xz ; kb ; kb′ ; bb ; lt ; es ; word ; pass-word ; via ; module CW ; E320 ; S-place)
@@ -305,3 +307,49 @@ module XY (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
   eq338xy : Λ□ (₄₊ k) • Hg (₂₊ k) ≈ Hg (₂₊ k) • Λ□ (₄₊ k)
   eq338xy = Aj.⟪⟫-≈ core (Aj.⟪⟫-•₂ (Aj.⟪⟫-⟪⟫ Λ) refl) (Aj.⟪⟫-•₂ refl (Aj.⟪⟫-⟪⟫ Λ))
+
+  --------------------------------------------------------------------
+  -- For rule (39): X on the H gate's box wire, and the H gate under the
+  -- swap of the wires 0 1 against the box negated on wire 1
+
+  private
+    open SS.Below 2 (s≤s (s≤s z≤n)) complete₂ using (by-sem)
+
+    module X₁ = Conj {N} (X ↑) (lemma-cong↑ _ _ X²)
+
+    -- Two-wire facts: P ⊗ P carries X on wire 1 to Z H Z there, and the
+    -- swap carries a gate on wire 0 to wire 1.
+    PX : Aj.⟪ X ↑ ⟫ ≈ (Z • H • Z) ↑
+    PX = by-sem (PP • X ↑ • PP) ((Z • H • Z) ↑) Eq.refl {₃₊ k}
+
+    SY : S₀₁.⟪ Z • H • Z ⟫ ≈ (Z • H • Z) ↑
+    SY = by-sem (Ex • (Z • H • Z) • Ex) ((Z • H • Z) ↑) Eq.refl {₃₊ k}
+
+    -- Z H Z on the box wire passes the box: (19) and (285).
+    ZHZ-Λ : (Z • H • Z) • Λ ≈ Λ • (Z • H • Z)
+    ZHZ-Λ = pass′ (ax (box-Z k)) (pass′ (eq285ₙ (₁₊ k) c) (ax (box-Z k)))
+      where
+      pass′ : ∀ {a u : Circuit N} → a • Λ ≈ Λ • a → u • Λ ≈ Λ • u → (a • u) • Λ ≈ Λ • (a • u)
+      pass′ ea eu = trans assoc (trans (back _ eu) (trans (sym assoc) (trans (front _ ea) assoc)))
+
+    -- Hence on the box wire of B₁₀, and between P ⊗ P X on wire 1.
+    Y-B₁₀ : (Z • H • Z) ↑ • B₁₀ ≈ B₁₀ • (Z • H • Z) ↑
+    Y-B₁₀ = S₀₁.⟪⟫-≈ ZHZ-Λ (S₀₁.⟪⟫-•₂ SY refl) (S₀₁.⟪⟫-•₂ refl SY)
+
+  -- X on the box wire of the H gate passes it.
+  X-Hg : X ↑ • Hg (₂₊ k) ≈ Hg (₂₊ k) • X ↑
+  X-Hg = Aj.⟪⟫-≈ Y-B₁₀ (Aj.⟪⟫-•₂ (Aj.⟪⟫-cong (sym PX) ▸ Aj.⟪⟫-⟪⟫ (X ↑)) refl)
+                        (Aj.⟪⟫-•₂ refl (Aj.⟪⟫-cong (sym PX) ▸ Aj.⟪⟫-⟪⟫ (X ↑)))
+    where
+    _▸_ : ∀ {a b c : Circuit N} → a ≈ b → b ≈ c → a ≈ c
+    _▸_ = trans
+
+  -- The H gate under the swap of the wires 0 1 is Hg: P ⊗ P commutes
+  -- with the swap.
+  S-ΛH : S₀₁.⟪ ΛH (₃₊ k) ⟫ ≈ Hg (₂₊ k)
+  S-ΛH = conj-swap (sym eq112) Λ
+
+  core39 : S₀₁.⟪ ΛH (₃₊ k) ⟫ • X₁.⟪ Λ ⟫ ≈ X₁.⟪ Λ ⟫ • S₀₁.⟪ ΛH (₃₊ k) ⟫
+  core39 = trans (front _ S-ΛH) (trans (sym (X₁.⟪⟫-≈ eq338xy (X₁.⟪⟫-•₂ refl (X₁.⟪⟫-fix X-Hg))
+                                                        (X₁.⟪⟫-•₂ (X₁.⟪⟫-fix X-Hg) refl)))
+                                      (back _ (sym S-ΛH)))
