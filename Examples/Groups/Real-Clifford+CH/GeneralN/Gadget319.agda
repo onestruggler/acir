@@ -59,10 +59,11 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.CForm
   using (CF ; cf-• ; cf-loc ; cf-loc′ ; cf-↑ ; cf-box ; cf-~)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Locals using (Ex₁₂ᴸ ; Ex₁₂ᴸ-def)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Place
-  using (place ; place-• ; place-low ; place-cong ; place-high ; lemma-5-1 ; ↑ᵏ-↑)
+  using (place ; place-• ; place-low ; place-cong ; place-high ; lemma-5-1 ; ↑ᵏ-↑ ; cyc⁻¹-cyc)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.PlaceAt using (placeAt ; placeAt-step ; placeAt-place)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Idle using (place-yB)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.LocalPlace using (local-comm)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Gadget318 complete₂ complete₃ using (Box₃)
 open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (same-sem)
 
 ------------------------------------------------------------------------
@@ -133,6 +134,24 @@ ZX₃-β∅ (suc k) below = begin
     ≡→≈ Eq.refl = refl
 
 ------------------------------------------------------------------------
+-- The boxes, wire 3 idle
+
+-- The box on wire 0 controlled by the wire 1 and the top wires, and by
+-- the wire 2 and the top wires (Box₃, both, is Gadget318's).
+C′ β₂ : ∀ k → Circuit (₁₊ (₄₊ k))
+C′ k = place 3 (C₀ k)
+β₂ k = place 3 (Ex ↑ • C₀ k • Ex ↑)
+
+-- A control on wire 2 of either colour (black = true).
+N₂ᵇ : ∀ {n} → Bool → Circuit (₃₊ n) → Circuit (₃₊ n)
+N₂ᵇ true  w = w
+N₂ᵇ false w = N₂.⟪ w ⟫
+
+-- The box with the colours γ, δ on the wires 1, 2.
+bx : ∀ k → Bool → Bool → Circuit (₁₊ (₄₊ k))
+bx k γ δ = N₁ᵇ γ (N₂ᵇ δ (Box₃ k))
+
+------------------------------------------------------------------------
 -- (319)
 
 module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
@@ -146,28 +165,6 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
   open Tools (N VRel,_===_)
   open WordAlgebra (N VRel,_===_) using (comm-inv)
-
-  ----------------------------------------------------------------------
-  -- The boxes, wire 3 idle
-
-  -- The box on wire 0 controlled by the wires 1 2 and the top wires.
-  Box₃ : Circuit N
-  Box₃ = place 3 (Λ□ (₃₊ k))
-
-  -- The same without the control on wire 2, and without the one on
-  -- wire 1.
-  C′ β₂ : Circuit N
-  C′ = place 3 (C₀ k)
-  β₂ = place 3 (Ex ↑ • C₀ k • Ex ↑)
-
-  -- A control on wire 2 of either colour (black = true).
-  N₂ᵇ : Bool → Circuit N → Circuit N
-  N₂ᵇ true  w = w
-  N₂ᵇ false w = N₂.⟪ w ⟫
-
-  -- The box with the colours γ, δ on the wires 1, 2.
-  bx : Bool → Bool → Circuit N
-  bx γ δ = N₁ᵇ γ (N₂ᵇ δ Box₃)
 
   private
     ≡→≈ : ∀ {a b : Circuit N} → a ≡ b → a ≈ b
@@ -195,36 +192,36 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       B₁₀ (₁₊ k) ↑ • ZX₃         ≈⟨ front _ (B₁₀↑-place k complete) ⟩
       C₃ • ZX₃ ∎
 
-    Box-S : S₂₃.⟪ C₃ ⟫ ≈ Box₃
+    Box-S : S₂₃.⟪ C₃ ⟫ ≈ Box₃ k
     Box-S = sym (Eq.subst₂ (λ a b → a ≈ Ex ↑ ↑ • b • Ex ↑ ↑)
                   (placeAt-place 3 (Λ□ (₃₊ k))) (placeAt-place 2 (Λ□ (₃₊ k)))
                   (placeAt-step 2 (Λ□ (₃₊ k)) (s≤s (s≤s (s≤s z≤n)))))
 
-    ZX₃-Box₃ : ZX₃ • Box₃ ≈ Box₃ • ZX₃
+    ZX₃-Box₃ : ZX₃ • Box₃ k ≈ Box₃ k • ZX₃
     ZX₃-Box₃ = S₂₃.⟪⟫-≈ ZX₃-C₃ (S₂₃.⟪⟫-•₂ fix Box-S) (S₂₃.⟪⟫-•₂ Box-S fix)
       where
       fix : S₂₃.⟪ ZX₃ ⟫ ≈ ZX₃
       fix = S₂₃.⟪⟫-fix (sym eq214)
 
-    C′-B□↑ : C′ ≈ B□ k ↑
+    C′-B□↑ : C′ k ≈ B□ k ↑
     C′-B□↑ = trans (lemma-5-1 3 complete (sem-C₀-yB k)) (place-yB k)
 
-    ZX₃-C′ : ZX₃ • C′ ≈ C′ • ZX₃
+    ZX₃-C′ : ZX₃ • C′ k ≈ C′ k • ZX₃
     ZX₃-C′ = begin
-      ZX₃ • C′         ≈⟨ back _ C′-B□↑ ⟩
+      ZX₃ • C′ k         ≈⟨ back _ C′-B□↑ ⟩
       ZX₃ • B□ k ↑     ≈⟨ sym (eq290 k complete) ⟩
       B□ k ↑ • ZX₃     ≈⟨ front _ (sym C′-B□↑) ⟩
-      C′ • ZX₃ ∎
+      C′ k • ZX₃ ∎
 
-    β₂-S : S₁₂.⟪ C′ ⟫ ≈ β₂
+    β₂-S : S₁₂.⟪ C′ k ⟫ ≈ β₂ k
     β₂-S = sym (begin
       place 3 (Ex ↑ • C₀ k • Ex ↑)
         ≈⟨ trans (place-• 3 (Ex ↑) (C₀ k • Ex ↑)) (back _ (place-• 3 (C₀ k) (Ex ↑))) ⟩
-      place 3 (Ex ↑) • C′ • place 3 (Ex ↑)
+      place 3 (Ex ↑) • C′ k • place 3 (Ex ↑)
         ≈⟨ cong (place-low 3 (Ex {0} ↑)) (back _ (place-low 3 (Ex {0} ↑))) ⟩
-      Ex ↑ • C′ • Ex ↑ ∎)
+      Ex ↑ • C′ k • Ex ↑ ∎)
 
-    ZX₃-β₂ : ZX₃ • β₂ ≈ β₂ • ZX₃
+    ZX₃-β₂ : ZX₃ • β₂ k ≈ β₂ k • ZX₃
     ZX₃-β₂ = S₁₂.⟪⟫-≈ ZX₃-C′ (S₁₂.⟪⟫-•₂ fix β₂-S) (S₁₂.⟪⟫-•₂ β₂-S fix)
       where
       fix : S₁₂.⟪ ZX₃ ⟫ ≈ ZX₃
@@ -279,23 +276,23 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
                    (cong (place-low 3 (X {0} ↑ ↑)) (trans (place-• 3 u (X ↑ ↑)) (back _ (place-low 3 (X {0} ↑ ↑))))))
 
     -- The coloured boxes as products of the four.
-    bx10 : bx true false ≈ C′ • Box₃
+    bx10 : bx k true false ≈ C′ k • Box₃ k
     bx10 = begin
-      X ↑ ↑ • Box₃ • X ↑ ↑                  ≈⟨ X₂-place Λ₄ ⟩
+      X ↑ ↑ • Box₃ k • X ↑ ↑                  ≈⟨ X₂-place Λ₄ ⟩
       place 3 (X ↑ ↑ • Λ₄ • X ↑ ↑)          ≈⟨ lemma-5-1 3 complete s10 ⟩
       place 3 (C₀ k • Λ₄)                   ≈⟨ place-• 3 (C₀ k) Λ₄ ⟩
-      C′ • Box₃ ∎
+      C′ k • Box₃ k ∎
 
-    bx01 : bx false true ≈ β₂ • Box₃
+    bx01 : bx k false true ≈ β₂ k • Box₃ k
     bx01 = begin
-      X ↑ • Box₃ • X ↑                      ≈⟨ X₁-place Λ₄ ⟩
+      X ↑ • Box₃ k • X ↑                      ≈⟨ X₁-place Λ₄ ⟩
       place 3 (X ↑ • Λ₄ • X ↑)              ≈⟨ lemma-5-1 3 complete s01 ⟩
       place 3 ((Ex ↑ • C₀ k • Ex ↑) • Λ₄)   ≈⟨ place-• 3 (Ex ↑ • C₀ k • Ex ↑) Λ₄ ⟩
-      β₂ • Box₃ ∎
+      β₂ k • Box₃ k ∎
 
-    bx00 : bx false false ≈ β∅ k • C′ • β₂ • Box₃
+    bx00 : bx k false false ≈ β∅ k • C′ k • β₂ k • Box₃ k
     bx00 = begin
-      X ↑ • (X ↑ ↑ • Box₃ • X ↑ ↑) • X ↑
+      X ↑ • (X ↑ ↑ • Box₃ k • X ↑ ↑) • X ↑
         ≈⟨ back _ (front _ (X₂-place Λ₄)) ⟩
       X ↑ • place 3 (X ↑ ↑ • Λ₄ • X ↑ ↑) • X ↑
         ≈⟨ X₁-place (X ↑ ↑ • Λ₄ • X ↑ ↑) ⟩
@@ -305,12 +302,39 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
         ≈⟨ trans (place-• 3 (Λ□ (₁₊ k) ↑ ↑) (C₀ k • (Ex ↑ • C₀ k • Ex ↑) • Λ₄))
             (back _ (trans (place-• 3 (C₀ k) ((Ex ↑ • C₀ k • Ex ↑) • Λ₄))
                            (back _ (place-• 3 (Ex ↑ • C₀ k • Ex ↑) Λ₄)))) ⟩
-      β∅ k • C′ • β₂ • Box₃ ∎
+      β∅ k • C′ k • β₂ k • Box₃ k ∎
+
+    s10′ : ⟦ X ↑ ↑ • Λ₄ • X ↑ ↑ ⟧ ~ ⟦ Λ₄ • C₀ k ⟧
+    s10′ = cf-~ n₂Λ (cf-• I.box c₀) Eq.refl Eq.refl
+
+    s-sq : ⟦ Λ₄ • Λ₄ ⟧ ~ ⟦ ε ⟧
+    s-sq = cf-~ (cf-• I.box I.box) I.eps Eq.refl Eq.refl
+
+  ----------------------------------------------------------------------
+  -- For (320): Box₃ is an involution, and Box₃ white on wire 2 is Box₃
+  -- times C′ in either order.
+
+  Box₃² : Box₃ k • Box₃ k ≈ ε
+  Box₃² = begin
+    Box₃ k • Box₃ k        ≈⟨ sym (place-• 3 Λ₄ Λ₄) ⟩
+    place 3 (Λ₄ • Λ₄)      ≈⟨ lemma-5-1 3 complete s-sq ⟩
+    place 3 ε              ≈⟨ trans (back _ left-unit) (cyc⁻¹-cyc 3) ⟩
+    ε ∎
+
+  G-C′ : bx k true false ≈ C′ k • Box₃ k
+  G-C′ = bx10
+
+  G-C′′ : bx k true false ≈ Box₃ k • C′ k
+  G-C′′ = begin
+    X ↑ ↑ • Box₃ k • X ↑ ↑                ≈⟨ X₂-place Λ₄ ⟩
+    place 3 (X ↑ ↑ • Λ₄ • X ↑ ↑)          ≈⟨ lemma-5-1 3 complete s10′ ⟩
+    place 3 (Λ₄ • C₀ k)                   ≈⟨ place-• 3 Λ₄ (C₀ k) ⟩
+    Box₃ k • C′ k ∎
 
   ----------------------------------------------------------------------
   -- (319)
 
-  eq319 : ∀ γ δ → ZX₃ • bx γ δ ≈ bx γ δ • ZX₃
+  eq319 : ∀ γ δ → ZX₃ • bx k γ δ ≈ bx k γ δ • ZX₃
   eq319 true  true  = ZX₃-Box₃
   eq319 true  false = trans (back _ bx10) (trans (pass ZX₃-C′ ZX₃-Box₃) (front _ (sym bx10)))
   eq319 false true  = trans (back _ bx01) (trans (pass ZX₃-β₂ ZX₃-Box₃) (front _ (sym bx01)))
@@ -318,9 +342,9 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     (trans (pass (ZX₃-β∅ k below) (pass ZX₃-C′ (pass ZX₃-β₂ ZX₃-Box₃))) (front _ (sym bx00)))
 
   -- And its inverse XZ₃; and both, as rot.
-  eq319′ : ∀ γ δ → XZ₃ • bx γ δ ≈ bx γ δ • XZ₃
+  eq319′ : ∀ γ δ → XZ₃ • bx k γ δ ≈ bx k γ δ • XZ₃
   eq319′ γ δ = sym (comm-inv eq208′ eq208 (sym (eq319 γ δ)))
 
-  eq319-rot : ∀ a γ δ → rot a • bx γ δ ≈ bx γ δ • rot a
+  eq319-rot : ∀ a γ δ → rot a • bx k γ δ ≈ bx k γ δ • rot a
   eq319-rot false = eq319′
   eq319-rot true  = eq319

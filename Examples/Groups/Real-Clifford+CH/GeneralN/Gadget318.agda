@@ -48,21 +48,21 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Idle using (yB ; cf-yB ; p
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Place
   using (place ; place-• ; place-low ; place-cong ; lemma-5-1 ; low-comm)
 
+------------------------------------------------------------------------
+-- The gates
+
+-- The triply controlled ZX on wire 1 from the wires 0 2 3.
+G₁ : ∀ {k} → Circuit (₁₊ (₄₊ k))
+G₁ = S₀₁.⟪ ZX₃ ⟫
+
+-- The box on wire 0 controlled by the wires 1, 2 and 4 …, wire 3 idle;
+-- and the same with the control on wire 2 white.
+Box₃ G₂ : ∀ k → Circuit (₁₊ (₄₊ k))
+Box₃ k = place 3 (Λ□ (₃₊ k))
+G₂   k = N₂.⟪ Box₃ k ⟫
+
 module _ (k : ℕ) (complete : Complete (₁₊ k)) where
   open Tools ((₁₊ (₄₊ k)) VRel,_===_)
-
-  ----------------------------------------------------------------------
-  -- The gates
-
-  -- The triply controlled ZX on wire 1 from the wires 0 2 3.
-  G₁ : Circuit (₁₊ (₄₊ k))
-  G₁ = S₀₁.⟪ ZX₃ ⟫
-
-  -- The box on wire 0 controlled by the wires 1, 2 (white) and 4 …;
-  -- wire 3 idle.
-  Box₃ G₂ : Circuit (₁₊ (₄₊ k))
-  Box₃ = place 3 (Λ□ (₃₊ k))
-  G₂   = N₂.⟪ Box₃ ⟫
 
   private
     -- The smaller box on wire 1, controlled by wire 0 and the wires
@@ -73,7 +73,7 @@ module _ (k : ℕ) (complete : Complete (₁₊ k)) where
     ------------------------------------------------------------------
     -- The box, factor by factor ((269))
 
-    Box₃-form : Box₃ ≈ CCZX • B′ • CCXZ • B′
+    Box₃-form : Box₃ k ≈ CCZX • B′ • CCXZ • B′
     Box₃-form = begin
       place 3 (CCZX • B□ k • CCXZ • B□ k)
         ≈⟨ place-• 3 CCZX (B□ k • CCXZ • B□ k) ⟩
@@ -101,7 +101,7 @@ module _ (k : ℕ) (complete : Complete (₁₊ k)) where
         ≈⟨ back _ (place-low 3 (X {0} ↑ ↑)) ⟩
       B′ • X ↑ ↑ ∎
 
-    G₂-form : G₂ ≈ N₂.⟪ CCZX ⟫ • B′ • N₂.⟪ CCXZ ⟫ • B′
+    G₂-form : G₂ k ≈ N₂.⟪ CCZX ⟫ • B′ • N₂.⟪ CCXZ ⟫ • B′
     G₂-form = trans (N₂.⟪⟫-cong Box₃-form)
                     (N₂.⟪⟫-•₄ refl (N₂.⟪⟫-fix X₂-B′) refl (N₂.⟪⟫-fix X₂-B′))
 
@@ -168,12 +168,12 @@ module _ (k : ℕ) (complete : Complete (₁₊ k)) where
   ----------------------------------------------------------------------
   -- (318), all controls black but B's
 
-  eq318₀ : G₁ • G₂ ≈ G₂ • G₁
+  eq318₀ : G₁ • G₂ k ≈ G₂ k • G₁
   eq318₀ = begin
-    G₁ • G₂
+    G₁ • G₂ k
       ≈⟨ back _ G₂-form ⟩
     G₁ • (N₂.⟪ CCZX ⟫ • B′ • N₂.⟪ CCXZ ⟫ • B′)
       ≈⟨ pass G₁-W (pass G₁-B′ (pass G₁-V G₁-B′)) ⟩
     (N₂.⟪ CCZX ⟫ • B′ • N₂.⟪ CCXZ ⟫ • B′) • G₁
       ≈⟨ front _ (sym G₂-form) ⟩
-    G₂ • G₁ ∎
+    G₂ k • G₁ ∎
