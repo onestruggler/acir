@@ -1,30 +1,24 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Circuits over {H , S , CZ} are isometries (Amy, QPL 2018,
--- definition 2.4 and proposition 2.10)
+-- Circuits over {H , S , CZ} are unitary (Amy, QPL 2018, definition 2.4
+-- and proposition 2.10)
 --
 -- Proposition 2.10 identifies the operator of ⟦ C ⟧ with the matrix of
 -- the circuit, which PathSum.CircuitSemantics builds a column at a
 -- time: the column of ⟦ C ⟧ at the input x is the gates of C applied
 -- in turn to the basis column δ x (prop-2-10).  Each gate acts on
--- columns by its own unnormalised matrix, and this module shows that
--- each of those matrices is a multiple of an isometry: it multiplies
--- the Hermitian product of any two columns (PathSum.Hermitian's inner)
--- by a constant.
+-- columns by its own unnormalised matrix, a Hadamard or a diagonal
+-- phase of PathSum.Unitarity.Gates, and both halves of unitarity are
+-- read off those matrices.
 --
---   * S and CZ multiply the entry at z by a power of ζ read off z, the
---     same power in both columns, and a common phase cancels from a
---     product a · conj b (inner-S, inner-CZ).
---   * A Hadamard on w pairs the assignments z[w≔0] and z[w≔1].  It
---     turns the entries a , b of one column there into a + b and
---     a - b, and those c , d of the other into c + d and c - d, and the
---     polarised parallelogram law adds the products of the new entries
---     up to twice a · conj c + b · conj d (inner-H).  So a Hadamard
---     doubles the product.
---
--- A circuit therefore multiplies the product of two columns by 2^k,
--- k = norm C the number of its Hadamards (inner-apply); the basis
+-- U†U = I.  Each gate multiplies the Hermitian product of any two
+-- columns (PathSum.Hermitian's inner) by a constant: S and CZ multiply
+-- the entry at z by a power of ζ read off z, the same in both columns,
+-- and a common phase cancels from a · conj b (inner-S, inner-CZ); a
+-- Hadamard doubles the product, by the polarised parallelogram law at
+-- each pair z[w≔0] , z[w≔1] (inner-H).  So a circuit multiplies it by
+-- 2^k, k = norm C the number of its Hadamards (inner-apply); the basis
 -- columns are orthonormal (inner-δ); and so the columns of ⟦ C ⟧ are
 -- orthogonal, each of norm 2^k (circuit-isometry):
 --
@@ -33,116 +27,74 @@
 -- which is U†U = I for U the operator of ⟦ C ⟧, its entries being
 -- amp ⟦ C ⟧ x z / √2^k and √2 real.  That is PathSum.PartialIsometry's
 -- Isometric (circuit-Isometric), so ⟦ C ⟧ is well-formed in the sense
--- of definition 2.4 as a theorem (circuit-PartialIsometric), and
--- lemma 4.1 applies to it under the paper's own hypothesis.
+-- of definition 2.4 as a theorem (circuit-PartialIsometric).
 --
--- What is proved is that U is an isometry, U†U = I.  That it is
--- unitary, UU† = I as well, follows for a square matrix by linear
--- algebra that is not formalised here, and is not stated.
+-- UU† = I.  The matrices of H, S and CZ are symmetric (dot-gate, in
+-- the unconjugated pairing dot of PathSum.Unitarity.Gates), and the
+-- transpose of a product is the product of the transposes in the
+-- opposite order, so the matrix of C, transposed, is that of C run
+-- backwards (dot-apply): the amplitude of ⟦ C ⟧ from x to z is that of
+-- ⟦ reverse C ⟧ from z to x (circuit-transpose).  The rows of ⟦ C ⟧ are
+-- therefore the columns of ⟦ reverse C ⟧, which has as many Hadamards
+-- (norm-reverse), and they are orthonormal by the first half
+-- (circuit-coisometry):
 --
--- The lemma for a Hadamard, and hence the one for a circuit, asks both
+--   Σ_x amp ⟦ C ⟧ x z · conj (amp ⟦ C ⟧ x z′) = 2^k [z = z′].
+--
+-- Both halves together: ⟦ C ⟧ is unitary (circuit-Unitary, in the sense
+-- of PathSum.PartialIsometry.Unitary).  For a square matrix UU† = I
+-- follows from U†U = I by linear algebra over Q(ζ), which is not
+-- formalised; here it is proved from the circuit instead, through the
+-- transpose, with U†U = I used only for reverse C.
+--
+-- The lemmas for a Hadamard, and hence those for a circuit, ask the
 -- columns to respect pointwise equality of assignments, since the
 -- pairing of z[w≔0] with z[w≔1] meets assignments only pointwise equal
--- to those the sum visits; the basis columns do.  The helpers below
--- that carry that respect through the gates, and read off the sign of
--- a Hadamard, are private to PathSum.CircuitSemantics and are
--- re-proved here.
+-- to those the sum visits; the basis columns do.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Nat.Base using (ℕ; suc; _^_)
+open import Data.Nat.Base using (ℕ; suc; _+_; _^_)
 
 module PathSum.Unitarity (M₀ : ℕ) where
 
-open import Data.Bool.Base using (Bool; true; false; if_then_else_; _∧_)
+open import Data.Bool.Base using (_∧_)
 open import Data.Fin.Base using (Fin)
-open import Data.Integer.Base using (ℤ; 0ℤ; +_; -_; _+_; _*_)
-open import Data.Integer.Properties using
-  (+-identityˡ; *-identityˡ; *-identityʳ; *-zeroʳ; *-comm; pos-*)
-open import Data.List.Base using ([]; _∷_)
+open import Data.Integer.Base using (+_; _*_)
+open import Data.Integer.Properties using (*-identityˡ; *-comm; pos-*)
+open import Data.List.Base using ([]; _∷_; _++_; reverse)
+open import Data.List.Properties using (unfold-reverse)
+open import Data.Product.Base using (_,_)
 open import Relation.Binary.PropositionalEquality using
-  (_≡_; refl; sym; trans; cong; cong₂)
+  (_≡_; refl; sym; trans; cong)
+
+import Data.Nat.Properties as ℕ
 
 private
   M : ℕ
   M = suc (suc (suc M₀))
 
-open import PathSum.Assign using ([_]ᶻ; _[_≔_]; ≔-here; ≔-≔; ≔-cong; same)
+open import PathSum.Adjoint M using (norm-++)
+open import PathSum.Assign using ([_]ᶻ; same)
 open import PathSum.Circuit M using (Gate; H; S; CZ; Circuit; norm; ⟦_⟧)
 open import PathSum.CircuitSemantics M₀ using
-  (Column; δ; gateᴬ; applyᴬ; prop-2-10)
-open import PathSum.Cyclotomic M₀ using
-  (Amp; 0ᴬ; _+ᴬ_; _-ᴬ_; _·ᴬ_; _≐_; rot; rot-map; rot-exp; rot-0;
-   rot-anti; Respects)
-  renaming (H to rank)
+  (Column; δ; gateᴬ; applyᴬ; prop-2-10; δ-resp; gateᴬ-resp; applyᴬ-resp)
+open import PathSum.Cyclotomic M₀ using (_≐_; _·ᴬ_; Respects)
 open import PathSum.Denotation M₀ using (Assign; amp)
 open import PathSum.Hermitian M₀ using
-  (Σᵃ; Σᵃ-cong; Σᵃ-·ᴬ; Σᵃ-at; [_]ᴬ; []ᴬ-resp; inner; inner-cong;
-   inner-phase; inner-basis)
+  (Σᵃ; [_]ᴬ; []ᴬ-resp; inner; inner-cong; inner-phase; inner-basis)
 open import PathSum.PartialIsometry M₀ using
   (Isometric; PartialIsometric; Isometric⇒PartialIsometric)
+open import PathSum.PartialIsometry.Unitary M₀ using (Coisometric; Unitary)
 open import PathSum.Reduction M using (¼; ½)
-open import PathSum.Ring M₀ using
-  (_⊛_; conj; ⊛-cong; conj-cong; ·ᴬ-cong; ·ᴬ-·ᴬ; ⊛-conj-parallelogram)
+open import PathSum.Ring M₀ using (_⊛_; conj; ·ᴬ-cong; ·ᴬ-·ᴬ)
+open import PathSum.Unitarity.Gates M₀ using
+  (dot; inner-had; dot-had; dot-phase; dot-comm; dot-basis)
 
 private
   variable
     n : ℕ
-
-
-------------------------------------------------------------------------
--- The gates, entry by entry
-
--- As in PathSum.CircuitSemantics, where these are private: a rotation
--- is compared only with a rotation by the same exponent, exponents
--- being changed by rot-exp alone.
-
-private
-  rot-cong : (a a′ : Amp) (e e′ : ℤ) → e ≡ e′ → a ≐ a′ →
-             rot e a ≐ rot e′ a′
-  rot-cong a a′ e e′ ee aa i =
-    trans (rot-map e aa i) (rot-exp {e} {e′} a′ ee i)
-
-  sum-cong : (a a′ b b′ : Amp) (e e′ : ℤ) → a ≐ a′ → e ≡ e′ → b ≐ b′ →
-             (a +ᴬ rot e b) ≐ (a′ +ᴬ rot e′ b′)
-  sum-cong a a′ b b′ e e′ aa ee bb i =
-    cong₂ _+_ (aa i) (rot-cong b b′ e e′ ee bb i)
-
-  -- The sign of a Hadamard: ζ^0 = 1 where its wire is 0, and
-  -- ζ^rank = -1 where it is 1.
-
-  sign-0 : (a a′ b b′ : Amp) (e : ℤ) → a ≐ a′ → e ≡ 0ℤ → b ≐ b′ →
-           (a +ᴬ rot e b) ≐ (a′ +ᴬ b′)
-  sign-0 a a′ b b′ e aa ee bb i = cong₂ _+_ (aa i)
-    (trans (rot-exp {e} {0ℤ} b ee i) (trans (rot-0 b i) (bb i)))
-
-  sign-1 : (a a′ b b′ : Amp) (e : ℤ) → a ≐ a′ → e ≡ 0ℤ + (+ rank) →
-           b ≐ b′ → (a +ᴬ rot e b) ≐ (a′ -ᴬ b′)
-  sign-1 a a′ b b′ e aa ee bb i = cong₂ _+_ (aa i)
-    (trans (rot-exp {e} {0ℤ + (+ rank)} b ee i)
-      (trans (rot-anti 0ℤ b i) (cong -_ (trans (rot-0 b i) (bb i)))))
-
-  -- The gates act entry by entry, so they preserve respect for
-  -- pointwise equality of assignments.
-
-  gateᴬ-resp : (g : Gate n) {ψ : Column n} → Respects ψ →
-               Respects (gateᴬ g ψ)
-  gateᴬ-resp (H w) {ψ} resp z z′ zz =
-    sum-cong (ψ (z [ w ≔ false ])) (ψ (z′ [ w ≔ false ]))
-             (ψ (z [ w ≔ true ])) (ψ (z′ [ w ≔ true ]))
-             (½ * [ z w ]ᶻ) (½ * [ z′ w ]ᶻ)
-             (resp (z [ w ≔ false ]) (z′ [ w ≔ false ])
-                   (≔-cong w false zz))
-             (cong (λ b → ½ * [ b ]ᶻ) (zz w))
-             (resp (z [ w ≔ true ]) (z′ [ w ≔ true ]) (≔-cong w true zz))
-  gateᴬ-resp (S w) {ψ} resp z z′ zz =
-    rot-cong (ψ z) (ψ z′) (¼ * [ z w ]ᶻ) (¼ * [ z′ w ]ᶻ)
-             (cong (λ b → ¼ * [ b ]ᶻ) (zz w)) (resp z z′ zz)
-  gateᴬ-resp (CZ w v) {ψ} resp z z′ zz =
-    rot-cong (ψ z) (ψ z′) (½ * [ z w ∧ z v ]ᶻ) (½ * [ z′ w ∧ z′ v ]ᶻ)
-             (cong₂ (λ a b → ½ * [ a ∧ b ]ᶻ) (zz w) (zz v))
-             (resp z z′ zz)
 
 
 ------------------------------------------------------------------------
@@ -158,81 +110,15 @@ inner-CZ : (w v : Fin n) (ψ φ : Column n) →
            inner (gateᴬ (CZ w v) ψ) (gateᴬ (CZ w v) φ) ≐ inner ψ φ
 inner-CZ w v ψ φ = inner-phase (λ z → ½ * [ z w ∧ z v ]ᶻ) ψ φ
 
--- A Hadamard on w doubles the product.  The sum over z is taken a pair
--- z[w≔0] , z[w≔1] at a time, on both sides; the new entries at the
--- pair are a + b , a - b and c + d , c - d, and the polarised
--- parallelogram law makes their products twice a · c̄ + b · d̄.
+-- A Hadamard on w doubles the product (PathSum.Unitarity.Gates).
 
 inner-H : (w : Fin n) {ψ φ : Column n} → Respects ψ → Respects φ →
           inner (gateᴬ (H w) ψ) (gateᴬ (H w) φ) ≐ (+ 2) ·ᴬ inner ψ φ
-inner-H {n} w {ψ} {φ} rψ rφ i =
-  trans (Σᵃ-at w F respF i)
-    (trans (Σᵃ-cong (λ z → masked (z w) (pair z)) i)
-      (trans (Σᵃ-·ᴬ (+ 2) P i)
-             (cong (λ t → (+ 2) * t) (sym (Σᵃ-at w G respG i)))))
-  where
-  F G : Assign n → Amp
-  F z = gateᴬ (H w) ψ z ⊛ conj (gateᴬ (H w) φ z)
-  G z = ψ z ⊛ conj (φ z)
-
-  -- The pairs of the old column products.
-
-  P : Assign n → Amp
-  P z = if z w then 0ᴬ else (G (z [ w ≔ false ]) +ᴬ G (z [ w ≔ true ]))
-
-  respF : Respects F
-  respF g h gh = ⊛-cong (gateᴬ-resp (H w) rψ g h gh)
-                        (conj-cong (gateᴬ-resp (H w) rφ g h gh))
-
-  respG : Respects G
-  respG g h gh = ⊛-cong (rψ g h gh) (conj-cong (rφ g h gh))
-
-  masked : ∀ b {A B : Amp} → A ≐ (+ 2) ·ᴬ B →
-           (if b then 0ᴬ else A) ≐ (+ 2) ·ᴬ (if b then 0ᴬ else B)
-  masked true  _ _ = sym (*-zeroʳ (+ 2))
-  masked false p   = p
-
-  e₀ : ∀ z → ½ * [ (z [ w ≔ false ]) w ]ᶻ ≡ 0ℤ
-  e₀ z =
-    trans (cong (λ b → ½ * [ b ]ᶻ) (≔-here z w false)) (*-zeroʳ ½)
-
-  e₁ : ∀ z → ½ * [ (z [ w ≔ true ]) w ]ᶻ ≡ 0ℤ + (+ rank)
-  e₁ z = trans (cong (λ b → ½ * [ b ]ᶻ) (≔-here z w true))
-               (trans (*-identityʳ ½) (sym (+-identityˡ ½)))
-
-  -- The new entries of a column at the pair.
-
-  at-0 : (χ : Column n) → Respects χ → ∀ z →
-         gateᴬ (H w) χ (z [ w ≔ false ]) ≐
-         χ (z [ w ≔ false ]) +ᴬ χ (z [ w ≔ true ])
-  at-0 χ rχ z =
-    sign-0 (χ (z [ w ≔ false ] [ w ≔ false ])) (χ (z [ w ≔ false ]))
-           (χ (z [ w ≔ false ] [ w ≔ true ])) (χ (z [ w ≔ true ]))
-           (½ * [ (z [ w ≔ false ]) w ]ᶻ)
-           (rχ _ _ (≔-≔ z w false false)) (e₀ z)
-           (rχ _ _ (≔-≔ z w false true))
-
-  at-1 : (χ : Column n) → Respects χ → ∀ z →
-         gateᴬ (H w) χ (z [ w ≔ true ]) ≐
-         χ (z [ w ≔ false ]) -ᴬ χ (z [ w ≔ true ])
-  at-1 χ rχ z =
-    sign-1 (χ (z [ w ≔ true ] [ w ≔ false ])) (χ (z [ w ≔ false ]))
-           (χ (z [ w ≔ true ] [ w ≔ true ])) (χ (z [ w ≔ true ]))
-           (½ * [ (z [ w ≔ true ]) w ]ᶻ)
-           (rχ _ _ (≔-≔ z w true false)) (e₁ z)
-           (rχ _ _ (≔-≔ z w true true))
-
-  pair : ∀ z → F (z [ w ≔ false ]) +ᴬ F (z [ w ≔ true ]) ≐
-               (+ 2) ·ᴬ (G (z [ w ≔ false ]) +ᴬ G (z [ w ≔ true ]))
-  pair z j = trans
-    (cong₂ _+_ (⊛-cong (at-0 ψ rψ z) (conj-cong (at-0 φ rφ z)) j)
-               (⊛-cong (at-1 ψ rψ z) (conj-cong (at-1 φ rφ z)) j))
-    (⊛-conj-parallelogram (ψ (z [ w ≔ false ])) (ψ (z [ w ≔ true ]))
-                          (φ (z [ w ≔ false ])) (φ (z [ w ≔ true ])) j)
+inner-H w {ψ} {φ} rψ rφ = inner-had w {ψ} {φ} rψ rφ
 
 
 ------------------------------------------------------------------------
--- Circuits
+-- U†U = I
 
 -- A circuit multiplies the product of two columns by 2^k, k the number
 -- of its Hadamards.
@@ -265,8 +151,8 @@ inner-apply (CZ w v ∷ C) {ψ} {φ} rψ rφ i =
 inner-δ : (x x′ : Assign n) → inner (δ x) (δ x′) ≐ [ same x x′ ]ᴬ
 inner-δ x x′ = inner-basis x x′
 
--- U†U = I: the columns of ⟦ C ⟧ are orthogonal, each of norm 2^k,
--- which the normalisation 1/√2^k makes 1.
+-- The columns of ⟦ C ⟧ are orthogonal, each of norm 2^k, which the
+-- normalisation 1/√2^k makes 1.
 
 circuit-isometry : (C : Circuit n) (x x′ : Assign n) →
                    Σᵃ (λ z → amp ⟦ C ⟧ x z ⊛ conj (amp ⟦ C ⟧ x′ z)) ≐
@@ -287,3 +173,96 @@ circuit-Isometric C = circuit-isometry C
 circuit-PartialIsometric : (C : Circuit n) → PartialIsometric ⟦ C ⟧
 circuit-PartialIsometric C =
   Isometric⇒PartialIsometric ⟦ C ⟧ (circuit-Isometric C)
+
+
+------------------------------------------------------------------------
+-- The transpose of a circuit's matrix
+
+-- The matrices of H, S and CZ are symmetric.
+
+dot-gate : (g : Gate n) {ψ φ : Column n} → Respects ψ → Respects φ →
+           dot (gateᴬ g ψ) φ ≐ dot ψ (gateᴬ g φ)
+dot-gate (H w)    {ψ} {φ} rψ rφ = dot-had w {ψ} {φ} rψ rφ
+dot-gate (S w)    {ψ} {φ} _  _  = dot-phase (λ z → ¼ * [ z w ]ᶻ) ψ φ
+dot-gate (CZ w v) {ψ} {φ} _  _  =
+  dot-phase (λ z → ½ * [ z w ∧ z v ]ᶻ) ψ φ
+
+-- The gates of reverse (g ∷ C) are those of reverse C, then g.
+
+private
+  applyᴬ-++ : (C D : Circuit n) (ψ : Column n) →
+              applyᴬ (C ++ D) ψ ≡ applyᴬ D (applyᴬ C ψ)
+  applyᴬ-++ []      D ψ = refl
+  applyᴬ-++ (g ∷ C) D ψ = applyᴬ-++ C D (gateᴬ g ψ)
+
+  apply-reverse : (g : Gate n) (C : Circuit n) (φ : Column n) →
+                  gateᴬ g (applyᴬ (reverse C) φ) ≡
+                  applyᴬ (reverse (g ∷ C)) φ
+  apply-reverse g C φ =
+    trans (sym (applyᴬ-++ (reverse C) (g ∷ []) φ))
+          (cong (λ D → applyᴬ D φ) (sym (unfold-reverse g C)))
+
+-- So the transpose of the matrix of C is that of reverse C: moved to
+-- the other side of the pairing, the gates of C act last to first.
+
+dot-apply : (C : Circuit n) {ψ φ : Column n} → Respects ψ → Respects φ →
+            dot (applyᴬ C ψ) φ ≐ dot ψ (applyᴬ (reverse C) φ)
+dot-apply []      rψ rφ i = refl
+dot-apply (g ∷ C) {ψ} {φ} rψ rφ i =
+  trans (dot-apply C {gateᴬ g ψ} {φ} (gateᴬ-resp g rψ) rφ i)
+    (trans (dot-gate g {ψ} {applyᴬ (reverse C) φ} rψ
+                     (applyᴬ-resp (reverse C) rφ) i)
+           (cong (λ χ → dot ψ χ i) (apply-reverse g C φ)))
+
+-- Read at two basis columns: the amplitude of ⟦ C ⟧ from x to z is that
+-- of ⟦ reverse C ⟧ from z to x.
+
+circuit-transpose : (C : Circuit n) (x z : Assign n) →
+                    amp ⟦ C ⟧ x z ≐ amp ⟦ reverse C ⟧ z x
+circuit-transpose C x z i =
+  trans (prop-2-10 C x z i)
+  (trans (sym (dot-basis {ψ = applyᴬ C (δ x)}
+                         (applyᴬ-resp C (δ-resp x)) z i))
+  (trans (dot-apply C {δ x} {δ z} (δ-resp x) (δ-resp z) i)
+  (trans (dot-comm (δ x) (applyᴬ (reverse C) (δ z)) i)
+  (trans (dot-basis {ψ = applyᴬ (reverse C) (δ z)}
+                    (applyᴬ-resp (reverse C) (δ-resp z)) x i)
+         (sym (prop-2-10 (reverse C) z x i))))))
+
+-- Reversing a circuit keeps its Hadamards.
+
+norm-reverse : (C : Circuit n) → norm (reverse C) ≡ norm C
+norm-reverse []      = refl
+norm-reverse (g ∷ C) =
+  trans (cong norm (unfold-reverse g C))
+    (trans (norm-++ (reverse C) (g ∷ []))
+      (trans (cong (_+ norm (g ∷ [])) (norm-reverse C))
+        (trans (ℕ.+-comm (norm C) (norm (g ∷ [])))
+               (sym (norm-++ (g ∷ []) C)))))
+
+
+------------------------------------------------------------------------
+-- UU† = I
+
+-- The rows of ⟦ C ⟧ are the columns of ⟦ reverse C ⟧, which are
+-- orthonormal by the first half.
+
+circuit-coisometry : (C : Circuit n) (z z′ : Assign n) →
+                     Σᵃ (λ x → amp ⟦ C ⟧ x z ⊛ conj (amp ⟦ C ⟧ x z′)) ≐
+                     (+ (2 ^ norm C)) ·ᴬ [ same z z′ ]ᴬ
+circuit-coisometry C z z′ i =
+  trans (inner-cong {ψ = λ x → amp ⟦ C ⟧ x z} {ψ′ = amp ⟦ reverse C ⟧ z}
+                    {φ = λ x → amp ⟦ C ⟧ x z′}
+                    {φ′ = amp ⟦ reverse C ⟧ z′}
+                    (λ x → circuit-transpose C x z)
+                    (λ x → circuit-transpose C x z′) i)
+    (trans (circuit-isometry (reverse C) z z′ i)
+           (cong (λ k → (+ (2 ^ k)) * [ same z z′ ]ᴬ i) (norm-reverse C)))
+
+circuit-Coisometric : (C : Circuit n) → Coisometric ⟦ C ⟧
+circuit-Coisometric C = circuit-coisometry C
+
+-- Both halves: ⟦ C ⟧ is unitary.
+
+circuit-Unitary : (C : Circuit n) → Unitary ⟦ C ⟧
+circuit-Unitary C = circuit-Isometric C , circuit-Coisometric C
