@@ -61,20 +61,9 @@ open IsInvolutiveRingEndo adjI public
 open AdjL public using () renaming (f-0 to adj-0 ; f-neg to adj-neg)
 
 ------------------------------------------------------------------------
--- Vectors
+-- Vectors: lookup, extensionality and (opaque) updates
 
-infixl 10 _!_
-
-_!_ : {B : Set} → Vec B n → Fin n → B
-_!_ = lookup
-
-vec-ext : {B : Set} {u v : Vec B n} → (∀ x → u ! x ≡ v ! x) → u ≡ v
-vec-ext {u = u} {v} eq =
-  trans (sym (VecP.tabulate∘lookup u))
-        (trans (VecP.tabulate-cong eq) (VecP.tabulate∘lookup v))
-
-!-tabulate : {B : Set} (f : Fin n → B) (x : Fin n) → tabulate f ! x ≡ f x
-!-tabulate f x = VecP.lookup∘tabulate f x
+open import Examples.Groups.Clifford+CS-TwoLevel.Vector public
 
 ------------------------------------------------------------------------
 -- Sums
@@ -417,61 +406,6 @@ sum-update₁ f g a agree ga = sum-cong-≗ pointwise
   pointwise x with x FinP.≟ a
   ... | yes refl = ga
   ... | no  x≢a  = agree x x≢a
-
-------------------------------------------------------------------------
--- Updating a vector at one or two indices
-
-set₁ : {B : Set} → Fin n → B → Vec B n → Vec B n
-set₁ a α v = tabulate (λ x → if does (x FinP.≟ a) then α else v ! x)
-
-set₂ : {B : Set} → Fin n → Fin n → B → B → Vec B n → Vec B n
-set₂ a b α β v =
-  tabulate (λ x → if does (x FinP.≟ a) then α else if does (x FinP.≟ b) then β else v ! x)
-
-module _ {B : Set} where
-
-  set₁-a : (a : Fin n) (α : B) (v : Vec B n) → set₁ a α v ! a ≡ α
-  set₁-a a α v with !-tabulate (λ x → if does (x FinP.≟ a) then α else v ! x) a
-  ... | eq with a FinP.≟ a
-  ...   | yes _   = eq
-  ...   | no  a≢a = contradiction refl a≢a
-    where open import Relation.Nullary.Negation using (contradiction)
-
-  set₁-≢ : (a : Fin n) (α : B) (v : Vec B n) {x : Fin n} → x ≢ a → set₁ a α v ! x ≡ v ! x
-  set₁-≢ a α v {x} x≢a with !-tabulate (λ x → if does (x FinP.≟ a) then α else v ! x) x
-  ... | eq with x FinP.≟ a
-  ...   | yes x≡a = contradiction x≡a x≢a
-    where open import Relation.Nullary.Negation using (contradiction)
-  ...   | no  _   = eq
-
-  set₂-a : (a b : Fin n) (α β : B) (v : Vec B n) → set₂ a b α β v ! a ≡ α
-  set₂-a a b α β v
-    with !-tabulate (λ x → if does (x FinP.≟ a) then α else if does (x FinP.≟ b) then β else v ! x) a
-  ... | eq with a FinP.≟ a
-  ...   | yes _   = eq
-  ...   | no  a≢a = contradiction refl a≢a
-    where open import Relation.Nullary.Negation using (contradiction)
-
-  set₂-b : (a b : Fin n) (α β : B) (v : Vec B n) → a ≢ b → set₂ a b α β v ! b ≡ β
-  set₂-b a b α β v a≢b
-    with !-tabulate (λ x → if does (x FinP.≟ a) then α else if does (x FinP.≟ b) then β else v ! x) b
-  ... | eq with b FinP.≟ a | b FinP.≟ b
-  ...   | yes b≡a | _       = contradiction (sym b≡a) a≢b
-    where open import Relation.Nullary.Negation using (contradiction)
-  ...   | no  _   | yes _   = eq
-  ...   | no  _   | no  b≢b = contradiction refl b≢b
-    where open import Relation.Nullary.Negation using (contradiction)
-
-  set₂-≢ : (a b : Fin n) (α β : B) (v : Vec B n) {x : Fin n} → x ≢ a → x ≢ b →
-           set₂ a b α β v ! x ≡ v ! x
-  set₂-≢ a b α β v {x} x≢a x≢b
-    with !-tabulate (λ x → if does (x FinP.≟ a) then α else if does (x FinP.≟ b) then β else v ! x) x
-  ... | eq with x FinP.≟ a | x FinP.≟ b
-  ...   | yes x≡a | _       = contradiction x≡a x≢a
-    where open import Relation.Nullary.Negation using (contradiction)
-  ...   | no  _   | yes x≡b = contradiction x≡b x≢b
-    where open import Relation.Nullary.Negation using (contradiction)
-  ...   | no  _   | no  _   = eq
 
 ------------------------------------------------------------------------
 -- The inner product ⟨u , v⟩ = Σₓ uₓ† vₓ

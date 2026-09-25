@@ -246,9 +246,14 @@ private
   0<1² : f0² < f1²
   0<1² = s≤s z≤n
 
-  -- K⁷ = K† = i_[0] i_[1] K in dimension 2.
-  K⁷≡ : ⟦ K f0² f1² 0<1² ^ 7 ⟧ᵐ ≡ ⟦ i f0² • i f1² • K f0² f1² 0<1² ⟧ᵐ
-  K⁷≡ = refl
+-- K⁷ = K† = i_[0] i_[1] K in dimension 2, by computation through the
+-- vector updates.
+opaque
+  unfolding set₁ set₂
+
+  private
+    K⁷≡ : ⟦ K f0² f1² 0<1² ^ 7 ⟧ᵐ ≡ ⟦ i f0² • i f1² • K f0² f1² 0<1² ⟧ᵐ
+    K⁷≡ = refl
 
 K†-action : (a b : Fin n) (ab : a < b) (u : Vec D n) →
             actVʷ (K† a b ab) u ≡ actV (i-gen a) (actV (i-gen b) (actV (K-gen a b ab) u))

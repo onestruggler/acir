@@ -30,19 +30,12 @@ open import Relation.Binary.Definitions using (tri< ; tri≈ ; tri>)
 
 open import Examples.Groups.Clifford+CS-TwoLevel.Ring
 open import Examples.Groups.Clifford+CS-TwoLevel.Scale
+open import Examples.Groups.Clifford+CS-TwoLevel.Vector public using (_!_)
+open import Examples.Groups.Clifford+CS-TwoLevel.Vector using (vec-ext)
 
 private
   variable
     n : ℕ
-
-infixl 10 _!_
-_!_ : {B : Set} → Vec B n → Fin n → B
-_!_ = lookup
-
-private
-  vec-ext : {B : Set} {u v : Vec B n} → (∀ x → u ! x ≡ v ! x) → u ≡ v
-  vec-ext {u = u} {v} eq =
-    trans (sym (VecP.tabulate∘lookup u)) (trans (VecP.tabulate-cong eq) (VecP.tabulate∘lookup v))
 
 ------------------------------------------------------------------------
 -- Scaled vectors

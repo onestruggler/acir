@@ -88,6 +88,10 @@ private
 
 ------------------------------------------------------------------------
 -- The relations in dimension at most 4, checked by computation
+--
+-- The words are transparent, so that their embeddings compute; the
+-- equations are proved in an opaque block that unfolds the vector
+-- updates, which the matrices of concrete words must compute through.
 
 private
   -- (1)–(3)
@@ -96,15 +100,6 @@ private
   l2 l3 : Word (Gen 2)
   l2 = X f0² f1² 0<1² ^ 2
   l3 = K f0² f1² 0<1² ^ 8
-
-  order-i₁ : ⟦ l1 ⟧ᵐ ≡ ⟦ ε ⟧ᵐ
-  order-i₁ = refl
-
-  order-X₂ : ⟦ l2 ⟧ᵐ ≡ ⟦ ε ⟧ᵐ
-  order-X₂ = refl
-
-  order-K₂ : ⟦ l3 ⟧ᵐ ≡ ⟦ ε ⟧ᵐ
-  order-K₂ = refl
 
   -- (10)–(12′)
   l10 r10 : Word (Gen 2)
@@ -121,21 +116,6 @@ private
   l12′ = K f0³ f2³ 0<2³ • X f1³ f2³ 1<2³
   r12′ = X f1³ f2³ 1<2³ • K f0³ f1³ 0<1³
 
-  swap-iX₂ : ⟦ l10 ⟧ᵐ ≡ ⟦ r10 ⟧ᵐ
-  swap-iX₂ = refl
-
-  swap-XX₃ : ⟦ l11 ⟧ᵐ ≡ ⟦ r11 ⟧ᵐ
-  swap-XX₃ = refl
-
-  swap-XX′₃ : ⟦ l11′ ⟧ᵐ ≡ ⟦ r11′ ⟧ᵐ
-  swap-XX′₃ = refl
-
-  swap-KX₃ : ⟦ l12 ⟧ᵐ ≡ ⟦ r12 ⟧ᵐ
-  swap-KX₃ = refl
-
-  swap-KX′₃ : ⟦ l12′ ⟧ᵐ ≡ ⟦ r12′ ⟧ᵐ
-  swap-KX′₃ = refl
-
   -- (13)–(16)
   l13 r13 l14 r14 l15 r15 l16 : Word (Gen 2)
   l13 = K f0² f1² 0<1² • i f1² ^ 2
@@ -146,28 +126,56 @@ private
   r15 = i f0² • i f1² • K f0² f1² 0<1²
   l16 = K f0² f1² 0<1² ^ 2 • i f0² • i f1²
 
-  rel-13₂ : ⟦ l13 ⟧ᵐ ≡ ⟦ r13 ⟧ᵐ
-  rel-13₂ = refl
-
-  rel-14₂ : ⟦ l14 ⟧ᵐ ≡ ⟦ r14 ⟧ᵐ
-  rel-14₂ = refl
-
-  rel-15₂ : ⟦ l15 ⟧ᵐ ≡ ⟦ r15 ⟧ᵐ
-  rel-15₂ = refl
-
-  rel-16₂ : ⟦ l16 ⟧ᵐ ≡ ⟦ ε ⟧ᵐ
-  rel-16₂ = refl
-
   -- (17), for the two orders of k and l.
   l17 r17 : Word (Gen 4)
   l17 = K f0⁴ f1⁴ 0<1⁴ • K f2⁴ f3⁴ 2<3⁴ • K f0⁴ f2⁴ 0<2⁴ • K f1⁴ f3⁴ 1<3⁴
   r17 = K f0⁴ f2⁴ 0<2⁴ • K f1⁴ f3⁴ 1<3⁴ • K f0⁴ f1⁴ 0<1⁴ • K f2⁴ f3⁴ 2<3⁴
 
-  rel-17₄ : ⟦ l17 ⟧ᵐ ≡ ⟦ r17 ⟧ᵐ
-  rel-17₄ = refl
+opaque
+  unfolding set₁ set₂
 
-  rel-17₄′ : ⟦ r17 ⟧ᵐ ≡ ⟦ l17 ⟧ᵐ
-  rel-17₄′ = sym rel-17₄
+  private
+    order-i₁ : ⟦ l1 ⟧ᵐ ≡ ⟦ ε ⟧ᵐ
+    order-i₁ = refl
+
+    order-X₂ : ⟦ l2 ⟧ᵐ ≡ ⟦ ε ⟧ᵐ
+    order-X₂ = refl
+
+    order-K₂ : ⟦ l3 ⟧ᵐ ≡ ⟦ ε ⟧ᵐ
+    order-K₂ = refl
+
+    swap-iX₂ : ⟦ l10 ⟧ᵐ ≡ ⟦ r10 ⟧ᵐ
+    swap-iX₂ = refl
+
+    swap-XX₃ : ⟦ l11 ⟧ᵐ ≡ ⟦ r11 ⟧ᵐ
+    swap-XX₃ = refl
+
+    swap-XX′₃ : ⟦ l11′ ⟧ᵐ ≡ ⟦ r11′ ⟧ᵐ
+    swap-XX′₃ = refl
+
+    swap-KX₃ : ⟦ l12 ⟧ᵐ ≡ ⟦ r12 ⟧ᵐ
+    swap-KX₃ = refl
+
+    swap-KX′₃ : ⟦ l12′ ⟧ᵐ ≡ ⟦ r12′ ⟧ᵐ
+    swap-KX′₃ = refl
+
+    rel-13₂ : ⟦ l13 ⟧ᵐ ≡ ⟦ r13 ⟧ᵐ
+    rel-13₂ = refl
+
+    rel-14₂ : ⟦ l14 ⟧ᵐ ≡ ⟦ r14 ⟧ᵐ
+    rel-14₂ = refl
+
+    rel-15₂ : ⟦ l15 ⟧ᵐ ≡ ⟦ r15 ⟧ᵐ
+    rel-15₂ = refl
+
+    rel-16₂ : ⟦ l16 ⟧ᵐ ≡ ⟦ ε ⟧ᵐ
+    rel-16₂ = refl
+
+    rel-17₄ : ⟦ l17 ⟧ᵐ ≡ ⟦ r17 ⟧ᵐ
+    rel-17₄ = refl
+
+    rel-17₄′ : ⟦ r17 ⟧ᵐ ≡ ⟦ l17 ⟧ᵐ
+    rel-17₄′ = sym rel-17₄
 
 ------------------------------------------------------------------------
 -- Soundness of the axioms
