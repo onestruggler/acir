@@ -161,7 +161,8 @@ Base = ∀ (G : Gen n) → IsBasic G → Path [ G ]ʷ 𝕀 ColOrth-𝕀
 -- Expanding a generator into basic ones stays below any level that
 -- both ends of the edge lie below.
 ExpLevel : Set
-ExpLevel = ∀ (g : Gen n) M L → level M <ₗ L → level (actM g M) <ₗ L → BelowSrc L (expand g) M
+ExpLevel = ∀ (g : Gen n) (M : Matrix n n D) → .(ColOrth M) → ∀ L →
+           level M <ₗ L → level (actM g M) <ₗ L → BelowSrc L (expand g) M
 
 ------------------------------------------------------------------------
 -- The reduction
@@ -182,7 +183,7 @@ module _ (main : MainLemma) (base : Base) (exp-level : ExpLevel) where
 
     path-below : EdgesBelow L → (w : Word (Gen n)) → ∀ M .(o : ColOrth M) → Below L w M → Path w M o
     path-below {L} ih [ g ]ʷ M o (l₀ , l₁) =
-      path-expand g M o (path-basic ih (expand g) (expand-basic g) M o (exp-level g M L l₀ l₁))
+      path-expand g M o (path-basic ih (expand g) (expand-basic g) M o (exp-level g M o L l₀ l₁))
     path-below ih ε M o _ = path-ε M o
     path-below ih (u • v) M o (bv , bu) =
       path-• u v M o (path-below ih u (actMʷ v M) (ColOrth-actMʷ v o) bu) (path-below ih v M o bv)

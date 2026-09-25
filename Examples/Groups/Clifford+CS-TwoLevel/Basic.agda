@@ -24,6 +24,7 @@ import Data.Fin.Properties as FinP
 import Data.Nat.Properties as ℕP
 open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Unit.Base using (⊤ ; tt)
+open import Data.Empty using (⊥)
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_ ; subst)
 open import Relation.Nullary.Decidable using (recompute)
 import Relation.Binary.Reasoning.Setoid as SR
@@ -33,7 +34,7 @@ import Presentation.Base as PB
 import Presentation.Properties as PP
 open import Examples.Groups.Clifford+CS-TwoLevel.Syntactics
 open import Examples.Groups.Clifford+CS-TwoLevel.Derived {n}
-  using (i≈XiX ; K≈XKX ; K≈XKX′ ; X≈XXX)
+  using (i≈XiX ; K≈XKX ; K≈XKX′ ; X≈XXX ; X-X)
 
 open PB (_===_ {n}) hiding (_===_)
 open PP (_===_ {n})
@@ -261,3 +262,68 @@ expandʷ-basic : (w : Word (Gen n)) → Basicʷ (expandʷ w)
 expandʷ-basic [ g ]ʷ = expand-basic g
 expandʷ-basic ε = tt
 expandʷ-basic (u • v) = expandʷ-basic u , expandʷ-basic v
+
+------------------------------------------------------------------------
+-- The shape of the expansions, for the level argument (Levels)
+
+-- Every letter is X_[a,c] or i_[c] with c ≤ l.
+Letters≤ : Fin n → Word (Gen n) → Set
+Letters≤ l [ X-gen a c _ ]ʷ = toℕ c ℕ.≤ toℕ l
+Letters≤ l [ K-gen _ _ _ ]ʷ = ⊥
+Letters≤ l [ i-gen c ]ʷ = toℕ c ℕ.≤ toℕ l
+Letters≤ l ε = ⊤
+Letters≤ l (u • v) = Letters≤ l u × Letters≤ l v
+
+Letters≤-weaken : ∀ {l l′} (w : Word (Gen n)) → toℕ l ℕ.≤ toℕ l′ → Letters≤ l w → Letters≤ l′ w
+Letters≤-weaken [ X-gen a c _ ]ʷ ll′ h = ℕP.≤-trans h ll′
+Letters≤-weaken [ i-gen c ]ʷ ll′ h = ℕP.≤-trans h ll′
+Letters≤-weaken ε ll′ _ = tt
+Letters≤-weaken (u • v) ll′ (hu , hv) = Letters≤-weaken u ll′ hu , Letters≤-weaken v ll′ hv
+
+-- A K expansion: a single K, or a conjugate by an involution P of
+-- transpositions.
+data KShape (b : Fin n) : Word (Gen n) → Set where
+  single   : ∀ {a c} .{p : a < c} → toℕ c ℕ.≤ toℕ b → KShape b (K a c p)
+  sandwich : ∀ {P Y} → Letters≤ b P → P • P ≈ ε → KShape b Y → KShape b (P • Y • P)
+
+expandX-letters : ∀ d (j l : Fin n) (e : toℕ l ≡ toℕ j ℕ.+ suc d) → Letters≤ l (expandX d j l e)
+expandX-letters zero j l e = ℕP.≤-refl
+expandX-letters (suc d) j l e = ℕP.<⇒≤ l⁺ , expandX-letters d j⁺ l e′ , ℕP.<⇒≤ l⁺
+  where open Split d j l e
+
+expandX-inv : ∀ d (j l : Fin n) (e : toℕ l ≡ toℕ j ℕ.+ suc d) → expandX d j l e • expandX d j l e ≈ ε
+expandX-inv d j l e =
+  trans (cong (sym (expandX-≈ d j l e (lt-from d e))) (sym (expandX-≈ d j l e (lt-from d e)))) (X-X (lt-from d e))
+
+expandI-letters : ∀ (a : Fin n) m (e : toℕ a ≡ m) → Letters≤ a (expandI a m e)
+expandI-letters a zero e = ℕP.≤-refl
+expandI-letters a (suc m) e =
+  expandX-letters m (z a) a (from-z a m e) ,
+  subst (ℕ._≤ toℕ a) (≡.sym (toℕ-z a)) z≤n ,
+  expandX-letters m (z a) a (from-z a m e)
+
+expandK₀-shape : ∀ (a b : Fin n) (a0 : toℕ a ≡ 0) m (e : toℕ b ≡ suc m) .(p : a < b) → KShape b (expandK₀ a b a0 m e p)
+expandK₀-shape a b a0 zero e p = single ℕP.≤-refl
+expandK₀-shape a b a0 (suc m) e p =
+  sandwich (expandX-letters m one b e′) (expandX-inv m one b e′) (single (ℕP.<⇒≤ one<b))
+  where open K₀ a b a0 m e
+
+expandK-shape : ∀ (a b : Fin n) m (ea : toℕ a ≡ m) m′ (eb : toℕ b ≡ suc m′) .(p : a < b) →
+                KShape b (expandK a b m ea m′ eb p)
+expandK-shape a b zero ea m′ eb p = expandK₀-shape a b ea m′ eb p
+expandK-shape a b (suc m) ea m′ eb p =
+  sandwich (Letters≤-weaken (expandX m (z a) a (from-z a m ea)) (ℕP.<⇒≤ (recompute (a FinP.<? b) p))
+                            (expandX-letters m (z a) a (from-z a m ea)))
+           (expandX-inv m (z a) a (from-z a m ea))
+           (expandK₀-shape (z a) b (toℕ-z a) m′ eb (z<b a b m′ eb))
+
+-- For each kind of generator.
+expand-letters-X : ∀ (a b : Fin n) .(p : a < b) → Letters≤ b (expand (X-gen a b p))
+expand-letters-X a b p = expandX-letters (toℕ b ℕ.∸ suc (toℕ a)) a b (gap a b (rc p))
+
+expand-letters-i : ∀ (a : Fin n) → Letters≤ a (expand (i-gen a))
+expand-letters-i a = expandI-letters a (toℕ a) ≡.refl
+
+expand-shape-K : ∀ (a b : Fin n) .(p : a < b) → KShape b (expand (K-gen a b p))
+expand-shape-K a b p = expandK-shape a b (toℕ a) ≡.refl (proj₁ s) (proj₂ s) p
+  where s = pos (toℕ b) (above (rc p))
