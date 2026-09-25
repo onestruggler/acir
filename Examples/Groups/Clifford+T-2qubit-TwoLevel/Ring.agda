@@ -131,8 +131,8 @@ private
   -h = Dyadic' -[1+ 0 ] 1 _
 
 -- ω = e^{iπ/4}, in both rings.
-ω : D
-ω = Omega d0 d0 d1 d0
+ωᴰ : D
+ωᴰ = Omega d0 d0 d1 d0
 
 ωᶻ : Z
 ωᶻ = Omega (+ 0) (+ 0) (+ 1) (+ 0)
@@ -249,7 +249,7 @@ emb-0 = refl
 emb-1 : emb ZR.1# ≡ DR.1#
 emb-1 = refl
 
-emb-ω : emb ωᶻ ≡ ω
+emb-ω : emb ωᶻ ≡ ωᴰ
 emb-ω = refl
 
 emb-δ : emb δᶻ ≡ δ

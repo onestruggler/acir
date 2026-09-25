@@ -4,7 +4,7 @@
 -- δ-adic scaling in 𝔻[ω]: the element w / δᵏ for w ∈ ℤ[ω].  Every
 -- element of 𝔻[ω] has this form (so it has δ-exponents, Definition
 -- 2.6), and the form determines w once k is fixed.  The scalars of
--- the generators: ω = emb ω, and 1/√2 = λω / δ² (λ = 1 + √2).
+-- the generators: ω = emb ωᶻ, and 1/√2 = λω / δ² (λ = 1 + √2).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -167,7 +167,7 @@ sc-√½ k w = begin
   X = δ⁻ ^ᴰ k
 
 -- The phase: ω w at scale k.
-sc-ω : ∀ k w → ω DR.* sc k w ≡ sc k (ωᶻ ZR.* w)
+sc-ω : ∀ k w → ωᴰ DR.* sc k w ≡ sc k (ωᶻ ZR.* w)
 sc-ω k w = sym (sc-* k ωᶻ w)
 
 ------------------------------------------------------------------------
