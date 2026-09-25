@@ -611,3 +611,10 @@ e42 a b c e ab ce nd = ≡→≈ (Eq.trans lhs (Eq.sym rhs))
   rhs = Eq.trans (Eq.cong (d ʷ) (hh-letter a b c e ab ce))
                  (Eq.cong rev (Eq.trans (dHH-false x y z w nd)
                                         (Eq.cong₂ (λ u v → dHH₄ {m} u v z w • dHH₄ x y u v) ts₁ ts₂)))
+
+-- The exchanges of consecutive indices, for later use.
+dZX-lo₁ : ∀ x → dZX {m} x x (suc x) ≡ dZXlo₁ x
+dZX-lo₁ = lo₁≡
+
+dZX-hi₁ : ∀ x → dZX {m} (suc x) x (suc x) ≡ dZXhi₁ x
+dZX-hi₁ = hi₁≡
