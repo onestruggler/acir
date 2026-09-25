@@ -48,7 +48,7 @@ open import Examples.Groups.Clifford+CS-TwoLevel.Soundness using (sound-axiom)
 open import Examples.Groups.Clifford+CS-TwoLevel.Pivot
   using (pivot ; pivot-just ; pivot-char ; Lvl ; level ; level-just ; _<ₗ_ ; _<ₗ?_)
 open import Examples.Groups.Clifford+CS-TwoLevel.Syllable
-  using (syl ; syl-just ; step ; top ; Beyond-actM ; actV-e-beyond ; eᶻ ; col𝕀≡)
+  using (syl ; syl-just ; step ; top ; Within ; Beyond-actM ; actV-e-beyond ; eᶻ ; col𝕀≡)
 open import Examples.Groups.Clifford+CS-TwoLevel.Step using (step-lt)
 open import Examples.Groups.Clifford+CS-TwoLevel.Synthesis using (synth-step)
 open import Examples.Groups.Clifford+CS-TwoLevel.Derived {n} using (_⁻¹ ; inverseˡ ; idx ; Apartʷ ; Apartʷʷ ; comm-words)
@@ -238,6 +238,31 @@ above-apart′ [ i-gen b ]ʷ j≤b h hs = All.map (≢< j≤b) hs ∷ []
 above-apart′ ε _ _ _ = tt
 above-apart′ (u • v) (hu , hv) h hs = above-apart′ u hu h hs , above-apart′ v hv h hs
 
+-- A word acting on indices ≤ c is apart from a generator acting above c.
+within-apart : ∀ {c : Fin n} (u : Word (Gen n)) → Within c u → (h : Gen n) → All (c <_) (idx h) → Apartʷ u h
+within-apart [ X-gen a b q ]ʷ b≤c h hs =
+  All.map (≢> (ℕP.≤-trans (ℕP.<⇒≤ (recompute (a FinP.<? b) q)) b≤c)) hs ∷ All.map (≢> b≤c) hs ∷ []
+  where
+  ≢> : ∀ {x c : Fin n} → x ≤ c → ∀ {y} → c < y → x ≢ y
+  ≢> x≤c c<y x≡y = FinP.<-irrefl x≡y (ℕP.≤-<-trans x≤c c<y)
+within-apart [ K-gen a b q ]ʷ b≤c h hs =
+  All.map (≢> (ℕP.≤-trans (ℕP.<⇒≤ (recompute (a FinP.<? b) q)) b≤c)) hs ∷ All.map (≢> b≤c) hs ∷ []
+  where
+  ≢> : ∀ {x c : Fin n} → x ≤ c → ∀ {y} → c < y → x ≢ y
+  ≢> x≤c c<y x≡y = FinP.<-irrefl x≡y (ℕP.≤-<-trans x≤c c<y)
+within-apart [ i-gen a ]ʷ a≤c h hs = All.map (≢> a≤c) hs ∷ []
+  where
+  ≢> : ∀ {x c : Fin n} → x ≤ c → ∀ {y} → c < y → x ≢ y
+  ≢> x≤c c<y x≡y = FinP.<-irrefl x≡y (ℕP.≤-<-trans x≤c c<y)
+within-apart ε _ _ _ = tt
+within-apart (u • v) (hu , hv) h hs = within-apart u hu h hs , within-apart v hv h hs
+
+-- Powers of a word apart from h.
+Apartʷ-^ : (w : Word (Gen n)) (h : Gen n) → Apartʷ w h → ∀ e → Apartʷ (w ^ e) h
+Apartʷ-^ w h a ℕ.zero = tt
+Apartʷ-^ w h a (suc ℕ.zero) = a
+Apartʷ-^ w h a (suc (suc e)) = a , Apartʷ-^ w h a (suc e)
+
 ------------------------------------------------------------------------
 -- Disjoint squares where G keeps the level, pivots and levels
 
@@ -267,6 +292,14 @@ ne-𝕀 : (M : Matrix n n D) (c : Fin n) (k : ℕ) (W : Vec Z n) → col M c ≡
 ne-𝕀 M c k W eq min e =
   ℕP.0≢1+n (≡.trans (≡.sym (proj₁ (lde-char 0 (eᶻ c) (col𝕀≡ c) (inj₁ ≡.refl))))
                     (proj₁ (lde-char (suc k) W (≡.trans (≡.sym e) eq) min)))
+
+-- A column whose numerator differs from that of I at some entry is not
+-- a column of I.
+ne-𝕀-at : (M : Matrix n n D) (c : Fin n) (k : ℕ) (U : Vec Z n) → col M c ≡ scV k U → Minimal k U →
+          (x : Fin n) → U ! x ≢ eᶻ c ! x → col M c ≢ col 𝕀 c
+ne-𝕀-at M c k U eq min x ne e =
+  ne (≡.cong (_! x) (≡.trans (≡.sym (proj₂ (lde-char k U (≡.trans (≡.sym e) eq) min)))
+                             (proj₂ (lde-char 0 (eᶻ c) (col𝕀≡ c) (inj₁ ≡.refl)))))
 
 -- (x + 1 , 0 , 1) lies below a level with pivot p ≥ x and a positive
 -- exponent.
