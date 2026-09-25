@@ -35,7 +35,7 @@ import Data.Integer.Solver as ℤSolver
 open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary using (¬_ ; Dec)
 
 open import Algebra.Solver.Ring.AlmostCommutativeRing using (fromCommutativeRing)
 import Algebra.Solver.Ring.Simple
@@ -43,7 +43,7 @@ open import Instances
   using (_≟_ ; DEℤ ; SemiRing ; Ring ; Adjoint ; _+_ ; _*_ ; -_ ; 0# ; 1# ; fromℕ ; adj)
 open import Quantum.Synthesis.Ring
   using (Dyadic ; Dyadic' ; _[ω] ; Omega ; DOmega ; ZOmega
-        ; SemiRingDyadic ; RingDyadic ; AdjointDyadic ; SemiRingOmega ; RingOmega ; AdjointOmega ; DecEqOmega)
+        ; SemiRingDyadic ; RingDyadic ; AdjointDyadic ; DecEqDyadic ; SemiRingOmega ; RingOmega ; AdjointOmega ; DecEqOmega)
 open import Quantum.Synthesis.Ring.Properties
   using (commutativeRing-𝔻 ; isCommutativeRing-DOmega ; commutativeRing-ZOmega
         ; IsInvolutiveRingEndo ; adj-DOmega)
@@ -138,8 +138,8 @@ private
 ωᶻ = Omega (+ 0) (+ 0) (+ 1) (+ 0)
 
 -- δ = 1 + ω, and its inverse δ⁻ = (1 - ω + ω² - ω³)/2 in 𝔻[ω].
-δ δ⁻ : D
-δ = Omega d0 d0 d1 d1
+δᴰ δ⁻ : D
+δᴰ = Omega d0 d0 d1 d1
 δ⁻ = Omega -h h -h h
 
 δᶻ : Z
@@ -158,10 +158,10 @@ private
 opaque
   unfolding _*ᴰ_
 
-  δ*δ⁻ : δ DR.* δ⁻ ≡ DR.1#
+  δ*δ⁻ : δᴰ DR.* δ⁻ ≡ DR.1#
   δ*δ⁻ = refl
 
-  δ⁻*δ : δ⁻ DR.* δ ≡ DR.1#
+  δ⁻*δ : δ⁻ DR.* δᴰ ≡ DR.1#
   δ⁻*δ = refl
 
 ------------------------------------------------------------------------
@@ -252,7 +252,7 @@ emb-1 = refl
 emb-ω : emb ωᶻ ≡ ωᴰ
 emb-ω = refl
 
-emb-δ : emb δᶻ ≡ δ
+emb-δ : emb δᶻ ≡ δᴰ
 emb-δ = refl
 
 emb-^ : ∀ x k → emb (x ^ᶻ k) ≡ emb x ^ᴰ k
@@ -392,6 +392,10 @@ even⇒δ∣ (Omega a b c d) e = go (evenℤ-half (a ℤ.+ b ℤ.+ c ℤ.+ d) e)
 -- client must not also have EucDomain's instances for 𝔻[ω] in scope
 -- (SemiRingOmega with RingDyadic): instance search at 𝔻[ω] would be
 -- ambiguous.
+
+-- Decidable equality.
+_≟ᴰ_ : (x y : D) → Dec (x ≡ y)
+_≟ᴰ_ = _≟_
 
 semiRing-D : SemiRing D
 semiRing-D = record { _+_ = _+ᴰ_ ; _*_ = _*ᴰ_ ; 0# = 0ᴰ ; 1# = 1ᴰ ; fromℕ = fromℕ }

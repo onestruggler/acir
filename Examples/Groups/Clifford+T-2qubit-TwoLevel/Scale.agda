@@ -116,8 +116,8 @@ sc-δ : ∀ k w → sc (suc k) (δᶻ ZR.* w) ≡ sc k w
 sc-δ k w = begin
   sc (suc k) (δᶻ ZR.* w)                ≡⟨ sc-def (suc k) (δᶻ ZR.* w) ⟩
   emb (δᶻ ZR.* w) DR.* (δ⁻ DR.* X)      ≡⟨ cong (DR._* (δ⁻ DR.* X)) (emb-* δᶻ w) ⟩
-  (δ DR.* emb w) DR.* (δ⁻ DR.* X)       ≡⟨ DA.*-4 δ (emb w) δ⁻ X ⟩
-  (δ DR.* δ⁻) DR.* (emb w DR.* X)       ≡⟨ cong (DR._* (emb w DR.* X)) δ*δ⁻ ⟩
+  (δᴰ DR.* emb w) DR.* (δ⁻ DR.* X)       ≡⟨ DA.*-4 δᴰ (emb w) δ⁻ X ⟩
+  (δᴰ DR.* δ⁻) DR.* (emb w DR.* X)       ≡⟨ cong (DR._* (emb w DR.* X)) δ*δ⁻ ⟩
   DR.1# DR.* (emb w DR.* X)             ≡⟨ DR.*-identityˡ (emb w DR.* X) ⟩
   emb w DR.* X                          ≡⟨ sym (sc-def k w) ⟩
   sc k w                                ∎
@@ -139,11 +139,11 @@ sc-raise : ∀ d k w → sc k w ≡ sc (d ℕ.+ k) ((δᶻ ^ᶻ d) ZR.* w)
 sc-raise d k w = sym (sc-δ^ d k w)
 
 -- The numerator is determined by the exponent.
-sc-cancel : ∀ k w → sc k w DR.* (δ ^ᴰ k) ≡ emb w
+sc-cancel : ∀ k w → sc k w DR.* (δᴰ ^ᴰ k) ≡ emb w
 sc-cancel k w = begin
-  sc k w DR.* (δ ^ᴰ k)                ≡⟨ cong (DR._* (δ ^ᴰ k)) (sc-def k w) ⟩
-  (emb w DR.* X) DR.* (δ ^ᴰ k)        ≡⟨ DR.*-assoc (emb w) X (δ ^ᴰ k) ⟩
-  emb w DR.* (X DR.* (δ ^ᴰ k))        ≡⟨ cong (emb w DR.*_) (DA.^-inverse δ⁻ δ k δ⁻*δ) ⟩
+  sc k w DR.* (δᴰ ^ᴰ k)                ≡⟨ cong (DR._* (δᴰ ^ᴰ k)) (sc-def k w) ⟩
+  (emb w DR.* X) DR.* (δᴰ ^ᴰ k)        ≡⟨ DR.*-assoc (emb w) X (δᴰ ^ᴰ k) ⟩
+  emb w DR.* (X DR.* (δᴰ ^ᴰ k))        ≡⟨ cong (emb w DR.*_) (DA.^-inverse δ⁻ δᴰ k δ⁻*δ) ⟩
   emb w DR.* DR.1#                    ≡⟨ DR.*-identityʳ (emb w) ⟩
   emb w                               ∎
   where
@@ -152,7 +152,7 @@ sc-cancel k w = begin
 
 sc-injective : ∀ k {w w'} → sc k w ≡ sc k w' → w ≡ w'
 sc-injective k {w} {w'} eq =
-  emb-injective (trans (sym (sc-cancel k w)) (trans (cong (DR._* (δ ^ᴰ k)) eq) (sc-cancel k w')))
+  emb-injective (trans (sym (sc-cancel k w)) (trans (cong (DR._* (δᴰ ^ᴰ k)) eq) (sc-cancel k w')))
 
 -- The Hadamard scalar: w / √2 at scale k is λω w at scale k + 2.
 sc-√½ : ∀ k w → √½ DR.* sc k w ≡ sc (suc (suc k)) (λωᶻ ZR.* w)
