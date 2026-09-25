@@ -23,8 +23,13 @@ open import Data.Fin.Base using (Fin ; _<_ ; _≤_ ; toℕ)
 open import Data.List.Relation.Unary.All as All using (All ; [] ; _∷_)
 import Data.Fin.Properties as FinP
 import Data.Nat.Properties as ℕP
-open import Data.Maybe.Base using (just)
-open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Maybe.Base using (Maybe ; just ; nothing)
+open import Data.Empty using (⊥-elim)
+import Data.Bool.Properties as BoolP
+open import Relation.Binary.Definitions using (Tri ; tri< ; tri≈ ; tri>)
+open import Relation.Nullary using (¬_ ; Dec ; yes ; no)
+open import Data.Bool.Base using (false)
+open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Unit.Base using (tt)
 open import Data.Vec.Base using (Vec)
@@ -39,14 +44,15 @@ open import Quantum.Synthesis.Ring
 open import Word.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open import Examples.Groups.Clifford+CS-TwoLevel.Ring using (D ; Z)
-open import Examples.Groups.Clifford+CS-TwoLevel.Lde using (scV ; lde ; lde-char ; Minimal)
+open import Examples.Groups.Clifford+CS-TwoLevel.Ring using (D ; Z ; oddᶻ)
+open import Examples.Groups.Clifford+CS-TwoLevel.Lde
+  using (scV ; lde ; num ; lde-char ; lde-≤ ; Minimal ; Odd ; Even ; ¬Even⇒Odd ; halveV ; scV-halve ; all-even?)
 open import Examples.Groups.Clifford+CS-TwoLevel.Column using (sylData ; nodd ; Above)
 open import Examples.Groups.Clifford+CS-TwoLevel.Syntactics
 open import Examples.Groups.Clifford+CS-TwoLevel.Semantics
 open import Examples.Groups.Clifford+CS-TwoLevel.Soundness using (sound-axiom)
 open import Examples.Groups.Clifford+CS-TwoLevel.Pivot
-  using (pivot ; pivot-just ; pivot-char ; Lvl ; level ; level-just ; _<ₗ_ ; _<ₗ?_)
+  using (pivot ; pivot-just ; pivot-char ; Beyond ; Lvl ; lvlAt ; level ; level-just ; _<ₗ_ ; _<₂_ ; _<ₗ?_)
 open import Examples.Groups.Clifford+CS-TwoLevel.Syllable
   using (syl ; syl-just ; step ; top ; Within ; Beyond-actM ; actV-e-beyond ; eᶻ ; col𝕀≡)
 open import Examples.Groups.Clifford+CS-TwoLevel.Step using (step-lt)
@@ -309,3 +315,42 @@ bℓ-below {x} {p} {k} m 0<k x≤p = aux (ℕP.m≤n⇒m<n∨m≡n x≤p)
   aux : toℕ x ℕ.< toℕ p ⊎ toℕ x ≡ toℕ p → Bℓ x <ₗ (suc (toℕ p) , k , m)
   aux (inj₁ lt) = inj₁ (s≤s lt)
   aux (inj₂ eq) = inj₂ (≡.cong suc eq , inj₁ 0<k)
+
+-- A matrix that agrees with I beyond p, and whose column p is w / γᵏ
+-- with fewer than m odd entries in w, lies below (p + 1 , k , m).
+level-le : (M : Matrix n n D) {p : Fin n} → Beyond p M → (k : ℕ) (N : Vec Z n) → col M p ≡ scV k N →
+           ∀ {m} → nodd N ℕ.< m → level M <ₗ (suc (toℕ p) , k , m)
+level-le M {p} be k N eq {m} lt = by-pivot (pivot M) ≡.refl
+  where
+  L : Lvl
+  L = suc (toℕ p) , k , m
+
+  exact : Minimal k N → (lde (col M p) , nodd (num (col M p))) <₂ (k , m)
+  exact mn = inj₂ (proj₁ (lde-char k N eq mn) ,
+                   ≡.subst (λ w → nodd w ℕ.< m) (≡.sym (proj₂ (lde-char k N eq mn))) lt)
+
+  rep< : (lde (col M p) , nodd (num (col M p))) <₂ (k , m)
+  rep< = by-even (all-even? N)
+    where
+    by-even : Dec (∀ x → Even (N ! x)) → (lde (col M p) , nodd (num (col M p))) <₂ (k , m)
+    by-even (no ¬ev) = exact (inj₂ (odd (FinP.¬∀⇒∃¬ n (λ x → Even (N ! x)) (λ x → oddᶻ (N ! x) BoolP.≟ false) ¬ev)))
+      where
+      odd : (∃ λ x → ¬ Even (N ! x)) → ∃ λ x → Odd (N ! x)
+      odd (x , ¬e) = x , ¬Even⇒Odd {N ! x} ¬e
+    by-even (yes ev) = halve k ≡.refl
+      where
+      halve : ∀ k′ → k′ ≡ k → (lde (col M p) , nodd (num (col M p))) <₂ (k , m)
+      halve ℕ.zero e = exact (inj₁ (≡.sym e))
+      halve (suc k′) e =
+        inj₁ (≡.subst (λ x → lde (col M p) ℕ.< x) e
+               (s≤s (lde-≤ k′ (halveV N ev) (≡.trans eq (≡.trans (≡.cong (λ x → scV x N) (≡.sym e)) (scV-halve k′ N ev))))))
+
+  by-pivot : (r : Maybe (Fin n)) → pivot M ≡ r → level M <ₗ L
+  by-pivot nothing pv = ≡.subst (_<ₗ L) (≡.sym (≡.cong (λ x → lvlAt x M) pv)) (inj₁ (s≤s z≤n))
+  by-pivot (just p′) pv = by-cmp (FinP.<-cmp p′ p)
+    where
+    by-cmp : Tri (p′ < p) (p′ ≡ p) (p < p′) → level M <ₗ L
+    by-cmp (tri< p′<p _ _) = ≡.subst (_<ₗ L) (≡.sym (level-just M pv)) (inj₁ (s≤s p′<p))
+    by-cmp (tri≈ _ p′≡p _) =
+      ≡.subst (_<ₗ L) (≡.sym (level-just M (≡.trans pv (≡.cong just p′≡p)))) (inj₂ (≡.refl , rep<))
+    by-cmp (tri> _ _ p<p′) = ⊥-elim (proj₁ (pivot-just M pv) (be p′ p<p′))

@@ -222,3 +222,40 @@ first-cong P Q eq = at (first P) refl
   at nothing e = sym (first-none Q (λ x → trans (sym (eq x)) (first-nothing P e x)))
   at (just j) e = sym (first-char Q (trans (sym (eq j)) (proj₁ (first-just P e)))
                                     (λ x x<j → trans (sym (eq x)) (proj₂ (first-just P e) x x<j)))
+
+------------------------------------------------------------------------
+-- Comparing counts
+
+-- A predicate that implies another counts no more.
+count-mono : (P Q : Fin n → Bool) → (∀ x → Q x ≡ true → P x ≡ true) → count Q ℕ.≤ count P
+count-mono {zero} P Q h = z≤n
+count-mono {suc n} P Q h =
+  ℕP.+-mono-≤ (ind (Q zero) (P zero) (h zero)) (count-mono (P ∘ suc) (Q ∘ suc) (h ∘ suc))
+  where
+  ind : ∀ a b → (a ≡ true → b ≡ true) → (if a then 1 else 0) ℕ.≤ (if b then 1 else 0)
+  ind false b _ = z≤n
+  ind true b h′ = subst (λ c → 1 ℕ.≤ (if c then 1 else 0)) (sym (h′ refl)) ℕP.≤-refl
+
+-- ... and strictly less if it fails where the other holds.
+count-lt : (P Q : Fin n → Bool) (a : Fin n) → (∀ x → Q x ≡ true → P x ≡ true) → P a ≡ true → Q a ≡ false →
+           count Q ℕ.< count P
+count-lt {n} P Q a h Pa Qa =
+  subst (count Q ℕ.<_) (sym (count-drop P R a Pa Ra agreeR)) (s≤s (count-mono R Q hR))
+  where
+  open import Relation.Nullary.Decidable using (does ; dec-true ; dec-false)
+  open import Relation.Nullary using (Dec ; yes ; no)
+  R : Fin n → Bool
+  R x = if does (x FinP.≟ a) then false else P x
+  Ra : R a ≡ false
+  Ra = cong (λ d → if d then false else P a) (dec-true (a FinP.≟ a) refl)
+  agreeR : ∀ x → x ≢ a → P x ≡ R x
+  agreeR x x≢a = sym (cong (λ d → if d then false else P x) (dec-false (x FinP.≟ a) x≢a))
+  hR : ∀ x → Q x ≡ true → R x ≡ true
+  hR x Qx = at (x FinP.≟ a)
+    where
+    at : Dec (x ≡ a) → R x ≡ true
+    at (yes refl) = ⊥-elim (true≢false (trans (sym Qx) Qa))
+      where
+      true≢false : true ≢ false
+      true≢false ()
+    at (no x≢a) = trans (sym (agreeR x x≢a)) (h x Qx)
