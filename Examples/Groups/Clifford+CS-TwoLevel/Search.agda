@@ -259,3 +259,31 @@ count-lt {n} P Q a h Pa Qa =
       true≢false : true ≢ false
       true≢false ()
     at (no x≢a) = trans (sym (agreeR x x≢a)) (h x Qx)
+
+-- A predicate true at exactly three indices counts 3.
+count-three : (P : Fin n → Bool) (a b c : Fin n) → a ≢ b → a ≢ c → b ≢ c →
+              P a ≡ true → P b ≡ true → P c ≡ true →
+              (∀ x → x ≢ a → x ≢ b → x ≢ c → P x ≡ false) → count P ≡ 3
+count-three {n} P a b c a≢b a≢c b≢c Pa Pb Pc others =
+  trans (count-drop P R a Pa Ra agreeR)
+        (cong suc (trans (count-drop₂ R F b c b≢c Rb Rc refl refl agreeF) (cong (λ m → ℕ.suc (ℕ.suc m)) (count-false F (λ _ → refl)))))
+  where
+  open import Relation.Nullary.Decidable using (does ; dec-true ; dec-false)
+  open import Relation.Nullary using (Dec ; yes ; no)
+  R F : Fin n → Bool
+  R x = if does (x FinP.≟ a) then false else P x
+  F _ = false
+  Ra : R a ≡ false
+  Ra = cong (λ d → if d then false else P a) (dec-true (a FinP.≟ a) refl)
+  agreeR : ∀ x → x ≢ a → P x ≡ R x
+  agreeR x x≢a = sym (cong (λ d → if d then false else P x) (dec-false (x FinP.≟ a) x≢a))
+  Rb : R b ≡ true
+  Rb = trans (sym (agreeR b (a≢b ∘ sym))) Pb
+  Rc : R c ≡ true
+  Rc = trans (sym (agreeR c (a≢c ∘ sym))) Pc
+  agreeF : ∀ x → x ≢ b → x ≢ c → R x ≡ F x
+  agreeF x x≢b x≢c = at (x FinP.≟ a)
+    where
+    at : Dec (x ≡ a) → R x ≡ false
+    at (yes refl) = Ra
+    at (no x≢a) = trans (sym (agreeR x x≢a)) (others x x≢a x≢b x≢c)

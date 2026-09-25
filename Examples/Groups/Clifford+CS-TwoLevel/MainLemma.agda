@@ -2,8 +2,8 @@
 -- Presentations of groups
 --
 -- The Main Lemma (Lemma 3.6), by the basic generator: Case 1 (i_[0],
--- CaseI), Case 2 (K_[0,1], CaseK) and Case 3 (X_[α,α+1], CaseX),
--- given the hard subcase of Case 3; and with it the completeness of
+-- CaseI), Case 2 (K_[0,1], CaseK) and Case 3 (X_[α,α+1], CaseX, with
+-- its hard subcase in CaseXM); and with it the completeness of
 -- the relations (Theorem 3.2).
 ------------------------------------------------------------------------
 
@@ -32,6 +32,7 @@ open import Examples.Groups.Clifford+CS-TwoLevel.ExpLevel {n} using (exp-level)
 open import Examples.Groups.Clifford+CS-TwoLevel.CaseI {n} using (caseI)
 open import Examples.Groups.Clifford+CS-TwoLevel.CaseK {n} using (caseK)
 open import Examples.Groups.Clifford+CS-TwoLevel.CaseX {n} using (caseX ; Hard)
+open import Examples.Groups.Clifford+CS-TwoLevel.CaseXM {n} using (hard)
 
 open PB (_===_ {n}) using (_≈_)
 
@@ -48,3 +49,15 @@ main-lemma hard (i-gen a) (bi a0) s o ps = caseI a a0 s o ps
 -- Theorem 3.2, given the hard subcase.
 completeness-given : HardAll → {u v : Word (Gen n)} → ⟦ u ⟧ᵐ ≡ ⟦ v ⟧ᵐ → u ≈ v
 completeness-given hard = completeness (main-lemma hard) base exp-level
+
+-- The hard subcase (CaseXM), and so the Main Lemma.
+hard-all : HardAll
+hard-all α β αβ1 s o ps = hard α β αβ1 s o ps
+
+main : MainLemma
+main = main-lemma hard-all
+
+-- Theorem 3.2: the relations are complete, words with the same matrix
+-- are equal in the presentation.
+relations-complete : {u v : Word (Gen n)} → ⟦ u ⟧ᵐ ≡ ⟦ v ⟧ᵐ → u ≈ v
+relations-complete = completeness main base exp-level

@@ -39,7 +39,7 @@ open import Quantum.Synthesis.Ring using (DecEqCplx)
 
 open import Word.Base using (Word)
 open import Examples.Groups.Clifford+CS-TwoLevel.Lde
-open import Examples.Groups.Clifford+CS-TwoLevel.Search using (first-nothing ; count ; count-one)
+open import Examples.Groups.Clifford+CS-TwoLevel.Search using (first-nothing ; count ; count-one ; count-three)
 open import Examples.Groups.Clifford+CS-TwoLevel.Norm using (Nℕ ; Σℕ ; Unit ; lde0 ; evenodd)
 open import Examples.Groups.Clifford+CS-TwoLevel.Column
 open import Examples.Groups.Clifford+CS-TwoLevel.Syntactics using (Gen)
@@ -142,3 +142,38 @@ second {K′} {j} ks fo = go (nextOdd j W) ≡.refl
                             (first-nothing (λ y → does (j FinP.<? y) ∧ oddᶻ (W ! y)) nx x)
     cnt : count (λ x → oddᶻ (W ! x)) ≡ 1
     cnt = count-one (λ x → oddᶻ (W ! x)) j (proj₁ (firstOdd-spec W fo)) others
+
+-- k > 0 and three odd entries j < ℓ < c, the first three: there is a
+-- fourth, by "evenodd".
+third : ∀ {K′ j ℓ c} → lde v ≡ suc K′ → firstOdd W ≡ just j → nextOdd j W ≡ just ℓ → ℓ < c → Odd (W ! c) →
+        (∀ x → ℓ < x → x < c → Even (W ! x)) → ∃ λ d → nextOdd c W ≡ just d
+third {K′} {j} {ℓ} {c} ks fo nx ℓc oc btw = go (nextOdd c W) ≡.refl
+  where
+  jℓ : j < ℓ
+  jℓ = proj₁ (nextOdd-spec W nx)
+  go : (r : Maybe (Fin n)) → nextOdd c W ≡ r → ∃ λ d → nextOdd c W ≡ just d
+  go (just d) nx′ = d , nx′
+  go nothing nx′ =
+    ⊥-elim (odd3 (≡.trans (≡.sym (≡.cong oddℕ cnt)) (evenodd K′ W (≡.trans norm (≡.cong (2 ℕ.^_) ks)))))
+    where
+    odd3 : oddℕ 3 ≡ false → ⊥
+    odd3 ()
+    others : ∀ x → x ≢ j → x ≢ ℓ → x ≢ c → oddᶻ (W ! x) ≡ false
+    others x x≢j x≢ℓ x≢c = at₁ (FinP.<-cmp x j)
+      where
+      at₃ : Tri (x < c) (x ≡ c) (c < x) → j < x → ℓ < x → oddᶻ (W ! x) ≡ false
+      at₃ (tri< x<c _ _) _ ℓ<x = btw x ℓ<x x<c
+      at₃ (tri≈ _ x≡c _) _ _ = ⊥-elim (x≢c x≡c)
+      at₃ (tri> _ _ c<x) _ _ = ≡.trans (≡.sym (≡.cong (_∧ oddᶻ (W ! x)) (dec-true (c FinP.<? x) c<x)))
+                                 (first-nothing (λ y → does (c FinP.<? y) ∧ oddᶻ (W ! y)) nx′ x)
+      at₂ : Tri (x < ℓ) (x ≡ ℓ) (ℓ < x) → j < x → oddᶻ (W ! x) ≡ false
+      at₂ (tri< x<ℓ _ _) j<x = proj₂ (proj₂ (nextOdd-spec W nx)) x j<x x<ℓ
+      at₂ (tri≈ _ x≡ℓ _) _ = ⊥-elim (x≢ℓ x≡ℓ)
+      at₂ (tri> _ _ ℓ<x) j<x = at₃ (FinP.<-cmp x c) j<x ℓ<x
+      at₁ : Tri (x < j) (x ≡ j) (j < x) → oddᶻ (W ! x) ≡ false
+      at₁ (tri< x<j _ _) = proj₂ (firstOdd-spec W fo) x x<j
+      at₁ (tri≈ _ x≡j _) = ⊥-elim (x≢j x≡j)
+      at₁ (tri> _ _ j<x) = at₂ (FinP.<-cmp x ℓ) j<x
+    cnt : count (λ x → oddᶻ (W ! x)) ≡ 3
+    cnt = count-three (λ x → oddᶻ (W ! x)) j ℓ c (FinP.<⇒≢ jℓ) (FinP.<⇒≢ (ℕP.<-trans jℓ ℓc)) (FinP.<⇒≢ ℓc)
+            (proj₁ (firstOdd-spec W fo)) (proj₁ (proj₂ (nextOdd-spec W nx))) oc others
