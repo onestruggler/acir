@@ -1,0 +1,262 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- Consequences of the relations of Table 1: the inverses of the
+-- generators, commutation of words with disjoint indices, the
+-- conjugations by X that give the basic generators (Lemma 3.8), and
+-- the relations of Table 2 (Lemma 3.6) that the proof of the Main
+-- Lemma uses.
+------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
+open import Data.Nat.Base as ℕ using (ℕ)
+
+module Examples.Groups.Clifford+T-2qubit-TwoLevel.Derived {n : ℕ} where
+
+open import Data.Fin.Base using (Fin ; _<_)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.List.Relation.Unary.All using (All ; [] ; _∷_)
+open import Data.Product.Base using (_×_ ; _,_)
+open import Data.Unit.Base using (⊤)
+import Data.Fin.Properties as FinP
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; ≢-sym) renaming (sym to ≡-sym)
+open import Relation.Nullary.Decidable using (recompute)
+import Relation.Binary.Reasoning.Setoid as SR
+
+open import Notations using (auto)
+open import Word.Base
+import Presentation.Base as PB
+import Presentation.Properties as PP
+open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
+open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Syntactics
+
+open PB (_===_ {n}) hiding (_===_)
+open PP (_===_ {n})
+open SR word-setoid
+
+private
+  variable
+    j k l : Fin n
+
+  <⇒≢ : .(j < k) → j ≢ k
+  <⇒≢ {j = j} {k} p j≡k = FinP.<-irrefl j≡k (recompute (j FinP.<? k) p)
+
+  >⇒≢ : .(j < k) → k ≢ j
+  >⇒≢ p e = <⇒≢ p (≡-sym e)
+
+  -- Generators with distinct indices ω_[j], ω_[k] commute.
+  ωω : j ≢ k → ω j • ω k ≈ ω k • ω j
+  ωω j≢k = axiom (comm-ωω j≢k)
+
+------------------------------------------------------------------------
+-- Orders and inverses
+
+ω⁸ : ω j ^ 8 ≈ ε
+ω⁸ = axiom order-ω
+
+ω-ω⁷ : ω j • ω j ^ 7 ≈ ε
+ω-ω⁷ = ω⁸
+
+ω⁷-ω : ω j ^ 7 • ω j ≈ ε
+ω⁷-ω {j} = trans (sym (^-+ (ω j) 7 1)) ω⁸
+
+X-X : .(p : j < k) → X j k p • X j k p ≈ ε
+X-X p = axiom (order-X p)
+
+H-H : .(p : j < k) → H j k p • H j k p ≈ ε
+H-H p = axiom (order-H p)
+
+grouplike : Grouplike (_===_ {n})
+grouplike (X-gen a b p) = X a b p , X-X p
+grouplike (H-gen a b p) = H a b p , H-H p
+grouplike (ω-gen a)     = ω a ^ 7 , ω⁷-ω
+
+open Group-Lemmas (_===_ {n}) grouplike public
+  using (_⁻¹ ; inverseˡ ; inverseʳ ; •-cancelˡ ; •-cancelʳ ; ⁻¹-cong)
+
+------------------------------------------------------------------------
+-- Exponents of ω, taken modulo 8
+
+ω^-+ : ∀ e f → ω j ^ e • ω j ^ f ≈ ω j ^ (e ℕ.+ f)
+ω^-+ {j} e f = sym (^-+ (ω j) e f)
+
+ω^+8 : ∀ e → ω j ^ (e ℕ.+ 8) ≈ ω j ^ e
+ω^+8 {j} e = begin
+  ω j ^ (e ℕ.+ 8)        ≈⟨ ^-+ (ω j) e 8 ⟩
+  ω j ^ e • ω j ^ 8      ≈⟨ cright ω⁸ ⟩
+  ω j ^ e • ε            ≈⟨ right-unit ⟩
+  ω j ^ e                ∎
+
+------------------------------------------------------------------------
+-- Conjugating powers
+
+-- u w = w v gives uᵉ w = w vᵉ.
+conj-^ : {u v w : Word (Gen n)} → u • w ≈ w • v → ∀ e → u ^ e • w ≈ w • v ^ e
+conj-^ h ℕ.zero = trans left-unit (sym right-unit)
+conj-^ h (ℕ.suc ℕ.zero) = h
+conj-^ {u} {v} {w} h (ℕ.suc (ℕ.suc e)) = begin
+  (u • u ^ ℕ.suc e) • w      ≈⟨ assoc ⟩
+  u • (u ^ ℕ.suc e • w)      ≈⟨ cright conj-^ h (ℕ.suc e) ⟩
+  u • (w • v ^ ℕ.suc e)      ≈⟨ sym assoc ⟩
+  (u • w) • v ^ ℕ.suc e      ≈⟨ cleft h ⟩
+  (w • v) • v ^ ℕ.suc e      ≈⟨ assoc ⟩
+  w • (v • v ^ ℕ.suc e)      ∎
+
+------------------------------------------------------------------------
+-- Conjugation by X
+
+-- A X = X B gives B X = X A.
+flip-X : ∀ {A B : Word (Gen n)} .(p : j < k) →
+         A • X j k p ≈ X j k p • B → B • X j k p ≈ X j k p • A
+flip-X {A = A} {B} p h = begin
+  B • X′                        ≈⟨ sym left-unit ⟩
+  ε • B • X′                    ≈⟨ cleft sym (X-X p) ⟩
+  (X′ • X′) • B • X′            ≈⟨ assoc ⟩
+  X′ • X′ • B • X′              ≈⟨ cright sym assoc ⟩
+  X′ • (X′ • B) • X′            ≈⟨ cright cleft sym h ⟩
+  X′ • (A • X′) • X′            ≈⟨ cright assoc ⟩
+  X′ • A • (X′ • X′)            ≈⟨ cright cright X-X p ⟩
+  X′ • A • ε                    ≈⟨ cright right-unit ⟩
+  X′ • A                        ∎
+  where X′ = X _ _ p
+
+-- A X = X B gives B = X A X.
+conj-X : ∀ {A B : Word (Gen n)} .(p : j < k) → A • X j k p ≈ X j k p • B → B ≈ X j k p • A • X j k p
+conj-X {A = A} {B} p h = begin
+  B                       ≈⟨ sym left-unit ⟩
+  ε • B                   ≈⟨ cleft sym (X-X p) ⟩
+  (X′ • X′) • B           ≈⟨ assoc ⟩
+  X′ • (X′ • B)           ≈⟨ cright sym h ⟩
+  X′ • (A • X′)           ∎
+  where X′ = X _ _ p
+
+-- A X = X B gives A = X B X.
+conj-X′ : ∀ {A B : Word (Gen n)} .(p : j < k) → A • X j k p ≈ X j k p • B → A ≈ X j k p • B • X j k p
+conj-X′ {A = A} {B} p h = begin
+  A                       ≈⟨ sym right-unit ⟩
+  A • ε                   ≈⟨ cright sym (X-X p) ⟩
+  A • (X′ • X′)           ≈⟨ sym assoc ⟩
+  (A • X′) • X′           ≈⟨ cleft h ⟩
+  (X′ • B) • X′           ≈⟨ assoc ⟩
+  X′ • B • X′             ∎
+  where X′ = X _ _ p
+
+------------------------------------------------------------------------
+-- X_[j,k] and the ω's: (10) and (11) read both ways
+
+-- ω_[k] X = X ω_[j], and ω_[j] X = X ω_[k].
+ωX≈Xω : .(p : j < k) → ω k • X j k p ≈ X j k p • ω j
+ωX≈Xω p = sym (axiom (swap-Xω′ p))
+
+ωX≈Xω′ : .(p : j < k) → ω j • X j k p ≈ X j k p • ω k
+ωX≈Xω′ p = sym (axiom (swap-Xω p))
+
+------------------------------------------------------------------------
+-- The basic generators (Lemma 3.8): X_[j,j+1], H_[0,1] and ω_[0]
+-- give the others by conjugation.
+
+-- ω_[k] = X_[j,k] ω_[j] X_[j,k]
+ω≈XωX : .(p : j < k) → ω k ≈ X j k p • ω j • X j k p
+ω≈XωX p = conj-X′ p (ωX≈Xω p)
+
+-- H_[k,l] = X_[j,k] H_[j,l] X_[j,k]
+H≈XHX : .(p : j < k) .(q : k < l) → H k l q ≈ X j k p • H j l (FinP.<-trans p q) • X j k p
+H≈XHX p q = conj-X′ p (sym (axiom (swap-XH p q)))
+
+-- H_[j,l] = X_[k,l] H_[j,k] X_[k,l]
+H≈XHX′ : .(p : j < k) .(q : k < l) → H j l (FinP.<-trans p q) ≈ X k l q • H j k p • X k l q
+H≈XHX′ p q = conj-X′ q (sym (axiom (swap-XH′ p q)))
+
+-- X_[j,l] = X_[j,k] X_[k,l] X_[j,k]
+X≈XXX : .(p : j < k) .(q : k < l) → X j l (FinP.<-trans p q) ≈ X j k p • X k l q • X j k p
+X≈XXX p q = conj-X p (sym (axiom (swap-XX p q)))
+
+------------------------------------------------------------------------
+-- Table 2: (p), (o) and (m), the inverses of (14), (15) and (18)
+
+-- (p) H_[j,l] X_[j,k] = X_[j,k] H_[k,l]
+HX≈XH : .(p : j < k) .(q : k < l) → H j l (FinP.<-trans p q) • X j k p ≈ X j k p • H k l q
+HX≈XH p q = flip-X p (sym (axiom (swap-XH p q)))
+
+-- (o) H_[l,j] X_[j,k] = X_[j,k] H_[l,k]
+HX≈XH′ : .(p : l < j) .(q : j < k) → H l j p • X j k q ≈ X j k q • H l k (FinP.<-trans p q)
+HX≈XH′ p q = flip-X q (sym (axiom (swap-XH′ p q)))
+
+-- (m) X_[j,k] H_[j,k] = H_[j,k] ω_[k]⁴
+XH≈Hω⁴ : .(p : j < k) → X j k p • H j k p ≈ H j k p • ω k ^ 4
+XH≈Hω⁴ {j} {k} p = begin
+  X′ • H′                             ≈⟨ sym left-unit ⟩
+  ε • X′ • H′                         ≈⟨ cleft sym (H-H p) ⟩
+  (H′ • H′) • X′ • H′                 ≈⟨ by-assoc auto ⟩
+  H′ • (H′ • X′) • H′                 ≈⟨ cright cleft axiom (rel-18 p) ⟩
+  H′ • (ω k ^ 4 • H′) • H′            ≈⟨ by-assoc auto ⟩
+  H′ • ω k ^ 4 • (H′ • H′)            ≈⟨ cright cright H-H p ⟩
+  H′ • ω k ^ 4 • ε                    ≈⟨ cright right-unit ⟩
+  H′ • ω k ^ 4                        ∎
+  where
+  X′ = X j k p
+  H′ = H j k p
+
+------------------------------------------------------------------------
+-- Generators with disjoint indices commute ((4)–(9)), and so do words
+
+-- The indices a generator acts on.
+idx : Gen n → List (Fin n)
+idx (X-gen a b _) = a ∷ b ∷ []
+idx (H-gen a b _) = a ∷ b ∷ []
+idx (ω-gen a)     = a ∷ []
+
+Apart : Gen n → Gen n → Set
+Apart g h = All (λ x → All (x ≢_) (idx h)) (idx g)
+
+comm-gen : (g h : Gen n) → Apart g h → [ g ]ʷ • [ h ]ʷ ≈ [ h ]ʷ • [ g ]ʷ
+comm-gen (ω-gen a) (ω-gen c) ((ac ∷ []) ∷ []) = axiom (comm-ωω ac)
+comm-gen (ω-gen a) (X-gen c d q) ((ac ∷ ad ∷ []) ∷ []) = axiom (comm-ωX q ac ad)
+comm-gen (ω-gen a) (H-gen c d q) ((ac ∷ ad ∷ []) ∷ []) = axiom (comm-ωH q ac ad)
+comm-gen (X-gen a b p) (ω-gen c) ((ac ∷ []) ∷ (bc ∷ []) ∷ []) =
+  sym (axiom (comm-ωX p (≢-sym ac) (≢-sym bc)))
+comm-gen (X-gen a b p) (X-gen c d q) ((ac ∷ ad ∷ []) ∷ (bc ∷ bd ∷ []) ∷ []) =
+  axiom (comm-XX p q ac ad bc bd)
+comm-gen (X-gen a b p) (H-gen c d q) ((ac ∷ ad ∷ []) ∷ (bc ∷ bd ∷ []) ∷ []) =
+  sym (axiom (comm-HX q p (≢-sym ac) (≢-sym bc) (≢-sym ad) (≢-sym bd)))
+comm-gen (H-gen a b p) (ω-gen c) ((ac ∷ []) ∷ (bc ∷ []) ∷ []) =
+  sym (axiom (comm-ωH p (≢-sym ac) (≢-sym bc)))
+comm-gen (H-gen a b p) (X-gen c d q) ((ac ∷ ad ∷ []) ∷ (bc ∷ bd ∷ []) ∷ []) =
+  axiom (comm-HX p q ac ad bc bd)
+comm-gen (H-gen a b p) (H-gen c d q) ((ac ∷ ad ∷ []) ∷ (bc ∷ bd ∷ []) ∷ []) =
+  axiom (comm-HH p q ac ad bc bd)
+
+-- Every letter of u is apart from h.
+Apartʷ : Word (Gen n) → Gen n → Set
+Apartʷ [ g ]ʷ h = Apart g h
+Apartʷ ε h = ⊤
+Apartʷ (u • v) h = Apartʷ u h × Apartʷ v h
+
+comm-word : (u : Word (Gen n)) (h : Gen n) → Apartʷ u h → u • [ h ]ʷ ≈ [ h ]ʷ • u
+comm-word [ g ]ʷ h ap = comm-gen g h ap
+comm-word ε h _ = trans left-unit (sym right-unit)
+comm-word (u • v) h (au , av) = begin
+  (u • v) • [ h ]ʷ      ≈⟨ assoc ⟩
+  u • (v • [ h ]ʷ)      ≈⟨ cright comm-word v h av ⟩
+  u • ([ h ]ʷ • v)      ≈⟨ sym assoc ⟩
+  (u • [ h ]ʷ) • v      ≈⟨ cleft comm-word u h au ⟩
+  ([ h ]ʷ • u) • v      ≈⟨ assoc ⟩
+  [ h ]ʷ • (u • v)      ∎
+
+-- Every letter of u is apart from every letter of v.
+Apartʷʷ : Word (Gen n) → Word (Gen n) → Set
+Apartʷʷ u [ h ]ʷ = Apartʷ u h
+Apartʷʷ u ε = ⊤
+Apartʷʷ u (v • v′) = Apartʷʷ u v × Apartʷʷ u v′
+
+comm-words : (u v : Word (Gen n)) → Apartʷʷ u v → u • v ≈ v • u
+comm-words u [ h ]ʷ ap = comm-word u h ap
+comm-words u ε _ = trans right-unit (sym left-unit)
+comm-words u (v • v′) (a , a′) = begin
+  u • (v • v′)          ≈⟨ sym assoc ⟩
+  (u • v) • v′          ≈⟨ cleft comm-words u v a ⟩
+  (v • u) • v′          ≈⟨ assoc ⟩
+  v • (u • v′)          ≈⟨ cright comm-words u v′ a′ ⟩
+  v • (v′ • u)          ≈⟨ sym assoc ⟩
+  (v • v′) • u          ∎
