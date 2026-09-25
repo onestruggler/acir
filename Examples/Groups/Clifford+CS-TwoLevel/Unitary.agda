@@ -83,8 +83,8 @@ ip-actV (X-gen a b p) u u' =
   sum-update F G a b (<⇒≢ p) off
     (begin
       G a + G b
-        ≡⟨ cong₂ _+_ (cong₂ (λ y z → adj y * z) (set₂-a a b (u ! b) (u ! a) u) (set₂-a a b (u' ! b) (u' ! a) u'))
-                     (cong₂ (λ y z → adj y * z) (set₂-b a b (u ! b) (u ! a) u (<⇒≢ p)) (set₂-b a b (u' ! b) (u' ! a) u' (<⇒≢ p))) ⟩
+        ≡⟨ cong₂ _+_ (cong₂ (λ y z → adj y * z) (actV-Xa p u) (actV-Xa p u'))
+                     (cong₂ (λ y z → adj y * z) (actV-Xb p u) (actV-Xb p u')) ⟩
       F b + F a
         ≡⟨ AR.+-comm (F b) (F a) ⟩
       F a + F b ∎)
@@ -94,14 +94,14 @@ ip-actV (X-gen a b p) u u' =
   F x = adj (u ! x) * u' ! x
   G x = adj (actV (X-gen a b p) u ! x) * actV (X-gen a b p) u' ! x
   off : ∀ x → x ≢ a → x ≢ b → G x ≡ F x
-  off x x≢a x≢b = cong₂ (λ y z → adj y * z) (set₂-≢ a b (u ! b) (u ! a) u x≢a x≢b)
-                                           (set₂-≢ a b (u' ! b) (u' ! a) u' x≢a x≢b)
+  off x x≢a x≢b = cong₂ (λ y z → adj y * z) (actV-X≢ p u x≢a x≢b)
+                                           (actV-X≢ p u' x≢a x≢b)
 ip-actV (K-gen a b p) u u' =
   sum-update F G a b (<⇒≢ p) off
     (begin
       G a + G b
-        ≡⟨ cong₂ _+_ (cong₂ (λ y z → adj y * z) (set₂-a a b α β u) (set₂-a a b α' β' u'))
-                     (cong₂ (λ y z → adj y * z) (set₂-b a b α β u (<⇒≢ p)) (set₂-b a b α' β' u' (<⇒≢ p))) ⟩
+        ≡⟨ cong₂ _+_ (cong₂ (λ y z → adj y * z) (actV-Ka p u) (actV-Ka p u'))
+                     (cong₂ (λ y z → adj y * z) (actV-Kb p u) (actV-Kb p u')) ⟩
       adj α * α' + adj β * β'
         ≡⟨ cong₂ _+_ (cong (_* α') (trans (adj-* cg (u ! a + u ! b)) (cong (adj cg *_) (adj-+ (u ! a) (u ! b)))))
                      (cong (_* β') (trans (adj-* cg (u ! a - u ! b)) (cong (adj cg *_) (adj-- (u ! a) (u ! b))))) ⟩
@@ -119,12 +119,12 @@ ip-actV (K-gen a b p) u u' =
   F x = adj (u ! x) * u' ! x
   G x = adj (actV (K-gen a b p) u ! x) * actV (K-gen a b p) u' ! x
   off : ∀ x → x ≢ a → x ≢ b → G x ≡ F x
-  off x x≢a x≢b = cong₂ (λ y z → adj y * z) (set₂-≢ a b α β u x≢a x≢b) (set₂-≢ a b α' β' u' x≢a x≢b)
+  off x x≢a x≢b = cong₂ (λ y z → adj y * z) (actV-K≢ p u x≢a x≢b) (actV-K≢ p u' x≢a x≢b)
 ip-actV (i-gen a) u u' =
   sum-update₁ F G a off
     (begin
       G a
-        ≡⟨ cong₂ (λ y z → adj y * z) (set₁-a a (ci * u ! a) u) (set₁-a a (ci * u' ! a) u') ⟩
+        ≡⟨ cong₂ (λ y z → adj y * z) (actV-ia a u) (actV-ia a u') ⟩
       adj (ci * u ! a) * (ci * u' ! a)
         ≡⟨ cong (_* (ci * u' ! a)) (adj-* ci (u ! a)) ⟩
       (adj ci * adj (u ! a)) * (ci * u' ! a)
@@ -136,7 +136,7 @@ ip-actV (i-gen a) u u' =
   F x = adj (u ! x) * u' ! x
   G x = adj (actV (i-gen a) u ! x) * actV (i-gen a) u' ! x
   off : ∀ x → x ≢ a → G x ≡ F x
-  off x x≢a = cong₂ (λ y z → adj y * z) (set₁-≢ a (ci * u ! a) u x≢a) (set₁-≢ a (ci * u' ! a) u' x≢a)
+  off x x≢a = cong₂ (λ y z → adj y * z) (actV-i≢ a u x≢a) (actV-i≢ a u' x≢a)
 
 ip-actVʷ : (w : Word (Gen n)) (u u' : Vec A n) → ⟨ actVʷ w u , actVʷ w u' ⟩ ≡ ⟨ u , u' ⟩
 ip-actVʷ [ g ]ʷ u u' = ip-actV g u u'

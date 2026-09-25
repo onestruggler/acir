@@ -106,20 +106,29 @@ module _ (e : Emb d n) where
   -- original one on the restricted vector.
   emb-actV-in : (g : Gen d) (v : Vec A n) (y : Fin d) →
                 actV (gen e g) v ! ι′ y ≡ actV g (restrict v) ! y
-  emb-actV-in (X-gen a b p) v y = trans (set₂-in a b (<⇒≢ p) (v ! ι′ b) (v ! ι′ a) v y)
-    (cong₂ (λ α β → set₂ a b α β (restrict v) ! y) (sym (restrict-! v b)) (sym (restrict-! v a)))
-  emb-actV-in (K-gen a b p) v y = trans (set₂-in a b (<⇒≢ p) _ _ v y)
-    (cong₂ (λ α β → set₂ a b α β (restrict v) ! y)
-           (cong₂ (λ s t → cg * (s + t)) (sym (restrict-! v a)) (sym (restrict-! v b)))
-           (cong₂ (λ s t → cg * (s - t)) (sym (restrict-! v a)) (sym (restrict-! v b))))
-  emb-actV-in (i-gen a) v y = trans (set₁-in a (ci * v ! ι′ a) v y)
-    (cong (λ α → set₁ a α (restrict v) ! y) (cong (ci *_) (sym (restrict-! v a))))
+  emb-actV-in (X-gen a b p) v y =
+    trans (cong (_! ι′ y) (actV-X≡ (mono e p) v))
+      (trans (set₂-in a b (<⇒≢ p) (v ! ι′ b) (v ! ι′ a) v y)
+        (trans (cong₂ (λ α β → set₂ a b α β (restrict v) ! y) (sym (restrict-! v b)) (sym (restrict-! v a)))
+          (sym (cong (_! y) (actV-X≡ p (restrict v))))))
+  emb-actV-in (K-gen a b p) v y =
+    trans (cong (_! ι′ y) (actV-K≡ (mono e p) v))
+      (trans (set₂-in a b (<⇒≢ p) _ _ v y)
+        (trans (cong₂ (λ α β → set₂ a b α β (restrict v) ! y)
+                      (cong₂ (λ s t → cg * (s + t)) (sym (restrict-! v a)) (sym (restrict-! v b)))
+                      (cong₂ (λ s t → cg * (s - t)) (sym (restrict-! v a)) (sym (restrict-! v b))))
+          (sym (cong (_! y) (actV-K≡ p (restrict v))))))
+  emb-actV-in (i-gen a) v y =
+    trans (cong (_! ι′ y) (actV-i≡ (ι′ a) v))
+      (trans (set₁-in a (ci * v ! ι′ a) v y)
+        (trans (cong (λ α → set₁ a α (restrict v) ! y) (cong (ci *_) (sym (restrict-! v a))))
+          (sym (cong (_! y) (actV-i≡ a (restrict v))))))
 
   -- The other coordinates are fixed.
   emb-actV-out : (g : Gen d) (v : Vec A n) (x : Fin n) → (∀ y → x ≢ ι′ y) → actV (gen e g) v ! x ≡ v ! x
-  emb-actV-out (X-gen a b p) v x out = set₂-≢ (ι′ a) (ι′ b) _ _ v (out a) (out b)
-  emb-actV-out (K-gen a b p) v x out = set₂-≢ (ι′ a) (ι′ b) _ _ v (out a) (out b)
-  emb-actV-out (i-gen a) v x out = set₁-≢ (ι′ a) _ v (out a)
+  emb-actV-out (X-gen a b p) v x out = actV-X≢ (mono e p) v (out a) (out b)
+  emb-actV-out (K-gen a b p) v x out = actV-K≢ (mono e p) v (out a) (out b)
+  emb-actV-out (i-gen a) v x out = actV-i≢ (ι′ a) v (out a)
 
   emb-restrict : (g : Gen d) (v : Vec A n) → restrict (actV (gen e g) v) ≡ actV g (restrict v)
   emb-restrict g v = vec-ext λ y → trans (restrict-! (actV (gen e g) v) y) (emb-actV-in g v y)
@@ -183,24 +192,23 @@ data _∈ₛ_ {n : ℕ} (x : Fin n) : Gen n → Set where
 
 -- Outside its indices, a generator does nothing.
 actV-off : (g : Gen n) (v : Vec A n) (x : Fin n) → ¬ (x ∈ₛ g) → actV g v ! x ≡ v ! x
-actV-off (X-gen a b p) v x x∉ = set₂-≢ a b _ _ v (λ { refl → x∉ X-a }) (λ { refl → x∉ X-b })
-actV-off (K-gen a b p) v x x∉ = set₂-≢ a b _ _ v (λ { refl → x∉ K-a }) (λ { refl → x∉ K-b })
-actV-off (i-gen a) v x x∉ = set₁-≢ a _ v (λ { refl → x∉ i-a })
+actV-off (X-gen a b p) v x x∉ = actV-X≢ p v (λ { refl → x∉ X-a }) (λ { refl → x∉ X-b })
+actV-off (K-gen a b p) v x x∉ = actV-K≢ p v (λ { refl → x∉ K-a }) (λ { refl → x∉ K-b })
+actV-off (i-gen a) v x x∉ = actV-i≢ a v (λ { refl → x∉ i-a })
 
 -- On its indices, a generator only reads its indices.
 actV-local : (g : Gen n) (u v : Vec A n) → (∀ y → y ∈ₛ g → u ! y ≡ v ! y) →
              ∀ x → x ∈ₛ g → actV g u ! x ≡ actV g v ! x
 actV-local (X-gen a b p) u v agree .a X-a =
-  trans (set₂-a a b _ _ u) (trans (agree b X-b) (sym (set₂-a a b _ _ v)))
+  trans (actV-Xa p u) (trans (agree b X-b) (sym (actV-Xa p v)))
 actV-local (X-gen a b p) u v agree .b X-b =
-  trans (set₂-b a b _ _ u (<⇒≢ p)) (trans (agree a X-a) (sym (set₂-b a b _ _ v (<⇒≢ p))))
+  trans (actV-Xb p u) (trans (agree a X-a) (sym (actV-Xb p v)))
 actV-local (K-gen a b p) u v agree .a K-a =
-  trans (set₂-a a b _ _ u) (trans (cong₂ (λ s t → cg * (s + t)) (agree a K-a) (agree b K-b)) (sym (set₂-a a b _ _ v)))
+  trans (actV-Ka p u) (trans (cong₂ (λ s t → cg * (s + t)) (agree a K-a) (agree b K-b)) (sym (actV-Ka p v)))
 actV-local (K-gen a b p) u v agree .b K-b =
-  trans (set₂-b a b _ _ u (<⇒≢ p))
-        (trans (cong₂ (λ s t → cg * (s - t)) (agree a K-a) (agree b K-b)) (sym (set₂-b a b _ _ v (<⇒≢ p))))
+  trans (actV-Kb p u) (trans (cong₂ (λ s t → cg * (s - t)) (agree a K-a) (agree b K-b)) (sym (actV-Kb p v)))
 actV-local (i-gen a) u v agree .a i-a =
-  trans (set₁-a a _ u) (trans (cong (ci *_) (agree a i-a)) (sym (set₁-a a _ v)))
+  trans (actV-ia a u) (trans (cong (ci *_) (agree a i-a)) (sym (actV-ia a v)))
 
 -- Generators with disjoint indices.
 Disjoint : Gen n → Gen n → Set

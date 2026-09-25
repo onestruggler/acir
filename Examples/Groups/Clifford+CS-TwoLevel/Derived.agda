@@ -13,9 +13,12 @@ open import Data.Nat.Base as ℕ using (ℕ)
 module Examples.Groups.Clifford+CS-TwoLevel.Derived {n : ℕ} where
 
 open import Data.Fin.Base using (Fin ; _<_)
-open import Data.Product.Base using (_,_)
+open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.List.Relation.Unary.All using (All ; [] ; _∷_)
+open import Data.Product.Base using (_×_ ; _,_)
+open import Data.Unit.Base using (⊤)
 import Data.Fin.Properties as FinP
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_) renaming (sym to ≡-sym)
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; ≢-sym) renaming (sym to ≡-sym)
 open import Relation.Nullary.Decidable using (recompute)
 import Relation.Binary.Reasoning.Setoid as SR
 
@@ -347,3 +350,134 @@ module _ {j l j′ l′ : Fin n} (p₁ : j < l) (p₂ : l < j′) (p₃ : j′ <
     (X′ • Kj′l′) • Kjl • Kll′ • Kjj′      ≈⟨ assoc ⟩
     X′ • Kj′l′ • Kjl • Kll′ • Kjj′        ≈⟨ cright rel-17⁻¹ ⟩
     X′ • Kll′ • Kjj′ • Kj′l′ • Kjl        ∎
+
+------------------------------------------------------------------------
+-- Generators with disjoint indices commute ((4)–(9)), and so do words
+
+-- The indices a generator acts on.
+idx : Gen n → List (Fin n)
+idx (X-gen a b _) = a ∷ b ∷ []
+idx (K-gen a b _) = a ∷ b ∷ []
+idx (i-gen a)     = a ∷ []
+
+Apart : Gen n → Gen n → Set
+Apart g h = All (λ x → All (x ≢_) (idx h)) (idx g)
+
+comm-gen : (g h : Gen n) → Apart g h → [ g ]ʷ • [ h ]ʷ ≈ [ h ]ʷ • [ g ]ʷ
+comm-gen (i-gen a) (i-gen c) ((ac ∷ []) ∷ []) = axiom (comm-ii ac)
+comm-gen (i-gen a) (X-gen c d q) ((ac ∷ ad ∷ []) ∷ []) = axiom (comm-iX q ac ad)
+comm-gen (i-gen a) (K-gen c d q) ((ac ∷ ad ∷ []) ∷ []) = axiom (comm-iK q ac ad)
+comm-gen (X-gen a b p) (i-gen c) ((ac ∷ []) ∷ (bc ∷ []) ∷ []) =
+  sym (axiom (comm-iX p (≢-sym ac) (≢-sym bc)))
+comm-gen (X-gen a b p) (X-gen c d q) ((ac ∷ ad ∷ []) ∷ (bc ∷ bd ∷ []) ∷ []) =
+  axiom (comm-XX p q ac ad bc bd)
+comm-gen (X-gen a b p) (K-gen c d q) ((ac ∷ ad ∷ []) ∷ (bc ∷ bd ∷ []) ∷ []) =
+  axiom (comm-XK p q ac ad bc bd)
+comm-gen (K-gen a b p) (i-gen c) ((ac ∷ []) ∷ (bc ∷ []) ∷ []) =
+  sym (axiom (comm-iK p (≢-sym ac) (≢-sym bc)))
+comm-gen (K-gen a b p) (X-gen c d q) ((ac ∷ ad ∷ []) ∷ (bc ∷ bd ∷ []) ∷ []) =
+  sym (axiom (comm-XK q p (≢-sym ac) (≢-sym bc) (≢-sym ad) (≢-sym bd)))
+comm-gen (K-gen a b p) (K-gen c d q) ((ac ∷ ad ∷ []) ∷ (bc ∷ bd ∷ []) ∷ []) =
+  axiom (comm-KK p q ac ad bc bd)
+
+-- Every letter of u is apart from h.
+Apartʷ : Word (Gen n) → Gen n → Set
+Apartʷ [ g ]ʷ h = Apart g h
+Apartʷ ε h = ⊤
+Apartʷ (u • v) h = Apartʷ u h × Apartʷ v h
+
+comm-word : (u : Word (Gen n)) (h : Gen n) → Apartʷ u h → u • [ h ]ʷ ≈ [ h ]ʷ • u
+comm-word [ g ]ʷ h ap = comm-gen g h ap
+comm-word ε h _ = trans left-unit (sym right-unit)
+comm-word (u • v) h (au , av) = begin
+  (u • v) • [ h ]ʷ      ≈⟨ assoc ⟩
+  u • (v • [ h ]ʷ)      ≈⟨ cright comm-word v h av ⟩
+  u • ([ h ]ʷ • v)      ≈⟨ sym assoc ⟩
+  (u • [ h ]ʷ) • v      ≈⟨ cleft comm-word u h au ⟩
+  ([ h ]ʷ • u) • v      ≈⟨ assoc ⟩
+  [ h ]ʷ • (u • v)      ∎
+
+-- Every letter of u is apart from every letter of v.
+Apartʷʷ : Word (Gen n) → Word (Gen n) → Set
+Apartʷʷ u [ h ]ʷ = Apartʷ u h
+Apartʷʷ u ε = ⊤
+Apartʷʷ u (v • v′) = Apartʷʷ u v × Apartʷʷ u v′
+
+comm-words : (u v : Word (Gen n)) → Apartʷʷ u v → u • v ≈ v • u
+comm-words u [ h ]ʷ ap = comm-word u h ap
+comm-words u ε _ = trans right-unit (sym left-unit)
+comm-words u (v • v′) (a , a′) = begin
+  u • (v • v′)          ≈⟨ sym assoc ⟩
+  (u • v) • v′          ≈⟨ cleft comm-words u v a ⟩
+  (v • u) • v′          ≈⟨ assoc ⟩
+  v • (u • v′)          ≈⟨ cright comm-words u v′ a′ ⟩
+  v • (v′ • u)          ≈⟨ sym assoc ⟩
+  (v • v′) • u          ∎
+
+------------------------------------------------------------------------
+-- The basic generators (Lemma 3.3): X_[j,j+1], K_[0,1] and i_[0]
+-- give the others by conjugation.
+
+-- A X = X B gives B = X A X.
+conj-X : ∀ {A B : Word (Gen n)} .(p : j < k) → A • X j k p ≈ X j k p • B → B ≈ X j k p • A • X j k p
+conj-X {A = A} {B} p h = begin
+  B                       ≈⟨ sym left-unit ⟩
+  ε • B                   ≈⟨ cleft sym (X-X p) ⟩
+  (X′ • X′) • B           ≈⟨ assoc ⟩
+  X′ • (X′ • B)           ≈⟨ cright sym h ⟩
+  X′ • (A • X′)           ∎
+  where X′ = X _ _ p
+
+-- A X = X B gives A = X B X.
+conj-X′ : ∀ {A B : Word (Gen n)} .(p : j < k) → A • X j k p ≈ X j k p • B → A ≈ X j k p • B • X j k p
+conj-X′ {A = A} {B} p h = begin
+  A                       ≈⟨ sym right-unit ⟩
+  A • ε                   ≈⟨ cright sym (X-X p) ⟩
+  A • (X′ • X′)           ≈⟨ sym assoc ⟩
+  (A • X′) • X′           ≈⟨ cleft h ⟩
+  (X′ • B) • X′           ≈⟨ assoc ⟩
+  X′ • B • X′             ∎
+  where X′ = X _ _ p
+
+-- i_[k] = X_[j,k] i_[j] X_[j,k]
+i≈XiX : .(p : j < k) → i k ≈ X j k p • i j • X j k p
+i≈XiX p = conj-X′ p (axiom (swap-iX p))
+
+-- K_[k,l] = X_[j,k] K_[j,l] X_[j,k]
+K≈XKX : (p : j < k) (q : k < l) → K k l q ≈ X j k p • K j l (FinP.<-trans p q) • X j k p
+K≈XKX p q = conj-X′ p (axiom (swap-KX p q))
+
+-- K_[j,l] = X_[k,l] K_[j,k] X_[k,l]
+K≈XKX′ : (p : j < k) (q : k < l) → K j l (FinP.<-trans p q) ≈ X k l q • K j k p • X k l q
+K≈XKX′ p q = conj-X′ q (axiom (swap-KX′ p q))
+
+-- X_[j,l] = X_[j,k] X_[k,l] X_[j,k]
+X≈XXX : (p : j < k) (q : k < l) → X j l (FinP.<-trans p q) ≈ X j k p • X k l q • X j k p
+X≈XXX p q = conj-X p (axiom (swap-XX p q))
+
+------------------------------------------------------------------------
+-- Exponents of i, taken modulo 4
+
+i^-+ : ∀ e f → i j ^ e • i j ^ f ≈ i j ^ (e ℕ.+ f)
+i^-+ {j} e f = sym (^-+ (i j) e f)
+
+i^+4 : ∀ e → i j ^ (e ℕ.+ 4) ≈ i j ^ e
+i^+4 {j} e = begin
+  i j ^ (e ℕ.+ 4)        ≈⟨ ^-+ (i j) e 4 ⟩
+  i j ^ e • i j ^ 4      ≈⟨ cright i⁴ ⟩
+  i j ^ e • ε            ≈⟨ right-unit ⟩
+  i j ^ e                ∎
+
+------------------------------------------------------------------------
+-- (q″): K†_[j,k] i_[k]² = X_[j,k] K†_[j,k], from K X = i_[k]² K
+
+K†L²≈XK† : .(p : j < k) → K† j k p • i k ^ 2 ≈ X j k p • K† j k p
+K†L²≈XK† {j} {k} p = begin
+  K† j k p • i k ^ 2                              ≈⟨ sym right-unit ⟩
+  (K† j k p • i k ^ 2) • ε                        ≈⟨ cright sym (K-K† p) ⟩
+  (K† j k p • i k ^ 2) • (K j k p • K† j k p)     ≈⟨ by-assoc auto ⟩
+  K† j k p • (i k ^ 2 • K j k p) • K† j k p       ≈⟨ cright cleft sym (KX≈L²K p) ⟩
+  K† j k p • (K j k p • X j k p) • K† j k p       ≈⟨ by-assoc auto ⟩
+  (K† j k p • K j k p) • X j k p • K† j k p       ≈⟨ cleft K†-K p ⟩
+  ε • X j k p • K† j k p                          ≈⟨ left-unit ⟩
+  X j k p • K† j k p                              ∎

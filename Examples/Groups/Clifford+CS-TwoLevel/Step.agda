@@ -16,7 +16,7 @@
 
 module Examples.Groups.Clifford+CS-TwoLevel.Step where
 
-open import Data.Bool.Base using (Bool ; true ; false)
+open import Data.Bool.Base using (Bool ; true ; false ; _∧_)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base as Fin using (Fin ; zero ; suc ; _<_ ; _≤_ ; toℕ)
 import Data.Fin.Properties as FinP
@@ -25,13 +25,13 @@ open import Data.Maybe.Base using (Maybe ; just ; nothing)
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 import Data.Nat.Properties as ℕP
 open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
-open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
+open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂ ; [_,_]′)
 open import Data.Vec.Base as Vec using (Vec)
 import Data.Vec.Properties as VecP
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (¬_ ; Dec ; yes ; no)
-open import Relation.Nullary.Decidable using (does)
+open import Relation.Nullary.Decidable using (does ; dec-true)
 
 open import Quantum.Synthesis.Matrix using (Matrix)
 open import Quantum.Synthesis.Ring
@@ -56,48 +56,34 @@ private
     n : ℕ
 
 ------------------------------------------------------------------------
--- The data of a pivot column
+-- The numerator of the pivot column
+--
+-- Beyond the pivot, the columns are those of the identity, so by
+-- orthogonality the pivot column vanishes there; being a unit vector,
+-- its numerator has norm 2ᵏ.
 
-record PivotData (M : Matrix n n D) (p : Fin n) : Set where
-  field
-    nonId  : col M p ≢ col 𝕀 p
-    beyond : Beyond p M
-    k      : ℕ
-    w      : Vec Z n
-    col≡   : col M p ≡ scV k w
-    min    : Minimal k w
-    zero>  : ∀ x → p < x → w ! x ≡ ZR.0#
-    norm   : Σℕ (λ x → Nℕ (w ! x)) ≡ 2 ℕ.^ k
-    k≡     : k ≡ lde (col M p)
-    w≡     : w ≡ num (col M p)
+pivot-zero> : {M : Matrix n n D} → ColOrth M → ∀ {p} → pivot M ≡ just p →
+              ∀ x → p < x → num (col M p) ! x ≡ ZR.0#
+pivot-zero> {M = M} o {p} pv x p<x = sc-injective (lde (col M p)) (begin
+  sc (lde (col M p)) (num (col M p) ! x)          ≡⟨ sym (scV-! (lde (col M p)) (num (col M p)) x) ⟩
+  scV (lde (col M p)) (num (col M p)) ! x         ≡⟨ cong (_! x) (sym (lde-eq (col M p))) ⟩
+  col M p ! x                                     ≡⟨ col-vanish o (proj₂ (pivot-just M pv) x p<x) (λ { refl → ℕP.<-irrefl refl p<x }) ⟩
+  DR.0#                                           ≡⟨ sym (sc-0 (lde (col M p))) ⟩
+  sc (lde (col M p)) ZR.0#                        ∎)
+  where open ≡-Reasoning
 
-pivotData : {M : Matrix n n D} → ColOrth M → ∀ {p} → pivot M ≡ just p → PivotData M p
-pivotData {M = M} o {p} pv = record
-  { nonId = proj₁ pj ; beyond = proj₂ pj ; k = lde v ; w = num v
-  ; col≡ = lde-eq v ; min = lde-min v ; zero> = zero> ; norm = norm ; k≡ = refl ; w≡ = refl }
-  where
-  pj = pivot-just M pv
-  v = col M p
-  zero> : ∀ x → p < x → num v ! x ≡ ZR.0#
-  zero> x p<x = sc-injective (lde v) (begin
-    sc (lde v) (num v ! x)          ≡⟨ sym (scV-! (lde v) (num v) x) ⟩
-    scV (lde v) (num v) ! x         ≡⟨ cong (_! x) (sym (lde-eq v)) ⟩
-    v ! x                           ≡⟨ col-vanish o (proj₂ pj x p<x) (λ { refl → ℕP.<-irrefl refl p<x }) ⟩
-    DR.0#                           ≡⟨ sym (sc-0 (lde v)) ⟩
-    sc (lde v) ZR.0#                ∎)
-    where open ≡-Reasoning
-  norm : Σℕ (λ x → Nℕ (num v ! x)) ≡ 2 ℕ.^ lde v
-  norm = unit-norm (lde v) (num v) (subst (λ u → ⟨ u , u ⟩ ≡ DR.1#) (lde-eq v) (col-unit o p))
+col-norm : {M : Matrix n n D} → ColOrth M → (p : Fin n) →
+           Σℕ (λ x → Nℕ (num (col M p) ! x)) ≡ 2 ℕ.^ lde (col M p)
+col-norm {M = M} o p =
+  unit-norm (lde (col M p)) (num (col M p))
+    (subst (λ u → ⟨ u , u ⟩ ≡ DR.1#) (lde-eq (col M p)) (col-unit o p))
 
-module _ {M : Matrix n n D} {p : Fin n} (P : PivotData M p) where
-  open PivotData P
-
-  -- The nonzero, and so the odd, entries are at indices ≤ p.
-  odd⇒≤ : ∀ {x} → Odd (w ! x) → x ≤ p
-  odd⇒≤ {x} ox = tri-elim (FinP.<-cmp p x)
-    (λ p<x → ⊥-elim (Odd⇒¬Even {w ! x} ox (cong oddᶻ (zero> x p<x))))
-    (λ { refl → FinP.≤-refl })
-    (λ x<p → ℕP.<⇒≤ x<p)
+-- The odd entries are at indices ≤ p.
+odd⇒≤ : {p : Fin n} {w : Vec Z n} → (∀ x → p < x → w ! x ≡ ZR.0#) → ∀ {x} → Odd (w ! x) → x ≤ p
+odd⇒≤ {p = p} {w} zero> {x} ox = tri-elim (FinP.<-cmp p x)
+  (λ p<x → ⊥-elim (Odd⇒¬Even {w ! x} ox (cong oddᶻ (zero> x p<x))))
+  (λ { refl → FinP.≤-refl })
+  (λ x<p → ℕP.<⇒≤ x<p)
 
 ------------------------------------------------------------------------
 -- Scaling a numerator by γ
@@ -279,6 +265,61 @@ W-eq j ℓ j≢ℓ w d c eq = vec-ext λ x → dec-elim (x FinP.≟ j)
   K₁ = Kᶻ j ℓ w₁
   W′ = set₂ j ℓ (γᶻ ZR.* (d ZR.+ c)) (γᶻ ZR.* c) w
 
+-- The numerator after the row operation, for q and c with
+-- w_j − iᑫ w_ℓ = 2c.
+pairW : (w : Vec Z n) (j ℓ : Fin n) (q : ℕ) (c : Z) → Vec Z n
+pairW w j ℓ q c = set₂ j ℓ (γᶻ ZR.* ((ⅈᶻ ^ᶻ q) ZR.* (w ! ℓ) ZR.+ c)) (γᶻ ZR.* c) w
+
+-- The numerator after i_[a]ᵉ.
+iset : Fin n → ℕ → Vec Z n → Vec Z n
+iset a e w = set₁ a ((ⅈᶻ ^ᶻ e) ZR.* (w ! a)) w
+
+private
+  actVʷ-• : (u v : Word (Gen n)) (x : Vec D n) → actVʷ (u • v) x ≡ actVʷ u (actVʷ v x)
+  actVʷ-• u v x = refl
+
+  -- Congruence with explicit endpoints.
+  cong-actVʷ : (u : Word (Gen n)) (x y : Vec D n) → x ≡ y → actVʷ u x ≡ actVʷ u y
+  cong-actVʷ u x y refl = refl
+
+  i^-action′ : (a : Fin n) (e k : ℕ) (w : Vec Z n) → actVʷ (i a ^ e) (scV k w) ≡ scV k (iset a e w)
+  i^-action′ = i^-action
+
+pair-action : ∀ k′ (w : Vec Z n) (j ℓ : Fin n) (j<ℓ : j < ℓ) (q : ℕ) (c : Z) →
+              w ! j ZR.- (ⅈᶻ ^ᶻ q) ZR.* (w ! ℓ) ≡ 2ᶻ ZR.* c →
+              actVʷ (K† j ℓ j<ℓ • i ℓ ^ q) (scV (suc k′) w) ≡ scV (suc k′) (pairW w j ℓ q c)
+pair-action k′ w j ℓ j<ℓ q c eq = begin
+  actVʷ (K† j ℓ j<ℓ • i ℓ ^ q) (scV (suc k′) w)
+    ≡⟨ actVʷ-• (K† j ℓ j<ℓ) (i ℓ ^ q) (scV (suc k′) w) ⟩
+  actVʷ (K† j ℓ j<ℓ) (actVʷ (i ℓ ^ q) (scV (suc k′) w))
+    ≡⟨ cong-actVʷ (K† j ℓ j<ℓ) (actVʷ (i ℓ ^ q) (scV (suc k′) w)) (scV (suc k′) (iset ℓ q w))
+                  (i^-action′ ℓ q (suc k′) w) ⟩
+  actVʷ (K† j ℓ j<ℓ) (scV (suc k′) (iset ℓ q w))
+    ≡⟨ K†-action j ℓ j<ℓ (scV (suc k′) (iset ℓ q w)) ⟩
+  actV (i-gen j) (actV (i-gen ℓ) (actV (K-gen j ℓ j<ℓ) (scV (suc k′) (iset ℓ q w))))
+    ≡⟨ cong (λ u → actV (i-gen j) (actV (i-gen ℓ) u)) (actV-K j ℓ j<ℓ (suc k′) (iset ℓ q w)) ⟩
+  actV (i-gen j) (actV (i-gen ℓ) (scV (suc (suc k′)) (Kᶻ j ℓ (iset ℓ q w))))
+    ≡⟨ cong (actV (i-gen j)) (actV-i ℓ (suc (suc k′)) (Kᶻ j ℓ (iset ℓ q w))) ⟩
+  actV (i-gen j) (scV (suc (suc k′)) (iᶻ ℓ (Kᶻ j ℓ (iset ℓ q w))))
+    ≡⟨ actV-i j (suc (suc k′)) (iᶻ ℓ (Kᶻ j ℓ (iset ℓ q w))) ⟩
+  scV (suc (suc k′)) (iᶻ j (iᶻ ℓ (Kᶻ j ℓ (iset ℓ q w))))
+    ≡⟨ cong (scV (suc (suc k′))) (W-eq j ℓ (<⇒≢ j<ℓ) w ((ⅈᶻ ^ᶻ q) ZR.* (w ! ℓ)) c eq) ⟩
+  scV (suc (suc k′)) (Vec.map (γᶻ ZR.*_) (pairW w j ℓ q c))
+    ≡⟨ scV-γmap (suc k′) (pairW w j ℓ q c) ⟩
+  scV (suc k′) (pairW w j ℓ q c) ∎
+  where open ≡-Reasoning
+
+-- The entries j and ℓ become even, the others keep their parity.
+pair-count : (w : Vec Z n) (j ℓ : Fin n) → j ≢ ℓ → (q : ℕ) (c : Z) →
+             Odd (w ! j) → Odd (w ! ℓ) → nodd w ≡ suc (suc (nodd (pairW w j ℓ q c)))
+pair-count w j ℓ j≢ℓ q c oj oℓ =
+  count-drop₂ (λ x → oddᶻ (w ! x)) (λ x → oddᶻ (pairW w j ℓ q c ! x)) j ℓ j≢ℓ oj oℓ
+    (trans (cong oddᶻ (set₂-a j ℓ (γᶻ ZR.* (d ZR.+ c)) (γᶻ ZR.* c) w)) (γ*-even (d ZR.+ c)))
+    (trans (cong oddᶻ (set₂-b j ℓ (γᶻ ZR.* (d ZR.+ c)) (γᶻ ZR.* c) w j≢ℓ)) (γ*-even c))
+    (λ x x≢j x≢ℓ → sym (cong oddᶻ (set₂-≢ j ℓ (γᶻ ZR.* (d ZR.+ c)) (γᶻ ZR.* c) w x≢j x≢ℓ)))
+  where
+  d = (ⅈᶻ ^ᶻ q) ZR.* (w ! ℓ)
+
 -- The row operation, given the first two odd entries j < ℓ.
 pair-core : ∀ {p : Fin n} k′ (w : Vec Z n) {j ℓ : Fin n} →
             firstOdd w ≡ just j → nextOdd j w ≡ just ℓ → (j<ℓ : j < ℓ) →
@@ -286,40 +327,122 @@ pair-core : ∀ {p : Fin n} k′ (w : Vec Z n) {j ℓ : Fin n} →
             ∃ λ W′ → Within p (sylData p (suc k′) w)
                    × actVʷ (sylData p (suc k′) w) (scV (suc k′) w) ≡ scV (suc k′) W′
                    × nodd w ≡ suc (suc (nodd W′))
-pair-core {n} {p} k′ w {j} {ℓ} fo no j<ℓ oj oℓ ℓ≤p =
-  W′ ,
-  subst (λ W → Within p W × actVʷ W (scV (suc k′) w) ≡ scV (suc k′) W′) (sym (sylData-pair k′ w fo no j<ℓ))
-    ( (Within-^ (K j ℓ j<ℓ) ℓ≤p 7 , Within-^ (i ℓ) ℓ≤p q)
-    , action ) ,
-  count-drop₂ (λ x → oddᶻ (w ! x)) (λ x → oddᶻ (W′ ! x)) j ℓ j≢ℓ oj oℓ
-    (trans (cong oddᶻ (set₂-a j ℓ (γᶻ ZR.* (d ZR.+ c)) (γᶻ ZR.* c) w)) (γ*-even (d ZR.+ c)))
-    (trans (cong oddᶻ (set₂-b j ℓ (γᶻ ZR.* (d ZR.+ c)) (γᶻ ZR.* c) w j≢ℓ)) (γ*-even c))
-    (λ x x≢j x≢ℓ → sym (cong oddᶻ (set₂-≢ j ℓ (γᶻ ZR.* (d ZR.+ c)) (γᶻ ZR.* c) w x≢j x≢ℓ)))
+pair-core {n} {p} k′ w {j} {ℓ} fo nx j<ℓ oj oℓ ℓ≤p = go (qOf-spec (w ! j) (w ! ℓ) oj oℓ)
   where
-  open ≡-Reasoning
-  j≢ℓ = <⇒≢ j<ℓ
-  q = qOf (w ! j) (w ! ℓ)
-  d = (ⅈᶻ ^ᶻ q) ZR.* (w ! ℓ)
-  c = proj₁ (qOf-spec (w ! j) (w ! ℓ) oj oℓ)
-  eqc : w ! j ZR.- d ≡ 2ᶻ ZR.* c
-  eqc = proj₂ (qOf-spec (w ! j) (w ! ℓ) oj oℓ)
-  W′ = set₂ j ℓ (γᶻ ZR.* (d ZR.+ c)) (γᶻ ZR.* c) w
-  w₁ = set₁ ℓ d w
-  k = suc k′
-  action : actVʷ (K† j ℓ j<ℓ) (actVʷ (i ℓ ^ q) (scV k w)) ≡ scV k W′
-  action = begin
-    actVʷ (K† j ℓ j<ℓ) (actVʷ (i ℓ ^ q) (scV k w))
-      ≡⟨ cong (actVʷ (K† j ℓ j<ℓ)) (i^-action ℓ q k w) ⟩
-    actVʷ (K† j ℓ j<ℓ) (scV k w₁)
-      ≡⟨ K†-action j ℓ j<ℓ (scV k w₁) ⟩
-    actV (i-gen j) (actV (i-gen ℓ) (actV (K-gen j ℓ j<ℓ) (scV k w₁)))
-      ≡⟨ cong (λ u → actV (i-gen j) (actV (i-gen ℓ) u)) (actV-K j ℓ j<ℓ k w₁) ⟩
-    actV (i-gen j) (actV (i-gen ℓ) (scV (suc k) (Kᶻ j ℓ w₁)))
-      ≡⟨ cong (actV (i-gen j)) (actV-i ℓ (suc k) (Kᶻ j ℓ w₁)) ⟩
-    actV (i-gen j) (scV (suc k) (iᶻ ℓ (Kᶻ j ℓ w₁)))
-      ≡⟨ actV-i j (suc k) (iᶻ ℓ (Kᶻ j ℓ w₁)) ⟩
-    scV (suc k) (iᶻ j (iᶻ ℓ (Kᶻ j ℓ w₁)))
-      ≡⟨ cong (scV (suc k)) (W-eq j ℓ j≢ℓ w d c eqc) ⟩
-    scV (suc k) (Vec.map (γᶻ ZR.*_) W′)
-      ≡⟨ scV-γmap k W′ ⟩
-    scV k W′ ∎
+  go : 2∣ (w ! j ZR.- (ⅈᶻ ^ᶻ qOf (w ! j) (w ! ℓ)) ZR.* (w ! ℓ)) →
+       ∃ λ W′ → Within p (sylData p (suc k′) w)
+              × actVʷ (sylData p (suc k′) w) (scV (suc k′) w) ≡ scV (suc k′) W′
+              × nodd w ≡ suc (suc (nodd W′))
+  go (c , eqc) = W′ , within , act , pair-count w j ℓ (<⇒≢ j<ℓ) q c oj oℓ
+    where
+    q = qOf (w ! j) (w ! ℓ)
+    W′ = pairW w j ℓ q c
+    syl≡ : sylData p (suc k′) w ≡ K† j ℓ j<ℓ • i ℓ ^ qOf (w ! j) (w ! ℓ)
+    syl≡ = sylData-pair {p = p} k′ w fo nx j<ℓ
+    within : Within p (sylData p (suc k′) w)
+    within = subst (Within p) (sym syl≡) (Within-^ (K j ℓ j<ℓ) ℓ≤p 7 , Within-^ (i ℓ) ℓ≤p q)
+    act : actVʷ (sylData p (suc k′) w) (scV (suc k′) w) ≡ scV (suc k′) W′
+    act = subst (λ W → actVʷ W (scV (suc k′) w) ≡ scV (suc k′) W′) (sym syl≡)
+                (pair-action k′ w j ℓ j<ℓ q c eqc)
+
+------------------------------------------------------------------------
+-- k > 0: the first two odd entries exist
+
+pair-step : ∀ {p : Fin n} k′ (w : Vec Z n) → Minimal (suc k′) w →
+            Σℕ (λ x → Nℕ (w ! x)) ≡ 2 ℕ.^ suc k′ → (∀ {x} → Odd (w ! x) → x ≤ p) →
+            ∃ λ W′ → Within p (sylData p (suc k′) w)
+                   × actVʷ (sylData p (suc k′) w) (scV (suc k′) w) ≡ scV (suc k′) W′
+                   × nodd w ≡ suc (suc (nodd W′))
+pair-step k′ w (inj₁ ()) norm ≤p
+pair-step {n} {p} k′ w (inj₂ (x , ox)) norm ≤p = withFirst (firstOdd w) refl
+  where
+  Goal : Set
+  Goal = ∃ λ W′ → Within p (sylData p (suc k′) w)
+                × actVʷ (sylData p (suc k′) w) (scV (suc k′) w) ≡ scV (suc k′) W′
+                × nodd w ≡ suc (suc (nodd W′))
+
+  withFirst : (r : Maybe (Fin n)) → firstOdd w ≡ r → Goal
+  withFirst nothing fo = ⊥-elim (Odd⇒¬Even {w ! x} ox (firstOdd-nothing w fo x))
+  withFirst (just j) fo = withNext (nextOdd j w) refl
+    where
+    oj : Odd (w ! j)
+    oj = proj₁ (firstOdd-spec w fo)
+
+    withNext : (r : Maybe (Fin n)) → nextOdd j w ≡ r → Goal
+    withNext (just ℓ) nx =
+      pair-core k′ w fo nx (proj₁ (nextOdd-spec w nx)) oj (proj₁ (proj₂ (nextOdd-spec w nx)))
+        (≤p (proj₁ (proj₂ (nextOdd-spec w nx))))
+    -- Otherwise j is the only odd entry, but their number is even.
+    withNext nothing nx = ⊥-elim (true≢false (trans (sym (cong oddℕ one)) (evenodd k′ w norm)))
+      where
+      true≢false : true ≢ false
+      true≢false ()
+      others : ∀ y → y ≢ j → oddᶻ (w ! y) ≡ false
+      others y y≢j = tri-elim (FinP.<-cmp y j)
+        (λ y<j → proj₂ (firstOdd-spec w fo) y y<j)
+        (λ y≡j → ⊥-elim (y≢j y≡j))
+        (λ j<y → trans (cong (_∧ oddᶻ (w ! y)) (sym (dec-true (j FinP.<? y) j<y)))
+                       (first-nothing (λ z → does (j FinP.<? z) ∧ oddᶻ (w ! z)) nx y))
+      one : nodd w ≡ 1
+      one = count-one (λ y → oddᶻ (w ! y)) j oj others
+
+------------------------------------------------------------------------
+-- One step lowers the level (the proof of Theorem 2.9)
+
+private
+  scV-injective : ∀ k (u v : Vec Z n) → scV k u ≡ scV k v → u ≡ v
+  scV-injective k u v eq = vec-ext λ x →
+    sc-injective k (trans (sym (scV-! k u x)) (trans (cong (_! x) eq) (scV-! k v x)))
+
+  -- The column p after the syllable S.
+  col-step : (M : Matrix n n D) (p : Fin n) (S : Word (Gen n)) (K : ℕ) (W : Vec Z n) →
+             col M p ≡ scV K W → col (actMʷ S M) p ≡ actVʷ S (scV K W)
+  col-step M p S K W eq = trans (col-actMʷ S M p) (cong-actVʷ S (col M p) (scV K W) eq)
+
+-- The level drops, given the data of the pivot column.
+lt-core : (M : Matrix n n D) (p : Fin n) (K : ℕ) (W : Vec Z n) →
+          Beyond p M → col M p ≡ scV K W → Minimal K W → (∀ x → p < x → W ! x ≡ ZR.0#) →
+          Σℕ (λ x → Nℕ (W ! x)) ≡ 2 ℕ.^ K →
+          level (actMʷ (sylData p K W) M) <ₗ (suc (toℕ p) , K , nodd W)
+lt-core M p zero W be eq min zero> norm =
+  level-below (actMʷ S M) col≡ (Beyond-actMʷ S {p} {M} (proj₁ us) be) zero (nodd W)
+  where
+  S = sylData p zero W
+  us = unit-step W norm zero>
+  col≡ : col (actMʷ S M) p ≡ col 𝕀 p
+  col≡ = trans (col-step M p S zero W eq) (trans (proj₂ us) (sym (col𝕀≡ p)))
+lt-core M p (suc K′) W be eq min zero> norm = go (pair-step K′ W min norm (odd⇒≤ {p = p} {W} zero>))
+  where
+  S = sylData p (suc K′) W
+  go : (∃ λ W′ → Within p S × actVʷ S (scV (suc K′) W) ≡ scV (suc K′) W′ × nodd W ≡ suc (suc (nodd W′))) →
+       level (actMʷ S M) <ₗ (suc (toℕ p) , suc K′ , nodd W)
+  go (W′ , within , act , cnt) =
+    decide (col (actMʷ S M) p ≟ᵛ col 𝕀 p)
+    where
+    be′ : Beyond p (actMʷ S M)
+    be′ = Beyond-actMʷ S {p} {M} within be
+    col′ : col (actMʷ S M) p ≡ scV (suc K′) W′
+    col′ = trans (col-step M p S (suc K′) W eq) act
+    v = col (actMʷ S M) p
+    -- With the same exponent, the numerator is W′.
+    same : lde v ≡ suc K′ → num v ≡ W′
+    same e = scV-injective (suc K′) (num v) W′
+      (trans (cong (λ k → scV k (num v)) (sym e)) (trans (sym (lde-eq v)) col′))
+    lt₂ : (lde v , nodd (num v)) <₂ (suc K′ , nodd W)
+    lt₂ = [ inj₁
+          , (λ e → inj₂ (e , subst (λ u → nodd u ℕ.< nodd W) (sym (same e))
+                                   (subst (nodd W′ ℕ.<_) (sym cnt) (ℕ.s≤s (ℕP.n≤1+n (nodd W′)))))) ]′
+          (ℕP.m≤n⇒m<n∨m≡n (lde-≤ (suc K′) W′ col′))
+    -- (A helper with its type written out, rather than dec-elim.)
+    decide : Dec (col (actMʷ S M) p ≡ col 𝕀 p) → level (actMʷ S M) <ₗ (suc (toℕ p) , suc K′ , nodd W)
+    decide (yes e) = level-below (actMʷ S M) e be′ (suc K′) (nodd W)
+    decide (no ne) = level-same (actMʷ S M) ne be′ lt₂
+
+
+step-lt : {M : Matrix n n D} → ColOrth M → ∀ {p} → pivot M ≡ just p → level (step M) <ₗ level M
+step-lt {M = M} o {p} pv =
+  subst₂ _<ₗ_ (cong (λ S → level (actMʷ S M)) (sym (syl-just M pv))) (sym (level-just M pv))
+    (lt-core M p (lde v) (num v) (proj₂ (pivot-just M pv)) (lde-eq v) (lde-min v)
+             (pivot-zero> o pv) (col-norm o p))
+  where
+  v = col M p

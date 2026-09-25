@@ -101,33 +101,33 @@ private
   0!  : (x : Fin n) → zeroV ! x ≡ DR.0#
   0! x = VecP.lookup-replicate x DR.0#
 
+-- (The case analyses are helpers with their types written out, not
+-- dec-elim: its result type, inferred from the branches, makes this
+-- intractable.)
 actV-0 : (g : Gen n) → actV g zeroV ≡ zeroV
-actV-0 (X-gen a b p) = vec-ext λ x →
-  dec-elim (x FinP.≟ a)
-    (λ { refl → trans (set₂-a x b (zeroV ! b) (zeroV ! x) zeroV) (trans (0! b) (sym (0! x))) })
-    (λ x≢a → dec-elim (x FinP.≟ b)
-      (λ { refl → trans (set₂-b a x (zeroV ! x) (zeroV ! a) zeroV (<⇒≢ p)) (trans (0! a) (sym (0! x))) })
-      (λ x≢b → set₂-≢ a b (zeroV ! b) (zeroV ! a) zeroV x≢a x≢b))
-actV-0 (K-gen a b p) = vec-ext λ x →
-  dec-elim (x FinP.≟ a)
-    (λ { refl → trans (set₂-a x b α β zeroV) (trans (sum0 x b) (sym (0! x))) })
-    (λ x≢a → dec-elim (x FinP.≟ b)
-      (λ { refl → trans (set₂-b a x α β zeroV (<⇒≢ p)) (trans (dif0 a x) (sym (0! x))) })
-      (λ x≢b → set₂-≢ a b α β zeroV x≢a x≢b))
+actV-0 (X-gen a b p) = vec-ext λ x → aux x (x FinP.≟ a) (x FinP.≟ b)
   where
-  α = γ⁻ DR.* (zeroV ! a DR.+ zeroV ! b)
-  β = γ⁻ DR.* (zeroV ! a DR.- zeroV ! b)
-  sum0 : ∀ y z → γ⁻ DR.* (zeroV ! y DR.+ zeroV ! z) ≡ DR.0#
-  sum0 y z = trans (cong₂ (λ s t → γ⁻ DR.* (s DR.+ t)) (0! y) (0! z))
-                   (trans (cong (γ⁻ DR.*_) (DR.+-identityˡ DR.0#)) (DR.zeroʳ γ⁻))
-  dif0 : ∀ y z → γ⁻ DR.* (zeroV ! y DR.- zeroV ! z) ≡ DR.0#
-  dif0 y z = trans (cong₂ (λ s t → γ⁻ DR.* (s DR.- t)) (0! y) (0! z))
-                   (trans (cong (γ⁻ DR.*_) (DR.-‿inverseʳ DR.0#)) (DR.zeroʳ γ⁻))
-actV-0 (i-gen a) = vec-ext λ x →
-  dec-elim (x FinP.≟ a)
-    (λ { refl → trans (set₁-a x (ⅈ DR.* (zeroV ! x)) zeroV)
-                      (trans (cong (ⅈ DR.*_) (0! x)) (trans (DR.zeroʳ ⅈ) (sym (0! x)))) })
-    (λ x≢a → set₁-≢ a (ⅈ DR.* (zeroV ! a)) zeroV x≢a)
+  aux : ∀ x → Dec (x ≡ a) → Dec (x ≡ b) → actV (X-gen a b p) zeroV ! x ≡ zeroV ! x
+  aux x (yes refl) _ = trans (actV-Xa p zeroV) (trans (0! b) (sym (0! x)))
+  aux x (no x≢a) (yes refl) = trans (actV-Xb p zeroV) (trans (0! a) (sym (0! x)))
+  aux x (no x≢a) (no x≢b) = actV-X≢ p zeroV x≢a x≢b
+actV-0 (K-gen a b p) = vec-ext λ x → aux x (x FinP.≟ a) (x FinP.≟ b)
+  where
+  sum0 : γ⁻ DR.* (zeroV ! a DR.+ zeroV ! b) ≡ DR.0#
+  sum0 = trans (cong₂ (λ s t → γ⁻ DR.* (s DR.+ t)) (0! a) (0! b))
+               (trans (cong (γ⁻ DR.*_) (DR.+-identityˡ DR.0#)) (DR.zeroʳ γ⁻))
+  dif0 : γ⁻ DR.* (zeroV ! a DR.- zeroV ! b) ≡ DR.0#
+  dif0 = trans (cong₂ (λ s t → γ⁻ DR.* (s DR.- t)) (0! a) (0! b))
+               (trans (cong (γ⁻ DR.*_) (DR.-‿inverseʳ DR.0#)) (DR.zeroʳ γ⁻))
+  aux : ∀ x → Dec (x ≡ a) → Dec (x ≡ b) → actV (K-gen a b p) zeroV ! x ≡ zeroV ! x
+  aux x (yes refl) _ = trans (actV-Ka p zeroV) (trans sum0 (sym (0! x)))
+  aux x (no x≢a) (yes refl) = trans (actV-Kb p zeroV) (trans dif0 (sym (0! x)))
+  aux x (no x≢a) (no x≢b) = actV-K≢ p zeroV x≢a x≢b
+actV-0 (i-gen a) = vec-ext λ x → aux x (x FinP.≟ a)
+  where
+  aux : ∀ x → Dec (x ≡ a) → actV (i-gen a) zeroV ! x ≡ zeroV ! x
+  aux x (yes refl) = trans (actV-ia a zeroV) (trans (cong (ⅈ DR.*_) (0! a)) (trans (DR.zeroʳ ⅈ) (sym (0! a))))
+  aux x (no x≢a) = actV-i≢ a zeroV x≢a
 
 -- A generator acting on indices ≤ p fixes the standard basis vectors
 -- beyond p.
@@ -247,9 +247,9 @@ private
   0<1² = s≤s z≤n
 
 -- K⁷ = K† = i_[0] i_[1] K in dimension 2, by computation through the
--- vector updates.
+-- action and the vector updates.
 opaque
-  unfolding set₁ set₂
+  unfolding actV set₁ set₂
 
   private
     K⁷≡ : ⟦ K f0² f1² 0<1² ^ 7 ⟧ᵐ ≡ ⟦ i f0² • i f1² • K f0² f1² 0<1² ⟧ᵐ

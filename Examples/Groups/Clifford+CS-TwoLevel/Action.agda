@@ -62,10 +62,57 @@ private
 ------------------------------------------------------------------------
 -- The action on vectors
 
-actV : Gen n → Vec A n → Vec A n
-actV (X-gen a b _) v = set₂ a b (v ! b) (v ! a) v
-actV (K-gen a b _) v = set₂ a b (cg * (v ! a + v ! b)) (cg * (v ! a - v ! b)) v
-actV (i-gen a)     v = set₁ a (ci * v ! a) v
+-- The action is opaque: a word acts as a rigid tower of actV's, so the
+-- conversion checker compares the actions of two words letter by
+-- letter instead of unfolding them into ring arithmetic (which, over
+-- 𝔻[i] and for a word like K⁷, is intractable).  The defining
+-- equations actV-X≡, actV-K≡, actV-i≡ and the entry lemmas below are
+-- the interface; proofs by computation on concrete matrices unfold
+-- actV explicitly.
+opaque
+  actV : Gen n → Vec A n → Vec A n
+  actV (X-gen a b _) v = set₂ a b (v ! b) (v ! a) v
+  actV (K-gen a b _) v = set₂ a b (cg * (v ! a + v ! b)) (cg * (v ! a - v ! b)) v
+  actV (i-gen a)     v = set₁ a (ci * v ! a) v
+
+  actV-X≡ : {a b : Fin n} .(p : a < b) (v : Vec A n) → actV (X-gen a b p) v ≡ set₂ a b (v ! b) (v ! a) v
+  actV-X≡ p v = refl
+
+  actV-K≡ : {a b : Fin n} .(p : a < b) (v : Vec A n) →
+            actV (K-gen a b p) v ≡ set₂ a b (cg * (v ! a + v ! b)) (cg * (v ! a - v ! b)) v
+  actV-K≡ p v = refl
+
+  actV-i≡ : (a : Fin n) (v : Vec A n) → actV (i-gen a) v ≡ set₁ a (ci * v ! a) v
+  actV-i≡ a v = refl
+
+-- The entries of g·v.
+module _ {a b : Fin n} .(p : a < b) (v : Vec A n) where
+
+  actV-Xa : actV (X-gen a b p) v ! a ≡ v ! b
+  actV-Xa = trans (cong (_! a) (actV-X≡ p v)) (set₂-a a b (v ! b) (v ! a) v)
+
+  actV-Xb : actV (X-gen a b p) v ! b ≡ v ! a
+  actV-Xb = trans (cong (_! b) (actV-X≡ p v)) (set₂-b a b (v ! b) (v ! a) v (<⇒≢ p))
+
+  actV-X≢ : ∀ {x} → x ≢ a → x ≢ b → actV (X-gen a b p) v ! x ≡ v ! x
+  actV-X≢ {x} xa xb = trans (cong (_! x) (actV-X≡ p v)) (set₂-≢ a b (v ! b) (v ! a) v xa xb)
+
+  actV-Ka : actV (K-gen a b p) v ! a ≡ cg * (v ! a + v ! b)
+  actV-Ka = trans (cong (_! a) (actV-K≡ p v)) (set₂-a a b (cg * (v ! a + v ! b)) (cg * (v ! a - v ! b)) v)
+
+  actV-Kb : actV (K-gen a b p) v ! b ≡ cg * (v ! a - v ! b)
+  actV-Kb = trans (cong (_! b) (actV-K≡ p v))
+                  (set₂-b a b (cg * (v ! a + v ! b)) (cg * (v ! a - v ! b)) v (<⇒≢ p))
+
+  actV-K≢ : ∀ {x} → x ≢ a → x ≢ b → actV (K-gen a b p) v ! x ≡ v ! x
+  actV-K≢ {x} xa xb = trans (cong (_! x) (actV-K≡ p v))
+                            (set₂-≢ a b (cg * (v ! a + v ! b)) (cg * (v ! a - v ! b)) v xa xb)
+
+actV-ia : (a : Fin n) (v : Vec A n) → actV (i-gen a) v ! a ≡ ci * v ! a
+actV-ia a v = trans (cong (_! a) (actV-i≡ a v)) (set₁-a a (ci * v ! a) v)
+
+actV-i≢ : (a : Fin n) (v : Vec A n) {x : Fin n} → x ≢ a → actV (i-gen a) v ! x ≡ v ! x
+actV-i≢ a v {x} xa = trans (cong (_! x) (actV-i≡ a v)) (set₁-≢ a (ci * v ! a) v xa)
 
 -- Words act letter by letter, the rightmost letter first.
 actVʷ : Word (Gen n) → Vec A n → Vec A n
@@ -264,32 +311,32 @@ actV-row {n} g v r = go g
   go (X-gen a b p) =
     byDec (r FinP.≟ a)
       (λ r≡a → subst (Row (X-gen a b p)) (sym r≡a)
-                 (trans (set₂-a a b (v ! b) (v ! a) v)
+                 (trans (actV-Xa p v)
                         (sym (trans (sum-cong-≗ (λ x → cong (_* v ! x) (coef-X-a p x))) (sum-δ-row b v)))))
       (λ r≢a → byDec (r FinP.≟ b)
         (λ r≡b → subst (Row (X-gen a b p)) (sym r≡b)
-                   (trans (set₂-b a b (v ! b) (v ! a) v (<⇒≢ p))
+                   (trans (actV-Xb p v)
                           (sym (trans (sum-cong-≗ (λ x → cong (_* v ! x) (coef-X-b p x))) (sum-δ-row a v)))))
-        (λ r≢b → trans (set₂-≢ a b (v ! b) (v ! a) v r≢a r≢b)
+        (λ r≢b → trans (actV-X≢ p v r≢a r≢b)
                        (sym (trans (sum-cong-≗ (λ x → cong (_* v ! x) (coef-X-≢ p r≢a r≢b x))) (sum-δ-row r v)))))
   go (K-gen a b p) =
     byDec (r FinP.≟ a)
       (λ r≡a → subst (Row (K-gen a b p)) (sym r≡a)
-                 (trans (set₂-a a b (cg * (v ! a + v ! b)) (cg * (v ! a - v ! b)) v)
+                 (trans (actV-Ka p v)
                         (sym (trans (sum-cong-≗ (λ x → cong (_* v ! x) (coef-K-a p x))) (sum-cδδ cg a b v)))))
       (λ r≢a → byDec (r FinP.≟ b)
         (λ r≡b → subst (Row (K-gen a b p)) (sym r≡b)
-                   (trans (set₂-b a b (cg * (v ! a + v ! b)) (cg * (v ! a - v ! b)) v (<⇒≢ p))
+                   (trans (actV-Kb p v)
                           (sym (trans (sum-cong-≗ (λ x → cong (_* v ! x) (coef-K-b p x))) (sum-cδ-δ cg a b v)))))
-        (λ r≢b → trans (set₂-≢ a b (cg * (v ! a + v ! b)) (cg * (v ! a - v ! b)) v r≢a r≢b)
+        (λ r≢b → trans (actV-K≢ p v r≢a r≢b)
                        (sym (trans (sum-cong-≗ (λ x → cong (_* v ! x) (coef-K-≢ p r≢a r≢b x))) (sum-δ-row r v)))))
   go (i-gen a) =
     byDec (r FinP.≟ a)
       (λ r≡a → subst (Row (i-gen a)) (sym r≡a)
-                 (trans (set₁-a a (ci * v ! a) v)
+                 (trans (actV-ia a v)
                         (sym (trans (sum-cong-≗ (λ x → cong (_* v ! x) (trans (coef-i-a a x) (AR.*-comm (δ a x) ci))))
                                     (sum-cδ ci a v)))))
-      (λ r≢a → trans (set₁-≢ a (ci * v ! a) v r≢a)
+      (λ r≢a → trans (actV-i≢ a v r≢a)
                      (sym (trans (sum-cong-≗ (λ x → cong (_* v ! x) (coef-i-≢ a r≢a x))) (sum-δ-row r v))))
 
 ------------------------------------------------------------------------

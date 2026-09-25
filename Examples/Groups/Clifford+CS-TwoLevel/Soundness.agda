@@ -39,7 +39,6 @@ open import Examples.Groups.Clifford+CS-TwoLevel.Syntactics
 open import Examples.Groups.Clifford+CS-TwoLevel.Embedding
 open import Examples.Groups.Clifford+CS-TwoLevel.Semantics
 
-
 private
   variable
     n : ℕ
@@ -90,8 +89,8 @@ private
 -- The relations in dimension at most 4, checked by computation
 --
 -- The words are transparent, so that their embeddings compute; the
--- equations are proved in an opaque block that unfolds the vector
--- updates, which the matrices of concrete words must compute through.
+-- equations are proved in an opaque block that unfolds the action and
+-- the vector updates, which the matrices of concrete words compute through.
 
 private
   -- (1)–(3)
@@ -132,7 +131,7 @@ private
   r17 = K f0⁴ f2⁴ 0<2⁴ • K f1⁴ f3⁴ 1<3⁴ • K f0⁴ f1⁴ 0<1⁴ • K f2⁴ f3⁴ 2<3⁴
 
 opaque
-  unfolding set₁ set₂
+  unfolding actV set₁ set₂
 
   private
     order-i₁ : ⟦ l1 ⟧ᵐ ≡ ⟦ ε ⟧ᵐ
@@ -185,6 +184,18 @@ private
   rc : {a b : Fin n} → .(a < b) → a < b
   rc {a = a} {b} p = recompute (a FinP.<? b) p
 
+  -- (17), for either order of k and l.  (A top-level function with
+  -- its type written out: a local eliminator, leaving the type of the
+  -- result to be inferred, is intractable here.)
+  rel-17-sound : {j k l m : Fin n} .(jk : j < k) .(lm : l < m) .(jl : j < l) .(km : k < m) →
+                 k ≢ l → Tri (k < l) (k ≡ l) (l < k) →
+                 ⟦ K j k jk • K l m lm • K j l jl • K k m km ⟧ᵐ ≡ ⟦ K j l jl • K k m km • K j k jk • K l m lm ⟧ᵐ
+  rel-17-sound {j = j} {k} {l} {m} jk lm jl km k≢l (tri< k<l _ _) =
+    emb-sound (emb₄ j k l m (rc jk) k<l (rc lm)) l17 r17 rel-17₄
+  rel-17-sound jk lm jl km k≢l (tri≈ _ k≡l _) = ⊥-elim (k≢l k≡l)
+  rel-17-sound {j = j} {k} {l} {m} jk lm jl km k≢l (tri> _ _ l<k) =
+    emb-sound (emb₄ j l k m (rc jl) l<k (rc km)) r17 l17 rel-17₄′
+
 sound-axiom : {w v : Word (Gen n)} → w === v → ⟦ w ⟧ᵐ ≡ ⟦ v ⟧ᵐ
 sound-axiom (order-i {j = j}) = emb-sound (emb₁ j) l1 ε order-i₁
 sound-axiom (order-X {j = j} {k = k} p) = emb-sound (emb₂ j k (rc p)) l2 ε order-X₂
@@ -213,15 +224,4 @@ sound-axiom (rel-13 {j = j} {k = k} p) = emb-sound (emb₂ j k (rc p)) l13 r13 r
 sound-axiom (rel-14 {j = j} {k = k} p) = emb-sound (emb₂ j k (rc p)) l14 r14 rel-14₂
 sound-axiom (rel-15 {j = j} {k = k} p) = emb-sound (emb₂ j k (rc p)) l15 r15 rel-15₂
 sound-axiom (rel-16 {j = j} {k = k} p) = emb-sound (emb₂ j k (rc p)) l16 ε rel-16₂
-sound-axiom (rel-17 {j = j} {k = k} {l = l} {m = m} jk lm jl km k≢l) =
-  tri-elim (FinP.<-cmp k l)
-    (λ k<l → emb-sound (emb₄ j k l m (rc jk) k<l (rc lm)) l17 r17 rel-17₄)
-    (λ k≡l → ⊥-elim (k≢l k≡l))
-    (λ l<k → emb-sound (emb₄ j l k m (rc jl) l<k (rc km)) r17 l17 rel-17₄′)
-  where
-  -- Case analysis without with-abstraction, which would normalise the
-  -- goal: the matrices of four symbolic generators.
-  tri-elim : ∀ {A B C X : Set} → Tri A B C → (A → X) → (B → X) → (C → X) → X
-  tri-elim (tri< a _ _) f g h = f a
-  tri-elim (tri≈ _ b _) f g h = g b
-  tri-elim (tri> _ _ c) f g h = h c
+sound-axiom (rel-17 {k = k} {l = l} jk lm jl km k≢l) = rel-17-sound jk lm jl km k≢l (FinP.<-cmp k l)
