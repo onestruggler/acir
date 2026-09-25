@@ -25,7 +25,7 @@ open import Data.Nat using (ℕ ; _≤_ ; suc)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.MultiControlled using (Xat)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.PlaceAt using (placeAt)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxFrames using (Canon ; module Frames ; pl ; pl-cong ; pl-• ; pl-•₃)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxFrames using (Canon ; module Frames ; pl ; pl-cong ; pl-• ; pl-•₃ ; perm-• ; perm-↑0 ; perm-↑s)
 open import Notations using (₁₊ ; ₂₊ ; ₃₊)
 open import Word.Base using (_•_)
 
@@ -48,7 +48,6 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _ʷ)
 
 import Examples.Groups.Symmetric.Syntactics as S
-open import Examples.Groups.Symmetric.Interpretation using (⟦↑⟧)
 open import Presentation.GroupLike using (module Group-Lemmas)
 
 open import Examples.Groups.Real-Clifford+CH.Semantics.Algebra using (Bits)
@@ -271,7 +270,8 @@ module Frame₁ (p : ℕ) (p≤ : p ≤ ₁₊ m) where
   pq = Eq.subst (λ j → perm (sdS {N} j) ⟨$⟩ʳ pF ≡ 0F) tp (sd-target pF)
 
   σq : perm σ ⟨$⟩ʳ pF ≡ 0F
-  σq = Eq.trans (Eq.cong (perm (sdS p S.↑) ⟨$⟩ʳ_) pq) (⟦↑⟧ (sdS p) 0F)
+  σq = Eq.trans (perm-• (sdS p) (sdS p S.↑) pF)
+         (Eq.trans (Eq.cong (perm (sdS p S.↑) ⟨$⟩ʳ_) pq) (perm-↑0 (sdS p)))
 
   private
     nets : ∀ (w : Circuit N) → net (sdS p S.↑) • w • net (revS (sdS p S.↑)) ≡ net (sdS p) ↑ • w • net (revS (sdS p)) ↑
@@ -318,9 +318,10 @@ module Frame₁ (p : ℕ) (p≤ : p ≤ ₁₊ m) where
     tj : toℕ jF ≡ p
     tj = toℕ-fromℕ< (s≤s p≤)
     σj : perm σ ⟨$⟩ʳ sF jF ≡ sF 0F
-    σj = Eq.trans (Eq.cong (perm (sdS p S.↑) ⟨$⟩ʳ_) (sd-fix p (sF jF) (s≤s (≤-reflexive′ tj))))
-           (Eq.trans (⟦↑⟧ (sdS p) (sF jF))
-             (Eq.cong sF (Eq.subst (λ j → perm (sdS {₂₊ m} j) ⟨$⟩ʳ jF ≡ 0F) tj (sd-target jF))))
+    σj = Eq.trans (perm-• (sdS p) (sdS p S.↑) (sF jF))
+         (Eq.trans (Eq.cong (perm (sdS p S.↑) ⟨$⟩ʳ_) (sd-fix p (sF jF) (s≤s (≤-reflexive′ tj))))
+           (Eq.trans (perm-↑s (sdS p) jF)
+             (Eq.cong sF (Eq.subst (λ j → perm (sdS {₂₊ m} j) ⟨$⟩ʳ jF ≡ 0F) tj (sd-target jF)))))
       where
       ≤-reflexive′ : ∀ {a b} → a ≡ b → b ≤ a
       ≤-reflexive′ Eq.refl = ≤-refl

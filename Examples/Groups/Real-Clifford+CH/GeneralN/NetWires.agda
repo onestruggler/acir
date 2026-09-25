@@ -175,18 +175,22 @@ perm-inj u {j} {k} e =
 ------------------------------------------------------------------------
 -- A network fixing wire 0 is a network one wire up
 
-lift0 : (u : Word (S.Gen (₁₊ n))) → perm u ⟨$⟩ʳ 0F ≡ 0F →
-        Σ (Word (S.Gen n)) λ v → (₁₊ n) ⊢ net u ≈ net v ↑
-lift0 {n} u p with surjective {n} (remove 0F (perm u))
-... | v , ok = v , Eq.subst (λ w → (₁₊ n) ⊢ net u ≈ w) (net-↑ v) (perm-≈ {u = u} {v = v S.↑} pw)
-  where
-  lift-cong : ∀ k → lift₀ (remove 0F (perm u)) ⟨$⟩ʳ k ≡ lift₀ (perm v) ⟨$⟩ʳ k
-  lift-cong 0F     = Eq.refl
-  lift-cong (sF k) = Eq.cong sF (Eq.sym (ok PB.refl k))
+-- Abstract: its value is computed by the symmetric group's normal
+-- form, which at a width with a few known successors unfolds into
+-- enormous stuck terms as soon as a client matches on the pair.
+abstract
+  lift0 : (u : Word (S.Gen (₁₊ n))) → perm u ⟨$⟩ʳ 0F ≡ 0F →
+          Σ (Word (S.Gen n)) λ v → (₁₊ n) ⊢ net u ≈ net v ↑
+  lift0 {n} u p with surjective {n} (remove 0F (perm u))
+  ... | v , ok = v , Eq.subst (λ w → (₁₊ n) ⊢ net u ≈ w) (net-↑ v) (perm-≈ {u = u} {v = v S.↑} pw)
+    where
+    lift-cong : ∀ k → lift₀ (remove 0F (perm u)) ⟨$⟩ʳ k ≡ lift₀ (perm v) ⟨$⟩ʳ k
+    lift-cong 0F     = Eq.refl
+    lift-cong (sF k) = Eq.cong sF (Eq.sym (ok PB.refl k))
 
-  pw : ∀ k → perm u ⟨$⟩ʳ k ≡ perm (v S.↑) ⟨$⟩ʳ k
-  pw k = Eq.trans (Eq.sym (lift₀-remove (perm u) p k))
-           (Eq.trans (lift-cong k) (Eq.sym (⟦↑⟧ v k)))
+    pw : ∀ k → perm u ⟨$⟩ʳ k ≡ perm (v S.↑) ⟨$⟩ʳ k
+    pw k = Eq.trans (Eq.sym (lift₀-remove (perm u) p k))
+             (Eq.trans (lift-cong k) (Eq.sym (⟦↑⟧ v k)))
 
 ------------------------------------------------------------------------
 -- Where the words send wires

@@ -110,6 +110,24 @@ module _ {n : ℕ} where
     (w • a) • a    ≈⟨ cancelʳ w aa ⟩
     w ∎
 
+  -- A permutation reads its left factor first.  Stated once at a
+  -- variable width: at a width 3 + m the conversion checker unfolds the
+  -- presentation of the symmetric group much further to compare the
+  -- two sides, and exhausts memory.
+  perm-• : ∀ (u v : Word (S.Gen n)) k → perm (u • v) ⟨$⟩ʳ k ≡ perm v ⟨$⟩ʳ (perm u ⟨$⟩ʳ k)
+  perm-• u v k = Eq.refl
+
+-- The same for a network one wire up, and for the swap of the wires 0 1.
+module _ {n : ℕ} where
+  perm-↑0 : ∀ (u : Word (S.Gen n)) → perm (u S.↑) ⟨$⟩ʳ 0F ≡ 0F
+  perm-↑0 u = ⟦↑⟧ u 0F
+
+  perm-↑s : ∀ (u : Word (S.Gen n)) (x : Fin n) → perm (u S.↑) ⟨$⟩ʳ sF x ≡ sF (perm u ⟨$⟩ʳ x)
+  perm-↑s u x = ⟦↑⟧ u (sF x)
+
+  perm-σ₁ : perm {₂₊ n} S.σ ⟨$⟩ʳ sF 0F ≡ 0F
+  perm-σ₁ = Eq.refl
+
 ------------------------------------------------------------------------
 -- Everything from the canonical facts
 
@@ -245,25 +263,30 @@ module Frames {m : ℕ} (C : Canon m) where
     net u • Λ • net (revS u) ∎)
     where
     pw : perm (revS u • u′) ⟨$⟩ʳ 0F ≡ 0F
-    pw = Eq.trans (Eq.cong (perm u′ ⟨$⟩ʳ_)
-                    (Eq.trans (Eq.cong (perm (revS u) ⟨$⟩ʳ_) (Eq.sym pu)) (perm-inv u t)))
-                  pu′
+    pw = Eq.trans (perm-• (revS u) u′ 0F)
+           (Eq.trans (Eq.cong (perm u′ ⟨$⟩ʳ_)
+                       (Eq.trans (Eq.cong (perm (revS u) ⟨$⟩ʳ_) (Eq.sym pu)) (perm-inv u t)))
+                     pu′)
 
   -- A network bringing q to wire 0 and p to wire 1.
-  σ-for : ∀ (u : Word (S.Gen N)) (p q : Fin N) → p ≢ q → perm u ⟨$⟩ʳ q ≡ 0F →
-          Σ (Word (S.Gen N)) λ σ → (perm σ ⟨$⟩ʳ q ≡ 0F) × (perm σ ⟨$⟩ʳ p ≡ sF 0F)
-  σ-for u p q p≢q pu = go (perm u ⟨$⟩ʳ p) Eq.refl
-    where
-    go : ∀ x → perm u ⟨$⟩ʳ p ≡ x →
-         Σ (Word (S.Gen N)) λ σ → (perm σ ⟨$⟩ʳ q ≡ 0F) × (perm σ ⟨$⟩ʳ p ≡ sF 0F)
-    go 0F     e = ⊥-elim (p≢q (perm-inj u (Eq.trans e (Eq.sym pu))))
-    go (sF x) e = u • (sdS (toℕ x) S.↑) , σq , σp
+  -- Abstract, like NetWires.lift0: three-frames matches on the triple.
+  abstract
+    σ-for : ∀ (u : Word (S.Gen N)) (p q : Fin N) → p ≢ q → perm u ⟨$⟩ʳ q ≡ 0F →
+            Σ (Word (S.Gen N)) λ σ → (perm σ ⟨$⟩ʳ q ≡ 0F) × (perm σ ⟨$⟩ʳ p ≡ sF 0F)
+    σ-for u p q p≢q pu = go (perm u ⟨$⟩ʳ p) Eq.refl
       where
-      σq : perm (u • (sdS (toℕ x) S.↑)) ⟨$⟩ʳ q ≡ 0F
-      σq = Eq.trans (Eq.cong (perm (sdS (toℕ x) S.↑) ⟨$⟩ʳ_) pu) (⟦↑⟧ (sdS (toℕ x)) 0F)
-      σp : perm (u • (sdS (toℕ x) S.↑)) ⟨$⟩ʳ p ≡ sF 0F
-      σp = Eq.trans (Eq.cong (perm (sdS (toℕ x) S.↑) ⟨$⟩ʳ_) e)
-             (Eq.trans (⟦↑⟧ (sdS (toℕ x)) (sF x)) (Eq.cong sF (sd-target x)))
+      go : ∀ x → perm u ⟨$⟩ʳ p ≡ x →
+           Σ (Word (S.Gen N)) λ σ → (perm σ ⟨$⟩ʳ q ≡ 0F) × (perm σ ⟨$⟩ʳ p ≡ sF 0F)
+      go 0F     e = ⊥-elim (p≢q (perm-inj u (Eq.trans e (Eq.sym pu))))
+      go (sF x) e = u • (sdS (toℕ x) S.↑) , σq , σp
+        where
+        σq : perm (u • (sdS (toℕ x) S.↑)) ⟨$⟩ʳ q ≡ 0F
+        σq = Eq.trans (perm-• u (sdS (toℕ x) S.↑) q)
+               (Eq.trans (Eq.cong (perm (sdS (toℕ x) S.↑) ⟨$⟩ʳ_) pu) (perm-↑0 (sdS (toℕ x))))
+        σp : perm (u • (sdS (toℕ x) S.↑)) ⟨$⟩ʳ p ≡ sF 0F
+        σp = Eq.trans (perm-• u (sdS (toℕ x) S.↑) p)
+               (Eq.trans (Eq.cong (perm (sdS (toℕ x) S.↑) ⟨$⟩ʳ_) e)
+                 (Eq.trans (perm-↑s (sdS (toℕ x)) x) (Eq.cong sF (sd-target x))))
 
   -- The three-box step for boxes of black controls, placed.
   three-frames : ∀ (u u′ : Word (S.Gen N)) (p q : Fin N) → p ≢ q →
@@ -285,7 +308,8 @@ module Frames {m : ℕ} (C : Canon m) where
 
     fB : pl σ B ≈ pl u′ Λ
     fB = trans (by-passoc (□ • (□ • □ • □) • □) ((□ • □) • □ • (□ • □)) Eq.refl)
-               (frame-eq (σ • S.σ) u′ p (Eq.cong (perm {N} S.σ ⟨$⟩ʳ_) σp) pu′)
+               (frame-eq (σ • S.σ) u′ p
+                  (Eq.trans (perm-• σ S.σ p) (Eq.trans (Eq.cong (perm S.σ ⟨$⟩ʳ_) σp) perm-σ₁)) pu′)
 
     fX : pl σ X ≈ Xat (toℕ q)
     fX = Eq.subst (λ j → net σ • Xat (toℕ j) • net (revS σ) ≈ Xat (toℕ q)) σq (X-net σ q)
