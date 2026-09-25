@@ -457,3 +457,122 @@ Hω¹X {j} {k} p = begin
   where
   X′ = X j k p
   H′ = H j k p
+
+------------------------------------------------------------------------
+-- Table 2, (s) and (t): four indices a < b < c < d
+--
+-- (s) H_[c,d] H_[a,b] X_[b,c] H_[a,b] H_[c,d] = H_[a,c] H_[b,d] X_[b,c] H_[b,d] H_[a,c]
+-- (t) H_[c,d] H_[a,b] X_[b,c] H_[a,b] H_[c,d] = H_[b,c] H_[a,d] X_[b,d] H_[a,d] H_[b,c]
+--
+-- (s) is (20) with X_[b,c] passed through, by (14) and (15); (t) is
+-- (s) conjugated by X_[c,d], after writing H_[c,d] = X_[c,d] H_[c,d]
+-- ω_[d]⁴ by (18) and (m).
+
+module _ {a b c d : Fin n} (ab : a < b) (bc : b < c) (cd : c < d) where
+
+  private
+    ac = FinP.<-trans ab bc
+    bd = FinP.<-trans bc cd
+    ad = FinP.<-trans ac cd
+    a≢b = <⇒≢ ab
+    a≢c = <⇒≢ ac
+    a≢d = <⇒≢ ad
+    b≢c = <⇒≢ bc
+    b≢d = <⇒≢ bd
+    c≢d = <⇒≢ cd
+    Hab = H a b ab
+    Hcd = H c d cd
+    Hac = H a c ac
+    Hbd = H b d bd
+    Xbc = X b c bc
+
+    -- Past a letter: x a = a′ x gives x (a r) = a′ (x r).
+    pass : ∀ {x a′ a r : Word (Gen n)} → x • a ≈ a′ • x → x • (a • r) ≈ a′ • (x • r)
+    pass h = trans (sym assoc) (trans (cleft h) assoc)
+
+    -- X_[b,c] H_[a,b] H_[c,d] = H_[a,c] H_[b,d] X_[b,c].
+    XHH : Xbc • (Hab • Hcd) ≈ (Hac • Hbd) • Xbc
+    XHH = begin
+      Xbc • (Hab • Hcd)            ≈⟨ pass (axiom (swap-XH′ ab bc)) ⟩
+      Hac • (Xbc • Hcd)            ≈⟨ cright sym (HX≈XH bc cd) ⟩
+      Hac • (Hbd • Xbc)            ≈⟨ sym assoc ⟩
+      (Hac • Hbd) • Xbc            ∎
+
+    -- H_[a,b] H_[c,d] X_[b,c] = X_[b,c] H_[a,c] H_[b,d].
+    HHX : (Hab • Hcd) • Xbc ≈ Xbc • (Hac • Hbd)
+    HHX = flip-X bc (sym XHH)
+
+    commHH : ∀ {w x y z : Fin n} .(p : w < x) .(q : y < z) → w ≢ y → w ≢ z → x ≢ y → x ≢ z →
+             H w x p • H y z q ≈ H y z q • H w x p
+    commHH p q e₁ e₂ e₃ e₄ = axiom (comm-HH p q e₁ e₂ e₃ e₄)
+
+  Hs : Hcd • Hab • Xbc • Hab • Hcd ≈ Hac • Hbd • Xbc • Hbd • Hac
+  Hs = begin
+    Hcd • Hab • Xbc • Hab • Hcd                    ≈⟨ cright cright XHH ⟩
+    Hcd • Hab • ((Hac • Hbd) • Xbc)                ≈⟨ by-assoc auto ⟩
+    (Hcd • Hab) • (Hac • Hbd) • Xbc                ≈⟨ cleft commHH cd ab (≢-sym a≢c) (≢-sym b≢c) (≢-sym a≢d) (≢-sym b≢d) ⟩
+    (Hab • Hcd) • (Hac • Hbd) • Xbc                ≈⟨ by-assoc auto ⟩
+    (Hab • Hcd • Hac • Hbd) • Xbc                  ≈⟨ cleft axiom (rel-20 ab bc cd) ⟩
+    (Hac • Hbd • Hab • Hcd) • Xbc                  ≈⟨ by-assoc auto ⟩
+    (Hac • Hbd) • ((Hab • Hcd) • Xbc)              ≈⟨ cright HHX ⟩
+    (Hac • Hbd) • (Xbc • (Hac • Hbd))              ≈⟨ cright cright commHH ac bd a≢b a≢d (≢-sym b≢c) c≢d ⟩
+    (Hac • Hbd) • (Xbc • (Hbd • Hac))              ≈⟨ by-assoc auto ⟩
+    Hac • Hbd • Xbc • Hbd • Hac                    ∎
+
+  Ht : Hcd • Hab • Xbc • Hab • Hcd ≈ H b c bc • H a d ad • X b d bd • H a d ad • H b c bc
+  Ht = begin
+    Hcd • Hab • Xbc • Hab • Hcd                    ≈⟨ sym right-unit ⟩
+    (Hcd • Hab • Xbc • Hab • Hcd) • ε              ≈⟨ cright sym (X-X cd) ⟩
+    (Hcd • Hab • Xbc • Hab • Hcd) • (Xcd • Xcd)    ≈⟨ by-assoc auto ⟩
+    Hcd • M • (Hcd • Xcd) • Xcd                    ≈⟨ cright cright cleft axiom (rel-18 cd) ⟩
+    Hcd • M • (ω d ^ 4 • Hcd) • Xcd                ≈⟨ cright sym assoc ⟩
+    Hcd • (M • (ω d ^ 4 • Hcd)) • Xcd              ≈⟨ cright cleft sym assoc ⟩
+    Hcd • ((M • ω d ^ 4) • Hcd) • Xcd              ≈⟨ cright cleft cleft sym (comm-words (ω d ^ 4) M apM) ⟩
+    Hcd • ((ω d ^ 4 • M) • Hcd) • Xcd              ≈⟨ by-assoc auto ⟩
+    (Hcd • ω d ^ 4) • M • Hcd • Xcd                ≈⟨ cleft sym (XH≈Hω⁴ cd) ⟩
+    (Xcd • Hcd) • M • Hcd • Xcd                    ≈⟨ by-assoc auto ⟩
+    Xcd • (Hcd • Hab • Xbc • Hab • Hcd) • Xcd      ≈⟨ cright cleft Hs ⟩
+    Xcd • (Hac • Hbd • Xbc • Hbd • Hac) • Xcd      ≈⟨ cright cleft swap-ends ⟩
+    Xcd • (Hbd • Hac • Xbc • Hac • Hbd) • Xcd      ≈⟨ sym assoc ⟩
+    (Xcd • (Hbd • Hac • Xbc • Hac • Hbd)) • Xcd    ≈⟨ cleft conj ⟩
+    ((Hbc • Had • Xbd • Had • Hbc) • Xcd) • Xcd    ≈⟨ assoc ⟩
+    (Hbc • Had • Xbd • Had • Hbc) • (Xcd • Xcd)    ≈⟨ cright X-X cd ⟩
+    (Hbc • Had • Xbd • Had • Hbc) • ε              ≈⟨ right-unit ⟩
+    Hbc • Had • Xbd • Had • Hbc                    ∎
+    where
+    Xcd = X c d cd
+    Hbc = H b c bc
+    Had = H a d ad
+    Xbd = X b d bd
+    M = Hab • Xbc • Hab
+    -- ω_[d] commutes with H_[a,b] and X_[b,c].
+    apM : Apartʷʷ (ω d ^ 4) M
+    apM = ap (H-gen a b ab) ((≢-sym a≢d ∷ ≢-sym b≢d ∷ []) ∷ []) ,
+          (ap (X-gen b c bc) ((≢-sym b≢d ∷ ≢-sym c≢d ∷ []) ∷ []) ,
+           ap (H-gen a b ab) ((≢-sym a≢d ∷ ≢-sym b≢d ∷ []) ∷ []))
+      where
+      ap : (g : Gen n) → Apart (ω-gen d) g → Apartʷ (ω d ^ 4) g
+      ap g h = h , h , h , h
+    swap-ends : Hac • Hbd • Xbc • Hbd • Hac ≈ Hbd • Hac • Xbc • Hac • Hbd
+    swap-ends = begin
+      Hac • Hbd • Xbc • Hbd • Hac                  ≈⟨ by-assoc auto ⟩
+      (Hac • Hbd) • Xbc • (Hbd • Hac)              ≈⟨ cong (commHH ac bd a≢b a≢d (≢-sym b≢c) c≢d)
+                                                          (cright commHH bd ac (≢-sym a≢b) b≢c (≢-sym a≢d) (≢-sym c≢d)) ⟩
+      (Hbd • Hac) • Xbc • (Hac • Hbd)              ≈⟨ by-assoc auto ⟩
+      Hbd • Hac • Xbc • Hac • Hbd                  ∎
+    -- X_[c,d] swaps c and d.
+    x-bd : Xcd • Hbd ≈ Hbc • Xcd
+    x-bd = sym (HX≈XH′ bc cd)
+    x-ac : Xcd • Hac ≈ Had • Xcd
+    x-ac = axiom (swap-XH′ ac cd)
+    x-bc : Xcd • Xbc ≈ Xbd • Xcd
+    x-bc = axiom (swap-XX′ bc cd)
+    conj : Xcd • (Hbd • Hac • Xbc • Hac • Hbd) ≈ (Hbc • Had • Xbd • Had • Hbc) • Xcd
+    conj = begin
+      Xcd • (Hbd • Hac • Xbc • Hac • Hbd)          ≈⟨ pass x-bd ⟩
+      Hbc • Xcd • (Hac • Xbc • Hac • Hbd)          ≈⟨ cright pass x-ac ⟩
+      Hbc • Had • Xcd • (Xbc • Hac • Hbd)          ≈⟨ cright cright pass x-bc ⟩
+      Hbc • Had • Xbd • Xcd • (Hac • Hbd)          ≈⟨ cright cright cright pass x-ac ⟩
+      Hbc • Had • Xbd • Had • Xcd • Hbd            ≈⟨ cright cright cright cright x-bd ⟩
+      Hbc • Had • Xbd • Had • Hbc • Xcd            ≈⟨ by-assoc auto ⟩
+      (Hbc • Had • Xbd • Had • Hbc) • Xcd          ∎
