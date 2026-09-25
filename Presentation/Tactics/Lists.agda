@@ -128,13 +128,16 @@ lemma-mem-list-prod xs ys {x} {y} p q =
   in
     lemma-mem-concat (map (λ y → map (λ x → x , y) xs) ys) p' q'
 
-lemma-append-[] : ∀ {X : Set} (xs : List X) → xs ++ [] ≡ xs
-lemma-append-[] [] = refl
-lemma-append-[] (x ∷ xs) = Eq.cong (x ∷_) (lemma-append-[] xs)
+lemma-append-nil : ∀ {X : Set} (xs : List X) → xs ++ [] ≡ xs
+lemma-append-nil [] = refl
+lemma-append-nil (x ∷ xs) = Eq.cong (x ∷_) (lemma-append-nil xs)
 
 lemma-append-assoc : ∀ {X : Set} (xs ys zs : List X) → (xs ++ ys) ++ zs ≡ xs ++ ys ++ zs
 lemma-append-assoc [] ys zs = refl
 lemma-append-assoc (x ∷ xs) ys zs = Eq.cong (x ∷_) (lemma-append-assoc xs ys zs)
+
+lemma-∷-append : ∀ {X : Set} (x : X) (xs ys : List X) → x ∷ xs ++ ys ≡ x ∷ (xs ++ ys)
+lemma-∷-append x xs ys = refl
 
 lemma-append-∷ : ∀ {X : Set} (xs : List X) (y : X) (ys : List X) → xs ++ y ∷ ys ≡ (xs ++ y ∷ []) ++ ys
 lemma-append-∷ [] y ys = refl
