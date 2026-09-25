@@ -394,8 +394,13 @@ even⇒δ∣ (Omega a b c d) e = go (evenℤ-half (a ℤ.+ b ℤ.+ c ℤ.+ d) e)
 -- ambiguous.
 
 -- Decidable equality.
+infix 4 _≟ᴰ_ _≟ᶻ_
+
 _≟ᴰ_ : (x y : D) → Dec (x ≡ y)
 _≟ᴰ_ = _≟_
+
+_≟ᶻ_ : (x y : Z) → Dec (x ≡ y)
+_≟ᶻ_ = _≟_
 
 semiRing-D : SemiRing D
 semiRing-D = record { _+_ = _+ᴰ_ ; _*_ = _*ᴰ_ ; 0# = 0ᴰ ; 1# = 1ᴰ ; fromℕ = fromℕ }
