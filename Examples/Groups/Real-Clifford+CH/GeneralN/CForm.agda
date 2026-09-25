@@ -40,6 +40,8 @@ open import Word.Base using (_•_)
 open import Examples.Groups.Real-Clifford+CH.Semantics
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.Interpretation
+open import Examples.Groups.Real-Clifford+CH.Semantics.Decide using (eqM ; eqM-sound)
+open import Examples.Groups.Real-Clifford+CH.Evaluation using (⟦_⟧R ; ⟦⟧R≡⟦⟧M)
 open import Examples.Groups.Real-Clifford+CH.Soundness.Operators
   using (ctrl ; ctrl-⊙ ; ctrl-cong ; ctrl-· ; emb-ctrl ; allT ; sgn ; phase ; diag ; up-·)
 open import Examples.Groups.Real-Clifford+CH.Soundness.Box using (Λ□-sem)
@@ -77,18 +79,18 @@ cf-• {j} {m} {u} {v} (cf e₁ A₁ B₁ f₁) (cf e₂ A₂ B₂ f₂) =
 ------------------------------------------------------------------------
 -- Local circuits: the same payload on both branches
 
-cf-loc : (c : Circuit j) → CF {j} {m} (c ↓ᵏ m)
-cf-loc {j} {m} c = cf (len c) ⟦ c ⟧M ⟦ c ⟧M
-  (·-cong (Eq.cong √2^_ (Eq.sym (len-↓ᵏ c)))
-    (≐-trans (localise c) (emb-ctrl ⟦ c ⟧M allT)))
-
--- The same with the stored matrix given as a literal (GeneralN.Locals),
--- so that products of payloads never recompute it.
+-- The stored matrix given as a literal (GeneralN.Locals), so that
+-- products of payloads never recompute it.
 cf-loc′ : (c : Circuit j) (M : Mat j) → ⟦ c ⟧M ≡ M → CF {j} {m} (c ↓ᵏ m)
 cf-loc′ {j} {m} c M e = cf (len c) M M
   (·-cong (Eq.cong √2^_ (Eq.sym (len-↓ᵏ c)))
     (≐-trans (localise c)
     (≐-trans (tensor-cong (ix-≡ e) (≐-refl Idₒ)) (emb-ctrl M allT))))
+
+-- Read by row operations (Evaluation), which is several times cheaper
+-- to evaluate than the dense ⟦ c ⟧M.
+cf-loc : (c : Circuit j) → CF {j} {m} (c ↓ᵏ m)
+cf-loc c = cf-loc′ c ⟦ c ⟧R (Eq.sym (⟦⟧R≡⟦⟧M c))
 
 ------------------------------------------------------------------------
 -- One wire up: the new bottom wire joins the payload
@@ -200,12 +202,14 @@ private
               (*-assoc (√2^ a′) (√2^ b′) z))))
 
 -- Two forms whose payloads agree once each is scaled by the other's
--- exponent give the same semantics.
+-- exponent give the same semantics.  The agreement is asked for as the
+-- boolean of Semantics.Decide, which `Eq.refl` decides in one shared
+-- evaluation of the payloads.
 cf-~ : {u v : Circuit (j +ℕ m)} (cu : CF {j} {m} u) (cv : CF {j} {m} v) →
-       scaleM (√2^ CF.e cv) (CF.A cu) ≡ scaleM (√2^ CF.e cu) (CF.A cv) →
-       scaleM (√2^ CF.e cv) (CF.B cu) ≡ scaleM (√2^ CF.e cu) (CF.B cv) →
+       eqM (scaleM (√2^ CF.e cv) (CF.A cu)) (scaleM (√2^ CF.e cu) (CF.A cv)) ≡ true →
+       eqM (scaleM (√2^ CF.e cv) (CF.B cu)) (scaleM (√2^ CF.e cu) (CF.B cv)) ≡ true →
        ⟦ u ⟧ ~ ⟦ v ⟧
-cf-~ {j} {m} {u} {v} (cf eu Au Bu fu) (cf ev Av Bv fv) eA eB x y =
+cf-~ {j} {m} {u} {v} (cf eu Au Bu fu) (cf ev Av Bv fv) bA bB x y =
   √2^-cancel K (√2^ len v * ⟦ u ⟧ₒ x y) (√2^ len u * ⟦ v ⟧ₒ x y) (begin
     √2^ K * (√2^ len v * ⟦ u ⟧ₒ x y)
       ≡⟨ shuffle K (len v) (len v +ℕ ev) eu (⟦ u ⟧ₒ x y)
@@ -230,6 +234,10 @@ cf-~ {j} {m} {u} {v} (cf eu Au Bu fu) (cf ev Av Bv fv) eA eB x y =
   open Eq.≡-Reasoning
   K : ℕ
   K = eu +ℕ ev
+  eA : scaleM (√2^ ev) Au ≡ scaleM (√2^ eu) Av
+  eA = eqM-sound _ _ bA
+  eB : scaleM (√2^ ev) Bu ≡ scaleM (√2^ eu) Bv
+  eB = eqM-sound _ _ bB
   Cu Cv : Op (j +ℕ m)
   Cu = ctrl (ix Au) (ix Bu) (allT {m})
   Cv = ctrl (ix Av) (ix Bv) (allT {m})

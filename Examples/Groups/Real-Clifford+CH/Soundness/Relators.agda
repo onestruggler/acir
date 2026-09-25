@@ -8,8 +8,8 @@
 -- there, as an identity between stored integer matrices: the two sides
 -- have different numbers of letters, hence different powers of 1/√2,
 -- so each side is scaled by the other's power of √2 before comparison
--- (Interpretation.by-matrix).  Every check is `refl`, a computation on
--- tries; the longest sides — (15) has eighty letters once the non-
+-- (Interpretation.by-matrix).  Every check is `refl` on one boolean
+-- (`Same`), a computation on tries; the longest sides — (15) has eighty letters once the non-
 -- adjacent gates are spelled out with their swaps — are products of
 -- eighty 8 × 8 matrices, which is where this module spends its time.
 --
@@ -21,6 +21,7 @@
 
 module Examples.Groups.Real-Clifford+CH.Soundness.Relators where
 
+open import Data.Bool using (true)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (ε ; _•_ ; _^_)
 open import Notations using (₁₊ ; ₂₊ ; ₃₊)
@@ -28,6 +29,8 @@ open import Notations using (₁₊ ; ₂₊ ; ₃₊)
 open import Examples.Groups.Real-Clifford+CH.Semantics hiding (_^_)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.Interpretation
+open import Examples.Groups.Real-Clifford+CH.Semantics.Decide using (eqM ; eqM-sound ; ≡-eqM)
+open import Examples.Groups.Real-Clifford+CH.Evaluation using (⟦_⟧R ; ⟦⟧R≡⟦⟧M)
 
 ------------------------------------------------------------------------
 -- The relators, at the width each is written for
@@ -92,9 +95,29 @@ sCHʳ = Ex ↓ • Ex ↑ • CH ↓
 ------------------------------------------------------------------------
 -- The identities
 
--- Both sides denote the same matrix over ℤ[1/√2].
+-- Both sides denote the same matrix over ℤ[1/√2], decided by one
+-- boolean (Semantics.Decide) on the row-operation reading (Evaluation):
+-- an `Eq.refl` for it evaluates each side once, sharing every
+-- intermediate trie, and applies each gate as a row operation.  (An
+-- `Eq.refl` for the equation of dense products ⟦ u ⟧M, which this used
+-- to be, re-evaluated the product once per entry: a hundred to two
+-- hundred times slower on an 80-gate three-wire word.)
 Same : ∀ {k} → Circuit k → Circuit k → Set
-Same u v = scaleM (√2^ len v) ⟦ u ⟧M ≡ scaleM (√2^ len u) ⟦ v ⟧M
+Same u v = eqM (scaleM (√2^ len v) ⟦ u ⟧R) (scaleM (√2^ len u) ⟦ v ⟧R) ≡ true
+
+-- The equation of stored matrices it decides, and back.  The words are
+-- explicit: `Same` is a function, so they cannot be read back off its
+-- type, and leaving them to unification makes the checker evaluate the
+-- boolean with unknown words.
+same-≡ : ∀ {k} (u v : Circuit k) → Same u v → scaleM (√2^ len v) ⟦ u ⟧M ≡ scaleM (√2^ len u) ⟦ v ⟧M
+same-≡ u v e =
+  Eq.subst₂ (λ A B → scaleM (√2^ len v) A ≡ scaleM (√2^ len u) B) (⟦⟧R≡⟦⟧M u) (⟦⟧R≡⟦⟧M v)
+            (eqM-sound _ _ e)
+
+≡-same : ∀ {k} (u v : Circuit k) → scaleM (√2^ len v) ⟦ u ⟧M ≡ scaleM (√2^ len u) ⟦ v ⟧M → Same u v
+≡-same u v e =
+  ≡-eqM (Eq.subst₂ (λ A B → scaleM (√2^ len v) A ≡ scaleM (√2^ len u) B)
+                   (Eq.sym (⟦⟧R≡⟦⟧M u)) (Eq.sym (⟦⟧R≡⟦⟧M v)) e)
 
 m1 : Same r1ˡ r1ʳ
 m1 = Eq.refl

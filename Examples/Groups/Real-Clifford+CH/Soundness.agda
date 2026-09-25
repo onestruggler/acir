@@ -95,31 +95,31 @@ comm₂-sound CH-gate g = same ([ g ↥ ↥ ]ʷ • CH) (CH • [ g ↥ ↥ ]ʷ)
 
 axiom-sound : {w v : Circuit n} → n VRel, w === v → ⟦ w ⟧ ~ ⟦ v ⟧
 -- Figure 4, by matrix computation at the width each equation is drawn on.
-axiom-sound (srel order-H)       = by-relator r1ˡ  r1ʳ  p1ˡ  p1ʳ  m1
-axiom-sound (srel order-Z)       = by-relator r2ˡ  r2ʳ  p2ˡ  p1ʳ  m2
-axiom-sound (srel order-HZ)      = by-relator r3ˡ  r3ʳ  p3ˡ  p1ʳ  m3
-axiom-sound (srel order-CZ)      = by-relator r4ˡ  r4ʳ  p4ˡ  p4ʳ  m4
-axiom-sound (srel order-CH)      = by-relator r5ˡ  r5ʳ  p5ˡ  p4ʳ  m5
-axiom-sound (srel merge-CZ)      = by-relator r6ˡ  r6ʳ  p6ˡ  p6ʳ  m6
-axiom-sound (srel merge-CH)      = by-relator r7ˡ  r7ʳ  p7ˡ  p7ʳ  m7
-axiom-sound (srel comm-CZ-Ex)    = by-relator r9ˡ  r9ʳ  p9ˡ  p9ʳ  m9
-axiom-sound (srel comm-CH-°CZ)   = by-relator r10ˡ r10ʳ p10ˡ p10ʳ m10
-axiom-sound (srel slide-CH)      = by-relator r11ˡ r11ʳ p11ˡ p11ʳ m11
-axiom-sound (srel comm-CZ↑-CZ↓)  = by-relator r12ˡ r12ʳ p12ˡ p12ʳ m12
-axiom-sound (srel comm-CZ↑-CH↓)  = by-relator r13ˡ r13ʳ p13ˡ p13ʳ m13
-axiom-sound (srel symm-controls) = by-relator r14ˡ r14ʳ p14ˡ p14ʳ m14
-axiom-sound (srel square-CCZX)   = by-relator r15ˡ r15ʳ p15ˡ p15ʳ m15
-axiom-sound (srel comm-°CZ₂₀-CH) = by-relator r16ˡ r16ʳ p16ˡ p16ʳ m16
-axiom-sound (srel comm-°CZ₂₀-HH) = by-relator r17ˡ r17ʳ p17ˡ p17ʳ m17
-axiom-sound (srel conj-PP)       = by-relator r18ˡ r18ʳ p18ˡ p18ʳ m18
+axiom-sound (srel order-H)       = by-relator r1ˡ  r1ʳ  p1ˡ  p1ʳ  (same-≡ r1ˡ r1ʳ m1)
+axiom-sound (srel order-Z)       = by-relator r2ˡ  r2ʳ  p2ˡ  p1ʳ  (same-≡ r2ˡ r2ʳ m2)
+axiom-sound (srel order-HZ)      = by-relator r3ˡ  r3ʳ  p3ˡ  p1ʳ  (same-≡ r3ˡ r3ʳ m3)
+axiom-sound (srel order-CZ)      = by-relator r4ˡ  r4ʳ  p4ˡ  p4ʳ  (same-≡ r4ˡ r4ʳ m4)
+axiom-sound (srel order-CH)      = by-relator r5ˡ  r5ʳ  p5ˡ  p4ʳ  (same-≡ r5ˡ r5ʳ m5)
+axiom-sound (srel merge-CZ)      = by-relator r6ˡ  r6ʳ  p6ˡ  p6ʳ  (same-≡ r6ˡ r6ʳ m6)
+axiom-sound (srel merge-CH)      = by-relator r7ˡ  r7ʳ  p7ˡ  p7ʳ  (same-≡ r7ˡ r7ʳ m7)
+axiom-sound (srel comm-CZ-Ex)    = by-relator r9ˡ  r9ʳ  p9ˡ  p9ʳ  (same-≡ r9ˡ r9ʳ m9)
+axiom-sound (srel comm-CH-°CZ)   = by-relator r10ˡ r10ʳ p10ˡ p10ʳ (same-≡ r10ˡ r10ʳ m10)
+axiom-sound (srel slide-CH)      = by-relator r11ˡ r11ʳ p11ˡ p11ʳ (same-≡ r11ˡ r11ʳ m11)
+axiom-sound (srel comm-CZ↑-CZ↓)  = by-relator r12ˡ r12ʳ p12ˡ p12ʳ (same-≡ r12ˡ r12ʳ m12)
+axiom-sound (srel comm-CZ↑-CH↓)  = by-relator r13ˡ r13ʳ p13ˡ p13ʳ (same-≡ r13ˡ r13ʳ m13)
+axiom-sound (srel symm-controls) = by-relator r14ˡ r14ʳ p14ˡ p14ʳ (same-≡ r14ˡ r14ʳ m14)
+axiom-sound (srel square-CCZX)   = by-relator r15ˡ r15ʳ p15ˡ p15ʳ (same-≡ r15ˡ r15ʳ m15)
+axiom-sound (srel comm-°CZ₂₀-CH) = by-relator r16ˡ r16ʳ p16ˡ p16ʳ (same-≡ r16ˡ r16ʳ m16)
+axiom-sound (srel comm-°CZ₂₀-HH) = by-relator r17ˡ r17ʳ p17ˡ p17ʳ (same-≡ r17ˡ r17ʳ m17)
+axiom-sound (srel conj-PP)       = by-relator r18ˡ r18ʳ p18ˡ p18ʳ (same-≡ r18ˡ r18ʳ m18)
 -- (19): the box is diagonal.
 axiom-sound (srel (box-Z k))     = box-Z-sound k
 -- The swap rules of Remark 1.
-axiom-sound (srel swap-order)    = by-relator sgˡ  sgʳ  psgˡ  p4ʳ   msg
-axiom-sound (srel swap-Z)        = by-relator sZˡ  sZʳ  psZˡ  psZʳ  msZ
-axiom-sound (srel swap-H)        = by-relator sHˡ  sHʳ  psHˡ  psHʳ  msH
-axiom-sound (srel swap-CZ)       = by-relator sCZˡ sCZʳ psCZˡ psCZʳ msCZ
-axiom-sound (srel swap-CH)       = by-relator sCHˡ sCHʳ psCHˡ psCHʳ msCH
+axiom-sound (srel swap-order)    = by-relator sgˡ  sgʳ  psgˡ  p4ʳ   (same-≡ sgˡ sgʳ msg)
+axiom-sound (srel swap-Z)        = by-relator sZˡ  sZʳ  psZˡ  psZʳ  (same-≡ sZˡ sZʳ msZ)
+axiom-sound (srel swap-H)        = by-relator sHˡ  sHʳ  psHˡ  psHʳ  (same-≡ sHˡ sHʳ msH)
+axiom-sound (srel swap-CZ)       = by-relator sCZˡ sCZʳ psCZˡ psCZʳ (same-≡ sCZˡ sCZʳ msCZ)
+axiom-sound (srel swap-CH)       = by-relator sCHˡ sCHʳ psCHˡ psCHʳ (same-≡ sCHˡ sCHʳ msCH)
 -- The structural rules.
 axiom-sound (cong↑ r)            = cong↑-sound (axiom-sound r)
 axiom-sound (comm₁ h g)          = comm₁-sound h g

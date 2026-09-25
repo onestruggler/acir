@@ -29,6 +29,7 @@ open import Word.Base using (_•_)
 open import Examples.Groups.Real-Clifford+CH.Semantics
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧M)
+open import Examples.Groups.Real-Clifford+CH.Evaluation using (by-rows)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Locals using (Ex₀₁ᴸ ; Ex₀₁ᴸ-def ; CH₀₁ᴸ ; CH₀₁ᴸ-def)
 
 private
@@ -41,7 +42,7 @@ private
   Midᴸ = mat ((((((((+ 0) +√2 (+ 512)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))) , (((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 512))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))))) , ((((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 512)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))) , (((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 512)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))))) , (((((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 -[1+ 511 ]) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))) , (((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 -[1+ 511 ])) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))))) , ((((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 -[1+ 511 ]) , ((+ 0) +√2 (+ 0))))) , (((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 -[1+ 511 ])))))))
 
   mid-def : ⟦ mid₃ ⟧M ≡ Midᴸ
-  mid-def = Eq.trans (Eq.cong₂ mulM Ex₀₁ᴸ-def (Eq.cong₂ mulM (Eq.refl {x = ⟦ Z {1} ↑ ⟧M}) Ex₀₁ᴸ-def)) Eq.refl
+  mid-def = by-rows (mid₃) Eq.refl
 
   zx₃ xz₃ : Circuit 3
   zx₃ = CH • mid₃ • CH • mid₃
@@ -58,7 +59,7 @@ ZX₀₁ᴸ = mat ((((((((+ 1048576) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 
 
 private
   zx₃-def : ⟦ zx₃ ⟧M ≡ ZX₀₁ᴸ
-  zx₃-def = Eq.trans (Eq.cong₂ mulM CH₀₁ᴸ-def (Eq.cong₂ mulM mid-def (Eq.cong₂ mulM CH₀₁ᴸ-def mid-def))) Eq.refl
+  zx₃-def = by-rows (zx₃) Eq.refl
 
 ZX₀₁ᴸ-def : ⟦ ΛZX 1 ↓ᵏ 1 ⟧M ≡ ZX₀₁ᴸ
 ZX₀₁ᴸ-def = Eq.subst (λ w → ⟦ w ⟧M ≡ ZX₀₁ᴸ) {x = zx₃} {y = ΛZX 1 ↓ᵏ 1} zx₃≡ zx₃-def
@@ -68,7 +69,7 @@ XZ₀₁ᴸ = mat ((((((((+ 1048576) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 
 
 private
   xz₃-def : ⟦ xz₃ ⟧M ≡ XZ₀₁ᴸ
-  xz₃-def = Eq.trans (Eq.cong₂ mulM mid-def (Eq.cong₂ mulM CH₀₁ᴸ-def (Eq.cong₂ mulM mid-def CH₀₁ᴸ-def))) Eq.refl
+  xz₃-def = by-rows (xz₃) Eq.refl
 
 XZ₀₁ᴸ-def : ⟦ ΛXZ 1 ↓ᵏ 1 ⟧M ≡ XZ₀₁ᴸ
 XZ₀₁ᴸ-def = Eq.subst (λ w → ⟦ w ⟧M ≡ XZ₀₁ᴸ) {x = xz₃} {y = ΛXZ 1 ↓ᵏ 1} xz₃≡ xz₃-def

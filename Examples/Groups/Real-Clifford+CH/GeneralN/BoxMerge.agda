@@ -44,9 +44,10 @@ open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Blocks complete₂ using
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Blocks complete₂ complete₃ using (L₃-sem)
 open import Examples.Groups.Real-Clifford+CH.Semantics using (Mat ; mat ; _+√2_ ; mulM ; scaleM ; √2^_)
 open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧M ; len)
-open import Examples.Groups.Real-Clifford+CH.Soundness.Relators using (Same)
+open import Examples.Groups.Real-Clifford+CH.Soundness.Relators using (Same ; ≡-same)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Locals using (Wᴸ ; Wᴸ-def ; Vᴸ ; Vᴸ-def)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Locals2 using (ZX₀₁ᴸ ; ZX₀₁ᴸ-def)
+open import Examples.Groups.Real-Clifford+CH.Evaluation using (by-rows)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Sem using (B□)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.SemZX using (B₁₀)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.SemMerge using (ZX₀ ; XZ₀ ; sem-305 ; sem-304)
@@ -132,7 +133,7 @@ module _ (k : ℕ) (complete : Complete k) where
     -- Stored-matrix equalities through the literals of Locals.
     lit-same : ∀ {u v : Circuit 3} {Mu Mv : Mat 3} → ⟦ u ⟧M ≡ Mu → ⟦ v ⟧M ≡ Mv →
                scaleM (√2^ len v) Mu ≡ scaleM (√2^ len u) Mv → Same u v
-    lit-same eu ev e = Eq.trans (Eq.cong (scaleM _) eu) (Eq.trans e (Eq.cong (scaleM _) (Eq.sym ev)))
+    lit-same {u} {v} eu ev e = ≡-same u v (Eq.trans (Eq.cong (scaleM _) eu) (Eq.trans e (Eq.cong (scaleM _) (Eq.sym ev))))
 
     -- The readings of the one-gate factors, named so that no implicit
     -- of the products is left to be solved by evaluation.
@@ -146,31 +147,28 @@ module _ (k : ℕ) (complete : Complete k) where
     rCZ : ⟦ CZ {0} ↑ ⟧M ≡ CZ₁₂M
     rCZ = Eq.refl
 
-    -- V negated on wire 2, as a literal (a chain of literal products
-    -- is kept to four factors: its final refl evaluates without sharing).
+    -- V negated on wire 2, as a literal.
     V°ᴸ : Mat 3
     V°ᴸ = mat ((((((((+ 8388608) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))) , (((((+ 0) +√2 (+ 0)) , ((+ 8388608) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))))) , ((((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 8388608) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))) , (((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 8388608) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))))) , (((((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 8388608) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))) , (((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 8388608) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))))) , ((((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((-[1+ 8388607 ]) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))) , (((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 8388608) +√2 (+ 0))))))))
 
     V°ᴸ-def : ⟦ X {0} ↑ ↑ • CCXZ {0} • X {0} ↑ ↑ ⟧M ≡ V°ᴸ
-    V°ᴸ-def = Eq.trans (Eq.cong₂ mulM rX₂ (Eq.cong₂ mulM Vᴸ-def rX₂)) Eq.refl
+    V°ᴸ-def = by-rows (X {0} ↑ ↑ • CCXZ {0} • X {0} ↑ ↑) Eq.refl
 
     VW° : (₄₊ k) ⊢ V • W° ≈ CZ ↑ • ZX₁
     VW° = L₃-sem (CCXZ • (X ↑ ↑ • CCZX • X ↑ ↑)) (CZ ↑ • (ΛZX 1 ↓ᵏ 1))
-            (lit-same (Eq.cong₂ mulM Vᴸ-def (Eq.cong₂ mulM rX₂ (Eq.cong₂ mulM Wᴸ-def rX₂)))
-                      (Eq.cong₂ mulM rCZ ZX₀₁ᴸ-def) Eq.refl)
+            Eq.refl
 
     CZ-ZX : (₄₊ k) ⊢ CZ ↑ • ZX₁ ≈ ZX₁ • CZ ↑
     CZ-ZX = L₃-sem (CZ ↑ • (ΛZX 1 ↓ᵏ 1)) ((ΛZX 1 ↓ᵏ 1) • CZ ↑)
-              (lit-same (Eq.cong₂ mulM rCZ ZX₀₁ᴸ-def) (Eq.cong₂ mulM ZX₀₁ᴸ-def rCZ) Eq.refl)
+              Eq.refl
 
     CZ-V° : (₄₊ k) ⊢ CZ ↑ • V° ≈ V° • CZ ↑
     CZ-V° = L₃-sem (CZ ↑ • (X ↑ ↑ • CCXZ • X ↑ ↑)) ((X ↑ ↑ • CCXZ • X ↑ ↑) • CZ ↑)
-              (lit-same (Eq.cong₂ mulM rCZ V°ᴸ-def) (Eq.cong₂ mulM V°ᴸ-def rCZ) Eq.refl)
+              Eq.refl
 
     rest : (₄₊ k) ⊢ W • ZX₁ • V° • CZ ↑ ≈ ε
     rest = L₃-sem (CCZX • (ΛZX 1 ↓ᵏ 1) • (X ↑ ↑ • CCXZ • X ↑ ↑) • CZ ↑) ε
-             (lit-same (Eq.cong₂ mulM Wᴸ-def (Eq.cong₂ mulM ZX₀₁ᴸ-def (Eq.cong₂ mulM V°ᴸ-def rCZ)))
-                       Eq.refl Eq.refl)
+             Eq.refl
 
     ZX-XZ : (₄₊ k) ⊢ ZX₁ • XZ₁ ≈ ε
     ZX-XZ = L-sem (ΛZX 1 • ΛXZ 1) ε Eq.refl
