@@ -214,7 +214,8 @@ module Step (k : ℕ) (below : Below (₁₊ (₄₊ k))) (ih : Sep (₁₊ k)) 
 
       -- The rotation between P ⊗ P passes both.
       A-Pb : ∀ v → Aᴾ true true true • Pb v ≈ Pb v • Aᴾ true true true
-      A-Pb v = gd′ true x v
+      A-Pb true  = gd′ true true true true x true
+      A-Pb false = gd′ true true true true x false
 
       -- The H gate's smaller box.
       g-bb : col s (g bb) ≈ Aj.⟪ Pb false ⟫

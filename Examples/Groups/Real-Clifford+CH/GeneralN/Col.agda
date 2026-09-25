@@ -56,3 +56,15 @@ C338 m = ∀ (y : Bits (₁₊ m)) →
 Vb : Bool → ∀ m → Circuit (₃₊ m)
 Vb true  m = Λ□ (₂₊ m)
 Vb false m = B₁ m
+
+-- The colours of the wires 0 1 2 of a box white on wire 2 and coloured γ
+-- on the other of the wires 0 1: on wire 1 for the box on wire 0 (v
+-- true), on wire 0 for the box on wire 1 (v false).
+c₀ c₁ : Bool → Bool → Bool
+c₀ true  γ = true
+c₀ false γ = γ
+c₁ true  γ = γ
+c₁ false γ = true
+
+bot : Bool → Bool → ∀ {j} → Bits j → Bits (₃₊ j)
+bot v γ x = c₀ v γ ∷ c₁ v γ ∷ false ∷ x

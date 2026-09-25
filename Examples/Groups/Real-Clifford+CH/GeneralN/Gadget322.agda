@@ -4,13 +4,14 @@
 -- A rotation between P ⊗ P against a box with wire 3 idle, of the other
 -- colour on wire 2 (Clément, Lemma D.12, Equations (322) and (323))
 --
--- At width 4 + j: the triply controlled ZX on wire 0 between P ⊗ P on
--- the wires 0 1, black on the wires 1 2 and of either colour on wire 3
--- (`Aᴾ α true true`, FourQubit.PForms), commutes with the box with
--- wire 3 idle, white on wire 2, black on the other of the wires 0 1 and
--- coloured x on the top wires, its box wire on wire 0 or on wire 1
--- (`Gd`, the two cases by `Vb`).  Semantically the rotation acts only
--- where wire 2 is 1 and the box only where it is 0.
+-- At width 4 + j: the triply controlled ZX or XZ on wire 0 between P ⊗ P
+-- on the wires 0 1, black on wire 2 and of any colours on the wires 1 3
+-- (`Aᴾ α β a`, FourQubit.PForms), commutes with the box with wire 3
+-- idle, white on wire 2, of either colour γ on the other of the wires 0
+-- 1 and coloured x on the top wires, its box wire on wire 0 or on wire 1
+-- (`Gd`, the two cases by `Vb`, the colours by `Col.bot`).
+-- Semantically the rotation acts only where wire 2 is 1 and the box only
+-- where it is 0.
 --
 -- The paper's induction on the length of x: on four wires it is decided
 -- (Base322; the paper cites (247), (248)).  At width 5 + j the box one
@@ -72,9 +73,14 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Ancilla complete₂ comple
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Box320 complete₂ complete₃ using (eq320)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Colours complete₂ complete₃
   using (col ; module Col ; col-place ; norm-ZX ; norm-K)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (B₁ ; Vb)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (B₁ ; Vb ; bot ; c₀ ; c₁)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Base338 using (W320 ; d320)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Base322 using (AᴾF ; P322 ; d322)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Base322b using (d322b)
+open import Examples.Groups.Real-Clifford+CH.FourQubit.Families2 complete₂ complete₃ using (N₁ᵇ ; N₃ᵇ)
+open import Examples.Groups.Real-Clifford+CH.FourQubit.Colours complete₂ complete₃ using (module N₃)
+open import Examples.Groups.Real-Clifford+CH.FourQubit.PForms complete₂ complete₃ using (module Aj)
+open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Auxiliary complete₂ using (module N₁)
 
 ------------------------------------------------------------------------
 -- The letters of (320) at width 4 + j, and their products
@@ -177,34 +183,47 @@ module _ {j : ℕ} where
   S-X₃ : S₃₄.⟪ X ↑ ↑ ↑ ⟫ ≈ X ↑ ↑ ↑ ↑
   S-X₃ = X-step 3 (s≤s (s≤s (s≤s (s≤s z≤n))))
 
-  -- X on wire 4 passes the first gate.
-  X₄-A : ∀ α → X ↑ ↑ ↑ ↑ • Aᴾ α true true ≈ Aᴾ α true true • X ↑ ↑ ↑ ↑
-  X₄-A true  = sym (local-comm (Aᴾ {0} true true true) X)
-  X₄-A false = sym (local-comm (Aᴾ {0} false true true) X)
+  -- X on wire 4 passes the first gate (a closed four-wire word in each
+  -- colouring, weakened).
+  X₄-A : ∀ α β a → X ↑ ↑ ↑ ↑ • Aᴾ α β a ≈ Aᴾ α β a • X ↑ ↑ ↑ ↑
+  X₄-A true  true  true  = sym (local-comm (Aᴾ {0} true  true  true ) X)
+  X₄-A true  true  false = sym (local-comm (Aᴾ {0} true  true  false) X)
+  X₄-A true  false true  = sym (local-comm (Aᴾ {0} true  false true ) X)
+  X₄-A true  false false = sym (local-comm (Aᴾ {0} true  false false) X)
+  X₄-A false true  true  = sym (local-comm (Aᴾ {0} false true  true ) X)
+  X₄-A false true  false = sym (local-comm (Aᴾ {0} false true  false) X)
+  X₄-A false false true  = sym (local-comm (Aᴾ {0} false false true ) X)
+  X₄-A false false false = sym (local-comm (Aᴾ {0} false false false) X)
 
   -- The first gate one width down, placed around wire 4.
-  place4-A : ∀ α → place 4 (Aᴾ {j} α true true) ≈ Aᴾ α true true
-  place4-A true  = place-low 4 (Aᴾ {0} true true true)
-  place4-A false = place-low 4 (Aᴾ {0} false true true)
+  place4-A : ∀ α β a → place 4 (Aᴾ {j} α β a) ≈ Aᴾ α β a
+  place4-A true  true  true  = place-low 4 (Aᴾ {0} true  true  true )
+  place4-A true  true  false = place-low 4 (Aᴾ {0} true  true  false)
+  place4-A true  false true  = place-low 4 (Aᴾ {0} true  false true )
+  place4-A true  false false = place-low 4 (Aᴾ {0} true  false false)
+  place4-A false true  true  = place-low 4 (Aᴾ {0} false true  true )
+  place4-A false true  false = place-low 4 (Aᴾ {0} false true  false)
+  place4-A false false true  = place-low 4 (Aᴾ {0} false false true )
+  place4-A false false false = place-low 4 (Aᴾ {0} false false false)
 
-  lift4 : ∀ α {u : Circuit (₄₊ j)} → (₄₊ j) ⊢ Aᴾ α true true • u ≈ u • Aᴾ α true true →
-          Aᴾ α true true • place 4 u ≈ place 4 u • Aᴾ α true true
-  lift4 α {u} e = begin
-    Aᴾ α true true • place 4 u           ≈⟨ front _ (sym (place4-A α)) ⟩
+  lift4 : ∀ α β a {u : Circuit (₄₊ j)} → (₄₊ j) ⊢ Aᴾ α β a • u ≈ u • Aᴾ α β a →
+          Aᴾ α β a • place 4 u ≈ place 4 u • Aᴾ α β a
+  lift4 α β a {u} e = begin
+    Aᴾ α β a • place 4 u                 ≈⟨ front _ (sym (place4-A α β a)) ⟩
     place 4 A₀ • place 4 u               ≈⟨ sym (place-• 4 A₀ u) ⟩
     place 4 (A₀ • u)                     ≈⟨ place-cong 4 e ⟩
     place 4 (u • A₀)                     ≈⟨ place-• 4 u A₀ ⟩
-    place 4 u • place 4 A₀               ≈⟨ back _ (place4-A α) ⟩
-    place 4 u • Aᴾ α true true ∎
+    place 4 u • place 4 A₀               ≈⟨ back _ (place4-A α β a) ⟩
+    place 4 u • Aᴾ α β a ∎
     where
     A₀ : Circuit (₄₊ j)
-    A₀ = Aᴾ α true true
+    A₀ = Aᴾ α β a
 
   -- A second gate negated on wire 3, under the swap of the wires 3 4:
   -- X on wire 4, which passes the first gate.
-  neg₃ : ∀ α {G : Circuit (₁₊ (₄₊ j))} → Aᴾ α true true • S₃₄.⟪ G ⟫ ≈ S₃₄.⟪ G ⟫ • Aᴾ α true true →
-         Aᴾ α true true • S₃₄.⟪ X ↑ ↑ ↑ • G • X ↑ ↑ ↑ ⟫ ≈ S₃₄.⟪ X ↑ ↑ ↑ • G • X ↑ ↑ ↑ ⟫ • Aᴾ α true true
-  neg₃ α e = via (S₃₄.⟪⟫-•₃ S-X₃ refl S-X₃) (conj-pass X₄² (X₄-A α) e)
+  neg₃ : ∀ α β a {G : Circuit (₁₊ (₄₊ j))} → Aᴾ α β a • S₃₄.⟪ G ⟫ ≈ S₃₄.⟪ G ⟫ • Aᴾ α β a →
+         Aᴾ α β a • S₃₄.⟪ X ↑ ↑ ↑ • G • X ↑ ↑ ↑ ⟫ ≈ S₃₄.⟪ X ↑ ↑ ↑ • G • X ↑ ↑ ↑ ⟫ • Aᴾ α β a
+  neg₃ α β a e = via (S₃₄.⟪⟫-•₃ S-X₃ refl S-X₃) (conj-pass X₄² (X₄-A α β a) e)
 
 -- Two idle wires 3 4, placed in either order: the two networks differ
 -- by the swap of the wires 0 1 inside, which passes the circuit lifted
@@ -272,15 +291,54 @@ Vb-word c₄ j b false = trans (S₀₁.⟪⟫-cong (E320 c₄ j b)) (CW.⟪⟫-
 ------------------------------------------------------------------------
 -- The statement
 
+-- The first gate: the ZX of sign a between P ⊗ P, controlled by β on
+-- wire 1 and α on wire 3; the box: its box wire on wire 0 (v true) or
+-- wire 1 (v false), γ on the other of the two, white on wire 2.
 Gd : ℕ → Set
-Gd j = ∀ (α : Bool) (x : Bits j) (v : Bool) →
-       (₄₊ j) ⊢ Aᴾ α true true • place 3 (col (true ∷ true ∷ false ∷ x) (Vb v j))
-              ≈ place 3 (col (true ∷ true ∷ false ∷ x) (Vb v j)) • Aᴾ α true true
+Gd j = ∀ (α β a γ : Bool) (x : Bits j) (v : Bool) →
+       (₄₊ j) ⊢ Aᴾ α β a • place 3 (col (bot v γ x) (Vb v j))
+              ≈ place 3 (col (bot v γ x) (Vb v j)) • Aᴾ α β a
 
--- On four wires, decided.
+-- The first gates of the two signs are inverse.
+module _ {n : ℕ} where
+  open Tools ((₄₊ n) VRel,_===_)
+
+  private
+    N₃-inv : ∀ c {u v : Circuit (₄₊ n)} → u • v ≈ ε → N₃ᵇ c u • N₃ᵇ c v ≈ ε
+    N₃-inv true  e = e
+    N₃-inv false {u} {v} e = trans (sym (N₃.⟪⟫-• u v)) (trans (N₃.⟪⟫-cong e) N₃.⟪⟫-ε)
+
+    N₁-inv : ∀ c {u v : Circuit (₄₊ n)} → u • v ≈ ε → N₁ᵇ c u • N₁ᵇ c v ≈ ε
+    N₁-inv true  e = e
+    N₁-inv false {u} {v} e = trans (sym (N₁.⟪⟫-• u v)) (trans (N₁.⟪⟫-cong e) N₁.⟪⟫-ε)
+
+    Aj-inv : ∀ {u v : Circuit (₄₊ n)} → u • v ≈ ε → Aj.⟪ u ⟫ • Aj.⟪ v ⟫ ≈ ε
+    Aj-inv {u} {v} e = trans (sym (Aj.⟪⟫-• u v)) (trans (Aj.⟪⟫-cong e) Aj.⟪⟫-ε)
+
+  A-inv : ∀ α β → Aᴾ α β true • Aᴾ α β false ≈ ε
+  A-inv α β = Aj-inv (N₃-inv α (N₁-inv β eq208′))
+
+  A-inv′ : ∀ α β → Aᴾ α β false • Aᴾ α β true ≈ ε
+  A-inv′ α β = Aj-inv (N₃-inv α (N₁-inv β eq208))
+
+-- On four wires, decided for the sign true; the other by inverses.
+private
+  gd₀⁺ : Comp 4 → ∀ α β γ v → 4 ⊢ Aᴾ α β true • P322 v γ ≈ P322 v γ • Aᴾ α β true
+  gd₀⁺ c₄ true  true  γ v =
+    c₄ (same-sem (AᴾF true true • P322 v γ) (P322 v γ • AᴾF true true) (Evaluated.same (d322 true γ v)))
+  gd₀⁺ c₄ false true  γ v =
+    c₄ (same-sem (AᴾF false true • P322 v γ) (P322 v γ • AᴾF false true) (Evaluated.same (d322 false γ v)))
+  gd₀⁺ c₄ true  false γ v =
+    c₄ (same-sem (AᴾF true false • P322 v γ) (P322 v γ • AᴾF true false) (Evaluated.same (d322b true γ v)))
+  gd₀⁺ c₄ false false γ v =
+    c₄ (same-sem (AᴾF false false • P322 v γ) (P322 v γ • AᴾF false false) (Evaluated.same (d322b false γ v)))
+
 gd₀ : Comp 4 → Gd 0
-gd₀ c₄ true  [] v = c₄ (same-sem (AᴾF true • P322 v) (P322 v • AᴾF true) (Evaluated.same (d322 true v)))
-gd₀ c₄ false [] v = c₄ (same-sem (AᴾF false • P322 v) (P322 v • AᴾF false) (Evaluated.same (d322 false v)))
+gd₀ c₄ α β true  γ [] v = gd₀⁺ c₄ α β γ v
+gd₀ c₄ α β false γ [] v = sym (comm-inv (A-inv α β) (A-inv′ α β) (sym (gd₀⁺ c₄ α β γ v)))
+  where
+  open Tools (4 VRel,_===_)
+  open WordAlgebra (4 VRel,_===_) using (comm-inv)
 
 ------------------------------------------------------------------------
 -- The step, at width 5 + j
@@ -301,101 +359,102 @@ module _ {j : ℕ} where
   K′-K : S₀₁.⟪ XZ₃ ⟫ • S₀₁.⟪ ZX₃ ⟫ ≈ ε
   K′-K = trans (sym (S₀₁.⟪⟫-• XZ₃ ZX₃)) (trans (S₀₁.⟪⟫-cong eq208) S₀₁.⟪⟫-ε)
 
-module Step (j : ℕ) (ih : Gd j) (α : Bool) (x₄ : Bool) (x′ : Bits j) where
+module Step (j : ℕ) (ih : Gd j) (α β a γ : Bool) (x₄ : Bool) (x′ : Bits j) where
 
   private
     open Tools ((₁₊ (₄₊ j)) VRel,_===_)
     open WordAlgebra ((₁₊ (₄₊ j)) VRel,_===_) using (comm-inv)
 
     A : Circuit (₁₊ (₄₊ j))
-    A = Aᴾ α true true
+    A = Aᴾ α β a
 
-    s : Bits (₄₊ j)
-    s = true ∷ true ∷ false ∷ x₄ ∷ x′
-
-  -- A letter coloured and placed.
-  pc : Circuit (₄₊ j) → Circuit (₁₊ (₄₊ j))
-  pc w = place 3 (col s w)
+  -- A letter coloured and placed, for the box on wire 0 or 1.
+  pc : Bool → Circuit (₄₊ j) → Circuit (₁₊ (₄₊ j))
+  pc v w = place 3 (col (bot v γ (x₄ ∷ x′)) w)
 
   private
-    pc-cong : ∀ {w w′} → (₄₊ j) ⊢ w ≈ w′ → pc w ≈ pc w′
-    pc-cong e = place-cong 3 (Col.⟪⟫-cong s e)
+    pc-cong : ∀ v {w w′} → (₄₊ j) ⊢ w ≈ w′ → pc v w ≈ pc v w′
+    pc-cong v e = place-cong 3 (Col.⟪⟫-cong (bot v γ (x₄ ∷ x′)) e)
 
-    pc-inv : ∀ {w w′} → (₄₊ j) ⊢ w • w′ ≈ ε → pc w • pc w′ ≈ ε
-    pc-inv {w} {w′} e = trans (sym (place-• 3 (col s w) (col s w′))) (trans (place-cong 3 (col-inv s e)) place-ε)
+    pc-inv : ∀ v {w w′} → (₄₊ j) ⊢ w • w′ ≈ ε → pc v w • pc v w′ ≈ ε
+    pc-inv v {w} {w′} e =
+      trans (sym (place-• 3 (col (bot v γ (x₄ ∷ x′)) w) (col (bot v γ (x₄ ∷ x′)) w′)))
+            (trans (place-cong 3 (col-inv (bot v γ (x₄ ∷ x′)) e)) place-ε)
 
     -- A passes the inverse of what it passes.
-    inv : ∀ {w w′} → (₄₊ j) ⊢ w • w′ ≈ ε → (₄₊ j) ⊢ w′ • w ≈ ε → A • pc w ≈ pc w • A → A • pc w′ ≈ pc w′ • A
-    inv e e′ p = comm-inv (pc-inv e) (pc-inv e′) p
+    inv : ∀ v {w w′} → (₄₊ j) ⊢ w • w′ ≈ ε → (₄₊ j) ⊢ w′ • w ≈ ε → A • pc v w ≈ pc v w • A → A • pc v w′ ≈ pc v w′ • A
+    inv v e e′ p = comm-inv (pc-inv v e) (pc-inv v e′) p
 
-    t : Bits (₁₊ (₄₊ j))
-    t = true ∷ true ∷ false ∷ x₄ ∷ true ∷ x′
+    t : Bool → Bits (₁₊ (₄₊ j))
+    t v = c₀ v γ ∷ c₁ v γ ∷ false ∷ x₄ ∷ true ∷ x′
 
     -- The rotations, placed: the second gates of (268) and (267) under
     -- the swap of the wires 3 4.
-    pc-Z : pc ZX₃ ≈ S₃₄.⟪ C₂₄₁ x₄ true true ⟫
-    pc-Z = begin
-      place 3 (col s ZX₃)                              ≈⟨ sym (col-place true true false true (x₄ ∷ x′) ZX₃) ⟩
-      col (swB 3 t) (place 3 ZX₃)                      ≈⟨ Col.⟪⟫-cong (swB 3 t) (place3-loc (ΛZX 3)) ⟩
-      col (swB 3 t) (S₃₄.⟪ ZX₃ ⟫)                      ≈⟨ sym (col-S₃₄ t ZX₃) ⟩
-      S₃₄.⟪ col t ZX₃ ⟫                                ≈⟨ S₃₄.⟪⟫-cong (norm-ZX true true x₄ (true ∷ x′)) ⟩
-      S₃₄.⟪ C₂₄₁ x₄ true true ⟫ ∎
+    pc-Z : ∀ v → pc v ZX₃ ≈ S₃₄.⟪ C₂₄₁ x₄ (c₁ v γ) (c₀ v γ) ⟫
+    pc-Z v = begin
+      place 3 (col (bot v γ (x₄ ∷ x′)) ZX₃)
+        ≈⟨ sym (col-place (c₀ v γ) (c₁ v γ) false true (x₄ ∷ x′) ZX₃) ⟩
+      col (swB 3 (t v)) (place 3 ZX₃)                  ≈⟨ Col.⟪⟫-cong (swB 3 (t v)) (place3-loc (ΛZX 3)) ⟩
+      col (swB 3 (t v)) (S₃₄.⟪ ZX₃ ⟫)                  ≈⟨ sym (col-S₃₄ (t v) ZX₃) ⟩
+      S₃₄.⟪ col (t v) ZX₃ ⟫                            ≈⟨ S₃₄.⟪⟫-cong (norm-ZX (c₀ v γ) (c₁ v γ) x₄ (true ∷ x′)) ⟩
+      S₃₄.⟪ C₂₄₁ x₄ (c₁ v γ) (c₀ v γ) ⟫ ∎
 
-    pc-K : pc (S₀₁.⟪ ZX₃ ⟫) ≈ S₃₄.⟪ D₂₄₀ x₄ true true ⟫
-    pc-K = begin
-      place 3 (col s (S₀₁.⟪ ZX₃ ⟫))                    ≈⟨ sym (col-place true true false true (x₄ ∷ x′) (S₀₁.⟪ ZX₃ ⟫)) ⟩
-      col (swB 3 t) (place 3 (S₀₁.⟪ ZX₃ ⟫))            ≈⟨ Col.⟪⟫-cong (swB 3 t) (place3-loc (Ex • ΛZX 3 • Ex)) ⟩
-      col (swB 3 t) (S₃₄.⟪ S₀₁.⟪ ZX₃ ⟫ ⟫)              ≈⟨ sym (col-S₃₄ t (S₀₁.⟪ ZX₃ ⟫)) ⟩
-      S₃₄.⟪ col t (S₀₁.⟪ ZX₃ ⟫) ⟫                      ≈⟨ S₃₄.⟪⟫-cong (norm-K true true x₄ (true ∷ x′)) ⟩
-      S₃₄.⟪ D₂₄₀ x₄ true true ⟫ ∎
+    pc-K : ∀ v → pc v (S₀₁.⟪ ZX₃ ⟫) ≈ S₃₄.⟪ D₂₄₀ x₄ (c₀ v γ) (c₁ v γ) ⟫
+    pc-K v = begin
+      place 3 (col (bot v γ (x₄ ∷ x′)) (S₀₁.⟪ ZX₃ ⟫))
+        ≈⟨ sym (col-place (c₀ v γ) (c₁ v γ) false true (x₄ ∷ x′) (S₀₁.⟪ ZX₃ ⟫)) ⟩
+      col (swB 3 (t v)) (place 3 (S₀₁.⟪ ZX₃ ⟫))        ≈⟨ Col.⟪⟫-cong (swB 3 (t v)) (place3-loc (Ex • ΛZX 3 • Ex)) ⟩
+      col (swB 3 (t v)) (S₃₄.⟪ S₀₁.⟪ ZX₃ ⟫ ⟫)          ≈⟨ sym (col-S₃₄ (t v) (S₀₁.⟪ ZX₃ ⟫)) ⟩
+      S₃₄.⟪ col (t v) (S₀₁.⟪ ZX₃ ⟫) ⟫                  ≈⟨ S₃₄.⟪⟫-cong (norm-K (c₀ v γ) (c₁ v γ) x₄ (true ∷ x′)) ⟩
+      S₃₄.⟪ D₂₄₀ x₄ (c₀ v γ) (c₁ v γ) ⟫ ∎
 
-    fam268 : ∀ γ → A • S₃₄.⟪ C₂₄₁ γ true true ⟫ ≈ S₃₄.⟪ C₂₄₁ γ true true ⟫ • A
-    fam268 true  = eq268 α true true true true
-    fam268 false = neg₃ α (eq268 α true true true true)
+    fam268 : ∀ x c d → A • S₃₄.⟪ C₂₄₁ x c d ⟫ ≈ S₃₄.⟪ C₂₄₁ x c d ⟫ • A
+    fam268 true  c d = eq268 α β c a d
+    fam268 false c d = neg₃ α β a (eq268 α β c a d)
 
-    fam267 : ∀ γ → A • S₃₄.⟪ D₂₄₀ γ true true ⟫ ≈ S₃₄.⟪ D₂₄₀ γ true true ⟫ • A
-    fam267 true  = eq267 α true true true true
-    fam267 false = neg₃ α (eq267 α true true true true)
+    fam267 : ∀ x c d → A • S₃₄.⟪ D₂₄₀ x c d ⟫ ≈ S₃₄.⟪ D₂₄₀ x c d ⟫ • A
+    fam267 true  c d = eq267 α β c a d
+    fam267 false c d = neg₃ α β a (eq267 α β c a d)
 
-    rZ : A • pc ZX₃ ≈ pc ZX₃ • A
-    rZ = via pc-Z (fam268 x₄)
+    rZ : ∀ v → A • pc v ZX₃ ≈ pc v ZX₃ • A
+    rZ v = via (pc-Z v) (fam268 x₄ (c₁ v γ) (c₀ v γ))
 
-    rK : A • pc (S₀₁.⟪ ZX₃ ⟫) ≈ pc (S₀₁.⟪ ZX₃ ⟫) • A
-    rK = via pc-K (fam267 x₄)
+    rK : ∀ v → A • pc v (S₀₁.⟪ ZX₃ ⟫) ≈ pc v (S₀₁.⟪ ZX₃ ⟫) • A
+    rK v = via (pc-K v) (fam267 x₄ (c₀ v γ) (c₁ v γ))
 
     -- The smaller box, placed twice: the statement one width down.
-    rB : ∀ v → A • pc (place 3 (Vb v j)) ≈ pc (place 3 (Vb v j)) • A
-    rB v = via (trans (place-cong 3 (col-place true true false x₄ x′ (Vb v j))) (place-34 _))
-               (lift4 α (ih α x′ v))
+    rB : ∀ v → A • pc v (place 3 (Vb v j)) ≈ pc v (place 3 (Vb v j)) • A
+    rB v = via (trans (place-cong 3 (col-place (c₀ v γ) (c₁ v γ) false x₄ x′ (Vb v j))) (place-34 _))
+               (lift4 α β a (ih α β a γ x′ v))
 
     SS : ∀ w → (₄₊ j) ⊢ S₀₁.⟪ S₀₁.⟪ w ⟫ ⟫ ≈ w
     SS w = S₀₁.⟪⟫-⟪⟫ w
 
-  letter : ∀ v l → A • pc (lv j v l) ≈ pc (lv j v l) • A
-  letter true  zx  = rZ
-  letter true  kb  = rK
-  letter true  xz  = inv ZX-XZ XZ-ZX rZ
-  letter true  kb′ = inv K-K′ K′-K rK
+  letter : ∀ v l → A • pc v (lv j v l) ≈ pc v (lv j v l) • A
+  letter true  zx  = rZ true
+  letter true  kb  = rK true
+  letter true  xz  = inv true ZX-XZ XZ-ZX (rZ true)
+  letter true  kb′ = inv true K-K′ K′-K (rK true)
   letter true  bb  = rB true
-  letter false zx  = rK
-  letter false kb  = via (pc-cong (SS ZX₃)) rZ
-  letter false xz  = inv K-K′ K′-K rK
-  letter false kb′ = via (pc-cong (SS XZ₃)) (inv ZX-XZ XZ-ZX rZ)
-  letter false bb  = via (pc-cong (S-place (Λ□ (₂₊ j)))) (rB false)
+  letter false zx  = rK false
+  letter false kb  = via (pc-cong false (SS ZX₃)) (rZ false)
+  letter false xz  = inv false K-K′ K′-K (rK false)
+  letter false kb′ = via (pc-cong false (SS XZ₃)) (inv false ZX-XZ XZ-ZX (rZ false))
+  letter false bb  = via (pc-cong false (S-place (Λ□ (₂₊ j)))) (rB false)
 
 ------------------------------------------------------------------------
 -- At every width
 
 gd : Comp 4 → ∀ j → Below (₄₊ j) → Gd j
 gd c₄ zero    _ = gd₀ c₄
-gd c₄ (suc j) b α (x₄ ∷ x′) v =
+gd c₄ (suc j) b α β a γ (x₄ ∷ x′) v =
   via (trans (place-cong 3 (Col.⟪⟫-cong s (Vb-word c₄ j b′ v)))
              (trans (place-cong 3 (CW.⟪⟫-word (negsB s) (negs² s) (lv j v) es))
                     (place-word (λ l → col s (lv j v l)) es)))
-      (pass-word (λ l → place 3 (col s (lv j v l))) es (Step.letter j (gd c₄ j b′) α x₄ x′ v))
+      (pass-word (λ l → place 3 (col s (lv j v l))) es (Step.letter j (gd c₄ j b′) α β a γ x₄ x′ v))
   where
   open Tools ((₄₊ (suc j)) VRel,_===_)
   b′ : Below (₄₊ j)
   b′ = below-suc b
   s : Bits (₄₊ j)
-  s = true ∷ true ∷ false ∷ x₄ ∷ x′
+  s = bot v γ (x₄ ∷ x′)
