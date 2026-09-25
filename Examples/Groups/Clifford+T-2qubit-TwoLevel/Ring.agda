@@ -8,6 +8,17 @@
 -- parity, i.e. divisibility by δ (the δ-residue of Definition 2.7).
 --
 -- An element aω³ + bω² + cω + d is written Omega a b c d.
+--
+-- The operations of 𝔻[ω] are opaque.  EucDomain's are transparent,
+-- and 𝔻[ω] is a record of dyadic fractions, again records, whose
+-- arithmetic goes through a normalising smart constructor.  So the
+-- type checker, asked to compare two different but convertible
+-- expressions (a product and a module-copied alias of it, say),
+-- unfolds both into dyadic arithmetic on stuck terms, which does not
+-- terminate in practice: even DR.*-assoc, checked against its own
+-- type as a client writes it, did not.  With the operations opaque,
+-- every comparison stops at _*ᴰ_; computations that need the
+-- arithmetic go in `opaque unfolding` blocks.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -15,23 +26,27 @@
 module Examples.Groups.Clifford+T-2qubit-TwoLevel.Ring where
 
 open import Algebra.Bundles using (CommutativeRing)
+open import Algebra.Structures using (IsCommutativeRing)
 open import Data.Bool.Base using (Bool ; true ; false ; not ; _xor_ ; _∧_)
 open import Data.Integer.Base as ℤ using (ℤ ; +_ ; -[1+_])
 import Data.Integer.Properties as ℤP
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 import Data.Integer.Solver as ℤSolver
 open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
+open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (¬_)
 
 open import Algebra.Solver.Ring.AlmostCommutativeRing using (fromCommutativeRing)
 import Algebra.Solver.Ring.Simple
-open import Instances using (_≟_ ; DEℤ)
+open import Instances
+  using (_≟_ ; DEℤ ; SemiRing ; Ring ; Adjoint ; _+_ ; _*_ ; -_ ; 0# ; 1# ; fromℕ ; adj)
 open import Quantum.Synthesis.Ring
   using (Dyadic ; Dyadic' ; _[ω] ; Omega ; DOmega ; ZOmega
-        ; SemiRingDyadic ; RingDyadic ; SemiRingOmega ; RingOmega ; DecEqOmega)
+        ; SemiRingDyadic ; RingDyadic ; AdjointDyadic ; SemiRingOmega ; RingOmega ; AdjointOmega ; DecEqOmega)
 open import Quantum.Synthesis.Ring.Properties
-  using (commutativeRing-𝔻 ; commutativeRing-DOmega ; commutativeRing-ZOmega)
+  using (commutativeRing-𝔻 ; isCommutativeRing-DOmega ; commutativeRing-ZOmega
+        ; IsInvolutiveRingEndo ; adj-DOmega)
 import Quantum.Synthesis.Ring.Properties.Common as Common
 import Examples.Groups.Clifford+CS-TwoLevel.Algebra as Algebra
 
@@ -51,13 +66,44 @@ D = DOmega
 Z : Set
 Z = ZOmega
 
--- Their ring structures, with the operations of EucDomain's instances.
+-- The operations of 𝔻[ω]: EucDomain's, made opaque, and complex
+-- conjugation.
+opaque
+  infixl 6 _+ᴰ_
+  infixl 7 _*ᴰ_
+  infix 8 -ᴰ_
+
+  _+ᴰ_ _*ᴰ_ : D → D → D
+  x +ᴰ y = x + y
+  x *ᴰ y = x * y
+
+  -ᴰ_ : D → D
+  -ᴰ x = - x
+
+  adjᴰ : D → D
+  adjᴰ x = adj x
+
+0ᴰ 1ᴰ : D
+0ᴰ = 0#
+1ᴰ = 1#
+
+opaque
+  unfolding _+ᴰ_ _*ᴰ_ -ᴰ_
+
+  isCommutativeRing-D : IsCommutativeRing _≡_ _+ᴰ_ _*ᴰ_ -ᴰ_ 0ᴰ 1ᴰ
+  isCommutativeRing-D = isCommutativeRing-DOmega
+
+commutativeRing-D : CommutativeRing 0ℓ 0ℓ
+commutativeRing-D = record { isCommutativeRing = isCommutativeRing-D }
+
+-- The ring structures: 𝔻[ω]'s opaque one, and EucDomain's for the
+-- dyadic fractions and for ℤ[ω].
 module 𝔻R = CommutativeRing commutativeRing-𝔻
-module DR = CommutativeRing commutativeRing-DOmega
+module DR = CommutativeRing commutativeRing-D
 module ZR = CommutativeRing commutativeRing-ZOmega
 
 -- Ring solvers with integer coefficients.
-module DS = Common.ZSolver commutativeRing-DOmega
+module DS = Common.ZSolver commutativeRing-D
 module ZS = Common.ZSolver commutativeRing-ZOmega
 
 -- A ring solver over ℤ[ω] with coefficients in ℤ[ω]: constants such
@@ -65,7 +111,7 @@ module ZS = Common.ZSolver commutativeRing-ZOmega
 module ZG = Algebra.Solver.Ring.Simple (fromCommutativeRing commutativeRing-ZOmega) (λ x y → x ≟ y)
 
 -- Identities in 𝔻[ω], proved over an abstract ring (see Algebra).
-module DA = Algebra commutativeRing-DOmega (λ p → p)
+module DA = Algebra commutativeRing-D (λ p → p)
 
 private
   module ℤS = ℤSolver.+-*-Solver
@@ -109,11 +155,14 @@ private
 λᶻ = Omega -[1+ 0 ] (+ 0) (+ 1) (+ 1)
 2ᶻ = Omega (+ 0) (+ 0) (+ 0) (+ 2)
 
-δ*δ⁻ : δ DR.* δ⁻ ≡ DR.1#
-δ*δ⁻ = refl
+opaque
+  unfolding _*ᴰ_
 
-δ⁻*δ : δ⁻ DR.* δ ≡ DR.1#
-δ⁻*δ = refl
+  δ*δ⁻ : δ DR.* δ⁻ ≡ DR.1#
+  δ*δ⁻ = refl
+
+  δ⁻*δ : δ⁻ DR.* δ ≡ DR.1#
+  δ⁻*δ = refl
 
 ------------------------------------------------------------------------
 -- Powers
@@ -155,33 +204,44 @@ private
   ι₀-- : ∀ x y → ι₀ (x ℤ.+ ℤ.- y) ≡ ι₀ x 𝔻R.+ 𝔻R.- ι₀ y
   ι₀-- x y = trans (ι₀-+ x (ℤ.- y)) (cong (ι₀ x 𝔻R.+_) (ι₀-neg y))
 
-emb-+ : ∀ x y → emb (x ZR.+ y) ≡ emb x DR.+ emb y
-emb-+ (Omega a b c d) (Omega a′ b′ c′ d′) = cong₄ Omega (ι₀-+ a a′) (ι₀-+ b b′) (ι₀-+ c c′) (ι₀-+ d d′)
+opaque
+  unfolding _+ᴰ_ _*ᴰ_ -ᴰ_
 
-emb-neg : ∀ x → emb (ZR.- x) ≡ DR.- emb x
-emb-neg (Omega a b c d) = cong₄ Omega (ι₀-neg a) (ι₀-neg b) (ι₀-neg c) (ι₀-neg d)
+  emb-+ : ∀ x y → emb (x ZR.+ y) ≡ emb x DR.+ emb y
+  emb-+ (Omega a b c d) (Omega a′ b′ c′ d′) = cong₄ Omega (ι₀-+ a a′) (ι₀-+ b b′) (ι₀-+ c c′) (ι₀-+ d d′)
 
-emb-* : ∀ x y → emb (x ZR.* y) ≡ emb x DR.* emb y
-emb-* (Omega a b c d) (Omega a′ b′ c′ d′) = cong₄ Omega ea eb ec ed
-  where
-  +₂ = cong₂ 𝔻R._+_
-  -₂ = cong₂ (λ x y → x 𝔻R.+ 𝔻R.- y)
-  ea = trans (ι₀-+ (a ℤ.* d′ ℤ.+ b ℤ.* c′ ℤ.+ c ℤ.* b′) (d ℤ.* a′))
-         (+₂ (trans (ι₀-+ (a ℤ.* d′ ℤ.+ b ℤ.* c′) (c ℤ.* b′))
-               (+₂ (trans (ι₀-+ (a ℤ.* d′) (b ℤ.* c′)) (+₂ (ι₀-* a d′) (ι₀-* b c′))) (ι₀-* c b′)))
-             (ι₀-* d a′))
-  eb = trans (ι₀-- (b ℤ.* d′ ℤ.+ c ℤ.* c′ ℤ.+ d ℤ.* b′) (a ℤ.* a′))
-         (-₂ (trans (ι₀-+ (b ℤ.* d′ ℤ.+ c ℤ.* c′) (d ℤ.* b′))
-               (+₂ (trans (ι₀-+ (b ℤ.* d′) (c ℤ.* c′)) (+₂ (ι₀-* b d′) (ι₀-* c c′))) (ι₀-* d b′)))
-             (ι₀-* a a′))
-  ec = trans (ι₀-- (c ℤ.* d′ ℤ.+ d ℤ.* c′ ℤ.+ ℤ.- (a ℤ.* b′)) (b ℤ.* a′))
-         (-₂ (trans (ι₀-- (c ℤ.* d′ ℤ.+ d ℤ.* c′) (a ℤ.* b′))
-               (-₂ (trans (ι₀-+ (c ℤ.* d′) (d ℤ.* c′)) (+₂ (ι₀-* c d′) (ι₀-* d c′))) (ι₀-* a b′)))
-             (ι₀-* b a′))
-  ed = trans (ι₀-- (d ℤ.* d′ ℤ.+ ℤ.- (a ℤ.* c′) ℤ.+ ℤ.- (b ℤ.* b′)) (c ℤ.* a′))
-         (-₂ (trans (ι₀-- (d ℤ.* d′ ℤ.+ ℤ.- (a ℤ.* c′)) (b ℤ.* b′))
-               (-₂ (trans (ι₀-- (d ℤ.* d′) (a ℤ.* c′)) (-₂ (ι₀-* d d′) (ι₀-* a c′))) (ι₀-* b b′)))
-             (ι₀-* c a′))
+  emb-neg : ∀ x → emb (ZR.- x) ≡ DR.- emb x
+  emb-neg (Omega a b c d) = cong₄ Omega (ι₀-neg a) (ι₀-neg b) (ι₀-neg c) (ι₀-neg d)
+
+private
+  -- With EucDomain's product, transparent.
+  emb-*′ : ∀ x y → emb (x ZR.* y) ≡ emb x * emb y
+  emb-*′ (Omega a b c d) (Omega a′ b′ c′ d′) = cong₄ Omega ea eb ec ed
+    where
+    +₂ = cong₂ 𝔻R._+_
+    -₂ = cong₂ (λ x y → x 𝔻R.+ 𝔻R.- y)
+    ea = trans (ι₀-+ (a ℤ.* d′ ℤ.+ b ℤ.* c′ ℤ.+ c ℤ.* b′) (d ℤ.* a′))
+           (+₂ (trans (ι₀-+ (a ℤ.* d′ ℤ.+ b ℤ.* c′) (c ℤ.* b′))
+                 (+₂ (trans (ι₀-+ (a ℤ.* d′) (b ℤ.* c′)) (+₂ (ι₀-* a d′) (ι₀-* b c′))) (ι₀-* c b′)))
+               (ι₀-* d a′))
+    eb = trans (ι₀-- (b ℤ.* d′ ℤ.+ c ℤ.* c′ ℤ.+ d ℤ.* b′) (a ℤ.* a′))
+           (-₂ (trans (ι₀-+ (b ℤ.* d′ ℤ.+ c ℤ.* c′) (d ℤ.* b′))
+                 (+₂ (trans (ι₀-+ (b ℤ.* d′) (c ℤ.* c′)) (+₂ (ι₀-* b d′) (ι₀-* c c′))) (ι₀-* d b′)))
+               (ι₀-* a a′))
+    ec = trans (ι₀-- (c ℤ.* d′ ℤ.+ d ℤ.* c′ ℤ.+ ℤ.- (a ℤ.* b′)) (b ℤ.* a′))
+           (-₂ (trans (ι₀-- (c ℤ.* d′ ℤ.+ d ℤ.* c′) (a ℤ.* b′))
+                 (-₂ (trans (ι₀-+ (c ℤ.* d′) (d ℤ.* c′)) (+₂ (ι₀-* c d′) (ι₀-* d c′))) (ι₀-* a b′)))
+               (ι₀-* b a′))
+    ed = trans (ι₀-- (d ℤ.* d′ ℤ.+ ℤ.- (a ℤ.* c′) ℤ.+ ℤ.- (b ℤ.* b′)) (c ℤ.* a′))
+           (-₂ (trans (ι₀-- (d ℤ.* d′ ℤ.+ ℤ.- (a ℤ.* c′)) (b ℤ.* b′))
+                 (-₂ (trans (ι₀-- (d ℤ.* d′) (a ℤ.* c′)) (-₂ (ι₀-* d d′) (ι₀-* a c′))) (ι₀-* b b′)))
+               (ι₀-* c a′))
+
+opaque
+  unfolding _*ᴰ_
+
+  emb-* : ∀ x y → emb (x ZR.* y) ≡ emb x DR.* emb y
+  emb-* = emb-*′
 
 emb-0 : emb ZR.0# ≡ DR.0#
 emb-0 = refl
@@ -323,3 +383,38 @@ even⇒δ∣ (Omega a b c d) e = go (evenℤ-half (a ℤ.+ b ℤ.+ c ℤ.+ d) e)
     ec = via (ℤS.solve 5 (λ s a b c d → (s :- b) :+ (s :- a :- d) := (s :+ s) :- (a :+ b :+ c :+ d :- c))
                          refl s a b c d)
     ed = ℤS.solve 3 (λ s b d → (s :- b) :+ :- (s :- b :- d) := d) refl s b d
+
+------------------------------------------------------------------------
+-- 𝔻[ω] as an EucDomain ring with conjugation
+--
+-- Instances, so that EucDomain's matrices over 𝔻[ω] (and the generic
+-- modules of Clifford+CS-TwoLevel) use the opaque operations.  A
+-- client must not also have EucDomain's instances for 𝔻[ω] in scope
+-- (SemiRingOmega with RingDyadic): instance search at 𝔻[ω] would be
+-- ambiguous.
+
+semiRing-D : SemiRing D
+semiRing-D = record { _+_ = _+ᴰ_ ; _*_ = _*ᴰ_ ; 0# = 0ᴰ ; 1# = 1ᴰ ; fromℕ = fromℕ }
+
+ring-D : Ring D
+ring-D = record { sra = semiRing-D ; -_ = -ᴰ_ }
+
+adjoint-D : Adjoint D
+adjoint-D = record { adj = adjᴰ }
+
+opaque
+  unfolding _+ᴰ_ _*ᴰ_ -ᴰ_ adjᴰ
+
+  -- Conjugation is an involutive ring automorphism.
+  adj-D : IsInvolutiveRingEndo {{ring-D}} adjᴰ
+  adj-D = adj-DOmega
+
+instance
+  SemiRingD : SemiRing D
+  SemiRingD = semiRing-D
+
+  RingD : Ring D
+  RingD = ring-D
+
+  AdjointD : Adjoint D
+  AdjointD = adjoint-D
