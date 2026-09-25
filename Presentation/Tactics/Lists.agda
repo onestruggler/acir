@@ -335,3 +335,14 @@ instance
     go (x ⌝) (y ⌝) with x =m? y
     ... | just refl = just refl
     ... | nothing = nothing
+
+------------------------------------------------------------------------
+-- Maybe
+
+isJust : {A : Set} → Maybe A → Bool
+isJust (just x) = true
+isJust nothing = false
+
+fromJust : {A : Set} (x : Maybe A) → isJust x ≡ true → A
+fromJust (just x) hyp = x
+fromJust nothing ()
