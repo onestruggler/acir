@@ -115,18 +115,26 @@ module _ {m : ℕ} where
     then dZXlo₁ a • dZXhi (suc a) (suc d) • dZXhi₁ a
     else dZXhi₁ (a + suc d) • dZXhi a (suc d) • dZXlo₁ (a + suc d)
 
-  private
-    -- (−1)_[a] X_[a,b] for any a ≠ b, through X_[a,b] = X_[b,a].
-    dZXself : ℕ → ℕ → Circuit n
-    dZXself a b = if a <ᵇ b then dZXlo a (b ∸ a) else dZXhi b (a ∸ b)
+  -- (−1)_[a] X_[a,b] for any a ≠ b, through X_[a,b] = X_[b,a].
+  dZXself : ℕ → ℕ → Circuit n
+  dZXself a b = if a <ᵇ b then dZXlo a (b ∸ a) else dZXhi b (a ∸ b)
+
+  -- (−1)_[c] X_[a,b], its tests passed as arguments so that proofs can
+  -- rewrite them: whether c is the lower index lo of a, b, the upper one
+  -- hi, or neither.
+  dZXs : Bool → Bool → ℕ → ℕ → ℕ → ℕ → ℕ → Circuit n
+  dZXs true  _     lo hi a b c = dZXlo lo (hi ∸ lo)
+  dZXs false true  lo hi a b c = dZXhi lo (hi ∸ lo)
+  dZXs false false lo hi a b c = dZXself a b • dZZ c a
+
+  -- The same with the order test of a, b as an argument.
+  dZXb : Bool → ℕ → ℕ → ℕ → Circuit n
+  dZXb β c a b =
+    dZXs (c ≡ᵇ (if β then a else b)) (c ≡ᵇ (if β then b else a))
+         (if β then a else b) (if β then b else a) a b c
 
   dZX : ℕ → ℕ → ℕ → Circuit n
-  dZX c a b =
-    let lo = if a <ᵇ b then a else b
-        hi = if a <ᵇ b then b else a
-    in if c ≡ᵇ lo then dZXlo lo (hi ∸ lo)
-       else if c ≡ᵇ hi then dZXhi lo (hi ∸ lo)
-       else dZXself a b • dZZ c a
+  dZX c a b = dZXb (a <ᵇ b) c a b
 
   ----------------------------------------------------------------------
   -- X_[a,b] X_[c,d]
@@ -141,18 +149,17 @@ module _ {m : ℕ} where
   layoutH : Bits n → ℕ → ℕ → Layout n
   layoutH a h q = layoutHFrom 0 h q a
 
-  private
-    -- D(H_[0,1] H_[3,2]): white controls everywhere, the box on wire 1,
-    -- the H on wire 0.
-    gadget : Circuit n
-    gadget = mcH (layoutH (gcode 0) 0 1)
+  -- D(H_[0,1] H_[3,2]): white controls everywhere, the box on wire 1,
+  -- the H on wire 0.
+  gadget : Circuit n
+  gadget = mcH (layoutH (gcode 0) 0 1)
 
-    -- The decoding of a word of (−1) X letters, the last letter first.
-    dΣ : Word (GenP n) → Circuit n
-    dΣ [ −1X c a b _ ]ʷ = dZX (toℕ c) (toℕ a) (toℕ b)
-    dΣ [ _ ]ʷ           = ε
-    dΣ ε                = ε
-    dΣ (u • v)          = dΣ v • dΣ u
+  -- The decoding of a word of (−1) X letters, the last letter first.
+  dΣ : Word (GenP n) → Circuit n
+  dΣ [ −1X c a b _ ]ʷ = dZX (toℕ c) (toℕ a) (toℕ b)
+  dΣ [ _ ]ʷ           = ε
+  dΣ ε                = ε
+  dΣ (u • v)          = dΣ v • dΣ u
 
   -- Four distinct indices.
   dHH₄ : ℕ → ℕ → ℕ → ℕ → Circuit n
@@ -165,6 +172,12 @@ module _ {m : ℕ} where
              dHH₄ a b c d ≡ mcH (layoutH (gcode a) pb pc)
   dHH₄-pat a b c d pb pc e with hpat (gcode a) (gcode b) (gcode c) (gcode d)
   dHH₄-pat a b c d pb pc Eq.refl | just .(pb , pc) = Eq.refl
+
+  -- Otherwise it is conjugated from H_[0,1] H_[3,2].
+  dHH₄-nopat : ∀ a b c d → hpat (gcode a) (gcode b) (gcode c) (gcode d) ≡ nothing →
+               dHH₄ a b c d ≡ dΣ (Σ′ a b c d) • gadget • dΣ (Σ a b c d)
+  dHH₄-nopat a b c d e with hpat (gcode a) (gcode b) (gcode c) (gcode d)
+  dHH₄-nopat a b c d Eq.refl | nothing = Eq.refl
 
   dHH : ℕ → ℕ → ℕ → ℕ → Circuit n
   dHH a b c d =
