@@ -13,13 +13,16 @@
 module Examples.Groups.Clifford+CS-TwoLevel.Levels where
 
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_)
-open import Data.Empty using (⊥-elim)
-open import Data.Fin.Base using (Fin ; _<_ ; toℕ)
+open import Data.Empty using (⊥ ; ⊥-elim)
+open import Data.Fin.Base using (Fin ; _<_ ; _≤_ ; toℕ)
 import Data.Fin.Properties as FinP
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 import Data.Nat.Properties as ℕP
 open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
-open import Data.Sum.Base using (inj₁ ; inj₂)
+open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
+open import Data.Unit.Base using (⊤)
+open import Data.Maybe.Base using (Maybe ; just ; nothing)
+open import Relation.Binary.Definitions using (Tri ; tri< ; tri≈ ; tri>)
 open import Data.Vec.Base as Vec using (Vec)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (Dec ; yes ; no)
@@ -34,7 +37,13 @@ open import Examples.Groups.Clifford+CS-TwoLevel.Column using (nodd)
 open import Examples.Groups.Clifford+CS-TwoLevel.ColumnAction
 open import Examples.Groups.Clifford+CS-TwoLevel.Syntactics
 open import Examples.Groups.Clifford+CS-TwoLevel.Semantics hiding (_!_)
-open import Examples.Groups.Clifford+CS-TwoLevel.Syllable using (eᶻ ; eᶻ-! ; δᶻ-refl ; δᶻ-≢)
+open import Examples.Groups.Clifford+CS-TwoLevel.Syllable
+  using (eᶻ ; eᶻ-! ; δᶻ-refl ; δᶻ-≢ ; col𝕀≡ ; top ; actV-e-beyond ; Beyond-actM)
+open import Examples.Groups.Clifford+CS-TwoLevel.Pivot
+  using (pivot ; pivot-just ; pivot-nothing ; pivot-char ; Beyond ; Lvl ; lvlAt ; level ; level-just ; _<ₗ_ ; _<₂_)
+open import Examples.Groups.Clifford+CS-TwoLevel.Soundness using (sound-axiom)
+open import Quantum.Synthesis.Matrix using (Matrix)
+open import Word.Base using (ε ; _^_)
 
 private
   variable
@@ -159,3 +168,131 @@ lde-i : (a : Fin n) (v : Vec D n) →
 lde-i a v = lde-char (lde v) (iᶻ a (num v))
   (trans (cong (actV (i-gen a)) (lde-eq v)) (actV-i a (lde v) (num v)))
   (Minimal-i a (num v) (lde-min v))
+
+------------------------------------------------------------------------
+-- The monomial generators
+
+Mono : Gen n → Set
+Mono (X-gen _ _ _) = ⊤
+Mono (K-gen _ _ _) = ⊥
+Mono (i-gen _)     = ⊤
+
+-- The level data of a column is kept.
+mono-col : (g : Gen n) → Mono g → (v : Vec D n) →
+           lde (actV g v) ≡ lde v × nodd (num (actV g v)) ≡ nodd (num v)
+mono-col (X-gen a b p) _ v =
+  proj₁ (lde-X a b p v) , trans (cong nodd (proj₂ (lde-X a b p v))) (nodd-X a b (<⇒≢ p) (num v))
+mono-col (i-gen a) _ v =
+  proj₁ (lde-i a v) , trans (cong nodd (proj₂ (lde-i a v))) (nodd-i a (num v))
+
+-- A standard basis vector goes to one of level data (0 , 1).
+mono-e : (g : Gen n) → Mono g → (c : Fin n) →
+         lde (actV g (col 𝕀 c)) ≡ 0 × nodd (num (actV g (col 𝕀 c))) ≡ 1
+mono-e g m c =
+  trans (proj₁ (mono-col g m (col 𝕀 c))) (proj₁ e₀) ,
+  trans (proj₂ (mono-col g m (col 𝕀 c))) (trans (cong nodd (proj₂ e₀)) (nodd-e c))
+  where
+  e₀ : lde (col 𝕀 c) ≡ 0 × num (col 𝕀 c) ≡ eᶻ c
+  e₀ = lde-char 0 (eᶻ c) (col𝕀≡ c) (inj₁ refl)
+
+-- X and i are invertible, by their orders.
+private
+  X-X-act : (a b : Fin n) .(p : a < b) (v : Vec D n) → actV (X-gen a b p) (actV (X-gen a b p) v) ≡ v
+  X-X-act a b p v = same-action (X a b p ^ 2) ε (sound-axiom (order-X p)) v
+
+  i⁴-act : (a : Fin n) (v : Vec D n) → actV (i-gen a) (actV (i-gen a) (actV (i-gen a) (actV (i-gen a) v))) ≡ v
+  i⁴-act a v = same-action (i a ^ 4) ε (sound-axiom order-i) v
+
+mono-inj : (g : Gen n) → Mono g → {u v : Vec D n} → actV g u ≡ actV g v → u ≡ v
+mono-inj (X-gen a b p) _ {u} {v} eq =
+  trans (sym (X-X-act a b p u)) (trans (cong (actV (X-gen a b p)) eq) (X-X-act a b p v))
+mono-inj (i-gen a) _ {u} {v} eq =
+  trans (sym (i⁴-act a u))
+    (trans (cong (λ z → actV (i-gen a) (actV (i-gen a) (actV (i-gen a) z))) eq) (i⁴-act a v))
+
+------------------------------------------------------------------------
+-- Levels
+
+private
+  <₂-trans : {x y z : ℕ × ℕ} → x <₂ y → y <₂ z → x <₂ z
+  <₂-trans (inj₁ a) (inj₁ b) = inj₁ (ℕP.<-trans a b)
+  <₂-trans (inj₁ a) (inj₂ (refl , b)) = inj₁ a
+  <₂-trans (inj₂ (refl , a)) (inj₁ b) = inj₁ b
+  <₂-trans (inj₂ (refl , a)) (inj₂ (refl , b)) = inj₂ (refl , ℕP.<-trans a b)
+
+<ₗ-trans : {x y z : Lvl} → x <ₗ y → y <ₗ z → x <ₗ z
+<ₗ-trans (inj₁ a) (inj₁ b) = inj₁ (ℕP.<-trans a b)
+<ₗ-trans (inj₁ a) (inj₂ (refl , b)) = inj₁ a
+<ₗ-trans (inj₂ (refl , a)) (inj₁ b) = inj₁ b
+<ₗ-trans (inj₂ (refl , a)) (inj₂ (refl , b)) = inj₂ (refl , <₂-trans a b)
+
+-- The level of a matrix whose pivot column is the image of a basis
+-- vector under g: (c + 1 , 0 , 1).
+Bℓ : Fin n → Lvl
+Bℓ b = suc (toℕ b) , 0 , 1
+
+-- A monomial generator acting on indices ≤ b keeps the level below
+-- any bound that both the level of M and (b + 1 , 0 , 1) lie below.
+mono-level : (g : Gen n) → Mono g → {b : Fin n} → top g ≤ b → (M : Matrix n n D) {L : Lvl} →
+             level M <ₗ L → Bℓ b <ₗ L → level (actM g M) <ₗ L
+mono-level {n} g m {b} tg M {L} lM lB = go (pivot (actM g M)) refl
+  where
+  gM = actM g M
+
+  col-g : ∀ c → col gM c ≡ actV g (col M c)
+  col-g c = col-actM g M c
+
+  -- The level of gM, given its pivot c and that col gM c comes from
+  -- col M c, compared to a level of the same pivot.
+  same-as : ∀ {c} → pivot gM ≡ just c → pivot M ≡ just c → level gM ≡ level M
+  same-as {c} eg em = trans (level-just gM eg) (trans (cong₂ (λ k m′ → suc (toℕ c) , k , m′)
+      (trans (cong lde (col-g c)) (proj₁ (mono-col g m (col M c))))
+      (trans (cong (λ v → nodd (num v)) (col-g c)) (proj₂ (mono-col g m (col M c)))))
+    (sym (level-just M em)))
+
+  -- The pivot column of gM is g applied to a basis vector.
+  from-e : ∀ {c} → pivot gM ≡ just c → col M c ≡ col 𝕀 c → level gM ≡ (suc (toℕ c) , 0 , 1)
+  from-e {c} eg ec = trans (level-just gM eg) (cong₂ (λ k m′ → suc (toℕ c) , k , m′)
+      (trans (cong lde (trans (col-g c) (cong (actV g) ec))) (proj₁ (mono-e g m c)))
+      (trans (cong (λ v → nodd (num v)) (trans (col-g c) (cong (actV g) ec))) (proj₂ (mono-e g m c))))
+
+  below-B : ∀ {c} → toℕ c ℕ.≤ toℕ b → (suc (toℕ c) , 0 , 1) <ₗ L
+  below-B {c} c≤b = at (ℕP.m≤n⇒m<n∨m≡n c≤b)
+    where
+    at : toℕ c ℕ.< toℕ b ⊎ toℕ c ≡ toℕ b → (suc (toℕ c) , 0 , 1) <ₗ L
+    at (inj₁ c<b) = <ₗ-trans (inj₁ (ℕ.s≤s c<b)) lB
+    at (inj₂ c≡b) = subst (λ k → (suc k , 0 , 1) <ₗ L) (sym c≡b) lB
+
+
+  -- Beyond b, g changes nothing: a pivot of gM there is one of M.
+  back : ∀ {c} → b < c → pivot gM ≡ just c → pivot M ≡ just c
+  back {c} b<c eg = pivot-char M ne be
+    where
+    ne : col M c ≢ col 𝕀 c
+    ne eq = proj₁ (pivot-just gM eg) (trans (col-g c) (trans (cong (actV g) eq) (actV-e-beyond g tg b<c)))
+    be : Beyond c M
+    be d c<d = mono-inj g m (trans (sym (col-g d))
+                 (trans (proj₂ (pivot-just gM eg) d c<d)
+                   (sym (actV-e-beyond g tg (ℕP.<-trans b<c c<d)))))
+
+  -- The pivot c of gM is at most b: compare with the pivot of M.
+  low : ∀ {c} → toℕ c ℕ.≤ toℕ b → pivot gM ≡ just c → (r : Maybe (Fin n)) → pivot M ≡ r → level gM <ₗ L
+  low {c} c≤b eg nothing em =
+    subst (_<ₗ L) (sym (from-e eg (cong (λ N → col N c) (pivot-nothing M em)))) (below-B c≤b)
+  low {c} c≤b eg (just p) em = by (FinP.<-cmp c p)
+    where
+    by : Tri (c < p) (c ≡ p) (p < c) → level gM <ₗ L
+    by (tri< c<p _ _) = <ₗ-trans (subst (_<ₗ level M) (sym (level-just gM eg))
+                                   (subst ((suc (toℕ c) , lde (col gM c) , nodd (num (col gM c))) <ₗ_)
+                                          (sym (level-just M em)) (inj₁ (ℕ.s≤s c<p)))) lM
+    by (tri≈ _ refl _) = subst (_<ₗ L) (sym (same-as eg em)) lM
+    by (tri> _ _ p<c) = subst (_<ₗ L) (sym (from-e eg (proj₂ (pivot-just M em) c p<c))) (below-B c≤b)
+
+  go : (r : Maybe (Fin n)) → pivot gM ≡ r → level gM <ₗ L
+  go nothing e = subst (_<ₗ L) (sym (cong (λ x → lvlAt x gM) e)) (<ₗ-trans (inj₁ (ℕ.s≤s ℕ.z≤n)) lB)
+  go (just c) e = cmp (FinP.<-cmp b c)
+    where
+    cmp : Tri (b < c) (b ≡ c) (c < b) → level gM <ₗ L
+    cmp (tri< b<c _ _) = subst (_<ₗ L) (sym (same-as e (back b<c e))) lM
+    cmp (tri≈ _ refl _) = low ℕP.≤-refl e (pivot M) refl
+    cmp (tri> _ _ c<b) = low (ℕP.<⇒≤ c<b) e (pivot M) refl
