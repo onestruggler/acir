@@ -59,6 +59,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Place using (place ; place
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Idle using (X-place)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.PlaceAt using (placeAt ; placeAt-place)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Gadget319 complete₂ complete₃ using (N₂ᵇ)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (col) public
 open import Examples.Groups.Real-Clifford+CH.GeneralN.PlaceCalc
   using (placeAt-• ; placeAt-X-lo ; placeAt-zero ; placeAt-↑)
 
@@ -68,9 +69,6 @@ private
 
 ------------------------------------------------------------------------
 -- A colouring
-
-col : Bits n → Circuit n → Circuit n
-col s w = negsB s • w • negsB s
 
 -- The colouring of the wires above the bottom four.
 colT : Bits n → Circuit (₄₊ n) → Circuit (₄₊ n)
