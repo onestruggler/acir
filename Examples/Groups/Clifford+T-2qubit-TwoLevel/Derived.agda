@@ -289,3 +289,68 @@ Hω⁴≈ω⁴ω⁴XH {j} {k} p = begin
   jk = ωω (<⇒≢ p)
   sc : (ω j • ω k) • H′ ≈ H′ • (ω j • ω k)
   sc = trans assoc (axiom (scalar-H p))
+
+------------------------------------------------------------------------
+-- Table 2, (r): H_[j,k] ω_[j]² H_[j,k] = X_[j,k] ω_[k]⁷ ω_[j] H_[j,k] ω_[j]²
+--
+-- Both sides are ω_[j] ω_[k]³ H_[j,k] ω_[k]², moving the scalars
+-- (ω_[j] ω_[k])ᵉ through H by (17).
+
+private
+  -- Powers of ω_[j] and ω_[k] commute.
+  ωω^ : j ≢ k → ∀ e f → ω j ^ e • ω k ^ f ≈ ω k ^ f • ω j ^ e
+  ωω^ jk e f = comm⇒pow-comm e f (ωω jk)
+
+  -- (ω_[j] ω_[k])ᵉ commutes with H_[j,k].
+  scH^ : .(p : j < k) → ∀ e → (ω j • ω k) ^ e • H j k p ≈ H j k p • (ω j • ω k) ^ e
+  scH^ p e = conj-^ (trans assoc (axiom (scalar-H p))) e
+
+  -- H_[j,k] ω_[j]² = ω_[j]² ω_[k]² H_[j,k] ω_[k]⁶.
+  Hω²ⱼ : .(p : j < k) → H j k p • ω j ^ 2 ≈ ω j ^ 2 • ω k ^ 2 • H j k p • ω k ^ 6
+  Hω²ⱼ {j} {k} p = begin
+    H′ • ω j ^ 2                                  ≈⟨ cright sym (trans (cright ω⁸) right-unit) ⟩
+    H′ • (ω j ^ 2 • ω k ^ 8)                      ≈⟨ by-assoc auto ⟩
+    H′ • (ω j ^ 2 • ω k ^ 2) • ω k ^ 6            ≈⟨ cright cleft sym (^-• (ω j) (ω k) 2 (ωω (<⇒≢ p))) ⟩
+    H′ • (ω j • ω k) ^ 2 • ω k ^ 6                ≈⟨ sym assoc ⟩
+    (H′ • (ω j • ω k) ^ 2) • ω k ^ 6              ≈⟨ cleft sym (scH^ p 2) ⟩
+    ((ω j • ω k) ^ 2 • H′) • ω k ^ 6              ≈⟨ cleft cleft ^-• (ω j) (ω k) 2 (ωω (<⇒≢ p)) ⟩
+    ((ω j ^ 2 • ω k ^ 2) • H′) • ω k ^ 6          ≈⟨ by-assoc auto ⟩
+    ω j ^ 2 • ω k ^ 2 • H′ • ω k ^ 6              ∎
+    where H′ = H j k p
+
+  -- The left side.
+  rL : .(p : j < k) → H j k p • ω j ^ 2 • H j k p ≈ ω j • ω k ^ 3 • H j k p • ω k ^ 2
+  rL {j} {k} p = begin
+    H′ • ω j ^ 2 • H′                                        ≈⟨ axiom (rel-19 p) ⟩
+    ω j ^ 6 • H′ • ω j ^ 3 • ω k ^ 5                         ≈⟨ by-assoc auto ⟩
+    ω j ^ 6 • H′ • (ω j ^ 3 • ω k ^ 3) • ω k ^ 2             ≈⟨ cright cright cleft sym (^-• (ω j) (ω k) 3 (ωω (<⇒≢ p))) ⟩
+    ω j ^ 6 • H′ • (ω j • ω k) ^ 3 • ω k ^ 2                 ≈⟨ cright sym assoc ⟩
+    ω j ^ 6 • (H′ • (ω j • ω k) ^ 3) • ω k ^ 2               ≈⟨ cright cleft sym (scH^ p 3) ⟩
+    ω j ^ 6 • ((ω j • ω k) ^ 3 • H′) • ω k ^ 2               ≈⟨ cright cleft cleft ^-• (ω j) (ω k) 3 (ωω (<⇒≢ p)) ⟩
+    ω j ^ 6 • ((ω j ^ 3 • ω k ^ 3) • H′) • ω k ^ 2           ≈⟨ by-assoc auto ⟩
+    ω j ^ 9 • ω k ^ 3 • H′ • ω k ^ 2                         ≈⟨ cleft ω^+8 1 ⟩
+    ω j • ω k ^ 3 • H′ • ω k ^ 2                             ∎
+    where H′ = H j k p
+
+  -- The right side.
+  rR : .(p : j < k) → X j k p • ω k ^ 7 • ω j • H j k p • ω j ^ 2 ≈ ω j • ω k ^ 3 • H j k p • ω k ^ 2
+  rR {j} {k} p = begin
+    X′ • ω k ^ 7 • ω j • H′ • ω j ^ 2                              ≈⟨ cright cright cright Hω²ⱼ p ⟩
+    X′ • ω k ^ 7 • ω j • ω j ^ 2 • ω k ^ 2 • H′ • ω k ^ 6          ≈⟨ by-assoc auto ⟩
+    X′ • (ω k ^ 7 • ω j ^ 3) • ω k ^ 2 • H′ • ω k ^ 6              ≈⟨ cright cleft ωω^ (>⇒≢ p) 7 3 ⟩
+    X′ • (ω j ^ 3 • ω k ^ 7) • ω k ^ 2 • H′ • ω k ^ 6              ≈⟨ by-assoc auto ⟩
+    (X′ • ω j ^ 3) • ω k ^ 9 • H′ • ω k ^ 6                        ≈⟨ cong (sym (conj-^ (ωX≈Xω p) 3)) (cleft ω^+8 1) ⟩
+    (ω k ^ 3 • X′) • ω k • H′ • ω k ^ 6                            ≈⟨ by-assoc auto ⟩
+    ω k ^ 3 • (X′ • ω k) • H′ • ω k ^ 6                            ≈⟨ cright cleft axiom (swap-Xω p) ⟩
+    ω k ^ 3 • (ω j • X′) • H′ • ω k ^ 6                            ≈⟨ by-assoc auto ⟩
+    ω k ^ 3 • ω j • (X′ • H′) • ω k ^ 6                            ≈⟨ cright cright cleft XH≈Hω⁴ p ⟩
+    ω k ^ 3 • ω j • (H′ • ω k ^ 4) • ω k ^ 6                       ≈⟨ by-assoc auto ⟩
+    (ω k ^ 3 • ω j) • H′ • ω k ^ 10                                ≈⟨ cong (ωω^ (>⇒≢ p) 3 1) (cright ω^+8 2) ⟩
+    (ω j • ω k ^ 3) • H′ • ω k ^ 2                                 ≈⟨ assoc ⟩
+    ω j • ω k ^ 3 • H′ • ω k ^ 2                                   ∎
+    where
+    X′ = X j k p
+    H′ = H j k p
+
+Hω²H≈Xω⁷ωHω² : .(p : j < k) → H j k p • ω j ^ 2 • H j k p ≈ X j k p • ω k ^ 7 • ω j • H j k p • ω j ^ 2
+Hω²H≈Xω⁷ωHω² p = trans (rL p) (sym (rR p))

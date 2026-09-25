@@ -406,3 +406,216 @@ zOf-ω u v ou ov =
                                    (pa (par u) ∷ pb (par u) ∷ pc (par u) ∷ pd (par u) ∷
                                     pa (par v) ∷ pb (par v) ∷ pc (par v) ∷ pd (par v) ∷ []))
                                  (∧-intro (trans (oddP-par u) ou) (trans (oddP-par v) ov))))
+
+------------------------------------------------------------------------
+-- Residues in terms of δ
+--
+-- Over 𝔽₂, ω = 1 + t with t = δ, so a parity vector aω³ + bω² + cω + d
+-- is c₀ + c₁ t + c₂ t² + c₃ t³ with c₀ = a + b + c + d, c₁ = a + c,
+-- c₂ = a + b and c₃ = a.  Then δʲ divides x iff c₀ … c_{j-1} vanish,
+-- and the parity of x / δʲ is c_j.
+
+c0 c1 c2 c3 : P4 → Bool
+c0 = oddP
+c1 P = pa P xor pc P
+c2 P = pa P xor pb P
+c3 P = pa P
+
+g1 : Z
+g1 = Omega -[1+ 0 ] (+ 1) -[1+ 0 ] (+ 1)
+
+δg1 : δᶻ ZR.* g1 ≡ 2ᶻ
+δg1 = refl
+
+private
+  -- For all P: the parity of y is c₁ of δ y, and c₂ of δ² y.
+  quot1-test quot2-test : Vec Bool 4 → Bool
+  quot1-test (a ∷ b ∷ c ∷ d ∷ []) = not (oddP P xor c1 (par δᶻ ⊗ P))
+    where P = ⟨ a , b , c , d ⟩
+  quot2-test (a ∷ b ∷ c ∷ d ∷ []) = not (oddP P xor c2 (par δ²ᶻ ⊗ P))
+    where P = ⟨ a , b , c , d ⟩
+
+  quot1-all : allB 4 quot1-test ≡ true
+  quot1-all = refl
+
+  quot2-all : allB 4 quot2-test ≡ true
+  quot2-all = refl
+
+  eqb-sound : ∀ {a b} → not (a xor b) ≡ true → a ≡ b
+  eqb-sound {true} {true} _ = refl
+  eqb-sound {false} {false} _ = refl
+
+  vec4 : P4 → Vec Bool 4
+  vec4 P = pa P ∷ pb P ∷ pc P ∷ pd P ∷ []
+
+  vec8 : P4 → P4 → Vec Bool 8
+  vec8 P Q = pa P ∷ pb P ∷ pc P ∷ pd P ∷ pa Q ∷ pb Q ∷ pc Q ∷ pd Q ∷ []
+
+-- The parity of a quotient by δ or δ².
+odd-quot1 : ∀ x y → x ≡ δᶻ ZR.* y → oddᶻ y ≡ c1 (par x)
+odd-quot1 x y refl = trans (sym (oddP-par y))
+  (trans (eqb-sound (allB-sound 4 quot1-test quot1-all (vec4 (par y)))) (cong c1 (sym (par-* δᶻ y))))
+
+odd-quot2 : ∀ x y → x ≡ δ²ᶻ ZR.* y → oddᶻ y ≡ c2 (par x)
+odd-quot2 x y refl = trans (sym (oddP-par y))
+  (trans (eqb-sound (allB-sound 4 quot2-test quot2-all (vec4 (par y)))) (cong c2 (sym (par-* δ²ᶻ y))))
+
+private
+  δ²-test : Vec Bool 4 → Bool
+  δ²-test (a ∷ b ∷ c ∷ d ∷ []) = imp (not (c0 P) ∧ not (c1 P)) (P ⊗ par g2 == 𝟘)
+    where P = ⟨ a , b , c , d ⟩
+
+  δ²-all : allB 4 δ²-test ≡ true
+  δ²-all = refl
+
+  not-intro : ∀ {a} → a ≡ false → not a ≡ true
+  not-intro refl = refl
+
+-- δ² divides x if c₀ and c₁ vanish.
+δ²∣-par : ∀ x → c0 (par x) ≡ false → c1 (par x) ≡ false → δ²ᶻ ∣ x
+δ²∣-par x e0 e1 = div-intro δ²ᶻ g2 x refl
+  (trans (par-* x g2) (==-sound _ 𝟘 (imp-sound (allB-sound 4 δ²-test δ²-all (vec4 (par x)))
+                                               (∧-intro (not-intro e0) (not-intro e1)))))
+
+-- δ³ divides 2 and g₁.
+δ³∣2 : δ³ᶻ ∣ 2ᶻ
+δ³∣2 = g3 , refl
+
+δ³∣g1 : δ³ᶻ ∣ g1
+δ³∣g1 = div-intro δ³ᶻ g3 g1 refl refl
+
+-- Cancelling δ².
+δ²-cancel : ∀ x y → δ²ᶻ ZR.* x ≡ δ²ᶻ ZR.* y → x ≡ y
+δ²-cancel x y eq = two-cancel x y (begin
+  2ᶻ ZR.* x                  ≡⟨ cong (ZR._* x) (sym δ²g2) ⟩
+  (δ²ᶻ ZR.* g2) ZR.* x       ≡⟨ cong (ZR._* x) (ZR.*-comm δ²ᶻ g2) ⟩
+  (g2 ZR.* δ²ᶻ) ZR.* x       ≡⟨ ZR.*-assoc g2 δ²ᶻ x ⟩
+  g2 ZR.* (δ²ᶻ ZR.* x)       ≡⟨ cong (g2 ZR.*_) eq ⟩
+  g2 ZR.* (δ²ᶻ ZR.* y)       ≡⟨ sym (ZR.*-assoc g2 δ²ᶻ y) ⟩
+  (g2 ZR.* δ²ᶻ) ZR.* y       ≡⟨ cong (ZR._* y) (ZR.*-comm g2 δ²ᶻ) ⟩
+  (δ²ᶻ ZR.* g2) ZR.* y       ≡⟨ cong (ZR._* y) δ²g2 ⟩
+  2ᶻ ZR.* y                  ∎)
+  where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- The exponent of congruent entries
+
+private
+  ⊕-test : Vec Bool 8 → Bool
+  ⊕-test (a ∷ b ∷ c ∷ d ∷ a′ ∷ b′ ∷ c′ ∷ d′ ∷ []) = P ⊕ (P ⊕ Q) == Q
+    where
+    P = ⟨ a , b , c , d ⟩
+    Q = ⟨ a′ , b′ , c′ , d′ ⟩
+
+  ⊕-all : allB 8 ⊕-test ≡ true
+  ⊕-all = refl
+
+  ⊕-cancel : ∀ P Q → P ⊕ (P ⊕ Q) ≡ Q
+  ⊕-cancel P Q = ==-sound _ Q (allB-sound 8 ⊕-test ⊕-all (vec8 P Q))
+
+  -- The other parity vector, from the sum.
+  ⊕-solve : ∀ P Q E → P ⊕ Q ≡ E → Q ≡ P ⊕ E
+  ⊕-solve P Q E h = trans (sym (⊕-cancel P Q)) (cong (P ⊕_) h)
+
+  -- zP P (P + δ³ C) = 0 for all P, C.
+  cong3-test : Vec Bool 8 → Bool
+  cong3-test (a ∷ b ∷ c ∷ d ∷ a′ ∷ b′ ∷ c′ ∷ d′ ∷ []) = zP P (P ⊕ par δ³ᶻ ⊗ C) ℕ.≡ᵇ 0
+    where
+    P = ⟨ a , b , c , d ⟩
+    C = ⟨ a′ , b′ , c′ , d′ ⟩
+
+  cong3-all : allB 8 cong3-test ≡ true
+  cong3-all = refl
+
+  -- zP P (P + g₂ Q) = 2 for odd P, Q.
+  plus2-test : Vec Bool 8 → Bool
+  plus2-test (a ∷ b ∷ c ∷ d ∷ a′ ∷ b′ ∷ c′ ∷ d′ ∷ []) =
+    imp (oddP P ∧ oddP Q) (zP P (P ⊕ par g2 ⊗ Q) ℕ.≡ᵇ 2)
+    where
+    P = ⟨ a , b , c , d ⟩
+    Q = ⟨ a′ , b′ , c′ , d′ ⟩
+
+  plus2-all : allB 8 plus2-test ≡ true
+  plus2-all = refl
+
+-- Entries congruent modulo δ³ give the exponent 0.
+zOf-cong3 : ∀ u v → δ³ᶻ ∣ (u ZR.- v) → zOf u v ≡ 0
+zOf-cong3 u v (c , eq) = begin
+  zP (par u) (par v)                               ≡⟨ cong (zP (par u)) pv ⟩
+  zP (par u) (par u ⊕ par δ³ᶻ ⊗ par c)             ≡⟨ ≡ᵇ-sound _ _ (allB-sound 8 cong3-test cong3-all (vec8 (par u) (par c))) ⟩
+  0                                                ∎
+  where
+  open ≡-Reasoning
+  pv : par v ≡ par u ⊕ par δ³ᶻ ⊗ par c
+  pv = ⊕-solve (par u) (par v) (par δ³ᶻ ⊗ par c)
+         (trans (sym (par-- u v)) (trans (cong par eq) (par-* δ³ᶻ c)))
+
+-- u and u − g₂ w, for odd u and w: the exponent is 2.
+zOf-plus2 : ∀ u w → oddᶻ u ≡ true → oddᶻ w ≡ true → zOf u (u ZR.- g2 ZR.* w) ≡ 2
+zOf-plus2 u w ou ow = begin
+  zP (par u) (par (u ZR.- g2 ZR.* w))              ≡⟨ cong (zP (par u)) (trans (par-- u (g2 ZR.* w)) (cong (par u ⊕_) (par-* g2 w))) ⟩
+  zP (par u) (par u ⊕ par g2 ⊗ par w)              ≡⟨ ≡ᵇ-sound _ _ (imp-sound (allB-sound 8 plus2-test plus2-all (vec8 (par u) (par w)))
+                                                                    (∧-intro (trans (oddP-par u) ou) (trans (oddP-par w) ow))) ⟩
+  2                                                ∎
+  where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Two odd entries and their sum, by the exponent
+
+private
+  -- For odd P, Q with zP P Q odd: c₁ (P + Q) = 1.
+  zodd-test : Vec Bool 8 → Bool
+  zodd-test (a ∷ b ∷ c ∷ d ∷ a′ ∷ b′ ∷ c′ ∷ d′ ∷ []) =
+    imp (oddP P ∧ oddP Q ∧ oddℕ (zP P Q)) (c1 (P ⊕ Q))
+    where
+    P = ⟨ a , b , c , d ⟩
+    Q = ⟨ a′ , b′ , c′ , d′ ⟩
+
+  zodd-all : allB 8 zodd-test ≡ true
+  zodd-all = refl
+
+  -- For odd P, Q with zP P Q = 2: c₁ (P + Q) = 0 and c₂ (P + Q) = 1.
+  z2-test : Vec Bool 8 → Bool
+  z2-test (a ∷ b ∷ c ∷ d ∷ a′ ∷ b′ ∷ c′ ∷ d′ ∷ []) =
+    imp (oddP P ∧ oddP Q ∧ (zP P Q ℕ.≡ᵇ 2)) (not (c1 (P ⊕ Q)) ∧ c2 (P ⊕ Q))
+    where
+    P = ⟨ a , b , c , d ⟩
+    Q = ⟨ a′ , b′ , c′ , d′ ⟩
+
+  z2-all : allB 8 z2-test ≡ true
+  z2-all = refl
+
+  ≡ᵇ-intro : ∀ m → (m ℕ.≡ᵇ m) ≡ true
+  ≡ᵇ-intro zero = refl
+  ≡ᵇ-intro (suc m) = ≡ᵇ-intro m
+
+  not-true : ∀ {a} → not a ≡ true → a ≡ false
+  not-true {false} _ = refl
+
+-- For odd u, v with an odd exponent, δ divides u ± v exactly once.
+zOf-odd-c1 : ∀ u v → oddᶻ u ≡ true → oddᶻ v ≡ true → oddℕ (zOf u v) ≡ true →
+             c1 (par u ⊕ par v) ≡ true
+zOf-odd-c1 u v ou ov oz =
+  imp-sound (allB-sound 8 zodd-test zodd-all (vec8 (par u) (par v)))
+    (∧-intro (trans (oddP-par u) ou) (∧-intro (trans (oddP-par v) ov) oz))
+
+-- For odd u, v with the exponent 2, δ² divides u ± v exactly.
+zOf-2-c : ∀ u v → oddᶻ u ≡ true → oddᶻ v ≡ true → zOf u v ≡ 2 →
+          c1 (par u ⊕ par v) ≡ false × c2 (par u ⊕ par v) ≡ true
+zOf-2-c u v ou ov z2 = not-true (∧-l h) , ∧-r {not (c1 (par u ⊕ par v))} h
+  where
+  h = imp-sound (allB-sound 8 z2-test z2-all (vec8 (par u) (par v)))
+        (∧-intro (trans (oddP-par u) ou) (∧-intro (trans (oddP-par v) ov) (trans (cong (ℕ._≡ᵇ 2) z2) (≡ᵇ-intro 2))))
+
+-- Cancelling δ.
+δ-cancel : ∀ x y → δᶻ ZR.* x ≡ δᶻ ZR.* y → x ≡ y
+δ-cancel x y eq = two-cancel x y (begin
+  2ᶻ ZR.* x                  ≡⟨ cong (ZR._* x) (sym δg1) ⟩
+  (δᶻ ZR.* g1) ZR.* x        ≡⟨ cong (ZR._* x) (ZR.*-comm δᶻ g1) ⟩
+  (g1 ZR.* δᶻ) ZR.* x        ≡⟨ ZR.*-assoc g1 δᶻ x ⟩
+  g1 ZR.* (δᶻ ZR.* x)        ≡⟨ cong (g1 ZR.*_) eq ⟩
+  g1 ZR.* (δᶻ ZR.* y)        ≡⟨ sym (ZR.*-assoc g1 δᶻ y) ⟩
+  (g1 ZR.* δᶻ) ZR.* y        ≡⟨ cong (ZR._* y) (ZR.*-comm g1 δᶻ) ⟩
+  (δᶻ ZR.* g1) ZR.* y        ≡⟨ cong (ZR._* y) δg1 ⟩
+  2ᶻ ZR.* y                  ∎)
+  where open ≡-Reasoning
