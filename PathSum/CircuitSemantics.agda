@@ -25,7 +25,8 @@
 -- parallelogram law adds those norms up to twice those of a and b.
 -- The basis column has norm 1, so a column of ⟦ C ⟧ has norm 2^k, k the
 -- number of Hadamards, which is what the normalisation 1/√2^k divides
--- out.  That ⟦ C ⟧ is unitary is true but not stated.
+-- out.  That the columns are also orthogonal, so that ⟦ C ⟧ is an
+-- isometry, is PathSum.Unitarity.
 --
 -- ⟦ C ⟧ᴿ differs from ⟦ C ⟧ only at the last Hadamard on each wire,
 -- where the restriction keeps the entries whose value on that wire is
@@ -418,8 +419,8 @@ private
     rest = trans (Σᶻ-cong (λ z → off (same x z))) Σᶻ-0
 
 -- Every column of ⟦ C ⟧ has trace-form norm 2^k, k = norm C: a unit
--- vector once normalised by 1/√2^k.  (That ⟦ C ⟧ is unitary is not
--- needed and not stated.)
+-- vector once normalised by 1/√2^k.  (Orthogonality of the columns is
+-- not needed here; PathSum.Unitarity proves it.)
 
 ⟦⟧-unit-columns : (C : Circuit n) (x : Assign n) →
                   Σᶻ (λ z → ‖ amp ⟦ C ⟧ x z ‖²) ≡ + (2 ^ norm C)

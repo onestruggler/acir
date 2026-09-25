@@ -25,21 +25,18 @@
 -- every column of U_ξ has norm at most 1 in the trace form -- averaged
 -- over the embeddings, which is not the same as its complex norm.
 --
--- The paper's hypothesis implies this one, by the following argument,
--- which is prose and is not formalised.  If U = U_ξ is a partial
--- isometry then U†U is a projection P.  Every embedding σ, applied
--- entrywise, commutes with complex conjugation, Q(ζ) being abelian
--- over Q, so σ(U)†σ(U) = σ(P) is again a projection; and σ(√2) = ±√2,
--- √2 lying in Q(ζ).  Hence Σ_z |σ(amp ξ x z)|² = 2^k ⟨x|σ(P)|x⟩ lies
--- in [0 , 2^k] for every σ, and its average over the embeddings, which
--- is Σ_z ‖amp ξ x z‖², is at most 2^k.  So the hypothesis of
--- lemma-4-1⇐ below follows from the paper's, and the lemma is proved
--- here in a form at least as strong as the paper's -- granted that
--- argument, U_ξ read as the matrix of entries amp ξ x z / √2^k that
--- PathSum.Denotation compares, and for path-sums whose inputs are all
--- variables.  (Constant inputs, the paper's usual source of partial
--- isometries, cannot be expressed in PathSum.Base; partial isometries
--- with variable inputs can, and the argument above covers them.)
+-- The paper's hypothesis implies this one, and that is a theorem:
+-- PathSum.PartialIsometry states definition 2.4 on the unnormalised
+-- operator (U†U = 2^k·I for an isometry, U†U idempotent up to 2^k for
+-- a partial isometry, with the product and conjugation of
+-- PathSum.Ring) and proves PartialIsometric ⇒ WellFormed without any
+-- Galois theory: t² ≤ ‖G_xx‖² ≤ Σ_x″ ‖G_xx″‖² = 2^k·t for the Gram
+-- matrix G and t = Σ_z ‖amp ξ x z‖².  So lemma 4.1 holds under the
+-- paper's own hypothesis (lemma-4-1-partial there), and the form here,
+-- under WellFormed, is strictly stronger: WellFormed does not imply
+-- definition 2.4.  (Constant inputs, the paper's usual source of
+-- partial isometries, cannot be expressed in PathSum.Base; partial
+-- isometries with variable inputs can.)
 --
 -- The proof of the converse splits the sum over the column at z = x.
 -- The diagonal term is ‖√2^k ζ^0‖² = 2^k, the whole budget, so the
