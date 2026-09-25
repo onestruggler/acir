@@ -363,3 +363,40 @@ qOf-flip (Cplx a b) v ou = flip (oddℤ a) (oddℤ b) (oddℤ (re v)) refl refl 
   flip false true false ea eb _ r = cong (λ c → if c xor false then 1 else 0) r
   flip true true ov ea eb () r
   flip false false ov ea eb () r
+
+------------------------------------------------------------------------
+-- The exponent q of sums and differences
+
+private
+  xor-self : ∀ x → x xor x ≡ false
+  xor-self true  = refl
+  xor-self false = refl
+
+  xor-xor : ∀ x y z → (x xor y) xor (x xor z) ≡ y xor z
+  xor-xor false y z = refl
+  xor-xor true true z = refl
+  xor-xor true false true = refl
+  xor-xor true false false = refl
+
+  xor-comm′ : ∀ x y → x xor y ≡ y xor x
+  xor-comm′ true  true  = refl
+  xor-comm′ true  false = refl
+  xor-comm′ false true  = refl
+  xor-comm′ false false = refl
+
+qOf-sym : ∀ u v → qOf u v ≡ qOf v u
+qOf-sym u v = cong (λ z → if z then 1 else 0) (xor-comm′ (oddℤ (re u)) (oddℤ (re v)))
+
+-- u + v ≡ u - v (mod 2).
+qOf-+- : ∀ u v → qOf (u ZR.+ v) (u ZR.- v) ≡ 0
+qOf-+- (Cplx a b) (Cplx c d) =
+  cong (λ z → if z then 1 else 0)
+    (trans (cong₂ _xor_ (oddℤ-+ a c) (odd-sub a c)) (xor-self (oddℤ a xor oddℤ c)))
+
+-- d + v ≡ i (d + i v) (mod 2) for odd v.
+qOf-shift : ∀ d v → Odd v → qOf (d ZR.+ v) (d ZR.+ ⅈᶻ ZR.* v) ≡ 1
+qOf-shift (Cplx a b) (Cplx e f) ov =
+  trans (cong (λ z → qOf (Cplx a b ZR.+ Cplx e f) (Cplx a b ZR.+ z)) (ⅈ*≡ e f))
+    (cong (λ z → if z then 1 else 0)
+      (trans (cong₂ _xor_ (oddℤ-+ a e) (odd-sub a f))
+        (trans (xor-xor (oddℤ a) (oddℤ e) (oddℤ f)) (trans (sym (oddℤ-+ e f)) ov))))

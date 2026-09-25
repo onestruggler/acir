@@ -15,16 +15,17 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Data.Nat.Base as ℕ using (ℕ ; suc)
+open import Data.Nat.Base as ℕ using (ℕ ; suc ; s≤s ; z≤n)
 
 module Examples.Groups.Clifford+CS-TwoLevel.MainTools {n : ℕ} where
 
-open import Data.Fin.Base using (Fin ; _<_ ; toℕ)
-open import Data.List.Relation.Unary.All using (All ; [] ; _∷_)
+open import Data.Fin.Base using (Fin ; _<_ ; _≤_ ; toℕ)
+open import Data.List.Relation.Unary.All as All using (All ; [] ; _∷_)
 import Data.Fin.Properties as FinP
 import Data.Nat.Properties as ℕP
 open import Data.Maybe.Base using (just)
 open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Unit.Base using (tt)
 open import Data.Vec.Base using (Vec)
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_ ; _≢_)
@@ -39,7 +40,7 @@ open import Word.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
 open import Examples.Groups.Clifford+CS-TwoLevel.Ring using (D ; Z)
-open import Examples.Groups.Clifford+CS-TwoLevel.Lde using (scV ; lde-char ; Minimal)
+open import Examples.Groups.Clifford+CS-TwoLevel.Lde using (scV ; lde ; lde-char ; Minimal)
 open import Examples.Groups.Clifford+CS-TwoLevel.Column using (sylData ; nodd ; Above)
 open import Examples.Groups.Clifford+CS-TwoLevel.Syntactics
 open import Examples.Groups.Clifford+CS-TwoLevel.Semantics
@@ -47,10 +48,10 @@ open import Examples.Groups.Clifford+CS-TwoLevel.Soundness using (sound-axiom)
 open import Examples.Groups.Clifford+CS-TwoLevel.Pivot
   using (pivot ; pivot-just ; pivot-char ; Lvl ; level ; level-just ; _<ₗ_ ; _<ₗ?_)
 open import Examples.Groups.Clifford+CS-TwoLevel.Syllable
-  using (syl ; syl-just ; step ; top ; Beyond-actM ; actV-e-beyond)
+  using (syl ; syl-just ; step ; top ; Beyond-actM ; actV-e-beyond ; eᶻ ; col𝕀≡)
 open import Examples.Groups.Clifford+CS-TwoLevel.Step using (step-lt)
 open import Examples.Groups.Clifford+CS-TwoLevel.Synthesis using (synth-step)
-open import Examples.Groups.Clifford+CS-TwoLevel.Derived {n} using (_⁻¹ ; inverseˡ ; Apartʷ ; Apartʷʷ ; comm-words)
+open import Examples.Groups.Clifford+CS-TwoLevel.Derived {n} using (_⁻¹ ; inverseˡ ; idx ; Apartʷ ; Apartʷʷ ; comm-words)
 open import Examples.Groups.Clifford+CS-TwoLevel.Levels using (Bℓ)
 open import Examples.Groups.Clifford+CS-TwoLevel.Basic {n} using (Letters≤)
 open import Examples.Groups.Clifford+CS-TwoLevel.ExpLevel {n} using (word-level)
@@ -217,3 +218,61 @@ above-apart [ i-gen b ]ʷ j≤b a<j = (≢ᵃ (ℕP.<-≤-trans a<j j≤b) ∷ [
   ≢ᵃ a<x x≡a = FinP.<-irrefl (≡.sym x≡a) a<x
 above-apart ε _ _ = tt
 above-apart (u • v) (hu , hv) a<j = above-apart u hu a<j , above-apart v hv a<j
+
+-- A word acting on indices ≥ j is apart from a generator acting below j.
+above-apart′ : ∀ {j : Fin n} (u : Word (Gen n)) → Above j u → (h : Gen n) → All (_< j) (idx h) → Apartʷ u h
+above-apart′ [ X-gen b c p ]ʷ j≤b h hs =
+  All.map (≢< j≤b) hs ∷ All.map (≢< (ℕP.≤-trans j≤b (ℕP.<⇒≤ (recompute (b FinP.<? c) p)))) hs ∷ []
+  where
+  ≢< : ∀ {j b : Fin n} → j ≤ b → ∀ {y} → y < j → b ≢ y
+  ≢< j≤b y<j b≡y = FinP.<-irrefl (≡.sym b≡y) (ℕP.<-≤-trans y<j j≤b)
+above-apart′ [ K-gen b c p ]ʷ j≤b h hs =
+  All.map (≢< j≤b) hs ∷ All.map (≢< (ℕP.≤-trans j≤b (ℕP.<⇒≤ (recompute (b FinP.<? c) p)))) hs ∷ []
+  where
+  ≢< : ∀ {j b : Fin n} → j ≤ b → ∀ {y} → y < j → b ≢ y
+  ≢< j≤b y<j b≡y = FinP.<-irrefl (≡.sym b≡y) (ℕP.<-≤-trans y<j j≤b)
+above-apart′ [ i-gen b ]ʷ j≤b h hs = All.map (≢< j≤b) hs ∷ []
+  where
+  ≢< : ∀ {j b : Fin n} → j ≤ b → ∀ {y} → y < j → b ≢ y
+  ≢< j≤b y<j b≡y = FinP.<-irrefl (≡.sym b≡y) (ℕP.<-≤-trans y<j j≤b)
+above-apart′ ε _ _ _ = tt
+above-apart′ (u • v) (hu , hv) h hs = above-apart′ u hu h hs , above-apart′ v hv h hs
+
+------------------------------------------------------------------------
+-- Disjoint squares where G keeps the level, pivots and levels
+
+-- Disjoint, where G keeps the level: G t is then the normal step from
+-- G s, whose level is lower.
+square-disjoint′ : (G : Gen n) (s : Matrix n n D) .(o : ColOrth s) {p p′ : Fin n} →
+                   pivot s ≡ just p → pivot (actM G s) ≡ just p′ → syl (actM G s) ≡ syl s →
+                   Apartʷʷ (syl s) [ G ]ʷ → level (actM G s) ≡ level s → Square G s o
+square-disjoint′ G s o ps pr eq ap lv = square-disjoint G s o ps pr eq ap lq
+  where
+  r = actM G s
+  Gt : actM G (step s) ≡ step r
+  Gt = ≡.trans (≡.sym (sound-act (comm-words (syl s) [ G ]ʷ ap) s))
+               (≡.cong (λ u → actMʷ u r) (≡.sym eq))
+  lq : level (actM G (step s)) <ₗ level s
+  lq = ≡.subst₂ _<ₗ_ (≡.sym (≡.cong level Gt)) lv (lt-step r (ColOrth-actMʷ [ G ]ʷ o) pr)
+
+-- A generator acting on indices ≤ p keeps the pivot p if the pivot
+-- column stays off I.
+pivot-stay : (g : Gen n) {p : Fin n} (M : Matrix n n D) → top g ≤ p → pivot M ≡ just p →
+             col (actM g M) p ≢ col 𝕀 p → pivot (actM g M) ≡ just p
+pivot-stay g M tg pv ne = pivot-char (actM g M) ne (Beyond-actM g {M = M} tg (proj₂ (pivot-just M pv)))
+
+-- A column with a positive exponent is not a column of I.
+ne-𝕀 : (M : Matrix n n D) (c : Fin n) (k : ℕ) (W : Vec Z n) → col M c ≡ scV (suc k) W →
+       Minimal (suc k) W → col M c ≢ col 𝕀 c
+ne-𝕀 M c k W eq min e =
+  ℕP.0≢1+n (≡.trans (≡.sym (proj₁ (lde-char 0 (eᶻ c) (col𝕀≡ c) (inj₁ ≡.refl))))
+                    (proj₁ (lde-char (suc k) W (≡.trans (≡.sym e) eq) min)))
+
+-- (x + 1 , 0 , 1) lies below a level with pivot p ≥ x and a positive
+-- exponent.
+bℓ-below : ∀ {x p : Fin n} {k : ℕ} (m : ℕ) → 0 ℕ.< k → toℕ x ℕ.≤ toℕ p → Bℓ x <ₗ (suc (toℕ p) , k , m)
+bℓ-below {x} {p} {k} m 0<k x≤p = aux (ℕP.m≤n⇒m<n∨m≡n x≤p)
+  where
+  aux : toℕ x ℕ.< toℕ p ⊎ toℕ x ≡ toℕ p → Bℓ x <ₗ (suc (toℕ p) , k , m)
+  aux (inj₁ lt) = inj₁ (s≤s lt)
+  aux (inj₂ eq) = inj₂ (≡.cong suc eq , inj₁ 0<k)
