@@ -129,34 +129,34 @@ applyᴬ (g ∷ C) ψ = applyᴬ C (gateᴬ g ψ)
 -- otherwise compare the two exponents by unfolding the proofs that
 -- Cyclotomic's classify carries.
 
+rot-cong : (a a′ : Amp) (e e′ : ℤ) → e ≡ e′ → a ≐ a′ →
+           rot e a ≐ rot e′ a′
+rot-cong a a′ e e′ ee aa i =
+  trans (rot-map e aa i) (rot-exp {e} {e′} a′ ee i)
+
+-- The two terms of a Hadamard.
+
+sum-cong : (a a′ b b′ : Amp) (e e′ : ℤ) → a ≐ a′ → e ≡ e′ → b ≐ b′ →
+           (a +ᴬ rot e b) ≐ (a′ +ᴬ rot e′ b′)
+sum-cong a a′ b b′ e e′ aa ee bb i =
+  cong₂ _+_ (aa i) (rot-cong b b′ e e′ ee bb i)
+
+-- The sign of a Hadamard is 1 when its wire is 0, and -1 when it is
+-- 1: ½ is the exponent H of ζ^H = -1 (Cyclotomic's H, imported as
+-- rank since the gate is H too), and rotating by H negates.
+
+sign-0 : (a a′ b b′ : Amp) (e : ℤ) → a ≐ a′ → e ≡ 0ℤ → b ≐ b′ →
+         (a +ᴬ rot e b) ≐ (a′ +ᴬ b′)
+sign-0 a a′ b b′ e aa ee bb i = cong₂ _+_ (aa i)
+  (trans (rot-exp {e} {0ℤ} b ee i) (trans (rot-0 b i) (bb i)))
+
+sign-1 : (a a′ b b′ : Amp) (e : ℤ) → a ≐ a′ → e ≡ 0ℤ + (+ rank) →
+         b ≐ b′ → (a +ᴬ rot e b) ≐ (a′ -ᴬ b′)
+sign-1 a a′ b b′ e aa ee bb i = cong₂ _+_ (aa i)
+  (trans (rot-exp {e} {0ℤ + (+ rank)} b ee i)
+    (trans (rot-anti 0ℤ b i) (cong -_ (trans (rot-0 b i) (bb i)))))
+
 private
-  rot-cong : (a a′ : Amp) (e e′ : ℤ) → e ≡ e′ → a ≐ a′ →
-             rot e a ≐ rot e′ a′
-  rot-cong a a′ e e′ ee aa i =
-    trans (rot-map e aa i) (rot-exp {e} {e′} a′ ee i)
-
-  -- The two terms of a Hadamard.
-
-  sum-cong : (a a′ b b′ : Amp) (e e′ : ℤ) → a ≐ a′ → e ≡ e′ → b ≐ b′ →
-             (a +ᴬ rot e b) ≐ (a′ +ᴬ rot e′ b′)
-  sum-cong a a′ b b′ e e′ aa ee bb i =
-    cong₂ _+_ (aa i) (rot-cong b b′ e e′ ee bb i)
-
-  -- The sign of a Hadamard is 1 when its wire is 0, and -1 when it is
-  -- 1: ½ is the exponent H of ζ^H = -1 (Cyclotomic's H, imported as
-  -- rank since the gate is H too), and rotating by H negates.
-
-  sign-0 : (a a′ b b′ : Amp) (e : ℤ) → a ≐ a′ → e ≡ 0ℤ → b ≐ b′ →
-           (a +ᴬ rot e b) ≐ (a′ +ᴬ b′)
-  sign-0 a a′ b b′ e aa ee bb i = cong₂ _+_ (aa i)
-    (trans (rot-exp {e} {0ℤ} b ee i) (trans (rot-0 b i) (bb i)))
-
-  sign-1 : (a a′ b b′ : Amp) (e : ℤ) → a ≐ a′ → e ≡ 0ℤ + (+ rank) →
-           b ≐ b′ → (a +ᴬ rot e b) ≐ (a′ -ᴬ b′)
-  sign-1 a a′ b b′ e aa ee bb i = cong₂ _+_ (aa i)
-    (trans (rot-exp {e} {0ℤ + (+ rank)} b ee i)
-      (trans (rot-anti 0ℤ b i) (cong -_ (trans (rot-0 b i) (bb i)))))
-
   -- Entries kept only under a condition.
 
   if-map : (c : Bool) {a b : Amp} → a ≐ b →
@@ -194,49 +194,48 @@ private
 -- gates act on columns entry by entry, so they respect equality of
 -- entries.
 
-private
-  δ-resp : (x : Assign n) → Respects (δ x)
-  δ-resp x z z′ zz i = cong (λ b → (if b then zpow 0ℤ else 0ᴬ) i)
-    (same-≗ {x = x} {x′ = x} {z = z} {z′ = z′} (λ _ → refl) zz)
+δ-resp : (x : Assign n) → Respects (δ x)
+δ-resp x z z′ zz i = cong (λ b → (if b then zpow 0ℤ else 0ᴬ) i)
+  (same-≗ {x = x} {x′ = x} {z = z} {z′ = z′} (λ _ → refl) zz)
 
-  gateᴬ-resp : (g : Gate n) {ψ : Column n} → Respects ψ →
-               Respects (gateᴬ g ψ)
-  gateᴬ-resp (H w) {ψ} resp z z′ zz =
-    sum-cong (ψ (z [ w ≔ false ])) (ψ (z′ [ w ≔ false ]))
-             (ψ (z [ w ≔ true ])) (ψ (z′ [ w ≔ true ]))
-             (½ * [ z w ]ᶻ) (½ * [ z′ w ]ᶻ)
-             (resp (z [ w ≔ false ]) (z′ [ w ≔ false ])
-                   (≔-cong w false zz))
-             (cong (λ b → ½ * [ b ]ᶻ) (zz w))
-             (resp (z [ w ≔ true ]) (z′ [ w ≔ true ]) (≔-cong w true zz))
-  gateᴬ-resp (S w) {ψ} resp z z′ zz =
-    rot-cong (ψ z) (ψ z′) (¼ * [ z w ]ᶻ) (¼ * [ z′ w ]ᶻ)
-             (cong (λ b → ¼ * [ b ]ᶻ) (zz w)) (resp z z′ zz)
-  gateᴬ-resp (CZ w v) {ψ} resp z z′ zz =
-    rot-cong (ψ z) (ψ z′) (½ * [ z w ∧ z v ]ᶻ) (½ * [ z′ w ∧ z′ v ]ᶻ)
-             (cong₂ (λ a b → ½ * [ a ∧ b ]ᶻ) (zz w) (zz v))
-             (resp z z′ zz)
+gateᴬ-resp : (g : Gate n) {ψ : Column n} → Respects ψ →
+             Respects (gateᴬ g ψ)
+gateᴬ-resp (H w) {ψ} resp z z′ zz =
+  sum-cong (ψ (z [ w ≔ false ])) (ψ (z′ [ w ≔ false ]))
+           (ψ (z [ w ≔ true ])) (ψ (z′ [ w ≔ true ]))
+           (½ * [ z w ]ᶻ) (½ * [ z′ w ]ᶻ)
+           (resp (z [ w ≔ false ]) (z′ [ w ≔ false ])
+                 (≔-cong w false zz))
+           (cong (λ b → ½ * [ b ]ᶻ) (zz w))
+           (resp (z [ w ≔ true ]) (z′ [ w ≔ true ]) (≔-cong w true zz))
+gateᴬ-resp (S w) {ψ} resp z z′ zz =
+  rot-cong (ψ z) (ψ z′) (¼ * [ z w ]ᶻ) (¼ * [ z′ w ]ᶻ)
+           (cong (λ b → ¼ * [ b ]ᶻ) (zz w)) (resp z z′ zz)
+gateᴬ-resp (CZ w v) {ψ} resp z z′ zz =
+  rot-cong (ψ z) (ψ z′) (½ * [ z w ∧ z v ]ᶻ) (½ * [ z′ w ∧ z′ v ]ᶻ)
+           (cong₂ (λ a b → ½ * [ a ∧ b ]ᶻ) (zz w) (zz v))
+           (resp z z′ zz)
 
-  applyᴬ-resp : (C : Circuit n) {ψ : Column n} → Respects ψ →
-                Respects (applyᴬ C ψ)
-  applyᴬ-resp []      resp = resp
-  applyᴬ-resp (g ∷ C) resp = applyᴬ-resp C (gateᴬ-resp g resp)
+applyᴬ-resp : (C : Circuit n) {ψ : Column n} → Respects ψ →
+              Respects (applyᴬ C ψ)
+applyᴬ-resp []      resp = resp
+applyᴬ-resp (g ∷ C) resp = applyᴬ-resp C (gateᴬ-resp g resp)
 
-  gateᴬ-cong : (g : Gate n) {φ φ′ : Column n} → (∀ z → φ z ≐ φ′ z) →
-               ∀ z → gateᴬ g φ z ≐ gateᴬ g φ′ z
-  gateᴬ-cong (H w) {φ} {φ′} h z =
-    sum-cong (φ (z [ w ≔ false ])) (φ′ (z [ w ≔ false ]))
-             (φ (z [ w ≔ true ])) (φ′ (z [ w ≔ true ]))
-             (½ * [ z w ]ᶻ) (½ * [ z w ]ᶻ)
-             (h (z [ w ≔ false ])) refl (h (z [ w ≔ true ]))
-  gateᴬ-cong (S w)    h z = rot-map (¼ * [ z w ]ᶻ) (h z)
-  gateᴬ-cong (CZ w v) h z = rot-map (½ * [ z w ∧ z v ]ᶻ) (h z)
+gateᴬ-cong : (g : Gate n) {φ φ′ : Column n} → (∀ z → φ z ≐ φ′ z) →
+             ∀ z → gateᴬ g φ z ≐ gateᴬ g φ′ z
+gateᴬ-cong (H w) {φ} {φ′} h z =
+  sum-cong (φ (z [ w ≔ false ])) (φ′ (z [ w ≔ false ]))
+           (φ (z [ w ≔ true ])) (φ′ (z [ w ≔ true ]))
+           (½ * [ z w ]ᶻ) (½ * [ z w ]ᶻ)
+           (h (z [ w ≔ false ])) refl (h (z [ w ≔ true ]))
+gateᴬ-cong (S w)    h z = rot-map (¼ * [ z w ]ᶻ) (h z)
+gateᴬ-cong (CZ w v) h z = rot-map (½ * [ z w ∧ z v ]ᶻ) (h z)
 
-  applyᴬ-cong : (C : Circuit n) {φ φ′ : Column n} → (∀ z → φ z ≐ φ′ z) →
-                ∀ z → applyᴬ C φ z ≐ applyᴬ C φ′ z
-  applyᴬ-cong []      h = h
-  applyᴬ-cong (g ∷ C) {φ} {φ′} h =
-    applyᴬ-cong C {gateᴬ g φ} {gateᴬ g φ′} (gateᴬ-cong g h)
+applyᴬ-cong : (C : Circuit n) {φ φ′ : Column n} → (∀ z → φ z ≐ φ′ z) →
+              ∀ z → applyᴬ C φ z ≐ applyᴬ C φ′ z
+applyᴬ-cong []      h = h
+applyᴬ-cong (g ∷ C) {φ} {φ′} h =
+  applyᴬ-cong C {gateᴬ g φ} {gateᴬ g φ′} (gateᴬ-cong g h)
 
 
 ------------------------------------------------------------------------
