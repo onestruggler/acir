@@ -15,11 +15,12 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Data.Nat.Base using (ℕ)
+open import Data.Nat.Base as ℕ using (ℕ ; suc)
 
 module Examples.Groups.Clifford+CS-TwoLevel.MainTools {n : ℕ} where
 
-open import Data.Fin.Base using (Fin ; _<_)
+open import Data.Fin.Base using (Fin ; _<_ ; toℕ)
+open import Data.List.Relation.Unary.All using (All ; [] ; _∷_)
 import Data.Fin.Properties as FinP
 import Data.Nat.Properties as ℕP
 open import Data.Maybe.Base using (just)
@@ -37,17 +38,22 @@ open import Quantum.Synthesis.Ring
 open import Word.Base
 import Presentation.Base as PB
 import Presentation.Properties as PP
-open import Examples.Groups.Clifford+CS-TwoLevel.Ring using (D)
+open import Examples.Groups.Clifford+CS-TwoLevel.Ring using (D ; Z)
+open import Examples.Groups.Clifford+CS-TwoLevel.Lde using (scV ; lde-char ; Minimal)
+open import Examples.Groups.Clifford+CS-TwoLevel.Column using (sylData ; nodd ; Above)
 open import Examples.Groups.Clifford+CS-TwoLevel.Syntactics
 open import Examples.Groups.Clifford+CS-TwoLevel.Semantics
 open import Examples.Groups.Clifford+CS-TwoLevel.Soundness using (sound-axiom)
 open import Examples.Groups.Clifford+CS-TwoLevel.Pivot
-  using (pivot ; pivot-just ; pivot-char ; level ; _<ₗ_ ; _<ₗ?_)
+  using (pivot ; pivot-just ; pivot-char ; Lvl ; level ; level-just ; _<ₗ_ ; _<ₗ?_)
 open import Examples.Groups.Clifford+CS-TwoLevel.Syllable
-  using (syl ; step ; top ; Beyond-actM ; actV-e-beyond)
+  using (syl ; syl-just ; step ; top ; Beyond-actM ; actV-e-beyond)
 open import Examples.Groups.Clifford+CS-TwoLevel.Step using (step-lt)
 open import Examples.Groups.Clifford+CS-TwoLevel.Synthesis using (synth-step)
-open import Examples.Groups.Clifford+CS-TwoLevel.Derived {n} using (_⁻¹ ; inverseˡ ; Apartʷʷ ; comm-words)
+open import Examples.Groups.Clifford+CS-TwoLevel.Derived {n} using (_⁻¹ ; inverseˡ ; Apartʷ ; Apartʷʷ ; comm-words)
+open import Examples.Groups.Clifford+CS-TwoLevel.Levels using (Bℓ)
+open import Examples.Groups.Clifford+CS-TwoLevel.Basic {n} using (Letters≤)
+open import Examples.Groups.Clifford+CS-TwoLevel.ExpLevel {n} using (word-level)
 open import Examples.Groups.Clifford+CS-TwoLevel.Reduction {n}
   using (nw ; nw-cong ; Path ; Below ; Square ; sound-act)
 
@@ -155,3 +161,49 @@ square-merge : (G : Gen n) (s : Matrix n n D) .(o : ColOrth s) {p′ : Fin n} �
 square-merge G s o pr rel =
   square-by G s o (syl (actM G s)) ε (path-normal (actM G s) (ColOrth-actMʷ [ G ]ʷ o) pr) tt
     (trans rel (sym left-unit))
+
+------------------------------------------------------------------------
+-- The syllable and the level, from a representation of the pivot
+-- column
+
+syl-of : (M : Matrix n n D) {p : Fin n} → pivot M ≡ just p → (K : ℕ) (W : Vec Z n) →
+         col M p ≡ scV K W → Minimal K W → syl M ≡ sylData p K W
+syl-of M {p} pv K W eq min =
+  ≡.trans (syl-just M pv) (≡.cong₂ (sylData p) (proj₁ (lde-char K W eq min)) (proj₂ (lde-char K W eq min)))
+
+level-of : (M : Matrix n n D) {p : Fin n} → pivot M ≡ just p → (K : ℕ) (W : Vec Z n) →
+           col M p ≡ scV K W → Minimal K W → level M ≡ (suc (toℕ p) , K , nodd W)
+level-of M {p} pv K W eq min =
+  ≡.trans (level-just M pv)
+    (≡.cong₂ (λ k w → suc (toℕ p) , k , nodd w) (proj₁ (lde-char K W eq min)) (proj₂ (lde-char K W eq min)))
+
+------------------------------------------------------------------------
+-- Paths of transpositions and i's, and apartness
+
+-- Every state along w, the last included, stays below.
+word-below-all : ∀ {b : Fin n} (w : Word (Gen n)) → Letters≤ b w → (M : Matrix n n D) {L : Lvl} →
+                 level M <ₗ L → Bℓ b <ₗ L → Below L w M
+word-below-all [ X-gen a c p ]ʷ h M lM lB = lM , word-level [ X-gen a c p ]ʷ h M lM lB
+word-below-all [ i-gen c ]ʷ h M lM lB = lM , word-level [ i-gen c ]ʷ h M lM lB
+word-below-all ε _ M lM lB = tt
+word-below-all (u • v) (hu , hv) M lM lB =
+  word-below-all v hv M lM lB , word-below-all u hu (actMʷ v M) (word-level v hv M lM lB) lB
+
+-- A word acting on indices ≥ j is apart from i_[a] for a < j.
+above-apart : ∀ {j a : Fin n} (u : Word (Gen n)) → Above j u → a < j → Apartʷ u (i-gen a)
+above-apart [ X-gen b c p ]ʷ j≤b a<j =
+  (≢ᵃ (ℕP.<-≤-trans a<j j≤b) ∷ []) ∷ (≢ᵃ (ℕP.<-trans (ℕP.<-≤-trans a<j j≤b) (recompute (b FinP.<? c) p)) ∷ []) ∷ []
+  where
+  ≢ᵃ : ∀ {x a : Fin n} → a < x → x ≢ a
+  ≢ᵃ a<x x≡a = FinP.<-irrefl (≡.sym x≡a) a<x
+above-apart [ K-gen b c p ]ʷ j≤b a<j =
+  (≢ᵃ (ℕP.<-≤-trans a<j j≤b) ∷ []) ∷ (≢ᵃ (ℕP.<-trans (ℕP.<-≤-trans a<j j≤b) (recompute (b FinP.<? c) p)) ∷ []) ∷ []
+  where
+  ≢ᵃ : ∀ {x a : Fin n} → a < x → x ≢ a
+  ≢ᵃ a<x x≡a = FinP.<-irrefl (≡.sym x≡a) a<x
+above-apart [ i-gen b ]ʷ j≤b a<j = (≢ᵃ (ℕP.<-≤-trans a<j j≤b) ∷ []) ∷ []
+  where
+  ≢ᵃ : ∀ {x a : Fin n} → a < x → x ≢ a
+  ≢ᵃ a<x x≡a = FinP.<-irrefl (≡.sym x≡a) a<x
+above-apart ε _ _ = tt
+above-apart (u • v) (hu , hv) a<j = above-apart u hu a<j , above-apart v hv a<j

@@ -141,20 +141,20 @@ nodd-e c = count-one (λ x → oddᶻ (eᶻ c ! x)) c
 ------------------------------------------------------------------------
 -- The least denominator exponent
 
-private
-  Minimal-X : ∀ {k} (a b : Fin n) → a ≢ b → (w : Vec Z n) → Minimal k w → Minimal k (Xᶻ a b w)
-  Minimal-X a b a≢b w (inj₁ k0) = inj₁ k0
-  Minimal-X a b a≢b w (inj₂ (x , ox)) = inj₂ (at (x FinP.≟ a) (x FinP.≟ b))
-    where
-    open import Data.Product.Base using (∃)
-    at : Dec (x ≡ a) → Dec (x ≡ b) → ∃ λ y → Odd (Xᶻ a b w ! y)
-    at (yes refl) _ = b , trans (cong oddᶻ (set₂-b x b (w ! b) (w ! x) w a≢b)) ox
-    at (no xa) (yes refl) = a , trans (cong oddᶻ (set₂-a a x (w ! x) (w ! a) w)) ox
-    at (no xa) (no xb) = x , trans (cong oddᶻ (set₂-≢ a b (w ! b) (w ! a) w xa xb)) ox
+-- Minimality is kept.
+Minimal-X : ∀ {k} (a b : Fin n) → a ≢ b → (w : Vec Z n) → Minimal k w → Minimal k (Xᶻ a b w)
+Minimal-X a b a≢b w (inj₁ k0) = inj₁ k0
+Minimal-X a b a≢b w (inj₂ (x , ox)) = inj₂ (at (x FinP.≟ a) (x FinP.≟ b))
+  where
+  open import Data.Product.Base using (∃)
+  at : Dec (x ≡ a) → Dec (x ≡ b) → ∃ λ y → Odd (Xᶻ a b w ! y)
+  at (yes refl) _ = b , trans (cong oddᶻ (set₂-b x b (w ! b) (w ! x) w a≢b)) ox
+  at (no xa) (yes refl) = a , trans (cong oddᶻ (set₂-a a x (w ! x) (w ! a) w)) ox
+  at (no xa) (no xb) = x , trans (cong oddᶻ (set₂-≢ a b (w ! b) (w ! a) w xa xb)) ox
 
-  Minimal-i : ∀ {k} (a : Fin n) (w : Vec Z n) → Minimal k w → Minimal k (iᶻ a w)
-  Minimal-i a w (inj₁ k0) = inj₁ k0
-  Minimal-i a w (inj₂ (x , ox)) = inj₂ (x , trans (odd-i a w x) ox)
+Minimal-i : ∀ {k} (a : Fin n) (w : Vec Z n) → Minimal k w → Minimal k (iᶻ a w)
+Minimal-i a w (inj₁ k0) = inj₁ k0
+Minimal-i a w (inj₂ (x , ox)) = inj₂ (x , trans (odd-i a w x) ox)
 
 -- X and i keep the exponent, and act on the numerator.
 lde-X : (a b : Fin n) .(p : a < b) (v : Vec D n) →

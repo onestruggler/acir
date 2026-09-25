@@ -26,6 +26,8 @@ open import Data.Integer.Base as ℤ using (ℤ ; +_ ; -[1+_])
 import Data.Integer.Properties as ℤP
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
+import Data.Nat.Properties as ℕP
+open import Data.Unit.Base using (⊤ ; tt)
 open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Vec.Base as Vec using (Vec)
 open import Relation.Binary.PropositionalEquality
@@ -35,7 +37,7 @@ import Data.Integer.Solver as ℤSolver
 
 open import Quantum.Synthesis.Ring using (Cplx)
 
-open import Word.Base using (Word ; ε ; _•_ ; _^_)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
 open import Examples.Groups.Clifford+CS-TwoLevel.Ring
 open import Examples.Groups.Clifford+CS-TwoLevel.Lde using (_!_ ; Odd ; Even)
 open import Examples.Groups.Clifford+CS-TwoLevel.Search
@@ -308,3 +310,56 @@ sylData-agree p (suc k) w w′ par agree =
     two : (r : Maybe (Fin _)) → nextOdd j w ≡ r → pairStep₂ w j r ≡ pairStep₂ w′ j r
     two nothing _ = refl
     two (just ℓ) e′ = syl-agree j ℓ (agree j oj) (agree ℓ (proj₁ (proj₂ (nextOdd-spec w e′)))) (j FinP.<? ℓ)
+
+------------------------------------------------------------------------
+-- The syllable acts at or above the first odd entry
+
+-- Every letter acts on indices ≥ j.
+Above : Fin n → Word (Gen n) → Set
+Above j [ X-gen a b _ ]ʷ = j Fin.≤ a
+Above j [ K-gen a b _ ]ʷ = j Fin.≤ a
+Above j [ i-gen a ]ʷ = j Fin.≤ a
+Above j ε = ⊤
+Above j (u • v) = Above j u × Above j v
+
+Above-^ : ∀ {j : Fin n} (w : Word (Gen n)) → Above j w → ∀ e → Above j (w ^ e)
+Above-^ w h zero = tt
+Above-^ w h (suc zero) = h
+Above-^ w h (suc (suc e)) = h , Above-^ w h (suc e)
+
+sylData-above : (p : Fin n) (k : ℕ) (w : Vec Z n) {j : Fin n} → firstOdd w ≡ just j → j Fin.≤ p →
+                Above j (sylData p k w)
+sylData-above p zero w {j} fo j≤p = subst (λ r → Above j (unitStep p w r)) (sym fo) (unit (j FinP.<? p))
+  where
+  unit : (d : Dec (j < p)) → Above j (unitSyl p j (invExp (w ! j)) d)
+  unit (yes j<p) = FinP.≤-refl , Above-^ (i j) FinP.≤-refl (invExp (w ! j))
+  unit (no ¬j<p) = Above-^ (i p) j≤p (invExp (w ! j))
+sylData-above p (suc k) w {j} fo j≤p = subst (λ r → Above j (pairStep w r)) (sym fo) (two (nextOdd j w) refl)
+  where
+  two : (r : Maybe (Fin _)) → nextOdd j w ≡ r → Above j (pairStep₂ w j r)
+  two nothing _ = tt
+  two (just ℓ) e = syl (j FinP.<? ℓ)
+    where
+    syl : (d : Dec (j < ℓ)) → Above j (pairSyl w j ℓ d)
+    syl (yes j<ℓ) = Above-^ (K j ℓ j<ℓ) FinP.≤-refl 7 , Above-^ (i ℓ) (ℕP.<⇒≤ j<ℓ) (qOf (w ! j) (w ! ℓ))
+    syl (no _) = tt
+
+------------------------------------------------------------------------
+-- Multiplying an odd entry by i flips the exponent q
+
+qOf-flip : ∀ u v → Odd u → qOf (ⅈᶻ ZR.* u) v ≡ 1 ℕ.∸ qOf u v
+qOf-flip (Cplx a b) v ou = flip (oddℤ a) (oddℤ b) (oddℤ (re v)) refl refl (trans (sym (oddℤ-+ a b)) ou) re-iu
+  where
+  -- re (i u) = - b, whose parity is that of b.
+  re-iu : oddℤ (re (ⅈᶻ ZR.* Cplx a b)) ≡ oddℤ b
+  re-iu = trans (cong oddℤ (ℤS.solve 2 (λ x y → con (+ 0) :* x :+ :- (con (+ 1) :* y) := :- y) refl a b))
+                (oddℤ-neg b)
+    where open ℤS using (_:+_ ; _:*_ ; :-_ ; _:=_ ; con)
+  flip : ∀ oa ob ov → oddℤ a ≡ oa → oddℤ b ≡ ob → oa xor ob ≡ true → oddℤ (re (ⅈᶻ ZR.* Cplx a b)) ≡ ob →
+         (if oddℤ (re (ⅈᶻ ZR.* Cplx a b)) xor ov then 1 else 0) ≡ 1 ℕ.∸ (if oa xor ov then 1 else 0)
+  flip true false true ea eb _ r = cong (λ c → if c xor true then 1 else 0) r
+  flip true false false ea eb _ r = cong (λ c → if c xor false then 1 else 0) r
+  flip false true true ea eb _ r = cong (λ c → if c xor true then 1 else 0) r
+  flip false true false ea eb _ r = cong (λ c → if c xor false then 1 else 0) r
+  flip true true ov ea eb () r
+  flip false false ov ea eb () r
