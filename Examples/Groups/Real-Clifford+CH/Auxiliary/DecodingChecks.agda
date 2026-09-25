@@ -22,7 +22,8 @@
 module Examples.Groups.Real-Clifford+CH.Auxiliary.DecodingChecks where
 
 open import Data.Bool using (Bool ; true)
-open import Data.List using (all ; allFin)
+open import Data.Bool.ListAction using (all)
+open import Data.List using (allFin)
 open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)

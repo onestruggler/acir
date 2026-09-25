@@ -128,8 +128,8 @@ canon4 = record
 
 private
   -- A conjugated box times the box is what the box times it is.
-  swap-order : ∀ {M d : Circuit 4} → M • M ≈ ε → d • d ≈ ε → B • M ≈ d → M • B ≈ d
-  swap-order MM dd e = inv-unique (unwrap′ MM (eq166 {0})) dd e
+  order-flip : ∀ {M d : Circuit 4} → M • M ≈ ε → d • d ≈ ε → B • M ≈ d → M • B ≈ d
+  order-flip MM dd e = inv-unique (unwrap′ MM (eq166 {0})) dd e
 
   place2 : placeAt 2 (Λ□ 2) ≈ P₁₃ CZ
   place2 = begin
@@ -144,10 +144,10 @@ private
 merge4 : ∀ c → 1 ≤ c → c ≤ 3 → (Xat c • Λ□ 3 • Xat c) • Λ□ 3 ≈ placeAt c (Λ□ 2)
 merge4 zero                ()      _
 merge4 (suc zero)          _       _ =
-  trans (swap-order (N₁.⟪⟫-invol (eq166 {0})) CZ↑↑² merge₁)
+  trans (order-flip (N₁.⟪⟫-invol (eq166 {0})) CZ↑↑² merge₁)
         (sym (placeAt-on2-hi CZ 1 1 ≤-refl (s≤s z≤n)))
 merge4 (suc (suc zero))    _       _ = trans (eq170′ {0}) (sym place2)
 merge4 (suc (suc (suc zero))) _    _ =
-  trans (swap-order (N₃.⟪⟫-invol (eq166 {0})) CZ↑² (eq170₃ {0}))
+  trans (order-flip (N₃.⟪⟫-invol (eq166 {0})) CZ↑² (eq170₃ {0}))
         (sym (placeAt-on2-top CZ 1 (s≤s (s≤s (s≤s z≤n)))))
 merge4 (suc (suc (suc (suc c)))) _ (s≤s (s≤s (s≤s ())))

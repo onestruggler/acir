@@ -40,13 +40,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.PlaceAt
 open import Examples.Groups.Real-Clifford+CH.GeneralN.ZXPass complete₂ complete₃ using (Complete)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxMerge complete₂ complete₃ using (eq301 ; eq302)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxSym complete₂ complete₃ using (SymAt)
-
--- A swap is an involution (the identity out of range).
-swapAt² : ∀ {n} c → n ⊢ swapAt c • swapAt c ≈ ε
-swapAt² {zero}        c       = PB.left-unit
-swapAt² {suc zero}    zero    = PB.left-unit
-swapAt² {suc (suc n)} zero    = Ex²
-swapAt² {suc n}       (suc c) = lemma-cong↑ (swapAt c • swapAt c) ε (swapAt² {n} c)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.SwapCalc using (swapAt²)
 
 -- (309) on wire c, in both orders.
 Merge Merge′ : ℕ → ℕ → Set
@@ -116,9 +110,9 @@ module _ (k : ℕ) (complete : Complete (₁₊ k)) (symAt : SymAt (₁₊ k)) w
 
     -- The swaps and X on the controls, one wire up.
     -- Conjugating by an involution both ways.
-    unconj : ∀ {S a b : Circuit (₁₊ (₄₊ k))} → (₁₊ (₄₊ k)) ⊢ S • S ≈ ε →
+    unconjS : ∀ {S a b : Circuit (₁₊ (₄₊ k))} → (₁₊ (₄₊ k)) ⊢ S • S ≈ ε →
              (₁₊ (₄₊ k)) ⊢ S • a • S ≈ b → (₁₊ (₄₊ k)) ⊢ a ≈ S • b • S
-    unconj {S} {a} {b} SS e = begin
+    unconjS {S} {a} {b} SS e = begin
       a                       ≈⟨ sym left-unit ⟩
       ε • a                   ≈⟨ front _ (sym SS) ⟩
       (S • S) • a             ≈⟨ assoc ⟩
@@ -130,10 +124,10 @@ module _ (k : ℕ) (complete : Complete (₁₊ k)) (symAt : SymAt (₁₊ k)) w
 
     -- X and the idle wire of a placement, one wire down.
     X-down : ∀ c → c < ₄₊ k → (₁₊ (₄₊ k)) ⊢ Xat c ≈ swapAt c • Xat (suc c) • swapAt c
-    X-down c b = unconj (swap² c) (X-step c b)
+    X-down c b = unconjS (swap² c) (X-step c b)
 
     place-down : ∀ c → c < ₄₊ k → (₁₊ (₄₊ k)) ⊢ placeAt c u ≈ swapAt c • placeAt (suc c) u • swapAt c
-    place-down c b = unconj (swap² c) (sym (placeAt-step c u b))
+    place-down c b = unconjS (swap² c) (sym (placeAt-step c u b))
 
     -- Carrying a merge on wire c + 1 to wire c, or on wire c to c + 1.
     down : ∀ c → c < ₄₊ k → (₁₊ (₄₊ k)) ⊢ swapAt c • Λ ≈ Λ • swapAt c → Merge k (suc c) → Merge k c
