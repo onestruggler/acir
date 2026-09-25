@@ -481,6 +481,25 @@ private
   (trans (par-* x g2) (==-sound _ 𝟘 (imp-sound (allB-sound 4 δ²-test δ²-all (vec4 (par x)))
                                                (∧-intro (not-intro e0) (not-intro e1)))))
 
+private
+  δ-test : Vec Bool 4 → Bool
+  δ-test (a ∷ b ∷ c ∷ d ∷ []) = imp (not (c0 P) ∧ c1 P) (not (c0 (P ⊕ par δᶻ)) ∧ not (c1 (P ⊕ par δᶻ)))
+    where P = ⟨ a , b , c , d ⟩
+
+  δ-all : allB 4 δ-test ≡ true
+  δ-all = refl
+
+  not-elim : ∀ {a} → not a ≡ true → a ≡ false
+  not-elim {false} _ = refl
+
+-- δ² divides x - δ if c₀ vanishes and c₁ does not: x ≡ δ (mod δ²).
+δ²∣-δ : ∀ x → c0 (par x) ≡ false → c1 (par x) ≡ true → δ²ᶻ ∣ (x ZR.- δᶻ)
+δ²∣-δ x e0 e1 = δ²∣-par (x ZR.- δᶻ)
+  (trans (cong c0 (par-- x δᶻ)) (not-elim (∧-l h)))
+  (trans (cong c1 (par-- x δᶻ)) (not-elim (∧-r {not (c0 (par x ⊕ par δᶻ))} h)))
+  where
+  h = imp-sound (allB-sound 4 δ-test δ-all (vec4 (par x))) (∧-intro (not-intro e0) e1)
+
 -- δ³ divides 2 and g₁.
 δ³∣2 : δ³ᶻ ∣ 2ᶻ
 δ³∣2 = g3 , refl

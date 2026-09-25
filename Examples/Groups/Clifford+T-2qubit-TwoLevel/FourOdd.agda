@@ -136,6 +136,15 @@ t₃j a b c A = δᶻ ZR.* (κ ZR.+ L2 ZR.* (g2 ZR.* (a ZR.+ b ZR.+ c) ZR.- A))
 even-δ : ∀ x → Even (δᶻ ZR.* x)
 even-δ x = oddᶻ-* δᶻ x
 
+even-y₁ : ∀ a b → Even (y₁ a b)
+even-y₁ a b = even-δ (λωᶻ ZR.* (g3 ZR.+ (a ZR.+ b)))
+
+even-s₂j : ∀ A → Even (s₂j A)
+even-s₂j A = even-δ (g1 ZR.+ L2 ZR.* A)
+
+even-t₃j : ∀ a b c A → Even (t₃j a b c A)
+even-t₃j a b c A = even-δ (κ ZR.+ L2 ZR.* (g2 ZR.* (a ZR.+ b ZR.+ c) ZR.- A))
+
 ------------------------------------------------------------------------
 -- The identities of the steps: λω (x ± y) = δ² z
 
