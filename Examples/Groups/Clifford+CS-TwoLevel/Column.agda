@@ -272,3 +272,39 @@ nextOdd-spec w {j} {ℓ} eq with first-just (λ x → does (j FinP.<? x) ∧ odd
     aux : (d : Dec (j < x)) → does d ∧ oddᶻ (w ! x) ≡ false → Even (w ! x)
     aux (yes _) e = e
     aux (no ¬j<x) _ = ⊥-elim (¬j<x j<x)
+
+------------------------------------------------------------------------
+-- The syllable depends only on the parities and the odd entries
+
+firstOdd-cong : (w w′ : Vec Z n) → (∀ x → oddᶻ (w ! x) ≡ oddᶻ (w′ ! x)) → firstOdd w ≡ firstOdd w′
+firstOdd-cong w w′ par = first-cong (λ x → oddᶻ (w ! x)) (λ x → oddᶻ (w′ ! x)) par
+
+nextOdd-cong : (j : Fin n) (w w′ : Vec Z n) → (∀ x → oddᶻ (w ! x) ≡ oddᶻ (w′ ! x)) → nextOdd j w ≡ nextOdd j w′
+nextOdd-cong j w w′ par =
+  first-cong (λ x → does (j FinP.<? x) ∧ oddᶻ (w ! x)) (λ x → does (j FinP.<? x) ∧ oddᶻ (w′ ! x))
+             (λ x → cong (does (j FinP.<? x) ∧_) (par x))
+
+sylData-agree : (p : Fin n) (k : ℕ) (w w′ : Vec Z n) →
+                (∀ x → oddᶻ (w ! x) ≡ oddᶻ (w′ ! x)) → (∀ x → Odd (w ! x) → w ! x ≡ w′ ! x) →
+                sylData p k w ≡ sylData p k w′
+sylData-agree p zero w w′ par agree =
+  trans (unit (firstOdd w) refl) (cong (unitStep p w′) (firstOdd-cong w w′ par))
+  where
+  unit : (r : Maybe (Fin _)) → firstOdd w ≡ r → unitStep p w r ≡ unitStep p w′ r
+  unit nothing _ = refl
+  unit (just m) e = cong (λ z → unitSyl p m (invExp z) (m FinP.<? p)) (agree m (proj₁ (firstOdd-spec w e)))
+sylData-agree p (suc k) w w′ par agree =
+  trans (pair (firstOdd w) refl) (cong (pairStep w′) (firstOdd-cong w w′ par))
+  where
+  syl-agree : ∀ j ℓ → w ! j ≡ w′ ! j → w ! ℓ ≡ w′ ! ℓ → (d : Dec (j < ℓ)) → pairSyl w j ℓ d ≡ pairSyl w′ j ℓ d
+  syl-agree j ℓ ej eℓ (yes j<ℓ) = cong₂ (λ a b → K† j ℓ j<ℓ • i ℓ ^ qOf a b) ej eℓ
+  syl-agree j ℓ ej eℓ (no _) = refl
+  pair : (r : Maybe (Fin _)) → firstOdd w ≡ r → pairStep w r ≡ pairStep w′ r
+  pair nothing _ = refl
+  pair (just j) e = trans (two (nextOdd j w) refl) (cong (pairStep₂ w′ j) (nextOdd-cong j w w′ par))
+    where
+    oj : Odd (w ! j)
+    oj = proj₁ (firstOdd-spec w e)
+    two : (r : Maybe (Fin _)) → nextOdd j w ≡ r → pairStep₂ w j r ≡ pairStep₂ w′ j r
+    two nothing _ = refl
+    two (just ℓ) e′ = syl-agree j ℓ (agree j oj) (agree ℓ (proj₁ (proj₂ (nextOdd-spec w e′)))) (j FinP.<? ℓ)

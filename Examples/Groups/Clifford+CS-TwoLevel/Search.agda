@@ -207,3 +207,18 @@ count-drop₂ {n} P Q a b a≢b Pa Pb Qa Qb agree =
   agreeQ x x≢b = dec-elim (x FinP.≟ a)
     (λ { refl → trans Ra (sym Qa) })
     (λ x≢a → trans (sym (agreeR x x≢a)) (agree x x≢a x≢b))
+
+------------------------------------------------------------------------
+-- The first index, for pointwise equal predicates
+
+first-none : (P : Fin n → Bool) → (∀ x → P x ≡ false) → first P ≡ nothing
+first-none {zero} P none = refl
+first-none {suc n} P none rewrite none zero | first-none (P ∘ suc) (none ∘ suc) = refl
+
+first-cong : (P Q : Fin n → Bool) → (∀ x → P x ≡ Q x) → first P ≡ first Q
+first-cong P Q eq = at (first P) refl
+  where
+  at : (r : Maybe (Fin _)) → first P ≡ r → r ≡ first Q
+  at nothing e = sym (first-none Q (λ x → trans (sym (eq x)) (first-nothing P e x)))
+  at (just j) e = sym (first-char Q (trans (sym (eq j)) (proj₁ (first-just P e)))
+                                    (λ x x<j → trans (sym (eq x)) (proj₂ (first-just P e) x x<j)))
