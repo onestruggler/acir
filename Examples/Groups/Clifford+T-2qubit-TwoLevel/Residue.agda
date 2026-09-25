@@ -162,8 +162,12 @@ oddP-par (Omega a b c d) = sym (odd4 a b c d)
 
 infix 4 _∣_
 
-_∣_ : Z → Z → Set
-e ∣ x = ∃ λ y → x ≡ e ZR.* y
+-- (A record, so that e and x are determined by its type.)
+record _∣_ (e x : Z) : Set where
+  constructor _,_
+  field
+    quot    : Z
+    quot-eq : x ≡ e ZR.* quot
 
 -- δ², δ³, and g with δʲ g = 2.
 δ²ᶻ δ³ᶻ g2 g3 : Z

@@ -38,7 +38,7 @@ open import Quantum.Synthesis.Matrix using (Matrix)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
 open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Ring
 open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Scale
-open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Residue using (δ²ᶻ ; δ³ᶻ ; g2 ; _∣_)
+open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Residue using (δ²ᶻ ; δ³ᶻ ; g2 ; _∣_ ; _,_)
 open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Lde
 open import Examples.Groups.Clifford+CS-TwoLevel.Search
 open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Norm
