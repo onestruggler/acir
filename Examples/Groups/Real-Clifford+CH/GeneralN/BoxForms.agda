@@ -321,12 +321,12 @@ module _ (k : ℕ) (complete : Complete (₁₊ k)) where
     CVC = begin
       C k • V • C k
         ≈⟨ cong (place-swap (Λ□ (₂₊ k))) (cong (sym (place-low 3 CCXZ)) (place-swap (Λ□ (₂₊ k)))) ⟩
-      place 3 (C₀ k) • place 3 (CCXZ ↓ᵏ (₁₊ k)) • place 3 (C₀ k)
-        ≈⟨ sym (trans (place-• 3 (C₀ k) ((CCXZ ↓ᵏ (₁₊ k)) • C₀ k))
-                      (back _ (place-• 3 (CCXZ ↓ᵏ (₁₊ k)) (C₀ k)))) ⟩
-      place 3 (C₀ k • (CCXZ ↓ᵏ (₁₊ k)) • C₀ k)
+      place 3 (C₀ k) • place 3 (CCXZ {0} ↓ᵏ (₁₊ k)) • place 3 (C₀ k)
+        ≈⟨ sym (trans (place-• 3 (C₀ k) ((CCXZ {0} ↓ᵏ (₁₊ k)) • C₀ k))
+                      (back _ (place-• 3 (CCXZ {0} ↓ᵏ (₁₊ k)) (C₀ k)))) ⟩
+      place 3 (C₀ k • (CCXZ {0} ↓ᵏ (₁₊ k)) • C₀ k)
         ≈⟨ lemma-5-1 3 complete (sem-294c k) ⟩
-      place 3 (CCXZ ↓ᵏ (₁₊ k))
+      place 3 (CCXZ {0} ↓ᵏ (₁₊ k))
         ≈⟨ place-low 3 CCXZ ⟩
       V ∎
 
@@ -348,8 +348,8 @@ module _ (k : ℕ) (complete : Complete (₁₊ k)) where
     K′-V = sym (comm-inv K-K′ eq209 (sym eq217))
 
     -- The middle of (294), the merges carried through CCXZ.
-    mid : (₁₊ (₄₊ k)) ⊢ Ā • V • A ≈ Kᵇ′ • V • Kᵇ
-    mid = begin
+    mid-V : (₁₊ (₄₊ k)) ⊢ Ā • V • A ≈ Kᵇ′ • V • Kᵇ
+    mid-V = begin
       Ā • V • A                     ≈⟨ cong (sym eq222) (back _ (sym eq221)) ⟩
       (Kᵇ′ • K′) • V • (K • Kᵇ)     ≈⟨ by-passoc ((□ • □) • □ • (□ • □)) (□ • (□ • □) • □ • □) Eq.refl ⟩
       Kᵇ′ • (K′ • V) • K • Kᵇ       ≈⟨ back _ (front _ K′-V) ⟩
@@ -442,7 +442,7 @@ module _ (k : ℕ) (complete : Complete (₁₊ k)) where
     W • Kᵇ • C k • Ā • V • A • C k • Kᵇ′
       ≈⟨ by-passoc (□ • □ • □ • □ • □ • □ • □ • □) (□ • □ • □ • (□ • □ • □) • □ • □) Eq.refl ⟩
     W • Kᵇ • C k • (Ā • V • A) • C k • Kᵇ′
-      ≈⟨ back _ (back _ (back _ (front _ mid))) ⟩
+      ≈⟨ back _ (back _ (back _ (front _ mid-V))) ⟩
     W • Kᵇ • C k • (Kᵇ′ • V • Kᵇ) • C k • Kᵇ′
       ≈⟨ by-passoc (□ • □ • □ • (□ • □ • □) • □ • □) (□ • (□ • □ • □) • □ • (□ • □ • □)) Eq.refl ⟩
     W • D • V • D

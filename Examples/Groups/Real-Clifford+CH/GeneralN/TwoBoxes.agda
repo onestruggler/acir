@@ -94,11 +94,11 @@ module _ (k : ℕ) (complete : Complete (₁₊ k)) where
 
     x′x : (₁₊ (₄₊ k)) ⊢ x′ • x ≈ ε
     x′x = begin
-      (Ex ↓ • (CCXZ ↓ᵏ (₁₊ k)) ↑ • Ex ↓) • (Ex ↓ • (CCZX ↓ᵏ (₁₊ k)) ↑ • Ex ↓)
+      (Ex ↓ • (CCXZ {0} ↓ᵏ (₁₊ k)) ↑ • Ex ↓) • (Ex ↓ • (CCZX {0} ↓ᵏ (₁₊ k)) ↑ • Ex ↓)
         ≈⟨ by-passoc ((□ • □ • □) • (□ • □ • □)) (□ • □ • (□ • □) • □ • □) Eq.refl ⟩
-      Ex ↓ • (CCXZ ↓ᵏ (₁₊ k)) ↑ • (Ex ↓ • Ex ↓) • (CCZX ↓ᵏ (₁₊ k)) ↑ • Ex ↓
+      Ex ↓ • (CCXZ {0} ↓ᵏ (₁₊ k)) ↑ • (Ex ↓ • Ex ↓) • (CCZX {0} ↓ᵏ (₁₊ k)) ↑ • Ex ↓
         ≈⟨ back _ (back _ (trans (front _ Ex²) left-unit)) ⟩
-      Ex ↓ • (CCXZ ↓ᵏ (₁₊ k)) ↑ • (CCZX ↓ᵏ (₁₊ k)) ↑ • Ex ↓
+      Ex ↓ • (CCXZ {0} ↓ᵏ (₁₊ k)) ↑ • (CCZX {0} ↓ᵏ (₁₊ k)) ↑ • Ex ↓
         ≈⟨ back _ (trans (sym assoc) (trans (front _ (lemma-cong↑ (CCXZ • CCZX) ε eq118)) left-unit)) ⟩
       Ex ↓ • Ex ↓
         ≈⟨ Ex² ⟩
@@ -277,7 +277,6 @@ module _ (k : ℕ) (complete : Complete (₁₊ k)) where
       (Ex ↑ • Ex ↓) • Λ□ (₃₊ k) ↑ • (Ex ↓ • Ex ↑)
         ≈⟨ sym (cong (front _ left-unit) (back _ (back _ right-unit))) ⟩
       ((ε • Ex ↑) • Ex ↓) • Λ□ (₃₊ k) ↑ • (Ex ↓ • (Ex ↑ • ε)) ∎
-    where open Tools ((₁₊ (₄₊ k)) VRel,_===_)
 
   private
     B₁₀↑-CH : (₁₊ (₄₊ k)) ⊢ B₁₀ (₁₊ k) ↑ • CH ↓ ≈ CH ↓ • B₁₀ (₁₊ k) ↑

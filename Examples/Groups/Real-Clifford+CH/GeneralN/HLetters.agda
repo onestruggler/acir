@@ -28,12 +28,12 @@ open import Data.List using (List ; [] ; _∷_)
 open import Data.Maybe using (just ; nothing)
 open import Data.Nat using (ℕ ; zero ; suc ; _+_ ; _^_ ; _<_ ; s≤s ; z≤n ; _≡ᵇ_)
 open import Data.Nat.Properties using (+-identityʳ ; +-suc ; <-cmp)
-open import Data.Product using (_,_)
+open import Data.Product using (_,_ ; proj₁ ; proj₂)
 open import Data.Vec using (Vec ; [] ; _∷_ ; map)
 open import Relation.Binary.Definitions using (tri< ; tri≈ ; tri>)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Relation.Nullary using (yes ; no)
-open import Word.Base using ([_]ʷ ; _ʷ)
+open import Word.Base using ([_]ʷ ; ε ; _•_ ; _ʷ)
 
 open import Notations using (₃₊)
 
@@ -46,7 +46,7 @@ open import Examples.Groups.Real-Clifford+CH.Auxiliary.P using (GenP ; HH)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Gray using (index ; code ; code-index)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Bitstrings using (lookupℕ ; diff ; diffFrom)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.GrayStep using (flipAt ; flipAt-comm)
-open import Examples.Groups.Real-Clifford+CH.Encoding using (hh ; hpat ; distinct4)
+open import Examples.Groups.Real-Clifford+CH.Encoding using (hh ; hpat ; distinct4 ; twoSmallest)
 open import Examples.Groups.Real-Clifford+CH.Decoding using (d ; dHH ; dHH₄ ; dHH₄-pat ; layoutH ; layoutHFrom)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires using (negsB)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Layouts using (layoutAt ; setT ; tgtWire-at ; negs-at)
@@ -291,7 +291,10 @@ module _ {m : ℕ} where
     ... | no  _  | no  _  = Eq.refl
 
     dHH-true : ∀ a b c e → distinct4 a b c e ≡ true → dHH {m} a b c e ≡ dHH₄ a b c e
-    dHH-true a b c e t = Eq.cong (λ x → if x then dHH₄ {m} a b c e else _) t
+    dHH-true a b c e t =
+      Eq.cong (λ x → if x then dHH₄ {m} a b c e
+                     else dHH₄ (proj₁ (twoSmallest a b c e)) (proj₂ (twoSmallest a b c e)) c e
+                          • dHH₄ a b (proj₁ (twoSmallest a b c e)) (proj₂ (twoSmallest a b c e))) t
 
   dH-pat : ∀ (G : Bits N) h q → h < N → q < N → h ≢ q → lookupℕ h G ≡ false → lookupℕ q G ≡ false →
            (d ʷ) (hh (idx G) (idx (flipAt h G)) (idx (flipAt q G)) (idx (flipAt h (flipAt q G))))

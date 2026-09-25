@@ -285,7 +285,7 @@ module Frame₁ (p : ℕ) (p≤ : p ≤ ₁₊ m) where
       net (sdS p S.↑) • (X • negsB (y ∷ c) ↑) • net (revS (sdS p S.↑))
         ≈⟨ ≡→≈ (nets (X • negsB (y ∷ c) ↑)) ⟩
       net (sdS p) ↑ • (X • negsB (y ∷ c) ↑) • net (revS (sdS p)) ↑
-        ≈⟨ trans (sym assoc) (front _ (sym (X-↑ (net (sdS p))))) ⟩
+        ≈⟨ trans (by-passoc (□ • (□ • □) • □) ((□ • □) • □ • □) Eq.refl) (front _ (sym (X-↑ (net (sdS p))))) ⟩
       (X • net (sdS p) ↑) • negsB (y ∷ c) ↑ • net (revS (sdS p)) ↑
         ≈⟨ assoc ⟩
       X • (net (sdS p) • negsB (y ∷ c) • net (revS (sdS p))) ↑
@@ -310,8 +310,8 @@ module Frame₁ (p : ℕ) (p≤ : p ≤ ₁₊ m) where
   frame₁ c = sym (pl-•₃ σ (colours′ false true c) (frame-eq σ (sdS p) pF σq pq) (colours′ false true c))
 
   -- A one-wire circuit on the frame's wire 1 is on wire 1 + p.
-  back : ∀ (g : Circuit 1) → pl σ (on1 g 1) ≈ on1 g (suc p)
-  back g = Eq.subst₂ (λ f t → net σ • on1 g (toℕ f) • net (revS σ) ≈ on1 g (suc t)) σj tj (on1-net g σ (sF jF))
+  back₁ : ∀ (g : Circuit 1) → pl σ (on1 g 1) ≈ on1 g (suc p)
+  back₁ g = Eq.subst₂ (λ f t → net σ • on1 g (toℕ f) • net (revS σ) ≈ on1 g (suc t)) σj tj (on1-net g σ (sF jF))
     where
     jF : Fin (₂₊ m)
     jF = fromℕ< (s≤s p≤)
@@ -327,7 +327,7 @@ module Frame₁ (p : ℕ) (p≤ : p ≤ ₁₊ m) where
       ≤-reflexive′ Eq.refl = ≤-refl
 
   back-Z : pl σ (on1 Z 1) ≈ on1 Z (suc p)
-  back-Z = back Z
+  back-Z = back₁ Z
 
 -- The gate on wire 0: a one-wire circuit on the frame's wire 1 is on
 -- wire 0.

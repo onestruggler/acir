@@ -38,9 +38,9 @@ open import Data.Fin.Properties using (toℕ<n ; toℕ-fromℕ<)
 open import Data.Nat using (zero ; suc ; _+_ ; _∸_ ; _<_ ; _≤_ ; _<ᵇ_ ; _^_ ; s≤s ; z≤n)
 open import Data.Nat.Properties
   using (+-suc ; +-identityʳ ; +-comm ; m≢1+m+n ; m≤m+n ; m+[n∸m]≡n ; <⇒≤ ; ≤-trans ; ≤-reflexive ;
-         <-transʳ ; m≤n⇒m<n∨m≡n ; suc-injective ; <-irrefl)
+         ≤-<-trans ; m≤n⇒m<n∨m≡n ; suc-injective ; <-irrefl)
 open import Data.Product using (_,_)
-open import Data.Sum using (inj₁ ; inj₂)
+open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Vec using (Vec ; [] ; _∷_ ; zipWith)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Word.Base using (ε ; _•_)
@@ -189,87 +189,96 @@ MI (suc (suc zero)) a t t<N lt E bnd =
   where
   e₂ : toBits N (suc (suc a)) ≡ compl t (toBits N a)
   e₂ = Eq.trans (Eq.cong (toBits N) (Eq.sym (Eq.trans (+-suc a 1) (Eq.cong suc (Eq.trans (+-suc a 0) (Eq.cong suc (+-identityʳ a))))))) E
-MI (suc (suc (suc e))) a t t<N lt E bnd with m≤n⇒m<n∨m≡n (firstZero-≤ t (toBits N a) lt t<N)
-... | inj₂ z≡t = ⊥-elim (m≢1+m+n a (suc-injective (Eq.trans a+d≡ idx)))
+MI (suc (suc (suc e))) a t t<N lt E bnd =
+  go (MI (suc e) (suc a) t t<N) (m≤n⇒m<n∨m≡n (firstZero-≤ t (toBits N a) lt t<N))
   where
-  A : Bits N
-  A = toBits N a
-  sa : toBits N (suc a) ≡ compl t A
-  sa = Eq.trans (toBits-suc N a)
-         (Eq.trans (incr-first A (Eq.subst (_< N) (Eq.sym z≡t) t<N)) (Eq.cong (λ j → compl j A) z≡t))
-  idx : a + suc (suc (suc e)) ≡ suc (suc (a + suc e))
-  idx = Eq.trans (+-suc a (suc (suc e))) (Eq.cong suc (+-suc a (suc e)))
-  sa< : suc a < 2 ^ N
-  sa< = ≤-trans (s≤s (≤-trans (s≤s (m≤m+n a (suc (suc e)))) (≤-reflexive (Eq.sym (+-suc a (suc (suc e))))))) bnd
-  a+d≡ : suc a ≡ a + suc (suc (suc e))
-  a+d≡ = toBits-inj sa< bnd (Eq.trans sa (Eq.sym E))
-... | inj₁ z<t = begin
-  dZZ₁ a • dZZ-chain (suc a) (suc (suc e))
-    ≈⟨ back _ (chain-snoc (suc a) (suc e)) ⟩
-  dZZ₁ a • (dZZ-chain (suc a) (suc e) • dZZ₁ (suc a + suc e))
-    ≈⟨ cong (≡→≈ (Eq.cong mc□ (layout-step a z z<N A1≡)))
-            (cong (MI (suc e) (suc a) t t<N lt1 T1 b1) (≡→≈ (Eq.cong mc□ L3))) ⟩
-  mc□ (layoutAt z G) • (mc□ (layoutAt t (gray (toBits N (suc a)))) • mc□ (layoutAt z (flipAt t G)))
-    ≈⟨ cong (mc□-boxF z z<N G) (cong (trans (≡→≈ (Eq.cong (λ w → mc□ (layoutAt t w)) G1))
-                                           (mc□-boxF t t<N (flipAt z G)))
-                                     (mc□-boxF z z<N (flipAt t G))) ⟩
-  boxF (sdS z) G • (boxF (sdS t) (flipAt z G) • boxF (sdS z) (flipAt t G))
-    ≈⟨ three-boxesℕ t z t<N z<N (λ e → <-irrefl′ (Eq.subst (_< t) (Eq.sym e) z<t)) G ⟩
-  boxF (sdS t) G
-    ≈⟨ sym (mc□-boxF t t<N G) ⟩
-  mc□ (layoutAt t G) ∎
-  where
-  A : Bits N
-  A = toBits N a
-  G : Bits N
-  G = gray A
-  z : ℕ
-  z = firstZero A
-  z<N : z < N
-  z<N = <-transʳ (<⇒≤ z<t) t<N
-
-  <-irrefl′ : t < t → ∀ {B : Set} → B
-  <-irrefl′ p = ⊥-elim (<-irrefl Eq.refl p)
-
-  -- a + 1: complemented up to z.
-  A1≡ : toBits N (suc a) ≡ compl z A
-  A1≡ = Eq.trans (toBits-suc N a) (incr-first A z<N)
-  G1 : gray (toBits N (suc a)) ≡ flipAt z G
-  G1 = Eq.trans (Eq.cong gray A1≡) (gray-compl z A z<N)
-
-  lt1 : lookupℕ t (toBits N (suc a)) ≡ false
-  lt1 = Eq.trans (Eq.cong (lookupℕ t) A1≡) (Eq.trans (lookup-compl-hi z t A z<t) lt)
-
-  idx : suc (suc a + suc e) ≡ a + suc (suc (suc e))
-  idx = Eq.sym (Eq.trans (+-suc a (suc (suc e))) (Eq.cong suc (+-suc a (suc e))))
-
-  -- b − 1 = a + 1 + (1 + e): complemented up to t from a + 1.
-  X′ : Bits N
-  X′ = compl t (compl z A)
-  fzX : firstZero X′ ≡ z
-  fzX = firstZero-cc z t A Eq.refl z<t t<N
-  incrX : incr X′ ≡ compl t A
-  incrX = Eq.trans (incr-first X′ (Eq.subst (_< N) (Eq.sym fzX) z<N))
-            (Eq.trans (Eq.cong (λ j → compl j X′) fzX)
-              (Eq.trans (compl-comm z t (compl z A)) (Eq.cong (compl t) (compl-invol z A))))
-  T1 : toBits N (suc a + suc e) ≡ compl t (toBits N (suc a))
-  T1 = incr-inj (Eq.trans (Eq.sym (toBits-suc N (suc a + suc e)))
-                  (Eq.trans (Eq.cong (toBits N) idx)
-                    (Eq.trans E (Eq.sym (Eq.trans (Eq.cong (λ w → incr (compl t w)) A1≡) incrX)))))
-  b1 : suc a + suc e < 2 ^ N
-  b1 = Eq.subst (_≤ 2 ^ N) (Eq.sym idx) (<⇒≤ bnd)
-
-  -- The last box: the codes of b − 1 and b.
-  L3 : layout□ {m} (suc a + suc e) ≡ layoutAt z (flipAt t G)
-  L3 = Eq.trans (Eq.cong₂ (zipWith slot) c₁ c₂) (zip-flip′ z (flipAt t G) z<N)
+  -- The recursive call is made here, on e + 1 < e + 3, and passed in:
+  -- inside the helper, whose argument is e, it would look like an
+  -- increase to the termination checker.
+  go : (lookupℕ t (toBits N (suc a)) ≡ false → toBits N (suc a + suc e) ≡ compl t (toBits N (suc a)) →
+        suc a + suc e < 2 ^ N → dZZ-chain {m} (suc a) (suc e) ≈ mc□ (layoutAt t (gray (toBits N (suc a))))) →
+       firstZero (toBits N a) < t ⊎ firstZero (toBits N a) ≡ t →
+       dZZ-chain {m} a (suc (suc (suc e))) ≈ mc□ (layoutAt t (gray (toBits N a)))
+  go ih (inj₂ z≡t) = ⊥-elim (m≢1+m+n a (suc-injective (Eq.trans a+d≡ idx)))
     where
-    c₁ : gcode (suc a + suc e) ≡ flipAt z (flipAt t G)
-    c₁ = Eq.trans (Eq.cong gray T1)
-           (Eq.trans (gray-compl t (toBits N (suc a)) t<N)
-             (Eq.trans (Eq.cong (flipAt t) G1) (flipAt-comm t z G)))
-    c₂ : gcode (suc (suc a + suc e)) ≡ flipAt t G
-    c₂ = Eq.trans (Eq.cong (λ k → gray (toBits N k)) idx)
-           (Eq.trans (Eq.cong gray E) (gray-compl t A t<N))
+    A : Bits N
+    A = toBits N a
+    sa : toBits N (suc a) ≡ compl t A
+    sa = Eq.trans (toBits-suc N a)
+           (Eq.trans (incr-first A (Eq.subst (_< N) (Eq.sym z≡t) t<N)) (Eq.cong (λ j → compl j A) z≡t))
+    idx : a + suc (suc (suc e)) ≡ suc (suc (a + suc e))
+    idx = Eq.trans (+-suc a (suc (suc e))) (Eq.cong suc (+-suc a (suc e)))
+    sa< : suc a < 2 ^ N
+    sa< = ≤-trans (s≤s (≤-trans (s≤s (m≤m+n a (suc (suc e)))) (≤-reflexive (Eq.sym (+-suc a (suc (suc e))))))) bnd
+    a+d≡ : suc a ≡ a + suc (suc (suc e))
+    a+d≡ = toBits-inj sa< bnd (Eq.trans sa (Eq.sym E))
+  go ih (inj₁ z<t) = begin
+    dZZ₁ a • dZZ-chain (suc a) (suc (suc e))
+      ≈⟨ back _ (chain-snoc (suc a) (suc e)) ⟩
+    dZZ₁ a • (dZZ-chain (suc a) (suc e) • dZZ₁ (suc a + suc e))
+      ≈⟨ cong (≡→≈ (Eq.cong mc□ (layout-step a z z<N A1≡)))
+              (cong (ih lt1 T1 b1) (≡→≈ (Eq.cong mc□ L3))) ⟩
+    mc□ (layoutAt z G) • (mc□ (layoutAt t (gray (toBits N (suc a)))) • mc□ (layoutAt z (flipAt t G)))
+      ≈⟨ cong (mc□-boxF z z<N G) (cong (trans (≡→≈ (Eq.cong (λ w → mc□ (layoutAt t w)) G1))
+                                             (mc□-boxF t t<N (flipAt z G)))
+                                       (mc□-boxF z z<N (flipAt t G))) ⟩
+    boxF (sdS z) G • (boxF (sdS t) (flipAt z G) • boxF (sdS z) (flipAt t G))
+      ≈⟨ three-boxesℕ t z t<N z<N (λ e → <-irrefl′ (Eq.subst (_< t) (Eq.sym e) z<t)) G ⟩
+    boxF (sdS t) G
+      ≈⟨ sym (mc□-boxF t t<N G) ⟩
+    mc□ (layoutAt t G) ∎
+    where
+    A : Bits N
+    A = toBits N a
+    G : Bits N
+    G = gray A
+    z : ℕ
+    z = firstZero A
+    z<N : z < N
+    z<N = ≤-<-trans (<⇒≤ z<t) t<N
+
+    <-irrefl′ : t < t → ∀ {B : Set} → B
+    <-irrefl′ p = ⊥-elim (<-irrefl Eq.refl p)
+
+    -- a + 1: complemented up to z.
+    A1≡ : toBits N (suc a) ≡ compl z A
+    A1≡ = Eq.trans (toBits-suc N a) (incr-first A z<N)
+    G1 : gray (toBits N (suc a)) ≡ flipAt z G
+    G1 = Eq.trans (Eq.cong gray A1≡) (gray-compl z A z<N)
+
+    lt1 : lookupℕ t (toBits N (suc a)) ≡ false
+    lt1 = Eq.trans (Eq.cong (lookupℕ t) A1≡) (Eq.trans (lookup-compl-hi z t A z<t) lt)
+
+    idx : suc (suc a + suc e) ≡ a + suc (suc (suc e))
+    idx = Eq.sym (Eq.trans (+-suc a (suc (suc e))) (Eq.cong suc (+-suc a (suc e))))
+
+    -- b − 1 = a + 1 + (1 + e): complemented up to t from a + 1.
+    X′ : Bits N
+    X′ = compl t (compl z A)
+    fzX : firstZero X′ ≡ z
+    fzX = firstZero-cc z t A Eq.refl z<t t<N
+    incrX : incr X′ ≡ compl t A
+    incrX = Eq.trans (incr-first X′ (Eq.subst (_< N) (Eq.sym fzX) z<N))
+              (Eq.trans (Eq.cong (λ j → compl j X′) fzX)
+                (Eq.trans (compl-comm z t (compl z A)) (Eq.cong (compl t) (compl-invol z A))))
+    T1 : toBits N (suc a + suc e) ≡ compl t (toBits N (suc a))
+    T1 = incr-inj (Eq.trans (Eq.sym (toBits-suc N (suc a + suc e)))
+                    (Eq.trans (Eq.cong (toBits N) idx)
+                      (Eq.trans E (Eq.sym (Eq.trans (Eq.cong (λ w → incr (compl t w)) A1≡) incrX)))))
+    b1 : suc a + suc e < 2 ^ N
+    b1 = Eq.subst (_≤ 2 ^ N) (Eq.sym idx) (<⇒≤ bnd)
+
+    -- The last box: the codes of b − 1 and b.
+    L3 : layout□ {m} (suc a + suc e) ≡ layoutAt z (flipAt t G)
+    L3 = Eq.trans (Eq.cong₂ (zipWith slot) c₁ c₂) (zip-flip′ z (flipAt t G) z<N)
+      where
+      c₁ : gcode (suc a + suc e) ≡ flipAt z (flipAt t G)
+      c₁ = Eq.trans (Eq.cong gray T1)
+             (Eq.trans (gray-compl t (toBits N (suc a)) t<N)
+               (Eq.trans (Eq.cong (flipAt t) G1) (flipAt-comm t z G)))
+      c₂ : gcode (suc (suc a + suc e)) ≡ flipAt t G
+      c₂ = Eq.trans (Eq.cong (λ k → gray (toBits N k)) idx)
+             (Eq.trans (Eq.cong gray E) (gray-compl t A t<N))
 
 ------------------------------------------------------------------------
 -- Lemma 8.4

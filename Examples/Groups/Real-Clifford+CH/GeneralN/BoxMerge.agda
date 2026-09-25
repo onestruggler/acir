@@ -44,7 +44,7 @@ open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Blocks complete₂ using
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Blocks complete₂ complete₃ using (L₃-sem)
 open import Examples.Groups.Real-Clifford+CH.Semantics using (Mat ; mat ; _+√2_ ; mulM ; scaleM ; √2^_)
 open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧M ; len)
-open import Examples.Groups.Real-Clifford+CH.Soundness.Relators using (Same ; ≡-same)
+open import Examples.Groups.Real-Clifford+CH.Soundness.Relators using (Same)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Locals using (Wᴸ ; Wᴸ-def ; Vᴸ ; Vᴸ-def)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Locals2 using (ZX₀₁ᴸ ; ZX₀₁ᴸ-def)
 open import Examples.Groups.Real-Clifford+CH.Evaluation using (by-rows)
@@ -129,23 +129,6 @@ module _ (k : ℕ) (complete : Complete k) where
 
     ------------------------------------------------------------------
     -- Three and two wires
-
-    -- Stored-matrix equalities through the literals of Locals.
-    lit-same : ∀ {u v : Circuit 3} {Mu Mv : Mat 3} → ⟦ u ⟧M ≡ Mu → ⟦ v ⟧M ≡ Mv →
-               scaleM (√2^ len v) Mu ≡ scaleM (√2^ len u) Mv → Same u v
-    lit-same {u} {v} eu ev e = ≡-same u v (Eq.trans (Eq.cong (scaleM _) eu) (Eq.trans e (Eq.cong (scaleM _) (Eq.sym ev))))
-
-    -- The readings of the one-gate factors, named so that no implicit
-    -- of the products is left to be solved by evaluation.
-    X₂M CZ₁₂M : Mat 3
-    X₂M   = ⟦ X {0} ↑ ↑ ⟧M
-    CZ₁₂M = ⟦ CZ {0} ↑ ⟧M
-
-    rX₂ : ⟦ X {0} ↑ ↑ ⟧M ≡ X₂M
-    rX₂ = Eq.refl
-
-    rCZ : ⟦ CZ {0} ↑ ⟧M ≡ CZ₁₂M
-    rCZ = Eq.refl
 
     -- V negated on wire 2, as a literal.
     V°ᴸ : Mat 3

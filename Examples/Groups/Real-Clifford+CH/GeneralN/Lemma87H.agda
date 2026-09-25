@@ -47,7 +47,7 @@ open import Data.Fin.Properties using (toℕ-fromℕ<)
 open import Data.Fin.Permutation using (_⟨$⟩ʳ_)
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Nat using (zero ; _<_ ; _<ᵇ_ ; s≤s ; z≤n)
-open import Data.Nat.Properties using (≤-refl ; ≤-trans ; n≤1+n ; n<1+n ; n≢1+n)
+open import Data.Nat.Properties using (≤-refl ; ≤-trans ; n≤1+n ; n<1+n ; <⇒≢)
 open import Data.Vec using ([] ; _∷_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Word.Base using (Word ; ε ; _ʷ)
@@ -306,7 +306,7 @@ private
 
   -- A gate on wire 1 + p, or the lower wire of a two-wire gate there.
   module Nets (p : ℕ) (p≤ : p ≤ ₁₊ m) where
-    open Frame₁ p p≤ public using (σ ; pF ; tp ; σq ; colours′ ; back)
+    open Frame₁ p p≤ public using (σ ; pF ; tp ; σq ; colours′ ; back₁)
 
     n₁ : shiftDown {N} p • shiftDown₁ (suc p) ≈ net σ
     n₁ = ≡→≈ (Eq.sym (Eq.cong₂ _•_ (net-sdS p) (Eq.trans (net-↑ (sdS p)) (Eq.cong _↑ (net-sdS p)))))
@@ -323,7 +323,7 @@ private
     module F = Frame σ
 
     h≢q : suc p ≢ p
-    h≢q e = n≢1+n p (Eq.sym e)
+    h≢q e = <⇒≢ (n<1+n p) (Eq.sym e)
 
 ------------------------------------------------------------------------
 -- Lemma 8.7 for H
@@ -371,7 +371,7 @@ lemmaH (suc p) p<N@(s≤s (s≤s p≤)) = sym (begin
   Nt.F.R • (d ʷ) (E-Z (suc p)) • Nt.F.R
     ≈⟨ back _ (front _ (sym (lemmaZ (suc p) p<N))) ⟩
   Nt.F.R • on1 Z (suc p) • Nt.F.R
-    ≈⟨ Nt.F.final {Z ↑} {H ↑} PP-Z↑ (Nt.back Z) (Nt.back H) ⟩
+    ≈⟨ Nt.F.final {Z ↑} {H ↑} PP-Z↑ (Nt.back₁ Z) (Nt.back₁ H) ⟩
   on1 H (suc p) ∎)
   where
   module Nt = Nets p p≤
@@ -457,7 +457,7 @@ lemmaCH (suc p) p<@(s≤s (s≤s (s≤s p≤))) = sym (begin
   Nt.F.R • (d ʷ) (E-CZ (suc p)) • Nt.F.R
     ≈⟨ back _ (front _ (sym (lemmaCZ (suc p) p<))) ⟩
   Nt.F.R • on2 CZ (suc p) • Nt.F.R
-    ≈⟨ cong Rp (back _ (front _ Rp)) ⟩
+    ≈⟨ cong Rp (back _ Rp) ⟩
   on2 PP p • on2 CZ (suc p) • on2 PP p
     ≈⟨ lift-18 p p≤ ⟩
   on2 CH (suc p) ∎)

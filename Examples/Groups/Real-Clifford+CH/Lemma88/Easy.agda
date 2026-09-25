@@ -33,7 +33,7 @@ open import Data.Product using (Σ-syntax ; _×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Vec using (_∷_)
 open import Relation.Binary.Definitions using (tri< ; tri≈ ; tri>)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
-open import Relation.Nullary using (yes ; no)
+open import Relation.Nullary using (Dec ; yes ; no)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 
 open import Notations using (₃₊)
@@ -51,7 +51,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.HLetters using (hpat-flips
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.P using (GenP ; −1−1 ; −1X ; XX ; HH)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Figure8 using (Succ)
 open import Examples.Groups.Real-Clifford+CH.Encoding
-  using (zz ; zx ; xx ; hh ; hhℕ ; zxℕ ; Σ ; Σ′ ; distinct4 ; twoSmallest ; hpat ; toFin)
+  using (zz ; zx ; xx ; hh ; hhℕ ; zxℕ ; Σ ; Σ′ ; τ ; distinct4 ; twoSmallest ; hpat ; toFin)
 open import Examples.Groups.Real-Clifford+CH.Decoding
   using (d ; dZZ ; dZZ-chain ; dZX ; dZXb ; dZXs ; dZXself ; dZXlo ; dZXhi ; dZXlo₁ ; dZXhi₁ ; dXX ;
          dHH ; dHH₄ ; dHH₄-pat ; dHH₄-nopat ; dΣ ; gadget ; gcode)
@@ -298,8 +298,8 @@ private
   odd-gap x y′ (s≤s p) with gap x (suc y′) (s≤s p)
   ... | k , e₁ , e₂ = k , p , e₂ , Eq.trans (Eq.sym (m+[n∸m]≡n (<⇒≤ p))) (Eq.cong (x +_) e₂) , e₁
 
-  par-of : ∀ {y x k b} → y ∸ x ≡ suc (suc k) → parity (y ∸ x) ≡ b → parity k ≡ b
-  par-of {k = k} e q = Eq.trans (Eq.sym (parity² k)) (Eq.trans (Eq.cong parity (Eq.sym e)) q)
+  par-of : ∀ y x {k b} → y ∸ x ≡ suc (suc k) → parity (y ∸ x) ≡ b → parity k ≡ b
+  par-of y x {k = k} e q = Eq.trans (Eq.sym (parity² k)) (Eq.trans (Eq.cong parity (Eq.sym e)) q)
 
 -- (25)
 e25 : ∀ (a a′ c : I) → Succ a a′ → toℕ a′ < toℕ c → parity (toℕ c ∸ toℕ a) ≡ true →
@@ -307,7 +307,7 @@ e25 : ∀ (a a′ c : I) → Succ a a′ → toℕ a′ < toℕ c → parity (to
 e25 a a′ c s p q with gap (toℕ a) (toℕ c) (Eq.subst (λ t → suc t ≤ toℕ c) s p)
 ... | k , e₁ , e₂ =
   trans (≡→≈ (d-zx a a c (ne-ℕ (<⇒≢ (≤-trans (n≤1+n _) p′)))))
-        (trans (D25 x y k p′ e₁ e₂ (par-of e₁ q)) (≡→≈ (Eq.sym rhs)))
+        (trans (D25 x y k p′ e₁ e₂ (par-of y x e₁ q)) (≡→≈ (Eq.sym rhs)))
   where
   x y : ℕ
   x = toℕ a
@@ -327,7 +327,7 @@ e26 : ∀ (a a′ c : I) → Succ a a′ → toℕ a′ < toℕ c → parity (to
 e26 a a′ c s p q with gap (toℕ a) (toℕ c) (Eq.subst (λ t → suc t ≤ toℕ c) s p)
 ... | k , e₁ , e₂ =
   trans (≡→≈ (d-zx c a c (ne-ℕ (<⇒≢ (≤-trans (n≤1+n _) p′)))))
-        (trans (D26 x y k p′ e₁ e₂ (par-of e₁ q)) (≡→≈ (Eq.sym rhs)))
+        (trans (D26 x y k p′ e₁ e₂ (par-of y x e₁ q)) (≡→≈ (Eq.sym rhs)))
   where
   x y : ℕ
   x = toℕ a
@@ -348,7 +348,7 @@ e27 a c′ c s p q with odd-gap (toℕ a) (toℕ c′) (Eq.subst (λ t → suc (
 ... | k , xy′ , e₁ , e₂ , e₃ =
   trans (≡→≈ (Eq.trans (d-zx a a c (ne-ℕ (<⇒≢ (≤-trans (n≤1+n _) p))))
                        (Eq.cong (λ t → rev (dZX {m} x x t)) s)))
-        (trans (D27 x y′ k xy′ e₁ e₂ (par-of e₃ (Eq.subst (λ t → parity (t ∸ x) ≡ false) s q)))
+        (trans (D27 x y′ k xy′ e₁ e₂ (par-of (suc y′) x e₃ (Eq.subst (λ t → parity (t ∸ x) ≡ false) s q)))
                (≡→≈ (Eq.sym rhs)))
   where
   x y′ : ℕ
@@ -368,7 +368,7 @@ e28 a c′ c s p q with odd-gap (toℕ a) (toℕ c′) (Eq.subst (λ t → suc (
 ... | k , xy′ , e₁ , e₂ , e₃ =
   trans (≡→≈ (Eq.trans (d-zx c a c (ne-ℕ (<⇒≢ (≤-trans (n≤1+n _) p))))
                        (Eq.cong (λ t → rev (dZX {m} t x t)) s)))
-        (trans (D28 x y′ k xy′ e₁ e₂ (par-of e₃ (Eq.subst (λ t → parity (t ∸ x) ≡ false) s q)))
+        (trans (D28 x y′ k xy′ e₁ e₂ (par-of (suc y′) x e₃ (Eq.subst (λ t → parity (t ∸ x) ≡ false) s q)))
                (≡→≈ (Eq.sym rhs)))
   where
   x y′ : ℕ
@@ -390,17 +390,21 @@ e30 c a b ab ca cb = ≡→≈ (Eq.trans (d-zx c a b ab)
 
 -- (33)
 e33 : ∀ (b a : I) → (d ʷ) (zx {N} b a b) ≈ (d ʷ) (zx b b a)
-e33 b a with a ≟F b
-... | yes Eq.refl = refl
-... | no ab = ≡→≈ (Eq.trans (d-zx b a b ab)
-                    (Eq.trans (Eq.cong rev (sides (toℕ a) (toℕ b) (λ e → ab (toℕ-injective e))))
-                              (Eq.sym (d-zx b b a (λ e → ab (Eq.sym e))))))
+e33 b a = go a (a ≟F b)
   where
-  sides : ∀ x y → x ≢ y → dZX {m} y x y ≡ dZX y y x
-  sides x y xy with <-cmp x y
-  ... | tri< p _ _ = Eq.trans (dZX-hi p) (Eq.sym (dZX-hi′ p))
-  ... | tri≈ _ e _ = ⊥-elim (xy e)
-  ... | tri> _ _ p = Eq.trans (dZX-lo′ p) (Eq.sym (dZX-lo p))
+  -- Casing on the decision here, not by `with` in e33: a `with` would
+  -- abstract the test in one side's zx and not the other's.
+  go : ∀ a → Dec (a ≡ b) → (d ʷ) (zx {N} b a b) ≈ (d ʷ) (zx b b a)
+  go a (yes Eq.refl) = refl
+  go a (no ab) = ≡→≈ (Eq.trans (d-zx b a b ab)
+                   (Eq.trans (Eq.cong rev (sides (toℕ a) (toℕ b) (λ e → ab (toℕ-injective e))))
+                             (Eq.sym (d-zx b b a (λ e → ab (Eq.sym e))))))
+    where
+    sides : ∀ x y → x ≢ y → dZX {m} y x y ≡ dZX y y x
+    sides x y xy with <-cmp x y
+    ... | tri< p _ _ = Eq.trans (dZX-hi p) (Eq.sym (dZX-hi′ p))
+    ... | tri≈ _ e _ = ⊥-elim (xy e)
+    ... | tri> _ _ p = Eq.trans (dZX-lo′ p) (Eq.sym (dZX-lo p))
 
 -- (34)
 e34 : ∀ (a b c e : I) → a ≢ b → c ≢ e → (d ʷ) (xx {N} a b c e) ≈ (d ʷ) (zx a a b • zx b c e)
@@ -436,23 +440,30 @@ private
     t≢f ()
 
   dist-ab : ∀ x y z w → distinct4 x y z w ≡ true → x ≢ y
-  dist-ab x y z w t = ᵇ-ne (not-true (∧-l t))
+  dist-ab x y z w t = ᵇ-ne {x} {y} (not-true {x ≡ᵇ y} (∧-l {not (x ≡ᵇ y)} t))
 
   dist-cd : ∀ x y z w → distinct4 x y z w ≡ true → z ≢ w
-  dist-cd x y z w t = ᵇ-ne (not-true (∧-r (∧-r (∧-r (∧-r (∧-r t))))))
+  dist-cd x y z w t =
+    ᵇ-ne {z} {w} (not-true {z ≡ᵇ w}
+      (∧-r {not (y ≡ᵇ w)} (∧-r {not (y ≡ᵇ z)} (∧-r {not (x ≡ᵇ w)} (∧-r {not (x ≡ᵇ z)} (∧-r {not (x ≡ᵇ y)} t))))))
 
   dist4 : ∀ x y z w → x ≢ y → x ≢ z → x ≢ w → y ≢ z → y ≢ w → z ≢ w →
           not (x ≡ᵇ y) ∧ not (x ≡ᵇ z) ∧ not (x ≡ᵇ w) ∧ not (y ≡ᵇ z) ∧ not (y ≡ᵇ w) ∧ not (z ≡ᵇ w) ≡ true
   dist4 x y z w e₁ e₂ e₃ e₄ e₅ e₆
     rewrite ≡ᵇ-≢ x y e₁ | ≡ᵇ-≢ x z e₂ | ≡ᵇ-≢ x w e₃ | ≡ᵇ-≢ y z e₄ | ≡ᵇ-≢ y w e₅ | ≡ᵇ-≢ z w e₆ = Eq.refl
 
+  -- The other branch of dHH, over the two smallest free indices.
+  dHH-two : ℕ → ℕ → ℕ → ℕ → Word (Gen N)
+  dHH-two x y z w = dHH₄ {m} (proj₁ (twoSmallest x y z w)) (proj₂ (twoSmallest x y z w)) z w •
+                    dHH₄ x y (proj₁ (twoSmallest x y z w)) (proj₂ (twoSmallest x y z w))
+
   dHH-true : ∀ x y z w → distinct4 x y z w ≡ true → dHH {m} x y z w ≡ dHH₄ x y z w
-  dHH-true x y z w t = Eq.cong (λ β → if β then dHH₄ {m} x y z w else _) t
+  dHH-true x y z w t = Eq.cong (λ β → if β then dHH₄ {m} x y z w else dHH-two x y z w) t
 
   dHH-false : ∀ x y z w → distinct4 x y z w ≡ false →
               dHH {m} x y z w ≡ dHH₄ (proj₁ (twoSmallest x y z w)) (proj₂ (twoSmallest x y z w)) z w •
                                 dHH₄ x y (proj₁ (twoSmallest x y z w)) (proj₂ (twoSmallest x y z w))
-  dHH-false x y z w f = Eq.cong (λ β → if β then dHH₄ {m} x y z w else _) f
+  dHH-false x y z w f = Eq.cong (λ β → if β then dHH₄ {m} x y z w else dHH-two x y z w) f
 
   -- The Gray codes of 0, 1, 3, 2: no bit, bit 0, bit 1, both.
   hd-Z : ∀ k → hd (toBits k 0) ≡ false
@@ -516,15 +527,38 @@ private
   ... | just _  | just _  | nothing = Eq.refl
   ... | just c′ | just a′ | just b′ = d-zx′ c′ a′ b′
 
-  dΣ-• : ∀ {u v : Word (GenP N)} → (d ʷ) u ≡ rev (dΣ {m} u) → (d ʷ) v ≡ rev (dΣ {m} v) →
+  dΣ-• : ∀ (u v : Word (GenP N)) → (d ʷ) u ≡ rev (dΣ {m} u) → (d ʷ) v ≡ rev (dΣ {m} v) →
          (d ʷ) (u • v) ≡ rev (dΣ {m} (u • v))
-  dΣ-• eu ev = Eq.cong₂ _•_ eu ev
+  dΣ-• u v eu ev = Eq.cong₂ _•_ eu ev
 
   d-Σ : ∀ x y z w → (d ʷ) (Σ {N} x y z w) ≡ rev (dΣ {m} (Σ x y z w))
-  d-Σ x y z w = dΣ-• (d-zxℕ _ _ _) (dΣ-• (d-zxℕ _ _ _) (dΣ-• (d-zxℕ _ _ _) (d-zxℕ _ _ _)))
+  d-Σ x y z w =
+    dΣ-• (zxℕ n₀ x j₀) (zxℕ n₁ y j₁ • zxℕ n₂ z j₂ • zxℕ n₃ w 2) (d-zxℕ n₀ x j₀)
+      (dΣ-• (zxℕ n₁ y j₁) (zxℕ n₂ z j₂ • zxℕ n₃ w 2) (d-zxℕ n₁ y j₁)
+        (dΣ-• (zxℕ n₂ z j₂) (zxℕ n₃ w 2) (d-zxℕ n₂ z j₂) (d-zxℕ n₃ w 2)))
+    where
+    n₃ j₂ n₂ j₁ n₁ j₀ n₀ : ℕ
+    n₃ = τ w 2 4
+    j₂ = τ w 2 3
+    n₂ = τ z j₂ n₃
+    j₁ = τ z j₂ (τ w 2 1)
+    n₁ = τ y j₁ n₂
+    j₀ = τ y j₁ (τ z j₂ (τ w 2 0))
+    n₀ = τ x j₀ n₁
 
   d-Σ′ : ∀ x y z w → (d ʷ) (Σ′ {N} x y z w) ≡ rev (dΣ {m} (Σ′ x y z w))
-  d-Σ′ x y z w = dΣ-• (d-zxℕ _ _ _) (dΣ-• (d-zxℕ _ _ _) (dΣ-• (d-zxℕ _ _ _) (d-zxℕ _ _ _)))
+  d-Σ′ x y z w =
+    dΣ-• (zxℕ 4 w 2) (zxℕ n₃ z j₂ • zxℕ n₂ y j₁ • zxℕ n₁ x j₀) (d-zxℕ 4 w 2)
+      (dΣ-• (zxℕ n₃ z j₂) (zxℕ n₂ y j₁ • zxℕ n₁ x j₀) (d-zxℕ n₃ z j₂)
+        (dΣ-• (zxℕ n₂ y j₁) (zxℕ n₁ x j₀) (d-zxℕ n₂ y j₁) (d-zxℕ n₁ x j₀)))
+    where
+    n₃ j₂ n₂ j₁ n₁ j₀ : ℕ
+    n₃ = τ w 2 4
+    j₂ = τ w 2 3
+    n₂ = τ z j₂ n₃
+    j₁ = τ z j₂ (τ w 2 1)
+    n₁ = τ y j₁ n₂
+    j₀ = τ y j₁ (τ z j₂ (τ w 2 0))
 
 -- (35)
 e35 : ∀ (a b c e : I) → distinct4 (toℕ a) (toℕ b) (toℕ c) (toℕ e) ≡ true →
@@ -602,10 +636,10 @@ e42 a b c e ab ce nd = ≡→≈ (Eq.trans lhs (Eq.sym rhs))
         ≡ rev (dHH₄ {m} x y E F) • rev (dHH₄ E F z w)
   lhs = Eq.trans (Eq.cong₂ (λ u v → (d ʷ) (u • v)) (Eq.trans l₁ (hh-letter a b E′ F′ ab E′F′))
                                                   (Eq.trans l₂ (hh-letter E′ F′ c e E′F′ ce)))
-                 (Eq.cong₂ _•_ (Eq.cong rev (Eq.trans (cong-dHH Eq.refl Eq.refl vE vF)
+                 (Eq.cong₂ _•_ (Eq.cong rev (Eq.trans (Eq.cong₂ (dHH {m} x y) vE vF)
                                                       (dHH-true x y E F (dist4 x y E F xy (sym≢ S.ea) (sym≢ S.fa)
                                                                                        (sym≢ S.eb) (sym≢ S.fb) EF))))
-                               (Eq.cong rev (Eq.trans (cong-dHH vE vF Eq.refl Eq.refl)
+                               (Eq.cong rev (Eq.trans (Eq.cong₂ (λ u v → dHH {m} u v z w) vE vF)
                                                       (dHH-true E F z w (dist4 E F z w EF S.ec S.ed S.fc S.fd zw)))))
   rhs : (d ʷ) (hh {N} a b c e) ≡ rev (dHH₄ {m} x y E F) • rev (dHH₄ E F z w)
   rhs = Eq.trans (Eq.cong (d ʷ) (hh-letter a b c e ab ce))

@@ -225,14 +225,14 @@ pair-down : ∀ (g : Circuit 2) j → j ≤ suc n →
 pair-down {n} g zero    _ = trans (cong left-unit (trans (back _ left-unit) right-unit)) left-unit
   where open Tools ((₃₊ n) VRel,_===_)
 pair-down {n} g (suc j) (s≤s p) = begin
-  ((s • D) • (s′ • D ↑)) • G₀ • ((U ↑ • s′) • (U • s))
+  ((s • D) • (s′ • D′ ↑)) • G₀ • ((U′ ↑ • s′) • (U • s))
     ≈⟨ by-passoc (((□ • □) • (□ • □)) • □ • ((□ • □) • (□ • □))) ((□ • (□ • □) • □) • □ • (□ • (□ • □) • □)) Eq.refl ⟩
-  (s • (D • s′) • D ↑) • G₀ • (U ↑ • (s′ • U) • s)
+  (s • (D • s′) • D′ ↑) • G₀ • (U′ ↑ • (s′ • U) • s)
     ≈⟨ cong (back _ (front _ (sym (sd-above j (suc j) ≤-refl′))))
             (back _ (back _ (front _ (sym (su-above j (suc j) ≤-refl′))))) ⟩
-  (s • (s′ • D) • D ↑) • G₀ • (U ↑ • (U • s′) • s)
+  (s • (s′ • D) • D′ ↑) • G₀ • (U′ ↑ • (U • s′) • s)
     ≈⟨ by-passoc ((□ • (□ • □) • □) • □ • (□ • (□ • □) • □)) (□ • □ • ((□ • □) • □ • (□ • □)) • □ • □) Eq.refl ⟩
-  s • s′ • ((D • D ↑) • G₀ • (U ↑ • U)) • s′ • s
+  s • s′ • ((D • D′ ↑) • G₀ • (U′ ↑ • U)) • s′ • s
     ≈⟨ back _ (back _ (front _ (pair-down g j (≤-trans (n≤1+n j) (s≤s p′))))) ⟩
   s • s′ • on2 g j • s′ • s
     ≈⟨ on2-step g j p′ ⟩
@@ -249,3 +249,6 @@ pair-down {n} g (suc j) (s≤s p) = begin
   D  = shiftDown j
   U  = shiftUp j
   G₀  = on2 g 0
+  D′ U′ : Circuit (₂₊ n)
+  D′ = shiftDown j
+  U′ = shiftUp j

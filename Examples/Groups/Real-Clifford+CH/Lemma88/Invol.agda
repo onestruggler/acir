@@ -35,6 +35,7 @@ open import Data.Bool using (Bool ; true ; false)
 open import Data.Fin using (Fin ; toℕ)
 open import Data.Nat using (zero ; suc ; _^_)
 open import Data.Nat.Properties using (n<1+n ; <⇒≢)
+open import Data.Vec using ([] ; _∷_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 
@@ -47,7 +48,7 @@ open import Examples.Groups.Real-Clifford+CH.MultiControlled
          shiftDown ; shiftUp ; shiftDown₁ ; shiftUp₁ ; mcZX ; mcXZ ; mc±ZX ; mc±XZ ; mcH ; ΛH)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Figure8 using (Succ)
 open import Examples.Groups.Real-Clifford+CH.Encoding using (zx ; hhℕ)
-open import Examples.Groups.Real-Clifford+CH.Decoding using (d ; dZX ; dZXlo₁ ; dZXhi₁ ; βof ; layout□ ; gadget)
+open import Examples.Groups.Real-Clifford+CH.Decoding using (d ; dZX ; dZXlo₁ ; dZXhi₁ ; βof ; layout□ ; gadget ; layoutH ; gcode)
 open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Auxiliary complete₂ using (module PP↓ ; PP-CZ↑)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Idle using (X-↑)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.SwapCalc using (sd-su ; su-sd)
@@ -246,5 +247,5 @@ e41 = begin
   (d ʷ) (hhℕ 0 1 3 2 • hhℕ 0 1 3 2)
     ≈⟨ ≡→≈ (Eq.cong₂ _•_ d-hh0132 d-hh0132) ⟩
   rev (gadget • gadget)
-    ≈⟨ rev-cong (conj₂-inv _ ΛH²) ⟩
+    ≈⟨ rev-cong (conj₂-inv (layoutH {m} (gcode 0) 0 1) ΛH²) ⟩
   ε ∎

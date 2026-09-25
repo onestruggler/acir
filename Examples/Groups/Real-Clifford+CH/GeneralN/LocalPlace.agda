@@ -51,15 +51,15 @@ up (suc k) w = up k w ↑
 
 -- A circuit on the bottom k wires passes anything k wires up.
 local-comm : ∀ {k} (u : Circuit k) (w : Circuit r) → (k + r) ⊢ (u ↓ᵏ r) • up k w ≈ up k w • (u ↓ᵏ r)
-local-comm {k} [ gate₀ () ]ʷ w
-local-comm {suc k} {r} [ gate₁ h ]ʷ w = PB-sym (comm-gate₁-w↑ h (up k w))
+local-comm [ gate₀ () ]ʷ w
+local-comm {r = r} {k = suc k} [ gate₁ h ]ʷ w = PB-sym (comm-gate₁-w↑ h (up k w))
   where open Tools ((suc (k + r)) VRel,_===_) renaming (sym to PB-sym)
-local-comm {suc (suc k)} {r} [ gate₂ h ]ʷ w = PB-sym (comm-gate₂-w↑↑ h (up k w))
+local-comm {r = r} {k = suc (suc k)} [ gate₂ h ]ʷ w = PB-sym (comm-gate₂-w↑↑ h (up k w))
   where open Tools ((suc (suc (k + r))) VRel,_===_) renaming (sym to PB-sym)
-local-comm {suc k} {r} [ g ↥ ]ʷ w = lemma-cong↑ (([ g ]ʷ ↓ᵏ r) • up k w) (up k w • ([ g ]ʷ ↓ᵏ r)) (local-comm [ g ]ʷ w)
-local-comm {k} {r} ε w = trans left-unit (sym right-unit)
+local-comm {r = r} {k = suc k} [ g ↥ ]ʷ w = lemma-cong↑ (([ g ]ʷ ↓ᵏ r) • up k w) (up k w • ([ g ]ʷ ↓ᵏ r)) (local-comm [ g ]ʷ w)
+local-comm {r = r} {k = k} ε w = trans left-unit (sym right-unit)
   where open Tools ((k + r) VRel,_===_)
-local-comm {k} {r} (a • b) w = begin
+local-comm {r = r} {k = k} (a • b) w = begin
   ((a ↓ᵏ r) • (b ↓ᵏ r)) • up k w   ≈⟨ assoc ⟩
   (a ↓ᵏ r) • ((b ↓ᵏ r) • up k w)   ≈⟨ back _ (local-comm b w) ⟩
   (a ↓ᵏ r) • (up k w • (b ↓ᵏ r))   ≈⟨ sym assoc ⟩
@@ -103,7 +103,7 @@ lift-k {r} (suc k) u fix with lift0′ u (fix 0F (s≤s z≤n))
 
 place-eq : ∀ {k} (u : Circuit k) (σ σ′ : Word (S.Gen (k + r))) →
            (∀ (j : Fin (k + r)) → toℕ j < k → perm σ′ ⟨$⟩ʳ (perm (revS σ) ⟨$⟩ʳ j) ≡ j) →
-           pl σ (u ↓ᵏ r) ≈ pl σ′ (u ↓ᵏ r)
+           (k + r) ⊢ pl σ (u ↓ᵏ r) ≈ pl σ′ (u ↓ᵏ r)
 place-eq {r} {k} u σ σ′ agree with lift-k k (revS σ • σ′) agree
 ... | v , e = sym (begin
   net σ′ • U • net (revS σ′)
