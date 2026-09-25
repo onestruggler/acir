@@ -63,30 +63,29 @@ private
 ------------------------------------------------------------------------
 -- Where a pair of indices sits relative to the two distinguished ones
 
-private
-  -- `both`: the pair is {z , o}; `hasZ t`: one index is z and the
-  -- other, t, is neither z nor o; `hasO t`: one is o and the other, t,
-  -- is neither; `none`: the pair misses both.
-  data Cls : Set where
-    both : Cls
-    hasZ : (t : Fin N) → .(t ≢ o) → Cls
-    hasO : (t : Fin N) → .(z ≢ t) → Cls
-    none : Cls
+-- `both`: the pair is {z , o}; `hasZ t`: one index is z and the
+-- other, t, is neither z nor o; `hasO t`: one is o and the other, t,
+-- is neither; `none`: the pair misses both.
+data Cls : Set where
+  both : Cls
+  hasZ : (t : Fin N) → .(t ≢ o) → Cls
+  hasO : (t : Fin N) → .(z ≢ t) → Cls
+  none : Cls
 
-  cls : Fin N → Fin N → Cls
-  cls a b with a ≟ z
-  ... | yes _   with b ≟ o
-  ...           | yes _    = both
-  ...           | no  b≢o  = hasZ b b≢o
-  cls a b | no a≢z with b ≟ z
-  ...              | yes _   with a ≟ o
-  ...                        | yes _   = both
-  ...                        | no a≢o  = hasZ a a≢o
-  cls a b | no a≢z | no b≢z with a ≟ o
-  ...                       | yes _  = hasO b (λ e → b≢z (sym e))
-  ...                       | no a≢o with b ≟ o
-  ...                                | yes _ = hasO a (λ e → a≢z (sym e))
-  ...                                | no  _ = none
+cls : Fin N → Fin N → Cls
+cls a b with a ≟ z
+... | yes _   with b ≟ o
+...           | yes _    = both
+...           | no  b≢o  = hasZ b b≢o
+cls a b | no a≢z with b ≟ z
+...              | yes _   with a ≟ o
+...                        | yes _   = both
+...                        | no a≢o  = hasZ a a≢o
+cls a b | no a≢z | no b≢z with a ≟ o
+...                       | yes _  = hasO b (λ e → b≢z (sym e))
+...                       | no a≢o with b ≟ o
+...                                | yes _ = hasO a (λ e → a≢z (sym e))
+...                                | no  _ = none
 
 ------------------------------------------------------------------------
 -- The action

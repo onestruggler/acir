@@ -27,6 +27,10 @@
 --     Appendix A) and Lemmas 8.7 and 8.8 (Appendix E).  Checks8
 --     decides the soundness of Figure 8 on three qubits.
 --
+-- Theorem 4.10 is in fact proved from Theorem 4.4 at the width of P
+-- (Auxiliary.Theorem410Proof), and `Theorem-8-9′` below takes that
+-- instead: its hypotheses are Theorem 4.4 and Lemmas 8.7 and 8.8.
+--
 -- The presented monoid is then a sub-monoid of the 2ⁿ × 2ⁿ matrices
 -- over ℤ[1/√2] at every width: the paper's completeness theorem in the
 -- form the rest of this library states such results.
@@ -60,6 +64,7 @@ import Examples.Groups.Real-Clifford+CH.TwoQubit as TwoQubit
 import Examples.Groups.Real-Clifford+CH.TwoQubit.Decoding as Decoding
 open TwoQubit.BF using () renaming (⟦_⟧Y to ⟦_⟧Y₂)
 import Examples.Groups.Real-Clifford+CH.Auxiliary.Syntactics as G
+import Examples.Groups.Real-Clifford+CH.Auxiliary.Theorem410Proof as T410
 
 ------------------------------------------------------------------------
 -- Width 0: there is one circuit
@@ -111,3 +116,27 @@ module Theorem-8-9
     where
     module MS = MonoidSem (n VRel,_===_) (Monoid.setoid (Scaled-monoid n))
                           (Scaled-monoid n) (λ g → 1 , ⟦ g ⟧ᵍ)
+
+------------------------------------------------------------------------
+-- Theorem 8.9 with Theorem 4.10 proved
+--
+-- Appendix A's Theorem 4.10 — Figure 8 complete for the alphabet P — is
+-- a theorem here (Auxiliary.Theorem410Proof: the Reidemeister–Schreier
+-- method, both of its conditions derived from Figure 10's (65), which
+-- Auxiliary.Eq65H proves), given completeness of Figure 7 at the width
+-- of P.  That is how the paper obtains it: its Theorem 4.4, taken from
+-- the literature, is the completeness of Figure 7 for the matrices on
+-- any number of basis vectors.  So what is left as hypotheses is that
+-- imported theorem, at two qubits and at every larger width, and
+-- Lemmas 8.7 and 8.8 of Appendix E.
+
+module Theorem-8-9′
+  (theorem-4-4  : ∀ {u t : Word (G.Gen 4)} → ⟦ u ⟧Y₂ ~ ⟦ t ⟧Y₂ →
+                  PB._≈_ (4 G.G,_===_) u t)
+  (theorem-4-4ₙ : ∀ k → T410.Theorem-4-4 k)
+  (lemma-8-8    : ∀ k → Section8.Lemma-8-8 k)
+  (lemma-8-7    : ∀ k → Section8.Lemma-8-7 k)
+  where
+
+  open Theorem-8-9 theorem-4-4 (λ k → T410.theorem-4-10 k (theorem-4-4ₙ k)) lemma-8-8 lemma-8-7
+    public using (completeness ; subpresentation)

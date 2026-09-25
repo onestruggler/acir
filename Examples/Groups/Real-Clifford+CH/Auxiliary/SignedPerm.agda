@@ -62,26 +62,25 @@ private
 -- The four facts about exclusive or that the signs need, proved here
 -- rather than imported so that nothing depends on a library name.
 
-private
-  xor-self : ∀ (x : Bool) → x xor x ≡ false
-  xor-self false = Eq.refl
-  xor-self true  = Eq.refl
+xor-self : ∀ (x : Bool) → x xor x ≡ false
+xor-self false = Eq.refl
+xor-self true  = Eq.refl
 
-  xor-idʳ : ∀ (x : Bool) → x xor false ≡ x
-  xor-idʳ false = Eq.refl
-  xor-idʳ true  = Eq.refl
+xor-idʳ : ∀ (x : Bool) → x xor false ≡ x
+xor-idʳ false = Eq.refl
+xor-idʳ true  = Eq.refl
 
-  xor-comm : ∀ (x y : Bool) → x xor y ≡ y xor x
-  xor-comm false false = Eq.refl
-  xor-comm false true  = Eq.refl
-  xor-comm true  false = Eq.refl
-  xor-comm true  true  = Eq.refl
+xor-comm : ∀ (x y : Bool) → x xor y ≡ y xor x
+xor-comm false false = Eq.refl
+xor-comm false true  = Eq.refl
+xor-comm true  false = Eq.refl
+xor-comm true  true  = Eq.refl
 
-  xor-assoc : ∀ (x y z : Bool) → (x xor y) xor z ≡ x xor (y xor z)
-  xor-assoc false y z = Eq.refl
-  xor-assoc true  false z = Eq.refl
-  xor-assoc true  true  false = Eq.refl
-  xor-assoc true  true  true  = Eq.refl
+xor-assoc : ∀ (x y z : Bool) → (x xor y) xor z ≡ x xor (y xor z)
+xor-assoc false y z = Eq.refl
+xor-assoc true  false z = Eq.refl
+xor-assoc true  true  false = Eq.refl
+xor-assoc true  true  true  = Eq.refl
 
 ------------------------------------------------------------------------
 -- Signed permutations
@@ -155,21 +154,23 @@ open import Relation.Binary.Reasoning.Setoid SP-setoid public
 ------------------------------------------------------------------------
 -- The atoms: a sign on one index, and a transposition
 
-private
-  δ : Fin N → Fin N → Bool
-  δ c i with i ≟ c
-  ... | yes _ = true
-  ... | no  _ = false
+-- Whether an index is the one carrying the sign.  Exported: the sign
+-- of a normal form's sign part at an index is exactly whether that
+-- index occurs in it, and `Unique` reads the list back off that.
+δ : Fin N → Fin N → Bool
+δ c i with i ≟ c
+... | yes _ = true
+... | no  _ = false
 
-  δ-here : ∀ (c : Fin N) → δ c c ≡ true
-  δ-here c with c ≟ c
-  ... | yes _  = Eq.refl
-  ... | no  ne = ⊥-elim (ne Eq.refl)
+δ-here : ∀ (c : Fin N) → δ c c ≡ true
+δ-here c with c ≟ c
+... | yes _  = Eq.refl
+... | no  ne = ⊥-elim (ne Eq.refl)
 
-  δ-≢ : ∀ (c i : Fin N) → i ≢ c → δ c i ≡ false
-  δ-≢ c i ne with i ≟ c
-  ... | yes e = ⊥-elim (ne e)
-  ... | no  _ = Eq.refl
+δ-≢ : ∀ (c i : Fin N) → i ≢ c → δ c i ≡ false
+δ-≢ c i ne with i ≟ c
+... | yes e = ⊥-elim (ne e)
+... | no  _ = Eq.refl
 
 swapF : Fin N → Fin N → Fin N → Fin N
 swapF a b i with i ≟ a
@@ -771,3 +772,52 @@ sound (PB.assoc {w} {v} {u})  = ⊙-assoc (sp w) (sp v) (sp u)
 sound (PB.left-unit {w})      = ⊙-idˡ (sp w)
 sound (PB.right-unit {w})     = ⊙-idʳ (sp w)
 sound (PB.axiom a)            = sound-ax a
+
+------------------------------------------------------------------------
+-- A signed permutation permutes
+--
+-- `SP` stores the permutation as a bare function, so that composition
+-- is a record literal and unification sees through it; that it really
+-- is a bijection is this lemma, proved letter by letter.  Only
+-- injectivity is ever wanted, and on a finite type it is enough.
+
+Inj : SP → Set
+Inj f = ∀ {i j : Fin N} → prm f i ≡ prm f j → i ≡ j
+
+idSP-inj : Inj idSP
+idSP-inj e = e
+
+NEG-inj : ∀ (c : Fin N) → Inj (NEG c)
+NEG-inj c e = e
+
+SWP-inj : ∀ (a b : Fin N) → Inj (SWP a b)
+SWP-inj a b e = swapF-inj a b e
+
+⊙-inj : ∀ (f g : SP) → Inj f → Inj g → Inj (f ⊙ g)
+⊙-inj f g fi gi e = fi (gi e)
+
+spg-inj : ∀ (g : GenP (₃₊ m)) → Inj (spg g)
+spg-inj (−1−1 a b)       = ⊙-inj (NEG a) (NEG b) (NEG-inj a) (NEG-inj b)
+spg-inj (−1X c a b _)    = ⊙-inj (NEG c) (SWP a b) (NEG-inj c) (SWP-inj a b)
+spg-inj (XX a b c d _ _) = ⊙-inj (SWP a b) (SWP c d) (SWP-inj a b) (SWP-inj c d)
+spg-inj (HH a b c d _ _) = idSP-inj
+
+sp-inj : ∀ (w : W) → Inj (sp w)
+sp-inj [ g ]ʷ  = spg-inj g
+sp-inj ε       = idSP-inj
+sp-inj (u • v) = ⊙-inj (sp u) (sp v) (sp-inj u) (sp-inj v)
+
+-- A one-sided inverse is a two-sided one, without any counting: `g`
+-- is injective, so from `g ∘ f = id` one gets `f ∘ g = id` by
+-- cancelling a `g`, and the signs then follow at the transported
+-- index.
+⊙-inverse : ∀ (f g : SP) → Inj g → f ⊙ g ≐ idSP → g ⊙ f ≐ idSP
+⊙-inverse f g gi e = eqv s p
+  where
+  p : ∀ i → prm f (prm g i) ≡ i
+  p i = gi (prm≡ e (prm g i))
+
+  s : ∀ i → sgn g i xor sgn f (prm g i) ≡ false
+  s i = Eq.trans (xor-comm (sgn g i) (sgn f (prm g i)))
+        (Eq.trans (Eq.cong (λ z → sgn f (prm g i) xor sgn g z) (Eq.sym (p i)))
+                  (sgn≡ e (prm g i)))

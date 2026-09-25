@@ -45,13 +45,16 @@ removeℕ zero    (_ ∷ bs)     = bs
 removeℕ (suc i) (b ∷ [])     = []
 removeℕ (suc i) (b ∷ c ∷ bs) = b ∷ removeℕ i (c ∷ bs)
 
--- The wires at which two strings differ, from wire 0 up.
+-- The wires at which two strings differ, from wire 0 up; the worker
+-- numbers them from wire i, and is exported so that the list can be
+-- reasoned about.
+diffFrom : ℕ → Bits n → Bits n → List ℕ
+diffFrom i []       []       = []
+diffFrom i (x ∷ xs) (y ∷ ys) =
+  if x xor y then i ∷ diffFrom (suc i) xs ys else diffFrom (suc i) xs ys
+
 diff : Bits n → Bits n → List ℕ
-diff xs ys = go 0 xs ys
-  where
-  go : ℕ → Bits n → Bits n → List ℕ
-  go i []       []       = []
-  go i (x ∷ xs) (y ∷ ys) = if x xor y then i ∷ go (suc i) xs ys else go (suc i) xs ys
+diff xs ys = diffFrom 0 xs ys
 
 -- Bitwise exclusive or.
 xorB : Bits n → Bits n → Bits n
