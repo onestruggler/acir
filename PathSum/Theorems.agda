@@ -105,6 +105,9 @@ module Dcd = PathSum.Decide M₀
 import PathSum.Syntactic
 module Syn = PathSum.Syntactic M₀
 
+import PathSum.Corollary
+module Cor = PathSum.Corollary M₀
+
 private
   variable
     n k m k′ m′ k″ m″ : ℕ
@@ -154,11 +157,7 @@ circuit-unit-columns = CSem.⟦⟧-unit-columns
 circuit-≋-id : (C : Circuit n) →
                (⟦ C ⟧ ≋ idPS ⇔
                 (∀ x z → applyᴬ C (δ x) z ≐ scale (norm C) (δ x z)))
-circuit-≋-id C = mk⇔
-  (λ eq x z i → trans (sym (prop-2-10 C x z i))
-    (trans (eq x z i) (scale-map (norm C) (CAmp.ampˢ-init x z) i)))
-  (λ eq x z i → trans (prop-2-10 C x z i)
-    (trans (eq x z i) (sym (scale-map (norm C) (CAmp.ampˢ-init x z) i))))
+circuit-≋-id = Cor.circuit-≋-id
 
 
 ------------------------------------------------------------------------
@@ -260,8 +259,7 @@ circuit-Ord≤ = Circ.⟦⟧ᴿ-Ord≤
 -- So the corollary applies to every Clifford circuit unconditionally.
 
 corollary-4-4-circuit : (C : Circuit n) → Cliff.Reduces ⟦ C ⟧ᴿ
-corollary-4-4-circuit C =
-  Cliff.corollary-4-4 ⟦ C ⟧ᴿ (circuit-Internal C) (circuit-Ord≤ C)
+corollary-4-4-circuit = Cor.corollary-4-4-circuit
 
 
 ------------------------------------------------------------------------
@@ -273,25 +271,10 @@ corollary-4-4-circuit C =
 -- whether ⟦ C ⟧ᴿ is -- the question the reduction answers.
 
 circuit-WellFormed : (C : Circuit n) → WellFormed ⟦ C ⟧
-circuit-WellFormed C x = ≤-reflexive (circuit-unit-columns C x)
+circuit-WellFormed = Cor.circuit-WellFormed
 
 lemma-4-1-circuit : (C : Circuit n) → (⟦ C ⟧ ≋ idPS ⇔ ⟦ C ⟧ᴿ ≋ idPS)
-lemma-4-1-circuit C = mk⇔ to from
-  where
-  whole : ⟦ C ⟧ ≋ idPS ⇔ Restriction-id ⟦ C ⟧
-  whole = Isom.lemma-4-1 ⟦ C ⟧ (circuit-WellFormed C)
-
-  restricted : ⟦ C ⟧ᴿ ≋ idPS ⇔ Restriction-id ⟦ C ⟧ᴿ
-  restricted = Isom.diagonal-≋ ⟦ C ⟧ᴿ (CSem.⟦⟧ᴿ-diagonal C)
-
-  to : ⟦ C ⟧ ≋ idPS → ⟦ C ⟧ᴿ ≋ idPS
-  to eq = Equivalence.from restricted (λ x i →
-    trans (CSem.⟦⟧ᴿ-restricts C x i) (Equivalence.to whole eq x i))
-
-  from : ⟦ C ⟧ᴿ ≋ idPS → ⟦ C ⟧ ≋ idPS
-  from eq = Equivalence.from whole (λ x i →
-    trans (sym (CSem.⟦⟧ᴿ-restricts C x i))
-          (Equivalence.to restricted eq x i))
+lemma-4-1-circuit = Cor.lemma-4-1-circuit
 
 
 ------------------------------------------------------------------------
@@ -343,25 +326,17 @@ not-id-phase = Idn.not-id-phase
 
 reduct≋ : (C : Circuit n) {ξ′ : PathSum n k′ 0} → ⟦ C ⟧ᴿ ⟶* ξ′ →
           (⟦ C ⟧ ≋ idPS ⇔ ξ′ ≋ idPS)
-reduct≋ C {ξ′ = ξ′} steps = mk⇔
-  (λ eq → ≋-trans {ξ = ξ′} {ζ = ⟦ C ⟧ᴿ} {χ = idPS}
-            (≋-sym {ξ = ⟦ C ⟧ᴿ} {ζ = ξ′} (⟶*-sound steps))
-            (Equivalence.to (lemma-4-1-circuit C) eq))
-  (λ eq → Equivalence.from (lemma-4-1-circuit C)
-            (≋-trans {ξ = ⟦ C ⟧ᴿ} {ζ = ξ′} {χ = idPS}
-                     (⟶*-sound steps) eq))
+reduct≋ = Cor.reduct≋
 
 circuit-id : (C : Circuit n) {ξ′ : PathSum n 0 0} → ⟦ C ⟧ᴿ ⟶* ξ′ →
              (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) →
              phase ξ′ ≈[ pow M ] 0ᴾ →
              ⟦ C ⟧ ≋ idPS
-circuit-id C {ξ′} steps eqf eqP =
-  Equivalence.from (reduct≋ C steps) (id-if ξ′ eqf eqP)
+circuit-id = Cor.circuit-id
 
 circuit-not-id : (C : Circuit n) {ξ′ : PathSum n k′ 0} → ⟦ C ⟧ᴿ ⟶* ξ′ →
                  ¬ (ξ′ ≋ idPS) → ¬ (⟦ C ⟧ ≋ idPS)
-circuit-not-id C steps ¬id C≋id =
-  ¬id (Equivalence.to (reduct≋ C steps) C≋id)
+circuit-not-id = Cor.circuit-not-id
 
 -- Corollary 4.4 about the circuit itself: either ⟦ C ⟧ᴿ reduces to a
 -- path-sum with no path variables left, whose being the identity is
@@ -372,10 +347,7 @@ corollary-4-4-⟦⟧ : (C : Circuit n) →
   (∃ λ k′ → ∃ λ (ξ′ : PathSum n k′ 0) →
      (⟦ C ⟧ᴿ ⟶* ξ′) × (⟦ C ⟧ ≋ idPS ⇔ ξ′ ≋ idPS))
   ⊎ ¬ (⟦ C ⟧ ≋ idPS)
-corollary-4-4-⟦⟧ C with corollary-4-4-circuit C
-... | Cliff.done {ξ′ = ξ′} steps = inj₁ (_ , ξ′ , steps , reduct≋ C steps)
-... | Cliff.no-id ¬id =
-  inj₂ (λ eq → ¬id (Equivalence.to (lemma-4-1-circuit C) eq))
+corollary-4-4-⟦⟧ = Cor.corollary-4-4-⟦⟧
 
 
 ------------------------------------------------------------------------
@@ -407,11 +379,7 @@ corollary-4-4-any : (C : Circuit n) {ξ′ : PathSum n k′ 0} →
   (⟦ C ⟧ ≋ idPS ⇔
    (k′ ≡ 0 ×
     (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ))
-corollary-4-4-any C {ξ′} steps = mk⇔
-  (λ eq → Equivalence.to (id⇔syntactic ξ′)
-            (Equivalence.to (reduct≋ C steps) eq))
-  (λ s → Equivalence.from (reduct≋ C steps)
-           (Equivalence.from (id⇔syntactic ξ′) s))
+corollary-4-4-any = Cor.corollary-4-4-any
 
 -- In particular such a chain ends at the identity's polynomials
 -- exactly for the identity circuits.  (The corollary's own statement,
@@ -422,37 +390,7 @@ corollary-4-4-syntactic : (C : Circuit n) →
    ∃ λ (ξ′ : PathSum n 0 0) →
      (⟦ C ⟧ᴿ ⟶* ξ′) ×
      (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ)
-corollary-4-4-syntactic {n} C = mk⇔ to from
-  where
-  Syntactically : ∀ {k′} → PathSum n k′ 0 → Set
-  Syntactically {k′} ξ′ =
-    k′ ≡ 0 × (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ
-
-  reduced : ∀ {k′} (ξ′ : PathSum n k′ 0) → ⟦ C ⟧ᴿ ⟶* ξ′ →
-            Syntactically ξ′ →
-            ∃ λ (ξ″ : PathSum n 0 0) →
-              (⟦ C ⟧ᴿ ⟶* ξ″) ×
-              (∀ w → out ξ″ w ≈[ + 2 ] μ x[ w ]) × phase ξ″ ≈[ pow M ] 0ᴾ
-  reduced ξ′ steps (refl , outs , ph) = ξ′ , steps , outs , ph
-
-  pick : ⟦ C ⟧ ≋ idPS →
-         (∃ λ k′ → ∃ λ (ξ′ : PathSum n k′ 0) →
-            (⟦ C ⟧ᴿ ⟶* ξ′) × (⟦ C ⟧ ≋ idPS ⇔ ξ′ ≋ idPS))
-         ⊎ ¬ (⟦ C ⟧ ≋ idPS) →
-         ∃ λ (ξ″ : PathSum n 0 0) →
-           (⟦ C ⟧ᴿ ⟶* ξ″) ×
-           (∀ w → out ξ″ w ≈[ + 2 ] μ x[ w ]) × phase ξ″ ≈[ pow M ] 0ᴾ
-  pick eq (inj₁ (_ , ξ′ , steps , C⇔ξ′)) = reduced ξ′ steps
-    (Equivalence.to (id⇔syntactic ξ′) (Equivalence.to C⇔ξ′ eq))
-  pick eq (inj₂ ¬id) = contradiction eq ¬id
-
-  to = λ eq → pick eq (corollary-4-4-⟦⟧ C)
-
-  from : (∃ λ (ξ′ : PathSum n 0 0) →
-            (⟦ C ⟧ᴿ ⟶* ξ′) ×
-            (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ) →
-         ⟦ C ⟧ ≋ idPS
-  from (ξ′ , steps , outs , ph) = circuit-id C steps outs ph
+corollary-4-4-syntactic = Cor.corollary-4-4-syntactic
 
 
 ------------------------------------------------------------------------
@@ -482,13 +420,8 @@ decide-≋-id = Dcd.decide-≋-id
 -- input, so nothing here is polynomial-time.)
 
 circuit-decidable : (C : Circuit n) → Dec (⟦ C ⟧ ≋ idPS)
-circuit-decidable C with corollary-4-4-⟦⟧ C
-... | inj₁ (_ , ξ′ , _ , C⇔ξ′) =
-  map′ (Equivalence.from C⇔ξ′) (Equivalence.to C⇔ξ′) (decide-≋-id ξ′)
-... | inj₂ ¬id = no ¬id
+circuit-decidable = Cor.circuit-decidable
 
 matrix-decidable : (C : Circuit n) →
   Dec (∀ x z → applyᴬ C (δ x) z ≐ scale (norm C) (δ x z))
-matrix-decidable C =
-  map′ (Equivalence.to (circuit-≋-id C)) (Equivalence.from (circuit-≋-id C))
-       (circuit-decidable C)
+matrix-decidable = Cor.matrix-decidable
