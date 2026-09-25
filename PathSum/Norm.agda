@@ -134,17 +134,16 @@ private
 ------------------------------------------------------------------------
 -- Coefficients
 
-private
-  -- A coefficient read at an exponent congruent to a basis exponent,
-  -- or to one shifted by H.
+-- A coefficient read at an exponent congruent to a basis exponent,
+-- or to one shifted by H.
 
-  coeff-at⁺ : ∀ a w (i : Fin H) → (+ N) ∣ (w - (+ toℕ i)) → coeff a w ≡ a i
-  coeff-at⁺ a w i d = trans (coeff-cong a w (+ toℕ i) d) (coeff-δ a i)
+coeff-at⁺ : ∀ a w (i : Fin H) → (+ N) ∣ (w - (+ toℕ i)) → coeff a w ≡ a i
+coeff-at⁺ a w i d = trans (coeff-cong a w (+ toℕ i) d) (coeff-δ a i)
 
-  coeff-at⁻ : ∀ a w (i : Fin H) → (+ N) ∣ (w - ((+ toℕ i) + (+ H))) →
-              coeff a w ≡ - a i
-  coeff-at⁻ a w i d = trans (coeff-cong a w ((+ toℕ i) + (+ H)) d)
-    (trans (coeff-anti a (+ toℕ i)) (cong -_ (coeff-δ a i)))
+coeff-at⁻ : ∀ a w (i : Fin H) → (+ N) ∣ (w - ((+ toℕ i) + (+ H))) →
+            coeff a w ≡ - a i
+coeff-at⁻ a w i d = trans (coeff-cong a w ((+ toℕ i) + (+ H)) d)
+  (trans (coeff-anti a (+ toℕ i)) (cong -_ (coeff-δ a i)))
 
 -- Rotating by ζ^e shifts every coefficient by e, not only the ones in
 -- the basis window.
@@ -250,12 +249,12 @@ coeff-0ᴬ w = go (classify w)
 
 -- Squares are non-negative, and only 0 squares to 0.
 
-private
-  sq≥0 : ∀ x → 0ℤ ≤ x * x
-  sq≥0 +0         = +≤+ z≤n
-  sq≥0 +[1+ n ]   = +≤+ z≤n
-  sq≥0 -[1+ n ]   = +≤+ z≤n
+sq≥0 : ∀ x → 0ℤ ≤ x * x
+sq≥0 +0         = +≤+ z≤n
+sq≥0 +[1+ n ]   = +≤+ z≤n
+sq≥0 -[1+ n ]   = +≤+ z≤n
 
+private
   sq≡0 : ∀ x → x * x ≡ 0ℤ → x ≡ 0ℤ
   sq≡0 x eq with i*j≡0⇒i≡0∨j≡0 x eq
   ... | inj₁ x≡0 = x≡0
@@ -285,56 +284,55 @@ private
 -- on, and for an H-periodic summand the two are equal.  Sliding it
 -- repeatedly moves it anywhere.
 
-private
-  module Window (g : ℤ → ℤ) (per : ∀ w → g (w + (+ H)) ≡ g w) where
+module Window (g : ℤ → ℤ) (per : ∀ w → g (w + (+ H)) ≡ g w) where
 
-    T : ℕ → ℤ → ℤ
-    T k s = Σ< k (λ j → g ((+ j) + s))
+  T : ℕ → ℤ → ℤ
+  T k s = Σ< k (λ j → g ((+ j) + s))
 
-    slide : ∀ k s → T k (s + 1ℤ) + g s ≡ T k s + g ((+ k) + s)
-    slide zero    s = cong (λ u → 0ℤ + g u) (sym (+-identityˡ s))
-    slide (suc k) s = trans
-      (swap (T k (s + 1ℤ)) (g ((+ k) + (s + 1ℤ))) (g s))
-      (cong₂ _+_ (slide k s) (cong g (shift (+ k) s)))
-      where
-      swap : ∀ x y z → (x + y) + z ≡ (x + z) + y
-      swap = solve 3 (λ x y z → (x :+ y) :+ z := (x :+ z) :+ y) refl
+  slide : ∀ k s → T k (s + 1ℤ) + g s ≡ T k s + g ((+ k) + s)
+  slide zero    s = cong (λ u → 0ℤ + g u) (sym (+-identityˡ s))
+  slide (suc k) s = trans
+    (swap (T k (s + 1ℤ)) (g ((+ k) + (s + 1ℤ))) (g s))
+    (cong₂ _+_ (slide k s) (cong g (shift (+ k) s)))
+    where
+    swap : ∀ x y z → (x + y) + z ≡ (x + z) + y
+    swap = solve 3 (λ x y z → (x :+ y) :+ z := (x :+ z) :+ y) refl
 
-      -- 1ℤ + + k is + suc k by computation.
-      shift : ∀ x u → x + (u + 1ℤ) ≡ (1ℤ + x) + u
-      shift = solve 2 (λ x u →
-        x :+ (u :+ con 1ℤ) := (con 1ℤ :+ x) :+ u) refl
+    -- 1ℤ + + k is + suc k by computation.
+    shift : ∀ x u → x + (u + 1ℤ) ≡ (1ℤ + x) + u
+    shift = solve 2 (λ x u →
+      x :+ (u :+ con 1ℤ) := (con 1ℤ :+ x) :+ u) refl
 
-    cancelʳ : ∀ {x y} z → x + z ≡ y + z → x ≡ y
-    cancelʳ {x} {y} z eq =
-      trans (sym (drop x z)) (trans (cong (_- z) eq) (drop y z))
-      where
-      drop : ∀ u v → (u + v) - v ≡ u
-      drop = solve 2 (λ u v → (u :+ v) :- v := u) refl
+  cancelʳ : ∀ {x y} z → x + z ≡ y + z → x ≡ y
+  cancelʳ {x} {y} z eq =
+    trans (sym (drop x z)) (trans (cong (_- z) eq) (drop y z))
+    where
+    drop : ∀ u v → (u + v) - v ≡ u
+    drop = solve 2 (λ u v → (u :+ v) :- v := u) refl
 
-    step : ∀ s → T H (s + 1ℤ) ≡ T H s
-    step s = cancelʳ (g s) (trans (slide H s)
-      (cong (λ x → T H s + x) (trans (cong g (+-comm (+ H) s)) (per s))))
+  step : ∀ s → T H (s + 1ℤ) ≡ T H s
+  step s = cancelʳ (g s) (trans (slide H s)
+    (cong (λ x → T H s + x) (trans (cong g (+-comm (+ H) s)) (per s))))
 
-    climb : ∀ s n → T H (s + (+ n)) ≡ T H s
-    climb s zero    = cong (T H) (+-identityʳ s)
-    climb s (suc n) = trans (cong (T H) (up s (+ n)))
-                            (trans (step (s + (+ n))) (climb s n))
-      where
-      up : ∀ u x → u + (1ℤ + x) ≡ (u + x) + 1ℤ
-      up = solve 2 (λ u x → u :+ (con 1ℤ :+ x) := (u :+ x) :+ con 1ℤ) refl
+  climb : ∀ s n → T H (s + (+ n)) ≡ T H s
+  climb s zero    = cong (T H) (+-identityʳ s)
+  climb s (suc n) = trans (cong (T H) (up s (+ n)))
+                          (trans (step (s + (+ n))) (climb s n))
+    where
+    up : ∀ u x → u + (1ℤ + x) ≡ (u + x) + 1ℤ
+    up = solve 2 (λ u x → u :+ (con 1ℤ :+ x) := (u :+ x) :+ con 1ℤ) refl
 
-    window : ∀ s → T H s ≡ T H 0ℤ
-    window (+ n)    = climb 0ℤ n
-    window -[1+ n ] = sym (trans (cong (T H) (sym (+-inverseˡ (+ suc n))))
-                                 (climb -[1+ n ] (suc n)))
+  window : ∀ s → T H s ≡ T H 0ℤ
+  window (+ n)    = climb 0ℤ n
+  window -[1+ n ] = sym (trans (cong (T H) (sym (+-inverseˡ (+ suc n))))
+                               (climb -[1+ n ] (suc n)))
 
-    rotate : ∀ e → Σ< H (λ j → g ((+ j) - e)) ≡ Σ< H (λ j → g (+ j))
-    rotate e =
-      trans (window (- e)) (Σ<-cong H (λ j → cong g (+-identityʳ (+ j))))
+  rotate : ∀ e → Σ< H (λ j → g ((+ j) - e)) ≡ Σ< H (λ j → g (+ j))
+  rotate e =
+    trans (window (- e)) (Σ<-cong H (λ j → cong g (+-identityʳ (+ j))))
 
-  neg*neg : ∀ x y → (- x) * (- y) ≡ x * y
-  neg*neg = solve 2 (λ x y → (:- x) :* (:- y) := x :* y) refl
+neg*neg : ∀ x y → (- x) * (- y) ≡ x * y
+neg*neg = solve 2 (λ x y → (:- x) :* (:- y) := x :* y) refl
 
 -- The product of two coefficients is H-periodic, both factors
 -- changing sign.
@@ -481,14 +479,14 @@ private
 -- 0 elsewhere, since for 0 < j < H neither -j nor -j - H is a
 -- multiple of N.
 
-private
-  H>0 : 0 < H
-  H>0 = 2^k>0 (2 ℕ+ M₀)
-    where
-    2^k>0 : ∀ k → 0 < 2 ℕ^ k
-    2^k>0 zero    = ℕ.≤-refl
-    2^k>0 (suc k) = ℕ.≤-trans (2^k>0 k) (ℕ.m≤m+n (2 ℕ^ k) _)
+H>0 : 0 < H
+H>0 = 2^k>0 (2 ℕ+ M₀)
+  where
+  2^k>0 : ∀ k → 0 < 2 ℕ^ k
+  2^k>0 zero    = ℕ.≤-refl
+  2^k>0 (suc k) = ℕ.≤-trans (2^k>0 k) (ℕ.m≤m+n (2 ℕ^ k) _)
 
+private
   H<N : H < N
   H<N = ℕ.m<m+n H (ℕ.≤-trans H>0 (ℕ.≤-reflexive (sym (ℕ.+-identityʳ H))))
 
@@ -508,36 +506,36 @@ private
                    (ℕ.≤-reflexive (trans (sym e) eq)))
         (ℕ.<⇒≱ j<N)
 
-  coeff-zpow0-0 : coeff (zpow 0ℤ) (+ 0) ≡ 1ℤ
-  coeff-zpow0-0 = trans (coeff-zpow 0ℤ (+ 0)) (χ-1 N∣0)
+coeff-zpow0-0 : coeff (zpow 0ℤ) (+ 0) ≡ 1ℤ
+coeff-zpow0-0 = trans (coeff-zpow 0ℤ (+ 0)) (χ-1 N∣0)
 
-  coeff-zpow0-off : ∀ j → 0 < j → j < H → coeff (zpow 0ℤ) (+ j) ≡ 0ℤ
-  coeff-zpow0-off j 0<j j<H = trans (coeff-zpow 0ℤ (+ j))
-    (χ-0 (N∤ (0ℤ - (+ j)) j abs₁ 0<j (ℕ.<-trans j<H H<N))
-         (N∤ ((0ℤ - (+ j)) - (+ H)) (j ℕ+ H) abs₂
-             (ℕ.<-≤-trans 0<j (ℕ.m≤m+n j H)) j+H<N))
-    where
-    fold : ∀ x y → (0ℤ - x) - y ≡ - (x + y)
-    fold = solve 2 (λ x y → (con 0ℤ :- x) :- y := :- (x :+ y)) refl
+coeff-zpow0-off : ∀ j → 0 < j → j < H → coeff (zpow 0ℤ) (+ j) ≡ 0ℤ
+coeff-zpow0-off j 0<j j<H = trans (coeff-zpow 0ℤ (+ j))
+  (χ-0 (N∤ (0ℤ - (+ j)) j abs₁ 0<j (ℕ.<-trans j<H H<N))
+       (N∤ ((0ℤ - (+ j)) - (+ H)) (j ℕ+ H) abs₂
+           (ℕ.<-≤-trans 0<j (ℕ.m≤m+n j H)) j+H<N))
+  where
+  fold : ∀ x y → (0ℤ - x) - y ≡ - (x + y)
+  fold = solve 2 (λ x y → (con 0ℤ :- x) :- y := :- (x :+ y)) refl
 
-    abs₁ : ∣ 0ℤ - (+ j) ∣ ≡ j
-    abs₁ = trans (cong ∣_∣ (+-identityˡ (- (+ j)))) (∣-i∣≡∣i∣ (+ j))
+  abs₁ : ∣ 0ℤ - (+ j) ∣ ≡ j
+  abs₁ = trans (cong ∣_∣ (+-identityˡ (- (+ j)))) (∣-i∣≡∣i∣ (+ j))
 
-    abs₂ : ∣ (0ℤ - (+ j)) - (+ H) ∣ ≡ j ℕ+ H
-    abs₂ = trans (cong ∣_∣ (fold (+ j) (+ H))) (∣-i∣≡∣i∣ (+ (j ℕ+ H)))
+  abs₂ : ∣ (0ℤ - (+ j)) - (+ H) ∣ ≡ j ℕ+ H
+  abs₂ = trans (cong ∣_∣ (fold (+ j) (+ H))) (∣-i∣≡∣i∣ (+ (j ℕ+ H)))
 
-    j+H<N : j ℕ+ H < N
-    j+H<N = subst (j ℕ+ H <_) (sym N≡H+H) (ℕ.+-monoˡ-< H j<H)
+  j+H<N : j ℕ+ H < N
+  j+H<N = subst (j ℕ+ H <_) (sym N≡H+H) (ℕ.+-monoˡ-< H j<H)
 
-  -- A sum whose terms vanish away from 0 is its term at 0.
+-- A sum whose terms vanish away from 0 is its term at 0.
 
-  Σ<-single : ∀ k (f : ℕ → ℤ) → 0 < k →
-              (∀ j → 0 < j → j < k → f j ≡ 0ℤ) → Σ< k f ≡ f 0
-  Σ<-single zero    f () z
-  Σ<-single (suc k) f _ z = trans (Σ<-front k f)
-    (trans (cong (λ x → f 0 + x)
-                 (Σ<-0 k (λ j j<k → z (suc j) (s≤s z≤n) (s≤s j<k))))
-           (+-identityʳ (f 0)))
+Σ<-single : ∀ k (f : ℕ → ℤ) → 0 < k →
+            (∀ j → 0 < j → j < k → f j ≡ 0ℤ) → Σ< k f ≡ f 0
+Σ<-single zero    f () z
+Σ<-single (suc k) f _ z = trans (Σ<-front k f)
+  (trans (cong (λ x → f 0 + x)
+               (Σ<-0 k (λ j j<k → z (suc j) (s≤s z≤n) (s≤s j<k))))
+         (+-identityʳ (f 0)))
 
 ‖zpow0‖² : ‖ zpow 0ℤ ‖² ≡ 1ℤ
 ‖zpow0‖² = trans
