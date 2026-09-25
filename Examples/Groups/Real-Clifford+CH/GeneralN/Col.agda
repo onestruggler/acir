@@ -22,11 +22,12 @@ open import Data.Nat using (ℕ)
 open import Data.Vec using (_∷_)
 open import Word.Base using (_•_)
 
-open import Notations using (₁₊ ; ₂₊ ; ₃₊)
+open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 
 open import Examples.Groups.Real-Clifford+CH.Semantics.Algebra using (Bits)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires using (negsB)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Place using (cyc ; cyc⁻¹)
 
 col : ∀ {n} → Bits n → Circuit n → Circuit n
 col s w = negsB s • w • negsB s
@@ -68,3 +69,28 @@ c₁ false γ = true
 
 bot : Bool → Bool → ∀ {j} → Bits j → Bits (₃₊ j)
 bot v γ x = c₀ v γ ∷ c₁ v γ ∷ false ∷ x
+
+-- P ⊗ P on the wires 0 3, and on the wires 1 3: P ⊗ P on the wires 0 1
+-- under the cycle that carries wire 0 up to wire 3 (a placement around
+-- wire 3 is that cycle, GeneralN.Place), and that under the swap of the
+-- wires 0 1.
+P₀₃ P₁₃ : ∀ {r} → Circuit (₄₊ r)
+P₀₃ = cyc⁻¹ 3 • PP ↓ • cyc 3
+P₁₃ = Ex ↓ • P₀₃ • Ex ↓
+
+-- The H gate on wire 3 with its box wire on wire 1, controlled by the
+-- wires 0 2 ….
+Hg₃ : ∀ m → Circuit (₄₊ m)
+Hg₃ m = P₁₃ • B₁ (₁₊ m) • P₁₃
+
+-- (339) at the canonical position, with the wires 2 3 exchanged: the box
+-- on wire 0, black on the wires 1 2, coloured a on wire 3 and x above,
+-- commutes with the H gate on wire 3 whose box wire is wire 1, black on
+-- wire 0, white on wire 2 and coloured y above.  The paper's (339) has
+-- the two series differ on some wire, which its reduction moves next to
+-- the lower wires and colours black in the box, white in the H gate; here
+-- that wire is wire 2, the paper's H wire being wire 3.
+C339 : ℕ → Set
+C339 m = ∀ (a : Bool) (x y : Bits m) →
+         (₄₊ m) ⊢ col (true ∷ true ∷ true ∷ a ∷ x) (Λ□ (₃₊ m)) • col (true ∷ true ∷ false ∷ true ∷ y) (Hg₃ m)
+                ≈ col (true ∷ true ∷ false ∷ true ∷ y) (Hg₃ m) • col (true ∷ true ∷ true ∷ a ∷ x) (Λ□ (₃₊ m))
