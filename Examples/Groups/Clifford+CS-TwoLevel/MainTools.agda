@@ -162,6 +162,16 @@ square-merge G s o pr rel =
   square-by G s o (syl (actM G s)) ε (path-normal (actM G s) (ColOrth-actMʷ [ G ]ʷ o) pr) tt
     (trans rel (sym left-unit))
 
+-- Normal: N′ is the syllable of G s.
+square-syl : (G : Gen n) (s : Matrix n n D) .(o : ColOrth s) {p′ : Fin n} (N′ G′ : Word (Gen n)) →
+             pivot (actM G s) ≡ just p′ → syl (actM G s) ≡ N′ → Below (level s) G′ (step s) →
+             N′ • [ G ]ʷ ≈ G′ • syl s → Square G s o
+square-syl G s o N′ G′ pr eq below rel = square-by G s o N′ G′ normal below rel
+  where
+  normal : Path N′ (actM G s) (ColOrth-actMʷ [ G ]ʷ o)
+  normal = ≡.subst (λ N → Path N (actM G s) (ColOrth-actMʷ [ G ]ʷ o)) eq
+             (path-normal (actM G s) (ColOrth-actMʷ [ G ]ʷ o) pr)
+
 ------------------------------------------------------------------------
 -- The syllable and the level, from a representation of the pivot
 -- column
