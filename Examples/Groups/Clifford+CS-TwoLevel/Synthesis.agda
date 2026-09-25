@@ -57,9 +57,6 @@ synthAt M o a nothing pv = ε
 synthAt M o (acc rs) (just p) pv =
   synthAt (step M) (ColOrth-step M o) (rs (lt M o pv)) (pivot (step M)) refl • syl M
 
-synth : (M : Matrix n n D) → .(ColOrth M) → Word (Gen n)
-synth M o = synthAt M o (<ₗ-wellFounded (level M)) (pivot M) refl
-
 ------------------------------------------------------------------------
 -- Correctness: ⟦ synth M ⟧ M = I
 
@@ -68,9 +65,6 @@ synthAt-correct : (M : Matrix n n D) .(o : ColOrth M) (a : Acc _<ₗ_ (level M))
 synthAt-correct M o a nothing pv = pivot-nothing M pv
 synthAt-correct M o (acc rs) (just p) pv =
   synthAt-correct (step M) (ColOrth-step M o) (rs (lt M o pv)) (pivot (step M)) refl
-
-synth-correct : (M : Matrix n n D) .(o : ColOrth M) → actMʷ (synth M o) M ≡ 𝕀
-synth-correct M o = synthAt-correct M o (<ₗ-wellFounded (level M)) (pivot M) refl
 
 ------------------------------------------------------------------------
 -- The word depends on the matrix alone
@@ -81,13 +75,27 @@ synthAt-irr M o a a′ nothing pv = refl
 synthAt-irr M o (acc rs) (acc rs′) (just p) pv =
   cong (_• syl M) (synthAt-irr (step M) (ColOrth-step M o) (rs (lt M o pv)) (rs′ (lt M o pv)) (pivot (step M)) refl)
 
--- A normal edge M ⇒ step M, with syllable syl M.
-synth-step : (M : Matrix n n D) .(o : ColOrth M) {p : Fin n} → pivot M ≡ just p →
-             synth M o ≡ synth (step M) (ColOrth-step M o) • syl M
-synth-step M o {p} pv = aux (pivot M) refl pv (<ₗ-wellFounded (level M))
-  where
-  aux : (r : Maybe (Fin _)) (e : pivot M ≡ r) → r ≡ just p → (a : Acc _<ₗ_ (level M)) →
-        synthAt M o a r e ≡ synth (step M) (ColOrth-step M o) • syl M
-  aux (just .p) e refl (acc rs) =
-    cong (_• syl M) (synthAt-irr (step M) (ColOrth-step M o) (rs (lt M o e)) (<ₗ-wellFounded (level (step M)))
-                                 (pivot (step M)) refl)
+------------------------------------------------------------------------
+-- The algorithm's output
+--
+-- Opaque: comparing two normal words then compares the matrices, where
+-- unfolding them would compare their accessibility proofs.
+
+opaque
+  synth : (M : Matrix n n D) → .(ColOrth M) → Word (Gen n)
+  synth M o = synthAt M o (<ₗ-wellFounded (level M)) (pivot M) refl
+
+  -- Correctness: ⟦ synth M ⟧ M = I.
+  synth-correct : (M : Matrix n n D) .(o : ColOrth M) → actMʷ (synth M o) M ≡ 𝕀
+  synth-correct M o = synthAt-correct M o (<ₗ-wellFounded (level M)) (pivot M) refl
+
+  -- A normal edge M ⇒ step M, with syllable syl M.
+  synth-step : (M : Matrix n n D) .(o : ColOrth M) {p : Fin n} → pivot M ≡ just p →
+               synth M o ≡ synth (step M) (ColOrth-step M o) • syl M
+  synth-step M o {p} pv = aux (pivot M) refl pv (<ₗ-wellFounded (level M))
+    where
+    aux : (r : Maybe (Fin _)) (e : pivot M ≡ r) → r ≡ just p → (a : Acc _<ₗ_ (level M)) →
+          synthAt M o a r e ≡ synth (step M) (ColOrth-step M o) • syl M
+    aux (just .p) e refl (acc rs) =
+      cong (_• syl M) (synthAt-irr (step M) (ColOrth-step M o) (rs (lt M o e)) (<ₗ-wellFounded (level (step M)))
+                                   (pivot (step M)) refl)

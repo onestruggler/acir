@@ -85,9 +85,11 @@ sound-act (axiom {w} {v} a) M =
 nw : (M : Matrix n n D) → .(ColOrth M) → Word (Gen n)
 nw = synth
 
--- The normal word depends on the matrix alone.
-nw-cong : {M M′ : Matrix n n D} .(o : ColOrth M) .(o′ : ColOrth M′) → M ≡ M′ → nw M o ≡ nw M′ o′
-nw-cong o o′ ≡.refl = ≡.refl
+-- The normal word depends on the matrix alone.  (The equation comes
+-- first: it determines the matrices, which the irrelevant proofs do
+-- not, and leaving them to be inferred from those is intractable.)
+nw-cong : {M M′ : Matrix n n D} → M ≡ M′ → .(o : ColOrth M) .(o′ : ColOrth M′) → nw M o ≡ nw M′ o′
+nw-cong ≡.refl o o′ = ≡.refl
 
 -- w leads from M to w·M: the normal word of M is that of w·M, then w.
 Path : (w : Word (Gen n)) (M : Matrix n n D) → .(ColOrth M) → Set
@@ -113,8 +115,8 @@ private
 path-expand : (g : Gen n) (M : Matrix n n D) .(o : ColOrth M) → Path (expand g) M o → Path [ g ]ʷ M o
 path-expand g M o pe = begin
   nw (actM g M) (ColOrth-actMʷ [ g ]ʷ o) • [ g ]ʷ                  ≈⟨ cright expand-≈ g ⟩
-  nw (actM g M) (ColOrth-actMʷ [ g ]ʷ o) • expand g                ≈⟨ cleft refl′ (nw-cong (ColOrth-actMʷ [ g ]ʷ o)
-                                                                       (ColOrth-actMʷ (expand g) o) (sound-act (expand-≈ g) M)) ⟩
+  nw (actM g M) (ColOrth-actMʷ [ g ]ʷ o) • expand g                ≈⟨ cleft refl′ (nw-cong (sound-act (expand-≈ g) M) (ColOrth-actMʷ [ g ]ʷ o)
+                                                                       (ColOrth-actMʷ (expand g) o)) ⟩
   nw (actMʷ (expand g) M) (ColOrth-actMʷ (expand g) o) • expand g  ≈⟨ pe ⟩
   nw M o                                                           ∎
 
@@ -197,8 +199,8 @@ module _ (main : MainLemma) (base : Base) (exp-level : ExpLevel) where
       nw (actMʷ N′ r) (ColOrth-actMʷ N′ (ColOrth-actMʷ [ G ]ʷ o)) • (G′ • syl s)
                                                                    ≈⟨ sym assoc ⟩
       (nw (actMʷ N′ r) (ColOrth-actMʷ N′ (ColOrth-actMʷ [ G ]ʷ o)) • G′) • syl s
-                                                                   ≈⟨ cleft cleft refl′ (nw-cong (ColOrth-actMʷ N′ (ColOrth-actMʷ [ G ]ʷ o))
-                                                                                                 (ColOrth-actMʷ G′ (ColOrth-actMʷ (syl s) o)) (≡.sym meet)) ⟩
+                                                                   ≈⟨ cleft cleft refl′ (nw-cong (≡.sym meet) (ColOrth-actMʷ N′ (ColOrth-actMʷ [ G ]ʷ o))
+                                                                                                 (ColOrth-actMʷ G′ (ColOrth-actMʷ (syl s) o))) ⟩
       (nw (actMʷ G′ t) (ColOrth-actMʷ G′ (ColOrth-actMʷ (syl s) o)) • G′) • syl s
                                                                    ≈⟨ cleft path-below ih G′ t (ColOrth-actMʷ (syl s) o) below ⟩
       nw t (ColOrth-actMʷ (syl s) o) • syl s                       ≈⟨ refl′ (≡.sym (synth-step s o pv)) ⟩
@@ -241,7 +243,7 @@ module _ (main : MainLemma) (base : Base) (exp-level : ExpLevel) where
   completeness {u} {v} eq = •-cancelˡ (begin
     nw ⟦ u ⟧ᵐ ou • u         ≈⟨ path u 𝕀 ColOrth-𝕀 ⟩
     nw 𝕀 ColOrth-𝕀           ≈⟨ sym (path v 𝕀 ColOrth-𝕀) ⟩
-    nw ⟦ v ⟧ᵐ ov • v         ≈⟨ cleft refl′ (nw-cong ov ou (≡.sym eq)) ⟩
+    nw ⟦ v ⟧ᵐ ov • v         ≈⟨ cleft refl′ (nw-cong (≡.sym eq) ov ou) ⟩
     nw ⟦ u ⟧ᵐ ou • v         ∎)
     where
     ou : ColOrth ⟦ u ⟧ᵐ

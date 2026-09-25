@@ -146,15 +146,26 @@ ip-actVʷ (v • w) u u' = trans (ip-actVʷ v (actVʷ w u) (actVʷ w u')) (ip-ac
 ------------------------------------------------------------------------
 -- Column-orthonormal matrices: M† M = I
 
-ColOrth : Matrix n m A → Set
-ColOrth M = adjoint M ·*· M ≡ 𝕀
+-- Opaque: a proof of ColOrth M is often used where ColOrth M′ is
+-- expected, for M and M′ equal only up to unfolding, and transparent,
+-- that comparison unfolds the matrix products.  (It happens even for
+-- irrelevant proofs, whose types are still checked.)
+opaque
+  ColOrth : Matrix n m A → Set
+  ColOrth M = adjoint M ·*· M ≡ 𝕀
 
--- The columns of a column-orthonormal matrix are orthonormal.
-ColOrth-ip : {M : Matrix n m A} → ColOrth M → ∀ r c → ⟨ col M r , col M c ⟩ ≡ δ r c
-ColOrth-ip {M = M} o r c = trans (sym (ent-†·*· M M r c)) (trans (cong (λ N → ent N r c) o) (ent-𝕀 r c))
+  ColOrth→ : {M : Matrix n m A} → ColOrth M → adjoint M ·*· M ≡ 𝕀
+  ColOrth→ o = o
 
-ip⇒ColOrth : {M : Matrix n m A} → (∀ r c → ⟨ col M r , col M c ⟩ ≡ δ r c) → ColOrth M
-ip⇒ColOrth {M = M} ip = mat-ext λ r c → trans (ent-†·*· M M r c) (trans (ip r c) (sym (ent-𝕀 r c)))
+  →ColOrth : {M : Matrix n m A} → adjoint M ·*· M ≡ 𝕀 → ColOrth M
+  →ColOrth e = e
+
+  -- The columns of a column-orthonormal matrix are orthonormal.
+  ColOrth-ip : {M : Matrix n m A} → ColOrth M → ∀ r c → ⟨ col M r , col M c ⟩ ≡ δ r c
+  ColOrth-ip {M = M} o r c = trans (sym (ent-†·*· M M r c)) (trans (cong (λ N → ent N r c) o) (ent-𝕀 r c))
+
+  ip⇒ColOrth : {M : Matrix n m A} → (∀ r c → ⟨ col M r , col M c ⟩ ≡ δ r c) → ColOrth M
+  ip⇒ColOrth {M = M} ip = mat-ext λ r c → trans (ent-†·*· M M r c) (trans (ip r c) (sym (ent-𝕀 r c)))
 
 ColOrth-actMʷ : (w : Word (Gen n)) {M : Matrix n m A} → ColOrth M → ColOrth (actMʷ w M)
 ColOrth-actMʷ w {M} o = ip⇒ColOrth λ r c → begin
@@ -165,7 +176,7 @@ ColOrth-actMʷ w {M} o = ip⇒ColOrth λ r c → begin
   where open ≡-Reasoning
 
 ColOrth-𝕀 : ColOrth (𝕀 {n})
-ColOrth-𝕀 = trans (cong (_·*· 𝕀) adjoint-𝕀) (·*·-identityˡ 𝕀)
+ColOrth-𝕀 = →ColOrth (trans (cong (_·*· 𝕀) adjoint-𝕀) (·*·-identityˡ 𝕀))
 
 ------------------------------------------------------------------------
 -- The matrices of the generators are symmetric
@@ -241,7 +252,7 @@ Unitary : Matrix n n A → Set
 Unitary M = (adjoint M ·*· M ≡ 𝕀) × (M ·*· adjoint M ≡ 𝕀)
 
 Unitary-𝕀 : Unitary (𝕀 {n})
-Unitary-𝕀 = ColOrth-𝕀 , trans (cong (𝕀 ·*·_) adjoint-𝕀) (·*·-identityˡ 𝕀)
+Unitary-𝕀 = ColOrth→ ColOrth-𝕀 , trans (cong (𝕀 ·*·_) adjoint-𝕀) (·*·-identityˡ 𝕀)
 
 Unitary-·*· : {M N : Matrix n n A} → Unitary M → Unitary N → Unitary (M ·*· N)
 Unitary-·*· {M = M} {N} (m₁ , m₂) (n₁ , n₂) = u₁ , u₂
@@ -274,7 +285,7 @@ Unitary-adjoint {M = M} (m₁ , m₂) =
 -- A symmetric matrix with orthonormal columns is unitary.
 private
   sym-ColOrth⇒Unitary : {M : Matrix n n A} → (∀ r c → ent M r c ≡ ent M c r) → ColOrth M → Unitary M
-  sym-ColOrth⇒Unitary {M = M} s o = o , mat-ext λ r c → begin
+  sym-ColOrth⇒Unitary {M = M} s o = ColOrth→ o , mat-ext λ r c → begin
     ent (M ·*· adjoint M) r c                         ≡⟨ ent-·*· M (adjoint M) r c ⟩
     sum (λ x → ent M r x * ent (adjoint M) x c)       ≡⟨ sum-cong-≗ (λ x → cong₂ _*_ (s r x) (ent-adjoint M x c)) ⟩
     sum (λ x → ent M x r * adj (ent M c x))           ≡⟨ sum-cong-≗ (λ x → cong (λ z → ent M x r * adj z) (s c x)) ⟩
