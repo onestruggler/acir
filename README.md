@@ -156,6 +156,19 @@ representation gate by gate, correctly, with every intermediate list
 polynomially bounded.  That bounds the data, not a running time: no
 machine model or complexity class is formalised.
 
+**Section 5.2: the quantum Fourier transform.**  `CRK/Controlled`
+builds controlled rotations from {H, CNOT, R_k} and proves them the
+diagonal e^{2πi x_c x_t/2^k}; `CRK/Trace` reads a circuit's phase and
+outputs path by path.  `QFT/Circuit`, `QFT/Spec` and `QFT` prove, for
+every n with n + 1 ≤ M, that the Nielsen–Chuang circuit with its
+final wire reversal is the paper's specification
+|x⟩ ↦ 1/√2^n Σ_y e^{2πi [x][y]/2^n} |y⟩ — through the amplitudes, not
+by running figure 2.  `QFT/Unitary` shows the specification unitary
+exactly when n ≤ M, `QFT/Relabel` that the final permutation is a
+relabelling of the outputs and cannot be dropped, `QFT/Count` the gate
+counts behind table 2 (n² Clifford gates: 256 and 961), and
+`Examples/QFT` the instances of table 2.
+
 **Equivalence and verification.**  `Adjoint` defines C†, `AmpLinear`
 the linearity of the gate matrices, and `Miter` proves that C† undoes
 C on both sides, so ⟦ C₁ ⟧ ≋ ⟦ C₂ ⟧ exactly when ⟦ C₁ ++ C₂ † ⟧ is the
@@ -206,4 +219,4 @@ Not formalised: the polynomial time bounds (proposition 3.2,
 corollaries 2.15 and 4.4); constant inputs, beyond restricting to the
 columns where an ancilla is |0⟩; the symmetric monoidal laws of remark
 2.8 beyond interchange and SWAP naturality; and the benchmarks of
-section 5.
+section 5 as runs of the tool (the QFT family is proved for every n).

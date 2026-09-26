@@ -24,7 +24,8 @@
 -- paper's own gate set {H, CNOT, R_k} with propositions 2.10 and 2.14
 -- (PathSum.CRK), compositionally as well; the size half of corollary
 -- 2.15, with an interpreter building the representation gate by gate
--- (PathSum.Size); Z[ζ] as a commutative ring,
+-- (PathSum.Size); section 5.2's quantum Fourier transform for every n
+-- within the precision (PathSum.QFT); Z[ζ] as a commutative ring,
 -- definition 2.4, and every circuit's path-sum unitary, over both gate
 -- sets; all four rules of figure 2, [Case] included and with
 -- Boolean-valued quotients, at any internal path variables
@@ -59,7 +60,7 @@
 -- corollaries 2.15 and 4.4); constant inputs, beyond restricting to the
 -- columns where an ancilla is |0⟩ (PathSum.Ancilla); the symmetric
 -- monoidal laws of remark 2.8 beyond interchange and SWAP naturality;
--- and section 5's benchmarks.
+-- and section 5's benchmarks as runs of the tool.
 --
 -- Each section's banner names the modules its results come from;
 -- results proved here from them are stated with their proofs.
@@ -73,10 +74,11 @@ module PathSum.Theorems (M₀ : ℕ) where
 
 open import Algebra.Bundles using (CommutativeRing)
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Nat.Base using (_+_; _*_; _^_; _≤_; _⊔_)
+open import Data.Nat.Base using (_+_; _*_; _∸_; _^_; _≤_; _⊔_)
 open import Data.Fin.Base using (Fin)
 open import Data.Fin.Subset using (⊥)
 open import Data.Integer.Base using (ℤ; 0ℤ; +_; _-_)
+  renaming (_*_ to _*ℤ_)
 open import Data.Integer.Divisibility.Signed using (_∣_)
 open import Data.Integer.Properties using (≤-reflexive)
 open import Data.List.Base using (_++_; length)
@@ -86,7 +88,7 @@ open import Level using (0ℓ)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔; Equivalence)
 open import Relation.Binary.PropositionalEquality using
-  (_≡_; refl; sym; trans)
+  (_≡_; _≢_; refl; sym; trans)
 open import Relation.Nullary.Decidable using (Dec; no; map′)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 
@@ -98,7 +100,7 @@ open import PathSum.Base
 open import PathSum.AssignSum using (Σᶻ)
 open import PathSum.Circuit M using
   (Gate; H; S; CZ; Circuit; norm; ⟦_⟧; ⟦_⟧ᴿ)
-open import PathSum.Cyclotomic M₀ using (_≐_; Σᴮ; scale; scale-map)
+open import PathSum.Cyclotomic M₀ using (_≐_; Σᴮ; zpow; scale; scale-map)
 open import PathSum.Norm M₀ using (‖_‖²)
 open import PathSum.Order M
 open import PathSum.Polynomial
@@ -321,6 +323,32 @@ module SzE = PathSum.Size.Equivalence M₀
 
 import PathSum.Size.Interpreter.Clifford
 import PathSum.Size.Interpreter.Equivalence
+
+import PathSum.CRK.Controlled
+module KCR = PathSum.CRK.Controlled M₀
+
+import PathSum.QFT
+module QFT = PathSum.QFT M₀
+
+import PathSum.QFT.Circuit
+module QC = PathSum.QFT.Circuit M₀
+
+import PathSum.QFT.Spec
+module QS = PathSum.QFT.Spec M₀
+
+import PathSum.QFT.Unitary
+module QU = PathSum.QFT.Unitary M₀
+
+import PathSum.QFT.Relabel
+module QR = PathSum.QFT.Relabel M₀
+
+import PathSum.QFT.Count
+module QCnt = PathSum.QFT.Count M₀
+
+-- The QFT at the sizes of table 2 (their gate counts), and the
+-- seven-T Toffoli's size representation, at fixed precisions.
+
+import PathSum.Examples.QFT
 
 -- Closed instances (the seven-T Toffoli's representation), at M₀ = 0.
 
@@ -1266,6 +1294,53 @@ spec-sound : (C : K.Circuit n) (ξ : PathSum n k m)
              phase ξ′ ≈[ pow M ] 0ᴾ →
              K.⟦ C ⟧ ≋ ξ
 spec-sound = KSpec.spec-sound
+
+
+------------------------------------------------------------------------
+-- Section 5.2: the quantum Fourier transform, for every n
+-- (PathSum.CRK.Controlled, PathSum.QFT, PathSum.QFT.*)
+
+-- The paper verifies "a circuit from [Nielsen–Chuang] together with a
+-- final qubit permutation correction" against
+-- QFT_n : |x⟩ ↦ 1/√2^n Σ_y e^{2πi [x][y]/2^n} |y⟩.  Its controlled
+-- rotations are built here from {H, CNOT, R_k}: R_(k+1) c; R_(k+1) t;
+-- CNOT; R_(k+1)† t; CNOT is the diagonal e^{2πi x_c x_t/2^k}.  At the
+-- fixed precision 2^M the family needs n + 1 ≤ M; the equivalence is
+-- proved through the amplitudes, not by a run of figure 2.
+
+CR-≋ : ∀ k → suc k ≤ M → (c t : Fin n) (c≢t : c ≢ t) →
+       K.⟦ KCR.CR k c t c≢t ⟧ ≋ KCR.CRᴾ k c t
+CR-≋ = KCR.CR-≋
+
+QFT-spec-phase : (x y : Assign n) →
+                 eval (phase (QS.QFTˢ n)) x y ≡
+                 pow (M ∸ n) *ℤ (QS.bin x *ℤ QS.bin y)
+QFT-spec-phase = QS.eval-QFTˢ
+
+QFT-≋ : ∀ n → suc n ≤ M → K.⟦ QC.QFTC n ⟧ ≋ QS.QFTˢ n
+QFT-≋ = QFT.QFT-≋
+
+QFT-matrix : ∀ n → suc n ≤ M → (x z : Assign n) →
+             amp K.⟦ QC.QFTC n ⟧ x z ≐
+             zpow (pow (M ∸ n) *ℤ (QS.bin x *ℤ QS.bin z))
+QFT-matrix = QFT.QFTC-matrix
+
+-- At a fixed precision the specification is the Fourier transform --
+-- equivalently, unitary -- exactly up to n = M.
+
+QFT-spec-Unitary⇔ : ∀ n → Unitary (QS.QFTˢ n) ⇔ n ≤ M
+QFT-spec-Unitary⇔ = QU.QFTˢ-Unitary⇔
+
+-- The final permutation is a relabelling of the outputs, and it cannot
+-- be dropped from two qubits on; without it the circuit has exactly n²
+-- Clifford gates -- table 2's 256 and 961 for n = 16 and 31.
+
+QFT-without-permutation : ∀ n → 2 ≤ n → suc n ≤ M →
+                          ¬ (K.⟦ QC.QFT₀ n ⟧ ≋ QS.QFTˢ n)
+QFT-without-permutation = QR.QFT₀-not-spec
+
+QFT-cliffords : ∀ n → QCnt.cliffords (QC.QFT₀ n) ≡ n * n
+QFT-cliffords = QCnt.cliffords-QFT₀
 
 
 ------------------------------------------------------------------------
