@@ -32,7 +32,7 @@
 -- basis column has norm 1, so a column of ⟦ C ⟧ has norm 2^k, k the
 -- number of Hadamards, which is what the normalisation 1/√2^k divides
 -- out -- and what lemma 4.1 asks of a path-sum (PathSum.Isometry's
--- WellFormed).  That ⟦ C ⟧ is unitary is true but not stated.
+-- WellFormed).  That ⟦ C ⟧ is unitary is PathSum.CRK.Unitarity.
 --
 -- The column action and its congruences are public, for developments
 -- that compare circuits through their matrices.
@@ -441,7 +441,7 @@ private
 
 -- Every column of ⟦ C ⟧ has trace-form norm 2^k, k = norm C: a unit
 -- vector once normalised by 1/√2^k.  (That ⟦ C ⟧ is unitary is not
--- needed and not stated.)
+-- needed here; PathSum.CRK.Unitarity proves it.)
 
 ⟦⟧-unit-columns : (C : Circuit n) (x : Assign n) →
                   Σᶻ (λ z → ‖ amp ⟦ C ⟧ x z ‖²) ≡ + (2 ^ norm C)

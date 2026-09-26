@@ -6,9 +6,11 @@
 -- PathSum.Ring defines the product ⊛ of Z[ζ] as a negacyclic
 -- convolution and conjugation conj as ζ ↦ ζ⁻¹, and proves the laws
 -- that the Hermitian product of columns and definition 2.4 use.  This
--- module proves the rest, so that (Amp, +ᴬ, ⊛, conj) is a commutative
--- ring with involution in the sense of the standard library, equality
--- being ≐ (coordinate by coordinate):
+-- module proves the rest, so that (Amp, +ᴬ, ⊛) is a commutative ring
+-- in the sense of the standard library (IsCommutativeRing, equality
+-- being ≐, coordinate by coordinate) and conj a ring automorphism of
+-- it that is its own inverse -- a ring with involution, though the
+-- standard library has no structure of that name:
 --
 --   * a ⊛ b = b ⊛ a, and so ζ^0 is a unit on the right as well;
 --   * (a ⊛ b) ⊛ c = a ⊛ (b ⊛ c);

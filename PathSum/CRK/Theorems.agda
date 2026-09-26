@@ -35,22 +35,19 @@
 -- as R_M, on both sides of proposition 2.10 alike (Rk-order,
 -- Rk-primitive).
 --
--- Corollary 4.4 is not proved by the paper's route.  After a CNOT the
--- outputs of ⟦ C ⟧ are sums of variables rather than variables, so
--- reifying its isometry restriction needs Gaussian elimination, which
--- is not done.  For the Clifford circuits here -- level at most 2 --
--- PathSum.CRK.Compile reaches the characterisation in the corollary's
--- proof another way: it compiles the circuit to {H, S, CZ}, whose
--- path-sum is equivalent to ⟦ C ⟧, and reduces the compiled circuit's
--- restriction (corollary-4-4-compiled and its two companions).
+-- Corollary 4.4 by the paper's route -- after a CNOT the outputs of
+-- ⟦ C ⟧ are sums of variables, so reifying its isometry restriction
+-- needs Gaussian elimination -- is PathSum.Gauss.Corollary.  This
+-- package has the other route, for the Clifford circuits here (level
+-- at most 2): PathSum.CRK.Compile compiles the circuit to {H, S, CZ},
+-- whose path-sum is equivalent to ⟦ C ⟧, and reduces the compiled
+-- circuit's restriction (corollary-4-4-compiled and its two
+-- companions).
 --
--- Not formalised for these circuits: corollary 4.4 by Gaussian
--- elimination; corollary 2.15 and every complexity claim; the
--- composition of path-sums of definition 2.6 and proposition 2.7, so
--- that ⟦C₁;C₂⟧ = ⟦C₂⟧ ∘ ⟦C₁⟧ holds here at the level of interpretation
--- states (run-++) and of matrices (PathSum.CRK.Semantics.applyᴬ-++)
--- but is not stated with path-sums; and unitarity of ⟦ C ⟧ beyond unit
--- trace-form column norms.  Whether ⟦ C ⟧ is the identity is decided
+-- Elsewhere: ⟦C₁;C₂⟧ = ⟦C₂⟧ ∘ ⟦C₁⟧ with the path-sum composition of
+-- definition 2.6 is PathSum.Compose.CRK, and unitarity of ⟦ C ⟧ is
+-- PathSum.CRK.Unitarity.  Not formalised for these circuits: corollary
+-- 2.15 and every complexity claim.  Whether ⟦ C ⟧ is the identity is decided
 -- for every circuit (circuit-decidable), but by an exhaustive search
 -- over the diagonal of the circuit's matrix -- an elementary fact, not
 -- the reduction of corollary 4.4.

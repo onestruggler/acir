@@ -502,9 +502,9 @@ lemma-4-3 ξ int ordP ξ≋id with progress ξ int ordP
 -- (PathSum.Circuit.⟦_⟧ᴿ), lemma 4.1 carries the verdict back to the
 -- circuit, and PathSum.Syntactic shows that the reduct is the identity
 -- exactly when it has no normalisation left and the identity's
--- polynomials (PathSum.Theorems.corollary-4-4-any).  Not formalised: the
--- polynomial time bound, and Gaussian elimination for gate sets whose
--- outputs are sums of variables (CNOT).
+-- polynomials (PathSum.Theorems.corollary-4-4-any).  For gate sets
+-- whose outputs are sums of variables (CNOT) the Gaussian elimination
+-- is PathSum.Gauss.  Not formalised: the polynomial time bound.
 
 data Reduces {n k m : ℕ} (ξ : PathSum n k m) : Set where
   done  : ∀ {k′} {ξ′ : PathSum n k′ 0} → ξ ⟶* ξ′ → Reduces ξ

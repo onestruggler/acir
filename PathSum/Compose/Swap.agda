@@ -26,10 +26,12 @@
 -- As for the interchange law, these hold up to ≋ and not as equations,
 -- although the remark says "strictly equal": the two sides of
 -- swap-natural have normalisations (k₁ + k₂) + 0 and k₂ + k₁ and path
--- variables in different orders.  A SWAP of blocks of different sizes
--- is not expressible, since a path-sum here has as many outputs as
--- inputs, of one type; nor are the other symmetric monoidal laws
--- (associativity of ⊗ᴾ, the hexagon) formalised.
+-- variables in different orders.  SWAP is defined for blocks of equal
+-- size only: one of n₁ and n₂ wires is expressible on n₁ + n₂ wires
+-- through a cast of Fin, but its naturality compares path-sums on
+-- n₁ + n₂ and n₂ + n₁ wires, which ≋ (homogeneous in the wire count)
+-- cannot state without a transport.  Nor are the other symmetric
+-- monoidal laws (associativity of ⊗ᴾ, the hexagon) formalised.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

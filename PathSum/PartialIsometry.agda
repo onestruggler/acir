@@ -54,8 +54,9 @@
 --
 -- WellFormed does not imply definition 2.4: ½·id, with k = 2, no path
 -- variables, phase 0 and outputs the inputs, has columns of norm
--- 1 ≤ 2^2 but U†U = ¼·I, which is not a projection (argued here, not
--- formalised).  So PathSum.Isometry's lemma-4-1, stated under
+-- 1 ≤ 2^2 but U†U = ¼·I, which is not a projection
+-- (PathSum.PartialIsometry.Strict.WellFormed-strict).  So
+-- PathSum.Isometry's lemma-4-1, stated under
 -- WellFormed, remains the strongest form of the lemma, and the two
 -- forms here are corollaries of it.
 ------------------------------------------------------------------------

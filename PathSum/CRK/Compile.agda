@@ -9,8 +9,8 @@
 -- that restriction is reified by construction (PathSum.Circuit.⟦_⟧ᴿ,
 -- and PathSum.Corollary carries the corollary to the circuit).  After
 -- a CNOT the outputs of ⟦ C ⟧ are sums of variables, and the paper's
--- proof reifies the restriction by Gaussian elimination, which is not
--- formalised.  This module takes another route for the Clifford
+-- proof reifies the restriction by Gaussian elimination (formalised
+-- as PathSum.Gauss).  This module takes another route for the Clifford
 -- circuits of the gate set {H, CNOT, R_k, R_k†} -- those of level at
 -- most 2, whose R_k and R_k† all have k ≤ 2.  It compiles them to
 -- {H, S, CZ} and reduces the compiled circuit's restriction instead.

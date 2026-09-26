@@ -18,34 +18,44 @@
 -- The corollary's own statement, decidability in polynomial time, is
 -- not formalised.
 --
--- Around that core: all four rules of figure 2, [Case] included and
--- with Boolean-valued quotients, at the first path variables
--- (PathSum.Reduction.General), and the linear [Elim], [ω] and [HH] at
--- any internal path variable (PathSum.Anywhere) -- each calculus sound,
--- and no chain longer than the path variables it starts with; lemma 2.5
--- for every Boolean polynomial; definition 2.4 (PathSum.PartialIsometry),
--- under which lemma 4.1 holds as the paper states it, with circuits
--- over {H, S, CZ} proved isometries; equivalence of two such circuits,
--- decided through the miter; and the paper's own gate set
--- {H, CNOT, R_k}: definition 2.9, propositions 2.10 and 2.14, and the
--- characterisation of corollary 4.4 for its Clifford circuits, reached
--- by compiling them to {H, S, CZ}.
+-- Around that core: lemma 2.5 for every Boolean polynomial; composition
+-- of path-sums (definition 2.6), proposition 2.7's operator equation,
+-- and remark 2.8 up to ≋ (PathSum.Compose); definition 2.9 over the
+-- paper's own gate set {H, CNOT, R_k} with propositions 2.10 and 2.14
+-- (PathSum.CRK), compositionally as well; Z[ζ] as a commutative ring,
+-- definition 2.4, and every circuit's path-sum unitary, over both gate
+-- sets; all four rules of figure 2, [Case] included and with
+-- Boolean-valued quotients, at any internal path variables
+-- (PathSum.Full) -- sound, strongly normalising, with decidable
+-- matching and irreducible normal forms; lemma 4.1 under definition
+-- 2.4 and up to a global phase; lemma 4.3 at every internal variable;
+-- corollary 4.4 by the paper's own route for circuits with CNOT
+-- (Gaussian elimination, PathSum.Gauss) and under any rules in any
+-- order (PathSum.Full.Clifford); equivalence of two circuits over
+-- {H, S, CZ} through the miter; and the paper's worked examples,
+-- checked at precision M₀ = 0 (PathSum.Examples, imported below).
 --
--- Two statements of the paper are false as printed.  What is proved is
--- the corrected statement, next to a checked counterexample: lemma 4.2
--- needs Q odd at some input, not merely non-zero (Q = 2x₁ has ½y₀Q
--- integral), and proposition 2.14's bound is max(2, k), not k (a
--- Hadamard's phase ½xy has order 2 whatever k is).
+-- Statements of the paper that are false as printed, proved here in a
+-- corrected form beside a checked counterexample: lemma 4.2 needs Q odd
+-- at some input, not merely non-zero (Q = 2x₁ has ½y₀Q integral);
+-- proposition 2.14's bound is max(2, k), not k (a Hadamard's phase ½xy
+-- has order 2 whatever k is); and proposition 2.7's "well-formedness
+-- is preserved" fails both for WellFormed and for definition 2.4 (it
+-- holds when the second path-sum is an isometry).  Smaller slips, in
+-- the module headers: definition 2.6 omits a renaming in the outputs,
+-- section 4.1 substitutes Q where x_i ⊕ Q is meant, example B.1 as
+-- printed is the identity rather than ω·I, and the fourth line of
+-- example 3.4 does not follow from the third.  One gap is filled: the
+-- proof of corollary 4.4 reduces by arbitrary rules, which needs every
+-- rule to preserve order ≤ 2 -- lemma 2.13 covers only linear
+-- substitutions, and PathSum.Full.Clifford supplies the rest.
 --
 -- Not formalised: the polynomial time bounds (proposition 3.2,
--- corollaries 2.15 and 4.4); [Case] and Boolean-valued quotients at a
--- path variable other than the first; the Gaussian elimination by which
--- the paper's proof of corollary 4.4 reifies the restriction of a
--- circuit with CNOT (the corollary is reached another way for those);
--- composition of path-sums (definition 2.6, proposition 2.7) and
--- remark 2.8; constant inputs; equivalence of circuits with CNOT or
--- R_k; and UU† = I, so no path-sum is claimed unitary -- ⟦ C ⟧ is
--- proved an isometry.
+-- corollaries 2.15 and 4.4); constant inputs, beyond restricting to the
+-- columns where an ancilla is |0⟩ (PathSum.Ancilla); equivalence of
+-- circuits with CNOT or R_k, and the miter as the composed path-sum
+-- ⟦ C† ⟧ ∘ ξ; the symmetric monoidal laws of remark 2.8 beyond
+-- interchange and SWAP naturality; and section 5's benchmarks.
 --
 -- Each section's banner names the modules its results come from;
 -- results proved here from them are stated with their proofs.
@@ -57,15 +67,18 @@ open import Data.Nat.Base using (ℕ; suc; _<_)
 
 module PathSum.Theorems (M₀ : ℕ) where
 
+open import Algebra.Bundles using (CommutativeRing)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat.Base using (_+_; _^_; _≤_; _⊔_)
 open import Data.Fin.Base using (Fin)
 open import Data.Fin.Subset using (⊥)
-open import Data.Integer.Base using (0ℤ; +_; _-_)
+open import Data.Integer.Base using (ℤ; 0ℤ; +_; _-_)
 open import Data.Integer.Divisibility.Signed using (_∣_)
 open import Data.Integer.Properties using (≤-reflexive)
 open import Data.List.Base using (_++_)
+open import Data.Maybe.Base using (just; nothing)
 open import Data.Product.Base using (_×_; _,_; ∃; proj₂)
+open import Level using (0ℓ)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔; Equivalence)
 open import Relation.Binary.PropositionalEquality using
@@ -81,7 +94,7 @@ open import PathSum.Base
 open import PathSum.AssignSum using (Σᶻ)
 open import PathSum.Circuit M using
   (Gate; H; S; CZ; Circuit; norm; ⟦_⟧; ⟦_⟧ᴿ)
-open import PathSum.Cyclotomic M₀ using (_≐_; scale; scale-map)
+open import PathSum.Cyclotomic M₀ using (_≐_; Σᴮ; scale; scale-map)
 open import PathSum.Norm M₀ using (‖_‖²)
 open import PathSum.Order M
 open import PathSum.Polynomial
@@ -189,9 +202,84 @@ module KC = PathSum.CRK.Compile M₀
 import PathSum.CRK.Theorems
 module KT = PathSum.CRK.Theorems M₀
 
+open import PathSum.Ring M₀ using (_⊛_; conj)
+
+import PathSum.Ring.Laws
+module RL = PathSum.Ring.Laws M₀
+
+import PathSum.PartialIsometry.Strict
+module Strict = PathSum.PartialIsometry.Strict M₀
+
+import PathSum.PartialIsometry.Unitary
+module PU = PathSum.PartialIsometry.Unitary M₀
+open PU using (Unitary)
+
+import PathSum.CRK.Unitarity
+module KU = PathSum.CRK.Unitarity M₀
+
+open import PathSum.Compose using (_∘ᴾ_; _⊗ᴾ_)
+open import PathSum.Compose.Sum M₀ using (_++ᵃ_)
+
+import PathSum.Compose.Matrix
+module Mat = PathSum.Compose.Matrix M₀
+
+import PathSum.Compose.Laws
+module Laws = PathSum.Compose.Laws M₀
+
+import PathSum.Compose.WellFormed
+module CWF = PathSum.Compose.WellFormed M₀
+
+import PathSum.Compose.Counterexample
+module CE = PathSum.Compose.Counterexample M₀
+
+import PathSum.Compose.Clifford
+module CC = PathSum.Compose.Clifford M₀
+
+import PathSum.Compose.CRK
+module CR = PathSum.Compose.CRK M₀
+
+import PathSum.Compose.Tensor
+module Tens = PathSum.Compose.Tensor M₀
+
+import PathSum.Compose.Swap
+module Swp = PathSum.Compose.Swap M₀
+open Swp using (swapᴾ)
+
+import PathSum.Full
+module Fl = PathSum.Full M
+open Fl using (_⟶ᶠ_; _⟶ᶠ*_; lenᶠ)
+
+import PathSum.Full.Sound
+module FlS = PathSum.Full.Sound M₀
+
+import PathSum.Full.Match
+module FlM = PathSum.Full.Match M
+open FlM using (Irreducibleᶠ)
+
+import PathSum.Full.Corollary
+module FlC = PathSum.Full.Corollary M₀
+
+import PathSum.Full.Clifford
+module FlCl = PathSum.Full.Clifford M₀
+
+import PathSum.Gauss.Corollary
+module GC = PathSum.Gauss.Corollary M₀
+
+open import PathSum.Congruence M₀ using (phasePS)
+
+import PathSum.GlobalPhase
+module GP = PathSum.GlobalPhase M₀
+open GP using (Restriction-phase)
+
+-- The worked examples are closed facts at precision M₀ = 0; they are
+-- imported, not restated, so that this root checks them too.
+
+import PathSum.Examples
+
 private
   variable
-    n k m k′ m′ k″ m″ : ℕ
+    n k m k′ m′ k″ m″ j l j′ l′ : ℕ
+    n₁ n₂ k₁ k₂ m₁ m₂ j₁ j₂ l₁ l₂ : ℕ
 
 
 ------------------------------------------------------------------------
@@ -234,6 +322,100 @@ lift-unique = PB.lift-unique
 
 
 ------------------------------------------------------------------------
+-- Z[ζ] is a commutative ring (PathSum.Ring, PathSum.Ring.Laws)
+
+-- The product is the negacyclic convolution of coordinates and conj
+-- sends ζ to ζ⁻¹; conj is a ring automorphism and its own inverse.
+
+⊛-comm : ∀ a b → a ⊛ b ≐ b ⊛ a
+⊛-comm = RL.⊛-comm
+
+⊛-assoc : ∀ a b c → (a ⊛ b) ⊛ c ≐ a ⊛ (b ⊛ c)
+⊛-assoc = RL.⊛-assoc
+
+conj-⊛ : ∀ a b → conj (a ⊛ b) ≐ conj a ⊛ conj b
+conj-⊛ = RL.conj-⊛
+
+ℤ[ζ] : CommutativeRing 0ℓ 0ℓ
+ℤ[ζ] = RL.ℤ[ζ]
+
+
+------------------------------------------------------------------------
+-- Definition 2.6 and proposition 2.7: composition
+-- (PathSum.Compose, PathSum.Compose.Matrix, PathSum.Compose.Laws)
+
+-- ξ′ ∘ᴾ ξ feeds ξ′'s inputs the (lifted) outputs of ξ and concatenates
+-- the path variables; the normalisations add.  Its operator is the
+-- product of the two, exactly and with no hypothesis.  The laws of a
+-- category hold up to ≋: the two bracketings, say, have normalisations
+-- that are equal only propositionally.
+
+prop-2-7 : (ξ′ : PathSum n k′ m′) (ξ : PathSum n k m) (x z : Assign n) →
+           amp (ξ′ ∘ᴾ ξ) x z ≐ Σᴮ (λ w → amp ξ x w ⊛ amp ξ′ w z)
+prop-2-7 = Mat.prop-2-7
+
+∘ᴾ-assoc : (ξ″ : PathSum n k″ m″) (ξ′ : PathSum n k′ m′)
+           (ξ : PathSum n k m) →
+           ((ξ″ ∘ᴾ ξ′) ∘ᴾ ξ) ≋ (ξ″ ∘ᴾ (ξ′ ∘ᴾ ξ))
+∘ᴾ-assoc = Laws.∘ᴾ-assoc
+
+∘ᴾ-cong : (ξ′ : PathSum n k′ m′) (η′ : PathSum n j′ l′)
+          (ξ : PathSum n k m) (η : PathSum n j l) →
+          ξ′ ≋ η′ → ξ ≋ η → (ξ′ ∘ᴾ ξ) ≋ (η′ ∘ᴾ η)
+∘ᴾ-cong = Laws.∘ᴾ-cong
+
+-- "For any well-formed, compatible path-sums ξ, ξ′, ξ′ ∘ ξ is also well
+-- formed" is false, whether well-formed means WellFormed (a path-sum
+-- sending every input to |+⟩, then one sending every input to |0⟩) or
+-- definition 2.4 (|0⟩⟨0| then |+⟩⟨+| is (1/√2)|+⟩⟨0|).  Compatibility
+-- is vacuous here, every input being a variable.  It holds when the
+-- path-sum applied second is an isometry -- the paper's footnote: in
+-- practice only unitaries are composed.
+
+WellFormed-∘-fails :
+  WellFormed CE.plus × WellFormed CE.erase × ¬ WellFormed (CE.erase ∘ᴾ CE.plus)
+WellFormed-∘-fails = CE.WellFormed-∘-fails
+
+PartialIsometric-∘-fails :
+  PartialIsometric CE.P₀ × PartialIsometric CE.P₊ ×
+  ¬ PartialIsometric (CE.P₊ ∘ᴾ CE.P₀)
+PartialIsometric-∘-fails = CE.PartialIsometric-∘-fails
+
+Isometric-∘ : (ξ′ : PathSum n k′ m′) (ξ : PathSum n k m) →
+              Isometric ξ′ → Isometric ξ → Isometric (ξ′ ∘ᴾ ξ)
+Isometric-∘ = CWF.Isometric-∘
+
+WellFormed-∘ : (ξ′ : PathSum n k′ m′) (ξ : PathSum n k m) →
+               Isometric ξ′ → WellFormed ξ → WellFormed (ξ′ ∘ᴾ ξ)
+WellFormed-∘ = CWF.WellFormed-∘
+
+
+------------------------------------------------------------------------
+-- Remark 2.8: the tensor product (PathSum.Compose.Tensor,
+-- PathSum.Compose.Swap)
+
+-- The amplitude of ξ₁ ⊗ᴾ ξ₂ is the product of the two; composition and
+-- tensor interchange, and SWAP is natural, up to ≋ -- the remark's
+-- "strictly equal" cannot even be stated, the indices of the two sides
+-- being equal only propositionally.
+
+amp-⊗ : (ξ₁ : PathSum n₁ k₁ m₁) (ξ₂ : PathSum n₂ k₂ m₂)
+        (x₁ z₁ : Assign n₁) (x₂ z₂ : Assign n₂) →
+        amp (ξ₁ ⊗ᴾ ξ₂) (x₁ ++ᵃ x₂) (z₁ ++ᵃ z₂) ≐
+        amp ξ₁ x₁ z₁ ⊛ amp ξ₂ x₂ z₂
+amp-⊗ = Tens.amp-⊗
+
+⊗-interchange : (ξ₁ : PathSum n₁ k₁ m₁) (ξ₂ : PathSum n₂ k₂ m₂)
+                (ζ₁ : PathSum n₁ j₁ l₁) (ζ₂ : PathSum n₂ j₂ l₂) →
+                ((ξ₁ ⊗ᴾ ξ₂) ∘ᴾ (ζ₁ ⊗ᴾ ζ₂)) ≋ ((ξ₁ ∘ᴾ ζ₁) ⊗ᴾ (ξ₂ ∘ᴾ ζ₂))
+⊗-interchange = Tens.⊗-interchange
+
+swap-natural : (ξ₁ : PathSum n k₁ m₁) (ξ₂ : PathSum n k₂ m₂) →
+               (swapᴾ n ∘ᴾ (ξ₁ ⊗ᴾ ξ₂)) ≋ ((ξ₂ ⊗ᴾ ξ₁) ∘ᴾ swapᴾ n)
+swap-natural = Swp.swap-natural
+
+
+------------------------------------------------------------------------
 -- Definition 2.9 and proposition 2.10, over {H, S, CZ}
 -- (PathSum.Circuit, PathSum.CircuitSemantics, PathSum.Unitarity)
 
@@ -257,11 +439,20 @@ circuit-unit-columns = CSem.⟦⟧-unit-columns
 
 -- More: the columns are orthonormal in Z[ζ] itself, U†U = I with the
 -- product and conjugation of PathSum.Ring, so ⟦ C ⟧ satisfies
--- definition 2.4 as a theorem.  (UU† = I, which would make it unitary,
--- is not stated.)
+-- definition 2.4 as a theorem; and so are the rows, UU† = I, because
+-- the transpose of U_C is U_(reverse C).  So ⟦ C ⟧ is unitary.
 
 circuit-Isometric : (C : Circuit n) → Isometric ⟦ C ⟧
 circuit-Isometric = Unit.circuit-Isometric
+
+circuit-Unitary : (C : Circuit n) → Unitary ⟦ C ⟧
+circuit-Unitary = Unit.circuit-Unitary
+
+-- Definition 2.9's clause ⟦C₁;C₂⟧ = ⟦C₂⟧ ∘ ⟦C₁⟧, up to ≋
+-- (PathSum.Compose.Clifford).
+
+⟦++⟧ : (C₁ C₂ : Circuit n) → ⟦ C₁ ++ C₂ ⟧ ≋ (⟦ C₂ ⟧ ∘ᴾ ⟦ C₁ ⟧)
+⟦++⟧ = CC.⟦++⟧
 
 -- So "⟦ C ⟧ is the identity" means what it should: the circuit's
 -- matrix, computed gate by gate, is the identity matrix.
@@ -287,6 +478,21 @@ prop-2-10-Rk = KT.prop-2-10
 
 circuit-WellFormed-Rk : (C : K.Circuit n) → WellFormed K.⟦ C ⟧
 circuit-WellFormed-Rk = KT.circuit-WellFormed
+
+-- The paper's definition proper is compositional, each gate's path-sum
+-- as printed (PathSum.Compose.CRK): it agrees with the interpretation
+-- above, which runs the gates on a state, and satisfies
+-- ⟦C₁;C₂⟧ = ⟦C₂⟧ ∘ ⟦C₁⟧.  And ⟦ C ⟧ is unitary (PathSum.CRK.Unitarity),
+-- as proposition 2.10's "unitary matrix U_C" requires.
+
+⟦⟧ᶜ≋⟦⟧-Rk : (C : K.Circuit n) → CR.⟦ C ⟧ᶜ ≋ K.⟦ C ⟧
+⟦⟧ᶜ≋⟦⟧-Rk = CR.⟦⟧ᶜ≋⟦⟧
+
+⟦++⟧-Rk : (C₁ C₂ : K.Circuit n) → K.⟦ C₁ ++ C₂ ⟧ ≋ (K.⟦ C₂ ⟧ ∘ᴾ K.⟦ C₁ ⟧)
+⟦++⟧-Rk = CR.⟦++⟧
+
+circuit-Unitary-Rk : (C : K.Circuit n) → Unitary K.⟦ C ⟧
+circuit-Unitary-Rk = KU.circuit-Unitary
 
 -- Proposition 2.14 bounds the order of the phase by the level k of the
 -- R_k in the circuit.  That is false at k = 1: the Hadamard's ½xy is
@@ -343,6 +549,15 @@ front-≋ = AnyS.front-≋
 ⟶ᵍ*-sound : {ξ : PathSum n k m} {ζ : PathSum n k′ m′} → ξ ⟶ᵍ* ζ → ξ ≋ ζ
 ⟶ᵍ*-sound = AnyS.⟶ᵍ*-sound
 
+-- All of figure 2 at any internal path variables, [Case] at any pair
+-- (PathSum.Full, PathSum.Full.Sound): the calculus the paper uses.
+
+⟶ᶠ-sound : {ξ : PathSum n k m} {ζ : PathSum n k′ m′} → ξ ⟶ᶠ ζ → ξ ≋ ζ
+⟶ᶠ-sound = FlS.⟶ᶠ-sound
+
+⟶ᶠ*-sound : {ξ : PathSum n k m} {ζ : PathSum n k′ m′} → ξ ⟶ᶠ* ζ → ξ ≋ ζ
+⟶ᶠ*-sound = FlS.⟶ᶠ*-sound
+
 
 ------------------------------------------------------------------------
 -- Proposition 3.2: strong normalization (PathSum.Reduction)
@@ -384,6 +599,23 @@ normal-form : (ξ : PathSum n k m) →
                 (ξ ⟶ᵍ* ξ′) × Irreducible ξ′
 normal-form = AnyM.normal-form
 
+-- The same for all of figure 2 at any variables (PathSum.Full,
+-- PathSum.Full.Match).  The rules quantify over quotients; the ones
+-- they need are read off the phase as canonical candidates, which work
+-- whenever any quotient does, so matching is decidable.
+
+⟶ᶠ-SN : (ξ : PathSum n k m) → SN _⟶ᶠ_ ξ
+⟶ᶠ-SN = Fl.⟶ᶠ-SN
+
+⟶ᶠ*-bounded : {ξ : PathSum n k m} {ζ : PathSum n k′ m′}
+              (steps : ξ ⟶ᶠ* ζ) → lenᶠ steps ≤ m
+⟶ᶠ*-bounded = Fl.⟶ᶠ*-bounded
+
+normal-formᶠ : (ξ : PathSum n k m) →
+               ∃ λ k′ → ∃ λ m′ → ∃ λ (ξ′ : PathSum n k′ m′) →
+                 (ξ ⟶ᶠ* ξ′) × Irreducibleᶠ ξ′
+normal-formᶠ = FlM.normal-formᶠ
+
 
 ------------------------------------------------------------------------
 -- Lemma 4.1: isometry restrictions (PathSum.Isometry,
@@ -410,6 +642,22 @@ PartialIsometric⇒WellFormed = PIso.PartialIsometric⇒WellFormed
 lemma-4-1-partial : (ξ : PathSum n k m) → PartialIsometric ξ →
                     (ξ ≋ idPS ⇔ Restriction-id ξ)
 lemma-4-1-partial = PIso.lemma-4-1-partial
+
+-- The converse fails: ½·id is WellFormed but not a partial isometry
+-- (PathSum.PartialIsometry.Strict).
+
+WellFormed-strict :
+  ∃ λ (ξ : PathSum 1 2 0) → WellFormed ξ × ¬ PartialIsometric ξ
+WellFormed-strict = Strict.WellFormed-strict
+
+-- Section 3.2 and appendix B conclude (SH)³ = ω·I, a global phase, and
+-- lemma 4.1 as stated covers only the identity.  It holds up to any
+-- global phase ζ^e (PathSum.GlobalPhase): a WellFormed path-sum is
+-- ζ^e·I exactly when every diagonal entry is the normalised ζ^e.
+
+lemma-4-1-phase : (ξ : PathSum n k m) (e : ℤ) → WellFormed ξ →
+                  (ξ ≋ phasePS e ⇔ Restriction-phase e ξ)
+lemma-4-1-phase = GP.lemma-4-1-phase
 
 
 ------------------------------------------------------------------------
@@ -672,6 +920,37 @@ corollary-4-4-anyᴳ : (C : Circuit n) {ξ′ : PathSum n k′ 0} →
     (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ))
 corollary-4-4-anyᴳ = GenCor.corollary-4-4-anyᴳ
 
+corollary-4-4-anyᶠ : (C : Circuit n) {ξ′ : PathSum n k′ 0} →
+  ⟦ C ⟧ᴿ ⟶ᶠ* ξ′ →
+  (⟦ C ⟧ ≋ idPS ⇔
+   (k′ ≡ 0 ×
+    (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ))
+corollary-4-4-anyᶠ = FlC.corollary-4-4-anyᶠ
+
+
+------------------------------------------------------------------------
+-- Corollary 4.4 under any rules, in any order (PathSum.Full.Clifford)
+
+-- The paper's proof reduces by arbitrary rewrites (proposition 3.2),
+-- so it needs every rule to keep the phase of order at most 2; lemma
+-- 4.3 shows that only for the step it builds, and lemma 2.13 covers
+-- only linear substitutions.  At a Clifford path-sum a Boolean-valued
+-- quotient of [ω] or [HH] is forced to be a linear lifting and the X of
+-- [Case] a constant, so every rule keeps the invariant.  Hence: reduce
+-- ⟦ C ⟧ᴿ by any rules of figure 2, in any order, until none applies;
+-- the circuit is the identity exactly when what is left is |x⟩ ↦ |x⟩
+-- syntactically, with no path variables.
+
+corollary-4-4-normalᶠ : (C : Circuit n) {ξ′ : PathSum n k′ m′} →
+  ⟦ C ⟧ᴿ ⟶ᶠ* ξ′ → Irreducibleᶠ ξ′ →
+  (⟦ C ⟧ ≋ idPS ⇔
+   (m′ ≡ 0 × k′ ≡ 0 ×
+    (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ))
+corollary-4-4-normalᶠ = FlCl.corollary-4-4-normalᶠ
+
+circuit-decidableᶠ : (C : Circuit n) → Dec (⟦ C ⟧ ≋ idPS)
+circuit-decidableᶠ = FlCl.circuit-decidableᶠ
+
 
 ------------------------------------------------------------------------
 -- Corollary 4.4 for Clifford circuits with CNOT, by compilation
@@ -681,7 +960,7 @@ corollary-4-4-anyᴳ = GenCor.corollary-4-4-anyᴳ
 -- Compiled to {H, S, CZ} (CNOT as H ; CZ ; H, S† as S³) it has an
 -- equivalent path-sum, so the characterisation above carries over.
 -- The paper's proof reifies the restriction of ⟦ C ⟧ itself by Gaussian
--- elimination instead; that route is not the one taken here.
+-- elimination instead; that route is the next section.
 
 compile-≋ : (C : K.Circuit n) → K.level C ≤ 2 → K.⟦ C ⟧ ≋ ⟦ KC.compile C ⟧
 compile-≋ = KT.compile-≋
@@ -692,6 +971,50 @@ corollary-4-4-syntactic-Rk : (C : K.Circuit n) → K.level C ≤ 2 →
      (⟦ KC.compile C ⟧ᴿ ⟶* ξ′) ×
      (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ)
 corollary-4-4-syntactic-Rk = KT.corollary-4-4-syntactic-compiled
+
+
+------------------------------------------------------------------------
+-- Corollary 4.4 by Gaussian elimination, the paper's route
+-- (PathSum.Gauss, PathSum.Gauss.Corollary)
+
+-- After a CNOT the outputs are sums of variables.  Eliminating one path
+-- variable per output that contains one (y_j ← f_w ⊕ x_w ⊕ y_j, which
+-- makes wire w read x_w) keeps the diagonal and the order of the phase,
+-- and ends either at an input whose diagonal entry vanishes -- "if no
+-- such solution exists, ⟦C⟧ ≢ |x⟩ ↦ |x⟩" -- or at the reified
+-- restriction GC.⟦ C ⟧ᴿ, with outputs x and only internal path
+-- variables, to which lemma 4.3 applies.
+
+not-id-gauss : (C : K.Circuit n) → GC.⟦ C ⟧ᴿ ≡ nothing →
+               ¬ (K.⟦ C ⟧ ≋ idPS)
+not-id-gauss = GC.not-id-gauss
+
+corollary-4-4-gauss : (C : K.Circuit n) → K.level C ≤ 2 →
+  (K.⟦ C ⟧ ≋ idPS ⇔
+   ∃ λ m′ → ∃ λ (ξ : PathSum n (K.norm C) m′) →
+     GC.⟦ C ⟧ᴿ ≡ just (m′ , ξ) ×
+     ∃ λ (ξ′ : PathSum n 0 0) → (ξ ⟶* ξ′) ×
+       (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ)
+corollary-4-4-gauss = GC.corollary-4-4-gauss
+
+decidable-gauss : (C : K.Circuit n) → K.level C ≤ 2 → Dec (K.⟦ C ⟧ ≋ idPS)
+decidable-gauss = GC.decidable-gauss
+
+
+------------------------------------------------------------------------
+-- Corollary 4.4 up to a global phase (PathSum.GlobalPhase)
+
+-- With lemma 4.1 at ζ^e, the same reduction decides whether a Clifford
+-- circuit is the global phase ζ^e: a chain from ⟦ C ⟧ᴿ that ends
+-- without path variables ends at |x⟩ ↦ ζ^e|x⟩ syntactically exactly
+-- when ⟦ C ⟧ is ζ^e·I.
+
+corollary-4-4-phase : (C : Circuit n) (e : ℤ) {ξ′ : PathSum n k′ 0} →
+  ⟦ C ⟧ᴿ ⟶* ξ′ →
+  (⟦ C ⟧ ≋ phasePS e ⇔
+   (k′ ≡ 0 ×
+    (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] κ e))
+corollary-4-4-phase = GP.corollary-4-4-phase
 
 
 ------------------------------------------------------------------------

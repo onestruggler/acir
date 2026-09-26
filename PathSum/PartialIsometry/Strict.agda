@@ -23,7 +23,7 @@
 -- ½·id (WellFormed-strict).  So lemma 4.1 under WellFormed
 -- (Isometry.lemma-4-1) is strictly stronger than under definition 2.4
 -- (PartialIsometry.lemma-4-1-partial): ½·id satisfies its hypothesis
--- and is, correctly, not the identity.
+-- but not the other's.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

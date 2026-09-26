@@ -39,7 +39,8 @@
 -- through a product, so that √2·a · conj (√2·b) = 2 · a·b̄ (which is
 -- what lets definition 2.4 be stated with the normalisation cleared).
 -- Commutativity and associativity of ⊛, and conj being multiplicative,
--- are not proved: those two modules do not need them.
+-- are not needed by those two modules and are proved separately, in
+-- PathSum.Ring.Laws.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
