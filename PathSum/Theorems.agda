@@ -25,7 +25,8 @@
 -- (PathSum.CRK), compositionally as well; the size half of corollary
 -- 2.15, with an interpreter building the representation gate by gate
 -- (PathSum.Size); section 5.2's quantum Fourier transform for every n
--- within the precision (PathSum.QFT); Z[ζ] as a commutative ring,
+-- within the precision (PathSum.QFT) and its n-bit Toffoli gates with
+-- ancillas for every n (PathSum.ToffoliN); Z[ζ] as a commutative ring,
 -- definition 2.4, and every circuit's path-sum unitary, over both gate
 -- sets; all four rules of figure 2, [Case] included and with
 -- Boolean-valued quotients, at any internal path variables
@@ -100,7 +101,8 @@ open import PathSum.Base
 open import PathSum.AssignSum using (Σᶻ)
 open import PathSum.Circuit M using
   (Gate; H; S; CZ; Circuit; norm; ⟦_⟧; ⟦_⟧ᴿ)
-open import PathSum.Cyclotomic M₀ using (_≐_; Σᴮ; zpow; scale; scale-map)
+open import PathSum.Cyclotomic M₀ using
+  (0ᴬ; _≐_; Σᴮ; zpow; scale; scale-map)
 open import PathSum.Norm M₀ using (‖_‖²)
 open import PathSum.Order M
 open import PathSum.Polynomial
@@ -344,6 +346,26 @@ module QR = PathSum.QFT.Relabel M₀
 
 import PathSum.QFT.Count
 module QCnt = PathSum.QFT.Count M₀
+
+import PathSum.Ancillas
+module Anc = PathSum.Ancillas M₀
+open Anc using (_≋[_]₀*_; Clean; set0ˢ)
+
+import PathSum.Classical
+import PathSum.CRK.Path
+module KP = PathSum.CRK.Path M₀
+
+import PathSum.Toffoli
+module Tof = PathSum.Toffoli M₀
+
+import PathSum.Toffoli.Netlist
+module TNet = PathSum.Toffoli.Netlist M₀
+
+import PathSum.ToffoliN.Chain
+module TCh = PathSum.ToffoliN.Chain M₀
+
+import PathSum.ToffoliN
+module TN = PathSum.ToffoliN M₀
 
 -- The QFT at the sizes of table 2 (their gate counts), and the
 -- seven-T Toffoli's size representation, at fixed precisions.
@@ -1341,6 +1363,64 @@ QFT-without-permutation = QR.QFT₀-not-spec
 
 QFT-cliffords : ∀ n → QCnt.cliffords (QC.QFT₀ n) ≡ n * n
 QFT-cliffords = QCnt.cliffords-QFT₀
+
+
+------------------------------------------------------------------------
+-- Section 5.2: n-bit Toffoli gates, for every n (PathSum.Toffoli,
+-- PathSum.ToffoliN, PathSum.Ancillas, PathSum.Classical)
+
+-- The building block: the seven-T Toffoli circuit on any three distinct
+-- wires of any circuit computes |x⟩ ↦ |x[t ≔ x_t ⊕ x_c₁ x_c₂]⟩ -- the
+-- classical path-sum TG.toffoliˢ, phase 0, no path variables.
+
+-- (Stated with CRK.Path's ⟦_⟧ and Toffoli's own tof, as Toffoli states
+-- it: with K.⟦_⟧ and Toffoli.Gate's tof Agda unfolds the fifteen-gate
+-- circuit to compare the two statements, for minutes.)
+
+tof-spec : (c₁ c₂ t : Fin n) (c₁≢c₂ : c₁ ≢ c₂) (c₁≢t : c₁ ≢ t)
+           (c₂≢t : c₂ ≢ t) →
+           KP.⟦ Tof.tof c₁ c₂ t c₁≢c₂ c₁≢t c₂≢t ⟧ ≋ Tof.toffoliˢ c₁ c₂ t
+tof-spec = Tof.tof-spec
+
+-- "The standard decomposition into 2(n − 3) + 1 Toffoli gates and
+-- n − 3 ancillas": on the inputs whose ancillas are |0⟩ it computes
+-- Toffoli_n : |x⟩ ↦ |x₁ … (x_n ⊕ x₁ ⋯ x_(n−1))⟩, it leaves the ancillas
+-- clean, and with the ancillas read as the constant 0 it is Toffoli_n
+-- outright.  The proof composes classical path-sums (proposition 2.7)
+-- rather than running figure 2.
+
+Toffoliₙ-spec : (n : ℕ) (p : 3 ≤ n) →
+                K.⟦ TN.Toffoliₙ n p ⟧ ≋[ TCh.anc (TCh.standard n p) ]₀*
+                  TCh.toffoliₙˢ (TCh.standard n p)
+Toffoliₙ-spec = TN.Toffoliₙ-spec
+
+Toffoliₙ-clean : (n : ℕ) (p : 3 ≤ n) → ∀ x z →
+                 Clean (TCh.anc (TCh.standard n p)) x → (i : Fin (n ∸ 3)) →
+                 z (TCh.anc (TCh.standard n p) i) ≡ true →
+                 amp K.⟦ TN.Toffoliₙ n p ⟧ x z ≐ 0ᴬ
+Toffoliₙ-clean = TN.Toffoliₙ-clean
+
+Toffoliₙ-set0 : (n : ℕ) (p : 3 ≤ n) →
+                set0ˢ (TCh.anc (TCh.standard n p)) K.⟦ TN.Toffoliₙ n p ⟧ ≋
+                set0ˢ (TCh.anc (TCh.standard n p))
+                      (TCh.toffoliₙˢ (TCh.standard n p))
+Toffoliₙ-set0 = TN.Toffoliₙ-set0
+
+-- Table 2's rows Toffoli50 and Toffoli100, computed from the circuit:
+-- qubits, path variables and T gates all as printed.  (Its Clifford
+-- column, nine per Toffoli, fits Nielsen and Chuang's figure 4.9; the
+-- circuit here merges two of its gates and has eight.)
+
+table-2-Toffoli50 : (p : 3 ≤ 50) →
+                    (50 + (50 ∸ 3) ≡ 97) × (K.paths (TN.Toffoliₙ 50 p) ≡ 190)
+                    × (TNet.tcount (TN.Toffoliₙ 50 p) ≡ 665)
+table-2-Toffoli50 = TN.table-2-Toffoli50
+
+table-2-Toffoli100 : (p : 3 ≤ 100) →
+                     (100 + (100 ∸ 3) ≡ 197)
+                     × (K.paths (TN.Toffoliₙ 100 p) ≡ 390)
+                     × (TNet.tcount (TN.Toffoliₙ 100 p) ≡ 1365)
+table-2-Toffoli100 = TN.table-2-Toffoli100
 
 
 ------------------------------------------------------------------------

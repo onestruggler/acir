@@ -169,6 +169,19 @@ relabelling of the outputs and cannot be dropped, `QFT/Count` the gate
 counts behind table 2 (n² Clifford gates: 256 and 961), and
 `Examples/QFT` the instances of table 2.
 
+**Section 5.2: n-bit Toffoli gates.**  `Classical` treats path-sums
+without path variables whose outputs compute a Boolean function (a
+path-sum "computes" F), and their composition; `CRK/Path` reads a
+circuit along one path; `Toffoli/Gate`, `Toffoli/Arith` and `Toffoli`
+prove the seven-T Toffoli circuit on any three wires of any circuit is
+the classical Toffoli gate, at every precision.  `Toffoli/Netlist`,
+`ToffoliN/Chain`, `Ancillas` and `ToffoliN` prove the paper's
+construction of Toffoli_n — 2(n − 3) + 1 Toffoli gates and n − 3
+ancillas — correct for every n ≥ 3: on the inputs whose ancillas are
+|0⟩ it computes x_n ⊕ x₁⋯x_(n−1), and it leaves the ancillas clean.
+Its qubit, path-variable and T counts reproduce table 2's rows
+Toffoli50 and Toffoli100.
+
 **Equivalence and verification.**  `Adjoint` defines C†, `AmpLinear`
 the linearity of the gate matrices, and `Miter` proves that C† undoes
 C on both sides, so ⟦ C₁ ⟧ ≋ ⟦ C₂ ⟧ exactly when ⟦ C₁ ++ C₂ † ⟧ is the
@@ -219,4 +232,5 @@ Not formalised: the polynomial time bounds (proposition 3.2,
 corollaries 2.15 and 4.4); constant inputs, beyond restricting to the
 columns where an ancilla is |0⟩; the symmetric monoidal laws of remark
 2.8 beyond interchange and SWAP naturality; and the benchmarks of
-section 5 as runs of the tool (the QFT family is proved for every n).
+section 5 as runs of the tool (the QFT and Toffoli families are
+proved for every n).
