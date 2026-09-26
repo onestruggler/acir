@@ -18,7 +18,8 @@
 -- Only the syntax is here.  That C† inverts C on both sides is
 -- PathSum.Miter's †-cancelʳ and †-cancelˡ, proved on columns gate by
 -- gate; that it is the conjugate transpose -- the adjoint proper --
--- would need conjugation in Z[ζ], and is not stated.
+-- is PathSum.Adjoint.Conjugate's circuit-adjoint, with the
+-- conjugation of Z[ζ] from PathSum.Ring.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

@@ -37,10 +37,12 @@
 -- circuit on the right both preserves and reflects ≋ (++-congʳ,
 -- ++-cancelʳ).
 --
--- Not formalised: the paper's miter against a general ξ is a
--- composition of path-sums (definition 2.6).  Here ⟦ C† ⟧ ∘ ξ appears
--- only as C† acting on the columns of ξ.  Prepending a circuit is not
--- shown to respect ≋ (see ++-congʳ for why).
+-- The paper's miter against a general ξ is a composition of path-sums
+-- (definition 2.6).  Here ⟦ C† ⟧ ∘ ξ appears only as C† acting on the
+-- columns of ξ; the composite itself is PathSum.Miter.Compose
+-- (spec-miter-∘), which also shows that prepending a circuit respects
+-- and reflects ≋ (++-congˡ, ++-cancelˡ; see ++-congʳ for why that
+-- needs composition).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -539,11 +541,11 @@ miter C₁ C₂ = mk⇔ to from
 
 -- The circuit D appended after C and C′ commutes with the
 -- normalisations, so it carries their equation along.  The other
--- side, D ++ C against D ++ C′, is not proved: there C and C′ act on
--- the columns of D, which are not basis states, and ⟦ C ⟧ ≋ ⟦ C′ ⟧
--- speaks only of basis states.  Passing between the two needs a
--- circuit to commute with multiplication by elements of Z[ζ], whose
--- product is not defined here.
+-- side, D ++ C against D ++ C′, is not proved here: there C and C′
+-- act on the columns of D, which are not basis states, and
+-- ⟦ C ⟧ ≋ ⟦ C′ ⟧ speaks only of basis states.  Composition of
+-- path-sums reads those columns path by path, and
+-- PathSum.Miter.Compose's ++-congˡ proves it that way.
 
 ++-congʳ : (C C′ D : Circuit n) → ⟦ C ⟧ ≋ ⟦ C′ ⟧ →
            ⟦ C ++ D ⟧ ≋ ⟦ C′ ++ D ⟧

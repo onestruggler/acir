@@ -31,14 +31,15 @@
 --     isometry (PartialIsometric-∘), or a WellFormed path-sum
 --     (WellFormed-∘).  In the second counterexample the path-sum
 --     composed after is |+⟩⟨+|, a partial isometry but not an
---     isometry: the hypothesis cannot be weakened to definition 2.4.
+--     isometry: for PartialIsometric-∘ -- the composite being a
+--     partial isometry -- the hypothesis cannot be weakened to
+--     definition 2.4.  (For WellFormed-∘ it can; see below.)
 --
--- Not formalised: that a WellFormed path-sum followed by any partial
--- isometry, or any contraction, is still WellFormed.  It is true -- a
--- partial isometry does not increase norms, in every complex embedding
--- of Q(ζ), by the argument of PathSum.Isometry's header -- but its
--- proof here would need the product of Z[ζ] to be commutative and
--- associative.
+-- Not here: that a WellFormed path-sum followed by any partial
+-- isometry, or any contraction, is still WellFormed.  Its proof needs
+-- the product of Z[ζ] to be commutative and associative, and it is
+-- PathSum.Compose.Contraction (WellFormed-∘ᶜ, WellFormed-∘-partial),
+-- over PathSum.Ring.Laws.
 --
 -- gram-∘ is proved on paths, without the commutativity or
 -- associativity of Z[ζ]'s product, which PathSum.Ring does not
