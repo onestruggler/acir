@@ -22,7 +22,9 @@
 -- of path-sums (definition 2.6), proposition 2.7's operator equation,
 -- and remark 2.8 up to ≋ (PathSum.Compose); definition 2.9 over the
 -- paper's own gate set {H, CNOT, R_k} with propositions 2.10 and 2.14
--- (PathSum.CRK), compositionally as well; Z[ζ] as a commutative ring,
+-- (PathSum.CRK), compositionally as well; the size half of corollary
+-- 2.15, with an interpreter building the representation gate by gate
+-- (PathSum.Size); Z[ζ] as a commutative ring,
 -- definition 2.4, and every circuit's path-sum unitary, over both gate
 -- sets; all four rules of figure 2, [Case] included and with
 -- Boolean-valued quotients, at any internal path variables
@@ -71,13 +73,13 @@ module PathSum.Theorems (M₀ : ℕ) where
 
 open import Algebra.Bundles using (CommutativeRing)
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Nat.Base using (_+_; _^_; _≤_; _⊔_)
+open import Data.Nat.Base using (_+_; _*_; _^_; _≤_; _⊔_)
 open import Data.Fin.Base using (Fin)
 open import Data.Fin.Subset using (⊥)
 open import Data.Integer.Base using (ℤ; 0ℤ; +_; _-_)
 open import Data.Integer.Divisibility.Signed using (_∣_)
 open import Data.Integer.Properties using (≤-reflexive)
-open import Data.List.Base using (_++_)
+open import Data.List.Base using (_++_; length)
 open import Data.Maybe.Base using (just; nothing)
 open import Data.Product.Base using (_×_; _,_; ∃; proj₂)
 open import Level using (0ℓ)
@@ -302,6 +304,27 @@ module KVal = PathSum.CRK.Validation M₀
 
 import PathSum.CRK.Specification
 module KSpec = PathSum.CRK.Specification M₀
+
+import PathSum.Size
+module Sz = PathSum.Size M
+
+import PathSum.Size.Sparse
+module Sp = PathSum.Size.Sparse M
+open Sp using (Represents; Small; terms; size)
+
+import PathSum.Size.Interpreter
+module SzI = PathSum.Size.Interpreter M
+open SzI using (Denotes)
+
+import PathSum.Size.Equivalence
+module SzE = PathSum.Size.Equivalence M₀
+
+import PathSum.Size.Interpreter.Clifford
+import PathSum.Size.Interpreter.Equivalence
+
+-- Closed instances (the seven-T Toffoli's representation), at M₀ = 0.
+
+import PathSum.Size.Interpreter.Example
 
 -- The worked examples are closed facts at precision M₀ = 0; they are
 -- imported, not restated, so that this root checks them too.
@@ -555,6 +578,55 @@ prop-2-14-deg = KT.prop-2-14-deg
 prop-2-14-false-at-1 :
   ¬ (∀ (C : K.Circuit 1) → K.level C ≤ 1 → K.Deg≤ 1 (phase K.⟦ C ⟧))
 prop-2-14-false-at-1 = KT.prop-2-14-false-at-1
+
+
+------------------------------------------------------------------------
+-- Corollary 2.15: size (PathSum.Size, PathSum.Size.Interpreter)
+
+-- A polynomial here is a function on all 2^(n+m) monomials, so "size"
+-- is about an explicit representation (Sp.Rep): a list of terms
+-- (monomial, coefficient modulo 2^M) and a Z₂-linear form per output.
+-- A circuit's path-sum has one path variable per Hadamard, and its
+-- phase modulo 1 has degree at most max(2, k) (proposition 2.14,
+-- corrected), so the terms of degree at most that -- at most
+-- (n + |C| + 1)^max(2,k) of them -- represent it.  The bound is
+-- polynomial in n + |C| for fixed k; in the paper's volume n·|C| it
+-- holds once n, |C| ≥ 1, and fails for the empty circuit.
+
+corollary-2-15 : (C : K.Circuit n) →
+  K.paths C ≡ K.norm C × K.paths C ≤ length C ×
+  Represents K.⟦ C ⟧ (Sz.repᴷ C) × Small (2 ⊔ K.level C) (Sz.repᴷ C) ×
+  length (terms (Sz.repᴷ C)) ≤ suc (n + length C) ^ (2 ⊔ K.level C) ×
+  size (Sz.repᴷ C) ≤ 2 * suc (n + length C + M) ^ suc (2 ⊔ K.level C)
+corollary-2-15 = Sz.corollary-2-15ᴷ
+
+corollary-2-15-volume-degenerate : (f : ℕ → ℕ) →
+  ¬ (∀ n (C : K.Circuit n) →
+       ∃ λ R → Represents K.⟦ C ⟧ R × size R ≤ f (n * length C))
+corollary-2-15-volume-degenerate = Sz.volume-degenerate
+
+-- The representation is not merely congruent: read back as a
+-- path-sum it is the circuit's operator.
+
+corollary-2-15-≋ : (C : K.Circuit n) →
+                   K.⟦ C ⟧ ≋ Sp.psʳ (K.norm C) (Sz.repᴷ C)
+corollary-2-15-≋ = SzE.repᴷ-≋
+
+-- "And can be computed in polynomial time", as far as it can be said
+-- without a machine model: an explicit interpreter building the
+-- representation gate by gate -- each R_k adding the lifting of its
+-- wire's form truncated at degree k -- is correct, and every list it
+-- builds has polynomially many terms.  This bounds the data, not a
+-- running time; no complexity class is formalised.
+
+sparse-interpreter-correct : (C : K.Circuit n) →
+                             Denotes K.⟦ C ⟧ (SzI.interpᴷ C)
+sparse-interpreter-correct = SzI.interpᴷ-correct
+
+sparse-interpreter-length : (C : K.Circuit n) →
+  length (terms (proj₂ (SzI.interpᴷ C))) ≤
+  suc (n + length C) ^ suc (1 ⊔ K.level C)
+sparse-interpreter-length = SzI.interpᴷ-length-poly
 
 
 ------------------------------------------------------------------------

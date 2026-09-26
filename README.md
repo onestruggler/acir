@@ -145,6 +145,17 @@ restriction by Gaussian elimination — which either exhibits an input
 whose diagonal entry vanishes or yields a restriction with only
 internal path variables, to which lemma 4.3 applies.
 
+**Size.**  `Size`, `Size/Sparse`, `Size/Monomials`, `Size/Submonomials`
+and `Size/Terms` prove the size half of corollary 2.15: a circuit's
+path-sum is represented exactly (`Size/Equivalence`) by a list of at
+most (n + |C| + 1)^max(2,k) terms plus one linear form per output,
+polynomial in n + |C| for fixed k — and, read literally in the volume
+n·|C|, false for the empty circuit.  `Size/Interpreter` (with
+`Interpreter/Clifford`, `Interpreter/Equivalence`) builds that
+representation gate by gate, correctly, with every intermediate list
+polynomially bounded.  That bounds the data, not a running time: no
+machine model or complexity class is formalised.
+
 **Equivalence and verification.**  `Adjoint` defines C†, `AmpLinear`
 the linearity of the gate matrices, and `Miter` proves that C† undoes
 C on both sides, so ⟦ C₁ ⟧ ≋ ⟦ C₂ ⟧ exactly when ⟦ C₁ ++ C₂ † ⟧ is the
