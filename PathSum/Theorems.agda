@@ -31,8 +31,11 @@
 -- 2.4 and up to a global phase; lemma 4.3 at every internal variable;
 -- corollary 4.4 by the paper's own route for circuits with CNOT
 -- (Gaussian elimination, PathSum.Gauss) and under any rules in any
--- order (PathSum.Full.Clifford); equivalence of two circuits over
--- {H, S, CZ} through the miter; and the paper's worked examples,
+-- order (PathSum.Full.Clifford); C† as the conjugate transpose, and
+-- the miter ⟦ C† ⟧ ∘ ξ against any specification, over both gate sets;
+-- equivalence of two Clifford circuits decided by the paper's route,
+-- and section 5.1's translation validation for circuits at any level
+-- (sound, and complete for Clifford); and the paper's worked examples,
 -- checked at precision M₀ = 0 (PathSum.Examples, imported below).
 --
 -- Statements of the paper that are false as printed, proved here in a
@@ -52,10 +55,9 @@
 --
 -- Not formalised: the polynomial time bounds (proposition 3.2,
 -- corollaries 2.15 and 4.4); constant inputs, beyond restricting to the
--- columns where an ancilla is |0⟩ (PathSum.Ancilla); equivalence of
--- circuits with CNOT or R_k, and the miter as the composed path-sum
--- ⟦ C† ⟧ ∘ ξ; the symmetric monoidal laws of remark 2.8 beyond
--- interchange and SWAP naturality; and section 5's benchmarks.
+-- columns where an ancilla is |0⟩ (PathSum.Ancilla); the symmetric
+-- monoidal laws of remark 2.8 beyond interchange and SWAP naturality;
+-- and section 5's benchmarks.
 --
 -- Each section's banner names the modules its results come from;
 -- results proved here from them are stated with their proofs.
@@ -271,6 +273,36 @@ import PathSum.GlobalPhase
 module GP = PathSum.GlobalPhase M₀
 open GP using (Restriction-phase)
 
+import PathSum.Adjoint.Conjugate
+module AdjC = PathSum.Adjoint.Conjugate M₀
+
+import PathSum.Miter.Compose
+module MitC = PathSum.Miter.Compose M₀
+
+import PathSum.Compose.Contraction
+module Contr = PathSum.Compose.Contraction M₀
+
+import PathSum.CRK.Adjoint
+module KA = PathSum.CRK.Adjoint M
+
+import PathSum.CRK.Conjugate
+module KConj = PathSum.CRK.Conjugate M₀
+
+import PathSum.CRK.Miter
+module KM = PathSum.CRK.Miter M₀
+
+import PathSum.CRK.Miter.Compose
+module KMC = PathSum.CRK.Miter.Compose M₀
+
+import PathSum.CRK.Equivalence
+module KEq = PathSum.CRK.Equivalence M₀
+
+import PathSum.CRK.Validation
+module KVal = PathSum.CRK.Validation M₀
+
+import PathSum.CRK.Specification
+module KSpec = PathSum.CRK.Specification M₀
+
 -- The worked examples are closed facts at precision M₀ = 0; they are
 -- imported, not restated, so that this root checks them too.
 
@@ -388,6 +420,16 @@ Isometric-∘ = CWF.Isometric-∘
 WellFormed-∘ : (ξ′ : PathSum n k′ m′) (ξ : PathSum n k m) →
                Isometric ξ′ → WellFormed ξ → WellFormed (ξ′ ∘ᴾ ξ)
 WellFormed-∘ = CWF.WellFormed-∘
+
+-- WellFormed, the bound lemma 4.1 needs, survives even after a partial
+-- isometry (PathSum.Compose.Contraction: any map that does not
+-- lengthen columns will do), although being a partial isometry does
+-- not.
+
+WellFormed-∘-partial : (ξ′ : PathSum n k′ m′) (ξ : PathSum n k m) →
+                       PartialIsometric ξ′ → WellFormed ξ →
+                       WellFormed (ξ′ ∘ᴾ ξ)
+WellFormed-∘-partial = Contr.WellFormed-∘-partial
 
 
 ------------------------------------------------------------------------
@@ -1049,6 +1091,109 @@ equivalence-syntactic = Eqv.equivalence-syntactic
 
 equivalence-decidable : (C₁ C₂ : Circuit n) → Dec (⟦ C₁ ⟧ ≋ ⟦ C₂ ⟧)
 equivalence-decidable = Eqv.equivalence-decidable
+
+-- C† is the adjoint proper: its path-sum is the conjugate transpose of
+-- C's (PathSum.Adjoint.Conjugate), over both gate sets.
+
+circuit-adjoint : (C : Circuit n) (x z : Assign n) →
+                  amp ⟦ C † ⟧ x z ≐ conj (amp ⟦ C ⟧ z x)
+circuit-adjoint = AdjC.circuit-adjoint
+
+circuit-adjoint-Rk : (C : K.Circuit n) (x z : Assign n) →
+                     amp K.⟦ C KA.† ⟧ x z ≐ conj (amp K.⟦ C ⟧ z x)
+circuit-adjoint-Rk = KConj.circuit-adjoint
+
+-- The miter as section 3 writes it, a composite of path-sums
+-- (PathSum.Miter.Compose): a circuit is equivalent to a path-sum ξ --
+-- any ξ -- exactly when ⟦ C† ⟧ ∘ ξ is the identity; and when ξ is
+-- well formed, lemma 4.1 reduces that to the miter's diagonal.
+
+spec-miter-∘ : (C : Circuit n) (ξ : PathSum n k m) →
+               (⟦ C ⟧ ≋ ξ ⇔ (⟦ C † ⟧ ∘ᴾ ξ) ≋ idPS)
+spec-miter-∘ = MitC.spec-miter-∘
+
+spec-miter-restriction : (C : Circuit n) (ξ : PathSum n k m) →
+                         WellFormed ξ →
+                         (⟦ C ⟧ ≋ ξ ⇔ Restriction-id (⟦ C † ⟧ ∘ᴾ ξ))
+spec-miter-restriction = MitC.spec-miter-restriction
+
+spec-miter-∘-Rk : (C : K.Circuit n) (ξ : PathSum n k m) →
+                  (K.⟦ C ⟧ ≋ ξ ⇔ (K.⟦ C KA.† ⟧ ∘ᴾ ξ) ≋ idPS)
+spec-miter-∘-Rk = KMC.spec-miter-∘
+
+
+------------------------------------------------------------------------
+-- Equivalence over {H, CNOT, R_k}, and translation validation
+-- (PathSum.CRK.Miter, PathSum.CRK.Equivalence, PathSum.CRK.Validation,
+-- PathSum.CRK.Specification)
+
+-- The miter for the paper's gate set, and equivalence of two of its
+-- Clifford circuits decided by the paper's route: Gaussian elimination
+-- on the miter's restriction, then the reduction of corollary 4.4.
+
+miter-Rk : (C₁ C₂ : K.Circuit n) →
+           (K.⟦ C₁ ⟧ ≋ K.⟦ C₂ ⟧ ⇔ K.⟦ C₁ ++ C₂ KA.† ⟧ ≋ idPS)
+miter-Rk = KM.miter
+
+equivalence-gauss : (C₁ C₂ : K.Circuit n) →
+  K.level C₁ ≤ 2 → K.level C₂ ≤ 2 →
+  (K.⟦ C₁ ⟧ ≋ K.⟦ C₂ ⟧ ⇔
+   ∃ λ m′ → ∃ λ (ξ : PathSum n (K.norm (C₁ ++ C₂ KA.†)) m′) →
+     GC.⟦ C₁ ++ C₂ KA.† ⟧ᴿ ≡ just (m′ , ξ) ×
+     ∃ λ (ξ′ : PathSum n 0 0) → (ξ ⟶* ξ′) ×
+       (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ)
+equivalence-gauss = KEq.equivalence-gauss
+
+equivalence-decidable-gauss : (C₁ C₂ : K.Circuit n) →
+  K.level C₁ ≤ 2 → K.level C₂ ≤ 2 → Dec (K.⟦ C₁ ⟧ ≋ K.⟦ C₂ ⟧)
+equivalence-decidable-gauss = KEq.equivalence-decidable-gauss
+
+-- Section 5.1's translation validation, for circuits at any level of
+-- the Clifford hierarchy (Clifford+T, say): reduce the miter's reified
+-- restriction by any rules of figure 2.  Reaching |x⟩ ↦ |x⟩ proves the
+-- circuits equivalent; lemma 4.2's pattern (Q odd somewhere) refutes
+-- them.  Sound at every level, but complete only for Clifford circuits,
+-- as the paper says: a non-Clifford miter may get stuck.
+
+validation-sound : (C₁ C₂ : K.Circuit n)
+  {ξ : PathSum n (K.norm (C₁ ++ C₂ KA.†)) m′} →
+  GC.⟦ C₁ ++ C₂ KA.† ⟧ᴿ ≡ just (m′ , ξ) →
+  {ξ′ : PathSum n 0 0} → ξ ⟶ᶠ* ξ′ →
+  (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) → phase ξ′ ≈[ pow M ] 0ᴾ →
+  K.⟦ C₁ ⟧ ≋ K.⟦ C₂ ⟧
+validation-sound = KVal.validation-sound
+
+validation-refuted-interference : (C₁ C₂ : K.Circuit n)
+  {ξ : PathSum n (K.norm (C₁ ++ C₂ KA.†)) m′} →
+  GC.⟦ C₁ ++ C₂ KA.† ⟧ᴿ ≡ just (m′ , ξ) →
+  {ξ″ : PathSum n k″ (suc m″)} → ξ ⟶ᶠ* ξ″ →
+  (Q : Poly n m″) →
+  head-part (phase ξ″) ≈[ pow M ] (½ ·ᴾ Q) →
+  (∀ w → NoVar (+ 2) y₀ (out ξ″ w)) →
+  (∀ j → NoVar (+ 2) y[ j ] Q) →
+  ¬ (Q ≈[ + 2 ] 0ᴾ) →
+  ¬ (K.⟦ C₁ ⟧ ≋ K.⟦ C₂ ⟧)
+validation-refuted-interference = KVal.validation-refuted-interference
+
+validation-clifford : (C₁ C₂ : K.Circuit n) →
+  K.level C₁ ≤ 2 → K.level C₂ ≤ 2 →
+  {ξ : PathSum n (K.norm (C₁ ++ C₂ KA.†)) m′} →
+  GC.⟦ C₁ ++ C₂ KA.† ⟧ᴿ ≡ just (m′ , ξ) →
+  {ξ′ : PathSum n k′ m″} → ξ ⟶ᶠ* ξ′ → Irreducibleᶠ ξ′ →
+  (K.⟦ C₁ ⟧ ≋ K.⟦ C₂ ⟧ ⇔
+   (m″ ≡ 0 × k′ ≡ 0 ×
+    (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ))
+validation-clifford = KVal.validation-clifford
+
+-- Section 5.2's check of a circuit against a path-sum specification,
+-- through reducts of the composed miter.
+
+spec-sound : (C : K.Circuit n) (ξ : PathSum n k m)
+             {ξ′ : PathSum n 0 0} → (K.⟦ C KA.† ⟧ ∘ᴾ ξ) ⟶ᶠ* ξ′ →
+             (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) →
+             phase ξ′ ≈[ pow M ] 0ᴾ →
+             K.⟦ C ⟧ ≋ ξ
+spec-sound = KSpec.spec-sound
 
 
 ------------------------------------------------------------------------

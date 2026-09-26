@@ -145,11 +145,25 @@ restriction by Gaussian elimination — which either exhibits an input
 whose diagonal entry vanishes or yields a restriction with only
 internal path variables, to which lemma 4.3 applies.
 
-**Equivalence.**  `Adjoint` defines C†, `AmpLinear` the linearity of
-the gate matrices, and `Miter` proves that C† undoes C on both sides,
-so ⟦ C₁ ⟧ ≋ ⟦ C₂ ⟧ exactly when ⟦ C₁ ++ C₂ † ⟧ is the identity;
-`Equivalence` decides equivalence of two Clifford circuits over
-{H, S, CZ} by corollary 4.4 at the miter.
+**Equivalence and verification.**  `Adjoint` defines C†, `AmpLinear`
+the linearity of the gate matrices, and `Miter` proves that C† undoes
+C on both sides, so ⟦ C₁ ⟧ ≋ ⟦ C₂ ⟧ exactly when ⟦ C₁ ++ C₂ † ⟧ is the
+identity; `Equivalence` decides equivalence of two Clifford circuits
+over {H, S, CZ} by corollary 4.4 at the miter.  `Adjoint/Conjugate`,
+`Adjoint/Gates` and `CRK/Conjugate` show C† is the adjoint proper, the
+conjugate transpose.  `Miter/Compose`, `Compose/Apply` and
+`CRK/Miter/Compose` state the miter as section 3 writes it, the
+composite ⟦ C† ⟧ ∘ ξ against any specification ξ, with lemma 4.1 at
+the miter.  `CRK/Adjoint`, `CRK/Miter` and `CRK/Equivalence` do the same
+for {H, CNOT, R_k} and decide equivalence of its Clifford circuits by
+Gaussian elimination.  `CRK/Validation` is section 5.1's translation
+validation for circuits at any level: reducing the miter's restriction
+by any rules to |x⟩ ↦ |x⟩ proves equivalence, and lemma 4.2's pattern
+refutes it — sound at every level, complete for Clifford circuits.
+`CRK/Specification` checks a circuit against a path-sum specification
+through the composed miter, `Compose/Contraction` shows well-formedness
+survives composition after any partial isometry, and
+`Examples/Validation` runs the procedure on small Clifford+T miters.
 
 **Examples.**  `Examples` and its submodules check the paper's worked
 examples at precision M₀ = 0 — examples 2.2 and 2.12, section 3.1,
@@ -179,7 +193,6 @@ the fourth line of example 3.4 does not follow from the third.
 
 Not formalised: the polynomial time bounds (proposition 3.2,
 corollaries 2.15 and 4.4); constant inputs, beyond restricting to the
-columns where an ancilla is |0⟩; equivalence of circuits with CNOT or
-R_k, and the miter as the composed path-sum ⟦ C† ⟧ ∘ ξ; the symmetric
-monoidal laws of remark 2.8 beyond interchange and SWAP naturality;
-and the benchmarks of section 5.
+columns where an ancilla is |0⟩; the symmetric monoidal laws of remark
+2.8 beyond interchange and SWAP naturality; and the benchmarks of
+section 5.

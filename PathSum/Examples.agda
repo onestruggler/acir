@@ -32,6 +32,9 @@
 --  * PathSum.Examples.Clifford: Clifford identities and non-identities
 --    by corollary 4.4's method, lemma 4.2 among the refutations, and
 --    the decision procedure run;
+--  * PathSum.Examples.Validation: section 5.1's translation validation
+--    on small miters -- T;T ≡ S and T;H;H ≡ T proved, X ≢ I and
+--    CNOT ≢ I refuted (by lemma 4.2 and by Gaussian elimination);
 --  * PathSum.Examples.Brute: cross-checks of all of the above by brute
 --    force (PathSum.Brute), which is not the paper's method.
 --
@@ -52,4 +55,5 @@ open import PathSum.Examples.AppendixB public
 open import PathSum.Examples.Adder public
 open import PathSum.Examples.General public
 open import PathSum.Examples.Clifford public
+open import PathSum.Examples.Validation public
 open import PathSum.Examples.Brute public
