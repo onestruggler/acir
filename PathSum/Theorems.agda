@@ -25,8 +25,10 @@
 -- (PathSum.CRK), compositionally as well; the size half of corollary
 -- 2.15, with an interpreter building the representation gate by gate
 -- (PathSum.Size); section 5.2's quantum Fourier transform for every n
--- within the precision (PathSum.QFT) and its n-bit Toffoli gates with
--- ancillas for every n (PathSum.ToffoliN); Z[ζ] as a commutative ring,
+-- within the precision (PathSum.QFT), its n-bit Toffoli gates with
+-- ancillas for every n (PathSum.ToffoliN) and its hidden shift
+-- algorithm for every size, bent function and shift, as path-sums and
+-- as figure 3's circuits (PathSum.HiddenShift); Z[ζ] as a commutative ring,
 -- definition 2.4, and every circuit's path-sum unitary, over both gate
 -- sets; all four rules of figure 2, [Case] included and with
 -- Boolean-valued quotients, at any internal path variables
@@ -74,7 +76,7 @@ open import Data.Nat.Base using (ℕ; suc; _<_)
 module PathSum.Theorems (M₀ : ℕ) where
 
 open import Algebra.Bundles using (CommutativeRing)
-open import Data.Bool.Base using (Bool; true; false)
+open import Data.Bool.Base using (Bool; true; false; _xor_; if_then_else_)
 open import Data.Nat.Base using (_+_; _*_; _∸_; _^_; _≤_; _⊔_)
 open import Data.Fin.Base using (Fin)
 open import Data.Fin.Subset using (⊥)
@@ -82,7 +84,7 @@ open import Data.Integer.Base using (ℤ; 0ℤ; +_; _-_)
   renaming (_*_ to _*ℤ_)
 open import Data.Integer.Divisibility.Signed using (_∣_)
 open import Data.Integer.Properties using (≤-reflexive)
-open import Data.List.Base using (_++_; length)
+open import Data.List.Base using (List; _++_; length)
 open import Data.Maybe.Base using (just; nothing)
 open import Data.Product.Base using (_×_; _,_; ∃; proj₂)
 open import Level using (0ℓ)
@@ -98,6 +100,7 @@ private
   M = suc (suc (suc M₀))
 
 open import PathSum.Base
+open import PathSum.Assign using (same; [_]ᶻ)
 open import PathSum.AssignSum using (Σᶻ)
 open import PathSum.Circuit M using
   (Gate; H; S; CZ; Circuit; norm; ⟦_⟧; ⟦_⟧ᴿ)
@@ -366,6 +369,33 @@ module TCh = PathSum.ToffoliN.Chain M₀
 
 import PathSum.ToffoliN
 module TN = PathSum.ToffoliN M₀
+
+import PathSum.HiddenShift.Walsh
+module HW = PathSum.HiddenShift.Walsh
+open HW using (0ᵃ; _⧺_; mm; dual; dot; RespectsB)
+
+import PathSum.HiddenShift
+module HSh = PathSum.HiddenShift M₀
+
+import PathSum.HiddenShift.Simulation
+module HSim = PathSum.HiddenShift.Simulation M₀
+
+import PathSum.HiddenShift.Gates
+module HGa = PathSum.HiddenShift.Gates M₀
+
+import PathSum.HiddenShift.Circuit
+module HCi = PathSum.HiddenShift.Circuit M₀
+
+import PathSum.HiddenShift.Symbolic
+module HSy = PathSum.HiddenShift.Symbolic M₀
+
+import PathSum.HiddenShift.Reduces
+import PathSum.Ancilla.Register
+
+-- Closed cross-checks of the hidden-shift development, at M₀ = 0.
+
+import PathSum.HiddenShift.Example
+import PathSum.HiddenShift.CircuitExample
 
 -- The QFT at the sizes of table 2 (their gate counts), and the
 -- seven-T Toffoli's size representation, at fixed precisions.
@@ -1421,6 +1451,65 @@ table-2-Toffoli100 : (p : 3 ≤ 100) →
                      × (K.paths (TN.Toffoliₙ 100 p) ≡ 390)
                      × (TNet.tcount (TN.Toffoliₙ 100 p) ≡ 1365)
 table-2-Toffoli100 = TN.table-2-Toffoli100
+
+
+------------------------------------------------------------------------
+-- Section 5.2: the quantum hidden shift algorithm, for every size
+-- (PathSum.HiddenShift, PathSum.HiddenShift.*)
+
+-- For the Maiorana–McFarland bent function f(x, y) = g(x) + x·y on
+-- 2m bits the dual is f̃(x, y) = g(y) + x·y: the Walsh transform of f
+-- is 2^m times f̃.
+
+walsh-mm : ∀ {m} (g : (Fin m → Bool) → Bool) → RespectsB g →
+           (c : Fin (m + m) → Bool) →
+           Σᶻ (λ u → sgn (mm g u xor dot u c)) ≡
+           + (2 ^ m) *ℤ sgn (dual g c)
+walsh-mm = HW.walsh-mm
+
+-- "The circuit H^{⊗n} O_f̃ H^{⊗n} O_f′ H^{⊗n} is known to implement
+-- the mapping |0⟩ ↦ |s⟩": for every m, every g and every shift s, as a
+-- composite of path-sums (definition 2.6) ...
+
+hidden-shift : (g : Poly m 0) (s z : Assign (m + m)) →
+               amp (HSh.HS g s) 0ᵃ z ≐
+               (if same s z then scale (HSh.hs-norm (m + m)) (zpow 0ℤ)
+                else 0ᴬ)
+hidden-shift g s = HSh.hidden-shift g s
+
+-- ... and as figure 3(a)'s circuit over {H, CNOT, R_k}, the oracles
+-- built from Z, CZ and CCZ gates for g any list of such monomials (X
+-- is H R₁ H, which adds path variables but not amplitude).
+
+hidden-shift-circuit : (gs : List (HGa.Term m)) (s z : Assign (m + m)) →
+                       amp K.⟦ HCi.HSᶜ gs s ⟧ 0ᵃ z ≐
+                       (if same s z
+                        then scale (K.norm (HCi.HSᶜ gs s)) (zpow 0ℤ)
+                        else 0ᴬ)
+hidden-shift-circuit = HCi.hidden-shift-circuit
+
+-- Figure 3(b), the shift given symbolically in a second register:
+-- |0⟩|s⟩ ↦ |s⟩|s⟩.
+
+symbolic-shift-0 : (gs : List (HGa.Term m)) (s : Assign (m + m))
+                   (z : Assign ((m + m) + (m + m))) →
+                   amp K.⟦ HSy.SSᶜ gs ⟧ (0ᵃ {m + m} ⧺ s) z ≐
+                   (if same (s ⧺ s) z
+                    then scale (K.norm (HSy.SSᶜ gs)) (zpow 0ℤ) else 0ᴬ)
+symbolic-shift-0 = HSy.symbolic-shift-0
+
+-- "Our calculus further finds the correct output |s⟩ even without
+-- providing the specification": every reduction by figure 2's rules,
+-- at any variables, that eliminates all path variables ends at
+-- |x⟩ ↦ |s⟩ syntactically.  (That such a reduction exists is shown for
+-- one instance only, PathSum.HiddenShift.Example.)
+
+hidden-shift-reduces : (g : Poly m 0) (s : Assign (m + m)) {k′ : ℕ}
+                       {ζ : PathSum (m + m) k′ 0} →
+                       HSim.at0 (HSh.HS g s) ⟶ᶠ* ζ →
+                       (k′ ≡ 0) × (∀ w → out ζ w ≈[ + 2 ] κ [ s w ]ᶻ) ×
+                       (phase ζ ≈[ pow M ] 0ᴾ)
+hidden-shift-reduces = HSim.hidden-shift-reduces
 
 
 ------------------------------------------------------------------------

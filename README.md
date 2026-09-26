@@ -182,6 +182,19 @@ ancillas — correct for every n ≥ 3: on the inputs whose ancillas are
 Its qubit, path-variable and T counts reproduce table 2's rows
 Toffoli50 and Toffoli100.
 
+**Section 5.2: the hidden shift algorithm.**  `HiddenShift/Walsh`
+(character sums, the Walsh transform of the Maiorana–McFarland bent
+function f(x, y) = g(x) + x·y is 2^m times its dual g(y) + x·y),
+`HiddenShift/Sign` and `HiddenShift` prove H O_f̃ H O_f′ H maps |0⟩ to
+|s⟩ for every m, every g and every shift s; `HiddenShift/Simulation`
+that every complete reduction by figure 2 ends at |x⟩ ↦ |s⟩, and
+`HiddenShift/Example` one such reduction.  `HiddenShift/Gates`,
+`Layers`, `Circuit` and `Symbolic` do the same for figure 3's circuits
+over {H, CNOT, R_k} — oracles built from Z, CZ and CCZ gates, the
+fixed shift (|0⟩ ↦ |s⟩) and the symbolic one (|0⟩|s⟩ ↦ |s⟩|s⟩) —
+with `HiddenShift/Reduces`, `Ancilla/Register` (a register of
+ancillas) and `HiddenShift/CircuitExample` (cross-checks).
+
 **Equivalence and verification.**  `Adjoint` defines C†, `AmpLinear`
 the linearity of the gate matrices, and `Miter` proves that C† undoes
 C on both sides, so ⟦ C₁ ⟧ ≋ ⟦ C₂ ⟧ exactly when ⟦ C₁ ++ C₂ † ⟧ is the
@@ -232,5 +245,5 @@ Not formalised: the polynomial time bounds (proposition 3.2,
 corollaries 2.15 and 4.4); constant inputs, beyond restricting to the
 columns where an ancilla is |0⟩; the symmetric monoidal laws of remark
 2.8 beyond interchange and SWAP naturality; and the benchmarks of
-section 5 as runs of the tool (the QFT and Toffoli families are
-proved for every n).
+section 5 as runs of the tool (the QFT, Toffoli and hidden shift
+families are proved for every size).
