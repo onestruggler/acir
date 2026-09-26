@@ -41,7 +41,11 @@
 -- the miter ⟦ C† ⟧ ∘ ξ against any specification, over both gate sets;
 -- equivalence of two Clifford circuits decided by the paper's route,
 -- and section 5.1's translation validation for circuits at any level
--- (sound, and complete for Clifford); and the paper's worked examples,
+-- (sound, and complete for Clifford); section 4's incompleteness beyond
+-- Clifford -- the paper's irreducible identity, non-unique normal
+-- forms, an equivalent level-3 pair validation cannot settle -- and
+-- its remedy, a complete (exponential) decision by expanding the
+-- variables reduction leaves (PathSum.Expand); and the paper's worked examples,
 -- checked at precision M₀ = 0 (PathSum.Examples, imported below).
 --
 -- Statements of the paper that are false as printed, proved here in a
@@ -63,7 +67,8 @@
 -- corollaries 2.15 and 4.4); constant inputs, beyond restricting to the
 -- columns where an ancilla is |0⟩ (PathSum.Ancilla); the symmetric
 -- monoidal laws of remark 2.8 beyond interchange and SWAP naturality;
--- and section 5's benchmarks as runs of the tool.
+-- footnote 2's complexity claim; and section 5's benchmarks as runs of
+-- the tool.
 --
 -- Each section's banner names the modules its results come from;
 -- results proved here from them are stated with their proofs.
@@ -391,6 +396,26 @@ module HSy = PathSum.HiddenShift.Symbolic M₀
 
 import PathSum.HiddenShift.Reduces
 import PathSum.Ancilla.Register
+
+import PathSum.Expand
+module Exp = PathSum.Expand M₀
+
+import PathSum.CRK.Expand
+module KE = PathSum.CRK.Expand M₀
+
+import PathSum.Full.Obstruction
+import PathSum.CRK.WithX
+import PathSum.Gauss.Single
+import PathSum.Polynomial.SubstVar
+
+-- Section 4's incompleteness witnesses, closed at M₀ = 0; stated below
+-- through their own names only.
+
+import PathSum.Examples.Incomplete
+module ExInc = PathSum.Examples.Incomplete
+
+import PathSum.Examples.ValidationIncomplete
+module ExVInc = PathSum.Examples.ValidationIncomplete
 
 -- Closed cross-checks of the hidden-shift development, at M₀ = 0.
 
@@ -1144,6 +1169,58 @@ corollary-4-4-normalᶠ = FlCl.corollary-4-4-normalᶠ
 
 circuit-decidableᶠ : (C : Circuit n) → Dec (⟦ C ⟧ ≋ idPS)
 circuit-decidableᶠ = FlCl.circuit-decidableᶠ
+
+
+------------------------------------------------------------------------
+-- Section 4: beyond Clifford the calculus is incomplete, and the
+-- paper's remedy (PathSum.Examples.Incomplete,
+-- PathSum.Examples.ValidationIncomplete, PathSum.Expand,
+-- PathSum.CRK.Expand)
+
+-- "The normal forms are not necessarily unique and hence our reduction
+-- system is incomplete": the paper's Clifford+T identity has the
+-- irreducible path-sum it prints (checked coefficient by coefficient
+-- against the circuit read off its figure), so two equivalent
+-- irreducible path-sums -- it and |x⟩ ↦ |x⟩ -- have 8 and 0 path
+-- variables.  Closed facts at M₀ = 0.
+
+normal-forms-not-unique : ¬ ExInc.UniqueNormalForms
+normal-forms-not-unique = ExInc.normal-forms-not-unique
+
+-- The same defeats translation validation beyond Clifford: two
+-- equivalent level-3 circuits (the paper's box without its X gates,
+-- and a box that undoes it) whose miter's reified restriction no rule
+-- of figure 2 reduces, so the syntactic test is never reached --
+-- whereas at level 2 every normal form decides (KE.complete-2).
+
+validation-not-complete-3 : ¬ PathSum.CRK.Expand.Complete 0 3
+validation-not-complete-3 = ExVInc.not-complete-3
+
+validation-complete-2 : KE.Complete 2
+validation-complete-2 = KE.complete-2
+
+-- "A complete verification procedure could proceed by explicitly
+-- expanding the values of remaining variables ... after all possible
+-- reductions have been made": reduce to a normal form under all of
+-- figure 2, then sum what is left over its path variables.  Sound and
+-- complete for every path-sum, hence for equivalence of circuits at
+-- every level; exponential, and on Clifford inputs never expanding.
+
+decide-id : (ξ : PathSum n k m) → Dec (ξ ≋ idPS)
+decide-id = Exp.decide-id
+
+validation-decidableᵉ : (C₁ C₂ : K.Circuit n) → Dec (KE.Equivalent C₁ C₂)
+validation-decidableᵉ = KE.validation-decidableᵉ
+
+-- Footnote 2, its logical half: were normal forms unique, a normal
+-- form keeping a path variable would never be the identity, and the
+-- expansion would never be needed.  (Its complexity half -- that this
+-- would put P = co-NP -- is not formalised.)
+
+unique⇒no-expansion : Exp.UniqueNormalForms →
+                      (ξ′ : PathSum n k (suc m)) → Irreducibleᶠ ξ′ →
+                      ¬ (ξ′ ≋ idPS)
+unique⇒no-expansion = Exp.unique⇒no-expansion
 
 
 ------------------------------------------------------------------------

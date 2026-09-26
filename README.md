@@ -156,6 +156,21 @@ representation gate by gate, correctly, with every intermediate list
 polynomially bounded.  That bounds the data, not a running time: no
 machine model or complexity class is formalised.
 
+**Section 4: incompleteness, and the remedy.**  `CRK/WithX` adds the
+X gate the paper's figure needs; `Examples/Incomplete` proves the
+paper's Clifford+T identity has exactly the irreducible path-sum it
+prints (`Full/Obstruction` certifies irreducibility cheaply), so normal
+forms are not unique.  `Examples/ValidationIncomplete` gives two
+equivalent level-3 circuits whose miter's restriction no rule reduces,
+so translation validation is incomplete beyond Clifford, though
+complete at level 2.  `Expand` and `CRK/Expand` formalise the paper's
+remedy — reduce, then expand the remaining variables — as a sound and
+complete decision for every path-sum and every pair of circuits,
+exponential and never expanding on Clifford inputs; `Gauss/Single` and
+`Polynomial/SubstVar` make the closed restriction cheap to compute.
+Footnote 2's logical half (unique normal forms would make expansion
+unnecessary) is proved; its complexity half is not formalised.
+
 **Section 5.2: the quantum Fourier transform.**  `CRK/Controlled`
 builds controlled rotations from {H, CNOT, R_k} and proves them the
 diagonal e^{2πi x_c x_t/2^k}; `CRK/Trace` reads a circuit's phase and

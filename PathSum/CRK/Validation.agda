@@ -57,10 +57,10 @@
 -- with eight path variables left).  An irreducible normal form with
 -- path variables left that matches no case of lemma 4.2 gives no
 -- verdict, and nothing here claims otherwise.  That incompleteness is
--- not formalised as a statement: exhibiting it needs the
--- irreducibility of a particular normal form, a closed computation
--- over all 2^(2+8) monomials that was not attempted (and the circuit
--- is printed only as a figure).  For Clifford circuits (level at most 2)
+-- a theorem elsewhere: PathSum.Examples.Incomplete shows the paper's
+-- own identity irreducible, and PathSum.Examples.ValidationIncomplete
+-- exhibits two equivalent level-3 circuits whose miter's restriction
+-- no rule of figure 2 reduces (not-complete-3).  For Clifford circuits (level at most 2)
 -- the procedure is complete, along every chain: every step keeps the
 -- restriction Clifford (PathSum.Full.Clifford), so by lemma 4.3 an
 -- irreducible end with a path variable left refutes
@@ -75,8 +75,11 @@
 --
 -- Not formalised: the polynomial time bounds, and the benchmarks of
 -- table 1.  The paper's procedure is a program returning a verdict;
--- here the verdicts are theorems about any chain of reductions, and
--- the only procedures are the normal form and the Clifford decision.
+-- here the verdicts are theorems about any chain of reductions.  The
+-- procedures are the normal form, the Clifford decision, and -- with
+-- the paper's remedy of expanding the variables left after reduction --
+-- a complete, exponential decision at every level
+-- (PathSum.CRK.Expand.validation-decidableᵉ).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
