@@ -58,6 +58,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Idle using (X-↑)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.PlaceCalc
   using (placeAt-• ; placeAt-ε ; placeAt-cong ; placeAt-X-lo ; placeAt-zero ; placeAt-↑)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires using (negsB ; negs²)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.TwoWire using (placeAt-top)
 
 private
   variable
@@ -311,3 +312,49 @@ merge-all₂ {suc j} (p ∷ ps) (pos 1≤p p≤ Q) b base = begin
                                         (negsB (VD₂ (p ∷ ps) y base) • Λ□ (₃₊ j) • negsB (VD₂ (p ∷ ps) y base)))
                                (rev-snoc c false) (rev-snoc c true)))
                  (pair-merge (₂₊ j) (s≤s z≤n) b p 1≤p p≤ (VD₂ ps (reverse c) base))
+
+------------------------------------------------------------------------
+-- Every colouring of the top wires, with the bottom four black
+
+private
+  ins-top : ∀ {j} (c : Bits j) b → insertℕ j b c ≡ c ∷ʳ b
+  ins-top []      b = Eq.refl
+  ins-top (x ∷ c) b = Eq.cong (x ∷_) (ins-top c b)
+
+-- The product, in `allBits` order, of the box Λ□ (3 + j) coloured c on
+-- the wires 4 … and black below, over every c: the box on the bottom
+-- four wires.  Each pair merges on the top wire (`pairing` puts the last
+-- bit there), and placing around the top wire is weakening (`placeAt-top`).
+merge-top₃ : ∀ j → ₂₊ j ≤ B →
+             (₄₊ j) ⊢ ∏ (allBits j) (λ c → negsB (true ∷ true ∷ true ∷ true ∷ c) • Λ□ (₃₊ j) •
+                                           negsB (true ∷ true ∷ true ∷ true ∷ c))
+                      ≈ Λ□ 3 ↓ᵏ j
+merge-top₃ zero    _ = trans right-unit (trans left-unit right-unit)
+  where open Tools (4 VRel,_===_)
+merge-top₃ (suc j) b = begin
+  ∏ (allBits (suc j)) G
+    ≈⟨ pairing j G ⟩
+  ∏ (allBits j) (λ c → G (c ∷ʳ false) • G (c ∷ʳ true))
+    ≈⟨ ∏-cong (allBits j) pair ⟩
+  ∏ (allBits j) (λ c → placeAt (₄₊ j) (h c))
+    ≈⟨ sym (placeAt-∏ (₄₊ j) (allBits j) h) ⟩
+  placeAt (₄₊ j) (∏ (allBits j) h)
+    ≈⟨ placeAt-cong (₄₊ j) (merge-top₃ j (≤-trans (n≤1+n _) b)) ⟩
+  placeAt (₄₊ j) (Λ□ 3 ↓ᵏ j)
+    ≈⟨ placeAt-top (Λ□ 3 ↓ᵏ j) ⟩
+  Λ□ 3 ↓ᵏ suc j ∎
+  where
+  open Tools ((₁₊ (₄₊ j)) VRel,_===_)
+  G : Bits (suc j) → Circuit (₁₊ (₄₊ j))
+  G c = negsB (true ∷ true ∷ true ∷ true ∷ c) • Λ□ (₄₊ j) • negsB (true ∷ true ∷ true ∷ true ∷ c)
+  h : Bits j → Circuit (₄₊ j)
+  h c = negsB (true ∷ true ∷ true ∷ true ∷ c) • Λ□ (₃₊ j) • negsB (true ∷ true ∷ true ∷ true ∷ c)
+  ≡→≈ : ∀ {x y : Circuit (₁₊ (₄₊ j))} → x ≡ y → x ≈ y
+  ≡→≈ Eq.refl = refl
+  pair : ∀ c → G (c ∷ʳ false) • G (c ∷ʳ true) ≈ placeAt (₄₊ j) (h c)
+  pair c = trans (≡→≈ (Eq.cong₂ (λ x y → (negsB (true ∷ true ∷ true ∷ true ∷ x) • Λ□ (₄₊ j) •
+                                          negsB (true ∷ true ∷ true ∷ true ∷ x)) •
+                                         (negsB (true ∷ true ∷ true ∷ true ∷ y) • Λ□ (₄₊ j) •
+                                          negsB (true ∷ true ∷ true ∷ true ∷ y)))
+                               (Eq.sym (ins-top c false)) (Eq.sym (ins-top c true))))
+                 (pair-merge (₃₊ j) (s≤s z≤n) b (₄₊ j) (s≤s z≤n) ≤-refl (true ∷ true ∷ true ∷ true ∷ c))
