@@ -358,3 +358,39 @@ merge-top₃ (suc j) b = begin
                                           negsB (true ∷ true ∷ true ∷ true ∷ y)))
                                (Eq.sym (ins-top c false)) (Eq.sym (ins-top c true))))
                  (pair-merge (₃₊ j) (s≤s z≤n) b (₄₊ j) (s≤s z≤n) ≤-refl (true ∷ true ∷ true ∷ true ∷ c))
+
+-- The same with the bottom three black: the box Λ□ (2 + j) over every
+-- colouring of the wires 3 … is the box on the bottom three wires.
+merge-top₂ : ∀ j → ₁₊ j ≤ B →
+             (₃₊ j) ⊢ ∏ (allBits j) (λ c → negsB (true ∷ true ∷ true ∷ c) • Λ□ (₂₊ j) •
+                                           negsB (true ∷ true ∷ true ∷ c))
+                      ≈ Λ□ 2 ↓ᵏ j
+merge-top₂ zero    _ = trans right-unit (trans left-unit right-unit)
+  where open Tools (3 VRel,_===_)
+merge-top₂ (suc j) b = begin
+  ∏ (allBits (suc j)) G
+    ≈⟨ pairing j G ⟩
+  ∏ (allBits j) (λ c → G (c ∷ʳ false) • G (c ∷ʳ true))
+    ≈⟨ ∏-cong (allBits j) pair ⟩
+  ∏ (allBits j) (λ c → placeAt (₃₊ j) (h c))
+    ≈⟨ sym (placeAt-∏ (₃₊ j) (allBits j) h) ⟩
+  placeAt (₃₊ j) (∏ (allBits j) h)
+    ≈⟨ placeAt-cong (₃₊ j) (merge-top₂ j (≤-trans (n≤1+n _) b)) ⟩
+  placeAt (₃₊ j) (Λ□ 2 ↓ᵏ j)
+    ≈⟨ placeAt-top (Λ□ 2 ↓ᵏ j) ⟩
+  Λ□ 2 ↓ᵏ suc j ∎
+  where
+  open Tools ((₄₊ j) VRel,_===_)
+  G : Bits (suc j) → Circuit (₄₊ j)
+  G c = negsB (true ∷ true ∷ true ∷ c) • Λ□ (₃₊ j) • negsB (true ∷ true ∷ true ∷ c)
+  h : Bits j → Circuit (₃₊ j)
+  h c = negsB (true ∷ true ∷ true ∷ c) • Λ□ (₂₊ j) • negsB (true ∷ true ∷ true ∷ c)
+  ≡→≈ : ∀ {x y : Circuit (₄₊ j)} → x ≡ y → x ≈ y
+  ≡→≈ Eq.refl = refl
+  pair : ∀ c → G (c ∷ʳ false) • G (c ∷ʳ true) ≈ placeAt (₃₊ j) (h c)
+  pair c = trans (≡→≈ (Eq.cong₂ (λ x y → (negsB (true ∷ true ∷ true ∷ x) • Λ□ (₃₊ j) •
+                                          negsB (true ∷ true ∷ true ∷ x)) •
+                                         (negsB (true ∷ true ∷ true ∷ y) • Λ□ (₃₊ j) •
+                                          negsB (true ∷ true ∷ true ∷ y)))
+                               (Eq.sym (ins-top c false)) (Eq.sym (ins-top c true))))
+                 (pair-merge (₂₊ j) (s≤s z≤n) b (₃₊ j) (s≤s z≤n) ≤-refl (true ∷ true ∷ true ∷ c))

@@ -39,7 +39,6 @@ open import Word.Base using ([_]ʷ ; ε ; _ʷ)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Algebra using (Bits)
 open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools ; module Conj ; X²)
 open import Examples.Groups.Real-Clifford+CH.Reverse using (rev ; rev-cong)
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.Gray using (toBits ; gray ; hd)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.LowGens m using (i₀ ; i₁ ; toℕ-i₀ ; toℕ-i₁)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.DE m using (zzℕ-zz)
 open import Examples.Groups.Real-Clifford+CH.Encoding using (zzℕ ; hhℕ)
@@ -49,6 +48,8 @@ open import Examples.Groups.Real-Clifford+CH.Decoding
   using (d ; dZZ ; gcode ; layout□ ; layoutH ; layoutHFrom ; slot ; gadget)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Idle using (X-↑)
 open import Examples.Groups.Real-Clifford+CH.Lemma88.Easy m using (d-hh0132)
+open import Examples.Groups.Real-Clifford+CH.Lemma88.Layout {m}
+  using (t ; L₀ ; lay0 ; negs-tail ; NY ; T ; T² ; module CT ; S ; gadget-form)
 
 private
   N : ℕ
@@ -58,84 +59,11 @@ private
     k : ℕ
 
 ------------------------------------------------------------------------
--- The two layouts
-
-private
-  -- The Gray codes of 0 and 1 (as Lemma88.Easy).
-  hd-Z : ∀ j → hd (toBits j 0) ≡ false
-  hd-Z zero    = Eq.refl
-  hd-Z (suc j) = Eq.refl
-
-  gray-Z : ∀ j → gray (toBits j 0) ≡ toBits j 0
-  gray-Z zero    = Eq.refl
-  gray-Z (suc j) = Eq.cong₂ _∷_ (hd-Z j) (gray-Z j)
-
-  t : Bits m
-  t = toBits m 0
-
-  g0 : gcode {m} 0 ≡ false ∷ false ∷ false ∷ t
-  g0 = Eq.cong₂ (λ h z → false ∷ false ∷ h ∷ z) (hd-Z m) (gray-Z m)
-
-  g1 : gcode {m} 1 ≡ true ∷ false ∷ false ∷ t
-  g1 = Eq.cong₂ (λ h z → true ∷ false ∷ h ∷ z) (hd-Z m) (gray-Z m)
-
-  -- The box: the target on wire 0, white controls elsewhere.
-  L₀ : Layout N
-  L₀ = tgt ∷ ctrl false ∷ ctrl false ∷ zipWith slot t t
-
-  lay0 : layout□ {m} 0 ≡ L₀
-  lay0 = Eq.cong₂ (zipWith slot) g0 g1
-
-  -- The gadget: the H on wire 0, the box on wire 1, white controls.
-  LH : Layout N
-  LH = tgtH ∷ tgt ∷ ctrl false ∷ layoutHFrom 3 0 1 t
-
-  layH : layoutH {m} (gcode 0) 0 1 ≡ LH
-  layH = Eq.cong (λ g → layoutH {m} g 0 1) g0
-
-  -- On the wires 3 … both are the controls of the bits of t.
-  negs-tail : ∀ (s : Bits k) w → negs (zipWith slot s s) ≡ negs (layoutHFrom (₃₊ w) 0 1 s)
-  negs-tail []          w = Eq.refl
-  negs-tail (true ∷ s)  w = Eq.cong _↑ (negs-tail s (suc w))
-  negs-tail (false ∷ s) w = Eq.cong (λ z → X • z ↑) (negs-tail s (suc w))
-
-  -- The negations of a layout are an involution.
-  negs² : ∀ (L : Layout k) → k ⊢ negs L • negs L ≈ ε
-  negs² {k} [] = left-unit
-    where open Tools (k VRel,_===_)
-  negs² {suc k} (ctrl false ∷ L) = begin
-    (X • negs L ↑) • (X • negs L ↑)     ≈⟨ by-passoc ((□ • □) • (□ • □)) (□ • (□ • □) • □) Eq.refl ⟩
-    X • (negs L ↑ • X) • negs L ↑       ≈⟨ back _ (front _ (sym (X-↑ (negs L)))) ⟩
-    X • (X • negs L ↑) • negs L ↑       ≈⟨ by-passoc (□ • (□ • □) • □) ((□ • □) • (□ • □)) Eq.refl ⟩
-    (X • X) • (negs L ↑ • negs L ↑)     ≈⟨ trans (front _ X²) left-unit ⟩
-    negs L ↑ • negs L ↑                 ≈⟨ lemma-cong↑ (negs L • negs L) ε (negs² L) ⟩
-    ε ∎
-    where open Tools ((₁₊ k) VRel,_===_)
-  negs² {suc k} (ctrl true ∷ L) = lemma-cong↑ (negs L • negs L) ε (negs² L)
-    where open Tools ((₁₊ k) VRel,_===_)
-  negs² {suc k} (tgt ∷ L)       = lemma-cong↑ (negs L • negs L) ε (negs² L)
-    where open Tools ((₁₊ k) VRel,_===_)
-  negs² {suc k} (tgtH ∷ L)      = lemma-cong↑ (negs L • negs L) ε (negs² L)
-    where open Tools ((₁₊ k) VRel,_===_)
-
-------------------------------------------------------------------------
--- The two gates, conjugated by the common negations
+-- The two gates, conjugated by the common negations (Lemma88.Layout)
 
 open Tools (N VRel,_===_)
 
 private
-  NY : Circuit m
-  NY = negs (layoutHFrom 3 0 1 t)
-
-  -- X on the wires 2 … where t is white.
-  T : Circuit N
-  T = negs LH
-
-  T² : T • T ≈ ε
-  T² = negs² LH
-
-  module CT = Conj T T²
-
   X₁T : X ↑ • T ≈ T • X ↑
   X₁T = begin
     X ↑ • X ↑ ↑ • NY ↑ ↑ ↑        ≈⟨ trans (sym assoc) (front _ (lemma-cong↑ _ _ (X-↑ X))) ⟩
@@ -143,9 +71,8 @@ private
     X ↑ ↑ • NY ↑ ↑ ↑ • X ↑        ≈⟨ sym assoc ⟩
     (X ↑ ↑ • NY ↑ ↑ ↑) • X ↑ ∎
 
-  Λ S X₁Λ : Circuit N
+  Λ X₁Λ : Circuit N
   Λ   = Λ□ (₂₊ m)
-  S   = Ex ↓ • ΛH (₁₊ m) • Ex ↓
   X₁Λ = X ↑ • Λ • X ↑
 
   ≡→≈ : ∀ {a b : Circuit N} → a ≡ b → a ≈ b
@@ -167,21 +94,6 @@ private
     (X ↑ • T) • Λ • (X ↑ • T)                        ≈⟨ front _ X₁T ⟩
     (T • X ↑) • Λ • (X ↑ • T)                        ≈⟨ by-passoc ((□ • □) • □ • (□ • □)) (□ • (□ • □ • □) • □) Eq.refl ⟩
     T • (X ↑ • Λ • X ↑) • T ∎
-
-  -- The gadget: the H gate under the swap of the wires 0 1, between the
-  -- negations.
-  gadget-≡ : gadget {m} ≡ T • (Ex • ε) • ε • ΛH (₁₊ m) • ε • (ε • Ex) • T
-  gadget-≡ = Eq.cong (λ L → conj₂ L (ΛH (₁₊ m))) layH
-
-  gadget-form : gadget {m} ≈ CT.⟪ S ⟫
-  gadget-form = begin
-    gadget                                              ≈⟨ ≡→≈ gadget-≡ ⟩
-    T • (Ex • ε) • ε • ΛH (₁₊ m) • ε • (ε • Ex) • T     ≈⟨ back _ (front _ right-unit) ⟩
-    T • Ex • ε • ΛH (₁₊ m) • ε • (ε • Ex) • T           ≈⟨ back _ (back _ left-unit) ⟩
-    T • Ex • ΛH (₁₊ m) • ε • (ε • Ex) • T               ≈⟨ back _ (back _ (back _ left-unit)) ⟩
-    T • Ex • ΛH (₁₊ m) • (ε • Ex) • T                   ≈⟨ back _ (back _ (back _ (front _ left-unit))) ⟩
-    T • Ex • ΛH (₁₊ m) • Ex • T                         ≈⟨ by-passoc (□ • □ • □ • □ • □) (□ • (□ • □ • □) • □) Eq.refl ⟩
-    T • (Ex • ΛH (₁₊ m) • Ex) • T ∎
 
   -- The two commute.
   commute : gadget {m} • dZZ {m} 0 1 ≈ dZZ {m} 0 1 • gadget {m}
