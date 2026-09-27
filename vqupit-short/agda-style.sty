@@ -1,0 +1,258 @@
+%% agda-style.sty — listings setup for quoting Agda code under pdflatex.
+%%
+%% Strategy: all Agda snippets go through the `listings' package with a
+%% `literate' table translating every Unicode character that occurs in
+%% quoted code into a LaTeX rendition.  This keeps the paper buildable
+%% with plain pdflatex; lualatex also works and then renders running
+%% text Unicode natively.
+%%
+%% DISCIPLINE: every non-ASCII character appearing inside an lstlisting
+%% must have an entry in the literate table below.  The QA pass checks
+%% this mechanically.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{agda-style}[2026/07/09 Agda listings for the paper]
+
+\RequirePackage{listings}
+%% acmart's newtxmath usually provides the AMS symbols; only fall back
+%% to amssymb when it does not (avoids the known acmart/amssymb clash).
+\ifdefined\rtimes\else\RequirePackage{amssymb}\fi
+
+%% U+21A5 UPWARDS ARROW FROM BAR (Agda's _↥ shift-up constructor).  There
+%% is no base symbol for it, so we render it as \mapsto given a quarter
+%% turn: the tail-bar lands at the bottom and the arrowhead points up.
+\RequirePackage{graphicx}
+\newcommand{\AgdaMapsUp}{\rotatebox[origin=c]{90}{\ensuremath{\mapsto}}}
+
+\lstdefinelanguage{Agda}{
+  sensitive=true,
+  morekeywords={abstract,constructor,data,do,field,hiding,import,in,
+    infix,infixl,infixr,instance,let,module,mutual,open,pattern,
+    postulate,primitive,private,public,record,renaming,rewrite,
+    syntax,using,variable,where,with},
+  morecomment=[l]{--},
+  morecomment=[n]{\{-}{-\}},
+  morestring=[b]",
+}
+
+\lstset{
+  language=Agda,
+  basicstyle=\small\ttfamily,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape\color[gray]{0.35},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=1.5em,
+  breaklines=false,
+  literate=
+  % --- subscript digits and signs -----------------------------------
+    {₀}{{\textsubscript{0}}}1 {₁}{{\textsubscript{1}}}1
+    {₂}{{\textsubscript{2}}}1 {₃}{{\textsubscript{3}}}1
+    {₄}{{\textsubscript{4}}}1 {₅}{{\textsubscript{5}}}1
+    {₆}{{\textsubscript{6}}}1 {₇}{{\textsubscript{7}}}1
+    {₈}{{\textsubscript{8}}}1 {₉}{{\textsubscript{9}}}1
+    {₊}{{\textsubscript{+}}}1
+  % --- subscript letters --------------------------------------------
+    {ₗ}{{\textsubscript{l}}}1 {ᵣ}{{\textsubscript{r}}}1
+    {ₚ}{{\textsubscript{p}}}1 {ₙ}{{\textsubscript{n}}}1
+    {ₖ}{{\textsubscript{k}}}1 {ₛ}{{\textsubscript{s}}}1
+  % --- superscripts -------------------------------------------------
+    {ʷ}{{\textsuperscript{w}}}1 {ᵗ}{{\textsuperscript{t}}}1
+    {ʰ}{{\textsuperscript{h}}}1 {ⁿ}{{\textsuperscript{n}}}1
+    {ᵏ}{{\textsuperscript{k}}}1 {ˡ}{{\textsuperscript{l}}}1
+    {ᵐ}{{\textsuperscript{m}}}1 {ʳ}{{\textsuperscript{r}}}1
+    {ᶜ}{{\textsuperscript{c}}}1
+    {ᶠ}{{\textsuperscript{f}}}1 {ˢ}{{\textsuperscript{s}}}1
+    {ᵖ}{{\textsuperscript{p}}}1 {←}{{\ensuremath{\leftarrow}}}1
+    {—}{{---}}1
+    {ᵈ}{{\textsuperscript{d}}}1 {ᵃ}{{\textsuperscript{a}}}1
+    {ᵇ}{{\textsuperscript{b}}}1 {ᵉ}{{\textsuperscript{e}}}1
+    {ᵛ}{{\textsuperscript{v}}}1 {ᵍ}{{\textsuperscript{g}}}1
+    {ᵢ}{{\textsubscript{i}}}1 {₋}{{\textsubscript{-}}}1
+    {⁻¹}{{\textsuperscript{-1}}}2 {⁻}{{\textsuperscript{-}}}1
+    {¹}{{\textsuperscript{1}}}1 {²}{{\textsuperscript{2}}}1
+    {′}{{\ensuremath{'}}}1
+  % --- greek and letterlike -----------------------------------------
+    {Γ}{{\ensuremath{\Gamma}}}1 {Δ}{{\ensuremath{\Delta}}}1
+    {ε}{{\ensuremath{\varepsilon}}}1 {λ}{{\ensuremath{\lambda}}}1
+    {σ}{{\ensuremath{\sigma}}}1 {φ}{{\ensuremath{\varphi}}}1
+    {π}{{\ensuremath{\pi}}}1 {ℓ}{{\ensuremath{\ell}}}1
+    {ω}{{\ensuremath{\omega}}}1 {ζ}{{\ensuremath{\zeta}}}1
+    {Λ}{{\ensuremath{\Lambda}}}1
+    {ℕ}{{\ensuremath{\mathbb{N}}}}1 {ℤ}{{\ensuremath{\mathbb{Z}}}}1
+  % --- brackets ------------------------------------------------------
+    {⟦}{{\ensuremath{[\![}}}1 {⟧}{{\ensuremath{]\!]}}}1
+    {⟨}{{\ensuremath{\langle}}}1 {⟩}{{\ensuremath{\rangle}}}1
+    {⌊}{{\ensuremath{\lfloor}}}1 {⌋}{{\ensuremath{\rfloor}}}1
+  % --- relations -----------------------------------------------------
+    {≈}{{\ensuremath{\approx}}}1 {≡}{{\ensuremath{\equiv}}}1
+    {≢}{{\ensuremath{\not\equiv}}}1 {≗}{{\ensuremath{\stackrel{\scriptscriptstyle\circ}{=}}}}1
+    {≟}{{\ensuremath{\stackrel{\scriptscriptstyle ?}{=}}}}1
+    {≤}{{\ensuremath{\le}}}1 {≥}{{\ensuremath{\ge}}}1
+    {≠}{{\ensuremath{\neq}}}1 {≅}{{\ensuremath{\cong}}}1
+    {≃}{{\ensuremath{\simeq}}}1 {∼}{{\ensuremath{\sim}}}1
+    {≋}{{\ensuremath{\approx\!\!\approx}}}1
+    {∈}{{\ensuremath{\in}}}1 {∉}{{\ensuremath{\notin}}}1
+    {⊆}{{\ensuremath{\subseteq}}}1 {∣}{{\ensuremath{\mid}}}1
+  % --- operators ------------------------------------------------------
+    {•}{{\ensuremath{\bullet}}}1 {∙}{{\ensuremath{\cdot}}}1
+    {∘}{{\ensuremath{\circ}}}1 {×}{{\ensuremath{\times}}}1
+    {⊎}{{\ensuremath{\uplus}}}1 {⊕}{{\ensuremath{\oplus}}}1
+    {⊗}{{\ensuremath{\otimes}}}1 {⋊}{{\ensuremath{\rtimes}}}1
+    {≀}{{\ensuremath{\wr}}}1 {∷}{{\ensuremath{\mathbin{::}}}}1
+    {⋄}{{\ensuremath{\diamond}}}1 {⋆}{{\ensuremath{\star}}}1
+    {∸}{{\ensuremath{\mathbin{\dot{-}}}}}1
+    {⊔}{{\ensuremath{\sqcup}}}1 {∪}{{\ensuremath{\cup}}}1
+    {∩}{{\ensuremath{\cap}}}1 {∧}{{\ensuremath{\wedge}}}1
+    {∨}{{\ensuremath{\vee}}}1 {¬}{{\ensuremath{\neg}}}1
+    {∁}{{\ensuremath{\complement}}}1
+  % --- arrows ---------------------------------------------------------
+    {→}{{\ensuremath{\to}}}1 {⟶}{{\ensuremath{\longrightarrow}}}1
+    {↑}{{\ensuremath{\uparrow}}}1 {↥}{{\AgdaMapsUp}}1
+    {↓}{{\ensuremath{\downarrow}}}1 {⇣}{{\ensuremath{\downarrow}}}1
+    {↦}{{\ensuremath{\mapsto}}}1 {↪}{{\ensuremath{\hookrightarrow}}}1
+    {⋯}{{\ensuremath{\cdots}}}1 {⇒}{{\ensuremath{\Rightarrow}}}1
+    {⇔}{{\ensuremath{\Leftrightarrow}}}1 {↔}{{\ensuremath{\leftrightarrow}}}1
+  % --- logic / misc ---------------------------------------------------
+    {∀}{{\ensuremath{\forall}}}1 {∃}{{\ensuremath{\exists}}}1
+    {⊤}{{\ensuremath{\top}}}1 {⊥}{{\ensuremath{\bot}}}1
+    {∎}{{\ensuremath{\rule[0.2ex]{0.9ex}{0.9ex}}}}1
+    {□}{{\ensuremath{\Box}}}1
+    {Σ}{{\ensuremath{\Sigma}}}1 {Π}{{\ensuremath{\Pi}}}1
+    {∃!}{{\ensuremath{\exists!}}}2
+}
+
+%% Display environment for Agda code blocks.
+\lstnewenvironment{agdacode}[1][]{\lstset{language=Agda,#1}}{}
+
+%% ------------------------------------------------------------------
+%% Unicode in RUNNING TEXT (\aid arguments, prose): mirror the literate
+%% table for pdflatex's utf8 handling.  No-op under LuaLaTeX/XeLaTeX.
+\ifdefined\DeclareUnicodeCharacter
+  % subscript digits and signs
+  \DeclareUnicodeCharacter{2080}{\textsubscript{0}}
+  \DeclareUnicodeCharacter{2081}{\textsubscript{1}}
+  \DeclareUnicodeCharacter{2082}{\textsubscript{2}}
+  \DeclareUnicodeCharacter{2083}{\textsubscript{3}}
+  \DeclareUnicodeCharacter{2084}{\textsubscript{4}}
+  \DeclareUnicodeCharacter{2085}{\textsubscript{5}}
+  \DeclareUnicodeCharacter{2086}{\textsubscript{6}}
+  \DeclareUnicodeCharacter{2087}{\textsubscript{7}}
+  \DeclareUnicodeCharacter{2088}{\textsubscript{8}}
+  \DeclareUnicodeCharacter{2089}{\textsubscript{9}}
+  \DeclareUnicodeCharacter{208A}{\textsubscript{+}}
+  % subscript letters
+  \DeclareUnicodeCharacter{2097}{\textsubscript{l}}
+  \DeclareUnicodeCharacter{1D63}{\textsubscript{r}}
+  \DeclareUnicodeCharacter{209A}{\textsubscript{p}}
+  \DeclareUnicodeCharacter{2099}{\textsubscript{n}}
+  \DeclareUnicodeCharacter{2096}{\textsubscript{k}}
+  \DeclareUnicodeCharacter{209B}{\textsubscript{s}}
+  % superscripts
+  \DeclareUnicodeCharacter{02B7}{\textsuperscript{w}}
+  \DeclareUnicodeCharacter{1D57}{\textsuperscript{t}}
+  \DeclareUnicodeCharacter{02B0}{\textsuperscript{h}}
+  \DeclareUnicodeCharacter{207F}{\textsuperscript{n}}
+  \DeclareUnicodeCharacter{1D4F}{\textsuperscript{k}}
+  \DeclareUnicodeCharacter{02E1}{\textsuperscript{l}}
+  \DeclareUnicodeCharacter{1D50}{\textsuperscript{m}}
+  \DeclareUnicodeCharacter{02B3}{\textsuperscript{r}}
+  \DeclareUnicodeCharacter{1D9C}{\textsuperscript{c}}
+  \DeclareUnicodeCharacter{1DA0}{\textsuperscript{f}}
+  \DeclareUnicodeCharacter{1D56}{\textsuperscript{p}}
+  \DeclareUnicodeCharacter{2190}{\ensuremath{\leftarrow}}
+  \DeclareUnicodeCharacter{2014}{---}
+  \DeclareUnicodeCharacter{02E2}{\textsuperscript{s}}
+  \DeclareUnicodeCharacter{1D48}{\textsuperscript{d}}
+  \DeclareUnicodeCharacter{1D43}{\textsuperscript{a}}
+  \DeclareUnicodeCharacter{1D47}{\textsuperscript{b}}
+  \DeclareUnicodeCharacter{1D49}{\textsuperscript{e}}
+  \DeclareUnicodeCharacter{1D5B}{\textsuperscript{v}}
+  \DeclareUnicodeCharacter{1D4D}{\textsuperscript{g}}
+  \DeclareUnicodeCharacter{1D62}{\textsubscript{i}}
+  \DeclareUnicodeCharacter{208B}{\textsubscript{-}}
+  \DeclareUnicodeCharacter{224B}{\ensuremath{\approx\!\!\approx}}
+  \DeclareUnicodeCharacter{2193}{\ensuremath{\downarrow}}
+  \DeclareUnicodeCharacter{21E3}{\ensuremath{\downarrow}}
+  \DeclareUnicodeCharacter{207B}{\textsuperscript{-}}
+  \DeclareUnicodeCharacter{00B9}{\textsuperscript{1}}
+  \DeclareUnicodeCharacter{00B2}{\textsuperscript{2}}
+  \DeclareUnicodeCharacter{2032}{\ensuremath{'}}
+  % greek and letterlike
+  \DeclareUnicodeCharacter{0393}{\ensuremath{\Gamma}}
+  \DeclareUnicodeCharacter{0394}{\ensuremath{\Delta}}
+  \DeclareUnicodeCharacter{039B}{\ensuremath{\Lambda}}
+  \DeclareUnicodeCharacter{03B5}{\ensuremath{\varepsilon}}
+  \DeclareUnicodeCharacter{03BB}{\ensuremath{\lambda}}
+  \DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
+  \DeclareUnicodeCharacter{03C6}{\ensuremath{\varphi}}
+  \DeclareUnicodeCharacter{03C0}{\ensuremath{\pi}}
+  \DeclareUnicodeCharacter{03C9}{\ensuremath{\omega}}
+  \DeclareUnicodeCharacter{03B6}{\ensuremath{\zeta}}
+  \DeclareUnicodeCharacter{2113}{\ensuremath{\ell}}
+  \DeclareUnicodeCharacter{2115}{\ensuremath{\mathbb{N}}}
+  \DeclareUnicodeCharacter{2124}{\ensuremath{\mathbb{Z}}}
+  \DeclareUnicodeCharacter{03A3}{\ensuremath{\Sigma}}
+  \DeclareUnicodeCharacter{03A0}{\ensuremath{\Pi}}
+  % brackets
+  \DeclareUnicodeCharacter{27E6}{\ensuremath{[\![}}
+  \DeclareUnicodeCharacter{27E7}{\ensuremath{]\!]}}
+  \DeclareUnicodeCharacter{27E8}{\ensuremath{\langle}}
+  \DeclareUnicodeCharacter{27E9}{\ensuremath{\rangle}}
+  \DeclareUnicodeCharacter{230A}{\ensuremath{\lfloor}}
+  \DeclareUnicodeCharacter{230B}{\ensuremath{\rfloor}}
+  % relations
+  \DeclareUnicodeCharacter{2248}{\ensuremath{\approx}}
+  \DeclareUnicodeCharacter{2261}{\ensuremath{\equiv}}
+  \DeclareUnicodeCharacter{2262}{\ensuremath{\not\equiv}}
+  \DeclareUnicodeCharacter{2257}{\ensuremath{\stackrel{\scriptscriptstyle\circ}{=}}}
+  \DeclareUnicodeCharacter{225F}{\ensuremath{\stackrel{\scriptscriptstyle ?}{=}}}
+  \DeclareUnicodeCharacter{2264}{\ensuremath{\le}}
+  \DeclareUnicodeCharacter{2265}{\ensuremath{\ge}}
+  \DeclareUnicodeCharacter{2260}{\ensuremath{\neq}}
+  \DeclareUnicodeCharacter{2245}{\ensuremath{\cong}}
+  \DeclareUnicodeCharacter{2243}{\ensuremath{\simeq}}
+  \DeclareUnicodeCharacter{223C}{\ensuremath{\sim}}
+  \DeclareUnicodeCharacter{2208}{\ensuremath{\in}}
+  \DeclareUnicodeCharacter{2209}{\ensuremath{\notin}}
+  \DeclareUnicodeCharacter{2286}{\ensuremath{\subseteq}}
+  \DeclareUnicodeCharacter{2223}{\ensuremath{\mid}}
+  % operators
+  \DeclareUnicodeCharacter{2022}{\ensuremath{\bullet}}
+  \DeclareUnicodeCharacter{2219}{\ensuremath{\cdot}}
+  \DeclareUnicodeCharacter{2218}{\ensuremath{\circ}}
+  \DeclareUnicodeCharacter{00D7}{\ensuremath{\times}}
+  \DeclareUnicodeCharacter{228E}{\ensuremath{\uplus}}
+  \DeclareUnicodeCharacter{2295}{\ensuremath{\oplus}}
+  \DeclareUnicodeCharacter{2297}{\ensuremath{\otimes}}
+  \DeclareUnicodeCharacter{22CA}{\ensuremath{\rtimes}}
+  \DeclareUnicodeCharacter{2240}{\ensuremath{\wr}}
+  \DeclareUnicodeCharacter{2237}{\ensuremath{\mathbin{::}}}
+  \DeclareUnicodeCharacter{22C4}{\ensuremath{\diamond}}
+  \DeclareUnicodeCharacter{22C6}{\ensuremath{\star}}
+  \DeclareUnicodeCharacter{2238}{\ensuremath{\mathbin{\dot{-}}}}
+  \DeclareUnicodeCharacter{2294}{\ensuremath{\sqcup}}
+  \DeclareUnicodeCharacter{222A}{\ensuremath{\cup}}
+  \DeclareUnicodeCharacter{2229}{\ensuremath{\cap}}
+  \DeclareUnicodeCharacter{2227}{\ensuremath{\wedge}}
+  \DeclareUnicodeCharacter{2228}{\ensuremath{\vee}}
+  \DeclareUnicodeCharacter{00AC}{\ensuremath{\neg}}
+  % arrows
+  \DeclareUnicodeCharacter{2192}{\ensuremath{\to}}
+  \DeclareUnicodeCharacter{27F6}{\ensuremath{\longrightarrow}}
+  \DeclareUnicodeCharacter{2191}{\ensuremath{\uparrow}}
+  \DeclareUnicodeCharacter{21A5}{\AgdaMapsUp}
+  \DeclareUnicodeCharacter{21A6}{\ensuremath{\mapsto}}
+  \DeclareUnicodeCharacter{21AA}{\ensuremath{\hookrightarrow}}
+  \DeclareUnicodeCharacter{22EF}{\ensuremath{\cdots}}
+  \DeclareUnicodeCharacter{21D2}{\ensuremath{\Rightarrow}}
+  \DeclareUnicodeCharacter{21D4}{\ensuremath{\Leftrightarrow}}
+  \DeclareUnicodeCharacter{2194}{\ensuremath{\leftrightarrow}}
+  % logic / misc
+  \DeclareUnicodeCharacter{2200}{\ensuremath{\forall}}
+  \DeclareUnicodeCharacter{2203}{\ensuremath{\exists}}
+  \DeclareUnicodeCharacter{22A4}{\ensuremath{\top}}
+  \DeclareUnicodeCharacter{22A5}{\ensuremath{\bot}}
+  \DeclareUnicodeCharacter{220E}{\ensuremath{\rule[0.2ex]{0.9ex}{0.9ex}}}
+  \DeclareUnicodeCharacter{25A1}{\ensuremath{\Box}}
+\fi

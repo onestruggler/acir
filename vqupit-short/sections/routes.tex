@@ -1,0 +1,39 @@
+\section{Two Routes to Completeness}\label{sec:routes}
+
+The routes share the normal boxes, the symplectic normal form and
+essentially the same eighteen symplectic relations, and differ in the
+\emph{organisation} of the argument.  The paper's normal form is a
+\emph{symplectic normal form} followed by a \emph{Pauli normal form}, unique by Proposition~3.8
+(``analogously to the qutrit case''); Section~4.1 pushes the gates in one by one --- a gate
+through a normal box yields an updated box and residual \emph{dirty}
+gates --- collecting the cases into 66 parametrised \emph{box
+relations} (Theorem~4.4 reduces them to 18, a step already in Agda);
+relations are applied \emph{up to Paulis}; and Proposition~4.9
+boosts by correcting each rule $C_l = C_r$ to $C_l = C_r\,;P$ for the
+unique Pauli $P$ making it projectively sound and replaying symplectic
+rewrites with the corrected rules, pushing each new Pauli to the end,
+where it becomes ``a potentially different Pauli''.  \emph{Why not
+formalise that:} the procedure is not a function --- formalised, it is
+a coset table, as we write, which would also have to say what happens
+to the Pauli --- and the objects rewritten are circuits modulo Paulis
+with no syntactic representation of the quotient, so the honest
+counterpart of Proposition~4.9 is a normaliser on the semidirect
+product whose well-definedness (congruent inputs give equal cosets and
+congruent residuals) is exactly what ``potentially different Pauli''
+glosses over; we did not see how to verify it at reasonable cost.
+\emph{Our route:} since $\PCliff = \PPauli \rtimes \Sp$ and $\Cliff$
+is a central extension of it, we work in a syntax where Paulis are genuinely trivial
+--- symplectic circuits have only $H, S, CZ$ and denote $\Sp$ itself ---
+and reintroduce Paulis and scalars by construction
+(Figure~\ref{fig:route} in the appendix): $\Sp$ is presented by a coset tower whose
+cosets are the normal boxes as a doubly inductive type, whose table is
+``push a gate through a box'' as a structurally recursive function with
+a verified section, and whose well-definedness is proved
+\emph{semantically}, by uniqueness one level down; $\PPauli$ is glued
+on by the semidirect theorem, whose one new obligation, that the action
+respects both factors' rules, follows from soundness and completeness
+of the factors; plumbing reduces alphabet and relations to the paper's;
+and the extension theorem restores the scalars.  The Pauli bookkeeping of
+Proposition~4.9 is thus done once, by a theorem proved for arbitrary
+groups before this project began.
+

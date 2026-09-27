@@ -1,0 +1,44 @@
+# Makefile — build the five-page version.
+#
+#   make          # latexmk -pdf main.tex  (no Agda needed: the code
+#                 # blocks in agda/ are pre-rendered, see README.md)
+#   make png      # render every page to png/pNN.png (needs gs)
+#   make qa       # labels, citations, figure files, Unicode coverage
+#   make clean    # remove latexmk auxiliary files (keeps main.pdf)
+#   make cleanall # also remove main.pdf and png/
+#
+# TeX Live on the authors' machine is a user-local install in WSL
+# (/home/bonest/texlive); it is added to PATH below if present.
+
+TEXLIVE_BIN := $(wildcard $(HOME)/texlive/bin/x86_64-linux)
+ifneq ($(TEXLIVE_BIN),)
+  export PATH := $(TEXLIVE_BIN):$(PATH)
+endif
+
+MAIN     := main
+LATEXMK  := latexmk
+LMKFLAGS := -halt-on-error -interaction=nonstopmode
+
+DEPS := $(MAIN).tex $(wildcard sections/*.tex) $(wildcard agda/*.tex) \
+        $(wildcard figures/*.tikz) refs.bib agda-style.sty agda.sty circuits.tikzstyles
+
+.PHONY: all png qa clean cleanall
+
+all: $(MAIN).pdf
+
+$(MAIN).pdf: $(DEPS)
+	$(LATEXMK) -pdf $(LMKFLAGS) $(MAIN).tex
+
+png: $(MAIN).pdf
+	mkdir -p png
+	gs -q -dNOPAUSE -dBATCH -sDEVICE=png16m -r80 -sOutputFile=png/p%02d.png $(MAIN).pdf
+
+qa:
+	perl notes/qa.pl
+
+clean:
+	$(LATEXMK) -c $(MAIN).tex
+	rm -f comment.cut $(MAIN).ptb
+
+cleanall: clean
+	rm -rf $(MAIN).pdf png

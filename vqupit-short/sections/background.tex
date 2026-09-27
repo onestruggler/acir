@@ -1,0 +1,56 @@
+\section{Qupit Clifford Circuits and the Main Theorems}\label{sec:background}
+
+Fix an odd prime $p$ and $\omega = e^{2\pi i/p}$.  On the basis
+$\ket{0},\dots,\ket{p-1}$ indexed by $\Zp$, $X\ket{j} = \ket{j+1}$ and
+$Z\ket{j} = \omega^{j}\ket{j}$ generate, with the phases $\omega^t$, the
+Pauli group $\Pauli$, and $H\colon \ket{j} \mapsto
+\tfrac{\delta_p}{\sqrt p}\sum_k \omega^{jk}\ket{k}$, $S\colon \ket{j}
+\mapsto \omega^{j(j-1)/2}\ket{j}$, $CZ\colon \ket{j}\ket{l} \mapsto
+\omega^{jl}\ket{j}\ket{l}$ generate the Clifford group $\Cliff$ ($\delta_p$
+makes the Clifford phases exactly the powers of
+$\omega$)~\cite{bian2026qudit}.  Modulo scalars, $\PCliff =
+\Cliff/\langle\omega\rangle$ and $\PPauli \cong \Zp^{2n}$ $\Cliff/\Pauli \cong \PCliff/\PPauli \cong \Sp$, and $\PCliff \cong
+\PPauli \rtimes \Sp$.  These ``glue facts'' are the two not formalised:
+our semantic groups are \emph{defined} as the right-hand sides.
+
+$\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$ is the free monoid on
+wire-indexed generators over the gates $H$, $S$ (unary) and $CZ$
+(binary), and $\aid{{\_}↑}$ shifts a circuit up one wire.  The other
+usual gates are \emph{words} ($Z = HHSHHS^{-1}$, $X = HSHHS^{-1}H$, the
+swap $\mathit{Ex} = (CZ \cdot H{\downarrow} \cdot H{\uparrow})^3$), as
+is the \emph{multiplier} $M_x\ket{j} = \ket{xj}$, $x \in \Zp^{*}$,
+spelled by the paper over $S$ with a Pauli prefix (its Lemma~2.14) and
+by us mostly as $R^{x}HR^{x^{-1}}HR^{x}H$ with $R = S \cdot Z^{1/2}$.  Our primary rule set --- Figure~1 modulo scalars,
+multiplier over $R$, $(SH)^3 = \varepsilon$ kept as an axiom --- is one
+inductive family \aid{{\_}CRel,{\_}==={\_}} with sixteen constructors,
+six one-qupit (orders, the multiplier calculus \aid{M-power} and \aid{semi-MR}, \aid{comm-HHSHHS}), seven two-qupit (orders of $CZ$ and $\mathit{Ex}$, commutations, the swap rules, \aid{blake-c12}) and three three-qupit (Yang--Baxter, \aid{cz-slide}, \aid{semi-CX↑-CZ↓}) (Figure~\ref{fig:rules}), plus the
+three \emph{structural} rules every circuit theory gets free
+(congruence under $\uparrow$; gates on disjoint wires commute); $XZ =
+ZX$ modulo scalars, $\mathit{Ex}$ commuting with $CZ$ and both rules
+pushing a Pauli through $CZ$ are derived.  Figure~1 has fifteen
+non-scalar rules; under the $R$-spelling $(SH)^3 = \varepsilon$ must
+stay an axiom, and \S\ref{sec:composing} verifies the paper's fifteen
+in its $S$-spelling, where it is a theorem.
+
+\begin{theorem}[\aid{clifford-presentation}]\label{thm:main}
+For every width $n$, the sixteen rules present the projective Clifford
+group:
+\input{agda/thm-clifford}
+\end{theorem}
+
+\noindent $\aid{Pauli⋊Sp}\;n$ is the semidirect product of $\Zp^{2n}$
+by $\Sp$ (\S\ref{sec:composing}); \aid{{\_}IsPresentationOf{\_}}
+(\S\ref{sec:framework}) is a group isomorphism $\mathsf{Cir}\;n/{\approx}
+\to \PPauli \rtimes \Sp \cong \Cliff/\langle\omega\rangle$:
+\emph{soundness}, each rule holds, and \emph{completeness}, $\sem{\_}$
+is injective.  Normal forms for
+symplectic operators (Clifford operators modulo Paulis) are
+\emph{data}: four kinds of atomic box, the paper's (its
+Figure~6), $A = \{(a,b) \in \Zp^2 \mid (a,b) \ne (0,0)\}$, $B = D =
+\Zp^2$, $E = \Zp$, spelled as circuits in Figure~\ref{fig:boxes}, then
+rows of boxes and a staircase of rows (\S\ref{sec:symplectic}).
+
+\begin{theorem}[\aid{unique-nf}]\label{thm:unique}
+Normal forms with equal symplectic denotations are equal:
+\input{agda/thm-unique}
+\end{theorem}

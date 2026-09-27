@@ -1,0 +1,61 @@
+\section{The Symplectic Factor}\label{sec:symplectic}
+
+$\Sp$ is modelled as the group of $\Zp$-linear, form-preserving
+bijections of the phase space $\aid{Pauli}\;n = \aid{Vec}\;(\Zp \times
+\Zp)\;n$ (the exponents of $Z^{a}X^{b}$ up to phase, per wire), with
+extensional equality, so that the monoid laws hold by \aid{refl}; the
+generators act as
+the paper's conjugation tables (Lemmas~2.22--2.23), and soundness of
+every axiom is one clause per axiom.  The paper's symplectic normal form is a $Z$-normal then an
+$X$-normal layer on $n$ wires, then a normal form on $n-1$; we refine
+it into a doubly inductive datatype (Appendix~\ref{app:agda}).  An
+$M$-row is a column of $D$ boxes ending in an $E$ box (the
+$X$-normal layer), an $L$-row a column of $B$ boxes ending in an $A$ box
+(the $Z$-normal layer), and an $\ML$ box at width $m \ge 2$ is
+\emph{either} a pair of rows \emph{or} a bottom $D$ box followed by an
+$\ML$ box one wire up: a spine of $D$ boxes capped by two rows.  $\ML$
+makes explicit the position of the paper's $A$ box and, crucially,
+makes the coset type at width $m$ a \emph{sum}
+of the coset type at width $m-1$ and a flat case, the shape the table
+and the uniqueness proof recurse on.
+
+\emph{The table.}  The coset table is the paper's ``push a gate through
+a normal box'' as a function $\aid{ract} : \ML\,(1{+}n) \to
+\aid{Gen}\,(1{+}n) \to \aid{Circuit}\;n \times \ML\,(1{+}n)$ (5\,600
+lines), with soundness law \aid{ract-sound}, a chain of box relations
+and structural rules per clause.
+The difference from $S_n$ is the hypothesis that the table respects the
+axioms, which does \emph{not} close by evaluation: its \emph{coset
+half} is semantic --- apply $\sem{\_}$ to \aid{ract-sound} on both sides
+of an axiom, note that residuals live one wire up and cannot move the
+bottom wire, and conclude by head-injectivity of the coset section
+(below) --- and its \emph{residual half} follows by cancellation, given
+that $\uparrow$ is injective on congruence classes one width down, a
+consequence of completeness there.  So the tower is a well-founded
+induction on the width.
+
+\emph{Uniqueness.}  Theorem~\ref{thm:unique} is a structural induction
+on the staircase from two lemmas: \emph{tail surjectivity}, free
+since a symplectic transformation carries its inverse, and \emph{head
+injectivity} --- $\ML$ boxes agreeing on the bottom-wire output at every
+input are equal --- the crux, an induction on $\ML$
+(\texttt{LMHeadInj}, 1\,300 lines), the $D$ box of a spine being read
+off by probing with $Z$ and $X$ on the bottom wire.
+
+\emph{Relation reduction.}  The relations \aid{ract-sound} uses are the
+paper's box relations, nine families of case tables quantified over
+the box labels (42 parametric relations against the paper's 66,
+differing only in grouping), derived (\texttt{BR}, 18\,000 lines with its supporting calculi) from the \emph{full} symplectic rule set of seventeen axioms: Selinger's
+c10--c15~\cite{selinger2015clifford} verbatim on two and three wires,
+and on one wire the orders of $S$, $H$ and $SH$, $H^2S = SH^2$ and four
+multiplier \emph{schemes} over units such as $M_xM_y = M_{xy}$.  The \emph{simplified} set
+derives all of these from relations about the single multiplier $M_g$
+of the primitive root (\aid{M-power} $M_g^{\,k} = M_{g^k}$, \aid{semi-MS}
+$M_gS = S^{g^2}M_g$, $M_g$ past $CZ$ on either wire, $H^2 = M_{-1}$;
+Appendix~\ref{app:agda}), with c10--c15 and the orders of $S$ and
+$CZ$: fifteen rules, eighteen with the structural ones; the identity on
+words is an isomorphism both ways (\texttt{Simplified.Iso}, 900 lines; the paper's Theorem~4.4).  The odd prime shows only on one wire; the two- and three-wire
+rewriting is Selinger's.  Surjectivity is
+``clear the bottom wire, recurse'' (\aid{Theorem-LM}, the paper's Lemma~3.7); and \aid{Theorem-Sp} transports the
+presentation to the simplified rules along the identity
+isomorphism.

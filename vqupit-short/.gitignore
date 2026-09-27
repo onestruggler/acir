@@ -1,0 +1,13 @@
+# latexmk / TeX auxiliary files
+main.aux
+main.bbl
+main.blg
+main.fdb_latexmk
+main.fls
+main.log
+main.out
+main.ptb
+main.synctex.gz
+build.log
+comment.cut
+png/

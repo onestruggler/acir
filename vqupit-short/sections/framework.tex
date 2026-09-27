@@ -1,0 +1,49 @@
+\section{The Framework, in Brief}\label{sec:framework}
+
+The library~\cite{bian2026framework,qupit-code} presents monoids and
+groups by generators and relations; syntax is unquotiented, so normal
+forms and coset tables are programs, and every construction comes with
+a presentation theorem against a concrete group.  \aid{{\_}≈{\_}} is the
+monoid congruence generated on words by the axioms \aid{{\_}==={\_}},
+the word problem of $\pres{X}{\Gamma}$; a \aid{Grouplike} witness
+upgrades to the presented group, and $\Gamma\;\aid{IsPresentationOf}\;G$
+packages it with $\sem{\_} : \aid{Word}\;X \to G$ and a group
+isomorphism from the presented group onto $G$.
+A normal form comes with a \emph{section} $\aid{inv-nf} : \NF \to
+\aid{Word}\;X$ realising each normal form as a canonical word;
+\aid{UniqueNormalForm} says representatives with equal
+denotations are equal, and the five-line \aid{by-normalization} turns
+uniqueness and soundness into completeness, so each case study proves
+\aid{unique}, about finite data, never about arbitrary words.
+
+\emph{Coset tables.}  Normal forms follow the chain-of-subgroups
+recipe of computational group
+theory~\cite{sims1994computation,holt2005handbook}, the chain for
+circuits being the wire structure.  One level is a Reidemeister--Schreier situation
+--- a subgroup presentation $\Gamma$, a group presentation $\Delta$, a
+finite type $C$ of coset labels with identity $I$, a section $[\_] : C
+\to \aid{Word}\;Y$, the embedding $f$, and the \emph{coset table} $h : C
+\to Y \to \aid{Word}\;X \times C$, pushing one letter past a
+representative and returning the subgroup residual and the new coset
+--- and the library \emph{verifies} a claimed table against five
+hypotheses
+(Appendix~\ref{app:agda}): the table inverts the embedding at $I$, it
+respects $\Delta$'s axioms coset by coset, $f$ respects $\Gamma$'s,
+$[I] \approx \varepsilon$, and the \emph{soundness law} $[c] \bullet
+[b]\aid{ʷ} \approx (f\,\aid{ʷ})\,b' \bullet [c']$ for $(b', c') =
+h\;c\;b$; from these it derives $\aid{NormalForm}\;\Gamma\;\NF \to
+\aid{NormalForm}\;\Delta\;(\NF \times C)$, and \aid{CosetTower}
+iterates up an $\mathbb{N}$-indexed family, one level per wire.  For semidirect products the mixed relation
+$\aid{ConjRelʷ}\;\mathit{conj}$ says $h \bullet n = \mathit{conj}\;h\;n
+\bullet h$ with a \emph{word}-valued action, and the semidirect theorem
+takes the factors' relation sets, the action, two well-definedness
+conditions (it respects the acting group's axioms in its first
+argument and the normal subgroup's in its second) and presentations of
+the factors, and returns a presentation of the semidirect product of
+the \emph{semantic} groups; \aid{extension-presentation} (Handbook~\cite{holt2005handbook},
+Proposition~2.55) also corrects each relator of the
+quotient by a word of the kernel, and is proved for central extensions
+built from a cocycle.  The library's warm-ups --- $S_n$ by a tower of swap staircases, all
+hypotheses but the soundness law closing by evaluation, and
+$\mathbb{Z}_N \wr S_n$ by the semidirect theorem with finite case
+splits --- are the two patterns the Clifford group combines.

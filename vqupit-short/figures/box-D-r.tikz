@@ -1,0 +1,27 @@
+\begin{tikzpicture}
+\path [use as bounding box] (-0.3, -1.0) rectangle (11.8, 3.7);
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (n0y00tl) at (1.0, 2.0) {$$};
+\node [style=none] (n0y00bl) at (1.0, 0.0) {$$};
+\node [style=none] (n0y00br) at (2.5, 0.0) {$$};
+\node [style=none] (n0y00tr) at (2.5, 2.0) {$$};
+\node [style=none] (n0y00ftl) at (1.0, 2.15) {};
+\node [style=none] (n0y00fbr) at (2.5, -0.15) {};
+\node [style=cnot ctrl, label={above:$-a$}] (n0y01) at (4.25, 2.0) {};
+\node [style=cnot ctrl] (n0y01t) at (4.25, 0.0) {$$};
+\node [style=gate] (n0y02) at (6.75, 0.0) {$H$};
+\node [style=gate] (n0y03) at (9.75, 0.0) {$S^{-b/a}$};
+\node [style=none] (lm0el00) at (0.0, 0.0){};
+\node [style=none] (lm0el10) at (0.0, 2.0){};
+\node [style=none] (lm0er00) at (11.5, 0.0){};
+\node [style=none] (lm0er10) at (11.5, 2.0){};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (lm0el00.center) to (lm0er00.center);
+\draw (lm0el10.center) to (lm0er10.center);
+\fill [white] (n0y00ftl.center) rectangle (n0y00fbr.center);
+\draw (n0y00bl.center) to (n0y00tr.center);
+\draw (n0y00tl.center) to (n0y00br.center);
+\draw (n0y01.center) to (n0y01t.center);
+\end{pgfonlayer}
+\end{tikzpicture}
