@@ -6,8 +6,8 @@
 --
 -- The rules of Figure 8 whose decodings are proved so far with the
 -- general-width machinery of GeneralN: (22), from (335) and (336)
--- (BoxComm); (39), from (338) with x = y (Box338Eq); and (40), from
--- (353) and (339) (Canon40).  Completeness below the width is the
+-- (BoxComm); (23), from (355) in both signs (ZX355); (39), from (338)
+-- with x = y (Box338Eq); and (40), from (353) and (339) (Canon40).  Completeness below the width is the
 -- paper's own induction (CompletenessInduction).
 ------------------------------------------------------------------------
 
@@ -32,6 +32,8 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.CanonN complete₂ complet
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxComm complete₂ complete₃ using (eq335 ; eq336ᶜ)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Box338Eq complete₂ complete₃ using (module XY)
 import Examples.Groups.Real-Clifford+CH.Lemma88.Rule22 as Rule22
+open import Examples.Groups.Real-Clifford+CH.GeneralN.ZX355 complete₂ complete₃ using (eq355 ; eq355′)
+import Examples.Groups.Real-Clifford+CH.Lemma88.Rule23 as Rule23
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon40 complete₂ complete₃ using (core40)
 import Examples.Groups.Real-Clifford+CH.Lemma88.Rule39 as Rule39
 import Examples.Groups.Real-Clifford+CH.Lemma88.Rule40 as Rule40
@@ -44,6 +46,9 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
   -- (22)
   open Rule22 complete₂ complete₃ (canonN k completes) (eq335 k below) (eq336ᶜ k below) public using (e22)
+
+  -- (23)
+  open Rule23 {₂₊ k} (eq355 k below) (eq355′ k below) public using (e23)
 
   -- (39)
   open Rule39 {₂₊ k} (XY.core39 k below) public using (e39)

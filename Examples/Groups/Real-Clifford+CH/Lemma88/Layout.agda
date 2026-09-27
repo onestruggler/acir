@@ -74,6 +74,12 @@ g3 = Eq.cong₂ (λ h z → false ∷ true ∷ h ∷ z) (hd-Z m) (gray-Z m)
 g4 : gcode {m} 4 ≡ false ∷ true ∷ true ∷ t
 g4 = Eq.cong₂ (λ h z → false ∷ true ∷ not h ∷ z) (hd-Z m) (gray-Z m)
 
+g6 : gcode {m} 6 ≡ true ∷ false ∷ true ∷ t
+g6 = Eq.cong₂ (λ h z → true ∷ false ∷ not h ∷ z) (hd-Z m) (gray-Z m)
+
+g7 : gcode {m} 7 ≡ false ∷ false ∷ true ∷ t
+g7 = Eq.cong₂ (λ h z → false ∷ false ∷ not h ∷ z) (hd-Z m) (gray-Z m)
+
 ------------------------------------------------------------------------
 -- The layouts
 
@@ -110,6 +116,17 @@ negs-tail : ∀ (s : Bits k) w → negs (zipWith slot s s) ≡ negs (layoutHFrom
 negs-tail []          w = Eq.refl
 negs-tail (true ∷ s)  w = Eq.cong _↑ (negs-tail s (suc w))
 negs-tail (false ∷ s) w = Eq.cong (λ z → X • z ↑) (negs-tail s (suc w))
+
+-- The same for the H-patterns (1 , 0) and (0 , 2).
+negs-tail₁₀ : ∀ (s : Bits k) w → negs (zipWith slot s s) ≡ negs (layoutHFrom (₃₊ w) 1 0 s)
+negs-tail₁₀ []          w = Eq.refl
+negs-tail₁₀ (true ∷ s)  w = Eq.cong _↑ (negs-tail₁₀ s (suc w))
+negs-tail₁₀ (false ∷ s) w = Eq.cong (λ z → X • z ↑) (negs-tail₁₀ s (suc w))
+
+negs-tail₀₂ : ∀ (s : Bits k) w → negs (zipWith slot s s) ≡ negs (layoutHFrom (₃₊ w) 0 2 s)
+negs-tail₀₂ []          w = Eq.refl
+negs-tail₀₂ (true ∷ s)  w = Eq.cong _↑ (negs-tail₀₂ s (suc w))
+negs-tail₀₂ (false ∷ s) w = Eq.cong (λ z → X • z ↑) (negs-tail₀₂ s (suc w))
 
 -- The negations of a layout are an involution.
 negs² : ∀ (L : Layout k) → k ⊢ negs L • negs L ≈ ε

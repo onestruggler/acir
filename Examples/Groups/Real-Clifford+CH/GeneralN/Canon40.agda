@@ -28,6 +28,11 @@
 -- So ΛZX Bt HG = CH₂ K CH₂ K Bt CH₂ D = CH₂ K CH₂ B₂ CH₂ D = CH₂ K B₂ D
 -- = CH₂ Bt D = CH₂ D Bt = HG Bt.  Every step was checked numerically at
 -- four to six wires first (scratchpad r40/check40.py).
+--
+-- The same argument with the colour on wire 3 black says D passes K,
+-- and (335) factor by factor says CH₂ passes HG ((340), `HG-CH₂`), so D
+-- is an involution passing CH₂ and K and cancels from (353): the
+-- rotations are words in HG and K, (333) and (334) (`eq333`, `eq334`).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -41,7 +46,7 @@ module Examples.Groups.Real-Clifford+CH.GeneralN.Canon40
   (complete₃ : ∀ {u v : Circuit 3} → ⟦ u ⟧ ~ ⟦ v ⟧ → 3 ⊢ u ≈ v)
   where
 
-open import Data.Bool using (true ; false)
+open import Data.Bool using (Bool ; true ; false)
 open import Data.Empty using (⊥-elim)
 open import Data.List using (List ; [] ; _∷_ ; _++_ ; map)
 open import Data.Nat using (ℕ ; zero ; suc ; s≤s ; z≤n)
@@ -81,10 +86,10 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (P₁₃ ; Hg ; 
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Base40 using (e-CH₂ ; e-X₃ ; e-τX ; e-trX ; e-trP)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Box339 complete₂ complete₃ using (eq339)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.ZX353 complete₂ complete₃
-  using (S-ZX ; ∏-conj ; ∏-cong ; pass-∏ ; allT)
+  using (S-ZX ; S-XZ ; ∏-conj ; ∏-cong ; pass-∏ ; allT)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Box338 complete₂ complete₃ using (module Carry)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Box338Eq complete₂ complete₃ using (module XY)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxComm complete₂ complete₃ using (move′)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxComm complete₂ complete₃ using (move′ ; eq335)
 
 private
   variable
@@ -387,15 +392,23 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       fix : ∀ {s u : Circuit N} → s • u ≈ u • s → s • s ≈ ε → s • u • s ≈ u
       fix e s² = trans (sym assoc) (trans (front _ e) (trans assoc (trans (back _ s²) right-unit)))
 
-    G1a : Circuit N
-    G1a = col (true ∷ true ∷ true ∷ false ∷ replicate m′ true) Λ
+    -- The box on wire 0, black but for the colour a on wire 3, and what
+    -- the carrying makes of it: K, or K negated on wire 0.
+    G1 : Bool → Circuit N
+    G1 a = col (true ∷ true ∷ true ∷ a ∷ replicate m′ true) Λ
+
+    Ka : Bool → Circuit N
+    Ka true  = K
+    Ka false = Bt
 
     G2 : Bits m′ → Circuit N
     G2 y = col (true ∷ true ∷ false ∷ true ∷ y) (Hg₃ m′)
 
-    trG1 : tr G1a ≈ Bt
-    trG1 = begin
-      tr G1a
+    trG1 : ∀ a → tr (G1 a) ≈ Ka a
+    trG1 true = trans (tr-cong (trans (≡→≈ (Eq.cong (λ z → z ↑ ↑ ↑ ↑ • Λ • z ↑ ↑ ↑ ↑) (allT m′)))
+                                      (trans left-unit right-unit))) trΛ
+    trG1 false = begin
+      tr (G1 false)
         ≈⟨ tr-cong (trans (≡→≈ (Eq.cong (λ z → (X ↑ ↑ ↑ • z ↑ ↑ ↑ ↑) • Λ • (X ↑ ↑ ↑ • z ↑ ↑ ↑ ↑)) (allT m′)))
                           (cong right-unit (back _ right-unit))) ⟩
       tr (X ↑ ↑ ↑ • Λ • X ↑ ↑ ↑)
@@ -417,9 +430,9 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       XU : tr (X ↑ ↑ • U) ≈ X ↑ ↑ ↑ • U
       XU = trans (tr-• _ _) (cong trX₂ (trU y))
 
-    base339 : ∀ (y : Bits m′) → Bt • Hc (false ∷ y) ≈ Hc (false ∷ y) • Bt
-    base339 y = both trG1 (trG2 y) (Cτ.carry refl refl (C₂₃.carry refl refl
-                  (eq339 k below false (replicate m′ true) y)))
+    base339 : ∀ a (y : Bits m′) → Ka a • Hc (false ∷ y) ≈ Hc (false ∷ y) • Ka a
+    base339 a y = both (trG1 a) (trG2 y) (Cτ.carry refl refl (C₂₃.carry refl refl
+                    (eq339 k below a (replicate m′ true) y)))
 
     -- The swap of two adjacent wires above wire 2.
     module Sw (i : ℕ) where
@@ -447,8 +460,12 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       S-B : S • B ≈ B • S
       S-B = pass₂ S-Ex (pass₂ S-Λ S-Ex)
 
-      S-Bt : S • Bt ≈ Bt • S
-      S-Bt = pass₂ S-X (pass₂ (pass₂ S-Ex↑ (pass₂ S-B S-Ex↑)) S-X)
+      S-K : S • K ≈ K • S
+      S-K = pass₂ S-Ex↑ (pass₂ S-B S-Ex↑)
+
+      S-Ka : ∀ a → S • Ka a ≈ Ka a • S
+      S-Ka true  = S-K
+      S-Ka false = pass₂ S-X (pass₂ S-K S-X)
 
       S-H : S • HG ≈ HG • S
       S-H = pass₂ S-PP (pass₂ S-B S-PP)
@@ -462,24 +479,114 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
                                (swapAt-negsB (suc (suc (suc i))) (true ∷ true ∷ true ∷ swB i t)))
                      (≡→≈ (Eq.cong (λ z → col (true ∷ true ∷ true ∷ z) HG) (swB-invol i t)))
 
-    Q : Bits m → Set
-    Q t = t ≢ replicate m true → Bt • Hc t ≈ Hc t • Bt
+    Q : Bool → Bits m → Set
+    Q a t = t ≢ replicate m true → Ka a • Hc t ≈ Hc t • Ka a
 
-    all339 : ∀ t → Q t
-    all339 = move′ Q (λ r _ → base339 r)
-                   (λ i t q t≢ → Sw.CS.carry i (Sw.TS.⟪⟫-fix i (Sw.S-Bt i)) (Sw.S-Hc i t)
-                                   (q (λ e → t≢ (swB-1 i t e))))
-                   (λ ne → ⊥-elim (ne Eq.refl))
+    all339 : ∀ a t → Q a t
+    all339 a = move′ (Q a) (λ r _ → base339 a r)
+                     (λ i t q t≢ → Sw.CS.carry i (Sw.TS.⟪⟫-fix i (Sw.S-Ka i a)) (Sw.S-Hc i t)
+                                     (q (λ e → t≢ (swB-1 i t e))))
+                     (λ ne → ⊥-elim (ne Eq.refl))
 
     --------------------------------------------------------------------
-    -- D passes Bt
+    -- D passes K and Bt
+
+    Ka-D : ∀ a → Ka a • D ≈ D • Ka a
+    Ka-D a = via (cong CH₂-∏ (sym Hc1))
+                 (pass-last m Hc (all339 a) (trans (cong Hc1 Hc1) HG²))
 
     Bt-D : Bt • D ≈ D • Bt
-    Bt-D = via (cong CH₂-∏ (sym Hc1))
-               (pass-last m Hc all339 (trans (cong Hc1 Hc1) HG²))
+    Bt-D = Ka-D false
 
     H-CD : HG ≈ CH₂ • D
     H-CD = sym (trans (sym assoc) (trans (front _ CH₂²) left-unit))
+
+    --------------------------------------------------------------------
+    -- (340) at the canonical position: CH₂ passes HG, factor by factor,
+    -- each factor being HG in a colouring of the wires 3 …, and two
+    -- colourings of one box commuting by (335)
+
+    module C₀₁ = Carry {N} Ex Ex²
+    module CP  = Carry {N} (PP ↓) eq111
+
+    HG-Hc : ∀ t → HG • Hc t ≈ Hc t • HG
+    HG-Hc t = both refl (sym (Hc-form t))
+                (CP.carry refl refl (C₀₁.carry refl refl (eq335 k below (true ∷ true ∷ true ∷ t))))
+
+  HG-CH₂ : HG • CH₂ ≈ CH₂ • HG
+  HG-CH₂ = trans (back _ CH₂-∏) (trans (pass-∏ (allBits m) Hc HG-Hc) (front _ (sym CH₂-∏)))
+
+  -- (339) at the canonical position of this module: the H gate HG in a
+  -- colouring of the wires 3 … that is not all black, against K,
+  -- negated on wire 0 or not.
+  Hcol : Bits m → Circuit N
+  Hcol = Hc
+
+  Kcol : Bool → Circuit N
+  Kcol = Ka
+
+  eq339c : ∀ a t → t ≢ replicate m true → Kcol a • Hcol t ≈ Hcol t • Kcol a
+  eq339c = all339
+
+  private
+    D-CH₂ : D • CH₂ ≈ CH₂ • D
+    D-CH₂ = trans assoc (back _ HG-CH₂)
+
+    D² : D • D ≈ ε
+    D² = begin
+      (CH₂ • HG) • (CH₂ • HG)     ≈⟨ by-passoc ((□ • □) • (□ • □)) (□ • (□ • □) • □) Eq.refl ⟩
+      CH₂ • (HG • CH₂) • HG       ≈⟨ back _ (front _ HG-CH₂) ⟩
+      CH₂ • (CH₂ • HG) • HG       ≈⟨ by-passoc (□ • (□ • □) • □) ((□ • □) • (□ • □)) Eq.refl ⟩
+      (CH₂ • CH₂) • (HG • HG)     ≈⟨ trans (cong CH₂² HG²) left-unit ⟩
+      ε ∎
+
+    XZ-K : ΛXZ (₄₊ k) ≈ K • CH₂ • K • CH₂
+    XZ-K = trans (sym (S-XZ k below)) (S₁₂.⟪⟫-•₄ refl refl refl refl)
+
+  --------------------------------------------------------------------
+  -- (333) and (334) at the canonical position: the rotations as words
+  -- in the H gate HG and the box K on wire 2.  HG = CH₂ D, D passes K
+  -- and CH₂ and is an involution, so D cancels from ΛZX = CH₂ K CH₂ K.
+
+  eq333 : HG • K • HG • K ≈ ΛZX (₄₊ k)
+  eq333 = begin
+    HG • K • HG • K
+      ≈⟨ cong H-CD (back _ (front _ H-CD)) ⟩
+    (CH₂ • D) • K • (CH₂ • D) • K
+      ≈⟨ by-passoc ((□ • □) • □ • (□ • □) • □) (□ • (□ • □) • □ • □ • □) Eq.refl ⟩
+    CH₂ • (D • K) • CH₂ • D • K
+      ≈⟨ back _ (front _ (sym (Ka-D true))) ⟩
+    CH₂ • (K • D) • CH₂ • D • K
+      ≈⟨ by-passoc (□ • (□ • □) • □ • □ • □) (□ • □ • (□ • □) • □ • □) Eq.refl ⟩
+    CH₂ • K • (D • CH₂) • D • K
+      ≈⟨ back _ (back _ (front _ D-CH₂)) ⟩
+    CH₂ • K • (CH₂ • D) • D • K
+      ≈⟨ by-passoc (□ • □ • (□ • □) • □ • □) (□ • □ • □ • (□ • □) • □) Eq.refl ⟩
+    CH₂ • K • CH₂ • (D • D) • K
+      ≈⟨ back _ (back _ (back _ (trans (front _ D²) left-unit))) ⟩
+    CH₂ • K • CH₂ • K
+      ≈⟨ sym ZX-K ⟩
+    ΛZX (₄₊ k) ∎
+
+  eq334 : K • HG • K • HG ≈ ΛXZ (₄₊ k)
+  eq334 = begin
+    K • HG • K • HG
+      ≈⟨ back _ (cong H-CD (back _ H-CD)) ⟩
+    K • (CH₂ • D) • K • (CH₂ • D)
+      ≈⟨ by-passoc (□ • (□ • □) • □ • (□ • □)) (□ • □ • (□ • □) • □ • □) Eq.refl ⟩
+    K • CH₂ • (D • K) • CH₂ • D
+      ≈⟨ back _ (back _ (front _ (sym (Ka-D true)))) ⟩
+    K • CH₂ • (K • D) • CH₂ • D
+      ≈⟨ by-passoc (□ • □ • (□ • □) • □ • □) (□ • □ • □ • (□ • □) • □) Eq.refl ⟩
+    K • CH₂ • K • (D • CH₂) • D
+      ≈⟨ back _ (back _ (back _ (front _ D-CH₂))) ⟩
+    K • CH₂ • K • (CH₂ • D) • D
+      ≈⟨ back _ (back _ (back _ (trans assoc (back _ D²)))) ⟩
+    K • CH₂ • K • CH₂ • ε
+      ≈⟨ back _ (back _ (back _ right-unit)) ⟩
+    K • CH₂ • K • CH₂
+      ≈⟨ sym XZ-K ⟩
+    ΛXZ (₄₊ k) ∎
 
   --------------------------------------------------------------------
   -- Rule (40), canonical

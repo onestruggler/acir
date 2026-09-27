@@ -394,3 +394,37 @@ merge-top₂ (suc j) b = begin
                                           negsB (true ∷ true ∷ true ∷ y)))
                                (Eq.sym (ins-top c false)) (Eq.sym (ins-top c true))))
                  (pair-merge (₂₊ j) (s≤s z≤n) b (₃₊ j) (s≤s z≤n) ≤-refl (true ∷ true ∷ true ∷ c))
+
+-- The same with the bottom two black: the box Λ□ (1 + j) over every
+-- colouring of the wires 2 … is the box on the bottom two wires, Z on
+-- wire 1.
+merge-top₁ : ∀ j → j ≤ B →
+             (₂₊ j) ⊢ ∏ (allBits j) (λ c → negsB (true ∷ true ∷ c) • Λ□ (suc j) • negsB (true ∷ true ∷ c))
+                      ≈ Λ□ 1 ↓ᵏ j
+merge-top₁ zero    _ = trans right-unit (trans left-unit right-unit)
+  where open Tools (2 VRel,_===_)
+merge-top₁ (suc j) b = begin
+  ∏ (allBits (suc j)) G
+    ≈⟨ pairing j G ⟩
+  ∏ (allBits j) (λ c → G (c ∷ʳ false) • G (c ∷ʳ true))
+    ≈⟨ ∏-cong (allBits j) pair ⟩
+  ∏ (allBits j) (λ c → placeAt (₂₊ j) (h c))
+    ≈⟨ sym (placeAt-∏ (₂₊ j) (allBits j) h) ⟩
+  placeAt (₂₊ j) (∏ (allBits j) h)
+    ≈⟨ placeAt-cong (₂₊ j) (merge-top₁ j (≤-trans (n≤1+n _) b)) ⟩
+  placeAt (₂₊ j) (Λ□ 1 ↓ᵏ j)
+    ≈⟨ placeAt-top (Λ□ 1 ↓ᵏ j) ⟩
+  Λ□ 1 ↓ᵏ suc j ∎
+  where
+  open Tools ((₃₊ j) VRel,_===_)
+  G : Bits (suc j) → Circuit (₃₊ j)
+  G c = negsB (true ∷ true ∷ c) • Λ□ (₂₊ j) • negsB (true ∷ true ∷ c)
+  h : Bits j → Circuit (₂₊ j)
+  h c = negsB (true ∷ true ∷ c) • Λ□ (suc j) • negsB (true ∷ true ∷ c)
+  ≡→≈ : ∀ {x y : Circuit (₃₊ j)} → x ≡ y → x ≈ y
+  ≡→≈ Eq.refl = refl
+  pair : ∀ c → G (c ∷ʳ false) • G (c ∷ʳ true) ≈ placeAt (₂₊ j) (h c)
+  pair c = trans (≡→≈ (Eq.cong₂ (λ x y → (negsB (true ∷ true ∷ x) • Λ□ (₂₊ j) • negsB (true ∷ true ∷ x)) •
+                                         (negsB (true ∷ true ∷ y) • Λ□ (₂₊ j) • negsB (true ∷ true ∷ y)))
+                               (Eq.sym (ins-top c false)) (Eq.sym (ins-top c true))))
+                 (pair-merge (suc j) (s≤s z≤n) b (₂₊ j) (s≤s z≤n) ≤-refl (true ∷ true ∷ c))

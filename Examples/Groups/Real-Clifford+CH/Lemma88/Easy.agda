@@ -25,7 +25,7 @@ open import Data.Bool using (Bool ; true ; false ; not ; if_then_else_ ; _∧_)
 open import Data.Bool.Properties using (not-involutive)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin ; toℕ ; fromℕ<)
-open import Data.Fin.Properties using (toℕ-injective ; toℕ-fromℕ<) renaming (_≟_ to _≟F_)
+open import Data.Fin.Properties using (toℕ-injective ; toℕ-fromℕ< ; toℕ-inject≤) renaming (_≟_ to _≟F_)
 open import Data.Nat using (zero ; suc ; _+_ ; _∸_ ; _<_ ; _≤_ ; _<ᵇ_ ; _≡ᵇ_ ; s≤s ; z≤n ; _^_)
 open import Data.Nat.Properties using (n∸n≡0 ; <⇒≤ ; <-cmp ; n<1+n ; <⇒≢ ; +-suc ; m+n∸m≡n ; m+[n∸m]≡n ; ≤-trans ; n≤1+n ; ≤-refl)
 open import Data.Maybe using (just ; nothing)
@@ -42,7 +42,7 @@ open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools)
 open import Examples.Groups.Real-Clifford+CH.Reverse using (rev)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Algebra using (Bits)
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.Gray using (parity ; code ; toBits ; gray ; hd ; 8≤2^)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.Gray using (parity ; code ; toBits ; gray ; hd ; 8≤2^ ; fin8)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.GrayStep using (flipAt)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Small using (Small ; small)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.LowGens m
@@ -54,7 +54,8 @@ open import Examples.Groups.Real-Clifford+CH.Encoding
   using (zz ; zx ; xx ; hh ; hhℕ ; zxℕ ; Σ ; Σ′ ; τ ; distinct4 ; twoSmallest ; hpat ; toFin)
 open import Examples.Groups.Real-Clifford+CH.Decoding
   using (d ; dZZ ; dZZ-chain ; dZX ; dZXb ; dZXs ; dZXself ; dZXlo ; dZXhi ; dZXlo₁ ; dZXhi₁ ; dXX ;
-         dHH ; dHH₄ ; dHH₄-pat ; dHH₄-nopat ; dΣ ; gadget ; gcode)
+         dHH ; dHH₄ ; dHH₄-pat ; dHH₄-nopat ; dΣ ; gadget ; gcode ; layoutH)
+open import Examples.Groups.Real-Clifford+CH.MultiControlled using (mcH)
 
 private
   N : ℕ
@@ -512,6 +513,37 @@ d-hh0132 = Eq.trans (Eq.cong (d ʷ) (Eq.trans (cong-hhℕ (Eq.sym toℕ-i₀) (E
   i₀≢i₁ e = ᵇ-ne {0} {1} Eq.refl (Eq.trans (Eq.sym toℕ-i₀) (Eq.trans (Eq.cong toℕ e) toℕ-i₁))
   i₃≢i₂ : i₃ ≢ i₂
   i₃≢i₂ e = ᵇ-ne {3} {2} Eq.refl (Eq.trans (Eq.sym toℕ-i₃) (Eq.trans (Eq.cong toℕ e) toℕ-i₂))
+
+-- A Hadamard pair on four distinct indices below 8 whose codes form an
+-- H-pattern decodes to the multi-controlled H of that pattern.
+d-hh-pat : ∀ (x y z w : Fin 8) pb pc →
+           distinct4 (toℕ x) (toℕ y) (toℕ z) (toℕ w) ≡ true →
+           hpat (gcode {m} (toℕ x)) (gcode (toℕ y)) (gcode (toℕ z)) (gcode (toℕ w)) ≡ just (pb , pc) →
+           (d ʷ) (hhℕ {N} (toℕ x) (toℕ y) (toℕ z) (toℕ w)) ≡ rev (mcH (layoutH (gcode {m} (toℕ x)) pb pc))
+d-hh-pat x y z w pb pc dist pat =
+  Eq.trans (Eq.cong (d ʷ) (Eq.trans (cong-hhℕ (Eq.sym vx) (Eq.sym vy) (Eq.sym vz) (Eq.sym vw))
+                                    (Eq.trans (hhℕ-hh a b c e) (hh-letter a b c e ab ce))))
+           (Eq.cong rev (Eq.trans (cong-dHH vx vy vz vw)
+                                  (Eq.trans (dHH-true (toℕ x) (toℕ y) (toℕ z) (toℕ w) dist)
+                                            (dHH₄-pat (toℕ x) (toℕ y) (toℕ z) (toℕ w) pb pc pat))))
+  where
+  a b c e : I
+  a = fin8 {m} x
+  b = fin8 {m} y
+  c = fin8 {m} z
+  e = fin8 {m} w
+  vx : toℕ a ≡ toℕ x
+  vx = toℕ-inject≤ x _
+  vy : toℕ b ≡ toℕ y
+  vy = toℕ-inject≤ y _
+  vz : toℕ c ≡ toℕ z
+  vz = toℕ-inject≤ z _
+  vw : toℕ e ≡ toℕ w
+  vw = toℕ-inject≤ w _
+  ab : a ≢ b
+  ab q = dist-ab (toℕ x) (toℕ y) (toℕ z) (toℕ w) dist (Eq.trans (Eq.sym vx) (Eq.trans (Eq.cong toℕ q) vy))
+  ce : c ≢ e
+  ce q = dist-cd (toℕ x) (toℕ y) (toℕ z) (toℕ w) dist (Eq.trans (Eq.sym vz) (Eq.trans (Eq.cong toℕ q) vw))
 
 private
   -- A word of signed exchanges decodes letter by letter.
