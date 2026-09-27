@@ -1,8 +1,7 @@
 \section{Composing: Paulis, the Semidirect Product, and Scalars}\label{sec:composing}
 
 $\PPauli \cong (\Zp \times \Zp)^n$ is presented over $X$, $Z$ on each
-wire by $X^{p} = Z^{p} = \varepsilon$ and $ZX = XZ$, with the phase
-space $\Sp$ acts on as semantic group and normal form $X^{a}Z^{b}$ per
+wire by $X^{p} = Z^{p} = \varepsilon$ and $ZX = XZ$, with the phase space that $\Sp$ acts on as its semantic group and normal form $X^{a}Z^{b}$ per
 wire.  The semidirect
 product is the wreath example with $\Sp$ for $S_n$: both factors'
 relations plus $h\,n\,h^{-1} = \mathit{conj}\,h\,n$, \aid{conj} being the
@@ -25,7 +24,7 @@ R^{x}HR^{x^{-1}}HR^{x}H$ exactly; V1's nineteen rules add $(SH)^3 =
 the simplified symplectic ones, and \aid{f-well-defined} derives the
 three Pauli and fourteen conjugation rules (6\,000 lines).  \emph{V1 to Paper-V0} is
 the identity on words: ten axioms are shared, V0's \texttt{Lemmas}
-(4\,750 lines) derives c10--c15 from its swap axioms.
+(4\,750 lines) derives c10--c15 from its own axioms.
 \emph{V0 to the paper's fifteen} connects the routes: Figure~1 spells
 $M_x = \aid{SHS'}\;x^{-1}\;x$ with $\aid{SHS'}\;a\;b =
 Z^{(b-1)/2}X^{(1-a)/2}S^{b}HS^{a}HS^{b}H$ and \aid{semi-MR} as
@@ -43,15 +42,14 @@ gate, \emph{correct} each rule by the scalar it picks up --- by
 \aid{extension-presentation} with a correction that is $\varepsilon$
 except on \aid{order-SH}: with $H$ normalised by $\delta_p$ exactly one
 rule fails on the nose, $(SH)^3 = \varepsilon$ picking up
-$\omega^{(p^2-1)/8}$ (the paper's (T1); its residue is $-1/8$), so it
+$\omega^{(p^2-1)/8}$ (residue $-1/8$), so it
 becomes $(SH)^3 = \omega^{-1/8}$ (the multiplier rules hold exactly
 because $R$ has no Pauli part).  The semantic extension is the Weyl
 cocycle $c((P,S),(Q,\_)) = \tfrac12\,\mathrm{sform}(P, \aid{ap}\;S\;Q)$
 on the natural semidirect product, whose cocycle law is symplectic
 invariance of \aid{sform}; the presented group's cocycle is pulled back
-from it, so the two agree by construction.  On no
-hypothesis, $\aid{presentation-exact} : \forall\,n \to
-(n\;\aid{Exact,{\_}==={\_}})\;\aid{IsPresentationOf}\;
+from it, so the two agree by construction.  On no hypothesis, \aid{presentation-exact} gives, for every $n$,
+$(n\;\aid{Exact,{\_}==={\_}})\;\aid{IsPresentationOf}\;
 (\aid{Presented-group}\;n\;(\aid{exact-generator-data}\;n))$; it needs
 no normal forms, only that each rule's Weyl phase on the left equals
 the correction plus that on the right, nineteen $\Zp$ equations.  The extension is provably

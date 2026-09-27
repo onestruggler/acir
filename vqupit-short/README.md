@@ -29,8 +29,9 @@ What did **not** survive: the worked examples (the $S_n$ coset table
 clause by clause, $S$ meeting a spine, $M_xM_y = M_{xy}$), the
 `respects-Δ` listing, the nine-family table of box relations, the
 `act≡ap`/`abstract` anecdote, the proof-engineering discussion beyond
-its three headline lessons, the `Paper-V1` module map, and the
-paragraph on the use of a language model (one sentence remains).  The
+its three headline lessons, the `Home:` module names under the
+theorems, and the paragraph on the use of a language model (one
+sentence remains).  The
 long version's `notes/survey-*.md` still record the file and line of
 every fact.
 
@@ -54,7 +55,7 @@ be dropped without breaking any cross-reference except those five.
   `../vqupit/latex/vqupit/sections/*.tex` (so this folder builds with
   `latexmk` alone; no Agda is needed).  If a snippet changes in the long
   version, regenerate there (`make agda` in `../vqupit`) and copy the
-  block again; the mapping is recorded in each file's first line.
+  block again; each file's first line records which block of which section it is.
   Only `thm-clifford`, `thm-unique`, `rows`, `nf`, `hypotheses`,
   `simplified-rules` and `conj` are used; the others are kept for
   re-expansion.
@@ -71,11 +72,10 @@ be dropped without breaking any cross-reference except those five.
 make            # latexmk -pdf main.tex; no Agda needed
 ```
 
-Verified 2026-09-27 with TeX Live 2023 (Ubuntu 24.04 packages, acmart
-2.10): `main.pdf` is 10 pages — **5 pages of text**, the references
-starting on page 5, then 3 pages of references and 2 of appendix — with
-zero errors, zero undefined references or citations and no overfull
-box.  The same toolchain rebuilds `../vqupit/main.tex` to its 26 pages,
+Verified 2026-09-27 with TeX Live 2023 (Ubuntu 24.04 packages): `main.pdf`
+is 9 pages — **5 pages of text**, ending at the foot of page 5, then the
+references (pages 6–8) and the appendix (pages 8–9) — with zero errors,
+zero undefined references or citations and no overfull box.  The same toolchain rebuilds `../vqupit/main.tex` to its 26 pages,
 so page counts are comparable.
 
 ## Things to decide
@@ -86,5 +86,5 @@ so page counts are comparable.
    what was cut (start with the worked examples and the listings).
 2. Whether to keep Appendix B (the listings) or fold the datatype back
    into §5 at the cost of a quarter page of text.
-3. The abstract is 170 words; a venue with a 150-word limit needs one
-   sentence fewer.
+3. The abstract is 185 words; a venue with a 150-word limit needs two
+   sentences fewer.
