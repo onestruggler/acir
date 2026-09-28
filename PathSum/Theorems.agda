@@ -30,7 +30,8 @@
 -- every n -- the circuit its tool generates included, with table 2's
 -- rows exactly (PathSum.Adder) -- and its hidden shift algorithm for
 -- every size, bent function and shift, as path-sums and as figure 3's
--- circuits (PathSum.HiddenShift); Z[ζ] as a commutative ring,
+-- circuits, with the calculus finding |s⟩ and |s⟩|s⟩ on them
+-- (PathSum.HiddenShift); Z[ζ] as a commutative ring,
 -- definition 2.4, and every circuit's path-sum unitary, over both gate
 -- sets; all four rules of figure 2, [Case] included and with
 -- Boolean-valued quotients, at any internal path variables
@@ -96,7 +97,7 @@ open import Data.Integer.Divisibility.Signed using (_∣_)
 open import Data.Integer.Properties using (≤-reflexive)
 open import Data.List.Base using (List; _++_; length)
 open import Data.Maybe.Base using (just; nothing)
-open import Data.Product.Base using (_×_; _,_; ∃; proj₂)
+open import Data.Product.Base using (Σ; _×_; _,_; ∃; proj₂)
 open import Level using (0ℓ)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔; Equivalence)
@@ -429,7 +430,19 @@ import PathSum.HiddenShift.Symbolic
 module HSy = PathSum.HiddenShift.Symbolic M₀
 
 import PathSum.HiddenShift.Reduces
+module HRe = PathSum.HiddenShift.Reduces M₀
+
 import PathSum.Ancilla.Register
+module AReg = PathSum.Ancilla.Register M₀
+
+import PathSum.HiddenShift.Exists
+module HEx = PathSum.HiddenShift.Exists M₀
+
+import PathSum.HiddenShift.ExistsCircuit
+module HEC = PathSum.HiddenShift.ExistsCircuit M₀
+
+import PathSum.HiddenShift.ExistsSymbolic
+module HES = PathSum.HiddenShift.ExistsSymbolic M₀
 
 import PathSum.Expand
 module Exp = PathSum.Expand M₀
@@ -1715,11 +1728,10 @@ symbolic-shift-0 : (gs : List (HGa.Term m)) (s : Assign (m + m))
                     then scale (K.norm (HSy.SSᶜ gs)) (zpow 0ℤ) else 0ᴬ)
 symbolic-shift-0 = HSy.symbolic-shift-0
 
--- "Our calculus further finds the correct output |s⟩ even without
--- providing the specification": every reduction by figure 2's rules,
--- at any variables, that eliminates all path variables ends at
--- |x⟩ ↦ |s⟩ syntactically.  (That such a reduction exists is shown for
--- one instance only, PathSum.HiddenShift.Example.)
+-- "Our calculus further finds the correct output |s⟩ or |s⟩|s⟩ even
+-- without providing the specification": every reduction by figure 2's
+-- rules, at any variables, that eliminates all path variables ends at
+-- |x⟩ ↦ |s⟩ syntactically ...
 
 hidden-shift-reduces : (g : Poly m 0) (s : Assign (m + m)) {k′ : ℕ}
                        {ζ : PathSum (m + m) k′ 0} →
@@ -1727,6 +1739,56 @@ hidden-shift-reduces : (g : Poly m 0) (s : Assign (m + m)) {k′ : ℕ}
                        (k′ ≡ 0) × (∀ w → out ζ w ≈[ + 2 ] κ [ s w ]ᶻ) ×
                        (phase ζ ≈[ pow M ] 0ᴾ)
 hidden-shift-reduces = HSim.hidden-shift-reduces
+
+-- ... and such a reduction exists, for every m, g and s -- three passes
+-- of [HH] and [Elim] over the coordinates -- so the calculus does find
+-- |s⟩.  (The chain is constructed; that the search normal-formᶠ finds
+-- one is not shown.)
+
+hidden-shift-finds : (g : Poly m 0) (s : Assign (m + m)) →
+                     Σ (PathSum (m + m) 0 0) (λ ζ →
+                       (HSim.at0 (HSh.HS g s) ⟶ᶠ* ζ) ×
+                       (∀ w → out ζ w ≈[ + 2 ] κ [ s w ]ᶻ) ×
+                       (phase ζ ≈[ pow M ] 0ᴾ))
+hidden-shift-finds = HEx.hidden-shift-finds
+
+-- The same on figure 3's circuits, their own path-sums (definition
+-- 2.9): from |0⟩, figure 3(a) -- whose X gates, H R₁ H here, add path
+-- variables the chain removes first -- every complete reduction ends at
+-- |s⟩, and one exists ...
+
+circuit-reduces : (gs : List (HGa.Term m)) (s : Assign (m + m)) {k′ : ℕ}
+                  {ζ : PathSum (m + m) k′ 0} →
+                  HSim.at0 K.⟦ HCi.HSᶜ gs s ⟧ ⟶ᶠ* ζ →
+                  (k′ ≡ 0) × (∀ w → out ζ w ≈[ + 2 ] κ [ s w ]ᶻ) ×
+                  (phase ζ ≈[ pow M ] 0ᴾ)
+circuit-reduces = HCi.circuit-reduces
+
+circuit-finds : (gs : List (HGa.Term m)) (s : Assign (m + m)) →
+                Σ (PathSum (m + m) 0 0) (λ ζ →
+                  (HSim.at0 K.⟦ HCi.HSᶜ gs s ⟧ ⟶ᶠ* ζ) ×
+                  (∀ w → out ζ w ≈[ + 2 ] κ [ s w ]ᶻ) ×
+                  (phase ζ ≈[ pow M ] 0ᴾ))
+circuit-finds = HEC.circuit-finds
+
+-- ... and figure 3(b), with its data register |0⟩ and the shift
+-- symbolic, at |x_d, x_s⟩ ↦ |x_s, x_s⟩: the calculus finds |s⟩|s⟩.
+
+symbolic-reduces : (gs : List (HGa.Term m)) {k′ : ℕ}
+                   {ζ : PathSum ((m + m) + (m + m)) k′ 0} →
+                   AReg.set0ᶜ (HSy.dataMask (m + m)) K.⟦ HSy.SSᶜ gs ⟧ ⟶ᶠ* ζ →
+                   (k′ ≡ 0) ×
+                   (∀ w → out ζ w ≈[ + 2 ] μ x[ HSy.copy (m + m) w ]) ×
+                   (phase ζ ≈[ pow M ] 0ᴾ)
+symbolic-reduces = HRe.symbolic-reduces
+
+symbolic-finds : (gs : List (HGa.Term m)) →
+                 Σ (PathSum ((m + m) + (m + m)) 0 0) (λ ζ →
+                   (AReg.set0ᶜ (HSy.dataMask (m + m)) K.⟦ HSy.SSᶜ gs ⟧
+                      ⟶ᶠ* ζ) ×
+                   (∀ w → out ζ w ≈[ + 2 ] μ x[ HSy.copy (m + m) w ]) ×
+                   (phase ζ ≈[ pow M ] 0ᴾ))
+symbolic-finds = HES.symbolic-finds
 
 
 ------------------------------------------------------------------------

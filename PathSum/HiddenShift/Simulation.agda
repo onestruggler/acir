@@ -9,7 +9,7 @@
 -- hidden shift circuit on the input |0⟩ until no path variable is left
 -- produces the path-sum |0⟩ ↦ |s⟩.  This module proves that every such
 -- reduction does, for every m, every g and every shift s; that one
--- exists is shown for a single instance only (PathSum.HiddenShift.Example).
+-- exists is PathSum.HiddenShift.Exists's hidden-shift-exists.
 --
 -- The input |0⟩.  Path-sums here have no constant inputs, so the
 -- circuit on |0⟩ is at0 (HS g s): every input variable is replaced by
@@ -45,8 +45,8 @@
 -- analogue for the hidden shift of corollary 4.4 as
 -- PathSum.Full.Corollary states it.
 --
--- What is not proved here is that such a reduction exists for every
--- m: the parametric chain would track 6m rule applications through
+-- That such a reduction exists, for every m, g and s, is
+-- PathSum.HiddenShift.Exists: a chain of 6m rule applications through
 -- renumbered path variables.  PathSum.HiddenShift.Example exhibits a
 -- derivation at m = 1, with the paper's rules, at M₀ = 0.
 ------------------------------------------------------------------------

@@ -217,12 +217,17 @@ function f(x, y) = g(x) + x·y is 2^m times its dual g(y) + x·y),
 `HiddenShift/Sign` and `HiddenShift` prove H O_f̃ H O_f′ H maps |0⟩ to
 |s⟩ for every m, every g and every shift s; `HiddenShift/Simulation`
 that every complete reduction by figure 2 ends at |x⟩ ↦ |s⟩, and
-`HiddenShift/Example` one such reduction.  `HiddenShift/Gates`,
-`Layers`, `Circuit` and `Symbolic` do the same for figure 3's circuits
-over {H, CNOT, R_k} — oracles built from Z, CZ and CCZ gates, the
-fixed shift (|0⟩ ↦ |s⟩) and the symbolic one (|0⟩|s⟩ ↦ |s⟩|s⟩) —
-with `HiddenShift/Reduces`, `Ancilla/Register` (a register of
-ancillas) and `HiddenShift/CircuitExample` (cross-checks).
+`HiddenShift/Blocks`, `Track` and `Exists` that one exists — so the
+calculus finds |s⟩ without being given the specification —
+`HiddenShift/Example` writing one out.  `HiddenShift/Gates`, `Layers`,
+`Circuit` and `Symbolic` do the same for figure 3's circuits over
+{H, CNOT, R_k} — oracles built from Z, CZ and CCZ gates, the fixed
+shift (|0⟩ ↦ |s⟩) and the symbolic one (|0⟩|s⟩ ↦ |s⟩|s⟩) — with
+`HiddenShift/Reduces`, `Ancilla/Register` (a register of ancillas) and
+`HiddenShift/CircuitExample` (cross-checks); `HiddenShift/TrackX`,
+`Engine`, `MainPasses`, `Runs`, `Layout`, `XLayer`, `ExistsCircuit`
+and `ExistsSymbolic` show complete reductions exist on the circuits'
+own path-sums too, the calculus finding |s⟩ and |s⟩|s⟩ there.
 
 **Equivalence and verification.**  `Adjoint` defines C†, `AmpLinear`
 the linearity of the gate matrices, and `Miter` proves that C† undoes

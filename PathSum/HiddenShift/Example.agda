@@ -5,9 +5,11 @@
 --
 -- PathSum.HiddenShift.Simulation proves, for every m, g and s, that a
 -- reduction of the hidden shift circuit on |0⟩ which eliminates every
--- path variable ends at the path-sum |x⟩ ↦ |s⟩.  That such a reduction
--- exists is shown here for one instance, at M₀ = 0 (phases in eighths,
--- ½ = 4): m = 1 (n = 2 qubits), g(a) = a and s = (1, 0).
+-- path variable ends at the path-sum |x⟩ ↦ |s⟩, and
+-- PathSum.HiddenShift.Exists that one exists.  Here is one, written
+-- out as the paper writes derivations, for one instance at M₀ = 0
+-- (phases in eighths, ½ = 4): m = 1 (n = 2 qubits), g(a) = a and
+-- s = (1, 0).
 --
 -- The derivation is the paper's: a column of lines, each obtained from
 -- the one before by a rule of figure 2 (checked by computing its

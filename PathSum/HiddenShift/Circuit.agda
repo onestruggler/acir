@@ -36,9 +36,8 @@
 -- rules of figure 2 eliminates all path variables, it ends at |s⟩
 -- syntactically (circuit-reduces, circuit-derives) -- the paper
 -- reports its tool finds |s⟩ "even without providing the
--- specification"; that such a reduction exists is not proved here
--- (only for one instance of the path-sum composite, in
--- PathSum.HiddenShift.Example).
+-- specification"; that such a reduction exists is
+-- PathSum.HiddenShift.ExistsCircuit's circuit-exists.
 -- All of it for every m, every list of monomials and every s.
 --
 -- Departures from the paper.  X is not in the gate set of definition

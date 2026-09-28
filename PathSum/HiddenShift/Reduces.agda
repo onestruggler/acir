@@ -29,7 +29,9 @@
 -- data register read as 0 ends at |x_d, x_s⟩ ↦ |x_s, x_s⟩
 -- syntactically (symbolic-reduces), as does every derivation in the
 -- paper's style (symbolic-derives), for every m and g.  That a
--- complete reduction exists is not proved here, for either figure.
+-- complete reduction exists is proved for both figures elsewhere:
+-- PathSum.HiddenShift.ExistsCircuit (figure 3(a)) and
+-- PathSum.HiddenShift.ExistsSymbolic (figure 3(b)).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
