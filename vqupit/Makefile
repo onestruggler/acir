@@ -14,7 +14,7 @@
 # From PowerShell (make, TeX Live and Agda live in WSL):
 #   wsl bash -lc "make -C /mnt/d/work/acir/vqupit"
 #
-# Code highlighting: the three sections that quote Agda are literate
+# Code highlighting: the five files that quote Agda are literate
 # Agda files (sections/*.lagda.tex).  `agda --latex --only-scope-checking`
 # scope-checks their code blocks against the library (so every name is
 # resolved and coloured by kind, without requiring the fragments to

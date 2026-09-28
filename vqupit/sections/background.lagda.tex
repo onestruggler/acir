@@ -6,20 +6,15 @@ open import Data.Product using (_×_ ; _,_ ; Σ-syntax)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
 open import Notations using (₀)
 
-infixl 7 _•_
-infixl 9 _↑
-infix 4 _≈ˢ_ _CRel,_===_ _IsPresentationOf_
+infix 4 _≈ˢ_ _CRel,_===_ _SRel,_===_ _IsPresentationOf_
 
 postulate
   proof-elided : ∀ {ℓ} {A : Set ℓ} → A
-  n : ℕ
-  Circuit : ℕ → Set
-  CZ H S : Circuit n
-  _•_ : Circuit n → Circuit n → Circuit n
-  _↑ : Circuit n → Circuit n
   _CRel,_===_ : ℕ → Set
+  _SRel,_===_ : ℕ → Set
   _IsPresentationOf_ : Set → Set → Set
   Pauli⋊Sp : ℕ → Set
+  Sp-group : ℕ → Set
   ℤ : ℕ → Set
   ₚ : ℕ
   NF : ℕ → Set
@@ -32,6 +27,8 @@ module PapPres where
   postulate presentation : Set
 module U where
   postulate ⟦[]⟧-injective : Set
+module SimPres where
+  postulate presentation : Set
 \end{code}
 \section{Qupit Clifford Circuits and the Main Theorems}\label{sec:background}
 
@@ -83,50 +80,41 @@ splits: $\PCliff \cong \PPauli \rtimes \Sp$.  These are the ``glue
 facts'' of the introduction; our formal development \emph{defines} its
 semantic groups as the right-hand sides.
 
-\subsection{Circuits in Agda}
+\subsection{Main result 1: a presentation of the projective qupit Clifford group}
 
 In the formalisation a gate set is a family of gate types indexed by
 arity, and a circuit on $n$ wires is a \emph{word} over wire-indexed
-generators (\S\ref{sec:framework} gives the generic machinery):
-
-\begin{code}
-data SympGate : ℕ → Set where
-  H-gate   : SympGate 1
-  S-gate   : SympGate 1
-  CZ-gate  : SympGate 2
-
-example : Circuit 2
-example = CZ • H ↑ • S
-\end{code}
-
-$\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$ is the free monoid on
-generators; $\aid{{\_}↑}$ shifts a circuit up one wire.  Diagrams are
-read in matrix-multiplication order, so \aid{example} is
-\fitfig[3cm]{ex-word}.  The remaining usual gates are \emph{words}, not
-extra generators: $Z = H H S H H S^{-1}$, $X = H S H H S^{-1} H$, the
-swap $\mathit{Ex} = (CZ \cdot H{\downarrow} \cdot H{\uparrow})^{3}$, and
-the controlled-$X$ gates $CX = H{\downarrow}^{3} \cdot CZ \cdot
+generators: $\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$ is the free
+monoid on the generators of $H$, $S$ and $CZ$ placed on each wire,
+$\aid{{\_}↑}$ shifts a circuit up one wire, and diagrams are read in
+matrix-multiplication order (\S\ref{sec:permutations} gives the generic
+machinery).  The remaining usual gates are \emph{words}, not extra
+generators: $Z = H H S H H S^{-1}$, $X = H S H H S^{-1} H$, the swap
+$\mathit{Ex} = (CZ \cdot H{\downarrow} \cdot H{\uparrow})^{3}$, and the
+controlled-$X$ gates $CX = H{\downarrow}^{3} \cdot CZ \cdot
 H{\downarrow}$ and $XC$ with the wires exchanged, where $S^{-1} =
 S^{p-1}$, $H^{-1} = H^{3}$ and $CZ^{-1} = CZ^{p-1}$ are the words that
 the relations make inverses, and \aid{{\_}↓} is the identity on
-circuits and exists to make ``the lower copy of a gate'' visible in a
-rule.  One more derived gate has no qubit counterpart:
-the \emph{multiplier} $M_x\ket{j} = \ket{xj}$ for a unit $x \in
-\Zp^{*}$.  The qupit paper spells it (its Lemma~2.14) as $H S^{g^{-1}}
-H S^{g} H S^{g^{-1}}$ followed by a Pauli correction and a global
-phase; we mostly use $R^{x}\,H\,R^{x^{-1}}H\,R^{x}H$ with $R = S\cdot
-Z^{1/2}$, which absorbs the Pauli and drops the phase.  One of the
-results below is that the spellings are interderivable.
-
-Everything below lives in one module parameterised by the prime, as
-$p = \aid{p-3} + 3$ with a primality proof, and by a primitive root
-$g$ of $\Zp^{*}$ with the witness \aid{g-gen} that every unit is a power
-of $g$.  So every theorem holds for every odd prime uniformly, and for
-the multiplicative generator chosen, exactly as the qupit paper fixes a
-generator $g$ in its Figure~1; the existence of a primitive root modulo
-every prime is classical and is taken as a parameter rather than proved.
-
-\subsection{Main result 1: a presentation of the projective qupit Clifford group}
+circuits, there to make ``the lower copy of a gate'' visible in a rule.
+One derived gate has no qubit counterpart: the \emph{multiplier}
+$M_x\ket{j} = \ket{xj}$ for a unit $x \in \Zp^{*}$, which the qupit
+paper spells (its Lemma~2.14) as $H S^{g^{-1}} H S^{g} H S^{g^{-1}}$
+followed by a Pauli correction and a global phase, and which we mostly
+spell $R^{x}\,H\,R^{x^{-1}}H\,R^{x}H$ with $R = S\cdot Z^{1/2}$, which
+absorbs the Pauli and drops the phase; the two spellings are
+interderivable (\S\ref{sec:plumbing}).  Every Clifford module is
+parameterised by the prime, as $p = \aid{p-3} + 3$ with a primality
+proof (the symplectic modules take $p = \aid{p-2} + 2$, so
+Theorems~\ref{thm:unique} and~\ref{thm:sp} are proved for every prime),
+and by a primitive root $g$ of $\Zp^{*}$ with the witness \aid{g-gen}
+that every unit is a power of $g$.  So every theorem holds for every odd
+prime uniformly, and for the multiplicative generator chosen, exactly as
+the qupit paper fixes a generator $g$ in its Figure~1; the existence of
+a primitive root modulo every prime is classical and is taken as a
+parameter rather than proved.  ($\Zp$ itself is $\mathsf{Fin}\;p$ with
+a ring solver, B\'ezout inversion and Fermat's little theorem; from $g$
+and \aid{g-gen} the discrete logarithm and the exponent law $g^{k} =
+g^{k \bmod (p-1)}$ are derived.)
 
 Our primary rule set --- the qupit paper's Figure~1 read modulo
 scalars, with the multiplier spelled over $R$ and with $(SH)^3 =
@@ -148,8 +136,8 @@ Beyond these, \emph{every} circuit theory in
 the framework gets the same three structural rules for free: congruence
 under $\uparrow$, and gates on disjoint wires commute, one rule per
 arity (a global scalar gate, when there is one, gets a fourth: it is
-the same gate on every wire; that it then commutes with everything is
-a theorem).  Nothing else is an
+the same gate on every wire; that it then commutes with every wire
+gate is a theorem).  Nothing else is an
 axiom: $XZ = ZX$ modulo scalars, the commutation of $\mathit{Ex}$ with
 $CZ$, and both rules for pushing a Pauli through $CZ$ are \emph{derived}.
 The count is sixteen where the paper's Figure~1 has fifteen non-scalar
@@ -185,8 +173,9 @@ $S$-spelling it is a theorem, and verifies the paper's fifteen.
   cz-slide & \ufig[0.48]{pv0-cz-slide} & semi-CX↑-CZ↓ & \ufig[0.48]{pv0-semi-CXup-CZdn}\\
 \end{tabular}
 \caption{The sixteen rules of \protect\aid{{\_}CRel,{\_}==={\_}} as
-circuit equations.  Diagrams read in matrix-multiplication order, so a
-word $w \bullet v$ is drawn with $v$ on the left.
+circuit equations.  A word is drawn left to right as written and read
+in matrix-multiplication order, so in $w \bullet v$ the right factor $v$
+acts first.
 \protect\aid{blake-c12} relates two circuits implementing
 controlled-$Z$; \protect\aid{yang-baxter} and \protect\aid{cz-slide}
 are the swap calculus.}
@@ -204,13 +193,14 @@ Theorem-1 : ∀ (n : ℕ) → (n CRel,_===_) IsPresentationOf (Pauli⋊Sp n)
 Theorem-1 = PapPres.presentation
 \end{code}
 \noindent Home: \texttt{ProjectiveClifford.Qupit.Paper-V0.Presentation}
-and \texttt{Paper-V1.Presentation}.
+and \texttt{Paper-V1.Presentation}\\
+(module paths here are under \texttt{Examples.Groups}).
 \end{theorem}
 
 Here \aid{Pauli⋊Sp}\;$n$ is the semidirect product of the projective
 Pauli group $\Zp^{2n}$ by the symplectic group, constructed in
 \S\ref{sec:semidirect}, and \aid{{\_}IsPresentationOf{\_}} is the record
-of \S\ref{sec:presentations}: a proof that every generator has an
+of \S\ref{sec:sn-semantics}: a proof that every generator has an
 inverse, an interpretation $\sem{\_}$ of words in the group, and a
 \emph{group isomorphism} from the words modulo the rules onto the group.
 Its two halves are the two directions of the diagram
@@ -274,7 +264,60 @@ Theorem-2 = U.⟦[]⟧-injective
 \end{theorem}
 
 Soundness plus a unique normal form yields completeness, by one generic
-lemma (\S\ref{sec:nfproperty}); and the hard, interesting part of the
+lemma (\S\ref{sec:sn-semantics}); and the hard, interesting part of the
 whole development is to find these coset representatives, parameterised
 by the number of wires, and to push every generator through them
 (\S\ref{sec:symplectic}).
+
+\subsection{Main result 3: a verified presentation of the symplectic operators}\label{sec:main3}
+
+The symplectic group $\Sp$ itself is modelled as the group
+\aid{Sp-group}~$n$ of symplectic transformations of Pauli vectors
+(\S\ref{sec:spsem}), and the third main theorem says that a small rule
+set over $H$, $S$ and $CZ$ alone presents it: the \emph{simplified}
+symplectic rule set of \S\ref{sec:reduction}, fifteen group-specific
+rules --- six rules for the order of $S$ and the multiplier calculus of
+the single multiplier $M_g$ of the primitive root ($H^{2} = M_{-1}$,
+$M_g^{\,k} = M_{g^k}$, and $M_g$ past $S$ and, on either wire, past
+$CZ$), then \aid{order-CZ}, \aid{comm-CZ-S↓}, \aid{comm-CZ-S↑} and
+Selinger's c10--c15~\cite{selinger2015clifford} --- plus the three
+structural rules, eighteen in all.  It is obtained from the \emph{full}
+symplectic rule set of seventeen rules --- Selinger's c10--c15
+verbatim, \aid{order-CZ} and the two $CZ$--$S$ commutations, and the
+eight-rule multiplier calculus over arbitrary units, the set to which
+\S\ref{sec:reduction} reduces the box relations --- by an identity
+isomorphism of presentations: the two sets share an
+alphabet and generate the same congruence, so the theorem proved for
+the full rules transfers to the simplified ones with the same
+interpretation.
+
+\begin{theorem}[\aid{simplified-presentation}]\label{thm:sp}
+For every width $n$, the simplified symplectic rules present the
+symplectic group:
+\begin{code}
+Theorem-3 : ∀ {n} → (n SRel,_===_) IsPresentationOf (Sp-group n)
+Theorem-3 = SimPres.presentation
+\end{code}
+\noindent Home: \texttt{Symplectic.Simplified.Presentation}.
+\end{theorem}
+
+The statement is verbatim from its home module, where
+\aid{{\_}SRel,{\_}==={\_}} is the full relation set: in
+\texttt{Simplified.Syntactics} the fifteen group-specific rules form a
+family of that name too --- the one \S\ref{sec:reduction} displays ---
+and \aid{{\_}QRel,{\_}==={\_}} is its closure under the three
+structural rules by \aid{Lift-Relation}, over which
+\texttt{MainTheorems} states the theorem; the home module re-exports
+the lifted relation under the shorter name, exactly as
+\aid{{\_}CRel,{\_}==={\_}} in Theorem~\ref{thm:main} is the lifted
+relation of \texttt{Paper-V0}.  The proof has the shape
+of the diagram above, one level down: soundness is one clause per
+axiom; completeness is Theorem~\ref{thm:unique} through the generic
+\aid{by-normalization} --- the rules rewrite every circuit to its
+normal form, and semantically equal circuits have equal normal forms;
+and surjectivity, that every symplectic transformation is the action of
+some circuit, is ``clear the bottom wire, recurse''
+(\S\ref{sec:sptheorem}).  Theorem~\ref{thm:main} is then built on this
+theorem: the semidirect product of \S\ref{sec:semidirect} assembles it
+with a presentation of the projective Pauli group and the conjugation
+action into the presentation of $\PPauli \rtimes \Sp$.

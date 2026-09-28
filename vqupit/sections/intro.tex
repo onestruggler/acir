@@ -36,10 +36,11 @@ for presentations, normal forms and completeness of circuit relation
 sets~\cite{bian2026framework,qupit-code}, whose design --- inductively
 defined circuits, presented monoids as inductive congruences, normal
 forms as function bundles, a verified Reidemeister--Schreier engine, and
-presentation theorems for products and extensions --- we recall in
-\S\ref{sec:framework}.  Every normal form in the development is an
-executable function, so each completeness theorem doubles as a verified
-decision procedure for circuit equivalence in its calculus.
+presentation theorems for products and extensions --- we recall on the
+library's smallest worked example in \S\ref{sec:permutations}.  Every
+normal form in the development is an executable function, so each
+completeness theorem doubles as a verified decision procedure for
+circuit equivalence in its calculus.
 
 \paragraph{The method.}
 The formalisation does \emph{not} follow the qupit paper's proof, and
@@ -85,9 +86,10 @@ scalars presents the same group as our semidirect presentation.
 \item[(1)] \textbf{A method, and a comparison.}  We explain precisely
   where the qupit paper's proof resists formalisation and how the
   factor-present-compose route avoids each difficulty
-  (\S\ref{sec:two-routes}), introduce the route on two warm-up examples,
-  the symmetric groups and the wreath products $\mathbb{Z}_N \wr S_n$
-  (\S\ref{sec:warmup}), and report what the formalisation covers and
+  (\S\ref{sec:two-routes}), walk through the library's pipeline on its
+  smallest case study, the swap circuits presenting the symmetric groups,
+  and recall the product constructions it composes
+  (\S\ref{sec:permutations}), and report what the formalisation covers and
   what it does not (\S\ref{sec:discussion}).  The route is generic: its
   two presentation theorems were proved for arbitrary groups before this
   project began.
@@ -100,8 +102,8 @@ scalars presents the same group as our semidirect presentation.
   (\S\ref{sec:composing}).
 \item[(3)] \textbf{A machine-checked presentation of $\Sp$ and a
   verified unique normal form.}  Eighteen relations present the
-  symplectic groups; the normal form is the paper's, refined into a
-  doubly inductive datatype of \emph{normal boxes} and \emph{rows},
+  symplectic groups (Theorem~\ref{thm:sp}); the normal form is the
+  paper's, refined into a doubly inductive datatype of \emph{normal boxes} and \emph{rows},
   realised as a Reidemeister--Schreier coset tower, and proved unique
   against the symplectic action on Pauli vectors
   (Theorem~\ref{thm:unique}, \S\ref{sec:symplectic}).
@@ -129,10 +131,10 @@ classical~\cite{bian2026qudit}, neither involves circuits, and
 
 \paragraph{Outline.}
 Section~\ref{sec:background} recalls qupit Clifford operators and states
-the two main theorems as Agda types.  Section~\ref{sec:two-routes}
-contrasts the paper's proof with ours.  Section~\ref{sec:framework}
-recalls the framework and \S\ref{sec:warmup} exercises it on the two
-warm-up examples.  Sections~\ref{sec:symplectic}
+the three main theorems as Agda types.  Section~\ref{sec:two-routes}
+contrasts the paper's proof with ours.  Section~\ref{sec:permutations}
+walks through the worked example of permutation circuits and recalls the
+product constructions.  Sections~\ref{sec:symplectic}
 and~\ref{sec:composing} are the method: the symplectic presentation,
 then the composition of the three factors.  Section~\ref{sec:discussion}
 gives statistics, engineering lessons and caveats; \S\ref{sec:related}

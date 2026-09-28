@@ -341,26 +341,15 @@
 \AgdaDatatype{ℕ}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaPrimitive{Set}\<%
-\\
-%
-\\[\AgdaEmptyExtraSkip]%
-\>[0]\AgdaKeyword{module}\AgdaSpace{}%
-\AgdaModule{SimPres}\AgdaSpace{}%
-\AgdaKeyword{where}\<%
-\\
-\>[0][@{}l@{\AgdaIndent{0}}]%
-\>[2]\AgdaKeyword{postulate}\AgdaSpace{}%
-\AgdaPostulate{presentation}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaPrimitive{Set}\<%
 \end{code}
 \section{The Symplectic Factor}\label{sec:symplectic}
 
 This section presents the symplectic factor, where the real rewriting
-happens, in five steps: the semantics; the normal form; the coset table
-that rewrites to it, which is the $S_n$ table of \S\ref{sec:sn} under a
-richer action; uniqueness; and the reduction of the relations the table
-uses to the eighteen rules that present $\Sp$.
+happens, in six steps: the semantics; the normal form; the coset table
+that rewrites to it, which is the $S_n$ table of \S\ref{sec:sn-cosets} under a
+richer action; uniqueness; the reduction of the relations the table
+uses to the eighteen rules that present $\Sp$; and the presentation
+theorem they assemble into (\S\ref{sec:sptheorem}).
 
 \subsection{The semantics: symplectic transformations of Pauli vectors}\label{sec:spsem}
 
@@ -544,14 +533,14 @@ shown in \S\ref{sec:background}; rows and the staircase are:
 \>[0]\AgdaFunction{ML}\AgdaSpace{}%
 \AgdaBound{m}\AgdaSymbol{@(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
 \AgdaBound{n}\AgdaSymbol{)}%
-\>[350I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[345I]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{M}\AgdaSpace{}%
 \AgdaBound{m}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
 \AgdaFunction{L}\AgdaSpace{}%
 \AgdaBound{m}\<%
 \\
-\>[.][@{}l@{}]\<[350I]%
+\>[.][@{}l@{}]\<[345I]%
 \>[12]\AgdaOperator{\AgdaDatatype{⊎}}\AgdaSpace{}%
 \AgdaPostulate{D}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
@@ -726,7 +715,7 @@ $D_{0,0}$ and $B_{0,0}$.
 
 \subsection{From symmetric to symplectic: change the action}\label{sec:pushing}
 
-The coset table of \S\ref{sec:sn} serves the symplectic group under a
+The coset table of \S\ref{sec:sn-cosets} serves the symplectic group under a
 richer action.  There are three ways of looking at the wires.  $S_n$
 acts on $\{0,\dots,n-1\}$: a wire is a position, and $c \circ f^{-1}$
 fixes $0$.  $S_n$ acts on $\aid{Vec}\;\mathsf{Bit}\;n$: a wire is a
@@ -742,7 +731,7 @@ table is the paper's ``push a gate through a normal box'', now a
 function $\aid{ract} : \ML\,(1{+}n) \to \aid{Gen}\,(1{+}n) \to
 \aid{Circuit}\;n \times \ML\,(1{+}n)$ with the same soundness law
 $[c]^{\mathsf c} \bullet g \approx b'{\uparrow} \bullet [c']^{\mathsf
-c}$ as in \S\ref{sec:sn}.  \aid{ract} dispatches on the shape of the coset --- a flat box or a
+c}$ as in \S\ref{sec:sn-cosets}.  \aid{ract} dispatches on the shape of the coset --- a flat box or a
 $D$-spine --- and on the generator --- $S$ or $H$ on the bottom wire,
 $CZ$ on the bottom two, or a lifted gate --- and delegates each case to
 a module of the \texttt{Pushing} directory (26 files, 5\,600 lines):
@@ -757,7 +746,7 @@ $D \leftarrow S$ rewrites $D_{a,b} \bullet S$ to $\mathit{dir}{\uparrow}
 \bullet D_{a,b-a}$, and re-association finishes.
 
 So far this is the $S_n$ story with bigger cosets.  The difference is in
-the five hypotheses of \S\ref{sec:engine}.  Four close as before; the
+the five hypotheses of \S\ref{sec:sn-cosets}.  Four close as before; the
 second, \aid{h-wd-ax} --- that the table respects the axioms, i.e.\
 congruent inputs produce equal cosets and congruent residuals --- does
 \emph{not} close by evaluation, because the axioms of $\Sp$ (unlike
@@ -887,7 +876,8 @@ agree on heads; and, for two spines, the $D$ box is read off by probing
 with the two basis Paulis $Z$ and $X$ on the bottom wire and the identity
 above, after which the hypothesis descends one width.  With these two
 lemmas the generic \texttt{Circuit.Uniqueness} module of the library
-assembles \aid{⟦[]⟧-injective} and the \aid{UniqueNormalForm} witness;
+assembles \aid{⟦[]⟧-injective} and the \aid{UniqueNormalForm} witness
+(the unique-normal-form property of \S\ref{sec:sn-semantics});
 the module's header records the one subtlety, that \aid{ap} is a
 \emph{left} action --- \aid{ap} of a composite applies its right factor
 first --- so the coset factor of a normal form is the one next to the
@@ -1147,23 +1137,5 @@ wire, recurse on the tail'': the single-level input is
 bottom-wire $Z$ and $X$ --- which is the paper's Lemma~3.7 with the box
 computed rather than asserted.  Composing the sub-presentation of the
 full rules with the identity isomorphism of \S\ref{sec:reduction} gives
-the theorem for the simplified rules, with the \emph{same}
-interpretation:
-
-\begin{code}%
-\>[0]\AgdaFunction{Theorem-Sp}\AgdaSpace{}%
-\AgdaSymbol{:}\AgdaSpace{}%
-\AgdaSymbol{∀}\AgdaSpace{}%
-\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
-\AgdaSymbol{→}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
-\AgdaOperator{\AgdaPostulate{SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
-\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
-\AgdaSymbol{(}\AgdaPostulate{Sp-group}\AgdaSpace{}%
-\AgdaBound{n}\AgdaSymbol{)}\<%
-\\
-\>[0]\AgdaFunction{Theorem-Sp}\AgdaSpace{}%
-\AgdaSymbol{=}\AgdaSpace{}%
-\AgdaPostulate{SimPres.presentation}\<%
-\end{code}
-
+Theorem~\ref{thm:sp} (\S\ref{sec:main3}), the presentation theorem for
+the simplified rules, with the \emph{same} interpretation.

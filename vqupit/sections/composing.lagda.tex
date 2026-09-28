@@ -94,8 +94,12 @@ qupit chain needs.)
 
 \subsection{The semidirect product}\label{sec:semidirect}
 
-This is the wreath-product example of \S\ref{sec:snd} with $\Sp$ in
-place of $S_n$: the relations of both factors plus twisted commutation
+This is the semidirect construction of \S\ref{sec:constructions},
+$\Gamma \mathrel{\aidop{⋄}} \Delta \mathrel{\aidop{⋄}}
+\aid{ConjRelʷ}\;\mathit{conj}$, instantiated with the Pauli
+presentation of \S\ref{sec:pauli} as the normal factor and the
+symplectic presentation of Theorem~\ref{thm:sp} as the acting one: the
+relations of both factors plus twisted commutation
 $h\,n\,h^{-1} = \mathit{conj}\,h\,n$.  Here the action of a symplectic
 generator on a Pauli generator is the
 paper's Lemmas~2.22--2.23, as words --- $H$ swaps $X$ and $Z$ (up to an
@@ -131,7 +135,9 @@ Pauli⋊Symplectic n = (n PRel,_===_) ⋄ (n SpRel,_===_) ⋄ ConjRelʷ conj
 The generic theorem of \S\ref{sec:constructions} asks for two things
 beyond the factor presentations: that \aid{conj} respects the symplectic
 rules in its first argument and the Pauli rules in its second.  Neither
-is proved by hand, in contrast to the case splits of \S\ref{sec:snd}.
+is proved by hand --- by a case split over the axioms and the
+generators, as one would for a simpler action such as $S_n$ permuting
+the factors of $\mathbb{Z}_N^{\,n}$ in a wreath product.
 Both go through the semantics: the action of a symplectic word $c$ on a
 Pauli word $w$, computed syntactically by $(\mathit{conj}\,\aid{ʰ'})$,
 denotes $\aid{ap}\;\sem{c}\;(\mathit{sem}\;w)$ in the phase space, so if
