@@ -23,19 +23,21 @@ version is wanted.
   `refs.bib` (`qupit-code`, `bian2026framework`, `vqupit-code`; the
   original fields are kept in comments next to each).
 - `sections/*.tex` and `sections/*.lagda.tex` — one file per section
-  (plus `constructions`, §4's last subsection), `\input` from
+  (plus `constructions`, §2's last subsection), `\input` from
   `main.tex` in this order: `abstract`, `intro` (PL
-  framing, method first, contributions), `background` (§2: gates, the
-  16 rules, the three main theorems — the Clifford presentation, the
-  unique normal form, and the symplectic presentation), `two-routes`
-  (§3: the paper's proof, where ours follows it and where it departs, our route), `permutations` (§4: the
-  worked example from the framework paper, `popl-revision1` §2 — the
-  swap circuits presenting $S_n$: gates, relations, the coset table,
-  semantics) and `constructions` (§4's last subsection, "Products of
-  presentations, and their presentation theorems", from that paper's
-  §4.6 without the amalgamated products), `symplectic` (§5),
-  `composing` (§6: Pauli, semidirect, plumbing, scalars), `discussion`
-  (§7), `related` (§8), `conclusion` (§9).  The five literate Agda
+  framing, method first, contributions), `permutations` (§2, "An
+  Introduction to the Framework": the worked example from the
+  framework paper, `popl-revision1` §2 — the swap circuits presenting
+  $S_n$: gates, relations, the coset table, semantics) and
+  `constructions` (§2's last subsection, "Products of presentations,
+  and their presentation theorems", from that paper's §4.6 without the
+  amalgamated products), `background` (§3: gates, the 16 rules, the
+  three main theorems — the Clifford presentation, the unique normal
+  form, and the symplectic presentation), `two-routes` (§4: the
+  paper's proof, where ours follows it and where it departs, our
+  route), `symplectic` (§5), `composing` (§6: Pauli, semidirect,
+  plumbing, scalars), `discussion` (§7), `related` (§8), `conclusion`
+  (§9).  The five literate Agda
   files (`*.lagda.tex`) — `background`, `permutations`,
   `constructions`, `symplectic`, `composing` — quote Agda as in
   `paper/`: `make agda` runs `agda --latex --only-scope-checking` on them from
@@ -76,8 +78,8 @@ version is wanted.
 
 **Status: builds clean; about two pages over the limit** — the
 2026-09-28 scratch build described below gives 28 pages in
-`acmsmall,review,anonymous` mode, the bibliography starting near the
-top of page 26 (so about 25 pages of text against the 23-page
+`acmsmall,review,anonymous` mode, the bibliography starting at the
+foot of page 25 (so about 25 pages of text against the 23-page
 OOPSLA/PLDI limit), with zero errors, zero undefined references or
 citations and no overfull box over 8 pt.  The previous 2026-09-18
 revision built with `make` (Agda on the literate sections, then
@@ -100,11 +102,16 @@ and conclusion were reworded to say where the formalisation follows
 the paper's proof (the symplectic factor: boxes, normal form, box
 relations and their reduction) and where it departs from it (the
 boosting step), in place of the earlier blanket "does not follow the
-paper's proof".  A scratch build of that revision (TeX Live 2023 and
-Agda 2.8.0 in a container, 2026-09-28) gave 28 pages, the bibliography
-starting near the top of page 26, i.e. about 25 pages of text — two
-over the 23-page limit — with zero errors, zero undefined references
-and no overfull box over 8 pt.
+paper's proof".  The worked example was then moved to just after the
+introduction and retitled "An Introduction to the Framework" (§2, with
+the constructions as §2.5), so that the main theorems (§3) and the
+comparison of routes (§4) can refer back to it; the text's own figure
+of the rules is now Figure 2, and every "Figure 1" in the text names
+the qupit paper's.  A scratch build of that revision (TeX Live 2023
+and Agda 2.8.0 in a container, 2026-09-28) gave 28 pages, the
+bibliography starting at the foot of page 25, i.e. about 25 pages of
+text — two over the 23-page limit — with zero errors, zero undefined
+references and no overfull box over 8 pt.
 
 ```
 make                                   # from a WSL shell in this directory

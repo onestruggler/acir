@@ -114,11 +114,14 @@
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{ℕ}\<%
 \end{code}
-\section{A Worked Example: Permutation Circuits}\label{sec:permutations}
+\section{An Introduction to the Framework}\label{sec:permutations}
 
-We begin with the smallest complete case study in the library: circuits
-built from a single two-wire gate, the swap $\sigma$, which present the
-symmetric groups.  The walkthrough exhibits the pipeline --- gates,
+The formalisation is built on a library for presentations, normal forms
+and completeness of circuit relation
+sets~\cite{bian2026framework,qupit-code}.  This section introduces it on
+its smallest complete case study: circuits built from a single two-wire
+gate, the swap $\sigma$, which present the symmetric groups.  The
+walkthrough exhibits the pipeline --- gates,
 relations, cosets, tower, semantics, uniqueness, completeness,
 presentation --- that \S\ref{sec:symplectic} instantiates again for the
 symplectic factor, concretely enough that the latter can be read as the
@@ -310,7 +313,7 @@ $c \aidop{•} c'$.  We write $\sigma$ for the one-letter circuit
 $[\,\aid{gate₂}\;\aid{σ-gate}\;]$\aid{ʷ} and $c\;{\uparrow}$ for $c$ shifted
 up one wire ($\aid{{\_}↑} = \aid{wmap}\;\aid{{\_}↥}$).  Read
 diagrammatically, with wires drawn bottom-up and a word drawn left to
-right as written (as in Figure~\ref{fig:rules}; the permutation
+right as written (as in Figure~\ref{fig:rules} below; the permutation
 semantics of \S\ref{sec:sn-semantics} applies the leftmost gate first),
 $\sigma$ is a crossing of the bottom two wires, $\sigma\;{\uparrow}$
 the same crossing one wire higher, and $\sigma \aidop{•} \sigma\;{\uparrow}

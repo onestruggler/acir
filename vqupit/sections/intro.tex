@@ -36,8 +36,9 @@ for presentations, normal forms and completeness of circuit relation
 sets~\cite{bian2026framework,qupit-code}, whose design --- inductively
 defined circuits, presented monoids as inductive congruences, normal
 forms as function bundles, a verified Reidemeister--Schreier engine, and
-presentation theorems for products and extensions --- we recall on the
-library's smallest worked example in \S\ref{sec:permutations}.  Every
+presentation theorems for products and extensions ---
+\S\ref{sec:permutations} introduces on the library's smallest worked
+example before the main development begins.  Every
 normal form in the development is an executable function, so each
 completeness theorem doubles as a verified decision procedure for
 circuit equivalence in its calculus.
@@ -89,15 +90,14 @@ scalars presents the same group as our semidirect presentation.
 \subsection{Contributions}\label{sec:contributions}
 
 \begin{enumerate}
-\item[(1)] \textbf{A method, and a comparison.}  We explain precisely
-  which parts of the qupit paper's proof the formalisation follows,
-  where the proof resists formalisation, and how the
-  factor-present-compose route avoids each difficulty
-  (\S\ref{sec:two-routes}), walk through the library's pipeline on its
-  smallest case study, the swap circuits presenting the symmetric groups,
-  and recall the product constructions it composes
-  (\S\ref{sec:permutations}), and report what the formalisation covers and
-  what it does not (\S\ref{sec:discussion}).  The route is generic: its
+\item[(1)] \textbf{A method, and a comparison.}  We introduce the
+  library's pipeline on its smallest case study, the swap circuits
+  presenting the symmetric groups, and recall the product constructions
+  it composes (\S\ref{sec:permutations}); explain precisely which parts
+  of the qupit paper's proof the formalisation follows, where the proof
+  resists formalisation, and how the factor-present-compose route avoids
+  each difficulty (\S\ref{sec:two-routes}); and report what the
+  formalisation covers and what it does not (\S\ref{sec:discussion}).  The route is generic: its
   two presentation theorems were proved for arbitrary groups before this
   project began.
 \item[(2)] \textbf{A machine-checked presentation of the projective
@@ -137,11 +137,11 @@ classical~\cite{bian2026qudit}, neither involves circuits, and
 \S\ref{sec:discussion} states exactly what our semantic groups are.
 
 \paragraph{Outline.}
+Section~\ref{sec:permutations} introduces the framework on the worked
+example of permutation circuits and recalls the product constructions.
 Section~\ref{sec:background} recalls qupit Clifford operators and states
 the three main theorems as Agda types.  Section~\ref{sec:two-routes}
-contrasts the paper's proof with ours.  Section~\ref{sec:permutations}
-walks through the worked example of permutation circuits and recalls the
-product constructions.  Sections~\ref{sec:symplectic}
+contrasts the paper's proof with ours.  Sections~\ref{sec:symplectic}
 and~\ref{sec:composing} are the method: the symplectic presentation,
 then the composition of the three factors.  Section~\ref{sec:discussion}
 gives statistics, engineering lessons and caveats; \S\ref{sec:related}
