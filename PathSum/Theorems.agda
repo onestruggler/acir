@@ -100,9 +100,9 @@ open import Data.Integer.Base using (ℤ; 0ℤ; +_; _-_)
   renaming (_*_ to _*ℤ_)
 open import Data.Integer.Divisibility.Signed using (_∣_)
 open import Data.Integer.Properties using (≤-reflexive)
-open import Data.List.Base using (List; _++_; length; map; upTo)
+open import Data.List.Base using (List; []; _++_; length; map; upTo)
 open import Data.Maybe.Base using (just; nothing)
-open import Data.Product.Base using (Σ; _×_; _,_; ∃; proj₂)
+open import Data.Product.Base using (Σ; _×_; _,_; ∃; proj₁; proj₂)
 open import Level using (0ℓ)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔; Equivalence)
@@ -481,6 +481,27 @@ module Exp = PathSum.Expand M₀
 import PathSum.CRK.Expand
 module KE = PathSum.CRK.Expand M₀
 
+import PathSum.Hardness.CNF
+module HCNF = PathSum.Hardness.CNF
+
+import PathSum.Hardness.Netlist
+module HNet = PathSum.Hardness.Netlist
+
+import PathSum.Hardness
+module Hard = PathSum.Hardness M₀
+
+import PathSum.Hardness.Certificate
+module HCert = PathSum.Hardness.Certificate
+
+import PathSum.Hardness.Prepared
+module HPrep = PathSum.Hardness.Prepared M₀
+
+import PathSum.Hardness.Conditional
+module HCond = PathSum.Hardness.Conditional M₀
+
+import PathSum.Hardness.Blowup
+module HBlow = PathSum.Hardness.Blowup M₀
+
 import PathSum.Full.Obstruction
 import PathSum.CRK.WithX
 import PathSum.Gauss.Single
@@ -499,6 +520,10 @@ module ExVInc = PathSum.Examples.ValidationIncomplete
 
 import PathSum.HiddenShift.Example
 import PathSum.HiddenShift.CircuitExample
+
+-- Closed cross-checks of footnote 2's reduction and its certificates.
+
+import PathSum.Hardness.Example
 
 -- The QFT at the sizes of table 2 (their gate counts), and the
 -- seven-T Toffoli's size representation, at fixed precisions.
@@ -1292,13 +1317,109 @@ validation-decidableᵉ = KE.validation-decidableᵉ
 
 -- Footnote 2, its logical half: were normal forms unique, a normal
 -- form keeping a path variable would never be the identity, and the
--- expansion would never be needed.  (Its complexity half -- that this
--- would put P = co-NP -- is not formalised.)
+-- expansion would never be needed.  (Its complexity half is the next
+-- section's reduction; complexity classes, and P = co-NP itself, are
+-- not formalised.)
 
 unique⇒no-expansion : Exp.UniqueNormalForms →
                       (ξ′ : PathSum n k (suc m)) → Irreducibleᶠ ξ′ →
                       ¬ (ξ′ ≋ idPS)
 unique⇒no-expansion = Exp.unique⇒no-expansion
+
+
+------------------------------------------------------------------------
+-- Footnote 2: the reduction from unsatisfiability (PathSum.Hardness,
+-- PathSum.Hardness.*)
+
+-- "Equivalence checking of reversible Boolean circuits ... is
+-- co-NP-complete": the reduction behind it, for every CNF formula φ --
+-- a Clifford+T circuit (NOT, Toffoli and CNOT gates, NOT as H R₁ H)
+-- that is the identity on the inputs whose ancillas are |0⟩ exactly
+-- when φ is unsatisfiable, also with the ancillas read as the constant
+-- 0 ...
+
+hardness : (φ : HCNF.CNF n) →
+           (KP.⟦ Hard.circuit φ ⟧ ≋[ HNet.ancillas φ ]₀* idPS) ⇔
+           HCNF.Unsatisfiable φ
+hardness = Hard.hardness
+
+hardness-set0 : (φ : HCNF.CNF n) →
+                (set0ˢ (HNet.ancillas φ) KP.⟦ Hard.circuit φ ⟧ ≋
+                 set0ˢ (HNet.ancillas φ) idPS) ⇔ HCNF.Unsatisfiable φ
+hardness-set0 = Hard.hardness-set0
+
+-- ... and of linear size in ‖ φ ‖, the literal occurrences plus the
+-- clauses: wires, path variables, T gates, gates.  (Only the size of
+-- the reduction's output is proved, not its running time.)
+
+hardness-wires : (φ : HCNF.CNF n) → HNet.wires φ ≤ n + 3 * HCNF.‖ φ ‖ + 3
+hardness-wires = HNet.wires-bound
+
+hardness-paths : (φ : HCNF.CNF n) →
+                 KP.paths (Hard.circuit φ) ≡ 4 * HCNF.‖ φ ‖ + 4
+hardness-paths = Hard.circuit-paths
+
+hardness-tcount : (φ : HCNF.CNF n) →
+                  TNet.tcount (Hard.circuit φ) ≡ 14 * HCNF.‖ φ ‖
+hardness-tcount = Hard.circuit-tcount
+
+hardness-gates : (φ : HCNF.CNF n) →
+                 length (Hard.circuit φ) ≤ 40 * HCNF.‖ φ ‖ + 9
+hardness-gates = Hard.circuit-length-bound
+
+-- Membership, as a certificate check: the circuit is not the identity
+-- on the clean inputs exactly when some input, simulated through the
+-- netlist, is rejected -- in a linear number of counted simulation
+-- steps (a count, not time on a machine).
+
+circuit-certificate :
+  (φ : HCNF.CNF n) →
+  (¬ (KP.⟦ Hard.circuit φ ⟧ ≋[ HNet.ancillas φ ]₀* idPS)) ⇔
+  (∃ λ x → proj₁ (HCert.check (HNet.ancillas φ) (HNet.netlist φ) [] x)
+             ≡ true)
+circuit-certificate = HPrep.circuit-certificate
+
+certificate-steps :
+  (φ : HCNF.CNF n) (x : HCNF.Assignment (HNet.wires φ)) →
+  proj₂ (HCert.check (HNet.ancillas φ) (HNet.netlist φ) [] x) ≤
+  n + 18 * HCNF.‖ φ ‖ + 10
+certificate-steps = HCert.check-steps-bound
+
+-- The footnote's conditional: with the ancillas prepared (read as 0,
+-- their inputs returned), the reduction's path-sum is the identity
+-- exactly when φ is unsatisfiable; were normal forms unique -- they
+-- are not, normal-forms-not-unique above -- the syntactic test on its
+-- normal form would decide unsatisfiability.  One direction needs no
+-- hypothesis.
+
+cleanPS-identity⇔unsat : (φ : HCNF.CNF n) →
+                         (HPrep.cleanPS φ ≋ idPS) ⇔ HCNF.Unsatisfiable φ
+cleanPS-identity⇔unsat = HPrep.cleanPS-identity⇔unsat
+
+unsat-by-normalisation : Exp.UniqueNormalForms → (φ : HCNF.CNF n) →
+                         HCNF.Unsatisfiable φ ⇔
+                         HCond.NormalFormId (HPrep.cleanPS φ)
+unsat-by-normalisation = HCond.unsat-by-normalisation
+
+normal-form-refutes : (φ : HCNF.CNF n) →
+                      HCond.NormalFormId (HPrep.cleanPS φ) →
+                      HCNF.Unsatisfiable φ
+normal-form-refutes = HCond.normal-form-refutes
+
+-- What the hypothesis would force: for the single clause x₁ ∨ … ∨ x_n,
+-- every irreducible reduct of the prepared path-sum -- 4n + 8 path
+-- variables -- has, on the target's output, an odd coefficient on
+-- every nonempty monomial over the inputs, 2^n − 1 of them (a count in
+-- words).  Written as lists of terms, such normal forms are
+-- exponentially large, so uniqueness and proposition 3.2's polynomial
+-- time exclude each other on these instances -- an argument about a
+-- representation and a running time, neither of them formalised.
+
+unique⇒orφ : Exp.UniqueNormalForms → (n : ℕ) →
+             ∀ {k′ m′} (ξ′ : PathSum (HNet.wires (HBlow.orφ n)) k′ m′) →
+             HPrep.cleanPS (HBlow.orφ n) ⟶ᶠ* ξ′ → Irreducibleᶠ ξ′ →
+             HBlow.OddOnInputs (HBlow.orφ n) ξ′
+unique⇒orφ = HBlow.unique⇒orφ
 
 
 ------------------------------------------------------------------------

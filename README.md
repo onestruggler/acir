@@ -169,7 +169,21 @@ complete decision for every path-sum and every pair of circuits,
 exponential and never expanding on Clifford inputs; `Gauss/Single` and
 `Polynomial/SubstVar` make the closed restriction cheap to compute.
 Footnote 2's logical half (unique normal forms would make expansion
-unnecessary) is proved; its complexity half is not formalised.
+unnecessary) is proved.
+
+**Footnote 2: the reduction from unsatisfiability.**  `Hardness/CNF`,
+`Hardness/Netlist` and `Hardness` compile every CNF formula φ into a
+Clifford+T circuit of linear size that is the identity on the inputs
+whose ancillas are |0⟩ exactly when φ is unsatisfiable — the reduction
+behind "equivalence checking of reversible circuits is co-NP-complete".
+`Hardness/Certificate` gives membership as a certificate check (an input
+the two circuits disagree on, found by a counted simulation);
+`Hardness/Prepared` and `Hardness/Conditional` show that were normal
+forms unique, normalising the reduction's path-sum would decide
+unsatisfiability; and `Hardness/Blowup` that the hypothesis would give
+the normal forms of x₁ ∨ … ∨ x_n an odd coefficient on every one of
+the 2^n − 1 nonempty input monomials.  Machine models, running times,
+complexity classes and P = co-NP are not formalised.
 
 **Section 5.2: the quantum Fourier transform.**  `CRK/Controlled`
 builds controlled rotations from {H, CNOT, R_k} and proves them the
