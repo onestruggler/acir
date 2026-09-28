@@ -68,10 +68,13 @@
 -- the statement costs the same for every n -- where the paper's tool,
 -- which expands the specification's polynomials, stopped at 16 bits.
 --
--- Resources, and table 2.  The circuit has 5n qubits
--- (PathSum.Adder.Layout.width-5n), and, for n ≥ 2, 4(n − 1) Toffoli
--- gates and 11n − 8 CNOTs (PathSum.Adder.Ripple.adder-toffolis,
--- adder-cnots); each Toffoli gate contributes two Hadamards, hence two
+-- Resources, and table 2.  The circuit has 5n qubits, counted as the
+-- paper's tool counts them, as the wires its gates touch: its gates
+-- touch every one of its 5n wires, for every n ≥ 1 (Adder-qubits,
+-- through PathSum.CRK.Qubits and PathSum.Adder.Wires).  For n ≥ 2 it
+-- has 4(n − 1) Toffoli gates and 11n − 8 CNOTs
+-- (PathSum.Adder.Ripple.adder-toffolis, adder-cnots); each Toffoli
+-- gate contributes two Hadamards, hence two
 -- path variables, seven T or T† gates, and eight Clifford gates (two
 -- Hadamards and six CNOTs; cliffords-expand, counting H, CNOT and
 -- R_k, R_k† for k ≤ 2 as PathSum.QFT.Count does).  So for n ≥ 2 it has
@@ -94,9 +97,12 @@
 -- too, for every n: PathSum.Adder.CarryRipple (the netlist and its
 -- correctness), PathSum.Toffoli.Depth3 (the tool's Toffoli circuit)
 -- and PathSum.Adder.Tool (the path-sum theorems Tool-spec, Tool-clean
--- and Tool-set0).  Its counts, computed from the circuit, are table
--- 2's rows exactly (PathSum.Adder.Tool.Adder8ᵀ and Adder16ᵀ: 40, 56,
--- 334, 196 and 80, 120, 710, 420).  So the Clifford column differs
+-- and Tool-set0), and with the tool's own uncomputation, the adjoint
+-- of the expanded compute, in PathSum.Adder.Feynman (Feynman-spec,
+-- Feynman-clean, Feynman-set0: Feynman's gate list, gate for gate).
+-- Its counts, computed from the circuit, are table 2's rows exactly
+-- (PathSum.Adder.Tool.Adder8ᵀ and Adder16ᵀ: 40, 56, 334, 196 and 80,
+-- 120, 710, 420).  So the Clifford column differs
 -- for two reasons, both read off the tool's source, and separated one
 -- circuit at a time in Adder8-gap and Adder16-gap.  The tool's Toffoli
 -- circuit has seven CNOTs (nine Clifford gates) where
@@ -144,10 +150,12 @@ open import PathSum.Adder.Spec M₀ using
   (adderˢ; fun-adderˢ; adderˢ-computes; adder₀ˢ; adder₀ˢ-computes;
    addition₀-addition)
 open import PathSum.Adder.Tool M₀ using (expand₃; cliffords-expand₃)
+open import PathSum.Adder.Wires using (adder-every)
 open import PathSum.Ancillas M₀ using
   (Clean; set0ˢ; _≋[_]₀*_; ≋[]₀*⇔set0ˢ; computes⇒≋[]₀*; clean-ancillas)
 open import PathSum.Classical M₀ using (_computes_; outBit-none)
 open import PathSum.CRK.Path M₀ using (Circuit; ⟦_⟧; paths)
+open import PathSum.CRK.Qubits M₀ using (qubits; qubits-all; ∈ᶜ-expand)
 open import PathSum.Cyclotomic M₀ using (_≐_; 0ᴬ)
 open import PathSum.Denotation M₀ using (Assign; amp; outBit; _≋_)
 open import PathSum.QFT.Count M₀ using (cliffords; cliffords-++)
@@ -354,27 +362,36 @@ Adder-cliffords m =
         (cong₂ (λ t c → t * 8 + c) (adder-toffolis (standard (suc m)))
                                    (adder-cnots (standard (suc m))))
 
+-- Qubits, counted as the paper's tool counts them -- the wires the
+-- circuit's gates touch (PathSum.CRK.Qubits.qubits) -- are all of its
+-- 5n wires, for every n ≥ 1: every wire of the netlist is touched
+-- (PathSum.Adder.Wires.adder-every), and so by the expansion.
+
+Adder-qubits : (m : ℕ) → qubits (Adderᶜ m) ≡ width m
+Adder-qubits m =
+  qubits-all (Adderᶜ m)
+    (λ u → ∈ᶜ-expand (adder (standard m)) (adder-every m u))
+
 -- Table 2's columns -- qubits, path variables, Clifford gates, T gates
--- -- for n = 8 and n = 16: the table's 40, 56, 196 and 80, 120, 420,
--- but 304 and 648 Clifford gates where the table has 334 and 710 (see
--- the header).  The qubits are the circuit's width, the index of its
--- type (Adderᶜ m : Circuit (width m)).  The circuits are never
+-- -- for n = 8 and n = 16, each counted from the circuit: the table's
+-- 40, 56, 196 and 80, 120, 420, but 304 and 648 Clifford gates where
+-- the table has 334 and 710 (see the header).  The circuits are never
 -- computed: these are the counts above at n = 8 and n = 16.
 
-Adder8 : (width 7 ≡ 40) × (paths (Adderᶜ 7) ≡ 56) ×
+Adder8 : (qubits (Adderᶜ 7) ≡ 40) × (paths (Adderᶜ 7) ≡ 56) ×
          (cliffords (Adderᶜ 7) ≡ 304) × (tcount (Adderᶜ 7) ≡ 196)
 Adder8 =
-  refl ,
+  Adder-qubits 7 ,
   trans (Adderᶜ-paths 7) (cong (_* 2) (adder-toffolis (standard 7))) ,
   trans (Adder-cliffords-gates 7)
         (cong₂ (λ t c → t * 8 + c) (adder-toffolis (standard 7))
                                    (adder-cnots (standard 7))) ,
   trans (Adderᶜ-tcount 7) (cong (_* 7) (adder-toffolis (standard 7)))
 
-Adder16 : (width 15 ≡ 80) × (paths (Adderᶜ 15) ≡ 120) ×
+Adder16 : (qubits (Adderᶜ 15) ≡ 80) × (paths (Adderᶜ 15) ≡ 120) ×
           (cliffords (Adderᶜ 15) ≡ 648) × (tcount (Adderᶜ 15) ≡ 420)
 Adder16 =
-  refl ,
+  Adder-qubits 15 ,
   trans (Adderᶜ-paths 15) (cong (_* 2) (adder-toffolis (standard 15))) ,
   trans (Adder-cliffords-gates 15)
         (cong₂ (λ t c → t * 8 + c) (adder-toffolis (standard 15))

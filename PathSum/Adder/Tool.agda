@@ -40,21 +40,28 @@
 -- Resources, computed from the circuit: per Toffoli gate two path
 -- variables, seven T gates and nine Clifford gates (two Hadamards and
 -- seven CNOTs), per CNOT one Clifford gate (paths-expand₃,
--- tcount-expand₃, cliffords-expand₃); so, for every n ≥ 1, 5n qubits,
--- 8(n − 1) path variables, 28(n − 1) T gates and 36(n − 1) + 11n − 6
--- Clifford gates (Tool-paths, Tool-tcount, Tool-cliffords).  At n = 8
--- and n = 16 these are table 2's rows exactly (Adder8ᵀ, Adder16ᵀ):
+-- tcount-expand₃, cliffords-expand₃); so, for every n ≥ 1, 8(n − 1)
+-- path variables, 28(n − 1) T gates and 36(n − 1) + 11n − 6 Clifford
+-- gates (Tool-paths, Tool-tcount, Tool-cliffords).  The qubits are
+-- counted as the tool counts them, as the wires the circuit's gates
+-- touch (PathSum.CRK.Qubits.qubits): every one of the 5n wires for
+-- n ≥ 2 (Tool-qubits, through PathSum.Adder.Wires), but four for
+-- n = 1, where no gate touches the carry-in wire carry₀ (Tool-qubits-1,
+-- Tool-idle-1 -- the tool's own count is 4 there too).  At n = 8 and
+-- n = 16 these are table 2's rows exactly (Adder8ᵀ, Adder16ᵀ):
 --
 --                 qubits   path vars   Clifford     T
 --    Adder8          40        56         334      196
 --    Adder16         80       120         710      420
 --
--- One difference from the tool's circuit remains, and it changes no
--- count: the tool uncomputes with the adjoint of its expanded compute,
--- which reverses each Toffoli circuit and swaps T and T†, where the
--- netlist here is uncomputed by the same Toffoli circuit (a Toffoli
--- gate is its own inverse, and the adjoint has the same gates up to
--- T ↔ T†).
+-- One difference from the tool's circuit remains here, and it changes
+-- no count: the tool uncomputes with the adjoint of its expanded
+-- compute, which reverses each Toffoli circuit and swaps T and T†,
+-- where the netlist here is uncomputed by the same Toffoli circuit (a
+-- Toffoli gate is its own inverse, and the adjoint has the same gates
+-- up to T ↔ T†).  PathSum.Adder.Feynman builds the tool's circuit
+-- literally, with that adjoint -- Feynman's gate list, gate for gate
+-- -- and proves the same theorems and rows for it.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -65,17 +72,21 @@ module PathSum.Adder.Tool (M₀ : ℕ) where
 
 open import Data.Bool.Base using (true; false; _xor_)
 open import Data.Bool.Properties using (xor-identityʳ)
+open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; _↑ˡ_; _↑ʳ_; splitAt)
 open import Data.List.Base using (List; []; _∷_; _++_; length)
+open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Properties using (length-++)
+open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.Nat.Base using (_+_; _*_; _∸_; _^_; _%_)
 open import Data.Nat.Properties using (+-suc; +-identityʳ; m^n≢0)
 open import Data.Product.Base using (_×_; _,_; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Bundles using (Equivalence; _⇔_; mk⇔)
 open import Relation.Binary.PropositionalEquality using
-  (_≡_; refl; sym; trans; cong; cong₂; subst)
+  (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
 open import Relation.Nullary.Decidable using (Dec; yes; no)
+open import Relation.Nullary.Negation using (¬_)
 
 import Data.Fin.Properties as Fin
 
@@ -92,6 +103,7 @@ open import PathSum.Adder.CarryRipple using
 open import PathSum.Adder.Layout using (Layout; wire; wire-inj)
 open import PathSum.Adder.Ripple using (distinct)
 open import PathSum.Adder.Spec M₀ using (sumbitᵉ; ⟦sumbitᵉ⟧)
+open import PathSum.Adder.Wires using (carryRipple-every)
 open import PathSum.Ancillas M₀ using
   (Clean; set0ˢ; _≋[_]₀*_; ≋[]₀*⇔set0ˢ; computes⇒≋[]₀*; clean-ancillas)
 open import PathSum.Base using (PathSum)
@@ -101,6 +113,8 @@ open import PathSum.Classical M₀ using
 open import PathSum.Compose.CRK M₀ using (norm-++)
 open import PathSum.CRK.Circuit M using (paths≡norm)
 open import PathSum.CRK.Path M₀ using (CNOT; Circuit; ⟦_⟧; norm; paths)
+open import PathSum.CRK.Qubits M₀ using
+  (_∈ᶜ_; ∈ᶜ-++ˡ; ∈ᶜ-++ʳ; ∈ᶜ-touched; qubits; qubits-all)
 open import PathSum.Cyclotomic M₀ using (_≐_; 0ᴬ)
 open import PathSum.Denotation M₀ using (Assign; amp; outBit; _≋_)
 open import PathSum.Polynomial using (Poly; x[_])
@@ -109,6 +123,7 @@ open import PathSum.Polynomial.Boolean using
 open import PathSum.QFT.Count M₀ using (cliffords; cliffords-++)
 open import PathSum.Reversible using
   (Gate; ccx; cx; run; recover; toffolis; cnots)
+open import PathSum.Reversible.Wires using (_∈ᴿ_)
 open import PathSum.Toffoli.Depth3 M₀ using (tof₃; tof₃-computes)
 open import PathSum.Toffoli.Netlist M₀ using (tcount; tcount-++)
 
@@ -184,6 +199,29 @@ length-expand₃ (ccx c₁ c₂ t p q r ∷ gs) =
 length-expand₃ (cx c t p ∷ gs)          =
   trans (cong suc (length-expand₃ gs))
         (sym (+-suc (toffolis gs * 16) (cnots gs)))
+
+-- The tool's Toffoli circuit touches its three wires: t with its first
+-- gate (H t), c₁ with its second (T c₁), c₂ with its third (T c₂) ...
+
+∈ᶜ-tof₃ : (c₁ c₂ t : Fin n) (p : c₁ ≢ c₂) (q : c₁ ≢ t) (r : c₂ ≢ t)
+          {u : Fin n} → u ∈ c₁ ∷ c₂ ∷ t ∷ [] → u ∈ᶜ tof₃ c₁ c₂ t p q r
+∈ᶜ-tof₃ c₁ c₂ t p q r (here refl)                 = there (here (here refl))
+∈ᶜ-tof₃ c₁ c₂ t p q r (there (here refl))         =
+  there (there (here (here refl)))
+∈ᶜ-tof₃ c₁ c₂ t p q r (there (there (here refl))) = here (here refl)
+
+-- ... so the expansion touches every wire of the netlist (the wires
+-- the tool counts as qubits: PathSum.CRK.Qubits).
+
+∈ᶜ-expand₃ : (gs : List (Gate n)) {u : Fin n} → u ∈ᴿ gs → u ∈ᶜ expand₃ gs
+∈ᶜ-expand₃ (ccx c₁ c₂ t p q r ∷ gs) (here m)  =
+  ∈ᶜ-++ˡ (tof₃ c₁ c₂ t (recover p) (recover q) (recover r)) (expand₃ gs)
+         (∈ᶜ-tof₃ c₁ c₂ t (recover p) (recover q) (recover r) m)
+∈ᶜ-expand₃ (ccx c₁ c₂ t p q r ∷ gs) (there m) =
+  ∈ᶜ-++ʳ (tof₃ c₁ c₂ t (recover p) (recover q) (recover r)) (expand₃ gs)
+         (∈ᶜ-expand₃ gs m)
+∈ᶜ-expand₃ (cx c t p ∷ gs)          (here m)  = here m
+∈ᶜ-expand₃ (cx c t p ∷ gs)          (there m) = there (∈ᶜ-expand₃ gs m)
 
 
 ------------------------------------------------------------------------
@@ -393,18 +431,42 @@ Tool-cliffords m =
         (cong₂ (λ t c → t * 9 + c) (carryRipple-toffolis (standardᶠ m))
                                    (carryRipple-cnots (standardᶠ m)))
 
+-- Its qubits, counted as the tool counts them -- the wires its gates
+-- touch (PathSum.CRK.Qubits.qubits) -- are all 5n wires for every
+-- n ≥ 2 (m ≢ 0): every wire of the netlist is touched
+-- (PathSum.Adder.Wires.carryRipple-every), and so by the expansion.
+
+Tool-qubits : (m : ℕ) → m ≢ 0 → qubits (CarryRippleᶜ m) ≡ 5 * suc m
+Tool-qubits m p =
+  qubits-all (CarryRippleᶜ m)
+    (λ u → ∈ᶜ-expand₃ (carryRipple (standardᶠ m)) (carryRipple-every m p u))
+
+-- For n = 1 they are four: without a majority block nothing touches
+-- the carry-in wire carry₀ -- as the tool's own count, 4, has it.
+
+Tool-qubits-1 : qubits (CarryRippleᶜ 0) ≡ 4
+Tool-qubits-1 = refl
+
+Tool-idle-1 : ¬ (wire (standardᶠ 0) (rcarry , zero) ∈ᶜ CarryRippleᶜ 0)
+Tool-idle-1 p = untouched (∈ᶜ-touched (CarryRippleᶜ 0) _ p)
+  where
+  untouched : false ≡ true → ⊥
+  untouched ()
+
 -- Table 2's Adder8 and Adder16, exactly: qubits, path variables,
--- Clifford gates, T gates.  The qubits are the circuit's width, the
--- index of its type (CarryRippleᶜ m : Circuit (5 * suc m)); the tool
--- counts the wires a circuit touches, and that every one of these is
--- touched is not proved.  (The circuits are never computed: these are
--- the counts above at n = 8 and n = 16.)
+-- Clifford gates, T gates, each counted from the circuit.  (The
+-- circuits are never computed: these are the counts above at n = 8
+-- and n = 16.)
 
-Adder8ᵀ : (5 * 8 ≡ 40) × (paths (CarryRippleᶜ 7) ≡ 56) ×
+Adder8ᵀ : (qubits (CarryRippleᶜ 7) ≡ 40) × (paths (CarryRippleᶜ 7) ≡ 56) ×
           (cliffords (CarryRippleᶜ 7) ≡ 334) × (tcount (CarryRippleᶜ 7) ≡ 196)
-Adder8ᵀ = refl , Tool-paths 7 , Tool-cliffords 7 , Tool-tcount 7
+Adder8ᵀ =
+  Tool-qubits 7 (λ ()) , Tool-paths 7 , Tool-cliffords 7 , Tool-tcount 7
 
-Adder16ᵀ : (5 * 16 ≡ 80) × (paths (CarryRippleᶜ 15) ≡ 120) ×
+Adder16ᵀ : (qubits (CarryRippleᶜ 15) ≡ 80) ×
+           (paths (CarryRippleᶜ 15) ≡ 120) ×
            (cliffords (CarryRippleᶜ 15) ≡ 710) ×
            (tcount (CarryRippleᶜ 15) ≡ 420)
-Adder16ᵀ = refl , Tool-paths 15 , Tool-cliffords 15 , Tool-tcount 15
+Adder16ᵀ =
+  Tool-qubits 15 (λ ()) , Tool-paths 15 , Tool-cliffords 15 ,
+  Tool-tcount 15
