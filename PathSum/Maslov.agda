@@ -19,12 +19,20 @@
 -- maslovToffoli in Feynman's src/Feynman/Verification/SOP.hs: its
 -- rToffoli4 (rc3x below) from three controls into a fresh ancilla,
 -- recursively on that ancilla and the remaining controls, then the
--- gate's adjoint; with two wires left a CNOT, with three a Toffoli
--- gate.  Table 2's counts are exactly this construction's
--- (PathSum.RelativePhase's header has the analysis).  It is a variant
--- of Maslov's own, [23]'s Proposition 4, which keeps an exact Toffoli
--- gate in the middle at every n: 8n − 17 T gates, one fewer than
--- table 2's 8n − 16 at even n.
+-- gate's adjoint; with two wires left a CNOT, with three the tool's
+-- own sixteen-gate Toffoli circuit (its toffoli: PathSum.Toffoli.
+-- Depth3's tof₃).  It is the tool's circuit gate for gate, at every n
+-- (PathSum.Maslov.Feynman.Maslovₙ-tool: read as the tool writes gates,
+-- it is the list maslovToffoli produces on the inputs 0 … n − 1, the
+-- ancillas _anc0, _anc1, … being the wires n, n + 1, …).  Table 2's
+-- counts are exactly this construction's (PathSum.RelativePhase's
+-- header has the analysis).  It is a variant of Maslov's own, [23]'s
+-- Proposition 4, which keeps an exact Toffoli gate in the middle at
+-- every n: 8n − 17 T gates, one fewer than table 2's 8n − 16 at even
+-- n.  At odd n the two have the same structure and the same T and
+-- Hadamard counts, but the tool's Toffoli circuit has seven CNOTs
+-- where [23]'s has six: 6n − 11 CNOTs here (the Clifford gates below
+-- less the Hadamards), 6n − 12 in [23].
 --
 -- * The gates (phase A): PathSum.Maslov.Gate4's relative-phase
 --   Toffoli-4 gate rc3x a b c d, three controls and a target, eight T
@@ -45,12 +53,13 @@
 --   mirrored chain of inverses uncomputes the ancillas.  For even n
 --   the chain absorbs every control and the middle gate is a CNOT from
 --   the last ancilla (from c₀ when n = 2); for odd n one control is
---   left over and the middle gate is a Toffoli gate, PathSum.Toffoli's
---   exact seven-T circuit, on the last ancilla and that control (on c₀
---   and c₁ when n = 3).  As a recursion (maslov):
+--   left over and the middle gate is a Toffoli gate, the tool's exact
+--   sixteen-gate circuit tof₃ (seven T gates, like PathSum.Toffoli's
+--   tof, and seven CNOTs where tof has six), on the last ancilla and
+--   that control (on c₀ and c₁ when n = 3).  As a recursion (maslov):
 --
 --      maslov L = CNOT(c₀, t)                               m = 0
---               = tof(c₀, c₁, t)                            m = 1
+--               = tof₃(c₀, c₁, t)                           m = 1
 --               = rc3x(c₀,c₁,c₂,a₀) ; maslov (inner L) ;
 --                 rc3x(c₀,c₁,c₂,a₀) †                       m + 2,
 --
@@ -69,10 +78,11 @@
 --   the records are used: no statement about the amplitudes of a
 --   concrete rc3x is restated here.  The middle gate is the one gate
 --   whose phase nothing would cancel, which is why it must be exact:
---   PathSum.Classical's CNOT, or the seven-T Toffoli circuit, never a
---   relative-phase gate.  And the phases are real: each gate is closed
---   by its inverse, not by itself as a Toffoli gate would be, since the
---   gate followed by itself is not the identity
+--   PathSum.Classical's CNOT, or the tool's Toffoli circuit
+--   (PathSum.Toffoli.Depth3.tof₃-computes), never a relative-phase
+--   gate.  And the phases are real: each gate is closed by its
+--   inverse, not by itself as a Toffoli gate would be, since the gate
+--   followed by itself is not the identity
 --   (PathSum.Maslov.Gate4.rc3x-rc3x-not-id).
 --
 -- * The theorem.  An ancilla enters in |0⟩, so the claim concerns the
@@ -100,33 +110,45 @@
 --   ancillas, the circuit has 2j relative-phase Toffoli-4 gates, each
 --   with four Hadamards, eight T or T† gates and ten Clifford gates (H
 --   and CNOT), and the middle gate: a CNOT for even n (no Hadamard, no
---   T, one Clifford gate), a seven-T Toffoli for odd n (two Hadamards,
---   seven T, eight Clifford).  So, with p = n mod 2, it has 8j + 2p
---   path variables, one per Hadamard (maslov-paths), 16j + 7p T gates
---   (maslov-tcount) and 20j + 7p + 1 Clifford gates (maslov-cliffords;
---   PathSum.QFT.Count's count of H, CNOT and R_k, R_k† for k ≤ 2, of
---   which the circuit has none).  In closed form (the -closed lemmas):
---   for even n, 4(n − 2) path variables, 8(n − 2) = 8n − 16 T gates
---   and 10(n − 2) + 1 Clifford gates; for odd n, which the table does
---   not use, 2, 1 and 3 fewer, so 8n − 17 T gates.  At n = 50 and
---   n = 100: 74 and 149 qubits (the circuit's width), 192 and 392 path
---   variables, 481 and 981 Clifford gates, 384 and 784 T gates --
---   exactly table 2's rows Maslov50 and Maslov100 (table-2-Maslov50,
---   table-2-Maslov100).
+--   T, one Clifford gate), the tool's Toffoli circuit for odd n (two
+--   Hadamards, seven T, nine Clifford: two H and seven CNOTs).  So,
+--   with p = n mod 2, it has 8j + 2p path variables, one per Hadamard
+--   (maslov-paths), 16j + 7p T gates (maslov-tcount) and 20j + 8p + 1
+--   Clifford gates (maslov-cliffords; PathSum.QFT.Count's count of H,
+--   CNOT and R_k, R_k† for k ≤ 2, of which the circuit has none).  In
+--   closed form (the -closed lemmas): for even n, 4(n − 2) path
+--   variables, 8(n − 2) = 8n − 16 T gates and 10(n − 2) + 1 Clifford
+--   gates; for odd n, which the table does not use, 2, 1 and 2 fewer,
+--   so 8n − 17 T gates and 10n − 21 Clifford gates (the tool's own
+--   count at n = 51: 194 path variables, 489 Clifford and 391 T).
+--
+-- * Qubits, as the tool counts them: the wires some gate touches
+--   (PathSum.CRK.Qubits.qubits).  The circuit touches every control,
+--   the target and every ancilla of its layout (maslov-ctl, maslov-tgt,
+--   maslov-anc: the first Toffoli-4 gate touches c₀, c₁, c₂ and a₀,
+--   the inner construction the rest, the middle gate what is left;
+--   PathSum.Maslov.Wires.∈ᶜ-rc3x, PathSum.Adder.Tool.∈ᶜ-tof₃), and on
+--   the paper's layout these are all the wires
+--   (PathSum.Maslov.Wires.standardᴹ-wires).  So no wire is idle
+--   (Maslovₙ-touched), and for every n ≥ 3 the qubits are all
+--   n + ⌈(n − 3)/2⌉ wires (Maslovₙ-qubits).  At n = 50 and n = 100:
+--   74 and 149 qubits, 192 and 392 path variables, 481 and 981
+--   Clifford gates, 384 and 784 T gates -- exactly table 2's rows
+--   Maslov50 and Maslov100 (table-2-Maslov50, table-2-Maslov100), the
+--   qubits counted from the circuit as the tool counts them, not read
+--   off its type (its width, which is the same number).
 --
 -- * Checks.  The circuits for n = 4, 5 and 6 are displayed
 --   (Maslov-4, Maslov-5, Maslov-6), as a check that the recursion
---   builds the chain described above on the paper's wires.
+--   builds the chain described above on the paper's wires; and
+--   PathSum.Maslov.Feynman proves the circuit is the tool's gate for
+--   gate at every n, with the tool's lists for n = 3 … 7, as printed
+--   by its own functions run under GHC.
 --
--- At even n the circuit is the tool's gate for gate (wires 0 … n − 1
--- for its inputs, n, n + 1, … for its ancillas _anc0, _anc1, …); at
--- odd n the tool's middle gate is its own sixteen-gate Toffoli circuit
--- (PathSum.Toffoli.Depth3's tof₃), where this module uses
--- PathSum.Toffoli's seven-T tof: the same operator, one Clifford gate
--- fewer.  Not formalised: the verifier's own run on these circuits.
--- The proof composes where the paper's tool reduces: no path-sum of
--- the whole circuit is ever computed and no closed instance is
--- evaluated, so the statement costs the same for every n.
+-- Not formalised: the verifier's own run on these circuits.  The proof
+-- composes where the paper's tool reduces: no path-sum of the whole
+-- circuit is ever computed and no closed instance is evaluated, so the
+-- statement costs the same for every n.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -139,10 +161,13 @@ open import Data.Bool.Base using (true; false)
 open import Data.Fin using (#_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base using ([]; _∷_; _++_)
+open import Data.List.Membership.Propositional using (_∈_)
+open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.Nat.Base using
   (zero; _+_; _*_; _∸_; _≤_; z≤n; s≤s; ⌊_/2⌋; ⌈_/2⌉)
 open import Data.Nat.Solver using (module +-*-Solver)
-open import Data.Product.Base using (_×_; _,_)
+open import Data.Product.Base using (_×_; _,_; ∃)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Bundles using (Equivalence)
 open import Relation.Binary.PropositionalEquality using
   (_≡_; refl; trans; cong)
@@ -153,6 +178,7 @@ private
   M : ℕ
   M = suc (suc (suc M₀))
 
+open import PathSum.Adder.Tool M₀ using (∈ᶜ-tof₃)
 open import PathSum.Ancillas M₀ using
   (Clean; set0ˢ; _≋[_]₀*_; ≋[]₀*⇔set0ˢ; computes⇒≋[]₀*; clean-ancillas)
 open import PathSum.Classical M₀ using
@@ -162,6 +188,8 @@ open import PathSum.Compose.CRK M₀ using (norm-++)
 open import PathSum.CRK.Adjoint M using (_†)
 open import PathSum.CRK.Circuit M using (paths≡norm)
 open import PathSum.CRK.Path M₀ using (CNOT; Circuit; ⟦_⟧; norm; paths)
+open import PathSum.CRK.Qubits M₀ using
+  (_∈ᶜ_; ∈ᶜ-++ˡ; ∈ᶜ-++ʳ; qubits; qubits-all)
 open import PathSum.Cyclotomic M₀ using (_≐_; 0ᴬ)
 open import PathSum.Denotation M₀ using (Assign; amp; outBit; _≋_)
 open import PathSum.Maslov.Chain M₀ using
@@ -170,11 +198,12 @@ open import PathSum.Maslov.Chain M₀ using
    toffoliᴹ; toffoliᴹᵉ; toffoliᴹˢ; fun-toffoliᴹˢ; toffoliᴹ-anc;
    applyᴹ-correct; layout; standardᴹ)
 open import PathSum.Maslov.Gate4 M₀ using (rc3x; rc3x-sandwich)
+open import PathSum.Maslov.Wires M₀ using (∈ᶜ-rc3x; standardᴹ-wires)
 open import PathSum.Polynomial.Boolean using (liftᵉ)
 open import PathSum.QFT.Count M₀ using (cliffords; cliffords-++)
 open import PathSum.RelativePhase M₀ using
   (computes⇒up-to; up-to⇒computes; ≡ᴺ-refl)
-open import PathSum.Toffoli M₀ using (tof; tof-computes)
+open import PathSum.Toffoli.Depth3 M₀ using (tof₃; tof₃-computes)
 open import PathSum.Toffoli.Netlist M₀ using (tcount; tcount-++)
 
 private
@@ -185,15 +214,16 @@ private
 ------------------------------------------------------------------------
 -- The circuit on any layout
 
--- A CNOT with one control, the seven-T Toffoli circuit with two, and
--- with more the relative-phase Toffoli-4 gate a₀ ⊕= c₀ c₁ c₂ and its
--- inverse around the construction on the inner layout.
+-- A CNOT with one control, the tool's sixteen-gate Toffoli circuit
+-- with two, and with more the relative-phase Toffoli-4 gate
+-- a₀ ⊕= c₀ c₁ c₂ and its inverse around the construction on the inner
+-- layout.
 
 maslov : Layout N m → Circuit N
 maslov {m = zero}        L = CNOT (ctl L zero) (tgt L) (ctl≢tgt L zero) ∷ []
 maslov {m = suc zero}    L =
-  tof (ctl L zero) (ctl L (suc zero)) (tgt L) (c₀≢c₁ L)
-      (ctl≢tgt L zero) (ctl≢tgt L (suc zero))
+  tof₃ (ctl L zero) (ctl L (suc zero)) (tgt L) (c₀≢c₁ L)
+       (ctl≢tgt L zero) (ctl≢tgt L (suc zero))
 maslov {m = suc (suc m)} L =
   rc3x (c₀ L) (c₁ L) (c₂ L) (a₀ L) (c₀≢a₀ L) (c₁≢a₀ L) (c₂≢a₀ L)
   ++ maslov (inner L)
@@ -208,8 +238,8 @@ maslov-computes : (L : Layout N m) → ⟦ maslov L ⟧ computes applyᴹ L
 maslov-computes {m = zero}        L =
   ⟦CNOT⟧-computes (ctl L zero) (tgt L) (ctl≢tgt L zero)
 maslov-computes {m = suc zero}    L =
-  tof-computes (ctl L zero) (ctl L (suc zero)) (tgt L) (c₀≢c₁ L)
-               (ctl≢tgt L zero) (ctl≢tgt L (suc zero))
+  tof₃-computes (ctl L zero) (ctl L (suc zero)) (tgt L) (c₀≢c₁ L)
+                (ctl≢tgt L zero) (ctl≢tgt L (suc zero))
 maslov-computes {m = suc (suc m)} L =
   up-to⇒computes _
     (rc3x-sandwich (c₀ L) (c₁ L) (c₂ L) (a₀ L)
@@ -328,7 +358,7 @@ maslov-paths : (L : Layout N m) →
 maslov-paths L = trans (paths≡norm (maslov L)) (maslov-norm L)
 
 -- Eight T or T† gates in each Toffoli-4 gate, seven in the Toffoli
--- gate, none in the CNOT.
+-- circuit, none in the CNOT.
 
 maslov-tcount : (L : Layout N m) →
                 tcount (maslov L) ≡ ⌊ m /2⌋ * 16 + parity m * 7
@@ -343,18 +373,18 @@ maslov-tcount {m = suc (suc m)} L =
   G : Circuit _
   G = rc3x (c₀ L) (c₁ L) (c₂ L) (a₀ L) (c₀≢a₀ L) (c₁≢a₀ L) (c₂≢a₀ L)
 
--- Ten Clifford gates (four H, six CNOT) in each Toffoli-4 gate, eight
--- (two H, six CNOT) in the Toffoli gate, one in the CNOT.
+-- Ten Clifford gates (four H, six CNOT) in each Toffoli-4 gate, nine
+-- (two H, seven CNOT) in the tool's Toffoli circuit, one in the CNOT.
 
 maslov-cliffords : (L : Layout N m) →
-                   cliffords (maslov L) ≡ ⌊ m /2⌋ * 20 + (parity m * 7 + 1)
+                   cliffords (maslov L) ≡ ⌊ m /2⌋ * 20 + (parity m * 8 + 1)
 maslov-cliffords {m = zero}        L = refl
 maslov-cliffords {m = suc zero}    L = refl
 maslov-cliffords {m = suc (suc m)} L =
   trans (cliffords-++ G (maslov (inner L) ++ G †))
     (trans (cong (10 +_) (trans (cliffords-++ (maslov (inner L)) (G †))
                                (cong (_+ 10) (maslov-cliffords (inner L)))))
-           (level 10 ⌊ m /2⌋ (parity m * 7 + 1)))
+           (level 10 ⌊ m /2⌋ (parity m * 8 + 1)))
   where
   G : Circuit _
   G = rc3x (c₀ L) (c₁ L) (c₂ L) (a₀ L) (c₀≢a₀ L) (c₁≢a₀ L) (c₂≢a₀ L)
@@ -373,15 +403,16 @@ Maslovₙ-tcount (suc (suc (suc m))) (s≤s (s≤s (s≤s z≤n))) =
 
 Maslovₙ-cliffords : (n : ℕ) (p : 3 ≤ n) →
                     cliffords (Maslovₙ n p) ≡
-                    ⌈ n ∸ 3 /2⌉ * 20 + (parity n * 7 + 1)
+                    ⌈ n ∸ 3 /2⌉ * 20 + (parity n * 8 + 1)
 Maslovₙ-cliffords (suc (suc (suc m))) (s≤s (s≤s (s≤s z≤n))) =
   maslov-cliffords (layout (suc m))
 
 -- In closed form.  ⌊m/2⌋ pairs of controls and the parity make up m
 -- (halves), so the circuit has 4m path variables, 8m T gates and
--- 10m + 1 Clifford gates when m is even, and 2, 1 and 3 fewer when m is
+-- 10m + 1 Clifford gates when m is even, and 2, 1 and 2 fewer when m is
 -- odd.  With m = n − 2: for even n, 4(n − 2), 8(n − 2) = 8n − 16 and
--- 10(n − 2) + 1; for odd n, 8n − 17 T gates.
+-- 10(n − 2) + 1; for odd n, 8n − 17 T gates and 10n − 21 Clifford
+-- gates.
 
 halves : ∀ m → ⌊ m /2⌋ * 2 + parity m ≡ m
 halves zero          = refl
@@ -409,14 +440,14 @@ maslov-tcount-closed {m = m} L =
                            := con 8 :* (j :* con 2 :+ p)) refl
 
 maslov-cliffords-closed : (L : Layout N m) →
-                          cliffords (maslov L) + 3 * parity m ≡ 10 * m + 1
+                          cliffords (maslov L) + 2 * parity m ≡ 10 * m + 1
 maslov-cliffords-closed {m = m} L =
-  trans (cong (_+ 3 * parity m) (maslov-cliffords L))
+  trans (cong (_+ 2 * parity m) (maslov-cliffords L))
     (trans (shape ⌊ m /2⌋ (parity m)) (cong (λ k → 10 * k + 1) (halves m)))
   where
-  shape : ∀ j p → (j * 20 + (p * 7 + 1)) + 3 * p ≡ 10 * (j * 2 + p) + 1
-  shape = solve 2 (λ j p → (j :* con 20 :+ (p :* con 7 :+ con 1))
-                           :+ con 3 :* p
+  shape : ∀ j p → (j * 20 + (p * 8 + 1)) + 2 * p ≡ 10 * (j * 2 + p) + 1
+  shape = solve 2 (λ j p → (j :* con 20 :+ (p :* con 8 :+ con 1))
+                           :+ con 2 :* p
                            := con 10 :* (j :* con 2 :+ p) :+ con 1) refl
 
 Maslovₙ-paths-closed : (n : ℕ) (p : 3 ≤ n) →
@@ -430,10 +461,109 @@ Maslovₙ-tcount-closed (suc (suc (suc m))) (s≤s (s≤s (s≤s z≤n))) =
   maslov-tcount-closed (layout (suc m))
 
 Maslovₙ-cliffords-closed : (n : ℕ) (p : 3 ≤ n) →
-                           cliffords (Maslovₙ n p) + 3 * parity n ≡
+                           cliffords (Maslovₙ n p) + 2 * parity n ≡
                            10 * (n ∸ 2) + 1
 Maslovₙ-cliffords-closed (suc (suc (suc m))) (s≤s (s≤s (s≤s z≤n))) =
   maslov-cliffords-closed (layout (suc m))
+
+
+------------------------------------------------------------------------
+-- Qubits
+
+-- The circuit touches every control, the target and every ancilla of
+-- its layout.  With three or more controls, the first Toffoli-4 gate
+-- touches c₀, c₁, c₂ and a₀, and the inner construction touches the
+-- rest; with fewer the middle gate touches them all.
+
+private
+  -- Where a wire of the first gate, or of the inner construction, sits
+  -- in the circuit.
+
+  in-gate : (L : Layout N (suc (suc m))) {u : Fin N} →
+            u ∈ c₀ L ∷ c₁ L ∷ c₂ L ∷ a₀ L ∷ [] → u ∈ᶜ maslov L
+  in-gate L p =
+    ∈ᶜ-++ˡ G (maslov (inner L) ++ G †)
+           (∈ᶜ-rc3x (c₀ L) (c₁ L) (c₂ L) (a₀ L)
+                    (c₀≢a₀ L) (c₁≢a₀ L) (c₂≢a₀ L) p)
+    where
+    G : Circuit _
+    G = rc3x (c₀ L) (c₁ L) (c₂ L) (a₀ L) (c₀≢a₀ L) (c₁≢a₀ L) (c₂≢a₀ L)
+
+  in-inner : (L : Layout N (suc (suc m))) {u : Fin N} →
+             u ∈ᶜ maslov (inner L) → u ∈ᶜ maslov L
+  in-inner L p =
+    ∈ᶜ-++ʳ G (maslov (inner L) ++ G †) (∈ᶜ-++ˡ (maslov (inner L)) (G †) p)
+    where
+    G : Circuit _
+    G = rc3x (c₀ L) (c₁ L) (c₂ L) (a₀ L) (c₀≢a₀ L) (c₁≢a₀ L) (c₂≢a₀ L)
+
+  in-middle : (L : Layout N (suc zero)) {u : Fin N} →
+              u ∈ ctl L zero ∷ ctl L (suc zero) ∷ tgt L ∷ [] →
+              u ∈ᶜ maslov L
+  in-middle L =
+    ∈ᶜ-tof₃ (ctl L zero) (ctl L (suc zero)) (tgt L) (c₀≢c₁ L)
+            (ctl≢tgt L zero) (ctl≢tgt L (suc zero))
+
+maslov-ctl : (L : Layout N m) (i : Fin (suc m)) → ctl L i ∈ᶜ maslov L
+maslov-ctl {m = zero}        L zero                = here (here refl)
+maslov-ctl {m = zero}        L (suc ())
+maslov-ctl {m = suc zero}    L zero                = in-middle L (here refl)
+maslov-ctl {m = suc zero}    L (suc zero)          =
+  in-middle L (there (here refl))
+maslov-ctl {m = suc zero}    L (suc (suc ()))
+maslov-ctl {m = suc (suc m)} L zero                = in-gate L (here refl)
+maslov-ctl {m = suc (suc m)} L (suc zero)          =
+  in-gate L (there (here refl))
+maslov-ctl {m = suc (suc m)} L (suc (suc zero))    =
+  in-gate L (there (there (here refl)))
+maslov-ctl {m = suc (suc m)} L (suc (suc (suc i))) =
+  in-inner L (maslov-ctl (inner L) (suc i))
+
+maslov-tgt : (L : Layout N m) → tgt L ∈ᶜ maslov L
+maslov-tgt {m = zero}        L = here (there (here refl))
+maslov-tgt {m = suc zero}    L = in-middle L (there (there (here refl)))
+maslov-tgt {m = suc (suc m)} L = in-inner L (maslov-tgt (inner L))
+
+maslov-anc : (L : Layout N m) (j : Fin ⌊ m /2⌋) → anc L j ∈ᶜ maslov L
+maslov-anc {m = zero}        L ()
+maslov-anc {m = suc zero}    L ()
+maslov-anc {m = suc (suc m)} L zero    =
+  in-gate L (there (there (there (here refl))))
+maslov-anc {m = suc (suc m)} L (suc j) = in-inner L (maslov-anc (inner L) j)
+
+-- So when the layout's wires are all the wires, no wire is idle, and
+-- the circuit's qubits, counted as the tool counts them, are all its
+-- wires.
+
+maslov-touched : (L : Layout N m) →
+                 (∀ u → (∃ λ i → u ≡ ctl L i) ⊎ u ≡ tgt L ⊎
+                        (∃ λ j → u ≡ anc L j)) →
+                 ∀ u → u ∈ᶜ maslov L
+maslov-touched L cover u = touch (cover u)
+  where
+  touch : ((∃ λ i → u ≡ ctl L i) ⊎ u ≡ tgt L ⊎ (∃ λ j → u ≡ anc L j)) →
+          u ∈ᶜ maslov L
+  touch (inj₁ (i , refl))        = maslov-ctl L i
+  touch (inj₂ (inj₁ refl))       = maslov-tgt L
+  touch (inj₂ (inj₂ (j , refl))) = maslov-anc L j
+
+maslov-qubits : (L : Layout N m) →
+                (∀ u → (∃ λ i → u ≡ ctl L i) ⊎ u ≡ tgt L ⊎
+                       (∃ λ j → u ≡ anc L j)) →
+                qubits (maslov L) ≡ N
+maslov-qubits L cover = qubits-all (maslov L) (maslov-touched L cover)
+
+-- On the paper's layout, for every n ≥ 3: every one of the
+-- n + ⌈(n − 3)/2⌉ wires is touched.
+
+Maslovₙ-touched : (n : ℕ) (p : 3 ≤ n) (u : Fin (n + ⌈ n ∸ 3 /2⌉)) →
+                  u ∈ᶜ Maslovₙ n p
+Maslovₙ-touched n p = maslov-touched (standardᴹ n p) (standardᴹ-wires n p)
+
+Maslovₙ-qubits : (n : ℕ) (p : 3 ≤ n) →
+                 qubits (Maslovₙ n p) ≡ n + ⌈ n ∸ 3 /2⌉
+Maslovₙ-qubits n p =
+  maslov-qubits (standardᴹ n p) (standardᴹ-wires n p)
 
 
 ------------------------------------------------------------------------
@@ -442,22 +572,25 @@ Maslovₙ-cliffords-closed (suc (suc (suc m))) (s≤s (s≤s (s≤s z≤n))) =
 -- Maslov50 and Maslov100: 74 and 149 qubits, 192 and 392 path
 -- variables, 481 and 981 Clifford gates, 384 and 784 T gates.  (The
 -- circuits are not computed: these are the counts above at n = 50 and
--- n = 100.)
+-- n = 100.  The qubits are the wires the gates touch, as the tool
+-- counts them; the width is the same number, by definition.)
 
 table-2-Maslov50 : (p : 3 ≤ 50) →
-                   (width (Maslovₙ 50 p) ≡ 74) × (paths (Maslovₙ 50 p) ≡ 192)
+                   (qubits (Maslovₙ 50 p) ≡ 74)
+                   × (paths (Maslovₙ 50 p) ≡ 192)
                    × (cliffords (Maslovₙ 50 p) ≡ 481)
                    × (tcount (Maslovₙ 50 p) ≡ 384)
 table-2-Maslov50 p =
-  refl , Maslovₙ-paths 50 p , Maslovₙ-cliffords 50 p , Maslovₙ-tcount 50 p
+  Maslovₙ-qubits 50 p , Maslovₙ-paths 50 p , Maslovₙ-cliffords 50 p
+  , Maslovₙ-tcount 50 p
 
 table-2-Maslov100 : (p : 3 ≤ 100) →
-                    (width (Maslovₙ 100 p) ≡ 149)
+                    (qubits (Maslovₙ 100 p) ≡ 149)
                     × (paths (Maslovₙ 100 p) ≡ 392)
                     × (cliffords (Maslovₙ 100 p) ≡ 981)
                     × (tcount (Maslovₙ 100 p) ≡ 784)
 table-2-Maslov100 p =
-  refl , Maslovₙ-paths 100 p , Maslovₙ-cliffords 100 p
+  Maslovₙ-qubits 100 p , Maslovₙ-paths 100 p , Maslovₙ-cliffords 100 p
   , Maslovₙ-tcount 100 p
 
 
@@ -474,11 +607,16 @@ Maslov-4 : Maslovₙ 4 (s≤s (s≤s (s≤s z≤n))) ≡
 Maslov-4 = refl
 
 -- n = 5, on 6 wires: a ⊕= x₀x₁x₂ (a = wire 5), t ⊕= a x₃ (t = wire 4),
--- by the seven-T Toffoli gate, and the first gate undone.
+-- by the tool's Toffoli circuit, and the first gate undone.  (That
+-- circuit uses the proof that its first control is not its target only
+-- under a λ, where unification cannot recover it, so it is written
+-- out: it is the inner layout's.)
 
 Maslov-5 : Maslovₙ 5 (s≤s (s≤s (s≤s z≤n))) ≡
            rc3x (# 0) (# 1) (# 2) (# 5) _ _ _
-           ++ tof (# 5) (# 3) (# 4) _ _ _
+           ++ tof₃ (# 5) (# 3) (# 4) _
+                   (ctl≢tgt (inner (standardᴹ 5 (s≤s (s≤s (s≤s z≤n))))) zero)
+                   _
            ++ rc3x (# 0) (# 1) (# 2) (# 5) _ _ _ †
 Maslov-5 = refl
 
