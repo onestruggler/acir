@@ -90,37 +90,27 @@ scalars presents the same group as our semidirect presentation.
 \subsection{Contributions}\label{sec:contributions}
 
 \begin{enumerate}
-\item[(1)] \textbf{A method, and a comparison.}  We introduce the
-  library's pipeline on its smallest case study, the swap circuits
-  presenting the symmetric groups, and recall the product constructions
-  it composes (\S\ref{sec:permutations}); explain precisely which parts
-  of the qupit paper's proof the formalisation follows, where the proof
-  resists formalisation, and how the factor-present-compose route avoids
-  each difficulty (\S\ref{sec:two-routes}); and report what the
-  formalisation covers and what it does not (\S\ref{sec:discussion}).  The route is generic: its
-  two presentation theorems were proved for arbitrary groups before this
-  project began.
-\item[(2)] \textbf{A machine-checked presentation of the projective
+\item[(1)] \textbf{A machine-checked presentation of the projective
   qupit Clifford groups.}  For every odd prime $p$ and every width $n$,
   the paper's Figure~1 read modulo scalars presents
   $\PPauli \rtimes \Sp$ (Theorem~\ref{thm:main}), via a chain of
   verified isomorphisms of presentations from a semidirect presentation
   on $X, Z, H, S, CZ$ down to the paper's fifteen rules on $H, S, CZ$
   (\S\ref{sec:composing}).
-\item[(3)] \textbf{A machine-checked presentation of $\Sp$ and a
+\item[(2)] \textbf{A machine-checked presentation of $\Sp$ and a
   verified unique normal form.}  Eighteen relations present the
   symplectic groups (Theorem~\ref{thm:sp}); the normal form is the
   paper's, refined into a doubly inductive datatype of \emph{normal boxes} and \emph{rows},
   realised as a Reidemeister--Schreier coset tower, and proved unique
   against the symplectic action on Pauli vectors
   (Theorem~\ref{thm:unique}, \S\ref{sec:symplectic}).
-\item[(4)] \textbf{The relation reductions, verified.}  The box
+\item[(3)] \textbf{The relation reductions, verified.}  The box
   relations that the normalisation uses are derived from the full
   symplectic rules, those from the simplified ones, the semidirect
   relations from the Clifford ones, and the paper's rules from ours;
   each reduction is a checked isomorphism of presentations
   (\S\ref{sec:reduction}, \S\ref{sec:plumbing}).
-\item[(5)] \textbf{The scalars restored.}  The exact rule set --- the
+\item[(4)] \textbf{The scalars restored.}  The exact rule set --- the
   sixteen rules corrected by the phase each actually picks up, a single
   power of $\omega$ on one rule --- presents a central extension of the
   projective group by $\langle\omega\rangle$, verified against the Weyl
