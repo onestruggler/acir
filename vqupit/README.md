@@ -32,14 +32,19 @@ version is wanted.
   $S_n$: gates, relations, the coset table, semantics) and
   `constructions` (§2's last subsection, "Products of presentations,
   and their presentation theorems", from that paper's §4.6 without the
-  amalgamated products), `background` (§3: gates, the 16 rules, the
-  three main theorems — the Clifford presentation, the unique normal
-  form, and the symplectic presentation), `two-routes` (§4: the
-  paper's proof, where ours follows it and where it departs, our
-  route), `symplectic` (§5), `composing` (§6: Pauli, semidirect,
-  plumbing, scalars), `discussion` (§7), `related` (§8), `conclusion`
-  (§9).  The five literate Agda
-  files (`*.lagda.tex`) — `background`, `permutations`,
+  amalgamated products), `two-routes` (§3, "Qupit Clifford Operators
+  and Two Routes to Completeness": the qupit gates and the groups the
+  semantics is built from, then the paper's proof, where ours follows
+  it and where it departs, and our route), `symplectic` (§4: the
+  circuit syntax and parameters, then semantics, the normal form with
+  its boxes, the coset table, uniqueness with the theorem `unique-nf`,
+  relation reduction, and the presentation theorem
+  `simplified-presentation`), `composing` (§5: Pauli, semidirect,
+  plumbing with the rules figure and the main theorem
+  `clifford-presentation`, scalars), `discussion` (§6), `related`
+  (§7), `conclusion` (§8).  There is no longer a section of main
+  theorems: each is stated where it is proved.  The four literate Agda
+  files (`*.lagda.tex`) — `permutations`,
   `constructions`, `symplectic`, `composing` — quote Agda as in
   `paper/`: `make agda` runs `agda --latex --only-scope-checking` on them from
   the repository root and writes `latex/vqupit/sections/<name>.tex`,
@@ -82,10 +87,10 @@ version is wanted.
 
 ## Building
 
-**Status: builds clean; about a page over the limit** — the
-2026-09-28 scratch build described below gives 27 pages in
-`acmsmall,review,anonymous` mode, the bibliography starting at the
-foot of page 24 (so about 24 pages of text against the 23-page
+**Status: builds clean; a fifth of a page over the limit** — the
+2026-09-28 scratch build described below gives 26 pages in
+`acmsmall,review,anonymous` mode, the bibliography starting near the
+top of page 24 (so about 23.2 pages of text against the 23-page
 OOPSLA/PLDI limit), with zero errors, zero undefined references or
 citations and no overfull box over 8 pt.  The previous 2026-09-18
 revision built with `make` (Agda on the literate sections, then
@@ -136,10 +141,19 @@ file defines the record rather than importing it).  §2.5 was
 shortened in the same way, to the join primitive, the semidirect
 theorem with its two hypotheses and the extension recipe, its prose
 halved (the displayed list of presentation statements, the lemma
-inventory and the plumbing remarks went).  A scratch build of that
-revision (TeX Live 2023 and Agda 2.8.0 in a container, 2026-09-28)
-gave 27 pages, the bibliography starting at the foot of page 24, i.e.
-about 24 pages of text — one over the 23-page limit — with zero errors, zero undefined references and no overfull
+inventory and the plumbing remarks went).  Finally the section of
+main theorems (old §3, `background.lagda.tex`, deleted with its twin)
+was dissolved: the qupit gates, Table 1 and the three quotients open
+the two-routes section (now §3, retitled), the circuit syntax and the
+parameters open §4, the boxes A/B/D/E sit in §4.2, `unique-nf` is
+stated in §4.4 and `simplified-presentation` in §4.6 with a note on
+`_SRel,_===_`, and the sixteen-rule figure and `clifford-presentation`
+(stated for the paper's fifteen rules, as in `MainTheorems`) sit in
+the plumbing subsection §5.3; theorems are numbered by section.  A
+scratch build of that revision (TeX Live 2023 and Agda 2.8.0 in a
+container, 2026-09-28) gave 26 pages, the bibliography starting near
+the top of page 24, i.e. about 23.2 pages of text — a fifth of a page
+over the 23-page limit — with zero errors, zero undefined references and no overfull
 box over 8 pt.
 
 ```
@@ -147,11 +161,11 @@ make                                   # from a WSL shell in this directory
 wsl bash -lc "make -C /mnt/d/work/acir/vqupit"   # from PowerShell
 ```
 
-The generated twins of the five literate sections
-(`latex/vqupit/sections/{background,permutations,constructions,symplectic,composing}.tex`)
+The generated twins of the four literate sections
+(`latex/vqupit/sections/{permutations,constructions,symplectic,composing}.tex`)
 were regenerated on 2026-09-28 with Agda 2.8.0 and agda-stdlib 2.4
 (`agda --latex --only-scope-checking`, run from the repository root as
-`make agda` does), so all five literate files are known to scope-check
+`make agda` does), so all four literate files are known to scope-check
 against the library on this branch.
 
 `make` reruns latexmk only when `main.tex`, `sections/*.tex`, `figures/*.tikz`,

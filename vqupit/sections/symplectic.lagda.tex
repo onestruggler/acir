@@ -2,11 +2,11 @@
 module vqupit.sections.symplectic where
 
 open import Data.Nat using (ℕ)
-open import Data.Product using (_×_ ; _,_ ; ∃)
+open import Data.Product using (_×_ ; _,_ ; ∃ ; Σ-syntax)
 open import Data.Sum using (_⊎_)
 open import Data.Unit using (⊤ ; tt)
 open import Data.Vec using (Vec ; _∷_ ; head ; tail)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
 open import Notations using (₀ ; ₁ ; ₁₊ ; ₂₊)
 open import Word.Base using (Word ; ε ; _•_ ; _^_)
 open import Presentation.Definitions using (_IsPresentationOf_)
@@ -15,7 +15,7 @@ infixl 9 _↑ _↓
 infix 8 -_
 infixl 6 _+_
 infixl 7 _*_
-infix 4 _SRel,_===_
+infix 4 _SRel,_===_ _≈ˢ_
 
 private variable
   n : ℕ
@@ -30,8 +30,12 @@ data Gen : ℕ → Set where
 
 postulate
   proof-elided : ∀ {ℓ} {A : Set ℓ} → A
-  A B D E : Set
   Pauli : ℕ → Set
+  ℤ : ℕ → Set
+  ₚ : ℕ
+  Symplectic : ℕ → Set
+  ⟦_⟧ : ∀ {n} → Word (Gen n) → Symplectic n
+  _≈ˢ_ : ∀ {n} → Symplectic n → Symplectic n → Set
   _+_ _*_ : ∀ {X : Set} → X → X → X
   -_ : ∀ {X : Set} → X → X
   _↑ _↓ : ∀ {n} → Word (Gen n) → Word (Gen (₁₊ n))
@@ -43,15 +47,58 @@ postulate
   pZ₀ pX₀ : ∀ {n} → Pauli n
   Sp-group : ℕ → Set
   _SRel,_===_ : ℕ → Set
+
+module Unq where
+  postulate ⟦[]⟧-injective : Set
+module Pres where
+  postulate presentation : Set
 \end{code}
 \section{The Symplectic Factor}\label{sec:symplectic}
 
-This section presents the symplectic factor, where the real rewriting
-happens, in six steps: the semantics; the normal form; the coset table
-that rewrites to it, which is the $S_n$ table of \S\ref{sec:sn-cosets} under a
-richer action; uniqueness; the reduction of the relations the table
-uses to the eighteen rules that present $\Sp$; and the presentation
-theorem they assemble into (\S\ref{sec:sptheorem}).
+This section fixes the circuit syntax shared by the symplectic and the
+Clifford developments, then presents the symplectic factor, where the
+real rewriting happens, in six steps: the semantics; the normal form;
+the coset table that rewrites to it, which is the $S_n$ table of
+\S\ref{sec:sn-cosets} under a richer action; uniqueness; the reduction
+of the relations the table uses to the eighteen rules that present
+$\Sp$; and the presentation theorem they assemble into
+(\S\ref{sec:sptheorem}).
+
+\paragraph{Circuits.}  In the formalisation a gate set is a family of gate types indexed by
+arity, and a circuit on $n$ wires is a \emph{word} over wire-indexed
+generators: $\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$ is the free
+monoid on the generators of $H$, $S$ and $CZ$ placed on each wire,
+$\aid{{\_}↑}$ shifts a circuit up one wire, and diagrams are read in
+matrix-multiplication order (the generic machinery is that of
+\S\ref{sec:permutations}).  The remaining usual gates are \emph{words}, not extra
+generators: $Z = H H S H H S^{-1}$, $X = H S H H S^{-1} H$, the swap
+$\mathit{Ex} = (CZ \cdot H{\downarrow} \cdot H{\uparrow})^{3}$, and the
+controlled-$X$ gates $CX = H{\downarrow}^{3} \cdot CZ \cdot
+H{\downarrow}$ and $XC$ with the wires exchanged, where $S^{-1} =
+S^{p-1}$, $H^{-1} = H^{3}$ and $CZ^{-1} = CZ^{p-1}$ are the words that
+the relations make inverses, and \aid{{\_}↓} is the identity on
+circuits, there to make ``the lower copy of a gate'' visible in a rule.
+One derived gate has no qubit counterpart: the \emph{multiplier}
+$M_x\ket{j} = \ket{xj}$ for a unit $x \in \Zp^{*}$, which the qupit
+paper spells (its Lemma~2.14) as $H S^{g^{-1}} H S^{g} H S^{g^{-1}}$
+followed by a Pauli correction and a global phase, and which we mostly
+spell $R^{x}\,H\,R^{x^{-1}}H\,R^{x}H$ with $R = S\cdot Z^{1/2}$, which
+absorbs the Pauli and drops the phase; the two spellings are
+interderivable (\S\ref{sec:plumbing}).
+
+\paragraph{Parameters.}  Every Clifford module is
+parameterised by the prime, as $p = \aid{p-3} + 3$ with a primality
+proof (the symplectic modules take $p = \aid{p-2} + 2$, so
+Theorems~\ref{thm:unique} and~\ref{thm:sp} are proved for every prime),
+and by a primitive root $g$ of $\Zp^{*}$ with the witness \aid{g-gen}
+that every unit is a power of $g$.  So every theorem holds for every odd
+prime uniformly, and for the multiplicative generator chosen, exactly as
+the qupit paper fixes a generator $g$ in its Figure~1; the existence of
+a primitive root modulo every prime is classical and is taken as a
+parameter rather than proved.  ($\Zp$ itself is $\mathsf{Fin}\;p$ with
+a ring solver, B\'ezout inversion and Fermat's little theorem; from $g$
+and \aid{g-gen} the discrete logarithm and the exponent law $g^{k} =
+g^{k \bmod (p-1)}$ are derived.)
 
 \subsection{The semantics: symplectic transformations of Pauli vectors}\label{sec:spsem}
 
@@ -93,8 +140,36 @@ axiom in \texttt{SoundnessDirect} (1\,100 lines).
 
 The qupit paper's symplectic normal form is a $Z$-normal layer followed
 by an $X$-normal layer on $n$ wires, then a normal form on $n-1$ wires.
-We refine this into a doubly inductive datatype.  The atomic boxes were
-shown in \S\ref{sec:background}; rows and the staircase are:
+We refine this into a doubly inductive datatype, built from four kinds
+of atomic boxes:
+
+\begin{minipage}[c]{0.46\textwidth}
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+A B D E : Set
+A = Σ[ ab ∈ (ℤ ₚ × ℤ ₚ) ] (ab ≢ (₀ , ₀))
+B = ℤ ₚ × ℤ ₚ
+D = ℤ ₚ × ℤ ₚ
+E = ℤ ₚ
+\end{code}
+\endgroup
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\textwidth}\centering\footnotesize
+  \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
+    $A_{a,b}$, $a\neq0$ & \ufig[0.58]{box-A-l} & $=$ & \ufig[0.58]{box-A-r}\\
+    $A_{0,b}$, $b\neq0$ & \ufig[0.58]{box-A0-l} & $=$ & \ufig[0.58]{box-A0-r}\\
+    $B_{a,b}$, $a\neq0$ & \ufig[0.58]{box-B-l} & $=$ & \ufig[0.58]{box-B-r}\\
+    $B_{0,b}$ & \ufig[0.58]{box-B0-l} & $=$ & \ufig[0.58]{box-B0-r}\\
+    $D_{a,b}$, $a\neq0$ & \ufig[0.58]{box-D-l} & $=$ & \ufig[0.58]{box-D-r}\\
+    $D_{0,b}$ & \ufig[0.58]{box-D0-l} & $=$ & \ufig[0.58]{box-D0-r}\\
+    $E_{b}$ & \ufig[0.58]{box-E-l} & $=$ & \ufig[0.58]{box-E-r}\\
+  \end{tabular}
+\end{minipage}
+
+\medskip\noindent
+The boxes are the paper's normal boxes (its Figure~6), with the same
+names; the pictures show how each is spelled as a circuit.  Rows and
+the staircase are:
 
 \begin{minipage}[c]{0.4\textwidth}
 \begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
@@ -153,7 +228,7 @@ NF (₁₊ n) = NF n × ML (₁₊ n)
 
 \medskip\noindent
 Reading normal forms back as circuits is structural recursion, box by
-box.  The box-to-word maps make the pictures of \S\ref{sec:background}
+box.  The box-to-word maps make the pictures above
 precise; for instance
 \begin{code}
 [_]ᵈ : ∀ {n} → D → Word (Gen (₂₊ n))
@@ -241,8 +316,20 @@ removed'' is the type of \aid{ract}.
 
 \subsection{Uniqueness of the normal form}\label{sec:uniqueness}
 
-Theorem~\ref{thm:unique} says that normal forms with equal denotations
-are equal.  The action of a normal form on a Pauli vector peels the
+The uniqueness theorem states this for the symplectic semantics of
+\S\ref{sec:spsem}:
+
+\begin{theorem}[\aid{unique-nf}]\label{thm:unique}
+Normal forms with equal symplectic denotations are equal:
+\begin{code}
+unique-nf : ∀ n {u v : NF n} → ⟦ [ u ] ⟧ ≈ˢ ⟦ [ v ] ⟧ → u ≡ v
+unique-nf = Unq.⟦[]⟧-injective
+\end{code}
+\noindent Home: \texttt{Symplectic.Normalization.Uniqueness} (module
+paths here are under \texttt{Examples.Groups}).
+\end{theorem}
+
+\noindent The action of a normal form on a Pauli vector peels the
 staircase one wire at a time --- the coset factor acts, the resulting
 bottom entry is fixed, and the inner normal form acts on the tail ---
 and injectivity is a structural induction on the staircase:
@@ -397,5 +484,23 @@ Theorem-LM = proof-elided
 bottom-wire $Z$ and $X$ --- which is the paper's Lemma~3.7 with the box
 computed rather than asserted.  Composing the sub-presentation of the
 full rules with the identity isomorphism of \S\ref{sec:reduction} gives
-Theorem~\ref{thm:sp} (\S\ref{sec:main3}), the presentation theorem for
-the simplified rules, with the \emph{same} interpretation.
+the presentation theorem for the simplified rules, with the \emph{same}
+interpretation:
+
+\begin{theorem}[\aid{simplified-presentation}]\label{thm:sp}
+For every width $n$, the simplified symplectic rules present the
+symplectic group:
+\begin{code}
+simplified-presentation : ∀ n → (n SRel,_===_) IsPresentationOf (Sp-group n)
+simplified-presentation n = Pres.presentation {n}
+\end{code}
+\noindent Home: \texttt{Symplectic.Simplified.Presentation}.
+\end{theorem}
+
+\noindent Here \aid{{\_}SRel,{\_}==={\_}} is the closure of the fifteen
+rules of \S\ref{sec:reduction} under the three structural rules
+(\aid{Lift-Relation}; the index module \texttt{MainTheorems} calls it
+\aid{{\_}QRel,{\_}==={\_}}).  Theorem~\ref{thm:main} is then built on
+this theorem: the semidirect product of \S\ref{sec:semidirect}
+assembles it with a presentation of the projective Pauli group and the
+conjugation action into the presentation of $\PPauli \rtimes \Sp$.

@@ -186,7 +186,7 @@ The semidirect presentation has five generators per wire, $X, Z, H, S,
 CZ$, and the relations of Table~\ref{tab:plumb}; the paper has three,
 $H, S, CZ$, and sixteen relations.  Getting from one to the other is
 \emph{generator reduction} --- $X$ and $Z$ become the derived words of
-\S\ref{sec:background} --- and \emph{relation reduction} --- the Pauli
+\S\ref{sec:symplectic} --- and \emph{relation reduction} --- the Pauli
 rules and the fourteen conjugation rules become derivable.  For
 example, $CZ \bullet X{\uparrow} \approx X{\uparrow} \bullet
 Z{\downarrow} \bullet CZ$ (\aid{conj CZ-gen (X-gen ↥)}) becomes a
@@ -219,7 +219,7 @@ $R$; $h$ sends $H$ and $CZ$ to themselves and $S$ to $Z^{-1/2} \bullet
 S$; both commute with $\uparrow$.  The symplectic $S$ is carried to
 $R = S \cdot Z^{1/2}$ and $h$ compensates, because the target rule set,
 \texttt{Simplified-V1}, spells the multiplier over $R$, as
-\S\ref{sec:background} does: $M_x = R^{x}HR^{x^{-1}}HR^{x}H$ exactly, with no Pauli
+\S\ref{sec:symplectic} does: $M_x = R^{x}HR^{x^{-1}}HR^{x}H$ exactly, with no Pauli
 correction.  \texttt{Simplified-V1} has nineteen group-specific rules:
 the simplified symplectic rules of \S\ref{sec:reduction} with $R$ in
 place of $S$ in the multiplier rules and in c10, c11, plus
@@ -249,9 +249,75 @@ bookkeeping the paper's hand derivations spend most of their length
 on.
 
 \paragraph{From Simplified-V1 to our sixteen rules.}
-\texttt{Paper-V0} is the rule set of \S\ref{sec:background}: the same
-alphabet, so the identity on words is the candidate isomorphism.  Ten of
-the axioms are shared verbatim; the rest is real work in both
+\texttt{Paper-V0} is our primary rule set: the qupit paper's Figure~1
+read modulo scalars, with the multiplier spelled over $R$ and with
+$(SH)^3 = \varepsilon$ kept as an axiom.  In Agda it is one inductive
+family \aid{{\_}CRel,{\_}==={\_}} with sixteen constructors, one per rule,
+each stated at the smallest number of wires at which it makes sense;
+Figure~\ref{fig:rules} shows them as circuit equations, drawn from the
+Agda terms, under the constructor names used throughout.  Six are
+one-qupit rules: the orders $S^{p} = \varepsilon$, $H^{2} = M_{-1}$ and
+$(SH)^{3} = \varepsilon$, the multiplier calculus \aid{M-power}
+($M_g^{\,k} = M_{g^k}$) and \aid{semi-MR} ($R\,M_g = M_g\,R^{g^2}$),
+and \aid{comm-HHSHHS}.  Seven are two-qupit rules: the orders of $CZ$
+and of the swap $\mathit{Ex}$, the commutations of $CZ$ with $S$ and
+$M_g$ on the upper wire, the two rules moving $S$ and $H$ across the
+swap, and \aid{blake-c12}, which relates two circuits implementing
+controlled-$Z$.  Three are three-qupit rules: the Yang--Baxter and
+\aid{cz-slide} rules of the swap calculus, and \aid{semi-CX↑-CZ↓}.
+Beyond these, \emph{every} circuit theory in
+the framework gets the same three structural rules for free: congruence
+under $\uparrow$, and gates on disjoint wires commute, one rule per
+arity (a global scalar gate, when there is one, gets a fourth: it is
+the same gate on every wire; that it then commutes with every wire
+gate is a theorem).  Nothing else is an
+axiom: $XZ = ZX$ modulo scalars, the commutation of $\mathit{Ex}$ with
+$CZ$, and both rules for pushing a Pauli through $CZ$ are \emph{derived}.
+The count is sixteen where the paper's Figure~1 has fifteen non-scalar
+rules because we keep $(SH)^3 = \varepsilon$ as an axiom under the
+$R$-spelling; under the paper's own $S$-spelling it is a theorem, as
+the next paragraph shows.
+
+\begin{figure}
+\centering
+\begin{minipage}[t]{0.42\textwidth}\centering\scriptsize
+  \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
+    order-S & \ufig[0.48]{pv0-order-S-l} & $=$ & \ufig[0.48]{pv0-order-S-r}\\[1pt]
+    order-H & \ufig[0.48]{pv0-order-H-l} & $=$ & \ufig[0.48]{pv0-order-H-r}\\[1pt]
+    M-power & \ufig[0.48]{pv0-M-power-l} & $=$ & \ufig[0.48]{pv0-M-power-r}\\[1pt]
+    semi-MR & \ufig[0.48]{pv0-semi-MR-l} & $=$ & \ufig[0.48]{pv0-semi-MR-r}\\[1pt]
+    order-CZ & \ufig[0.48]{pv0-order-CZ-l} & $=$ & \ufig[0.48]{pv0-order-CZ-r}\\[1pt]
+    order-Ex & \ufig[0.48]{pv0-order-Ex-l} & $=$ & \ufig[0.48]{pv0-order-Ex-r}\\[1pt]
+    order-SH & \ufig[0.48]{pv0-order-SH-l} & $=$ & \ufig[0.48]{pv0-order-SH-r}\\
+  \end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.55\textwidth}\centering\scriptsize
+  \begin{tabular}{@{}r@{\;\,}l@{}}
+    comm-CZ-S↑ & \ufig[0.48]{pv0-comm-CZ-Sup}\\[1pt]
+    semi-M↑CZ & \ufig[0.48]{pv0-semi-Mup-CZ}\\[1pt]
+    semi-Ex-S↑ & \ufig[0.48]{pv0-semi-Ex-Sup}\\[1pt]
+    semi-Ex-H↑ & \ufig[0.48]{pv0-semi-Ex-Hup}\\[1pt]
+    comm-HHSHHS & \ufig[0.4]{pv0-comm-HHSHHS-l} $=$ \ufig[0.4]{pv0-comm-HHSHHS-r}\\
+  \end{tabular}
+\end{minipage}\\[3pt]
+\scriptsize
+\begin{tabular}{@{}r@{\;\,}l@{\qquad}r@{\;\,}l@{}}
+  blake-c12 & \ufig[0.48]{pv0-blake-c12} & yang-baxter & \ufig[0.48]{pv0-yang-baxter}\\[2pt]
+  cz-slide & \ufig[0.48]{pv0-cz-slide} & semi-CX↑-CZ↓ & \ufig[0.48]{pv0-semi-CXup-CZdn}\\
+\end{tabular}
+\caption{The sixteen rules of \protect\aid{{\_}CRel,{\_}==={\_}} as
+circuit equations.  A word is drawn left to right as written and read
+in matrix-multiplication order, so in $w \bullet v$ the right factor $v$
+acts first.
+\protect\aid{blake-c12} relates two circuits implementing
+controlled-$Z$; \protect\aid{yang-baxter} and \protect\aid{cz-slide}
+are the swap calculus.}
+\label{fig:rules}
+\end{figure}
+
+\texttt{Paper-V0} shares its alphabet with \texttt{Simplified-V1}, so
+the identity on words is the candidate isomorphism.  Ten of the axioms
+are shared verbatim; the rest is real work in both
 directions.  \texttt{Paper-V0} axiomatises the swap directly and
 two-qupit interactions through \aid{blake-c12} and
 \aid{semi-CX↑-CZ↓}, and from these its \texttt{Lemmas} (4\,750 lines)
@@ -287,8 +353,11 @@ eleven axioms cross directly, and the four multiplier rules need the
 bridge between the two spellings, $R^{a}HR^{b}HR^{a}H \approx
 \aid{SHS'}\;a\;b$, proved once over an abstract relation in
 \texttt{Shared.PauliBase} and transported by \aid{v1⇒pap}.  The result
-is the theorem the index module states:
+is the main theorem, as the index module states it:
 
+\begin{theorem}[\aid{clifford-presentation}]\label{thm:main}
+For every width $n$, the paper's fifteen rules, read modulo scalars,
+present the projective Clifford group:
 \begin{code}
 clifford-presentation :
   ∀ n → (PapV1.Clifford-Relations._QRel,_===_ n) IsPresentationOf (Pauli⋊Sp n)
@@ -296,11 +365,26 @@ clifford-presentation :
 \begin{code}[hide]
 clifford-presentation = proof-elided
 \end{code}
+\noindent Home: \texttt{ProjectiveClifford.Qupit.Paper-V1.Presentation};
+the same theorem holds for our sixteen rules
+(\texttt{Paper-V0.Presentation}).
+\end{theorem}
 
-So the paper's Figure~1, read modulo scalars, presents the same group as
-the semidirect presentation of \S\ref{sec:semidirect}: the two routes ---
+\noindent Its two halves are the two directions of the diagram
+\[
+  \mathsf{Cir}\;n \,/\, {\approx_{\text{15 rules}}}
+  \;\xrightarrow{\ \sem{\_}\ \cong\ }\;
+  \PPauli \rtimes \Sp \;\cong\; \Cliff/\langle\omega\rangle :
+\]
+\emph{soundness} --- $\sem{\_}$ is well defined, each rule holds
+semantically --- and \emph{completeness} --- $\sem{\_}$ is injective,
+semantically equal circuits are related by the rules.  So the paper's
+Figure~1, read modulo scalars, presents the same group as the
+semidirect presentation of \S\ref{sec:semidirect}: the two routes ---
 the paper's single rule set with its projective use of relations, and
-our factored construction --- provably arrive at the same place.
+our factored construction --- provably arrive at the same place.  With
+the scalar $\omega$ and its one correction added, the same holds for
+the exact Clifford group (\S\ref{sec:scalars}).
 
 \subsection{Getting the scalars back}\label{sec:scalars}
 
