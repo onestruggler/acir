@@ -197,6 +197,22 @@ ancillas — correct for every n ≥ 3: on the inputs whose ancillas are
 Its qubit, path-variable and T counts reproduce table 2's rows
 Toffoli50 and Toffoli100.
 
+**Section 5.2: the Maslov decomposition.**  `RelativePhase` treats
+path-sums that compute a permutation up to a diagonal phase, their
+composition, their adjoints, and the sandwich lemma: a gate, any
+circuit leaving its wires alone, and the gate's adjoint cancel their
+phases.  `Maslov/Gate` and `Maslov/Gate4` are Maslov's relative-phase
+Toffoli gates (figures 3 and 4 of his paper; the second is the paper's
+tool's `rToffoli4`), each proved to compute the Toffoli function up to
+an exact phase, with `Maslov/Arith` and `Maslov/Eighths` (sums of
+eighth roots of unity by computation).  `Maslov/Chain` and `Maslov`
+prove the decomposition the paper's tool builds — a chain of
+relative-phase Toffoli-4 gates on ⌈(n − 3)/2⌉ ancillas around a CNOT —
+correct for every n ≥ 3: its phases cancel exactly on every input,
+and on the inputs whose ancillas are |0⟩ it is Toffoli_n, leaving them
+clean.  Its counts are table 2's rows Maslov50 and Maslov100 in every
+column.
+
 **Section 5.2: the out-of-place adder.**  `Adder/Binary` is ripple-carry
 addition on bit vectors, `Reversible` circuits of Toffoli and CNOT gates
 read classically (with Bennett's compute-copy-uncompute lemma), and

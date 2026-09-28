@@ -26,12 +26,14 @@
 -- 2.15, with an interpreter building the representation gate by gate
 -- (PathSum.Size); section 5.2's quantum Fourier transform for every n
 -- within the precision (PathSum.QFT), its n-bit Toffoli gates with
--- ancillas for every n (PathSum.ToffoliN), its out-of-place adder for
--- every n -- the circuit its tool generates included, with table 2's
--- rows exactly (PathSum.Adder) -- and its hidden shift algorithm for
--- every size, bent function and shift, as path-sums and as figure 3's
--- circuits, with the calculus finding |s⟩ and |s⟩|s⟩ on them
--- (PathSum.HiddenShift); Z[ζ] as a commutative ring,
+-- ancillas for every n, both the standard decomposition
+-- (PathSum.ToffoliN) and Maslov's with relative-phase Toffoli gates,
+-- their phases cancelling exactly (PathSum.Maslov), its out-of-place
+-- adder for every n -- the circuit its tool generates included, with
+-- table 2's rows exactly (PathSum.Adder) -- and its hidden shift
+-- algorithm for every size, bent function and shift, as path-sums and
+-- as figure 3's circuits, with the calculus finding |s⟩ and |s⟩|s⟩ on
+-- them (PathSum.HiddenShift); Z[ζ] as a commutative ring,
 -- definition 2.4, and every circuit's path-sum unitary, over both gate
 -- sets; all four rules of figure 2, [Case] included and with
 -- Boolean-valued quotients, at any internal path variables
@@ -48,8 +50,9 @@
 -- Clifford -- the paper's irreducible identity, non-unique normal
 -- forms, an equivalent level-3 pair validation cannot settle -- and
 -- its remedy, a complete (exponential) decision by expanding the
--- variables reduction leaves (PathSum.Expand); and the paper's worked examples,
--- checked at precision M₀ = 0 (PathSum.Examples, imported below).
+-- variables reduction leaves (PathSum.Expand); and the paper's worked
+-- examples, checked at precision M₀ = 0 (PathSum.Examples, imported
+-- below).
 --
 -- Statements of the paper that are false as printed, proved here in a
 -- corrected form beside a checked counterexample: lemma 4.2 needs Q odd
@@ -89,7 +92,7 @@ module PathSum.Theorems (M₀ : ℕ) where
 
 open import Algebra.Bundles using (CommutativeRing)
 open import Data.Bool.Base using (Bool; true; false; _xor_; if_then_else_)
-open import Data.Nat.Base using (_+_; _*_; _∸_; _^_; _≤_; _⊔_)
+open import Data.Nat.Base using (_+_; _*_; _∸_; _^_; _≤_; _⊔_; ⌊_/2⌋)
 open import Data.Fin.Base using (Fin)
 open import Data.Fin.Subset using (⊥)
 open import Data.Integer.Base using (ℤ; 0ℤ; +_; _-_)
@@ -368,6 +371,11 @@ open Anc using (_≋[_]₀*_; Clean; set0ˢ)
 
 import PathSum.Classical
 module Cl = PathSum.Classical M₀
+open Cl using (_computes_)
+
+import PathSum.RelativePhase
+module RP = PathSum.RelativePhase M₀
+open RP using (_computes_up-to_)
 
 import PathSum.CRK.Path
 module KP = PathSum.CRK.Path M₀
@@ -386,6 +394,18 @@ module TN = PathSum.ToffoliN M₀
 
 import PathSum.Toffoli.Depth3
 module Tof3 = PathSum.Toffoli.Depth3 M₀
+
+import PathSum.Maslov.Gate
+module MGt = PathSum.Maslov.Gate M₀
+
+import PathSum.Maslov.Gate4
+module MG4 = PathSum.Maslov.Gate4 M₀
+
+import PathSum.Maslov.Chain
+module MCh = PathSum.Maslov.Chain M₀
+
+import PathSum.Maslov
+module Msl = PathSum.Maslov M₀
 
 import PathSum.Adder.Binary
 module ABin = PathSum.Adder.Binary
@@ -1582,6 +1602,109 @@ table-2-Toffoli100 : (p : 3 ≤ 100) →
                      × (K.paths (TN.Toffoliₙ 100 p) ≡ 390)
                      × (TNet.tcount (TN.Toffoliₙ 100 p) ≡ 1365)
 table-2-Toffoli100 = TN.table-2-Toffoli100
+
+
+------------------------------------------------------------------------
+-- Section 5.2: the Maslov decomposition, for every n
+-- (PathSum.RelativePhase, PathSum.Maslov, PathSum.Maslov.*)
+
+-- The relative-phase Toffoli gates of [23] -- the three-qubit one
+-- (four T gates; figure 3's dashed box) and the Toffoli-4 one (eight;
+-- figure 4, the paper's tool's rToffoli4) -- compute the Toffoli
+-- functions only up to a diagonal phase, computed exactly here ...
+
+rtof-up-to : (c₁ c₂ t : Fin n) (c₁≢t : c₁ ≢ t) (c₂≢t : c₂ ≢ t) →
+             KP.⟦ MGt.rtof c₁ c₂ t c₁≢t c₂≢t ⟧
+               computes Tof.toffoli c₁ c₂ t up-to MGt.rtof-phase c₁ c₂ t
+rtof-up-to = MGt.rtof-up-to
+
+rc3x-up-to : (a b c d : Fin n) (a≢d : a ≢ d) (b≢d : b ≢ d) (c≢d : c ≢ d) →
+             KP.⟦ MG4.rc3x a b c d a≢d b≢d c≢d ⟧
+               computes MG4.toffoli₄ a b c d up-to MG4.rc3x-phase a b c d
+rc3x-up-to = MG4.rc3x-up-to
+
+-- ... so a gate followed by its adjoint is exactly the identity, but a
+-- gate followed by itself -- as a netlist of Toffoli gates would be
+-- expanded -- is not: the phases are real.
+
+rc3x-rc3x† : (a b c d : Fin n) (a≢d : a ≢ d) (b≢d : b ≢ d)
+             (c≢d : c ≢ d) →
+             KP.⟦ MG4.rc3x a b c d a≢d b≢d c≢d
+                  ++ MG4.rc3x a b c d a≢d b≢d c≢d KA.† ⟧ computes (λ x → x)
+rc3x-rc3x† = MG4.rc3x-rc3x†
+
+rc3x-rc3x-not-id : (a b c d : Fin n) (a≢d : a ≢ d) (b≢d : b ≢ d)
+                   (c≢d : c ≢ d) →
+                   ¬ (KP.⟦ MG4.rc3x a b c d a≢d b≢d c≢d
+                          ++ MG4.rc3x a b c d a≢d b≢d c≢d ⟧
+                        computes (λ x → x))
+rc3x-rc3x-not-id = MG4.rc3x-rc3x-not-id
+
+-- "The Maslov decomposition [23] using relative phase Toffolis and
+-- ⌈(n − 3)/2⌉ ancillas", as the paper's tool builds it: a chain of
+-- Toffoli-4 gates collects the controls into the ancillas, a CNOT (at
+-- odd n a Toffoli gate) writes the target, and the chain's adjoint
+-- uncomputes.  On every input its phases cancel exactly -- it computes
+-- a permutation -- which on the inputs whose ancillas are |0⟩ is
+-- Toffoli_n; it leaves them clean, and with them read as the constant
+-- 0 it is Toffoli_n outright.
+
+Maslovₙ-computes : (n : ℕ) (p : 3 ≤ n) →
+                   KP.⟦ Msl.Maslovₙ n p ⟧
+                     computes MCh.applyᴹ (MCh.standardᴹ n p)
+Maslovₙ-computes = Msl.Maslovₙ-computes
+
+Maslovₙ-spec : (n : ℕ) (p : 3 ≤ n) →
+               KP.⟦ Msl.Maslovₙ n p ⟧ ≋[ MCh.anc (MCh.standardᴹ n p) ]₀*
+                 MCh.toffoliᴹˢ (MCh.standardᴹ n p)
+Maslovₙ-spec = Msl.Maslovₙ-spec
+
+Maslovₙ-clean : (n : ℕ) (p : 3 ≤ n) → ∀ x z →
+                Clean (MCh.anc (MCh.standardᴹ n p)) x →
+                (i : Fin ⌊ n ∸ 2 /2⌋) →
+                z (MCh.anc (MCh.standardᴹ n p) i) ≡ true →
+                amp KP.⟦ Msl.Maslovₙ n p ⟧ x z ≐ 0ᴬ
+Maslovₙ-clean = Msl.Maslovₙ-clean
+
+Maslovₙ-set0 : (n : ℕ) (p : 3 ≤ n) →
+               set0ˢ (MCh.anc (MCh.standardᴹ n p)) KP.⟦ Msl.Maslovₙ n p ⟧ ≋
+               set0ˢ (MCh.anc (MCh.standardᴹ n p))
+                     (MCh.toffoliᴹˢ (MCh.standardᴹ n p))
+Maslovₙ-set0 = Msl.Maslovₙ-set0
+
+-- Its resources: at even n, 4(n − 2) path variables, 8(n − 2) T gates
+-- and 10(n − 2) + 1 Clifford gates (at odd n one T gate, three
+-- Clifford gates and two path variables fewer) -- one T gate more
+-- than [23]'s own construction, which keeps an exact Toffoli gate in
+-- the middle: 8n − 17.  Table 2's rows Maslov50 and Maslov100,
+-- computed from the circuit, are all as printed.
+
+Maslovₙ-paths : (n : ℕ) (p : 3 ≤ n) →
+                KP.paths (Msl.Maslovₙ n p) + 2 * Msl.parity n ≡ 4 * (n ∸ 2)
+Maslovₙ-paths = Msl.Maslovₙ-paths-closed
+
+Maslovₙ-tcount : (n : ℕ) (p : 3 ≤ n) →
+                 TNet.tcount (Msl.Maslovₙ n p) + Msl.parity n ≡ 8 * (n ∸ 2)
+Maslovₙ-tcount = Msl.Maslovₙ-tcount-closed
+
+Maslovₙ-cliffords : (n : ℕ) (p : 3 ≤ n) →
+                    QCnt.cliffords (Msl.Maslovₙ n p) + 3 * Msl.parity n ≡
+                    10 * (n ∸ 2) + 1
+Maslovₙ-cliffords = Msl.Maslovₙ-cliffords-closed
+
+table-2-Maslov50 : (p : 3 ≤ 50) →
+                   (Msl.width (Msl.Maslovₙ 50 p) ≡ 74) ×
+                   (KP.paths (Msl.Maslovₙ 50 p) ≡ 192) ×
+                   (QCnt.cliffords (Msl.Maslovₙ 50 p) ≡ 481) ×
+                   (TNet.tcount (Msl.Maslovₙ 50 p) ≡ 384)
+table-2-Maslov50 = Msl.table-2-Maslov50
+
+table-2-Maslov100 : (p : 3 ≤ 100) →
+                    (Msl.width (Msl.Maslovₙ 100 p) ≡ 149) ×
+                    (KP.paths (Msl.Maslovₙ 100 p) ≡ 392) ×
+                    (QCnt.cliffords (Msl.Maslovₙ 100 p) ≡ 981) ×
+                    (TNet.tcount (Msl.Maslovₙ 100 p) ≡ 784)
+table-2-Maslov100 = Msl.table-2-Maslov100
 
 
 ------------------------------------------------------------------------
