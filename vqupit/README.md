@@ -82,10 +82,10 @@ version is wanted.
 
 ## Building
 
-**Status: builds clean; about a page and a half over the limit** — the
+**Status: builds clean; about a page over the limit** — the
 2026-09-28 scratch build described below gives 27 pages in
-`acmsmall,review,anonymous` mode, the bibliography starting two
-thirds of the way down page 25 (so about 24.6 pages of text against the 23-page
+`acmsmall,review,anonymous` mode, the bibliography starting at the
+foot of page 24 (so about 24 pages of text against the 23-page
 OOPSLA/PLDI limit), with zero errors, zero undefined references or
 citations and no overfull box over 8 pt.  The previous 2026-09-18
 revision built with `make` (Agda on the literate sections, then
@@ -132,12 +132,14 @@ semantics, the uniqueness idea, the completeness lemma and the
 presentation record, and now quotes the record `_IsPresentationOf_`
 itself (three fields; the module plumbing between them elided, and
 `IsGroupIsomorphism` postulated in the hidden block, so the literate
-file defines the record rather than importing it).  A scratch build of
-that revision
-(TeX Live 2023 and Agda 2.8.0 in a container, 2026-09-28) gave 27
-pages, the bibliography starting two thirds of the way down page 25,
-i.e. about 24.6 pages of text — a page and a half over the 23-page
-limit — with zero errors, zero undefined references and no overfull
+file defines the record rather than importing it).  §2.5 was
+shortened in the same way, to the join primitive, the semidirect
+theorem with its two hypotheses and the extension recipe, its prose
+halved (the displayed list of presentation statements, the lemma
+inventory and the plumbing remarks went).  A scratch build of that
+revision (TeX Live 2023 and Agda 2.8.0 in a container, 2026-09-28)
+gave 27 pages, the bibliography starting at the foot of page 24, i.e.
+about 24 pages of text — one over the 23-page limit — with zero errors, zero undefined references and no overfull
 box over 8 pt.
 
 ```

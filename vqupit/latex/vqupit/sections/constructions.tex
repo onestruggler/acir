@@ -163,11 +163,9 @@
 \subsection{Products of presentations, and their presentation theorems}\label{sec:constructions}
 
 The presentation just obtained is one factor of the groups
-\S\ref{sec:composing} assembles; this last subsection recalls the
-constructions that glue such factors together.  Relation sets over a
-disjoint union of alphabets (\texttt{Presentation.Construct.Base}) are
-built from a single primitive,
-a three-way join whose \emph{mixed} component is the design parameter:
+\S\ref{sec:composing} assembles.  Relation sets over a disjoint union
+of alphabets are built from a single primitive, a three-way join whose
+\emph{mixed} component is the design parameter:
 
 \begin{code}%
 \>[0]\AgdaKeyword{data}\AgdaSpace{}%
@@ -247,51 +245,19 @@ a three-way join whose \emph{mixed} component is the design parameter:
 \AgdaPostulate{v}\<%
 \end{code}
 
-Choosing the mixed relation recovers the classical constructions ---
-free product ($\aid{EmptyRel}$), direct product ($\aid{CommRel}$:
-generators of the two sides commute), semidirect product
-($\aid{ConjRel}$/$\aid{ConjRelʷ}$: moving $h$ past $n$ conjugates $n$,
-by a generator or by a word), and definitional extension
-($\aid{SugarRel}$: a new generator desugars to a word) --- plus $n$-fold
-iterations $\Gamma \mathrel{\aid{⊕\char94}} n$.  Congruence-lifting
-lemmas (\aid{lefts}, \aid{rights}) embed the factors' congruences into
-the join, and normal-form transports carry witnesses across these maps:
-a normal form for one factor becomes a weak normal form for the union,
-and a normal form for a presented monoid pulls back along any monoid
-monomorphism into it.
-
-For each construction, \texttt{Presentation.Construct.Properties} proves
-two kinds of theorems.  \emph{Normal-form lifting}: given normal-form
-witnesses for the factors $\Gamma$ and $\Delta$, with carriers
-$\mathit{NF}_1$ and $\mathit{NF}_2$, the construction has a normal-form
-witness whose carrier is $\mathit{NF}_1 \times \mathit{NF}_2$ for the
-direct and semidirect products.  \emph{Presentation}: if the factors
-present concrete groups, the constructed relation set presents the
-constructed group.  With their premise telescopes elided, the direct,
-semidirect and $n$-fold statements read:
-\[
-\begin{array}{l}
-\aid{dpres} : (\Gamma \mathrel{\aidop{⋄}} \Delta \mathrel{\aidop{⋄}} \aid{CommRel})
-   \ \aid{IsPresentationOf}\ (G_1 \times G_2) \\[3pt]
-\aid{dpres} : (\Gamma \mathrel{\aidop{⋄}} \Delta \mathrel{\aidop{⋄}} \aid{ConjRelʷ}\;\mathit{conj})
-   \ \aid{IsPresentationOf}\ (G_1 \rtimes G_2) \\[3pt]
-\aid{presentation} : \forall n \to (\Gamma \mathrel{\aid{⊕\char94}} n)
-   \ \aid{IsPresentationOf}\ (\otimes\aid{-group}\;n)
-\end{array}
-\]
-where the semantic groups on the right are standard-library-style
-bundles built by the library's \texttt{ForStdlib} layer.  The
-semidirect theorem is the one \S\ref{sec:composing} uses, so we state it
-in full.  Its mixed relation $\aid{ConjRelʷ}\;\mathit{conj}$ says that
-moving a letter $h$ of the acting group past a letter $n$ of the normal
-subgroup conjugates $n$, by a \emph{word}: $h \bullet n =
-\mathit{conj}\;h\;n \bullet h$.  The theorem takes the two relation sets
-and the action, two well-definedness conditions on the action --- it
-respects the acting group's axioms in its first argument
-(\aid{conj-hyph}) and the normal subgroup's in its second
-(\aid{conj-hypn}) --- and presentations of the factors, and returns a
-presentation of the semidirect product of the two \emph{semantic}
-groups:
+Choosing the mixed relation recovers the classical constructions: free
+product ($\aid{EmptyRel}$), direct product ($\aid{CommRel}$), semidirect
+product ($\aid{ConjRelʷ}\;\mathit{conj}$: moving a letter $h$ of the
+acting group past a letter $n$ of the normal subgroup conjugates $n$, by
+a \emph{word}, $h \bullet n = \mathit{conj}\;h\;n \bullet h$) and
+definitional extension ($\aid{SugarRel}$).  For each, the library lifts
+normal forms from the factors to the construction and proves that if
+the factors present concrete groups, the constructed relation set
+presents the constructed group.  The semidirect theorem is the one
+\S\ref{sec:composing} uses.  Beyond presentations of the factors it
+needs two well-definedness conditions on the action: that it respects
+the acting group's axioms in its first argument (\aid{conj-hyph}) and
+the normal subgroup's in its second (\aid{conj-hypn}):
 
 \begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
 \begin{code}%
@@ -398,23 +364,16 @@ groups:
 \AgdaPrimitive{Set}\<%
 \end{code}
 
-\noindent Here \aid{G1⋊G2} is built by the library's standard-library
-style semidirect product from an \aid{Action} record whose action is the
-syntactic \aid{conj} transported through the two presentation
-isomorphisms; its normal form is the product of the factors' normal
-forms, and uniqueness reduces factor by factor to the injectivity of
-the two factor interpretations (\aid{unfp₃}).  A further module proves the classical recipe for
-presenting a group \emph{extension}: if $1 \to N \to G \to Q \to 1$ is a
-short exact sequence, and presentations of $N$ and $Q$ are given together
-with the data that realises it in $G$ --- how $G$ conjugates $N$, and the
-correction in $N$ by which each lifted relator of $Q$ fails to hold ---
-then $N$'s relations, word-valued conjugation rules, and the corrected
-lifts of $Q$'s relators together present $G$ (cf.\ Proposition~2.55
-of~\cite{holt2005handbook}).  A second mixed component, \aid{RelTwist},
-twists each relator $u = v$ of the quotient by its correction word in
-the normal subgroup, and the relation set of the recipe --- the one the
-qupit paper invokes, in its pen-and-paper form, for its Section~4.2 ---
-is
+\noindent Here \aid{G1⋊G2} is the semidirect product of the two
+\emph{semantic} groups, built from an \aid{Action} record whose action
+is the syntactic \aid{conj} transported through the two presentation
+isomorphisms.  A further module proves the classical recipe for
+presenting a group \emph{extension} $1 \to N \to G \to Q \to 1$ from
+presentations of $N$ and $Q$, how $G$ conjugates $N$, and the
+correction in $N$ by which each lifted relator of $Q$ fails to hold
+(cf.\ Proposition~2.55 of~\cite{holt2005handbook}): a second mixed
+component, \aid{RelTwist}, twists each relator of the quotient by its
+correction, and the relation set of the recipe is
 \begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
 \begin{code}%
 \>[0]\AgdaFunction{extension-presentation}\AgdaSpace{}%
@@ -435,11 +394,10 @@ is
 \AgdaBound{corr}\AgdaSymbol{)}\<%
 \end{code}
 \endgroup
-and the library proves it as a presentation theorem for any group
-extension realised by a short exact sequence and, in the form used in
-\S\ref{sec:scalars}, for central extensions built from a cocycle.  Semidirect products are the special
-case with trivial corrections.  These construction theorems are what
-make the composition step of \S\ref{sec:composing} cheap: the semidirect
-product of the Pauli and symplectic presentations and the central
-extension by the scalars are \emph{assembled} from the factor
-presentations, with no fresh coset enumeration at all.
+Semidirect products are the special case with trivial corrections, and
+\S\ref{sec:scalars} uses the form for central extensions built from a
+cocycle.  These theorems are what make the composition step of
+\S\ref{sec:composing} cheap: the semidirect product of the Pauli and
+symplectic presentations and the central extension by the scalars are
+\emph{assembled} from the factor presentations, with no fresh coset
+enumeration at all.
