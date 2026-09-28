@@ -110,7 +110,13 @@ of the rules is now Figure 2, and every "Figure 1" in the text names
 the qupit paper's.  §2.4 ("Semantics, uniqueness, and completeness")
 then lost its loose semantics into endofunctions of `Fin n` and keeps
 only the permutation semantics, the one the presentation record is
-stated for.  A scratch build of that revision (TeX Live 2023
+stated for.  The abstract was cut from about 410 words to 240,
+keeping the result, the follows/departs statement, the
+factor-present-compose method and the trust statement, and dropping
+the rule counts, the internal structure of the normal form, the
+isomorphism of presentations, the cocycle and the line counts (all of
+which the introduction and §7 still give).  A scratch build of that
+revision (TeX Live 2023
 and Agda 2.8.0 in a container, 2026-09-28) gave 28 pages, the
 bibliography starting at the foot of page 25, i.e. about 25 pages of
 text — two over the 23-page limit — with zero errors, zero undefined

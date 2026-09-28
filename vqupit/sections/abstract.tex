@@ -2,39 +2,22 @@ A recent paper by Bian, Li, Ross, van de Wetering, and Zhao gives a
 complete set of sixteen rewrite rules for multi-qudit Clifford circuits
 in every odd prime dimension $p$: two circuits over the gates $H$, $S$,
 and $CZ$ implement the same unitary exactly when the rules prove them
-equal.  The completeness proof is a normal-form argument in the tradition
-of Selinger's presentation of the qubit Clifford group; its heart is a
-case analysis pushing every generator through every normal box, and its
+equal.  Its completeness proof is a normal-form argument whose
 supporting derivations run to roughly a hundred pages.  This paper
-reports a machine-checked proof of the result, in safe, axiom-free Agda,
-against an independently constructed semantics, together with the method
-that made it feasible.  The formalisation follows the paper's proof
-where the paper does its real work, in the symplectic factor: the
-normal boxes, the symplectic normal form and the rewriting of gates
-through boxes are the paper's, and so is the reduction of its box
-relations to a small rule set.  It departs from the paper at the step
-that promotes a symplectically complete rule set to a projectively
-complete one, which the paper performs with a single rule set applied,
-implicitly, ``up to Paulis'' --- convincing on paper, but hard to turn
-into a verified normalisation procedure.  We instead factor the
-projective Clifford group as a
-semidirect product $\overline{\mathcal P}_n \rtimes \mathrm{Sp}(2n,\mathbb{Z}_p)$
+reports a machine-checked proof of the result, in safe, axiom-free
+Agda, against an independently constructed semantics, together with the
+method that made it feasible.  The formalisation follows the paper's
+proof for the symplectic factor, where the paper does its real work,
+and departs from it at the step that promotes symplectic completeness
+to projective completeness, which the paper performs ``up to Paulis''.
+We instead factor the projective Clifford group as a semidirect product
 of the projective Pauli group by the symplectic group, present the two
-factors separately, and glue the presentations with a generic, verified
-semidirect-product theorem.  The symplectic factor carries all the
-mathematics: a unique normal form for $\mathrm{Sp}(2n,\mathbb{Z}_p)$,
-refined into a doubly inductive datatype of \emph{normal boxes} and
-\emph{rows}, is realised as a tower of verified coset tables in the
-style of Reidemeister and Schreier, its uniqueness is proved by induction
-on the width against the symplectic action on Pauli vectors, and the
-paper's 66 box relations are derived from eighteen natural ones.
-Presentation-level ``plumbing'' then reduces the glued alphabet and
-relations to the paper's own generators and rules, and a verified
-isomorphism of presentations connects the two routes.  Finally, the
-scalars are restored by a central extension, verified against a cocycle
-construction.  Everything is parametric in the prime $p$ and typechecks
-with no postulates; the semantic groups are constructed from $\mathbb{Z}_p$
-arithmetic, and their identification with the groups of unitary matrices
-is the one step taken from the literature.  The Agda development is
-about 100\,000 lines, of which 60\,000 are specific to the qupit
-Clifford groups.
+factors separately --- the symplectic one by a unique normal form,
+realised as a verified tower of coset tables in the style of
+Reidemeister and Schreier --- and glue the presentations with a
+generic, verified semidirect-product theorem.  Presentation-level
+``plumbing'' then reduces the result to the paper's own generators and
+rules, and a central extension restores the scalars.  Everything is
+parametric in $p$ and typechecks with no postulates; the identification
+of the semantic groups with the groups of unitary matrices is the one
+step taken from the literature.
