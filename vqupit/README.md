@@ -28,7 +28,7 @@ version is wanted.
   framing, method first, contributions), `background` (§2: gates, the
   16 rules, the three main theorems — the Clifford presentation, the
   unique normal form, and the symplectic presentation), `two-routes`
-  (§3: the paper's proof, why not, our route), `permutations` (§4: the
+  (§3: the paper's proof, where ours follows it and where it departs, our route), `permutations` (§4: the
   worked example from the framework paper, `popl-revision1` §2 — the
   swap circuits presenting $S_n$: gates, relations, the coset table,
   semantics) and `constructions` (§4's last subsection, "Products of
@@ -75,9 +75,9 @@ version is wanted.
 ## Building
 
 **Status: builds clean; about two pages over the limit** — the
-2026-09-28 scratch build described below gives 27 pages in
-`acmsmall,review,anonymous` mode, the bibliography starting two thirds
-of the way down page 25 (so 24.7 pages of text against the 23-page
+2026-09-28 scratch build described below gives 28 pages in
+`acmsmall,review,anonymous` mode, the bibliography starting near the
+top of page 26 (so about 25 pages of text against the 23-page
 OOPSLA/PLDI limit), with zero errors, zero undefined references or
 citations and no overfull box over 8 pt.  The previous 2026-09-18
 revision built with `make` (Agda on the literate sections, then
@@ -95,12 +95,16 @@ simplified-rules figure and most record listings to fit.  The
 examples (old §4–§5) by the framework paper's worked example of
 permutation circuits with its product constructions (§4), and added the
 third main theorem, the symplectic presentation, to §2 (§2.4), giving
-the nine sections above; a scratch build of that revision (TeX Live 2023 and Agda 2.8.0 in
-a container, 2026-09-28) gave 27 pages, the
-bibliography starting two thirds of the way down page 25, i.e. about
-24.7 pages of text — nearly two over the 23-page limit — with zero
-errors, zero undefined references and no
-overfull box over 8 pt.
+the nine sections above.  The same day the abstract, introduction, §3
+and conclusion were reworded to say where the formalisation follows
+the paper's proof (the symplectic factor: boxes, normal form, box
+relations and their reduction) and where it departs from it (the
+boosting step), in place of the earlier blanket "does not follow the
+paper's proof".  A scratch build of that revision (TeX Live 2023 and
+Agda 2.8.0 in a container, 2026-09-28) gave 28 pages, the bibliography
+starting near the top of page 26, i.e. about 25 pages of text — two
+over the 23-page limit — with zero errors, zero undefined references
+and no overfull box over 8 pt.
 
 ```
 make                                   # from a WSL shell in this directory

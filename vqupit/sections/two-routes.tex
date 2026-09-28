@@ -1,9 +1,13 @@
 \section{Two Routes to Completeness}\label{sec:two-routes}
 
-The two routes share their mathematics, the same normal boxes, the
-same symplectic normal form, and essentially the same eighteen
-symplectic relations, and differ in the \emph{organisation} of the
-completeness argument, which is what a proof assistant cares about.
+The two routes share their mathematics --- the same normal boxes, the
+same symplectic normal form, essentially the same eighteen symplectic
+relations, and the same reduction of the box relations to them --- so
+for the symplectic factor, which is most of the paper, the
+formalisation follows the paper move for move.  Where they differ is
+in the \emph{organisation} of the completeness argument, which is what
+a proof assistant cares about, and in the step that boosts symplectic
+completeness to projective completeness, where they part company.
 
 \subsection{The paper's route}
 
@@ -38,12 +42,14 @@ created Pauli to the end of the circuit, where it turns into ``a
 potentially different Pauli''.  The same argument with
 $\langle\omega\rangle$ in place of $\Pauli$ gives unitary completeness.
 
-\subsection{Why we did not formalise that}
+\subsection{Where we depart from the paper's route}
 
 Each move is correct, and each was stated at exactly the level of
 precision a careful reader needs.  A proof assistant needs more, and the
 gap is widest at the places where the paper says ``analogous'', ``by
-inspection'' and ``potentially different''.
+inspection'' and ``potentially different''.  The first two moves we
+formalise as the paper makes them, reorganised where that gap is; the
+third, the boosting, we replace.
 
 First, the rewriting procedure is not a function.  ``Push the gates in
 one by one'' describes a non-deterministic rewrite relation whose

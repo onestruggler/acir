@@ -8,12 +8,16 @@ case analysis pushing every generator through every normal box, and its
 supporting derivations run to roughly a hundred pages.  This paper
 reports a machine-checked proof of the result, in safe, axiom-free Agda,
 against an independently constructed semantics, together with the method
-that made it feasible.  The formalisation does not follow the paper's
-proof.  The paper works with one rule set for the whole Clifford group
-and applies it, implicitly, ``up to Paulis''; the step that promotes a
-symplectically complete rule set to a projectively complete one is
-convincing on paper but hard to turn into a verified normalisation
-procedure.  We instead factor the projective Clifford group as a
+that made it feasible.  The formalisation follows the paper's proof
+where the paper does its real work, in the symplectic factor: the
+normal boxes, the symplectic normal form and the rewriting of gates
+through boxes are the paper's, and so is the reduction of its box
+relations to a small rule set.  It departs from the paper at the step
+that promotes a symplectically complete rule set to a projectively
+complete one, which the paper performs with a single rule set applied,
+implicitly, ``up to Paulis'' --- convincing on paper, but hard to turn
+into a verified normalisation procedure.  We instead factor the
+projective Clifford group as a
 semidirect product $\overline{\mathcal P}_n \rtimes \mathrm{Sp}(2n,\mathbb{Z}_p)$
 of the projective Pauli group by the symplectic group, present the two
 factors separately, and glue the presentations with a generic, verified

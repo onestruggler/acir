@@ -43,15 +43,20 @@ completeness theorem doubles as a verified decision procedure for
 circuit equivalence in its calculus.
 
 \paragraph{The method.}
-The formalisation does \emph{not} follow the qupit paper's proof, and
-the reason is the paper's main methodological lesson.  The paper works
-with a single rule set for the whole Clifford group and organises its
-completeness proof around the symplectic group $\Sp$, the Clifford
-group modulo Paulis: it shows that every circuit rewrites, \emph{up to
-Paulis}, to a symplectic normal form, and then boosts symplectic
-completeness to projective and unitary completeness by a general
-argument (its Proposition~4.9) in which each rewrite is repaired by
-pushing a Pauli correction to the end of the circuit.  Throughout,
+The formalisation follows the qupit paper's proof for the symplectic
+factor, which is most of the paper (\S\ref{sec:two-routes}): the
+paper's normal boxes and symplectic normal form become our datatype of
+normal forms, its ``push a gate through a normal box'' becomes our
+coset table, and its box relations, with their reduction to a small
+rule set, are derived as it derives them.  Where the formalisation
+departs from the paper, and why, is the paper's main methodological
+lesson.  The paper works with a single rule set for the whole Clifford
+group and organises its completeness proof around the symplectic group
+$\Sp$, the Clifford group modulo Paulis: it shows that every circuit
+rewrites, \emph{up to Paulis}, to a symplectic normal form, and then
+boosts symplectic completeness to projective and unitary completeness
+by a general argument (its Proposition~4.9) in which each rewrite is
+repaired by pushing a Pauli correction to the end of the circuit.  Throughout,
 relations are used ``projectively'': Paulis and scalars are silently
 dropped and later restored.  This is sound mathematics, and we believe
 it; but it is a poor specification for a verified normalisation
@@ -62,7 +67,8 @@ level --- ``push the Pauli to the right, it changes to some other
 Pauli'' --- that a proof assistant would have to reconstruct from
 scratch.
 
-We therefore chose a route that a proof assistant likes: \emph{factor
+We therefore keep the paper's symplectic argument and replace its
+boosting step by a route that a proof assistant likes: \emph{factor
 the group, present the factors, compose the presentations}.  The
 projective Clifford group is a semidirect product of the projective
 Pauli group by the symplectic group, and the Clifford group is a central
@@ -84,7 +90,8 @@ scalars presents the same group as our semidirect presentation.
 
 \begin{enumerate}
 \item[(1)] \textbf{A method, and a comparison.}  We explain precisely
-  where the qupit paper's proof resists formalisation and how the
+  which parts of the qupit paper's proof the formalisation follows,
+  where the proof resists formalisation, and how the
   factor-present-compose route avoids each difficulty
   (\S\ref{sec:two-routes}), walk through the library's pipeline on its
   smallest case study, the swap circuits presenting the symmetric groups,
