@@ -197,6 +197,20 @@ ancillas — correct for every n ≥ 3: on the inputs whose ancillas are
 Its qubit, path-variable and T counts reproduce table 2's rows
 Toffoli50 and Toffoli100.
 
+**Section 5.2: the out-of-place adder.**  `Adder/Binary` is ripple-carry
+addition on bit vectors, `Reversible` circuits of Toffoli and CNOT gates
+read classically (with Bennett's compute-copy-uncompute lemma), and
+`Adder/Layout`, `Adder/Ripple`, `Reversible/Expand` and `Adder/Circuit`
+build the adder on 5n wires with 4(n − 1) Toffoli gates, each expanded
+into the seven-T circuit.  `Adder/Spec` builds the specification by
+symbolic addition, as the paper does, and `Adder` proves for every n
+that on the inputs whose carries and temporary register are |0⟩ the
+circuit is that specification and leaves them clean.  The paper's own
+circuit is the one its tool, Feynman, generates: `Adder/CarryRipple`
+(its netlist, which adds modulo 2^n), `Toffoli/Depth3` (its sixteen-gate
+Toffoli circuit) and `Adder/Tool` formalise it and prove the same, and
+its counts are table 2's rows Adder8 and Adder16 exactly.
+
 **Section 5.2: the hidden shift algorithm.**  `HiddenShift/Walsh`
 (character sums, the Walsh transform of the Maiorana–McFarland bent
 function f(x, y) = g(x) + x·y is 2^m times its dual g(y) + x·y),
@@ -253,12 +267,15 @@ is max(2, k), not k (a Hadamard's phase ½xy has order 2 whatever k
 is); and proposition 2.7's well-formedness claim fails, for
 `WellFormed` and for definition 2.4 alike.  Smaller slips: definition
 2.6 omits a renaming in the outputs; section 4.1 substitutes Q where
-x_i ⊕ Q is meant; example B.1 as printed is the identity, not ω·I; and
-the fourth line of example 3.4 does not follow from the third.
+x_i ⊕ Q is meant; example B.1 as printed is the identity, not ω·I; the
+fourth line of example 3.4 does not follow from the third; section
+5.2's formula for the shifted function f′ drops the shift; and its
+adder has 5n qubits, as its table and its tool's circuit say, not the
+text's 5n − 1 bits.
 
 Not formalised: the polynomial time bounds (proposition 3.2,
 corollaries 2.15 and 4.4); constant inputs, beyond restricting to the
 columns where an ancilla is |0⟩; the symmetric monoidal laws of remark
 2.8 beyond interchange and SWAP naturality; and the benchmarks of
-section 5 as runs of the tool (the QFT, Toffoli and hidden shift
-families are proved for every size).
+section 5 as runs of the tool (the QFT, Toffoli, adder and hidden
+shift families are proved for every size).
