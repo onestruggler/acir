@@ -107,7 +107,10 @@ introduction and retitled "An Introduction to the Framework" (§2, with
 the constructions as §2.5), so that the main theorems (§3) and the
 comparison of routes (§4) can refer back to it; the text's own figure
 of the rules is now Figure 2, and every "Figure 1" in the text names
-the qupit paper's.  A scratch build of that revision (TeX Live 2023
+the qupit paper's.  §2.4 ("Semantics, uniqueness, and completeness")
+then lost its loose semantics into endofunctions of `Fin n` and keeps
+only the permutation semantics, the one the presentation record is
+stated for.  A scratch build of that revision (TeX Live 2023
 and Agda 2.8.0 in a container, 2026-09-28) gave 28 pages, the
 bibliography starting at the foot of page 25, i.e. about 25 pages of
 text — two over the 23-page limit — with zero errors, zero undefined
