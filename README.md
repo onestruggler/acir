@@ -210,6 +210,11 @@ circuit is the one its tool, Feynman, generates: `Adder/CarryRipple`
 (its netlist, which adds modulo 2^n), `Toffoli/Depth3` (its sixteen-gate
 Toffoli circuit) and `Adder/Tool` formalise it and prove the same, and
 its counts are table 2's rows Adder8 and Adder16 exactly.
+`Adder/Feynman` is that circuit literally, uncomputing by the adjoint
+of the expanded compute (`Classical/Adjoint`: the adjoint of a circuit
+computing a permutation computes its inverse), the same gate list as
+the tool's output; `CRK/Qubits`, `Reversible/Wires` and `Adder/Wires`
+count qubits as the tool does, as the wires the gates touch.
 
 **Section 5.2: the hidden shift algorithm.**  `HiddenShift/Walsh`
 (character sums, the Walsh transform of the Maiorana–McFarland bent
@@ -275,8 +280,8 @@ is); and proposition 2.7's well-formedness claim fails, for
 x_i ⊕ Q is meant; example B.1 as printed is the identity, not ω·I; the
 fourth line of example 3.4 does not follow from the third; section
 5.2's formula for the shifted function f′ drops the shift; and its
-adder has 5n qubits, as its table and its tool's circuit say, not the
-text's 5n − 1 bits.
+adder has 5n qubits for n ≥ 2, as its table and its tool's circuit
+say, not the text's 5n − 1 bits.
 
 Not formalised: the polynomial time bounds (proposition 3.2,
 corollaries 2.15 and 4.4); constant inputs, beyond restricting to the

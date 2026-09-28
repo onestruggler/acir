@@ -62,8 +62,9 @@
 -- section 4.1 substitutes Q where x_i ⊕ Q is meant, example B.1 as
 -- printed is the identity rather than ω·I, the fourth line of example
 -- 3.4 does not follow from the third, section 5.2's formula for the
--- shifted function f′ drops the shift, and its adder has 5n qubits, as
--- its table and its tool's circuit say, not the text's 5n − 1 bits.
+-- shifted function f′ drops the shift, and its adder has 5n qubits for
+-- n ≥ 2, as its table and its tool's circuit say, not the text's
+-- 5n − 1 bits.
 -- One gap is filled: the proof of corollary 4.4 reduces by arbitrary
 -- rules, which needs every rule to preserve order ≤ 2 -- lemma 2.13
 -- covers only linear substitutions, and PathSum.Full.Clifford supplies
@@ -409,6 +410,12 @@ module ACR = PathSum.Adder.CarryRipple
 
 import PathSum.Adder.Tool
 module AT = PathSum.Adder.Tool M₀
+
+import PathSum.Adder.Feynman
+module AF = PathSum.Adder.Feynman M₀
+
+import PathSum.CRK.Qubits
+module Qb = PathSum.CRK.Qubits M₀
 
 import PathSum.HiddenShift.Walsh
 module HW = PathSum.HiddenShift.Walsh
@@ -1630,23 +1637,21 @@ adder₀ˢ-value m = ASp.adder₀ˢ-value (AL.standard m)
 -- The paper's circuit is the one its tool generates: Feynman
 -- (github.com/meamy/feynman), whose src/Feynman/Verification/SOP.hs
 -- builds the netlist carryRipple, expands each Toffoli gate by its
--- sixteen-gate, T-depth-3 toffoli, and checks the result against
--- adderOOPSpec.  It is formalised gate for gate -- but for the
--- uncomputation, whose Toffoli circuits are the circuit itself rather
--- than the tool's adjoints, with the same operator and counts -- and
--- verified for every n.  The tool's Toffoli circuit is the Toffoli
--- gate ...
+-- sixteen-gate, T-depth-3 toffoli, uncomputes by the adjoint of the
+-- expanded compute, and checks the result against adderOOPSpec.  The
+-- tool's Toffoli circuit is the Toffoli gate ...
 
 tof₃-spec : (c₁ c₂ t : Fin n) (c₁≢c₂ : c₁ ≢ c₂) (c₁≢t : c₁ ≢ t)
             (c₂≢t : c₂ ≢ t) →
             KP.⟦ Tof3.tof₃ c₁ c₂ t c₁≢c₂ c₁≢t c₂≢t ⟧ ≋ Tof.toffoliˢ c₁ c₂ t
 tof₃-spec = Tof3.tof₃-spec
 
--- ... and on the inputs whose ancillas are |0⟩ the circuit is the
--- tool's specification, which adds modulo 2^n (the output register
--- has n bits); it leaves the ancillas clean; and with them read as the
--- constant 0 the two are ≋ -- the check the tool ran at n = 8 and
--- n = 16.
+-- ... so the netlist expanded by it throughout, uncomputation included
+-- (a Toffoli gate is its own inverse), is on the inputs whose ancillas
+-- are |0⟩ the tool's specification, which adds modulo 2^n (the output
+-- register has n bits); it leaves the ancillas clean; and with them
+-- read as the constant 0 the two are ≋ -- the check the tool ran at
+-- n = 8 and n = 16, here for every n.
 
 Tool-spec : (m : ℕ) →
             KP.⟦ AT.CarryRippleᶜ m ⟧ ≋[ AT.ancᶠ (ACR.standardᶠ m) ]₀*
@@ -1664,23 +1669,71 @@ Tool-set0 : (m : ℕ) →
             set0ˢ (AT.ancᶠ (ACR.standardᶠ m)) (AT.toolˢ (ACR.standardᶠ m))
 Tool-set0 = AT.Tool-set0
 
--- Table 2's rows Adder8 and Adder16, computed from that circuit: 40
--- and 80 qubits (its width, the index of its type), 56 and 120 path
--- variables, 334 and 710 Clifford gates, 196 and 420 T gates, all as
--- printed.  The text's "5n − 1 bits" leaves out a carry-in wire the
--- tool allocates.  (The adder above, which keeps the carry out, has
--- the same qubits, path variables and T gates, and 304 and 648
--- Clifford gates.)
+-- The tool's circuit literally -- its uncomputation the adjoint of the
+-- expanded compute, T and T† exchanged; the same gate list as the
+-- tool's own output at n = 2 and 3 -- is ≋ that circuit, and so the
+-- same holds of it.
 
-table-2-Adder8 : (5 * 8 ≡ 40) × (KP.paths (AT.CarryRippleᶜ 7) ≡ 56) ×
+Feynman-≋ : (m : ℕ) → KP.⟦ AF.Feynmanᶜ m ⟧ ≋ KP.⟦ AT.CarryRippleᶜ m ⟧
+Feynman-≋ = AF.Feynman-≋
+
+Feynman-spec : (m : ℕ) →
+               KP.⟦ AF.Feynmanᶜ m ⟧ ≋[ AT.ancᶠ (ACR.standardᶠ m) ]₀*
+                 AT.toolˢ (ACR.standardᶠ m)
+Feynman-spec = AF.Feynman-spec
+
+Feynman-clean : (m : ℕ) → ∀ x z → Clean (AT.ancᶠ (ACR.standardᶠ m)) x →
+                (j : Fin (suc m + suc m)) →
+                z (AT.ancᶠ (ACR.standardᶠ m) j) ≡ true →
+                amp KP.⟦ AF.Feynmanᶜ m ⟧ x z ≐ 0ᴬ
+Feynman-clean = AF.Feynman-clean
+
+Feynman-set0 : (m : ℕ) →
+               set0ˢ (AT.ancᶠ (ACR.standardᶠ m)) KP.⟦ AF.Feynmanᶜ m ⟧ ≋
+               set0ˢ (AT.ancᶠ (ACR.standardᶠ m)) (AT.toolˢ (ACR.standardᶠ m))
+Feynman-set0 = AF.Feynman-set0
+
+-- Table 2's rows Adder8 and Adder16, counted from the circuit in both
+-- forms: 40 and 80 qubits -- the wires its gates touch, as the tool
+-- counts them -- 56 and 120 path variables, 334 and 710 Clifford
+-- gates, 196 and 420 T gates, all as printed.  Its gates touch all 5n
+-- wires once n ≥ 2; at n = 1 the carry-in wire is idle and the count
+-- is 4, the text's "5n − 1 bits", which for n ≥ 2 leaves that wire out.
+-- (The adder above, which keeps the carry out, touches all its 5n
+-- wires for every n and has the same path variables and T gates, and
+-- 304 and 648 Clifford gates.)
+
+Tool-qubits : (m : ℕ) → m ≢ 0 → Qb.qubits (AT.CarryRippleᶜ m) ≡ 5 * suc m
+Tool-qubits = AT.Tool-qubits
+
+Tool-qubits-1 : Qb.qubits (AT.CarryRippleᶜ 0) ≡ 4
+Tool-qubits-1 = AT.Tool-qubits-1
+
+Adder-qubits : (m : ℕ) → Qb.qubits (ACi.Adderᶜ m) ≡ AL.width m
+Adder-qubits = Add.Adder-qubits
+
+table-2-Adder8 : (Qb.qubits (AT.CarryRippleᶜ 7) ≡ 40) ×
+                 (KP.paths (AT.CarryRippleᶜ 7) ≡ 56) ×
                  (QCnt.cliffords (AT.CarryRippleᶜ 7) ≡ 334) ×
                  (TNet.tcount (AT.CarryRippleᶜ 7) ≡ 196)
 table-2-Adder8 = AT.Adder8ᵀ
 
-table-2-Adder16 : (5 * 16 ≡ 80) × (KP.paths (AT.CarryRippleᶜ 15) ≡ 120) ×
+table-2-Adder16 : (Qb.qubits (AT.CarryRippleᶜ 15) ≡ 80) ×
+                  (KP.paths (AT.CarryRippleᶜ 15) ≡ 120) ×
                   (QCnt.cliffords (AT.CarryRippleᶜ 15) ≡ 710) ×
                   (TNet.tcount (AT.CarryRippleᶜ 15) ≡ 420)
 table-2-Adder16 = AT.Adder16ᵀ
+
+table-2-Adder8-Feynman :
+  (Qb.qubits (AF.Feynmanᶜ 7) ≡ 40) × (KP.paths (AF.Feynmanᶜ 7) ≡ 56) ×
+  (QCnt.cliffords (AF.Feynmanᶜ 7) ≡ 334) × (TNet.tcount (AF.Feynmanᶜ 7) ≡ 196)
+table-2-Adder8-Feynman = AF.Adder8-Feynman
+
+table-2-Adder16-Feynman :
+  (Qb.qubits (AF.Feynmanᶜ 15) ≡ 80) × (KP.paths (AF.Feynmanᶜ 15) ≡ 120) ×
+  (QCnt.cliffords (AF.Feynmanᶜ 15) ≡ 710) ×
+  (TNet.tcount (AF.Feynmanᶜ 15) ≡ 420)
+table-2-Adder16-Feynman = AF.Adder16-Feynman
 
 
 ------------------------------------------------------------------------
