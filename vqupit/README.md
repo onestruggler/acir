@@ -127,7 +127,13 @@ reading order in §2.1 and the paragraph in §2.3 listing the five
 hypotheses of the Reidemeister–Schreier engine (§5 now names them
 itself where it discusses `h-wd-ax`); and the labels of the
 coset-table pictures, previously scaled down to about 2.5 pt, were
-made legible (`\ufigT`, above).  A scratch build of that revision
+made legible (`\ufigT`, above).  §2.4 was then shortened to the
+semantics, the uniqueness idea, the completeness lemma and the
+presentation record, and now quotes the record `_IsPresentationOf_`
+itself (three fields; the module plumbing between them elided, and
+`IsGroupIsomorphism` postulated in the hidden block, so the literate
+file defines the record rather than importing it).  A scratch build of
+that revision
 (TeX Live 2023 and Agda 2.8.0 in a container, 2026-09-28) gave 27
 pages, the bibliography starting two thirds of the way down page 25,
 i.e. about 24.6 pages of text — a page and a half over the 23-page

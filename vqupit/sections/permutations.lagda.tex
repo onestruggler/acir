@@ -4,20 +4,24 @@ module vqupit.sections.permutations where
 open import Data.Nat using (ℕ ; suc)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Unit using (⊤)
-open import Level using (0ℓ)
+open import Level using (0ℓ ; Level ; _⊔_)
 open import Relation.Binary using (Rel)
+open import Algebra.Bundles using (Group)
 
 open import Notations using (₁₊ ; ₂₊ ; ₃₊)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; wmap)
-open import Presentation.Definitions using (_IsPresentationOf_)
+open import Presentation.GroupLike using (Grouplike)
 open import Examples.Groups.Symmetric.Semantics using (Permutation′-group)
 import Examples.Groups.Symmetric.Presentation as SymPres
 
-postulate
-  proof-elided : ∀ {ℓ} {A : Set ℓ} → A
-
 private variable
   n : ℕ
+  a ℓ : Level
+  X : Set
+
+postulate
+  proof-elided : ∀ {ℓ} {A : Set ℓ} → A
+  IsGroupIsomorphism : {G : Group a ℓ} → (Word X → Group.Carrier G) → Set (a ⊔ ℓ)
 \end{code}
 \section{An Introduction to the Framework}\label{sec:permutations}
 
@@ -308,44 +312,40 @@ wires of its level: a ``staircase of staircases''.
 
 \subsection{Semantics, uniqueness, and completeness}\label{sec:sn-semantics}
 
-So far everything was syntax.  The development interprets circuits by a
-semantics $\aid{⟦\_⟧} : \aid{Circuit}\;n \to \aid{Permutation′}\;n$
-into the standard library's permutations of $\mathsf{Fin}\;n$
-($\sigma$ swaps the bottom two elements), bundled as a \aid{Group},
-$\aid{Permutation′-group}\;n$, by our \texttt{ForStdlib} layer.
-\emph{Soundness} --- $w \approx v$
-implies $\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ --- is a small case
-analysis over the axioms.  The heart of the matter is the \emph{unique
-normal form} property, that normal forms with
-equal denotations are equal: $\aid{⟦}\;\aid{inv-nf}\;u\,\aid{⟧} \doteq
-\aid{⟦}\;\aid{inv-nf}\;v\,\aid{⟧}$ implies $u \equiv v$, proved by
-induction on the tower: the lower digits fix the last point, so the top
-digit alone determines where the permutation sends it; equal denotations
-therefore force equal top digits, and cancelling them reduces the claim
-to the level below.  Soundness and uniqueness are exactly the premises of the generic
-lemma \aid{by-normalization}, which concludes \emph{completeness}:
-$\aid{⟦}w\aid{⟧} \doteq \aid{⟦}v\aid{⟧}$ implies $w \approx v$.
-Unfolding the lemma on this example shows where the axioms enter.  Each
-step of \aid{nf} is one of the rewrites of Figure~\ref{fig:pushing}, and
-each of those is an instance of \aid{order}, of \aid{yang-baxter}, or of
-the structural rules (the far commutation \aid{comm₂}, lifted to the
-wires above by \aid{cong↑}); so $w \approx \aid{inv-nf}\;(\aid{nf}\;w)$
---- the law of the \aid{NormalForm} witness --- is a derivation from
-exactly those rules.  Now suppose $\aid{⟦}w\aid{⟧} \doteq
-\aid{⟦}v\aid{⟧}$.  By soundness the normal forms of $w$ and $v$ have the
-same denotation, so by uniqueness they are equal, and hence $w \approx
-\aid{inv-nf}\;(\aid{nf}\;w) = \aid{inv-nf}\;(\aid{nf}\;v) \approx v$, a
-derivation assembled from the two normal-form derivations and nothing
-else.  Completeness thus never appeals to a rule beyond the axioms and
-structural rules above.  \texttt{Examples.Groups.Symmetric} states
-these for every $n$.  Soundness, completeness, and surjectivity (every
-permutation is a product of adjacent transpositions) assemble into the
-library's \emph{presentation record}.
-The record packages two things: a \aid{Grouplike} witness, which makes
-the presented monoid a group, and a proof that the semantics
-$\aid{⟦\_⟧}$ is a group isomorphism from that group onto the target.  We quote
-this one statement in Agda because every presentation theorem in the
-paper has its shape:
+So far everything was syntax.  The development interprets circuits in
+the group $\aid{Permutation′-group}\;n$ of permutations of
+$\mathsf{Fin}\;n$, with $\sigma$ swapping the bottom two elements.
+\emph{Soundness} --- $w \approx v$ implies $\aid{⟦}w\aid{⟧} \doteq
+\aid{⟦}v\aid{⟧}$ --- is a small case analysis over the axioms.  The
+heart of the matter is the \emph{unique normal form} property, that
+normal forms with equal denotations are equal:
+$\aid{⟦}\;\aid{inv-nf}\;u\,\aid{⟧} \doteq
+\aid{⟦}\;\aid{inv-nf}\;v\,\aid{⟧}$ implies $u \equiv v$.  It is
+proved by induction on the tower: the lower digits fix the last point,
+so the top digit alone determines where the permutation sends it; equal
+denotations therefore force equal top digits, and cancelling them
+reduces the claim to the level below.  Soundness and uniqueness are
+exactly the premises of the generic lemma \aid{by-normalization}, which
+concludes \emph{completeness}: $\aid{⟦}w\aid{⟧} \doteq
+\aid{⟦}v\aid{⟧}$ implies $w \approx v$.  Together with surjectivity
+(every permutation is a product of adjacent transpositions), these
+assemble into the library's \emph{presentation record}: a
+\aid{Grouplike} witness, which makes the presented monoid a group, and
+a proof that $\aid{⟦\_⟧}$ is a group isomorphism from that group onto
+the target (\aid{IsGroupIsomorphism} is the standard library's, between
+the group the witness induces and $G$; the record's module plumbing that
+says so is elided):
+
+\begin{code}
+record _IsPresentationOf_ (_===_ : WRel X) (G : Group a ℓ) : Set (a ⊔ ℓ) where
+  field
+    gl  : Grouplike _===_
+    ⟦_⟧ : Word X → Group.Carrier G
+    iso : IsGroupIsomorphism ⟦_⟧
+\end{code}
+
+\noindent Every presentation theorem in the paper has the shape of this
+one:
 
 \begin{code}
 symmetric-presentation : ∀ n → (n VRel,_===_) IsPresentationOf (Permutation′-group n)
@@ -356,8 +356,7 @@ symmetric-presentation n = SymPres.presentation {n}
 
 \noindent read: the monoid of swap circuits modulo \{\aid{order},
 \aid{yang-baxter}\} and the structural rules \emph{is} the group of
-permutations of $\mathsf{Fin}\;n$ (\aid{IsPresentationOf} is the mixfix
-record name \aid{{\_}IsPresentationOf{\_}} used infix).  The symplectic
+permutations of $\mathsf{Fin}\;n$.  The symplectic
 factor of \S\ref{sec:symplectic} is this pipeline again, with richer
 gates and a richer action, and \S\ref{sec:composing} composes such
 presentations.
