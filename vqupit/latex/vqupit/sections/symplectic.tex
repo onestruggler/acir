@@ -746,10 +746,15 @@ $D \leftarrow S$ rewrites $D_{a,b} \bullet S$ to $\mathit{dir}{\uparrow}
 \bullet D_{a,b-a}$, and re-association finishes.
 
 So far this is the $S_n$ story with bigger cosets.  The difference is in
-the five hypotheses of \S\ref{sec:sn-cosets}.  Four close as before; the
-second, \aid{h-wd-ax} --- that the table respects the axioms, i.e.\
-congruent inputs produce equal cosets and congruent residuals --- does
-\emph{not} close by evaluation, because the axioms of $\Sp$ (unlike
+what the library asks of a coset table before it builds a normal form
+from it.  Four of its five hypotheses --- that the table inverts the
+embedding at the identity coset, that the embedding respects the axioms
+(here the structural rule \aid{cong↑} itself), that the identity coset
+is represented by $\varepsilon$, and the soundness law, here
+\aid{ract-sound} --- close as they do for $S_n$, by evaluation or a
+short derivation.  The fifth, \aid{h-wd-ax} --- that the table respects
+the axioms, i.e.\ congruent inputs produce equal cosets and congruent
+residuals --- does \emph{not} close by evaluation, because the axioms of $\Sp$ (unlike
 $\sigma^2 = e$) are not decided by a finite computation on the coset
 data.  The formalisation proves it in two halves.  The \emph{coset half}
 is proved semantically: apply $\sem{\_}$ to \aid{ract-sound} on both

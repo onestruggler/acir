@@ -72,6 +72,11 @@
 %% Scale a circuit by a FIXED factor instead: on a grid of relations,
 %% every picture shares one scale, so gate boxes stay proportionate.
 \newcommand{\ufig}[2][1]{$\vcenter{\hbox{\scalebox{#1}{\tikzfig{figures/#2}}}}$}
+%% The same scale applied by TikZ to the coordinates alone, so that the
+%% labels of a picture keep their font size (the coset and residual
+%% labels b, c, b', c' of the coset-table pictures); the line width is
+%% scaled by hand to match the \scalebox'd pictures.
+\newcommand{\ufigT}[2][1]{$\vcenter{\hbox{{\tikzstyle{every picture}=[tikzfig,scale=#1,line width=0.4pt*#1]\input{figures/#2.tikz}}}}$}
 
 %% PACMPL reference style (must precede \begin{document})
 \citestyle{acmauthoryear}
