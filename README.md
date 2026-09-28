@@ -207,11 +207,13 @@ tool's `rToffoli4`), each proved to compute the Toffoli function up to
 an exact phase, with `Maslov/Arith` and `Maslov/Eighths` (sums of
 eighth roots of unity by computation).  `Maslov/Chain` and `Maslov`
 prove the decomposition the paper's tool builds — a chain of
-relative-phase Toffoli-4 gates on ⌈(n − 3)/2⌉ ancillas around a CNOT —
-correct for every n ≥ 3: its phases cancel exactly on every input,
-and on the inputs whose ancillas are |0⟩ it is Toffoli_n, leaving them
-clean.  Its counts are table 2's rows Maslov50 and Maslov100 in every
-column.
+relative-phase Toffoli-4 gates on ⌈(n − 3)/2⌉ ancillas around a CNOT,
+or at odd n around the tool's Toffoli circuit — correct for every
+n ≥ 3: its phases cancel exactly on every input, and on the inputs
+whose ancillas are |0⟩ it is Toffoli_n, leaving them clean.
+`Maslov/Feynman` proves it is the tool's `maslovToffoli` gate for gate,
+for every n, and `Maslov/Wires` that it touches every wire; its counts
+are table 2's rows Maslov50 and Maslov100 in every column.
 
 **Section 5.2: the out-of-place adder.**  `Adder/Binary` is ripple-carry
 addition on bit vectors, `Reversible` circuits of Toffoli and CNOT gates

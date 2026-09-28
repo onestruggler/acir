@@ -92,14 +92,15 @@ module PathSum.Theorems (M₀ : ℕ) where
 
 open import Algebra.Bundles using (CommutativeRing)
 open import Data.Bool.Base using (Bool; true; false; _xor_; if_then_else_)
-open import Data.Nat.Base using (_+_; _*_; _∸_; _^_; _≤_; _⊔_; ⌊_/2⌋)
+open import Data.Nat.Base using
+  (_+_; _*_; _∸_; _^_; _≤_; _⊔_; ⌊_/2⌋; ⌈_/2⌉)
 open import Data.Fin.Base using (Fin)
 open import Data.Fin.Subset using (⊥)
 open import Data.Integer.Base using (ℤ; 0ℤ; +_; _-_)
   renaming (_*_ to _*ℤ_)
 open import Data.Integer.Divisibility.Signed using (_∣_)
 open import Data.Integer.Properties using (≤-reflexive)
-open import Data.List.Base using (List; _++_; length)
+open import Data.List.Base using (List; _++_; length; map; upTo)
 open import Data.Maybe.Base using (just; nothing)
 open import Data.Product.Base using (Σ; _×_; _,_; ∃; proj₂)
 open import Level using (0ℓ)
@@ -406,6 +407,9 @@ module MCh = PathSum.Maslov.Chain M₀
 
 import PathSum.Maslov
 module Msl = PathSum.Maslov M₀
+
+import PathSum.Maslov.Feynman
+module MF = PathSum.Maslov.Feynman M₀
 
 import PathSum.Adder.Binary
 module ABin = PathSum.Adder.Binary
@@ -1641,11 +1645,19 @@ rc3x-rc3x-not-id : (a b c d : Fin n) (a≢d : a ≢ d) (b≢d : b ≢ d)
 rc3x-rc3x-not-id = MG4.rc3x-rc3x-not-id
 
 -- "The Maslov decomposition [23] using relative phase Toffolis and
--- ⌈(n − 3)/2⌉ ancillas", as the paper's tool builds it: a chain of
--- Toffoli-4 gates collects the controls into the ancillas, a CNOT (at
--- odd n a Toffoli gate) writes the target, and the chain's adjoint
--- uncomputes.  On every input its phases cancel exactly -- it computes
--- a permutation -- which on the inputs whose ancillas are |0⟩ is
+-- ⌈(n − 3)/2⌉ ancillas", exactly as the paper's tool builds it -- its
+-- maslovToffoli, gate for gate, read into the tool's primitives: a
+-- chain of Toffoli-4 gates collects the controls into the ancillas, a
+-- CNOT (at odd n the tool's Toffoli circuit) writes the target, and
+-- the chain's adjoint uncomputes ...
+
+Maslovₙ-tool : (n : ℕ) (p : 3 ≤ n) →
+               map AF.prim (Msl.Maslovₙ n p) ≡
+               MF.maslovToffoliᵀ (λ i → n + i) (upTo n)
+Maslovₙ-tool = MF.Maslovₙ-tool
+
+-- ... On every input its phases cancel exactly -- it computes a
+-- permutation -- which on the inputs whose ancillas are |0⟩ is
 -- Toffoli_n; it leaves them clean, and with them read as the constant
 -- 0 it is Toffoli_n outright.
 
@@ -1672,12 +1684,18 @@ Maslovₙ-set0 : (n : ℕ) (p : 3 ≤ n) →
                      (MCh.toffoliᴹˢ (MCh.standardᴹ n p))
 Maslovₙ-set0 = Msl.Maslovₙ-set0
 
--- Its resources: at even n, 4(n − 2) path variables, 8(n − 2) T gates
--- and 10(n − 2) + 1 Clifford gates (at odd n one T gate, three
--- Clifford gates and two path variables fewer) -- one T gate more
--- than [23]'s own construction, which keeps an exact Toffoli gate in
--- the middle: 8n − 17.  Table 2's rows Maslov50 and Maslov100,
--- computed from the circuit, are all as printed.
+-- Its resources: every one of its n + ⌈(n − 3)/2⌉ wires is touched,
+-- so that many qubits as the tool counts them; at even n, 4(n − 2)
+-- path variables, 8(n − 2) T gates and 10(n − 2) + 1 Clifford gates
+-- (at odd n one T gate, two Clifford gates and two path variables
+-- fewer) -- one T gate more than [23]'s own construction, which keeps
+-- an exact Toffoli gate in the middle: 8n − 17.  Table 2's rows
+-- Maslov50 and Maslov100, computed from the circuit, are all as
+-- printed.
+
+Maslovₙ-qubits : (n : ℕ) (p : 3 ≤ n) →
+                 Qb.qubits (Msl.Maslovₙ n p) ≡ n + ⌈ n ∸ 3 /2⌉
+Maslovₙ-qubits = Msl.Maslovₙ-qubits
 
 Maslovₙ-paths : (n : ℕ) (p : 3 ≤ n) →
                 KP.paths (Msl.Maslovₙ n p) + 2 * Msl.parity n ≡ 4 * (n ∸ 2)
@@ -1688,19 +1706,19 @@ Maslovₙ-tcount : (n : ℕ) (p : 3 ≤ n) →
 Maslovₙ-tcount = Msl.Maslovₙ-tcount-closed
 
 Maslovₙ-cliffords : (n : ℕ) (p : 3 ≤ n) →
-                    QCnt.cliffords (Msl.Maslovₙ n p) + 3 * Msl.parity n ≡
+                    QCnt.cliffords (Msl.Maslovₙ n p) + 2 * Msl.parity n ≡
                     10 * (n ∸ 2) + 1
 Maslovₙ-cliffords = Msl.Maslovₙ-cliffords-closed
 
 table-2-Maslov50 : (p : 3 ≤ 50) →
-                   (Msl.width (Msl.Maslovₙ 50 p) ≡ 74) ×
+                   (Qb.qubits (Msl.Maslovₙ 50 p) ≡ 74) ×
                    (KP.paths (Msl.Maslovₙ 50 p) ≡ 192) ×
                    (QCnt.cliffords (Msl.Maslovₙ 50 p) ≡ 481) ×
                    (TNet.tcount (Msl.Maslovₙ 50 p) ≡ 384)
 table-2-Maslov50 = Msl.table-2-Maslov50
 
 table-2-Maslov100 : (p : 3 ≤ 100) →
-                    (Msl.width (Msl.Maslovₙ 100 p) ≡ 149) ×
+                    (Qb.qubits (Msl.Maslovₙ 100 p) ≡ 149) ×
                     (KP.paths (Msl.Maslovₙ 100 p) ≡ 392) ×
                     (QCnt.cliffords (Msl.Maslovₙ 100 p) ≡ 981) ×
                     (TNet.tcount (Msl.Maslovₙ 100 p) ≡ 784)
