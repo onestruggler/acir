@@ -114,3 +114,10 @@ e23 a a′ s = begin
   x = toℕ a
   aa′ : a ≢ a′
   aa′ e = <⇒≢ (n<1+n x) (Eq.trans (Eq.cong toℕ e) s)
+
+------------------------------------------------------------------------
+-- For the rule (31): the box of a Gray-code step is the square of its
+-- rotation
+
+box-rot : ∀ x → dZZ₁ {m} x ≈ dZXlo₁ x • dZXlo₁ x
+box-rot x = trans (sym right-unit) (unrev (βof x) (layout□ x))

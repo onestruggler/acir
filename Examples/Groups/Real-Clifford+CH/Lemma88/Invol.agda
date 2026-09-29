@@ -164,35 +164,36 @@ private
     Ex • Ex                         ≈⟨ Ex² ⟩
     ε ∎
 
-  -- (317): the multi-controlled ZX and XZ are inverse.
-  zx-xz : ΛZX (₂₊ m) • ΛXZ (₂₊ m) ≈ ε
-  zx-xz = begin
-    (CH • E • CH • E) • (E • CH • E • CH)
-      ≈⟨ by-passoc ((□ • □ • □ • □) • (□ • □ • □ • □)) (□ • □ • □ • (□ • □) • □ • □ • □) Eq.refl ⟩
-    CH • E • CH • (E • E) • CH • E • CH
-      ≈⟨ back _ (back _ (back _ (trans (front _ E²) left-unit))) ⟩
-    CH • E • CH • CH • E • CH
-      ≈⟨ back _ (back _ (trans (sym assoc) (trans (front _ CH²) left-unit))) ⟩
-    CH • E • E • CH
-      ≈⟨ back _ (trans (sym assoc) (trans (front _ E²) left-unit)) ⟩
-    CH • CH
-      ≈⟨ CH² ⟩
-    ε ∎
+-- (317): the multi-controlled ZX and XZ are inverse.
+zx-xz : ΛZX (₂₊ m) • ΛXZ (₂₊ m) ≈ ε
+zx-xz = begin
+  (CH • E • CH • E) • (E • CH • E • CH)
+    ≈⟨ by-passoc ((□ • □ • □ • □) • (□ • □ • □ • □)) (□ • □ • □ • (□ • □) • □ • □ • □) Eq.refl ⟩
+  CH • E • CH • (E • E) • CH • E • CH
+    ≈⟨ back _ (back _ (back _ (trans (front _ E²) left-unit))) ⟩
+  CH • E • CH • CH • E • CH
+    ≈⟨ back _ (back _ (trans (sym assoc) (trans (front _ CH²) left-unit))) ⟩
+  CH • E • E • CH
+    ≈⟨ back _ (trans (sym assoc) (trans (front _ E²) left-unit)) ⟩
+  CH • CH
+    ≈⟨ CH² ⟩
+  ε ∎
 
-  xz-zx : ΛXZ (₂₊ m) • ΛZX (₂₊ m) ≈ ε
-  xz-zx = begin
-    (E • CH • E • CH) • (CH • E • CH • E)
-      ≈⟨ by-passoc ((□ • □ • □ • □) • (□ • □ • □ • □)) (□ • □ • □ • (□ • □) • □ • □ • □) Eq.refl ⟩
-    E • CH • E • (CH • CH) • E • CH • E
-      ≈⟨ back _ (back _ (back _ (trans (front _ CH²) left-unit))) ⟩
-    E • CH • E • E • CH • E
-      ≈⟨ back _ (back _ (trans (sym assoc) (trans (front _ E²) left-unit))) ⟩
-    E • CH • CH • E
-      ≈⟨ back _ (trans (sym assoc) (trans (front _ CH²) left-unit)) ⟩
-    E • E
-      ≈⟨ E² ⟩
-    ε ∎
+xz-zx : ΛXZ (₂₊ m) • ΛZX (₂₊ m) ≈ ε
+xz-zx = begin
+  (E • CH • E • CH) • (CH • E • CH • E)
+    ≈⟨ by-passoc ((□ • □ • □ • □) • (□ • □ • □ • □)) (□ • □ • □ • (□ • □) • □ • □ • □) Eq.refl ⟩
+  E • CH • E • (CH • CH) • E • CH • E
+    ≈⟨ back _ (back _ (back _ (trans (front _ CH²) left-unit))) ⟩
+  E • CH • E • E • CH • E
+    ≈⟨ back _ (back _ (trans (sym assoc) (trans (front _ E²) left-unit))) ⟩
+  E • CH • CH • E
+    ≈⟨ back _ (trans (sym assoc) (trans (front _ CH²) left-unit)) ⟩
+  E • E
+    ≈⟨ E² ⟩
+  ε ∎
 
+private
   pair-β : ∀ β (L : Layout N) → mc±ZX β L • mc±XZ β L ≈ ε
   pair-β false L = conj₁-inv L zx-xz
   pair-β true  L = conj₁-inv L xz-zx
@@ -249,3 +250,9 @@ e41 = begin
   rev (gadget • gadget)
     ≈⟨ rev-cong (conj₂-inv (layoutH {m} (gcode 0) 0 1) ΛH²) ⟩
   ε ∎
+
+------------------------------------------------------------------------
+-- For the rule (31): a rotation and its inverse, placed by any layout
+
+rot-inv : ∀ β (L : Layout N) → mc±ZX β L • mc±XZ β L ≈ ε
+rot-inv = pair-β

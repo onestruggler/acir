@@ -6,9 +6,13 @@
 --
 -- The rules of Figure 8 whose decodings are proved so far with the
 -- general-width machinery of GeneralN: (22), from (335) and (336)
--- (BoxComm); (23), from (355) in both signs (ZX355); (39), from (338)
--- with x = y (Box338Eq); and (40), from (353) and (339) (Canon40).  Completeness below the width is the
--- paper's own induction (CompletenessInduction).
+-- (BoxComm); (23), from (355) in both signs (ZX355); (31), from (355),
+-- (351)/(352) and the pair step of RotPair; (32), from (351)/(352)
+-- placed (RotAnywhere); (39), from (338) with x = y (Box338Eq); (40),
+-- from (353) and (339) (Canon40); (44), from (361) — Lemma 8.5, (354)
+-- and (355) (Canon361) — and (338) (Canon44); and (45), from (333) and
+-- the three-qubit proof of (146) (Canon45).  Completeness below the
+-- width is the paper's own induction (CompletenessInduction).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -34,9 +38,17 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Box338Eq complete₂ compl
 import Examples.Groups.Real-Clifford+CH.Lemma88.Rule22 as Rule22
 open import Examples.Groups.Real-Clifford+CH.GeneralN.ZX355 complete₂ complete₃ using (eq355 ; eq355′)
 import Examples.Groups.Real-Clifford+CH.Lemma88.Rule23 as Rule23
+open import Examples.Groups.Real-Clifford+CH.GeneralN.RotPair complete₂ complete₃ using (pair-step)
+import Examples.Groups.Real-Clifford+CH.Lemma88.Rule31 as Rule31
+open import Examples.Groups.Real-Clifford+CH.GeneralN.RotAnywhere complete₂ complete₃ using (rot-comm)
+import Examples.Groups.Real-Clifford+CH.Lemma88.Rule32 as Rule32
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon40 complete₂ complete₃ using (core40)
 import Examples.Groups.Real-Clifford+CH.Lemma88.Rule39 as Rule39
 import Examples.Groups.Real-Clifford+CH.Lemma88.Rule40 as Rule40
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon44 complete₂ complete₃ using (core44)
+import Examples.Groups.Real-Clifford+CH.Lemma88.Rule44 as Rule44
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon45 complete₂ complete₃ using (core45)
+import Examples.Groups.Real-Clifford+CH.Lemma88.Rule45 as Rule45
 
 module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
@@ -50,8 +62,21 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
   -- (23)
   open Rule23 {₂₊ k} (eq355 k below) (eq355′ k below) public using (e23)
 
+  -- (31)
+  open Rule31 (canonN k completes) complete₂ (eq355 k below) (eq355′ k below) (rot-comm k below) (pair-step k below)
+    public using (e31)
+
+  -- (32)
+  open Rule32 {₂₊ k} (rot-comm k below) public using (e32)
+
   -- (39)
   open Rule39 {₂₊ k} (XY.core39 k below) public using (e39)
 
   -- (40)
   open Rule40 {₂₊ k} (core40 k below) public using (e40)
+
+  -- (44)
+  open Rule44 {₂₊ k} (core44 k below) public using (e44)
+
+  -- (45)
+  open Rule45 {₂₊ k} (core45 k below) public using (e45)

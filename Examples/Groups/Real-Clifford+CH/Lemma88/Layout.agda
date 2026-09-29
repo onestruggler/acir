@@ -6,11 +6,11 @@
 -- At width 3 + m the Gray codes of 0 … 4 have t = toBits m 0 — all
 -- white — on the wires 3 … (`g0` … `g4`), so the gates the decoding makes
 -- of letters with indices among them share the negations of those
--- wires.  The layouts they are placed by (`lay0`, `lay2`, `lay3`,
+-- wires.  The layouts they are placed by (`lay0`, `lay1`, `lay2`, `lay3`,
 -- `layH`), the negations as a conjugation (`T`, X on the wires 2 …, and
 -- `CT`), and the gadget — the decoded H_[0,1] H_[3,2] — as the H gate
 -- under the swap of the wires 0 1 between them (`gadget-form`).  Shared
--- by the rules (39) and (40).
+-- by the rules (39), (40), (44) and (45).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -89,6 +89,13 @@ L₀ = tgt ∷ ctrl false ∷ ctrl false ∷ zipWith slot t t
 
 lay0 : layout□ {m} 0 ≡ L₀
 lay0 = Eq.cong₂ (zipWith slot) g0 g1
+
+-- The gate for 1, 2: the target on wire 1, black on wire 0.
+L₁ : Layout N
+L₁ = ctrl true ∷ tgt ∷ ctrl false ∷ zipWith slot t t
+
+lay1 : layout□ {m} 1 ≡ L₁
+lay1 = Eq.cong₂ (zipWith slot) g1 g2
 
 -- The gate for 2, 3: the target on wire 0, black on wire 1.
 L₂ : Layout N
