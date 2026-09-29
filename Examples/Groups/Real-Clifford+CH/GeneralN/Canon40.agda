@@ -642,3 +642,8 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
   core40 : (Ex ↓ • ΛH (₃₊ k) • Ex ↓) • Btd ≈ ΛZX (₄₊ k) • Btd • (Ex ↓ • ΛH (₃₊ k) • Ex ↓)
   core40 = trans (cong S-ΛH Btd-Bt) (trans eq40c (sym (back _ (cong Btd-Bt S-ΛH))))
     where open XY k below using (S-ΛH)
+
+  -- Exported for (43): CH₂ as the product of HG over the colourings of
+  -- the wires 3 ….
+  CH₂-∏′ : CH₂ ≈ ∏ (allBits (₂₊ k)) Hcol
+  CH₂-∏′ = CH₂-∏

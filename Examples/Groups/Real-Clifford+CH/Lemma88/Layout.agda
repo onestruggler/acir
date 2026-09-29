@@ -45,7 +45,7 @@ private
     k : ℕ
 
 ------------------------------------------------------------------------
--- The Gray codes of 0 … 4
+-- The Gray codes of 0 … 7
 
 private
   hd-Z : ∀ j → hd (toBits j 0) ≡ false
@@ -73,6 +73,9 @@ g3 = Eq.cong₂ (λ h z → false ∷ true ∷ h ∷ z) (hd-Z m) (gray-Z m)
 
 g4 : gcode {m} 4 ≡ false ∷ true ∷ true ∷ t
 g4 = Eq.cong₂ (λ h z → false ∷ true ∷ not h ∷ z) (hd-Z m) (gray-Z m)
+
+g5 : gcode {m} 5 ≡ true ∷ true ∷ true ∷ t
+g5 = Eq.cong₂ (λ h z → true ∷ true ∷ not h ∷ z) (hd-Z m) (gray-Z m)
 
 g6 : gcode {m} 6 ≡ true ∷ false ∷ true ∷ t
 g6 = Eq.cong₂ (λ h z → true ∷ false ∷ not h ∷ z) (hd-Z m) (gray-Z m)
