@@ -533,3 +533,19 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
   letter-comm true  false b c r = F2 true b c r
   letter-comm false true  b c r = F3 b c r
   letter-comm false false b c r = F4 (true ∷ b ∷ c ∷ false ∷ r)
+
+  ----------------------------------------------------------------------
+  -- Exported for (38): the H gate against the letters of a rotation on
+  -- wire 1 (the crossed pairs G1, G2), and K, negated on wire 0 or not,
+  -- against the H gate white on wire 3 (KH)
+
+  HG-letter₁ : ∀ y a c (r : Bits (₁₊ k)) →
+               letter true • col (a ∷ true ∷ c ∷ false ∷ r) (Ex • letter y • Ex) ≈
+               col (a ∷ true ∷ c ∷ false ∷ r) (Ex • letter y • Ex) • letter true
+  HG-letter₁ true  a c r = G1 a (c ∷ false ∷ r)
+  HG-letter₁ false a c r = G2 a c r
+
+  Kneg-HG : ∀ a b c (r : Bits (₁₊ k)) →
+            Kcol k below a • col (true ∷ b ∷ c ∷ false ∷ r) (letter true) ≈
+            col (true ∷ b ∷ c ∷ false ∷ r) (letter true) • Kcol k below a
+  Kneg-HG = KH

@@ -8,7 +8,8 @@
 -- general-width machinery of GeneralN: (22), from (335) and (336)
 -- (BoxComm); (23), from (355) in both signs (ZX355); (24), from (358)
 -- placed (BraidAnywhere); (31), from (355), (351)/(352) and the pair
--- step of RotPair; (32), from (351)/(352) placed (RotAnywhere); (39),
+-- step of RotPair; (32), from (351)/(352) placed (RotAnywhere); (38),
+-- from (348)–(350) placed (HGAnywhere, Canon38); (39),
 -- from (338) with x = y (Box338Eq); (40),
 -- from (353) and (339) (Canon40); (44), from (361) — Lemma 8.5, (354)
 -- and (355) (Canon361) — and (338) (Canon44); and (45), from (333) and
@@ -36,6 +37,8 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxSym complete₂ complet
 open import Examples.Groups.Real-Clifford+CH.GeneralN.CanonN complete₂ complete₃ using (canonN)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxComm complete₂ complete₃ using (eq335 ; eq336ᶜ)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Box338Eq complete₂ complete₃ using (module XY)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.HGAnywhere complete₂ complete₃ using (hgrot)
+import Examples.Groups.Real-Clifford+CH.Lemma88.Rule38 as Rule38
 import Examples.Groups.Real-Clifford+CH.Lemma88.Rule22 as Rule22
 open import Examples.Groups.Real-Clifford+CH.GeneralN.ZX355 complete₂ complete₃ using (eq355 ; eq355′)
 import Examples.Groups.Real-Clifford+CH.Lemma88.Rule23 as Rule23
@@ -74,6 +77,9 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
   -- (32)
   open Rule32 {₂₊ k} (rot-comm k below) public using (e32)
+
+  -- (38)
+  open Rule38 {₂₊ k} (rot-comm k below) (hgrot k below) public using (e38)
 
   -- (39)
   open Rule39 {₂₊ k} (XY.core39 k below) public using (e39)
