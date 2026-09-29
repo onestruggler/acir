@@ -13,8 +13,10 @@
 -- from (338) with x = y (Box338Eq); (40),
 -- from (353) and (339) (Canon40); (43), from (361), (360) and the
 -- D-trick (Canon43); (44), from (361) — Lemma 8.5, (354)
--- and (355) (Canon361) — and (338) (Canon44); and (45), from (333) and
--- the three-qubit proof of (146) (Canon45).  Completeness below the
+-- and (355) (Canon361) — and (338) (Canon44); (45), from (333) and
+-- the three-qubit proof of (146) (Canon45); and (46), from (337) and
+-- the D-trick, (338) and (339) under relabellings and (335), (336)
+-- (Canon46a, Canon46b).  Completeness below the
 -- width is the paper's own induction (CompletenessInduction).
 ------------------------------------------------------------------------
 
@@ -58,6 +60,8 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon44 complete₂ comple
 import Examples.Groups.Real-Clifford+CH.Lemma88.Rule44 as Rule44
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon45 complete₂ complete₃ using (core45)
 import Examples.Groups.Real-Clifford+CH.Lemma88.Rule45 as Rule45
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon46b complete₂ complete₃ using (core46)
+import Examples.Groups.Real-Clifford+CH.Lemma88.Rule46 as Rule46
 
 module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
@@ -98,3 +102,6 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
   -- (45)
   open Rule45 {₂₊ k} (core45 k below) public using (e45)
+
+  -- (46)
+  open Rule46 {₂₊ k} (core46 k below) public using (e46)
