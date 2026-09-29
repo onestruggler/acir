@@ -11,7 +11,9 @@
 -- such a proof.  Here completeness is built width by width instead
 -- (`below`: at every width below n, each from all the smaller ones), so
 -- Lemma 8.7 is discharged, and Lemma 8.8 is asked for only in the form
--- the paper proves it: at each width, given completeness below.
+-- the paper proves it: at each width, given completeness below.  From
+-- five qubits on that is Lemma88.All, so `Theorem-8-9‴` asks for Lemma
+-- 8.8 on three and four qubits only.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -48,6 +50,7 @@ import Examples.Groups.Real-Clifford+CH.Auxiliary.Theorem410Proof as T410
 open import Examples.Groups.Real-Clifford+CH.Completeness using (zero-wires)
 import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87Three as L87₃
 import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87All as L87ₙ
+import Examples.Groups.Real-Clifford+CH.Lemma88.All as L88
 
 ------------------------------------------------------------------------
 -- Completeness at a width, and below it
@@ -118,3 +121,25 @@ module Theorem-8-9″
     where
     module MS = MonoidSem (n VRel,_===_) (Monoid.setoid (Scaled-monoid n))
                           (Scaled-monoid n) (λ g → 1 , ⟦ g ⟧ᵍ)
+
+------------------------------------------------------------------------
+-- Theorem 8.9, with Lemma 8.8 proved from five qubits on
+
+-- Lemma 8.8 on 5 + k qubits is Lemma88.All, given completeness on
+-- fewer; what is left of it is three and four qubits.
+module Theorem-8-9‴
+  (theorem-4-4  : ∀ {u t : Word (G.Gen 4)} → ⟦ u ⟧Y₂ ~ ⟦ t ⟧Y₂ →
+                  PB._≈_ (4 G.G,_===_) u t)
+  (theorem-4-4ₙ : ∀ k → T410.Theorem-4-4 k)
+  (lemma-8-8₃   : Below 3 → Section8.Lemma-8-8 0)
+  (lemma-8-8₄   : Below 4 → Section8.Lemma-8-8 1)
+  where
+
+  private
+    lemma-8-8 : ∀ k → Below (₃₊ k) → Section8.Lemma-8-8 k
+    lemma-8-8 zero          b = lemma-8-8₃ b
+    lemma-8-8 (suc zero)    b = lemma-8-8₄ b
+    lemma-8-8 (suc (suc k)) b =
+      L88.lemma-8-8 (b {2} (s≤s (s≤s (s≤s z≤n)))) (b {3} (s≤s (s≤s (s≤s (s≤s z≤n))))) k b
+
+  open Theorem-8-9″ theorem-4-4 theorem-4-4ₙ lemma-8-8 public using (completeness ; subpresentation)

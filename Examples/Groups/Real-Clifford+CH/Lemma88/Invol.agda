@@ -256,3 +256,7 @@ e41 = begin
 
 rot-inv : ∀ β (L : Layout N) → mc±ZX β L • mc±XZ β L ≈ ε
 rot-inv = pair-β
+
+-- The multi-controlled H, placed by any layout, is an involution.
+mcH-inv : ∀ (L : Layout N) → mcH L • mcH L ≈ ε
+mcH-inv L = conj₂-inv L ΛH²
