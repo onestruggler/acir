@@ -44,12 +44,13 @@ open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module 
 open import Examples.Groups.Real-Clifford+CH.SemanticSteps using () renaming (module Below to SBelow)
 open import Examples.Groups.Real-Clifford+CH.TopWeakening using (top)
 open import Examples.Groups.Real-Clifford+CH.Reverse using (rev ; rev≈⁻¹)
-open import Examples.Groups.Real-Clifford+CH.Auxiliary.Bitstrings using (allBits ; lookupℕ ; insertℕ)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.Bitstrings using (allBits ; lookupℕ ; insertℕ ; flipℕ)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.BitAlg using (swapBits)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Gray using (bit ; hd ; ungray ; fromBits ; index ; code-index)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.P using (GenP)
 open import Examples.Groups.Real-Clifford+CH.Encoding using (∏ ; zx ; E-X ; E-Z ; E-CZ ; E-swap)
 open import Examples.Groups.Real-Clifford+CH.MultiControlled
-  using (Slot ; ctrl ; tgt ; Layout ; negs ; tgtWire ; mcZX ; mcXZ ; mc±ZX ; mc±XZ)
+  using (Slot ; ctrl ; tgt ; Layout ; negs ; tgtWire ; mcZX ; mcXZ ; mc±ZX ; mc±XZ ; Xat ; swapAt)
 open import Examples.Groups.Real-Clifford+CH.Decoding
   using (d ; dZX ; dZXlo₁ ; dZXhi₁ ; gcode ; layout□ ; slot)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires using (negsB)
@@ -61,7 +62,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.CanonN complete₂ complet
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87All complete₂ complete₃ using (mergesₙ)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.ZX353 complete₂ complete₃ using (∏-cong ; ∏-conj)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Place using (low-comm)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.PlaceAt using (placeAt)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.PlaceAt using (placeAt ; X-step)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.PlaceCalc using (placeAt-cong)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.TwoWire using (placeAt-top)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Colours complete₂ complete₃ using (conj-swap)
@@ -72,6 +73,11 @@ import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87CZ as Lemma87CZ
 import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87Z as Lemma87Z
 import Examples.Groups.Real-Clifford+CH.Lemma88.Easy as Easy
 import Examples.Groups.Real-Clifford+CH.Lemma88.Invol as Invol
+open import Examples.Groups.Real-Clifford+CH.Lemma88.Free complete₂ complete₃ using (dA5)
+import Examples.Groups.Real-Clifford+CH.Auxiliary.SignedPerm as SignedPerm
+import Examples.Groups.Real-Clifford+CH.Auxiliary.NetSP as NetSP
+import Examples.Groups.Real-Clifford+CH.Auxiliary.Eq65H as Eq65H
+import Examples.Groups.Real-Clifford+CH.Auxiliary.NF as NF
 
 ------------------------------------------------------------------------
 -- Merges at the full width
@@ -151,6 +157,10 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
   open Lemma87Z (canonN k completes) (mergesₙ k completes) using (lemmaZ ; dʷ-∏)
   open Lemma87CZ (canonN k completes) (mergesₙ k completes) using (lemmaCZ)
   open SBelow 2 (s≤s (s≤s z≤n)) complete₂ using () renaming (by-sem to by-sem₂)
+  open SignedPerm m using (sp ; _≐_ ; ≐-trans ; ≐-sym ; ≐-refl ; ⊙-cong)
+  open NetSP m using (bm ; bm-⊙ ; bm-cong ; sp-EX ; sp-Eswap)
+  open Eq65H m using (hf-EX ; hf-Eswap)
+  open NF m using (cat)
 
   private
     ≡→≈ : ∀ {a b : Circuit N} → a ≡ b → a ≈ b
@@ -420,3 +430,37 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     CZ • (ΛXZ 1 ↓ᵏ (₃₊ k)) • (Ex • (ΛZX 1 ↓ᵏ (₃₊ k)) • Ex) • (ΛXZ 1 ↓ᵏ (₃₊ k))
       ≈⟨ by-sem₂ (CZ • ΛXZ 1 • (Ex • ΛZX 1 • Ex) • ΛXZ 1) Ex Eq.refl {₃₊ k} ⟩
     Ex ∎
+
+  ----------------------------------------------------------------------
+  -- E-X one wire up: its signed permutation is that of E-X conjugated
+  -- by the swap below it, so by Corollary A.5 its decoding is too
+
+  private
+    flip-swap : ∀ {n} w (x : Bits n) → suc w < n → swapBits w (flipℕ w (swapBits w x)) ≡ flipℕ (suc w) x
+    flip-swap zero    Data.Vec.[] ()
+    flip-swap zero    (a ∷ Data.Vec.[]) (s≤s ())
+    flip-swap zero    (a ∷ b ∷ r) _       = Eq.refl
+    flip-swap (suc w) Data.Vec.[] ()
+    flip-swap (suc w) (a ∷ r)     (s≤s b) = Eq.cong (a ∷_) (flip-swap w r b)
+
+    sp-rec : ∀ w → suc w < N → sp (E-X {m} (suc w)) ≐ sp (E-swap {m} w • E-X w • E-swap w)
+    sp-rec w b = ≐-trans (sp-EX (suc w) b) (≐-sym (begin′))
+      where
+      w<N : w < N
+      w<N = ≤-trans (n≤1+n (suc w)) b
+      begin′ : sp (E-swap {m} w • E-X w • E-swap w) ≐ bm (flipℕ (suc w))
+      begin′ = ≐-trans (⊙-cong (sp-Eswap w b) (⊙-cong (sp-EX w w<N) (sp-Eswap w b)))
+               (≐-trans (⊙-cong (≐-refl {bm (swapBits w)}) (bm-⊙ (flipℕ w) (swapBits w)))
+               (≐-trans (bm-⊙ (swapBits w) (λ x → swapBits w (flipℕ w x)))
+                        (bm-cong _ (flipℕ (suc w)) (λ x → flip-swap w x b))))
+
+  step-X : ∀ w → suc w < N → (d ʷ) (E-swap {m} w) ≈ swapAt w → (d ʷ) (E-X {m} w) ≈ Xat w →
+           (d ʷ) (E-X {m} (suc w)) ≈ Xat (suc w)
+  step-X w b ds dx = begin
+    (d ʷ) (E-X (suc w))
+      ≈⟨ dA5 k below (hf-EX (suc w)) (cat (hf-Eswap w) (cat (hf-EX w) (hf-Eswap w))) (sp-rec w b) ⟩
+    (d ʷ) (E-swap w) • (d ʷ) (E-X w) • (d ʷ) (E-swap w)
+      ≈⟨ cong ds (cong dx ds) ⟩
+    swapAt w • Xat w • swapAt w
+      ≈⟨ X-step w (≤-pred b) ⟩
+    Xat (suc w) ∎
