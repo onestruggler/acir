@@ -42,8 +42,9 @@
 -- variables m" is made exact: every chain from m to m′ variables has
 -- length m − m′ (⟶ᵍ*-length).  That a sequence can always be continued
 -- to an irreducible path-sum is PathSum.Anywhere.Match (by a finite
--- search); the claim that matching and normalisation take polynomial
--- time is not formalised.
+-- search); that matching and normalisation take polynomial time, for
+-- a fixed order, is proved in a cost model by PathSum.Cost.Normalise
+-- (proposition-3-2), on sparse representations.
 -- Soundness (proposition 3.1) is in PathSum.Anywhere.Sound, which is
 -- where the denotation comes in.
 ------------------------------------------------------------------------

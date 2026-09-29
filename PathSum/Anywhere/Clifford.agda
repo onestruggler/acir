@@ -27,9 +27,9 @@
 -- and a phase of order at most 2 either reduces along that strategy
 -- to one with no path variables left, or is not the identity.  The
 -- strategy is part of the type, so this is more than the existence of
--- some chain.  PathSum.Anywhere.Corollary carries it to circuits.  As
--- everywhere in PathSum, the polynomial time bounds are not
--- formalised.
+-- some chain.  PathSum.Anywhere.Corollary carries it to circuits.  The
+-- polynomial time bounds are proved in a cost model, on sparse
+-- representations, by PathSum.Cost.Normalise and PathSum.Cost.Corollary.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

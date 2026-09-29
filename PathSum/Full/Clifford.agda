@@ -45,7 +45,8 @@
 -- (corollary-4-4-normalᶠ).  Hence also a decision procedure that
 -- normalises with all of figure 2 (circuit-decidableᶠ; decidability as
 -- such is elementary, and the type does not record the route).  The
--- polynomial time bounds are not formalised.
+-- polynomial time bounds are proved in a cost model with the linear
+-- rules only (PathSum.Cost.Corollary).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

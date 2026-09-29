@@ -21,7 +21,9 @@
 -- and tries every candidate linear form (c , S) and, for [HH], every
 -- substituted variable.  That takes exponential time.  The paper's
 -- claim that rules are matched, and path-sums normalised, in
--- polynomial time is not formalised.
+-- polynomial time is PathSum.Cost.Search and PathSum.Cost.Normalise:
+-- the same rules on sparse representations, in a cost model, for a
+-- fixed order.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

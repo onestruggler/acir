@@ -16,7 +16,8 @@
 -- normalisation and the identity's polynomials -- the content of
 -- corollary 4.4's proof (corollary-4-4-any, corollary-4-4-syntactic).
 -- The corollary's own statement, decidability in polynomial time, is
--- not formalised.
+-- proved in a cost model for circuits over {H, S, CZ}
+-- (PathSum.Cost.Corollary, the last section below).
 --
 -- Around that core: lemma 2.5 for every Boolean polynomial; composition
 -- of path-sums (definition 2.6), proposition 2.7's operator equation,
@@ -73,12 +74,18 @@
 -- covers only linear substitutions, and PathSum.Full.Clifford supplies
 -- the rest.
 --
--- Not formalised: the polynomial time bounds (proposition 3.2,
--- corollaries 2.15 and 4.4); constant inputs, beyond restricting to the
--- columns where an ancilla is |0⟩ (PathSum.Ancilla); the symmetric
--- monoidal laws of remark 2.8 beyond interchange and SWAP naturality;
--- footnote 2's complexity claim; and section 5's benchmarks as runs of
--- the tool.
+-- The polynomial time bounds (proposition 3.2, corollaries 2.15 and
+-- 4.4, the abstract's equivalence procedure) are proved in a cost
+-- model, not on a machine (PathSum.Cost): for a fixed order and the
+-- linear rules, and corollary 4.4's for circuits over {H, S, CZ}.
+--
+-- Not formalised: running times on a machine and complexity classes
+-- (footnote 2's P = co-NP among them); the time bounds for [Case] and
+-- non-linear quotients, and by the Gaussian route; constant inputs,
+-- beyond restricting to the columns where an ancilla is |0⟩
+-- (PathSum.Ancilla); the symmetric monoidal laws of remark 2.8 beyond
+-- interchange and SWAP naturality; and section 5's benchmarks as runs
+-- of the tool.
 --
 -- Each section's banner names the modules its results come from;
 -- results proved here from them are stated with their proofs.
@@ -344,6 +351,22 @@ module SzE = PathSum.Size.Equivalence M₀
 
 import PathSum.Size.Interpreter.Clifford
 import PathSum.Size.Interpreter.Equivalence
+
+import PathSum.Cost
+module PC = PathSum.Cost
+
+import PathSum.Cost.Normalise
+module CN = PathSum.Cost.Normalise M
+
+import PathSum.Cost.Equivalence
+import PathSum.Cost.Normalise.Equivalence
+import PathSum.Cost.Excluded
+
+import PathSum.Cost.Corollary
+module CCor = PathSum.Cost.Corollary M₀
+
+import PathSum.Cost.Interpreter
+module CInt = PathSum.Cost.Interpreter M
 
 import PathSum.CRK.Controlled
 module KCR = PathSum.CRK.Controlled M₀
@@ -914,7 +937,8 @@ front-≋ = AnyS.front-≋
 -- "Every sequence of rewrites terminates with an irreducible
 -- path-sum": whether a rule applies somewhere is decidable, by a
 -- finite search, so every path-sum reduces to one to which none does.
--- (That the search is polynomial is not formalised.)
+-- (This search is exponential; the polynomial one, on sparse
+-- path-sums in a cost model, is proposition-3-2 in the last section.)
 
 normal-form : (ξ : PathSum n k m) →
               ∃ λ k′ → ∃ λ m′ → ∃ λ (ξ′ : PathSum n k′ m′) →
@@ -1208,7 +1232,8 @@ corollary-4-4-any = Cor.corollary-4-4-any
 
 -- In particular such a chain ends at the identity's polynomials
 -- exactly for the identity circuits.  (The corollary's own statement,
--- decidability in polynomial time, is not formalised.)
+-- decidability in polynomial time, is corollary-4-4-polytime in the
+-- last section, in a cost model.)
 
 corollary-4-4-syntactic : (C : Circuit n) →
   (⟦ C ⟧ ≋ idPS ⇔
@@ -2130,7 +2155,9 @@ decide-≋-id = Dcd.decide-≋-id
 -- record the route; what the route adds is the reduction, whose content
 -- is corollary-4-4-⟦⟧ and corollary-4-4-syntactic above.  (Polynomials
 -- are functions on all 2^(n+m) monomials and the test visits every
--- input, so nothing here is polynomial-time.)
+-- input, so nothing here is polynomial-time; the polynomial-time
+-- procedure, on sparse path-sums in a cost model, is the last
+-- section's.)
 
 circuit-decidable : (C : Circuit n) → Dec (⟦ C ⟧ ≋ idPS)
 circuit-decidable = Cor.circuit-decidable
@@ -2138,3 +2165,71 @@ circuit-decidable = Cor.circuit-decidable
 matrix-decidable : (C : Circuit n) →
   Dec (∀ x z → applyᴬ C (δ x) z ≐ scale (norm C) (δ x z))
 matrix-decidable = Cor.matrix-decidable
+
+
+------------------------------------------------------------------------
+-- The paper's polynomial-time claims, in a cost model (PathSum.Cost,
+-- PathSum.Cost.*)
+
+-- A cost model, not a machine model: every algorithm below is written
+-- once, as a program in PathSum.Cost's monad that computes a value and
+-- a count of unit steps together (an operation on numbers below 2^M,
+-- on Booleans or Fin indices, a list or vector cell visited, and the
+-- few conventions PathSum.Cost's header lists), on sparse path-sums
+-- rather than the dense ones above.  Nothing is claimed about Turing
+-- machines or complexity classes.
+
+-- Proposition 3.2, as far as it holds: for a fixed order bound d ≥ 2,
+-- normalising a sparse path-sum with [Elim], [ω] and [HH] with linear
+-- quotients, at any variables, terminates after at most m rounds with
+-- a chain to an irreducible path-sum, at a cost polynomial in n + m
+-- (the Proposition-3-2 record: terminates, linear, normalises,
+-- polynomial, every).  [Case] and non-linear quotients are left out:
+-- one such step can raise the order the bounds rest on
+-- (PathSum.Cost.Excluded.order-rises) -- and "matching is polynomial,
+-- hence normalising is" needs the path-sum to stay small, which lemma
+-- 2.13 gives only for linear quotients.
+
+proposition-3-2 : (d : ℕ) → 2 ≤ d → (ξ : PathSum n k m) (R : Sp.Rep n m) →
+                  Represents ξ R → Ord≤ d (phase ξ) →
+                  CN.Proposition-3-2 d ξ R
+proposition-3-2 = CN.proposition-3-2
+
+-- Corollary 4.4 in polynomial time, for circuits over {H, S, CZ}:
+-- interpret the circuit into its isometry restriction, normalise at
+-- order 2, and read the verdict.  The value is true exactly when the
+-- circuit is the identity, at a cost at most 313 (n + |C| + 3)^12 and
+-- at most 313 (2 n |C| + 3)^12 in the volume (the Corollary-4-4
+-- record's decides, polynomial, volume).  (The paper's gate set
+-- {H, CNOT, R_k} at level ≤ 2 would need a cost-annotated Gaussian
+-- elimination, which is not written.)
+
+corollary-4-4-polytime : (C : Circuit n) → CCor.Corollary-4-4 C
+corollary-4-4-polytime = CCor.corollary-4-4-polytime
+
+decide-correct : (C : Circuit n) →
+                 (PC.value (CCor.decideᶜ C) ≡ true ⇔ ⟦ C ⟧ ≋ idPS)
+decide-correct = CCor.decide-correct
+
+decideBound-def : ∀ n ℓ → CCor.decideBound n ℓ ≡ 313 * (3 + (n + ℓ)) ^ 12
+decideBound-def = CCor.decideBound-def
+
+-- "A polynomial-time decision procedure for checking the equivalence
+-- of Clifford group circuits" (the abstract): the miter, built in the
+-- monad and decided, at a cost at most
+-- 315 (n + 3 (|C₁| + |C₂|) + 3)^12.
+
+equivalence-polytime : (C₁ C₂ : Circuit n) → CCor.PolyEquivalence C₁ C₂
+equivalence-polytime = CCor.equivalence-polytime
+
+equiv-correct : (C₁ C₂ : Circuit n) →
+                (PC.value (CCor.equivᶜ C₁ C₂) ≡ true ⇔ ⟦ C₁ ⟧ ≋ ⟦ C₂ ⟧)
+equiv-correct = CCor.equiv-correct
+
+-- Corollary 2.15's time half: the path-sum of a circuit over
+-- {H, CNOT, R_k, R_k†} is computed gate by gate at a cost polynomial
+-- in n + |C| for each fixed level k (the Corollary-2-15-time record:
+-- computes, few-terms, polynomial, volume).
+
+corollary-2-15-time : (C : K.Circuit n) → CInt.Corollary-2-15-time C
+corollary-2-15-time = CInt.corollary-2-15-time

@@ -32,10 +32,12 @@
 -- is stronger than PathSum.Anywhere.Match's Irreducible, which only
 -- rules out the linear rules (Irreducibleᶠ⇒Irreducible).
 --
--- What is not formalised: the paper's claim that rules are matched,
--- and path-sums normalised, in polynomial time.  This search takes
--- exponential time (every monomial, every variable, every pair), and
--- the lift behind each candidate folds over every monomial.
+-- This search takes exponential time (every monomial, every variable,
+-- every pair), and the lift behind each candidate folds over every
+-- monomial.  The paper's claim that rules are matched, and path-sums
+-- normalised, in polynomial time is proved in a cost model for the
+-- linear rules (PathSum.Cost.Normalise); for [Case] and non-linear
+-- quotients it is not.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

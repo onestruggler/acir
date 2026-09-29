@@ -504,7 +504,9 @@ lemma-4-3 ξ int ordP ξ≋id with progress ξ int ordP
 -- exactly when it has no normalisation left and the identity's
 -- polynomials (PathSum.Theorems.corollary-4-4-any).  For gate sets
 -- whose outputs are sums of variables (CNOT) the Gaussian elimination
--- is PathSum.Gauss.  Not formalised: the polynomial time bound.
+-- is PathSum.Gauss.  The polynomial time bound is proved in a cost
+-- model for circuits over {H, S, CZ} (PathSum.Cost.Corollary); by the
+-- Gaussian route it is not.
 
 data Reduces {n k m : ℕ} (ξ : PathSum n k m) : Set where
   done  : ∀ {k′} {ξ′ : PathSum n k′ 0} → ξ ⟶* ξ′ → Reduces ξ

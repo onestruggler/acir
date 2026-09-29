@@ -71,8 +71,10 @@
 --   m − m′ (⟶ᶠ*-length-lower): its length is linear in m, both ways.
 --   That the chain can be continued to an irreducible path-sum is
 --   PathSum.Full.Match (one-step reducibility is decidable, for all
---   four rules); the claim that matching and normalisation take
---   polynomial time is not formalised.
+--   four rules); that matching and normalisation take polynomial
+--   time is proved in a cost model for the linear rules only
+--   (PathSum.Cost.Normalise), [Case] and non-linear quotients being
+--   able to raise the order the bounds rest on (PathSum.Cost.Excluded).
 -- * Renumbering a pair keeps the order of the phase (Ord≤-front₂).
 --
 -- Proposition 3.1 for this calculus is PathSum.Full.Sound; the

@@ -7,8 +7,10 @@
 -- Corollary 2.15 ends: "... and can be computed in polynomial time."
 -- Running time is a property of a machine, and no machine model -- no
 -- Turing machine, no RAM, no cost semantics for Agda's own evaluation
--- -- is formalised here; so that sentence is not formalised, and no
--- complexity class is.  What is formalised is as much of it as can be
+-- -- is formalised here; so that sentence is not formalised here, and
+-- no complexity class is (PathSum.Cost.Interpreter writes this
+-- interpreter in a cost model and bounds its cost: corollary 2.15's
+-- time half there).  What is formalised is as much of it as can be
 -- stated without one: an explicit program that computes a
 -- representation of the path-sum of a circuit over {H, CNOT, R_k,
 -- R_k†} gate by gate, on sparse data, proved correct; and bounds on

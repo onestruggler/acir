@@ -10,10 +10,10 @@
 -- proves the size half, for circuits over {H, CNOT, R_k, R_k†}
 -- (PathSum.CRK.Circuit, the paper's gate set; names marked ᴷ) and over
 -- {H, S, CZ} (PathSum.Circuit, definition 2.9's ⟦ C ⟧ with a path
--- variable for every Hadamard; names marked ᶜ).  The running time is
--- not formalised; PathSum.Size.Interpreter computes the representation
--- defined here gate by gate from sparse data, and bounds the size of
--- that computation's data.
+-- variable for every Hadamard; names marked ᶜ).  PathSum.Size.Interpreter
+-- computes the representation defined here gate by gate from sparse
+-- data, and bounds the size of that computation's data; the time half,
+-- in a cost model, is PathSum.Cost.Interpreter.
 --
 -- What size means.  A polynomial of PathSum.Polynomial is a function
 -- from all 2^(n+m) monomials to coefficients, so the Poly value that

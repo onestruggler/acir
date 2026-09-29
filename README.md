@@ -41,8 +41,9 @@ variables settles it by that test.  Around it are most of sections 2
 and 3 — composition, the paper's gate set {H, CNOT, R_k}, unitarity,
 the whole of figure 2 at any path variables — the paper's own route
 through Gaussian elimination, equivalence of two circuits, and the
-worked examples.  The polynomial time bounds are not formalised.  Its
-root is
+worked examples.  The polynomial time bounds are proved in an explicit
+cost model (not a machine model) for fixed order and the linear rules,
+corollary 4.4's for circuits over {H, S, CZ}.  Its root is
 
 ```bash
 agda +RTS -M10G -RTS PathSum/Theorems.agda
@@ -155,6 +156,24 @@ n·|C|, false for the empty circuit.  `Size/Interpreter` (with
 representation gate by gate, correctly, with every intermediate list
 polynomially bounded.  That bounds the data, not a running time: no
 machine model or complexity class is formalised.
+
+**Polynomial time, in a cost model.**  `Cost` is a monad counting unit
+steps (arithmetic below 2^M, Booleans, Fin comparisons, list and vector
+cells), in which each algorithm is written once, so its count cannot
+drift from it: a cost model, not a machine model.  `Cost/Monomial`,
+`Cost/Coeff`, `Cost/Canon`, `Cost/Split`, `Cost/Subst` and
+`Cost/Rules` keep phases of bounded order as canonical sparse lists and
+run [Elim], [ω] and [HH] with linear quotients on them, each proved a
+step of `Anywhere`'s calculus at polynomial cost; `Cost/Complete`,
+`Cost/Search`, `Cost/Sequence` and `Cost/Normalise` give proposition 3.2
+as far as it holds — normalisation in at most m rounds to an
+irreducible path-sum, at a cost polynomial in n + m for each fixed
+order — and `Cost/Excluded` shows why [Case] and non-linear quotients
+are left out (a single step can raise the order).  `Cost/Identity`,
+`Cost/Restriction` and `Cost/Corollary` decide whether a circuit over
+{H, S, CZ} is the identity, and whether two are equivalent, at a cost
+polynomial in n + |C| (corollary 4.4 and the abstract's claim);
+`Cost/Interpreter` is corollary 2.15's time half.
 
 **Section 4: incompleteness, and the remedy.**  `CRK/WithX` adds the
 X gate the paper's figure needs; `Examples/Incomplete` proves the
@@ -315,8 +334,10 @@ fourth line of example 3.4 does not follow from the third; section
 adder has 5n qubits for n ≥ 2, as its table and its tool's circuit
 say, not the text's 5n − 1 bits.
 
-Not formalised: the polynomial time bounds (proposition 3.2,
-corollaries 2.15 and 4.4); constant inputs, beyond restricting to the
+Not formalised: running times on a machine and complexity classes;
+the time bounds for [Case] and non-linear quotients, and for the
+paper's gate set by Gaussian elimination; constant inputs, beyond
+restricting to the
 columns where an ancilla is |0⟩; the symmetric monoidal laws of remark
 2.8 beyond interchange and SWAP naturality; and the benchmarks of
 section 5 as runs of the tool (the QFT, Toffoli, adder and hidden

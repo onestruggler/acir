@@ -19,7 +19,8 @@
 -- definition 2.3's: equality of the two operators, global phase
 -- included, not equality up to a phase.
 --
--- Not formalised: the polynomial time.  Decidability as such is
+-- The polynomial time is PathSum.Cost.Corollary's (equiv-correct,
+-- cost-equivᶜ), in a cost model.  Decidability as such is
 -- elementary, since a matrix has finitely many entries.
 -- equivalence-decidable goes by the reduction, but its type does not
 -- say so.  Checking a circuit against a general path-sum ξ is not
