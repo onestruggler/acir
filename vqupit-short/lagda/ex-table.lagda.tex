@@ -1,0 +1,21 @@
+\begin{code}[hide]
+module vqupit-short.lagda.ex-table where
+
+open import Data.Product using (_×_; _,_)
+open import Word.Base using ([_]ʷ)
+open import vqupit-short.lagda.Prelude
+
+private variable
+  n : ℕ
+
+Circuit : ℕ → Set
+Circuit n = Word (Gen n)
+
+postulate
+  ML : ℕ → Set
+  [_]ᶜ : ML (₁₊ n) → Circuit (₁₊ n)
+\end{code}
+\begin{code}
+  ract        : ML (₁₊ n) → Gen (₁₊ n) → Circuit n × ML (₁₊ n)
+  ract-sound  : ∀ (c : ML (₁₊ n)) g → let (b' , c') = ract c g in [ c ]ᶜ • [ g ]ʷ ≈ b' ↑ • [ c' ]ᶜ
+\end{code}

@@ -192,7 +192,8 @@ texlive-pictures texlive-science texlive-plain-generic latexmk`.
   separately (5 m 50 s with the chain's interfaces cached).
 - Counts used in the paper: full symplectic rules 17 (+3 structural),
   simplified 15 (+3 = 18), Simplified-V1 19, Paper-V0 16, Paper-V1 15;
-  box-relation case tables 42 in nine families (the paper's 66); line
+  box-relation case tables 42 in nine families (the paper's 42, its
+  Figures 15-21); line
   counts in `sections/discussion.tex` Table 2 (`wc -l`, 2026-09-04).
 
 ## Things the authors should decide or check

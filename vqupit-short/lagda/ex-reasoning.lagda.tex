@@ -1,4 +1,4 @@
-\begin{code}[hide]
+﻿\begin{code}[hide]
 module vqupit-short.lagda.ex-reasoning where
 
 open import vqupit-short.lagda.Prelude
@@ -9,15 +9,15 @@ private variable
   n : ℕ
 
 postulate
-  axiom : ∀ {w v : Word (Gen n)} → n CRel, w === v → w ≈ v
+  axiom : ∀ {w v : Word (Gen n)} → n SRel, w === v → w ≈ v
 \end{code}
 \begin{code}
-conj-Ex-H↑ : Ex • H ↑ • Ex ≈ H
+conj-Ex-H↑ : Ex • H ↑ • Ex ≈ H ↓
 conj-Ex-H↑ = begin
   Ex • H ↑ • Ex    ≈⟨ sym assoc ⟩
   (Ex • H ↑) • Ex  ≈⟨ cleft axiom semi-Ex-H↑ ⟩
-  (H • Ex) • Ex    ≈⟨ assoc ⟩
-  H • Ex • Ex      ≈⟨ cright axiom order-Ex ⟩
-  H • ε            ≈⟨ right-unit ⟩
-  H ∎
+  (H ↓ • Ex) • Ex  ≈⟨ assoc ⟩
+  H ↓ • Ex • Ex    ≈⟨ cright axiom order-Ex ⟩
+  H ↓ • ε          ≈⟨ right-unit ⟩
+  H ↓ ∎
 \end{code}

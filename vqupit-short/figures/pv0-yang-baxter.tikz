@@ -40,7 +40,7 @@
 \draw (n0y02bl.center) to (n0y02tr.center);
 \draw (n0y02tl.center) to (n0y02br.center);
 \end{pgfonlayer}
-\node [style=none] (equiv) at (9.5, 2.0) {$\equiv$};
+\node [style=none] (equiv) at (9.5, 2.0) {\Large$\equiv$};
 \begin{pgfonlayer}{nodelayer}
 \node [style=none] (n10y00tl) at (11.5, 2.0) {$$};
 \node [style=none] (n10y00bl) at (11.5, 0.0) {$$};

@@ -2,15 +2,17 @@ Bian, Li, Ross, van de Wetering, and Zhao give sixteen rewrite rules
 that are sound and complete for multi-qudit Clifford circuits over $H$,
 $S$, $CZ$ in every odd prime dimension $p$.  We report a
 machine-checked proof of the result in safe, axiom-free Agda, against
-an independently constructed semantics.  Rather than follow the paper, which applies one rule set to
-the whole Clifford group ``up to Paulis'', we factor the projective
+an independently constructed semantics.  The proof follows the
+paper's for the symplectic factor, where the paper does its real work,
+and diverges once, at the step that promotes symplectic completeness
+to projective completeness ``up to Paulis'': there we factor the projective
 Clifford group as $\overline{\mathcal P}_n \rtimes
 \mathrm{Sp}(2n,\mathbb{Z}_p)$, present the factors separately, and glue
 the presentations with a generic, verified semidirect-product theorem.
 The symplectic factor carries the mathematics: the paper's normal form,
 refined into a doubly inductive datatype of \emph{normal boxes} and
 \emph{rows}, is a tower of verified Reidemeister--Schreier coset
-tables, proved unique by induction on the width, and the paper's 66 box
+tables, proved unique by induction on the width, and the paper's 42 box
 relations are derived from eighteen natural ones.  Verified
 isomorphisms of presentations reach the paper's own rules, and a
 central extension, verified against a cocycle, restores the scalars.  Everything is parametric in $p$ and typechecks with no postulates.

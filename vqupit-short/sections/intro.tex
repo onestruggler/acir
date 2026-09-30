@@ -17,7 +17,10 @@ derivations~\cite{bian2026supplement}.
 We report a machine-checked proof of that theorem in safe, axiom-free
 Agda~\cite{norell2007thesis,agdastdlib}, against a semantics constructed
 independently of the syntax, on the library of~\cite{bian2026framework,qupit-code} (introduced in Appendix~\ref{sec:permutations}).  The
-proof does \emph{not} follow the paper's, which works \emph{up to Paulis} with one rule set for the whole group (\S\ref{sec:routes}); we instead \emph{factor the group,
+proof follows the paper's for the symplectic factor, where the paper
+does its real work, and diverges once, at the step that promotes
+symplectic to projective completeness \emph{up to Paulis}
+(\S\ref{sec:background}); there we instead \emph{factor the group,
 present the factors, compose the presentations}: $\PCliff = \PPauli
 \rtimes \Sp$ and $\Cliff$ is a central extension of it by the scalars;
 the symplectic group gets a coset-table normal form, the Pauli group a

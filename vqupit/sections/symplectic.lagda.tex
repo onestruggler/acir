@@ -115,7 +115,7 @@ and therefore associativity and the unit laws hold \emph{on the nose},
 by \aid{refl} --- a small choice with large consequences downstream,
 since every monoid case of every soundness proof closes definitionally.
 \aid{Sp-group}~$n$ is the resulting \aid{Group}.  The generators act
-as the qupit paper's conjugation tables (its Lemmas~2.22--2.23) read on
+as the qupit paper's conjugation tables (its Lemmas~2.24--2.25) read on
 exponent vectors, and $\sem{\_}$ is the homomorphic extension:
 
 \begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
@@ -323,6 +323,8 @@ The uniqueness theorem states this for the symplectic semantics of
 Normal forms with equal symplectic denotations are equal:
 \begin{code}
 unique-nf : ∀ n {u v : NF n} → ⟦ [ u ] ⟧ ≈ˢ ⟦ [ v ] ⟧ → u ≡ v
+\end{code}
+\begin{code}[hide]
 unique-nf = Unq.⟦[]⟧-injective
 \end{code}
 \noindent Home: \texttt{Symplectic.Normalization.Uniqueness} (module
@@ -395,8 +397,8 @@ d} \bullet g \approx S^{e} \bullet \mathit{dir}{\uparrow} \bullet
 labels of $d$ and the gate $g$ --- the paper's Figure~18, with the
 residual split into an $S$-power on the bottom wire and a word one wire
 up.  The nine families are the paper's
-Figures~15--21; unfolding the case tables gives 42 parametric relations,
-against the paper's count of 66, the difference being only in how cases
+Figures~15--21; unfolding the case tables gives exactly the paper's 42
+parametric relations, differing only in how cases
 are grouped (the formalisation, for instance, proves each of the
 $\uparrow$/$\downarrow$ pairs of a $B$ box and a $D$ box once and
 obtains the other by a duality lemma).  The width-3 relations are stated
@@ -473,8 +475,7 @@ action of some circuit --- is proved constructively by ``clear the bottom
 wire, recurse on the tail'': the single-level input is
 
 \begin{code}
-Theorem-LM : ∀ {n} (p q : Pauli n) → sform p q ≡ ₁ →
-  ∃ λ (lm : ML n) → act [ lm ]ᵐˡ p ≡ pZ₀ × act [ lm ]ᵐˡ q ≡ pX₀
+Theorem-LM : ∀ {n} (p q : Pauli n) → sform p q ≡ ₁ → ∃ λ (lm : ML n) → act [ lm ]ᵐˡ p ≡ pZ₀ × act [ lm ]ᵐˡ q ≡ pX₀
 \end{code}
 \begin{code}[hide]
 Theorem-LM = proof-elided
@@ -492,6 +493,8 @@ For every width $n$, the simplified symplectic rules present the
 symplectic group:
 \begin{code}
 simplified-presentation : ∀ n → (n SRel,_===_) IsPresentationOf (Sp-group n)
+\end{code}
+\begin{code}[hide]
 simplified-presentation n = Pres.presentation {n}
 \end{code}
 \noindent Home: \texttt{Symplectic.Simplified.Presentation}.

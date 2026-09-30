@@ -68,6 +68,7 @@ box = Mul
 
 data Item = R String [UserGate] [UserGate] String     -- relation, lhs = rhs
           | C String [UserGate] String                -- single circuit
+          | Chain String String [[UserGate]]          -- c₁ ~ c₂ ~ …, sign ~ given
           | Raw String String                         -- hand-written tikz
 
 items :: [Item]
@@ -81,6 +82,8 @@ items =
                [box 0 "R^{x}", H 0, box 0 "R^{x^{-1}}", H 0, box 0 "R^{x}", H 0]
                ""
   , R "def-Ex" [Ex 0]       (wEx 0) ""
+  -- the same with "=", for the five-page paper (vqupit-short, §2)
+  , Chain "def-Ex-eq" "=" [[Ex 0], wEx 0]
   , R "def-CX" [CX 1 0]     [He 0 "3", CZ 0 1, H 0] ""
   , R "def-XC" [CX 0 1]     [He 1 "3", CZ 0 1, H 1] ""
 
@@ -103,6 +106,10 @@ items =
   -- derived: conjugation by the swap moves H down a wire (§2 of the
   -- five-page paper, vqupit-short/lagda/ex-reasoning.lagda.tex)
   , R "pv0-conj-Ex-Hup" [Ex 0, H 1, Ex 0]                 [H 0, I 1] ""
+  -- ... and its derivation, one circuit per step that is not bracketing:
+  -- semi-Ex-H↑, then order-Ex (with the right unit)
+  , Chain "pv0-conj-Ex-Hup-steps" "\\approx"
+      [[Ex 0, H 1, Ex 0], [H 0, Ex 0, Ex 0], [H 0, I 1]]
   , R "pv0-blake-c12"   [sInv 1, sInv 0, CXe 1 0 "p-1", S 0, CX 1 0]
                         [CZ 0 1] ""
   -- three-wire
@@ -147,7 +154,7 @@ items =
   ------------------------------------------------------------------
   -- Scalar correction: order-SH in the exact (with-scalars) rule set
   , R "sc-order-SH" [S 0, H 0, S 0, H 0, S 0, H 0]
-                    [Mul 0 "\\omega^{(p^2-1)/8}\\,I"] ""
+                    [Mul 0 "\\omega^{-1/8}"] ""
 
   ------------------------------------------------------------------
   -- M-mul, the derived multiplier law
@@ -467,6 +474,23 @@ tikzOf (R nm l r sp) =
               withBBox (bboxC c) (CT.tikz_of_cir c)
 tikzOf (C nm gs sp) = [(nm, withBBox (bboxC c) (CT.tikz_of_cir c))]
   where c = cir_trans (Cir gs (Spec sp))
+-- Laid out as tikz_of_rel lays out its two sides: each circuit starts 2
+-- units after the previous one ends, with the sign in the middle of the
+-- gap.  With two circuits it is an R item with its own sign.
+tikzOf (Chain nm sgn gss) = [(nm, withBBox bb body)]
+  where
+    cs   = [ cir_trans (Cir gs (Spec "")) | gs <- gss ]
+    lms  = scanl (\lm c -> lm + CT.width_of_cir c + 2) 0 cs
+    body = CT.tikz_header
+        ++ concat (zipWith (CT.tikz_of_cir_yshift_lm 0) lms cs)
+        ++ concat [ "\\node [style=none] (equiv" ++ show i ++ ") at ("
+                    ++ show (lm + CT.width_of_cir c + 1) ++ ", "
+                    ++ show (CT.ymid_of_cir c) ++ ") {$" ++ sgn ++ "$};\n"
+                  | (i, lm, c) <- zip3 [1 :: Int ..] lms (init cs) ]
+        ++ CT.tikz_ender
+    ws   = concatMap CT.wires_of_cir cs
+    bb   = ( -0.3, fromIntegral (minimum ws) * 2 - 1.0
+           , last lms - 2 + 0.8, fromIntegral (maximum ws) * 2 + 1.7 )
 tikzOf (Raw nm body) = [(nm, body)]
 
 figDir :: FilePath

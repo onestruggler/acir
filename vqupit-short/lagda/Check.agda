@@ -1,4 +1,4 @@
-------------------------------------------------------------------------
+﻿------------------------------------------------------------------------
 -- The derivation printed in §2 (lagda/ex-reasoning.lagda.tex), restated
 -- with its width pinned so that it typechecks against Prelude: the
 -- printed snippet leaves the width implicit, as the library does inside
@@ -17,13 +17,13 @@ private variable
   n : ℕ
 
 postulate
-  axiom : ∀ {w v : Word (Gen n)} → n CRel, w === v → w ≈ v
+  axiom : ∀ {w v : Word (Gen n)} → n SRel, w === v → w ≈ v
 
-conj-Ex-H↑ : Ex {n} • H ↑ • Ex ≈ H
+conj-Ex-H↑ : Ex {n} • H ↑ • Ex ≈ H ↓
 conj-Ex-H↑ = begin
   Ex • H ↑ • Ex    ≈⟨ sym assoc ⟩
   (Ex • H ↑) • Ex  ≈⟨ cleft axiom semi-Ex-H↑ ⟩
-  (H • Ex) • Ex    ≈⟨ assoc ⟩
-  H • Ex • Ex      ≈⟨ cright axiom order-Ex ⟩
-  H • ε            ≈⟨ right-unit ⟩
-  H ∎
+  (H ↓ • Ex) • Ex  ≈⟨ assoc ⟩
+  H ↓ • Ex • Ex    ≈⟨ cright axiom order-Ex ⟩
+  H ↓ • ε          ≈⟨ right-unit ⟩
+  H ↓ ∎

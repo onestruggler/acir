@@ -1,56 +1,75 @@
 \section{Composing: Paulis, the Semidirect Product, and Scalars}\label{sec:composing}
 
 $\PPauli \cong (\Zp \times \Zp)^n$ is presented over $X$, $Z$ on each
-wire by $X^{p} = Z^{p} = \varepsilon$ and $ZX = XZ$, with the phase space that $\Sp$ acts on as its semantic group and normal form $X^{a}Z^{b}$ per
-wire.  The semidirect
-product is the wreath example with $\Sp$ for $S_n$: both factors'
-relations plus $h\,n\,h^{-1} = \mathit{conj}\,h\,n$, \aid{conj} being the
-paper's Lemmas~2.22--2.23 as words.  Its two conditions are proved by
-semantics: the conjugates of congruent words have equal denotations by
-symplectic soundness, hence are congruent by Pauli \emph{completeness}
-(\aid{respects-Δ}; the paper's ``Pauli complete'' rules, Definition~4.7).  Every premise being a theorem, the
-semidirect presentation of \aid{Pauli⋊Sp} is unconditional.
+wire by $X^{p} = Z^{p} = \varepsilon$ and $ZX = XZ$; its semantic
+group is the phase space that $\Sp$ acts on, and its normal form is
+$X^{a}Z^{b}$ per wire.  Gluing this to the symplectic presentation of
+\S\ref{sec:symplectic} is the semidirect example of
+Appendix~\ref{sec:sn-wreath} with $\Sp$ for $S_n$ and $\PPauli$ for
+$(\mathbb{Z}_N)^n$: the presentation has both factors' relations plus
+the conjugation relations $h\,n\,h^{-1} = \mathit{conj}\,h\,n$, the
+action \aid{conj} spelling out the paper's Lemmas~2.24--2.25.  The
+theorem's two conditions --- the action respects the relations of
+each factor --- are here proved by semantics: the conjugates of
+congruent words have equal denotations by symplectic soundness, hence
+are congruent by Pauli \emph{completeness} (\aid{respects-Δ}; the
+paper's ``Pauli complete'' rules, Definition~4.7).  Every premise
+being a theorem, the semidirect presentation of \aid{Pauli⋊Sp} is
+unconditional.
 
-\emph{Plumbing.}  The semidirect presentation has $X, Z, H, S, CZ$ and
-$3 + 15 + 14$ relations (Pauli, symplectic, conjugation);
-\texttt{Simplified-V1} has $H, S, CZ$ and nineteen; \texttt{Paper-V0} and
-\texttt{Paper-V1} sixteen and fifteen (generator reduction: $X$, $Z$
-become words; relation reduction: Pauli and conjugation rules become
-theorems).  \emph{Semidirect to
-V1} is an isomorphism on \emph{different} alphabets, $f$ sending $S$ to
-$R$ and $h$ sending $S$ to $Z^{-1/2} \bullet S$, because V1 spells $M_x =
-R^{x}HR^{x^{-1}}HR^{x}H$ exactly; V1's nineteen rules add $(SH)^3 =
-\varepsilon$, $H^2SH^2S = SH^2SH^2$ and the two $X$-through-$CZ$ rules to
-the simplified symplectic ones, and \aid{f-well-defined} derives the
-three Pauli and fourteen conjugation rules (6\,000 lines).  \emph{V1 to Paper-V0} is
-the identity on words: ten axioms are shared, V0's \texttt{Lemmas}
+\emph{Plumbing.}  The semidirect presentation has generators $X, Z, H,
+S, CZ$ and $3 + 15 + 14$ relations (Pauli, symplectic, conjugation);
+the paper's rule sets have $H, S, CZ$ alone.  Three isomorphisms of
+presentations close the gap (Figure~\ref{fig:route}), through
+\texttt{Simplified-V1} (nineteen rules), \texttt{Paper-V0} (sixteen)
+and \texttt{Paper-V1} (Theorem~\ref{thm:main}'s
+fifteen): generator reduction ($X$ and $Z$ become words) and relation
+reduction (the Pauli and conjugation rules become theorems).
+\emph{Semidirect to Simplified-V1} is an isomorphism on \emph{different}
+alphabets, $f$ sending $S$ to $R = S \bullet Z^{1/2}$ and $h$ sending
+$S$ to $Z^{-1/2} \bullet S$; in particular, $f$ induces the embedding
+of the symplectic group into the projective Clifford
+group.  \texttt{Simplified-V1}'s nineteen rules are the fifteen simplified symplectic ones
+plus $(SH)^3 = \varepsilon$, $H^2SH^2S = SH^2SH^2$ and the two rules
+pushing $X$ through $CZ$; \aid{f-well-defined} derives from them the
+images under $f$ of the three Pauli and the fourteen conjugation
+rules (6\,000 lines).  \emph{Simplified-V1 to Paper-V0} is
+the identity on circuits: ten axioms are shared, and V0's \texttt{Lemmas}
 (4\,750 lines) derives c10--c15 from its own axioms.
-\emph{V0 to the paper's fifteen} connects the routes: Figure~1 spells
-$M_x = \aid{SHS'}\;x^{-1}\;x$ with $\aid{SHS'}\;a\;b =
-Z^{(b-1)/2}X^{(1-a)/2}S^{b}HS^{a}HS^{b}H$ and \aid{semi-MR} as
-$M_gS^{g^2}Z^{(g^2-g)/2} = SM_g$; \texttt{Paper-V1} restates
-the four multiplier rules over \aid{SHS'} and has fifteen rules, since
-under the $S$-spelling $M_1$ \emph{is} $(SH)^3$ and \aid{M-power} at $k
-= 0$ gives $M_1 \approx \varepsilon$, whereas $(RH)^3$ is a different
-word; the bridge $R^{a}HR^{b}HR^{a}H \approx \aid{SHS'}\;a\;b$
-(\texttt{Shared.PauliBase}) carries the multiplier rules across.  Hence
-Theorem~\ref{thm:main}.
+\emph{Paper-V0 to Paper-V1} reaches the paper's own rules.  The two
+rule sets differ in how the multiplier is spelled as a word:
+\texttt{Paper-V0} spells $M_x = R^{x}HR^{x^{-1}}HR^{x}H$ over $R$;
+the paper's~(T1) spells $M_x = \aid{SHS'}\;x^{-1}\;x$ over $S$, with
+$\aid{SHS'}\;a\;b = Z^{(b-1)/2}X^{(1-a)/2}S^{b}HS^{a}HS^{b}H$ and
+\aid{semi-MR} as $M_gS^{g^2}Z^{(g^2-g)/2} = SM_g$.  \texttt{Paper-V1}
+restates the four multiplier rules over \aid{SHS'} and drops one:
+$M_1$ is now the word $(SH)^3$, so \aid{M-power} at $k = 0$ already
+gives $(SH)^3 \approx \varepsilon$, whereas over $R$ it is $(RH)^3$,
+a different word, and the axiom had to stay.  The bridge
+$R^{a}HR^{b}HR^{a}H \approx \aid{SHS'}\;a\;b$
+(\texttt{Shared.PauliBase}) carries the multiplier rules across,
+giving Theorem~\ref{thm:main}.
 
-\emph{Scalars.}  The projective presentation is extended --- add
-$\omega$ and $\omega^{p} = \varepsilon$, let $\omega$ commute with every
-gate, \emph{correct} each rule by the scalar it picks up --- by
-\aid{extension-presentation} with a correction that is $\varepsilon$
-except on \aid{order-SH}: with $H$ normalised by $\delta_p$ exactly one
-rule fails on the nose, $(SH)^3 = \varepsilon$ picking up
-$\omega^{(p^2-1)/8}$ (residue $-1/8$), so it
-becomes $(SH)^3 = \omega^{-1/8}$ (the multiplier rules hold exactly
-because $R$ has no Pauli part).  The semantic extension is the Weyl
-cocycle $c((P,S),(Q,\_)) = \tfrac12\,\mathrm{sform}(P, \aid{ap}\;S\;Q)$
-on the natural semidirect product, whose cocycle law is symplectic
-invariance of \aid{sform}; the presented group's cocycle is pulled back
-from it, so the two agree by construction.  On no hypothesis, \aid{presentation-exact} gives, for every $n$,
-$(n\;\aid{Exact,{\_}==={\_}})$ \aid{IsPresentationOf}
-$(\aid{Presented-group}\;n\;(\aid{exact-generator-data}\;n))$; it needs
-no normal forms, only that each rule's Weyl phase on the left equals
-the correction plus that on the right, nineteen $\Zp$ equations.  The extension is provably
-non-split.
+\emph{Scalars.}  \aid{extension-presentation} extends the projective
+presentation --- \texttt{Paper-V0}'s, which has \aid{order-SH} as an
+axiom --- by the scalar (Figure~\ref{fig:exact}): add $\omega$ and $\omega^{p} = \varepsilon$,
+let $\omega$ commute with every gate, and \emph{correct} each rule by
+its scalar.  The correction is $\varepsilon$ except on
+\aid{order-SH}, the one rule failing on the nose: $(SH)^3 =
+\omega^{-1/8}$, exponent $(p^2{-}1)/8 \equiv -1/8$ in $\Zp$.
+The multiplier words now denote $\ket{j} \mapsto \ket{xj}$
+only up to a scalar.  The semantic extension is
+the Weyl cocycle on the natural semidirect product, $c((P,S),(Q,S'))
+= \tfrac12\,\mathrm{sform}(P,\ S \cdot Q)$, with $S \cdot Q$ the
+symplectic part acting on the Pauli vector and $\mathrm{sform}$ the
+symplectic form of the phase space, the exponent in $PQ =
+\omega^{\mathrm{sform}(P,Q)}\,QP$; its cocycle identity is, by
+bilinearity, symplectic invariance of \aid{sform}, and the
+presented group's cocycle is the pullback of $c$ along
+Theorem~\ref{thm:main}'s isomorphism, so the two agree by
+construction.
+Unconditionally:
+
+\input{agda/thm-exact}
+
+\noindent The extension is provably non-split.

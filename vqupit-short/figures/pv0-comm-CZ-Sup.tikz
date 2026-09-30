@@ -14,7 +14,7 @@
 \draw (lm0el10.center) to (lm0er10.center);
 \draw (n0y00.center) to (n0y00t.center);
 \end{pgfonlayer}
-\node [style=none] (equiv) at (7.0, 1.0) {$\equiv$};
+\node [style=none] (equiv) at (7.0, 1.0) {\Large$\equiv$};
 \begin{pgfonlayer}{nodelayer}
 \node [style=gate] (n8y00) at (9.75, 2.0) {$S$};
 \node [style=cnot ctrl, label={above:$$}] (n8y01) at (12.25, 2.0) {};

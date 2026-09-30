@@ -469,7 +469,7 @@ and therefore associativity and the unit laws hold \emph{on the nose},
 by \aid{refl} --- a small choice with large consequences downstream,
 since every monoid case of every soundness proof closes definitionally.
 \aid{Sp-group}~$n$ is the resulting \aid{Group}.  The generators act
-as the qupit paper's conjugation tables (its Lemmas~2.22--2.23) read on
+as the qupit paper's conjugation tables (its Lemmas~2.24--2.25) read on
 exponent vectors, and $\sem{\_}$ is the homomorphic extension:
 
 \begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
@@ -981,7 +981,8 @@ Normal forms with equal symplectic denotations are equal:
 \AgdaBound{u}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaBound{v}\<%
-\\
+\end{code}
+\begin{code}[hide]%
 \>[0]\AgdaFunction{unique-nf}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
 \AgdaPostulate{Unq.⟦[]⟧-injective}\<%
@@ -1127,8 +1128,8 @@ d} \bullet g \approx S^{e} \bullet \mathit{dir}{\uparrow} \bullet
 labels of $d$ and the gate $g$ --- the paper's Figure~18, with the
 residual split into an $S$-power on the bottom wire and a word one wire
 up.  The nine families are the paper's
-Figures~15--21; unfolding the case tables gives 42 parametric relations,
-against the paper's count of 66, the difference being only in how cases
+Figures~15--21; unfolding the case tables gives exactly the paper's 42
+parametric relations, differing only in how cases
 are grouped (the formalisation, for instance, proves each of the
 $\uparrow$/$\downarrow$ pairs of a $B$ box and a $D$ box once and
 obtains the other by a duality lemma).  The width-3 relations are stated
@@ -1315,10 +1316,8 @@ wire, recurse on the tail'': the single-level input is
 \AgdaBound{q}\AgdaSpace{}%
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaInductiveConstructor{₁}\AgdaSpace{}%
-\AgdaSymbol{→}\<%
-\\
-\>[0][@{}l@{\AgdaIndent{0}}]%
-\>[2]\AgdaFunction{∃}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{∃}\AgdaSpace{}%
 \AgdaSymbol{λ}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{lm}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -1368,7 +1367,8 @@ symplectic group:
 \AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaPostulate{Sp-group}\AgdaSpace{}%
 \AgdaBound{n}\AgdaSymbol{)}\<%
-\\
+\end{code}
+\begin{code}[hide]%
 \>[0]\AgdaFunction{simplified-presentation}\AgdaSpace{}%
 \AgdaBound{n}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%

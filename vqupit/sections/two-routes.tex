@@ -75,9 +75,9 @@ case''.  \emph{Symplectic completeness:} its Section~4.1 rewrites any
 circuit to symplectic normal form by pushing the gates in one by one;
 pushing a gate through a normal box yields an updated box and residual
 \emph{dirty} gates, which are pushed further in.  Collecting every case
-gives 66 parametrised \emph{box relations}; termination in a clean
+gives 42 parametrised \emph{box relations}; termination in a clean
 normal form is Lemma~4.2, proved by inspecting which dirty gates each
-box can absorb; and Theorem~4.4 reduces the 66 box relations to 18
+box can absorb; and Theorem~4.4 reduces the 42 box relations to 18
 symplectic relations, a step the paper already delegated to Agda.
 Throughout, relations are applied \emph{up to Paulis}: the symplectic
 interpretation identifies a circuit with the same circuit followed by
@@ -105,7 +105,7 @@ third, the boosting, we replace.
 First, the rewriting procedure is not a function.  ``Push the gates in
 one by one'' describes a non-deterministic rewrite relation whose
 termination is argued by an invariant on the placement of dirty gates,
-verified by reading the 66 box relations.  To formalise Proposition~4.3
+verified by reading the 42 box relations.  To formalise Proposition~4.3
 one would define the normalisation as a structurally recursive function
 on circuits, prove it sound with respect to the relations, and prove
 that its result is a clean normal form --- and at that point one has
@@ -118,8 +118,8 @@ modulo Paulis, without any syntactic representation of the quotient.  A
 box relation $g\,M = M'\,\mathit{dir}$ holds \emph{up to a Pauli} that
 the relation does not name.  Formalising this faithfully means either
 carrying the Pauli explicitly through every box relation, turning each
-of the 66 relations into one with a computed correction and re-doing the
-reductions $66 \to 18 \to 16$ with corrections, or working in a syntax
+of the 42 relations into one with a computed correction and re-doing the
+reductions $42 \to 18 \to 16$ with corrections, or working in a syntax
 where Paulis are genuinely trivial.  The paper does the former
 informally, in Proposition~4.9, by observing that the corrections
 \emph{can} be computed and pushed to the end.  The honest formal

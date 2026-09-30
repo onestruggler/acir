@@ -19,22 +19,23 @@ in the projective quotient, where $-1$ makes no difference except that
 the relations come out a little simpler.
 
 Using the framework of Appendix~\ref{sec:permutations}, we encode
-circuits, circuit relations, and reasoning with the relations.  For
-example, the swap:
+circuits, circuit relations, and reasoning with the relations.  We
+draw circuits in matrix-multiplication order, the reverse of the usual
+circuit order: $w \bullet v$ applies $v$ first but draws it on the
+right.  For example, the swap:
 
 \noindent\begin{minipage}[c]{0.56\textwidth}
 \input{agda/ex-circuit}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.42\textwidth}\centering
-\ufig[0.48]{def-Ex}
+\ufig[0.48]{def-Ex-eq}
 \end{minipage}
 
 \noindent A rule set is an inductive family indexed by the width, one
 constructor per rule, each stated once at the smallest width at which
-it fits; for example, two of the sixteen constructors of our primary
-rule set \aid{{\_}CRel,{\_}==={\_}} (all drawn in
-Figure~\ref{fig:rules}), the order of the swap and the rule moving $H$
-across it:
+it fits; for example, two of the fifteen constructors of our primary
+rule set \aid{{\_}SRel,{\_}==={\_}}, the order of the swap and the
+rule moving $H$ across it:
 
 \noindent\begin{minipage}[c]{0.56\textwidth}
 \input{agda/ex-relation}
@@ -53,30 +54,52 @@ product; for example, conjugating by the swap moves $H$ down a wire:
 \input{agda/ex-reasoning}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.42\textwidth}\centering
-\ufig[0.48]{pv0-conj-Ex-Hup}
+\ufig[0.48]{pv0-conj-Ex-Hup-steps}
 \end{minipage}
 
 \noindent Further, we can express and prove our main theorems:
 
 \begin{theorem}[\aid{clifford-presentation}]\label{thm:main}
-For every width $n$, the sixteen rules present the projective Clifford
-group:
+For every width $n$, the fifteen rules---the relations
+of~\cite{bian2026qudit}, read modulo scalars---present the projective
+Clifford group:
 \input{agda/thm-clifford}
 \end{theorem}
 
-\noindent $\aid{Pauli⋊Sp}\;n$ is the semidirect product of $\Zp^{2n}$
+\noindent \aid{{\_}QRel,{\_}==={\_}} closes \aid{{\_}SRel,{\_}==={\_}}
+under the three structural rules (Appendix~\ref{sec:permutations});
+$\aid{Pauli⋊Sp}\;n$ is the semidirect product of $\Zp^{2n}$
 by $\Sp$ (\S\ref{sec:composing}); \aid{{\_}IsPresentationOf{\_}}
 (Appendix~\ref{sec:permutations}) is a group isomorphism $\mathsf{Cir}\;n/{\approx}
-\to \PPauli \rtimes \Sp \cong \Cliff/\langle\omega\rangle$:
-\emph{soundness}, each rule holds, and \emph{completeness}, $\sem{\_}$
-is injective.  Normal forms for
-symplectic operators (Clifford operators modulo Paulis) are
-\emph{data}: four kinds of atomic box, the paper's (its
-Figure~6), $A = \{(a,b) \in \Zp^2 \mid (a,b) \ne (0,0)\}$, $B = D =
-\Zp^2$, $E = \Zp$, spelled as circuits in Figure~\ref{fig:boxes}, then
-rows of boxes and a staircase of rows (\S\ref{sec:symplectic}).
+\to \PPauli \rtimes \Sp$:
+\emph{soundness} (well-definedness of the map), each rule holds;
+\emph{completeness}, $\sem{\_}$ is injective; and \emph{surjectivity},
+each projective Clifford operator is represented by a circuit.
+
+We refine the qupit paper's normal form for symplectic operators
+(Clifford operators modulo Paulis) into a doubly inductive definition
+(\S\ref{sec:symplectic}) and prove that it
+enjoys the unique-normal-form property:
 
 \begin{theorem}[\aid{unique-nf}]\label{thm:unique}
 Normal forms with equal symplectic denotations are equal:
 \input{agda/thm-unique}
 \end{theorem}
+
+\noindent\emph{The route.}  We mostly follow the paper: its normal
+boxes, its symplectic normal form and its
+parametrised \emph{box relations} --- pushing a gate through a normal
+box yields an updated box and residual \emph{dirty} gates --- reappear
+below, with Theorem~4.4's reduction to eighteen relations, a step the
+paper already delegated to Agda.  The one major divergence is the step
+that promotes symplectic to projective completeness (its
+Proposition~4.9): the paper corrects each rule $C_l = C_r$ to $C_l =
+C_r\,;P$ for the unique Pauli $P$ making it projectively sound and
+replays the symplectic rewrites, pushing each correction to the end,
+where it becomes ``a potentially different Pauli''.  We did not see
+how to verify it at reasonable cost.  We instead work in a syntax where Paulis are
+genuinely trivial --- symplectic circuits have only $H$, $S$, $CZ$ and
+denote $\Sp$ itself --- and reintroduce Paulis and scalars by
+construction (Figure~\ref{fig:route} in the appendix): the Pauli
+bookkeeping of Proposition~4.9 is done once, by a semidirect-product
+theorem proved for arbitrary groups before this project began.

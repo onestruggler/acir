@@ -34,7 +34,7 @@
 \draw (n0y01tl.center) to (n0y01br.center);
 \draw (n0y02.center) to (n0y02t.center);
 \end{pgfonlayer}
-\node [style=none] (equiv) at (9.5, 2.0) {$\equiv$};
+\node [style=none] (equiv) at (9.5, 2.0) {\Large$\equiv$};
 \begin{pgfonlayer}{nodelayer}
 \node [style=cnot ctrl, label={above:$$}] (n10y00) at (12.25, 4.0) {};
 \node [style=cnot ctrl] (n10y00t) at (12.25, 2.0) {$$};

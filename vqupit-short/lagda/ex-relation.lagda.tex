@@ -1,4 +1,4 @@
-\begin{code}[hide]
+﻿\begin{code}[hide]
 module vqupit-short.lagda.ex-relation where
 
 open import vqupit-short.lagda.Prelude
@@ -7,10 +7,10 @@ open import vqupit-short.lagda.ex-circuit
 private variable
   n : ℕ
 
-infix 4 _CRel,_===_
+infix 4 _SRel,_===_
 \end{code}
 \begin{code}
-data _CRel,_===_ : (n : ℕ) → WRel (Gen n) where
-  order-Ex    : (₂₊ n) CRel,  Ex ^ 2 === ε
-  semi-Ex-H↑  : (₂₊ n) CRel,  Ex • H ↑ === H ↓ • Ex
+data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
+  order-Ex    : (₂₊ n) SRel,  Ex ^ 2 === ε
+  semi-Ex-H↑  : (₂₊ n) SRel,  Ex • H ↑ === H ↓ • Ex
 \end{code}

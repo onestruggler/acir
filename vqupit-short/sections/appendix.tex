@@ -1,58 +1,39 @@
-\section{The Rules, the Normal Boxes, and the Size of the Development}\label{sec:appendix}
+\section{The Simplified and Exact Rules and the Size of the Development}\label{sec:appendix}
 
 \begin{center}
-\begin{minipage}[t]{0.42\textwidth}\centering\scriptsize
-  \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
-    order-S & \ufig[0.48]{pv0-order-S-l} & $=$ & \ufig[0.48]{pv0-order-S-r}\\[1pt]
-    order-H & \ufig[0.48]{pv0-order-H-l} & $=$ & \ufig[0.48]{pv0-order-H-r}\\[1pt]
-    M-power & \ufig[0.48]{pv0-M-power-l} & $=$ & \ufig[0.48]{pv0-M-power-r}\\[1pt]
-    semi-MR & \ufig[0.48]{pv0-semi-MR-l} & $=$ & \ufig[0.48]{pv0-semi-MR-r}\\[1pt]
-    order-CZ & \ufig[0.48]{pv0-order-CZ-l} & $=$ & \ufig[0.48]{pv0-order-CZ-r}\\[1pt]
-    order-Ex & \ufig[0.48]{pv0-order-Ex-l} & $=$ & \ufig[0.48]{pv0-order-Ex-r}\\[1pt]
-    order-SH & \ufig[0.48]{pv0-order-SH-l} & $=$ & \ufig[0.48]{pv0-order-SH-r}\\
+\begin{minipage}[t]{0.47\textwidth}\centering\scriptsize
+  \begin{tabular}{@{}r@{\;\,}l@{}}
+    order-S & \ufig[0.48]{simp-order-S}\\[1pt]
+    order-H & \ufig[0.48]{simp-order-H}\\[1pt]
+    M-power & \ufig[0.48]{simp-M-power}\\[1pt]
+    semi-MS & \ufig[0.48]{simp-semi-MS}\\[1pt]
+    selinger-c10 & \ufig[0.48]{simp-selinger-c10}\\[1pt]
+    selinger-c11 & \ufig[0.48]{simp-selinger-c11}\\
   \end{tabular}
 \end{minipage}\hfill
-\begin{minipage}[t]{0.55\textwidth}\centering\scriptsize
+\begin{minipage}[t]{0.50\textwidth}\centering\scriptsize
   \begin{tabular}{@{}r@{\;\,}l@{}}
-    comm-CZ-S↑ & \ufig[0.48]{pv0-comm-CZ-Sup}\\[1pt]
-    semi-M↑CZ & \ufig[0.48]{pv0-semi-Mup-CZ}\\[1pt]
-    semi-Ex-S↑ & \ufig[0.48]{pv0-semi-Ex-Sup}\\[1pt]
-    semi-Ex-H↑ & \ufig[0.48]{pv0-semi-Ex-Hup}\\[1pt]
-    comm-HHSHHS & \ufig[0.4]{pv0-comm-HHSHHS-l} $=$ \ufig[0.4]{pv0-comm-HHSHHS-r}\\
+    comm-CZ-S↓ & \ufig[0.48]{simp-comm-CZ-Sdn}\\[1pt]
+    comm-CZ-S↑ & \ufig[0.48]{simp-comm-CZ-Sup}\\[1pt]
+    semi-M↓CZ & \ufig[0.48]{simp-semi-Mdn-CZ}\\[1pt]
+    semi-M↑CZ & \ufig[0.48]{simp-semi-Mup-CZ}\\[1pt]
+    order-CZ & \ufig[0.48]{simp-order-CZ}\\
   \end{tabular}
 \end{minipage}\\[3pt]
 \scriptsize
-\begin{tabular}{@{}r@{\;\,}l@{\qquad}r@{\;\,}l@{}}
-  blake-c12 & \ufig[0.48]{pv0-blake-c12} & yang-baxter & \ufig[0.48]{pv0-yang-baxter}\\[2pt]
-  cz-slide & \ufig[0.48]{pv0-cz-slide} & semi-CX↑-CZ↓ & \ufig[0.48]{pv0-semi-CXup-CZdn}\\
+\begin{tabular}{@{}r@{\;\,}l@{}}
+  selinger-c12 & \ufig[0.48]{simp-selinger-c12}\\[2pt]
+  selinger-c13 & \ufig[0.40]{simp-selinger-c13}\\[2pt]
+  selinger-c14 & \ufig[0.40]{simp-selinger-c14}\\[2pt]
+  selinger-c15 & \ufig[0.40]{simp-selinger-c15}\\
 \end{tabular}
-\captionof{figure}{The sixteen rules of \protect\aid{{\_}CRel,{\_}==={\_}}
-(\S\ref{sec:background}) as circuit equations, drawn from the Agda
-terms.  Diagrams read in matrix-multiplication order, so a word $w
-\bullet v$ is drawn with $v$ on the left.  \protect\aid{blake-c12}
-relates two circuits implementing controlled-$Z$;
-\protect\aid{yang-baxter} and \protect\aid{cz-slide} are the swap
-calculus.  With the scalar restored (\S\ref{sec:composing}) only
-\protect\aid{order-SH} changes, to $(SH)^3 = \omega^{-1/8}$.}
-\Description{The sixteen circuit equations of the rule set.}
-\label{fig:rules}
-\end{center}
-
-\begin{center}\footnotesize
-  \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{\qquad}r@{\;\,}r@{\,}c@{\,}l@{}}
-    $A_{a,b}$, $a\neq0$ & \ufig[0.58]{box-A-l} & $=$ & \ufig[0.58]{box-A-r} &
-    $D_{a,b}$, $a\neq0$ & \ufig[0.58]{box-D-l} & $=$ & \ufig[0.58]{box-D-r}\\
-    $A_{0,b}$, $b\neq0$ & \ufig[0.58]{box-A0-l} & $=$ & \ufig[0.58]{box-A0-r} &
-    $D_{0,b}$ & \ufig[0.58]{box-D0-l} & $=$ & \ufig[0.58]{box-D0-r}\\
-    $B_{a,b}$, $a\neq0$ & \ufig[0.58]{box-B-l} & $=$ & \ufig[0.58]{box-B-r} &
-    $E_{b}$ & \ufig[0.58]{box-E-l} & $=$ & \ufig[0.58]{box-E-r}\\
-    $B_{0,b}$ & \ufig[0.58]{box-B0-l} & $=$ & \ufig[0.58]{box-B0-r} & & & & \\
-  \end{tabular}
-\captionof{figure}{The four kinds of normal box (the qupit paper's Figure~6) and
-how each is spelled as a circuit by the section of the normal form
-(\S\ref{sec:symplectic}).}
-\Description{The seven normal-box shapes and their circuit spellings.}
-\label{fig:boxes}
+\captionof{figure}{The fifteen simplified symplectic rules
+(\S\ref{sec:symplectic}) as circuit equations, drawn from the Agda
+terms; $M_g$ is the multiplier of a primitive root $g$, and
+selinger-c10--c15 are Selinger's two- and three-wire rules.}
+\Description{The fifteen circuit equations of the simplified
+symplectic rule set.}
+\label{fig:simplified}
 \end{center}
 
 \begin{center}
@@ -65,17 +46,17 @@ how each is spelled as a circuit by the section of the normal form
   \node[box] (sim)   at (3.35,0)  {$\Sp$: simplified\\rules (15)};
   \node[box] (sd)    at (6.7,0)   {$\PPauli\rtimes\Sp$: semidirect\\relation on $X,Z,H,S,CZ$};
   \node[box] (v1)    at (10.3,0)  {Simplified-V1\\(19 rules, $H,S,CZ$)};
-  \node[box] (v0)    at (13.5,0)  {Paper-V0 (16 rules):\\our Figure~1 mod scalars};
+  \node[box] (v0)    at (13.5,0)  {Paper-V0 (16 rules):\\multiplier over $R$};
   \node[box] (pauli) at (6.7,-1.5){$\PPauli$: $X^p,\ Z^p,\ XZ{=}ZX$};
   \node[box] (ex)    at (10.3,-1.5){Exact: Paper-V0 $+\ \omega$,\\one correction};
-  \node[box] (pv1)   at (13.5,-1.5){Paper-V1 (15 rules):\\Figure~1 mod scalars};
-  \draw[->] (sp) -- node[lab,above]{identity iso} (sim);
-  \draw[->] (sim) -- node[lab,above]{semidirect thm} (sd);
+  \node[box] (pv1)   at (13.5,-1.5){Paper-V1: Theorem~\ref{thm:main}'s fifteen,\\the paper's Figure~1 mod scalars};
+  \draw[->] (sp) -- node[lab,above=13pt]{identity iso} (sim);
+  \draw[->] (sim) -- node[lab,above=13pt]{semidirect thm} (sd);
   \draw[->] (pauli) -- node[lab,right]{semidirect thm} (sd);
-  \draw[->] (sd) -- node[lab,above]{generator reduction:\\$X,Z \mapsto$ words} (v1);
-  \draw[->] (v1) -- node[lab,above]{identity iso} (v0);
+  \draw[->] (sd) -- node[lab,above=13pt]{generator reduction:\\$X,Z \mapsto$ words} (v1);
+  \draw[->] (v1) -- node[lab,above=13pt]{identity iso} (v0);
   \draw[->] (v0) -- node[lab,right]{identity iso} (pv1);
-  \draw[->] (v0.south west) -- node[lab,below,pos=0.55]{central extension thm} (ex.north east);
+  \draw[->] (v0.south west) -- node[lab,below,pos=0.55,fill=white]{central extension thm} (ex.north east);
 \end{tikzpicture}}
 \captionof{figure}{The chain of presentations: every arrow is a verified
 presentation theorem or isomorphism of presentations; the semantic
@@ -84,6 +65,45 @@ level on, and a central extension of it by $\langle\omega\rangle$ at
 ``Exact''.}
 \Description{Boxes for the presentations, joined by arrows labelled with the theorem that connects them.}
 \label{fig:route}
+\end{center}
+
+\begin{center}
+\begin{minipage}[t]{0.42\textwidth}\centering\scriptsize
+  \begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
+    order-S & \ufig[0.48]{pv0-order-S-l} & $\equiv$ & \ufig[0.48]{pv0-order-S-r}\\[1pt]
+    order-H & \ufig[0.48]{pv0-order-H-l} & $\equiv$ & \ufig[0.48]{pv0-order-H-r}\\[1pt]
+    M-power & \ufig[0.48]{pv0-M-power-l} & $\equiv$ & \ufig[0.48]{pv0-M-power-r}\\[1pt]
+    semi-MR & \ufig[0.48]{pv0-semi-MR-l} & $\equiv$ & \ufig[0.48]{pv0-semi-MR-r}\\[1pt]
+    order-CZ & \ufig[0.48]{pv0-order-CZ-l} & $\equiv$ & \ufig[0.48]{pv0-order-CZ-r}\\[1pt]
+    order-Ex & \ufig[0.48]{pv0-order-Ex-l} & $\equiv$ & \ufig[0.48]{pv0-order-Ex-r}\\
+  \end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.55\textwidth}\centering\scriptsize
+  \begin{tabular}{@{}r@{\;\,}l@{}}
+    comm-CZ-S↑ & \ufig[0.48]{pv0-comm-CZ-Sup}\\[1pt]
+    semi-M↑CZ & \ufig[0.48]{pv0-semi-Mup-CZ}\\[1pt]
+    semi-Ex-S↑ & \ufig[0.48]{pv0-semi-Ex-Sup}\\[1pt]
+    semi-Ex-H↑ & \ufig[0.48]{pv0-semi-Ex-Hup}\\
+  \end{tabular}
+\end{minipage}\\[3pt]
+\scriptsize
+\begin{tabular}{@{}r@{\;\,}l@{}}
+  order-SH & \ufig[0.48]{sc-order-SH-l} $\equiv$ \ufig[0.48]{sc-order-SH-r}\\[2pt]
+  comm-HHSHHS & \ufig[0.48]{pv0-comm-HHSHHS-l} $\equiv$ \ufig[0.48]{pv0-comm-HHSHHS-r}\\
+\end{tabular}\\[3pt]
+\begin{tabular}{@{}r@{\;\,}l@{\qquad}r@{\;\,}l@{}}
+  blake-c12 & \ufig[0.48]{pv0-blake-c12} & yang-baxter & \ufig[0.48]{pv0-yang-baxter}\\[2pt]
+  cz-slide & \ufig[0.48]{pv0-cz-slide} & semi-CX↑-CZ↓ & \ufig[0.48]{pv0-semi-CXup-CZdn}\\
+\end{tabular}
+\captionof{figure}{The gate rules of the exact rule set
+\protect\aid{{\_}Exact,{\_}==={\_}} (\S\ref{sec:composing}) as circuit
+equations, drawn from the Agda terms: \texttt{Paper-V0}'s sixteen with
+the one correction, \protect\aid{order-SH} becoming $(SH)^3 =
+\omega^{(p^2-1)/8}$.  Not drawn are the scalar's own rules,
+$\omega^{p} = \varepsilon$ and $\omega$ commuting with every gate.
+Diagrams read in matrix-multiplication order (\S\ref{sec:background}).}
+\Description{The sixteen circuit equations of the exact rule set.}
+\label{fig:exact}
 \end{center}
 
 \begin{center}\begin{minipage}{\textwidth}\centering
@@ -101,7 +121,7 @@ Projective Pauli group & 3 & 1\,220 \\
 Projective Clifford: semidirect, plumbing, shared calculus & 26 & 17\,996 \\
 Clifford with scalars & 11 & 5\,029 \\
 \midrule
-Other examples in the tree (symmetric, cyclic, wreath, Clifford+$T$, qubit Clifford) & 107 & 27\,552 \\
+Other examples in the tree (symmetric, cyclic, semidirect, Clifford+$T$, qubit Clifford) & 107 & 27\,552 \\
 Not on the chain (\texttt{Simplified-V2}), index, notations & 10 & 4\,344 \\
 \midrule
 Total & 329 & 106\,388 \\
@@ -110,31 +130,3 @@ Total & 329 & 106\,388 \\
 \end{minipage}
 \end{center}
 
-\section{Selected Agda Definitions}\label{app:agda}
-
-The normal-form datatype; the five hypotheses against which the library verifies a coset table
-(the general form of the soundness law \aid{ract-sound} of
-Appendix~\ref{sec:permutations}), in the generic \texttt{Transfer} module; the
-six one-qupit rules of the simplified symplectic rule set
-(\S\ref{sec:symplectic}), which with \aid{order-CZ}, \aid{comm-CZ-S↓},
-\aid{comm-CZ-S↑} and \aid{selinger-c10}--\aid{c15} make its fifteen; and
-the conjugation action of the semidirect presentation
-(\S\ref{sec:composing}), the paper's Lemmas~2.22--2.23 as words.  All
-three are quoted from the development, as is the doubly inductive
-normal-form datatype of \S\ref{sec:symplectic}, shown first.
-
-\begingroup\renewcommand{\AgdaCodeStyle}{\scriptsize}
-\noindent\begin{minipage}[t]{0.44\textwidth}
-\input{agda/rows}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.54\textwidth}
-\input{agda/nf}
-\end{minipage}
-\input{agda/hypotheses}
-\noindent\begin{minipage}[t]{0.5\textwidth}
-\input{agda/simplified-rules}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.47\textwidth}
-\input{agda/conj}
-\end{minipage}
-\endgroup

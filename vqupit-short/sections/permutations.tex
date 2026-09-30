@@ -685,7 +685,7 @@ is left over on the wires above --- the residual circuit --- so that
 staircase followed by generator equals residual (shifted up) followed by
 updated staircase.
 Pushing $\sigma$ into a staircase can lengthen it, cancel with it ($\sigma^2 =
-\varepsilon$), or pass it through and shift it up (Yang--Baxter), or
+\varepsilon$), pass it through and shift it up (Yang--Baxter), or
 commute past; for a generator that does not touch the bottom wire we can
 recurse.  The residual is empty or a single swap here, but in richer
 gate sets it can be a longer circuit, which is why the table returns a
@@ -899,7 +899,7 @@ wires of its level: a ``staircase of staircases''.
 
 \subsection{Semantics, uniqueness, and completeness}\label{sec:sn-semantics}
 
-So far everything was syntax.  The development interprets circuits in
+Everything above is syntax.  The development interprets circuits in
 the group $\aid{Permutation′-group}\;n$ of permutations of
 $\mathsf{Fin}\;n$, with $\sigma$ swapping the bottom two elements.
 \emph{Soundness} --- $w \approx v$ implies $\aid{⟦}w\aid{⟧} \doteq
@@ -996,3 +996,42 @@ permutations of $\mathsf{Fin}\;n$.  The symplectic
 factor of \S\ref{sec:symplectic} is this pipeline again, with richer
 gates and a richer action, and \S\ref{sec:composing} composes such
 presentations.
+
+\subsection{The semidirect product \texorpdfstring{$(\mathbb{Z}_N)^n \rtimes S_n$}{(ZN)n x Sn}}\label{sec:sn-wreath}
+
+Fix a base order $N = m{+}1$.  The cyclic presentation $\langle T \mid
+T^{N} = \varepsilon\rangle$, iterated by the $n$-fold direct-product
+construction, presents $(\mathbb{Z}_N)^n$ over $n$ copies of $T$, one
+per coordinate; the other factor is already in hand: the swap
+circuits present $S_n$ (\S\ref{sec:sn-semantics}'s
+\aid{symmetric-presentation}).  The
+semidirect product $(\mathbb{Z}_N)^n \rtimes S_n$ is
+$S_n$ acting on the coordinates, and the action is specified
+\emph{syntactically}, generator by generator: the bottom swap
+exchanges the bottom two coordinates, and a shifted swap acts on the
+shifted coordinates and fixes the bottom one.
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\input{agda/wreath-act}
+\endgroup
+
+\noindent The construction takes the action \emph{word-valued} ---
+in richer examples a conjugated generator becomes a whole word ---
+so it is fed \aid{act} read as a one-letter word,
+$\aid{conj}\;g\;x = [\,\aid{act}\;g\;x\,]^{\mathsf w}$.
+The semidirect theorem asks for two compatibility lemmas ---
+that the action respects the relations of each factor.
+With the two factor presentations and these
+lemmas in hand, the theorem gives
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\input{agda/wreath-thm}
+\endgroup
+
+\noindent read: the relations fall into three groups --- the cyclic
+relations, one copy per coordinate plus the commutations between
+distinct coordinates; the swap-circuit relations of $S_n$; and
+the conjugation relations \aid{ConjRelʷ}, one per swap
+and coordinate generator, spelling out the action --- and, joined by
+$\aid{⋄}$, they are together a presentation of the semidirect
+product $(\mathbb{Z}_N)^n \rtimes S_n$.
