@@ -18,24 +18,45 @@ the swap and the multiplier gates belong to $\Cliff$; we work mainly
 in the projective quotient, where $-1$ makes no difference except that
 the relations come out a little simpler.
 
-$\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$ is the free monoid on
-wire-indexed generators over the gates $H$, $S$ (unary) and $CZ$
-(binary), and $\aid{{\_}↑}$ shifts a circuit up one wire.  The other
-usual gates are \emph{words} ($Z = HHSHHS^{-1}$, $X = HSHHS^{-1}H$, the
-swap $\mathit{Ex} = (CZ \cdot H{\downarrow} \cdot H{\uparrow})^3$), as
-is the \emph{multiplier} $M_x\ket{j} = \ket{xj}$, $x \in \Zp^{*}$,
-spelled by the paper over $S$ with a Pauli prefix (its Lemma~2.14) and
-by us mostly as $R^{x}HR^{x^{-1}}HR^{x}H$ with $R = S \cdot Z^{1/2}$.  Our primary rule set --- Figure~1 modulo scalars,
-multiplier over $R$, $(SH)^3 = \varepsilon$ kept as an axiom --- is one
-inductive family \aid{{\_}CRel,{\_}==={\_}} with sixteen constructors,
-six one-qupit (orders, the multiplier calculus \aid{M-power} and \aid{semi-MR}, \aid{comm-HHSHHS}), seven two-qupit (orders of $CZ$ and $\mathit{Ex}$, commutations, the swap rules, \aid{blake-c12}) and three three-qupit (Yang--Baxter, \aid{cz-slide}, \aid{semi-CX↑-CZ↓}), all drawn in Figure~\ref{fig:rules}, plus the
-three \emph{structural} rules every circuit theory gets free
-(congruence under $\uparrow$; gates on disjoint wires commute); $XZ =
-ZX$ modulo scalars, $\mathit{Ex}$ commuting with $CZ$ and both rules
-pushing a Pauli through $CZ$ are derived.  Figure~1 has fifteen
-non-scalar rules; under the $R$-spelling $(SH)^3 = \varepsilon$ must
-stay an axiom, and \S\ref{sec:composing} verifies the paper's fifteen
-in its $S$-spelling, where it is a theorem.
+Using the framework of Appendix~\ref{sec:permutations}, we encode
+circuits, circuit relations, and reasoning with the relations.  For
+example, the swap:
+
+\noindent\begin{minipage}[c]{0.56\textwidth}
+\input{agda/ex-circuit}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.42\textwidth}\centering
+\ufig[0.48]{def-Ex}
+\end{minipage}
+
+\noindent A rule set is an inductive family indexed by the width, one
+constructor per rule, each stated once at the smallest width at which
+it fits; for example, two of the sixteen constructors of our primary
+rule set \aid{{\_}CRel,{\_}==={\_}} (all drawn in
+Figure~\ref{fig:rules}), the order of the swap and the rule moving $H$
+across it:
+
+\noindent\begin{minipage}[c]{0.56\textwidth}
+\input{agda/ex-relation}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.42\textwidth}\centering
+\ufig[0.48]{pv0-order-Ex}\\[3pt]
+\ufig[0.48]{pv0-semi-Ex-Hup}
+\end{minipage}
+
+\noindent And reasoning with the rules is equational reasoning in the
+congruence $\approx$ they generate, with combinators for symmetry,
+associativity, and rewriting the left or the right factor of a
+product; for example, conjugating by the swap moves $H$ down a wire:
+
+\noindent\begin{minipage}[c]{0.56\textwidth}
+\input{agda/ex-reasoning}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.42\textwidth}\centering
+\ufig[0.48]{pv0-conj-Ex-Hup}
+\end{minipage}
+
+\noindent Further, we can express and prove our main theorems:
 
 \begin{theorem}[\aid{clifford-presentation}]\label{thm:main}
 For every width $n$, the sixteen rules present the projective Clifford

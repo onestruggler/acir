@@ -100,6 +100,9 @@ items =
   , R "pv0-semi-Mup-CZ" [Mul 1 "M_g", CZe 0 1 "g"]        [CZ 0 1, Mul 1 "M_g"] ""
   , R "pv0-semi-Ex-Sup" [Ex 0, S 1]                       [S 0, Ex 0] ""
   , R "pv0-semi-Ex-Hup" [Ex 0, H 1]                       [H 0, Ex 0] ""
+  -- derived: conjugation by the swap moves H down a wire (§2 of the
+  -- five-page paper, vqupit-short/lagda/ex-reasoning.lagda.tex)
+  , R "pv0-conj-Ex-Hup" [Ex 0, H 1, Ex 0]                 [H 0, I 1] ""
   , R "pv0-blake-c12"   [sInv 1, sInv 0, CXe 1 0 "p-1", S 0, CX 1 0]
                         [CZ 0 1] ""
   -- three-wire

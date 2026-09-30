@@ -1,0 +1,12 @@
+\begin{code}[hide]
+module vqupit-short.lagda.ex-circuit where
+
+open import vqupit-short.lagda.Prelude
+
+private variable
+  n : ℕ
+\end{code}
+\begin{code}
+Ex : Word (Gen (₂₊ n))
+Ex = CZ • H ↓ • H ↑ • CZ • H ↓ • H ↑ • CZ • H ↓ • H ↑
+\end{code}

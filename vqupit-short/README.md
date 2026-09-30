@@ -1,7 +1,7 @@
 # "Verified Generators and Relations for Qupit Clifford Operators" — five-page version
 
 A compression of `../vqupit` (the 26-page OOPSLA/PACMPL draft; 23 pages
-of text) to **four pages of text** in the same format
+of text) to **five pages of text** in the same format
 (`acmart`, `acmsmall,review,anonymous`), followed by the references and
 an appendix.  Generated 2026-09-27 from the sources of `../vqupit`
 at their state on branch `qupit`; nothing here was written from other
@@ -13,14 +13,14 @@ place.
 
 ## What was kept, and where
 
-The four pages keep every result and every design decision of the long
+The five pages keep every result and every design decision of the long
 version, at a density of roughly one sentence per paragraph of the
 original:
 
 | §  | Content | Long version |
 |----|---------|--------------|
 | 1  | The problem, the method (factor, present, compose), what is checked | §1 |
-| 2  | Qupit Clifford gates and quotients, circuits in Agda, the sixteen rules, **Theorem 1** (`clifford-presentation`) and **Theorem 2** (`unique-nf`) as Agda types | §2 |
+| 2  | Qupit Clifford gates and quotients; three examples of the encoding, each as Agda code beside its circuit picture (the swap as a word, two constructors of the rule family, a five-step derivation); **Theorem 1** (`clifford-presentation`) and **Theorem 2** (`unique-nf`) as Agda types | §2 |
 | 3  | The paper's route, why it was not formalised, our route | §4 |
 | 4  | The symplectic factor: semantics, the doubly inductive normal form, the coset table and its well-definedness by semantics, uniqueness, the relation reductions (66 → 42 families → 17 → 15) | §5 |
 | 5  | Composing: the Pauli factor, the semidirect product, plumbing (semidirect → Simplified-V1 → Paper-V0 → Paper-V1), the scalars and the one correction $\omega^{(p^2-1)/8}$ | §6 |
@@ -74,8 +74,19 @@ Theorem 1, and the coset-table hypotheses of Appendix B).
   block again; each file's first line records which block of which section it is.
   Only `thm-clifford`, `thm-unique`, `rows`, `nf`, `hypotheses`,
   `simplified-rules` and `conj` are used; the others are kept for
-  re-expansion.
-- `figures/*.tikz` — the 57 circuit pictures used (copied from
+  re-expansion.  The three exceptions are `ex-circuit`, `ex-relation`
+  and `ex-reasoning`, the examples of §2 (the swap as a word, two
+  constructors of the rule family, and a five-step derivation): they
+  are this folder's own, rendered by `make agda` from
+  `lagda/ex-*.lagda.tex` over the shared scope `lagda/Prelude.agda`,
+  which postulates the gates and the congruence so that each snippet
+  fits on a few lines; `lagda/Check.agda` typechecks the derivation
+  against it with the width pinned (the printed snippet leaves the
+  width implicit, as the library does inside a module parameterised
+  by it).
+  Their figures `def-Ex` and `pv0-conj-Ex-Hup` come from
+  `../Cir2Tikz/src/qpl26.hs` like the others.
+- `figures/*.tikz` — the 64 circuit pictures used (copied from
   `../vqupit/figures/`, do not edit here); `circuits.tikzstyles`,
   `agda.sty`, `agda-style.sty`, `refs.bib` — copied unchanged.
 - `Makefile` — `make` (latexmk), `make png`, `make qa`, `make clean`.
@@ -89,11 +100,13 @@ make            # latexmk -pdf main.tex; no Agda needed
 ```
 
 Verified 2026-09-30 with TeX Live 2023 (Ubuntu 24.04 packages): `main.pdf`
-is 12 pages — **4 pages of text**, ending near the top of page 5, then
-the references (pages 5–8), Appendices A and B (pages 8–9) and
-Appendix C (pages 9–12) — with zero errors, zero undefined references
-or citations and no overfull box.  (The 2026-09-27 version, with the
-framework summary as §4, was 9 pages: 5 of text, references 6–8,
+is 12 pages — **just under 5 pages of text**, the references starting
+on the lower half of page 5 and running to page 7, then Appendix A
+(pages 7–8), Appendix B (page 8) and Appendix C (pages 9–12) — with
+zero errors, zero undefined references or citations and no overfull
+box.
+(The 2026-09-27 version, with the framework summary as §4 and without
+the three examples of §2, was 9 pages: 5 of text, references 6–8,
 appendix 8–9.)  The same toolchain rebuilds `../vqupit/main.tex` to
 its 26 pages, so page counts are comparable.
 
