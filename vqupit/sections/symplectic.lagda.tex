@@ -8,14 +8,14 @@ open import Data.Unit using (⊤ ; tt)
 open import Data.Vec using (Vec ; _∷_ ; head ; tail)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_)
 open import Notations using (₀ ; ₁ ; ₁₊ ; ₂₊)
-open import Word.Base using (Word ; ε ; _•_ ; _^_)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
 open import Presentation.Definitions using (_IsPresentationOf_)
 
 infixl 9 _↑ _↓
 infix 8 -_
 infixl 6 _+_
 infixl 7 _*_
-infix 4 _SRel,_===_ _≈ˢ_
+infix 4 _SRel,_===_ _QRel,_===_ _≈ˢ_ _≈_
 
 private variable
   n : ℕ
@@ -34,8 +34,10 @@ postulate
   ℤ : ℕ → Set
   ₚ : ℕ
   Symplectic : ℕ → Set
+  Circuit : ℕ → Set
   ⟦_⟧ : ∀ {n} → Word (Gen n) → Symplectic n
   _≈ˢ_ : ∀ {n} → Symplectic n → Symplectic n → Set
+  _≈_ : ∀ {n} → Word (Gen n) → Word (Gen n) → Set
   _+_ _*_ : ∀ {X : Set} → X → X → X
   -_ : ∀ {X : Set} → X → X
   _↑ _↓ : ∀ {n} → Word (Gen n) → Word (Gen (₁₊ n))
@@ -46,7 +48,7 @@ postulate
   sform : ∀ {n} → Pauli n → Pauli n → ℕ
   pZ₀ pX₀ : ∀ {n} → Pauli n
   Sp-group : ℕ → Set
-  _SRel,_===_ : ℕ → Set
+  _SRel,_===_ _QRel,_===_ : ℕ → Set
 
 module Unq where
   postulate ⟦[]⟧-injective : Set
@@ -67,10 +69,10 @@ $\Sp$; and the presentation theorem they assemble into
 \paragraph{Circuits.}  In the formalisation a gate set is a family of gate types indexed by
 arity, and a circuit on $n$ wires is a \emph{word} over wire-indexed
 generators: $\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$ is the free
-monoid on the generators of $H$, $S$ and $CZ$ placed on each wire,
-$\aid{{\_}↑}$ shifts a circuit up one wire, and diagrams are read in
-matrix-multiplication order (the generic machinery is that of
-\S\ref{sec:permutations}).  The remaining usual gates are \emph{words}, not extra
+monoid on the generators of $H$, $S$ and $CZ$ placed on each wire, and
+$\aid{{\_}↑}$ shifts a circuit up one wire (the generic machinery is
+that of \S\ref{sec:permutations}, and the reading order of diagrams
+that of \S\ref{sec:encoding}).  The remaining usual gates are \emph{words}, not extra
 generators: $Z = H H S H H S^{-1}$, $X = H S H H S^{-1} H$, the swap
 $\mathit{Ex} = (CZ \cdot H{\downarrow} \cdot H{\uparrow})^{3}$, and the
 controlled-$X$ gates $CX = H{\downarrow}^{3} \cdot CZ \cdot
@@ -264,10 +266,21 @@ each $f \in \Sp$ there is a $c$ such that $c \circ f^{-1}$ fixes the
 symplectic subspace of the bottom wire.  The cosets at width $1{+}n$
 are the $\ML$ boxes, their section is $[\_]^{\mathsf{ml}}$, and the coset
 table is the paper's ``push a gate through a normal box'', now a
-function $\aid{ract} : \ML\,(1{+}n) \to \aid{Gen}\,(1{+}n) \to
-\aid{Circuit}\;n \times \ML\,(1{+}n)$ with the same soundness law
-$[c]^{\mathsf c} \bullet g \approx b'{\uparrow} \bullet [c']^{\mathsf
-c}$ as in \S\ref{sec:sn-cosets}.  \aid{ract} dispatches on the shape of the coset --- a flat box or a
+function with the same soundness law as in \S\ref{sec:sn-cosets}:
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+ract        : ML (₁₊ n) → Gen (₁₊ n) → Circuit n × ML (₁₊ n)
+ract-sound  : ∀ (c : ML (₁₊ n)) g → let (b' , c') = ract c g in
+              [ c ]ᵐˡ • [ g ]ʷ ≈ b' ↑ • [ c' ]ᵐˡ
+\end{code}
+\endgroup
+\begin{code}[hide]
+ract = proof-elided
+ract-sound = proof-elided
+\end{code}
+
+\noindent \aid{ract} dispatches on the shape of the coset --- a flat box or a
 $D$-spine --- and on the generator --- $S$ or $H$ on the bottom wire,
 $CZ$ on the bottom two, or a lifted gate --- and delegates each case to
 a module of the \texttt{Pushing} directory (26 files, 5\,600 lines):
@@ -474,9 +487,11 @@ injective homomorphism from the words modulo the full rules into
 action of some circuit --- is proved constructively by ``clear the bottom
 wire, recurse on the tail'': the single-level input is
 
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
 \begin{code}
 Theorem-LM : ∀ {n} (p q : Pauli n) → sform p q ≡ ₁ → ∃ λ (lm : ML n) → act [ lm ]ᵐˡ p ≡ pZ₀ × act [ lm ]ᵐˡ q ≡ pX₀
 \end{code}
+\endgroup
 \begin{code}[hide]
 Theorem-LM = proof-elided
 \end{code}
@@ -492,7 +507,7 @@ interpretation:
 For every width $n$, the simplified symplectic rules present the
 symplectic group:
 \begin{code}
-simplified-presentation : ∀ n → (n SRel,_===_) IsPresentationOf (Sp-group n)
+simplified-presentation : ∀ n → (n QRel,_===_) IsPresentationOf (Sp-group n)
 \end{code}
 \begin{code}[hide]
 simplified-presentation n = Pres.presentation {n}
@@ -500,10 +515,11 @@ simplified-presentation n = Pres.presentation {n}
 \noindent Home: \texttt{Symplectic.Simplified.Presentation}.
 \end{theorem}
 
-\noindent Here \aid{{\_}SRel,{\_}==={\_}} is the closure of the fifteen
-rules of \S\ref{sec:reduction} under the three structural rules
-(\aid{Lift-Relation}; the index module \texttt{MainTheorems} calls it
-\aid{{\_}QRel,{\_}==={\_}}).  Theorem~\ref{thm:main} is then built on
+\noindent Here \aid{{\_}QRel,{\_}==={\_}} closes the fifteen rules
+\aid{{\_}SRel,{\_}==={\_}} of \S\ref{sec:reduction} under the three
+structural rules (\aid{Lift-Relation}, as in \S\ref{sec:sn-relations});
+the statement is the index module \texttt{MainTheorems}'s.
+Theorem~\ref{thm:main} is then built on
 this theorem: the semidirect product of \S\ref{sec:semidirect}
 assembles it with a presentation of the projective Pauli group and the
 conjugation action into the presentation of $\PPauli \rtimes \Sp$.

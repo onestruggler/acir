@@ -75,6 +75,8 @@
 \AgdaKeyword{using}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaDatatype{Word}\AgdaSpace{}%
 \AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[\AgdaUnderscore{}]ʷ}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
 \AgdaInductiveConstructor{ε}\AgdaSpace{}%
 \AgdaSymbol{;}\AgdaSpace{}%
 \AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}•\AgdaUnderscore{}}}\AgdaSpace{}%
@@ -109,7 +111,9 @@
 \>[0]\AgdaKeyword{infix}\AgdaSpace{}%
 \AgdaNumber{4}\AgdaSpace{}%
 \AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
-\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈ˢ\AgdaUnderscore{}}}\<%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈ˢ\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\<%
 \\
 %
 \\[\AgdaEmptyExtraSkip]%
@@ -225,6 +229,13 @@
 \AgdaPrimitive{Set}\<%
 \\
 %
+\>[2]\AgdaPostulate{Circuit}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
 \>[2]\AgdaOperator{\AgdaPostulate{⟦\AgdaUnderscore{}⟧}}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaSymbol{∀}\AgdaSpace{}%
@@ -248,6 +259,22 @@
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaPostulate{Symplectic}\AgdaSpace{}%
 \AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaPrimitive{Set}\<%
 \\
@@ -380,6 +407,7 @@
 \\
 %
 \>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
 \AgdaDatatype{ℕ}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
@@ -421,10 +449,10 @@ $\Sp$; and the presentation theorem they assemble into
 \paragraph{Circuits.}  In the formalisation a gate set is a family of gate types indexed by
 arity, and a circuit on $n$ wires is a \emph{word} over wire-indexed
 generators: $\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$ is the free
-monoid on the generators of $H$, $S$ and $CZ$ placed on each wire,
-$\aid{{\_}↑}$ shifts a circuit up one wire, and diagrams are read in
-matrix-multiplication order (the generic machinery is that of
-\S\ref{sec:permutations}).  The remaining usual gates are \emph{words}, not extra
+monoid on the generators of $H$, $S$ and $CZ$ placed on each wire, and
+$\aid{{\_}↑}$ shifts a circuit up one wire (the generic machinery is
+that of \S\ref{sec:permutations}, and the reading order of diagrams
+that of \S\ref{sec:encoding}).  The remaining usual gates are \emph{words}, not extra
 generators: $Z = H H S H H S^{-1}$, $X = H S H H S^{-1} H$, the swap
 $\mathit{Ex} = (CZ \cdot H{\downarrow} \cdot H{\uparrow})^{3}$, and the
 controlled-$X$ gates $CX = H{\downarrow}^{3} \cdot CZ \cdot
@@ -703,14 +731,14 @@ the staircase are:
 \>[0]\AgdaFunction{ML}\AgdaSpace{}%
 \AgdaBound{m}\AgdaSymbol{@(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
 \AgdaBound{n}\AgdaSymbol{)}%
-\>[421I]\AgdaSymbol{=}\AgdaSpace{}%
+\>[443I]\AgdaSymbol{=}\AgdaSpace{}%
 \AgdaFunction{M}\AgdaSpace{}%
 \AgdaBound{m}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
 \AgdaFunction{L}\AgdaSpace{}%
 \AgdaBound{m}\<%
 \\
-\>[.][@{}l@{}]\<[421I]%
+\>[.][@{}l@{}]\<[443I]%
 \>[12]\AgdaOperator{\AgdaDatatype{⊎}}\AgdaSpace{}%
 \AgdaFunction{D}\AgdaSpace{}%
 \AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
@@ -898,10 +926,75 @@ each $f \in \Sp$ there is a $c$ such that $c \circ f^{-1}$ fixes the
 symplectic subspace of the bottom wire.  The cosets at width $1{+}n$
 are the $\ML$ boxes, their section is $[\_]^{\mathsf{ml}}$, and the coset
 table is the paper's ``push a gate through a normal box'', now a
-function $\aid{ract} : \ML\,(1{+}n) \to \aid{Gen}\,(1{+}n) \to
-\aid{Circuit}\;n \times \ML\,(1{+}n)$ with the same soundness law
-$[c]^{\mathsf c} \bullet g \approx b'{\uparrow} \bullet [c']^{\mathsf
-c}$ as in \S\ref{sec:sn-cosets}.  \aid{ract} dispatches on the shape of the coset --- a flat box or a
+function with the same soundness law as in \S\ref{sec:sn-cosets}:
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}%
+\>[0]\AgdaFunction{ract}%
+\>[12]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{Circuit}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaFunction{ract-sound}%
+\>[12]\AgdaSymbol{:}%
+\>[554I]\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{c}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{ML}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaKeyword{let}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{b'}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{c'}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaKeyword{in}\<%
+\\
+\>[.][@{}l@{}]\<[554I]%
+\>[14]\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{]ᵐˡ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{≈}}\AgdaSpace{}%
+\AgdaBound{b'}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
+\AgdaBound{c'}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{]ᵐˡ}}\<%
+\end{code}
+\endgroup
+\begin{code}[hide]%
+\>[0]\AgdaFunction{ract}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\\
+\>[0]\AgdaFunction{ract-sound}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\end{code}
+
+\noindent \aid{ract} dispatches on the shape of the coset --- a flat box or a
 $D$-spine --- and on the generator --- $S$ or $H$ on the bottom wire,
 $CZ$ on the bottom two, or a lifted gate --- and delegates each case to
 a module of the \texttt{Pushing} directory (26 files, 5\,600 lines):
@@ -1300,6 +1393,7 @@ injective homomorphism from the words modulo the full rules into
 action of some circuit --- is proved constructively by ``clear the bottom
 wire, recurse on the tail'': the single-level input is
 
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
 \begin{code}%
 \>[0]\AgdaFunction{Theorem-LM}\AgdaSpace{}%
 \AgdaSymbol{:}\AgdaSpace{}%
@@ -1340,6 +1434,7 @@ wire, recurse on the tail'': the single-level input is
 \AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
 \AgdaPostulate{pX₀}\<%
 \end{code}
+\endgroup
 \begin{code}[hide]%
 \>[0]\AgdaFunction{Theorem-LM}\AgdaSpace{}%
 \AgdaSymbol{=}\AgdaSpace{}%
@@ -1363,7 +1458,7 @@ symplectic group:
 \AgdaBound{n}\AgdaSpace{}%
 \AgdaSymbol{→}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
-\AgdaOperator{\AgdaPostulate{SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
 \AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
 \AgdaSymbol{(}\AgdaPostulate{Sp-group}\AgdaSpace{}%
 \AgdaBound{n}\AgdaSymbol{)}\<%
@@ -1378,10 +1473,11 @@ symplectic group:
 \noindent Home: \texttt{Symplectic.Simplified.Presentation}.
 \end{theorem}
 
-\noindent Here \aid{{\_}SRel,{\_}==={\_}} is the closure of the fifteen
-rules of \S\ref{sec:reduction} under the three structural rules
-(\aid{Lift-Relation}; the index module \texttt{MainTheorems} calls it
-\aid{{\_}QRel,{\_}==={\_}}).  Theorem~\ref{thm:main} is then built on
+\noindent Here \aid{{\_}QRel,{\_}==={\_}} closes the fifteen rules
+\aid{{\_}SRel,{\_}==={\_}} of \S\ref{sec:reduction} under the three
+structural rules (\aid{Lift-Relation}, as in \S\ref{sec:sn-relations});
+the statement is the index module \texttt{MainTheorems}'s.
+Theorem~\ref{thm:main} is then built on
 this theorem: the semidirect product of \S\ref{sec:semidirect}
 assembles it with a presentation of the projective Pauli group and the
 conjugation action into the presentation of $\PPauli \rtimes \Sp$.

@@ -252,8 +252,12 @@ on.
 \texttt{Paper-V0} is our primary rule set: the qupit paper's Figure~1
 read modulo scalars, with the multiplier spelled over $R$ and with
 $(SH)^3 = \varepsilon$ kept as an axiom.  In Agda it is one inductive
-family \aid{{\_}CRel,{\_}==={\_}} with sixteen constructors, one per rule,
-each stated at the smallest number of wires at which it makes sense;
+family \aid{{\_}SRel,{\_}==={\_}} with sixteen constructors, one per rule,
+each stated at the smallest number of wires at which it makes sense
+(two of them were shown in \S\ref{sec:encoding}; the name is the same
+as the symplectic family's of \S\ref{sec:reduction}, each rule set
+being its own module, and \aid{{\_}QRel,{\_}==={\_}} is again its
+closure under the structural rules);
 Figure~\ref{fig:rules} shows them as circuit equations, drawn from the
 Agda terms, under the constructor names used throughout.  Six are
 one-qupit rules: the orders $S^{p} = \varepsilon$, $H^{2} = M_{-1}$ and
@@ -305,10 +309,11 @@ the next paragraph shows.
   blake-c12 & \ufig[0.48]{pv0-blake-c12} & yang-baxter & \ufig[0.48]{pv0-yang-baxter}\\[2pt]
   cz-slide & \ufig[0.48]{pv0-cz-slide} & semi-CX↑-CZ↓ & \ufig[0.48]{pv0-semi-CXup-CZdn}\\
 \end{tabular}
-\caption{The sixteen rules of \protect\aid{{\_}CRel,{\_}==={\_}} as
-circuit equations.  A word is drawn left to right as written and read
-in matrix-multiplication order, so in $w \bullet v$ the right factor $v$
-acts first.
+\caption{The sixteen rules of \texttt{Paper-V0}'s
+\protect\aid{{\_}SRel,{\_}==={\_}} as circuit equations.  A word is
+drawn left to right as written and read in matrix-multiplication
+order, so in $w \bullet v$ the right factor $v$ acts first
+(\S\ref{sec:encoding}).
 \protect\aid{blake-c12} relates two circuits implementing
 controlled-$Z$; \protect\aid{yang-baxter} and \protect\aid{cz-slide}
 are the swap calculus.}
@@ -369,15 +374,17 @@ the same theorem holds for our sixteen rules
 (\texttt{Paper-V0.Presentation}).
 \end{theorem}
 
-\noindent Its two halves are the two directions of the diagram
+\noindent Its content is the diagram
 \[
   \mathsf{Cir}\;n \,/\, {\approx_{\text{15 rules}}}
   \;\xrightarrow{\ \sem{\_}\ \cong\ }\;
   \PPauli \rtimes \Sp \;\cong\; \Cliff/\langle\omega\rangle :
 \]
 \emph{soundness} --- $\sem{\_}$ is well defined, each rule holds
-semantically --- and \emph{completeness} --- $\sem{\_}$ is injective,
-semantically equal circuits are related by the rules.  So the paper's
+semantically --- \emph{completeness} --- $\sem{\_}$ is injective,
+semantically equal circuits are related by the rules --- and
+\emph{surjectivity} --- each projective Clifford operator is
+represented by a circuit.  So the paper's
 Figure~1, read modulo scalars, presents the same group as the
 semidirect presentation of \S\ref{sec:semidirect}: the two routes ---
 the paper's single rule set with its projective use of relations, and
@@ -436,9 +443,11 @@ the Weyl cocycle back along the projective presentation theorem, so the
 two cocycles agree by construction.  The theorem, again on no hypothesis,
 is
 
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
 \begin{code}
 presentation-exact : ∀ n → (n Exact,_===_) IsPresentationOf (PE.Presented-group n (exact-generator-data n))
 \end{code}
+\endgroup
 \begin{code}[hide]
 presentation-exact = proof-elided
 \end{code}

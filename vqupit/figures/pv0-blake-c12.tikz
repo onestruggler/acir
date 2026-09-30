@@ -19,7 +19,7 @@
 \draw (n0y02.center) to (n0y02t.center);
 \draw (n0y04.center) to (n0y04t.center);
 \end{pgfonlayer}
-\node [style=none] (equiv) at (12.0, 1.0) {$\equiv$};
+\node [style=none] (equiv) at (12.0, 1.0) {\Large$\equiv$};
 \begin{pgfonlayer}{nodelayer}
 \node [style=cnot ctrl, label={above:$$}] (n13y00) at (14.75, 2.0) {};
 \node [style=cnot ctrl] (n13y00t) at (14.75, 0.0) {$$};

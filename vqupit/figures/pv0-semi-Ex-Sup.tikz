@@ -20,7 +20,7 @@
 \draw (n0y00bl.center) to (n0y00tr.center);
 \draw (n0y00tl.center) to (n0y00br.center);
 \end{pgfonlayer}
-\node [style=none] (equiv) at (7.0, 1.0) {$\equiv$};
+\node [style=none] (equiv) at (7.0, 1.0) {\Large$\equiv$};
 \begin{pgfonlayer}{nodelayer}
 \node [style=gate] (n8y00) at (9.75, 0.0) {$S$};
 \node [style=none] (n8y01tl) at (11.5, 2.0) {$$};

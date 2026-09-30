@@ -34,7 +34,10 @@ version is wanted.
   and their presentation theorems", from that paper's §4.6 without the
   amalgamated products), `two-routes` (§3, "Qupit Clifford Operators
   and Two Routes to Completeness": the qupit gates and the groups the
-  semantics is built from, then the paper's proof, where ours follows
+  semantics is built from; §3.2, the encoding on three examples with
+  the Agda beside the circuit picture — the swap as a word, two
+  constructors of the rule family, a five-step derivation — as in the
+  five-page version's §2; then the paper's proof, where ours follows
   it and where it departs, and our route), `symplectic` (§4: the
   circuit syntax and parameters, then semantics, the normal form with
   its boxes, the coset table, uniqueness with the theorem `unique-nf`,
@@ -43,9 +46,9 @@ version is wanted.
   plumbing with the rules figure and the main theorem
   `clifford-presentation`, scalars), `discussion` (§6), `related`
   (§7), `conclusion` (§8).  There is no longer a section of main
-  theorems: each is stated where it is proved.  The four literate Agda
+  theorems: each is stated where it is proved.  The five literate Agda
   files (`*.lagda.tex`) — `permutations`,
-  `constructions`, `symplectic`, `composing` — quote Agda as in
+  `constructions`, `two-routes`, `symplectic`, `composing` — quote Agda as in
   `paper/`: `make agda` runs `agda --latex --only-scope-checking` on them from
   the repository root and writes `latex/vqupit/sections/<name>.tex`,
   which `main.tex` inputs, so every identifier is coloured by kind
@@ -87,12 +90,17 @@ version is wanted.
 
 ## Building
 
-**Status: builds clean; a fifth of a page over the limit** — the
-2026-09-28 scratch build described below gives 26 pages in
-`acmsmall,review,anonymous` mode, the bibliography starting near the
-top of page 24 (so about 23.2 pages of text against the 23-page
+**Status: builds clean; about half a page over the limit** — the
+2026-10-01 build (TeX Live 2023 and Agda 2.8.0 in WSL) gives 27 pages
+in `acmsmall,review,anonymous` mode, the bibliography starting in the
+middle of page 24 (so about 23.5 pages of text against the 23-page
 OOPSLA/PLDI limit), with zero errors, zero undefined references or
-citations and no overfull box over 8 pt.  The previous 2026-09-18
+citations and no overfull box over 3 pt; the new §3.2 (the three
+examples) costs about a third of a page, and the two one-line theorem
+statements `Theorem-LM` and `presentation-exact` are set at footnote
+size so that they fit the line.  The 2026-09-28 scratch build gave 26
+pages, the bibliography starting near the top of page 24 (about 23.2
+pages of text).  The previous 2026-09-18
 revision built with `make` (Agda on the literate sections, then
 `latexmk -pdf main.tex`) to 26 pages (23 pages of text, the
 bibliography starting on page 24), zero errors, zero undefined
@@ -161,12 +169,29 @@ make                                   # from a WSL shell in this directory
 wsl bash -lc "make -C /mnt/d/work/acir/vqupit"   # from PowerShell
 ```
 
-The generated twins of the four literate sections
-(`latex/vqupit/sections/{permutations,constructions,symplectic,composing}.tex`)
-were regenerated on 2026-09-28 with Agda 2.8.0 and agda-stdlib 2.4
+The generated twins of the five literate sections
+(`latex/vqupit/sections/{permutations,constructions,two-routes,symplectic,composing}.tex`)
+were regenerated on 2026-10-01 with Agda 2.8.0 and agda-stdlib 2.4
 (`agda --latex --only-scope-checking`, run from the repository root as
-`make agda` does), so all four literate files are known to scope-check
-against the library on this branch.
+`make agda` does), so all five literate files are known to scope-check
+against the library on this branch.  (On a machine whose Agda package
+lacks its `agda.sty`, the backend fails copying it into `latex/`; put
+a copy of `agda.sty` at `latex/agda.sty` first — it is gitignored.)
+
+The 2026-10-01 revision ported the improvements made to the five-page
+version (`../vqupit-short`) back here: §3.1 says the Clifford
+generators come with the phases ω^t, states δ_p = i^{(p−1)/2} through
+the determinants, and notes the qupit paper's −1 among the global
+phases; a new §3.2 shows the encoding on three examples (code beside
+picture; `two-routes` became a literate file for it); §4.3 quotes the
+coset table's two signatures `ract`/`ract-sound` as code; §4.6 states
+`simplified-presentation` over `_QRel,_===_`, the closure, as
+`MainTheorems` does, and says so; §5.3 calls the Clifford family by its
+name in the code, `_SRel,_===_`, and Theorem 5.1's reading adds
+surjectivity; the AI-use statement names what Claude did; and the
+eight combined rule pictures and `sc-order-SH-r` were synced from the
+five-page version (equal signs at one size; the correction drawn as
+ω^{−1/8}).
 
 `make` reruns latexmk only when `main.tex`, `sections/*.tex`, `figures/*.tikz`,
 `refs.bib` or the style files changed; `make png` renders the pages to `png/`
