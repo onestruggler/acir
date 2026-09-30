@@ -6,12 +6,17 @@ $Z\ket{j} = \omega^{j}\ket{j}$ generate, with the phases $\omega^t$, the
 Pauli group $\Pauli$, and $H\colon \ket{j} \mapsto
 \tfrac{\delta_p}{\sqrt p}\sum_k \omega^{jk}\ket{k}$, $S\colon \ket{j}
 \mapsto \omega^{j(j-1)/2}\ket{j}$, $CZ\colon \ket{j}\ket{l} \mapsto
-\omega^{jl}\ket{j}\ket{l}$ generate the Clifford group $\Cliff$ ($\delta_p$
-makes the Clifford phases exactly the powers of
-$\omega$)~\cite{bian2026qudit}.  Modulo scalars, $\PCliff =
+\omega^{jl}\ket{j}\ket{l}$ generate, with the phases $\omega^t$, the
+Clifford group $\Cliff$ ($\delta_p = i^{(p-1)/2}$ makes the
+determinant of $H$ equal to $1$; the determinants of $S$ and $CZ$ are
+$1$ too)~\cite{bian2026qudit}.  Modulo scalars, $\PCliff =
 \Cliff/\langle\omega\rangle$ and $\PPauli \cong \Zp^{2n}$, $\Cliff/\Pauli \cong \PCliff/\PPauli \cong \Sp$, and $\PCliff \cong
 \PPauli \rtimes \Sp$.  These ``glue facts'' are the two not formalised:
 our semantic groups are \emph{defined} as the right-hand sides.
+In~\cite{bian2026qudit} the global phases also include $-1$, so that
+the swap and the multiplier gates belong to $\Cliff$; we work mainly
+in the projective quotient, where $-1$ makes no difference except that
+the relations come out a little simpler.
 
 $\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$ is the free monoid on
 wire-indexed generators over the gates $H$, $S$ (unary) and $CZ$
@@ -40,7 +45,7 @@ group:
 
 \noindent $\aid{Pauli⋊Sp}\;n$ is the semidirect product of $\Zp^{2n}$
 by $\Sp$ (\S\ref{sec:composing}); \aid{{\_}IsPresentationOf{\_}}
-(\S\ref{sec:framework}) is a group isomorphism $\mathsf{Cir}\;n/{\approx}
+(Appendix~\ref{sec:permutations}) is a group isomorphism $\mathsf{Cir}\;n/{\approx}
 \to \PPauli \rtimes \Sp \cong \Cliff/\langle\omega\rangle$:
 \emph{soundness}, each rule holds, and \emph{completeness}, $\sem{\_}$
 is injective.  Normal forms for

@@ -65,6 +65,11 @@
 %% Scale a circuit by a FIXED factor instead: on a grid of relations,
 %% every picture shares one scale, so gate boxes stay proportionate.
 \newcommand{\ufig}[2][1]{$\vcenter{\hbox{\scalebox{#1}{\tikzfig{figures/#2}}}}$}
+%% The same scale applied by TikZ to the coordinates alone, so that the
+%% labels of a picture keep their font size (the coset and residual
+%% labels b, c, b', c' of the coset-table pictures); the line width is
+%% scaled by hand to match the \scalebox'd pictures.
+\newcommand{\ufigT}[2][1]{$\vcenter{\hbox{{\tikzstyle{every picture}=[tikzfig,scale=#1,line width=0.4pt*#1]\input{figures/#2.tikz}}}}$}
 
 %% PACMPL reference style (must precede \begin{document})
 \citestyle{acmauthoryear}
@@ -83,6 +88,9 @@
 \newcommand{\ML}{\ensuremath{\mathit{ML}}}
 % Inline Agda identifier (see agda-style.sty for the Unicode table).
 \newcommand{\aid}[1]{\mbox{\textsf{\small #1}}}
+% Operator / relation variants for math mode, so that $c \aidop{•} c'$
+% is set like c • c' rather than c•c'.
+\newcommand{\aidop}[1]{\ifmmode\mathbin{\aid{#1}}\else\aid{#1}\fi}
 \newcommand{\aidrel}[1]{\ifmmode\mathrel{\aid{#1}}\else\aid{#1}\fi}
 
 \begin{document}
@@ -160,7 +168,6 @@ verification}
 \input{sections/intro}
 \input{sections/background}
 \input{sections/routes}
-\input{sections/framework}
 \input{sections/symplectic}
 \input{sections/composing}
 \input{sections/discussion}
@@ -179,5 +186,8 @@ by us.
 
 \appendix
 \input{sections/appendix}
+%% Appendix C: Section 2 of ../vqupit ("An Introduction to the Framework"),
+%% the Agda-generated LaTeX copied verbatim (see the file's header).
+\input{sections/permutations}
 
 \end{document}

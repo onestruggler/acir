@@ -1,15 +1,19 @@
 # "Verified Generators and Relations for Qupit Clifford Operators" — five-page version
 
 A compression of `../vqupit` (the 26-page OOPSLA/PACMPL draft; 23 pages
-of text) to **five pages of text** in the same format
+of text) to **four pages of text** in the same format
 (`acmart`, `acmsmall,review,anonymous`), followed by the references and
-a short appendix.  Generated 2026-09-27 from the sources of `../vqupit`
+an appendix.  Generated 2026-09-27 from the sources of `../vqupit`
 at their state on branch `qupit`; nothing here was written from other
 material, and every count, name and line count is the long version's.
+Revised 2026-09-30: the one-page summary of the framework (the former
+§4) was removed from the main text, and the long version's §2, *An
+Introduction to the Framework*, was copied into the appendix in its
+place.
 
 ## What was kept, and where
 
-The five pages keep every result and every design decision of the long
+The four pages keep every result and every design decision of the long
 version, at a density of roughly one sentence per paragraph of the
 original:
 
@@ -17,16 +21,20 @@ original:
 |----|---------|--------------|
 | 1  | The problem, the method (factor, present, compose), what is checked | §1 |
 | 2  | Qupit Clifford gates and quotients, circuits in Agda, the sixteen rules, **Theorem 1** (`clifford-presentation`) and **Theorem 2** (`unique-nf`) as Agda types | §2 |
-| 3  | The paper's route, why it was not formalised, our route | §3 |
-| 4  | The framework: presented monoids, normal forms and `by-normalization`, coset tables and their five hypotheses, the semidirect and extension theorems, the two warm-ups in one sentence | §4, §5 |
-| 5  | The symplectic factor: semantics, the doubly inductive normal form, the coset table and its well-definedness by semantics, uniqueness, the relation reductions (66 → 42 families → 17 → 15) | §6 |
-| 6  | Composing: the Pauli factor, the semidirect product, plumbing (semidirect → Simplified-V1 → Paper-V0 → Paper-V1), the scalars and the one correction $\omega^{(p^2-1)/8}$ | §7 |
-| 7  | What is verified and what is not, statistics, lessons, related work (all citations kept), future work | §8, §9, §10 |
+| 3  | The paper's route, why it was not formalised, our route | §4 |
+| 4  | The symplectic factor: semantics, the doubly inductive normal form, the coset table and its well-definedness by semantics, uniqueness, the relation reductions (66 → 42 families → 17 → 15) | §5 |
+| 5  | Composing: the Pauli factor, the semidirect product, plumbing (semidirect → Simplified-V1 → Paper-V0 → Paper-V1), the scalars and the one correction $\omega^{(p^2-1)/8}$ | §6 |
+| 6  | What is verified and what is not, statistics, lessons, related work (all citations kept), future work | §7, §8, §9 |
 | A  | The sixteen rules as circuit equations, the normal boxes, the chain of presentations, the size table | Figures 1, 2, Table 2, box table |
-| B  | Four Agda listings the text refers to: the normal-form datatype, the five coset-table hypotheses, the six one-qupit simplified rules, the conjugation action | code blocks of §4–§7 |
+| B  | Four Agda listings the text refers to: the normal-form datatype, the five coset-table hypotheses, the six one-qupit simplified rules, the conjugation action | code blocks of §3–§6 |
+| C  | *An Introduction to the Framework*, verbatim: the $S_n$ walkthrough — gates and circuits, the two axioms and the structural rules, cosets, the staircase normal form and the coset table `ract` with its soundness law, the tower, semantics, uniqueness, completeness, and the presentation record `_IsPresentationOf_` | §2 |
 
-What did **not** survive: the worked examples (the $S_n$ coset table
-clause by clause, $S$ meeting a spine, $M_xM_y = M_{xy}$), the
+What did **not** survive: the framework summary that used to be §4 (the
+five coset-table hypotheses in prose, the semidirect and extension
+theorems, the two warm-ups in one sentence — the presentation record,
+the coset table and its soundness law are now shown on $S_n$ in
+Appendix C instead), the product constructions (the long version's
+§3), the worked examples ($S$ meeting a spine, $M_xM_y = M_{xy}$), the
 `respects-Δ` listing, the nine-family table of box relations, the
 `act≡ap`/`abstract` anecdote, the proof-engineering discussion beyond
 its three headline lessons, the `Home:` module names under the
@@ -35,20 +43,28 @@ sentence remains).  The
 long version's `notes/survey-*.md` still record the file and line of
 every fact.
 
-The appendix exists because the main text refers to the rule figure,
-the boxes and the size table, and because the four listings are the
-most information-dense way to show what the Agda actually says; it can
-be dropped without breaking any cross-reference except those five.
+Appendices A and B exist because the main text refers to the rule
+figure, the boxes and the size table, and because the four listings are
+the most information-dense way to show what the Agda actually says;
+Appendix C is where the main text sends the reader for the library
+(three references: the introduction, the presentation record under
+Theorem 1, and the coset-table hypotheses of Appendix B).
 
 ## Files
 
 - `main.tex` — the driver, the long version's preamble minus the
-  `listings` fallback, with the same `\aid{…}`, `\fitfig`/`\ufig`
-  macros and PACMPL metadata.  Drop `anonymous` for a camera-ready.
+  `listings` fallback, with the same `\aid{…}`/`\aidop{…}`,
+  `\fitfig`/`\ufig`/`\ufigT` macros and PACMPL metadata.  Drop
+  `anonymous` for a camera-ready.
 - `sections/*.tex` — plain LaTeX, one file per section (`abstract`,
-  `intro`, `background`, `routes`, `framework`, `symplectic`,
-  `composing`, `discussion`, `appendix`).  Unlike the long version they
-  are **not** literate Agda files.
+  `intro`, `background`, `routes`, `symplectic`, `composing`,
+  `discussion`, `appendix`).  Unlike the long version they are **not**
+  literate Agda files.  The exception is `sections/permutations.tex`,
+  Appendix C: it is `../vqupit/latex/vqupit/sections/permutations.tex`,
+  the LaTeX Agda generated from the long version's
+  `sections/permutations.lagda.tex`, copied whole (prose and code) with
+  two local edits recorded in its header comment; if the long version's
+  §2 changes, regenerate there and copy it again.
 - `agda/*.tex` — the Agda code blocks, as the LaTeX that Agda's backend
   (`agda --latex --only-scope-checking`) generated for the long
   version's literate sections, copied verbatim from
@@ -59,7 +75,7 @@ be dropped without breaking any cross-reference except those five.
   Only `thm-clifford`, `thm-unique`, `rows`, `nf`, `hypotheses`,
   `simplified-rules` and `conj` are used; the others are kept for
   re-expansion.
-- `figures/*.tikz` — the 38 circuit pictures used (copied from
+- `figures/*.tikz` — the 57 circuit pictures used (copied from
   `../vqupit/figures/`, do not edit here); `circuits.tikzstyles`,
   `agda.sty`, `agda-style.sty`, `refs.bib` — copied unchanged.
 - `Makefile` — `make` (latexmk), `make png`, `make qa`, `make clean`.
@@ -72,11 +88,14 @@ be dropped without breaking any cross-reference except those five.
 make            # latexmk -pdf main.tex; no Agda needed
 ```
 
-Verified 2026-09-27 with TeX Live 2023 (Ubuntu 24.04 packages): `main.pdf`
-is 9 pages — **5 pages of text**, ending at the foot of page 5, then the
-references (pages 6–8) and the appendix (pages 8–9) — with zero errors,
-zero undefined references or citations and no overfull box.  The same toolchain rebuilds `../vqupit/main.tex` to its 26 pages,
-so page counts are comparable.
+Verified 2026-09-30 with TeX Live 2023 (Ubuntu 24.04 packages): `main.pdf`
+is 12 pages — **4 pages of text**, ending near the top of page 5, then
+the references (pages 5–8), Appendices A and B (pages 8–9) and
+Appendix C (pages 9–12) — with zero errors, zero undefined references
+or citations and no overfull box.  (The 2026-09-27 version, with the
+framework summary as §4, was 9 pages: 5 of text, references 6–8,
+appendix 8–9.)  The same toolchain rebuilds `../vqupit/main.tex` to
+its 26 pages, so page counts are comparable.
 
 ## Things to decide
 
@@ -85,6 +104,6 @@ so page counts are comparable.
    three-and-a-half pages, leaving room to restore roughly a third of
    what was cut (start with the worked examples and the listings).
 2. Whether to keep Appendix B (the listings) or fold the datatype back
-   into §5 at the cost of a quarter page of text.
+   into §4 at the cost of a quarter page of text.
 3. The abstract is 185 words; a venue with a 150-word limit needs two
    sentences fewer.
