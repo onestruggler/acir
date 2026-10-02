@@ -134,6 +134,19 @@ path-sum only by a renaming of its path variables, which cannot be
 dropped.  `Compose/WellFormed` and `Compose/Counterexample`
 show proposition 2.7's well-formedness claim false and prove what
 survives: composing after an isometry preserves well-formedness.
+`Signature`, `Signature/Compose`, `Signature/Clean` and
+`Signature/WithX` add definition 2.1's constant inputs — a signature
+makes each wire a variable or a Boolean constant, and the operator is
+partial — with constants 0 exactly the library's |0⟩-restrictions;
+section 2.1's compatibility condition, decided, in three forms (the
+paper's syntactic one, along every path, and by the operator's
+range); proposition 2.7 for signed path-sums under range
+compatibility, which is exactly what it needs, beside the
+post-selection counterexample (the identity, then |0⟩ ↦ |0⟩: the
+composite erases, the product projects); footnote 1 as a reduction —
+an ancilla is clean exactly when its preparation is compatible, so a
+decider for compatibility decides unsatisfiability through footnote
+2's circuits; and preparing |1⟩ as preparing |0⟩ and applying X.
 
 **The ring, definition 2.4 and unitarity.**  `Ring` and `Ring/Laws`
 make ℤ[ζ] a commutative ring with conjugation, `Hermitian` gives the
@@ -364,8 +377,5 @@ say, not the text's 5n − 1 bits.
 
 Not formalised: running times on a machine and complexity classes;
 the time bounds for [Case] and non-linear quotients beyond order 2;
-constant inputs, beyond
-restricting to the
-columns where an ancilla is |0⟩; and the benchmarks of
-section 5 as runs of the tool (the QFT, Toffoli, adder and hidden
+and the benchmarks of section 5 as runs of the tool (the QFT, Toffoli, adder and hidden
 shift families are proved for every size).

@@ -25,7 +25,10 @@
 -- of path-sums (definition 2.6), proposition 2.7's operator equation,
 -- and remark 2.8 up to renaming path variables, every symmetric
 -- monoidal law and for circuits (PathSum.Compose, PathSum.Compose.
--- Monoidal, PathSum.CRK.Structural); definition 2.9 over the
+-- Monoidal, PathSum.CRK.Structural); definition 2.1's constant inputs
+-- and section 2.1's compatibility condition, with proposition 2.7
+-- under exactly the compatibility it needs and footnote 1's reduction
+-- (PathSum.Signature); definition 2.9 over the
 -- paper's own gate set {H, CNOT, R_k} with propositions 2.10 and 2.14
 -- (PathSum.CRK), compositionally as well; the size half of corollary
 -- 2.15, with an interpreter building the representation gate by gate
@@ -82,15 +85,14 @@
 -- The polynomial time bounds (proposition 3.2, corollaries 2.15 and
 -- 4.4, the abstract's equivalence procedure) are proved in a cost
 -- model, not on a machine (PathSum.Cost): for a fixed order and the
--- linear rules, and corollary 4.4's for circuits over {H, S, CZ}.
+-- linear rules, and corollary 4.4's for circuits over {H, S, CZ} and,
+-- by Gaussian elimination, over {H, CNOT, R_k} at level ≤ 2.
 --
 -- Not formalised: running times on a machine and complexity classes
--- (footnote 2's P = co-NP among them); the time bounds for [Case] and
--- non-linear quotients, and by the Gaussian route; constant inputs,
--- beyond restricting to the columns where an ancilla is |0⟩
--- (PathSum.Ancilla); the symmetric monoidal laws of remark 2.8 beyond
--- interchange and SWAP naturality; and section 5's benchmarks as runs
--- of the tool.
+-- (footnote 2's P = co-NP among them, and footnote 1's hardness of
+-- compatibility as a complexity statement); the time bounds for [Case]
+-- and non-linear quotients beyond order 2; and section 5's benchmarks
+-- as runs of the tool.
 --
 -- Each section's banner names the modules its results come from;
 -- results proved here from them are stated with their proofs.
@@ -103,7 +105,8 @@ open import Data.Nat.Base using (ℕ; suc; _<_)
 module PathSum.Theorems (M₀ : ℕ) where
 
 open import Algebra.Bundles using (CommutativeRing)
-open import Data.Bool.Base using (Bool; true; false; _xor_; if_then_else_)
+open import Data.Bool.Base using
+  (Bool; true; false; not; _xor_; if_then_else_)
 open import Data.Nat.Base using
   (_+_; _*_; _∸_; _^_; _≤_; _⊔_; ⌊_/2⌋; ⌈_/2⌉)
 open import Data.Fin.Base using (Fin)
@@ -112,7 +115,7 @@ open import Data.Integer.Base using (ℤ; 0ℤ; +_; _-_)
   renaming (_*_ to _*ℤ_)
 open import Data.Integer.Divisibility.Signed using (_∣_)
 open import Data.Integer.Properties using (≤-reflexive)
-open import Data.List.Base using (List; []; _++_; length; map; upTo)
+open import Data.List.Base using (List; []; _∷_; _++_; length; map; upTo)
 open import Data.Maybe.Base using (just; nothing)
 open import Data.Product.Base using (Σ; _×_; _,_; ∃; proj₁; proj₂)
 open import Level using (0ℓ)
@@ -582,6 +585,27 @@ import PathSum.CRK.WithX
 import PathSum.Gauss.Single
 import PathSum.Polynomial.SubstVar
 
+import PathSum.Ancilla
+module Ancl = PathSum.Ancilla M₀
+
+module KX = PathSum.CRK.WithX M₀
+
+import PathSum.Signature
+module Sig = PathSum.Signature M₀
+open Sig using (Signature; Signed; _⊢_; sig; ps; ⌜_⌝; ampˢ; _≋ˢ_; inline)
+
+import PathSum.Signature.Compose
+module SigC = PathSum.Signature.Compose M₀
+open SigC using
+  (SynCompatible; PathCompatible; Compatible; _∘ˢ_; Prop-2-7)
+
+import PathSum.Signature.Clean
+module SigCl = PathSum.Signature.Clean M₀
+open SigCl using (LeavesClean; LeavesClean₁; prepare; watched)
+
+import PathSum.Signature.WithX
+module SigX = PathSum.Signature.WithX M₀
+
 -- Section 4's incompleteness witnesses, closed at M₀ = 0; stated below
 -- through their own names only.
 
@@ -903,6 +927,179 @@ structural-≃-≋ = Str.structural-≃-≋
 renaming-needed : (Str.HH₀₁ ∼ Str.HH₁₀) ×
                   ¬ (KP.⟦ Str.HH₀₁ ⟧ ≡ᴿ⟨ Perm.id ⟩ KP.⟦ Str.HH₁₀ ⟧)
 renaming-needed = Str.HH-∼ , Str.renaming-needed
+
+
+------------------------------------------------------------------------
+-- Definition 2.1's input signatures with Boolean constants, and section
+-- 2.1's compatibility condition (PathSum.Signature,
+-- PathSum.Signature.Compose, PathSum.Signature.Clean,
+-- PathSum.Signature.WithX)
+
+-- Each wire a variable or a Boolean constant.  A signed path-sum
+-- σ ⊢ ξ denotes the partial operator of definition 2.1 extended by zero
+-- to the inputs σ does not admit, and definition 2.3 for it is ≋ˢ.
+-- Without constants it is ≋; with one signature it is ≋ between the
+-- path-sums with their constants written in, as the paper writes them.
+
+≋ˢ⇔≋ : (ξ : PathSum n k m) (ζ : PathSum n k′ m′) →
+       (⌜ ξ ⌝ ≋ˢ ⌜ ζ ⌝) ⇔ (ξ ≋ ζ)
+≋ˢ⇔≋ = Sig.≋ˢ⇔≋
+
+inline-≋ˢ : (σ : Signature n) (ξ : PathSum n k m) →
+            (σ ⊢ ξ) ≋ˢ (σ ⊢ inline σ ξ)
+inline-≋ˢ = Sig.inline-≋ˢ
+
+≋ˢ⇔inline : (σ : Signature n) (ξ : PathSum n k m) (ζ : PathSum n k′ m′) →
+            ((σ ⊢ ξ) ≋ˢ (σ ⊢ ζ)) ⇔ (inline σ ξ ≋ inline σ ζ)
+≋ˢ⇔inline = Sig.≋ˢ⇔inline
+
+-- Constants 0 are the library's |0⟩-restrictions -- a register, one
+-- ancilla, a family of ancillas -- and the path-sum with them inline is
+-- Register's set0ᶜ.  (Constants 1 are new.)
+
+≋⟨⟩₀⇔≋ˢ : (c : Fin n → Bool) (ξ : PathSum n k m) (ζ : PathSum n k′ m′) →
+          (ξ AReg.≋⟨ c ⟩₀ ζ) ⇔ ((Sig.zeros c ⊢ ξ) ≋ˢ (Sig.zeros c ⊢ ζ))
+≋⟨⟩₀⇔≋ˢ = Sig.≋⟨⟩₀⇔≋ˢ
+
+inline-zeros : (c : Fin n → Bool) (ξ : PathSum n k m) →
+               inline (Sig.zeros c) ξ ≋ AReg.set0ᶜ c ξ
+inline-zeros = Sig.inline-zeros
+
+≋[]₀⇔≋ˢ : (i : Fin n) (ξ : PathSum n k m) (ζ : PathSum n k′ m′) →
+          (ξ Ancl.≋[ i ]₀ ζ) ⇔
+          ((Sig.at i false ⊢ ξ) ≋ˢ (Sig.at i false ⊢ ζ))
+≋[]₀⇔≋ˢ = Sig.≋[]₀⇔≋ˢ
+
+≋[]₀*⇔≋ˢ : (a : Fin j → Fin n) (ξ : PathSum n k m) (ζ : PathSum n k′ m′) →
+           (ξ ≋[ a ]₀* ζ) ⇔
+           ((Sig.zeros (Sig.image a) ⊢ ξ) ≋ˢ (Sig.zeros (Sig.image a) ⊢ ζ))
+≋[]₀*⇔≋ˢ = Sig.≋[]₀*⇔≋ˢ
+
+-- Compatibility.  The paper's condition -- every output on a constant
+-- wire is that constant, as a Boolean polynomial -- is decided
+-- coefficient by coefficient; on the path-sum written with its
+-- constants inline it is compatibility along every path (Möbius
+-- inversion), which implies compatibility by the operator's range, but
+-- not conversely (P₀ = |0⟩⟨0|); only the range form is a property of
+-- the operator.
+
+synCompatible? : (ξ : PathSum n k m) (σ′ : Signature n) →
+                 Dec (SynCompatible ξ σ′)
+synCompatible? = SigC.synCompatible?
+
+path⇔syn : (σ : Signature n) (ξ : PathSum n k m) (σ′ : Signature n) →
+           PathCompatible (σ ⊢ ξ) σ′ ⇔ SynCompatible (inline σ ξ) σ′
+path⇔syn = SigC.path⇔syn
+
+path⇒range : (ξ : Signed n k m) (σ′ : Signature n) →
+             PathCompatible ξ σ′ → Compatible ξ σ′
+path⇒range = SigC.path⇒range
+
+compatible? : (ξ : Signed n k m) (σ′ : Signature n) →
+              Dec (Compatible ξ σ′)
+compatible? = SigC.compatible?
+
+range⇏path : Compatible ⌜ CE.P₀ ⌝ SigC.const0 ×
+             ¬ PathCompatible ⌜ CE.P₀ ⌝ SigC.const0
+range⇏path = SigC.range⇏path
+
+path-not-invariant : ⌜ CE.P₀ ⌝ ≋ˢ ⌜ SigC.P₀′ ⌝ ×
+                     ¬ PathCompatible ⌜ CE.P₀ ⌝ SigC.const0 ×
+                     SynCompatible SigC.P₀′ SigC.const0
+path-not-invariant = SigC.path-not-invariant
+
+Compatible-≋ˢ : (ξ : Signed n k m) (ζ : Signed n k′ m′) (σ′ : Signature n) →
+                ξ ≋ˢ ζ → Compatible ξ σ′ → Compatible ζ σ′
+Compatible-≋ˢ = SigC.Compatible-≋ˢ
+
+-- Definition 2.6 and proposition 2.7 for signed path-sums: the
+-- composite (Compose's, with the left signature) has the product of the
+-- operators as its matrix when the range of the first lies where the
+-- second is defined -- in particular under the paper's own condition
+-- -- and that is exactly what the proposition needs.  Then composition
+-- is well defined on operators.
+
+prop-2-7ˢ : (ξ′ : Signed n k′ m′) (ξ : Signed n k m) →
+            Compatible ξ (sig ξ′) →
+            ∀ x z → ampˢ (ξ′ ∘ˢ ξ) x z ≐ (ampˢ ξ′ Mat.⊙ ampˢ ξ) x z
+prop-2-7ˢ = SigC.prop-2-7ˢ
+
+prop-2-7-syn : (ξ′ : Signed n k′ m′) (ξ : Signed n k m) →
+               SynCompatible (inline (sig ξ) (ps ξ)) (sig ξ′) →
+               ∀ x z → ampˢ (ξ′ ∘ˢ ξ) x z ≐ (ampˢ ξ′ Mat.⊙ ampˢ ξ) x z
+prop-2-7-syn = SigC.prop-2-7-syn
+
+compatible⇔prop-2-7 : (ξ : Signed n k m) (σ′ : Signature n) →
+                      Compatible ξ σ′ ⇔
+                      (∀ {k′ m′} (ξ′ : PathSum n k′ m′) →
+                       Prop-2-7 (σ′ ⊢ ξ′) ξ)
+compatible⇔prop-2-7 = SigC.compatible⇔prop-2-7
+
+∘ˢ-congˡ : (ξ′ : Signed n k′ m′) (η′ : Signed n j′ l′) (ξ : Signed n k m) →
+           Compatible ξ (sig ξ′) → Compatible ξ (sig η′) → ξ′ ≋ˢ η′ →
+           (ξ′ ∘ˢ ξ) ≋ˢ (η′ ∘ˢ ξ)
+∘ˢ-congˡ = SigC.∘ˢ-congˡ
+
+-- Without compatibility: the identity on one wire, then |0⟩ ↦ |0⟩.  As
+-- the paper writes it (output 0) the composite is the erasure and the
+-- product the projection onto |0⟩; stored with output the variable of
+-- the constant wire the composite is the identity.  Proposition 2.7
+-- fails for both, and the composite is not a function of the operators.
+
+composite-erases : (SigC.η′₀ ∘ˢ SigC.ξ₀) ≋ˢ ⌜ CE.erase ⌝
+composite-erases = SigC.composite-erases
+
+prop-2-7ˢ-fails-η : ¬ Prop-2-7 SigC.η′₀ SigC.ξ₀
+prop-2-7ˢ-fails-η = SigC.prop-2-7ˢ-fails-η
+
+prop-2-7ˢ-fails : ¬ Compatible SigC.ξ₀ SigC.const0 ×
+                  ¬ Prop-2-7 SigC.ξ′₀ SigC.ξ₀
+prop-2-7ˢ-fails = SigC.prop-2-7ˢ-fails
+
+∘ˢ-congˡ-fails : SigC.ξ′₀ ≋ˢ SigC.η′₀ ×
+                 ¬ ((SigC.ξ′₀ ∘ˢ SigC.ξ₀) ≋ˢ (SigC.η′₀ ∘ˢ SigC.ξ₀))
+∘ˢ-congˡ-fails = SigC.∘ˢ-congˡ-fails
+
+-- Footnote 1: an ancilla is clean exactly when the path-sum prepared
+-- with it at 0 is compatible (by its range) with that preparation, so
+-- deciding compatibility decides cleanliness; and through footnote 2's
+-- reduction, unsatisfiability.  (That this makes compatibility
+-- co-NP-hard is not formalised.)
+
+clean⇔compatible : (ξ : PathSum n k m) (a : Fin j → Fin n) →
+                   LeavesClean ξ a ⇔ Compatible (prepare a ⊢ ξ) (prepare a)
+clean⇔compatible = SigCl.clean⇔compatible
+
+clean₁⇔compatible : (ξ : PathSum n k m) (i : Fin n) →
+                    LeavesClean₁ ξ i ⇔
+                    Compatible (Sig.at i false ⊢ ξ) (Sig.at i false)
+clean₁⇔compatible = SigCl.clean₁⇔compatible
+
+compatible⇔unsat : (φ : HCNF.CNF n) →
+                   Compatible (prepare (watched φ) ⊢ KP.⟦ Hard.circuit φ ⟧)
+                              (prepare (watched φ)) ⇔
+                   HCNF.Unsatisfiable φ
+compatible⇔unsat = SigCl.compatible⇔unsat
+
+decide-unsat : SigCl.CompatibilityDecider → (φ : HCNF.CNF n) →
+               Dec (HCNF.Unsatisfiable φ)
+decide-unsat = SigCl.decide-unsat
+
+-- Preparing a wire in |1⟩ is preparing it in |0⟩ and applying X, for
+-- circuits over {H, X, CNOT, R_k, R_k†}: as path-sums with their
+-- constants inline, and as signed operators up to X's relabelling of
+-- the input.
+
+X-prepares : (w : Fin n) (b : Bool) (C : KX.Circuit n) →
+             inline (Sig.at w b) KX.⟦ KX.X w ∷ C ⟧ ≋
+             inline (Sig.at w (not b)) KX.⟦ C ⟧
+X-prepares = SigX.X-prepares
+
+X-prepares-ampˢ : (w : Fin n) (b : Bool) (C : KX.Circuit n)
+                  (x z : Assign n) → x w ≡ b →
+                  ampˢ (Sig.at w b ⊢ KX.⟦ KX.X w ∷ C ⟧) x z ≐
+                  ampˢ (Sig.at w (not b) ⊢ KX.⟦ C ⟧) (HNet.flip w x) z
+X-prepares-ampˢ = SigX.X-prepares-ampˢ
 
 
 ------------------------------------------------------------------------
