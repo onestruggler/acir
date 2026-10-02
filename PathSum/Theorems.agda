@@ -40,7 +40,8 @@
 -- their phases cancelling exactly (PathSum.Maslov), its out-of-place
 -- adder for every n -- the circuit its tool generates included, with
 -- table 2's rows exactly (PathSum.Adder) -- and its hidden shift
--- algorithm for every size, bent function and shift, as path-sums and
+-- algorithm for every size, Maiorana-McFarland bent function and
+-- shift, as path-sums and
 -- as figure 3's circuits, with the calculus finding |s⟩ and |s⟩|s⟩ on
 -- them, and as its tool generated them for every random draw, with
 -- table 2's rows (PathSum.HiddenShift); Z[ζ] as a commutative ring,
@@ -88,6 +89,12 @@
 -- model, not on a machine (PathSum.Cost): for a fixed order and the
 -- linear rules, and corollary 4.4's for circuits over {H, S, CZ} and,
 -- by Gaussian elimination, over {H, CNOT, R_k} at level ≤ 2.
+--
+-- The precision is fixed, as in the paper's tool: phases are integer
+-- numerators over 2^M, with M = M₀ + 3 for every M₀, and R_k for
+-- k > M is read as R_M (PathSum.CRK.Circuit), so a theorem about a
+-- circuit with such gates is about their R_M reading; the families of
+-- section 5.2 state the precision they need (the QFT n + 1 ≤ M).
 --
 -- Not formalised: running times on a machine and complexity classes
 -- (footnote 2's P = co-NP among them, and footnote 1's hardness of
@@ -2205,8 +2212,9 @@ equivalence-decidable-gauss : (C₁ C₂ : K.Circuit n) →
   K.level C₁ ≤ 2 → K.level C₂ ≤ 2 → Dec (K.⟦ C₁ ⟧ ≋ K.⟦ C₂ ⟧)
 equivalence-decidable-gauss = KEq.equivalence-decidable-gauss
 
--- Section 5.1's translation validation, for circuits at any level of
--- the Clifford hierarchy (Clifford+T, say): reduce the miter's reified
+-- Section 5.1's translation validation, for circuits at any level --
+-- the largest k of an R_k gate, Clifford+T being level 3: reduce the
+-- miter's reified
 -- restriction by any rules of figure 2.  Reaching |x⟩ ↦ |x⟩ proves the
 -- circuits equivalent; lemma 4.2's pattern (Q odd somewhere) refutes
 -- them.  Sound at every level, but complete only for Clifford circuits,
@@ -2257,8 +2265,9 @@ spec-sound = KSpec.spec-sound
 -- Section 5.2: the quantum Fourier transform, for every n
 -- (PathSum.CRK.Controlled, PathSum.QFT, PathSum.QFT.*)
 
--- The paper verifies "a circuit from [Nielsen–Chuang] together with a
--- final qubit permutation correction" against
+-- The paper verifies "a circuit from [20] (Kaye, Laflamme and Mosca)
+-- together with a final qubit permutation correction" -- here the
+-- textbook circuit, not shown to be the tool's gate for gate -- against
 -- QFT_n : |x⟩ ↦ 1/√2^n Σ_y e^{2πi [x][y]/2^n} |y⟩.  Its controlled
 -- rotations are built here from {H, CNOT, R_k}: R_(k+1) c; R_(k+1) t;
 -- CNOT; R_(k+1)† t; CNOT is the diagonal e^{2πi x_c x_t/2^k}.  At the

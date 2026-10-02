@@ -53,8 +53,9 @@
 --
 -- Everything here is exponential: the matrix has 4^n entries computed
 -- through every gate, and PathSum.Expand's procedure is exponential
--- (see its header).  The polynomial-time claims of the paper are not
--- formalised.
+-- (see its header).  The paper's polynomial-time claims are formalised
+-- elsewhere, in a cost model (PathSum.Cost and PathSum.Cost.*); this
+-- procedure is not among them.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

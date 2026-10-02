@@ -30,7 +30,8 @@
 -- composite by definition 2.6 (PathSum.Compose._∘ᴾ_), five path-sums
 -- with 3n path variables between them.  g is any polynomial on m bits,
 -- read modulo 2 (boolᴾ): Boolean-valued polynomials, the paper's case,
--- are among them, and so every Boolean function is.
+-- are among them, and so is every Boolean function on m bits, each
+-- having a multilinear form (a standard fact, not proved here).
 --
 -- The proof never looks inside the composite.  Proposition 2.7 in
 -- operator form (prop-2-7ᶜ) says the column of ξ′ ∘ ξ at 0 is U_ξ′
@@ -59,9 +60,11 @@
 --   substitution rather than figure 3(a)'s X gates: the circuits of
 --   figure 3, and the paper's oracles built from Z, CZ and CCZ gates,
 --   are not formalised in this module.
--- * There are no constant inputs in this development, so the
---   specification |0⟩ ↦ |s⟩ is the column of the composite at the
---   input 0, stated for every output z.
+-- * The specification |0⟩ ↦ |s⟩ is stated as the column of the
+--   composite at the input 0, for every output z, rather than with a
+--   constant input (PathSum.Signature has those; PathSum.Ancilla.
+--   Register's restriction to inputs 0 is the form the circuit-level
+--   modules use).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

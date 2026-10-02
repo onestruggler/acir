@@ -12,7 +12,8 @@
 -- with their value proved correct against ≋ and their cost bounded by
 -- an explicit polynomial.
 --
--- Scope: circuits over {H, S, CZ}, which generate the Clifford group.
+-- Scope: circuits over {H, S, CZ}, which are known to generate the
+-- Clifford group (a standard fact, not proved here).
 -- The paper's own gate set {H, CNOT, R_k} at level ≤ 2 is
 -- PathSum.Cost.Gauss.Corollary, by Gaussian elimination in the monad.
 --

@@ -382,8 +382,10 @@ Definition 2.1 ties the normalisation 1/√2^k to the number of path
 variables, but the rules of figure 2 do not preserve that tie, so a
 path-sum carries both indices; and with the normalisation explicit,
 lemma 4.3 acquires a case the paper does not discuss, which is proved
-impossible for a path-sum that is the identity.  Lemma 4.1 is proved
-under `WellFormed`, which definition 2.4 implies and which is strictly
+impossible for a path-sum that is the identity.  The precision is
+fixed, as in the paper's tool: phases are integer numerators over 2^M
+(M = M₀ + 3, for every M₀), and R_k for k > M is read as R_M.  Lemma
+4.1 is proved under `WellFormed`, which definition 2.4 implies and which is strictly
 weaker.  Three statements are false as printed, and their corrected
 forms are proved beside checked counterexamples: lemma 4.2 needs Q odd
 at some input, not merely non-zero (Q = 2x₁); proposition 2.14's bound

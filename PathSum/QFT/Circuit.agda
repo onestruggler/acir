@@ -4,8 +4,12 @@
 -- The circuit for the quantum Fourier transform (Amy, QPL 2018,
 -- section 5.2), and its trace along a path
 --
--- Section 5.2 verifies "a circuit from [20]" -- Nielsen and Chuang,
+-- Section 5.2 verifies "a circuit from [20]" -- Kaye, Laflamme and
+-- Mosca's textbook; the same textbook circuit is Nielsen and Chuang's
 -- figure 5.1 -- "together with a final qubit permutation correction".
+-- (The tool's own QFT circuit is not available, so unlike the Toffoli,
+-- Maslov, adder and hidden shift benchmarks this one is not shown to be
+-- the tool's circuit gate for gate.)
 -- On n wires, wire i holding the bit of weight 2^i, that circuit is:
 --
 --    for each wire j, from the top wire n-1 down to wire 0: a

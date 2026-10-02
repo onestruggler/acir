@@ -25,8 +25,10 @@
 --    CZ w v : |x⟩ ↦ (-1)^(x_w x_v) |x⟩             phase  ½ x_w x_v
 --    H w    : |x⟩ ↦ 1/√2 Σ_y (-1)^(x_w y) |x[w←y]⟩ phase  ½ x_w y
 --
--- and {H , S , CZ} generates the whole Clifford group, Paulis and the
--- global phase e^(iπ/4) = (SH)³ included.  The normalisation of ⟦ C ⟧ᴿ
+-- and {H , S , CZ} is known to generate the whole Clifford group,
+-- Paulis and the global phase e^(iπ/4) = (SH)³ included (a standard
+-- fact, not proved here: "Clifford" in this development means a
+-- circuit over these gates, or of level ≤ 2 over {H, CNOT, R_k}).  The normalisation of ⟦ C ⟧ᴿ
 -- counts every Hadamard, a restricted sum keeping the normalisation of
 -- the sum it restricts, while its path variables count only the
 -- Hadamards that are not the last on their wire.
