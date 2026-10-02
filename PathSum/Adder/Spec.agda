@@ -24,7 +24,9 @@
 -- expression for the carry into position i repeats the carry into
 -- position i − 1 twice, and its multilinear expansion has
 -- exponentially many terms -- "the size of the bitwise expansion of
--- x + y" that the paper found limited its tool to 16 bits.  Nothing
+-- x + y" that the paper found limited its tool to 16 bits: every
+-- Boolean polynomial computing the carry out of n bits has 2^n − 1
+-- monomials, however it is written (PathSum.Adder.Expansion).  Nothing
 -- here expands it: every fact is proved by induction on the positions,
 -- through values.
 --

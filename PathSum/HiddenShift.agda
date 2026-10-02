@@ -31,7 +31,9 @@
 -- with 3n path variables between them.  g is any polynomial on m bits,
 -- read modulo 2 (boolᴾ): Boolean-valued polynomials, the paper's case,
 -- are among them, and so is every Boolean function on m bits, each
--- having a multilinear form (a standard fact, not proved here).
+-- having a multilinear form (PathSum.Polynomial.Interpolate).  The
+-- theorem for every bent function, not only these, is
+-- PathSum.HiddenShift.AnyBent.
 --
 -- The proof never looks inside the composite.  Proposition 2.7 in
 -- operator form (prop-2-7ᶜ) says the column of ξ′ ∘ ξ at 0 is U_ξ′

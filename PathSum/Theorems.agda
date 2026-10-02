@@ -40,8 +40,7 @@
 -- their phases cancelling exactly (PathSum.Maslov), its out-of-place
 -- adder for every n -- the circuit its tool generates included, with
 -- table 2's rows exactly (PathSum.Adder) -- and its hidden shift
--- algorithm for every size, Maiorana-McFarland bent function and
--- shift, as path-sums and
+-- algorithm for every size, bent function and shift, as path-sums and
 -- as figure 3's circuits, with the calculus finding |s⟩ and |s⟩|s⟩ on
 -- them, and as its tool generated them for every random draw, with
 -- table 2's rows (PathSum.HiddenShift); Z[ζ] as a commutative ring,
@@ -117,8 +116,8 @@ open import Data.Bool.Base using
   (Bool; true; false; not; _xor_; if_then_else_)
 open import Data.Nat.Base using
   (_+_; _*_; _∸_; _^_; _≤_; _⊔_; ⌊_/2⌋; ⌈_/2⌉)
-open import Data.Fin.Base using (Fin)
-open import Data.Fin.Subset using (⊥)
+open import Data.Fin.Base using (Fin; toℕ)
+open import Data.Fin.Subset using (Subset; ⊥)
 open import Data.Integer.Base using (ℤ; 0ℤ; +_; _-_)
   renaming (_*_ to _*ℤ_)
 open import Data.Integer.Divisibility.Signed using (_∣_)
@@ -140,7 +139,7 @@ private
 
 open import PathSum.Base
 open import PathSum.Assign using (same; [_]ᶻ)
-open import PathSum.AssignSum using (Σᶻ)
+open import PathSum.AssignSum using (Σᶻ; RespectsZ)
 open import PathSum.Circuit M using
   (Gate; H; S; CZ; Circuit; norm; ⟦_⟧; ⟦_⟧ᴿ)
 open import PathSum.Cyclotomic M₀ using
@@ -657,6 +656,23 @@ module HTb = PathSum.HiddenShift.Table M₀
 
 import PathSum.HiddenShift.ToolExists
 module HTE = PathSum.HiddenShift.ToolExists M₀
+
+-- Multilinear forms, the size of addition's expansion, and the hidden
+-- shift for every bent function (generic names: imported qualified;
+-- PCnt.count would clash with PathSum.Reversible's count).
+
+import PathSum.Polynomial.Count as PCnt
+import PathSum.Polynomial.Interpolate as PInt
+import PathSum.Adder.Expansion as AExp
+import PathSum.Adder.Expansion.Lift as ALift
+import PathSum.Adder.Expansion.PathSums
+module APS = PathSum.Adder.Expansion.PathSums M₀
+import PathSum.HiddenShift.Bent as HBent
+open HBent using (Bent; walsh)
+import PathSum.HiddenShift.AnyBent
+module HAB = PathSum.HiddenShift.AnyBent M₀
+open import PathSum.Polynomial.Bind using (odd)
+open import PathSum.Mobius using (evalˢ)
 
 -- Section 4's incompleteness witnesses, closed at M₀ = 0; stated below
 -- through their own names only.
@@ -3047,6 +3063,208 @@ tool-symbolic-finds :
     (∀ w → out ζ w ≈[ + 2 ] μ x[ HSy.copy (m + m) w ]) ×
     (phase ζ ≈[ pow M ] 0ᴾ))
 tool-symbolic-finds = HTE.tool-symbolic-finds
+
+
+------------------------------------------------------------------------
+-- Every function on the Boolean cube is a multilinear polynomial
+-- (PathSum.Polynomial.Interpolate)
+
+-- Section 2 takes functions and multilinear polynomials to correspond.
+-- Every integer-valued function of n bits is the value of a
+-- polynomial, built by interpolation at the head variable, and only of
+-- that one (Möbius inversion) ...
+
+multilinear-exists : (F : (Fin n → Bool) → ℤ) → RespectsZ F →
+                     ∀ x (y : Fin 0 → Bool) → eval (PInt.polyᶻ F) x y ≡ F x
+multilinear-exists = PInt.eval-polyᶻ
+
+multilinear-unique : (F : (Fin n → Bool) → ℤ) → RespectsZ F →
+                     (P : Poly n 0) →
+                     (∀ x (y : Fin 0 → Bool) → eval P x y ≡ F x) →
+                     ∀ γ → P γ ≡ PInt.polyᶻ F γ
+multilinear-unique = PInt.polyᶻ-unique
+
+-- ... and every Boolean function is the reading modulo 2 of a
+-- polynomial, unique modulo 2.  (The functions must read their
+-- argument through its values: RespectsZ, RespectsB.)
+
+boolean-exists : (f : (Fin n → Bool) → Bool) → RespectsB f →
+                 ∀ x (y : Fin 0 → Bool) → odd (eval (PInt.polyᴮ f) x y) ≡ f x
+boolean-exists = PInt.odd-polyᴮ
+
+boolean-unique : (f : (Fin n → Bool) → Bool) → RespectsB f →
+                 (P : Poly n 0) →
+                 (∀ x (y : Fin 0 → Bool) → odd (eval P x y) ≡ f x) →
+                 P ≈[ + 2 ] PInt.polyᴮ f
+boolean-unique = PInt.polyᴮ-unique
+
+
+------------------------------------------------------------------------
+-- Sections 2 and 5.2: the bitwise expansion of x + y is exponentially
+-- large (PathSum.Adder.Expansion, PathSum.Adder.Expansion.Lift,
+-- PathSum.Adder.Expansion.PathSums)
+
+-- "The polynomial representation of a classical function may grow
+-- exponentially large, as in the case of addition."  In the 2n
+-- variables x₀, y₀, …, x_(n−1), y_(n−1) (interleaved: AExp.xs, AExp.ys)
+-- every polynomial whose values are the carry out modulo 2 has odd
+-- coefficients exactly on the monomials of its algebraic normal form
+-- ⊕_i x_i y_i Π_{j>i} (x_j ⊕ y_j) ...
+
+carry-anf : (f : Subset (AExp.dbl n) → ℤ) →
+            (∀ v → odd (evalˢ f v) ≡
+                   ABin.carry-out (AExp.xs v) (AExp.ys v) false) →
+            ∀ s → odd (f s) ≡ AExp.cmon s
+carry-anf {n} = AExp.carry-anf {n}
+
+-- ... which are 2^n − 1; those of the sum bit i are 2^i + 1 ...
+
+count-cmon : suc (PCnt.count (AExp.cmon {n})) ≡ 2 ^ n
+count-cmon {n} = AExp.count-cmon {n}
+
+count-smon : (i : Fin n) → PCnt.count (AExp.smon i) ≡ suc (2 ^ toℕ i)
+count-smon {n} = AExp.count-smon {n}
+
+sumbit-anf : (i : Fin n) (f : Subset (AExp.dbl n) → ℤ) →
+             (∀ v → odd (evalˢ f v) ≡
+                    ABin.sumbit (AExp.xs v) (AExp.ys v) false i) →
+             ∀ s → odd (f s) ≡ AExp.smon i s
+sumbit-anf {n} = AExp.sumbit-anf {n}
+
+-- ... so a polynomial computing the carry, written down as a list of
+-- terms -- in any order, with any repetitions and integer
+-- coefficients -- has at least 2^n − 1 of them, one computing the sum
+-- bit i at least 2^i + 1.
+
+carry-terms : (ts : List (Subset (AExp.dbl n) × ℤ)) →
+              (∀ v → odd (evalˢ (AExp.⟦_⟧ᵗ ts) v) ≡
+                     ABin.carry-out (AExp.xs v) (AExp.ys v) false) →
+              2 ^ n ≤ suc (length ts)
+carry-terms {n} = AExp.carry-terms {n}
+
+sumbit-terms : (i : Fin n) (ts : List (Subset (AExp.dbl n) × ℤ)) →
+               (∀ v → odd (evalˢ (AExp.⟦_⟧ᵗ ts) v) ≡
+                      ABin.sumbit (AExp.xs v) (AExp.ys v) false i) →
+               suc (2 ^ toℕ i) ≤ length ts
+sumbit-terms {n} = AExp.sumbit-terms {n}
+
+-- As a Boolean-valued integer polynomial -- the lift, the form in
+-- which outputs enter phases -- the carry out is unique and has
+-- (3^n − 1)/2 terms.
+
+carry-exact : (f : Subset (AExp.dbl n) → ℤ) →
+              (∀ v → evalˢ f v ≡
+                     [ ABin.carry-out (AExp.xs v) (AExp.ys v) false ]ᶻ) →
+              ∀ s → f s ≡ ALift.cZ s
+carry-exact {n} = ALift.carry-exact {n}
+
+count-cZ : suc (2 * PCnt.count (λ s → AExp.nonzero (ALift.cZ {n} s))) ≡
+           3 ^ n
+count-cZ {n} = ALift.count-cZ {n}
+
+-- So no classical specification of the adder -- a path-sum without
+-- path variables computing it -- has a carry output of fewer than
+-- 2^n − 1 terms, however it is written: on any adder layout (n =
+-- m + 1 bits), every list of terms representing the carry output,
+-- modulo 2 as outputs are read, is that long ...
+
+addition-carry-terms :
+  (L : AL.Layout (AL.Wire false m) n) (ξ : PathSum n k 0) →
+  ξ computes ARip.addition L →
+  (ts : List (Mon n 0 × ℤ)) →
+  APS.⟦_⟧ᵐ L ts ≈[ + 2 ] out ξ (APS.carry-wire L) →
+  2 ^ suc m ≤ suc (length ts)
+addition-carry-terms L ξ c =
+  APS.adds-carry-terms L ξ (APS.computes-adds L ξ c)
+
+-- ... and so in particular for section 5.2's specification, in the
+-- tool's form and in the paper's; its own carry output, a lift, has
+-- exactly (3^n − 1)/2 non-zero coefficients on the register monomials.
+
+adderˢ-carry-terms :
+  (L : AL.Layout (AL.Wire false m) n) (ts : List (Mon n 0 × ℤ)) →
+  APS.⟦_⟧ᵐ L ts ≈[ + 2 ] out (ASp.adderˢ L) (APS.carry-wire L) →
+  2 ^ suc m ≤ suc (length ts)
+adderˢ-carry-terms = APS.adderˢ-carry-terms
+
+adder₀ˢ-carry-terms :
+  (L : AL.Layout (AL.Wire false m) n) (ts : List (Mon n 0 × ℤ)) →
+  APS.⟦_⟧ᵐ L ts ≈[ + 2 ] out (ASp.adder₀ˢ L) (APS.carry-wire L) →
+  2 ^ suc m ≤ suc (length ts)
+adder₀ˢ-carry-terms = APS.adder₀ˢ-carry-terms
+
+adderˢ-carry-lift :
+  (L : AL.Layout (AL.Wire false m) n) →
+  suc (2 * PCnt.count (λ S →
+         AExp.nonzero (out (ASp.adderˢ L) (APS.carry-wire L) (APS.reg L S))))
+  ≡ 3 ^ suc m
+adderˢ-carry-lift = APS.adderˢ-carry-lift
+
+
+------------------------------------------------------------------------
+-- Section 5.2: the hidden shift algorithm for every bent function
+-- (PathSum.HiddenShift.Bent, PathSum.HiddenShift.AnyBent)
+
+-- f on 2m bits is bent with dual f̃ when its Walsh transform is 2^m
+-- times the sign of f̃.
+
+Bent-def : ∀ m (f f̃ : Assign (m + m) → Bool) →
+           Bent m f f̃ ≡ (∀ a → walsh f a ≡ + (2 ^ m) *ℤ sgn (f̃ a))
+Bent-def m f f̃ = refl
+
+walsh-def : (f : Assign n → Bool) (a : Assign n) →
+            walsh f a ≡ Σᶻ (λ x → sgn (f x xor dot a x))
+walsh-def f a = refl
+
+-- The dual of a bent function is bent, with dual f.
+
+dual-bent : (f f̃ : Assign (m + m) → Bool) → RespectsB f →
+            Bent m f f̃ → Bent m f̃ f
+dual-bent {m} = HBent.dual-bent {m}
+
+-- "Given oracles O_f′ and O_f̃ for the shifted and dual bent functions
+-- f′, f̃, the circuit H^{⊗n} O_f̃ H^{⊗n} O_f′ H^{⊗n} is known to
+-- implement the mapping |0⟩ ↦ |s⟩": for oracles of any polynomials
+-- whose readings are bent and dual ...
+
+hidden-shift-bent : (E Ẽ : Poly (m + m) 0) (s : Assign (m + m)) →
+                    Bent m (HSh.boolᴾ E) (HSh.boolᴾ Ẽ) →
+                    (z : Assign (m + m)) →
+                    amp (HAB.HSᵇ {m} E Ẽ s) 0ᵃ z ≐
+                    (if same s z then scale (HSh.hs-norm (m + m)) (zpow 0ℤ)
+                     else 0ᴬ)
+hidden-shift-bent {m} = HAB.hidden-shift-bent {m}
+
+hidden-shift-bent-≋ : (E Ẽ : Poly (m + m) 0) (s : Assign (m + m)) →
+                      Bent m (HSh.boolᴾ E) (HSh.boolᴾ Ẽ) →
+                      HSim.at0 (HAB.HSᵇ {m} E Ẽ s) ≋ HSh.specᴾ s
+hidden-shift-bent-≋ {m} = HAB.hidden-shift-bent-≋ {m}
+
+-- ... and so for every bent pair of Boolean functions, through their
+-- polynomials ...
+
+hidden-shift-any : (f f̃ : Assign (m + m) → Bool) →
+                   RespectsB f → RespectsB f̃ → Bent m f f̃ →
+                   (s z : Assign (m + m)) →
+                   amp (HAB.HSᵇ {m} (PInt.polyᴮ f) (PInt.polyᴮ f̃) s) 0ᵃ z ≐
+                   (if same s z then scale (HSh.hs-norm (m + m)) (zpow 0ℤ)
+                    else 0ᴬ)
+hidden-shift-any {m} = HAB.hidden-shift-any {m}
+
+hidden-shift-any-≋ : (f f̃ : Assign (m + m) → Bool) →
+                     RespectsB f → RespectsB f̃ → Bent m f f̃ →
+                     (s : Assign (m + m)) →
+                     HSim.at0 (HAB.HSᵇ {m} (PInt.polyᴮ f) (PInt.polyᴮ f̃) s)
+                     ≋ HSh.specᴾ s
+hidden-shift-any-≋ {m} = HAB.hidden-shift-any-≋ {m}
+
+-- ... the Maiorana–McFarland functions being an instance.
+
+hidden-shift-mm : (g : Poly m 0) (s z : Assign (m + m)) →
+                  amp (HSh.HS g s) 0ᵃ z ≐
+                  (if same s z then scale (HSh.hs-norm (m + m)) (zpow 0ℤ)
+                   else 0ᴬ)
+hidden-shift-mm = HAB.hidden-shift-mm
 
 
 ------------------------------------------------------------------------

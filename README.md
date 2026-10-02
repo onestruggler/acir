@@ -346,7 +346,16 @@ the Clifford count exactly when the number c of CZ draws satisfies
 (symbolic shift), each attained; the tool's QuickCheck generator is
 unseeded, so the table's own draws are unknown.  `HiddenShift/TraceX`,
 `ThreeLayers`, `ToolRuns` and `ToolExists` give complete reductions on
-the tool's own path-sums, of exactly 3n steps.
+the tool's own path-sums, of exactly 3n steps.  `HiddenShift/Bent`
+and `HiddenShift/AnyBent` prove the algorithm correct for every bent
+function with its dual, as the paper states it, not only for the
+Maiorana–McFarland family; `Polynomial/Interpolate` shows every
+function on the Boolean cube is a (unique) multilinear polynomial.
+`Adder/Expansion` (with `Polynomial/Count`, `Parity`, `Restrict`)
+proves the paper's remark that addition's polynomial specification
+grows exponentially: every Boolean polynomial computing the carry out
+of n-bit addition has 2^n − 1 monomials, so no classical
+specification of the adder is smaller.
 
 **Equivalence and verification.**  `Adjoint` defines C†, `AmpLinear`
 the linearity of the gate matrices, and `Miter` proves that C† undoes
