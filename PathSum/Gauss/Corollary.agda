@@ -85,12 +85,12 @@
 -- is not needed for termination here: every rule removes a path
 -- variable.
 --
--- Not formalised: the polynomial time bound, the whole point of the
--- corollary.  This covers the running time of the elimination,
--- proposition 3.2's bounds on the reduction, and the space-time volume
--- of a circuit.  Polynomials here are functions on all 2^(n+m)
--- monomials, and the final syntactic test inspects every one of them,
--- so the procedure as formalised is exponential.
+-- Polynomials here are functions on all 2^(n+m) monomials, and the
+-- final syntactic test inspects every one of them, so the procedure
+-- as formalised here is exponential.  The polynomial time bound, the
+-- whole point of the corollary, is PathSum.Cost.Gauss.Corollary's: the
+-- same route on sparse path-sums in the cost model (not a machine
+-- model), at a cost polynomial in n + |C| and in the volume n · |C|.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

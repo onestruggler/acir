@@ -13,9 +13,8 @@
 -- an explicit polynomial.
 --
 -- Scope: circuits over {H, S, CZ}, which generate the Clifford group.
--- The paper's own gate set {H, CNOT, R_k} at level ≤ 2 is not covered
--- in the cost model: that would need a cost-annotated PathSum.Gauss or
--- PathSum.CRK.Compile, and neither is written in the monad.
+-- The paper's own gate set {H, CNOT, R_k} at level ≤ 2 is
+-- PathSum.Cost.Gauss.Corollary, by Gaussian elimination in the monad.
 --
 -- The decision, for a circuit C over {H, S, CZ} (decideᶜ):
 --

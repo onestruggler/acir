@@ -17,7 +17,9 @@
 -- corollary 4.4's proof (corollary-4-4-any, corollary-4-4-syntactic).
 -- The corollary's own statement, decidability in polynomial time, is
 -- proved in a cost model for circuits over {H, S, CZ}
--- (PathSum.Cost.Corollary, the last section below).
+-- (PathSum.Cost.Corollary) and, by the paper's own route of Gaussian
+-- elimination, over its gate set {H, CNOT, R_k} at level ≤ 2
+-- (PathSum.Cost.Gauss.Corollary): the last two sections below.
 --
 -- Around that core: lemma 2.5 for every Boolean polynomial; composition
 -- of path-sums (definition 2.6), proposition 2.7's operator equation,
@@ -393,6 +395,20 @@ import PathSum.Full.Order2.Sharp
 
 import PathSum.Cost.Irreducible
 module CIrr = PathSum.Cost.Irreducible M₀
+
+import PathSum.Cost.Gauss
+module CGs = PathSum.Cost.Gauss M
+
+import PathSum.Cost.Gauss.Correct
+module CGC = PathSum.Cost.Gauss.Correct M₀
+
+import PathSum.Cost.Gauss.Corollary
+module CG = PathSum.Cost.Gauss.Corollary M₀
+
+-- Closed runs of the decision at precision M = 3, imported so that
+-- this root checks them.
+
+import PathSum.Cost.Gauss.Example
 
 import PathSum.CRK.Controlled
 module KCR = PathSum.CRK.Controlled M₀
@@ -2466,9 +2482,9 @@ proposition-3-2 = CN.proposition-3-2
 -- order 2, and read the verdict.  The value is true exactly when the
 -- circuit is the identity, at a cost at most 313 (n + |C| + 3)^12 and
 -- at most 313 (2 n |C| + 3)^12 in the volume (the Corollary-4-4
--- record's decides, polynomial, volume).  (The paper's gate set
--- {H, CNOT, R_k} at level ≤ 2 would need a cost-annotated Gaussian
--- elimination, which is not written.)
+-- record's decides, polynomial, volume).  The paper's gate set
+-- {H, CNOT, R_k} at level ≤ 2, by Gaussian elimination, is the last
+-- section below.
 
 corollary-4-4-polytime : (C : Circuit n) → CCor.Corollary-4-4 C
 corollary-4-4-polytime = CCor.corollary-4-4-polytime
@@ -2515,3 +2531,97 @@ proposition-3-2ᶠ = CIrr.proposition-3-2ᶠ
 corollary-4-4-polytimeᶠ : (C : Circuit n) →
                           CCor.Corollary-4-4 C × CIrr.PipelineNormalForm C
 corollary-4-4-polytimeᶠ = CIrr.corollary-4-4-polytimeᶠ
+
+
+------------------------------------------------------------------------
+-- Corollary 4.4 in polynomial time for the paper's gate set, by
+-- Gaussian elimination (PathSum.Cost.Gauss, PathSum.Cost.Gauss.Correct,
+-- PathSum.Cost.Gauss.Corollary)
+
+-- Section 4.1's elimination on sparse path-sums, in the cost model: on
+-- the path-sum of a circuit over {H, CNOT, R_k, R_k†}, at any order
+-- d ≥ max(2, level C), a refutation refutes the circuit, and otherwise
+-- the restriction it returns is the identity exactly when the circuit
+-- is (lemma 4.1); its cost is at most (L + 79) (n + m + 3)^(3d + 3) on
+-- L terms.  The program runs in lockstep with PathSum.Gauss's
+-- elimination, and refutes exactly when some input has no solution
+-- y with f(x, y) = x; that it refutes exactly when PathSum.Gauss.gauss
+-- does is not proved (gauss's pivot choice is private), only that the
+-- two never disagree about the identity.
+
+gauss-circuit-refutes :
+  (C : K.Circuit n) (d : ℕ) → 2 ⊔ K.level C ≤ d → ∀ {x} →
+  PC.value (CGs.gaussᶜ d (proj₂ (PC.value (CInt.interpKᶜ C)))) ≡
+  CGs.refutes x →
+  ¬ (K.⟦ C ⟧ ≋ idPS)
+gauss-circuit-refutes = CGC.circuit-refutes
+
+gauss-circuit-identity :
+  (C : K.Circuit n) (d : ℕ) (le : 2 ⊔ K.level C ≤ d)
+  {m′ : ℕ} {R′ : Sp.Rep n m′}
+  (eq : PC.value (CGs.gaussᶜ d (proj₂ (PC.value (CInt.interpKᶜ C)))) ≡
+        CGs.reifies R′) →
+  (K.⟦ C ⟧ ≋ idPS ⇔ CGC.reified (CGC.circuit-reifies C d le eq) ≋ idPS)
+gauss-circuit-identity = CGC.circuit-identity
+
+cost-gauss : (d : ℕ) (R : Sp.Rep n m) →
+             PC.cost (CGs.gaussᶜ d R) ≤
+             CGs.gaussBound n m d (length (Sp.terms R))
+cost-gauss = CGs.cost-gaussᶜ
+
+gaussBound-def : ∀ n m d L →
+                 CGs.gaussBound n m d L ≡ (L + 79) * (3 + (n + m)) ^ (3 * d + 3)
+gaussBound-def = CGs.gaussBound-def
+
+-- Corollary 4.4 with its time claim, for the paper's gate set by the
+-- paper's route: count the Hadamards, interpret, eliminate, then
+-- refute or normalise at order 2 and read the verdict.  The value is
+-- true exactly when ⟦ C ⟧ ≋ idPS, at a cost at most
+-- 398 (n + |C| + 3)^11, and at most 398 (2 n |C| + 3)^11 in the volume
+-- (the Corollary-4-4ᴳ record); and the equivalence of two such
+-- circuits through the miter C₁ ++ C₂ †, at a cost at most
+-- 400 (n + |C₁| + |C₂| + 3)^11.
+
+corollary-4-4-polytime-Rk : (C : K.Circuit n) → K.level C ≤ 2 →
+                            CG.Corollary-4-4ᴳ C
+corollary-4-4-polytime-Rk = CG.corollary-4-4-polytime-gauss
+
+decide-correct-Rk : (C : K.Circuit n) → K.level C ≤ 2 →
+                    (PC.value (CG.decideᴳᶜ C) ≡ true ⇔ K.⟦ C ⟧ ≋ idPS)
+decide-correct-Rk = CG.decideᴳ-correct
+
+decide?-Rk : (C : K.Circuit n) → K.level C ≤ 2 → Dec (K.⟦ C ⟧ ≋ idPS)
+decide?-Rk = CG.decideᴳ?
+
+decideBound-Rk-def : ∀ n ℓ → CG.decideᴳBound n ℓ ≡ 398 * (3 + (n + ℓ)) ^ 11
+decideBound-Rk-def = CG.decideᴳBound-def
+
+volumeBound-Rk-def : ∀ v → CG.volumeᴳBound v ≡ 398 * (3 + 2 * v) ^ 11
+volumeBound-Rk-def = CG.volumeᴳBound-def
+
+cost-decide-Rk : (C : K.Circuit n) → K.level C ≤ 2 →
+                 PC.cost (CG.decideᴳᶜ C) ≤ CG.decideᴳBound n (length C)
+cost-decide-Rk = CG.cost-decideᴳᶜ
+
+cost-decide-volume-Rk : (C : K.Circuit n) → K.level C ≤ 2 →
+                        PC.cost (CG.decideᴳᶜ C) ≤
+                        CG.volumeᴳBound (n * length C)
+cost-decide-volume-Rk = CG.cost-decideᴳ-volume
+
+equivalence-polytime-Rk : (C₁ C₂ : K.Circuit n) → K.level C₁ ≤ 2 →
+                          K.level C₂ ≤ 2 → CG.PolyEquivalenceᴳ C₁ C₂
+equivalence-polytime-Rk = CG.equivalence-polytime-gauss
+
+equiv-correct-Rk : (C₁ C₂ : K.Circuit n) → K.level C₁ ≤ 2 →
+                   K.level C₂ ≤ 2 →
+                   (PC.value (CG.equivᴳᶜ C₁ C₂) ≡ true ⇔
+                    K.⟦ C₁ ⟧ ≋ K.⟦ C₂ ⟧)
+equiv-correct-Rk = CG.equivᴳ-correct
+
+equiv?-Rk : (C₁ C₂ : K.Circuit n) → K.level C₁ ≤ 2 → K.level C₂ ≤ 2 →
+            Dec (K.⟦ C₁ ⟧ ≋ K.⟦ C₂ ⟧)
+equiv?-Rk = CG.equivᴳ?
+
+equivBound-Rk-def : ∀ n a b →
+                    CG.equivᴳBound n a b ≡ 400 * (3 + (n + (a + b))) ^ 11
+equivBound-Rk-def = CG.equivᴳBound-def

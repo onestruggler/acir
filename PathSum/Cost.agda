@@ -113,10 +113,11 @@
 --      - PathSum.Cost.Corollary: corollary 4.4 -- whether ⟦ C ⟧ is the
 --        identity, decided at a cost polynomial in n + |C| and in the
 --        volume n · |C| -- and the equivalence of two Clifford circuits
---        by their miter, both for circuits over {H, S, CZ} only; the
---        paper's gate set {H, CNOT, R_k} at level ≤ 2 would need a
---        cost-annotated PathSum.Gauss or PathSum.CRK.Compile, which is
---        not done.
+--        by their miter, both for circuits over {H, S, CZ}.
+--      - PathSum.Cost.Gauss, Cost.Gauss.Correct, Cost.Gauss.Corollary:
+--        the same for the paper's gate set {H, CNOT, R_k} at level
+--        ≤ 2, by the paper's route -- Gaussian elimination (section
+--        4.1) written in the monad, then the normaliser and the verdict.
 --      - PathSum.Cost.Interpreter: the sparse interpreter of
 --        PathSum.Size.Interpreter over {H, CNOT, R_k, R_k†} written in
 --        the monad, at a cost polynomial in n + |C| for fixed k

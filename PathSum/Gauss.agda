@@ -81,11 +81,13 @@
 -- Section 4.1 ignores "restrictions
 -- which can't be reified"; here, the outputs being linear, none is
 -- ignored: elimination either reifies the whole restriction or
--- refutes.  Gaussian elimination is formalised as the sequence of row
--- operations above, not as a matrix algorithm, and its polynomial
--- running time -- like every complexity claim of the paper -- is not
--- formalised.  The reduction of ξᴿ by lemma 4.3 that completes the
--- corollary is in PathSum.Gauss.Corollary.
+-- refutes.  Gaussian elimination is formalised here as the sequence of
+-- row operations above, not as a matrix algorithm, on dense
+-- path-sums, so with no cost; PathSum.Cost.Gauss writes it on sparse
+-- path-sums in the cost model (a cost model, not a machine model) and
+-- PathSum.Cost.Gauss.Correct runs it in lockstep with this one.  The
+-- reduction of ξᴿ by lemma 4.3 that completes the corollary is in
+-- PathSum.Gauss.Corollary.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

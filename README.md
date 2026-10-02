@@ -43,7 +43,8 @@ the whole of figure 2 at any path variables — the paper's own route
 through Gaussian elimination, equivalence of two circuits, and the
 worked examples.  The polynomial time bounds are proved in an explicit
 cost model (not a machine model) for fixed order and the linear rules,
-corollary 4.4's for circuits over {H, S, CZ}.  Its root is
+corollary 4.4's for circuits over {H, S, CZ} and, by Gaussian
+elimination, over the paper's gate set at level ≤ 2.  Its root is
 
 ```bash
 agda +RTS -M10G -RTS PathSum/Theorems.agda
@@ -183,7 +184,11 @@ are left out (a single step can raise the order).  `Cost/Identity`,
 `Cost/Restriction` and `Cost/Corollary` decide whether a circuit over
 {H, S, CZ} is the identity, and whether two are equivalent, at a cost
 polynomial in n + |C| (corollary 4.4 and the abstract's claim);
-`Cost/Interpreter` is corollary 2.15's time half.  `Reorder/Commute`,
+`Cost/Gauss`, `Cost/Gauss/Correct` and `Cost/Gauss/Corollary` do the
+same for the paper's gate set {H, CNOT, R_k} at level ≤ 2 by its own
+route, Gaussian elimination (section 4.1) written in the monad and
+run in lockstep with `Gauss`'s, at a cost at most
+398 (n + |C| + 3)^11; `Cost/Interpreter` is corollary 2.15's time half.  `Reorder/Commute`,
 `Full/Order2` and `Cost/Irreducible` show that at order 2 — every
 Clifford circuit's restriction — a path-sum no linear rule reduces is
 irreducible under all of figure 2, so the normaliser's outputs are
@@ -358,9 +363,8 @@ adder has 5n qubits for n ≥ 2, as its table and its tool's circuit
 say, not the text's 5n − 1 bits.
 
 Not formalised: running times on a machine and complexity classes;
-the time bounds for [Case] and non-linear quotients beyond order 2,
-and for the
-paper's gate set by Gaussian elimination; constant inputs, beyond
+the time bounds for [Case] and non-linear quotients beyond order 2;
+constant inputs, beyond
 restricting to the
 columns where an ancilla is |0⟩; and the benchmarks of
 section 5 as runs of the tool (the QFT, Toffoli, adder and hidden

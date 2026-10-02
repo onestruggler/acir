@@ -39,10 +39,11 @@
 -- PathSum.Gauss.Corollary: the only phase gates such a circuit can
 -- contain are R_0 = I, R_1 = Z and R_2 = S, and their inverses.
 --
--- Not formalised: the polynomial time.  Decidability as such is
--- elementary, since a matrix has finitely many entries;
--- equivalence-decidable-gauss goes by the reduction, but its type does
--- not say so.
+-- Decidability as such is elementary, since a matrix has finitely many
+-- entries; equivalence-decidable-gauss goes by the reduction, but its
+-- type does not say so.  The polynomial time is
+-- PathSum.Cost.Gauss.Corollary's equivalence-polytime-gauss, in the
+-- cost model (not a machine model).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
