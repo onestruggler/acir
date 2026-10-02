@@ -56,8 +56,10 @@
 -- (daggerᶜ, miterᶜ; S† is S³ as in PathSum.Adjoint, so |C₂†| ≤ 3 |C₂|)
 -- and decided.  equiv-correct says the value is true exactly when
 -- ⟦ C₁ ⟧ ≋ ⟦ C₂ ⟧ (PathSum.Miter.miter), and cost-equivᶜ bounds the
--- cost by 315 (n + 3 (|C₁| + |C₂|) + 3)^12.  Equivalence is
--- definition 2.3's: equality of the operators, global phase included.
+-- cost by 315 (n + 3 (|C₁| + |C₂|) + 3)^12, and
+-- PathSum.Cost.Corollary.Volume by 315 (6 n (|C₁| + |C₂|) + 3)^12 in
+-- the volume.  Equivalence is definition 2.3's: equality of the
+-- operators, global phase included.
 --
 -- decide? and equiv? turn the Boolean into a decision procedure in the
 -- sense of Relation.Nullary: their Dec is computed by the program.

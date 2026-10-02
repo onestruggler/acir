@@ -97,6 +97,9 @@
 -- returned is one step; whether the circuit is empty is read in one
 -- step when it is, and otherwise absorbed in the count, which reads
 -- the first gate anyway; the circuit's level is not read at all.
+-- PathSum.Cost.Gauss.Total reads it in the monad, so that the decision
+-- answers for every circuit (nothing above level 2), and bounds the
+-- equivalence in the volume n · (|C₁| + |C₂|) too.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

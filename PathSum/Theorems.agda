@@ -413,6 +413,30 @@ module CG = PathSum.Cost.Gauss.Corollary M₀
 
 import PathSum.Cost.Gauss.Example
 
+import PathSum.Permute.Congruence
+module PmC = PathSum.Permute.Congruence M₀
+
+import PathSum.Permute.Hexagon as Hex
+
+import PathSum.Compose.Relabel
+module Rel = PathSum.Compose.Relabel M₀
+
+import PathSum.Compose.Relabel.Sharp
+module RelS = PathSum.Compose.Relabel.Sharp M₀
+
+import PathSum.CRK.RenamingNeeded
+module KRN = PathSum.CRK.RenamingNeeded M₀
+
+import PathSum.Circuit.Trace
+import PathSum.Circuit.Structural
+module CStr = PathSum.Circuit.Structural M₀
+
+import PathSum.Cost.Gauss.Total
+module CGT = PathSum.Cost.Gauss.Total M₀
+
+import PathSum.Cost.Corollary.Volume
+module CCorV = PathSum.Cost.Corollary.Volume M₀
+
 import PathSum.CRK.Controlled
 module KCR = PathSum.CRK.Controlled M₀
 
@@ -927,6 +951,155 @@ structural-≃-≋ = Str.structural-≃-≋
 renaming-needed : (Str.HH₀₁ ∼ Str.HH₁₀) ×
                   ¬ (KP.⟦ Str.HH₀₁ ⟧ ≡ᴿ⟨ Perm.id ⟩ KP.⟦ Str.HH₁₀ ⟧)
 renaming-needed = Str.HH-∼ , Str.renaming-needed
+
+
+------------------------------------------------------------------------
+-- Remark 2.8, continued (PathSum.Permute.Congruence,
+-- PathSum.Permute.Hexagon, PathSum.Compose.Relabel,
+-- PathSum.Compose.Relabel.Sharp, PathSum.CRK.RenamingNeeded)
+
+-- Congruence up to renaming is an equivalence: symmetric along the
+-- inverse renaming, transitive along the composite.
+
+≈ᴿ-sym : {ξ : PathSum n k m} {π : Perm.Permutation m m′}
+         {ζ : PathSum n k′ m′} → ξ ≈ᴿ⟨ π ⟩ ζ → ζ ≈ᴿ⟨ Perm.flip π ⟩ ξ
+≈ᴿ-sym = PmC.≈ᴿ-sym
+
+≈ᴿ-trans : {ξ : PathSum n k m} {π : Perm.Permutation m m′}
+           {ζ : PathSum n k′ m′} {ρ : Perm.Permutation m′ m″}
+           {χ : PathSum n k″ m″} →
+           ξ ≈ᴿ⟨ π ⟩ ζ → ζ ≈ᴿ⟨ ρ ⟩ χ → ξ ≈ᴿ⟨ π Perm.∘ₚ ρ ⟩ χ
+≈ᴿ-trans = PmC.≈ᴿ-trans
+
+-- Relabelling the wires is functorial over both compositions, with no
+-- renaming of the path variables and the outputs equal as integers.
+
+relabel-∘ᴾ : ∀ {n′} (σ : Perm.Permutation n n′) (ξ′ : PathSum n k′ m′)
+             (ξ : PathSum n k m) →
+             relabel σ (ξ′ ∘ᴾ ξ) ≡ᴿ⟨ Perm.id ⟩ (relabel σ ξ′ ∘ᴾ relabel σ ξ)
+relabel-∘ᴾ = Rel.relabel-∘ᴾ
+
+relabel-⊗ᴾ : ∀ {n₁′ n₂′} (σ : Perm.Permutation n₁ n₁′)
+             (τ : Perm.Permutation n₂ n₂′)
+             (ξ₁ : PathSum n₁ k₁ m₁) (ξ₂ : PathSum n₂ k₂ m₂) →
+             relabel (σ ⊕ᵖ τ) (ξ₁ ⊗ᴾ ξ₂) ≡ᴿ⟨ Perm.id ⟩
+             (relabel σ ξ₁ ⊗ᴾ relabel τ ξ₂)
+relabel-⊗ᴾ = Rel.relabel-⊗ᴾ
+
+-- Conjugation by SWAP is relabelling along the braiding (outputs
+-- modulo 2: SWAP's outputs carry the lifts of ξ's).
+
+swap-conjugateᴿ : (ξ : PathSum (n + n) k m) →
+                  ((swapᴾ n ∘ᴾ ξ) ∘ᴾ swapᴾ n) ≈ᴿ⟨ Blk.unitʳᵖ m ⟩
+                  relabel (Blk.braidᵖ n n) ξ
+swap-conjugateᴿ {n = n} ξ = Rel.swap-conjugateᴿ {n = n} ξ
+
+-- The drawn form of bifunctoriality, in either order, and the two
+-- orders against each other (outputs modulo 2).
+
+⊗-sequentialᴿ : (ξ₁ : PathSum n₁ k₁ m₁) (ξ₂ : PathSum n₂ k₂ m₂) →
+                ((ξ₁ ⊗ᴾ idPS {n₂}) ∘ᴾ (idPS {n₁} ⊗ᴾ ξ₂))
+                ≈ᴿ⟨ Rel.seqᵖ m₁ m₂ ⟩ (ξ₁ ⊗ᴾ ξ₂)
+⊗-sequentialᴿ = Rel.⊗-sequentialᴿ
+
+⊗-sequential′ᴿ : (ξ₁ : PathSum n₁ k₁ m₁) (ξ₂ : PathSum n₂ k₂ m₂) →
+                 ((idPS {n₁} ⊗ᴾ ξ₂) ∘ᴾ (ξ₁ ⊗ᴾ idPS {n₂}))
+                 ≈ᴿ⟨ Rel.seq′ᵖ m₁ m₂ ⟩ (ξ₁ ⊗ᴾ ξ₂)
+⊗-sequential′ᴿ = Rel.⊗-sequential′ᴿ
+
+remark-2-8ᴿ : (ξ₁ : PathSum n₁ k₁ m₁) (ξ₂ : PathSum n₂ k₂ m₂) →
+              ((ξ₁ ⊗ᴾ idPS {n₂}) ∘ᴾ (idPS {n₁} ⊗ᴾ ξ₂))
+              ≈ᴿ⟨ Rel.seqᵖ m₁ m₂ Perm.∘ₚ Perm.flip (Rel.seq′ᵖ m₁ m₂) ⟩
+              ((idPS {n₁} ⊗ᴾ ξ₂) ∘ᴾ (ξ₁ ⊗ᴾ idPS {n₂}))
+remark-2-8ᴿ = Rel.remark-2-8ᴿ
+
+-- Where the lifts enter, congruence is the best one gets: none of the
+-- four ≈ᴿ laws above (both drawn forms, the two orders against each
+-- other, conjugation by SWAP) holds as ≡ᴿ under any renaming, for a
+-- one-wire path-sum whose output is 3 x₀.
+
+sequential-sharp :
+  (π : Perm.Permutation 0 0) →
+  ¬ (((idPS {0} ⊗ᴾ idPS {1}) ∘ᴾ (idPS {0} ⊗ᴾ RelS.three)) ≡ᴿ⟨ π ⟩
+     (idPS {0} ⊗ᴾ RelS.three))
+sequential-sharp = RelS.sequential-sharp
+
+sequential′-sharp :
+  (π : Perm.Permutation 0 0) →
+  ¬ (((idPS {1} ⊗ᴾ idPS {0}) ∘ᴾ (RelS.three ⊗ᴾ idPS {0})) ≡ᴿ⟨ π ⟩
+     (RelS.three ⊗ᴾ idPS {0}))
+sequential′-sharp = RelS.sequential′-sharp
+
+remark-2-8-sharp :
+  (π : Perm.Permutation 0 0) →
+  ¬ (((RelS.three ⊗ᴾ idPS {0}) ∘ᴾ (idPS {1} ⊗ᴾ idPS {0})) ≡ᴿ⟨ π ⟩
+     ((idPS {1} ⊗ᴾ idPS {0}) ∘ᴾ (RelS.three ⊗ᴾ idPS {0})))
+remark-2-8-sharp = RelS.remark-2-8-sharp
+
+swap-conjugate-sharp :
+  (π : Perm.Permutation 0 0) →
+  ¬ (((swapᴾ 1 ∘ᴾ RelS.three₂) ∘ᴾ swapᴾ 1) ≡ᴿ⟨ π ⟩
+     relabel (Blk.braidᵖ 1 1) RelS.three₂)
+swap-conjugate-sharp = RelS.swap-conjugate-sharp
+
+-- The second hexagon.
+
+hexagon′ᴿ : ∀ a b c (ξ : PathSum (a + (b + c)) k m) →
+            relabel (Perm.flip (Blk.assocᵖ c a b))
+              (relabel (Blk.braidᵖ (a + b) c)
+                (relabel (Perm.flip (Blk.assocᵖ a b c)) ξ))
+            ≡ᴿ⟨ Perm.id ⟩
+            relabel (Blk.braidᵖ a c ⊕ᵖ Perm.id {b})
+              (relabel (Perm.flip (Blk.assocᵖ a c b))
+                (relabel (Perm.id {a} ⊕ᵖ Blk.braidᵖ b c) ξ))
+hexagon′ᴿ = Rel.hexagon′ᴿ
+
+-- Even congruence needs the renaming, for H on wire 0 then wire 1
+-- against the other order.
+
+renaming-needed-≈ : ¬ (KP.⟦ Str.HH₀₁ ⟧ ≈ᴿ⟨ Perm.id ⟩ KP.⟦ Str.HH₁₀ ⟧)
+renaming-needed-≈ = KRN.renaming-needed-≈
+
+
+------------------------------------------------------------------------
+-- Remark 2.8 for circuits over {H, S, CZ} (PathSum.Circuit.Trace,
+-- PathSum.Circuit.Structural)
+
+-- Exchanging adjacent gates on disjoint wires renames the path
+-- variables of ⟦ C ⟧ and of its isometry restriction ⟦ C ⟧ᴿ, and
+-- changes nothing else -- hence ≋.
+
+structural-HSCZ : {C C′ : Circuit n} → C CStr.∼ C′ →
+                  Σ (Perm.Permutation (Circ.pathsᵁ C) (Circ.pathsᵁ C′))
+                    (λ π → ⟦ C ⟧ ≡ᴿ⟨ π ⟩ ⟦ C′ ⟧)
+structural-HSCZ = CStr.structural
+
+structural-HSCZ-≋ : {C C′ : Circuit n} → C CStr.∼ C′ → ⟦ C ⟧ ≋ ⟦ C′ ⟧
+structural-HSCZ-≋ = CStr.structural-≋
+
+structuralᴿ-HSCZ : {C C′ : Circuit n} → C CStr.∼ C′ →
+                   Σ (Perm.Permutation (Circ.paths C) (Circ.paths C′))
+                     (λ π → ⟦ C ⟧ᴿ ≡ᴿ⟨ π ⟩ ⟦ C′ ⟧ᴿ)
+structuralᴿ-HSCZ = CStr.structuralᴿ
+
+structuralᴿ-HSCZ-≋ : {C C′ : Circuit n} → C CStr.∼ C′ → ⟦ C ⟧ᴿ ≋ ⟦ C′ ⟧ᴿ
+structuralᴿ-HSCZ-≋ = CStr.structuralᴿ-≋
+
+parallel-⟦⟧-HSCZ : (C D : Circuit n) → CStr.Apart C D →
+                   Σ (Perm.Permutation (Circ.pathsᵁ (C ++ D))
+                                       (Circ.pathsᵁ (D ++ C)))
+                     (λ π → ⟦ C ++ D ⟧ ≡ᴿ⟨ π ⟩ ⟦ D ++ C ⟧)
+parallel-⟦⟧-HSCZ = CStr.parallel-⟦⟧
+
+parallel-⟦⟧ᴿ-HSCZ : (C D : Circuit n) → CStr.Apart C D →
+                    Σ (Perm.Permutation (Circ.paths (C ++ D))
+                                        (Circ.paths (D ++ C)))
+                      (λ π → ⟦ C ++ D ⟧ᴿ ≡ᴿ⟨ π ⟩ ⟦ D ++ C ⟧ᴿ)
+parallel-⟦⟧ᴿ-HSCZ = CStr.parallel-⟦⟧ᴿ
+
+renaming-needed-HSCZ : (CStr.HH₀₁ CStr.∼ CStr.HH₁₀) ×
+                       ¬ (⟦ CStr.HH₀₁ ⟧ ≈ᴿ⟨ Perm.id ⟩ ⟦ CStr.HH₁₀ ⟧)
+renaming-needed-HSCZ = CStr.HH-∼ , CStr.renaming-needed-≈
 
 
 ------------------------------------------------------------------------
@@ -2822,3 +2995,86 @@ equiv?-Rk = CG.equivᴳ?
 equivBound-Rk-def : ∀ n a b →
                     CG.equivᴳBound n a b ≡ 400 * (3 + (n + (a + b))) ^ 11
 equivBound-Rk-def = CG.equivᴳBound-def
+
+
+------------------------------------------------------------------------
+-- Corollary 4.4 for every circuit over {H, CNOT, R_k, R_k†}, and the
+-- equivalence bounds in the volume (PathSum.Cost.Gauss.Total,
+-- PathSum.Cost.Corollary.Volume)
+
+-- The level is computed in the monad (one step per gate, one more per
+-- R_k or R_k†), so the decision checks corollary 4.4's promise itself:
+-- it answers nothing above level 2 and decideᴳᶜ's verdict otherwise --
+-- correct for every circuit, at a cost at most 399 (n + |C| + 3)^11,
+-- and 399 (2 n |C| + 3)^11 in the volume.  Equivalence goes through
+-- the miter, whose level is the larger of the two: at most
+-- 401 (n + |C₁| + |C₂| + 3)^11, and 401 (2 n (|C₁| + |C₂|) + 3)^11 in
+-- the volume.  PathSum.Cost.Gauss.Corollary's equivalence (levels
+-- assumed) costs at most 400 (2 n (|C₁| + |C₂|) + 3)^11 in the volume,
+-- and PathSum.Cost.Corollary's, over {H, S, CZ}, at most
+-- 315 (6 n (|C₁| + |C₂|) + 3)^12.
+
+level-total : (C : K.Circuit n) → PC.value (CGT.levelᶜ C) ≡ K.level C
+level-total = CGT.value-levelᶜ
+
+cost-level-total : (C : K.Circuit n) → PC.cost (CGT.levelᶜ C) ≤ 2 * length C
+cost-level-total = CGT.cost-levelᶜ
+
+decide-total-correct : (C : K.Circuit n) (b : Bool) →
+                       (PC.value (CGT.decideᴷᶜ C) ≡ just b ⇔
+                        (K.level C ≤ 2 × (b ≡ true ⇔ K.⟦ C ⟧ ≋ idPS)))
+decide-total-correct = CGT.decideᴷ-correct
+
+decide-total-nothing : (C : K.Circuit n) →
+                       (PC.value (CGT.decideᴷᶜ C) ≡ nothing ⇔
+                        (¬ (K.level C ≤ 2)))
+decide-total-nothing = CGT.decideᴷ-nothing
+
+decide-total-agrees : (C : K.Circuit n) → K.level C ≤ 2 →
+                      PC.value (CGT.decideᴷᶜ C) ≡
+                      just (PC.value (CG.decideᴳᶜ C))
+decide-total-agrees = CGT.decideᴷ-agrees
+
+decideBound-total-def : ∀ n ℓ →
+                        CGT.decideᴷBound n ℓ ≡ 399 * (3 + (n + ℓ)) ^ 11
+decideBound-total-def = CGT.decideᴷBound-def
+
+volumeBound-total-def : ∀ v → CGT.volumeᴷBound v ≡ 399 * (3 + 2 * v) ^ 11
+volumeBound-total-def = CGT.volumeᴷBound-def
+
+corollary-4-4-polytime-total : (C : K.Circuit n) → CGT.Corollary-4-4ᴷ C
+corollary-4-4-polytime-total = CGT.corollary-4-4-polytime-total
+
+equiv-total-correct : (C₁ C₂ : K.Circuit n) (b : Bool) →
+                      (PC.value (CGT.equivᴷᶜ C₁ C₂) ≡ just b ⇔
+                       ((K.level C₁ ≤ 2 × K.level C₂ ≤ 2) ×
+                        (b ≡ true ⇔ K.⟦ C₁ ⟧ ≋ K.⟦ C₂ ⟧)))
+equiv-total-correct = CGT.equivᴷ-correct
+
+equivBound-total-def : ∀ n a b →
+                       CGT.equivᴷBound n a b ≡ 401 * (3 + (n + (a + b))) ^ 11
+equivBound-total-def = CGT.equivᴷBound-def
+
+equivVolumeBound-total-def : ∀ v →
+                             CGT.equivᴷVolumeBound v ≡ 401 * (3 + 2 * v) ^ 11
+equivVolumeBound-total-def = CGT.equivᴷVolumeBound-def
+
+equivalence-polytime-total : (C₁ C₂ : K.Circuit n) →
+                             CGT.PolyEquivalenceᴷ C₁ C₂
+equivalence-polytime-total = CGT.equivalence-polytime-total
+
+equivVolumeBound-Rk-def : ∀ v →
+                          CGT.equivᴳVolumeBound v ≡ 400 * (3 + 2 * v) ^ 11
+equivVolumeBound-Rk-def = CGT.equivᴳVolumeBound-def
+
+equivalence-polytime-volume-Rk : (C₁ C₂ : K.Circuit n) → K.level C₁ ≤ 2 →
+                                 K.level C₂ ≤ 2 → CGT.PolyEquivalenceᴳᵛ C₁ C₂
+equivalence-polytime-volume-Rk = CGT.equivalence-polytime-gauss-volume
+
+equivVolumeBound-def : ∀ v →
+                       CCorV.equivVolumeBound v ≡ 315 * (3 + 6 * v) ^ 12
+equivVolumeBound-def = CCorV.equivVolumeBound-def
+
+equivalence-polytime-volume : (C₁ C₂ : Circuit n) →
+                              CCorV.PolyEquivalenceᵛ C₁ C₂
+equivalence-polytime-volume = CCorV.equivalence-polytime-volume

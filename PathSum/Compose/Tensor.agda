@@ -58,10 +58,11 @@
 -- wires, or on n + 0 and n wires, which are equal only
 -- propositionally, and ≋ relates path-sums on the same wires.
 -- PathSum.Compose.Monoidal states them after re-indexing the wires,
--- and proves every law -- the interchange law included, though not the
--- drawn form ⊗-sequential -- as equality up to a renaming of the path
--- variables; for circuits, the drawn form is PathSum.CRK.Structural's
--- parallel-⟦⟧.
+-- and proves every law, the interchange law included, as equality up
+-- to a renaming of the path variables; PathSum.Compose.Relabel does
+-- the same for the drawn form ⊗-sequential, in either order, with the
+-- outputs modulo 2 (PathSum.Compose.Relabel.Sharp: no better); for
+-- circuits, the drawn form is PathSum.CRK.Structural's parallel-⟦⟧.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

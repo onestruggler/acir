@@ -131,7 +131,14 @@ n₁ + (n₂ + n₃) and (n₁ + n₂) + n₃ wires): "strictly equal", as far a
 path-sums name their variables.  `CRK/Structural` proves the remark for
 circuits: exchanging adjacent gates on disjoint wires changes the
 path-sum only by a renaming of its path variables, which cannot be
-dropped.  `Compose/WellFormed` and `Compose/Counterexample`
+dropped even modulo 2^M (`CRK/RenamingNeeded`); `Circuit/Trace` and
+`Circuit/Structural` prove the same for circuits over {H, S, CZ}, for
+⟦ C ⟧ and for its isometry restriction.  `Compose/Relabel` adds that
+relabelling wires commutes with both compositions, that conjugation by
+SWAP is relabelling, the drawn form of bifunctoriality and the second
+hexagon; where definition 2.6's lifted outputs enter, these hold with
+outputs modulo 2, and `Compose/Relabel/Sharp` shows nothing better
+does.  `Compose/WellFormed` and `Compose/Counterexample`
 show proposition 2.7's well-formedness claim false and prove what
 survives: composing after an isometry preserves well-formedness.
 `Signature`, `Signature/Compose`, `Signature/Clean` and
@@ -201,7 +208,10 @@ polynomial in n + |C| (corollary 4.4 and the abstract's claim);
 same for the paper's gate set {H, CNOT, R_k} at level ≤ 2 by its own
 route, Gaussian elimination (section 4.1) written in the monad and
 run in lockstep with `Gauss`'s, at a cost at most
-398 (n + |C| + 3)^11; `Cost/Interpreter` is corollary 2.15's time half.  `Reorder/Commute`,
+398 (n + |C| + 3)^11; `Cost/Gauss/Total` computes the level in the
+monad too, so that the decision answers for every circuit (declining
+above level 2), and `Cost/Corollary/Volume` bounds equivalence in the
+volume for {H, S, CZ}; `Cost/Interpreter` is corollary 2.15's time half.  `Reorder/Commute`,
 `Full/Order2` and `Cost/Irreducible` show that at order 2 — every
 Clifford circuit's restriction — a path-sum no linear rule reduces is
 irreducible under all of figure 2, so the normaliser's outputs are
