@@ -60,24 +60,35 @@
 -- them into amplitudes -- see PathSum.Toffoli.tof-tof.)
 --
 -- Resources.  The circuit uses 2(n − 3) + 1 Toffoli gates
--- (Toffoliₙ-gates) on n + (n − 3) wires; each contributes two
--- Hadamards, hence two path variables, and seven T or T† gates, so
--- Toffoliₙ has (2(n − 3) + 1) · 2 path variables (Toffoliₙ-paths) and
--- (2(n − 3) + 1) · 7 T gates (Toffoliₙ-tcount).  At n = 50 and n = 100
--- that is 97 and 197 qubits, 190 and 390 path variables, 665 and 1365
--- T gates: the paper's table 2, rows Toffoli50 and Toffoli100
--- (table-2-Toffoli50, table-2-Toffoli100).  Its Clifford counts, 855
--- and 1755, are nine per Toffoli gate (95·9, 195·9): exactly the
--- Clifford count of Nielsen and Chuang's figure 4.9 circuit, whose T†
--- and S on the second control the circuit here merges into one T,
--- leaving eight.  So the table is consistent with that circuit; the
--- Clifford column is not formalised.  Finally the netlists for n = 4 and n = 5
+-- (Toffoliₙ-gates) on n + (n − 3) wires, and it touches every one of
+-- them -- every control, the target and every ancilla is a wire of
+-- some gate of the chain, and the paper's layout has no other wires
+-- (PathSum.ToffoliN.Wires) -- so its qubits, counted as the paper's
+-- tool counts them (PathSum.CRK.Qubits.qubits: the wires some gate
+-- touches), are n + (n − 3) (Toffoliₙ-qubits).  Each Toffoli gate
+-- contributes two Hadamards, hence two path variables, seven T or T†
+-- gates and eight Clifford gates (two Hadamards, six CNOTs), so
+-- Toffoliₙ has (2(n − 3) + 1) · 2 path variables (Toffoliₙ-paths),
+-- (2(n − 3) + 1) · 7 T gates (Toffoliₙ-tcount) and (2(n − 3) + 1) · 8
+-- Clifford gates (Toffoliₙ-cliffords).  At n = 50 and n = 100 that is
+-- 97 and 197 qubits, 190 and 390 path variables, 665 and 1365 T gates:
+-- the paper's table 2, rows Toffoli50 and Toffoli100
+-- (table-2-Toffoli50, table-2-Toffoli100) -- but 760 and 1560
+-- Clifford gates, where the table has 855 and 1755
+-- (cliffords-Toffoli50, cliffords-Toffoli100).  The table's are nine
+-- per Toffoli gate (95·9, 195·9), because the circuit the paper's
+-- tool verified writes each Toffoli gate with its own sixteen-gate
+-- circuit (PathSum.Toffoli.Depth3's tof₃: two Hadamards and seven
+-- CNOTs) and uncomputes by the adjoint.  That circuit, gate for gate,
+-- is PathSum.ToffoliN.Tool's ToffoliNᶜ (PathSum.ToffoliN.Feynman):
+-- its path-sum is ≋ this one's on every input, and it has table 2's
+-- rows in all four columns.  Finally the netlists for n = 4 and n = 5
 -- are displayed (netlist-4, netlist-5), as a check that chain is the
 -- standard V-chain.
 --
--- Not formalised: the Maslov decomposition with relative-phase
--- Toffoli gates (section 5.2's second implementation), and the
--- verifier's own run on these circuits.
+-- The Maslov decomposition with relative-phase Toffoli gates (section
+-- 5.2's second implementation) is PathSum.Maslov.  Not formalised:
+-- the verifier's own run on these circuits.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -90,7 +101,7 @@ open import Data.Bool.Base using (true; false)
 open import Data.Fin using (#_)
 open import Data.Fin.Base using (Fin)
 open import Data.List.Base using (List; []; _∷_; map; length)
-open import Data.Nat.Base using (_+_; _*_; _∸_; _≤_; z≤n; s≤s)
+open import Data.Nat.Base using (suc; _+_; _*_; _∸_; _≤_; z≤n; s≤s)
 open import Data.Product.Base using (_×_; _,_)
 open import Function.Bundles using (Equivalence)
 open import Relation.Binary.PropositionalEquality using
@@ -101,15 +112,21 @@ open import PathSum.Ancillas M₀ using
 open import PathSum.Classical M₀ using
   (_computes_; classical-computes; computes-≗; setWire; outBit-none)
 open import PathSum.CRK.Path M₀ using (Circuit; ⟦_⟧; paths)
+open import PathSum.CRK.Qubits M₀ using (_∈ᶜ_; qubits; qubits-all)
 open import PathSum.Cyclotomic M₀ using (_≐_; 0ᴬ)
 open import PathSum.Denotation M₀ using (Assign; amp; outBit; _≋_)
 open import PathSum.Polynomial.Boolean using (liftᵉ)
+open import PathSum.QFT.Count M₀ using (cliffords; cliffords-++)
+open import PathSum.Toffoli M₀ using (tof)
 open import PathSum.Toffoli.Netlist M₀ using
-  (Toff; expand; apply; expand-computes; paths-expand; tcount;
+  (Toff; toff; expand; apply; expand-computes; paths-expand; tcount;
    tcount-expand)
 open import PathSum.ToffoliN.Chain M₀ using
-  (Layout; tgt; anc; chain; length-chain; toffoliₙ; toffoliₙᵉ;
+  (Layout; ctl; tgt; anc; chain; length-chain; toffoliₙ; toffoliₙᵉ;
    toffoliₙˢ; fun-toffoliₙˢ; chain-correct; toffoliₙ-anc; standard)
+open import PathSum.ToffoliN.Wires M₀ using
+  (∈ᶜ-expandᴺ; chain-ctl; chain-tgt; chain-anc; Covers; covered;
+   standard-wires)
 
 import PathSum.Toffoli.Netlist M₀ as Netlist
 
@@ -219,21 +236,75 @@ Toffoliₙ-tcount : (n : ℕ) (p : 3 ≤ n) →
 Toffoliₙ-tcount n p = trans (tcount-expand (chain (standard n p)))
                             (cong (_* 7) (Toffoliₙ-gates n p))
 
+-- Eight Clifford gates per Toffoli gate: the seven-T circuit's two
+-- Hadamards and six CNOTs.
+
+cliffords-expand : (gs : List (Toff N)) →
+                   cliffords (expand gs) ≡ length gs * 8
+cliffords-expand []                        = refl
+cliffords-expand (toff c₁ c₂ t p q r ∷ gs) =
+  trans (cliffords-++ (tof c₁ c₂ t p q r) (expand gs))
+        (cong (8 +_) (cliffords-expand gs))
+
+Toffoliₙ-cliffords : (n : ℕ) (p : 3 ≤ n) →
+                     cliffords (Toffoliₙ n p) ≡ (2 * (n ∸ 3) + 1) * 8
+Toffoliₙ-cliffords n p = trans (cliffords-expand (chain (standard n p)))
+                               (cong (_* 8) (Toffoliₙ-gates n p))
+
+-- Qubits, as the paper's tool counts them: the wires some gate
+-- touches.  The circuit touches every control, the target and every
+-- ancilla of its layout -- each is a wire of some gate of the chain --
+-- so on a layout that covers its wires it touches every wire ...
+
+tofₙ-ctl : (L : Layout N j) (i : Fin (suc (suc j))) → ctl L i ∈ᶜ tofₙ L
+tofₙ-ctl L i = ∈ᶜ-expandᴺ (chain L) (chain-ctl L i)
+
+tofₙ-tgt : (L : Layout N j) → tgt L ∈ᶜ tofₙ L
+tofₙ-tgt L = ∈ᶜ-expandᴺ (chain L) (chain-tgt L)
+
+tofₙ-anc : (L : Layout N j) (i : Fin j) → anc L i ∈ᶜ tofₙ L
+tofₙ-anc L i = ∈ᶜ-expandᴺ (chain L) (chain-anc L i)
+
+tofₙ-qubits : (L : Layout N j) → Covers L → qubits (tofₙ L) ≡ N
+tofₙ-qubits L cov =
+  qubits-all (tofₙ L)
+    (covered (_∈ᶜ tofₙ L) L (tofₙ-ctl L) (tofₙ-tgt L) (tofₙ-anc L) cov)
+
+-- ... and on the paper's layout its qubits are all n + (n − 3) wires,
+-- for every n ≥ 3.
+
+Toffoliₙ-qubits : (n : ℕ) (p : 3 ≤ n) →
+                  qubits (Toffoliₙ n p) ≡ n + (n ∸ 3)
+Toffoliₙ-qubits n p = tofₙ-qubits (standard n p) (standard-wires n p)
+
 -- Toffoli50 and Toffoli100: 97 and 197 qubits, 190 and 390 path
 -- variables, 665 and 1365 T gates.  (The circuits are not computed:
--- these are the counts above at n = 50 and n = 100.)
+-- these are the counts above at n = 50 and n = 100.  The qubits are
+-- the wires the gates touch, as the tool counts them.)
 
 table-2-Toffoli50 : (p : 3 ≤ 50) →
-                    (50 + (50 ∸ 3) ≡ 97) × (paths (Toffoliₙ 50 p) ≡ 190)
+                    (qubits (Toffoliₙ 50 p) ≡ 97)
+                    × (paths (Toffoliₙ 50 p) ≡ 190)
                     × (tcount (Toffoliₙ 50 p) ≡ 665)
-table-2-Toffoli50 p = refl , Toffoliₙ-paths 50 p , Toffoliₙ-tcount 50 p
+table-2-Toffoli50 p =
+  Toffoliₙ-qubits 50 p , Toffoliₙ-paths 50 p , Toffoliₙ-tcount 50 p
 
 table-2-Toffoli100 : (p : 3 ≤ 100) →
-                     (100 + (100 ∸ 3) ≡ 197)
+                     (qubits (Toffoliₙ 100 p) ≡ 197)
                      × (paths (Toffoliₙ 100 p) ≡ 390)
                      × (tcount (Toffoliₙ 100 p) ≡ 1365)
 table-2-Toffoli100 p =
-  refl , Toffoliₙ-paths 100 p , Toffoliₙ-tcount 100 p
+  Toffoliₙ-qubits 100 p , Toffoliₙ-paths 100 p , Toffoliₙ-tcount 100 p
+
+-- Its Clifford gates at n = 50 and n = 100: 760 and 1560, where table
+-- 2 has 855 and 1755 -- the counts of the tool's own circuit
+-- (PathSum.ToffoliN.Tool.Toffoli50ᵀ, Toffoli100ᵀ).
+
+cliffords-Toffoli50 : (p : 3 ≤ 50) → cliffords (Toffoliₙ 50 p) ≡ 760
+cliffords-Toffoli50 p = Toffoliₙ-cliffords 50 p
+
+cliffords-Toffoli100 : (p : 3 ≤ 100) → cliffords (Toffoliₙ 100 p) ≡ 1560
+cliffords-Toffoli100 p = Toffoliₙ-cliffords 100 p
 
 
 ------------------------------------------------------------------------
