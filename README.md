@@ -232,8 +232,16 @@ the classical Toffoli gate, at every precision.  `Toffoli/Netlist`,
 construction of Toffoli_n — 2(n − 3) + 1 Toffoli gates and n − 3
 ancillas — correct for every n ≥ 3: on the inputs whose ancillas are
 |0⟩ it computes x_n ⊕ x₁⋯x_(n−1), and it leaves the ancillas clean.
-Its qubit, path-variable and T counts reproduce table 2's rows
-Toffoli50 and Toffoli100.
+Its qubit (the wires its gates touch, as the tool counts them),
+path-variable and T counts reproduce table 2's rows Toffoli50 and
+Toffoli100; its Clifford count is eight per Toffoli gate where the
+table has nine.  `ToffoliN/Tool` builds the circuit the paper's tool
+verified — the same chain, each Toffoli gate by the tool's
+sixteen-gate circuit and the uncomputing one by its adjoint — and
+proves it ≋ the circuit above, hence correct and clean, with table
+2's rows in all four columns; `ToffoliN/Feynman` proves it is the
+tool's `toffoliN` gate for gate, for every n ≥ 3, and
+`ToffoliN/Wires` that both circuits touch every wire.
 
 **Section 5.2: the Maslov decomposition.**  `RelativePhase` treats
 path-sums that compute a permutation up to a diagonal phase, their

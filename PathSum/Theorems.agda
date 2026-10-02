@@ -27,8 +27,9 @@
 -- 2.15, with an interpreter building the representation gate by gate
 -- (PathSum.Size); section 5.2's quantum Fourier transform for every n
 -- within the precision (PathSum.QFT), its n-bit Toffoli gates with
--- ancillas for every n, both the standard decomposition
--- (PathSum.ToffoliN) and Maslov's with relative-phase Toffoli gates,
+-- ancillas for every n, both the standard decomposition -- the circuit
+-- its tool verified included, with table 2's rows exactly
+-- (PathSum.ToffoliN) -- and Maslov's with relative-phase Toffoli gates,
 -- their phases cancelling exactly (PathSum.Maslov), its out-of-place
 -- adder for every n -- the circuit its tool generates included, with
 -- table 2's rows exactly (PathSum.Adder) -- and its hidden shift
@@ -423,6 +424,12 @@ module TCh = PathSum.ToffoliN.Chain M₀
 
 import PathSum.ToffoliN
 module TN = PathSum.ToffoliN M₀
+
+import PathSum.ToffoliN.Tool
+module TT = PathSum.ToffoliN.Tool M₀
+
+import PathSum.ToffoliN.Feynman
+module TF = PathSum.ToffoliN.Feynman M₀
 
 import PathSum.Toffoli.Depth3
 module Tof3 = PathSum.Toffoli.Depth3 M₀
@@ -1725,7 +1732,8 @@ QFT-cliffords = QCnt.cliffords-QFT₀
 
 ------------------------------------------------------------------------
 -- Section 5.2: n-bit Toffoli gates, for every n (PathSum.Toffoli,
--- PathSum.ToffoliN, PathSum.Ancillas, PathSum.Classical)
+-- PathSum.ToffoliN, PathSum.ToffoliN.Tool, PathSum.ToffoliN.Feynman,
+-- PathSum.Ancillas, PathSum.Classical)
 
 -- The building block: the seven-T Toffoli circuit on any three distinct
 -- wires of any circuit computes |x⟩ ↦ |x[t ≔ x_t ⊕ x_c₁ x_c₂]⟩ -- the
@@ -1765,20 +1773,88 @@ Toffoliₙ-set0 : (n : ℕ) (p : 3 ≤ n) →
 Toffoliₙ-set0 = TN.Toffoliₙ-set0
 
 -- Table 2's rows Toffoli50 and Toffoli100, computed from the circuit:
--- qubits, path variables and T gates all as printed.  (Its Clifford
--- column, nine per Toffoli, fits Nielsen and Chuang's figure 4.9; the
--- circuit here merges two of its gates and has eight.)
+-- qubits (the wires its gates touch, as the tool counts them), path
+-- variables and T gates all as printed.  Its Clifford gates are eight
+-- per Toffoli gate, 760 and 1560, where the table has nine, 855 and
+-- 1755: the tool writes each Toffoli gate with its own sixteen-gate
+-- circuit, below.
 
 table-2-Toffoli50 : (p : 3 ≤ 50) →
-                    (50 + (50 ∸ 3) ≡ 97) × (K.paths (TN.Toffoliₙ 50 p) ≡ 190)
+                    (Qb.qubits (TN.Toffoliₙ 50 p) ≡ 97)
+                    × (K.paths (TN.Toffoliₙ 50 p) ≡ 190)
                     × (TNet.tcount (TN.Toffoliₙ 50 p) ≡ 665)
 table-2-Toffoli50 = TN.table-2-Toffoli50
 
 table-2-Toffoli100 : (p : 3 ≤ 100) →
-                     (100 + (100 ∸ 3) ≡ 197)
+                     (Qb.qubits (TN.Toffoliₙ 100 p) ≡ 197)
                      × (K.paths (TN.Toffoliₙ 100 p) ≡ 390)
                      × (TNet.tcount (TN.Toffoliₙ 100 p) ≡ 1365)
 table-2-Toffoli100 = TN.table-2-Toffoli100
+
+Toffoliₙ-qubits : (n : ℕ) (p : 3 ≤ n) →
+                  Qb.qubits (TN.Toffoliₙ n p) ≡ n + (n ∸ 3)
+Toffoliₙ-qubits = TN.Toffoliₙ-qubits
+
+Toffoliₙ-cliffords : (n : ℕ) (p : 3 ≤ n) →
+                     QCnt.cliffords (TN.Toffoliₙ n p) ≡
+                     (2 * (n ∸ 3) + 1) * 8
+Toffoliₙ-cliffords = TN.Toffoliₙ-cliffords
+
+cliffords-Toffoli50 : (p : 3 ≤ 50) → QCnt.cliffords (TN.Toffoliₙ 50 p) ≡ 760
+cliffords-Toffoli50 = TN.cliffords-Toffoli50
+
+cliffords-Toffoli100 : (p : 3 ≤ 100) →
+                       QCnt.cliffords (TN.Toffoliₙ 100 p) ≡ 1560
+cliffords-Toffoli100 = TN.cliffords-Toffoli100
+
+-- The circuit the paper's tool verified (Feynman's toffoliN): the same
+-- V-chain, each Toffoli gate written with the tool's sixteen-gate
+-- circuit and the uncomputing one with its adjoint.  Gate for gate it
+-- is the list the tool produces, for every n ≥ 3; its path-sum is ≋
+-- the circuit's above on every input, so it is correct on the clean
+-- columns; and it has table 2's rows in all four columns.
+
+ToffoliNᶜ-tool : (n : ℕ) (p : 3 ≤ n) →
+                 map AF.prim (TT.ToffoliNᶜ n p) ≡
+                 TF.toffoliNᵀ (λ i → n + i) (upTo n)
+ToffoliNᶜ-tool = TF.ToffoliNᶜ-tool
+
+ToffoliNᶜ-≋ : (n : ℕ) (p : 3 ≤ n) →
+              K.⟦ TT.ToffoliNᶜ n p ⟧ ≋ K.⟦ TN.Toffoliₙ n p ⟧
+ToffoliNᶜ-≋ = TT.ToffoliNᶜ-≋
+
+ToffoliNᶜ-spec : (n : ℕ) (p : 3 ≤ n) →
+                 K.⟦ TT.ToffoliNᶜ n p ⟧ ≋[ TCh.anc (TCh.standard n p) ]₀*
+                   TCh.toffoliₙˢ (TCh.standard n p)
+ToffoliNᶜ-spec = TT.ToffoliNᶜ-spec
+
+ToffoliNᶜ-clean : (n : ℕ) (p : 3 ≤ n) → ∀ x z →
+                  Clean (TCh.anc (TCh.standard n p)) x →
+                  (i : Fin (n ∸ 3)) →
+                  z (TCh.anc (TCh.standard n p) i) ≡ true →
+                  amp K.⟦ TT.ToffoliNᶜ n p ⟧ x z ≐ 0ᴬ
+ToffoliNᶜ-clean = TT.ToffoliNᶜ-clean
+
+ToffoliNᶜ-set0 : (n : ℕ) (p : 3 ≤ n) →
+                 set0ˢ (TCh.anc (TCh.standard n p)) K.⟦ TT.ToffoliNᶜ n p ⟧ ≋
+                 set0ˢ (TCh.anc (TCh.standard n p))
+                       (TCh.toffoliₙˢ (TCh.standard n p))
+ToffoliNᶜ-set0 = TT.ToffoliNᶜ-set0
+
+table-2-Toffoli50-tool :
+  (p : 3 ≤ 50) →
+  (Qb.qubits (TT.ToffoliNᶜ 50 p) ≡ 97) × (K.paths (TT.ToffoliNᶜ 50 p) ≡ 190)
+  × (QCnt.cliffords (TT.ToffoliNᶜ 50 p) ≡ 855)
+  × (TNet.tcount (TT.ToffoliNᶜ 50 p) ≡ 665)
+table-2-Toffoli50-tool = TT.Toffoli50ᵀ
+
+table-2-Toffoli100-tool :
+  (p : 3 ≤ 100) →
+  (Qb.qubits (TT.ToffoliNᶜ 100 p) ≡ 197)
+  × (K.paths (TT.ToffoliNᶜ 100 p) ≡ 390)
+  × (QCnt.cliffords (TT.ToffoliNᶜ 100 p) ≡ 1755)
+  × (TNet.tcount (TT.ToffoliNᶜ 100 p) ≡ 1365)
+table-2-Toffoli100-tool = TT.Toffoli100ᵀ
 
 
 ------------------------------------------------------------------------
