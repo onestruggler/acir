@@ -14,8 +14,10 @@
 --
 -- The rules are those of PathSum.Anywhere: [Elim], [ω] and [HH] with
 -- Z₂-linear quotients, at any path variable.  "Irreducible" is
--- relative to them: [Case], and the rules with quotients that are not
--- Z₂-linear, are not formalised.  Deciding whether a rule applies is
+-- relative to them; [Case] and the rules with quotients that are not
+-- Z₂-linear are PathSum.Full's, and at order 2 the two notions of
+-- irreducibility coincide (PathSum.Full.Order2).  Deciding whether a
+-- rule applies is
 -- a finite search.  It tries every path variable to eliminate, checks
 -- the premises coefficient by coefficient over all 2^(n+m) monomials,
 -- and tries every candidate linear form (c , S) and, for [HH], every

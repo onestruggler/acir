@@ -173,7 +173,12 @@ are left out (a single step can raise the order).  `Cost/Identity`,
 `Cost/Restriction` and `Cost/Corollary` decide whether a circuit over
 {H, S, CZ} is the identity, and whether two are equivalent, at a cost
 polynomial in n + |C| (corollary 4.4 and the abstract's claim);
-`Cost/Interpreter` is corollary 2.15's time half.
+`Cost/Interpreter` is corollary 2.15's time half.  `Reorder/Commute`,
+`Full/Order2` and `Cost/Irreducible` show that at order 2 — every
+Clifford circuit's restriction — a path-sum no linear rule reduces is
+irreducible under all of figure 2, so the normaliser's outputs are
+normal forms of the whole calculus and proposition 3.2 holds for it
+there; `Full/Order2/Sharp` shows this fails at order 3.
 
 **Section 4: incompleteness, and the remedy.**  `CRK/WithX` adds the
 X gate the paper's figure needs; `Examples/Incomplete` proves the
@@ -335,7 +340,8 @@ adder has 5n qubits for n ≥ 2, as its table and its tool's circuit
 say, not the text's 5n − 1 bits.
 
 Not formalised: running times on a machine and complexity classes;
-the time bounds for [Case] and non-linear quotients, and for the
+the time bounds for [Case] and non-linear quotients beyond order 2,
+and for the
 paper's gate set by Gaussian elimination; constant inputs, beyond
 restricting to the
 columns where an ancilla is |0⟩; the symmetric monoidal laws of remark

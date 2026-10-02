@@ -37,7 +37,9 @@
 -- monomial.  The paper's claim that rules are matched, and path-sums
 -- normalised, in polynomial time is proved in a cost model for the
 -- linear rules (PathSum.Cost.Normalise); for [Case] and non-linear
--- quotients it is not.
+-- quotients it is not, except at order 2, where the linear normal
+-- forms are normal forms of all of figure 2 (PathSum.Full.Order2,
+-- PathSum.Cost.Irreducible).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

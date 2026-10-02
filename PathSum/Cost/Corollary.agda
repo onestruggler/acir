@@ -27,7 +27,8 @@
 --  3. normalise at order 2 (PathSum.Cost.Normalise.normaliseᶜ): the
 --     result comes with a chain ⟦ C ⟧ᴿ ⟶ᵍ* ξ′ to a path-sum it
 --     represents, and no rule of PathSum.Anywhere applies to ξ′ at any
---     variable;
+--     variable (nor, by PathSum.Cost.Irreducible, any rule of figure
+--     2);
 --  4. read the verdict (verdictᶜ).  If a path variable is left, the
 --     answer is no: ξ′ is irreducible, its path variables are internal
 --     (every step keeps them so) and its phase has order 2, so lemma

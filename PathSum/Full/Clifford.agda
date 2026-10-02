@@ -46,7 +46,9 @@
 -- normalises with all of figure 2 (circuit-decidableᶠ; decidability as
 -- such is elementary, and the type does not record the route).  The
 -- polynomial time bounds are proved in a cost model with the linear
--- rules only (PathSum.Cost.Corollary).
+-- rules (PathSum.Cost.Corollary), whose normal forms are normal forms
+-- of all of figure 2 at order 2 (PathSum.Full.Order2,
+-- PathSum.Cost.Irreducible).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

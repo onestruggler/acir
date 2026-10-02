@@ -368,6 +368,14 @@ module CCor = PathSum.Cost.Corollary M₀
 import PathSum.Cost.Interpreter
 module CInt = PathSum.Cost.Interpreter M
 
+import PathSum.Full.Order2
+module FO2 = PathSum.Full.Order2 M₀
+
+import PathSum.Full.Order2.Sharp
+
+import PathSum.Cost.Irreducible
+module CIrr = PathSum.Cost.Irreducible M₀
+
 import PathSum.CRK.Controlled
 module KCR = PathSum.CRK.Controlled M₀
 
@@ -1294,6 +1302,25 @@ corollary-4-4-normalᶠ : (C : Circuit n) {ξ′ : PathSum n k′ m′} →
    (m′ ≡ 0 × k′ ≡ 0 ×
     (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ))
 corollary-4-4-normalᶠ = FlCl.corollary-4-4-normalᶠ
+
+-- At order 2 the linear rules already decide irreducibility under all
+-- of figure 2 (PathSum.Full.Order2): every step of figure 2 -- a
+-- Boolean-valued quotient, [Case], at any variables -- implies that
+-- some linear rule applies.  So the corollary holds at every end of a
+-- reduction where no linear rule applies.  (Not at order 3:
+-- PathSum.Full.Order2.Sharp.order-3-gap is a path-sum of order 3 that
+-- no linear rule reduces and figure 2 does.)
+
+Irreducible⇔Irreducibleᶠ : (ξ : PathSum n k m) → Ord≤ 2 (phase ξ) →
+                           Irreducible ξ ⇔ Irreducibleᶠ ξ
+Irreducible⇔Irreducibleᶠ = FO2.Irreducible⇔Irreducibleᶠ
+
+corollary-4-4-normalᴸ : (C : Circuit n) {ξ′ : PathSum n k′ m′} →
+  ⟦ C ⟧ᴿ ⟶ᶠ* ξ′ → Irreducible ξ′ →
+  (⟦ C ⟧ ≋ idPS ⇔
+   (m′ ≡ 0 × k′ ≡ 0 ×
+    (∀ w → out ξ′ w ≈[ + 2 ] μ x[ w ]) × phase ξ′ ≈[ pow M ] 0ᴾ))
+corollary-4-4-normalᴸ = FO2.corollary-4-4-normalᴸ
 
 circuit-decidableᶠ : (C : Circuit n) → Dec (⟦ C ⟧ ≋ idPS)
 circuit-decidableᶠ = FlCl.circuit-decidableᶠ
@@ -2233,3 +2260,19 @@ equiv-correct = CCor.equiv-correct
 
 corollary-2-15-time : (C : K.Circuit n) → CInt.Corollary-2-15-time C
 corollary-2-15-time = CInt.corollary-2-15-time
+
+-- At order 2 -- every Clifford circuit's restriction -- the linear
+-- normaliser's outputs are normal forms of all of figure 2
+-- (PathSum.Full.Order2), so proposition 3.2 holds for the whole
+-- calculus there, at the linear normaliser's polynomial cost (the
+-- Proposition-3-2ᶠ record: linear, terminatesᶠ, lengthᶠ, reachesᶠ,
+-- normalᶠ), and the normal form corollary-4-4-polytime computes is one
+-- of figure 2, read by corollary-4-4-normalᶠ.
+
+proposition-3-2ᶠ : (ξ : PathSum n k m) (R : Sp.Rep n m) → Represents ξ R →
+                   Ord≤ 2 (phase ξ) → CIrr.Proposition-3-2ᶠ ξ R
+proposition-3-2ᶠ = CIrr.proposition-3-2ᶠ
+
+corollary-4-4-polytimeᶠ : (C : Circuit n) →
+                          CCor.Corollary-4-4 C × CIrr.PipelineNormalForm C
+corollary-4-4-polytimeᶠ = CIrr.corollary-4-4-polytimeᶠ

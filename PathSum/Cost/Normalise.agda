@@ -107,9 +107,9 @@
 -- lemma 2.13 gives that for linear quotients only.  So no time bound
 -- is claimed for these rules.  At order 2 (Clifford path-sums, with
 -- internal path variables) every rule of figure 2 keeps the order at 2
--- (PathSum.Full.Clifford), so this obstacle disappears there.  It is
--- not proved here that the loop's irreducible outputs are also
--- irreducible under those rules.
+-- (PathSum.Full.Clifford), so this obstacle disappears there; and the
+-- loop's irreducible outputs are then irreducible under all of figure
+-- 2 too (PathSum.Cost.Irreducible.stuckᶠ, by PathSum.Full.Order2).
 --
 -- Costs are counted in the cost model of PathSum.Cost: a cost model,
 -- not a machine model; nothing is claimed about Turing machines or
