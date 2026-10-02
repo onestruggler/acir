@@ -50,14 +50,18 @@
 -- propositionally, and likewise their numbers of path variables; the
 -- path variables come in different orders; and polynomials are
 -- functions, which --safe without function extensionality does not
--- identify from pointwise equality.  Equality up to a reordering of
--- path variables is not formalised.  The remark's other example, the
+-- identify from pointwise equality.  The remark's other example, the
 -- naturality of SWAP, is PathSum.Compose.Swap.  Of the remaining laws
--- of a monoidal category only the left unit law is stated
+-- of a monoidal category only the left unit law is stated here
 -- (⊗ᴾ-identityˡ, with idPS on no wires): associativity and the right
 -- unit law relate path-sums on (n₁ + n₂) + n₃ and n₁ + (n₂ + n₃)
 -- wires, or on n + 0 and n wires, which are equal only
 -- propositionally, and ≋ relates path-sums on the same wires.
+-- PathSum.Compose.Monoidal states them after re-indexing the wires,
+-- and proves every law -- the interchange law included, though not the
+-- drawn form ⊗-sequential -- as equality up to a renaming of the path
+-- variables; for circuits, the drawn form is PathSum.CRK.Structural's
+-- parallel-⟦⟧.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

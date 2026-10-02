@@ -30,8 +30,11 @@
 -- size only: one of n₁ and n₂ wires is expressible on n₁ + n₂ wires
 -- through a cast of Fin, but its naturality compares path-sums on
 -- n₁ + n₂ and n₂ + n₁ wires, which ≋ (homogeneous in the wire count)
--- cannot state without a transport.  Nor are the other symmetric
--- monoidal laws (associativity of ⊗ᴾ, the hexagon) formalised.
+-- cannot state without a transport.  PathSum.Compose.Monoidal proves
+-- swap-natural as an equality up to renaming the path variables
+-- (swap-naturalᴿ, outputs modulo 2), and the other symmetric monoidal
+-- laws -- associativity of ⊗ᴾ, the unit laws, the braiding, the
+-- hexagon -- with the wires re-indexed by relabelling.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

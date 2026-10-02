@@ -21,7 +21,9 @@
 --
 -- Around that core: lemma 2.5 for every Boolean polynomial; composition
 -- of path-sums (definition 2.6), proposition 2.7's operator equation,
--- and remark 2.8 up to ≋ (PathSum.Compose); definition 2.9 over the
+-- and remark 2.8 up to renaming path variables, every symmetric
+-- monoidal law and for circuits (PathSum.Compose, PathSum.Compose.
+-- Monoidal, PathSum.CRK.Structural); definition 2.9 over the
 -- paper's own gate set {H, CNOT, R_k} with propositions 2.10 and 2.14
 -- (PathSum.CRK), compositionally as well; the size half of corollary
 -- 2.15, with an interpreter building the representation gate by gate
@@ -278,6 +280,21 @@ module Tens = PathSum.Compose.Tensor M₀
 
 import PathSum.Compose.Swap
 module Swp = PathSum.Compose.Swap M₀
+
+import Data.Fin.Permutation as Perm
+
+import PathSum.Permute as Pm
+open Pm using (_≡ᴿ⟨_⟩_; relabel)
+
+import PathSum.Permute.Sound
+module PmS = PathSum.Permute.Sound M₀
+open PmS using (_≈ᴿ⟨_⟩_)
+
+import PathSum.Permute.Blocks as Blk
+open Blk using (_⊕ᵖ_)
+
+import PathSum.Compose.Monoidal
+module Mon = PathSum.Compose.Monoidal M₀
 open Swp using (swapᴾ)
 
 import PathSum.Full
@@ -412,6 +429,10 @@ open RP using (_computes_up-to_)
 
 import PathSum.CRK.Path
 module KP = PathSum.CRK.Path M₀
+
+import PathSum.CRK.Structural
+module Str = PathSum.CRK.Structural M₀
+open Str using (_∼_; _≃⟨_⟩_)
 
 import PathSum.Toffoli
 module Tof = PathSum.Toffoli M₀
@@ -706,9 +727,8 @@ WellFormed-∘-partial = Contr.WellFormed-∘-partial
 -- PathSum.Compose.Swap)
 
 -- The amplitude of ξ₁ ⊗ᴾ ξ₂ is the product of the two; composition and
--- tensor interchange, and SWAP is natural, up to ≋ -- the remark's
--- "strictly equal" cannot even be stated, the indices of the two sides
--- being equal only propositionally.
+-- tensor interchange, and SWAP is natural, up to ≋.  The next section
+-- has these and the other laws as equalities up to renaming.
 
 amp-⊗ : (ξ₁ : PathSum n₁ k₁ m₁) (ξ₂ : PathSum n₂ k₂ m₂)
         (x₁ z₁ : Assign n₁) (x₂ z₂ : Assign n₂) →
@@ -724,6 +744,149 @@ amp-⊗ = Tens.amp-⊗
 swap-natural : (ξ₁ : PathSum n k₁ m₁) (ξ₂ : PathSum n k₂ m₂) →
                (swapᴾ n ∘ᴾ (ξ₁ ⊗ᴾ ξ₂)) ≋ ((ξ₂ ⊗ᴾ ξ₁) ∘ᴾ swapᴾ n)
 swap-natural = Swp.swap-natural
+
+
+------------------------------------------------------------------------
+-- Remark 2.8: the symmetric monoidal laws up to renaming
+-- (PathSum.Permute, PathSum.Permute.Sound, PathSum.Permute.Blocks,
+-- PathSum.Compose.Monoidal)
+
+-- "Strictly equal in the path-sum picture", as far as path-sums name
+-- their variables: ξ ≡ᴿ⟨ π ⟩ ζ says the normalisations are equal and
+-- every phase and output coefficient is equal as an integer once the
+-- path variables are renamed along the bijection π; ξ ≈ᴿ⟨ π ⟩ ζ asks
+-- only for outputs modulo 2 (where definition 2.6's lifted outputs
+-- enter).  Either gives ≋.  The structure maps act on the wires by
+-- relabelling (the casts along +-assoc and +-identityʳ, the block
+-- exchange), since ≋ only relates path-sums on the same wires.
+
+renumber-≋ : (π : Perm.Permutation m m′) (ξ : PathSum n k m) →
+             Pm.renumber π ξ ≋ ξ
+renumber-≋ = PmS.renumber-≋
+
+≡ᴿ⇒≋ : {ξ : PathSum n k m} {π : Perm.Permutation m m′}
+       {ζ : PathSum n k′ m′} → ξ ≡ᴿ⟨ π ⟩ ζ → ξ ≋ ζ
+≡ᴿ⇒≋ = PmS.≡ᴿ⇒≋
+
+≈ᴿ⇒≋ : {ξ : PathSum n k m} {π : Perm.Permutation m m′}
+       {ζ : PathSum n k′ m′} → ξ ≈ᴿ⟨ π ⟩ ζ → ξ ≋ ζ
+≈ᴿ⇒≋ = PmS.≈ᴿ⇒≋
+
+⊗-assocᴿ : ∀ {n₃ k₃ m₃}
+           (ξ₁ : PathSum n₁ k₁ m₁) (ξ₂ : PathSum n₂ k₂ m₂)
+           (ξ₃ : PathSum n₃ k₃ m₃) →
+           relabel (Blk.assocᵖ n₁ n₂ n₃) ((ξ₁ ⊗ᴾ ξ₂) ⊗ᴾ ξ₃)
+           ≡ᴿ⟨ Blk.assocᵖ m₁ m₂ m₃ ⟩ (ξ₁ ⊗ᴾ (ξ₂ ⊗ᴾ ξ₃))
+⊗-assocᴿ = Mon.⊗-assocᴿ
+
+⊗-unitˡᴿ : (ξ : PathSum n k m) → (idPS {0} ⊗ᴾ ξ) ≡ᴿ⟨ Perm.id ⟩ ξ
+⊗-unitˡᴿ = Mon.⊗-unitˡᴿ
+
+⊗-unitʳᴿ : (ξ : PathSum n k m) →
+           relabel (Blk.unitʳᵖ n) (ξ ⊗ᴾ idPS {0}) ≡ᴿ⟨ Blk.unitʳᵖ m ⟩ ξ
+⊗-unitʳᴿ = Mon.⊗-unitʳᴿ
+
+⊗-braidᴿ : (ξ₁ : PathSum n₁ k₁ m₁) (ξ₂ : PathSum n₂ k₂ m₂) →
+           relabel (Blk.braidᵖ n₁ n₂) (ξ₁ ⊗ᴾ ξ₂)
+           ≡ᴿ⟨ Blk.braidᵖ m₁ m₂ ⟩ (ξ₂ ⊗ᴾ ξ₁)
+⊗-braidᴿ = Mon.⊗-braidᴿ
+
+braid-braidᴿ : ∀ a b (ξ : PathSum (a + b) k m) →
+               relabel (Blk.braidᵖ b a) (relabel (Blk.braidᵖ a b) ξ)
+               ≡ᴿ⟨ Perm.id ⟩ ξ
+braid-braidᴿ = Mon.braid-braidᴿ
+
+hexagonᴿ : ∀ a b c (ξ : PathSum ((a + b) + c) k m) →
+           relabel (Blk.assocᵖ b c a)
+             (relabel (Blk.braidᵖ a (b + c)) (relabel (Blk.assocᵖ a b c) ξ))
+           ≡ᴿ⟨ Perm.id ⟩
+           relabel (Perm.id {b} ⊕ᵖ Blk.braidᵖ a c)
+             (relabel (Blk.assocᵖ b a c)
+               (relabel (Blk.braidᵖ a b ⊕ᵖ Perm.id {c}) ξ))
+hexagonᴿ = Mon.hexagonᴿ
+
+pentagonᴿ : ∀ a b c d (ξ : PathSum (((a + b) + c) + d) k m) →
+            relabel (Blk.assocᵖ a b (c + d))
+              (relabel (Blk.assocᵖ (a + b) c d) ξ)
+            ≡ᴿ⟨ Perm.id ⟩
+            relabel (Perm.id {a} ⊕ᵖ Blk.assocᵖ b c d)
+              (relabel (Blk.assocᵖ a (b + c) d)
+                (relabel (Blk.assocᵖ a b c ⊕ᵖ Perm.id {d}) ξ))
+pentagonᴿ = Mon.pentagonᴿ
+
+triangleᴿ : ∀ a b (ξ : PathSum ((a + 0) + b) k m) →
+            relabel (Perm.id {a} ⊕ᵖ Perm.id {b})
+              (relabel (Blk.assocᵖ a 0 b) ξ)
+            ≡ᴿ⟨ Perm.id ⟩ relabel (Blk.unitʳᵖ a ⊕ᵖ Perm.id {b}) ξ
+triangleᴿ = Mon.triangleᴿ
+
+-- Bifunctoriality and the naturality of SWAP -- the remark's two
+-- examples -- and the category laws of ∘ᴾ.
+
+⊗-interchangeᴿ : (ξ₁ : PathSum n₁ k₁ m₁) (ξ₂ : PathSum n₂ k₂ m₂)
+                 (ζ₁ : PathSum n₁ j₁ l₁) (ζ₂ : PathSum n₂ j₂ l₂) →
+                 ((ξ₁ ⊗ᴾ ξ₂) ∘ᴾ (ζ₁ ⊗ᴾ ζ₂))
+                 ≡ᴿ⟨ Blk.shuffleᵖ l₁ l₂ m₁ m₂ ⟩
+                 ((ξ₁ ∘ᴾ ζ₁) ⊗ᴾ (ξ₂ ∘ᴾ ζ₂))
+⊗-interchangeᴿ = Mon.⊗-interchangeᴿ
+
+swap-naturalᴿ : (ξ₁ : PathSum n k₁ m₁) (ξ₂ : PathSum n k₂ m₂) →
+                (swapᴾ n ∘ᴾ (ξ₁ ⊗ᴾ ξ₂))
+                ≈ᴿ⟨ Blk.unitʳᵖ (m₁ + m₂) Perm.∘ₚ Blk.braidᵖ m₁ m₂ ⟩
+                ((ξ₂ ⊗ᴾ ξ₁) ∘ᴾ swapᴾ n)
+swap-naturalᴿ = Mon.swap-naturalᴿ
+
+∘ᴾ-identityʳᴿ : (ξ : PathSum n k m) → (ξ ∘ᴾ idPS) ≡ᴿ⟨ Perm.id ⟩ ξ
+∘ᴾ-identityʳᴿ = Mon.∘ᴾ-identityʳᴿ
+
+∘ᴾ-identityˡᴿ : (ξ : PathSum n k m) → (idPS ∘ᴾ ξ) ≈ᴿ⟨ Blk.unitʳᵖ m ⟩ ξ
+∘ᴾ-identityˡᴿ = Mon.∘ᴾ-identityˡᴿ
+
+∘ᴾ-assocᴿ : (ξ″ : PathSum n k″ m″) (ξ′ : PathSum n k′ m′)
+            (ξ : PathSum n k m) →
+            ((ξ″ ∘ᴾ ξ′) ∘ᴾ ξ) ≡ᴿ⟨ Perm.flip (Blk.assocᵖ m m′ m″) ⟩
+            (ξ″ ∘ᴾ (ξ′ ∘ᴾ ξ))
+∘ᴾ-assocᴿ = Mon.∘ᴾ-assocᴿ
+
+
+------------------------------------------------------------------------
+-- Remark 2.8 for circuits (PathSum.CRK.Structural)
+
+-- Circuits over {H, CNOT, R_k, R_k†} related by exchanging adjacent
+-- gates on disjoint wires (_∼_) have path-sums with the same
+-- normalisation and the same phase and output coefficients once the
+-- path variables are renamed along a permutation read off the
+-- derivation (two Hadamards exchanged swap their variables) -- hence
+-- ≋.  The renaming cannot be dropped: H on wire 0 then wire 1 against
+-- the other order (renaming-needed).  Relabelling a circuit's wires
+-- relabels its path-sum.
+
+structural : {C C′ : KP.Circuit n} → C ∼ C′ →
+             Σ (Perm.Permutation (KP.paths C) (KP.paths C′))
+               (λ π → KP.⟦ C ⟧ ≡ᴿ⟨ π ⟩ KP.⟦ C′ ⟧)
+structural = Str.structural
+
+structural-≋ : {C C′ : KP.Circuit n} → C ∼ C′ → KP.⟦ C ⟧ ≋ KP.⟦ C′ ⟧
+structural-≋ = Str.structural-≋
+
+parallel-⟦⟧ : (C D : KP.Circuit n) → Str.Apart C D →
+              Σ (Perm.Permutation (KP.paths (C ++ D)) (KP.paths (D ++ C)))
+                (λ π → KP.⟦ C ++ D ⟧ ≡ᴿ⟨ π ⟩ KP.⟦ D ++ C ⟧)
+parallel-⟦⟧ = Str.parallel-⟦⟧
+
+relabel-⟦⟧ : ∀ {n′} (σ : Perm.Permutation n n′) (C : KP.Circuit n) →
+             relabel σ KP.⟦ C ⟧ ≡ᴿ⟨ Str.paths-cast σ C ⟩
+             KP.⟦ Str.relabelC σ C ⟧
+relabel-⟦⟧ = Str.relabel-⟦⟧
+
+structural-≃-≋ : ∀ {n′} {C : KP.Circuit n} {σ : Perm.Permutation n n′}
+                 {C′ : KP.Circuit n′} → C ≃⟨ σ ⟩ C′ →
+                 relabel σ KP.⟦ C ⟧ ≋ KP.⟦ C′ ⟧
+structural-≃-≋ = Str.structural-≃-≋
+
+renaming-needed : (Str.HH₀₁ ∼ Str.HH₁₀) ×
+                  ¬ (KP.⟦ Str.HH₀₁ ⟧ ≡ᴿ⟨ Perm.id ⟩ KP.⟦ Str.HH₁₀ ⟧)
+renaming-needed = Str.HH-∼ , Str.renaming-needed
 
 
 ------------------------------------------------------------------------

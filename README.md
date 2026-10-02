@@ -120,7 +120,17 @@ equation U_{ξ′∘ξ} = U_ξ′ U_ξ with no hypotheses, and the category laws
 up to equivalence; `Compose/Gates`, `Compose/Clifford` and
 `Compose/CRK` read definition 2.9 compositionally for both gate sets;
 `Compose/Tensor` and `Compose/Swap` give remark 2.8's interchange law
-and SWAP naturality.  `Compose/WellFormed` and `Compose/Counterexample`
+and SWAP naturality up to equivalence.  `Permute`, `Permute/Sound`,
+`Permute/Blocks` and `Compose/Monoidal` prove every symmetric monoidal
+law — associativity, the unit laws, the braiding, the hexagon,
+pentagon and triangle, interchange, SWAP naturality, and the category
+laws of composition — as equality of path-sums up to renaming their
+path variables (with the wires re-indexed where the two sides live on
+n₁ + (n₂ + n₃) and (n₁ + n₂) + n₃ wires): "strictly equal", as far as
+path-sums name their variables.  `CRK/Structural` proves the remark for
+circuits: exchanging adjacent gates on disjoint wires changes the
+path-sum only by a renaming of its path variables, which cannot be
+dropped.  `Compose/WellFormed` and `Compose/Counterexample`
 show proposition 2.7's well-formedness claim false and prove what
 survives: composing after an isometry preserves well-formedness.
 
@@ -352,7 +362,6 @@ the time bounds for [Case] and non-linear quotients beyond order 2,
 and for the
 paper's gate set by Gaussian elimination; constant inputs, beyond
 restricting to the
-columns where an ancilla is |0⟩; the symmetric monoidal laws of remark
-2.8 beyond interchange and SWAP naturality; and the benchmarks of
+columns where an ancilla is |0⟩; and the benchmarks of
 section 5 as runs of the tool (the QFT, Toffoli, adder and hidden
 shift families are proved for every size).
