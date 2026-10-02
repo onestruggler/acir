@@ -42,7 +42,8 @@
 -- table 2's rows exactly (PathSum.Adder) -- and its hidden shift
 -- algorithm for every size, bent function and shift, as path-sums and
 -- as figure 3's circuits, with the calculus finding |s⟩ and |s⟩|s⟩ on
--- them (PathSum.HiddenShift); Z[ζ] as a commutative ring,
+-- them, and as its tool generated them for every random draw, with
+-- table 2's rows (PathSum.HiddenShift); Z[ζ] as a commutative ring,
 -- definition 2.4, and every circuit's path-sum unitary, over both gate
 -- sets; all four rules of figure 2, [Case] included and with
 -- Boolean-valued quotients, at any internal path variables
@@ -629,6 +630,26 @@ open SigCl using (LeavesClean; LeavesClean₁; prepare; watched)
 
 import PathSum.Signature.WithX
 module SigX = PathSum.Signature.WithX M₀
+
+-- Section 5.2's hidden shift benchmarks as the paper's tool generates
+-- them.  The modules export generic names (prim, Prim, Block, Draw,
+-- firsts, countᵀ, …; prim and Prim clash with PathSum.Adder.Feynman's),
+-- so they are imported qualified.
+
+import PathSum.HiddenShift.Tool
+module HTo = PathSum.HiddenShift.Tool M₀
+
+import PathSum.HiddenShift.ToolSymbolic
+module HTSy = PathSum.HiddenShift.ToolSymbolic M₀
+
+import PathSum.HiddenShift.Feynman
+module HFy = PathSum.HiddenShift.Feynman M₀
+
+import PathSum.HiddenShift.Table
+module HTb = PathSum.HiddenShift.Table M₀
+
+import PathSum.HiddenShift.ToolExists
+module HTE = PathSum.HiddenShift.ToolExists M₀
 
 -- Section 4's incompleteness witnesses, closed at M₀ = 0; stated below
 -- through their own names only.
@@ -2781,6 +2802,242 @@ symbolic-finds : (gs : List (HGa.Term m)) →
                    (∀ w → out ζ w ≈[ + 2 ] μ x[ HSy.copy (m + m) w ]) ×
                    (phase ζ ≈[ pow M ] 0ᴾ))
 symbolic-finds = HES.symbolic-finds
+
+
+------------------------------------------------------------------------
+-- Section 5.2 and table 2: the hidden shift benchmarks as the paper's
+-- tool generates them (PathSum.HiddenShift.Tool, ToolSymbolic,
+-- Feynman, Table, ToolExists, with ToolCCZ, LayersX, TraceX,
+-- ThreeLayers, ToolRuns)
+
+-- The tool, Feynman, draws its hidden shift instances at random: for
+-- n = 2m qubits and A alternations, a shift s and a Maiorana-McFarland
+-- g of A blocks, each a ccz and 200 cz or Z draws (Block 200 m).  For
+-- every draw: the hidden shift circuit (X primitive, 3n path
+-- variables) is HiddenShift's composite HS for the sum of the drawn
+-- monomials; with every input read as 0 it is |x⟩ ↦ |s⟩ (the check the
+-- tool ran, verifyHiddenShift); the symbolic shift circuit with its
+-- data register read as 0 is |x, y⟩ ↦ |y, y⟩ (the tool's
+-- verifyHiddenShiftQuantum); and the first is figure 3(a)'s circuit up
+-- to ≋.
+
+hidden-shift-tool-≋ : ∀ {d} (s : Assign (m + m)) (Bs : List (HTo.Block d m)) →
+                      KX.⟦ HTo.HSᵗ s Bs ⟧ ≋ HSh.HS (HCi.sumᴾ (HTo.gTerms Bs)) s
+hidden-shift-tool-≋ = HTo.hidden-shift-tool-≋
+
+hidden-shift-tool-set0 :
+  ∀ {d} (s : Assign (m + m)) (Bs : List (HTo.Block d m)) →
+  AReg.set0ᶜ (HCi.allMask (m + m)) KX.⟦ HTo.HSᵗ s Bs ⟧ ≋ HSh.specᴾ s
+hidden-shift-tool-set0 = HTo.hidden-shift-tool-set0
+
+symbolic-shift-tool-set0 :
+  ∀ {d} (Bs : List (HTo.Block d m)) →
+  AReg.set0ᶜ (HSy.dataMask (m + m)) KX.⟦ HTSy.SSᵗ Bs ⟧ ≋ HSy.specSᴾ (m + m)
+symbolic-shift-tool-set0 = HTSy.symbolic-shift-tool-set0
+
+tool-≋-figure3a : ∀ {d} (s : Assign (m + m)) (Bs : List (HTo.Block d m)) →
+                  KX.⟦ HTo.HSᵗ s Bs ⟧ ≋ K.⟦ HCi.HSᶜ (HTo.gTerms Bs) s ⟧
+tool-≋-figure3a = HTo.tool-≋-figure3a
+
+-- Gate for gate the tool's own lists: read as the tool writes gates,
+-- the circuits are its hiddenShift and hiddenShiftQuantum on the same
+-- draws.
+
+prim-HSᵗ : ∀ {d} (s : Assign (m + m)) (Bs : List (HTo.Block d m)) →
+           map HFy.prim (HTo.HSᵗ s Bs) ≡
+           HFy.hiddenShiftᵀ (m + m) (HFy.shiftᵀ s) (HFy.altsᵀ Bs)
+prim-HSᵗ = HFy.prim-HSᵗ
+
+prim-SSᵗ : ∀ {d} (Bs : List (HTo.Block d m)) →
+           map HFy.prim (HTSy.SSᵗ Bs) ≡
+           HFy.hiddenShiftQuantumᵀ (m + m) (HFy.altsᵀ Bs)
+prim-SSᵗ = HFy.prim-SSᵗ
+
+-- printVerStats's four numbers on those lists, for every draw at the
+-- tool's 200 draws per alternation (c of them a cz): n qubits (2n for
+-- the symbolic shift), 3n path variables, 8n + 2|s| + 414A + 8c
+-- (10n + 414A + 8c) Clifford and 14A T gates; and the same columns
+-- counted on the circuits (wires touched, path variables).
+
+HSᵗ-printVerStats :
+  (s : Assign (m + m)) (Bs : List (HTo.Block 200 m)) →
+  HTb.printVerStatsᵀ (map HFy.prim (HTo.HSᵗ s Bs)) ≡
+  (m + m , 3 * (m + m) ,
+   ((8 * (m + m) + 2 * Qb.#ʷ s) + 414 * length Bs) + 8 * HTb.czs Bs ,
+   14 * length Bs)
+HSᵗ-printVerStats = HTb.HS-printVerStats
+
+SSᵗ-printVerStats :
+  (Bs : List (HTo.Block 200 m)) →
+  HTb.printVerStatsᵀ (map HFy.prim (HTSy.SSᵗ Bs)) ≡
+  ((m + m) + (m + m) , 3 * (m + m) ,
+   (10 * (m + m) + 414 * length Bs) + 8 * HTb.czs Bs ,
+   14 * length Bs)
+SSᵗ-printVerStats = HTb.SS-printVerStats
+
+HSᵗ-cliffords : (s : Assign (m + m)) (Bs : List (HTo.Block 200 m)) →
+                HTb.cliffordsᵀ (map HFy.prim (HTo.HSᵗ s Bs)) ≡
+                ((8 * (m + m) + 2 * Qb.#ʷ s) + 414 * length Bs) +
+                8 * HTb.czs Bs
+HSᵗ-cliffords = HTb.HS-cliffords-200
+
+SSᵗ-cliffords : (Bs : List (HTo.Block 200 m)) →
+                HTb.cliffordsᵀ (map HFy.prim (HTSy.SSᵗ Bs)) ≡
+                (10 * (m + m) + 414 * length Bs) + 8 * HTb.czs Bs
+SSᵗ-cliffords = HTb.SS-cliffords-200
+
+HSᵗ-tcount : (s : Assign (m + m)) (Bs : List (HTo.Block 200 m)) →
+             HTb.tcountᵀ (map HFy.prim (HTo.HSᵗ s Bs)) ≡ 14 * length Bs
+HSᵗ-tcount = HTb.HS-tcount
+
+SSᵗ-tcount : (Bs : List (HTo.Block 200 m)) →
+             HTb.tcountᵀ (map HFy.prim (HTSy.SSᵗ Bs)) ≡ 14 * length Bs
+SSᵗ-tcount = HTb.SS-tcount
+
+HSᵗ-paths : (s : Assign (m + m)) (Bs : List (HTo.Block 200 m)) →
+            KX.paths (HTo.HSᵗ s Bs) ≡ 3 * (m + m)
+HSᵗ-paths = HTb.HS-paths
+
+SSᵗ-paths : (Bs : List (HTo.Block 200 m)) →
+            KX.paths (HTSy.SSᵗ Bs) ≡ 3 * (m + m)
+SSᵗ-paths = HTb.SS-paths
+
+HSᵗ-qubits : (s : Assign (m + m)) (Bs : List (HTo.Block 200 m)) →
+             HTb.qubitsˣ (HTo.HSᵗ s Bs) ≡ m + m
+HSᵗ-qubits = HTb.HS-qubits
+
+SSᵗ-qubits : (Bs : List (HTo.Block 200 m)) →
+             HTb.qubitsˣ (HTSy.SSᵗ Bs) ≡ (m + m) + (m + m)
+SSᵗ-qubits = HTb.SS-qubits
+
+-- Table 2's six rows, for every draw of A alternations of 200 draws:
+-- qubits, path variables and T gates as printed, and the printed
+-- Clifford count exactly when |s| + 4c (hidden shift) or c (symbolic
+-- shift) is the given number.  First counted on the circuits, then
+-- with all four columns printVerStats's on the tool's lists (-tool).
+-- The table's own draws are unknown (the tool's QuickCheck generator
+-- is unseeded), so the Clifford column is characterised, not computed.
+
+table-2-HiddenShift20-4 : HTb.HSRow 10 4 20 60 5254 56 1719
+table-2-HiddenShift20-4 = HTb.table-HiddenShift-20-4
+
+table-2-HiddenShift40-5 : HTb.HSRow 20 5 40 120 6466 70 2038
+table-2-HiddenShift40-5 = HTb.table-HiddenShift-40-5
+
+table-2-HiddenShift60-10 : HTb.HSRow 30 10 60 180 12784 140 4082
+table-2-HiddenShift60-10 = HTb.table-HiddenShift-60-10
+
+table-2-SymbolicShift20-4 : HTb.SSRow 10 4 40 60 5296 56 430
+table-2-SymbolicShift20-4 = HTb.table-SymbolicShift-20-4
+
+table-2-SymbolicShift40-5 : HTb.SSRow 20 5 80 120 6638 70 521
+table-2-SymbolicShift40-5 = HTb.table-SymbolicShift-40-5
+
+table-2-SymbolicShift60-10 : HTb.SSRow 30 10 120 180 12804 140 1008
+table-2-SymbolicShift60-10 = HTb.table-SymbolicShift-60-10
+
+table-2-HiddenShift20-4-tool : HTb.HSRowᵀ 10 4 20 60 5254 56 1719
+table-2-HiddenShift20-4-tool = HTb.table-HiddenShift-20-4ᵀ
+
+table-2-HiddenShift40-5-tool : HTb.HSRowᵀ 20 5 40 120 6466 70 2038
+table-2-HiddenShift40-5-tool = HTb.table-HiddenShift-40-5ᵀ
+
+table-2-HiddenShift60-10-tool : HTb.HSRowᵀ 30 10 60 180 12784 140 4082
+table-2-HiddenShift60-10-tool = HTb.table-HiddenShift-60-10ᵀ
+
+table-2-SymbolicShift20-4-tool : HTb.SSRowᵀ 10 4 40 60 5296 56 430
+table-2-SymbolicShift20-4-tool = HTb.table-SymbolicShift-20-4ᵀ
+
+table-2-SymbolicShift40-5-tool : HTb.SSRowᵀ 20 5 80 120 6638 70 521
+table-2-SymbolicShift40-5-tool = HTb.table-SymbolicShift-40-5ᵀ
+
+table-2-SymbolicShift60-10-tool : HTb.SSRowᵀ 30 10 120 180 12804 140 1008
+table-2-SymbolicShift60-10-tool = HTb.table-SymbolicShift-60-10ᵀ
+
+-- Each row is attained by a draw of the tool's shape, and printVerStats
+-- prints the row's four numbers on it: the table is consistent with the
+-- tool's generator.
+
+table-2-HiddenShift20-4-attained :
+  ∃ λ (s : Assign 20) → ∃ λ (Bs : List (HTo.Block 200 10)) →
+  (length Bs ≡ 4) ×
+  (HTb.printVerStatsᵀ (map HFy.prim (HTo.HSᵗ s Bs)) ≡ (20 , 60 , 5254 , 56))
+table-2-HiddenShift20-4-attained = HTb.HS-20-4-attainedᵀ
+
+table-2-HiddenShift40-5-attained :
+  ∃ λ (s : Assign 40) → ∃ λ (Bs : List (HTo.Block 200 20)) →
+  (length Bs ≡ 5) ×
+  (HTb.printVerStatsᵀ (map HFy.prim (HTo.HSᵗ s Bs)) ≡ (40 , 120 , 6466 , 70))
+table-2-HiddenShift40-5-attained = HTb.HS-40-5-attainedᵀ
+
+table-2-HiddenShift60-10-attained :
+  ∃ λ (s : Assign 60) → ∃ λ (Bs : List (HTo.Block 200 30)) →
+  (length Bs ≡ 10) ×
+  (HTb.printVerStatsᵀ (map HFy.prim (HTo.HSᵗ s Bs)) ≡
+   (60 , 180 , 12784 , 140))
+table-2-HiddenShift60-10-attained = HTb.HS-60-10-attainedᵀ
+
+table-2-SymbolicShift20-4-attained :
+  ∃ λ (Bs : List (HTo.Block 200 10)) →
+  (length Bs ≡ 4) ×
+  (HTb.printVerStatsᵀ (map HFy.prim (HTSy.SSᵗ Bs)) ≡ (40 , 60 , 5296 , 56))
+table-2-SymbolicShift20-4-attained = HTb.SS-20-4-attainedᵀ
+
+table-2-SymbolicShift40-5-attained :
+  ∃ λ (Bs : List (HTo.Block 200 20)) →
+  (length Bs ≡ 5) ×
+  (HTb.printVerStatsᵀ (map HFy.prim (HTSy.SSᵗ Bs)) ≡ (80 , 120 , 6638 , 70))
+table-2-SymbolicShift40-5-attained = HTb.SS-40-5-attainedᵀ
+
+table-2-SymbolicShift60-10-attained :
+  ∃ λ (Bs : List (HTo.Block 200 30)) →
+  (length Bs ≡ 10) ×
+  (HTb.printVerStatsᵀ (map HFy.prim (HTSy.SSᵗ Bs)) ≡
+   (120 , 180 , 12804 , 140))
+table-2-SymbolicShift60-10-attained = HTb.SS-60-10-attainedᵀ
+
+-- The rewrite rules find |s⟩ and |s⟩|s⟩ on the tool's own path-sums:
+-- complete reductions by figure 2's rules, of exactly 3n steps, ending
+-- at the specification coefficient by coefficient; every complete
+-- reduction of the symbolic one ends there.  (Constructed chains, not
+-- the tool's search.)
+
+tool-exists : ∀ {d} (s : Assign (m + m)) (Bs : List (HTo.Block d m)) →
+              Σ (PathSum (m + m) 0 0) (λ ζ →
+                Σ (HSim.at0 KX.⟦ HTo.HSᵗ s Bs ⟧ ⟶ᶠ* ζ) (λ steps →
+                  lenᶠ steps ≡ 3 * (m + m)))
+tool-exists = HTE.tool-exists
+
+tool-finds : ∀ {d} (s : Assign (m + m)) (Bs : List (HTo.Block d m)) →
+             Σ (PathSum (m + m) 0 0) (λ ζ →
+               (HSim.at0 KX.⟦ HTo.HSᵗ s Bs ⟧ ⟶ᶠ* ζ) ×
+               (∀ w → out ζ w ≈[ + 2 ] κ [ s w ]ᶻ) ×
+               (phase ζ ≈[ pow M ] 0ᴾ))
+tool-finds = HTE.tool-finds
+
+tool-symbolic-exists :
+  ∀ {d} (Bs : List (HTo.Block d m)) →
+  Σ (PathSum ((m + m) + (m + m)) 0 0) (λ ζ →
+    Σ (AReg.set0ᶜ (HSy.dataMask (m + m)) KX.⟦ HTSy.SSᵗ Bs ⟧ ⟶ᶠ* ζ)
+      (λ steps → lenᶠ steps ≡ 3 * (m + m)))
+tool-symbolic-exists = HTE.tool-symbolic-exists
+
+tool-symbolic-reduces :
+  ∀ {d} (Bs : List (HTo.Block d m)) {k′ : ℕ}
+  {ζ : PathSum ((m + m) + (m + m)) k′ 0} →
+  AReg.set0ᶜ (HSy.dataMask (m + m)) KX.⟦ HTSy.SSᵗ Bs ⟧ ⟶ᶠ* ζ →
+  (k′ ≡ 0) ×
+  (∀ w → out ζ w ≈[ + 2 ] μ x[ HSy.copy (m + m) w ]) ×
+  (phase ζ ≈[ pow M ] 0ᴾ)
+tool-symbolic-reduces = HTE.tool-symbolic-reduces
+
+tool-symbolic-finds :
+  ∀ {d} (Bs : List (HTo.Block d m)) →
+  Σ (PathSum ((m + m) + (m + m)) 0 0) (λ ζ →
+    (AReg.set0ᶜ (HSy.dataMask (m + m)) KX.⟦ HTSy.SSᵗ Bs ⟧ ⟶ᶠ* ζ) ×
+    (∀ w → out ζ w ≈[ + 2 ] μ x[ HSy.copy (m + m) w ]) ×
+    (phase ζ ≈[ pow M ] 0ᴾ))
+tool-symbolic-finds = HTE.tool-symbolic-finds
 
 
 ------------------------------------------------------------------------

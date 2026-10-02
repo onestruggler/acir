@@ -335,6 +335,18 @@ shift (|0⟩ ↦ |s⟩) and the symbolic one (|0⟩|s⟩ ↦ |s⟩|s⟩) — wit
 `Engine`, `MainPasses`, `Runs`, `Layout`, `XLayer`, `ExistsCircuit`
 and `ExistsSymbolic` show complete reductions exist on the circuits'
 own path-sums too, the calculus finding |s⟩ and |s⟩|s⟩ there.
+`HiddenShift/Feynman`, `Tool`, `ToolSymbolic`, `ToolCCZ`, `LayersX` and
+`Table` formalise the circuits the paper's tool generated (its 2018
+`hiddenShift` and `hiddenShiftQuantum`, X a primitive, so 3n path
+variables) as functions of its random draws: gate for gate the tool's
+lists, correct for every draw, and with table 2's six hidden-shift
+rows — qubits, path variables and T gates as printed for every draw,
+the Clifford count exactly when the number c of CZ draws satisfies
+|s| + 4c = 1719, 2038, 4082 (hidden shift) or c = 430, 521, 1008
+(symbolic shift), each attained; the tool's QuickCheck generator is
+unseeded, so the table's own draws are unknown.  `HiddenShift/TraceX`,
+`ThreeLayers`, `ToolRuns` and `ToolExists` give complete reductions on
+the tool's own path-sums, of exactly 3n steps.
 
 **Equivalence and verification.**  `Adjoint` defines C†, `AmpLinear`
 the linearity of the gate matrices, and `Miter` proves that C† undoes
