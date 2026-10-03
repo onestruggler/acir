@@ -201,11 +201,26 @@ Z^ k = Z ^ toℕ k
 --           · (a/p)_L · ω^((-a² + 4a - 2)/(8a)),
 --
 -- which maps |x⟩ to |ax⟩ on the nose (Lemma 2.15).
+--
+-- Its exponents, named: the Z-exponent (1-a)/(2a) and the phase
+-- exponent (-a² + 4a - 2)/(8a).
+M-Z-exponent : ℤ* ₚ → ℤ ₚ
+M-Z-exponent a* = (₁ + - a) * 1/2 * a⁻¹
+  where
+  a = a* .proj₁
+  a⁻¹ = (a* ⁻¹) .proj₁
+
+M-phase : ℤ* ₚ → ℤ ₚ
+M-phase a* = (- (a * a) + (₂ + ₂) * a + - ₂) * 1/8 * a⁻¹
+  where
+  a = a* .proj₁
+  a⁻¹ = (a* ⁻¹) .proj₁
+
 M : ℤ* ₚ → Word (Gen (₁₊ n))
 M a* =
-  Z^ ((₁ + - a) * 1/2 * a⁻¹) • X^ ((₁ + - a) * 1/2)
+  Z^ (M-Z-exponent a*) • X^ ((₁ + - a) * 1/2)
   • S^ a⁻¹ • H • S^ a • H • S^ a⁻¹ • H
-  • legendre a* • ω^ ((- (a * a) + (₂ + ₂) * a + - ₂) * 1/8 * a⁻¹)
+  • legendre a* • ω^ (M-phase a*)
   where
   a = a* .proj₁
   a⁻¹ = (a* ⁻¹) .proj₁
@@ -245,7 +260,7 @@ data _Fig1,_===_ : (n : ℕ) → CRel n where
 
   -- Single qudit.
   c1  : (₁₊ n) Fig1,  S ^ p === ε
-  c2  : (₁₊ n) Fig1,  H ^ 2 === M₋₁ • λ²
+  c2  : (₁₊ n) Fig1,  H ^ 2 === M₋₁ • -1ˢ ^ p-1/2
   c3  : ∀ (k : ℤ ₚ) → (₁₊ n) Fig1,  Mg ^ toℕ k === M (g^ k)
   c4  : (₁₊ n) Fig1,
           Mg • S === Z^ ((₁ + - g) * 1/2 * (g⁻¹ * g⁻¹)) • S^ (g⁻¹ * g⁻¹) • Mg
