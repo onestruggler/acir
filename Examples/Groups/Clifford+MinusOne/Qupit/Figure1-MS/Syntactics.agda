@@ -89,175 +89,27 @@ import Presentation.Properties
 open Primitive-Root-Modp' g* g-gen using (g′ ; g^_)
 
 ------------------------------------------------------------------------
--- The gate set
+-- Both presentations use exactly the same gates and derived words.
+-- Only the axiom relation below differs.
 
-data Fig1Gate : ℕ → Set where
-  ν-gate  : Fig1Gate 0     -- the scalar -ω
-  H-gate  : Fig1Gate 1
-  S-gate  : Fig1Gate 1
-  CZ-gate : Fig1Gate 2
-
-open import Circuit.Base Fig1Gate
-  using ( Gen ; Circuit ; CRel ; gate₀ ; gate₁ ; gate₂
-        ; _↥ ; _↑ ; _↓ ; module Lift-Relation) public
+import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Syntactics
+  p-3 p-prime g* g-gen as F
+open F public using
+  ( Fig1Gate ; ν-gate ; H-gate ; S-gate ; CZ-gate
+  ; Gen ; Circuit ; CRel ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; _↓
+  ; ν ; H ; S ; CZ ; 1/2 ; 1/8 ; p-1/2 ; -1ˢ ; ωˢ ; ω^ ; λ²
+  ; is-one ; legendre-by ; legendre ; S^ ; S⁻¹ ; CZ^ ; X ; Z ; X^ ; Z^
+  ; M-Z-exponent ; M-phase ; M ; Mg ; M₋₁ ; SWAP ; CX ; CIZ ; g⁻¹ )
+open import Circuit.Base Fig1Gate using (module Lift-Relation)
 
 private
   variable
     n : ℕ
 
 ------------------------------------------------------------------------
--- The generators, as one-letter words
-
--- The scalar generator -ω.
-ν : Word (Gen n)
-ν = [ gate₀ ν-gate ]ʷ
-
-H : Word (Gen (₁₊ n))
-H = [ gate₁ H-gate ]ʷ
-
-S : Word (Gen (₁₊ n))
-S = [ gate₁ S-gate ]ʷ
-
-CZ : Word (Gen (₂₊ n))
-CZ = [ gate₂ CZ-gate ]ʷ
-
-------------------------------------------------------------------------
--- Exponents in ℤ/pℤ
-
-1/2 : ℤ ₚ
-1/2 = ((₂ , λ ()) ⁻¹) .proj₁
-
--- 1/8, for the exponent of T1's phase.
-1/8 : ℤ ₚ
-1/8 = 1/2 * 1/2 * 1/2
-
--- (p - 1)/2, the exponent of λ_p² and of Euler's criterion.  p is odd,
--- so the floor is exact.
-p-1/2 : ℕ
-p-1/2 = ⌊ p-1 /2⌋
-
-------------------------------------------------------------------------
--- The scalars
-
--- -1 = (-ω)^p.
--1ˢ : Word (Gen n)
--1ˢ = ν ^ p
-
--- ω = (-ω)^(p+1).
-ωˢ : Word (Gen n)
-ωˢ = ν ^ ₁₊ p
-
--- ω to a power in ℤ/pℤ.
-ω^ : ℤ ₚ → Word (Gen n)
-ω^ t = ωˢ ^ toℕ t
-
--- λ_p² = e^((p-1)πi/2) = (-1)^((p-1)/2), the phase of T4.
-λ² : Word (Gen n)
-λ² = -1ˢ ^ p-1/2
-
--- The Legendre symbol (a/p)_L, by Euler's criterion: a^((p-1)/2) is
--- 1 exactly when a is a square.  The test is made on the
--- representative, toℕ y ≡ 1 being y ≡ ₁ by toℕ-injective, and is
--- spelled out rather than taken from the library, whose name for it
--- has moved between releases.
-is-one : (m : ℕ) → Dec (m ≡ 1)
-is-one ₀      = no (λ ())
-is-one (₁₊ ₀) = yes Eq.refl
-is-one (₂₊ m) = no (λ ())
-
-legendre-by : ∀ {y : ℤ ₚ} → Dec (toℕ y ≡ 1) → Word (Gen n)
-legendre-by (yes _) = ε
-legendre-by (no _)  = -1ˢ
-
-legendre : ℤ* ₚ → Word (Gen n)
-legendre a* = legendre-by (is-one (toℕ (a* .proj₁ ^′ p-1/2)))
-
-------------------------------------------------------------------------
--- Powers
-
-S^ : ℤ ₚ → Word (Gen (₁₊ n))
-S^ k = S ^ toℕ k
-
-S⁻¹ : Word (Gen (₁₊ n))
-S⁻¹ = S ^ p-1
-
-CZ^ : ℤ ₚ → Word (Gen (₂₊ n))
-CZ^ k = CZ ^ toℕ k
-
-------------------------------------------------------------------------
--- The derived generators (Figure 4)
-
--- T2, T3: the Paulis.
-X : Word (Gen (₁₊ n))
-X = H • S • H • H • S⁻¹ • H
-
-Z : Word (Gen (₁₊ n))
-Z = H • H • S • H • H • S⁻¹
-
-X^ : ℤ ₚ → Word (Gen (₁₊ n))
-X^ k = X ^ toℕ k
-
-Z^ : ℤ ₚ → Word (Gen (₁₊ n))
-Z^ k = Z ^ toℕ k
-
--- T1: the multiplier by a ∈ ℤₚ*,
---
---     M_a = Z^((1-a)/(2a)) X^((1-a)/2) S^(a⁻¹) H S^a H S^(a⁻¹) H
---           · (a/p)_L · ω^((-a² + 4a - 2)/(8a)),
---
--- which maps |x⟩ to |ax⟩ on the nose (Lemma 2.15).
---
--- Its exponents, named: the Z-exponent (1-a)/(2a) and the phase
--- exponent (-a² + 4a - 2)/(8a).
-M-Z-exponent : ℤ* ₚ → ℤ ₚ
-M-Z-exponent a* = (₁ + - a) * 1/2 * a⁻¹
-  where
-  a = a* .proj₁
-  a⁻¹ = (a* ⁻¹) .proj₁
-
-M-phase : ℤ* ₚ → ℤ ₚ
-M-phase a* = (- (a * a) + (₂ + ₂) * a + - ₂) * 1/8 * a⁻¹
-  where
-  a = a* .proj₁
-  a⁻¹ = (a* ⁻¹) .proj₁
-
-M : ℤ* ₚ → Word (Gen (₁₊ n))
-M a* =
-  Z^ (M-Z-exponent a*) • X^ ((₁ + - a) * 1/2)
-  • S^ a⁻¹ • H • S^ a • H • S^ a⁻¹ • H
-  • legendre a* • ω^ (M-phase a*)
-  where
-  a = a* .proj₁
-  a⁻¹ = (a* ⁻¹) .proj₁
-
--- The two multipliers the rules name.
-Mg : Word (Gen (₁₊ n))
-Mg = M g′
-
-M₋₁ : Word (Gen (₁₊ n))
-M₋₁ = M -'₁
-
--- T4: the swap, three CZs between Hadamard layers, and the phase λ_p².
-SWAP : Word (Gen (₂₊ n))
-SWAP = CZ • H ↓ • H ↑ • CZ • H ↓ • H ↑ • CZ • H ↓ • H ↑ • λ²
-
--- T5: CNOT, controlled on the top wire.
-CX : Word (Gen (₂₊ n))
-CX = H ↓ ^ 3 • CZ • H ↓
-
--- T7: the remote CZ between the top and bottom of three wires.
-CIZ : Word (Gen (₃₊ n))
-CIZ = SWAP • CZ ↑ • SWAP
-
-------------------------------------------------------------------------
--- The rules of Figure 1
-
--- The inverse of the primitive root, retained for the copied helpers.
-g⁻¹ : ℤ ₚ
-g⁻¹ = (g′ ⁻¹) .proj₁
+-- The axioms
 
 infix 4 _Fig1,_===_
-
 data _Fig1,_===_ : (n : ℕ) → CRel n where
 
   -- One scalar rule, at every width.

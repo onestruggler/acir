@@ -74,6 +74,8 @@ import Examples.Groups.Clifford+MinusOne.Qupit.Figure1-MS.Syntactics
   as Fig1MSSyn
 import Examples.Groups.Clifford+MinusOne.Qupit.Figure1-MS.Presentation
   as Fig1MSPres
+import Examples.Groups.Clifford+MinusOne.Qupit.Figure1-MS.FF-Iso
+  as Fig1FFIso
 
 ------------------------------------------------------------------------
 -- The symplectic normal form is unique
@@ -234,6 +236,7 @@ module Qupit-Clifford-Scalar-Theorems
     module Pres₁ = Fig1Pres   p-3 p-prime g* g-gen
     module SynMS = Fig1MSSyn  p-3 p-prime g* g-gen
     module PresMS = Fig1MSPres p-3 p-prime g* g-gen
+    module FF = Fig1FFIso p-3 p-prime g* g-gen
 
   open Syn± using (_Exact,_===_ ; _Exact±,_===_)
   open Syn₁ using (_F,_===_)
@@ -258,6 +261,11 @@ module Qupit-Clifford-Scalar-Theorems
   figure1-MS-presentation :
     ∀ n → (n F′,_===_) IsPresentationOf (Clifford± n)
   figure1-MS-presentation = PresMS.presentation-Figure1
+
+  -- Direct equivalence: only the two C4 rules need to be derived.
+  open FF public using () renaming
+    ( Theorem-Figure1-equivalent-Figure1-MS to figure1-figure1-MS-equivalence
+    ; Theorem-Figure1-iso-Figure1-MS to figure1-figure1-MS-iso )
 
 ------------------------------------------------------------------------
 -- The structural rules are independent

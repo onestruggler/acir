@@ -1,0 +1,237 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=24mm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{18354A}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=ink,
+  pdftitle={Direct equivalence of the two C4 rules},
+  pdfsubject={Syntactic derivations for Figure1 and Figure1-MS}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{ink}{Figure1 $\longleftrightarrow$ Figure1-MS}}
+\fancyhead[R]{\small Direct C4 derivations}
+\fancyfoot[C]{\small\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\abovedisplayskip}{8pt}
+\setlength{\belowdisplayskip}{8pt}
+\newcommand{\F}{\mathbb F_p}
+\newcommand{\eqw}{\mathrel{\simeq}}
+\newcommand{\CC}{\mathcal C}
+\newcommand{\rulebox}[2]{\begin{center}\fcolorbox{ink}{ink!4}{%
+  \parbox{0.9\linewidth}{\centering\textbf{#1}\quad $\displaystyle #2$}}\end{center}}
+\newcommand{\heading}[1]{\section*{\textcolor{ink}{#1}}}
+\begin{document}
+
+{\LARGE\bfseries\textcolor{ink}{Direct equivalence of the two C4 rules}}\par
+\smallskip
+{\large Figure1 and Figure1-MS, with scalars retained}
+
+Let $p$ be an odd prime and $g\in\F^{\times}$ a primitive root. Write
+\[
+ M=M_g,\qquad u=g^{-1},\qquad d=u^2,\qquad b=g^2,
+ \qquad c=\frac{1-g}{2}\,d,\qquad e=\frac{g^2-g}{2}.
+\]
+Every displayed exponent of $S$ or $Z$ is an element of $\F$; the word
+$S^a$ means the natural-number power at the representative of $a$ in
+$\{0,\ldots,p-1\}$. Fractions and inverses are computed in $\F$.
+Juxtaposition is word concatenation, with associativity and units suppressed.
+The symbol $\eqw$ denotes derivability from the specified axioms, and $1$
+denotes the empty word. These are exact equations, not equations modulo scalars.
+
+\rulebox{Original C4 (Figure1)}{MS\eqw Z^cS^dM}
+\rulebox{Replacement C4 (Figure1-MS)}{SM\eqw MS^bZ^e}
+
+\heading{1. Consequences of the shared axioms}
+Both presentations share C0--C3, C5--C15 and the structural circuit rules.
+The one-wire support needed below follows from C0--C3, C5 and scalar centrality:
+\[
+ S^p\eqw Z^p\eqw1,\qquad ZS\eqw SZ,\qquad
+ J^2\eqw1,\qquad JM\eqw MJ,\qquad J=H^2.
+ \tag{1}
+\]
+Here is the derivation of this support. C3 gives
+$M_g^k\eqw M_{g^k}$, $M_1\eqw1$ and $M_g^{p-1}\eqw1$.
+Taking discrete logarithms of nonzero field elements and reducing exponents
+modulo $p-1$ gives
+\[
+ M_xM_y\eqw M_{xy},\qquad M_{-1}^2\eqw1,\qquad
+ M_{-1}M\eqw MM_{-1}.
+\]
+Set $\lambda=(\nu^p)^{(p-1)/2}$, with $\nu$ the central scalar generator.
+C0 gives $\nu^{2p}\eqw1$, hence $\lambda^2\eqw1$.
+C2 says $J\eqw M_{-1}\lambda$, so $J^2\eqw1$ and $JM\eqw MJ$.
+
+Put $T=JSJ$. C5 says $ST\eqw TS$. Since
+$Z=JSJS^{-1}=TS^{-1}$, it follows that $ZS\eqw SZ$.
+Also $T^p\eqw JS^pJ\eqw1$ by C1 and $J^2\eqw1$; thus
+$Z^p\eqw T^pS^{-p}\eqw1$. This proves (1) without either C4.
+
+\newpage
+\heading{2. Deriving the action on $Z$ from each C4}
+Define $\CC(w)=JwJ$. By (1), this is an involutive word automorphism:
+\[
+ \CC(xy)\eqw\CC(x)\CC(y),\quad
+ \CC^2(w)\eqw w,\quad \CC(M)\eqw M.
+\]
+The definition of $Z$ gives $\CC(S)\eqw ZS$.
+Applying $\CC$ again yields
+$S\eqw\CC(Z)ZS$. Cancelling the final $S$ gives
+$\CC(Z)Z\eqw1$, so
+\[
+ \CC(Z)\eqw Z^{-1},\qquad
+ \CC(Z^aS^h)\eqw Z^{h-a}S^h.
+ \tag{2}
+\]
+All cancellations here and below use the finite-order inverses from (1).
+
+\subsection*{Starting with the original C4}
+Assume $MS\eqw Z^cS^dM$. Apply (2):
+\begin{align*}
+ MZS
+ &\eqw \CC(MS)
+ \eqw \CC(Z^cS^dM)
+ \eqw Z^{d-c}S^dM\\
+ &\eqw Z^{d-2c}(Z^cS^dM)
+ \eqw Z^{d-2c}MS.
+\end{align*}
+Cancel $S$. Since
+\[
+ c=\frac{d-u}{2},\qquad d-2c=u,
+\]
+we obtain $MZ\eqw Z^uM$. Iteration gives
+$MZ^x\eqw Z^{ux}M$. Taking $x=gk$ and using $ug=1$ gives
+\[
+ \boxed{Z^kM\eqw MZ^{gk}}.
+ \tag{3}
+\]
+
+\subsection*{Starting with the replacement C4}
+Assume $SM\eqw MS^bZ^e\eqw MZ^eS^b$.
+Apply (2), then substitute the assumed rule:
+\begin{align*}
+ ZSM&\eqw MZ^{b-e}S^b,\\
+ (ZM)(Z^eS^b)
+ &\eqw ZSM
+ \eqw MZ^{b-e}S^b
+ \eqw (MZ^{b-2e})(Z^eS^b).
+\end{align*}
+Cancel $Z^eS^b$. As $b-2e=g$, this gives $ZM\eqw MZ^g$.
+Iteration again yields (3). In either theory, taking $k=ux$ in (3) also gives
+\[
+ \boxed{MZ^x\eqw Z^{ux}M}.
+ \tag{4}
+\]
+Thus each theory supplies (3)--(4) from its own C4; the argument is not circular.
+
+\newpage
+\heading{3. Original C4 implies the replacement C4}
+Assume only the original C4 and the shared axioms:
+\[
+ MS\eqw Z^cS^dM.
+\]
+Use (4), derived from this assumption on the preceding page.
+
+\subsection*{Step 1: iterate the assumed rule $b=g^2$ times}
+Choose the natural representative of $b$ for the induction. Because $Z$ and
+$S$ commute and have order $p$, their powers add and multiply in $\F$.
+Hence
+\begin{align*}
+ MS^b
+ &\eqw (Z^cS^d)^bM
+ &&\text{iterate the original C4}\\
+ &\eqw Z^{cb}S^{db}M
+ &&\text{$ZS\eqw SZ$ and power laws}\\
+ &\eqw Z^{cb}SM
+ &&\text{$db=u^2g^2=1$.}
+\end{align*}
+
+\subsection*{Step 2: move the remaining $Z$-power through $M$}
+\begin{align*}
+ MS^bZ^e
+ &\eqw Z^{cb}SMZ^e
+ &&\text{Step 1}\\
+ &\eqw Z^{cb}SZ^{eu}M
+ &&\text{(4) with $x=e$}\\
+ &\eqw Z^{cb+eu}SM
+ &&\text{$ZS\eqw SZ$}\\
+ &\eqw SM
+ &&\text{$cb+eu=0$.}
+\end{align*}
+The last field identity is
+\[
+ cb+eu
+ =\frac{1-g}{2}\,u^2g^2+\frac{g^2-g}{2}\,u
+ =\frac{1-g}{2}+\frac{g-1}{2}=0.
+\]
+Reverse the resulting equation to obtain exactly the replacement C4:
+\rulebox{Derived in Figure1}{SM\eqw MS^{g^2}Z^{(g^2-g)/2}}
+
+\subsection*{Formal counterpart}
+In \texttt{FF-Iso.agda}, the iteration and calculation above are
+\texttt{Conversion.MS}\,$\Rightarrow$\,\texttt{MR}.
+The theorem \texttt{Figure1.c4'} reverses its conclusion to match the
+orientation of the Figure1-MS axiom.
+
+\newpage
+\heading{4. Replacement C4 implies the original C4}
+Assume only the replacement C4 and the shared axioms:
+\[
+ SM\eqw MS^bZ^e.
+\]
+Use (4), now derived from this assumption. Set $f=ed$.
+
+\subsection*{Step 1: iterate the assumed rule $d=g^{-2}$ times}
+Again choose the natural representative for the induction. Then
+\begin{align*}
+ S^dM
+ &\eqw M(S^bZ^e)^d
+ &&\text{iterate the replacement C4}\\
+ &\eqw MS^{bd}Z^{ed}
+ &&\text{$ZS\eqw SZ$ and power laws}\\
+ &\eqw MSZ^f
+ &&\text{$bd=g^2u^2=1$.}
+\end{align*}
+
+\subsection*{Step 2: remove the extra $Z$-power}
+\begin{align*}
+ MS
+ &\eqw (MSZ^f)Z^{-f}
+ &&\text{insert $Z^fZ^{-f}\eqw1$}\\
+ &\eqw S^dMZ^{-f}
+ &&\text{Step 1}\\
+ &\eqw S^dZ^{-fu}M
+ &&\text{(4) with $x=-f$}\\
+ &\eqw Z^cS^dM
+ &&\text{$ZS\eqw SZ$ and $-fu=c$.}
+\end{align*}
+The last field identity is
+\[
+ -fu=-edu
+ =-\frac{g^2-g}{2}\,u^3
+ =\frac{u^2-u}{2}
+ =\frac{1-g}{2}\,u^2=c.
+\]
+This is exactly the original C4:
+\rulebox{Derived in Figure1-MS}{MS\eqw
+   Z^{(1-g)g^{-2}/2}S^{g^{-2}}M}
+
+\subsection*{Formal counterpart and equivalence}
+This direction is \texttt{Conversion.MR}\,$\Rightarrow$\,\texttt{MS} and
+\texttt{Figure1-MS.c4} in \texttt{FF-Iso.agda}.
+Every other axiom is carried over unchanged, and derivations are transported
+recursively through the congruence and structural rules. Therefore the two
+presentations generate the same equivalence relation on the same circuits.
+Their presented groups are isomorphic by the identity on words.
+
+\smallskip
+\small
+\textbf{Formal source:}
+\nolinkurl{Examples/Groups/Clifford+MinusOne/Qupit/Figure1-MS/FF-Iso.agda}.
+The Agda file proves both directions syntactically, without importing Clifford
+semantics or the existing exact-group isomorphisms.
+
+\end{document}
