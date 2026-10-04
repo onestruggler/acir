@@ -2,22 +2,23 @@
 
 Everything above is checked by Agda~2.8 with standard library 2.4
 under \texttt{--safe}: no postulates, no holes.  The development is
-106\,388 lines in 329 files (Table~\ref{tab:stats}): framework
+113\,526 lines in 349 files (Table~\ref{tab:stats}): framework
 15\,000, qupit-specific 60\,000 (symplectic 35\,000, composition
 23\,000).
 
 Not formalised are the two well-known \emph{glue facts}: that the
 projective Clifford group is $\PPauli \rtimes \Sp$, and that the
 Clifford group is a central extension of it by
-$\langle\omega\rangle$~\cite{bian2026qudit}; no matrix appears in the
+$\langle\omega\rangle$ (times $\langle -1\rangle$ over
+$-\omega$)~\cite{bian2026qudit}; no matrix appears in the
 development.
 
 We have used versions of Claude to improve the language of
 this paper and to help with the formalisation: composing box relations
 to prove \aid{ract-sound}, defining the symplectic group, and
 establishing the equivalence between the code's relations and the
-qupit paper's Figure~1 modulo scalars; \aid{presentation-exact} was
-done by Claude.
+qupit paper's Figure~1 modulo scalars; \aid{presentation-exact} and
+the Figure~1 layer with $-1$ were done by Claude.
 
 \emph{Related work.}  The completeness proofs for these gate groups,
 from Selinger's $n$-qubit Clifford presentation to the qupit rules,

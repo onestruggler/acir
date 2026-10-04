@@ -50,6 +50,8 @@ symplectic rule set.}
   \node[box] (pauli) at (6.7,-1.5){$\PPauli$: $X^p,\ Z^p,\ XZ{=}ZX$};
   \node[box] (ex)    at (10.3,-1.5){Exact: Paper-V0 $+\ \omega$,\\one correction};
   \node[box] (pv1)   at (13.5,-1.5){Paper-V1: Theorem~\ref{thm:main}'s fifteen,\\the paper's Figure~1 mod scalars};
+  \node[box] (exm)   at (10.3,-3.0){Exact $+\,{-1}$};
+  \node[box] (fig1)  at (14.2,-3.0){the paper's Figure~1,\\16 rules over $-\omega$};
   \draw[->] (sp) -- node[lab,above=13pt]{identity iso} (sim);
   \draw[->] (sim) -- node[lab,above=13pt]{semidirect thm} (sd);
   \draw[->] (pauli) -- node[lab,right]{semidirect thm} (sd);
@@ -57,12 +59,14 @@ symplectic rule set.}
   \draw[->] (v1) -- node[lab,above=13pt]{identity iso} (v0);
   \draw[->] (v0) -- node[lab,right]{identity iso} (pv1);
   \draw[->] (v0.south west) -- node[lab,below,pos=0.55,fill=white]{central extension thm} (ex.north east);
+  \draw[->] (ex) -- node[lab,left]{direct product thm} (exm);
+  \draw[->] (exm) -- node[lab,above]{iso: $-\omega \mapsto -1\cdot\omega$} (fig1);
 \end{tikzpicture}}
 \captionof{figure}{The chain of presentations: every arrow is a verified
 presentation theorem or isomorphism of presentations; the semantic
 group is $\Sp$ on the left, $\PPauli \rtimes \Sp$ from the semidirect
-level on, and a central extension of it by $\langle\omega\rangle$ at
-``Exact''.}
+level on, a central extension of it by $\langle\omega\rangle$ at
+``Exact'', and that times $\langle -1\rangle$ below it.}
 \Description{Boxes for the presentations, joined by arrows labelled with the theorem that connects them.}
 \label{fig:route}
 \end{center}
@@ -108,7 +112,7 @@ Diagrams read in matrix-multiplication order (\S\ref{sec:background}).}
 
 \begin{center}\begin{minipage}{\textwidth}\centering
 \captionof{table}{Size of the development (lines of Agda incl.\ comments,
-\texttt{wc -l}, September 2026).}
+\texttt{wc -l}, September 2026; the Figure~1 row October 2026).}
 \label{tab:stats}
 \small
 \begin{tabular}{@{}lrr@{}}
@@ -120,11 +124,12 @@ Symplectic group (normalisation 8\,352; box relations 18\,161; soundness etc.\ 8
 Projective Pauli group & 3 & 1\,220 \\
 Projective Clifford: semidirect, plumbing, shared calculus & 26 & 17\,996 \\
 Clifford with scalars & 11 & 5\,029 \\
+Figure~1 with scalars ($-1$ adjoined) & 20 & 7\,138 \\
 \midrule
 Other examples in the tree (symmetric, cyclic, semidirect, Clifford+$T$, qubit Clifford) & 107 & 27\,552 \\
 Not on the chain (\texttt{Simplified-V2}), index, notations & 10 & 4\,344 \\
 \midrule
-Total & 329 & 106\,388 \\
+Total & 349 & 113\,526 \\
 \bottomrule
 \end{tabular}
 \end{minipage}

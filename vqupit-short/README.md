@@ -24,7 +24,7 @@ original:
 | 1  | The problem, the method (factor, present, compose), what is checked | §1 |
 | 2  | Qupit Clifford gates and quotients; three examples of the encoding, each as Agda code beside its circuit picture (the swap as a word, two constructors of the rule family, a five-step derivation); **Theorem 1** (`clifford-presentation`) and **Theorem 2** (`unique-nf`) as Agda types; the route — we mostly follow the paper, with one major divergence at the boosting step, and why | §2, §4 |
 | 3  | The symplectic factor: semantics, the doubly inductive normal form (its datatype and box pictures quoted from the long version's §4.2), the coset table with its soundness law in code, uniqueness, completeness by `by-normalization` | §5 |
-| 4  | Composing: the Pauli factor, the semidirect product, plumbing (semidirect → Simplified-V1 → Paper-V0 → Paper-V1), the scalars and the one correction $\omega^{(p^2-1)/8}$ | §6 |
+| 4  | Composing: the Pauli factor, the semidirect product, plumbing (semidirect → Simplified-V1 → Paper-V0 → Paper-V1), the scalars and the one correction $\omega^{(p^2-1)/8}$, and the paper's Figure 1 as printed (−1 adjoined as a direct factor, the exchange −ω ↦ −1·ω, `figure1-presentation`; added 2026-10-04) | §6 |
 | 5  | What is verified and what is not, statistics, the use of Claude, related work (trimmed 2026-09-30 to formal verification in proof assistants), future work | §7, §8, §9 |
 | A  | The fifteen simplified rules and the sixteen exact rules as circuit equations, the chain of presentations, the size table (the normal-box figure removed 2026-09-30) | Figure 2, Table 2 |
 | B  | *An Introduction to the Framework*, verbatim: the $S_n$ walkthrough — gates and circuits, the two axioms and the structural rules, cosets, the staircase normal form and the coset table `ract` with its soundness law, the tower, semantics, uniqueness, completeness, and the presentation record `_IsPresentationOf_`; plus B.5, the semidirect product (ℤ_N)ⁿ ⋊ S_n (a former warm-up of the long version, condensed, cited from §4) | §2 |
@@ -81,7 +81,8 @@ its box-label sets moved into the boxes figure's caption.
   version, regenerate there (`make agda` in `../vqupit`) and copy the
   block again; each file's first line records which block of which section it is.
   Only `thm-clifford`, `thm-unique`, `thm-sp`, `thm-lm`, `thm-exact`,
-  `rows` and `nf` are used; the others are kept for
+  `thm-figure1` (the `figure1-presentation` block of the long version's
+  §5.5), `rows` and `nf` are used; the others are kept for
   re-expansion.  The four exceptions are `ex-circuit`, `ex-relation`
   and `ex-reasoning`, the examples of §2 (the swap as a word, two
   constructors of the rule family, and a five-step derivation), and
@@ -109,6 +110,21 @@ its box-label sets moved into the boxes figure's caption.
 ```
 make            # latexmk -pdf main.tex; no Agda needed
 ```
+
+Verified 2026-10-04 with TeX Live 2023 (Ubuntu 24.04 packages):
+`main.pdf` is 12 pages — **exactly 5 pages of text**, the last line of
+§5 on the last line of page 5 and the references starting at the top of
+page 6 — with zero errors, zero undefined references or citations and
+no overfull box.  That revision followed the long version's §5.5: §4
+ends with a paragraph *Figure 1 as printed* (the exact group lacks −1;
+−1 adjoined as a central involution; Figure 1 isomorphic to that rule
+set by −ω ↦ −1·ω, each exact rule's scalar pinned by reading its lift
+back; `agda/thm-figure1`), the abstract and §1 say so in a clause each,
+§5 has the new totals, the glue fact for −1 and the AI-use statement,
+and Appendix A's chain figure gains the two boxes below "Exact" and
+Table 1 the row for `Clifford+MinusOne/Qupit`.  It costs the half page
+of slack the previous revision had, so further additions need a cut
+elsewhere.
 
 Verified 2026-09-30 with TeX Live 2023 (Ubuntu 24.04 packages): `main.pdf`
 is 12 pages — **just under 5 pages of text**, the references starting
