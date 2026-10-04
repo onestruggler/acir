@@ -10,7 +10,7 @@ open import Presentation.Definitions using (_IsPresentationOf_)
 open import Presentation.Construct.Base using (_⋄_⋄_ ; ConjRelʷ)
 
 infixl 9 _↑
-infix 4 _PRel,_===_ _SpRel,_===_ _Exact,_===_
+infix 4 _PRel,_===_ _SpRel,_===_ _Exact,_===_ _Exact±,_===_ _F,_===_
 
 private variable
   n : ℕ
@@ -51,7 +51,8 @@ postulate
   p p-1 : ℕ
   +ₚ-group Pauli⋊Sp : ℕ → Set
   _SpRel,_===_ : ℕ → Set
-  _Exact,_===_ : ℕ → Set
+  _Exact,_===_ _Exact±,_===_ _F,_===_ : ℕ → Set
+  Clifford± : ℕ → Set
   _↑ : ∀ {n} → Word (Gen n) → Word (Gen (₁₊ n))
   complete conjw-sem denote-eq sem : Set
   exact-generator-data : ℕ → Set
@@ -59,11 +60,13 @@ postulate
 \section{Composing: Paulis, the Semidirect Product, and Scalars}\label{sec:composing}
 
 From the symplectic presentation to the Clifford presentation there are
-four steps: the Pauli factor; the semidirect product, gluing the Pauli
+five steps: the Pauli factor; the semidirect product, gluing the Pauli
 and symplectic presentations along the conjugation action; plumbing,
 which simplifies the glued presentation to the paper's rules over $H$,
-$S$, $CZ$ alone; and the central extension by $\langle\omega\rangle$,
-which restores the scalars.
+$S$, $CZ$ alone; the central extension by $\langle\omega\rangle$,
+which restores the scalars; and the direct factor $\langle -1\rangle$,
+which with an exchange of scalar generators reaches the paper's
+Figure~1 itself.
 
 \subsection{The Pauli factor}\label{sec:pauli}
 
@@ -390,7 +393,8 @@ semidirect presentation of \S\ref{sec:semidirect}: the two routes ---
 the paper's single rule set with its projective use of relations, and
 our factored construction --- provably arrive at the same place.  With
 the scalar $\omega$ and its one correction added, the same holds for
-the exact Clifford group (\S\ref{sec:scalars}).
+the exact Clifford group (\S\ref{sec:scalars}), and with $-1$ added as
+well, for the paper's Figure~1 as printed (\S\ref{sec:figure1}).
 
 \subsection{Getting the scalars back}\label{sec:scalars}
 
@@ -419,8 +423,10 @@ where $1/8$ is the inverse of $8$ in $\Zp$.  Every other rule holds
 exactly: the three multiplier rules and \aid{order-H} because $R = S
 \cdot Z^{1/2}$ has no Pauli part, \aid{blake-c12} because every Pauli in
 it is pure-$Z$, and pure-$Z$ Paulis have vanishing symplectic form.  Note that the quotient here is
-our sixteen-rule set; correcting the paper's fifteen would give
-the paper's Figure~1 itself.
+our sixteen-rule set, not the paper's fifteen; the paper's Figure~1,
+which writes its scalars with $-\omega$, is reached in
+\S\ref{sec:figure1} by an isomorphism rather than by a second
+extension.
 
 \paragraph{The semantic side.}  A central extension of a group $Q$ by
 an abelian group $K$ is determined by a 2-cocycle $c : Q \times Q \to
@@ -466,3 +472,66 @@ is the formal counterpart of the paper's remark before its Theorem~4.10
 that a complete rule set for $\langle\omega\rangle$ ``only needs
 $\omega^{d} = 1$'', with the one non-trivial correction computed and
 checked.
+
+\subsection{The paper's Figure~1, scalars included}\label{sec:figure1}
+
+The exact group of \S\ref{sec:scalars} does not contain $-1$: its
+scalars $\langle\omega\rangle$ have odd order $p$.  The paper's
+Figure~1, however, is stated over $-\omega$, $H$, $S$, $CZ$, and its
+derived generators need $-1$: the multiplier $M_a$ (its (T1)) carries
+the Legendre symbol $(\frac{a}{p}) = \pm 1$ besides a power of $\omega$,
+and the swap (T4) carries $\lambda_p^2 = (-1)^{(p-1)/2}$.  Since $2$ and
+$p$ are coprime, $-\omega$ generates the same scalars as $-1$ and
+$\omega$ together, and $-1$ is central and meets the exact group
+trivially, so the paper's group is the direct product of the exact
+group with $\langle -1\rangle \cong \mathbb Z_2$.  Syntactically that is
+the join of \S\ref{sec:constructions}: the rule set
+\aid{{\_}Exact±,{\_}==={\_}} is the exact one $\oplus$ the cyclic relation
+$(-1)^2 = \varepsilon$, and the direct-product theorem gives
+\aid{clifford±-presentation} onto $\aid{Clifford±}\;n$, the exact group
+times $\mathbb Z_2$, on no hypothesis.
+
+Figure~1 itself is formalised as printed: $-\omega$ is a gate on no
+wires, $\nu$, whose centrality is the theorem \aid{comm₀} of the
+structural rules; $\omega = \nu^{p+1}$ and $-1 = \nu^{p}$; the derived
+generators (T1)--(T7) keep their phases, the Legendre symbol computed by
+Euler's criterion $a^{(p-1)/2}$; and the rules are C0--C15, C0 being
+$\nu^{2p} = \varepsilon$.  The two rule sets are isomorphic by the
+exchange of scalar generators, $\nu \mapsto -1 \cdot \omega$ one way and
+$\omega \mapsto \nu^{p+1}$, $-1 \mapsto \nu^{p}$ the other, the identity
+on gates.  Each direction must respect the other's rules.  That
+Figure~1's rules hold in the rule set with $-1$ is where all its
+scalars are checked, once: the gate part of each multiplier is the
+$S$-spelled multiplier of \texttt{Paper-V1}, and the phase (T1) attaches
+to it is exactly the inverse of the phase the Weyl cocycle assigns that
+gate part, so that the Legendre symbol is all that is left, and it is a
+character along the powers of $g$ with the right value at $-1$.  The
+converse --- each exact rule, with its power of $\omega$, holds in
+Figure~1 --- computes no scalar inside Figure~1 at all.  Modulo scalars
+the rule is a theorem of Figure~1, which with its scalars erased is
+isomorphic to \texttt{Paper-V1} (its C4 conjugates by $M_g$ where
+\texttt{Paper-V1}'s \aid{semi-MR} conjugates by $M_g^{-1}$, and each
+derives the other); so it holds in Figure~1 up to some power
+$(-\omega)^a$.  Read back by the isomorphism, that equation holds in the
+rule set with $-1$, as does the rule itself, so $(-\omega)^a$ equals the
+rule's own scalar there; and the presentation theorem reads a power of
+$-\omega$ off as its exponents modulo $p$ and modulo $2$, which pins
+$a$ down and rebuilds the scalar in Figure~1.
+
+\begin{theorem}[\aid{figure1-presentation}]\label{thm:figure1}
+For every width $n$, the paper's Figure~1, its sixteen rules over
+$-\omega$, $H$, $S$, $CZ$, presents the Clifford group with its scalars
+$\pm\omega^t$:
+\begin{code}
+figure1-presentation : ∀ n → (n F,_===_) IsPresentationOf (Clifford± n)
+\end{code}
+\begin{code}[hide]
+figure1-presentation = proof-elided
+\end{code}
+\noindent Home: \texttt{Clifford+MinusOne.Qupit.Figure1.Presentation}.
+\end{theorem}
+
+\noindent This is the paper's Theorem~4.10, against our constructed
+group rather than the unitaries.  The index module states it together
+with \aid{clifford±-presentation} and the exact presentation, which it
+calls \aid{exact-clifford-presentation}.

@@ -260,7 +260,7 @@ semantic groups as the right-hand sides.  In~\cite{bian2026qudit} the
 global phases also include $-1$, so that the swap and the multiplier
 gates belong to $\Cliff$; we work mainly in the projective quotient,
 where $-1$ makes no difference except that the relations come out a
-little simpler.
+little simpler, and adjoin $-1$ only at the end (\S\ref{sec:figure1}).
 
 \subsection{Circuits, rules and derivations in Agda}\label{sec:encoding}
 
@@ -578,9 +578,12 @@ discharged by soundness and completeness of the two factor presentations
 rather than by hand (\S\ref{sec:semidirect}); plumbing reduces the
 semidirect alphabet and relations to the paper's, and two identity
 isomorphisms carry the result to our sixteen rules and to the paper's
-fifteen (\S\ref{sec:plumbing}); and the scalars are restored by the
+fifteen (\S\ref{sec:plumbing}); the scalars are restored by the
 extension theorem, with the one correction computed and verified against
-a cocycle (\S\ref{sec:scalars}).
+a cocycle (\S\ref{sec:scalars}); and $-1$ is adjoined by the
+direct-product theorem, after which exchanging the generators $\omega$,
+$-1$ for the paper's $-\omega$ is a verified isomorphism onto the
+paper's Figure~1 itself (\S\ref{sec:figure1}).
 
 \begin{figure}
 \centering
@@ -595,6 +598,8 @@ a cocycle (\S\ref{sec:scalars}).
   \node[box] (v0)  at (3.2,6.2) {Paper-V0 (16 rules): our Figure~\ref{fig:rules} mod scalars};
   \node[box] (pv1) at (3.2,7.7) {Paper-V1 (15 rules): the paper's Figure~1 mod scalars};
   \node[box] (ex)  at (10.2,6.2) {Exact: Paper-V0 $+\ \omega$,\\ one correction};
+  \node[box] (exm) at (10.2,7.7) {Exact $+\,{-1}$};
+  \node[box] (fig1) at (10.2,9.2) {the paper's Figure~1,\\ 16 rules, $-\omega$};
   \draw[->] (sp) -- node[lab,right]{identity iso} (spsim);
   \draw[->] (spsim.north) -- node[lab,left,pos=0.5]{semidirect thm\ } (sd.south west);
   \draw[->] (pauli.north) -- node[lab,right,pos=0.5]{\ semidirect thm} (sd.south east);
@@ -602,13 +607,16 @@ a cocycle (\S\ref{sec:scalars}).
   \draw[->] (v1) -- node[lab,right]{identity iso} (v0);
   \draw[->] (v0) -- node[lab,right]{identity iso} (pv1);
   \draw[->] (v0) -- node[lab,above]{central extension thm} (ex);
+  \draw[->] (ex) -- node[lab,left]{direct product thm} (exm);
+  \draw[->] (exm) -- node[lab,left]{iso: $-\omega \mapsto -1\cdot\omega$} (fig1);
 \end{tikzpicture}
 \caption{The chain of presentations.  Every arrow is a verified
 presentation theorem or a verified isomorphism of presentations; the
 semantic group is $\mathrm{Sp}(2n,\mathbb Z_p)$ at the bottom,
 $\overline{\mathcal P}_n \rtimes \mathrm{Sp}(2n,\mathbb Z_p)$ from the
-semidirect level up, and a central extension of it by
-$\langle\omega\rangle$ at the top right.}
+semidirect level up, a central extension of it by
+$\langle\omega\rangle$ at the right, and that times $\langle -1\rangle$
+above it.}
 \label{fig:route}
 \end{figure}
 

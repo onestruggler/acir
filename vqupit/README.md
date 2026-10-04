@@ -44,7 +44,9 @@ version is wanted.
   relation reduction, and the presentation theorem
   `simplified-presentation`), `composing` (§5: Pauli, semidirect,
   plumbing with the rules figure and the main theorem
-  `clifford-presentation`, scalars), `discussion` (§6), `related`
+  `clifford-presentation`, scalars, and §5.5, the paper's Figure 1
+  with its scalars — −1 adjoined as a direct factor, the exchange of
+  scalar generators −ω ↦ −1·ω, and Theorem 5.2 `figure1-presentation`), `discussion` (§6), `related`
   (§7), `conclusion` (§8).  There is no longer a section of main
   theorems: each is stated where it is proved.  The five literate Agda
   files (`*.lagda.tex`) — `permutations`,
@@ -89,6 +91,29 @@ version is wanted.
   references into the Agda), `qa.pl`.
 
 ## Building
+
+**Status (2026-10-04): builds clean, 28 pages** — TeX Live 2023
+(Ubuntu 24.04 packages) and Agda 2.8.0, in a container: the
+bibliography starts near the top of page 26, about 25.2 pages of text
+against the 23-page OOPSLA/PLDI limit, with zero errors, zero undefined
+references or citations and no overfull box over 3 pt.  The same
+toolchain builds the previous revision (below) to 27 pages with the
+bibliography on page 24, so the 2026-10-04 revision costs about a page
+and a quarter of text: it adds §5.5, *The paper's Figure 1, scalars
+included* — the exact group has no −1, the paper's group is the exact
+group times ⟨−1⟩, presented by the join with (−1)² = ε
+(`clifford±-presentation`), and Figure 1 itself, over −ω with its
+Legendre symbols and phases, presents the same group by the exchange of
+scalar generators (Theorem 5.2, `figure1-presentation`, the paper's
+Theorem 4.10 against the constructed group) — together with two boxes
+and arrows at the top of the chain figure, the matching sentences in
+the abstract, the introduction (contribution (4)), §3.1, §3.5, §5's
+opening and §5.4, the list of verified theorems and glue facts in §6.1,
+a row of Table 3 (`Clifford+MinusOne/Qupit`, 20 files, 7 138 lines),
+the AI-use statement and the conclusion.  `two-routes` and `composing`
+were regenerated with `agda --latex --only-scope-checking` (Agda 2.8.0),
+and their twins differ from the previous ones only where the sources
+were edited.
 
 **Status: builds clean; about half a page over the limit** — the
 2026-10-01 build (TeX Live 2023 and Agda 2.8.0 in WSL) gives 27 pages
