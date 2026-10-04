@@ -134,7 +134,7 @@ private
     u = x + - ₁
 
 square-one : ∀ (x : ℤ ₚ) → x * x ≡ ₁ → (x ≡ ₁) ⊎ (x ≡ - ₁)
-square-one x x²≡1 with x FP.≡? ₁
+square-one x x²≡1 with x FP.≟ ₁
 ... | yes x≡1 = inj₁ x≡1
 ... | no  x≢1 =
   inj₂ (+-inverseˡ-unique x ₁
