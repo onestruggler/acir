@@ -67,7 +67,22 @@ symplectic form of the phase space, the exponent in $PQ =
 bilinearity, symplectic invariance of \aid{sform}, and the
 presented group's cocycle is the pullback of $c$ along
 Theorem~\ref{thm:main}'s isomorphism, so the two agree by
-construction.
+construction.  The unitary identification uses Weyl multiplication
+\cite[Eq.~(4), Theorem~3]{gross2006hudson} and a \emph{linear} Weil
+representation with exact covariance
+\cite[Theorem~1.3.2]{gurevich2007geometric}: the operators
+$U(e,v,S)=\omega^e W(v)\rho(S)$ obey
+\[
+ U(e,v,S)U(f,w,T)
+ =U\bigl(e+f+\tfrac12\mathrm{sform}(v,Sw),v+Sw,ST\bigr).
+\]
+This is the Heisenberg--Weil representation
+\cite[\S 1.3]{gurevich2010bounds}; conjugation on Weyl operators
+determines $S$ and $v$, so it is faithful and its scalars are exactly
+$\langle\omega I\rangle$ (at width zero, $e\mapsto\omega^e$).
+Adjoining $-I$ gives its direct product with $\mathbb Z_2$ and scalars
+$\langle-\omega I\rangle$.  These finite phase choices differ from
+the full unitary normalizer, which contains $U(1)$.
 Unconditionally:
 
 \input{agda/thm-exact}

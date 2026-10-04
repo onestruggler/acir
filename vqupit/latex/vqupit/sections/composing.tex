@@ -1008,6 +1008,39 @@ which writes its scalars with $-\omega$, is reached in
 \S\ref{sec:figure1} by an isomorphism rather than by a second
 extension.
 
+\paragraph{The unitary identification.}
+Write $V=\Zp^{2n}$ and $\omega=e^{2\pi i/p}$.  Gross's Weyl
+operators satisfy $W(v)W(w)=\omega^{\frac12\mathrm{sform}(v,w)}
+W(v+w)$, after matching the order of the position and momentum
+coordinates~\cite[\S II.1, Eq.~(4)]{gross2006hudson}.
+Every Clifford unitary is, up to phase, a Weyl operator followed by
+a symplectic implementer~\cite[Theorem~3]{gross2006hudson}.
+For finite fields of odd characteristic those implementers can be
+chosen as a \emph{linear} Weil representation $\rho$, with exact
+covariance $\rho(S)W(v)\rho(S)^{-1}=W(Sv)$
+\cite[Theorem~1.3.2]{gurevich2007geometric}.
+Thus, writing $U(e,v,S)=\omega^e W(v)\rho(S)$, one obtains
+\[
+ U(e,v,S)U(f,w,T)
+ =U\bigl(e+f+\tfrac12\mathrm{sform}(v,Sw),\,v+Sw,\,ST\bigr).
+\]
+This is the Heisenberg--Weil representation of the Jacobi group
+\cite[\S 1.3]{gurevich2010bounds}, and its multiplication is exactly
+our structural extension's.  For $n\geq1$ it is faithful: conjugation
+on Weyl operators determines $S$ and then $v$, and the remaining
+scalar determines $e$.  Its scalar subgroup is therefore exactly
+$\langle\omega I\rangle$; at width zero the representation is simply
+$e\mapsto\omega^e$.
+Adjoining $-I$ gives a direct product with $\mathbb Z_2$, since $p$ is
+odd, with scalar subgroup $\langle-\omega I\rangle$.
+These are the two finite scalar conventions used here; the full
+unitary normalizer allows every scalar in $U(1)$.
+The representation argument is mathematical background, not an Agda
+theorem.  Matching the paper's particular $\delta_p$-normalised gate
+matrices to this linearization is a further convention check; explicit
+constructions on symplectic generators are given by
+Neuhauser~\cite{neuhauser2002metaplectic}.
+
 \paragraph{The semantic side.}  A central extension of a group $Q$ by
 an abelian group $K$ is determined by a 2-cocycle $c : Q \times Q \to
 K$, with multiplication $(k, g)\cdot(k', h) = (k + k' + c(g,h),\; gh)$.
