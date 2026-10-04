@@ -11,13 +11,14 @@ This is the Agda formalisation accompanying the paper *"A Complete and Natural R
 ```bash
 # Typecheck via WSL (Agda 2.8, resolves dependencies automatically).
 # This single root reaches most of the library through the results it
-# states, including CliffordT1, QutritCliffordT1, U33Di, and the qupit
+# states, including CliffordT1, QutritCliffordT1, U33Di, the qupit
 # projective Clifford chain (Paper-V1 → Paper-V0 → Simplified-V1 →
-# SemiDirect, plus Shared/PauliBase):
+# SemiDirect, plus Shared/PauliBase), the exact qupit Clifford group
+# (Clifford/Qupit) and Figure 1 with its scalars (Clifford+MinusOne/Qupit):
 wsl --exec /home/onest/.cabal/bin/agda MainTheorems.agda
 ```
 
-What the root does **not** reach, as of the last check: `ProjectiveClifford/Qupit/Simplified-V2`, `ProjectiveClifford/Qubit/`, `Clifford/Qupit/` and `Clifford+MinusOne/Qupit/` — nothing `MainTheorems` states depends on them, so they need typechecking separately if you touch them. For the last two the roots are `Clifford/Qupit/Presentation.agda` (~27 min from scratch) and `Clifford+MinusOne/Qupit/Figure1/Presentation.agda`, which reaches the whole of `Clifford+MinusOne/Qupit/`.
+What the root does **not** reach, as of the last check: `ProjectiveClifford/Qupit/Simplified-V2`, `ProjectiveClifford/Qubit/` and `Clifford/Qubit/` — nothing `MainTheorems` states depends on them, so they need typechecking separately if you touch them. `Clifford/Qupit/` is the slow subtree (~27 min from scratch); with it built, the root rechecks in ~3 min at ~3 GB.
 
 Use WSL Agda 2.8 (`wsl --exec /home/onest/.cabal/bin/agda`) for all files. The WSL install uses its own stdlib at `/home/onest/.agda/lib/agda-stdlib/`. The `.agda-lib` file (`qupit.agda-lib`) includes `.` and depends on `standard-library`.
 
@@ -80,7 +81,7 @@ There is no longer a `Presentation/Groups/`: it held a second Sₙ and a hand-ro
   - **`Syntactics`** is that statement made syntactic: `_Exact±,_===_ n = (n Exact,_===_) ⊕ ⟨ -1 ∣ (-1)² = 1 ⟩`. **`Semantics`**/**`Presentation`** give `presentation±` (via `DirectProduct.dpres`) and `scalar-injective` (a power of -ω is read off as its exponents mod p and mod 2). **`ExactLift`** turns a Paper-V0 derivation `a ≈ b` into the exact `⌜ a ⌝ ≈ ω^c • ⌜ b ⌝`, `c` being the phase difference `Φ a - Φ b` of `Clifford/Qupit/SemRealises` — completeness of the exact presentation, used as a lifting tool.
   - **`Figure1/Syntactics`** is Figure 1 itself: -ω as a 0-ary gate `ν` (as Selinger's ω in `Clifford/Qubit/Selinger/Figure8`), the derived generators T1–T7 *with their phases* (T1's Legendre symbol is computed by Euler's criterion, T4 carries λ_p²), rules `c0`–`c15` in matrix order. **`Figure1/ModScalar/`** is Figure 1 with the scalars erased: Paper-V1 with its semi-MR replaced by Figure 1's C4 (`semi-MS`, the conjugation by M_g rather than M_g⁻¹), Paper-V1's lemma library copied verbatim (it never uses semi-MR), `SemiMS` (each of C4 and semi-MR derives the other, given that M_g conjugates Z to Z^g), and `Iso` (≅ Paper-V1 ≅ Paper-V0, with transports `fq⇒v0`/`v0⇒fq`).
   - **`Translation`** exchanges the scalar generators (`fig : ω ↦ ν^(p+1), -1 ↦ ν^p`, `new : ν ↦ -1 • ω`, identity on gates); **`SemFigure1`** computes the phase of the S-spelled multiplier (`Φ-XM`: exactly minus T1's exponent); **`Figure1/Legendre`** is Euler's criterion's sign arithmetic; **`Figure1/Images`** reads Figure 1's words on the new side; **`Figure1/Derived`** proves every Figure 1 rule there (`new-well-defined`); **`Figure1/Lift`** lifts every Paper-V0 derivation into Figure 1 up to a power of -ω.
-  - **`Iso`**: `Theorem-Exact±-iso-Figure1`. The converse well-definedness pins each lifted scalar down by reading it back through `new` and `scalar-injective`, so Figure 1's scalars are checked once, in `Derived`. **`Figure1/Presentation`**: `presentation-Figure1 : (F._F,_===_ n) IsPresentationOf (Clifford± n)` — the paper's Theorem 4.10, against the abstract model.
+  - **`Iso`**: `Theorem-Exact±-iso-Figure1`. The converse well-definedness pins each lifted scalar down by reading it back through `new` and `scalar-injective`, so Figure 1's scalars are checked once, in `Derived`. **`Figure1/Presentation`**: `presentation-Figure1 : (F._F,_===_ n) IsPresentationOf (Clifford± n)` — the paper's Theorem 4.10, against the abstract model. `MainTheorems.Qupit-Clifford-Scalar-Theorems` states the three presentations: the exact one, the one with -1, and Figure 1's. **Pitfall:** never `with`-abstract a term whose definition is large at symbolic p — `h-cases` in `Legendre`, `P.scalar-injective` or `Lift.lift-v0` in `Iso` — since abstracting it out of the goal normalises the goal and exhausts the heap (Iso: >13 GB vs 90 s). Take the value apart in a helper function instead.
 - **`Groups/ProjectiveClifford/Qubit/`**: the qubit analogue (`CliffordExtension`, `Cocycle`, `ExtensionPresentation`, a `Selinger/` subtree). Self-contained — nothing outside the directory imports it.
 - **`Amalgamations/CliffordT1.agda`**: the qubit Clifford+T gate set as an amalgamated product, ending in a monoid isomorphism.
 - **`Amalgamations/QutritCliffordT1.agda`**: the qutrit Clifford+T analogue.
