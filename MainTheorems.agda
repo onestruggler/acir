@@ -70,6 +70,10 @@ import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Syntactics
   as Fig1Syn
 import Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Presentation
   as Fig1Pres
+import Examples.Groups.Clifford+MinusOne.Qupit.Figure1-MS.Syntactics
+  as Fig1MSSyn
+import Examples.Groups.Clifford+MinusOne.Qupit.Figure1-MS.Presentation
+  as Fig1MSPres
 
 ------------------------------------------------------------------------
 -- The symplectic normal form is unique
@@ -190,7 +194,8 @@ module Qupit-Clifford-Theorems
 -- Homes: Examples.Groups.Clifford.Qupit.Presentation (the exact group),
 -- Examples.Groups.Clifford+MinusOne.Qupit.Presentation (-1 adjoined)
 -- and Examples.Groups.Clifford+MinusOne.Qupit.Figure1.Presentation
--- (Figure 1 itself).  The theorems above read the circuits modulo
+-- (Figure 1 itself), with its variant in Figure1-MS.Presentation.
+-- The theorems above read the circuits modulo
 -- scalars; these put the scalars back, in two steps.
 --
 -- The exact rule set adds the scalar ω, of order p and central, and
@@ -208,6 +213,8 @@ module Qupit-Clifford-Theorems
 -- presentation with -1 and the isomorphism of Clifford+MinusOne.Qupit.
 -- Iso between the two rule sets, which reads -ω as -1 • ω and is the
 -- identity on gates.
+-- Figure1-MS replaces C4 by Paper-V1's semi-MR with its sides swapped
+-- and presents the same group, with all other axioms unchanged.
 
 module Qupit-Clifford-Scalar-Theorems
   (p-3 : ℕ)
@@ -225,9 +232,12 @@ module Qupit-Clifford-Scalar-Theorems
     module Pres± = Qupit±Pres p-3 p-prime g* g-gen
     module Syn₁  = Fig1Syn    p-3 p-prime g* g-gen
     module Pres₁ = Fig1Pres   p-3 p-prime g* g-gen
+    module SynMS = Fig1MSSyn  p-3 p-prime g* g-gen
+    module PresMS = Fig1MSPres p-3 p-prime g* g-gen
 
   open Syn± using (_Exact,_===_ ; _Exact±,_===_)
   open Syn₁ using (_F,_===_)
+  open SynMS using () renaming (_F,_===_ to _F′,_===_)
   open Sem± using (Exact-group ; Clifford±)
 
   -- The exact rule set presents the central extension by ⟨ω⟩.
@@ -243,6 +253,11 @@ module Qupit-Clifford-Scalar-Theorems
   -- Figure 1 presents the same group.
   figure1-presentation : ∀ n → (n F,_===_) IsPresentationOf (Clifford± n)
   figure1-presentation = Pres₁.presentation-Figure1
+
+  -- Figure1-MS presents the same group with the replacement C4.
+  figure1-MS-presentation :
+    ∀ n → (n F′,_===_) IsPresentationOf (Clifford± n)
+  figure1-MS-presentation = PresMS.presentation-Figure1
 
 ------------------------------------------------------------------------
 -- The structural rules are independent
