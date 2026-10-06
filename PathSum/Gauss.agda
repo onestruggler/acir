@@ -81,7 +81,10 @@
 -- Section 4.1 ignores "restrictions
 -- which can't be reified"; here, the outputs being linear, none is
 -- ignored: elimination either reifies the whole restriction or
--- refutes.  Gaussian elimination is formalised here as the sequence of
+-- refutes.  For any outputs, PathSum.Restrict proves the paper's
+-- step sound and ignoring the rest sound (restriction-lemma-4-1), and
+-- PathSum.Restrict.Linear shows this elimination is a chain of its
+-- steps.  Gaussian elimination is formalised here as the sequence of
 -- row operations above, not as a matrix algorithm, on dense
 -- path-sums, so with no cost; PathSum.Cost.Gauss writes it on sparse
 -- path-sums in the cost model (a cost model, not a machine model) and

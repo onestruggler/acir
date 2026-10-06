@@ -674,6 +674,55 @@ module HAB = PathSum.HiddenShift.AnyBent M₀
 open import PathSum.Polynomial.Bind using (odd)
 open import PathSum.Mobius using (evalˢ)
 
+-- Section 4.1's restriction for any outputs.
+
+import PathSum.Restrict
+module Rs = PathSum.Restrict M₀
+open Rs using (Restricts; Solved; _↝*_; _⇝*_)
+
+import PathSum.Restrict.Pivot
+module RPv = PathSum.Restrict.Pivot M₀
+open RPv using (Pivot; restrictᴾ)
+
+import PathSum.Restrict.Spec
+module RSp = PathSum.Restrict.Spec M₀
+
+import PathSum.Restrict.Linear
+module RLn = PathSum.Restrict.Linear M₀
+
+import PathSum.Restrict.Removes
+module RRm = PathSum.Restrict.Removes M₀
+
+import PathSum.CRK.WithX.WellFormed
+module KXW = PathSum.CRK.WithX.WellFormed M₀
+
+import PathSum.Gauss
+module Gau = PathSum.Gauss M₀
+import PathSum.Gauss.Forms as GF
+import PathSum.CRK.Amp
+module KAmp = PathSum.CRK.Amp M₀
+
+-- Counterexamples tied to definition 2.1's normalisation, and lemma 4.1
+-- with constant inputs.
+
+import PathSum.Tied
+module Td = PathSum.Tied M₀
+import PathSum.Compose.Counterexample.Tied
+module CEt = PathSum.Compose.Counterexample.Tied M₀
+import PathSum.PartialIsometry.Strict.Tied
+module Strt = PathSum.PartialIsometry.Strict.Tied M₀
+import PathSum.Isometry.Counterexample
+module IsoC = PathSum.Isometry.Counterexample M₀
+import PathSum.Signature.Isometry
+module SigI = PathSum.Signature.Isometry M₀
+import PathSum.Polynomial.Substitution as PSub
+
+-- Closed restrictions at M₀ = 0, imported so that this root checks
+-- them.
+
+import PathSum.Examples.Restrict
+import PathSum.Examples.Restrict.NonLinear
+
 -- Section 4's incompleteness witnesses, closed at M₀ = 0; stated below
 -- through their own names only.
 
@@ -797,19 +846,36 @@ prop-2-7 = Mat.prop-2-7
 -- "For any well-formed, compatible path-sums ξ, ξ′, ξ′ ∘ ξ is also well
 -- formed" is false, whether well-formed means WellFormed (a path-sum
 -- sending every input to |+⟩, then one sending every input to |0⟩) or
--- definition 2.4 (|0⟩⟨0| then |+⟩⟨+| is (1/√2)|+⟩⟨0|).  Compatibility
--- is vacuous here, every input being a variable.  It holds when the
--- path-sum applied second is an isometry -- the paper's footnote: in
--- practice only unitaries are composed.
+-- definition 2.4.  For definition 2.4 the witnesses must be path-sums
+-- in definition 2.1's sense, the normalisation 1/√2^m tied to the m
+-- path variables: |0⟩⟨0| then |+⟩⟨+|, whose composite is
+-- (1/√2)|+⟩⟨0|, both written with three path variables
+-- (PathSum.Compose.Counterexample.Tied).  The untied pair CE.P₀, CE.P₊
+-- (normalisation ½, one path variable) is kept as the operator-level
+-- statement it is.  It holds when the path-sum applied second is an
+-- isometry -- the paper's footnote: in practice only unitaries are
+-- composed.
 
 WellFormed-∘-fails :
   WellFormed CE.plus × WellFormed CE.erase × ¬ WellFormed (CE.erase ∘ᴾ CE.plus)
 WellFormed-∘-fails = CE.WellFormed-∘-fails
 
+PartialIsometric-∘-fails-tied :
+  ∃ λ m → ∃ λ (ξ : PathSum 1 m m) → ∃ λ (ζ : PathSum 1 m m) →
+    PartialIsometric ξ × PartialIsometric ζ × ¬ PartialIsometric (ζ ∘ᴾ ξ)
+PartialIsometric-∘-fails-tied = CEt.PartialIsometric-∘-fails-tied
+
 PartialIsometric-∘-fails :
   PartialIsometric CE.P₀ × PartialIsometric CE.P₊ ×
   ¬ PartialIsometric (CE.P₊ ∘ᴾ CE.P₀)
 PartialIsometric-∘-fails = CE.PartialIsometric-∘-fails
+
+-- Every path-sum is equivalent to one with its normalisation tied to
+-- its path variables (pad and gadget), so keeping the two apart costs
+-- nothing in what operators are expressible.
+
+tie : (ξ : PathSum n k m) → ∃ λ j → ∃ λ (ξ′ : PathSum n j j) → ξ′ ≋ ξ
+tie = Td.tie
 
 Isometric-∘ : (ξ′ : PathSum n k′ m′) (ξ : PathSum n k m) →
               Isometric ξ′ → Isometric ξ → Isometric (ξ′ ∘ᴾ ξ)
@@ -1597,12 +1663,44 @@ lemma-4-1-partial : (ξ : PathSum n k m) → PartialIsometric ξ →
                     (ξ ≋ idPS ⇔ Restriction-id ξ)
 lemma-4-1-partial = PIso.lemma-4-1-partial
 
--- The converse fails: ½·id is WellFormed but not a partial isometry
--- (PathSum.PartialIsometry.Strict).
+-- The converse fails: (1/√2)·id, with its normalisation tied to its
+-- two path variables, is WellFormed but not a partial isometry
+-- (PathSum.PartialIsometry.Strict.Tied); WellFormed-strict is ½·id
+-- written with no path variables.
+
+WellFormed-strict-tied :
+  ∃ λ (ξ : PathSum 1 2 2) → WellFormed ξ × ¬ PartialIsometric ξ
+WellFormed-strict-tied = Strt.WellFormed-strict-tied
 
 WellFormed-strict :
   ∃ λ (ξ : PathSum 1 2 0) → WellFormed ξ × ¬ PartialIsometric ξ
 WellFormed-strict = Strict.WellFormed-strict
+
+-- Lemma 4.1 needs well-formedness: |x⟩ ↦ |x⟩ + |x ⊕ 1⟩ has the
+-- identity's restriction and is not the identity
+-- (PathSum.Isometry.Counterexample), also with its normalisation tied.
+
+lemma-4-1-needs-WellFormed :
+  ∃ λ (ξ : PathSum 1 0 1) → Restriction-id ξ × ¬ (ξ ≋ idPS)
+lemma-4-1-needs-WellFormed = IsoC.lemma-4-1-needs-WellFormed
+
+lemma-4-1-needs-WellFormed-tied :
+  ∃ λ (ξ : PathSum 1 2 2) → Restriction-id ξ × ¬ (ξ ≋ idPS)
+lemma-4-1-needs-WellFormed-tied = IsoC.lemma-4-1-needs-WellFormed-tied
+
+-- Lemma 4.1 for path-sums with constant inputs: on the columns a
+-- signature admits, well-formedness and the restriction criterion
+-- (PathSum.Signature.Isometry).
+
+lemma-4-1ˢ : (σ : Signature n) (ξ : PathSum n k m) →
+             SigI.WellFormedˢ (σ ⊢ ξ) →
+             ((σ ⊢ ξ) ≋ˢ (σ ⊢ idPS)) ⇔ SigI.Restriction-idˢ (σ ⊢ ξ)
+lemma-4-1ˢ = SigI.lemma-4-1ˢ
+
+lemma-4-1ˢ-partial : (σ : Signature n) (ξ : PathSum n k m) →
+                     SigI.PartialIsometricˢ (σ ⊢ ξ) →
+                     ((σ ⊢ ξ) ≋ˢ (σ ⊢ idPS)) ⇔ SigI.Restriction-idˢ (σ ⊢ ξ)
+lemma-4-1ˢ-partial = SigI.lemma-4-1ˢ-partial
 
 -- Section 3.2 and appendix B conclude (SH)³ = ω·I, a global phase, and
 -- lemma 4.1 as stated covers only the identity.  It holds up to any
@@ -1652,6 +1750,21 @@ interference-bool : (ξ : PathSum n k (suc m)) (Q : Poly n m) →
                     ¬ (∀ γ → Q γ ≡ 0ℤ) →
                     ¬ (ξ ≋ idPS)
 interference-bool = Intf.interference-bool
+
+-- Lemma 4.2 as printed ("Q non-zero, integer-valued") fails, for a
+-- path-sum in definition 2.1's sense -- normalisation tied to its three
+-- path variables, Q = 2x₁ -- that is the identity.  (The untied
+-- lemma-4-2-as-stated-fails below, normalisation ½ with one path
+-- variable, read with 1/√2^m is √2·id, not a counterexample.)
+
+lemma-4-2-as-stated-fails-tied :
+  ∃ λ (ξ : PathSum 1 3 3) → ∃ λ (Q : Poly 1 2) →
+    (head-part (phase ξ) ≈[ pow M ] (½ ·ᴾ Q)) ×
+    (∀ j → PSub.Absent y[ j ] Q) ×
+    (∀ w → NoVar (+ 2) y₀ (out ξ w)) ×
+    ¬ (∀ γ → Q γ ≡ 0ℤ) ×
+    (ξ ≋ idPS)
+lemma-4-2-as-stated-fails-tied = Intf.lemma-4-2-as-stated-fails-tied
 
 lemma-4-2-as-stated-fails :
   ∃ λ (ξ : PathSum 1 2 1) → ∃ λ (Q : Poly 1 0) →
@@ -2121,6 +2234,111 @@ corollary-4-4-gauss = GC.corollary-4-4-gauss
 
 decidable-gauss : (C : K.Circuit n) → K.level C ≤ 2 → Dec (K.⟦ C ⟧ ≋ idPS)
 decidable-gauss = GC.decidable-gauss
+
+
+------------------------------------------------------------------------
+-- Section 4.1's restriction for any outputs (PathSum.Restrict,
+-- PathSum.Restrict.Pivot, PathSum.Restrict.Spec, PathSum.Restrict.Linear,
+-- PathSum.Restrict.Removes, PathSum.CRK.WithX.WellFormed)
+
+-- The paper reifies the restriction where an output reads
+-- f_w = y_j ⊕ Q, and ignores the outputs it cannot reify.  For any
+-- path-sum, a restriction step at such an output -- Q any Boolean
+-- polynomial, constants included -- keeps every entry whose output
+-- agrees with the input on wire w; along a chain of steps and rules of
+-- figure 2, lemma 4.1 holds whatever outputs are left unsolved, so
+-- ignoring them is sound.
+
+restricts-amp : {ξ : PathSum n k (suc m)} {w : Fin n} {j : Fin (suc m)}
+                {ρ : PathSum n k m} → Restricts ξ w j ρ →
+                ∀ x z → z w ≡ x w → amp ξ x z ≐ amp ρ x z
+restricts-amp = Rs.restricts-amp
+
+restriction-amp : {ξ : PathSum n k m} {ρ : PathSum n k m′} → ξ ↝* ρ →
+                  ∀ x z → (∀ w → Solved ρ w → z w ≡ x w) →
+                  amp ξ x z ≐ amp ρ x z
+restriction-amp = Rs.restriction-amp
+
+restriction-lemma-4-1 : (ξ : PathSum n k m) {ρ : PathSum n k′ m′} →
+                        WellFormed ξ → ξ ⇝* ρ →
+                        (ξ ≋ idPS ⇔ Restriction-id ρ)
+restriction-lemma-4-1 = Rs.restriction-lemma-4-1
+
+restriction-solved : (ξ : PathSum n k m) (ρ : PathSum n k′ m′) →
+                     WellFormed ξ → ξ ⇝* ρ → (∀ w → Solved ρ w) →
+                     (ξ ≋ idPS ⇔ ρ ≋ idPS)
+restriction-solved = Rs.restriction-solved
+
+restriction-syntactic : (ξ : PathSum n k m) (ρ : PathSum n k′ 0) →
+                        WellFormed ξ → ξ ⇝* ρ →
+                        (ξ ≋ idPS ⇔
+                         (k′ ≡ 0 × (∀ w → out ρ w ≈[ + 2 ] μ x[ w ]) ×
+                          phase ρ ≈[ pow M ] 0ᴾ))
+restriction-syntactic = Rs.restriction-syntactic
+
+restriction-refutes : (ξ : PathSum n k m) (ρ : PathSum n k′ m′) → ξ ⇝* ρ →
+                      (w : Fin n) (x : Assign n) →
+                      (∀ y → Den.outBit ρ x y w ≡ not (x w)) → ¬ (ξ ≋ idPS)
+restriction-refutes = Rs.restriction-refutes
+
+noPaths-WellFormed : (ξ : PathSum n 0 0) → WellFormed ξ
+noPaths-WellFormed = Rs.noPaths-WellFormed
+
+-- The paper's step: at an output f_w = y_j ⊕ Q (y_j not in Q), the
+-- substitution y_j ← x_w ⊕ Q is a restriction step, and every step at
+-- that output is it, coefficient by coefficient; a chain of steps
+-- removes at most n path variables; Gaussian elimination is a chain of
+-- such steps.
+
+restrictᴾ-step : (ξ : PathSum n k (suc m)) (w : Fin n) (j : Fin (suc m)) →
+                 Pivot ξ w j → Restricts ξ w j (restrictᴾ ξ w j)
+restrictᴾ-step = RPv.restrictᴾ-step
+
+restricts≈restrictᴾ : {ξ : PathSum n k (suc m)} {w : Fin n}
+                      {j : Fin (suc m)} {ρ : PathSum n k m} →
+                      Pivot ξ w j → Restricts ξ w j ρ →
+                      phase ρ ≈[ pow M ] phase (restrictᴾ ξ w j) ×
+                      (∀ v → out ρ v ≈[ + 2 ] out (restrictᴾ ξ w j) v)
+restricts≈restrictᴾ = RPv.restricts≈restrictᴾ
+
+restriction-removes : {ξ : PathSum n k m} {ρ : PathSum n k m′} →
+                      ξ ↝* ρ → m ≤ m′ + n
+restriction-removes = RRm.restriction-removes
+
+gauss-restricts : (st : K.State n (suc m)) (w : Fin n) (j : Fin (suc m)) →
+                  GF.coefʸ (K.sig st w) j ≡ true →
+                  Restricts (KAmp.toPS {k = k} st) w j
+                            (KAmp.toPS {k = k} (Gau.step st w j))
+gauss-restricts = RLn.gauss-restricts
+
+-- Section 3's specification route, for any specification: a circuit
+-- C meets a well-formed ξ exactly when a restriction of the miter
+-- ⟦ C† ⟧ ∘ ξ satisfies lemma 4.1's criterion.
+
+spec-restriction : (C : K.Circuit n) (ξ : PathSum n k m)
+                   {ρ : PathSum n k′ m′} →
+                   WellFormed ξ → (K.⟦ C KA.† ⟧ ∘ᴾ ξ) ⇝* ρ →
+                   (K.⟦ C ⟧ ≋ ξ ⇔ Restriction-id ρ)
+spec-restriction = RSp.spec-restriction
+
+spec-restriction-syntactic :
+  (C : K.Circuit n) (ξ : PathSum n k m) (ρ : PathSum n k′ 0) →
+  WellFormed ξ → (K.⟦ C KA.† ⟧ ∘ᴾ ξ) ⇝* ρ →
+  (K.⟦ C ⟧ ≋ ξ ⇔
+   (k′ ≡ 0 × (∀ w → out ρ w ≈[ + 2 ] μ x[ w ]) × phase ρ ≈[ pow M ] 0ᴾ))
+spec-restriction-syntactic = RSp.spec-restriction-syntactic
+
+spec-restriction-refutes :
+  (C : K.Circuit n) (ξ : PathSum n k m) (ρ : PathSum n k′ m′) →
+  (K.⟦ C KA.† ⟧ ∘ᴾ ξ) ⇝* ρ → (w : Fin n) (x : Assign n) →
+  (∀ y → Den.outBit ρ x y w ≡ not (x w)) → ¬ (K.⟦ C ⟧ ≋ ξ)
+spec-restriction-refutes = RSp.spec-restriction-refutes
+
+-- Circuits with X gates, whose outputs are affine, are well formed, so
+-- the same applies to them.
+
+circuit-WellFormed-X : (C : KX.Circuit n) → WellFormed KX.⟦ C ⟧
+circuit-WellFormed-X = KXW.circuit-WellFormed
 
 
 ------------------------------------------------------------------------

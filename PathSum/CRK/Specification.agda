@@ -28,11 +28,11 @@
 -- sound and, beyond Clifford circuits and specifications, not
 -- complete: an irreducible normal form with path variables left that
 -- matches no case of lemma 4.2 gives no verdict.  Section 4.1's
--- isometry restriction is not applied here: Gaussian elimination is
--- formalised on the state a circuit runs to (PathSum.Gauss), not on a
--- composite of path-sums, so the whole miter is reduced.  For a
--- WellFormed ξ the diagonal of the miter would decide the question
--- (PathSum.CRK.Miter.Compose's spec-miter-restriction).
+-- isometry restriction is not applied here: the whole miter is
+-- reduced.  For a WellFormed ξ the diagonal of the miter decides the
+-- question (PathSum.CRK.Miter.Compose's spec-miter-restriction), and
+-- PathSum.Restrict.Spec restricts the miter itself, whatever its
+-- outputs (spec-restriction).
 --
 -- These are theorems for symbolic use.  On a closed instance the
 -- miter's polynomials do not compute -- a composite is built by

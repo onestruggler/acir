@@ -141,6 +141,14 @@ outputs modulo 2, and `Compose/Relabel/Sharp` shows nothing better
 does.  `Compose/WellFormed` and `Compose/Counterexample`
 show proposition 2.7's well-formedness claim false and prove what
 survives: composing after an isometry preserves well-formedness.
+`Tied` and `Compose/Counterexample/Tied` restate the counterexample
+for definition 2.4 with path-sums in definition 2.1's sense, the
+normalisation 1/√2^m tied to the m path variables (every path-sum has
+such an equivalent form), as do `PartialIsometry/Strict/Tied` for
+`WellFormed` being strictly weaker and `Interference`'s
+`lemma-4-2-as-stated-fails-tied` for lemma 4.2; `Isometry/Counterexample`
+shows lemma 4.1 needs well-formedness, and `Signature/Isometry` proves
+it for path-sums with constant inputs.
 `Signature`, `Signature/Compose`, `Signature/Clean` and
 `Signature/WithX` add definition 2.1's constant inputs — a signature
 makes each wire a variable or a Boolean constant, and the operator is
@@ -175,7 +183,16 @@ is reached two ways for the Clifford ones (every R_k with k ≤ 2):
 `Gauss/Forms` and `Gauss/Corollary` follow the paper, reifying the
 restriction by Gaussian elimination — which either exhibits an input
 whose diagonal entry vanishes or yields a restriction with only
-internal path variables, to which lemma 4.3 applies.
+internal path variables, to which lemma 4.3 applies.  `Restrict`,
+`Restrict/Pivot`, `Restrict/Removes`, `Restrict/Linear` and
+`Restrict/Spec` do section 4.1 for any path-sum, whatever its outputs:
+the paper's step at an output y_j ⊕ Q (Q any Boolean polynomial) keeps
+every entry whose output agrees with the input on that wire, and along
+any chain of steps and rules lemma 4.1 holds however many outputs are
+left unsolved — so the restrictions the paper "ignores" are ignored
+soundly.  That reaches specification miters ⟦ C† ⟧ ∘ ξ and circuits
+with X gates (`CRK/WithX/WellFormed`); `Examples/Restrict` checks the
+seven-T Toffoli against its specification this way.
 
 **Size.**  `Size`, `Size/Sparse`, `Size/Monomials`, `Size/Submonomials`
 and `Size/Terms` prove the size half of corollary 2.15: a circuit's
