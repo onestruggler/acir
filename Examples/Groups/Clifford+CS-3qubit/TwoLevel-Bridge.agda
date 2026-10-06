@@ -313,3 +313,32 @@ from-to : ∀ w → (from ʷ) ((to ʷ) w) ≡ w
 from-to [ g ]ʷ = from-to-gen g
 from-to ε = Eq.refl
 from-to (w • v) = Eq.cong₂ _•_ (from-to w) (from-to v)
+
+idx-idx⁻ : ∀ a → idx (idx⁻ a) ≡ a
+idx-idx⁻ zero = Eq.refl
+idx-idx⁻ (suc zero) = Eq.refl
+idx-idx⁻ (suc (suc zero)) = Eq.refl
+idx-idx⁻ (suc (suc (suc zero))) = Eq.refl
+idx-idx⁻ (suc (suc (suc (suc zero)))) = Eq.refl
+idx-idx⁻ (suc (suc (suc (suc (suc zero))))) = Eq.refl
+idx-idx⁻ (suc (suc (suc (suc (suc (suc zero)))))) = Eq.refl
+idx-idx⁻ (suc (suc (suc (suc (suc (suc (suc zero))))))) = Eq.refl
+
+private
+  -- A generator is determined by its indices: the proof that they are
+  -- in order is irrelevant.
+  X≡ : ∀ {a a′ b b′ : Fin 8} .{p : a < b} .{p′ : a′ < b′} → a ≡ a′ → b ≡ b′ → TL.X-gen a b p ≡ TL.X-gen a′ b′ p′
+  X≡ Eq.refl Eq.refl = Eq.refl
+
+  K≡ : ∀ {a a′ b b′ : Fin 8} .{p : a < b} .{p′ : a′ < b′} → a ≡ a′ → b ≡ b′ → TL.K-gen a b p ≡ TL.K-gen a′ b′ p′
+  K≡ Eq.refl Eq.refl = Eq.refl
+
+to-from-gen : ∀ g → (to ʷ) (from g) ≡ [ g ]ʷ
+to-from-gen (TL.i-gen a) = Eq.cong (λ b → [ TL.i-gen b ]ʷ) (idx-idx⁻ a)
+to-from-gen (TL.X-gen a b p) = Eq.cong [_]ʷ (X≡ (idx-idx⁻ a) (idx-idx⁻ b))
+to-from-gen (TL.K-gen a b p) = Eq.cong [_]ʷ (K≡ (idx-idx⁻ a) (idx-idx⁻ b))
+
+to-from : ∀ w → (to ʷ) ((from ʷ) w) ≡ w
+to-from [ g ]ʷ = to-from-gen g
+to-from ε = Eq.refl
+to-from (w • v) = Eq.cong₂ _•_ (to-from w) (to-from v)

@@ -5,10 +5,12 @@
 -- four things:
 --
 -- * Our generators and relations for the monoid U₈(ℤ[1/2, i]), from
---   Figure 1. These were proven to be sound and complete in
---   arXiv:2204.02217. We do not reprove the results of
---   arXiv:2204.02217 here, but rather we use them as a starting
---   point.
+--   Figure 1. These were proven to be sound and complete in Bian and
+--   Selinger, "Generators and relations for Uₙ(ℤ[1/2,i])" (QPL 2021,
+--   EPTCS 343). The statements here use them as a starting point;
+--   this library proves that result in Clifford+CS-TwoLevel, and
+--   Presentation.agda combines the two.  (The original code cited
+--   arXiv:2204.02217, the 2-qubit Clifford+T paper, here.)
 --
 -- * Our generators and relations for 3-qubit Clifford+CS circuits,
 --   from Figure 2.
@@ -19,7 +21,8 @@
 -- * The statement of the soundness and completeness theorems, namely:
 --   an equation is derivable from our Clifford+CS axioms if and only
 --   if it is derivable from the 2-level axioms (and therefore, by
---   the result of arXiv:2204.02217, if and only if it is true).
+--   the soundness and completeness of the 2-level relations, if and
+--   only if it is true).
 --
 -- This module contains the *statement* of the soundness and
 -- completeness theorems, to ensure that these theorems do not depend
@@ -264,6 +267,8 @@ module CliffordCS where
     ax-CX10-CX01-CS12-CS12-CX01-CX10=CX01-CS12-CS12-CX01-CS12-CS12 : CX10 • CX01 • CS12 • CS12 • CX01 • CX10 === CX01 • CS12 • CS12 • CX01 • CS12 • CS12 ∈ Rel
     ax-CS12-CX01-CS12-CS12-CS12-CX01=CS01-CX21-CS01-CS01-CS01-CX21 : CS12 • CX01 • CS12 • CS12 • CS12 • CX01 === CS01 • CX21 • CS01 • CS01 • CS01 • CX21 ∈ Rel
     ax-CS12-K1-CS12-K1-CS01-K1-CS01=CS01-K1-CS01-K1-CS12-K1-CS12 : CS12 • K1 • CS12 • K1 • CS01 • K1 • CS01 === CS01 • K1 • CS01 • K1 • CS12 • K1 • CS12 ∈ Rel
+    -- The name of this relation, kept from the original code, spells a
+    -- trailing K1 on each side that the relation itself does not have.
     ax-CS12-K1-CS12-CS12-CS12-K1-CS01-K1-CS12-K1=CS01-K1-CS01-CS01-CS01-K1-CS12-K1-CS01-K1 : CS12 • K1 • CS12 • CS12 • CS12 • K1 • CS01 • K1 • CS12 === CS01 • K1 • CS01 • CS01 • CS01 • K1 • CS12 • K1 • CS01 ∈ Rel
 
 
