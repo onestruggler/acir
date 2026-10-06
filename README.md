@@ -211,7 +211,24 @@ n·|C|, false for the empty circuit.  `Size/Interpreter` (with
 `Interpreter/Clifford`, `Interpreter/Equivalence`) builds that
 representation gate by gate, correctly, with every intermediate list
 polynomially bounded.  That bounds the data, not a running time: no
-machine model or complexity class is formalised.
+machine model or complexity class is formalised.  `Size/Cubic` shows
+section 2.2's "space cubic in the volume" is attained: k rounds of
+(H; CNOT) and one T gate on two wires force Θ(V³) terms on every list
+of monomials representing the path-sum, while `Fourier` and
+`Fourier/Circuit` give every circuit's phase a Fourier (parity)
+expansion of at most 3|C| terms — not unique modulo 1, as the paper
+says (`Examples/Fourier`).
+
+**Section 2's smaller claims.**  `PartialIsometry/Erase` (|x⟩ ↦ |0⟩
+is a path-sum but not a partial isometry), `Examples/Section21` (the
+section's composition and lifting instances), `CRK/Cancellation` and
+`Examples/LongDistance` (phase gates on the same parity cancel at a
+distance, in any circuit, before any rule is applied), and
+`Examples/AdderTCount` (appendix B.2's adder uses 7 T gates against
+the two-Toffoli adder's 14).  `Restrict/Stuck` and
+`Examples/IncompleteRestrict` show that section 4's irreducible
+identity stays irreducible after section 4.1's restriction: it removes
+one path variable and solves every output, but no rule then applies.
 
 **Polynomial time, in a cost model.**  `Cost` is a monad counting unit
 steps (arithmetic below 2^M, Booleans, Fin comparisons, list and vector

@@ -767,6 +767,43 @@ import Data.Fin.Base as FinB
 import Data.Fin.Subset as Sub
 import Data.Vec.Base as Vec
 
+-- Section 2.1's small claims, long-distance cancellation, section 4's
+-- identity under the restriction, Fourier expansions, the cubic family.
+-- The closed modules are imported with "as", never applied; _C_
+-- (binomials) is imported qualified, C being a variable name here.
+
+import Data.Nat.Combinatorics as Comb
+
+import PathSum.PartialIsometry.Erase
+module Ers = PathSum.PartialIsometry.Erase M₀
+
+import PathSum.CRK.Cancellation
+module Canc = PathSum.CRK.Cancellation M₀
+
+import PathSum.Restrict.Stuck
+module RSt = PathSum.Restrict.Stuck M₀
+
+import PathSum.Fourier
+module Fou = PathSum.Fourier M₀
+
+import PathSum.Fourier.Circuit
+module FouC = PathSum.Fourier.Circuit M₀
+
+import PathSum.Size.Cubic
+module Cub = PathSum.Size.Cubic M₀
+
+import PathSum.Examples.Incomplete as ExI
+import PathSum.Examples.IncompleteRestrict as ExIR
+import PathSum.Examples.Section21 as ExS21
+import PathSum.Examples.Adder as ExAdd
+import PathSum.Examples.AdderTCount as ExATC
+import PathSum.Examples.LongDistance as ExLD
+import PathSum.Examples.Fourier as ExFou
+import PathSum.CRK.Expand
+import PathSum.Congruence
+import PathSum.Polynomial.Product
+import PathSum.Order
+
 -- Closed cross-checks of the hidden-shift development, at M₀ = 0.
 
 import PathSum.HiddenShift.Example
@@ -2247,6 +2284,211 @@ case-identityᶜ :
   (ExCase.Wᶜ²ᴿᵖ Fl₀.⟶ᶠ* ExCase.Wᶜ²ᴿᵖ₂) ×
   ExB.Cong.Id-syntactic ExCase.Wᶜ²ᴿᵖ₂
 case-identityᶜ = ExCase.case-identityᶜ
+
+
+------------------------------------------------------------------------
+-- Section 2's remaining claims, section 4's identity under the
+-- restriction, and the representations of the phase
+-- (PathSum.PartialIsometry.Erase, PathSum.Examples.Section21,
+-- PathSum.Examples.AdderTCount, PathSum.CRK.Cancellation,
+-- PathSum.Examples.LongDistance, PathSum.Restrict.Stuck,
+-- PathSum.Examples.IncompleteRestrict, PathSum.Fourier,
+-- PathSum.Fourier.Circuit, PathSum.Examples.Fourier,
+-- PathSum.Size.Cubic)
+
+-- Section 2: |x⟩ ↦ |0⟩ is a path-sum (normalisation tied to its path
+-- variables, as definition 2.1 has it) that is not a partial isometry,
+-- yet WellFormed.
+
+erase-non-isometric :
+  WellFormed Ers.eraseᵖ × ¬ PartialIsometric Ers.eraseᵖ × ¬ Isometric Ers.eraseᵖ
+erase-non-isometric = Ers.non-isometric-path-sum
+
+WellFormed⇏PartialIsometric-erase :
+  ∃ λ (ξ : PathSum 1 0 0) → WellFormed ξ × ¬ PartialIsometric ξ
+WellFormed⇏PartialIsometric-erase = Ers.WellFormed⇏PartialIsometric-tied
+
+-- Section 2.1's worked composition (at M₀ = 0): |x1 (x1 ⊕ x2) x3⟩
+-- followed by |x1′ x2′ (x2′ ⊕ x3′)⟩ is |x1 (x1 ⊕ x2)(x1 ⊕ x2 ⊕ x3)⟩,
+-- coefficient by coefficient.
+
+composition-instance :
+  PathSum.Congruence.Congruent 0 ExS21.composite ExS21.cnot₁₃
+composition-instance = ExS21.composite-congruent
+
+-- Section 2.1's lifting instance: ¼(x ⊕ y) = ¼x + ¼y − ½xy, as
+-- polynomials (numerators over 8, coefficient by coefficient).
+
+lift-instance : ∀ γ →
+  (PathSum.Reduction.¼ 3 ·ᴾ liftᴮ ExS21.xorᴾ) γ ≡
+  ((PathSum.Reduction.¼ 3 ·ᴾ μ x[ FinB.zero ] +ᴾ
+    PathSum.Reduction.¼ 3 ·ᴾ μ x[ FinB.suc FinB.zero ]) -ᴾ
+   PathSum.Reduction.½ 3 ·ᴾ PathSum.Polynomial.Product.monoᴾ ExS21.xy) γ
+lift-instance = ExS21.lift-instance
+
+-- Appendix B.2: the Reed-Muller adder and the two-Toffoli adder both
+-- implement the full adder; 7 T gates against 14.
+
+reed-muller-adder :
+  ExB.Implements ExAdd.AdderC ExAdd.Adderˢ ×
+  ExB.Implements ExATC.StdAdder ExAdd.Adderˢ ×
+  PathSum.Toffoli.Netlist.tcount 0 ExAdd.AdderC <
+  PathSum.Toffoli.Netlist.tcount 0 ExATC.StdAdder
+reed-muller-adder = ExATC.reed-muller-adder
+
+adder-tcounts :
+  PathSum.Toffoli.Netlist.tcount 0 ExAdd.AdderC ≡ 7 ×
+  PathSum.Toffoli.Netlist.tcount 0 ExATC.StdAdder ≡ 2 * 7
+adder-tcounts = ExATC.adder-tcounts
+
+-- Section 2.1: long-distance cancellation of phase gates on the same
+-- parity, in any circuit context, before any rule is applied.
+
+long-distance-agree :
+  (C₁ C₃ : K.Circuit n) (D : List (Canc.PGate n)) (k : ℕ) (w w′ : Fin n) →
+  Canc.Carries C₁ C₃ D k w w′ →
+  Canc.Agree (K.run (C₁ ++ K.R k w ∷ Canc.circ D ++ K.R† k w′ ∷ C₃) (K.init {n}))
+             (K.run (C₁ ++ Canc.circ D ++ C₃) (K.init {n}))
+long-distance-agree = Canc.long-distance
+
+long-distance-cancellation :
+  (C₁ C₃ : K.Circuit n) (D : List (Canc.PGate n)) (k : ℕ) (w w′ : Fin n) →
+  Canc.Carries C₁ C₃ D k w w′ →
+  K.⟦ C₁ ++ K.R k w ∷ Canc.circ D ++ K.R† k w′ ∷ C₃ ⟧ ≋
+  K.⟦ C₁ ++ Canc.circ D ++ C₃ ⟧
+long-distance-cancellation = Canc.long-distance-≋
+
+-- A closed instance (M₀ = 0): T and T† on x1 ⊕ x2, on different wires;
+-- the path-sum is literally the identity's.
+
+long-distance-literally-id :
+  ExB.CRK.norm ExLD.LD ≡ 0 × ExB.CRK.paths ExLD.LD ≡ 0 ×
+  (∀ γ → phase ExB.CRK.⟦ ExLD.LD ⟧ γ ≡ phase idPS γ) ×
+  (∀ w γ → out ExB.CRK.⟦ ExLD.LD ⟧ w γ ≡ out idPS w γ) ×
+  PathSum.Congruence.Congruent 0 ExB.CRK.⟦ ExLD.LD ⟧ idPS
+long-distance-literally-id = ExLD.LD-literally-id
+
+long-distance-literal : ExB.Implements ExLD.LD idPS
+long-distance-literal = ExLD.LD-syntactic
+
+long-distance-matrix : PathSum.CRK.Expand.MatrixId 0 ExLD.LD
+long-distance-matrix = ExLD.LD-matrix
+
+-- Section 4's identity under section 4.1's restriction (M₀ = 0): one
+-- step y8 ← x2 solves every output, and what is left -- the identity --
+-- is irreducible with seven path variables ...
+
+identity-restriction :
+  PathSum.Restrict.Restricts 0 ExI.CX.⟦ ExI.SB ⟧ ExIR.w₂ FinB.zero ExIR.ρ ×
+  (∀ w → PathSum.Restrict.Solved 0 ExIR.ρ w) ×
+  PathSum.Full.Match.Irreducibleᶠ 3 ExIR.ρ × ExIR.ρ ExI.D.≋ idPS
+identity-restriction = ExIR.restriction-SB
+
+identity-restriction-substitution :
+  phase ExIR.ρ ≈[ PathSum.Order.pow 3 3 ]
+    phase (PathSum.Restrict.Pivot.restrictᴾ 0 ExIR.ξ₀ ExIR.w₂ FinB.zero) ×
+  (∀ v → out ExIR.ρ v ≈[ + 2 ]
+           out (PathSum.Restrict.Pivot.restrictᴾ 0 ExIR.ξ₀ ExIR.w₂ FinB.zero) v)
+identity-restriction-substitution = ExIR.ρ-is-substitution
+
+identity-restriction-⇔ :
+  (ExI.CX.⟦ ExI.SB ⟧ ExI.D.≋ idPS) ⇔ (ExIR.ρ ExI.D.≋ idPS)
+identity-restriction-⇔ = ExIR.SB⇔ρ
+
+-- ... and no chain of restriction steps and rules of figure 2 reaches a
+-- path-sum without path variables.
+
+identity-stuck-restricted :
+  ∀ {k′} {ζ : PathSum 2 k′ 0} →
+  ¬ (PathSum.Restrict._⇝*_ 0 ExI.CX.⟦ ExI.SB ⟧ ζ)
+identity-stuck-restricted = ExIR.SB-stuck-restricted
+
+-- The generic step: a path-sum all of whose restriction steps lead to
+-- irreducible, fully solved path-sums is stuck.
+
+restriction-stuck-after-one :
+  (ξ : PathSum n k (suc (suc m))) → FlM.Irreducibleᶠ ξ →
+  (∀ {w j} {ρ : PathSum n k (suc m)} → Restricts ξ w j ρ → RSt.Dead ρ) →
+  ∀ {k′} {ζ : PathSum n k′ 0} → ¬ (ξ ⇝* ζ)
+restriction-stuck-after-one = RSt.stuck-after-one
+
+-- Section 2.2: every phase polynomial has a Fourier expansion, at
+-- precision 2^(M+n+m); the multilinear form is unique modulo 1.
+
+fourier-expansion : (P : Poly n m) → Fou.FourierOf (n + m) (Fou.expandᴾ P) P
+fourier-expansion = Fou.expand-fourier
+
+phase-unique : (P Q : Poly n m) →
+               (∀ x y → pow M ∣ (eval P x y - eval Q x y)) → P ≈[ pow M ] Q
+phase-unique = Fou.phase-unique
+
+-- The phase of a circuit has one with at most 3|C| terms, at the
+-- precision of the phase itself.
+
+circuit-fourier-linear : (C : K.Circuit n) →
+  ∃ λ (E : Fou.Expansion n (K.paths C)) →
+  Fou.sizeᶠ E ≤ 3 * length C × Fou.FourierOf 0 E (phase K.⟦ C ⟧)
+circuit-fourier-linear = FouC.circuit-fourier-linear
+
+-- The Fourier expansion is not unique modulo 1 (M₀ = 0): the CZ phase
+-- ½ x1x2 has expansions with coefficients ¼ and −¼ on x1.
+
+fourier-not-unique :
+  PathSum.Fourier.FourierOf 0 0 ExFou.E₊ ExFou.czᴾ ×
+  PathSum.Fourier.FourierOf 0 0 ExFou.E₋ ExFou.czᴾ ×
+  ¬ (PathSum.Order.pow 3 3 ∣
+     (PathSum.Fourier.coefᶠ 0 ExFou.E₊ ExFou.X₁ -
+      PathSum.Fourier.coefᶠ 0 ExFou.E₋ ExFou.X₁))
+fourier-not-unique = ExFou.fourier-not-unique
+
+-- Section 2.2: "the path-sum of a Clifford+T circuit requires space
+-- cubic in the volume", attained: k rounds of (H; CNOT) and one T on two
+-- wires (volume 4k + 2) give a phase with a non-integer coefficient on
+-- every product of three path variables, so every representation of
+-- ⟦ Cube k ⟧ lists at least C(k, 3) ≥ (V − 10)^3/384 terms, while
+-- PathSum.Size's has at most (2k + 4)^3 and the Fourier expansion at
+-- most 6k + 3.
+
+cubic-coefficient : ∀ k (β : Subset (K.paths (Cub.Cube k))) →
+                    Data.Fin.Subset.∣ β ∣ ≡ 3 →
+                    ¬ (pow M ∣ phase K.⟦ Cub.Cube k ⟧ (⊥ , β))
+cubic-coefficient = Cub.cubic-coefficient
+
+cubic-lower-bound : ∀ k (ρ : Sp.Rep 2 (K.paths (Cub.Cube k))) →
+                    Represents K.⟦ Cub.Cube k ⟧ ρ →
+                    Comb._C_ k 3 ≤ length (terms ρ)
+cubic-lower-bound = Cub.cubic-lower-bound
+
+cubic-volume-lower-bound :
+  ∀ k (ρ : Sp.Rep 2 (K.paths (Cub.Cube k))) → Represents K.⟦ Cub.Cube k ⟧ ρ →
+  (2 * length (Cub.Cube k) ∸ 10) ^ 3 ≤ 384 * length (terms ρ)
+cubic-volume-lower-bound = Cub.cubic-volume-lower-bound
+
+cubic-upper-bound : ∀ k →
+  length (terms (Sz.repᴷ (Cub.Cube k))) ≤ (4 + 2 * k) ^ 3
+cubic-upper-bound = Cub.cubic-upper-bound
+
+cubic-volume : ∀ k → 2 * length (Cub.Cube k) ≡ 4 * k + 2
+cubic-volume = Cub.Cube-volume
+
+fourier-vs-multilinear : ∀ k →
+  (∃ λ (E : Fou.Expansion 2 (K.paths (Cub.Cube k))) →
+     Fou.sizeᶠ E ≤ 3 * length (Cub.Cube k) ×
+     Fou.FourierOf 0 E (phase K.⟦ Cub.Cube k ⟧)) ×
+  (∀ (ρ : Sp.Rep 2 (K.paths (Cub.Cube k))) → Represents K.⟦ Cub.Cube k ⟧ ρ →
+     Comb._C_ k 3 ≤ length (terms ρ))
+fourier-vs-multilinear = Cub.fourier-vs-multilinear
+
+-- Θ(V^3) in one statement: PathSum.Size's representation of
+-- ⟦ Cube k ⟧ (corollary 2.15) has at most (V + 2)^3 terms, every
+-- representation at least (V − 10)^3 / 384, V = 2 |Cube k|.
+
+cubic-space-Θ : ∀ k →
+  Represents K.⟦ Cub.Cube k ⟧ (Sz.repᴷ (Cub.Cube k)) ×
+  length (terms (Sz.repᴷ (Cub.Cube k))) ≤ (2 * length (Cub.Cube k) + 2) ^ 3 ×
+  (∀ (ρ : Sp.Rep 2 (K.paths (Cub.Cube k))) → Represents K.⟦ Cub.Cube k ⟧ ρ →
+     (2 * length (Cub.Cube k) ∸ 10) ^ 3 ≤ 384 * length (terms ρ))
+cubic-space-Θ = Cub.cubic-space-Θ
 
 
 ------------------------------------------------------------------------
