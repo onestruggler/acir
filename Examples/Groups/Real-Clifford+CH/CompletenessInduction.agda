@@ -53,6 +53,7 @@ import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87Three as L87₃
 import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87All as L87ₙ
 import Examples.Groups.Real-Clifford+CH.Lemma88.All as L88
 import Examples.Groups.Real-Clifford+CH.Lemma88.W3.All as L88₃
+import Examples.Groups.Real-Clifford+CH.Lemma88.W4.All as L88₄
 
 ------------------------------------------------------------------------
 -- Completeness at a width, and below it
@@ -163,3 +164,22 @@ module Theorem-8-9⁗
     lemma-8-8₃ b = L88₃.lemma-8-8₃ (b {2} (s≤s (s≤s (s≤s z≤n))))
 
   open Theorem-8-9‴ theorem-4-4 theorem-4-4ₙ lemma-8-8₃ lemma-8-8₄ public using (completeness ; subpresentation)
+
+------------------------------------------------------------------------
+-- Theorem 8.9 from Theorem 4.4 alone
+
+-- Lemma 8.8 on four qubits is Lemma88.W4.All, from completeness on two
+-- and three qubits and Lemma D.5.  So Theorem 8.9 rests on nothing but
+-- the one theorem the paper imports, Theorem 4.4 (on two qubits, and at
+-- the width of P for Theorem 4.10).
+module Theorem-8-9-from-4-4
+  (theorem-4-4  : ∀ {u t : Word (G.Gen 4)} → ⟦ u ⟧Y₂ ~ ⟦ t ⟧Y₂ →
+                  PB._≈_ (4 G.G,_===_) u t)
+  (theorem-4-4ₙ : ∀ k → T410.Theorem-4-4 k)
+  where
+
+  private
+    lemma-8-8₄ : Below 4 → Section8.Lemma-8-8 1
+    lemma-8-8₄ b = L88₄.lemma-8-8₄ (b {2} (s≤s (s≤s (s≤s z≤n)))) (b {3} (s≤s (s≤s (s≤s (s≤s z≤n)))))
+
+  open Theorem-8-9⁗ theorem-4-4 theorem-4-4ₙ lemma-8-8₄ public using (completeness ; subpresentation)
