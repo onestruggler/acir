@@ -70,7 +70,12 @@
 -- proposition 2.14's bound is max(2, k), not k (a Hadamard's phase ½xy
 -- has order 2 whatever k is); and proposition 2.7's "well-formedness
 -- is preserved" fails both for WellFormed and for definition 2.4 (it
--- holds when the second path-sum is an isometry).  Smaller slips, in
+-- holds when the second path-sum is an isometry).  And proposition
+-- 3.2's time bound -- "every path-sum reduces to a normal form in
+-- polynomial time" -- fails for all of figure 2 beyond order 2, for
+-- path-sums written as sums of monomials: every normal form reachable
+-- from a ladder of n Toffoli gadgets (4n terms) has an output of 2^n
+-- monomials (PathSum.Ladder.Size).  Smaller slips, in
 -- the module headers: definition 2.6 omits a renaming in the outputs,
 -- section 4.1 substitutes Q where x_i ⊕ Q is meant, example B.1 as
 -- printed is the identity rather than ω·I, the fourth line of example
@@ -97,8 +102,7 @@
 --
 -- Not formalised: running times on a machine and complexity classes
 -- (footnote 2's P = co-NP among them, and footnote 1's hardness of
--- compatibility as a complexity statement); the time bounds for [Case]
--- and non-linear quotients beyond order 2; and section 5's benchmarks
+-- compatibility as a complexity statement); and section 5's benchmarks
 -- as runs of the tool.
 --
 -- Each section's banner names the modules its results come from;
@@ -751,6 +755,17 @@ import PathSum.Full.WithoutCase
 module FWC  = PathSum.Full.WithoutCase M
 module FWC₀ = PathSum.Full.WithoutCase 3
 module Fl₀  = PathSum.Full 3
+
+-- Proposition 3.2's time bound for all of figure 2: a ladder of Toffoli
+-- gadgets, every normal form of which is exponentially large.
+
+import PathSum.Ladder
+module Ldr = PathSum.Ladder M₀
+import PathSum.Ladder.Size
+module LdS = PathSum.Ladder.Size M₀
+import Data.Fin.Base as FinB
+import Data.Fin.Subset as Sub
+import Data.Vec.Base as Vec
 
 -- Closed cross-checks of the hidden-shift development, at M₀ = 0.
 
@@ -3745,6 +3760,92 @@ proposition-3-2ᶠ = CIrr.proposition-3-2ᶠ
 corollary-4-4-polytimeᶠ : (C : Circuit n) →
                           CCor.Corollary-4-4 C × CIrr.PipelineNormalForm C
 corollary-4-4-polytimeᶠ = CIrr.corollary-4-4-polytimeᶠ
+
+
+------------------------------------------------------------------------
+-- Proposition 3.2's time bound fails for figure 2 beyond order 2
+-- (PathSum.Ladder, PathSum.Ladder.Size)
+
+-- The ladder ξ n: 2n qubits, 2n path variables, 4n terms in the cost
+-- model's sparse representation, order at most 3 (exactly 3 for
+-- n ≥ 2, not formalised).  Erratum (sections 3, 3.2, proposition 3.2),
+-- for path-sums written as in definition 2.1 (sums of monomials): every
+-- normal form reachable from ξ (n + 1) needs at least 2^(n+1) monomials
+-- in one output, read modulo 2; time is read as at least output size.
+-- Not refuted: termination, linear length, the linear rules at fixed
+-- order, order 2, ⟦ C ⟧ of Clifford+T circuits, and representations
+-- with sharing or complemented literals (polynomial size there).
+
+ladder-represents : (n : ℕ) → Represents (Ldr.ξ n) (Ldr.ξ-rep n)
+ladder-represents = Ldr.ξ-represents
+
+ladder-terms : (n : ℕ) → length (terms (Ldr.ξ-rep n)) ≡ 4 * n
+ladder-terms = Ldr.ξ-terms
+
+ladder-order : (n : ℕ) → Ord≤ 3 (phase (Ldr.ξ n))
+ladder-order = LdS.ξ-order
+
+-- It has a normal form under all of figure 2 ...
+
+ladder-normal-form-exists :
+  (n : ℕ) → Σ ℕ λ k′ → Σ ℕ λ m′ → Σ (PathSum (n + n) k′ m′) λ ζ →
+  (Ldr.ξ n ⟶ᶠ* ζ) × Irreducibleᶠ ζ
+ladder-normal-form-exists = LdS.normal-form-exists
+
+-- ... and every one of its normal forms, whatever the rules and their
+-- order, has no path variables and normalisation 0 ...
+
+ladder-normal-form-shape :
+  (n : ℕ) {k′ m′ : ℕ} {ζ : PathSum (n + n) k′ m′} →
+  Ldr.ξ n ⟶ᶠ* ζ → Irreducibleᶠ ζ → (m′ ≡ 0) × (k′ ≡ 0)
+ladder-normal-form-shape = LdS.normal-form-shape
+
+-- ... and an odd coefficient on each of the 2^(n+1) monomials over the
+-- x wires in its last output (for n + 1 gadgets) ...
+
+ladder-normal-form-odd :
+  (n : ℕ) {k′ m′ : ℕ} {ζ : PathSum (suc n + suc n) k′ m′} →
+  Ldr.ξ (suc n) ⟶ᶠ* ζ → Irreducibleᶠ ζ →
+  ∀ (s : Subset (suc n)) →
+  odd (out ζ (Ldr.aw (FinB.fromℕ n))
+         (s Vec.++ Vec.replicate (suc n) Sub.outside , ⊥)) ≡ true
+ladder-normal-form-odd = LdS.normal-form-odd
+
+-- ... so every list of terms with that output's values modulo 2 has at
+-- least 2^(n+1) entries ...
+
+ladder-normal-form-terms :
+  (n : ℕ) {k′ m′ : ℕ} {ζ : PathSum (suc n + suc n) k′ m′} →
+  Ldr.ξ (suc n) ⟶ᶠ* ζ → Irreducibleᶠ ζ →
+  (ts : List (Mon (suc n + suc n) m′ × ℤ)) →
+  (∀ x y → odd (eval LdS.⟦ ts ⟧ᵗ x y) ≡
+           odd (eval (out ζ (Ldr.aw (FinB.fromℕ n))) x y)) →
+  2 ^ suc n ≤ length ts
+ladder-normal-form-terms = LdS.normal-form-terms
+
+-- ... and for n + 2 gadgets no sparse representation of the cost model
+-- represents it.
+
+ladder-normal-form-no-rep :
+  (n : ℕ) {k′ m′ : ℕ} {ζ : PathSum (suc (suc n) + suc (suc n)) k′ m′} →
+  Ldr.ξ (suc (suc n)) ⟶ᶠ* ζ → Irreducibleᶠ ζ →
+  (R : Sp.Rep (suc (suc n) + suc (suc n)) m′) → ¬ Represents ζ R
+ladder-normal-form-no-rep = LdS.normal-form-no-rep
+
+-- What every reachable normal form computes: phase 0 modulo 1, and the
+-- x's and V_g = a_g ⊕ (¬x_g ∧ V_(g-1)) (V_(-1) = 1) as outputs.
+
+ladder-normal-form-phase :
+  (n : ℕ) {k′ m′ : ℕ} {ζ : PathSum (n + n) k′ m′} →
+  Ldr.ξ n ⟶ᶠ* ζ → Irreducibleᶠ ζ →
+  ∀ x y → eval (phase ζ) x y Ldr.≡ᴹ 0ℤ
+ladder-normal-form-phase = LdS.normal-form-phase
+
+ladder-normal-form-outputs :
+  (n : ℕ) {k′ m′ : ℕ} {ζ : PathSum (n + n) k′ m′} →
+  Ldr.ξ n ⟶ᶠ* ζ → Irreducibleᶠ ζ →
+  ∀ w x y → odd (eval (out ζ w) x y) ≡ LdS.ladderOut n x w
+ladder-normal-form-outputs = LdS.normal-form-outputs
 
 
 ------------------------------------------------------------------------

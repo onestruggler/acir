@@ -52,8 +52,10 @@
 -- when normal forms are not unique -- they are not -- is not decided
 -- here; only reducts without path variables are shown large, and under
 -- the hypothesis every normal form is one.  Proposition 3.2's time
--- bound is not refuted outright: normal forms that keep path variables
--- can be small.  Nor are the representation and the time formalised:
+-- bound is not refuted here: normal forms that keep path variables
+-- can be small.  (PathSum.Ladder.Size refutes it without any
+-- hypothesis, for a family whose every normal form has no path
+-- variables.)  Nor are the representation and the time formalised:
 -- "exponentially many terms" presumes polynomials written as lists of
 -- terms (the paper's multilinear forms), and "cannot take polynomial
 -- time" presumes a time model; a compact representation -- the lifted

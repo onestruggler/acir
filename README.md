@@ -425,7 +425,13 @@ forms are proved beside checked counterexamples: lemma 4.2 needs Q odd
 at some input, not merely non-zero (Q = 2x₁); proposition 2.14's bound
 is max(2, k), not k (a Hadamard's phase ½xy has order 2 whatever k
 is); and proposition 2.7's well-formedness claim fails, for
-`WellFormed` and for definition 2.4 alike.  Smaller slips: definition
+`WellFormed` and for definition 2.4 alike.  And proposition 3.2's time
+bound fails for all of figure 2 beyond order 2, for path-sums written
+as sums of monomials (`Ladder`, `Ladder/Size`): a ladder of n Toffoli
+gadgets has 4n terms and order at most 3, and every normal form
+reachable from it, by any rules in any order, has an output of 2^n
+monomials — the linear rules at fixed order and all rules at order 2
+stay polynomial.  Smaller slips: definition
 2.6 omits a renaming in the outputs; section 4.1 substitutes Q where
 x_i ⊕ Q is meant; example B.1 as printed is the identity, not ω·I; the
 fourth line of example 3.4 does not follow from the third; section
@@ -434,6 +440,5 @@ adder has 5n qubits for n ≥ 2, as its table and its tool's circuit
 say, not the text's 5n − 1 bits.
 
 Not formalised: running times on a machine and complexity classes;
-the time bounds for [Case] and non-linear quotients beyond order 2;
 and the benchmarks of section 5 as runs of the tool (the QFT, Toffoli, adder and hidden
 shift families are proved for every size).
