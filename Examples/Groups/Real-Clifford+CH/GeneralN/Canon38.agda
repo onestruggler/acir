@@ -88,19 +88,8 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Base38
   using (c₄ ; Q₄ ; e-ZX ; e-XZ ; e-Kb ; e-Kb′ ; e-°c ; e-pc)
 
 -- The transposition of the wires 0 3, and the network putting the box
--- on wire 2 (K below); where they send wires, at a variable width (at
--- a width 3 + m the conversion checker unfolds much further).
-t03 : ∀ {n} → Word (S.Gen (₄₊ n))
-t03 = S.σ • (S.σ S.↑ • ((S.σ S.↑) S.↑ • (S.σ S.↑ • S.σ)))
-
-k₀ : ∀ {n} → Word (S.Gen (₄₊ n))
-k₀ = S.σ S.↑ • S.σ
-
-perm-t03 : ∀ {n} → perm {₄₊ n} t03 ⟨$⟩ʳ sF (sF (sF 0F)) ≡ 0F
-perm-t03 = Eq.refl
-
-cond-K : ∀ {n} → perm {₄₊ n} k₀ ⟨$⟩ʳ (perm (revS (t03 • k₀)) ⟨$⟩ʳ 0F) ≡ 0F
-cond-K = Eq.refl
+-- on wire 2 (HGRotCol's).
+open import Examples.Groups.Real-Clifford+CH.GeneralN.HGRotCol public using (t03 ; k₀ ; perm-t03 ; cond-K)
 
 -- Word algebra at any width.
 module _ {n : ℕ} where
