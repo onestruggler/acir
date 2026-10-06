@@ -439,38 +439,47 @@ module _ {n k m : ℕ} (ξ : PathSum n (suc k) (suc m)) (c : Bool)
              (cong₂ _+ℤ_ (eval-κ ¼ x y) (eval-·ᴾ ½ (liftXor c S) x y)))
       (eval-≈ (head-part (phase ξ)) (κ ¼ +ᴾ (½ ·ᴾ liftXor c S)) eqP x y)
 
-    -- The two branches of y₀ interfere into √2 times the reduct.
+    -- The two branches of y₀ interfere into √2 times the reduct.  The
+    -- value of the quotient is an argument of core-by, not a `with`:
+    -- abstracting it over this goal (here, in ωBranches.core and in
+    -- hh-sound's pair-eq) cost ~85 s and 9 GB of live heap; as
+    -- arguments the whole module checks in ~9 s and 0.5 GB.
 
     core : ∀ x y →
            (zpow (eval (head-part (phase ξ)) x y +ℤ tv x y) +ᴬ zpow (tv x y))
            ≐ √2· (zpow ((⅛ - (¼ * qv x y)) +ℤ tv x y))
-    core x y with liftXor-value c S x y
-    ... | inj₁ q≡0 = λ i → trans
-      (interfere₀ (eval (head-part (phase ξ)) x y) (tv x y) div i)
-      (cong (λ w → √2· (zpow (w +ℤ tv x y)) i) (sym at0))
+    core x y = core-by (liftXor-value c S x y)
       where
-      at0 : ⅛ - (¼ * qv x y) ≡ ⅛
-      at0 = trans (cong (λ w → ⅛ - (¼ * w)) q≡0)
-                  (trans (cong (λ v → ⅛ - v) (*-zeroʳ ¼)) (+-identityʳ ⅛))
+      core-by : (qv x y ≡ 0ℤ) ⊎ (qv x y ≡ 1ℤ) →
+                (zpow (eval (head-part (phase ξ)) x y +ℤ tv x y) +ᴬ
+                 zpow (tv x y))
+                ≐ √2· (zpow ((⅛ - (¼ * qv x y)) +ℤ tv x y))
+      core-by (inj₁ q≡0) = λ i → trans
+        (interfere₀ (eval (head-part (phase ξ)) x y) (tv x y) div i)
+        (cong (λ w → √2· (zpow (w +ℤ tv x y)) i) (sym at0))
+        where
+        at0 : ⅛ - (¼ * qv x y) ≡ ⅛
+        at0 = trans (cong (λ w → ⅛ - (¼ * w)) q≡0)
+                    (trans (cong (λ v → ⅛ - v) (*-zeroʳ ¼)) (+-identityʳ ⅛))
 
-      div : pow M ∣ (eval (head-part (phase ξ)) x y - ¼)
-      div = Eq.subst (λ w → pow M ∣ (eval (head-part (phase ξ)) x y - w))
-        (trans (cong (λ w → ¼ +ℤ (½ * w)) q≡0)
-               (trans (cong (λ v → ¼ +ℤ v) (*-zeroʳ ½)) (+-identityʳ ¼)))
-        (head-eval x y)
-    ... | inj₂ q≡1 = λ i → trans
-      (interfere₁ (eval (head-part (phase ξ)) x y) (tv x y) div i)
-      (cong (λ w → √2· (zpow (w +ℤ tv x y)) i) (sym at1))
-      where
-      at1 : ⅛ - (¼ * qv x y) ≡ ⅛ - ¼
-      at1 = trans (cong (λ w → ⅛ - (¼ * w)) q≡1)
-                  (cong (λ v → ⅛ - v) (*-identityʳ ¼))
+        div : pow M ∣ (eval (head-part (phase ξ)) x y - ¼)
+        div = Eq.subst (λ w → pow M ∣ (eval (head-part (phase ξ)) x y - w))
+          (trans (cong (λ w → ¼ +ℤ (½ * w)) q≡0)
+                 (trans (cong (λ v → ¼ +ℤ v) (*-zeroʳ ½)) (+-identityʳ ¼)))
+          (head-eval x y)
+      core-by (inj₂ q≡1) = λ i → trans
+        (interfere₁ (eval (head-part (phase ξ)) x y) (tv x y) div i)
+        (cong (λ w → √2· (zpow (w +ℤ tv x y)) i) (sym at1))
+        where
+        at1 : ⅛ - (¼ * qv x y) ≡ ⅛ - ¼
+        at1 = trans (cong (λ w → ⅛ - (¼ * w)) q≡1)
+                    (cong (λ v → ⅛ - v) (*-identityʳ ¼))
 
-      div : pow M ∣ (eval (head-part (phase ξ)) x y - (¼ +ℤ ½))
-      div = Eq.subst (λ w → pow M ∣ (eval (head-part (phase ξ)) x y - w))
-        (trans (cong (λ w → ¼ +ℤ (½ * w)) q≡1)
-               (cong (λ v → ¼ +ℤ v) (*-identityʳ ½)))
-        (head-eval x y)
+        div : pow M ∣ (eval (head-part (phase ξ)) x y - (¼ +ℤ ½))
+        div = Eq.subst (λ w → pow M ∣ (eval (head-part (phase ξ)) x y - w))
+          (trans (cong (λ w → ¼ +ℤ (½ * w)) q≡1)
+                 (cong (λ v → ¼ +ℤ v) (*-identityʳ ½)))
+          (head-eval x y)
 
     -- Stated over an arbitrary ζ carrying the reduct's denotational
     -- data, so that ω-reduct never unfolds inside the proof.
@@ -640,38 +649,44 @@ module ωBranches {n k m : ℕ} (ξ : PathSum n k (suc m)) (c : Bool)
            (cong₂ _+ℤ_ (eval-κ ¼ x y) (eval-·ᴾ ½ (liftXor c S) x y)))
     (eval-≈ (head-part (phase ξ)) (κ ¼ +ᴾ (½ ·ᴾ liftXor c S)) eqP x y)
 
-  -- The two branches of y₀ interfere into √2 times the reduct.
+  -- The two branches of y₀ interfere into √2 times the reduct.  As in
+  -- [ω]'s soundness above, the quotient's value is an argument, not a
+  -- `with`.
 
   core : ∀ x y →
          (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y))
          ≐ √2· (zpow ((⅛ - (¼ * qv x y)) +ℤ tv x y))
-  core x y with liftXor-value c S x y
-  ... | inj₁ q≡0 = λ i → trans
-    (interfere₀ (hd x y) (tv x y) div i)
-    (cong (λ w → √2· (zpow (w +ℤ tv x y)) i) (sym at0))
+  core x y = core-by (liftXor-value c S x y)
     where
-    at0 : ⅛ - (¼ * qv x y) ≡ ⅛
-    at0 = trans (cong (λ w → ⅛ - (¼ * w)) q≡0)
-                (trans (cong (λ v → ⅛ - v) (*-zeroʳ ¼)) (+-identityʳ ⅛))
+    core-by : (qv x y ≡ 0ℤ) ⊎ (qv x y ≡ 1ℤ) →
+              (zpow (hd x y +ℤ tv x y) +ᴬ zpow (tv x y))
+              ≐ √2· (zpow ((⅛ - (¼ * qv x y)) +ℤ tv x y))
+    core-by (inj₁ q≡0) = λ i → trans
+      (interfere₀ (hd x y) (tv x y) div i)
+      (cong (λ w → √2· (zpow (w +ℤ tv x y)) i) (sym at0))
+      where
+      at0 : ⅛ - (¼ * qv x y) ≡ ⅛
+      at0 = trans (cong (λ w → ⅛ - (¼ * w)) q≡0)
+                  (trans (cong (λ v → ⅛ - v) (*-zeroʳ ¼)) (+-identityʳ ⅛))
 
-    div : pow M ∣ (hd x y - ¼)
-    div = Eq.subst (λ w → pow M ∣ (hd x y - w))
-      (trans (cong (λ w → ¼ +ℤ (½ * w)) q≡0)
-             (trans (cong (λ v → ¼ +ℤ v) (*-zeroʳ ½)) (+-identityʳ ¼)))
-      (head-eval x y)
-  ... | inj₂ q≡1 = λ i → trans
-    (interfere₁ (hd x y) (tv x y) div i)
-    (cong (λ w → √2· (zpow (w +ℤ tv x y)) i) (sym at1))
-    where
-    at1 : ⅛ - (¼ * qv x y) ≡ ⅛ - ¼
-    at1 = trans (cong (λ w → ⅛ - (¼ * w)) q≡1)
-                (cong (λ v → ⅛ - v) (*-identityʳ ¼))
+      div : pow M ∣ (hd x y - ¼)
+      div = Eq.subst (λ w → pow M ∣ (hd x y - w))
+        (trans (cong (λ w → ¼ +ℤ (½ * w)) q≡0)
+               (trans (cong (λ v → ¼ +ℤ v) (*-zeroʳ ½)) (+-identityʳ ¼)))
+        (head-eval x y)
+    core-by (inj₂ q≡1) = λ i → trans
+      (interfere₁ (hd x y) (tv x y) div i)
+      (cong (λ w → √2· (zpow (w +ℤ tv x y)) i) (sym at1))
+      where
+      at1 : ⅛ - (¼ * qv x y) ≡ ⅛ - ¼
+      at1 = trans (cong (λ w → ⅛ - (¼ * w)) q≡1)
+                  (cong (λ v → ⅛ - v) (*-identityʳ ¼))
 
-    div : pow M ∣ (hd x y - (¼ +ℤ ½))
-    div = Eq.subst (λ w → pow M ∣ (hd x y - w))
-      (trans (cong (λ w → ¼ +ℤ (½ * w)) q≡1)
-             (cong (λ v → ¼ +ℤ v) (*-identityʳ ½)))
-      (head-eval x y)
+      div : pow M ∣ (hd x y - (¼ +ℤ ½))
+      div = Eq.subst (λ w → pow M ∣ (hd x y - w))
+        (trans (cong (λ w → ¼ +ℤ (½ * w)) q≡1)
+               (cong (λ v → ¼ +ℤ v) (*-identityʳ ½)))
+        (head-eval x y)
 
 
   -- The exponent the pair collapses to.
@@ -953,11 +968,19 @@ module _ {n k m : ℕ} (ξ : PathSum n k (suc m)) (i : Fin m) (c : Bool)
     pair-eq : ∀ x z y →
       (if y i then 0ᴬ else (F x z y +ᴬ F x z (setᵗ i y))) ≐
       (if y i then 0ᴬ else (G x z y +ᴬ G x z (setᵗ i y)))
-    pair-eq x z y with y i in ey
-    ... | true  = λ _ → refl
-    ... | false with liftXor-value c S′ x y
-    ...   | inj₁ q0 = pair-q0 x z y ey q0
-    ...   | inj₂ q1 = pair-q1 x z y ey q1
+    pair-eq x z y = pair-by (y i) refl
+      where
+      pair-by : ∀ b → y i ≡ b →
+        (if b then 0ᴬ else (F x z y +ᴬ F x z (setᵗ i y))) ≐
+        (if b then 0ᴬ else (G x z y +ᴬ G x z (setᵗ i y)))
+      pair-by true  _  = λ _ → refl
+      pair-by false ey = pair-q (liftXor-value c S′ x y)
+        where
+        pair-q : (q x y ≡ 0ℤ) ⊎ (q x y ≡ 1ℤ) →
+                 (F x z y +ᴬ F x z (setᵗ i y)) ≐
+                 (G x z y +ᴬ G x z (setᵗ i y))
+        pair-q (inj₁ q0) = pair-q0 x z y ey q0
+        pair-q (inj₂ q1) = pair-q1 x z y ey q1
 
     ext-cong : ∀ (b : Bool) (y y′ : Assign m) → (∀ j → y j ≡ y′ j) →
                ∀ j → extend b y j ≡ extend b y′ j

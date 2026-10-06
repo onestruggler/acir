@@ -47,13 +47,11 @@ corollary 4.4's for circuits over {H, S, CZ} and, by Gaussian
 elimination, over the paper's gate set at level ≤ 2.  Its root is
 
 ```bash
-agda +RTS -M10G -RTS PathSum/Theorems.agda
+agda +RTS -M6G -RTS PathSum/Theorems.agda
 ```
 
-which covers the whole of `PathSum/`.  Run it under a heap cap as
-shown: `Denotation` alone needs about 10 GB and four to five minutes,
-`Cyclotomic` about two minutes, and the rest of the directory several
-minutes more.
+which covers the whole of `PathSum/`.  From scratch it takes about
+25 minutes and peaks under 4 GB; run it under a heap cap as shown.
 
 **The core.**  The layers are the multilinear dyadic polynomials
 (`Polynomial`, `Polynomial/Properties`) with Möbius inversion
