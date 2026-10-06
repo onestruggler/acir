@@ -122,6 +122,14 @@ private
   h-box : HG • box₃ ≈ box₃ • HG
   h-box = trans (back _ B-form) (trans (comm-• eq194 h-P) (front _ (sym B-form)))
 
+-- (338) with x = y on four wires, and HG against the CZ of the wires 1
+-- 3, for the cores of (43) and (44).
+HG-box₃ : (Ex ↓ • ΛH 2 • Ex ↓) • box₃ ≈ box₃ • (Ex ↓ • ΛH 2 • Ex ↓)
+HG-box₃ = h-box
+
+HG-P₁₃CZ : (Ex ↓ • ΛH 2 • Ex ↓) • P₁₃ CZ ≈ P₁₃ CZ • (Ex ↓ • ΛH 2 • Ex ↓)
+HG-P₁₃CZ = h-P
+
 ------------------------------------------------------------------------
 -- (39)
 
