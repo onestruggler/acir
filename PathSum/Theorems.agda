@@ -130,7 +130,7 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Bundles using (_⇔_; mk⇔; Equivalence)
 open import Relation.Binary.PropositionalEquality using
   (_≡_; _≢_; refl; sym; trans)
-open import Relation.Nullary.Decidable using (Dec; no; map′)
+open import Relation.Nullary.Decidable using (Dec; no; map′; True)
 open import Relation.Nullary.Negation using (¬_; contradiction)
 
 private
@@ -731,6 +731,26 @@ module ExInc = PathSum.Examples.Incomplete
 
 import PathSum.Examples.ValidationIncomplete
 module ExVInc = PathSum.Examples.ValidationIncomplete
+
+-- Section 3.2's identity behind [Case], closed at M₀ = 0; stated below
+-- through its own names and instances only (ExCase.D, ExCase.CX).  It
+-- is imported with "as", not applied as a module: a module application
+-- copies every definition, and a closed statement made with the copies
+-- is matched against the originals by unfolding ≋ into amplitudes.
+
+import PathSum.Examples.CaseIdentity as ExCase
+import PathSum.Examples.Base as ExB
+
+-- Circuits with X gates: lemma 4.1 and the reified restriction; and
+-- figure 2 without [Case], generically and at the examples' precision.
+
+import PathSum.CRK.WithX.Columns
+module KXC = PathSum.CRK.WithX.Columns M₀
+
+import PathSum.Full.WithoutCase
+module FWC  = PathSum.Full.WithoutCase M
+module FWC₀ = PathSum.Full.WithoutCase 3
+module Fl₀  = PathSum.Full 3
 
 -- Closed cross-checks of the hidden-shift development, at M₀ = 0.
 
@@ -2090,6 +2110,128 @@ unique⇒no-expansion : Exp.UniqueNormalForms →
                       (ξ′ : PathSum n k (suc m)) → Irreducibleᶠ ξ′ →
                       ¬ (ξ′ ≋ idPS)
 unique⇒no-expansion = Exp.unique⇒no-expansion
+
+
+------------------------------------------------------------------------
+-- The identity behind [Case] (PathSum.CRK.WithX.Columns,
+-- PathSum.Full.WithoutCase, PathSum.Examples.CaseIdentity)
+
+-- Section 3.2 says that [Case] "is a specific case distinction needed
+-- to prove the 2-qubit Clifford+T identity (CNOT (X ⊗ T) controlled-H
+-- (X ⊗ T†))²" [29].  Over {H, X, CNOT, R_k, R_k†} every circuit is well
+-- formed (circuit-WellFormed-X above), so lemma 4.1 applies to it, and
+-- Gaussian elimination reifies its restriction (the X gates make the
+-- outputs affine).
+
+lemma-4-1-circuit-X : (C : KX.Circuit n) →
+                      (KX.⟦ C ⟧ ≋ idPS ⇔ Restriction-id KX.⟦ C ⟧)
+lemma-4-1-circuit-X = KXC.lemma-4-1-circuit
+
+reification-circuit-X :
+  (C : KX.Circuit n) →
+  Gau.Reification (proj₂ (KX.run C K.init)) (KX.norm C)
+reification-circuit-X = KXC.reification-circuit
+
+-- Figure 2 without [Case] (FWC._⟶⁻_: [Elim], [ω], [HH], any
+-- Boolean-valued quotient, any variable).  A certificate -- two
+-- coefficients at every renumbering -- shows that none of its steps
+-- applies; then every chain of figure 2 that gets rid of the path
+-- variables begins with a [Case].
+
+stuck-without-case! : (i : Fin n) (ξ : PathSum n k (suc m)) →
+                      {True (FWC.certificate? i ξ)} → FWC.Stuck⁻ ξ
+stuck-without-case! = FWC.stuck⁻!
+
+case-first : (ξ : PathSum n k (suc m)) → FWC.Stuck⁻ ξ → FWC.CaseFirst ξ
+case-first = FWC.case-first
+
+-- The identity, closed at M₀ = 0.  CH is (1 ⊗ S H T) CNOT (1 ⊗ T† H S†),
+-- whose matrix is twice controlled-H; W is the operator product
+-- (X ⊗ T† acts first), Wᶜ its left-to-right reading as a circuit.
+-- Both squares are the identity, by their matrices; neither factor is.
+-- (The paper does not say how it decomposes controlled-H; "needed" is
+-- proved for this decomposition.)
+
+controlled-H-matrix : ExCase.SameMatrix ExCase.CH ExCase.CHᴬ
+controlled-H-matrix = ExCase.CH-matrix
+
+case-identity-W² : ExCase.CX.⟦ ExCase.W² ⟧ ExCase.D.≋ idPS
+case-identity-W² = ExCase.W²-id
+
+case-identity-Wᶜ² : ExCase.CX.⟦ ExCase.Wᶜ² ⟧ ExCase.D.≋ idPS
+case-identity-Wᶜ² = ExCase.Wᶜ²-id
+
+case-W-not-id : ¬ (ExCase.CX.⟦ ExCase.W ⟧ ExCase.D.≋ idPS)
+case-W-not-id = ExCase.W-not-id
+
+-- Its isometry restriction W²ᴿ, by elimination: the identity exactly
+-- when the circuit is.
+
+case-restriction :
+  ExCase.CX.⟦ ExCase.W² ⟧ ExCase.D.≋ idPS ⇔ ExCase.W²ᴿ ExCase.D.≋ idPS
+case-restriction = ExCase.W²-restriction
+
+-- [Case] is needed: no [Elim], [ω] or [HH] step applies to the
+-- circuit's path-sum or to its restriction, so no chain without [Case]
+-- gets rid of the path variables, and every chain of figure 2 that
+-- does begins with a [Case].
+
+case-stuck : FWC₀.Stuck⁻ ExCase.CX.⟦ ExCase.W² ⟧
+case-stuck = ExCase.W²-stuck⁻
+
+case-stuck-restriction : FWC₀.Stuck⁻ ExCase.W²ᴿ
+case-stuck-restriction = ExCase.W²ᴿ-stuck⁻
+
+case-needed : FWC₀.NeedsCase ExCase.CX.⟦ ExCase.W² ⟧
+case-needed = ExCase.W²-needs-case
+
+case-first-W² : FWC₀.CaseFirst ExCase.CX.⟦ ExCase.W² ⟧
+case-first-W² = ExCase.W²-case-first
+
+-- [Case] suffices: on literals congruent to the path-sum (renumbered)
+-- and to the restriction, [Case] at (y₂ , y₁) with X = x₁, then [HH]
+-- and [Elim] (path-sum) or [Elim] (restriction), end at a path-sum
+-- congruent to the identity; so the circuit is the identity by the
+-- rules, and by the restriction and lemma 4.1, without its matrix.
+
+case-chain : ExCase.W²ᵖ Fl₀.⟶ᶠ* ExCase.W²ᵖ₃
+case-chain = ExCase.W²ᵖ-chain
+
+case-chain-end : ExB.Cong.Id-syntactic ExCase.W²ᵖ₃
+case-chain-end = ExCase.W²ᵖ-end
+
+case-chain-restriction : ExCase.W²ᴿᵖ Fl₀.⟶ᶠ* ExCase.W²ᴿᵖ₂
+case-chain-restriction = ExCase.W²ᴿᵖ-chain
+
+case-chain-restriction-end : ExB.Cong.Id-syntactic ExCase.W²ᴿᵖ₂
+case-chain-restriction-end = ExCase.W²ᴿᵖ-end
+
+case-by-rules : ExCase.CX.⟦ ExCase.W² ⟧ ExCase.D.≋ idPS
+case-by-rules = ExCase.W²-by-rules
+
+case-by-restriction : ExCase.CX.⟦ ExCase.W² ⟧ ExCase.D.≋ idPS
+case-by-restriction = ExCase.W²-by-restriction
+
+-- The claim in one statement, for each reading.
+
+case-identity :
+  ExCase.CX.⟦ ExCase.W² ⟧ ExCase.D.≋ idPS ×
+  FWC₀.Stuck⁻ ExCase.CX.⟦ ExCase.W² ⟧ × FWC₀.Stuck⁻ ExCase.W²ᴿ ×
+  FWC₀.NeedsCase ExCase.CX.⟦ ExCase.W² ⟧ × FWC₀.NeedsCase ExCase.W²ᴿ ×
+  (ExCase.W²ᵖ Fl₀.⟶ᶠ* ExCase.W²ᵖ₃) × ExB.Cong.Id-syntactic ExCase.W²ᵖ₃ ×
+  (ExCase.W²ᴿᵖ Fl₀.⟶ᶠ* ExCase.W²ᴿᵖ₂) ×
+  ExB.Cong.Id-syntactic ExCase.W²ᴿᵖ₂
+case-identity = ExCase.case-identity
+
+case-identityᶜ :
+  ExCase.CX.⟦ ExCase.Wᶜ² ⟧ ExCase.D.≋ idPS ×
+  FWC₀.Stuck⁻ ExCase.CX.⟦ ExCase.Wᶜ² ⟧ × FWC₀.Stuck⁻ ExCase.Wᶜ²ᴿ ×
+  FWC₀.NeedsCase ExCase.CX.⟦ ExCase.Wᶜ² ⟧ × FWC₀.NeedsCase ExCase.Wᶜ²ᴿ ×
+  (ExCase.Wᶜ²ᵖ Fl₀.⟶ᶠ* ExCase.Wᶜ²ᵖ₃) ×
+  ExB.Cong.Id-syntactic ExCase.Wᶜ²ᵖ₃ ×
+  (ExCase.Wᶜ²ᴿᵖ Fl₀.⟶ᶠ* ExCase.Wᶜ²ᴿᵖ₂) ×
+  ExB.Cong.Id-syntactic ExCase.Wᶜ²ᴿᵖ₂
+case-identityᶜ = ExCase.case-identityᶜ
 
 
 ------------------------------------------------------------------------

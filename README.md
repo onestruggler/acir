@@ -107,6 +107,14 @@ variable, folding the renumbering into each rule; `Reorder/Pair` and
 calculus is sound and strongly normalising; `Anywhere/Match` and
 `Full/Match` decide whether a rule applies (reading the quotients off
 the phase), so every path-sum reaches an irreducible one.
+`Examples/CaseIdentity` (with `Full/WithoutCase` and
+`CRK/WithX/Columns`) checks the paper's reason for [Case]: the
+two-qubit Clifford+T identity (CNOT (X ⊗ T) controlled-H (X ⊗ T†))² of
+Selinger and Bian holds, in both readings of the product; no other
+rule of figure 2 applies to its path-sum or to its isometry
+restriction, so every complete reduction begins with [Case]; and with
+[Case] both reduce to the identity (for one standard decomposition of
+controlled-H, the paper not giving its own).
 `Anywhere/Clifford` shows lemma 4.3 makes progress at *every* internal
 variable, `Interference` proves lemma 4.2 for general quotients, and
 `Full/Clifford` fills a gap in the proof of corollary 4.4: every rule

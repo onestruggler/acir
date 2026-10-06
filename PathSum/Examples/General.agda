@@ -13,9 +13,10 @@
 --    true (SH)³ of PathSum.Examples.AppendixB, with the lift
 --    x + y2 - 2xy2 of x ⊕ y2 as [ω]'s quotient and x as [HH]'s.  The
 --    general rules reach ω I exactly as the linear ones do there.
---  * [Case]: the paper applies it only inside the proof of a
---    two-qubit Clifford+T identity it does not print in full, so the
---    instance here is built for the purpose and is not the paper's:
+--  * [Case]: a small instance built for the purpose -- the paper's
+--    own, the identity (CNOT (X ⊗ T) controlled-H (X ⊗ T†))² for which
+--    section 3.2 says [Case] is needed, is
+--    PathSum.Examples.CaseIdentity:
 --    ¼y1x + ½y1y2 + ¼y2(1 - x), output x, is both
 --    ¼y1X + ½y1(y2 + Q) + R and ¼y2(1 - X) + ½y2(y1 + Q′) + R′ with
 --    X = x and Q = Q′ = 0, and [Case] reduces it to the identity.
