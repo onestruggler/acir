@@ -97,8 +97,12 @@ module Step1 where
 
   -- The cosets for the Reidemeister-Schreier theorem. Since the
   -- 2-qubit Clifford+T group is a subgroup of U₄(ℤ[1/√2, i]) of index
-  -- 2, there are exactly 2 cosets. We use 1 and ω as the coset
-  -- representatives.
+  -- 2, there are exactly 2 cosets. We use 1 and ω_[3] = diag(1,1,1,ω)
+  -- as the coset representatives: h c y = (v , c') says that c ⟦y⟧ =
+  -- ⟦v⟧ c', e.g. ω_[0] = ⟦T0⁻¹ • T1⁻¹ • W⟧ ω_[3].  (The original code
+  -- said "1 and ω"; the scalar ω is the generator W, in the trivial
+  -- coset.  The formal proof needs only hypotheses (a) and (b), not
+  -- the index or the representatives.)
   data Cosets : Set where
     I : Cosets
     Ω : Cosets

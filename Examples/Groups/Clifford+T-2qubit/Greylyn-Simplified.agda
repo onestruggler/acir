@@ -1,12 +1,15 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Greylyn-Simplified: a smaller presentation of U₄(ℤ[1/√2,i]), with the
--- five generators ω₀, X₀₁, X₁₂, X₂₃, H₀₁ and 19 relations, equivalent to
--- Greylyn's (16 generators, 123 relations with their indices), by the
--- simplified Reidemeister-Schreier theorem.  Ported from the Agda code
--- accompanying Bian and Selinger, "Generators and relations for 2-qubit
--- Clifford+T operators" (CC BY 2.0).
+-- Greylyn-Simplified: five generators ω₀, X₀₁, X₁₂, X₂₃, H₀₁ and 19
+-- relations, complete relative to Greylyn's (16 generators, 123
+-- relations with their indices): by the simplified Reidemeister-Schreier
+-- theorem, every equation that follows from Greylyn's relations follows
+-- from the 19 after translation (theorem-greylyn-of-simple,
+-- theorem-simple-of-greylyn).  The converse, that the 19 follow from
+-- Greylyn's, holds but is not needed and not proved.  Ported from the
+-- Agda code accompanying Bian and Selinger, "Generators and relations
+-- for 2-qubit Clifford+T operators" (CC BY 2.0).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

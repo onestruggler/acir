@@ -3,7 +3,7 @@
 --
 -- The Reidemeister–Schreier theorem for monoids (Bian and Selinger,
 -- "Generators and relations for 2-qubit Clifford+T operators",
--- Theorem 4.2), in the interface of the Agda code accompanying the
+-- Theorem 4.3), in the interface of the Agda code accompanying the
 -- paper (CC BY 2.0), as an instance of Normalization.Reidemeister-
 -- Schreier:
 --
