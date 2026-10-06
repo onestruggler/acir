@@ -285,6 +285,7 @@ import PathSum.Compose.WellFormed
 module CWF = PathSum.Compose.WellFormed M₀
 
 import PathSum.Compose.Counterexample
+import PathSum.Compose.Counterexample as CEᵒ
 module CE = PathSum.Compose.Counterexample M₀
 
 import PathSum.Compose.Clifford
@@ -947,9 +948,13 @@ PartialIsometric-∘-fails-tied :
     PartialIsometric ξ × PartialIsometric ζ × ¬ PartialIsometric (ζ ∘ᴾ ξ)
 PartialIsometric-∘-fails-tied = CEt.PartialIsometric-∘-fails-tied
 
+-- The path-sums are named through the module itself, applied to M₀,
+-- not through CE's copies: against the copies Agda unfolds both
+-- operators to compare the types (60 s of this module's check).
+
 PartialIsometric-∘-fails :
-  PartialIsometric CE.P₀ × PartialIsometric CE.P₊ ×
-  ¬ PartialIsometric (CE.P₊ ∘ᴾ CE.P₀)
+  PartialIsometric (CEᵒ.P₀ M₀) × PartialIsometric (CEᵒ.P₊ M₀) ×
+  ¬ PartialIsometric (CEᵒ.P₊ M₀ ∘ᴾ CEᵒ.P₀ M₀)
 PartialIsometric-∘-fails = CE.PartialIsometric-∘-fails
 
 -- Every path-sum is equivalent to one with its normalisation tied to
