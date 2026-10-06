@@ -431,41 +431,57 @@ private
 coeff : Amp → ℤ → ℤ
 coeff a w = coeff-aux a (classify w)
 
+-- The lemmas below case on the class of an exponent through a helper
+-- applied to `classify w` (coeff a w is coeff-aux a (classify w) by
+-- definition), never by `with classify w`: abstracting it over these
+-- goals made this module take ~95 s and a 9 GB heap.
+
 coeff-δ : ∀ a i → coeff a (+ toℕ i) ≡ a i
-coeff-δ a i with classify (+ toℕ i)
-... | pos j d = cong a (uniq (+ toℕ i) j i d (self (+ toℕ i)))
-... | neg j d = ⊥-elim (cross (+ toℕ i) i j (self (+ toℕ i)) d)
+coeff-δ a i = by (classify (+ toℕ i))
+  where
+  by : (κ : Class (+ toℕ i)) → coeff-aux a κ ≡ a i
+  by (pos j d) = cong a (uniq (+ toℕ i) j i d (self (+ toℕ i)))
+  by (neg j d) = ⊥-elim (cross (+ toℕ i) i j (self (+ toℕ i)) d)
 
 coeff-cong : ∀ a w w′ → (+ N) ∣ (w - w′) → coeff a w ≡ coeff a w′
-coeff-cong a w w′ d with classify w | classify w′
-... | pos i di | pos j dj =
-      cong a (uniq w i j di (transport w w′ (+ toℕ j) d dj))
-... | pos i di | neg j dj =
-      ⊥-elim (cross w i j di (transport w w′ _ d dj))
-... | neg i di | pos j dj =
-      ⊥-elim (cross w j i (transport w w′ (+ toℕ j) d dj) di)
-... | neg i di | neg j dj = cong -_ (cong a
-      (uniq (w + (+ H)) i j (neg→pos w i di)
-        (neg→pos w j (transport w w′ _ d dj))))
+coeff-cong a w w′ d = by (classify w) (classify w′)
+  where
+  by : (κ : Class w) (κ′ : Class w′) → coeff-aux a κ ≡ coeff-aux a κ′
+  by (pos i di) (pos j dj) =
+    cong a (uniq w i j di (transport w w′ (+ toℕ j) d dj))
+  by (pos i di) (neg j dj) =
+    ⊥-elim (cross w i j di (transport w w′ _ d dj))
+  by (neg i di) (pos j dj) =
+    ⊥-elim (cross w j i (transport w w′ (+ toℕ j) d dj) di)
+  by (neg i di) (neg j dj) = cong -_ (cong a
+    (uniq (w + (+ H)) i j (neg→pos w i di)
+      (neg→pos w j (transport w w′ _ d dj))))
 
 coeff-anti : ∀ a w → coeff a (w + (+ H)) ≡ - (coeff a w)
-coeff-anti a w with classify (w + (+ H)) | classify w
-... | pos i di | pos j dj = ⊥-elim (cross w j i dj (pos→neg w i di))
-... | pos i di | neg j dj =
-      trans (cong a (uniq (w + (+ H)) i j di (neg→pos w j dj)))
-            (sym (neg-involutive (a j)))
-... | neg i di | pos j dj = cong -_ (cong a (uniq w i j (drop-H w i di) dj))
-... | neg i di | neg j dj = ⊥-elim (cross w i j (drop-H w i di) dj)
+coeff-anti a w = by (classify (w + (+ H))) (classify w)
+  where
+  by : (κ : Class (w + (+ H))) (κ′ : Class w) →
+       coeff-aux a κ ≡ - (coeff-aux a κ′)
+  by (pos i di) (pos j dj) = ⊥-elim (cross w j i dj (pos→neg w i di))
+  by (pos i di) (neg j dj) =
+    trans (cong a (uniq (w + (+ H)) i j di (neg→pos w j dj)))
+          (sym (neg-involutive (a j)))
+  by (neg i di) (pos j dj) = cong -_ (cong a (uniq w i j (drop-H w i di) dj))
+  by (neg i di) (neg j dj) = ⊥-elim (cross w i j (drop-H w i di) dj)
 
 coeff-map : ∀ {a b} → a ≐ b → ∀ w → coeff a w ≡ coeff b w
-coeff-map a≐b w with classify w
-... | pos i _ = a≐b i
-... | neg i _ = cong -_ (a≐b i)
+coeff-map {a} {b} a≐b w = by (classify w)
+  where
+  by : (κ : Class w) → coeff-aux a κ ≡ coeff-aux b κ
+  by (pos i _) = a≐b i
+  by (neg i _) = cong -_ (a≐b i)
 
 coeff-+ : ∀ a b w → coeff (a +ᴬ b) w ≡ coeff a w + coeff b w
-coeff-+ a b w with classify w
-... | pos i _ = refl
-... | neg i _ = neg-distrib-+ (a i) (b i)
+coeff-+ a b w = by (classify w)
+  where
+  by : (κ : Class w) → coeff-aux (a +ᴬ b) κ ≡ coeff-aux a κ + coeff-aux b κ
+  by (pos i _) = refl
+  by (neg i _) = neg-distrib-+ (a i) (b i)
 
 
 ------------------------------------------------------------------------
@@ -509,28 +525,30 @@ rot-anti e a i = trans (cong (coeff a) (shape (+ toℕ i) e (+ H))) flip
 -- agree modulo N, differ by H, or neither.
 
 coeff-zpow : ∀ e w → coeff (zpow e) w ≡ χ (e - w)
-coeff-zpow e w with classify w
-... | pos i d = χ-cong (Eq.subst ((+ N) ∣_)
+coeff-zpow e w = by (classify w)
+  where
+  by : (κ : Class w) → coeff-aux (zpow e) κ ≡ χ (e - w)
+  by (pos i d) = χ-cong (Eq.subst ((+ N) ∣_)
       (sym (shape e (+ toℕ i) w)) d)
-  where
-  shape : ∀ u v t → (u - v) - (u - t) ≡ t - v
-  shape = solve 3 (λ u v t → (u :- v) :- (u :- t) := t :- v) refl
-... | neg i d = trans (sym flip) (χ-cong shifted)
-  where
-  shape : ∀ u v s t → t - (v + s) ≡ ((u - v) - s) - (u - t)
-  shape = solve 4 (λ u v s t →
-    t :- (v :+ s) := ((u :- v) :- s) :- (u :- t)) refl
+    where
+    shape : ∀ u v t → (u - v) - (u - t) ≡ t - v
+    shape = solve 3 (λ u v t → (u :- v) :- (u :- t) := t :- v) refl
+  by (neg i d) = trans (sym flip) (χ-cong shifted)
+    where
+    shape : ∀ u v s t → t - (v + s) ≡ ((u - v) - s) - (u - t)
+    shape = solve 4 (λ u v s t →
+      t :- (v :+ s) := ((u :- v) :- s) :- (u :- t)) refl
 
-  shifted : (+ N) ∣ (((e - (+ toℕ i)) - (+ H)) - (e - w))
-  shifted = Eq.subst ((+ N) ∣_) (shape e (+ toℕ i) (+ H) w) d
+    shifted : (+ N) ∣ (((e - (+ toℕ i)) - (+ H)) - (e - w))
+    shifted = Eq.subst ((+ N) ∣_) (shape e (+ toℕ i) (+ H) w) d
 
-  raise : ∀ u v s → ((u - v) - s) + s ≡ u - v
-  raise = solve 3 (λ u v s → ((u :- v) :- s) :+ s := u :- v) refl
+    raise : ∀ u v s → ((u - v) - s) + s ≡ u - v
+    raise = solve 3 (λ u v s → ((u :- v) :- s) :+ s := u :- v) refl
 
-  flip : χ ((e - (+ toℕ i)) - (+ H)) ≡ - (χ (e - (+ toℕ i)))
-  flip = trans (sym (neg-involutive _))
-    (cong -_ (sym (trans (cong χ (sym (raise e (+ toℕ i) (+ H))))
-                         (χ-anti ((e - (+ toℕ i)) - (+ H))))))
+    flip : χ ((e - (+ toℕ i)) - (+ H)) ≡ - (χ (e - (+ toℕ i)))
+    flip = trans (sym (neg-involutive _))
+      (cong -_ (sym (trans (cong χ (sym (raise e (+ toℕ i) (+ H))))
+                           (χ-anti ((e - (+ toℕ i)) - (+ H))))))
 
 rot-zpow : ∀ e′ e → rot e′ (zpow e) ≐ zpow (e′ + e)
 rot-zpow e′ e i = trans (coeff-zpow e ((+ toℕ i) - e′))
@@ -540,22 +558,25 @@ rot-zpow e′ e i = trans (coeff-zpow e ((+ toℕ i) - e′))
   shape = solve 3 (λ u v t → u :- (t :- v) := (v :+ u) :- t) refl
 
 rot-comp : ∀ e e′ a → rot e (rot e′ a) ≐ rot (e + e′) a
-rot-comp e e′ a i with classify ((+ toℕ i) - e)
-... | pos j d = sym (coeff-cong a ((+ toℕ i) - (e + e′)) ((+ toℕ j) - e′)
-      (Eq.subst ((+ N) ∣_) (shape (+ toℕ i) (+ toℕ j) e e′) d))
+rot-comp e e′ a i = by (classify ((+ toℕ i) - e))
   where
-  shape : ∀ u v y y′ → (u - y) - v ≡ (u - (y + y′)) - (v - y′)
-  shape = solve 4 (λ u v y y′ →
-    (u :- y) :- v := (u :- (y :+ y′)) :- (v :- y′)) refl
-... | neg j d = sym (trans
+  by : (κ : Class ((+ toℕ i) - e)) →
+       coeff-aux (rot e′ a) κ ≡ rot (e + e′) a i
+  by (pos j d) = sym (coeff-cong a ((+ toℕ i) - (e + e′)) ((+ toℕ j) - e′)
+      (Eq.subst ((+ N) ∣_) (shape (+ toℕ i) (+ toℕ j) e e′) d))
+    where
+    shape : ∀ u v y y′ → (u - y) - v ≡ (u - (y + y′)) - (v - y′)
+    shape = solve 4 (λ u v y y′ →
+      (u :- y) :- v := (u :- (y :+ y′)) :- (v :- y′)) refl
+  by (neg j d) = sym (trans
       (coeff-cong a ((+ toℕ i) - (e + e′)) (((+ toℕ j) - e′) + (+ H))
         (Eq.subst ((+ N) ∣_) (shape (+ toℕ i) (+ toℕ j) e e′ (+ H)) d))
       (coeff-anti a ((+ toℕ j) - e′)))
-  where
-  shape : ∀ u v y y′ t →
-          ((u - y) - (v + t)) ≡ (u - (y + y′)) - ((v - y′) + t)
-  shape = solve 5 (λ u v y y′ t →
-    (u :- y) :- (v :+ t) := (u :- (y :+ y′)) :- ((v :- y′) :+ t)) refl
+    where
+    shape : ∀ u v y y′ t →
+            ((u - y) - (v + t)) ≡ (u - (y + y′)) - ((v - y′) + t)
+    shape = solve 5 (λ u v y y′ t →
+      (u :- y) :- (v :+ t) := (u :- (y :+ y′)) :- ((v :- y′) :+ t)) refl
 
 
 ------------------------------------------------------------------------
@@ -571,9 +592,11 @@ scale zero    a = a
 scale (suc j) a = √2· (scale j a)
 
 coeff-·ᴬ : ∀ (z : ℤ) a w → coeff (z ·ᴬ a) w ≡ z * coeff a w
-coeff-·ᴬ z a w with classify w
-... | pos i _ = refl
-... | neg i _ = neg-distribʳ-* z (a i)
+coeff-·ᴬ z a w = by (classify w)
+  where
+  by : (κ : Class w) → coeff-aux (z ·ᴬ a) κ ≡ z * coeff-aux a κ
+  by (pos i _) = refl
+  by (neg i _) = neg-distribʳ-* z (a i)
 
 rot-·ᴬ : ∀ e (z : ℤ) a → rot e (z ·ᴬ a) ≐ z ·ᴬ rot e a
 rot-·ᴬ e z a i = coeff-·ᴬ z a ((+ toℕ i) - e)
@@ -589,9 +612,11 @@ scale-map (suc j) a≐b = √2·-map (scale-map j a≐b)
 +ᴬ-comm a b i = +-comm (a i) (b i)
 
 rot-0ᴬ : ∀ e → rot e 0ᴬ ≐ 0ᴬ
-rot-0ᴬ e i with classify ((+ toℕ i) - e)
-... | pos _ _ = refl
-... | neg _ _ = refl
+rot-0ᴬ e i = by (classify ((+ toℕ i) - e))
+  where
+  by : (κ : Class ((+ toℕ i) - e)) → coeff-aux 0ᴬ κ ≡ 0ᴬ i
+  by (pos _ _) = refl
+  by (neg _ _) = refl
 
 Σᴮ-+ : ∀ {k} (f g : (Fin k → Bool) → Amp) →
        Σᴮ (λ y → f y +ᴬ g y) ≐ Σᴮ f +ᴬ Σᴮ g
