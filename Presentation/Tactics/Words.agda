@@ -1175,23 +1175,39 @@ module Rewriting
     -- Rewrite the given word until a normal form is reached, or up to
     -- a maximum of n rewrite steps. The parameter n is needed to
     -- ensure termination.
-    multistep : (n : ℕ) -> List X -> List X
-    multistep zero xs = xs
-    multistep (suc n) xs with strict xs step
-    multistep (suc n) xs | nothing = xs
-    multistep (suc n) xs | just (xs' , _) = multistep n xs'
+    --
+    -- Each round goes on from the list strict has rebuilt, and returns
+    -- that list when no step applies -- not the argument, which may be
+    -- an unevaluated term that Agda's conversion checker evaluates
+    -- again, so that the work doubles with every normal form nested
+    -- inside another (rep 20 nf, in Clifford+CS-3qubit, took 2^20).
+    mutual
+      multistep : (n : ℕ) -> List X -> List X
+      multistep zero xs = xs
+      multistep (suc n) xs = strict {P = λ _ -> List X} xs (λ xs' -> multistep-after n xs' (step xs'))
 
-    -- Lemma: multistep rewriting returns an equivalent word.
-    lemma-multistep : (n : ℕ) -> (xs : List X) -> Γ ⊢ word-of-list' xs === word-of-list' (multistep n xs)
-    lemma-multistep zero xs = refl
-    lemma-multistep (suc n) xs with strict xs step in eq
-    lemma-multistep (suc n) xs | nothing = refl
-    lemma-multistep (suc n) xs | just (xs' , hyp) =
-      equational word-of-list' xs
-              by hyp
-          equals word-of-list' xs'
-              by lemma-multistep n xs'
-          equals word-of-list' (multistep n xs')
+      multistep-after : ℕ -> (xs : List X) -> Maybe (∃ λ (xs' : List X) -> Γ ⊢ word-of-list' xs === word-of-list' xs') -> List X
+      multistep-after n xs nothing = xs
+      multistep-after n xs (just p) = multistep n (proj₁ p)
+
+    mutual
+      -- Lemma: multistep rewriting returns an equivalent word.
+      lemma-multistep : (n : ℕ) -> (xs : List X) -> Γ ⊢ word-of-list' xs === word-of-list' (multistep n xs)
+      lemma-multistep zero xs = refl
+      lemma-multistep (suc n) xs =
+        Eq.subst (λ l -> Γ ⊢ word-of-list' xs === word-of-list' l)
+          (Eq.sym (lemma-strict {P = λ _ -> List X} xs (λ xs' -> multistep-after n xs' (step xs'))))
+          (lemma-multistep-after n xs (step xs))
+
+      lemma-multistep-after : (n : ℕ) -> (xs : List X) -> (m : Maybe (∃ λ (xs' : List X) -> Γ ⊢ word-of-list' xs === word-of-list' xs')) ->
+        Γ ⊢ word-of-list' xs === word-of-list' (multistep-after n xs m)
+      lemma-multistep-after n xs nothing = refl
+      lemma-multistep-after n xs (just p) =
+        equational word-of-list' xs
+                by proj₂ p
+            equals word-of-list' (proj₁ p)
+                by lemma-multistep n (proj₁ p)
+            equals word-of-list' (multistep n (proj₁ p))
 
     -- Return the entire rewrite sequence. This is useful for
     -- debugging rewriting strategies.
@@ -1249,24 +1265,35 @@ module Rewriting
 
     -- Rewrite the given word until a normal form is reached, or up to
     -- a maximum of n rewrite steps. The parameter n is needed to
-    -- ensure termination.
-    multistep : (n : ℕ) -> List X -> List X
-    multistep zero xs = xs
-    multistep (suc n) xs with strict xs step
-    multistep (suc n) xs | nothing = xs
-    multistep (suc n) xs | just (xs' , _) = multistep n xs'
+    -- ensure termination.  Each round goes on from the list strict has
+    -- rebuilt (see Step-syllable.multistep).
+    mutual
+      multistep : (n : ℕ) -> List X -> List X
+      multistep zero xs = xs
+      multistep (suc n) xs = strict {P = λ _ -> List X} xs (λ xs' -> multistep-after n xs' (step xs'))
 
-    -- Lemma: multistep rewriting returns an equivalent word.
-    lemma-multistep : (n : ℕ) -> (xs : List X) -> Γ ⊢ word-of-list xs === word-of-list (multistep n xs)
-    lemma-multistep zero xs = refl
-    lemma-multistep (suc n) xs with strict xs step in eq
-    lemma-multistep (suc n) xs | nothing = refl
-    lemma-multistep (suc n) xs | just (xs' , hyp) =
-      equational word-of-list xs
-              by hyp
-          equals word-of-list xs'
-              by lemma-multistep n xs'
-          equals word-of-list (multistep n xs')
+      multistep-after : ℕ -> (xs : List X) -> Maybe (∃ λ (xs' : List X) -> Γ ⊢ word-of-list xs === word-of-list xs') -> List X
+      multistep-after n xs nothing = xs
+      multistep-after n xs (just p) = multistep n (proj₁ p)
+
+    mutual
+      -- Lemma: multistep rewriting returns an equivalent word.
+      lemma-multistep : (n : ℕ) -> (xs : List X) -> Γ ⊢ word-of-list xs === word-of-list (multistep n xs)
+      lemma-multistep zero xs = refl
+      lemma-multistep (suc n) xs =
+        Eq.subst (λ l -> Γ ⊢ word-of-list xs === word-of-list l)
+          (Eq.sym (lemma-strict {P = λ _ -> List X} xs (λ xs' -> multistep-after n xs' (step xs'))))
+          (lemma-multistep-after n xs (step xs))
+
+      lemma-multistep-after : (n : ℕ) -> (xs : List X) -> (m : Maybe (∃ λ (xs' : List X) -> Γ ⊢ word-of-list xs === word-of-list xs')) ->
+        Γ ⊢ word-of-list xs === word-of-list (multistep-after n xs m)
+      lemma-multistep-after n xs nothing = refl
+      lemma-multistep-after n xs (just p) =
+        equational word-of-list xs
+                by proj₂ p
+            equals word-of-list (proj₁ p)
+                by lemma-multistep n (proj₁ p)
+            equals word-of-list (multistep n (proj₁ p))
 
     -- Return the entire rewrite sequence. This is useful for
     -- debugging rewriting strategies.
@@ -1387,12 +1414,15 @@ module Rewriting
       multistep n xs = multistep-st n (standardize xs)
 
       -- Auxiliary function: multistep-st assumes that the input is
-      -- already standardized.
+      -- already standardized.  Each round goes on from the list strict
+      -- has rebuilt (see Step-syllable.multistep).
       multistep-st : (n : ℕ) -> List X -> List X
       multistep-st zero xs = xs
-      multistep-st (suc n) xs with strict xs step
-      multistep-st (suc n) xs | nothing = xs
-      multistep-st (suc n) xs | just (xs' , _) = multistep n xs'
+      multistep-st (suc n) xs = strict {P = λ _ -> List X} xs (λ xs' -> multistep-after n xs' (step xs'))
+
+      multistep-after : ℕ -> (xs : List X) -> Maybe (∃ λ (xs' : List X) -> Γ ⊢ word-of-list xs === word-of-list xs') -> List X
+      multistep-after n xs nothing = xs
+      multistep-after n xs (just p) = multistep n (proj₁ p)
 
     mutual
       -- Lemma: multistep rewriting returns an equivalent word.
@@ -1410,14 +1440,20 @@ module Rewriting
 
       lemma-multistep-st : (n : ℕ) -> (xs : List X) -> Γ ⊢ word-of-list xs === word-of-list (multistep-st n xs)
       lemma-multistep-st zero xs = refl
-      lemma-multistep-st (suc n) xs with strict xs step in eq
-      lemma-multistep-st (suc n) xs | nothing = refl
-      lemma-multistep-st (suc n) xs | just (xs' , hyp) =
+      lemma-multistep-st (suc n) xs =
+        Eq.subst (λ l -> Γ ⊢ word-of-list xs === word-of-list l)
+          (Eq.sym (lemma-strict {P = λ _ -> List X} xs (λ xs' -> multistep-after n xs' (step xs'))))
+          (lemma-multistep-after n xs (step xs))
+
+      lemma-multistep-after : (n : ℕ) -> (xs : List X) -> (m : Maybe (∃ λ (xs' : List X) -> Γ ⊢ word-of-list xs === word-of-list xs')) ->
+        Γ ⊢ word-of-list xs === word-of-list (multistep-after n xs m)
+      lemma-multistep-after n xs nothing = refl
+      lemma-multistep-after n xs (just p) =
         equational word-of-list xs
-                by hyp
-            equals word-of-list xs'
-                by lemma-multistep n xs'
-            equals word-of-list (multistep n xs')
+                by proj₂ p
+            equals word-of-list (proj₁ p)
+                by lemma-multistep n (proj₁ p)
+            equals word-of-list (multistep n (proj₁ p))
 
     -- Return the entire rewrite sequence. Useful for debugging
     -- rewriting strategies. Note: in the output, standardization
@@ -1490,24 +1526,35 @@ module Rewriting
       -- to a maximum of n rewrite steps. The parameter n is needed to
       -- ensure termination. The given standardization function is
       -- applied before and after every rewrite step.
-    multistep : (n : ℕ) -> List X -> List X
-    multistep zero xs = standardize xs
-    multistep (suc k) xs with strict xs step
-    multistep (suc k) xs | nothing = standardize xs
-    multistep (suc k) xs | just (xs' , _) = multistep k xs'
+      -- Each round goes on from the list strict has rebuilt (see
+      -- Step-syllable.multistep).
+    mutual
+      multistep : (n : ℕ) -> List X -> List X
+      multistep zero xs = standardize xs
+      multistep (suc k) xs = strict {P = λ _ -> List X} xs (λ xs' -> multistep-after k xs' (step xs'))
 
+      multistep-after : ℕ -> (xs : List X) -> Maybe (∃ λ (xs' : List X) -> Γ ⊢ word-of-list xs === word-of-list xs') -> List X
+      multistep-after k xs nothing = standardize xs
+      multistep-after k xs (just p) = multistep k (proj₁ p)
 
-    -- Lemma: multistep rewriting returns an equivalent word.
-    lemma-multistep : (n : ℕ) -> (xs : List X) -> Γ ⊢ word-of-list xs === word-of-list (multistep n xs)
-    lemma-multistep zero xs = lemma-standardize xs
-    lemma-multistep (suc k) xs with strict xs step in eq
-    lemma-multistep (suc k) xs | nothing = lemma-standardize xs
-    lemma-multistep (suc k) xs | just (xs' , hyp) =
-      equational word-of-list xs
-              by hyp
-          equals word-of-list xs'
-              by lemma-multistep k xs'
-          equals word-of-list (multistep k xs')
+    mutual
+      -- Lemma: multistep rewriting returns an equivalent word.
+      lemma-multistep : (n : ℕ) -> (xs : List X) -> Γ ⊢ word-of-list xs === word-of-list (multistep n xs)
+      lemma-multistep zero xs = lemma-standardize xs
+      lemma-multistep (suc k) xs =
+        Eq.subst (λ l -> Γ ⊢ word-of-list xs === word-of-list l)
+          (Eq.sym (lemma-strict {P = λ _ -> List X} xs (λ xs' -> multistep-after k xs' (step xs'))))
+          (lemma-multistep-after k xs (step xs))
+
+      lemma-multistep-after : (k : ℕ) -> (xs : List X) -> (m : Maybe (∃ λ (xs' : List X) -> Γ ⊢ word-of-list xs === word-of-list xs')) ->
+        Γ ⊢ word-of-list xs === word-of-list (multistep-after k xs m)
+      lemma-multistep-after k xs nothing = lemma-standardize xs
+      lemma-multistep-after k xs (just p) =
+        equational word-of-list xs
+                by proj₂ p
+            equals word-of-list (proj₁ p)
+                by lemma-multistep k (proj₁ p)
+            equals word-of-list (multistep k (proj₁ p))
 
     -- Return the entire rewrite sequence. This is useful for
     -- debugging rewriting strategies.
