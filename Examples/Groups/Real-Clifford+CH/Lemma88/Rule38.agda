@@ -5,7 +5,7 @@
 --
 -- (38) is (−1)_[a] X_[a,a′] · H_[0,1] H_[3,2] = H_[0,1] H_[3,2] · (−1)_[a] X_[a,a′]
 -- for a′ = a + 1 and a ≥ 4.  Decoded, the letter is a rotation placed by
--- the layout of the Gray-code step a (Rule32.letter′), and the pair is
+-- the layout of the Gray-code step a (LetterG.letter′), and the pair is
 -- the gadget, the H gate on the wires 0 1 with every other control
 -- white (Layout.gadget-form, its negations read off as the colouring
 -- HGRotCol.gcol).  Since a ≥ 4 the code of a is black on some wire
@@ -20,10 +20,9 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.RotCol using (RotComm)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.HGRotCol using (HGRot)
 
-module Examples.Groups.Real-Clifford+CH.Lemma88.Rule38 {m : ℕ} (rotcomm : RotComm m) (hgrot : HGRot m) where
+module Examples.Groups.Real-Clifford+CH.Lemma88.Rule38 {m : ℕ} (hgrot : HGRot m) where
 
 open import Data.Bool using (Bool ; true ; false ; not)
 open import Data.Bool.Properties using () renaming (_≟_ to _≟ᵇ_)
@@ -59,7 +58,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Placed using (place)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.RotCol using (rot)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.HGRotCol using (gcol ; gadgetG)
 open import Examples.Groups.Real-Clifford+CH.Lemma88.Easy m using (d-zx ; dZX-lo₁ ; d-hh0132)
-open import Examples.Groups.Real-Clifford+CH.Lemma88.Rule32 {m} rotcomm using (letter′ ; tw)
+open import Examples.Groups.Real-Clifford+CH.Lemma88.LetterG {m} using (letter′ ; tw)
 open import Examples.Groups.Real-Clifford+CH.Lemma88.Layout {m}
   using (t ; g0 ; g1 ; g2 ; g3 ; layH ; T ; S ; gadget-form)
 open import Examples.Groups.Real-Clifford+CH.Lemma88.GrayWitness {m}

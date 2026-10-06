@@ -96,39 +96,10 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.LocalPlace using (up)
 -- C335 and C336 are Col's.
 
 ------------------------------------------------------------------------
--- A flipped bit where X passes the gate does not count
+-- A flipped bit where X passes the gate does not count, and X on wire 1
+-- passes the box on wire 1 (Col's)
 
-col-flip : ∀ {n} (i : Fin n) (t : Bits n) {w : Circuit n} → n ⊢ Xat (toℕ i) • w ≈ w • Xat (toℕ i) →
-           n ⊢ col (flipAt (toℕ i) t) w ≈ col t w
-col-flip {n} i t {w} e = begin
-  negsB (flipAt (toℕ i) t) • w • negsB (flipAt (toℕ i) t)
-    ≈⟨ cong (negs-flip i t) (back _ (negs-flip′ i t)) ⟩
-  (Xi • M) • w • (M • Xi)
-    ≈⟨ by-passoc ((□ • □) • □ • (□ • □)) (□ • (□ • □ • □) • □) Eq.refl ⟩
-  Xi • (M • w • M) • Xi
-    ≈⟨ trans (sym assoc) (trans (front _ (pass (X-negs i t) (pass e (X-negs i t)))) (cancelʳ _ (Xat² i))) ⟩
-  M • w • M ∎
-  where
-  open Tools (n VRel,_===_)
-  Xi M : Circuit n
-  Xi = Xat (toℕ i)
-  M  = negsB t
-  pass : ∀ {u v : Circuit n} → Xi • u ≈ u • Xi → Xi • v ≈ v • Xi → Xi • (u • v) ≈ (u • v) • Xi
-  pass eu ev = trans (sym assoc) (trans (front _ eu) (trans assoc (trans (back _ ev) (sym assoc))))
-
--- X on wire 1 passes the box on wire 1.
-X₁-B : ∀ {m} → (₃₊ m) ⊢ X • Λ□ (₂₊ m) ≈ Λ□ (₂₊ m) • X → (₃₊ m) ⊢ X ↑ • B₁ m ≈ B₁ m • X ↑
-X₁-B {m} xb = begin
-  X ↑ • Ex • Λ • Ex          ≈⟨ sym assoc ⟩
-  (X ↑ • Ex) • Λ • Ex        ≈⟨ front _ swapX ⟩
-  (Ex • X) • Λ • Ex          ≈⟨ trans assoc (back _ (trans (sym assoc) (front _ xb))) ⟩
-  Ex • (Λ • X) • Ex          ≈⟨ back _ (trans assoc (back _ (sym swapX′))) ⟩
-  Ex • Λ • (Ex • X ↑)        ≈⟨ by-passoc (□ • □ • (□ • □)) ((□ • □ • □) • □) Eq.refl ⟩
-  (Ex • Λ • Ex) • X ↑ ∎
-  where
-  open Tools ((₃₊ m) VRel,_===_)
-  Λ : Circuit (₃₊ m)
-  Λ = Λ□ (₂₊ m)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Col public using (col-flip ; X₁-B)
 
 ------------------------------------------------------------------------
 -- On four wires, decided (Base335, Base336)

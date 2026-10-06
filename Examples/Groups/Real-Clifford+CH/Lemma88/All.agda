@@ -33,7 +33,8 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxSym complete₂ complet
 open import Examples.Groups.Real-Clifford+CH.GeneralN.CanonN complete₂ complete₃ using (canonN)
 open import Examples.Groups.Real-Clifford+CH.Lemma88.Wide complete₂ complete₃
   using (e22 ; e23 ; e24 ; e31 ; e32 ; e38 ; e39 ; e40 ; e43 ; e44 ; e45 ; e46)
-open import Examples.Groups.Real-Clifford+CH.Lemma88.Rule3637 complete₂ complete₃ using (e36 ; e37)
+open import Examples.Groups.Real-Clifford+CH.Lemma88.Rule3637 using (e36 ; e37)
+open import Examples.Groups.Real-Clifford+CH.Lemma88.KitN complete₂ complete₃ using (kitN)
 import Examples.Groups.Real-Clifford+CH.Lemma88.Easy as Easy
 import Examples.Groups.Real-Clifford+CH.Lemma88.Invol as Invol
 
@@ -63,8 +64,8 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
   lemma-8-8 (r33 b a)                = e33 b a
   lemma-8-8 (r34 a b c e ab ce)      = e34 a b c e ab ce
   lemma-8-8 (r35 a b c e dist np)    = e35 a b c e dist np
-  lemma-8-8 (r36 a b c e pb pc hp lt) = e36 k below a b c e pb pc hp lt
-  lemma-8-8 (r37 a b c e pb pc hp lt) = e37 k below a b c e pb pc hp lt
+  lemma-8-8 (r36 a b c e pb pc hp lt) = e36 (kitN k below) a b c e pb pc hp lt
+  lemma-8-8 (r37 a b c e pb pc hp lt) = e37 (kitN k below) a b c e pb pc hp lt
   lemma-8-8 (r38 a a′ s le)          = e38 k below a a′ s le
   lemma-8-8 r39                      = e39 k below
   lemma-8-8 r40                      = e40 k below

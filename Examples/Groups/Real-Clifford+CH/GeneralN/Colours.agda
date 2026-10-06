@@ -80,25 +80,7 @@ module Col {n : ℕ} (s : Bits n) = Conj {n} (negsB s) (negs² s)
 ------------------------------------------------------------------------
 -- Word algebra: conjugations by involutions
 
-module _ {m : ℕ} where
-  open Tools (m VRel,_===_)
-
-  -- Conjugating by commuting involutions in either order.
-  conj-swap : ∀ {c d : Circuit m} → c • d ≈ d • c → (w : Circuit m) →
-              c • (d • w • d) • c ≈ d • (c • w • c) • d
-  conj-swap {c} {d} cd w = begin
-    c • (d • w • d) • c        ≈⟨ by-passoc (□ • (□ • □ • □) • □) ((□ • □) • □ • (□ • □)) Eq.refl ⟩
-    (c • d) • w • (d • c)      ≈⟨ cong cd (back _ (sym cd)) ⟩
-    (d • c) • w • (c • d)      ≈⟨ by-passoc ((□ • □) • □ • (□ • □)) (□ • (□ • □ • □) • □) Eq.refl ⟩
-    d • (c • w • c) • d ∎
-
-  -- Conjugating by c • r where c commutes with r.
-  conj-split : ∀ {c r : Circuit m} → c • r ≈ r • c → (w : Circuit m) →
-               (c • r) • w • (c • r) ≈ c • (r • w • r) • c
-  conj-split {c} {r} cr w = begin
-    (c • r) • w • (c • r)      ≈⟨ back _ (back _ cr) ⟩
-    (c • r) • w • (r • c)      ≈⟨ by-passoc ((□ • □) • □ • (□ • □)) (□ • (□ • □ • □) • □) Eq.refl ⟩
-    c • (r • w • r) • c ∎
+open import Examples.Groups.Real-Clifford+CH.GeneralN.PlaceFrames public using (conj-swap ; conj-split)
 
 ------------------------------------------------------------------------
 -- X on the bottom four wires, and the colourings on them

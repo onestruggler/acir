@@ -78,29 +78,12 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Box338 complete₂ complet
 ------------------------------------------------------------------------
 -- Products over lists
 
-module _ {n : ℕ} {A : Set} where
-  open Tools (n VRel,_===_)
-
-  -- A conjugation by an involution, factor by factor.
-  ∏-conj : ∀ (c : Circuit n) → c • c ≈ ε → ∀ (xs : List A) g →
-           c • ∏ xs g • c ≈ ∏ xs (λ a → c • g a • c)
-  ∏-conj c c² []       g = trans (back _ left-unit) c²
-  ∏-conj c c² (x ∷ xs) g = trans (Conj.⟪⟫-• c c² (g x) (∏ xs g)) (back _ (∏-conj c c² xs g))
-
-  ∏-cong : ∀ (xs : List A) {g g′ : A → Circuit n} → (∀ a → g a ≈ g′ a) → ∏ xs g ≈ ∏ xs g′
-  ∏-cong []       e = refl
-  ∏-cong (x ∷ xs) e = cong (e x) (∏-cong xs e)
-
-  -- What passes every factor passes the product.
-  pass-∏ : ∀ {y : Circuit n} (xs : List A) g → (∀ a → y • g a ≈ g a • y) → y • ∏ xs g ≈ ∏ xs g • y
-  pass-∏ []       g e = trans right-unit (sym left-unit)
-  pass-∏ (x ∷ xs) g e =
-    trans (sym assoc) (trans (front _ (e x)) (trans assoc (trans (back _ (pass-∏ xs g e)) (sym assoc))))
+-- A conjugation by an involution factor by factor, congruence, and
+-- what passes every factor passes the product.
+open import Examples.Groups.Real-Clifford+CH.GeneralN.MergeGen public using (∏-conj ; ∏-cong ; pass-∏)
 
 -- No colours.
-allT : ∀ j → negsB (replicate j true) ≡ ε
-allT zero    = Eq.refl
-allT (suc j) = Eq.cong (λ w → w ↑) (allT j)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires public using (allT)
 
 ------------------------------------------------------------------------
 -- (353)

@@ -70,13 +70,13 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     completes j≤ = below (s≤s (s≤s (s≤s (s≤s j≤))))
 
   -- (22)
-  open Rule22 complete₂ complete₃ (canonN k completes) (eq335 k below) (eq336ᶜ k below) public using (e22)
+  open Rule22 (canonN k completes) (eq335 k below) (eq336ᶜ k below) public using (e22)
 
   -- (23)
   open Rule23 {₂₊ k} (eq355 k below) (eq355′ k below) public using (e23)
 
   -- (24)
-  open Rule24 {₂₊ k} (rot-comm k below) (braid k below) public using (e24)
+  open Rule24 {₂₊ k} (braid k below) public using (e24)
 
   -- (31)
   open Rule31 (canonN k completes) complete₂ (eq355 k below) (eq355′ k below) (rot-comm k below) (pair-step k below)
@@ -86,7 +86,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
   open Rule32 {₂₊ k} (rot-comm k below) public using (e32)
 
   -- (38)
-  open Rule38 {₂₊ k} (rot-comm k below) (hgrot k below) public using (e38)
+  open Rule38 {₂₊ k} (hgrot k below) public using (e38)
 
   -- (39)
   open Rule39 {₂₊ k} (XY.core39 k below) public using (e39)

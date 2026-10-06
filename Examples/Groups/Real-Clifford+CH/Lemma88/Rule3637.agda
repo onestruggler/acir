@@ -37,10 +37,7 @@ open import Examples.Groups.Real-Clifford+CH.Semantics using (_~_)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧)
 
-module Examples.Groups.Real-Clifford+CH.Lemma88.Rule3637
-  (complete₂ : ∀ {u v : Circuit 2} → ⟦ u ⟧ ~ ⟦ v ⟧ → 2 ⊢ u ≈ v)
-  (complete₃ : ∀ {u v : Circuit 3} → ⟦ u ⟧ ~ ⟦ v ⟧ → 3 ⊢ u ≈ v)
-  where
+module Examples.Groups.Real-Clifford+CH.Lemma88.Rule3637 where
 
 open import Data.Bool using (Bool ; true ; false ; not ; _xor_ ; T ; if_then_else_)
 open import Data.Empty using (⊥-elim)
@@ -92,14 +89,11 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxFrames using (pl ; pl-c
 open import Examples.Groups.Real-Clifford+CH.GeneralN.HLetters
   using (dH-pat ; negs-layoutH ; tgtWire-layoutH ; hWire₀-layoutH ; setT-flips)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Place using (low-comm)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Colours complete₂ complete₃ using (conj-swap)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Ancilla complete₂ complete₃ using (Below)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxSym complete₂ complete₃ using (Completes)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.CanonN complete₂ complete₃ using (canonN)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87All complete₂ complete₃ using (mergesₙ)
-open import Examples.Groups.Real-Clifford+CH.Lemma88.Free complete₂ complete₃ using (dA5)
-open import Examples.Groups.Real-Clifford+CH.Lemma88.DecSwap complete₂ complete₃ using (dS)
-open import Examples.Groups.Real-Clifford+CH.Lemma88.Letter85 complete₂ complete₃
+open import Examples.Groups.Real-Clifford+CH.GeneralN.PlaceFrames using (conj-swap)
+open import Examples.Groups.Real-Clifford+CH.Lemma88.Kit using (Kit)
+import Examples.Groups.Real-Clifford+CH.Lemma88.FreeGen as FreeGen
+open import Examples.Groups.Real-Clifford+CH.Lemma88.DecSwap using (dS)
+open import Examples.Groups.Real-Clifford+CH.Lemma88.Letter85
   using (Eneg ; hf-Eneg ; sp-Eneg ; dEneg ; dEX ; negsAt-negsB ; low-from ; flips ; flips-combine ; comb-cancel)
 import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87Z as Lemma87Z
 import Examples.Groups.Real-Clifford+CH.Lemma88.Easy as Easy
@@ -234,23 +228,21 @@ private
 ------------------------------------------------------------------------
 -- At width 5 + k
 
-module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
+module _ {m : ℕ} (kit : Kit m) where
 
   private
-    m N : ℕ
-    m = ₂₊ k
+    N : ℕ
     N = ₃₊ m
 
     I : Set
     I = Fin (2 ^ N)
 
-    completes : Completes (₁₊ k)
-    completes j≤ = below (s≤s (s≤s (s≤s (s≤s j≤))))
-
+  open Kit kit using (complete₂ ; canon ; merges ; d-ax)
+  open FreeGen {m} d-ax using (dA5)
   open Tools (N VRel,_===_)
   open Easy m using (d-hh0132)
-  open Invol (canonN k completes) complete₂ using (mcH-inv)
-  open Lemma87Z (canonN k completes) (mergesₙ k completes) using (dʷ-∏ ; rev-invol)
+  open Invol canon complete₂ using (mcH-inv)
+  open Lemma87Z canon merges using (dʷ-∏ ; rev-invol)
   open SignedPerm m using (sp ; _≐_ ; ≐-trans ; ≐-sym)
   open NetSP m using (bm ; bm-cong)
   open NF m using (HFreeʷ)
@@ -367,17 +359,17 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
         b = ≤-trans (s≤s (s≤s t<i)) (≤-trans (s≤s i<j) j<N)
 
       dpair : ∀ t → (₂₊ t ≤ N) × (₂₊ (suc t) ≤ N) → (d ʷ) (E-swap {m} t • E-swap (suc t)) ≈ swapAt t • swapAt (suc t)
-      dpair t (p , p′) = cong (dS k below t p) (dS k below (suc t) p′)
+      dpair t (p , p′) = cong (dS kit t p) (dS kit (suc t) p′)
 
       dpair′ : ∀ t → (₂₊ t ≤ N) × (₂₊ (suc t) ≤ N) → (d ʷ) (E-swap {m} (suc t) • E-swap t) ≈ swapAt (suc t) • swapAt t
-      dpair′ t (p , p′) = cong (dS k below (suc t) p′) (dS k below t p)
+      dpair′ t (p , p′) = cong (dS kit (suc t) p′) (dS kit t p)
 
     dsw← : (d ʷ) (swaps← {m} i j) ≈ net (ν← i j)
     dsw← = begin
       (d ʷ) (∏ (range↓ (suc i) j) (E-swap {m})) • (d ʷ) (∏ (range↓ 0 i) (λ t → E-swap {m} t • E-swap (suc t)))
         ≈⟨ ≡→≈ (Eq.cong₂ _•_ (dʷ-∏ (range↓ (suc i) j) (E-swap {m})) (dʷ-∏ (range↓ 0 i) (λ t → E-swap {m} t • E-swap (suc t)))) ⟩
       ∏ (range↓ (suc i) j) (λ t → (d ʷ) (E-swap {m} t)) • ∏ (range↓ 0 i) (λ t → (d ʷ) (E-swap {m} t • E-swap (suc t)))
-        ≈⟨ cong (∏-All (range↓ (suc i) j) (all-range↓ (suc i) j b₁) (λ t p → dS k below t p))
+        ≈⟨ cong (∏-All (range↓ (suc i) j) (all-range↓ (suc i) j b₁) (λ t p → dS kit t p))
                 (∏-All (range↓ 0 i) (all-range↓ 0 i b₀) dpair) ⟩
       ∏ (range↓ (suc i) j) swapAt • ∏ (range↓ 0 i) (λ t → swapAt t • swapAt (suc t))
         ≈⟨ ≡→≈ (Eq.sym (Eq.cong₂ _•_ (Eq.trans (net-∏ (range↓ (suc i) j) σAt) (∏-≡ (range↓ (suc i) j) net-σAt))
@@ -390,7 +382,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
         ≈⟨ ≡→≈ (Eq.cong₂ _•_ (dʷ-∏ (range↑ 0 i) (λ t → E-swap {m} (suc t) • E-swap t)) (dʷ-∏ (range↑ (suc i) j) (E-swap {m}))) ⟩
       ∏ (range↑ 0 i) (λ t → (d ʷ) (E-swap {m} (suc t) • E-swap t)) • ∏ (range↑ (suc i) j) (λ t → (d ʷ) (E-swap {m} t))
         ≈⟨ cong (∏-All (range↑ 0 i) (all-range↑ 0 i b₀) dpair′)
-                (∏-All (range↑ (suc i) j) (all-range↑ (suc i) j b₁) (λ t p → dS k below t p)) ⟩
+                (∏-All (range↑ (suc i) j) (all-range↑ (suc i) j b₁) (λ t p → dS kit t p)) ⟩
       ∏ (range↑ 0 i) (λ t → swapAt (suc t) • swapAt t) • ∏ (range↑ (suc i) j) swapAt
         ≈⟨ ≡→≈ (Eq.sym (Eq.cong₂ _•_ (Eq.trans (net-∏ (range↑ 0 i) (λ t → σAt (suc t) • σAt t)) (∏-≡ (range↑ 0 i) net-pair′))
                                      (Eq.trans (net-∏ (range↑ (suc i) j) σAt) (∏-≡ (range↑ (suc i) j) net-σAt)))) ⟩
@@ -458,16 +450,16 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
   qn A i j = true ∷ true ∷ vmap not (ctrls {m} A i j)
 
   private
-    spE : ∀ (q : Bits N) → sp (Eneg k below 0 q) ≐ bm (combine q)
-    spE q = ≐-trans (sp-Eneg k below 0 q ≤-refl) (bm-cong (flips 0 q) (combine q) (flips-combine q))
+    spE : ∀ (q : Bits N) → sp (Eneg kit 0 q) ≐ bm (combine q)
+    spE q = ≐-trans (sp-Eneg kit 0 q ≤-refl) (bm-cong (flips 0 q) (combine q) (flips-combine q))
 
-    dEneg′ : ∀ (q : Bits N) → (d ʷ) (Eneg k below 0 q) ≈ negsB q
-    dEneg′ q = trans (dEneg k below N 0 q (dEX k below) (low-from N 0 q (λ l l<N Nl → ⊥-elim (<⇒≱ l<N Nl))))
+    dEneg′ : ∀ (q : Bits N) → (d ʷ) (Eneg kit 0 q) ≈ negsB q
+    dEneg′ q = trans (dEneg kit N 0 q (dEX kit) (low-from N 0 q (λ l l<N Nl → ⊥-elim (<⇒≱ l<N Nl))))
                      (negsAt-negsB q)
 
     -- Any Hadamard-free word with the bit map of the negations decodes to them.
     dneg : ∀ (q : Bits N) (w : Word (GenP N)) → HFreeʷ w → sp w ≐ bm (combine q) → (d ʷ) w ≈ negsB q
-    dneg q w hw e = trans (dA5 k below hw (hf-Eneg k below 0 q) (≐-trans e (≐-sym (spE q)))) (dEneg′ q)
+    dneg q w hw e = trans (dA5 hw (hf-Eneg kit 0 q) (≐-trans e (≐-sym (spE q)))) (dEneg′ q)
 
   module Negations (A : Bits N) (i j : ℕ) where
     open Negs A i j using (Ψ ; Ψ′ ; sp-neg↑ ; sp-neg↓ ; unneg)
@@ -489,7 +481,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
     -- With the gadget's colours, the controls.
     c₀ : combine (qn A i j) T₀ ≡ true ∷ true ∷ ctrls {m} A i j
-    c₀ = Eq.trans (Eq.cong (λ z → true ∷ true ∷ combine (vmap not (ctrls {m} A i j)) z) (gray-zeros (₃₊ k)))
+    c₀ = Eq.trans (Eq.cong (λ z → true ∷ true ∷ combine (vmap not (ctrls {m} A i j)) z) (gray-zeros (₁₊ m)))
                   (Eq.cong (λ z → true ∷ true ∷ z) (comb-zeros (ctrls {m} A i j)))
 
   ----------------------------------------------------------------------
@@ -604,8 +596,8 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     pl (ν← pc (suc u)) (Ex • (negsB Q • col T₀ (pl σg ΛH′) • negsB Q) • Ex)
       ≈⟨ by-passoc (□ • (□ • (□ • □ • □) • □) • □) (□ • □ • □ • □ • □ • □ • □) Eq.refl ⟩
     net (ν← pc (suc u)) • Ex • negsB Q • col T₀ (pl σg ΛH′) • negsB Q • Ex • net (revS (ν← pc (suc u)))
-      ≈⟨ sym (cong SW.dsw← (cong (dS k below 0 two≤) (cong NG.dneg↑ (cong dHH (cong NG.dneg↓
-                (cong (dS k below 0 two≤) (trans SW.dsw→ SW.back-rev))))))) ⟩
+      ≈⟨ sym (cong SW.dsw← (cong (dS kit 0 two≤) (cong NG.dneg↑ (cong dHH (cong NG.dneg↓
+                (cong (dS kit 0 two≤) (trans SW.dsw→ SW.back-rev))))))) ⟩
     (d ʷ) (W₁ A pc (suc u)) ∎
     where
     Hp = hpat-inv (code N a) (code N b) (code N c) (code N e) (suc u) pc hp
@@ -649,7 +641,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       col C (Ex • pl σg ΛH′ • Ex)
         ≈⟨ sym (col-col Q T₀ (Ex • pl σg ΛH′ • Ex)) ⟩
       col Q (col T₀ (Ex • pl σg ΛH′ • Ex))
-        ≈⟨ back _ (front _ (conj-swap (sym (low-comm Ex (negsB (gray (toBits (₃₊ k) 0))))) (pl σg ΛH′))) ⟩
+        ≈⟨ back _ (front _ (conj-swap (sym (low-comm Ex (negsB (gray (toBits (₁₊ m) 0))))) (pl σg ΛH′))) ⟩
       col Q (Ex • col T₀ (pl σg ΛH′) • Ex)
         ≈⟨ conj-swap (sym (low-comm Ex (negsB (vmap not (ctrls {m} A pc (suc u)))))) (col T₀ (pl σg ΛH′)) ⟩
       Ex • (negsB Q • col T₀ (pl σg ΛH′) • negsB Q) • Ex ∎

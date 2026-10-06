@@ -16,7 +16,7 @@
 
 module Examples.Groups.Real-Clifford+CH.GeneralN.BraidCol where
 
-open import Data.Bool using (Bool ; true ; not)
+open import Data.Bool using (Bool ; true ; false ; not)
 open import Data.Fin using (Fin ; toℕ) renaming (zero to 0F)
 open import Data.Fin.Permutation using (_⟨$⟩ʳ_)
 open import Data.Nat using (ℕ)
@@ -42,3 +42,13 @@ Braid m =
   not α ≡ lookupℕ (toℕ t) s′ → β ≡ lookupℕ (toℕ t′) s →
   (₃₊ m) ⊢ place u s (rot α) • place u′ s′ (rot β) • place u s (rot α) ≈
            place u′ s′ (rot β) • place u s (rot α) • place u′ s′ (rot β)
+
+-- X on the target turns the rotation over ((356)) …
+E356 : ℕ → Set
+E356 m = (₃₊ m) ⊢ X • rot {m} false • X ≈ rot true
+
+-- … and the canonical braid, of the XZ on wire 0 and the ZX on wire 1
+-- ((358)).
+E358 : ℕ → Set
+E358 m = (₃₊ m) ⊢ rot {m} false • (Ex ↓ • rot true • Ex ↓) • rot false ≈
+                  (Ex ↓ • rot true • Ex ↓) • rot false • (Ex ↓ • rot true • Ex ↓)

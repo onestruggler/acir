@@ -38,7 +38,7 @@ open import Notations using (₁₊ ; ₂₊)
 
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.Semantics.Algebra using (Bits)
-open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools)
+open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools ; module Conj)
 open import Examples.Groups.Real-Clifford+CH.MultiControlled using (Xat ; swapAt)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Bitstrings using (allBits ; insertℕ)
 open import Examples.Groups.Real-Clifford+CH.Encoding using (∏)
@@ -68,6 +68,12 @@ module _ {n : ℕ} {A : Set} where
   ∏-cong : ∀ (xs : List A) {g g′ : A → Circuit n} → (∀ a → g a ≈ g′ a) → ∏ xs g ≈ ∏ xs g′
   ∏-cong []       e = refl
   ∏-cong (x ∷ xs) e = cong (e x) (∏-cong xs e)
+
+  -- A conjugation by an involution, factor by factor.
+  ∏-conj : ∀ (c : Circuit n) → c • c ≈ ε → ∀ (xs : List A) g →
+           c • ∏ xs g • c ≈ ∏ xs (λ a → c • g a • c)
+  ∏-conj c c² []       g = trans (back _ left-unit) c²
+  ∏-conj c c² (x ∷ xs) g = trans (Conj.⟪⟫-• c c² (g x) (∏ xs g)) (back _ (∏-conj c c² xs g))
 
   -- A gate passing every factor passes the product.
   pass-∏ : ∀ {y : Circuit n} (xs : List A) g → (∀ a → y • g a ≈ g a • y) → y • ∏ xs g ≈ ∏ xs g • y

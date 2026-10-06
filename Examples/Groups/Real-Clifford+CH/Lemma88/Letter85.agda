@@ -10,7 +10,7 @@
 -- the sign is on the code with a 1 at t, ZX otherwise — the other bits
 -- of the code as its controls, placed by the network bringing t to wire
 -- 0 (`lemma85`).  Definition 8.3 gives that outright when a and b are
--- consecutive (Rule32's `letterG`); the paper walks the Gray code
+-- consecutive (LetterG's `letterG`); the paper walks the Gray code
 -- otherwise (Appendix E.3).  Here Corollary A.5, decoded (`Free.dA5`),
 -- does the walking.  In binary, the index with the bits below t set and
 -- the bit t cleared (`low1`) is the lower of two consecutive indices
@@ -35,10 +35,7 @@ open import Examples.Groups.Real-Clifford+CH.Semantics using (_~_)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧)
 
-module Examples.Groups.Real-Clifford+CH.Lemma88.Letter85
-  (complete₂ : ∀ {u v : Circuit 2} → ⟦ u ⟧ ~ ⟦ v ⟧ → 2 ⊢ u ≈ v)
-  (complete₃ : ∀ {u v : Circuit 3} → ⟦ u ⟧ ~ ⟦ v ⟧ → 3 ⊢ u ≈ v)
-  where
+module Examples.Groups.Real-Clifford+CH.Lemma88.Letter85 where
 
 open import Data.Bool using (Bool ; true ; false ; not ; _xor_)
 open import Data.Bool.Properties using () renaming (_≟_ to _≟ᵇ_)
@@ -79,19 +76,15 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxFrames using (pl ; pl-c
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Layouts using (layoutAt ; setT ; zip-flip ; tgtWire-at)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.OneWire using (on1 ; on1-net)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.RotCol using (rot ; mc±XZ-rot)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Ancilla complete₂ complete₃ using (Below)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxSym complete₂ complete₃ using (Completes)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.CanonN complete₂ complete₃ using (canonN)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87All complete₂ complete₃ using (mergesₙ)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.ZX353 complete₂ complete₃ using (∏-cong)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.RotAnywhere complete₂ complete₃ using (rot-comm)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.MergeGen using (∏-cong)
+open import Examples.Groups.Real-Clifford+CH.Lemma88.Kit using (Kit)
 open import Examples.Groups.Real-Clifford+CH.Lemma88.GrayWitness using (tgt ; tgt< ; gstep ; lookup-flip-same ; lookup-flip-other)
-open import Examples.Groups.Real-Clifford+CH.Lemma88.Free complete₂ complete₃ using (dA5)
-open import Examples.Groups.Real-Clifford+CH.Lemma88.DecX complete₂ complete₃ using (mergeN)
 import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87Z as Lemma87Z
 import Examples.Groups.Real-Clifford+CH.Lemma88.Easy as Easy
+import Examples.Groups.Real-Clifford+CH.Lemma88.LetterG as LetterG
+import Examples.Groups.Real-Clifford+CH.Lemma88.FreeGen as FreeGen
+import Examples.Groups.Real-Clifford+CH.Lemma88.MergeKit as MergeKit
 import Examples.Groups.Real-Clifford+CH.Lemma88.Invol as Invol
-import Examples.Groups.Real-Clifford+CH.Lemma88.Rule32 as Rule32
 import Examples.Groups.Real-Clifford+CH.Auxiliary.SignedPerm as SignedPerm
 import Examples.Groups.Real-Clifford+CH.Auxiliary.NetSP as NetSP
 import Examples.Groups.Real-Clifford+CH.Auxiliary.Eq65H as Eq65H
@@ -256,24 +249,23 @@ on1-Xat {suc n} zero    = Eq.refl
 on1-Xat {suc n} (suc i) = Eq.cong _↑ (on1-Xat {n} i)
 
 ------------------------------------------------------------------------
--- At width 5 + k
+-- At a width with its kit
 
-module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
+module _ {m : ℕ} (kit : Kit m) where
 
   private
-    m N : ℕ
-    m = ₂₊ k
+    N : ℕ
     N = ₃₊ m
 
-    completes : Completes (₁₊ k)
-    completes j≤ = below (s≤s (s≤s (s≤s (s≤s j≤))))
-
+  open Kit kit using (complete₂ ; canon ; merges ; tm ; d-ax)
   open Tools (N VRel,_===_)
   open Group-Lemmas (N VRel,_===_) grouplike using (inverseʳ-unique)
   open Easy m using (d-zx ; dZX-lo₁ ; dZX-hi₁ ; e33)
-  open Invol (canonN k completes) complete₂ using (rot-inv)
-  open Lemma87Z (canonN k completes) (mergesₙ k completes) using (lemmaZ ; dʷ-∏ ; pl-∏ ; flip-insert)
-  open Rule32 {m} (rot-comm k below) using (letterG)
+  open LetterG {m} using (letterG)
+  open Invol canon complete₂ using (rot-inv)
+  open FreeGen {m} d-ax using (dA5)
+  open MergeKit {m} tm using (mergeN)
+  open Lemma87Z canon merges using (lemmaZ ; dʷ-∏ ; pl-∏ ; flip-insert)
   open SignedPerm m
     using (sp ; _≐_ ; _⊙_ ; ≐-trans ; ≐-sym ; ≐-refl ; ⊙-cong ; L ; sp-zx ; sp-inj ; prm ; sgn ; prm≡ ; sgn≡ ;
            SWP-sym ; idSP ; NEG)
@@ -457,7 +449,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     -- The codes agree at t: the sign on the lower index.
     go (yes e) = begin
       (d ʷ) (zx (index N G) (index N G) (index N (flipAt t G)))
-        ≈⟨ dA5 k below (hfree-zx (index N G) (index N G) (index N (flipAt t G))) (cat (hf-Eneg 0 q) (cat (hfree-zx x₀ x₀ x₁) (hf-Eneg 0 q))) spEq ⟩
+        ≈⟨ dA5 (hfree-zx (index N G) (index N G) (index N (flipAt t G))) (cat (hf-Eneg 0 q) (cat (hfree-zx x₀ x₀ x₁) (hf-Eneg 0 q))) spEq ⟩
       (d ʷ) E • (d ʷ) (zx x₀ x₀ x₁) • (d ʷ) E
         ≈⟨ cong dE (cong dlo dE) ⟩
       negsB q • place (sdS t) (setT t Y) (rot (not (lookupℕ t Y))) • negsB q
@@ -501,7 +493,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     -- They differ at t: the sign on the upper index.
     go (no ne) = begin
       (d ʷ) (zx (index N G) (index N G) (index N (flipAt t G)))
-        ≈⟨ dA5 k below (hfree-zx (index N G) (index N G) (index N (flipAt t G))) (cat (hf-Eneg 0 q) (cat (hfree-zx x₁ x₀ x₁) (hf-Eneg 0 q))) spEq ⟩
+        ≈⟨ dA5 (hfree-zx (index N G) (index N G) (index N (flipAt t G))) (cat (hf-Eneg 0 q) (cat (hfree-zx x₁ x₀ x₁) (hf-Eneg 0 q))) spEq ⟩
       (d ʷ) E • (d ʷ) (zx x₁ x₀ x₁) • (d ʷ) E
         ≈⟨ cong dE (cong dhi dE) ⟩
       negsB q • place (sdS t) (setT t (flipAt t Y)) (rot (lookupℕ t Y)) • negsB q
@@ -552,7 +544,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
   -- E-X on every wire
 
   private
-    ℓX : ℕ → Bits (₄₊ k) → Word (GenP N)
+    ℓX : ℕ → Bits (₂₊ m) → Word (GenP N)
     ℓX w c = zx {N} (index N (insertℕ w true c)) (index N (insertℕ w false c)) (index N (insertℕ w true c))
 
     dec-ℓX : ∀ w → w < N → (∀ w′ → w′ < w → (d ʷ) (E-X {m} w′) ≈ Xat w′) → ∀ c →
@@ -572,21 +564,21 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       where
       G : Bits N
       G = insertℕ w true c
-      w≤ : w ≤ ₄₊ k
+      w≤ : w ≤ ₂₊ m
       w≤ = ≤-pred w<N
       sN : pl (sdS w) (negsB (true ∷ c)) ≈ negsB G
       sN = sd-negsB w true c w≤
 
     dEX-step : ∀ w → w < N → (∀ w′ → w′ < w → (d ʷ) (E-X {m} w′) ≈ Xat w′) → (d ʷ) (E-X {m} w) ≈ Xat w
     dEX-step w w<N dx = begin
-      (d ʷ) (E-Z w) • (d ʷ) (∏ (allBits (₄₊ k)) (ℓX w))
-        ≈⟨ cong (sym (lemmaZ w w<N)) (≡→≈ (dʷ-∏ (allBits (₄₊ k)) (ℓX w))) ⟩
-      on1 Z w • ∏ (allBits (₄₊ k)) (λ c → (d ʷ) (ℓX w c))
-        ≈⟨ cong (sym (at-w Z)) (∏-cong (allBits (₄₊ k)) (dec-ℓX w w<N dx)) ⟩
-      pl (sdS w) Z • ∏ (allBits (₄₊ k)) (λ c → pl (sdS w) (col (true ∷ c) (rot false)))
-        ≈⟨ back _ (sym (pl-∏ (sdS w) (allBits (₄₊ k)) (λ c → col (true ∷ c) (rot false)))) ⟩
-      pl (sdS w) Z • pl (sdS w) (∏ (allBits (₄₊ k)) (λ c → col (true ∷ c) (rot false)))
-        ≈⟨ back _ (pl-cong (sdS w) (mergeN k below false)) ⟩
+      (d ʷ) (E-Z w) • (d ʷ) (∏ (allBits (₂₊ m)) (ℓX w))
+        ≈⟨ cong (sym (lemmaZ w w<N)) (≡→≈ (dʷ-∏ (allBits (₂₊ m)) (ℓX w))) ⟩
+      on1 Z w • ∏ (allBits (₂₊ m)) (λ c → (d ʷ) (ℓX w c))
+        ≈⟨ cong (sym (at-w Z)) (∏-cong (allBits (₂₊ m)) (dec-ℓX w w<N dx)) ⟩
+      pl (sdS w) Z • ∏ (allBits (₂₊ m)) (λ c → pl (sdS w) (col (true ∷ c) (rot false)))
+        ≈⟨ back _ (sym (pl-∏ (sdS w) (allBits (₂₊ m)) (λ c → col (true ∷ c) (rot false)))) ⟩
+      pl (sdS w) Z • pl (sdS w) (∏ (allBits (₂₊ m)) (λ c → col (true ∷ c) (rot false)))
+        ≈⟨ back _ (pl-cong (sdS w) (mergeN false)) ⟩
       pl (sdS w) Z • pl (sdS w) (Z • X)
         ≈⟨ sym (pl-• (sdS w) Z (Z • X)) ⟩
       pl (sdS w) (Z • Z • X)

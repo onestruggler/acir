@@ -43,6 +43,7 @@ import Examples.Groups.Real-Clifford+CH.Lemma88.Invol as Invol
 import Examples.Groups.Real-Clifford+CH.Auxiliary.Unique as Unique
 import Examples.Groups.Real-Clifford+CH.Auxiliary.SignedPerm as SignedPerm
 import Examples.Groups.Real-Clifford+CH.Auxiliary.NF as NF
+import Examples.Groups.Real-Clifford+CH.Lemma88.FreeGen as FreeGen
 
 module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
@@ -57,9 +58,6 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
   open Tools (N VRel,_===_)
   open Easy m using (e20 ; e21 ; e25 ; e26 ; e27 ; e28 ; e30 ; e33 ; e34)
   open Invol (canonN k completes) complete₂ using (e29)
-  open SignedPerm m using (sp ; _≐_)
-  open NF m using (HFreeʷ)
-  open Unique m using (A5)
 
   -- Each rule of the fragment, decoded.
   d-ax : ∀ {u t : Word (GenP N)} → m PF, u === t → (d ʷ) u ≈ (d ʷ) t
@@ -79,17 +77,4 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
   d-ax (r33 b a)               = e33 b a
   d-ax (r34 a b c e ab ce)     = e34 a b c e ab ce
 
-  -- The decoding respects the fragment's congruence.
-  d-≈ : ∀ {u t : Word (GenP N)} → PB._≈_ (m PF,_===_) u t → (d ʷ) u ≈ (d ʷ) t
-  d-≈ PB.refl         = refl
-  d-≈ (PB.sym e)      = sym (d-≈ e)
-  d-≈ (PB.trans e e′) = trans (d-≈ e) (d-≈ e′)
-  d-≈ (PB.cong e e′)  = cong (d-≈ e) (d-≈ e′)
-  d-≈ PB.assoc        = assoc
-  d-≈ PB.left-unit    = left-unit
-  d-≈ PB.right-unit   = right-unit
-  d-≈ (PB.axiom a)    = d-ax a
-
-  -- Corollary A.5, decoded.
-  dA5 : ∀ {u v : Word (GenP N)} → HFreeʷ u → HFreeʷ v → sp u ≐ sp v → (d ʷ) u ≈ (d ʷ) v
-  dA5 hu hv e = d-≈ (A5 hu hv e)
+  open FreeGen {m} d-ax public using (d-≈ ; dA5)

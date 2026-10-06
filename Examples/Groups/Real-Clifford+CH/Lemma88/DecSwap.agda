@@ -28,10 +28,7 @@ open import Examples.Groups.Real-Clifford+CH.Semantics using (_~_)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧)
 
-module Examples.Groups.Real-Clifford+CH.Lemma88.DecSwap
-  (complete₂ : ∀ {u v : Circuit 2} → ⟦ u ⟧ ~ ⟦ v ⟧ → 2 ⊢ u ≈ v)
-  (complete₃ : ∀ {u v : Circuit 3} → ⟦ u ⟧ ~ ⟦ v ⟧ → 3 ⊢ u ≈ v)
-  where
+module Examples.Groups.Real-Clifford+CH.Lemma88.DecSwap where
 
 open import Data.Bool using (Bool ; true ; false ; not)
 open import Data.Nat using (ℕ ; zero ; suc ; _<_ ; _≤_ ; s≤s ; z≤n)
@@ -63,14 +60,10 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxFrames using (pl ; pl-c
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Layouts using (setT)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.TwoWire using (on2 ; pair-down)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.RotCol using (rot)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Ancilla complete₂ complete₃ using (Below)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxSym complete₂ complete₃ using (Completes)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.CanonN complete₂ complete₃ using (canonN)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87All complete₂ complete₃ using (mergesₙ)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.ZX353 complete₂ complete₃ using (∏-cong)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon32 complete₂ complete₃ using (rot-rigid)
-open import Examples.Groups.Real-Clifford+CH.Lemma88.DecX complete₂ complete₃ using (merge₁R)
-open import Examples.Groups.Real-Clifford+CH.Lemma88.Letter85 complete₂ complete₃ using (lemma85 ; dEX ; setT-insert)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.MergeGen using (∏-cong)
+open import Examples.Groups.Real-Clifford+CH.Lemma88.Kit using (Kit)
+import Examples.Groups.Real-Clifford+CH.Lemma88.MergeKit as MergeKit
+open import Examples.Groups.Real-Clifford+CH.Lemma88.Letter85 using (lemma85 ; dEX ; setT-insert)
 import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87Z as Lemma87Z
 import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87CZ as Lemma87CZ
 import Examples.Groups.Real-Clifford+CH.Lemma88.Easy as Easy
@@ -95,22 +88,20 @@ private
   setT-true (suc i) (b ∷ y)     h = Eq.cong (b ∷_) (setT-true i y h)
 
 ------------------------------------------------------------------------
--- At width 5 + k
+-- At a width with its kit
 
-module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
+module _ {m : ℕ} (kit : Kit m) where
 
   private
-    m N : ℕ
-    m = ₂₊ k
+    N : ℕ
     N = ₃₊ m
 
-    completes : Completes (₁₊ k)
-    completes j≤ = below (s≤s (s≤s (s≤s (s≤s j≤))))
-
+  open Kit kit using (complete₂ ; canon ; merges ; tm ; rig)
+  open MergeKit {m} tm using (merge₁R)
   open Tools (N VRel,_===_)
   open Easy m using (e33)
-  open Lemma87Z (canonN k completes) (mergesₙ k completes) using (dʷ-∏ ; pl-∏ ; flip-insert ; flip-below ; module Frame₁)
-  open Lemma87CZ (canonN k completes) (mergesₙ k completes) using (lemmaCZ)
+  open Lemma87Z canon merges using (dʷ-∏ ; pl-∏ ; flip-insert ; flip-below ; module Frame₁)
+  open Lemma87CZ canon merges using (lemmaCZ)
   open SBelow 2 (s≤s (s≤s z≤n)) complete₂ using () renaming (by-sem to by-sem₂)
 
   private
@@ -134,15 +125,15 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
       -- The encoded X is decoded below every wire.
       dxs : ∀ t → t < N → ∀ w → w < t → (d ʷ) (E-X {m} w) ≈ Xat w
-      dxs t t<N w w<t = dEX k below w (<-trans w<t t<N)
+      dxs t t<N w w<t = dEX kit w (<-trans w<t t<N)
 
       -- The rotation passes the network on its controls.
-      inner : ∀ β → pl (sdS {₄₊ k} p S.↑) (rot β) ≈ rot β
+      inner : ∀ β → pl (sdS {₂₊ m} p S.↑) (rot β) ≈ rot β
       inner β = begin
         net (sdS p S.↑) • rot β • net (revS (sdS p S.↑))
           ≈⟨ ≡→≈ (Eq.cong₂ (λ a b → a • rot β • b) (net-↑ (sdS p)) (Eq.trans (Eq.cong net (revS-↑ (sdS p))) (net-↑ (revS (sdS p))))) ⟩
         net (sdS p) ↑ • rot β • net (revS (sdS p)) ↑
-          ≈⟨ trans (sym assoc) (front _ (rot-rigid k below β (sdS p))) ⟩
+          ≈⟨ trans (sym assoc) (front _ (rig β (sdS p))) ⟩
         (rot β • net (sdS p) ↑) • net (revS (sdS p)) ↑
           ≈⟨ trans assoc (trans (back _ (lemma-cong↑ _ _ (net-inv (sdS p)))) right-unit) ⟩
         rot β ∎
@@ -178,8 +169,8 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
                                          (Eq.trans (net-↑ (revS (sdS p))) (Eq.cong _↑ (Eq.trans (Eq.cong net (revS-sdS p)) (net-suS p)))))
                                (Eq.trans (Eq.cong net (revS-sdS p)) (net-suS p)))
 
-      at : ∀ (g : Circuit 2) → pl σ (g ↓ᵏ (₃₊ k)) ≈ on2 g p
-      at g = trans (≡→≈ (plσ≡ (g ↓ᵏ (₃₊ k)))) (pair-down g p p≤)
+      at : ∀ (g : Circuit 2) → pl σ (g ↓ᵏ (₁₊ m)) ≈ on2 g p
+      at g = trans (≡→≈ (plσ≡ (g ↓ᵏ (₁₊ m)))) (pair-down g p p≤)
 
       -- The second frame is the first after the swap.
       σ₂-σ : ∀ (g : Circuit N) → pl σ₂ g ≈ swapAt p • pl σ g • swapAt p
@@ -208,7 +199,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       (d ʷ) (zx (index N G) (index N G) (index N (str₂′ p c true false)))
         ≈⟨ ≡→≈ (Eq.cong (λ v → (d ʷ) (zx {N} (index N G) (index N G) (index N v))) (Eq.sym flipG)) ⟩
       (d ʷ) (zx (index N G) (index N G) (index N (flipAt p G)))
-        ≈⟨ lemma85 k below p p<N (dxs p p<N) G ⟩
+        ≈⟨ lemma85 kit p p<N (dxs p p<N) G ⟩
       place (sdS p) (setT p G) (rot (not (lookupℕ p G)))
         ≈⟨ ≡→≈ (Eq.cong₂ (λ s b → place (sdS p) s (rot (not b))) (setT-true p G Gp) Gp) ⟩
       negsB G • pl (sdS p) (rot false) • negsB G
@@ -228,7 +219,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       (d ʷ) (zx (index N G) (index N G) (index N (str₂′ p c true true)))
         ≈⟨ ≡→≈ (Eq.cong (λ v → (d ʷ) (zx {N} (index N G) (index N G) (index N v))) (Eq.sym flipG)) ⟩
       (d ʷ) (zx (index N G) (index N G) (index N (flipAt (suc p) G)))
-        ≈⟨ lemma85 k below (suc p) p< (dxs (suc p) p<) G ⟩
+        ≈⟨ lemma85 kit (suc p) p< (dxs (suc p) p<) G ⟩
       place (sdS (suc p)) (setT (suc p) G) (rot (not (lookupℕ (suc p) G)))
         ≈⟨ ≡→≈ (Eq.cong₂ (λ s b → place (sdS (suc p)) s (rot (not b)))
                          (setT-insert (suc p) false (insertℕ p true c) (s≤s p≤))
@@ -246,7 +237,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     ----------------------------------------------------------------------
     -- The products
 
-    dP₁ : (d ʷ) (∏ (allBits (₁₊ m)) ℓ₁) ≈ pl σ (ΛXZ 1 ↓ᵏ (₃₊ k))
+    dP₁ : (d ʷ) (∏ (allBits (₁₊ m)) ℓ₁) ≈ pl σ (ΛXZ 1 ↓ᵏ (₁₊ m))
     dP₁ = begin
       (d ʷ) (∏ (allBits (₁₊ m)) ℓ₁)
         ≈⟨ ≡→≈ (dʷ-∏ (allBits (₁₊ m)) ℓ₁) ⟩
@@ -255,10 +246,10 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       ∏ (allBits (₁₊ m)) (λ c → pl σ (col (true ∷ true ∷ c) (rot false)))
         ≈⟨ sym (pl-∏ σ (allBits (₁₊ m)) (λ c → col (true ∷ true ∷ c) (rot false))) ⟩
       pl σ (∏ (allBits (₁₊ m)) (λ c → col (true ∷ true ∷ c) (rot false)))
-        ≈⟨ pl-cong σ (merge₁R k below false (₃₊ k) ≤-refl) ⟩
-      pl σ (ΛXZ 1 ↓ᵏ (₃₊ k)) ∎
+        ≈⟨ pl-cong σ (merge₁R false (₁₊ m) ≤-refl) ⟩
+      pl σ (ΛXZ 1 ↓ᵏ (₁₊ m)) ∎
 
-    dP₂ : (d ʷ) (∏ (allBits (₁₊ m)) ℓ₂) ≈ pl σ₂ (ΛZX 1 ↓ᵏ (₃₊ k))
+    dP₂ : (d ʷ) (∏ (allBits (₁₊ m)) ℓ₂) ≈ pl σ₂ (ΛZX 1 ↓ᵏ (₁₊ m))
     dP₂ = begin
       (d ʷ) (∏ (allBits (₁₊ m)) ℓ₂)
         ≈⟨ ≡→≈ (dʷ-∏ (allBits (₁₊ m)) ℓ₂) ⟩
@@ -267,8 +258,8 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       ∏ (allBits (₁₊ m)) (λ c → pl σ₂ (col (true ∷ true ∷ c) (rot true)))
         ≈⟨ sym (pl-∏ σ₂ (allBits (₁₊ m)) (λ c → col (true ∷ true ∷ c) (rot true))) ⟩
       pl σ₂ (∏ (allBits (₁₊ m)) (λ c → col (true ∷ true ∷ c) (rot true)))
-        ≈⟨ pl-cong σ₂ (merge₁R k below true (₃₊ k) ≤-refl) ⟩
-      pl σ₂ (ΛZX 1 ↓ᵏ (₃₊ k)) ∎
+        ≈⟨ pl-cong σ₂ (merge₁R true (₁₊ m) ≤-refl) ⟩
+      pl σ₂ (ΛZX 1 ↓ᵏ (₁₊ m)) ∎
 
     ----------------------------------------------------------------------
     -- The swap
@@ -282,7 +273,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       pl σ CZ • pl σ XZ′ • (pl σ Ex • pl σ ZX′ • pl σ Ex) • pl σ XZ′
         ≈⟨ sym split ⟩
       pl σ (CZ • XZ′ • (Ex • ZX′ • Ex) • XZ′)
-        ≈⟨ pl-cong σ (by-sem₂ (CZ • ΛXZ 1 • (Ex • ΛZX 1 • Ex) • ΛXZ 1) Ex Eq.refl {₃₊ k}) ⟩
+        ≈⟨ pl-cong σ (by-sem₂ (CZ • ΛXZ 1 • (Ex • ΛZX 1 • Ex) • ΛXZ 1) Ex Eq.refl {₁₊ m}) ⟩
       pl σ Ex
         ≈⟨ at Ex ⟩
       on2 Ex p
@@ -290,8 +281,8 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       swapAt p ∎
       where
       XZ′ ZX′ : Circuit N
-      XZ′ = ΛXZ 1 ↓ᵏ (₃₊ k)
-      ZX′ = ΛZX 1 ↓ᵏ (₃₊ k)
+      XZ′ = ΛXZ 1 ↓ᵏ (₁₊ m)
+      ZX′ = ΛZX 1 ↓ᵏ (₁₊ m)
       Sw : swapAt p ≈ pl σ Ex
       Sw = sym (trans (at Ex) (≡→≈ (Eq.sym (swapAt-on2 p))))
       split : pl σ (CZ • XZ′ • (Ex • ZX′ • Ex) • XZ′) ≈ pl σ CZ • pl σ XZ′ • (pl σ Ex • pl σ ZX′ • pl σ Ex) • pl σ XZ′

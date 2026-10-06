@@ -33,7 +33,7 @@ open import Data.Fin.Permutation using (_⟨$⟩ʳ_ ; _⟨$⟩ˡ_ ; remove ; lif
 open import Data.Nat using (ℕ ; zero ; suc ; _<_ ; _≤_ ; s≤s ; z≤n)
 open import Data.Nat.Properties using (suc-injective ; ≤-trans ; n≤1+n)
 open import Data.Product using (Σ ; ∃ ; _,_)
-open import Data.Vec using (Vec ; [] ; _∷_)
+open import Data.Vec using (Vec ; [] ; _∷_ ; replicate)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
@@ -285,6 +285,11 @@ negs² {suc n} (false ∷ s) = begin
   negsB s ↑ • negsB s ↑                 ≈⟨ lemma-cong↑ (negsB s • negsB s) ε (negs² s) ⟩
   ε ∎
   where open Tools ((₁₊ n) VRel,_===_)
+
+-- No colours.
+allT : ∀ j → negsB (replicate j true) ≡ ε
+allT zero    = Eq.refl
+allT (suc j) = Eq.cong (λ w → w ↑) (allT j)
 
 -- Every X commutes with the negations.
 X-negs : ∀ (i : Fin n) (s : Bits n) → n ⊢ Xat (toℕ i) • negsB s ≈ negsB s • Xat (toℕ i)

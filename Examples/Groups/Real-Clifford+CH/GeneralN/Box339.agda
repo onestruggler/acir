@@ -78,7 +78,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (B₁ ; P₀₃ 
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Base339 using (d339 ; d339r ; G1r ; G2r)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Base339K using (dK ; dK′)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxComm complete₂ complete₃ using (module Base ; eq336ᶜ)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxAnywhere complete₂ complete₃ using (col-pair′)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxAnywhere using (col-pair′)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Gadget319 complete₂ complete₃ using (bx ; eq319)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Box320 complete₂ complete₃ using (eq318)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Gadget322 complete₂ complete₃

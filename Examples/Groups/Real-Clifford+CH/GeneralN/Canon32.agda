@@ -71,9 +71,10 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxFrames using (Canon)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.CanonN complete₂ complete₃ using (canonN)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxSym complete₂ complete₃ using (Completes ; SymAt ; eqSymAt)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Colours complete₂ complete₃ using (col ; col-Ex ; conj-swap)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxAnywhere complete₂ complete₃ using (col-pair)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxAnywhere using (col-pair)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (Hg)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.ZX353 complete₂ complete₃ using (allT ; S-ZX ; S-XZ)
+import Examples.Groups.Real-Clifford+CH.GeneralN.RotRigid as RotRigid
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Canon40 complete₂ complete₃
   using (eq333 ; eq334 ; Kcol ; eq339c ; swB-invol)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Box338 complete₂ complete₃ using (module Carry)
@@ -404,31 +405,19 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
   ----------------------------------------------------------------------
   -- The rotations are rigid on wire 0: a network of the controls passes
   -- them — the swap of the wires 1 2 by (353), the higher ones by
-  -- disjointness from CH and (307) for the box
+  -- disjointness from CH and (307) for the box (RotRigid)
+
+  private
+    s12 : ∀ β → Ex ↑ • R β ≈ R β • Ex ↑
+    s12 true  = S₁₂.⟪⟫-comm (S-ZX k below)
+    s12 false = S₁₂.⟪⟫-comm (S-XZ k below)
+
+  rot-rigid : ∀ β (v : Word (S.Gen (₄₊ k))) → net v ↑ • R β ≈ R β • net v ↑
+  rot-rigid = RotRigid.rot-rigid canon s12
 
   private
     R-gen : ∀ β (g : S.Gen (₄₊ k)) → φ g ↑ • R β ≈ R β • φ g ↑
-    R-gen β     (S.gate₀ ())
-    R-gen β     (S.gate₁ ())
-    R-gen true  (S.gate₂ S.σ-gate) = S₁₂.⟪⟫-comm (S-ZX k below)
-    R-gen false (S.gate₂ S.σ-gate) = S₁₂.⟪⟫-comm (S-XZ k below)
-    R-gen true  (g S.↥) = pass₂ sCH (pass₂ sB (pass₂ sCH sB))
-      where
-      sCH : φ g ↑ ↑ • CH ≈ CH • φ g ↑ ↑
-      sCH = sym (low-comm CH (φ g))
-      sB : φ g ↑ ↑ • B ≈ B • φ g ↑ ↑
-      sB = pass₂ (sym (low-comm Ex (φ g))) (pass₂ (Canon.swaps canon [ g S.↥ ]ʷ) (sym (low-comm Ex (φ g))))
-    R-gen false (g S.↥) = pass₂ sB (pass₂ sCH (pass₂ sB sCH))
-      where
-      sCH : φ g ↑ ↑ • CH ≈ CH • φ g ↑ ↑
-      sCH = sym (low-comm CH (φ g))
-      sB : φ g ↑ ↑ • B ≈ B • φ g ↑ ↑
-      sB = pass₂ (sym (low-comm Ex (φ g))) (pass₂ (Canon.swaps canon [ g S.↥ ]ʷ) (sym (low-comm Ex (φ g))))
-
-  rot-rigid : ∀ β (v : Word (S.Gen (₄₊ k))) → net v ↑ • R β ≈ R β • net v ↑
-  rot-rigid β [ g ]ʷ  = R-gen β g
-  rot-rigid β ε       = trans left-unit (sym right-unit)
-  rot-rigid β (u • v) = passL (rot-rigid β u) (rot-rigid β v)
+    R-gen β g = rot-rigid β [ g ]ʷ
 
   ----------------------------------------------------------------------
   -- (351) and (352) for two colourings, in the frame of the placement

@@ -50,15 +50,9 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.MergeGen using (merge-up�
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BaseRotMerge
   using (e-zx1 ; e-zx2 ; e-zx3 ; e-xz1 ; e-xz2 ; e-xz3)
 
--- The family of rotations with no control on wire 0 left out: ZX for
--- true, XZ for false (rot β is F β (2 + m)).
-F : Bool → (K : ℕ) → Circuit (₁₊ K)
-F true  = ΛZX
-F false = ΛXZ
-
--- (354) on the top wire of 1 + K wires.
-TopMerge : Bool → ℕ → Set
-TopMerge β K = (₂₊ K) ⊢ (Xat (suc K) • F β (suc K) • Xat (suc K)) • F β (suc K) ≈ placeAt (suc K) (F β K)
+-- The family of rotations with no control on wire 0 left out, and (354)
+-- on the top wire.
+open import Examples.Groups.Real-Clifford+CH.GeneralN.RotCol public using (F ; TopMerge)
 
 ------------------------------------------------------------------------
 -- From wire 3 to the top wire, at width 5 + k

@@ -7,7 +7,7 @@
 -- (−1)_[a] X_[a,a′] · (−1)_[a′] X_[a′,a″] · (−1)_[a] X_[a,a′] = the same
 -- with a and a′ exchanged, for a′ = a + 1 and a″ = a + 2.  Decoded, each
 -- letter is a rotation R_x placed by the layout of the Gray-code step x
--- (Rule32.letter′), so the rule is R_a R_{a+1} R_a ≈ R_{a+1} R_a R_{a+1}.
+-- (LetterG.letter′), so the rule is R_a R_{a+1} R_a ≈ R_{a+1} R_a R_{a+1}.
 -- The two steps have different targets (`tgt-apart`), their codes agree
 -- off the first target (`gstep`), and the type of each rotation is its
 -- code's bit at its own target — the negation of the other code's bit
@@ -20,10 +20,9 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.RotCol using (RotComm)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BraidCol using (Braid)
 
-module Examples.Groups.Real-Clifford+CH.Lemma88.Rule24 {m : ℕ} (rotcomm : RotComm m) (braid : Braid m) where
+module Examples.Groups.Real-Clifford+CH.Lemma88.Rule24 {m : ℕ} (braid : Braid m) where
 
 open import Data.Bool using (Bool ; true ; false ; not)
 open import Data.Empty using (⊥-elim)
@@ -53,7 +52,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Layouts using (layoutAt ; 
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Placed using (place)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.RotCol using (rot)
 open import Examples.Groups.Real-Clifford+CH.Lemma88.Easy m using (d-zx ; dZX-lo₁)
-open import Examples.Groups.Real-Clifford+CH.Lemma88.Rule32 {m} rotcomm using (letter′ ; tw)
+open import Examples.Groups.Real-Clifford+CH.Lemma88.LetterG {m} using (letter′ ; tw)
 open import Examples.Groups.Real-Clifford+CH.Lemma88.GrayWitness {m}
   using (tgt ; tgt< ; gstep ; tgt-apart ; lookup-flip-same ; lookup-flip-other)
 

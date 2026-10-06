@@ -18,15 +18,21 @@
 module Examples.Groups.Real-Clifford+CH.GeneralN.Col where
 
 open import Data.Bool using (Bool ; true ; false)
+open import Data.Fin using (Fin ; toℕ)
 open import Data.Nat using (ℕ)
 open import Data.Vec using (_∷_)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (_•_)
 
 open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 
 open import Examples.Groups.Real-Clifford+CH.Semantics.Algebra using (Bits)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
-open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires using (negsB)
+open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools)
+open import Examples.Groups.Real-Clifford+CH.MultiControlled using (Xat)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.GrayStep using (flipAt)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires using (negsB ; negs-flip ; negs-flip′ ; X-negs ; Xat²)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Idle using (swapX ; swapX′)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Place using (cyc ; cyc⁻¹)
 
 col : ∀ {n} → Bits n → Circuit n → Circuit n
@@ -94,3 +100,38 @@ C339 : ℕ → Set
 C339 m = ∀ (a : Bool) (x y : Bits m) →
          (₄₊ m) ⊢ col (true ∷ true ∷ true ∷ a ∷ x) (Λ□ (₃₊ m)) • col (true ∷ true ∷ false ∷ true ∷ y) (Hg₃ m)
                 ≈ col (true ∷ true ∷ false ∷ true ∷ y) (Hg₃ m) • col (true ∷ true ∷ true ∷ a ∷ x) (Λ□ (₃₊ m))
+
+------------------------------------------------------------------------
+-- A flipped bit where X passes the gate does not count
+
+col-flip : ∀ {n} (i : Fin n) (t : Bits n) {w : Circuit n} → n ⊢ Xat (toℕ i) • w ≈ w • Xat (toℕ i) →
+           n ⊢ col (flipAt (toℕ i) t) w ≈ col t w
+col-flip {n} i t {w} e = begin
+  negsB (flipAt (toℕ i) t) • w • negsB (flipAt (toℕ i) t)
+    ≈⟨ cong (negs-flip i t) (back _ (negs-flip′ i t)) ⟩
+  (Xi • M) • w • (M • Xi)
+    ≈⟨ by-passoc ((□ • □) • □ • (□ • □)) (□ • (□ • □ • □) • □) Eq.refl ⟩
+  Xi • (M • w • M) • Xi
+    ≈⟨ trans (sym assoc) (trans (front _ (pass (X-negs i t) (pass e (X-negs i t)))) (cancelʳ _ (Xat² i))) ⟩
+  M • w • M ∎
+  where
+  open Tools (n VRel,_===_)
+  Xi M : Circuit n
+  Xi = Xat (toℕ i)
+  M  = negsB t
+  pass : ∀ {u v : Circuit n} → Xi • u ≈ u • Xi → Xi • v ≈ v • Xi → Xi • (u • v) ≈ (u • v) • Xi
+  pass eu ev = trans (sym assoc) (trans (front _ eu) (trans assoc (trans (back _ ev) (sym assoc))))
+
+-- X on wire 1 passes the box on wire 1.
+X₁-B : ∀ {m} → (₃₊ m) ⊢ X • Λ□ (₂₊ m) ≈ Λ□ (₂₊ m) • X → (₃₊ m) ⊢ X ↑ • B₁ m ≈ B₁ m • X ↑
+X₁-B {m} xb = begin
+  X ↑ • Ex • Λ • Ex          ≈⟨ sym assoc ⟩
+  (X ↑ • Ex) • Λ • Ex        ≈⟨ front _ swapX ⟩
+  (Ex • X) • Λ • Ex          ≈⟨ trans assoc (back _ (trans (sym assoc) (front _ xb))) ⟩
+  Ex • (Λ • X) • Ex          ≈⟨ back _ (trans assoc (back _ (sym swapX′))) ⟩
+  Ex • Λ • (Ex • X ↑)        ≈⟨ by-passoc (□ • □ • (□ • □)) ((□ • □ • □) • □) Eq.refl ⟩
+  (Ex • Λ • Ex) • X ↑ ∎
+  where
+  open Tools ((₃₊ m) VRel,_===_)
+  Λ : Circuit (₃₊ m)
+  Λ = Λ□ (₂₊ m)

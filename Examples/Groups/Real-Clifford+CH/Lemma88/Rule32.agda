@@ -8,7 +8,7 @@
 -- rotation — the multi-controlled ZX or XZ on the wire t_a where the
 -- Gray codes of a and a + 1 differ, controlled by the other bits of the
 -- code of a — which is the canonical rotation placed by the network
--- bringing t_a to wire 0 and coloured by the code (`letter`, as
+-- bringing t_a to wire 0 and coloured by the code (LetterG's `letter′`, as
 -- Lemma84's mc□-boxF for the box).  Their colourings differ on a wire
 -- off both targets (GrayWitness), so they commute: the module's
 -- parameter, `RotComm`, which GeneralN.RotAnywhere gives at every width
@@ -24,13 +24,11 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.RotCol using (RotComm)
 module Examples.Groups.Real-Clifford+CH.Lemma88.Rule32 {m : ℕ} (rotcomm : RotComm m) where
 
 open import Data.Bool using (Bool ; true ; false)
-open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin ; toℕ ; fromℕ<)
 open import Data.Fin.Properties using (toℕ<n ; toℕ-fromℕ<)
 open import Data.Nat using (zero ; suc ; _<_ ; _^_ ; s≤s ; z≤n)
 open import Data.Nat.Properties using (n<1+n ; <⇒≢ ; <-trans ; ≤-<-trans)
 open import Data.Product using (_,_)
-open import Data.Vec using ([] ; _∷_ ; zipWith)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Word.Base using (ε ; _•_ ; _ʷ)
 
@@ -43,17 +41,16 @@ open import Examples.Groups.Real-Clifford+CH.Reverse using (rev ; rev-cong)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Bitstrings using (lookupℕ)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Figure8 using (Succ)
 open import Examples.Groups.Real-Clifford+CH.Encoding using (zx)
-open import Examples.Groups.Real-Clifford+CH.MultiControlled
-  using (conj₁ ; negs ; tgtWire ; shiftDown ; shiftUp)
-open import Examples.Groups.Real-Clifford+CH.Decoding using (d ; dZX ; dZXlo₁ ; βof ; layout□ ; gcode ; slot)
-open import Examples.Groups.Real-Clifford+CH.PermCalc using (net)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires
-  using (sdS ; revS ; net-sdS ; net-suS ; revS-sdS ; sd-target ; negsB)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Layouts using (layoutAt ; setT ; zip-flip ; tgtWire-at ; negs-at)
+open import Examples.Groups.Real-Clifford+CH.Decoding using (d ; dZX ; dZXlo₁ ; βof ; gcode)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires using (sdS ; sd-target)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.Layouts using (setT)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Placed using (place)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.RotCol using (rot ; mc±XZ-rot)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.RotCol using (rot)
 open import Examples.Groups.Real-Clifford+CH.Lemma88.Easy m using (d-zx ; dZX-lo₁)
-open import Examples.Groups.Real-Clifford+CH.Lemma88.GrayWitness {m} using (tgt ; tgt< ; gstep ; witness)
+open import Examples.Groups.Real-Clifford+CH.Lemma88.GrayWitness {m} using (tgt ; tgt< ; witness)
+open import Examples.Groups.Real-Clifford+CH.Lemma88.LetterG {m} public
+  using (letterG ; tw ; letterG′ ; letter′)
+open import Examples.Groups.Real-Clifford+CH.Lemma88.LetterG {m} using (lookup-setT-same ; lookup-setT-other)
 
 private
   N : ℕ
@@ -67,59 +64,6 @@ open Tools (N VRel,_===_)
 private
   ≡→≈ : ∀ {a b : Circuit N} → a ≡ b → a ≈ b
   ≡→≈ Eq.refl = refl
-
-  ------------------------------------------------------------------------
-  -- Setting a bit
-
-  lookup-setT-same : ∀ {n} i (s : Bits n) → i < n → lookupℕ i (setT i s) ≡ true
-  lookup-setT-same zero    (b ∷ s) _       = Eq.refl
-  lookup-setT-same (suc i) (b ∷ s) (s≤s p) = lookup-setT-same i s p
-
-  lookup-setT-other : ∀ {n} i j (s : Bits n) → j ≢ i → lookupℕ j (setT i s) ≡ lookupℕ j s
-  lookup-setT-other i       j       []      _  = Eq.refl
-  lookup-setT-other zero    zero    (b ∷ s) ne = ⊥-elim (ne Eq.refl)
-  lookup-setT-other zero    (suc j) (b ∷ s) _  = Eq.refl
-  lookup-setT-other (suc i) zero    (b ∷ s) _  = Eq.refl
-  lookup-setT-other (suc i) (suc j) (b ∷ s) ne = lookup-setT-other i j s (λ e → ne (Eq.cong suc e))
-
-
-
-------------------------------------------------------------------------
--- A gate placed by the layout of a, as a placed gate
-
-letterG : ∀ x → suc x < 2 ^ N → ∀ (g : Circuit N) →
-          conj₁ (layout□ {m} x) g ≈ place (sdS (tgt x)) (setT (tgt x) (gcode x)) g
-letterG x bnd g = trans (≡→≈ e₁) (by-passoc (□ • □ • □ • □ • □) (□ • (□ • □ • □) • □) Eq.refl)
-  where
-  t : ℕ
-  t = tgt x
-  G : Bits N
-  G = gcode x
-  s′ : Bits N
-  s′ = setT t G
-  lay : layout□ {m} x ≡ layoutAt t G
-  lay = Eq.trans (Eq.cong (zipWith slot G) (gstep x bnd)) (zip-flip t G (tgt< x bnd))
-  e₁ : conj₁ (layout□ {m} x) g ≡ negsB s′ • net (sdS t) • g • net (revS (sdS {N} t)) • negsB s′
-  e₁ = Eq.trans (Eq.cong (λ L → conj₁ L g) lay)
-         (Eq.trans (Eq.cong₂ (λ w j → w • shiftDown j • g • shiftUp j • w) (negs-at t G) (tgt-at t G (tgt< x bnd)))
-                   (Eq.cong₂ (λ a b → negsB s′ • a • g • b • negsB s′)
-                             (Eq.sym (net-sdS t)) (Eq.sym (Eq.trans (Eq.cong net (revS-sdS t)) (net-suS t)))))
-    where
-    tgt-at = tgtWire-at
-
--- The target as a wire.
-tw : ∀ x → suc x < 2 ^ N → Fin N
-tw x bnd = fromℕ< (tgt< x bnd)
-
-letterG′ : ∀ x (bnd : suc x < 2 ^ N) (g : Circuit N) →
-           conj₁ (layout□ {m} x) g ≈ place (sdS (toℕ (tw x bnd))) (setT (toℕ (tw x bnd)) (gcode x)) g
-letterG′ x bnd g = Eq.subst (λ j → conj₁ (layout□ {m} x) g ≈ place (sdS j) (setT j (gcode x)) g)
-                            (Eq.sym (toℕ-fromℕ< (tgt< x bnd))) (letterG x bnd g)
-
--- The letter (−1)_[a] X_[a,a+1] as a placed rotation.
-letter′ : ∀ x (bnd : suc x < 2 ^ N) →
-          dZXlo₁ {m} x ≈ place (sdS (toℕ (tw x bnd))) (setT (toℕ (tw x bnd)) (gcode x)) (rot (βof x))
-letter′ x bnd = trans (≡→≈ (mc±XZ-rot (βof x) (layout□ x))) (letterG′ x bnd (rot (βof x)))
 
 ------------------------------------------------------------------------
 -- Two letters commute

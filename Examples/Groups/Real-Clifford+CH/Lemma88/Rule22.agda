@@ -21,15 +21,11 @@
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Data.Nat using (ℕ)
-open import Examples.Groups.Real-Clifford+CH.Semantics using (_~_)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
-open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxFrames using (Canon)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (C335 ; C336)
 
 module Examples.Groups.Real-Clifford+CH.Lemma88.Rule22
-  (complete₂ : ∀ {u v : Circuit 2} → ⟦ u ⟧ ~ ⟦ v ⟧ → 2 ⊢ u ≈ v)
-  (complete₃ : ∀ {u v : Circuit 3} → ⟦ u ⟧ ~ ⟦ v ⟧ → 3 ⊢ u ≈ v)
   {m : ℕ} (C : Canon m) (c335 : C335 m) (c336 : C336 m)
   where
 
@@ -68,7 +64,7 @@ open import Examples.Groups.Real-Clifford+CH.GeneralN.Layouts using (layoutAt)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.NetWires using (sdS ; sd-target ; negsB ; negs² ; net-inv)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxFrames using (module Frames ; pl ; pl-• ; pl-cong)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma84 C using (MI ; mc□-boxF)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxAnywhere complete₂ complete₃ using (module Anywhere)
+open import Examples.Groups.Real-Clifford+CH.GeneralN.BoxAnywhere using (module Anywhere)
 
 open Frames C using (boxF)
 open Anywhere C c335 c336 using (boxes-comm)
