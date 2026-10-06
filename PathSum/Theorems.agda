@@ -80,9 +80,11 @@
 -- section 4.1 substitutes Q where x_i ⊕ Q is meant, example B.1 as
 -- printed is the identity rather than ω·I, the fourth line of example
 -- 3.4 does not follow from the third, section 5.2's formula for the
--- shifted function f′ drops the shift, and its adder has 5n qubits for
+-- shifted function f′ drops the shift, its adder has 5n qubits for
 -- n ≥ 2, as its table and its tool's circuit say, not the text's
--- 5n − 1 bits.
+-- 5n − 1 bits, and its calculus finds |s⟩ without the specification
+-- along a suitable reduction, not along every one
+-- (PathSum.HiddenShift.Stuck).
 -- One gap is filled: the proof of corollary 4.4 reduces by arbitrary
 -- rules, which needs every rule to preserve order ≤ 2 -- lemma 2.13
 -- covers only linear substitutions, and PathSum.Full.Clifford supplies
@@ -660,6 +662,14 @@ module HTb = PathSum.HiddenShift.Table M₀
 
 import PathSum.HiddenShift.ToolExists
 module HTE = PathSum.HiddenShift.ToolExists M₀
+
+-- Hidden shift: the calculus can get stuck.
+
+import PathSum.HiddenShift.Stuck
+module HStk = PathSum.HiddenShift.Stuck M₀
+
+import PathSum.HiddenShift.StuckTool
+module HStT = PathSum.HiddenShift.StuckTool M₀
 
 -- Multilinear forms, the size of addition's expansion, and the hidden
 -- shift for every bent function (generic names: imported qualified;
@@ -3386,7 +3396,8 @@ symbolic-shift-0 = HSy.symbolic-shift-0
 -- "Our calculus further finds the correct output |s⟩ or |s⟩|s⟩ even
 -- without providing the specification": every reduction by figure 2's
 -- rules, at any variables, that eliminates all path variables ends at
--- |x⟩ ↦ |s⟩ syntactically ...
+-- |x⟩ ↦ |s⟩ syntactically (not every maximal reduction does eliminate
+-- them: see "the calculus can get stuck" below) ...
 
 hidden-shift-reduces : (g : Poly m 0) (s : Assign (m + m)) {k′ : ℕ}
                        {ζ : PathSum (m + m) k′ 0} →
@@ -3680,6 +3691,66 @@ tool-symbolic-finds :
     (∀ w → out ζ w ≈[ + 2 ] μ x[ HSy.copy (m + m) w ]) ×
     (phase ζ ≈[ pow M ] 0ᴾ))
 tool-symbolic-finds = HTE.tool-symbolic-finds
+
+
+------------------------------------------------------------------------
+-- Section 5.2: the calculus can get stuck on the hidden shift circuit
+-- (PathSum.HiddenShift.Stuck, with Stuck.Instance, Stuck.Machine,
+-- Stuck.Linear, PathSum.Polynomial.ANF; PathSum.HiddenShift.StuckTool)
+
+-- "Our calculus further finds the correct output |s⟩ ... even without
+-- providing the specification": a complete reduction exists and every
+-- complete reduction ends at |s⟩ (above), but not every maximal one is
+-- complete.  At m = 3, g = x₀x₁ + x₀x₂ + x₁x₂ (the majority, so the
+-- oracles are Clifford) and s = 0, four [HH] steps with linear
+-- quotients, each followed by an [Elim], reach a path-sum with ten path
+-- variables, all of them in the outputs, to which no rule of figure 2
+-- applies.
+
+hidden-shift-stuck :
+  Σ (PathSum 6 10 10) (λ ζ →
+    (HSim.at0 (HSh.HS HStk.g HStk.s) ⟶ᵍ* ζ) × Irreducibleᶠ ζ)
+hidden-shift-stuck = HStk.hidden-shift-stuck
+
+-- So "every irreducible path-sum reachable from the circuit on |0⟩ has
+-- no path variables" fails, for figure 2 and for the linear rules
+-- alike: the paper's sentence holds of a suitable reduction, not of
+-- every one.
+
+not-every-maximal-reduction-complete :
+  ¬ (∀ {k′ m′} {ζ : PathSum 6 k′ m′} →
+     HSim.at0 (HSh.HS HStk.g HStk.s) ⟶ᶠ* ζ → Irreducibleᶠ ζ → m′ ≡ 0)
+not-every-maximal-reduction-complete =
+  HStk.not-every-maximal-reduction-complete
+
+not-every-maximal-reduction-complete-linear :
+  ¬ (∀ {k′ m′} {ζ : PathSum 6 k′ m′} →
+     HSim.at0 (HSh.HS HStk.g HStk.s) ⟶ᵍ* ζ → Irreducible ζ → m′ ≡ 0)
+not-every-maximal-reduction-complete-linear =
+  HStk.not-every-maximal-reduction-complete-linear
+
+-- The stuck path-sum never reaches one without path variables, yet it
+-- still denotes |x⟩ ↦ |s⟩: whatever the calculus reaches is sound.
+
+hidden-shift-stuck-incomplete :
+  ∀ {k′} {ζ′ : PathSum 6 k′ 0} → ¬ (proj₁ hidden-shift-stuck ⟶ᶠ* ζ′)
+hidden-shift-stuck-incomplete = HStk.stuck-incomplete
+
+hidden-shift-reachable-≋ :
+  ∀ {m} (g : Poly m 0) (s : Assign (m + m)) {k′ m′}
+    {ζ : PathSum (m + m) k′ m′} →
+  HSim.at0 (HSh.HS g s) ⟶ᶠ* ζ → ζ ≋ HSh.specᴾ s
+hidden-shift-reachable-≋ = HStk.reachable-≋
+
+-- The same on the tool's own circuit (X primitive, one alternation of
+-- the tool's size, n = 8, shift 0, g = x₁x₂x₃ + x₀x₂ + x₀x₁): six [HH]
+-- steps, one with a non-linear quotient, end stuck with twelve path
+-- variables.
+
+hidden-shift-tool-stuck :
+  Σ (PathSum 8 12 12) (λ ζ →
+    (HSim.at0 KX.⟦ HTo.HSᵗ HStT.s HStT.Bs ⟧ ⟶ᶠ* ζ) × Irreducibleᶠ ζ)
+hidden-shift-tool-stuck = HStT.tool-stuck
 
 
 ------------------------------------------------------------------------

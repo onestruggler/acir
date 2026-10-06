@@ -367,7 +367,7 @@ function f(x, y) = g(x) + x·y is 2^m times its dual g(y) + x·y),
 |s⟩ for every m, every g and every shift s; `HiddenShift/Simulation`
 that every complete reduction by figure 2 ends at |x⟩ ↦ |s⟩, and
 `HiddenShift/Blocks`, `Track` and `Exists` that one exists — so the
-calculus finds |s⟩ without being given the specification —
+calculus can find |s⟩ without being given the specification —
 `HiddenShift/Example` writing one out.  `HiddenShift/Gates`, `Layers`,
 `Circuit` and `Symbolic` do the same for figure 3's circuits over
 {H, CNOT, R_k} — oracles built from Z, CZ and CCZ gates, the fixed
@@ -388,8 +388,14 @@ the Clifford count exactly when the number c of CZ draws satisfies
 (symbolic shift), each attained; the tool's QuickCheck generator is
 unseeded, so the table's own draws are unknown.  `HiddenShift/TraceX`,
 `ThreeLayers`, `ToolRuns` and `ToolExists` give complete reductions on
-the tool's own path-sums, of exactly 3n steps.  `HiddenShift/Bent`
-and `HiddenShift/AnyBent` prove the algorithm correct for every bent
+the tool's own path-sums, of exactly 3n steps.  Not every strategy
+finds them: `HiddenShift/Stuck` and `HiddenShift/StuckTool` give
+reductions that end at an irreducible path-sum with path variables
+left — by the linear rules on a 6-qubit Clifford instance, and with
+one non-linear quotient on the tool's own circuit at n = 8 — so
+section 5.2's "our calculus finds |s⟩ even without providing the
+specification" holds along a suitable reduction, not along every one.
+`HiddenShift/Bent` and `HiddenShift/AnyBent` prove the algorithm correct for every bent
 function with its dual, as the paper states it, not only for the
 Maiorana–McFarland family; `Polynomial/Interpolate` shows every
 function on the Boolean cube is a (unique) multilinear polynomial.
@@ -452,9 +458,10 @@ stay polynomial.  Smaller slips: definition
 2.6 omits a renaming in the outputs; section 4.1 substitutes Q where
 x_i ⊕ Q is meant; example B.1 as printed is the identity, not ω·I; the
 fourth line of example 3.4 does not follow from the third; section
-5.2's formula for the shifted function f′ drops the shift; and its
-adder has 5n qubits for n ≥ 2, as its table and its tool's circuit
-say, not the text's 5n − 1 bits.
+5.2's formula for the shifted function f′ drops the shift; its adder
+has 5n qubits for n ≥ 2, as its table and its tool's circuit say, not
+the text's 5n − 1 bits; and its calculus finds |s⟩ without the
+specification along a suitable reduction, not along every one.
 
 Not formalised: running times on a machine and complexity classes;
 and the benchmarks of section 5 as runs of the tool (the QFT, Toffoli, adder and hidden
