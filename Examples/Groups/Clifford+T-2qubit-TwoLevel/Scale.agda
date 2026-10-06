@@ -2,9 +2,9 @@
 -- Presentations of groups
 --
 -- δ-adic scaling in 𝔻[ω]: the element w / δᵏ for w ∈ ℤ[ω].  Every
--- element of 𝔻[ω] has this form (so it has δ-exponents, Definition
--- 2.6), and the form determines w once k is fixed.  The scalars of
--- the generators: ω = emb ωᶻ, and 1/√2 = λω / δ² (λ = 1 + √2).
+-- element of 𝔻[ω] has this form (so it has δ-exponents, Definition 9),
+-- and the form determines w once k is fixed.  The scalars of the
+-- generators: ω = emb ωᶻ, and 1/√2 = λω / δ² (λ = 1 + √2).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

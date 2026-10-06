@@ -1,14 +1,14 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Termination of the exact synthesis algorithm (Theorem 2.16): for a
+-- Termination of the exact synthesis algorithm (Theorem 18): for a
 -- column-orthonormal matrix M ≠ I, one step lowers the level.
 --
 -- * If the pivot column v has k = lde v = 0, it is a unit times a
---   standard basis vector e_m (Lemma 2.12), and the syllable turns it
+--   standard basis vector e_m (Lemma 14), and the syllable turns it
 --   into e_p, so the pivot drops.
 -- * If k > 0, the syllable H_[j,ℓ] ω_[j]ᶻ makes the entries j and ℓ
---   of δᵏ v even (Lemma 2.13: the row operation), so the number of
+--   of δᵏ v even (Lemma 12: the row operation), so the number of
 --   odd entries drops by two, or the exponent drops.
 ------------------------------------------------------------------------
 
@@ -362,7 +362,7 @@ pair-step {n} {p} k′ w (inj₂ (x , ox)) norm ≤p = withFirst (firstOdd w) re
       one = count-one (λ y → oddᶻ (w ! y)) j oj others
 
 ------------------------------------------------------------------------
--- One step lowers the level (the proof of Theorem 2.9)
+-- One step lowers the level (the proof of Theorem 18)
 
 private
   scV-injective : ∀ k (u v : Vec Z n) → scV k u ≡ scV k v → u ≡ v

@@ -2,9 +2,9 @@
 -- Presentations of groups
 --
 -- The presentation theorem (Bian and Selinger, "Generators and
--- relations for Uₙ(ℤ[½,i])", Theorem 3.2 with the exact synthesis
+-- relations for Uₙ(ℤ[½,i])", Theorem 3.1 with the exact synthesis
 -- algorithm): the generators X_[a,b], K_[a,b] and i_[a] with the
--- relations (1)–(17) present Uₙ(𝔻[i]), the group of unitary
+-- relations (1)–(19) present Uₙ(𝔻[i]), the group of unitary
 -- n × n matrices over 𝔻[i] = ℤ[½,i].
 --
 -- The semantics ⟦_⟧ᵘ takes a word to its matrix.  It is a monoid

@@ -2,7 +2,7 @@
 -- Presentations of groups
 --
 -- The Main Lemma for the basic generator G = X_[α,α+1] (Cases 3–5 of
--- the proof of Lemma 3.10), β = α + 1, but for one subcase, left as
+-- the proof of Lemma 31), β = α + 1, but for one subcase, left as
 -- the hypothesis Hard (proved in CaseXM).  With p the pivot, w the
 -- numerator of the pivot column and k its least δ-exponent:
 --
@@ -13,7 +13,7 @@
 -- * k > 0, with j < ℓ the first odd entries: disjoint when ℓ < α,
 --   j < α < β < ℓ or β < j; through X_[α,β] when ℓ = α with w_β even,
 --   ℓ = β with j < α, and β < ℓ with j ∈ {α, β}; for j = α, ℓ = β,
---   through ω_[β]⁴ or through (z₁)–(z₃), by the exponent.  The subcase
+--   through ω_[β]⁴ or through (28)–(30), by the exponent.  The subcase
 --   ℓ = α with w_β odd is Hard.
 ------------------------------------------------------------------------
 
@@ -652,7 +652,7 @@ module _ (α β : Fin n) (αβ1 : toℕ β ≡ suc (toℕ α))
             (below (ω β ^ 4) (ℕP.≤-refl , ℕP.≤-refl , ℕP.≤-refl , ℕP.≤-refl))
             (trans (trans (cleft right-unit) (trans (axiom (rel-18 αβ)) (cright sym right-unit)))
                    (cright refl′ (≡.sym (syl-s′ e))))
-        -- z = 1, 2, 3: by (z₁), (z₂), (z₃).
+        -- z = 1, 2, 3: by (28), (29), (30).
         by-z 1 _ e =
           square-syl G s o (H α β αβ • ω α ^ 3) (ω α ^ 7 • ω β ^ 3 • X α β αβ) pr (syl-r′ e)
             (below (ω α ^ 7 • ω β ^ 3 • X α β αβ)

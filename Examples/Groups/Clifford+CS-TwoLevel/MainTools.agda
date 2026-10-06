@@ -1,12 +1,13 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Tools for the Main Lemma (Lemma 3.6).
+-- Tools for the Main Lemma (Lemma 3.7).
 --
 -- A square for a basic edge s → r = G s and the normal edge s ⇒ t is
 -- given by a normal path N′ from r, a path G′ from t below the level
 -- of s, and the relation N′ G ≈ G′ N; the two paths meet by soundness
--- (square-by).  Three shapes recur in the case analysis of the paper:
+-- (square-by).  Three shapes recur in the case analysis of the
+-- Appendix (the proof of Lemma 3.7):
 --
 -- * disjoint: N is also the normal edge from r, and commutes with G;
 -- * retrograde: the normal edge from r undoes G (N′ = N N_r, G′ = ε);

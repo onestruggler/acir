@@ -1,16 +1,16 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The syllables of the exact synthesis algorithm (Algorithm 2.14), as
+-- The syllables of the exact synthesis algorithm (Algorithm 16), as
 -- a function of the data of the pivot column: its index p, its least
 -- δ-exponent k and its numerator w ∈ ℤ[ω]ⁿ.
 --
 -- * k = 0: w has a single nonzero entry, a unit u = ωᵗ at index m
---   (Lemma 2.12), and the syllable is ω_[m]ᵉ followed by X_[m,p]
+--   (Lemma 14), and the syllable is ω_[m]ᵉ followed by X_[m,p]
 --   (if m < p), where ωᵉ u = 1;
--- * k > 0: with j < ℓ the first two odd entries of w (Lemma 2.13) and
---   z < 4 such that ωᶻ w_j ≡ w_ℓ (mod δ³) (Lemma 2.11), the syllable
---   is ω_[j]ᶻ followed by H_[j,ℓ] (Lemma 2.12).
+-- * k > 0: with j < ℓ the first two odd entries of w (Lemma 13) and
+--   z < 4 such that ωᶻ w_j ≡ w_ℓ (mod δ³) (Lemma 11), the syllable
+--   is ω_[j]ᶻ followed by H_[j,ℓ] (Lemma 12).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

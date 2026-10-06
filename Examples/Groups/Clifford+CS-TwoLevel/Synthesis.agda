@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The exact synthesis algorithm (Algorithm 2.10) and its correctness
--- (Theorem 2.9): for a column-orthonormal matrix M, the word synth M
+-- The exact synthesis algorithm (Algorithm 2.14) and its correctness
+-- (Theorem 2.16): for a column-orthonormal matrix M, the word synth M
 -- is the concatenation N_m ⋯ N_1 of the syllables along the path of
 -- normal edges from M to I, and ⟦ synth M ⟧ M = I.
 --

@@ -4,15 +4,16 @@
 -- The relations of the hard subcase of Case 3 (case 3.2.2.2 with w_β
 -- odd), for j < ℓ < j′ < ℓ′.  With D the powers of i at the four
 -- indices that make the four odd entries ≡ 1 (mod γ³), and D′ the
--- same with the exponents at ℓ and j′ swapped:
+-- same with the exponents at ℓ and j′ swapped, these are the faces of
+-- the figure in Case 3.2.2.2.2:
 --
 -- * the left and right faces: K†_[j,ℓ] D = V K†_[j,ℓ] i_[ℓ]ᑫ for a
 --   word V of transpositions and powers of i;
 -- * the middle face: X_[ℓ,j′] D = D′ X_[ℓ,j′];
 -- * the bottom face: K†_[j,ℓ] X_[ℓ,j′] = B K†_[j,ℓ], with B the path
---   of (case 3.2.2.2.1), from (17);
+--   of (case 3.2.2.2.1), by (27), from (19);
 --
--- and so the square of the paper's outer perimeter.
+-- and so the square of that figure's outer perimeter.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -94,7 +95,7 @@ module _ {j ℓ j′ ℓ′ : Fin n} (jℓ : j < ℓ) (ℓj′ : ℓ < j′) (j�
     K†′ = K† j ℓ jℓ
     Xm = X ℓ j′ ℓj′
 
-  -- K†_[j,ℓ] commutes with i_[j]ᶜ i_[ℓ]ᶜ, by (15).
+  -- K†_[j,ℓ] commutes with i_[j]ᶜ i_[ℓ]ᶜ, by (17).
   K†-ii : ∀ c → K†′ • (i j ^ c • i ℓ ^ c) ≈ (i j ^ c • i ℓ ^ c) • K†′
   K†-ii zero = trans (trans (cright left-unit) right-unit) (sym (trans (cleft left-unit) left-unit))
   K†-ii (suc c) = begin
@@ -120,13 +121,13 @@ module _ {j ℓ j′ ℓ′ : Fin n} (jℓ : j < ℓ) (ℓj′ : ℓ < j′) (j�
       i j • (i ℓ • (i j ^ c • i ℓ ^ c))           ≈⟨ sym assoc ⟩
       (i j • i ℓ) • Q                             ∎
 
-  -- K†_[j,ℓ] i_[ℓ]^(2h) = X_[j,ℓ]ʰ K†_[j,ℓ], by (q″).
+  -- K†_[j,ℓ] i_[ℓ]^(2h) = X_[j,ℓ]ʰ K†_[j,ℓ], by (29).
   K†-ii² : ∀ h q → h ℕ.≤ 1 → K†′ • (i ℓ ^ (2 * h) • i ℓ ^ q) ≈ X j ℓ jℓ ^ h • (K†′ • i ℓ ^ q)
   K†-ii² zero q _ = trans (cright left-unit) (sym left-unit)
   K†-ii² (suc zero) q _ = trans (sym assoc) (trans (cleft K†L²≈XK† jℓ) assoc)
   K†-ii² (suc (suc h)) q (s≤s ())
 
-  -- The left and right faces.
+  -- The left and right faces of the figure in Case 3.2.2.2.2.
   face : ∀ c h q e′ e″ → h ℕ.≤ 1 →
          K†′ • (i j ^ c • i ℓ ^ (c + (2 * h + q)) • i j′ ^ e′ • i ℓ′ ^ e″) ≈
          ((i j′ ^ e′ • i ℓ′ ^ e″) • ((i j ^ c • i ℓ ^ c) • X j ℓ jℓ ^ h)) • (K†′ • i ℓ ^ q)
@@ -168,7 +169,7 @@ module _ {j ℓ j′ ℓ′ : Fin n} (jℓ : j < ℓ) (ℓj′ : ℓ < j′) (j�
       (P • E) • R                                      ≈⟨ comm-words (P • E) R apPE ⟩
       R • (P • E)                                      ∎
 
-  -- The middle face.
+  -- The middle face of the figure in Case 3.2.2.2.2.
   middle : ∀ e₁ e₂ e₃ e₄ → Xm • (i j ^ e₁ • i ℓ ^ e₂ • i j′ ^ e₃ • i ℓ′ ^ e₄) ≈
                            (i j ^ e₁ • i ℓ ^ e₃ • i j′ ^ e₂ • i ℓ′ ^ e₄) • Xm
   middle e₁ e₂ e₃ e₄ = begin
@@ -198,7 +199,7 @@ module _ {j ℓ j′ ℓ′ : Fin n} (jℓ : j < ℓ) (ℓj′ : ℓ < j′) (j�
   B = K j′ ℓ′ j′ℓ′ • K j j′ jj′ • K ℓ ℓ′ ℓℓ′ • Xm •
       (K ℓ ℓ′ ℓℓ′ • i ℓ • i ℓ′) • (K j j′ jj′ • i j • i j′) • (K j′ ℓ′ j′ℓ′ • i j′ • i ℓ′)
 
-  -- The bottom face, from (17).
+  -- The bottom face of the figure in Case 3.2.2.2.2: (27), from (19).
   bottom : K†′ • Xm ≈ B • K†′
   bottom = begin
     K†′ • Xm                                                  ≈⟨ sym left-unit ⟩

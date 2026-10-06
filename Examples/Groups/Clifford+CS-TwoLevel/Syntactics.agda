@@ -73,7 +73,7 @@ data _===_ {n : ℕ} : WRel (Gen n) where
   comm-KK : .(p : j < k) .(q : l < m) → j ≢ l → j ≢ m → k ≢ l → k ≢ m →
             K j k p • K l m q === K l m q • K j k p
 
-  -- (10)–(12′): X_[j,k] swaps the indices j and k of other generators.
+  -- (10)–(14): X_[j,k] swaps the indices j and k of other generators.
   swap-iX  : .(p : j < k) → i k • X j k p === X j k p • i j
   swap-XX  : (p : j < k) (q : k < l) →
              X k l q • X j k p === X j k p • X j l (FinP.<-trans p q)
@@ -84,7 +84,8 @@ data _===_ {n : ℕ} : WRel (Gen n) where
   swap-KX′ : (p : j < k) (q : k < l) →
              K j l (FinP.<-trans p q) • X k l q === X k l q • K j k p
 
-  -- (13)–(17): further properties of K.
+  -- (15)–(19): further properties of K.  The constructor names follow
+  -- the LaTeX labels eq:13–eq:17, printed in the paper as (15)–(19).
   rel-13 : .(p : j < k) → K j k p • i k ^ 2 === X j k p • K j k p
   rel-14 : .(p : j < k) → K j k p • i k ^ 3 === i k • K j k p • i k • K j k p
   rel-15 : .(p : j < k) → K j k p • i j • i k === i j • i k • K j k p

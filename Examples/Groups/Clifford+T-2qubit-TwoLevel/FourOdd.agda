@@ -6,10 +6,10 @@
 -- The generators on numerators at a fixed scale: X, powers of ω, and H
 -- when δ² divides the new entries.  Then, for j < α < β < ℓ′ and
 -- numerators that differ from a fixed W only at these four indices,
--- the states along the two paths of the thesis from
--- (1 + a δ³ , 1 + b δ³ , 1 + c δ³ , 1 + d δ³): the first when
--- a + b + c + d = δ² A, the second when a + b + c + d = δ + δ² A.  In
--- each of them the entry j is even.
+-- the states along the two paths (Subcases 4.3.1 and 4.3.2 of the
+-- thesis) from (1 + a δ³ , 1 + b δ³ , 1 + c δ³ , 1 + d δ³): the first
+-- when a + b + c + d = δ² A, the second when a + b + c + d = δ + δ² A.
+-- In each of them the entry j is even.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

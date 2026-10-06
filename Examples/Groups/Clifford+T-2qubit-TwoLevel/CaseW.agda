@@ -2,7 +2,7 @@
 -- Presentations of groups
 --
 -- The Main Lemma for the basic generator G = ω_[0] (Case 2 of the
--- proof of Lemma 3.10).  With v the pivot column of s, k its least
+-- proof of Lemma 31).  With v the pivot column of s, k its least
 -- δ-exponent, w = δᵏ v and j the index of the first odd entry of w:
 --
 -- * j > 0: the syllable of s acts above 0, and is also the syllable of

@@ -10,8 +10,8 @@
 --
 -- since two words u, v with ⟦ u ⟧ = ⟦ v ⟧ are then both paths from I
 -- to the same matrix, and cancel.  Path reduces to the edges of basic
--- generators (Lemma 3.8), which are proved by well-founded induction
--- on the level of the source (Lemma 3.9), each induction step being an
+-- generators (Lemma 30), which are proved by well-founded induction
+-- on the level of the source (Lemma 32), each induction step being an
 -- instance of the Main Lemma.
 --
 -- This module takes as hypotheses the three facts that the rest of the
@@ -136,7 +136,7 @@ BelowSrc L (u • v) M = BelowSrc L v M × BelowSrc L u (actMʷ v M)
 ------------------------------------------------------------------------
 -- The three hypotheses
 
--- The Main Lemma (Lemma 3.6): a basic edge s → r and the normal edge
+-- The Main Lemma (Lemma 31): a basic edge s → r and the normal edge
 -- s ⇒ t = step s close up, relationally, through a normal path N′
 -- from r to some q and a path G′ from t to q below the level of s.
 -- (A Σ-type rather than a record: a record whose fields mention the
@@ -221,7 +221,7 @@ module _ (main : MainLemma) (base : Base) (exp-level : ExpLevel) where
         at-𝕀 ≡.refl = base G bG
       by-pivot (just p) pv = square⇒edge G M o pv ih (main G bG M o pv)
 
-  -- Lemma 3.5: every basic edge.
+  -- Lemma 32: every basic edge.
   edge : ∀ (G : Gen n) → IsBasic G → ∀ M .(o : ColOrth M) → Path [ G ]ʷ M o
   edge G bG M o = edge-acc (level M) (<ₗ-wellFounded (level M)) G bG M o ≡.refl
 
@@ -231,13 +231,13 @@ module _ (main : MainLemma) (base : Base) (exp-level : ExpLevel) where
     basic ε _ M o = path-ε M o
     basic (u • v) (bu , bv) M o = path-• u v M o (basic u bu (actMʷ v M) (ColOrth-actMʷ v o)) (basic v bv M o)
 
-  -- Lemma 3.4: every word.
+  -- Lemma 33 (with Lemma 30): every word.
   path : (w : Word (Gen n)) (M : Matrix n n D) .(o : ColOrth M) → Path w M o
   path [ g ]ʷ M o = path-expand g M o (basic (expand g) (expand-basic g) M o)
   path ε M o = path-ε M o
   path (u • v) M o = path-• u v M o (path u (actMʷ v M) (ColOrth-actMʷ v o)) (path v M o)
 
-  -- Theorem 3.2: the relations are complete.
+  -- Theorem 34: the relations are complete.
   completeness : {u v : Word (Gen n)} → ⟦ u ⟧ᵐ ≡ ⟦ v ⟧ᵐ → u ≈ v
   completeness {u} {v} eq = •-cancelˡ (begin
     nw ⟦ u ⟧ᵐ ou • u         ≈⟨ path u 𝕀 ColOrth-𝕀 ⟩

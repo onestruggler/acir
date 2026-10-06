@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The Main Lemma (Lemma 3.10), by the basic generator: Case 1 (H_[0,1],
+-- The Main Lemma (Lemma 31), by the basic generator: Case 1 (H_[0,1],
 -- CaseH), Case 2 (ω_[0], CaseW) and Cases 3–5 (X_[α,α+1], CaseX, with
 -- its hard subcase in CaseXM, in dimension at most 4); and with it the
 -- completeness of the relations.

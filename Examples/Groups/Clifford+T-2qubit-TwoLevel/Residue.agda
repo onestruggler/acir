@@ -11,7 +11,7 @@
 -- by enumeration.  Divisibility is then witnessed through a g with
 -- δʲ g = 2: if 2 divides x g, then δʲ divides x.
 --
--- In particular (Lemma 2.11), an odd x is ≡ ωᵐ (mod δ³), where m is
+-- In particular (Lemma 11), an odd x is ≡ ωᵐ (mod δ³), where m is
 -- the position of the coordinate whose parity differs from the three
 -- others; and two odd u, v satisfy ωᶻ u ≡ v (mod δ³) for z = zOf u v.
 ------------------------------------------------------------------------

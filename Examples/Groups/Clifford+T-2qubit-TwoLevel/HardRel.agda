@@ -11,7 +11,7 @@
 --   V of powers of ω, by (17);
 -- * the middle face: X_[α,β] D_s = D_r X_[α,β];
 -- * the bottom face: H_[j,α] X_[α,β] = B H_[j,α], with B either path
---   of the thesis, from (s) or (t);
+--   (Subcase 4.3.1 or 4.3.2 of the thesis), from (31) or (32);
 --
 -- and so the square of the outer perimeter.
 ------------------------------------------------------------------------
@@ -197,7 +197,8 @@ module _ {j α β ℓ′ : Fin n} (jα : j < α) (αβ : α < β) (βℓ′ : β
     Hjα • Xαβ • ε                                            ≈⟨ cright right-unit ⟩
     Hjα • Xαβ                                                ∎)
 
-  -- The two paths, for Σ c ≡ 0 and Σ c ≡ δ (mod δ²), from (s) and (t).
+  -- The two paths (Subcases 4.3.1 and 4.3.2), for Σ c ≡ 0 and Σ c ≡ δ
+  -- (mod δ²), from (31) and (32).
   B₀ B₁ : Word (Gen n)
   B₀ = Hβℓ′ • (H j β jβ • H α ℓ′ αℓ′ • Xαβ • H α ℓ′ αℓ′ • H j β jβ) • Hβℓ′
   B₁ = Hβℓ′ • (H α β αβ • H j ℓ′ jℓ′ • X α ℓ′ αℓ′ • H j ℓ′ jℓ′ • H α β αβ) • Hβℓ′

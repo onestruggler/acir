@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Soundness (Remark in §3.1): every relation of Figure 1 holds in
+-- Soundness (Remark 3.2): every relation of Figure 1 holds in
 -- Uₙ(𝔻[i]).
 --
 -- The relations (4)–(9) say that generators with disjoint indices
@@ -91,6 +91,9 @@ private
 -- The words are transparent, so that their embeddings compute; the
 -- equations are proved in an opaque block that unfolds the action and
 -- the vector updates, which the matrices of concrete words compute through.
+-- The names l10 … r17 follow the source's LaTeX labels, as the
+-- constructors of Syntactics do: l11′, l12, l12′ are the printed (12),
+-- (13), (14), and l13 … r17 the printed (15)–(19).
 
 private
   -- (1)–(3)
@@ -100,7 +103,7 @@ private
   l2 = X f0² f1² 0<1² ^ 2
   l3 = K f0² f1² 0<1² ^ 8
 
-  -- (10)–(12′)
+  -- (10)–(14)
   l10 r10 : Word (Gen 2)
   l10 = i f1² • X f0² f1² 0<1²
   r10 = X f0² f1² 0<1² • i f0²
@@ -115,7 +118,7 @@ private
   l12′ = K f0³ f2³ 0<2³ • X f1³ f2³ 1<2³
   r12′ = X f1³ f2³ 1<2³ • K f0³ f1³ 0<1³
 
-  -- (13)–(16)
+  -- (15)–(18)
   l13 r13 l14 r14 l15 r15 l16 : Word (Gen 2)
   l13 = K f0² f1² 0<1² • i f1² ^ 2
   r13 = X f0² f1² 0<1² • K f0² f1² 0<1²
@@ -125,7 +128,7 @@ private
   r15 = i f0² • i f1² • K f0² f1² 0<1²
   l16 = K f0² f1² 0<1² ^ 2 • i f0² • i f1²
 
-  -- (17), for the two orders of k and l.
+  -- (19), for the two orders of k and l.
   l17 r17 : Word (Gen 4)
   l17 = K f0⁴ f1⁴ 0<1⁴ • K f2⁴ f3⁴ 2<3⁴ • K f0⁴ f2⁴ 0<2⁴ • K f1⁴ f3⁴ 1<3⁴
   r17 = K f0⁴ f2⁴ 0<2⁴ • K f1⁴ f3⁴ 1<3⁴ • K f0⁴ f1⁴ 0<1⁴ • K f2⁴ f3⁴ 2<3⁴
@@ -184,7 +187,7 @@ private
   rc : {a b : Fin n} → .(a < b) → a < b
   rc {a = a} {b} p = recompute (a FinP.<? b) p
 
-  -- (17), for either order of k and l.  (A top-level function with
+  -- (19), for either order of k and l.  (A top-level function with
   -- its type written out: a local eliminator, leaving the type of the
   -- result to be inferred, is intractable here.)
   rel-17-sound : {j k l m : Fin n} .(jk : j < k) .(lm : l < m) .(jl : j < l) .(km : k < m) →

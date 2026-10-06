@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The syllable of a matrix (step 2 of Algorithm 2.14), and the facts
+-- The syllable of a matrix (step 2 of Algorithm 16), and the facts
 -- about the action of words that the analysis of the algorithm uses:
 -- words acting on indices ≤ p leave the columns beyond p alone, and
 -- the action of ω_[a]ᵉ on columns.
@@ -60,7 +60,7 @@ syl-just M eq = cong (λ x → sylAt x M) eq
 syl-nothing : (M : Matrix n n D) → pivot M ≡ nothing → syl M ≡ ε
 syl-nothing M eq = cong (λ x → sylAt x M) eq
 
--- Step 4: apply the syllable.
+-- Step 3: apply the syllable.
 step : Matrix n n D → Matrix n n D
 step M = actMʷ (syl M) M
 

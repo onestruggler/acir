@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The syllable of a matrix (step 3 of Algorithm 2.10), and the facts
+-- The syllable of a matrix (step 3 of Algorithm 2.14), and the facts
 -- about the action of words that the analysis of the algorithm uses:
 -- words acting on indices ≤ p leave the columns beyond p alone, and
 -- the actions of i_[a]ᵉ and of K†_[a,b] on columns.

@@ -4,10 +4,10 @@
 -- The hard subcase of Case 3 (case 3.2.2.2 with w_β odd): k > 0, the
 -- first two odd entries of w are j < α, and w_β is odd, β = α + 1.
 -- Then there is a fourth odd entry ℓ′, and with D the powers of i
--- that make w_j, w_α, w_β, w_ℓ′ ≡ 1 (mod γ³) (Lemma "modulo-1-3"),
+-- that make w_j, w_α, w_β, w_ℓ′ ≡ 1 (mod γ³) (Lemma 2.3),
 -- the square closes through G′ = V_r⁻¹ B V_s (HardRel), where B runs
--- through the states of the table of the paper (FourOdd): each has
--- an even entry j, so lies below s.
+-- through the states of the second diagram of Case 3.2.2.2.1 (FourOdd):
+-- each has an even entry j, so lies below s.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -73,7 +73,7 @@ private
   open ZG using (_:+_ ; _:*_ ; :-_ ; _:-_ ; _:=_ ; con)
 
 ------------------------------------------------------------------------
--- Residues modulo γ³ (Lemma "modulo-1-3")
+-- Residues modulo γ³ (Lemma 2.3)
 
 -- 1 + 2c + γ³X, times ±1, is ≡ 1 (mod γ³).
 lift : ∀ (c X : Z) → ∃ λ h → h ℕ.≤ 1 × ∃ λ A →

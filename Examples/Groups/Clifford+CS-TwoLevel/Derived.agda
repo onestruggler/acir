@@ -66,7 +66,7 @@ K†-K : .(p : j < k) → K† j k p • K j k p ≈ ε
 K†-K {j} {k} p = trans (sym (^-+ (K j k p) 7 1)) (axiom (order-K p))
 
 ------------------------------------------------------------------------
--- K† = K i_[j] i_[k] = i_[j] i_[k] K (from (15) and (16))
+-- K† = K i_[j] i_[k] = i_[j] i_[k] K (from (17) and (18))
 
 K†≈Kii : .(p : j < k) → K† j k p ≈ K j k p • i j • i k
 K†≈Kii {j} {k} p = begin
@@ -95,7 +95,7 @@ K≈i³i³K† {j} {k} p = sym (begin
   K j k p                                               ∎)
 
 ------------------------------------------------------------------------
--- Consequences of (13)–(15) for K_[j,k] and i_[j], i_[k]
+-- Consequences of (15)–(17) for K_[j,k] and i_[j], i_[k]
 
 private
   k≢j : .(j < k) → k ≢ j
@@ -115,7 +115,7 @@ KI≈XILKL {j} {k} p = sym (begin
   K j k p • i j • ε                           ≈⟨ by-assoc auto ⟩
   K j k p • i j                               ∎)
 
--- K i_[k] K = i_[k]³ K i_[k]³, from (14).
+-- K i_[k] K = i_[k]³ K i_[k]³, from (16).
 KLK : .(p : j < k) → K j k p • i k • K j k p ≈ i k ^ 3 • K j k p • i k ^ 3
 KLK {j} {k} p = sym (begin
   i k ^ 3 • K j k p • i k ^ 3                  ≈⟨ cright axiom (rel-14 p) ⟩
@@ -308,7 +308,7 @@ flip-X {A = A} {B} p h = begin
 --
 -- X_[l,j′] commutes with K†_[l,l′] K†_[j,j′] K†_[j′,l′] K†_[j,l]: it
 -- swaps l and j′, which turns this word into the inverse of the other
--- side of (17).
+-- side of (19).
 
 module _ {j l j′ l′ : Fin n} (p₁ : j < l) (p₂ : l < j′) (p₃ : j′ < l′) where
 
@@ -334,7 +334,7 @@ module _ {j l j′ l′ : Fin n} (p₁ : j < l) (p₂ : l < j′) (p₃ : j′ <
     swap-ll′ : Kll′ • X′ ≈ X′ • Kj′l′
     swap-ll′ = conj-^ (flip-X p₂ (axiom (swap-KX p₂ p₃))) 7
 
-    -- (17), inverted.
+    -- (19), inverted.
     rel-17⁻¹ : Kj′l′ • Kjl • Kll′ • Kjj′ ≈ Kll′ • Kjj′ • Kj′l′ • Kjl
     rel-17⁻¹ = by-assoc-and (sym (⁻¹-cong (axiom (rel-17 p₁ p₃ jj′ ll′ (<⇒≢ p₂))))) auto auto
 
@@ -415,7 +415,7 @@ comm-words u (v • v′) (a , a′) = begin
   (v • v′) • u          ∎
 
 ------------------------------------------------------------------------
--- The basic generators (Lemma 3.3): X_[j,j+1], K_[0,1] and i_[0]
+-- The basic generators (Lemma 3.4): X_[j,j+1], K_[0,1] and i_[0]
 -- give the others by conjugation.
 
 -- A X = X B gives B = X A X.
@@ -469,7 +469,7 @@ i^+4 {j} e = begin
   i j ^ e                ∎
 
 ------------------------------------------------------------------------
--- (q″): K†_[j,k] i_[k]² = X_[j,k] K†_[j,k], from K X = i_[k]² K
+-- (29): K†_[j,k] i_[k]² = X_[j,k] K†_[j,k], from K X = i_[k]² K
 
 K†L²≈XK† : .(p : j < k) → K† j k p • i k ^ 2 ≈ X j k p • K† j k p
 K†L²≈XK† {j} {k} p = begin

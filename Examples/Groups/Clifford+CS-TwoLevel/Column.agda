@@ -1,16 +1,16 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The syllables of the exact synthesis algorithm (Algorithm 2.10), as
+-- The syllables of the exact synthesis algorithm (Algorithm 2.14), as
 -- a function of the data of the pivot column: its index p, its least
 -- denominator exponent k and its numerator w ∈ ℤ[i]ⁿ.
 --
 -- * k = 0: w has a single nonzero entry, a unit u at index m
---   (Corollary 2.3), and the syllable is i_[m]ᵉ followed by X_[m,p]
---   (if m < p), where iᵉ u = 1;
--- * k > 0: with j < ℓ the first two odd entries of w (Lemma 2.5) and
+--   (Lemma 2.7), and the syllable is i_[m]ᵉ followed by X_[m,p]
+--   (if m < p), where iᵉ u = 1 (Corollary 2.8);
+-- * k > 0: with j < ℓ the first two odd entries of w (Lemma 2.9) and
 --   q ∈ {0,1} such that w_j ≡ iᑫ w_ℓ (mod 2), the syllable is
---   i_[ℓ]ᑫ followed by K†_[j,ℓ] (Lemma 2.6).
+--   i_[ℓ]ᑫ followed by K†_[j,ℓ] (Lemma 2.10).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -108,7 +108,7 @@ unit-odd (suc (suc (suc (suc t)))) (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s (
 -- Residues modulo 2 of odd Gaussian integers
 --
 -- An odd a + bi has exactly one of a, b odd, so it is ≡ 1 or ≡ i
--- (mod 2) according to the parity of a (Lemma 2.2).  Two odd numbers
+-- (mod 2) according to the parity of a (Lemma 2.3).  Two odd numbers
 -- u, v satisfy u ≡ iᑫ v (mod 2) for q = qOf u v.
 
 private

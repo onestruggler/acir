@@ -5,7 +5,7 @@
 -- U₄(ℤ[1/√2,i])" (M.Sc. thesis, Dalhousie 2014, arXiv:1408.6204):
 -- the cyclotomic integers ℤ[ω] ⊆ 𝔻[ω] = ℤ[1/√2,i], ω = e^{iπ/4},
 -- taken from EucDomain (ZOmega, DOmega); the prime δ = 1 + ω, and
--- parity, i.e. divisibility by δ (the δ-residue of Definition 2.7).
+-- parity, i.e. divisibility by δ (the δ-residue of Definition 10).
 --
 -- An element aω³ + bω² + cω + d is written Omega a b c d.
 --
@@ -260,7 +260,7 @@ emb-^ x zero = refl
 emb-^ x (suc k) = trans (emb-* x (x ^ᶻ k)) (cong (emb x DR.*_) (emb-^ x k))
 
 ------------------------------------------------------------------------
--- Parity: the δ-residue of Definition 2.7
+-- Parity: the δ-residue of Definition 10
 --
 -- Since ω ≡ 1 (mod δ) and 2 ≡ 0 (mod δ), aω³ + bω² + cω + d ≡ a + b +
 -- c + d (mod δ), and the residue is its parity.

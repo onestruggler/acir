@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Soundness (Lemma 3.5): every relation of Table 1 holds in
+-- Soundness (Lemma 23): every relation of Table 3.1 holds in
 -- Uₙ(𝔻[ω]).
 --
 -- The relations (4)–(9) say that generators with disjoint indices

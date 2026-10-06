@@ -7,8 +7,8 @@
 -- divides the new entries) and K† written as K i i.  Then, for
 -- j < ℓ < j′ < ℓ′ and numerators that differ from a fixed W only at
 -- these four indices, the states of the path of (case 3.2.2.2.1) from
--- (1 + a γ³ , 1 + b γ³ , 1 + c γ³ , 1 + d γ³), as in the table of the
--- paper: in each of them the entry j is even.
+-- (1 + a γ³ , 1 + b γ³ , 1 + c γ³ , 1 + d γ³), as in the second
+-- diagram of that case: in each of them the entry j is even.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -118,7 +118,7 @@ K†-step a b ab k V V′ ea eb eo =
                     (≡.sym (≡.trans (set₁-≢ a (ⅈᶻ ZR.* (V₁ ! a)) V₁ x≢a) (set₁-≢ b (ⅈᶻ ZR.* (V ! b)) V x≢b)))
 
 ------------------------------------------------------------------------
--- The entries of the table
+-- The entries of the second diagram of Case 3.2.2.2.1
 
 γ² γ³ : Z
 γ² = γᶻ ZR.* γᶻ

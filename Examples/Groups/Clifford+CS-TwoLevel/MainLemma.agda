@@ -1,10 +1,10 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The Main Lemma (Lemma 3.6), by the basic generator: Case 1 (i_[0],
+-- The Main Lemma (Lemma 3.7), by the basic generator: Case 1 (i_[0],
 -- CaseI), Case 2 (K_[0,1], CaseK) and Case 3 (X_[α,α+1], CaseX, with
 -- its hard subcase in CaseXM); and with it the completeness of
--- the relations (Theorem 3.2).
+-- the relations (Theorem 3.1).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -46,7 +46,7 @@ main-lemma hard (X-gen a b _) (bX e) s o ps = caseX a b e s o ps (hard a b e s o
 main-lemma hard (K-gen a b _) (bK a0 b1) s o ps = caseK a b a0 b1 s o ps
 main-lemma hard (i-gen a) (bi a0) s o ps = caseI a a0 s o ps
 
--- Theorem 3.2, given the hard subcase.
+-- Theorem 3.1, given the hard subcase.
 completeness-given : HardAll → {u v : Word (Gen n)} → ⟦ u ⟧ᵐ ≡ ⟦ v ⟧ᵐ → u ≈ v
 completeness-given hard = completeness (main-lemma hard) base exp-level
 
@@ -57,7 +57,7 @@ hard-all α β αβ1 s o ps = hard α β αβ1 s o ps
 main : MainLemma
 main = main-lemma hard-all
 
--- Theorem 3.2: the relations are complete, words with the same matrix
+-- Theorem 3.1: the relations are complete, words with the same matrix
 -- are equal in the presentation.
 relations-complete : {u v : Word (Gen n)} → ⟦ u ⟧ᵐ ≡ ⟦ v ⟧ᵐ → u ≈ v
 relations-complete = completeness main base exp-level

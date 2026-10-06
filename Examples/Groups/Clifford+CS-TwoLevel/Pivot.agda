@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Pivots and levels (Definition 2.8).  The pivot of a matrix is its
+-- Pivots and levels (Definition 2.15).  The pivot of a matrix is its
 -- last column that differs from the identity; its level is the triple
 -- (pivot + 1, lde of the pivot column, number of its odd entries), or
 -- (0, 0, 0) for the identity, ordered lexicographically.  A word acting

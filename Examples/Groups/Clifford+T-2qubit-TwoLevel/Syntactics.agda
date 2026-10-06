@@ -7,7 +7,7 @@
 --
 --   X_[j,k] (j < k),   H_[j,k] (j < k),   ω_[j],
 --
--- and the twenty relations of its Table 1.
+-- and the twenty relations of its Table 3.1.
 --
 -- The generators are those of Clifford+CS-TwoLevel, whose semantics
 -- is generic in the scalars: the K-generator acts as c [[1,1],[1,-1]]
@@ -47,7 +47,7 @@ H a b p = [ H-gen a b p ]ʷ
 ω a = [ ω-gen a ]ʷ
 
 ------------------------------------------------------------------------
--- The relations of Table 1
+-- The relations of Table 3.1
 --
 -- Numbered (1)–(20) in the order of the table.  In each relation the
 -- indices are distinct, and whenever X_[a,b] or H_[a,b] occurs, a < b.

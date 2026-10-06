@@ -4,7 +4,7 @@
 -- The rings of Bian–Selinger, "Generators and relations for
 -- Uₙ(ℤ[½,i])" (QPL 2021): the Gaussian integers ℤ[i] ⊆ 𝔻[i] = ℤ[½,i],
 -- taken from EucDomain (ZComplex, DComplex), the prime γ = 1 + i, and
--- parity, i.e. divisibility by γ (Definition "even/odd" of §2.1).
+-- parity, i.e. divisibility by γ (Definition 2.1).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -300,7 +300,7 @@ oddℤ-double y = trans (oddℤ-+ y y) (lemma (oddℤ y))
 -- Parity of Gaussian integers
 
 -- A Gaussian integer a + bi is odd iff a + b is odd, i.e. iff it is
--- not divisible by γ (Definition in §2.1).
+-- not divisible by γ (Definition 2.1).
 oddᶻ : Z → Bool
 oddᶻ (Cplx a b) = oddℤ (a ℤ.+ b)
 

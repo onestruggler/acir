@@ -121,7 +121,7 @@ first = go (firstOdd W) ≡.refl
   go nothing fo = ⊥-elim (Odd⇒¬Even {W ! proj₁ some-odd} (proj₂ some-odd) (firstOdd-nothing W fo (proj₁ some-odd)))
   go (just j) fo = j , fo
 
--- k > 0: the second odd entry, by "evenodd".
+-- k > 0: the second odd entry, by "evenodd" (Lemma 2.9).
 second : ∀ {K′ j} → lde v ≡ suc K′ → firstOdd W ≡ just j → ∃ λ ℓ → nextOdd j W ≡ just ℓ
 second {K′} {j} ks fo = go (nextOdd j W) ≡.refl
   where
@@ -144,7 +144,7 @@ second {K′} {j} ks fo = go (nextOdd j W) ≡.refl
     cnt = count-one (λ x → oddᶻ (W ! x)) j (proj₁ (firstOdd-spec W fo)) others
 
 -- k > 0 and three odd entries j < ℓ < c, the first three: there is a
--- fourth, by "evenodd".
+-- fourth, by "evenodd" (Lemma 2.9).
 third : ∀ {K′ j ℓ c} → lde v ≡ suc K′ → firstOdd W ≡ just j → nextOdd j W ≡ just ℓ → ℓ < c → Odd (W ! c) →
         (∀ x → ℓ < x → x < c → Even (W ! x)) → ∃ λ d → nextOdd c W ≡ just d
 third {K′} {j} {ℓ} {c} ks fo nx ℓc oc btw = go (nextOdd c W) ≡.refl

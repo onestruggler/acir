@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The basic generators (Lemma 3.8): X_[α,α+1], H_[0,1] and ω_[0].  Every
--- generator is relationally equal to a word of basic generators
--- (Lemma 3.8), by the conjugations
+-- The basic generators (Definition 28): X_[α,α+1], H_[0,1] and ω_[0].
+-- Every generator is relationally equal to a word of basic generators
+-- (Lemma 30), by the conjugations
 --
 --   ω_[j]    = X_[0,j] ω_[0] X_[0,j]           (j > 0)
 --   H_[j,l]  = X_[0,j] H_[0,l] X_[0,j]         (j > 0)

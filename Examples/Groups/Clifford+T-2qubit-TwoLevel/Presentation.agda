@@ -2,10 +2,11 @@
 -- Presentations of groups
 --
 -- The presentation theorem (Greylyn, "Generators and relations for the
--- group U₄(ℤ[1/√2,i])", the main theorem, with the exact synthesis
--- algorithm): in dimension n ≤ 4, the generators X_[a,b], H_[a,b] and
--- ω_[a] with the relations (1)–(20) of Table 1 present Uₙ(𝔻[ω]), the
--- group of unitary n × n matrices over 𝔻[ω] = ℤ[1/√2,i].
+-- group U₄(ℤ[1/√2,i])": its main theorem, Theorem 22, stated there for
+-- n = 4, together with the exact synthesis algorithm, Algorithm 16): in
+-- dimension n ≤ 4, the generators X_[a,b], H_[a,b] and ω_[a] with the
+-- relations (1)–(20) of Table 3.1 present Uₙ(𝔻[ω]), the group of
+-- unitary n × n matrices over 𝔻[ω] = ℤ[1/√2,i].
 --
 -- The semantics ⟦_⟧ᵘ takes a word to its matrix.  It is a monoid
 -- homomorphism by soundness (Soundness, through Reduction.sound-act),

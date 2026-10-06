@@ -3,8 +3,7 @@
 --
 -- γ-adic scaling in 𝔻[i]: the element w / γᵏ for w ∈ ℤ[i].  Every
 -- element of 𝔻[i] has this form (so it has denominator exponents,
--- Definition "denominator exponent" of §2.1), and the form determines
--- w once k is fixed.
+-- Definition 2.4), and the form determines w once k is fixed.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

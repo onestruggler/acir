@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Unit vectors (Lemmas 2.9 and 2.10).  For w = aω³ + bω² + cω + d in
+-- Unit vectors (Lemmas 13 and 14).  For w = aω³ + bω² + cω + d in
 -- ℤ[ω],
 --
 --   w† w = A + B √2,   A = a² + b² + c² + d²,   B = ab + bc + cd - ad,

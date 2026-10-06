@@ -11,8 +11,8 @@
 --   k > 0, j ≥ 2 where G makes w₀, w₁ odd: retrograde, the normal
 --   edge from G s is K†_[0,1];
 -- * k > 0, j = 0 and ℓ = 1: the square closes through i_[0]³ i_[1]³
---   when q = 0 (case 2.2.1a) and through i_[1]³ X_[0,1] when q = 1
---   (case 2.2.1b).
+--   when q = 0, by (22), and through i_[1]³ X_[0,1] when q = 1,
+--   by (23).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

@@ -7,9 +7,9 @@
 -- make w_j, w_α, w_β, w_ℓ′ equal to 1 + a δ³, 1 + b δ³, 1 + c δ³ and
 -- 1 + d δ³, the square closes through G′ = V_r⁻¹ B V_s (HardRel).  In
 -- dimension 4 the sum a + b + c + d is even (OddSum), so ≡ 0 or δ
--- (mod δ²), and B is the first or the second path of the thesis
--- accordingly (FourOdd): along either, each state has an even entry
--- j, so lies below s.
+-- (mod δ²), and B is the first or the second path (Subcase 4.3.1 or
+-- 4.3.2 of the thesis) accordingly (FourOdd): along either, each
+-- state has an even entry j, so lies below s.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -280,7 +280,7 @@ module _ (n≤4 : n ℕ.≤ 4) (α β : Fin n) (αβ1 : toℕ β ≡ suc (toℕ 
         evenA : oddᶻ A ≡ false
         evenA = OddSum.even-sum n≤4 jα αβ βℓ′ W K′ a b c d (col T₁ p) unit₁ col₁
 
-        -- The first path, when a + b + c + d = δ² A₂.
+        -- The first path (Subcase 4.3.1): a + b + c + d = δ² A₂.
         path₀ : δ²ᶻ ∣ A → Square G s o
         path₀ (A₂ , eA) = finish (HardRel.B₀ jα αβ βℓ′) (HardRel.bottom₀ jα αβ βℓ′)
                             (((l₀ , l₁) , ((((l₁ , l₂) , (l₂ , l₃)) , (l₃ , l₄)) , (l₄ , l₅)) , (l₅ , l₆)) , (l₆ , l₇))
@@ -319,7 +319,7 @@ module _ (n≤4 : n ℕ.≤ 4) (α β : Fin n) (αβ1 : toℕ β ≡ suc (toℕ 
           l₆ = lv T₆ be₆ _ c₆ (nodd< _ _ _ _ (even-y₁ a c))
           l₇ = lv T₇ be₇ _ c₇ (nodd< _ _ _ _ (even-y₁ a c))
 
-        -- The second path, when a + b + c + d = δ + δ² A₂.
+        -- The second path (Subcase 4.3.2): a + b + c + d = δ + δ² A₂.
         path₁ : δ²ᶻ ∣ (A ZR.- δᶻ) → Square G s o
         path₁ (A₂ , eA) = finish (HardRel.B₁ jα αβ βℓ′) (HardRel.bottom₁ jα αβ βℓ′)
                             (((l₀ , l₁) , ((((l₁ , l₂) , (l₂ , l₃)) , (l₃ , l₄)) , (l₄ , l₅)) , (l₅ , l₆)) , (l₆ , l₇))

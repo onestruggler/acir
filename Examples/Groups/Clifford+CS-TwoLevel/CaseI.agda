@@ -11,7 +11,7 @@
 --   that of s (or r = I when t = 3);
 -- * j = 0, k > 0: with l the second odd entry, the syllables are
 --   K†_[0,l] i_[l]ᑫ and K†_[0,l] i_[l]ᑫ′ with q′ = 1 - q, and the square
---   closes through i_[0] i_[l] X_[0,l]ᑫ by (15) or (case 1.4b).
+--   closes through i_[0] i_[l] X_[0,l]ᑫ by (17) or (21).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -271,7 +271,7 @@ module _ (a : Fin n) (a0 : toℕ a ≡ 0) (s : Matrix n n D) .(o : ColOrth s) {p
       oa = proj₁ (firstOdd-spec W fo)
 
       withNext : (m : Maybe (Fin n)) → nextOdd a W ≡ m → Square (i-gen a) s o
-      -- By evenodd, a is not the only odd entry.
+      -- By evenodd (Lemma 2.9), a is not the only odd entry.
       withNext nothing nx =
         ⊥-elim (odd1 (≡.trans (≡.sym (≡.cong oddℕ cnt)) (evenodd K′ W (≡.trans norm (≡.cong (2 ℕ.^_) ks)))))
         where
@@ -332,7 +332,7 @@ module _ (a : Fin n) (a0 : toℕ a ≡ 0) (s : Matrix n n D) .(o : ColOrth s) {p
         a≤ℓ = ℕP.<⇒≤ a<ℓ
 
         by-q : ∀ q → q ℕ.≤ 1 → qOf (W ! a) (W ! ℓ) ≡ q → Square (i-gen a) s o
-        -- q = 0: K† commutes with i_[0] i_[ℓ], by (15).
+        -- q = 0: K† commutes with i_[0] i_[ℓ], by (17).
         by-q 0 _ e =
           square-syl (i-gen a) s o (K† a ℓ a<ℓ • i ℓ) (i a • i ℓ) pr
             (≡.trans syl-r (≡.cong (λ z → K† a ℓ a<ℓ • i ℓ ^ (1 ℕ.∸ z)) e))

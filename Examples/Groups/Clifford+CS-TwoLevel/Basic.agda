@@ -3,7 +3,7 @@
 --
 -- The basic generators (§3.3): X_[α,α+1], K_[0,1] and i_[0].  Every
 -- generator is relationally equal to a word of basic generators
--- (Lemma 3.3), by the conjugations
+-- (Lemma 3.4), by the conjugations
 --
 --   i_[j]    = X_[0,j] i_[0] X_[0,j]           (j > 0)
 --   K_[j,l]  = X_[0,j] K_[0,l] X_[0,j]         (j > 0)

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The base case of Lemma 3.9: the basic edges out of I.
+-- The base case of Lemma 32: the basic edges out of I.
 --
 -- For a basic generator G, the synthesis algorithm run on G·I removes
 -- G in one syllable: ω_[0] gives the syllable ω_[0]⁷, X_[α,α+1] gives

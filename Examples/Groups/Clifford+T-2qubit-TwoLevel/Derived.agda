@@ -1,10 +1,10 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Consequences of the relations of Table 1: the inverses of the
+-- Consequences of the relations of Table 3.1: the inverses of the
 -- generators, commutation of words with disjoint indices, the
--- conjugations by X that give the basic generators (Lemma 3.8), and
--- the relations of Table 2 (Lemma 3.6) that the proof of the Main
+-- conjugations by X that give the basic generators (Lemma 30), and
+-- the relations of Table 3.2 (Lemma 24) that the proof of the Main
 -- Lemma uses.
 ------------------------------------------------------------------------
 
@@ -153,8 +153,8 @@ conj-X′ {A = A} {B} p h = begin
 ωX≈Xω′ p = sym (axiom (swap-Xω p))
 
 ------------------------------------------------------------------------
--- The basic generators (Lemma 3.8): X_[j,j+1], H_[0,1] and ω_[0]
--- give the others by conjugation.
+-- The basic generators X_[j,j+1], H_[0,1] and ω_[0] give the others
+-- by conjugation (Lemma 30).
 
 -- ω_[k] = X_[j,k] ω_[j] X_[j,k]
 ω≈XωX : .(p : j < k) → ω k ≈ X j k p • ω j • X j k p
@@ -173,17 +173,17 @@ X≈XXX : .(p : j < k) .(q : k < l) → X j l (FinP.<-trans p q) ≈ X j k p •
 X≈XXX p q = conj-X p (sym (axiom (swap-XX p q)))
 
 ------------------------------------------------------------------------
--- Table 2: (p), (o) and (m), the inverses of (14), (15) and (18)
+-- Table 3.2: (21), (22) and (23), the inverses of (14), (15) and (18)
 
--- (p) H_[j,l] X_[j,k] = X_[j,k] H_[k,l]
+-- (21) H_[j,l] X_[j,k] = X_[j,k] H_[k,l]
 HX≈XH : .(p : j < k) .(q : k < l) → H j l (FinP.<-trans p q) • X j k p ≈ X j k p • H k l q
 HX≈XH p q = flip-X p (sym (axiom (swap-XH p q)))
 
--- (o) H_[l,j] X_[j,k] = X_[j,k] H_[l,k]
+-- (22) H_[l,j] X_[j,k] = X_[j,k] H_[l,k]
 HX≈XH′ : .(p : l < j) .(q : j < k) → H l j p • X j k q ≈ X j k q • H l k (FinP.<-trans p q)
 HX≈XH′ p q = flip-X q (sym (axiom (swap-XH′ p q)))
 
--- (m) X_[j,k] H_[j,k] = H_[j,k] ω_[k]⁴
+-- (23) X_[j,k] H_[j,k] = H_[j,k] ω_[k]⁴
 XH≈Hω⁴ : .(p : j < k) → X j k p • H j k p ≈ H j k p • ω k ^ 4
 XH≈Hω⁴ {j} {k} p = begin
   X′ • H′                             ≈⟨ sym left-unit ⟩
@@ -264,8 +264,8 @@ comm-words u (v • v′) (a , a′) = begin
 ------------------------------------------------------------------------
 -- H_[j,k] ω_[j]⁴ = ω_[j]⁴ ω_[k]⁴ X_[j,k] H_[j,k]
 --
--- (The thesis, Case 2, writes X_[j,k] H_[j,k]: that is (m) with ω⁴ on
--- k, and differs from H ω_[j]⁴ by the sign ω_[j]⁴ ω_[k]⁴.)  From (m),
+-- (The thesis, Case 2, writes X_[j,k] H_[j,k]: that is (23) with ω⁴ on
+-- k, and differs from H ω_[j]⁴ by the sign ω_[j]⁴ ω_[k]⁴.)  From (23),
 -- and (17): ω_[j] ω_[k] is a scalar on the indices j and k.
 
 Hω⁴≈ω⁴ω⁴XH : .(p : j < k) → H j k p • ω j ^ 4 ≈ ω j ^ 4 • ω k ^ 4 • X j k p • H j k p
@@ -291,7 +291,7 @@ Hω⁴≈ω⁴ω⁴XH {j} {k} p = begin
   sc = trans assoc (axiom (scalar-H p))
 
 ------------------------------------------------------------------------
--- Table 2, (r): H_[j,k] ω_[j]² H_[j,k] = X_[j,k] ω_[k]⁷ ω_[j] H_[j,k] ω_[j]²
+-- Table 3.2, (26): H_[j,k] ω_[j]² H_[j,k] = X_[j,k] ω_[k]⁷ ω_[j] H_[j,k] ω_[j]²
 --
 -- Both sides are ω_[j] ω_[k]³ H_[j,k] ω_[k]², moving the scalars
 -- (ω_[j] ω_[k])ᵉ through H by (17).
@@ -356,10 +356,10 @@ Hω²H≈Xω⁷ωHω² : .(p : j < k) → H j k p • ω j ^ 2 • H j k p ≈ X
 Hω²H≈Xω⁷ωHω² p = trans (rL p) (sym (rR p))
 
 ------------------------------------------------------------------------
--- Table 2, (z₁)–(z₃): H_[j,k] ω_[j]ᵉ X_[j,k] = ω_[j]^(4+e) ω_[k]ᵉ X_[j,k] H_[j,k] ω_[j]^(4-e)
+-- Table 3.2, (28)–(30): H_[j,k] ω_[j]ᵉ X_[j,k] = ω_[j]^(4+e) ω_[k]ᵉ X_[j,k] H_[j,k] ω_[j]^(4-e)
 --
 -- H ω_[j]ᵉ X = ω_[k]⁴ H ω_[k]ᵉ = ω_[k]⁴ X H ω_[k]^(4+e) by (10), (18)
--- and (m); then ω_[k]^(4+e) = (ω_[j] ω_[k])^(4+e) ω_[j]^(4-e), whose
+-- and (23); then ω_[k]^(4+e) = (ω_[j] ω_[k])^(4+e) ω_[j]^(4-e), whose
 -- scalar part moves out through H and X by (16) and (17).
 
 private
@@ -404,7 +404,7 @@ private
     X′ = X j k p
     H′ = H j k p
 
--- (z₁): H ω_[j]³ X = ω_[j]⁷ ω_[k]³ X H ω_[j].
+-- (28): H ω_[j]³ X = ω_[j]⁷ ω_[k]³ X H ω_[j].
 Hω³X : .(p : j < k) → H j k p • ω j ^ 3 • X j k p ≈ ω j ^ 7 • ω k ^ 3 • X j k p • H j k p • ω j
 Hω³X {j} {k} p = begin
   H′ • ω j ^ 3 • X′                                      ≈⟨ HωX-core p 3 ⟩
@@ -422,7 +422,7 @@ Hω³X {j} {k} p = begin
   X′ = X j k p
   H′ = H j k p
 
--- (z₂): H ω_[j]² X = ω_[j]⁶ ω_[k]² X H ω_[j]².
+-- (29): H ω_[j]² X = ω_[j]⁶ ω_[k]² X H ω_[j]².
 Hω²X : .(p : j < k) → H j k p • ω j ^ 2 • X j k p ≈ ω j ^ 6 • ω k ^ 2 • X j k p • H j k p • ω j ^ 2
 Hω²X {j} {k} p = begin
   H′ • ω j ^ 2 • X′                                      ≈⟨ HωX-core p 2 ⟩
@@ -440,7 +440,7 @@ Hω²X {j} {k} p = begin
   X′ = X j k p
   H′ = H j k p
 
--- (z₃): H ω_[j] X = ω_[j]⁵ ω_[k] X H ω_[j]³.
+-- (30): H ω_[j] X = ω_[j]⁵ ω_[k] X H ω_[j]³.
 Hω¹X : .(p : j < k) → H j k p • ω j • X j k p ≈ ω j ^ 5 • ω k • X j k p • H j k p • ω j ^ 3
 Hω¹X {j} {k} p = begin
   H′ • ω j • X′                                          ≈⟨ HωX-core p 1 ⟩
@@ -459,14 +459,14 @@ Hω¹X {j} {k} p = begin
   H′ = H j k p
 
 ------------------------------------------------------------------------
--- Table 2, (s) and (t): four indices a < b < c < d
+-- Table 3.2, (31) and (32): four indices a < b < c < d
 --
--- (s) H_[c,d] H_[a,b] X_[b,c] H_[a,b] H_[c,d] = H_[a,c] H_[b,d] X_[b,c] H_[b,d] H_[a,c]
--- (t) H_[c,d] H_[a,b] X_[b,c] H_[a,b] H_[c,d] = H_[b,c] H_[a,d] X_[b,d] H_[a,d] H_[b,c]
+-- (31) H_[c,d] H_[a,b] X_[b,c] H_[a,b] H_[c,d] = H_[a,c] H_[b,d] X_[b,c] H_[b,d] H_[a,c]
+-- (32) H_[c,d] H_[a,b] X_[b,c] H_[a,b] H_[c,d] = H_[b,c] H_[a,d] X_[b,d] H_[a,d] H_[b,c]
 --
--- (s) is (20) with X_[b,c] passed through, by (14) and (15); (t) is
--- (s) conjugated by X_[c,d], after writing H_[c,d] = X_[c,d] H_[c,d]
--- ω_[d]⁴ by (18) and (m).
+-- (31) is (20) with X_[b,c] passed through, by (14) and (15); (32) is
+-- (31) conjugated by X_[c,d], after writing H_[c,d] = X_[c,d] H_[c,d]
+-- ω_[d]⁴ by (18) and (23).
 
 module _ {a b c d : Fin n} (ab : a < b) (bc : b < c) (cd : c < d) where
 

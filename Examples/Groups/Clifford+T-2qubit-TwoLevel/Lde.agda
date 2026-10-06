@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Least δ-exponents (Definition 2.6): every vector v over 𝔻[ω] is
+-- Least δ-exponents (Definition 9): every vector v over 𝔻[ω] is
 -- w / δᵏ for a unique k and w ∈ ℤ[ω]ⁿ such that k = 0 or some entry of
 -- w is odd (not divisible by δ).  This k is the least δ-exponent
 -- lde v, and w is num v = δ^(lde v) v.

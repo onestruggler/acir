@@ -2,7 +2,7 @@
 -- Presentations of groups
 --
 -- The Main Lemma for the basic generator G = H_[0,1] (Case 1 of the
--- proof of Lemma 3.10).  With w the numerator of the pivot column of
+-- proof of Lemma 31).  With w the numerator of the pivot column of
 -- s, k its least δ-exponent, and j < ℓ the first odd entries of w.  H
 -- takes the entries w₀, w₁ to λω (w₀ ± w₁) at the exponent k + 2:
 --
@@ -16,7 +16,7 @@
 --   G s is the normal step from s; for z odd the new entries are δ
 --   times odd congruent ones, retrograde; for z = 2 they are δ² times
 --   odd ones with the exponent 2, and the square closes through
---   X_[0,1] ω_[1]⁷ ω_[0] by (r).
+--   X_[0,1] ω_[1]⁷ ω_[0] by (26).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -454,7 +454,7 @@ module _ (a b : Fin n) (a0 : toℕ a ≡ 0) (b1 : toℕ b ≡ 1)
 
         -- z = 2: W_a ± W_b = δ² y± with y± odd, y₋ = y₊ − g₂ W_b; the
         -- normal edge from r is H_[0,1] ω_[0]² too, and the square closes
-        -- by (r).
+        -- by (26).
         two-z : zOf (W ! a) (W ! b) ≡ 2 → Square G s o
         two-z z2 = go (δ²∣-par (W ! a ZR.+ W ! b) c0+ c1+) (δ²∣-par (W ! a ZR.- W ! b) c0- c1-)
           where

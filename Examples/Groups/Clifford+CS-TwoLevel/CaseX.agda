@@ -11,7 +11,7 @@
 -- * k = 0, w a unit at m: disjoint when m ∉ {α, β} and β < p; the
 --   squares of (case 3.1.2) when β = p and of (case 3.1.3) otherwise;
 -- * k > 0, with j < ℓ the first odd entries: disjoint when ℓ < α,
---   j < α < β < ℓ or β < j; ℓ = α with w_β even (case 3.2.2.2a);
+--   j < α < β < ℓ or β < j; ℓ = α with w_β even (case 3.2.2.2);
 --   ℓ = β (cases 3.2.2.3 and 3.2.2.4) and β < ℓ with j ∈ {α, β}
 --   (cases 3.2.2.6 and 3.2.2.7).  The subcase ℓ = α with w_β odd is
 --   Hard.
@@ -79,7 +79,7 @@ private
 -- The relations of the squares, for j < k < l
 
 private
-  -- (case 3.1.2.3)
+  -- (24), used in case 3.1.2.3
   R-X-X : ∀ {j k l : Fin n} (jk : j < k) (kl : k < l) f →
           (X j l (FinP.<-trans jk kl) • i j ^ f) • X k l kl ≈ X j k jk • (X j l (FinP.<-trans jk kl) • i j ^ f)
   R-X-X {j} {k} {l} jk kl f = begin
@@ -91,7 +91,7 @@ private
     X j k jk • (X j l jl • i j ^ f)       ∎
     where jl = FinP.<-trans jk kl
 
-  -- (case 3.1.3.1)
+  -- (25), used in cases 3.1.3.1 and 3.1.3.2
   R-X-i : ∀ {j k l : Fin n} (jk : j < k) (kl : k < l) f →
           (X k l kl • i k ^ f) • X j k jk ≈ X j k jk • (X j l (FinP.<-trans jk kl) • i j ^ f)
   R-X-i {j} {k} {l} jk kl f = begin
@@ -113,7 +113,7 @@ private
     ε • i k ^ f                           ≈⟨ left-unit ⟩
     i k ^ f                               ∎
 
-  -- (case 3.2.2.2a)
+  -- (26), with K† for K, used in cases 3.2.2.2 and 3.2.2.4
   R-K-X : ∀ {j k l : Fin n} (jk : j < k) (kl : k < l) q →
           (K† j l (FinP.<-trans jk kl) • i l ^ q) • X k l kl ≈ X k l kl • (K† j k jk • i k ^ q)
   R-K-X {j} {k} {l} jk kl q = begin
@@ -137,7 +137,7 @@ private
     X j k jk • (K† j l jl • i l ^ q)      ∎
     where jl = FinP.<-trans jk kl
 
-  -- The inverse of (13): K† X = i_[k]² K†.
+  -- The inverse of (15): K† X = i_[k]² K†.
   R-K†X : ∀ {j k : Fin n} (jk : j < k) → (K† j k jk • ε) • X j k jk ≈ i k ^ 2 • (K† j k jk • ε)
   R-K†X {j} {k} jk = begin
     (K† j k jk • ε) • X j k jk                        ≈⟨ cleft right-unit ⟩
@@ -151,7 +151,7 @@ private
     i k ^ 2 • K† j k jk                               ≈⟨ cright sym right-unit ⟩
     i k ^ 2 • (K† j k jk • ε)                         ∎
 
-  -- (case 3.2.2.3)
+  -- (28), used in case 3.2.2.3
   R-K†LX : ∀ {j k : Fin n} (jk : j < k) →
            (K† j k jk • i k) • X j k jk ≈ (X j k jk • i j ^ 3 • i k) • (K† j k jk • i k)
   R-K†LX jk = trans assoc (trans (K†LX≈XI³LK†L jk) (by-assoc auto))
@@ -446,7 +446,7 @@ module _ (α β : Fin n) (αβ1 : toℕ β ≡ suc (toℕ α))
           syl-r = ≡.trans (syl-of r pr (lde v) W (≡.trans col≡ v≡) min) (≡.sym syl≡)
           lv : level r ≡ level s
           lv = ≡.trans (level-of r pr (lde v) W (≡.trans col≡ v≡) min) (≡.sym lvl)
-        -- The unit at α or β: G moves it (case 3.1.3.1).
+        -- The unit at α or β: G moves it (cases 3.1.3.1 and 3.1.3.2).
         at-α : ∀ {m′} → m′ ≡ α → firstOdd W ≡ just m′ → W ! m′ ≡ ⅈᶻ ^ᶻ t → (∀ y → y ≢ m′ → W ! y ≡ ZR.0#) →
                Square G s o
         at-α ≡.refl fo′ ua rest′ =
@@ -574,7 +574,7 @@ module _ (α β : Fin n) (αβ1 : toℕ β ≡ suc (toℕ α))
         syl-r = ≡.trans (syl-U foU nxU jℓ)
                   (≡.trans (≡.cong₂ (λ x y → K† j ℓ jℓ • i ℓ ^ qOf x y) ej eℓ) (≡.sym (syl-W fo nx jℓ)))
 
-      -- ℓ = α, w_β even (case 3.2.2.2a).
+      -- ℓ = α, w_β even (case 3.2.2.2).
       evenβ : ∀ {j} → firstOdd W ≡ just j → nextOdd j W ≡ just α → Even (W ! β) → Square G s o
       evenβ {j} fo nx eβ =
         square-syl G s o (K† j β jβ • i β ^ q) (X α β αβ) pr syl-r (below (X α β αβ) ℕP.≤-refl)

@@ -4,8 +4,8 @@
 -- Unit vectors (§2.3).  A column v of a column-orthonormal matrix has
 -- ⟨v , v⟩ = 1; writing v = w / γᵏ this says Σₓ |wₓ|² = 2ᵏ.  Hence
 --
--- * Lemma "evenodd": if k > 0, an even number of the wₓ are odd;
--- * Lemma "lde0": if k = 0, exactly one wₓ is nonzero, and it is a
+-- * evenodd (Lemma 2.9): if k > 0, an even number of the wₓ are odd;
+-- * lde0 (Lemma 2.7): if k = 0, exactly one wₓ is nonzero, and it is a
 --   power of i.
 --
 -- Moreover the columns that equal standard basis vectors force the
@@ -167,12 +167,12 @@ private
     where big : suc (suc m′) ℕ.+ Σℕ (f ∘ suc) ≢ 1
           big ()
 
--- Lemma "evenodd": if Σₓ |wₓ|² = 2ᵏ with k > 0, an even number of wₓ are odd.
+-- Lemma 2.9: if Σₓ |wₓ|² = 2ᵏ with k > 0, an even number of wₓ are odd.
 evenodd : ∀ k (w : Vec Z n) → Σℕ (λ x → Nℕ (w ! x)) ≡ 2 ℕ.^ suc k →
           oddℕ (count (λ x → oddᶻ (w ! x))) ≡ false
 evenodd k w eq = trans (sym (parity-count w)) (trans (cong oddℕ eq) (oddℕ-* 2 (2 ℕ.^ k)))
 
--- Lemma "lde0": if Σₓ |wₓ|² = 1, a single wₓ is nonzero, and it is a unit.
+-- Lemma 2.7: if Σₓ |wₓ|² = 1, a single wₓ is nonzero, and it is a unit.
 lde0 : (w : Vec Z n) → Σℕ (λ x → Nℕ (w ! x)) ≡ 1 →
        ∃ λ m → Unit (w ! m) × (∀ y → y ≢ m → w ! y ≡ ZR.0#)
 lde0 w eq with Σℕ≡1 (λ x → Nℕ (w ! x)) eq
