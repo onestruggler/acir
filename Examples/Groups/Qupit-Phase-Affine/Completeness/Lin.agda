@@ -21,6 +21,7 @@ module Examples.Groups.Qupit-Phase-Affine.Completeness.Lin
   (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
 
 open import Data.Empty using (⊥ ; ⊥-elim-irr)
+open import Data.Fin.Base using (Fin ; zero ; suc)
 open import Data.Nat.Base using (zero ; suc ; _≤_ ; s≤s ; z≤n)
 open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Vec.Base using (Vec ; [] ; _∷_ ; zipWith ; head ; tail)
@@ -94,11 +95,11 @@ lin-tr {n} (s , c) y = begin
   [ ι y ]ʷ • ω h ^ᶠ s • Zc (c ⋆ᴿ y)     ∎
   where open Width n
 
-_⋆ᵗ_ : D n → Vec F n → D n
-(s , c) ⋆ᵗ v = s + c ·ᵛ v , c
+_⋆ᵛ_ : D n → Vec F n → D n
+(s , c) ⋆ᵛ v = s + c ·ᵛ v , c
 
-tr-tr : (d : D n) (v : Vec F n) → n ⊢ ⟦ d ⟧ᵈ • Xc v ≈ Xc v • ⟦ d ⋆ᵗ v ⟧ᵈ
-tr-tr {n} (s , c) v = begin
+tr-tr′ : (d : D n) (v : Vec F n) → n ⊢ ⟦ d ⟧ᵈ • Xc v ≈ Xc v • ⟦ d ⋆ᵛ v ⟧ᵈ
+tr-tr′ {n} (s , c) v = begin
   (ω h ^ᶠ s • Zc c) • Xc v                          ≈⟨ trans assoc (back _ (Zc-Xc c v)) ⟩
   ω h ^ᶠ s • Xc v • Zc c • ω h ^ᶠ (c ·ᵛ v)          ≈⟨ trans (sym assoc) (trans (front _ (ωᶠ-comm s _)) assoc) ⟩
   Xc v • ω h ^ᶠ s • Zc c • ω h ^ᶠ (c ·ᵛ v)          ≈⟨ back _ (back _ (sym (ωᶠ-comm (c ·ᵛ v) _))) ⟩
@@ -107,6 +108,12 @@ tr-tr {n} (s , c) v = begin
   where
   open Width n
   module OW = Pow.Order n {ω h} ω-order
+
+_⋆ᵗ_ : D n → Fin n → D n
+d ⋆ᵗ j = d ⋆ᵛ uvec j
+
+tr-tr : (d : D n) (j : Fin n) → n ⊢ ⟦ d ⟧ᵈ • Xc (uvec j) ≈ Xc (uvec j) • ⟦ d ⋆ᵗ j ⟧ᵈ
+tr-tr d j = tr-tr′ d (uvec j)
 
 ------------------------------------------------------------------------
 -- The phase generators: ω, and a column of Z's
@@ -199,19 +206,19 @@ open Layer D ⟦_⟧ᵈ d₀ d₀-ε _⋆ˡ_ lin-tr _⋆ᵗ_ tr-tr PG ⟦_⟧ᵖ
 private
   up-kind : Kind PG n → Kind PG (₁₊ n)
   up-kind (lin y)       = lin (y ↥ₗ)
-  up-kind (tr e)        = tr (0F ∷ e)
+  up-kind (trX j)       = trX (suc j)
   up-kind (phs gω)      = phs gω
   up-kind (phs (gZ e))  = phs (gZ (0F ∷ e))
 
   up-kind-sound : (k : Kind PG n) → (₁₊ n) ⊢ ⟦ k ⟧ₖ ↑ ≈ ⟦ up-kind k ⟧ₖ
   up-kind-sound (lin y)      = Width.refl
-  up-kind-sound (tr e)       = Width.sym Width.left-unit
+  up-kind-sound (trX j)      = Width.sym Width.left-unit
   up-kind-sound (phs gω)     = ω↑
   up-kind-sound (phs (gZ e)) = Width.sym Width.left-unit
 
 kind : Gen n → Kind PG n
 kind (gate₀ (ω-gate _))     = phs gω
-kind (gate₁ X-gate)         = tr (1F ∷ 0ᵛ)
+kind (gate₁ X-gate)         = trX zero
 kind (gate₁ (M-gate a nz))  = lin (mul (unit a nz))
 kind (gate₁ (Z-gate _))     = phs (gZ (1F ∷ 0ᵛ))
 kind (gate₁ (S-gate h₂))    = ⊥-elim-irr (no2 h₂)

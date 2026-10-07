@@ -31,6 +31,7 @@ module Examples.Groups.Qupit-Phase-Affine.Completeness.Layered
   (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) (lv : ℕ)
   (adm : Snd.Admissible p-2 p-prime lv) where
 
+open import Data.Fin.Base using (Fin ; zero ; suc)
 open import Data.Nat.Base using (zero ; suc)
 open import Data.Product.Base using (_,_ ; proj₁ ; proj₂)
 open import Data.Vec.Base using (Vec ; [] ; _∷_ ; zipWith)
@@ -116,9 +117,14 @@ lin-none (L • M) = Width.trans (Width.cong (lin-none L) (lin-none M)) Width.le
 ------------------------------------------------------------------------
 -- The generators of a level: linear ones, translations and phases
 
+-- The unit vector at a wire: X there is Xc (uvec j).
+uvec : Fin n → Vec F n
+uvec zero    = 1F ∷ 0ᵛ
+uvec (suc j) = 0F ∷ uvec j
+
 data Kind (PG : ℕ → Set) (n : ℕ) : Set where
   lin : LGen n → Kind PG n
-  tr  : Vec F n → Kind PG n
+  trX : Fin n → Kind PG n
   phs : PG n → Kind PG n
 
 ------------------------------------------------------------------------
@@ -131,8 +137,8 @@ module Layer
   (d₀-ε : ∀ {n} → n ⊢ ⟦ d₀ {n} ⟧ᵈ ≈ ε)
   (_⋆ˡ_ : ∀ {n} → D n → LGen n → D n)
   (lin-tr : ∀ {n} (d : D n) (y : LGen n) → n ⊢ ⟦ d ⟧ᵈ • [ ι y ]ʷ ≈ [ ι y ]ʷ • ⟦ d ⋆ˡ y ⟧ᵈ)
-  (_⋆ᵗ_ : ∀ {n} → D n → Vec F n → D n)
-  (tr-tr : ∀ {n} (d : D n) (v : Vec F n) → n ⊢ ⟦ d ⟧ᵈ • Xc v ≈ Xc v • ⟦ d ⋆ᵗ v ⟧ᵈ)
+  (_⋆ᵗ_ : ∀ {n} → D n → Fin n → D n)
+  (tr-tr : ∀ {n} (d : D n) (j : Fin n) → n ⊢ ⟦ d ⟧ᵈ • Xc (uvec j) ≈ Xc (uvec j) • ⟦ d ⋆ᵗ j ⟧ᵈ)
   (PG : ℕ → Set)
   (⟦_⟧ᵖ : ∀ {n} → PG n → Circuit n)
   (app : ∀ {n} → D n → PG n → D n)
@@ -145,7 +151,7 @@ module Layer
 
   ⟦_⟧ₖ : Kind PG n → Circuit n
   ⟦ lin y ⟧ₖ = [ ι y ]ʷ
-  ⟦ tr e ⟧ₖ  = Xc e
+  ⟦ trX j ⟧ₖ = Xc (uvec j)
   ⟦ phs g ⟧ₖ = ⟦ g ⟧ᵖ
 
   record NF (n : ℕ) : Set where
@@ -167,7 +173,7 @@ module Layer
 
   step : NF n → Kind PG n → NF n
   step ⟨ b , L , d ⟩ (lin y) = ⟨ b , L • [ y ]ʷ , d ⋆ˡ y ⟩
-  step ⟨ b , L , d ⟩ (tr e)  = ⟨ zipWith _+_ b (e ⋆ˣ* L) , L , d ⋆ᵗ e ⟩
+  step ⟨ b , L , d ⟩ (trX j) = ⟨ zipWith _+_ b (uvec j ⋆ˣ* L) , L , d ⋆ᵗ j ⟩
   step ⟨ b , L , d ⟩ (phs g) = ⟨ b , L , app d g ⟩
 
   step-sound : (N : NF n) (k : Kind PG n) → n ⊢ ⌜ N ⌝ • ⟦ k ⟧ₖ ≈ ⌜ step N k ⌝
@@ -176,12 +182,14 @@ module Layer
     Xc b • ⌊ L ⌋ • [ ι y ]ʷ • ⟦ d ⋆ˡ y ⟧ᵈ     ≈⟨ back _ (sym assoc) ⟩
     Xc b • (⌊ L ⌋ • [ ι y ]ʷ) • ⟦ d ⋆ˡ y ⟧ᵈ   ∎
     where open Width n
-  step-sound {n} ⟨ b , L , d ⟩ (tr e) = begin
-    (Xc b • ⌊ L ⌋ • ⟦ d ⟧ᵈ) • Xc e                    ≈⟨ trans assoc (back _ (trans assoc (back _ (tr-tr d e)))) ⟩
-    Xc b • ⌊ L ⌋ • Xc e • ⟦ d ⋆ᵗ e ⟧ᵈ                 ≈⟨ back _ (trans (sym assoc) (trans (front _ (X-push* L e)) assoc)) ⟩
-    Xc b • Xc (e ⋆ˣ* L) • ⌊ L ⌋ • ⟦ d ⋆ᵗ e ⟧ᵈ         ≈⟨ trans (sym assoc) (front _ (Xc-add b (e ⋆ˣ* L))) ⟩
-    Xc (zipWith _+_ b (e ⋆ˣ* L)) • ⌊ L ⌋ • ⟦ d ⋆ᵗ e ⟧ᵈ ∎
-    where open Width n
+  step-sound {n} ⟨ b , L , d ⟩ (trX j) = begin
+    (Xc b • ⌊ L ⌋ • ⟦ d ⟧ᵈ) • Xc e                    ≈⟨ trans assoc (back _ (trans assoc (back _ (tr-tr d j)))) ⟩
+    Xc b • ⌊ L ⌋ • Xc e • ⟦ d ⋆ᵗ j ⟧ᵈ                 ≈⟨ back _ (trans (sym assoc) (trans (front _ (X-push* L e)) assoc)) ⟩
+    Xc b • Xc (e ⋆ˣ* L) • ⌊ L ⌋ • ⟦ d ⋆ᵗ j ⟧ᵈ         ≈⟨ trans (sym assoc) (front _ (Xc-add b (e ⋆ˣ* L))) ⟩
+    Xc (zipWith _+_ b (e ⋆ˣ* L)) • ⌊ L ⌋ • ⟦ d ⋆ᵗ j ⟧ᵈ ∎
+    where
+    open Width n
+    e = uvec j
   step-sound {n} ⟨ b , L , d ⟩ (phs g) =
     trans assoc (back _ (trans assoc (back _ (app-sound d g))))
     where open Width n
