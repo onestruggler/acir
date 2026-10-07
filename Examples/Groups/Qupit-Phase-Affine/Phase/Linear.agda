@@ -266,3 +266,157 @@ module _ {n : ℕ} where
       Z₁ • C • Ci • Zi₁       ≈⟨ back _ (trans (sym assoc) (trans (front _ (CX-invʳ 1F)) left-unit)) ⟩
       Z₁ • Zi₁                ≈⟨ lift (OZ.^ᶠ-inverseʳ 1F) ⟩
       ε                       ∎
+
+------------------------------------------------------------------------
+-- Iterates of Z past the two-wire gates
+
+module _ {n : ℕ} where
+
+  open Width (₂₊ n)
+
+  private
+    module OZ = Pow.Order (₂₊ n) {Z h} Z-order
+
+    Z∥Z↑ : (₂₊ n) ⊢ Z h • Z h ↑ ≈ Z h ↑ • Z h
+    Z∥Z↑ = sym (comm-gate₁-w↑ (Z-gate h) (Z h))
+
+  -- On the target, rule (21).
+  Zᶠ-CX : (c : F) → (₂₊ n) ⊢ Z h ^ᶠ c • CX ≈ CX • Z h ^ᶠ c • (Z h ^ᶠ c) ↑
+  Zᶠ-CX c = begin
+    Z h ^ᶠ c • CX                          ≈⟨ slideʳ^ (toℕ c) (sym (ax (ax21 h))) ⟩
+    CX • (Z h • Z h ↑) ^ᶠ c                ≈⟨ back _ (Pow.pow-• (₂₊ n) (toℕ c) Z∥Z↑) ⟩
+    CX • Z h ^ᶠ c • (Z h ↑) ^ᶠ c           ≈⟨ back _ (back _ (refl' (Eq.sym (↑ᶠ (Z h) c)))) ⟩
+    CX • Z h ^ᶠ c • (Z h ^ᶠ c) ↑           ∎
+
+  -- On the control.
+  Z↑ᶠ-CX : (c : F) → (₂₊ n) ⊢ (Z h ^ᶠ c) ↑ • CX ≈ CX • (Z h ^ᶠ c) ↑
+  Z↑ᶠ-CX c = trans (front _ (refl' (↑ᶠ (Z h) c)))
+               (trans (Pow.pow-comm (₂₊ n) (toℕ c) (sym Z↑-CX)) (back _ (refl' (Eq.sym (↑ᶠ (Z h) c)))))
+
+  -- SWAP moves Z a wire.
+  Zᶠ-SWAP : (c : F) → (₂₊ n) ⊢ Z h ^ᶠ c • SWAP ≈ SWAP • (Z h ^ᶠ c) ↑
+  Zᶠ-SWAP c = trans (slideʳ^ (toℕ c) (ax (swap-Z h))) (back _ (refl' (Eq.sym (↑ᶠ (Z h) c))))
+
+  Z↑ᶠ-SWAP : (c : F) → (₂₊ n) ⊢ (Z h ^ᶠ c) ↑ • SWAP ≈ SWAP • Z h ^ᶠ c
+  Z↑ᶠ-SWAP c = trans (front _ (refl' (↑ᶠ (Z h) c)))
+                 (slideʳ^ (toℕ c) (Involution.conj→' (ax swap-order)
+                   (Involution.conj← (ax swap-order) (sym (ax (swap-Z h))))))
+
+  Zᶠ∥Z↑ᶠ : (c d : F) → (₂₊ n) ⊢ Z h ^ᶠ c • (Z h ^ᶠ d) ↑ ≈ (Z h ^ᶠ d) ↑ • Z h ^ᶠ c
+  Zᶠ∥Z↑ᶠ c d = Pow.pow-comm (₂₊ n) (toℕ c) (sym (comm-gate₁-w↑ (Z-gate h) (Z h ^ᶠ d)))
+
+------------------------------------------------------------------------
+-- Columns of Z's
+
+-- Phase c · x.
+Zc : Vec F n → Circuit n
+Zc []       = ε
+Zc (c ∷ cs) = Z h ^ᶠ c • Zc cs ↑
+
+-- The linear form c · v.
+_·ᵛ_ : Vec F n → Vec F n → F
+[]       ·ᵛ []       = 0F
+(c ∷ cs) ·ᵛ (v ∷ vs) = c * v + cs ·ᵛ vs
+
+-- A linear generator turns the column of c into that of c Y.
+Z-push : (y : LGen n) (c : Vec F n) → n ⊢ Zc c • [ ι y ]ʷ ≈ [ ι y ]ʷ • Zc (c ⋆ᴿ y)
+Z-push {₁₊ n} (y ↥ₗ) (c ∷ cs) = begin
+  (Z h ^ᶠ c • Zc cs ↑) • Y ↑              ≈⟨ trans assoc (back _ (lift (Z-push y cs))) ⟩
+  Z h ^ᶠ c • Y ↑ • Zc (cs ⋆ᴿ y) ↑         ≈⟨ trans (sym assoc) (trans (front _ (Zᶠ-up c Y)) assoc) ⟩
+  Y ↑ • Z h ^ᶠ c • Zc (cs ⋆ᴿ y) ↑         ∎
+  where
+  open Width (₁₊ n)
+  Y = [ ι y ]ʷ
+Z-push {₁₊ n} (mul x) (c ∷ cs) = begin
+  (Z h ^ᶠ c • Zc cs ↑) • M⟨ x ⟩                 ≈⟨ trans assoc (back _ (comm-gate₁-w↑ (M-gate (proj₁ x) (proj₂ x)) (Zc cs))) ⟩
+  Z h ^ᶠ c • M⟨ x ⟩ • Zc cs ↑                   ≈⟨ trans (sym assoc) (trans (front _ (Zᶠ-M c x)) assoc) ⟩
+  M⟨ x ⟩ • Z h ^ᶠ (c * proj₁ x) • Zc cs ↑       ∎
+  where open Width (₁₊ n)
+Z-push {₂₊ n} cx (c ∷ d ∷ cs) = begin
+  (Z h ^ᶠ c • (Z h ^ᶠ d) ↑ • B) • CX
+    ≈⟨ by-passoc ((□ • □ • □) • □) (□ • □ • □ • □) Eq.refl ⟩
+  Z h ^ᶠ c • (Z h ^ᶠ d) ↑ • B • CX
+    ≈⟨ back _ (back _ (comm-gate₂-w↑↑ CX-gate (Zc cs))) ⟩
+  Z h ^ᶠ c • (Z h ^ᶠ d) ↑ • CX • B
+    ≈⟨ back _ (trans (sym assoc) (trans (front _ (Z↑ᶠ-CX d)) assoc)) ⟩
+  Z h ^ᶠ c • CX • (Z h ^ᶠ d) ↑ • B
+    ≈⟨ trans (sym assoc) (trans (front _ (Zᶠ-CX c)) assoc) ⟩
+  CX • (Z h ^ᶠ c • (Z h ^ᶠ c) ↑) • (Z h ^ᶠ d) ↑ • B
+    ≈⟨ back _ (trans assoc (back _ (trans (sym assoc) (front _ merge)))) ⟩
+  CX • Z h ^ᶠ c • (Z h ^ᶠ (d + c)) ↑ • B ∎
+  where
+  open Width (₂₊ n)
+  B = Zc cs ↑ ↑
+  module OZ1 = Pow.Order (₁₊ n) {Z h} Z-order
+  merge : (₂₊ n) ⊢ (Z h ^ᶠ c) ↑ • (Z h ^ᶠ d) ↑ ≈ (Z h ^ᶠ (d + c)) ↑
+  merge = lift (OZ1.^ᶠ-+ c d ⟨ Width.trans ⟩ OZ1.^ᶠ-≡ (FR.+-comm c d))
+    where
+    _⟨_⟩_ : ∀ {A B C : Set} → A → (A → B → C) → B → C
+    x ⟨ f ⟩ y = f x y
+Z-push {₂₊ n} sw (c ∷ d ∷ cs) = begin
+  (Z h ^ᶠ c • (Z h ^ᶠ d) ↑ • B) • SWAP
+    ≈⟨ by-passoc ((□ • □ • □) • □) (□ • □ • □ • □) Eq.refl ⟩
+  Z h ^ᶠ c • (Z h ^ᶠ d) ↑ • B • SWAP
+    ≈⟨ back _ (back _ (comm-gate₂-w↑↑ SWAP-gate (Zc cs))) ⟩
+  Z h ^ᶠ c • (Z h ^ᶠ d) ↑ • SWAP • B
+    ≈⟨ back _ (trans (sym assoc) (trans (front _ (Z↑ᶠ-SWAP d)) assoc)) ⟩
+  Z h ^ᶠ c • SWAP • Z h ^ᶠ d • B
+    ≈⟨ trans (sym assoc) (trans (front _ (Zᶠ-SWAP c)) assoc) ⟩
+  SWAP • (Z h ^ᶠ c) ↑ • Z h ^ᶠ d • B
+    ≈⟨ back _ (trans (sym assoc) (trans (front _ (sym (Zᶠ∥Z↑ᶠ d c))) assoc)) ⟩
+  SWAP • Z h ^ᶠ d • (Z h ^ᶠ c) ↑ • B ∎
+  where
+  open Width (₂₊ n)
+  B = Zc cs ↑ ↑
+
+-- A translation by v leaves the scalar ω^(c · v).
+Zc-Xc : (c v : Vec F n) → n ⊢ Zc c • Xc v ≈ Xc v • Zc c • ω h ^ᶠ (c ·ᵛ v)
+Zc-Xc {zero} [] [] = trans left-unit (sym (trans left-unit right-unit))
+  where open Width 0
+Zc-Xc {suc n} (c ∷ cs) (v ∷ vs) = begin
+  (Z h ^ᶠ c • Zc cs ↑) • X ^ᶠ v • Xc vs ↑
+    ≈⟨ by-passoc ((□ • □) • □ • □) (□ • (□ • □) • □) Eq.refl ⟩
+  Z h ^ᶠ c • (Zc cs ↑ • X ^ᶠ v) • Xc vs ↑
+    ≈⟨ back _ (front _ (sym (Pow.pow-comm (₁₊ n) (toℕ v) (sym (comm-gate₁-w↑ X-gate (Zc cs)))))) ⟩
+  Z h ^ᶠ c • (X ^ᶠ v • Zc cs ↑) • Xc vs ↑
+    ≈⟨ by-passoc (□ • (□ • □) • □) ((□ • □) • □ • □) Eq.refl ⟩
+  (Z h ^ᶠ c • X ^ᶠ v) • Zc cs ↑ • Xc vs ↑
+    ≈⟨ cong (Zᶠ-Xᶠ c v) (lift (Zc-Xc cs vs)) ⟩
+  (X ^ᶠ v • Z h ^ᶠ c • ω h ^ᶠ (c * v)) • Xc vs ↑ • Zc cs ↑ • (ω h ^ᶠ (cs ·ᵛ vs)) ↑
+    ≈⟨ back _ (back _ (back _ (ωᶠ↑ (cs ·ᵛ vs)))) ⟩
+  (X ^ᶠ v • Z h ^ᶠ c • ω h ^ᶠ (c * v)) • Xc vs ↑ • Zc cs ↑ • ω h ^ᶠ (cs ·ᵛ vs)
+    ≈⟨ by-passoc ((□ • □ • □) • □ • □ • □) (□ • □ • (□ • □) • □ • □) Eq.refl ⟩
+  X ^ᶠ v • Z h ^ᶠ c • (ω h ^ᶠ (c * v) • Xc vs ↑) • Zc cs ↑ • ω h ^ᶠ (cs ·ᵛ vs)
+    ≈⟨ back _ (back _ (front _ (ωᶠ-comm (c * v) _))) ⟩
+  X ^ᶠ v • Z h ^ᶠ c • (Xc vs ↑ • ω h ^ᶠ (c * v)) • Zc cs ↑ • ω h ^ᶠ (cs ·ᵛ vs)
+    ≈⟨ by-passoc (□ • □ • (□ • □) • □ • □) (□ • (□ • □) • □ • □ • □) Eq.refl ⟩
+  X ^ᶠ v • (Z h ^ᶠ c • Xc vs ↑) • ω h ^ᶠ (c * v) • Zc cs ↑ • ω h ^ᶠ (cs ·ᵛ vs)
+    ≈⟨ back _ (front _ (Zᶠ-up c (Xc vs))) ⟩
+  X ^ᶠ v • (Xc vs ↑ • Z h ^ᶠ c) • ω h ^ᶠ (c * v) • Zc cs ↑ • ω h ^ᶠ (cs ·ᵛ vs)
+    ≈⟨ back _ (back _ (trans (sym assoc) (front _ (ωᶠ-comm (c * v) _)))) ⟩
+  X ^ᶠ v • (Xc vs ↑ • Z h ^ᶠ c) • (Zc cs ↑ • ω h ^ᶠ (c * v)) • ω h ^ᶠ (cs ·ᵛ vs)
+    ≈⟨ by-passoc (□ • (□ • □) • (□ • □) • □) ((□ • □) • □ • □ • □ • □) Eq.refl ⟩
+  (X ^ᶠ v • Xc vs ↑) • Z h ^ᶠ c • Zc cs ↑ • ω h ^ᶠ (c * v) • ω h ^ᶠ (cs ·ᵛ vs)
+    ≈⟨ back _ (back _ (back _ (OW.^ᶠ-+ (c * v) (cs ·ᵛ vs)))) ⟩
+  (X ^ᶠ v • Xc vs ↑) • Z h ^ᶠ c • Zc cs ↑ • ω h ^ᶠ (c * v + cs ·ᵛ vs)
+    ≈⟨ back _ (sym assoc) ⟩
+  (X ^ᶠ v • Xc vs ↑) • (Z h ^ᶠ c • Zc cs ↑) • ω h ^ᶠ (c * v + cs ·ᵛ vs) ∎
+  where
+  open Width (₁₊ n)
+  module OW = Pow.Order (₁₊ n) {ω h} ω-order
+
+-- Columns add.
+Zc-add : (c c' : Vec F n) → n ⊢ Zc c • Zc c' ≈ Zc (zipWith _+_ c c')
+Zc-add [] [] = Width.left-unit
+Zc-add {₁₊ n} (c ∷ cs) (c' ∷ cs') = begin
+  (Z h ^ᶠ c • Zc cs ↑) • Z h ^ᶠ c' • Zc cs' ↑   ≈⟨ by-passoc ((□ • □) • □ • □) (□ • (□ • □) • □) Eq.refl ⟩
+  Z h ^ᶠ c • (Zc cs ↑ • Z h ^ᶠ c') • Zc cs' ↑   ≈⟨ back _ (front _ (sym (Zᶠ-up c' (Zc cs)))) ⟩
+  Z h ^ᶠ c • (Z h ^ᶠ c' • Zc cs ↑) • Zc cs' ↑   ≈⟨ by-passoc (□ • (□ • □) • □) ((□ • □) • □ • □) Eq.refl ⟩
+  (Z h ^ᶠ c • Z h ^ᶠ c') • Zc cs ↑ • Zc cs' ↑   ≈⟨ cong (Pow.Order.^ᶠ-+ (₁₊ n) Z-order c c') (lift (Zc-add cs cs')) ⟩
+  Z h ^ᶠ (c + c') • Zc (zipWith _+_ cs cs') ↑    ∎
+  where open Width (₁₊ n)
+
+Zc-zero : n ⊢ Zc (0ᵛ {n}) ≈ ε
+Zc-zero {zero}  = Width.refl
+Zc-zero {suc n} = trans left-unit (lift Zc-zero)
+  where open Width (₁₊ n)
