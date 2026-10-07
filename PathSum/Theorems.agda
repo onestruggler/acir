@@ -847,6 +847,7 @@ import PathSum.Examples
 
 import PathSum.Hierarchy
 module Hier = PathSum.Hierarchy M₀
+import PathSum.Hierarchy as Hᵒ
 
 import PathSum.Hierarchy.Operator
 module HrOp = PathSum.Hierarchy.Operator M₀
@@ -1628,12 +1629,21 @@ prop-2-14-false-at-1 = KT.prop-2-14-false-at-1
    (∀ j → Hier.IsPauli (U ·ᵒ HrPa.pauli (HrPa.Z^ j) ·ᵒ U †ᵒ)))
 𝒞₂⇔generators U = Hier.𝒞₂⇔gen U
 
+-- 𝒞₃⇔generators is spelled with PathSum.Hierarchy's own names, applied
+-- to M₀ in place (Hᵒ.𝒞 M₀, Hᵒ.Opʰ._·_ M₀, ...): the root's applications
+-- Hier, HrOp and HrPa make other copies of the operators, and comparing
+-- the two spellings of this type unfolded them for a minute.
+
 𝒞₃⇔generators :
-  (U : Op n) →
-  Hier.𝒞 3 U ⇔
-  (HrOp.Unitary U ×
-   (∀ j → Hier.𝒞 2 (U ·ᵒ HrPa.pauli (HrPa.X^ j) ·ᵒ U †ᵒ)) ×
-   (∀ j → Hier.𝒞 2 (U ·ᵒ HrPa.pauli (HrPa.Z^ j) ·ᵒ U †ᵒ)))
+  (U : Hᵒ.Opʰ.Op M₀ n) →
+  Hᵒ.𝒞 M₀ 3 U ⇔
+  (Hᵒ.Opʰ.Unitary M₀ U ×
+   (∀ j → Hᵒ.𝒞 M₀ 2
+            (Hᵒ.Opʰ._·_ M₀ (Hᵒ.Opʰ._·_ M₀ U (Hᵒ.Paʰ.pauli M₀ (Hᵒ.Paʰ.X^ M₀ j)))
+                           (Hᵒ.Opʰ._† M₀ U))) ×
+   (∀ j → Hᵒ.𝒞 M₀ 2
+            (Hᵒ.Opʰ._·_ M₀ (Hᵒ.Opʰ._·_ M₀ U (Hᵒ.Paʰ.pauli M₀ (Hᵒ.Paʰ.Z^ M₀ j)))
+                           (Hᵒ.Opʰ._† M₀ U))))
 𝒞₃⇔generators U = Hier.𝒞₃⇔gen U
 
 𝒞₂-closed : {U V : Op n} → Hier.𝒞 2 U → Hier.𝒞 2 V → Hier.𝒞 2 (U ·ᵒ V)

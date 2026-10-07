@@ -51,7 +51,7 @@ agda +RTS -M6G -RTS PathSum/Theorems.agda
 ```
 
 which covers the whole of `PathSum/`.  From scratch it takes about
-22 minutes and peaks near 4 GB; run it under a heap cap as shown.
+30 minutes and peaks near 4.5 GB; run it under a heap cap as shown.
 
 **The core.**  The layers are the multilinear dyadic polynomials
 (`Polynomial`, `Polynomial/Properties`) with Möbius inversion

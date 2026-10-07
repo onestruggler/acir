@@ -72,9 +72,23 @@ import Data.Nat.Properties as ℕ
 
 open import PathSum.Assign using ([_]ᶻ)
 open import PathSum.Denotation M₀ using (Assign)
-open import PathSum.Hierarchy.Operator M₀
-open import PathSum.Hierarchy.Pauli M₀
 open import PathSum.RelativePhase M₀ using (_≡ᴺ_; ≡ᴺ-refl; ≡ᴺ-≡)
+
+import PathSum.Hierarchy.Operator
+import PathSum.Hierarchy.Pauli
+
+-- The applications are named, and so exported as submodules, so that
+-- a client can state this module's theorems with the very operators
+-- its types use (PathSum.Hierarchy.Opʰ._·_ M₀ and so on): through a
+-- module application of its own, the operators are other copies, and
+-- comparing the types unfolds them (𝒞₃⇔gen restated so in the root:
+-- 62 s, against nothing through these names).
+
+module Opʰ = PathSum.Hierarchy.Operator M₀
+module Paʰ = PathSum.Hierarchy.Pauli M₀
+
+open Opʰ
+open Paʰ
 
 private
   variable
