@@ -14,8 +14,11 @@
 --     A(e₀+e₁+e₂) = A(e₁+e₂) A(e₁)⁻¹ A(e₀+e₁) A(e₀)⁻¹ A(e₂)⁻¹ A(e₀+e₂)   (T3₀)
 --
 -- and transporting it by M_c on wire 1 and the representative of w two
--- wires up puts e₁ at c e₁ and e₂ at w (T3).  A multiplier on wire 0
--- then scales everything (split-big).
+-- wires up puts e₁ at c e₁ and e₂ at w (T3), while on two wires the S
+-- gadget gives the atom of (1 , c) (A-01).  A multiplier on wire 0 then
+-- scales everything (split-big), and the atoms of a diagonal expression
+-- split one at a time: every diagonal expression on ₁₊ n wires is one on
+-- n wires, one wire up, times a wire-0 form E e (split-sound).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -279,3 +282,281 @@ module _ {n : ℕ} (c : F*) (ℓ : NZ (₁₊ n)) where
     rhs : (₃₊ n) ⊢ atoms as₀ ≈ atom (small (big 1* (1F ∷ 0ᵛ))) • (small (big 1* 0ᵛ)) ᵃ⁻ • atom (big 1* (1F ∷ 0ᵛ))
                                • (big 1* 0ᵛ) ᵃ⁻ • (small (small (big 1* 0ᵛ))) ᵃ⁻ • atom (big 1* (0F ∷ 1F ∷ 0ᵛ))
     rhs = back _ (back _ (back _ (back _ (back _ right-unit))))
+
+------------------------------------------------------------------------
+-- The atom of a vector
+
+-- Nothing for the zero vector.
+atomᵛ : Vec F n → Circuit n
+atomᵛ [] = ε
+atomᵛ (c ∷ w) with c ≟ 0F
+... | no nc = atom (big (c , nc) w)
+... | yes _ = atomᵛ w ↑
+
+Diag-atomᵛ : (w : Vec F n) → Diag n (atomᵛ w)
+Diag-atomᵛ [] = Diag-ε
+Diag-atomᵛ (c ∷ w) with c ≟ 0F
+... | no nc = Diag-atom (big (c , nc) w)
+... | yes _ = Diag-↑ (Diag-atomᵛ w)
+
+atomᵛ-row : (ℓ : NZ n) → n ⊢ atomᵛ (row ℓ) ≈ atom ℓ
+atomᵛ-row (big a w) with proj₁ a ≟ 0F
+... | no nc = atom-≡ (big (proj₁ a , nc) w) (big a w) Eq.refl
+... | yes e = ⊥-elim (proj₂ a e)
+atomᵛ-row (small ℓ) = Width.trans (lift (atomᵛ-row ℓ)) (Width.sym (A-small ℓ))
+
+------------------------------------------------------------------------
+-- Atoms on wires 0 and 1
+
+A-e0 : (₁₊ n) ⊢ atom (e0 {n}) ≈ S h
+A-e0 = Width.sym (S-e zero)
+
+-- An atom of a multiple of e₀: rule (27).
+A-scale : (a : F*) → (₁₊ n) ⊢ atom (big a (0ᵛ {n})) ≈ SZ (1F * (proj₁ a * proj₁ a)) (1F * binom2 (proj₁ a))
+A-scale {n} a = begin
+  (R 0ᵛ • M⟨ a ⟩) ⁻¹ • S h • R 0ᵛ • M⟨ a ⟩
+    ≈⟨ cong (Inv.⁻¹-cong (₁₊ n) r≈) (back _ r≈) ⟩
+  M⟨ a ⟩ ⁻¹ • S h • M⟨ a ⟩
+    ≈⟨ back _ (Sᶠ-M 1F a) ⟩
+  M⟨ a ⟩ ⁻¹ • M⟨ a ⟩ • Z h₁ ^ᶠ β • S h ^ᶠ s
+    ≈⟨ trans (sym assoc) (trans (front _ (Inv.inverseˡ (₁₊ n))) left-unit) ⟩
+  Z h₁ ^ᶠ β • S h ^ᶠ s
+    ≈⟨ sym (Sᶠ∥Zᶠ s β) ⟩
+  SZ s β ∎
+  where
+  open Width (₁₊ n)
+  s β : F
+  s = 1F * (proj₁ a * proj₁ a)
+  β = 1F * binom2 (proj₁ a)
+  r≈ : (₁₊ n) ⊢ R 0ᵛ • M⟨ a ⟩ ≈ M⟨ a ⟩
+  r≈ = trans (front _ R-zero) left-unit
+
+-- The atom of e₀ + c e₁: the S gadget.
+A-01 : (c : F) → (₂₊ n) ⊢ atom (big 1* (c ∷ 0ᵛ {n})) ≈ S h • SZ (c * c) (binom2 c) ↑ • CZ h ^ᶠ c
+A-01 {n} c = begin
+  r₀ ⁻¹ • S h • r₀                       ≈⟨ cong (Inv.⁻¹-cong (₂₊ n) r≈) (back _ r≈) ⟩
+  (CX ^ᶠ c) ⁻¹ • S h • CX ^ᶠ c           ≈⟨ front _ (sym (Inv.inverseʳ-unique (₂₊ n) (CX-invʳ c))) ⟩
+  CX ^ᶠ (- c) • S h • CX ^ᶠ c            ≈⟨ S-conj c ⟩
+  S h • SZ (c * c) (binom2 c) ↑ • CZ h ^ᶠ c ∎
+  where
+  open Width (₂₊ n)
+  r₀ = r (big 1* (c ∷ 0ᵛ {n}))
+  r≈ : (₂₊ n) ⊢ r₀ ≈ CX ^ᶠ c
+  r≈ = trans (back _ (ax ax1)) (trans right-unit
+         (trans (front _ (trans (back _ (trans (front _ (lift R-zero)) left-unit)) (ax swap-order))) left-unit))
+
+-- The same with the atom of c e₁ for the S's on wire 1.
+A-01′ : (c : F*) → (₂₊ n) ⊢ atom (big 1* (proj₁ c ∷ 0ᵛ {n})) ≈ atom e0 • atom (small (big c 0ᵛ)) • CZ h ^ᶠ proj₁ c
+A-01′ {n} c = trans (A-01 (proj₁ c)) (sym (cong A-e0 (cong (trans (A-small (big c 0ᵛ)) (lift q≈)) refl)))
+  where
+  open Width (₂₊ n)
+  q≈ : (₁₊ n) ⊢ atom (big c (0ᵛ {n})) ≈ SZ (proj₁ c * proj₁ c) (binom2 (proj₁ c))
+  q≈ = Width.trans (A-scale c) (SZ-≡ (FR.*-identityˡ _) (FR.*-identityˡ _))
+
+------------------------------------------------------------------------
+-- The atom of (1 , w)
+
+K₀ : Vec F n → Circuit (₂₊ n)
+K₀ w = SWAP • K w ↑ • SWAP
+
+-- Prefixing a 0 to w moves everything a wire up, past wire 0.
+Q-dec-0 : (w : Vec F n) → (₁₊ n) ⊢ atom (big 1* w) ≈ S h • atomᵛ w ↑ • K w →
+          (₂₊ n) ⊢ atom (big 1* (0F ∷ w)) ≈ S h • atomᵛ w ↑ ↑ • K₀ w
+Q-dec-0 {n} w IH = begin
+  atom (small (big 1* w) ⋆ sw)
+    ≈⟨ sym (trans (back _ (A-step (small (big 1* w)) sw)) (trans (sym assoc) (trans (front _ (ax swap-order)) left-unit))) ⟩
+  SWAP • A (small (big 1* w)) • SWAP
+    ≈⟨ back _ (front _ (trans (A-small (big 1* w)) (lift IH))) ⟩
+  SWAP • (S h ↑ • atomᵛ w ↑ ↑ • K w ↑) • SWAP
+    ≈⟨ by-passoc (□ • (□ • □ • □) • □) ((□ • □) • □ • □ • □) Eq.refl ⟩
+  (SWAP • S h ↑) • atomᵛ w ↑ ↑ • K w ↑ • SWAP
+    ≈⟨ trans (front _ sS↑) assoc ⟩
+  S h • SWAP • atomᵛ w ↑ ↑ • K w ↑ • SWAP
+    ≈⟨ back _ (trans (sym assoc) (trans (front _ (sym (comm-gate₂-w↑↑ SWAP-gate (atomᵛ w)))) assoc)) ⟩
+  S h • atomᵛ w ↑ ↑ • SWAP • K w ↑ • SWAP ∎
+  where open Width (₂₊ n)
+
+-- The step from w to (c , w), c ≠ 0 and w ≠ 0: rule (30) on atoms.
+Q-dec-row : (c : F*) (ℓ : NZ (₁₊ n)) →
+            (₂₊ n) ⊢ atom (big 1* (row ℓ)) ≈ S h • atomᵛ (row ℓ) ↑ • K (row ℓ) →
+            (₃₊ n) ⊢ atom (big 1* (proj₁ c ∷ row ℓ)) ≈ S h • atom (big c (row ℓ)) ↑ • K (proj₁ c ∷ row ℓ)
+Q-dec-row {n} c ℓ IH = begin
+  atom (big 1* (proj₁ c ∷ row ℓ))
+    ≈⟨ T3 c ℓ ⟩
+  u • (small (big c 0ᵛ)) ᵃ⁻ • atom (big 1* (proj₁ c ∷ 0ᵛ)) • (big 1* 0ᵛ) ᵃ⁻ • (small (small ℓ)) ᵃ⁻ • atom (big 1* (0F ∷ row ℓ))
+    ≈⟨ back _ (back _ (cong (A-01′ c) (back _ (back _ D≈)))) ⟩
+  u • (small (big c 0ᵛ)) ᵃ⁻ • (s • q • Zᶜ) • (big 1* 0ᵛ) ᵃ⁻ • (small (small ℓ)) ᵃ⁻ • (s • v • K')
+    ≈⟨ back _ (by-passoc (□ • (□ • □ • □) • □ • □ • (□ • □ • □)) ((□ • □) • □ • □ • □ • □ • □ • □ • □) Eq.refl) ⟩
+  u • ((small (big c 0ᵛ)) ᵃ⁻ • s) • q • Zᶜ • (big 1* 0ᵛ) ᵃ⁻ • (small (small ℓ)) ᵃ⁻ • s • v • K'
+    ≈⟨ back _ (trans (front _ (diag∥ dq⁻ (Diag-atom e0))) assoc) ⟩
+  u • s • (small (big c 0ᵛ)) ᵃ⁻ • q • Zᶜ • (big 1* 0ᵛ) ᵃ⁻ • (small (small ℓ)) ᵃ⁻ • s • v • K'
+    ≈⟨ back _ (back _ (trans (sym assoc) (trans (front _ (atom-invˡ (small (big c 0ᵛ)))) left-unit))) ⟩
+  u • s • Zᶜ • (big 1* 0ᵛ) ᵃ⁻ • (small (small ℓ)) ᵃ⁻ • s • v • K'
+    ≈⟨ back _ (back _ (back _ (back _ (trans (sym assoc) (trans (front _ (diag∥ dv⁻ (Diag-atom e0))) assoc))))) ⟩
+  u • s • Zᶜ • (big 1* 0ᵛ) ᵃ⁻ • s • (small (small ℓ)) ᵃ⁻ • v • K'
+    ≈⟨ back _ (back _ (back _ (trans (sym assoc) (trans (front _ (atom-invˡ e0)) left-unit)))) ⟩
+  u • s • Zᶜ • (small (small ℓ)) ᵃ⁻ • v • K'
+    ≈⟨ back _ (back _ (back _ (trans (sym assoc) (trans (front _ (atom-invˡ (small (small ℓ)))) left-unit)))) ⟩
+  u • s • Zᶜ • K'
+    ≈⟨ trans (sym assoc) (trans (front _ (diag∥ (Diag-atom (small (big c (row ℓ)))) (Diag-atom e0))) assoc) ⟩
+  s • u • Zᶜ • K'
+    ≈⟨ cong A-e0 (front _ (A-small (big c (row ℓ)))) ⟩
+  S h • atom (big c (row ℓ)) ↑ • Zᶜ • K' ∎
+  where
+  open Width (₃₊ n)
+  u q v s Zᶜ K' : Circuit (₃₊ n)
+  u  = atom (small (big c (row ℓ)))
+  q  = atom (small (big c 0ᵛ))
+  v  = atom (small (small ℓ))
+  s  = atom e0
+  Zᶜ  = CZ h ^ᶠ proj₁ c
+  K' = K₀ (row ℓ)
+  D≈ : (₃₊ n) ⊢ atom (big 1* (0F ∷ row ℓ)) ≈ s • v • K'
+  D≈ = trans (Q-dec-0 (row ℓ) IH)
+         (cong (sym A-e0) (front _ (trans (lift (lift (atomᵛ-row ℓ)))
+                                    (trans (lift (Width.sym (A-small ℓ))) (sym (A-small (small ℓ)))))))
+  dq⁻ : Diag (₃₊ n) ((small (big c 0ᵛ)) ᵃ⁻)
+  dq⁻ = Diag-^ᶠ (Diag-atom (small (big c 0ᵛ))) (- 1F)
+  dv⁻ : Diag (₃₊ n) ((small (small ℓ)) ᵃ⁻)
+  dv⁻ = Diag-^ᶠ (Diag-atom (small (small ℓ))) (- 1F)
+
+Q-dec-row′ : (c : F*) (ℓ : NZ n) →
+             (₁₊ n) ⊢ atom (big 1* (row ℓ)) ≈ S h • atomᵛ (row ℓ) ↑ • K (row ℓ) →
+             (₂₊ n) ⊢ atom (big 1* (proj₁ c ∷ row ℓ)) ≈ S h • atom (big c (row ℓ)) ↑ • K (proj₁ c ∷ row ℓ)
+Q-dec-row′ {suc n} c ℓ IH = Q-dec-row c ℓ IH
+Q-dec-row′ {zero} c () IH
+
+Q-dec : (w : Vec F n) → (₁₊ n) ⊢ atom (big 1* w) ≈ S h • atomᵛ w ↑ • K w
+Q-dec [] = Width.trans (A-e0) (Width.sym (Width.trans (Width.back _ _ Width.left-unit) Width.right-unit))
+Q-dec {suc n} (c ∷ w) with c ≟ 0F
+... | yes e = begin
+  atom (big 1* (c ∷ w))                  ≈⟨ atom-≡ (big 1* (c ∷ w)) (big 1* (0F ∷ w)) (Eq.cong (λ t → 1F ∷ t ∷ w) e) ⟩
+  atom (big 1* (0F ∷ w))                 ≈⟨ Q-dec-0 w (Q-dec w) ⟩
+  S h • atomᵛ w ↑ ↑ • K₀ w               ≈⟨ back _ (back _ (sym (trans (front _ (OCZ.^ᶠ-≡ e)) left-unit))) ⟩
+  S h • atomᵛ w ↑ ↑ • CZ h ^ᶠ c • K₀ w   ∎
+  where
+  open Width (₂₊ n)
+  module OCZ = Pow.Order (₂₊ n) {CZ h} CZ-order
+... | no nc with nz? w
+...   | inj₁ e = Eq.subst (λ v → (₂₊ n) ⊢ atom (big 1* (c ∷ v)) ≈ S h • atom (big (c , nc) v) ↑ • K (c ∷ v))
+                         (Eq.sym e) zero-case
+  where
+  open Width (₂₊ n)
+  zero-case : (₂₊ n) ⊢ atom (big 1* (c ∷ 0ᵛ)) ≈ S h • atom (big (c , nc) 0ᵛ) ↑ • K (c ∷ 0ᵛ)
+  zero-case = begin
+    atom (big 1* (c ∷ 0ᵛ))
+      ≈⟨ A-01 c ⟩
+    S h • SZ (c * c) (binom2 c) ↑ • CZ h ^ᶠ c
+      ≈⟨ back _ (cong (lift (Width.sym (Width.trans (A-scale (c , nc)) (SZ-≡ (FR.*-identityˡ _) (FR.*-identityˡ _)))))
+                      (sym (trans (back _ (trans (back _ (trans (front _ (lift K-zero)) left-unit)) (ax swap-order))) right-unit))) ⟩
+    S h • atom (big (c , nc) 0ᵛ) ↑ • K (c ∷ 0ᵛ) ∎
+...   | inj₂ (ℓ , e) =
+  Eq.subst (λ v → (₂₊ n) ⊢ atom (big 1* (c ∷ v)) ≈ S h • atom (big (c , nc) v) ↑ • K (c ∷ v)) e
+    (Q-dec-row′ (c , nc) ℓ
+      (Eq.subst (λ v → (₁₊ n) ⊢ atom (big 1* v) ≈ S h • atomᵛ v ↑ • K v) (Eq.sym e) (Q-dec w)))
+
+------------------------------------------------------------------------
+-- An atom: one wire up, and a form on wire 0
+
+-- The form a row (a , w) leaves on wire 0.
+eᴬ : F* → Vec F n → EData n
+eᴬ a w = 1F * (proj₁ a * proj₁ a) , 1F * binom2 (proj₁ a) , sc (proj₁ a) w
+
+split-big : (a : F*) (w : Vec F n) → (₁₊ n) ⊢ atom (big a w) ≈ atomᵛ w ↑ • E (eᴬ a w)
+split-big {n} a w = begin
+  (M⁻ • R w ⁻¹) • S h • R w • M⟨ a ⟩
+    ≈⟨ by-passoc ((□ • □) • □ • □ • □) (□ • (□ • □ • □) • □) Eq.refl ⟩
+  M⁻ • (R w ⁻¹ • S h • R w) • M⟨ a ⟩
+    ≈⟨ back _ (front _ (trans Y≈ (Q-dec w))) ⟩
+  M⁻ • (S h • atomᵛ w ↑ • K w) • M⟨ a ⟩
+    ≈⟨ back _ (trans assoc (back _ (trans assoc (back _ (K-M a w))))) ⟩
+  M⁻ • S h • atomᵛ w ↑ • M⟨ a ⟩ • K (sc (proj₁ a) w)
+    ≈⟨ back _ (back _ (trans (sym assoc) (trans (front _ (comm-gate₁-w↑ (M-gate (proj₁ a) (proj₂ a)) (atomᵛ w))) assoc))) ⟩
+  M⁻ • S h • M⟨ a ⟩ • atomᵛ w ↑ • K (sc (proj₁ a) w)
+    ≈⟨ back _ (trans (sym assoc) (trans (front _ (Sᶠ-M 1F a)) assoc)) ⟩
+  M⁻ • M⟨ a ⟩ • (Z h₁ ^ᶠ β • S h ^ᶠ s) • atomᵛ w ↑ • K (sc (proj₁ a) w)
+    ≈⟨ trans (sym assoc) (trans (front _ (Inv.inverseˡ (₁₊ n))) left-unit) ⟩
+  (Z h₁ ^ᶠ β • S h ^ᶠ s) • atomᵛ w ↑ • K (sc (proj₁ a) w)
+    ≈⟨ trans (sym assoc) (trans (front _ (trans (front _ (sym (Sᶠ∥Zᶠ s β))) (SZ-up s β (atomᵛ w)))) assoc) ⟩
+  atomᵛ w ↑ • SZ s β • K (sc (proj₁ a) w) ∎
+  where
+  open Width (₁₊ n)
+  M⁻ = M⟨ a ⟩ ⁻¹
+  s β : F
+  s = 1F * (proj₁ a * proj₁ a)
+  β = 1F * binom2 (proj₁ a)
+  Y≈ : (₁₊ n) ⊢ R w ⁻¹ • S h • R w ≈ atom (big 1* w)
+  Y≈ = sym (cong (Inv.⁻¹-cong (₁₊ n) r≈) (back _ r≈))
+    where
+    r≈ : (₁₊ n) ⊢ R w • M⟨ 1* ⟩ ≈ R w
+    r≈ = trans (back _ (ax ax1)) right-unit
+
+-- An iterate of an atom, split.
+split-atom : (ℓ : NZ (₁₊ n)) (k : F) → Σ (DE n × EData n) λ ue →
+             (₁₊ n) ⊢ atom ℓ ^ᶠ k ≈ ⟦ proj₁ ue ⟧ᴰ ↑ • E (proj₂ ue)
+split-atom {n} (small ℓ) k = (de 0F 0ᵛ ((ℓ , k) ∷ []) , e₀ᴱ) , (begin
+  A (small ℓ) ^ᶠ k                       ≈⟨ Pow.pow-cong (₁₊ n) (toℕ k) (A-small ℓ) ⟩
+  (atom ℓ ↑) ^ᶠ k                        ≈⟨ refl' (Eq.sym (↑ᶠ (atom ℓ) k)) ⟩
+  (atom ℓ ^ᶠ k) ↑                        ≈⟨ lift (Width.sym (Width.trans Width.left-unit
+                                              (Width.trans (Width.front n _ Zc-zero) (Width.trans Width.left-unit Width.right-unit)))) ⟩
+  ⟦ de 0F 0ᵛ ((ℓ , k) ∷ []) ⟧ᴰ ↑         ≈⟨ sym (trans (back _ E-zero) right-unit) ⟩
+  ⟦ de 0F 0ᵛ ((ℓ , k) ∷ []) ⟧ᴰ ↑ • E e₀ᴱ ∎)
+  where open Width (₁₊ n)
+split-atom {n} (big a w) k = (proj₁ dX , k ·ᴱ eᴬ a w) , (begin
+  atom (big a w) ^ᶠ k                    ≈⟨ Pow.pow-cong (₁₊ n) (toℕ k) (split-big a w) ⟩
+  (atomᵛ w ↑ • E (eᴬ a w)) ^ᶠ k          ≈⟨ Pow.pow-• (₁₊ n) (toℕ k) (diag∥ (Diag-↑ (Diag-atomᵛ w)) (Diag-E _)) ⟩
+  (atomᵛ w ↑) ^ᶠ k • E (eᴬ a w) ^ᶠ k     ≈⟨ cong (trans (refl' (Eq.sym (↑ᶠ (atomᵛ w) k))) (lift (proj₂ dX))) (E-^ᶠ _ k) ⟩
+  ⟦ proj₁ dX ⟧ᴰ ↑ • E (k ·ᴱ eᴬ a w)      ∎)
+  where
+  open Width (₁₊ n)
+  dX = Diag-^ᶠ (Diag-atomᵛ w) k
+
+------------------------------------------------------------------------
+-- A diagonal expression: one wire up, and a form on wire 0
+
+split-atoms : (as : Atoms (₁₊ n)) → Σ (DE n × EData n) λ ue →
+              (₁₊ n) ⊢ atoms as ≈ ⟦ proj₁ ue ⟧ᴰ ↑ • E (proj₂ ue)
+split-atoms {n} [] = (de 0F 0ᵛ [] , e₀ᴱ) , sym (trans (cong (lift (Width.sym (proj₂ (Diag-ε {n})))) E-zero) left-unit)
+  where open Width (₁₊ n)
+split-atoms {n} ((ℓ , k) ∷ as) with split-atom ℓ k | split-atoms as
+... | (U₁ , e₁) , p₁ | (U₂ , e₂) , p₂ = (U₁ ⊕ U₂ , e₁ +ᴱ e₂) , (begin
+  atom ℓ ^ᶠ k • atoms as                         ≈⟨ cong p₁ p₂ ⟩
+  (⟦ U₁ ⟧ᴰ ↑ • E e₁) • ⟦ U₂ ⟧ᴰ ↑ • E e₂          ≈⟨ by-passoc ((□ • □) • □ • □) (□ • (□ • □) • □) Eq.refl ⟩
+  ⟦ U₁ ⟧ᴰ ↑ • (E e₁ • ⟦ U₂ ⟧ᴰ ↑) • E e₂          ≈⟨ back _ (front _ (diag∥ (Diag-E e₁) (Diag-↑ (U₂ , Width.refl)))) ⟩
+  ⟦ U₁ ⟧ᴰ ↑ • (⟦ U₂ ⟧ᴰ ↑ • E e₁) • E e₂          ≈⟨ by-passoc (□ • (□ • □) • □) ((□ • □) • □ • □) Eq.refl ⟩
+  (⟦ U₁ ⟧ᴰ ↑ • ⟦ U₂ ⟧ᴰ ↑) • E e₁ • E e₂          ≈⟨ cong (lift (⊕-sound U₁ U₂)) (E-add e₁ e₂) ⟩
+  ⟦ U₁ ⊕ U₂ ⟧ᴰ ↑ • E (e₁ +ᴱ e₂)                  ∎)
+  where open Width (₁₊ n)
+
+split : DE (₁₊ n) → DE n × EData n
+split (de s (c₀ ∷ c) as) = de s c [] ⊕ proj₁ (proj₁ (split-atoms as)) , (0F , c₀ , 0ᵛ) +ᴱ proj₂ (proj₁ (split-atoms as))
+
+split-sound : (d : DE (₁₊ n)) → (₁₊ n) ⊢ ⟦ d ⟧ᴰ ≈ ⟦ proj₁ (split d) ⟧ᴰ ↑ • E (proj₂ (split d))
+split-sound {n} (de s (c₀ ∷ c) as) with split-atoms as
+... | (U , e) , pr = begin
+  ω h₁ ^ᶠ s • (Z h₁ ^ᶠ c₀ • Zc c ↑) • atoms as
+    ≈⟨ back _ (back _ pr) ⟩
+  ω h₁ ^ᶠ s • (Z h₁ ^ᶠ c₀ • Zc c ↑) • ⟦ U ⟧ᴰ ↑ • E e
+    ≈⟨ trans (front _ (sym (ωᶠ↑ s))) (back _ (trans assoc (back _ (trans (sym assoc) (trans (front _ (diag∥ Dz (Diag-↑ (U , Width.refl)))) assoc))))) ⟩
+  (ω h₁ ^ᶠ s) ↑ • Z h₁ ^ᶠ c₀ • ⟦ U ⟧ᴰ ↑ • Zc c ↑ • E e
+    ≈⟨ back _ (trans (sym assoc) (trans (front _ (diag∥ Dz₀ (Diag-↑ (U , Width.refl)))) assoc)) ⟩
+  (ω h₁ ^ᶠ s) ↑ • ⟦ U ⟧ᴰ ↑ • Z h₁ ^ᶠ c₀ • Zc c ↑ • E e
+    ≈⟨ back _ (back _ (trans (sym assoc) (trans (front _ (Zᶠ-up c₀ (Zc c))) assoc))) ⟩
+  (ω h₁ ^ᶠ s) ↑ • ⟦ U ⟧ᴰ ↑ • Zc c ↑ • Z h₁ ^ᶠ c₀ • E e
+    ≈⟨ back _ (trans (sym assoc) (trans (front _ (diag∥ (Diag-↑ (U , Width.refl)) (Diag-↑ (Diag-Zc c)))) assoc)) ⟩
+  (ω h₁ ^ᶠ s) ↑ • Zc c ↑ • ⟦ U ⟧ᴰ ↑ • Z h₁ ^ᶠ c₀ • E e
+    ≈⟨ by-passoc (□ • □ • □ • □ • □) ((□ • □ • □) • □ • □) Eq.refl ⟩
+  ((ω h₁ ^ᶠ s) ↑ • Zc c ↑ • ⟦ U ⟧ᴰ ↑) • Z h₁ ^ᶠ c₀ • E e
+    ≈⟨ cong (lift Ud) Ze ⟩
+  ⟦ de s c [] ⊕ U ⟧ᴰ ↑ • E ((0F , c₀ , 0ᵛ) +ᴱ e) ∎
+  where
+  open Width (₁₊ n)
+  Dz : Diag (₁₊ n) (Zc c ↑)
+  Dz = Diag-↑ (Diag-Zc c)
+  Dz₀ : Diag (₁₊ n) (Z h₁ ^ᶠ c₀)
+  Dz₀ = Diag-^ᶠ Diag-Z c₀
+  Ud : n ⊢ ω h₁ ^ᶠ s • Zc c • ⟦ U ⟧ᴰ ≈ ⟦ de s c [] ⊕ U ⟧ᴰ
+  Ud = Width.trans (Width.sym (Width.trans Width.assoc (Width.back n _ (Width.front n _ Width.right-unit))))
+                   (⊕-sound (de s c []) U)
+  Ze : (₁₊ n) ⊢ Z h₁ ^ᶠ c₀ • E e ≈ E ((0F , c₀ , 0ᵛ) +ᴱ e)
+  Ze = trans (front _ (sym (trans (front _ left-unit) (trans (back _ K-zero) right-unit)))) (E-add (0F , c₀ , 0ᵛ) e)
