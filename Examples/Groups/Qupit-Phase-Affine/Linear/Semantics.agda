@@ -25,10 +25,8 @@ module Examples.Groups.Qupit-Phase-Affine.Linear.Semantics
   (adm : Snd.Admissible p-2 p-prime lv) where
 
 import Data.Integer.Base as ℤ
-open import Data.Empty using (⊥-elim)
 open import Data.Product.Base using (_,_ ; proj₁ ; proj₂)
 open import Data.Vec.Base using (Vec ; [] ; _∷_ ; head ; tail)
-import Data.Vec.Properties as VecP
 open import Relation.Binary.PropositionalEquality as Eq
   using (_≡_ ; refl ; sym ; trans ; cong ; cong₂ ; module ≡-Reasoning)
 open import Word.Base using (ε ; _•_)
@@ -41,7 +39,6 @@ open import Examples.Groups.Qupit-Phase-Affine.Interpretation p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Soundness.Eval p-2 p-prime lv
   using (•-at ; ↑-at ; at-≡ ; SWAP-at ; M-at ; CXᶠ-at)
 open import Examples.Groups.Qupit-Phase-Affine.Reasoning p-2 p-prime lv using (ax)
-open import Examples.Groups.Qupit-Phase-Affine.Basic p-2 p-prime lv using (M-≡)
 open import Examples.Groups.Qupit-Phase-Affine.Evaluation p-2 p-prime lv adm
 open import Examples.Groups.Qupit-Phase-Affine.Linear.Wires p-2 p-prime lv using (sCX)
 open import Examples.Groups.Qupit-Phase-Affine.Linear.Base p-2 p-prime lv
@@ -154,12 +151,7 @@ dot-injective (c ∷ w) (c' ∷ w') e = cong₂ _∷_ head-eq (dot-injective w w
   tail-eq x = trans (sym (at-0 c w x)) (trans (e (0F ∷ x)) (at-0 c' w' x))
 
 -- Rows that agree have the same representative.
-row-r : (ℓ ℓ' : NZ n) → row ℓ ≡ row ℓ' → r ℓ ≡ r ℓ'
-row-r (big a w) (big a' w') e =
-  trans (cong (λ v → R v • M⟨ a ⟩) (VecP.∷-injectiveʳ e)) (cong (R w' •_) (M-≡ (VecP.∷-injectiveˡ e)))
-row-r (big a w) (small ℓ') e = ⊥-elim (proj₂ a (VecP.∷-injectiveˡ e))
-row-r (small ℓ) (big a' w') e = ⊥-elim (proj₂ a' (sym (VecP.∷-injectiveˡ e)))
-row-r (small ℓ) (small ℓ') e = cong (λ q → SWAP • q ↑) (row-r ℓ ℓ' (VecP.∷-injectiveʳ e))
+open import Examples.Groups.Qupit-Phase-Affine.Linear.Rows p-2 p-prime lv using (row-r) public
 
 -- The fan-out at wire 0 equal to 0 and to 1.
 addv-0 : (v : Vec F n) (x : Labels n) → addv 0F v x ≡ x
