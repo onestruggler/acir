@@ -24,7 +24,7 @@ open import Data.Nat.Primality using (Prime)
 open import Notations using (₂₊)
 
 module Examples.Groups.Qupit-Phase-Affine.Phase.Cube.T
-  (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) (lv : ℕ) (h : 3 ≤ lv) (big : 2 ≤ p-2) where
+  (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) (lv : ℕ) (h : 3 ≤ lv) (gt3 : 2 ≤ p-2) where
 
 import Data.Integer.Base as ℤ
 open import Data.Fin.Base using (toℕ)
@@ -46,7 +46,7 @@ open import Examples.Groups.Qupit-Phase-Affine.Basic p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Linear.Lib p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Linear.Wires p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Phase.Gadget p-2 p-prime lv
-open import Examples.Groups.Qupit-Phase-Affine.Phase.Quad.CZ p-2 p-prime lv (quad₃ h) (big⇒odd big) public
+open import Examples.Groups.Qupit-Phase-Affine.Phase.Quad.CZ p-2 p-prime lv (quad₃ h) (big⇒odd gt3)
 
 private
   variable
@@ -59,7 +59,7 @@ private
   h₁ = lin₃ h
 
   odd : 1 ≤ p-2
-  odd = big⇒odd big
+  odd = big⇒odd gt3
 
 ------------------------------------------------------------------------
 -- T on one wire
@@ -122,7 +122,7 @@ module _ {n : ℕ} where
 
     b3-step : (k c : F) → (k * binom2 c) * 1F + k * binom3 c ≡ k * binom3 (1F + c)
     b3-step k c = Eq.trans (solve 3 (λ k b2 b3 → (k :* b2) :* con (ℤ.+ 1) :+ k :* b3 := k :* (b3 :+ b2)) Eq.refl k (binom2 c) (binom3 c))
-                    (Eq.cong (k *_) (Eq.trans (Eq.sym (Big.binom3-shift big c)) (Eq.cong binom3 (FR.+-comm c 1F))))
+                    (Eq.cong (k *_) (Eq.trans (Eq.sym (Big.binom3-shift gt3 c)) (Eq.cong binom3 (FR.+-comm c 1F))))
 
     s-step : (k c : F) → k + k * c ≡ k * (1F + c)
     s-step = solve 2 (λ k c → k :+ k :* c := k :* (con (ℤ.+ 1) :+ c)) Eq.refl
