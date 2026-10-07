@@ -55,6 +55,7 @@ open import Examples.Groups.Qupit-Phase-Affine.Linear.Two p-2 p-prime lv using (
 open import Examples.Groups.Qupit-Phase-Affine.Linear.Base p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Linear.Fan p-2 p-prime lv using (0ᵛ ; pass)
 open import Examples.Groups.Qupit-Phase-Affine.Affine p-2 p-prime lv using (Xc)
+open import Examples.Groups.Qupit-Phase-Affine.Linear.Rows p-2 p-prime lv using (_⋆ᴿ*_)
 open import Examples.Groups.Qupit-Phase-Affine.Linear.Semantics p-2 p-prime lv
   using () renaming (dot to dot′)
 
@@ -368,6 +369,18 @@ Z-push {₂₊ n} sw (c ∷ d ∷ cs) = begin
   where
   open Width (₂₊ n)
   B = Zc cs ↑ ↑
+
+-- A linear word turns the column of c into that of c L.
+Z-push* : (L : Word (LGen n)) (c : Vec F n) → n ⊢ Zc c • ⌊ L ⌋ ≈ ⌊ L ⌋ • Zc (c ⋆ᴿ* L)
+Z-push* [ y ]ʷ  c = Z-push y c
+Z-push* {n} ε c = trans right-unit (sym left-unit)
+  where open Width n
+Z-push* {n} (L • M) c = begin
+  Zc c • ⌊ L ⌋ • ⌊ M ⌋                    ≈⟨ trans (sym assoc) (trans (front _ (Z-push* L c)) assoc) ⟩
+  ⌊ L ⌋ • Zc (c ⋆ᴿ* L) • ⌊ M ⌋            ≈⟨ back _ (Z-push* M (c ⋆ᴿ* L)) ⟩
+  ⌊ L ⌋ • ⌊ M ⌋ • Zc (c ⋆ᴿ* L ⋆ᴿ* M)      ≈⟨ sym assoc ⟩
+  (⌊ L ⌋ • ⌊ M ⌋) • Zc (c ⋆ᴿ* L ⋆ᴿ* M)    ∎
+  where open Width n
 
 -- A translation by v leaves the scalar ω^(c · v).
 Zc-Xc : (c v : Vec F n) → n ⊢ Zc c • Xc v ≈ Xc v • Zc c • ω h ^ᶠ (c ·ᵛ v)

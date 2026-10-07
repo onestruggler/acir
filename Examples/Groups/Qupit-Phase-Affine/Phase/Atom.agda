@@ -13,8 +13,8 @@
 -- ⟪ k ⟫ • r (ℓ ⋆ y) for letters k that keep wire 0, which G passes.
 -- Conjugating by a whole linear word transports the row along the word
 -- (A-conj), an atom of a row with x₀-coefficient 0 is an atom one wire
--- up (A-small), and a translation shifts the gate G it conjugates
--- (A-X).  A gate g that commutes with r ℓ X (r ℓ)⁻¹ makes the atom of ℓ
+-- up (A-small), and a translation passes a conjugate of a word it
+-- passes up to what it leaves behind, conjugated too (conj-X, A-X).  A gate g that commutes with r ℓ X (r ℓ)⁻¹ makes the atom of ℓ
 -- commute with X (conj-into), which is how atoms are shown to commute.
 ------------------------------------------------------------------------
 
@@ -86,6 +86,31 @@ module _ {m : ℕ} where
     (ρ ⁻¹ • ρ) • X • ρ ⁻¹ • g • ρ
       ≈⟨ trans (front _ (Inv.inverseˡ m)) left-unit ⟩
     X • ρ ⁻¹ • g • ρ ∎
+
+-- A translation passes a word conjugated by a representative, if it
+-- passes the word.
+conj-X : (ℓ : NZ (₁₊ n)) (b : Vec F (₁₊ n)) {E D : Circuit (₁₊ n)} →
+         (₁₊ n) ⊢ E • Xc (b ⋆ˣ* rL ℓ) ≈ Xc (b ⋆ˣ* rL ℓ) • E • D →
+         (₁₊ n) ⊢ (r ℓ ⁻¹ • E • r ℓ) • Xc b ≈ Xc b • (r ℓ ⁻¹ • E • r ℓ) • (r ℓ ⁻¹ • D • r ℓ)
+conj-X {n} ℓ b {E} {D} e = begin
+  (ρ ⁻¹ • E • ρ) • Xc b                ≈⟨ trans assoc (back _ (trans assoc (back _ ρXc))) ⟩
+  ρ ⁻¹ • E • Xc v • ρ                  ≈⟨ back _ (trans (sym assoc) (trans (front _ e) assoc)) ⟩
+  ρ ⁻¹ • Xc v • (E • D) • ρ            ≈⟨ trans (sym assoc) (front _ (flip⁻¹ (sym ρXc))) ⟩
+  (Xc b • ρ ⁻¹) • (E • D) • ρ          ≈⟨ assoc ⟩
+  Xc b • ρ ⁻¹ • (E • D) • ρ            ≈⟨ back _ (back _ (trans assoc (back _ (sym (trans (front _ (Inv.inverseʳ (₁₊ n))) left-unit))))) ⟩
+  Xc b • ρ ⁻¹ • E • (ρ • ρ ⁻¹) • D • ρ ≈⟨ back _ (by-passoc (□ • □ • (□ • □) • □ • □) ((□ • □ • □) • □ • □ • □) Eq.refl) ⟩
+  Xc b • (ρ ⁻¹ • E • ρ) • ρ ⁻¹ • D • ρ ∎
+  where
+  open Width (₁₊ n)
+  ρ : Circuit (₁₊ n)
+  ρ = r ℓ
+  v = b ⋆ˣ* rL ℓ
+  ρXc : (₁₊ n) ⊢ ρ • Xc b ≈ Xc v • ρ
+  ρXc = Eq.subst (λ q → (₁₊ n) ⊢ q • Xc b ≈ Xc v • q) (⌊rL⌋ ℓ) (X-push* (rL ℓ) b)
+
+-- The inverse word of a representative.
+⌊linv-rL⌋ : (ℓ : NZ n) → n ⊢ ⌊ linv (rL ℓ) ⌋ ≈ r ℓ ⁻¹
+⌊linv-rL⌋ {n} ℓ = Width.trans (⌊linv⌋ (rL ℓ)) (Width.refl' n (Eq.cong _⁻¹ (⌊rL⌋ ℓ)))
 
 ------------------------------------------------------------------------
 -- Atoms of a gate on wire 0
@@ -170,21 +195,7 @@ module Atoms
   A-X : (ℓ : NZ (₁₊ n)) (b : Vec F (₁₊ n)) {D : Circuit (₁₊ n)} →
         (₁₊ n) ⊢ G • Xc (b ⋆ˣ* rL ℓ) ≈ Xc (b ⋆ˣ* rL ℓ) • G • D →
         (₁₊ n) ⊢ A ℓ • Xc b ≈ Xc b • A ℓ • (r ℓ ⁻¹ • D • r ℓ)
-  A-X {n} ℓ b {D} e = begin
-    (ρ ⁻¹ • G • ρ) • Xc b                ≈⟨ trans assoc (back _ (trans assoc (back _ ρXc))) ⟩
-    ρ ⁻¹ • G • Xc v • ρ                  ≈⟨ back _ (trans (sym assoc) (trans (front _ e) assoc)) ⟩
-    ρ ⁻¹ • Xc v • (G • D) • ρ            ≈⟨ trans (sym assoc) (front _ (flip⁻¹ (sym ρXc))) ⟩
-    (Xc b • ρ ⁻¹) • (G • D) • ρ          ≈⟨ assoc ⟩
-    Xc b • ρ ⁻¹ • (G • D) • ρ            ≈⟨ back _ (back _ (trans assoc (back _ (sym (trans (front _ (Inv.inverseʳ (₁₊ n))) left-unit))))) ⟩
-    Xc b • ρ ⁻¹ • G • (ρ • ρ ⁻¹) • D • ρ ≈⟨ back _ (by-passoc (□ • □ • (□ • □) • □ • □) ((□ • □ • □) • □ • □ • □) Eq.refl) ⟩
-    Xc b • (ρ ⁻¹ • G • ρ) • ρ ⁻¹ • D • ρ ∎
-    where
-    open Width (₁₊ n)
-    ρ : Circuit (₁₊ n)
-    ρ = r ℓ
-    v = b ⋆ˣ* rL ℓ
-    ρXc : (₁₊ n) ⊢ ρ • Xc b ≈ Xc v • ρ
-    ρXc = Eq.subst (λ q → (₁₊ n) ⊢ q • Xc b ≈ Xc v • q) (⌊rL⌋ ℓ) (X-push* (rL ℓ) b)
+  A-X ℓ b = conj-X ℓ b
 
   -- G past r ℓ X (r ℓ)⁻¹ makes the atom of ℓ commute with X.
   conj-into : (ℓ : NZ (₁₊ n)) (X : Circuit (₁₊ n)) → (₁₊ n) ⊢ G ∥ (r ℓ • X • r ℓ ⁻¹) → (₁₊ n) ⊢ A ℓ ∥ X
@@ -201,4 +212,4 @@ module Atoms
     open Width (₁₊ n)
     L = linv (rL ℓ)
     L≈ : (₁₊ n) ⊢ ⌊ L ⌋ ≈ r ℓ ⁻¹
-    L≈ = trans (⌊linv⌋ (rL ℓ)) (refl' (Eq.cong _⁻¹ (⌊rL⌋ ℓ)))
+    L≈ = ⌊linv-rL⌋ ℓ
