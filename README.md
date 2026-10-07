@@ -200,6 +200,25 @@ soundly.  That reaches specification miters ⟦ C† ⟧ ∘ ξ and circuits
 with X gates (`CRK/WithX/WellFormed`); `Examples/Restrict` checks the
 seven-T Toffoli against its specification this way.
 
+**The Clifford hierarchy.**  `Hierarchy/Operator` and `Hierarchy/Pauli`
+give operators (matrices over ℤ[ζ] with a normalisation, compared
+exactly, as ≋ compares path-sums) and the n-qubit Pauli group with every
+phase; `Hierarchy` defines the levels C_k as printed in section 2 (C₁
+the Pauli group, C_(k+1) the unitaries conjugating every Pauli into
+C_k), decides C₂ and C₃ on the generators X_j, Z_j, and closes C₂ under
+products.  `Hierarchy/Gates` and `Hierarchy/Levels` place the gates:
+R_k and R_k† are in C_k for every k ≥ 1 and not in C_(k−1) (k ≤ M); H
+and CNOT are in every C_k with k ≥ 2 but not in C₁, and S is not a
+Pauli up to any phase.  `Hierarchy/Circuits` shows every circuit of
+level ≤ 2 over {H, CNOT, R_k, R_k†}, and every circuit over {H, S, CZ},
+implements a Clifford.  `Hierarchy/NotClosed` proves C₃ is not closed
+under products — T and T H are in C₃, T H T is not — so the level-3
+circuit T;H;T lies outside C₃.  `Hierarchy/OneQubit` (with `Code`,
+`Words`, `Table`, `Scalar`) shows that on one qubit C₂ modulo unitary
+scalars is exactly the 24 words over {H, S}.  Generation of the
+n-qubit Clifford group for n ≥ 2, and anything about generating C₃,
+are not formalised.
+
 **Size.**  `Size`, `Size/Sparse`, `Size/Monomials`, `Size/Submonomials`
 and `Size/Terms` prove the size half of corollary 2.15: a circuit's
 path-sum is represented exactly (`Size/Equivalence`) by a list of at
@@ -458,8 +477,12 @@ x_i ⊕ Q is meant; example B.1 as printed is the identity, not ω·I; the
 fourth line of example 3.4 does not follow from the third; section
 5.2's formula for the shifted function f′ drops the shift; its adder
 has 5n qubits for n ≥ 2, as its table and its tool's circuit say, not
-the text's 5n − 1 bits; and its calculus finds |s⟩ without the
-specification along a suitable reduction, not along every one.
+the text's 5n − 1 bits; its calculus finds |s⟩ without the
+specification along a suitable reduction, not along every one; and in
+section 2, "for k ≥ 1, all three gates lie in C_k" holds from k = 2
+(H and CNOT are not Paulis), while "for k ≤ 3 the above gates suffice
+to generate C_k" fails read literally at k = 1 and k = 3 — C₃ is not a
+group, and "Clifford+T (C₃)" is not C₃, since T H T ∉ C₃.
 
 Not formalised: running times on a machine and complexity classes;
 and the benchmarks of section 5 as runs of the tool (the QFT, Toffoli, adder and hidden

@@ -84,7 +84,11 @@
 -- n ≥ 2, as its table and its tool's circuit say, not the text's
 -- 5n − 1 bits, and its calculus finds |s⟩ without the specification
 -- along a suitable reduction, not along every one
--- (PathSum.HiddenShift.Stuck).
+-- (PathSum.HiddenShift.Stuck).  In section 2, "for k ≥ 1, all three
+-- gates lie in C_k" holds from k = 2 (H and CNOT are not Paulis), and
+-- "for k ≤ 3 the above gates suffice to generate C_k" fails read
+-- literally at k = 1 and k = 3: C₃ is not closed under products, and
+-- "Clifford+T (C₃)" is not C₃ (PathSum.Hierarchy.NotClosed).
 -- One gap is filled: the proof of corollary 4.4 reduces by arbitrary
 -- rules, which needs every rule to preserve order ≤ 2 -- lemma 2.13
 -- covers only linear substitutions, and PathSum.Full.Clifford supplies
@@ -838,6 +842,37 @@ import PathSum.Size.Interpreter.Example
 
 import PathSum.Examples
 
+-- The Clifford hierarchy, imported qualified: its operators' Unitary,
+-- _† and I would clash with the path-sums' above.
+
+import PathSum.Hierarchy
+module Hier = PathSum.Hierarchy M₀
+
+import PathSum.Hierarchy.Operator
+module HrOp = PathSum.Hierarchy.Operator M₀
+
+import PathSum.Hierarchy.Pauli
+module HrPa = PathSum.Hierarchy.Pauli M₀
+
+import PathSum.Hierarchy.Gates
+module HrGa = PathSum.Hierarchy.Gates M₀
+
+import PathSum.Hierarchy.Levels
+module HrLv = PathSum.Hierarchy.Levels M₀
+
+import PathSum.Hierarchy.Circuits
+module HrCi = PathSum.Hierarchy.Circuits M₀
+
+import PathSum.Hierarchy.NotClosed
+module HrNC = PathSum.Hierarchy.NotClosed M₀
+
+import PathSum.Hierarchy.OneQubit
+module Hr1 = PathSum.Hierarchy.OneQubit M₀
+
+open HrOp using (Op)
+  renaming (_≈_ to infix 4 _≈ᵒ_; _·_ to infixl 7 _·ᵒ_; _† to infix 8 _†ᵒ;
+            ⟪_⟫ to ⟪_⟫ᵒ; _◃_ to infixr 8 _◃ᵒ_)
+
 private
   variable
     n k m k′ m′ k″ m″ j l j′ l′ : ℕ
@@ -1570,6 +1605,147 @@ prop-2-14-deg = KT.prop-2-14-deg
 prop-2-14-false-at-1 :
   ¬ (∀ (C : K.Circuit 1) → K.level C ≤ 1 → K.Deg≤ 1 (phase K.⟦ C ⟧))
 prop-2-14-false-at-1 = KT.prop-2-14-false-at-1
+
+
+------------------------------------------------------------------------
+-- The Clifford hierarchy (PathSum.Hierarchy, PathSum.Hierarchy.Gates,
+-- PathSum.Hierarchy.Levels, PathSum.Hierarchy.Circuits,
+-- PathSum.Hierarchy.NotClosed, PathSum.Hierarchy.OneQubit)
+
+-- The preliminaries' hierarchy on the development's operators (a
+-- matrix over Z[ζ] with a normalisation, PathSum.Hierarchy.Operator):
+-- C₁ is the Pauli group and C_(k+1) the unitaries conjugating every
+-- Pauli into C_k, as printed.  C₂ and C₃ are decided on the generators
+-- X_j and Z_j, and C₂ is closed under products.  (Each restatement
+-- applies the proof to its arguments: restated by the bare name, Agda
+-- compares the types with the width n still unknown, by unfolding 𝒞.)
+
+𝒞₂⇔generators :
+  (U : Op n) →
+  Hier.𝒞 2 U ⇔
+  (HrOp.Unitary U ×
+   (∀ j → Hier.IsPauli (U ·ᵒ HrPa.pauli (HrPa.X^ j) ·ᵒ U †ᵒ)) ×
+   (∀ j → Hier.IsPauli (U ·ᵒ HrPa.pauli (HrPa.Z^ j) ·ᵒ U †ᵒ)))
+𝒞₂⇔generators U = Hier.𝒞₂⇔gen U
+
+𝒞₃⇔generators :
+  (U : Op n) →
+  Hier.𝒞 3 U ⇔
+  (HrOp.Unitary U ×
+   (∀ j → Hier.𝒞 2 (U ·ᵒ HrPa.pauli (HrPa.X^ j) ·ᵒ U †ᵒ)) ×
+   (∀ j → Hier.𝒞 2 (U ·ᵒ HrPa.pauli (HrPa.Z^ j) ·ᵒ U †ᵒ)))
+𝒞₃⇔generators U = Hier.𝒞₃⇔gen U
+
+𝒞₂-closed : {U V : Op n} → Hier.𝒞 2 U → Hier.𝒞 2 V → Hier.𝒞 2 (U ·ᵒ V)
+𝒞₂-closed {n} {U} {V} = Hier.𝒞₂-· {n} {U} {V}
+
+-- "For k ≥ 1, all three gates lie in C_k" holds for R_k and R_k† at
+-- every k ≥ 1, and for H and CNOT at every k ≥ 2 but not at k = 1: C₁
+-- is the Pauli group, and neither is a Pauli.  R_k's level is sharp
+-- for 2 ≤ k ≤ M.  (The phase of R_k is HrLv.ρ false k = 2^(M-k),
+-- opaque; above M the gate reads as R_M.)
+
+R-in-𝒞 : ∀ k (w : Fin n) → 1 ≤ k → Hier.𝒞 k (HrGa.Rs (HrLv.ρ false k) w)
+R-in-𝒞 k w = HrLv.R∈𝒞 k w
+
+R†-in-𝒞 : ∀ k (w : Fin n) → 1 ≤ k → Hier.𝒞 k (HrGa.Rs (HrLv.ρ true k) w)
+R†-in-𝒞 k w = HrLv.R†∈𝒞 k w
+
+H-in-𝒞 : ∀ k (w : Fin n) → 2 ≤ k → Hier.𝒞 k (HrGa.hadOp w)
+H-in-𝒞 k w = HrLv.H∈𝒞 k w
+
+CNOT-in-𝒞 : ∀ k (c t : Fin n) → c ≢ t → 2 ≤ k →
+            Hier.𝒞 k (HrGa.cnotOp c t)
+CNOT-in-𝒞 k c t = HrLv.CNOT∈𝒞 k c t
+
+H-not-in-𝒞₁ : (w : Fin n) → ¬ Hier.𝒞 1 (HrGa.hadOp w)
+H-not-in-𝒞₁ w = HrLv.H∉𝒞₁ w
+
+CNOT-not-in-𝒞₁ : (c t : Fin n) → c ≢ t → ¬ Hier.𝒞 1 (HrGa.cnotOp c t)
+CNOT-not-in-𝒞₁ c t = HrLv.CNOT∉𝒞₁ c t
+
+R-not-in-𝒞 : ∀ k (w : Fin n) → 2 ≤ k → k ≤ M →
+             ¬ Hier.𝒞 (k ∸ 1) (HrGa.Rs (HrLv.ρ false k) w)
+R-not-in-𝒞 k w = HrLv.R∉𝒞 k w
+
+R†-not-in-𝒞 : ∀ k (w : Fin n) → 2 ≤ k → k ≤ M →
+              ¬ Hier.𝒞 (k ∸ 1) (HrGa.Rs (HrLv.ρ true k) w)
+R†-not-in-𝒞 k w = HrLv.R†∉𝒞 k w
+
+-- S = R_2 is not a Pauli up to any phase ζ^e, R_0 is the identity, and
+-- CZ is a Clifford.
+
+S-not-in-𝒞₁ : (w : Fin n) (e : ℤ) →
+              ¬ Hier.𝒞 1 (e ◃ᵒ HrGa.Rs (HrLv.ρ false 2) w)
+S-not-in-𝒞₁ w = HrLv.S∉𝒞₁ w
+
+R₀-is-I : (σ : Bool) (w : Fin n) → HrGa.Rs (HrLv.ρ σ 0) w ≈ᵒ HrOp.I
+R₀-is-I σ w = HrLv.R₀≈I σ w
+
+CZ-in-𝒞₂ : (a b : Fin n) → Hier.𝒞 2 (HrGa.diagOp (HrGa.czFn a b))
+CZ-in-𝒞₂ a b = HrGa.cz-𝒞₂ a b
+
+-- The syntactic Clifford circuits are semantic Cliffords: the operator
+-- of every circuit of level ≤ 2 over {H, CNOT, R_k, R_k†}, and of every
+-- circuit over {H, S, CZ}, is in C₂.  (The circuits are those of the
+-- module applications PathSum.Hierarchy.Circuits exports, HrCi.K and
+-- HrCi.Cl -- K and Circ above up to unfolding M; a statement through
+-- the other application would make Agda compute path-sums.)
+
+level-2-in-𝒞₂ : (C : HrCi.K.Circuit n) → HrCi.K.level C ≤ 2 →
+                Hier.𝒞 2 ⟪ HrCi.K.⟦ C ⟧ ⟫ᵒ
+level-2-in-𝒞₂ C = HrCi.crk-𝒞₂ C
+
+HSCZ-in-𝒞₂ : (C : HrCi.Cl.Circuit n) → Hier.𝒞 2 ⟪ HrCi.Cl.⟦ C ⟧ ⟫ᵒ
+HSCZ-in-𝒞₂ C = HrCi.clifford-𝒞₂ C
+
+-- Not beyond level 2: T H T has level 3 and is not in C₃, though T and
+-- T H are, so C₃ is not closed under products and the group the gates
+-- generate is not C₃.  THT-circuit-claim w is, by definition, ¬ 𝒞 3 of
+-- the operator of the circuit THT-circuit w = T ; H ; T
+-- (PathSum.Hierarchy.NotClosed; PathSum.ContractHIER pins it).
+
+THT-not-in-𝒞₃ : (w : Fin n) →
+                ¬ Hier.𝒞 3 (HrGa.Rs (HrLv.ρ false 3) w ·ᵒ HrGa.hadOp w ·ᵒ
+                            HrGa.Rs (HrLv.ρ false 3) w)
+THT-not-in-𝒞₃ w = HrNC.THT∉𝒞₃ w
+
+𝒞₃-not-closed : (w : Fin n) →
+  Hier.𝒞 3 (HrGa.Rs (HrLv.ρ false 3) w ·ᵒ HrGa.hadOp w) ×
+  Hier.𝒞 3 (HrGa.Rs (HrLv.ρ false 3) w) ×
+  ¬ Hier.𝒞 3 (HrGa.Rs (HrLv.ρ false 3) w ·ᵒ HrGa.hadOp w ·ᵒ
+              HrGa.Rs (HrLv.ρ false 3) w)
+𝒞₃-not-closed w = HrNC.𝒞₃-not-closed w
+
+THT-circuit-not-in-𝒞₃ : (w : Fin n) →
+  HrCi.K.level (HrCi.K.R 3 w ∷ HrCi.K.H w ∷ HrCi.K.R 3 w ∷ []) ≡ 3 ×
+  HrNC.THT-circuit-claim w
+THT-circuit-not-in-𝒞₃ w = HrNC.THT-level w , HrNC.THT-circuit∉𝒞₃ w
+
+-- On one qubit, C₂ modulo global phases is the 24 products of H and S:
+-- every element is one of the words times a unitary scalar, each word
+-- and each unitary scalar is in C₂, and no two words are equal up to
+-- a unitary scalar.
+
+one-qubit-𝒞₂ : (U : Op 1) → Hier.𝒞 2 U →
+  Σ (Fin 24) λ i → Σ (Op 1) λ V →
+    (U ≈ᵒ Hr1.opW (Vec.lookup Hr1.words i) ·ᵒ V) ×
+    HrOp.Unitary V × Hr1.Scalar V
+one-qubit-𝒞₂ U = Hr1.classify U
+
+one-qubit-words-𝒞₂ : (i : Fin 24) →
+                     Hier.𝒞 2 (Hr1.opW (Vec.lookup Hr1.words i))
+one-qubit-words-𝒞₂ i = Hr1.word-𝒞₂ i
+
+one-qubit-scalar-𝒞₂ : (V : Op 1) → HrOp.Unitary V → Hr1.Scalar V →
+                      Hier.𝒞 2 V
+one-qubit-scalar-𝒞₂ V = Hr1.scalar-𝒞₂ V
+
+one-qubit-words-distinct :
+  (i j : Fin 24) (V : Op 1) → HrOp.Unitary V → Hr1.Scalar V →
+  Hr1.opW (Vec.lookup Hr1.words i) ≈ᵒ Hr1.opW (Vec.lookup Hr1.words j) ·ᵒ V →
+  i ≡ j
+one-qubit-words-distinct i j V = Hr1.distinct i j V
 
 
 ------------------------------------------------------------------------
