@@ -243,7 +243,7 @@ private
         ∎
 
 opaque
-  unfolding _+_ _*_
+  unfolding _+_ _*_ -_
 
   private
     ×ᶠ-＊ : (m : ℕ) (x : F) → m ×ᶠ x ≡ m Mod.＊ x
@@ -253,6 +253,17 @@ opaque
   -- A residue as a count: toℕ k copies of x make k * x.
   ×ᶠ-toℕ : (k x : F) → toℕ k ×ᶠ x ≡ k * x
   ×ᶠ-toℕ k x = trans (×ᶠ-＊ (toℕ k) x) (＊-* (toℕ k) x)
+
+  -- The representative of -1 is p - 1.
+  toℕ-1 : toℕ (- 1F) ≡ ℕ.suc p-2
+  toℕ-1 = PM.lemma-toℕ-1ₚ
+
+  -- Representatives of sums and products.
+  toℕ-+ : (k l : F) → toℕ (k + l) ≡ (toℕ k ℕ.+ toℕ l) % p
+  toℕ-+ k l = toℕ-fromℕ< (m%n<n (toℕ k ℕ.+ toℕ l) p)
+
+  toℕ-* : (k l : F) → toℕ (k * l) ≡ (toℕ k ℕ.* toℕ l) % p
+  toℕ-* k l = toℕ-fromℕ< (m%n<n (toℕ k ℕ.* toℕ l) p)
 
   -- p copies of x make 0.
   p-×ᶠ : (x : F) → p ×ᶠ x ≡ 0F
