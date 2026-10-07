@@ -48,14 +48,10 @@ open import Notations using (₀ ; ₁ ; ₁₊ ; ₃₊ ; ₄₊)
 import Circuit.Base
 import Presentation.Base as PB
 
-open import ForStdlib.Data.Fin.Mod using (_+_ ; _*_ ; -_)
-open import ForStdlib.Data.Fin.Mod.Prime.Fermat using (module PrimeModulus')
-
 open import Examples.Groups.Qupit-Phase-Affine.Field p-2 p-prime
-  using (F ; F* ; p ; 1F ; 2F ; half ; binom2 ; binom3 ; _-_)
+  using (F ; F* ; p ; 0F ; 1F ; 2F ; half ; binom2 ; binom3 ; _+_ ; _*_ ; -_ ; _-_ ; 1* ; -1* ; _⊛_)
 
 private
-  module PM = PrimeModulus' p-2 p-prime
   variable
     n : ℕ
 
@@ -79,7 +75,7 @@ lin₃ h = lin₂ (quad₃ h)
 data Gate : ℕ → Set where
   ω-gate    : .(1 ≤ lv) → Gate 0
   X-gate    : Gate 1
-  M-gate    : (a : F) → .(a ≢ ₀) → Gate 1
+  M-gate    : (a : F) → .(a ≢ 0F) → Gate 1
   Z-gate    : .(1 ≤ lv) → Gate 1
   S-gate    : .(2 ≤ lv) → Gate 1
   T-gate    : .(3 ≤ lv) → Gate 1
@@ -98,7 +94,7 @@ open C public
 X : Circuit (₁₊ n)
 X = [ gate₁ X-gate ]ʷ
 
-M : (a : F) → .(a ≢ ₀) → Circuit (₁₊ n)
+M : (a : F) → .(a ≢ 0F) → Circuit (₁₊ n)
 M a nz = [ gate₁ (M-gate a nz) ]ʷ
 
 -- M at a unit.
@@ -125,16 +121,6 @@ T h = [ gate₁ (T-gate h) ]ʷ
 infixr 8 _^ᶠ_
 _^ᶠ_ : Circuit n → F → Circuit n
 w ^ᶠ k = w ^ toℕ k
-
--- The units 1 and -1.
-1* -1* : F*
-1*  = ₁ , λ ()
--1* = PM.-' 1*
-
--- The product of units.
-infixl 7 _⊛_
-_⊛_ : F* → F* → F*
-_⊛_ = PM._*'_
 
 ------------------------------------------------------------------------
 -- Placed gates (Section 2: placements by the symmetry)
@@ -210,7 +196,7 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
   swap-order : (₂₊ n) SRel, SWAP • SWAP === ε
   swap-braid : (₃₊ n) SRel, SWAP • SWAP ↑ • SWAP === SWAP ↑ • SWAP • SWAP ↑
   swap-X     : (₂₊ n) SRel, X • SWAP === SWAP • X ↑
-  swap-M     : (a : F) .(nz : a ≢ ₀) → (₂₊ n) SRel, M a nz • SWAP === SWAP • M a nz ↑
+  swap-M     : (a : F) .(nz : a ≢ 0F) → (₂₊ n) SRel, M a nz • SWAP === SWAP • M a nz ↑
   swap-Z     : .(h : 1 ≤ lv) → (₂₊ n) SRel, Z h • SWAP === SWAP • Z h ↑
   swap-S     : .(h : 2 ≤ lv) → (₂₊ n) SRel, S h • SWAP === SWAP • S h ↑
   swap-T     : .(h : 3 ≤ lv) → (₂₊ n) SRel, T h • SWAP === SWAP • T h ↑

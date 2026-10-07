@@ -31,19 +31,21 @@ open import Notations using (₂₊)
 module Examples.Groups.Qupit-Phase-Affine.Field (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) where
 
 open import Algebra.Bundles using (CommutativeRing)
+open import Algebra.Structures using (IsCommutativeRing)
 open import Data.Fin.Base using (Fin ; zero ; suc ; toℕ ; fromℕ<)
-open import Data.Fin.Properties using (toℕ-fromℕ< ; fromℕ<-cong ; fromℕ<-toℕ ; toℕ<n)
+open import Data.Fin.Properties using (toℕ-fromℕ< ; fromℕ<-cong)
 import Data.Integer.Base as ℤ
 open import Data.Nat.Base as ℕ using (_≤_ ; s≤s ; z≤n)
-open import Data.Nat.DivMod using (_%_ ; m%n<n ; m%n%n≡m%n ; %-distribˡ-+ ; %-distribˡ-*)
-open import Data.Product.Base using (_,_ ; proj₁ ; proj₂)
+open import Data.Nat.DivMod using (_%_ ; m%n<n ; m%n%n≡m%n ; %-distribˡ-+)
+open import Data.Product.Base using (Σ ; _,_ ; proj₁ ; proj₂)
+open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq
   using (_≡_ ; _≢_ ; refl ; sym ; trans ; cong ; cong₂ ; module ≡-Reasoning)
 
 open import Notations using (₀ ; ₁ ; ₁₊)
 
-open import ForStdlib.Data.Fin.Mod
-  using (ℤ ; ℤ* ; _+_ ; _*_ ; -_ ; _^′_ ; _＊_ ; +-*-commutativeRing)
+import ForStdlib.Data.Fin.Mod as Mod
+open import ForStdlib.Data.Fin.Mod using (ℤ ; ℤ*)
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat using (module PrimeModulus')
 import Quantum.Synthesis.Ring.Properties.Common as Common
 
@@ -60,43 +62,72 @@ p = ₂₊ p-2
 F : Set
 F = ℤ p
 
--- The units.
-F* : Set
-F* = ℤ* p
+0F 1F : F
+0F = ₀
+1F = ₁
+
+-- The operations are ForStdlib's, made opaque: comparing two phases
+-- never unfolds the residue arithmetic, which with a symbolic p would
+-- leave large stuck terms of mod-helper behind.  Computations go in
+-- blocks that unfold them.  The inverse of a nonzero c is c^(p-2), by
+-- Fermat's little theorem.
+opaque
+  infixl 6 _+_
+  infixl 7 _*_
+  infixr 8 -_
+  infixl 9 _⁻¹ᶠ
+
+  _+_ _*_ : F → F → F
+  x + y = x Mod.+ y
+  x * y = x Mod.* y
+
+  -_ : F → F
+  - x = Mod.- x
+
+  _⁻¹ᶠ : F → F
+  c ⁻¹ᶠ = c Mod.^′ p-2
+
+opaque
+  unfolding _+_ _*_ -_
+
+  isCommutativeRing-F : IsCommutativeRing _≡_ _+_ _*_ -_ 0F 1F
+  isCommutativeRing-F = Mod.+-*-isCommutativeRing
+
+commutativeRing-F : CommutativeRing 0ℓ 0ℓ
+commutativeRing-F = record { isCommutativeRing = isCommutativeRing-F }
+
+module FR = CommutativeRing commutativeRing-F
+
+-- Ring identities with integer coefficients.
+module ZS = Common.ZSolver commutativeRing-F
+open ZS public using (solve ; _:+_ ; _:*_ ; :-_ ; _:-_ ; _:=_ ; con)
 
 infixl 6 _-_
 
 _-_ : F → F → F
 x - y = x + - y
 
-module FR = CommutativeRing (+-*-commutativeRing p-2)
-
--- Ring identities with integer coefficients.
-module ZS = Common.ZSolver (+-*-commutativeRing p-2)
-open ZS public using (solve ; _:+_ ; _:*_ ; :-_ ; _:-_ ; _:=_ ; con)
-
 -- Numerals, as the solver reads its integer constants.
-0F 1F 2F 3F 6F : F
-0F = ₀
-1F = ₁
-2F = ₁ + ₁
-3F = 2F + ₁
-6F = ((3F + ₁) + ₁) + ₁
+2F 3F 6F : F
+2F = 1F + 1F
+3F = 2F + 1F
+6F = ((3F + 1F) + 1F) + 1F
 
--- Fermat's little theorem: c^(p-2) is the inverse of a nonzero c.
-infixl 9 _⁻¹ᶠ
+opaque
+  unfolding _*_ _⁻¹ᶠ
 
-_⁻¹ᶠ : F → F
-c ⁻¹ᶠ = c ^′ p-2
+  ⁻¹ᶠ-inverseʳ : (c : F) → c ≢ 0F → c * c ⁻¹ᶠ ≡ 1F
+  ⁻¹ᶠ-inverseʳ c nz = PM.Fermat's-little-theorem (c , nz)
 
-⁻¹ᶠ-inverseʳ : (c : F) → c ≢ ₀ → c * c ⁻¹ᶠ ≡ 1F
-⁻¹ᶠ-inverseʳ c nz = PM.Fermat's-little-theorem (c , nz)
+  -- A product of nonzero elements is nonzero.
+  *-nonzero : {a b : F} → a ≢ 0F → b ≢ 0F → a * b ≢ 0F
+  *-nonzero {a} {b} na nb = proj₂ (PM._*'_ (a , na) (b , nb))
 
-⁻¹ᶠ-inverseˡ : (c : F) → c ≢ ₀ → c ⁻¹ᶠ * c ≡ 1F
+⁻¹ᶠ-inverseˡ : (c : F) → c ≢ 0F → c ⁻¹ᶠ * c ≡ 1F
 ⁻¹ᶠ-inverseˡ c nz = trans (FR.*-comm (c ⁻¹ᶠ) c) (⁻¹ᶠ-inverseʳ c nz)
 
 -- A nonzero factor cancels.
-cancel : (c : F) → c ≢ ₀ → {a b : F} → c * a ≡ c * b → a ≡ b
+cancel : (c : F) → c ≢ 0F → {a b : F} → c * a ≡ c * b → a ≡ b
 cancel c nz {a} {b} e = begin
   a                    ≡⟨ sym (FR.*-identityˡ a) ⟩
   1F * a               ≡⟨ cong (_* a) (sym (⁻¹ᶠ-inverseˡ c nz)) ⟩
@@ -108,28 +139,56 @@ cancel c nz {a} {b} e = begin
   b                    ∎
   where open ≡-Reasoning
 
--- A product of nonzero elements is nonzero.
-*-nonzero : {a b : F} → a ≢ ₀ → b ≢ ₀ → a * b ≢ ₀
-*-nonzero {a} {b} na nb = proj₂ (PM._*'_ (a , na) (b , nb))
+------------------------------------------------------------------------
+-- The units
+
+F* : Set
+F* = Σ F (λ a → a ≢ 0F)
+
+1≢0 : 1F ≢ 0F
+1≢0 ()
+
+opaque
+  unfolding -_
+
+  -1≢0 : - 1F ≢ 0F
+  -1≢0 = proj₂ (PM.-'_ (₁ , λ ()))
+
+-- The units 1 and -1, and the product.
+1* -1* : F*
+1*  = 1F , 1≢0
+-1* = - 1F , -1≢0
+
+infixl 7 _⊛_
+_⊛_ : F* → F* → F*
+(a , na) ⊛ (b , nb) = a * b , *-nonzero na nb
+
+-- The inverse of a unit.
+infixl 9 _⁻¹*
+_⁻¹* : F* → F*
+(a , na) ⁻¹* = a ⁻¹ᶠ , λ e → 1≢0 (trans (sym (⁻¹ᶠ-inverseʳ a na)) (trans (cong (a *_) e) (FR.zeroʳ a)))
 
 ------------------------------------------------------------------------
 -- 2 and 6 are invertible in the admissible fragments
 
 private
-  two≢0′ : ∀ m → 1 ≤ m → _≢_ {A = ℤ (₂₊ m)} (₁ + ₁) ₀
+  two≢0′ : ∀ m → 1 ≤ m → _≢_ {A = ℤ (₂₊ m)} (₁ Mod.+ ₁) ₀
   two≢0′ ℕ.zero    ()
   two≢0′ (ℕ.suc k) _ ()
 
-  three≢0′ : ∀ m → 2 ≤ m → _≢_ {A = ℤ (₂₊ m)} ((₁ + ₁) + ₁) ₀
+  three≢0′ : ∀ m → 2 ≤ m → _≢_ {A = ℤ (₂₊ m)} ((₁ Mod.+ ₁) Mod.+ ₁) ₀
   three≢0′ ℕ.zero           ()
   three≢0′ (ℕ.suc ℕ.zero)   (s≤s ())
   three≢0′ (ℕ.suc (ℕ.suc k)) _ ()
 
-two≢0 : 1 ≤ p-2 → 2F ≢ ₀
-two≢0 = two≢0′ p-2
+opaque
+  unfolding _+_
 
-three≢0 : 2 ≤ p-2 → 3F ≢ ₀
-three≢0 = three≢0′ p-2
+  two≢0 : 1 ≤ p-2 → 2F ≢ 0F
+  two≢0 = two≢0′ p-2
+
+  three≢0 : 2 ≤ p-2 → 3F ≢ 0F
+  three≢0 = three≢0′ p-2
 
 six≡2*3 : 6F ≡ 2F * 3F
 six≡2*3 = solve 0 (con (ℤ.+ 6) := con (ℤ.+ 2) :* con (ℤ.+ 3)) refl
@@ -138,7 +197,7 @@ six≡2*3 = solve 0 (con (ℤ.+ 6) := con (ℤ.+ 2) :* con (ℤ.+ 3)) refl
 big⇒odd : 2 ≤ p-2 → 1 ≤ p-2
 big⇒odd (s≤s _) = s≤s z≤n
 
-six≢0 : 2 ≤ p-2 → 6F ≢ ₀
+six≢0 : 2 ≤ p-2 → 6F ≢ 0F
 six≢0 h e = *-nonzero (two≢0 (big⇒odd h)) (three≢0 h) (trans (sym six≡2*3) e)
 
 -- The two inverses.
@@ -149,38 +208,50 @@ sixth = 6F ⁻¹ᶠ
 ------------------------------------------------------------------------
 -- k-fold sums are products
 
--- The residue of a natural number.
-⟨_⟩ : ℕ → F
-⟨ m ⟩ = fromℕ< (m%n<n m p)
+infixr 7 _×ᶠ_
 
-＊-* : (m : ℕ) (x : F) → m ＊ x ≡ fromℕ< (m%n<n (m ℕ.* toℕ x) p)
-＊-* ℕ.zero    x = refl
-＊-* (ℕ.suc m) x = begin
-  x + (m ＊ x)
-    ≡⟨ cong (x +_) (＊-* m x) ⟩
-  fromℕ< (m%n<n (toℕ x ℕ.+ toℕ (fromℕ< (m%n<n (m ℕ.* toℕ x) p))) p)
-    ≡⟨ fromℕ<-cong _ _ eq (m%n<n (toℕ x ℕ.+ toℕ (fromℕ< (m%n<n (m ℕ.* toℕ x) p))) p)
-                          (m%n<n (toℕ x ℕ.+ m ℕ.* toℕ x) p) ⟩
-  fromℕ< (m%n<n (ℕ.suc m ℕ.* toℕ x) p)
-    ∎
-  where
-  open ≡-Reasoning
-  eq : (toℕ x ℕ.+ toℕ (fromℕ< (m%n<n (m ℕ.* toℕ x) p))) % p ≡ (toℕ x ℕ.+ m ℕ.* toℕ x) % p
-  eq = begin
-    (toℕ x ℕ.+ toℕ (fromℕ< (m%n<n (m ℕ.* toℕ x) p))) % p
-      ≡⟨ cong (λ t → (toℕ x ℕ.+ t) % p) (toℕ-fromℕ< (m%n<n (m ℕ.* toℕ x) p)) ⟩
-    (toℕ x ℕ.+ (m ℕ.* toℕ x) % p) % p
-      ≡⟨ %-distribˡ-+ (toℕ x) ((m ℕ.* toℕ x) % p) p ⟩
-    (toℕ x % p ℕ.+ (m ℕ.* toℕ x) % p % p) % p
-      ≡⟨ cong (λ t → (toℕ x % p ℕ.+ t) % p) (m%n%n≡m%n (m ℕ.* toℕ x) p) ⟩
-    (toℕ x % p ℕ.+ (m ℕ.* toℕ x) % p) % p
-      ≡⟨ sym (%-distribˡ-+ (toℕ x) (m ℕ.* toℕ x) p) ⟩
-    (toℕ x ℕ.+ m ℕ.* toℕ x) % p
+-- m copies of x.
+_×ᶠ_ : ℕ → F → F
+ℕ.zero  ×ᶠ x = 0F
+ℕ.suc m ×ᶠ x = x + m ×ᶠ x
+
+private
+  ＊-* : (m : ℕ) (x : F) → m Mod.＊ x ≡ fromℕ< (m%n<n (m ℕ.* toℕ x) p)
+  ＊-* ℕ.zero    x = refl
+  ＊-* (ℕ.suc m) x = begin
+    x Mod.+ (m Mod.＊ x)
+      ≡⟨ cong (x Mod.+_) (＊-* m x) ⟩
+    fromℕ< (m%n<n (toℕ x ℕ.+ toℕ (fromℕ< (m%n<n (m ℕ.* toℕ x) p))) p)
+      ≡⟨ fromℕ<-cong _ _ eq (m%n<n (toℕ x ℕ.+ toℕ (fromℕ< (m%n<n (m ℕ.* toℕ x) p))) p)
+                            (m%n<n (toℕ x ℕ.+ m ℕ.* toℕ x) p) ⟩
+    fromℕ< (m%n<n (ℕ.suc m ℕ.* toℕ x) p)
       ∎
+    where
+    open ≡-Reasoning
+    eq : (toℕ x ℕ.+ toℕ (fromℕ< (m%n<n (m ℕ.* toℕ x) p))) % p ≡ (toℕ x ℕ.+ m ℕ.* toℕ x) % p
+    eq = begin
+      (toℕ x ℕ.+ toℕ (fromℕ< (m%n<n (m ℕ.* toℕ x) p))) % p
+        ≡⟨ cong (λ t → (toℕ x ℕ.+ t) % p) (toℕ-fromℕ< (m%n<n (m ℕ.* toℕ x) p)) ⟩
+      (toℕ x ℕ.+ (m ℕ.* toℕ x) % p) % p
+        ≡⟨ %-distribˡ-+ (toℕ x) ((m ℕ.* toℕ x) % p) p ⟩
+      (toℕ x % p ℕ.+ (m ℕ.* toℕ x) % p % p) % p
+        ≡⟨ cong (λ t → (toℕ x % p ℕ.+ t) % p) (m%n%n≡m%n (m ℕ.* toℕ x) p) ⟩
+      (toℕ x % p ℕ.+ (m ℕ.* toℕ x) % p) % p
+        ≡⟨ sym (%-distribˡ-+ (toℕ x) (m ℕ.* toℕ x) p) ⟩
+      (toℕ x ℕ.+ m ℕ.* toℕ x) % p
+        ∎
 
--- A residue as a count: toℕ k copies of x make k * x.
-＊-toℕ : (k x : F) → toℕ k ＊ x ≡ k * x
-＊-toℕ k x = ＊-* (toℕ k) x
+opaque
+  unfolding _+_ _*_
+
+  private
+    ×ᶠ-＊ : (m : ℕ) (x : F) → m ×ᶠ x ≡ m Mod.＊ x
+    ×ᶠ-＊ ℕ.zero    x = refl
+    ×ᶠ-＊ (ℕ.suc m) x = cong (x Mod.+_) (×ᶠ-＊ m x)
+
+  -- A residue as a count: toℕ k copies of x make k * x.
+  ×ᶠ-toℕ : (k x : F) → toℕ k ×ᶠ x ≡ k * x
+  ×ᶠ-toℕ k x = trans (×ᶠ-＊ (toℕ k) x) (＊-* (toℕ k) x)
 
 ------------------------------------------------------------------------
 -- The binomial coordinates
@@ -247,6 +318,16 @@ module Odd (odd : 1 ≤ p-2) where
                refl 2F k (binom2 x) (binom2 k) x ⟩
     2F * (k * k * binom2 x + binom2 k * x)
       ∎)
+    where open ≡-Reasoning
+
+  -- At -x.
+  binom2-neg : (x : F) → binom2 (- x) ≡ binom2 x + x
+  binom2-neg x = by-doubling (begin
+    2F * binom2 (- x)            ≡⟨ 2*binom2 (- x) ⟩
+    (- x) * (- x - 1F)           ≡⟨ solve 1 (λ x → (:- x) :* (:- x :- con (ℤ.+ 1)) := x :* (x :- con (ℤ.+ 1)) :+ con (ℤ.+ 2) :* x) refl x ⟩
+    x * (x - 1F) + 2F * x        ≡⟨ cong (_+ 2F * x) (sym (2*binom2 x)) ⟩
+    2F * binom2 x + 2F * x       ≡⟨ sym (FR.distribˡ 2F (binom2 x) x) ⟩
+    2F * (binom2 x + x)          ∎)
     where open ≡-Reasoning
 
 module Big (big : 2 ≤ p-2) where
@@ -335,5 +416,23 @@ module Big (big : 2 ≤ p-2) where
                                       := c :* (k :* k :* k :* a :+ d :* k :* b :* u :+ t :* x))
                refl 6F 2F k (binom3 x) (binom2 k) (binom2 x) (binom3 k) x ⟩
     6F * (k * k * k * binom3 x + 2F * k * binom2 k * binom2 x + binom3 k * x)
+      ∎)
+    where open ≡-Reasoning
+
+  binom3-neg : (x : F) → binom3 (- x) ≡ - binom3 x - 2F * binom2 x - x
+  binom3-neg x = by-sextupling (begin
+    6F * binom3 (- x)
+      ≡⟨ 6*binom3 (- x) ⟩
+    (- x) * (- x - 1F) * (- x - 2F)
+      ≡⟨ solve 1 (λ x → (:- x) :* (:- x :- con (ℤ.+ 1)) :* (:- x :- con (ℤ.+ 2))
+                       := :- (x :* (x :- con (ℤ.+ 1)) :* (x :- con (ℤ.+ 2)))
+                          :- con (ℤ.+ 2) :* (con (ℤ.+ 3) :* (x :* (x :- con (ℤ.+ 1))))
+                          :- con (ℤ.+ 6) :* x) refl x ⟩
+    - (x * (x - 1F) * (x - 2F)) - 2F * (3F * (x * (x - 1F))) - 6F * x
+      ≡⟨ cong₂ (λ a b → - a - 2F * b - 6F * x) (sym (6*binom3 x)) (sym (6*binom2 x)) ⟩
+    - (6F * binom3 x) - 2F * (6F * binom2 x) - 6F * x
+      ≡⟨ solve 5 (λ c d a b x → :- (c :* a) :- d :* (c :* b) :- c :* x := c :* (:- a :- d :* b :- x))
+               refl 6F 2F (binom3 x) (binom2 x) x ⟩
+    6F * (- binom3 x - 2F * binom2 x - x)
       ∎)
     where open ≡-Reasoning
