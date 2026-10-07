@@ -14,9 +14,13 @@
 --   CZ-CX    CX⁻¹ CZ CX = S² ↑ Z ↑ CZ (the paper's CZ-CX), by
 --            conjugating with M₋₁ on the control, which inverts CX
 --            (rule (4)) and CZ (rule (28));
---   CZ-gad   CX⁻ᵗ S CXᵗ = S (Sᵗ²) ↑ (Zᵗ⁽ᵗ⁻¹⁾ᐟ²) ↑ CZᵗ, by induction from CZ-CX
---            (the paper's CZ-S-gadget);
---   CZ-M     a multiplier scales it (the paper's CZ-M).
+--   S-conj   CX⁻ᶜ S CXᶜ = S (Sᶜ² Zᵇ⁽ᶜ⁾) ↑ CZᶜ, b the binomial coefficient
+--            (c 2), by induction from CZ-CX (the paper's CZ-S-gadget);
+--   CZ-M₁    a multiplier on wire 1 scales it (the paper's CZ-M), by
+--            moving it through S-conj; CZ-M₀ on wire 0, by symmetry.
+--
+-- SZ q b = S^q Z^b collects the one-wire diagonal words the gadget
+-- leaves behind.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -40,14 +44,15 @@ open import Word.Base using (ε ; _•_ ; _^_)
 open import Notations using (₁₊)
 
 open import Examples.Groups.Qupit-Phase-Affine.Semantics p-2 p-prime
-  using ( F ; F* ; p ; 0F ; 1F ; 2F ; _+_ ; _*_ ; -_ ; -1* ; binom2 ; half ; module FR ; module Odd
-        ; solve ; _:+_ ; _:*_ ; :-_ ; _:-_ ; _:=_ ; con )
+  using ( F ; F* ; p ; 0F ; 1F ; 2F ; _+_ ; _-_ ; _*_ ; -_ ; -1* ; binom2 ; half ; _×ᶠ_ ; ×ᶠ-toℕ
+        ; module FR ; module Odd ; solve ; _:+_ ; _:*_ ; :-_ ; _:-_ ; _:=_ ; con )
 open import Examples.Groups.Qupit-Phase-Affine.Syntactics p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Reasoning p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Powers p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Basic p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Linear.Lib p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Linear.Wires p-2 p-prime lv
+open import Examples.Groups.Qupit-Phase-Affine.Linear.Fan p-2 p-prime lv using (conjᶠ)
 open import Examples.Groups.Qupit-Phase-Affine.Affine p-2 p-prime lv using (CX-X)
 open import Examples.Groups.Qupit-Phase-Affine.Phase.Quad.S p-2 p-prime lv h public
 
@@ -332,3 +337,238 @@ module _ {n : ℕ} where
     (m • CZi • m) • (m • Ci • m)
       ≈⟨ cong (ax (ax28 h)) mCim ⟩
     CZ h • CX ∎)
+
+------------------------------------------------------------------------
+-- S and Z on one wire, as one word
+
+module _ {n : ℕ} where
+
+  open Width (₁₊ n)
+
+  private
+    module OS = Pow.Order (₁₊ n) {S h} S-order
+    module OZ = Pow.Order (₁₊ n) {Z h₁} Z-order
+
+  SZ : F → F → Circuit (₁₊ n)
+  SZ q b = S h ^ᶠ q • Z h₁ ^ᶠ b
+
+  SZ-≡ : {q b q' b' : F} → q ≡ q' → b ≡ b' → (₁₊ n) ⊢ SZ q b ≈ SZ q' b'
+  SZ-≡ Eq.refl Eq.refl = refl
+
+  SZ-zero : (₁₊ n) ⊢ SZ 0F 0F ≈ ε
+  SZ-zero = left-unit
+
+  SZ-add : (q b q' b' : F) → (₁₊ n) ⊢ SZ q b • SZ q' b' ≈ SZ (q + q') (b + b')
+  SZ-add q b q' b' = begin
+    (S h ^ᶠ q • Z h₁ ^ᶠ b) • S h ^ᶠ q' • Z h₁ ^ᶠ b'
+      ≈⟨ by-passoc ((□ • □) • □ • □) (□ • (□ • □) • □) Eq.refl ⟩
+    S h ^ᶠ q • (Z h₁ ^ᶠ b • S h ^ᶠ q') • Z h₁ ^ᶠ b'
+      ≈⟨ back _ (front _ (sym (Sᶠ∥Zᶠ q' b))) ⟩
+    S h ^ᶠ q • (S h ^ᶠ q' • Z h₁ ^ᶠ b) • Z h₁ ^ᶠ b'
+      ≈⟨ by-passoc (□ • (□ • □) • □) ((□ • □) • □ • □) Eq.refl ⟩
+    (S h ^ᶠ q • S h ^ᶠ q') • Z h₁ ^ᶠ b • Z h₁ ^ᶠ b'
+      ≈⟨ cong (OS.^ᶠ-+ q q') (OZ.^ᶠ-+ b b') ⟩
+    S h ^ᶠ (q + q') • Z h₁ ^ᶠ (b + b') ∎
+
+  SZ-^ᶠ : (q b c : F) → (₁₊ n) ⊢ SZ q b ^ᶠ c ≈ SZ (q * c) (b * c)
+  SZ-^ᶠ q b c = trans (Pow.pow-• (₁₊ n) (toℕ c) (Sᶠ∥Zᶠ q b)) (cong (OS.^ᶠ-* q c) (OZ.^ᶠ-* b c))
+
+  -- The inverse.
+  SZ-inv : (q b : F) → (₁₊ n) ⊢ SZ (- q) (- b) • SZ q b ≈ ε
+  SZ-inv q b = trans (SZ-add (- q) (- b) q b)
+                 (trans (SZ-≡ (FR.-‿inverseˡ q) (FR.-‿inverseˡ b)) SZ-zero)
+
+  -- The inverse written as rule (27) at -1 leaves it.
+  SZ-cancel : (q b : F) → (₁₊ n) ⊢ (Z h₁ ^ᶠ (- 1F * b) • S h ^ᶠ (- 1F * q)) • SZ q b ≈ ε
+  SZ-cancel q b = begin
+    (Z h₁ ^ᶠ (- 1F * b) • S h ^ᶠ (- 1F * q)) • SZ q b
+      ≈⟨ front _ (sym (Sᶠ∥Zᶠ (- 1F * q) (- 1F * b))) ⟩
+    SZ (- 1F * q) (- 1F * b) • SZ q b
+      ≈⟨ front _ (SZ-≡ (negs q) (negs b)) ⟩
+    SZ (- q) (- b) • SZ q b
+      ≈⟨ SZ-inv q b ⟩
+    ε ∎
+    where
+    negs : ∀ t → - 1F * t ≡ - t
+    negs = solve 1 (λ t → (:- con (ℤ.+ 1)) :* t := :- t) Eq.refl
+
+------------------------------------------------------------------------
+-- The S gadget with any weight, and CZ under a multiplier
+
+module _ {n : ℕ} where
+
+  open Width (₂₊ n)
+
+  private
+    module OS₁ = Pow.Order (₁₊ n) {S h} S-order
+    module OS₂ = Pow.Order (₂₊ n) {S h} S-order
+    module OCZ = Pow.Order (₂₊ n) {CZ h} CZ-order
+
+    Si₀ Si₁ Ci : Circuit (₂₊ n)
+    Si₀ = S h ^ᶠ (- 1F)
+    Si₁ = (S h ^ᶠ (- 1F)) ↑
+    Ci  = CX ^ᶠ (- 1F)
+
+    up-iter′ : (w : Circuit (₁₊ n)) {y : Circuit (₂₊ n)} (k : F) → (₂₊ n) ⊢ w ↑ ∥ y → (₂₊ n) ⊢ (w ^ᶠ k) ↑ ∥ y
+    up-iter′ w k e = trans (front _ (refl' (↑ᶠ w k)))
+                       (trans (∥-^ᶠ k e) (back _ (refl' (Eq.sym (↑ᶠ w k)))))
+
+    SZ↑∥ : {y : Circuit (₂₊ n)} (q b : F) → (₂₊ n) ⊢ S h ↑ ∥ y → (₂₊ n) ⊢ Z h₁ ↑ ∥ y →
+           (₂₊ n) ⊢ SZ q b ↑ ∥ y
+    SZ↑∥ q b es ez = •-∥ (up-iter′ (S h) q es) (up-iter′ (Z h₁) b ez)
+
+  SZ↑∥CX : (q b : F) → (₂₊ n) ⊢ SZ q b ↑ ∥ CX
+  SZ↑∥CX q b = SZ↑∥ q b (sym S↑-CX) (sym Z↑-CX)
+
+  SZ↑∥CZ : (q b : F) → (₂₊ n) ⊢ SZ q b ↑ ∥ CZ h
+  SZ↑∥CZ q b = SZ↑∥ q b S↑∥CZ Z↑∥CZ
+
+  SZ↑∥S : (q b : F) → (₂₊ n) ⊢ SZ q b ↑ ∥ S h
+  SZ↑∥S q b = comm-gate₁-w↑ (S-gate h) (SZ q b)
+
+  -- P is S on both wires times CZ.
+  P-SZ : (₂₊ n) ⊢ P ≈ S h • SZ 1F 0F ↑ • CZ h
+  P-SZ = sym (begin
+    S h • SZ 1F 0F ↑ • Si₀ • Si₁ • P      ≈⟨ back _ (front _ right-unit) ⟩
+    S h • S h ↑ • Si₀ • Si₁ • P            ≈⟨ back _ (trans (sym assoc) (trans (front _ (sym (Sᶠ-up (- 1F) (S h)))) assoc)) ⟩
+    S h • Si₀ • S h ↑ • Si₁ • P            ≈⟨ trans (sym assoc) (front _ OS₂.inverseʳ) ⟩
+    ε • S h ↑ • Si₁ • P                    ≈⟨ trans left-unit (trans (sym assoc) (trans (front _ (lift OS₁.inverseʳ)) left-unit)) ⟩
+    P                                      ∎)
+
+  -- S past CX: the gadget of weight 1.
+  S-CX : (₂₊ n) ⊢ S h • CX ≈ CX • S h • SZ 1F 0F ↑ • CZ h
+  S-CX = begin
+    S h • CX                      ≈⟨ sym left-unit ⟩
+    ε • S h • CX                  ≈⟨ front _ (sym (CX-invʳ 1F)) ⟩
+    (CX • Ci) • S h • CX          ≈⟨ assoc ⟩
+    CX • P                        ≈⟨ back _ P-SZ ⟩
+    CX • S h • SZ 1F 0F ↑ • CZ h  ∎
+
+  -- CZ past an iterate of CX.
+  CZ-CXᶠ : (c : F) → (₂₊ n) ⊢ CZ h ^ᶠ c • CX ≈ CX • SZ (2F * c) c ↑ • CZ h ^ᶠ c
+  CZ-CXᶠ c = begin
+    CZ h ^ᶠ c • CX                         ≈⟨ sym (slide^ (toℕ c) (sym (trans CZ-CX (back _ (sym assoc))))) ⟩
+    CX • (SZ 2F 1F ↑ • CZ h) ^ᶠ c          ≈⟨ back _ (Pow.pow-• (₂₊ n) (toℕ c) (SZ↑∥CZ 2F 1F)) ⟩
+    CX • (SZ 2F 1F ↑) ^ᶠ c • CZ h ^ᶠ c     ≈⟨ back _ (front _ (trans (refl' (Eq.sym (↑ᶠ (SZ 2F 1F) c)))
+                                                 (lift (Width.trans (SZ-^ᶠ 2F 1F c) (SZ-≡ Eq.refl (FR.*-identityˡ c)))))) ⟩
+    CX • SZ (2F * c) c ↑ • CZ h ^ᶠ c       ∎
+
+  -- The S gadget of weight m, by induction.
+  private
+    ĉ : ℕ → F
+    ĉ m = m ×ᶠ 1F
+
+    CX-split : (m : ℕ) → (₂₊ n) ⊢ CX ^ suc m ≈ CX ^ m • CX
+    CX-split m = trans (refl' (Eq.cong (CX ^_) (ℕP.+-comm 1 m))) (Pow.pow-+ (₂₊ n) CX m 1)
+
+    sq-step : (c : F) → (1F + c * c) + 2F * c ≡ (1F + c) * (1F + c)
+    sq-step = solve 1 (λ c → (con (ℤ.+ 1) :+ c :* c) :+ (con (ℤ.+ 1) :+ con (ℤ.+ 1)) :* c
+                             := (con (ℤ.+ 1) :+ c) :* (con (ℤ.+ 1) :+ c)) Eq.refl
+
+    b-step : (c : F) → (0F + binom2 c) + c ≡ binom2 (1F + c)
+    b-step c = Eq.trans (Eq.cong (_+ c) (FR.+-identityˡ (binom2 c)))
+                 (Eq.trans (Eq.sym (Odd.binom2-shift odd c)) (Eq.cong binom2 (FR.+-comm c 1F)))
+
+    zero² : 0F * 0F ≡ 0F
+    zero² = FR.zeroʳ 0F
+
+    binom2-0 : binom2 0F ≡ 0F
+    binom2-0 = Eq.trans (Eq.cong (_* half) (FR.zeroˡ (0F - 1F))) (FR.zeroˡ half)
+
+  S-gad^ : (m : ℕ) → (₂₊ n) ⊢ S h • CX ^ m ≈ CX ^ m • S h • SZ (ĉ m * ĉ m) (binom2 (ĉ m)) ↑ • CZ h ^ᶠ ĉ m
+  S-gad^ zero = sym (trans left-unit (back _ (trans (front _ (lift (Width.trans (SZ-≡ zero² binom2-0) SZ-zero))) left-unit)))
+  S-gad^ (suc m) = begin
+    S h • CX ^ suc m
+      ≈⟨ back _ (CX-split m) ⟩
+    S h • CX ^ m • CX
+      ≈⟨ trans (sym assoc) (front _ (S-gad^ m)) ⟩
+    (CX ^ m • S h • U q b • CZ h ^ᶠ c) • CX
+      ≈⟨ by-passoc ((□ • □ • □ • □) • □) (□ • □ • □ • □ • □) Eq.refl ⟩
+    CX ^ m • S h • U q b • CZ h ^ᶠ c • CX
+      ≈⟨ back _ (back _ (back _ (CZ-CXᶠ c))) ⟩
+    CX ^ m • S h • U q b • CX • U (2F * c) c • CZ h ^ᶠ c
+      ≈⟨ back _ (back _ (trans (sym assoc) (trans (front _ (SZ↑∥CX q b)) assoc))) ⟩
+    CX ^ m • S h • CX • U q b • U (2F * c) c • CZ h ^ᶠ c
+      ≈⟨ back _ (trans (sym assoc) (trans (front _ S-CX) assoc)) ⟩
+    CX ^ m • CX • (S h • U 1F 0F • CZ h) • U q b • U (2F * c) c • CZ h ^ᶠ c
+      ≈⟨ back _ (back _ (by-passoc ((□ • □ • □) • □ • □ • □) (□ • □ • □ • □ • □ • □) Eq.refl)) ⟩
+    CX ^ m • CX • S h • U 1F 0F • CZ h • U q b • U (2F * c) c • CZ h ^ᶠ c
+      ≈⟨ back _ (back _ (back _ (back _ (trans (sym assoc) (trans (front _ (sym (SZ↑∥CZ q b))) assoc))))) ⟩
+    CX ^ m • CX • S h • U 1F 0F • U q b • CZ h • U (2F * c) c • CZ h ^ᶠ c
+      ≈⟨ back _ (back _ (back _ (back _ (back _ (trans (sym assoc) (trans (front _ (sym (SZ↑∥CZ (2F * c) c))) assoc)))))) ⟩
+    CX ^ m • CX • S h • U 1F 0F • U q b • U (2F * c) c • CZ h • CZ h ^ᶠ c
+      ≈⟨ back _ (back _ (back _ (trans (sym assoc) (front _ (lift (SZ-add 1F 0F q b)))))) ⟩
+    CX ^ m • CX • S h • U (1F + q) (0F + b) • U (2F * c) c • CZ h • CZ h ^ᶠ c
+      ≈⟨ back _ (back _ (back _ (trans (sym assoc) (front _ (lift (SZ-add (1F + q) (0F + b) (2F * c) c)))))) ⟩
+    CX ^ m • CX • S h • U ((1F + q) + 2F * c) ((0F + b) + c) • CZ h • CZ h ^ᶠ c
+      ≈⟨ back _ (back _ (back _ (cong (lift (SZ-≡ (sq-step c) (b-step c))) (OCZ.^ᶠ-+ 1F c)))) ⟩
+    CX ^ m • CX • S h • U (c' * c') (binom2 c') • CZ h ^ᶠ c'
+      ≈⟨ trans (sym assoc) (front _ (sym (CX-split m))) ⟩
+    CX ^ suc m • S h • U (c' * c') (binom2 c') • CZ h ^ᶠ c' ∎
+    where
+    U : F → F → Circuit (₂₊ n)
+    U q b = SZ q b ↑
+    c c' q b : F
+    c  = ĉ m
+    c' = 1F + c
+    q  = c * c
+    b  = binom2 c
+
+  S-gad : (c : F) → (₂₊ n) ⊢ S h • CX ^ᶠ c ≈ CX ^ᶠ c • S h • SZ (c * c) (binom2 c) ↑ • CZ h ^ᶠ c
+  S-gad c = Eq.subst (λ t → (₂₊ n) ⊢ S h • CX ^ᶠ c ≈ CX ^ᶠ c • S h • SZ (t * t) (binom2 t) ↑ • CZ h ^ᶠ t)
+                     (Eq.trans (×ᶠ-toℕ c 1F) (FR.*-identityʳ c)) (S-gad^ (toℕ c))
+
+  -- The paper's CZ-S-gadget: S on x₀ + c x₁.
+  S-conj : (c : F) → (₂₊ n) ⊢ CX ^ᶠ (- c) • S h • CX ^ᶠ c ≈ S h • SZ (c * c) (binom2 c) ↑ • CZ h ^ᶠ c
+  S-conj c = trans (back _ (S-gad c)) (cancel-in (CX-invˡ c) _)
+
+  -- A multiplier on wire 1 scales CZ (the paper's CZ-M).
+  CZ-M₁ : (x : F*) → (₂₊ n) ⊢ CZ h • M⟨ x ⟩ ↑ ≈ M⟨ x ⟩ ↑ • CZ h ^ᶠ proj₁ x
+  CZ-M₁ x = begin
+    (Si₀ • Si₁ • Ci • S h • CX) • m
+      ≈⟨ by-passoc ((□ • □ • □ • □ • □) • □) (□ • □ • □ • □ • □ • □) Eq.refl ⟩
+    Si₀ • Si₁ • Ci • S h • CX • m
+      ≈⟨ back _ (back _ (back _ (back _ (ax (ax4 x))))) ⟩
+    Si₀ • Si₁ • Ci • S h • m • CX ^ᶠ a
+      ≈⟨ back _ (back _ (back _ (trans (sym assoc) (trans (front _ (sym (comm-gate₁-w↑ (S-gate h) M⟨ x ⟩))) assoc)))) ⟩
+    Si₀ • Si₁ • Ci • m • S h • CX ^ᶠ a
+      ≈⟨ back _ (back _ (trans (sym assoc) (trans (front _ (CXᶠ-M↑ x (- 1F))) assoc))) ⟩
+    Si₀ • Si₁ • m • CX ^ᶠ (- 1F * a) • S h • CX ^ᶠ a
+      ≈⟨ back _ (trans (sym assoc) (trans (front _ (lift (Sᶠ-M (- 1F) x))) assoc)) ⟩
+    Si₀ • m • W ↑ • CX ^ᶠ (- 1F * a) • S h • CX ^ᶠ a
+      ≈⟨ trans (sym assoc) (trans (front _ (Sᶠ-up (- 1F) M⟨ x ⟩)) assoc) ⟩
+    m • Si₀ • W ↑ • CX ^ᶠ (- 1F * a) • S h • CX ^ᶠ a
+      ≈⟨ back _ (back _ (back _ (trans (front _ (CX-≡ neg1)) (S-conj a)))) ⟩
+    m • Si₀ • W ↑ • S h • SZ s b ↑ • CZ h ^ᶠ a
+      ≈⟨ back _ (back _ (trans (sym assoc) (trans (front _ (comm-gate₁-w↑ (S-gate h) W)) assoc))) ⟩
+    m • Si₀ • S h • W ↑ • SZ s b ↑ • CZ h ^ᶠ a
+      ≈⟨ back _ (trans (sym assoc) (trans (front _ OS₂.inverseˡ) left-unit)) ⟩
+    m • W ↑ • SZ s b ↑ • CZ h ^ᶠ a
+      ≈⟨ back _ (trans (sym assoc) (trans (front _ (lift W-cancel)) left-unit)) ⟩
+    m • CZ h ^ᶠ a ∎
+    where
+    a s b : F
+    a = proj₁ x
+    s = a * a
+    b = binom2 a
+    m : Circuit (₂₊ n)
+    m = M⟨ x ⟩ ↑
+    W : Circuit (₁₊ n)
+    W = Z h₁ ^ᶠ (- 1F * b) • S h ^ᶠ (- 1F * s)
+    neg1 : - 1F * a ≡ - a
+    neg1 = solve 1 (λ t → (:- con (ℤ.+ 1)) :* t := :- t) Eq.refl a
+    W-cancel : (₁₊ n) ⊢ W • SZ s b ≈ ε
+    W-cancel = SZ-cancel s b
+
+  -- On wire 0, by the symmetry of CZ.
+  CZ-M₀ : (x : F*) → (₂₊ n) ⊢ CZ h • M⟨ x ⟩ ≈ M⟨ x ⟩ • CZ h ^ᶠ proj₁ x
+  CZ-M₀ x = begin
+    CZ h • M⟨ x ⟩                          ≈⟨ front _ (sym (conjᶠ (ax swap-order) CZ-sym 1F)) ⟩
+    (SWAP • CZ h • SWAP) • M⟨ x ⟩          ≈⟨ by-passoc ((□ • □ • □) • □) (□ • □ • □ • □) Eq.refl ⟩
+    SWAP • CZ h • SWAP • M⟨ x ⟩            ≈⟨ back _ (back _ (sM x)) ⟩
+    SWAP • CZ h • M⟨ x ⟩ ↑ • SWAP          ≈⟨ back _ (trans (sym assoc) (trans (front _ (CZ-M₁ x)) assoc)) ⟩
+    SWAP • M⟨ x ⟩ ↑ • CZ h ^ᶠ a • SWAP      ≈⟨ trans (sym assoc) (trans (front _ (sM↑ x)) assoc) ⟩
+    M⟨ x ⟩ • SWAP • CZ h ^ᶠ a • SWAP       ≈⟨ back _ (conjᶠ (ax swap-order) CZ-sym a) ⟩
+    M⟨ x ⟩ • CZ h ^ᶠ a                     ∎
+    where
+    a = proj₁ x
