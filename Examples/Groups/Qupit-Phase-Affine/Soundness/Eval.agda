@@ -183,6 +183,15 @@ DiagC-^ᶠ {w = w} {φ} d k x =
   trans (⟦⟧-^ w (toℕ k) x)
     (trans (^ₒ-diagonal {M = ⟦ w ⟧} {φ} d (toℕ k) x) (cong (x ,_) (×ᶠ-toℕ k (φ x))))
 
+-- The iterate by a natural number m multiplies the phase by m.
+DiagC-^ : {w : Circuit n} {φ : Labels n → F} → DiagC w φ → (m : ℕ) → DiagC (w ^ m) (λ x → m ×ᶠ φ x)
+DiagC-^ {w = w} {φ} d m x = trans (⟦⟧-^ w m x) (^ₒ-diagonal {M = ⟦ w ⟧} {φ} d m x)
+
+-- Two evaluations of the same labels meet.
+meet : {w v : Circuit n} {x y y′ : Labels n} {φ φ′ : F} →
+       ⟦ w ⟧ x ≡ (y , φ) → ⟦ v ⟧ x ≡ (y′ , φ′) → y ≡ y′ → φ ≡ φ′ → ⟦ w ⟧ x ≡ ⟦ v ⟧ x
+meet ew ev refl refl = trans ew (sym ev)
+
 ω-diag : .(h : 1 ≤ lv) → DiagC {n} (ω h) (λ _ → 1F)
 ω-diag h x = ω-at h x
 

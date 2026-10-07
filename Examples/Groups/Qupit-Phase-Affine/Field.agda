@@ -36,7 +36,8 @@ open import Data.Fin.Base using (Fin ; zero ; suc ; toℕ ; fromℕ<)
 open import Data.Fin.Properties using (toℕ-fromℕ< ; fromℕ<-cong)
 import Data.Integer.Base as ℤ
 open import Data.Nat.Base as ℕ using (_≤_ ; s≤s ; z≤n)
-open import Data.Nat.DivMod using (_%_ ; m%n<n ; m%n%n≡m%n ; %-distribˡ-+)
+open import Data.Nat.DivMod using (_%_ ; m%n<n ; m%n%n≡m%n ; %-distribˡ-+ ; m*n%n≡0)
+import Data.Nat.Properties as ℕP
 open import Data.Product.Base using (Σ ; _,_ ; proj₁ ; proj₂)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq
@@ -252,6 +253,12 @@ opaque
   -- A residue as a count: toℕ k copies of x make k * x.
   ×ᶠ-toℕ : (k x : F) → toℕ k ×ᶠ x ≡ k * x
   ×ᶠ-toℕ k x = trans (×ᶠ-＊ (toℕ k) x) (＊-* (toℕ k) x)
+
+  -- p copies of x make 0.
+  p-×ᶠ : (x : F) → p ×ᶠ x ≡ 0F
+  p-×ᶠ x = trans (×ᶠ-＊ p x) (trans (＊-* p x)
+             (fromℕ<-cong _ 0 (trans (cong (_% p) (ℕP.*-comm p (toℕ x))) (m*n%n≡0 (toℕ x) p))
+                          (m%n<n (p ℕ.* toℕ x) p) (m%n<n 0 p)))
 
 ------------------------------------------------------------------------
 -- The binomial coordinates
