@@ -106,6 +106,21 @@ eval : Vec (Gen₃ m) k → Vec F k → Circuit m
 eval []       []       = ε
 eval (G ∷ Gs) (e ∷ es) = the G ^ᶠ e • eval Gs es
 
+-- The vector with c at i.
+unitᵛ : Fin k → F → Vec F k
+unitᵛ {suc k} zero    c = c ∷ replicate k 0F
+unitᵛ {suc k} (suc i) c = 0F ∷ unitᵛ i c
+
+-- The label vector of a list of (gate, label).
+vec : List (Fin k × F) → Vec F k
+vec []             = replicate _ 0F
+vec ((i , c) ∷ ts) = zipWith _+_ (unitᵛ i c) (vec ts)
+
+-- Scaling every label.
+scaleᵗ : F → List (Fin k × F) → List (Fin k × F)
+scaleᵗ a []             = []
+scaleᵗ a ((i , c) ∷ ts) = (i , c * a) ∷ scaleᵗ a ts
+
 module _ {m : ℕ} where
 
   open Width m
@@ -140,11 +155,6 @@ module _ {m : ℕ} where
       ≈⟨ cong (Pow.Order.^ᶠ-* m (ord G) e c) (eval-^ᶠ Gs es c) ⟩
     the G ^ᶠ (e * c) • eval Gs (map (_* c) es) ∎
 
-  -- The vector with c at i.
-  unitᵛ : Fin k → F → Vec F k
-  unitᵛ {suc k} zero    c = c ∷ replicate k 0F
-  unitᵛ {suc k} (suc i) c = 0F ∷ unitᵛ i c
-
   eval-unit : (Gs : Vec (Gen₃ m) k) (i : Fin k) (c : F) → m ⊢ the (lookup Gs i) ^ᶠ c ≈ eval Gs (unitᵛ i c)
   eval-unit (G ∷ Gs) zero    c = sym (trans (back _ (eval-0 Gs)) right-unit)
   eval-unit (G ∷ Gs) (suc i) c = trans (eval-unit Gs i c) (sym left-unit)
@@ -153,11 +163,6 @@ module _ {m : ℕ} where
   term : Vec (Gen₃ m) k → List (Fin k × F) → Circuit m
   term Gs []             = ε
   term Gs ((i , c) ∷ ts) = the (lookup Gs i) ^ᶠ c • term Gs ts
-
-  -- Its label vector.
-  vec : List (Fin k × F) → Vec F k
-  vec []             = replicate _ 0F
-  vec ((i , c) ∷ ts) = zipWith _+_ (unitᵛ i c) (vec ts)
 
   term-eval : (Gs : Vec (Gen₃ m) k) (ts : List (Fin k × F)) → m ⊢ term Gs ts ≈ eval Gs (vec ts)
   term-eval Gs []             = sym (eval-0 Gs)
@@ -170,11 +175,6 @@ module _ {m : ℕ} where
   Diag₃-term : (Gs : Vec (Gen₃ m) k) (ts : List (Fin k × F)) → Diag₃ m (term Gs ts)
   Diag₃-term Gs []             = Diag₃-ε
   Diag₃-term Gs ((i , c) ∷ ts) = Diag₃-• (Diag₃-^ᶠ (dia (lookup Gs i)) c) (Diag₃-term Gs ts)
-
-  -- Scaling every label.
-  scaleᵗ : F → List (Fin k × F) → List (Fin k × F)
-  scaleᵗ a []             = []
-  scaleᵗ a ((i , c) ∷ ts) = (i , c * a) ∷ scaleᵗ a ts
 
   term-^ᶠ : (Gs : Vec (Gen₃ m) k) (ts : List (Fin k × F)) (a : F) → m ⊢ term Gs ts ^ᶠ a ≈ term Gs (scaleᵗ a ts)
   term-^ᶠ Gs []             a = Pow.pow-ε m (toℕ a)

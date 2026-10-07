@@ -28,7 +28,8 @@ module Examples.Groups.Qupit-Phase-Affine.Phase.Cube.Gates
 
 import Data.Integer.Base as ℤ
 open import Data.Fin.Base using (Fin ; zero ; toℕ)
-open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.Fin using (#_)
+open import Data.List.Base using (List ; [] ; _∷_ ; _++_)
 open import Data.Nat.Base using (zero ; suc)
 open import Data.Product.Base using (Σ ; _×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Vec.Base using (Vec ; [] ; _∷_)
@@ -50,6 +51,8 @@ open import Examples.Groups.Qupit-Phase-Affine.Linear.Wires p-2 p-prime lv using
 open import Examples.Groups.Qupit-Phase-Affine.Linear.Fan p-2 p-prime lv using (0ᵛ ; ⌊^⌋)
 open import Examples.Groups.Qupit-Phase-Affine.Linear.Rows p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Phase.Cube.Diag p-2 p-prime lv h gt3 public
+open import Examples.Groups.Qupit-Phase-Affine.Phase.Cube.Mono p-2 p-prime lv h gt3
+  using (Gen₃ ; gen₃ ; term ; vec ; by-labels ; term-++ ; term-^ᶠ ; scaleᵗ ; fix)
 
 private
   variable
@@ -258,3 +261,118 @@ neg-T {n} ℓ = begin
   MTM = trans (back _ (T-M -1*)) (trans (sym assoc) (trans (front _ (Inv.inverseˡ (₁₊ n))) left-unit))
   Zpart : (₁₊ n) ⊢ r ℓ ⁻¹ • Z h₁ ^ᶠ b • r ℓ ≈ Zc ((b ∷ 0ᵛ) ⋆ᴿ* rL ℓ)
   Zpart = trans (back _ (front _ (sym (trans (back _ (lift Zc-zero)) right-unit)))) (Zc-rconj ℓ (b ∷ 0ᵛ))
+
+------------------------------------------------------------------------
+-- The gadget of T
+
+module _ {n : ℕ} where
+
+  open Width (₂₊ n)
+
+  private
+    lift-ᶠ : (w : Circuit (₁₊ n)) (k : F) → (₂₊ n) ⊢ (w ^ᶠ k) ↑ ≈ (w ↑) ^ᶠ k
+    lift-ᶠ w k = refl' (↑ᶠ w k)
+
+    -- T, S, Z on both wires, CZ, and the atoms of T at x₀ ± x₁.
+    Gs : Vec (Gen₃ (₂₊ n)) 9
+    Gs = gen₃ (T h) Diag₃-T ∷ gen₃ (T h ↑) (Diag₃-↑ Diag₃-T)
+       ∷ gen₃ (S h₂) (Diag₃-2 Diag-S) ∷ gen₃ (S h₂ ↑) (Diag₃-↑ (Diag₃-2 Diag-S))
+       ∷ gen₃ (Z h₁) (Diag₃-2 Diag-Z) ∷ gen₃ (Z h₁ ↑) (Diag₃-↑ (Diag₃-2 Diag-Z))
+       ∷ gen₃ (CZ h₂) (Diag₃-2 Diag-CZ) ∷ gen₃ (atomᵀ e₀₁) (Diag₃-atomᵀ e₀₁)
+       ∷ gen₃ (atomᵀ e0m1) (Diag₃-atomᵀ e0m1) ∷ []
+
+    L-CS L-A L-z L-8 L-b L-SC′ L-SC L-T L-L L-R : List (Fin 9 × F)
+    L-CS = (# 8 , - half) ∷ (# 7 , half) ∷ (# 3 , - 1F) ∷ (# 1 , - 1F) ∷ (# 5 , - half) ∷ (# 6 , half) ∷ []
+    L-A  = (# 2 , 1F) ∷ (# 3 , - 1F * - 1F) ∷ (# 5 , binom2 (- 1F)) ∷ (# 6 , - 1F) ∷ []
+    L-z  = (# 4 , binom3 (- 1F) * 1F) ∷ (# 5 , binom3 (- 1F) * - 1F) ∷ []
+    L-8  = (# 8 , - 1F * - 1F * - 1F) ∷ []
+    L-b  = scaleᵗ (2F * - 1F * binom2 (- 1F)) L-A ++ L-z ++ L-8
+    L-SC′ = (# 7 , half) ∷ (# 2 , - 1F) ∷ (# 0 , - 1F) ∷ (# 4 , - half) ∷ (# 6 , half) ∷ []
+    L-SC = scaleᵗ (- half) L-b ++ L-SC′
+    L-T  = (# 0 , 1F) ∷ (# 1 , 1F) ∷ []
+    L-L  = L-T ++ (L-CS ++ L-SC)
+    L-R  = (# 7 , 1F) ∷ []
+
+    CS≈ : (₂₊ n) ⊢ CS h ≈ term Gs L-CS
+    CS≈ = trans CS-atoms (back _ (back _ (cong (lift-ᶠ (S h₂) (- 1F)) (cong (lift-ᶠ (T h) (- 1F)) (cong (lift-ᶠ (Z h₁) (- half)) (sym right-unit))))))
+
+    A≈ : (₂₊ n) ⊢ atom e0m1 ≈ term Gs L-A
+    A≈ = trans (A-01 (- 1F)) (back _ (trans assoc (cong (lift-ᶠ (S h₂) (- 1F * - 1F)) (cong (lift-ᶠ (Z h₁) (binom2 (- 1F))) (sym right-unit)))))
+
+    B : F
+    B = binom3 (- 1F)
+
+    z≡ : (B ∷ 0ᵛ) ⋆ᴿ* rL (e0m1 {n}) ≡ B * 1F ∷ B * - 1F ∷ scaleᵛ B 0ᵛ
+    z≡ = Eq.trans (Eq.cong (_⋆ᴿ* rL e0m1) (Eq.cong₂ _∷_ (Eq.sym (FR.*-identityʳ B)) (Eq.sym (scale-0 B))))
+           (Eq.trans (scale-⋆ᴿ* B (1F ∷ 0ᵛ) (rL e0m1)) (Eq.cong (scaleᵛ B) (e₀-rL e0m1)))
+
+    Zc≈ : (₂₊ n) ⊢ Zc (B * 1F ∷ B * - 1F ∷ scaleᵛ B 0ᵛ) ≈ term Gs L-z
+    Zc≈ = back _ (cong (lift-ᶠ (Z h₁) (B * - 1F)) (lift (lift (Width.trans (Width.refl' n (Eq.cong Zc (scale-0 B))) Zc-zero))))
+
+    em1-row : row (e0 ⋆* ([ mul -1* ]ʷ • rL (e0m1 {n}))) ≡ row (em1 {n})
+    em1-row = Eq.trans (row-⋆* e0 ([ mul -1* ]ʷ • rL e0m1))
+      (Eq.trans (Eq.cong (_⋆ᴿ* rL e0m1) (Eq.cong₂ _∷_ (FR.*-comm 1F (- 1F)) (Eq.sym (scale-0 (- 1F)))))
+        (Eq.trans (scale-⋆ᴿ* (- 1F) (1F ∷ 0ᵛ) (rL e0m1))
+          (Eq.trans (Eq.cong (scaleᵛ (- 1F)) (e₀-rL e0m1))
+            (Eq.cong₂ _∷_ (FR.*-identityʳ (- 1F))
+                      (Eq.cong₂ _∷_ (solve 0 ((:- con (ℤ.+ 1)) :* (:- con (ℤ.+ 1)) := con (ℤ.+ 1)) Eq.refl) (scale-0 (- 1F)))))))
+
+    b≈ : (₂₊ n) ⊢ atomᵀ em1 ≈ term Gs L-b
+    b≈ = begin
+      atomᵀ em1
+        ≈⟨ atomᵀ-≡ em1 (e0 ⋆* ([ mul -1* ]ʷ • rL e0m1)) (Eq.sym em1-row) ⟩
+      atomᵀ (e0 ⋆* ([ mul -1* ]ʷ • rL e0m1))
+        ≈⟨ neg-T e0m1 ⟩
+      atom e0m1 ^ᶠ (2F * - 1F * binom2 (- 1F)) • Zc ((B ∷ 0ᵛ) ⋆ᴿ* rL e0m1) • atomᵀ e0m1 ^ᶠ (- 1F * - 1F * - 1F)
+        ≈⟨ cong (trans (Pow.pow-cong (₂₊ n) (toℕ (2F * - 1F * binom2 (- 1F))) A≈) (term-^ᶠ Gs L-A _))
+                (cong (trans (refl' (Eq.cong Zc z≡)) Zc≈) (sym right-unit)) ⟩
+      term Gs (scaleᵗ (2F * - 1F * binom2 (- 1F)) L-A) • term Gs L-z • term Gs L-8
+        ≈⟨ sym (trans (term-++ Gs (scaleᵗ (2F * - 1F * binom2 (- 1F)) L-A) (L-z ++ L-8)) (back _ (term-++ Gs L-z L-8))) ⟩
+      term Gs L-b ∎
+
+    SC≈ : (₂₊ n) ⊢ SC ≈ term Gs L-SC
+    SC≈ = begin
+      SC
+        ≈⟨ SC-atoms ⟩
+      atomᵀ em1 ^ᶠ (- half) • atomᵀ e₀₁ ^ᶠ half • Q₀
+        ≈⟨ cong (trans (Pow.pow-cong (₂₊ n) (toℕ (- half)) b≈) (term-^ᶠ Gs L-b _))
+                (back _ (back _ (back _ (back _ (sym right-unit))))) ⟩
+      term Gs (scaleᵗ (- half) L-b) • term Gs L-SC′
+        ≈⟨ sym (term-++ Gs (scaleᵗ (- half) L-b) L-SC′) ⟩
+      term Gs L-SC ∎
+
+    PT≈ : (₂₊ n) ⊢ PT ≈ atomᵀ e₀₁
+    PT≈ = begin
+      CX ^ᶠ (- 1F) • T h • CX              ≈⟨ undo-conj [ cx ]ʷ (CX-invˡ 1F) ⟩
+      CX ⁻¹ • T h • CX                     ≈⟨ back _ (front _ T≈) ⟩
+      CX ⁻¹ • atomᵀ e0 • CX                ≈⟨ atomᵀ-conj e0 [ cx ]ʷ ⟩
+      atomᵀ (e0 ⋆ cx)                      ≈⟨ atomᵀ-≡ (e0 ⋆ cx) e₀₁ (Eq.cong (λ t → 1F ∷ t ∷ 0ᵛ) (FR.+-identityˡ 1F)) ⟩
+      atomᵀ e₀₁                            ∎
+
+    labels : vec L-L ≡ vec L-R
+    labels = Eq.cong₂ _∷_ (solve 3 (λ h B2 B3 → ((con (ℤ.+ 1)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((:- (con (ℤ.+ 1))) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0)))))))))))))))))))))) := ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0)))) Eq.refl half (binom2 (- 1F)) (binom3 (- 1F)))
+      (Eq.cong₂ _∷_ (solve 3 (λ h B2 B3 → ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 1)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((:- (con (ℤ.+ 1))) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0)))))))))))))))))))))) := ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0)))) Eq.refl half (binom2 (- 1F)) (binom3 (- 1F)))
+      (Eq.cong₂ _∷_ (Eq.trans (solve 3 (λ h B2 B3 → ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((((con (ℤ.+ 1)) :* (((con (ℤ.+ 1) :+ con (ℤ.+ 1)) :* (:- (con (ℤ.+ 1)))) :* B2)) :* (:- h)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((:- (con (ℤ.+ 1))) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0)))))))))))))))))))))) := ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0))) :+ ((con (ℤ.+ 1)) :* ((h :+ h) :- con (ℤ.+ 1)) :+ (((con (ℤ.+ 2)) :* h) :* (B2 :- con (ℤ.+ 1)) :+ (con (ℤ.+ 0)) :* (B3 :+ con (ℤ.+ 1))))) Eq.refl half (binom2 (- 1F)) (binom3 (- 1F)))
+            (fix _ _ _ _))
+      (Eq.cong₂ _∷_ (Eq.trans (solve 3 (λ h B2 B3 → ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((:- (con (ℤ.+ 1))) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (((((:- (con (ℤ.+ 1))) :* (:- (con (ℤ.+ 1)))) :* (((con (ℤ.+ 1) :+ con (ℤ.+ 1)) :* (:- (con (ℤ.+ 1)))) :* B2)) :* (:- h)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0)))))))))))))))))))))) := ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0))) :+ ((con (ℤ.+ 1)) :* ((h :+ h) :- con (ℤ.+ 1)) :+ (((con (ℤ.+ 2)) :* h) :* (B2 :- con (ℤ.+ 1)) :+ (con (ℤ.+ 0)) :* (B3 :+ con (ℤ.+ 1))))) Eq.refl half (binom2 (- 1F)) (binom3 (- 1F)))
+            (fix _ _ _ _))
+      (Eq.cong₂ _∷_ (Eq.trans (solve 3 (λ h B2 B3 → ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (((B3 :* (con (ℤ.+ 1))) :* (:- h)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((:- h) :+ ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0)))))))))))))))))))))) := ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0))) :+ ((con (ℤ.+ 0)) :* ((h :+ h) :- con (ℤ.+ 1)) :+ ((con (ℤ.+ 0)) :* (B2 :- con (ℤ.+ 1)) :+ ((:- (con (ℤ.+ 1))) :* h) :* (B3 :+ con (ℤ.+ 1))))) Eq.refl half (binom2 (- 1F)) (binom3 (- 1F)))
+            (fix _ _ _ _))
+      (Eq.cong₂ _∷_ (Eq.trans (solve 3 (λ h B2 B3 → ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((:- h) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (((B2 :* (((con (ℤ.+ 1) :+ con (ℤ.+ 1)) :* (:- (con (ℤ.+ 1)))) :* B2)) :* (:- h)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (((B3 :* (:- (con (ℤ.+ 1)))) :* (:- h)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0)))))))))))))))))))))) := ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0))) :+ ((con (ℤ.+ 0)) :* ((h :+ h) :- con (ℤ.+ 1)) :+ (((((con (ℤ.+ 2)) :* h) :* B2) :+ ((con (ℤ.+ 2)) :* h)) :* (B2 :- con (ℤ.+ 1)) :+ ((con (ℤ.+ 1)) :* h) :* (B3 :+ con (ℤ.+ 1))))) Eq.refl half (binom2 (- 1F)) (binom3 (- 1F)))
+            (fix _ _ _ _))
+      (Eq.cong₂ _∷_ (Eq.trans (solve 3 (λ h B2 B3 → ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (h :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((((:- (con (ℤ.+ 1))) :* (((con (ℤ.+ 1) :+ con (ℤ.+ 1)) :* (:- (con (ℤ.+ 1)))) :* B2)) :* (:- h)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (h :+ (con (ℤ.+ 0)))))))))))))))))))))) := ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0))) :+ ((con (ℤ.+ 0)) :* ((h :+ h) :- con (ℤ.+ 1)) :+ (((:- (con (ℤ.+ 2))) :* h) :* (B2 :- con (ℤ.+ 1)) :+ (con (ℤ.+ 0)) :* (B3 :+ con (ℤ.+ 1))))) Eq.refl half (binom2 (- 1F)) (binom3 (- 1F)))
+            (fix _ _ _ _))
+      (Eq.cong₂ _∷_ (Eq.trans (solve 3 (λ h B2 B3 → ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (h :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (h :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0)))))))))))))))))))))) := ((con (ℤ.+ 1)) :+ (con (ℤ.+ 0))) :+ ((con (ℤ.+ 1)) :* ((h :+ h) :- con (ℤ.+ 1)) :+ ((con (ℤ.+ 0)) :* (B2 :- con (ℤ.+ 1)) :+ (con (ℤ.+ 0)) :* (B3 :+ con (ℤ.+ 1))))) Eq.refl half (binom2 (- 1F)) (binom3 (- 1F)))
+            (fix _ _ _ _))
+      (Eq.cong₂ _∷_ (solve 3 (λ h B2 B3 → ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((:- h) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (((((:- (con (ℤ.+ 1))) :* (:- (con (ℤ.+ 1)))) :* (:- (con (ℤ.+ 1)))) :* (:- h)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0)))))))))))))))))))))) := ((con (ℤ.+ 0)) :+ (con (ℤ.+ 0)))) Eq.refl half (binom2 (- 1F)) (binom3 (- 1F)))
+      (Eq.refl)))))))))
+
+  -- The gadget of T: PT is T on both wires, CS and SC.
+  PT-dec : (₂₊ n) ⊢ PT ≈ T h • T h ↑ • CS h • SC
+  PT-dec = begin
+    PT                                   ≈⟨ trans PT≈ (sym right-unit) ⟩
+    term Gs L-R                          ≈⟨ sym (by-labels Gs L-L L-R labels) ⟩
+    term Gs L-L                          ≈⟨ trans (term-++ Gs L-T (L-CS ++ L-SC)) (cong refl (trans (term-++ Gs L-CS L-SC) (cong (sym CS≈) (sym SC≈)))) ⟩
+    (T h • T h ↑ • ε) • CS h • SC        ≈⟨ front _ (back _ right-unit) ⟩
+    (T h • T h ↑) • CS h • SC            ≈⟨ assoc ⟩
+    T h • T h ↑ • CS h • SC              ∎
