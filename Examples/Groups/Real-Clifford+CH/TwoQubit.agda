@@ -32,6 +32,7 @@ open import Data.Bool using (Bool ; true ; false ; _∧_ ; if_then_else_)
 open import Data.Fin using (Fin)
 open import Data.Nat using (ℕ)
 open import Data.Product using (_,_ ; proj₁ ; proj₂)
+open import Data.Unit using (tt)
 open import Data.Vec using ([] ; _∷_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
@@ -204,18 +205,41 @@ e-sem (gate₀ () ↥ ↥)
 ------------------------------------------------------------------------
 -- Two-qubit completeness (Lemma 7.6)
 --
--- From the completeness of Figure 7 for the matrix group (Theorem 4.4,
--- [Fang, Heunen and Kaarsgaard]) and the two lemmas of Appendix C:
+-- From the completeness of Figure 7 for the proper words (Theorem 4.4
+-- of [Fang, Heunen and Kaarsgaard], for Figure 6, with Proposition 4.8:
+-- Auxiliary.Theorem44) and the two lemmas of Appendix C:
 -- the decoding respects Figure 7 (Lemma 7.5) and inverts the encoding
 -- (Lemma 7.4, here on the generators, since circuits are words).
 
 open PB (4 G.G,_===_) using () renaming (_≈_ to _≈G_)
 
+-- Theorem 4.4 on four basis vectors: Figure 7 is complete for the
+-- proper words, those over the paper's G₄.
+Theorem-4-4 : Set
+Theorem-4-4 = ∀ {u t : Word (G.Gen 4)} → G.Proper u → G.Proper t → ⟦ u ⟧Y ~ ⟦ t ⟧Y → u ≈G t
+
+-- The encoding produces proper words.
+e-ok₁ : ∀ g → G.Proper (e g)
+e-ok₁ (gate₀ ())
+e-ok₁ H-gen        = G.Hᵖ (λ ()) , G.Hᵖ (λ ())
+e-ok₁ Z-gen        = G.−1ᵖ , G.−1ᵖ
+e-ok₁ CZ-gen       = G.−1ᵖ
+e-ok₁ CH-gen       = G.Hᵖ (λ ())
+e-ok₁ (H-gen ↥)    = G.Hᵖ (λ ()) , G.Hᵖ (λ ())
+e-ok₁ (Z-gen ↥)    = G.−1ᵖ , G.−1ᵖ
+e-ok₁ (gate₀ () ↥)
+e-ok₁ (gate₀ () ↥ ↥)
+
+e-ok : ∀ (w : Circuit 2) → G.Proper ((e ʷ) w)
+e-ok [ g ]ʷ   = e-ok₁ g
+e-ok ε        = tt
+e-ok (w • v)  = e-ok w , e-ok v
+
 module Lemma-7-6
-  (theorem-4-4 : ∀ {u t : Word (G.Gen 4)} → ⟦ u ⟧Y ~ ⟦ t ⟧Y → u ≈G t)
+  (theorem-4-4 : Theorem-4-4)
   (lemma-7-4   : ∀ g → 2 ⊢ [ g ]ʷ ≈ (d ʷ) (e g))
   (lemma-7-5   : ∀ {u t} → 4 G.G, u === t → 2 ⊢ (d ʷ) u ≈ (d ʷ) t)
   where
 
-  open BF.Complete theorem-4-4 e e-sem d lemma-7-5 lemma-7-4 public
+  open BF.CompleteOn G.Proper theorem-4-4 e e-ok e-sem d lemma-7-5 lemma-7-4 public
     using (complete)

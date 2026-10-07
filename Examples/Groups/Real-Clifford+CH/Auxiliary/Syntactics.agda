@@ -16,8 +16,9 @@
 -- that theory, equivalent to it (Proposition 4.8): generic equations
 -- over distinct indices, and a few instances at named indices 0 … 5.
 -- Its completeness for the matrix group is the paper's Theorem 4.4,
--- quoted from the literature; here it is a hypothesis of the
--- completeness theorems that use it.
+-- quoted from the literature, with Proposition 4.8; here it is a
+-- hypothesis of the completeness theorems that use it, stated for
+-- proper words (below).
 --
 -- The relation is indexed by N, like the circuit relations by their
 -- width: an equation naming the indices 0 … j is stated for every N
@@ -31,6 +32,8 @@ module Examples.Groups.Real-Clifford+CH.Auxiliary.Syntactics where
 
 open import Data.Fin using (Fin)
 open import Data.Nat using (ℕ)
+open import Data.Product using (_×_)
+open import Data.Unit using (⊤)
 open import Relation.Binary.PropositionalEquality using (_≢_)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_)
 
@@ -88,3 +91,23 @@ data _G,_===_ : (N : ℕ) → WRel (Gen N) where
         H ₀ ₄ • H ₁ ₅ • H ₀ ₂ • H ₁ ₃ • H ₀ ₁
 
   e2* : ∀ {b c : Fin N} → b ≢ c → N G, H c b • X b c === X b c • H b c
+
+------------------------------------------------------------------------
+-- Proper words
+--
+-- The paper's alphabet G_N (Proposition 4.2) asks a ≠ b of X_[a,b] and
+-- H_[a,b]; `Gen N` does not.  Its degenerate letters are not harmless:
+-- X_[a,a] denotes the identity, but no rule of Figure 7 mentions it, so
+-- it is not ≈ ε (Auxiliary.Degenerate), and completeness for all words
+-- of `Gen N` would be false.  Completeness is therefore stated for the
+-- proper words, the words over G_N.
+
+data ProperG {N : ℕ} : Gen N → Set where
+  −1ᵖ : ∀ {a : Fin N} → ProperG −1[ a ]
+  Xᵖ  : ∀ {a b : Fin N} → a ≢ b → ProperG X[ a , b ]
+  Hᵖ  : ∀ {a b : Fin N} → a ≢ b → ProperG H[ a , b ]
+
+Proper : Word (Gen N) → Set
+Proper [ g ]ʷ  = ProperG g
+Proper ε       = ⊤
+Proper (u • v) = Proper u × Proper v

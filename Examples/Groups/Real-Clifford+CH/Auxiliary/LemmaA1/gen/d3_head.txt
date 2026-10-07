@@ -1,0 +1,42 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- Lemma A.1: (d3) at the indices 0 … 3 (Clément, Appendix A.2)
+--
+--     (H_[2,3] H_[0,2] H_[1,3])⁴  ≈  H_[0,1] H_[2,3]
+--
+-- The paper's chain of eighteen lines, from (d3*): signs on 2, 3 are
+-- inserted and turned into the exchanges X_[0,2] X_[1,3] (b4, d2, b5),
+-- which carry H_[2,3] to H_[0,1] (c5†, c4†) and are turned back into
+-- signs (b5, d2†, b4), twice per half; then (d3*) applies and what is
+-- left cancels.  Each line is one or a few structured moves — commuting
+-- swaps, an exchange passing a letter it renames (LemmaA1.Rename), (d1),
+-- (d2), (d2†) — generated from the paper's lines and checked
+-- numerically, every intermediate line against the paper's (LemmaA1/gen:
+-- gen_chain.py, macros.py, spec_d3.py).
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+open import Data.Nat using (ℕ)
+
+module Examples.Groups.Real-Clifford+CH.Auxiliary.LemmaA1.D3 (m : ℕ) where
+
+open import Data.List using ([] ; _∷_)
+open import Relation.Binary.PropositionalEquality as Eq using (_≢_)
+open import Word.Base using (_•_ ; _^_)
+
+open import Notations using (₀ ; ₁ ; ₂ ; ₃ ; ₄₊)
+
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.Syntactics
+  using (−1 ; X ; H ; −1[_] ; X[_,_] ; H[_,_] ; _G,_===_ ; −1ᵖ ; Xᵖ ; Hᵖ)
+open _G,_===_
+open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.SegChain (₄₊ m G,_===_)
+  using (at ; _▸_ ; done ; run)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.LemmaA1.Rename (₄₊ m) using (passR ; passL)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.LemmaA1.Moves using (a1 ; b1 ; b4 ; b6)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.LemmaA1.More (₄₊ m) using (d1 ; d2†)
+
+open Tools (₄₊ m G,_===_)
+

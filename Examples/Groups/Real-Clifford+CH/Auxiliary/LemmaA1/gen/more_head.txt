@@ -1,0 +1,31 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- Lemma A.1: (d1) and the variant (d2†) (Clément, Appendix A.2)
+--
+-- The paper's chains, generated and checked numerically as those of
+-- LemmaA1.Base (LemmaA1/gen: gen_chain.py, spec_more.py).  (d2†) uses
+-- (a1) at any index and (d1) uses (b1), both from LemmaA1.Moves.
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+open import Data.Nat using (ℕ)
+
+module Examples.Groups.Real-Clifford+CH.Auxiliary.LemmaA1.More (N : ℕ) where
+
+open import Data.Fin using (Fin)
+open import Data.List using ([] ; _∷_)
+open import Relation.Binary.PropositionalEquality using (_≢_)
+open import Word.Base using (_•_)
+
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.Syntactics using (−1 ; X ; H ; _G,_===_)
+open _G,_===_
+open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.SegChain (N G,_===_)
+  using (at ; _▸_ ; done ; run)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.LemmaA1.Base N using (sy ; e1)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.LemmaA1.Moves using (a1 ; b1)
+
+open Tools (N G,_===_)
+

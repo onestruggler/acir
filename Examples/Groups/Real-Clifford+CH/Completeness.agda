@@ -16,10 +16,12 @@
 -- (BackAndForth).  What the paper takes from the literature or proves
 -- in its appendix appears as hypotheses:
 --
---   * Theorem 4.4, completeness of Figure 7 for the matrices on four
---     basis vectors — for two qubits; Figure 7 is sound for those
---     matrices (Auxiliary.Soundness), and Lemmas 7.4 and 7.5 of
---     Appendix C are proved (TwoQubit.Decoding);
+--   * completeness of Figure 7 for the proper words on four basis
+--     vectors — for two qubits; it is the paper's Theorem 4.4
+--     (completeness of Figure 6) with Proposition 4.8, which
+--     Auxiliary.LemmaA1 proves, and Figure 7 is sound for those
+--     matrices (Auxiliary.Soundness); Lemmas 7.4 and 7.5 of Appendix C
+--     are proved (TwoQubit.Decoding);
 --   * for n ≥ 3, with the generators P and Figure 8, the encoding and
 --     the decoding of Definitions 8.2 and 8.3 all defined (Section8),
 --     and the encoding proved to preserve the semantics at every width
@@ -27,9 +29,11 @@
 --     Appendix A) and Lemmas 8.7 and 8.8 (Appendix E).  Checks8
 --     decides the soundness of Figure 8 on three qubits.
 --
--- Theorem 4.10 is in fact proved from Theorem 4.4 at the width of P
--- (Auxiliary.Theorem410Proof), and `Theorem-8-9′` below takes that
--- instead: its hypotheses are Theorem 4.4 and Lemmas 8.7 and 8.8.
+-- Theorem 4.10 is in fact proved from the completeness of Figure 7 at
+-- the width of P (Auxiliary.Theorem410Proof), and `Theorem-8-9′` below
+-- takes that instead.  Lemmas 8.7 and 8.8 are proved too, and
+-- CompletenessInduction.Theorem-8-9-from-4-4 assumes only the paper's
+-- Theorem 4.4.
 --
 -- The presented monoid is then a sub-monoid of the 2ⁿ × 2ⁿ matrices
 -- over ℤ[1/√2] at every width: the paper's completeness theorem in the
@@ -82,8 +86,7 @@ zero-wires (w • v) =
 
 module Theorem-8-9
   -- Two qubits: Theorem 4.4.
-  (theorem-4-4 : ∀ {u t : Word (G.Gen 4)} → ⟦ u ⟧Y₂ ~ ⟦ t ⟧Y₂ →
-                 PB._≈_ (4 G.G,_===_) u t)
+  (theorem-4-4 : TwoQubit.Theorem-4-4)
   -- Three qubits and more: Section 8, for each k with n = k + 3.
   (theorem-4-10 : ∀ k → Section8.Theorem-4-10 k)
   (lemma-8-8    : ∀ k → Section8.Lemma-8-8 k)
@@ -125,14 +128,14 @@ module Theorem-8-9
 -- method, both of its conditions derived from Figure 10's (65), which
 -- Auxiliary.Eq65H proves), given completeness of Figure 7 at the width
 -- of P.  That is how the paper obtains it: its Theorem 4.4, taken from
--- the literature, is the completeness of Figure 7 for the matrices on
--- any number of basis vectors.  So what is left as hypotheses is that
--- imported theorem, at two qubits and at every larger width, and
--- Lemmas 8.7 and 8.8 of Appendix E.
+-- the literature, is the completeness of Figure 6, and Proposition 4.8
+-- gives Figure 7's (Auxiliary.Theorem44).  So what is left as
+-- hypotheses is completeness of Figure 7 for the proper words, at two
+-- qubits and at every larger width, and Lemmas 8.7 and 8.8 of
+-- Appendix E.
 
 module Theorem-8-9′
-  (theorem-4-4  : ∀ {u t : Word (G.Gen 4)} → ⟦ u ⟧Y₂ ~ ⟦ t ⟧Y₂ →
-                  PB._≈_ (4 G.G,_===_) u t)
+  (theorem-4-4  : TwoQubit.Theorem-4-4)
   (theorem-4-4ₙ : ∀ k → T410.Theorem-4-4 k)
   (lemma-8-8    : ∀ k → Section8.Lemma-8-8 k)
   (lemma-8-7    : ∀ k → Section8.Lemma-8-7 k)

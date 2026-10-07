@@ -9,10 +9,12 @@
 -- (65), which `Eq65H` proves at every tuple of four distinct indices.
 -- So σ (`P.asG`) reflects equivalence: two words of P whose images over
 -- the auxiliary generators are equal in Figure 7 are equal in Figure 8.
--- And σ preserves the semantics on the nose (`asG-sem`), so the paper's
--- Theorem 4.4 — completeness of Figure 7, which it imports — at the
--- width of P gives `Section8.Theorem-4-10`, completeness of Figure 8,
--- the first hypothesis of Section 8's completeness argument.
+-- And σ preserves the semantics on the nose (`asG-sem`) and produces
+-- proper words (`asG-proper`), so completeness of Figure 7 for proper
+-- words at the width of P — the paper's imported Theorem 4.4, for
+-- Figure 6, with Proposition 4.8 (Auxiliary.Theorem44) — gives
+-- `Section8.Theorem-4-10`, completeness of Figure 8, the first
+-- hypothesis of Section 8's completeness argument.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -21,7 +23,10 @@ open import Data.Nat using (ℕ)
 
 module Examples.Groups.Real-Clifford+CH.Auxiliary.Theorem410Proof (m : ℕ) where
 
+open import Data.Empty.Irrelevant using (⊥-elim)
 open import Data.Nat using () renaming (_^_ to _^ℕ_)
+open import Data.Product using (_,_)
+open import Data.Unit using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 
@@ -56,9 +61,11 @@ module BG = BackAndForth n (N G.G,_===_) ⟦_⟧ᴳ
 module BP = BackAndForth n (m P,_===_) ⟦_⟧ᴾ
 
 -- Theorem 4.4 at the width of P: Figure 7 is complete for the matrices
--- of the auxiliary generators on 2ⁿ indices.
+-- of the proper words over the auxiliary generators on 2ⁿ indices (the
+-- words over the paper's G_N).
 Theorem-4-4 : Set
-Theorem-4-4 = ∀ {u t : Word (G.Gen N)} → BG.⟦ u ⟧Y ~ BG.⟦ t ⟧Y → PB._≈_ (N G.G,_===_) u t
+Theorem-4-4 = ∀ {u t : Word (G.Gen N)} → G.Proper u → G.Proper t →
+              BG.⟦ u ⟧Y ~ BG.⟦ t ⟧Y → PB._≈_ (N G.G,_===_) u t
 
 -- σ preserves the semantics.
 asG-sem : ∀ (u : Word (GenP n)) → BG.⟦ (asG ʷ) u ⟧Y ≡ BP.⟦ u ⟧Y
@@ -68,6 +75,15 @@ asG-sem [ XX a b c d _ _ ]ʷ = Eq.refl
 asG-sem [ HH a b c d _ _ ]ʷ = Eq.refl
 asG-sem ε                   = Eq.refl
 asG-sem (u • v)             = Eq.cong₂ _∙_ (asG-sem u) (asG-sem v)
+
+-- σ produces proper words: a letter of P carries its distinctness.
+asG-proper : ∀ (u : Word (GenP n)) → G.Proper ((asG ʷ) u)
+asG-proper [ −1−1 a b ]ʷ       = G.−1ᵖ , G.−1ᵖ
+asG-proper [ −1X c a b p ]ʷ    = G.−1ᵖ , G.Xᵖ (λ e → ⊥-elim (p e))
+asG-proper [ XX a b c d p q ]ʷ = G.Xᵖ (λ e → ⊥-elim (p e)) , G.Xᵖ (λ e → ⊥-elim (q e))
+asG-proper [ HH a b c d p q ]ʷ = G.Hᵖ (λ e → ⊥-elim (p e)) , G.Hᵖ (λ e → ⊥-elim (q e))
+asG-proper ε                   = tt
+asG-proper (u • v)             = asG-proper u , asG-proper v
 
 -- Item (b), in full.
 item-b : Item-b
@@ -79,4 +95,5 @@ open Complete eq65-full item-b public using (reidemeister-schreier)
 theorem-4-10 : Theorem-4-4 → Section8.Theorem-4-10 m
 theorem-4-10 t44 {u} {t} eq =
   reidemeister-schreier u t
-    (t44 (Eq.subst₂ _~_ (Eq.sym (asG-sem u)) (Eq.sym (asG-sem t)) eq))
+    (t44 (asG-proper u) (asG-proper t)
+       (Eq.subst₂ _~_ (Eq.sym (asG-sem u)) (Eq.sym (asG-sem t)) eq))

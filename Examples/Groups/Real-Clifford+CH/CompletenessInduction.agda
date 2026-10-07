@@ -48,6 +48,7 @@ import Examples.Groups.Real-Clifford+CH.TwoQubit.Decoding as Decoding
 open TwoQubit.BF using () renaming (⟦_⟧Y to ⟦_⟧Y₂)
 import Examples.Groups.Real-Clifford+CH.Auxiliary.Syntactics as G
 import Examples.Groups.Real-Clifford+CH.Auxiliary.Theorem410Proof as T410
+import Examples.Groups.Real-Clifford+CH.Auxiliary.Theorem44 as T44
 open import Examples.Groups.Real-Clifford+CH.Completeness using (zero-wires)
 import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87Three as L87₃
 import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87All as L87ₙ
@@ -70,8 +71,7 @@ Below n = ∀ {j} → j < n → Complete j
 module Theorem-8-9″
   -- Two qubits: Theorem 4.4 of the literature; on more, Theorem 4.4 at
   -- the width of P, from which Theorem 4.10 is proved.
-  (theorem-4-4  : ∀ {u t : Word (G.Gen 4)} → ⟦ u ⟧Y₂ ~ ⟦ t ⟧Y₂ →
-                  PB._≈_ (4 G.G,_===_) u t)
+  (theorem-4-4  : TwoQubit.Theorem-4-4)
   (theorem-4-4ₙ : ∀ k → T410.Theorem-4-4 k)
   -- Lemma 8.8 on 3 + k qubits, given completeness on fewer.
   (lemma-8-8    : ∀ k → Below (₃₊ k) → Section8.Lemma-8-8 k)
@@ -131,8 +131,7 @@ module Theorem-8-9″
 -- Lemma 8.8 on 5 + k qubits is Lemma88.All, given completeness on
 -- fewer; what is left of it is three and four qubits.
 module Theorem-8-9‴
-  (theorem-4-4  : ∀ {u t : Word (G.Gen 4)} → ⟦ u ⟧Y₂ ~ ⟦ t ⟧Y₂ →
-                  PB._≈_ (4 G.G,_===_) u t)
+  (theorem-4-4  : TwoQubit.Theorem-4-4)
   (theorem-4-4ₙ : ∀ k → T410.Theorem-4-4 k)
   (lemma-8-8₃   : Below 3 → Section8.Lemma-8-8 0)
   (lemma-8-8₄   : Below 4 → Section8.Lemma-8-8 1)
@@ -153,8 +152,7 @@ module Theorem-8-9‴
 -- Lemma 8.8 on three qubits is Lemma88.W3.All, from completeness on two
 -- and Lemma D.2; what is left of it is four qubits.
 module Theorem-8-9⁗
-  (theorem-4-4  : ∀ {u t : Word (G.Gen 4)} → ⟦ u ⟧Y₂ ~ ⟦ t ⟧Y₂ →
-                  PB._≈_ (4 G.G,_===_) u t)
+  (theorem-4-4  : TwoQubit.Theorem-4-4)
   (theorem-4-4ₙ : ∀ k → T410.Theorem-4-4 k)
   (lemma-8-8₄   : Below 4 → Section8.Lemma-8-8 1)
   where
@@ -169,17 +167,20 @@ module Theorem-8-9⁗
 -- Theorem 8.9 from Theorem 4.4 alone
 
 -- Lemma 8.8 on four qubits is Lemma88.W4.All, from completeness on two
--- and three qubits and Lemma D.5.  So Theorem 8.9 rests on nothing but
--- the one theorem the paper imports, Theorem 4.4 (on two qubits, and at
--- the width of P for Theorem 4.10).
+-- and three qubits and Lemma D.5.  And Proposition 4.8 derives the
+-- completeness of Figure 7, which the argument uses, from that of
+-- Figure 6, which is what the paper imports (Auxiliary.Theorem44,
+-- Auxiliary.LemmaA1).  So Theorem 8.9 rests on nothing but that one
+-- theorem, Theorem 4.4 as the paper states it: on two qubits, and at
+-- the width of P for Theorem 4.10.
 module Theorem-8-9-from-4-4
-  (theorem-4-4  : ∀ {u t : Word (G.Gen 4)} → ⟦ u ⟧Y₂ ~ ⟦ t ⟧Y₂ →
-                  PB._≈_ (4 G.G,_===_) u t)
-  (theorem-4-4ₙ : ∀ k → T410.Theorem-4-4 k)
+  (theorem-4-4  : T44.Theorem-4-4₂)
+  (theorem-4-4ₙ : ∀ k → T44.Theorem-4-4ₙ k)
   where
 
   private
     lemma-8-8₄ : Below 4 → Section8.Lemma-8-8 1
     lemma-8-8₄ b = L88₄.lemma-8-8₄ (b {2} (s≤s (s≤s (s≤s z≤n)))) (b {3} (s≤s (s≤s (s≤s (s≤s z≤n)))))
 
-  open Theorem-8-9⁗ theorem-4-4 theorem-4-4ₙ lemma-8-8₄ public using (completeness ; subpresentation)
+  open Theorem-8-9⁗ (T44.figure-7₂ theorem-4-4) (λ k → T44.figure-7ₙ k (theorem-4-4ₙ k)) lemma-8-8₄
+    public using (completeness ; subpresentation)
