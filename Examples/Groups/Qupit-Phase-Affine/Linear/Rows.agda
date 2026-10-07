@@ -135,20 +135,40 @@ zero-⋆ᴿ* [ y ]ʷ  = zero-⋆ᴿ y
 zero-⋆ᴿ* ε       = refl
 zero-⋆ᴿ* (L • M) = Eq.trans (Eq.cong (_⋆ᴿ* M) (zero-⋆ᴿ* L)) (zero-⋆ᴿ* M)
 
+-- Transport is linear: scaling commutes with it.
+scaleᵛ : F → Vec F n → Vec F n
+scaleᵛ k []      = []
+scaleᵛ k (a ∷ v) = k * a ∷ scaleᵛ k v
+
+scale-⋆ᴿ : (k : F) (v : Vec F n) (y : LGen n) → scaleᵛ k v ⋆ᴿ y ≡ scaleᵛ k (v ⋆ᴿ y)
+scale-⋆ᴿ k (c ∷ v)     (y ↥ₗ) = Eq.cong (k * c ∷_) (scale-⋆ᴿ k v y)
+scale-⋆ᴿ k (c ∷ v)     (mul x) = Eq.cong (_∷ scaleᵛ k v) (FR.*-assoc k c (proj₁ x))
+scale-⋆ᴿ k (c ∷ d ∷ v) cx      = Eq.cong (λ t → k * c ∷ t ∷ scaleᵛ k v) (Eq.sym (FR.distribˡ k d c))
+scale-⋆ᴿ k (c ∷ d ∷ v) sw      = refl
+
+scale-⋆ᴿ* : (k : F) (v : Vec F n) (L : Word (LGen n)) → scaleᵛ k v ⋆ᴿ* L ≡ scaleᵛ k (v ⋆ᴿ* L)
+scale-⋆ᴿ* k v [ y ]ʷ  = scale-⋆ᴿ k v y
+scale-⋆ᴿ* k v ε       = refl
+scale-⋆ᴿ* k v (L • M) = Eq.trans (Eq.cong (_⋆ᴿ* M) (scale-⋆ᴿ* k v L)) (scale-⋆ᴿ* k (v ⋆ᴿ* L) M)
+
+scale-0 : (k : F) → scaleᵛ k (0ᵛ {n}) ≡ 0ᵛ
+scale-0 {zero}  k = refl
+scale-0 {suc n} k = Eq.cong₂ _∷_ (FR.zeroʳ k) (scale-0 k)
+
 -- One wire up the head stays.
 ⋆ᴿ*-↑ : (c : F) (v : Vec F n) (L : Word (LGen n)) → (c ∷ v) ⋆ᴿ* (L ↑ₗ) ≡ c ∷ (v ⋆ᴿ* L)
 ⋆ᴿ*-↑ c v [ y ]ʷ  = refl
 ⋆ᴿ*-↑ c v ε       = refl
 ⋆ᴿ*-↑ c v (L • M) = Eq.trans (Eq.cong (_⋆ᴿ* (M ↑ₗ)) (⋆ᴿ*-↑ c v L)) (⋆ᴿ*-↑ c (v ⋆ᴿ* L) M)
 
-private
-  -- m copies of CX add m copies of the head to the next entry.
-  cx-pow : (x d : F) (v : Vec F n) (m : ℕ) → (x ∷ d ∷ v) ⋆ᴿ* ([ cx ]ʷ ^ m) ≡ x ∷ d + m ×ᶠ x ∷ v
-  cx-pow x d v zero          = Eq.cong (λ t → x ∷ t ∷ v) (Eq.sym (FR.+-identityʳ d))
-  cx-pow x d v (suc zero)    = Eq.cong (λ t → x ∷ d + t ∷ v) (Eq.sym (FR.+-identityʳ x))
-  cx-pow x d v (suc (suc m)) =
-    Eq.trans (cx-pow x (d + x) v (suc m)) (Eq.cong (λ t → x ∷ t ∷ v) (FR.+-assoc d x (suc m ×ᶠ x)))
+-- m copies of CX add m copies of the head to the next entry.
+cx-pow : (x d : F) (v : Vec F n) (m : ℕ) → (x ∷ d ∷ v) ⋆ᴿ* ([ cx ]ʷ ^ m) ≡ x ∷ d + m ×ᶠ x ∷ v
+cx-pow x d v zero          = Eq.cong (λ t → x ∷ t ∷ v) (Eq.sym (FR.+-identityʳ d))
+cx-pow x d v (suc zero)    = Eq.cong (λ t → x ∷ d + t ∷ v) (Eq.sym (FR.+-identityʳ x))
+cx-pow x d v (suc (suc m)) =
+  Eq.trans (cx-pow x (d + x) v (suc m)) (Eq.cong (λ t → x ∷ t ∷ v) (FR.+-assoc d x (suc m ×ᶠ x)))
 
+private
   e₀-R : (w : Vec F n) → (1F ∷ 0ᵛ) ⋆ᴿ* Rʷ w ≡ 1F ∷ w
   e₀-R []      = refl
   e₀-R (c ∷ w) = begin
