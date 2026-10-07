@@ -1,0 +1,462 @@
+\begin{code}[hide]
+module slides.Tsinghua-PL-seminar.sections.permutations where
+
+open import Data.Nat using (ℕ ; suc)
+open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Unit using (⊤)
+open import Level using (0ℓ)
+open import Relation.Binary using (Rel)
+
+open import Notations using (₁₊ ; ₂₊ ; ₃₊)
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; wmap)
+open import Presentation.Definitions using (_IsPresentationOf_)
+open import Examples.Groups.Symmetric.Tight.Semantics using (Permutation′-group)
+import Examples.Groups.Symmetric.Theorems as SymThm
+
+postulate
+  proof-elided : ∀ {ℓ} {A : Set ℓ} → A
+
+private variable
+  n : ℕ
+\end{code}
+%% Part 2 — the worked example (paper §2).
+\PaperPart
+\section{A complete worked example: permutation circuits}
+
+\begin{frame}{The pipeline we are about to run \InPaper}
+\centering
+\begin{tikzpicture}[node distance=3mm,
+  st/.style={draw=paperC,fill=softpaper,rounded corners=3pt,font=\scriptsize,
+    minimum height=10mm,text width=14mm,align=center,inner sep=2pt},
+  >={Stealth[length=2mm]}]
+  \node[st] (g) {gates \&\\generators};
+  \node[st,right=of g] (r) {relations\\{\scriptsize 2 axioms}};
+  \node[st,right=of r] (c) {cosets \&\\coset table};
+  \node[st,right=of c] (t) {tower\\{\scriptsize one digit/wire}};
+  \node[st,right=of t] (s) {semantics\\{\scriptsize two of them}};
+  \node[st,right=of s] (u) {uniqueness};
+  \node[st,fill=paperC!25,right=of u] (k) {completeness\\\& presentation};
+  \foreach \a/\b in {g/r,r/c,c/t,t/s,s/u,u/k} \draw[->,thick,paperC] (\a) -- (\b);
+\end{tikzpicture}
+\vspace{10pt}
+
+\begin{columns}[T]
+\begin{column}{0.45\textwidth}
+Circuits built from \alert{one} two-wire gate, the swap $\sigma$.
+They present the \alert{symmetric groups} $S_n$, at every width $n$ at once.
+\end{column}
+\begin{column}{0.45\textwidth}
+Every later case study is ``the same thing, with richer gates, longer
+towers, and amalgamations where the chain branches''.
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Gates, generators, circuits \InPaper}
+\begin{columns}[c]
+\begin{column}{0.58\textwidth}
+A gate set is a family \aid{Gate : ℕ → Set} (gates by arity). The circuit
+layer turns it into \alert{wire-indexed generators}:
+\begin{code}
+data Gate : ℕ → Set where
+  σ-gate : Gate 2
+data Gen : ℕ → Set where
+  gate₁ : Gate 1 → Gen (₁₊ n)  -- on the bottom wire
+  gate₂ : Gate 2 → Gen (₂₊ n)  -- on the bottom two wires
+  _↥   : Gen n → Gen (₁₊ n)    -- one wire higher
+\end{code}
+\begin{code}[hide]
+Circuit : ℕ → Set
+Circuit n = Word (Gen n)
+
+CRel : ℕ → Set₁
+CRel n = Rel (Circuit n) 0ℓ
+
+_↑ : Circuit n → Circuit (₁₊ n)
+_↑ = wmap _↥
+
+pattern σ-gen = gate₂ σ-gate
+
+σ : Circuit (₂₊ n)
+σ = [ σ-gen ]ʷ
+
+infix 4 _SRel,_===_ _VRel,_===_ _≈_
+infixr 10 σ•_
+
+private variable
+  w v : Circuit n
+
+postulate
+  _≈_ : Circuit n → Circuit n → Set
+\end{code}
+\vspace{2pt}
+\small An $n$-wire circuit is a word of generators,
+$\aid{Circuit}\;n = \aid{Word}\;(\aid{Gen}\;n)$:\;
+$[\,g\,]^{\mathsf{w}}$,\; $\varepsilon$ ($n$ bare wires),\; $c \aidop{•} c'$.
+\aid{₂₊ n} is the pattern for $2+n$, so \aid{gate₂ σ-gate} lives at every width $\ge 2$.
+\end{column}
+\begin{column}{0.38\textwidth}
+\centering
+\small
+\begin{tabular}{@{}r@{\quad}c@{}}
+$\sigma$ & \permcirc{3}{0} \\[10pt]
+$\sigma\;{\uparrow}$ & \permcirc{3}{1} \\[10pt]
+$\sigma \aidop{•} \sigma\;{\uparrow} \aidop{•} \sigma$ & \permcirc{3}{0,1,0}
+\end{tabular}
+
+\vspace{8pt}
+{\scriptsize wires drawn bottom-up (wire 0 at the bottom),\\
+composition left to right; $c\;{\uparrow} = \aid{wmap}\;\aid{\_↥}\;c$}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Relations: two axioms \InPaper}
+\begin{columns}[c]
+\begin{column}{0.60\textwidth}
+Gate-specific relations are an inductive family indexed by the wire count;
+each axiom is stated \alert{once}, at the bottom of the wires, at every width
+where it fits:
+\begin{code}
+data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
+  order       : (₂₊ n) SRel, σ • σ === ε
+  yang-baxter : (₃₊ n) SRel, σ • σ ↑ • σ === σ ↑ • σ • σ ↑
+\end{code}
+\vspace{4pt}
+Two thirds of the \alert{Coxeter presentation} of $S_n$:
+$\sigma^2=\varepsilon$ and the braid (Yang--Baxter) relation.
+
+\vspace{4pt}
+\small The third Coxeter relation --- swaps on \emph{disjoint} wires commute ---
+is not about permutations: every circuit theory needs it.
+\end{column}
+\begin{column}{0.36\textwidth}
+\centering
+\aid{order}\\[2pt]
+\ufig[0.42]{sn-order}\\[12pt]
+\aid{yang-baxter}\\[2pt]
+\ufig[0.42]{sn-yb}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Structure for free: \aid{Lift-Relation} \InPaper}
+\begin{columns}[c]
+\begin{column}{0.60\textwidth}
+Circuits are fixed-width slices of a \alert{PROP}. The monoidal structure leaves
+two traces at fixed width: equations survive the \alert{shift} (tensoring an
+identity wire), and gates on \alert{disjoint wires commute}.
+\begin{code}
+data _VRel,_===_ : (n : ℕ) → CRel n where
+  srel  : n SRel, w === v → n VRel, w === v
+  cong↑ : n VRel, w === v → (₁₊ n) VRel, w ↑ === v ↑
+  comm₁ : (h : Gate 1) (g : Gen n) →
+          (₁₊ n) VRel, [ g ↥ ]ʷ • [ gate₁ h ]ʷ === [ gate₁ h ]ʷ • [ g ↥ ]ʷ
+  comm₂ : (h : Gate 2) (g : Gen n) →
+          (₂₊ n) VRel, [ g ↥ ↥ ]ʷ • [ gate₂ h ]ʷ === [ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ
+\end{code}
+\small A new circuit theory = a \aid{Gate} family + its gate-specific
+relations. Structural rules and their lemmas come for free.
+\end{column}
+\begin{column}{0.37\textwidth}
+\centering
+\begin{tikzpicture}[x=4.2mm,y=3.7mm,line width=0.6pt,
+  g/.style={draw,fill=white,minimum width=4mm,minimum height=4mm,inner sep=0pt,font=\scriptsize}]
+  % cong↑
+  \node[font=\scriptsize\agdafont,anchor=west] at (-0.3,10.2) {cong↑};
+  \foreach \y in {8,9} \draw (0,\y) -- (2.6,\y);
+  \node[g,minimum height=9mm] at (1.3,8.5) {$w$};
+  \foreach \y in {7} \draw[gray] (0,\y) -- (2.6,\y);
+  \node at (3.4,8) {$\approx$};
+  \foreach \y in {8,9} \draw (4.2,\y) -- (6.8,\y);
+  \node[g,minimum height=9mm] at (5.5,8.5) {$v$};
+  \draw[gray] (4.2,7) -- (6.8,7);
+  % comm1
+  \node[font=\scriptsize\agdafont,anchor=west] at (-0.3,5.6) {comm₁};
+  \foreach \y in {2.8,3.8,4.8} \draw (0,\y) -- (2.6,\y);
+  \node[g,minimum height=9mm] at (0.8,4.3) {$g$};
+  \node[g] at (1.8,2.8) {$h$};
+  \node at (3.4,3.8) {$\approx$};
+  \foreach \y in {2.8,3.8,4.8} \draw (4.2,\y) -- (6.8,\y);
+  \node[g] at (5.0,2.8) {$h$};
+  \node[g,minimum height=9mm] at (6.0,4.3) {$g$};
+  % comm2
+  \node[font=\scriptsize\agdafont,anchor=west] at (-0.3,1.7) {comm₂};
+  \foreach \y in {-2,-1,0,1} \draw (0,\y) -- (2.6,\y);
+  \node[g,minimum height=9mm] at (0.8,0.5) {$g$};
+  \node[g,minimum height=9mm] at (1.8,-1.5) {$h$};
+  \node at (3.4,-0.5) {$\approx$};
+  \foreach \y in {-2,-1,0,1} \draw (4.2,\y) -- (6.8,\y);
+  \node[g,minimum height=9mm] at (5.0,-1.5) {$h$};
+  \node[g,minimum height=9mm] at (6.0,0.5) {$g$};
+\end{tikzpicture}
+
+{\scriptsize $\approx$ = the monoid congruence generated by
+\aid{n VRel,\_===\_}; deciding it is the word problem.}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Cosets: what normalization will compute \InPaper}
+\begin{columns}[c]
+\begin{column}{0.52\textwidth}
+Chain $S_1 < S_2 < \dots < S_n < S_{n+1}$; $S_n$ sits in $S_{n+1}$ as the
+circuits \alert{not touching the bottom wire}: the circuits $c\;{\uparrow}$.
+
+\vspace{4pt}
+Two circuits are in the same right coset iff they bring the \alert{same wire
+to the bottom}: $n{+}1$ cosets. Representative: the \alert{descending
+staircase} carrying that wire down.
+
+\vspace{4pt}
+A coset is a \emph{label}, not a set of circuits:
+\begin{code}
+data C : ℕ → Set where
+  ε   : C n
+  σ•_ : C n → C (₁₊ n)
+[_]ᶜ : C n → Circuit (₁₊ n)
+[ ε ]ᶜ     = ε
+[ σ• c ]ᶜ  = σ • ([ c ]ᶜ ↑)
+\end{code}
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tabular}{@{}l@{\;\;}ccc@{}}
+  $\aid{C}\;2$: & \ufig[0.40]{c2-0} & \ufig[0.40]{c2-1} & \ufig[0.40]{c2-2}\\
+  & $\varepsilon$ & $\sigma{\bullet}\,\varepsilon$ &
+    $\sigma{\bullet}\,\sigma{\bullet}\,\varepsilon$\\[8pt]
+  $\aid{C}\;1$: & \ufig[0.40]{c1-0} & \ufig[0.40]{c1-1} & \\
+  & $\varepsilon$ & $\sigma{\bullet}\,\varepsilon$ & \\[8pt]
+  $\aid{C}\;0$: & \ufig[0.40]{c0-0} & & \\
+  & $\varepsilon$ & &
+\end{tabular}
+
+\vspace{6pt}
+\small $|\aid{C}\;n| = n+1 = [S_{n+1} : S_n]$
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The coset table \aid{ract} \InPaper}
+\begin{columns}[c]
+\begin{column}{0.60\textwidth}
+Push one generator past a staircase: where do we land, and what is left
+over on the wires above?
+\begin{code}
+ract : C (₁₊ n) → Gen (₂₊ n) → Circuit (₁₊ n) × C (₁₊ n)
+ract ε σ-gen = ε , σ• ε             -- grows
+ract (σ• ε) σ-gen = ε , ε           -- cancels (σ² = ε)
+ract (σ• σ• c) σ-gen = σ , σ• σ• c  -- passes (Yang-Baxter)
+ract ε (g ↥) = [ g ]ʷ , ε           -- commutes past
+ract (σ• c) (g ↥) = proj₁ (ract c g) ↑ , σ• (proj₂ (ract c g))
+\end{code}
+Each clause is certified by the \alert{soundness law}, one short derivation per case:
+\begin{code}
+ract-sound : ∀ c b → let (b' , c') = ract c b in
+             [ c ]ᶜ • [ b ]ʷ ≈ b' ↑ • [ c' ]ᶜ
+\end{code}
+\begin{code}[hide]
+ract-sound = proof-elided
+\end{code}
+\end{column}
+\begin{column}{0.37\textwidth}
+\centering
+\begin{tikzpicture}
+\node (l) {\ufig[0.42]{ract-l}};
+\node[right=0mm of l] (eq) {$\approx$};
+\node[right=0mm of eq] (r) {\ufig[0.42]{ract-r}};
+\end{tikzpicture}
+
+\vspace{6pt}
+\begin{keybox}
+\small staircase $c$, then generator $b$\\
+\quad$\approx$\\
+residual $b'$ (one wire up), then staircase $c'$
+\end{keybox}
+\small The residual is a \emph{circuit}, not a generator: in richer
+gate sets it can be long.
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The four cases, as circuit rewrites \InPaper}
+\centering
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{@{}r@{\,}c@{\,}l@{\;\;}l@{\qquad}r@{\,}c@{\,}l@{\;\;}l@{}}
+  \ufig[0.38]{push4-l} & $\rightarrow$ & \ufig[0.38]{push4-r} &
+    \small grows &
+  \ufig[0.38]{push3-l} & $\rightarrow$ & \ufig[0.38]{push3-r} &
+    \small cancels ($\sigma^2 = \varepsilon$)\\[12pt]
+  \ufig[0.38]{push2-l} & $\rightarrow$ & \ufig[0.38]{push2-r} &
+    \small passes (Yang--Baxter) &
+  \ufig[0.38]{push1-l} & $\rightarrow$ & \ufig[0.38]{push1-r} &
+    \small commutes past
+\end{tabular}
+
+\vspace{12pt}
+\begin{keybox}
+\small Each step of normalization is an instance of \aid{order}, of
+\aid{yang-baxter}, or of a structural rule (\aid{comm₂}, lifted by
+\aid{cong↑}). Nothing else is ever used.
+\end{keybox}
+\end{frame}
+
+\begin{frame}{Running the table: normalizing $\sigma \aidop{•} \sigma\;{\uparrow} \aidop{•} \sigma$ \InPaper}
+\small
+The stateful traversal \aid{\_ᵗ} threads the coset left to right and
+concatenates the residuals --- one \alert{level} of normalization:
+\vspace{6pt}
+
+\centering
+\begin{tikzpicture}[>={Stealth[length=2mm]},
+  st/.style={draw=accent,fill=soft,rounded corners=2pt,minimum width=18mm,minimum height=13mm,align=center},
+  lab/.style={font=\scriptsize,align=center}]
+  \node[st] (s0) at (0,0) {\permcirc[0.22]{3}{x}\\[-1pt]{\scriptsize $\varepsilon$}};
+  \node[st] (s1) at (3.6,0) {\permcirc[0.22]{3}{0}\\[-1pt]{\scriptsize $\sigma{\bullet}\varepsilon$}};
+  \node[st] (s2) at (7.2,0) {\permcirc[0.22]{3}{0,1}\\[-1pt]{\scriptsize $\sigma{\bullet}\sigma{\bullet}\varepsilon$}};
+  \node[st] (s3) at (10.8,0) {\permcirc[0.22]{3}{0,1}\\[-1pt]{\scriptsize $\sigma{\bullet}\sigma{\bullet}\varepsilon$}};
+  \draw[->,thick] (s0) -- node[above,lab]{read $\sigma$}node[below,lab]{grows\\residual $\varepsilon$} (s1);
+  \draw[->,thick] (s1) -- node[above,lab]{read $\sigma\;{\uparrow}$}node[below,lab]{recurses\\residual $\varepsilon$} (s2);
+  \draw[->,thick] (s2) -- node[above,lab]{read $\sigma$}node[below,lab]{passes (YB)\\residual $\sigma$} (s3);
+  \node[lab,above=1mm of s0] {coset};
+\end{tikzpicture}
+
+\vspace{4pt}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+\small
+Level 3 wires: top digit $c_2 = \sigma{\bullet}\sigma{\bullet}\varepsilon$, residual $\sigma$ on the upper 2 wires.\\
+Level 2 wires: normalize the residual $\sigma$: digit $c_1 = \sigma{\bullet}\varepsilon$.\\[3pt]
+Rebuild: $[c_1]^{\mathsf c}\;{\uparrow} \aidop{•} [c_2]^{\mathsf c}
+ \;=\; \sigma\;{\uparrow} \aidop{•} \sigma \aidop{•} \sigma\;{\uparrow}$.
+\end{column}
+\begin{column}{0.40\textwidth}
+\centering
+\permcirc[0.26]{3}{0,1,0}\; $\approx$\; \permcirc[0.26]{3}{1,0,1}
+
+{\scriptsize the normal form of the Yang--Baxter left side\\
+is its right side --- found by computation}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The coset tower: one digit per wire \InPaper}
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
+Iterating one level per wire is the \alert{coset tower}:
+\begin{code}
+NF : ℕ → Set
+NF 0       = ⊤
+NF (suc k) = NF k × C k   -- ⊤ × C 0 × C 1 × ⋯ × C k
+\end{code}
+so $|\aid{NF}\;n| = 1\cdot 2 \cdots n = n!$: the \alert{factorial number
+system}.
+
+\vspace{4pt}
+\aid{nf : Circuit n → NF n} runs the tables; its \alert{section}
+\aid{inv-nf} rebuilds a circuit from the digits --- a ``staircase of
+staircases''.
+\vspace{4pt}
+
+\centering
+\ufig[0.40]{fig3_staircase}\quad{\scriptsize $(\mathsf{tt},c_1,c_2,c_3)\in\aid{NF}\;4$}
+\end{column}
+\begin{column}{0.49\textwidth}
+\centering
+{\small all six normal forms on three wires ($S_3$):}\\[6pt]
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}c@{\quad}c@{\quad}c@{}}
+ & $c_2=\varepsilon$ & \\
+\permcirc[0.24]{3}{x} & \permcirc[0.24]{3}{0} & \permcirc[0.24]{3}{0,1} \\
+{\scriptsize $(\varepsilon,\varepsilon)$} & {\scriptsize $(\varepsilon,\sigma\varepsilon)$} & {\scriptsize $(\varepsilon,\sigma\sigma\varepsilon)$}\\[6pt]
+\permcirc[0.24]{3}{1} & \permcirc[0.24]{3}{1,0} & \permcirc[0.24]{3}{1,0,1} \\
+{\scriptsize $(\sigma\varepsilon,\varepsilon)$} & {\scriptsize $(\sigma\varepsilon,\sigma\varepsilon)$} & {\scriptsize $(\sigma\varepsilon,\sigma\sigma\varepsilon)$}
+\end{tabular}
+
+\vspace{6pt}
+{\scriptsize digit $c_1\in\aid{C}\;1$ (2 values) selects the row,
+$c_2\in\aid{C}\;2$ (3 values) the column;\\
+section $(c_1,c_2)\mapsto [c_1]^{\mathsf c}\,{\uparrow}\aidop{•}[c_2]^{\mathsf c}$}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Two semantics, uniqueness, completeness \InPaper}
+\begin{columns}[c]
+\begin{column}{0.52\textwidth}
+\begin{itemize}
+  \setlength{\itemsep}{4pt}
+  \item \textbf{loose}: \aid{⟦\_⟧ : Circuit n → (Fin n → Fin n)}, endofunctions
+        --- a monoid that is \emph{not} a group;
+  \item \textbf{tight}: into \aid{Permutation′-group n}, stdlib permutations
+        bundled as a \aid{Group} (our \texttt{ForStdlib}).
+\end{itemize}
+\vspace{4pt}
+\textbf{Soundness}: small case analysis over the axioms.\\
+\textbf{Unique NF}: $\llbracket \aid{inv-nf}\,u\rrbracket = \llbracket\aid{inv-nf}\,v\rrbracket \Rightarrow u\equiv v$,
+by induction on the tower: the lower digits fix the last point, so the top digit alone
+says where it goes.\\
+\textbf{Completeness} then follows generically --- even for the \emph{loose}
+semantics: circuits equal as mere functions are provably equal.
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[>={Stealth[length=2mm]},node distance=8mm]
+  \node (w) {$w$};
+  \node[right=22mm of w] (v) {$v$};
+  \node[below=of w] (nw) {$\aid{inv-nf}(\aid{nf}\,w)$};
+  \node[below=of v] (nv) {$\aid{inv-nf}(\aid{nf}\,v)$};
+  \draw[double,thick,accent] (w) -- node[left,font=\scriptsize]{NF law} (nw);
+  \draw[double,thick,accent] (v) -- node[right,font=\scriptsize]{NF law} (nv);
+  \draw[double,thick,newC] (nw) -- node[below,font=\scriptsize]{$\equiv$} (nv);
+  \draw[->,dashed,gray] (w) -- node[above,font=\scriptsize]{$\llbracket w\rrbracket=\llbracket v\rrbracket$} (v);
+  \node[below=2mm of $(nw)!0.5!(nv)$,font=\scriptsize,align=center,yshift=-3mm]
+    {soundness: the two normal forms have equal denotations;\\
+     uniqueness: so they are \emph{equal}};
+\end{tikzpicture}
+
+\vspace{6pt}
+{\small $w \approx \aid{inv-nf}(\aid{nf}\,w) = \aid{inv-nf}(\aid{nf}\,v)\approx v$ ---
+a derivation assembled from the two normalization runs, i.e.\ from
+\aid{order}, \aid{yang-baxter} and the structural rules only.}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The theorem \InPaper}
+Soundness, completeness and surjectivity assemble into the
+\alert{presentation record}: a \aid{Grouplike} witness (so the presented
+monoid is a group) and a proof that \aid{⟦\_⟧} is a group isomorphism.
+\vspace{4pt}
+\begin{code}
+symmetric-presentation : ∀ n → (n VRel,_===_) IsPresentationOf (Permutation′-group n)
+\end{code}
+\begin{code}[hide]
+symmetric-presentation n = SymThm.Tight.presentation n
+\end{code}
+\vspace{2pt}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+\small Read: the monoid of swap circuits modulo \{\aid{order},
+\aid{yang-baxter}\} + structural rules \emph{is} the group of permutations of
+$\mathsf{Fin}\;n$ --- for every $n$.
+
+\vspace{4pt}
+Every presentation theorem in the library has this shape.
+\end{column}
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[>={Stealth[length=2mm]}]
+  \node (W) at (0,1.6) {\aid{Word (Gen n)}};
+  \node (Q) at (0,0) {\aid{Word (Gen n)}$\,/\!\approx$};
+  \node (P) at (3.6,1.6) {$\text{Perm}(\mathsf{Fin}\;n)$};
+  \draw[->>,thick] (W) -- node[left,font=\scriptsize]{quotient} (Q);
+  \draw[->,thick] (W) -- node[above,font=\scriptsize]{$\llbracket\_\rrbracket$} (P);
+  \draw[->,thick,paperC] (Q) -- node[below right,font=\scriptsize]{$\cong$ (group iso)} (P);
+\end{tikzpicture}
+
+\vspace{4pt}
+{\scriptsize \aid{gl}: the quotient is a group; \aid{iso}: the induced map is an isomorphism}
+\end{column}
+\end{columns}
+\end{frame}

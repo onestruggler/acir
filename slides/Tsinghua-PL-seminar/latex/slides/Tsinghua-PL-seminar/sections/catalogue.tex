@@ -1,0 +1,542 @@
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{slides.Tsinghua-PL-seminar.sections.catalogue}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Algebra.Bundles}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaRecord{Group}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaRecord{Monoid}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Algebra.Morphism.Structures}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{MonoidMorphisms}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Nat}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{suc}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{2+}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Nat.Primality}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaRecord{Prime}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Level}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{0ℓ}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Notations}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Word.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}ʷ}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Definitions}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaRecord{\AgdaUnderscore{}IsPresentationOf\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Construct.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}⋄\AgdaUnderscore{}⋄\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaDatatype{CommRel}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaDatatype{ConjRelʷ}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}⊕\textasciicircum{}\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Properties}\AgdaSpace{}%
+\AgdaSymbol{as}\AgdaSpace{}%
+\AgdaModule{PP}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Groups.Cyclic.Normalization}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}Cn,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Groups.Symmetric.Syntactics}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}VRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Groups.Pauli.Presentation}\AgdaSpace{}%
+\AgdaSymbol{as}\AgdaSpace{}%
+\AgdaModule{Pauli}\<%
+\\
+\>[0]\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Construct.SemiDirectProduct.SnD}\AgdaSpace{}%
+\AgdaSymbol{as}\AgdaSpace{}%
+\AgdaModule{SnD}\<%
+\\
+\>[0]\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Amalgamations.CliffordT1}\AgdaSpace{}%
+\AgdaSymbol{as}\AgdaSpace{}%
+\AgdaModule{CliffordT1}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{SnD}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{Wreath}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{Pauli}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Pauli-group}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaKeyword{renaming}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Γ-H}\AgdaSpace{}%
+\AgdaSymbol{to}\AgdaSpace{}%
+\AgdaFunction{Γ-Pauli₁}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{Monoid}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{rawMonoid}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{MonoidMorphisms}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaRecord{IsMonoidIsomorphism}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{PP}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{•-ε-monoid}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{CliffordT1.CliffordT1}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{amalPres}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{f}\AgdaSymbol{)}\<%
+\end{code}
+%% Part 5 — the catalogue (paper §5).
+\PaperPart
+\section{A catalogue of verified presentations}
+
+\begin{frame}{Each family was chosen to exercise something \InPaper}
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}l*{7}{c}@{}}
+\toprule
+ & circuit & coset & tower & $\times$, $\rtimes$ & $n$-fold & amalgam & \aid{refl}-\\
+ & layer & tables & & & power & & obligations\\
+\midrule
+cyclic $\mathbb{Z}_n$, trivial & & \checkmark & base & & & & \\
+symmetric $S_n$ & \checkmark & \checkmark & \checkmark & & & & \checkmark\\
+wreath $\mathbb{Z}_N\wr S_n$ & \checkmark & & & \checkmark & \checkmark & & \\
+Pauli $(\mathbb{Z}_p\times\mathbb{Z}_p)^n$ & & & & \checkmark & \checkmark & & \\
+qubit Clifford+$T$ & & \checkmark & \checkmark & \checkmark & & \checkmark & \checkmark\\
+qutrit Clifford+$T$ & & \checkmark & \checkmark & \checkmark & & \checkmark & \checkmark\\
+$U_3(\mathbb{Z}[\frac12,i])$ & & \checkmark & \checkmark & \checkmark & & \checkmark & \checkmark\\
+\bottomrule
+\end{tabular}
+
+\vspace{10pt}
+\begin{columns}[T]
+\begin{column}{0.30\textwidth}\centering\small
+\textbf{base cases}\\ where monoid and group presentations come apart
+\end{column}
+\begin{column}{0.30\textwidth}\centering\small
+\textbf{pure composition}\\ the Pauli group: no coset enumeration at all
+\end{column}
+\begin{column}{0.30\textwidth}\centering\small
+\textbf{stress tests}\\ long towers, twisted relations, branching chains
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Concrete presentation theorems \InPaper}
+\centering
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Relation set & Presents & Index name in \texttt{MainTheorems} \\
+\midrule
+\aid{EmptyRel} over $\bot$ & trivial group & \aid{trivial-presentation} \\
+\aid{TrivialRel} over any $A$ & trivial group & \aid{trivial-presentation′} \\
+$T^{\,n+1} = \varepsilon$ & $\mathbb{Z}/(n{+}1)\mathbb{Z}$ & \aid{cyclic-presentation} \\
+$T^{\,0} = \varepsilon$ & the \emph{monoid} $(\mathbb{N}, +, 0)$ & \aid{cyclic-monoid-presentation} \\
+\aid{order}, \aid{yang-baxter} + structural & permutations of $\mathsf{Fin}\;n$ & \aid{symmetric-presentation} \\
+$C_p \aidop{⋄} C_p \aidop{⋄} \aid{CommRel}$ & $\mathbb{Z}_p \times \mathbb{Z}_p$ & (\aid{H-pres}) \\
+$(C_p \aidop{⋄} C_p \aidop{⋄} \aid{CommRel}) \aidop{⊕\textasciicircum} n$ & $(\mathbb{Z}_p{\times}\mathbb{Z}_p)^n$ & \aid{pauli-presentation} \\
+$(C_N \aidop{⊕\textasciicircum} n) \aidop{⋄} S_n\text{-circuits} \aidop{⋄} \aid{ConjRelʷ}$ & $\mathbb{Z}_N \wr S_n$ & \aid{wreath-presentation} \\
+\midrule
+qubit Clifford+$T$ gate relations & $\cong$ amalgam $\langle T,M\rangle\ast_M\langle H,M\rangle$ & \aid{clifford+T-qubit-isomorphism}\\
+qutrit Clifford+$T$ gate relations & $\cong$ amalgam over $M=\langle S,X,\zeta,H^2\rangle$ & \aid{clifford+T-qutrit-isomorphism}\\
+$U_3(\mathbb{Z}[\frac12,i])$, S1--S14 & $\cong (\mathbb{Z}_4\wr S_3)\ast_M\langle M,K_{01}\rangle$ & \aid{U₃-presentation-isomorphism}\\
+\bottomrule
+\end{tabular}
+
+\vspace{6pt}
+{\small Normal-form carriers: $\mathsf{Fin}(n{+}1)$; $\mathbb{N}$; $\top\times C1\times\dots\times C(n{-}1)$;
+$\mathit{NF}_1\times\mathit{NF}_2$; $\mathit{NF}_0\times\aid{amalNFC}\,C\,D$; $\mathsf{Fin}\,8\times\mathsf{Fin}\,4$ (Clifford+$T$ base).}
+\end{frame}
+
+\begin{frame}{Wreath products: signed permutations and beyond \InPaper}
+\begin{columns}[c]
+\begin{column}{0.57\textwidth}
+$(\mathbb{Z}_N)^n$ by the $n$-fold power; $S_n$ acts by permuting coordinates,
+given \alert{syntactically} as a word-valued conjugation; two finite
+compatibility lemmas feed the semidirect-product theorem:
+\begin{code}%
+\>[0]\AgdaFunction{wreath-presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{(((}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{Cn,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{⊕\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{VRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
+\AgdaDatatype{ConjRelʷ}\AgdaSpace{}%
+\AgdaFunction{conj}\AgdaSymbol{)}\<%
+\\
+\>[2][@{}l@{\AgdaIndent{0}}]%
+\>[4]\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Wreath.wreath-group}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSymbol{)}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{wreath-presentation}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{Wreath.presentation}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaBound{m}\<%
+\end{code}
+\begin{itemize}
+  \small
+  \item $N=2$: the hyperoctahedral group $B_n$ of \alert{signed permutations};
+  \item general $N$: $G(N,1,n)$, monomial matrices with $N$-th roots of unity;
+  \item a family of completeness results over \alert{two naturals}, all at once.
+\end{itemize}
+\end{column}
+\begin{column}{0.40\textwidth}
+\centering
+{\small normal form: residues, then staircases}\\[4pt]
+\begin{tikzpicture}[x=5mm,y=6mm,line width=0.7pt]
+  \foreach \y in {0,1,2,3} \draw (0,\y) -- (11,\y);
+  \foreach \y/\e in {0/2,1/0,2/3,3/1} {
+    \node[draw,fill=softnew,font=\scriptsize,minimum width=6mm,minimum height=4mm,inner sep=1pt] at (1.6,\y) {$T^{\e}$};
+  }
+  % staircases (swap crossings)
+  \foreach \x/\p in {4/2,5.5/1,7/2,8.5/0,10/1} {
+    \fill[white] (\x-0.55,\p-0.05) rectangle (\x+0.55,\p+1.05);
+    \draw (\x-0.55,\p) -- (\x+0.55,\p+1);
+    \draw (\x-0.55,\p+1) -- (\x+0.55,\p);
+  }
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (0.6,-0.6) -- (2.6,-0.6) node[midway,below=2pt,font=\tiny]{$(\mathbb{Z}_N)^n$};
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (3.3,-0.6) -- (10.7,-0.6) node[midway,below=2pt,font=\tiny]{$S_n$ (factorial digits)};
+\end{tikzpicture}
+
+\vspace{8pt}
+$\begin{pmatrix} 0 & 0 & -1 & 0\\ 1 & 0 & 0 & 0\\ 0 & 0 & 0 & -1\\ 0 & -1 & 0 & 0\end{pmatrix}\in B_4$
+
+{\scriptsize a signed permutation ($N=2$): one $\pm1$ per row and column}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Pauli groups in all prime dimensions: pure composition \InPaper}
+\begin{columns}[c]
+\begin{column}{0.56\textwidth}
+\begin{code}%
+\>[0]\AgdaFunction{pauli-presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{prime}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaRecord{Prime}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{2+}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{(}\AgdaFunction{Γ-Pauli₁}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaBound{prime}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{⊕\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Pauli-group}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaBound{prime}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{pauli-presentation}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaBound{prime}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{Pauli.Pauli-presentation}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaBound{prime}\<%
+\end{code}
+\begin{itemize}
+  \small
+  \item $p = 2+m$ prime: a \alert{qupit};
+  \item \aid{Γ-Pauli₁}: direct-product join of two order-$p$ cyclic
+        presentations ($X$, $Z$; they commute modulo phases);
+  \item $n$ qupits: the $n$-fold power;
+  \item the proof is \alert{three construction theorems composed} --- three
+        lines of Agda, no coset enumeration;
+  \item normal form: $X^{a_1}Z^{b_1}\cdots X^{a_n}Z^{b_n}$,
+        $(a_i,b_i)\in\mathsf{Fin}\,p\times\mathsf{Fin}\,p$.
+\end{itemize}
+\end{column}
+\begin{column}{0.41\textwidth}
+\centering
+\begin{tikzpicture}[node distance=5mm,>={Stealth[length=1.8mm]},
+  bx/.style={draw=paperC,fill=softpaper,rounded corners=2pt,font=\scriptsize,align=center,minimum height=8mm,text width=26mm}]
+  \node[bx] (cx) {$\langle X\mid X^p\rangle$\\cyclic};
+  \node[bx,right=4mm of cx,text width=18mm] (cz) {$\langle Z\mid Z^p\rangle$\\cyclic};
+  \node[bx,below=8mm of $(cx)!0.5!(cz)$] (p1) {$\mathbb{Z}_p\times\mathbb{Z}_p$\\binary product};
+  \node[bx,below=8mm of p1] (pn) {$(\mathbb{Z}_p\times\mathbb{Z}_p)^n$\\$n$-fold product};
+  \draw[->,thick] (cx) -- (p1); \draw[->,thick] (cz) -- (p1); \draw[->,thick] (p1) -- (pn);
+\end{tikzpicture}
+
+\vspace{6pt}
+\begin{quantikz}[row sep=0.18cm,column sep=0.25cm,font=\scriptsize]
+ & \gate{X^{a_3}} & \gate{Z^{b_3}} & \\
+ & \gate{X^{a_2}} & \gate{Z^{b_2}} & \\
+ & \gate{X^{a_1}} & \gate{Z^{b_1}} &
+\end{quantikz}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Single-qubit Clifford+$T$ as an amalgamated free product \InPaper}
+\begin{columns}[c]
+\begin{column}{0.50\textwidth}
+Generators $T, H, S, \omega$; $X := HSSH$:
+\[
+  \omega^8 = \varepsilon,\;
+  T^2 = S,\;
+  S^4 = \varepsilon,\;
+  H^2 = \varepsilon,\]
+\[
+  (SH)^3 = \omega,\;
+  (TX)^2 = \omega,\;
+  \omega\ \text{central}.
+\]
+Verified structure:
+\[
+  \mathrm{Clifford}{+}T \;\cong\;
+  \langle T, M \rangle \,\ast_{M}\, \langle H, M \rangle,\quad
+  M = \langle X, S, \omega \rangle .
+\]
+\begin{code}%
+\>[0]\AgdaFunction{clifford+T-qubit-isomorphism}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaRecord{IsMonoidIsomorphism}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{(}\AgdaFunction{rawMonoid}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{•-ε-monoid}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{rawMonoid}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{•-ε-monoid}\AgdaSpace{}%
+\AgdaFunction{amalPres}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{f}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{ʷ}}\AgdaSymbol{)}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{clifford+T-qubit-isomorphism}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{CliffordT1.CliffordT1.CliffordT1-isomorphism}\<%
+\end{code}
+\end{column}
+\begin{column}{0.47\textwidth}
+\centering
+\begin{tikzpicture}[>={Stealth[length=1.8mm]},
+  bx/.style={draw=paperC,fill=softpaper,rounded corners=2pt,font=\scriptsize,align=center,minimum height=7mm},
+  lab/.style={font=\tiny,align=center,color=newC}]
+  \node[bx] (b) at (0,0) {$\langle\omega\rangle\times\langle S\rangle$\\{\tiny radices $8\cdot 4$}};
+  \node[bx] (m) at (0,1.6) {$M=\langle X,S,\omega\rangle$};
+  \node[bx] (t) at (-1.9,3.3) {$\langle T,M\rangle$};
+  \node[bx] (h) at (1.9,3.3) {$\langle H,M\rangle$\\{\tiny Clifford}};
+  \node[bx,draw=newC,fill=softnew] (a) at (0,5.0) {$\langle T,M\rangle\ast_M\langle H,M\rangle$};
+  \draw[->,thick] (b) -- node[right,lab]{2 cosets: $\varepsilon$, $X$} (m);
+  \draw[->,thick] (m) -- node[left,lab]{2 cosets:\\$\varepsilon$, $T$} (t);
+  \draw[->,thick] (m) -- node[right,lab]{3 cosets:\\$\varepsilon$, $H$, $HS$} (h);
+  \draw[->,thick] (t) -- (a); \draw[->,thick] (h) -- (a);
+\end{tikzpicture}
+
+\vspace{2pt}
+{\small 59 well-definedness obligations, every one \aid{(by-equal-nf Eq.refl) , Eq.refl}.}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The amalgam rediscovers Matsumoto--Amano \InPaper}
+With $C=\{T\}$ and $D=\{H, HS\}$, the section of the alternating normal form spells, left to right,
+\[
+  \mathcal{M}\;(\varepsilon \mid H \mid HS)\;(TH \mid THS)^{*}\;(\varepsilon \mid T)
+\]
+and read right to left:
+\[
+  (\varepsilon \mid T)\;(HT \mid SHT)^{*}\;(\varepsilon \mid H \mid SH)\;\mathcal{M}
+\]
+--- the \alert{Matsumoto--Amano normal form}
+$(\varepsilon\mid T)(HT\mid SHT)^*\,\mathcal{C}$, with its Clifford factor split
+into a coset representative and an element of $M$.
+\vspace{6pt}
+
+\centering
+\begin{tikzpicture}[x=9mm,
+  s/.style={draw,minimum height=6mm,minimum width=8.2mm,font=\scriptsize,inner sep=1pt}]
+  \node[s,fill=gray!15] at (0,0) {$\mathcal{M}$};
+  \node[s,fill=softpaper] at (1,0) {$HS$};
+  \node[s,fill=soft] at (2,0) {$T$}; \node[s,fill=softpaper] at (3,0) {$H$};
+  \node[s,fill=soft] at (4,0) {$T$}; \node[s,fill=softpaper] at (5,0) {$HS$};
+  \node[s,fill=soft] at (6,0) {$T$}; \node[s,fill=softpaper] at (7,0) {$H$};
+  \node[s,fill=soft] at (8,0) {$T$};
+  \node[font=\scriptsize,anchor=west] at (8.7,0) {a typical normal form: $T$-count 4};
+\end{tikzpicture}
+
+\vspace{4pt}
+{\small The syllable structure falls out of the group theory alone (as observed in the
+Bian--Selinger line).}
+\end{frame}
+
+\begin{frame}{Qutrit Clifford+$T$ and $U_3(\mathbb{Z}[\frac12,i])$ \InPaper}
+\begin{columns}[T]
+\begin{column}{0.50\textwidth}
+\textbf{Qutrit} ($\zeta$ a 9th root; $X,Z$ abbreviations):
+\[
+  \zeta^9 = \varepsilon,\;
+  S^3 = \zeta^6,\;
+  H^4 = \varepsilon,\;
+  T^3 = Z,\;
+  (SH)^3 = \varepsilon,
+\]
+\[
+  (THH)^2 = \varepsilon,\;
+  HHSHHS = SHHSHH,\;
+  TS = ST,
+\]
+\[
+  TX = \zeta^3 S^2 X\, T,\;\;
+  \zeta\ \text{central}.
+\]
+Tower $\langle\zeta\rangle \to \langle S,\zeta\rangle\ (3) \to \langle S,X,\zeta\rangle\
+(\alert{9}) \to M\ (2)$, then two extensions over $M = \langle S,X,\zeta,H^2\rangle$.
+Normal form = Glaudell--Ross--Taylor's $T$-optimal form.
+The nine-coset level: \alert{72} obligations, all \aid{refl}.
+\end{column}
+\begin{column}{0.47\textwidth}
+\textbf{$U_3(\mathbb{Z}[\frac12,i])$} (Bian--Selinger, $n=3$):
+\[
+  U_3(\mathbb{Z}[\tfrac12,i]) \cong
+  (\mathbb{Z}_4 \wr S_3) \ast_{M} \langle M, K_{01} \rangle,
+\]
+\[ M = (\mathbb{Z}_4 \wr S_2) \times \mathbb{Z}_4 . \]
+The left factor is taken \alert{verbatim} from the wreath development.
+\[
+  \mathcal{M}\,(\varepsilon \mid K_{01} \mid K_{01} i_0)\,
+  \bigl((X_{12} \mid X_{12}X_{01})(K_{01} \mid K_{01} i_0)\bigr)^{*}
+\]
+\[ (\varepsilon \mid X_{12} \mid X_{12}X_{01}) \]
+\begin{newdevbox}
+\small A \alert{new canonical form} for $U_3(\mathbb{Z}[\frac12,i])$ with
+Matsumoto--Amano-style syllables --- for free from the amalgam.
+\end{newdevbox}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Size and cost \InPaper}
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[xbar stacked, width=7.0cm, height=3.6cm, xmin=0, xmax=11500,
+  symbolic y coords={examples,core}, ytick=data,
+  xlabel={\scriptsize lines of Agda}, x tick label style={font=\scriptsize},
+  y tick label style={font=\small}, bar width=16pt, enlarge y limits=0.45,
+  legend style={font=\tiny,at={(0.5,-0.42)},anchor=north,legend columns=2,draw=none,fill=none},
+  scaled x ticks=false, axis lines*=left]
+\addplot[fill=accent!70] coordinates {(1000,core) (0,examples)};
+\addplot[fill=accent!40] coordinates {(4300,core) (0,examples)};
+\addplot[fill=accent!20] coordinates {(600,core) (0,examples)};
+\addplot[fill=gray!30] coordinates {(5100,core) (0,examples)};
+\addplot[fill=paperC!60] coordinates {(0,core) (4300,examples)};
+\addplot[fill=paperC!25] coordinates {(0,core) (6700,examples)};
+\legend{presentation core,product constructions,solvers,rest of core,Clifford+$T_3$ \& $U_3$,other examples}
+\end{axis}
+\end{tikzpicture}
+
+{\scriptsize approximate split of $\approx$22\,000 lines (74 files, Sept.\ 2026)}
+\end{column}
+\begin{column}{0.49\textwidth}
+\begin{itemize}
+  \setlength{\itemsep}{4pt}
+  \item about \textbf{22\,000 lines} in 74 files: half reusable core, half examples;
+  \item of 7\,000 lines under \texttt{Presentation}: $\approx$1\,000 core proper,
+        4\,300 the five product constructions (amalgamation alone 1\,800),
+        600 the solvers;
+  \item whole development from scratch, Agda 2.8.0: \textbf{1\,min\,42\,s}, peak
+        3.5\,GB; a third of it the amalgamated product (31\,s), the three
+        amalgamation studies 19\,s, every other module $<4$\,s.
+\end{itemize}
+\begin{keybox}
+\small \textbf{Limitations stated in the paper}: amalgamation studies are
+syntax-to-syntax (no matrix semantics); continuous-parameter gate sets and
+infinite-index steps are outside the engine.
+\end{keybox}
+\end{column}
+\end{columns}
+\end{frame}

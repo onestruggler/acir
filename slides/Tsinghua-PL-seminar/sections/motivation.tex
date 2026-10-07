@@ -1,0 +1,213 @@
+%% Part 1 — Why completeness proofs need a machine (paper §1).
+
+\PaperPart
+\section{Why completeness proofs need a machine}
+
+\begin{frame}{Circuits are programs; rules are their equational theory \InPaper}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+A circuit optimizer, a compiler pass, a diagram normalizer: the
+justification is always the same --- \alert{local rewrite rules} on a
+syntactic object, preserving a \alert{semantics}.
+\vspace{6pt}
+\begin{center}
+\begin{quantikz}[row sep=0.2cm,column sep=0.18cm,font=\scriptsize]
+  & \gate{H} & \gate{H} & \gate{S} & \ctrl{1} & \\
+  & & & & \control{} &
+\end{quantikz}
+$\;\overset{\scriptscriptstyle H^2=\varepsilon}{\approx}\;$
+\begin{quantikz}[row sep=0.2cm,column sep=0.18cm,font=\scriptsize]
+  & \gate{S} & \ctrl{1} & \\
+  & & \control{} &
+\end{quantikz}
+$\;\overset{\scriptscriptstyle\text{diagonal}}{\approx}\;$
+\begin{quantikz}[row sep=0.2cm,column sep=0.18cm,font=\scriptsize]
+  & \ctrl{1} & \gate{S} & \\
+  & \control{} & &
+\end{quantikz}
+\end{center}
+\vspace{4pt}
+Two questions attach to every rule set:
+\begin{itemize}
+  \item \textbf{Soundness} --- does every rule preserve the semantics?\\
+        {\small\color{gray}finitely many small algebraic identities: easy.}
+  \item \textbf{Completeness} --- is every true equation derivable?\\
+        {\small\color{gray}a different animal altogether.}
+\end{itemize}
+\end{column}
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[
+  >={Stealth[length=2mm]}]
+  \node[blob=accent] (S) at (0,0) {};
+  \node[blob=paperC] (M) at (3.3,0) {};
+  \node[font=\small\bfseries,accent] at (0,2.0) {syntax};
+  \node[font=\small\bfseries,paperC] at (3.3,2.0) {semantics};
+  \node[font=\scriptsize,accent] at (0,1.15) {circuits / $\approx$};
+  \node[font=\scriptsize,paperC] at (3.3,1.15) {unitaries, \dots};
+  \node[circle,fill=accent,inner sep=1.3pt,label=left:{\small $w$}] (w) at (-0.2,0.35) {};
+  \node[circle,fill=accent,inner sep=1.3pt,label=left:{\small $v$}] (v) at (-0.2,-0.55) {};
+  \node[circle,fill=paperC,inner sep=1.3pt,label=right:{\small $U$}] (u) at (3.2,-0.1) {};
+  \draw[->,thick,gray] (w) to[bend left=12] node[above,font=\scriptsize]{$\llbracket\_\rrbracket$} (u);
+  \draw[->,thick,gray] (v) to[bend right=12] (u);
+  \draw[<->,thick,newC,dashed] (w) to[bend right=40] node[left,font=\scriptsize,align=right]{derivable\\from rules?} (v);
+\end{tikzpicture}
+
+\small soundness: $w\approx v\;\Rightarrow\;\llbracket w\rrbracket=\llbracket v\rrbracket$\\
+completeness: $\llbracket w\rrbracket=\llbracket v\rrbracket\;\Rightarrow\;w\approx v$
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{How completeness is proved on paper \InPaper}
+\begin{columns}[c]
+\begin{column}{0.47\textwidth}
+The standard strategy has three steps:
+\begin{enumerate}
+  \setlength{\itemsep}{4pt}
+  \item define a \alert{normal form} for circuits;
+  \item show every circuit \alert{rewrites to normal form} using the rules;
+  \item show \alert{distinct normal forms denote distinct} semantic objects.
+\end{enumerate}
+\vspace{6pt}
+Step 2 is where it explodes: for \emph{every} rule and \emph{every} way a
+generator can meet a normal form, the combination must reduce again ---
+mechanical, unforgiving, enormous.
+\end{column}
+\begin{column}{0.50\textwidth}
+\centering
+\begin{tikzpicture}[x=3.3mm,y=3.3mm]
+  % a grid of "cases": generators x normal-form shapes
+  \foreach \i in {0,...,13} {
+    \foreach \j in {0,...,8} {
+      \pgfmathsetmacro{\shade}{mod(\i*7+\j*13,11)}
+      \ifdim\shade pt<1pt
+        \fill[newC!55] (\i,\j) rectangle ++(0.85,0.85);
+      \else
+        \fill[paperC!35] (\i,\j) rectangle ++(0.85,0.85);
+      \fi
+    }
+  }
+  \node[rotate=90,font=\scriptsize,anchor=south] at (-0.3,4.4) {generator $g$ (incl.\ every wire)};
+  \node[font=\scriptsize,anchor=north] at (7,-0.2) {shape of the normal form it meets};
+  \node[font=\scriptsize,anchor=south,align=center] at (7,9.1)
+     {one case per (rule, coset) or (generator, coset)};
+  \fill[paperC!35] (15,6) rectangle ++(0.85,0.85); \node[font=\scriptsize,anchor=west] at (16,6.4) {routine};
+  \fill[newC!55] (15,4) rectangle ++(0.85,0.85); \node[font=\scriptsize,anchor=west,align=left] at (16,4.4) {a real\\derivation};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The literature wears the scars \InPaper}
+\begin{columns}[c]
+\begin{column}{0.50\textwidth}
+\small
+\begin{itemize}
+  \setlength{\itemsep}{3pt}
+  \item Selinger (2015): $n$-qubit Clifford --- a substantial rewrite
+        system and normal-form analysis.
+  \item Li, Mosca, Ross, van de Wetering, Zhao (2025): qutrit Clifford, first
+        complete fragment in odd prime dimension --- \alert{$>50$ pages} of proofs.
+  \item Clément, Heurtel, Mansfield, Perdrix, Valiron (2023, 2024):
+        complete theory for full quantum circuits, and its minimal refinement.
+  \item Clément (2026): Real-Clifford+$CH$ --- a 13-page paper with an
+        \alert{appendix of 264 pages} of equational derivations.
+  \item Rig-categorical completeness (POPL '22, '24, '26); Blake (2026)
+        simplifies the rule sets of six near-Clifford fragments.
+\end{itemize}
+\end{column}
+\begin{column}{0.47\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[xbar, width=5.0cm, height=4.6cm, xmin=0, xmax=300,
+  symbolic y coords={Real-Clifford+CH appendix,Real-Clifford+CH paper,Qutrit Clifford proofs},
+  ytick=data, y tick label style={font=\scriptsize,align=right,text width=2.1cm},
+  x tick label style={font=\scriptsize}, xlabel={\scriptsize pages},
+  nodes near coords, nodes near coords style={font=\scriptsize},
+  bar width=9pt, enlarge y limits=0.3, axis lines*=left]
+\addplot[fill=newC!70,draw=newC] coordinates
+  {(264,Real-Clifford+CH appendix) (13,Real-Clifford+CH paper) (50,Qutrit Clifford proofs)};
+\end{axis}
+\end{tikzpicture}
+
+{\small Long, regular, mechanical: exactly the proofs a proof assistant
+should check --- it does not tire of case splits, and where a case is a
+computation, its \alert{evaluator} can carry it out.}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Why this is a programming-languages problem \InPaper}
+\begin{columns}[T]
+\begin{column}{0.50\textwidth}
+\begin{itemize}
+  \setlength{\itemsep}{5pt}
+  \item Circuit calculi \emph{are} programming languages; completeness of
+        their equational theory is a PL question.
+  \item It licenses \alert{normal-form decision procedures}, and tells an
+        optimizer author that \alert{no valid rewrite is missing}.
+  \item It underlies the rig-categorical completeness theorems for
+        reversible and quantum languages (Choudhury--Karwowski--Sabry POPL'22,
+        Carette--Heunen--Kaarsgaard--Sabry POPL'24, Fang--Heunen--Kaarsgaard
+        POPL'26).
+  \item The contribution is a \alert{design}: objects that both
+        \emph{compute} and \emph{prove}.
+\end{itemize}
+\end{column}
+\begin{column}{0.46\textwidth}
+\begin{keybox}[title={Announced up front: setoids, not quotients}]
+\small
+Plain, setoid-based Agda on the standard library --- not cubical, not HoTT.
+A presented monoid is a \emph{setoid on words}, not a quotient type.
+\begin{itemize}
+  \item the library \alert{computes with syntax}: coset tables and normal
+        forms pattern-match on concrete representatives, obligations close
+        by evaluation;
+  \item central devices are maps \alert{into} the syntax (sections, coset
+        representatives, amalgamation tails);
+  \item derivations are \alert{data} one can induct on.
+\end{itemize}
+\end{keybox}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Contributions of the paper \InPaper}
+\small
+\begin{columns}[T]
+\begin{column}{0.50\textwidth}
+\begin{enumerate}
+  \setcounter{enumi}{-1}
+  \setlength{\itemsep}{4pt}
+  \item \textbf{A library} for circuit normal forms and complete relation
+        sets: presentations as inductive congruences; normal forms as stdlib
+        function bundles; generic \aid{by-normalization}; a verified
+        Reidemeister--Schreier engine; solvers by evaluation.
+  \item \textbf{Inductively defined circuits}: wire-indexed generators,
+        structural rules supplied once for every gate set.
+  \item \textbf{A catalogue} of verified presentations: $\mathbb{Z}_n$,
+        $S_n$, $\mathbb{Z}_N\wr S_n$, Pauli $(\mathbb{Z}_p{\times}\mathbb{Z}_p)^n$,
+        qubit/qutrit Clifford+$T$, $U_3(\mathbb{Z}[\frac12,i])$.
+\end{enumerate}
+\end{column}
+\begin{column}{0.48\textwidth}
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \setlength{\itemsep}{4pt}
+  \item \textbf{Monoid-level} amalgamation and Reidemeister--Schreier
+        (after Bian--Selinger).
+  \item \textbf{Presentation theorems} for direct, semidirect, $n$-fold and
+        amalgamated products, and group extensions.
+  \item \textbf{New stdlib theorems}: semidirect products, amalgamated free
+        products of monoids, extensions, epimorphisms, $\mathsf{Perm}(n)$ as a group.
+\end{enumerate}
+\vspace{4pt}
+\begin{paperbox}
+Every headline theorem is restated with its full type in
+\texttt{MainTheorems.agda}; \texttt{--safe}, \texttt{--cubical-compatible},
+no postulates, no holes, no classical axioms.
+\end{paperbox}
+\end{column}
+\end{columns}
+\end{frame}

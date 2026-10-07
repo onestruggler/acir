@@ -1,0 +1,154 @@
+\begin{code}[hide]
+module slides.Tsinghua-PL-seminar.sections.newmatrix where
+
+open import Data.Nat using (ℕ)
+open import Data.Product using (proj₁)
+open import Level using (0ℓ)
+open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+open import Algebra.Bundles using (Group)
+open import Word.Base using (Word ; WRel)
+open import Presentation.Definitions using (_IsPresentationOf_ ; _IsSubPresentationOf_)
+
+infix 4 _≈_ _⊢_===_
+
+postulate
+  Gen : ℕ → Set
+  _===_ : ∀ {n} → WRel (Gen n)
+  U : ℕ → Group 0ℓ 0ℓ
+  ⟦_⟧ᵐ : ∀ {n} → Word (Gen n) → ℕ
+  _≈_ : ∀ {n} → Word (Gen n) → Word (Gen n) → Set
+  l17 r17 : Word (Gen 4)
+  Rel : WRel (Gen 4)
+  _⊢_===_ : WRel (Gen 4) → WRel (Gen 4)
+
+private variable
+  n : ℕ
+\end{code}
+%% Part 6c — matrix semantics for unitary groups (branch v-office).
+
+\begin{frame}{Matrix semantics, for real: $U_n(\mathbb{Z}[\frac12,i])$ \New}
+\begin{columns}[c]
+\begin{column}{0.47\textwidth}
+\small The paper's stated limitation: its $U_3(\mathbb{Z}[\frac12,i])$ and
+Clifford+$T$ studies stop at syntax, because the rings and unitary matrices
+were missing. \Branch{v-office} supplies them:
+\begin{itemize}
+  \item rings $\mathbb{Z}[\frac12]$, $\mathbb{Z}[\frac12,i]$, $\mathbb{Z}[\frac1{\sqrt2},i]$ and
+        matrices from \textbf{EucDomain} --- an Agda port of Ross--Selinger's
+        \texttt{newsynth} (17.6k lines);
+  \item generators act as \alert{two-level} matrices:
+\end{itemize}
+\vspace{2pt}
+\centering
+\begin{tikzpicture}[x=2.75mm,y=2.75mm,font=\tiny]
+  \foreach \M/\x/\lab in {X/0/{X_{[j,k]}},K/9/{K_{[j,k]}},I/18/{i_{[j]}}} {
+    \draw[gray] (\x,0) rectangle ++(6,6);
+    \node at (\x+3,-0.9) {$\lab$};
+  }
+  % X: swap rows 1,3 (j=1,k=3)
+  \fill[newC!20] (1,4) rectangle (2,5); \fill[newC!20] (3,2) rectangle (4,3);
+  \fill[newC!20] (1,2) rectangle (2,3); \fill[newC!20] (3,4) rectangle (4,5);
+  \node at (1.5,4.5) {0}; \node at (3.5,4.5) {1}; \node at (1.5,2.5) {1}; \node at (3.5,2.5) {0};
+  \foreach \d in {0,2,4,5} \node at (\d+0.5,5.5-\d) {1};
+  % K
+  \fill[accent!20] (10,4) rectangle (11,5); \fill[accent!20] (12,2) rectangle (13,3);
+  \fill[accent!20] (10,2) rectangle (11,3); \fill[accent!20] (12,4) rectangle (13,5);
+  \node at (10.5,4.5) {$\gamma$}; \node at (12.5,4.5) {$\gamma$}; \node at (10.5,2.5) {$\gamma$}; \node at (12.5,2.5) {$\!\!-\gamma$};
+  \foreach \d in {0,2,4,5} \node at (9+\d+0.5,5.5-\d) {1};
+  % i
+  \fill[paperC!20] (19,4) rectangle (20,5); \node at (19.5,4.5) {$i$};
+  \foreach \d in {0,2,3,4,5} \node at (18+\d+0.5,5.5-\d) {1};
+  \node[anchor=west] at (24.3,3) {$\gamma = \frac{1}{1+i}$};
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.51\textwidth}
+\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\small Bian--Selinger (QPL'21), \textbf{every} $n$, against matrices:
+\begin{code}[hide]
+module Clifford+CS-TwoLevel where
+\end{code}
+\begin{code}
+  -- Presentation.agda: the relations present Uₙ(𝔻[i])
+  presentation : (_===_ {n}) IsPresentationOf (U n)
+  -- MainLemma.agda
+  relations-complete : {u v : Word (Gen n)} →
+                       ⟦ u ⟧ᵐ ≡ ⟦ v ⟧ᵐ → u ≈ v
+  -- Soundness.agda: decided on concrete 4 × 4 matrices
+  rel-17₄ : ⟦ l17 ⟧ᵐ ≡ ⟦ r17 ⟧ᵐ
+  rel-17₄ = refl
+\end{code}
+\begin{code}[hide]
+  presentation = _
+  relations-complete = _
+\end{code}
+\begin{itemize}
+  \small
+  \item the normal form is \alert{exact synthesis} (Algorithm 2.10), by
+        well-founded recursion on (pivot, lde, \#odd entries);
+  \item soundness: commutations at any indices; the rest pulled back to
+        dimension $\le4$ and decided by \aid{refl};
+  \item Greylyn's $U_n(\mathbb{Z}[\frac1{\sqrt2},i])$ by the same code, generic in
+        the ring: complete for $n\le4$.
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The authors' own Agda, now on the library's engine \New}
+\begin{columns}[c]
+\begin{column}{0.53\textwidth}
+\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\small \textbf{2-qubit Clifford+$T$} (Bian--Selinger, QPL'22), end to end:
+\vspace{2pt}
+
+\centering
+\begin{tikzpicture}[node distance=3.5mm,>={Stealth[length=1.6mm]},
+  bx/.style={draw=accent,fill=soft,rounded corners=2pt,font=\scriptsize,align=center,text width=40mm,minimum height=7mm}]
+  \node[bx,draw=newC,fill=softnew] (ct) {Clifford+$T$: $\omega,H_i,S_i,T_i,CZ$\\{\tiny Figure 1, 33 relation constructors}};
+  \node[bx,below=of ct] (gs) {Greylyn, simplified\\{\tiny 5 generators, 19 relations}};
+  \node[bx,below=of gs] (g) {Greylyn: $U_4(\mathbb{Z}[\frac1{\sqrt2},i])$\\{\tiny 16 generators, 123 relations}};
+  \node[bx,below=of g,draw=paperC,fill=softpaper] (m) {two-level matrices, $n\le4$\\{\tiny complete against matrices}};
+  \draw[->,thick] (ct) -- node[right,font=\tiny,align=left]{full R--S: 2 cosets $I,\Omega$,\\ $8+2\cdot19=46$ equations} (gs);
+  \draw[<->,thick] (gs) -- node[right,font=\tiny]{iso} (g);
+  \draw[<->,thick] (g) -- node[right,font=\tiny]{\texttt{Greylyn-TwoLevel}} (m);
+\end{tikzpicture}
+\begin{code}[hide]
+module Clifford+T-2qubit where
+\end{code}
+\begin{code}
+  -- Clifford+T-2qubit/Presentation.agda:
+  -- ⟦_⟧ is a group monomorphism into U₄(ℤ[1/√2,i])
+  presentation : Rel IsSubPresentationOf U 4
+\end{code}
+\begin{code}[hide]
+  presentation = _
+\end{code}
+\end{column}
+\begin{column}{0.44\textwidth}
+\small \textbf{3-qubit Clifford+$CS$} (QPL'23), in progress: the
+two-level $U_8(\mathbb{Z}[\frac12,i])$ side is done; Step 4 of the R--S chain
+derives each of \alert{3\,192} relations from \alert{508}:
+\vspace{2pt}
+
+\centering
+\begin{tikzpicture}[scale=0.95]
+  \def\R{1.25}
+  % 2486 / 3192 = 0.7788 -> 280.4 deg; 341 -> 38.5 deg; 346 -> 39.0 deg
+  \fill[paperC!55] (0,0) -- (90:\R) arc (90:370.4:\R) -- cycle;
+  \fill[accent!45] (0,0) -- (370.4:\R) arc (370.4:408.9:\R) -- cycle;
+  \fill[newC!55] (0,0) -- (408.9:\R) arc (408.9:447.9:\R) -- cycle;
+  \fill[gray!50] (0,0) -- (447.9:\R) arc (447.9:450:\R) -- cycle;
+  \node[font=\scriptsize,anchor=west,align=left] at (1.5,0.55) {\textcolor{paperC}{\rule{6pt}{6pt}} 2\,486 by normal-form\\[-2pt]\quad computation};
+  \node[font=\scriptsize,anchor=west] at (1.5,-0.15) {\textcolor{accent!70}{\rule{6pt}{6pt}} 341 axioms};
+  \node[font=\scriptsize,anchor=west] at (1.5,-0.65) {\textcolor{newC}{\rule{6pt}{6pt}} 346 by rewriting};
+  \node[font=\scriptsize,anchor=west] at (1.5,-1.15) {\textcolor{gray}{\rule{6pt}{6pt}} 19 by small lemmas};
+\end{tikzpicture}
+
+\vspace{4pt}
+\raggedright
+\small \texttt{Presentation/Tactics}: a \aid{Γ ⊢ w === v} \emph{view} of our
+congruence, and the original paper's R--S theorem \alert{as an instance} of
+\texttt{Normalization.Reidemeister-Schreier}. \texttt{Step4/Main}: 10 min, 2.2\,GB.
+\end{column}
+\end{columns}
+\end{frame}

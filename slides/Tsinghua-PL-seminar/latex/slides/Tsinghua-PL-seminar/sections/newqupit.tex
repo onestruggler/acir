@@ -1,0 +1,726 @@
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{slides.Tsinghua-PL-seminar.sections.newqupit}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Nat}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{ℕ}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Level}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{0ℓ}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Algebra.Bundles}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaRecord{Group}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Notations}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{₃₊}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Word.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}•\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Definitions}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaRecord{\AgdaUnderscore{}IsPresentationOf\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{infix}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\<%
+\\
+\>[0]\AgdaKeyword{infixr}\AgdaSpace{}%
+\AgdaNumber{8}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}\textasciicircum{}\AgdaUnderscore{}}}\<%
+\\
+\>[0]\AgdaKeyword{infix}\AgdaSpace{}%
+\AgdaNumber{9}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{S\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{Z\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{CZ\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{XMg\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{g\textasciicircum{}\AgdaUnderscore{}}}\<%
+\\
+\>[0]\AgdaKeyword{infixl}\AgdaSpace{}%
+\AgdaNumber{10}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}↓}}\<%
+\\
+\>[0]\AgdaKeyword{infixl}\AgdaSpace{}%
+\AgdaNumber{7}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}*\AgdaUnderscore{}}}\<%
+\\
+\>[0]\AgdaKeyword{infixl}\AgdaSpace{}%
+\AgdaNumber{6}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}+\AgdaUnderscore{}}}\<%
+\\
+\>[0]\AgdaKeyword{infix}\AgdaSpace{}%
+\AgdaNumber{8}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{-\AgdaUnderscore{}}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaPostulate{p}\AgdaSpace{}%
+\AgdaPostulate{p-1}\AgdaSpace{}%
+\AgdaPostulate{g}\AgdaSpace{}%
+\AgdaPostulate{k}\AgdaSpace{}%
+\AgdaPostulate{1/2}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+%
+\>[2]\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaPostulate{Z}\AgdaSpace{}%
+\AgdaPostulate{CZ}\AgdaSpace{}%
+\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaPostulate{CX}\AgdaSpace{}%
+\AgdaPostulate{CZ02}\AgdaSpace{}%
+\AgdaPostulate{XMg}\AgdaSpace{}%
+\AgdaPostulate{XM₋₁}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaPostulate{XM}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{S\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{Z\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{CZ\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{XMg\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{g\textasciicircum{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{-\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}*\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}+\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}↓}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaPostulate{Sp-group}\AgdaSpace{}%
+\AgdaPostulate{Pauli⋊Sp}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaRecord{Group}\AgdaSpace{}%
+\AgdaFunction{0ℓ}\AgdaSpace{}%
+\AgdaFunction{0ℓ}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{private}\AgdaSpace{}%
+\AgdaKeyword{variable}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\end{code}
+%% Part 6b — qupit Clifford circuits (branches main, qupit, ...).
+
+\begin{frame}{Qupit Clifford circuits in all odd prime dimensions \New}
+\begin{columns}[c]
+\begin{column}{0.40\textwidth}
+\small
+\textbf{Bian, Li, Ross, van de Wetering, Zhao}, \emph{A Complete and Natural
+Rule Set for Multi-Qudit Clifford Circuits in All Odd Prime Dimensions}
+(QPL'26). Its verification is a separate paper in preparation.
+\begin{itemize}
+  \item gates $H$, $S$ (one qupit), $CZ$ (two), any width $n$, any odd prime $p$;
+  \item read \alert{modulo scalars}, the circuits present
+        \[\text{Pauli}(n)\rtimes Sp(2n,\mathbb{Z}_p);\]
+  \item rules over $p$, a \emph{primitive root} $g$, and $\frac12\in\mathbb{Z}_p$;
+  \item 16 rules in the paper (Figure 1); 15 here: $(SH)^3=\varepsilon$
+        becomes a theorem.
+\end{itemize}
+\end{column}
+\begin{column}{0.58\textwidth}
+\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\begin{code}%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}SRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{order-S}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaPostulate{p}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{order-H}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaNumber{2}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{XM₋₁}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{M-power}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{k}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaOperator{\AgdaPostulate{XMg\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{k}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{XM}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaPostulate{g\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{k}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{semi-MR}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{XMg}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{S\textasciicircum{}}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{*}}\AgdaSpace{}%
+\AgdaPostulate{g}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{Z\textasciicircum{}}}\AgdaSpace{}%
+\AgdaSymbol{((}\AgdaPostulate{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{*}}\AgdaSpace{}%
+\AgdaPostulate{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{+}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{-}}\AgdaSpace{}%
+\AgdaPostulate{g}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{*}}\AgdaSpace{}%
+\AgdaPostulate{1/2}\AgdaSymbol{)}\<%
+\\
+%
+\>[32]\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{XMg}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{comm-HHSHHS}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₁₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{H}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{order-CZ}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{CZ}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaPostulate{p}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{order-Ex}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaNumber{2}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{comm-CZ-S↑}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{CZ}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{CZ}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{semi-M↑CZ}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{XMg}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{CZ\textasciicircum{}}}\AgdaSpace{}%
+\AgdaPostulate{g}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{CZ}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{XMg}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{semi-Ex-S↑}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Ex}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{semi-Ex-H↑}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{H}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Ex}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{blake-c12}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₂₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaSymbol{(}\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaPostulate{p-1}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaPostulate{p-1}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{CX}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\textasciicircum{}}}\AgdaSpace{}%
+\AgdaPostulate{p-1}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{S}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{CX}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{CZ}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{yang-baxter}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₃₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{cz-slide}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₃₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{CZ}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{CZ}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{Ex}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{semi-CX↑-CZ↓}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[18]\AgdaSymbol{(}\AgdaInductiveConstructor{₃₊}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{SRel,}}%
+\>[32]\AgdaPostulate{CZ}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{CX}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaPostulate{CZ02}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{CX}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↑}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{CZ}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{↓}}\<%
+\end{code}
+{\scriptsize \texttt{ProjectiveClifford/Qupit/Paper-V1/Syntactics.agda} (\Branch{qupit}), one comment elided}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The rules as circuits (one and two qupits) \New}
+\begin{columns}[T]
+\begin{column}{0.46\textwidth}\tiny
+\begin{tabular}{@{}r@{\;\,}r@{\,}c@{\,}l@{}}
+order-S & \qfig{pv0-order-S-l} & $\equiv$ & \qfig{pv0-order-S-r}\\[2pt]
+order-H & \qfig{pv0-order-H-l} & $\equiv$ & \qfig{pv0-order-H-r}\\[2pt]
+M-power & \qfig{pv0-M-power-l} & $\equiv$ & \qfig{pv0-M-power-r}\\[2pt]
+semi-MR & \qfig{pv0-semi-MR-l} & $\equiv$ & \qfig{pv0-semi-MR-r}\\[2pt]
+order-CZ & \qfig{pv0-order-CZ-l} & $\equiv$ & \qfig{pv0-order-CZ-r}\\[2pt]
+order-Ex & \qfig{pv0-order-Ex-l} & $\equiv$ & \qfig{pv0-order-Ex-r}\\[2pt]
+order-SH & \qfig{pv0-order-SH-l} & $\equiv$ & \qfig{pv0-order-SH-r}
+\end{tabular}
+\end{column}
+\begin{column}{0.52\textwidth}\tiny
+\begin{tabular}{@{}r@{\;\,}l@{}}
+comm-CZ-S↑ & \qfig{pv0-comm-CZ-Sup}\\[2pt]
+semi-M↑CZ & \qfig{pv0-semi-Mup-CZ}\\[2pt]
+semi-Ex-S↑ & \qfig{pv0-semi-Ex-Sup}\\[2pt]
+semi-Ex-H↑ & \qfig{pv0-semi-Ex-Hup}\\[2pt]
+comm-HHSHHS & \qfig[0.5]{pv0-comm-HHSHHS}
+\end{tabular}
+\end{column}
+\end{columns}
+\vspace{2pt}
+{\scriptsize Figure 1 of the QPL'26 paper (the multiplier spelled over $R=S\,Z^{1/2}$);
+figures generated by Cir2Tikz from the Agda terms.}
+\end{frame}
+
+\begin{frame}{\ldots\ three qupits, and the symplectic group underneath \New}
+\begin{columns}[c]
+\begin{column}{0.50\textwidth}\tiny
+\begin{tabular}{@{}r@{\;\,}l@{}}
+blake-c12 & \qfig{pv0-blake-c12}\\[3pt]
+yang-baxter & \qfig{pv0-yang-baxter}\\[3pt]
+cz-slide & \qfig{pv0-cz-slide}\\[3pt]
+semi-CX↑-CZ↓ & \qfig{pv0-semi-CXup-CZdn}
+\end{tabular}
+\end{column}
+\begin{column}{0.48\textwidth}
+\small $Sp(2n,\mathbb{Z}_p)$ \textbf{by a coset tower} (\texttt{Examples/Groups/Symplectic}, 35k lines):
+\begin{itemize}
+  \item one level per wire, Selinger-style staircases as digits;
+  \item one wire: $\mathbb{Z}_p\times\mathbb{Z}_p^{*}\times(\varepsilon\mid HS^a)$, i.e.
+        $p\,(p{-}1)(p{+}1) = |Sp(2,p)|$ normal forms;
+  \item \alert{67 $\to$ 18}: normalization uses 67 relations; a small set of
+        natural ones derives them all.
+\end{itemize}
+\begin{code}%
+\>[0]\AgdaComment{--\ MainTheorems,\ Symplectic-Simplified-Theorems}\<%
+\\
+\>[0]\AgdaFunction{simplified-presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Sp-group}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{simplified-presentation}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{λ}\AgdaSpace{}%
+\AgdaBound{\AgdaUnderscore{}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{\AgdaUnderscore{}}\<%
+\end{code}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Assembled, not re-proved \New}
+\begin{columns}[c]
+\begin{column}{0.52\textwidth}
+\centering
+\begin{tikzpicture}[node distance=5mm and 6mm,>={Stealth[length=1.8mm]},
+  bx/.style={draw=accent,fill=soft,rounded corners=2pt,font=\scriptsize,align=center,minimum height=8mm,text width=26mm},
+  nb/.style={draw=newC,fill=softnew,rounded corners=2pt,font=\scriptsize,align=center,minimum height=8mm,text width=26mm}]
+  \node[bx] (pl) {ProjectivePauli\\{\tiny $(\mathbb{Z}_p\times\mathbb{Z}_p)^n$, the paper's Pauli}};
+  \node[bx,right=of pl] (sp) {Symplectic.Simplified\\{\tiny coset tower, 18 rules}};
+  \node[nb,below=9mm of $(pl)!0.5!(sp)$] (sd) {SemiDirect\\{\tiny $\text{Pauli}\rtimes Sp$, generic $\rtimes$ theorem}};
+  \node[nb,below=of sd] (v1) {Simplified-V1\\{\tiny the Pauli calculus lives here}};
+  \node[nb,below=of v1] (p0) {Paper-V0 (16 rules)\\{\tiny Figure 1}};
+  \node[nb,below=of p0] (p1) {Paper-V1 (15 rules)};
+  \draw[->,thick] (pl) -- (sd); \draw[->,thick] (sp) -- (sd);
+  \draw[<->,thick,newC] (sd) -- node[right,font=\tiny]{iso} (v1);
+  \draw[<->,thick,newC] (v1) -- node[right,font=\tiny]{iso, exports \aid{v1⇒pap}} (p0);
+  \draw[<->,thick,newC] (p0) -- node[right,font=\tiny]{identity on words} (p1);
+  \node[font=\tiny,gray,align=left,anchor=west] at ($(sd.east)+(1mm,0)$) {+ two well-definedness\\proofs of the action};
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.46\textwidth}
+\small Every layer above the base is \alert{an isomorphism plus a composition};
+no rule set re-proves what another has.
+\begin{code}%
+\>[0]\AgdaComment{--\ MainTheorems,\ Qupit-Clifford-Theorems}\<%
+\\
+\>[0]\AgdaFunction{clifford-presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{QRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Pauli⋊Sp}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{clifford-presentation}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{λ}\AgdaSpace{}%
+\AgdaBound{\AgdaUnderscore{}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{\AgdaUnderscore{}}\<%
+\end{code}
+\vspace{-2pt}
+{\scriptsize (\aid{PapSyn.Clifford-Relations.\_QRel,\_===\_} in the source)}
+\begin{itemize}
+  \item reuses the paper's machinery verbatim: coset towers, the
+        word-valued semidirect product, \aid{StarIsomorphism};
+  \item derivability results: two Pauli-vs-$CZ$ axioms dropped (18 $\to$ 16);
+        $(SH)^3=\varepsilon$ a theorem in V1;
+  \item $\approx$22k lines for the four rule sets.
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Getting the scalars back: exact Clifford groups \New}
+\begin{columns}[c]
+\begin{column}{0.50\textwidth}
+\small The Clifford group is a \alert{central extension} of the projective one by
+$\langle\omega\rangle$. Add $\omega$, $\omega^p=\varepsilon$, centrality, and
+\alert{correct} each relation by the scalar it picks up --- only one needs it:
+\vspace{4pt}
+
+\centering\qfig[0.85]{sc-order-SH}
+
+{\scriptsize ($\frac18$ the inverse of 8 in $\mathbb{Z}_p$)}
+\vspace{4pt}
+
+\raggedright
+\small \texttt{Clifford/Qupit}: \aid{presentation-exact}, against the central
+extension $A\times_\gamma H$ with $\gamma$ the Weyl cocycle $\frac12\,\text{sform}$;
+new \texttt{ForStdlib}: \aid{CentralExtension}, \aid{FactorSetExtension}
+(Rotman 9.8), \aid{CentralProduct}.
+\end{column}
+\begin{column}{0.47\textwidth}
+\small \textbf{Qubits, after Selinger} (LMCS 2015), \texttt{ProjectiveClifford/Qubit},
+\texttt{Clifford/Qubit}:
+\begin{itemize}
+  \item Figure 8 modulo scalars presents $V\!Sp(n)$ (symplectic map + $\mathbb{Z}_4$
+        phase function); $\cong$ the Clifford action on signed Paulis;
+  \item an \alert{extension} presentation $1\to\mathbb{Z}_8\to\text{Exact}(n)\to
+        \text{CMS}(n)\to1$, isomorphic to Figure 8;
+  \item that $\omega$ has order exactly 8 needs a model: $2^n\times2^n$
+        matrices over $\mathbb{Z}/17$ with $i=4$, $\frac1{\sqrt2}=14$,
+        $\omega=2$ --- every relation by \aid{refl} on tries.
+\end{itemize}
+\begin{newdevbox}
+\small A first, small \alert{matrix} semantics --- next: real ones.
+\end{newdevbox}
+\end{column}
+\end{columns}
+\end{frame}

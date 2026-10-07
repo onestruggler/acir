@@ -1,0 +1,81 @@
+%% Opening: plan of the talk, provenance legend, take-home message.
+
+\begin{frame}{Plan for the next 90 minutes}
+\begin{columns}[T]
+\begin{column}{0.56\textwidth}
+\small
+\begin{enumerate}
+  \setlength{\itemsep}{2pt}
+  \item Why completeness proofs need a machine \hfill{\color{gray}\small 7'}
+  \item A complete worked example: permutation circuits \hfill{\color{gray}\small 15'}
+  \item Normal forms from subgroup chains \hfill{\color{gray}\small 4'}
+  \item The library, layer by layer \hfill{\color{gray}\small 18'}
+  \item A catalogue of verified presentations \hfill{\color{gray}\small 10'}
+  \item {\color{newC}New since the paper} \hfill{\color{gray}\small 31'}
+  \begin{itemize}
+    \footnotesize
+    \item scalars and \alert{minimality} of relation sets
+    \item qupit Clifford circuits, all odd primes
+    \item \alert{matrix semantics}: $U_n(\mathbb{Z}[\frac12,i])$, 2-qubit Clifford+$T$,
+          Real-Clifford+$CH$ over $\mathbb{Z}[\sqrt2]$
+    \item CNOT-dihedral (phase polynomials); path sums (polynomial cost)
+  \end{itemize}
+  \item Related work, lessons, outlook \hfill{\color{gray}\small 5'}
+\end{enumerate}
+\end{column}
+\begin{column}{0.40\textwidth}
+\begin{keybox}[title=How to read the slides]
+\footnotesize
+Every frame title carries its provenance:\\[4pt]
+\badge{paperC}{in the paper}\; the POPL'27 submission
+\emph{Normal Forms and Complete Relations for Circuits in Agda}
+(tag \texttt{popl-revision1}).\\[4pt]
+\badge{newC}{new since the paper}\; developed afterwards on other
+branches of the same repository (\Branch{qupit},
+\Branch{v-office-Cli-CH}, \Branch{popl}, \ldots).\\[4pt]
+All Agda on the slides is typeset by Agda's own \LaTeX\ backend from
+literate files that are scope-checked: against the library on this
+branch, and against stub declarations for snippets quoted from other
+branches.
+\end{keybox}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The talk in one slide}
+\begin{columns}[c]
+\begin{column}{0.52\textwidth}
+\begin{itemize}
+  \setlength{\itemsep}{5pt}
+  \item A \alert{circuit} is a word of gates; a \alert{rule set} is a datatype of axioms;
+        the equational theory is the \alert{inductive congruence} they generate.
+  \item A \alert{normal form} is a function on words with a \alert{section}
+        picking canonical representatives.
+  \item \textbf{Completeness = soundness + unique normal form}, proved
+        \emph{once}, generically.
+  \item Normal forms are built \alert{one wire at a time} by verified
+        \alert{coset tables}: one ``digit'' per wire, a mixed-radix numeral.
+  \item Everything is \texttt{--safe}, axiom-free, setoid-based Agda on the
+        standard library.
+\end{itemize}
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[node distance=7mm and 5mm,
+  box/.style={draw=accent,fill=soft,rounded corners=2pt,align=center,
+    font=\small,minimum height=8mm,inner sep=3pt},
+  arr/.style={-{Stealth[length=2mm]},thick,accent}]
+  \node[box] (sound) {soundness\\{\scriptsize $w\approx v \Rightarrow \llbracket w\rrbracket = \llbracket v\rrbracket$}};
+  \node[box,right=of sound] (unf) {unique NF\\{\scriptsize $\llbracket \bar u\rrbracket = \llbracket \bar v\rrbracket \Rightarrow u = v$}};
+  \node[box,fill=accent!15,below=12mm of $(sound)!0.5!(unf)$] (compl)
+     {\textbf{completeness}\\{\scriptsize $\llbracket w\rrbracket = \llbracket v\rrbracket \Rightarrow w\approx v$}};
+  \draw[arr] (sound) -- (compl);
+  \draw[arr] (unf) -- (compl);
+  \node[font=\scriptsize\agdafont,anchor=west,text=accent] at ($(compl.east)+(1mm,0)$) {by-normalization};
+  \node[box,below=9mm of compl,fill=white] (tab)
+     {verified coset tables\\{\scriptsize finite data + 5 equations per level}};
+  \draw[arr] (tab) -- node[right,font=\scriptsize]{build the NF} (compl);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}

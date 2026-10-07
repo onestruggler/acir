@@ -1,0 +1,118 @@
+%% Part 7 — related work, lessons, outlook (paper §6–§8, plus new).
+\PaperPart
+\section{Related work, lessons, outlook}
+
+\begin{frame}{Where this sits \InPaper}
+\centering\footnotesize
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}llcccc@{}}
+\toprule
+Development & Prover & Circuits & Pres. & NF & Compl. \\
+\midrule
+\textbf{This library} & Agda & \checkmark & \checkmark & \checkmark & \checkmark \\
+Bian--Selinger developments & Agda & \checkmark & \checkmark & \checkmark & syntactic \\
+\textsc{sqir}/\textsc{voqc}, VyZX & Rocq & \checkmark & -- & -- & sound only \\
+\textsc{Qwire}, CoqQ, Qbricks, QHLProver, IMD & Rocq/Why3/Isabelle & \checkmark & -- & -- & -- \\
+$\Pi$ as free rig groupoid & Agda (HoTT) & \checkmark & categorical & \checkmark & classical \\
+$\sqrt{\Pi}$ & Agda (partial) & \checkmark & categorical & -- & 2q Clifford \\
+mathlib group theory & Lean & -- & \checkmark & -- & -- \\
+MathComp / Odd Order & Rocq & -- & partial & -- & -- \\
+Free groups (AFP), IsaFoR completion & Isabelle & -- & \checkmark\,/\,-- & \checkmark & -- \\
+\bottomrule
+\end{tabular}
+
+\vspace{8pt}
+\begin{columns}[T]
+\begin{column}{0.47\textwidth}
+\small \textbf{vs.\ mathlib}: presentation \emph{theory} (quotients, Coxeter);
+no infrastructure to prove a \emph{given} relation set presents a \emph{given}
+group --- no coset enumeration, no verified transversals.
+\end{column}
+\begin{column}{0.47\textwidth}
+\small \textbf{vs.\ rewriting}: we never orient or prove confluence; a normal form is
+any verified \emph{function} --- sidestepping Squier's obstruction (decidable word
+problem $\not\Rightarrow$ finite convergent presentation).
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Lessons for proof engineering \Mixed}
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\begin{paperbox}[title=From the paper]
+\small
+\begin{enumerate}
+  \setlength{\itemsep}{2pt}
+  \item \textbf{Setoids over syntax} beat quotients when you need to compute and
+        to map \emph{into} the syntax.
+  \item \textbf{Certificates, not search}: finite tables + five equations;
+        the engine is proved once.
+  \item \textbf{Evaluation as a tactic}: map both sides to canonical data, compare by
+        \aid{refl} --- no reflection needed.
+  \item \textbf{Index engineering}: left-biased successors make coverage a matter
+        of unification.
+  \item \textbf{Constructions in pairs}: syntax theorem + semantic theorem, against
+        stdlib bundles.
+\end{enumerate}
+\end{paperbox}
+\end{column}
+\begin{column}{0.48\textwidth}
+\begin{newdevbox}[title=Since]
+\small
+\begin{enumerate}
+  \setcounter{enumi}{5}
+  \setlength{\itemsep}{2pt}
+  \item \textbf{Tame the conversion checker}: \texttt{abstract} semantics,
+        strict arithmetic, records instead of unfolded propositions.
+  \item \textbf{Simulate, decide, then prove at symbolic width}: a transcription
+        bug invisible on three qubits surfaced only in a symbolic-width proof.
+  \item \textbf{Formalization finds errata}: in Clément's appendix and in Amy's
+        path-sum paper --- each confirmed by a decision procedure or a
+        counterexample.
+  \item \textbf{Reuse compounds}: Theorem 4.10, the Clifford+$T$ 2-qubit proof and
+        the qupit semidirect product all run on the paper's generic engine.
+\end{enumerate}
+\end{newdevbox}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Outlook \Mixed}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+\begin{itemize}
+  \setlength{\itemsep}{3pt}
+  \item \textbf{Upstreaming} the \texttt{ForStdlib} constructions (semidirect,
+        amalgamated, central and factor-set extensions) to agda-stdlib.
+  \item \textbf{Close the loops}: Lemma 8.8 on 3--4 qubits; Theorem 4.4 itself
+        (a presentation of $O_N(\mathbb{Z}[\frac1{\sqrt2}])$, Fang--Heunen--Kaarsgaard);
+        the remaining R--S steps of 3-qubit Clifford+$CS$.
+  \item \textbf{Connect} the syntactic Clifford+$T$ amalgams of the paper to the
+        new matrix semantics.
+  \item \textbf{Minimality} of gate-specific rule sets with the independence
+        engine --- e.g.\ Blake's simplified near-Clifford presentations.
+  \item The ``264-page appendix'' should become \alert{ordinary, reusable,
+        machine-checked mathematics}.
+\end{itemize}
+\end{column}
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[x=9mm,y=9mm,>={Stealth[length=1.8mm]}]
+  \node[tag=paperC,text width=30mm] (a) at (0,3) {presentations as data};
+  \node[tag=paperC,text width=30mm] (b) at (0,2) {normal forms as bundles};
+  \node[tag=paperC,text width=30mm] (c) at (0,1) {coset tables as certificates};
+  \node[tag=newC,text width=30mm] (d) at (0,0) {matrices as tries,\\decided by \aid{refl}};
+  \node[tag=accent,text width=30mm,font=\small\bfseries] (e) at (0,-1.4) {complete rule sets,\\machine-checked};
+  \draw[->,thick,gray] (d) -- (e);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[standout]
+Thank you!\\[10pt]
+{\normalsize Questions?}\\[16pt]
+{\footnotesize Everything stated as a theorem is checked by Agda 2.8 + stdlib 2.4:\\
+\texttt{--safe}, no postulates; conditional results take their hypotheses as
+module parameters.}
+\end{frame}

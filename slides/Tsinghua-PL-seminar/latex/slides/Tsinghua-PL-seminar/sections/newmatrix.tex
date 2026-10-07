@@ -1,0 +1,357 @@
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{slides.Tsinghua-PL-seminar.sections.newmatrix}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Nat}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{ℕ}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Product}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaField{proj₁}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Level}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{0ℓ}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Relation.Binary.PropositionalEquality}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}≡\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{refl}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Algebra.Bundles}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaRecord{Group}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Word.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Definitions}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaRecord{\AgdaUnderscore{}IsPresentationOf\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{\AgdaUnderscore{}IsSubPresentationOf\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{infix}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}⊢\AgdaUnderscore{}===\AgdaUnderscore{}}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaPostulate{U}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaRecord{Group}\AgdaSpace{}%
+\AgdaFunction{0ℓ}\AgdaSpace{}%
+\AgdaFunction{0ℓ}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{⟦\AgdaUnderscore{}⟧ᵐ}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{n}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaPostulate{l17}\AgdaSpace{}%
+\AgdaPostulate{r17}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaPostulate{Rel}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}⊢\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{private}\AgdaSpace{}%
+\AgdaKeyword{variable}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaGeneralizable{n}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{ℕ}\<%
+\end{code}
+%% Part 6c — matrix semantics for unitary groups (branch v-office).
+
+\begin{frame}{Matrix semantics, for real: $U_n(\mathbb{Z}[\frac12,i])$ \New}
+\begin{columns}[c]
+\begin{column}{0.47\textwidth}
+\small The paper's stated limitation: its $U_3(\mathbb{Z}[\frac12,i])$ and
+Clifford+$T$ studies stop at syntax, because the rings and unitary matrices
+were missing. \Branch{v-office} supplies them:
+\begin{itemize}
+  \item rings $\mathbb{Z}[\frac12]$, $\mathbb{Z}[\frac12,i]$, $\mathbb{Z}[\frac1{\sqrt2},i]$ and
+        matrices from \textbf{EucDomain} --- an Agda port of Ross--Selinger's
+        \texttt{newsynth} (17.6k lines);
+  \item generators act as \alert{two-level} matrices:
+\end{itemize}
+\vspace{2pt}
+\centering
+\begin{tikzpicture}[x=2.75mm,y=2.75mm,font=\tiny]
+  \foreach \M/\x/\lab in {X/0/{X_{[j,k]}},K/9/{K_{[j,k]}},I/18/{i_{[j]}}} {
+    \draw[gray] (\x,0) rectangle ++(6,6);
+    \node at (\x+3,-0.9) {$\lab$};
+  }
+  % X: swap rows 1,3 (j=1,k=3)
+  \fill[newC!20] (1,4) rectangle (2,5); \fill[newC!20] (3,2) rectangle (4,3);
+  \fill[newC!20] (1,2) rectangle (2,3); \fill[newC!20] (3,4) rectangle (4,5);
+  \node at (1.5,4.5) {0}; \node at (3.5,4.5) {1}; \node at (1.5,2.5) {1}; \node at (3.5,2.5) {0};
+  \foreach \d in {0,2,4,5} \node at (\d+0.5,5.5-\d) {1};
+  % K
+  \fill[accent!20] (10,4) rectangle (11,5); \fill[accent!20] (12,2) rectangle (13,3);
+  \fill[accent!20] (10,2) rectangle (11,3); \fill[accent!20] (12,4) rectangle (13,5);
+  \node at (10.5,4.5) {$\gamma$}; \node at (12.5,4.5) {$\gamma$}; \node at (10.5,2.5) {$\gamma$}; \node at (12.5,2.5) {$\!\!-\gamma$};
+  \foreach \d in {0,2,4,5} \node at (9+\d+0.5,5.5-\d) {1};
+  % i
+  \fill[paperC!20] (19,4) rectangle (20,5); \node at (19.5,4.5) {$i$};
+  \foreach \d in {0,2,3,4,5} \node at (18+\d+0.5,5.5-\d) {1};
+  \node[anchor=west] at (24.3,3) {$\gamma = \frac{1}{1+i}$};
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.51\textwidth}
+\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\small Bian--Selinger (QPL'21), \textbf{every} $n$, against matrices:
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{Clifford+CS-TwoLevel}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\end{code}
+\begin{code}%
+\>[0][@{}l@{\AgdaIndent{1}}]%
+\>[2]\AgdaComment{--\ Presentation.agda:\ the\ relations\ present\ Uₙ(𝔻[i])}\<%
+\\
+%
+\>[2]\AgdaFunction{presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaGeneralizable{n}\AgdaSymbol{\})}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{U}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaComment{--\ MainLemma.agda}\<%
+\\
+%
+\>[2]\AgdaFunction{relations-complete}\AgdaSpace{}%
+\AgdaSymbol{:}%
+\>[107I]\AgdaSymbol{\{}\AgdaBound{u}\AgdaSpace{}%
+\AgdaBound{v}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Gen}\AgdaSpace{}%
+\AgdaGeneralizable{n}\AgdaSymbol{)\}}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[.][@{}l@{}]\<[107I]%
+\>[23]\AgdaOperator{\AgdaPostulate{⟦}}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟧ᵐ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟦}}\AgdaSpace{}%
+\AgdaBound{v}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟧ᵐ}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{≈}}\AgdaSpace{}%
+\AgdaBound{v}\<%
+\\
+%
+\>[2]\AgdaComment{--\ Soundness.agda:\ decided\ on\ concrete\ 4\ ×\ 4\ matrices}\<%
+\\
+%
+\>[2]\AgdaFunction{rel-17₄}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟦}}\AgdaSpace{}%
+\AgdaPostulate{l17}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟧ᵐ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≡}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟦}}\AgdaSpace{}%
+\AgdaPostulate{r17}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟧ᵐ}}\<%
+\\
+%
+\>[2]\AgdaFunction{rel-17₄}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaInductiveConstructor{refl}\<%
+\end{code}
+\begin{code}[hide]%
+%
+\>[2]\AgdaFunction{presentation}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{\AgdaUnderscore{}}\<%
+\\
+%
+\>[2]\AgdaFunction{relations-complete}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{\AgdaUnderscore{}}\<%
+\end{code}
+\begin{itemize}
+  \small
+  \item the normal form is \alert{exact synthesis} (Algorithm 2.10), by
+        well-founded recursion on (pivot, lde, \#odd entries);
+  \item soundness: commutations at any indices; the rest pulled back to
+        dimension $\le4$ and decided by \aid{refl};
+  \item Greylyn's $U_n(\mathbb{Z}[\frac1{\sqrt2},i])$ by the same code, generic in
+        the ring: complete for $n\le4$.
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The authors' own Agda, now on the library's engine \New}
+\begin{columns}[c]
+\begin{column}{0.53\textwidth}
+\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\small \textbf{2-qubit Clifford+$T$} (Bian--Selinger, QPL'22), end to end:
+\vspace{2pt}
+
+\centering
+\begin{tikzpicture}[node distance=3.5mm,>={Stealth[length=1.6mm]},
+  bx/.style={draw=accent,fill=soft,rounded corners=2pt,font=\scriptsize,align=center,text width=40mm,minimum height=7mm}]
+  \node[bx,draw=newC,fill=softnew] (ct) {Clifford+$T$: $\omega,H_i,S_i,T_i,CZ$\\{\tiny Figure 1, 33 relation constructors}};
+  \node[bx,below=of ct] (gs) {Greylyn, simplified\\{\tiny 5 generators, 19 relations}};
+  \node[bx,below=of gs] (g) {Greylyn: $U_4(\mathbb{Z}[\frac1{\sqrt2},i])$\\{\tiny 16 generators, 123 relations}};
+  \node[bx,below=of g,draw=paperC,fill=softpaper] (m) {two-level matrices, $n\le4$\\{\tiny complete against matrices}};
+  \draw[->,thick] (ct) -- node[right,font=\tiny,align=left]{full R--S: 2 cosets $I,\Omega$,\\ $8+2\cdot19=46$ equations} (gs);
+  \draw[<->,thick] (gs) -- node[right,font=\tiny]{iso} (g);
+  \draw[<->,thick] (g) -- node[right,font=\tiny]{\texttt{Greylyn-TwoLevel}} (m);
+\end{tikzpicture}
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{Clifford+T-2qubit}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\end{code}
+\begin{code}%
+\>[0][@{}l@{\AgdaIndent{1}}]%
+\>[2]\AgdaComment{--\ Clifford+T-2qubit/Presentation.agda:}\<%
+\\
+%
+\>[2]\AgdaComment{--\ ⟦\AgdaUnderscore{}⟧\ is\ a\ group\ monomorphism\ into\ U₄(ℤ[1/√2,i])}\<%
+\\
+%
+\>[2]\AgdaFunction{presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{Rel}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{IsSubPresentationOf}}\AgdaSpace{}%
+\AgdaPostulate{U}\AgdaSpace{}%
+\AgdaNumber{4}\<%
+\end{code}
+\begin{code}[hide]%
+%
+\>[2]\AgdaFunction{presentation}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{\AgdaUnderscore{}}\<%
+\end{code}
+\end{column}
+\begin{column}{0.44\textwidth}
+\small \textbf{3-qubit Clifford+$CS$} (QPL'23), in progress: the
+two-level $U_8(\mathbb{Z}[\frac12,i])$ side is done; Step 4 of the R--S chain
+derives each of \alert{3\,192} relations from \alert{508}:
+\vspace{2pt}
+
+\centering
+\begin{tikzpicture}[scale=0.95]
+  \def\R{1.25}
+  % 2486 / 3192 = 0.7788 -> 280.4 deg; 341 -> 38.5 deg; 346 -> 39.0 deg
+  \fill[paperC!55] (0,0) -- (90:\R) arc (90:370.4:\R) -- cycle;
+  \fill[accent!45] (0,0) -- (370.4:\R) arc (370.4:408.9:\R) -- cycle;
+  \fill[newC!55] (0,0) -- (408.9:\R) arc (408.9:447.9:\R) -- cycle;
+  \fill[gray!50] (0,0) -- (447.9:\R) arc (447.9:450:\R) -- cycle;
+  \node[font=\scriptsize,anchor=west,align=left] at (1.5,0.55) {\textcolor{paperC}{\rule{6pt}{6pt}} 2\,486 by normal-form\\[-2pt]\quad computation};
+  \node[font=\scriptsize,anchor=west] at (1.5,-0.15) {\textcolor{accent!70}{\rule{6pt}{6pt}} 341 axioms};
+  \node[font=\scriptsize,anchor=west] at (1.5,-0.65) {\textcolor{newC}{\rule{6pt}{6pt}} 346 by rewriting};
+  \node[font=\scriptsize,anchor=west] at (1.5,-1.15) {\textcolor{gray}{\rule{6pt}{6pt}} 19 by small lemmas};
+\end{tikzpicture}
+
+\vspace{4pt}
+\raggedright
+\small \texttt{Presentation/Tactics}: a \aid{Γ ⊢ w === v} \emph{view} of our
+congruence, and the original paper's R--S theorem \alert{as an instance} of
+\texttt{Normalization.Reidemeister-Schreier}. \texttt{Step4/Main}: 10 min, 2.2\,GB.
+\end{column}
+\end{columns}
+\end{frame}

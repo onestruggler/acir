@@ -1,0 +1,444 @@
+\begin{code}[hide]
+module slides.Tsinghua-PL-seminar.sections.design where
+
+open import Data.Nat using (ℕ ; _+_)
+open import Data.Product using (_×_ ; _,_)
+open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
+open import Data.List using (List)
+open import Data.Unit using (⊤ ; tt)
+open import Level using (Level ; _⊔_ ; 0ℓ)
+open import Relation.Binary using (Rel)
+open import Relation.Binary.Definitions using (Decidable)
+import Relation.Binary.PropositionalEquality as Eq
+open import Function.Definitions using (Congruent ; Injective)
+open import Algebra.Bundles using (Group)
+open import Algebra.Morphism.Structures using (module GroupMorphisms)
+
+open import Notations using (₁₊ ; ₂₊)
+open import Word.Base using (wconcatmap)
+import Word.Base as WB
+open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
+open import Presentation.Construct.Base using ([_]ₗ ; [_]ᵣ)
+
+postulate
+  proof-elided : ∀ {ℓ} {A : Set ℓ} → A
+  X Y A B C D  : Set
+  a ℓ c d      : Level
+  n k          : ℕ
+\end{code}
+%% Part 4 — the library, layer by layer (paper §4).
+\PaperPart
+\section{The library, layer by layer}
+
+\begin{frame}{Five design decisions \InPaper}
+\begin{columns}[c]
+\begin{column}{0.60\textwidth}
+\begin{enumerate}
+  \setlength{\itemsep}{2pt}
+  \item \textbf{Syntax is unquotiented}; everything out of it is a function
+        on words --- normal forms, coset tables, sections are structurally
+        recursive programs the evaluator runs.
+  \item \textbf{Specifications are stdlib bundles}: a normal form \emph{is}
+        an \aid{Injection}, \aid{RightInverse} or \aid{Bijection} out of the
+        word setoid. No new theory to maintain.
+  \item \textbf{Certificates are finite}: a verified coset table is finite
+        data plus five equations; obligations are case splits whose cases
+        are closed goals.
+  \item \textbf{Indices are chosen for the unifier}: wire counts built from
+        successors only.
+  \item \textbf{Constructions come in pairs}: a syntactic theorem (normal
+        forms combine) and a semantic one (the constructed relation set
+        presents the constructed group).
+\end{enumerate}
+\end{column}
+\begin{column}{0.37\textwidth}
+\centering
+\begin{tikzpicture}[x=10mm,y=7.6mm]
+  \node[ly=paperC!25,minimum width=50mm] at (2.5,7) {Examples: $S_n$, Pauli, Clifford+$T$, \ldots};
+  \node[ly=soft,minimum width=24mm] at (1.2,6) {Constructions\\[-2pt]{\tiny $\times,\rtimes,\ast_M$, ext.}};
+  \node[ly=soft,minimum width=24mm] at (3.8,6) {Circuits\\[-2pt]{\tiny \aid{Lift-Relation}}};
+  \node[ly=soft,minimum width=50mm] at (2.5,5) {Normalization: NF bundles, R--S, cosets, towers};
+  \node[ly=soft,minimum width=50mm] at (2.5,4) {Presentations: $\_{===}\_$ and its congruence $\_{\approx}\_$};
+  \node[ly=soft,minimum width=50mm] at (2.5,3) {Words: the free monoid \aid{Word X}};
+  \node[ly=gray!10,minimum width=50mm] at (2.5,2) {\texttt{Notations} \quad\textbar\quad \texttt{ForStdlib} (semantics)};
+  \node[ly=gray!5,draw=gray,minimum width=50mm] at (2.5,1) {Agda standard library 2.4};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Words: a syntax tree, not a list \InPaper}
+\begin{columns}[c]
+\begin{column}{0.56\textwidth}
+\begin{code}
+data Word (X : Set) : Set where
+  [_]ʷ : X → Word X
+  ε    : Word X
+  _•_  : Word X → Word X → Word X
+\end{code}
+\begin{code}[hide]
+infixr 7 _•_
+infixl 9 _ʷ _ᵗ
+infix 4 _≈_ _===_ _≈ₙ_ _≈₂_ _~_ _===₁_ _===₂_
+
+
+WRel : Set → Set₁
+WRel X = Rel (Word X) 0ℓ
+
+postulate
+  w v u w' v' : Word X
+  _===_       : WRel X
+\end{code}
+A word remembers its bracketing: terms mirror pen-and-paper calculations,
+rules apply to any subterm, and associativity is a \alert{congruence
+generator}, discharged by a solver.
+
+\vspace{4pt}
+Generator substitutions extend to words (``the unique monoid homomorphism''):
+\begin{code}
+_ʷ : (X → Word Y) → (Word X → Word Y)
+_ʷ = wconcatmap
+\end{code}
+and a \alert{coset action} extends to words by threading the coset:
+\begin{code}
+_ᵗ : (C → Y → Word X × C) → (C → Word Y → Word X × C)
+\end{code}
+\begin{code}[hide]
+_ᵗ = WB._ᵗ
+\end{code}
+\end{column}
+\begin{column}{0.41\textwidth}
+\centering
+\begin{tikzpicture}[level distance=9mm,sibling distance=14mm,
+  every node/.style={font=\small},
+  op/.style={circle,draw=accent,fill=soft,inner sep=1pt,minimum size=5mm},
+  lf/.style={rectangle,draw=paperC,fill=softpaper,inner sep=2pt,rounded corners=1pt}]
+  \node[op] {$\bullet$}
+    child {node[op] {$\bullet$}
+      child {node[lf] {$H$}}
+      child {node[lf] {$S$}}}
+    child {node[op] {$\bullet$}
+      child {node[lf] {$H$}}
+      child {node[lf,draw=gray,fill=white] {$\varepsilon$}}};
+\end{tikzpicture}
+
+{\scriptsize $(H \aidop{•} S) \aidop{•} (H \aidop{•} \varepsilon)$ --- a tree;\\
+\aid{by-assoc} flattens both sides to lists and compares by \aid{refl}}
+
+\vspace{8pt}
+\begin{tikzpicture}[>={Stealth[length=1.8mm]}]
+  \node[draw=accent,fill=soft,rounded corners=2pt,font=\scriptsize] (c) {$c$};
+  \node[draw=accent,fill=soft,rounded corners=2pt,font=\scriptsize,right=12mm of c] (c1) {$c_1$};
+  \node[draw=accent,fill=soft,rounded corners=2pt,font=\scriptsize,right=12mm of c1] (c2) {$c_2$};
+  \draw[->] (c) -- node[above,font=\scriptsize]{$y_1$} node[below,font=\scriptsize]{emit $w_1$} (c1);
+  \draw[->] (c1) -- node[above,font=\scriptsize]{$y_2$} node[below,font=\scriptsize]{emit $w_2$} (c2);
+\end{tikzpicture}
+
+{\scriptsize $(h\,\aid{ᵗ})\;c\;(y_1\aidop{•}y_2) = (w_1\aidop{•}w_2,\;c_2)$}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Presented monoids as inductive congruences \InPaper}
+\begin{columns}[c]
+\begin{column}{0.52\textwidth}
+One convention everywhere: \aid{\_===\_} = the raw axioms $\Gamma$;
+\aid{\_≈\_} = the monoid congruence they generate:
+\begin{code}
+data _≈_ : WRel X where
+  refl  : w ≈ w
+  sym   : w ≈ v → v ≈ w
+  trans : w ≈ v → v ≈ u → w ≈ u
+  cong  : w ≈ w' → v ≈ v' → w • v ≈ w' • v'
+  assoc      : (w • v) • u ≈ w • (v • u)
+  left-unit  : ε • w ≈ w
+  right-unit : w • ε ≈ w
+  axiom      : w === v → w ≈ v
+\end{code}
+\end{column}
+\begin{column}{0.45\textwidth}
+\begin{itemize}
+  \setlength{\itemsep}{4pt}
+  \item $\approx$ \emph{is} the word problem of $\langle X\mid\Gamma\rangle$.
+  \item A derivation is a \alert{first-class object}: compute with it,
+        induct on it, translate it (congruence-lifting lemmas are inductions
+        on this type).
+  \item Packaged as the \emph{word setoid} and the presented monoid
+        \aid{•-ε-monoid}; with a \aid{Grouplike} witness (a left inverse per
+        generator) the group \aid{•-ε-group}.
+\end{itemize}
+\vspace{2pt}
+{\small Contrast: mathlib's \aid{PresentedGroup} (quotient), cubical Agda (HIT).}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{What ``$\Gamma$ presents $G$'' means \InPaper}
+\begin{code}
+record _IsPresentationOf_ (_===_ : WRel X) (G : Group a ℓ) : Set (a ⊔ ℓ) where
+  field gl : Grouplike _===_
+  module GL = Group-Lemmas _===_ gl
+  open GroupMorphisms (Group.rawGroup GL.•-ε-group) (Group.rawGroup G)
+  field ⟦_⟧ : Word X → Group.Carrier G
+        iso : IsGroupIsomorphism ⟦_⟧
+\end{code}
+\begin{code}[hide]
+postulate
+  |NF|       : Set
+  nf         : Word X → |NF|
+  _≈ₙ_       : |NF| → |NF| → Set
+  NormalForm : Set
+  inv-nf     : |NF| → Word X
+  Sem        : Set
+  ⟦_⟧        : Word X → Sem
+  _≈₂_       : Sem → Sem → Set
+\end{code}
+\begin{columns}[c]
+\begin{column}{0.54\textwidth}
+\small
+\begin{itemize}
+  \item weaker records: \aid{\_IsSubPresentationOf\_} (monomorphism), monoid versions;
+  \item upgrade lemmas: surjective sub-presentation $\Rightarrow$ presentation;
+        grouplike monoid presentation $\Rightarrow$ group presentation;
+  \item proofs split into soundness, injectivity (by normalization),
+        surjectivity; the records assemble the isomorphism.
+\end{itemize}
+\end{column}
+\begin{column}{0.43\textwidth}
+\begin{keybox}[title=Monoid vs group: a real distinction]
+\small Words have no formal inverses, so \emph{every} presentation is at
+bottom a monoid presentation. $\langle\, T \mid T^{0} = \varepsilon\,\rangle$
+read as a group presentation is $\mathbb{Z}$; as a \alert{monoid} it is
+$(\mathbb{N},+,0)$ --- and \aid{Grouplike} is exactly what fails.
+\end{keybox}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Normal forms are standard-library bundles \InPaper}
+\begin{columns}[c]
+\begin{column}{0.50\textwidth}
+\small From the \alert{word setoid} to a carrier $\mathit{NF}$, on the nose:\\[4pt]
+\begin{tabular}{@{\quad}l@{\;\;=\;\;}l@{}}
+\aid{NormalFormInjective} & \aid{Injection} \\
+\aid{NormalForm}          & \aid{RightInverse} \\
+\aid{BijectiveNormalForm} & \aid{Bijection}
+\end{tabular}
+\vspace{6pt}
+
+
+\aid{Injection}: $w\approx v \iff \aid{nf}\,w \approx_{\mathit{NF}} \aid{nf}\,v$, and with it
+\begin{code}
+by-equal-nf : nf w ≈ₙ nf v → w ≈ v
+≈-dec : Decidable _≈ₙ_ → Decidable _≈_
+\end{code}
+\begin{code}[hide]
+by-equal-nf = proof-elided
+≈-dec = proof-elided
+\end{code}
+{\small prove word equations by \alert{computing}; a decidable carrier
+\alert{decides the word problem}.}
+\end{column}
+\begin{column}{0.47\textwidth}
+\centering
+\begin{tikzpicture}[>={Stealth[length=2mm]}]
+  \node[draw=accent,fill=soft,ellipse,minimum width=26mm,minimum height=34mm] (W) at (0,0) {};
+  \node[draw=paperC,fill=softpaper,ellipse,minimum width=18mm,minimum height=28mm] (N) at (4,0) {};
+  \node[font=\scriptsize\bfseries,accent] at (0,1.95) {word setoid};
+  \node[font=\scriptsize\bfseries,paperC] at (4,1.95) {$\mathit{NF}$};
+  \foreach \y in {0.9,0.35,-0.2} \node[circle,fill=accent,inner sep=1pt] at (-0.4,\y) {};
+  \draw[accent!60,rounded corners] (-0.8,-0.45) rectangle (0.1,1.15);
+  \node[circle,fill=paperC,inner sep=1.3pt] (u) at (4,0.45) {};
+  \draw[->,thick] (0.15,0.45) to[bend left=10] node[above,font=\scriptsize\agdafont]{nf} (u);
+  \node[circle,fill=newC,inner sep=1.3pt] (r) at (-0.4,-1.0) {};
+  \draw[->,thick,newC] (u) to[bend left=25] node[below right,font=\scriptsize\agdafont]{inv-nf} (r);
+  \node[font=\tiny,newC,align=center] at (-0.4,-1.35) {canonical\\representative};
+  \node[circle,fill=gray,inner sep=1pt] at (4.3,-1.0) {};
+  \node[font=\tiny,gray,align=center] at (4.3,-1.35) {junk allowed};
+\end{tikzpicture}
+
+{\small \aid{RightInverse} adds the \alert{section} \aid{inv-nf} with
+$\aid{inv-nf}\circ\aid{nf}\approx\mathrm{id}$. Exactness
+$\aid{nf}\circ\aid{inv-nf}\approx\mathrm{id}$ is kept separate.}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Where constructivity bites: the section is data \InPaper}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+\begin{itemize}
+  \setlength{\itemsep}{5pt}
+  \item Classically, an injective \aid{nf} has a section on its image for
+        free: \emph{choose} a preimage.
+  \item Constructively, choosing is not free: an \aid{Injection} gives
+        \alert{no algorithm} producing a word that realizes a normal form.
+  \item That algorithm is exactly the extra field of \aid{RightInverse} ---
+        and it is what completeness consumes.
+  \item So the two are \alert{different strengths} in Agda, though
+        classically equal. Use the weak one for word-problem reasoning, the
+        strong one for completeness and presentations.
+  \item A fourth, crude witness, \aid{WeakNormalForm}: an injective
+        \emph{invariant}, not even congruent.
+\end{itemize}
+\end{column}
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[x=12mm,y=10mm]
+  \node[w=gray] (weak) at (0,0) {\aid{WeakNormalForm}};
+  \node[w=accent] (inj) at (0,1.3) {\aid{NormalFormInjective}};
+  \node[w=paperC] (ri) at (0,2.6) {\aid{NormalForm}\\[-2pt]{\scriptsize + section (data)}};
+  \node[w=newC] (bij) at (0,3.9) {\aid{BijectiveNormalForm}\\[-2pt]{\scriptsize surjectivity as a property}};
+  \draw[-{Stealth},thick] (ri) -- (inj);
+  \draw[-{Stealth},thick] (inj) -- (weak);
+  \draw[-{Stealth},thick] (bij) -- (ri);
+  \node[font=\scriptsize,anchor=west,align=left] at (1.55,1.95) {strictly stronger\\as \emph{data}};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Completeness, once and for all \InPaper}
+A \aid{NormalForm} is \alert{unique} for a semantics \aid{⟦\_⟧} into any setoid
+when canonical representatives with equal denotations are equal:
+\begin{code}
+record UniqueNormalForm (normalForm : NormalForm) : Set (c ⊔ d) where
+  field unique : ∀ {u v : |NF|} → ⟦ inv-nf u ⟧ ≈₂ ⟦ inv-nf v ⟧ → u ≈ₙ v
+by-normalization : {normalForm : NormalForm} → UniqueNormalForm normalForm →
+  Congruent _≈_ _≈₂_ ⟦_⟧ → Injective _≈_ _≈₂_ ⟦_⟧
+\end{code}
+\begin{code}[hide]
+by-normalization = proof-elided
+\end{code}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+\small
+\textbf{Soundness + unique NF $\Rightarrow$ completeness.} Five lines of proof;
+its value: every case study only ever proves \aid{unique} --- a statement about
+\alert{normal forms}, i.e.\ concrete finite data, never about arbitrary words.
+\end{column}
+\begin{column}{0.42\textwidth}
+\small
+\begin{itemize}
+  \item \aid{by-normalization-wsurj}: surjectivity on canonical forms suffices;
+  \item \aid{by-completeness}: the converse, given an exact section --- how
+        uniqueness lifts through products.
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Inductively defined circuits: indices for the unifier \InPaper}
+\begin{columns}[c]
+\begin{column}{0.52\textwidth}
+\aid{\_+\_} recurses on its \emph{first} argument:
+$2 + n \;\leadsto\; \mathsf{suc}\,(\mathsf{suc}\,n)$, while $n + 2$ is stuck.
+
+\vspace{4pt}
+So the indices are \alert{left-biased} too:
+\begin{itemize}
+  \item \aid{gate₂ : Gate 2 → Gen (₂₊ n)}, not \aid{Gen k} with $k\ge 2$;
+  \item $k$-fold shift: \aid{Gen n → Gen (k + n)}.
+\end{itemize}
+Every index equation the coverage checker meets is solved by
+\alert{injectivity of \aid{₁₊}}, never by arithmetic. That is why coset tables
+are written by direct pattern matching.
+
+\vspace{4pt}
+\small \aid{lemma-cong↑} lifts the \emph{entire} congruence one wire up, by
+induction over the eight constructors of $\approx$.
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[
+  ok/.style={draw=paperC,fill=softpaper,rounded corners=2pt,font=\small,align=left,text width=50mm,inner sep=4pt},
+  bad/.style={draw=newC,fill=softnew,rounded corners=2pt,font=\small,align=left,text width=50mm,inner sep=4pt}]
+  \node[ok] (a) {\textbf{left-biased} \hfill\checkmark\\[2pt]
+   \aid{Gen (₂₊ n)} $\doteq$ \aid{Gen (₁₊ m)}\\
+   $\leadsto\ m := \aid{₁₊}\,n$ \quad by unification};
+  \node[bad,below=6mm of a] (b) {\textbf{right-biased} \hfill$\times$\\[2pt]
+   \aid{Gen (n + 2)} $\doteq$ \aid{Gen (₁₊ m)}\\
+   $\leadsto\ n + 2 \doteq \mathsf{suc}\,m$ \quad stuck:\\ a Diophantine equation};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The Reidemeister--Schreier engine \InPaper}
+\begin{code}
+module SingleLevel (Γ : WRel X) (Δ : WRel Y) (C : Set) (I : C)
+  (f : X → Word Y) (h : C → Y → Word X × C) ([_] : C → Word Y)
+\end{code}
+\begin{code}[hide]
+  where
+
+postulate
+  I      : C
+  f      : X → Word Y
+  h      : C → Y → Word X × C
+  [_]    : C → Word Y
+  _~_    : Word X × C → Word X × C → Set
+  _===₁_ : WRel X
+  _===₂_ : WRel Y
+\end{code}
+\vspace{-2pt}
+{\small $\Gamma$ presents a subgroup $H$ of the group $G$ presented by $\Delta$;
+$C$ = cosets, $I$ = identity coset, $f$ = embedding of generators,
+$[\_]$ = Schreier section, $h$ = the coset table.}
+\begin{code}
+module Transfer
+  (h=⁻¹f-gen : ∀ (x : X) → ([ x ]ʷ , I) ~ ((h ᵗ) I (f x)))                         -- 1
+  (h-wd-ax : ∀ (c : C){u t : Word Y} → u ===₂ t → ((h ᵗ) c u) ~ ((h ᵗ) c t))       -- 2
+  (f-wd-ax : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)                              -- 3
+  ([I]≈ε : [ I ] ≈₂ ε)                                                             -- 4
+  (h=ract : ∀ c b → let (b' , c') = h c b in [ c ] • [ b ]ʷ ≈₂ (f ʷ) b' • [ c' ])  -- 5
+\end{code}
+\begin{code}[hide]
+  where
+\end{code}
+\vspace{-4pt}
+{\small (1) the table inverts the embedding at $I$;\; (2) it respects $\Delta$'s
+axioms, coset by coset;\; (3) $f$ respects $\Gamma$'s axioms;\; (4) $[I]\approx\varepsilon$;\;
+(5) the soundness law, as \aid{ract-sound}.}
+\end{frame}
+
+\begin{frame}{What the engine gives back \InPaper}
+\begin{columns}[c]
+\begin{column}{0.52\textwidth}
+From the five hypotheses, \aid{Transfer} derives well-definedness of
+$\aid{nf} = (h\,\aid{ᵗ})\,I$, the factorization of whole words, injectivity,
+and the payoff --- the \alert{normal-form transport}:
+\[
+  \aid{nf-transp} : \aid{NormalForm}\;\Gamma\;\mathit{NF}
+    \to \aid{NormalForm}\;\Delta\;(\mathit{NF}\times C)
+\]
+a normal form for the subgroup yields one for the group, \alert{with one
+more coset digit}.
+
+\vspace{4pt}
+\small \aid{PackedCosetTable} bundles data + hypotheses into one value;
+\aid{CosetTower} iterates up an $\mathbb{N}$-indexed family:\\[2pt]
+\quad\aid{tower-carrier NF₀ (k+1) = tower-carrier NF₀ k × Cₖ}
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[x=9mm,y=9mm,>={Stealth[length=1.8mm]},
+  lv/.style={draw=accent,fill=soft,rounded corners=2pt,font=\scriptsize,minimum width=26mm,minimum height=6mm},
+  dg/.style={draw=newC,fill=softnew,rounded corners=2pt,font=\scriptsize,minimum width=8mm,minimum height=6mm}]
+  \node[lv] (l0) at (0,0) {$\mathit{NF}_0$ (base)};
+  \node[lv] (l1) at (0,1.2) {level 1};
+  \node[lv] (l2) at (0,2.4) {level 2};
+  \node[lv] (l3) at (0,3.6) {level $k$};
+  \node[dg] (d1) at (2.6,1.2) {$C_1$};
+  \node[dg] (d2) at (2.6,2.4) {$C_2$};
+  \node[dg] (d3) at (2.6,3.6) {$C_k$};
+  \draw[->,thick,paperC] (l0) -- node[left,font=\tiny]{table 1} (l1);
+  \draw[->,thick,paperC] (l1) -- node[left,font=\tiny]{table 2} (l2);
+  \draw[->,thick,paperC,dashed] (l2) -- (l3);
+  \foreach \i in {1,2,3} \draw[-,gray] (l\i) -- (d\i);
+  \node[font=\scriptsize,align=center] at (1.3,-1.0) {carrier $\mathit{NF}_0\times C_1\times C_2\times\dots\times C_k$};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+

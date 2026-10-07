@@ -1,0 +1,253 @@
+\begin{code}[hide]
+module slides.Tsinghua-PL-seminar.sections.design2 where
+
+open import Data.Nat using (ℕ)
+open import Data.Product using (_×_ ; _,_)
+open import Data.Sum using (_⊎_)
+open import Data.List using (List)
+open import Data.Unit using (⊤)
+open import Level using (0ℓ)
+import Relation.Binary.PropositionalEquality as Eq
+
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_)
+open import Presentation.Construct.Base using ([_]ₗ ; [_]ᵣ)
+
+infix 5 _⋄_⋄_
+
+postulate
+  A B : Set
+  u v : Word A
+\end{code}
+%% Part 4, continued — a real coset level, products, stdlib (paper §4).
+\begin{frame}{A real coset level, in full: adjoining $X$ to $\langle\omega\rangle\times\langle S\rangle$ \InPaper}
+\begin{code}[hide]
+module Sω where
+  postulate ω S : Word ⊤
+module CT where
+  Sω = ⊤
+  data XSω : Set where
+    X-gen S-gen ω-gen : XSω
+  data Cr : Set where
+    X-cr ε-cr : Cr
+  infixr 8 _^_
+  postulate
+    _^_ : ∀ {A : Set} → Word A → ℕ → Word A
+    _===′_ : WRel XSω
+    _~′_ : Word Sω × Cr → Word Sω × Cr → Set
+    by-equal-nf′ : ∀ {A : Set} → A
+  open Eq using (refl)
+  data _==_ : WRel XSω where
+    order-ω order-S order-X order-SX : ε == ε
+    comm : ∀ {gen : XSω} → ε == ε
+\end{code}
+\begin{columns}[T]
+\begin{column}{0.47\textwidth}
+\small Base $\langle\omega\rangle\times\langle S\rangle$ (radices $8\cdot 4$);
+adjoin $X$ with $X^2=\varepsilon$, $(SX)^2=\omega^2$, $\omega$ central.
+Two cosets, $\varepsilon$ and $X$. The whole table:
+\begin{code}
+  h : Cr → XSω → Word Sω × Cr
+  h X-cr X-gen = ε , ε-cr
+  h X-cr S-gen = (Sω.ω ^ 2 • Sω.S ^ 3) , X-cr
+  h X-cr ω-gen = Sω.ω , X-cr
+  h ε-cr X-gen = ε , X-cr
+  h ε-cr S-gen = Sω.S , ε-cr
+  h ε-cr ω-gen = Sω.ω , ε-cr
+\end{code}
+{\scriptsize from \texttt{Examples/Amalgamations/CliffordT1.agda} (coset type renamed \aid{Cr})}
+\end{column}
+\begin{column}{0.50\textwidth}
+\small Hypothesis (2), \emph{every} case closed by evaluation:
+\begin{code}
+  h-wd-ax : ∀ c {u t} → u == t → Set
+  h-wd-ax X-cr order-ω = by-equal-nf′ refl , refl
+  h-wd-ax X-cr order-S = by-equal-nf′ refl , refl
+  h-wd-ax X-cr order-X = by-equal-nf′ refl , refl
+  h-wd-ax X-cr order-SX = by-equal-nf′ refl , refl
+  h-wd-ax X-cr (comm {X-gen}) = by-equal-nf′ refl , refl
+  h-wd-ax X-cr (comm {S-gen}) = by-equal-nf′ refl , refl
+  h-wd-ax X-cr (comm {ω-gen}) = by-equal-nf′ refl , refl
+  -- … and the same seven for ε-cr
+\end{code}
+{\scriptsize abridged: \aid{(by-equal-nf Eq.refl) , Eq.refl} in the source}
+\end{column}
+\end{columns}
+\begin{keybox}
+\small The typechecker runs the table on both sides of the axiom: the cosets
+coincide and the residues have the same normal form one level down.
+Qubit Clifford+$T$: \textbf{59} such obligations; qutrit's nine-coset level
+alone: \textbf{72} --- every one \aid{refl}.
+\end{keybox}
+\end{frame}
+
+\begin{frame}{The one case that is a real derivation \InPaper}
+\begin{columns}[c]
+\begin{column}{0.62\textwidth}
+\small Hypothesis (5) at coset $X$, letter $S$: the table says
+$X\cdot S = (\omega^2 S^3)\cdot X$. The proof, verbatim:
+\vspace{2pt}
+
+{\agdafont\scriptsize
+\begin{tabular}{@{}l@{}}
+\textcolor{AgdaFunction}{lemma-XS} : \textcolor{AgdaFunction}{X} \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{S} \textcolor{AgdaDatatype}{≈} (\textcolor{AgdaFunction}{ω} \textcolor{AgdaFunction}{\textasciicircum} 2 \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{S} \textcolor{AgdaFunction}{\textasciicircum} 3) \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{X}\\
+\textcolor{AgdaFunction}{lemma-XS} = \textcolor{AgdaFunction}{begin}\\
+\quad \textcolor{AgdaFunction}{X} \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{S} \textcolor{AgdaFunction}{≈⟨} \textcolor{AgdaInductiveConstructor}{trans} (\textcolor{AgdaInductiveConstructor}{sym} \textcolor{AgdaInductiveConstructor}{right-unit}) (\textcolor{AgdaInductiveConstructor}{sym} (\textcolor{AgdaInductiveConstructor}{cong} \textcolor{AgdaInductiveConstructor}{refl} (\textcolor{AgdaInductiveConstructor}{axiom} \textcolor{AgdaInductiveConstructor}{order-X}))) \textcolor{AgdaFunction}{⟩}\\
+\quad (\textcolor{AgdaFunction}{X} \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{S}) \textcolor{AgdaInductiveConstructor}{•} (\textcolor{AgdaFunction}{X} \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{X}) \textcolor{AgdaFunction}{≈⟨} \textcolor{AgdaInductiveConstructor}{trans} (\textcolor{AgdaInductiveConstructor}{sym} \textcolor{AgdaInductiveConstructor}{left-unit}) (\textcolor{AgdaInductiveConstructor}{sym} (\textcolor{AgdaInductiveConstructor}{cong} (\textcolor{AgdaInductiveConstructor}{axiom} \textcolor{AgdaInductiveConstructor}{order-S}) \textcolor{AgdaInductiveConstructor}{refl})) \textcolor{AgdaFunction}{⟩}\\
+\quad (\textcolor{AgdaFunction}{S} \textcolor{AgdaFunction}{\textasciicircum} 4) \textcolor{AgdaInductiveConstructor}{•} (\textcolor{AgdaFunction}{X} \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{S}) \textcolor{AgdaInductiveConstructor}{•} (\textcolor{AgdaFunction}{X} \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{X}) \textcolor{AgdaFunction}{≈⟨} \textcolor{AgdaFunction}{by-assoc} \textcolor{AgdaInductiveConstructor}{Eq.refl} \textcolor{AgdaFunction}{⟩}\\
+\quad (\textcolor{AgdaFunction}{S} \textcolor{AgdaFunction}{\textasciicircum} 3) \textcolor{AgdaInductiveConstructor}{•} (\textcolor{AgdaFunction}{S} \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{X}) \textcolor{AgdaFunction}{\textasciicircum} 2 \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{X} \textcolor{AgdaFunction}{≈⟨} \textcolor{AgdaInductiveConstructor}{cong} \textcolor{AgdaInductiveConstructor}{refl} (\textcolor{AgdaInductiveConstructor}{cong} (\textcolor{AgdaInductiveConstructor}{axiom} \textcolor{AgdaInductiveConstructor}{order-SX}) \textcolor{AgdaInductiveConstructor}{refl}) \textcolor{AgdaFunction}{⟩}\\
+\quad (\textcolor{AgdaFunction}{S} \textcolor{AgdaFunction}{\textasciicircum} 3) \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{ω} \textcolor{AgdaFunction}{\textasciicircum} 2 \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{X} \textcolor{AgdaFunction}{≈⟨} \textcolor{AgdaInductiveConstructor}{sym} \textcolor{AgdaInductiveConstructor}{assoc} \textcolor{AgdaFunction}{⟩}\\
+\quad (\textcolor{AgdaFunction}{S} \textcolor{AgdaFunction}{\textasciicircum} 3 \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{ω} \textcolor{AgdaFunction}{\textasciicircum} 2) \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{X} \textcolor{AgdaFunction}{≈⟨} \textcolor{AgdaInductiveConstructor}{cong} (\textcolor{AgdaFunction}{lemma-ω\textasciicircum{}n} 2 (\textcolor{AgdaFunction}{S} \textcolor{AgdaFunction}{\textasciicircum} 3)) \textcolor{AgdaInductiveConstructor}{refl} \textcolor{AgdaFunction}{⟩}\\
+\quad (\textcolor{AgdaFunction}{ω} \textcolor{AgdaFunction}{\textasciicircum} 2 \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{S} \textcolor{AgdaFunction}{\textasciicircum} 3) \textcolor{AgdaInductiveConstructor}{•} \textcolor{AgdaFunction}{X} \textcolor{AgdaFunction}{∎}
+\end{tabular}}
+\end{column}
+\begin{column}{0.35\textwidth}
+\begin{keybox}[title=Division of labour]
+\small
+\begin{itemize}
+  \item \textbf{coverage checker}: no case is missed;
+  \item \textbf{evaluator}: closes the cases that are computation;
+  \item \textbf{human}: writes the few real derivations, which read
+        line by line like the pen-and-paper ones.
+\end{itemize}
+\end{keybox}
+\vspace{4pt}
+{\scriptsize (typeset by hand in Agda's colours: this block needs the full
+module context of \texttt{CliffordT1.agda})}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Products of presentations \InPaper}
+\begin{columns}[c]
+\begin{column}{0.56\textwidth}
+Relation sets over $A \uplus B$ from one primitive: a three-way join whose
+\alert{mixed} component is the design parameter.
+\begin{code}
+data _⋄_⋄_ (Γ₁ : WRel A) (Γ₂ : WRel B) (Γ₃ : WRel (A ⊎ B))
+           : WRel (A ⊎ B) where
+  left  : Γ₁ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) [ u ]ₗ [ v ]ₗ
+  right : Γ₂ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) [ u ]ᵣ [ v ]ᵣ
+  mid   : Γ₃ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) u v
+\end{code}
+\vspace{2pt}
+{\small Congruence-lifting lemmas (\aid{lefts}, \aid{rights}) embed the factors;
+normal forms transport across.}
+\end{column}
+\begin{column}{0.41\textwidth}
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}ll@{}}
+\toprule
+mixed relation $\Gamma_3$ & construction\\
+\midrule
+\aid{EmptyRel} & free product\\
+\aid{CommRel} & direct product $\times$\\
+\aid{ConjRel}, \aid{ConjRelʷ} & semidirect $\rtimes$\\
+\aid{AmalgRel} $f_1\,f_2$ & amalgamated $\ast_M$\\
+\aid{SugarRel} & definitional extension\\
+$\Gamma$ \aid{⊕\textasciicircum} $n$ & $n$-fold power\\
+\bottomrule
+\end{tabular}
+
+\vspace{6pt}
+{\scriptsize \aid{ConjRelʷ}: moving $h$ past $n$ conjugates $n$ by a
+\emph{word} --- \aid{conj : H → N → Word N}.}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Constructions come in pairs \InPaper}
+\begin{columns}[c]
+\begin{column}{0.50\textwidth}
+\textbf{Syntactic}: normal-form lifting.
+\begin{itemize}
+  \item direct / semidirect: carrier $\mathit{NF}_1\times\mathit{NF}_2$;
+  \item amalgam: a normal form for the \emph{common subgroup} plus one verified
+        coset table per factor:
+\end{itemize}
+\begin{code}[hide]
+amalNFC : Set → Set → Set
+\end{code}
+\begin{code}
+amalNFC C D = (D ⊎ ⊤) × List (C × D) × (C ⊎ ⊤)
+\end{code}
+\textbf{Semantic}: presentation theorems against concrete groups
+\[
+\begin{array}{l}
+(\Gamma \aidop{⋄} \Delta \aidop{⋄} \aid{CommRel})\ \aid{IsPresentationOf}\ (G_1 \times G_2) \\[2pt]
+(\Gamma \aidop{⋄} \Delta \aidop{⋄} \aid{ConjRelʷ}\;\mathit{conj})\ \aid{IsPresentationOf}\ (G_1 \rtimes G_2) \\[2pt]
+(\Gamma \mathrel{\aid{⊕\textasciicircum}} n)\ \aid{IsPresentationOf}\ (\otimes\aid{-group}\;n) \\[2pt]
+(P_1 \mathrel{\aid{*}} P_2 \mathrel{\aid{⋆}} f_1 \mathrel{\aid{⋆}} f_2)\ \aid{IsPresentationOf}\ (G_1 \ast_{G_0} G_2)
+\end{array}
+\]
+\end{column}
+\begin{column}{0.47\textwidth}
+\centering
+{\small alternating normal form of an amalgam:}\\[4pt]
+\begin{tikzpicture}[x=8.5mm,
+  b0/.style={draw=gray,fill=gray!15,minimum height=7mm,minimum width=8mm,font=\scriptsize},
+  bd/.style={draw=paperC,fill=softpaper,minimum height=7mm,minimum width=8mm,font=\scriptsize},
+  bc/.style={draw=accent,fill=soft,minimum height=7mm,minimum width=8mm,font=\scriptsize}]
+  \node[b0] at (0,0) {$\mathcal{M}$};
+  \node[bd] at (1,0) {$d_0$};
+  \node[bc] at (2,0) {$c_1$};
+  \node[bd] at (3,0) {$d_1$};
+  \node at (4,0) {$\cdots$};
+  \node[bc] at (5,0) {$c_k$};
+  \node[bd] at (6,0) {$d_k$};
+  \node[bc] at (7,0) {$c$};
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (0.55,-0.5) -- (1.45,-0.5) node[midway,below=2pt,font=\tiny]{$D\uplus\top$};
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (1.55,-0.5) -- (6.45,-0.5) node[midway,below=2pt,font=\tiny]{\aid{List (C × D)}};
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (6.55,-0.5) -- (7.45,-0.5) node[midway,below=2pt,font=\tiny]{$C\uplus\top$};
+  \draw[decorate,decoration={brace,amplitude=3pt}] (-0.45,0.5) -- (0.45,0.5) node[midway,above=2pt,font=\tiny]{$\mathit{NF}_0$};
+\end{tikzpicture}
+
+\vspace{8pt}
+{\small Group \alert{extensions}: given $1\to N\to G\to Q\to 1$ with the
+conjugation action and the corrections by which lifted relators of $Q$ fail,
+$N$'s relations + conjugation rules + corrected lifts present $G$.}
+
+\vspace{4pt}
+\begin{tikzpicture}[>={Stealth[length=1.6mm]},x=11mm]
+  \foreach \x/\l in {0/1,1/N,2/G,3/Q,4/1} \node (n\x) at (\x,0) {$\l$};
+  \foreach \a/\b in {0/1,1/2,2/3,3/4} \draw[->] (n\a) -- (n\b);
+  \draw[->,dashed,newC] (n3) to[bend right=40] node[above,font=\scriptsize]{lift} (n2);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The semantic side: contributions to the standard library \InPaper}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+A presentation theorem cannot be stated without the group it presents --- and
+stdlib had the structures but not the \alert{constructions}.
+\begin{itemize}
+  \setlength{\itemsep}{2pt}
+  \item \texttt{Algebra.Construct.SemiDirectProduct}: $N\rtimes H$ via a
+        bundled \aid{Action} (six laws);
+  \item \texttt{Algebra.Construct.Amalgamation}: $M\ast_C N$ of
+        \emph{monoids}, as a setoid --- the pushout;
+  \item \texttt{Algebra.Construct.Extension}, \texttt{.SplitExtension}:
+        short exact sequences;
+  \item \texttt{Algebra.Morphism.Consequences}: monoid homomorphisms between
+        groups are group homomorphisms;
+  \item \aid{IsMonoidEpimorphism};\; \aid{Permutation′ n} as a \aid{Group}.
+\end{itemize}
+\small Seven modules, 865 lines --- being prepared for upstreaming.
+\end{column}
+\begin{column}{0.42\textwidth}
+\begin{keybox}[title={Solvers by evaluation, not reflection}]
+\small
+\begin{itemize}
+  \item \aid{by-assoc}: same letter sequence $\Rightarrow$ $w\approx v$;
+  \item \aid{by-passoc}: re-bracket toward a pattern with holes;
+  \item \aid{by-equal-nf}: same computed normal form.
+\end{itemize}
+Each maps both sides into a canonical data type by a function proved
+correct once, then compares by \aid{refl}: the evaluator does the work of
+a reflective tactic.
+\end{keybox}
+\end{column}
+\end{columns}
+\end{frame}
