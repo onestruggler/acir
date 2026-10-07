@@ -79,6 +79,9 @@
 \definecolor{softpaper}{HTML}{EAF5EA}
 \definecolor{wirec}{HTML}{37474F}
 \setbeamercolor{alerted text}{fg=newC}
+%% Neutral blue before the first part (title page, plan): orange is
+%% reserved for "new since the paper".
+\setbeamercolor{progress bar}{fg=accent,bg=accent!25}
 
 %% Parameterised TikZ styles (a `#1' cannot appear inside a frame body).
 \tikzset{
@@ -138,10 +141,11 @@
 \newcommand{\PaperPart}{\setbeamercolor{progress bar}{fg=paperC,bg=paperC!20}}
 \newcommand{\NewPart}{\setbeamercolor{progress bar}{fg=newC,bg=newC!20}}
 
-\title{Normal Forms and Complete Relations\\for Circuits in Agda}
+\title{Normal Forms and Complete Relations for Circuits in Agda}
 \subtitle{Presentations, coset tables, and machine-checked completeness}
-\author{Xiaoning Bian}
-\institute{Tsinghua University \\[2pt] \textcolor{gray}{Tsinghua PL Seminar}}
+\author[Bian, Feng]{\underline{Xiaoning Bian} \and Yuan Feng}
+\institute{Tsinghua University \\[2pt]
+  \textcolor{gray}{Tsinghua PL Seminar \quad$\cdot$\quad speaker: Xiaoning Bian}}
 \date{October 2026}
 
 \begin{document}
