@@ -26,8 +26,9 @@ open import Data.Nat.Primality using (Prime)
 open import Notations using (₂₊)
 
 module Examples.Groups.Qupit-Phase-Affine.Phase.Quad.CZ
-  (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) (lv : ℕ) (h : 2 ≤ lv) where
+  (p-2 : ℕ) (p-prime : Prime (₂₊ p-2)) (lv : ℕ) (h : 2 ≤ lv) (odd : 1 ≤ p-2) where
 
+import Data.Integer.Base as ℤ
 open import Data.Fin.Base using (toℕ)
 open import Data.Nat.Base using (zero ; suc)
 import Data.Nat.Base as ℕ
@@ -39,7 +40,8 @@ open import Word.Base using (ε ; _•_ ; _^_)
 open import Notations using (₁₊)
 
 open import Examples.Groups.Qupit-Phase-Affine.Semantics p-2 p-prime
-  using (F ; F* ; p ; 0F ; 1F ; 2F ; _+_ ; _*_ ; -_ ; -1* ; binom2 ; module FR)
+  using ( F ; F* ; p ; 0F ; 1F ; 2F ; _+_ ; _*_ ; -_ ; -1* ; binom2 ; half ; module FR ; module Odd
+        ; solve ; _:+_ ; _:*_ ; :-_ ; _:-_ ; _:=_ ; con )
 open import Examples.Groups.Qupit-Phase-Affine.Syntactics p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Reasoning p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Powers p-2 p-prime lv
@@ -186,3 +188,147 @@ module _ {n : ℕ} where
     Si₁-X = comm-gate₁-w↑ X-gate (S h ^ᶠ (- 1F))
     Z∥Si₁ : (₂₊ n) ⊢ Z h₁ ∥ Si₁
     Z∥Si₁ = Zᶠ-up 1F (S h ^ᶠ (- 1F))
+
+------------------------------------------------------------------------
+-- CZ past CX: conjugating by M₋₁ on the control
+
+module _ {n : ℕ} where
+
+  open Width (₂₊ n)
+
+  private
+    module OS = Pow.Order (₁₊ n) {S h} S-order
+    module OS₂ = Pow.Order (₂₊ n) {S h} S-order
+    module OZ = Pow.Order (₁₊ n) {Z h₁} Z-order
+    module OCZ = Pow.Order (₂₊ n) {CZ h} CZ-order
+
+    S₀ S₁ Z₁ Si₀ Si₁ Ci m CZi Pi S2₁ : Circuit (₂₊ n)
+    S₀  = S h
+    S₁  = S h ↑
+    Z₁  = Z h₁ ↑
+    Si₀ = S h ^ᶠ (- 1F)
+    Si₁ = (S h ^ᶠ (- 1F)) ↑
+    Ci  = CX ^ᶠ (- 1F)
+    m   = M⟨ -1* ⟩ ↑
+    CZi = CZ h ^ᶠ (- 1F)
+    Pi  = P ^ᶠ (- 1F)
+    S2₁ = (S h ^ᶠ 2F) ↑
+
+    neg² : - 1F * - 1F ≡ 1F
+    neg² = solve 0 ((:- con (ℤ.+ 1)) :* (:- con (ℤ.+ 1)) := con (ℤ.+ 1)) Eq.refl
+
+    binom2-1 : binom2 (- 1F) ≡ 1F
+    binom2-1 = Eq.trans (Odd.binom2-neg odd 1F)
+      (Eq.trans (Eq.cong (_+ 1F) (solve 1 (λ t → con (ℤ.+ 1) :* (con (ℤ.+ 1) :- con (ℤ.+ 1)) :* t := con (ℤ.+ 0))
+                                           Eq.refl half))
+                (FR.+-identityˡ 1F))
+
+    mm : (₂₊ n) ⊢ m • m ≈ ε
+    mm = lift (Width.trans (ax (ax2 -1* -1*)) (Width.trans (Width.refl' (₁₊ n) (M-≡ neg²)) (ax ax1)))
+
+    -- Rule (4) at -1, and its readings.
+    Cm : (₂₊ n) ⊢ CX • m ≈ m • Ci
+    Cm = ax (ax4 -1*)
+
+    mCm : (₂₊ n) ⊢ m • CX • m ≈ Ci
+    mCm = trans (back _ Cm) (cancel-in mm _)
+
+    mCi : (₂₊ n) ⊢ m • Ci ≈ CX • m
+    mCi = trans (back _ (sym mCm)) (cancel-in mm _)
+
+    mC : (₂₊ n) ⊢ m • CX ≈ Ci • m
+    mC = trans (sym (cancel-at mm _)) (trans (by-passoc ((□ • □) • □ • □) ((□ • □ • □) • □) Eq.refl) (front _ mCm))
+
+    mCim : (₂₊ n) ⊢ m • Ci • m ≈ CX
+    mCim = trans (sym assoc) (trans (front _ mCi) (trans assoc (cancel-at mm _)))
+
+    -- Rule (27) at -1 on wire 1: S ↑ m = m Z ↑ S ↑.
+    S₁m : (₂₊ n) ⊢ S₁ • m ≈ m • Z₁ • S₁
+    S₁m = lift (Width.trans (ax (ax27 h -1*))
+                 (Width.back (₁₊ n) _ (Width.cong (OZ.^ᶠ-≡ binom2-1) (OS.^ᶠ-≡ neg²))))
+
+    m∥S₀ : (₂₊ n) ⊢ m ∥ S₀
+    m∥S₀ = comm-gate₁-w↑ (S-gate h) M⟨ -1* ⟩
+
+    m∥Si₀ : (₂₊ n) ⊢ m ∥ Si₀
+    m∥Si₀ = ∥-sym (∥-^ᶠ (- 1F) (∥-sym m∥S₀))
+
+    mP : (₂₊ n) ⊢ m • P ≈ CX • S₀ • Ci • m
+    mP = begin
+      m • Ci • S₀ • CX          ≈⟨ trans (sym assoc) (trans (front _ mCi) assoc) ⟩
+      CX • m • S₀ • CX          ≈⟨ back _ (trans (sym assoc) (trans (front _ m∥S₀) assoc)) ⟩
+      CX • S₀ • m • CX          ≈⟨ back _ (back _ mC) ⟩
+      CX • S₀ • Ci • m          ∎
+
+    CiS₁ : (₂₊ n) ⊢ Ci • S₁ ≈ S₁ • Ci
+    CiS₁ = Pow.pow-comm (₂₊ n) (toℕ (- 1F)) S↑-CX
+
+    Pi≈ : (₂₊ n) ⊢ Pi ≈ Ci • Si₀ • CX
+    Pi≈ = P^ (toℕ (- 1F))
+
+    -- S^(-1)^(-1) = S, on either wire.
+    Si-inv₁ : (₁₊ n) ⊢ (S h ^ᶠ (- 1F)) ^ᶠ (- 1F) ≈ S h
+    Si-inv₁ = Width.trans (OS.^ᶠ-* (- 1F) (- 1F)) (OS.^ᶠ-≡ neg²)
+
+    Si-inv₂ : (₂₊ n) ⊢ (S h ^ᶠ (- 1F)) ^ᶠ (- 1F) ≈ S h
+    Si-inv₂ = trans (OS₂.^ᶠ-* (- 1F) (- 1F)) (OS₂.^ᶠ-≡ neg²)
+
+    CZi≈ : (₂₊ n) ⊢ CZi ≈ S₀ • S₁ • Pi
+    CZi≈ = trans (CZ^ (toℕ (- 1F)))
+             (cong Si-inv₂ (cong (trans (refl' (Eq.sym (↑-pow (S h ^ᶠ (- 1F)) (toℕ (- 1F))))) (lift Si-inv₁))
+                                 refl))
+
+    S₁PiS₀ : (₂₊ n) ⊢ S₁ • Pi • S₀ ≈ CZi
+    S₁PiS₀ = begin
+      S₁ • Pi • S₀          ≈⟨ back _ (sym S₀∥Pi) ⟩
+      S₁ • S₀ • Pi          ≈⟨ trans (sym assoc) (trans (front _ (sym S∥S↑)) assoc) ⟩
+      S₀ • S₁ • Pi          ≈⟨ sym CZi≈ ⟩
+      CZi                   ∎
+      where
+      S₀∥Pi : (₂₊ n) ⊢ S₀ ∥ Pi
+      S₀∥Pi = ∥-sym (∥-^ᶠ (- 1F) (∥-sym S∥P))
+
+    two-one : 2F + - 1F ≡ 1F
+    two-one = solve 0 ((con (ℤ.+ 1) :+ con (ℤ.+ 1)) :+ (:- con (ℤ.+ 1)) := con (ℤ.+ 1)) Eq.refl
+
+    step-a : (₂₊ n) ⊢ S2₁ • Z₁ • Si₀ • Si₁ • P ≈ Z₁ • S₁ • Si₀ • P
+    step-a = begin
+      S2₁ • Z₁ • Si₀ • Si₁ • P      ≈⟨ trans (sym assoc) (trans (front _ (lift (Sᶠ∥Zᶠ 2F 1F))) assoc) ⟩
+      Z₁ • S2₁ • Si₀ • Si₁ • P      ≈⟨ back _ (trans (sym assoc) (trans (front _ (sym (Sᶠ-up (- 1F) (S h ^ᶠ 2F)))) assoc)) ⟩
+      Z₁ • Si₀ • S2₁ • Si₁ • P      ≈⟨ back _ (back _ (trans (sym assoc) (front _ merge))) ⟩
+      Z₁ • Si₀ • S₁ • P             ≈⟨ back _ (trans (sym assoc) (trans (front _ (Sᶠ-up (- 1F) (S h))) assoc)) ⟩
+      Z₁ • S₁ • Si₀ • P             ∎
+      where
+      merge : (₂₊ n) ⊢ S2₁ • Si₁ ≈ S₁
+      merge = lift (Width.trans (OS.^ᶠ-+ 2F (- 1F)) (OS.^ᶠ-≡ two-one))
+
+  CZ-CX : (₂₊ n) ⊢ CZ h • CX ≈ CX • (S h ^ᶠ 2F) ↑ • Z h₁ ↑ • CZ h
+  CZ-CX = sym (begin
+    CX • S2₁ • Z₁ • Si₀ • Si₁ • P
+      ≈⟨ back _ step-a ⟩
+    CX • Z₁ • S₁ • Si₀ • P
+      ≈⟨ back _ (sym (cancel-in mm _)) ⟩
+    CX • m • m • Z₁ • S₁ • Si₀ • P
+      ≈⟨ back _ (back _ (trans (by-passoc (□ • □ • □ • □ • □) ((□ • □ • □) • □ • □) Eq.refl)
+                                 (front _ (sym S₁m)))) ⟩
+    CX • m • (S₁ • m) • Si₀ • P
+      ≈⟨ back _ (back _ (trans assoc (back _ (trans (sym assoc) (trans (front _ m∥Si₀) assoc))))) ⟩
+    CX • m • S₁ • Si₀ • m • P
+      ≈⟨ back _ (back _ (back _ (back _ mP))) ⟩
+    CX • m • S₁ • Si₀ • CX • S₀ • Ci • m
+      ≈⟨ trans (sym assoc) (trans (front _ Cm) assoc) ⟩
+    m • Ci • S₁ • Si₀ • CX • S₀ • Ci • m
+      ≈⟨ back _ (trans (sym assoc) (trans (front _ CiS₁) assoc)) ⟩
+    m • S₁ • Ci • Si₀ • CX • S₀ • Ci • m
+      ≈⟨ back _ (back _ (by-passoc (□ • □ • □ • □ • □ • □) ((□ • □ • □) • □ • □ • □) Eq.refl)) ⟩
+    m • S₁ • (Ci • Si₀ • CX) • S₀ • Ci • m
+      ≈⟨ back _ (back _ (front _ (sym Pi≈))) ⟩
+    m • S₁ • Pi • S₀ • Ci • m
+      ≈⟨ back _ (trans (by-passoc (□ • □ • □ • □ • □) ((□ • □ • □) • □ • □) Eq.refl) (front _ S₁PiS₀)) ⟩
+    m • CZi • Ci • m
+      ≈⟨ back _ (back _ (sym (cancel-in mm _))) ⟩
+    m • CZi • m • m • Ci • m
+      ≈⟨ by-passoc (□ • □ • □ • □ • □ • □) ((□ • □ • □) • (□ • □ • □)) Eq.refl ⟩
+    (m • CZi • m) • (m • Ci • m)
+      ≈⟨ cong (ax (ax28 h)) mCim ⟩
+    CZ h • CX ∎)
