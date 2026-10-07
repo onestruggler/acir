@@ -123,6 +123,18 @@ row-⋆* ℓ [ y ]ʷ  = row-⋆ ℓ y
 row-⋆* ℓ ε       = refl
 row-⋆* ℓ (L • M) = Eq.trans (row-⋆* (ℓ ⋆* L) M) (Eq.cong (_⋆ᴿ* M) (row-⋆* ℓ L))
 
+-- The zero vector stays.
+zero-⋆ᴿ : (y : LGen n) → 0ᵛ ⋆ᴿ y ≡ 0ᵛ
+zero-⋆ᴿ (y ↥ₗ) = Eq.cong (0F ∷_) (zero-⋆ᴿ y)
+zero-⋆ᴿ (mul x) = Eq.cong (_∷ 0ᵛ) (FR.zeroˡ (proj₁ x))
+zero-⋆ᴿ cx      = Eq.cong (λ t → 0F ∷ t ∷ 0ᵛ) (FR.+-identityʳ 0F)
+zero-⋆ᴿ sw      = refl
+
+zero-⋆ᴿ* : (L : Word (LGen n)) → 0ᵛ ⋆ᴿ* L ≡ 0ᵛ
+zero-⋆ᴿ* [ y ]ʷ  = zero-⋆ᴿ y
+zero-⋆ᴿ* ε       = refl
+zero-⋆ᴿ* (L • M) = Eq.trans (Eq.cong (_⋆ᴿ* M) (zero-⋆ᴿ* L)) (zero-⋆ᴿ* M)
+
 -- One wire up the head stays.
 ⋆ᴿ*-↑ : (c : F) (v : Vec F n) (L : Word (LGen n)) → (c ∷ v) ⋆ᴿ* (L ↑ₗ) ≡ c ∷ (v ⋆ᴿ* L)
 ⋆ᴿ*-↑ c v [ y ]ʷ  = refl
