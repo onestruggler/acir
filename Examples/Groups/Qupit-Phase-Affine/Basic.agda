@@ -29,7 +29,7 @@ open import Word.Base using ([_]ʷ ; ε ; _•_ ; _^_)
 open import Notations using (₁₊)
 
 import Presentation.Base as PB
-open import Presentation.GroupLike using (Grouplike)
+open import Presentation.GroupLike using (Grouplike ; module Group-Lemmas)
 
 open import Examples.Groups.Qupit-Phase-Affine.Semantics p-2 p-prime
   using (F ; F* ; p ; 0F ; 1F ; _*_ ; -_ ; _⁻¹ᶠ ; _⁻¹* ; 1* ; ⁻¹ᶠ-inverseʳ ; ⁻¹ᶠ-inverseˡ ; toℕ-1)
@@ -109,3 +109,12 @@ grouplike (gate₂ CX-gate)    = CX ^ᶠ (- 1F) , CX-inverseˡ
 grouplike (gate₂ SWAP-gate)  = SWAP , ax swap-order
 grouplike (g ↥) with grouplike g
 ... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf
+
+------------------------------------------------------------------------
+-- The syntactic inverse
+
+module Inv (n : ℕ) = Group-Lemmas (n VRel,_===_) (grouplike {n})
+
+infix 8 _⁻¹
+_⁻¹ : Circuit n → Circuit n
+_⁻¹ {n} = Inv._⁻¹ n

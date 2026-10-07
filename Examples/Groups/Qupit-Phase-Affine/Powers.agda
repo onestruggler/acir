@@ -29,7 +29,7 @@ open import Word.Base using (ε ; _•_ ; _^_)
 open import Notations using (₁₊)
 
 open import Examples.Groups.Qupit-Phase-Affine.Semantics p-2 p-prime
-  using (F ; p ; 0F ; 1F ; _+_ ; _*_ ; -_ ; toℕ-+ ; toℕ-* ; module FR)
+  using (F ; p ; 0F ; 1F ; 2F ; _+_ ; _*_ ; -_ ; toℕ-+ ; toℕ-* ; module FR)
 open import Examples.Groups.Qupit-Phase-Affine.Syntactics p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Reasoning p-2 p-prime lv
 
@@ -147,6 +147,10 @@ module Pow (n : ℕ) where
     -- Labels that are equal give equal iterates.
     ^ᶠ-≡ : {k l : F} → k ≡ l → w ^ᶠ k ≈ w ^ᶠ l
     ^ᶠ-≡ e = refl' (Eq.cong (w ^ᶠ_) e)
+
+    -- The iterate labelled 2 is the square.
+    ^ᶠ-2 : w ^ᶠ 2F ≈ w • w
+    ^ᶠ-2 = sym (^ᶠ-+ 1F 1F)
 
     -- The iterate by -k undoes the iterate by k.
     ^ᶠ-inverseˡ : (k : F) → w ^ᶠ (- k) • w ^ᶠ k ≈ ε
