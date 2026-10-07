@@ -424,6 +424,29 @@ module Functor
   ctrl-lin ε       = Width.refl
   ctrl-lin (u • v) = Width.cong (ctrl-lin u) (ctrl-lin v)
 
+  -- And back: a linear word of the lower level as one of level 3.
+  untr : SL.LGen n → LGen n
+  untr SL.cx       = cx
+  untr SL.sw       = sw
+  untr (SL.mul a)  = mul a
+  untr (y SL.↥ₗ)   = untr y ↥ₗ
+
+  untr* : Word (SL.LGen n) → Word (LGen n)
+  untr* [ y ]ʷ   = [ untr y ]ʷ
+  untr* ε        = ε
+  untr* (u • v)  = untr* u • untr* v
+
+  ctrl-ι′ : (y : SL.LGen n) → (₁₊ n) ⊢ ctrl (SL.ι y) ≈ [ ι (untr y) ]ʷ ↑
+  ctrl-ι′ SL.cx            = Width.refl
+  ctrl-ι′ SL.sw            = Width.refl
+  ctrl-ι′ (SL.mul a)       = Width.refl
+  ctrl-ι′ {suc n} (y SL.↥ₗ) = Width.trans (Width.mid (₂₊ n) SWAP SWAP (lift (ctrl-ι′ y))) (c↑ [ ι (untr y) ]ʷ)
+
+  ctrl-lin′ : (L : Word (SL.LGen n)) → (₁₊ n) ⊢ ctrl* SL.⌊ L ⌋ ≈ ⌊ untr* L ⌋ ↑
+  ctrl-lin′ [ y ]ʷ  = ctrl-ι′ y
+  ctrl-lin′ ε       = Width.refl
+  ctrl-lin′ (u • v) = Width.cong (ctrl-lin′ u) (ctrl-lin′ v)
+
   ----------------------------------------------------------------------
   -- The phase of a controlled circuit: κ x₀ times the phase
 
