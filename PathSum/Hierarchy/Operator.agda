@@ -70,8 +70,10 @@
 --  6. One qubit (PathSum.Hierarchy.OneQubit): every single-qubit
 --     element of C₂ is, up to a global phase, one of 24 products of H
 --     and S, which are pairwise distinct up to phase -- the paper's
---     "for k ≤ 3 they generate C_k" at k = 2, n = 1.  For n qubits
---     neither generation of C₂ nor anything about generating C₃ is
+--     "for k ≤ 3 they generate C_k" at k = 2, n = 1.  For every n,
+--     PathSum.Hierarchy.Generation shows every element of C₂ is a
+--     circuit over {H, S, CZ} (or of level ≤ 2 over {H, CNOT, R_k})
+--     times a unitary scalar; nothing about generating C₃ is
 --     formalised, and whether C_k = ⟨H, R_k, CNOT⟩ is, as the paper
 --     says, open.
 ------------------------------------------------------------------------

@@ -55,15 +55,17 @@
 --
 -- This is the charitable reading of the paper's "for k ≤ 3 the above
 -- gates suffice to generate C_k" (every element of C_k is a product of
--- the gates, up to a global phase), at n = 1 and k = 2 only.  Read
+-- the gates, up to a global phase), at n = 1 and k = 2, with the 24
+-- words; PathSum.Hierarchy.Generation gives it at k = 2 for every n,
+-- modulo unitary scalars, without the count.  Read
 -- literally (C_k the group the gates generate) the sentence fails at
 -- k = 3, C₃ not being a group (PathSum.Hierarchy.NotClosed), and at
 -- k = 1, H not being a Pauli (PathSum.Hierarchy.Levels).
 --
--- What is not formalised: generation of the n-qubit Clifford group by
--- H, S and CNOT for n ≥ 2, anything about generating C₃, and whether
+-- What is not formalised: anything about generating C₃, and whether
 -- every element of C_k is a product of the gates for k ≥ 4, which the
--- paper leaves open.
+-- paper leaves open.  (Generation of the n-qubit Clifford group for
+-- n ≥ 2 is PathSum.Hierarchy.Generation.)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}

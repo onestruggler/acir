@@ -215,9 +215,15 @@ implements a Clifford.  `Hierarchy/NotClosed` proves C₃ is not closed
 under products — T and T H are in C₃, T H T is not — so the level-3
 circuit T;H;T lies outside C₃.  `Hierarchy/OneQubit` (with `Code`,
 `Words`, `Table`, `Scalar`) shows that on one qubit C₂ modulo unitary
-scalars is exactly the 24 words over {H, S}.  Generation of the
-n-qubit Clifford group for n ≥ 2, and anything about generating C₃,
-are not formalised.
+scalars is exactly the 24 words over {H, S}.  `Hierarchy/Generation`
+(with `Generation/Scalar`, `Symplectic`, `Tableau`, `Synthesis` and
+`CRK`) does every n: an operator commuting with every Pauli is a
+scalar; each gate's conjugation action on Pauli data is computed, with
+phases; and wire by wire, a circuit built from the images of X_w and
+Z_w fixes them, so every element of C₂ is a circuit over {H, S, CZ} —
+or of level ≤ 2 over {H, CNOT, R_k} — times a unitary scalar, and
+every such product is in C₂.  That the scalar is a root of unity, and
+anything about generating C₃, are not formalised.
 
 **Size.**  `Size`, `Size/Sparse`, `Size/Monomials`, `Size/Submonomials`
 and `Size/Terms` prove the size half of corollary 2.15: a circuit's

@@ -16,8 +16,9 @@
 -- T H T ∉ C₃, so "Clifford+T (C₃)" misnames C₃ -- and at k = 1 as well,
 -- since H ∉ C₁ (PathSum.Hierarchy.Levels).  The charitable reading,
 -- that every element of C_k is a product of the gates up to a global
--- phase, is formalised only for n = 1 and k = 2
--- (PathSum.Hierarchy.OneQubit); for n-qubit C₂ and for C₃ it is not.
+-- phase, is formalised at k = 2: for n = 1 with the 24 words
+-- (PathSum.Hierarchy.OneQubit), and for every n modulo unitary scalars
+-- (PathSum.Hierarchy.Generation); for C₃ it is not.
 --
 -- The proof follows conjugates through the gates' actions on the
 -- Paulis, on any wire w of n qubits and for every precision M.  With

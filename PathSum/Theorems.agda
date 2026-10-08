@@ -90,7 +90,9 @@
 -- gates lie in C_k" holds from k = 2 (H and CNOT are not Paulis), and
 -- "for k ≤ 3 the above gates suffice to generate C_k" fails read
 -- literally at k = 1 and k = 3: C₃ is not closed under products, and
--- "Clifford+T (C₃)" is not C₃ (PathSum.Hierarchy.NotClosed).
+-- "Clifford+T (C₃)" is not C₃ (PathSum.Hierarchy.NotClosed); at k = 2
+-- it holds for every n, modulo unitary scalars
+-- (PathSum.Hierarchy.Generation).
 -- One gap is filled: the proof of corollary 4.4 reduces by arbitrary
 -- rules, which needs every rule to preserve order ≤ 2 -- lemma 2.13
 -- covers only linear substitutions, and PathSum.Full.Clifford supplies
@@ -155,7 +157,7 @@ open import PathSum.AssignSum using (Σᶻ; RespectsZ)
 open import PathSum.Circuit M using
   (Gate; H; S; CZ; Circuit; norm; ⟦_⟧; ⟦_⟧ᴿ)
 open import PathSum.Cyclotomic M₀ using
-  (0ᴬ; _≐_; Σᴮ; zpow; scale; scale-map)
+  (Amp; 0ᴬ; _≐_; Σᴮ; zpow; scale; scale-map)
 open import PathSum.Norm M₀ using (‖_‖²)
 open import PathSum.Order M
 open import PathSum.Polynomial
@@ -883,6 +885,16 @@ import PathSum.Hierarchy.NotClosed as NCᵒ
 
 import PathSum.Hierarchy.OneQubit
 module Hr1 = PathSum.Hierarchy.OneQubit M₀
+
+-- The generation of C₂ (PathSum.Hierarchy.Generation.CRK re-exports
+-- the whole development, so one application names all of it).
+
+import PathSum.Hierarchy.Generation.CRK
+module HrGen = PathSum.Hierarchy.Generation.CRK M₀
+
+open HrGen using ()
+  renaming (_≈_ to infix 4 _≈ᵍ_; _·_ to infixl 7 _·ᵍ_; _† to infix 8 _†ᵍ;
+            ⟪_⟫ to ⟪_⟫ᵍ)
 
 open HrOp using (Op)
   renaming (_≈_ to infix 4 _≈ᵒ_; _·_ to infixl 7 _·ᵒ_; _† to infix 8 _†ᵒ;
@@ -1783,6 +1795,65 @@ one-qubit-words-distinct :
   Hr1.opW (Vec.lookup Hr1.words i) ≈ᵒ Hr1.opW (Vec.lookup Hr1.words j) ·ᵒ V →
   i ≡ j
 one-qubit-words-distinct i j V = Hr1.distinct i j V
+
+
+------------------------------------------------------------------------
+-- Generation of the Clifford group (PathSum.Hierarchy.Generation,
+-- PathSum.Hierarchy.Generation.Scalar, .Symplectic, .Tableau,
+-- .Synthesis, .CRK)
+
+-- The preliminaries' "H, S and CNOT generate C₂", for every number n of
+-- qubits, modulo unitary scalars: every element of C₂ is the operator
+-- of a circuit over {H, S, CZ} -- or of level ≤ 2 over {H, CNOT, R_k,
+-- R_k†} -- times a unitary V whose matrix is its entry at |0…0⟩ times
+-- the identity, and every such product is in C₂.  (Stated with the
+-- names of the one application HrGen of the development's last module,
+-- which re-exports the rest: its types name the operators through that
+-- chain of applications, and the root's HrOp and Hier are other copies,
+-- which Agda would compare by unfolding.  That the scalar's entry is a
+-- root of unity is not proved.)
+
+scalar-lemma : (V : HrGen.Op n) →
+  (∀ j → V ·ᵍ HrGen.pauli (HrGen.X^ j) ≈ᵍ HrGen.pauli (HrGen.X^ j) ·ᵍ V) →
+  (∀ j → V ·ᵍ HrGen.pauli (HrGen.Z^ j) ≈ᵍ HrGen.pauli (HrGen.Z^ j) ·ᵍ V) →
+  HrGen.ScalarBy V (HrGen.mat V HrGen.0ᵛ HrGen.0ᵛ)
+scalar-lemma V = HrGen.scalar-commuting V
+
+symplectic-preserved : (V : HrGen.Op n) → HrGen.Unitary V →
+  (a b a′ b′ : HrGen.PauliData n) →
+  V ·ᵍ HrGen.pauli a ·ᵍ V †ᵍ ≈ᵍ HrGen.pauli a′ →
+  V ·ᵍ HrGen.pauli b ·ᵍ V †ᵍ ≈ᵍ HrGen.pauli b′ →
+  HrGen.ω a′ b′ ≡ HrGen.ω a b
+symplectic-preserved V = HrGen.ω-pres V
+
+tableau-semantics : (C : HrGen.Cl.Circuit n) (p : HrGen.PauliData n) →
+  ⟪ HrGen.Cl.⟦ C ⟧ ⟫ᵍ ·ᵍ HrGen.pauli p ·ᵍ ⟪ HrGen.Cl.⟦ C ⟧ ⟫ᵍ †ᵍ ≈ᵍ
+  HrGen.pauli (HrGen.actC C p)
+tableau-semantics C = HrGen.circuit-act C
+
+clifford-generation : (U : HrGen.Op n) → HrGen.𝒞 2 U →
+  Σ (HrGen.Cl.Circuit n) λ C → Σ (HrGen.Op n) λ V →
+    (U ≈ᵍ ⟪ HrGen.Cl.⟦ C ⟧ ⟫ᵍ ·ᵍ V) × HrGen.Unitary V ×
+    HrGen.ScalarBy V (HrGen.mat V HrGen.0ᵛ HrGen.0ᵛ)
+clifford-generation U = HrGen.generation U
+
+generated-in-𝒞₂ : (C : HrGen.Cl.Circuit n) (V : HrGen.Op n) (a : Amp) →
+  HrGen.Unitary V → HrGen.ScalarBy V a →
+  HrGen.𝒞 2 (⟪ HrGen.Cl.⟦ C ⟧ ⟫ᵍ ·ᵍ V)
+generated-in-𝒞₂ C = HrGen.generated-𝒞₂ C
+
+𝒞₂⇔generated : (U : HrGen.Op n) → HrGen.𝒞 2 U ⇔ HrGen.Generated U
+𝒞₂⇔generated U = HrGen.𝒞₂⇔generated U
+
+clifford-generation-CRK : (U : HrGen.Op n) → HrGen.𝒞 2 U →
+  Σ (HrGen.K.Circuit n) λ C → (HrGen.K.level C ≤ 2) ×
+    Σ (HrGen.Op n) λ V →
+      (U ≈ᵍ ⟪ HrGen.K.⟦ C ⟧ ⟫ᵍ ·ᵍ V) × HrGen.Unitary V ×
+      HrGen.ScalarBy V (HrGen.mat V HrGen.0ᵛ HrGen.0ᵛ)
+clifford-generation-CRK U = HrGen.generation-K U
+
+𝒞₂⇔K-generated : (U : HrGen.Op n) → HrGen.𝒞 2 U ⇔ HrGen.K-Generated U
+𝒞₂⇔K-generated U = HrGen.𝒞₂⇔K-generated U
 
 
 ------------------------------------------------------------------------
