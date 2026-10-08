@@ -156,6 +156,12 @@ sign-of-mat nf nf' eu e = sgn-cancel (sign nf) (sign nf') ⟦ unsign nf ⟧ⁿ
 ------------------------------------------------------------------------
 -- Completeness
 
+-- Normal forms with the same matrix are equal.
+nf-injective : (nf nf' : NF n) → ⟦ ⟦ nf ⟧ⁿ ⟧ᴬ ≐ ⟦ ⟦ nf' ⟧ⁿ ⟧ᴬ → nf ≡ nf'
+nf-injective nf nf' e = unsign-sign nf nf' eu (sign-of-mat nf nf' eu e)
+  where
+  eu = act-unique nf nf' (act-of-mat {w = ⟦ nf ⟧ⁿ} {v = ⟦ nf' ⟧ⁿ} e)
+
 completeness : {w v : Circuit n} → ⟦ w ⟧ᴬ ≐ ⟦ v ⟧ᴬ → n ⊢ w ≈ v
 completeness {n} {w} {v} e = begin
   w                    ≈⟨ normalise-ok n w ⟩
@@ -166,7 +172,5 @@ completeness {n} {w} {v} e = begin
   open Width n
   nw = normalise n w
   nv = normalise n v
-  e' : ⟦ ⟦ nw ⟧ⁿ ⟧ᴬ ≐ ⟦ ⟦ nv ⟧ⁿ ⟧ᴬ
-  e' = ≐-trans (≐-sym (sound (normalise-ok n w))) (≐-trans e (sound (normalise-ok n v)))
-  eu = act-unique nw nv (act-of-mat {w = ⟦ nw ⟧ⁿ} {v = ⟦ nv ⟧ⁿ} e')
-  nf≡ = unsign-sign nw nv eu (sign-of-mat nw nv eu e')
+  nf≡ = nf-injective nw nv
+    (≐-trans (≐-sym (sound (normalise-ok n w))) (≐-trans e (sound (normalise-ok n v))))
