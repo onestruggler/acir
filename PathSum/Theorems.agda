@@ -84,7 +84,9 @@
 -- n ≥ 2, as its table and its tool's circuit say, not the text's
 -- 5n − 1 bits, and its calculus finds |s⟩ without the specification
 -- along a suitable reduction, not along every one
--- (PathSum.HiddenShift.Stuck).  In section 2, "for k ≥ 1, all three
+-- (PathSum.HiddenShift.Stuck) -- though along every maximal one of an
+-- output-safe, Clifford-safe class (PathSum.HiddenShift.Positive).
+-- In section 2, "for k ≥ 1, all three
 -- gates lie in C_k" holds from k = 2 (H and CNOT are not Paulis), and
 -- "for k ≤ 3 the above gates suffice to generate C_k" fails read
 -- literally at k = 1 and k = 3: C₃ is not closed under products, and
@@ -675,6 +677,17 @@ module HStk = PathSum.HiddenShift.Stuck M₀
 
 import PathSum.HiddenShift.StuckTool
 module HStT = PathSum.HiddenShift.StuckTool M₀
+
+-- Hidden shift: a class of strategies that always finds the shift.
+
+import PathSum.HiddenShift.Positive
+module HPos = PathSum.HiddenShift.Positive M₀
+
+import PathSum.HiddenShift.Positive.Class
+module HPC = PathSum.HiddenShift.Positive.Class M₀
+
+import PathSum.HiddenShift.Positive.Exists
+module HPE = PathSum.HiddenShift.Positive.Exists M₀
 
 -- Multilinear forms, the size of addition's expansion, and the hidden
 -- shift for every bent function (generic names: imported qualified;
@@ -3956,6 +3969,65 @@ hidden-shift-tool-stuck :
   Σ (PathSum 8 12 12) (λ ζ →
     (HSim.at0 KX.⟦ HTo.HSᵗ HStT.s HStT.Bs ⟧ ⟶ᶠ* ζ) × Irreducibleᶠ ζ)
 hidden-shift-tool-stuck = HStT.tool-stuck
+
+
+------------------------------------------------------------------------
+-- Section 5.2: every maximal output-safe, Clifford-safe reduction finds
+-- the shift (PathSum.HiddenShift.Positive, with Positive.Class,
+-- Positive.Invariant, Positive.Initial, Positive.Progress,
+-- Positive.Exists)
+
+-- A class of strategies under which the paper's sentence holds for
+-- every maximal reduction.  Steps are figure 2's at any variables
+-- (_⟶ᶠ_); an [HH] that substitutes Q for y_i must be output-safe -- if
+-- Q mentions an internal path variable (one in no output), y_i is
+-- internal -- and Clifford-safe -- every internal variable occurring in
+-- the phase only quadratically still does in the reduct.  Every other
+-- step of figure 2 is admissible, in each of _⟶ᶠ_'s shapes.
+-- Admissibility is decidable.  The theorem is about the composite
+-- circuit on |0⟩ only, not figure 3's or the tool's circuits
+-- (PathSum.HiddenShift.Positive's "What is not proved").
+
+hidden-shift-admissible? : {ξ : PathSum n k m} {ζ : PathSum n k′ m′}
+                           (s : ξ ⟶ᶠ ζ) → Dec (HPC.Admᶠ s)
+hidden-shift-admissible? = HPC.Admᶠ?
+
+-- Every maximal chain of the class from the circuit on |0⟩ is complete,
+-- for every m, every g and every shift s ...
+
+hidden-shift-positive :
+  ∀ {m} (g : Poly m 0) (s : Assign (m + m)) {k′ m′}
+    {ζ : PathSum (m + m) k′ m′} →
+  HSim.at0 (HSh.HS g s) HPC.⟶ᴷ* ζ → HPC.Maximal ζ → m′ ≡ 0
+hidden-shift-positive = HPos.hidden-shift-positive
+
+-- ... and so ends at |x⟩ ↦ |s⟩, coefficient by coefficient.
+
+hidden-shift-positive-finds :
+  ∀ {m} (g : Poly m 0) (s : Assign (m + m)) {k′ m′}
+    {ζ : PathSum (m + m) k′ m′} →
+  HSim.at0 (HSh.HS g s) HPC.⟶ᴷ* ζ → HPC.Maximal ζ → HPos.Finds s ζ
+hidden-shift-positive-finds = HPos.hidden-shift-positive-finds
+
+-- The class reaches no stuck path-sum, the one above among them ...
+
+hidden-shift-stuck-unreachable :
+  ∀ {m} (g : Poly m 0) (s : Assign (m + m)) {k′ m′}
+    {ζ : PathSum (m + m) k′ (suc m′)} →
+  Irreducibleᶠ ζ → ¬ (HSim.at0 (HSh.HS g s) HPC.⟶ᴷ* ζ)
+hidden-shift-stuck-unreachable = HPos.stuck-unreachable
+
+hidden-shift-stuck-excluded :
+  ¬ (HSim.at0 (HSh.HS HStk.g HStk.s) HPC.⟶ᴷ* proj₁ HStk.hidden-shift-stuck)
+hidden-shift-stuck-excluded = HPos.stuck-excluded
+
+-- ... and admits the complete reductions of PathSum.HiddenShift.Exists:
+-- its three passes, rule for rule, are a chain of the class.
+
+hidden-shift-admits :
+  ∀ {m} (g : Poly m 0) (s : Assign (m + m)) →
+  Σ (PathSum (m + m) 0 0) (λ ζ → HSim.at0 (HSh.HS g s) HPC.⟶ᴷ* ζ)
+hidden-shift-admits = HPE.hidden-shift-admits
 
 
 ------------------------------------------------------------------------

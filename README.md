@@ -412,6 +412,19 @@ left — by the linear rules on a 6-qubit Clifford instance, and with
 one non-linear quotient on the tool's own circuit at n = 8 — so
 section 5.2's "our calculus finds |s⟩ even without providing the
 specification" holds along a suitable reduction, not along every one.
+It does hold along every maximal reduction of a natural class:
+`HiddenShift/Positive` (with `Positive/Class`, `Boolean`,
+`Stabilizer`, `Values`, `Invariant`, `Amplitude`, `Progress`,
+`Initial`, `Admit`, `ExistsLink`, `Exists`) restricts each [HH] of
+figure 2 to be output-safe (a quotient mentioning a variable absent
+from the outputs may only substitute such a variable) and
+Clifford-safe (variables of degree at most 2 in the phase stay so),
+admits every other step, and proves for every m, g and s that every
+maximal reduction of the class from the circuit on |0⟩ is complete
+and ends at |x⟩ ↦ |s⟩ — no stuck path-sum, the one above among them,
+is reachable, and the complete reductions of `Exists` belong to the
+class.  Figure 3's and the tool's circuits, and the tool's own
+strategy, are not covered.
 `HiddenShift/Bent` and `HiddenShift/AnyBent` prove the algorithm correct for every bent
 function with its dual, as the paper states it, not only for the
 Maiorana–McFarland family; `Polynomial/Interpolate` shows every
@@ -478,7 +491,8 @@ fourth line of example 3.4 does not follow from the third; section
 5.2's formula for the shifted function f′ drops the shift; its adder
 has 5n qubits for n ≥ 2, as its table and its tool's circuit say, not
 the text's 5n − 1 bits; its calculus finds |s⟩ without the
-specification along a suitable reduction, not along every one; and in
+specification along a suitable reduction, not along every one (though
+along every maximal one of an output-safe, Clifford-safe class); and in
 section 2, "for k ≥ 1, all three gates lie in C_k" holds from k = 2
 (H and CNOT are not Paulis), while "for k ≤ 3 the above gates suffice
 to generate C_k" fails read literally at k = 1 and k = 3 — C₃ is not a
