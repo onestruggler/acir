@@ -51,6 +51,10 @@ module Width (n : ℕ) where
   swap : ∀ {a b} (s : Circuit n) → a • b ≈ b • a → a • b • s ≈ b • a • s
   swap s e = trans (sym assoc) (trans (front s e) assoc)
 
+  -- Rewriting the first two factors of a product.
+  pair : ∀ {a b c d} (s : Circuit n) → a • b ≈ c • d → a • b • s ≈ c • d • s
+  pair s e = trans (sym assoc) (trans (front s e) assoc)
+
   -- Rewriting a product as a reassociated product.
   ⊙ : ∀ (a b c : Circuit n) → (a • b) • c ≈ a • b • c
   ⊙ a b c = assoc
