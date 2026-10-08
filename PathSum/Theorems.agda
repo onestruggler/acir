@@ -866,6 +866,7 @@ module HrCi = PathSum.Hierarchy.Circuits M₀
 
 import PathSum.Hierarchy.NotClosed
 module HrNC = PathSum.Hierarchy.NotClosed M₀
+import PathSum.Hierarchy.NotClosed as NCᵒ
 
 import PathSum.Hierarchy.OneQubit
 module Hr1 = PathSum.Hierarchy.OneQubit M₀
@@ -1715,16 +1716,29 @@ HSCZ-in-𝒞₂ C = HrCi.clifford-𝒞₂ C
 -- the operator of the circuit THT-circuit w = T ; H ; T
 -- (PathSum.Hierarchy.NotClosed; PathSum.ContractHIER pins it).
 
+-- As for 𝒞₃⇔generators, the next two are spelled with the names
+-- NotClosed's own statements use (its named applications Hrⁿ, Opⁿ,
+-- Gaⁿ, Lvⁿ, unapplied, given M₀): T is Gaⁿ.Rs (Lvⁿ.ρ false 3), the
+-- phase of R_3, and Opⁿ._·_ composes right to left.
+
 THT-not-in-𝒞₃ : (w : Fin n) →
-                ¬ Hier.𝒞 3 (HrGa.Rs (HrLv.ρ false 3) w ·ᵒ HrGa.hadOp w ·ᵒ
-                            HrGa.Rs (HrLv.ρ false 3) w)
+  ¬ NCᵒ.Hrⁿ.𝒞 M₀ 3
+      (NCᵒ.Opⁿ._·_ M₀
+        (NCᵒ.Opⁿ._·_ M₀ (NCᵒ.Gaⁿ.Rs M₀ (NCᵒ.Lvⁿ.ρ M₀ false 3) w)
+                        (NCᵒ.Gaⁿ.hadOp M₀ w))
+        (NCᵒ.Gaⁿ.Rs M₀ (NCᵒ.Lvⁿ.ρ M₀ false 3) w))
 THT-not-in-𝒞₃ w = HrNC.THT∉𝒞₃ w
 
 𝒞₃-not-closed : (w : Fin n) →
-  Hier.𝒞 3 (HrGa.Rs (HrLv.ρ false 3) w ·ᵒ HrGa.hadOp w) ×
-  Hier.𝒞 3 (HrGa.Rs (HrLv.ρ false 3) w) ×
-  ¬ Hier.𝒞 3 (HrGa.Rs (HrLv.ρ false 3) w ·ᵒ HrGa.hadOp w ·ᵒ
-              HrGa.Rs (HrLv.ρ false 3) w)
+  NCᵒ.Hrⁿ.𝒞 M₀ 3
+    (NCᵒ.Opⁿ._·_ M₀ (NCᵒ.Gaⁿ.Rs M₀ (NCᵒ.Lvⁿ.ρ M₀ false 3) w)
+                    (NCᵒ.Gaⁿ.hadOp M₀ w)) ×
+  NCᵒ.Hrⁿ.𝒞 M₀ 3 (NCᵒ.Gaⁿ.Rs M₀ (NCᵒ.Lvⁿ.ρ M₀ false 3) w) ×
+  ¬ NCᵒ.Hrⁿ.𝒞 M₀ 3
+      (NCᵒ.Opⁿ._·_ M₀
+        (NCᵒ.Opⁿ._·_ M₀ (NCᵒ.Gaⁿ.Rs M₀ (NCᵒ.Lvⁿ.ρ M₀ false 3) w)
+                        (NCᵒ.Gaⁿ.hadOp M₀ w))
+        (NCᵒ.Gaⁿ.Rs M₀ (NCᵒ.Lvⁿ.ρ M₀ false 3) w))
 𝒞₃-not-closed w = HrNC.𝒞₃-not-closed w
 
 THT-circuit-not-in-𝒞₃ : (w : Fin n) →

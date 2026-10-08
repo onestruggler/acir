@@ -115,11 +115,13 @@ schur V uV fx fz x z =
             (sym (same-≗ (on₁ x) (on₁ z))) ≐-refl
   where
   cmX : ∀ v u → mat (V · pauli ⟦ cX ⟧ᶜ) v u ≐ mat (pauli ⟦ cX ⟧ᶜ · V) v u
-  cmX = ent {V · pauli ⟦ cX ⟧ᶜ} {pauli ⟦ cX ⟧ᶜ · V} (conj⇒intertwine V (pauli ⟦ cX ⟧ᶜ) (pauli ⟦ cX ⟧ᶜ) uV fx)
+  cmX = ent {V · pauli ⟦ cX ⟧ᶜ} {pauli ⟦ cX ⟧ᶜ · V}
+            (conj⇒intertwine V (pauli ⟦ cX ⟧ᶜ) (pauli ⟦ cX ⟧ᶜ) uV fx)
             (ℕ.+-identityʳ (nrm V))
 
   cmZ : ∀ v u → mat (V · pauli ⟦ cZ ⟧ᶜ) v u ≐ mat (pauli ⟦ cZ ⟧ᶜ · V) v u
-  cmZ = ent {V · pauli ⟦ cZ ⟧ᶜ} {pauli ⟦ cZ ⟧ᶜ · V} (conj⇒intertwine V (pauli ⟦ cZ ⟧ᶜ) (pauli ⟦ cZ ⟧ᶜ) uV fz)
+  cmZ = ent {V · pauli ⟦ cZ ⟧ᶜ} {pauli ⟦ cZ ⟧ᶜ · V}
+            (conj⇒intertwine V (pauli ⟦ cZ ⟧ᶜ) (pauli ⟦ cZ ⟧ᶜ) uV fz)
             (ℕ.+-identityʳ (nrm V))
 
   -- From X: V(1,1) = V(0,0) and V(1,0) = V(0,1).

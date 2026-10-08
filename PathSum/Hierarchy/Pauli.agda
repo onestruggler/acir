@@ -84,7 +84,8 @@ open import PathSum.Reduction M public using (⅛; ¼; ½)
 open import PathSum.RelativePhase M₀ using
   (_≡ᴺ_; ≡ᴺ-refl; ≡ᴺ-≡; ≡ᴺ-sym; ≡ᴺ-trans; ≡ᴺ-+; ≡ᴺ-neg; ≡ᴺ-N; zpow-≡ᴺ;
    module ≡ᴺ-Reasoning)
-open import PathSum.Ring M₀ using (_⊛_; ⊛-cong; zpow-⊛; conj; conj-zpow; conj-0ᴬ)
+open import PathSum.Ring M₀ using
+  (_⊛_; ⊛-cong; zpow-⊛; conj; conj-zpow; conj-0ᴬ)
 
 open +-*-Solver using (solve; con; _:+_; _:-_; :-_; _:*_; _:=_)
 
@@ -229,7 +230,8 @@ dot-⊕ˡ z z′ v = trans (dot-comm (z ⊕ᵛ z′) v)
 
 dot-0ˡ : (z v : Assign n) → (∀ j → z j ≡ false) → dot z v ≡ false
 dot-0ˡ {ℕ.zero}  z v _  = refl
-dot-0ˡ {ℕ.suc n} z v z0 rewrite z0 zero = dot-0ˡ (tail z) (tail v) (λ j → z0 (suc j))
+dot-0ˡ {ℕ.suc n} z v z0 rewrite z0 zero =
+  dot-0ˡ (tail z) (tail v) (λ j → z0 (suc j))
 
 dot-0ʳ : (z v : Assign n) → (∀ j → v j ≡ false) → dot z v ≡ false
 dot-0ʳ z v v0 = trans (dot-comm z v) (dot-0ˡ v z v0)

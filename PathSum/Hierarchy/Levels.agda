@@ -281,14 +281,16 @@ private
   Rs-up : ∀ k (s s′ : ℤ) (w : Fin n) → (+ 2) * s ≡ s′ →
           (∀ {V : Op n} → 𝒞 (suc k) V → 𝒞 (suc k) ((- s) ◃ V)) →
           𝒞 (suc k) (Rs s′ w) → 𝒞 (suc (suc k)) (Rs s w)
-  Rs-up {n} k s s′ w eq ph c = diag-unitary (wireFn s w) , λ p → by p (xs p w) refl
+  Rs-up {n} k s s′ w eq ph c =
+    diag-unitary (wireFn s w) , λ p → by p (xs p w) refl
     where
     by : (p : PauliData n) (b : Bool) → xs p w ≡ b →
          𝒞 (suc k) (Rs s w · pauli p · Rs s w †)
     by p false e = 𝒞-resp (suc k) (≈-sym (Rs-conj-0 s w p e)) (𝒞-pauli k p)
     by p true  e = 𝒞-resp (suc k)
       (≈-sym (Rs-conj-1 s w p e
-              ⟨≈⟩ ◃-cong (- s) (·-congˡ (pauli p) (Rs-exp {a = (+ 2) * s} {b = s′} w eq))))
+              ⟨≈⟩ ◃-cong (- s) (·-congˡ (pauli p)
+                                  (Rs-exp {a = (+ 2) * s} {b = s′} w eq))))
       (ph {Rs s′ w · pauli p} (𝒞-·pauli k {Rs s′ w} p c))
 
 -- D(±2^(M-k)) ∈ C_k, for 1 ≤ k ≤ M.
@@ -385,7 +387,8 @@ H∉𝒞₁ {n} w (p , h) = case (same (0ᵛ ⊕ᵛ xs p) 0ᵛ) refl
                 (λ j → cong (λ b → (0ᵛ [ w ≔ b ]) j) (e-here w)))
     (zero-if (eᵛ w) (bool-false (λ s →
        contradiction (trans (sym (same-true (0ᵛ ⊕ᵛ xs p) 0ᵛ g w))
-                            (trans (same-true (0ᵛ ⊕ᵛ xs p) (eᵛ w) s w) (e-here w)))
+                            (trans (same-true (0ᵛ ⊕ᵛ xs p) (eᵛ w) s w)
+                                   (e-here w)))
                      (λ ()))))
 
 -- CNOT leaves |0…0⟩ where it is but moves |e_c⟩ to |e_c + e_t⟩; a
@@ -454,26 +457,31 @@ Rs-not-pauli {n} t w t≢0 t≢½ e (p , h) = case (same (0ᵛ ⊕ᵛ xs p) 0ᵛ
 
     ge : same (eᵛ w ⊕ᵛ xs p) (eᵛ w) ≡ true
     ge = same-intro (eᵛ w ⊕ᵛ xs p) (eᵛ w)
-                    (λ j → trans (cong (eᵛ w j xor_) (x0 j)) (xor-false (eᵛ w j)))
+                    (λ j → trans (cong (eᵛ w j xor_) (x0 j))
+                                 (xor-false (eᵛ w j)))
 
     at0 : e + (t * 0ℤ + 0ℤ) ≡ᴺ φᴾ p 0ᵛ
     at0 = zpow-inj (≐-sym (diag 0ᵛ) ∙ entry 0ᵛ ∙ gz-guard (φᴾ p 0ᵛ) g)
 
     at1 : e + (t * [ eᵛ w w ]ᶻ + 0ℤ) ≡ᴺ φᴾ p (eᵛ w)
-    at1 = zpow-inj (≐-sym (diag (eᵛ w)) ∙ entry (eᵛ w) ∙ gz-guard (φᴾ p (eᵛ w)) ge)
+    at1 = zpow-inj (≐-sym (diag (eᵛ w)) ∙ entry (eᵛ w)
+                    ∙ gz-guard (φᴾ p (eᵛ w)) ge)
 
     -- t is the difference of the two phases.
     t≡ : t ≡ᴺ ½ * [ zs p w ]ᶻ
-    t≡ = ≡ᴺ-trans (≡ᴺ-≡ (solve 2 (λ e t → t := (e :+ (t :* con 1ℤ :+ con 0ℤ))
-                                               :- (e :+ (t :* con 0ℤ :+ con 0ℤ)))
-                                  refl e t))
+    t≡ = ≡ᴺ-trans
+      (≡ᴺ-≡ (solve 2 (λ e t → t := (e :+ (t :* con 1ℤ :+ con 0ℤ))
+                                   :- (e :+ (t :* con 0ℤ :+ con 0ℤ)))
+                     refl e t))
       (≡ᴺ-trans (≡ᴺ-- (≡ᴺ-trans (≡ᴺ-≡ (cong (λ b → e + (t * [ b ]ᶻ + 0ℤ))
                                               (sym (e-here w))))
                                 at1)
                       at0)
-        (≡ᴺ-≡ (trans (cong₂ (λ x y → (¼ * ph p + ½ * [ x ]ᶻ) - (¼ * ph p + ½ * [ y ]ᶻ))
+        (≡ᴺ-≡ (trans (cong₂ (λ x y → (¼ * ph p + ½ * [ x ]ᶻ)
+                                     - (¼ * ph p + ½ * [ y ]ᶻ))
                             (dot-e (zs p) w) (dot-0ʳ (zs p) 0ᵛ (λ _ → refl)))
-                     (trans (cong (λ y → (¼ * ph p + ½ * [ zs p w ]ᶻ) - (¼ * ph p + y))
+                     (trans (cong (λ y → (¼ * ph p + ½ * [ zs p w ]ᶻ)
+                                         - (¼ * ph p + y))
                                   (*-zeroʳ ½))
                             (solve 2 (λ q h → (q :+ h) :- (q :+ con 0ℤ) := h)
                                    refl (¼ * ph p) (½ * [ zs p w ]ᶻ))))))

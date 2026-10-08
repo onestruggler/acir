@@ -199,8 +199,9 @@ col-· k A A-cong A-resp lin B x z = ≐-sym (lin (λ w → mat B x w) (respᶻ 
 col-·-col : (k j : ℕ) (A : Column n → Column n) (A-cong : ColCong A)
             (A-resp : ColResp A) → Linear A →
             (B : Column n → Column n) (B-cong : ColCong B)
-            (B-resp : ColResp B) → ∀ x z → mat (colOp k A A-cong A-resp · colOp j B B-cong B-resp) x z
-                    ≐ A (B (δ x)) z
+            (B-resp : ColResp B) → ∀ x z →
+            mat (colOp k A A-cong A-resp · colOp j B B-cong B-resp) x z
+              ≐ A (B (δ x)) z
 col-·-col k j A A-cong A-resp lin B B-cong B-resp x z =
   col-· k A A-cong A-resp lin (colOp j B B-cong B-resp) x z
 
@@ -851,7 +852,8 @@ cnot-pauli {n} c t c≢t p = ≈-by (cnotOp c t · pauli p)
   guard v u = sym (trans
     (same-≗ {x = v} {x′ = v} (λ _ → refl)
             (λ j → trans (flip-⊕ c t u x′ j)
-                         (cong (flip c t u j xor_) (flip-flip c t c≢t (xs p) j))))
+                         (cong (flip c t u j xor_)
+                               (flip-flip c t c≢t (xs p) j))))
     (trans (same-sym v (flip c t u ⊕ᵛ xs p))
            (same-⊕-swap (flip c t u) (xs p) v)))
 
@@ -865,7 +867,8 @@ cnot-pauli {n} c t c≢t p = ≈-by (cnotOp c t · pauli p)
     -- u ⊕ πx is π v.
     back′ : ∀ j → (u ⊕ᵛ x′) j ≡ flip c t v j
     back′ j = trans (sym (flip-flip c t c≢t (u ⊕ᵛ x′) j))
-                    (flip-≗ c t (λ i → sym (same-true v (flip c t (u ⊕ᵛ x′)) h i)) j)
+                    (flip-≗ c t (λ i → sym (same-true v (flip c t (u ⊕ᵛ x′))
+                                                       h i)) j)
 
 cnot-𝒞₂ : (c t : Fin n) → c ≢ t → 𝒞 2 (cnotOp c t)
 cnot-𝒞₂ c t c≢t = cnot-unitary c t c≢t , λ p →
@@ -958,8 +961,8 @@ diag-◃ (f , f-resp) (g , g-resp) t h =
 diag-is-pauli : (F : PhaseFn n) (a : ℤ) (z : Assign n) →
                 (∀ u → proj₁ F u ≡ᴺ ¼ * a + ½ * [ dot z u ]ᶻ) →
                 diagOp F ≈ pauli (pd a 0ᵛ z)
-diag-is-pauli (f , f-resp) a z h = ≈-by (diagOp (f , f-resp)) (pauli (pd a 0ᵛ z))
-  refl (λ v u →
+diag-is-pauli (f , f-resp) a z h =
+  ≈-by (diagOp (f , f-resp)) (pauli (pd a 0ᵛ z)) refl (λ v u →
     rot-if (same v u) (f u) 0ℤ
     ∙ gz-cong (same-≗ (λ j → sym (xor-false (v j))) (λ _ → refl))
         (λ g → ≡ᴺ-trans (≡ᴺ-≡ (+-identityʳ (f u)))
@@ -1036,7 +1039,8 @@ Rs-−½ : (w : Fin n) → Rs (- ½) w ≈ pauli (Z^ w)
 Rs-−½ w = diag-is-pauli (wireFn (- ½) w) 0ℤ (eᵛ w) (λ u →
   ≡ᴺ-trans (≡ᴺ-≡ (sym (neg-distribˡ-* ½ [ u w ]ᶻ)))
     (≡ᴺ-trans (neg-½ (u w))
-      (≡ᴺ-≡ (sym (trans (cong₂ _+_ (*-zeroʳ ¼) (cong (λ b → ½ * [ b ]ᶻ) (e-dot w u)))
+      (≡ᴺ-≡ (sym (trans (cong₂ _+_ (*-zeroʳ ¼)
+                                   (cong (λ b → ½ * [ b ]ᶻ) (e-dot w u)))
                         (+-identityˡ (½ * [ u w ]ᶻ)))))))
 
 

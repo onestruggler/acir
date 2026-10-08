@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is the Agda formalisation accompanying the paper *"A Complete and Natural Rule Set for Multi-Qudit Clifford Circuits in All Odd Prime Dimensions"*. It is being prepared for submission to the Agda standard library. Tested with **Agda 2.8 + stdlib 2.3** (also works with Agda 2.7 + stdlib 2.2).
+This is the Agda formalisation accompanying the paper *"A Complete and Natural Rule Set for Multi-Qudit Clifford Circuits in All Odd Prime Dimensions"*. It is being prepared for submission to the Agda standard library. Tested with **Agda 2.8 + stdlib 2.4**, the versions README.md pins (stdlib 2.3 is too old: `Presentation/Construct/Properties/Extension` imports `Algebra.Construct.Sub.Group`, added after it).
 
 ## Typechecking
 
@@ -14,12 +14,12 @@ This is the Agda formalisation accompanying the paper *"A Complete and Natural R
 # states, including CliffordT1, QutritCliffordT1, U33Di, and the qupit
 # projective Clifford chain (Paper-V1 → Paper-V0 → Simplified-V1 →
 # SemiDirect, plus Shared/PauliBase):
-wsl --exec /home/onest/.cabal/bin/agda MainTheorems.agda
+wsl --exec agda MainTheorems.agda
 ```
 
 What the root does **not** reach, as of the last check: `ProjectiveClifford/Qupit/Simplified-V2`, `ProjectiveClifford/Qubit/` and `Clifford/Qupit/` — nothing `MainTheorems` states depends on them, so they need typechecking separately if you touch them.
 
-Use WSL Agda 2.8 (`wsl --exec /home/onest/.cabal/bin/agda`) for all files. The WSL install uses its own stdlib at `/home/onest/.agda/lib/agda-stdlib/`. The `.agda-lib` file (`qupit.agda-lib`) includes `.` and depends on `standard-library`.
+Use WSL Agda 2.8 for all files — `agda` on the WSL path, or the install's full path where it is not (`/usr/bin/agda` from apt on one machine, `~/.cabal/bin/agda` on another). Agda 2.8 finds the standard library through the XDG registry `~/.config/agda/libraries` (it no longer reads `~/.agda/`), which must list a stdlib 2.4 checkout's `standard-library.agda-lib`. The `.agda-lib` file (`qupit.agda-lib`) includes `.` and depends on `standard-library`.
 
 **Always re-typecheck `MainTheorems.agda` after any edit to library files.** From PowerShell, invoke WSL directly (Git-Bash mangles the Linux path).
 
@@ -83,7 +83,7 @@ There is no longer a `Presentation/Groups/`: it held a second Sₙ and a hand-ro
 
 ### Separate development — Path-sums (`PathSum/`)
 
-Amy's path-sum calculus (QPL 2018). The core is §4 — lemmas 4.1–4.3, and corollary 4.4 for circuits over {H, S, CZ} as the paper *proves* it, about the circuit itself and syntactically (`corollary-4-4-any`, `corollary-4-4-syntactic`); its polynomial-time statement is proved in a cost model over sparse path-sums (`Cost/Corollary`). Around it: lemma 2.5 in general; composition (def. 2.6, prop. 2.7, remark 2.8 up to renaming path variables); the paper's gate set {H, CNOT, R_k} (def. 2.9, props. 2.10 and 2.14); ℤ[ζ] as a ring, definition 2.4, and unitarity of every circuit over both gate sets; all of figure 2 ([Case], Boolean-valued quotients) at any variables, with decidable matching; corollary 4.4 by the paper's Gaussian-elimination route and under any rules in any order; lemma 4.1/corollary 4.4 up to a global phase; equivalence of two circuits by the miter; the Clifford hierarchy of section 2 (the gates' levels, C₃ not closed, one-qubit C₂); and the worked examples (at M₀ = 0). **Not reached by `MainTheorems.agda`**; its own root is `PathSum/Theorems.agda`, which covers the whole directory. Typecheck it with `wsl --exec /usr/bin/agda +RTS -M6G -RTS PathSum/Theorems.agda` — **always under a heap cap** (an uncapped run once exhausted the WSL VM). From scratch the directory takes ~30 min CPU and peaks near 4.5 GB; the root alone ~160 s. (`Denotation` and `Cyclotomic` needed 9–10 GB and 1.5–4 min each until October 2026, when their `with`s over amplitude goals became helpers; each now checks in under 10 s.)
+Amy's path-sum calculus (QPL 2018). The core is §4 — lemmas 4.1–4.3, and corollary 4.4 for circuits over {H, S, CZ} as the paper *proves* it, about the circuit itself and syntactically (`corollary-4-4-any`, `corollary-4-4-syntactic`); its polynomial-time statement is proved in a cost model over sparse path-sums (`Cost/Corollary`). Around it: lemma 2.5 in general; composition (def. 2.6, prop. 2.7, remark 2.8 up to renaming path variables); the paper's gate set {H, CNOT, R_k} (def. 2.9, props. 2.10 and 2.14); ℤ[ζ] as a ring, definition 2.4, and unitarity of every circuit over both gate sets; all of figure 2 ([Case], Boolean-valued quotients) at any variables, with decidable matching; corollary 4.4 by the paper's Gaussian-elimination route and under any rules in any order; lemma 4.1/corollary 4.4 up to a global phase; equivalence of two circuits by the miter; the Clifford hierarchy of section 2 (the gates' levels, C₃ not closed, one-qubit C₂); and the worked examples (at M₀ = 0). **Not reached by `MainTheorems.agda`**; its own root is `PathSum/Theorems.agda`, which covers the whole directory. Typecheck it with `wsl --exec /usr/bin/agda +RTS -M6G -RTS PathSum/Theorems.agda` — **always under a heap cap** (an uncapped run once exhausted the WSL VM). From scratch the directory takes ~30 min CPU and peaks near 4.5 GB; the root alone ~140 s. (`Denotation` and `Cyclotomic` needed 9–10 GB and 1.5–4 min each until October 2026, when their `with`s over amplitude goals became helpers; each now checks in under 10 s.)
 
 Its module map, the departures from the paper, and its pitfalls (several cost minutes and gigabytes when ignored) are in **`PathSum/CLAUDE.md`** — read it before working in that directory.
 

@@ -166,7 +166,8 @@ conj⇒intertwine U P Q u e =
 intertwine⇒conj : (U P Q : Op n) → Unitary U → U · P ≈ Q · U → U · P · U † ≈ Q
 intertwine⇒conj U P Q u e = ·-congˡ (U †) e ⟨≈⟩ cancelʳ U Q u
 
-conj⇔intertwine : (U P Q : Op n) → Unitary U → (U · P · U † ≈ Q) ⇔ (U · P ≈ Q · U)
+conj⇔intertwine : (U P Q : Op n) → Unitary U →
+                  (U · P · U † ≈ Q) ⇔ (U · P ≈ Q · U)
 conj⇔intertwine U P Q u =
   mk⇔ (conj⇒intertwine U P Q u) (intertwine⇒conj U P Q u)
 
@@ -187,7 +188,8 @@ conj⇔intertwine U P Q u =
 -- A sign times a Pauli is a Pauli.
 
 sign-pauli : (b : Bool) (q : PauliData n) →
-             (½ * [ b ]ᶻ) ◃ pauli q ≈ pauli (pd (ph q + (+ 2) * [ b ]ᶻ) (xs q) (zs q))
+             (½ * [ b ]ᶻ) ◃ pauli q ≈
+             pauli (pd (ph q + (+ 2) * [ b ]ᶻ) (xs q) (zs q))
 sign-pauli b q =
   ◃-exp (pauli q) (sym (¼·2 [ b ]ᶻ)) ⟨≈⟩ ◃-pauli ((+ 2) * [ b ]ᶻ) q
 
@@ -447,14 +449,16 @@ module Decompose
 
 private
   conj-1 : (U : Op n) → Unitary U → U · pauli 1ᴾ · U † ≈ I
-  conj-1 U u = conj-congᴾ U pauli-I ⟨≈⟩ ·-congˡ (U †) (·-identityʳ U) ⟨≈⟩ proj₂ u
+  conj-1 U u = conj-congᴾ U pauli-I ⟨≈⟩ ·-congˡ (U †) (·-identityʳ U)
+               ⟨≈⟩ proj₂ u
 
   -- U i^t P U† = i^t U P U†.
 
   conj-i : (U : Op n) (t : ℤ) (p : PauliData n) →
            U · pauli (pd (ph p + t) (xs p) (zs p)) · U † ≈
            (¼ * t) ◃ (U · pauli p · U †)
-  conj-i U t p = conj-congᴾ U (≈-sym (◃-pauli t p)) ⟨≈⟩ conj-◃ (¼ * t) U (pauli p)
+  conj-i U t p = conj-congᴾ U (≈-sym (◃-pauli t p))
+                 ⟨≈⟩ conj-◃ (¼ * t) U (pauli p)
 
 𝒞₂-gen : (U : Op n) → Unitary U →
          (∀ j → IsPauli (U · pauli (X^ j) · U †)) →
@@ -513,5 +517,7 @@ private
   (∀ j → Σ[ q ∈ PauliData n ] U · pauli (X^ j) ≈ pauli q · U) →
   (∀ j → Σ[ q ∈ PauliData n ] U · pauli (Z^ j) ≈ pauli q · U) → 𝒞 2 U
 𝒞₂-by-intertwining U u hX hZ = 𝒞₂-gen U u
-  (λ j → let (q , e) = hX j in q , intertwine⇒conj U (pauli (X^ j)) (pauli q) u e)
-  (λ j → let (q , e) = hZ j in q , intertwine⇒conj U (pauli (Z^ j)) (pauli q) u e)
+  (λ j → let (q , e) = hX j
+         in q , intertwine⇒conj U (pauli (X^ j)) (pauli q) u e)
+  (λ j → let (q , e) = hZ j
+         in q , intertwine⇒conj U (pauli (Z^ j)) (pauli q) u e)

@@ -54,12 +54,28 @@ open import Relation.Nullary.Negation using (¬_)
 open import PathSum.Assign using ([_]ᶻ; ≔-here)
 open import PathSum.CircuitSemantics M₀ using (δ)
 open import PathSum.Cyclotomic M₀ using (rot-exp)
-open import PathSum.Hierarchy M₀
 open import PathSum.Hierarchy.Circuits M₀
-open import PathSum.Hierarchy.Gates M₀
-open import PathSum.Hierarchy.Levels M₀
-open import PathSum.Hierarchy.Operator M₀
 open import PathSum.Hierarchy.Pauli M₀
+
+import PathSum.Hierarchy
+import PathSum.Hierarchy.Gates
+import PathSum.Hierarchy.Levels
+import PathSum.Hierarchy.Operator
+
+-- The applications the statements below are written with are named, so
+-- that a client can restate them with the very same names
+-- (PathSum.Hierarchy.NotClosed.Hrⁿ.𝒞 M₀ and so on; see the header of
+-- PathSum.Hierarchy).
+
+module Hrⁿ = PathSum.Hierarchy M₀
+module Gaⁿ = PathSum.Hierarchy.Gates M₀
+module Lvⁿ = PathSum.Hierarchy.Levels M₀
+module Opⁿ = PathSum.Hierarchy.Operator M₀
+
+open Hrⁿ
+open Gaⁿ
+open Lvⁿ
+open Opⁿ
 
 
 
