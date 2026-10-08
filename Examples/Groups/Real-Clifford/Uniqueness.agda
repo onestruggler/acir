@@ -12,6 +12,10 @@
 -- N ↑ acts on the wires above as N.  The sign of a normal form is a
 -- scalar and acts trivially: the matrix semantics tells it.
 --
+-- These are the uniqueness halves of Propositions 4.11 and 4.12 of the
+-- paper (QZ-inj, QX-inj), and its Proposition 4.13 (QX-Z); the paper's
+-- first tensor factor is the top wire here, its last one wire 0.
+--
 -- The operators are read one wire at a time.  Climbing a ladder, a B
 -- gate leaves on its lower wire the letter (Z or XZ) of its lower
 -- input type, and on its upper wire a letter that tells it from the

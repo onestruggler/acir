@@ -8,8 +8,9 @@
 -- matrix of a circuit conjugates Pauli matrices as Pauli.act says, it
 -- is invertible, and Pauli matrices are determined by their entries).
 -- So their normal forms differ at most in the sign (Uniqueness), and
--- not even there, since −U ≠ U for an invertible U.  Each circuit
--- equals its normal form (Normalise), hence they are equal.
+-- not even there, since −U ≠ U for an invertible U (this replaces the
+-- paper's Proposition 2.4 and Corollary 2.5).  Each circuit equals its
+-- normal form (Normalise), hence they are equal.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
