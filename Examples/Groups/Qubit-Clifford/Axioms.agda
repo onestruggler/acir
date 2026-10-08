@@ -62,7 +62,7 @@ C₃ᵉ = ax (s₀ ∷ s₀ ∷ s₀ ∷ s₀ ∷ [])
   ([]) C₃ (as Eq.refl) (as Eq.refl)
 
 C₄ᵉ : Eqn (₁₊ n)
-C₄ᵉ = ax (h₀ ∷ s₀ ∷ h₀ ∷ s₀ ∷ h₀ ∷ s₀ ∷ [])
+C₄ᵉ = ax (s₀ ∷ h₀ ∷ s₀ ∷ h₀ ∷ s₀ ∷ h₀ ∷ [])
   (𝕨 ∷ []) C₄ (as Eq.refl) (as Eq.refl)
 
 C₅ᵉ : Eqn (₂₊ n)

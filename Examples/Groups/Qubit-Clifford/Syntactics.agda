@@ -90,7 +90,7 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
   -- (b) n ≥ 1.
   C₂  : (₁₊ n) SRel, H • H === ε
   C₃  : (₁₊ n) SRel, S • S • S • S === ε
-  C₄  : (₁₊ n) SRel, H • S • H • S • H • S === ω
+  C₄  : (₁₊ n) SRel, S • H • S • H • S • H === ω
 
   -- (c) n ≥ 2.
   C₅  : (₂₊ n) SRel, CZ • CZ === ε
