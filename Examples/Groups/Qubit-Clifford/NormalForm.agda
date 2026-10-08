@@ -3,8 +3,8 @@
 --
 -- Normal forms of Clifford circuits (Section 4 of Selinger)
 --
--- The gates A, B, C, D and E of Figure 1 are letter lists.  The
--- families of Definition 4.2 are inductive types:
+-- The gates A, B, C, D and E of Definition 4.2 (Figure 1) are letter
+-- lists.  The families of Definition 4.3 are inductive types:
 --
 --   Lad n     a ladder of B gates on n wires, climbing from wire 0 to
 --             the top and closed by a C gate;

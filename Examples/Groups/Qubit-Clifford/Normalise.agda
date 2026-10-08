@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Every Clifford circuit equals a normal form (Lemma 5.2 and
--- Proposition 5.3)
+-- Every Clifford circuit equals a normal form (Lemma 6.2 and
+-- Proposition 6.3)
 --
 -- A generator in front of a normal form N ↑ • M • L is pushed through
 -- the Z-normal circuit L (zPush), which turns it into dirty gates an

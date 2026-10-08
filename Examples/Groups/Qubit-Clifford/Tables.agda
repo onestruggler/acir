@@ -4,13 +4,13 @@
 -- The rewrite rules of Figures 3 to 7 as rewriting tables
 --
 -- A dirty gate in front of clean gates of a normal form is rewritten
--- into clean gates followed by dirty gates (Lemma 5.2).  Each table
+-- into clean gates followed by dirty gates (Lemma 6.2).  Each table
 -- below sends the clean gates and the dirty gate to the new clean gates
 -- and the dirty gates that come out, listed in operator order (the head
 -- leaves last), and its companion `-ok` is the relation, one of the
 -- supplement's equations (3.3) to (3.101).  The dirty gates that come
--- out are sorted by where they go next, which is the label the paper
--- gives their wire:
+-- out are sorted by where they go next, which is the label Definition
+-- 6.1 gives their wire:
 --
 --   W0      a gate on the lower input of a ladder (label 2): S and X;
 --   Post    what follows a clean gate on wires 0 and 1 whose wire 1

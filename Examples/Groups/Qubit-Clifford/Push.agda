@@ -2,7 +2,7 @@
 -- Presentations of groups
 --
 -- Pushing dirty gates into the ladders of a Z-normal circuit (the proof
--- of Lemma 5.2)
+-- of Lemma 6.2)
 --
 -- A gate in front of a ladder is pushed through it by the rewriting
 -- tables: it meets the bottom B gate, and what comes out is either done
