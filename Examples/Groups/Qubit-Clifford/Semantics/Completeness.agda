@@ -56,6 +56,8 @@ open import Examples.Groups.Qubit-Clifford.Semantics.Soundness isCR s s-half i i
 open import Examples.Groups.Qubit-Clifford.Semantics.PauliMatrix isCR s s-half i i²
   using (iph ; iph-⊕ ; iph-p2 ; pmat ; pmat-act)
   renaming (one≢-one to one≢-one′ ; iph-inj to iph-inj′ ; pmat-injective to pmat-injective′)
+open import Examples.Groups.Qubit-Clifford.Semantics.Scalars isCR s s-half i i²
+  using (phOf ; ω̂-even ; ⟦ω^⟧)
 
 private
   variable
@@ -93,48 +95,6 @@ act-of-mat {w = w} {v} e P = pmat-injective (act w P) (act v P) λ x y → begin
 -- The powers of ω are distinct
 
 private
-  -- ω ω = i.
-  ω̂² : ω̂ * ω̂ ≡ i
-  ω̂² = begin
-    (s * (1# + i)) * (s * (1# + i))       ≡⟨ solve 2 (λ s i → (s :* (con (+ 1) :+ i)) :* (s :* (con (+ 1) :+ i))
-                                                := (s :* s :+ s :* s) :* i :+ (s :* s) :* (i :* i :+ con (+ 1)))
-                                               refl s i ⟩
-    (s * s + s * s) * i + (s * s) * (i * i + 1#)
-                                          ≡⟨ Eq.cong₂ (λ a b → a * i + (s * s) * b) s-half i²+1 ⟩
-    1# * i + (s * s) * 0#                 ≡⟨ solve 2 (λ s i → con (+ 1) :* i :+ (s :* s) :* con (+ 0) := i) refl s i ⟩
-    i                                     ∎
-    where
-    open Eq.≡-Reasoning
-    open import Data.Integer.Base using (+_)
-    i²+1 : i * i + 1# ≡ 0#
-    i²+1 = Eq.trans (Eq.cong (_+ 1#) i²) (AR.-‿inverseˡ 1#)
-
-  pow-mul : (a b : A) (k : ℕ) → (a * b) ^ k ≡ (a ^ k) * (b ^ k)
-  pow-mul a b zero    = Eq.sym (AR.*-identityˡ 1#)
-  pow-mul a b (suc k) = Eq.trans (Eq.cong ((a * b) *_) (pow-mul a b k)) (cross a b (a ^ k) (b ^ k))
-    where
-    cross : (a b c d : A) → (a * b) * (c * d) ≡ (a * c) * (b * d)
-    cross a b c d = solve 4 (λ a b c d → (a :* b) :* (c :* d) := (a :* c) :* (b :* d)) refl a b c d
-
-  -- i^k as a phase.
-  phOf : ℕ → Ph
-  phOf zero    = p0
-  phOf (suc k) = phOf k ⊕ p1
-
-  i^ : (k : ℕ) → i ^ k ≡ iph (phOf k)
-  i^ zero    = Eq.sym ιᵍ-1
-  i^ (suc k) = begin
-    i * i ^ k                     ≡⟨ Eq.cong (i *_) (i^ k) ⟩
-    i * iph (phOf k)              ≡⟨ AR.*-comm i (iph (phOf k)) ⟩
-    iph (phOf k) * i              ≡⟨ Eq.cong (iph (phOf k) *_) (Eq.sym ιᵍ-i) ⟩
-    iph (phOf k) * iph p1         ≡⟨ Eq.sym (iph-⊕ (phOf k) p1) ⟩
-    iph (phOf k ⊕ p1)             ∎
-    where open Eq.≡-Reasoning
-
-  ω̂-even : (k : ℕ) → ω̂ ^ (k +ℕ k) ≡ iph (phOf k)
-  ω̂-even k = Eq.trans (^-+ ω̂ k k) (Eq.trans (Eq.sym (pow-mul ω̂ ω̂ k))
-               (Eq.trans (Eq.cong (_^ k) ω̂²) (i^ k)))
-
   -- A power ω^d = 1 gives i^d = 1.
   sq-root : (d : ℕ) → ω̂ ^ d ≡ 1# → phOf d ≡ p0
   sq-root d e = iph-inj (phOf d) p0 (begin
@@ -277,12 +237,6 @@ nf-phase {n} (nfₛ L M N) = begin
   L' = ⟦ L ⟧ᶻ
   Ω : {k : ℕ} → Circuit k
   Ω = ω ^ʷ toℕ (phase N)
-
--- The matrix of ω^k.
-⟦ω^⟧ : (k : ℕ) → ⟦ ω {n} ^ʷ k ⟧ᴬ ≐ scal (ω̂ ^ k)
-⟦ω^⟧ zero          = ≐-sym scal-1
-⟦ω^⟧ (suc zero)    x y = Eq.cong (_* δb x y) (Eq.sym (AR.*-identityʳ ω̂))
-⟦ω^⟧ (suc (suc k)) = ≐-trans (⊙-cong (≐-refl (scal ω̂)) (⟦ω^⟧ (suc k))) (scal-⊙ ω̂ (ω̂ ^ suc k))
 
 private
   δb-refl : (x : Bits n) → δb x x ≡ 1#
