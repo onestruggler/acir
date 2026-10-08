@@ -436,28 +436,39 @@ xPushL m M (d ∷ ds) with xPush m M d
 ------------------------------------------------------------------------
 -- Pushing into normal forms
 
+-- The scalar as a list of letters, and its word one wire up.
+negs : Bool → List (Gen n)
+negs false = []
+negs true  = gate₀ neg-gate ∷ []
+
+negs-ok : (s : Bool) → (₁₊ n) ⊢ ⟪ negs {n} s ⟫ ↑ ≈ sgn s
+negs-ok false = PB.refl
+negs-ok true  = PB.trans PB.right-unit neg↑
+
 push  : (n : ℕ) (N : NF n) (g : Gen n) → Σ (NF n) λ N' → n ⊢ ⟦ N ⟧ⁿ • ⟪ g ∷ [] ⟫ ≈ ⟦ N' ⟧ⁿ
 pushW : (n : ℕ) (N : NF n) (gs : List (Gen n)) → Σ (NF n) λ N' → n ⊢ ⟦ N ⟧ⁿ • ⟪ gs ⟫ ≈ ⟦ N' ⟧ⁿ
 
 push zero (nf₀ s) (gate₀ neg-gate) = nf₀ (not s) ,
   PB.trans (PB.cong PB.refl PB.right-unit) (PB.trans (Sign.sgn-comm s neg) (Sign.sgn-neg s))
-push (suc m) (nfₛ s L M N) g with zPush m L g
+push (suc m) (nfₛ L M N) g with zPush m L g
 ... | out ds L' e₁ with xPushL m M ds
-... | xout s₁ vs M' e₂ with pushW m N vs
-... | N' , e₃ = nfₛ (s xor s₁) L' M' N' , p
+... | xout s₁ vs M' e₂ with pushW m N (vs ++ negs s₁)
+... | N' , e₃ = nfₛ L' M' N' , p
   where
   open Width (₁₊ m)
   open Sign {₁₊ m}
+  q : ⟪ vs ++ negs s₁ ⟫ ↑ ≈ ⟪ vs ⟫ ↑ • sgn s₁
+  q = trans (lift (⟪++⟫ vs (negs s₁))) (back _ (negs-ok s₁))
   p = begin
-    (sgn s • ⟦ N ⟧ⁿ ↑ • ⟦ M ⟧ˣ • ⟦ L ⟧ᶻ) • ⟪ g ∷ [] ⟫          ≈⟨ trans assoc (back _ (trans assoc (back _ assoc))) ⟩
-    sgn s • ⟦ N ⟧ⁿ ↑ • ⟦ M ⟧ˣ • ⟦ L ⟧ᶻ • ⟪ g ∷ [] ⟫            ≈⟨ back _ (back _ (back _ e₁)) ⟩
-    sgn s • ⟦ N ⟧ⁿ ↑ • ⟦ M ⟧ˣ • ⟪ Mls ds ⟫ • ⟦ L' ⟧ᶻ          ≈⟨ back _ (back _ (sym assoc)) ⟩
-    sgn s • ⟦ N ⟧ⁿ ↑ • (⟦ M ⟧ˣ • ⟪ Mls ds ⟫) • ⟦ L' ⟧ᶻ        ≈⟨ back _ (back _ (front _ e₂)) ⟩
-    sgn s • ⟦ N ⟧ⁿ ↑ • (sgn s₁ • ⟪ vs ⟫ ↑ • ⟦ M' ⟧ˣ) • ⟦ L' ⟧ᶻ ≈⟨ back _ (back _ (trans assoc (back _ assoc))) ⟩
-    sgn s • ⟦ N ⟧ⁿ ↑ • sgn s₁ • ⟪ vs ⟫ ↑ • ⟦ M' ⟧ˣ • ⟦ L' ⟧ᶻ  ≈⟨ back _ (swap _ (sym (sgn-comm s₁ _))) ⟩
-    sgn s • sgn s₁ • ⟦ N ⟧ⁿ ↑ • ⟪ vs ⟫ ↑ • ⟦ M' ⟧ˣ • ⟦ L' ⟧ᶻ  ≈⟨ trans (sym assoc) (front _ (sgn-xor s s₁)) ⟩
-    sgn (s xor s₁) • ⟦ N ⟧ⁿ ↑ • ⟪ vs ⟫ ↑ • ⟦ M' ⟧ˣ • ⟦ L' ⟧ᶻ  ≈⟨ back _ (trans (sym assoc) (front _ (lift e₃))) ⟩
-    sgn (s xor s₁) • ⟦ N' ⟧ⁿ ↑ • ⟦ M' ⟧ˣ • ⟦ L' ⟧ᶻ            ∎
+    (⟦ N ⟧ⁿ ↑ • ⟦ M ⟧ˣ • ⟦ L ⟧ᶻ) • ⟪ g ∷ [] ⟫                  ≈⟨ trans assoc (back _ assoc) ⟩
+    ⟦ N ⟧ⁿ ↑ • ⟦ M ⟧ˣ • ⟦ L ⟧ᶻ • ⟪ g ∷ [] ⟫                    ≈⟨ back _ (back _ e₁) ⟩
+    ⟦ N ⟧ⁿ ↑ • ⟦ M ⟧ˣ • ⟪ Mls ds ⟫ • ⟦ L' ⟧ᶻ                  ≈⟨ back _ (sym assoc) ⟩
+    ⟦ N ⟧ⁿ ↑ • (⟦ M ⟧ˣ • ⟪ Mls ds ⟫) • ⟦ L' ⟧ᶻ                ≈⟨ back _ (front _ e₂) ⟩
+    ⟦ N ⟧ⁿ ↑ • (sgn s₁ • ⟪ vs ⟫ ↑ • ⟦ M' ⟧ˣ) • ⟦ L' ⟧ᶻ         ≈⟨ back _ (trans assoc (back _ assoc)) ⟩
+    ⟦ N ⟧ⁿ ↑ • sgn s₁ • ⟪ vs ⟫ ↑ • ⟦ M' ⟧ˣ • ⟦ L' ⟧ᶻ           ≈⟨ back _ (swap _ (sgn-comm s₁ _)) ⟩
+    ⟦ N ⟧ⁿ ↑ • ⟪ vs ⟫ ↑ • sgn s₁ • ⟦ M' ⟧ˣ • ⟦ L' ⟧ᶻ           ≈⟨ trans (back _ (sym assoc)) (sym assoc) ⟩
+    (⟦ N ⟧ⁿ ↑ • ⟪ vs ⟫ ↑ • sgn s₁) • ⟦ M' ⟧ˣ • ⟦ L' ⟧ᶻ         ≈⟨ front _ (trans (back _ (sym q)) (lift e₃)) ⟩
+    ⟦ N' ⟧ⁿ ↑ • ⟦ M' ⟧ˣ • ⟦ L' ⟧ᶻ                             ∎
 
 pushW n N []       = N , PB.right-unit
 pushW n N (g ∷ gs) with push n N g
@@ -484,7 +495,7 @@ dl₁ (suc m) = D₁ ∷ᴰ dl₁ m
 
 idNF : (n : ℕ) → NF n
 idNF zero    = nf₀ false
-idNF (suc m) = nfₛ false (at A₁ (lad₁ m)) (E₁ ,ˣ dl₁ m) (idNF m)
+idNF (suc m) = nfₛ (at A₁ (lad₁ m)) (E₁ ,ˣ dl₁ m) (idNF m)
 
 -- D₁ undoes B₁.
 D₁B₁ : (₂₊ m) ⊢ ⟪ Dl D₁ ⟫ • ⟪ Bl B₁ ⟫ ≈ ε
@@ -502,7 +513,7 @@ dl₁lad₁ (suc m) = begin
 idNF-ok : (n : ℕ) → n ⊢ ⟦ idNF n ⟧ⁿ ≈ ε
 idNF-ok zero    = PB.refl
 idNF-ok (suc m) = begin
-  ε • ⟦ idNF m ⟧ⁿ ↑ • (ε • ⟦ dl₁ m ⟧ᴰ) • (⟦ lad₁ m ⟧ᴸ • ε)   ≈⟨ trans left-unit (front _ (lift (idNF-ok m))) ⟩
+  ⟦ idNF m ⟧ⁿ ↑ • (ε • ⟦ dl₁ m ⟧ᴰ) • (⟦ lad₁ m ⟧ᴸ • ε)       ≈⟨ front _ (lift (idNF-ok m)) ⟩
   ε • (ε • ⟦ dl₁ m ⟧ᴰ) • (⟦ lad₁ m ⟧ᴸ • ε)                  ≈⟨ trans left-unit (trans (front _ left-unit) (back _ right-unit)) ⟩
   ⟦ dl₁ m ⟧ᴰ • ⟦ lad₁ m ⟧ᴸ                                  ≈⟨ dl₁lad₁ m ⟩
   ε                                                         ∎

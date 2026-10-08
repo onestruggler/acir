@@ -21,8 +21,9 @@
 --             on all n wires, then a normal form on the top n − 1.
 --
 -- Wire 0 is the bottom wire and words are in operator order, so the
--- normal form L_n M_n N_{n-1} (−1)^s of the paper, read left to right,
--- is the word  (−1)^s • N ↑ • M • L.
+-- normal form L_n M_n N_{n-1} of the paper, read left to right, is the
+-- word  N ↑ • M • L; its sign (−1)^s is kept at width 0, where the
+-- recursion ends.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -163,11 +164,11 @@ sgn : Bool → Circuit n
 sgn false = ε
 sgn true  = neg
 
--- Normal forms.
+-- Normal forms.  The sign sits at width 0, shifted up to every width.
 data NF : ℕ → Set where
   nf₀  : Bool → NF 0
-  nfₛ  : Bool → Zc (₁₊ m) → Xc (₁₊ m) → NF m → NF (₁₊ m)
+  nfₛ  : Zc (₁₊ m) → Xc (₁₊ m) → NF m → NF (₁₊ m)
 
 ⟦_⟧ⁿ : NF n → Circuit n
-⟦ nf₀ s ⟧ⁿ          = sgn s
-⟦ nfₛ s L M N ⟧ⁿ    = sgn s • ⟦ N ⟧ⁿ ↑ • ⟦ M ⟧ˣ • ⟦ L ⟧ᶻ
+⟦ nf₀ s ⟧ⁿ        = sgn s
+⟦ nfₛ L M N ⟧ⁿ    = ⟦ N ⟧ⁿ ↑ • ⟦ M ⟧ˣ • ⟦ L ⟧ᶻ
