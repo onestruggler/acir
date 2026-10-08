@@ -249,6 +249,11 @@ sym⁼ (eqn l r p) = eqn r l (PB.sym p)
 rev⁼ : Eqn n → Eqn n
 rev⁼ (eqn l r p) = eqn (rev l) (rev r) (rev-cong l r p)
 
+-- Shifting the letters shifts the word.
+⟪map↥⟫ : (xs : List (Gen n)) → ⟪ map _↥ xs ⟫ ≡ ⟪ xs ⟫ ↑
+⟪map↥⟫ []       = Eq.refl
+⟪map↥⟫ (x ∷ xs) = Eq.cong ([ x ↥ ]ʷ •_) (⟪map↥⟫ xs)
+
 -- One wire up.  The scalar stays the scalar of the wider circuit
 -- (ω↑=ω), so that lifted equations still match the letters of a word.
 lift-gen : Gen n → Gen (₁₊ n)
