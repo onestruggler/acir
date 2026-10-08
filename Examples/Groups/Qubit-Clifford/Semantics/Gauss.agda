@@ -50,6 +50,7 @@ dblᵍ conjᵍ : ℤi → ℤi
 dblᵍ (a +i b)  = (+ 2 ℤ.* a) +i (+ 2 ℤ.* b)
 conjᵍ (a +i b) = a +i ℤ.- b
 
+infix 4 _≟ᵍ_
 _≟ᵍ_ : DecidableEquality ℤi
 (a +i b) ≟ᵍ (c +i d) with a ℤP.≟ c | b ℤP.≟ d
 ... | yes Eq.refl | yes Eq.refl = yes Eq.refl
