@@ -42,6 +42,7 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Column
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syllable using (syl)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Step using (pivot-zero> ; col-norm ; col-normB ; odd⇒≤)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.States {n} using (syl-of ; level-of)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.EdgeTools {n} using (Unit1 ; unit-odd)
 
 ------------------------------------------------------------------------
 -- The representation
@@ -82,17 +83,6 @@ odd≤ = odd⇒≤ {p = p} {W} zero>
 
 ------------------------------------------------------------------------
 -- k = 0: a unit ±1 at the first odd entry m, and 0 elsewhere
-
-Unit1 : Z → Set
-Unit1 u = u ≡ ZR.1# ⊎ u ≡ ZR.- ZR.1#
-
-unit-odd : ∀ {u} → Unit1 u → Odd u
-unit-odd (inj₁ ≡.refl) = ≡.refl
-unit-odd (inj₂ ≡.refl) = ≡.refl
-
-unit≢0 : ∀ {u} → Unit1 u → u ≢ ZR.0#
-unit≢0 (inj₁ ≡.refl) ()
-unit≢0 (inj₂ ≡.refl) ()
 
 unit : lde v ≡ 0 →
        ∃ λ m → firstOdd W ≡ just m × Unit1 (W ! m) × (∀ y → y ≢ m → W ! y ≡ ZR.0#) × m ≤ p

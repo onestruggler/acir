@@ -16,20 +16,15 @@ open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 
 module Examples.Groups.Real-Clifford+CH-TwoLevel.Above {n : ℕ} where
 
-open import Data.Bool.Base using (true ; false)
-open import Data.Empty using (⊥ ; ⊥-elim)
-open import Data.Fin.Base as Fin using (Fin ; _<_ ; toℕ)
+open import Data.Fin.Base as Fin using (Fin ; _<_)
 import Data.Fin.Properties as FinP
 import Data.Nat.Properties as ℕP
 open import Data.Maybe.Base using (just)
-open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Sum.Base using (inj₁ ; inj₂)
 open import Data.Vec.Base as Vec using (Vec)
 import Data.Vec.Properties as VecP
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_ ; _≢_)
-open import Relation.Nullary using (Dec ; yes ; no)
 open import Relation.Nullary.Decidable using (recompute)
-import Relation.Binary.Reasoning.Setoid as SR
 
 open import Quantum.Synthesis.Matrix using (Matrix)
 
@@ -46,14 +41,14 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Pivot using (pivot ; pivot-char ; Beyond)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syllable
   using (syl ; top ; Beyond-actM ; eᶻ ; eᶻ-! ; eδ-refl ; eδ-≢ ; col𝕀≡)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Derived {n} using (Z-Z ; X-X ; H-H ; flip-X)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Derived {n} using (Z-Z ; X-X)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path ; path-ε)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.PathTools {n} using (via)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.States {n} using (path-normal ; syl-of ; ne-𝕀 ; ne-𝕀-at)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.EdgeTools {n} using (module Pair ; edge-H-pair)
 
 open PB (_===_ {n}) hiding (_===_)
 open PP (_===_ {n})
-open SR word-setoid
 
 private
   refl′ : ∀ {w v : Word (Gen n)} → w ≡ v → w ≈ v
@@ -148,11 +143,12 @@ module At (s : Matrix n n D) .(o : ColOrth s) (p : Fin n) (be : Beyond p s) wher
              (≡.trans (sylData-unit< (eᶻ c) fo (rc cd)) (≡.cong (λ z → X c d cd • Zτ c (negᶻ z)) (e-a c)))
 
   ----------------------------------------------------------------------
-  -- H_[c,d], given the edges X_[0,c]
+  -- H_[c,d], given the edges X_[0,c]: the column is a pair
 
   edge-H : (c d : Fin n) .(cd : c < d) → p < d →
            (∀ (x y : Fin n) .(xy : x < y) → Path [ X-gen x y xy ]ʷ s o) → Path [ H-gen c d cd ]ʷ s o
-  edge-H c d cd p<d xedge = by-c (toℕ c ℕP.≟ 0)
+  edge-H c d cd p<d xedge =
+    edge-H-pair s o c d cd pv (Pair.syl≡ w cd′ (inj₁ wc) (inj₂ wd) w≢ M pv col≡) (λ pos → xedge (zeroOf c) c (zeroOf-< c pos))
     where
     cd′ = rc cd
     c≢d : c ≢ d
@@ -165,44 +161,8 @@ module At (s : Matrix n n D) .(o : ColOrth s) (p : Fin n) (be : Beyond p s) wher
     wc = ≡.trans (set₂-a c d _ _ _) (≡.cong₂ ZR._+_ (e-≢ c≢d) (e-a d))
     wd : w ! d ≡ ZR.- ZR.1#
     wd = ≡.trans (set₂-b c d _ _ _ c≢d) (≡.cong₂ ZR._-_ (e-≢ c≢d) (e-a d))
-    w≢ : ∀ {x} → x ≢ c → x ≢ d → w ! x ≡ ZR.0#
-    w≢ {x} x≢c x≢d = ≡.trans (set₂-≢ c d _ _ _ x≢c x≢d)
-                       (≡.trans (VecP.lookup-map x (√2ᶻ ZR.*_) (eᶻ d)) (≡.cong (√2ᶻ ZR.*_) (e-≢ x≢d)))
-    min : Minimal 1 w
-    min = inj₂ (c , ≡.cong oddᶻ wc)
+    w≢ : ∀ x → x ≢ c → x ≢ d → w ! x ≡ ZR.0#
+    w≢ x x≢c x≢d = ≡.trans (set₂-≢ c d _ _ _ x≢c x≢d)
+                     (≡.trans (VecP.lookup-map x (√2ᶻ ZR.*_) (eᶻ d)) (≡.cong (√2ᶻ ZR.*_) (e-≢ x≢d)))
     pv : pivot M ≡ just d
-    pv = pivot-g (H-gen c d cd) d p<d FinP.≤-refl (ne-𝕀 M d 0 w col≡ min)
-    fo : firstOdd w ≡ just c
-    fo = firstOdd-char w (≡.cong oddᶻ wc) (λ x x<c → ≡.cong oddᶻ (w≢ (λ { ≡.refl → FinP.<-irrefl ≡.refl x<c })
-                                                              (λ { ≡.refl → FinP.<-irrefl ≡.refl (FinP.<-trans x<c cd′) })))
-    true≢false : true ≢ false
-    true≢false ()
-    nx : nextSame c w ≡ just d
-    nx = nextSame-char w cd′ (≡.cong oddᶻ wd , ≡.trans (≡.cong rbit wd) (≡.sym (≡.cong rbit wc)))
-           (λ x c<x x<d (ox , _) → true≢false (≡.trans (≡.sym ox)
-              (≡.cong oddᶻ (w≢ (λ { ≡.refl → FinP.<-irrefl ≡.refl c<x }) (λ { ≡.refl → FinP.<-irrefl ≡.refl x<d })))))
-    syl≡ : syl M ≡ pairSyl c d cd
-    syl≡ = ≡.trans (syl-of M pv 1 w col≡ min) (sylData-pair {p = d} 0 w fo nx cd′)
-    by-c : Dec (toℕ c ≡ 0) → Path [ H-gen c d cd ]ʷ s o
-    by-c (yes c0) =
-      via (H-gen c d cd) s o (syl M) ε (path-normal M (ColOrth-actMʷ [ H-gen c d cd ]ʷ o) pv)
-          (trans (cleft refl′ (≡.trans syl≡ (pairSyl-0 c d cd c0))) (H-H cd)) (path-ε s o)
-    by-c (no c≢0) =
-      via (H-gen c d cd) s o (syl M) (X z c 0<c) (path-normal M (ColOrth-actMʷ [ H-gen c d cd ]ʷ o) pv) rel (xedge z c 0<c)
-      where
-      pos : 0 ℕ.< toℕ c
-      pos = ℕP.n≢0⇒n>0 c≢0
-      z = zeroOf c
-      0<c : z < c
-      0<c = zeroOf-< c pos
-      0<d = ℕP.<-trans 0<c cd′
-      c4′ : H z d 0<d • X z c 0<c ≈ X z c 0<c • H c d cd
-      c4′ = flip-X 0<c (axiom (c4 0<c cd′))
-      rel : syl M • H c d cd ≈ X z c 0<c
-      rel = begin
-        syl M • H c d cd                                       ≈⟨ cleft refl′ (≡.trans syl≡ (pairSyl-s c d cd pos)) ⟩
-        (H z d 0<d • X z c 0<c) • H c d cd                     ≈⟨ cleft c4′ ⟩
-        (X z c 0<c • H c d cd) • H c d cd                      ≈⟨ assoc ⟩
-        X z c 0<c • (H c d cd • H c d cd)                      ≈⟨ cright H-H cd ⟩
-        X z c 0<c • ε                                          ≈⟨ right-unit ⟩
-        X z c 0<c                                              ∎
+    pv = pivot-g (H-gen c d cd) d p<d FinP.≤-refl (ne-𝕀 M d 0 w col≡ (Pair.min w cd′ (inj₁ wc) (inj₂ wd) w≢))
