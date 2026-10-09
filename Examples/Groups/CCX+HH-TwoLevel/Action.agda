@@ -77,7 +77,7 @@ rowD = lin 1# m1 m1 1#
 ------------------------------------------------------------------------
 -- Updating four entries
 
-set₄ : Fin n → Fin n → Fin n → Fin n → A → A → A → A → Vec A n → Vec A n
+set₄ : {B : Set} → Fin n → Fin n → Fin n → Fin n → B → B → B → B → Vec B n → Vec B n
 set₄ a b c d α β γ δ′ v = set₂ a b α β (set₂ c d γ δ′ v)
 
 -- Four distinct indices.
@@ -99,7 +99,7 @@ distinct₄ p q r = record
   { ab = <⇒≢ p ; ac = <⇒≢ (FinP.<-trans (rcp p) (rcp q)) ; ad = <⇒≢ (FinP.<-trans (FinP.<-trans (rcp p) (rcp q)) (rcp r))
   ; bc = <⇒≢ q ; bd = <⇒≢ (FinP.<-trans (rcp q) (rcp r)) ; cd = <⇒≢ r }
 
-module _ {a b c d : Fin n} (D : Distinct₄ a b c d) (α β γ δ′ : A) (v : Vec A n) where
+module _ {B : Set} {a b c d : Fin n} (D : Distinct₄ a b c d) (α β γ δ′ : B) (v : Vec B n) where
 
   open Distinct₄ D
 
