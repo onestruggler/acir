@@ -9,7 +9,8 @@
 -- N = K_[a,b,c,d] (-1)_[a]^t.  After N the level drops, and words of
 -- X's and (-1)'s on indices ≤ p keep a state below the level
 -- (States.mono-word-below), so a square whose bottom is such a word
--- closes (square).
+-- closes (square).  The entries of W before d other than a, b, c are
+-- even (ev).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -37,10 +38,12 @@ open import Data.Integer.Base using (ℤ)
 open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Vec.Base using (Vec)
 open import Relation.Nullary.Decidable using (recompute)
+open import Relation.Binary.Definitions using (Tri ; tri< ; tri≈ ; tri>)
+open import Data.Empty using (⊥-elim)
 
 open import Word.Base
 import Presentation.Base as PB
-open import Examples.Groups.CCX+HH-TwoLevel.Lde using (scV ; Minimal)
+open import Examples.Groups.CCX+HH-TwoLevel.Lde using (scV ; Minimal ; Even)
 open import Examples.Groups.CCX+HH-TwoLevel.Column
 open import Examples.Groups.CCX+HH-TwoLevel.Syntactics
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (distinct₄ ; Distinct₄ ; <⇒≢)
@@ -198,3 +201,38 @@ sandwich g N′ V₁ V₂ pN′ lN′ m₁ m₂ rel =
          (mono-word-level (V₁ ⁻¹) (mono-inv V₁ m₁) (actMʷ N′ (actM g s)) lN′ lB)
   l₁ : Low (level s) V₁ S₃
   l₁ = mono-word-below V₁ m₁ S₃ lg lB
+
+------------------------------------------------------------------------
+-- Even entries
+
+-- Before d, the entries of W other than a, b and c are even.
+ev : ∀ x → x < d → x ≢ a → x ≢ b → x ≢ c → Even (W ! x)
+ev x x<d xa xb xc = byA (FinP.<-cmp x a)
+  where
+  -- (Case analyses through helpers: with-abstraction would normalise
+  -- W, the numerator of the pivot column.)
+  byC : Tri (x < c) (x ≡ c) (c < x) → b < x → Even (W ! x)
+  byC (tri< x<c _ _) b<x = proj₂ (proj₂ (nextOdd-spec W nb)) x b<x x<c
+  byC (tri≈ _ e _) _ = ⊥-elim (xc e)
+  byC (tri> _ _ c<x) _ = proj₂ (proj₂ (nextOdd-spec W nc)) x c<x x<d
+  byB : Tri (x < b) (x ≡ b) (b < x) → a < x → Even (W ! x)
+  byB (tri< x<b _ _) a<x = proj₂ (proj₂ (nextOdd-spec W na)) x a<x x<b
+  byB (tri≈ _ e _) _ = ⊥-elim (xb e)
+  byB (tri> _ _ b<x) _ = byC (FinP.<-cmp x c) b<x
+  byA : Tri (x < a) (x ≡ a) (a < x) → Even (W ! x)
+  byA (tri< x<a _ _) = proj₂ (firstOdd-spec W fo) x x<a
+  byA (tri≈ _ e _) = ⊥-elim (xa e)
+  byA (tri> _ _ a<x) = byB (FinP.<-cmp x b) a<x
+
+-- Indices with the same number are equal.
+same : ∀ {x y : Fin n} {i} → toℕ x ≡ i → toℕ y ≡ i → x ≡ y
+same e e′ = FinP.toℕ-injective (≡.trans e (≡.sym e′))
+
+-- Indices with different numbers differ.
+apart : ∀ {x y : Fin n} → toℕ x ≢ toℕ y → x ≢ y
+apart ne e = ne (≡.cong toℕ e)
+
+-- K_[a,b,c,d] depends on the indices alone.
+K≡ : ∀ {a a′ b b′ c c′ d d′ : Fin n} .{q₁ q₂ q₃ r₁ r₂ r₃} → a ≡ a′ → b ≡ b′ → c ≡ c′ → d ≡ d′ →
+     K a b c d q₁ q₂ q₃ ≡ K a′ b′ c′ d′ r₁ r₂ r₃
+K≡ ≡.refl ≡.refl ≡.refl ≡.refl = ≡.refl

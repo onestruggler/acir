@@ -8,8 +8,7 @@
 -- 2K·W is KW at exponent K + 1.  If an entry of KW is odd the exponent
 -- rises and the edge goes up, against the hypothesis (up-odd).  If the
 -- column after K is W′ / 2ᴷ, its normal syllable N′ is a path out of
--- K·s that drops below the level of s (After).  The entries of W
--- before d other than a, b, c are even (ev).
+-- K·s that drops below the level of s (After).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -135,38 +134,3 @@ module After (W′ : Vec ℤ n) (eq : col gs p ≡ scV K′ W′) (mn : Minimal 
     lt : level (actMʷ (sylData p K′ W′) gs) <ₗ level gs
     lt = ≡.subst (λ w → level (actMʷ w gs) <ₗ level gs) (syl-g gK P3≤p W′ eq mn)
            (lt-step gs (ColOrth-actMʷ [ gK ]ʷ o) (pivot-g gK P3≤p W′ eq mn))
-
-------------------------------------------------------------------------
--- Even entries
-
--- Before d, the entries of W other than a, b and c are even.
-ev : ∀ x → x < d → x ≢ a → x ≢ b → x ≢ c → Even (W ! x)
-ev x x<d xa xb xc = byA (FinP.<-cmp x a)
-  where
-  -- (Case analyses through helpers: with-abstraction would normalise
-  -- W, the numerator of the pivot column.)
-  byC : Tri (x < c) (x ≡ c) (c < x) → b < x → Even (W ! x)
-  byC (tri< x<c _ _) b<x = proj₂ (proj₂ (nextOdd-spec W nb)) x b<x x<c
-  byC (tri≈ _ e _) _ = ⊥-elim (xc e)
-  byC (tri> _ _ c<x) _ = proj₂ (proj₂ (nextOdd-spec W nc)) x c<x x<d
-  byB : Tri (x < b) (x ≡ b) (b < x) → a < x → Even (W ! x)
-  byB (tri< x<b _ _) a<x = proj₂ (proj₂ (nextOdd-spec W na)) x a<x x<b
-  byB (tri≈ _ e _) _ = ⊥-elim (xb e)
-  byB (tri> _ _ b<x) _ = byC (FinP.<-cmp x c) b<x
-  byA : Tri (x < a) (x ≡ a) (a < x) → Even (W ! x)
-  byA (tri< x<a _ _) = proj₂ (firstOdd-spec W fo) x x<a
-  byA (tri≈ _ e _) = ⊥-elim (xa e)
-  byA (tri> _ _ a<x) = byB (FinP.<-cmp x b) a<x
-
--- Indices with the same number are equal.
-same : ∀ {x y : Fin n} {i} → toℕ x ≡ i → toℕ y ≡ i → x ≡ y
-same e e′ = FinP.toℕ-injective (≡.trans e (≡.sym e′))
-
--- Indices with different numbers differ.
-apart : ∀ {x y : Fin n} → toℕ x ≢ toℕ y → x ≢ y
-apart ne e = ne (≡.cong toℕ e)
-
--- K_[a,b,c,d] depends on the indices alone.
-K≡ : ∀ {a a′ b b′ c c′ d d′ : Fin n} .{q₁ q₂ q₃ r₁ r₂ r₃} → a ≡ a′ → b ≡ b′ → c ≡ c′ → d ≡ d′ →
-     K a b c d q₁ q₂ q₃ ≡ K a′ b′ c′ d′ r₁ r₂ r₃
-K≡ ≡.refl ≡.refl ≡.refl ≡.refl = ≡.refl
