@@ -8,15 +8,21 @@
 -- * k = 0: w = (-1)^τ e_m (Norm.lde0), and the syllable is (-1)_[p] if
 --   m = p (then τ = 1), X_[m,p] (-1)_[m]^τ if m < p (steps 8–10);
 -- * k > 0: with a < b < c < d the first four odd entries of w, the
---   syllable is K_[a,b,c,d] (-1)_[a]^τa (-1)_[b]^τb (-1)_[c]^τc
---   (-1)_[d]^τd, where τx says that wₓ ≡ 3 (mod 4) (steps 13–15).
+--   syllable is K_[a,b,c,d] (-1)_[a]^t, where t says that an odd
+--   number of wa, wb, wc, wd are ≡ 3 (mod 4).
+--
+-- For k > 0 this is a variant of steps 13–15, which negate every entry
+-- ≡ 3 (mod 4): one sign suffices for an even number of the entries to
+-- be ≡ 1 (mod 4), which is what makes K reduce them (Lemma A.2), and
+-- it spares the Main Lemma most of its sign cases.  The relations do
+-- not depend on the choice of the normal form.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Examples.Groups.CCX+HH-TwoLevel.Column where
 
-open import Data.Bool.Base using (Bool ; true ; false ; not ; _∧_)
+open import Data.Bool.Base using (Bool ; true ; false ; not ; _∧_ ; _xor_)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base as Fin using (Fin ; zero ; suc ; _<_ ; toℕ)
 import Data.Fin.Properties as FinP
@@ -76,10 +82,14 @@ unitSyl : (p m : Fin n) → Bool → Dec (m < p) → Word (Gen n)
 unitSyl p m t (yes m<p) = X m p m<p • Mτ m t
 unitSyl p m t (no  _)   = Mτ p t
 
--- k > 0: K_[a,b,c,d] with the signs that make the entries ≡ 1 (mod 4).
+-- Does an odd number of the four entries lie in the class 3 (mod 4)?
+σ₄ : Vec ℤ n → (a b c d : Fin n) → Bool
+σ₄ w a b c d = ((τ (w ! a) xor τ (w ! b)) xor τ (w ! c)) xor τ (w ! d)
+
+-- k > 0: K_[a,b,c,d] with the sign that makes an even number of the
+-- entries ≡ 1 (mod 4).
 quadSyl : (a b c d : Fin n) → .(a < b) → .(b < c) → .(c < d) → Vec ℤ n → Word (Gen n)
-quadSyl a b c d p q r w =
-  K a b c d p q r • Mτ a (τ (w ! a)) • Mτ b (τ (w ! b)) • Mτ c (τ (w ! c)) • Mτ d (τ (w ! d))
+quadSyl a b c d p q r w = K a b c d p q r • Mτ a (σ₄ w a b c d)
 
 private
   unitStep : Fin n → Vec ℤ n → Maybe (Fin n) → Word (Gen n)

@@ -11,7 +11,7 @@
 
 module Examples.Groups.CCX+HH-TwoLevel.Residue where
 
-open import Data.Bool.Base using (Bool ; true ; false ; not)
+open import Data.Bool.Base using (Bool ; true ; false ; not ; _xor_)
 import Data.Bool.Properties as BoolP
 open import Data.Empty using (⊥-elim)
 open import Data.Integer.Base as ℤ using (ℤ ; +_ ; -[1+_])
@@ -19,10 +19,10 @@ import Data.Integer.Properties as ℤP
 import Data.Integer.Solver as ℤSolver
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 import Data.Nat.Properties as ℕP
-open import Data.Product.Base using (∃ ; _,_)
+open import Data.Product.Base using (∃ ; _×_ ; _,_)
 open import Relation.Binary.PropositionalEquality
 
-open import Examples.Groups.CCX+HH-TwoLevel.Ring using (oddℕ ; oddℤ ; oddℤ-neg)
+open import Examples.Groups.CCX+HH-TwoLevel.Ring using (oddℕ ; oddℤ ; oddℤ-neg ; oddℤ-+ ; oddℤ-*)
 
 private
   module ℤS = ℤSolver.+-*-Solver
@@ -135,3 +135,23 @@ private
   not (τ (+ 1 ℤ.+ + 4 ℤ.* z)) ≡⟨ cong not (τ-one z) ⟩
   true                   ∎
   where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Odd integers as 1 + 2y
+
+-- An odd integer is 1 + 2y, with y odd iff it is ≡ 3 (mod 4).
+one2 : ∀ w → oddℤ w ≡ true → ∃ λ y → w ≡ + 1 ℤ.+ + 2 ℤ.* y × oddℤ y ≡ τ w
+one2 w o with τ w in eτ | one4 w o
+... | false | z , e = + 2 ℤ.* z , trans e (ℤS.solve 1 (λ z → con (+ 1) :+ con (+ 4) :* z := con (+ 1) :+ con (+ 2) :* (con (+ 2) :* z)) refl z)
+                                , oddℤ-* (+ 2) z
+... | true | z , e = ℤ.- (+ 1) ℤ.- + 2 ℤ.* z , (begin
+  w                                      ≡⟨ sym (ℤP.neg-involutive w) ⟩
+  ℤ.- (ℤ.- w)                            ≡⟨ cong ℤ.-_ e ⟩
+  ℤ.- (+ 1 ℤ.+ + 4 ℤ.* z)                ≡⟨ ℤS.solve 1 (λ z → :- (con (+ 1) :+ con (+ 4) :* z)
+                                                := con (+ 1) :+ con (+ 2) :* (:- con (+ 1) :- con (+ 2) :* z)) refl z ⟩
+  + 1 ℤ.+ + 2 ℤ.* (ℤ.- (+ 1) ℤ.- + 2 ℤ.* z) ∎) , oddness
+  where
+  open ≡-Reasoning
+  oddness : oddℤ (ℤ.- (+ 1) ℤ.- + 2 ℤ.* z) ≡ true
+  oddness = trans (oddℤ-+ (ℤ.- (+ 1)) (ℤ.- (+ 2 ℤ.* z)))
+                  (cong (true xor_) (trans (oddℤ-neg (+ 2 ℤ.* z)) (oddℤ-* (+ 2) z)))

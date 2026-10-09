@@ -9,16 +9,17 @@
 --   it into e_p, so the pivot drops.
 -- * If k > 0, the number of odd entries of 2ᵏ v is a multiple of 4
 --   (Norm.nodd-mod4), so there are four odd entries a < b < c < d;
---   with the signs, they are 1 + 4z (Residue.one4), and K_[a,b,c,d]
---   makes them even (Lemma 3.1): the number of odd entries drops by
---   four, or the exponent drops.
+--   they are 1 + 2y (Residue.one2), and the sign of the syllable makes
+--   the sum of the y's even, so that K_[a,b,c,d] makes them even
+--   (Lemma A.2): the number of odd entries drops by four, or the
+--   exponent drops.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Examples.Groups.CCX+HH-TwoLevel.Step where
 
-open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; _∨_ ; not ; if_then_else_)
+open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; _∨_ ; _xor_ ; not ; if_then_else_)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base as Fin using (Fin ; zero ; suc ; _<_ ; _≤_ ; toℕ)
 import Data.Fin.Properties as FinP
@@ -46,7 +47,7 @@ open import Examples.Groups.CCX+HH-TwoLevel.Lde
 open import Examples.Groups.Clifford+CS-TwoLevel.Search hiding (count-three)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Counting using (count-two ; count-three)
 open import Examples.Groups.CCX+HH-TwoLevel.Norm using (sq ; Σℕ ; nodd-mod4 ; lde0 ; unit-norm)
-open import Examples.Groups.CCX+HH-TwoLevel.Residue using (τ ; sgn ; one4)
+open import Examples.Groups.CCX+HH-TwoLevel.Residue using (τ ; sgn ; one2 ; τ-neg)
 open import Examples.Groups.CCX+HH-TwoLevel.Column
 open import Examples.Groups.CCX+HH-TwoLevel.ColumnAction
 open import Examples.Groups.CCX+HH-TwoLevel.Syntactics
@@ -214,71 +215,80 @@ sgnAt-off : ∀ (a : Fin n) t w {x} → x ≢ a → sgnAt a t w ! x ≡ w ! x
 sgnAt-off a true  w x≢a = set₁-≢ a (ℤ.- (w ! a)) w x≢a
 sgnAt-off a false w x≢a = refl
 
--- The numerator after K_[a,b,c,d] on entries uₓ = 1 + 4zₓ, back at the
--- same scale: the four entries become even.
-quadW : (u : Vec ℤ n) (a b c d : Fin n) (za zb zc zd : ℤ) → Vec ℤ n
-quadW u a b c d za zb zc zd =
-  set₄ a b c d (+ 2 ℤ.* (+ 1 ℤ.+ za ℤ.+ zb ℤ.+ zc ℤ.+ zd)) (+ 2 ℤ.* (za ℤ.- zb ℤ.+ zc ℤ.- zd))
-               (+ 2 ℤ.* (za ℤ.+ zb ℤ.- zc ℤ.- zd)) (+ 2 ℤ.* (za ℤ.- zb ℤ.- zc ℤ.+ zd)) u
+-- 1 + 2y.
+o2 : ℤ → ℤ
+o2 y = + 1 ℤ.+ + 2 ℤ.* y
 
--- 1 + 4z.
-o4 : ℤ → ℤ
-o4 z = + 1 ℤ.+ + 4 ℤ.* z
+-- With y_a + y_b + y_c + y_d = 2T: y_a.
+ya-of : (yb yc yd T : ℤ) → ℤ
+ya-of yb yc yd T = + 2 ℤ.* T ℤ.- yb ℤ.- yc ℤ.- yd
+
+-- The numerator after K_[a,b,c,d] on entries uₓ = 1 + 2yₓ with an even
+-- sum y_a + y_b + y_c + y_d = 2T, back at the same scale: the four
+-- entries become even.
+quadW : (u : Vec ℤ n) (a b c d : Fin n) (yb yc yd T : ℤ) → Vec ℤ n
+quadW u a b c d yb yc yd T =
+  set₄ a b c d (+ 2 ℤ.* (+ 1 ℤ.+ T)) (+ 2 ℤ.* (T ℤ.- yb ℤ.- yd))
+               (+ 2 ℤ.* (T ℤ.- yc ℤ.- yd)) (+ 2 ℤ.* (T ℤ.- yb ℤ.- yc)) u
 
 private
   open ℤS using (_:+_ ; _:*_ ; :-_ ; _:-_ ; _:=_ ; con)
 
-  idA : ∀ za zb zc zd → rowAᶻ (o4 za) (o4 zb) (o4 zc) (o4 zd) ≡ + 2 ℤ.* (+ 2 ℤ.* (+ 1 ℤ.+ za ℤ.+ zb ℤ.+ zc ℤ.+ zd))
-  idA = ℤS.solve 4 (λ za zb zc zd →
-    con (+ 1) :* (con (+ 1) :+ con (+ 4) :* za) :+ con (+ 1) :* (con (+ 1) :+ con (+ 4) :* zb)
-      :+ con (+ 1) :* (con (+ 1) :+ con (+ 4) :* zc) :+ con (+ 1) :* (con (+ 1) :+ con (+ 4) :* zd)
-    := con (+ 2) :* (con (+ 2) :* (con (+ 1) :+ za :+ zb :+ zc :+ zd))) refl
+  idA : ∀ yb yc yd T → rowAᶻ (o2 (ya-of yb yc yd T)) (o2 yb) (o2 yc) (o2 yd) ≡ + 2 ℤ.* (+ 2 ℤ.* (+ 1 ℤ.+ T))
+  idA = ℤS.solve 4 (λ yb yc yd T →
+    con (+ 1) :* (con (+ 1) :+ con (+ 2) :* (con (+ 2) :* T :- yb :- yc :- yd))
+      :+ con (+ 1) :* (con (+ 1) :+ con (+ 2) :* yb)
+      :+ con (+ 1) :* (con (+ 1) :+ con (+ 2) :* yc) :+ con (+ 1) :* (con (+ 1) :+ con (+ 2) :* yd)
+    := con (+ 2) :* (con (+ 2) :* (con (+ 1) :+ T))) refl
 
-  idB : ∀ za zb zc zd → rowBᶻ (o4 za) (o4 zb) (o4 zc) (o4 zd) ≡ + 2 ℤ.* (+ 2 ℤ.* (za ℤ.- zb ℤ.+ zc ℤ.- zd))
-  idB = ℤS.solve 4 (λ za zb zc zd →
-    con (+ 1) :* (con (+ 1) :+ con (+ 4) :* za) :+ con -[1+ 0 ] :* (con (+ 1) :+ con (+ 4) :* zb)
-      :+ con (+ 1) :* (con (+ 1) :+ con (+ 4) :* zc) :+ con -[1+ 0 ] :* (con (+ 1) :+ con (+ 4) :* zd)
-    := con (+ 2) :* (con (+ 2) :* (za :- zb :+ zc :- zd))) refl
+  idB : ∀ yb yc yd T → rowBᶻ (o2 (ya-of yb yc yd T)) (o2 yb) (o2 yc) (o2 yd) ≡ + 2 ℤ.* (+ 2 ℤ.* (T ℤ.- yb ℤ.- yd))
+  idB = ℤS.solve 4 (λ yb yc yd T →
+    con (+ 1) :* (con (+ 1) :+ con (+ 2) :* (con (+ 2) :* T :- yb :- yc :- yd))
+      :+ con -[1+ 0 ] :* (con (+ 1) :+ con (+ 2) :* yb)
+      :+ con (+ 1) :* (con (+ 1) :+ con (+ 2) :* yc) :+ con -[1+ 0 ] :* (con (+ 1) :+ con (+ 2) :* yd)
+    := con (+ 2) :* (con (+ 2) :* (T :- yb :- yd))) refl
 
-  idC : ∀ za zb zc zd → rowCᶻ (o4 za) (o4 zb) (o4 zc) (o4 zd) ≡ + 2 ℤ.* (+ 2 ℤ.* (za ℤ.+ zb ℤ.- zc ℤ.- zd))
-  idC = ℤS.solve 4 (λ za zb zc zd →
-    con (+ 1) :* (con (+ 1) :+ con (+ 4) :* za) :+ con (+ 1) :* (con (+ 1) :+ con (+ 4) :* zb)
-      :+ con -[1+ 0 ] :* (con (+ 1) :+ con (+ 4) :* zc) :+ con -[1+ 0 ] :* (con (+ 1) :+ con (+ 4) :* zd)
-    := con (+ 2) :* (con (+ 2) :* (za :+ zb :- zc :- zd))) refl
+  idC : ∀ yb yc yd T → rowCᶻ (o2 (ya-of yb yc yd T)) (o2 yb) (o2 yc) (o2 yd) ≡ + 2 ℤ.* (+ 2 ℤ.* (T ℤ.- yc ℤ.- yd))
+  idC = ℤS.solve 4 (λ yb yc yd T →
+    con (+ 1) :* (con (+ 1) :+ con (+ 2) :* (con (+ 2) :* T :- yb :- yc :- yd))
+      :+ con (+ 1) :* (con (+ 1) :+ con (+ 2) :* yb)
+      :+ con -[1+ 0 ] :* (con (+ 1) :+ con (+ 2) :* yc) :+ con -[1+ 0 ] :* (con (+ 1) :+ con (+ 2) :* yd)
+    := con (+ 2) :* (con (+ 2) :* (T :- yc :- yd))) refl
 
-  idD : ∀ za zb zc zd → rowDᶻ (o4 za) (o4 zb) (o4 zc) (o4 zd) ≡ + 2 ℤ.* (+ 2 ℤ.* (za ℤ.- zb ℤ.- zc ℤ.+ zd))
-  idD = ℤS.solve 4 (λ za zb zc zd →
-    con (+ 1) :* (con (+ 1) :+ con (+ 4) :* za) :+ con -[1+ 0 ] :* (con (+ 1) :+ con (+ 4) :* zb)
-      :+ con -[1+ 0 ] :* (con (+ 1) :+ con (+ 4) :* zc) :+ con (+ 1) :* (con (+ 1) :+ con (+ 4) :* zd)
-    := con (+ 2) :* (con (+ 2) :* (za :- zb :- zc :+ zd))) refl
+  idD : ∀ yb yc yd T → rowDᶻ (o2 (ya-of yb yc yd T)) (o2 yb) (o2 yc) (o2 yd) ≡ + 2 ℤ.* (+ 2 ℤ.* (T ℤ.- yb ℤ.- yc))
+  idD = ℤS.solve 4 (λ yb yc yd T →
+    con (+ 1) :* (con (+ 1) :+ con (+ 2) :* (con (+ 2) :* T :- yb :- yc :- yd))
+      :+ con -[1+ 0 ] :* (con (+ 1) :+ con (+ 2) :* yb)
+      :+ con -[1+ 0 ] :* (con (+ 1) :+ con (+ 2) :* yc) :+ con (+ 1) :* (con (+ 1) :+ con (+ 2) :* yd)
+    := con (+ 2) :* (con (+ 2) :* (T :- yb :- yc))) refl
 
-K-quad : ∀ k (u : Vec ℤ n) (a b c d : Fin n) .(p : a < b) .(q : b < c) .(r : c < d) (za zb zc zd : ℤ) →
-         u ! a ≡ o4 za → u ! b ≡ o4 zb → u ! c ≡ o4 zc → u ! d ≡ o4 zd →
-         actV (K-gen a b c d p q r) (scV k u) ≡ scV k (quadW u a b c d za zb zc zd)
-K-quad k u a b c d p q r za zb zc zd ea eb ec ed =
+K-quad : ∀ k (u : Vec ℤ n) (a b c d : Fin n) .(p : a < b) .(q : b < c) .(r : c < d) (yb yc yd T : ℤ) →
+         u ! a ≡ o2 (ya-of yb yc yd T) → u ! b ≡ o2 yb → u ! c ≡ o2 yc → u ! d ≡ o2 yd →
+         actV (K-gen a b c d p q r) (scV k u) ≡ scV k (quadW u a b c d yb yc yd T)
+K-quad k u a b c d p q r yb yc yd T ea eb ec ed =
   trans (actV-K a b c d p q r k u) (trans (cong (scV (suc k)) Kq) (scV-2map k W))
   where
   open ≡-Reasoning
-  W = quadW u a b c d za zb zc zd
+  W = quadW u a b c d yb yc yd T
   D₄ = distinct₄ p q r
   du = Vec.map (+ 2 ℤ.*_) u
   dW = Vec.map (+ 2 ℤ.*_) W
-  ents : ∀ (f : ℤ → ℤ → ℤ → ℤ → ℤ) → f (u ! a) (u ! b) (u ! c) (u ! d) ≡ f (o4 za) (o4 zb) (o4 zc) (o4 zd)
+  ents : ∀ (f : ℤ → ℤ → ℤ → ℤ → ℤ) → f (u ! a) (u ! b) (u ! c) (u ! d) ≡ f (o2 (ya-of yb yc yd T)) (o2 yb) (o2 yc) (o2 yd)
   ents f = cong₄ f ea eb ec ed
   twice : ∀ x → + 2 ℤ.* (W ! x) ≡ dW ! x
   twice x = sym (VecP.lookup-map x (+ 2 ℤ.*_) W)
   at : ∀ x → Dec (x ≡ a) → Dec (x ≡ b) → Dec (x ≡ c) → Dec (x ≡ d) → Kᶻ a b c d u ! x ≡ dW ! x
   at x (yes refl) _ _ _ =
-    trans (set₄-a D₄ _ _ _ _ du) (trans (ents rowAᶻ) (trans (idA za zb zc zd)
+    trans (set₄-a D₄ _ _ _ _ du) (trans (ents rowAᶻ) (trans (idA yb yc yd T)
       (trans (cong (+ 2 ℤ.*_) (sym (set₄-a D₄ _ _ _ _ u))) (twice x))))
   at x (no _) (yes refl) _ _ =
-    trans (set₄-b D₄ _ _ _ _ du) (trans (ents rowBᶻ) (trans (idB za zb zc zd)
+    trans (set₄-b D₄ _ _ _ _ du) (trans (ents rowBᶻ) (trans (idB yb yc yd T)
       (trans (cong (+ 2 ℤ.*_) (sym (set₄-b D₄ _ _ _ _ u))) (twice x))))
   at x (no _) (no _) (yes refl) _ =
-    trans (set₄-c D₄ _ _ _ _ du) (trans (ents rowCᶻ) (trans (idC za zb zc zd)
+    trans (set₄-c D₄ _ _ _ _ du) (trans (ents rowCᶻ) (trans (idC yb yc yd T)
       (trans (cong (+ 2 ℤ.*_) (sym (set₄-c D₄ _ _ _ _ u))) (twice x))))
   at x (no _) (no _) (no _) (yes refl) =
-    trans (set₄-d D₄ _ _ _ _ du) (trans (ents rowDᶻ) (trans (idD za zb zc zd)
+    trans (set₄-d D₄ _ _ _ _ du) (trans (ents rowDᶻ) (trans (idD yb yc yd T)
       (trans (cong (+ 2 ℤ.*_) (sym (set₄-d D₄ _ _ _ _ u))) (twice x))))
   at x (no xa) (no xb) (no xc) (no xd) =
     trans (set₄-≢ D₄ _ _ _ _ du xa xb xc xd) (trans (VecP.lookup-map x (+ 2 ℤ.*_) u)
@@ -327,6 +337,47 @@ count-drop₄ {n} P Q {a} {b} {c} {d} D₄ Pa Pb Pc Pd Qa Qb Qc Qd agree =
       (λ xb → trans (off x xa xb) (agree x xa xb xc xd)))
 
 ------------------------------------------------------------------------
+-- Signs and residues
+
+private
+  sgn-odd : ∀ t x → oddℤ (sgn t x) ≡ oddℤ x
+  sgn-odd true  x = oddℤ-neg x
+  sgn-odd false x = refl
+
+  τ-sgn : ∀ t x → oddℤ x ≡ true → τ (sgn t x) ≡ t xor τ x
+  τ-sgn true  x o = τ-neg x o
+  τ-sgn false x o = refl
+
+  xor-twice : ∀ p q r s → ((((((p xor q) xor r) xor s) xor p) xor q) xor r) xor s ≡ false
+  xor-twice true  true  true  true  = refl
+  xor-twice true  true  true  false = refl
+  xor-twice true  true  false true  = refl
+  xor-twice true  true  false false = refl
+  xor-twice true  false true  true  = refl
+  xor-twice true  false true  false = refl
+  xor-twice true  false false true  = refl
+  xor-twice true  false false false = refl
+  xor-twice false true  true  true  = refl
+  xor-twice false true  true  false = refl
+  xor-twice false true  false true  = refl
+  xor-twice false true  false false = refl
+  xor-twice false false true  true  = refl
+  xor-twice false false true  false = refl
+  xor-twice false false false true  = refl
+  xor-twice false false false false = refl
+
+  module ℤS′ where
+    open ℤS using (_:+_ ; _:*_ ; _:-_ ; _:=_ ; con)
+    -- From ya + yb + yc + yd = T + T: ya = 2T - yb - yc - yd.
+    solve-sum : ∀ ya yb yc yd T → ((ya ℤ.+ yb) ℤ.+ yc) ℤ.+ yd ≡ T ℤ.+ T → ya ≡ ya-of yb yc yd T
+    solve-sum ya yb yc yd T e = begin
+      ya                                               ≡⟨ ℤS.solve 4 (λ ya yb yc yd → ya := (((ya :+ yb) :+ yc) :+ yd) :- yb :- yc :- yd) refl ya yb yc yd ⟩
+      (((ya ℤ.+ yb) ℤ.+ yc) ℤ.+ yd) ℤ.- yb ℤ.- yc ℤ.- yd ≡⟨ cong (λ z → z ℤ.- yb ℤ.- yc ℤ.- yd) e ⟩
+      (T ℤ.+ T) ℤ.- yb ℤ.- yc ℤ.- yd                   ≡⟨ ℤS.solve 4 (λ T yb yc yd → (T :+ T) :- yb :- yc :- yd := con (+ 2) :* T :- yb :- yc :- yd) refl T yb yc yd ⟩
+      ya-of yb yc yd T                                 ∎
+      where open ≡-Reasoning
+
+------------------------------------------------------------------------
 -- The syllable of four odd entries
 
 private
@@ -351,62 +402,68 @@ quad-core {n} {p} k′ w {a} {b} {c} {d} fo na nb nc d≤p = W′ , within , act
   ob = proj₁ (proj₂ (nextOdd-spec w na))
   oc = proj₁ (proj₂ (nextOdd-spec w nb))
   od = proj₁ (proj₂ (nextOdd-spec w nc))
-  ta = τ (w ! a)
-  tb = τ (w ! b)
-  tc = τ (w ! c)
-  td = τ (w ! d)
-  u = sgnAt a ta (sgnAt b tb (sgnAt c tc (sgnAt d td w)))
-  za = proj₁ (one4 (w ! a) oa)
-  zb = proj₁ (one4 (w ! b) ob)
-  zc = proj₁ (one4 (w ! c) oc)
-  zd = proj₁ (one4 (w ! d) od)
+  t = σ₄ w a b c d
+  u = sgnAt a t w
   sym≢ : ∀ {x y : Fin n} → x ≢ y → y ≢ x
   sym≢ ne e = ne (sym e)
-  ua : u ! a ≡ o4 za
-  ua = trans (sgnAt-at a ta _) (trans (cong (sgn ta) (trans (sgnAt-off b tb _ ab) (trans (sgnAt-off c tc _ ac)
-         (sgnAt-off d td w ad)))) (proj₂ (one4 (w ! a) oa)))
-  ub : u ! b ≡ o4 zb
-  ub = trans (sgnAt-off a ta _ (sym≢ ab)) (trans (sgnAt-at b tb _) (trans (cong (sgn tb) (trans (sgnAt-off c tc _ bc)
-         (sgnAt-off d td w bd))) (proj₂ (one4 (w ! b) ob))))
-  uc : u ! c ≡ o4 zc
-  uc = trans (sgnAt-off a ta _ (sym≢ ac)) (trans (sgnAt-off b tb _ (sym≢ bc)) (trans (sgnAt-at c tc _)
-         (trans (cong (sgn tc) (sgnAt-off d td w cd)) (proj₂ (one4 (w ! c) oc)))))
-  ud : u ! d ≡ o4 zd
-  ud = trans (sgnAt-off a ta _ (sym≢ ad)) (trans (sgnAt-off b tb _ (sym≢ bd)) (trans (sgnAt-off c tc _ (sym≢ cd))
-         (trans (sgnAt-at d td w) (proj₂ (one4 (w ! d) od)))))
-  W′ = quadW u a b c d za zb zc zd
+  ua≡ : u ! a ≡ sgn t (w ! a)
+  ua≡ = sgnAt-at a t w
+  oua : oddℤ (u ! a) ≡ true
+  oua = trans (cong oddℤ ua≡) (trans (sgn-odd t (w ! a)) oa)
+  -- The entries as 1 + 2y.
+  Ya = one2 (u ! a) oua
+  Yb = one2 (w ! b) ob
+  Yc = one2 (w ! c) oc
+  Yd = one2 (w ! d) od
+  ya = proj₁ Ya
+  yb = proj₁ Yb
+  yc = proj₁ Yc
+  yd = proj₁ Yd
+  -- The sign makes the sum of the y's even.
+  par : oddℤ (((ya ℤ.+ yb) ℤ.+ yc) ℤ.+ yd) ≡ false
+  par = begin
+    oddℤ (((ya ℤ.+ yb) ℤ.+ yc) ℤ.+ yd)
+      ≡⟨ trans (oddℤ-+ ((ya ℤ.+ yb) ℤ.+ yc) yd) (cong (_xor oddℤ yd) (trans (oddℤ-+ (ya ℤ.+ yb) yc) (cong (_xor oddℤ yc) (oddℤ-+ ya yb)))) ⟩
+    ((oddℤ ya xor oddℤ yb) xor oddℤ yc) xor oddℤ yd
+      ≡⟨ cong₄ (λ p q r s → ((p xor q) xor r) xor s) (proj₂ (proj₂ Ya)) (proj₂ (proj₂ Yb)) (proj₂ (proj₂ Yc)) (proj₂ (proj₂ Yd)) ⟩
+    ((τ (u ! a) xor τ (w ! b)) xor τ (w ! c)) xor τ (w ! d)
+      ≡⟨ cong (λ x → ((x xor τ (w ! b)) xor τ (w ! c)) xor τ (w ! d)) (trans (cong τ ua≡) (τ-sgn t (w ! a) oa)) ⟩
+    (((t xor τ (w ! a)) xor τ (w ! b)) xor τ (w ! c)) xor τ (w ! d)
+      ≡⟨ xor-twice (τ (w ! a)) (τ (w ! b)) (τ (w ! c)) (τ (w ! d)) ⟩
+    false ∎
+  H = evenℤ-half (((ya ℤ.+ yb) ℤ.+ yc) ℤ.+ yd) par
+  T = proj₁ H
+  ya≡ : ya ≡ ya-of yb yc yd T
+  ya≡ = ℤS′.solve-sum ya yb yc yd T (proj₂ H)
+  ua : u ! a ≡ o2 (ya-of yb yc yd T)
+  ua = trans (proj₁ (proj₂ Ya)) (cong o2 ya≡)
+  ub : u ! b ≡ o2 yb
+  ub = trans (sgnAt-off a t w (sym≢ ab)) (proj₁ (proj₂ Yb))
+  uc : u ! c ≡ o2 yc
+  uc = trans (sgnAt-off a t w (sym≢ ac)) (proj₁ (proj₂ Yc))
+  ud : u ! d ≡ o2 yd
+  ud = trans (sgnAt-off a t w (sym≢ ad)) (proj₁ (proj₂ Yd))
+  W′ = quadW u a b c d yb yc yd T
   syl≡ : sylData p (suc k′) w ≡ quadSyl a b c d a<b b<c c<d w
   syl≡ = sylData-quad {p = p} k′ w fo na nb nc a<b b<c c<d
   a≤p = ℕP.<⇒≤ (FinP.<-trans a<b (FinP.<-trans b<c (ℕP.<-≤-trans c<d d≤p)))
-  b≤p = ℕP.<⇒≤ (FinP.<-trans b<c (ℕP.<-≤-trans c<d d≤p))
-  c≤p = ℕP.<⇒≤ (ℕP.<-≤-trans c<d d≤p)
   within : Within p (sylData p (suc k′) w)
-  within = subst (Within p) (sym syl≡)
-    (d≤p , Within-Mτ ta a≤p , Within-Mτ tb b≤p , Within-Mτ tc c≤p , Within-Mτ td d≤p)
+  within = subst (Within p) (sym syl≡) (d≤p , Within-Mτ t a≤p)
   K′ = suc k′
   act : actVʷ (sylData p (suc k′) w) (scV (suc k′) w) ≡ scV (suc k′) W′
   act = subst (λ S → actVʷ S (scV K′ w) ≡ scV K′ W′) (sym syl≡) (begin
-    actV (K-gen a b c d a<b b<c c<d) (actVʷ (Mτ a ta) (actVʷ (Mτ b tb) (actVʷ (Mτ c tc) (actVʷ (Mτ d td) (scV K′ w)))))
-      ≡⟨ cong-actVʷ (K a b c d a<b b<c c<d • Mτ a ta • Mτ b tb • Mτ c tc) _ _ (Mτ-action d td K′ w) ⟩
-    actV (K-gen a b c d a<b b<c c<d) (actVʷ (Mτ a ta) (actVʷ (Mτ b tb) (actVʷ (Mτ c tc) (scV K′ (sgnAt d td w)))))
-      ≡⟨ cong-actVʷ (K a b c d a<b b<c c<d • Mτ a ta • Mτ b tb) _ _ (Mτ-action c tc K′ _) ⟩
-    actV (K-gen a b c d a<b b<c c<d) (actVʷ (Mτ a ta) (actVʷ (Mτ b tb) (scV K′ (sgnAt c tc (sgnAt d td w)))))
-      ≡⟨ cong-actVʷ (K a b c d a<b b<c c<d • Mτ a ta) _ _ (Mτ-action b tb K′ _) ⟩
-    actV (K-gen a b c d a<b b<c c<d) (actVʷ (Mτ a ta) (scV K′ (sgnAt b tb (sgnAt c tc (sgnAt d td w)))))
-      ≡⟨ cong-actVʷ (K a b c d a<b b<c c<d) _ _ (Mτ-action a ta K′ _) ⟩
+    actV (K-gen a b c d a<b b<c c<d) (actVʷ (Mτ a t) (scV K′ w))
+      ≡⟨ cong-actVʷ (K a b c d a<b b<c c<d) _ _ (Mτ-action a t K′ w) ⟩
     actV (K-gen a b c d a<b b<c c<d) (scV K′ u)
-      ≡⟨ K-quad K′ u a b c d a<b b<c c<d za zb zc zd ua ub uc ud ⟩
+      ≡⟨ K-quad K′ u a b c d a<b b<c c<d yb yc yd T ua ub uc ud ⟩
     scV K′ W′ ∎)
-  even-at : ∀ y → Even (+ 2 ℤ.* y)
-  even-at = even-2*
   cnt : nodd w ≡ 4 ℕ.+ nodd W′
   cnt = count-drop₄ (λ x → oddℤ (w ! x)) (λ x → oddℤ (W′ ! x)) D₄ oa ob oc od
-    (trans (cong oddℤ (set₄-a D₄ _ _ _ _ u)) (even-at (+ 1 ℤ.+ za ℤ.+ zb ℤ.+ zc ℤ.+ zd)))
-    (trans (cong oddℤ (set₄-b D₄ _ _ _ _ u)) (even-at (za ℤ.- zb ℤ.+ zc ℤ.- zd)))
-    (trans (cong oddℤ (set₄-c D₄ _ _ _ _ u)) (even-at (za ℤ.+ zb ℤ.- zc ℤ.- zd)))
-    (trans (cong oddℤ (set₄-d D₄ _ _ _ _ u)) (even-at (za ℤ.- zb ℤ.- zc ℤ.+ zd)))
-    (λ x xa xb xc xd → sym (cong oddℤ (trans (set₄-≢ D₄ _ _ _ _ u xa xb xc xd)
-       (trans (sgnAt-off a ta _ xa) (trans (sgnAt-off b tb _ xb) (trans (sgnAt-off c tc _ xc) (sgnAt-off d td w xd)))))))
+    (trans (cong oddℤ (set₄-a D₄ _ _ _ _ u)) (even-2* (+ 1 ℤ.+ T)))
+    (trans (cong oddℤ (set₄-b D₄ _ _ _ _ u)) (even-2* (T ℤ.- yb ℤ.- yd)))
+    (trans (cong oddℤ (set₄-c D₄ _ _ _ _ u)) (even-2* (T ℤ.- yc ℤ.- yd)))
+    (trans (cong oddℤ (set₄-d D₄ _ _ _ _ u)) (even-2* (T ℤ.- yb ℤ.- yc)))
+    (λ x xa xb xc xd → sym (cong oddℤ (trans (set₄-≢ D₄ _ _ _ _ u xa xb xc xd) (sgnAt-off a t w xa))))
 
 ------------------------------------------------------------------------
 -- k > 0: four odd entries exist
