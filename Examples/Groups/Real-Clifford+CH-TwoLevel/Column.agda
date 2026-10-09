@@ -200,3 +200,29 @@ nextSame-nothing w {j} eq x j<x = SameAfter-false w j x (first-nothing (SameAfte
 
 firstOdd-cong : (w w′ : Vec Z n) → (∀ x → oddᶻ (w ! x) ≡ oddᶻ (w′ ! x)) → firstOdd w ≡ firstOdd w′
 firstOdd-cong w w′ par = first-cong (λ x → oddᶻ (w ! x)) (λ x → oddᶻ (w′ ! x)) par
+
+------------------------------------------------------------------------
+-- The pair syllable, without matching on the index
+
+-- The index 0 of the type of a given index.
+zeroOf : Fin n → Fin n
+zeroOf zero    = zero
+zeroOf (suc _) = zero
+
+zeroOf-0 : (a : Fin n) → toℕ (zeroOf a) ≡ 0
+zeroOf-0 zero    = refl
+zeroOf-0 (suc _) = refl
+
+zeroOf-< : (a : Fin n) → 0 ℕ.< toℕ a → zeroOf a < a
+zeroOf-< (suc a) _ = ℕ.s≤s ℕ.z≤n
+
+zeroOf-≤ : (a b : Fin n) → zeroOf a Fin.≤ b
+zeroOf-≤ zero b = ℕ.z≤n
+zeroOf-≤ (suc a) b = ℕ.z≤n
+
+pairSyl-0 : (i₁ i₂ : Fin n) .(lt : i₁ < i₂) → toℕ i₁ ≡ 0 → pairSyl i₁ i₂ lt ≡ H i₁ i₂ lt
+pairSyl-0 zero i₂ lt _ = refl
+
+pairSyl-s : (i₁ i₂ : Fin n) .(lt : i₁ < i₂) (pos : 0 ℕ.< toℕ i₁) →
+            pairSyl i₁ i₂ lt ≡ H (zeroOf i₁) i₂ (ℕP.<-trans (zeroOf-< i₁ pos) lt) • X (zeroOf i₁) i₁ (zeroOf-< i₁ pos)
+pairSyl-s (suc i₁) i₂ lt pos = refl
