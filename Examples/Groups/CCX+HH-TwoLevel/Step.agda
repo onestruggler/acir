@@ -157,10 +157,6 @@ private
   unit≢0 (inj₁ refl) ()
   unit≢0 (inj₂ refl) ()
 
-  unit-odd : ∀ {u} → (u ≡ + 1 ⊎ u ≡ -[1+ 0 ]) → Odd u
-  unit-odd (inj₁ refl) = refl
-  unit-odd (inj₂ refl) = refl
-
   Within-Mτ : ∀ {p a : Fin n} t → a ≤ p → Within p (Mτ a t)
   Within-Mτ true  a≤p = a≤p
   Within-Mτ false a≤p = tt
@@ -501,21 +497,29 @@ private
   3%4 : 3 % 4 ≢ 0
   3%4 ()
 
-quad-step : ∀ {p : Fin n} k′ (w : Vec ℤ n) → Minimal (suc k′) w →
-            Σℕ (λ x → sq (w ! x)) ≡ 4 ℕ.^ suc k′ →
-            (∀ {x} → Odd (w ! x) → x ≤ p) → Goal p k′ w
-quad-step k′ w (inj₁ ()) norm ≤p
-quad-step {n} {p} k′ w (inj₂ (x , ox)) norm ≤p = withA (firstOdd w) refl
+-- The first four odd entries.
+record Quad (w : Vec ℤ n) : Set where
+  constructor quad⟨_,_,_,_⟩
+  field
+    {a b c d} : Fin n
+    fo : firstOdd w ≡ just a
+    na : nextOdd a w ≡ just b
+    nb : nextOdd b w ≡ just c
+    nc : nextOdd c w ≡ just d
+
+quad-exists : ∀ k′ (w : Vec ℤ n) → Minimal (suc k′) w → Σℕ (λ x → sq (w ! x)) ≡ 4 ℕ.^ suc k′ → Quad w
+quad-exists k′ w (inj₁ ()) norm
+quad-exists {n} k′ w (inj₂ (x , ox)) norm = withA (firstOdd w) refl
   where
   m4 = nodd-mod4 k′ w norm
   P : Fin n → Bool
   P y = oddℤ (w ! y)
-  withA : (r : Maybe (Fin n)) → firstOdd w ≡ r → Goal p k′ w
+  withA : (r : Maybe (Fin n)) → firstOdd w ≡ r → Quad w
   withA nothing fo = ⊥-elim (Odd⇒¬Even {w ! x} ox (firstOdd-nothing w fo x))
   withA (just a) fo = withB (nextOdd a w) refl
     where
     oa = proj₁ (firstOdd-spec w fo)
-    withB : (r : Maybe (Fin n)) → nextOdd a w ≡ r → Goal p k′ w
+    withB : (r : Maybe (Fin n)) → nextOdd a w ≡ r → Quad w
     withB nothing na = ⊥-elim (1%4 (trans (cong (_% 4) (sym one)) m4))
       where
       one : count P ≡ 1
@@ -530,7 +534,7 @@ quad-step {n} {p} k′ w (inj₂ (x , ox)) norm ≤p = withA (firstOdd w) refl
       where
       ab = proj₁ (nextOdd-spec w na)
       ob = proj₁ (proj₂ (nextOdd-spec w na))
-      withC : (r : Maybe (Fin n)) → nextOdd b w ≡ r → Goal p k′ w
+      withC : (r : Maybe (Fin n)) → nextOdd b w ≡ r → Quad w
       withC nothing nb = ⊥-elim (2%4 (trans (cong (_% 4) (sym two)) m4))
         where
         two : count P ≡ 2
@@ -539,12 +543,18 @@ quad-step {n} {p} k′ w (inj₂ (x , ox)) norm ≤p = withA (firstOdd w) refl
         where
         bc = proj₁ (nextOdd-spec w nb)
         oc = proj₁ (proj₂ (nextOdd-spec w nb))
-        withD : (r : Maybe (Fin n)) → nextOdd c w ≡ r → Goal p k′ w
+        withD : (r : Maybe (Fin n)) → nextOdd c w ≡ r → Quad w
         withD nothing nc = ⊥-elim (3%4 (trans (cong (_% 4) (sym three)) m4))
           where
           three : count P ≡ 3
           three = count-three P a b c (<⇒≢ ab) (<⇒≢ (FinP.<-trans ab bc)) (<⇒≢ bc) oa ob oc (inside₃ w fo na nb nc)
-        withD (just d) nc = quad-core k′ w fo na nb nc (≤p (proj₁ (proj₂ (nextOdd-spec w nc))))
+        withD (just d) nc = quad⟨ fo , na , nb , nc ⟩
+
+quad-step : ∀ {p : Fin n} k′ (w : Vec ℤ n) → Minimal (suc k′) w →
+            Σℕ (λ x → sq (w ! x)) ≡ 4 ℕ.^ suc k′ →
+            (∀ {x} → Odd (w ! x) → x ≤ p) → Goal p k′ w
+quad-step k′ w min norm ≤p with quad-exists k′ w min norm
+... | quad⟨ fo , na , nb , nc ⟩ = quad-core k′ w fo na nb nc (≤p (proj₁ (proj₂ (nextOdd-spec w nc))))
 
 ------------------------------------------------------------------------
 -- One step lowers the level

@@ -30,6 +30,7 @@ open import Data.Integer.Base as ℤ using (ℤ ; +_ ; -[1+_])
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Vec.Base as Vec using (Vec)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (¬_ ; Dec ; yes ; no)
@@ -63,6 +64,16 @@ OddAfter j w x = does (j FinP.<? x) ∧ oddℤ (w ! x)
 
 nextOdd : Fin n → Vec ℤ n → Maybe (Fin n)
 nextOdd j w = first (OddAfter j w)
+
+------------------------------------------------------------------------
+-- Units
+
+Unit1 : ℤ → Set
+Unit1 u = u ≡ + 1 ⊎ u ≡ -[1+ 0 ]
+
+unit-odd : ∀ {u} → Unit1 u → Odd u
+unit-odd (inj₁ refl) = refl
+unit-odd (inj₂ refl) = refl
 
 ------------------------------------------------------------------------
 -- The syllables

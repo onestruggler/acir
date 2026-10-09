@@ -12,6 +12,7 @@
 
 module Examples.Groups.CCX+HH-TwoLevel.ColumnAction where
 
+open import Data.Bool.Base using (Bool ; true ; false ; _xor_ ; _∧_)
 open import Data.Fin.Base using (Fin ; _<_)
 import Data.Fin.Properties as FinP
 open import Data.Integer.Base as ℤ using (ℤ ; +_ ; -[1+_])
@@ -207,3 +208,31 @@ actV-K a b c d p q r k w = vec-ext λ x → at x (x FinP.≟ a) (x FinP.≟ b) (
     sc (suc k) (dw ! x)              ≡⟨ cong (sc (suc k)) (sym (set₄-≢ D₄ _ _ _ _ dw xa xb xc xd)) ⟩
     sc (suc k) (W ! x)               ≡⟨ sym (W! x) ⟩
     scV (suc k) W ! x                ∎
+
+------------------------------------------------------------------------
+-- Parities of the rows of 2K
+
+-- Every row of 2K has the parity of the sum of the four entries.
+odd-lin : ∀ s₁ s₂ s₃ s₄ x₁ x₂ x₃ x₄ → oddℤ s₁ ≡ true → oddℤ s₂ ≡ true → oddℤ s₃ ≡ true → oddℤ s₄ ≡ true →
+          oddℤ (linℤ s₁ s₂ s₃ s₄ x₁ x₂ x₃ x₄) ≡ ((oddℤ x₁ xor oddℤ x₂) xor oddℤ x₃) xor oddℤ x₄
+odd-lin s₁ s₂ s₃ s₄ x₁ x₂ x₃ x₄ o₁ o₂ o₃ o₄ =
+  trans (oddℤ-+ (s₁ ℤ.* x₁ ℤ.+ s₂ ℤ.* x₂ ℤ.+ s₃ ℤ.* x₃) (s₄ ℤ.* x₄))
+    (cong₂ _xor_ (trans (oddℤ-+ (s₁ ℤ.* x₁ ℤ.+ s₂ ℤ.* x₂) (s₃ ℤ.* x₃))
+                   (cong₂ _xor_ (trans (oddℤ-+ (s₁ ℤ.* x₁) (s₂ ℤ.* x₂)) (cong₂ _xor_ (t s₁ x₁ o₁) (t s₂ x₂ o₂)))
+                                (t s₃ x₃ o₃)))
+                 (t s₄ x₄ o₄))
+  where
+  t : ∀ s x → oddℤ s ≡ true → oddℤ (s ℤ.* x) ≡ oddℤ x
+  t s x o = trans (oddℤ-* s x) (cong (_∧ oddℤ x) o)
+
+odd-rowA : ∀ x₁ x₂ x₃ x₄ → oddℤ (rowAᶻ x₁ x₂ x₃ x₄) ≡ ((oddℤ x₁ xor oddℤ x₂) xor oddℤ x₃) xor oddℤ x₄
+odd-rowA x₁ x₂ x₃ x₄ = odd-lin p1ᶻ p1ᶻ p1ᶻ p1ᶻ x₁ x₂ x₃ x₄ refl refl refl refl
+
+odd-rowB : ∀ x₁ x₂ x₃ x₄ → oddℤ (rowBᶻ x₁ x₂ x₃ x₄) ≡ ((oddℤ x₁ xor oddℤ x₂) xor oddℤ x₃) xor oddℤ x₄
+odd-rowB x₁ x₂ x₃ x₄ = odd-lin p1ᶻ m1ᶻ p1ᶻ m1ᶻ x₁ x₂ x₃ x₄ refl refl refl refl
+
+odd-rowC : ∀ x₁ x₂ x₃ x₄ → oddℤ (rowCᶻ x₁ x₂ x₃ x₄) ≡ ((oddℤ x₁ xor oddℤ x₂) xor oddℤ x₃) xor oddℤ x₄
+odd-rowC x₁ x₂ x₃ x₄ = odd-lin p1ᶻ p1ᶻ m1ᶻ m1ᶻ x₁ x₂ x₃ x₄ refl refl refl refl
+
+odd-rowD : ∀ x₁ x₂ x₃ x₄ → oddℤ (rowDᶻ x₁ x₂ x₃ x₄) ≡ ((oddℤ x₁ xor oddℤ x₂) xor oddℤ x₃) xor oddℤ x₄
+odd-rowD x₁ x₂ x₃ x₄ = odd-lin p1ᶻ m1ᶻ m1ᶻ p1ᶻ x₁ x₂ x₃ x₄ refl refl refl refl
