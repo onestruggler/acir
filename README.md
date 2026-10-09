@@ -31,7 +31,10 @@ separately.
 
 [`PathSum/`](PathSum/) is a separate development, not reached by
 `MainTheorems.agda`: a formalisation of M. Amy, *Towards Large-scale
-Functional Verification of Universal Quantum Circuits* (QPL 2018).  Its
+Functional Verification of Universal Quantum Circuits* (QPL 2018).  For
+a gentle introduction to the paper and the formalisation, aimed at
+undergraduates, start with the tutorial in
+[`PathSum/doc/`](PathSum/doc/README.md).  Its
 core is section 4: lemma 4.1 (isometry restrictions), lemma 4.2, lemma
 4.3 (Clifford progress & preservation), and the content of corollary
 4.4's proof, about the circuit itself: a Clifford circuit is the
