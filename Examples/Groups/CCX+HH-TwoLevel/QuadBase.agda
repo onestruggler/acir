@@ -48,9 +48,10 @@ open import Examples.Groups.CCX+HH-TwoLevel.Pivot using (pivot-just ; pivot-char
 open import Examples.Groups.CCX+HH-TwoLevel.Syllable using (syl ; step ; top ; Beyond-actM)
 open import Examples.Groups.CCX+HH-TwoLevel.Step using (Quad ; quad⟨_,_,_,_⟩)
 open import Examples.Groups.CCX+HH-TwoLevel.Levels using (Bℓ)
-open R {n} using (Path ; Low)
+open R {n} using (Path ; Low ; sound-act)
 open import Examples.Groups.CCX+HH-TwoLevel.PathTools {n} using (module Below)
-open import Examples.Groups.CCX+HH-TwoLevel.States {n} using (path-normal ; lt-step ; bℓ-below ; MonoWord ; mono-word-below ; ne-𝕀 ; syl-of)
+open import Examples.Groups.CCX+HH-TwoLevel.States {n} using (path-normal ; lt-step ; bℓ-below ; MonoWord ; mono-word-below ; mono-word-level ; ne-𝕀 ; syl-of)
+open import Examples.Groups.CCX+HH-TwoLevel.Derived {n} using (_⁻¹ ; inverseˡ)
 import Examples.Groups.CCX+HH-TwoLevel.PivotColumn as PC
 
 open PB (_===_ {n}) using (_≈_)
@@ -162,3 +163,38 @@ syl-same-odd W′ par = sylData-quad {p = p} k′ W′
 -- The column of g·s.
 colg : (g : Gen n) → col (actM g s) p ≡ actV g (scV K′ W)
 colg g = ≡.trans (col-actM g s p) (≡.cong (actV g) colK)
+
+------------------------------------------------------------------------
+-- Squares whose bottom passes through one more generator
+
+-- The inverse of a word of X's and (-1)'s is one.
+mono-inv : (w : Word (Gen n)) → MonoWord p w → MonoWord p (w ⁻¹)
+mono-inv [ M-gen x ]ʷ h = h
+mono-inv [ X-gen x y q ]ʷ h = h
+mono-inv [ K-gen _ _ _ _ _ _ _ ]ʷ ()
+mono-inv ε h = h
+mono-inv (u • v) (hu , hv) = mono-inv v hv , mono-inv u hu
+
+-- The square N′ g ≈ V₁ g V₂ N, with V₁ and V₂ words of X's and (-1)'s
+-- below p and N′ a path out of g·s that drops below the level of s:
+-- the states along V₁ g V₂ stay below the level.
+sandwich : (g : Gen n) (N′ V₁ V₂ : Word (Gen n)) → Path N′ (actM g s) (ColOrth-actMʷ [ g ]ʷ o) →
+           level (actMʷ N′ (actM g s)) <ₗ level s → MonoWord p V₁ → MonoWord p V₂ →
+           (V₁ • ([ g ]ʷ • V₂)) • syl s ≈ N′ • [ g ]ʷ → Path [ g ]ʷ s o
+sandwich g N′ V₁ V₂ pN′ lN′ m₁ m₂ rel =
+  bridge g s o (syl s) N′ (V₁ • ([ g ]ʷ • V₂)) pN pN′ ((low-mono V₂ m₂ , l₂ , lg) , l₁) rel
+  where
+  S₂ = actMʷ V₂ Ns
+  S₃ = actM g S₂
+  l₂ : level S₂ <ₗ level s
+  l₂ = mono-word-level V₂ m₂ Ns lNs lB
+  -- V₁ g V₂ N s = N′ g s, so g V₂ N s is V₁⁻¹ applied to N′ g s.
+  top≡ : actMʷ V₁ S₃ ≡ actMʷ N′ (actM g s)
+  top≡ = sound-act rel s
+  back≡ : actMʷ (V₁ ⁻¹) (actMʷ N′ (actM g s)) ≡ S₃
+  back≡ = ≡.trans (≡.cong (actMʷ (V₁ ⁻¹)) (≡.sym top≡)) (sound-act (inverseˡ {V₁}) S₃)
+  lg : level S₃ <ₗ level s
+  lg = ≡.subst (λ M → level M <ₗ level s) back≡
+         (mono-word-level (V₁ ⁻¹) (mono-inv V₁ m₁) (actMʷ N′ (actM g s)) lN′ lB)
+  l₁ : Low (level s) V₁ S₃
+  l₁ = mono-word-below V₁ m₁ S₃ lg lB
