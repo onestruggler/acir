@@ -67,3 +67,14 @@ conj {A = A} {B} g h = begin
   G • (G • A)                   ≈⟨ cright h ⟩
   G • (B • G)                   ∎
   where G = [ g ]ʷ
+
+-- g A ≈ B g gives B ≈ g A g.
+conj′ : ∀ {A B : Word (Gen n)} (g : Gen n) → [ g ]ʷ • A ≈ B • [ g ]ʷ → B ≈ [ g ]ʷ • (A • [ g ]ʷ)
+conj′ {A = A} {B} g h = begin
+  B                             ≈⟨ sym right-unit ⟩
+  B • ε                         ≈⟨ cright sym (gen-gen g) ⟩
+  B • (G • G)                   ≈⟨ sym assoc ⟩
+  (B • G) • G                   ≈⟨ cleft sym h ⟩
+  (G • A) • G                   ≈⟨ assoc ⟩
+  G • (A • G)                   ∎
+  where G = [ g ]ʷ

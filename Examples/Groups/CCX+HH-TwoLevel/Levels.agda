@@ -294,3 +294,84 @@ mono-level {n} g m {b} tg M {L} lM lB = go (pivot (actM g M)) refl
     cmp (tri< b<c _ _) = subst (_<ₗ L) (sym (same-as e (back b<c e))) lM
     cmp (tri≈ _ refl _) = low ℕP.≤-refl e (pivot M) refl
     cmp (tri> _ _ c<b) = low (ℕP.<⇒≤ c<b) e (pivot M) refl
+
+------------------------------------------------------------------------
+-- Levels, non-strictly
+
+infix 4 _≤ₗ′_
+
+_≤ₗ′_ : Lvl → Lvl → Set
+x ≤ₗ′ y = x <ₗ y ⊎ x ≡ y
+
+≤ₗ′-trans : {x y z : Lvl} → x ≤ₗ′ y → y ≤ₗ′ z → x ≤ₗ′ z
+≤ₗ′-trans (inj₁ a) (inj₁ b) = inj₁ (<ₗ-trans a b)
+≤ₗ′-trans (inj₁ a) (inj₂ refl) = inj₁ a
+≤ₗ′-trans (inj₂ refl) b = b
+
+-- A monomial generator acting on indices ≤ b does not raise the level
+-- of M beyond the larger of it and (b + 1 , 0 , 1).
+mono-le : (g : Gen n) → Mono g → {b : Fin n} → top g ≤ b → (M : Matrix n n D) →
+          level (actM g M) ≤ₗ′ level M ⊎ level (actM g M) ≤ₗ′ Bℓ b
+mono-le {n} g m {b} tg M = go (pivot (actM g M)) refl
+  where
+  gM = actM g M
+
+  col-g : ∀ c → col gM c ≡ actV g (col M c)
+  col-g c = col-actM g M c
+
+  same-as : ∀ {c} → pivot gM ≡ just c → pivot M ≡ just c → level gM ≡ level M
+  same-as {c} eg em = trans (level-just gM eg) (trans (cong₂ (λ k m′ → suc (toℕ c) , k , m′)
+      (trans (cong lde (col-g c)) (proj₁ (mono-col g m (col M c))))
+      (trans (cong (λ v → nodd (num v)) (col-g c)) (proj₂ (mono-col g m (col M c)))))
+    (sym (level-just M em)))
+
+  from-e : ∀ {c} → pivot gM ≡ just c → col M c ≡ col 𝕀 c → level gM ≡ (suc (toℕ c) , 0 , 1)
+  from-e {c} eg ec = trans (level-just gM eg) (cong₂ (λ k m′ → suc (toℕ c) , k , m′)
+      (trans (cong lde (trans (col-g c) (cong (actV g) ec))) (proj₁ (mono-e g m c)))
+      (trans (cong (λ v → nodd (num v)) (trans (col-g c) (cong (actV g) ec))) (proj₂ (mono-e g m c))))
+
+  le-B : ∀ {c} → toℕ c ℕ.≤ toℕ b → (suc (toℕ c) , 0 , 1) ≤ₗ′ Bℓ b
+  le-B {c} c≤b = at (ℕP.m≤n⇒m<n∨m≡n c≤b)
+    where
+    at : toℕ c ℕ.< toℕ b ⊎ toℕ c ≡ toℕ b → (suc (toℕ c) , 0 , 1) ≤ₗ′ Bℓ b
+    at (inj₁ c<b) = inj₁ (inj₁ (ℕ.s≤s c<b))
+    at (inj₂ c≡b) = inj₂ (cong (λ k → suc k , 0 , 1) c≡b)
+
+  back : ∀ {c} → b < c → pivot gM ≡ just c → pivot M ≡ just c
+  back {c} b<c eg = pivot-char M ne be
+    where
+    ne : col M c ≢ col 𝕀 c
+    ne eq = proj₁ (pivot-just gM eg) (trans (col-g c) (trans (cong (actV g) eq) (actV-e-beyond g tg b<c)))
+    be : Beyond c M
+    be d c<d = mono-inj g m (trans (sym (col-g d))
+                 (trans (proj₂ (pivot-just gM eg) d c<d)
+                   (sym (actV-e-beyond g tg (ℕP.<-trans b<c c<d)))))
+
+  low : ∀ {c} → toℕ c ℕ.≤ toℕ b → pivot gM ≡ just c → (r : Maybe (Fin n)) → pivot M ≡ r →
+        level gM ≤ₗ′ level M ⊎ level gM ≤ₗ′ Bℓ b
+  low {c} c≤b eg nothing em =
+    inj₂ (subst (_≤ₗ′ Bℓ b) (sym (from-e eg (cong (λ N → col N c) (pivot-nothing M em)))) (le-B c≤b))
+  low {c} c≤b eg (just p) em = by (FinP.<-cmp c p)
+    where
+    by : Tri (c < p) (c ≡ p) (p < c) → level gM ≤ₗ′ level M ⊎ level gM ≤ₗ′ Bℓ b
+    by (tri< c<p _ _) = inj₁ (inj₁ (subst (_<ₗ level M) (sym (level-just gM eg))
+                                   (subst ((suc (toℕ c) , lde (col gM c) , nodd (num (col gM c))) <ₗ_)
+                                          (sym (level-just M em)) (inj₁ (ℕ.s≤s c<p)))))
+    by (tri≈ _ refl _) = inj₁ (inj₂ (same-as eg em))
+    by (tri> _ _ p<c) = inj₂ (subst (_≤ₗ′ Bℓ b) (sym (from-e eg (proj₂ (pivot-just M em) c p<c))) (le-B c≤b))
+
+  go : (r : Maybe (Fin n)) → pivot gM ≡ r → level gM ≤ₗ′ level M ⊎ level gM ≤ₗ′ Bℓ b
+  go nothing e = inj₂ (inj₁ (subst (_<ₗ Bℓ b) (sym (cong (λ x → lvlAt x gM) e)) (inj₁ (ℕ.s≤s ℕ.z≤n))))
+  go (just c) e = cmp (FinP.<-cmp b c)
+    where
+    cmp : Tri (b < c) (b ≡ c) (c < b) → level gM ≤ₗ′ level M ⊎ level gM ≤ₗ′ Bℓ b
+    cmp (tri< b<c _ _) = inj₁ (inj₂ (same-as e (back b<c e)))
+    cmp (tri≈ _ refl _) = low ℕP.≤-refl e (pivot M) refl
+    cmp (tri> _ _ c<b) = low (ℕP.<⇒≤ c<b) e (pivot M) refl
+
+-- So it keeps a state at most at L at most at L, if (b + 1 , 0 , 1) is.
+mono-level-≤ : (g : Gen n) → Mono g → {b : Fin n} → top g ≤ b → (M : Matrix n n D) {L : Lvl} →
+               level M ≤ₗ′ L → Bℓ b ≤ₗ′ L → level (actM g M) ≤ₗ′ L
+mono-level-≤ g m tg M lM lB with mono-le g m tg M
+... | inj₁ x = ≤ₗ′-trans x lM
+... | inj₂ x = ≤ₗ′-trans x lB
