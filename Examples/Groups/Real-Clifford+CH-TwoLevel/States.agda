@@ -50,7 +50,7 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Step using (step-lt)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Synthesis using (synth-step)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Derived {n} using (_⁻¹ ; inverseˡ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Levels using (Mono ; mono-level ; Bℓ ; <ₗ-trans)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path ; BelowSrc ; nw ; sound-act)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path ; Low ; nw ; sound-act)
 
 open PB (_===_ {n}) using (_≈_)
 open PB (_===_ {n}) using (refl ; sym ; trans ; cong ; assoc ; left-unit ; right-unit ; axiom)
@@ -207,11 +207,11 @@ mono-word-level [ H-gen x y p ]ʷ () M lM lB
 mono-word-level ε _ M lM lB = lM
 mono-word-level (u • v) (hu , hv) M lM lB = mono-word-level u hu (actMʷ v M) (mono-word-level v hv M lM lB) lB
 
--- Every state along them, sources included, lies below L.
+-- Every state along them lies below L.
 mono-word-below : ∀ {b : Fin n} (w : Word (Gen n)) → MonoWord b w → (M : Matrix n n D) {L : Lvl} →
-                  level M <ₗ L → Bℓ b <ₗ L → BelowSrc L w M
-mono-word-below [ X-gen x y p ]ʷ h M lM lB = lM
-mono-word-below [ Z-gen x ]ʷ h M lM lB = lM
+                  level M <ₗ L → Bℓ b <ₗ L → Low L w M
+mono-word-below [ X-gen x y p ]ʷ h M lM lB = lM , mono-level (X-gen x y p) tt h M lM lB
+mono-word-below [ Z-gen x ]ʷ h M lM lB = lM , mono-level (Z-gen x) tt h M lM lB
 mono-word-below [ H-gen x y p ]ʷ () M lM lB
 mono-word-below ε _ M lM lB = tt
 mono-word-below (u • v) (hu , hv) M lM lB =

@@ -51,7 +51,7 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Pivot using (pivot ; Beyon
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syllable using (syl ; top ; Beyond-actM ; actV-e-beyond)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Derived {n} using (H-H ; flip-X)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Symmetric {n} using (Hs ; Xs ; HsT ; XsT)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path ; path-ε ; BelowSrc)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path ; path-ε ; Low)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.PathTools {n} using (via)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.States {n} using (path-normal ; syl-of)
 
@@ -124,10 +124,12 @@ AtI-actʷ [ g ]ʷ {p} {M} h a = AtI-act g {p} {M} h a
 AtI-actʷ ε _ a = a
 AtI-actʷ (u • v) {p} {M} (hu , hv) a = AtI-actʷ u {p} {actMʷ v M} hu (AtI-actʷ v {p} {M} hv a)
 
--- Every letter of the word leaves a state below any level with pivot p.
+-- Every letter of the word joins states below any level with pivot p.
 under-below : (w : Word (Gen n)) {p : Fin n} {M : Matrix n n D} → Under p w → AtI p M →
-              ∀ k m → BelowSrc (suc (toℕ p) , k , m) w M
-under-below [ g ]ʷ {p} {M} h (be , cp) k m = level-below M cp be k m
+              ∀ k m → Low (suc (toℕ p) , k , m) w M
+under-below [ g ]ʷ {p} {M} h a k m =
+  level-below M (proj₂ a) (proj₁ a) k m ,
+  level-below (actM g M) (proj₂ (AtI-act g {p} {M} h a)) (proj₁ (AtI-act g {p} {M} h a)) k m
 under-below ε _ _ k m = tt
 under-below (u • v) {p} {M} (hu , hv) a k m =
   under-below v {p} {M} hv a k m , under-below u {p} {actMʷ v M} hu (AtI-actʷ v {p} {M} hv a) k m

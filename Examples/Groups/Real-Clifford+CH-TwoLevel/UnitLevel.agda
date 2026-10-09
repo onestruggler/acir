@@ -11,8 +11,8 @@
 -- * if g does not touch m, g·s has the same syllable N, and the
 --   square closes with g conjugated by N's X_[m,p]: a word below p;
 -- * Z_[m] and the X_[c,d] that move m make g·s a unit state again,
---   and the two syllables differ by g, up to X_[c,d] below p (or g·s
---   is below the level: the unit came to e_p);
+--   and the two syllables differ by g, up to X_[c,d] below p (or g is
+--   the normal syllable: it takes the unit to e_p);
 -- * H_[c,d] touching m makes the column a pair, whose syllable undoes
 --   H_[c,d] up to X_[0,c] (EdgeTools.edge-H-pair).
 ------------------------------------------------------------------------
@@ -52,15 +52,15 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.ColumnAction
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics renaming (Z to Zʷ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Pivot
-  using (pivot ; pivot-just ; pivot-char ; Beyond ; level ; level-below ; _<ₗ_)
+  using (pivot ; pivot-just ; pivot-char ; Beyond ; level ; _<ₗ_)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syllable
   using (syl ; syl-just ; top ; Within ; Beyond-actM ; Beyond-actMʷ ; eᶻ ; eᶻ-! ; eδ-refl ; eδ-≢ ; col𝕀≡ ; zeroV ; actV-0)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Step using (unit-step)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Derived {n} using (Z-Z ; X-X ; flip-X ; Apart ; comm-gen)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Symmetric {n}
   using (τ ; τ-p ; τ-q ; τ-o ; τ-τ ; relabel-Z ; relabel-X ; relabel-H ; Xs ; Hs ; Xs-< ; conj-•)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path ; BelowSrc ; EdgesBelow)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.PathTools {n} using (via ; module Below)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path ; Low ; EdgesBelow)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.PathTools {n} using (via ; path-cong ; module Below)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.States {n} using (path-normal ; syl-of ; ne-𝕀 ; ne-𝕀-at)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.EdgeTools {n}
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Above {n} as Above
@@ -286,11 +286,8 @@ module At (s : Matrix n n D) .(o : ColOrth s) {p : Fin n} (ps : pivot s ≡ just
     colN = ≡.trans (col-actMʷ (syl s) s p)
              (≡.trans (≡.cong₂ actVʷ N≡ col0) (≡.trans (proj₂ us) (≡.sym (col𝕀≡ p))))
 
-  lowL : ∀ {L} → L <ₗ (suc (toℕ p) , lde v , nodd W) → L <ₗ level s
-  lowL {L} lt = ≡.subst (L <ₗ_) (≡.sym lvl) lt
-
-  lowS : (V : Word (Gen n)) → Under p V → BelowSrc (level s) V (actMʷ (syl s) s)
-  lowS V uV = ≡.subst (λ L → BelowSrc L V (actMʷ (syl s) s)) (≡.sym lvl) (under-below V uV NsAtI (lde v) (nodd W))
+  lowS : (V : Word (Gen n)) → Under p V → Low (level s) V (actMʷ (syl s) s)
+  lowS V uV = ≡.subst (λ L → Low L V (actMʷ (syl s) s)) (≡.sym lvl) (under-below V uV NsAtI (lde v) (nodd W))
 
   colg : (g : Gen n) → col (actM g s) p ≡ actV g (scV 0 W)
   colg g = ≡.trans (col-actM g s p) (≡.cong (actV g) col0)
@@ -317,10 +314,9 @@ module At (s : Matrix n n D) .(o : ColOrth s) {p : Fin n} (ps : pivot s ≡ just
     pN′ : Path (syl s) gs (ColOrth-actMʷ [ g ]ʷ o)
     pN′ = ≡.subst (λ w → Path w gs (ColOrth-actMʷ [ g ]ʷ o)) sylg (path-normal gs (ColOrth-actMʷ [ g ]ʷ o) pv′)
 
-  -- g takes the unit to e_p: g·s lies below.
-  drop : (g : Gen n) → top g ≤ p → actV g (scV 0 W) ≡ scV 0 (eᶻ p) → Path [ g ]ʷ s o
-  drop g tg e = back-below g s o (lowL (level-below (actM g s) (≡.trans (colg g) (≡.trans e (≡.sym (col𝕀≡ p))))
-                                                      (Beyond-actM g {M = s} tg be) (lde v) (nodd W)))
+  -- g is the normal syllable (it takes the unit to e_p).
+  normal : (g : Gen n) → syl s ≈ [ g ]ʷ → Path [ g ]ʷ s o
+  normal g eq = path-cong eq s o pN
 
   -- g moves the unit: g·s is a unit state, with its normal syllable.
   moved : (g : Gen n) → top g ≤ p → (m′ : Fin n) (u′ : Z) (W′ : Vec Z n) → actV g (scV 0 W) ≡ scV 0 W′ →
@@ -417,8 +413,8 @@ module At (s : Matrix n n D) .(o : ColOrth s) {p : Fin n} (ps : pivot s ≡ just
       uv′ : UV p (W ! m) W′
       uv′ = ≡.subst (λ x → UV x (W ! m) W′) (τ-p m p) (UV-X m p m≢p uW)
       by : Unit1 (W ! m) → Path [ X-gen m p m<p ]ʷ s o
-      by (inj₁ e1) = drop (X-gen m p m<p) FinP.≤-refl
-        (≡.trans act (≡.cong (scV 0) (UV-e (mkUV (inj₁ ≡.refl) (≡.trans (UV.at uv′) e1) (UV.off uv′)))))
+      by (inj₁ e1) = normal (X-gen m p m<p)
+        (trans (refl′ N≡′) (trans (cright refl′ (≡.cong (λ z → Zτ m (negᶻ z)) e1)) right-unit))
       by (inj₂ e1) =
         via (X-gen m p m<p) s o (sylData p 0 W′) (syl s) (moved (X-gen m p m<p) FinP.≤-refl p (W ! m) W′ act uv′ (inj₂ e1)) rel pN
         where
@@ -533,7 +529,7 @@ module At (s : Matrix n n D) .(o : ColOrth s) {p : Fin n} (ps : pivot s ≡ just
     edge-Z c c≤p = by (c FinP.≟ p)
       where
       by : Dec (c ≡ p) → Path (Zʷ c) s o
-      by (yes ≡.refl) = drop (Z-gen c) c≤p (≡.trans (actV-Z c 0 W) (≡.cong (scV 0) (UV-e (UV-Z≡ uW₋))))
+      by (yes ≡.refl) = normal (Z-gen c) (refl′ N≡″)
       by (no c≢p) = sameE (Z-gen c) (FinP.≤∧≢⇒< c≤p c≢p) ((c≢p ∷ []) ∷ []) (λ { _ i-a → c≢p })
 
     edge-X : (c d : Fin n) .(cd : c < d) → d ≤ p → Path [ X-gen c d cd ]ʷ s o

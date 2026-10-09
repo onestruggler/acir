@@ -232,7 +232,7 @@ edge-𝕀 (X-gen a b ab) = Case-X.edge a b ab
 edge-𝕀 (H-gen a b ab) = Case-H.edge a b ab (λ x y xy → Case-X.edge x y xy)
 
 base : EdgesAt (0 , 0 , 0)
-base g M o eq = at (pivot M) ≡.refl
+base g M o eq _ = at (pivot M) ≡.refl
   where
   at : (r : Maybe (Fin n)) → pivot M ≡ r → Path [ g ]ʷ M o
   at nothing pv = ≡.subst (λ N → ∀ .(o′ : ColOrth N) → Path [ g ]ʷ N o′)
