@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Soundness of the relations (Theorem 4.12): every relation of Figure 4
+-- Soundness of the relations (Theorem 4.13): every relation of Figure 6
 -- holds in Oₙ(ℤ[1/√2]).
 --
 -- The relations (b1)–(b6) say that generators with disjoint indices

@@ -7,15 +7,15 @@
 --
 --   Z_[a],   X_[a,b] (a < b),   H_[a,b] (a < b)
 --
--- of the generating set 𝒢ₙ of Oₙ(ℤ[1/√2]) (Definition 4.6), and the
--- relations (a1)–(d4) of Figure 4.
+-- of the generating set 𝒢ₙ of Oₙ(ℤ[1/√2]) (Definition 4.5), and the
+-- relations (a1)–(d4) of Figure 6.
 --
 -- The generators are those of Clifford+CS-TwoLevel, whose semantics is
 -- generic in the scalars: the K-generator acts as c [[1,1],[1,-1]] and
 -- the i-generator as a phase.  Here c = 1/√2 and the phase is -1, so
 -- they are H_[a,b] and Z_[a].
 --
--- Figure 4 asks only that the indices be distinct; a generator X_[a,b]
+-- Figure 6 asks only that the indices be distinct; a generator X_[a,b]
 -- or H_[a,b] needs a < b, so each relation holds for the orderings of
 -- its indices that make all its subscripts increasing.  For (d3) these
 -- are a < b < c < d and a < c < b < d, for (d4) the six interleavings
@@ -55,7 +55,7 @@ Z : Fin n → Word (Gen n)
 Z a = [ Z-gen a ]ʷ
 
 ------------------------------------------------------------------------
--- The relations of Figure 4
+-- The relations of Figure 6
 
 infix 4 _===_
 

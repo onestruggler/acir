@@ -2,9 +2,9 @@
 -- Presentations of groups
 --
 -- The semantics: the group Oₙ(ℤ[1/√2]) of orthogonal n×n matrices over
--- 𝔻[√2] = ℤ[1/√2] (Definition 4.5), as EucDomain matrices with the
+-- 𝔻[√2] = ℤ[1/√2] (Definition 4.3), as EucDomain matrices with the
 -- (opaque) ring operations of Ring, and the matrices of the generators
--- (Definition 4.6): Z_[a] = -1 at a, X_[a,b] the transposition of a and
+-- (Definition 4.5): Z_[a] = -1 at a, X_[a,b] the transposition of a and
 -- b, and H_[a,b] = 1/√2 [[1,1],[1,-1]] at (a, b).
 --
 -- The generic unitary machinery of Clifford+CS-TwoLevel applies with
