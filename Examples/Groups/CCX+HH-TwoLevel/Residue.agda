@@ -155,3 +155,24 @@ one2 w o with τ w in eτ | one4 w o
   oddness : oddℤ (ℤ.- (+ 1) ℤ.- + 2 ℤ.* z) ≡ true
   oddness = trans (oddℤ-+ (ℤ.- (+ 1)) (ℤ.- (+ 2 ℤ.* z)))
                   (cong (true xor_) (trans (oddℤ-neg (+ 2 ℤ.* z)) (oddℤ-* (+ 2) z)))
+
+------------------------------------------------------------------------
+-- Pairs of odd integers
+
+-- Two odd integers with sum 2m have equal residues iff m is odd.
+τ-pair : ∀ p q m → oddℤ p ≡ true → oddℤ q ≡ true → p ℤ.+ q ≡ + 2 ℤ.* m →
+         τ p xor τ q ≡ not (oddℤ m)
+τ-pair p q m op oq e with one2 p op | one2 q oq
+... | yp , ep , τp | yq , eq , τq = begin
+  τ p xor τ q                              ≡⟨ cong₂ _xor_ (sym τp) (sym τq) ⟩
+  oddℤ yp xor oddℤ yq                      ≡⟨ sym (BoolP.not-involutive _) ⟩
+  not (not (oddℤ yp xor oddℤ yq))          ≡⟨ cong not (sym (trans (oddℤ-+ (+ 1) (yp ℤ.+ yq)) (cong (true xor_) (oddℤ-+ yp yq)))) ⟩
+  not (oddℤ (+ 1 ℤ.+ (yp ℤ.+ yq)))         ≡⟨ cong (λ x → not (oddℤ x)) m≡ ⟩
+  not (oddℤ m)                             ∎
+  where
+  open ≡-Reasoning
+  m≡ : + 1 ℤ.+ (yp ℤ.+ yq) ≡ m
+  m≡ = ℤP.*-cancelˡ-≡ (+ 2) _ _ (trans
+    (ℤS.solve 2 (λ yp yq → con (+ 2) :* (con (+ 1) :+ (yp :+ yq))
+                   := (con (+ 1) :+ con (+ 2) :* yp) :+ (con (+ 1) :+ con (+ 2) :* yq)) refl yp yq)
+    (trans (cong₂ ℤ._+_ (sym ep) (sym eq)) e))
