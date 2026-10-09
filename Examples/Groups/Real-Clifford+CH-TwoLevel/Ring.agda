@@ -42,6 +42,8 @@ open import Quantum.Synthesis.Ring.Properties
   using ( isCommutativeRing-DRootTwo ; commutativeRing-ZRootTwo ; commutativeRing-𝔻
         ; IsInvolutiveRingEndo ; adj-DRootTwo )
 import Quantum.Synthesis.Ring.Properties.Common as Common
+open import Algebra.Solver.Ring.AlmostCommutativeRing using (fromCommutativeRing)
+import Algebra.Solver.Ring.Simple
 import Examples.Groups.Clifford+CS-TwoLevel.Algebra as Algebra
 
 open import Examples.Groups.Clifford+CS-TwoLevel.Ring public
@@ -97,6 +99,10 @@ module ZR = CommutativeRing commutativeRing-ZRootTwo
 -- Ring solvers with integer coefficients.
 module DS = Common.ZSolver commutativeRing-D
 module ZS = Common.ZSolver commutativeRing-ZRootTwo
+
+-- A ring solver over ℤ[√2] with coefficients in ℤ[√2]: constants such
+-- as √2 multiply out by computation.
+module ZG = Algebra.Solver.Ring.Simple (fromCommutativeRing commutativeRing-ZRootTwo) (λ x y → x ≟ y)
 
 -- Identities in 𝔻[√2], proved over an abstract ring.
 module DA = Algebra commutativeRing-D (λ p → p)
