@@ -115,6 +115,17 @@ halfZ (RootTwo a b) = halfZ′ a b (oddℤ a) refl
 halfZ-sound : ∀ x {y} → halfZ x ≡ just y → x ≡ √2ᶻ ZR.* y
 halfZ-sound (RootTwo a b) = halfZ′-sound a b (oddℤ a) refl
 
+-- An odd element does not halve.
+halfZ-odd : ∀ x → oddᶻ x ≡ true → halfZ x ≡ nothing
+halfZ-odd (RootTwo a b) e = go (oddℤ a) refl e
+  where
+  go : ∀ o (eo : oddℤ a ≡ o) → oddℤ a ≡ true → halfZ′ a b o eo ≡ nothing
+  go true eo _ = refl
+  go false eo e′ = ⊥-elim (t≢f (trans (sym e′) eo))
+    where
+    t≢f : true ≢ false
+    t≢f ()
+
 -- An even element halves.
 halfZ-even : ∀ x → oddᶻ x ≡ false → ∃ λ y → halfZ x ≡ just y
 halfZ-even (RootTwo a b) e = go (oddℤ a) refl e
