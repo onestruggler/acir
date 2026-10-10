@@ -47,6 +47,7 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Counting using (count-spli
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Step using (scV-δmap)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Local {n} using (module Emb)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Check using (countV)
 
 private
   t≢f : true ≢ false
@@ -54,10 +55,6 @@ private
 
 ------------------------------------------------------------------------
 -- Counting over vectors
-
-countV : ∀ {m} → (Z → Bool) → Vec Z m → ℕ
-countV P [] = 0
-countV P (x ∷ e) = (if P x then 1 else 0) ℕ.+ countV P e
 
 -- A positive count has a witness.
 count-exists : ∀ {k} (P : Fin k → Bool) → 0 ℕ.< count P → ∃ λ x → P x ≡ true

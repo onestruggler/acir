@@ -161,6 +161,11 @@ stepF-sound (Zˡ i) fs refl ρ =
 ------------------------------------------------------------------------
 -- Parities of states
 
+-- The number of entries of a vector satisfying P.
+countV : (Z → Bool) → Vec Z m → ℕ
+countV P [] = 0
+countV P (x ∷ e) = (if P x then 1 else 0) ℕ.+ countV P e
+
 -- The number of odd entries of a vector.
 noddV : Vec Z m → ℕ
 noddV [] = 0
