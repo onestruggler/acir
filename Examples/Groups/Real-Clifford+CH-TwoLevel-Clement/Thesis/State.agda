@@ -20,7 +20,7 @@ open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc ; z≤n ; s≤s)
 module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.State {n : ℕ} where
 
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; not ; _xor_)
-open import Data.Empty using (⊥-elim)
+open import Data.Empty using (⊥ ; ⊥-elim)
 open import Data.Fin.Base as Fin using (Fin ; _<_ ; _≤_ ; toℕ)
 import Data.Fin.Properties as FinP
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
@@ -34,25 +34,28 @@ open import Relation.Nullary.Decidable using (does ; recompute)
 import Data.Nat.Properties as ℕP
 import Data.Integer.Base as ℤ
 import Data.Integer.Properties as ℤP
-open import Examples.Groups.Clifford+CS-TwoLevel.Search using (tri-elim)
+open import Examples.Groups.Clifford+CS-TwoLevel.Search using (tri-elim ; dec-elim ; count ; count-one ; count-drop ; count-drop₂)
 
 open import Quantum.Synthesis.Matrix using (Matrix)
 
 open import Word.Base
 open import Examples.Groups.Clifford+CS-TwoLevel.Search using (first-cong ; count-cong)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (D ; Z ; module ZR ; oddᶻ ; rbit ; oddᶻ-neg ; rbit-neg ; _≟ᶻ_)
+open import Relation.Nullary using (¬_)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (D ; Z ; module ZR ; oddᶻ ; rbit ; oddᶻ-neg ; rbit-neg ; _≟ᶻ_ ; oddℕ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Lde
-  using (_!_ ; scV ; Minimal ; Odd ; Odd⇒¬Even ; lde ; num ; lde-eq ; lde-min ; lde-char)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Norm using (NA ; NB ; Σℕ ; Σℤ ; lde0)
+  using (_!_ ; scV ; Minimal ; Odd ; Even ; Odd⇒¬Even ; lde ; num ; lde-eq ; lde-min ; lde-char)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Norm using (NA ; NB ; Σℕ ; Σℤ ; lde0 ; evenodd ; evenclass)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Column
-  using (nodd ; firstOdd ; nextSame ; negᶻ ; firstOdd-spec ; firstOdd-nothing ; nextSame-spec)
+  using (nodd ; firstOdd ; nextSame ; negᶻ ; Same ; firstOdd-spec ; firstOdd-nothing ; nextSame-spec ; nextSame-nothing)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.ColumnAction using (Zᶻ ; Xᶻ ; actV-Z ; actV-X)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics renaming (Z to Zʷ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics hiding (_!_)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Pivot
   using (pivot ; pivot-just ; pivot-char ; Beyond ; Lvl ; lvlAt ; level ; level-just ; _<ₗ_)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syllable using (top ; Beyond-actM ; set₁-self ; eᶻ ; eᶻ-! ; eδ-refl ; eδ-≢ ; col𝕀≡)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Step using (pivot-zero> ; col-norm ; col-normB ; odd⇒≤)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Step
+  using (pivot-zero> ; col-norm ; col-normB ; odd⇒≤ ; same-class ; pairW ; H-action ; pairW-j ; pairW-ℓ ; pairW-≢)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.States {n} using (level-le)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Levels using (Minimal-X ; Minimal-Z ; nodd-X ; nodd-Z)
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} as R
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Algorithm
@@ -171,6 +174,89 @@ nextSame-Z a j w = first-cong _ _ λ x →
 -- Z at an entry 0 changes nothing.
 Zᶻ-0 : (a : Fin n) (w : Vec Z n) → w ! a ≡ ZR.0# → Zᶻ a w ≡ w
 Zᶻ-0 a w e = ≡.trans (≡.cong (λ z → set₁ a (ZR.- z) w) e) (≡.trans (≡.cong (λ z → set₁ a z w) (≡.sym e)) (set₁-self a w))
+
+------------------------------------------------------------------------
+-- H on two odd entries of one class, at a fixed scale
+
+-- Both become even, the others stay, and the count drops by two.
+valid-step : (M : Matrix n n D) (p : Fin n) (K : ℕ) (w : Vec Z n) → col M p ≡ scV K w →
+             (i i′ : Fin n) .(ii′ : i < i′) → Odd (w ! i) → Odd (w ! i′) → rbit (w ! i) ≡ rbit (w ! i′) →
+             ∃ λ w′ → col (actM (H-gen i i′ ii′) M) p ≡ scV K w′ × nodd w ≡ suc (suc (nodd w′)) ×
+                      (∀ x → x ≢ i → x ≢ i′ → w′ ! x ≡ w ! x) × Even (w′ ! i) × Even (w′ ! i′)
+valid-step M p K w eq i i′ ii′ oi oi′ rb =
+  w′ , col′ , cnt , pairW-≢ w i i′ z , pairW-j w i i′ z , pairW-ℓ w i i′ z i≢i′
+  where
+  i≢i′ : i ≢ i′
+  i≢i′ = <⇒≢ ii′
+  zc = same-class (w ! i) (w ! i′) oi oi′ rb
+  z = proj₁ zc
+  w′ = pairW w i i′ z
+  col′ : col (actM (H-gen i i′ ii′) M) p ≡ scV K w′
+  col′ = ≡.trans (col-actM (H-gen i i′ ii′) M p)
+           (≡.trans (≡.cong (actV (H-gen i i′ ii′)) eq) (H-action K w i i′ ii′ z (proj₂ zc)))
+  cnt : nodd w ≡ suc (suc (nodd w′))
+  cnt = count-drop₂ (λ x → oddᶻ (w ! x)) (λ x → oddᶻ (w′ ! x)) i i′ i≢i′ oi oi′
+          (pairW-j w i i′ z) (pairW-ℓ w i i′ z i≢i′)
+          (λ x x≢i x≢i′ → ≡.sym (≡.cong oddᶻ (pairW-≢ w i i′ z x x≢i x≢i′)))
+
+-- A state agreeing with I beyond p, whose column p is w / √2^(k′+1)
+-- with fewer than m odd entries in w, lies below (p + 1, k′ + 1, m).
+lowᶜ : (M : Matrix n n D) {p : Fin n} → Beyond p M → (k′ : ℕ) (w : Vec Z n) → col M p ≡ scV (suc k′) w →
+       ∀ {m} → nodd w ℕ.< m → levelᶜ M <ₗ (suc (toℕ p) , suc k′ , m)
+lowᶜ M be k′ w eq lt = Pos.conv< M (level-le M be (suc k′) w eq lt)
+
+-- X at two entries 0 changes nothing.
+Xᶻ-00 : (a b : Fin n) (w : Vec Z n) → a ≢ b → w ! a ≡ ZR.0# → w ! b ≡ ZR.0# → Xᶻ a b w ≡ w
+Xᶻ-00 a b w a≢b ea eb = vec-ext λ x → dec-elim (x FinP.≟ a)
+  (λ { ≡.refl → ≡.trans (set₂-a x b (w ! b) (w ! x) w) (≡.trans eb (≡.sym ea)) })
+  (λ x≢a → dec-elim (x FinP.≟ b)
+    (λ { ≡.refl → ≡.trans (set₂-b a x (w ! x) (w ! a) w a≢b) (≡.trans ea (≡.sym eb)) })
+    (λ x≢b → set₂-≢ a b (w ! b) (w ! a) w x≢a x≢b))
+
+------------------------------------------------------------------------
+-- The first odd entry of a class has a partner (Lemma 2.1)
+
+partner′ : ∀ k′ (w : Vec Z n) → Σℕ (λ x → NA (w ! x)) ≡ 2 ℕ.^ suc k′ → Σℤ (λ x → NB (w ! x)) ≡ ℤ.+ 0 →
+           ∀ {j} → Odd (w ! j) → (∀ y → y < j → ¬ Same w j y) → nextSame j w ≡ nothing → ⊥
+partner′ k′ w norm normB {j} oj before nx = by-class (rbit (w ! j)) ≡.refl
+  where
+  t≢f : true ≢ false
+  t≢f ()
+  -- No other entry is odd in the class of j.
+  others : ∀ y → y ≢ j → Odd (w ! y) → rbit (w ! y) ≢ rbit (w ! j)
+  others y y≢j oy rb = tri-elim (FinP.<-cmp y j)
+    (λ y<j → before y y<j (oy , rb))
+    (λ y≡j → y≢j y≡j)
+    (λ j<y → nextSame-nothing w nx y j<y (oy , rb))
+  by-class : ∀ b → rbit (w ! j) ≡ b → ⊥
+  by-class true rb = t≢f (≡.trans (≡.sym (≡.cong oddℕ one)) (evenclass w normB))
+    where
+    P : Fin n → Bool
+    P y = oddᶻ (w ! y) ∧ rbit (w ! y)
+    noP : ∀ y → y ≢ j → P y ≡ false
+    noP y y≢j with oddᶻ (w ! y) in oy | rbit (w ! y) in ry
+    ... | false | _ = ≡.refl
+    ... | true | false = ≡.refl
+    ... | true | true = ⊥-elim (others y y≢j oy (≡.trans ry (≡.sym rb)))
+    one : count P ≡ 1
+    one = count-one P j (≡.cong₂ _∧_ oj rb) noP
+  by-class false rb = t≢f (≡.trans (≡.sym oddsum) (evenodd k′ w norm))
+    where
+    P Q : Fin n → Bool
+    P y = oddᶻ (w ! y)
+    Q y = oddᶻ (w ! y) ∧ rbit (w ! y)
+    ∧-false : ∀ b → b ∧ false ≡ false
+    ∧-false true = ≡.refl
+    ∧-false false = ≡.refl
+    agree : ∀ y → y ≢ j → P y ≡ Q y
+    agree y y≢j with oddᶻ (w ! y) in oy | rbit (w ! y) in ry
+    ... | false | _ = ≡.refl
+    ... | true | true = ≡.refl
+    ... | true | false = ⊥-elim (others y y≢j oy (≡.trans ry (≡.sym rb)))
+    PQ : count P ≡ suc (count Q)
+    PQ = count-drop P Q j oj (≡.trans (≡.cong (oddᶻ (w ! j) ∧_) rb) (∧-false (oddᶻ (w ! j)))) agree
+    oddsum : oddℕ (count P) ≡ true
+    oddsum = ≡.trans (≡.cong oddℕ PQ) (≡.cong not (evenclass w normB))
 
 ------------------------------------------------------------------------
 -- The pivot column: −e_m, e_m (m < p), or a first odd entry i₁ and the
