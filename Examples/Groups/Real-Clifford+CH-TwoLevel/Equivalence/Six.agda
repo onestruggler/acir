@@ -21,7 +21,7 @@
 open import Word.Base using (WRel)
 import Presentation.Base as PB
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (Gen)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Local using (_===ˡ_)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.LocalRelations using (_===ˡ_)
 
 module Examples.Groups.Real-Clifford+CH-TwoLevel.Equivalence.Six
   (Γ : WRel (Gen 6)) (loc : ∀ {u v} → u ===ˡ v → PB._≈_ Γ u v) where

@@ -40,7 +40,7 @@ open import Data.List.Relation.Unary.All using (All ; [] ; _∷_)
 open import Data.Maybe.Base using (just)
 open import Data.Product.Base using (∃ ; _×_ ; proj₁ ; proj₂)
 open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
-open import Data.Unit.Base using (tt)
+open import Data.Unit.Base using (⊤ ; tt)
 open import Data.Vec.Base as Vec using (Vec)
 open import Relation.Binary.Definitions using (Tri ; tri< ; tri≈ ; tri>)
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_ ; _≢_)
@@ -95,6 +95,12 @@ Hard : Set
 Hard = ∀ (M : Matrix n n D) .(o : ColOrth M) → level M ≡ L → nodd (num (col M p)) ≡ 4 →
        ∀ c d .(cd : c < d) → Odd (num (col M p) ! c) → Odd (num (col M p) ! d) →
        rbit (num (col M p) ! c) ≢ rbit (num (col M p) ! d) → Path [ H-gen c d cd ]ʷ M o
+
+-- The same, for one state.
+Hard′ : (M : Matrix n n D) .(o : ColOrth M) → level M ≡ L → Set
+Hard′ M o eq = nodd (num (col M p)) ≡ 4 →
+               ∀ c d .(cd : c < d) → Odd (num (col M p) ! c) → Odd (num (col M p) ! d) →
+               rbit (num (col M p) ! c) ≢ rbit (num (col M p) ! d) → Path [ H-gen c d cd ]ʷ M o
 
 ------------------------------------------------------------------------
 -- Parities and words
@@ -188,9 +194,14 @@ module _ {a b : Fin n} (ab : a < b) where
 ------------------------------------------------------------------------
 -- The edges out of a state at L
 
-module At (hard : Hard) (s : Matrix n n D) .(o : ColOrth s) (eq : level s ≡ L) where
+module At (s : Matrix n n D) .(o : ColOrth s) (eq : level s ≡ L) where
 
   open State s o eq
+
+  -- The hard edge H_[c,d] out of s, when it is one.
+  HardH : ∀ c d .(cd : c < d) → Set
+  HardH c d cd = Odd (W ! c) → Odd (W ! d) → rbit (W ! c) ≢ rbit (W ! d) → nodd W ≡ 4 →
+                 Path [ H-gen c d cd ]ʷ s o
   open V1 s o eq using (validEdge)
 
   private
@@ -396,9 +407,9 @@ module At (hard : Hard) (s : Matrix n n D) .(o : ColOrth s) (eq : level s ≡ L)
   ----------------------------------------------------------------------
   -- Two odd entries of different classes
 
-  delta : ∀ c d .(cd : c < d) → d ≤ p → Odd (W ! c) → Odd (W ! d) → rbit (W ! c) ≢ rbit (W ! d) →
-          Path [ H-gen c d cd ]ʷ s o
-  delta c d cd d≤p oc od rcd = find-c (search (Cls κc) (in2 c c′))
+  delta : ∀ c d .(cd : c < d) → d ≤ p → (oc : Odd (W ! c)) (od : Odd (W ! d)) (rcd : rbit (W ! c) ≢ rbit (W ! d)) →
+          (nodd W ≡ 4 → Path [ H-gen c d cd ]ʷ s o) → Path [ H-gen c d cd ]ʷ s o
+  delta c d cd d≤p oc od rcd hard = find-c (search (Cls κc) (in2 c c′))
     where
     κc = rbit (W ! c)
     κd = rbit (W ! d)
@@ -476,7 +487,7 @@ module At (hard : Hard) (s : Matrix n n D) .(o : ColOrth s) (eq : level s ≡ L)
         (cls≢ (λ e → rcd (≡.trans e rd′))) (cls≢ (λ e → rcd (≡.trans e (proj₂ (cls-spec κd d″ cy)))))
         (sym≢ d′≢d) (sym≢ (proj₁ (in2-false f)))
     find-d cc (inj₂ all) =
-      hard s o eq (four κc κd rcd cc (count2 κd d d′ (sym≢ d′≢d) od od′ ≡.refl rd′ all)) c d cd oc od rcd
+      hard (four κc κd rcd cc (count2 κd d d′ (sym≢ d′≢d) od od′ ≡.refl rd′ all))
 
     find-c : (∃ λ y → Cls κc y ≡ true × in2 c c′ y ≡ false) ⊎ (∀ y → Cls κc y ≡ true → in2 c c′ y ≡ true) →
              Path [ H-gen c d cd ]ʷ s o
@@ -576,15 +587,16 @@ module At (hard : Hard) (s : Matrix n n D) .(o : ColOrth s) (eq : level s ≡ L)
     up = ≡.subst (L <ₗ_) (≡.sym (level-of HM pvH (suc k) w′ colH (inj₂ (c , oc))))
            (inj₂ (≡.refl , inj₁ (ℕP.n<1+n k)))
 
-  hEdge : ∀ c d .(cd : c < d) → d ≤ p → level (actM (H-gen c d cd) s) ≤ₗ L → Path [ H-gen c d cd ]ʷ s o
-  hEdge c d cd d≤p le = by (oddᶻ (W ! c)) (oddᶻ (W ! d)) ≡.refl ≡.refl
+  hEdge : ∀ c d .(cd : c < d) → d ≤ p → level (actM (H-gen c d cd) s) ≤ₗ L → HardH c d cd →
+          Path [ H-gen c d cd ]ʷ s o
+  hEdge c d cd d≤p le hard = by (oddᶻ (W ! c)) (oddᶻ (W ! d)) ≡.refl ≡.refl
     where
     by : ∀ u v → oddᶻ (W ! c) ≡ u → oddᶻ (W ! d) ≡ v → Path [ H-gen c d cd ]ʷ s o
     by true true oc od = by-r (rbit (W ! c) BoolP.≟ rbit (W ! d))
       where
       by-r : Dec (rbit (W ! c) ≡ rbit (W ! d)) → Path [ H-gen c d cd ]ʷ s o
       by-r (yes r) = validEdge c d cd (oc , od , r)
-      by-r (no r) = delta c d cd d≤p oc od r
+      by-r (no r) = delta c d cd d≤p oc od r (hard oc od r)
     by true false oc ed = ⊥-elim (gamma c d cd d≤p (≡.cong₂ _xor_ oc ed) le)
     by false true ec od = ⊥-elim (gamma c d cd d≤p (≡.cong₂ _xor_ ec od) le)
     by false false ec ed = beta c d cd d≤p ec ed le
@@ -592,18 +604,29 @@ module At (hard : Hard) (s : Matrix n n D) .(o : ColOrth s) (eq : level s ≡ L)
   ----------------------------------------------------------------------
   -- All edges that do not go up
 
-  edges : ∀ (g : Gen n) → level (actM g s) ≤ₗ L → Path [ g ]ʷ s o
-  edges (Z-gen c) _ = by (p FinP.<? c)
+  -- What an edge needs besides its level: for H, the hard case.
+  Needs : Gen n → Set
+  Needs (H-gen c d cd) = HardH c d cd
+  Needs _ = ⊤
+
+  edgesWith : ∀ (g : Gen n) → level (actM g s) ≤ₗ L → Needs g → Path [ g ]ʷ s o
+  edgesWith (Z-gen c) _ _ = by (p FinP.<? c)
     where
     by : Dec (p < c) → Path (Zʷ c) s o
     by (yes p<c) = Ab.edge-Z c p<c
     by (no p≮c) = zEdge c (ℕP.≮⇒≥ p≮c)
-  edges (X-gen c d cd) _ = xAll c d cd
-  edges (H-gen c d cd) le = by (p FinP.<? d)
+  edgesWith (X-gen c d cd) _ _ = xAll c d cd
+  edgesWith (H-gen c d cd) le hard = by (p FinP.<? d)
     where
     by : Dec (p < d) → Path [ H-gen c d cd ]ʷ s o
     by (yes p<d) = Ab.edge-H c d cd p<d xAll
-    by (no p≮d) = hEdge c d cd (ℕP.≮⇒≥ p≮d) le
+    by (no p≮d) = hEdge c d cd (ℕP.≮⇒≥ p≮d) le hard
+
+  -- Given the hard edges of s.
+  edges : Hard′ s o eq → ∀ (g : Gen n) → level (actM g s) ≤ₗ L → Path [ g ]ʷ s o
+  edges hard (Z-gen c) le = edgesWith (Z-gen c) le tt
+  edges hard (X-gen c d cd) le = edgesWith (X-gen c d cd) le tt
+  edges hard (H-gen c d cd) le = edgesWith (H-gen c d cd) le (λ oc od r n4 → hard n4 c d cd oc od r)
 
 edgesAt : Hard → EdgesAt L
-edgesAt hard g M o eq le = At.edges hard M o eq g le
+edgesAt hard g M o eq le = At.edges M o eq (λ n4 → hard M o eq n4) g le

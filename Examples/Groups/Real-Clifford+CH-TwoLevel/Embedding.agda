@@ -26,7 +26,7 @@ import Presentation.Base as PB
 import Presentation.Properties as PP
 
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Local
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.LocalRelations
 
 private
   variable

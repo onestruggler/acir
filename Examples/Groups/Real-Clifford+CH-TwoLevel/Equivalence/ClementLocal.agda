@@ -34,7 +34,7 @@ import Presentation.Properties as PP
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Symmetric {n}
   using (Hs ; Xs ; HsT ; XsT ; Hs-< ; Hs-> ; Xs-< ; Xs-> ; τ ; τ-p ; τ-q ; τ-o)
-import Examples.Groups.Real-Clifford+CH-TwoLevel.Local as L
+import Examples.Groups.Real-Clifford+CH-TwoLevel.LocalRelations as L
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Clement
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Embedding using (Emb ; ι ; mono ; gen ; word)
 import Presentation.Tactics.Words as TW

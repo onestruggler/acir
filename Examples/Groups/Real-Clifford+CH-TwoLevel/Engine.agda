@@ -27,7 +27,7 @@ open import Data.Nat.Base using (ℕ)
 open import Word.Base using (Word ; WRel)
 import Presentation.Base as PB
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (Gen)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Local using (_===ˡ_)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.LocalRelations using (_===ˡ_)
 
 module Examples.Groups.Real-Clifford+CH-TwoLevel.Engine
   {n : ℕ} (Γ : WRel (Gen n)) (loc : ∀ {u v} → u ===ˡ v → PB._≈_ Γ u v) where
@@ -50,7 +50,7 @@ open import Presentation.Tactics.Words using (commutes ; module Commuting ; modu
 
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics
   using (X-gen ; K-gen ; i-gen ; H-gen ; Z-gen)
-import Examples.Groups.Real-Clifford+CH-TwoLevel.Local as L
+import Examples.Groups.Real-Clifford+CH-TwoLevel.LocalRelations as L
 
 open Associative using (word-of-list ; lemma-append)
 open PB Γ using (_≈_ ; refl ; sym ; trans ; cong ; assoc ; left-unit ; right-unit)

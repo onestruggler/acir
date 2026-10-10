@@ -40,7 +40,7 @@ import Presentation.Base as PB
 import Presentation.Properties as PP
 import Presentation.Tactics.Words as TW
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics
-import Examples.Groups.Real-Clifford+CH-TwoLevel.Local as L
+import Examples.Groups.Real-Clifford+CH-TwoLevel.LocalRelations as L
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Clement
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Embedding using (Emb ; ι ; word ; incl+ ; module Pull)
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Pairings as Pairings
