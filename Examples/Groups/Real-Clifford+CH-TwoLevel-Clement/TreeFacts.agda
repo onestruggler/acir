@@ -371,10 +371,21 @@ private
   double0 (+ suc q) ()
   double0 -[1+ q ] ()
 
-  √2-cancel : ∀ w → √2ᶻ ZR.* w ≡ ZR.0# → w ≡ ZR.0#
-  √2-cancel (RootTwo p q) e = cong₂ RootTwo (rt-b p0) (double0 q (rt-a p0))
-    where
-    p0 = trans (sym (√2*≡ p q)) e
+√2-cancel : ∀ w → √2ᶻ ZR.* w ≡ ZR.0# → w ≡ ZR.0#
+√2-cancel (RootTwo p q) e = cong₂ RootTwo (rt-b p0) (double0 q (rt-a p0))
+  where
+  p0 = trans (sym (√2*≡ p q)) e
+
+√2-inj : ∀ a b → √2ᶻ ZR.* a ≡ √2ᶻ ZR.* b → a ≡ b
+√2-inj a b e = trans (ZG.solve 2 (λ a b → a := b :+ (a :- b)) refl a b)
+                 (trans (cong (b ZR.+_) (√2-cancel (a ZR.- b) (trans (ZG.solve 2 (λ a b → con √2ᶻ :* (a :- b) := con √2ᶻ :* a :- con √2ᶻ :* b) refl a b)
+                                                                  (trans (cong (ZR._- (√2ᶻ ZR.* b)) e) (ZG.solve 1 (λ t → t :- t := con ZR.0#) refl (√2ᶻ ZR.* b))))))
+                   (ZG.solve 1 (λ b → b :+ con ZR.0# := b) refl b))
+
+pow-cancel : ∀ δ y y′ → (√2ᶻ ^ᶻ δ) ZR.* y ≡ (√2ᶻ ^ᶻ δ) ZR.* y′ → y ≡ y′
+pow-cancel zero y y′ e = trans (sym (ZR.*-identityˡ y)) (trans e (ZR.*-identityˡ y′))
+pow-cancel (suc δ) y y′ e =
+  pow-cancel δ y y′ (√2-inj _ _ (trans (sym (ZR.*-assoc √2ᶻ (√2ᶻ ^ᶻ δ) y)) (trans e (ZR.*-assoc √2ᶻ (√2ᶻ ^ᶻ δ) y′))))
 
 pow-odd-≢0 : ∀ δ y → oddᶻ y ≡ true → (√2ᶻ ^ᶻ δ) ZR.* y ≢ ZR.0#
 pow-odd-≢0 zero y o e = t≢f (trans (sym o) (cong oddᶻ (trans (sym (ZR.*-identityˡ y)) e)))

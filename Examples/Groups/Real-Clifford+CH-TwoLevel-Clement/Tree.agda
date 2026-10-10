@@ -194,13 +194,13 @@ countOK (just b) gs with noddF gs | clsF (oddSumF gs)
 ... | _ | _ = false
 
 -- Two tagged entries of depth δ′ whose quotients differ in class.
+isJustTrue : Maybe Bool → Bool
+isJustTrue (just true) = true
+isJustTrue _ = false
+
 pairOK : ℕ → Vec (Maybe ℕ) m → Vec (Form r) m → Fin m × Fin m → Bool
 pairOK δ′ tags fs (a , b) with tags ! a | tags ! b | halfFⁿ δ′ (fs ! a) | halfFⁿ δ′ (fs ! b)
-... | just δa | just δb | just qa | just qb = (δa ≡ᵇ δ′) ∧ (δb ≡ᵇ δ′) ∧ sameCls (clsF (qa ⊕ qb))
-  where
-  sameCls : Maybe Bool → Bool
-  sameCls (just true) = true
-  sameCls _ = false
+... | just δa | just δb | just qa | just qb = (δa ≡ᵇ δ′) ∧ (δb ≡ᵇ δ′) ∧ isJustTrue (clsF (qa ⊕ qb))
 ... | _ | _ | _ | _ = false
 
 pairsOK : ℕ → Vec (Maybe ℕ) m → Vec (Form r) m → List (Fin m × Fin m) → Bool
