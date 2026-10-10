@@ -31,10 +31,16 @@ open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 open import Data.Fin.Base using (Fin ; toℕ)
 open import Data.Product.Base using (_,_)
 open import Relation.Binary.PropositionalEquality using (_≡_)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction using (EdgesBelow)
+open import Quantum.Synthesis.Matrix using (Matrix)
+open import Word.Base using (Word)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (D)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (Gen)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics using (ColOrth)
+import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Framework as F
 
 module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Sound {n : ℕ} (p : Fin n) (k′ ℓ : ℕ)
-  (ih : EdgesBelow {n} (suc (toℕ p) , suc k′ , ℓ)) (ℓ4 : ℓ ≡ 4) where
+  (nw : (M : Matrix n n D) → .(ColOrth M) → Word (Gen n))
+  (ih : F.EdgesBelow p k′ ℓ nw) (plain : F.PlainEdges p k′ ℓ nw) (ℓ4 : ℓ ≡ 4) where
 
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; not ; if_then_else_ ; _xor_)
 open import Data.Empty using (⊥ ; ⊥-elim)
@@ -66,13 +72,13 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Clement using (_===ᶜ_)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Pivot using (level)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Derived {n} using (Z-Z)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path ; path-• ; nw ; nw-cong ; sound-act)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.PathTools {n} using (path-cong)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (sound-act)
+open F p k′ ℓ nw using (Path ; path-• ; nw-cong ; path-cong)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Local {n} using (module Emb ; upd₁-i ; upd₁-o ; upd₂-o)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Symmetric {n} using (Hs ; Xs ; Hs-comm)
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Equivalence as EQ
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.PairBase p k′ ℓ ih using (k ; L ; module State)
-import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Route p k′ ℓ ih as RT
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.PairLevels p k′ ℓ using (k ; L ; module State)
+import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Route p k′ ℓ nw ih plain as RT
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Forms
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Subst
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Check

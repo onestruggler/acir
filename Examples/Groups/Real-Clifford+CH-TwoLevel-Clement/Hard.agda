@@ -21,10 +21,16 @@
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 open import Data.Fin.Base using (Fin ; toℕ)
 open import Data.Product.Base using (_,_)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction using (EdgesBelow)
+open import Quantum.Synthesis.Matrix using (Matrix)
+open import Word.Base using (Word)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (D)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (Gen)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics using (ColOrth)
+import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Framework as F
 
 module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Hard {n : ℕ} (p : Fin n) (k′ ℓ : ℕ)
-  (ih : EdgesBelow {n} (suc (toℕ p) , suc k′ , ℓ)) where
+  (nw : (M : Matrix n n D) → .(ColOrth M) → Word (Gen n))
+  (ih : F.EdgesBelow p k′ ℓ nw) (plain : F.PlainEdges p k′ ℓ nw) where
 
 open import Data.Bool.Base using (Bool ; true ; false ; if_then_else_ ; _xor_)
 open import Data.Empty using (⊥ ; ⊥-elim)
@@ -57,9 +63,9 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Step using (same-class)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics renaming (Z to Zʷ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Pivot using (level)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path)
+open F p k′ ℓ nw using (Path)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Symmetric {n} using (Hs ; Hs-<)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.PairBase p k′ ℓ ih using (k ; L ; module State)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.PairLevels p k′ ℓ using (k ; L ; module State)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Forms
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Subst using (liftF ; ⟦liftF⟧ ; bitᶻ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Check
@@ -70,8 +76,7 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.NFs using (nfData)
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.TreeTop as TT
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.TreeNF38 as T38
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.TreeNF341 as T341
-import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Sound p k′ ℓ ih as S
-import Examples.Groups.Real-Clifford+CH-TwoLevel.PairEdges p k′ ℓ ih as PE
+import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Sound p k′ ℓ nw ih plain as S
 
 open ZG using (_:+_ ; _:*_ ; _:=_ ; con)
 
@@ -655,5 +660,5 @@ module Core (ℓ4 : ℓ ≡ 4) where
 ------------------------------------------------------------------------
 -- PairEdges.Hard
 
-hard : PE.Hard
+hard : F.Hard p k′ ℓ nw
 hard M o eq four c d cd oc od rcd = Core.hard′ (≡.trans (≡.sym (State.ℓM M o eq)) four) M o eq four c d cd oc od rcd

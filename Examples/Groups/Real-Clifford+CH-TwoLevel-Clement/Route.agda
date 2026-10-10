@@ -9,10 +9,11 @@
 -- its odd local entries (nodd-known): a known state lies below L when
 -- at most three local entries are odd, and at L when four are.
 --
--- An edge with both ends below L is given (ih).  One out of a state at
--- L is an edge at L (PairEdges.At.edgesWith), which needs, for an H,
--- that it is not hard: its two entries are not odd of different
--- classes (PlainAt).  One into a state at L is that edge backwards.
+-- The paths are over any normal words nw (Framework).  An edge with
+-- both ends below L is given (ih).  One out of a state at L is given
+-- when it is not hard: for an H, its two entries are not odd of
+-- different classes (plain).  One into a state at L is that edge
+-- backwards.
 -- The letters of a route are words of one generator, or X H X; the
 -- check (Check) gives the levels and the plainness each edge needs, so
 -- a route that passes the check from the forms of s is a path out of s
@@ -24,10 +25,16 @@
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 open import Data.Fin.Base using (Fin ; toℕ)
 open import Data.Product.Base using (_,_)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction using (EdgesBelow)
+open import Quantum.Synthesis.Matrix using (Matrix)
+open import Word.Base using (Word)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (D)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (Gen)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics using (ColOrth)
+import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Framework as F
 
 module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Route {n : ℕ} (p : Fin n) (k′ ℓ : ℕ)
-  (ih : EdgesBelow {n} (suc (toℕ p) , suc k′ , ℓ)) where
+  (nw : (M : Matrix n n D) → .(ColOrth M) → Word (Gen n))
+  (ih : F.EdgesBelow p k′ ℓ nw) (plain : F.PlainEdges p k′ ℓ nw) where
 
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_)
 open import Data.Empty using (⊥ ; ⊥-elim)
@@ -55,12 +62,12 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Pivot using (level ; _<ₗ_ ; <ₗ-irrefl ; pivot-char)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.States {n} using (level-of ; ne-𝕀)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Step using (scV-injective)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path ; path-ε ; path-• ; back ; act-gg ; _≤ₗ_)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (act-gg ; _≤ₗ_)
+open F p k′ ℓ nw using (Path ; path-ε ; path-• ; back ; PlainAt)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Local {n} using (upd₂ ; upd₂-i ; upd₂-j ; module Emb)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Symmetric {n} using (HsT ; XsT)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.PairBase p k′ ℓ ih
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.PairLevels p k′ ℓ
   using (k ; L ; X-low ; mono-L ; module State) renaming (low to below-L)
-import Examples.Groups.Real-Clifford+CH-TwoLevel.PairEdges p k′ ℓ ih as PE
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Forms using (Form)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Check
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Embed {n} using (count-emb ; module Known-at)
@@ -75,21 +82,7 @@ private
 ------------------------------------------------------------------------
 -- Edges of one generator
 
--- An H that is not hard at a state at L.
-PlainAt : (N : Matrix n n D) .(oN : ColOrth N) → level N ≡ L → Gen n → Set
-PlainAt N oN eqN (H-gen a b _) =
-  oddᶻ (State.W N oN eqN ! a) ≡ true → oddᶻ (State.W N oN eqN ! b) ≡ true →
-  rbit (State.W N oN eqN ! a) ≡ rbit (State.W N oN eqN ! b)
-PlainAt N oN eqN (X-gen _ _ _) = ⊤
-PlainAt N oN eqN (Z-gen _) = ⊤
-
 private
-  needs : (N : Matrix n n D) .(oN : ColOrth N) (eqN : level N ≡ L) (g : Gen n) →
-          PlainAt N oN eqN g → PE.At.Needs N oN eqN g
-  needs N oN eqN (H-gen a b ab) pl oa ob r _ = ⊥-elim (r (pl oa ob))
-  needs N oN eqN (X-gen _ _ _) _ = tt
-  needs N oN eqN (Z-gen _) _ = tt
-
   le-of : ∀ {x} → x <ₗ L ⊎ x ≡ L → x ≤ₗ L
   le-of (inj₁ lt) = inj₁ lt
   le-of (inj₂ eq) = inj₂ eq
@@ -102,11 +95,11 @@ gen-edge : (g : Gen n) (N : Matrix n n D) .(oN : ColOrth N) →
            (level N <ₗ L → (eqG : level (actM g N) ≡ L) → PlainAt (actM g N) (ColOrth-actMʷ [ g ]ʷ oN) eqG g) →
            Path [ g ]ʷ N oN
 gen-edge g N oN (inj₁ ltN) (inj₁ ltG) _ _ = ih g N oN ltN ltG
-gen-edge g N oN (inj₂ eqN) aG plN _ = PE.At.edgesWith N oN eqN g (le-of aG) (needs N oN eqN g (plN eqN))
+gen-edge g N oN (inj₂ eqN) aG plN _ = plain N oN eqN g (le-of aG) (plN eqN)
 gen-edge g N oN (inj₁ ltN) (inj₂ eqG) _ plG =
-  back g N oN (PE.At.edgesWith (actM g N) (ColOrth-actMʷ [ g ]ʷ oN) eqG g
+  back g N oN (plain (actM g N) (ColOrth-actMʷ [ g ]ʷ oN) eqG g
                  (inj₁ (≡.subst (_<ₗ L) (≡.sym (≡.cong level (act-gg g N))) ltN))
-                 (needs (actM g N) (ColOrth-actMʷ [ g ]ʷ oN) eqG g (plG ltN eqG)))
+                 (plG ltN eqG))
 
 ------------------------------------------------------------------------
 -- Routes on local indices of a state at L

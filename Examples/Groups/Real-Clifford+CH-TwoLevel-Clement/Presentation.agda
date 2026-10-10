@@ -19,7 +19,9 @@ open import Data.Nat.Base using (ℕ)
 module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Presentation {n : ℕ} where
 
 open import Algebra.Bundles using (Group)
+open import Data.Empty using (⊥-elim)
 open import Data.Product.Base using (_,_ ; proj₁ ; proj₂)
+open import Data.Unit.Base using (tt)
 import Function.Bundles as Fun
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 
@@ -32,17 +34,28 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Clement using (_===ᶜ_)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Derived {n} using (grouplike)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (sound-act)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (sound-act ; nw)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.MainLemma {n} using (Hard ; completeness-given)
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Presentation {n} as FHK
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Equivalence as EQ
+import Examples.Groups.Real-Clifford+CH-TwoLevel.PairEdges as PE
+import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Framework as F
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Hard as H
 
 ------------------------------------------------------------------------
 -- The case the paper leaves open, at every level
 
 hard : Hard
-hard p k′ ℓ ih = H.hard p k′ ℓ ih
+hard p k′ ℓ ih = H.hard p k′ ℓ nw ih plain
+  where
+  -- The edges at L that are not hard come from PairEdges.
+  plain : F.PlainEdges p k′ ℓ nw
+  plain N oN eqN g le pl = PE.At.edgesWith p k′ ℓ ih N oN eqN g le (needs g pl)
+    where
+    needs : (g : Gen n) → F.PlainAt p k′ ℓ nw N oN eqN g → PE.At.Needs p k′ ℓ ih N oN eqN g
+    needs (H-gen a b ab) pl oa ob r _ = ⊥-elim (r (pl oa ob))
+    needs (X-gen _ _ _) _ = tt
+    needs (Z-gen _) _ = tt
 
 ------------------------------------------------------------------------
 -- Figure 6
