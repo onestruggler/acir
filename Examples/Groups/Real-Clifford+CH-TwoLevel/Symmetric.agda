@@ -23,6 +23,7 @@ open import Data.Bool.Base using (if_then_else_)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base using (Fin ; _<_)
 import Data.Fin.Properties as FinP
+import Data.List.Base as List
 open import Data.List.Relation.Unary.All using (All ; [] ; _∷_)
 open import Data.Product.Base using (_,_)
 open import Function.Base using (_∘_)
@@ -163,6 +164,23 @@ Hs-flip {a = a} {b} a≢b = by-order a≢b
   (λ lt → trans (refl′ (Hs-> lt))
                 (sym (cong (refl′ (Xs-< lt)) (cong (refl′ (Hs-< lt)) (refl′ (Xs-< lt))))))
   (λ gt → sym (flip-gt gt))
+
+-- Hs on two pairs apart from each other commute.
+Hs-comm : p ≢ q → a ≢ b → p ≢ a → p ≢ b → q ≢ a → q ≢ b → Hs p q • Hs a b ≈ Hs a b • Hs p q
+Hs-comm {p = p} {q} {a} {b} pq ab pa pb qa qb = comm-words (Hs p q) (Hs a b) (ap (FinP.<-cmp p q) (FinP.<-cmp a b))
+  where
+  pr : ∀ {x y z w : Fin n} → x ≢ z → x ≢ w → y ≢ z → y ≢ w →
+       All (λ t → All (t ≢_) (z List.∷ w List.∷ List.[])) (x List.∷ y List.∷ List.[])
+  pr xz xw yz yw = (xz ∷ xw ∷ []) ∷ (yz ∷ yw ∷ []) ∷ []
+  ap : (t : Tri (p < q) (p ≡ q) (q < p)) (u : Tri (a < b) (a ≡ b) (b < a)) → Apartʷʷ (HsT p q t) (HsT a b u)
+  ap (tri≈ _ e _) _ = ⊥-elim (pq e)
+  ap _ (tri≈ _ e _) = ⊥-elim (ab e)
+  ap (tri< _ _ _) (tri< _ _ _) = pr pa pb qa qb
+  ap (tri< _ _ _) (tri> _ _ _) = pr pb pa qb qa , pr pb pa qb qa , pr pb pa qb qa
+  ap (tri> _ _ _) (tri< _ _ _) = pr qa qb pa pb , pr qa qb pa pb , pr qa qb pa pb
+  ap (tri> _ _ _) (tri> _ _ _) = (pr qb qa pb pa , pr qb qa pb pa , pr qb qa pb pa) ,
+                                 (pr qb qa pb pa , pr qb qa pb pa , pr qb qa pb pa) ,
+                                 (pr qb qa pb pa , pr qb qa pb pa , pr qb qa pb pa)
 
 ------------------------------------------------------------------------
 -- The transposition (p q)

@@ -421,6 +421,15 @@ core20ᶜ {n} ℓ inj with split {4} {n} (FinP.injective⇒≤ inj)
 -- A route built on a diagram: signs Q (on local indices other than
 -- lab 0), the diagram relabelled by lab, the letters undoing the signs, and
 -- with flip the letters exchanging the two indices of its H.
+-- The decorated route of a core, and its conjugate by H on two other
+-- indices.
+decoRoute : ∀ {k m} → Route (ℕ.suc (ℕ.suc k)) → (Fin (ℕ.suc (ℕ.suc k)) → Fin m) → List (Fin m) → Bool → Route m
+decoRoute core lab Q false = decorate (lab zero) (lab (suc zero)) Q (relabelR lab core)
+decoRoute core lab Q true = decoRoute core lab Q false ++ flipped (lab zero) (lab (suc zero))
+
+conjRoute : ∀ {m} → Fin m → Fin m → Route m → Route m
+conjRoute p q r = Hˡ p q ∷ (r ++ Hˡ p q ∷ [])
+
 module Leaf {n m : ℕ} (ι : Fin m → Fin n) (inj : ∀ {i j} → ι i ≡ ι j → i ≡ j) where
 
   open Placed ι using (wordR)
@@ -438,8 +447,7 @@ module Leaf {n m : ℕ} (ι : Fin m → Fin n) (inj : ∀ {i j} → ι i ≡ ι 
                     PB._≈_ (_===ᶜ_ {n}) (Placed.wordR ℓ core) (Sym.Hs (ℓ zero) (ℓ (suc zero)))) where
 
       route : (lab : Fin (ℕ.suc (ℕ.suc k)) → Fin m) → List (Fin m) → Bool → Route m
-      route lab Q false = decorate (lab zero) (lab (suc zero)) Q (relabelR lab core)
-      route lab Q true = route lab Q false ++ flipped (lab zero) (lab (suc zero))
+      route = decoRoute core
 
       relᶜ : (lab : Fin (ℕ.suc (ℕ.suc k)) → Fin m) → (∀ {i j} → lab i ≡ lab j → i ≡ j) →
              (Q : List (Fin m)) → All (_≢ lab zero) Q →
@@ -465,3 +473,23 @@ module Leaf {n m : ℕ} (ι : Fin m → Fin n) (inj : ∀ {i j} → ι i ≡ ι 
     renaming (route to route30 ; relᶜ to route30-relᶜ ; rel to route30-rel ; rel-flip to route30-flip)
   open Gen-route (fromGens D20.Route) core20ᶜ public
     renaming (route to route20 ; relᶜ to route20-relᶜ ; rel to route20-rel ; rel-flip to route20-flip)
+
+  -- Conjugating by H on two indices apart from those of the relation.
+  conj-rel : ∀ (p q a b : Fin m) → p ≢ q → a ≢ b → p ≢ a → p ≢ b → q ≢ a → q ≢ b → ∀ r →
+             PB._≈_ (_===_ {n}) (wordR r) (Sym.Hs (ι a) (ι b)) →
+             PB._≈_ (_===_ {n}) (wordR (conjRoute p q r)) (Sym.Hs (ι a) (ι b))
+  conj-rel p q a b pq ab pa pb qa qb r h = begin
+    wordR (r ++ Hˡ p q ∷ []) • Hpq           ≈⟨ cleft Words.wordR-++ (_===_ {n}) ι r (Hˡ p q ∷ []) ⟩
+    ((ε • Hpq) • wordR r) • Hpq              ≈⟨ cleft cong left-unit h ⟩
+    (Hpq • Hab) • Hpq                        ≈⟨ cleft Sym.Hs-comm (ι≢ pq) (ι≢ ab) (ι≢ pa) (ι≢ pb) (ι≢ qa) (ι≢ qb) ⟩
+    (Hab • Hpq) • Hpq                        ≈⟨ assoc ⟩
+    Hab • (Hpq • Hpq)                        ≈⟨ cright Sym.Hs-Hs (ι≢ pq) ⟩
+    Hab • ε                                  ≈⟨ right-unit ⟩
+    Hab                                      ∎
+    where
+    open PB (_===_ {n}) hiding (_===_)
+    open import Relation.Binary.Reasoning.Setoid (PP.word-setoid (_===_ {n}))
+    ι≢ : ∀ {i j} → i ≢ j → ι i ≢ ι j
+    ι≢ ne e = ne (inj e)
+    Hpq = Sym.Hs (ι p) (ι q)
+    Hab = Sym.Hs (ι a) (ι b)
