@@ -31,6 +31,7 @@ open import Relation.Nullary.Decidable using (does)
 
 open import Quantum.Synthesis.Ring using (RootTwo)
 open import Examples.Groups.Clifford+CS-TwoLevel.Ring using (oddℕ ; oddℕ-+ ; oddℤ ; evenℤ-half)
+import Examples.Groups.Clifford+CS-TwoLevel.Ring
 open import Examples.Groups.Clifford+CS-TwoLevel.Vector using (_!_)
 open import Examples.Groups.Clifford+CS-TwoLevel.Search using (count ; count-drop₂)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring
@@ -402,3 +403,16 @@ pow-odd-≢0 (suc δ) y o e = pow-odd-≢0 δ y o (√2-cancel ((√2ᶻ ^ᶻ δ
 ⟦newF₀⟧ δ v ρ = trans (⟦⊛⟧ (√2ᶻ ^ᶻ δ) (form ZR.1# (√2ᶻ ∷ Vec.replicate _ ZR.0#)) (v ∷ ρ)) (cong ((√2ᶻ ^ᶻ δ) ZR.*_)
   (trans (cong (λ t → ZR.1# ZR.+ (√2ᶻ ZR.* v ZR.+ t)) (dot-zero ρ))
     (ZG.solve 1 (λ t → con ZR.1# :+ (t :+ con ZR.0#) := con ZR.1# :+ t) refl (√2ᶻ ZR.* v))))
+
+-- Halving √2 times an element.
+halfZ-√2 : ∀ y → halfZ (√2ᶻ ZR.* y) ≡ just y
+halfZ-√2 y = go (halfZ-even (√2ᶻ ZR.* y) (oddᶻ-*′ y))
+  where
+  oddᶻ-*′ : ∀ y → oddᶻ (√2ᶻ ZR.* y) ≡ false
+  oddᶻ-*′ (RootTwo p q) = cong oddᶻ (√2*≡ p q) ∙ oddℤ-double′ q
+    where
+    _∙_ = trans
+    oddℤ-double′ : ∀ q → oddᶻ (RootTwo (q ℤ.+ q) p) ≡ false
+    oddℤ-double′ q = Examples.Groups.Clifford+CS-TwoLevel.Ring.oddℤ-double q
+  go : (∃ λ y′ → halfZ (√2ᶻ ZR.* y) ≡ just y′) → halfZ (√2ᶻ ZR.* y) ≡ just y
+  go (y′ , h) = trans h (cong just (sym (√2-inj y y′ (halfZ-sound (√2ᶻ ZR.* y) h))))

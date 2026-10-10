@@ -21,7 +21,8 @@ open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; _xor_ ; not)
 open import Data.Integer.Base as ℤ using (ℤ)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
 open import Data.Nat.Base using (ℕ ; zero ; suc)
-open import Data.Product.Base using (proj₁ ; proj₂)
+open import Data.Product.Base using (∃ ; _,_ ; proj₁ ; proj₂)
+open import Data.Empty using (⊥-elim)
 open import Data.Vec.Base as Vec using (Vec ; [] ; _∷_)
 open import Relation.Binary.PropositionalEquality
 
@@ -113,6 +114,17 @@ halfZ (RootTwo a b) = halfZ′ a b (oddℤ a) refl
 
 halfZ-sound : ∀ x {y} → halfZ x ≡ just y → x ≡ √2ᶻ ZR.* y
 halfZ-sound (RootTwo a b) = halfZ′-sound a b (oddℤ a) refl
+
+-- An even element halves.
+halfZ-even : ∀ x → oddᶻ x ≡ false → ∃ λ y → halfZ x ≡ just y
+halfZ-even (RootTwo a b) e = go (oddℤ a) refl e
+  where
+  go : ∀ o (eo : oddℤ a ≡ o) → oddℤ a ≡ false → ∃ λ y → halfZ′ a b o eo ≡ just y
+  go false eo _ = _ , refl
+  go true eo e′ = ⊥-elim (t≢f (trans (sym eo) e′))
+    where
+    t≢f : true ≢ false
+    t≢f ()
 
 halfV : Vec Z r → Maybe (Vec Z r)
 halfV [] = just []

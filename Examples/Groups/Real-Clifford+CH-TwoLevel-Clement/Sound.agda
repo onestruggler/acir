@@ -480,7 +480,8 @@ module Main (nfData : (nf : NF) → NFData nf) (allow : NF → Bool) (nfThm : �
     stepF g fs ≡ just fs′ → stepF (Hˡ ic id) fs ≡ just fcd → apart ic id g ≡ true → check (g ∷ []) fs ≡ true →
     kindF fs′ ≡ just atL → check (conjLetter ic id g ∷ []) fcd ≡ true →
     ∀ s .(o : ColOrth s) (eq : level s ≡ L) (w : Win m s) → ⟦ fs ⟧ᵛ ρ ≡ locW w → TagsOK s w tags → (mini ≡ true → Minimal s) →
-    (∀ N .(oN : ColOrth N) (eqN : level N ≡ L) (wN : Win m N) → ⟦ fs′ ⟧ᵛ ρ ≡ locW wN →
+    (∀ N .(oN : ColOrth N) (eqN : level N ≡ L) (wN : Win m N) → ι wN ≡ ι w → ⟦ fs′ ⟧ᵛ ρ ≡ locW wN →
+       (∀ x → (∀ i → ι w i ≢ x) → Wn N ! x ≡ Wn s ! x) →
        TagsOK N wN (tagsAfter g tags) → (miniAfter g mini ≡ true → Minimal N) → Goal N oN wN ic id) →
     Goal s o w ic id
   conj-case g tags mini ic id fs fs′ fcd ρ icd st sc ap cg ka cl s o eq w eqv tg mn rec =
@@ -530,7 +531,7 @@ module Main (nfData : (nf : NF) → NFData nf) (allow : NF → Bool) (nfThm : �
     mini-after (Hˡ u v) _ stp′ ()
     mini-after (Xˡ a b) () stp′ m≡
     recN : Path (Hs (ι w ic) (ι w id)) N (ColOrth-actMʷ (wordL g) o)
-    recN = rec N (ColOrth-actMʷ (wordL g) o) eqN NX.win′ NX.loc′ (tags-after g ap stp) (mini-after g ap stp)
+    recN = rec N (ColOrth-actMʷ (wordL g) o) eqN NX.win′ ≡.refl NX.loc′ NX.outside (tags-after g ap stp) (mini-after g ap stp)
     pG : Path (wordL g) s o
     pG = letter g fs ρ o cg K
     Kcd = known-step (Hˡ ic id) icd (stepF-sound (Hˡ ic id) fs sc ρ) K
@@ -735,8 +736,8 @@ module Main (nfData : (nf : NF) → NFData nf) (allow : NF → Bool) (nfThm : �
             Goal s o w ic id
       go′ (fcd , sc , ok-c2) =
         conj-case g tags mini ic id fs fs′ fcd ρ icd st sc ap cg ka cl s o eq w eqv tg mn
-          (λ N oN eqN wN eqvN tgN mnN → sound t (tagsAfter g tags) (miniAfter g mini) ic id fs′ ρ
-                                           (snd (conjOK ic id g fs) ok-c1) icd N oN eqN wN eqvN tgN mnN)
+          (λ N oN eqN wN _ eqvN _ tgN mnN → sound t (tagsAfter g tags) (miniAfter g mini) ic id fs′ ρ
+                                             (snd (conjOK ic id g fs) ok-c1) icd N oN eqN wN eqvN tgN mnN)
         where
         ap = fst (apart ic id g) ok-c2
         ok-c3 = snd (apart ic id g) ok-c2

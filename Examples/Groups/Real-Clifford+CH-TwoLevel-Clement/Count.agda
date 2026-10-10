@@ -65,29 +65,28 @@ count-exists P pos with first P in f
 ... | just x = x , proj₁ (first-just P f)
 ... | nothing = ⊥-elim (ℕP.<-irrefl (≡.sym (count-false P (first-nothing P f))) pos)
 
-private
-  ind : Bool → ℕ
-  ind b = if b then 1 else 0
+ind : Bool → ℕ
+ind b = if b then 1 else 0
 
-  -- Changing one index of a predicate.
-  count-replace : ∀ {k} (P Q : Fin k → Bool) (a : Fin k) → (∀ x → x ≢ a → P x ≡ Q x) →
-                  count P ℕ.+ ind (Q a) ≡ count Q ℕ.+ ind (P a)
-  count-replace P Q a agree with P a in pa | Q a in qa
-  ... | true | true = ≡.cong (ℕ._+ 1) (count-cong P Q at)
-    where
-    at : ∀ x → P x ≡ Q x
-    at x with x FinP.≟ a
-    ... | yes ≡.refl = ≡.trans pa (≡.sym qa)
-    ... | no x≢a = agree x x≢a
-  ... | false | false = ≡.cong (ℕ._+ 0) (count-cong P Q at)
-    where
-    at : ∀ x → P x ≡ Q x
-    at x with x FinP.≟ a
-    ... | yes ≡.refl = ≡.trans pa (≡.sym qa)
-    ... | no x≢a = agree x x≢a
-  ... | true | false = ≡.trans (ℕP.+-identityʳ (count P)) (≡.trans (count-drop P Q a pa qa agree) (ℕP.+-comm 1 (count Q)))
-  ... | false | true = ≡.trans (ℕP.+-comm (count P) 1) (≡.trans (≡.sym (count-drop Q P a qa pa (λ x x≢a → ≡.sym (agree x x≢a))))
-                                                                 (≡.sym (ℕP.+-identityʳ (count Q))))
+-- Changing one index of a predicate.
+count-replace : ∀ {k} (P Q : Fin k → Bool) (a : Fin k) → (∀ x → x ≢ a → P x ≡ Q x) →
+                count P ℕ.+ ind (Q a) ≡ count Q ℕ.+ ind (P a)
+count-replace P Q a agree with P a in pa | Q a in qa
+... | true | true = ≡.cong (ℕ._+ 1) (count-cong P Q at)
+  where
+  at : ∀ x → P x ≡ Q x
+  at x with x FinP.≟ a
+  ... | yes ≡.refl = ≡.trans pa (≡.sym qa)
+  ... | no x≢a = agree x x≢a
+... | false | false = ≡.cong (ℕ._+ 0) (count-cong P Q at)
+  where
+  at : ∀ x → P x ≡ Q x
+  at x with x FinP.≟ a
+  ... | yes ≡.refl = ≡.trans pa (≡.sym qa)
+  ... | no x≢a = agree x x≢a
+... | true | false = ≡.trans (ℕP.+-identityʳ (count P)) (≡.trans (count-drop P Q a pa qa agree) (ℕP.+-comm 1 (count Q)))
+... | false | true = ≡.trans (ℕP.+-comm (count P) 1) (≡.trans (≡.sym (count-drop Q P a qa pa (λ x x≢a → ≡.sym (agree x x≢a))))
+                                                               (≡.sym (ℕP.+-identityʳ (count Q))))
 
 -- The count over an embedding: inside, then outside.
 count-embP : ∀ {m} (ι : Fin m → Fin n) (inj : ∀ {i j} → ι i ≡ ι j → i ≡ j) (P : Z → Bool) → P ZR.0# ≡ false →
