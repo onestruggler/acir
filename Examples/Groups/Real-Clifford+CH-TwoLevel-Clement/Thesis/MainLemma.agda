@@ -9,8 +9,8 @@
 -- the pivot p of M, then g·M has pivot d and lies above L: this does
 -- not occur.  Otherwise g acts on indices ≤ p, and the edge is a path
 -- by Cases 1–3 when g is basic, and through the basic edges at L
--- (Basic) when it is not.  Subcases 1.14.2 and 3.4 are hypotheses here
--- (Hyps), proved in Case1142 and Case34.
+-- (Basic) when it is not.  Subcase 3.4 is Case34; Subcase 1.14.2 is a
+-- hypothesis here (Hyps), proved in Case1142.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -55,6 +55,7 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Basic {n} u
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Case1 as Case1
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Case2 as Case2
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Case3 as Case3
+import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Case34 as Case34
 
 open PB (_===_ {n}) using (_≈_)
 
@@ -65,9 +66,23 @@ private
 ------------------------------------------------------------------------
 -- The induction step
 
--- Subcases 1.14.2 and 3.4, at every level.
+-- Subcase 1.14.2, at every level.
 Hyps : Set
-Hyps = ∀ L (ih : EdgesBelow L) → Case1.Hyp1142 {n} ih × Case3.Hyp34 {n} ih
+Hyps = ∀ L (ih : EdgesBelow L) → Case1.Hyp1142 {n} ih
+
+-- Subcase 3.4 (Case34), given 1.14.2: the level of a state with a
+-- positive exponent has the form Case34 asks for.
+hyp34 : Hyps → ∀ {L} (ih : EdgesBelow L) → Case3.Hyp34 {n} ih
+hyp34 hyps {L} ih s o {q} pv eq t0 t1 z01 z₁≤q le k″ eK o0 o1 r01 =
+  Case34.hyp34 q k″ ℓ₁ ih₁ (hyps L₁ ih₁) s o pv (≡.trans eq L≡) t0 t1 z01 z₁≤q (≡.subst (levelᶜ (actM (H-gen _ _ z01) s) ≤ₗ_) L≡ le)
+    k″ eK o0 o1 r01
+  where
+  ℓ₁ = third (lde (col s q)) (num (col s q))
+  L₁ = suc (toℕ q) , suc k″ , ℓ₁
+  L≡ : L ≡ L₁
+  L≡ = ≡.trans (≡.sym eq) (≡.trans (levelᶜ-just s pv) (≡.cong (λ K → suc (toℕ q) , K , ℓ₁) eK))
+  ih₁ : EdgesBelow L₁
+  ih₁ = ≡.subst EdgesBelow L≡ ih
 
 private
   -- A level with pivot index d + 1 is not at or below one with a
@@ -109,8 +124,8 @@ edge-step hyps L ih g M o eq le = at (pivot M) ≡.refl
     L′ = suc (toℕ p) , k , ℓ
     ih′ : EdgesBelow L′
     ih′ = ≡.subst EdgesBelow L≡ ih
-    h1142 = proj₁ (hyps L′ ih′)
-    h34 = proj₂ (hyps L′ ih′)
+    h1142 = hyps L′ ih′
+    h34 = hyp34 hyps ih′
     -- The basic edges at L′.
     basicAt : BasicAt L′
     basicAt g′ bg M′ o′ eq′ le′ = at′ (pivot M′) ≡.refl
@@ -136,6 +151,6 @@ edge-step hyps L ih g M o eq le = at (pivot M) ≡.refl
     within : top g ≤ p → Path [ g ]ʷ M o
     within tg = Conj.edge-le p k ℓ ih′ basicAt g tg M o (inj₂ (≡.trans eq L≡)) (≡.subst (levelᶜ (actM g M) ≤ₗ_) L≡ le)
 
--- Theorem 4.1, given the two subcases.
+-- Theorem 4.1, given Subcase 1.14.2.
 completeness-given : Hyps → {u v : Word (Gen n)} → ⟦ u ⟧ᵐ ≡ ⟦ v ⟧ᵐ → u ≈ v
 completeness-given hyps = completeness (edge-step hyps)
