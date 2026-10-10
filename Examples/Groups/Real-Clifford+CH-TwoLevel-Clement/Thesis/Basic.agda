@@ -230,22 +230,37 @@ module Le (p : Fin n) (k ℓ : ℕ) where
 ------------------------------------------------------------------------
 -- Every edge from the basic ones
 
--- The basic edges out of the states at L that do not go up.
+-- The basic edges out of the states at L that do not go up, and are Ok.
+BasicAtOk : Lvl → (Gen n → Matrix n n D → Set) → Set
+BasicAtOk L Ok = ∀ (g : Gen n) → Basic g → ∀ M .(o : ColOrth M) → levelᶜ M ≡ L → levelᶜ (actM g M) ≤ₗ L →
+                 Ok g M → Path [ g ]ʷ M o
+
 BasicAt : Lvl → Set
 BasicAt L = ∀ (g : Gen n) → Basic g → ∀ M .(o : ColOrth M) → levelᶜ M ≡ L → levelᶜ (actM g M) ≤ₗ L →
             Path [ g ]ʷ M o
 
-module Conj (p : Fin n) (k ℓ : ℕ) (ih : EdgesBelow (suc (toℕ p) , k , ℓ)) (basicAt : BasicAt (suc (toℕ p) , k , ℓ)) where
+-- Ok is a property of edges that every X has, and that conjugation
+-- carries from H[b,c] to H[a,c] (by X[a,b]) and from H[a,c] to H[a,b]
+-- (by X[b,c]), and from an edge going up to L to the edge back.  (All
+-- edges, or those that are not hard.)
+module ConjOk (p : Fin n) (k ℓ : ℕ) (ih : EdgesBelow (suc (toℕ p) , k , ℓ))
+  (Ok : Gen n → Matrix n n D → Set)
+  (ok-X : ∀ a b .(ab : a < b) M → Ok (X-gen a b ab) M)
+  (ok-c4 : ∀ {a b c} .(ab : a < b) .(bc : b < c) .(ac : a < c) M → Ok (H-gen b c bc) M → Ok (H-gen a c ac) (actM (X-gen a b ab) M))
+  (ok-c5 : ∀ {a b c} .(ab : a < b) .(bc : b < c) .(ac : a < c) M → Ok (H-gen a c ac) M → Ok (H-gen a b ab) (actM (X-gen b c bc) M))
+  (ok-back : ∀ g M .(o : ColOrth M) → levelᶜ M <ₗ (suc (toℕ p) , k , ℓ) → levelᶜ (actM g M) ≡ (suc (toℕ p) , k , ℓ) →
+             Ok g M → Ok g (actM g M))
+  (basicAt : BasicAtOk (suc (toℕ p) , k , ℓ) Ok) where
 
   open Le p k ℓ
 
   -- Basic edges with both ends at or below L.
-  basicLE : (g : Gen n) → Basic g → ∀ M .(o : ColOrth M) → levelᶜ M ≤ₗ L → levelᶜ (actM g M) ≤ₗ L → Path [ g ]ʷ M o
-  basicLE g bg M o (inj₂ eM) le = basicAt g bg M o eM le
-  basicLE g bg M o (inj₁ lM) (inj₁ lG) = ih g M o lM lG
-  basicLE g bg M o (inj₁ lM) (inj₂ eG) =
+  basicLE : (g : Gen n) → Basic g → ∀ M .(o : ColOrth M) → levelᶜ M ≤ₗ L → levelᶜ (actM g M) ≤ₗ L → Ok g M → Path [ g ]ʷ M o
+  basicLE g bg M o (inj₂ eM) le ok = basicAt g bg M o eM le ok
+  basicLE g bg M o (inj₁ lM) (inj₁ lG) ok = ih g M o lM lG
+  basicLE g bg M o (inj₁ lM) (inj₂ eG) ok =
     back g M o (basicAt g bg (actM g M) (ColOrth-actMʷ [ g ]ʷ o) eG
-                  (inj₁ (≡.subst (_<ₗ L) (≡.sym (≡.cong levelᶜ (act-gg g M))) lM)))
+                  (inj₁ (≡.subst (_<ₗ L) (≡.sym (≡.cong levelᶜ (act-gg g M))) lM)) (ok-back g M o lM eG ok))
 
   -- The level after u, from a relation u ≈ v.
   level-via : ∀ {u v} → u ≈ v → (M : Matrix n n D) → levelᶜ (actMʷ v M) ≤ₗ L → levelᶜ (actMʷ u M) ≤ₗ L
@@ -254,7 +269,7 @@ module Conj (p : Fin n) (k ℓ : ℕ) (ih : EdgesBelow (suc (toℕ p) , k , ℓ)
   -- X[a,c], with c = a + gap + 1.
   xLE : ∀ gap (a c : Fin n) (ac : a < c) → toℕ c ≡ suc (gap ℕ.+ toℕ a) → c ≤ p →
         ∀ M .(o : ColOrth M) → levelᶜ M ≤ₗ L → levelᶜ (actM (X-gen a c ac) M) ≤ₗ L → Path (X a c ac) M o
-  xLE zero a c ac eq c≤p M o lM lX = basicLE (X-gen a c ac) eq M o lM lX
+  xLE zero a c ac eq c≤p M o lM lX = basicLE (X-gen a c ac) eq M o lM lX (ok-X a c ac M)
   xLE (suc g) a c ac eq c≤p M o lM lX = path-cong (sym rel) M o pw
     where
     m = suc (g ℕ.+ toℕ a)
@@ -291,10 +306,10 @@ module Conj (p : Fin n) (k ℓ : ℕ) (ih : EdgesBelow (suc (toℕ p) , k , ℓ)
     l₃ = level-via (sym rel) M lX
     pw : Path (X b c bc • X a b ab • X b c bc) M o
     pw = path-• (X b c bc) (X a b ab • X b c bc) M o
-           (basicLE (X-gen b c bc) adj (actM (X-gen a b ab) M₁) (ColOrth-actMʷ (X a b ab • X b c bc) o) l₂ l₃)
+           (basicLE (X-gen b c bc) adj (actM (X-gen a b ab) M₁) (ColOrth-actMʷ (X a b ab • X b c bc) o) l₂ l₃ (ok-X b c bc _))
            (path-• (X a b ab) (X b c bc) M o
              (xLE g a b ab tb b≤p M₁ (ColOrth-actMʷ (X b c bc) o) l₁ l₂)
-             (basicLE (X-gen b c bc) adj M o lM l₁))
+             (basicLE (X-gen b c bc) adj M o lM l₁ (ok-X b c bc M)))
 
   -- Any X[a,c] with c ≤ p.
   xAny : (a c : Fin n) (ac : a < c) → c ≤ p →
@@ -322,8 +337,9 @@ module Conj (p : Fin n) (k ℓ : ℕ) (ih : EdgesBelow (suc (toℕ p) , k , ℓ)
 
   -- H[0,b] with b > 1: X[1,b] H[0,1] X[1,b], by (c5).
   h0LE : (a b : Fin n) (ab : a < b) → toℕ a ≡ 0 → 1 ℕ.< toℕ b → b ≤ p →
-         ∀ M .(o : ColOrth M) → levelᶜ M ≤ₗ L → levelᶜ (actM (H-gen a b ab) M) ≤ₗ L → Path (H a b ab) M o
-  h0LE a b ab ta 1<b b≤p M o lM lH = path-cong (sym rel) M o pw
+         ∀ M .(o : ColOrth M) → levelᶜ M ≤ₗ L → levelᶜ (actM (H-gen a b ab) M) ≤ₗ L → Ok (H-gen a b ab) M →
+         Path (H a b ab) M o
+  h0LE a b ab ta 1<b b≤p M o lM lH ok = path-cong (sym rel) M o pw
     where
     open Two {b} (ℕP.<⇒≤ 1<b)
     a≡z₀ : a ≡ z₀
@@ -350,22 +366,26 @@ module Conj (p : Fin n) (k ℓ : ℕ) (ih : EdgesBelow (suc (toℕ p) , k , ℓ)
     l₂ = level-via rel₂ M (perm z₁ b 1b b≤p (actM (H-gen a b ab) M) lH)
     l₃ : levelᶜ (actM (X-gen z₁ b 1b) (actM (H-gen z₀ z₁ z01) M₁)) ≤ₗ L
     l₃ = level-via (sym rel) M lH
+    ok₁ : Ok (H-gen z₀ z₁ z01) M₁
+    ok₁ = ok-c5 z01 1b (FinP.<-trans z01 1b) M
+            (≡.subst (λ x → ∀ .(xb : x < b) → Ok (H-gen x b xb) M) a≡z₀ (λ _ → ok) (FinP.<-trans z01 1b))
     pw : Path (X1b • H01 • X1b) M o
     pw = path-• X1b (H01 • X1b) M o
            (xAny z₁ b 1b b≤p (actM (H-gen z₀ z₁ z01) M₁) (ColOrth-actMʷ (H01 • X1b) o) l₂ l₃)
-           (path-• H01 X1b M o (basicLE (H-gen z₀ z₁ z01) (t₀ , t₁) M₁ (ColOrth-actMʷ X1b o) l₁ l₂)
+           (path-• H01 X1b M o (basicLE (H-gen z₀ z₁ z01) (t₀ , t₁) M₁ (ColOrth-actMʷ X1b o) l₁ l₂ ok₁)
              (xAny z₁ b 1b b≤p M o lM l₁))
 
   -- H[a,b], not H[0,1]: X[0,a] H[0,b] X[0,a] when a > 0, by (c4).
   hLE : (a b : Fin n) (ab : a < b) → ¬ (toℕ a ≡ 0 × toℕ b ≡ 1) → b ≤ p →
-        ∀ M .(o : ColOrth M) → levelᶜ M ≤ₗ L → levelᶜ (actM (H-gen a b ab) M) ≤ₗ L → Path (H a b ab) M o
-  hLE a b ab nb b≤p M o lM lH = dec-elim (toℕ a ℕP.≟ 0) at0 pos
+        ∀ M .(o : ColOrth M) → levelᶜ M ≤ₗ L → levelᶜ (actM (H-gen a b ab) M) ≤ₗ L → Ok (H-gen a b ab) M →
+        Path (H a b ab) M o
+  hLE a b ab nb b≤p M o lM lH ok = dec-elim (toℕ a ℕP.≟ 0) at0 pos
     where
     -- b > 1 unless (a, b) = (0, 1).
     1<b : toℕ a ≡ 0 → 1 ℕ.< toℕ b
     1<b ta = ℕP.≤∧≢⇒< (≡.subst (ℕ._< toℕ b) ta ab) (λ e → nb (ta , ≡.sym e))
     at0 : toℕ a ≡ 0 → Path (H a b ab) M o
-    at0 ta = h0LE a b ab ta (1<b ta) b≤p M o lM lH
+    at0 ta = h0LE a b ab ta (1<b ta) b≤p M o lM lH ok
     pos : toℕ a ≢ 0 → Path (H a b ab) M o
     pos a≢0 = path-cong (sym rel) M o pw
       where
@@ -401,20 +421,32 @@ module Conj (p : Fin n) (k ℓ : ℕ) (ih : EdgesBelow (suc (toℕ p) , k , ℓ)
       pw : Path (X0a • H0b • X0a) M o
       pw = path-• X0a (H0b • X0a) M o
              (xAny z₀ a za a≤p (actM (H-gen z₀ b zb) M₁) (ColOrth-actMʷ (H0b • X0a) o) l₂ l₃)
-             (path-• H0b X0a M o (h0LE z₀ b zb t₀ 1<b′ b≤p M₁ (ColOrth-actMʷ X0a o) l₁ l₂)
+             (path-• H0b X0a M o (h0LE z₀ b zb t₀ 1<b′ b≤p M₁ (ColOrth-actMʷ X0a o) l₁ l₂ (ok-c4 za ab zb M ok))
                (xAny z₀ a za a≤p M o lM l₁))
 
   -- The generators that are not basic.
   other : (g : Gen n) → ¬ Basic g → top g ≤ p →
-          ∀ M .(o : ColOrth M) → levelᶜ M ≤ₗ L → levelᶜ (actM g M) ≤ₗ L → Path [ g ]ʷ M o
+          ∀ M .(o : ColOrth M) → levelᶜ M ≤ₗ L → levelᶜ (actM g M) ≤ₗ L → Ok g M → Path [ g ]ʷ M o
   other (Z-gen a) nb _ = ⊥-elim (nb tt)
-  other (X-gen a c ac) nb tg M o lM lG = xAny a c (rc ac) tg M o lM lG
-  other (H-gen a b ab) nb tg M o lM lG = hLE a b (rc ab) nb tg M o lM lG
+  other (X-gen a c ac) nb tg M o lM lG _ = xAny a c (rc ac) tg M o lM lG
+  other (H-gen a b ab) nb tg M o lM lG ok = hLE a b (rc ab) nb tg M o lM lG ok
 
-  -- Every edge on indices ≤ p with both ends at or below L.
-  edge-le : (g : Gen n) → top g ≤ p → ∀ M .(o : ColOrth M) → levelᶜ M ≤ₗ L → levelᶜ (actM g M) ≤ₗ L → Path [ g ]ʷ M o
-  edge-le g tg M o lM lG = by (basic? g)
+  -- Every Ok edge on indices ≤ p with both ends at or below L.
+  edge-le : (g : Gen n) → top g ≤ p → ∀ M .(o : ColOrth M) → levelᶜ M ≤ₗ L → levelᶜ (actM g M) ≤ₗ L → Ok g M →
+            Path [ g ]ʷ M o
+  edge-le g tg M o lM lG ok = by (basic? g)
     where
     by : Dec (Basic g) → Path [ g ]ʷ M o
-    by (yes bg) = basicLE g bg M o lM lG
-    by (no nb) = other g nb tg M o lM lG
+    by (yes bg) = basicLE g bg M o lM lG ok
+    by (no nb) = other g nb tg M o lM lG ok
+
+-- All edges are Ok.
+module Conj (p : Fin n) (k ℓ : ℕ) (ih : EdgesBelow (suc (toℕ p) , k , ℓ)) (basicAt : BasicAt (suc (toℕ p) , k , ℓ)) where
+
+  private
+    module C = ConjOk p k ℓ ih (λ _ _ → ⊤) (λ _ _ _ _ → tt) (λ _ _ _ _ _ → tt) (λ _ _ _ _ _ → tt) (λ _ _ _ _ _ _ → tt)
+                 (λ g bg M o e le _ → basicAt g bg M o e le)
+
+  edge-le : (g : Gen n) → top g ≤ p → ∀ M .(o : ColOrth M) → levelᶜ M ≤ₗ (suc (toℕ p) , k , ℓ) →
+            levelᶜ (actM g M) ≤ₗ (suc (toℕ p) , k , ℓ) → Path [ g ]ʷ M o
+  edge-le g tg M o lM lG = C.edge-le g tg M o lM lG tt

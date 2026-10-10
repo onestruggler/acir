@@ -13,7 +13,7 @@
 --   here: only the edges that do not go up are asked for.
 -- * 3.3: both odd, of one class: G is the syllable of s (prograde).
 -- * 3.4: both odd, of different classes: a hypothesis here (Hyp34),
---   proved in Case34.
+--   proved in Case34, at s.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -104,9 +104,13 @@ Hyp34 = ∀ (s : Matrix n n D) .(o : ColOrth s) {p : Fin n} (pv : pivot s ≡ ju
 ------------------------------------------------------------------------
 -- The edge H[0,1] out of s
 
-module Edge (h34 : Hyp34) (s : Matrix n n D) .(o : ColOrth s) {p : Fin n} (pv : pivot s ≡ just p) (eqL : levelᶜ s ≡ L)
+module Edge (s : Matrix n n D) .(o : ColOrth s) {p : Fin n} (pv : pivot s ≡ just p) (eqL : levelᶜ s ≡ L)
             {z₀ z₁ : Fin n} (t0 : toℕ z₀ ≡ 0) (t1 : toℕ z₁ ≡ 1) (z₁≤p : z₁ ≤ p)
-            (le : levelᶜ (actM (H-gen z₀ z₁ (≡.subst₂ ℕ._<_ (≡.sym t0) (≡.sym t1) (s≤s z≤n))) s) ≤ₗ L) where
+            (le : levelᶜ (actM (H-gen z₀ z₁ (≡.subst₂ ℕ._<_ (≡.sym t0) (≡.sym t1) (s≤s z≤n))) s) ≤ₗ L)
+            -- Subcase 3.4 at s.
+            (h34 : ∀ k′ → lde (col s p) ≡ suc k′ →
+                   Odd (num (col s p) ! z₀) → Odd (num (col s p) ! z₁) → rbit (num (col s p) ! z₀) ≢ rbit (num (col s p) ! z₁) →
+                   Path [ H-gen z₀ z₁ (≡.subst₂ ℕ._<_ (≡.sym t0) (≡.sym t1) (s≤s z≤n)) ]ʷ s o) where
 
   z01 : z₀ < z₁
   z01 = ≡.subst₂ ℕ._<_ (≡.sym t0) (≡.sym t1) (s≤s z≤n)
@@ -260,7 +264,7 @@ module Edge (h34 : Hyp34) (s : Matrix n n D) .(o : ColOrth s) {p : Fin n} (pv : 
       sylN = ≡.trans syl (≡.trans (≡.cong (λ K → sylDataᶜ p K W) eK) (sylDataᶜ-pair {p = p} k′ W fo nx i₁<i₂))
       by-par : ∀ a → oddᶻ (W ! z₀) ≡ a → ∀ b → oddᶻ (W ! z₁) ≡ b → Path Hz s o
       -- 3.3 and 3.4
-      by-par true o0 true o1 = dec-elim (rbit (W ! z₀) BoolP.≟ rbit (W ! z₁)) prog (h34 s o pv eqL t0 t1 z01 z₁≤p le k′ eK o0 o1)
+      by-par true o0 true o1 = dec-elim (rbit (W ! z₀) BoolP.≟ rbit (W ! z₁)) prog (h34 k′ eK o0 o1)
         where
         prog : rbit (W ! z₀) ≡ rbit (W ! z₁) → Path Hz s o
         prog rb = prograde G s o pv

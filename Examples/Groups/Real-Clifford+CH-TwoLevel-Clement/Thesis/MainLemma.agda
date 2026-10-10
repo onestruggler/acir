@@ -50,6 +50,7 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.States {n} using (ne-𝕀 
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Derived {n} using (•-cancelˡ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Algorithm using (third ; levelᶜ ; levelᶜ-just ; lvlAtᶜ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Reduction {n}
+open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Above {n} using (gen-col ; above)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Basic {n} using (Basic ; BasicAt ; module Conj)
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Case1 as Case1
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Case2 as Case2
@@ -60,46 +61,6 @@ open PB (_===_ {n}) using (_≈_)
 private
   <-≢ : ∀ {x y : Fin n} → x < y → x ≢ y
   <-≢ lt ≡.refl = FinP.<-irrefl ≡.refl lt
-
-------------------------------------------------------------------------
--- A generator moves the basis vector of its top index
-
-gen-col : (g : Gen n) → col (actM g 𝕀) (top g) ≢ col 𝕀 (top g)
-gen-col (Z-gen a) =
-  ne-𝕀-at (actM (Z-gen a) 𝕀) a 0 (Zᶻ a (eᶻ a)) col≡ (inj₁ ≡.refl) a
-    (λ e → -1≢1 (≡.trans (≡.sym (≡.trans (set₁-a a (ZR.- (eᶻ a ! a)) (eᶻ a)) (≡.cong ZR.-_ ea))) (≡.trans e ea)))
-  where
-  ea : eᶻ a ! a ≡ ZR.1#
-  ea = ≡.trans (eᶻ-! a a) (eδ-refl a)
-  col≡ = ≡.trans (col-actM (Z-gen a) 𝕀 a) (≡.trans (≡.cong (actV (Z-gen a)) (col𝕀≡ a)) (actV-Z a 0 (eᶻ a)))
-  -1≢1 : ZR.- ZR.1# ≢ ZR.1#
-  -1≢1 ()
-gen-col (X-gen a b ab) =
-  ne-𝕀-at (actM (X-gen a b ab) 𝕀) b 0 (Xᶻ a b (eᶻ b)) col≡ (inj₁ ≡.refl) b
-    (λ e → 0≢1 (≡.trans (≡.sym (≡.trans (set₂-b a b (eᶻ b ! b) (eᶻ b ! a) (eᶻ b) (<⇒≢ ab)) (≡.trans (eᶻ-! b a) (eδ-≢ (<⇒≢ ab)))))
-                         (≡.trans e (≡.trans (eᶻ-! b b) (eδ-refl b)))))
-  where
-  col≡ = ≡.trans (col-actM (X-gen a b ab) 𝕀 b) (≡.trans (≡.cong (actV (X-gen a b ab)) (col𝕀≡ b)) (actV-X a b ab 0 (eᶻ b)))
-  0≢1 : ZR.0# ≢ ZR.1#
-  0≢1 ()
-gen-col (H-gen a b ab) =
-  ne-𝕀 (actM (H-gen a b ab) 𝕀) b 0 (Hᶻ a b (eᶻ b)) col≡ (inj₂ (a , odd-a))
-  where
-  col≡ = ≡.trans (col-actM (H-gen a b ab) 𝕀 b) (≡.trans (≡.cong (actV (H-gen a b ab)) (col𝕀≡ b)) (actV-H a b ab 0 (eᶻ b)))
-  odd-a : oddᶻ (Hᶻ a b (eᶻ b) ! a) ≡ true
-  odd-a = ≡.cong oddᶻ (≡.trans (set₂-a a b _ _ _)
-            (≡.cong₂ ZR._+_ (≡.trans (eᶻ-! b a) (eδ-≢ (<⇒≢ ab))) (≡.trans (eᶻ-! b b) (eδ-refl b))))
-
--- Beyond the pivot, g · M has the pivot top g.
-above : (M : Matrix n n D) {p : Fin n} → pivot M ≡ just p → (g : Gen n) → p < top g → pivot (actM g M) ≡ just (top g)
-above M {p} pv g p<d = pivot-char (actM g M) ne be′
-  where
-  d = top g
-  be = proj₂ (pivot-just M pv)
-  be′ : Beyond d (actM g M)
-  be′ = Beyond-actM g {d} {M} FinP.≤-refl (λ x d<x → be x (ℕP.<-trans p<d d<x))
-  ne : col (actM g M) d ≢ col 𝕀 d
-  ne e = gen-col g (≡.trans (col-actM g 𝕀 d) (≡.trans (≡.cong (actV g) (≡.sym (be d p<d))) (≡.trans (≡.sym (col-actM g M d)) e)))
 
 ------------------------------------------------------------------------
 -- The induction step
@@ -170,7 +131,8 @@ edge-step hyps L ih g M o eq le = at (pivot M) ≡.refl
           by : (h : Gen n) → Basic h → top h ≤ p → levelᶜ (actM h M′) ≤ₗ L′ → Path [ h ]ʷ M′ o′
           by (Z-gen j) _ tg le″ = Case2.Edge.case2 ih′ M′ o′ pv″ eq′ j tg le″
           by (X-gen a b ab) adj tg le″ = Case1.Edge.case1 ih′ h1142 M′ o′ pv″ eq′ adj tg le″
-          by (H-gen a b ab) (t0 , t1) tg le″ = Case3.Edge.case3 ih′ h34 M′ o′ pv″ eq′ t0 t1 tg le″
+          by (H-gen a b ab) (t0 , t1) tg le″ =
+            Case3.Edge.case3 ih′ M′ o′ pv″ eq′ t0 t1 tg le″ (h34 M′ o′ pv″ eq′ t0 t1 (≡.subst₂ ℕ._<_ (≡.sym t0) (≡.sym t1) (s≤s z≤n)) tg le″)
     within : top g ≤ p → Path [ g ]ʷ M o
     within tg = Conj.edge-le p k ℓ ih′ basicAt g tg M o (inj₂ (≡.trans eq L≡)) (≡.subst (levelᶜ (actM g M) ≤ₗ_) L≡ le)
 
