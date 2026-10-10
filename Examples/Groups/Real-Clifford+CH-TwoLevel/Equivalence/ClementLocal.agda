@@ -18,7 +18,7 @@ open import Data.Bool.Base using (if_then_else_)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base using (Fin ; _<_)
 import Data.Fin.Properties as FinP
-open import Data.List.Base using (List ; [] ; _∷_ ; map ; foldr)
+open import Data.List.Base using (List ; [] ; _∷_ ; map ; foldr ; _++_)
 open import Data.Product.Base using (_×_ ; _,_)
 open import Function.Base using (_∘_)
 open import Relation.Binary.Definitions using (Tri ; tri< ; tri≈ ; tri>)
@@ -36,6 +36,9 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Symmetric {n}
   using (Hs ; Xs ; HsT ; XsT ; Hs-< ; Hs-> ; Xs-< ; Xs-> ; τ ; τ-p ; τ-q ; τ-o)
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Local as L
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Clement
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Embedding using (Emb ; ι ; mono ; gen ; word)
+import Presentation.Tactics.Words as TW
+module AW = TW.Associative
 
 open PB (_===ᶜ_ {n}) renaming (_≈_ to _≈ᶜ_)
 open PP (_===ᶜ_ {n})
@@ -353,6 +356,10 @@ place-ext e (zᵗ i ∷ T) = ≡.cong₂ _∷_ (≡.cong zs (e i)) (place-ext e 
 τs [] x = x
 τs ((p , q) ∷ ps) x = τ p q (τs ps x)
 
+τs-++ : ∀ ps qs x → τs (ps ++ qs) x ≡ τs ps (τs qs x)
+τs-++ [] qs x = ≡.refl
+τs-++ ((p , q) ∷ ps) qs x = ≡.cong (τ p q) (τs-++ ps qs x)
+
 -- A template equation placed by ℓ moves to any ℓ₁ that a list of
 -- transpositions takes ℓ to.
 move : ∀ {m} (ps : List (Fin n × Fin n)) {ℓ ℓ₁ : Fin m → Fin n} → (∀ i → τs ps (ℓ i) ≡ ℓ₁ i) →
@@ -363,3 +370,30 @@ move ((p , q) ∷ ps) {ℓ} {ℓ₁} e {T} {T₁} h =
   trans (refl′ (≡.cong ⟦_⟧ (≡.trans (place-ext (≡.sym ∘ e) T) (≡.sym (relabel-place (τ p q) (τs ps ∘ ℓ) T)))))
         (trans (relabel-eq p q {place (τs ps ∘ ℓ) T} {place (τs ps ∘ ℓ) T₁} (move ps {ℓ} {τs ps ∘ ℓ} (λ i → ≡.refl) {T} {T₁} h))
                (refl′ (≡.cong ⟦_⟧ (≡.trans (relabel-place (τ p q) (τs ps ∘ ℓ) T₁) (place-ext e T₁)))))
+
+------------------------------------------------------------------------
+-- Templates from letter lists, and back along an embedding
+
+ofGen : ∀ {m} → Gen m → Symᵗ m
+ofGen (X-gen i j _) = xᵗ i j
+ofGen (K-gen i j _) = hᵗ i j
+ofGen (i-gen i)     = zᵗ i
+
+private
+  rcm : ∀ {m} {a b : Fin m} → .(a < b) → a < b
+  rcm {a = a} {b} lt = recompute (a FinP.<? b) lt
+
+-- The letters, one by one.
+letter : ∀ {m} (e : Emb m n) (g : Gen m) → ⟦ placeˢ (ι e) (ofGen g) ⟧ˢ ≈ᶜ [ gen e g ]ʷ
+letter e (X-gen i j p) = refl′ (Xs-< (mono e (rcm p)))
+letter e (K-gen i j p) = refl′ (Hs-< (mono e (rcm p)))
+letter e (i-gen i)     = refl
+
+-- A list of letters on m indices, placed by an increasing map, is its
+-- image (with the trailing ε of the list word).
+placeW : ∀ {m} (e : Emb m n) (L : List (Gen m)) →
+         ⟦ place (ι e) (map ofGen L) ⟧ ≈ᶜ word e (AW.word-of-list L)
+placeW e [] = refl
+placeW e (g ∷ []) = trans (letter e g) (sym right-unit)
+placeW e (g ∷ g′ ∷ L) = cong (letter e g) (placeW e (g′ ∷ L))
+

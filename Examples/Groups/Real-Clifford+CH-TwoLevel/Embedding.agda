@@ -14,7 +14,7 @@
 
 module Examples.Groups.Real-Clifford+CH-TwoLevel.Embedding where
 
-open import Data.Fin.Base using (Fin ; _<_ ; inject≤ ; toℕ)
+open import Data.Fin.Base using (Fin ; _<_ ; inject≤ ; toℕ ; _↑ˡ_)
 import Data.Fin.Properties as FinP
 open import Data.Nat.Base as ℕ using (ℕ ; _≤_)
 open import Relation.Binary.Definitions using (tri< ; tri≈ ; tri>)
@@ -92,6 +92,10 @@ incl h = record { ι = λ a → inject≤ a h ; mono = λ {a} {b} lt → mono′
 
 toℕ-incl : (h : m ≤ n) (a : Fin m) → toℕ (ι (incl h) a) ≡ toℕ a
 toℕ-incl h a = FinP.toℕ-inject≤ a h
+
+-- The first m indices of m + k, by _↑ˡ_, which computes on literals.
+incl+ : ∀ m k → Emb m (m ℕ.+ k)
+incl+ m k = record { ι = _↑ˡ k ; mono = λ {a} {b} lt → ≡.subst₂ ℕ._<_ (≡.sym (FinP.toℕ-↑ˡ a k)) (≡.sym (FinP.toℕ-↑ˡ b k)) lt }
 
 ------------------------------------------------------------------------
 -- Pulling a set of relations back
