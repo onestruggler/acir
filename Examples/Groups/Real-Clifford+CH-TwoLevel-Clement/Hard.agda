@@ -39,6 +39,7 @@ open import Data.Vec.Base as Vec using (Vec ; [] ; _∷_ ; tabulate)
 import Data.Vec.Properties as VecP
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_ ; _≢_)
 open import Relation.Nullary using (yes ; no)
+open import Relation.Nullary.Decidable using (recompute)
 
 open import Quantum.Synthesis.Matrix using (Matrix)
 open import Quantum.Synthesis.Ring using (RootTwo)
@@ -57,7 +58,7 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics renaming (Z to 
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Pivot using (level)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Symmetric {n} using (Hs)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Symmetric {n} using (Hs ; Hs-<)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.PairBase p k′ ℓ ih using (k ; L ; module State)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Forms
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Subst using (liftF ; ⟦liftF⟧ ; bitᶻ)
@@ -70,6 +71,7 @@ import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.TreeTop as TT
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.TreeNF38 as T38
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.TreeNF341 as T341
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Sound p k′ ℓ ih as S
+import Examples.Groups.Real-Clifford+CH-TwoLevel.PairEdges p k′ ℓ ih as PE
 
 open ZG using (_:+_ ; _:*_ ; :-_ ; _:-_ ; _:=_ ; con)
 
@@ -530,3 +532,128 @@ module Core (ℓ4 : ℓ ≡ 4) where
                 (≡.trans (≡.sym (vN (suc (suc i)))) (≡.sym (VecP.lookup∘tabulate (λ i → W N ! ι w i) i)))))
         lt : μ N ℕ.< μ s
         lt = measure-drop s N u v uv agree δ b δ12 cu cv yu eyu yv eyv _ _ Nu Nv
+
+  ----------------------------------------------------------------------
+  -- The recursion on the measure
+
+  hard-rec : ∀ (fuel : ℕ) s .(o : ColOrth s) (eq : level s ≡ L) (w : Win 4 s) ρ → ⟦ TT.topForms ⟧ᵛ ρ ≡ locW w →
+             μ s ℕ.< fuel → Path (Hs (ι w g0) (ι w g1)) s o
+  hard-rec zero s o eq w ρ eqv ()
+  hard-rec (suc fuel) s o eq w ρ eqv lt = from (minimal? s)
+    where
+    from : Minimal s ⊎ Viol s → Path (Hs (ι w g0) (ι w g1)) s o
+    from (inj₁ mn) = top-thm s o eq w ρ eqv mn
+    from (inj₂ vi) = pair-step s o eq w ρ eqv vi
+      (λ N oN eqN outN eqvN ltN → hard-rec fuel N oN eqN (win {s = N} (ι w) (inj w) (ι≤p w) outN) ρ eqvN (ℕP.<-≤-trans ltN (ℕP.≤-pred lt)))
+
+  ----------------------------------------------------------------------
+  -- The window of a hard state
+
+  private
+    ¬t⇒f : ∀ {a} → (a ≡ true → ⊥) → a ≡ false
+    ¬t⇒f {true} h = ⊥-elim (h ≡.refl)
+    ¬t⇒f {false} _ = ≡.refl
+
+  module Of-hard (s : Matrix n n D) .(o : ColOrth s) (eq : level s ≡ L) (four : nodd (W s) ≡ 4)
+                 (c d : Fin n) (c≢d : c ≢ d) (oc : Odd (W s ! c)) (od : Odd (W s ! d)) (rcd : rbit (W s ! c) ≢ rbit (W s ! d)) where
+
+    open State s o eq using (Cls ; cls-even ; cls-true ; cls-spec ; odd≤)
+
+    -- Another odd entry of the same class.
+    partner : ∀ x → Odd (W s ! x) → ∃ λ y → y ≢ x × (Odd (W s ! y) × rbit (W s ! y) ≡ rbit (W s ! x))
+    partner x ox = from (two? (Cls b))
+      where
+      b = rbit (W s ! x)
+      px : Cls b x ≡ true
+      px = cls-true x ox
+      from : (∃₂ λ u v → u ≢ v × Cls b u ≡ true × Cls b v ≡ true) ⊎ (∀ u v → u ≢ v → Cls b u ≡ true → Cls b v ≡ true → ⊥) →
+             ∃ λ y → y ≢ x × (Odd (W s ! y) × rbit (W s ! y) ≡ b)
+      from (inj₁ (u , v , uv , pu , pv)) = pick (u FinP.≟ x)
+        where
+        pick : _ → ∃ λ y → y ≢ x × (Odd (W s ! y) × rbit (W s ! y) ≡ b)
+        pick (yes e) = v , (λ e′ → uv (≡.trans e (≡.sym e′))) , cls-spec b v pv
+        pick (no ne) = u , ne , cls-spec b u pu
+      from (inj₂ none) = ⊥-elim (t≢f (≡.trans (≡.sym (≡.cong oddℕ one)) (cls-even b)))
+        where
+        one : count (Cls b) ≡ 1
+        one = count-one (Cls b) x px (λ y y≢x → ¬t⇒f (λ py → none y x y≢x py px))
+
+    pe = partner c oc
+    pf = partner d od
+    e = proj₁ pe
+    f = proj₁ pf
+    e≢c = proj₁ (proj₂ pe)
+    oe = proj₁ (proj₂ (proj₂ pe))
+    re = proj₂ (proj₂ (proj₂ pe))
+    f≢d = proj₁ (proj₂ pf)
+    of = proj₁ (proj₂ (proj₂ pf))
+    rf = proj₂ (proj₂ (proj₂ pf))
+
+    rb : ∀ {x y} → x ≡ y → rbit (W s ! x) ≡ rbit (W s ! y)
+    rb p = ≡.cong (λ z → rbit (W s ! z)) p
+
+    e≢d : e ≢ d
+    e≢d p = rcd (≡.trans (≡.sym re) (rb p))
+    f≢c : f ≢ c
+    f≢c p = rcd (≡.trans (≡.sym (rb p)) rf)
+    e≢f : e ≢ f
+    e≢f p = rcd (≡.trans (≡.sym re) (≡.trans (rb p) rf))
+
+    ι4 : Fin 4 → Fin n
+    ι4 zero = c
+    ι4 (suc zero) = d
+    ι4 (suc (suc zero)) = e
+    ι4 (suc (suc (suc zero))) = f
+
+    inj4 : ∀ {i j} → ι4 i ≡ ι4 j → i ≡ j
+    inj4 {zero} {zero} _ = ≡.refl
+    inj4 {zero} {suc zero} p = ⊥-elim (c≢d p)
+    inj4 {zero} {suc (suc zero)} p = ⊥-elim (e≢c (≡.sym p))
+    inj4 {zero} {suc (suc (suc zero))} p = ⊥-elim (f≢c (≡.sym p))
+    inj4 {suc zero} {zero} p = ⊥-elim (c≢d (≡.sym p))
+    inj4 {suc zero} {suc zero} _ = ≡.refl
+    inj4 {suc zero} {suc (suc zero)} p = ⊥-elim (e≢d (≡.sym p))
+    inj4 {suc zero} {suc (suc (suc zero))} p = ⊥-elim (f≢d (≡.sym p))
+    inj4 {suc (suc zero)} {zero} p = ⊥-elim (e≢c p)
+    inj4 {suc (suc zero)} {suc zero} p = ⊥-elim (e≢d p)
+    inj4 {suc (suc zero)} {suc (suc zero)} _ = ≡.refl
+    inj4 {suc (suc zero)} {suc (suc (suc zero))} p = ⊥-elim (e≢f p)
+    inj4 {suc (suc (suc zero))} {zero} p = ⊥-elim (f≢c p)
+    inj4 {suc (suc (suc zero))} {suc zero} p = ⊥-elim (f≢d p)
+    inj4 {suc (suc (suc zero))} {suc (suc zero)} p = ⊥-elim (e≢f (≡.sym p))
+    inj4 {suc (suc (suc zero))} {suc (suc (suc zero))} _ = ≡.refl
+
+    ι≤p4 : ∀ i → ι4 i ≤ p
+    ι≤p4 zero = odd≤ oc
+    ι≤p4 (suc zero) = odd≤ od
+    ι≤p4 (suc (suc zero)) = odd≤ oe
+    ι≤p4 (suc (suc (suc zero))) = odd≤ of
+
+    out4 : ∀ x → (∀ i → ι4 i ≢ x) → oddᶻ (W s ! x) ≡ false
+    out4 x h = ¬t⇒f λ px → no5 (≡.subst (5 ℕ.≤_) four
+      (five (λ y → oddᶻ (W s ! y)) c d e f x c≢d e≢f (λ p → e≢c (≡.sym p)) (λ p → f≢c (≡.sym p)) (λ p → e≢d (≡.sym p))
+            (λ p → f≢d (≡.sym p)) (λ p → h zero (≡.sym p)) (λ p → h (suc zero) (≡.sym p)) (λ p → h (suc (suc zero)) (≡.sym p))
+            (λ p → h (suc (suc (suc zero))) (≡.sym p)) oc od oe of px))
+      where
+      no5 : 5 ℕ.≤ 4 → ⊥
+      no5 (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ()))))
+
+    w4 : Win 4 s
+    w4 = win {s = s} ι4 inj4 ι≤p4 out4
+
+    inst : ∃ λ ρ → ⟦ TT.topForms ⟧ᵛ ρ ≡ locW w4
+    inst = root-inst (W s ! c) (W s ! d) (W s ! e) (W s ! f) oc od rcd oe re of rf
+
+  -- The hard edge.
+  hard′ : ∀ (M : Matrix n n D) .(o : ColOrth M) (eq : level M ≡ L) → nodd (W M) ≡ 4 →
+          ∀ c d .(cd : c < d) → Odd (W M ! c) → Odd (W M ! d) → rbit (W M ! c) ≢ rbit (W M ! d) → Path [ H-gen c d cd ]ʷ M o
+  hard′ M o eq four c d cd oc od rcd =
+    ≡.subst (λ w → Path w M o) (Hs-< cd) (hard-rec (suc (μ M)) M o eq OH.w4 (proj₁ OH.inst) (proj₂ OH.inst) ℕP.≤-refl)
+    where
+    module OH = Of-hard M o eq four c d (λ p → FinP.<-irrefl p (recompute (c FinP.<? d) cd)) oc od rcd
+
+------------------------------------------------------------------------
+-- PairEdges.Hard
+
+hard : PE.Hard
+hard M o eq four c d cd oc od rcd = Core.hard′ (≡.trans (≡.sym (State.ℓM M o eq)) four) M o eq four c d cd oc od rcd
