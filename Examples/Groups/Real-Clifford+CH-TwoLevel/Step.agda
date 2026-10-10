@@ -457,11 +457,12 @@ pair-step {n} {p} k′ w (inj₂ (x , ox)) norm normB ≤p = withFirst (firstOdd
 ------------------------------------------------------------------------
 -- One step lowers the level (Theorem 4.10)
 
-private
-  scV-injective : ∀ k (u v : Vec Z n) → scV k u ≡ scV k v → u ≡ v
-  scV-injective k u v eq = vec-ext λ x →
-    sc-injective k (trans (sym (scV-! k u x)) (trans (cong (_! x) eq) (scV-! k v x)))
+-- Numerators at one scale are determined by the vector.
+scV-injective : ∀ k (u v : Vec Z n) → scV k u ≡ scV k v → u ≡ v
+scV-injective k u v eq = vec-ext λ x →
+  sc-injective k (trans (sym (scV-! k u x)) (trans (cong (_! x) eq) (scV-! k v x)))
 
+private
   -- The column p after the syllable S.
   col-step : (M : Matrix n n D) (p : Fin n) (S : Word (Gen n)) (K : ℕ) (W : Vec Z n) →
              col M p ≡ scV K W → col (actMʷ S M) p ≡ actVʷ S (scV K W)
