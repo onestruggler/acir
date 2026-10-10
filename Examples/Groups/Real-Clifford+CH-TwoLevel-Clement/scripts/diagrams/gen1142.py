@@ -1,4 +1,5 @@
-"""Generate Thesis/Rel1142.agda: the relations of Clement's Subcase 1.14.2.
+"""Generate Thesis/Rel1142.agda and Thesis/Steps1142.agda: the relations
+of Clement's Subcase 1.14.2, and the local vectors along its routes.
 
 On four indices a < b < c < d (here 0 < 1 < 2 < 3), with the pairings
 PA = H[a,b] H[c,d], PB = H[a,c] H[b,d], PC = H[a,d] H[b,c], the squares
@@ -12,6 +13,10 @@ from (f1) PA PB = PB PA and from (G) PB PC = H[a,b] H[c,d] X[b,d] Z[d]
 H[c,d] H[a,b] (Real-Clifford+CH-TwoLevel.Pairings), by chains of steps
 found by search (deriv.search) or written out (manual.Chain), each
 checked here and emitted as `derive` proofs for the generic Engine.
+
+Steps1142 has the four entries along both routes from H[a,b] X[b,c] s,
+with the sum and the difference of the two entries each H acts on as
+√2 times its new entries (ring identities, by ZG.solve).
 
 Usage: python gen1142.py [OUTDIR]   (default: the development's Thesis folder)
 """

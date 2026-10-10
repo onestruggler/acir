@@ -1,15 +1,17 @@
 # Generators for Real-Clifford+CH-TwoLevel-Clement
 
-Six modules of this development are generated. These scripts regenerate them
+Eight modules of this development are generated. These scripts regenerate them
 byte for byte. They need Python 3 and nothing else.
 
 ```bash
 cd diagrams && python gen.py    # Diagram20.agda, Diagram30.agda
+cd diagrams && python gen1142.py   # Thesis/Rel1142.agda, Thesis/Steps1142.agda
 cd trees    && python gen.py    # NFs.agda, TreeNF341.agda, TreeNF38.agda, TreeTop.agda
 ```
 
-Each `gen.py` writes into the development's folder (two levels up), or into the
-directory given as its argument.
+Each `gen.py` writes into the development's folder (two levels up), and
+`gen1142.py` into its `Thesis` folder, or into the directory given as the
+argument.
 Both pass their output through `tidy.py`, which drops the imported names and
 the one-line helpers that a module does not use.
 
@@ -27,6 +29,21 @@ checked chains are emitted as `derive` proofs for
 - `words.py`: Clément's (20) and (21) as letter lists.
 - `deriv.py`, `manual.py`: the step checker and the chain builder.
 - `emit.py`: the Agda text.
+
+## `diagrams/gen1142.py`: Subcase 1.14.2 of Clément's own proof
+
+`Thesis/Case1142` closes the square of X[b,c] at a state whose syllable is
+H[a,b] with c = b + 1 in the class of a, by Clément's diagrams (27) and (28)
+over a fourth entry d of that class. `gen1142.py` derives them, in the form
+
+    H[c,d] PB X[b,c] PB H[c,d] . H[a,b] . X[b,c] = H[a,b]   (27')
+    H[c,d] PC X[b,d] PC H[c,d] . H[a,b] . X[b,c] = H[a,b]   (28')
+
+(PB = H[a,c] H[b,d], PC = H[a,d] H[b,c]), from (f1) and the rewriting (G)
+of PB PC in `Real-Clifford+CH-TwoLevel.Pairings`, on the indices 0 < 1 < 2 < 3:
+`Rel1142.agda`. With entries A, A + 2q, A + 2p, A + 2d at a, b, c, d of
+X[b,c]·s, it also writes the local vectors along both routes and the ring
+identities for each H step: `Steps1142.agda`.
 
 ## `trees/`: the decision trees
 
