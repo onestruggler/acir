@@ -118,10 +118,7 @@ module Known-at (p : Fin n) (k : ℕ) {m : ℕ} (ι : Fin m → Fin n) (inj : �
   open Known public
 
   -- The words of the letters.
-  wordL : Let m → Word (Gen n)
-  wordL (Hˡ i j) = Hs (ι i) (ι j)
-  wordL (Xˡ i j) = Xs (ι i) (ι j)
-  wordL (Zˡ i) = Zʷ (ι i)
+  open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Placed ι public using (wordL ; wordR)
 
   private
     ι≢ : ∀ {i j} → i ≢ j → ι i ≢ ι j

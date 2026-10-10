@@ -15,8 +15,7 @@ import Presentation.Base as PB
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (Gen)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.LocalRelations using (_===ˡ_)
 
-module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Diagram30
-  (Γ : WRel (Gen 6)) (loc : ∀ {u v} → u ===ˡ v → PB._≈_ Γ u v) where
+module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Diagram30 where
 
 open import Data.Fin.Base using (Fin ; zero ; suc ; _<_)
 open import Data.List.Base using (List ; [] ; _∷_)
@@ -24,8 +23,7 @@ open import Data.Nat.Base using (z≤n ; s≤s)
 open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (H-gen ; X-gen ; Z-gen)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Engine Γ loc
-open PB Γ using (_≈_)
+import Presentation.Tactics.Words as TW
 
 ------------------------------------------------------------------------
 -- Letters
@@ -99,7 +97,11 @@ C0w = (h01 ∷ [])
 ------------------------------------------------------------------------
 -- The diagram commutes
 
-module From (r21eh : ⟪ L21 ⟫ ≈ ⟪ R21 ⟫) where
+module From (Γ : WRel (Gen 6)) (loc : ∀ {u v} → u ===ˡ v → PB._≈_ Γ u v)
+  (r21eh : PB._≈_ Γ (TW.Associative.word-of-list L21) (TW.Associative.word-of-list R21)) where
+
+  open import Examples.Groups.Real-Clifford+CH-TwoLevel.Engine Γ loc
+  open PB Γ using (_≈_)
 
   private
     r21e : Eqn

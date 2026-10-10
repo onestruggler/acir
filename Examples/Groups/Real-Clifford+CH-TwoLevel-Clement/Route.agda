@@ -309,10 +309,6 @@ module Local-at (s : Matrix n n D) .(o : ColOrth s) (eq : level s ≡ L) (ℓ4 :
   ----------------------------------------------------------------------
   -- Routes
 
-  wordR : Route m → Word (Gen n)
-  wordR [] = ε
-  wordR (g ∷ gs) = wordR gs • wordL g
-
   private
     ∧-split : ∀ {a b} → a ∧ b ≡ true → a ≡ true × b ≡ true
     ∧-split {true} {true} _ = ≡.refl , ≡.refl
