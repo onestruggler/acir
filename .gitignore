@@ -53,3 +53,6 @@ qpl26slides/latex/*.snm
 qpl26slides/latex/*.toc
 qpl26slides/latex/*.vrb
 qpl26slides/latex/*.ptb
+
+# Python bytecode (generator scripts)
+__pycache__/
