@@ -59,8 +59,8 @@ open import Examples.Groups.CCX+HH-TwoLevel.Syntactics
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (_!_ ; actMʷ ; actV ; actVʷ ; col-actMʷ ; col-actM ; ColOrth-actMʷ ; 𝕀)
 open import Examples.Groups.CCX+HH-TwoLevel.Pivot
   using (_<ₗ_ ; Beyond ; pivot-char ; pivot-just ; level-just ; lvlAt ; Lvl)
-open import Examples.Groups.CCX+HH-TwoLevel.Syllable using (syl ; step ; Within ; Beyond-actM ; Beyond-actMʷ)
-open import Examples.Groups.CCX+HH-TwoLevel.Levels using (<ₗ-trans)
+open import Examples.Groups.CCX+HH-TwoLevel.Syllable using (syl ; step ; top ; Within ; Beyond-actM ; Beyond-actMʷ)
+open import Examples.Groups.CCX+HH-TwoLevel.Levels using (<ₗ-trans ; mono-level ; Mono)
 open import Examples.Groups.CCX+HH-TwoLevel.Engine using (⟪_⟫)
 open import Examples.Groups.CCX+HH-TwoLevel.Embedding using (Emb ; gen ; ι)
 import Data.Fin.Base as F
@@ -68,7 +68,7 @@ open import Examples.Groups.CCX+HH-TwoLevel.Residue using (τ)
 open import Examples.Groups.CCX+HH-TwoLevel.TauSyl using (mτ)
 open import Examples.Groups.Clifford+CS-TwoLevel.Search using (count-lt)
 open R {n} using (Path ; Low ; path-• ; path-below)
-open import Examples.Groups.CCX+HH-TwoLevel.PathTools {n} using (path-cong)
+open import Examples.Groups.CCX+HH-TwoLevel.PathTools {n} using (path-cong ; module Below)
 open import Examples.Groups.CCX+HH-TwoLevel.States {n}
   using (MonoWord ; mono-word-below ; mono-word-level ; path-normal ; lt-step ; syl-of ; level-of ; ne-𝕀)
 import Examples.Groups.CCX+HH-TwoLevel.XEStep as XS
@@ -78,6 +78,7 @@ import Examples.Groups.CCX+HH-TwoLevel.XEStep as XS
 open import Examples.Groups.CCX+HH-TwoLevel.QuadXETail s o ps ks ih public
 
 open PB (_===_ {n}) using (_≈_) renaming (sym to ≈sym)
+open Below {L = level s} ih using (bridge)
 import Data.Integer.Solver as ℤSolver
 
 private
@@ -232,6 +233,24 @@ module Descent (σ : Matrix n n D) .(oσ : ColOrth σ) (U : Vec ℤ n) (eqσ : c
   useE : Bool
   useE = T₁.Σz xor T₂.Σz
 
+  private
+    four : ∀ {x₁ x₂ x₃ x₄ y₁ y₂ y₃ y₄ : Bool} → x₁ ≡ y₁ → x₂ ≡ y₂ → x₃ ≡ y₃ → x₄ ≡ y₄ →
+           ((x₁ xor x₂) xor x₃) xor x₄ ≡ ((y₁ xor y₂) xor y₃) xor y₄
+    four ≡.refl ≡.refl ≡.refl ≡.refl = ≡.refl
+
+  -- It depends on the eight entries alone.
+  useE-ζ : (oa : Odd (U ! a)) (ob : Odd (U ! b)) (oc : Odd (U ! c)) (od : Odd (U ! d))
+           (oe : Odd (U ! e)) (of : Odd (U ! f)) (og : Odd (U ! g)) (oh : Odd (U ! h)) →
+           useE ≡ (((XS.ζ (U ! a) oa xor XS.ζ (U ! b) ob) xor XS.ζ (U ! c) oc) xor XS.ζ (U ! d) od) xor
+                  (((XS.ζ (U ! e) oe xor XS.ζ (U ! f) of) xor XS.ζ (U ! g) og) xor XS.ζ (U ! h) oh)
+  useE-ζ oa ob oc od oe of og oh = ≡.cong₂ _xor_
+    (≡.trans (XS.tau-Σz U a<b b<c c<d oaU obU ocU odU)
+      (four (XS.ζ-irr (U ! a) oaU oa) (XS.ζ-irr (U ! b) obU ob) (XS.ζ-irr (U ! c) ocU oc) (XS.ζ-irr (U ! d) odU od)))
+    (≡.trans (XS.tau-Σz T₁.Wh e<f f<g g<h (odd₁ d<e oeU) (odd₁ (d<e ⟨<⟩ e<f) ofU)
+                (odd₁ (d<e ⟨<⟩ e<f ⟨<⟩ f<g) ogU) (odd₁ (d<e ⟨<⟩ e<f ⟨<⟩ f<g ⟨<⟩ g<h) ohU))
+      (four (XS.ζ-cong (hi₁ d<e) _ oe) (XS.ζ-cong (hi₁ (d<e ⟨<⟩ e<f)) _ of)
+            (XS.ζ-cong (hi₁ (d<e ⟨<⟩ e<f ⟨<⟩ f<g)) _ og) (XS.ζ-cong (hi₁ (d<e ⟨<⟩ e<f ⟨<⟩ f<g ⟨<⟩ g<h)) _ oh)))
+
   -- (-1)_[a] (-1)_[x] X_[a,x], with x = e or h.
   xS : Bool → Fin n
   xS true = e
@@ -369,6 +388,9 @@ module Descent (σ : Matrix n n D) .(oσ : ColOrth σ) (U : Vec ℤ n) (eqσ : c
     cast : ∀ (M M′ : Matrix n n D) → M ≡ M′ → level M <ₗ level s → level M′ <ₗ level s
     cast M M′ eq l = ≡.subst (λ M → level M <ₗ level s) eq l
 
+    castLow : ∀ (w : Word (Gen n)) (M M′ : Matrix n n D) → M ≡ M′ → Low (level s) w M → Low (level s) w M′
+    castLow w M M′ eq l = ≡.subst (Low (level s) w) eq l
+
     -- After T₂.
     l-T2 : level (actMʷ T2w σ₁) <ₗ level s
     l-T2 = cast σ₂ (actMʷ T2w σ₁) ≡.refl lσ₂
@@ -465,3 +487,57 @@ module Descent (σ : Matrix n n D) .(oσ : ColOrth σ) (U : Vec ℤ n) (eqσ : c
     Σ₂≡ = ≡.trans (≡.cong₂ (λ q r → ((q xor r) xor oddℤ T₂.hC) xor oddℤ (ℤ.- T₁.hA)) T₂.par-A T₂.par-B)
             (≡.trans (≡.cong₂ (λ q r → ((not T₂.Σz xor T₂.Σz) xor q) xor r) T₂.par-C (≡.trans (oddneg T₁.hA) T₁.par-A))
               (xor-lemma₄ T₁.Σz T₂.Σz hu))
+
+  ----------------------------------------------------------------------
+  -- The path along the descent, and the square that closes it
+
+  -- (Stated here, where the states have their own names: the types of a
+  -- module application mention the definitions of this module applied
+  -- to its arguments, and restating them otherwise makes Agda compare
+  -- levels by computing them.)
+
+  path-desc : ∀ u → useE ≡ u → Path (Rest u • T1w) σ oσ
+  path-desc u hu = path-• (Rest u) T1w σ oσ
+    (path-below ih (Rest u) (actMʷ T1w σ) (ColOrth-actMʷ T1w oσ)
+      (castLow (Rest u) σ₁ (actMʷ T1w σ) ≡.refl (proj₁ (descent u hu)))) pT1
+
+  -- A generator g of X's and (-1)'s, whose image has a path w₂ that
+  -- closes the square.
+  close : ∀ u → useE ≡ u → (g : Gen n) → Mono g → top g ≤ p → (w₂ : Word (Gen n)) →
+          Path w₂ (actM g σ) (ColOrth-actMʷ [ g ]ʷ oσ) → ([ g ]ʷ • Rest u) • T1w ≈ w₂ • [ g ]ʷ → Path [ g ]ʷ σ oσ
+  close u hu g mg tg w₂ p₂ rel = bridge g σ oσ T1w w₂ ([ g ]ʷ • Rest u) pT1 p₂ low rel
+    where
+    res = descent u hu
+    l₃ : level (actMʷ (Rest u) (actMʷ T1w σ)) <ₗ level s
+    l₃ = cast (actMʷ (Rest u) σ₁) (actMʷ (Rest u) (actMʷ T1w σ)) ≡.refl (proj₂ res)
+    low : Low (level s) ([ g ]ʷ • Rest u) (actMʷ T1w σ)
+    low = castLow (Rest u) σ₁ (actMʷ T1w σ) ≡.refl (proj₁ res) , l₃ , mono-level g mg tg (actMʷ (Rest u) (actMʷ T1w σ)) l₃ lB
+
+------------------------------------------------------------------------
+-- Two descents, from σ and from x·σ, closing a square
+
+-- (The descents are named by the definitions of Descent applied to
+-- their arguments, the form in which their types mention them.)
+
+module _ (σ : Matrix n n D) .(oσ : ColOrth σ) (U : Vec ℤ n) (eqσ : col σ p ≡ scV K′ U)
+  (beσ : Beyond p σ) (cnt : nodd U ≡ nodd W) {e f g h : Fin n}
+  (fo₀ : firstOdd U ≡ just a) (na₀ : nextOdd a U ≡ just b) (nb₀ : nextOdd b U ≡ just c) (nc₀ : nextOdd c U ≡ just d)
+  (nd₀ : nextOdd d U ≡ just e) (ne₀ : nextOdd e U ≡ just f) (nf₀ : nextOdd f U ≡ just g) (ng₀ : nextOdd g U ≡ just h)
+  (h≤p : h ≤ p) (x : Gen n) (mx : Mono x) (tx : top x ≤ p)
+  (U′ : Vec ℤ n) (eq′ : col (actM x σ) p ≡ scV K′ U′) (be′ : Beyond p (actM x σ)) (cnt′ : nodd U′ ≡ nodd W)
+  (fo′ : firstOdd U′ ≡ just a) (na′ : nextOdd a U′ ≡ just b) (nb′ : nextOdd b U′ ≡ just c) (nc′ : nextOdd c U′ ≡ just d)
+  (nd′ : nextOdd d U′ ≡ just e) (ne′ : nextOdd e U′ ≡ just f) (nf′ : nextOdd f U′ ≡ just g) (ng′ : nextOdd g U′ ≡ just h) where
+
+  pair-close : ∀ u →
+    Descent.useE σ oσ U eqσ beσ cnt fo₀ na₀ nb₀ nc₀ nd₀ ne₀ nf₀ ng₀ h≤p ≡ u →
+    Descent.useE (actM x σ) (ColOrth-actMʷ [ x ]ʷ oσ) U′ eq′ be′ cnt′ fo′ na′ nb′ nc′ nd′ ne′ nf′ ng′ h≤p ≡ u →
+    ([ x ]ʷ • Descent.Rest σ oσ U eqσ beσ cnt fo₀ na₀ nb₀ nc₀ nd₀ ne₀ nf₀ ng₀ h≤p u) •
+      Descent.T1w σ oσ U eqσ beσ cnt fo₀ na₀ nb₀ nc₀ nd₀ ne₀ nf₀ ng₀ h≤p ≈
+    (Descent.Rest (actM x σ) (ColOrth-actMʷ [ x ]ʷ oσ) U′ eq′ be′ cnt′ fo′ na′ nb′ nc′ nd′ ne′ nf′ ng′ h≤p u •
+      Descent.T1w (actM x σ) (ColOrth-actMʷ [ x ]ʷ oσ) U′ eq′ be′ cnt′ fo′ na′ nb′ nc′ nd′ ne′ nf′ ng′ h≤p) • [ x ]ʷ →
+    Path [ x ]ʷ σ oσ
+  pair-close u hu hu′ rel =
+    Descent.close σ oσ U eqσ beσ cnt fo₀ na₀ nb₀ nc₀ nd₀ ne₀ nf₀ ng₀ h≤p u hu x mx tx
+      (Descent.Rest (actM x σ) (ColOrth-actMʷ [ x ]ʷ oσ) U′ eq′ be′ cnt′ fo′ na′ nb′ nc′ nd′ ne′ nf′ ng′ h≤p u •
+       Descent.T1w (actM x σ) (ColOrth-actMʷ [ x ]ʷ oσ) U′ eq′ be′ cnt′ fo′ na′ nb′ nc′ nd′ ne′ nf′ ng′ h≤p)
+      (Descent.path-desc (actM x σ) (ColOrth-actMʷ [ x ]ʷ oσ) U′ eq′ be′ cnt′ fo′ na′ nb′ nc′ nd′ ne′ nf′ ng′ h≤p u hu′) rel

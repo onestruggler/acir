@@ -416,3 +416,27 @@ module _ {n : ℕ} where
       go (M-gen x ∷ xs) h = bnd x , go xs h
       go (X-gen x y q ∷ xs) h = bnd y , go xs h
       go (K-gen _ _ _ _ _ _ _ ∷ xs) ()
+
+------------------------------------------------------------------------
+-- The parity of z, for 1 + 4z = ±w
+
+ζ : (w : ℤ) → Odd w → Bool
+ζ w o = oddℤ (proj₁ (one4 w o))
+
+-- It depends on w alone (Odd w is a proposition: Bool has decidable
+-- equality).
+ζ-irr : ∀ w (o o′ : Odd w) → ζ w o ≡ ζ w o′
+ζ-irr w o o′ = cong (ζ w) (UIP.≡-irrelevant BoolP._≟_ o o′)
+  where
+  import Axiom.UniquenessOfIdentityProofs as UIPm
+  module UIP = UIPm.Decidable⇒UIP
+  import Data.Bool.Properties as BoolP
+
+ζ-cong : ∀ {w w′} → w ≡ w′ → (o : Odd w) (o′ : Odd w′) → ζ w o ≡ ζ w′ o′
+ζ-cong {w} refl o o′ = ζ-irr w o o′
+
+-- The parity Σ of the syllable, in terms of ζ.
+tau-Σz : ∀ {n} (U : Vec ℤ n) {i j k l : Fin n} (ij : i < j) (jk : j < k) (kl : k < l)
+         (oi : Odd (U ! i)) (oj : Odd (U ! j)) (ok : Odd (U ! k)) (ol : Odd (U ! l)) →
+         TauR.Σz (tau U ij jk kl oi oj ok ol) ≡ ((ζ (U ! i) oi xor ζ (U ! j) oj) xor ζ (U ! k) ok) xor ζ (U ! l) ol
+tau-Σz U ij jk kl oi oj ok ol = refl
