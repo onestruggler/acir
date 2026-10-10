@@ -212,3 +212,119 @@ even-odd o zero u eq = from (lde0 u (unit-norm 0 u (≡.subst (λ v → ⟨ v , 
          oddℕ (count (λ x → oddᶻ (u ! x))) ≡ false ⊎ count (λ x → oddᶻ (u ! x)) ≡ 1
   from (m , pm , rest) = inj₂ (count-one (λ x → oddᶻ (u ! x)) m (one pm) (λ y y≢m → ≡.cong oddᶻ (rest y y≢m)))
 even-odd o (suc K) u eq = inj₁ (evenodd K u (unit-norm (suc K) u (≡.subst (λ v → ⟨ v , v ⟩ ≡ DR.1#) eq (col-unit o p))))
+
+------------------------------------------------------------------------
+-- An entry outside the window
+
+-- The kinds of odd entries counted: all, of class 1, of class 0.
+Pκ : Maybe Bool → Z → Bool
+Pκ nothing z = oddᶻ z
+Pκ (just true) z = oddᶻ z ∧ rbit z
+Pκ (just false) z = oddᶻ z ∧ not (rbit z)
+
+private
+  Pκ-0 : ∀ κ → Pκ κ ZR.0# ≡ false
+  Pκ-0 nothing = ≡.refl
+  Pκ-0 (just true) = ≡.refl
+  Pκ-0 (just false) = ≡.refl
+
+  ≤-count : ∀ a b → 2 ℕ.≤ a → a ℕ.+ b ≡ 1 → ⊥
+  ≤-count (suc zero) b (ℕ.s≤s ()) _
+  ≤-count (suc (suc a)) b _ ()
+
+  xor-l : ∀ a b → a xor b ≡ false → a ≡ false → b ≡ false
+  xor-l false b e _ = e
+
+  xor-ff : ∀ {a b} → a ≡ false → b ≡ false → a Data.Bool.Base.xor b ≡ false
+  xor-ff ≡.refl ≡.refl = ≡.refl
+
+  parity-rest : ∀ a b → oddℕ (a ℕ.+ b) ≡ false → oddℕ a ≡ true → oddℕ b ≡ true
+  parity-rest a b e o with oddℕ b in ob
+  ... | true = ≡.refl
+  ... | false = ⊥-elim (t≢f (≡.trans (≡.sym (≡.trans (oddℕ-+ a b) (≡.cong₂ _xor_ o ob))) e))
+
+  odd-pos : ∀ c → oddℕ c ≡ true → 0 ℕ.< c
+  odd-pos (suc c) _ = ℕ.s≤s ℕ.z≤n
+
+module Extra {m : ℕ} (ι : Fin m → Fin n) (inj : ∀ {i j} → ι i ≡ ι j → i ≡ j) where
+
+  open Emb ι inj using (emb ; emb-ι ; emb-o ; where?)
+
+  -- Quotients outside the window.
+  private
+    quot : ∀ δ (W₀ : Vec Z n) → (∀ x → (∀ i → ι i ≢ x) → ∃ λ y → W₀ ! x ≡ (√2ᶻ ^ᶻ δ) ZR.* y) →
+           ∀ x → (∃ λ i → ι i ≡ x) ⊎ (∀ i → ι i ≢ x) → Z
+    quot δ W₀ div x (inj₁ _) = ZR.0#
+    quot δ W₀ div x (inj₂ o) = proj₁ (div x o)
+
+    quot-eq : ∀ δ W₀ div x (o : ∀ i → ι i ≢ x) (w : (∃ λ i → ι i ≡ x) ⊎ (∀ i → ι i ≢ x)) →
+              W₀ ! x ≡ (√2ᶻ ^ᶻ δ) ZR.* quot δ W₀ div x w
+    quot-eq δ W₀ div x o (inj₁ (i , e)) = ⊥-elim (o i e)
+    quot-eq δ W₀ div x o (inj₂ o′) = proj₂ (div x o′)
+
+  -- If the local quotients count an odd number of the kind, and at
+  -- least two odd ones, an entry of that kind lies outside the window.
+  extra : ∀ {N : Matrix n n D} → ColOrth N → ∀ k (e : Vec Z m) (W₀ : Vec Z n) → col N p ≡ scV k (emb e W₀) →
+          ∀ δ (g : Vec Z m) → (∀ i → e ! i ≡ (√2ᶻ ^ᶻ δ) ZR.* (g ! i)) →
+          (∀ x → (∀ i → ι i ≢ x) → ∃ λ y → W₀ ! x ≡ (√2ᶻ ^ᶻ δ) ZR.* y) →
+          2 ℕ.≤ countV oddᶻ g → ∀ κ → oddℕ (countV (Pκ κ) g) ≡ true →
+          ∃ λ x → (∀ i → ι i ≢ x) × ∃ λ y → W₀ ! x ≡ (√2ᶻ ^ᶻ δ) ZR.* y × Pκ κ y ≡ true
+  extra {N} o k e W₀ col≡ δ g eg div two κ oddκ = found (count-exists Pout (odd-pos _ outside-odd))
+    where
+    Ŵ : Vec Z n
+    Ŵ = tabulate (λ x → quot δ W₀ div x (where? x))
+    w̃ : Vec Z n
+    w̃ = emb g Ŵ
+    zeros : Vec Z m
+    zeros = Vec.replicate m ZR.0#
+    Pout : Fin n → Bool
+    Pout x = Pκ κ (emb zeros Ŵ ! x)
+    -- The column is w̃ at a lower scale.
+    scaled : emb e W₀ ≡ Vec.map ((√2ᶻ ^ᶻ δ) ZR.*_) w̃
+    scaled = vec-ext λ x → at x (where? x)
+      where
+      at : ∀ x → (∃ λ i → ι i ≡ x) ⊎ (∀ i → ι i ≢ x) → emb e W₀ ! x ≡ Vec.map ((√2ᶻ ^ᶻ δ) ZR.*_) w̃ ! x
+      at x (inj₁ (i , ≡.refl)) =
+        ≡.trans (emb-ι e W₀ i) (≡.trans (eg i) (≡.sym (≡.trans (VecP.lookup-map (ι i) _ w̃) (≡.cong ((√2ᶻ ^ᶻ δ) ZR.*_) (emb-ι g Ŵ i)))))
+      at x (inj₂ out) =
+        ≡.trans (emb-o e W₀ out)
+          (≡.trans (quot-eq δ W₀ div x out (where? x))
+            (≡.sym (≡.trans (VecP.lookup-map x _ w̃)
+                     (≡.cong ((√2ᶻ ^ᶻ δ) ZR.*_) (≡.trans (emb-o g Ŵ out) (VecP.lookup∘tabulate (λ x → quot δ W₀ div x (where? x)) x))))))
+    low : ∃ λ K → col N p ≡ scV K w̃
+    low = scale-down o δ k w̃ (≡.trans col≡ (≡.cong (scV k) scaled))
+    K = proj₁ low
+    colK = proj₂ low
+    -- Counts over w̃: the window's, then the outside's.
+    splitP : ∀ P → P ZR.0# ≡ false → count (λ x → P (w̃ ! x)) ≡ countV P g ℕ.+ count (λ x → P (emb zeros Ŵ ! x))
+    splitP P P0 = count-embP ι inj P P0 g Ŵ
+    two-total : 2 ℕ.≤ count (λ x → oddᶻ (w̃ ! x))
+    two-total = ℕP.≤-trans two (≡.subst (countV oddᶻ g ℕ.≤_) (≡.sym (splitP oddᶻ ≡.refl)) (ℕP.m≤m+n _ _))
+    odd-even : oddℕ (count (λ x → oddᶻ (w̃ ! x))) ≡ false
+    odd-even with even-odd o K w̃ colK
+    ... | inj₁ ev = ev
+    ... | inj₂ one = ⊥-elim (≤-count _ 0 two-total (≡.trans (ℕP.+-identityʳ _) one))
+    total-even : oddℕ (count (λ x → Pκ κ (w̃ ! x))) ≡ false
+    total-even = at κ
+      where
+      at : ∀ κ → oddℕ (count (λ x → Pκ κ (w̃ ! x))) ≡ false
+      at nothing = odd-even
+      at (just true) = even-cls o K w̃ colK
+      at (just false) =
+        xor-l (oddℕ c₁) (oddℕ c₀)
+          (≡.trans (≡.sym (oddℕ-+ c₁ c₀)) (≡.trans (≡.cong oddℕ (≡.sym (count-split (λ x → oddᶻ (w̃ ! x)) (λ x → rbit (w̃ ! x))))) odd-even))
+          (even-cls o K w̃ colK)
+        where
+        c₁ = count (λ x → oddᶻ (w̃ ! x) ∧ rbit (w̃ ! x))
+        c₀ = count (λ x → oddᶻ (w̃ ! x) ∧ not (rbit (w̃ ! x)))
+    outside-odd : oddℕ (count Pout) ≡ true
+    outside-odd = parity-rest (countV (Pκ κ) g) (count Pout) (≡.trans (≡.cong oddℕ (≡.sym (splitP (Pκ κ) (Pκ-0 κ)))) total-even) oddκ
+    found : (∃ λ x → Pout x ≡ true) → ∃ λ x → (∀ i → ι i ≢ x) × ∃ λ y → W₀ ! x ≡ (√2ᶻ ^ᶻ δ) ZR.* y × Pκ κ y ≡ true
+    found (x , px) = at (where? x)
+      where
+      at : (∃ λ i → ι i ≡ x) ⊎ (∀ i → ι i ≢ x) → ∃ λ x → (∀ i → ι i ≢ x) × ∃ λ y → W₀ ! x ≡ (√2ᶻ ^ᶻ δ) ZR.* y × Pκ κ y ≡ true
+      at (inj₁ (i , ≡.refl)) =
+        ⊥-elim (t≢f (≡.trans (≡.sym px) (≡.trans (≡.cong (Pκ κ) (≡.trans (emb-ι zeros Ŵ i) (VecP.lookup-replicate i ZR.0#))) (Pκ-0 κ))))
+      at (inj₂ out) =
+        x , out , Ŵ ! x , ≡.trans (quot-eq δ W₀ div x out (where? x)) (≡.cong ((√2ᶻ ^ᶻ δ) ZR.*_) (≡.sym (VecP.lookup∘tabulate _ x))) ,
+        ≡.trans (≡.cong (Pκ κ) (≡.sym (emb-o zeros Ŵ out))) px
