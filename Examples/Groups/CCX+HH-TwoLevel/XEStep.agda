@@ -329,3 +329,90 @@ module Swap (U : Vec ℤ n) {a x : Fin n} (ax : a < x) where
 
   U′-o : ∀ {y} → y ≢ a → y ≢ x → U′ ! y ≡ U ! y
   U′-o ya yx = trans (set₁-≢ a _ _ ya) (trans (set₁-≢ x _ _ yx) (set₂-≢ a x (U ! x) (U ! a) U ya yx))
+
+-- EvenK as a function: using it projects fields, and does not apply the
+-- module again.
+record EvenKR (U : Vec ℤ n) (i j k l : Fin n) .(ij : i < j) .(jk : j < k) .(kl : k < l) : Set where
+  field
+    Wh    : Vec ℤ n
+    col-K : ∀ K → actV (K-gen i j k l ij jk kl) (scV K U) ≡ scV K Wh
+    ev-i  : Even (Wh ! i)
+    ev-j  : Even (Wh ! j)
+    ev-k  : Even (Wh ! k)
+    ev-l  : Even (Wh ! l)
+    Wh-≢  : ∀ {x} → x ≢ i → x ≢ j → x ≢ k → x ≢ l → Wh ! x ≡ U ! x
+
+evenK : (U : Vec ℤ n) {i j k l : Fin n} (ij : i < j) (jk : j < k) (kl : k < l) (ui uj uk ul : ℤ) →
+        U ! i ≡ + 2 ℤ.* ui → U ! j ≡ + 2 ℤ.* uj → U ! k ≡ + 2 ℤ.* uk → U ! l ≡ + 2 ℤ.* ul →
+        ((oddℤ ui xor oddℤ uj) xor oddℤ uk) xor oddℤ ul ≡ false → EvenKR U i j k l ij jk kl
+evenK U ij jk kl ui uj uk ul wi wj wk wl Σ0 = record
+  { Wh = E.Wh ; col-K = E.col-K ; ev-i = E.ev-i ; ev-j = E.ev-j ; ev-k = E.ev-k ; ev-l = E.ev-l ; Wh-≢ = E.Wh-≢ }
+  where module E = EvenK U ij jk kl ui uj uk ul wi wj wk wl Σ0
+
+-- Swap as a function.
+record SwapR (U : Vec ℤ n) (a x : Fin n) .(ax : a < x) : Set where
+  field
+    U′    : Vec ℤ n
+    col-S : ∀ K → actVʷ ([ M-gen a ]ʷ • ([ M-gen x ]ʷ • [ X-gen a x ax ]ʷ)) (scV K U) ≡ scV K U′
+    U′-a  : U′ ! a ≡ ℤ.- (U ! x)
+    U′-x  : U′ ! x ≡ ℤ.- (U ! a)
+    U′-o  : ∀ {y} → y ≢ a → y ≢ x → U′ ! y ≡ U ! y
+
+swap : (U : Vec ℤ n) {a x : Fin n} (ax : a < x) → SwapR U a x ax
+swap U ax = record { U′ = S.U′ ; col-S = S.col-S ; U′-a = S.U′-a ; U′-x = S.U′-x ; U′-o = S.U′-o }
+  where module S = Swap U ax
+
+------------------------------------------------------------------------
+-- Tau as a function
+
+-- The paper's syllable on i, j, k, l, with the signs of U.
+τword : (U : Vec ℤ n) {i j k l : Fin n} .(ij : i < j) .(jk : j < k) .(kl : k < l) → Word (Gen n)
+τword U {i} {j} {k} {l} ij jk kl =
+  ⟪ K-gen i j k l ij jk kl ∷ (mτ i (τ (U ! i)) ++ (mτ j (τ (U ! j)) ++ (mτ k (τ (U ! k)) ++ mτ l (τ (U ! l))))) ⟫
+
+module _ {n : ℕ} where
+  open PB (_===_ {n}) using (_≈_)
+  import Examples.Groups.CCX+HH-TwoLevel.States as St
+
+  record TauR (U : Vec ℤ n) (i j k l : Fin n) .(ij : i < j) .(jk : j < k) .(kl : k < l) : Set where
+    field
+      Wh    : Vec ℤ n
+      col-T : ∀ K → actVʷ (τword U ij jk kl) (scV K U) ≡ scV K Wh
+      hA hB hC hD : ℤ
+      Wh-i  : Wh ! i ≡ + 2 ℤ.* hA
+      Wh-j  : Wh ! j ≡ + 2 ℤ.* hB
+      Wh-k  : Wh ! k ≡ + 2 ℤ.* hC
+      Wh-l  : Wh ! l ≡ + 2 ℤ.* hD
+      Wh-o  : ∀ {x} → x ≢ i → x ≢ j → x ≢ k → x ≢ l → Wh ! x ≡ U ! x
+      Σz    : Bool
+      par-A : oddℤ hA ≡ not Σz
+      par-B : oddℤ hB ≡ Σz
+      par-C : oddℤ hC ≡ Σz
+      par-D : oddℤ hD ≡ Σz
+      -- The word of X's and (-1)'s.
+      S′     : Word (Gen n)
+      S′-mono : ∀ {p : Fin n} → i ≤ p → j ≤ p → k ≤ p → l ≤ p → St.MonoWord p S′
+      rel   : τword U ij jk kl ≈ S′ • ([ K-gen i j k l ij jk kl ]ʷ • Mτ i (((τ (U ! i) xor τ (U ! j)) xor τ (U ! k)) xor τ (U ! l)))
+
+  tau : (U : Vec ℤ n) {i j k l : Fin n} (ij : i < j) (jk : j < k) (kl : k < l) →
+        Odd (U ! i) → Odd (U ! j) → Odd (U ! k) → Odd (U ! l) → TauR U i j k l ij jk kl
+  tau U {i} {j} {k} {l} ij jk kl oi oj ok ol = record
+    { Wh = T.Wh ; col-T = T.col-T ; hA = T.hA ; hB = T.hB ; hC = T.hC ; hD = T.hD
+    ; Wh-i = T.Wh-i ; Wh-j = T.Wh-j ; Wh-k = T.Wh-k ; Wh-l = T.Wh-l ; Wh-o = T.Wh-o
+    ; Σz = T.Σz ; par-A = T.par-A ; par-B = T.par-B ; par-C = T.par-C ; par-D = T.par-D
+    ; S′ = T.S′ ; S′-mono = mono ; rel = T.rel }
+    where
+    module T = Tau U ij jk kl oi oj ok ol
+    mono : ∀ {p : Fin n} → i ≤ p → j ≤ p → k ≤ p → l ≤ p → St.MonoWord p T.S′
+    mono {p} hi hj hk hl = go (RT.tauS T.τi T.τj T.τk T.τl) (tauS-noK T.τi T.τj T.τk T.τl)
+      where
+      bnd : ∀ (z : Fin 4) → ι T.e4 z ≤ p
+      bnd F.zero = hi
+      bnd (F.suc F.zero) = hj
+      bnd (F.suc (F.suc F.zero)) = hk
+      bnd (F.suc (F.suc (F.suc F.zero))) = hl
+      go : ∀ (xs : List (Gen 4)) → noK xs ≡ true → St.MonoWord p ⟪ map (gen T.e4) xs ⟫
+      go [] _ = tt
+      go (M-gen x ∷ xs) h = bnd x , go xs h
+      go (X-gen x y q ∷ xs) h = bnd y , go xs h
+      go (K-gen _ _ _ _ _ _ _ ∷ xs) ()
