@@ -9,8 +9,8 @@
 -- the pivot p of M, then g·M has pivot d and lies above L: this does
 -- not occur.  Otherwise g acts on indices ≤ p, and the edge is a path
 -- by Cases 1–3 when g is basic, and through the basic edges at L
--- (Basic) when it is not.  Subcase 3.4 is Case34; Subcase 1.14.2 is a
--- hypothesis here (Hyps), proved in Case1142.
+-- (Basic) when it is not.  Subcase 3.4 is Case34, Subcase 1.14.2
+-- Case1142.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -49,13 +49,15 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (_≤�
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.States {n} using (ne-𝕀 ; ne-𝕀-at)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Derived {n} using (•-cancelˡ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Algorithm using (third ; levelᶜ ; levelᶜ-just ; lvlAtᶜ)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Reduction {n}
+open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Reduction {n} hiding (completeness)
+import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Reduction {n} as TR
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Above {n} using (gen-col ; above)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Basic {n} using (Basic ; BasicAt ; module Conj)
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Case1 as Case1
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Case2 as Case2
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Case3 as Case3
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Case34 as Case34
+import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Thesis.Case1142 as Case1142
 
 open PB (_===_ {n}) using (_≈_)
 
@@ -66,15 +68,11 @@ private
 ------------------------------------------------------------------------
 -- The induction step
 
--- Subcase 1.14.2, at every level.
-Hyps : Set
-Hyps = ∀ L (ih : EdgesBelow L) → Case1.Hyp1142 {n} ih
-
--- Subcase 3.4 (Case34), given 1.14.2: the level of a state with a
--- positive exponent has the form Case34 asks for.
-hyp34 : Hyps → ∀ {L} (ih : EdgesBelow L) → Case3.Hyp34 {n} ih
-hyp34 hyps {L} ih s o {q} pv eq t0 t1 z01 z₁≤q le k″ eK o0 o1 r01 =
-  Case34.hyp34 q k″ ℓ₁ ih₁ (hyps L₁ ih₁) s o pv (≡.trans eq L≡) t0 t1 z01 z₁≤q (≡.subst (levelᶜ (actM (H-gen _ _ z01) s) ≤ₗ_) L≡ le)
+-- Subcase 3.4 (Case34): the level of a state with a positive exponent
+-- has the form Case34 asks for.
+hyp34 : ∀ {L} (ih : EdgesBelow L) → Case3.Hyp34 {n} ih
+hyp34 {L} ih s o {q} pv eq t0 t1 z01 z₁≤q le k″ eK o0 o1 r01 =
+  Case34.hyp34 q k″ ℓ₁ ih₁ (Case1142.hyp1142 ih₁) s o pv (≡.trans eq L≡) t0 t1 z01 z₁≤q (≡.subst (levelᶜ (actM (H-gen _ _ z01) s) ≤ₗ_) L≡ le)
     k″ eK o0 o1 r01
   where
   ℓ₁ = third (lde (col s q)) (num (col s q))
@@ -92,8 +90,8 @@ private
   not-le p<d (inj₁ (inj₂ (e , _))) = ℕP.<-irrefl (≡.sym e) (s≤s p<d)
   not-le p<d (inj₂ e) = ℕP.<-irrefl (≡.sym (≡.cong proj₁ e)) (s≤s p<d)
 
-edge-step : Hyps → EdgeStep
-edge-step hyps L ih g M o eq le = at (pivot M) ≡.refl
+edge-step : EdgeStep
+edge-step L ih g M o eq le = at (pivot M) ≡.refl
   where
   at : (r : Maybe (Fin n)) → pivot M ≡ r → Path [ g ]ʷ M o
   -- M = I: g · I has the pivot top g, above (0, 0, 0).
@@ -124,8 +122,8 @@ edge-step hyps L ih g M o eq le = at (pivot M) ≡.refl
     L′ = suc (toℕ p) , k , ℓ
     ih′ : EdgesBelow L′
     ih′ = ≡.subst EdgesBelow L≡ ih
-    h1142 = hyps L′ ih′
-    h34 = hyp34 hyps ih′
+    h1142 = Case1142.hyp1142 ih′
+    h34 = hyp34 ih′
     -- The basic edges at L′.
     basicAt : BasicAt L′
     basicAt g′ bg M′ o′ eq′ le′ = at′ (pivot M′) ≡.refl
@@ -151,6 +149,6 @@ edge-step hyps L ih g M o eq le = at (pivot M) ≡.refl
     within : top g ≤ p → Path [ g ]ʷ M o
     within tg = Conj.edge-le p k ℓ ih′ basicAt g tg M o (inj₂ (≡.trans eq L≡)) (≡.subst (levelᶜ (actM g M) ≤ₗ_) L≡ le)
 
--- Theorem 4.1, given Subcase 1.14.2.
-completeness-given : Hyps → {u v : Word (Gen n)} → ⟦ u ⟧ᵐ ≡ ⟦ v ⟧ᵐ → u ≈ v
-completeness-given hyps = completeness (edge-step hyps)
+-- Theorem 4.1.
+completeness : {u v : Word (Gen n)} → ⟦ u ⟧ᵐ ≡ ⟦ v ⟧ᵐ → u ≈ v
+completeness = TR.completeness edge-step
