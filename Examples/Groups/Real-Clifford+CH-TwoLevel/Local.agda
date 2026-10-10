@@ -1,11 +1,11 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Columns that differ from a given numerator W only at four indices
--- ι 0 < ι 1 < ι 2 < ι 3: emb e W puts the local vector e ∈ ℤ[√2]⁴ at
--- those indices.  The generators on these indices act on e, so the
--- column computations of the four-entry diamond are computations on
--- literal 4-vectors, which evaluate.
+-- Columns that differ from a given numerator W only at m indices
+-- ι 0, …, ι (m - 1): emb e W puts the local vector e ∈ ℤ[√2]ᵐ at those
+-- indices.  The generators on these indices act on e, so the column
+-- computations of the four-entry diamond (m = 4) are computations on
+-- literal vectors, which evaluate.
 --
 -- * actV-H-same: H_[a,b] at the same scale, when √2 divides the sum
 --   and the difference of the two entries;
@@ -74,10 +74,10 @@ actV-H-same a b ab k w α β sum dif =
 -- Local vectors, and their updates (transparent: they evaluate on
 -- literal vectors and indices)
 
-upd₁ : Fin 4 → Z → Vec Z 4 → Vec Z 4
+upd₁ : ∀ {m} → Fin m → Z → Vec Z m → Vec Z m
 upd₁ i α e = tabulate (λ m → if does (m FinP.≟ i) then α else e ! m)
 
-upd₂ : Fin 4 → Fin 4 → Z → Z → Vec Z 4 → Vec Z 4
+upd₂ : ∀ {m} → Fin m → Fin m → Z → Z → Vec Z m → Vec Z m
 upd₂ i j α β e = tabulate (λ m → if does (m FinP.≟ i) then α else if does (m FinP.≟ j) then β else e ! m)
 
 private
@@ -87,35 +87,35 @@ private
   if-false : ∀ {A : Set} {d : Bool} (x y : A) → d ≡ false → (if d then x else y) ≡ y
   if-false x y ≡.refl = ≡.refl
 
-upd₁-i : ∀ i α e → upd₁ i α e ! i ≡ α
+upd₁-i : ∀ {m} (i : Fin m) α e → upd₁ i α e ! i ≡ α
 upd₁-i i α e = ≡.trans (VecP.lookup∘tabulate (λ m → if does (m FinP.≟ i) then α else e ! m) i) (if-true α (e ! i) (dec-true (i FinP.≟ i) ≡.refl))
 
-upd₁-o : ∀ i α e {m} → m ≢ i → upd₁ i α e ! m ≡ e ! m
-upd₁-o i α e {m} m≢i = ≡.trans (VecP.lookup∘tabulate (λ m → if does (m FinP.≟ i) then α else e ! m) m) (if-false α (e ! m) (dec-false (m FinP.≟ i) m≢i))
+upd₁-o : ∀ {m} (i : Fin m) α e {l} → l ≢ i → upd₁ i α e ! l ≡ e ! l
+upd₁-o i α e {l} l≢i = ≡.trans (VecP.lookup∘tabulate (λ m → if does (m FinP.≟ i) then α else e ! m) l) (if-false α (e ! l) (dec-false (l FinP.≟ i) l≢i))
 
-upd₂-i : ∀ i j α β e → upd₂ i j α β e ! i ≡ α
+upd₂-i : ∀ {m} (i j : Fin m) α β e → upd₂ i j α β e ! i ≡ α
 upd₂-i i j α β e = ≡.trans (VecP.lookup∘tabulate (λ m → if does (m FinP.≟ i) then α else if does (m FinP.≟ j) then β else e ! m) i) (if-true α _ (dec-true (i FinP.≟ i) ≡.refl))
 
-upd₂-j : ∀ i j α β e → i ≢ j → upd₂ i j α β e ! j ≡ β
+upd₂-j : ∀ {m} (i j : Fin m) α β e → i ≢ j → upd₂ i j α β e ! j ≡ β
 upd₂-j i j α β e i≢j =
   ≡.trans (VecP.lookup∘tabulate (λ m → if does (m FinP.≟ i) then α else if does (m FinP.≟ j) then β else e ! m) j)
     (≡.trans (if-false α _ (dec-false (j FinP.≟ i) (λ e → i≢j (≡.sym e))))
              (if-true β (e ! j) (dec-true (j FinP.≟ j) ≡.refl)))
 
-upd₂-o : ∀ i j α β e {m} → m ≢ i → m ≢ j → upd₂ i j α β e ! m ≡ e ! m
-upd₂-o i j α β e {m} m≢i m≢j =
-  ≡.trans (VecP.lookup∘tabulate (λ m → if does (m FinP.≟ i) then α else if does (m FinP.≟ j) then β else e ! m) m)
-    (≡.trans (if-false α _ (dec-false (m FinP.≟ i) m≢i)) (if-false β (e ! m) (dec-false (m FinP.≟ j) m≢j)))
+upd₂-o : ∀ {m} (i j : Fin m) α β e {l} → l ≢ i → l ≢ j → upd₂ i j α β e ! l ≡ e ! l
+upd₂-o i j α β e {l} l≢i l≢j =
+  ≡.trans (VecP.lookup∘tabulate (λ m → if does (m FinP.≟ i) then α else if does (m FinP.≟ j) then β else e ! m) l)
+    (≡.trans (if-false α _ (dec-false (l FinP.≟ i) l≢i)) (if-false β (e ! l) (dec-false (l FinP.≟ j) l≢j)))
 
 ------------------------------------------------------------------------
--- Embedding a local vector at four indices
+-- Embedding a local vector at m indices
 
-module Emb (ι : Fin 4 → Fin n) (inj : ∀ {i j} → ι i ≡ ι j → i ≡ j) where
+module Emb {m : ℕ} (ι : Fin m → Fin n) (inj : ∀ {i j} → ι i ≡ ι j → i ≡ j) where
 
-  pre : Fin n → Maybe (Fin 4)
+  pre : Fin n → Maybe (Fin m)
   pre x = first (λ m → does (ι m FinP.≟ x))
 
-  emb : Vec Z 4 → Vec Z n → Vec Z n
+  emb : Vec Z m → Vec Z n → Vec Z n
   emb e W = tabulate (λ x → maybe′ (e !_) (W ! x) (pre x))
 
   private
@@ -146,11 +146,11 @@ module Emb (ι : Fin 4 → Fin n) (inj : ∀ {i j} → ι i ≡ ι j → i ≡ j
   where? : ∀ x → (∃ λ m → ι m ≡ x) ⊎ (∀ m → ι m ≢ x)
   where? x = at (pre x) ≡.refl
     where
-    at : (r : Maybe (Fin 4)) → pre x ≡ r → (∃ λ m → ι m ≡ x) ⊎ (∀ m → ι m ≢ x)
+    at : (r : Maybe (Fin m)) → pre x ≡ r → (∃ λ m → ι m ≡ x) ⊎ (∀ m → ι m ≢ x)
     at (just m) e = inj₁ (m , pre-just e)
     at nothing e = inj₂ λ m eq → nothing≢just (≡.trans (≡.sym e) (≡.trans (≡.cong pre (≡.sym eq)) (pre-ι m)))
       where
-      nothing≢just : ∀ {j : Fin 4} → nothing ≢ just j
+      nothing≢just : ∀ {j : Fin m} → nothing ≢ just j
       nothing≢just ()
 
   -- Pointwise equality of embeddings.
@@ -163,7 +163,7 @@ module Emb (ι : Fin 4 → Fin n) (inj : ∀ {i j} → ι i ≡ ι j → i ≡ j
     at x (inj₂ o) = ≡.trans (emb-o e W o) (≡.trans (out x o) (≡.sym (emb-o e′ W′ o)))
 
   -- W is the embedding of its own entries.
-  loc : Vec Z n → Vec Z 4
+  loc : Vec Z n → Vec Z m
   loc W = tabulate (λ m → W ! ι m)
 
   emb-self : ∀ W → emb (loc W) W ≡ W
@@ -209,7 +209,7 @@ module Emb (ι : Fin 4 → Fin n) (inj : ∀ {i j} → ι i ≡ ι j → i ≡ j
   ----------------------------------------------------------------------
   -- The generators on embedded vectors
 
-  H-emb : ∀ (i j : Fin 4) .(ij : ι i < ι j) k e W (α β : Z) →
+  H-emb : ∀ (i j : Fin m) .(ij : ι i < ι j) k e W (α β : Z) →
           e ! i ZR.+ e ! j ≡ √2ᶻ ZR.* α → e ! i ZR.- e ! j ≡ √2ᶻ ZR.* β →
           actV (H-gen (ι i) (ι j) ij) (scV k (emb e W)) ≡ scV k (emb (upd₂ i j α β e) W)
   H-emb i j ij k e W α β sum dif =
@@ -221,7 +221,7 @@ module Emb (ι : Fin 4 → Fin n) (inj : ∀ {i j} → ι i ≡ ι j → i ≡ j
     i≢j : i ≢ j
     i≢j e = <⇒≢ ij (≡.cong ι e)
 
-  X-emb : ∀ (i j : Fin 4) .(ij : ι i < ι j) k e W →
+  X-emb : ∀ (i j : Fin m) .(ij : ι i < ι j) k e W →
           actV (X-gen (ι i) (ι j) ij) (scV k (emb e W)) ≡ scV k (emb (upd₂ i j (e ! j) (e ! i) e) W)
   X-emb i j ij k e W =
     ≡.trans (actV-X (ι i) (ι j) ij k (emb e W))
@@ -231,7 +231,7 @@ module Emb (ι : Fin 4 → Fin n) (inj : ∀ {i j} → ι i ≡ ι j → i ≡ j
     i≢j : i ≢ j
     i≢j e = <⇒≢ ij (≡.cong ι e)
 
-  Z-emb : ∀ (i : Fin 4) k e W → actV (Z-gen (ι i)) (scV k (emb e W)) ≡ scV k (emb (upd₁ i (ZR.- (e ! i)) e) W)
+  Z-emb : ∀ (i : Fin m) k e W → actV (Z-gen (ι i)) (scV k (emb e W)) ≡ scV k (emb (upd₁ i (ZR.- (e ! i)) e) W)
   Z-emb i k e W =
     ≡.trans (actV-Z (ι i) k (emb e W))
       (≡.cong (scV k) (≡.trans (≡.cong (λ s → set₁ (ι i) (ZR.- s) (emb e W)) (emb-ι e W i)) (set₁-emb i _ e W)))
@@ -239,9 +239,9 @@ module Emb (ι : Fin 4 → Fin n) (inj : ∀ {i j} → ι i ≡ ι j → i ≡ j
   ----------------------------------------------------------------------
   -- Fewer odd entries
 
-  nodd-emb : ∀ e W → (∀ m → Odd (W ! ι m)) → (m : Fin 4) → Even (e ! m) → nodd (emb e W) ℕ.< nodd W
-  nodd-emb e W odd m ev =
-    count-lt (λ x → oddᶻ (W ! x)) (λ x → oddᶻ (emb e W ! x)) (ι m) imp (odd m) (≡.trans (≡.cong oddᶻ (emb-ι e W m)) ev)
+  nodd-emb : ∀ e W → (∀ l → Odd (W ! ι l)) → (l : Fin m) → Even (e ! l) → nodd (emb e W) ℕ.< nodd W
+  nodd-emb e W odd l ev =
+    count-lt (λ x → oddᶻ (W ! x)) (λ x → oddᶻ (emb e W ! x)) (ι l) imp (odd l) (≡.trans (≡.cong oddᶻ (emb-ι e W l)) ev)
     where
     imp : ∀ x → oddᶻ (emb e W ! x) ≡ true → oddᶻ (W ! x) ≡ true
     imp x ox = at (where? x)
