@@ -19,18 +19,16 @@ import Data.Fin.Properties as FinP
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 import Data.Nat.Properties as ℕP
-open import Data.Product.Base using (∃ ; ∃₂ ; _×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Product.Base using (∃ ; ∃₂ ; _×_ ; _,_ ; proj₁)
 open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
-open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes ; no)
-open import Relation.Nullary.Decidable using (does)
 
 open import Examples.Groups.Clifford+CS-TwoLevel.Search using (count ; count-cong ; count-drop ; first ; first-just ; first-nothing)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (Z ; module ZR ; module ZG ; √2ᶻ ; _^ᶻ_ ; oddᶻ ; rbit ; oddᶻ-*)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Forms using (halfZ ; halfZ-sound ; halfZ-odd)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Tree using (caseM ; _==_)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.TreeFacts using (halfZ-√2 ; ==-sound ; ==-false ; t≢f)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.TreeFacts using (halfZ-√2 ; t≢f)
 
 private
   variable
@@ -101,13 +99,6 @@ cls?-deeper δ y =
     (trans (cong (λ m → caseM m nothing λ y → if oddᶻ y then just (rbit y) else nothing) (halfZⁿ-pow δ (√2ᶻ ZR.* y)))
       (cls-even (√2ᶻ ZR.* y) (oddᶻ-* √2ᶻ y)))
   where open ZG using (_:*_ ; _:=_ ; con)
-
--- An entry √2 y with y odd is not of depth 2.
-cls?-shallow : ∀ y → oddᶻ y ≡ true → cls? 2 (√2ᶻ ZR.* y) ≡ nothing
-cls?-shallow y o = cong (λ m → caseM m nothing λ y → if oddᶻ y then just (rbit y) else nothing) h2
-  where
-  h2 : halfZⁿ 2 (√2ᶻ ZR.* y) ≡ nothing
-  h2 = trans (cong (λ m → caseM m nothing (halfZⁿ 1)) (halfZ-√2 y)) (cong (λ m → caseM m nothing (halfZⁿ 0)) (halfZ-odd y o))
 
 deep?-cls : ∀ δ z b → cls? δ z ≡ just b → deep? δ z ≡ true
 deep?-cls δ z b e = cong (λ m → caseM m false (λ _ → true)) e

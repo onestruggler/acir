@@ -6,6 +6,9 @@ import os, sys
 sys.setrecursionlimit(50000)
 from emit import *
 import trees
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+from tidy import tidy
+HELPERS = ['f%d' % i for i in range(20)] + ['𝟎', '𝟏', '-𝟏', '𝟐']
 
 DIR = os.path.join(sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'), '')
 NL = '\n'
@@ -25,7 +28,7 @@ def write_nfs():
     out = [HEADER % (doc, 'NFs'), PRIV]
     out.append('nfData : (nf : NF) → NFData nf')
     out += nf_block()
-    open(DIR + 'NFs.agda', 'w', encoding='utf-8').write(NL.join(out) + NL)
+    open(DIR + 'NFs.agda', 'w', encoding='utf-8').write(tidy(NL.join(out) + NL, HELPERS))
 
 def write_tree(modname, doc, tname, t, rows, vars_, fs, tags, mini, allow):
     out = [HEADER % (doc, modname), 'open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.NFs using (nfData)', PRIV]
@@ -44,7 +47,7 @@ def write_tree(modname, doc, tname, t, rows, vars_, fs, tags, mini, allow):
     out.append('')
     out.append('%s-ok : checkT %s %sTags %s %s %s %sForms ≡ true' % (tname, tname, tname, boolean(mini), fin(rows.index('c')), fin(rows.index('d')), tname))
     out.append('%s-ok = refl' % tname)
-    open(DIR + modname + '.agda', 'w', encoding='utf-8').write(NL.join(out) + NL)
+    open(DIR + modname + '.agda', 'w', encoding='utf-8').write(tidy(NL.join(out) + NL, HELPERS))
 
 if __name__ == '__main__':
     T = trees.build()

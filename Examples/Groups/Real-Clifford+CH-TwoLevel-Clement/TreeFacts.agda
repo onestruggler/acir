@@ -11,26 +11,26 @@
 
 module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.TreeFacts where
 
-open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; _∨_ ; not ; _xor_ ; if_then_else_)
-open import Data.Empty using (⊥ ; ⊥-elim)
+open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; not ; _xor_ ; if_then_else_)
+open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base using (Fin ; zero ; suc)
 import Data.Fin.Properties as FinP
 open import Data.Integer.Base as ℤ using (ℤ ; +_ ; -[1+_])
 open import Data.List.Base using (List ; [] ; _∷_)
 open import Data.List.Relation.Unary.All using (All ; [] ; _∷_)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
-open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc ; _≡ᵇ_)
+open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 import Data.Nat.Properties as ℕP
-open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Product.Base using (∃ ; _×_ ; _,_)
 open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Vec.Base as Vec using (Vec ; [] ; _∷_)
 import Data.Vec.Properties as VecP
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (Dec ; yes ; no)
+open import Relation.Nullary using (yes ; no)
 open import Relation.Nullary.Decidable using (does)
 
 open import Quantum.Synthesis.Ring using (RootTwo)
-open import Examples.Groups.Clifford+CS-TwoLevel.Ring using (oddℕ ; oddℕ-+ ; oddℤ ; evenℤ-half)
+open import Examples.Groups.Clifford+CS-TwoLevel.Ring using (oddℕ ; oddℕ-+)
 import Examples.Groups.Clifford+CS-TwoLevel.Ring
 open import Examples.Groups.Clifford+CS-TwoLevel.Vector using (_!_)
 open import Examples.Groups.Clifford+CS-TwoLevel.Search using (count ; count-drop₂)

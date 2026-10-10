@@ -28,13 +28,13 @@ open import Data.Fin.Base as Fin using (zero ; suc)
 import Data.Fin.Properties as FinP
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
 import Data.Nat.Properties as ℕP
-open import Data.Product.Base using (∃ ; ∃₂ ; _×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Product.Base using (∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Vec.Base as Vec using (Vec ; [] ; _∷_ ; tabulate)
 import Data.Vec.Properties as VecP
 open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_ ; _≢_)
-open import Relation.Nullary using (Dec ; yes ; no)
+open import Relation.Nullary using (yes ; no)
 
 open import Quantum.Synthesis.Matrix using (Matrix)
 
@@ -236,9 +236,6 @@ private
 
   xor-l : ∀ a b → a xor b ≡ false → a ≡ false → b ≡ false
   xor-l false b e _ = e
-
-  xor-ff : ∀ {a b} → a ≡ false → b ≡ false → a Data.Bool.Base.xor b ≡ false
-  xor-ff ≡.refl ≡.refl = ≡.refl
 
   parity-rest : ∀ a b → oddℕ (a ℕ.+ b) ≡ false → oddℕ a ≡ true → oddℕ b ≡ true
   parity-rest a b e o with oddℕ b in ob

@@ -10,6 +10,8 @@ cd trees    && python gen.py    # NFs.agda, TreeNF341.agda, TreeNF38.agda, TreeT
 
 Each `gen.py` writes into the development's folder (two levels up), or into the
 directory given as its argument.
+Both pass their output through `tidy.py`, which drops the imported names and
+the one-line helpers that a module does not use.
 
 ## `diagrams/`: Clément's diagrams (20) and (30)
 

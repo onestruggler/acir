@@ -20,7 +20,7 @@ open import Data.Bool.Base using (Bool ; true ; false ; _xor_)
 open import Data.Integer.Base using (+_)
 open import Data.Fin.Base using (Fin ; zero ; suc)
 open import Data.Nat.Base using (ℕ ; zero ; suc)
-open import Data.Product.Base using (∃ ; ∃₂ ; _,_ ; proj₁ ; proj₂)
+open import Data.Product.Base using (∃₂ ; _,_ ; proj₁ ; proj₂)
 open import Data.Vec.Base as Vec using (Vec ; [] ; _∷_ ; _[_]≔_)
 open import Relation.Binary.PropositionalEquality
 

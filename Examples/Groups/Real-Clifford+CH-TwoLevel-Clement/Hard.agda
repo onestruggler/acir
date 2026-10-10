@@ -26,7 +26,7 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction using (EdgesBelo
 module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Hard {n : ℕ} (p : Fin n) (k′ ℓ : ℕ)
   (ih : EdgesBelow {n} (suc (toℕ p) , suc k′ , ℓ)) where
 
-open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; not ; if_then_else_ ; _xor_)
+open import Data.Bool.Base using (Bool ; true ; false ; if_then_else_ ; _xor_)
 open import Data.Empty using (⊥ ; ⊥-elim)
 open import Data.Fin.Base as Fin using (zero ; suc ; _<_ ; _≤_)
 import Data.Fin.Properties as FinP
@@ -35,7 +35,7 @@ open import Data.Maybe.Base using (Maybe ; just ; nothing)
 import Data.Nat.Properties as ℕP
 open import Data.Product.Base using (∃ ; ∃₂ ; _×_ ; proj₁ ; proj₂)
 open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
-open import Data.Vec.Base as Vec using (Vec ; [] ; _∷_ ; tabulate)
+open import Data.Vec.Base as Vec using (Vec ; [] ; _∷_)
 import Data.Vec.Properties as VecP
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_ ; _≢_)
 open import Relation.Nullary using (yes ; no)
@@ -73,7 +73,7 @@ import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.TreeNF341 as T341
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Sound p k′ ℓ ih as S
 import Examples.Groups.Real-Clifford+CH-TwoLevel.PairEdges p k′ ℓ ih as PE
 
-open ZG using (_:+_ ; _:*_ ; :-_ ; _:-_ ; _:=_ ; con)
+open ZG using (_:+_ ; _:*_ ; _:=_ ; con)
 
 private
   f0 : ∀ {m} → Fin (suc m)

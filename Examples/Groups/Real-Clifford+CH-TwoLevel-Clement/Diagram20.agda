@@ -20,7 +20,7 @@ open import Data.List.Base using (List ; [] ; _∷_)
 open import Data.Nat.Base using (z≤n ; s≤s)
 open import Relation.Binary.PropositionalEquality using (refl)
 
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (H-gen ; X-gen ; Z-gen)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics using (H-gen ; Z-gen)
 import Presentation.Tactics.Words as TW
 
 ------------------------------------------------------------------------
@@ -36,14 +36,8 @@ lt01 : f0 < f1
 lt01 = s≤s z≤n
 lt02 : f0 < f2
 lt02 = s≤s z≤n
-lt03 : f0 < f3
-lt03 = s≤s z≤n
-lt12 : f1 < f2
-lt12 = s≤s (s≤s z≤n)
 lt13 : f1 < f3
 lt13 = s≤s (s≤s z≤n)
-lt23 : f2 < f3
-lt23 = s≤s (s≤s (s≤s z≤n))
 
 h01 : Gen 4
 h01 = H-gen f0 f1 lt01

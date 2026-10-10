@@ -14,6 +14,8 @@ from words import *
 from manual import Chain
 from emit import *
 from routes import CORES
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+from tidy import tidy
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 
@@ -143,7 +145,8 @@ def module(m, name, doc, hyp, hypL, hypR, derivs, dname, route):
     sec.insert(3, '  open PB Γ using (_≈_)')
     out += sec
     path = os.path.join(OUT, name + '.agda')
-    open(path, 'w', encoding='utf-8').write('\n'.join(out) + '\n')
+    helpers = ['f%d' % i for i in range(m)] + ['lt%d%d' % (i, j) for i in range(m) for j in range(i + 1, m)]
+    open(path, 'w', encoding='utf-8').write(tidy('\n'.join(out) + '\n', helpers))
     print('written', name)
 
 module(6, 'Diagram30', [

@@ -29,7 +29,7 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction using (EdgesBelo
 module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Route {n : ℕ} (p : Fin n) (k′ ℓ : ℕ)
   (ih : EdgesBelow {n} (suc (toℕ p) , suc k′ , ℓ)) where
 
-open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; if_then_else_)
+open import Data.Bool.Base using (Bool ; true ; false ; _∧_)
 open import Data.Empty using (⊥ ; ⊥-elim)
 open import Data.Fin.Base as Fin using (_<_ ; _≤_)
 import Data.Fin.Properties as FinP
@@ -43,13 +43,12 @@ open import Data.Vec.Base as Vec using (Vec ; [] ; _∷_)
 import Data.Vec.Properties as VecP
 open import Relation.Binary.Definitions using (Tri ; tri< ; tri≈ ; tri>)
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_ ; _≢_)
-open import Relation.Nullary using (Dec ; yes ; no)
 
 open import Quantum.Synthesis.Matrix using (Matrix)
 
 open import Word.Base
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (D ; Z ; module ZR ; oddᶻ ; rbit)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Lde using (scV ; lde-char ; Odd)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Lde using (scV ; lde-char)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Column using (nodd)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics renaming (Z to Zʷ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics
@@ -57,10 +56,10 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Pivot using (level ; _<ₗ
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.States {n} using (level-of ; ne-𝕀)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Step using (scV-injective)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path ; path-ε ; path-• ; back ; act-gg ; _≤ₗ_)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Local {n} using (upd₁ ; upd₂ ; upd₂-i ; upd₂-j ; upd₂-o ; module Emb)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Symmetric {n} using (Hs ; HsT ; Xs ; XsT)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Local {n} using (upd₂ ; upd₂-i ; upd₂-j ; module Emb)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Symmetric {n} using (HsT ; XsT)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.PairBase p k′ ℓ ih
-  using (k ; L ; X-low ; Z-low ; mono-L ; module State) renaming (low to below-L)
+  using (k ; L ; X-low ; mono-L ; module State) renaming (low to below-L)
 import Examples.Groups.Real-Clifford+CH-TwoLevel.PairEdges p k′ ℓ ih as PE
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Forms using (Form)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Check
@@ -177,10 +176,6 @@ module Local-at (s : Matrix n n D) .(o : ColOrth s) (eq : level s ≡ L) (ℓ4 :
     levelL : level N ≡ L
     levelL = ≡.trans (level-of N pv k (emb e W₀) (colK K) (inj₂ (ι i₀ , wodd)))
                (≡.cong (λ c → suc (toℕ p) , k , c) (≡.trans (nodd-known e) (≡.trans four (≡.sym ℓ4))))
-
-    -- Its numerator is the embedding.
-    W≡ : .(oN : ColOrth N) (eqN : level N ≡ L) → State.W N oN eqN ≡ emb e W₀
-    W≡ oN eqN = proj₂ (lde-char k (emb e W₀) (colK K) (inj₂ (ι i₀ , wodd)))
 
   ----------------------------------------------------------------------
   -- Letters

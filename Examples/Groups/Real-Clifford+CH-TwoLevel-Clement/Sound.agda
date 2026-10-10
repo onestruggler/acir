@@ -42,13 +42,11 @@ open import Data.Fin.Base as Fin using (zero ; suc ; _<_ ; _≤_)
 import Data.Fin.Properties as FinP
 open import Data.List.Base using (List ; [] ; _∷_ ; length)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
-open import Data.Maybe.Properties using (just-injective)
 import Data.Nat.Properties as ℕP
 open import Data.Product.Base using (∃ ; ∃₂ ; _×_ ; proj₁ ; proj₂)
 open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Vec.Base as Vec using (Vec ; [] ; _∷_ ; tabulate ; _[_]≔_)
 import Data.Vec.Properties as VecP
-open import Function.Base using (_∘_)
 import Function.Bundles as Fun
 open import Relation.Binary.PropositionalEquality as ≡ using (_≢_)
 open import Relation.Nullary using (yes ; no)
@@ -62,7 +60,7 @@ import Presentation.Properties as PP
 open import Examples.Groups.Clifford+CS-TwoLevel.Ring using (oddℕ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring
   using (D ; Z ; module ZR ; module ZG ; √2ᶻ ; _^ᶻ_ ; oddᶻ ; rbit ; oddᶻ-neg ; rbit-neg ; rbit-+ ; even⇒δ∣)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Lde using (num ; scV)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Lde using (num)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics renaming (Z to Zʷ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Clement using (_===ᶜ_)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics
@@ -87,7 +85,7 @@ import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Placed as Placed
 open PB (_===_ {n}) hiding (_===_)
 open PP (_===_ {n})
 open SR word-setoid
-open ZG using (_:+_ ; _:*_ ; :-_ ; _:-_ ; _:=_ ; con)
+open ZG using (_:*_ ; :-_ ; _:-_ ; _:=_ ; con)
 
 private
   fst : ∀ a {b} → a ∧ b ≡ true → a ≡ true

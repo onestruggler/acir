@@ -8,10 +8,10 @@
 
 module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.TreeNF38 where
 
-open import Data.Bool.Base using (Bool ; true ; false)
+open import Data.Bool.Base using (true ; false)
 open import Data.Fin.Base using (Fin ; zero ; suc)
 open import Data.Integer.Base using (+_ ; -[1+_])
-open import Data.List.Base using (List ; [] ; _∷_)
+open import Data.List.Base using ([] ; _∷_)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
 open import Data.Nat.Base using (ℕ ; suc)
 open import Data.Product.Base using (_,_)
@@ -21,16 +21,15 @@ open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
 open import Quantum.Synthesis.Ring using (RootTwo)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (Z)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Forms using (Form ; form)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Check using (Hˡ ; Xˡ ; Zˡ)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Check using (Hˡ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Tree
 
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.NFs using (nfData)
 
 private
-  𝟎 𝟏 -𝟏 𝟐 : Z
+  𝟎 𝟏 𝟐 : Z
   𝟎 = RootTwo (+ 0) (+ 0)
   𝟏 = RootTwo (+ 1) (+ 0)
-  -𝟏 = RootTwo -[1+ 0 ] (+ 0)
   𝟐 = RootTwo (+ 2) (+ 0)
   f0 : ∀ {m} → Fin (suc m)
   f0 = zero
@@ -62,16 +61,6 @@ private
   f13 = suc f12
   f14 : ∀ {m} → Fin (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc m)))))))))))))))
   f14 = suc f13
-  f15 : ∀ {m} → Fin (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc m))))))))))))))))
-  f15 = suc f14
-  f16 : ∀ {m} → Fin (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc m)))))))))))))))))
-  f16 = suc f15
-  f17 : ∀ {m} → Fin (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc m))))))))))))))))))
-  f17 = suc f16
-  f18 : ∀ {m} → Fin (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc m)))))))))))))))))))
-  f18 = suc f17
-  f19 : ∀ {m} → Fin (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc (suc m))))))))))))))))))))
-  f19 = suc f18
 
 t38 : Tree 6 14
 t38 = (split f13 (form 𝟎 (𝟎 ∷ 𝟏 ∷ 𝟏 ∷ 𝟏 ∷ 𝟎 ∷ 𝟏 ∷ 𝟏 ∷ 𝟏 ∷ 𝟏 ∷ 𝟏 ∷ 𝟏 ∷ 𝟏 ∷ 𝟏 ∷ 𝟏 ∷ []))

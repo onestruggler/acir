@@ -26,8 +26,8 @@ open import Data.Fin.Base using (Fin)
 import Data.Fin.Properties as FinP
 open import Data.List.Base using (List ; [] ; _∷_)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
-open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
-open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Nat.Base as ℕ using (ℕ ; suc)
+open import Data.Product.Base using (_×_ ; _,_)
 open import Data.Unit.Base using (⊤ ; tt)
 open import Data.Vec.Base as Vec using (Vec ; [] ; _∷_ ; tabulate)
 import Data.Vec.Properties as VecP

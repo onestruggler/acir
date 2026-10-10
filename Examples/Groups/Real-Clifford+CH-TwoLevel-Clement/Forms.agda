@@ -20,7 +20,7 @@ module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Forms where
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; _xor_ ; not)
 open import Data.Integer.Base as ℤ using (ℤ)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
-open import Data.Nat.Base using (ℕ ; zero ; suc)
+open import Data.Nat.Base using (ℕ)
 open import Data.Product.Base using (∃ ; _,_ ; proj₁ ; proj₂)
 open import Data.Empty using (⊥-elim)
 open import Data.Vec.Base as Vec using (Vec ; [] ; _∷_)

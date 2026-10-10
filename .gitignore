@@ -56,3 +56,6 @@ qpl26slides/latex/*.ptb
 
 # Python bytecode (generator scripts)
 __pycache__/
+
+# Chromium crash-handler log that a desktop tool writes into the working directory
+debug.log

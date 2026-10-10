@@ -22,18 +22,17 @@
 module Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Relators where
 
 open import Data.Bool.Base using (Bool ; true ; false)
-open import Data.Empty using (⊥-elim)
-open import Data.Fin.Base as Fin using (Fin ; zero ; suc ; _<_ ; _↑ˡ_ ; toℕ)
+open import Data.Fin.Base as Fin using (Fin ; zero ; suc ; _<_ ; _↑ˡ_)
 import Data.Fin.Properties as FinP
 open import Data.List.Base using (List ; [] ; _∷_ ; _++_ ; map)
 open import Data.Nat.Base as ℕ using (ℕ ; z≤n ; s≤s)
 import Data.Nat.Properties as ℕP
-open import Data.Product.Base using (Σ ; ∃ ; _×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Product.Base using (Σ ; _×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.List.Relation.Unary.All using (All ; [] ; _∷_)
 open import Function.Base using (_∘_)
 import Function.Bundles as Fun
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_ ; _≢_)
-open import Relation.Nullary using (Dec ; yes ; no)
+open import Relation.Nullary using (yes ; no)
 
 open import Notations using (auto)
 open import Word.Base
@@ -62,7 +61,7 @@ private
 module _ {n : ℕ} where
 
   open CLm {n} using (τs ; τs-++ ; τ-refl)
-  open Sym {n} using (τ ; τ-p ; τ-q ; τ-o ; τ-τ ; τ-inj)
+  open Sym {n} using (τ ; τ-p ; τ-q ; τ-o ; τ-τ)
 
   private
     τ-self : ∀ (p q x : Fin n) → τ p q (τ p q x) ≡ x
