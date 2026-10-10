@@ -33,6 +33,7 @@ import Data.Fin.Properties as FinP
 import Data.Nat.Properties as ℕP
 open import Data.List.Relation.Unary.All using (All ; [] ; _∷_)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
+open import Data.Maybe.Properties using (just-injective)
 open import Data.Product.Base using (∃ ; _×_ ; proj₁ ; proj₂)
 open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂)
 open import Data.Unit.Base using (tt)
@@ -49,8 +50,8 @@ import Presentation.Base as PB
 import Presentation.Properties as PP
 open import Examples.Groups.Clifford+CS-TwoLevel.Ring using (oddℕ ; oddℕ-+)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (D ; Z ; module ZR ; oddᶻ ; rbit)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Lde using (scV ; lde ; num ; Odd ; Even)
-open import Examples.Groups.Clifford+CS-TwoLevel.Search using (count ; count-one ; count-lt)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Lde using (scV ; lde ; num ; lde-char ; Odd ; Even)
+open import Examples.Groups.Clifford+CS-TwoLevel.Search using (count ; count-one ; count-lt ; first-cong)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Counting using (count-split ; search)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Norm using (evenodd ; evenclass ; 2ᶻ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Column
@@ -58,13 +59,13 @@ open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syntactics renaming (Z to 
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Pivot
   using (pivot ; pivot-just ; Beyond ; Lvl ; lvlAt ; level ; level-just ; _<ₗ_)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syllable using (syl ; Beyond-actM)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Syllable using (syl ; top ; Beyond-actM ; eᶻ ; col𝕀≡)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Step using (same-class ; pairW ; H-action ; pairW-j ; pairW-ℓ ; pairW-≢)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Levels using (mono-level ; Bℓ)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Levels using (Mono ; mono-col ; mono-level ; Bℓ)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Derived {n} using (flip-X ; comm-gen)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Reduction {n} using (Path ; Low)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.PathTools {n} using (path-cong ; peel ; module Below)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.States {n} using (path-normal ; syl-of ; level-le ; bℓ-below)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.States {n} using (path-normal ; syl-of ; level-le ; bℓ-below ; pivot-stay)
 import Examples.Groups.Real-Clifford+CH-TwoLevel.PivotColumn as PC
 
 open PB (_===_ {n}) hiding (_===_)
@@ -146,19 +147,61 @@ pair-step N w eq i j ij (oi , oj , rb) = from (same-class (w ! i) (w ! j) oi oj 
       at (no x≢i) (no x≢j) = ≡.trans (≡.cong oddᶻ (≡.sym (pairW-≢ w i j z x x≢i x≢j))) ox
 
 ------------------------------------------------------------------------
+-- The states at level L
+
+-- Their pivot is p.
+pivot-of : (N : Matrix n n D) → level N ≡ L → pivot N ≡ just p
+pivot-of N eq = at (pivot N) ≡.refl
+  where
+  0≢suc : ∀ {m} → 0 ≢ suc m
+  0≢suc ()
+  at : (r : Maybe (Fin n)) → pivot N ≡ r → pivot N ≡ just p
+  at nothing e = ⊥-elim (0≢suc (≡.cong proj₁ (≡.trans (≡.sym (≡.cong (λ r → lvlAt r N) e)) eq)))
+  at (just p′) e =
+    ≡.trans e (≡.cong just (FinP.toℕ-injective (ℕP.suc-injective (≡.cong proj₁ (≡.trans (≡.sym (level-just N e)) eq)))))
+
+-- X and Z on indices ≤ p keep them at level L.
+mono-L : (g : Gen n) → Mono g → top g ≤ p → (N : Matrix n n D) → level N ≡ L → level (actM g N) ≡ L
+mono-L g m tg N eq =
+  ≡.trans (level-just gN pv′)
+    (≡.trans (≡.cong₂ (λ x y → suc (toℕ p) , x , y) lde≡ nodd≡) (≡.trans (≡.sym (level-just N pv)) eq))
+  where
+  pv = pivot-of N eq
+  gN = actM g N
+  colg : col gN p ≡ actV g (col N p)
+  colg = col-actM g N p
+  mc = mono-col g m (col N p)
+  lde≡ : lde (col gN p) ≡ lde (col N p)
+  lde≡ = ≡.trans (≡.cong lde colg) (proj₁ mc)
+  nodd≡ : nodd (num (col gN p)) ≡ nodd (num (col N p))
+  nodd≡ = ≡.trans (≡.cong (λ v → nodd (num v)) colg) (proj₂ mc)
+  ldeN : lde (col N p) ≡ k
+  ldeN = ≡.cong (λ x → proj₁ (proj₂ x)) (≡.trans (≡.sym (level-just N pv)) eq)
+  suc≢0 : ∀ {m} → suc m ≢ 0
+  suc≢0 ()
+  ne : col gN p ≢ col 𝕀 p
+  ne e = suc≢0 (≡.trans (≡.sym (≡.trans lde≡ ldeN))
+                  (≡.trans (≡.cong lde e) (proj₁ (lde-char 0 (eᶻ p) (col𝕀≡ p) (inj₁ ≡.refl)))))
+  pv′ = pivot-stay g N tg pv ne
+
+-- An edge H along equal indices.
+H-transport : ∀ {i j i′ j′ : Fin n} {N : Matrix n n D} .{oN : ColOrth N} .(ij : i < j) .(ij′ : i′ < j′) →
+              i ≡ i′ → j ≡ j′ → Path [ H-gen i j ij ]ʷ N oN → Path [ H-gen i′ j′ ij′ ]ʷ N oN
+H-transport ij ij′ ≡.refl ≡.refl x = x
+
+-- The next entry in a class depends only on parities and classes.
+nextSame-cong : (w w′ : Vec Z n) (j : Fin n) → (∀ x → oddᶻ (w ! x) ≡ oddᶻ (w′ ! x)) →
+                (∀ x → rbit (w ! x) ≡ rbit (w′ ! x)) → nextSame j w ≡ nextSame j w′
+nextSame-cong w w′ j po pr = first-cong (SameAfter j w) (SameAfter j w′)
+  (λ x → ≡.cong₂ (λ o s → does (j FinP.<? x) ∧ (o ∧ s)) (po x) (≡.cong₂ sameᵇ (pr x) (pr j)))
+
+------------------------------------------------------------------------
 -- A state at level L
 
 module State (M : Matrix n n D) .(o : ColOrth M) (eq : level M ≡ L) where
 
   pv : pivot M ≡ just p
-  pv = at (pivot M) ≡.refl
-    where
-    0≢suc : ∀ {m} → 0 ≢ suc m
-    0≢suc ()
-    at : (r : Maybe (Fin n)) → pivot M ≡ r → pivot M ≡ just p
-    at nothing e = ⊥-elim (0≢suc (≡.cong proj₁ (≡.trans (≡.sym (≡.cong (λ r → lvlAt r M) e)) eq)))
-    at (just p′) e =
-      ≡.trans e (≡.cong just (FinP.toℕ-injective (ℕP.suc-injective (≡.cong proj₁ (≡.trans (≡.sym (level-just M e)) eq)))))
+  pv = pivot-of M eq
 
   open PC M o pv public using (W ; v ; v≡ ; syl≡ ; lvl ; zero> ; norm ; normB ; odd≤)
   open PC M o pv using (first)
@@ -365,6 +408,16 @@ module State (M : Matrix n n D) .(o : ColOrth M) (eq : level M ≡ L) where
       l₁ = below i₁ i₂ i₁<i₂ valid₁₂
       pX : Path (X z₀ i₁ 0<i₁) HM (ColOrth-actMʷ [ H-gen i₁ i₂ i₁<i₂ ]ʷ o)
       pX = ih (X-gen z₀ i₁ 0<i₁) HM (ColOrth-actMʷ [ H-gen i₁ i₂ i₁<i₂ ]ʷ o) l₁ (X-low 0<i₁ (odd≤ oi₁) HM l₁)
+
+  -- The canonical edge, at indices known to be the canonical pair.
+  canonical-at : ∀ {a b : Fin n} .(ab : a < b) → firstOdd W ≡ just a → nextSame a W ≡ just b →
+                 Path [ H-gen a b ab ]ʷ M o
+  canonical-at {a} {b} ab fa nb = H-transport i₁<i₂ ab i₁≡a i₂≡b canonical
+    where
+    i₁≡a : i₁ ≡ a
+    i₁≡a = just-injective (≡.trans (≡.sym fo) fa)
+    i₂≡b : i₂ ≡ b
+    i₂≡b = just-injective (≡.trans (≡.sym nx) (≡.trans (≡.cong (λ x → nextSame x W) i₁≡a) nb))
 
   ----------------------------------------------------------------------
   -- Squares
