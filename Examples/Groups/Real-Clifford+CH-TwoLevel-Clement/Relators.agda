@@ -46,6 +46,7 @@ import Examples.Groups.Real-Clifford+CH-TwoLevel.Symmetric as Sym
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Equivalence as EQ
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Equivalence.ClementLocal as CLm
 open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Check using (Let ; Hˡ ; Xˡ ; Zˡ ; Route)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Routes
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Placed as Placed
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Diagram30 as D30
 import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.Diagram20 as D20
@@ -265,28 +266,6 @@ core20 {n} ℓ inj with split {4} {n} (FinP.injective⇒≤ inj)
 ------------------------------------------------------------------------
 -- Decorated routes
 
--- The letter that undoes a sign Z at l after the core H a b.
-undo : ∀ {m} (a b l : Fin m) → Let m
-undo a b l with l FinP.≟ b
-... | yes _ = Xˡ a b
-... | no _ = Zˡ l
-
-signs : ∀ {m} → List (Fin m) → Route m
-signs = map Zˡ
-
-closing : ∀ {m} (a b : Fin m) → List (Fin m) → Route m
-closing a b [] = []
-closing a b (l ∷ Q) = closing a b Q ++ (undo a b l ∷ [])
-
--- Signs, then the core, then the letters that undo the signs.
-decorate : ∀ {m} (a b : Fin m) (Q : List (Fin m)) (core : Route m) → Route m
-decorate a b Q core = signs Q ++ (core ++ closing a b Q)
-
--- With the indices of the core H exchanged, the letters that turn
--- Hs a b into Hs b a.
-flipped : ∀ {m} (a b : Fin m) → Route m
-flipped a b = Zˡ b ∷ Xˡ a b ∷ []
-
 module Deco {n : ℕ} where
 
   open PB (_===ᶜ_ {n}) hiding (_===_)
@@ -382,15 +361,6 @@ module Deco {n : ℕ} where
 ------------------------------------------------------------------------
 -- The routes of the case analysis, and their relations in Figure 6
 
--- Relabelling the indices of a route.
-relabelL : ∀ {m m′} → (Fin m → Fin m′) → Let m → Let m′
-relabelL f (Hˡ i j) = Hˡ (f i) (f j)
-relabelL f (Xˡ i j) = Xˡ (f i) (f j)
-relabelL f (Zˡ i) = Zˡ (f i)
-
-relabelR : ∀ {m m′} → (Fin m → Fin m′) → Route m → Route m′
-relabelR f = map (relabelL f)
-
 private
   wordR-relabel : ∀ {n m m′} (ι : Fin m′ → Fin n) (f : Fin m → Fin m′) (r : Route m) →
                   Placed.wordR ι (relabelR f r) ≡ Placed.wordR (ι ∘ f) r
@@ -421,15 +391,6 @@ core20ᶜ {n} ℓ inj with split {4} {n} (FinP.injective⇒≤ inj)
 -- A route built on a diagram: signs Q (on local indices other than
 -- lab 0), the diagram relabelled by lab, the letters undoing the signs, and
 -- with flip the letters exchanging the two indices of its H.
--- The decorated route of a core, and its conjugate by H on two other
--- indices.
-decoRoute : ∀ {k m} → Route (ℕ.suc (ℕ.suc k)) → (Fin (ℕ.suc (ℕ.suc k)) → Fin m) → List (Fin m) → Bool → Route m
-decoRoute core lab Q false = decorate (lab zero) (lab (suc zero)) Q (relabelR lab core)
-decoRoute core lab Q true = decoRoute core lab Q false ++ flipped (lab zero) (lab (suc zero))
-
-conjRoute : ∀ {m} → Fin m → Fin m → Route m → Route m
-conjRoute p q r = Hˡ p q ∷ (r ++ Hˡ p q ∷ [])
-
 module Leaf {n m : ℕ} (ι : Fin m → Fin n) (inj : ∀ {i j} → ι i ≡ ι j → i ≡ j) where
 
   open Placed ι using (wordR)
@@ -474,22 +435,9 @@ module Leaf {n m : ℕ} (ι : Fin m → Fin n) (inj : ∀ {i j} → ι i ≡ ι 
   open Gen-route (fromGens D20.Route) core20ᶜ public
     renaming (route to route20 ; relᶜ to route20-relᶜ ; rel to route20-rel ; rel-flip to route20-flip)
 
-  -- Conjugating by H on two indices apart from those of the relation.
-  conj-rel : ∀ (p q a b : Fin m) → p ≢ q → a ≢ b → p ≢ a → p ≢ b → q ≢ a → q ≢ b → ∀ r →
-             PB._≈_ (_===_ {n}) (wordR r) (Sym.Hs (ι a) (ι b)) →
-             PB._≈_ (_===_ {n}) (wordR (conjRoute p q r)) (Sym.Hs (ι a) (ι b))
-  conj-rel p q a b pq ab pa pb qa qb r h = begin
-    wordR (r ++ Hˡ p q ∷ []) • Hpq           ≈⟨ cleft Words.wordR-++ (_===_ {n}) ι r (Hˡ p q ∷ []) ⟩
-    ((ε • Hpq) • wordR r) • Hpq              ≈⟨ cleft cong left-unit h ⟩
-    (Hpq • Hab) • Hpq                        ≈⟨ cleft Sym.Hs-comm (ι≢ pq) (ι≢ ab) (ι≢ pa) (ι≢ pb) (ι≢ qa) (ι≢ qb) ⟩
-    (Hab • Hpq) • Hpq                        ≈⟨ assoc ⟩
-    Hab • (Hpq • Hpq)                        ≈⟨ cright Sym.Hs-Hs (ι≢ pq) ⟩
-    Hab • ε                                  ≈⟨ right-unit ⟩
-    Hab                                      ∎
-    where
-    open PB (_===_ {n}) hiding (_===_)
-    open import Relation.Binary.Reasoning.Setoid (PP.word-setoid (_===_ {n}))
-    ι≢ : ∀ {i j} → i ≢ j → ι i ≢ ι j
-    ι≢ ne e = ne (inj e)
-    Hpq = Sym.Hs (ι p) (ι q)
-    Hab = Sym.Hs (ι a) (ι b)
+-- The cores of Routes are those of the diagrams.
+diag30≡ : fromGens D30.Route ≡ diag30
+diag30≡ = ≡.refl
+
+diag20≡ : fromGens D20.Route ≡ diag20
+diag20≡ = ≡.refl
