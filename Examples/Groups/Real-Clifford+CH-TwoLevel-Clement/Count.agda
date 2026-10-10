@@ -42,7 +42,10 @@ open import Examples.Groups.Clifford+CS-TwoLevel.Ring using (oddℕ ; oddℕ-+)
 open import Examples.Groups.Clifford+CS-TwoLevel.Search using (count ; count-cong ; count-drop ; count-false ; count-one ; first ; first-just ; first-nothing)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring using (D ; Z ; module ZR ; module DR ; √2ᶻ ; _^ᶻ_ ; oddᶻ ; rbit ; oddᶻ-*)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Lde using (scV)
-open import Examples.Groups.Real-Clifford+CH-TwoLevel.Norm using (NA ; Σℕ ; parity-count ; unit-norm ; unit-normB ; evenodd ; evenclass ; lde0)
+open import Examples.Groups.Real-Clifford+CH-TwoLevel.Norm using (NA ; NB ; Σℕ ; Σℤ ; parity-count ; unit-norm ; unit-normB ; evenodd ; evenclass ; lde0)
+open import Data.Integer.Base using (+_)
+import Data.Integer.Properties as ℤP
+open import Relation.Nullary.Decidable using (recompute)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Counting using (count-split)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Step using (scV-δmap)
 open import Examples.Groups.Real-Clifford+CH-TwoLevel.Semantics
@@ -164,13 +167,13 @@ private
   map-pow δ u = ≡.trans (VecP.map-cong (λ y → ZR.*-assoc √2ᶻ (√2ᶻ ^ᶻ δ) y) u) (VecP.map-∘ (√2ᶻ ZR.*_) ((√2ᶻ ^ᶻ δ) ZR.*_) u)
 
 -- A unit column at scale 0 is not √2 times a vector.
-scale-pos : ∀ {N : Matrix n n D} → ColOrth N → ∀ k (u : Vec Z n) → col N p ≡ scV k (Vec.map (√2ᶻ ZR.*_) u) →
+scale-pos : ∀ {N : Matrix n n D} → .(ColOrth N) → ∀ k (u : Vec Z n) → col N p ≡ scV k (Vec.map (√2ᶻ ZR.*_) u) →
             ∃ λ k′ → k ≡ suc k′
 scale-pos o zero u eq = ⊥-elim (t≢f (≡.trans (≡.sym odd1) (≡.trans (≡.cong oddℕ (≡.sym norm)) even0)))
   where
   w = Vec.map (√2ᶻ ZR.*_) u
   norm : Σℕ (λ x → NA (w ! x)) ≡ 1
-  norm = unit-norm 0 w (≡.subst (λ v → ⟨ v , v ⟩ ≡ DR.1#) eq (col-unit o p))
+  norm = recompute (Σℕ (λ x → NA (w ! x)) ℕP.≟ 1) (unit-norm 0 w (≡.subst (λ v → ⟨ v , v ⟩ ≡ DR.1#) eq (col-unit o p)))
   odd1 : oddℕ 1 ≡ true
   odd1 = ≡.refl
   even0 : oddℕ (Σℕ (λ x → NA (w ! x))) ≡ false
@@ -180,7 +183,7 @@ scale-pos o zero u eq = ⊥-elim (t≢f (≡.trans (≡.sym odd1) (≡.trans (�
 scale-pos o (suc k′) u eq = k′ , ≡.refl
 
 -- The column at the lower scale.
-scale-down : ∀ {N : Matrix n n D} → ColOrth N → ∀ δ k (u : Vec Z n) → col N p ≡ scV k (Vec.map ((√2ᶻ ^ᶻ δ) ZR.*_) u) →
+scale-down : ∀ {N : Matrix n n D} → .(ColOrth N) → ∀ δ k (u : Vec Z n) → col N p ≡ scV k (Vec.map ((√2ᶻ ^ᶻ δ) ZR.*_) u) →
              ∃ λ K → col N p ≡ scV K u
 scale-down o zero k u eq = k , ≡.trans eq (≡.cong (scV k) (≡.trans (VecP.map-cong (λ y → ZR.*-identityˡ y) u) (VecP.map-id u)))
 scale-down {N} o (suc δ) k u eq = go (scale-pos o k (Vec.map ((√2ᶻ ^ᶻ δ) ZR.*_) u) eq′)
@@ -196,14 +199,14 @@ scale-down {N} o (suc δ) k u eq = go (scale-pos o k (Vec.map ((√2ᶻ ^ᶻ δ)
 -- The two parities
 
 -- Odd entries of class 1: evenly many.
-even-cls : ∀ {N : Matrix n n D} → ColOrth N → ∀ K (u : Vec Z n) → col N p ≡ scV K u →
+even-cls : ∀ {N : Matrix n n D} → .(ColOrth N) → ∀ K (u : Vec Z n) → col N p ≡ scV K u →
            oddℕ (count (λ x → oddᶻ (u ! x) ∧ rbit (u ! x))) ≡ false
-even-cls o K u eq = evenclass u (unit-normB K u (≡.subst (λ v → ⟨ v , v ⟩ ≡ DR.1#) eq (col-unit o p)))
+even-cls o K u eq = evenclass u (recompute (Σℤ (λ x → NB (u ! x)) ℤP.≟ + 0) (unit-normB K u (≡.subst (λ v → ⟨ v , v ⟩ ≡ DR.1#) eq (col-unit o p))))
 
 -- Odd entries: evenly many, or exactly one.
-even-odd : ∀ {N : Matrix n n D} → ColOrth N → ∀ K (u : Vec Z n) → col N p ≡ scV K u →
+even-odd : ∀ {N : Matrix n n D} → .(ColOrth N) → ∀ K (u : Vec Z n) → col N p ≡ scV K u →
            oddℕ (count (λ x → oddᶻ (u ! x))) ≡ false ⊎ count (λ x → oddᶻ (u ! x)) ≡ 1
-even-odd o zero u eq = from (lde0 u (unit-norm 0 u (≡.subst (λ v → ⟨ v , v ⟩ ≡ DR.1#) eq (col-unit o p))))
+even-odd o zero u eq = from (lde0 u (recompute (Σℕ (λ x → NA (u ! x)) ℕP.≟ 1) (unit-norm 0 u (≡.subst (λ v → ⟨ v , v ⟩ ≡ DR.1#) eq (col-unit o p)))))
   where
   one : ∀ {z} → z ≡ ZR.1# ⊎ z ≡ ZR.- ZR.1# → oddᶻ z ≡ true
   one (inj₁ ≡.refl) = ≡.refl
@@ -211,7 +214,7 @@ even-odd o zero u eq = from (lde0 u (unit-norm 0 u (≡.subst (λ v → ⟨ v , 
   from : (∃ λ m → (u ! m ≡ ZR.1# ⊎ u ! m ≡ ZR.- ZR.1#) × (∀ y → y ≢ m → u ! y ≡ ZR.0#)) →
          oddℕ (count (λ x → oddᶻ (u ! x))) ≡ false ⊎ count (λ x → oddᶻ (u ! x)) ≡ 1
   from (m , pm , rest) = inj₂ (count-one (λ x → oddᶻ (u ! x)) m (one pm) (λ y y≢m → ≡.cong oddᶻ (rest y y≢m)))
-even-odd o (suc K) u eq = inj₁ (evenodd K u (unit-norm (suc K) u (≡.subst (λ v → ⟨ v , v ⟩ ≡ DR.1#) eq (col-unit o p))))
+even-odd o (suc K) u eq = inj₁ (evenodd K u (recompute (Σℕ (λ x → NA (u ! x)) ℕP.≟ 2 ℕ.^ suc K) (unit-norm (suc K) u (≡.subst (λ v → ⟨ v , v ⟩ ≡ DR.1#) eq (col-unit o p)))))
 
 ------------------------------------------------------------------------
 -- An entry outside the window
@@ -264,7 +267,7 @@ module Extra {m : ℕ} (ι : Fin m → Fin n) (inj : ∀ {i j} → ι i ≡ ι j
 
   -- If the local quotients count an odd number of the kind, and at
   -- least two odd ones, an entry of that kind lies outside the window.
-  extra : ∀ {N : Matrix n n D} → ColOrth N → ∀ k (e : Vec Z m) (W₀ : Vec Z n) → col N p ≡ scV k (emb e W₀) →
+  extra : ∀ {N : Matrix n n D} → .(ColOrth N) → ∀ k (e : Vec Z m) (W₀ : Vec Z n) → col N p ≡ scV k (emb e W₀) →
           ∀ δ (g : Vec Z m) → (∀ i → e ! i ≡ (√2ᶻ ^ᶻ δ) ZR.* (g ! i)) →
           (∀ x → (∀ i → ι i ≢ x) → ∃ λ y → W₀ ! x ≡ (√2ᶻ ^ᶻ δ) ZR.* y) →
           2 ℕ.≤ countV oddᶻ g → ∀ κ → oddℕ (countV (Pκ κ) g) ≡ true →

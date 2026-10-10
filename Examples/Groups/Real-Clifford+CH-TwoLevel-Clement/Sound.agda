@@ -420,3 +420,356 @@ deep-out s w tags fs ρ eqv tg mn δ ps pok len δ3 (suc e) e<δ x ox = step (de
       from : (∃ λ y″ → y′ ≡ √2ᶻ ZR.* y″) → ∃ λ y → Wn s ! x ≡ (√2ᶻ ^ᶻ suc e) ZR.* y
       from (y″ , e″) = y″ , ≡.trans ey′ (≡.trans (≡.cong ((√2ᶻ ^ᶻ e) ZR.*_) e″)
                               (ZG.solve 2 (λ c y → c :* (con √2ᶻ :* y) := (con √2ᶻ :* c) :* y) ≡.refl (√2ᶻ ^ᶻ e) y″))
+
+------------------------------------------------------------------------
+-- Steps on values
+
+private
+  caseM-true : ∀ {A : Set} (m : Maybe A) (k : A → Bool) → caseM m false k ≡ true → ∃ λ a → m ≡ just a × k a ≡ true
+  caseM-true (just a) k e = a , ≡.refl , e
+  caseM-true nothing k ()
+
+  z-vals : ∀ {m} {j : Fin m} {e e′ : Vec Z m} → Step (Zˡ j) e e′ → ∀ i → e′ ! i ≡ e ! i ⊎ e′ ! i ≡ ZR.- (e ! i)
+  z-vals {j = j} {e} stepZ i = at (i FinP.≟ j)
+    where
+    at : _ → updA₁ j (ZR.- (e ! j)) e ! i ≡ e ! i ⊎ updA₁ j (ZR.- (e ! j)) e ! i ≡ ZR.- (e ! i)
+    at (yes ≡.refl) = inj₂ (upd₁-i i (ZR.- (e ! i)) e)
+    at (no i≢j) = inj₁ (upd₁-o j (ZR.- (e ! j)) e i≢j)
+
+  h-vals : ∀ {m} {u v : Fin m} {e e′ : Vec Z m} → Step (Hˡ u v) e e′ → ∀ i → i ≢ u → i ≢ v → e′ ! i ≡ e ! i
+  h-vals {e = e} (stepH α β _ _) i iu iv = upd₂-o _ _ α β e iu iv
+
+  upd-tags : ∀ {m} (tags : Vec (Maybe ℕ) m) u v i {δ} → ((tags [ u ]≔ nothing) [ v ]≔ nothing) ! i ≡ just δ →
+             i ≢ u × i ≢ v × tags ! i ≡ just δ
+  upd-tags tags u v i {δ} e = at (i FinP.≟ v) (i FinP.≟ u)
+    where
+    nj : nothing ≢ just δ
+    nj ()
+    at : _ → _ → i ≢ u × i ≢ v × tags ! i ≡ just δ
+    at (yes ≡.refl) _ = ⊥-elim (nj (≡.trans (≡.sym (VecP.lookup∘update i (tags [ u ]≔ nothing) nothing)) e))
+    at (no i≢v) (yes ≡.refl) =
+      ⊥-elim (nj (≡.trans (≡.sym (≡.trans (VecP.lookup∘update′ i≢v (tags [ i ]≔ nothing) nothing) (VecP.lookup∘update i tags nothing))) e))
+    at (no i≢v) (no i≢u) =
+      i≢u , i≢v , ≡.trans (≡.sym (≡.trans (VecP.lookup∘update′ i≢v (tags [ u ]≔ nothing) nothing) (VecP.lookup∘update′ i≢u tags nothing))) e
+
+  atL?-sound : ∀ {m r} (fs : Vec (Form r) m) → atL? (just fs) ≡ true → kindF fs ≡ just atL
+  atL?-sound fs e with caseM-true (kindF fs) isAtL e
+  ... | atL , k , _ = k
+  atL?-sound fs e | low , k , ()
+
+  if-sw : ∀ {A : Set} (sw : Bool) (x y : A) → (if sw then x else y) ≡ x ⊎ (if sw then x else y) ≡ y
+  if-sw true x y = inj₁ ≡.refl
+  if-sw false x y = inj₂ ≡.refl
+
+------------------------------------------------------------------------
+-- The induction
+
+module Main (nfData : (nf : NF) → NFData nf) (allow : NF → Bool) (nfThm : ∀ nf → allow nf ≡ true → NFThm nfData nf) where
+
+  open Checker nfData allow
+
+  -- The goal at a node.
+  Goal : ∀ {m} (s : Matrix n n D) .(o : ColOrth s) → Win m s → Fin m → Fin m → Set
+  Goal s o w ic id = Path (Hs (ι w ic) (ι w id)) s o
+
+
+  ----------------------------------------------------------------------
+  -- conj: the edge g out of s, and out of Hs ic id · s, and the square
+
+  conj-case : ∀ {m r} (g : Let m) tags mini (ic id : Fin m) (fs fs′ fcd : Vec (Form r) m) ρ → ic ≢ id →
+    stepF g fs ≡ just fs′ → stepF (Hˡ ic id) fs ≡ just fcd → apart ic id g ≡ true → check (g ∷ []) fs ≡ true →
+    kindF fs′ ≡ just atL → check (conjLetter ic id g ∷ []) fcd ≡ true →
+    ∀ s .(o : ColOrth s) (eq : level s ≡ L) (w : Win m s) → ⟦ fs ⟧ᵛ ρ ≡ locW w → TagsOK s w tags → (mini ≡ true → Minimal s) →
+    (∀ N .(oN : ColOrth N) (eqN : level N ≡ L) (wN : Win m N) → ⟦ fs′ ⟧ᵛ ρ ≡ locW wN →
+       TagsOK N wN (tagsAfter g tags) → (miniAfter g mini ≡ true → Minimal N) → Goal N oN wN ic id) →
+    Goal s o w ic id
+  conj-case g tags mini ic id fs fs′ fcd ρ icd st sc ap cg ka cl s o eq w eqv tg mn rec =
+    via-w (Hs (ι w ic) (ι w id)) s o (wordL g′) (Hs (ι w ic) (ι w id) • wordL g) pG′ (rel g ap dg)
+      (path-• (Hs (ι w ic) (ι w id)) (wordL g) s o recN pG)
+    where
+    open At-window s o eq w
+    g′ = conjLetter ic id g
+    ι≢ : ∀ {i j} → i ≢ j → ι w i ≢ ι w j
+    ι≢ ne e = ne (inj w e)
+    K = known-at fs ρ eqv
+    dg : Distinct g
+    dg = check-distinct g [] fs cg
+    stp = stepF-sound g fs st ρ
+    K′ = known-step g dg stp K
+    N = actMʷ (wordL g) s
+    four : noddV (⟦ fs′ ⟧ᵛ ρ) ≡ 4
+    four = proj₂ (kindF-sound fs′ ka ρ) ≡.refl
+    eqN : level N ≡ L
+    eqN = At-L.levelL K′ four
+    module NX = Next K′ (ColOrth-actMʷ (wordL g) o) eqN
+    s-vals : ∀ i → (⟦ fs ⟧ᵛ ρ) ! i ≡ Wn s ! ι w i
+    s-vals i = ≡.trans (≡.cong (_! i) eqv) (VecP.lookup∘tabulate (λ i → Wn s ! ι w i) i)
+    -- Tags and minimality after g.
+    z-deep : ∀ i δ → (⟦ fs′ ⟧ᵛ ρ) ! i ≡ (⟦ fs ⟧ᵛ ρ) ! i ⊎ (⟦ fs′ ⟧ᵛ ρ) ! i ≡ ZR.- ((⟦ fs ⟧ᵛ ρ) ! i) →
+             Deep (Wn s ! ι w i) δ → Deep (Wn N ! ι w i) δ
+    z-deep i δ (inj₁ e) d = ≡.subst (λ z → Deep z δ) (≡.sym (≡.trans (NX.inside i) (≡.trans e (s-vals i)))) d
+    z-deep i δ (inj₂ e) d = ≡.subst (λ z → Deep z δ) (≡.sym (≡.trans (NX.inside i) (≡.trans e (≡.cong ZR.-_ (s-vals i))))) (deep-neg {Wn s ! ι w i} {δ} d)
+    h-deep : ∀ {u v} → Step (Hˡ u v) (⟦ fs ⟧ᵛ ρ) (⟦ fs′ ⟧ᵛ ρ) → ∀ i δ → i ≢ u × i ≢ v × tags ! i ≡ just δ → Deep (Wn N ! ι w i) δ
+    h-deep stp′ i δ (iu , iv , ti′) =
+      ≡.subst (λ z → Deep z δ) (≡.sym (≡.trans (NX.inside i) (≡.trans (h-vals stp′ i iu iv) (s-vals i)))) (tg i δ ti′)
+    tags-after : ∀ g → apart ic id g ≡ true → Step g (⟦ fs ⟧ᵛ ρ) (⟦ fs′ ⟧ᵛ ρ) → TagsOK N NX.win′ (tagsAfter g tags)
+    tags-after (Zˡ j) _ stp′ i δ ti = z-deep i δ (z-vals stp′ i) (tg i δ ti)
+    tags-after (Hˡ u v) _ stp′ i δ ti = h-deep stp′ i δ (upd-tags tags u v i ti)
+    tags-after (Xˡ a b) () stp′
+    z-pm : ∀ {j} → Step (Zˡ j) (⟦ fs ⟧ᵛ ρ) (⟦ fs′ ⟧ᵛ ρ) → ∀ x → (∃ λ i → ι w i ≡ x) ⊎ (∀ i → ι w i ≢ x) →
+           Wn N ! x ≡ Wn s ! x ⊎ Wn N ! x ≡ ZR.- (Wn s ! x)
+    z-pm stp′ x (inj₁ (i , ≡.refl)) = sgn (z-vals stp′ i)
+      where
+      sgn : (⟦ fs′ ⟧ᵛ ρ) ! i ≡ (⟦ fs ⟧ᵛ ρ) ! i ⊎ (⟦ fs′ ⟧ᵛ ρ) ! i ≡ ZR.- ((⟦ fs ⟧ᵛ ρ) ! i) →
+            Wn N ! ι w i ≡ Wn s ! ι w i ⊎ Wn N ! ι w i ≡ ZR.- (Wn s ! ι w i)
+      sgn (inj₁ e) = inj₁ (≡.trans (NX.inside i) (≡.trans e (s-vals i)))
+      sgn (inj₂ e) = inj₂ (≡.trans (NX.inside i) (≡.trans e (≡.cong ZR.-_ (s-vals i))))
+    z-pm stp′ x (inj₂ o′) = inj₁ (NX.outside x o′)
+    mini-after : ∀ g → apart ic id g ≡ true → Step g (⟦ fs ⟧ᵛ ρ) (⟦ fs′ ⟧ᵛ ρ) → miniAfter g mini ≡ true → Minimal N
+    mini-after (Zˡ j) _ stp′ m≡ = minimal-± {N} {s} (λ x → z-pm stp′ x (Emb.where? (ι w) (inj w) x)) (mn m≡)
+    mini-after (Hˡ u v) _ stp′ ()
+    mini-after (Xˡ a b) () stp′ m≡
+    recN : Path (Hs (ι w ic) (ι w id)) N (ColOrth-actMʷ (wordL g) o)
+    recN = rec N (ColOrth-actMʷ (wordL g) o) eqN NX.win′ NX.loc′ (tags-after g ap stp) (mini-after g ap stp)
+    pG : Path (wordL g) s o
+    pG = letter g fs ρ o cg K
+    Kcd = known-step (Hˡ ic id) icd (stepF-sound (Hˡ ic id) fs sc ρ) K
+    pG′ : Path (wordL g′) (actMʷ (Hs (ι w ic) (ι w id)) s) (ColOrth-actMʷ (Hs (ι w ic) (ι w id)) o)
+    pG′ = letter g′ fcd ρ (ColOrth-actMʷ (Hs (ι w ic) (ι w id)) o) cl Kcd
+    -- The square: g′ Hs = Hs g.
+    zrel : ∀ j (b : Bool) → (j == id) ≡ b → (j == ic) ≡ false →
+           wordL (if b then Xˡ ic id else Zˡ j) • Hs (ι w ic) (ι w id) ≈ Hs (ι w ic) (ι w id) • Zʷ (ι w j)
+    zrel j true e _ = ≡.subst (λ x → Xs (ι w ic) (ι w id) • Hs (ι w ic) (ι w id) ≈ Hs (ι w ic) (ι w id) • Zʷ (ι w x))
+                              (≡.sym (==-sound e)) (XH′ (ι≢ icd))
+    zrel j false e jc = ZH (ι≢ icd) (ι≢ (==-false jc)) (ι≢ (==-false e))
+    rel : ∀ g → apart ic id g ≡ true → Distinct g → wordL (conjLetter ic id g) • Hs (ι w ic) (ι w id) ≈ Hs (ι w ic) (ι w id) • wordL g
+    rel (Zˡ j) a _ = zrel j (j == id) ≡.refl (not-t a)
+    rel (Hˡ u v) a uv =
+      Hs-comm (ι≢ uv) (ι≢ icd) (ι≢ (==-false (not-t (fst (not (u == ic)) a))))
+        (ι≢ (==-false (not-t (fst (not (u == id)) (snd (not (u == ic)) a)))))
+        (ι≢ (==-false (not-t (fst (not (v == ic)) (snd (not (u == id)) (snd (not (u == ic)) a))))))
+        (ι≢ (==-false (not-t (snd (not (v == ic)) (snd (not (u == id)) (snd (not (u == ic)) a))))))
+    rel (Xˡ a b) () _
+
+  ----------------------------------------------------------------------
+  -- extend: an entry outside the window, at depth δ
+
+  extend-case : ∀ {m r} δ κ (R : Route m) a b c d (ps : List (Fin m × Fin m)) tags (ic id : Fin m) (fs : Vec (Form r) m) fsR gs ρ →
+    runF R fs ≡ just fsR → halfVⁿ δ fsR ≡ just gs → (δ ℕ.≤ᵇ 3) ≡ true → (suc (length ps) ℕ.≡ᵇ δ) ≡ true →
+    pairsOK 1 tags fs ps ≡ true → certOK gs a b c d ≡ true → countOK κ gs ≡ true →
+    ∀ s .(o : ColOrth s) (eq : level s ≡ L) (w : Win m s) → ⟦ fs ⟧ᵛ ρ ≡ locW w → TagsOK s w tags → Minimal s →
+    (∀ (ρ′ : Vec Z (suc r)) (w′ : Win (suc m) s) → ⟦ newF δ κ ∷ Vec.map liftF fs ⟧ᵛ ρ′ ≡ locW w′ →
+       TagsOK s w′ (just δ ∷ tags) → Goal s o w′ (suc ic) (suc id)) →
+    Goal s o w ic id
+  extend-case δ κ R a b c d ps tags ic id fs fsR gs ρ rr hh le3 ln pok cert cnt s o eq w eqv tg mn rec =
+    found (Extra.extra (ι w) (inj w) (ColOrth-actMʷ (wordRι R) o) k (⟦ fsR ⟧ᵛ ρ) (Wn s) (colK KR) δ (⟦ gs ⟧ᵛ ρ) eg div
+             (certOK-sound gs a b c d cert ρ) κ (countOK-sound κ gs cnt ρ))
+    where
+    open At-window s o eq w
+    open import Data.Bool.Base using (T)
+    T′ : ∀ {x} → x ≡ true → T x
+    T′ ≡.refl = _
+    K = known-at fs ρ eqv
+    KR = run-known R fs rr ρ K
+    eg : ∀ i → (⟦ fsR ⟧ᵛ ρ) ! i ≡ (√2ᶻ ^ᶻ δ) ZR.* ((⟦ gs ⟧ᵛ ρ) ! i)
+    eg i = ≡.trans (⟦⟧ᵛ-! fsR ρ i) (≡.trans (halfVⁿ-sound δ fsR hh ρ i) (≡.cong ((√2ᶻ ^ᶻ δ) ZR.*_) (≡.sym (⟦⟧ᵛ-! gs ρ i))))
+    δ3 : δ ℕ.≤ 3
+    δ3 = ℕP.≤ᵇ⇒≤ δ 3 (T′ le3)
+    len : suc (length ps) ≡ δ
+    len = ℕP.≡ᵇ⇒≡ (suc (length ps)) δ (T′ ln)
+    div : ∀ x → (∀ i → ι w i ≢ x) → ∃ λ y → Wn s ! x ≡ (√2ᶻ ^ᶻ δ) ZR.* y
+    div = deep-out s w tags fs ρ eqv tg mn δ ps pok len δ3 δ ℕP.≤-refl
+    found : (∃ λ x → (∀ i → ι w i ≢ x) × ∃ λ y → Wn s ! x ≡ (√2ᶻ ^ᶻ δ) ZR.* y × Pκ κ y ≡ true) → Goal s o w ic id
+    found (x , ox , y , ey , py) = rec (proj₁ nv ∷ ρ) w′ eqv′ tg′
+      where
+      oy : oddᶻ y ≡ true
+      oy = Pκ-odd κ y py
+      x≤p : x ≤ p
+      x≤p = ℕP.≮⇒≥ λ p<x → pow-odd-≢0 δ y oy (≡.trans (≡.sym ey) (State.zero> s o eq x p<x))
+      ι′ : Fin (suc _) → Fin n
+      ι′ zero = x
+      ι′ (suc i) = ι w i
+      inj′ : ∀ {i j} → ι′ i ≡ ι′ j → i ≡ j
+      inj′ {zero} {zero} _ = ≡.refl
+      inj′ {zero} {suc j} e = ⊥-elim (ox j (≡.sym e))
+      inj′ {suc i} {zero} e = ⊥-elim (ox i e)
+      inj′ {suc i} {suc j} e = ≡.cong suc (inj w e)
+      ι≤p′ : ∀ i → ι′ i ≤ p
+      ι≤p′ zero = x≤p
+      ι≤p′ (suc i) = ι≤p w i
+      w′ : Win (suc _) s
+      w′ = win ι′ inj′ ι≤p′ (λ z o′ → out w z (λ i → o′ (suc i)))
+      nv = new-val δ κ y py
+      lifted : ⟦ Vec.map liftF fs ⟧ᵛ (proj₁ nv ∷ ρ) ≡ ⟦ fs ⟧ᵛ ρ
+      lifted = ≡.trans (≡.sym (VecP.map-∘ (λ f → ⟦ f ⟧ (proj₁ nv ∷ ρ)) liftF fs)) (VecP.map-cong (λ f → ⟦liftF⟧ f (proj₁ nv) ρ) fs)
+      eqv′ : ⟦ newF δ κ ∷ Vec.map liftF fs ⟧ᵛ (proj₁ nv ∷ ρ) ≡ locW w′
+      eqv′ = ≡.cong₂ _∷_ (≡.trans (proj₂ nv ρ) (≡.sym ey)) (≡.trans lifted eqv)
+      tg′ : TagsOK s w′ (just δ ∷ tags)
+      tg′ zero δ′ ≡.refl = y , ey , oy
+      tg′ (suc i) δ′ ti = tg i δ′ ti
+
+  ----------------------------------------------------------------------
+  -- relabel: a permutation of the window
+
+  relabel-case : ∀ {m r} (π : Vec (Fin m) m) sw (ic′ id′ : Fin m) tags (ic id : Fin m) (fs : Vec (Form r) m) ρ → ic ≢ id →
+    distinctV π ≡ true → ontoV π ≡ true → (π ! ic′ == (if sw then id else ic)) ≡ true → (π ! id′ == (if sw then ic else id)) ≡ true →
+    (if sw then flipOK ic id fs else true) ≡ true →
+    ∀ s .(o : ColOrth s) (eq : level s ≡ L) (w : Win m s) → ⟦ fs ⟧ᵛ ρ ≡ locW w → TagsOK s w tags →
+    (∀ (w′ : Win m s) → ⟦ Vec.map (fs !_) π ⟧ᵛ ρ ≡ locW w′ → TagsOK s w′ (Vec.map (tags !_) π) → ic′ ≢ id′ →
+       Goal s o w′ ic′ id′) →
+    Goal s o w ic id
+  relabel-case π sw ic′ id′ tags ic id fs ρ icd di on e1 e2 fl s o eq w eqv tg rec = finish sw e1 e2 fl
+    where
+    open At-window s o eq w
+    πinj = distinctV-sound π di
+    πonto = ontoV-sound π on
+    w′ : Win _ s
+    w′ = win (λ i → ι w (π ! i)) (λ e → πinj (inj w e)) (λ i → ι≤p w (π ! i))
+             (λ x o′ → out w x (λ j e → let (i , pi) = πonto j in o′ i (≡.trans (≡.cong (ι w) pi) e)))
+    s-vals : ∀ i → (⟦ fs ⟧ᵛ ρ) ! i ≡ Wn s ! ι w i
+    s-vals i = ≡.trans (≡.cong (_! i) eqv) (VecP.lookup∘tabulate (λ i → Wn s ! ι w i) i)
+    eqv′ : ⟦ Vec.map (fs !_) π ⟧ᵛ ρ ≡ locW w′
+    eqv′ = vec-ext λ i →
+      ≡.trans (⟦⟧ᵛ-! (Vec.map (fs !_) π) ρ i)
+        (≡.trans (≡.cong (λ f → ⟦ f ⟧ ρ) (VecP.lookup-map i (fs !_) π))
+          (≡.trans (≡.sym (⟦⟧ᵛ-! fs ρ (π ! i))) (≡.trans (s-vals (π ! i)) (≡.sym (VecP.lookup∘tabulate (λ i → Wn s ! ι w (π ! i)) i)))))
+    tg′ : TagsOK s w′ (Vec.map (tags !_) π)
+    tg′ i δ ti = tg (π ! i) δ (≡.trans (≡.sym (VecP.lookup-map i (tags !_) π)) ti)
+    icd′ : ∀ {x y} → x ≢ y → π ! ic′ ≡ x → π ! id′ ≡ y → ic′ ≢ id′
+    icd′ xy ex ey ≡.refl = xy (≡.trans (≡.sym ex) ey)
+    finish : ∀ sw → (π ! ic′ == (if sw then id else ic)) ≡ true → (π ! id′ == (if sw then ic else id)) ≡ true →
+             (if sw then flipOK ic id fs else true) ≡ true → Goal s o w ic id
+    finish false e1 e2 _ =
+      ≡.subst₂ (λ x y → Path (Hs (ι w x) (ι w y)) s o) (==-sound e1) (==-sound e2)
+        (rec w′ eqv′ tg′ (icd′ icd (==-sound e1) (==-sound e2)))
+    finish true e1 e2 fo = path-cong rel s o (path-• (wordRι (Zˡ ic ∷ Xˡ id ic ∷ [])) (Hs (ι w id) (ι w ic)) s o p2 recr)
+      where
+      recr : Path (Hs (ι w id) (ι w ic)) s o
+      recr = ≡.subst₂ (λ x y → Path (Hs (ι w x) (ι w y)) s o) (==-sound e1) (==-sound e2)
+               (rec w′ eqv′ tg′ (icd′ (λ e → icd (≡.sym e)) (==-sound e1) (==-sound e2)))
+      fN = caseM-true (stepF (Hˡ id ic) fs) _ fo
+      Kdc = known-step (Hˡ id ic) (λ e → icd (≡.sym e)) (stepF-sound (Hˡ id ic) fs (proj₁ (proj₂ fN)) ρ) (known-at fs ρ eqv)
+      p2 : Path (wordRι (Zˡ ic ∷ Xˡ id ic ∷ [])) (actMʷ (Hs (ι w id) (ι w ic)) s) (ColOrth-actMʷ (Hs (ι w id) (ι w ic)) o)
+      p2 = route-path (Zˡ ic ∷ Xˡ id ic ∷ []) (proj₁ fN) ρ (ColOrth-actMʷ (Hs (ι w id) (ι w ic)) o) (proj₂ (proj₂ fN)) Kdc
+      rel : wordRι (Zˡ ic ∷ Xˡ id ic ∷ []) • Hs (ι w id) (ι w ic) ≈ Hs (ι w ic) (ι w id)
+      rel = begin
+        ((ε • Xs (ι w id) (ι w ic)) • Zʷ (ι w ic)) • Hs (ι w id) (ι w ic)   ≈⟨ cleft cleft left-unit ⟩
+        (Xs (ι w id) (ι w ic) • Zʷ (ι w ic)) • Hs (ι w id) (ι w ic)         ≈⟨ assoc ⟩
+        Xs (ι w id) (ι w ic) • Zʷ (ι w ic) • Hs (ι w id) (ι w ic)           ≈⟨ XZH′ (λ e → icd (inj w (≡.sym e))) ⟩
+        Hs (ι w ic) (ι w id)                                                ∎
+
+  ----------------------------------------------------------------------
+  -- useNF: the normal form's theorem
+
+  use-case : ∀ {r} nf (τ : Vec (Form r) (nfVars nf)) tags mini (ic id : Fin (nfRows nf)) (fs : Vec (Form r) (nfRows nf)) ρ → ic ≢ id →
+    allow nf ≡ true → (ic == NFData.ic (nfData nf)) ≡ true → (id == NFData.id (nfData nf)) ≡ true →
+    eqTags tags (NFData.tags (nfData nf)) ≡ true → (if NFData.mini (nfData nf) then mini else true) ≡ true →
+    eqFs (Vec.map (λ f → compF f τ) (NFData.forms (nfData nf))) fs ≡ true →
+    ∀ s .(o : ColOrth s) (eq : level s ≡ L) (w : Win (nfRows nf) s) → ⟦ fs ⟧ᵛ ρ ≡ locW w → TagsOK s w tags →
+    (mini ≡ true → Minimal s) → Goal s o w ic id
+  use-case nf τ tags mini ic id fs ρ icd al eic eid etg emi efs s o eq w eqv tg mn =
+    ≡.subst₂ (λ x y → Path (Hs (ι w x) (ι w y)) s o) (≡.sym (==-sound eic)) (≡.sym (==-sound eid))
+      (nfThm nf al s o eq w (⟦ τ ⟧ᵛ ρ) eqvNF (≡.subst (TagsOK s w) (eqTags-sound tags _ etg) tg) (mini-of (NFData.mini (nfData nf)) emi)
+        (λ e → icd (≡.trans (==-sound eic) (≡.trans e (≡.sym (==-sound eid))))))
+    where
+    eqvNF : ⟦ NFData.forms (nfData nf) ⟧ᵛ (⟦ τ ⟧ᵛ ρ) ≡ locW w
+    eqvNF = ≡.trans (VecP.map-cong (λ f → ≡.sym (⟦compF⟧ f τ ρ)) (NFData.forms (nfData nf)))
+              (≡.trans (VecP.map-∘ (λ f → ⟦ f ⟧ ρ) (λ f → compF f τ) (NFData.forms (nfData nf)))
+                (≡.trans (≡.cong (λ fs → ⟦ fs ⟧ᵛ ρ) (eqFs-sound _ fs efs)) eqv))
+    mini-of : ∀ b → (if b then mini else true) ≡ true → b ≡ true → Minimal s
+    mini-of true e _ = mn e
+
+  ----------------------------------------------------------------------
+  -- The induction
+
+  sound : ∀ {m r} (t : Tree m r) (tags : Vec (Maybe ℕ) m) (mini : Bool) (ic id : Fin m) (fs : Vec (Form r) m) (ρ : Vec Z r) →
+          checkT t tags mini ic id fs ≡ true → ic ≢ id →
+          ∀ s .(o : ColOrth s) (eq : level s ≡ L) (w : Win m s) →
+          ⟦ fs ⟧ᵛ ρ ≡ locW w → TagsOK s w tags → (mini ≡ true → Minimal s) → Goal s o w ic id
+  sound (leaf ld) tags mini ic id fs ρ chk icd s o eq w eqv tg mn =
+    leaf-path ld ic id fs ρ (fst (leafOK ic id ld) chk) (snd (leafOK ic id ld) chk) s o eq w eqv
+  sound (split v g t₀ t₁) tags mini ic id fs ρ chk icd s o eq w eqv tg mn = branch (split-sound v g one ρ)
+    where
+    one = fst (isOne (co g ! v)) chk
+    c₀ = fst (checkT t₀ tags mini ic id (Vec.map (substF v (splitH v g false)) fs)) (snd (isOne (co g ! v)) chk)
+    c₁ = snd (checkT t₀ tags mini ic id (Vec.map (substF v (splitH v g false)) fs)) (snd (isOne (co g ! v)) chk)
+    vals : ∀ b ρ′ → (∀ f → ⟦ substF v (splitH v g b) f ⟧ ρ′ ≡ ⟦ f ⟧ ρ) → ⟦ Vec.map (substF v (splitH v g b)) fs ⟧ᵛ ρ′ ≡ locW w
+    vals b ρ′ h = ≡.trans (≡.trans (≡.sym (VecP.map-∘ (λ f → ⟦ f ⟧ ρ′) (substF v (splitH v g b)) fs)) (VecP.map-cong h fs)) eqv
+    branch : (∃₂ λ b ρ′ → ∀ f → ⟦ substF v (splitH v g b) f ⟧ ρ′ ≡ ⟦ f ⟧ ρ) → Goal s o w ic id
+    branch (false , ρ′ , h) = sound t₀ tags mini ic id _ ρ′ c₀ icd s o eq w (vals false ρ′ h) tg mn
+    branch (true , ρ′ , h) = sound t₁ tags mini ic id _ ρ′ c₁ icd s o eq w (vals true ρ′ h) tg mn
+  sound (extend δ κ R a b c d ps t) tags mini ic id fs ρ chk icd s o eq w eqv tg mn =
+    go (caseM-true (runF R fs) _ (fst (extOK δ κ R a b c d ps tags fs) (snd mini chk)))
+    where
+    m≡ = fst mini chk
+    ct = snd (extOK δ κ R a b c d ps tags fs) (snd mini chk)
+    go : (∃ λ fsR → runF R fs ≡ just fsR ×
+            caseM (halfVⁿ δ fsR) false (λ gs → (δ ℕ.≤ᵇ 3) ∧ (suc (length ps) ℕ.≡ᵇ δ) ∧ pairsOK 1 tags fs ps ∧ certOK gs a b c d ∧ countOK κ gs) ≡ true) →
+         Goal s o w ic id
+    go (fsR , rr , e1) = go′ (caseM-true (halfVⁿ δ fsR) _ e1)
+      where
+      go′ : (∃ λ gs → halfVⁿ δ fsR ≡ just gs ×
+               ((δ ℕ.≤ᵇ 3) ∧ (suc (length ps) ℕ.≡ᵇ δ) ∧ pairsOK 1 tags fs ps ∧ certOK gs a b c d ∧ countOK κ gs) ≡ true) →
+            Goal s o w ic id
+      go′ (gs , hh , e2) =
+        extend-case δ κ R a b c d ps tags ic id fs fsR gs ρ rr hh ok-d3 ln pok ce cn s o eq w eqv tg (mn m≡)
+          (λ ρ′ w′ eqv′ tg′ → sound t (just δ ∷ tags) true (suc ic) (suc id) _ ρ′ ct (λ e → icd (FinP.suc-injective e)) s o eq w′ eqv′ tg′
+                                 (λ _ → mn m≡))
+        where
+        ok-d3 = fst (δ ℕ.≤ᵇ 3) e2
+        e3 = snd (δ ℕ.≤ᵇ 3) e2
+        ln = fst (suc (length ps) ℕ.≡ᵇ δ) e3
+        e4 = snd (suc (length ps) ℕ.≡ᵇ δ) e3
+        pok = fst (pairsOK 1 tags fs ps) e4
+        e5 = snd (pairsOK 1 tags fs ps) e4
+        ce = fst (certOK gs a b c d) e5
+        cn = snd (certOK gs a b c d) e5
+  sound (conj g t) tags mini ic id fs ρ chk icd s o eq w eqv tg mn = go (caseM-true (stepF g fs) _ chk)
+    where
+    go : (∃ λ fs′ → stepF g fs ≡ just fs′ × (conjOK ic id g fs ∧ checkT t (tagsAfter g tags) (miniAfter g mini) ic id fs′) ≡ true) →
+         Goal s o w ic id
+    go (fs′ , st , ok-c1) = go′ (caseM-true (stepF (Hˡ ic id) fs) _ (fst (conjOK ic id g fs) ok-c1))
+      where
+      go′ : (∃ λ fcd → stepF (Hˡ ic id) fs ≡ just fcd ×
+               (apart ic id g ∧ check (g ∷ []) fs ∧ atL? (stepF g fs) ∧ check (conjLetter ic id g ∷ []) fcd) ≡ true) →
+            Goal s o w ic id
+      go′ (fcd , sc , ok-c2) =
+        conj-case g tags mini ic id fs fs′ fcd ρ icd st sc ap cg ka cl s o eq w eqv tg mn
+          (λ N oN eqN wN eqvN tgN mnN → sound t (tagsAfter g tags) (miniAfter g mini) ic id fs′ ρ
+                                           (snd (conjOK ic id g fs) ok-c1) icd N oN eqN wN eqvN tgN mnN)
+        where
+        ap = fst (apart ic id g) ok-c2
+        ok-c3 = snd (apart ic id g) ok-c2
+        cg = fst (check (g ∷ []) fs) ok-c3
+        ok-c4 = snd (check (g ∷ []) fs) ok-c3
+        ka = atL?-sound fs′ (≡.subst (λ x → atL? x ≡ true) st (fst (atL? (stepF g fs)) ok-c4))
+        cl = snd (atL? (stepF g fs)) ok-c4
+  sound (relabel π sw ic′ id′ t) tags mini ic id fs ρ chk icd s o eq w eqv tg mn =
+    relabel-case π sw ic′ id′ tags ic id fs ρ icd di on e1 e2 fl s o eq w eqv tg
+      (λ w′ eqv′ tg′ icd′ → sound t (Vec.map (tags !_) π) mini ic′ id′ _ ρ ct icd′ s o eq w′ eqv′ tg′ mn)
+    where
+    A1 = distinctV π
+    A2 = ontoV π
+    A3 = π ! ic′ == (if sw then id else ic)
+    A4 = π ! id′ == (if sw then ic else id)
+    A5 = if sw then flipOK ic id fs else true
+    di = fst A1 chk
+    on = fst A2 (snd A1 chk)
+    e1 = fst A3 (snd A2 (snd A1 chk))
+    e2 = fst A4 (snd A3 (snd A2 (snd A1 chk)))
+    fl = fst A5 (snd A4 (snd A3 (snd A2 (snd A1 chk))))
+    ct = snd A5 (snd A4 (snd A3 (snd A2 (snd A1 chk))))
+  sound (useNF nf τ) tags mini ic id fs ρ chk icd s o eq w eqv tg mn =
+    use-case nf τ tags mini ic id fs ρ icd al eic eid etg emi efs s o eq w eqv tg mn
+    where
+    B1 = allow nf
+    B2 = ic == NFData.ic (nfData nf)
+    B3 = id == NFData.id (nfData nf)
+    B4 = eqTags tags (NFData.tags (nfData nf))
+    B5 = if NFData.mini (nfData nf) then mini else true
+    al = fst B1 chk
+    eic = fst B2 (snd B1 chk)
+    eid = fst B3 (snd B2 (snd B1 chk))
+    etg = fst B4 (snd B3 (snd B2 (snd B1 chk)))
+    emi = fst B5 (snd B4 (snd B3 (snd B2 (snd B1 chk))))
+    efs = snd B5 (snd B4 (snd B3 (snd B2 (snd B1 chk))))

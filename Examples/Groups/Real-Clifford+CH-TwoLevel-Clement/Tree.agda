@@ -56,6 +56,13 @@ private
     m r : ℕ
 
 ------------------------------------------------------------------------
+-- Case analysis on Maybe (as a function, so that equations rewrite it)
+
+caseM : ∀ {A B : Set} → Maybe A → B → (A → B) → B
+caseM nothing b k = b
+caseM (just a) b k = k a
+
+------------------------------------------------------------------------
 -- Booleans on indices and forms
 
 infix 4 _==_
@@ -142,22 +149,16 @@ compF (form k cs) τ = form k (Vec.replicate _ ZR.0#) ⊕ combF cs τ
 
 halfFⁿ : ℕ → Form r → Maybe (Form r)
 halfFⁿ zero f = just f
-halfFⁿ (suc δ) f with halfF f
-... | just g = halfFⁿ δ g
-... | nothing = nothing
+halfFⁿ (suc δ) f = caseM (halfF f) nothing (halfFⁿ δ)
 
 halfVⁿ : ℕ → Vec (Form r) m → Maybe (Vec (Form r) m)
 halfVⁿ δ [] = just []
-halfVⁿ δ (f ∷ fs) with halfFⁿ δ f | halfVⁿ δ fs
-... | just g | just gs = just (g ∷ gs)
-... | _ | _ = nothing
+halfVⁿ δ (f ∷ fs) = caseM (halfFⁿ δ f) nothing λ g → caseM (halfVⁿ δ fs) nothing λ gs → just (g ∷ gs)
 
 -- The forms after a route (with distinct indices).
 runF : Route m → Vec (Form r) m → Maybe (Vec (Form r) m)
 runF [] fs = just fs
-runF (g ∷ gs) fs with distinctF g | stepF g fs
-... | true | just fs′ = runF gs fs′
-... | _ | _ = nothing
+runF (g ∷ gs) fs = if distinctF g then caseM (stepF g fs) nothing (runF gs) else nothing
 
 ------------------------------------------------------------------------
 -- Leaves
@@ -189,9 +190,7 @@ certOK gs a b c d = distinctV (a ∷ b ∷ c ∷ d ∷ []) ∧ oddF (gs ! a ⊕ 
 -- An odd number of odd quotients (of class κ).
 countOK : Maybe Bool → Vec (Form r) m → Bool
 countOK nothing gs = oddF (sumF gs)
-countOK (just b) gs with noddF gs | clsF (oddSumF gs)
-... | just c | just c₁ = if b then c₁ else oddℕ c xor c₁
-... | _ | _ = false
+countOK (just b) gs = caseM (noddF gs) false λ c → caseM (clsF (oddSumF gs)) false λ c₁ → if b then c₁ else oddℕ c xor c₁
 
 -- Two tagged entries of depth δ′ whose quotients differ in class.
 isJustTrue : Maybe Bool → Bool
@@ -199,9 +198,10 @@ isJustTrue (just true) = true
 isJustTrue _ = false
 
 pairOK : ℕ → Vec (Maybe ℕ) m → Vec (Form r) m → Fin m × Fin m → Bool
-pairOK δ′ tags fs (a , b) with tags ! a | tags ! b | halfFⁿ δ′ (fs ! a) | halfFⁿ δ′ (fs ! b)
-... | just δa | just δb | just qa | just qb = (δa ≡ᵇ δ′) ∧ (δb ≡ᵇ δ′) ∧ isJustTrue (clsF (qa ⊕ qb))
-... | _ | _ | _ | _ = false
+pairOK δ′ tags fs (a , b) =
+  caseM (tags ! a) false λ δa → caseM (tags ! b) false λ δb →
+  caseM (halfFⁿ δ′ (fs ! a)) false λ qa → caseM (halfFⁿ δ′ (fs ! b)) false λ qb →
+  (δa ≡ᵇ δ′) ∧ (δb ≡ᵇ δ′) ∧ isJustTrue (clsF (qa ⊕ qb))
 
 pairsOK : ℕ → Vec (Maybe ℕ) m → Vec (Form r) m → List (Fin m × Fin m) → Bool
 pairsOK δ′ tags fs [] = true
@@ -209,11 +209,9 @@ pairsOK δ′ tags fs (ab ∷ ps) = pairOK δ′ tags fs ab ∧ pairsOK (suc δ�
 
 extOK : ℕ → Maybe Bool → Route m → Fin m → Fin m → Fin m → Fin m → List (Fin m × Fin m) →
         Vec (Maybe ℕ) m → Vec (Form r) m → Bool
-extOK δ κ R a b c d ps tags fs with runF R fs
-... | nothing = false
-... | just fs′ with halfVⁿ δ fs′
-...   | nothing = false
-...   | just gs = (δ ≤ᵇ 3) ∧ (suc (length ps) ≡ᵇ δ) ∧ pairsOK 1 tags fs ps ∧ certOK gs a b c d ∧ countOK κ gs
+extOK δ κ R a b c d ps tags fs =
+  caseM (runF R fs) false λ fs′ → caseM (halfVⁿ δ fs′) false λ gs →
+  (δ ≤ᵇ 3) ∧ (suc (length ps) ≡ᵇ δ) ∧ pairsOK 1 tags fs ps ∧ certOK gs a b c d ∧ countOK κ gs
 
 -- The form of the new entry: √2^δ (1 + √2 κ + 2 v), or √2^δ (1 + √2 v).
 newF : ℕ → Maybe Bool → Form (suc r)
@@ -233,16 +231,16 @@ apart ic id (Zˡ i) = not (i == ic)
 apart ic id (Hˡ u v) = not (u == ic) ∧ not (u == id) ∧ not (v == ic) ∧ not (v == id)
 apart ic id (Xˡ _ _) = false
 
+isAtL : Kind → Bool
+isAtL atL = true
+isAtL low = false
+
 atL? : Maybe (Vec (Form r) m) → Bool
-atL? (just fs) with kindF fs
-... | just atL = true
-... | _ = false
-atL? nothing = false
+atL? m = caseM m false λ fs → caseM (kindF fs) false isAtL
 
 conjOK : Fin m → Fin m → Let m → Vec (Form r) m → Bool
-conjOK ic id g fs with stepF (Hˡ ic id) fs
-... | nothing = false
-... | just fcd = apart ic id g ∧ check (g ∷ []) fs ∧ atL? (stepF g fs) ∧ check (conjLetter ic id g ∷ []) fcd
+conjOK ic id g fs = caseM (stepF (Hˡ ic id) fs) false λ fcd →
+  apart ic id g ∧ check (g ∷ []) fs ∧ atL? (stepF g fs) ∧ check (conjLetter ic id g ∷ []) fcd
 
 tagsAfter : Let m → Vec (Maybe ℕ) m → Vec (Maybe ℕ) m
 tagsAfter (Hˡ u v) tags = (tags [ u ]≔ nothing) [ v ]≔ nothing
@@ -256,9 +254,7 @@ miniAfter _ b = b
 -- Reversing the pair: Hs c d = Xs d c • Z c • Hs d c
 
 flipOK : Fin m → Fin m → Vec (Form r) m → Bool
-flipOK ic id fs with stepF (Hˡ id ic) fs
-... | just fN = check (Zˡ ic ∷ Xˡ id ic ∷ []) fN
-... | nothing = false
+flipOK ic id fs = caseM (stepF (Hˡ id ic) fs) false λ fN → check (Zˡ ic ∷ Xˡ id ic ∷ []) fN
 
 ------------------------------------------------------------------------
 -- Normal forms
@@ -300,9 +296,8 @@ module Checker (nfData : (nf : NF) → NFData nf) (allow : NF → Bool) where
                      ∧ checkT t₁ tags mini ic id (Vec.map (substF v (splitH v g true)) fs)
   checkT (extend δ κ R a b c d ps t) tags mini ic id fs =
     mini ∧ extOK δ κ R a b c d ps tags fs ∧ checkT t (just δ ∷ tags) true (suc ic) (suc id) (newF δ κ ∷ Vec.map liftF fs)
-  checkT (conj g t) tags mini ic id fs with stepF g fs
-  ... | nothing = false
-  ... | just fs′ = conjOK ic id g fs ∧ checkT t (tagsAfter g tags) (miniAfter g mini) ic id fs′
+  checkT (conj g t) tags mini ic id fs =
+    caseM (stepF g fs) false λ fs′ → conjOK ic id g fs ∧ checkT t (tagsAfter g tags) (miniAfter g mini) ic id fs′
   checkT (relabel π sw ic′ id′ t) tags mini ic id fs =
     distinctV π ∧ ontoV π ∧ (π ! ic′ == (if sw then id else ic)) ∧ (π ! id′ == (if sw then ic else id))
       ∧ (if sw then flipOK ic id fs else true)
