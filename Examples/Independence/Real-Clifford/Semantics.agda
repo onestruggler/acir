@@ -13,7 +13,6 @@
 
 module Examples.Independence.Real-Clifford.Semantics where
 
-open import Data.Nat.Base using (ℕ)
 open import Data.Unit using (tt)
 open import Relation.Binary.PropositionalEquality using (refl)
 

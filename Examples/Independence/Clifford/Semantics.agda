@@ -13,17 +13,12 @@
 
 module Examples.Independence.Clifford.Semantics where
 
-open import Data.Nat.Base using (ℕ)
 open import Data.Unit using (tt)
 open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Examples.Independence.Clifford.Syntactics
 open import Examples.Independence.Semantics.Qubit
   using (Sc ; ωᵍ ; Hᵍ ; Sᵍ ; CXᵍ ; SWᵍ ; module Circuits)
-
-private
-  variable
-    n : ℕ
 
 -- The gates.
 val : ∀ {k} → PGate k → Sc k

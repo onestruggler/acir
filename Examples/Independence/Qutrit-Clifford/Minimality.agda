@@ -1,12 +1,11 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Theorem 37.3, Cliff₃ is minimal up to two qutrits: the weighted
--- separators
+-- Theorem 37.3: Cliff₃ is minimal up to two qutrits
 --
--- The rows of Figure 8(c) other than (SS′), whose separator is a
--- projective substitution (Proposition 38), and (I), for which the
--- paper has none.
+-- The separators of Figure 8(c).  The weighted ones are here; (SS′) is
+-- separated by a projective substitution (Projective, Proposition 38).
+-- The paper has none for the three-qutrit (I).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -19,6 +18,7 @@ open import Data.Nat using (ℕ ; z≤n ; s≤s)
 open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Examples.Independence.Qutrit-Clifford.Syntactics
+import Examples.Independence.Qutrit-Clifford.Projective as Projective
 open import Examples.Independence.Model Gate
 open Separators arity lhs rhs
 
@@ -145,3 +145,18 @@ module Sep-KC where
 
   independent : Independent-axiom KC
   independent = separates (s≤s (s≤s z≤n)) (λ ())
+
+------------------------------------------------------------------------
+-- Theorem 37.3
+
+minimal-upto-2 : Minimal-upto 2
+minimal-upto-2 ω¹² _ = Sep-ω¹².independent
+minimal-upto-2 H⁴  _ = Sep-H⁴.independent
+minimal-upto-2 S³  _ = Sep-S³.independent
+minimal-upto-2 E   _ = Sep-E.independent
+minimal-upto-2 SS′ _ = Projective.Sep-SS′.independent
+minimal-upto-2 CPh _ = Sep-CPh.independent
+minimal-upto-2 KC  _ = Sep-KC.independent
+minimal-upto-2 CZ  _ = Sep-CZ.independent
+minimal-upto-2 B   _ = Sep-B.independent
+minimal-upto-2 I   (s≤s (s≤s ()))

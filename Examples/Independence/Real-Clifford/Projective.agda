@@ -18,7 +18,7 @@
 module Examples.Independence.Real-Clifford.Projective where
 
 open import Data.Empty using (⊥-elim)
-open import Data.Nat.Base using (ℕ ; z≤n ; s≤s)
+open import Data.Nat.Base using (z≤n ; s≤s)
 open import Data.Product.Base using (_,_)
 open import Data.Unit using (tt)
 open import Relation.Binary.PropositionalEquality using (refl)

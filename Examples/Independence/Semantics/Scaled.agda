@@ -41,8 +41,7 @@ module Examples.Independence.Semantics.Scaled
 open import Algebra.Bundles using (Monoid ; CommutativeRing)
 import Algebra.Solver.CommutativeMonoid as CMSolver
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; not ; T)
-open import Data.Bool.Properties using (T-∧ ; T-not-≡)
-open import Data.Empty using (⊥ ; ⊥-elim)
+open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin ; zero ; suc ; toℕ ; fromℕ<)
 open import Data.Fin.Properties using (toℕ-fromℕ<)
 open import Data.Nat.Base using (zero ; _<_ ; _/_ ; _%_)

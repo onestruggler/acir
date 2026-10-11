@@ -19,6 +19,7 @@ open import Data.Bool using (Bool ; true ; false)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat using (ℕ ; z≤n ; s≤s)
 open import Relation.Binary.PropositionalEquality using (refl)
+open import Relation.Nullary.Negation using (¬_)
 
 open import Examples.Independence.Clifford.Syntactics
 open import Examples.Independence.Model Gate
@@ -133,11 +134,15 @@ module Sep-B where
   independent = separates (s≤s (s≤s z≤n)) (λ ())
 
 -- (CZ): #{CX, σ}[2].  It does not respect (I), whose sides carry three
--- CNOTs and two swaps against two CNOTs; but (I) acts on three wires,
--- and a derivation of the two-wire (CZ) cannot use it.
+-- CNOTs and two swaps against two CNOTs (not-a-model-of-I); but (I)
+-- acts on three wires, and a derivation of the two-wire (CZ) cannot
+-- use it.
 module Sep-CZ where
   open Weighted (count 2) (counts #CX 1) refl
   open Sep CZ 2
+
+  not-a-model-of-I : ¬ (_≈ₘ_ {3} ⟦ lhs I ⟧ ⟦ rhs I ⟧)
+  not-a-model-of-I ()
   open Check (λ
     { ω⁸ _ _ → refl ; H² _ _ → refl ; S⁴ _ _ → refl ; E _ _ → refl
     ; CPh _ _ → refl ; B _ _ → refl ; CZ ne _ → ⊥-elim (ne refl)

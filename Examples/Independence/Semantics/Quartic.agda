@@ -28,7 +28,7 @@ open import Data.Integer.Base as ℤ using (+_ ; -[1+_])
 import Data.Integer.Properties as ℤP
 open import Data.Integer.Solver using (module +-*-Solver)
 open import Data.Nat.Base using (ℕ ; zero ; suc)
-open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Data.Product.Base using (_×_ ; _,_)
 open import Level using (0ℓ)
 open import Relation.Binary.Definitions using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl)
@@ -87,14 +87,47 @@ private
   from (a₀ , a₁ , a₂ , a₃) = ⟨ a₀ , a₁ , a₂ , a₃ ⟩
 
 infixl 6 _+_
-infixl 7 _*_
+infixl 7 _*_ _*ₗ_
 infix  8 -_
 
 -- Both arguments are matched on, so that a product of variables does
--- not reduce.
-_+_ _*_ : Q → Q → Q
+-- not reduce.  _*ₗ_ is the product as the solver sees it.
+_+_ _*ₗ_ : Q → Q → Q
 ⟨ a₀ , a₁ , a₂ , a₃ ⟩ + ⟨ b₀ , b₁ , b₂ , b₃ ⟩ = from (MZ.add (a₀ , a₁ , a₂ , a₃) (b₀ , b₁ , b₂ , b₃))
-⟨ a₀ , a₁ , a₂ , a₃ ⟩ * ⟨ b₀ , b₁ , b₂ , b₃ ⟩ = from (MZ.mul (a₀ , a₁ , a₂ , a₃) (b₀ , b₁ , b₂ , b₃))
+⟨ a₀ , a₁ , a₂ , a₃ ⟩ *ₗ ⟨ b₀ , b₁ , b₂ , b₃ ⟩ = from (MZ.mul (a₀ , a₁ , a₂ , a₃) (b₀ , b₁ , b₂ , b₃))
+
+-- Forcing an integer to normal form before passing it on.
+forceℕ : {A : Set} → ℕ → (ℕ → A) → A
+forceℕ zero    k = k zero
+forceℕ (suc m) k = k (suc m)
+
+forceℤ : {A : Set} → ℤ → (ℤ → A) → A
+forceℤ (+ n)    k = forceℕ n (λ m → k (+ m))
+forceℤ -[1+ n ] k = forceℕ n (λ m → k -[1+ m ])
+
+forceℤ-id : {A : Set} (i : ℤ) (k : ℤ → A) → forceℤ i k ≡ k i
+forceℤ-id (+ zero)        k = refl
+forceℤ-id (+ suc n)       k = refl
+forceℤ-id -[1+ zero ]     k = refl
+forceℤ-id -[1+ suc n ]    k = refl
+
+-- The product used for evaluation: _*ₗ_ on normalised coefficients.
+-- Each coefficient of a factor occurs in several of the product's, and
+-- the evaluator does not share them: without the forcing, a chain of
+-- products, such as ζ¹² or a long circuit's matrix, re-evaluates its
+-- earlier factors exponentially often.
+_*_ : Q → Q → Q
+⟨ a₀ , a₁ , a₂ , a₃ ⟩ * ⟨ b₀ , b₁ , b₂ , b₃ ⟩ =
+  forceℤ a₀ λ a₀ → forceℤ a₁ λ a₁ → forceℤ a₂ λ a₂ → forceℤ a₃ λ a₃ →
+  forceℤ b₀ λ b₀ → forceℤ b₁ λ b₁ → forceℤ b₂ λ b₂ → forceℤ b₃ λ b₃ →
+  ⟨ a₀ , a₁ , a₂ , a₃ ⟩ *ₗ ⟨ b₀ , b₁ , b₂ , b₃ ⟩
+
+*≡*ₗ : ∀ a b → a * b ≡ a *ₗ b
+*≡*ₗ ⟨ a₀ , a₁ , a₂ , a₃ ⟩ ⟨ b₀ , b₁ , b₂ , b₃ ⟩ =
+  Eq.trans (forceℤ-id a₀ _) (Eq.trans (forceℤ-id a₁ _)
+  (Eq.trans (forceℤ-id a₂ _) (Eq.trans (forceℤ-id a₃ _)
+  (Eq.trans (forceℤ-id b₀ _) (Eq.trans (forceℤ-id b₁ _)
+  (Eq.trans (forceℤ-id b₂ _) (forceℤ-id b₃ _)))))))
 
 -_ : Q → Q
 - ⟨ a₀ , a₁ , a₂ , a₃ ⟩ = ⟨ ℤ.- a₀ , ℤ.- a₁ , ℤ.- a₂ , ℤ.- a₃ ⟩
@@ -174,8 +207,8 @@ private
     ⟨≡⟩ (ℤP.+-inverseʳ a₀) (ℤP.+-inverseʳ a₁)
         (ℤP.+-inverseʳ a₂) (ℤP.+-inverseʳ a₃)
 
-  *-comm : ∀ a b → a * b ≡ b * a
-  *-comm ⟨ a₀ , a₁ , a₂ , a₃ ⟩ ⟨ b₀ , b₁ , b₂ , b₃ ⟩ =
+  *ₗ-comm : ∀ a b → a *ₗ b ≡ b *ₗ a
+  *ₗ-comm ⟨ a₀ , a₁ , a₂ , a₃ ⟩ ⟨ b₀ , b₁ , b₂ , b₃ ⟩ =
     ⟨≡⟩ (solve 10 (λ p q a₀ a₁ a₂ a₃ b₀ b₁ b₂ b₃ →
            π₀ (MP.mul p q (a₀ , a₁ , a₂ , a₃) (b₀ , b₁ , b₂ , b₃)) :=
            π₀ (MP.mul p q (b₀ , b₁ , b₂ , b₃) (a₀ , a₁ , a₂ , a₃)))
@@ -193,8 +226,8 @@ private
            π₃ (MP.mul p q (b₀ , b₁ , b₂ , b₃) (a₀ , a₁ , a₂ , a₃)))
            refl p q a₀ a₁ a₂ a₃ b₀ b₁ b₂ b₃)
 
-  *-identityˡ : ∀ a → 1q * a ≡ a
-  *-identityˡ ⟨ a₀ , a₁ , a₂ , a₃ ⟩ =
+  *ₗ-identityˡ : ∀ a → 1q *ₗ a ≡ a
+  *ₗ-identityˡ ⟨ a₀ , a₁ , a₂ , a₃ ⟩ =
     ⟨≡⟩ (solve 6 (λ p q a₀ a₁ a₂ a₃ →
            π₀ (MP.mul p q (con (+ 1) , con (+ 0) , con (+ 0) , con (+ 0))
                           (a₀ , a₁ , a₂ , a₃)) := a₀)
@@ -212,11 +245,8 @@ private
                           (a₀ , a₁ , a₂ , a₃)) := a₃)
            refl p q a₀ a₁ a₂ a₃)
 
-  *-identityʳ : ∀ a → a * 1q ≡ a
-  *-identityʳ a = Eq.trans (*-comm a 1q) (*-identityˡ a)
-
-  distribˡ : ∀ a b c → a * (b + c) ≡ a * b + a * c
-  distribˡ ⟨ a₀ , a₁ , a₂ , a₃ ⟩ ⟨ b₀ , b₁ , b₂ , b₃ ⟩ ⟨ c₀ , c₁ , c₂ , c₃ ⟩ =
+  distribₗˡ : ∀ a b c → a *ₗ (b + c) ≡ a *ₗ b + a *ₗ c
+  distribₗˡ ⟨ a₀ , a₁ , a₂ , a₃ ⟩ ⟨ b₀ , b₁ , b₂ , b₃ ⟩ ⟨ c₀ , c₁ , c₂ , c₃ ⟩ =
     ⟨≡⟩ (solve 14 (λ p q a₀ a₁ a₂ a₃ b₀ b₁ b₂ b₃ c₀ c₁ c₂ c₃ →
            π₀ (MP.mul p q (a₀ , a₁ , a₂ , a₃)
                  (MP.add p q (b₀ , b₁ , b₂ , b₃) (c₀ , c₁ , c₂ , c₃))) :=
@@ -242,13 +272,8 @@ private
                           (MP.mul p q (a₀ , a₁ , a₂ , a₃) (c₀ , c₁ , c₂ , c₃))))
            refl p q a₀ a₁ a₂ a₃ b₀ b₁ b₂ b₃ c₀ c₁ c₂ c₃)
 
-  distribʳ : ∀ a b c → (b + c) * a ≡ b * a + c * a
-  distribʳ a b c =
-    Eq.trans (*-comm (b + c) a)
-      (Eq.trans (distribˡ a b c) (Eq.cong₂ _+_ (*-comm a b) (*-comm a c)))
-
-  *-assoc : ∀ a b c → (a * b) * c ≡ a * (b * c)
-  *-assoc ⟨ a₀ , a₁ , a₂ , a₃ ⟩ ⟨ b₀ , b₁ , b₂ , b₃ ⟩ ⟨ c₀ , c₁ , c₂ , c₃ ⟩ =
+  *ₗ-assoc : ∀ a b c → (a *ₗ b) *ₗ c ≡ a *ₗ (b *ₗ c)
+  *ₗ-assoc ⟨ a₀ , a₁ , a₂ , a₃ ⟩ ⟨ b₀ , b₁ , b₂ , b₃ ⟩ ⟨ c₀ , c₁ , c₂ , c₃ ⟩ =
     ⟨≡⟩ (solve 14 (λ p q a₀ a₁ a₂ a₃ b₀ b₁ b₂ b₃ c₀ c₁ c₂ c₃ →
            π₀ (MP.mul p q (MP.mul p q (a₀ , a₁ , a₂ , a₃) (b₀ , b₁ , b₂ , b₃))
                           (c₀ , c₁ , c₂ , c₃)) :=
@@ -273,6 +298,36 @@ private
            π₃ (MP.mul p q (a₀ , a₁ , a₂ , a₃)
                           (MP.mul p q (b₀ , b₁ , b₂ , b₃) (c₀ , c₁ , c₂ , c₃))))
            refl p q a₀ a₁ a₂ a₃ b₀ b₁ b₂ b₃ c₀ c₁ c₂ c₃)
+
+-- The laws of the evaluated product, through *≡*ₗ.
+private
+  *-comm : ∀ a b → a * b ≡ b * a
+  *-comm a b = Eq.trans (*≡*ₗ a b) (Eq.trans (*ₗ-comm a b) (Eq.sym (*≡*ₗ b a)))
+
+  *-assoc : ∀ a b c → (a * b) * c ≡ a * (b * c)
+  *-assoc a b c =
+    Eq.trans (Eq.cong (_* c) (*≡*ₗ a b))
+    (Eq.trans (*≡*ₗ (a *ₗ b) c)
+    (Eq.trans (*ₗ-assoc a b c)
+    (Eq.trans (Eq.sym (*≡*ₗ a (b *ₗ c)))
+              (Eq.cong (a *_) (Eq.sym (*≡*ₗ b c))))))
+
+  *-identityˡ : ∀ a → 1q * a ≡ a
+  *-identityˡ a = Eq.trans (*≡*ₗ 1q a) (*ₗ-identityˡ a)
+
+  *-identityʳ : ∀ a → a * 1q ≡ a
+  *-identityʳ a = Eq.trans (*-comm a 1q) (*-identityˡ a)
+
+  distribˡ : ∀ a b c → a * (b + c) ≡ a * b + a * c
+  distribˡ a b c =
+    Eq.trans (*≡*ₗ a (b + c))
+      (Eq.trans (distribₗˡ a b c)
+                (Eq.cong₂ _+_ (Eq.sym (*≡*ₗ a b)) (Eq.sym (*≡*ₗ a c))))
+
+  distribʳ : ∀ a b c → (b + c) * a ≡ b * a + c * a
+  distribʳ a b c =
+    Eq.trans (*-comm (b + c) a)
+      (Eq.trans (distribˡ a b c) (Eq.cong₂ _+_ (*-comm a b) (*-comm a c)))
 
 isCommutativeRing : IsCommutativeRing _≡_ _+_ _*_ -_ 0q 1q
 isCommutativeRing = record
@@ -301,7 +356,7 @@ commutativeRing = record { isCommutativeRing = isCommutativeRing }
 -- Cancelling a square root of a nonzero integer
 
 private
-  ι-* : ∀ d a → ι d * a ≡ ⟨ d ℤ.* c₀ a , d ℤ.* c₁ a , d ℤ.* c₂ a , d ℤ.* c₃ a ⟩
+  ι-* : ∀ d a → ι d *ₗ a ≡ ⟨ d ℤ.* c₀ a , d ℤ.* c₁ a , d ℤ.* c₂ a , d ℤ.* c₃ a ⟩
   ι-* d ⟨ a₀ , a₁ , a₂ , a₃ ⟩ =
     ⟨≡⟩ (solve 7 (λ p q d a₀ a₁ a₂ a₃ →
            π₀ (MP.mul p q (d , con (+ 0) , con (+ 0) , con (+ 0)) (a₀ , a₁ , a₂ , a₃))
@@ -339,4 +394,5 @@ cancel r d rr {a@(⟨ _ , _ , _ , _ ⟩)} {b@(⟨ _ , _ , _ , _ ⟩)} e =
 
   dd : ⟨ d ℤ.* c₀ a , d ℤ.* c₁ a , d ℤ.* c₂ a , d ℤ.* c₃ a ⟩ ≡
        ⟨ d ℤ.* c₀ b , d ℤ.* c₁ b , d ℤ.* c₂ b , d ℤ.* c₃ b ⟩
-  dd = Eq.trans (Eq.sym (ι-* d a)) (Eq.trans da≡db (ι-* d b))
+  dd = Eq.trans (Eq.sym (ι-* d a))
+         (Eq.trans (Eq.sym (*≡*ₗ (ι d) a)) (Eq.trans da≡db (Eq.trans (*≡*ₗ (ι d) b) (ι-* d b))))

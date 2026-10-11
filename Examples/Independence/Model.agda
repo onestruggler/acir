@@ -28,7 +28,6 @@ open import Data.Nat using (ℕ)
 module Examples.Independence.Model (Gate : ℕ → Set) where
 
 open import Algebra.Bundles using (Monoid ; CommutativeMonoid)
-open import Algebra.Morphism.Structures using (module MonoidMorphisms)
 open import Data.Bool using (Bool ; false)
 open import Data.Bool.Properties using (∨-commutativeMonoid)
 open import Data.Nat using (_+_ ; _*_ ; _^_ ; _∸_ ; _%_ ; _≤_ ; NonZero)

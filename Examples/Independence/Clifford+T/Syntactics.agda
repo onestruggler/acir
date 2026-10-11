@@ -20,7 +20,7 @@ open import Data.Nat using (ℕ)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Word.Base using ([_]ʷ ; ε ; _•_ ; _^_)
 
-open import Notations using (₁₊ ; ₂₊ ; ₃₊)
+open import Notations using (₁₊ ; ₂₊)
 
 private
   variable

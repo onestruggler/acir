@@ -14,7 +14,7 @@ module Examples.Independence.Clifford+T.Minimality where
 
 open import Data.Bool using (Bool ; true ; false)
 open import Data.Empty using (⊥-elim)
-open import Data.Nat using (ℕ ; _≤_ ; z≤n ; s≤s)
+open import Data.Nat using (ℕ ; z≤n ; s≤s)
 open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Examples.Independence.Clifford+T.Syntactics

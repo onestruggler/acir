@@ -40,7 +40,7 @@ open import Data.Nat using (ℕ)
 module Examples.Independence.Prop (Gate : ℕ → Set) where
 
 open import Data.Empty using (⊥)
-open import Data.Nat using (_+_ ; _≤_ ; suc)
+open import Data.Nat using (_+_ ; _≤_)
 open import Data.Nat.Properties using (≤-trans ; m≤m+n ; n≤1+n ; +-identityʳ)
 open import Data.Product using (_×_ ; _,_)
 open import Data.Unit using (⊤ ; tt)
