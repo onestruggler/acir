@@ -1,11 +1,11 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Theorem 37.2, RCliff₂ is minimal: the weighted separators
+-- Theorem 37.2: RCliff₂ is minimal
 --
--- The rows of Figure 8(b) other than (CF) and (CZr), whose separators
--- are projective substitutions.  arg det₂ weighs −1, H and Z by
--- multiples of 2π, and CNOT and σ by π.
+-- The separators of Figure 8(b).  The weighted ones are here; (CF) and
+-- (CZr) are separated by projective substitutions (Projective).
+-- arg det₂ weighs −1, H and Z by multiples of 2π, and CNOT and σ by π.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -18,6 +18,7 @@ open import Data.Nat using (ℕ ; z≤n ; s≤s)
 open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Examples.Independence.Real-Clifford.Syntactics
+import Examples.Independence.Real-Clifford.Projective as Projective
 open import Examples.Independence.Model Gate
 open Separators arity lhs rhs
 
@@ -146,3 +147,18 @@ module Sep-I where
 
   independent : Independent-axiom I
   independent = separates (s≤s (s≤s (s≤s z≤n))) (λ ())
+
+------------------------------------------------------------------------
+-- Theorem 37.2
+
+minimal : Minimal
+minimal −²  = Sep-−².independent
+minimal H²  = Sep-H².independent
+minimal Z²  = Sep-Z².independent
+minimal F   = Sep-F.independent
+minimal CX² = Sep-CX².independent
+minimal B   = Sep-B.independent
+minimal ZC  = Sep-ZC.independent
+minimal CZr = Projective.Sep-CZr.independent
+minimal CF  = Projective.Sep-CF.independent
+minimal I   = Sep-I.independent

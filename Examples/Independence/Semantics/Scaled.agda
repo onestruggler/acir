@@ -389,6 +389,21 @@ eqₖ-complete : (k : ℕ) (s s' : Sc n) →
 eqₖ-complete {n} k (h , M) (h' , M') e =
   allD-complete n _ (λ i → allD-complete n _ (λ j → dec-complete _ _ (e i j)))
 
+-- A digit on which f holds, if not all digits fail it.
+pick : {m : ℕ} (f : Fin m → Bool) → T (not (allFin (λ i → not (f i)))) →
+       Σ (Fin m) (λ i → T (f i))
+pick {zero}  f ()
+pick {suc m} f t = aux (f zero) refl t
+  where
+  aux : (b : Bool) → f zero ≡ b →
+        T (not (not (f zero) ∧ allFin (λ i → not (f (suc i))))) →
+        Σ (Fin (suc m)) (λ i → T (f i))
+  aux true  e _  = zero , Eq.subst T (Eq.sym e) tt
+  aux false e t' =
+    let (i , ti) = pick (λ j → f (suc j))
+                     (Eq.subst (λ c → T (not (not c ∧ allFin (λ i → not (f (suc i)))))) e t')
+    in suc i , ti
+
 -- s and s' agree up to no phase at all.
 apartₖ : Sc n → Sc n → Bool
 apartₖ s s' = allFin {suc N-1} (λ i → not (eqₖ (toℕ i) s s'))
@@ -423,3 +438,10 @@ module Decide
     not-both t' = T-not (eqₖ k' s s') t'
       (Eq.subst (λ j → T (not (eqₖ j s s'))) (toℕ-fromℕ< k'<N)
                 (allFin-sound (λ i → not (eqₖ (toℕ i) s s')) t i'))
+
+  -- Agreement up to some phase, found by evaluation, when every phase
+  -- is allowed.
+  check-some : (∀ k → P k) → (s s' : Sc n) → T (not (apartₖ s s')) → s ≈ s'
+  check-some all s s' t = check (toℕ (proj₁ found)) (all _) s s' (proj₂ found)
+    where
+    found = pick {suc N-1} (λ i → eqₖ (toℕ i) s s') t

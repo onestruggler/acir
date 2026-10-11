@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Theorem 37.5, CliffCS₂ is minimal up to two qubits and its axiom (I)
--- is independent: the weighted separators
+-- Theorem 37.5: CliffCS₂ is minimal up to two qubits, and its axiom (I)
+-- is independent
 --
--- The rows of Figure 8(e) other than (CSr) and (CE), whose separators
--- are projective substitutions, and (SH_k), for which the paper has
--- none.  arg det₂ weighs ω and S by π, H by 2π, CS by π/2 and σ by π.
+-- The separators of Figure 8(e).  The weighted ones are here; (CSr) and
+-- (CE) are separated by projective substitutions (Projective).  The
+-- paper has none for (SH_k).  arg det₂ weighs ω and S by π, H by 2π, CS by π/2 and σ by π.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -19,6 +19,7 @@ open import Data.Nat using (ℕ ; z≤n ; s≤s)
 open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Examples.Independence.Clifford+CS.Syntactics
+import Examples.Independence.Clifford+CS.Projective as Projective
 open import Examples.Independence.Model Gate
 open Separators arity lhs rhs
 
@@ -163,3 +164,25 @@ module Sep-I where
 
   independent : Independent-axiom I
   independent = separates (s≤s (s≤s (s≤s z≤n))) (λ ())
+
+------------------------------------------------------------------------
+-- Theorem 37.5
+
+minimal-upto-2 : Minimal-upto 2
+minimal-upto-2 ω⁸  _ = Sep-ω⁸.independent
+minimal-upto-2 H²  _ = Sep-H².independent
+minimal-upto-2 S⁴  _ = Sep-S⁴.independent
+minimal-upto-2 E   _ = Sep-E.independent
+minimal-upto-2 CPh _ = Sep-CPh.independent
+minimal-upto-2 CSr _ = Projective.Sep-CSr.independent
+minimal-upto-2 B   _ = Sep-B.independent
+minimal-upto-2 XCS _ = Sep-XCS.independent
+minimal-upto-2 CE  _ = Projective.Sep-CE.independent
+minimal-upto-2 I   (s≤s (s≤s ()))
+minimal-upto-2 SH₀ (s≤s (s≤s ()))
+minimal-upto-2 SH₁ (s≤s (s≤s ()))
+minimal-upto-2 SH₂ (s≤s (s≤s ()))
+minimal-upto-2 SH₃ (s≤s (s≤s ()))
+
+I-independent : Independent-axiom I
+I-independent = Sep-I.independent
