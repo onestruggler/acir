@@ -20,16 +20,21 @@
 -- Paper-V0.Iso proves Simplified-V1 ⟺ Paper-V0 the long way round and
 -- genuinely consumes them.
 --
--- This file is a façade over Lemmas/, in dependency order:
+-- The lemmas themselves live in Lemmas/, stated over any relation with
+-- the rules they use, and in dependency order:
 --
 --   OneWire     multiplier arithmetic on one wire, and lemma-order-SH
---   GroupLike   group-likeness, and powers modulo p
+--   GroupLike   group-likeness, powers modulo p, and induction on powers
 --   XZ          Pauli conjugation past H and past S, the ℤₚ
 --               half-exponent arithmetic (where X • Z ≈ Z • X lives),
 --               and the bridge between the two spellings
+--   SemiMR      semi-MR, derived from the other four one-wire rules
 --
--- Clients should keep importing this module: the names Iso.agda and
--- Presentation.agda use are the ones below, and they are unchanged.
+-- This module instantiates the first three at Paper-V1's relation, under
+-- the names Iso.agda uses.  It does not instantiate SemiMR: Paper-V1 has
+-- semi-MR as an axiom, and One-Wire-Group's lemma-semi-MR-R below reads
+-- it off that.  SemiMR is for the rule set that does without it,
+-- Reduced.
 ------------------------------------------------------------------------
 
 open import Data.Fin using (toℕ)
@@ -37,7 +42,9 @@ open import Data.Nat using (ℕ ; suc)
 open import Data.Nat.Primality using (Prime)
 open import Data.Product using (_,_ ; ∃)
 open import Notations
+import Presentation.Base as PB
 open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Word.Base using (_•_)
 open import ForStdlib.Data.Fin.Mod.Prime.Fermat
 open import ForStdlib.Data.Fin.Mod
 
@@ -50,9 +57,56 @@ module Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas
   (g-gen : ∀ ((x , _) : ℤ* ₚ) -> ∃ \ (k : ℤ ₚ-₁) -> x ≡ g ^′ toℕ k )
   where
 
-open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.OneWire
-  p-3 p-prime g* g-gen public
-open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.GroupLike
-  p-3 p-prime g* g-gen public
-open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.XZ
-  p-3 p-prime g* g-gen public
+open Primitive-Root-Modp' g* g-gen
+
+open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Syntactics
+  p-3 p-prime g* g-gen
+open Clifford-Relations
+
+import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.OneWire
+  p-3 p-prime g* g-gen as OW
+import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.GroupLike
+  p-3 p-prime g* g-gen as GL
+import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.XZ
+  p-3 p-prime g* g-gen as XZ
+
+open GL public using (lemma-pow-mod ; lemma-Induction ; lemma-Inductionˡ)
+
+------------------------------------------------------------------------
+-- The one-wire layer at Paper-V1's relation
+--
+-- Each rule is passed as the axiom it is.  Only four of the five one-wire
+-- axioms are passed: semi-MR is not a parameter of any of these modules.
+
+module One-Wire (n : ℕ) =
+  OW.One-Wire n ((₁₊ n) QRel,_===_)
+    (PB.axiom order-S) (PB.axiom order-H) (λ k → PB.axiom (M-power k))
+    (PB.axiom comm-HHSHHS)
+
+module Paper-GroupLike =
+  GL.Paper-GroupLike _QRel,_===_
+    (PB.axiom order-S) (PB.axiom order-H) (λ k → PB.axiom (M-power k))
+    (PB.axiom comm-HHSHHS) (PB.axiom order-CZ) lemma-cong↑
+
+module One-Wire-Group (n : ℕ) where
+
+  open XZ.One-Wire-Group n ((₁₊ n) QRel,_===_)
+    (PB.axiom order-S) (PB.axiom order-H) (λ k → PB.axiom (M-power k))
+    (PB.axiom comm-HHSHHS) (Paper-GroupLike.grouplike {₁₊ n}) public
+
+  open PB ((₁₊ n) QRel,_===_) using (_≈_ ; axiom)
+
+  -- semi-MR, back in the R-spelling.
+  --
+  -- Paper-V1 states semi-MR over S, with the Pauli that the change of
+  -- spelling leaves behind written out on the left.  Paper-V0 states it
+  -- over R.  The two are the same rule: R^(g·g) splits as S^(g·g) • Z^(½g²),
+  -- and the Z^½ that R contributes on the right crosses the multiplier by
+  -- Z-XM, picking up the factor g.  What is left over on each side is
+  -- Z^(½g), and cancelling it is the difference between the two
+  -- statements.
+  --
+  -- This is the one place the lemma layer uses Paper-V1's fifth one-wire
+  -- axiom.  Lemmas.SemiMR proves the same statement without it.
+  lemma-semi-MR-R : XMg {n} • R^ (g * g) ≈ R • XMg
+  lemma-semi-MR-R = SB.SemiMR.S⇒R g′ (axiom semi-MR)

@@ -3,9 +3,14 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Multiplier arithmetic on one wire: the six one-wire axioms and what
--- they give.  Split out of the former monolithic Lemmas.agda; see
+-- Multiplier arithmetic on one wire: what order-S, order-H, M-power and
+-- comm-HHSHHS give.  Split out of the former monolithic Lemmas.agda; see
 -- Lemmas.agda for the layering.
+--
+-- Stated over any relation that has those four rules, which One-Wire
+-- takes as parameters, so that a rule set without Paper-V1's fifth
+-- one-wire rule, semi-MR, can use it too.  Lemmas.agda instantiates it at
+-- Paper-V1's relation, Reduced.Iso at the reduced one.
 ------------------------------------------------------------------------
 
 open import Relation.Binary.PropositionalEquality
@@ -44,18 +49,14 @@ module Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.OneWire
 
 open Primitive-Root-Modp' g* g-gen
 
+-- Only the words are taken from Syntactics, not the relation: the rules
+-- this file uses arrive as parameters of One-Wire below.
 open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Syntactics
   p-3 p-prime g* g-gen
 
 open Clifford-Relations
-open Lemmas-Clifford
-  using (lemma-↑^ ; lemma-Induction ; lemma-Inductionˡ
-        ; lemma-comm-S-w↑ ; lemma-comm-H-w↑ ; lemma-comm-Hᵏ-w↑
-        ; lemma-comm-Z-w↑ ; lemma-comm-X-w↑ ; lemma-comm-CZ-w↑)
-
-private
-  variable
-    n : ℕ
+  using ( Z ; X ; Z⁻¹ ; X⁻¹ ; Z^ ; X^ ; R ; R^ ; SHS' ; SHS ; M ; XM
+        ; XM≡M⁻¹ ; M₁ ; M₋₁ ; XM₋₁ ; XM₋₁≡M₋₁ ; XMg ; XMg^ )
 
 ------------------------------------------------------------------------
 -- Multiplier arithmetic on one wire
@@ -68,6 +69,10 @@ private
 -- there, because the proof terms are tied to a particular relation and
 -- cannot be reused across the two.
 --
+-- None of them uses semi-MR, so the module takes the other four as its
+-- parameters, stated exactly as Paper-V1's axioms are, but as equations
+-- in an arbitrary relation Γ at width ₁₊ n.
+--
 -- Only what Iso needs survives here.  That is lemma-order-SH, the two
 -- Pauli orders, Z-versus-S commutation and conjugation by H — the
 -- hypotheses of the shared bridge — together with lemma-order-H, which
@@ -75,10 +80,18 @@ private
 -- arithmetic (the Mg power law, the semi-rules in Mg form, M ½ • M 2)
 -- is not reproved: the isomorphism transports it.
 
-module One-Wire (n : ℕ) where
+module One-Wire
+  (n : ℕ)
+  (Γ : WRel (Gen (₁₊ n)))
+  (order-S     : let open PB Γ in S ^ p ≈ ε)
+  (order-H     : let open PB Γ in H ^ 2 ≈ XM₋₁)
+  (M-power     : let open PB Γ in ∀ k → XMg^ k ≈ XM (g^ k))
+  (comm-HHSHHS : let open PB Γ in
+                 H • H • S • H • H • S ≈ S • H • H • S • H • H)
+  where
 
-  open PB ((₁₊ n) QRel,_===_) hiding (_===_)
-  open PP ((₁₊ n) QRel,_===_)
+  open PB Γ hiding (_===_)
+  open PP Γ
 
   -- M y mentions y only through the two field values x and x⁻¹, so the
   -- congruence is one cong₂ over the shape once both are identified:
@@ -140,10 +153,10 @@ module One-Wire (n : ℕ) where
     x' = y' .proj₁
     x'⁻¹ = ((y' ⁻¹) .proj₁ )
 
-  -- The axiom with the bridge applied: a power of XMg is an M.
+  -- M-power with the bridge applied: a power of XMg is an M.
   lemma-XMg^ : ∀ (k : ℤ ₚ) -> XMg {n} ^ toℕ k ≈ M ((g^ k) ⁻¹)
   lemma-XMg^ k = begin
-    XMg ^ toℕ k    ≈⟨ axiom (M-power k) ⟩
+    XMg ^ toℕ k    ≈⟨ M-power k ⟩
     XM (g^ k)      ≡⟨ XM≡M⁻¹ (g^ k) ⟩
     M ((g^ k) ⁻¹) ∎
     where
@@ -403,7 +416,7 @@ module One-Wire (n : ℕ) where
   -- XM₋₁≡M₋₁ says those are the same word — propositionally, so the
   -- rewrite has to be applied by hand.  Done once here.
   order-H' : H ^ 2 ≈ M₋₁ {n}
-  order-H' = trans (axiom order-H) (refl' XM₋₁≡M₋₁)
+  order-H' = trans order-H (refl' XM₋₁≡M₋₁)
 
   lemma-order-H : H ^ 4 ≈ ε
   lemma-order-H = begin
@@ -444,7 +457,7 @@ module One-Wire (n : ℕ) where
     where
     open SR word-setoid
     open Pattern-Assoc
-  lemma-comm-SHHS^kHH k@1 = sym (by-assoc-and (axiom comm-HHSHHS) auto auto)
+  lemma-comm-SHHS^kHH k@1 = sym (by-assoc-and comm-HHSHHS auto auto)
   lemma-comm-SHHS^kHH k@(₁₊ k'@(₁₊ k'')) = begin
     S • H • H • S ^ k • H • H
       ≈⟨ refl ⟩
@@ -455,7 +468,7 @@ module One-Wire (n : ℕ) where
     S • H • H • (S • (H • H • H • H) • S ^ k') • H • H
       ≈⟨ by-passoc (□ • □ • □ • (□ • □ ^ 4 • □) • □ ^ 2) (□ ^ 6 • □ ^ 5) auto ⟩
     (S • H • H • S • H • H) • H • H • S ^ k' • H • H
-      ≈⟨ cleft sym (axiom comm-HHSHHS) ⟩
+      ≈⟨ cleft sym comm-HHSHHS ⟩
     (H • H • S • H • H • S) • H • H • S ^ k' • H • H
       ≈⟨ by-passoc (□ ^ 6 • □ ^ 5) (□ ^ 5 • □ ^ 6) auto ⟩
     (H • H • S • H • H) • S • H • H • S ^ k' • H • H
@@ -548,8 +561,8 @@ module One-Wire (n : ℕ) where
     Z ^ p
       ≈⟨ lemma-Z^k-ℕ p ⟩
     H • H • S ^ p • H • H • S⁻¹ ^ p
-      ≈⟨ cright cright cong (axiom order-S)
-                            (cright cright lemma-order-w^k S p p-1 (axiom order-S)) ⟩
+      ≈⟨ cright cright cong order-S
+                            (cright cright lemma-order-w^k S p p-1 order-S) ⟩
     H • H • ε • H • H • ε
       ≈⟨ by-assoc auto ⟩
     H • H • H • H
@@ -562,8 +575,8 @@ module One-Wire (n : ℕ) where
     X ^ p
       ≈⟨ lemma-X^k-ℕ p ⟩
     H • S ^ p • H • H • S⁻¹ ^ p • H
-      ≈⟨ cright cong (axiom order-S)
-                     (cright cright cleft lemma-order-w^k S p p-1 (axiom order-S)) ⟩
+      ≈⟨ cright cong order-S
+                     (cright cright cleft lemma-order-w^k S p p-1 order-S) ⟩
     H • ε • H • H • ε • H
       ≈⟨ by-assoc auto ⟩
     H • H • H • H
@@ -580,7 +593,7 @@ module One-Wire (n : ℕ) where
     (H • H • S • H • H) • S • S⁻¹
       ≈⟨ sym (by-passoc (□ ^ 6 • □) (□ ^ 5 • □ ^ 2) auto) ⟩
     (H • H • S • H • H • S) • S⁻¹
-      ≈⟨ cleft axiom comm-HHSHHS ⟩
+      ≈⟨ cleft comm-HHSHHS ⟩
     (S • H • H • S • H • H) • S⁻¹
       ≈⟨ by-passoc (□ ^ 6 • □) (□ • □ ^ 6) auto ⟩
     S • (H • H • S • H • H • S⁻¹) ∎

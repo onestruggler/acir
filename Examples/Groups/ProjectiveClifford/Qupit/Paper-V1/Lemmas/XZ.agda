@@ -6,6 +6,10 @@
 -- Pauli conjugation past H and past S: the calculus that moves an X or a
 -- Z through a Clifford generator, and the ℤₚ half-exponent arithmetic it
 -- needs.  This is where X • Z ≈ Z • X is established.
+--
+-- Like OneWire, stated over any relation with order-S, order-H, M-power
+-- and comm-HHSHHS, taken as parameters of One-Wire-Group together with a
+-- grouplike witness.  semi-MR is not among them: nothing here uses it.
 ------------------------------------------------------------------------
 
 open import Relation.Binary.PropositionalEquality
@@ -45,21 +49,17 @@ module Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.XZ
 open Primitive-Root-Modp' g* g-gen
 open import ForStdlib.Data.Fin.Mod.Prime.Properties p-2 p-prime using (toℕ-+)
 
+-- The words only, as in OneWire.
 open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Syntactics
   p-3 p-prime g* g-gen
 
 open Clifford-Relations
-open Lemmas-Clifford
-  using (lemma-↑^ ; lemma-Induction ; lemma-Inductionˡ
-        ; lemma-comm-S-w↑ ; lemma-comm-H-w↑ ; lemma-comm-Hᵏ-w↑
-        ; lemma-comm-Z-w↑ ; lemma-comm-X-w↑ ; lemma-comm-CZ-w↑)
-
-private
-  variable
-    n : ℕ
+  using ( Z ; X ; Z⁻¹ ; X⁻¹ ; Z^ ; X^ ; R ; R^ ; SHS' ; SHS ; M ; XM
+        ; XM≡M⁻¹ ; M₁ ; M₋₁ ; XM₋₁ ; XM₋₁≡M₋₁ ; XMg ; XMg^ )
 
 open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.OneWire p-3 p-prime g* g-gen
 open import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.GroupLike p-3 p-prime g* g-gen
+  using (lemma-pow-mod ; lemma-Induction ; lemma-Inductionˡ)
 
 import Examples.Groups.ProjectiveClifford.Qupit.Shared.PauliBase
   p-3 p-prime g* g-gen as Shared
@@ -68,24 +68,32 @@ import Examples.Groups.ProjectiveClifford.Qupit.Shared.PauliBase
 -- Pauli conjugation by H ^ 2, and the second direction of conj-H
 --
 -- These need right cancellation and the basis-change tactic, so they
--- cannot live in One-Wire: Paper-GroupLike is declared after it, so no
--- Group-Lemmas instance is in scope there.  Ported verbatim from
--- Simplified-V1.LemmasXZ, on the same grounds as the One-Wire ports —
--- the one-wire axioms are shared, so the proof terms transfer unchanged.
+-- cannot live in One-Wire, which takes no grouplike witness.  Ported
+-- verbatim from Simplified-V1.LemmasXZ, on the same grounds as the
+-- One-Wire ports — the one-wire rules are shared, so the proof terms
+-- transfer unchanged.
 --
 -- conj-H-Z is the direction conj-H-X does not give.  Both are needed to
 -- carry a Pauli through the H's the bridge's blocks are built from.
 
-module One-Wire-Group (n : ℕ) where
+module One-Wire-Group
+  (n : ℕ)
+  (Γ : WRel (Gen (₁₊ n)))
+  (order-S     : let open PB Γ in S ^ p ≈ ε)
+  (order-H     : let open PB Γ in H ^ 2 ≈ XM₋₁)
+  (M-power     : let open PB Γ in ∀ k → XMg^ k ≈ XM (g^ k))
+  (comm-HHSHHS : let open PB Γ in
+                 H • H • S • H • H • S ≈ S • H • H • S • H • H)
+  (grouplike   : Grouplike Γ)
+  where
 
-  open PB ((₁₊ n) QRel,_===_) hiding (_===_)
-  open PP ((₁₊ n) QRel,_===_)
+  open PB Γ hiding (_===_)
+  open PP Γ
   open SR word-setoid
   open Pattern-Assoc
-  open One-Wire n
-  open Group-Lemmas ((₁₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₁₊ n})
-    using (•-cancelʳ ; •-cancelˡ)
-  open Basis-Change _ ((₁₊ n) QRel,_===_) (Paper-GroupLike.grouplike {₁₊ n})
+  open One-Wire n Γ order-S order-H M-power comm-HHSHHS
+  open Group-Lemmas Γ grouplike using (•-cancelʳ ; •-cancelˡ)
+  open Basis-Change _ Γ grouplike
 
   aux-S⁻¹⁻¹ : S⁻¹ ^ p-1 ≈ S
   aux-S⁻¹⁻¹ = •-cancelʳ {h = S⁻¹} aux00
@@ -97,9 +105,9 @@ module One-Wire-Group (n : ℕ) where
       S⁻¹ ^ p            ≈⟨ ^^ S p-1 p ⟩
       S ^ (p-1 Nat.* p)  ≡⟨ Eq.cong (S ^_) (NP.*-comm p-1 p) ⟩
       S ^ (p Nat.* p-1)  ≈⟨ sym (^^ S p p-1) ⟩
-      (S ^ p) ^ p-1      ≈⟨ ^-cong (S ^ p) ε p-1 (axiom order-S) ⟩
+      (S ^ p) ^ p-1      ≈⟨ ^-cong (S ^ p) ε p-1 order-S ⟩
       ε ^ p-1            ≈⟨ ε^k=ε (₁₊ p-2) ⟩
-      ε                  ≈⟨ sym (axiom order-S) ⟩
+      ε                  ≈⟨ sym order-S ⟩
       S • S⁻¹ ∎
 
   lemma-HH-Z : HH • Z ≈ Z^ (- ₁) • HH
@@ -185,9 +193,8 @@ module One-Wire-Group (n : ℕ) where
   -- order-SH' is NOT an axiom here: it is One-Wire's lemma-order-SH,
   -- derived from M-power at k = 0.  This is the only place in the
   -- development that needs (S • H) ^ 3 ≈ ε at all.
-  module SC = Shared.Calculus n ((₁₊ n) QRel,_===_)
-                (Paper-GroupLike.grouplike {₁₊ n})
-                (axiom order-S) lemma-order-H lemma-order-SH
+  module SC = Shared.Calculus n Γ grouplike
+                order-S lemma-order-H lemma-order-SH
 
   S⁻¹S : S⁻¹ • S ≈ ε
   S⁻¹S = SC.S⁻¹S
@@ -216,7 +223,7 @@ module One-Wire-Group (n : ℕ) where
     (H • H • H • S⁻¹ • H) • (H • H ^ 3 • S⁻¹ • H)
       ≈⟨ cleft (cright sym left-unit) ⟩
     (H • ε • H • H • S⁻¹ • H) • (H • H ^ 3 • S⁻¹ • H)
-      ≈⟨ cleft cright cleft sym (axiom order-S) ⟩
+      ≈⟨ cleft cright cleft sym order-S ⟩
     (H • (S • S⁻¹) • H • H • S⁻¹ • H) • (H • H ^ 3 • S⁻¹ • H)
       ≈⟨ by-passoc ((□ • □ ^ 2 • □ ^ 4) • □ ^ 4) (□ ^ 2 • □ ^ 6 • □ ^ 3) auto ⟩
     (H • S) • (S⁻¹ • H • H • S⁻¹ • H • H) • H ^ 3 • S⁻¹ • H
@@ -230,7 +237,7 @@ module One-Wire-Group (n : ℕ) where
     (H • S • H • H • S⁻¹ • H) • (H • H • S • H • H)
       ≈⟨ cright sym right-unit ⟩
     (H • S • H • H • S⁻¹ • H) • (H • H • S • H • H) • ε
-      ≈⟨ cright cright sym (axiom order-S) ⟩
+      ≈⟨ cright cright sym order-S ⟩
     (H • S • H • H • S⁻¹ • H) • (H • H • S • H • H) • S • S⁻¹
       ≈⟨ cright cright comm⇒pow-comm 1 p-1 refl ⟩
     (H • S • H • H • S⁻¹ • H) • (H • H • S • H • H) • S⁻¹ • S
@@ -381,7 +388,7 @@ module One-Wire-Group (n : ℕ) where
       (H • S • H ^ 3 • S • H ^ 3 • S) • (S⁻¹ • H • S⁻¹ • H • S⁻¹ • H)
         ≈⟨ by-passoc (□ ^ 6 • □ ^ 6) (□ ^ 5 • □ ^ 2 • □ ^ 5) auto ⟩
       (H • S • H ^ 3 • S • H ^ 3) • (S • S⁻¹) • (H • S⁻¹ • H • S⁻¹ • H)
-        ≈⟨ cright cleft axiom order-S ⟩
+        ≈⟨ cright cleft order-S ⟩
       (H • S • H ^ 3 • S • H ^ 3) • ε • (H • S⁻¹ • H • S⁻¹ • H)
         ≈⟨ cright left-unit ⟩
       (H • S • H ^ 3 • S • H ^ 3) • (H • S⁻¹ • H • S⁻¹ • H)
@@ -393,7 +400,7 @@ module One-Wire-Group (n : ℕ) where
       (H • S • H ^ 3 • S) • (S⁻¹ • H • S⁻¹ • H)
         ≈⟨ by-passoc (□ ^ 4 • □ ^ 4) (□ ^ 3 • □ ^ 2 • □ ^ 3) auto ⟩
       (H • S • H ^ 3) • (S • S⁻¹) • (H • S⁻¹ • H)
-        ≈⟨ cright cleft axiom order-S ⟩
+        ≈⟨ cright cleft order-S ⟩
       (H • S • H ^ 3) • ε • (H • S⁻¹ • H)
         ≈⟨ cright left-unit ⟩
       (H • S • H ^ 3) • (H • S⁻¹ • H)
@@ -405,7 +412,7 @@ module One-Wire-Group (n : ℕ) where
       (H • S) • (S⁻¹ • H)
         ≈⟨ by-passoc (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
       H • (S • S⁻¹) • H
-        ≈⟨ cright cleft axiom order-S ⟩
+        ≈⟨ cright cleft order-S ⟩
       H • ε • H
         ≈⟨ cright left-unit ⟩
       H • H ∎
@@ -480,7 +487,7 @@ module One-Wire-Group (n : ℕ) where
       (H • H • H • S) • (S⁻¹ • H)
         ≈⟨ by-passoc (□ ^ 4 • □ ^ 2) (□ ^ 3 • □ ^ 2 • □) auto ⟩
       (H • H • H) • (S • S⁻¹) • H
-        ≈⟨ cright cleft axiom order-S ⟩
+        ≈⟨ cright cleft order-S ⟩
       (H • H • H) • ε • H
         ≈⟨ cright left-unit ⟩
       (H • H • H) • H
@@ -526,7 +533,7 @@ module One-Wire-Group (n : ℕ) where
       H ^ 2 • (S⁻¹ • H • H • S • H • H • S • H • H • S⁻¹)
         ≈⟨ by-passoc (□ ^ 2 • □ ^ 10) (□ ^ 3 • □ ^ 6 • □ ^ 3) auto ⟩
       (H • H • S⁻¹) • (H • H • S • H • H • S) • (H • H • S⁻¹)
-        ≈⟨ cright cleft axiom comm-HHSHHS ⟩
+        ≈⟨ cright cleft comm-HHSHHS ⟩
       (H • H • S⁻¹) • (S • H • H • S • H • H) • (H • H • S⁻¹)
         ≈⟨ by-passoc (□ ^ 3 • □ ^ 6 • □ ^ 3) (□ ^ 2 • □ ^ 2 • □ ^ 8) auto ⟩
       (H • H) • (S⁻¹ • S) • (H • H • S • H • H • H • H • S⁻¹)
@@ -546,7 +553,7 @@ module One-Wire-Group (n : ℕ) where
       S • ε • S⁻¹
         ≈⟨ cright left-unit ⟩
       S • S⁻¹
-        ≈⟨ axiom order-S ⟩
+        ≈⟨ order-S ⟩
       ε ∎
 
   -- W • Z ≈ X, by cancelling A off the left of both.
@@ -583,10 +590,10 @@ module One-Wire-Group (n : ℕ) where
   -- lemma-comm-X-Z is the one hypothesis whose proof genuinely differs
   -- between the two spellings of the multiplier, which is why it is
   -- proved above rather than assumed there.
-  module SB = Shared.BridgeCalc n ((₁₊ n) QRel,_===_)
+  module SB = Shared.BridgeCalc n Γ
                 lemma-order-X lemma-order-Z lemma-comm-Z-S lemma-comm-X-Z
                 conj-H-X^k conj-X^k-H lemma-XS
-                (λ w → lemma-pow-mod {₁₊ n} {w})
+                (λ w → lemma-pow-mod {w = w})
                 lemma-Induction lemma-Inductionˡ
 
   ------------------------------------------------------------------------
@@ -675,24 +682,14 @@ module One-Wire-Group (n : ℕ) where
   -- outright — with its Z-part trivially, with its X-part by
   -- lemma-comm-X-Z.  So conjugating by XM x sends Z to Z^x.
   --
-  -- This is what semi-MR needs: the axiom is stated with a Z on one side
-  -- of the multiplier and none on the other, so the two spellings of it
-  -- differ by exactly one application of this.
+  -- This is what semi-MR needs: the rule is stated with a Z on one side
+  -- of the multiplier and none on the other, so its two spellings differ
+  -- by exactly one application of this.  (SB.SemiMR converts between
+  -- them.  Its R-spelling, lemma-semi-MR-R, is not stated here: Paper-V1
+  -- takes it from its own axiom, in Lemmas.agda, and Lemmas.SemiMR
+  -- derives it from the four rules this module takes.)
   Z-XM : ∀ (x : ℤ* ₚ) (k : ℤ ₚ) → Z^ k • XM x ≈ XM x • Z^ ((x .proj₁) * k)
   Z-XM x = SB.MulZ.Z-W x
-
-  ------------------------------------------------------------------------
-  -- semi-MR, back in the R-spelling
-  --
-  -- Paper-V1 states semi-MR over S, with the Pauli that the change of
-  -- spelling leaves behind written out on the left.  Paper-V0 states it
-  -- over R.  The two are the same rule: R^(g·g) splits as S^(g·g) • Z^(½g²),
-  -- and the Z^½ that R contributes on the right crosses the multiplier by
-  -- Z-XM, picking up the factor g.  What is left over on each side is
-  -- Z^(½g), and cancelling it is the difference between the two
-  -- statements.
-  lemma-semi-MR-R : XMg {n} • R^ (g * g) ≈ R • XMg
-  lemma-semi-MR-R = SB.SemiMR.S⇒R g′ (axiom semi-MR)
 
 
   ------------------------------------------------------------------------
