@@ -40,7 +40,7 @@ module Examples.Groups.Qupit-Phase-Affine.Syntactics
 open import Data.Fin.Base using (toℕ)
 open import Data.Nat.Properties using (<⇒≤)
 open import Data.Product.Base using (_,_ ; proj₁ ; proj₂)
-open import Relation.Binary.PropositionalEquality using (_≢_)
+open import Relation.Binary.PropositionalEquality using (_≢_ ; refl)
 open import Word.Base
 
 open import Notations using (₀ ; ₁ ; ₁₊ ; ₃₊ ; ₄₊)
@@ -242,8 +242,12 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
 private module LR = C.Lift-Relation _SRel,_===_
 
 open LR public
-  using ( srel ; cong↑ ; comm₀ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
-        ; comm-gate₀-w ; comm-gate₁-w↑ ; comm-gate₂-w↑↑ ; _VRel,_===_ )
+  using ( srel ; cong↑ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
+        ; comm-gate₁-w↑ ; comm-gate₂-w↑↑ ; _VRel,_===_ )
+
+-- The scalar is central: not a rule but a theorem of the others
+-- (Circuit.Base), there being a single scalar.
+open LR.Single-Scalar (λ { (ω-gate _) (ω-gate _) → refl }) public using (comm₀ ; comm-gate₀-w)
 
 -- The monoid congruence the relations generate at width n: the
 -- equality of circuits of the fragment.

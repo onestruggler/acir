@@ -373,7 +373,6 @@ module Functor
   ctrl-ax (Src.srel r) = ctrl-srel r
   ctrl-ax {suc n} (Src.cong↑ {w = w} {v = v} r) =
     Width.trans (ctrl*-↑ w) (Width.trans (Width.mid (₂₊ n) SWAP SWAP (lift (ctrl-ax r))) (Width.sym (ctrl*-↑ v)))
-  ctrl-ax (Src.comm₀ (Src.ω-gate _) g)     = Width.sym (Ω∥ g)
   ctrl-ax (Src.comm₁ Src.X-gate g)         = gate1∥ X-gate (ctrl g)
   ctrl-ax (Src.comm₁ (Src.M-gate a nz) g)  = gate1∥ (M-gate a nz) (ctrl g)
   ctrl-ax (Src.comm₁ (Src.Z-gate _) g)     = Width.sym (two-cls Z-D Z-two g)

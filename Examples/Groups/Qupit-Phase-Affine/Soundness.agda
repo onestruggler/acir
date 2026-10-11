@@ -89,12 +89,6 @@ cong↑-sound : {w v : Circuit n} → ⟦ w ⟧ ≐ ⟦ v ⟧ → ⟦ w ↑ ⟧ 
 cong↑-sound {w = w} {v} e =
   ≐-trans (up-word w) (≐-trans (up-cong e) (≐-sym (up-word v)))
 
-comm₀-sound : (h : Gate 0) (g : Gen n) →
-              ⟦ [ g ]ʷ • [ gate₀ h ]ʷ ⟧ ≐ ⟦ [ gate₀ h ]ʷ • [ g ]ʷ ⟧
-comm₀-sound (ω-gate e) g =
-  ≐-trans (gen² g (gate₀ (ω-gate e)))
-    (≐-trans (comm-scalar ⟦ g ⟧ᵍ) (≐-sym (gen² (gate₀ (ω-gate e)) g)))
-
 comm₁-sound : (h : Gate 1) (g : Gen n) →
               ⟦ [ g ↥ ]ʷ • [ gate₁ h ]ʷ ⟧ ≐ ⟦ [ gate₁ h ]ʷ • [ g ↥ ]ʷ ⟧
 comm₁-sound h g =
@@ -177,7 +171,6 @@ axiom-sound adm (srel (ax41 h))   = Cube.r41 (big adm h) h
 axiom-sound adm (srel (ax42 h))   = Cube.r42 (big adm h) h
 -- The structural rules.
 axiom-sound adm (cong↑ r)   = cong↑-sound (axiom-sound adm r)
-axiom-sound adm (comm₀ h g) = comm₀-sound h g
 axiom-sound adm (comm₁ h g) = comm₁-sound h g
 axiom-sound adm (comm₂ h g) = comm₂-sound h g
 axiom-sound adm (ω↑=ω h)    = ω↑=ω-sound h

@@ -73,12 +73,6 @@ cong↑-sound : {w v : Circuit n} → ⟦ w ⟧ ≐ ⟦ v ⟧ → ⟦ w ↑ ⟧ 
 cong↑-sound {w = w} {v} e =
   ≐-trans (up-word w) (≐-trans (up-cong e) (≐-sym (up-word v)))
 
--- The scalar commutes with every generator.
-comm₀-sound : (h : Gate 0) (g : Gen n) →
-              ⟦ [ g ]ʷ • [ gate₀ h ]ʷ ⟧ ≐ ⟦ [ gate₀ h ]ʷ • [ g ]ʷ ⟧
-comm₀-sound ω-gate g =
-  ≐-trans (gen² g ω-gen) (≐-trans (ω-comm ⟦ g ⟧ᵍ) (≐-sym (gen² ω-gen g)))
-
 comm₁-sound : (h : Gate 1) (g : Gen n) →
               ⟦ [ g ↥ ]ʷ • [ gate₁ h ]ʷ ⟧ ≐ ⟦ [ gate₁ h ]ʷ • [ g ↥ ]ʷ ⟧
 comm₁-sound X-gate g =
@@ -124,7 +118,6 @@ axiom-sound (srel swap-T)     = by-relator sTˡ sTʳ psTˡ psTʳ msT
 axiom-sound (srel swap-CNOT)  = by-relator sCˡ sCʳ psCˡ psCʳ msC
 -- The structural rules.
 axiom-sound (cong↑ r)          = cong↑-sound (axiom-sound r)
-axiom-sound (comm₀ h g)        = comm₀-sound h g
 axiom-sound (comm₁ h g)        = comm₁-sound h g
 axiom-sound (comm₂ h g)        = comm₂-sound h g
 axiom-sound (ω↑=ω ω-gate)      = ω↑=ω-sound

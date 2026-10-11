@@ -60,7 +60,7 @@ private
 ω-pass : (xs : List (Gen n)) → n ⊢ ⟪ xs ++ 𝕨 ∷ [] ⟫ ≈ ⟪ 𝕨 ∷ xs ⟫
 ω-pass []       = PB.refl
 ω-pass (x ∷ xs) = PB.trans (PB.cong PB.refl (ω-pass xs))
-  (PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (PB.axiom (comm₀ ω-gate x)) PB.refl) PB.assoc))
+  (PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong (comm₀ ω-gate x) PB.refl) PB.assoc))
 
 ------------------------------------------------------------------------
 -- Dirty gates

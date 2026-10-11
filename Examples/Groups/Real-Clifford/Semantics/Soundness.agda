@@ -118,7 +118,6 @@ vrel-sound : n VRel, w === v → ⟦ w ⟧ᴬ ≐ ⟦ v ⟧ᴬ
 vrel-sound (srel r)    = srel-sound r
 vrel-sound (cong↑ {w = w} {v = v} r) =
   ≐-trans (⟦↑⟧ w) (≐-trans (up-cong (vrel-sound r)) (≐-sym (⟦↑⟧ v)))
-vrel-sound (comm₀ neg-gate g) = ≐-sym (scal-central (- 1#) (valA g))
 vrel-sound (comm₁ H-gate g) = ≐-sym (emb-up-comm {k = 1} (scale s (ιO (ZI.ix hZ))) (valA g))
 vrel-sound (comm₁ Z-gate g) = ≐-sym (emb-up-comm {k = 1} (ιO (ZI.ix zZ)) (valA g))
 vrel-sound (comm₂ CZ-gate g) =

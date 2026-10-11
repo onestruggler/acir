@@ -145,8 +145,8 @@ less x y = code x <ᵇ code y
 
 -- Letters on disjoint wires commute; the scalar commutes with all.
 comm? : (x y : Gen n) → Maybe (commutes (n VRel,_===_) x y)
-comm? x             (gate₀ h)     = just (PB.axiom (comm₀ h x))
-comm? (gate₀ h)     y             = just (PB.sym (PB.axiom (comm₀ h y)))
+comm? x             (gate₀ h)     = just (comm₀ h x)
+comm? (gate₀ h)     y             = just (PB.sym (comm₀ h y))
 comm? (gate₁ h)     (y ↥)         = just (PB.sym (PB.axiom (comm₁ h y)))
 comm? (y ↥)         (gate₁ h)     = just (PB.axiom (comm₁ h y))
 comm? (gate₂ h)     ((y ↥) ↥)     = just (PB.sym (PB.axiom (comm₂ h y)))
