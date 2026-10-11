@@ -11,14 +11,14 @@
 -- and S-spellings of the multiplier at -1, at g and at g ^ k — and every
 -- rule Paper-V0 derives is then a Paper-V1 theorem by transport.
 --
--- That is why there is no Ex-conjugation or three-wire layer here.  An
--- earlier version carried one, ported wholesale from Paper-V0: 4255 lines
--- deriving the swap calculus, the lower-wire rules and Selinger's
--- c10–c15 natively.  None of it was reachable from Presentation, because
--- the isomorphism already transports all of it, so it is gone.  Look in
--- Paper-V0.Lemmas for those derivations; they are live there, since
--- Paper-V0.Iso proves Simplified-V1 ⟺ Paper-V0 the long way round and
--- genuinely consumes them.
+-- That is why Paper-V1 instantiates no Ex-conjugation or three-wire
+-- layer.  An earlier version carried one, ported wholesale from
+-- Paper-V0: 4255 lines deriving the swap calculus, the lower-wire rules
+-- and Selinger's c10–c15 natively.  None of it was reachable from
+-- Presentation, because the isomorphism already transports all of it,
+-- so it is gone.  Look in Paper-V0.Lemmas for those derivations; they
+-- are live there, since Paper-V0.Iso proves Simplified-V1 ⟺ Paper-V0
+-- the long way round and genuinely consumes them.
 --
 -- The lemmas themselves live in Lemmas/, stated over any relation with
 -- the rules they use, and in dependency order:
@@ -29,12 +29,14 @@
 --               half-exponent arithmetic (where X • Z ≈ Z • X lives),
 --               and the bridge between the two spellings
 --   SemiMR      semi-MR, derived from the other four one-wire rules
+--   OrderEx     order-Ex, derived from those four and the other six
+--               two-wire rules — the one two-wire module here
 --
 -- This module instantiates the first three at Paper-V1's relation, under
--- the names Iso.agda uses.  It does not instantiate SemiMR: Paper-V1 has
--- semi-MR as an axiom, and One-Wire-Group's lemma-semi-MR-R below reads
--- it off that.  SemiMR is for the rule set that does without it,
--- Reduced.
+-- the names Iso.agda uses.  It instantiates neither SemiMR nor OrderEx:
+-- Paper-V1 has both rules as axioms, and One-Wire-Group's
+-- lemma-semi-MR-R below reads semi-MR off its axiom.  The last two are
+-- for the rule set that does without both, Reduced.
 ------------------------------------------------------------------------
 
 open import Data.Fin using (toℕ)

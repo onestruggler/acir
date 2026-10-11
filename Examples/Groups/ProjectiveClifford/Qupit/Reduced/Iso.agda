@@ -12,12 +12,18 @@
 --   f-well-defined : every Reduced axiom holds in Paper-V1;
 --   g-well-defined : every Paper-V1 axiom holds in Reduced.
 --
--- Reduced is Paper-V1 less semi-MR, so f sends each axiom to the
--- Paper-V1 axiom of the same name, and g does the same for fourteen of
--- the fifteen.  The fifteenth, semi-MR, is a theorem of the reduced
--- relation: Paper-V1.Lemmas.SemiMR derives it from order-S, order-H,
--- M-power and comm-HHSHHS, and is instantiated below at Reduced's
--- relation, which does not have it.
+-- Reduced is Paper-V1 less semi-MR and order-Ex, so f sends each axiom
+-- to the Paper-V1 axiom of the same name, and g does the same for
+-- thirteen of the fifteen.  The other two are theorems of the reduced
+-- relation, each derived by a relation-agnostic module of Paper-V1's
+-- lemma layer that is instantiated below at Reduced's relation, which
+-- has neither:
+--
+--   semi-MR   Paper-V1.Lemmas.SemiMR, from order-S, order-H, M-power
+--             and comm-HHSHHS;
+--   order-Ex  Paper-V1.Lemmas.OrderEx, from those four and order-CZ,
+--             comm-CZ-S↑, semi-M↑CZ, semi-Ex-S↑, semi-Ex-H↑ and
+--             blake-c12.
 ------------------------------------------------------------------------
 
 open import Relation.Binary.PropositionalEquality using (_≡_)
@@ -59,6 +65,8 @@ import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.GroupLike
   p-3 p-prime g* g-gen as GL
 import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.SemiMR
   p-3 p-prime g* g-gen as SM
+import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.OrderEx
+  p-3 p-prime g* g-gen as OE
 
 module PapR = Clifford-Relations
 module RedR = Red.Clifford-Relations
@@ -71,12 +79,14 @@ private
 -- The lemma layer at the reduced relation
 --
 -- The generic layer takes the rules it uses as parameters; here each is
--- passed as the Reduced axiom it is.  semi-MR is not among them, so the
--- derived rule below is a theorem of the fourteen rules alone.
+-- passed as the Reduced axiom it is.  Neither semi-MR nor order-Ex is
+-- among them, so the derived rules below are theorems of the thirteen
+-- rules alone.
 
--- Group-likeness, directly: the derivation needs cancellation, so this
+-- Group-likeness, directly: the derivations need cancellation, so this
 -- witness cannot be transported back along g-well-defined, as
--- Paper-V1.Iso transports its own.
+-- Paper-V1.Iso transports its own.  It inverts generators only, so Ex,
+-- a derived word, never needs an inverse here.
 red-grouplike : Grouplike (RedR._QRel,_===_ n)
 red-grouplike =
   GL.Paper-GroupLike.grouplike RedR._QRel,_===_
@@ -90,6 +100,18 @@ module Derived (n : ℕ) =
     (PB.axiom RedR.order-S) (PB.axiom RedR.order-H)
     (λ k → PB.axiom (RedR.M-power k)) (PB.axiom RedR.comm-HHSHHS)
     (red-grouplike {₁₊ n})
+
+-- order-Ex, at every width ₂₊ n, as Derived-Ex.Two-Wire.lemma-order-Ex n.
+-- The module takes the whole family, since it lifts one-wire facts to
+-- the top wire; comm₁ and lemma-cong↑ are Reduced's structural rules.
+module Derived-Ex =
+  OE.Order-Ex RedR._QRel,_===_
+    (PB.axiom RedR.order-S) (PB.axiom RedR.order-H)
+    (λ k → PB.axiom (RedR.M-power k)) (PB.axiom RedR.comm-HHSHHS)
+    (PB.axiom RedR.order-CZ) (PB.axiom RedR.comm-CZ-S↑)
+    (PB.axiom RedR.semi-M↑CZ) (PB.axiom RedR.semi-Ex-S↑)
+    (PB.axiom RedR.semi-Ex-H↑) (PB.axiom RedR.blake-c12)
+    (λ h x → PB.axiom (RedR.comm₁ h x)) RedR.lemma-cong↑
 
 ------------------------------------------------------------------------
 -- The isomorphism
@@ -107,7 +129,6 @@ module Theorem where
   f-well-defined (RedR.M-power k)    = PB.axiom (PapR.M-power k)
   f-well-defined RedR.comm-HHSHHS    = PB.axiom PapR.comm-HHSHHS
   f-well-defined RedR.order-CZ       = PB.axiom PapR.order-CZ
-  f-well-defined RedR.order-Ex       = PB.axiom PapR.order-Ex
   f-well-defined RedR.comm-CZ-S↑     = PB.axiom PapR.comm-CZ-S↑
   f-well-defined RedR.semi-M↑CZ      = PB.axiom PapR.semi-M↑CZ
   f-well-defined RedR.semi-Ex-S↑     = PB.axiom PapR.semi-Ex-S↑
@@ -120,8 +141,8 @@ module Theorem where
   f-well-defined (RedR.comm₂ gt w)   = PB.axiom (PapR.comm₂ gt w)
   f-well-defined (RedR.cong↑ eq)     = PapR.lemma-cong↑ _ _ (f-well-defined eq)
 
-  -- g : Paper-V1 → Reduced.  The same, except at semi-MR, which Reduced
-  -- does not have as an axiom and proves instead.
+  -- g : Paper-V1 → Reduced.  The same, except at semi-MR and order-Ex,
+  -- which Reduced does not have as axioms and proves instead.
   g-well-defined : ∀ {n} → let open PB (RedR._QRel,_===_ n) renaming (_≈_ to _≈₁_) in
     ∀ {u t} -> PapR._QRel,_===_ n u t -> id u ≈₁ id t
   g-well-defined PapR.order-S        = PB.axiom RedR.order-S
@@ -130,7 +151,7 @@ module Theorem where
   g-well-defined {₁₊ n} PapR.semi-MR = Derived.lemma-semi-MR n
   g-well-defined PapR.comm-HHSHHS    = PB.axiom RedR.comm-HHSHHS
   g-well-defined PapR.order-CZ       = PB.axiom RedR.order-CZ
-  g-well-defined PapR.order-Ex       = PB.axiom RedR.order-Ex
+  g-well-defined {₂₊ n} PapR.order-Ex = Derived-Ex.Two-Wire.lemma-order-Ex n
   g-well-defined PapR.comm-CZ-S↑     = PB.axiom RedR.comm-CZ-S↑
   g-well-defined PapR.semi-M↑CZ      = PB.axiom RedR.semi-M↑CZ
   g-well-defined PapR.semi-Ex-S↑     = PB.axiom RedR.semi-Ex-S↑
