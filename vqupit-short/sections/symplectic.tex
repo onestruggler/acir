@@ -1,0 +1,82 @@
+\section{The Symplectic Factor}\label{sec:symplectic}
+
+$\Sp$ is modelled as the group of $\Zp$-linear, form-preserving
+bijections of the phase space $\aid{Pauli}\;n = \aid{Vec}\;(\Zp \times
+\Zp)\;n$ (the exponents of $Z^{a}X^{b}$ up to phase, per wire).
+Against this semantics, completeness rests on the normal form, which
+we refine into a doubly inductive datatype:
+
+\noindent\begin{minipage}[c]{0.4\textwidth}
+\input{agda/rows}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.56\textwidth}\centering
+  \begin{tabular}{@{}r@{\,}c@{\,}l@{\quad}r@{\,}c@{\,}l@{}}
+    \ufig[0.5]{m4-box} & \scalebox{0.7}{$=$} & \ufig[0.5]{m4-atoms} &
+    \ufig[0.5]{ml4-box} & \scalebox{0.7}{$=$} & \ufig[0.5]{ml-tower-a-r}\\[1ex]
+    \ufig[0.5]{l4-box} & \scalebox{0.7}{$=$} & \ufig[0.5]{l4-atoms} &
+    \ufig[0.5]{ml4-box} & \scalebox{0.7}{$=$} & \ufig[0.5]{ml-tower-b-r}\\
+  \end{tabular}
+\end{minipage}
+
+\medskip\noindent
+An $M$-row is a column of $D$ boxes ending in an $E$ box (the paper's
+$X$-normal layer); an $L$-row is a column of $B$ boxes ending in an $A$
+box (its $Z$-normal layer, with the $A$ box at the bottom).  An
+$\ML$ box at width $m \ge 2$ is \emph{either} a full pair of rows
+\emph{or} a bottom $D$ box followed by an $\ML$ box one wire up: a
+spine of $D$ boxes capped by a pair of rows.  This is the first
+induction, on the width of a single coset representative.  The second
+induction is the staircase:
+
+\noindent\begin{minipage}[c]{0.54\textwidth}
+\input{agda/nf}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.42\textwidth}\centering
+  \ufig[0.7]{nf4}
+\end{minipage}
+
+\medskip\noindent
+\emph{The table.}  The coset table is the paper's ``push a gate through
+a normal box'' as a structurally recursive function \aid{ract}
+(5\,600 lines), with its soundness law \aid{ract-sound}:
+
+\input{agda/ex-table}
+
+\noindent Each clause of \aid{ract-sound} is derived from the fifteen
+simplified symplectic relations, drawn in
+Figure~\ref{fig:simplified}; for instance, pushing $S$ through an $E$
+box is one $S$-power step, $[\,b\,]^{\mathsf e} \bullet S \;=\;
+S^{-b} \bullet S \;\approx\; S^{-(b-1)} \;=\; [\,b-1\,]^{\mathsf
+e}$.  A circuit is
+rewritten to its normal form by repeating this step, gate by gate;
+every rewrite step is thereby traced to a relation.
+
+\emph{Uniqueness.}  The symplectic group acts on
+$\aid{Vec}\;\mathrm{Pauli}_1\;n$, a $2n$-dimensional symplectic
+$\Zp$-vector space in which $\mathrm{Pauli}_1$ is a two-dimensional
+symplectic subspace, represented by a wire in a circuit.  The elements
+fixing the bottom wire's subspace pointwise form a copy of
+$\mathrm{Sp}(2(n{-}1), \Zp)$, acting above the bottom wire, and the
+$\ML$ boxes represent its cosets: every $f \in \Sp$ factors as $f = f'
+\circ c_n$ with $c_n \in \ML_n$ and $f'$ above the bottom wire, and
+$c_n$ is unique because the bottom-wire output determines the box.
+Recursing on $f'$ writes $f$ uniquely as $c_1 \circ c_2 \circ \cdots
+\circ c_n$ with $c_k \in \ML_k$, which is Theorem~\ref{thm:unique}.
+
+\medskip\noindent
+\emph{Surjectivity.}  Every symplectic transformation is the action of
+some circuit, proved constructively by ``clear the bottom wire,
+recurse on the tail'' --- the paper's Lemma~3.7, its coset box
+computed rather than asserted:
+
+\input{agda/thm-lm}
+
+\medskip\noindent
+\emph{Completeness.}  Circuits with the same denotation rewrite
+through the table to their normal forms, which denote the same map by
+soundness and so are equal by Theorem~\ref{thm:unique}: the circuits
+are equivalent.  That argument is the framework's
+\aid{by-normalization} (Appendix~\ref{sec:permutations}); with
+surjectivity, the simplified relations present the symplectic group:
+
+\input{agda/thm-sp}

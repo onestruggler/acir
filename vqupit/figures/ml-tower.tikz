@@ -1,0 +1,46 @@
+\begin{tikzpicture}
+\path [use as bounding box] (-0.8, -1.2) rectangle (18.8, 7.7);
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (w0l) at (-0.5, 0.0){};
+\node [style=none] (w0r) at (7.6, 0.0){};
+\node [style=none] (w1l) at (-0.5, 2.0){};
+\node [style=none] (w1r) at (7.6, 2.0){};
+\node [style=none] (w2l) at (-0.5, 4.0){};
+\node [style=none] (w2r) at (7.6, 4.0){};
+\node [style=none] (w3l) at (-0.5, 6.0){};
+\node [style=none] (w3r) at (7.6, 6.0){};
+\draw [fill=white] (0.0, -0.75) rectangle (2.0, 6.75);
+\node [style=none] (ml4) at (1.0, 3.0) {\scriptsize $ML_4$};
+\node [style=none] (eq1) at (2.6, 3.0) {\scriptsize $\equiv$};
+\draw [fill=white] (3.1999998, -0.75) rectangle (5.2, 6.75);
+\node [style=none] (m4) at (4.2, 3.0) {\scriptsize $M_4$};
+\draw [fill=white] (5.4, -0.75) rectangle (7.4, 6.75);
+\node [style=none] (l4) at (6.4, 3.0) {\scriptsize $L_4'$};
+\node [style=none] (orr) at (8.7, 3.0) {\scriptsize or};
+\node [style=none] (v0l) at (9.8, 0.0){};
+\node [style=none] (v0r) at (18.5, 0.0){};
+\node [style=none] (v1l) at (9.8, 2.0){};
+\node [style=none] (v1r) at (18.5, 2.0){};
+\node [style=none] (v2l) at (9.8, 4.0){};
+\node [style=none] (v2r) at (18.5, 4.0){};
+\node [style=none] (v3l) at (9.8, 6.0){};
+\node [style=none] (v3r) at (18.5, 6.0){};
+\draw [fill=white] (10.3, -0.75) rectangle (12.3, 6.75);
+\node [style=none] (ml4b) at (11.3, 3.0) {\scriptsize $ML_4$};
+\node [style=none] (eq2) at (12.9, 3.0) {\scriptsize $\equiv$};
+\draw [fill=white] (13.5, -0.75) rectangle (15.5, 2.75);
+\node [style=none] (d0) at (14.5, 1.0) {\scriptsize $D$};
+\draw [fill=white] (15.9, 1.25) rectangle (17.9, 6.75);
+\node [style=none] (ml3) at (16.9, 4.0) {\scriptsize $ML_3$};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (w0l.center) to (w0r.center);
+\draw (w1l.center) to (w1r.center);
+\draw (w2l.center) to (w2r.center);
+\draw (w3l.center) to (w3r.center);
+\draw (v0l.center) to (v0r.center);
+\draw (v1l.center) to (v1r.center);
+\draw (v2l.center) to (v2r.center);
+\draw (v3l.center) to (v3r.center);
+\end{pgfonlayer}
+\end{tikzpicture}

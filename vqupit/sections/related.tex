@@ -1,0 +1,114 @@
+\section{Related Work}\label{sec:related}
+
+\paragraph{Generators and relations for quantum gate groups.}
+The programme of presenting quantum gate groups by generators and
+relations, with completeness proved through normal forms, was opened by
+Selinger's presentation of the $n$-qubit Clifford
+group~\cite{selinger2015clifford}, whose staircase normal form and
+``push a generator through a box'' rewrite system are the direct
+ancestors of the symplectic normal form verified here.  The line
+continued with presentations of $U_n(\mathbb{Z}[\tfrac12,i])$ by Bian and
+Selinger~\cite{bian2021un}, building on Greylyn's
+$U_4(\mathbb{Z}[1/\sqrt2,i])$~\cite{greylyn2014}; of the orthogonal
+groups $O_n(\mathbb{Z}[\tfrac12])$ by Li, Ross, and
+Selinger~\cite{li2021on}; of the real stabilizer operators by Makary,
+Ross, and Selinger~\cite{makary2021realstabilizer}; of the $2$-qubit
+Clifford+$T$ and $3$-qubit Clifford+$CS$ groups by Bian and
+Selinger~\cite{bian2023cliffordt2,bian2023cliffordcs3,bian2023thesis};
+of the CNOT-dihedral operators by Amy, Chen, and
+Ross~\cite{amy2018cnotdihedral}; and of $3$-qubit Toffoli--Hadamard
+circuits by Amy, Ross, and Wesley~\cite{amy2024toffolihadamard}.  The
+first such result in an odd prime dimension is the qutrit Clifford rule
+set of Li, Mosca, Ross, van de Wetering, and Zhao~\cite{li2025qutrit},
+and its generalisation to all odd primes is the paper this work
+verifies~\cite{bian2026qudit}.  In every one of these papers the
+completeness proof is a normal-form argument checked by hand; the
+Bian--Selinger papers are the exception in that their \emph{syntactic}
+relation-simplification steps were checked in Agda.
+
+\paragraph{Complete equational theories for circuits.}
+A parallel programme, phrased in terms of PROPs rather than groups,
+seeks complete equational theories for quantum circuits.  Cl\'ement,
+Heurtel, Mansfield, Perdrix, and Valiron gave the first complete
+equational theory for arbitrary quantum
+circuits~\cite{clement2023complete}; it was extended to ancillae and
+discarding~\cite{clement2024extensions} and made
+minimal~\cite{clement2024minimal}; and Cl\'ement's complete theory for
+Real-Clifford+$CH$ circuits comes with an appendix of 264 pages of
+equational derivations~\cite{clement2026realcliffordch}.  Blake treats
+many near-Clifford fragments uniformly as PROPs, transferring
+completeness results and obtaining simpler and often minimal rule
+sets~\cite{blake2026simpler}; gives a finite, dimension-uniform
+presentation of qudit circuits via polycontrolled
+PROPs~\cite{blake2026polycontrolled}; and proves completeness for
+prime-dimensional phase-affine circuits through unique normal
+forms~\cite{blake2026phaseaffine}.  All of these are pen-and-paper.
+Behind circuit presentations of this kind stands Lafont's algebraic
+theory of Boolean circuits~\cite{lafont2003boolean}, whose normal forms
+for permutation circuits the circuit-level normal forms above
+generalise.  On the graphical side, the ZX-calculus has complete
+axiomatisations for the qubit stabilizer fragment, for Clifford+$T$,
+and for the stabilizer fragment in odd prime
+dimensions~\cite{backens2014zx,jeandel2018zx,booth2022qupitzx,poor2023travaganza};
+as the paper we verify points out, completeness of a graphical calculus
+for linear maps does not yield a complete calculus for unitary circuits.
+
+\paragraph{Mechanised completeness.}
+Machine-checked completeness proofs for quantum circuit rule sets are
+rare.  Bian and Selinger's Agda
+developments~\cite{bian2023cliffordt2,bian2023cliffordcs3} verify that
+two \emph{syntactic} presentations are equivalent and never mention a
+semantics.  Choudhury, Karwowski, and Sabry mechanised, in HoTT-Agda,
+the presentation of the classical reversible language $\Pi$ as a free
+symmetric rig groupoid~\cite{choudhury2022symmetries}, and Carette,
+Heunen, Kaarsgaard, and Sabry partially mechanised their square-root
+extension, including the completeness proof for the two-qubit Clifford
+fragment~\cite{carette2024squareroots}; both are categorical coherence
+arguments rather than presentations of concrete groups.  The library
+this paper builds on~\cite{bian2026framework} was designed to close
+exactly this gap; the present paper is its first application to a
+research-level completeness theorem.  Verified quantum compilers and
+program logics --- \textsc{Qwire}~\cite{paykin2017qwire},
+\textsc{sqir}/\textsc{voqc}~\cite{hietala2021voqc},
+VyZX~\cite{lehmann2025vyzx}, CoqQ~\cite{zhou2023coqq},
+Qbricks~\cite{chareton2021qbricks} --- prove the \emph{soundness} of
+rewrites against a matrix semantics, never the completeness of a rule
+set; connecting our presented groups to such a semantics is the natural
+next step (\S\ref{sec:conclusion}).
+
+\paragraph{Quantum programming and circuit tools.}
+Closer to the programming-languages mainstream, a body of work takes
+circuits and gate-level rewriting as its object without asking for a
+completeness theorem.  The verified compiler for quantum oracles of Li
+et al.~\cite{li2022vqo} proves in Rocq that oracle circuits are compiled
+semantics-preservingly; Proq~\cite{li2020proq} adds projection-based
+runtime assertions to quantum programs; and QbC~\cite{peduri2025qbc}
+derives quantum while-programs from their specifications by refinement
+rules that are sound and complete for the refinement calculus, not for a
+gate set.  Circuit optimisers and synthesisers such as
+Quarl~\cite{li2024quarl}, Synthetiq~\cite{paradis2024synthetiq}, and the
+component-based synthesiser of Kang and Oh~\cite{kang2023modular} search
+over gate-level rewrites and gate sets; a complete relation set is the
+guarantee that every pair of equivalent circuits is joined by a chain of
+such rewrites, so a verified one is a natural input for rewrite-based
+optimisers.  Tower~\cite{yuan2022tower}, the quantum control
+machine~\cite{yuan2024qcm}, and the network language
+PBKAT~\cite{buckley2025pbkat} reason about data structures, control flow,
+and protocols in superposition rather than about unitary groups.  On the
+method side, our use of Agda as a library of reusable verified
+constructions, whose contribution lies in how the mechanisation is
+structured, follows the intrinsically-typed definitional interpreters
+\`a la carte of van der Rest et al.~\cite{vanderrest2022alacarte}.
+
+\paragraph{Group theory in proof assistants.}
+Lean's mathlib defines presented groups as quotients of free
+groups~\cite{mathlib2020,mathlib-doc-presented}, Isabelle's Archive of
+Formal Proofs has free groups and the Nielsen--Schreier
+theorem~\cite{breitner2010freegroups,kharim2023freegroups}, and the
+Rocq/MathComp school~\cite{gonthier2013oddorder} develops finite group
+theory over concrete permutation groups; none provides verified coset
+enumeration for a \emph{given} finite relation set against a
+\emph{given} concrete group.  The classical algorithms are described by
+Sims~\cite{sims1994computation} and in the Handbook of Computational
+Group Theory~\cite{holt2005handbook}, whose Proposition~2.55 is the
+pen-and-paper form of the extension theorems we use.

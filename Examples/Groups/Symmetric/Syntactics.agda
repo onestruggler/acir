@@ -64,12 +64,12 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
 -- comm₂)
 
 private module LR = SC.Lift-Relation _SRel,_===_
--- comm₀ and ω↑=ω are the 0-ary gate's structural rules.  This gate set
--- has no 0-ary gate, so they are never inhabited here — but they still
--- have to be re-exported, or a client cannot name them to discharge
--- them when it cases on the relation.
+-- ω↑=ω is the 0-ary gate's structural rule.  This gate set has no
+-- 0-ary gate, so it is never inhabited here — but it still has to be
+-- re-exported, or a client cannot name it to discharge it when it
+-- cases on the relation.
 open LR public
-  using ( srel ; cong↑ ; comm₀ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
+  using ( srel ; cong↑ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
         ; comm-gate₂-w↑↑ ; _VRel,_===_ )
 
 ------------------------------------------------------------------------

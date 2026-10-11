@@ -1,0 +1,148 @@
+\section{Introduction}\label{sec:intro}
+
+A circuit calculus is a programming language of a particular kind: its
+programs are circuits, words of gates on numbered wires, and its
+equational theory is a finite list of circuit equations.  Such a list is
+\emph{sound} when each equation holds in the intended semantics and
+\emph{complete} when every semantic equality between circuits is
+derivable from it.  Completeness is what a language designer wants from
+an equational theory: it licenses normal-form-based decision procedures
+for program equivalence, and it tells the author of a circuit optimizer
+that no valid rewrite is missing.  It is also, for quantum circuits, the
+kind of theorem that resists being trusted on paper.  Soundness is a
+finite collection of matrix identities.  Completeness is proved by a
+\emph{normal form}: one shows that every circuit rewrites to a normal
+form using the equations, and that distinct normal forms denote distinct
+operators.  The middle step is a case analysis, every generator against
+every piece of every normal form, that is mechanical, unforgiving and
+enormous.  Selinger's presentation of the $n$-qubit Clifford
+group~\cite{selinger2015clifford} runs a substantial rewrite system
+through such an analysis; its qutrit successor~\cite{li2025qutrit} needs
+more than fifty pages; and its generalisation to all odd primes by Bian,
+Li, Ross, van de Wetering, and Zhao~\cite{bian2026qudit} --- sixteen
+rewrite rules for multi-qudit Clifford circuits in every odd prime
+dimension $p$, henceforth ``the qupit paper'' --- rests on roughly a
+hundred pages of derivations spread over its appendices and a
+supplement~\cite{bian2026supplement}.
+
+This paper reports a machine-checked proof of that theorem, and, more
+importantly for a programming-languages audience, a \emph{method} for
+machine-checking theorems of this shape.  We formalise, in safe,
+axiom-free Agda~\cite{norell2007thesis,agdastdlib}, that the qupit
+paper's rule set presents the multi-qupit Clifford group at every width
+$n$ and every odd prime $p$, against a semantics constructed
+independently of the syntax.  The formalisation is built on a library
+for presentations, normal forms and completeness of circuit relation
+sets~\cite{bian2026framework,qupit-code}, whose design --- inductively
+defined circuits, presented monoids as inductive congruences, normal
+forms as function bundles, a verified Reidemeister--Schreier engine, and
+presentation theorems for products and extensions ---
+\S\ref{sec:permutations} introduces on the library's smallest worked
+example before the main development begins.  Every
+normal form in the development is an executable function, so each
+completeness theorem doubles as a verified decision procedure for
+circuit equivalence in its calculus.
+
+\paragraph{The method.}
+The formalisation follows the qupit paper's proof for the symplectic
+factor, which is most of the paper (\S\ref{sec:two-routes}): the
+paper's normal boxes and symplectic normal form become our datatype of
+normal forms, its ``push a gate through a normal box'' becomes our
+coset table, and its box relations, with their reduction to a small
+rule set, are derived as it derives them.  Where the formalisation
+departs from the paper, and why, is the paper's main methodological
+lesson.  The paper works with a single rule set for the whole Clifford
+group and organises its completeness proof around the symplectic group
+$\Sp$, the Clifford group modulo Paulis: it shows that every circuit
+rewrites, \emph{up to Paulis}, to a symplectic normal form, and then
+boosts symplectic completeness to projective and unitary completeness
+by a general argument (its Proposition~4.9) in which each rewrite is
+repaired by pushing a Pauli correction to the end of the circuit.  Throughout,
+relations are used ``projectively'': Paulis and scalars are silently
+dropped and later restored.  This is sound mathematics, but it is a
+poor specification for a verified normalisation procedure.  The
+rewriting steps preserve no single syntactic invariant,
+the correction Paulis are not part of the data the rewrites compute
+with, and the termination and well-definedness arguments are stated at a
+level --- ``push the Pauli to the right, it changes to some other
+Pauli'' --- that a proof assistant would have to reconstruct from
+scratch.
+
+We therefore keep the paper's symplectic argument and replace its
+boosting step by a route that a proof assistant likes: \emph{factor
+the group, present the factors, compose the presentations}.  The
+projective Clifford group is a semidirect product of the projective
+Pauli group by the symplectic group, and the Clifford group is a central
+extension of that by the scalars.  We present the three factors
+separately --- the symplectic group by a coset-table normal form, the
+Pauli group compositionally, the scalars as a cyclic group --- and glue
+the presentations together with generic, verified presentation theorems
+for semidirect products and central extensions.  On this route the
+Paulis are never implicit: the symplectic development never mentions
+them, and they enter only through the conjugation action of the
+semidirect product, which is verified once, by semantics, rather than
+threaded through every rewrite.  A final layer of presentation-level
+``plumbing'' reduces the glued alphabet and relations to the paper's
+generators $H$, $S$, $CZ$ and its rules, and a verified isomorphism of
+presentations connects the two routes: the paper's Figure~1 read modulo
+scalars presents the same group as our semidirect presentation.  With
+the scalars restored --- $\omega$ by the central extension, $-1$ by a
+direct factor --- a second verified isomorphism reaches the paper's
+Figure~1 itself, over $-\omega$, $H$, $S$, $CZ$, phases and Legendre
+symbols included.
+
+\subsection{Contributions}\label{sec:contributions}
+
+\begin{enumerate}
+\item[(1)] \textbf{A machine-checked presentation of the projective
+  qupit Clifford groups.}  For every odd prime $p$ and every width $n$,
+  the paper's Figure~1 read modulo scalars presents
+  $\PPauli \rtimes \Sp$ (Theorem~\ref{thm:main}), via a chain of
+  verified isomorphisms of presentations from a semidirect presentation
+  on $X, Z, H, S, CZ$ down to the paper's fifteen rules on $H, S, CZ$
+  (\S\ref{sec:composing}).
+\item[(2)] \textbf{A machine-checked presentation of $\Sp$ and a
+  verified unique normal form.}  Eighteen relations present the
+  symplectic groups (Theorem~\ref{thm:sp}); the normal form is the
+  paper's, refined into a doubly inductive datatype of \emph{normal boxes} and \emph{rows},
+  realised as a Reidemeister--Schreier coset tower, and proved unique
+  against the symplectic action on Pauli vectors
+  (Theorem~\ref{thm:unique}, \S\ref{sec:symplectic}).
+\item[(3)] \textbf{The relation reductions, verified.}  The box
+  relations that the normalisation uses are derived from the full
+  symplectic rules, those from the simplified ones, the semidirect
+  relations from the Clifford ones, and the paper's rules from ours;
+  each reduction is a checked isomorphism of presentations
+  (\S\ref{sec:reduction}, \S\ref{sec:plumbing}).
+\item[(4)] \textbf{The scalars restored.}  The exact rule set --- the
+  sixteen rules corrected by the phase each actually picks up, a single
+  power of $\omega$ on one rule --- presents a central extension of the
+  projective group by $\langle\omega\rangle$, verified against the Weyl
+  cocycle (\S\ref{sec:scalars}).  With $-1$ adjoined it presents the
+  Clifford group generated by $-\omega$, and the paper's Figure~1
+  itself, its sixteen rules over $-\omega$, $H$, $S$, $CZ$, presents the
+  same group (Theorem~\ref{thm:figure1}, \S\ref{sec:figure1}): the
+  paper's Theorem~4.10, scalars included.
+\end{enumerate}
+
+Everything stated as a theorem in this paper typechecks under
+\texttt{--safe}: there are no postulates, no holes and no classical
+axioms.  Two facts are \emph{not} formalised, and we say so wherever
+they are used: that the projective Clifford group of unitaries is
+$\PPauli \rtimes \Sp$, and that the Clifford group is a central
+extension of it by $\langle\omega\rangle$ (times $\langle -1\rangle$
+when $-\omega$ is a generator).  Both are
+classical~\cite{bian2026qudit}, neither involves circuits, and
+\S\ref{sec:discussion} states exactly what our semantic groups are.
+
+\paragraph{Outline.}
+Section~\ref{sec:permutations} introduces the framework on the worked
+example of permutation circuits and recalls the product constructions.
+Section~\ref{sec:two-routes} recalls qupit Clifford operators, shows
+on three examples how circuits, rules and derivations are encoded, and
+contrasts the paper's proof with ours.  Sections~\ref{sec:symplectic}
+and~\ref{sec:composing} are the method, and state the main theorems as
+Agda types where they are proved: the symplectic presentation with its
+unique normal form, then the composition of the three factors.  Section~\ref{sec:discussion}
+gives statistics, engineering lessons and caveats; \S\ref{sec:related}
+surveys related work; \S\ref{sec:conclusion} concludes.

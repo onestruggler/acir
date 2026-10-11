@@ -1,0 +1,134 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- The n-qupit Clifford group with the scalar -1 adjoined, for an odd
+-- prime p = 3 + p-3.
+--
+-- Clifford.Qupit presents the Clifford group whose only scalars are the
+-- powers of ω = e^(2πi/p):
+--
+--     _Exact,_===_   over   ScalarGen ⊎ Gen n,
+--
+-- the central extension of the projective Clifford group (Paper-V0
+-- mod scalars) by ⟨ω⟩ ≅ ℤ/pℤ.  That group never contains -1: its
+-- scalars ⟨ω⟩ have odd order p, and -1 has order 2.  The Clifford
+-- group of the paper (arXiv:2609.40106, Definition 2.12) is generated
+-- by -ω instead, so its scalars are ±ωᵗ ≅ ℤ/2pℤ and it is
+--
+--     ⟨ -1 ⟩ × (the group _Exact,_===_ presents).
+--
+-- This module is that statement, made syntactic: the exact rule set
+-- with one more generator, -1, of order 2 and central.  It is the
+-- direct product of presentations (Presentation.Construct.Base._⊕_)
+--
+--     n Exact±,_===_  =  (n Exact,_===_)  ⊕  ⟨ -1 ∣ (-1)² = 1 ⟩,
+--
+-- so its relations are
+--
+--   left    the exact rules, untouched: ωᵖ = 1, ω central, and the
+--           sixteen Paper-V0 relations each twisted by its power of ω
+--           (only order-SH carries one);
+--   right   (-1)² = 1, the cyclic relation of order 2;
+--   mid     -1 commutes with ω and with every gate.
+--
+-- Nothing in the left factor is restated: every derivation of
+-- Clifford.Qupit is a derivation here, along the left embedding.  That
+-- is why the direct product, and not a re-built extension over the
+-- scalar group ℤ/2pℤ, is the shape chosen.
+--
+-- The two generators ω and -1 together give every scalar of the
+-- paper's group: -ω is -1 • ω, and conversely ω = (-ω)^(p+1) and
+-- -1 = (-ω)^p.  Iso.agda makes that exchange of generators an
+-- isomorphism with Figure 1 of the paper.
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+open import Data.Fin using (toℕ)
+open import Data.Nat using (ℕ ; suc)
+open import Data.Nat.Primality using (Prime)
+open import Data.Product using (_,_ ; ∃)
+open import Relation.Binary.PropositionalEquality using (_≡_)
+
+open import Notations
+open import ForStdlib.Data.Fin.Mod
+open import ForStdlib.Data.Fin.Mod.Prime.Fermat
+
+module Examples.Groups.Clifford+MinusOne.Qupit.Syntactics
+  (p-3 : ℕ)
+  (let p-2 = ₁₊ p-3)
+  (p-prime : Prime (suc (₁₊ p-2)))
+  (let open PrimeModulus' p-2 p-prime)
+  (g*@(g , g≠0) : ℤ* ₚ)
+  (g-gen : ∀ ((x , _) : ℤ* ₚ) → ∃ \ (k : ℤ ₚ-₁) → x ≡ g ^′ toℕ k)
+  where
+
+open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
+open import Data.Unit using (⊤ ; tt)
+
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _^_)
+
+open import Presentation.Construct.Base using ([_]ₗ ; [_]ᵣ)
+import Presentation.Construct.Base as PCB
+
+import Examples.Groups.Cyclic.Syntactics as Cy
+
+-- The exact layer, re-exported: its alphabet, its relation and its
+-- names are part of this module's interface, since _Exact±,_===_ is
+-- written over them.
+import Examples.Groups.Clifford.Qupit.Syntactics
+  p-3 p-prime g* g-gen as QS
+open QS public
+  using (ScalarGen ; ω ; Scalar-relation ; Gen ; Circuit ; _Exact,_===_
+        ; corr ; ω^SH ; sh-exponent ; module CR ; module CB)
+
+private
+  variable
+    n : ℕ
+
+------------------------------------------------------------------------
+-- The new generator
+--
+-- One letter, of order 2: the cyclic presentation ⟨ t ∣ t² = 1 ⟩ with
+-- its generator named for the scalar it denotes.
+
+MinusOneGen : Set
+MinusOneGen = ⊤
+
+MinusOne-relation : WRel MinusOneGen
+MinusOne-relation = 2 Cy.Cn,_===_
+
+------------------------------------------------------------------------
+-- The alphabet
+--
+-- The exact alphabet on the left, -1 on the right.
+
+Alphabet : ℕ → Set
+Alphabet n = (ScalarGen ⊎ Gen n) ⊎ MinusOneGen
+
+------------------------------------------------------------------------
+-- The rule set
+
+infix 4 _Exact±,_===_
+
+_Exact±,_===_ : (n : ℕ) → WRel (Alphabet n)
+_Exact±,_===_ n = PCB._⊕_ (n Exact,_===_) MinusOne-relation
+
+------------------------------------------------------------------------
+-- The generators, as words over the full alphabet
+
+-- The scalar ω, from the exact layer.
+ω± : Word (Alphabet n)
+ω± = [ [ ω ]ₗ ]ₗ
+
+-- The scalar -1.
+-1± : Word (Alphabet n)
+-1± = [ Cy.T ]ᵣ
+
+-- A gate word, from the exact layer.
+⌜_⌝ : Circuit n → Word (Alphabet n)
+⌜ w ⌝ = [ [ w ]ᵣ ]ₗ
+
+-- -ω, the scalar generator of the paper.
+-ω± : Word (Alphabet n)
+-ω± = -1± • ω±

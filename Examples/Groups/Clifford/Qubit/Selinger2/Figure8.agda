@@ -19,9 +19,9 @@
 -- The scalar is a generator, as it is in Selinger.  Making it 0-ary is
 -- what buys that: a gate occupying no wires is available at EVERY width
 -- (gate₀'s index is an unconstrained n), so one ω serves all n, and
--- Circuit.Base's structural rule comm₀ already says that it commutes
+-- Circuit.Base's theorem comm₀ already proves that it commutes
 -- with every generator.  Centrality therefore costs no axiom here —
--- ω-central below is the structural rule walked across a word — and C1
+-- ω-central below is that theorem walked across a word — and C1
 -- can be stated at width 0 as Selinger states it.  Its other structural
 -- fact, that ω does not depend on the wire it is written on, is
 -- Circuit.Base's ω↑=ω.
@@ -146,9 +146,13 @@ data _Sel,_===_ : (n : ℕ) → CRel n where
 
 ------------------------------------------------------------------------
 -- The full relation, with the structural rules
--- srel / cong↑ / comm₀ / comm₁ / comm₂ / ω↑=ω.
+-- srel / cong↑ / comm₁ / comm₂ / ω↑=ω, and the theorem comm₀.
 
 open Lift-Relation _Sel,_===_ public
+
+-- The scalar is central: with a single scalar, Circuit.Base derives
+-- comm₀ from the other structural rules.
+open Central-Scalars (λ { ω-gate ω-gate → PB.refl }) public
 
 infix 4 _CRel,_===_
 _CRel,_===_ : (n : ℕ) → CRel n
@@ -161,11 +165,12 @@ _≈ᶠ_ {n} = PB._≈_ (n CRel,_===_)
 ------------------------------------------------------------------------
 -- The scalar is central
 --
--- comm₀ gives it for the generators, with no axiom of our own; a word
+-- comm₀ gives it for the generators, with no axiom of our own (it is
+-- a theorem of Circuit.Base's structural rules); a word
 -- commutes with ω because each of its letters does.
 
 ω-central : (w : Word (Gen n)) → (ω • w) ≈ᶠ (w • ω)
-ω-central [ g ]ʷ  = PB.sym (PB.axiom (comm₀ ω-gate g))
+ω-central [ g ]ʷ  = PB.sym (comm₀ ω-gate g)
 ω-central ε       = PB.trans PB.right-unit (PB.sym PB.left-unit)
 ω-central (w • v) =
   PB.trans (PB.sym PB.assoc)

@@ -1,0 +1,91 @@
+\begin{code}[hide]
+module vqupit.sections.constructions where
+
+open import Data.Sum using (_⊎_)
+open import Level using (0ℓ)
+open import Algebra.Bundles using (Group)
+open import Word.Base using (Word ; WRel ; _ʰ' ; _ⁿ')
+open import Presentation.Definitions using (_IsPresentationOf_)
+open import Presentation.Construct.Base using ([_]ₗ ; [_]ᵣ ; ConjRelʷ ; EmptyRel)
+
+infix 4 _≈₁_ _===₁_ _===₂_
+infix 5 _⋄_⋄_
+
+postulate
+  proof-elided : ∀ {ℓ} {A : Set ℓ} → A
+  A B N H : Set
+  u v : Word A
+  _===₁_ : WRel N
+  _===₂_ : WRel H
+  _≈₁_ : Word N → Word N → Set
+  Γ Δ : Set
+  conj : H → N → Word N
+  G1⋊G2 : Group 0ℓ 0ℓ
+  RelTwist : Set → Set → Set
+  _∪_ : Set → Set → Set
+\end{code}
+\subsection{Products of presentations, and their presentation theorems}\label{sec:constructions}
+
+The presentation just obtained is one factor of the groups
+\S\ref{sec:composing} assembles.  Relation sets over a disjoint union
+of alphabets are built from a single primitive, a three-way join whose
+\emph{mixed} component is the design parameter:
+
+\begin{code}
+data _⋄_⋄_ (Γ₁ : WRel A) (Γ₂ : WRel B) (Γ₃ : WRel (A ⊎ B)) : WRel (A ⊎ B) where
+  left  : Γ₁ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) [ u ]ₗ [ v ]ₗ
+  right : Γ₂ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) [ u ]ᵣ [ v ]ᵣ
+  mid   : Γ₃ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) u v
+\end{code}
+
+Choosing the mixed relation recovers the classical constructions: free
+product ($\aid{EmptyRel}$), direct product ($\aid{CommRel}$), semidirect
+product ($\aid{ConjRelʷ}\;\mathit{conj}$: moving a letter $h$ of the
+acting group past a letter $n$ of the normal subgroup conjugates $n$, by
+a \emph{word}, $h \bullet n = \mathit{conj}\;h\;n \bullet h$) and
+definitional extension ($\aid{SugarRel}$).  For each, the library lifts
+normal forms from the factors to the construction and proves that if
+the factors present concrete groups, the constructed relation set
+presents the constructed group.  The semidirect theorem is the one
+\S\ref{sec:composing} uses.  Beyond presentations of the factors it
+needs two well-definedness conditions on the action: that it respects
+the acting group's axioms in its first argument (\aid{conj-hyph}) and
+the normal subgroup's in its second (\aid{conj-hypn}):
+
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+module _ (conj-hyph : ∀ {c d} n → c ===₂ d → (conj ʰ') c n ≈₁ (conj ʰ') d n)
+         (conj-hypn : ∀ c {w v} → w ===₁ v → (conj ⁿ') c w ≈₁ (conj ⁿ') c v) where
+  module Presentation (G1 G2 : Group 0ℓ 0ℓ)
+    (p1 : Γ IsPresentationOf G1) (p2 : Δ IsPresentationOf G2) where
+    dpres : (Γ ⋄ Δ ⋄ ConjRelʷ conj) IsPresentationOf G1⋊G2
+\end{code}
+\endgroup
+\begin{code}[hide]
+    dpres = proof-elided
+
+extension-presentation : Set → Set → Set → Set → Set
+\end{code}
+
+\noindent Here \aid{G1⋊G2} is the semidirect product of the two
+\emph{semantic} groups, built from an \aid{Action} record whose action
+is the syntactic \aid{conj} transported through the two presentation
+isomorphisms.  A further module proves the classical recipe for
+presenting a group \emph{extension} $1 \to N \to G \to Q \to 1$ from
+presentations of $N$ and $Q$, how $G$ conjugates $N$, and the
+correction in $N$ by which each lifted relator of $Q$ fails to hold
+(cf.\ Proposition~2.55 of~\cite{holt2005handbook}): a second mixed
+component, \aid{RelTwist}, twists each relator of the quotient by its
+correction, and the relation set of the recipe is
+\begingroup\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+extension-presentation S R conj corr = S ⋄ EmptyRel ⋄ (ConjRelʷ conj ∪ RelTwist R corr)
+\end{code}
+\endgroup
+Semidirect products are the special case with trivial corrections, and
+\S\ref{sec:scalars} uses the form for central extensions built from a
+cocycle.  These theorems are what make the composition step of
+\S\ref{sec:composing} cheap: the semidirect product of the Pauli and
+symplectic presentations and the central extension by the scalars are
+\emph{assembled} from the factor presentations, with no fresh coset
+enumeration at all.

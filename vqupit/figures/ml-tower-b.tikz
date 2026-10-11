@@ -1,0 +1,38 @@
+\begin{tikzpicture}
+\path [use as bounding box] (-0.8, -1.0) rectangle (9.4, 7.7);
+\begin{pgfonlayer}{nodelayer}
+\node [style=none] (w0l) at (-0.5, 0.0){};
+\node [style=none] (w0r) at (2.3, 0.0){};
+\node [style=none] (w1l) at (-0.5, 2.0){};
+\node [style=none] (w1r) at (2.3, 2.0){};
+\node [style=none] (w2l) at (-0.5, 4.0){};
+\node [style=none] (w2r) at (2.3, 4.0){};
+\node [style=none] (w3l) at (-0.5, 6.0){};
+\node [style=none] (w3r) at (2.3, 6.0){};
+\draw [fill=white] (0.0, -0.75) rectangle (2.0, 6.75);
+\node [style=none] (ml4) at (1.0, 3.0) {\scriptsize $ML_4$};
+\node [style=none] (eq2) at (3.0, 3.0) {\scriptsize $\equiv$};
+\node [style=none] (v0l) at (3.7, 0.0){};
+\node [style=none] (v0r) at (9.1, 0.0){};
+\node [style=none] (v1l) at (3.7, 2.0){};
+\node [style=none] (v1r) at (9.1, 2.0){};
+\node [style=none] (v2l) at (3.7, 4.0){};
+\node [style=none] (v2r) at (9.1, 4.0){};
+\node [style=none] (v3l) at (3.7, 6.0){};
+\node [style=none] (v3r) at (9.1, 6.0){};
+\draw [fill=white] (4.0, -0.75) rectangle (6.0, 2.75);
+\node [style=none] (d0) at (5.0, 1.0) {\scriptsize $D$};
+\draw [fill=white] (6.4, 1.25) rectangle (8.4, 6.75);
+\node [style=none] (ml3) at (7.4, 4.0) {\scriptsize $ML_3$};
+\end{pgfonlayer}
+\begin{pgfonlayer}{edgelayer}
+\draw (w0l.center) to (w0r.center);
+\draw (w1l.center) to (w1r.center);
+\draw (w2l.center) to (w2r.center);
+\draw (w3l.center) to (w3r.center);
+\draw (v0l.center) to (v0r.center);
+\draw (v1l.center) to (v1r.center);
+\draw (v2l.center) to (v2r.center);
+\draw (v3l.center) to (v3r.center);
+\end{pgfonlayer}
+\end{tikzpicture}

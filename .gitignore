@@ -59,3 +59,18 @@ __pycache__/
 
 # Chromium crash-handler log that a desktop tool writes into the working directory
 debug.log
+
+# vqupit paper build artifacts (the rendered literate sections under
+# vqupit/latex/vqupit/sections/ are tracked; the agda.sty copy Agda drops
+# next to them is not)
+vqupit/*.aux
+vqupit/*.bbl
+vqupit/*.blg
+vqupit/*.fdb_latexmk
+vqupit/*.fls
+vqupit/*.log
+vqupit/*.out
+vqupit/*.ptb
+vqupit/comment.cut
+vqupit/latex/agda.sty
+vqupit/png/

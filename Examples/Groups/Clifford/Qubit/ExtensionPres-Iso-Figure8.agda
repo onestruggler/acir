@@ -259,9 +259,9 @@ f-well-defined : {a b : Word (Alph n)} → (n Exact,_===_) a b →
 f-well-defined {n} (_⋄_⋄_.left CyS.order) =
   AF.by-assoc-and n (PB.axiom (srel F8.c1)) Eq.refl Eq.refl
 f-well-defined (_⋄_⋄_.right ())
--- Centrality: one application of the structural comm₀.
+-- Centrality: Circuit.Base's comm₀.
 f-well-defined (_⋄_⋄_.mid (_∪_.left (ConjRelʷ.comm y x))) =
-  PB.axiom (comm₀ ω-gate (sym→ex x))
+  comm₀ ω-gate (sym→ex x)
 f-well-defined (_⋄_⋄_.mid (_∪_.right (tw {u} {v} r̄))) =
   Eq.subst₂ (PB._≈_ _) (Eq.sym (fᵣ u))
             (Eq.cong ((f ʷ) [ corr r̄ ]ₗ •_) (Eq.sym (fᵣ v)))
@@ -454,10 +454,8 @@ g-wd-ax (srel (F8.c11 {n})) =
 -- this as its own axiom cω↑; it is Circuit.Base's structural rule now.)
 g-wd-ax (F8.ω↑=ω ω-gate) = PB.refl
 
--- The structural rules.  comm₀ is centrality, which on this side is
--- ext-comm1; comm₁ and comm₂ are their mod-scalar namesakes, after a
--- case split to make g reduce on the gate.
-g-wd-ax (comm₀ ω-gate y) = ext-comm1 (g y)
+-- The structural rules.  comm₁ and comm₂ are their mod-scalar
+-- namesakes, after a case split to make g reduce on the gate.
 g-wd-ax (F8.comm₁ F8.H-gate y) = shifted-comm₁ Symplectic.H-gate (g y)
 g-wd-ax (F8.comm₁ F8.S-gate y) = shifted-comm₁ Symplectic.S-gate (g y)
 g-wd-ax (F8.comm₂ F8.CZ-gate y) = shifted-comm₂ (g y)
