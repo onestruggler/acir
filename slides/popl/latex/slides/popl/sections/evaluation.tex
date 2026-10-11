@@ -1,0 +1,282 @@
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{slides.popl.sections.evaluation}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Product}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}×\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{},\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Relation.Binary.PropositionalEquality}\AgdaSpace{}%
+\AgdaSymbol{as}\AgdaSpace{}%
+\AgdaModule{Eq}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Word.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[\AgdaUnderscore{}]ʷ}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}•\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}ᵗ}}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{infix}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}\textasciitilde{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}===\AgdaUnderscore{}}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{X-gen}\AgdaSpace{}%
+\AgdaInductiveConstructor{S-gen}\AgdaSpace{}%
+\AgdaInductiveConstructor{ω-gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gen}\<%
+\\
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{X-cr}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε-cr}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{C}\<%
+\\
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaPostulate{Sω}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaPostulate{h}%
+\>[5]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{Sω}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaDatatype{C}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}\textasciitilde{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{Sω}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{Sω}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaDatatype{C}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaPostulate{by-equal-nf}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{A}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{A}\<%
+\\
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{order-ω}\AgdaSpace{}%
+\AgdaInductiveConstructor{order-S}\AgdaSpace{}%
+\AgdaInductiveConstructor{order-X}\AgdaSpace{}%
+\AgdaInductiveConstructor{order-SX}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{comm}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Gen}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\<%
+\end{code}
+%% Proof by evaluation (paper §4.4, §4.7, §5.4).
+
+\begin{frame}{Obligations close by evaluation}
+\begin{columns}[c]
+\begin{column}{0.64\textwidth}
+\small A real level of the single-qubit Clifford+$T$ tower: adjoin $X$ to
+$\langle\omega\rangle\times\langle S\rangle$, two cosets $\varepsilon$, $X$.
+Hypothesis (2), verbatim:
+\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\begin{code}%
+\>[0]\AgdaFunction{h-wd-ax}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{u}\AgdaSpace{}%
+\AgdaBound{t}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{===}}\AgdaSpace{}%
+\AgdaBound{t}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{h}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{ᵗ}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\textasciitilde{}}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{h}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{ᵗ}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{t}\<%
+\\
+\>[0]\AgdaFunction{h-wd-ax}\AgdaSpace{}%
+\AgdaInductiveConstructor{X-cr}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{u}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{t}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaInductiveConstructor{order-ω}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{by-equal-nf}\AgdaSpace{}%
+\AgdaInductiveConstructor{Eq.refl}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaInductiveConstructor{Eq.refl}\<%
+\\
+\>[0]\AgdaFunction{h-wd-ax}\AgdaSpace{}%
+\AgdaInductiveConstructor{X-cr}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{u}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{t}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaInductiveConstructor{order-S}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{by-equal-nf}\AgdaSpace{}%
+\AgdaInductiveConstructor{Eq.refl}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaInductiveConstructor{Eq.refl}\<%
+\\
+\>[0]\AgdaFunction{h-wd-ax}\AgdaSpace{}%
+\AgdaInductiveConstructor{X-cr}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{u}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{t}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaInductiveConstructor{order-X}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{by-equal-nf}\AgdaSpace{}%
+\AgdaInductiveConstructor{Eq.refl}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaInductiveConstructor{Eq.refl}\<%
+\\
+\>[0]\AgdaFunction{h-wd-ax}\AgdaSpace{}%
+\AgdaInductiveConstructor{X-cr}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{u}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{t}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaInductiveConstructor{order-SX}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{by-equal-nf}\AgdaSpace{}%
+\AgdaInductiveConstructor{Eq.refl}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaInductiveConstructor{Eq.refl}\<%
+\\
+\>[0]\AgdaFunction{h-wd-ax}\AgdaSpace{}%
+\AgdaInductiveConstructor{X-cr}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{u}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{t}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{comm}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaInductiveConstructor{X-gen}\AgdaSymbol{\})}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{by-equal-nf}\AgdaSpace{}%
+\AgdaInductiveConstructor{Eq.refl}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaInductiveConstructor{Eq.refl}\<%
+\end{code}
+{\scriptsize \ldots\ nine more; from \texttt{Examples/Amalgamations/CliffordT1.agda}}
+\vspace{4pt}
+
+Run the table on both sides of the axiom: the cosets coincide, and the
+residues have the \alert{same normal form one level down}.
+\end{column}
+\begin{column}{0.33\textwidth}
+\centering
+\begin{tikzpicture}[node distance=4mm]
+  \node[bx=prim,text width=38mm,font=\small] (a) {\textbf{coverage checker}\\{\scriptsize no case is missed}};
+  \node[bx=ok,text width=38mm,font=\small,below=of a] (b) {\textbf{evaluator}\\{\scriptsize closes every case that is computation}};
+  \node[bx=hot,text width=38mm,font=\small,below=of b] (c) {\textbf{you}\\{\scriptsize the few real derivations, which read like the paper's}};
+\end{tikzpicture}
+
+\vspace{8pt}
+\begin{tabular}{@{}rl@{}}
+\textbf{59} & obligations: qubit Clifford+$T$\\
+\textbf{72} & one qutrit level\\
+\end{tabular}
+
+{\small every one \aid{refl}}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{\textbf{4}\; Indices are chosen for the unifier}
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
+\aid{\_+\_} recurses on its \emph{first} argument:
+\[ 2 + n \;\leadsto\; \mathsf{suc}\,(\mathsf{suc}\,n) \qquad n + 2 \;\;\text{is stuck.} \]
+So the indices are \alert{left-biased}: \aid{gate₂} lands in
+\aid{Gen (₂₊ n)}, and the $k$-fold shift in \aid{Gen (k + n)}.
+\vspace{6pt}
+
+Every index equation the coverage checker meets is then solved by
+\alert{injectivity of \aid{suc}}, never by arithmetic --- which is why coset
+tables are written by plain pattern matching.
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}[node distance=6mm]
+  \node[bx=ok,text width=52mm,align=left,font=\small] (a) {\textbf{left-biased} \hfill\checkmark\\[3pt]
+    \aid{Gen (₂₊ n) ≟ Gen (₁₊ m)}\\
+    $\leadsto$ $m := \aid{₁₊ n}$, by unification};
+  \node[bx=hot,text width=52mm,align=left,font=\small,below=of a] (b) {\textbf{right-biased} \hfill$\times$\\[3pt]
+    \aid{Gen (n + 2) ≟ Gen (₁₊ m)}\\
+    $\leadsto$ $n + 2 \doteq \mathsf{suc}\;m$: stuck,\\
+    a Diophantine side condition};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}

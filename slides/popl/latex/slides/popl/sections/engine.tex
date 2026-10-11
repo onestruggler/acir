@@ -1,0 +1,328 @@
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{slides.popl.sections.engine}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Product}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}×\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{},\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Level}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{0ℓ}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Word.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[\AgdaUnderscore{}]ʷ}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}•\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}ʷ}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}ᵗ}}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{infix}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}\textasciitilde{}\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈₂\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}===₁\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}===₂\AgdaUnderscore{}}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaPostulate{Y}\AgdaSpace{}%
+\AgdaPostulate{C}%
+\>[9]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaPostulate{I}%
+\>[9]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{C}\<%
+\\
+%
+\>[2]\AgdaPostulate{f}%
+\>[9]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{Y}\<%
+\\
+%
+\>[2]\AgdaPostulate{h}%
+\>[9]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{C}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{Y}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaPostulate{C}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{[\AgdaUnderscore{}]}}%
+\>[9]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{C}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{Y}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}\textasciitilde{}\AgdaUnderscore{}}}%
+\>[9]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaPostulate{C}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{×}}\AgdaSpace{}%
+\AgdaPostulate{C}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈₂\AgdaUnderscore{}}}%
+\>[9]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{Y}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{Y}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}===₁\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaPostulate{X}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}===₂\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaPostulate{Y}\<%
+\end{code}
+%% The Reidemeister–Schreier engine (paper §3, §4.4).
+\section{Verified coset tables}
+
+\begin{frame}{\textbf{3}\; Certificates are finite: the Reidemeister--Schreier engine}
+\small $\Gamma$ presents a subgroup $H$ of the group $G$ presented by $\Delta$.
+A \alert{claimed} coset table --- cosets $C$ with identity $I$, a section
+$[\_] : C\to\aid{Word}\;Y$, and a table $h$ that pushes a letter past a coset and
+emits a word of $H$ --- is \alert{verified} against five equations; the search
+that found it stays outside.
+\vspace{4pt}
+
+\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\begin{code}%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{Transfer}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{(}\AgdaBound{h=⁻¹f-gen}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{x}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{x}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaPostulate{I}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\textasciitilde{}}}\AgdaSpace{}%
+\AgdaSymbol{((}\AgdaPostulate{h}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{ᵗ}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaPostulate{I}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{f}\AgdaSpace{}%
+\AgdaBound{x}\AgdaSymbol{)))}%
+\>[83]\AgdaComment{--\ 1}\<%
+\\
+%
+\>[2]\AgdaSymbol{(}\AgdaBound{h-wd-ax}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{c}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{C}\AgdaSymbol{)\{}\AgdaBound{u}\AgdaSpace{}%
+\AgdaBound{t}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{Y}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{===₂}}\AgdaSpace{}%
+\AgdaBound{t}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{((}\AgdaPostulate{h}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{ᵗ}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\textasciitilde{}}}\AgdaSpace{}%
+\AgdaSymbol{((}\AgdaPostulate{h}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{ᵗ}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{t}\AgdaSymbol{))}%
+\>[83]\AgdaComment{--\ 2}\<%
+\\
+%
+\>[2]\AgdaSymbol{(}\AgdaBound{f-wd-ax}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{w}\AgdaSpace{}%
+\AgdaBound{v}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{===₁}}\AgdaSpace{}%
+\AgdaBound{v}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{f}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{ʷ}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaBound{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{≈₂}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{f}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{ʷ}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaBound{v}\AgdaSymbol{)}%
+\>[83]\AgdaComment{--\ 3}\<%
+\\
+%
+\>[2]\AgdaSymbol{(}\AgdaBound{[I]≈ε}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
+\AgdaPostulate{I}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{]}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{≈₂}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSymbol{)}%
+\>[83]\AgdaComment{--\ 4}\<%
+\\
+%
+\>[2]\AgdaSymbol{(}\AgdaBound{h=ract}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaKeyword{let}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{b'}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{,}}\AgdaSpace{}%
+\AgdaBound{c'}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{h}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSpace{}%
+\AgdaKeyword{in}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
+\AgdaBound{c}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{]}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{[}}\AgdaSpace{}%
+\AgdaBound{b}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{]ʷ}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{≈₂}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{f}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{ʷ}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaBound{b'}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{[}}\AgdaSpace{}%
+\AgdaBound{c'}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{]}}\AgdaSymbol{)}%
+\>[83]\AgdaComment{--\ 5}\<%
+\end{code}
+\begin{code}[hide]%
+%
+\>[2]\AgdaKeyword{where}\<%
+\end{code}
+\vspace{2pt}
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\scriptsize
+\begin{enumerate}
+  \item the table inverts the embedding $f$ at $I$;
+  \item it respects $\Delta$'s axioms, coset by coset;
+  \item $f$ respects $\Gamma$'s axioms;
+\end{enumerate}
+\end{column}
+\begin{column}{0.48\textwidth}
+\scriptsize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item the identity coset is represented by $\varepsilon$;
+  \item coset then letter $\approx$ emitted word then new coset.
+\end{enumerate}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{One more digit per level: normal-form transport and towers}
+\begin{columns}[c]
+\begin{column}{0.50\textwidth}
+From the five equations, proved once:
+\[
+\begin{array}{@{}l@{}}
+  \aid{nf-transp} : \aid{NormalForm}\;\Gamma\;\mathit{NF}\\
+  \qquad\qquad\to \aid{NormalForm}\;\Delta\;(\mathit{NF}\times C)
+\end{array}
+\]
+\small a normal form for the subgroup gives one for the group, \alert{with one more
+coset digit}. \aid{PackedCosetTable} makes a verified level a first-class value;
+\aid{CosetTower} stacks them:
+\[
+  \mathit{NF}_0 \times C_1 \times C_2 \times \cdots \times C_k
+\]
+--- the classical stabilizer-chain normal form, read as a \alert{mixed-radix
+numeral} (Schreier--Sims), with syntactically chosen chains: for circuits,
+\emph{one level per wire}.
+\end{column}
+\begin{column}{0.46\textwidth}
+\centering
+\begin{tikzpicture}[x=10mm,y=10mm]
+  \foreach \r/\d/\lab [count=\i] in {2/1/C_1,3/2/C_2,4/0/C_3,5/3/C_4} {
+    \pgfmathsetmacro{\x}{\i*1.15}
+    \draw[prim,fill=tint,rounded corners=2pt] (\x-0.45,-0.2) rectangle (\x+0.45,2.6);
+    \foreach \k in {1,...,\r} {
+      \pgfmathsetmacro{\yy}{2.6-\k*2.8/(\r+1)}
+      \pgfmathtruncatemacro{\kk}{\k-1}
+      \ifnum\kk=\d
+        \node[fill=hot,text=white,font=\scriptsize,inner sep=1.5pt,rounded corners=1pt] at (\x,\yy) {\kk};
+      \else
+        \node[font=\scriptsize,text=gray] at (\x,\yy) {\kk};
+      \fi
+    }
+    \node[font=\small] at (\x,-0.55) {$\lab$};
+  }
+  \node[font=\small,align=center] at (2.9,-1.25) {$S_5$: radices $2\cdot3\cdot4\cdot5 = 120$};
+\end{tikzpicture}
+
+\vspace{6pt}
+{\small Where the chain \alert{branches} --- two subgroups over a common base ---
+the gluing is the amalgamated free product, with its alternating normal form.}
+\end{column}
+\end{columns}
+\end{frame}

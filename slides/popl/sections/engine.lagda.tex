@@ -1,0 +1,110 @@
+\begin{code}[hide]
+module slides.popl.sections.engine where
+
+open import Data.Product using (_×_ ; _,_)
+open import Level using (0ℓ)
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _ʷ ; _ᵗ)
+
+infix 4 _~_ _≈₂_ _===₁_ _===₂_
+
+postulate
+  X Y C  : Set
+  I      : C
+  f      : X → Word Y
+  h      : C → Y → Word X × C
+  [_]    : C → Word Y
+  _~_    : Word X × C → Word X × C → Set
+  _≈₂_   : Word Y → Word Y → Set
+  _===₁_ : WRel X
+  _===₂_ : WRel Y
+\end{code}
+%% The Reidemeister–Schreier engine (paper §3, §4.4).
+\section{Verified coset tables}
+
+\begin{frame}{\textbf{3}\; Certificates are finite: the Reidemeister--Schreier engine}
+\small $\Gamma$ presents a subgroup $H$ of the group $G$ presented by $\Delta$.
+A \alert{claimed} coset table --- cosets $C$ with identity $I$, a section
+$[\_] : C\to\aid{Word}\;Y$, and a table $h$ that pushes a letter past a coset and
+emits a word of $H$ --- is \alert{verified} against five equations; the search
+that found it stays outside.
+\vspace{4pt}
+
+\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\begin{code}
+module Transfer
+  (h=⁻¹f-gen : ∀ (x : X) → ([ x ]ʷ , I) ~ ((h ᵗ) I (f x)))                         -- 1
+  (h-wd-ax : ∀ (c : C){u t : Word Y} → u ===₂ t → ((h ᵗ) c u) ~ ((h ᵗ) c t))       -- 2
+  (f-wd-ax : ∀ {w v} → w ===₁ v → (f ʷ) w ≈₂ (f ʷ) v)                              -- 3
+  ([I]≈ε : [ I ] ≈₂ ε)                                                             -- 4
+  (h=ract : ∀ c b → let (b' , c') = h c b in [ c ] • [ b ]ʷ ≈₂ (f ʷ) b' • [ c' ])  -- 5
+\end{code}
+\begin{code}[hide]
+  where
+\end{code}
+\vspace{2pt}
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\scriptsize
+\begin{enumerate}
+  \item the table inverts the embedding $f$ at $I$;
+  \item it respects $\Delta$'s axioms, coset by coset;
+  \item $f$ respects $\Gamma$'s axioms;
+\end{enumerate}
+\end{column}
+\begin{column}{0.48\textwidth}
+\scriptsize
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item the identity coset is represented by $\varepsilon$;
+  \item coset then letter $\approx$ emitted word then new coset.
+\end{enumerate}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{One more digit per level: normal-form transport and towers}
+\begin{columns}[c]
+\begin{column}{0.50\textwidth}
+From the five equations, proved once:
+\[
+\begin{array}{@{}l@{}}
+  \aid{nf-transp} : \aid{NormalForm}\;\Gamma\;\mathit{NF}\\
+  \qquad\qquad\to \aid{NormalForm}\;\Delta\;(\mathit{NF}\times C)
+\end{array}
+\]
+\small a normal form for the subgroup gives one for the group, \alert{with one more
+coset digit}. \aid{PackedCosetTable} makes a verified level a first-class value;
+\aid{CosetTower} stacks them:
+\[
+  \mathit{NF}_0 \times C_1 \times C_2 \times \cdots \times C_k
+\]
+--- the classical stabilizer-chain normal form, read as a \alert{mixed-radix
+numeral} (Schreier--Sims), with syntactically chosen chains: for circuits,
+\emph{one level per wire}.
+\end{column}
+\begin{column}{0.46\textwidth}
+\centering
+\begin{tikzpicture}[x=10mm,y=10mm]
+  \foreach \r/\d/\lab [count=\i] in {2/1/C_1,3/2/C_2,4/0/C_3,5/3/C_4} {
+    \pgfmathsetmacro{\x}{\i*1.15}
+    \draw[prim,fill=tint,rounded corners=2pt] (\x-0.45,-0.2) rectangle (\x+0.45,2.6);
+    \foreach \k in {1,...,\r} {
+      \pgfmathsetmacro{\yy}{2.6-\k*2.8/(\r+1)}
+      \pgfmathtruncatemacro{\kk}{\k-1}
+      \ifnum\kk=\d
+        \node[fill=hot,text=white,font=\scriptsize,inner sep=1.5pt,rounded corners=1pt] at (\x,\yy) {\kk};
+      \else
+        \node[font=\scriptsize,text=gray] at (\x,\yy) {\kk};
+      \fi
+    }
+    \node[font=\small] at (\x,-0.55) {$\lab$};
+  }
+  \node[font=\small,align=center] at (2.9,-1.25) {$S_5$: radices $2\cdot3\cdot4\cdot5 = 120$};
+\end{tikzpicture}
+
+\vspace{6pt}
+{\small Where the chain \alert{branches} --- two subgroups over a common base ---
+the gluing is the amalgamated free product, with its alternating normal form.}
+\end{column}
+\end{columns}
+\end{frame}

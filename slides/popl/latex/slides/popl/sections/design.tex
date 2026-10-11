@@ -1,0 +1,528 @@
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{slides.popl.sections.design}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Nat}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{ℕ}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Level}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{Level}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{\AgdaUnderscore{}⊔\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{0ℓ}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Relation.Binary}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Rel}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Relation.Binary.Definitions}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Decidable}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Function.Definitions}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Congruent}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{Injective}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaPostulate{proof-elided}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{ℓ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{A}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaBound{ℓ}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{A}\<%
+\\
+%
+\>[2]\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaPostulate{Y}%
+\>[15]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaPostulate{c}\AgdaSpace{}%
+\AgdaPostulate{d}%
+\>[15]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{Level}\<%
+\end{code}
+%% The design (paper §4).
+\section{Five design decisions}
+
+\begin{frame}{Five bets about where proof effort should go}
+\centering
+\begin{tikzpicture}[x=29mm,y=1mm]
+  \foreach \i/\head/\sub/\col in {
+     1/{Syntax is\\unquotiented}/{everything out of it is a\\function on words}/prim,
+     2/{Specifications are\\stdlib bundles}/{a normal form \emph{is} an\\injection, right inverse,\\or bijection}/prim,
+     3/{Certificates\\are finite}/{a coset table is data\\+ five equations}/ok,
+     4/{Indices for\\the unifier}/{wire counts built\\from successors only}/prim,
+     5/{Constructions\\come in pairs}/{a syntactic and a\\semantic theorem}/ok} {
+    \node[bx=\col,minimum width=26mm,minimum height=13mm,font=\small\bfseries] (h\i) at (\i,0) {\head};
+    \node[font=\scriptsize,align=center,anchor=north] at (\i,-9) {\sub};
+    \node[circle,fill=\col,text=white,font=\scriptsize\bfseries,inner sep=1.5pt] at ($(h\i.north west)+(1.5mm,-1.5mm)$) {\i};
+  }
+\end{tikzpicture}
+
+\vspace{14pt}
+\begin{idea}
+\small The common thread: \alert{the same objects both compute and prove}. Normal forms,
+coset tables and sections are structurally recursive programs that Agda's evaluator
+runs; their correctness is checked once, generically.
+\end{idea}
+\end{frame}
+
+\begin{frame}{\textbf{1}\; Presented monoids are inductive congruences}
+\begin{columns}[c]
+\begin{column}{0.42\textwidth}
+A word is a syntax tree, \emph{not} a list:
+\begin{code}%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{X}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaOperator{\AgdaInductiveConstructor{[\AgdaUnderscore{}]ʷ}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaBound{X}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaBound{X}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{ε}%
+\>[7]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaBound{X}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}•\AgdaUnderscore{}}}%
+\>[7]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaBound{X}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaBound{X}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaBound{X}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{infixr}\AgdaSpace{}%
+\AgdaNumber{7}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{\AgdaUnderscore{}•\AgdaUnderscore{}}}\<%
+\\
+\>[0]\AgdaKeyword{infix}\AgdaSpace{}%
+\AgdaNumber{4}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈ₙ\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈₂\AgdaUnderscore{}}}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set₁}\<%
+\\
+\>[0]\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaBound{X}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{Rel}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaBound{X}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaFunction{0ℓ}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaPostulate{v}\AgdaSpace{}%
+\AgdaPostulate{u}\AgdaSpace{}%
+\AgdaPostulate{w'}\AgdaSpace{}%
+\AgdaPostulate{v'}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{X}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}===\AgdaUnderscore{}}}%
+\>[14]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaPostulate{X}\<%
+\end{code}
+\vspace{2pt}
+\footnotesize
+\begin{itemize}
+  \item terms mirror pen-and-paper calculations;
+  \item associativity is a \emph{rule}, discharged by a solver
+        (\aid{by-assoc}: flatten, compare by \aid{refl});
+  \item groups are monoids whose generators have left inverses
+        (\aid{Grouplike}).
+\end{itemize}
+\end{column}
+\begin{column}{0.54\textwidth}
+{\small \aid{\_===\_}: the axioms; \aid{\_≈\_}: the congruence they generate.}
+\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}%
+\>[0]\AgdaKeyword{data}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{WRel}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaInductiveConstructor{refl}%
+\>[8]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{w}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{sym}%
+\>[8]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{v}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{v}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{w}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{trans}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{v}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{v}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{u}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{u}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{cong}%
+\>[8]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{w'}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{v}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{v'}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{v}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{w'}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{v'}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{assoc}%
+\>[13]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{v}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{u}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{v}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{u}\AgdaSymbol{)}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{left-unit}%
+\>[13]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{w}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{right-unit}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaInductiveConstructor{•}}\AgdaSpace{}%
+\AgdaInductiveConstructor{ε}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{w}\<%
+\\
+%
+\>[2]\AgdaInductiveConstructor{axiom}%
+\>[13]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{===}}\AgdaSpace{}%
+\AgdaPostulate{v}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{v}\<%
+\end{code}
+\begin{win}
+\small Derivations are \alert{data}: lifting a whole congruence one wire up, or
+across a product, is an induction over these eight constructors.
+\end{win}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{\textbf{2}\; Normal forms are standard-library bundles}
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{postulate}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaPostulate{|NF|}%
+\>[13]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaPostulate{nf}%
+\>[13]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{|NF|}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈ₙ\AgdaUnderscore{}}}%
+\>[13]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{|NF|}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{|NF|}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaPostulate{NormalForm}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaPostulate{inv-nf}%
+\>[13]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{|NF|}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{X}\<%
+\\
+%
+\>[2]\AgdaPostulate{Sem}%
+\>[13]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{⟦\AgdaUnderscore{}⟧}}%
+\>[13]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaDatatype{Word}\AgdaSpace{}%
+\AgdaPostulate{X}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{Sem}\<%
+\\
+%
+\>[2]\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈₂\AgdaUnderscore{}}}%
+\>[13]\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{Sem}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{Sem}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPrimitive{Set}\<%
+\end{code}
+\begin{columns}[c]
+\begin{column}{0.50\textwidth}
+From the \alert{word setoid} to a carrier $\mathit{NF}$:
+\vspace{4pt}
+
+\begin{tabular}{@{\quad}l@{\;\;=\;\;}l@{}}
+\aid{NormalFormInjective} & \aid{Injection}\\
+\aid{NormalForm}          & \aid{RightInverse}\\
+\aid{BijectiveNormalForm} & \aid{Bijection}
+\end{tabular}
+\vspace{6pt}
+
+No new theory, just names for roles. An \aid{Injection} already gives
+\begin{code}%
+\>[0]\AgdaFunction{by-equal-nf}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{nf}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{≈ₙ}}\AgdaSpace{}%
+\AgdaPostulate{nf}\AgdaSpace{}%
+\AgdaPostulate{v}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaPostulate{w}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{≈}}\AgdaSpace{}%
+\AgdaPostulate{v}\<%
+\\
+\>[0]\AgdaFunction{≈-dec}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaFunction{Decidable}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈ₙ\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{Decidable}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{by-equal-nf}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\\
+\>[0]\AgdaFunction{≈-dec}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\end{code}
+{\small prove equations by \alert{computing} normal forms; decide the word problem.}
+\end{column}
+\begin{column}{0.46\textwidth}
+\centering
+\begin{tikzpicture}[>={Stealth[length=2mm]}]
+  \node[draw=prim,fill=tint,ellipse,minimum width=24mm,minimum height=29mm] at (0,0) {};
+  \node[draw=ok,fill=tintok,ellipse,minimum width=16mm,minimum height=24mm] at (3.7,0) {};
+  \node[font=\scriptsize\bfseries,text=prim] at (0,1.75) {words / $\approx$};
+  \node[font=\scriptsize\bfseries,text=ok] at (3.7,1.75) {$\mathit{NF}$};
+  \foreach \y in {0.85,0.35,-0.15} \node[dot=prim] at (-0.35,\y) {};
+  \draw[prim!60,rounded corners] (-0.7,-0.4) rectangle (0.05,1.1);
+  \node[dot=ok] (u) at (3.7,0.4) {};
+  \draw[arr] (0.1,0.4) to[bend left=10] node[above,font=\scriptsize\codefont]{nf} (u);
+  \node[dot=hot] (r) at (-0.35,-1.0) {};
+  \draw[arr,hot] (u) to[bend left=25] node[below right,font=\scriptsize\codefont]{inv-nf} (r);
+  \node[font=\tiny,text=hot,align=center] at (-0.35,-1.4) {canonical\\representative};
+\end{tikzpicture}
+
+\vspace{6pt}
+\begin{idea}[title={Constructively, the section is data}]
+\small Classically an injective \aid{nf} has a section for free (choose a
+preimage). In Agda it is an \emph{algorithm} --- the extra field of
+\aid{RightInverse} --- and it is what completeness consumes.
+\end{idea}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Completeness, once and for all}
+A normal form is \alert{unique} for a semantics \aid{⟦\_⟧} (into any setoid) when
+canonical representatives with equal meanings are equal:
+\begin{code}%
+\>[0]\AgdaKeyword{record}\AgdaSpace{}%
+\AgdaRecord{UniqueNormalForm}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{normalForm}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{NormalForm}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPrimitive{Set}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaPostulate{c}\AgdaSpace{}%
+\AgdaOperator{\AgdaPrimitive{⊔}}\AgdaSpace{}%
+\AgdaPostulate{d}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaKeyword{field}\AgdaSpace{}%
+\AgdaField{unique}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{u}\AgdaSpace{}%
+\AgdaBound{v}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{|NF|}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟦}}\AgdaSpace{}%
+\AgdaPostulate{inv-nf}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟧}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{≈₂}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟦}}\AgdaSpace{}%
+\AgdaPostulate{inv-nf}\AgdaSpace{}%
+\AgdaBound{v}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟧}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaBound{u}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{≈ₙ}}\AgdaSpace{}%
+\AgdaBound{v}\<%
+\\
+\>[0]\AgdaFunction{by-normalization}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{\{}\AgdaBound{normalForm}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaPostulate{NormalForm}\AgdaSymbol{\}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaRecord{UniqueNormalForm}\AgdaSpace{}%
+\AgdaBound{normalForm}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaFunction{Congruent}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈₂\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟦\AgdaUnderscore{}⟧}}\AgdaSpace{}%
+\AgdaSymbol{→}\AgdaSpace{}%
+\AgdaFunction{Injective}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}≈\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{\AgdaUnderscore{}≈₂\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaOperator{\AgdaPostulate{⟦\AgdaUnderscore{}⟧}}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{by-normalization}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaPostulate{proof-elided}\<%
+\end{code}
+\vspace{4pt}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+\begin{win}
+\textbf{soundness + unique normal form $\Rightarrow$ completeness.}\\[2pt]
+\small Five lines. Every case study proves only \aid{unique} --- a statement
+about \alert{normal forms}, i.e.\ finite data, never about arbitrary words.
+\end{win}
+\end{column}
+\begin{column}{0.42\textwidth}
+\small
+\begin{itemize}
+  \item \aid{by-completeness}: the converse, given an exact section --- how
+        uniqueness travels through products;
+  \item with surjectivity, the records assemble a group isomorphism:
+        \aid{\_IsPresentationOf\_}.
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}

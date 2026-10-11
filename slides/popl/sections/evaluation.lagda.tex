@@ -1,0 +1,91 @@
+\begin{code}[hide]
+module slides.popl.sections.evaluation where
+
+open import Data.Product using (_×_ ; _,_)
+import Relation.Binary.PropositionalEquality as Eq
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _ᵗ)
+
+infix 4 _~_ _===_
+
+data Gen : Set where
+  X-gen S-gen ω-gen : Gen
+data C : Set where
+  X-cr ε-cr : C
+postulate
+  Sω : Set
+  h  : C → Gen → Word Sω × C
+  _~_ : Word Sω × C → Word Sω × C → Set
+  by-equal-nf : ∀ {A : Set} → A
+data _===_ : WRel Gen where
+  order-ω order-S order-X order-SX : ε === ε
+  comm : ∀ {gen : Gen} → ε === ε
+\end{code}
+%% Proof by evaluation (paper §4.4, §4.7, §5.4).
+
+\begin{frame}{Obligations close by evaluation}
+\begin{columns}[c]
+\begin{column}{0.64\textwidth}
+\small A real level of the single-qubit Clifford+$T$ tower: adjoin $X$ to
+$\langle\omega\rangle\times\langle S\rangle$, two cosets $\varepsilon$, $X$.
+Hypothesis (2), verbatim:
+\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\begin{code}
+h-wd-ax : ∀ c {u t} → u === t → (h ᵗ) c u ~ (h ᵗ) c t
+h-wd-ax X-cr {u} {t} order-ω = (by-equal-nf Eq.refl) , Eq.refl
+h-wd-ax X-cr {u} {t} order-S = (by-equal-nf Eq.refl) , Eq.refl
+h-wd-ax X-cr {u} {t} order-X = (by-equal-nf Eq.refl) , Eq.refl
+h-wd-ax X-cr {u} {t} order-SX = (by-equal-nf Eq.refl) , Eq.refl
+h-wd-ax X-cr {u} {t} (comm {X-gen}) = (by-equal-nf Eq.refl) , Eq.refl
+\end{code}
+{\scriptsize \ldots\ nine more; from \texttt{Examples/Amalgamations/CliffordT1.agda}}
+\vspace{4pt}
+
+Run the table on both sides of the axiom: the cosets coincide, and the
+residues have the \alert{same normal form one level down}.
+\end{column}
+\begin{column}{0.33\textwidth}
+\centering
+\begin{tikzpicture}[node distance=4mm]
+  \node[bx=prim,text width=38mm,font=\small] (a) {\textbf{coverage checker}\\{\scriptsize no case is missed}};
+  \node[bx=ok,text width=38mm,font=\small,below=of a] (b) {\textbf{evaluator}\\{\scriptsize closes every case that is computation}};
+  \node[bx=hot,text width=38mm,font=\small,below=of b] (c) {\textbf{you}\\{\scriptsize the few real derivations, which read like the paper's}};
+\end{tikzpicture}
+
+\vspace{8pt}
+\begin{tabular}{@{}rl@{}}
+\textbf{59} & obligations: qubit Clifford+$T$\\
+\textbf{72} & one qutrit level\\
+\end{tabular}
+
+{\small every one \aid{refl}}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{\textbf{4}\; Indices are chosen for the unifier}
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
+\aid{\_+\_} recurses on its \emph{first} argument:
+\[ 2 + n \;\leadsto\; \mathsf{suc}\,(\mathsf{suc}\,n) \qquad n + 2 \;\;\text{is stuck.} \]
+So the indices are \alert{left-biased}: \aid{gate₂} lands in
+\aid{Gen (₂₊ n)}, and the $k$-fold shift in \aid{Gen (k + n)}.
+\vspace{6pt}
+
+Every index equation the coverage checker meets is then solved by
+\alert{injectivity of \aid{suc}}, never by arithmetic --- which is why coset
+tables are written by plain pattern matching.
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}[node distance=6mm]
+  \node[bx=ok,text width=52mm,align=left,font=\small] (a) {\textbf{left-biased} \hfill\checkmark\\[3pt]
+    \aid{Gen (₂₊ n) ≟ Gen (₁₊ m)}\\
+    $\leadsto$ $m := \aid{₁₊ n}$, by unification};
+  \node[bx=hot,text width=52mm,align=left,font=\small,below=of a] (b) {\textbf{right-biased} \hfill$\times$\\[3pt]
+    \aid{Gen (n + 2) ≟ Gen (₁₊ m)}\\
+    $\leadsto$ $n + 2 \doteq \mathsf{suc}\;m$: stuck,\\
+    a Diophantine side condition};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}

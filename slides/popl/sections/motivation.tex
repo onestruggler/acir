@@ -1,0 +1,77 @@
+%% Motivation and contributions (paper §1).
+
+\begin{frame}{Completeness proofs are gigantic computations}
+\begin{columns}[c]
+\begin{column}{0.50\textwidth}
+A rule set for circuits is \alert{complete} when it derives every true
+equation:
+\[
+  \llbracket w\rrbracket = \llbracket v\rrbracket \;\Longrightarrow\; w \approx v .
+\]
+Soundness is a finite check. Completeness is not:
+\begin{itemize}
+  \item define a \alert{normal form};
+  \item show every rule, meeting every shape of normal form, reduces again
+        --- mechanical, unforgiving, enormous;
+  \item show distinct normal forms mean distinct things.
+\end{itemize}
+\end{column}
+\begin{column}{0.46\textwidth}
+\centering
+\begin{tikzpicture}[x=1mm,y=1mm]
+  % a stack of pages, height proportional to the page count (1 sheet = 10 pp.)
+  \foreach \i in {0,...,25} {
+    \fill[white,draw=gray!60] (26+\i*0.15,\i*0.85) rectangle ++(17,22);
+  }
+  \foreach \i in {0,1} {
+    \fill[white,draw=gray!60] (0+\i*0.15,\i*0.85) rectangle ++(17,22);
+  }
+  \node[font=\small,align=center] at (8.5,-5) {paper\\13 pp.};
+  \node[font=\small,align=center,text=hot] at (36,-5) {appendix\\\textbf{264 pp.}};
+  \draw[decorate,decoration={brace,amplitude=4pt},thick,hot] (48,0) -- (48,43);
+  \node[font=\scriptsize,anchor=west,align=left,text=hot] at (50,21.5) {derivations,\\case by case};
+\end{tikzpicture}
+
+\vspace{4pt}
+{\small Real-Clifford+$CH$ (Clément). Qutrit Clifford (Li et al.): more
+than 50 pages of proofs. Long, regular, mechanical: what proof assistants
+are good at.}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{This paper}
+\begin{columns}[c]
+\begin{column}{0.52\textwidth}
+\small
+An \textbf{Agda library} for presentations, normal forms, and completeness ---
+with \alert{circuits} as the motivating instance.
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \item a circuit is a \alert{word}; a rule set is a \alert{datatype};
+        the theory is their \alert{inductive congruence};
+  \item a normal form is a \alert{function} with a \alert{section};
+  \item \textbf{completeness = soundness + unique normal form}, proved once;
+  \item normal forms grow \alert{one wire at a time} by verified \alert{coset
+        tables}, whose obligations often close by \aid{refl}.
+\end{itemize}
+\small Plain, setoid-based Agda on the standard library; \texttt{--safe}.
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[node distance=8mm]
+  \node[bx=prim,font=\small] (s) {soundness\\{\scriptsize finite check}};
+  \node[bx=prim,font=\small,right=6mm of s] (u) {unique NF\\{\scriptsize about finite data}};
+  \node[bx=ok,font=\small,below=12mm of $(s)!0.5!(u)$] (c) {\textbf{completeness}};
+  \draw[arr,prim] (s) -- (c);
+  \draw[arr,prim] (u) -- (c);
+  \node[bx=gray,font=\small,below=10mm of c] (t) {coset tables\\{\scriptsize data + 5 equations per level}};
+  \draw[arr,gray] (t) -- node[right,font=\scriptsize]{build the normal form} (c);
+\end{tikzpicture}
+
+\vspace{8pt}
+{\small Validated on $S_n$, $\mathbb{Z}_N\wr S_n$, Pauli groups, qubit and
+qutrit Clifford+$T$, $U_3(\mathbb{Z}[\frac12,i])$.}
+\end{column}
+\end{columns}
+\end{frame}

@@ -1,0 +1,355 @@
+\begin{code}[hide]%
+\>[0]\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{slides.popl.sections.catalogue}\AgdaSpace{}%
+\AgdaKeyword{where}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Algebra.Bundles}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaRecord{Group}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaRecord{Monoid}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Algebra.Morphism.Structures}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{MonoidMorphisms}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Nat}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaDatatype{ℕ}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{suc}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaInductiveConstructor{2+}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Data.Nat.Primality}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaRecord{Prime}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Level}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{0ℓ}\AgdaSymbol{)}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Word.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}ʷ}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Definitions}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaRecord{\AgdaUnderscore{}IsPresentationOf\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Construct.Base}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}⋄\AgdaUnderscore{}⋄\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaDatatype{CommRel}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaDatatype{ConjRelʷ}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{\AgdaUnderscore{}⊕\textasciicircum{}\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Presentation.Properties}\AgdaSpace{}%
+\AgdaSymbol{as}\AgdaSpace{}%
+\AgdaModule{PP}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Groups.Cyclic.Normalization}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}Cn,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Groups.Symmetric.Syntactics}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}VRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Groups.Pauli.Presentation}\AgdaSpace{}%
+\AgdaSymbol{as}\AgdaSpace{}%
+\AgdaModule{Pauli}\<%
+\\
+\>[0]\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Construct.SemiDirectProduct.SnD}\AgdaSpace{}%
+\AgdaSymbol{as}\AgdaSpace{}%
+\AgdaModule{SnD}\<%
+\\
+\>[0]\AgdaKeyword{import}\AgdaSpace{}%
+\AgdaModule{Examples.Amalgamations.CliffordT1}\AgdaSpace{}%
+\AgdaSymbol{as}\AgdaSpace{}%
+\AgdaModule{CliffordT1}\<%
+\\
+%
+\\[\AgdaEmptyExtraSkip]%
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{SnD}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{conj}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaKeyword{module}\AgdaSpace{}%
+\AgdaModule{Wreath}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{Pauli}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Pauli-group}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaKeyword{renaming}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Γ-H}\AgdaSpace{}%
+\AgdaSymbol{to}\AgdaSpace{}%
+\AgdaFunction{Γ-Pauli₁}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{Monoid}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{rawMonoid}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{MonoidMorphisms}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaRecord{IsMonoidIsomorphism}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{PP}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{•-ε-monoid}\AgdaSymbol{)}\<%
+\\
+\>[0]\AgdaKeyword{open}\AgdaSpace{}%
+\AgdaModule{CliffordT1.CliffordT1}\AgdaSpace{}%
+\AgdaKeyword{using}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{amalPres}\AgdaSpace{}%
+\AgdaSymbol{;}\AgdaSpace{}%
+\AgdaFunction{f}\AgdaSymbol{)}\<%
+\end{code}
+%% The catalogue (paper §5).
+\section{A catalogue of verified presentations}
+
+\begin{frame}{What the library has verified}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lll@{}}
+\toprule
+relation set & presents & what it exercises\\
+\midrule
+$T^{\,n+1}=\varepsilon$\;/\;$T^{\,0}=\varepsilon$ & $\mathbb{Z}_{n+1}$\;/\;the \emph{monoid} $(\mathbb{N},+,0)$ & monoid vs.\ group presentations\\
+\aid{order}, \aid{yang-baxter} + structure & permutations of $\mathsf{Fin}\;n$ & circuits, a recursive tower\\
+$(\mathbb{Z}_N)^n \rtimes S_n$-circuits & $\mathbb{Z}_N\wr S_n$, every $N,n$ & products with semantics\\
+$(\mathbb{Z}_p\times\mathbb{Z}_p)^n$ & Pauli group mod phases, every prime $p$ & pure composition\\
+qubit Clifford+$T$ rules & $\cong\langle T,M\rangle\ast_M\langle H,M\rangle$ & amalgamation, \aid{refl}\\
+qutrit Clifford+$T$ rules & $\cong$ an amalgam over $M=\langle S,X,\zeta,H^2\rangle$ & long towers, twisted relations\\
+$U_3(\mathbb{Z}[\frac12,i])$, S1--S14 & $\cong(\mathbb{Z}_4\wr S_3)\ast_M\langle M,K_{01}\rangle$ & reuse of the wreath product\\
+\bottomrule
+\end{tabular}
+
+\vspace{10pt}
+\begin{columns}[c]
+\begin{column}{0.45\textwidth}
+\begin{win}
+\small Every theorem restated with its full type in one index module,
+\texttt{MainTheorems.agda}.
+\end{win}
+\end{column}
+\begin{column}{0.45\textwidth}
+\small $T^0=\varepsilon$ presents $\mathbb{Z}$ as a \emph{group} but $\mathbb{N}$ as a
+\emph{monoid}: words have no formal inverses, and \aid{Grouplike} is exactly what fails.
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Whole families at once}
+\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{columns}[c]
+\begin{column}{0.58\textwidth}
+\textbf{Wreath products}: signed permutations at $N=2$, monomial matrices with
+$N$-th roots of unity in general --- completeness over \alert{two naturals}:
+\begin{code}%
+\>[0]\AgdaFunction{wreath-presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{(((}\AgdaInductiveConstructor{suc}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{Cn,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{⊕\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{n}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{VRel,\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{⋄}}\AgdaSpace{}%
+\AgdaDatatype{ConjRelʷ}\AgdaSpace{}%
+\AgdaFunction{conj}\AgdaSymbol{)}\<%
+\\
+\>[2][@{}l@{\AgdaIndent{0}}]%
+\>[4]\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Wreath.wreath-group}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSymbol{)}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{wreath-presentation}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{Wreath.presentation}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaBound{m}\<%
+\end{code}
+\vspace{4pt}
+\textbf{Pauli groups} for every prime: three construction theorems composed,
+\alert{no coset enumeration at all}:
+\begin{code}%
+\>[0]\AgdaFunction{pauli-presentation}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaSymbol{∀}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaBound{prime}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaRecord{Prime}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaInductiveConstructor{2+}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSpace{}%
+\AgdaSymbol{→}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{(}\AgdaFunction{Γ-Pauli₁}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaBound{prime}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{⊕\textasciicircum{}}}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\AgdaSpace{}%
+\AgdaOperator{\AgdaRecord{IsPresentationOf}}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{Pauli-group}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaBound{prime}\AgdaSpace{}%
+\AgdaBound{n}\AgdaSymbol{)}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{pauli-presentation}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaBound{prime}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{Pauli.Pauli-presentation}\AgdaSpace{}%
+\AgdaBound{m}\AgdaSpace{}%
+\AgdaBound{prime}\<%
+\end{code}
+\end{column}
+\begin{column}{0.39\textwidth}
+\centering
+{\small normal form of $\mathbb{Z}_N\wr S_n$:}\\[4pt]
+\begin{tikzpicture}[x=4.6mm,y=5.5mm,line width=0.7pt]
+  \foreach \y in {0,1,2,3} \draw[wire] (0,\y) -- (11,\y);
+  \foreach \y/\e in {0/2,1/0,2/3,3/1}
+    \node[draw,fill=tint,font=\scriptsize,minimum width=6mm,minimum height=4mm,inner sep=1pt] at (1.6,\y) {$T^{\e}$};
+  \foreach \x/\p in {4/2,5.5/1,7/2,8.5/0,10/1} {
+    \fill[white] (\x-0.55,\p-0.05) rectangle (\x+0.55,\p+1.05);
+    \draw[wire] (\x-0.55,\p) -- (\x+0.55,\p+1);
+    \draw[wire] (\x-0.55,\p+1) -- (\x+0.55,\p);
+  }
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (0.6,-0.6) -- (2.6,-0.6) node[midway,below=2pt,font=\scriptsize]{residues};
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (3.3,-0.6) -- (10.7,-0.6) node[midway,below=2pt,font=\scriptsize]{staircases};
+\end{tikzpicture}
+
+\vspace{10pt}
+{\small normal form of the Pauli group: $X^{a_1}Z^{b_1}\cdots X^{a_n}Z^{b_n}$ ---
+nothing proved about Paulis specifically}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Amalgamation rediscovers Matsumoto--Amano}
+\begin{columns}[c]
+\begin{column}{0.52\textwidth}
+\footnotesize Single-qubit Clifford+$T$; generators $T,H,S,\omega$, $X := HSSH$;
+$\omega^8 = S^4 = H^2 = \varepsilon$, $T^2 = S$, $(SH)^3 = (TX)^2 = \omega$,
+$\omega$ central.
+\small
+\[
+  \text{Clifford}{+}T \;\cong\; \langle T, M\rangle \ast_M \langle H, M\rangle,
+  \qquad M = \langle X, S, \omega\rangle
+\]
+The alternating normal form, read right to left:
+\[
+  (\varepsilon\mid T)\;(HT\mid SHT)^{*}\;(\varepsilon\mid H\mid SH)\;\mathcal{M}
+\]
+--- \alert{Matsumoto--Amano}, from the group theory alone.
+\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\begin{code}%
+\>[0]\AgdaFunction{clifford+T-qubit-isomorphism}\AgdaSpace{}%
+\AgdaSymbol{:}\AgdaSpace{}%
+\AgdaRecord{IsMonoidIsomorphism}\<%
+\\
+\>[0][@{}l@{\AgdaIndent{0}}]%
+\>[2]\AgdaSymbol{(}\AgdaFunction{rawMonoid}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{•-ε-monoid}\AgdaSpace{}%
+\AgdaOperator{\AgdaDatatype{\AgdaUnderscore{}===\AgdaUnderscore{}}}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{rawMonoid}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{•-ε-monoid}\AgdaSpace{}%
+\AgdaFunction{amalPres}\AgdaSymbol{))}\AgdaSpace{}%
+\AgdaSymbol{(}\AgdaFunction{f}\AgdaSpace{}%
+\AgdaOperator{\AgdaFunction{ʷ}}\AgdaSymbol{)}\<%
+\end{code}
+\begin{code}[hide]%
+\>[0]\AgdaFunction{clifford+T-qubit-isomorphism}\AgdaSpace{}%
+\AgdaSymbol{=}\AgdaSpace{}%
+\AgdaFunction{CliffordT1.CliffordT1.CliffordT1-isomorphism}\<%
+\end{code}
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[>={Stealth[length=1.8mm]},
+  lab/.style={font=\tiny,align=center,text=hot}]
+  \node[bx=prim,font=\scriptsize] (b) at (0,0) {$\langle\omega\rangle\times\langle S\rangle$};
+  \node[bx=prim,font=\scriptsize] (m) at (0,1.1) {$M=\langle X,S,\omega\rangle$};
+  \node[bx=prim,font=\scriptsize] (t) at (-1.6,2.2) {$\langle T,M\rangle$};
+  \node[bx=prim,font=\scriptsize] (h) at (1.6,2.2) {$\langle H,M\rangle$};
+  \node[bx=ok,font=\scriptsize] (a) at (0,3.3) {$\langle T,M\rangle\ast_M\langle H,M\rangle$};
+  \draw[->,thick] (b) -- node[right,lab]{2 cosets} (m);
+  \draw[->,thick] (m) -- node[left,lab]{2 cosets} (t);
+  \draw[->,thick] (m) -- node[right,lab]{3 cosets} (h);
+  \draw[->,thick] (t) -- (a); \draw[->,thick] (h) -- (a);
+\end{tikzpicture}
+
+\vspace{3pt}
+\begin{tikzpicture}[x=7.2mm,
+  s/.style={draw,minimum height=5.5mm,minimum width=6.8mm,font=\scriptsize,inner sep=1pt}]
+  \node[s,fill=gray!15] at (0,0) {$\mathcal{M}$};
+  \node[s,fill=tintok] at (1,0) {$HS$};
+  \node[s,fill=tint] at (2,0) {$T$}; \node[s,fill=tintok] at (3,0) {$H$};
+  \node[s,fill=tint] at (4,0) {$T$}; \node[s,fill=tintok] at (5,0) {$HS$};
+  \node[s,fill=tint] at (6,0) {$T$};
+\end{tikzpicture}
+
+{\scriptsize a normal form with $T$-count 3}
+\end{column}
+\end{columns}
+\vspace{4pt}
+{\small Same story for qutrit Clifford+$T$ (Glaudell--Ross--Taylor's form) and for
+$U_3(\mathbb{Z}[\frac12,i])$ --- where the regular expression is a \alert{new}
+canonical form.}
+\end{frame}

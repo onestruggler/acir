@@ -1,0 +1,65 @@
+\begin{code}[hide]
+module slides.popl.sections.constructions where
+
+open import Data.Product using (_×_)
+open import Data.Sum using (_⊎_)
+open import Data.List using (List)
+open import Data.Unit using (⊤)
+open import Word.Base using (Word ; WRel)
+open import Presentation.Construct.Base using ([_]ₗ ; [_]ᵣ)
+
+infix 5 _⋄_⋄_
+
+postulate
+  A B : Set
+  u v : Word A
+\end{code}
+%% Products of presentations and their presentation theorems (paper §4.5–4.6).
+
+\begin{frame}{\textbf{5}\; Constructions come in pairs}
+\begin{columns}[c]
+\begin{column}{0.56\textwidth}
+One primitive: a three-way join whose \alert{mixed} part is the parameter.
+\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+data _⋄_⋄_ (Γ₁ : WRel A) (Γ₂ : WRel B) (Γ₃ : WRel (A ⊎ B))
+           : WRel (A ⊎ B) where
+  left  : Γ₁ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) [ u ]ₗ [ v ]ₗ
+  right : Γ₂ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) [ u ]ᵣ [ v ]ᵣ
+  mid   : Γ₃ u v → (Γ₁ ⋄ Γ₂ ⋄ Γ₃) u v
+\end{code}
+\vspace{2pt}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+mixed part & construction\\
+\midrule
+\aid{CommRel} & direct product\\
+\aid{ConjRelʷ} \textit{conj} & semidirect product\\
+\aid{AmalgRel} $f_1\,f_2$ & amalgamated free product\\
+\aid{SugarRel} & definitional extension\\
+\bottomrule
+\end{tabular}
+\end{column}
+\begin{column}{0.41\textwidth}
+\small
+\textbf{Syntactic}: normal forms combine --- for $\times$ and $\rtimes$ the carrier is
+$\mathit{NF}_1\times\mathit{NF}_2$; an amalgam has a base normal form and
+alternating cosets:
+\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\begin{code}[hide]
+amalNFC : Set → Set → Set
+\end{code}
+\begin{code}
+amalNFC C D = (D ⊎ ⊤) × List (C × D) × (C ⊎ ⊤)
+\end{code}
+\vspace{4pt}
+\textbf{Semantic}: if the factors present $G_1$, $G_2$, the construction presents
+$G_1\times G_2$, $G_1\rtimes G_2$, $G_1\ast_{G_0}G_2$ --- and group extensions.
+\vspace{4pt}
+
+{\scriptsize Semidirect products, amalgamated free products of monoids and group
+extensions were not in agda-stdlib; we contribute them (\texttt{ForStdlib}, 865 lines).}
+\end{column}
+\end{columns}
+\end{frame}

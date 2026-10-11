@@ -1,0 +1,186 @@
+\begin{code}[hide]
+module slides.popl.sections.design where
+
+open import Data.Nat using (ℕ)
+open import Level using (Level ; _⊔_ ; 0ℓ)
+open import Relation.Binary using (Rel)
+open import Relation.Binary.Definitions using (Decidable)
+open import Function.Definitions using (Congruent ; Injective)
+
+postulate
+  proof-elided : ∀ {ℓ} {A : Set ℓ} → A
+  X Y          : Set
+  c d          : Level
+\end{code}
+%% The design (paper §4).
+\section{Five design decisions}
+
+\begin{frame}{Five bets about where proof effort should go}
+\centering
+\begin{tikzpicture}[x=29mm,y=1mm]
+  \foreach \i/\head/\sub/\col in {
+     1/{Syntax is\\unquotiented}/{everything out of it is a\\function on words}/prim,
+     2/{Specifications are\\stdlib bundles}/{a normal form \emph{is} an\\injection, right inverse,\\or bijection}/prim,
+     3/{Certificates\\are finite}/{a coset table is data\\+ five equations}/ok,
+     4/{Indices for\\the unifier}/{wire counts built\\from successors only}/prim,
+     5/{Constructions\\come in pairs}/{a syntactic and a\\semantic theorem}/ok} {
+    \node[bx=\col,minimum width=26mm,minimum height=13mm,font=\small\bfseries] (h\i) at (\i,0) {\head};
+    \node[font=\scriptsize,align=center,anchor=north] at (\i,-9) {\sub};
+    \node[circle,fill=\col,text=white,font=\scriptsize\bfseries,inner sep=1.5pt] at ($(h\i.north west)+(1.5mm,-1.5mm)$) {\i};
+  }
+\end{tikzpicture}
+
+\vspace{14pt}
+\begin{idea}
+\small The common thread: \alert{the same objects both compute and prove}. Normal forms,
+coset tables and sections are structurally recursive programs that Agda's evaluator
+runs; their correctness is checked once, generically.
+\end{idea}
+\end{frame}
+
+\begin{frame}{\textbf{1}\; Presented monoids are inductive congruences}
+\begin{columns}[c]
+\begin{column}{0.42\textwidth}
+A word is a syntax tree, \emph{not} a list:
+\begin{code}
+data Word (X : Set) : Set where
+  [_]ʷ : X → Word X
+  ε    : Word X
+  _•_  : Word X → Word X → Word X
+\end{code}
+\begin{code}[hide]
+infixr 7 _•_
+infix 4 _≈_ _===_ _≈ₙ_ _≈₂_
+
+WRel : Set → Set₁
+WRel X = Rel (Word X) 0ℓ
+
+postulate
+  w v u w' v' : Word X
+  _===_       : WRel X
+\end{code}
+\vspace{2pt}
+\footnotesize
+\begin{itemize}
+  \item terms mirror pen-and-paper calculations;
+  \item associativity is a \emph{rule}, discharged by a solver
+        (\aid{by-assoc}: flatten, compare by \aid{refl});
+  \item groups are monoids whose generators have left inverses
+        (\aid{Grouplike}).
+\end{itemize}
+\end{column}
+\begin{column}{0.54\textwidth}
+{\small \aid{\_===\_}: the axioms; \aid{\_≈\_}: the congruence they generate.}
+\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{code}
+data _≈_ : WRel X where
+  refl  : w ≈ w
+  sym   : w ≈ v → v ≈ w
+  trans : w ≈ v → v ≈ u → w ≈ u
+  cong  : w ≈ w' → v ≈ v' → w • v ≈ w' • v'
+  assoc      : (w • v) • u ≈ w • (v • u)
+  left-unit  : ε • w ≈ w
+  right-unit : w • ε ≈ w
+  axiom      : w === v → w ≈ v
+\end{code}
+\begin{win}
+\small Derivations are \alert{data}: lifting a whole congruence one wire up, or
+across a product, is an induction over these eight constructors.
+\end{win}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{\textbf{2}\; Normal forms are standard-library bundles}
+\begin{code}[hide]
+postulate
+  |NF|       : Set
+  nf         : Word X → |NF|
+  _≈ₙ_       : |NF| → |NF| → Set
+  NormalForm : Set
+  inv-nf     : |NF| → Word X
+  Sem        : Set
+  ⟦_⟧        : Word X → Sem
+  _≈₂_       : Sem → Sem → Set
+\end{code}
+\begin{columns}[c]
+\begin{column}{0.50\textwidth}
+From the \alert{word setoid} to a carrier $\mathit{NF}$:
+\vspace{4pt}
+
+\begin{tabular}{@{\quad}l@{\;\;=\;\;}l@{}}
+\aid{NormalFormInjective} & \aid{Injection}\\
+\aid{NormalForm}          & \aid{RightInverse}\\
+\aid{BijectiveNormalForm} & \aid{Bijection}
+\end{tabular}
+\vspace{6pt}
+
+No new theory, just names for roles. An \aid{Injection} already gives
+\begin{code}
+by-equal-nf : nf w ≈ₙ nf v → w ≈ v
+≈-dec : Decidable _≈ₙ_ → Decidable _≈_
+\end{code}
+\begin{code}[hide]
+by-equal-nf = proof-elided
+≈-dec = proof-elided
+\end{code}
+{\small prove equations by \alert{computing} normal forms; decide the word problem.}
+\end{column}
+\begin{column}{0.46\textwidth}
+\centering
+\begin{tikzpicture}[>={Stealth[length=2mm]}]
+  \node[draw=prim,fill=tint,ellipse,minimum width=24mm,minimum height=29mm] at (0,0) {};
+  \node[draw=ok,fill=tintok,ellipse,minimum width=16mm,minimum height=24mm] at (3.7,0) {};
+  \node[font=\scriptsize\bfseries,text=prim] at (0,1.75) {words / $\approx$};
+  \node[font=\scriptsize\bfseries,text=ok] at (3.7,1.75) {$\mathit{NF}$};
+  \foreach \y in {0.85,0.35,-0.15} \node[dot=prim] at (-0.35,\y) {};
+  \draw[prim!60,rounded corners] (-0.7,-0.4) rectangle (0.05,1.1);
+  \node[dot=ok] (u) at (3.7,0.4) {};
+  \draw[arr] (0.1,0.4) to[bend left=10] node[above,font=\scriptsize\codefont]{nf} (u);
+  \node[dot=hot] (r) at (-0.35,-1.0) {};
+  \draw[arr,hot] (u) to[bend left=25] node[below right,font=\scriptsize\codefont]{inv-nf} (r);
+  \node[font=\tiny,text=hot,align=center] at (-0.35,-1.4) {canonical\\representative};
+\end{tikzpicture}
+
+\vspace{6pt}
+\begin{idea}[title={Constructively, the section is data}]
+\small Classically an injective \aid{nf} has a section for free (choose a
+preimage). In Agda it is an \emph{algorithm} --- the extra field of
+\aid{RightInverse} --- and it is what completeness consumes.
+\end{idea}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Completeness, once and for all}
+A normal form is \alert{unique} for a semantics \aid{⟦\_⟧} (into any setoid) when
+canonical representatives with equal meanings are equal:
+\begin{code}
+record UniqueNormalForm (normalForm : NormalForm) : Set (c ⊔ d) where
+  field unique : ∀ {u v : |NF|} → ⟦ inv-nf u ⟧ ≈₂ ⟦ inv-nf v ⟧ → u ≈ₙ v
+by-normalization : {normalForm : NormalForm} → UniqueNormalForm normalForm →
+  Congruent _≈_ _≈₂_ ⟦_⟧ → Injective _≈_ _≈₂_ ⟦_⟧
+\end{code}
+\begin{code}[hide]
+by-normalization = proof-elided
+\end{code}
+\vspace{4pt}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+\begin{win}
+\textbf{soundness + unique normal form $\Rightarrow$ completeness.}\\[2pt]
+\small Five lines. Every case study proves only \aid{unique} --- a statement
+about \alert{normal forms}, i.e.\ finite data, never about arbitrary words.
+\end{win}
+\end{column}
+\begin{column}{0.42\textwidth}
+\small
+\begin{itemize}
+  \item \aid{by-completeness}: the converse, given an exact section --- how
+        uniqueness travels through products;
+  \item with surjectivity, the records assemble a group isomorphism:
+        \aid{\_IsPresentationOf\_}.
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}

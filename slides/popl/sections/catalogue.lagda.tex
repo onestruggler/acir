@@ -1,0 +1,168 @@
+\begin{code}[hide]
+module slides.popl.sections.catalogue where
+
+open import Algebra.Bundles using (Group ; Monoid)
+open import Algebra.Morphism.Structures using (module MonoidMorphisms)
+open import Data.Nat using (ℕ ; suc ; 2+)
+open import Data.Nat.Primality using (Prime)
+open import Level using (0ℓ)
+
+open import Word.Base using (_ʷ)
+open import Presentation.Definitions using (_IsPresentationOf_)
+open import Presentation.Construct.Base using (_⋄_⋄_ ; CommRel ; ConjRelʷ ; _⊕^_)
+import Presentation.Properties as PP
+open import Examples.Groups.Cyclic.Normalization using (_Cn,_===_)
+open import Examples.Groups.Symmetric.Syntactics using (_VRel,_===_)
+import Examples.Groups.Pauli.Presentation as Pauli
+import Examples.Construct.SemiDirectProduct.SnD as SnD
+import Examples.Amalgamations.CliffordT1 as CliffordT1
+
+open SnD using (conj ; module Wreath)
+open Pauli using (Pauli-group) renaming (Γ-H to Γ-Pauli₁)
+open Monoid using (rawMonoid)
+open MonoidMorphisms using (IsMonoidIsomorphism)
+open PP using (•-ε-monoid)
+open CliffordT1.CliffordT1 using (_===_ ; amalPres ; f)
+\end{code}
+%% The catalogue (paper §5).
+\section{A catalogue of verified presentations}
+
+\begin{frame}{What the library has verified}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lll@{}}
+\toprule
+relation set & presents & what it exercises\\
+\midrule
+$T^{\,n+1}=\varepsilon$\;/\;$T^{\,0}=\varepsilon$ & $\mathbb{Z}_{n+1}$\;/\;the \emph{monoid} $(\mathbb{N},+,0)$ & monoid vs.\ group presentations\\
+\aid{order}, \aid{yang-baxter} + structure & permutations of $\mathsf{Fin}\;n$ & circuits, a recursive tower\\
+$(\mathbb{Z}_N)^n \rtimes S_n$-circuits & $\mathbb{Z}_N\wr S_n$, every $N,n$ & products with semantics\\
+$(\mathbb{Z}_p\times\mathbb{Z}_p)^n$ & Pauli group mod phases, every prime $p$ & pure composition\\
+qubit Clifford+$T$ rules & $\cong\langle T,M\rangle\ast_M\langle H,M\rangle$ & amalgamation, \aid{refl}\\
+qutrit Clifford+$T$ rules & $\cong$ an amalgam over $M=\langle S,X,\zeta,H^2\rangle$ & long towers, twisted relations\\
+$U_3(\mathbb{Z}[\frac12,i])$, S1--S14 & $\cong(\mathbb{Z}_4\wr S_3)\ast_M\langle M,K_{01}\rangle$ & reuse of the wreath product\\
+\bottomrule
+\end{tabular}
+
+\vspace{10pt}
+\begin{columns}[c]
+\begin{column}{0.45\textwidth}
+\begin{win}
+\small Every theorem restated with its full type in one index module,
+\texttt{MainTheorems.agda}.
+\end{win}
+\end{column}
+\begin{column}{0.45\textwidth}
+\small $T^0=\varepsilon$ presents $\mathbb{Z}$ as a \emph{group} but $\mathbb{N}$ as a
+\emph{monoid}: words have no formal inverses, and \aid{Grouplike} is exactly what fails.
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Whole families at once}
+\renewcommand{\AgdaCodeStyle}{\footnotesize}
+\begin{columns}[c]
+\begin{column}{0.58\textwidth}
+\textbf{Wreath products}: signed permutations at $N=2$, monomial matrices with
+$N$-th roots of unity in general --- completeness over \alert{two naturals}:
+\begin{code}
+wreath-presentation : ∀ n m →
+  (((suc m Cn,_===_) ⊕^ n) ⋄ (n VRel,_===_) ⋄ ConjRelʷ conj)
+    IsPresentationOf (Wreath.wreath-group n m)
+\end{code}
+\begin{code}[hide]
+wreath-presentation n m = Wreath.presentation n m
+\end{code}
+\vspace{4pt}
+\textbf{Pauli groups} for every prime: three construction theorems composed,
+\alert{no coset enumeration at all}:
+\begin{code}
+pauli-presentation : ∀ m (prime : Prime (2+ m)) n →
+  (Γ-Pauli₁ m prime ⊕^ n) IsPresentationOf (Pauli-group m prime n)
+\end{code}
+\begin{code}[hide]
+pauli-presentation m prime = Pauli.Pauli-presentation m prime
+\end{code}
+\end{column}
+\begin{column}{0.39\textwidth}
+\centering
+{\small normal form of $\mathbb{Z}_N\wr S_n$:}\\[4pt]
+\begin{tikzpicture}[x=4.6mm,y=5.5mm,line width=0.7pt]
+  \foreach \y in {0,1,2,3} \draw[wire] (0,\y) -- (11,\y);
+  \foreach \y/\e in {0/2,1/0,2/3,3/1}
+    \node[draw,fill=tint,font=\scriptsize,minimum width=6mm,minimum height=4mm,inner sep=1pt] at (1.6,\y) {$T^{\e}$};
+  \foreach \x/\p in {4/2,5.5/1,7/2,8.5/0,10/1} {
+    \fill[white] (\x-0.55,\p-0.05) rectangle (\x+0.55,\p+1.05);
+    \draw[wire] (\x-0.55,\p) -- (\x+0.55,\p+1);
+    \draw[wire] (\x-0.55,\p+1) -- (\x+0.55,\p);
+  }
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (0.6,-0.6) -- (2.6,-0.6) node[midway,below=2pt,font=\scriptsize]{residues};
+  \draw[decorate,decoration={brace,amplitude=3pt,mirror}] (3.3,-0.6) -- (10.7,-0.6) node[midway,below=2pt,font=\scriptsize]{staircases};
+\end{tikzpicture}
+
+\vspace{10pt}
+{\small normal form of the Pauli group: $X^{a_1}Z^{b_1}\cdots X^{a_n}Z^{b_n}$ ---
+nothing proved about Paulis specifically}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Amalgamation rediscovers Matsumoto--Amano}
+\begin{columns}[c]
+\begin{column}{0.52\textwidth}
+\footnotesize Single-qubit Clifford+$T$; generators $T,H,S,\omega$, $X := HSSH$;
+$\omega^8 = S^4 = H^2 = \varepsilon$, $T^2 = S$, $(SH)^3 = (TX)^2 = \omega$,
+$\omega$ central.
+\small
+\[
+  \text{Clifford}{+}T \;\cong\; \langle T, M\rangle \ast_M \langle H, M\rangle,
+  \qquad M = \langle X, S, \omega\rangle
+\]
+The alternating normal form, read right to left:
+\[
+  (\varepsilon\mid T)\;(HT\mid SHT)^{*}\;(\varepsilon\mid H\mid SH)\;\mathcal{M}
+\]
+--- \alert{Matsumoto--Amano}, from the group theory alone.
+\renewcommand{\AgdaCodeStyle}{\scriptsize}
+\begin{code}
+clifford+T-qubit-isomorphism : IsMonoidIsomorphism
+  (rawMonoid (•-ε-monoid _===_)) (rawMonoid (•-ε-monoid amalPres)) (f ʷ)
+\end{code}
+\begin{code}[hide]
+clifford+T-qubit-isomorphism = CliffordT1.CliffordT1.CliffordT1-isomorphism
+\end{code}
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[>={Stealth[length=1.8mm]},
+  lab/.style={font=\tiny,align=center,text=hot}]
+  \node[bx=prim,font=\scriptsize] (b) at (0,0) {$\langle\omega\rangle\times\langle S\rangle$};
+  \node[bx=prim,font=\scriptsize] (m) at (0,1.1) {$M=\langle X,S,\omega\rangle$};
+  \node[bx=prim,font=\scriptsize] (t) at (-1.6,2.2) {$\langle T,M\rangle$};
+  \node[bx=prim,font=\scriptsize] (h) at (1.6,2.2) {$\langle H,M\rangle$};
+  \node[bx=ok,font=\scriptsize] (a) at (0,3.3) {$\langle T,M\rangle\ast_M\langle H,M\rangle$};
+  \draw[->,thick] (b) -- node[right,lab]{2 cosets} (m);
+  \draw[->,thick] (m) -- node[left,lab]{2 cosets} (t);
+  \draw[->,thick] (m) -- node[right,lab]{3 cosets} (h);
+  \draw[->,thick] (t) -- (a); \draw[->,thick] (h) -- (a);
+\end{tikzpicture}
+
+\vspace{3pt}
+\begin{tikzpicture}[x=7.2mm,
+  s/.style={draw,minimum height=5.5mm,minimum width=6.8mm,font=\scriptsize,inner sep=1pt}]
+  \node[s,fill=gray!15] at (0,0) {$\mathcal{M}$};
+  \node[s,fill=tintok] at (1,0) {$HS$};
+  \node[s,fill=tint] at (2,0) {$T$}; \node[s,fill=tintok] at (3,0) {$H$};
+  \node[s,fill=tint] at (4,0) {$T$}; \node[s,fill=tintok] at (5,0) {$HS$};
+  \node[s,fill=tint] at (6,0) {$T$};
+\end{tikzpicture}
+
+{\scriptsize a normal form with $T$-count 3}
+\end{column}
+\end{columns}
+\vspace{4pt}
+{\small Same story for qutrit Clifford+$T$ (Glaudell--Ross--Taylor's form) and for
+$U_3(\mathbb{Z}[\frac12,i])$ --- where the regular expression is a \alert{new}
+canonical form.}
+\end{frame}

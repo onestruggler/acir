@@ -1,0 +1,138 @@
+%% Discussion, related work, conclusion (paper §6–§8).
+\section{Lessons}
+
+\begin{frame}{Setoids, not quotients: the balance sheet}
+\begin{columns}[T]
+\begin{column}{0.47\textwidth}
+\begin{tcolorbox}[colback=tinthot,colframe=hot,boxrule=0.6pt,arc=2pt,
+  title=What it cost,fonttitle=\bfseries\small]
+\small Every function out of a presented monoid carries a congruence proof
+(bundled by the standard library's \aid{Injection}, \aid{RightInverse}, \ldots).
+\end{tcolorbox}
+\vspace{4pt}
+\small A univalent quotient would turn $\approx$ into $\equiv$ --- but its eliminator
+still demands a respect proof for every function out of it.
+\end{column}
+\begin{column}{0.49\textwidth}
+\begin{win}[title=What it bought]
+\small
+\begin{itemize}
+  \item normal forms, coset tables, sections \alert{run}: hundreds of obligations
+        close by \aid{refl};
+  \item \alert{maps into the syntax} --- sections, transversals, amalgamation
+        tails --- need concrete representatives;
+  \item plain Agda and the stdlib algebra hierarchy: \alert{upstreamable};
+  \item derivations are data: lifting lemmas are inductions.
+\end{itemize}
+\end{win}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Size, cost, and what is not formalized}
+\begin{columns}[c]
+\begin{column}{0.46\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[xbar stacked, width=6.2cm, height=3.2cm, xmin=0, xmax=12000,
+  symbolic y coords={examples,core}, ytick=data, bar width=13pt,
+  y tick label style={font=\small}, x tick label style={font=\scriptsize},
+  xlabel={\scriptsize lines of Agda}, scaled x ticks=false, enlarge y limits=0.5,
+  axis lines*=left]
+\addplot[fill=prim!70,draw=prim] coordinates {(1000,core) (0,examples)};
+\addplot[fill=prim!40,draw=prim] coordinates {(4300,core) (0,examples)};
+\addplot[fill=prim!15,draw=prim] coordinates {(5700,core) (0,examples)};
+\addplot[fill=ok!60,draw=ok] coordinates {(0,core) (4300,examples)};
+\addplot[fill=ok!20,draw=ok] coordinates {(0,core) (6700,examples)};
+\end{axis}
+\end{tikzpicture}
+
+{\scriptsize core: presentation core $\approx$1k, product constructions 4.3k, rest\\
+examples: qutrit Clifford+$T$ and $U_3$ 4.3k, others}
+\vspace{6pt}
+
+\small $\approx$22\,000 lines, 74 files. Whole development from scratch:
+\textbf{1\,min\,42\,s}, 3.5\,GB (Agda 2.8.0).
+\end{column}
+\begin{column}{0.50\textwidth}
+\textbf{Limitations}
+\begin{itemize}
+  \small
+  \item the amalgamation studies stop at \alert{syntax}: the isomorphism with the
+        matrix groups is taken from the literature --- the rings and unitary
+        matrices are not in the standard library;
+  \item \alert{continuous parameters} (phase gates with real angles) have no finite
+        coset structure: vocabulary yes, engine no;
+  \item \alert{infinite-index} steps ($\mathbb{Z}_N\wr\mathbb{Z}$) are statable, but
+        need induction instead of finitely many evaluations.
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Related work}
+\centering\footnotesize
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}llcccc@{}}
+\toprule
+ & prover & circuits & presentations & normal forms & completeness\\
+\midrule
+\textbf{this work} & Agda & \checkmark & \checkmark & \checkmark & \checkmark\\
+Bian--Selinger developments & Agda & \checkmark & \checkmark & \checkmark & syntactic\\
+\textsc{sqir}/\textsc{voqc}, VyZX & Rocq & \checkmark & -- & -- & sound only\\
+$\Pi$ as free rig groupoid & Agda (HoTT) & \checkmark & categorical & \checkmark & classical\\
+$\sqrt{\Pi}$ & Agda (partial) & \checkmark & categorical & -- & 2q Clifford\\
+mathlib group theory & Lean & -- & \checkmark & -- & --\\
+free groups (AFP) & Isabelle & -- & \checkmark & \checkmark & --\\
+IsaFoR completion & Isabelle & -- & -- & \checkmark & --\\
+\bottomrule
+\end{tabular}
+
+\vspace{10pt}
+\begin{columns}[T]
+\begin{column}{0.46\textwidth}
+\small \textbf{vs.\ abstract presentation theory}: no infrastructure to prove that a
+\emph{given} relation set presents a \emph{given} group --- no verified coset
+enumeration, no transversals.
+\end{column}
+\begin{column}{0.46\textwidth}
+\small \textbf{vs.\ completion}: we never orient rules or prove confluence; a normal
+form is any verified \emph{function} --- avoiding Squier's obstruction.
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Takeaways}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+\begin{enumerate}
+  \setlength{\itemsep}{8pt}
+  \item \textbf{Completeness = soundness + unique normal form} --- one generic
+        lemma; case studies only reason about finite data.
+  \item \textbf{Coset tables are certificates}: finite data plus five equations,
+        checked by coverage and closed by evaluation.
+  \item \textbf{Normal forms grow one wire at a time} --- mixed-radix numerals over
+        the chain the circuit layer hands us.
+  \item \textbf{Constructions come in pairs}, against groups we added to the
+        standard library.
+\end{enumerate}
+\end{column}
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[node distance=3mm]
+  \node[bx=prim,text width=44mm,font=\small] (a) {presentations as \textbf{data}};
+  \node[bx=prim,text width=44mm,font=\small,below=of a] (b) {normal forms as \textbf{bundles}};
+  \node[bx=prim,text width=44mm,font=\small,below=of b] (c) {coset tables as \textbf{certificates}};
+  \node[bx=ok,text width=44mm,font=\small\bfseries,below=7mm of c] (d) {heroic manuscripts $\to$\\ordinary, checked mathematics};
+  \draw[arr,ok] (c) -- (d);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[standout]
+Thank you!\\[12pt]
+{\normalsize\mdseries Every theorem in the paper is checked by Agda:\\
+\texttt{--safe}, \texttt{--cubical-compatible}, no postulates,\\
+indexed in \texttt{MainTheorems.agda}.}
+\end{frame}
