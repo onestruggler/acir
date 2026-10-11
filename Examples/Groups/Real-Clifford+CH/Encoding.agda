@@ -232,14 +232,13 @@ module _ {m : ℕ} where
   ----------------------------------------------------------------------
   -- The swap and the X gate (Definition 8.2, Appendix A.4.1)
 
-  private
-    -- The basis vector with bits u, t on wires p + 1, p and context c.
-    str₂′ : ℕ → Bits (₁₊ m) → Bool → Bool → Bits n
-    str₂′ p c u t = insertℕ (suc p) u (insertℕ p t c)
+  -- The basis vector with bits u, t on wires p + 1, p and context c.
+  str₂′ : ℕ → Bits (₁₊ m) → Bool → Bool → Bits n
+  str₂′ p c u t = insertℕ (suc p) u (insertℕ p t c)
 
-    -- With bit g on wire p and context c.
-    str₁′ : ℕ → Bits (₂₊ m) → Bool → Bits n
-    str₁′ p c g = insertℕ p g c
+  -- With bit g on wire p and context c.
+  str₁′ : ℕ → Bits (₂₊ m) → Bool → Bits n
+  str₁′ p c g = insertℕ p g c
 
   -- E_{k,ℓ}(⨉), the swap of wires p and p + 1.
   E-swap : ℕ → Word (GenP n)
@@ -270,36 +269,42 @@ module _ {m : ℕ} where
   --
   -- For H_[a,b] H_[c,d] whose codes are x0y0z, x1y0z, x0y1z, x1y1z (W₁)
   -- or x0y0z, x0y1z, x1y0z, x1y1z (W₂): a swap network carries the two
-  -- varying wires, i (lower) and j (upper), down to wires 1 and 0, the
-  -- controls keeping their order; X negates the controls that are 0;
-  -- then H_[0,1] H_[3,2]; then back.  The paper indexes the negation of
-  -- the j-th control from the top as ℰ_{j,n−j−2}: it is the control on
-  -- wire n − 1 − j, so the negations run over the wires 2 … n − 1 of the
-  -- moved frame, with the bits of the base code a at the wires other
-  -- than i and j.
+  -- varying wires, i (lower) and j (upper), down to wires 0 and 1, the
+  -- controls keeping their order; X negates the controls that are 1
+  -- (see ℰ); then H_[0,1] H_[3,2]; then back.  The paper indexes the
+  -- negation of the j-th control from the top as ℰ_{j,n−j−2}: it is the
+  -- control on wire n − 1 − j, so the negations run over the wires
+  -- 2 … n − 1 of the moved frame, with the bits of the base code a at
+  -- the wires other than i and j.
 
-  private
-    -- The control bits in the moved frame, wire 2 of the frame first.
-    ctrls : Bits n → ℕ → ℕ → Bits (₁₊ m)
-    ctrls a i j = removeℕ i (removeℕ j a)
+  -- The control bits in the moved frame, wire 2 of the frame first.
+  ctrls : Bits n → ℕ → ℕ → Bits (₁₊ m)
+  ctrls a i j = removeℕ i (removeℕ j a)
 
-    negations↑ negations↓ : Bits n → ℕ → ℕ → Word (GenP n)
-    negations↑ a i j = ∏ (range↑ 2 n) λ w → ℰ (lookupℕ (w ∸ 2) (ctrls a i j)) w
-    negations↓ a i j = ∏ (range↓ 2 n) λ w → ℰ (lookupℕ (w ∸ 2) (ctrls a i j)) w
+  negations↑ negations↓ : Bits n → ℕ → ℕ → Word (GenP n)
+  negations↑ a i j = ∏ (range↑ 2 n) λ w → ℰ (lookupℕ (w ∸ 2) (ctrls a i j)) w
+  negations↓ a i j = ∏ (range↓ 2 n) λ w → ℰ (lookupℕ (w ∸ 2) (ctrls a i j)) w
 
-    -- The swap network, forward (applied first) and back.  With m′ the
-    -- number of wires below i and ℓ the number between i and j.
-    swaps→ swaps← : ℕ → ℕ → Word (GenP n)
-    swaps→ i j =
-      ∏ (range↑ 0 i) (λ k → E-swap (suc k) • E-swap k) •
-      ∏ (range↓ (suc i) j) (λ k → E-swap k)
-    swaps← i j =
-      ∏ (range↑ (suc i) j) (λ k → E-swap k) •
-      ∏ (range↓ 0 i) (λ k → E-swap k • E-swap (suc k))
+  -- The swap network and its reverse.  Read with the left factor
+  -- acting first, swaps← carries wire j down to wire i + 1, one swap
+  -- at a time from the top, then the pair down to wires 0 and 1; swaps→
+  -- carries them back.  The products over i + 1 … j − 1 run downwards
+  -- in swaps← and upwards in swaps→, as the paper's ∏← and ∏→ say: the
+  -- other way round they carry wire j only to wire j − 1, which is the
+  -- same thing only when j − i < 3 — always on three qubits, where
+  -- Checks8 decides these rules, and first wrong on four
+  -- (`scratchpad/tW.py`).
+  swaps→ swaps← : ℕ → ℕ → Word (GenP n)
+  swaps→ i j =
+    ∏ (range↑ 0 i) (λ k → E-swap (suc k) • E-swap k) •
+    ∏ (range↑ (suc i) j) (λ k → E-swap k)
+  swaps← i j =
+    ∏ (range↓ (suc i) j) (λ k → E-swap k) •
+    ∏ (range↓ 0 i) (λ k → E-swap k • E-swap (suc k))
 
-    -- H_[0,1] H_[3,2] at this width.
-    HH₀₁₃₂ : Word (GenP n)
-    HH₀₁₃₂ = hh (fin8 {m} ₀) (fin8 {m} ₁) (fin8 {m} ₃) (fin8 {m} ₂)
+  -- H_[0,1] H_[3,2] at this width.
+  HH₀₁₃₂ : Word (GenP n)
+  HH₀₁₃₂ = hh (fin8 {m} ₀) (fin8 {m} ₁) (fin8 {m} ₃) (fin8 {m} ₂)
 
   W₁ W₂ : Bits n → ℕ → ℕ → Word (GenP n)
   W₁ a i j = swaps← i j • E-swap 0 • negations↑ a i j • HH₀₁₃₂ •

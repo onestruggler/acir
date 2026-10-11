@@ -1,0 +1,45 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- Lemma A.1, first part: the generic equations of Figure 6 that
+-- Figure 7 derives in a few lines (Clément, Appendix A.2)
+--
+-- (e1), (e2), (c2), (c3), (c4), the variants (c2†), (c4†), (c5†), and
+-- (b2), (b3), (b5), each by the paper's own chain; then the seventeen
+-- ways conjugating a letter by X_[x,y] exchanges x and y in it, which
+-- is what lets Auxiliary.LemmaA1.Rename move an equation from one tuple
+-- of distinct indices to any other.  All indices are distinct and in
+-- any order (the paper proves every equation "in full generality").
+--
+-- Every derivation is a chain of segment replacements (SegChain),
+-- generated from the paper's lines and checked numerically first: each
+-- replaced segment occurs where the step says and has the matrix of its
+-- replacement (LemmaA1/gen: gen_a1.py, spec_base.py).  An equation whose
+-- sides the paper writes the other way round carries a prime.
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+open import Data.Nat using (ℕ)
+
+module Examples.Groups.Real-Clifford+CH.Auxiliary.LemmaA1.Base (N : ℕ) where
+
+open import Data.Fin using (Fin)
+open import Data.List using ([] ; _∷_)
+open import Relation.Binary.PropositionalEquality as Eq using (_≢_)
+open import Word.Base using (ε ; _•_)
+
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.Syntactics using (−1 ; X ; H ; _G,_===_)
+open _G,_===_
+open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.SegChain (N G,_===_)
+  using (at ; _▸_ ; done ; run)
+
+open Tools (N G,_===_)
+
+sy : ∀ {a b : Fin N} → a ≢ b → b ≢ a
+sy ne e = ne (Eq.sym e)
+
+------------------------------------------------------------------------
+-- The equations
+

@@ -29,6 +29,7 @@ open import Data.Maybe using (Maybe ; just ; nothing)
 open import Data.Nat using (ℕ ; zero ; suc ; _+_ ; _∸_ ; _<ᵇ_ ; _≡ᵇ_)
 open import Data.Product using (_×_ ; _,_)
 open import Data.Vec using (Vec ; [] ; _∷_ ; zipWith)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
 open import Notations using (₀ ; ₁ ; ₁₊ ; ₂₊ ; ₃₊)
@@ -45,26 +46,34 @@ open import Examples.Groups.Real-Clifford+CH.Encoding using (Σ ; Σ′ ; hpat ;
 ------------------------------------------------------------------------
 -- The decoding, on n = m + 3 wires, with indices as naturals
 
+-- The slot of a wire in the gate for two codes: the target where they
+-- differ, a control of the common bit elsewhere.
+slot : Bool → Bool → Slot
+slot b b′ = if b xor b′ then tgt else ctrl b
+
+-- The layout with the H on wire h, the box on wire q and the bits of a
+-- as controls elsewhere, the first bit on wire w.
+layoutHFrom : ∀ {k} → ℕ → ℕ → ℕ → Bits k → Layout k
+layoutHFrom w h q []       = []
+layoutHFrom w h q (b ∷ bs) = (if w ≡ᵇ h then tgtH else if w ≡ᵇ q then tgt else ctrl b) ∷ layoutHFrom (suc w) h q bs
+
 module _ {m : ℕ} where
   private
     n : ℕ
     n = ₃₊ m
 
-    -- The Gray code of an index.
-    gcode : ℕ → Bits n
-    gcode k = gray (toBits n k)
+  -- The Gray code of an index.
+  gcode : ℕ → Bits n
+  gcode k = gray (toBits n k)
 
-    -- The layout of the gate for a and a + 1: the target where the
-    -- codes differ, the common bits as controls.
-    slot : Bool → Bool → Slot
-    slot b b′ = if b xor b′ then tgt else ctrl b
+  -- The layout of the gate for a and a + 1: the target where the
+  -- codes differ, the common bits as controls.
+  layout□ : ℕ → Layout n
+  layout□ a = zipWith slot (gcode a) (gcode (suc a))
 
-    layout□ : ℕ → Layout n
-    layout□ a = zipWith slot (gcode a) (gcode (suc a))
-
-    -- β: the bit of the code of a on the target wire.
-    βof : ℕ → Bool
-    βof a = lookupℕ (tgtWire (layout□ a)) (gcode a)
+  -- β: the bit of the code of a on the target wire.
+  βof : ℕ → Bool
+  βof a = lookupℕ (tgtWire (layout□ a)) (gcode a)
 
   ----------------------------------------------------------------------
   -- (−1)_[a] (−1)_[b]
@@ -73,15 +82,14 @@ module _ {m : ℕ} where
   dZZ₁ : ℕ → Circuit n
   dZZ₁ a = mc□ (layout□ a)
 
-  private
-    -- D((−1)_[a] (−1)_[a+d]) for a ≤ a + d: the boxes for a, …, a + d − 1,
-    -- the one for a first (the ∘-product runs from the right).
-    chain : ℕ → ℕ → Circuit n
-    chain a zero    = ε
-    chain a (suc d) = dZZ₁ a • chain (suc a) d
+  -- D((−1)_[a] (−1)_[a+d]) for a ≤ a + d: the boxes for a, …, a + d − 1,
+  -- the one for a first (the ∘-product runs from the right).
+  dZZ-chain : ℕ → ℕ → Circuit n
+  dZZ-chain a zero    = ε
+  dZZ-chain a (suc d) = dZZ₁ a • dZZ-chain (suc a) d
 
   dZZ : ℕ → ℕ → Circuit n
-  dZZ a b = if a <ᵇ b then chain a (b ∸ a) else chain b (a ∸ b)
+  dZZ a b = if a <ᵇ b then dZZ-chain a (b ∸ a) else dZZ-chain b (a ∸ b)
 
   ----------------------------------------------------------------------
   -- (−1)_[c] X_[a,b]
@@ -107,18 +115,26 @@ module _ {m : ℕ} where
     then dZXlo₁ a • dZXhi (suc a) (suc d) • dZXhi₁ a
     else dZXhi₁ (a + suc d) • dZXhi a (suc d) • dZXlo₁ (a + suc d)
 
-  private
-    -- (−1)_[a] X_[a,b] for any a ≠ b, through X_[a,b] = X_[b,a].
-    dZXself : ℕ → ℕ → Circuit n
-    dZXself a b = if a <ᵇ b then dZXlo a (b ∸ a) else dZXhi b (a ∸ b)
+  -- (−1)_[a] X_[a,b] for any a ≠ b, through X_[a,b] = X_[b,a].
+  dZXself : ℕ → ℕ → Circuit n
+  dZXself a b = if a <ᵇ b then dZXlo a (b ∸ a) else dZXhi b (a ∸ b)
+
+  -- (−1)_[c] X_[a,b], its tests passed as arguments so that proofs can
+  -- rewrite them: whether c is the lower index lo of a, b, the upper one
+  -- hi, or neither.
+  dZXs : Bool → Bool → ℕ → ℕ → ℕ → ℕ → ℕ → Circuit n
+  dZXs true  _     lo hi a b c = dZXlo lo (hi ∸ lo)
+  dZXs false true  lo hi a b c = dZXhi lo (hi ∸ lo)
+  dZXs false false lo hi a b c = dZXself a b • dZZ c a
+
+  -- The same with the order test of a, b as an argument.
+  dZXb : Bool → ℕ → ℕ → ℕ → Circuit n
+  dZXb β c a b =
+    dZXs (c ≡ᵇ (if β then a else b)) (c ≡ᵇ (if β then b else a))
+         (if β then a else b) (if β then b else a) a b c
 
   dZX : ℕ → ℕ → ℕ → Circuit n
-  dZX c a b =
-    let lo = if a <ᵇ b then a else b
-        hi = if a <ᵇ b then b else a
-    in if c ≡ᵇ lo then dZXlo lo (hi ∸ lo)
-       else if c ≡ᵇ hi then dZXhi lo (hi ∸ lo)
-       else dZXself a b • dZZ c a
+  dZX c a b = dZXb (a <ᵇ b) c a b
 
   ----------------------------------------------------------------------
   -- X_[a,b] X_[c,d]
@@ -129,33 +145,39 @@ module _ {m : ℕ} where
   ----------------------------------------------------------------------
   -- H_[a,b] H_[c,d]
 
-  private
-    -- The layout with the H on wire h, the box on wire q and the bits
-    -- of a as controls elsewhere.
-    layoutH : Bits n → ℕ → ℕ → Layout n
-    layoutH a h q = go 0 a
-      where
-      go : ∀ {k} → ℕ → Bits k → Layout k
-      go w []       = []
-      go w (b ∷ bs) = (if w ≡ᵇ h then tgtH else if w ≡ᵇ q then tgt else ctrl b) ∷ go (suc w) bs
+  -- The layout of an H gate on n wires.
+  layoutH : Bits n → ℕ → ℕ → Layout n
+  layoutH a h q = layoutHFrom 0 h q a
 
-    -- D(H_[0,1] H_[3,2]): white controls everywhere, the box on wire 1,
-    -- the H on wire 0.
-    gadget : Circuit n
-    gadget = mcH (layoutH (gcode 0) 0 1)
+  -- D(H_[0,1] H_[3,2]): white controls everywhere, the box on wire 1,
+  -- the H on wire 0.
+  gadget : Circuit n
+  gadget = mcH (layoutH (gcode 0) 0 1)
 
-    -- The decoding of a word of (−1) X letters, the last letter first.
-    dΣ : Word (GenP n) → Circuit n
-    dΣ [ −1X c a b _ ]ʷ = dZX (toℕ c) (toℕ a) (toℕ b)
-    dΣ [ _ ]ʷ           = ε
-    dΣ ε                = ε
-    dΣ (u • v)          = dΣ v • dΣ u
+  -- The decoding of a word of (−1) X letters, the last letter first.
+  dΣ : Word (GenP n) → Circuit n
+  dΣ [ −1X c a b _ ]ʷ = dZX (toℕ c) (toℕ a) (toℕ b)
+  dΣ [ _ ]ʷ           = ε
+  dΣ ε                = ε
+  dΣ (u • v)          = dΣ v • dΣ u
 
-    -- Four distinct indices.
-    dHH₄ : ℕ → ℕ → ℕ → ℕ → Circuit n
-    dHH₄ a b c d with hpat (gcode a) (gcode b) (gcode c) (gcode d)
-    ... | just (pb , pc) = mcH (layoutH (gcode a) pb pc)
-    ... | nothing        = dΣ (Σ′ a b c d) • gadget • dΣ (Σ a b c d)
+  -- Four distinct indices.
+  dHH₄ : ℕ → ℕ → ℕ → ℕ → Circuit n
+  dHH₄ a b c d with hpat (gcode a) (gcode b) (gcode c) (gcode d)
+  ... | just (pb , pc) = mcH (layoutH (gcode a) pb pc)
+  ... | nothing        = dΣ (Σ′ a b c d) • gadget • dΣ (Σ a b c d)
+
+  -- An H-pattern decodes to the multi-controlled H.
+  dHH₄-pat : ∀ a b c d pb pc → hpat (gcode a) (gcode b) (gcode c) (gcode d) ≡ just (pb , pc) →
+             dHH₄ a b c d ≡ mcH (layoutH (gcode a) pb pc)
+  dHH₄-pat a b c d pb pc e with hpat (gcode a) (gcode b) (gcode c) (gcode d)
+  dHH₄-pat a b c d pb pc Eq.refl | just .(pb , pc) = Eq.refl
+
+  -- Otherwise it is conjugated from H_[0,1] H_[3,2].
+  dHH₄-nopat : ∀ a b c d → hpat (gcode a) (gcode b) (gcode c) (gcode d) ≡ nothing →
+               dHH₄ a b c d ≡ dΣ (Σ′ a b c d) • gadget • dΣ (Σ a b c d)
+  dHH₄-nopat a b c d e with hpat (gcode a) (gcode b) (gcode c) (gcode d)
+  dHH₄-nopat a b c d Eq.refl | nothing = Eq.refl
 
   dHH : ℕ → ℕ → ℕ → ℕ → Circuit n
   dHH a b c d =

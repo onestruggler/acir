@@ -1370,19 +1370,18 @@ data HFreeʷ : W → Set where
   nil : HFreeʷ ε
   cat : ∀ {u v} → HFreeʷ u → HFreeʷ v → HFreeʷ (u • v)
 
-private
-  -- The deciding wrapper on indices already known to differ.
-  gen-zx : ∀ (c a b : Fin N) .(ni : a ≢ b) → [ −1X {₃₊ m} c a b ni ]ʷ ≡ zx {₃₊ m} c a b
-  gen-zx c a b ni with a ≟ b
-  ... | yes e = ⊥-elim-irr (ni e)
-  ... | no  _ = Eq.refl
+-- The deciding wrapper on indices already known to differ.
+gen-zx : ∀ (c a b : Fin N) .(ni : a ≢ b) → [ −1X {₃₊ m} c a b ni ]ʷ ≡ zx {₃₊ m} c a b
+gen-zx c a b ni with a ≟ b
+... | yes e = ⊥-elim-irr (ni e)
+... | no  _ = Eq.refl
 
-  gen-xx : ∀ (a b c d : Fin N) .(ni : a ≢ b) .(ni′ : c ≢ d) →
-           [ XX {₃₊ m} a b c d ni ni′ ]ʷ ≡ xx {₃₊ m} a b c d
-  gen-xx a b c d ni ni′ with a ≟ b | c ≟ d
-  ... | yes e | _     = ⊥-elim-irr (ni e)
-  ... | no  _ | yes e = ⊥-elim-irr (ni′ e)
-  ... | no  _ | no  _ = Eq.refl
+gen-xx : ∀ (a b c d : Fin N) .(ni : a ≢ b) .(ni′ : c ≢ d) →
+         [ XX {₃₊ m} a b c d ni ni′ ]ʷ ≡ xx {₃₊ m} a b c d
+gen-xx a b c d ni ni′ with a ≟ b | c ≟ d
+... | yes e | _     = ⊥-elim-irr (ni e)
+... | no  _ | yes e = ⊥-elim-irr (ni′ e)
+... | no  _ | no  _ = Eq.refl
 
 AsSxs-gen : ∀ {g : GenP (₃₊ m)} → HFree g → AsSxs [ g ]ʷ
 AsSxs-gen (hf-zz a b) = AsSxs-zz a b

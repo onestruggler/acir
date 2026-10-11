@@ -1,0 +1,186 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- Theorem 8.9 by induction on the width, with Lemma 8.7 proved
+--
+-- The paper proves Section 8's lemmas on n qubits using completeness on
+-- fewer — its Lemma 5.1, "the induction hypothesis" — and so does this
+-- development: Lemma 8.7 on 5 + k qubits (GeneralN.Lemma87All) takes
+-- completeness at every width up to 4 + k.  Completeness.Theorem-8-9′
+-- takes Lemmas 8.7 and 8.8 at every width outright, which cannot be fed
+-- such a proof.  Here completeness is built width by width instead
+-- (`below`: at every width below n, each from all the smaller ones), so
+-- Lemma 8.7 is discharged, and Lemma 8.8 is asked for only in the form
+-- the paper proves it: at each width, given completeness below.  From
+-- five qubits on that is Lemma88.All, so `Theorem-8-9‴` asks for Lemma
+-- 8.8 on three and four qubits only, and on three qubits that is
+-- Lemma88.W3.All, so `Theorem-8-9⁗` asks for four qubits only.
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+module Examples.Groups.Real-Clifford+CH.CompletenessInduction where
+
+open import Algebra.Bundles using (Monoid)
+open import Data.Nat using (ℕ ; zero ; suc ; _≤_ ; _<_ ; s≤s ; z≤n)
+open import Data.Nat.Properties using (m≤n⇒m<n∨m≡n)
+open import Data.Product using (_,_)
+open import Data.Sum using (inj₁ ; inj₂)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Word.Base using (Word)
+
+open import Notations using (₀ ; ₁ ; ₂ ; ₃₊)
+
+import Presentation.Base as PB
+open import Presentation.Definitions using (_IsSubMonoidPresentationOf_)
+open import Normalization.StarPresentation using (module MonoidSem)
+
+open import Examples.Groups.Real-Clifford+CH.Semantics
+open import Examples.Groups.Real-Clifford+CH.Syntactics
+open import Examples.Groups.Real-Clifford+CH.Interpretation
+open import Examples.Groups.Real-Clifford+CH.Soundness using (axiom-soundᴱ)
+
+import Examples.Groups.Real-Clifford+CH.EncodingSemantics as EncodingSemantics
+import Examples.Groups.Real-Clifford+CH.OneQubit as OneQubit
+import Examples.Groups.Real-Clifford+CH.Section8 as Section8
+import Examples.Groups.Real-Clifford+CH.TwoQubit as TwoQubit
+import Examples.Groups.Real-Clifford+CH.TwoQubit.Decoding as Decoding
+open TwoQubit.BF using () renaming (⟦_⟧Y to ⟦_⟧Y₂)
+import Examples.Groups.Real-Clifford+CH.Auxiliary.Syntactics as G
+import Examples.Groups.Real-Clifford+CH.Auxiliary.Theorem410Proof as T410
+import Examples.Groups.Real-Clifford+CH.Auxiliary.Theorem44 as T44
+open import Examples.Groups.Real-Clifford+CH.Completeness using (zero-wires)
+import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87Three as L87₃
+import Examples.Groups.Real-Clifford+CH.GeneralN.Lemma87All as L87ₙ
+import Examples.Groups.Real-Clifford+CH.Lemma88.All as L88
+import Examples.Groups.Real-Clifford+CH.Lemma88.W3.All as L88₃
+import Examples.Groups.Real-Clifford+CH.Lemma88.W4.All as L88₄
+
+------------------------------------------------------------------------
+-- Completeness at a width, and below it
+
+Complete : ℕ → Set
+Complete n = ∀ {w v : Circuit n} → ⟦ w ⟧ ~ ⟦ v ⟧ → n ⊢ w ≈ v
+
+Below : ℕ → Set
+Below n = ∀ {j} → j < n → Complete j
+
+------------------------------------------------------------------------
+-- Theorem 8.9
+
+module Theorem-8-9″
+  -- Two qubits: Theorem 4.4 of the literature; on more, Theorem 4.4 at
+  -- the width of P, from which Theorem 4.10 is proved.
+  (theorem-4-4  : TwoQubit.Theorem-4-4)
+  (theorem-4-4ₙ : ∀ k → T410.Theorem-4-4 k)
+  -- Lemma 8.8 on 3 + k qubits, given completeness on fewer.
+  (lemma-8-8    : ∀ k → Below (₃₊ k) → Section8.Lemma-8-8 k)
+  where
+
+  private
+    module L76 = TwoQubit.Lemma-7-6 theorem-4-4 Decoding.lemma-7-4 Decoding.lemma-7-5
+
+    -- Lemma 8.7, from completeness on two and three qubits and, on five
+    -- and more, on every width up to the one below.
+    lemma-8-7 : ∀ k → Below (₃₊ k) → Section8.Lemma-8-7 k
+    lemma-8-7 zero          b = L87₃.lemma-8-7₃ (b {2} (s≤s (s≤s (s≤s z≤n))))
+    lemma-8-7 (suc zero)    b = L87ₙ.lemma-8-7₄ (b {2} (s≤s (s≤s (s≤s z≤n))))
+                                                (b {3} (s≤s (s≤s (s≤s (s≤s z≤n)))))
+    lemma-8-7 (suc (suc k)) b =
+      L87ₙ.lemma-8-7ₙ (b {2} (s≤s (s≤s (s≤s z≤n)))) (b {3} (s≤s (s≤s (s≤s (s≤s z≤n))))) k
+                      (λ {j} j≤ → b {₃₊ j} (s≤s (s≤s (s≤s (s≤s j≤)))))
+
+    -- One width, from all the smaller ones.
+    step : ∀ n → Below n → Complete n
+    step ₀      _ {w} {v} _ = PB.trans (zero-wires w) (PB.sym (zero-wires v))
+    step ₁      _ = OneQubit.complete
+    step ₂      _ = L76.complete
+    step (₃₊ k) b = S8.complete
+      where
+      module S8 = Section8.Complete k (T410.theorem-4-10 k (theorem-4-4ₙ k))
+                    (EncodingSemantics.e-sem k) (lemma-8-8 k b) (lemma-8-7 k b)
+
+    -- Every width below n.
+    below : ∀ n → Below n
+    below zero    ()
+    below (suc n) {j} (s≤s j≤n) with m≤n⇒m<n∨m≡n j≤n
+    ... | inj₁ j<n     = below n j<n
+    ... | inj₂ Eq.refl = step n (below n)
+
+  -- Two circuits with the same matrix over ℤ[1/√2] are equal in QC.
+  completeness : ∀ n → Complete n
+  completeness n = step n (below n)
+
+  -- With soundness (Proposition 3.1), Figure 4 presents its image at
+  -- every width, as in Completeness.
+  subpresentation : ∀ n → (n VRel,_===_) IsSubMonoidPresentationOf Scaled-monoid n
+  subpresentation n = record
+    { ⟦_⟧  = MS.⟦_⟧
+    ; mono = record
+      { isMonoidHomomorphism = MS.Cong.isMonoidHomomorphism axiom-soundᴱ
+      ; injective            = λ {w} {v} e → completeness n {w} {v} (~-⟦⟧ᴱ {w = w} {v} e)
+      }
+    }
+    where
+    module MS = MonoidSem (n VRel,_===_) (Monoid.setoid (Scaled-monoid n))
+                          (Scaled-monoid n) (λ g → 1 , ⟦ g ⟧ᵍ)
+
+------------------------------------------------------------------------
+-- Theorem 8.9, with Lemma 8.8 proved from five qubits on
+
+-- Lemma 8.8 on 5 + k qubits is Lemma88.All, given completeness on
+-- fewer; what is left of it is three and four qubits.
+module Theorem-8-9‴
+  (theorem-4-4  : TwoQubit.Theorem-4-4)
+  (theorem-4-4ₙ : ∀ k → T410.Theorem-4-4 k)
+  (lemma-8-8₃   : Below 3 → Section8.Lemma-8-8 0)
+  (lemma-8-8₄   : Below 4 → Section8.Lemma-8-8 1)
+  where
+
+  private
+    lemma-8-8 : ∀ k → Below (₃₊ k) → Section8.Lemma-8-8 k
+    lemma-8-8 zero          b = lemma-8-8₃ b
+    lemma-8-8 (suc zero)    b = lemma-8-8₄ b
+    lemma-8-8 (suc (suc k)) b =
+      L88.lemma-8-8 (b {2} (s≤s (s≤s (s≤s z≤n)))) (b {3} (s≤s (s≤s (s≤s (s≤s z≤n))))) k b
+
+  open Theorem-8-9″ theorem-4-4 theorem-4-4ₙ lemma-8-8 public using (completeness ; subpresentation)
+
+------------------------------------------------------------------------
+-- Theorem 8.9, with Lemma 8.8 proved on three qubits too
+
+-- Lemma 8.8 on three qubits is Lemma88.W3.All, from completeness on two
+-- and Lemma D.2; what is left of it is four qubits.
+module Theorem-8-9⁗
+  (theorem-4-4  : TwoQubit.Theorem-4-4)
+  (theorem-4-4ₙ : ∀ k → T410.Theorem-4-4 k)
+  (lemma-8-8₄   : Below 4 → Section8.Lemma-8-8 1)
+  where
+
+  private
+    lemma-8-8₃ : Below 3 → Section8.Lemma-8-8 0
+    lemma-8-8₃ b = L88₃.lemma-8-8₃ (b {2} (s≤s (s≤s (s≤s z≤n))))
+
+  open Theorem-8-9‴ theorem-4-4 theorem-4-4ₙ lemma-8-8₃ lemma-8-8₄ public using (completeness ; subpresentation)
+
+------------------------------------------------------------------------
+-- Theorem 8.9 from Theorem 4.4 alone
+
+-- Lemma 8.8 on four qubits is Lemma88.W4.All, from completeness on two
+-- and three qubits and Lemma D.5.  And Proposition 4.8 derives the
+-- completeness of Figure 7, which the argument uses, from that of
+-- Figure 6, which is what the paper imports (Auxiliary.Theorem44,
+-- Auxiliary.LemmaA1).  So Theorem 8.9 rests on nothing but that one
+-- theorem, Theorem 4.4 as the paper states it: on two qubits, and at
+-- the width of P for Theorem 4.10.
+module Theorem-8-9-from-4-4
+  (theorem-4-4  : T44.Theorem-4-4₂)
+  (theorem-4-4ₙ : ∀ k → T44.Theorem-4-4ₙ k)
+  where
+
+  private
+    lemma-8-8₄ : Below 4 → Section8.Lemma-8-8 1
+    lemma-8-8₄ b = L88₄.lemma-8-8₄ (b {2} (s≤s (s≤s (s≤s z≤n)))) (b {3} (s≤s (s≤s (s≤s (s≤s z≤n)))))
+
+  open Theorem-8-9⁗ (T44.figure-7₂ theorem-4-4) (λ k → T44.figure-7ₙ k (theorem-4-4ₙ k)) lemma-8-8₄
+    public using (completeness ; subpresentation)

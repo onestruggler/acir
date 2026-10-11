@@ -22,6 +22,8 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Examples.Groups.Real-Clifford+CH.Semantics
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.Interpretation
+open import Examples.Groups.Real-Clifford+CH.Evaluation using (⟦_⟧R ; ⟦⟧R≡⟦⟧M ; by-rows)
+open import Examples.Groups.Real-Clifford+CH.Semantics.Decide using (eqM-sound)
 open import Examples.Groups.Real-Clifford+CH.Soundness.Operators
 
 ------------------------------------------------------------------------
@@ -55,35 +57,35 @@ cτ = √2^ ℓτ
 
 abstract
   Cm C′m D3 : Mat 3
-  Cm  = ⟦ CCZX₀ ⟧M
-  C′m = ⟦ CCXZ₀ ⟧M
+  Cm  = ⟦ CCZX₀ ⟧R
+  C′m = ⟦ CCXZ₀ ⟧R
   D3  = matOf (diag z₀)
 
   Cm-def : ⟦ CCZX₀ ⟧M ≡ Cm
-  Cm-def = Eq.refl
+  Cm-def = Eq.sym (⟦⟧R≡⟦⟧M CCZX₀)
 
   C′m-def : ⟦ CCXZ₀ ⟧M ≡ C′m
-  C′m-def = Eq.refl
+  C′m-def = Eq.sym (⟦⟧R≡⟦⟧M CCXZ₀)
 
   D3-ix : ix D3 ≐ diag z₀
   D3-ix = ix-matOf (diag z₀)
 
   step-set : mulM Cm (mulM D3 (mulM C′m D3)) ≡ scaleM cC (matOf (diag ccz))
-  step-set = Eq.refl
+  step-set = eqM-sound _ _ Eq.refl
 
   step-unset : mulM Cm (mulM idM (mulM C′m idM)) ≡ scaleM cC idM
-  step-unset = Eq.refl
+  step-unset = eqM-sound _ _ Eq.refl
 
   -- The transposition, as a circuit, is the permutation matrix.
   τ-perm : ⟦ τ₀₂₀ ⟧M ≡ scaleM cτ permM
-  τ-perm = Eq.refl
+  τ-perm = by-rows τ₀₂₀ Eq.refl
 
   -- The base cases: the box on 0, 1 and 2 controls.
   b0 : ⟦ Λ□ 0 ⟧M ≡ scaleM (√2^ len (Λ□ 0)) (matOf (diag (phase 0)))
-  b0 = Eq.refl
+  b0 = by-rows (Λ□ 0) Eq.refl
 
   b1 : ⟦ Λ□ 1 ⟧M ≡ scaleM (√2^ len (Λ□ 1)) (matOf (diag (phase 1)))
-  b1 = Eq.refl
+  b1 = by-rows (Λ□ 1) Eq.refl
 
   b2 : ⟦ Λ□ 2 ⟧M ≡ scaleM (√2^ len (Λ□ 2)) (matOf (diag (phase 2)))
-  b2 = Eq.refl
+  b2 = by-rows (Λ□ 2) Eq.refl

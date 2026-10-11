@@ -1,0 +1,43 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- Lemma A.1: (d4) at the indices 0 … 5 (Clément, Appendix A.2)
+--
+--     (H_[0,4] H_[1,5] H_[0,1] H_[0,4] H_[1,5] X_[4,2] X_[5,3])³
+--       ≈  H_[4,2] H_[5,3] H_[2,3] H_[4,2] H_[5,3] X_[4,2] X_[5,3]
+--
+-- The paper's chain of twenty lines, from (d4*): the exchanges
+-- X_[4,2] X_[5,3] of the first period carry the second across (b5, c5)
+-- and cancel those of the second; signs on 0, 1, 4, 5 are inserted and
+-- turned into X_[0,4] X_[1,5] and back, around (d4*), and the same is
+-- done with signs on 2, 3 at the end.  Each line is one or a few
+-- structured moves, generated from the paper's lines and checked
+-- numerically, every intermediate line against the paper's (LemmaA1/gen:
+-- gen_chain.py, macros.py, spec_d4.py).  Cut into segments of a few
+-- steps, as LemmaA1.D3.
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+open import Data.Nat using (ℕ)
+
+module Examples.Groups.Real-Clifford+CH.Auxiliary.LemmaA1.D4 (m : ℕ) where
+
+open import Data.List using ([] ; _∷_)
+open import Relation.Binary.PropositionalEquality as Eq using (_≢_)
+open import Word.Base using (_•_ ; _^_)
+
+open import Notations using (₀ ; ₁ ; ₂ ; ₃ ; ₄ ; ₅ ; ₂₊ ; ₄₊)
+
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.Syntactics
+  using (−1 ; X ; H ; −1[_] ; X[_,_] ; H[_,_] ; _G,_===_ ; −1ᵖ ; Xᵖ ; Hᵖ)
+open _G,_===_
+open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.SegChain (₂₊ (₄₊ m) G,_===_)
+  using (at ; _▸_ ; done ; run)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.LemmaA1.Rename (₂₊ (₄₊ m)) using (passR ; passL)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.LemmaA1.Moves using (a1 ; b1 ; b4 ; b6)
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.LemmaA1.More (₂₊ (₄₊ m)) using (d1 ; d2†)
+
+open Tools (₂₊ (₄₊ m) G,_===_)
+

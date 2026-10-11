@@ -41,6 +41,7 @@ module Examples.Groups.Real-Clifford+CH.BackAndForth
   where
 
 open import Algebra.Bundles using (Monoid)
+open import Data.Unit using (⊤ ; tt)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 import Presentation.Base as PB
@@ -69,10 +70,17 @@ private
 
 ------------------------------------------------------------------------
 -- The argument
+--
+-- Completeness of the auxiliary theory may hold only on some words (on
+-- the auxiliary generators of Figure 7 it holds on the proper ones,
+-- Auxiliary.Syntactics.Proper); the encoding must then land there.
 
-module Complete
-  (complete-Y : ∀ {u t : Word Y} → ⟦ u ⟧Y ~ ⟦ t ⟧Y → u ≈ʸ t)  -- Theorem 4.4 / 4.10
+module CompleteOn
+  (Ok : Word Y → Set)                                         -- where it holds
+  (complete-Y : ∀ {u t : Word Y} → Ok u → Ok t →
+                ⟦ u ⟧Y ~ ⟦ t ⟧Y → u ≈ʸ t)                     -- Theorem 4.4 / 4.10
   (e     : Gen n → Word Y)                                    -- the encoding, on generators
+  (e-ok  : ∀ (w : Circuit n) → Ok ((e ʷ) w))                  -- it lands there
   (e-sem : ∀ g → ⟦ e g ⟧Y ~ ⟦ [ g ]ʷ ⟧)                       -- it preserves the semantics
   (d     : Y → Circuit n)                                     -- the decoding, on generators
   (d-wd  : ∀ {u t} → Δ u t → n ⊢ (d ʷ) u ≈ (d ʷ) t)            -- Lemma 7.5 / 8.8
@@ -97,7 +105,19 @@ module Complete
   -- Two circuits with the same matrix are equal in QC.
   complete : ∀ {w v : Circuit n} → ⟦ w ⟧ ~ ⟦ v ⟧ → n ⊢ w ≈ v
   complete {w} {v} eq =
-    R.fʷ-inj (complete-Y {u = (e ʷ) w} {t = (e ʷ) v}
+    R.fʷ-inj (complete-Y {u = (e ʷ) w} {t = (e ʷ) v} (e-ok w) (e-ok v)
       (~-trans {s = ⟦ (e ʷ) w ⟧Y} {t = ⟦ w ⟧ᴱ} {u = ⟦ (e ʷ) v ⟧Y} (eʷ-sem w)
         (~-trans {s = ⟦ w ⟧ᴱ} {t = ⟦ v ⟧ᴱ} {u = ⟦ (e ʷ) v ⟧Y} (⟦⟧ᴱ-~ {w = w} {v} eq)
           (~-sym {s = ⟦ (e ʷ) v ⟧Y} {t = ⟦ v ⟧ᴱ} (eʷ-sem v)))))
+
+-- Completeness of the auxiliary theory on every word.
+module Complete
+  (complete-Y : ∀ {u t : Word Y} → ⟦ u ⟧Y ~ ⟦ t ⟧Y → u ≈ʸ t)  -- Theorem 4.10
+  (e     : Gen n → Word Y)
+  (e-sem : ∀ g → ⟦ e g ⟧Y ~ ⟦ [ g ]ʷ ⟧)
+  (d     : Y → Circuit n)
+  (d-wd  : ∀ {u t} → Δ u t → n ⊢ (d ʷ) u ≈ (d ʷ) t)
+  (d∘e   : ∀ g → n ⊢ [ g ]ʷ ≈ (d ʷ) (e g))
+  where
+
+  open CompleteOn (λ _ → ⊤) (λ _ _ → complete-Y) e (λ _ → tt) e-sem d d-wd d∘e public

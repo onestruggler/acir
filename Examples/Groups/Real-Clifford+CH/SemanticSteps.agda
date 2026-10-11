@@ -30,7 +30,7 @@ open import Notations using (₁₊)
 open import Examples.Groups.Real-Clifford+CH.Semantics hiding (_^_ ; ^-+)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧ ; ⟦_⟧M ; ⟦⟧-ix ; len)
-open import Examples.Groups.Real-Clifford+CH.Soundness.Relators using (Same)
+open import Examples.Groups.Real-Clifford+CH.Soundness.Relators using (Same ; same-≡)
 open import Examples.Groups.Real-Clifford+CH.Weakening using (weaken)
 
 -- Two circuits with the same stored matrix have the same semantics.
@@ -38,7 +38,7 @@ same-sem : ∀ {k} (u v : Circuit k) → Same u v → ⟦ u ⟧ ~ ⟦ v ⟧
 same-sem u v eq =
   ≐-trans (·-cong Eq.refl (⟦⟧-ix u))
     (≐-trans (≐-sym (ix-scaleM (√2^ len v) ⟦ u ⟧M))
-      (≐-trans (ix-≡ eq)
+      (≐-trans (ix-≡ (same-≡ u v eq))
         (≐-trans (ix-scaleM (√2^ len u) ⟦ v ⟧M) (·-cong Eq.refl (≐-sym (⟦⟧-ix v))))))
 
 -- An evaluation, as a record: a lemma that takes one as a hypothesis
