@@ -12,18 +12,22 @@
 --   f-well-defined : every Reduced axiom holds in Paper-V1;
 --   g-well-defined : every Paper-V1 axiom holds in Reduced.
 --
--- Reduced is Paper-V1 less semi-MR and order-Ex, so f sends each axiom
--- to the Paper-V1 axiom of the same name, and g does the same for
--- thirteen of the fifteen.  The other two are theorems of the reduced
--- relation, each derived by a relation-agnostic module of Paper-V1's
--- lemma layer that is instantiated below at Reduced's relation, which
--- has neither:
+-- Reduced is Paper-V1 less semi-MR, order-Ex, yang-baxter and cz-slide,
+-- so f sends each axiom to the Paper-V1 axiom of the same name, and g
+-- does the same for eleven of the fifteen.  The other four are theorems
+-- of the reduced relation, each derived by a relation-agnostic module
+-- that is instantiated below at Reduced's relation, which has none of
+-- them:
 --
---   semi-MR   Paper-V1.Lemmas.SemiMR, from order-S, order-H, M-power
---             and comm-HHSHHS;
---   order-Ex  Paper-V1.Lemmas.OrderEx, from those four and order-CZ,
---             comm-CZ-S↑, semi-M↑CZ, semi-Ex-S↑, semi-Ex-H↑ and
---             blake-c12.
+--   semi-MR      Paper-V1.Lemmas.SemiMR, from order-S, order-H, M-power
+--                and comm-HHSHHS;
+--   order-Ex     Paper-V1.Lemmas.OrderEx, from those four and order-CZ,
+--                comm-CZ-S↑, semi-M↑CZ, semi-Ex-S↑, semi-Ex-H↑ and
+--                blake-c12;
+--   yang-baxter  Paper-V0.Lemmas.ThreeWire, from all of those, order-Ex
+--   cz-slide     as derived, and semi-CX↑-CZ↓.  That calculus is stated
+--                over Paper-V0's spelling of the rules, and
+--                Paper-V1.Lemmas.V0Rules supplies them.
 ------------------------------------------------------------------------
 
 open import Relation.Binary.PropositionalEquality using (_≡_)
@@ -67,6 +71,10 @@ import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.SemiMR
   p-3 p-prime g* g-gen as SM
 import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.OrderEx
   p-3 p-prime g* g-gen as OE
+import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.V0Rules
+  p-3 p-prime g* g-gen as V0Rules
+import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Lemmas.ThreeWire
+  p-3 p-prime g* g-gen as TH0
 
 module PapR = Clifford-Relations
 module RedR = Red.Clifford-Relations
@@ -79,9 +87,9 @@ private
 -- The lemma layer at the reduced relation
 --
 -- The generic layer takes the rules it uses as parameters; here each is
--- passed as the Reduced axiom it is.  Neither semi-MR nor order-Ex is
--- among them, so the derived rules below are theorems of the thirteen
--- rules alone.
+-- passed as the Reduced axiom it is, or as a rule derived before it.
+-- None of the four dropped rules is among them, so the derived rules
+-- below are theorems of the eleven rules alone.
 
 -- Group-likeness, directly: the derivations need cancellation, so this
 -- witness cannot be transported back along g-well-defined, as
@@ -113,6 +121,27 @@ module Derived-Ex =
     (PB.axiom RedR.semi-Ex-H↑) (PB.axiom RedR.blake-c12)
     (λ h x → PB.axiom (RedR.comm₁ h x)) RedR.lemma-cong↑
 
+-- yang-baxter and cz-slide, at every width ₃₊ n, as
+-- Derived-3.Three-Wire.lemma-yang-baxter n and lemma-cz-slide n.  The
+-- Paper-V0 calculus takes Paper-V0's spelling of the rules: V0Rules
+-- respells the four that mention the multiplier across the bridge and
+-- passes the rest through, with order-Ex the theorem above.
+private
+  module V0 = V0Rules.V0-Rules RedR._QRel,_===_
+    (PB.axiom RedR.order-S) (PB.axiom RedR.order-H)
+    (λ k → PB.axiom (RedR.M-power k)) (PB.axiom RedR.comm-HHSHHS)
+    red-grouplike RedR.lemma-cong↑
+
+  v0-rules : TH0.Three-Wire-Rules RedR._QRel,_===_
+  v0-rules = V0.Records.three-wire-rules
+    (PB.axiom RedR.order-CZ) (λ {n} → Derived-Ex.Two-Wire.lemma-order-Ex n)
+    (PB.axiom RedR.comm-CZ-S↑) (PB.axiom RedR.semi-M↑CZ)
+    (PB.axiom RedR.semi-Ex-S↑) (PB.axiom RedR.semi-Ex-H↑)
+    (PB.axiom RedR.blake-c12) (PB.axiom RedR.semi-CX↑-CZ↓)
+    (λ h x → PB.axiom (RedR.comm₁ h x)) (λ h x → PB.axiom (RedR.comm₂ h x))
+
+module Derived-3 = TH0.Three-Wire-Calculus RedR._QRel,_===_ v0-rules
+
 ------------------------------------------------------------------------
 -- The isomorphism
 
@@ -134,15 +163,14 @@ module Theorem where
   f-well-defined RedR.semi-Ex-S↑     = PB.axiom PapR.semi-Ex-S↑
   f-well-defined RedR.semi-Ex-H↑     = PB.axiom PapR.semi-Ex-H↑
   f-well-defined RedR.blake-c12      = PB.axiom PapR.blake-c12
-  f-well-defined RedR.yang-baxter    = PB.axiom PapR.yang-baxter
-  f-well-defined RedR.cz-slide       = PB.axiom PapR.cz-slide
   f-well-defined RedR.semi-CX↑-CZ↓   = PB.axiom PapR.semi-CX↑-CZ↓
   f-well-defined (RedR.comm₁ gt w)   = PB.axiom (PapR.comm₁ gt w)
   f-well-defined (RedR.comm₂ gt w)   = PB.axiom (PapR.comm₂ gt w)
   f-well-defined (RedR.cong↑ eq)     = PapR.lemma-cong↑ _ _ (f-well-defined eq)
 
-  -- g : Paper-V1 → Reduced.  The same, except at semi-MR and order-Ex,
-  -- which Reduced does not have as axioms and proves instead.
+  -- g : Paper-V1 → Reduced.  The same, except at semi-MR, order-Ex,
+  -- yang-baxter and cz-slide, which Reduced does not have as axioms and
+  -- proves instead.
   g-well-defined : ∀ {n} → let open PB (RedR._QRel,_===_ n) renaming (_≈_ to _≈₁_) in
     ∀ {u t} -> PapR._QRel,_===_ n u t -> id u ≈₁ id t
   g-well-defined PapR.order-S        = PB.axiom RedR.order-S
@@ -157,8 +185,8 @@ module Theorem where
   g-well-defined PapR.semi-Ex-S↑     = PB.axiom RedR.semi-Ex-S↑
   g-well-defined PapR.semi-Ex-H↑     = PB.axiom RedR.semi-Ex-H↑
   g-well-defined PapR.blake-c12      = PB.axiom RedR.blake-c12
-  g-well-defined PapR.yang-baxter    = PB.axiom RedR.yang-baxter
-  g-well-defined PapR.cz-slide       = PB.axiom RedR.cz-slide
+  g-well-defined {₃₊ n} PapR.yang-baxter = Derived-3.Three-Wire.lemma-yang-baxter n
+  g-well-defined {₃₊ n} PapR.cz-slide    = Derived-3.Three-Wire.lemma-cz-slide n
   g-well-defined PapR.semi-CX↑-CZ↓   = PB.axiom RedR.semi-CX↑-CZ↓
   g-well-defined (PapR.comm₁ gt w)   = PB.axiom (RedR.comm₁ gt w)
   g-well-defined (PapR.comm₂ gt w)   = PB.axiom (RedR.comm₂ gt w)

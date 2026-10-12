@@ -4,15 +4,18 @@
 -- Presentations of groups
 --
 -- The reduced qupit Clifford rules: the paper's Figure 1, as Paper-V1
--- states it, less semi-MR and order-Ex.
+-- states it, less semi-MR, order-Ex, yang-baxter and cz-slide.
 --
--- Neither is needed.  semi-MR is a consequence of the other four
--- one-wire rules (Paper-V1.Lemmas.SemiMR), and order-Ex of those four
--- and the other six two-wire rules (Paper-V1.Lemmas.OrderEx); neither
--- derivation uses the other rule, nor any three-wire one.  So dropping
--- both changes nothing: Iso proves these thirteen rules isomorphic to
--- Paper-V1's fifteen, by the identity on words, and Presentation that
--- they present the same group.
+-- None of the four is needed.  semi-MR is a consequence of the other
+-- four one-wire rules (Paper-V1.Lemmas.SemiMR), and order-Ex of those
+-- four and the other six two-wire rules (Paper-V1.Lemmas.OrderEx);
+-- neither derivation uses the other rule, nor any three-wire one.
+-- yang-baxter and cz-slide follow from all of those and semi-CX↑-CZ↓,
+-- the one three-wire rule kept (Paper-V0.Lemmas.ThreeWire, reached
+-- through Paper-V1.Lemmas.V0Rules).  So dropping all four changes
+-- nothing: Iso proves these eleven rules isomorphic to Paper-V1's
+-- fifteen, by the identity on words, and Presentation that they present
+-- the same group.
 --
 -- The generator layer and the derived words are Paper-V1's, re-exported
 -- rather than restated, so that a word here is literally a word there
@@ -61,8 +64,8 @@ module Clifford-Relations where
           ; XM≡M⁻¹ ; M₁ ; M₋₁ ; XM₋₁ ; XM₋₁≡M₋₁ ; XMg ; XMg^ )
 
   -- Paper-V1's group-specific axioms, each stated exactly as there, less
-  -- semi-MR and order-Ex.  The structural rules come from Lift-Relation
-  -- below, as for Paper-V1.
+  -- semi-MR, order-Ex, yang-baxter and cz-slide.  The structural rules
+  -- come from Lift-Relation below, as for Paper-V1.
   module Base where
     infix 4 _SRel,_===_
     data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
@@ -79,8 +82,6 @@ module Clifford-Relations where
       semi-Ex-H↑ :    (₂₊ n) SRel,  Ex • H ↑ === H ↓ • Ex
       blake-c12 :     (₂₊ n) SRel,  (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX === CZ
 
-      yang-baxter :   (₃₊ n) SRel,  Ex ↑ • Ex ↓ • Ex ↑ === Ex ↓ • Ex ↑ • Ex ↓
-      cz-slide :      (₃₊ n) SRel,  Ex ↓ • Ex ↑ • CZ === CZ ↑ • Ex ↓ • Ex ↑
       semi-CX↑-CZ↓ :  (₃₊ n) SRel,  CZ ↓ • CX ↑ === CZ02 • CX ↑ • CZ ↓
 
   private module SC = Circuit.Base SympGate
@@ -108,6 +109,4 @@ module Clifford-Relations where
 
   pattern blake-c12 = srel (Base.blake-c12)
 
-  pattern yang-baxter = srel (Base.yang-baxter)
-  pattern cz-slide = srel (Base.cz-slide)
   pattern semi-CX↑-CZ↓ = srel (Base.semi-CX↑-CZ↓)

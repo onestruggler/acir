@@ -129,8 +129,8 @@ open Semidirect using (Pauli⋊Sp)
 ------------------------------------------------------------------------
 -- The theorem
 
--- The reduced rules — Figure 1 mod scalars, without semi-MR and
--- order-Ex — present
--- the semidirect product of the Pauli group and Sp(2n, ℤ/pℤ).
+-- The reduced rules — Figure 1 mod scalars, without semi-MR, order-Ex,
+-- yang-baxter and cz-slide — present the semidirect product of the
+-- Pauli group and Sp(2n, ℤ/pℤ).
 presentation : ∀ (n : ℕ) → (n CRel,_===_) IsPresentationOf (Pauli⋊Sp n)
 presentation = Build.pres

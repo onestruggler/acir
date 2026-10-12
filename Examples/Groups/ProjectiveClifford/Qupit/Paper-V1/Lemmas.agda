@@ -30,13 +30,18 @@
 --               and the bridge between the two spellings
 --   SemiMR      semi-MR, derived from the other four one-wire rules
 --   OrderEx     order-Ex, derived from those four and the other six
---               two-wire rules — the one two-wire module here
+--               two-wire rules
+--   V0Rules     Paper-V0's spelling of the rules, across the bridge:
+--               what lets a Paper-V1-style rule set use Paper-V0's
+--               calculus (Paper-V0.Lemmas), cz-slide and yang-baxter
+--               included
 --
 -- This module instantiates the first three at Paper-V1's relation, under
--- the names Iso.agda uses.  It instantiates neither SemiMR nor OrderEx:
--- Paper-V1 has both rules as axioms, and One-Wire-Group's
--- lemma-semi-MR-R below reads semi-MR off its axiom.  The last two are
--- for the rule set that does without both, Reduced.
+-- the names Iso.agda uses; Iso instantiates V0Rules itself.  Neither
+-- SemiMR nor OrderEx is instantiated here: Paper-V1 has both rules as
+-- axioms, and One-Wire-Group's lemma-semi-MR-R below reads semi-MR off
+-- its axiom.  Those two are for the rule set that does without them,
+-- Reduced, which also takes cz-slide and yang-baxter from V0Rules.
 ------------------------------------------------------------------------
 
 open import Data.Fin using (toℕ)

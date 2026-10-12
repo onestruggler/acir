@@ -23,9 +23,9 @@
 --
 -- Four mention the multiplier — order-H, M-power, semi-MR, semi-M↑CZ —
 -- and each needs the bridge between the two spellings, at -1, at g and at
--- g ^ k.  That bridge is the real mathematics, and it is Shared.PauliBase
--- (instantiated below at Simplified-V1, whose theorems Paper-V0.Iso
--- transports).
+-- g ^ k.  That bridge is the real mathematics, and it is Shared.PauliBase:
+-- f instantiates it below at Simplified-V1, whose theorems Paper-V0.Iso
+-- transports, and g takes it from Lemmas.V0Rules at Paper-V1's relation.
 --
 -- One axiom is asymmetric: Paper-V0 has order-SH, Paper-V1 does not, so
 -- g has a case for it that f has no counterpart to.  See the note there.
@@ -81,6 +81,8 @@ import Examples.Groups.ProjectiveClifford.Qupit.Paper-V0.Lemmas
   p-3 p-prime g* g-gen as V1L
 import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas
   p-3 p-prime g* g-gen as PapL
+import Examples.Groups.ProjectiveClifford.Qupit.Paper-V1.Lemmas.V0Rules
+  p-3 p-prime g* g-gen as V0Rules
 
 -- Paper-V0 is already proved isomorphic to Simplified-V1, and that
 -- isomorphism transports Simplified-V1 theorems into Paper-V0's theory.
@@ -116,6 +118,14 @@ module SimBridge (n : ℕ) =
 
 module PapR = Clifford-Relations
 module PapV0R  = PapV0.Clifford-Relations
+
+-- Paper-V0's rules that mention the multiplier, as Paper-V1 theorems: the
+-- bridge between the two spellings, over Paper-V1's relation.
+private
+  module V0 = V0Rules.V0-Rules PapR._QRel,_===_
+    (PB.axiom PapR.order-S) (PB.axiom PapR.order-H)
+    (λ k → PB.axiom (PapR.M-power k)) (PB.axiom PapR.comm-HHSHHS)
+    PapL.Paper-GroupLike.grouplike PapR.lemma-cong↑
 
 -- The bridge as a Simplified-V1 theorem.  Stated separately from its
 -- transport below because semi-MR needs it there too, on the way to
@@ -289,49 +299,16 @@ module Theorem where
   -- quote it.  One-Wire.lemma-order-SH does, from M-power at k = 0 —
   -- under the SHS' spelling M₁ is the word (S • H) ^ 3 outright.  This is
   -- the only case with no counterpart on the f side.
-  g-well-defined {₁₊ n} PapV0R.order-SH = PapL.One-Wire.lemma-order-SH n
-  -- The four stated over the multiplier.
-  --
-  -- order-H is exactly lemma-M₋₁-R: Paper-V0's M₋₁ *is* the R-word
-  -- RHR(-1)(-1), once both exponents are identified with p-1 (the first
-  -- by lemma-toℕ-1ₚ, the second because -1 is its own inverse), and
-  -- lemma-M₋₁-R says that word is H ^ 2 in Paper-V1's theory.
-  g-well-defined {n} PapV0R.order-H =
-    PB.trans (PB.sym (PapL.One-Wire-Group.lemma-M₋₁-R _)) (PB.refl' _ eqn)
-    where
-    eqn : PapR.R ^ p-1 • (H • (PapR.R ^ p-1 • (H • (PapR.R ^ p-1 • H))))
-          ≡ PapV0R.M₋₁
-    eqn = Eq.sym
-      (Eq.cong₂ (λ a b → PapR.R ^ a • (H • (PapR.R ^ b • (H • (PapR.R ^ a • H)))))
-         lemma-toℕ-1ₚ
-         (Eq.trans (Eq.cong toℕ aux-₁⁻¹) lemma-toℕ-1ₚ))
-  -- The other three are the bridge at g and at g ^ k: Paper-V0's XM is
-  -- the R-word, Paper-V1's is the S-word, and XM-bridge says they agree.
-  -- Once XMg is rewritten across, each rule is Paper-V1's own axiom.
-  g-well-defined {₁₊ n} (PapV0R.M-power k) =
-    trans (^-cong _ _ (toℕ k) bridge-g)
-      (trans (axiom (PapR.M-power k))
-        (sym (PapL.One-Wire-Group.XM-bridge n (g^ k))))
-    where
-    open PB (PapR._QRel,_===_ (₁₊ n))
-    open PP (PapR._QRel,_===_ (₁₊ n)) using (^-cong)
-    bridge-g = PapL.One-Wire-Group.XM-bridge n g′
-
-  -- …and back: lemma-semi-MR-R is Paper-V1's axiom put back into the
-  -- R-spelling, by the same Shared.SemiMR step run the other way.
+  g-well-defined PapV0R.order-SH = V0.v0-order-SH
+  -- The four stated over the multiplier, each the bridge between the
+  -- two spellings (Lemmas.V0Rules): order-H at -1, M-power at g and at
+  -- g ^ k, semi-M↑CZ at g lifted, and semi-MR at g, from Paper-V1's
+  -- axiom put back into the R-spelling (lemma-semi-MR-R).
+  g-well-defined PapV0R.order-H = V0.v0-order-H
+  g-well-defined (PapV0R.M-power k) = V0.v0-M-power k
   g-well-defined {₁₊ n} PapV0R.semi-MR =
-    trans (cleft bridge-g)
-      (trans (PapL.One-Wire-Group.lemma-semi-MR-R n) (cright (sym bridge-g)))
-    where
-    open PB (PapR._QRel,_===_ (₁₊ n))
-    bridge-g = PapL.One-Wire-Group.XM-bridge n g′
-
-  g-well-defined {₂₊ n} PapV0R.semi-M↑CZ =
-    trans (cleft bridge-g↑)
-      (trans (axiom PapR.semi-M↑CZ) (cright (sym bridge-g↑)))
-    where
-    open PB (PapR._QRel,_===_ (₂₊ n))
-    bridge-g↑ = PapR.lemma-cong↑ _ _ (PapL.One-Wire-Group.XM-bridge n g′)
+    V0.v0-semi-MR (PapL.One-Wire-Group.lemma-semi-MR-R n)
+  g-well-defined PapV0R.semi-M↑CZ = V0.v0-semi-M↑CZ (PB.axiom PapR.semi-M↑CZ)
   -- Structural rules.
   g-well-defined (PapV0R.comm₁ gt w) = PB.axiom (PapR.comm₁ gt w)
   g-well-defined (PapV0R.comm₂ gt w) = PB.axiom (PapR.comm₂ gt w)
