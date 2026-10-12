@@ -19,9 +19,11 @@
 --
 -- Completeness (Section 4, Theorem 22) is transferred from the source
 -- presentations, several of which this library proves complete in
--- their own developments.  It is formalised for CNOTdihe₂, from Amy,
--- Chen and Ross's presentation (CNOT-Dihedral.Completeness), so that
--- CNOTdihe₂ is a minimal complete presentation of its semantics.
+-- their own developments.  It is formalised for Cliff₂, from Selinger's
+-- presentation (Clifford.Completeness, through the paper's Appendices A
+-- and G.1 and a bridge between the two matrix semantics), and for
+-- CNOTdihe₂, from Amy, Chen and Ross's (CNOT-Dihedral.Completeness), so
+-- that both are minimal complete presentations of their semantics.
 --
 -- Two departures from the paper.  The scalar of the qutrit axiom (E)
 -- is printed ω₁₂⁷ in Figure 4, which is unsound for the semantics of
@@ -32,7 +34,7 @@
 -- applied here.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Examples.Independence.Theorems where
 
@@ -63,6 +65,7 @@ import Examples.Independence.Clifford+T.Minimality      as CliffT-Min
 import Examples.Independence.Clifford+CS.Minimality     as CliffCS-Min
 import Examples.Independence.CNOT-Dihedral.Minimality   as CNOTdihe-Min
 
+import Examples.Independence.Clifford.Completeness      as Cliff-Cpl
 import Examples.Independence.CNOT-Dihedral.Completeness as CNOTdihe-Cpl
 
 private
@@ -180,6 +183,19 @@ CNOTdihe₂-necessary ρ = CNOTdihe-M.necessary ρ (CNOTdihe₂-minimal ρ)
 
 ------------------------------------------------------------------------
 -- Completeness by transfer (Section 4, Theorem 22)
+
+-- 1. Cliff₂ is complete, at every width: its axioms derive Selinger's,
+-- decoded (Appendices A and G.1), whose presentation is complete.
+Cliff₂-complete : {w v : Cliff.Circuit n} →
+                  Cliff-Sem.⟦ w ⟧ Cliff-Sem.≈ Cliff-Sem.⟦ v ⟧ → n Cliff.⊢ w ≈ v
+Cliff₂-complete = Cliff-Cpl.complete
+
+-- So Cliff₂ is a minimal complete presentation.
+Cliff₂-minimal-complete :
+  (∀ {n} {w v : Cliff.Circuit n} →
+     Cliff-Sem.⟦ w ⟧ Cliff-Sem.≈ Cliff-Sem.⟦ v ⟧ → n Cliff.⊢ w ≈ v) ×
+  (∀ ρ → ¬ Cliff-M.Complete-without ρ (Cliff.arity ρ + 0))
+Cliff₂-minimal-complete = Cliff₂-complete , Cliff₂-necessary
 
 -- 6. CNOTdihe₂ is complete, at every width: its axioms derive Amy,
 -- Chen and Ross's, whose presentation is complete.

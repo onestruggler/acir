@@ -1,9 +1,12 @@
 """Write an Agda module from the derivations of a spec file:
 
-    python3 mkmod.py appendixA Examples.Independence.Clifford.AppendixA         'Appendix A of the paper: auxiliary derivations for Cliff₂'         ../Clifford/AppendixA.agda
+    python3 mkmod.py appendixA Examples.Independence.Clifford.AppendixA \
+        'Appendix A of the paper: auxiliary derivations for Cliff₂' \
+        ../Clifford/AppendixA.agda [imported modules ...]
 """
 import sys, importlib
 spec, module, title, path = sys.argv[1:5]
+imports = sys.argv[5:]
 mod = importlib.import_module(spec)
 from cliff import OUT, emit
 head = '''------------------------------------------------------------------------
@@ -29,11 +32,11 @@ open import Notations using (₁₊ ; ₂₊ ; ₃₊)
 
 open import Examples.Independence.Clifford.Syntactics using (_↥)
 open import Examples.Independence.Clifford.Kit
-
+%s
 private
   variable
     n : ℕ
-''' % (title, spec, module)
+''' % (title, spec, module, ''.join('open import %s\n' % m for m in imports))
 with open(path, 'w', encoding='utf-8') as f:
     f.write(head)
     for d in OUT:
