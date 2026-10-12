@@ -1,0 +1,100 @@
+%% main.tex -- OOPSLA submission
+%% "Machine-Checked Completeness Proofs for Quantum Circuit Equations"
+%%
+%% Build: make   (latexmk -pdf main.tex; pdflatex, with the Unicode
+%% tables of agda-style.sty for the quoted Agda).
+\documentclass[acmsmall,review,anonymous]{acmart}
+
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{OOPSLA}
+\acmArticle{1}
+\acmMonth{1}
+\setcopyright{none}
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{agda-style}
+
+\citestyle{acmauthoryear}
+
+%% Inline Agda identifiers, in a sans-serif face.
+\newcommand{\aid}[1]{\mbox{\textsf{\small #1}}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\lde}{\mathrm{lde}}
+\newcommand{\level}{\mathrm{level}}
+
+\begin{document}
+
+\title{Machine-Checked Completeness Proofs for Quantum Circuit Equations}
+
+\author{Anonymous Author(s)}
+\affiliation{%
+  \institution{Anonymous Institution}
+  \city{Anonymous City}
+  \country{Anonymous Country}}
+\email{anonymous@example.org}
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10003752.10003790.10002990</concept_id>
+<concept_desc>Theory of computation~Logic and verification</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10003752.10003790.10003800</concept_id>
+<concept_desc>Theory of computation~Equational logic and rewriting</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10003752.10010124.10010131.10010137</concept_id>
+<concept_desc>Theory of computation~Quantum computation theory</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10003752.10003790.10011740</concept_id>
+<concept_desc>Theory of computation~Type theory</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+\ccsdesc[500]{Theory of computation~Logic and verification}
+\ccsdesc[500]{Theory of computation~Equational logic and rewriting}
+\ccsdesc[500]{Theory of computation~Quantum computation theory}
+\ccsdesc[300]{Theory of computation~Type theory}
+
+\keywords{quantum circuits, equational theories, completeness, group
+presentations, exact synthesis, Agda, proof checking}
+
+\maketitle
+
+\input{sections/intro}
+\input{sections/background}
+\input{sections/corpus}
+\input{sections/findings}
+\input{sections/architecture}
+\input{sections/method}
+\input{sections/engineering}
+\input{sections/related}
+\input{sections/conclusion}
+
+%% Acknowledgements are suppressed in anonymous mode.
+\begin{acks}
+The formalization was written with Claude Code, an LLM coding agent
+(Section~\ref{sec:agent}). This paper was drafted with the same agent
+from the repository and its notes, and then checked and revised by us.
+\end{acks}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{refs}
+
+\end{document}

@@ -1,0 +1,143 @@
+\section{How the Proofs Were Produced}\label{sec:method}
+
+The thirteen developments were written in 24 days, from 19 September to
+12 October 2026, in 307 commits. This pace depended on four habits,
+which we describe in turn, and on an LLM coding agent, which we
+describe last.
+
+\subsection{Check numerically first}\label{sec:numerical}
+
+Almost every statement in these papers is a claim about finitely many
+explicit matrices: a relation between two circuits, a typed relation
+between a gate and a normal-form layer, a diagram whose states and
+levels can be computed, an intermediate row of a derivation. Before
+formalizing a statement we checked it by computation in Python, exact
+over $\Z[\sqrt2]$ where levels or residues were involved, and compared
+it with the printed page. This is fast, and when it fails the problem
+is in the statement, not in the proof we are about to write. Most of
+the misprints of Section~\ref{sec:misprints} were found this way; the
+others were found by the decision procedures of
+Section~\ref{sec:eval}.
+
+The same scripts look for counterexamples. The counterexamples to
+Lemmas~A.16 and~A.17 of Hadamard-$\Pi$, and the state on which its Main
+Case~9 fails, were found by a script that samples random states of a
+given level and follows the case analysis of the proof, computing the
+level of every state on every diagram. For Cl\'ement's real
+Clifford+$CH$ appendix we wrote a small floating-point simulator of
+circuits on a few qubits, and tested every intermediate claim with it
+before writing the corresponding Agda. A similar script, computing the
+signed permutation of a swap network, found our own transcription error
+in Section~\ref{sec:own-errors}.
+
+\subsection{Derivations by search}\label{sec:search}
+
+The supplements of the Clifford and real stabilizer papers, the
+diagrams of Cl\'ement's thesis, and the appendix of Li, Ross and
+Selinger contain long derivations: chains of words, each obtained from
+the previous by one relation, up to commuting letters. We did not
+transcribe these by hand. A reflective rewriter in Agda represents a
+word as a list of letters and checks a derivation given as a list of
+steps:
+\begin{agdacode}
+δxpp = derive (x13 ∷ h02 ∷ h13 ∷ h01 ∷ h23 ∷ []) (h02 ∷ h13 ∷ h01 ∷ h23 ∷ x23 ∷ [])
+  ( perm (x13 ∷ h02 ∷ h13 ∷ h01 ∷ h23 ∷ [])
+  ∷ rw 0 (sym⁼ (ʟa3 f1 f3 lt13))
+  ∷ perm (h13 ∷ h13 ∷ x13 ∷ h02 ∷ h13 ∷ h01 ∷ h23 ∷ [])
+  ∷ rw 1 (sym⁼ (ʟd2 f1 f3 lt13))
+  ∷ ⋯ ) refl
+\end{agdacode}
+A \aid{perm} step moves to a word equal up to commuting letters, which
+the rewriter decides by computing canonical forms. A \aid{rw i e} step
+rewrites at position \aid{i} with an equation \aid{e}. Equations can be
+reversed, shifted up a wire, read backwards (every letter is an
+involution in most of these theories), rotated as relators, and moved
+to any increasing choice of indices. The final \aid{refl} asks Agda to
+run the checker on the closed list of steps.
+
+A Python script produces the steps. It follows the paper's derivation
+line by line: for each printed line it searches for a \aid{perm} and a
+\aid{rw} that reach it from the previous one, using the relation the
+paper cites first and the others if that fails. When no step reaches a
+printed line, the line or its citation is wrong, which is how the
+citation errors of Section~\ref{sec:findings} showed up. Where a paper
+gives no derivation, the script searches for one by breadth-first
+search over rewrites with the local relations, with intermediate
+lemmas to keep the search small. The scripts that produce modules we
+kept are in the repository, and they regenerate those modules byte for
+byte. The generated modules are a large part of some developments: the
+real stabilizer development derives the 137 typed relations this way,
+the Clifford development the 101 equations of its supplement, and the
+proof of Lemma~A.1 in the real Clifford+$CH$ development has chains of
+101 and 170 steps. We split such chains into segments between explicit
+lines; a single chain of 101 steps exhausted 4\,GB, because each step's
+type normalizes all the steps before it.
+
+\subsection{Case analyses as decision trees}\label{sec:trees}
+
+Cl\'ement's Case~3.4 is a case analysis over symbolic entries. The four
+odd entries of the pivot column are written as linear forms over
+$\Z[\sqrt2]$ in a few integer variables. The cases split on the parity
+of a form, on the residue class of a further entry outside the window,
+or on a symmetry, and every leaf is one of his diagrams with signs
+added. We wrote the analysis as data: a decision tree with nodes for
+splits, for new entries at a given depth and class, for relabellings
+of the window, for conjugation by a letter that commutes with the hard
+edge, and for a change of variables into a normal form. A Boolean
+function checks a tree against the forms, and a soundness theorem says
+that a tree that passes the check gives the path. The trees themselves
+are checked by \aid{refl}.
+
+The trees are generated, and their size depended on how the search was
+organized. A greedy search over the original variables gave a tree with
+more than 5{,}000 leaves. Bringing every case first into Cl\'ement's
+normal form (38), by signs, relabellings and a change of variables,
+gave one shared subtree of 202 leaves for his Subcase~3.4.2 and a small
+top-level tree that reaches it. Agda checks the shared subtree in
+about 17~seconds.
+
+\subsection{Proof by evaluation}\label{sec:eval}
+
+Many obligations in these developments are equations between explicit
+matrices: soundness of a relation, a step justified by completeness one
+width down, an identity of $8\times8$ integer matrices. The obvious
+proof is \aid{refl} on two stored tries. For the real Clifford+$CH$
+development this was too slow. The conversion checker compares the
+tries entry by entry, and does not share work between entries, so it
+evaluates the product of dense matrices once for each entry. We
+replaced it by a Boolean decision procedure on a reading of the
+circuit as row operations, with a soundness lemma: the proof is
+\aid{refl : eqM A B ≡ true}. This made the soundness of the relations
+go from 525.6 to 1.2 seconds, Lemma~D.5 of the appendix from about an
+hour to 54 seconds, and one 80-gate equation on three wires from 158
+seconds to under one. The same shape works for the decision procedures
+that check Figure~8 of the same paper on three qubits at every
+admissible index. There, each module holds a few thousand evaluations,
+because Agda frees the memory of an evaluation only when its module is
+done.
+
+\subsection{An LLM coding agent}\label{sec:agent}
+
+The Agda in these developments, and the Python scripts, were written by
+Claude Code, an LLM coding agent, in sessions that we directed. We chose
+the papers, decided what to formalize and in what order, and stated
+the targets; the agent read the papers, wrote and ran the scripts and
+the Agda, and kept notes in the repository. Agda's checker is the only
+part of this that we trust. Every theorem typechecks under
+\texttt{-{}-safe}, with no postulates and no holes, so a proof that is
+accepted is correct relative to its statement, whoever wrote it.
+
+The statements are a different matter. A wrong definition is checked
+as faithfully as a right one, and the false hypothesis of
+Section~\ref{sec:own-errors} stayed in the development, unnoticed, until
+we tried to discharge it. For this reason every result ends in a short
+module that states it without hypotheses, in terms of
+the library's records and a matrix semantics that can be compared with
+the paper's. These are the statements a reader should check.
+
+We also found that the agent's mistakes resembled human ones.
+It misread a diagram at low resolution, took the bounds of a product in
+the wrong order, and stated a hypothesis more strongly than the paper
+does. Each was caught by a computation or by Agda, not by the agent's
+own reading. The numerical checks of Section~\ref{sec:numerical} were
+also the agent's main check on its own work before Agda saw it.

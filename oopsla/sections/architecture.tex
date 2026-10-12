@@ -1,0 +1,189 @@
+\section{Proof Architectures}\label{sec:architecture}
+
+The thirteen sources use few proof methods, and each method became one
+structure in Agda, reused across developments. This section describes
+them.
+
+\subsection{Levels and edges}\label{sec:levels}
+
+The two-level developments share the following definitions (the two
+earliest state the induction slightly differently, but with the same
+\aid{Path}). Here \aid{nw M o} is the algorithm's word for
+a matrix \aid{M} with orthonormal columns \aid{o}, \aid{actMʷ} is the
+action of a word on a matrix, and \aid{level} the level of
+Section~\ref{sec:by-levels}.
+\begin{agdacode}
+Path : (w : Word (Gen n)) (M : Matrix n n D) → .(ColOrth M) → Set
+Path w M o = nw (actMʷ w M) (ColOrth-actMʷ w o) • w ≈ nw M o
+
+EdgesBelow : Lvl → Set
+EdgesBelow L = ∀ (g : Gen n) M .(o : ColOrth M) →
+  level M <ₗ L → level (actM g M) <ₗ L → Path [ g ]ʷ M o
+
+EdgesAt : Lvl → Set
+EdgesAt L = ∀ (g : Gen n) M .(o : ColOrth M) →
+  level M ≡ L → level (actM g M) ≤ₗ L → Path [ g ]ʷ M o
+
+EdgeStep : Set
+EdgeStep = ∀ L → EdgesBelow L → EdgesAt L
+\end{agdacode}
+A proof of \aid{EdgeStep} is the Main Lemma. From it, a generic
+module proves completeness: by well-founded induction on the
+lexicographic order of levels, every edge is a path, so every word is a
+path, and two words with the same matrix are related. The orthogonality
+proof \aid{o} is irrelevant, so that the normal word depends on the
+matrix alone.
+
+Three details of this formulation matter in practice. First, the
+statement covers every generator, not only the basic ones that the
+papers' Main Lemmas are stated for. The papers reduce the other
+generators to the basic ones in a sentence; in Agda this reduction is a
+module of its own, because conjugating by an exchange must be shown to
+keep the state at or below its level. Second, squares are closed by one
+lemma, \aid{close}, which takes the two syllables $N$ and $N'$, the
+word $W$, the proof that every state on the path of $W$ is below $L$,
+and the relation $W N' g \approx N$. Many cases of a Main Lemma are
+one call to \aid{close} with a relation and a list of level facts.
+Third, the definitions are generic in the normal word. When we found
+the gap in Hadamard-$\Pi$, the proof of the missing case was written
+over any function \aid{nw} with three properties (paths compose, edges
+below $L$ are paths, and the non-hard edges at $L$ are paths), so that
+the same proof served both Hadamard-$\Pi$'s algorithm and Cl\'ement's.
+
+The level facts are where Agda's evaluator helps and also where it
+hurts. The routes in these proofs touch at most eight entries of the
+pivot column, and leave the rest alone. We describe such a state as a fixed
+numerator with a window of entries replaced, a \emph{known state}, and
+derive its level from the parities of the window alone. Each step of a
+route is then one ring identity, $a\pm b = \sqrt2\, c$, about symbolic
+entries, which a script generates and a ring solver proves. The
+evaluator must never see the full column with its symbolic entries,
+because it would try to compute the level, and the ring operations of
+$\Z[\frac1{\sqrt2}]$, records of dyadic fractions, are expensive to
+unfold (Section~\ref{sec:engineering}).
+
+\subsection{Normal forms for circuits}\label{sec:nf}
+
+The Clifford and real stabilizer developments follow their papers'
+normal forms closely, and share a structure. The normal forms are
+inductive types: ladders, $Z$-circuits, $D$-ladders and $X$-circuits,
+indexed in the real case by a \emph{wire type} that records whether
+$Z$ alone or both $X$ and $Z$ are tracked on a wire. A normal form on
+$n+1$ wires is a $Z$-circuit and an $X$-circuit that reach down to the
+bottom wire, followed by a normal form on $n$ wires shifted up. Rewriting a word to normal form pushes one
+gate at a time through the layers, by a mutual recursion whose tables
+are the papers' typed relations; the tables are generated from those
+relations and checked letter by letter. Uniqueness is semantic, by the
+conjugation action on Pauli operators. In the real case, a normal
+form's action on $Z_0$ determines its $Z$-circuit, its action on $X_0$
+the $X$-circuit, and the rest acts one wire up. The matrix semantics is generic over a
+commutative ring with an involution and an element $s$ with
+$ss+ss=1$; the matrices are functions of two bit vectors, and a lemma
+turns sums over bit vectors into sums over $\mathsf{Fin}\,2^n$, so
+products of operators are products of matrices. One instantiation is
+$\Z[\frac1{\sqrt2}]$, which connects these developments to the
+two-level ones (Section~\ref{sec:corpus}). Another is the field
+$\mathbb{F}_7$, with $s=2$, which shows that the hypotheses of the
+generation theorem are consistent; the intended model is $\mathbb{R}$,
+which Agda does not have.
+
+\subsection{Induction on the width}\label{sec:width}
+
+The CNOT-dihedral and phase-affine developments prove completeness by
+induction on the number of wires, with a decomposition that the papers
+use in different forms. Every circuit is related to
+$D\cdot X_b \cdot L$, a diagonal part, a column of $X$ gates, and a
+linear circuit. Two circuits with the same matrix have the same $b$;
+their linear parts are equal by a coset tower in the style of
+Lafont~\cite{lafont2003boolean}, which needs completeness one wire
+down; and their diagonal parts are equal because a diagonal part
+splits into a part one wire up and a form on the bottom wire, and that
+form is determined by its phase function.
+
+The phase-affine hierarchy~\cite{blake2026phaseaffine} has four levels.
+We organized level~3, which adds $T$, around a functor. It goes from circuits of a lower
+level to circuits of level~3 one wire up, with the new wire~0 as a
+control. It maps every derivation to a derivation, and its semantics
+multiplies the phase by a polynomial in the control bit. With it, the
+bottom-wire forms of level~3 are $T^t$ followed by the images of a
+level-1 and a level-2 circuit, and their uniqueness follows from
+completeness at levels~1 and~2, which are proved first.
+
+\subsection{Encodings, and the bridge to Theorem 4.4}\label{sec:encoding}
+
+Cl\'ement's real Clifford+$CH$ paper~\cite{clement2026realcliffordch}
+proves completeness at each width $n\ge2$ by a back-and-forth argument.
+There is a second language $Y$ with a complete theory, an encoding $e$
+from circuits to $Y$ that preserves the matrix, and a decoding $d$ back
+such that $d(e(g)) \approx g$ for every gate (its Lemma~8.7) and $d$
+maps every relation of $Y$ to a derivable equation (its Lemma~8.8).
+Then two circuits with the same matrix have encodings with the same
+matrix, hence related encodings, hence related decodings, hence are
+related. We proved this argument once, generically, and instantiated
+it at $n=2$, where $Y$ is the language of two-level matrices on four
+basis vectors, and at $n\ge3$, where $Y$ is the paper's group $P$. In
+the second case, completeness of $Y$ is the paper's Theorem~4.10,
+which it proves from Theorem~4.4 by the Reidemeister--Schreier method
+with four cosets. We formalized that too. Its two families of
+obligations are exactly the paper's items (a) and (b), and most of the
+work went into item (b), where we found that the coset action is a
+conjugation of a uniform embedding by four fixed words, so that each
+obligation reduces to the image of one relation.
+
+That left Theorem~4.4: the relations of Figure~6 are complete for
+\emph{proper} words, those whose letters have distinct indices, at two
+semantics, on 4 basis vectors and on $2^n$ basis vectors. The paper
+cites Hadamard-$\Pi$ for it, and our Hadamard-$\Pi$ development proves
+the same statement. The two developments, however, were written
+independently, and they differ in every detail. Generators with
+indices in either order against generators with increasing indices;
+matrices as functions of bit vectors over a hand-made $\Z[\sqrt2]$,
+read with a power of $\frac1{\sqrt2}$, against EucDomain's
+$\Z[\frac1{\sqrt2}]$ indexed by $\mathsf{Fin}\,n$; basis vectors
+numbered by a Gray code at the width of $P$, and by a table on two
+qubits. The bridge has three parts:
+\begin{itemize}
+\item a ring map $\iota$ from $\Z[\sqrt2]$ to $\Z[\frac1{\sqrt2}]$;
+\item a translation $\varphi$ from proper letters to increasing words,
+  which writes a decreasing letter by the paper's rules (e1) and (e2),
+  and a map $\psi$ back that sends each relation of Hadamard-$\Pi$'s
+  Figure~6 to the same relation of the paper's, so that
+  $\psi(\varphi(u)) \approx u$;
+\item for any numbering $\mathit{code}$ of the basis by
+  $\mathsf{Fin}\,2^n$, a map $\Phi$ from scaled matrices
+  $(\ell, M)$ to matrices over $\Z[\frac1{\sqrt2}]$, with entry
+  $(\frac1{\sqrt2})^\ell\,\iota(M(\mathit{code}\,r)(\mathit{code}\,c))$ at
+  $(r,c)$.
+\end{itemize}
+$\Phi$ is a monoid homomorphism: its sums over bit vectors are sums over
+$\mathsf{Fin}\,2^n$ in binary order, renumbered by a permutation, for
+which the standard library's \aid{sum-permute} applies. It identifies
+pairs that the localization relation of the paper's semantics
+identifies, and it sends the matrix of each generator to the matrix of
+its translation, which we checked entry by entry. Then two proper words
+$u,t$ with the same matrix give $\varphi(u)$ and $\varphi(t)$ with the
+same matrix, so $\varphi(u)\approx\varphi(t)$ by the Hadamard-$\Pi$
+development, so $\psi(\varphi(u))\approx\psi(\varphi(t))$, so
+$u\approx t$. The bridge is about 600 lines. The two-qubit semantics
+uses private copies of the generator matrices; a generated module of
+336 cases checks that they agree with the shared ones entry by entry.
+With both instances of Theorem~4.4 proved, the paper's Theorem~8.9
+holds with no hypothesis:
+\begin{agdacode}
+completeness : ∀ n → Complete n
+subpresentation : ∀ n → (n VRel,_===_) IsSubMonoidPresentationOf Scaled-monoid n
+\end{agdacode}
+
+\subsection{Ports of existing Agda proofs}
+
+Bian and Selinger's Agda proofs for two-qubit Clifford+$T$ and
+three-qubit Clifford+$CS$ circuits~\cite{bian2023cliffordt2,bian2023cliffordcs3}
+were written against their own tactic library. We rebased that library
+on our words and presentations, so that their generated proof terms
+port mechanically, and then connected their syntactic theorem to the
+two-level presentations of Greylyn and of Bian and Selinger. For the
+three-qubit result, the original proof checks five modules with Agda's
+call-by-name evaluation. After a change to the tactic library
+(Section~\ref{sec:engineering}), four of them check with the default
+strategy; one, the main lemma of step~4, still needs call-by-name and
+takes about nine minutes.

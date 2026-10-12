@@ -1,0 +1,56 @@
+\section{What Is Not Formalized, and Conclusion}\label{sec:conclusion}
+
+The theorems of Table~\ref{tab:corpus} are proved as stated there. Some
+of the papers prove more, and some of our statements are weaker than
+the papers' in ways a reader should know.
+
+\begin{itemize}
+\item Greylyn's presentation of $U_4(\Z[\frac1{\sqrt2},i])$ is proved
+  for $n\le4$, as in the thesis, and not for larger $n$.
+\item The three-qubit Clifford+$CS$ result says that the circuit
+  relations present the group of matrices that the circuits generate,
+  inside $U_8(\Z[\frac12,i])$. The paper also uses that this group has
+  index 2 in $U_8(\Z[\frac12,i])$, which it takes
+  from~\cite{amy2020numbertheoretic}. We do not formalize the index.
+  The coset table with two cosets enters our proof only through the
+  hypotheses of the Reidemeister--Schreier theorem, which give
+  injectivity and say nothing about the index.
+\item Blake's simpler presentations~\cite{blake2026simpler} are
+  formalized for soundness and minimality. Their completeness, by
+  translation from the earlier presentations, is not.
+\item For Hadamard-$\Pi$ we did not repair Lemma~A.19 of the paper. We
+  replaced the case that uses it by Cl\'ement's argument. Whether the
+  diagrams of Lemma~A.19 can be fixed in place is open.
+\item Some semantic statements are proved over abstract rings with
+  stated properties, because Agda has no real numbers. The count of
+  real stabilizer operators (Corollary~4.16 of~\cite{makary2021real}) is
+  proved over any nontrivial commutative ring with an element $s$ such
+  that $2s^2=1$, in which $1$ and $-1$ are the only square roots of $1$.
+  The paper means $\mathbb{R}$. We instantiate the corollary only at
+  $\mathbb{F}_7$, with $s=2$, which shows that the hypotheses are
+  consistent. The presentation theorems themselves are instantiated at
+  the rings of the papers.
+\end{itemize}
+
+The trust base is Agda~2.8, the standard library and EucDomain, all
+under \texttt{-{}-safe} with no postulates. What Agda cannot check is
+that our definitions mean what the papers mean. We wrote the semantics
+of each development separately, from the paper, and checked it against
+the paper's matrices by computation. In three places two developments
+are connected, and the connection is a check on both: the real stabilizer group
+inside Hadamard-$\Pi$'s orthogonal group (Section~\ref{sec:corpus}),
+Bian and Selinger's ports against the two-level presentations, and
+Cl\'ement's real Clifford+$CH$ paper against Hadamard-$\Pi$
+(Section~\ref{sec:encoding}). The other developments are checked only
+against their papers.
+
+We checked thirteen papers on the completeness and minimality of
+equations for quantum circuits and related matrix groups. One proof
+had a gap. We closed it with an argument from another source, and with
+it the later paper that relied on it. The other papers were correct up
+to misprints, though some of the misprints were in statements that
+later proofs use. Most of the work was engineering: turning case
+analyses and derivations into data that Agda can check, and keeping
+Agda within time and memory. An agent wrote most of the code under our
+direction, and Agda checked it. We think that long computational
+proofs of this kind can now come with a machine-checked version.

@@ -1,0 +1,90 @@
+\section{Related Work}\label{sec:related}
+
+\paragraph{The library.} The developments use the Agda library of our
+earlier paper~\cite{anonymous2027popl}. That paper is about the library
+itself: presentations as congruences on words, normal forms as bundles
+of the standard library, coset tables and towers in the style of
+Reidemeister and Schreier, products and extensions of presentations,
+and circuits indexed by their width. It tested the design on symmetric
+groups, wreath products, Pauli groups, and the single-qubit and
+single-qutrit Clifford+$T$ monoids. It also compares the library with
+work on presentations and rewriting in Lean, Rocq and
+Isabelle~\cite{mathlib-doc-presented,gonthier2013oddorder,kharim2023freegroups,sternagel2013kb},
+and we do not repeat that comparison here. The present paper is about
+using the library on published proofs that were not written with
+formalization in mind. We extended the library where these proofs
+needed it, for example with the independence of its structural rules
+(Section~\ref{sec:structural}) and with Bian and Selinger's tactics.
+
+\paragraph{Bian and Selinger's Agda proofs.} Bian and Selinger checked
+part of their two- and three-qubit results in
+Agda~\cite{bian2023cliffordt2,bian2023cliffordcs3,bian2023thesis}:
+that the circuit relations and a set of two-level relations generate
+the same congruence, by the Reidemeister--Schreier method, with
+generated proof terms. The other part, that the two-level relations
+present a matrix group, is Greylyn's thesis~\cite{greylyn2014} and
+Bian and Selinger's paper on $U_n(\Z[\frac12,i])$~\cite{bian2021un}, and
+was proved on paper. We formalized both two-level presentations and
+ported their code, so that both results now end in a statement about
+matrices.
+
+\paragraph{Verified quantum programming.} Several projects verify
+quantum programs and compilers against a matrix semantics: QWIRE and
+SQIR, with the optimizer VOQC, in
+Rocq~\cite{paykin2017qwire,rand2018qwirepractice,hietala2021voqc,hietala2021proving},
+CoqQ~\cite{zhou2023coqq}, Qbricks~\cite{chareton2021qbricks}, and in
+Isabelle a quantum Hoare logic~\cite{liu2019quantum} and a library for
+quantum information~\cite{bordg2020dirac}. VyZX~\cite{lehmann2025vyzx}
+formalizes the ZX-calculus in Rocq and proves its rules sound. In this
+work a rewrite rule must be sound, and soundness is a finite
+computation. Completeness is the converse question, whether the rules
+derive every true equation. A complete set of rules with a normal form
+decides the equality of circuits, and an optimizer built on a complete
+set of rules misses no equation. Our theorems are stated against
+matrices, so they could be connected to the semantics of these
+projects. We have not done so.
+
+\paragraph{Completeness on paper.} The papers we formalized belong to a
+larger literature, almost all of it checked by hand. For circuits it
+includes complete theories for all quantum
+circuits~\cite{clement2023complete}, minimal versions of
+them~\cite{clement2024minimal}, and multi-qutrit Clifford
+circuits~\cite{li2025qutrit}. For the ZX-calculus it includes
+completeness for qubit stabilizer and Clifford+$T$
+diagrams~\cite{backens2014zx,jeandel2018zx} and for qupit
+stabilizers~\cite{booth2022qupitzx,poor2023travaganza}. The
+programming-language line around the reversible language $\Pi$ reaches
+quantum computing by adding gates to $\Pi$. Its completeness results
+for quantum fragments are translations from presentations of matrix
+groups. The square-root extension of~\citet{carette2024squareroots}
+builds on two presentations we formalized, Selinger's for Clifford
+circuits and Bian and Selinger's for $U_n(\Z[\frac12,i])$, and
+Hadamard-$\Pi$ builds on its own presentation of
+$O_n(\Z[\frac1{\sqrt2}])$. Controlled circuits have also been
+axiomatized uniformly in this setting~\cite{heunen2026onerig}. The
+classical core, $\Pi$ as the free symmetric rig groupoid, was
+formalized in HoTT-Agda~\cite{choudhury2022symmetries}. The quantum
+completeness results were not.
+
+\paragraph{Large formalizations of published proofs.} The four colour
+theorem~\cite{gonthier2008fourcolour}, the odd order
+theorem~\cite{gonthier2013oddorder} and the Kepler
+conjecture~\cite{hales2017kepler} were each one large theorem,
+formalized by a team over years. Our sources are the opposite: many
+proofs of moderate size, which share methods and differ in their
+details. A common library and generated code paid off for that reason.
+The computational parts of our proofs are proofs by
+reflection~\cite{boutin1997reflection}, as in the four colour theorem:
+a Boolean check, proved sound once, and run by the typechecker.
+\citet{ringer2019qed} survey the engineering side of such projects.
+
+\paragraph{Language models and proof assistants.} Most work on language
+models for proof assistants asks a model to prove one theorem at a time,
+and measures success on a
+benchmark~\cite{first2023baldur,yang2023leandojo,jiang2023dsp}. Our use
+was different. The agent worked on whole developments for weeks, with
+the papers as specifications, and most of its output was ordinary
+engineering: definitions, scripts that generate proofs, and changes for
+performance. We do not claim that this experience generalizes. We
+report it because the time the work took matters to anyone who plans
+similar work.

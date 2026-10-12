@@ -1,0 +1,100 @@
+\section{What It Cost in Agda}\label{sec:engineering}
+
+All developments use Agda~2.8.0 and version~2.4 of the standard
+library~\cite{agdastdlib}. The two-level developments use a separate
+library, EucDomain, for the rings $\Z[\sqrt2]$, $\Z[\frac1{\sqrt2}]$,
+$\Z[i]$ and their dyadic relatives; it is an Agda port of parts of a
+Haskell library for exact synthesis. We ran Agda with a 3\,GB heap on a
+shared machine, which shaped several of the decisions below.
+Table~\ref{tab:costs} gives typechecking times.
+
+\begin{table}
+\caption{Approximate typechecking times from scratch, with the
+interfaces of the shared library and EucDomain already built.}
+\label{tab:costs}
+\small
+\begin{tabular}{@{}l l@{}}
+\toprule
+Development & Time \\
+\midrule
+CNOT-dihedral & 1--2 min \\
+Real stabilizer, Clifford & 1--2 min each \\
+Phase-affine (four levels) & about 9 min \\
+Hadamard-$\Pi$; Cl\'ement's thesis & under 2 min per module \\
+$O_n(\Z[\frac12])$ and $L_n$ & about 6 min, peak heap 1.2\,GB \\
+Two-level bases of the Bian--Selinger ports & about 10 min each \\
+Three-qubit Clifford+$CS$ & about 50 min \\
+Real Clifford+$CH$ & about 1~h 45 min, module by module \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Most of what we learned about Agda in this work is about what makes it
+slow, or makes it run out of memory. The problems are not specific to
+these papers. They come from proving things about large explicit
+objects, matrices and long words, that Agda can also compute with.
+
+\paragraph{The evaluator compares by unfolding.} When Agda checks that
+two terms are equal and they are not syntactically equal, it unfolds
+definitions until they are. For two readings of a 40-gate circuit as
+operators, unfolding means computing a sum over every intermediate
+basis vector, which is exponential in the circuit. This happens for
+reasons that are invisible in the source, such as an implicit width
+elaborated as \aid{3} in one place and \aid{₃₊ 0} in another. The fix in
+the real Clifford+$CH$ development was to make the reading of a circuit
+\aid{abstract}, with its defining equations exported as lemmas, so that
+two readings are compared by comparing the circuits. The ring
+operations of $\Z[\frac1{\sqrt2}]$ are records of dyadic fractions, and
+comparing two expressions over them unfolds the arithmetic on stuck
+terms; we made them \aid{opaque} and do arithmetic with a ring solver
+over an abstract commutative ring, unfolding them only inside
+\aid{opaque unfolding} blocks where a concrete value is needed.
+
+\paragraph{Unification cannot invert.} Many functions in these
+developments are not injective: $2^n$, multiplication, the power
+$\sqrt2^\ell$, the reading of a matrix. An implicit argument that occurs
+only under such a function is never solved, and Agda may reduce
+operators for a long time looking for it; in one case this used
+9.6\,GB. We give such arguments explicitly, and state lemmas so that
+their arguments occur in positions that unification can read.
+
+\paragraph{Pattern matching can force normalization.} A \aid{with} that
+abstracts a term out of a goal normalizes the goal. When the goal
+mentions a matrix with symbolic entries, or a large $\Sigma$-type such
+as a level, this exhausted the heap several times. The same happened
+when we compared the levels of two convertible but syntactically
+different states: Agda computed the pivots of both. We split such cases
+with helper functions that take the decision as an argument, cast
+between levels along \aid{refl} with both matrices given explicitly, and
+avoided records whose fields mention levels, since the positivity
+checker normalizes their types.
+
+\paragraph{A rewrite loop that was exponential.} Bian and Selinger's
+tactic library, which we ported, rewrites a word to normal form by a
+loop that, when no rule applies, returns its argument. Under Agda~2.8,
+returning the argument rather than the list the loop has just rebuilt
+makes a normal form nested $k$ levels deep cost $2^k$ steps; the
+three-qubit Clifford+$CS$ proof nests 20 levels. Returning the rebuilt
+list made one step of that proof go from running out of memory to 13
+seconds, and made four of the five modules that the original checks
+with call-by-name evaluation check with the default strategy.
+
+\paragraph{Memory is kept across modules.} Agda keeps every module it
+has checked in memory, and frees the memory used by evaluation only
+when a module is done. Two consequences followed. Modules that decide
+many instances by evaluation, such as the check of Figure~8 of the real
+Clifford+$CH$ paper on three qubits, must be split, a few thousand
+instances per module; in one module, all of them exhausted 10\,GB. And
+a large development does not fit a 3\,GB heap in one process from
+scratch. We check such developments with a script that reruns Agda,
+and checks on its own each module at which a run runs out of memory;
+each module but a handful fits in 3\,GB on its own.
+
+\paragraph{Generated code needs care too.} A single generated module of
+6{,}000 lines, the derivations of the Clifford supplement, exhausted the
+heap; split into one module per figure it checks. A chain of 101
+rewriting steps written as one term exhausted 4\,GB; split into
+segments of six steps it checks in 16 seconds. And the lazy power
+$\sqrt2^{\,n}$, written as repeated multiplication, is a tree of size
+$2^n$ to the conversion checker; computing it level by level, forcing
+each intermediate value, removed the problem.

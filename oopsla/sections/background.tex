@@ -1,0 +1,119 @@
+\section{Background}\label{sec:background}
+
+\subsection{Presentations and their semantics}\label{sec:presentations}
+
+A \emph{relation} on an alphabet $X$ is a set of pairs of words over $X$.
+It generates a congruence $\approx$ on the free monoid $X^*$: the
+smallest equivalence relation that contains the pairs and is closed under
+concatenation on both sides. A \emph{semantics} is a monoid homomorphism
+$\llbracket - \rrbracket : X^* \to M$. It is \emph{sound} if related
+words have equal images, and \emph{complete} if words with equal images
+are related. When it is sound and complete, the relation presents the
+image of $\llbracket - \rrbracket$; when moreover every element of $M$
+is the image of a word, it presents $M$. All the results in this paper
+have one of these two forms. For circuits, $M$ is a group of matrices
+and the image is the group the gates generate, which in most cases has
+no simpler description. For the two-level groups, $M$ is a matrix group
+such as $O_n(\Z[\frac1{\sqrt2}])$ and the generators generate all of it.
+
+We use the Agda library of~\citet{anonymous2027popl}. In it, a relation
+is an inductive family \aid{Γ : WRel X}, its congruence is the inductive
+family \aid{\_≈\_} with one constructor for each closure rule and one
+for the axioms, and the two theorem forms are the records
+\aid{\_IsPresentationOf\_} and \aid{\_IsSubPresentationOf\_}. The second
+asks that $\llbracket - \rrbracket$ be an injective group homomorphism on
+words modulo $\approx$; the first adds surjectivity. A circuit on $n$
+wires is a word over wire-indexed gates. A gate of arity $k$ sits on the
+bottom $k$ wires, and the shift $\uparrow$ moves a circuit up one wire.
+The library extends any gate relation with four structural rules: an
+equation holds one wire up (\aid{cong↑}), a one- or two-wire gate at the
+bottom commutes with anything shifted above it (\aid{comm₁},
+\aid{comm₂}), and a scalar is the same on every wire (\aid{ω↑=ω}). That
+a scalar commutes with every gate is not a rule. It follows from the
+four when there is one scalar, and we show in
+Section~\ref{sec:structural} that none of the four follows from the
+other three.
+
+Many of the papers we formalized present groups of \emph{two-level}
+matrices. Over a ring $R$ with a suitable element $s$ (for example
+$s=\frac1{\sqrt2}$), the generators act on $R^n$: $(-1)_{[a]}$ negates
+coordinate~$a$, $X_{[a,b]}$ exchanges coordinates $a$ and $b$, and
+$H_{[a,b]}$ applies $s\left(\begin{smallmatrix}1&1\\1&-1\end{smallmatrix}\right)$
+to coordinates $a$ and~$b$. Circuit groups embed into such groups, which
+is how several circuit completeness proofs reduce to them.
+
+\subsection{Completeness by normal forms}\label{sec:by-nf}
+
+The first method defines a set of normal forms with an interpretation
+as words, shows that every word is related to the interpretation of
+some normal form, and shows that the semantics is injective on normal
+forms. Completeness follows: two words with the same matrix are related
+to normal forms with the same matrix, which are therefore the same
+normal form. The second step is the long one, since it has to rewrite
+an arbitrary word. The usual proof pushes one gate at a time into a
+normal form, and needs a rewrite rule for every gate and every shape of
+normal form. These rules are the ``typed relations'' or tables that
+fill the appendices. The third step is usually semantic: one reads the
+normal form back from the matrix, for example from how it acts on Pauli
+operators.
+
+\subsection{Completeness by exact synthesis and levels}\label{sec:by-levels}
+
+The second method starts from an exact synthesis algorithm in the style
+of Giles and Selinger~\cite{giles2013exact}. Let $M$ be a matrix in the
+group. Its \emph{pivot} is the last column that differs from the
+corresponding column of the identity, and the \emph{least denominator
+exponent} $k$ of that column is the least $k$ such that $\sqrt2^k$ times
+the column has entries in $\Z[\sqrt2]$ (or in $\Z$, or $\Z[i]$,
+depending on the ring). The algorithm looks at the residues of these
+entries and chooses a short word, the \emph{syllable}, that lowers a
+\emph{level}: in Hadamard-$\Pi$ the level is the triple of the pivot,
+$k$, and the number of odd entries, ordered lexicographically. Iterating
+gives a word $\mathit{nw}(M)$ with $\mathit{nw}(M)\cdot M = I$. This is
+generation: every matrix is the matrix of a word.
+
+For completeness one shows that, for every word $w$ and matrix $M$,
+\[
+  \mathit{nw}(w\cdot M) \, w \;\approx\; \mathit{nw}(M).
+\]
+Call such a $w$ a \emph{path} from $M$. Applied to $M = I$ this gives
+$\mathit{nw}(\llbracket w \rrbracket)\, w \approx \varepsilon$, so two
+words with the same matrix are related to the same word, after
+cancelling $\mathit{nw}(\llbracket w \rrbracket)$. Paths compose, so it suffices to show that every \emph{edge}
+$M \to g \cdot M$ is a path. The proof is by well-founded induction on
+the level of the edge, the larger of the levels of its two ends. If $g$
+is the syllable of $M$, or of $g\cdot M$, the edge is a path by
+definition. Otherwise one completes a square (Figure~\ref{fig:square}):
+with $N$ the syllable of $M$ and $N'$ that of $g\cdot M$, one finds a
+word $W$ with $W N' g \approx N$ whose intermediate states all lie below
+the level of the edge. By induction, every edge of $W$ is a path, and
+the square closes. The \emph{Main Lemma} of these papers is the
+statement that such squares exist for all states and generators. Its
+proof is the long case analysis, and each case is a diagram of matrices
+whose levels must be computed.
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[node distance=1.6cm and 3.2cm, every node/.style={font=\small}]
+  \node (s)  {$M$};
+  \node (r)  [right=of s] {$g\cdot M$};
+  \node (Ns) [below=of s] {$N\cdot M$};
+  \node (Nr) [below=of r] {$N'g\cdot M$};
+  \draw[-{Stealth}] (s) -- node[above] {$g$} (r);
+  \draw[-{Stealth}] (s) -- node[left] {$N$} (Ns);
+  \draw[-{Stealth}] (r) -- node[right] {$N'$} (Nr);
+  \draw[-{Stealth},dashed] (Nr) -- node[below] {$W$, below the level of $M$} (Ns);
+\end{tikzpicture}
+\caption{The square of the Main Lemma. $N$ and $N'$ are the syllables of
+$M$ and $g\cdot M$, both at level at most $L$. If $W N' g \approx N$ and
+every state on the path of $W$ lies below $L$, the edge $g$ is a path
+from $M$ given that all edges below $L$ are.}
+\label{fig:square}
+\Description{A square of four states. The generator g goes from M to
+g M. The syllables N and N prime go down from M and from g M. A dashed
+word W goes from N prime g M back to N M, below the level of M.}
+\end{figure}
+
+Most of the effort in these papers goes into the Main Lemma. The
+rest, generation, soundness and the reduction to edges, is short and
+the same each time.

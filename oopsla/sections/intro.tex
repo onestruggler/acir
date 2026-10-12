@@ -1,0 +1,101 @@
+\section{Introduction}\label{sec:intro}
+
+A quantum circuit denotes a unitary matrix. A set of equations between
+circuits is \emph{sound} if both sides of each equation denote the same
+matrix, and \emph{complete} if every equation between circuits with the
+same matrix follows from it. For example, Selinger's fifteen relations
+for the gates $\omega$, $H$, $S$ and $CZ$ are complete for $n$-qubit
+Clifford circuits, for every $n$~\cite{selinger2015clifford}. Soundness
+is a finite check. Completeness says that the equations present the
+group or monoid of matrices that the circuits generate, and it is much
+harder to prove.
+
+There are a few standard ways to prove it. One defines a normal form,
+shows that every circuit can be rewritten to one, and shows that
+different normal forms have different matrices. Another starts from an
+exact synthesis algorithm, which turns a matrix into a word, and shows
+by induction on a measure of the matrix that every generator applied to
+it can be absorbed into the algorithm's output. A third moves a known
+complete theory along a translation between circuit languages. In each
+case the core of the proof is a case analysis: every relation against
+every normal form, or every generator against every shape of matrix
+column. The papers say so in their page counts. The extended version of
+Hadamard-$\Pi$~\cite{fang2026hadamard} has 116 pages, most of them on
+the completeness of one set of relations. Makary, Ross and Selinger
+support their completeness proof for real stabilizer circuits with a
+supplement of 76 pages of derivations~\cite{makary2021real}. Cl\'ement's
+completeness theorem for real Clifford+$CH$ circuits has a 13-page text
+and an appendix of 264 pages~\cite{clement2026realcliffordch}. A
+referee cannot redo these computations, and an author cannot easily
+check them again after a change.
+
+We have checked twelve completeness proofs of this kind in Agda,
+written between 2014 and 2026, and the minimality theorem of a
+thirteenth paper. Table~\ref{tab:corpus} lists them. Each development
+states its result against a semantics: the relations present the
+group of matrices that the generators generate, or they present a
+submonoid of a matrix group, at every width or dimension. The
+developments build on an Agda library for presentations, normal forms
+and circuits~\cite{anonymous2027popl}, which we extended where we
+needed to. Together they have about 950 modules and 250{,}000 lines,
+and they typecheck in safe Agda~2.8 with no postulates.
+
+The most important finding is about Hadamard-$\Pi$, a POPL~2026 paper
+on equational reasoning for quantum programs~\cite{fang2026hadamard}.
+Its Theorem~4.14 says that the relations of its Figure~6 present the
+group $O_n(\Z[\frac1{\sqrt2}])$ of orthogonal $n\times n$ matrices with
+entries in $\Z[\frac1{\sqrt2}]$. The proof is incomplete. Two of its lemmas
+are false, one of the cases of its Main Lemma relies on them, and that
+case fails on an explicit state in dimension~9 (Section~\ref{sec:gap}).
+The theorem is still true. An unpublished thesis of Cl\'ement from
+2019~\cite{clement2019thesis} presents the same group by a different
+set of relations, and handles the problematic case by other diagrams.
+We proved that the two sets of relations generate the same congruence,
+formalized Cl\'ement's argument for the missing case, and later
+formalized his whole proof. Cl\'ement's 2026 paper on real
+Clifford+$CH$ circuits imports exactly Theorem~4.14 of Hadamard-$\Pi$ as
+its Theorem~4.4, so its main theorem also rested on this gap. Our
+formalization of that paper discharges the import, so its completeness
+theorem is now proved with no hypothesis.
+
+The other papers are correct, but they contain misprints, and some of
+them are in statements that proofs use. Eleven of the 137 typed
+relations in the appendix of the real stabilizer paper are false as
+printed~\cite{makary2021real}. One relation in Table~2 of Li, Ross and
+Selinger's presentation of $O_n(\Z[\frac12])$ has its exponents
+exchanged~\cite{li2021on}. A scalar in Figure~4 of Blake's simpler
+presentations~\cite{blake2026simpler} makes one rule unsound. Our own
+transcriptions were wrong too, sometimes in ways that only a later step
+of the formalization exposed. Section~\ref{sec:findings} lists all of
+these.
+
+The work took 24 days. We did not write most of the Agda by hand: an
+LLM coding agent wrote it, and the scripts that generated the long
+derivations, under our direction. What made this possible is that
+almost every claim in these papers can be checked by a computation
+before it is formalized, and that Agda checks the result after. We
+describe how we used both in Section~\ref{sec:method}.
+
+\paragraph{Contributions.}
+\begin{itemize}
+\item Machine-checked proofs of twelve completeness theorems for
+  quantum circuits and two-level matrix groups, and of one minimality
+  theorem, each stated against a matrix semantics
+  (Section~\ref{sec:corpus}).
+\item A gap in the completeness proof of Hadamard-$\Pi$, with explicit
+  counterexamples to two of its lemmas and to one case of its Main
+  Lemma, and two machine-checked repairs (Section~\ref{sec:gap}).
+\item A list of the other errors that the formalization found, in the
+  papers and in our own transcriptions (Section~\ref{sec:findings}).
+\item The proof architectures behind these results, as they appear in
+  Agda: completeness by levels and edges for exact synthesis,
+  inductive normal forms for circuits, induction on the width, and
+  encodings between circuit languages (Section~\ref{sec:architecture}).
+\item The methods we used to produce the proofs, and what they cost in
+  Agda, including the performance problems we met and how we solved
+  them (Sections~\ref{sec:method} and~\ref{sec:engineering}).
+\end{itemize}
+
+Section~\ref{sec:background} recalls presentations and the two main
+kinds of completeness proof. Section~\ref{sec:related} discusses related
+work and Section~\ref{sec:conclusion} what is not formalized.
