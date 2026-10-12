@@ -17,9 +17,11 @@
 -- * Theorem 37, by the separators of Figure 8 (<fragment>.Minimality,
 --   and <fragment>.Projective for the projective substitutions).
 --
--- Completeness (Section 4) is not formalised here: it is transferred
--- from the source presentations, several of which this library proves
--- complete in their own developments.
+-- Completeness (Section 4, Theorem 22) is transferred from the source
+-- presentations, several of which this library proves complete in
+-- their own developments.  It is formalised for CNOTdihe₂, from Amy,
+-- Chen and Ross's presentation (CNOT-Dihedral.Completeness), so that
+-- CNOTdihe₂ is a minimal complete presentation of its semantics.
 --
 -- Two departures from the paper.  The scalar of the qutrit axiom (E)
 -- is printed ω₁₂⁷ in Figure 4, which is unsound for the semantics of
@@ -35,6 +37,7 @@
 module Examples.Independence.Theorems where
 
 open import Data.Nat.Base using (ℕ ; _+_ ; _≤_)
+open import Data.Product.Base using (_×_ ; _,_)
 open import Relation.Nullary.Negation using (¬_)
 
 import Examples.Independence.Necessity as Necessity
@@ -59,6 +62,8 @@ import Examples.Independence.Qutrit-Clifford.Minimality as Cliff3-Min
 import Examples.Independence.Clifford+T.Minimality      as CliffT-Min
 import Examples.Independence.Clifford+CS.Minimality     as CliffCS-Min
 import Examples.Independence.CNOT-Dihedral.Minimality   as CNOTdihe-Min
+
+import Examples.Independence.CNOT-Dihedral.Completeness as CNOTdihe-Cpl
 
 private
   variable
@@ -172,3 +177,22 @@ CliffCS₂-necessary ρ ar≤2 = CliffCS-M.necessary ρ (CliffCS₂-minimal-upto
 
 CNOTdihe₂-necessary : ∀ ρ → ¬ CNOTdihe-M.Complete-without ρ (CNOTdihe.arity ρ + 0)
 CNOTdihe₂-necessary ρ = CNOTdihe-M.necessary ρ (CNOTdihe₂-minimal ρ)
+
+------------------------------------------------------------------------
+-- Completeness by transfer (Section 4, Theorem 22)
+
+-- 6. CNOTdihe₂ is complete, at every width: its axioms derive Amy,
+-- Chen and Ross's, whose presentation is complete.
+CNOTdihe₂-complete : {w v : CNOTdihe.Circuit n} →
+                     CNOTdihe-Sem.⟦ w ⟧ CNOTdihe-Sem.≈ CNOTdihe-Sem.⟦ v ⟧ →
+                     n CNOTdihe.⊢ w ≈ v
+CNOTdihe₂-complete = CNOTdihe-Cpl.complete
+
+-- So CNOTdihe₂ is a minimal complete presentation: complete at every
+-- width, and without any one of its axioms no longer complete on that
+-- axiom's wires.
+CNOTdihe₂-minimal-complete :
+  (∀ {n} {w v : CNOTdihe.Circuit n} →
+     CNOTdihe-Sem.⟦ w ⟧ CNOTdihe-Sem.≈ CNOTdihe-Sem.⟦ v ⟧ → n CNOTdihe.⊢ w ≈ v) ×
+  (∀ ρ → ¬ CNOTdihe-M.Complete-without ρ (CNOTdihe.arity ρ + 0))
+CNOTdihe₂-minimal-complete = CNOTdihe₂-complete , CNOTdihe₂-necessary

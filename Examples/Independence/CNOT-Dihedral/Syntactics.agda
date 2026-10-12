@@ -10,7 +10,10 @@
 -- of Figure 9 are the phase gates |x, y⟩ ↦ ω^{x ⊕ y} |x, y⟩ and
 -- |x, y, z⟩ ↦ ω^{x ⊕ y ⊕ z} |x, y, z⟩ (blue and green in Figure 7);
 -- placed on wires that are not adjacent, they are conjugated by swaps
--- that bring the wires together.  CTᵢⱼ and CCTᵢⱼₖ name the wires.
+-- that bring the wires together, spelled as Amy, Chen and Ross spell
+-- them (Examples.Groups.CNOT+Dihedral.Syntactics: U₀₂, U₁₃, U₀₃, V₀₂₃,
+-- V₀₁₃), so that (C²T) and (C³T) are their R₉ and R₁₃ letter for
+-- letter.  CTᵢⱼ and CCTᵢⱼₖ name the wires.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -78,7 +81,7 @@ CT₃₀ = σ • σ ↑ • CT ↑ ↑ • σ ↑ • σ
 CCT₃₂₁ CCT₃₂₀ CCT₃₁₀ CCT₂₁₀ : Circuit (₄₊ n)
 CCT₃₂₁ = CCT ↑
 CCT₃₂₀ = σ • CCT ↑ • σ
-CCT₃₁₀ = σ ↑ ↑ • CCT • σ ↑ ↑
+CCT₃₁₀ = σ ↑ • σ • CCT ↑ • σ • σ ↑
 CCT₂₁₀ = CCT
 
 -- T^k on each of the bottom three, and four, wires.
