@@ -1,4 +1,4 @@
-# OOPSLA draft: machine-checked completeness proofs
+# OOPSLA draft: Human-Made Scaffolds for Machine-Written Proofs
 
 This folder is a draft OOPSLA paper on the formalization work done in
 this repository since the POPL paper on the library (branch
