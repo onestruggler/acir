@@ -31,7 +31,6 @@ module Examples.Groups.Real-Clifford+CH.GeneralN.BoxMerge
   (complete₃ : ∀ {u v : Circuit 3} → ⟦ u ⟧ ~ ⟦ v ⟧ → 3 ⊢ u ≈ v)
   where
 
-open import Data.Integer using (+_ ; -[1+_])
 open import Data.Nat using (ℕ)
 open import Data.Product using (_,_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
@@ -42,12 +41,6 @@ open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools ; module Conj ; ax)
 open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Blocks complete₂ using (L-sem)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Blocks complete₂ complete₃ using (L₃-sem)
-open import Examples.Groups.Real-Clifford+CH.Semantics using (Mat ; mat ; _+√2_ ; mulM ; scaleM ; √2^_)
-open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧M ; len)
-open import Examples.Groups.Real-Clifford+CH.Soundness.Relators using (Same)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Locals using (Wᴸ ; Wᴸ-def ; Vᴸ ; Vᴸ-def)
-open import Examples.Groups.Real-Clifford+CH.GeneralN.Locals2 using (ZX₀₁ᴸ ; ZX₀₁ᴸ-def)
-open import Examples.Groups.Real-Clifford+CH.Evaluation using (by-rows)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Sem using (B□)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.SemZX using (B₁₀)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.SemMerge using (ZX₀ ; XZ₀ ; sem-305 ; sem-304)
@@ -129,13 +122,6 @@ module _ (k : ℕ) (complete : Complete k) where
 
     ------------------------------------------------------------------
     -- Three and two wires
-
-    -- V negated on wire 2, as a literal.
-    V°ᴸ : Mat 3
-    V°ᴸ = mat ((((((((+ 8388608) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))) , (((((+ 0) +√2 (+ 0)) , ((+ 8388608) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))))) , ((((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 8388608) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))) , (((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 8388608) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))))) , (((((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 8388608) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))) , (((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 8388608) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))))) , ((((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((-[1+ 8388607 ]) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))))) , (((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0)))) , ((((+ 0) +√2 (+ 0)) , ((+ 0) +√2 (+ 0))) , (((+ 0) +√2 (+ 0)) , ((+ 8388608) +√2 (+ 0))))))))
-
-    V°ᴸ-def : ⟦ X {0} ↑ ↑ • CCXZ {0} • X {0} ↑ ↑ ⟧M ≡ V°ᴸ
-    V°ᴸ-def = by-rows (X {0} ↑ ↑ • CCXZ {0} • X {0} ↑ ↑) Eq.refl
 
     VW° : (₄₊ k) ⊢ V • W° ≈ CZ ↑ • ZX₁
     VW° = L₃-sem (CCXZ • (X ↑ ↑ • CCZX • X ↑ ↑)) (CZ ↑ • (ΛZX 1 ↓ᵏ 1))
