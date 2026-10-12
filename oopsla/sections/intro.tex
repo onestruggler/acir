@@ -60,7 +60,8 @@ in every paper. We use an Agda library, described in an earlier
 paper~\cite{anonymous2027popl}, that fixes this form once: words,
 circuits on $n$ wires with their structural rules, and what it means for
 relations to present a group or a subgroup of one. On top of it an LLM
-coding agent wrote each formalization, under our direction. For each
+coding agent wrote the formalizations, under our direction, except the
+qudit Clifford development, which was written mainly by hand. For each
 paper, a person then checks only what the library cannot fix: the
 relations as transcribed, the matrices of the gates, the interpretation
 of a circuit as a matrix, and a theorem statement of one line. For the
@@ -109,9 +110,9 @@ transcriptions were wrong too, sometimes in ways that only a later step
 of the formalization exposed. Section~\ref{sec:findings} lists all of
 these.
 
-The qudit development took three months. Everything else took 24
-days. The agent wrote the Agda and the scripts that generated the long
-derivations. What made this possible is that almost every claim in
+The qudit Clifford development was written mainly by a person, over three
+months. Everything else took 24 days, and there the agent wrote the
+Agda and the scripts that generated the long derivations. What made this possible is that almost every claim in
 these papers can be checked by a computation before it is formalized,
 and that Agda checks the result after. We describe how we used both in
 Section~\ref{sec:method}.
