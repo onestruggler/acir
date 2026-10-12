@@ -207,8 +207,22 @@ With both instances of Theorem~4.4 proved, the paper's Theorem~8.9
 holds with no hypothesis:
 \begin{agdacode}
 completeness : ∀ n → Complete n
-subpresentation : ∀ n → (n VRel,_===_) IsSubMonoidPresentationOf Scaled-monoid n
+subpresentationᴼ : ∀ n → (n VRel,_===_) IsSubPresentationOf O (2 ^ n)
 \end{agdacode}
+Here \aid{O (2 \textasciicircum{} n)} is the orthogonal group
+$O_{2^n}(\Z[\frac1{\sqrt2}])$ of the Hadamard-$\Pi$ development. The
+development first proved the theorem for a monoid: it reads a circuit
+as a pair $(\ell, M)$ of an integer matrix over $\Z[\sqrt2]$ and a
+power of $\frac1{\sqrt2}$, which makes the matrices fast to compute
+with, and such pairs have no inverses. To get the group version, the
+bridge's $\Phi$ carries each pair to a matrix over
+$\Z[\frac1{\sqrt2}]$. That matrix is orthogonal, because every gate
+matrix is symmetric and every gate is its own inverse by Cl\'ement's
+rules. And $\Phi$ is injective up to the equality of pairs, because
+$\iota$ is injective and $\sqrt2$ is a unit. The module that does this
+has about 210 lines and checks in 17~seconds. So the real Clifford+$CH$
+circuits, the real stabilizer circuits and Figure~6 of Hadamard-$\Pi$
+are now all stated against the same group.
 
 \subsection{Ports of existing Agda proofs}
 
