@@ -209,7 +209,24 @@ presentation : {n : ℕ} → (n VRel,_===_) IsSubPresentationOf U (2 ^ n)
 \end{agdacode}
 where \aid{U} is the unitary group over any nontrivial
 commutative ring with an involution and an element $s$ with $s s + s s
-= 1$ fixed by it. A second module instantiates this at
+= 1$ fixed by it.
+
+To trust this line, a reader checks four things, and nothing else in
+the 11{,}799 lines of the development. The relation
+\aid{n VRel,\_===\_} is the paper's R1--R16, lifted to $n$ wires by the
+library's structural rules; the module that states it has 117 lines.
+The group \aid{U (2 \textasciicircum{} n)} is built from operators on bit vectors and
+the unitary matrices; its definitions take under 200 lines, and the
+lemmas around them need not be read. The interpretation sends $-1$,
+$H$, $Z$ and $CZ$ to their matrices and a word to the product of its
+letters, in about 30 lines. Last, the record
+\aid{\_IsSubPresentationOf\_} holds the interpretation as one of its
+fields, so the reader checks that the proof fills that field with this
+interpretation, which is one line. The rest of the library, which
+defines words, circuits, the structural rules and the record itself, is
+checked once for all the developments.
+
+A second module instantiates this theorem at
 $\D[\sqrt2]=\Z[\frac1{\sqrt2}]$ and $s=\frac1{\sqrt2}$, which puts the
 real stabilizer group inside the orthogonal group of
 Hadamard-$\Pi$. Because that group is presented by Figure~6, every real

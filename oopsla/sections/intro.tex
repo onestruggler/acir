@@ -1,9 +1,30 @@
 \section{Introduction}\label{sec:intro}
 
-A quantum circuit denotes a unitary matrix. A set of equations between
-circuits is \emph{sound} if both sides of each equation denote the same
-matrix, and \emph{complete} if every equation between circuits with the
-same matrix follows from it. For example, Selinger's fifteen relations
+Formalizing mathematics has been slow. A non-trivial theorem could take
+dozens or hundreds of person-hours to formalize, and a large one years
+of work by a team. This has changed. In September 2026 a language model
+wrote a proof of Fermat's Last Theorem in Lean, 13 million lines in 11
+days~\cite{anthropic2026flt}. Writing the proof is no longer the
+bottleneck.
+
+What remains is the statement. A formal proof proves what its statement
+says, and checking that the statement, and the definitions it depends
+on, say what was meant needs a person. Generated formalizations are not
+written to be read, so this check is still slow. As
+\citet{hales2026reliability} puts it, a proof in Lean should not be
+accepted until a human has checked statement fidelity, a task much
+easier than checking the proof. For Fermat's Last Theorem the check was
+easy, because the generated statement could be compared mechanically
+with one that people had already written and checked in Mathlib. Most
+results have no such statement to compare with. We would like the
+check to stay easy anyway.
+
+In this paper we take one step towards this, in one area of quantum
+computing where formalization is wanted: completeness of equational
+theories for circuits. A quantum circuit denotes a unitary matrix. A
+set of equations between circuits is \emph{sound} if both sides of
+each equation denote the same matrix, and \emph{complete} if every
+equation between circuits with the same matrix follows from it. For example, Selinger's fifteen relations
 for the gates $\omega$, $H$, $S$ and $CZ$ are complete for $n$-qubit
 Clifford circuits, for every $n$~\cite{selinger2015clifford}. Soundness
 is a finite check. Completeness says that the equations present the
@@ -25,23 +46,39 @@ the completeness of one set of relations. Makary, Ross and Selinger
 support their completeness proof for real stabilizer circuits with a
 supplement of 76 pages of derivations~\cite{makary2021real}. Cl\'ement's
 completeness theorem for real Clifford+$CH$ circuits has a 13-page text
-and an appendix of 264 pages~\cite{clement2026realcliffordch}. A
-referee cannot redo these computations, and an author cannot easily
-check them again after a change.
+and an appendix of 264 pages~\cite{clement2026realcliffordch}. Most
+of these papers appear at conferences, where a referee has a few weeks
+for several papers, so in practice such appendices are seldom checked
+in full. An author cannot easily check them again after a change
+either.
 
-We have checked thirteen completeness proofs of this kind in Agda,
-written between 2014 and 2026, and the minimality theorem of a
-fourteenth paper. Table~\ref{tab:corpus} lists them. Each development
-states its result against a semantics: the relations present the
-group of matrices that the generators generate, or they present a
-submonoid of a matrix group, at every width or dimension. The one
-exception is the qudit Clifford group of \citet{bian2026qupit}, whose
-relations are shown to present an algebraic model of that group
-(Section~\ref{sec:qupit}). The developments build on an Agda library
-for presentations, normal forms and circuits~\cite{anonymous2027popl},
-which we extended where we needed to. Together they have about
-1{,}100 modules and 300{,}000 lines, and they typecheck in safe
-Agda~2.8 with no postulates.
+These papers have one thing in common that helps: they share a
+semantics. A circuit is a word over gates, it denotes a matrix, and the
+theorem says that the relations present the group, or monoid, that the
+matrices of the circuits form. So the form of the statement is the same
+in every paper. We use an Agda library, described in an earlier
+paper~\cite{anonymous2027popl}, that fixes this form once: words,
+circuits on $n$ wires with their structural rules, and what it means for
+relations to present a group or a subgroup of one. On top of it an LLM
+coding agent wrote each formalization, under our direction. For each
+paper, a person then checks only what the library cannot fix: the
+relations as transcribed, the matrices of the gates, the interpretation
+of a circuit as a matrix, and a theorem statement of one line. For the
+real stabilizer development these come to under 500 of its 11{,}799
+lines. Agda checks the rest.
+
+We did this for thirteen completeness proofs, written between 2014 and
+2026, and for the minimality theorem of a fourteenth paper.
+Table~\ref{tab:corpus} lists them. Each development states its result
+against a semantics: the relations present the group of matrices that
+the generators generate, or they present a submonoid of a matrix group,
+at every width or dimension. The one exception is the qudit Clifford
+group of \citet{bian2026qupit}, whose relations are shown to present an
+algebraic model of that group (Section~\ref{sec:qupit}). A development
+has about 22{,}000 lines on average, and all of them together about
+1{,}100 modules and 300{,}000 lines, on a library of 16{,}000 lines
+that we extended where we needed to. They typecheck in safe Agda~2.8
+with no postulates.
 
 The most important finding is about Hadamard-$\Pi$, a POPL~2026 paper
 on equational reasoning for quantum programs~\cite{fang2026hadamard}.
@@ -73,15 +110,23 @@ of the formalization exposed. Section~\ref{sec:findings} lists all of
 these.
 
 The qudit development took three months. Everything else took 24
-days. We did not write most of the Agda by hand: an LLM coding agent
-wrote it, and the scripts that generated the long derivations, under
-our direction. What made this possible is that
-almost every claim in these papers can be checked by a computation
-before it is formalized, and that Agda checks the result after. We
-describe how we used both in Section~\ref{sec:method}.
+days. The agent wrote the Agda and the scripts that generated the long
+derivations. What made this possible is that almost every claim in
+these papers can be checked by a computation before it is formalized,
+and that Agda checks the result after. We describe how we used both in
+Section~\ref{sec:method}.
+
+With language models, we need new ways of engaging with mathematics and
+its formalization. We think that scaffolds made by people, on which the
+models build, are one step in this direction: the people check the
+scaffold once and a short statement per result, and the machine checks
+the rest.
 
 \paragraph{Contributions.}
 \begin{itemize}
+\item A way of formalizing a family of papers with an LLM agent: a
+  library fixes the form of the theorem, and a person checks a short
+  statement per paper (Sections~\ref{sec:corpus} and~\ref{sec:agent}).
 \item Machine-checked proofs of thirteen completeness theorems for
   quantum circuits and two-level matrix groups, and of one minimality
   theorem, each stated against a matrix semantics or, for qudit

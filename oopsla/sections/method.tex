@@ -138,6 +138,22 @@ module that states it without hypotheses, in terms of
 the library's records and a matrix semantics that can be compared with
 the paper's. These are the statements a reader should check.
 
+The library is what keeps that check short, and it is worth being
+precise about what it fixes. It fixes the form of every theorem, so a
+reader learns the form once and recognizes it in each development. It
+does not fix the matrices. Here each development defines its own
+semantics, written by the agent from the paper, and we checked it
+against the paper by computation. Several developments share one
+unitary group and one matrix algebra, and a library of matrix
+semantics for the common gates would make the check per paper smaller
+still. Nor does the statement pin the interpretation. The records hold
+the interpretation as a field, so \aid{R IsSubPresentationOf U} on its
+own says only that the presented group embeds in \aid{U} in some way,
+and the reader has to look at the field the proof supplies. A scaffold
+built for this use should make the interpretation a parameter of the
+statement. We have not changed the library in this way, which is why
+the check of Section~\ref{sec:corpus} includes that line.
+
 We also found that the agent's mistakes resembled human ones.
 It misread a diagram at low resolution, took the bounds of a product in
 the wrong order, and stated a hypothesis more strongly than the paper

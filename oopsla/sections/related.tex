@@ -82,10 +82,16 @@ a Boolean check, proved sound once, and run by the typechecker.
 \paragraph{Language models and proof assistants.} Most work on language
 models for proof assistants asks a model to prove one theorem at a time,
 and measures success on a
-benchmark~\cite{first2023baldur,yang2023leandojo,jiang2023dsp}. Our use
-was different. The agent worked on whole developments for weeks, with
-the papers as specifications, and most of its output was ordinary
-engineering: definitions, scripts that generate proofs, and changes for
-performance. We do not claim that this experience generalizes. We
+benchmark~\cite{first2023baldur,yang2023leandojo,jiang2023dsp}. At the
+other end, the formalization of Fermat's Last
+Theorem~\cite{anthropic2026flt} was written by models working largely
+on their own, and its statement was checked against the one in Mathlib.
+Our use lies between the two. The agent worked on whole developments
+for weeks, with the papers as specifications and a fixed library for
+the statements, and most of its output was ordinary engineering:
+definitions, scripts that generate proofs, and changes for
+performance. \citet{hales2026reliability} argues that every formal
+proof needs a human audit of its statement; our library is a way to
+make that audit short for a family of papers. We do not claim that this experience generalizes. We
 report it because the time the work took matters to anyone who plans
 similar work.

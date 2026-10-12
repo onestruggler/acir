@@ -1,26 +1,30 @@
-An equational theory for a family of quantum circuits is complete if it
-proves every equation that holds between the matrices of the circuits.
-Completeness proofs are long and repetitive. They normalize circuits, or
-synthesize them from their matrices, and then check by hand that every
-rule meets every normal form in the expected way. We have checked
-thirteen such proofs in Agda, written between 2014 and 2026, together
-with the minimality theorem of a fourteenth paper. They are about
-Clifford circuits on qubits and on qudits of odd prime dimension, real
-stabilizer, CNOT-dihedral, phase-affine, Clifford+$T$, Clifford+$CS$
-and real Clifford+$CH$ circuits, and about the groups of unitary and
-orthogonal matrices over $\Z[\tfrac12,i]$, $\Z[\tfrac1{\sqrt2},i]$,
-$\Z[\tfrac12]$ and $\Z[\tfrac1{\sqrt2}]$ in which such circuits live.
-The developments have about 1{,}100 modules and 300{,}000 lines of safe
-Agda without postulates. Most of them were written in 24 days with an
-LLM coding agent.
+Formalizing a proof used to take a person days or months. Language
+models now write machine-checked proofs of hundreds of thousands of
+lines, or millions. This moves the bottleneck. A formal proof proves its
+statement, and someone still has to check that the statement and the
+definitions under it mean what was intended. Generated code is not
+written to be read, so that check is still done by people. We study how
+to keep it small in one area of quantum computing: completeness of
+equational theories for circuits. These papers have appendices of
+dozens or hundreds of pages that referees have no time to check, and they share
+one semantics, circuits read as matrices. On top of an Agda library
+that fixes, once, what circuits are and what it means for relations to
+present a group of matrices, an LLM coding agent formalized thirteen
+completeness proofs written between 2014 and 2026, and the minimality
+theorem of a fourteenth paper. For each paper a reader checks the
+relations, the matrices of the gates and a one-line theorem. For real
+stabilizer circuits that is under 500 of 11{,}799 lines. In all the
+developments have about 300{,}000 lines of safe Agda without
+postulates, on a library of 16{,}000 lines, and most of them were
+written in 24 days.
 
 Most of the proofs are correct, up to misprints that we list. One is
 not. The completeness proof for Figure~6 of Hadamard-$\Pi$ (POPL 2026)
-relies on two false lemmas, and its Main Lemma fails on an explicit state
-in dimension~9. The theorem itself is true. We prove it by formalizing
-the corresponding case of an unpublished 2019 thesis of Cl\'ement, and
-then the whole thesis. Cl\'ement's 2026 completeness theorem for real
-Clifford+$CH$ circuits, whose appendix has 264 pages,
+relies on two false lemmas, and its Main Lemma fails on an explicit
+state in dimension~9. The theorem itself is true. We prove it by
+formalizing the corresponding case of an unpublished 2019 thesis of
+Cl\'ement, and then the whole thesis. Cl\'ement's 2026 completeness
+theorem for real Clifford+$CH$ circuits, whose appendix has 264 pages,
 imports this theorem; our proof of it has no such hypothesis. We
-describe the proof architectures the papers share, how we found and
-checked hundreds of derivations, and what the work cost in Agda.
+describe the proof architectures the papers share, how the proofs were
+produced, and what they cost in Agda.
