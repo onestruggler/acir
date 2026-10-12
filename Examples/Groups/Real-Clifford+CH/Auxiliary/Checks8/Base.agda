@@ -6,6 +6,11 @@
 -- Boolean checks of the rules of Figure 8 (one per rule, over every
 -- choice of indices satisfying its side conditions)
 --
+-- A word over P is read by row operations (Checks8.Rows), letter by
+-- letter from the right, and two readings are compared by one boolean
+-- (Semantics.Decide).  Dense products of 8 × 8 tries compared by
+-- mat-dec took about twenty minutes for Checks8.
+--
 -- The evaluations are in Checks8/R* and Checks8/H*, not here (a few
 -- thousand instances per module: Agda releases the memory of an
 -- evaluation only when its module is done).  Each evaluation module
@@ -30,19 +35,22 @@ open import Data.Nat using (ℕ ; suc ; _+_ ; _∸_ ; _<_ ; _≤_ ; _<ᵇ_ ; _�
 open import Data.Nat.Properties using (<⇒<ᵇ ; ≡ᵇ⇒≡ ; ≡⇒≡ᵇ ; ≤⇒≤ᵇ)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
-open import Relation.Nullary.Decidable using (yes ; no ; ⌊_⌋)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
 open import Notations using (₀ ; ₁ ; ₂ ; ₃ ; ₄ ; ₅ ; ₆ ; ₇)
 
 open import Examples.Groups.Real-Clifford+CH.Semantics hiding (_^_ ; ^-+)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
-open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧ ; ⟦_⟧M ; ⟦⟧-ix ; len)
+open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧ ; len)
+open import Examples.Groups.Real-Clifford+CH.Evaluation using (Rows ; rix ; _⊙ʳ_ ; ⟦_⟧R ; ⟦⟧R-ix)
+open import Examples.Groups.Real-Clifford+CH.Semantics.Decide using (eqM ; eqM-sound)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Gray using (code ; parity)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Matrices using (⟦_⟧ᴳ)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.P
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Figure8
 open import Examples.Groups.Real-Clifford+CH.Encoding
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.Rows
+  using (negR ; swapR ; hadR ; negR-ok ; swapR-ok ; hadR-ok ; ⊙ʳ-ext ; ⊙ʳ-assoc ; ⊙ʳ-id)
 
 import Examples.Groups.Real-Clifford+CH.Auxiliary.Syntactics as G
 open G using (−1[_] ; X[_,_] ; H[_,_])
@@ -55,54 +63,82 @@ open BF using (⟦_⟧Y)
 -- The stored reading of a word over P, and the decision
 
 private
-  ⟦_⟧GM : G.Gen 8 → Mat 3
-  ⟦ g ⟧GM = matOf (proj₂ ⟦ g ⟧ᴳ)
+  -- A letter of G on the left of a trie of rows.
+  applyG : G.Gen 8 → Rows 3 3 → Rows 3 3
+  applyG −1[ a ]    = negR 3 (code 3 a)
+  applyG X[ a , b ] = swapR 3 (code 3 a) (code 3 b)
+  applyG H[ a , b ] = hadR 3 (code 3 a) (code 3 b)
 
-  ⟦_⟧PM : Word (GenP 3) → Mat 3
-  ⟦ [ −1−1 a b ]ʷ ⟧PM       = mulM ⟦ −1[ a ] ⟧GM ⟦ −1[ b ] ⟧GM
-  ⟦ [ −1X c a b _ ]ʷ ⟧PM    = mulM ⟦ −1[ c ] ⟧GM ⟦ X[ a , b ] ⟧GM
-  ⟦ [ XX a b c d _ _ ]ʷ ⟧PM = mulM ⟦ X[ a , b ] ⟧GM ⟦ X[ c , d ] ⟧GM
-  ⟦ [ HH a b c d _ _ ]ʷ ⟧PM = mulM ⟦ H[ a , b ] ⟧GM ⟦ H[ c , d ] ⟧GM
-  ⟦ ε ⟧PM                   = idM
-  ⟦ u • t ⟧PM               = mulM ⟦ u ⟧PM ⟦ t ⟧PM
+  applyG-ok : (g : G.Gen 8) (R : Rows 3 3) (x y : Bits 3) →
+              rix (applyG g R) x y ≡ (proj₂ ⟦ g ⟧ᴳ ⊙ʳ rix R) x y
+  applyG-ok −1[ a ]    = negR-ok 3 (code 3 a)
+  applyG-ok X[ a , b ] = swapR-ok 3 (code 3 a) (code 3 b)
+  applyG-ok H[ a , b ] = hadR-ok 3 (code 3 a) (code 3 b)
 
-  pair-ix : (g h : G.Gen 8) → (proj₂ ⟦ g ⟧ᴳ ⊙ proj₂ ⟦ h ⟧ᴳ) ≐ ix (mulM ⟦ g ⟧GM ⟦ h ⟧GM)
-  pair-ix g h = ≐-trans (⊙-cong (≐-sym (ix-matOf (proj₂ ⟦ g ⟧ᴳ))) (≐-sym (ix-matOf (proj₂ ⟦ h ⟧ᴳ)))) (≐-sym (ix-mul ⟦ g ⟧GM ⟦ h ⟧GM))
+  -- A letter of P: two letters of G, the right one first.
+  apply₂ : G.Gen 8 → G.Gen 8 → Rows 3 3 → Rows 3 3
+  apply₂ g h R = applyG g (applyG h R)
 
-  Y-ix : (u : Word (GenP 3)) → proj₂ ⟦ u ⟧Y ≐ ix ⟦ u ⟧PM
-  Y-ix [ −1−1 a b ]ʷ       = pair-ix −1[ a ] −1[ b ]
-  Y-ix [ −1X c a b _ ]ʷ    = pair-ix −1[ c ] X[ a , b ]
-  Y-ix [ XX a b c d _ _ ]ʷ = pair-ix X[ a , b ] X[ c , d ]
-  Y-ix [ HH a b c d _ _ ]ʷ = pair-ix H[ a , b ] H[ c , d ]
-  Y-ix ε                   = ≐-sym ix-id
-  Y-ix (u • t)             = ≐-trans (⊙-cong (Y-ix u) (Y-ix t)) (≐-sym (ix-mul ⟦ u ⟧PM ⟦ t ⟧PM))
+  apply₂-ok : (g h : G.Gen 8) (R : Rows 3 3) (x y : Bits 3) →
+              rix (apply₂ g h R) x y ≡ ((proj₂ ⟦ g ⟧ᴳ ⊙ proj₂ ⟦ h ⟧ᴳ) ⊙ʳ rix R) x y
+  apply₂-ok g h R x y =
+    Eq.trans (applyG-ok g (applyG h R) x y)
+      (Eq.trans (⊙ʳ-ext (proj₂ ⟦ g ⟧ᴳ) (applyG-ok h R) x y)
+                (⊙ʳ-assoc (proj₂ ⟦ g ⟧ᴳ) (proj₂ ⟦ h ⟧ᴳ) (rix R) x y))
 
--- Two words over P with the same matrix, decided.
+  -- A word over P, from the right.
+  runP : Word (GenP 3) → Rows 3 3 → Rows 3 3
+  runP [ −1−1 a b ]ʷ       = apply₂ −1[ a ] −1[ b ]
+  runP [ −1X c a b _ ]ʷ    = apply₂ −1[ c ] X[ a , b ]
+  runP [ XX a b c d _ _ ]ʷ = apply₂ X[ a , b ] X[ c , d ]
+  runP [ HH a b c d _ _ ]ʷ = apply₂ H[ a , b ] H[ c , d ]
+  runP ε R                 = R
+  runP (u • t) R           = runP u (runP t R)
+
+  runP-ok : (u : Word (GenP 3)) (R : Rows 3 3) (x y : Bits 3) →
+            rix (runP u R) x y ≡ (proj₂ ⟦ u ⟧Y ⊙ʳ rix R) x y
+  runP-ok [ −1−1 a b ]ʷ       = apply₂-ok −1[ a ] −1[ b ]
+  runP-ok [ −1X c a b _ ]ʷ    = apply₂-ok −1[ c ] X[ a , b ]
+  runP-ok [ XX a b c d _ _ ]ʷ = apply₂-ok X[ a , b ] X[ c , d ]
+  runP-ok [ HH a b c d _ _ ]ʷ = apply₂-ok H[ a , b ] H[ c , d ]
+  runP-ok ε R x y             = Eq.sym (⊙ʳ-id (rix R) x y)
+  runP-ok (u • t) R x y =
+    Eq.trans (runP-ok u (runP t R) x y)
+      (Eq.trans (⊙ʳ-ext (proj₂ ⟦ u ⟧Y) (runP-ok t R) x y)
+                (⊙ʳ-assoc (proj₂ ⟦ u ⟧Y) (proj₂ ⟦ t ⟧Y) (rix R) x y))
+
+  -- The stored reading of a word over P, and its correctness.
+  ⟦_⟧PR : Word (GenP 3) → Mat 3
+  ⟦ u ⟧PR = mat (runP u (entries (idM {3})))
+
+  PR-ix : (u : Word (GenP 3)) → proj₂ ⟦ u ⟧Y ≐ ix ⟦ u ⟧PR
+  PR-ix u x y = Eq.sym
+    (Eq.trans (runP-ok u (entries (idM {3})) x y)
+      (Eq.trans (⊙ʳ-ext (proj₂ ⟦ u ⟧Y) (ix-id {3}) x y)
+                (Σ-δʳ y (λ z → proj₂ ⟦ u ⟧Y x z))))
+
 decide : Word (GenP 3) → Word (GenP 3) → Bool
-decide u t = ⌊ mat-dec (scaleM (√2^ proj₁ ⟦ t ⟧Y) ⟦ u ⟧PM) (scaleM (√2^ proj₁ ⟦ u ⟧Y) ⟦ t ⟧PM) ⌋
+decide u t = eqM (scaleM (√2^ proj₁ ⟦ t ⟧Y) ⟦ u ⟧PR) (scaleM (√2^ proj₁ ⟦ u ⟧Y) ⟦ t ⟧PR)
 
 decide-sound : (u t : Word (GenP 3)) → decide u t ≡ true → ⟦ u ⟧Y ~ ⟦ t ⟧Y
-decide-sound u t eq with mat-dec (scaleM (√2^ proj₁ ⟦ t ⟧Y) ⟦ u ⟧PM) (scaleM (√2^ proj₁ ⟦ u ⟧Y) ⟦ t ⟧PM)
-... | yes p =
-  ≐-trans (·-cong Eq.refl (Y-ix u))
+decide-sound u t eq =
+  ≐-trans (·-cong Eq.refl (PR-ix u))
     (≐-trans (≐-sym (ix-scaleM _ _))
-      (≐-trans (ix-≡ p)
-        (≐-trans (ix-scaleM _ _) (·-cong Eq.refl (≐-sym (Y-ix t))))))
-... | no _ with eq
-...   | ()
+      (≐-trans (ix-≡ (eqM-sound (scaleM (√2^ proj₁ ⟦ t ⟧Y) ⟦ u ⟧PR)
+                                (scaleM (√2^ proj₁ ⟦ u ⟧Y) ⟦ t ⟧PR) eq))
+        (≐-trans (ix-scaleM _ _) (·-cong Eq.refl (≐-sym (PR-ix t))))))
 
-------------------------------------------------------------------------
--- The encoding preserves the semantics of every generator
 
 private
   by-tries : (g : Gen 3) →
-             scaleM (√2^ len [ g ]ʷ) ⟦ e g ⟧PM ≡ scaleM (√2^ proj₁ ⟦ e g ⟧Y) ⟦ [ g ]ʷ ⟧M →
+             eqM (scaleM (√2^ len [ g ]ʷ) ⟦ e g ⟧PR) (scaleM (√2^ proj₁ ⟦ e g ⟧Y) ⟦ [ g ]ʷ ⟧R) ≡ true →
              ⟦ e g ⟧Y ~ ⟦ [ g ]ʷ ⟧
   by-tries g eq =
-    ≐-trans (·-cong Eq.refl (Y-ix (e g)))
+    ≐-trans (·-cong Eq.refl (PR-ix (e g)))
       (≐-trans (≐-sym (ix-scaleM _ _))
-        (≐-trans (ix-≡ eq)
-          (≐-trans (ix-scaleM _ _) (·-cong Eq.refl (≐-sym (⟦⟧-ix [ g ]ʷ))))))
+        (≐-trans (ix-≡ (eqM-sound (scaleM (√2^ len [ g ]ʷ) ⟦ e g ⟧PR)
+                                  (scaleM (√2^ proj₁ ⟦ e g ⟧Y) ⟦ [ g ]ʷ ⟧R) eq))
+          (≐-trans (ix-scaleM _ _) (·-cong Eq.refl (≐-sym (⟦⟧R-ix [ g ]ʷ))))))
 
 e-sem₃ : (g : Gen 3) → ⟦ e g ⟧Y ~ ⟦ [ g ]ʷ ⟧
 e-sem₃ (gate₀ ())
