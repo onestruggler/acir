@@ -286,10 +286,14 @@ module Frame (e65 : Eq65) (z o : Fin N) (z≢o : z ≢ o) (e f g : Fin N)
             w ≈ T c • (Φ y • T⁻ c′) → Goal c y
   via-act c y ex p = Eq.subst (λ q → proj₁ q ≈ T c • (Φ y • T⁻ (proj₂ q))) (Eq.sym ex) p
 
-  -- The normaliser at a vector of indices.
+  -- The normaliser at a vector of indices.  Every application of NV
+  -- (N3 … O4, and each `open N4 …` in a branch) copies what NV exports,
+  -- so it exports only what the branches use: all of Norm, copied some
+  -- fifty times, made this module's interface 2.2 MB.
   module NV {k : ℕ} (v : Vec (Fin N) k) (dv : Distinct v)
             (ae : All (λ y → y ≢ e) v) (af : All (λ y → y ≢ f) v) =
     Norm e65 (lookup v) (lookup-inj dv) e f ef (allAt ae) (allAt af)
+      using (by-norm ; A5-tmpl ; FL ; FW ; hf ; hl ; hr ; hp ; femp ; ⌞_⌟ ; _•ᶠ_)
 
   -- The three we use most: 0 1 g, 0 1 x g and 0 1 a b g.
   module N3 = NV (z ∷ o ∷ g ∷ [])
