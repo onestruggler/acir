@@ -216,6 +216,7 @@ module _ (e65 : Eq65) where
   module With (a b c : Fin N) where
     open FrameFor (frame-for a b c) public
     open Frame e65 z₀ o₁ z₀≢o₁ e f g ef eg fg ez eo fz fo gz go public
+      using (by-frame ; Av ; module NV)
 
     av-a : Av a
     av-a = ae , af , ag
