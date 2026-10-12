@@ -42,7 +42,7 @@ Source & Object & Method & Mod. & Lines & Result \\
 \citet{clement2026realcliffordch} & real Clifford+$CH$ & encoding & 348 & 73{,}097 & sub-presentation, every $n$ \\
 \midrule
 \multicolumn{6}{@{}l}{\emph{Minimality}}\\
-\citet{blake2026simpler} & six fragments & models & 32 & 4{,}070 & soundness, minimality \\
+\citet{blake2026simpler} & six fragments & models & 33 & 4{,}143 & soundness, minimality, necessity \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -176,9 +176,13 @@ follows from the others. The proofs use separating interpretations, a
 model in which all rules but one hold. We formalized the six fragments
 with their matrix semantics, soundness at every width, and all the
 separating interpretations of the minimality theorem, on the
-independence framework of Section~\ref{sec:independence-layer}. The
-completeness part of that paper, a translation from the earlier
-presentations, is not formalized.
+independence framework of Section~\ref{sec:independence-layer}. Since
+the rules are sound, an independent rule is also necessary for
+completeness, its own two sides being an equation that the semantics
+validates and the other rules do not derive; the paper's Section~5.1
+says so, and we state it for every fragment in the ranges of its
+Theorem~37. The completeness part of that paper, a translation from
+the earlier presentations, is not formalized.
 
 We used the same framework on our own circuit layer. Its four
 structural rules (Section~\ref{sec:presentations}) are independent: for
