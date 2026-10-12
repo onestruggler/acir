@@ -5,71 +5,37 @@ appears in Agda a route; two of the routes are module shapes, copied
 from development to development, and the others are patterns. This
 section describes them, and for each says what an author who brings a
 new theory has to supply and what the machine supplies. The route is
-the paper's choice, not ours: a paper that proves completeness by a
-normal form is formalized by a normal form. For a new theory the route
-follows what the author has. An exact synthesis algorithm over the
-ring gives the levels route; a candidate normal form the normal-form
-route; a decomposition of circuits by wires the induction on the
-width; a complete theory for a nearby language an encoding. Four of
-the shapes below are such routes. The other two, products of
-presentations and Reidemeister--Schreier ports, compose presentations
-rather than prove one from scratch. Section~\ref{sec:example} follows
-one development from its gate set to its theorem, and
-Section~\ref{sec:generated} tabulates, across the developments, how
-much was generated and how much was written.
+the paper's choice, not ours, and for a new theory it follows what the
+author has: an exact synthesis algorithm over the ring gives the
+levels route, a candidate normal form the normal-form route, a
+decomposition of circuits by wires the induction on the width, and a
+complete theory for a nearby language an encoding. Four of the shapes
+below are such routes; the other two, products of presentations and
+Reidemeister--Schreier ports, compose presentations rather than prove
+one from scratch. Section~\ref{sec:example} follows one development
+from its gate set to its theorem, and Section~\ref{sec:generated}
+says how much was generated and how much was written.
 
 \subsection{Levels and edges}\label{sec:levels}
 
-The two-level developments share the following definitions (the two
-earliest state the induction slightly differently, but with the same
-\aid{Path}). Here \aid{nw M o} is the algorithm's word for
-a matrix \aid{M} with orthonormal columns \aid{o}, \aid{actMʷ} is the
-action of a word on a matrix, and \aid{level} the level of
-Section~\ref{sec:by-levels}.
-\begin{agdacode}
-Path : (w : Word (Gen n)) (M : Matrix n n D) → .(ColOrth M) → Set
-Path w M o = nw (actMʷ w M) (ColOrth-actMʷ w o) • w ≈ nw M o
-
-EdgeStep : Set
-EdgeStep = ∀ L → EdgesBelow L → EdgesAt L
-\end{agdacode}
-Here \aid{EdgesBelow L} says that every generator is a path from every
-state when both ends of the edge are below $L$, and \aid{EdgesAt L}
-the same for the edges out of a state at $L$ that do not go up. A proof
-of \aid{EdgeStep} is the Main Lemma. From it, a generic
-module proves completeness: by well-founded induction on the
-lexicographic order of levels, every edge is a path, so every word is a
-path, and two words with the same matrix are related. The orthogonality
-proof \aid{o} is irrelevant, so that the normal word depends on the
-matrix alone.
-
-Three details of this formulation matter in practice. First, the
-statement covers every generator, not only the basic ones that the
-papers' Main Lemmas are stated for. The papers reduce the other
-generators to the basic ones in a sentence; in Agda this reduction is a
-module of its own, because conjugating by an exchange must be shown to
-keep the state at or below its level. Second, squares are closed by one
-lemma, \aid{close}, which takes the two syllables $N$ and $N'$, the
-word $W$, the proof that every state on the path of $W$ is below $L$,
-and the relation $W N' g \approx N$. Many cases of a Main Lemma are
-one call to \aid{close} with a relation and a list of level facts.
-Third, the definitions are generic in the normal word. When we found
-the gap in Hadamard-$\Pi$, the proof of the missing case was written
-over any function \aid{nw} with three properties (paths compose, edges
-below $L$ are paths, and the non-hard edges at $L$ are paths), so that
-the same proof served both Hadamard-$\Pi$'s algorithm and Cl\'ement's.
-
-The level facts are where Agda's evaluator helps and also where it
-hurts. The routes in these proofs touch at most eight entries of the
-pivot column, and leave the rest alone. We describe such a state as a fixed
-numerator with a window of entries replaced, a \emph{known state}, and
-derive its level from the parities of the window alone. Each step of a
-route is then one ring identity, $a\pm b = \sqrt2\, c$, about symbolic
-entries, which a script generates and a ring solver proves. The
-evaluator must never see the full column with its symbolic entries,
-because it would try to compute the level, and the ring operations of
-$\Z[\frac1{\sqrt2}]$, records of dyadic fractions, are expensive to
-unfold (Section~\ref{sec:engineering}).
+The two-level developments share one statement of the induction of
+Section~\ref{sec:by-levels}, over the algorithm's normal word
+\aid{nw}, the action of a word on a matrix, and the level
+(Appendix~\ref{sec:levels-details} shows the Agda). \aid{Path w M} says
+that $\mathit{nw}(w\cdot M)\,w\approx\mathit{nw}(M)$; \aid{EdgesBelow L}
+that every generator is a path from every state when both ends of the
+edge are below $L$; \aid{EdgesAt L} the same for the edges out of a
+state at $L$ that do not go up; and \aid{EdgeStep}, that
+\aid{EdgesBelow L} gives \aid{EdgesAt L} for every $L$, is the Main
+Lemma. From it a generic module proves completeness by well-founded
+induction on the lexicographic order of levels. The statement covers
+every generator, not only the basic ones the papers' Main Lemmas are
+stated for, so the papers' one-sentence reduction to the basic
+generators is a module of its own; squares are closed by one lemma,
+\aid{close}, so many cases of a Main Lemma are one call to it with a
+relation and a list of level facts; and the definitions are generic in
+the normal word, which is how the proof of the missing case of
+Hadamard-$\Pi$ served both its algorithm and Cl\'ement's.
 
 What the author supplies on this route is the choice of ring, the
 action of the generators on a column, the algorithm \aid{nw} with the
@@ -77,12 +43,18 @@ proof that $\mathit{nw}(M)\cdot M=I$, the level with the proof that a
 syllable lowers it, and \aid{EdgeStep}, which is the Main Lemma. The
 well-founded induction, the composition of paths, \aid{close} and the
 presentation record are the shape, written once and copied. Inside the
-Main Lemma the machine does the arithmetic: a script generates the
-ring identities of each route and the ring solver proves them, and
-where a case analysis is large it is data, a decision tree checked by
+Main Lemma the machine does the arithmetic. The routes in these proofs
+touch at most eight entries of the pivot column, so a state is a fixed
+numerator with a window of entries replaced, a \emph{known state},
+whose level is read off the parities of the window; each step of a
+route is then one ring identity, $a\pm b = \sqrt2\, c$, about symbolic
+entries, which a script generates and a ring solver proves, and where
+a case analysis is large it is data, a decision tree checked by
 evaluation (Section~\ref{sec:trees}). The relations that a square
 needs are derived by the rewriter of Section~\ref{sec:search}, by
-search where the paper gives no derivation.
+search where the paper gives no derivation. The evaluator must never
+see the full column with its symbolic entries, because it would try to
+compute the level (Section~\ref{sec:engineering}).
 
 \subsection{Normal forms for circuits}\label{sec:nf}
 
@@ -99,17 +71,12 @@ papers' typed relations; in the Clifford development the tables are
 generated from those relations and checked letter by letter, and in
 the real case they were written by hand, each entry paired with its
 relation so that a wrong entry does not typecheck. Uniqueness is
-semantic, by the conjugation action on Pauli operators. In the real
+semantic, by the conjugation action on Pauli operators: in the real
 case, a normal form's action on $Z_0$ determines its $Z$-circuit, its
 action on $X_0$ the $X$-circuit, and the rest acts one wire up. The
 matrix semantics is the layer's circuit end over a commutative ring
 with an involution and an element $s$ with $2s^2=1$ that the involution
-fixes (Section~\ref{sec:matrix-layer}). One instantiation is
-$\Z[\frac1{\sqrt2}]$, which connects these developments to the
-two-level ones (Section~\ref{sec:theorem-form}). Another is the field
-$\mathbb{F}_7$, with $s=2$, which shows that the hypotheses of the
-generation theorem are consistent; the intended model is $\mathbb{R}$,
-which Agda does not have.
+fixes (Section~\ref{sec:matrix-layer}).
 
 The author supplies the normal forms as inductive types, the push of
 one gate through each part of a normal form, and the decoding of a
@@ -132,16 +99,13 @@ their linear parts are equal by a coset tower in the style of
 Lafont~\cite{lafont2003boolean}, which needs completeness one wire
 down; and their diagonal parts are equal because a diagonal part
 splits into a part one wire up and a form on the bottom wire, and that
-form is determined by its phase function.
-
-The phase-affine hierarchy~\cite{blake2026phaseaffine} has four levels.
-We organized level~3, which adds $T$, around a functor. It goes from circuits of a lower
+form is determined by its phase function. The phase-affine
+hierarchy~\cite{blake2026phaseaffine} has four levels, and we organized
+level~3, which adds $T$, around a functor from circuits of a lower
 level to circuits of level~3 one wire up, with the new wire~0 as a
-control. It maps every derivation to a derivation, and its semantics
-multiplies the phase by a polynomial in the control bit. With it, the
-bottom-wire forms of level~3 are $T^t$ followed by the images of a
-level-1 and a level-2 circuit, and their uniqueness follows from
-completeness at levels~1 and~2, which are proved first.
+control: the bottom-wire forms of level~3 are $T^t$ followed by images
+of a level-1 and a level-2 circuit, whose uniqueness follows from
+completeness at levels~1 and~2.
 
 The author supplies the decomposition, the coset tower of the linear
 part, and the uniqueness of the bottom-wire form. In the CNOT-dihedral
@@ -156,31 +120,23 @@ generated by a script.
 
 \subsection{Products, extensions and isomorphisms}\label{sec:products}
 
-Most of the qudit Clifford development is assembled from constructions of the
-library~\cite{anonymous2027popl}. The long case analysis is confined to
-the symplectic normal form, and three constructions do the rest.
-The first is the semidirect product: given presentations of $N$ and
-$H$ and, for each generator $h$ of $H$ and $n$ of $N$, a word $c(h,n)$
-over $N$, the library presents $N\rtimes H$ by the relations of both
-and $h\,n = c(h,n)\,h$, once the client has shown the action well
-defined on the relations of $H$ and of $N$; the normal forms of the
-product are pairs of normal forms, by the Reidemeister--Schreier
-method with the words over $H$ as cosets. The second is the extension,
-which need not split: a presentation of a group $G$ with a normal
-subgroup $N$ adds to the relations of $N$ the conjugates of its
+Most of the qudit Clifford development is assembled from constructions
+of the library~\cite{anonymous2027popl}; the long case analysis is
+confined to the symplectic normal form. The semidirect product
+presents $N\rtimes H$ from presentations of $N$ and $H$ and a word
+$c(h,n)$ over $N$ for each pair of generators, by the relations of
+both and $h\,n = c(h,n)\,h$, once the client has shown the action well
+defined on the relations. The extension, which need not split, adds to
+the relations of a normal subgroup $N$ the conjugates of its
 generators by the representatives, and each relation of $G/N$ twisted
-by the word in $N$ that its lift picks up. For the qudit Clifford group
-these corrections come from the Weyl cocycle; the correction of a
-relation is a phase in $\Z_p$, computed by folding the product law of
-the Heisenberg--Weyl group over the two sides of the relation, and
-only $(SH)^3$ has a nonzero one, $(p^2-1)/8$, which is $-\frac18$
-modulo $p$ because $p^2\equiv1 \pmod 8$. The third is transport along
-isomorphisms of rule sets: when translations of generators to words
-carry the relations of each rule set to equations derivable in the
-other, and the two composites are the identity up to derivation, a
-presentation theorem moves from one rule set to the other. This is
-how Figure~1 inherits its theorem from the rule set where the
-mathematics was done, and why the second form of C4 cost little.
+by the word in $N$ that its lift picks up; for the qudit Clifford group
+the twists are phases in $\Z_p$ computed from the Weyl cocycle, and
+only $(SH)^3$ has a nonzero one, $(p^2-1)/8$. And a presentation
+theorem transports along an isomorphism of rule sets, translations of
+generators to words that carry the relations of each rule set to
+equations derivable in the other, with both composites the identity up
+to derivation; this is how Figure~1 inherits its theorem from the rule
+set where the mathematics was done.
 
 Here the author supplies presentations of the factors, and the
 well-definedness of the action or the cocycle on the relations; the
@@ -191,70 +147,53 @@ derivations of the rules that differ.
 \subsection{Encodings, and the bridge to Theorem 4.4}\label{sec:encoding}
 
 Cl\'ement's real Clifford+$CH$ paper~\cite{clement2026realcliffordch}
-proves completeness at each width $n\ge2$ by a back-and-forth argument.
-There is a second language $Y$ with a complete theory, an encoding $e$
-from circuits to $Y$ that preserves the matrix, and a decoding $d$ back
+proves completeness at each width $n\ge2$ by a back-and-forth argument:
+a second language $Y$ with a complete theory, an encoding $e$ from
+circuits to $Y$ that preserves the matrix, and a decoding $d$ back
 such that $d(e(g)) \approx g$ for every gate (its Lemma~8.7) and $d$
-maps every relation of $Y$ to a derivable equation (its Lemma~8.8).
-Then two circuits with the same matrix have encodings with the same
-matrix, hence related encodings, hence related decodings, hence are
-related. We proved this argument once, generically, and instantiated
-it at $n=2$, where $Y$ is the language of two-level matrices on four
-basis vectors, and at $n\ge3$, where $Y$ is the paper's group $P$. In
-the second case, completeness of $Y$ is the paper's Theorem~4.10,
-which it proves from Theorem~4.4 by the Reidemeister--Schreier method
-with four cosets. We formalized that too. Its two families of
-obligations are exactly the paper's items (a) and (b), and most of the
-work went into item (b), where we found that the coset action is a
-conjugation of a uniform embedding by four fixed words, so that each
-obligation reduces to the image of one relation.
+maps every relation of $Y$ to a derivable equation (its Lemma~8.8), so
+that two circuits with the same matrix have related encodings, hence
+related decodings, hence are related. We proved this argument once,
+generically, and instantiated it at $n=2$, where $Y$ is the language
+of two-level matrices on four basis vectors, and at $n\ge3$, where $Y$
+is the paper's group $P$, whose completeness is the paper's
+Theorem~4.10, proved from Theorem~4.4 by the Reidemeister--Schreier
+method with four cosets. We formalized that too; its two families of
+obligations are exactly the paper's items (a) and (b), and in item (b)
+the coset action turned out to be a conjugation of a uniform embedding
+by four fixed words, so that each obligation reduces to the image of
+one relation.
 
 That left Theorem~4.4: the relations of Figure~6 are complete for
 \emph{proper} words, those whose letters have distinct indices, at two
 semantics, on 4 basis vectors and on $2^n$. The paper cites
 Hadamard-$\Pi$ for it, and our Hadamard-$\Pi$ development proves the
 same statement, but the two developments were written independently
-and differ in every detail: generators with indices in either order
-against generators with increasing indices; matrices as functions of
-bit vectors over a hand-made $\Z[\sqrt2]$, read with a power of
-$\frac1{\sqrt2}$, against EucDomain's $\Z[\frac1{\sqrt2}]$ indexed by
-$\mathsf{Fin}\,n$; basis vectors numbered by a Gray code at the width
-of $P$, and by a table on two qubits. The bridge has a ring map
-$\iota$ from $\Z[\sqrt2]$ to $\Z[\frac1{\sqrt2}]$; a translation
-$\varphi$ from proper letters to increasing words, which writes a
-decreasing letter by the paper's rules (e1) and (e2), with a map $\psi$
-back that sends each relation of Hadamard-$\Pi$'s Figure~6 to the same
-relation of the paper's, so that $\psi(\varphi(u))\approx u$; and, for
-any numbering of the basis by $\mathsf{Fin}\,2^n$, a map $\Phi$ from
-scaled matrices $(\ell,M)$ to matrices over $\Z[\frac1{\sqrt2}]$, with
-entry $(\frac1{\sqrt2})^\ell\,\iota(M(r)(c))$ at the numbered
-positions. $\Phi$ is a monoid homomorphism, its sums over bit vectors
-being sums over $\mathsf{Fin}\,2^n$ renumbered by a permutation, for
-which the standard library's \aid{sum-permute} applies; it identifies
-the pairs that the paper's localization identifies; and it sends the
-matrix of each generator to the matrix of its translation, which we
-checked entry by entry, on two qubits by a generated module of 336
-cases. Then two proper words with the same matrix have translations
-with the same matrix, which are related by the Hadamard-$\Pi$
-development, so the words are related after $\psi$. With both
-instances of Theorem~4.4 proved, the paper's Theorem~8.9 holds with no
-hypothesis:
+and differ in every detail, from the order of the indices in a
+generator to the ring and the numbering of the basis. A bridge of
+about 600 lines carries one to the other
+(Appendix~\ref{sec:bridge-details}): a ring map from $\Z[\sqrt2]$ to
+$\Z[\frac1{\sqrt2}]$; a translation $\varphi$ from proper letters to
+increasing words, with a map $\psi$ back such that
+$\psi(\varphi(u))\approx u$; and a map $\Phi$ from scaled matrices to
+matrices over $\Z[\frac1{\sqrt2}]$ that is a monoid homomorphism and
+sends the matrix of each generator to the matrix of its translation.
+Two proper words with the same matrix then have translations with the
+same matrix, which the Hadamard-$\Pi$ development relates, so $\psi$
+relates the words. With both instances of Theorem~4.4 proved, the
+paper's Theorem~8.9 holds with no hypothesis:
 \begin{agdacode}
 completeness : ∀ n → Complete n
 subpresentationᴼ : ∀ n → (n VRel,_===_) IsSubPresentationOf O (2 ^ n)
 \end{agdacode}
 Here \aid{O (2 \textasciicircum{} n)} is the orthogonal group
 $O_{2^n}(\Z[\frac1{\sqrt2}])$ of the Hadamard-$\Pi$ development. The
-development first proved the theorem for a monoid: it reads a circuit
-as a pair of an integer matrix over $\Z[\sqrt2]$ and a power of
-$\frac1{\sqrt2}$, which is fast to compute with, and such pairs have no
-inverses. For the group version the bridge's $\Phi$ carries each pair
-to a matrix over $\Z[\frac1{\sqrt2}]$, which is orthogonal because
-every gate matrix is symmetric and every gate is its own inverse by
-Cl\'ement's rules, and $\Phi$ is injective up to the equality of pairs
-because $\iota$ is injective and $\sqrt2$ is a unit. So the real
-Clifford+$CH$ circuits, the real stabilizer circuits and Figure~6 of
-Hadamard-$\Pi$ are now all stated against the same group.
+development first proved the theorem for a monoid of scaled integer
+matrices, which are fast to compute with and have no inverses, and
+$\Phi$, which is injective and lands in orthogonal matrices, turns it
+into the group statement. So the real Clifford+$CH$ circuits, the real
+stabilizer circuits and Figure~6 of Hadamard-$\Pi$ are now all stated
+against the same group.
 
 The author supplies the encoding, the decoding, the proof that the
 encoding preserves the matrix, the two lemmas of the back-and-forth
@@ -273,21 +212,16 @@ Bian and Selinger's Agda proofs for two-qubit Clifford+$T$ and
 three-qubit Clifford+$CS$ circuits~\cite{bian2023cliffordt2,bian2023cliffordcs3}
 were written against their own tactic library. We rebased that library
 on our words and presentations, so that their generated proof terms
-port mechanically, and then connected their syntactic theorem to the
-two-level presentations of Greylyn and of Bian and Selinger. For the
-three-qubit result, the original proof checks five modules with Agda's
-call-by-name evaluation. After a change to the tactic library
-(Section~\ref{sec:engineering}), four of them check with the default
-strategy, and the fifth followed once the coset normal forms were
-computed incrementally; the whole development now checks in about five
-minutes.
-
-What a Reidemeister--Schreier argument asks of the author is the
-translation of generators, the coset action, and the two families of
-obligations, items (a) and (b) as in Section~\ref{sec:encoding}; the
-theorem that these give injectivity is in the library, in the original
-authors' own interface, and the obligations are what their generated
-proof terms discharge.
+port mechanically, and connected their syntactic theorem to the
+two-level presentations of Greylyn and of Bian and Selinger; after a
+change to the tactic library (Section~\ref{sec:engineering}) and
+incremental coset normal forms, the three-qubit development checks
+with the default strategy in about five minutes. What a
+Reidemeister--Schreier argument asks of the author is the translation
+of generators, the coset action, and the two families of obligations,
+items (a) and (b) as in Section~\ref{sec:encoding}; the theorem that
+these give injectivity is in the library, in the original authors' own
+interface.
 
 \subsection{A worked example: real stabilizer circuits}\label{sec:example}
 
@@ -379,19 +313,18 @@ author writes.
 
 \paragraph{The typed relations.} The push uses 137 typed relations, one
 per gate and kind of normal-form wire, which the paper lists in its
-Appendix~B and derives in its supplement, together with 19 lemmas. A
-script, written for this development and not kept, followed the
-supplement's derivations line by line for the 19 lemmas and 90 of the
-typed relations and emitted each as a list of rewriter steps
-(Section~\ref{sec:search}); eight further typed relations were derived
-by normalizing both sides, and two by hand. With the 137 rules that
-restate them in the form the push uses, these derivations are 264 in
-all and 5{,}995 lines, half of the development, checked by the
-rewriter, 316 lines of which each development with derivations has its
-own copy; eleven of them end in a corrected relation
-(Appendix~\ref{sec:misprints}). The tables that index them by the
-types of the gates (456 lines) were written by hand, with each entry
-paired with its relation, so that a wrong entry does not typecheck.
+Appendix~B and derives in its supplement, with 19 lemmas. A script,
+written for this development and not kept, followed the supplement's
+derivations line by line for the lemmas and 90 of the typed relations
+and emitted each as a list of rewriter steps (Section~\ref{sec:search});
+eight more were derived by normalizing both sides, and two by hand.
+With the 137 rules that restate them as the push uses them, these are
+264 derivations and 5{,}995 lines, half of the development, checked by
+the rewriter (316 lines, copied per development); eleven end in a
+corrected relation (Appendix~\ref{sec:misprints}). The tables that
+index them by the types of the gates (456 lines) were written by hand,
+each entry paired with its relation, so that a wrong entry does not
+typecheck.
 
 \paragraph{The theorem.} The last module (130 lines) shows that the
 matrix of a circuit is unitary, by evaluation on the gate matrices and
@@ -419,14 +352,12 @@ group, is the generation theorem, proved separately; and two further
 modules instantiate the statement at $\D[\omega]$ and at $\D[\sqrt2]$.
 
 \paragraph{The cost.} Table~\ref{tab:example} sorts the 11{,}799 lines
-by who wrote them. Nearly all of the development's commits fall within
-four hours. The theorem and its $\D[\omega]$ instance typecheck from
-scratch in about 75 seconds, and the $\D[\sqrt2]$ instance takes about
-100 seconds more, given the Hadamard-$\Pi$ and Cl\'ement developments.
-Half of its lines are generated, a fifth are the paper's mathematics,
-a seventh are results beyond the theorem (the count of Corollary~4.16,
-and the generation theorem of Section~\ref{sec:nf}), and the layer,
+by who wrote them: half are generated, a fifth are the paper's
+mathematics, a seventh are results beyond the theorem, and the layer,
 the rewriter, the statements and the soundness checks are the rest.
+Nearly all of the development's commits fall within four hours, and
+the theorem with its $\D[\omega]$ instance typechecks from scratch in
+about 75 seconds.
 
 \begin{table}
 \caption{The real stabilizer development, 11{,}799 lines, by who wrote
@@ -451,45 +382,16 @@ Further results: Corollary 4.16 with its Pauli calculus, the generation theorem,
 
 \subsection{What is generated and what is written}\label{sec:generated}
 
-Table~\ref{tab:generated} gives, for each development, how many lines
-were generated by a script and what they are. What is generated is
-what the paper itself presents as a computation: a derivation, a
-diagram with its levels, a case analysis over residues, and in the
-Clifford development the rewriting tables. What is written is what the
-paper presents as an idea: a normal form, a decoding, a level, a
-decomposition, a conjugation that makes two cases one. The share of
-generated code is high where the paper's derivations were followed
-line by line, and low where its arguments were replaced by structure,
-as in the real Clifford+$CH$ development, whose bulk is word algebra
-written by the agent with completeness one width down as a black box,
-and where several thousand further lines are decided by evaluation
-rather than generated. Nothing generated is trusted: the script can be
-wrong, and Agda checks its output as it checks everything else.
-
-\begin{table}
-\caption{Generated code per development: non-blank lines of the
-modules that a script wrote, by their headers and our notes, and what
-they contain. The scripts of the real Clifford+$CH$ development and of
-Cl\'ement's thesis are in the repository; the others were not kept.
-The ports consist largely of the original authors' generated proof
-terms and are not counted.}
-\label{tab:generated}
-\small
-\setlength{\tabcolsep}{4pt}
-\begin{tabularx}{\linewidth}{@{}l r r Y@{}}
-\toprule
-Development & Lines & Generated & What \\
-\midrule
-Real stabilizer & 11{,}799 & 5{,}995 & 264 derivations as rewriter steps: the supplement's lemmas and typed relations, and the rules as the push uses them \\
-Clifford & 11{,}349 & 7{,}347 & the supplement's Lemmas 1.1--1.3 and equations (3.1)--(3.101); the rewriting tables \\
-CNOT-dihedral & 5{,}809 & 836 & local identities of the linear tower, the phase gates and the $X$ column, by search \\
-$O_n(\Z[\frac12])$, $L_n$ & 15{,}528 & 4{,}337 & relations on four, six and eight indices (Props.~A.11--A.16); the six cases of one edge \\
-Hadamard-$\Pi$ & 11{,}198 & 1{,}420 & the equivalence of (d3), (d4) with Cl\'ement's (20), (21); the ring identities of the diamond cases are generated inline and not counted \\
-Cl\'ement's thesis & 10{,}406 & 2{,}203 & diagrams (20), (30) and those of Subcase 1.14.2; the decision trees of Case~3.4 \\
-Real Clifford+$CH$ & 73{,}097 & 1{,}391 & Lemma A.1's chains of 101 and 170 steps; the 336 entry checks of the bridge \\
-Phase-affine & 12{,}219 & --- & ring identities per entry, generated inline \\
-Qudit Clifford & 67{,}340 & 0 & written by hand \\
-Minimality & 4{,}143 & 0 & \\
-\bottomrule
-\end{tabularx}
-\end{table}
+Table~\ref{tab:generated} in Appendix~\ref{sec:appendix-routes} gives,
+for each development, how many lines were generated by a script and
+what they are: 5{,}995 of 11{,}799 for the real stabilizer development,
+7{,}347 of 11{,}349 for Clifford, 4{,}337 of 15{,}528 for
+$O_n(\Z[\frac12])$ and $L_n$, 2{,}203 of 10{,}406 for Cl\'ement's thesis,
+and none for the qudit Clifford and minimality developments. What is
+generated is what the paper itself presents as a computation; what is
+written is what it presents as an idea. The share is high where the
+paper's derivations were followed line by line, and low where its
+arguments were replaced by structure, as in the real Clifford+$CH$
+development, whose bulk is word algebra written by the agent. Nothing
+generated is trusted: the script can be wrong, and Agda checks its
+output as it checks everything else.

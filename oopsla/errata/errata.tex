@@ -1,0 +1,334 @@
+%% errata.tex -- supplementary material: the errata that the
+%% formalization found in the fourteen sources, one by one, with the
+%% Agda module in which each corrected statement is checked.
+%%
+%% Build: latexmk -pdf errata.tex
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\DeclareUnicodeCharacter{2130}{\ensuremath{\mathcal{E}}}
+\DeclareUnicodeCharacter{2080}{\ensuremath{_0}}
+\DeclareUnicodeCharacter{2081}{\ensuremath{_1}}
+\newcommand{\ket}[1]{|#1\rangle}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\aid}[1]{\mbox{\textsf{\small #1}}}
+
+\title{Errata Found by the Formalization\\
+\large Supplementary material for ``Human-Made Scaffolds for Machine-Written
+Proofs: Completeness of Quantum Circuit Equations''}
+\author{Anonymous}
+\date{October 2026}
+
+\begin{document}
+\sloppy
+\maketitle
+
+This document lists, source by source, every error that the
+formalization found in the papers we formalized, with the corrected
+statement and the Agda module in which the correction is checked. The
+paper summarizes them in its Section~5 and Appendix~A; here each one is
+stated in full, so that a reader can check it by hand or by a short
+computation. Errors in our own transcriptions are in Section~5.2 of
+the paper and are not repeated here.
+
+Throughout, module names are relative to \path{Examples/Groups/} of
+the repository, except those of the minimality development, which are
+relative to \path{Examples/Independence/}.
+
+\section{Hadamard-\texorpdfstring{$\Pi$}{Pi} (Fang, Heunen and Kaarsgaard, POPL 2026)}
+
+References are to the extended version (arXiv:2506.06835), whose
+Appendix~A contains the proof of Theorem~4.14, the completeness of
+Figure~6 for $O_n(\Z[\frac1{\sqrt2}])$. Indices in this section are
+the paper's, from~1.
+
+\subsection{Lemma A.16 is false}
+
+\paragraph{Statement.} Let $M$ be at level $(j,k,4)$ with $k\ge2$, and
+let $v$ be the first four entries of column $j$, with
+$\sqrt2^k v \equiv (1+\sqrt2,1,1+\sqrt2,1)$ or
+$(1,1+\sqrt2,1,1+\sqrt2) \pmod 2$. The lemma says that if
+\[
+\sqrt2^{k-1}\,H_{[1,4]}H_{[2,3]}H_{[2,4]}H_{[2,3]}H_{[1,4]}\,v
+\]
+has entries in $\Z[\sqrt2]$, then so does
+\[
+\sqrt2^{k-1}\,H_{[1,3]}H_{[2,4]}H_{[1,2]}H_{[1,3]}H_{[2,4]}\,v .
+\]
+
+\paragraph{Counterexample.} Take $n=j=6$, $k=4$, and the unit column
+\[
+\sqrt2^4\cdot M_{\cdot,6} = (-1-\sqrt2,\; 1,\; -1-\sqrt2,\; 1,\; \sqrt2,\; -2+\sqrt2).
+\]
+It is a unit vector: the squared norm of the right-hand side is
+$2(3+2\sqrt2) + 2 + 2 + (6-4\sqrt2) = 16 = (\sqrt2^4)^2$. Some matrix
+of $O_6(\Z[\frac1{\sqrt2}])$ has this last column, because the
+generators act transitively on unit columns. Its level is $(6,4,4)$,
+and its first four entries are $\equiv(1+\sqrt2,1,1+\sqrt2,1)$ modulo
+$2$, so the hypotheses hold. Applying the first word to the first four
+entries gives $\sqrt2^{-3}(0,0,-1-\sqrt2,-1)$, with entries in
+$\Z[\sqrt2]$ after multiplication by $\sqrt2^{3}$. Applying the second
+gives
+$\sqrt2^{-3}(-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2},\,-\tfrac{\sqrt2}{2},\,-1-\tfrac{\sqrt2}{2})$,
+whose entries are not in $\Z[\sqrt2]$ after multiplication by
+$\sqrt2^{3}$. So the conclusion fails.
+
+\paragraph{Where the proof goes wrong.} The proof (page~38) writes
+the entries as $a_i+\sqrt2 b_i$ and compares the $\sqrt2$-parts of the
+norm equation. The constant terms of $(2a_1+1)(2b_1+1)$ and
+$(2a_3+1)(2b_3+1)$ contribute $4$ to that comparison, so the bracket
+the proof reduces modulo~2 is missing a $+1$. With the $+1$, the case
+$a_3+a_4$ odd is no longer contradictory, and the column above lies
+in it.
+
+\subsection{Lemma A.17 is false}
+
+Lemma~A.17 has the same hypotheses as Lemma~A.16, with $H_{[3,4]}$ in
+place of $H_{[2,4]}$ in the two words, and its proof ends by appeal to
+the argument of Lemma~A.16. It fails in the same way, in the case
+$a_3+a_4$ even. A counterexample is the unit column
+\[
+\sqrt2^4\cdot M_{\cdot,6} = (1+\sqrt2,\; -1,\; 1+\sqrt2,\; 1,\; -\sqrt2,\; 2-\sqrt2),
+\]
+again at level $(6,4,4)$: the first word lowers the denominator
+exponent of the first four entries and the second does not.
+
+\subsection{Main Case 9 of the Main Lemma does not cover every state}
+
+Main Case~9 of the Main Lemma (Lemma~A.7) is the case $G=H_{[1,2]}$,
+$N=H_{[1,i_2]}$. In its case (2)(b)(i), second bullet, it calls
+Lemma~A.19 for a path between two states that stays strictly below the
+level of the edge; in the case $\ell=4$, sub-case (2), of that lemma,
+items (c) and (d) rest on Lemmas~A.16 and A.17.
+
+A state on which the proof fails is $s$ with
+\[
+\sqrt2^7\cdot s_{\cdot,9} = (1+3\sqrt2,\; 1,\; -3\sqrt2,\; 1+3\sqrt2,\; 2,\; 5,\; -2+\sqrt2,\; -4+2\sqrt2,\; -2-2\sqrt2),
+\]
+in dimension $n=9$, at level $(9,7,4)$. Algorithm~1 takes
+$N=H_{[1,4]}$. The proof of Main Case~9 goes to Lemma~A.19 with
+$t_2=H_{[2,6]}H_{[1,4]}\,s$ at level $(9,6,4)$ and
+$(a,b,c,d)=(1,2,4,6)$. Rows 1 and 2 of $t_2$ have different residues,
+which is sub-case (2) of the lemma, and only item (d) of Lemma~A.15
+holds there. Main Case~9 needs a path from $t_2$ to $t_3$ strictly
+below $(9,7,4)$, and every one of the eight diagrams of Lemma~A.19,
+started at $t_2$ with these labels, reaches a state at level $(9,7,4)$
+or $(9,8,4)$. So the proof of the Main Lemma, and with it the proof of
+Theorem~4.14, does not cover this state.
+
+The state was found by sampling random states of the relevant level
+and following the case analysis of the proof on each, computing the
+level of every state of every diagram. Such states are rare: none
+among about 3{,}000 instances of the sub-case in dimension~7 and about
+9{,}000 in dimension~8, and one among about 400 states that reach
+this step in dimension~9.
+
+\paragraph{The theorem is true.} Theorem~4.14 holds. The edge the proof
+leaves open, $H$ on two odd entries of different residue classes when
+exactly four entries of the pivot column are odd, is Case~3.4 of
+Cl\'ement's thesis (2019), which presents the same group by other
+relations. We proved his relations and those of Figure~6 equivalent
+in every dimension and formalized his Case~3.4 for this edge; on the
+state $s$ above his diagram~(32), on rows $1,2,4,6$ with the further
+rows $3$ and $5$, gives a path that never rises above the level of
+$s$. Modules: \path{Real-Clifford+CH-TwoLevel/Presentation} states
+the theorem with the hard edge as a hypothesis
+(\aid{MainLemma.Hard}), and
+\path{Real-Clifford+CH-TwoLevel-Clement/Presentation} discharges it
+(\aid{hard}) and concludes \aid{presentation} unconditionally;
+\path{Real-Clifford+CH-TwoLevel/Equivalence} is the equivalence of
+the two relation sets.
+
+\subsection{Citations in the proof of Lemma A.19(d)}
+
+The proof of item (d) of Lemma~A.19 cites Propositions~A.28 and A.29.
+Proposition~A.29 as printed repeats Proposition~A.22. What the step
+needs is the relation of Proposition~A.28 and a second relation that
+is stated nowhere in the paper. That relation holds, and it follows
+from Proposition~A.26 in the same way as A.28 follows from A.27. (In
+the formalization this part of Lemma~A.19 is not used, the case being
+handled by Cl\'ement's argument.)
+
+\section{Real Clifford+\texorpdfstring{$CH$}{CH} circuits (Cl\'ement, 2026)}
+
+References are to arXiv:2602.06644.
+
+\paragraph{Dependency.} Theorem~4.4 of the paper is Theorem~4.14 of
+Hadamard-$\Pi$, whose proof has the gap above. The paper's main
+theorem, Theorem~8.9, depends on it through Theorem~4.10 as well. Both
+are now discharged: \path{Real-Clifford+CH/Presentation} proves
+Theorem~8.9 with no hypotheses, with Theorem~4.4 taken from the
+Cl\'ement development (\path{Auxiliary/Theorem44Proof}).
+
+\paragraph{Equations (36) and (37).} These write a Hadamard pair with
+an $H$-pattern through a network of swaps and negations. As printed,
+the negation of a control bit $x$ is $\mathcal{E}^{1-x}$, an $X$ gate
+where the bit is $0$. The equations hold with $\mathcal{E}^{x}$, an
+$X$ gate where the bit is $1$, and fail at every instance the other
+way round. Checked by deciding both equations on three qubits at every
+admissible choice of indices (\path{Real-Clifford+CH/Auxiliary/Checks8});
+the transcription with $\mathcal{E}^{x}$ is \aid{E-X} and \aid{ℰ} of
+\path{Real-Clifford+CH/Encoding}.
+
+\paragraph{Side conditions of Figure 8.} The rules (30), (34) and (42)
+of Figure~8 need their $X$ and $H$ letters to have distinct indices, a
+convention the paper applies throughout but does not state in the
+figure. Without the conditions the rules are unsound, which the same
+decision procedure shows. They are stated as hypotheses in
+\path{Real-Clifford+CH/Auxiliary/Figure8}.
+
+\section{Real stabilizer circuits (Makary, Ross and Selinger, QPL 2021)}
+
+References are to arXiv:2109.05655 and its supplement of derivations.
+Below, a relation between circuits is written as an equation of words
+over the gates $H_i$, $Z_i$ and $CZ_{i,i+1}$ on wires numbered from
+the bottom, in operator order: the rightmost gate acts first, as in a
+matrix product. These are the relations as our normalization uses
+them (\path{Real-Clifford/Relations/Rules}), and each is checked by
+evaluation on matrices.
+
+\subsection{Eleven typed relations of Appendix B}
+
+Of the 137 typed relations of Appendix~B, eleven are false as printed:
+the two sides have different matrices, not only up to a sign. Six have
+a wrong right-hand side, and five lack a Pauli gate at the end of the
+right-hand side. Table~\ref{tab:typed} lists them, and the corrected
+relations follow as word equations; $t$ and $b$ denote the top and
+bottom wire of a two-wire gate in the paper's notation.
+
+\begin{table}[h]
+\caption{The eleven misprinted typed relations.}
+\label{tab:typed}
+\begin{tabularx}{\linewidth}{@{}l l Y@{}}
+\toprule
+Relation & Error & Note \\
+\midrule
+$H;A_3$ & right side & printed $A_2;H$; correct is $A_3;H$ \\
+$X;C_1$ & right side & printed $C_1;Z$; correct is $C_2$ \\
+$X;C_2$ & right side & \\
+$H_0;B_6$, $H_0;B_7$, $H_0;B_8$ & right side & \\
+$CZ;A_3;B_7$ & Pauli tail & \\
+$Z_t;B_2$ & Pauli tail & printed $B_2;X_t$; correct is $B_2;X_t;Z_b$ \\
+$Z_t;B_6$ & Pauli tail & \\
+$SXZC;B_5$, $SXZC;B_8$ & Pauli tail & \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{align*}
+H;A_3:\quad & H_0 = H_0 \\
+X;C_1:\quad & H_0Z_0H_0 = H_0Z_0H_0 \\
+X;C_2:\quad & H_0Z_0H_0\,H_0Z_0H_0 = \varepsilon \\
+H_0;B_6:\quad & CZ_{01}H_1H_0CZ_{01}H_0 = H_1H_0CZ_{01}H_1CZ_{01}H_1H_0CZ_{01}H_1H_0CZ_{01} \\
+H_0;B_7:\quad & CZ_{01}H_1H_0CZ_{01}H_1H_0 = H_1H_0CZ_{01}H_1CZ_{01}H_1H_0CZ_{01}H_1H_0CZ_{01}H_1 \\
+H_0;B_8:\quad & CZ_{01}H_1H_0CZ_{01}H_0CZ_{01}H_0H_0 \\
+ & \quad = CZ_{01}H_1Z_1H_1H_0CZ_{01}CZ_{01}H_1H_0CZ_{01}H_0CZ_{01}H_0 \\
+CZ;A_3;B_7:\quad & CZ_{01}H_1H_0CZ_{01}H_1CZ_{01} \\
+ & \quad = H_0Z_0H_0\,H_0CZ_{01}H_1CZ_{01}H_1H_0CZ_{01}H_1H_0CZ_{01}H_1H_0CZ_{01}H_0 \\
+Z_t;B_2:\quad & CZ_{01}H_1H_0CZ_{01}Z_1 = Z_0H_1Z_1H_1CZ_{01}H_1H_0CZ_{01} \\
+Z_t;B_6:\quad & CZ_{01}H_1H_0CZ_{01}Z_1 = Z_0H_1Z_1H_1CZ_{01}H_1H_0CZ_{01} \\
+SXZC;B_5:\quad & CZ_{12}H_2H_1CZ_{12}H_2H_1CZ_{12}H_1CZ_{01}H_1CZ_{01}H_1 \\
+ & \quad = Z_0Z_0H_0CZ_{01}H_0H_1CZ_{01}H_1CZ_{12}H_2CZ_{12}H_2H_1 \\
+ & \qquad\quad CZ_{01}H_1H_0CZ_{01}H_0CZ_{12}H_2H_1CZ_{12}H_2H_1CZ_{12}H_1 \\
+SXZC;B_8:\quad & CZ_{12}H_2H_1CZ_{12}H_1CZ_{12}H_1CZ_{01}H_1CZ_{01}H_1 \\
+ & \quad = Z_0CZ_{01}H_1CZ_{01}H_1H_0CZ_{01}H_0H_1CZ_{01}H_1CZ_{12}H_1 \\
+ & \qquad\quad CZ_{01}H_1H_0CZ_{01}H_0CZ_{12}H_2H_1CZ_{12}H_1CZ_{12}H_1
+\end{align*}
+
+The words are those of \aid{Rule-HA-3}, \aid{Rule-XC-1},
+\aid{Rule-XC-2}, \aid{Rule-H0B-6}, \aid{Rule-H0B-7}, \aid{Rule-H0B-8},
+\aid{Rule-CZAB-3-7}, \aid{Rule-Z1B-2}, \aid{Rule-Z1B-6},
+\aid{Rule-SXZCB-5} and \aid{Rule-SXZCB-8} in
+\path{Real-Clifford/Relations/Rules}; the typed forms, with the
+layer types, are the corresponding entries of
+\path{Real-Clifford/Tables}, each paired with its relation so that a
+wrong entry does not typecheck. The normal form, its uniqueness and
+the count of Corollary~4.16 go through with the corrected relations.
+
+\subsection{Two smaller problems in the paper}
+
+\begin{itemize}
+\item Figure~10 prints one equation without its ``$=$''.
+\item Definition~5.3 of the normal forms does not allow a $CZ$ whose
+  top wire is a single wire labelled~2, although the left-hand sides
+  of rules 5.1--5.4 have exactly such a gate. The inductive normal
+  forms of \path{Real-Clifford/NormalForm} include the case.
+\end{itemize}
+
+\subsection{The supplement}
+
+Six derivations in the supplement reach one of the eleven false
+conclusions above; the formalization derives the corrected relations
+instead (\path{Real-Clifford/Relations/Typed} and
+\path{Derived}). Besides these, the supplement has five misprinted
+intermediate rows, four steps labelled with the wrong axiom, and some
+forty citations of typed relations by an older figure numbering; the
+script that followed the derivations line by line stopped at each of
+these, and continued with the step that does hold. The script was not
+kept, and we did not record the page of each of these smaller slips;
+the counts are those reported when the modules were generated.
+
+\section{Clifford circuits (Selinger, LMCS 2015)}
+
+References are to arXiv:1310.6813 and its 105-page supplement, whose
+derivations are followed line by line in
+\path{Qubit-Clifford/Relations}. The paper's figures all check.
+Three citations in the supplement are wrong, each in a step whose
+conclusion is right:
+
+\begin{itemize}
+\item The proof of Lemma~1.3 says that property (19) is relation
+  (C10); it is (C12).
+\item Two steps in the proof of equation (21) are labelled (11). Rule
+  (11) cannot reorder two $CZ$ gates sharing a wire; the steps use
+  (19).
+\end{itemize}
+
+These are the only wrong citations among the derivations of
+Lemmas~1.1--1.3 and equations (3.1)--(3.101).
+
+\section{\texorpdfstring{$O_n(\Z[\frac12])$}{On(Z[1/2])} and \texorpdfstring{$L_n$}{Ln} (Li, Ross and Selinger, QPL 2021)}
+
+References are to arXiv:2106.01175. Relation (7d) of Table~2, which
+conjugates $X_{[a,a+1]}$ by $I\otimes H$, has its two right-hand sides
+exchanged. With indices from~1, as in the paper: for $a$ odd the block
+$\{a,a+1\}$ is one block of $I\otimes H$, and
+$(I\otimes H)\,X_{[a,a+1]}\,(I\otimes H) = (-1)_{[a+1]}$; for $a$ even
+it is $X_{[a,a+1]}\,K_{[a-1,a,a+1,a+2]}$. The printed right-hand side,
+$(-1)_{[a+1]}^{\,a+1}\,X_{[a,a+1]}^{\,a}\,K_{[a-1,a,a+1,a+2]}^{\,a}$ with
+exponents read modulo~2, has the two cases the other way round. Found
+when the relation failed to check numerically; the corrected forms are
+\aid{r7d₀} and \aid{r7d₁} (indices from~0) in
+\path{CCX+HH-TwoLevel/Scaled/Syntactics}, and both are proved sound
+in \path{CCX+HH-TwoLevel/Scaled/Table2}.
+
+\section{Simpler presentations (Blake, FSCD 2026)}
+
+References are to arXiv:2602.09874.
+
+\paragraph{The scalar of rule (E).} Figure~4 gives the scalar of the
+qutrit Clifford rule (E) as $\omega_{12}^7$. With the semantics of
+Section~3.2 ($H\ket{x} = \sum_k e^{2\pi i xk/3}\ket{k}/\sqrt3$,
+$S = \mathrm{diag}(1,1,e^{2\pi i/3})$), $SHS$ equals
+$\omega_{12}\,H^3S^2H^3$, and $\omega_{12}^7 = -\omega_{12}$ makes the
+rule unsound. It is sound with $\omega_{12}$, which is what
+\path{Qutrit-Clifford/Syntactics} states and
+\path{Qutrit-Clifford/Semantics} checks. No separating
+interpretation of Figure~8(c) sees the exponent, so the minimality
+theorem is unaffected.
+
+\paragraph{A separator that is not a model.} The separating
+interpretation $\#\{CX,\sigma\}[2]$ used for the independence of the
+Clifford rule (CZ) does not satisfy the three-wire rule (I), whose
+sides carry three $CNOT$s and two swaps against two $CNOT$s
+(\aid{Sep-CZ.not-a-model-of-I} in \path{Clifford/Minimality}). The
+independence claim survives: a derivation between two-wire circuits
+uses no three-wire rule, the paper's Remark~14, which is proved as
+\aid{Prop.truncate} and applied to every bounded separator.
+
+\end{document}

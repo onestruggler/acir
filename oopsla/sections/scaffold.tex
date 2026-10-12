@@ -6,7 +6,7 @@ has two parts: the library of our earlier paper, which fixes the
 syntactic side, and the additions of this work, which fix the semantic
 side. This section describes both, says which recurring difficulties
 the additions remove, and ends with what a theorem looks like as a
-result. Table~\ref{tab:scaffold} lists the components.
+result. Table~\ref{tab:scaffold} in Appendix~\ref{sec:scaffold-table} lists the components.
 
 \subsection{What the library fixes}\label{sec:library}
 
@@ -38,16 +38,16 @@ their rule \aid{ω↑=ω} (Section~\ref{sec:presentations}), so that a
 paper's figure of rules, each stated at the width it is drawn on, is
 the whole relation set.
 
-Its semantics was abstract, and that is where its examples stopped. The
+Its semantics was abstract, and that is where its examples stopped: the
 symmetric groups were presented as permutations, the wreath products
-as signed permutations and the Pauli groups as $(\Z_p\times\Z_p)^n$;
-the single-qubit and single-qutrit Clifford+$T$ monoids and
+as signed permutations and the Pauli groups as $(\Z_p\times\Z_p)^n$,
+while the single-qubit and single-qutrit Clifford+$T$ monoids and
 $U_3(\Z[\frac12,i])$ ended in an isomorphism between the gate-set
-presentation and an amalgamated product of smaller presentations, with
-the matrix monoid taken from the literature. Its discussion of
-limitations said why: the matrix side needs rings and unitary groups
-that the standard library does not have, and then the completeness
-proof of each paper has to be formalized. Both are done here.
+presentation and an amalgamated product of smaller presentations, the
+matrix monoid being taken from the literature. Its limitations section
+said why: the matrix side needs rings and unitary groups that the
+standard library does not have, and then the completeness proof of
+each paper. Both are done here.
 
 \subsection{What this work added}\label{sec:extensions}
 
@@ -74,34 +74,31 @@ the circuit end are operators on bit vectors, functions of two vectors
 of $n$ bits over any commutative ring with an involution, with sums
 over bit vectors, the Kronecker product and its mixed product law, a
 gate placed on the bottom wires of a wider circuit, and an operator
-moved up a wire. This is what makes the structural rules sound once
-for every gate set: a gate on the bottom wires commutes with a shifted
-operator by the mixed product law, whatever the gate. A map from
-operators to matrices, which renumbers a sum over bit vectors as a sum
-over $\mathsf{Fin}\,2^n$, is a monoid homomorphism, and it sends an
-operator whose conjugate transpose is its inverse to an element of
-$U_{2^n}$. The circuit end exists in three versions: over an abstract
-ring, as just described; over $\Z[\sqrt2]$ with a power of
-$\frac1{\sqrt2}$ kept apart, with stored tries and a decision procedure
-on row operations, for the developments whose soundness checks are
-large (Section~\ref{sec:eval}); and over the cyclotomic rings of
-qudits, with a comparison up to a phase, for the minimality theorems.
-The first two reach the groups at the matrix end; the qudit version
-stops at scaled operators compared up to a phase, which is all the
-minimality theorems need. Each circuit development chooses a ring and
-gives its gate matrices, which with the relations is all a reader has
-to compare with the paper. The layer is about 6{,}000 lines, counted in
-the developments' totals of Table~\ref{tab:corpus} rather than in the
-library's. It grew with the developments, and its modules live in the
-folders of the developments that first needed them: at the matrix end
+moved up a wire; the mixed product law is what makes the structural
+rules sound once for every gate set. A map from operators to matrices,
+which renumbers a sum over bit vectors as a sum over
+$\mathsf{Fin}\,2^n$, is a monoid homomorphism, and sends an operator
+whose conjugate transpose is its inverse to an element of $U_{2^n}$.
+The circuit end exists in three versions: over an abstract ring; over
+$\Z[\sqrt2]$ with a power of $\frac1{\sqrt2}$ kept apart, with stored
+tries and a decision procedure on row operations, for the developments
+whose soundness checks are large (Section~\ref{sec:eval}); and over the
+cyclotomic rings of qudits, compared up to a phase, which stops short
+of a group and is all the minimality theorems need. Each circuit
+development chooses a ring and gives its gate matrices, which with the
+relations is all a reader has to compare with the paper. The layer is
+about 6{,}000 lines, counted in the developments' totals of
+Table~\ref{tab:corpus} rather than in the library's; its modules live
+in the folders of the developments that first needed them, the
 \texttt{Ring}, \texttt{Vector}, \texttt{Algebra},
 \texttt{MatrixAlgebra}, \texttt{Unitary}, \texttt{Action},
 \texttt{Embedding} and \texttt{EmbedAction} of
-\texttt{Clifford+CS-TwoLevel}, with the \texttt{Semantics} module of
-each two-level development; at the circuit end the \texttt{Semantics}
-folders of \texttt{Real-Clifford}, \texttt{Real-Clifford+CH} and
-\texttt{Examples/Independence}. They are imported across developments;
-we have not yet moved them into one folder.
+\texttt{Clifford+CS-TwoLevel} with the \texttt{Semantics} module of
+each two-level development at the matrix end, and the
+\texttt{Semantics} folders of \texttt{Real-Clifford},
+\texttt{Real-Clifford+CH} and \texttt{Examples/Independence} at the
+circuit end, imported across developments. We have not yet moved them
+into one folder.
 
 \paragraph{Independence.}\label{sec:independence-layer} A rule of a
 presentation is independent when the congruence generated by the other
@@ -176,32 +173,7 @@ that a theorem relating two developments can be stated, and where one
 is proved (Section~\ref{sec:encoding}) the developments check each
 other.
 
-\begin{table}
-\caption{The scaffold. ``Earlier'' is the library of
-\citet{anonymous2027popl}, ``here'' this work. The matrix layer's
-modules sit in the folders of the developments that first needed them.}
-\label{tab:scaffold}
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\begin{tabularx}{\linewidth}{@{}Y l Y Y@{}}
-\toprule
-Component & Origin & Where & Used by \\
-\midrule
-Words, congruences, the presentation records, morphisms & earlier & \texttt{Word}, \texttt{Presentation} & all \\
-Circuits by width with three structural rules; scalars with their rule, and a scalar's centrality as a theorem & earlier; here & \texttt{Circuit} & circuit developments \\
-Normal forms as bundles; completeness from soundness and uniqueness & earlier & \texttt{Normalization} & qudit Clifford, real Clifford+$CH$ \\
-Reidemeister--Schreier engine, coset tables and towers & earlier & \texttt{Normalization} & qudit Clifford, real Clifford+$CH$, the ports \\
-Products and extensions of presentations; extensions by a factor set & earlier; here & \texttt{Presentation/\allowbreak Construct} & qudit Clifford \\
-Bian--Selinger's tactics, with their Reidemeister--Schreier interface & here & \texttt{Presentation/\allowbreak Tactics} & the ports; four rewriters \\
-Translation along a presentation of the same group & here & \texttt{Presentation/\allowbreak Translation} & real stabilizer into Hadamard-$\Pi$ \\
-Independence by models; the structural rules; fragments in a PROP, weighted models & here & \texttt{Presentation}, \texttt{Circuit}, \texttt{Examples/\allowbreak Independence} & minimality; the structural rules \\
-Matrices over $\mathsf{Fin}\,n$ and EucDomain's rings; $U_n$, $O_n$; two-level generators; embeddings & here & \texttt{Clifford+CS-\allowbreak TwoLevel}; each two-level \texttt{Semantics} & two-level developments; the group of every circuit theorem \\
-Operators on bit vectors; Kronecker calculus; the map to matrices; stored tries, decision procedure; qudits up to a phase & here & \texttt{Semantics} of \texttt{Real-Clifford}, \texttt{Real-Clifford+CH}, \texttt{Independence} & real stabilizer, Clifford, real Clifford+$CH$, minimality \\
-Route shapes: levels and edges, paths over any normal word, back-and-forth encoding, rewriter & here & one copy per development & two-level, real Clifford+$CH$, five with derivations \\
-Actions, indexed families of groups, central extensions, factor sets, $\Z/n\Z$ with a solver & here & \texttt{ForStdlib} & qudit Clifford, phase-affine \\
-\bottomrule
-\end{tabularx}
-\end{table}
+
 
 \subsection{The form of a theorem}\label{sec:theorem-form}
 
@@ -228,29 +200,25 @@ three-qubit Clifford+$CS$ circuits inside $U_8(\D[i])$, and so on down
 Table~\ref{tab:corpus}.
 
 To trust the line above, a reader checks four things, and nothing else
-in the 11{,}799 lines of the development. The relation: the module that
-states it has 117 lines, and Section~\ref{sec:example} shows part of
-it. The group: it is built from the operators and the unitary matrices
-of the layer, whose definitions take under 200 lines and whose lemmas
-need not be read, and a reader who has checked the layer once need not
-check it again for the next paper. The interpretation: it sends $-1$,
-$H$, $Z$ and $CZ$ to their matrices and a word to the product of its
-letters, in about 30 lines. And the one line of the theorem module that
-fills the record's field \aid{⟦\_⟧} with that interpretation: the record
-holds the interpretation as a field, so \aid{R IsSubPresentationOf U}
-on its own says that the presented group embeds in \aid{U} in some way,
-and the reader looks at the field to see in which. These come to under
-500 lines, most of them the layer's definitions. The rest of the
-library, which defines words, circuits, the structural rules and the
-record itself, is checked once for all the developments.
-
-A second module instantiates this theorem at
-$\D[\sqrt2]=\Z[\frac1{\sqrt2}]$ and $s=\frac1{\sqrt2}$, which puts the
-real stabilizer group inside the orthogonal group of
-Hadamard-$\Pi$. Because that group is presented by Figure~6, every real
+in the 11{,}799 lines of the development: the relation, whose module
+has 117 lines (Section~\ref{sec:example} shows part of it); the group,
+built from the operators and unitary matrices of the layer, whose
+definitions take under 200 lines, need no lemma read, and are checked
+once for every paper; the interpretation, which sends $-1$, $H$, $Z$
+and $CZ$ to their matrices and a word to the product of its letters,
+in about 30 lines; and the one line of the theorem module that fills
+the record's field \aid{⟦\_⟧} with that interpretation, since
+\aid{R IsSubPresentationOf U} on its own says only that the presented
+group embeds in \aid{U} in some way. These come to under 500 lines,
+most of them the layer's definitions. The rest of the library, which
+defines words, circuits, the structural rules and the record itself,
+is checked once for all the developments. A second module instantiates
+the theorem at $\D[\sqrt2]=\Z[\frac1{\sqrt2}]$ and $s=\frac1{\sqrt2}$,
+which puts the real stabilizer group inside the orthogonal group of
+Hadamard-$\Pi$: because that group is presented by Figure~6, every real
 Clifford circuit translates to a two-level word with the same matrix,
 and two circuits are equal by the circuit relations exactly when their
-translations are equal by Figure~6. The two developments, written
-separately, thus check each other. A third instantiates it at
-$\D[\omega]$, into the unitary group that the Clifford and CNOT-dihedral
+translations are equal by Figure~6, so the two developments, written
+separately, check each other. A third instantiates it at $\D[\omega]$,
+into the unitary group that the Clifford and CNOT-dihedral
 developments use.

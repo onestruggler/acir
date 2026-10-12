@@ -1,40 +1,25 @@
 \section{What Is Not Formalized, and Conclusion}\label{sec:conclusion}
 
-The theorems of Table~\ref{tab:corpus} are proved as stated there. Some
-of the papers prove more, and some of our statements are weaker than
-the papers' in ways a reader should know.
-
-\begin{itemize}
-\item Greylyn's presentation of $U_4(\Z[\frac1{\sqrt2},i])$ is proved
-  for $n\le4$, as in the thesis, and not for larger $n$.
-\item The three-qubit Clifford+$CS$ result says that the circuit
-  relations present the group of matrices that the circuits generate,
-  inside $U_8(\Z[\frac12,i])$. The paper also uses that this group has
-  index 2 in $U_8(\Z[\frac12,i])$, which it takes
-  from~\cite{amy2020numbertheoretic}. We do not formalize the index.
-  The coset table with two cosets enters our proof only through the
-  hypotheses of the Reidemeister--Schreier theorem, which give
-  injectivity and say nothing about the index.
-\item The qudit Clifford theorems are stated against an algebraic
-  model of the Clifford group (Section~\ref{sec:qupit}). The Weyl
-  representation, which identifies the model with the group of unitary
-  matrices, is not formalized.
-\item Blake's simpler presentations~\cite{blake2026simpler} are
-  formalized for soundness and minimality. Their completeness, by
-  translation from the earlier presentations, is not.
-\item For Hadamard-$\Pi$ we did not repair Lemma~A.19 of the paper. We
-  replaced the case that uses it by Cl\'ement's argument. Whether the
-  diagrams of Lemma~A.19 can be fixed in place is open.
-\item Some semantic statements are proved over abstract rings with
-  stated properties, because Agda has no real numbers. The count of
-  real stabilizer operators (Corollary~4.16 of~\cite{makary2021real}) is
-  proved over any nontrivial commutative ring with an element $s$ such
-  that $2s^2=1$, in which $1$ and $-1$ are the only square roots of $1$.
-  The paper means $\mathbb{R}$. We instantiate the corollary only at
-  $\mathbb{F}_7$, with $s=2$, which shows that the hypotheses are
-  consistent. The presentation theorems themselves are instantiated at
-  the rings of the papers.
-\end{itemize}
+The theorems of Table~\ref{tab:corpus} are proved as stated there, and
+some are weaker than the papers' in ways a reader should know.
+Greylyn's presentation of $U_4(\Z[\frac1{\sqrt2},i])$ is proved for
+$n\le4$, as in the thesis. The three-qubit Clifford+$CS$ result says
+that the circuit relations present the group that the circuits
+generate inside $U_8(\Z[\frac12,i])$; that this group has index 2
+there, which the paper takes from~\cite{amy2020numbertheoretic}, is
+not formalized. The qudit Clifford theorems are stated against an
+algebraic model of the Clifford group (Section~\ref{sec:qupit}), the
+Weyl representation being left out. Blake's simpler
+presentations~\cite{blake2026simpler} are formalized for soundness,
+minimality and necessity, not for completeness. For Hadamard-$\Pi$ we
+replaced the case that uses Lemma~A.19 by Cl\'ement's argument;
+whether its diagrams can be fixed in place is open. And some semantic
+statements are proved over abstract rings with stated properties,
+because Agda has no real numbers: the count of real stabilizer
+operators (Corollary~4.16 of~\cite{makary2021real}) is proved over any
+nontrivial commutative ring with $2s^2=1$ whose only square roots of
+$1$ are $\pm1$, and instantiated only at $\mathbb{F}_7$; the
+presentation theorems are instantiated at the rings of the papers.
 
 The trust base is Agda~2.8, the standard library and the modules of
 EucDomain we import, all checked under \texttt{-{}-safe} with no
@@ -47,25 +32,19 @@ are connected, and the connection is a check on both: the real
 stabilizer group inside Hadamard-$\Pi$'s orthogonal group
 (Section~\ref{sec:theorem-form}), Bian and Selinger's ports against the
 two-level presentations, and Cl\'ement's real Clifford+$CH$ paper
-against Hadamard-$\Pi$ (Section~\ref{sec:encoding}). The other
-developments are checked only against their papers.
+against Hadamard-$\Pi$ (Section~\ref{sec:encoding}).
 
 We checked fourteen papers on the completeness and minimality of
 equations for quantum circuits and related matrix groups. One proof
-had a gap. We closed it with an argument from another source, and so
-discharged the import of the later paper that relied on it. The other
-papers were correct up to misprints, though some of the misprints were
-in statements that later proofs use. Most of the work was engineering:
+had a gap, which we closed with an argument from another source, and
+so discharged the import of the later paper that relied on it; the
+others were correct up to misprints. Most of the work was engineering:
 turning case analyses and derivations into data that Agda can check,
 and keeping Agda within time and memory. An agent wrote most of the
 code under our direction, and Agda checked it. What was left for people
-was to check the scaffold once and a short statement per paper; what
-an author of a new theory writes is the mathematics of the paper's
-route.
-
-We think that long computational proofs of this kind can now come with
-a machine-checked version, and that the cost has moved from writing
-proofs to checking statements. Scaffolds made by people, on which
-language models build, are one way to keep that cost small, for the
-reader who checks a statement and for the author who writes the next
-one.
+was to check the scaffold once and a short statement per paper, and
+for an author of a new theory to write the mathematics of its route.
+Long computational proofs of this kind can now come with a
+machine-checked version; the cost has moved from writing proofs to
+checking statements, and scaffolds made by people, on which language
+models build, are one way to keep it small.

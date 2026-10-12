@@ -1,12 +1,60 @@
-\section{Misprints and Slips in Detail}\label{sec:appendix-errata}
+\section{The Findings in Detail}\label{sec:appendix-errata}
 
-This appendix describes the errors of Table~\ref{tab:findings} other
-than the gap, which Section~\ref{sec:gap} describes. Each is a
-statement that is false as printed and easy to correct once a
-computation shows it is false, or a wrong step or citation inside a
-proof whose conclusion is right. We list them because several are in
-statements that a later proof uses, and a reader who builds on the
-printed version would build on something false.
+This appendix gives the details behind Section~\ref{sec:findings}:
+the two false lemmas of Hadamard-$\Pi$ and the state on which its
+Main Lemma fails, and then the misprints and slips of
+Table~\ref{tab:findings}, each a statement that is false as printed
+and easy to correct once a computation shows it is false, or a wrong
+step or citation inside a proof whose conclusion is right. We list the
+latter because several are in statements that a later proof uses, and a
+reader who builds on the printed version would build on something
+false.
+
+\subsection{The gap in Hadamard-\texorpdfstring{$\Pi$}{Pi}}\label{sec:gap-details}
+
+Lemma~A.16 of the extended version assumes that $M$ is at level
+$(j,k,4)$ with $k\ge2$ and that the first four entries $v$ of column
+$j$ satisfy $\sqrt2^k v \equiv (1+\sqrt2,1,1+\sqrt2,1)$ or
+$(1,1+\sqrt2,1,1+\sqrt2) \pmod 2$. It states that if
+$\sqrt2^{k-1}H_{[1,4]}H_{[2,3]}H_{[2,4]}H_{[2,3]}H_{[1,4]}v$ has
+entries in $\Z[\sqrt2]$, then so does
+$\sqrt2^{k-1}H_{[1,3]}H_{[2,4]}H_{[1,2]}H_{[1,3]}H_{[2,4]}v$. Take
+$n=j=6$, $k=4$ and the unit vector with
+\[
+\sqrt2^4\cdot M_{\cdot,6} = (-1-\sqrt2,\; 1,\; -1-\sqrt2,\; 1,\; \sqrt2,\; -2+\sqrt2).
+\]
+Some matrix of $O_6(\Z[\frac1{\sqrt2}])$ has this last column, because
+the generators act transitively on unit columns. Its level is
+$(6,4,4)$. The first word gives $\frac1{\sqrt2^{3}}(0,0,-1-\sqrt2,-1)$,
+which has the required form. The second gives
+$\frac1{\sqrt2^{3}}(-\frac{\sqrt2}2,-1-\frac{\sqrt2}2,-\frac{\sqrt2}2,-1-\frac{\sqrt2}2)$,
+which does not. The proof of the lemma writes the entries as
+$a_i+\sqrt2 b_i$ and compares the $\sqrt2$-parts of the norm equation
+(page~38 of the extended version). There the constant terms of
+$(2a_1+1)(2b_1+1)$ and $(2a_3+1)(2b_3+1)$ contribute $4$, so the
+bracket that the proof reduces modulo~2 is missing a $+1$. With the
+$+1$, the case $a_3+a_4$ odd is no longer contradictory, and the
+vector above lies in it. Lemma~A.17 has the same hypotheses with
+$H_{[3,4]}$ in place of $H_{[2,4]}$, ends its proof by appeal to the
+argument of Lemma~A.16, and fails in the same way, in the case
+$a_3+a_4$ even. A counterexample is the column
+$(1+\sqrt2,-1,1+\sqrt2,1,-\sqrt2,2-\sqrt2)/\sqrt2^4$.
+
+To find a state on which the proof of the Main Lemma itself fails, we
+sampled random states and followed the case analysis of Main Case~9 on
+each of them, computing the level of every state on every diagram of
+Lemma~A.19. Such states are rare: for $n=7$ and $n=8$ there were none
+among about 3{,}000 and 9{,}000 instances of the relevant sub-case,
+and for $n=9$ one among about 400 states that reach the step. It is
+the state $s$ of Section~\ref{sec:gap}, at level $(9,7,4)$. Algorithm~1
+takes $N=H_{[1,4]}$, and the proof of Main Case~9 goes to case
+(2)(b)(i), then to its second bullet, then to Lemma~A.19 with
+$t_2=H_{[2,6]}H_{[1,4]}s$ at level $(9,6,4)$ and $(a,b,c,d)=(1,2,4,6)$.
+Rows 1 and 2 of $t_2$ have different residues, which is sub-case (2),
+and only item (d) of Lemma~A.15 holds. Main Case~9 needs a path from
+$t_2$ to $t_3$ strictly below $(9,7,4)$, and every one of the eight
+diagrams of Lemma~A.19, started at $t_2$ with these labels, reaches
+$(9,7,4)$ or $(9,8,4)$.
 
 \subsection{Misprinted statements}\label{sec:misprints}
 
@@ -149,3 +197,165 @@ segments of six steps it checks in 16 seconds. And the lazy power
 $\sqrt2^{\,n}$, written as repeated multiplication, is a tree of size
 $2^n$ to the conversion checker; computing it level by level, forcing
 each intermediate value, removed the problem.
+
+\section{The Routes in Detail}\label{sec:appendix-routes}
+
+\subsection{The components of the scaffold}\label{sec:scaffold-table}
+
+Table~\ref{tab:scaffold} lists the components of Section~\ref{sec:scaffold}.
+
+\begin{table}[h]
+\caption{The scaffold, with the folder of each component. ``Earlier''
+is the library of \citet{anonymous2027popl}, ``here'' this work.}
+\label{tab:scaffold}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{@{}Y l Y@{}}
+\toprule
+Component & Origin & Used by \\
+\midrule
+Words, congruences, the presentation records, morphisms (\texttt{Word}, \texttt{Presentation}) & earlier & all \\
+Circuits by width with three structural rules; scalars with their rule, and a scalar's centrality as a theorem (\texttt{Circuit}) & earlier; here & circuit developments \\
+Normal forms as bundles; completeness from soundness and uniqueness; the Reidemeister--Schreier engine, coset tables and towers (\texttt{Normalization}) & earlier & qudit Clifford, real Clifford+$CH$, the ports \\
+Products and extensions of presentations; extensions by a factor set (\texttt{Presentation/\allowbreak Construct}) & earlier; here & qudit Clifford \\
+Bian--Selinger's tactics, with their Reidemeister--Schreier interface (\texttt{Presentation/\allowbreak Tactics}) & here & the ports; four rewriters \\
+Translation along a presentation of the same group (\texttt{Presentation/\allowbreak Translation}) & here & real stabilizer into Hadamard-$\Pi$ \\
+Independence by models; the structural rules; fragments in a PROP, weighted models (\texttt{Presentation}, \texttt{Circuit}, \texttt{Examples/\allowbreak Independence}) & here & minimality; the structural rules \\
+Matrices over $\mathsf{Fin}\,n$ and EucDomain's rings; $U_n$, $O_n$; two-level generators; embeddings (\texttt{Clifford+CS-\allowbreak TwoLevel}, each two-level \texttt{Semantics}) & here & two-level developments; the group of every circuit theorem \\
+Operators on bit vectors; Kronecker calculus; the map to matrices; stored tries, decision procedure; qudits up to a phase (\texttt{Semantics} of \texttt{Real-Clifford}, \texttt{Real-Clifford+CH}, \texttt{Independence}) & here & real stabilizer, Clifford, real Clifford+$CH$, minimality \\
+Route shapes: levels and edges, paths over any normal word, back-and-forth encoding, rewriter (one copy per development) & here & two-level, real Clifford+$CH$, five with derivations \\
+Actions, indexed families of groups, central extensions, factor sets, $\Z/n\Z$ with a solver (\texttt{ForStdlib}) & here & qudit Clifford, phase-affine \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{The levels route in Agda}\label{sec:levels-details}
+
+The two-level developments share the following definitions (the two
+earliest state the induction slightly differently, but with the same
+\aid{Path}). Here \aid{nw M o} is the algorithm's word for
+a matrix \aid{M} with orthonormal columns \aid{o}, \aid{actMʷ} is the
+action of a word on a matrix, and \aid{level} the level of
+Section~\ref{sec:by-levels}.
+\begin{agdacode}
+Path : (w : Word (Gen n)) (M : Matrix n n D) → .(ColOrth M) → Set
+Path w M o = nw (actMʷ w M) (ColOrth-actMʷ w o) • w ≈ nw M o
+
+EdgesBelow : Lvl → Set
+EdgesBelow L = ∀ (g : Gen n) M .(o : ColOrth M) →
+  level M <ₗ L → level (actM g M) <ₗ L → Path [ g ]ʷ M o
+
+EdgesAt : Lvl → Set
+EdgesAt L = ∀ (g : Gen n) M .(o : ColOrth M) →
+  level M ≡ L → level (actM g M) ≤ₗ L → Path [ g ]ʷ M o
+
+EdgeStep : Set
+EdgeStep = ∀ L → EdgesBelow L → EdgesAt L
+\end{agdacode}
+The orthogonality proof \aid{o} is irrelevant, so that the normal word
+depends on the matrix alone. Three details of this formulation matter
+in practice. First, the statement covers every generator, not only the
+basic ones that the papers' Main Lemmas are stated for. The papers
+reduce the other generators to the basic ones in a sentence; in Agda
+this reduction is a module of its own, because conjugating by an
+exchange must be shown to keep the state at or below its level. Second,
+squares are closed by one lemma, \aid{close}, which takes the two
+syllables $N$ and $N'$, the word $W$, the proof that every state on the
+path of $W$ is below $L$, and the relation $W N' g \approx N$. Many
+cases of a Main Lemma are one call to \aid{close} with a relation and a
+list of level facts. Third, the definitions are generic in the normal
+word. When we found the gap in Hadamard-$\Pi$, the proof of the missing
+case was written over any function \aid{nw} with three properties
+(paths compose, edges below $L$ are paths, and the non-hard edges at
+$L$ are paths), so that the same proof served both Hadamard-$\Pi$'s
+algorithm and Cl\'ement's.
+
+\subsection{The bridge to Theorem 4.4}\label{sec:bridge-details}
+
+The Hadamard-$\Pi$ development and the real Clifford+$CH$ development
+differ in every detail: generators with indices in either order against
+generators with increasing indices; matrices as functions of bit
+vectors over a hand-made $\Z[\sqrt2]$, read with a power of
+$\frac1{\sqrt2}$, against EucDomain's $\Z[\frac1{\sqrt2}]$ indexed by
+$\mathsf{Fin}\,n$; basis vectors numbered by a Gray code at the width
+of $P$, and by a table on two qubits. The bridge has three parts:
+\begin{itemize}
+\item a ring map $\iota$ from $\Z[\sqrt2]$ to $\Z[\frac1{\sqrt2}]$;
+\item a translation $\varphi$ from proper letters to increasing words,
+  which writes a decreasing letter by the paper's rules (e1) and (e2),
+  and a map $\psi$ back that sends each relation of Hadamard-$\Pi$'s
+  Figure~6 to the same relation of the paper's, so that
+  $\psi(\varphi(u)) \approx u$;
+\item for any numbering $\mathit{code}$ of the basis by
+  $\mathsf{Fin}\,2^n$, a map $\Phi$ from scaled matrices
+  $(\ell, M)$ to matrices over $\Z[\frac1{\sqrt2}]$, with entry
+  $(\frac1{\sqrt2})^\ell\,\iota(M(\mathit{code}\,r)(\mathit{code}\,c))$ at
+  $(r,c)$.
+\end{itemize}
+$\Phi$ is a monoid homomorphism: its sums over bit vectors are sums over
+$\mathsf{Fin}\,2^n$ in binary order, renumbered by a permutation, for
+which the standard library's \aid{sum-permute} applies. It identifies
+pairs that the localization relation of the paper's semantics
+identifies, and it sends the matrix of each generator to the matrix of
+its translation, which we checked entry by entry. Then two proper words
+$u,t$ with the same matrix give $\varphi(u)$ and $\varphi(t)$ with the
+same matrix, so $\varphi(u)\approx\varphi(t)$ by the Hadamard-$\Pi$
+development, so $\psi(\varphi(u))\approx\psi(\varphi(t))$, so
+$u\approx t$. The two-qubit semantics uses private copies of the
+generator matrices; a generated module of 336 cases checks that they
+agree with the shared ones entry by entry. The real Clifford+$CH$
+development first proved its theorem for a monoid: it reads a circuit
+as a pair $(\ell, M)$ of an integer matrix over $\Z[\sqrt2]$ and a
+power of $\frac1{\sqrt2}$, which makes the matrices fast to compute
+with, and such pairs have no inverses. To get the group version, the
+bridge's $\Phi$ carries each pair to a matrix over
+$\Z[\frac1{\sqrt2}]$. That matrix is orthogonal, because every gate
+matrix is symmetric and every gate is its own inverse by Cl\'ement's
+rules. And $\Phi$ is injective up to the equality of pairs, because
+$\iota$ is injective and $\sqrt2$ is a unit. The module that does this
+has about 210 lines and checks in 17~seconds.
+
+\subsection{A derivation for the rewriter}\label{sec:rewriter-details}
+
+A derivation of the real stabilizer development, as the rewriter of
+Section~\ref{sec:search} checks it:
+\begin{agdacode}
+δxpp = derive (x13 ∷ h02 ∷ h13 ∷ h01 ∷ h23 ∷ []) (h02 ∷ h13 ∷ h01 ∷ h23 ∷ x23 ∷ [])
+  ( perm (x13 ∷ h02 ∷ h13 ∷ h01 ∷ h23 ∷ [])
+  ∷ rw 0 (sym⁼ (ʟa3 f1 f3 lt13))
+  ∷ perm (h13 ∷ h13 ∷ x13 ∷ h02 ∷ h13 ∷ h01 ∷ h23 ∷ [])
+  ∷ rw 1 (sym⁼ (ʟd2 f1 f3 lt13))
+  ∷ ⋯ ) refl
+\end{agdacode}
+The final \aid{refl} asks Agda to run the checker on the closed list of
+steps.
+
+\subsection{Generated code per development}\label{sec:generated-details}
+
+\begin{table}[h]
+\caption{Generated code per development: non-blank lines of the
+modules that a script wrote, by their headers and our notes, and what
+they contain. The scripts of the real Clifford+$CH$ development and of
+Cl\'ement's thesis are in the repository; the others were not kept.
+The ports consist largely of the original authors' generated proof
+terms and are not counted.}
+\label{tab:generated}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{@{}l r r Y@{}}
+\toprule
+Development & Lines & Generated & What \\
+\midrule
+Real stabilizer & 11{,}799 & 5{,}995 & 264 derivations as rewriter steps: the supplement's lemmas and typed relations, and the rules as the push uses them \\
+Clifford & 11{,}349 & 7{,}347 & the supplement's Lemmas 1.1--1.3 and equations (3.1)--(3.101); the rewriting tables \\
+CNOT-dihedral & 5{,}809 & 836 & local identities of the linear tower, the phase gates and the $X$ column, by search \\
+$O_n(\Z[\frac12])$, $L_n$ & 15{,}528 & 4{,}337 & relations on four, six and eight indices (Props.~A.11--A.16); the six cases of one edge \\
+Hadamard-$\Pi$ & 11{,}198 & 1{,}420 & the equivalence of (d3), (d4) with Cl\'ement's (20), (21); the ring identities of the diamond cases are generated inline and not counted \\
+Cl\'ement's thesis & 10{,}406 & 2{,}203 & diagrams (20), (30) and those of Subcase 1.14.2; the decision trees of Case~3.4 \\
+Real Clifford+$CH$ & 73{,}097 & 1{,}391 & Lemma A.1's chains of 101 and 170 steps; the 336 entry checks of the bridge \\
+Phase-affine & 12{,}219 & --- & ring identities per entry, generated inline \\
+Qudit Clifford & 67{,}340 & 0 & written by hand \\
+Minimality & 4{,}143 & 0 & \\
+\bottomrule
+\end{tabularx}
+\end{table}

@@ -47,41 +47,32 @@ reject a postulate.
 That makes the work harder. A case split must be on a decidable
 question, so ``either the entry is odd or it is even'' is a decision
 procedure on $\Z[\sqrt2]$, and ``the matrix determines the normal
-form'' is a function that reads the normal form off the matrix, not an
-argument that two normal forms with equal matrices cannot differ. Two
+form'' is a function that reads the normal form off the matrix. Two
 functions with the same values are not equal, so operators on bit
 vectors are compared pointwise, and every lemma about them carries the
 congruence proofs that the standard library's setoid bundles ask for.
 And the intended semantics of several papers is $\mathbb{R}$ or
 $\mathbb{C}$, which do not exist here; those theorems are proved over
 any commutative ring with the properties the paper uses, and
-instantiated at the rings the paper computes in
-(Sections~\ref{sec:theorem-form} and~\ref{sec:conclusion}).
-
-In return, every proof is a program. With soundness, completeness and
-decidable equality of matrices, the word problem of a theory is
-decided; a normal-form witness is a normalizer that runs; and the
-proofs by evaluation of Section~\ref{sec:eval} are run by the
-typechecker itself, with no oracle outside it to trust.
+instantiated at the rings the paper computes in. In return, every
+proof is a program: with soundness, completeness and decidable
+equality of matrices, the word problem of a theory is decided, a
+normal-form witness is a normalizer that runs, and the proofs by
+evaluation of Section~\ref{sec:eval} are run by the typechecker
+itself, with no oracle outside it to trust.
 
 \subsection{What makes Agda slow}\label{sec:slow}
 
 Most of what we learned about Agda in this work is about what makes it
-slow, or makes it run out of memory. The problems are not specific to
-these papers. They come from proving things about large explicit
+slow, or makes it run out of memory, and none of it is specific to
+these papers: it comes from proving things about large explicit
 objects, matrices and long words, that Agda can also compute with.
-Appendix~\ref{sec:appendix-agda} describes the six we met and what we
-did about each. In short: the conversion checker compares terms by
-unfolding them, so the reading of a circuit and the ring operations of
-$\Z[\frac1{\sqrt2}]$ are \aid{abstract} or \aid{opaque}, and two
-readings of a circuit are compared by comparing the circuits;
-unification cannot invert $2^n$, products or powers, so such arguments
-are given explicitly; a \aid{with} normalizes its goal, so a decision
-about a matrix or a level is taken in a helper function that receives
-it as an argument; a rewrite loop of the ported tactics was exponential
-under Agda~2.8 until it returned the list it had just rebuilt; memory
-is kept across modules, so modules that decide thousands of instances
-are split and the largest developments are checked module by module;
-and generated code needs the same care, in modules of a figure each and
-chains of a few steps each, with the power $\sqrt2^{\,n}$ computed level
-by level rather than as a tree of size $2^n$.
+Appendix~\ref{sec:appendix-agda} describes the six problems we met and
+what we did about each: the conversion checker compares terms by
+unfolding them, so readings of circuits and the ring operations are
+\aid{abstract} or \aid{opaque}; unification cannot invert $2^n$,
+products or powers, so such arguments are given explicitly; a
+\aid{with} normalizes its goal, so decisions about matrices and levels
+are taken in helper functions; a rewrite loop of the ported tactics
+was exponential; memory is kept across modules, so evaluation-heavy
+modules are split; and generated code needs the same care.

@@ -44,5 +44,11 @@ sequence".
 - The numbers (modules, lines, times, dates) were measured on the
   `v-office` branch on 13 October 2026. Re-measure them if the
   developments change.
-- The errata for Hadamard-Pi are cited as supplementary material
-  (Section 5.1). They still have to be written up as a separate file.
+- The errata are cited as supplementary material (Section 5.1). They
+  are `errata/errata.tex`, a standalone document listing every error
+  found, source by source, with the module that checks each
+  correction; build it with `latexmk -pdf errata.tex` in that folder.
+  Update it when the findings change.
+- The body must end by page 23 (OOPSLA 2027 limit, excluding
+  references and appendices). On 13 October 2026 the conclusion ends
+  on page 23 and the references start on page 24.

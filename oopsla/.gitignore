@@ -6,3 +6,6 @@
 *.log
 *.out
 main.pdf
+main.txt
+errata/errata.pdf
+errata/errata.txt

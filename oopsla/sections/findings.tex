@@ -36,117 +36,90 @@ Source & Finding & Kind \\
 \subsection{A gap in the completeness proof of Hadamard-\texorpdfstring{$\Pi$}{Pi}}\label{sec:gap}
 
 Hadamard-$\Pi$~\cite{fang2026hadamard} proves the completeness of its
-Figure~6 (Theorem~4.14) by the method of
-Section~\ref{sec:by-levels}. The level of a matrix is $(j,k,\ell)$: the
-pivot column $j$, its least denominator exponent $k$, and the number
-$\ell$ of entries of $\sqrt2^k$ times the column whose integer part is
-odd. The odd entries come in two residue classes modulo 2, $1$ and
-$1+\sqrt2$, each of even size. Algorithm~1 applies $H$ to the first two
-odd entries of one class, which makes both even. The Main Lemma
+Figure~6 (Theorem~4.14) by the method of Section~\ref{sec:by-levels},
+with the level $(j,k,\ell)$ of a matrix its pivot column, the least
+denominator exponent of that column, and the number of odd entries of
+$\sqrt2^k$ times it; the odd entries come in two residue classes
+modulo 2, $1$ and $1+\sqrt2$, each of even size, and Algorithm~1
+applies $H$ to the first two odd entries of one class. The Main Lemma
 (Lemma~A.7) is split into Main Cases by the generator $G$ and the
 syllable $N$. Main Case~9, where $G=H_{[1,2]}$ and $N=H_{[1,i_2]}$, takes
-nine pages in the extended version. In one of its subcases it applies
-Lemma~A.19, which gives a path between two states $t_2$ and $t_3$ that
-stays below a promised level. In the case $\ell=4$, sub-case (2) of
-Lemma~A.19, items (c) and (d) rely on Lemmas~A.16 and A.17.
+nine pages in the extended version, and in one of its subcases it
+applies Lemma~A.19, which gives a path between two states that stays
+below a promised level; in the case $\ell=4$, sub-case (2) of that
+lemma, items (c) and (d) rely on Lemmas~A.16 and A.17.
 
-These two lemmas are false. Lemma~A.16 assumes that $M$ is at level
-$(j,k,4)$ with $k\ge2$ and that the first four entries $v$ of column $j$
-satisfy $\sqrt2^k v \equiv (1+\sqrt2,1,1+\sqrt2,1)$ or
-$(1,1+\sqrt2,1,1+\sqrt2) \pmod 2$. It states that if
-$\sqrt2^{k-1}H_{[1,4]}H_{[2,3]}H_{[2,4]}H_{[2,3]}H_{[1,4]}v$ has
-entries in $\Z[\sqrt2]$, then so does
-$\sqrt2^{k-1}H_{[1,3]}H_{[2,4]}H_{[1,2]}H_{[1,3]}H_{[2,4]}v$. Take
-$n=j=6$, $k=4$ and the unit vector with
+These two lemmas are false. Lemma~A.16 takes a state at level $(j,k,4)$
+with $k\ge2$ whose first four entries $v$ of column $j$ satisfy
+$\sqrt2^k v \equiv (1+\sqrt2,1,1+\sqrt2,1)$ or
+$(1,1+\sqrt2,1,1+\sqrt2) \pmod 2$, and says that if one word of five
+$H$'s brings $\sqrt2^{k-1}$ times the column into $\Z[\sqrt2]$, then
+so does a second. The unit column
 \[
-\sqrt2^4\cdot M_{\cdot,6} = (-1-\sqrt2,\; 1,\; -1-\sqrt2,\; 1,\; \sqrt2,\; -2+\sqrt2).
+\sqrt2^4\cdot M_{\cdot,6} = (-1-\sqrt2,\; 1,\; -1-\sqrt2,\; 1,\; \sqrt2,\; -2+\sqrt2),
 \]
-Some matrix of $O_6(\Z[\frac1{\sqrt2}])$ has this last column, because
-the generators act transitively on unit columns. Its level is
-$(6,4,4)$. The first word gives $\frac1{\sqrt2^{3}}(0,0,-1-\sqrt2,-1)$,
-which has the required form. The second gives
-$\frac1{\sqrt2^{3}}(-\frac{\sqrt2}2,-1-\frac{\sqrt2}2,-\frac{\sqrt2}2,-1-\frac{\sqrt2}2)$,
-which does not. The proof of the lemma writes the entries as
-$a_i+\sqrt2 b_i$ and compares the $\sqrt2$-parts of the norm equation
-(page~38 of the extended version). There the constant terms of
-$(2a_1+1)(2b_1+1)$ and $(2a_3+1)(2b_3+1)$ contribute $4$, so the
-bracket that the proof reduces modulo~2 is missing a $+1$. With the
-$+1$, the case $a_3+a_4$ odd is no longer contradictory, and the
-vector above lies in it. Lemma~A.17 has the same hypotheses with
-$H_{[3,4]}$ in place of $H_{[2,4]}$, ends its proof by appeal to the
-argument of Lemma~A.16, and fails in the same way, in the case
-$a_3+a_4$ even. A counterexample is the column
-$(1+\sqrt2,-1,1+\sqrt2,1,-\sqrt2,2-\sqrt2)/\sqrt2^4$.
+at level $(6,4,4)$, is a counterexample: the first word does and the
+second does not. The proof compares the $\sqrt2$-parts of the norm
+equation and drops a $+1$ from the bracket it reduces modulo~2, and
+with the $+1$ the case it rules out is possible. Lemma~A.17 has the
+same hypotheses with $H_{[3,4]}$ in place of $H_{[2,4]}$, ends its
+proof by appeal to the argument of Lemma~A.16, and fails in the same
+way, on the column $(1+\sqrt2,-1,1+\sqrt2,1,-\sqrt2,2-\sqrt2)/\sqrt2^4$.
+Appendix~\ref{sec:gap-details} states both lemmas in full and checks
+both columns.
 
 A false lemma does not make the Main Lemma false, since Lemma~A.19 only
 needs some path, and there might be one. So we looked for a state on
-which the proof itself fails. We sampled random states and followed the
-case analysis of the Main Lemma on each of them. Such states are rare:
-for $n=7$ and $n=8$ there were none among about 3{,}000 and 9{,}000
-instances of the relevant sub-case, and for $n=10$ one among about 400
-states that reach the step. One of them is the state $s$ with
+which the proof itself fails, by sampling random states and following
+the case analysis of the Main Lemma on each
+(Appendix~\ref{sec:gap-details}). One is the state $s$ with
 \[
 \sqrt2^7\cdot s_{\cdot,9} = (1+3\sqrt2,\; 1,\; -3\sqrt2,\; 1+3\sqrt2,\; 2,\; 5,\; -2+\sqrt2,\; -4+2\sqrt2,\; -2-2\sqrt2)
 \]
 at level $(9,7,4)$. Algorithm~1 takes $N=H_{[1,4]}$, and the proof of
-Main Case~9 goes to case (2)(b)(i), then to its second bullet, then to
-Lemma~A.19 with $t_2=H_{[2,6]}H_{[1,4]}s$ at level $(9,6,4)$ and
-$(a,b,c,d)=(1,2,4,6)$. Rows 1 and 2 of $t_2$ have different residues,
-which is sub-case (2), and only item (d) of Lemma~A.15 holds. Main
-Case~9 needs a path from $t_2$ to $t_3$ strictly below $(9,7,4)$.
-Every one of the eight diagrams of Lemma~A.19, started at $t_2$ with
-these labels, reaches $(9,7,4)$ or $(9,8,4)$. So the proof of the Main
-Lemma does not cover this state, and the proof of Theorem~4.14 is
-incomplete.
+Main Case~9 goes to Lemma~A.19 with $t_2=H_{[2,6]}H_{[1,4]}s$ at level
+$(9,6,4)$ and $(a,b,c,d)=(1,2,4,6)$, in its sub-case (2), where only
+item (d) of Lemma~A.15 holds. Main Case~9 needs a path from $t_2$ to
+$t_3$ strictly below $(9,7,4)$, and every one of the eight diagrams of
+Lemma~A.19, started at $t_2$ with these labels, reaches $(9,7,4)$ or
+$(9,8,4)$. So the proof of the Main Lemma does not cover this state,
+and the proof of Theorem~4.14 is incomplete.
 
-In terms of states, what is left open is the edge given by $H$ on two
-odd entries of different classes, when exactly four entries of the
-pivot column are odd. Cl\'ement's 2019 thesis~\cite{clement2019thesis}
-presents the same group with the same generators by its own
-relations (1)--(21), with a completeness proof by the same method, and
-his Case~3.4 is exactly this edge. We did two things with it.
-
-First, we proved that his relations and those of Figure~6 generate the
-same congruence in every dimension. His (1)--(18) follow from
-(a1)--(d2), his (19) is a relation the paper derives from (d3), and
-conversely. His (20) and (21) are relations on four and six indices
-that are equivalent to (d3) and (d4) given the others; we derived each
-direction by a generated chain of rewrites on the first indices, and
-carried the result to any indices by an increasing embedding. So a
-completeness proof for either set is one for both.
-
-Second, we formalized his Case~3.4 and used it for the edge that
-Hadamard-$\Pi$ leaves open. On the state $s$ above, his diagram~(32), on
-rows 1, 2, 4, 6 and the further rows 3 and 5, gives a path that never
-rises above the level of $s$. The general argument is a case analysis
-over the residues of four entries, extended in some sub-cases by up to
-three further rows of given depth and class, and closed by his
-diagrams~(20) and~(30). We wrote it as a decision tree that Agda checks
-by evaluation (Section~\ref{sec:trees}). With it, the relations of
-Figure~6 present $O_n(\Z[\frac1{\sqrt2}])$ in every dimension.
+What is left open is the edge given by $H$ on two odd entries of
+different classes, when exactly four entries of the pivot column are
+odd. Cl\'ement's 2019 thesis~\cite{clement2019thesis} presents the same
+group with the same generators by its own relations (1)--(21), with a
+completeness proof by the same method, and his Case~3.4 is exactly
+this edge. We did two things with it. First, we proved that his
+relations and those of Figure~6 generate the same congruence in every
+dimension, his (20) and (21) on four and six indices being equivalent
+to (d3) and (d4) given the others, by generated chains of rewrites on
+the first indices carried to any indices by an increasing embedding.
+Second, we formalized his Case~3.4 and used it for the open edge. On the state $s$ above, his
+diagram~(32), on rows 1, 2, 4, 6 and the further rows 3 and 5, gives a
+path that never rises above the level of $s$. The general argument is a
+case analysis over the residues of four entries, extended in some
+sub-cases by up to three further rows of given depth and class, and
+closed by his diagrams~(20) and~(30); we wrote it as a decision tree
+that Agda checks by evaluation (Section~\ref{sec:trees}). With it, the
+relations of Figure~6 present $O_n(\Z[\frac1{\sqrt2}])$ in every
+dimension.
 
 After that we formalized the rest of the thesis: his version of the
 algorithm, in which every syllable is a single generator, his
-Lemma~4.4 for the basic generators $H_{[0,1]}$, $(-1)_{[j]}$ and
-$X_{[j,j+1]}$ in all its cases and subcases, and his Theorem~4.1. Two
-steps the thesis leaves implicit had to be supplied: the reduction from
-all generators to the basic ones, by conjugation with exchanges that
-keep a state at or below its level, and the induction itself. So the
-theorem now has two machine-checked proofs, one along Hadamard-$\Pi$
-with Cl\'ement's case, and one along Cl\'ement.
-
+Lemma~4.4 for the basic generators in all its cases, and his
+Theorem~4.1, supplying two steps the thesis leaves implicit, the
+reduction from all generators to the basic ones and the induction
+itself. So the theorem now has two machine-checked proofs, one along
+Hadamard-$\Pi$ with Cl\'ement's case, and one along Cl\'ement.
 Cl\'ement's 2026 paper on real Clifford+$CH$
 circuits~\cite{clement2026realcliffordch} imports Theorem~4.14 of
-Hadamard-$\Pi$ as its own Theorem~4.4, and uses it twice: for circuits
-on two qubits, and, through its Theorem~4.10, for three qubits and
-more. Its main theorem therefore rested on a theorem whose published
-proof is incomplete. Section~\ref{sec:encoding} explains how we connect
-the two developments so that its completeness is proved with no
-imported statement.
-
-The two counterexamples and the state $s$ are given above, and all
-three are small enough to check by hand; the errata will be provided
-as supplementary material.
+Hadamard-$\Pi$ as its own Theorem~4.4, for circuits on two qubits and,
+through its Theorem~4.10, on three and more; Section~\ref{sec:encoding}
+explains how the two developments are connected so that its
+completeness is proved with no imported statement. The two
+counterexamples and the state $s$ are small enough to check by hand;
+the errata are provided as supplementary material.
 
 \subsection{Our own errors}\label{sec:own-errors}
 
@@ -170,17 +143,9 @@ discharges is not checked by anything.
 \paragraph{A bug invisible at small sizes.} Our transcription of the
 swap networks of Cl\'ement's Definition~8.2 took two products over the
 wires between $i$ and $j$ in the wrong order. On three qubits there is
-at most one wire in between, so the two orders agree, and the decision
-procedure that checks Figure~8 on three qubits could not see the
-difference. On four qubits the transcribed (36) and (37) are unsound:
-a simulation of the network's signed permutation in Python showed that
-8 of the 48 relevant index tuples land on the wrong basis vectors, and
-48 of 160 on five qubits. We found it when proving (65) at every width,
-which needs exactly this permutation. This is our error, distinct from
-the paper's misprint of $\mathcal{E}^{1-x}$ in the same equations
-(Appendix~\ref{sec:misprints}).
-
-\paragraph{A misread diagram.} A control dot of equation (261),
-misread at screen resolution, cost a proof of a true but harder
-statement before the one the paper means; we now read diagrams at
-400~dpi.
+at most one wire in between, so the two orders agree and the decision
+procedure that checks Figure~8 there could not see the difference; on
+four qubits the transcribed (36) and (37) are unsound. We found it when
+proving (65) at every width, which needs exactly this permutation. And
+a control dot of equation (261), misread at screen resolution, cost a
+proof of a true but harder statement before the one the paper means.
