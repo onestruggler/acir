@@ -34,7 +34,10 @@
 
 module Examples.Independence.Theorems where
 
-open import Data.Nat.Base using (ℕ)
+open import Data.Nat.Base using (ℕ ; _+_ ; _≤_)
+open import Relation.Nullary.Negation using (¬_)
+
+import Examples.Independence.Necessity as Necessity
 
 import Examples.Independence.Clifford.Syntactics       as Cliff
 import Examples.Independence.Real-Clifford.Syntactics  as RCliff
@@ -128,3 +131,44 @@ CliffCS₂-I-independent = CliffCS-Min.I-independent
 -- 6. CNOTdihe₂ is minimal (all arities).
 CNOTdihe₂-minimal : CNOTdihe.Minimal
 CNOTdihe₂-minimal = CNOTdihe-Min.minimal
+
+------------------------------------------------------------------------
+-- Minimality against the matrix semantics (Section 5.1)
+--
+-- Every rule set is sound, so an independent axiom is necessary for
+-- completeness: the other axioms do not derive every equation between
+-- circuits on its wires that the matrices validate.
+
+module Cliff-M    = Necessity.Fragment-Semantics Cliff.Gate Cliff.arity Cliff.lhs Cliff.rhs
+                      Cliff-Sem.⟦_⟧ Cliff-Sem._≈_ Cliff-Sem.sound
+module RCliff-M   = Necessity.Fragment-Semantics RCliff.Gate RCliff.arity RCliff.lhs RCliff.rhs
+                      RCliff-Sem.⟦_⟧ RCliff-Sem._≈_ RCliff-Sem.sound
+module Cliff3-M   = Necessity.Fragment-Semantics Cliff3.Gate Cliff3.arity Cliff3.lhs Cliff3.rhs
+                      Cliff3-Sem.⟦_⟧ Cliff3-Sem._≈_ Cliff3-Sem.sound
+module CliffT-M   = Necessity.Fragment-Semantics CliffT.Gate CliffT.arity CliffT.lhs CliffT.rhs
+                      CliffT-Sem.⟦_⟧ CliffT-Sem._≈_ CliffT-Sem.sound
+module CliffCS-M  = Necessity.Fragment-Semantics CliffCS.Gate CliffCS.arity CliffCS.lhs CliffCS.rhs
+                      CliffCS-Sem.⟦_⟧ CliffCS-Sem._≈_ CliffCS-Sem.sound
+module CNOTdihe-M = Necessity.Fragment-Semantics CNOTdihe.Gate CNOTdihe.arity CNOTdihe.lhs CNOTdihe.rhs
+                      CNOTdihe-Sem.⟦_⟧ CNOTdihe-Sem._≈_ CNOTdihe-Sem.sound
+
+Cliff₂-necessary : ∀ ρ → ¬ Cliff-M.Complete-without ρ (Cliff.arity ρ + 0)
+Cliff₂-necessary ρ = Cliff-M.necessary ρ (Cliff₂-minimal ρ)
+
+RCliff₂-necessary : ∀ ρ → ¬ RCliff-M.Complete-without ρ (RCliff.arity ρ + 0)
+RCliff₂-necessary ρ = RCliff-M.necessary ρ (RCliff₂-minimal ρ)
+
+Cliff₃-necessary : ∀ ρ → Cliff3.arity ρ ≤ 2 →
+                   ¬ Cliff3-M.Complete-without ρ (Cliff3.arity ρ + 0)
+Cliff₃-necessary ρ ar≤2 = Cliff3-M.necessary ρ (Cliff₃-minimal-upto-2 ρ ar≤2)
+
+CliffT₂-necessary : ∀ ρ → CliffT.arity ρ ≤ 1 →
+                    ¬ CliffT-M.Complete-without ρ (CliffT.arity ρ + 0)
+CliffT₂-necessary ρ ar≤1 = CliffT-M.necessary ρ (CliffT₂-minimal-upto-1 ρ ar≤1)
+
+CliffCS₂-necessary : ∀ ρ → CliffCS.arity ρ ≤ 2 →
+                     ¬ CliffCS-M.Complete-without ρ (CliffCS.arity ρ + 0)
+CliffCS₂-necessary ρ ar≤2 = CliffCS-M.necessary ρ (CliffCS₂-minimal-upto-2 ρ ar≤2)
+
+CNOTdihe₂-necessary : ∀ ρ → ¬ CNOTdihe-M.Complete-without ρ (CNOTdihe.arity ρ + 0)
+CNOTdihe₂-necessary ρ = CNOTdihe-M.necessary ρ (CNOTdihe₂-minimal ρ)
