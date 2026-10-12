@@ -1,0 +1,151 @@
+\section{Misprints and Slips in Detail}\label{sec:appendix-errata}
+
+This appendix describes the errors of Table~\ref{tab:findings} other
+than the gap, which Section~\ref{sec:gap} describes. Each is a
+statement that is false as printed and easy to correct once a
+computation shows it is false, or a wrong step or citation inside a
+proof whose conclusion is right. We list them because several are in
+statements that a later proof uses, and a reader who builds on the
+printed version would build on something false.
+
+\subsection{Misprinted statements}\label{sec:misprints}
+
+\paragraph{Real stabilizer circuits.} The normal form of Makary, Ross and
+Selinger~\cite{makary2021real} is pushed through by 137 \emph{typed
+relations}, listed in their Appendix~B, one for each gate and each kind
+of normal-form wire. Eleven of them are false as printed: both sides
+have different matrices, and do not differ only by a sign. Six have a
+wrong right-hand side; for example the paper prints $X;C_1 = C_1;Z$
+where $X;C_1=C_2$ holds, and $H;A_3 = A_2;H$ where $A_3$ is meant on the
+right. The other five lack a Pauli gate at the end, such as $Z_t;B_2 =
+B_2;X_t$ for $Z_t;B_2 = B_2;X_t;Z_b$. Six derivations in the supplement
+reach one of these false conclusions. The formalization proves the
+corrected relations, and the normal form, the uniqueness argument and
+the count of Corollary~4.16 go through with them. Two smaller problems
+in the paper are an equation printed without its ``='' in Figure~10,
+and Definition~5.3 of the normal forms, which does not allow a $CZ$
+whose top wire is a single wire labelled 2, although the left-hand
+sides of rules 5.1--5.4 have exactly such a gate.
+
+\paragraph{The group $O_n(\Z[\frac12])$.} Table~2 of Li, Ross and
+Selinger~\cite{li2021on} lists the relations of the group $L_n$ that
+mention $I\otimes H$. In relation (7d) the right-hand sides for odd and
+for even $a$ are exchanged: for $a$ odd (counting from 1) the right
+side is $(-1)_{[a+1]}$, and for $a$ even it is
+$X_{[a,a+1]}K_{[a-1,a,a+1,a+2]}$. We found this when the relation
+failed to check numerically, and our development uses the corrected
+form.
+
+\paragraph{Simpler presentations.} Figure~4 of Blake's
+paper~\cite{blake2026simpler} gives the scalar of the qutrit rule (E) as
+$\omega_{12}^7$. With the semantics of its Section~3.2 the rule is then
+unsound; with $\omega_{12}$ it is sound. Separately, one of the
+separating interpretations used for the minimality of the Clifford
+rule (CZ) does not satisfy the three-wire rule (I). The minimality
+claim survives, because a derivation of a two-wire equation never needs
+a rule on three wires (the paper's Remark~14); we prove that remark and
+use it.
+
+\paragraph{Real Clifford+$CH$ circuits.} The equations (36) and (37) of
+Cl\'ement's paper, which write a pair of Hadamards through a network of
+swaps, hold with the negations $\mathcal{E}^x$ of the controls, not
+with $\mathcal{E}^{1-x}$ as printed. The rules (30), (34) and (42) of its
+Figure~8 need distinctness conditions on their indices that the paper
+assumes by convention but does not state. We found these by deciding
+every rule of Figure~8 on three qubits, at every admissible choice of
+indices, before formalizing it.
+
+\subsection{Slips in derivations}\label{sec:slips}
+
+Some derivations cite the wrong rule for a step whose conclusion is
+right. In the supplement of Selinger's Clifford
+paper~\cite{selinger2015clifford}, which has 105 pages, the proof of
+Lemma~1.3 says that property (19) is relation (C10) where it is (C12),
+and two steps in the proof of (21) are labelled (11), a rule that cannot
+reorder two $CZ$ gates, where they use (19). These are the only three
+wrong citations among all the derivations of its Lemmas 1.1--1.3 and
+equations (3.1)--(3.101), and the paper's figures all check. The
+supplement of the real stabilizer paper has five misprinted
+intermediate rows, four wrong axiom labels, and forty citations of
+typed relations by an older figure numbering. In Hadamard-$\Pi$, the
+proof of Lemma A.19(d) cites Propositions A.28 and A.29 where it needs
+a relation stated nowhere in the paper and the relation of A.28;
+Proposition A.29 repeats A.22. The missing relation holds, and follows
+from Proposition A.26 as A.28 follows from A.27.
+
+A rewriter that follows the paper's own steps (Section~\ref{sec:search})
+fails at exactly such a step, and the failure points at the line. This
+is how the wrong citations in the two supplements were found.
+
+\section{What Makes Agda Slow, in Detail}\label{sec:appendix-agda}
+
+Section~\ref{sec:slow} summarizes the six problems below.
+
+\paragraph{The evaluator compares by unfolding.} When Agda checks that
+two terms are equal and they are not syntactically equal, it unfolds
+definitions until they are. For two readings of a 40-gate circuit as
+operators, unfolding means computing a sum over every intermediate
+basis vector, which is exponential in the circuit. This happens for
+reasons that are invisible in the source, such as an implicit width
+elaborated as \aid{3} in one place and \aid{₃₊ 0} in another. The fix in
+the real Clifford+$CH$ development was to make the reading of a circuit
+\aid{abstract}, with its defining equations exported as lemmas, so that
+two readings are compared by comparing the circuits. The ring
+operations of $\Z[\frac1{\sqrt2}]$ are records of dyadic fractions, and
+comparing two expressions over them unfolds the arithmetic on stuck
+terms; we made them \aid{opaque} and do arithmetic with a ring solver
+over an abstract commutative ring, unfolding them only inside
+\aid{opaque unfolding} blocks where a concrete value is needed.
+
+\paragraph{Unification cannot invert.} Many functions in these
+developments are not injective: $2^n$, multiplication, the power
+$\sqrt2^\ell$, the reading of a matrix. An implicit argument that occurs
+only under such a function is never solved, and Agda may reduce
+operators for a long time looking for it; in one case this used
+9.6\,GB. We give such arguments explicitly, and state lemmas so that
+their arguments occur in positions that unification can read.
+
+\paragraph{Pattern matching can force normalization.} A \aid{with} that
+abstracts a term out of a goal normalizes the goal. When the goal
+mentions a matrix with symbolic entries, or a large $\Sigma$-type such
+as a level, this exhausted the heap several times. The same happened
+when we compared the levels of two convertible but syntactically
+different states: Agda computed the pivots of both. In the qudit
+Clifford development, abstracting the map that lifts a derivation out of a goal
+at a symbolic prime used more than 13\,GB; taking the value apart in a
+helper function instead checks in 90 seconds. We split such cases
+with helper functions that take the decision as an argument, cast
+between levels along \aid{refl} with both matrices given explicitly, and
+avoided records whose fields mention levels, since the positivity
+checker normalizes their types.
+
+\paragraph{A rewrite loop that was exponential.} Bian and Selinger's
+tactic library, which we ported, rewrites a word to normal form by a
+loop that, when no rule applies, returns its argument. Under Agda~2.8,
+returning the argument rather than the list the loop has just rebuilt
+makes a normal form nested $k$ levels deep cost $2^k$ steps; the
+three-qubit Clifford+$CS$ proof nests 20 levels. Returning the rebuilt
+list made one step of that proof go from running out of memory to 13
+seconds, and made four of the five modules that the original checks
+with call-by-name evaluation check with the default strategy; the fifth
+followed once the coset normal forms were computed incrementally.
+
+\paragraph{Memory is kept across modules.} Agda keeps every module it
+has checked in memory, and frees the memory used by evaluation only
+when a module is done. Two consequences followed. Modules that decide
+many instances by evaluation, such as the check of Figure~8 of the real
+Clifford+$CH$ paper on three qubits, must be split, a few thousand
+instances per module; in one module, all of them exhausted 10\,GB. And
+the largest developments did not fit a 3\,GB heap in one process from
+scratch. We check such developments with a script that reruns Agda,
+and checks on its own each module at which a run runs out of memory;
+each module but a handful fits in 3\,GB on its own.
+
+\paragraph{Generated code needs care too.} A single generated module of
+6{,}000 lines, the derivations of the Clifford supplement, exhausted the
+heap; split into one module per figure it checks. A chain of 101
+rewriting steps written as one term exhausted 4\,GB; split into
+segments of six steps it checks in 16 seconds. And the lazy power
+$\sqrt2^{\,n}$, written as repeated multiplication, is a tree of size
+$2^n$ to the conversion checker; computing it level by level, forcing
+each intermediate value, removed the problem.

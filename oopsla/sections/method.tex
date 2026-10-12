@@ -14,7 +14,7 @@ development was written earlier, from July to early October 2026, in
 by hand; an LLM coding agent helped with parts of it and is a co-author
 of about a fifth of those commits. The pace of the other thirteen
 depended on four habits, which we describe in turn, and on an LLM
-coding agent, which we describe last.
+coding agent, which we describe after them.
 
 \subsection{Check numerically first}\label{sec:numerical}
 
@@ -26,8 +26,8 @@ formalizing a statement we checked it by computation in Python, exact
 over $\Z[\sqrt2]$ where levels or residues were involved, and compared
 it with the printed page. This is fast, and when it fails the problem
 is in the statement, not in the proof we are about to write. Most of
-the misprints of Section~\ref{sec:misprints} were found this way; the
-others were found by the decision procedures of
+the misprints of Appendix~\ref{sec:appendix-errata} were found this
+way; the others were found by the decision procedures of
 Section~\ref{sec:eval}.
 
 The same scripts look for counterexamples. The counterexamples to
@@ -71,18 +71,23 @@ line by line: for each printed line it searches for a \aid{perm} and a
 \aid{rw} that reach it from the previous one, using the relation the
 paper cites first and the others if that fails. When no step reaches a
 printed line, the line or its citation is wrong, which is how the
-citation errors of Section~\ref{sec:findings} showed up. Where a paper
+citation errors of Appendix~\ref{sec:slips} showed up. Where a paper
 gives no derivation, the script searches for one by breadth-first
 search over rewrites with the local relations, with intermediate
-lemmas to keep the search small. The scripts that produce modules we
-kept are in the repository, and they regenerate those modules byte for
-byte. The generated modules are a large part of some developments: the
-real stabilizer development derives the 137 typed relations this way,
-the Clifford development the 101 equations of its supplement, and the
-proof of Lemma~A.1 in the real Clifford+$CH$ development has chains of
-101 and 170 steps. We split such chains into segments between explicit
-lines; a single chain of 101 steps exhausted 4\,GB, because each step's
-type normalizes all the steps before it.
+lemmas to keep the search small. The scripts for the real
+Clifford+$CH$ development and for Cl\'ement's thesis are in the
+repository and regenerate their modules byte for byte; the scripts of
+the other five developments with generated code were not kept. An
+author of a new theory writes such a script, or has the agent write
+one, following a derivation where the paper gives one and searching
+where it does not. The generated modules are a large part of some
+developments (Table~\ref{tab:generated}): the real stabilizer
+development derives the 137 typed relations this way, the Clifford
+development the 101 equations of its supplement, and the proof of
+Lemma~A.1 in the real Clifford+$CH$ development has chains of 101 and
+170 steps. We split such chains into segments between explicit lines;
+a single chain of 101 steps exhausted 4\,GB, because each step's type
+normalizes all the steps before it.
 
 \subsection{Case analyses as decision trees}\label{sec:trees}
 
@@ -144,25 +149,15 @@ The statements are a different matter. A wrong definition is checked
 as faithfully as a right one, and the false hypothesis of
 Section~\ref{sec:own-errors} stayed in the development, unnoticed, until
 we tried to discharge it. For this reason every result ends in a short
-module that states it without hypotheses, in terms of
-the library's records and a matrix semantics that can be compared with
-the paper's. These are the statements a reader should check.
-
-The library is what keeps that check short, and it is worth being
-precise about what it fixes. It fixes the form of every theorem, so a
-reader learns the form once and recognizes it in each development. It
-does not fix the matrices. Here each development defines its own
-semantics, written by the agent from the paper, and we checked it
-against the paper by computation. Several developments share one
-unitary group and one matrix algebra, and a library of matrix
-semantics for the common gates would make the check per paper smaller
-still. Nor does the statement pin the interpretation. The records hold
-the interpretation as a field, so \aid{R IsSubPresentationOf U} on its
-own says only that the presented group embeds in \aid{U} in some way,
-and the reader has to look at the field the proof supplies. A scaffold
-built for this use should make the interpretation a parameter of the
-statement. We have not changed the library in this way, which is why
-the check of Section~\ref{sec:corpus} includes that line.
+module that states it without hypotheses, in the form of
+Section~\ref{sec:theorem-form}: the relation set over the library's
+words, the group from the layer, and the interpretation in the
+record's field. These are the statements a reader should check, and
+the scaffold is what keeps them short. What the scaffold does not fix,
+the relations and the gate matrices, the agent wrote from the paper;
+we read the relations against the paper and checked the matrices by
+computation. A library of matrices for the common gates would remove
+the second step, and is the next addition to make.
 
 We also found that the agent's mistakes resembled human ones.
 It misread a diagram at low resolution, took the bounds of a product in
@@ -170,3 +165,55 @@ the wrong order, and stated a hypothesis more strongly than the paper
 does. Each was caught by a computation or by Agda, not by the agent's
 own reading. The numerical checks of Section~\ref{sec:numerical} were
 also the agent's main check on its own work before Agda saw it.
+
+\subsection{Beyond checking}\label{sec:beyond}
+
+A colleague asked whether these tools help with the mathematics, and
+not only with checking it. In a few ways they did.
+
+\paragraph{Missing conditions.} Three of our findings are conditions
+assumed without being stated, one by a paper and two by us: the
+distinctness conventions of Cl\'ement's Figure~8; the proper words of
+its Theorem~4.4, which the paper does state and our first statement
+dropped; and the hypothesis that scalars commute with one another,
+which an earlier version of our own circuit layer assumed and which
+the independence models showed cannot be dropped from the structural
+rules (Section~\ref{sec:independence-layer}). The first and third were
+found when a decision procedure, or a model, was run on the statement
+as written; the second when we tried to discharge the hypothesis.
+
+\paragraph{Rule sets.} A presentation theorem transports along an
+isomorphism of rule sets (Section~\ref{sec:products}), so a variant
+rule set costs the translation of its generators and the derivation of
+the rules that differ: the four rule sets of the qudit Clifford
+development and both spellings of its rule C4 were related this way,
+and so were Cl\'ement's thesis relations and Figure~6 of
+Hadamard-$\Pi$, in every dimension. That a rule is not redundant is
+shown by a model and one lemma, which is how Blake's six minimality
+theorems and our own structural rules were done.
+
+\paragraph{Shorter proofs.} Our normal syllables for $O_n(\Z[\frac12])$
+carry one sign where the paper's carry four, which removes most sign
+cases from its Main Lemma. In the real Clifford+$CH$ appendix several
+arguments were replaced by shorter ones found while formalizing: two
+equations saying that a word of involutions equals its reverse, (146)
+and (147), are proved by making the word a palindrome where the paper
+draws some sixty diagram steps; a commutation of two multiply
+controlled gates, (203), is proved letter by letter where the paper
+takes three pages; the obligations of its Theorem~4.10 are the images
+of one relation per rule under a uniform embedding, where the paper
+does a case analysis over every rule and coset; and rule (45) of its
+Lemma~8.8, an involution again, has a proof whose argument fits in a
+page, where the paper's takes six. Each was checked numerically first
+and then in Agda.
+
+\paragraph{Normal forms.} The normal form of Cl\'ement's Lemma~A.4, a
+sign part and a permutation part, was checked by enumeration, by a
+script we did not keep, before its uniqueness was proved: at
+$N=2,\dots,5$ the words number $2^{N-1}N!$ and no two have the same
+matrix. The proof then reads the permutation part as a Lehmer code. And
+the decision trees of Section~\ref{sec:trees} came out of a search
+whose organization decided their size.
+
+Whether the same scaffold helps to find a new theory, rather than to
+check one, we do not know.

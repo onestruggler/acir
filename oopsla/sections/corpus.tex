@@ -7,22 +7,28 @@ development, and the form of the theorem we proved. A
 group; a \emph{sub-presentation} means that they present the subgroup,
 or submonoid, that the generators generate, which for circuits is the
 group the paper is about. ``Every $n$'' means every number of wires or
-every dimension. The line counts are non-blank lines of Agda.
+every dimension. The line counts are non-blank lines of Agda. Every
+presentation theorem has the form of Section~\ref{sec:theorem-form},
+the qudit Clifford ones with a model in place of the matrix group.
 
 \begin{table}
 \caption{The sources and our developments. Modules and lines are those
-of the development's own folder; the shared library is not counted.}
+of the development's own folder, which includes the modules of the
+matrix layer that first appeared there; the library proper is not
+counted. The Hadamard-$\Pi$ theorem takes its hard case from the row
+below it (Section~\ref{sec:gap}).}
 \label{tab:corpus}
-\small
-\begin{tabularx}{\linewidth}{@{}l Y l r r Y@{}}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{@{}l Y l r r l@{}}
 \toprule
 Source & Object & Method & Mod. & Lines & Result \\
 \midrule
 \multicolumn{6}{@{}l}{\emph{Groups of two-level matrices}}\\
 \citet{greylyn2014} & $U_4(\Z[\frac1{\sqrt2},i])$ & synthesis & 31 & 8{,}490 & presentation, $n\le4$ \\
-\citet{bian2021un} & $U_n(\Z[\frac12,i])$ & synthesis & 38 & 9{,}033 & presentation, every $n$ \\
+\citet{bian2021un} & $U_n(\Z[\frac12,i])$ & synthesis & 37 & 9{,}006 & presentation, every $n$ \\
 \citet{li2021on} & $O_n(\Z[\frac12])$, $L_n$ & synthesis & 68 & 15{,}528 & presentations, every $n$ \\
-\citet{fang2026hadamard} & $O_n(\Z[\frac1{\sqrt2}])$ & synthesis & 44 & 11{,}198 & presentation, one case from Cl\'ement \\
+\citet{fang2026hadamard} & $O_n(\Z[\frac1{\sqrt2}])$ & synthesis & 44 & 11{,}198 & presentation, every $n$ \\
 \citet{clement2019thesis} & $O_n(\Z[\frac1{\sqrt2}])$ & synthesis & 40 & 10{,}406 & presentation, every $n$ \\
 \midrule
 \multicolumn{6}{@{}l}{\emph{Circuits}}\\
@@ -32,8 +38,8 @@ Source & Object & Method & Mod. & Lines & Result \\
 \citet{amy2018cnotdihedral} & CNOT-dihedral & width induction & 29 & 5{,}809 & sub-presentation, every $n$ \\
 \citet{blake2026phaseaffine} & phase-affine, prime $d$ & width induction & 55 & 12{,}219 & sub-presentations, every $n$ \\
 \citet{bian2023cliffordt2} & 2-qubit Clifford+$T$ & Reid.--Schreier & 56 & 11{,}684 & sub-presentation in $U_4$ \\
-\citet{bian2023cliffordcs3} & 3-qubit Clifford+$CS$ & Reid.--Schreier & 107 & 50{,}839 & sub-presentation in $U_8$ \\
-\citet{clement2026realcliffordch} & real Clifford+$CH$ & encoding & 346 & 72{,}636 & sub-presentation, every $n$ \\
+\citet{bian2023cliffordcs3} & 3-qubit Clifford+$CS$ & Reid.--Schreier & 107 & 50{,}972 & sub-presentation in $U_8$ \\
+\citet{clement2026realcliffordch} & real Clifford+$CH$ & encoding & 348 & 73{,}097 & sub-presentation, every $n$ \\
 \midrule
 \multicolumn{6}{@{}l}{\emph{Minimality}}\\
 \citet{blake2026simpler} & six fragments & models & 32 & 4{,}070 & soundness, minimality \\
@@ -45,35 +51,28 @@ Source & Object & Method & Mod. & Lines & Result \\
 
 Four of the sources present groups of two-level matrices by exact
 synthesis, and the fifth (Hadamard-$\Pi$) does too. We formalized each
-of them with the same skeleton: the ring and its operations, the action
-of a generator on a column, the algorithm and its correctness, the
-level and the proof that a syllable lowers it, and the Main Lemma as a
-function that returns the path of every edge out of a state at a level
-$L$ that does not go up, given the edges below $L$
-(Section~\ref{sec:levels}).
+of them with the same skeleton, the levels and edges of
+Section~\ref{sec:levels}.
 
 Greylyn's thesis~\cite{greylyn2014} presents $U_4(\Z[\frac1{\sqrt2},i])$,
-the group of two-qubit Clifford+$T$ operators. Our development states the
-relations for every $n$ and proves completeness for $n\le4$, as the
+the group of two-qubit Clifford+$T$ operators; our development states
+the relations for every $n$ and proves completeness for $n\le4$, as the
 thesis does. Bian and Selinger~\cite{bian2021un} present
 $U_n(\Z[\frac12,i])$, the group behind Clifford+$CS$, for every $n$.
 Li, Ross and Selinger~\cite{li2021on} present $O_n(\Z[\frac12])$ with the
 generators $(-1)_{[a]}$, $X_{[a,b]}$ and $K_{[a,b,c,d]}=H\otimes H$, and,
 in their Section~5, the group $L_n$ of scaled dyadic orthogonal
-matrices, which adds $I\otimes H$. We formalized both. Their normal
-syllables carry four signs. Ours carry one, which is enough for $K$ to
-reduce the four entries it acts on and removes most sign cases from the
-Main Lemma; a separate module relates the two kinds of syllable.
-
-Hadamard-$\Pi$~\cite{fang2026hadamard} presents
-$O_n(\Z[\frac1{\sqrt2}])$ by the generators $Z_{[a]}$, $X_{[a,b]}$ and
-$H_{[a,b]}$ and the relations (a1)--(d4) of its Figure~6. We formalized
-generation, Algorithm~1 and its correctness, soundness, and the Main
-Lemma up to one case, which the paper's proof does not cover. The
-theorem takes that case as a hypothesis. Cl\'ement's thesis of
-2019~\cite{clement2019thesis} presents the same group with relations
-(1)--(21). We proved that the two relation sets generate the same
-congruence in every dimension, proved the missing case after his
+matrices, which adds $I\otimes H$; we formalized both, with normal
+syllables that carry one sign where theirs carry four
+(Section~\ref{sec:beyond}). Hadamard-$\Pi$~\cite{fang2026hadamard}
+presents $O_n(\Z[\frac1{\sqrt2}])$ by the generators $Z_{[a]}$,
+$X_{[a,b]}$ and $H_{[a,b]}$ and the relations (a1)--(d4) of its
+Figure~6; we formalized generation, Algorithm~1 and its correctness,
+soundness, and the Main Lemma up to the one case that the paper's proof
+does not cover, which the theorem takes as a hypothesis. Cl\'ement's
+thesis of 2019~\cite{clement2019thesis} presents the same group with
+relations (1)--(21); we proved that the two relation sets generate the
+same congruence in every dimension, proved the missing case after his
 Case~3.4, and then formalized his whole proof over his own version of
 the algorithm. Section~\ref{sec:gap} tells this story.
 
@@ -81,95 +80,84 @@ the algorithm. Section~\ref{sec:gap} tells this story.
 
 Selinger's Clifford circuits~\cite{selinger2015clifford} and Makary,
 Ross and Selinger's real stabilizer circuits~\cite{makary2021real} are
-proved complete by normal forms. Both papers come with a supplement of
-derivations, which we followed line by line
-(Section~\ref{sec:search}). Both also count their normal forms, and so
-the order of the group: $8\prod_{i=1}^n 2(4^i-1)4^i$ for Clifford and
+proved complete by normal forms, with supplements of derivations that
+we followed line by line (Section~\ref{sec:search}). Both papers count
+their normal forms, and so the order of the group,
+$8\prod_{i=1}^n 2(4^i-1)4^i$ for Clifford and
 $2\prod_{i=1}^n (4^i+2^i-2)(2\cdot4^{i-1})$ for real stabilizers. We
-proved these counts as bijections between the normal forms and
+proved the counts as bijections between the normal forms and
 $\mathsf{Fin}$ of the order, and, for the real case, that every
 orthogonal matrix that normalizes the Pauli group is the matrix of a
 circuit, over any ring whose only square roots of $1$ are $\pm1$.
 
 Amy, Chen and Ross~\cite{amy2018cnotdihedral} present the CNOT-dihedral
-operators, generated by $\omega$, $X$, $T$ and $CNOT$. Blake's
+operators, generated by $\omega$, $X$, $T$ and $CNOT$, and Blake's
 phase-affine circuits~\cite{blake2026phaseaffine} form four levels in
 each prime dimension $d$: affine circuits, then phases, then $S$, then
 $T$, the last two for odd $d$ and $d>3$. Both proofs go by induction on
-the number of wires, splitting a circuit into a diagonal part, a layer
-of $X$ gates and a linear part (Section~\ref{sec:width}). The proof
+the number of wires (Section~\ref{sec:width}). The proof
 of~\cite{amy2018cnotdihedral} builds on known presentations of linear
 reversible circuits; our development proves that part too, by a coset
 tower in the style of Lafont~\cite{lafont2003boolean}.
 
 Bian and Selinger's papers on two-qubit Clifford+$T$ and three-qubit
 Clifford+$CS$ circuits~\cite{bian2023cliffordt2,bian2023cliffordcs3}
-came with Agda code. That code proves only that the circuit relations
-and a set of two-level relations generate the same congruence; it
-does not mention matrices. We ported it to our library, which took a
-change in its rewriting tactic for Agda~2.8
-(Section~\ref{sec:engineering}), and connected it to the two-level
-presentations above at $n=4$ and $n=8$. The result is the semantic
+came with Agda code, which proves only that the circuit relations
+present the same group as a set of two-level relations, along a
+translation of generators, and does not mention matrices. We ported it
+to our library and connected it to the two-level presentations above
+at $n=4$ and $n=8$ (Section~\ref{sec:ports}), which gives the semantic
 theorem: the circuit relations present the image of the circuits in
 $U_4$ and $U_8$.
 
 Cl\'ement's theory of real Clifford+$CH$
 circuits~\cite{clement2026realcliffordch} is proved complete width by
-width. On one qubit it uses a normal form; on two qubits it encodes
-circuits as words over two-level matrices and back, and uses
-completeness of those (its Theorem~4.4, imported from
-Hadamard-$\Pi$); on three or more qubits it encodes them in a group $P$
-of pairs of two-level matrices, whose relations (its Figure~8) are
-proved complete in an appendix by the Reidemeister--Schreier method
-(its Theorem~4.10). The paper numbers its equations up to (361), and
-most of them are auxiliary equations for the decoding, proved by
-induction on the width with completeness one width down as a black
-box. All of it is formalized, and Section~\ref{sec:encoding} describes how the
-imported theorem is discharged.
+width: by a normal form on one qubit, and on two qubits and more by
+encoding circuits as words over two-level matrices, or over a group $P$
+of pairs of them, and back, using completeness of those words (its
+Theorem~4.4, imported from Hadamard-$\Pi$, and its Theorem~4.10, proved
+by the Reidemeister--Schreier method). The paper numbers its equations
+up to (361), most of them auxiliary equations for the decoding, proved
+by induction on the width with completeness one width down as a black
+box. All of it is formalized, and Section~\ref{sec:encoding} describes
+how the imported theorem is discharged.
 
 \subsection{Qudit Clifford circuits}\label{sec:qupit}
 
 \citet{bian2026qupit} give sixteen rules, C0--C15 of their Figure~1,
 for Clifford circuits on qudits of odd prime dimension $p$, over the
 generators $-\omega$, $H$, $S$ and $CZ$, where $\omega = e^{2\pi i/p}$.
-Their proof works first at the symplectic level. Modulo scalars, the
-Clifford group is the semidirect product of the Pauli group and
-$Sp(2n,\Z_p)$. Their theorem was formalized in Agda alongside the
-paper, with the same library, and we include that development here.
-Unlike the others, it was written mainly by hand, with an LLM agent for
-parts of it. It is the earliest of the fourteen developments and took
-the longest, about three months.
+Their theorem was formalized in Agda alongside the paper, with the same
+library, and we include that development here. Unlike the others, it
+was written mainly by hand, with an LLM agent for parts of it; it is the
+earliest of the fourteen developments and took the longest, about three
+months.
 
-The development goes up in layers, and each layer is a presentation
-theorem.
-\begin{itemize}
-\item $Sp(2n,\Z_p)$ is presented by a normal form computed by a coset
-  tower in the style of Reidemeister and Schreier, one level per wire.
-  Its uniqueness is proved by induction on the width. A simplified rule
-  set, stated relative to a primitive root $g$ of $\Z_p$, presents the
-  same group.
-\item The semidirect product of the Pauli group and $Sp(2n,\Z_p)$ is
-  assembled by a generic construction from presentations of the two
-  factors and of the conjugation action.
-\item The circuits read modulo scalars present this product. There
-  are four rule sets over $H$, $S$ and $CZ$. The first is where the
-  mathematics is, and the other three are spellings of Figure~1
-  without its scalars. The first is related to the rules of the
-  semidirect product, and each of the others to the one before it, by
-  an isomorphism of rule sets, along which the theorem transports.
-\item The scalars come back in two steps. The first is the central
-  extension by $\langle\omega\rangle\cong\Z_p$ given by the Weyl
-  cocycle, $\frac12$ times the symplectic form of $P$ and $AQ$ for two
-  elements $(P,A)$ and $(Q,B)$. Its rules are those below, each
-  multiplied by the power of $\omega$ that it holds up to, and only
-  $(SH)^3$ needs one, $\omega^{(p^2-1)/8}$. The scalars of this group
-  have odd order, so it does not contain $-1$. The paper's group,
-  generated by $-\omega$, is its direct product with
-  $\langle -1\rangle$, and Figure~1 presents that product, through an
-  isomorphism of rule sets that reads $-\omega$ as $-1\cdot\omega$.
-\end{itemize}
-The rule C4 can be stated with the multiplier $M_g$ on either side of
-$S$. Both versions are formalized, and each is derived from the other.
+The proof works first at the symplectic level, and the development goes
+up in layers, each a presentation theorem. $Sp(2n,\Z_p)$ is presented by
+a normal form computed by a coset tower in the style of Reidemeister
+and Schreier, one level per wire, its uniqueness proved by induction on
+the width; a simplified rule set, stated relative to a primitive root
+$g$ of $\Z_p$, presents the same group. The semidirect product of the
+Pauli group and $Sp(2n,\Z_p)$, which is the Clifford group modulo
+scalars, is assembled by a generic construction from presentations of
+the two factors and of the conjugation action
+(Section~\ref{sec:products}). The circuits read modulo scalars present
+this product under five rule sets over $H$, $S$ and $CZ$: the first is
+where the mathematics is, the second simplifies its relations further,
+the other three are spellings of Figure~1 without its scalars, and each
+is related to one before it by an isomorphism of rule sets along which
+the theorem transports. The scalars come back in two steps: a central
+extension by $\langle\omega\rangle\cong\Z_p$ given by the Weyl cocycle,
+whose rules are those below each multiplied by the power of $\omega$
+it holds up to, which is trivial except for
+$(SH)^3 = \omega^{(p^2-1)/8}$; and, since the scalars of that group
+have odd order and it does not contain $-1$, a direct factor
+$\langle -1\rangle$, the paper's group being generated by $-\omega$.
+Figure~1 presents that product, through an isomorphism of rule sets
+that reads $-\omega$ as $-1\cdot\omega$. The rule C4 can be stated with
+the multiplier $M_g$ on either side of $S$; both versions are
+formalized, and each is derived from the other.
 
 The groups on the right of these theorems are algebraic models. An
 element is a Pauli and a symplectic matrix over $\Z_p$, with a phase in
@@ -187,53 +175,16 @@ fragments of near-Clifford circuits and proves them minimal: no rule
 follows from the others. The proofs use separating interpretations, a
 model in which all rules but one hold. We formalized the six fragments
 with their matrix semantics, soundness at every width, and all the
-separating interpretations of the minimality theorem. The completeness
-part of that paper, a translation from the earlier presentations, is
-not formalized.
+separating interpretations of the minimality theorem, on the
+independence framework of Section~\ref{sec:independence-layer}. The
+completeness part of that paper, a translation from the earlier
+presentations, is not formalized.
 
-We used the same method on our own circuit layer. Its four structural
-rules (Section~\ref{sec:presentations}) are independent: for each rule
-there is a family of monoids, one per width, in which the other three
-hold and that one fails. The models record how many times each gate
-has been shifted up. A fifth rule that the library used to have, that a scalar
-commutes with every gate, is derivable from the four when scalars
-commute with each other. With two scalars it is not, and a fifth model
-shows it.
-
-\subsection{What the theorems look like}
-
-Every development ends in a module that states its theorem in the
-library's terms, without hypotheses. For example, the real stabilizer
-development concludes
-\begin{agdacode}
-presentation : {n : ℕ} → (n VRel,_===_) IsSubPresentationOf U (2 ^ n)
-\end{agdacode}
-where \aid{U} is the unitary group over any nontrivial commutative ring
-$A$ with an involution $x\mapsto\overline{x}$, playing the role of
-complex conjugation, and an element $s$ with $2s^2=1$ and
-$\overline{s}=s$, playing the role of $\frac1{\sqrt2}$; for example
-$\mathbb{C}$, or $\Z[\frac1{\sqrt2}]$.
-
-To trust this line, a reader checks four things, and nothing else in
-the 11{,}799 lines of the development. The relation
-\aid{n VRel,\_===\_} is the paper's R1--R16, lifted to $n$ wires by the
-library's structural rules; the module that states it has 117 lines.
-The group \aid{U (2 \textasciicircum{} n)} is built from operators on bit vectors and
-the unitary matrices; its definitions take under 200 lines, and the
-lemmas around them need not be read. The interpretation sends $-1$,
-$H$, $Z$ and $CZ$ to their matrices and a word to the product of its
-letters, in about 30 lines. Last, the record
-\aid{\_IsSubPresentationOf\_} holds the interpretation as one of its
-fields, so the reader checks that the proof fills that field with this
-interpretation, which is one line. The rest of the library, which
-defines words, circuits, the structural rules and the record itself, is
-checked once for all the developments.
-
-A second module instantiates this theorem at
-$\D[\sqrt2]=\Z[\frac1{\sqrt2}]$ and $s=\frac1{\sqrt2}$, which puts the
-real stabilizer group inside the orthogonal group of
-Hadamard-$\Pi$. Because that group is presented by Figure~6, every real
-Clifford circuit translates to a two-level word with the same matrix,
-and two circuits are equal by the circuit relations exactly when their
-translations are equal by Figure~6. The two developments, written
-separately, thus check each other.
+We used the same framework on our own circuit layer. Its four
+structural rules (Section~\ref{sec:presentations}) are independent: for
+each rule there is a family of monoids, one per width, in which the
+other three hold and that one fails. The models record how many times
+each gate has been shifted up. A fifth rule that an earlier version of
+this work had, that a scalar commutes with every gate, is derivable
+from the four when scalars commute with each other. With two scalars it
+is not, and a fifth model shows it.

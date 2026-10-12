@@ -36,31 +36,36 @@ the papers' in ways a reader should know.
   the rings of the papers.
 \end{itemize}
 
-The trust base is Agda~2.8, the standard library and EucDomain, all
-under \texttt{-{}-safe} with no postulates. What Agda cannot check is
-that our definitions mean what the papers mean. We wrote the semantics
-of each development separately, from the paper, and except in the
-qudit Clifford development checked it against the paper's matrices by
-computation. In three places two developments
-are connected, and the connection is a check on both: the real stabilizer group
-inside Hadamard-$\Pi$'s orthogonal group (Section~\ref{sec:corpus}),
-Bian and Selinger's ports against the two-level presentations, and
-Cl\'ement's real Clifford+$CH$ paper against Hadamard-$\Pi$
-(Section~\ref{sec:encoding}). The other developments are checked only
-against their papers.
+The trust base is Agda~2.8, the standard library and the modules of
+EucDomain we import, all checked under \texttt{-{}-safe} with no
+postulates; everything is constructive (Section~\ref{sec:why-agda}).
+What Agda cannot check is that our definitions mean what the papers
+mean. We wrote the semantics of each development separately, from the
+paper, and except in the qudit Clifford development checked it against
+the paper's matrices by computation. In three places two developments
+are connected, and the connection is a check on both: the real
+stabilizer group inside Hadamard-$\Pi$'s orthogonal group
+(Section~\ref{sec:theorem-form}), Bian and Selinger's ports against the
+two-level presentations, and Cl\'ement's real Clifford+$CH$ paper
+against Hadamard-$\Pi$ (Section~\ref{sec:encoding}). The other
+developments are checked only against their papers.
 
 We checked fourteen papers on the completeness and minimality of
 equations for quantum circuits and related matrix groups. One proof
-had a gap. We closed it with an argument from another source, and with
-it the later paper that relied on it. The other papers were correct up
-to misprints, though some of the misprints were in statements that
-later proofs use. Most of the work was engineering: turning case
-analyses and derivations into data that Agda can check, and keeping
-Agda within time and memory. An agent wrote most of the code under our
-direction, and Agda checked it. What was left for people was the
-library, checked once, and a short statement per paper.
+had a gap. We closed it with an argument from another source, and so
+discharged the import of the later paper that relied on it. The other
+papers were correct up to misprints, though some of the misprints were
+in statements that later proofs use. Most of the work was engineering:
+turning case analyses and derivations into data that Agda can check,
+and keeping Agda within time and memory. An agent wrote most of the
+code under our direction, and Agda checked it. What was left for people
+was to check the scaffold once and a short statement per paper; what
+an author of a new theory writes is the mathematics of the paper's
+route.
 
 We think that long computational proofs of this kind can now come with
 a machine-checked version, and that the cost has moved from writing
 proofs to checking statements. Scaffolds made by people, on which
-language models build, are one way to keep that cost small.
+language models build, are one way to keep that cost small, for the
+reader who checks a statement and for the author who writes the next
+one.

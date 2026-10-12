@@ -4,6 +4,12 @@
 %%
 %% Build: make   (latexmk -pdf main.tex; pdflatex, with the Unicode
 %% tables of agda-style.sty for the quoted Agda).
+%%
+%% Sections, in order: intro, background, scaffold (the library and
+%% what this work added to it), corpus, findings, architecture (the
+%% proof routes, what each asks of the author, the worked example),
+%% method, engineering, related, conclusion; then the appendix with
+%% the misprints and slips in detail.
 \documentclass[acmsmall,review,anonymous]{acmart}
 
 \acmJournal{PACMPL}
@@ -82,6 +88,7 @@ presentations, exact synthesis, Agda, proof checking}
 
 \input{sections/intro}
 \input{sections/background}
+\input{sections/scaffold}
 \input{sections/corpus}
 \input{sections/findings}
 \input{sections/architecture}
@@ -100,5 +107,8 @@ from the repository and its notes, and then checked and revised by us.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{refs}
+
+\appendix
+\input{sections/appendix}
 
 \end{document}

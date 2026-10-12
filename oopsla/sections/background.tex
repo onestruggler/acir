@@ -10,19 +10,14 @@ $\llbracket - \rrbracket : X^* \to M$. It is \emph{sound} if related
 words have equal images, and \emph{complete} if words with equal images
 are related. When it is sound and complete, the relation presents the
 image of $\llbracket - \rrbracket$; when moreover every element of $M$
-is the image of a word, it presents $M$. All the results in this paper
-have one of these two forms. For circuits, $M$ is a group of matrices
+is the image of a word, it presents $M$. All the presentation theorems in this
+paper have one of these two forms. For circuits, $M$ is a group of matrices
 and the image is the group the gates generate, which in most cases has
 no simpler description. For the two-level groups, $M$ is a matrix group
 such as $O_n(\Z[\frac1{\sqrt2}])$ and the generators generate all of it.
 
-We use the Agda library of~\citet{anonymous2027popl}. In it, a relation
-is an inductive family \aid{Γ : WRel X}, its congruence is the inductive
-family \aid{\_≈\_} with one constructor for each closure rule and one
-for the axioms, and the two theorem forms are the records
-\aid{\_IsPresentationOf\_} and \aid{\_IsSubPresentationOf\_}. The second
-asks that $\llbracket - \rrbracket$ be an injective group homomorphism on
-words modulo $\approx$; the first adds surjectivity. A circuit on $n$
+Our library~\cite{anonymous2027popl} fixes this vocabulary, and the
+syntax of circuits (Section~\ref{sec:library}). A circuit on $n$
 wires is a word over wire-indexed gates. A gate of arity $k$ sits on the
 bottom $k$ wires, and the shift $\uparrow$ moves a circuit up one wire.
 The library extends any gate relation with four structural rules: an

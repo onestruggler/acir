@@ -4,10 +4,9 @@ Table~\ref{tab:findings} summarizes what the formalization found. One
 item is a gap in a proof. The others are misprints and small slips:
 statements that are false as printed but obvious to correct, wrong
 citations inside derivations, and a few conventions the papers use but
-do not state. We list them because several of them are in statements
-that a later proof uses, and a reader who builds on the printed version
-would build on something false. At the end of the section we list the
-errors we made ourselves.
+do not state. Appendix~\ref{sec:appendix-errata} describes those one by
+one, and says how each was found. Here we describe the gap, and then
+the errors we made ourselves.
 
 \begin{table}
 \caption{Errors found in the sources. ``Statement'' means a printed
@@ -145,80 +144,9 @@ proof is incomplete. Section~\ref{sec:encoding} explains how we connect
 the two developments so that its completeness is proved with no
 imported statement.
 
-The errata, with the two counterexamples and the state $s$, are in the
-supplementary material. All three are small enough to check by hand.
-
-\subsection{Misprinted statements}\label{sec:misprints}
-
-The most frequent kind of error is a statement that is false as
-printed and easy to correct once a computation shows it is false.
-
-\paragraph{Real stabilizer circuits.} The normal form of Makary, Ross and
-Selinger~\cite{makary2021real} is pushed through by 137 \emph{typed
-relations}, listed in their Appendix~B, one for each gate and each kind
-of normal-form wire. Eleven of them are false as printed: both sides
-have different matrices, and do not differ only by a sign. Six have a
-wrong right-hand side; for example the paper prints $X;C_1 = C_1;Z$
-where $X;C_1=C_2$ holds, and $H;A_3 = A_2;H$ where $A_3$ is meant on the
-right. The other five lack a Pauli gate at the end, such as $Z_t;B_2 =
-B_2;X_t$ for $Z_t;B_2 = B_2;X_t;Z_b$. Six derivations in the supplement
-reach one of these false conclusions. The formalization proves the
-corrected relations, and the normal form, the uniqueness argument and
-the count of Corollary~4.16 go through with them. Two smaller problems
-in the paper are an equation printed without its ``='' in Figure~10,
-and Definition~5.3 of the normal forms, which does not allow a $CZ$
-whose top wire is a single wire labelled 2, although the left-hand
-sides of rules 5.1--5.4 have exactly such a gate.
-
-\paragraph{The group $O_n(\Z[\frac12])$.} Table~2 of Li, Ross and
-Selinger~\cite{li2021on} lists the relations of the group $L_n$ that
-mention $I\otimes H$. In relation (7d) the right-hand sides for odd and
-for even $a$ are exchanged: for $a$ odd (counting from 1) the right
-side is $(-1)_{[a+1]}$, and for $a$ even it is
-$X_{[a,a+1]}K_{[a-1,a,a+1,a+2]}$. We found this when the relation
-failed to check numerically, and our development uses the corrected
-form.
-
-\paragraph{Simpler presentations.} Figure~4 of Blake's
-paper~\cite{blake2026simpler} gives the scalar of the qutrit rule (E) as
-$\omega_{12}^7$. With the semantics of its Section~3.2 the rule is then
-unsound; with $\omega_{12}$ it is sound. Separately, one of the
-separating interpretations used for the minimality of the Clifford
-rule (CZ) does not satisfy the three-wire rule (I). The minimality
-claim survives, because a derivation of a two-wire equation never needs
-a rule on three wires (the paper's Remark~14); we prove that remark and
-use it.
-
-\paragraph{Real Clifford+$CH$ circuits.} The equations (36) and (37) of
-Cl\'ement's paper, which write a pair of Hadamards through a network of
-swaps, hold with the negations $\mathcal{E}^x$ of the controls, not
-with $\mathcal{E}^{1-x}$ as printed. The rules (30), (34) and (42) of its
-Figure~8 need distinctness conditions on their indices that the paper
-assumes by convention but does not state. We found these by deciding
-every rule of Figure~8 on three qubits, at every admissible choice of
-indices, before formalizing it.
-
-\subsection{Slips in derivations}
-
-Some derivations cite the wrong rule for a step whose conclusion is
-right. In the supplement of Selinger's Clifford
-paper~\cite{selinger2015clifford}, which has 105 pages, the proof of
-Lemma~1.3 says that property (19) is relation (C10) where it is (C12),
-and two steps in the proof of (21) are labelled (11), a rule that cannot
-reorder two $CZ$ gates, where they use (19). These are the only three
-wrong citations among all the derivations of its Lemmas 1.1--1.3 and
-equations (3.1)--(3.101), and the paper's figures all check. The
-supplement of the real stabilizer paper has five misprinted
-intermediate rows, four wrong axiom labels, and forty citations of
-typed relations by an older figure numbering. In Hadamard-$\Pi$, the
-proof of Lemma A.19(d) cites Propositions A.28 and A.29 where it needs
-a relation stated nowhere in the paper and the relation of A.28;
-Proposition A.29 repeats A.22. The missing relation holds, and follows
-from Proposition A.26 as A.28 follows from A.27.
-
-A rewriter that follows the paper's own steps (Section~\ref{sec:search})
-fails at exactly such a step, and the failure points at the line. This
-is how the wrong citations in the two supplements were found.
+The two counterexamples and the state $s$ are given above, and all
+three are small enough to check by hand; the errata will be provided
+as supplementary material.
 
 \subsection{Our own errors}\label{sec:own-errors}
 
@@ -248,10 +176,11 @@ difference. On four qubits the transcribed (36) and (37) are unsound:
 a simulation of the network's signed permutation in Python showed that
 8 of the 48 relevant index tuples land on the wrong basis vectors, and
 48 of 160 on five qubits. We found it when proving (65) at every width,
-which needs exactly this permutation.
+which needs exactly this permutation. This is our error, distinct from
+the paper's misprint of $\mathcal{E}^{1-x}$ in the same equations
+(Appendix~\ref{sec:misprints}).
 
-\paragraph{A misread diagram.} Equation (261) has a control that is
-easy to misread at normal resolution. We first proved a statement
-about a triply controlled gate, which is true but harder, and only
-later the one the paper means. We now read control dots from
-renderings at 400 dpi.
+\paragraph{A misread diagram.} A control dot of equation (261),
+misread at screen resolution, cost a proof of a true but harder
+statement before the one the paper means; we now read diagrams at
+400~dpi.

@@ -1,0 +1,256 @@
+\section{The Scaffold}\label{sec:scaffold}
+
+A scaffold, as the introduction said, is code that people write and
+check once, and that fixes the form of every theorem built on it. Ours
+has two parts: the library of our earlier paper, which fixes the
+syntactic side, and the additions of this work, which fix the semantic
+side. This section describes both, says which recurring difficulties
+the additions remove, and ends with what a theorem looks like as a
+result. Table~\ref{tab:scaffold} lists the components.
+
+\subsection{What the library fixes}\label{sec:library}
+
+The library~\cite{anonymous2027popl} represents a relation set as an
+inductive family \aid{Γ : WRel X} of pairs of words, and the congruence
+it generates as an inductive family \aid{\_≈\_} with one constructor per
+closure rule and one for the axioms. A presentation theorem is a record.
+\aid{Γ IsSubPresentationOf G} holds an interpretation \aid{⟦\_⟧} of
+words in the group \aid{G}, with a proof that it is a group
+homomorphism from the words modulo \aid{≈} and that it is injective,
+that is, sound and complete; \aid{Γ IsPresentationOf G} adds that it is
+onto. Both are stated for any group, or monoid, of the standard
+library's algebra hierarchy. Around them the library has morphisms of
+presentations, normal forms as the standard library's function bundles
+with the lemma that soundness and a unique normal form give
+completeness, a Reidemeister--Schreier engine of coset tables and
+towers, and presentations of direct, semidirect, $n$-fold and
+amalgamated products and of group extensions given a short exact
+sequence, each with a theorem that the constructed relation set
+presents the constructed group.
+
+For circuits it fixes the syntax. A gate set is a family
+\aid{Gate : ℕ → Set} indexed by arity; a generator is a gate on the
+bottom wires, or a generator shifted up one wire; a circuit on $n$
+wires is a word over the generators. \aid{Lift-Relation} extended any
+gate relation with three structural rules, \aid{cong↑}, \aid{comm₁} and
+\aid{comm₂}; this work added the gates on no wires, the scalars, with
+their rule \aid{ω↑=ω} (Section~\ref{sec:presentations}), so that a
+paper's figure of rules, each stated at the width it is drawn on, is
+the whole relation set.
+
+Its semantics was abstract, and that is where its examples stopped. The
+symmetric groups were presented as permutations, the wreath products
+as signed permutations and the Pauli groups as $(\Z_p\times\Z_p)^n$;
+the single-qubit and single-qutrit Clifford+$T$ monoids and
+$U_3(\Z[\frac12,i])$ ended in an isomorphism between the gate-set
+presentation and an amalgamated product of smaller presentations, with
+the matrix monoid taken from the literature. Its discussion of
+limitations said why: the matrix side needs rings and unitary groups
+that the standard library does not have, and then the completeness
+proof of each paper has to be formalized. Both are done here.
+
+\subsection{What this work added}\label{sec:extensions}
+
+The library proper, the folders \texttt{Word}, \texttt{Presentation},
+\texttt{Normalization}, \texttt{Circuit} and \texttt{ForStdlib}, is
+now about 16{,}000 lines, against about 11{,}000 at the earlier paper.
+The additions are of four kinds; the first sits in the developments'
+folders and is counted with them.
+
+\paragraph{The matrix layer.}\label{sec:matrix-layer} The layer has two
+ends. At the matrix end are square matrices indexed by $\mathsf{Fin}\,n$
+over the rings of exact synthesis, $\D[\omega]=\Z[\frac1{\sqrt2},i]$,
+$\D[i]=\Z[\frac12,i]$, $\D[\sqrt2]=\Z[\frac1{\sqrt2}]$ and
+$\D=\Z[\frac12]$, taken from EucDomain, an Agda port of a Haskell
+library for exact synthesis. Over each ring the unitary group $U_n$, or
+the orthogonal group $O_n$ when the involution is the identity, is a
+group of the standard library; the one- and two-level generators act on
+columns; and embeddings between dimensions move a relation on $d$
+indices to any $d$ indices of a larger matrix. The ring operations of
+$\D[\omega]$, $\D[\sqrt2]$ and $\D$ are opaque, and over $\D[i]$ the
+vector updates are, so that no proof unfolds the arithmetic of a
+dyadic fraction unless it asks to (Section~\ref{sec:engineering}). At
+the circuit end are operators on bit vectors, functions of two vectors
+of $n$ bits over any commutative ring with an involution, with sums
+over bit vectors, the Kronecker product and its mixed product law, a
+gate placed on the bottom wires of a wider circuit, and an operator
+moved up a wire. This is what makes the structural rules sound once
+for every gate set: a gate on the bottom wires commutes with a shifted
+operator by the mixed product law, whatever the gate. A map from
+operators to matrices, which renumbers a sum over bit vectors as a sum
+over $\mathsf{Fin}\,2^n$, is a monoid homomorphism, and it sends an
+operator whose conjugate transpose is its inverse to an element of
+$U_{2^n}$. The circuit end exists in three versions: over an abstract
+ring, as just described; over $\Z[\sqrt2]$ with a power of
+$\frac1{\sqrt2}$ kept apart, with stored tries and a decision procedure
+on row operations, for the developments whose soundness checks are
+large (Section~\ref{sec:eval}); and over the cyclotomic rings of
+qudits, with a comparison up to a phase, for the minimality theorems.
+The first two reach the groups at the matrix end; the qudit version
+stops at scaled operators compared up to a phase, which is all the
+minimality theorems need. Each circuit development chooses a ring and
+gives its gate matrices, which with the relations is all a reader has
+to compare with the paper. The layer is about 6{,}000 lines, counted in
+the developments' totals of Table~\ref{tab:corpus} rather than in the
+library's. It grew with the developments, and its modules live in the
+folders of the developments that first needed them: at the matrix end
+\texttt{Ring}, \texttt{Vector}, \texttt{Algebra},
+\texttt{MatrixAlgebra}, \texttt{Unitary}, \texttt{Action},
+\texttt{Embedding} and \texttt{EmbedAction} of
+\texttt{Clifford+CS-TwoLevel}, with the \texttt{Semantics} module of
+each two-level development; at the circuit end the \texttt{Semantics}
+folders of \texttt{Real-Clifford}, \texttt{Real-Clifford+CH} and
+\texttt{Examples/Independence}. They are imported across developments;
+we have not yet moved them into one folder.
+
+\paragraph{Independence.}\label{sec:independence-layer} A rule of a
+presentation is independent when the congruence generated by the other
+rules does not relate its two sides. The classical proof is a model in
+which the other rules hold and this one fails, and
+\aid{Presentation.Independence} proves that argument once: a selection
+of axiom instances, a reading of words in a monoid that respects the
+selected instances, and the conclusion that the reading respects
+everything they derive, so that an instance it separates is
+independent. \aid{Circuit.Independence} does the same for circuits,
+where a model is a monoid per width related by a shift homomorphism,
+and uses it on the structural rules: each of the four is independent
+of the other three, and a fifth rule that an earlier version of this
+work had, that a scalar commutes with every gate, is derivable from
+the four when scalars commute with one another, and not otherwise. On
+top of these, the modules for Blake's minimality
+theorems~\cite{blake2026simpler} add the swap as a generator with the
+rules of a PROP, the notion of a fragment with named rules, the fact
+that a derivation at width $n$ uses no rule of arity above $n$ (his
+Remark~14), and the weighted models of his Figure~8, so that a
+minimality theorem is one model per rule, each checked at its arity by
+\aid{refl}.
+
+\paragraph{Routes, tactics and translations.} Two of the proof routes
+of Section~\ref{sec:architecture} are module shapes written once: the
+levels and edges of exact synthesis, with completeness by well-founded
+induction from a Main Lemma, and paths stated over any normal-word
+function; and the back-and-forth argument of an encoding. So is the
+rewriter that checks a derivation given as a list of steps. Each
+development has its own copy of these, with the parameters changed.
+The other two routes, normal forms and induction on the width, are
+patterns that the author follows with the library's records, and the
+product constructions are the library's. Two additions are library
+modules proper. Bian and Selinger's tactic
+library~\cite{bian2023cliffordt2,bian2023cliffordcs3}, about 2{,}800
+lines, is rebased on the library's words and congruences, so that their
+computer-generated proofs port mechanically and the rewriters of four
+developments, one of them shared by a fifth, can use its canonical
+forms for commuting letters. And \aid{Presentation.Translation} turns a
+sub-presentation of a group and a presentation of the same group into a
+translation of words that preserves the matrix, which is how a real
+Clifford circuit becomes a two-level word
+(Section~\ref{sec:theorem-form}).
+
+\paragraph{Constructions, and the standard library.} The direct,
+semidirect and amalgamated products and the extensions by a short
+exact sequence are the earlier library's. Extensions by a factor set
+built from data on the generators were added for the qudit Clifford
+development, together with what it needed of the standard library:
+actions of monoids and groups, $\mathbb{N}$-indexed families of groups
+with embeddings between levels, central extensions presented by a
+cocycle, and $\Z/n\Z$ as $\mathsf{Fin}\,n$ with its ring, moved from
+the earlier library's own folder and given a ring solver. Central
+products were added as well, and no development uses them yet. These
+are written in the standard library's style, as the earlier additions
+were.
+
+\paragraph{What the additions remove.} Five things recur in these
+papers, and each is done once here rather than once per paper: the
+soundness of the structural rules, a proof in the Kronecker calculus;
+the soundness of the relations, a decision procedure, with stored
+tries where the check is large; the independence of a rule, a model and
+one lemma; the induction on levels, a module with completeness from a
+Main Lemma by one lemma that closes a square, and the encoding
+argument, a module of a hundred lines; and the identity of a group
+with the group of another paper, which here is literal: the real
+stabilizer circuits, the real Clifford+$CH$ circuits and the two-level
+presentations of Hadamard-$\Pi$ and of Cl\'ement are stated against the
+same $O_{2^n}(\Z[\frac1{\sqrt2}])$, and the Clifford, CNOT-dihedral and
+real stabilizer circuits against the same $U_{2^n}(\D[\omega])$, so
+that a theorem relating two developments can be stated, and where one
+is proved (Section~\ref{sec:encoding}) the developments check each
+other.
+
+\begin{table}
+\caption{The scaffold. ``Earlier'' is the library of
+\citet{anonymous2027popl}, ``here'' this work. The matrix layer's
+modules sit in the folders of the developments that first needed them.}
+\label{tab:scaffold}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{@{}Y l Y Y@{}}
+\toprule
+Component & Origin & Where & Used by \\
+\midrule
+Words, congruences, the presentation records, morphisms & earlier & \texttt{Word}, \texttt{Presentation} & all \\
+Circuits by width with three structural rules; scalars with their rule, and a scalar's centrality as a theorem & earlier; here & \texttt{Circuit} & circuit developments \\
+Normal forms as bundles; completeness from soundness and uniqueness & earlier & \texttt{Normalization} & qudit Clifford, real Clifford+$CH$ \\
+Reidemeister--Schreier engine, coset tables and towers & earlier & \texttt{Normalization} & qudit Clifford, real Clifford+$CH$, the ports \\
+Products and extensions of presentations; extensions by a factor set & earlier; here & \texttt{Presentation/\allowbreak Construct} & qudit Clifford \\
+Bian--Selinger's tactics, with their Reidemeister--Schreier interface & here & \texttt{Presentation/\allowbreak Tactics} & the ports; four rewriters \\
+Translation along a presentation of the same group & here & \texttt{Presentation/\allowbreak Translation} & real stabilizer into Hadamard-$\Pi$ \\
+Independence by models; the structural rules; fragments in a PROP, weighted models & here & \texttt{Presentation}, \texttt{Circuit}, \texttt{Examples/\allowbreak Independence} & minimality; the structural rules \\
+Matrices over $\mathsf{Fin}\,n$ and EucDomain's rings; $U_n$, $O_n$; two-level generators; embeddings & here & \texttt{Clifford+CS-\allowbreak TwoLevel}; each two-level \texttt{Semantics} & two-level developments; the group of every circuit theorem \\
+Operators on bit vectors; Kronecker calculus; the map to matrices; stored tries, decision procedure; qudits up to a phase & here & \texttt{Semantics} of \texttt{Real-Clifford}, \texttt{Real-Clifford+CH}, \texttt{Independence} & real stabilizer, Clifford, real Clifford+$CH$, minimality \\
+Route shapes: levels and edges, paths over any normal word, back-and-forth encoding, rewriter & here & one copy per development & two-level, real Clifford+$CH$, five with derivations \\
+Actions, indexed families of groups, central extensions, factor sets, $\Z/n\Z$ with a solver & here & \texttt{ForStdlib} & qudit Clifford, phase-affine \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{The form of a theorem}\label{sec:theorem-form}
+
+Every development ends in a module that states its theorem in the
+scaffold's terms, without hypotheses; the one exception is the
+Hadamard-$\Pi$ folder, whose theorem takes its hard case as a
+hypothesis that the Cl\'ement folder discharges, so the unconditional
+statement lives there. The real stabilizer development concludes
+\begin{agdacode}
+presentation : {n : ℕ} → (n VRel,_===_) IsSubPresentationOf U (2 ^ n)
+\end{agdacode}
+The statement has two parameters. The relation \aid{n VRel,\_===\_} is
+the paper's R1--R16 lifted to $n$ wires by the structural rules, and
+the type of the record requires it to be a relation on the library's
+circuits. The group \aid{U (2 \textasciicircum{} n)} is the unitary
+group of the layer, here over any nontrivial commutative ring $A$ with
+an involution $x\mapsto\overline{x}$, playing the role of complex
+conjugation, and an element $s$ with $2s^2=1$ and $\overline{s}=s$,
+playing the role of $\frac1{\sqrt2}$; for example $\mathbb{C}$, or
+$\Z[\frac1{\sqrt2}]$. A reader who has seen one such statement reads
+the others the same way: \aid{(\_===\_ \{n\}) IsPresentationOf (O n)}
+for the two-level groups, \aid{Rel IsSubPresentationOf U 8} for the
+three-qubit Clifford+$CS$ circuits inside $U_8(\D[i])$, and so on down
+Table~\ref{tab:corpus}.
+
+To trust the line above, a reader checks four things, and nothing else
+in the 11{,}799 lines of the development. The relation: the module that
+states it has 117 lines, and Section~\ref{sec:example} shows part of
+it. The group: it is built from the operators and the unitary matrices
+of the layer, whose definitions take under 200 lines and whose lemmas
+need not be read, and a reader who has checked the layer once need not
+check it again for the next paper. The interpretation: it sends $-1$,
+$H$, $Z$ and $CZ$ to their matrices and a word to the product of its
+letters, in about 30 lines. And the one line of the theorem module that
+fills the record's field \aid{⟦\_⟧} with that interpretation: the record
+holds the interpretation as a field, so \aid{R IsSubPresentationOf U}
+on its own says that the presented group embeds in \aid{U} in some way,
+and the reader looks at the field to see in which. These come to under
+500 lines, most of them the layer's definitions. The rest of the
+library, which defines words, circuits, the structural rules and the
+record itself, is checked once for all the developments.
+
+A second module instantiates this theorem at
+$\D[\sqrt2]=\Z[\frac1{\sqrt2}]$ and $s=\frac1{\sqrt2}$, which puts the
+real stabilizer group inside the orthogonal group of
+Hadamard-$\Pi$. Because that group is presented by Figure~6, every real
+Clifford circuit translates to a two-level word with the same matrix,
+and two circuits are equal by the circuit relations exactly when their
+translations are equal by Figure~6. The two developments, written
+separately, thus check each other. A third instantiates it at
+$\D[\omega]$, into the unitary group that the Clifford and CNOT-dihedral
+developments use.
