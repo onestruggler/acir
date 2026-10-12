@@ -353,14 +353,23 @@ module Examples.Groups.Clifford+CS-3qubit.Step4.S8 where
   nf-desugar-swap = record { listnf = Desugar-Swap.multistep 1000 ; lemma-listnf = Desugar-Swap.lemma-multistep 1000 }
 
 
+  -- The same tower, incremental (CosetNF.CosIns): the normal forms the
+  -- tactics use.
+  module S3i = CosIns (fromListNF (record { listnf = S2.multistep 1000 ; lemma-listnf = S2.lemma-multistep 1000 })) S3-S2-act
+  module S4i = CosIns S3i.insNF S4-S3-act
+  module S5i = CosIns S4i.insNF S5-S4-act
+  module S6i = CosIns S5i.insNF S6-S5-act
+  module S7i = CosIns S6i.insNF S7-S6-act
+  module S8i = CosIns S7i.insNF S8-S7-act
+
   nfp : ListNF Rel
-  nfp = record { listnf = S8.lactnf ; lemma-listnf = S8.lemma-lactnf } ∘ nf-desugar-swap
+  nfp = S8i.listNF ∘ nf-desugar-swap
 
   nf-s6 : ListNF Rel
-  nf-s6 = record { listnf = S6.lactnf ; lemma-listnf = S6.lemma-lactnf } ∘ nf-desugar-swap
+  nf-s6 = S6i.listNF ∘ nf-desugar-swap
 
   nf-s7 : ListNF Rel
-  nf-s7 = record { listnf = S7.lactnf ; lemma-listnf = S7.lemma-lactnf } ∘ nf-desugar-swap
+  nf-s7 = S7i.listNF ∘ nf-desugar-swap
 
   isS7-Swap : Gate -> Bool
   isS7-Swap (Swap01-gen) = true

@@ -456,8 +456,15 @@ module Examples.Groups.Clifford+CS-3qubit.Step4.KD where
   nfp24 : ListNF Rel
   nfp24 = record { listnf = P24.multistep 1000 ; lemma-listnf = P24.lemma-multistep 1000 }
 
+  -- The same tower, incremental (CosetNF.CosIns): the normal forms the
+  -- tactics use.
+  module E1i = CosIns (fromListNF (record { listnf = SPD.nfnh' ; lemma-listnf = SPD.lemma-nfnh' })) spde1-act
+  module E2i = CosIns E1i.insNF spde2-act
+  module E3i = CosIns E2i.insNF spde3-act
+  module E4i = CosIns E3i.insNF spde4-act
+
   nfk0spd : ListNF Rel
-  nfk0spd = record { listnf = E4.lactnf ; lemma-listnf = E4.lemma-lactnf }
+  nfk0spd = E4i.listNF
 
   module P24K0D = SemiDirect isP24 isk0spd nfp24 nfk0spd group-like p24-spde4-conj
 
@@ -472,16 +479,16 @@ module Examples.Groups.Clifford+CS-3qubit.Step4.KD where
 
 
   nf-e4 : ListNF Rel
-  nf-e4 = record { listnf = E4.lactnf ; lemma-listnf = E4.lemma-lactnf }
+  nf-e4 = E4i.listNF
 
   nf-e3 : ListNF Rel
-  nf-e3 = record { listnf = E3.lactnf ; lemma-listnf = E3.lemma-lactnf }
+  nf-e3 = E3i.listNF
 
   nf-e2 : ListNF Rel
-  nf-e2 = record { listnf = E2.lactnf ; lemma-listnf = E2.lemma-lactnf }
+  nf-e2 = E2i.listNF
 
   nf-e1 : ListNF Rel
-  nf-e1 = record { listnf = E1.lactnf ; lemma-listnf = E1.lemma-lactnf }
+  nf-e1 = E1i.listNF
 
   isSPD : Gate -> Bool
   isSPD CCX0-gen = true

@@ -312,6 +312,121 @@ module CosAct {X : Set} {{_ : MaybeEq X}} {Γ : Context X}
                 Γ ⊢ s === t
   rewrite-tactic = rewrite-in-context' multistep lemma-multistep
 
+
+-- ----------------------------------------------------------------------
+-- * Incremental coset normal forms
+
+-- CosAct normalises the whole lower-level tail afresh at every
+-- letter, so a tower of k levels costs, per letter, a product of k
+-- tail lengths.  An incremental normal form keeps the state of each
+-- level apart (its coset representative and the state of the level
+-- below) and acts on it one letter at a time, so a letter costs about
+-- one table lookup per level.  On a tower whose representatives are
+-- prefix-closed and whose identity coset is fixed by the generators
+-- of the subgroup, as every tower here is, it computes the same
+-- normal forms as CosAct.
+
+record InsNF {A : Set} (Γ : Context A) : Set₁ where
+  field
+    St : Set
+    flat : St -> List A
+    start : St
+    lemma-start : Γ ⊢ word-of-list (flat start) === ε
+    ins : (x : A) -> (s : St) ->
+      Maybe (∃ λ (s' : St) -> Γ ⊢ [ x ]ʷ • word-of-list (flat s) === word-of-list (flat s'))
+
+module InsOps {A : Set} {Γ : Context A} (I : InsNF Γ) where
+  open InsNF I
+
+  -- Acting by a list of letters, the last first.
+  ins* : (xs : List A) -> (s : St) ->
+    Maybe (∃ λ (s' : St) -> Γ ⊢ word-of-list xs • word-of-list (flat s) === word-of-list (flat s'))
+  ins* [] s = just (s , left-unit)
+  ins* (x ∷ xs) s with ins* xs s
+  ... | nothing = nothing
+  ... | just (s₁ , p) with ins x s₁
+  ... | nothing = nothing
+  ... | just (s₂ , q) = just (s₂ , trans assoc (trans (right p) q))
+
+  -- The normal form, or the word itself if a letter falls outside the
+  -- tables.
+  insnf : List A -> List A
+  insnf xs with ins* xs start
+  ... | nothing = xs
+  ... | just (s , _) = flat s
+
+  lemma-insnf : (xs : List A) -> Γ ⊢ word-of-list xs === word-of-list (insnf xs)
+  lemma-insnf xs with ins* xs start
+  ... | nothing = refl
+  ... | just (s , p) = trans (symm right-unit) (trans (right (symm lemma-start)) p)
+
+  listNF : ListNF Γ
+  listNF = record { listnf = insnf ; lemma-listnf = lemma-insnf }
+
+-- The base of a tower: a normal form acting by renormalising.
+fromListNF : ∀ {A} {Γ : Context A} -> ListNF Γ -> InsNF Γ
+fromListNF {A} nf = record
+  { St = List A
+  ; flat = λ s -> s
+  ; start = []
+  ; lemma-start = refl
+  ; ins = λ x s -> just (ListNF.listnf nf (x ∷ s) , ListNF.lemma-listnf nf (x ∷ s))
+  }
+
+-- One level up a tower: the same left action table as CosAct's.
+module CosIns {X : Set} {Γ : Context X}
+  (low : InsNF Γ)
+  (laction : (g : X) -> (rep : List X) ->
+    Maybe (∃ λ (rep' : List X) -> ∃ λ (g' : List X) -> Γ ⊢ word-of-list (g ∷ rep) === word-of-list (rep' ++ g')))
+    where
+
+  private
+    module L = InsNF low
+    module LO = InsOps low
+
+  St : Set
+  St = List X × L.St
+
+  flat : St -> List X
+  flat (r , s) = r ++ L.flat s
+
+  ins : (g : X) -> (s : St) ->
+    Maybe (∃ λ (s' : St) -> Γ ⊢ [ g ]ʷ • word-of-list (flat s) === word-of-list (flat s'))
+  ins g (r , s) with laction g r
+  ... | nothing = nothing
+  ... | just (r' , h' , eq) with LO.ins* h' s
+  ... | nothing = nothing
+  ... | just (s' , eq') = just ((r' , s') , d)
+    where
+      d : Γ ⊢ [ g ]ʷ • word-of-list (r ++ L.flat s) === word-of-list (r' ++ L.flat s')
+      d =
+        equational [ g ]ʷ • word-of-list (r ++ L.flat s)
+          by right lemma-append r (L.flat s) reversed
+        equals [ g ]ʷ • word-of-list r • word-of-list (L.flat s)
+          by symm assoc
+        equals word-of-list (g ∷ r) • word-of-list (L.flat s)
+          by left eq
+        equals word-of-list (r' ++ h') • word-of-list (L.flat s)
+          by left lemma-append r' h' reversed
+        equals (word-of-list r' • word-of-list h') • word-of-list (L.flat s)
+          by assoc
+        equals word-of-list r' • word-of-list h' • word-of-list (L.flat s)
+          by right eq'
+        equals word-of-list r' • word-of-list (L.flat s')
+          by lemma-append r' (L.flat s')
+        equals word-of-list (r' ++ L.flat s')
+
+  insNF : InsNF Γ
+  insNF = record
+    { St = St
+    ; flat = flat
+    ; start = ([] , L.start)
+    ; lemma-start = L.lemma-start
+    ; ins = ins
+    }
+
+  open InsOps insNF public using (insnf ; lemma-insnf ; listNF)
+
 -- A version of SemiDirect that ignores types and operates modulo
 -- associativity.
 module SemiDirect {X : Set} {{_ : MaybeEq X}} {Γ : Context X}

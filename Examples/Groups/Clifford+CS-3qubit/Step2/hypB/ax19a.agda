@@ -9,7 +9,7 @@
 -- while the rewrite loops of Presentation.Tactics.Words returned their
 -- unevaluated argument.  With those loops fixed, call-by-name only
 -- loses sharing: it exhausts a 3 GB heap, where the default
--- call-by-need checks this module in under 10 minutes and 500 MB.
+-- call-by-need checks this module in about 10 seconds.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

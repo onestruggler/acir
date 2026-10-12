@@ -567,25 +567,33 @@ module Examples.Groups.Clifford+CS-3qubit.Step2.Lafont-S8 where
 
 
 
+  -- The same towers, incremental (CosetNF.CosIns): the normal forms
+  -- the tactics use.  CosAct's towers above stay for the proofs in the
+  -- tables, which compute with them.
+  module S3i = CosIns (fromListNF (record { listnf = S2.multistep 1000 ; lemma-listnf = S2.lemma-multistep 1000 })) S3-S2-act
+  module S4i = CosIns S3i.insNF S4-S3-act
+  module S5i = CosIns S4i.insNF S5-S4-act
+  module S6i = CosIns S5i.insNF S6-S5-act
+  module S7i = CosIns S6i.insNF S7-S6-act
+  module S8i = CosIns S7i.insNF S8-S7-act
+
   nf-s8 : ListNF Rel
-  nf-s8 = record { listnf = S8.lactnfc s8-id ; lemma-listnf = S8.lemma-lactnfc s8-id s8-idp }
+  nf-s8 = S8i.listNF
 
   nf-s7 : ListNF Rel
-  nf-s7 = record { listnf = S7.lactnfc s7-id ; lemma-listnf = S7.lemma-lactnfc s7-id s7-idp }
+  nf-s7 = S7i.listNF
 
   nf-s6 : ListNF Rel
-  nf-s6 = record { listnf = S6.lactnfc s6-id ; lemma-listnf = S6.lemma-lactnfc s6-id s6-idp }
+  nf-s6 = S6i.listNF
 
   nf-s5 : ListNF Rel
-  nf-s5 = record { listnf = S5.lactnfc s5-id ; lemma-listnf = S5.lemma-lactnfc s5-id s5-idp }
-
+  nf-s5 = S5i.listNF
 
   nf-s4 : ListNF Rel
-  nf-s4 = record { listnf = S4.lactnfc s4-id ; lemma-listnf = S4.lemma-lactnfc s4-id s4-idp }
-
+  nf-s4 = S4i.listNF
 
   nf-s3 : ListNF Rel
-  nf-s3 = record { listnf = S3.lactnfc s3-id ; lemma-listnf = S3.lemma-lactnfc s3-id s3-idp }
+  nf-s3 = S3i.listNF
 
 
   nf-s8e : ListNF Rel
@@ -859,25 +867,30 @@ module Examples.Groups.Clifford+CS-3qubit.Step2.Lafont-S8 where
 
 
 
+  module S3ui = CosIns (fromListNF (record { listnf = S2u.multistep 1000 ; lemma-listnf = S2u.lemma-multistep 1000 })) S3-S2-uact
+  module S4ui = CosIns S3ui.insNF S4-S3-uact
+  module S5ui = CosIns S4ui.insNF S5-S4-uact
+  module S6ui = CosIns S5ui.insNF S6-S5-uact
+  module S7ui = CosIns S6ui.insNF S7-S6-uact
+  module S8ui = CosIns S7ui.insNF S8-S7-uact
+
   nf-us8 : ListNF Rel
-  nf-us8 = record { listnf = S8u.lactnf ; lemma-listnf = S8u.lemma-lactnf  }
+  nf-us8 = S8ui.listNF
 
   nf-us7 : ListNF Rel
-  nf-us7 = record { listnf = S7u.lactnf ; lemma-listnf = S7u.lemma-lactnf  }
+  nf-us7 = S7ui.listNF
 
   nf-us6 : ListNF Rel
-  nf-us6 = record { listnf = S6u.lactnf ; lemma-listnf = S6u.lemma-lactnf  }
+  nf-us6 = S6ui.listNF
 
   nf-us5 : ListNF Rel
-  nf-us5 = record { listnf = S5u.lactnf ; lemma-listnf = S5u.lemma-lactnf  }
-
+  nf-us5 = S5ui.listNF
 
   nf-us4 : ListNF Rel
-  nf-us4 = record { listnf = S4u.lactnf ; lemma-listnf = S4u.lemma-lactnf  }
-
+  nf-us4 = S4ui.listNF
 
   nf-us3 : ListNF Rel
-  nf-us3 = record { listnf = S3u.lactnf ; lemma-listnf = S3u.lemma-lactnf  }
+  nf-us3 = S3ui.listNF
 
 
   nf-us8e : ListNF Rel

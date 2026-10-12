@@ -4,9 +4,15 @@
 -- Ported from the Agda code accompanying Bian and Selinger,
 -- "Generators and relations for 3-qubit Clifford+CS operators"
 -- (arXiv:2306.08530, CC BY 2.0).
+--
+-- The original was checked with --call-by-name, which saved memory
+-- while the coset normal forms of CosetNF renormalised the whole
+-- tail of a word at every letter.  They now act incrementally
+-- (CosetNF.CosIns), and the default call-by-need checks this module
+-- in under a minute and 1.4 GB.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --call-by-name #-}
+{-# OPTIONS --without-K --safe #-}
 
 open import Presentation.Tactics.Equality as Eq using (_≡_ ; auto)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
