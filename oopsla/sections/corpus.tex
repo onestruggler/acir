@@ -208,9 +208,11 @@ development concludes
 \begin{agdacode}
 presentation : {n : ℕ} → (n VRel,_===_) IsSubPresentationOf U (2 ^ n)
 \end{agdacode}
-where \aid{U} is the unitary group over any nontrivial
-commutative ring with an involution and an element $s$ with $s s + s s
-= 1$ fixed by it.
+where \aid{U} is the unitary group over any nontrivial commutative ring
+$A$ with an involution $x\mapsto\overline{x}$, playing the role of
+complex conjugation, and an element $s$ with $2s^2=1$ and
+$\overline{s}=s$, playing the role of $\frac1{\sqrt2}$; for example
+$\mathbb{C}$, or $\Z[\frac1{\sqrt2}]$.
 
 To trust this line, a reader checks four things, and nothing else in
 the 11{,}799 lines of the development. The relation
