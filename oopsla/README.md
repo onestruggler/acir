@@ -2,10 +2,13 @@
 
 This folder is a draft OOPSLA paper on the formalization work done in
 this repository since the POPL paper on the library (branch
-`popl-revision1`, folder `paper/`). It covers the thirteen developments
-under `Examples/Groups/` that came after it: the two-level groups,
-the circuit theories, Blake's minimality theorem, and the gap in
-Hadamard-Pi with Clément's repair.
+`popl-revision1`, folder `paper/`). It covers the fourteen developments
+under `Examples/Groups/` (and `Examples/Independence/`) that came after
+it: the two-level groups, the circuit theories, the qudit Clifford
+chain of the `qupit` branch (Symplectic, ProjectivePauli,
+ProjectiveClifford/Qupit, Clifford/Qupit, Clifford+MinusOne/Qupit),
+Blake's minimality theorem, and the gap in Hadamard-Pi with Clément's
+repair.
 
 ## Building
 
@@ -30,6 +33,11 @@ sequence".
 - The author block is anonymous (`acmart` option `anonymous`). The
   entry `anonymous2027popl` in `refs.bib` is our POPL paper. Fill in
   its authors and venue once it is public.
+- The qudit Clifford paper (`bian2026qupit`, arXiv:2609.40106) is ours
+  and says in its abstract that its completeness is verified in Agda.
+  Section 3.3 cites it in the third person, but a reviewer who reads
+  that abstract can link the two. Decide whether to keep it, and check
+  the venue's rules on citing one's own work.
 - The acknowledgements say that the formalization and this draft were
   written with Claude Code. Check that this matches the venue's policy
   on AI disclosure, and adjust the wording to what we did.

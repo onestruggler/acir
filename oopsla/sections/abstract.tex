@@ -2,15 +2,17 @@ An equational theory for a family of quantum circuits is complete if it
 proves every equation that holds between the matrices of the circuits.
 Completeness proofs are long and repetitive. They normalize circuits, or
 synthesize them from their matrices, and then check by hand that every
-rule meets every normal form in the expected way. We have checked twelve
-such proofs in Agda, written between 2014 and 2026, together with the
-minimality theorem of a thirteenth paper. They are about Clifford, real
-stabilizer, CNOT-dihedral, phase-affine, Clifford+$T$, Clifford+$CS$ and
-real Clifford+$CH$ circuits, and about the groups of unitary and
+rule meets every normal form in the expected way. We have checked
+thirteen such proofs in Agda, written between 2014 and 2026, together
+with the minimality theorem of a fourteenth paper. They are about
+Clifford circuits on qubits and on qudits of odd prime dimension, real
+stabilizer, CNOT-dihedral, phase-affine, Clifford+$T$, Clifford+$CS$
+and real Clifford+$CH$ circuits, and about the groups of unitary and
 orthogonal matrices over $\Z[\tfrac12,i]$, $\Z[\tfrac1{\sqrt2},i]$,
 $\Z[\tfrac12]$ and $\Z[\tfrac1{\sqrt2}]$ in which such circuits live.
-The development has about 950 modules and 250{,}000 lines of safe Agda
-without postulates. It was written in 24 days with an LLM coding agent.
+The developments have about 1{,}100 modules and 300{,}000 lines of safe
+Agda without postulates. Most of them were written in 24 days with an
+LLM coding agent.
 
 Most of the proofs are correct, up to misprints that we list. One is
 not. The completeness proof for Figure~6 of Hadamard-$\Pi$ (POPL 2026)

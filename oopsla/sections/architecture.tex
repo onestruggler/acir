@@ -1,6 +1,6 @@
 \section{Proof Architectures}\label{sec:architecture}
 
-The thirteen sources use few proof methods, and each method became one
+The fourteen sources use few proof methods, and each method became one
 structure in Agda, reused across developments. This section describes
 them.
 
@@ -108,6 +108,41 @@ multiplies the phase by a polynomial in the control bit. With it, the
 bottom-wire forms of level~3 are $T^t$ followed by the images of a
 level-1 and a level-2 circuit, and their uniqueness follows from
 completeness at levels~1 and~2, which are proved first.
+
+\subsection{Products, extensions and isomorphisms}\label{sec:products}
+
+Most of the qudit development is assembled from constructions of the
+library~\cite{anonymous2027popl}. The long case analysis is confined to
+the symplectic normal form, and three constructions do the rest.
+
+The first is the semidirect product. Given presentations of groups $N$
+and $H$, and for each generator $h$ of $H$ and $n$ of $N$ a word
+$c(h,n)$ over $N$, the library presents $N\rtimes H$ by the relations of
+both and $h\,n = c(h,n)\,h$. The client proves that the action is well
+defined, on the relations of $H$ and of $N$. The normal forms of the
+product are pairs of normal forms, by the Reidemeister--Schreier method
+with the words over $H$ as cosets.
+
+The second is the extension, which need not split. Given a group $G$
+with a normal subgroup $N$, and presentations of $N$ and of $G/N$, a
+presentation of $G$ adds to the relations of $N$ the conjugates of its
+generators by the representatives, and each relation of $G/N$ twisted by
+the word in $N$ that its lift picks up. For the qudit Clifford group
+these corrections come from the Weyl cocycle. The correction of a
+relation is a phase in $\Z_p$, and the development computes it by
+folding the product law of the Heisenberg--Weyl group over the two
+sides of the relation. Only $(SH)^3$ has a nonzero phase, and that it
+is $(p^2-1)/8$ is a small lemma of number theory: $p^2\equiv1 \pmod 8$,
+and $(p^2-1)/8 \equiv -\frac18 \pmod p$.
+
+The third is transport along isomorphisms of rule sets. Two rule sets
+are isomorphic when translations of generators to words carry the
+relations of each to equations derivable in the other, and the two
+composites are the identity up to derivation. A presentation theorem
+then moves from one to the other. This is how Figure~1 inherits its
+theorem from the rule set where the mathematics was done, and why the
+second form of C4 cost little: each form is derived from the other
+together with the remaining rules.
 
 \subsection{Encodings, and the bridge to Theorem 4.4}\label{sec:encoding}
 

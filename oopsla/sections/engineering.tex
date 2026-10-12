@@ -25,6 +25,7 @@ $O_n(\Z[\frac12])$ and $L_n$ & about 6 min, peak heap 1.2\,GB \\
 Two-level bases of the Bian--Selinger ports & about 10 min each \\
 Three-qubit Clifford+$CS$ & about 50 min \\
 Real Clifford+$CH$ & about 1~h 45 min, module by module \\
+Qudit Clifford & over 30 min, module by module; four modules need 4.5\,GB \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -63,7 +64,10 @@ abstracts a term out of a goal normalizes the goal. When the goal
 mentions a matrix with symbolic entries, or a large $\Sigma$-type such
 as a level, this exhausted the heap several times. The same happened
 when we compared the levels of two convertible but syntactically
-different states: Agda computed the pivots of both. We split such cases
+different states: Agda computed the pivots of both. In the qudit
+development, abstracting the map that lifts a derivation out of a goal
+at a symbolic prime used more than 13\,GB; taking the value apart in a
+helper function instead checks in 90 seconds. We split such cases
 with helper functions that take the decision as an argument, cast
 between levels along \aid{refl} with both matrices given explicitly, and
 avoided records whose fields mention levels, since the positivity

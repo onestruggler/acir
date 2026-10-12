@@ -29,16 +29,19 @@ and an appendix of 264 pages~\cite{clement2026realcliffordch}. A
 referee cannot redo these computations, and an author cannot easily
 check them again after a change.
 
-We have checked twelve completeness proofs of this kind in Agda,
+We have checked thirteen completeness proofs of this kind in Agda,
 written between 2014 and 2026, and the minimality theorem of a
-thirteenth paper. Table~\ref{tab:corpus} lists them. Each development
+fourteenth paper. Table~\ref{tab:corpus} lists them. Each development
 states its result against a semantics: the relations present the
 group of matrices that the generators generate, or they present a
-submonoid of a matrix group, at every width or dimension. The
-developments build on an Agda library for presentations, normal forms
-and circuits~\cite{anonymous2027popl}, which we extended where we
-needed to. Together they have about 950 modules and 250{,}000 lines,
-and they typecheck in safe Agda~2.8 with no postulates.
+submonoid of a matrix group, at every width or dimension. The one
+exception is the qudit Clifford group of \citet{bian2026qupit}, whose
+relations are shown to present an algebraic model of that group
+(Section~\ref{sec:qupit}). The developments build on an Agda library
+for presentations, normal forms and circuits~\cite{anonymous2027popl},
+which we extended where we needed to. Together they have about
+1{,}100 modules and 300{,}000 lines, and they typecheck in safe
+Agda~2.8 with no postulates.
 
 The most important finding is about Hadamard-$\Pi$, a POPL~2026 paper
 on equational reasoning for quantum programs~\cite{fang2026hadamard}.
@@ -69,19 +72,20 @@ transcriptions were wrong too, sometimes in ways that only a later step
 of the formalization exposed. Section~\ref{sec:findings} lists all of
 these.
 
-The work took 24 days. We did not write most of the Agda by hand: an
-LLM coding agent wrote it, and the scripts that generated the long
-derivations, under our direction. What made this possible is that
+The qudit development took three months. Everything else took 24
+days. We did not write most of the Agda by hand: an LLM coding agent
+wrote it, and the scripts that generated the long derivations, under
+our direction. What made this possible is that
 almost every claim in these papers can be checked by a computation
 before it is formalized, and that Agda checks the result after. We
 describe how we used both in Section~\ref{sec:method}.
 
 \paragraph{Contributions.}
 \begin{itemize}
-\item Machine-checked proofs of twelve completeness theorems for
+\item Machine-checked proofs of thirteen completeness theorems for
   quantum circuits and two-level matrix groups, and of one minimality
-  theorem, each stated against a matrix semantics
-  (Section~\ref{sec:corpus}).
+  theorem, each stated against a matrix semantics or, for qudit
+  Clifford circuits, an algebraic model (Section~\ref{sec:corpus}).
 \item A gap in the completeness proof of Hadamard-$\Pi$, with explicit
   counterexamples to two of its lemmas and to one case of its Main
   Lemma, and two machine-checked repairs (Section~\ref{sec:gap}).
@@ -89,8 +93,9 @@ describe how we used both in Section~\ref{sec:method}.
   papers and in our own transcriptions (Section~\ref{sec:findings}).
 \item The proof architectures behind these results, as they appear in
   Agda: completeness by levels and edges for exact synthesis,
-  inductive normal forms for circuits, induction on the width, and
-  encodings between circuit languages (Section~\ref{sec:architecture}).
+  inductive normal forms for circuits, induction on the width,
+  products and extensions of presentations, and encodings between
+  circuit languages (Section~\ref{sec:architecture}).
 \item The methods we used to produce the proofs, and what they cost in
   Agda, including the performance problems we met and how we solved
   them (Sections~\ref{sec:method} and~\ref{sec:engineering}).

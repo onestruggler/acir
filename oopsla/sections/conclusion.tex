@@ -15,6 +15,10 @@ the papers' in ways a reader should know.
   The coset table with two cosets enters our proof only through the
   hypotheses of the Reidemeister--Schreier theorem, which give
   injectivity and say nothing about the index.
+\item The qudit Clifford theorems are stated against an algebraic
+  model of the Clifford group (Section~\ref{sec:qupit}). The Weyl
+  representation, which identifies the model with the group of unitary
+  matrices, is not formalized.
 \item Blake's simpler presentations~\cite{blake2026simpler} are
   formalized for soundness and minimality. Their completeness, by
   translation from the earlier presentations, is not.
@@ -35,8 +39,9 @@ the papers' in ways a reader should know.
 The trust base is Agda~2.8, the standard library and EucDomain, all
 under \texttt{-{}-safe} with no postulates. What Agda cannot check is
 that our definitions mean what the papers mean. We wrote the semantics
-of each development separately, from the paper, and checked it against
-the paper's matrices by computation. In three places two developments
+of each development separately, from the paper, and except in the
+qudit development checked it against the paper's matrices by
+computation. In three places two developments
 are connected, and the connection is a check on both: the real stabilizer group
 inside Hadamard-$\Pi$'s orthogonal group (Section~\ref{sec:corpus}),
 Bian and Selinger's ports against the two-level presentations, and
@@ -44,7 +49,7 @@ Cl\'ement's real Clifford+$CH$ paper against Hadamard-$\Pi$
 (Section~\ref{sec:encoding}). The other developments are checked only
 against their papers.
 
-We checked thirteen papers on the completeness and minimality of
+We checked fourteen papers on the completeness and minimality of
 equations for quantum circuits and related matrix groups. One proof
 had a gap. We closed it with an argument from another source, and with
 it the later paper that relied on it. The other papers were correct up
