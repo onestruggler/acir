@@ -13,7 +13,9 @@
 -- with the rules that make the PRO a PROP (Definition 2): σ is an
 -- involution and is natural in every generator — σ-nat₂ at σ itself is
 -- the Yang–Baxter equation.  With Circuit.Base's rules these present
--- the free PROP on the fragment's gates.
+-- the free PROP on the fragment's gates, as long as they have at most
+-- two wires: Circuit.Base admits three-wire gates too, but there is no
+-- σ-nat₃ here yet.
 --
 -- A fragment (Section 3) is given by its axioms: for each name r an
 -- arity and the two sides, circuits on that many wires.  The axiom
@@ -122,6 +124,7 @@ module Fragment
   Uses ρ (cong↑ a)       = Uses ρ a
   Uses ρ (comm₁ _ _)     = ⊥
   Uses ρ (comm₂ _ _)     = ⊥
+  Uses ρ (comm₃ _ _)     = ⊥
   Uses ρ (ω↑=ω _)        = ⊥
 
   -- Every axiom instance not using ρ: "the other axioms".
@@ -136,6 +139,7 @@ module Fragment
   Within b (cong↑ a)       = Within b a
   Within b (comm₁ _ _)     = ⊤
   Within b (comm₂ _ _)     = ⊤
+  Within b (comm₃ _ _)     = ⊤
   Within b (ω↑=ω _)        = ⊤
 
   -- The other axioms of arity at most b (C_{•,b} \ {ρ}, Definition 24).
@@ -149,6 +153,7 @@ module Fragment
   Within-mono b≤b' (cong↑ a)       p = Within-mono b≤b' a p
   Within-mono b≤b' (comm₁ _ _)     _ = tt
   Within-mono b≤b' (comm₂ _ _)     _ = tt
+  Within-mono b≤b' (comm₃ _ _)     _ = tt
   Within-mono b≤b' (ω↑=ω _)        _ = tt
 
   -- Remark 14: an instance at width n has arity at most n.
@@ -158,6 +163,7 @@ module Fragment
   within (cong↑ a)       = Within-mono (n≤1+n _) a (within a)
   within (comm₁ _ _)     = tt
   within (comm₂ _ _)     = tt
+  within (comm₃ _ _)     = tt
   within (ω↑=ω _)        = tt
 
   -- So a derivation at width n ≤ b from the other axioms is one from

@@ -132,6 +132,9 @@ module Separators
       (sound-comm₂ : ∀ {n} (h : PGate 2) (g : Gen n) →
                      ⟦ [ g ↥ ↥ ]ʷ • [ gate₂ h ]ʷ ⟧ ≈ₘ
                      ⟦ [ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ ⟧)
+      (sound-comm₃ : ∀ {n} (h : PGate 3) (g : Gen n) →
+                     ⟦ [ g ↥ ↥ ↥ ]ʷ • [ gate₃ h ]ʷ ⟧ ≈ₘ
+                     ⟦ [ gate₃ h ]ʷ • [ g ↥ ↥ ↥ ]ʷ ⟧)
       (sound-ω↑=ω : ∀ {n} (ω : PGate 0) →
                     ⟦ [ gate₀ {n} ω ]ʷ ↑ ⟧ ≈ₘ ⟦ [ gate₀ ω ]ʷ ⟧)
       where
@@ -144,6 +147,7 @@ module Separators
 
       open Rules sound-srel sound-cong↑
         (λ h g _ → sound-comm₁ h g) (λ h g _ → sound-comm₂ h g)
+        (λ h g _ → sound-comm₃ h g)
         (λ ω _ → sound-ω↑=ω ω)
         public
 
@@ -171,6 +175,7 @@ module Separators
     ⟦ gate₀ g ⟧₀ = wt g
     ⟦ gate₁ g ⟧₀ = wt g
     ⟦ gate₂ g ⟧₀ = wt g
+    ⟦ gate₃ g ⟧₀ = wt g
     ⟦ g ↥ ⟧₀     = ⟦ g ⟧₀
 
     module Sep (ρ : Rule) (b : ℕ) where
@@ -182,6 +187,7 @@ module Separators
       ⟦↧⟧₀ (gate₀ g) k = refl
       ⟦↧⟧₀ (gate₁ g) k = refl
       ⟦↧⟧₀ (gate₂ g) k = refl
+      ⟦↧⟧₀ (gate₃ g) k = refl
       ⟦↧⟧₀ (g ↥)     k = ⟦↧⟧₀ g k
 
       ⟦↓⟧ : (w : Circuit n) (k : ℕ) → ⟦ w ↓ᵏ k ⟧ ≡ ⟦ w ⟧
@@ -219,5 +225,6 @@ module Separators
                     Independent-axiom ρ
         separates ar≤b sep =
           Separates.separates sound-sym sound-ax sound-cong↑
-            (λ h g → comm _ _) (λ h g → comm _ _) (λ ω → ≈-refl) ar≤b
+            (λ h g → comm _ _) (λ h g → comm _ _) (λ h g → comm _ _)
+            (λ ω → ≈-refl) ar≤b
             (λ e → sep (Eq.subst₂ _≈_ (⟦↓⟧ (lhs ρ) 0) (⟦↓⟧ (rhs ρ) 0) e))

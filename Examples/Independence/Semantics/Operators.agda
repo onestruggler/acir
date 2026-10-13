@@ -439,6 +439,11 @@ tensor-assoc₂ : (P : Op 2) (B : Op m) (C : Op n) →
 tensor-assoc₂ P B C (a ∷ a' ∷ x) (b ∷ b' ∷ y) =
   tensor-scaleˡ (P (a ∷ a' ∷ []) (b ∷ b' ∷ [])) B C x y
 
+tensor-assoc₃ : (P : Op 3) (B : Op m) (C : Op n) →
+                tensor (tensor P B) C ≐ tensor P (tensor B C)
+tensor-assoc₃ P B C (a ∷ a' ∷ a'' ∷ x) (b ∷ b' ∷ b'' ∷ y) =
+  tensor-scaleˡ (P (a ∷ a' ∷ a'' ∷ []) (b ∷ b' ∷ b'' ∷ [])) B C x y
+
 ------------------------------------------------------------------------
 -- Tries
 
@@ -509,6 +514,12 @@ up-up M (a ∷ b ∷ x) (a' ∷ b' ∷ y) = begin
                                     (Eq.cong (δ₁ a a' *_) (*-identityˡ (δ₁ b b' * 1#)))) ⟩
   (δ₁ a a' * (δ₁ b b' * 1#)) * M x y ∎
 
+-- One more wire below an operator shifted past k of them.
+up-upk : (k : ℕ) (M : Op n) → up (upk k M) ≐ upk (suc k) M
+up-upk k M (a ∷ x) (b ∷ y) =
+  Eq.trans (Eq.cong (_* tensor (Idₒ {k}) M x y) (*-identityʳ (δ₁ a b)))
+           (Eq.sym (tensor-scaleˡ {k} (δ₁ a b) Idₒ M x y))
+
 -- Scalars are local, and the same on every wire.
 up-scal : (c : A) → up (scal {n} c) ≐ scal c
 up-scal c (a ∷ x) (b ∷ y) = begin
@@ -528,6 +539,12 @@ emb-pad₂ : (M : Op 2) → emb {2} {m +ℕ n} M ≐ emb {suc (suc m)} {n} (tens
 emb-pad₂ {m} {n} M =
   ≐-trans (tensor-cong {m = 2} {n = m +ℕ n} (≐-refl M) (tensor-Id {m} {n}))
           (≐-sym (tensor-assoc₂ M (Idₒ {m}) (Idₒ {n})))
+
+emb-pad₃ : (M : Op 3) →
+           emb {3} {m +ℕ n} M ≐ emb {suc (suc (suc m))} {n} (tensor M (Idₒ {m}))
+emb-pad₃ {m} {n} M =
+  ≐-trans (tensor-cong {m = 3} {n = m +ℕ n} (≐-refl M) (tensor-Id {m} {n}))
+          (≐-sym (tensor-assoc₃ M (Idₒ {m}) (Idₒ {n})))
 
 up-emb : (M : Op k) → up (emb {k} {n} M) ≐ emb {suc k} {n} (tensor (Idₒ {1}) M)
 up-emb {k} {n} M = ≐-sym (tensor-assoc₁ (Idₒ {1}) M (Idₒ {n}))

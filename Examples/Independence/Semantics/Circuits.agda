@@ -69,6 +69,7 @@ private
 ⟦ gate₀ g ⟧₀ = proj₁ (val g) , scalM (entries (proj₂ (val g)))
 ⟦ gate₁ g ⟧₀ = embs (val g)
 ⟦ gate₂ g ⟧₀ = embs (val g)
+⟦ gate₃ g ⟧₀ = embs (val g)
 ⟦ g ↥ ⟧₀     = ↑s ⟦ g ⟧₀
 
 ⟦_⟧ : Circuit n → Sc n
@@ -119,6 +120,13 @@ module Laws
       (≐-trans (emb-pad₂ {k} {n} (ix M))
       (≐-trans (emb-cong {suc (suc k)} {n} (≐-sym (ix-emb {2} {k} M)))
                (≐-sym (ix-emb {suc (suc k)} {n} (tenM M (idM {k})))))))
+    where M = proj₂ (val g)
+  ⟦↧⟧₀ {suc (suc (suc k))} (gate₃ g) n =
+    ≐→≈ {s = ⟦ gate₃ {k +ℕ n} g ⟧₀} {embs {suc (suc (suc k))} {n} ⟦ gate₃ g ⟧₀} refl
+      (≐-trans (ix-emb {3} {k +ℕ n} M)
+      (≐-trans (emb-pad₃ {k} {n} (ix M))
+      (≐-trans (emb-cong {suc (suc (suc k))} {n} (≐-sym (ix-emb {3} {k} M)))
+               (≐-sym (ix-emb {suc (suc (suc k))} {n} (tenM M (idM {k})))))))
     where M = proj₂ (val g)
   ⟦↧⟧₀ {suc k} (g ↥) n =
     ≈-trans' {s₁ = ↑s ⟦ g ↧ᵏ n ⟧₀} {↑s (embs {k} {n} ⟦ g ⟧₀)} {embs {suc k} {n} (↑s ⟦ g ⟧₀)}
@@ -201,6 +209,28 @@ module Laws
     UU = ≐-trans (ix-up (tenM (idM {1}) G))
            (≐-trans (up-cong (ix-up G)) (up-up (ix G)))
 
+  comm₃-sound : (h : PGate 3) (g : Gen n) →
+                ⟦ [ g ↥ ↥ ↥ ]ʷ • [ gate₃ h ]ʷ ⟧ ≈ ⟦ [ gate₃ h ]ʷ • [ g ↥ ↥ ↥ ]ʷ ⟧
+  comm₃-sound {n} h g =
+    ≐→≈ {s = ↑s (↑s (↑s ⟦ g ⟧₀)) ∙ embs (val h)} {embs (val h) ∙ ↑s (↑s (↑s ⟦ g ⟧₀))}
+        (ℕP.+-comm (proj₁ ⟦ g ⟧₀) (proj₁ (val h)))
+      (≐-trans (ix-mul E U)
+      (≐-trans (⊙-cong (ix-emb {3} {n} V) UUU)
+      (≐-trans (emb-up-comm {3} {n} (ix V) (ix G))
+      (≐-trans (⊙-cong (≐-sym UUU) (≐-sym (ix-emb {3} {n} V)))
+               (≐-sym (ix-mul U E))))))
+    where
+    V = proj₂ (val h)
+    G = proj₂ ⟦ g ⟧₀
+    E = tenM V (idM {n})
+    U₂ = tenM (idM {1}) (tenM (idM {1}) G)
+    U = tenM (idM {1}) U₂
+    UU : ix U₂ ≐ upk 2 (ix G)
+    UU = ≐-trans (ix-up (tenM (idM {1}) G))
+           (≐-trans (up-cong (ix-up G)) (up-up (ix G)))
+    UUU : ix U ≐ upk 3 (ix G)
+    UUU = ≐-trans (ix-up U₂) (≐-trans (up-cong UU) (up-upk 2 (ix G)))
+
   ω↑=ω-sound : (h : PGate 0) → ⟦ [ gate₀ {n} h ]ʷ ↑ ⟧ ≈ ⟦ [ gate₀ h ]ʷ ⟧
   ω↑=ω-sound {n} h =
     ≐→≈ {s = ↑s ⟦ gate₀ {n} h ⟧₀} {⟦ gate₀ {suc n} h ⟧₀} refl
@@ -255,6 +285,7 @@ module Laws
       vrel-sound (cong↑ {w = w} {v = v} a) = cong↑-sound {w = w} {v} (vrel-sound a)
       vrel-sound (comm₁ h g)     = comm₁-sound h g
       vrel-sound (comm₂ h g)     = comm₂-sound h g
+      vrel-sound (comm₃ h g)     = comm₃-sound h g
       vrel-sound (ω↑=ω h)        = ω↑=ω-sound h
 
       -- Every derivable equation holds.
@@ -311,6 +342,7 @@ module Laws
              ᴹ {w = w ↑} {v ↑}
                (cong↑-sound {w = w} {v} (≈-subst (ᴹ≡ w) (ᴹ≡ v) e)))
           (λ h g → comm₁-sound h g) (λ h g → comm₂-sound h g)
+          (λ h g → comm₃-sound h g)
           (λ {n} h → ᴹ {w = [ gate₀ {n} h ]ʷ ↑} {[ gate₀ h ]ʷ} (ω↑=ω-sound h))
           ar≤b
           (λ e → sep (≈-subst (ᴹ≡ (lhs ρ ↓ᵏ 0)) (ᴹ≡ (rhs ρ ↓ᵏ 0)) e))

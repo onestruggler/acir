@@ -4,14 +4,14 @@
 -- Independence of the structural rules
 --
 -- Circuit.Base's Lift-Relation extends any gate-specific relation with
--- four structural rules: cong↑, comm₁, comm₂ and ω↑=ω.  This module
--- asks whether any of them is redundant, and answers with the models
--- of Presentation.Independence: for each rule, a family of monoids —
--- one per width, related by a shift homomorphism — in which the other
--- three hold and that rule fails.  All four are independent of one
--- another.  A fifth rule, comm₀ — a scalar commutes with every
+-- five structural rules: cong↑, comm₁, comm₂, comm₃ and ω↑=ω.  This
+-- module asks whether any of them is redundant, and answers with the
+-- models of Presentation.Independence: for each rule, a family of
+-- monoids — one per width, related by a shift homomorphism — in which
+-- the other four hold and that rule fails.  All five are independent
+-- of one another.  A sixth rule, comm₀ — a scalar commutes with every
 -- generator — used to be structural; it is now Circuit.Base's theorem
--- Central-Scalars.comm₀, derived from these four once scalars commute
+-- Central-Scalars.comm₀, derived from these five once scalars commute
 -- with one another.  That hypothesis cannot be dropped: in the pure
 -- structural theory two distinct scalars need not commute, which is
 -- the last model here.
@@ -19,7 +19,7 @@
 -- The models are all built from the depths of letters — how many
 -- times a generator has been shifted — because that is what the
 -- structural rules are about: cong↑ relates depths, the comm rules
--- separate depth 0 from depth ≥ 1 or ≥ 2, and ω↑=ω says depth does
+-- separate depth 0 from depth ≥ 1, ≥ 2 or ≥ 3, and ω↑=ω says depth does
 -- not matter for scalars.  Words are read into (ℕ, +) or into a free
 -- monoid of depths, List ℕ under _++_, forgetting exactly what the
 -- retained rules are allowed to forget: a commutative target validates
@@ -78,6 +78,7 @@ depth : Gen n → ℕ
 depth (gate₀ _) = 0
 depth (gate₁ _) = 0
 depth (gate₂ _) = 0
+depth (gate₃ _) = 0
 depth (g ↥)     = suc (depth g)
 
 ------------------------------------------------------------------------
@@ -87,10 +88,10 @@ module Structural (_SRel,_===_ : (n : ℕ) → CRel n) where
 
   open Lift-Relation _SRel,_===_
 
-  -- The four structural rules, by name.  The names are those of the
+  -- The five structural rules, by name.  The names are those of the
   -- constructors of _VRel,_===_; Agda tells the two apart by type.
   data Rule : Set where
-    cong↑ comm₁ comm₂ ω↑=ω : Rule
+    cong↑ comm₁ comm₂ comm₃ ω↑=ω : Rule
 
   -- Uses r a: the rule r occurs in the axiom instance a.  Only cong↑
   -- has a premise, so only it recurses: removing a rule removes its
@@ -100,6 +101,7 @@ module Structural (_SRel,_===_ : (n : ℕ) → CRel n) where
   Uses r (cong↑ a)   = r ≡ cong↑ ⊎ Uses r a
   Uses r (comm₁ _ _) = r ≡ comm₁
   Uses r (comm₂ _ _) = r ≡ comm₂
+  Uses r (comm₃ _ _) = r ≡ comm₃
   Uses r (ω↑=ω _)    = r ≡ ω↑=ω
 
   -- The selection of every axiom instance not using r.
@@ -221,6 +223,9 @@ module Structural (_SRel,_===_ : (n : ℕ) → CRel n) where
       (sound-comm₂ : ∀ {n} (h : Gate 2) (g : Gen n) → P (comm₂ h g) →
                      ⟦ [ g ↥ ↥ ]ʷ • [ gate₂ h ]ʷ ⟧ ≈ₘ
                      ⟦ [ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ ⟧)
+      (sound-comm₃ : ∀ {n} (h : Gate 3) (g : Gen n) → P (comm₃ h g) →
+                     ⟦ [ g ↥ ↥ ↥ ]ʷ • [ gate₃ h ]ʷ ⟧ ≈ₘ
+                     ⟦ [ gate₃ h ]ʷ • [ g ↥ ↥ ↥ ]ʷ ⟧)
       (sound-ω↑=ω : ∀ {n} (ω : Gate 0) → P (ω↑=ω {n} ω) →
                     ⟦ [ gate₀ {n} ω ]ʷ ↑ ⟧ ≈ₘ ⟦ [ gate₀ ω ]ʷ ⟧)
       where
@@ -230,6 +235,7 @@ module Structural (_SRel,_===_ : (n : ℕ) → CRel n) where
       sound-ax (cong↑ a)   p = sound-cong↑ a p (sound-ax a (P-cong↑ p))
       sound-ax (comm₁ h g) p = sound-comm₁ h g p
       sound-ax (comm₂ h g) p = sound-comm₂ h g p
+      sound-ax (comm₃ h g) p = sound-comm₃ h g p
       sound-ax (ω↑=ω ω)    p = sound-ω↑=ω ω p
 
       private
@@ -241,7 +247,7 @@ module Structural (_SRel,_===_ : (n : ℕ) → CRel n) where
 -- The pure structural theory
 --
 -- The lift of the empty relation: the structural rules and nothing
--- else.  Each rule is shown independent of the other three by a model
+-- else.  Each rule is shown independent of the other four by a model
 -- that reads letters by depth; a last model shows that the centrality
 -- of a scalar needs its hypothesis.
 
@@ -273,6 +279,7 @@ module Pure where
     open Rules (λ ()) sound-cong↑
       (λ h g _ → +-comm ⟦ g ↥ ⟧ʷ 1)
       (λ h g _ → +-comm ⟦ g ↥ ↥ ⟧ʷ 1)
+      (λ h g _ → +-comm ⟦ g ↥ ↥ ↥ ⟧ʷ 1)
       (λ ω ¬u → ⊥-elim (¬u refl))
 
     ω↑=ω-independent : (ω : Gate 0) → ω↑=ω {n} ω IndependentOf ω↑=ω
@@ -282,8 +289,9 @@ module Pure where
   -- comm₁: depths of the one-wire gates
   --
   -- Read a one-wire gate as its depth, and everything else as ε, in
-  -- the free monoid List ℕ; shifting is map suc.  comm₂ commutes a
-  -- letter read as ε, so holds; comm₁ would commute depths 1 and 0.
+  -- the free monoid List ℕ; shifting is map suc.  comm₂ and comm₃
+  -- commute a letter read as ε, so hold; comm₁ would commute depths 1
+  -- and 0.
 
   module Depth₁ where
 
@@ -291,6 +299,7 @@ module Pure where
     ⟦ gate₀ _ ⟧¹ = []
     ⟦ gate₁ _ ⟧¹ = [ 0 ]
     ⟦ gate₂ _ ⟧¹ = []
+    ⟦ gate₃ _ ⟧¹ = []
     ⟦ g ↥ ⟧¹     = map suc ⟦ g ⟧¹
 
     open Soundness (Without comm₁) (Without-cong↑⁻ comm₁)
@@ -304,6 +313,7 @@ module Pure where
     open Rules (λ ()) sound-cong↑
       (λ h g ¬u → ⊥-elim (¬u refl))
       (λ h g _ → ++-identityʳ ⟦ g ↥ ↥ ⟧¹)
+      (λ h g _ → ++-identityʳ ⟦ g ↥ ↥ ↥ ⟧¹)
       (λ ω _ → refl)
 
     comm₁-independent : (h : Gate 1) →
@@ -320,6 +330,7 @@ module Pure where
     ⟦ gate₀ _ ⟧² = []
     ⟦ gate₁ _ ⟧² = []
     ⟦ gate₂ _ ⟧² = [ 0 ]
+    ⟦ gate₃ _ ⟧² = []
     ⟦ g ↥ ⟧²     = map suc ⟦ g ⟧²
 
     open Soundness (Without comm₂) (Without-cong↑⁻ comm₂)
@@ -333,6 +344,7 @@ module Pure where
     open Rules (λ ()) sound-cong↑
       (λ h g _ → ++-identityʳ ⟦ g ↥ ⟧²)
       (λ h g ¬u → ⊥-elim (¬u refl))
+      (λ h g _ → ++-identityʳ ⟦ g ↥ ↥ ↥ ⟧²)
       (λ ω _ → refl)
 
     comm₂-independent : (h : Gate 2) →
@@ -341,17 +353,48 @@ module Pure where
       independent (comm₂ h (gate₂ h)) λ e → case ∷-injectiveˡ e of λ ()
 
   ----------------------------------------------------------------------
+  -- comm₃: depths of the three-wire gates, symmetrically
+
+  module Depth₃ where
+
+    ⟦_⟧³ : Gen n → List ℕ
+    ⟦ gate₀ _ ⟧³ = []
+    ⟦ gate₁ _ ⟧³ = []
+    ⟦ gate₂ _ ⟧³ = []
+    ⟦ gate₃ _ ⟧³ = [ 0 ]
+    ⟦ g ↥ ⟧³     = map suc ⟦ g ⟧³
+
+    open Soundness (Without comm₃) (Without-cong↑⁻ comm₃)
+      (λ _ → ++-monoid ℕ) ⟦_⟧³
+    open Shift (map suc)
+      (record { isMagmaHomomorphism = record
+                  { isRelHomomorphism = record { cong = Eq.cong (map suc) }
+                  ; homo = map-++ suc }
+              ; ε-homo = refl })
+      (λ _ → refl)
+    open Rules (λ ()) sound-cong↑
+      (λ h g _ → ++-identityʳ ⟦ g ↥ ⟧³)
+      (λ h g _ → ++-identityʳ ⟦ g ↥ ↥ ⟧³)
+      (λ h g ¬u → ⊥-elim (¬u refl))
+      (λ ω _ → refl)
+
+    comm₃-independent : (h : Gate 3) →
+                        comm₃ h (gate₃ {n} h) IndependentOf comm₃
+    comm₃-independent h =
+      independent (comm₃ h (gate₃ h)) λ e → case ∷-injectiveˡ e of λ ()
+
+  ----------------------------------------------------------------------
   -- cong↑: depths beyond the reach of the other rules
   --
   -- Without cong↑ the remaining rules are all stated at the bottom of
-  -- the circuit: comm₁ and comm₂ commute a gate at depth 0, and ω↑=ω
-  -- identifies a scalar at depth 1 with one at depth 0.  So read a
-  -- wire gate as its depth once that is at least 1, a scalar as its
+  -- the circuit: comm₁, comm₂ and comm₃ commute a gate at depth 0, and
+  -- ω↑=ω identifies a scalar at depth 1 with one at depth 0.  So read
+  -- a wire gate as its depth once that is at least 1, a scalar as its
   -- depth once that is at least 2, and everything shallower as ε, in
   -- List ℕ.  Every retained rule then holds, and no shift homomorphism
-  -- is needed since none is sound.  A shifted comm₁, comm₂ or ω↑=ω is
-  -- separated: it would commute depths 2 and 1, or 3 and 1, or
-  -- identify depth 2 with ε.
+  -- is needed since none is sound.  A shifted comm₁, comm₂, comm₃ or
+  -- ω↑=ω is separated: it would commute depths 2 and 1, 3 and 1, or 4
+  -- and 1, or identify depth 2 with ε.
 
   module Shiftless where
 
@@ -364,6 +407,8 @@ module Pure where
     at (gate₁ _) (₁₊ k)    = [ ₁₊ k ]
     at (gate₂ _) zero      = []
     at (gate₂ _) (₁₊ k)    = [ ₁₊ k ]
+    at (gate₃ _) zero      = []
+    at (gate₃ _) (₁₊ k)    = [ ₁₊ k ]
     at (g ↥)     k         = at g (suc k)
 
     ⟦_⟧ᶜ : Gen n → List ℕ
@@ -374,6 +419,7 @@ module Pure where
     open Rules (λ ()) (λ a ¬u _ → ⊥-elim (¬u (inj₁ refl)))
       (λ h g _ → ++-identityʳ ⟦ g ↥ ⟧ᶜ)
       (λ h g _ → ++-identityʳ ⟦ g ↥ ↥ ⟧ᶜ)
+      (λ h g _ → ++-identityʳ ⟦ g ↥ ↥ ↥ ⟧ᶜ)
       (λ ω _ → refl)
 
     cong↑-independent₁ : (h : Gate 1) →
@@ -388,6 +434,12 @@ module Pure where
       independent (cong↑ (comm₂ h (gate₂ h)))
         λ e → case ∷-injectiveˡ e of λ ()
 
+    cong↑-independent₃ : (h : Gate 3) →
+                         cong↑ (comm₃ h (gate₃ {n} h)) IndependentOf cong↑
+    cong↑-independent₃ h =
+      independent (cong↑ (comm₃ h (gate₃ h)))
+        λ e → case ∷-injectiveˡ e of λ ()
+
     cong↑-independent₀ : (ω : Gate 0) →
                          cong↑ (ω↑=ω {n} ω) IndependentOf cong↑
     cong↑-independent₀ ω = independent (cong↑ (ω↑=ω ω)) λ ()
@@ -395,11 +447,11 @@ module Pure where
   ----------------------------------------------------------------------
   -- Centrality needs its hypothesis: the scalars, in order
   --
-  -- Circuit.Base derives comm₀ from the four rules and the assumption
+  -- Circuit.Base derives comm₀ from the five rules and the assumption
   -- that scalars commute with one another.  The assumption is not
   -- redundant: read a scalar gate as itself, at any depth, and a wire
   -- gate as ε, in the free monoid List (Gate 0), with the identity as
-  -- shift.  All four rules hold — the selection keeps every axiom —
+  -- shift.  All five rules hold — the selection keeps every axiom —
   -- and two distinct scalars do not commute.
 
   module Scalars where
@@ -408,6 +460,7 @@ module Pure where
     ⟦ gate₀ ω ⟧ˢ = [ ω ]
     ⟦ gate₁ _ ⟧ˢ = []
     ⟦ gate₂ _ ⟧ˢ = []
+    ⟦ gate₃ _ ⟧ˢ = []
     ⟦ g ↥ ⟧ˢ     = ⟦ g ⟧ˢ
 
     open Soundness (λ {n} → all (n VRel,_===_)) (λ _ → tt)
@@ -421,6 +474,7 @@ module Pure where
     open Rules (λ ()) sound-cong↑
       (λ h g _ → ++-identityʳ ⟦ g ↥ ⟧ˢ)
       (λ h g _ → ++-identityʳ ⟦ g ↥ ↥ ⟧ˢ)
+      (λ h g _ → ++-identityʳ ⟦ g ↥ ↥ ↥ ⟧ˢ)
       (λ ω _ → refl)
 
     -- Two distinct scalars need not commute.
@@ -433,6 +487,8 @@ module Pure where
   open Weight    public using (ω↑=ω-independent)
   open Depth₁    public using (comm₁-independent)
   open Depth₂    public using (comm₂-independent)
+  open Depth₃    public using (comm₃-independent)
   open Shiftless public
-    using (cong↑-independent₀ ; cong↑-independent₁ ; cong↑-independent₂)
+    using ( cong↑-independent₀ ; cong↑-independent₁ ; cong↑-independent₂
+          ; cong↑-independent₃ )
   open Scalars   public using (scalars-comm-needed)
