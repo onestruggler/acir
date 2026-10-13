@@ -1,0 +1,289 @@
+{
+  "format": "clement-translated-circuit-presentation-v1",
+  "wires": 2,
+  "word_order": "matrix product order",
+  "wire_order": "wire 0 is least significant",
+  "sources": [
+    "CCX+HH-TwoLevel/Syntactics.agda",
+    "CCX+HH-TwoLevel/Scaled/Syntactics.agda"
+  ],
+  "method": "decode every auxiliary relation and add circuit generator roundtrips",
+  "circuit_generators": [
+    {
+      "gate": "X",
+      "wires": [
+        0
+      ]
+    },
+    {
+      "gate": "X",
+      "wires": [
+        1
+      ]
+    },
+    {
+      "gate": "CX",
+      "wires": [
+        1,
+        0
+      ]
+    },
+    {
+      "gate": "H",
+      "wires": [
+        0
+      ]
+    },
+    {
+      "gate": "H",
+      "wires": [
+        1
+      ]
+    }
+  ],
+  "auxiliary_generators": [
+    {
+      "gate": "M",
+      "levels": [
+        0
+      ]
+    },
+    {
+      "gate": "M",
+      "levels": [
+        1
+      ]
+    },
+    {
+      "gate": "M",
+      "levels": [
+        2
+      ]
+    },
+    {
+      "gate": "M",
+      "levels": [
+        3
+      ]
+    },
+    {
+      "gate": "X",
+      "levels": [
+        0,
+        1
+      ]
+    },
+    {
+      "gate": "X",
+      "levels": [
+        0,
+        2
+      ]
+    },
+    {
+      "gate": "X",
+      "levels": [
+        0,
+        3
+      ]
+    },
+    {
+      "gate": "X",
+      "levels": [
+        1,
+        2
+      ]
+    },
+    {
+      "gate": "X",
+      "levels": [
+        1,
+        3
+      ]
+    },
+    {
+      "gate": "X",
+      "levels": [
+        2,
+        3
+      ]
+    },
+    {
+      "gate": "K",
+      "levels": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "gate": "IH",
+      "levels": []
+    }
+  ],
+  "decoder": [
+    [
+      0,
+      1,
+      3,
+      2,
+      3,
+      1,
+      0
+    ],
+    [
+      1,
+      3,
+      2,
+      3,
+      1
+    ],
+    [
+      0,
+      3,
+      2,
+      3,
+      0
+    ],
+    [
+      3,
+      2,
+      3
+    ],
+    [
+      1,
+      2,
+      1
+    ],
+    [
+      0,
+      3,
+      4,
+      2,
+      3,
+      4,
+      0
+    ],
+    [
+      1,
+      2,
+      1,
+      3,
+      4,
+      2,
+      3,
+      4,
+      1,
+      2,
+      1
+    ],
+    [
+      2,
+      3,
+      4,
+      2,
+      3,
+      4,
+      2
+    ],
+    [
+      3,
+      4,
+      2,
+      3,
+      4
+    ],
+    [
+      2
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      3
+    ]
+  ],
+  "verification": {
+    "arithmetic": "exact integer numerators / sqrt(2)^exponent",
+    "decoder_images": 12,
+    "table1_instances": 58,
+    "table2_instances": 6,
+    "roundtrips": 5,
+    "circuit_relations": 69,
+    "soundness": "checked decoder images + every source equation + roundtrips",
+    "completeness": "Agda: CCX+H/TwoQubit.agda"
+  },
+  "relations": [
+    {"source":"r1a","indices":[0,1],"auxiliary_left":[4,4],"auxiliary_right":[],"left":[1,2,1,1,2,1],"right":[]},
+    {"source":"r1a","indices":[0,2],"auxiliary_left":[5,5],"auxiliary_right":[],"left":[0,3,4,2,3,4,0,0,3,4,2,3,4,0],"right":[]},
+    {"source":"r1a","indices":[0,3],"auxiliary_left":[6,6],"auxiliary_right":[],"left":[1,2,1,3,4,2,3,4,1,2,1,1,2,1,3,4,2,3,4,1,2,1],"right":[]},
+    {"source":"r1a","indices":[1,2],"auxiliary_left":[7,7],"auxiliary_right":[],"left":[2,3,4,2,3,4,2,2,3,4,2,3,4,2],"right":[]},
+    {"source":"r1a","indices":[1,3],"auxiliary_left":[8,8],"auxiliary_right":[],"left":[3,4,2,3,4,3,4,2,3,4],"right":[]},
+    {"source":"r1a","indices":[2,3],"auxiliary_left":[9,9],"auxiliary_right":[],"left":[2,2],"right":[]},
+    {"source":"r1b","indices":[0],"auxiliary_left":[0,0],"auxiliary_right":[],"left":[0,1,3,2,3,1,0,0,1,3,2,3,1,0],"right":[]},
+    {"source":"r1b","indices":[1],"auxiliary_left":[1,1],"auxiliary_right":[],"left":[1,3,2,3,1,1,3,2,3,1],"right":[]},
+    {"source":"r1b","indices":[2],"auxiliary_left":[2,2],"auxiliary_right":[],"left":[0,3,2,3,0,0,3,2,3,0],"right":[]},
+    {"source":"r1b","indices":[3],"auxiliary_left":[3,3],"auxiliary_right":[],"left":[3,2,3,3,2,3],"right":[]},
+    {"source":"r1c","indices":[0,1,2,3],"auxiliary_left":[10,10],"auxiliary_right":[],"left":[3,4,3,4],"right":[]},
+    {"source":"r2a","indices":[0,1,2,3],"auxiliary_left":[4,9],"auxiliary_right":[9,4],"left":[1,2,1,2],"right":[2,1,2,1]},
+    {"source":"r2a","indices":[0,2,1,3],"auxiliary_left":[5,8],"auxiliary_right":[8,5],"left":[0,3,4,2,3,4,0,3,4,2,3,4],"right":[3,4,2,3,4,0,3,4,2,3,4,0]},
+    {"source":"r2a","indices":[0,3,1,2],"auxiliary_left":[6,7],"auxiliary_right":[7,6],"left":[1,2,1,3,4,2,3,4,1,2,1,2,3,4,2,3,4,2],"right":[2,3,4,2,3,4,2,1,2,1,3,4,2,3,4,1,2,1]},
+    {"source":"r2a","indices":[1,2,0,3],"auxiliary_left":[7,6],"auxiliary_right":[6,7],"left":[2,3,4,2,3,4,2,1,2,1,3,4,2,3,4,1,2,1],"right":[1,2,1,3,4,2,3,4,1,2,1,2,3,4,2,3,4,2]},
+    {"source":"r2a","indices":[1,3,0,2],"auxiliary_left":[8,5],"auxiliary_right":[5,8],"left":[3,4,2,3,4,0,3,4,2,3,4,0],"right":[0,3,4,2,3,4,0,3,4,2,3,4]},
+    {"source":"r2a","indices":[2,3,0,1],"auxiliary_left":[9,4],"auxiliary_right":[4,9],"left":[2,1,2,1],"right":[1,2,1,2]},
+    {"source":"r2b","indices":[0,1,2],"auxiliary_left":[4,2],"auxiliary_right":[2,4],"left":[1,2,1,0,3,2,3,0],"right":[0,3,2,3,0,1,2,1]},
+    {"source":"r2b","indices":[0,1,3],"auxiliary_left":[4,3],"auxiliary_right":[3,4],"left":[1,2,1,3,2,3],"right":[3,2,3,1,2,1]},
+    {"source":"r2b","indices":[0,2,1],"auxiliary_left":[5,1],"auxiliary_right":[1,5],"left":[0,3,4,2,3,4,0,1,3,2,3,1],"right":[1,3,2,3,1,0,3,4,2,3,4,0]},
+    {"source":"r2b","indices":[0,2,3],"auxiliary_left":[5,3],"auxiliary_right":[3,5],"left":[0,3,4,2,3,4,0,3,2,3],"right":[3,2,3,0,3,4,2,3,4,0]},
+    {"source":"r2b","indices":[0,3,1],"auxiliary_left":[6,1],"auxiliary_right":[1,6],"left":[1,2,1,3,4,2,3,4,1,2,1,1,3,2,3,1],"right":[1,3,2,3,1,1,2,1,3,4,2,3,4,1,2,1]},
+    {"source":"r2b","indices":[0,3,2],"auxiliary_left":[6,2],"auxiliary_right":[2,6],"left":[1,2,1,3,4,2,3,4,1,2,1,0,3,2,3,0],"right":[0,3,2,3,0,1,2,1,3,4,2,3,4,1,2,1]},
+    {"source":"r2b","indices":[1,2,0],"auxiliary_left":[7,0],"auxiliary_right":[0,7],"left":[2,3,4,2,3,4,2,0,1,3,2,3,1,0],"right":[0,1,3,2,3,1,0,2,3,4,2,3,4,2]},
+    {"source":"r2b","indices":[1,2,3],"auxiliary_left":[7,3],"auxiliary_right":[3,7],"left":[2,3,4,2,3,4,2,3,2,3],"right":[3,2,3,2,3,4,2,3,4,2]},
+    {"source":"r2b","indices":[1,3,0],"auxiliary_left":[8,0],"auxiliary_right":[0,8],"left":[3,4,2,3,4,0,1,3,2,3,1,0],"right":[0,1,3,2,3,1,0,3,4,2,3,4]},
+    {"source":"r2b","indices":[1,3,2],"auxiliary_left":[8,2],"auxiliary_right":[2,8],"left":[3,4,2,3,4,0,3,2,3,0],"right":[0,3,2,3,0,3,4,2,3,4]},
+    {"source":"r2b","indices":[2,3,0],"auxiliary_left":[9,0],"auxiliary_right":[0,9],"left":[2,0,1,3,2,3,1,0],"right":[0,1,3,2,3,1,0,2]},
+    {"source":"r2b","indices":[2,3,1],"auxiliary_left":[9,1],"auxiliary_right":[1,9],"left":[2,1,3,2,3,1],"right":[1,3,2,3,1,2]},
+    {"source":"r2d","indices":[0,1],"auxiliary_left":[0,1],"auxiliary_right":[1,0],"left":[0,1,3,2,3,1,0,1,3,2,3,1],"right":[1,3,2,3,1,0,1,3,2,3,1,0]},
+    {"source":"r2d","indices":[0,2],"auxiliary_left":[0,2],"auxiliary_right":[2,0],"left":[0,1,3,2,3,1,0,0,3,2,3,0],"right":[0,3,2,3,0,0,1,3,2,3,1,0]},
+    {"source":"r2d","indices":[0,3],"auxiliary_left":[0,3],"auxiliary_right":[3,0],"left":[0,1,3,2,3,1,0,3,2,3],"right":[3,2,3,0,1,3,2,3,1,0]},
+    {"source":"r2d","indices":[1,0],"auxiliary_left":[1,0],"auxiliary_right":[0,1],"left":[1,3,2,3,1,0,1,3,2,3,1,0],"right":[0,1,3,2,3,1,0,1,3,2,3,1]},
+    {"source":"r2d","indices":[1,2],"auxiliary_left":[1,2],"auxiliary_right":[2,1],"left":[1,3,2,3,1,0,3,2,3,0],"right":[0,3,2,3,0,1,3,2,3,1]},
+    {"source":"r2d","indices":[1,3],"auxiliary_left":[1,3],"auxiliary_right":[3,1],"left":[1,3,2,3,1,3,2,3],"right":[3,2,3,1,3,2,3,1]},
+    {"source":"r2d","indices":[2,0],"auxiliary_left":[2,0],"auxiliary_right":[0,2],"left":[0,3,2,3,0,0,1,3,2,3,1,0],"right":[0,1,3,2,3,1,0,0,3,2,3,0]},
+    {"source":"r2d","indices":[2,1],"auxiliary_left":[2,1],"auxiliary_right":[1,2],"left":[0,3,2,3,0,1,3,2,3,1],"right":[1,3,2,3,1,0,3,2,3,0]},
+    {"source":"r2d","indices":[2,3],"auxiliary_left":[2,3],"auxiliary_right":[3,2],"left":[0,3,2,3,0,3,2,3],"right":[3,2,3,0,3,2,3,0]},
+    {"source":"r2d","indices":[3,0],"auxiliary_left":[3,0],"auxiliary_right":[0,3],"left":[3,2,3,0,1,3,2,3,1,0],"right":[0,1,3,2,3,1,0,3,2,3]},
+    {"source":"r2d","indices":[3,1],"auxiliary_left":[3,1],"auxiliary_right":[1,3],"left":[3,2,3,1,3,2,3,1],"right":[1,3,2,3,1,3,2,3]},
+    {"source":"r2d","indices":[3,2],"auxiliary_left":[3,2],"auxiliary_right":[2,3],"left":[3,2,3,0,3,2,3,0],"right":[0,3,2,3,0,3,2,3]},
+    {"source":"r3a","indices":[0,1,2],"auxiliary_left":[4,5],"auxiliary_right":[7,4],"left":[1,2,1,0,3,4,2,3,4,0],"right":[2,3,4,2,3,4,2,1,2,1]},
+    {"source":"r3b","indices":[0,1,2],"auxiliary_left":[7,4],"auxiliary_right":[5,7],"left":[2,3,4,2,3,4,2,1,2,1],"right":[0,3,4,2,3,4,0,2,3,4,2,3,4,2]},
+    {"source":"r3a","indices":[0,1,3],"auxiliary_left":[4,6],"auxiliary_right":[8,4],"left":[1,2,1,1,2,1,3,4,2,3,4,1,2,1],"right":[3,4,2,3,4,1,2,1]},
+    {"source":"r3b","indices":[0,1,3],"auxiliary_left":[8,4],"auxiliary_right":[6,8],"left":[3,4,2,3,4,1,2,1],"right":[1,2,1,3,4,2,3,4,1,2,1,3,4,2,3,4]},
+    {"source":"r3a","indices":[0,2,3],"auxiliary_left":[5,6],"auxiliary_right":[9,5],"left":[0,3,4,2,3,4,0,1,2,1,3,4,2,3,4,1,2,1],"right":[2,0,3,4,2,3,4,0]},
+    {"source":"r3b","indices":[0,2,3],"auxiliary_left":[9,5],"auxiliary_right":[6,9],"left":[2,0,3,4,2,3,4,0],"right":[1,2,1,3,4,2,3,4,1,2,1,2]},
+    {"source":"r3a","indices":[1,2,3],"auxiliary_left":[7,8],"auxiliary_right":[9,7],"left":[2,3,4,2,3,4,2,3,4,2,3,4],"right":[2,2,3,4,2,3,4,2]},
+    {"source":"r3b","indices":[1,2,3],"auxiliary_left":[9,7],"auxiliary_right":[8,9],"left":[2,2,3,4,2,3,4,2],"right":[3,4,2,3,4,2]},
+    {"source":"r3c","indices":[0,1],"auxiliary_left":[4,1],"auxiliary_right":[0,4],"left":[1,2,1,1,3,2,3,1],"right":[0,1,3,2,3,1,0,1,2,1]},
+    {"source":"r3c","indices":[0,2],"auxiliary_left":[5,2],"auxiliary_right":[0,5],"left":[0,3,4,2,3,4,0,0,3,2,3,0],"right":[0,1,3,2,3,1,0,0,3,4,2,3,4,0]},
+    {"source":"r3c","indices":[0,3],"auxiliary_left":[6,3],"auxiliary_right":[0,6],"left":[1,2,1,3,4,2,3,4,1,2,1,3,2,3],"right":[0,1,3,2,3,1,0,1,2,1,3,4,2,3,4,1,2,1]},
+    {"source":"r3c","indices":[1,2],"auxiliary_left":[7,2],"auxiliary_right":[1,7],"left":[2,3,4,2,3,4,2,0,3,2,3,0],"right":[1,3,2,3,1,2,3,4,2,3,4,2]},
+    {"source":"r3c","indices":[1,3],"auxiliary_left":[8,3],"auxiliary_right":[1,8],"left":[3,4,2,3,4,3,2,3],"right":[1,3,2,3,1,3,4,2,3,4]},
+    {"source":"r3c","indices":[2,3],"auxiliary_left":[9,3],"auxiliary_right":[2,9],"left":[2,3,2,3],"right":[0,3,2,3,0,2]},
+    {"source":"r4a","indices":[0,1,2,3],"auxiliary_left":[4,10],"auxiliary_right":[10,8,1,3],"left":[1,2,1,3,4],"right":[3,4,3,4,2,3,4,1,3,2,3,1,3,2,3]},
+    {"source":"r4b","indices":[0,1,2,3],"auxiliary_left":[7,10],"auxiliary_right":[0,10,0,10,0],"left":[2,3,4,2,3,4,2,3,4],"right":[0,1,3,2,3,1,0,3,4,0,1,3,2,3,1,0,3,4,0,1,3,2,3,1,0]},
+    {"source":"r4c","indices":[0,1,2,3],"auxiliary_left":[9,10],"auxiliary_right":[10,8],"left":[2,3,4],"right":[3,4,3,4,2,3,4]},
+    {"source":"r7a","indices":[],"auxiliary_left":[11,11],"auxiliary_right":[],"left":[3,3],"right":[]},
+    {"source":"r7b","indices":[0,1,2,3],"auxiliary_left":[11,10,11],"auxiliary_right":[10],"left":[3,3,4,3],"right":[3,4]},
+    {"source":"r7c","indices":[0,1],"auxiliary_left":[11,0,11],"auxiliary_right":[0,4,0],"left":[3,0,1,3,2,3,1,0,3],"right":[0,1,3,2,3,1,0,1,2,1,0,1,3,2,3,1,0]},
+    {"source":"r7d-even","indices":[0,1],"auxiliary_left":[11,4,11],"auxiliary_right":[1],"left":[3,1,2,1,3],"right":[1,3,2,3,1]},
+    {"source":"r7d-odd","indices":[0,1,2,3],"auxiliary_left":[11,7,11],"auxiliary_right":[7,10],"left":[3,2,3,4,2,3,4,2,3],"right":[2,3,4,2,3,4,2,3,4]},
+    {"source":"r7d-even","indices":[2,3],"auxiliary_left":[11,9,11],"auxiliary_right":[3],"left":[3,2,3],"right":[3,2,3]},
+    {"source":"roundtrip","generator":0,"auxiliary_encoding":[4,9],"left":[0],"right":[1,2,1,2]},
+    {"source":"roundtrip","generator":1,"auxiliary_encoding":[5,8],"left":[1],"right":[0,3,4,2,3,4,0,3,4,2,3,4]},
+    {"source":"roundtrip","generator":2,"auxiliary_encoding":[9],"left":[2],"right":[2]},
+    {"source":"roundtrip","generator":3,"auxiliary_encoding":[11],"left":[3],"right":[3]},
+    {"source":"roundtrip","generator":4,"auxiliary_encoding":[7,11,7],"left":[4],"right":[2,3,4,2,3,4,2,3,2,3,4,2,3,4,2]}
+  ]
+}

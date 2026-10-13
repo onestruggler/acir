@@ -1,0 +1,93 @@
+{
+  "format": "clement-translated-circuit-presentation-v1",
+  "wires": 1,
+  "word_order": "matrix product order",
+  "wire_order": "wire 0 is least significant",
+  "sources": [
+    "CCX+HH-TwoLevel/Syntactics.agda",
+    "CCX+HH-TwoLevel/Scaled/Syntactics.agda"
+  ],
+  "method": "decode every auxiliary relation and add circuit generator roundtrips",
+  "circuit_generators": [
+    {
+      "gate": "X",
+      "wires": [
+        0
+      ]
+    },
+    {
+      "gate": "H",
+      "wires": [
+        0
+      ]
+    }
+  ],
+  "auxiliary_generators": [
+    {
+      "gate": "M",
+      "levels": [
+        0
+      ]
+    },
+    {
+      "gate": "M",
+      "levels": [
+        1
+      ]
+    },
+    {
+      "gate": "X",
+      "levels": [
+        0,
+        1
+      ]
+    },
+    {
+      "gate": "IH",
+      "levels": []
+    }
+  ],
+  "decoder": [
+    [
+      0,
+      1,
+      0,
+      1,
+      0
+    ],
+    [
+      1,
+      0,
+      1
+    ],
+    [
+      0
+    ],
+    [
+      1
+    ]
+  ],
+  "verification": {
+    "arithmetic": "exact integer numerators / sqrt(2)^exponent",
+    "decoder_images": 4,
+    "table1_instances": 6,
+    "table2_instances": 3,
+    "roundtrips": 2,
+    "circuit_relations": 11,
+    "soundness": "checked decoder images + every source equation + roundtrips",
+    "completeness": "Agda: CCX+H/OneQubit.agda"
+  },
+  "relations": [
+    {"source":"r1a","indices":[0,1],"auxiliary_left":[2,2],"auxiliary_right":[],"left":[0,0],"right":[]},
+    {"source":"r1b","indices":[0],"auxiliary_left":[0,0],"auxiliary_right":[],"left":[0,1,0,1,0,0,1,0,1,0],"right":[]},
+    {"source":"r1b","indices":[1],"auxiliary_left":[1,1],"auxiliary_right":[],"left":[1,0,1,1,0,1],"right":[]},
+    {"source":"r2d","indices":[0,1],"auxiliary_left":[0,1],"auxiliary_right":[1,0],"left":[0,1,0,1,0,1,0,1],"right":[1,0,1,0,1,0,1,0]},
+    {"source":"r2d","indices":[1,0],"auxiliary_left":[1,0],"auxiliary_right":[0,1],"left":[1,0,1,0,1,0,1,0],"right":[0,1,0,1,0,1,0,1]},
+    {"source":"r3c","indices":[0,1],"auxiliary_left":[2,1],"auxiliary_right":[0,2],"left":[0,1,0,1],"right":[0,1,0,1,0,0]},
+    {"source":"r7a","indices":[],"auxiliary_left":[3,3],"auxiliary_right":[],"left":[1,1],"right":[]},
+    {"source":"r7c","indices":[0,1],"auxiliary_left":[3,0,3],"auxiliary_right":[0,2,0],"left":[1,0,1,0,1,0,1],"right":[0,1,0,1,0,0,0,1,0,1,0]},
+    {"source":"r7d-even","indices":[0,1],"auxiliary_left":[3,2,3],"auxiliary_right":[1],"left":[1,0,1],"right":[1,0,1]},
+    {"source":"roundtrip","generator":0,"auxiliary_encoding":[2],"left":[0],"right":[0]},
+    {"source":"roundtrip","generator":1,"auxiliary_encoding":[3],"left":[1],"right":[1]}
+  ]
+}
