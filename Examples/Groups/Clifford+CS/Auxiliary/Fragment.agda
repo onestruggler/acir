@@ -107,10 +107,16 @@ data _F,_===_ (N : ℕ) : WRel (GenP N) where
   px-sign : ∀ c a b .(ab : a < b) →
             N F, xw c a b ab === pw c a • pw c a • xw a a b ab
 
-  -- A phase pair crosses a letter, its indices transposed.
+  -- A phase pair crosses a letter, its indices transposed: once with
+  -- one index off the pair, and once within the pair.  Every other
+  -- configuration is derivable by telescoping through a pair index
+  -- (`Derived.conj-any`), with no fresh index.
   px-conj : ∀ a a′ c (s : Succ a a′) → c ≢ a → c ≢ a′ →
             N F, pw a′ c • xw a a a′ (s< s)
             === xw a a a′ (s< s) • pw a c
+  px-conj₂ : ∀ a a′ (s : Succ a a′) →
+             N F, pw a a′ • xw a a a′ (s< s)
+             === xw a a a′ (s< s) • pw a′ a
 
   -- Letters on disjoint consecutive pairs commute.
   px-comm : ∀ a a′ b b′ (s : Succ a a′) (s′ : Succ b b′) (lt : a′ < b) →

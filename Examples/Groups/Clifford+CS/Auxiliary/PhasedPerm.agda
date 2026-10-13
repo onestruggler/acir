@@ -803,6 +803,29 @@ sound-ax (px-conj a a′ c s ca ca′) = ≐-trans lhs (≐-sym rhs)
                 (hop (PH a p2) (PH c p3) (PH a p2) (PH c p3) (SWP a a′)
                      (PH-comm a c p2 p3)) ⟩
     PH a′ p1 ⊙ (PH c p3 ⊙ (PH a p2 ⊙ SWP a a′)) ∎
+-- The within-pair phase pair crosses its own letter: both sides are
+-- the same sum once the two δ-swap identities rewrite the pair's
+-- phases, and what is left is commutativity.
+sound-ax (px-conj₂ a a′ s) = eqv sg (λ _ → Eq.refl)
+  where
+  σ = swapF a a′
+
+  -- The pair's phases read through σ are its phases here.
+  δσa : ∀ i → δ a′ (σ i) ≡ δ a i
+  δσa i = Eq.trans (Eq.cong (λ z → δ z (σ i)) (Eq.sym (swapF-a a a′)))
+                   (δ-swap a a′ a i)
+
+  δσa′ : ∀ i → δ a (σ i) ≡ δ a′ i
+  δσa′ i = Eq.trans (Eq.cong (λ z → δ z (σ i)) (Eq.sym (swapF-b a a′)))
+                    (δ-swap a a′ a′ i)
+
+  sg : ∀ i → (phif (δ a i) p1 +ᵖ phif (δ a′ i) p3) +ᵖ (phif (δ a i) p2 +ᵖ p0)
+             ≡ (phif (δ a i) p2 +ᵖ p0)
+               +ᵖ (phif (δ a′ (σ i)) p1 +ᵖ phif (δ a (σ i)) p3)
+  sg i = Eq.trans
+    (+ᵖ-comm (phif (δ a i) p1 +ᵖ phif (δ a′ i) p3) (phif (δ a i) p2 +ᵖ p0))
+    (Eq.cong ((phif (δ a i) p2 +ᵖ p0) +ᵖ_)
+      (Eq.sym (Eq.cong₂ (λ x y → phif x p1 +ᵖ phif y p3) (δσa i) (δσa′ i))))
 -- Letters on disjoint consecutive pairs commute.
 sound-ax (px-comm a a′ b b′ s s′ lt) = ≐-trans lhs (≐-sym rhs)
   where
