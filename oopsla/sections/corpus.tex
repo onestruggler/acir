@@ -42,7 +42,7 @@ Source & Object & Method & Mod. & Lines & Result \\
 \citet{clement2026realcliffordch} & real Clifford+$CH$ & encoding & 348 & 73{,}097 & sub-presentation, every $n$ \\
 \midrule
 \multicolumn{6}{@{}l}{\emph{Minimality}}\\
-\citet{blake2026simpler} & six fragments & models & 33 & 4{,}143 & soundness, minimality, necessity \\
+\citet{blake2026simpler} & six fragments & models & 37 & 4{,}893 & soundness, minimality, necessity \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -151,11 +151,9 @@ completeness, its own two sides being an equation that the semantics
 validates and the other rules do not derive; the paper's Section~5.1
 says so, and we state it for every fragment in the ranges of its
 Theorem~37. The completeness part of that paper, a translation from
-the earlier presentations, is not formalized.
-
-We used the same framework on our own circuit layer: its four
-structural rules (Section~\ref{sec:presentations}) are independent,
-by models that record how many times each gate has been shifted up,
-and a fifth rule that an earlier version of this work had, that a
-scalar commutes with every gate, is derivable from the four when
-scalars commute with each other and not otherwise.
+the earlier presentations, is formalized for the CNOT-dihedral
+fragment, the one the paper transfers without an encoding, so that
+its smaller rule set is a minimal complete presentation; the other
+five transfers go through encodings and are not formalized. The same
+framework proves our own four structural rules independent
+(Section~\ref{sec:independence-layer}).
