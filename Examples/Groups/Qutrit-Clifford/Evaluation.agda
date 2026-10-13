@@ -609,10 +609,18 @@ private
   ≈-sym' : {s s' : Sc n} → s ≈ s' → s' ≈ s
   ≈-sym' {s = s} {s'} = ≈-sym {s = s} {s'}
 
+-- An equation on its own wires, checked by evaluation.  State the check
+-- for named words (Soundness.Checks): the type of the evidence is then
+-- the very type expected here, where an implicit width elaborated as
+-- 0 in one and as zero in the other makes the conversion checker
+-- evaluate both Booleans again, slowly.
+checked : (l r : Circuit k) → T (eqF (ev l) (ev r)) → ⟦ l ⟧ ≈ ⟦ r ⟧
+checked l r t =
+  ≈-trans' {s₁ = ⟦ l ⟧} {ev l} {⟦ r ⟧} (≈-sym' {s = ev l} {⟦ l ⟧} (ev-≈ l))
+    (≈-trans' {s₁ = ev l} {ev r} {⟦ r ⟧} (eqF-sound (ev l) (ev r) t) (ev-≈ r))
+
 -- An equation on k wires, checked by evaluation, holds on the bottom k
 -- wires of every wider circuit.
 by-fast : (l r : Circuit k) {n : ℕ} {w v : Circuit (k +ℕ n)} →
           l ↓ᵏ n ≡ w → r ↓ᵏ n ≡ v → T (eqF (ev l) (ev r)) → ⟦ w ⟧ ≈ ⟦ v ⟧
-by-fast l r el er t = lift l r el er
-  (≈-trans' {s₁ = ⟦ l ⟧} {ev l} {⟦ r ⟧} (≈-sym' {s = ev l} {⟦ l ⟧} (ev-≈ l))
-    (≈-trans' {s₁ = ev l} {ev r} {⟦ r ⟧} (eqF-sound (ev l) (ev r) t) (ev-≈ r)))
+by-fast l r el er t = lift l r el er (checked l r t)
