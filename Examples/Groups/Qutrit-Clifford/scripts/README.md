@@ -16,6 +16,7 @@ finite groups.
 | `Uniqueness.agda` | `python3 gen_uniq.py` (box actions from `pauli_act.py`) |
 | `Box1.agda` | `python3 kb_one.py` (Knuth–Bendix on C1–C5) |
 | `Box2.agda`, `Box2/Part*.agda` | `python3 br2gen.py emit 2000` (Felsch enumeration, `felsch.py` on `relcos2.py`, `relcos.py`, `kb.py`, `coset2.py`; relations from `br2rels.py`; Agda from `emit2.py`) |
+| `Box3.agda`, `Box3/Part*.agda` | `python3 br3gen.py && python3 emit3.py 19` (each relation a loop in the graph of hyperbolic planes of F₃⁶, `geo.py`, filled by translates of the loops of C15–C18, `fill.py`; the derivations pass through `br3.pkl` in the working directory) |
 
 `rules.py` checks the 18 rules and `boxes.py` the boxes' Figure 8
 actions in the model.  The paper's Figure 25 (third row) is misprinted —

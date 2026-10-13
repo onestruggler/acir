@@ -9,8 +9,9 @@
 -- opposite monoid (values n).  Soundness is the congruence of the
 -- reading, completeness its injectivity: the 18 rules are a monoid
 -- presentation of the values of n-qutrit Clifford circuits, given the
--- box relations on n qutrits, and outright on zero, one and two qutrits
--- (the relations on one and two are derived in Box1 and Box2).
+-- box relations on n qutrits, and so outright at every width (the
+-- relations on one, two and three qutrits are derived in Box1, Box2 and
+-- Box3).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -29,10 +30,11 @@ open import Presentation.Definitions using (_IsSubMonoidPresentationOf_)
 open import Examples.Groups.Qutrit-Clifford.Syntactics
 open import Examples.Groups.Qutrit-Clifford.Semantics using (⟦_⟧ ; monoid ; ≈-refl)
 open import Examples.Groups.Qutrit-Clifford.Soundness using (sound)
-open import Examples.Groups.Qutrit-Clifford.Rels using (Rels)
+open import Examples.Groups.Qutrit-Clifford.Rels using (Rels ; rels)
 open import Examples.Groups.Qutrit-Clifford.Completeness using (completeness)
 open import Examples.Groups.Qutrit-Clifford.Box1 using (br₁)
 open import Examples.Groups.Qutrit-Clifford.Box2 using (br₂)
+open import Examples.Groups.Qutrit-Clifford.Box3 using (br₃)
 
 private
   variable
@@ -66,3 +68,8 @@ presentation₁ = presentation br₁
 
 presentation₂ : (2 VRel,_===_) IsSubMonoidPresentationOf values 2
 presentation₂ = presentation (br₁ , br₂)
+
+-- The 18 rules present the values of n-qutrit Clifford circuits, for
+-- every n.
+presentationⁿ : (n : ℕ) → (n VRel,_===_) IsSubMonoidPresentationOf values n
+presentationⁿ n = presentation (rels br₁ br₂ br₃ n)
