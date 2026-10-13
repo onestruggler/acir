@@ -332,3 +332,257 @@ sd-px-comm a a′ b b′ p q ab ab′ a′b a′b′ = begin
 
   vy : X₁ • X₂ ≈ X₂ • X₁
   vy = axiom (TL.comm-XX p q ab ab′ a′b a′b′)
+
+------------------------------------------------------------------------
+-- The braid and the shrinking rules
+--
+-- Each proof crosses the phases to the front, where the pattern
+-- x² y² x² fuses to y² (`φ-aba`), and settles the three exchanges by
+-- one swap relation and an involution (`xcoreL`, `xcoreR`, `xcoreU`).
+
+private
+  <F-trans : ∀ {x y z : Fin N} → x <F y → y <F z → x <F z
+  <F-trans = Data.Nat.Properties.<-trans
+    where import Data.Nat.Properties
+
+  -- x² y² x² is y².
+  φ-aba : ∀ (x y : Fin N) (core : WT) →
+          (i x • i x) • ((i y • i y) • ((i x • i x) • core))
+          ≈ (i y • i y) • core
+  φ-aba x y core = begin
+    (i x • i x) • ((i y • i y) • ((i x • i x) • core))
+      ≈⟨ by-assoc Eq.refl ⟩
+    ((i x • i x) • (i y • i y)) • ((i x • i x) • core)
+      ≈⟨ front _ (ipow-comm x y 2 2) ⟩
+    ((i y • i y) • (i x • i x)) • ((i x • i x) • core)
+      ≈⟨ by-assoc Eq.refl ⟩
+    (i y • i y) • (((i x • i x) • (i x • i x)) • core)
+      ≈⟨ back _ (front core (trans (by-assoc Eq.refl) (i⁴ x))) ⟩
+    (i y • i y) • (ε • core)
+      ≈⟨ back _ left-unit ⟩
+    (i y • i y) • core ∎
+
+  -- The three-exchange cores.
+  xcoreL : ∀ (a a′ c : Fin N) (p : a <F a′) (q : a′ <F c) →
+           X a a′ p • (X a′ c q • X a a′ p) ≈ X a c (<F-trans p q)
+  xcoreL a a′ c p q =
+    trans (back (X a a′ p) (axiom (TL.swap-XX p q)))
+          (cancelˡ⁻ _ (X² a a′ p))
+
+  xcoreR : ∀ (a a′ c : Fin N) (p : a <F a′) (q : a′ <F c) →
+           X a′ c q • (X a a′ p • X a′ c q) ≈ X a c (<F-trans p q)
+  xcoreR a a′ c p q =
+    trans (back (X a′ c q) (sym (conj-flip (X² a′ c q) (axiom (TL.swap-XX′ p q)))))
+          (cancelˡ⁻ _ (X² a′ c q))
+
+  xcoreU : ∀ (a c′ c : Fin N) (p : a <F c′) (q : c′ <F c) →
+           X c′ c q • (X a c′ p • X c′ c q) ≈ X a c (<F-trans p q)
+  xcoreU a c′ c p q =
+    trans (back (X c′ c q) (sym (conj-flip (X² c′ c q) (axiom (TL.swap-XX′ p q)))))
+          (cancelˡ⁻ _ (X² c′ c q))
+
+sd-px-braid : ∀ (a a′ a″ : Fin N) (p : a <F a′) (q : a′ <F a″) →
+              (i a • (i a • X a a′ p))
+              • ((i a′ • (i a′ • X a′ a″ q)) • (i a • (i a • X a a′ p)))
+              ≈ (i a′ • (i a′ • X a′ a″ q))
+                • ((i a • (i a • X a a′ p)) • (i a′ • (i a′ • X a′ a″ q)))
+sd-px-braid a a′ a″ p q = trans lhs (sym rhs)
+  where
+  X₁ = X a a′ p
+  X₂ = X a′ a″ q
+
+  a∉₂ : X₂ • (i a • i a) ≈ (i a • i a) • X₂
+  a∉₂ = crossʳ-pow-at a′ a″ q 2
+          (swapF-o a′ a″ a (<⇒≢ p) (<⇒≢ (<F-trans p q)))
+
+  lhs : (i a • (i a • X₁)) • ((i a′ • (i a′ • X₂)) • (i a • (i a • X₁)))
+        ≈ (i a′ • i a′) • X a a″ (<F-trans p q)
+  lhs = begin
+    (i a • (i a • X₁)) • ((i a′ • (i a′ • X₂)) • (i a • (i a • X₁)))
+      ≈⟨ by-assoc Eq.refl ⟩
+    (i a • i a) • (X₁ • ((i a′ • i a′) • ((X₂ • (i a • i a)) • X₁)))
+      ≈⟨ back _ (back X₁ (back _ (front X₁ a∉₂))) ⟩
+    (i a • i a) • (X₁ • ((i a′ • i a′) • (((i a • i a) • X₂) • X₁)))
+      ≈⟨ by-assoc Eq.refl ⟩
+    (i a • i a) • ((X₁ • (i a′ • i a′)) • ((i a • i a) • (X₂ • X₁)))
+      ≈⟨ back _ (front _ (crossʳ-pow-at a a′ p 2 (swapF-b a a′))) ⟩
+    (i a • i a) • (((i a • i a) • X₁) • ((i a • i a) • (X₂ • X₁)))
+      ≈⟨ by-assoc Eq.refl ⟩
+    (i a • i a) • ((i a • i a) • ((X₁ • (i a • i a)) • (X₂ • X₁)))
+      ≈⟨ back _ (back _ (front _ (crossʳ-pow-at a a′ p 2 (swapF-a a a′)))) ⟩
+    (i a • i a) • ((i a • i a) • (((i a′ • i a′) • X₁) • (X₂ • X₁)))
+      ≈⟨ by-assoc Eq.refl ⟩
+    ((i a • i a) • (i a • i a)) • ((i a′ • i a′) • (X₁ • (X₂ • X₁)))
+      ≈⟨ front _ (trans (by-assoc Eq.refl) (i⁴ a)) ⟩
+    ε • ((i a′ • i a′) • (X₁ • (X₂ • X₁)))
+      ≈⟨ left-unit ⟩
+    (i a′ • i a′) • (X₁ • (X₂ • X₁))
+      ≈⟨ back _ (xcoreL a a′ a″ p q) ⟩
+    (i a′ • i a′) • X a a″ (<F-trans p q) ∎
+
+  rhs : (i a′ • (i a′ • X₂)) • ((i a • (i a • X₁)) • (i a′ • (i a′ • X₂)))
+        ≈ (i a′ • i a′) • X a a″ (<F-trans p q)
+  rhs = begin
+    (i a′ • (i a′ • X₂)) • ((i a • (i a • X₁)) • (i a′ • (i a′ • X₂)))
+      ≈⟨ by-assoc Eq.refl ⟩
+    (i a′ • i a′) • (X₂ • ((i a • i a) • ((X₁ • (i a′ • i a′)) • X₂)))
+      ≈⟨ back _ (back X₂ (back _ (front X₂
+           (crossʳ-pow-at a a′ p 2 (swapF-b a a′))))) ⟩
+    (i a′ • i a′) • (X₂ • ((i a • i a) • (((i a • i a) • X₁) • X₂)))
+      ≈⟨ by-assoc Eq.refl ⟩
+    (i a′ • i a′) • ((X₂ • (i a • i a)) • ((i a • i a) • (X₁ • X₂)))
+      ≈⟨ back _ (front _ a∉₂) ⟩
+    (i a′ • i a′) • (((i a • i a) • X₂) • ((i a • i a) • (X₁ • X₂)))
+      ≈⟨ by-assoc Eq.refl ⟩
+    (i a′ • i a′) • ((i a • i a) • ((X₂ • (i a • i a)) • (X₁ • X₂)))
+      ≈⟨ back _ (back _ (front _ a∉₂)) ⟩
+    (i a′ • i a′) • ((i a • i a) • (((i a • i a) • X₂) • (X₁ • X₂)))
+      ≈⟨ by-assoc Eq.refl ⟩
+    (i a′ • i a′) • (((i a • i a) • (i a • i a)) • (X₂ • (X₁ • X₂)))
+      ≈⟨ back _ (front _ (trans (by-assoc Eq.refl) (i⁴ a))) ⟩
+    (i a′ • i a′) • (ε • (X₂ • (X₁ • X₂)))
+      ≈⟨ back _ left-unit ⟩
+    (i a′ • i a′) • (X₂ • (X₁ • X₂))
+      ≈⟨ back _ (xcoreR a a′ a″ p q) ⟩
+    (i a′ • i a′) • X a a″ (<F-trans p q) ∎
+
+------------------------------------------------------------------------
+-- The shrinking rules
+
+sd-px-shrink₁ : ∀ (a a′ c : Fin N) (p : a <F a′) (lt : a′ <F c) →
+                i a • (i a • X a c (<F-trans p lt))
+                ≈ (i a′ • (i a′ • X a a′ p))
+                  • ((i a′ • (i a′ • X a′ c lt)) • (i a • (i a • X a a′ p)))
+sd-px-shrink₁ a a′ c p lt = sym (begin
+  (i a′ • (i a′ • X₁)) • ((i a′ • (i a′ • X₂)) • (i a • (i a • X₁)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i a′ • i a′) • (X₁ • ((i a′ • i a′) • ((X₂ • (i a • i a)) • X₁)))
+    ≈⟨ back _ (back X₁ (back _ (front X₁ a∉₂))) ⟩
+  (i a′ • i a′) • (X₁ • ((i a′ • i a′) • (((i a • i a) • X₂) • X₁)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i a′ • i a′) • ((X₁ • (i a′ • i a′)) • ((i a • i a) • (X₂ • X₁)))
+    ≈⟨ back _ (front _ (crossʳ-pow-at a a′ p 2 (swapF-b a a′))) ⟩
+  (i a′ • i a′) • (((i a • i a) • X₁) • ((i a • i a) • (X₂ • X₁)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i a′ • i a′) • ((i a • i a) • ((X₁ • (i a • i a)) • (X₂ • X₁)))
+    ≈⟨ back _ (back _ (front _ (crossʳ-pow-at a a′ p 2 (swapF-a a a′)))) ⟩
+  (i a′ • i a′) • ((i a • i a) • (((i a′ • i a′) • X₁) • (X₂ • X₁)))
+    ≈⟨ back _ (back _ assoc) ⟩
+  (i a′ • i a′) • ((i a • i a) • ((i a′ • i a′) • (X₁ • (X₂ • X₁))))
+    ≈⟨ φ-aba a′ a (X₁ • (X₂ • X₁)) ⟩
+  (i a • i a) • (X₁ • (X₂ • X₁))
+    ≈⟨ back _ (xcoreL a a′ c p lt) ⟩
+  (i a • i a) • X a c (<F-trans p lt)
+    ≈⟨ assoc ⟩
+  i a • (i a • X a c (<F-trans p lt)) ∎)
+  where
+  X₁ = X a a′ p
+  X₂ = X a′ c lt
+
+  a∉₂ : X₂ • (i a • i a) ≈ (i a • i a) • X₂
+  a∉₂ = crossʳ-pow-at a′ c lt 2
+          (swapF-o a′ c a (<⇒≢ p) (<⇒≢ (<F-trans p lt)))
+
+sd-px-shrink₂ : ∀ (a a′ c : Fin N) (p : a <F a′) (lt : a′ <F c) →
+                i c • (i c • X a c (<F-trans p lt))
+                ≈ (i a′ • (i a′ • X a a′ p))
+                  • ((i c • (i c • X a′ c lt)) • (i a • (i a • X a a′ p)))
+sd-px-shrink₂ a a′ c p lt = sym (begin
+  (i a′ • (i a′ • X₁)) • ((i c • (i c • X₂)) • (i a • (i a • X₁)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i a′ • i a′) • (X₁ • ((i c • i c) • ((X₂ • (i a • i a)) • X₁)))
+    ≈⟨ back _ (back X₁ (back _ (front X₁ a∉₂))) ⟩
+  (i a′ • i a′) • (X₁ • ((i c • i c) • (((i a • i a) • X₂) • X₁)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i a′ • i a′) • ((X₁ • (i c • i c)) • ((i a • i a) • (X₂ • X₁)))
+    ≈⟨ back _ (front _ (crossʳ-pow-at a a′ p 2
+         (swapF-o a a′ c (≢sym (<⇒≢ (<F-trans p lt))) (≢sym (<⇒≢ lt))))) ⟩
+  (i a′ • i a′) • (((i c • i c) • X₁) • ((i a • i a) • (X₂ • X₁)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i a′ • i a′) • ((i c • i c) • ((X₁ • (i a • i a)) • (X₂ • X₁)))
+    ≈⟨ back _ (back _ (front _ (crossʳ-pow-at a a′ p 2 (swapF-a a a′)))) ⟩
+  (i a′ • i a′) • ((i c • i c) • (((i a′ • i a′) • X₁) • (X₂ • X₁)))
+    ≈⟨ back _ (back _ assoc) ⟩
+  (i a′ • i a′) • ((i c • i c) • ((i a′ • i a′) • (X₁ • (X₂ • X₁))))
+    ≈⟨ φ-aba a′ c (X₁ • (X₂ • X₁)) ⟩
+  (i c • i c) • (X₁ • (X₂ • X₁))
+    ≈⟨ back _ (xcoreL a a′ c p lt) ⟩
+  (i c • i c) • X a c (<F-trans p lt)
+    ≈⟨ assoc ⟩
+  i c • (i c • X a c (<F-trans p lt)) ∎)
+  where
+  X₁ = X a a′ p
+  X₂ = X a′ c lt
+
+  a∉₂ : X₂ • (i a • i a) ≈ (i a • i a) • X₂
+  a∉₂ = crossʳ-pow-at a′ c lt 2
+          (swapF-o a′ c a (<⇒≢ p) (<⇒≢ (<F-trans p lt)))
+
+sd-px-shrink₃ : ∀ (a c′ c : Fin N) (lt : a <F c′) (q : c′ <F c) →
+                i a • (i a • X a c (<F-trans lt q))
+                ≈ (i c′ • (i c′ • X c′ c q))
+                  • ((i a • (i a • X a c′ lt)) • (i c • (i c • X c′ c q)))
+sd-px-shrink₃ a c′ c lt q = sym (begin
+  (i c′ • (i c′ • Y₁)) • ((i a • (i a • Y₂)) • (i c • (i c • Y₁)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i c′ • i c′) • (Y₁ • ((i a • i a) • ((Y₂ • (i c • i c)) • Y₁)))
+    ≈⟨ back _ (back Y₁ (back _ (front Y₁ c∉₂))) ⟩
+  (i c′ • i c′) • (Y₁ • ((i a • i a) • (((i c • i c) • Y₂) • Y₁)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i c′ • i c′) • ((Y₁ • (i a • i a)) • ((i c • i c) • (Y₂ • Y₁)))
+    ≈⟨ back _ (front _ (crossʳ-pow-at c′ c q 2
+         (swapF-o c′ c a (<⇒≢ lt) (<⇒≢ (<F-trans lt q))))) ⟩
+  (i c′ • i c′) • (((i a • i a) • Y₁) • ((i c • i c) • (Y₂ • Y₁)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i c′ • i c′) • ((i a • i a) • ((Y₁ • (i c • i c)) • (Y₂ • Y₁)))
+    ≈⟨ back _ (back _ (front _ (crossʳ-pow-at c′ c q 2 (swapF-b c′ c)))) ⟩
+  (i c′ • i c′) • ((i a • i a) • (((i c′ • i c′) • Y₁) • (Y₂ • Y₁)))
+    ≈⟨ back _ (back _ assoc) ⟩
+  (i c′ • i c′) • ((i a • i a) • ((i c′ • i c′) • (Y₁ • (Y₂ • Y₁))))
+    ≈⟨ φ-aba c′ a (Y₁ • (Y₂ • Y₁)) ⟩
+  (i a • i a) • (Y₁ • (Y₂ • Y₁))
+    ≈⟨ back _ (xcoreU a c′ c lt q) ⟩
+  (i a • i a) • X a c (<F-trans lt q)
+    ≈⟨ assoc ⟩
+  i a • (i a • X a c (<F-trans lt q)) ∎)
+  where
+  Y₁ = X c′ c q
+  Y₂ = X a c′ lt
+
+  c∉₂ : Y₂ • (i c • i c) ≈ (i c • i c) • Y₂
+  c∉₂ = crossʳ-pow-at a c′ lt 2
+          (swapF-o a c′ c (≢sym (<⇒≢ (<F-trans lt q))) (≢sym (<⇒≢ q)))
+
+sd-px-shrink₄ : ∀ (a c′ c : Fin N) (lt : a <F c′) (q : c′ <F c) →
+                i c • (i c • X a c (<F-trans lt q))
+                ≈ (i c′ • (i c′ • X c′ c q))
+                  • ((i c′ • (i c′ • X a c′ lt)) • (i c • (i c • X c′ c q)))
+sd-px-shrink₄ a c′ c lt q = sym (begin
+  (i c′ • (i c′ • Y₁)) • ((i c′ • (i c′ • Y₂)) • (i c • (i c • Y₁)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i c′ • i c′) • (Y₁ • ((i c′ • i c′) • ((Y₂ • (i c • i c)) • Y₁)))
+    ≈⟨ back _ (back Y₁ (back _ (front Y₁ c∉₂))) ⟩
+  (i c′ • i c′) • (Y₁ • ((i c′ • i c′) • (((i c • i c) • Y₂) • Y₁)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i c′ • i c′) • ((Y₁ • (i c′ • i c′)) • ((i c • i c) • (Y₂ • Y₁)))
+    ≈⟨ back _ (front _ (crossʳ-pow-at c′ c q 2 (swapF-a c′ c))) ⟩
+  (i c′ • i c′) • (((i c • i c) • Y₁) • ((i c • i c) • (Y₂ • Y₁)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i c′ • i c′) • ((i c • i c) • ((Y₁ • (i c • i c)) • (Y₂ • Y₁)))
+    ≈⟨ back _ (back _ (front _ (crossʳ-pow-at c′ c q 2 (swapF-b c′ c)))) ⟩
+  (i c′ • i c′) • ((i c • i c) • (((i c′ • i c′) • Y₁) • (Y₂ • Y₁)))
+    ≈⟨ back _ (back _ assoc) ⟩
+  (i c′ • i c′) • ((i c • i c) • ((i c′ • i c′) • (Y₁ • (Y₂ • Y₁))))
+    ≈⟨ φ-aba c′ c (Y₁ • (Y₂ • Y₁)) ⟩
+  (i c • i c) • (Y₁ • (Y₂ • Y₁))
+    ≈⟨ back _ (xcoreU a c′ c lt q) ⟩
+  (i c • i c) • X a c (<F-trans lt q)
+    ≈⟨ assoc ⟩
+  i c • (i c • X a c (<F-trans lt q)) ∎)
+  where
+  Y₁ = X c′ c q
+  Y₂ = X a c′ lt
+
+  c∉₂ : Y₂ • (i c • i c) ≈ (i c • i c) • Y₂
+  c∉₂ = crossʳ-pow-at a c′ lt 2
+          (swapF-o a c′ c (≢sym (<⇒≢ (<F-trans lt q))) (≢sym (<⇒≢ q)))
