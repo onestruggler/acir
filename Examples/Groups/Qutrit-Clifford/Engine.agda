@@ -13,7 +13,8 @@
 -- a derivation, so that a proof is a list of steps closed by refl.
 --
 -- Equations are transformed by sym⁼ and by lift⁼ (one wire up).
--- Lists are in operator order, like words: the head acts last.
+-- Lists are in operator order, like words: the head acts last.  This is
+-- Examples.Groups.Qubit-Clifford.Engine over the qutrit gates.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

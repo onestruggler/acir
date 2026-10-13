@@ -35,6 +35,7 @@ open import Data.Fin.Base using (Fin ; zero ; suc)
 open import Data.Nat.Base using (ℕ ; zero ; suc) renaming (_+_ to _+ℕ_ ; _*_ to _*ℕ_)
 import Data.Nat.Properties as ℕP
 open import Data.Product.Base using (_,_ ; proj₁ ; proj₂)
+open import Data.Bool.Base using (T)
 open import Data.Unit using (tt)
 open import Data.Vec.Base using ([] ; _∷_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl)
@@ -58,43 +59,50 @@ private
 ------------------------------------------------------------------------
 -- The gates
 
-private
-  -- Addition and multiplication modulo 3.
-  _⊞_ : Fin 3 → Fin 3 → Fin 3
-  zero           ⊞ b              = b
-  suc zero       ⊞ zero           = suc zero
-  suc zero       ⊞ suc zero       = suc (suc zero)
-  suc zero       ⊞ suc (suc zero) = zero
-  suc (suc zero) ⊞ zero           = suc (suc zero)
-  suc (suc zero) ⊞ suc zero       = zero
-  suc (suc zero) ⊞ suc (suc zero) = suc zero
+-- Addition and multiplication modulo 3, the powers of ω, and the
+-- phases of S (Evaluation computes with them too).
+_⊞_ : Fin 3 → Fin 3 → Fin 3
+zero           ⊞ b              = b
+suc zero       ⊞ zero           = suc zero
+suc zero       ⊞ suc zero       = suc (suc zero)
+suc zero       ⊞ suc (suc zero) = zero
+suc (suc zero) ⊞ zero           = suc (suc zero)
+suc (suc zero) ⊞ suc zero       = zero
+suc (suc zero) ⊞ suc (suc zero) = suc zero
 
-  _⊠_ : Fin 3 → Fin 3 → Fin 3
-  zero           ⊠ _ = zero
-  suc zero       ⊠ b = b
-  suc (suc zero) ⊠ b = b ⊞ b
+_⊠_ : Fin 3 → Fin 3 → Fin 3
+zero           ⊠ _ = zero
+suc zero       ⊠ b = b
+suc (suc zero) ⊠ b = b ⊞ b
 
-  -- ω^j = ζ^{4 j}.
-  ω^ : Fin 3 → Q
-  ω^ zero             = 1#
-  ω^ (suc zero)       = x ^q 4
-  ω^ (suc (suc zero)) = x ^q 8
+-- ω^j = ζ^{4 j}.
+ω^ : Fin 3 → Q
+ω^ zero             = 1#
+ω^ (suc zero)       = x ^q 4
+ω^ (suc (suc zero)) = x ^q 8
 
-  -- The phase of S on |b⟩.
-  sph : Fin 3 → Q
-  sph (suc (suc zero)) = 1#
-  sph _                = x ^q 4
+-- The phase of S on |b⟩.
+sph : Fin 3 → Q
+sph (suc (suc zero)) = 1#
+sph _                = x ^q 4
 
 νᵍ : Sc 0
 νᵍ = 0 , mat (x ^q 10)
 
+-- The matrices, named so that Evaluation can refer to them.
+Hₒ Sₒ : Op 1
+Hₒ (a ∷ []) (b ∷ []) = x ^q 3 * ω^ (a ⊠ b)
+Sₒ (a ∷ []) (b ∷ []) = δ₁ a b * sph b
+
+CZₒ : Op 2
+CZₒ (a₀ ∷ a₁ ∷ []) (b₀ ∷ b₁ ∷ []) = δ₁ a₀ b₀ * (δ₁ a₁ b₁ * ω^ (b₀ ⊠ b₁))
+
 Hᵍ Sᵍ : Sc 1
-Hᵍ = 1 , matOf λ { (a ∷ []) (b ∷ []) → x ^q 3 * ω^ (a ⊠ b) }
-Sᵍ = 0 , matOf λ { (a ∷ []) (b ∷ []) → δ₁ a b * sph b }
+Hᵍ = 1 , matOf Hₒ
+Sᵍ = 0 , matOf Sₒ
 
 CZᵍ : Sc 2
-CZᵍ = 0 , matOf λ { (a₀ ∷ a₁ ∷ []) (b₀ ∷ b₁ ∷ []) →
-                    δ₁ a₀ b₀ * (δ₁ a₁ b₁ * ω^ (b₀ ⊠ b₁)) }
+CZᵍ = 0 , matOf CZₒ
 
 val : Gate k → Sc k
 val ν-gate  = νᵍ
@@ -119,8 +127,23 @@ val CZ-gate = CZᵍ
 ------------------------------------------------------------------------
 -- Exact comparison
 
-open Phases (λ k → k ≡ 0) refl (λ { refl refl → refl }) (λ { refl → ℕP.*-zeroʳ 11 }) public
-open Decide (λ k → k ≡ 0) refl (λ { refl refl → refl }) (λ { refl → ℕP.*-zeroʳ 11 }) public
+-- The phases allowed: x^0 only.  Named, so that Phases and Decide are
+-- applied to the same terms and their relations are the same.
+Exact : ℕ → Set
+Exact k = k ≡ 0
+
+private
+  exact-0 : Exact 0
+  exact-0 = refl
+
+  exact-+ : ∀ {k l} → Exact k → Exact l → Exact (k +ℕ l)
+  exact-+ refl refl = refl
+
+  exact-⁻ : ∀ {k} → Exact k → Exact (11 *ℕ k)
+  exact-⁻ refl = ℕP.*-zeroʳ 11
+
+open Phases Exact exact-0 exact-+ exact-⁻ public
+open Decide Exact exact-0 exact-+ exact-⁻ public
 
 private
   ≈-trans' : {s₁ s₂ s₃ : Sc n} → s₁ ≈ s₂ → s₂ ≈ s₃ → s₁ ≈ s₃
@@ -199,6 +222,13 @@ lift {k} l r {n} {w} {v} el er e =
       (embs-cong {k} {n} {s = ⟦ l ⟧} {⟦ r ⟧} e)
       (≈-sym' {s = ⟦ v ⟧} {embs {k} {n} ⟦ r ⟧} (⟦↓≡⟧ r er)))
 
+-- The same, the equation on k wires being checked by evaluation.  The
+-- two values are named, so that the Boolean check has no metavariable
+-- left in it.
+by-eval : (l r : Circuit k) {n : ℕ} {w v : Circuit (k +ℕ n)} →
+          l ↓ᵏ n ≡ w → r ↓ᵏ n ≡ v → T (eqₖ 0 ⟦ l ⟧ ⟦ r ⟧) → ⟦ w ⟧ ≈ ⟦ v ⟧
+by-eval l r el er t = lift l r el er (check 0 refl ⟦ l ⟧ ⟦ r ⟧ t)
+
 ------------------------------------------------------------------------
 -- The structural rules of Circuit.Base
 
@@ -251,53 +281,3 @@ comm₂-sound {n} h g =
     (≐-trans (up-cong (ix-scalM {n} c))
     (≐-trans (up-scal c) (≐-sym (ix-scalM {suc n} c)))))
   where c = entries (proj₂ (val h))
-
-------------------------------------------------------------------------
--- The rules of Figure 1, by evaluation on their own wires
-
-rule-sound : n QRel, w === v → ⟦ w ⟧ ≈ ⟦ v ⟧
-rule-sound C₁  = lift {0} (ν ^ 6) ε refl refl (check 0 refl _ _ tt)
-rule-sound C₂  = lift {1} (H ^ 4) ε refl refl (check 0 refl _ _ tt)
-rule-sound C₃  = lift {1} (S ^ 3) ε refl refl (check 0 refl _ _ tt)
-rule-sound C₄  = lift {1} (H • S • S • H • S • S • H • S • S) ν refl refl (check 0 refl _ _ tt)
-rule-sound C₅  = lift {1} (S′ • S) (S • S′) refl refl (check 0 refl _ _ tt)
-rule-sound C₆  = lift {2} (CZ ^ 3) ε refl refl (check 0 refl _ _ tt)
-rule-sound C₇  = lift {2} (SWAP • SWAP) ε refl refl (check 0 refl _ _ tt)
-rule-sound C₈  = lift {2} (CZ • S ↑) (S ↑ • CZ) refl refl (check 0 refl _ _ tt)
-rule-sound C₉  = lift {2} (CZ • CZ • H ↑ • H ↑) (H ↑ • H ↑ • CZ) refl refl (check 0 refl _ _ tt)
-rule-sound C₁₀ = lift {2} (SWAP • S ↑) (S • SWAP) refl refl (check 0 refl _ _ tt)
-rule-sound C₁₁ = lift {2} (SWAP • H ↑) (H • SWAP) refl refl (check 0 refl _ _ tt)
-rule-sound C₁₂ = lift {2} (SWAP • CZ) (CZ • SWAP) refl refl (check 0 refl _ _ tt)
-rule-sound C₁₃ = lift {2} (XC • S ↑) (ωˢ • ωˢ • S′ • S ↑ • CZ • XC) refl refl (check 0 refl _ _ tt)
-rule-sound C₁₄ = lift {2} (XC • CZ) (ωˢ • S • S′ • CZ • XC) refl refl (check 0 refl _ _ tt)
-rule-sound C₁₅ = lift {3} (CZ ↑ • CZ) (CZ • CZ ↑) refl refl (check 0 refl _ _ tt)
-rule-sound C₁₆ = lift {3} (SWAP ↑ • SWAP • SWAP ↑) (SWAP • SWAP ↑ • SWAP) refl refl (check 0 refl _ _ tt)
-rule-sound C₁₇ = lift {3} (SWAP • SWAP ↑ • CZ) (CZ ↑ • SWAP • SWAP ↑) refl refl (check 0 refl _ _ tt)
-rule-sound C₁₈ = lift {3} (CZ • CX ↑) (CZ₀₂ • CX ↑ • CZ) refl refl (check 0 refl _ _ tt)
-
-------------------------------------------------------------------------
--- Soundness
-
-vrel-sound : n VRel, w === v → ⟦ w ⟧ ≈ ⟦ v ⟧
-vrel-sound (srel r)                  = rule-sound r
-vrel-sound (cong↑ {w = w} {v = v} a) = cong↑-sound {w = w} {v} (vrel-sound a)
-vrel-sound (comm₁ h g)               = ≈-sym' {s = ⟦ [ gate₁ h ]ʷ • [ g ↥ ]ʷ ⟧}
-                                         {⟦ [ g ↥ ]ʷ • [ gate₁ h ]ʷ ⟧} (comm₁-sound h g)
-vrel-sound (comm₂ h g)               = ≈-sym' {s = ⟦ [ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ ⟧}
-                                         {⟦ [ g ↥ ↥ ]ʷ • [ gate₂ h ]ʷ ⟧} (comm₂-sound h g)
-vrel-sound (ω↑=ω h)                  = ω↑=ω-sound h
-
--- Every derivable equation holds.
-sound : n ⊢ w ≈ v → ⟦ w ⟧ ≈ ⟦ v ⟧
-sound {w = w} PB.refl          = ≈-refl {s = ⟦ w ⟧}
-sound {w = w} {v} (PB.sym e)   = ≈-sym' {s = ⟦ v ⟧} {⟦ w ⟧} (sound e)
-sound {w = w} {v} (PB.trans {v = u} e f) =
-  ≈-trans' {s₁ = ⟦ w ⟧} {⟦ u ⟧} {⟦ v ⟧} (sound e) (sound f)
-sound (PB.cong {w = w} {w' = w'} {v = v} {v' = v'} e f) =
-  ∙-cong {s₁ = ⟦ v ⟧} {⟦ v' ⟧} {⟦ w ⟧} {⟦ w' ⟧} (sound f) (sound e)
-sound (PB.assoc {w = w} {v = v} {u = u}) =
-  ≈-sym' {s = (⟦ u ⟧ ∙ ⟦ v ⟧) ∙ ⟦ w ⟧} {⟦ u ⟧ ∙ (⟦ v ⟧ ∙ ⟦ w ⟧)}
-    (Monoid.assoc (monoid _) ⟦ u ⟧ ⟦ v ⟧ ⟦ w ⟧)
-sound (PB.left-unit {w = w})  = proj₂ (Monoid.identity (monoid _)) ⟦ w ⟧
-sound (PB.right-unit {w = w}) = proj₁ (Monoid.identity (monoid _)) ⟦ w ⟧
-sound (PB.axiom a)            = vrel-sound a
