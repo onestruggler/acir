@@ -115,6 +115,17 @@ private
                       , proj₂ ⟦ u ⟧ˢᵈ ∘ˢ proj₂ ⟦ v ⟧ˢᵈ )
   ∙ᵃᵖ {n} u v = SDPres.Semidirect.∙-agrees n ⟦ u ⟧ˢᵈ ⟦ v ⟧ˢᵈ
 
+  -- Its Pauli component, proved once over variable words.  At a
+  -- particular word, `Eq.cong proj₁ (∙ᵃᵖ u v)` leaves cong's endpoints to
+  -- be solved against the goal at the whole pair, so the two readings
+  -- of the word are compared symplectic part and all: about 100 s for
+  -- each of Z^-bot, Z^-botZ and Z^-val (Z ^ ₂₊ j against Z • Z ^ ₁₊ j).
+  -- Stated for the first component alone, the same step is
+  -- milliseconds.
+  ∙ᵃᵖ₁ : (u v : Word (SemiDirect.Gen n)) →
+         proj₁ ⟦ u • v ⟧ˢᵈ ≡ proj₁ ⟦ u ⟧ˢᵈ +ₚ ap (proj₂ ⟦ u ⟧ˢᵈ) (proj₁ ⟦ v ⟧ˢᵈ)
+  ∙ᵃᵖ₁ u v = Eq.cong proj₁ (∙ᵃᵖ u v)
+
   -- Composition respects ≈ˢ.  Written out: the endpoints of a ≈ˢ are
   -- never recovered by unification.
   ∘ˢ-cong : (S S' T T' : Symplectic n) → S ≈ˢ S' → T ≈ˢ T' →
@@ -159,7 +170,7 @@ private
                  (proj₂ ihu (pI ∷ Pv))
 
   pw : proj₁ ⟦ (u • v) SemiDirect.↑ ⟧ˢᵈ ≡ pI ∷ proj₁ ⟦ u • v ⟧ˢᵈ
-  pw = Eq.trans (Eq.cong proj₁ (∙ᵃᵖ (u SemiDirect.↑) (v SemiDirect.↑)))
+  pw = Eq.trans (∙ᵃᵖ₁ (u SemiDirect.↑) (v SemiDirect.↑))
          (Eq.trans (Eq.cong₂ _+ₚ_ (proj₁ ihu) apv)
            (Eq.trans (Eq.cong (_∷ (Pu +ₚ ap Su Pv)) (+₁-identityˡ pI))
                      (Eq.cong (λ z → pI ∷ proj₁ z) (Eq.sym (∙ᵃᵖ u v)))))
@@ -276,7 +287,7 @@ Z^-bot (₁₊ zero) = (pZ , Eq.refl) , λ q → Eq.refl
 -- recursive calls avoids both.
 Z^-bot {n} (₂₊ j) =
       ( (pZ +₁ proj₁ (proj₁ (Z^-bot {n} (₁₊ j))))
-      , Eq.trans (Eq.cong proj₁ (∙ᵃᵖ (SemiDirect.Z {n}) (SemiDirect.Z ^ ₁₊ j)))
+      , Eq.trans (∙ᵃᵖ₁ (SemiDirect.Z {n}) (SemiDirect.Z ^ ₁₊ j))
           (Eq.trans (Eq.cong (pZ₀ +ₚ_) (proj₂ (proj₁ (Z^-bot {n} (₁₊ j)))))
                     (Eq.cong ((pZ +₁ proj₁ (proj₁ (Z^-bot {n} (₁₊ j)))) ∷_)
                              (+ₚ-identityˡ pIₙ))) )
@@ -318,7 +329,7 @@ ZS-bot : (w : Word (SemiDirect.Gen (₁₊ n))) →
           ap (proj₂ (⟦_⟧ˢᵈ {₁₊ n} (w • SemiDirect.S))) (pI ∷ R) ≡ pI ∷ R)
 ZS-bot {n} w (q , eq) sy =
       ( q
-      , Eq.trans (Eq.cong proj₁ (∙ᵃᵖ w SemiDirect.S))
+      , Eq.trans (∙ᵃᵖ₁ w SemiDirect.S)
           (Eq.trans (Eq.cong (proj₁ (⟦_⟧ˢᵈ {₁₊ n} w) +ₚ_) (sy pIₙ))
                     (Eq.trans (+ₚ-identityʳ (proj₁ (⟦_⟧ˢᵈ {₁₊ n} w))) eq)) )
     , λ R → Eq.trans
@@ -416,7 +427,7 @@ Z^-botZ zero      = ₀ , Eq.refl
 Z^-botZ (₁₊ zero) = ₁ , Eq.refl
 Z^-botZ {n} (₂₊ j) =
   ( ₁ + proj₁ (Z^-botZ {n} (₁₊ j))
-  , Eq.trans (Eq.cong proj₁ (∙ᵃᵖ (SemiDirect.Z {n}) (SemiDirect.Z ^ ₁₊ j)))
+  , Eq.trans (∙ᵃᵖ₁ (SemiDirect.Z {n}) (SemiDirect.Z ^ ₁₊ j))
       (Eq.trans (Eq.cong (pZ₀ +ₚ_) (proj₂ (Z^-botZ {n} (₁₊ j))))
         (Eq.trans
           (Eq.cong (λ z → (z , ₁ + proj₁ (Z^-botZ {n} (₁₊ j)))
@@ -433,7 +444,7 @@ ZS-botZ : (w : Word (SemiDirect.Gen (₁₊ n))) →
           BotZ (proj₁ (⟦_⟧ˢᵈ {₁₊ n} (w • SemiDirect.S)))
 ZS-botZ {n} w (b , e) sy =
   ( b
-  , Eq.trans (Eq.cong proj₁ (∙ᵃᵖ w SemiDirect.S))
+  , Eq.trans (∙ᵃᵖ₁ w SemiDirect.S)
       (Eq.trans (Eq.cong (proj₁ (⟦_⟧ˢᵈ {₁₊ n} w) +ₚ_) (sy pIₙ))
                 (Eq.trans (+ₚ-identityʳ (proj₁ (⟦_⟧ˢᵈ {₁₊ n} w))) e)) )
 
@@ -555,7 +566,7 @@ Z^-val : (j : ℕ) →
 Z^-val zero      = Eq.refl
 Z^-val (₁₊ zero) = Eq.cong (λ z → (₀ , z) ∷ pIₙ) (Eq.sym (+-identityʳ ₁))
 Z^-val {n} (₂₊ j) =
-  Eq.trans (Eq.cong proj₁ (∙ᵃᵖ (SemiDirect.Z {n}) (SemiDirect.Z ^ ₁₊ j)))
+  Eq.trans (∙ᵃᵖ₁ (SemiDirect.Z {n}) (SemiDirect.Z ^ ₁₊ j))
     (Eq.trans (Eq.cong (pZ₀ +ₚ_) (Z^-val {n} (₁₊ j)))
       (Eq.trans (Eq.cong (λ z → (z , ₁ + mult (₁₊ j)) ∷ (pIₙ +ₚ pIₙ))
                          (+-identityʳ ₀))
@@ -567,7 +578,7 @@ ZS-val : (w : Word (SemiDirect.Gen (₁₊ n))) (b : ℤ ₚ) →
          (proj₂ (⟦_⟧ˢᵈ {₁₊ n} w) ≈ˢ εˢ) →
          proj₁ (⟦_⟧ˢᵈ {₁₊ n} (w • SemiDirect.S)) ≡ (₀ , b) ∷ pIₙ
 ZS-val {n} w b e sy =
-  Eq.trans (Eq.cong proj₁ (∙ᵃᵖ w SemiDirect.S))
+  Eq.trans (∙ᵃᵖ₁ w SemiDirect.S)
     (Eq.trans (Eq.cong (proj₁ (⟦_⟧ˢᵈ {₁₊ n} w) +ₚ_) (sy pIₙ))
               (Eq.trans (+ₚ-identityʳ (proj₁ (⟦_⟧ˢᵈ {₁₊ n} w))) e))
 
