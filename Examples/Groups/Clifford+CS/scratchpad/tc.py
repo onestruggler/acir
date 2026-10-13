@@ -89,6 +89,56 @@ def letters(which):
             for (c, d) in pairs:
                 if len({a, b, c, d}) == 4:
                     for e in range(N): L.append([Kg(a, b), Kg(c, d), I(e), I(e)])
+    for w in which:          # gates:n -> E(gate) words at width n (N = 2^n)
+        if w.startswith('gates'):
+            n = N.bit_length() - 1
+            assert 2 ** n == N
+            L.append([I(x) for x in range(N)])                    # E(iI)
+            for t in range(n):
+                L.append([I(x) for x in range(N) if (x >> t) & 1])  # E(S_t)
+                L.append([Kg(y, y | (1 << t)) for y in range(N)
+                          if not (y >> t) & 1])                     # E(K_t)
+            for v in range(n):
+                for t in range(v + 1, n):
+                    L.append([I(x) for x in range(N)
+                              if (x >> v) & 1 and (x >> t) & 1])    # E(CS_vt)
+            if 'gates+' in which:
+                # scaffolding: encodings of circuits on <= 3 wires,
+                # licensed by U_4 at width 2 and det +-1 at width 3
+                import itertools as _it
+                def xw(pred, t):
+                    return [Xg(x, x | (1 << t)) for x in range(N)
+                            if not (x >> t) & 1 and pred(x)]
+                def zw(pred):
+                    return [I(x) for x in range(N) if pred(x)] * 2
+                def izw(pred, t):
+                    o = []
+                    for x in range(N):
+                        if not (x >> t) & 1 and pred(x):
+                            o += [I(x)] + [I(x | (1 << t))] * 3
+                    return o
+                bit = lambda v: (lambda x: (x >> v) & 1)
+                for t in range(n):
+                    L.append(xw(lambda x: True, t))               # X_t
+                    L.append(izw(lambda x: True, t))              # iZ_t
+                bitv = lambda v, e: (lambda x: ((x >> v) & 1) == e)
+                for v, t in _it.permutations(range(n), 2):
+                    for e in (0, 1):
+                        L.append(xw(bitv(v, e), t))               # CX, either colour
+                        L.append(izw(bitv(v, e), t))              # C(iZ)
+                for v, t in _it.combinations(range(n), 2):
+                    L.append(zw(lambda x, v=v, t=t: bit(v)(x) and bit(t)(x)))  # CZ
+                for u, v, t in _it.combinations(range(n), 3):
+                    L.append(zw(lambda x, u=u, v=v, t=t:
+                                bit(u)(x) and bit(v)(x) and bit(t)(x)))        # CCZ
+                for (u, v), t in _it.product(_it.combinations(range(n), 2), range(n)):
+                    if t not in (u, v):
+                        for eu in (0, 1):
+                            for ev in (0, 1):
+                                pred = (lambda x, u=u, v=v, eu=eu, ev=ev:
+                                        bitv(u, eu)(x) and bitv(v, ev)(x))
+                                L.append(xw(pred, t))             # CCX, 4 colours
+                                L.append(izw(pred, t))            # CC(iZ)
     if 'schreier' in which:  # full Schreier set over reps e, i0, i0^2, i0^3
         reps = [[], [I(0)], [I(0)] * 2, [I(0)] * 3]
         deg = {}
@@ -100,10 +150,12 @@ def letters(which):
     return L
 
 # ---- HLT Todd-Coxeter with coincidence handling
-def todd_coxeter(subgens, maxcosets=80000):
+def todd_coxeter(subgens, maxcosets=1200000):
+    from array import array
     def col(g): return 2 * g if g >= 0 else 2 * (~g) + 1
     def icol(g): return 2 * (~g) if g < 0 else 2 * g + 1
-    table = [[None] * (2 * NG)]
+    blank = array('i', [-1]) * (2 * NG)
+    table = [array('i', blank)]
     parent = [0]
     def find(x):
         while parent[x] != x:
@@ -118,7 +170,7 @@ def todd_coxeter(subgens, maxcosets=80000):
         parent[b] = a
         pending.append(b)
     def define(c, g):
-        table.append([None] * (2 * NG))
+        table.append(array('i', blank))
         parent.append(len(parent))
         d = len(table) - 1
         table[c][col(g)] = d
@@ -128,7 +180,7 @@ def todd_coxeter(subgens, maxcosets=80000):
         f = c; i = 0; n = len(w)
         while i < n:
             nxt = table[f][col(w[i])]
-            if nxt is None: break
+            if nxt < 0: break
             f = find(nxt); i += 1
         if i == n:
             if f != c: merge(f, c)
@@ -136,14 +188,14 @@ def todd_coxeter(subgens, maxcosets=80000):
         b = c; j = n
         while j > i + 1:
             prv = table[b][icol(w[j - 1])]
-            if prv is None: break
+            if prv < 0: break
             b = find(prv); j -= 1
         # fill forward from f to position j-1, then close
         while i < j - 1:
             f = find(define(f, w[i])); i += 1
         # now i == j-1: close the gap with one deduction
         ex = table[f][col(w[i])]
-        if ex is None:
+        if ex < 0:
             table[f][col(w[i])] = b
             table[b][icol(w[i])] = f
         else:
@@ -154,20 +206,20 @@ def todd_coxeter(subgens, maxcosets=80000):
             a = find(b)
             for cc in range(2 * NG):
                 d = table[b][cc]
-                if d is not None:
+                if d >= 0:
                     d = find(d)
                     e = table[a][cc]
-                    if e is None:
+                    if e < 0:
                         table[a][cc] = d
                         ic = cc + 1 if cc % 2 == 0 else cc - 1
                         ee = table[d][ic]
-                        if ee is None:
+                        if ee < 0:
                             table[d][ic] = a
                         elif find(ee) != a:
                             merge(find(ee), a)
                     elif find(e) != d:
                         merge(find(e), d)
-                table[b][cc] = None
+                table[b][cc] = -1
     for w in subgens:
         scan(0, w); process()
     rounds = 0
@@ -184,7 +236,7 @@ def todd_coxeter(subgens, maxcosets=80000):
         for w in subgens:
             scan(find(0), w); process()
         live = [c for c in range(len(table)) if find(c) == c]
-        full = all(table[c][cc] is not None for c in live for cc in range(2 * NG))
+        full = all(table[c][cc] >= 0 for c in live for cc in range(2 * NG))
         if full and len(live) == before_live:
             return len(live), rounds, True
     live = [c for c in range(len(table)) if find(c) == c]
