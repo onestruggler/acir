@@ -81,6 +81,7 @@ D-↑ (w • v) = Eq.cong₂ _•_ (D-↑ w) (D-↑ v)
 ι-ι⁻ (gate₁ ⌈ T-gate ⌉)  = refl
 ι-ι⁻ (gate₂ ⌈ CX-gate ⌉) = refl
 ι-ι⁻ (gate₂ swap)        = refl
+ι-ι⁻ (gate₃ ⌈ () ⌉)
 ι-ι⁻ (g ↥)               = Eq.cong _↥ (ι-ι⁻ g)
 
 D-ι⁻ : (w : Circuit n) → D (wmap ι⁻ w) ≡ w

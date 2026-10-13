@@ -156,6 +156,7 @@ back-gen (gate₁ ⌈ H-gate ⌉)  = PB.refl
 back-gen (gate₁ ⌈ S-gate ⌉)  = PB.refl
 back-gen (gate₂ ⌈ CX-gate ⌉) = via DCX⁼ refl refl
 back-gen (gate₂ swap)        = via Dσ⁼ refl refl
+back-gen (gate₃ ⌈ () ⌉)
 back-gen (g ↥)               =
   Eq.subst (λ x → _ ⊢ x ≈ [ g ↥ ]ʷ) (Eq.sym (D-↑ (ℰ g))) (lift (back-gen g))
 

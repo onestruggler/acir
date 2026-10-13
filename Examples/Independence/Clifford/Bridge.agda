@@ -142,6 +142,7 @@ uσ  = Q.H • Q.CZ • Q.H • Q.H Q.↑ • Q.CZ • Q.H Q.↑ • Q.H • Q.C
 ℰ (gate₁ ⌈ S-gate ⌉)  = Q.S
 ℰ (gate₂ ⌈ CX-gate ⌉) = uCX
 ℰ (gate₂ swap)        = uσ
+ℰ (gate₃ ⌈ () ⌉)
 ℰ (g ↥)               = ℰ g Q.↑
 
 -- A circuit: its gates encoded, in the reverse order.
@@ -244,6 +245,7 @@ gen {suc (suc n)} (gate₂ swap) =
   QI.≐-trans (QI.localise {2} {n} uσ)
     (QI.≐-trans (QI.emb-cong (QI.bridge uσ))
       (QI.≐-sym (placed {2} {n} O.SWᵍ _ closedσ)))
+gen (gate₃ ⌈ () ⌉)
 gen (g ↥) =
   QI.≐-trans (QS.⟦↑⟧ (ℰ g))
     (QI.≐-trans (QI.up-cong (gen g)) (QI.≐-sym (lifted Sem.⟦ g ⟧₀)))

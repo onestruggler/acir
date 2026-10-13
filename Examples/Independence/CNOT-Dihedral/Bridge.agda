@@ -285,6 +285,7 @@ private
 ι⁻ (gate₀ g) = ACR.gate₀ (ιg g)
 ι⁻ (gate₁ g) = ACR.gate₁ (ιg g)
 ι⁻ (gate₂ g) = ACR.gate₂ (ιg g)
+ι⁻ (gate₃ ⌈ () ⌉)
 ι⁻ (g ↥)     = ι⁻ g ACR.↥
 
 ------------------------------------------------------------------------
@@ -297,6 +298,7 @@ gen-h (gate₁ ⌈ X-gate ⌉)  = refl
 gen-h (gate₁ ⌈ T-gate ⌉)  = refl
 gen-h (gate₂ ⌈ CX-gate ⌉) = refl
 gen-h (gate₂ swap)        = refl
+gen-h (gate₃ ⌈ () ⌉)
 gen-h (g ↥)               = gen-h g
 
 gen-ok : (g : Gen n) → ix (proj₂ (Sem.⟦ g ⟧₀)) ≐ matT (AI.⟦ ι⁻ g ⟧ᵍ)
@@ -320,6 +322,7 @@ gen-ok (gate₂ swap) (a₀ ∷ a₁ ∷ u) (b₀ ∷ b₁ ∷ v) =
     (tail₂ (ix (proj₂ SWᵍ) (a₀ ∷ a₁ ∷ []) (b₀ ∷ b₁ ∷ []))
            (δ₁ b₀ (bF (fB a₁))) (δ₁ b₁ (bF (fB a₀))) A.0₈ u v
            (SW-tab a₀ a₁ b₀ b₁))
+gen-ok (gate₃ ⌈ () ⌉)
 gen-ok (g ↥) =
   ≐-trans (ix-up (proj₂ Sem.⟦ g ⟧₀))
     (≐-trans (up-cong (gen-ok g)) (≐-sym (matT-up AI.⟦ ι⁻ g ⟧ᵍ)))
