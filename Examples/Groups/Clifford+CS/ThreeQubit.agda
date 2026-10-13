@@ -196,11 +196,12 @@ private
   gen-Φ : ∀ y → Bridge.Φ ⟦ y ⟧ʸ ≡ ⟦ BSP.tl y ⟧ᵐ
   gen-Φ y = Eq.trans (Bridge.Φ-cong {s = ⟦ d y ⟧} {T.⟦ BSP.tl y ⟧Y} (gen-~ y)) (T.Φ-Y (BSP.tl y))
 
-  Φ-Y : ∀ u → Bridge.Φ ⟦ u ⟧Y ≡ ⟦ (BSP.tl ʷ) u ⟧ᵐ
-  Φ-Y [ y ]ʷ  = gen-Φ y
-  Φ-Y ε       = Bridge.Φ-ε {3}
-  Φ-Y (u • t) = Eq.trans (Bridge.Φ-∙ ⟦ u ⟧Y ⟦ t ⟧Y)
-                  (Eq.trans (Eq.cong₂ _·*·_ (Φ-Y u) (Φ-Y t)) (Eq.sym (⟦•⟧ᵐ ((BSP.tl ʷ) u) ((BSP.tl ʷ) t))))
+-- A word's scaled matrix is the matrix of its two-level translation.
+Φ-Y : ∀ u → Bridge.Φ ⟦ u ⟧Y ≡ ⟦ (BSP.tl ʷ) u ⟧ᵐ
+Φ-Y [ y ]ʷ  = gen-Φ y
+Φ-Y ε       = Bridge.Φ-ε {3}
+Φ-Y (u • t) = Eq.trans (Bridge.Φ-∙ ⟦ u ⟧Y ⟦ t ⟧Y)
+                (Eq.trans (Eq.cong₂ _·*·_ (Φ-Y u) (Φ-Y t)) (Eq.sym (⟦•⟧ᵐ ((BSP.tl ʷ) u) ((BSP.tl ʷ) t))))
 
 -- Their completeness, for words with the same scaled matrix.
 complete-Y : ∀ {u t : Word B.Gen} → ⟦ u ⟧Y ~ ⟦ t ⟧Y → PB._≈_ B.Rel u t

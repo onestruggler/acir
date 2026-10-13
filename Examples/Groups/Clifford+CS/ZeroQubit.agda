@@ -33,8 +33,9 @@ import Examples.Groups.Clifford+CS-TwoLevel.Syntactics as TL
 import Examples.Groups.Clifford+CS.Bridge as Bridge
 import Examples.Groups.Clifford+CS.TwoLevelTries as TwoLevelTries
 
+module T = Bridge.TwoLevel 0
+
 private
-  module T = Bridge.TwoLevel 0
   module TT = TwoLevelTries 0
 
 ------------------------------------------------------------------------

@@ -40,8 +40,9 @@ import Examples.Groups.Clifford+CS.Bridge as Bridge
 import Examples.Groups.Clifford+CS.TwoLevelTries as TwoLevelTries
 import Examples.Groups.Clifford+CS.Lemmas.OneWire as OneWire
 
+module T = Bridge.TwoLevel 1
+
 private
-  module T  = Bridge.TwoLevel 1
   module TT = TwoLevelTries 1
   module W  = OneWire {0}
 
