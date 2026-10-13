@@ -71,12 +71,23 @@ decoding or semantic-correctness hypotheses at these fixed widths.
 
 ## Scope
 
-The all-width compiler is defined, but a semantic bridge at arbitrary
-width and the required larger-width subgroup presentation are not yet
-proved. In particular, from four wires onward all requested circuit
-generators have determinant +1, so the full scaled auxiliary alphabet
-cannot have a same-width semantic decoder. Clément's subgroup step is
-necessary before extending the construction.
+`GeneralN/Action.agda` and `GeneralN/Presentation.agda` now prove the
+required four-state auxiliary subgroup presentation from Tables 1 and 2.
+The dyadic letters act by charges `M -> 10`, `X -> 11`, `K -> 01`;
+`IH` fixes states 00 and 01 and exchanges 10 with 11. A decoder for this
+stabilizer is the correct general-width target.
+
+`GeneralN/HadamardSchreier.agda` proves that each `IH` edge is `H0` or
+`M0 M1 H0`. `DyadicSchreier.agda` formally reduces every K edge to even
+signed permutations and a mixed `M_a X_bc K_abcd` block, using only
+source relations. `GeneralN/construct.py` realizes all these edge types
+as physical circuits, reusing the borrowed-bit constructions in `CCX+HH`.
+At four wires the exact audit checks all 7,828 source plans and sampled
+fully expanded circuits. `GeneralN/Decoding.md` gives the derivation.
+
+The all-width physical decoder proof and semantic bridge are still being
+completed. The checked auxiliary presentation and executable decoder
+are not yet an unconditional general-width circuit completeness theorem.
 
 `Certificates.agda` is only an auxiliary proof-certificate interface:
 its relation wraps derivations between encodings, and its denotation is
@@ -96,12 +107,16 @@ agda Examples/Groups/CCX+H/ThreeQubit/Presentation.agda
 agda Examples/Groups/CCX+H/ThreeQubit/Semantics.agda
 agda Examples/Groups/CCX+H/Zero.agda
 agda Examples/Groups/CCX+H/Certificates.agda
+agda Examples/Groups/CCX+H/GeneralN/Presentation.agda
+agda Examples/Groups/CCX+H/GeneralN/DyadicSchreier.agda
+agda Examples/Groups/CCX+H/GeneralN/HadamardSchreier.agda
 python3 -B Examples/Groups/CCX+H/TwoQubit/build_checks.py
 python3 -B Examples/Groups/CCX+H/ThreeQubit/build_decoding.py
 python3 -B Examples/Groups/CCX+H/ThreeQubit/build_soundness.py
 python3 -B Examples/Groups/CCX+H/scripts/translated_relations.py --wires 1 --check Examples/Groups/CCX+H/one_qubit_relations.json
 python3 -B Examples/Groups/CCX+H/scripts/translated_relations.py --wires 2 --check Examples/Groups/CCX+H/two_qubit_relations.json
 python3 -B Examples/Groups/CCX+H/scripts/translated_relations.py --wires 3 --check Examples/Groups/CCX+H/three_qubit_relations.json
+python3 -B Examples/Groups/CCX+H/GeneralN/construct.py --wires 4 --samples 4
 ```
 
 The Python generators emit ordinary safe Agda definitions and proof

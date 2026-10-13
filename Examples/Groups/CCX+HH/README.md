@@ -7,8 +7,9 @@ the encode/decode and subgroup steps in
 presentation or the method of arXiv:2407.11152.
 
 The general-width completeness theorem is **not yet established**.
-The current concrete translation is on two wires. The all-width encoder
-and shared translation lemmas are intended to support the next stages.
+The concrete circuit presentations cover one and two wires. At arbitrary
+width we now have a checked structural encoder and a complete four-state
+auxiliary subgroup presentation. The physical decoder is being proved.
 
 ## Conventions and encoding
 
@@ -23,6 +24,15 @@ two-level exchanges and `HH` as disjoint four-level `K` blocks. It defines
 the compiler at every width. `check_encoding.py` compares these blocks with
 independent tensor/basis semantics at all placements through a selected
 finite width. A symbolic-width semantic preservation proof remains open.
+
+`StructuralEncoding.agda` gives a second, recursive spelling of the same
+block construction. `EncodingSemantics/` proves its correctness at every
+width: an idle top wire uses two contiguous blocks, and an idle bottom
+wire uses the even and odd coordinates. `Semantics.agda` independently
+specifies the Boolean gate actions and the four Hadamard rows, then forms
+their ordinary matrices. The theorem `encoding-correct` identifies these
+matrices with the recursive encoder. The relationship with the original
+enumeration-based compiler has not yet been proved at symbolic width.
 
 ## The two-wire translation
 
@@ -78,13 +88,29 @@ these kernel-checked proofs.
   trace. The circuit subgroup therefore has infinite index in this
   ambient group; a finite coset table from the full source will not
   suffice on three wires.
-- From four wires onward every primitive circuit gate has determinant
-  +1, while individual auxiliary signs and exchanges have determinant
-  -1. A suitable auxiliary subgroup presentation is required there too.
+- `Subgroup/` proves a complete four-state auxiliary subgroup
+  presentation directly from Table 1. The states record the charges
+  `M -> 10`, `X -> 11`, `K -> 01`. Charge is invariant under every source
+  relation and under exact matrix equality. The subgroup consists
+  exactly of charge-00 matrices. `CircuitCharge.agda` proves every
+  structurally encoded circuit on at least four wires has charge 00.
+- `CircuitTranslation.agda` gives the exact remaining interface: a
+  circuit decoder for the auxiliary edge generators, with a matrix
+  correctness proof, yields sound and complete circuit relations at
+  every width at least four. The relations are decoded auxiliary
+  equations and primitive-gate recovery equations. The decoder parameter
+  is explicit; this is not an unconditional general-width theorem.
+- `GeneralN/construct.py` constructs the needed sign pairs, even
+  permutations, paired K blocks, and mixed `M_a X_bc K_abcd` operators
+  using actual circuit gates. Exact tests cover widths four through six.
+  `GeneralN/ControlledX.agda` formally proves the recursive borrowed-bit
+  construction on every Boolean input. It restores all non-target wires
+  and assumes no initialized ancilla.
 
-The next step is that subgroup presentation and a decoder at general
-width, followed by decoded-relation and generator-recovery proofs. The
-178 two-wire equations do not constitute an all-width circuit calculus.
+The next step is the complete physical correctness proof for these
+general-width constructions. The three-wire finite case needs its own
+subgroup translation; its 135-frame diagnostic is in `ThreeQubit/`.
+The 178 two-wire equations do not constitute an all-width circuit calculus.
 
 ## Reproduction
 
@@ -97,8 +123,12 @@ agda Examples/Groups/CCX+HH/OneQubit.agda
 agda Examples/Groups/CCX+HH/Translation.agda
 agda Examples/Groups/CCX+HH/Schreier.agda
 agda Examples/Groups/CCX+HH/TwoQubit/Presentation.agda
+agda Examples/Groups/CCX+HH/CircuitTranslation.agda
+agda Examples/Groups/CCX+HH/Subgroup/Presentation.agda
+agda Examples/Groups/CCX+HH/GeneralN/ControlledX.agda
 python3 -B Examples/Groups/CCX+HH/check_encoding.py --max-width 6
 python3 -B Examples/Groups/CCX+HH/check_subgroup.py
+python3 -B Examples/Groups/CCX+HH/GeneralN/construct.py --wires 4
 python3 -B Examples/Groups/CCX+HH/scripts/two_qubit_schreier.py --check Examples/Groups/CCX+HH/two_qubit_schreier.json
 ```
 
