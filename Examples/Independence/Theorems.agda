@@ -33,7 +33,9 @@
 -- from Bian and Selinger's 3-qubit presentation (Clifford+CS.
 -- Completeness, through Appendices E and G.5: ω is not in its ring
 -- 𝔻[i], so the encoding drops it and the decoding restores it, by
--- parity) and on at most one wire from Cliff₂ (Clifford+CS.Low).
+-- parity) and on at most one wire from Cliff₂ (Clifford+CS.Low); and
+-- CliffCS₂ derives Cliff₂, so it is complete for Clifford circuits at
+-- every width (Clifford+CS.CliffordCircuits).
 --
 -- Two departures from the paper.  The scalar of the qutrit axiom (E)
 -- is printed ω₁₂⁷ in Figure 4, which is unsound for the semantics of
@@ -81,6 +83,8 @@ import Examples.Independence.Clifford.Completeness      as Cliff-Cpl
 import Examples.Independence.Real-Clifford.Completeness as RCliff-Cpl
 import Examples.Independence.Clifford+T.Completeness   as CliffT-Cpl
 import Examples.Independence.Clifford+CS.Completeness  as CliffCS-Cpl
+import Examples.Independence.Clifford+CS.CliffordCircuits as CliffCS-Cliff
+open import Examples.Independence.Clifford+CS.Low using () renaming (Φ to Cliff→CliffCS)
 import Examples.Independence.CNOT-Dihedral.Completeness as CNOTdihe-Cpl
 
 private
@@ -259,6 +263,19 @@ CliffCS₂-minimal-complete :
      CliffCS-Sem.⟦ w ⟧ CliffCS-Sem.≈ CliffCS-Sem.⟦ v ⟧ → n CliffCS.⊢ w ≈ v) ×
   (∀ ρ → CliffCS.arity ρ ≤ 2 → ¬ CliffCS-M.Complete-without ρ (CliffCS.arity ρ + 0))
 CliffCS₂-minimal-complete = CliffCS₂-complete , CliffCS₂-necessary
+
+-- And on Clifford circuits CliffCS₂ is complete at every width, two
+-- wires included: read with its CNOT as H CS CS H, every axiom of Cliff₂
+-- is derivable in CliffCS₂ ((CZ) through (CE)), so Cliff₂'s completeness
+-- carries over.
+CliffCS₂-derives-Cliff₂ : {w v : Cliff.Circuit n} →
+                          n Cliff.⊢ w ≈ v → n CliffCS.⊢ Cliff→CliffCS w ≈ Cliff→CliffCS v
+CliffCS₂-derives-Cliff₂ = CliffCS-Cliff.tr
+
+CliffCS₂-clifford-complete : {w v : Cliff.Circuit n} →
+                             Cliff-Sem.⟦ w ⟧ Cliff-Sem.≈ Cliff-Sem.⟦ v ⟧ →
+                             n CliffCS.⊢ Cliff→CliffCS w ≈ Cliff→CliffCS v
+CliffCS₂-clifford-complete = CliffCS-Cliff.clifford-complete
 
 -- 6. CNOTdihe₂ is complete, at every width: its axioms derive Amy,
 -- Chen and Ross's, whose presentation is complete.
