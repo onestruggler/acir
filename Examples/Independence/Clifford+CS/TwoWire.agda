@@ -285,3 +285,210 @@ BCK⁼ = derive
    ∷ rw 6 BS0⁼
    ∷ rw 7 BS0⁼ ∷ [])
   refl
+
+Hs⁼ : Eqn (₁₊ n)
+Hs⁼ = derive
+  (Hₗ ∷ [])
+  (ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ Sₗ ∷ Hₗ ∷ Sₗ ∷ Hₗ ∷ Sₗ ∷ [])
+  (rw 1 (sym⁼ S⁴⁼)
+   ∷ rw 4 (sym⁼ H²⁼)
+   ∷ rw 4 H²⁼
+   ∷ rw 0 (sym⁼ S⁴⁼)
+   ∷ rw 1 (sym⁼ ω⁸⁼)
+   ∷ perm (ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ Sₗ ∷ ωₗ ∷ Sₗ ∷ Sₗ ∷ Sₗ ∷ Hₗ ∷ Sₗ ∷ Sₗ ∷ Sₗ ∷ Sₗ ∷ [])
+   ∷ rw 8 (sym⁼ E⁼) ∷ [])
+  refl
+
+Ed⁼ : Eqn (₁₊ n)
+Ed⁼ = derive
+  (Hₗ ∷ Sₗ ∷ Sₗ ∷ Sₗ ∷ Hₗ ∷ [])
+  (ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ Sₗ ∷ Hₗ ∷ Sₗ ∷ [])
+  (rw 4 Hs⁼
+   ∷ perm (Hₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ Sₗ ∷ Sₗ ∷ Sₗ ∷ Sₗ ∷ Hₗ ∷ Sₗ ∷ Hₗ ∷ Sₗ ∷ [])
+   ∷ rw 8 S⁴⁼
+   ∷ perm (Hₗ ∷ Hₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ Sₗ ∷ Hₗ ∷ Sₗ ∷ [])
+   ∷ rw 0 H²⁼ ∷ [])
+  refl
+
+B4⁼ : Eqn (₂₊ n)
+B4⁼ = derive
+  (Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ [])
+  ([])
+  (rw 3 (sym⁼ E3⁼)
+   ∷ rw 2 (sym⁼ E3⁼)
+   ∷ rw 1 (sym⁼ E3⁼)
+   ∷ rw 7 (sym⁼ E3⁼)
+   ∷ rw 6 (sym⁼ E3⁼)
+   ∷ rw 5 (sym⁼ E3⁼)
+   ∷ rw 4 (sym⁼ E3⁼)
+   ∷ rw 3 (sym⁼ E3⁼)
+   ∷ rw 2 (sym⁼ E3⁼)
+   ∷ rw 11 (sym⁼ E3⁼)
+   ∷ rw 10 (sym⁼ E3⁼)
+   ∷ rw 9 (sym⁼ E3⁼)
+   ∷ rw 8 (sym⁼ E3⁼)
+   ∷ rw 7 (sym⁼ E3⁼)
+   ∷ rw 6 (sym⁼ E3⁼)
+   ∷ rw 5 (sym⁼ E3⁼)
+   ∷ rw 4 (sym⁼ E3⁼)
+   ∷ rw 3 (sym⁼ E3⁼)
+   ∷ rw 0 (lift⁼ S⁴⁼)
+   ∷ rw 0 E2⁼
+   ∷ rw 0 E2⁼
+   ∷ rw 0 E2⁼ ∷ [])
+  refl
+
+TT⁼ : Eqn (₂₊ n)
+TT⁼ = derive
+  (Hₗ ↥ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Hₗ ↥ ∷ Hₗ ↥ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Hₗ ↥ ∷ [])
+  ([])
+  (rw 5 (lift⁼ H²⁼)
+   ∷ rw 1 B4⁼
+   ∷ rw 0 (lift⁼ H²⁼) ∷ [])
+  refl
+
+SB⁼ : Eqn (₂₊ n)
+SB⁼ = derive
+  (Sₗ ↥ ∷ [])
+  (CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ [])
+  (rw 1 (sym⁼ E2⁼)
+   ∷ rw 0 E3⁼ ∷ [])
+  refl
+
+tBc⁼ : Eqn (₂₊ n)
+tBc⁼ = derive
+  (Hₗ ↥ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Hₗ ↥ ∷ CSₗ ∷ [])
+  (CSₗ ∷ Hₗ ↥ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Hₗ ↥ ∷ [])
+  (rw 7 (sym⁼ (lift⁼ H²⁼))
+   ∷ rw 1 AB⁼
+   ∷ rw 0 (lift⁼ H²⁼) ∷ [])
+  refl
+
+Bc⁼ : Eqn (₂₊ n)
+Bc⁼ = derive
+  (Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ [])
+  (CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ [])
+  (rw 0 E3⁼ ∷ [])
+  refl
+
+S13⁼ : Eqn (₂₊ n)
+S13⁼ = derive
+  (Sₗ ↥ ∷ Sₗ ↥ ∷ Sₗ ↥ ∷ [])
+  (CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ [])
+  (rw 3 (sym⁼ E2⁼)
+   ∷ rw 3 (sym⁼ E2⁼)
+   ∷ rw 3 (sym⁼ E2⁼)
+   ∷ rw 2 E3⁼
+   ∷ rw 3 E3⁼
+   ∷ rw 4 E3⁼
+   ∷ rw 5 E3⁼
+   ∷ rw 6 E3⁼
+   ∷ rw 7 E3⁼
+   ∷ rw 8 E3⁼
+   ∷ rw 9 E3⁼
+   ∷ rw 10 E3⁼
+   ∷ rw 1 E3⁼
+   ∷ rw 2 E3⁼
+   ∷ rw 3 E3⁼
+   ∷ rw 4 E3⁼
+   ∷ rw 5 E3⁼
+   ∷ rw 6 E3⁼
+   ∷ rw 0 E3⁼
+   ∷ rw 1 E3⁼
+   ∷ rw 2 E3⁼ ∷ [])
+  refl
+
+B3C3⁼ : Eqn (₂₊ n)
+B3C3⁼ = derive
+  (Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ [])
+  (CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ [])
+  (rw 3 (sym⁼ E3⁼)
+   ∷ rw 2 (sym⁼ E3⁼)
+   ∷ rw 1 (sym⁼ E3⁼)
+   ∷ rw 7 (sym⁼ E3⁼)
+   ∷ rw 6 (sym⁼ E3⁼)
+   ∷ rw 5 (sym⁼ E3⁼)
+   ∷ rw 4 (sym⁼ E3⁼)
+   ∷ rw 3 (sym⁼ E3⁼)
+   ∷ rw 2 (sym⁼ E3⁼)
+   ∷ rw 3 E2⁼
+   ∷ rw 3 E2⁼
+   ∷ rw 3 E2⁼
+   ∷ rw 3 (sym⁼ E2⁼)
+   ∷ rw 3 (sym⁼ E2⁼)
+   ∷ rw 3 (sym⁼ E2⁼)
+   ∷ rw 2 E3⁼
+   ∷ rw 3 E3⁼
+   ∷ rw 4 E3⁼
+   ∷ rw 5 E3⁼
+   ∷ rw 6 E3⁼
+   ∷ rw 7 E3⁼
+   ∷ rw 8 E3⁼
+   ∷ rw 9 E3⁼
+   ∷ rw 10 E3⁼
+   ∷ rw 1 E3⁼
+   ∷ rw 2 E3⁼
+   ∷ rw 3 E3⁼
+   ∷ rw 4 E3⁼
+   ∷ rw 5 E3⁼
+   ∷ rw 6 E3⁼
+   ∷ rw 0 E3⁼
+   ∷ rw 1 E3⁼
+   ∷ rw 2 E3⁼ ∷ [])
+  refl
+
+t3Bc⁼ : Eqn (₂₊ n)
+t3Bc⁼ = derive
+  (Hₗ ↥ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Hₗ ↥ ∷ CSₗ ∷ [])
+  (CSₗ ∷ Hₗ ↥ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Sₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Hₗ ↥ ∷ [])
+  (rw 9 (sym⁼ (lift⁼ H²⁼))
+   ∷ rw 5 (sym⁼ (lift⁼ H²⁼))
+   ∷ rw 12 tBc⁼
+   ∷ rw 6 tBc⁼
+   ∷ rw 0 tBc⁼
+   ∷ rw 12 (lift⁼ H²⁼)
+   ∷ rw 6 (lift⁼ H²⁼) ∷ [])
+  refl
+
+BR0⁼ : Eqn (₂₊ n)
+BR0⁼ = derive
+  (Hₗ ↥ ∷ CSₗ ∷ Hₗ ↥ ∷ CSₗ ∷ Hₗ ↥ ∷ CSₗ ∷ CSₗ ∷ CSₗ ∷ Hₗ ↥ ∷ [])
+  (CSₗ ∷ CSₗ ∷ CSₗ ∷ Hₗ ↥ ∷ CSₗ ∷ Hₗ ↥ ∷ CSₗ ∷ [])
+  (rw 3 (sym⁼ TT⁼)
+   ∷ rw 9 t3Bc⁼
+   ∷ rw 23 (lift⁼ H²⁼)
+   ∷ rw 11 B3C3⁼
+   ∷ rw 2 (lift⁼ H²⁼)
+   ∷ rw 1 (sym⁼ SB⁼)
+   ∷ rw 11 (sym⁼ SB⁼)
+   ∷ rw 8 E3⁼
+   ∷ rw 5 E2⁼
+   ∷ rw 6 (sym⁼ E3⁼)
+   ∷ rw 7 (sym⁼ SB⁼)
+   ∷ rw 4 (lift⁼ Ed⁼)
+   ∷ rw 0 (lift⁼ E⁼)
+   ∷ perm (Sₗ ↥ ∷ Sₗ ↥ ∷ Sₗ ↥ ∷ Hₗ ↥ ∷ Sₗ ↥ ∷ Sₗ ↥ ∷ Sₗ ↥ ∷ CSₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ Sₗ ↥ ∷ Hₗ ↥ ∷ Sₗ ↥ ∷ [])
+   ∷ rw 8 ω⁸⁼
+   ∷ rw 7 (sym⁼ E3⁼)
+   ∷ rw 4 (lift⁼ S⁴⁼)
+   ∷ rw 6 SB⁼
+   ∷ rw 0 S13⁼
+   ∷ rw 11 AB⁼
+   ∷ rw 7 AB⁼
+   ∷ rw 3 AB⁼
+   ∷ rw 14 Bc⁼
+   ∷ rw 10 Bc⁼
+   ∷ rw 6 Bc⁼
+   ∷ rw 7 B4⁼ ∷ [])
+  refl
+
+braid⁼ : Eqn (₂₊ n)
+braid⁼ = derive
+  (CSₗ ∷ Hₗ ↥ ∷ CSₗ ∷ Hₗ ↥ ∷ CSₗ ∷ [])
+  (Hₗ ↥ ∷ CSₗ ∷ Hₗ ↥ ∷ CSₗ ∷ Hₗ ↥ ∷ CSₗ ∷ Hₗ ↥ ∷ [])
+  (rw 5 (sym⁼ (lift⁼ H²⁼))
+   ∷ rw 6 (sym⁼ E2⁼)
+   ∷ rw 9 (sym⁼ (lift⁼ H²⁼))
+   ∷ rw 1 BR0⁼
+   ∷ rw 0 E2⁼ ∷ [])
+  refl

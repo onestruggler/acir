@@ -1,6 +1,8 @@
 """The two-level relations of Bian and Selinger on four indices
 (Examples.Groups.Clifford+CS-TwoLevel.Syntactics at n = 4), and their
-decoding into CliffCS₂ on two wires.
+decoding into CliffCS₂ on two wires: each generator a frame's
+conjugate of CS (the phases), the CNOT CX01 (the exchanges) or the
+controlled K CK01 (the K's).
 
 Index k = 2 x₀ + x₁, wire 0 the most significant bit.  The decoding of
 a generator is a scalar-free circuit with exactly its matrix (each
@@ -15,12 +17,21 @@ import circ
 
 CK01 = 'CS01 H1 CS01 H1 CS01 S0 S0 S0'
 CK10 = 'CS01 H0 CS01 H0 CS01 S1 S1 S1'
-DI = {3: 'CS01', 2: 'S0 CS01 CS01 CS01', 1: 'S1 CS01 CS01 CS01',
-      0: 'w2 S0 S0 S0 S1 S1 S1 CS01'}
-DX = {(2, 3): 'CX01', (0, 1): 'CX01 X1', (1, 3): 'CX10', (0, 2): 'CX10 X0',
-      (1, 2): 'SW01', (0, 3): 'SW01 X0 X1'}
-DK = {(2, 3): CK01, (0, 1): 'X0 ' + CK01 + ' X0', (1, 3): CK10, (0, 2): 'X1 ' + CK10 + ' X1',
-      (1, 2): 'CX01 ' + CK10 + ' CX01', (0, 3): 'CX10 X0 ' + CK01 + ' X0 CX10'}
+
+# The frames: permutation circuits taking the canonical pair (2, 3) to
+# each pair (a, b), 2 to a and 3 to b, and the index 3 to each index a.
+FRAME = {(2, 3): [], (0, 1): ['X0'], (1, 3): ['SW01'], (0, 2): ['X1', 'SW01'],
+         (1, 2): ['CX01', 'SW01'], (0, 3): ['X1', 'CX01', 'SW01']}
+IFRAME = {3: [], 2: ['X1'], 1: ['X0'], 0: ['X0', 'X1']}
+
+
+def conj(F, C):
+    return ' '.join(list(F) + [C] + list(reversed(F)))
+
+
+DI = {a: conj(IFRAME[a], 'CS01') for a in IFRAME}
+DX = {p: conj(FRAME[p], 'CX01') for p in FRAME}
+DK = {p: conj(FRAME[p], CK01) for p in FRAME}
 
 
 def i(j): return [('i', j)]

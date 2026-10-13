@@ -38,6 +38,51 @@ Q = 'CS01 H1 CS01 H1 CS01'          # CK01 without its phase S0³
 B = 'S1 CS01 CS01 CS01'              # i_[1]
 
 
+def dnorm(text):
+    """Lines taking a word in CS01, S0, S1 (and ω) to its normal form
+    ωᵃ S0ᵇ S1ᶜ CS01ᵈ (exponents reduced), one swap or cancellation a
+    line: the steps of a diagonal rearrangement."""
+    toks = text.split()
+    w = sum(1 if t == 'w' else 7 if t == 'wd' else int(t[1:]) if t[0] == 'w' else 0
+            for t in toks)
+    word = [t for t in toks if t[0] != 'w']
+    order = {'S0': 0, 'S1': 1, 'CS01': 2}
+    lines = []
+
+    def show():
+        return ' '.join((['w%d' % w] if w else []) + word)
+    changed = True
+    while changed:
+        changed = False
+        for i in range(len(word) - 1):
+            a, b = word[i], word[i + 1]
+            if order[a] > order[b]:
+                word[i], word[i + 1] = b, a
+                if {a, b} != {'S0', 'S1'}:
+                    lines.append((show(), ['E3⁼', 'E4⁼']))
+                changed = True
+                break
+    for t, m in [('S0', 4), ('S1', 4), ('CS01', 4)]:
+        while word.count(t) >= m:
+            k = word.index(t)
+            del word[k:k + m]
+            lines.append((show(), ['S4', 'E2⁼']))
+    while w >= 8:
+        w -= 8
+        lines.append((show(), ['w8']))
+    return lines
+
+
+
+def deq(a, b):
+    """Lines from one diagonal word to another with the same normal form."""
+    la, lb = dnorm(a), dnorm(b)
+    back = [(t, None) for t, _ in reversed(lb[:-1])] + [(b, None)]
+    # each backward step undoes one swap or cancellation
+    back = [(t, ['E3⁼', 'E4⁼', 'S4', 'E2⁼', 'w8']) for t, _ in back]
+    return la + back
+
+
 def T(name, width, lines, **kw):
     D(name, width, lines, mirror=False, **kw)
 
@@ -127,6 +172,48 @@ T('BQ⁼', 2, [(B + ' ' + Q, None), (Q + ' ' + B, ['AB⁼', 'E3⁼', 'E2⁼'])])
 T('BS0⁼', 2, [(B + ' S0', None), ('S0 ' + B, ['E4⁼'])])
 T('BCK⁼', 2, [(B + ' ' + CK01, None), (Q + ' ' + B + ' S0 S0 S0', ['BQ⁼']),
               (CK01 + ' ' + B, ['BS0⁼'])])
+
+# ---------------------------------------------------------------------
+# The braid of the x₀ = 1 world: s t s = t s t, s = CS, t = H1 CS H1.
+# With u = H1 S1 H1, (E) makes u s u⁻¹ = S1³ t S1, while S1 = s B and
+# u = t t′ (t′ = H1 B H1, of the other world) make it t s t³; and
+# S1³ t S1 = s³ t s, B passing t.
+
+TB = 'H1 ' + B + ' H1'                      # t′
+B3 = ' '.join([B] * 3)
+T('Hs⁼', 1, [('H0', None), ('H0 Sd0 S0', ['S4']), ('H0 Sd0 H0 H0 S0', ['H2']),
+             ('wd S0 H0 S0 H0 S0', ['E'])])
+T('Ed⁼', 1, [('H0 Sd0 H0', None), ('H0 Sd0 wd S0 H0 S0 H0 S0', ['Hs⁼']),
+             ('wd S0 H0 S0', ['S4', 'H2'])])
+T('B4⁼', 2, [(B3 + ' ' + B, None)] + dnorm(B3 + ' ' + B))
+T('TT⁼', 2, [(TB + ' H1 ' + B3 + ' H1', None), ('H1 ' + B + ' ' + B3 + ' H1', ['H2']),
+             ('', ['B4⁼', 'H2'])])
+T('SB⁼', 2, [('S1', None), ('CS01 S1 ' + C3, ['E3⁼', 'E2⁼'])])
+T('tBc⁼', 2, [('H1 ' + B + ' H1 CS01', None), ('CS01 H1 ' + B + ' H1', ['AB⁼', 'H2'])],
+  maxstates=40000)
+T('Bc⁼', 2, [(B + ' CS01', None), ('CS01 ' + B, ['E3⁼'])])
+T('S13⁼', 2, [('S1 S1 S1', None)] + deq('S1 S1 S1', C3 + ' ' + B3))
+T('B3C3⁼', 2, [(B3 + ' ' + C3, None)] + deq(B3 + ' ' + C3, C3 + ' ' + B3))
+T('t3Bc⁼', 2, [('H1 ' + B3 + ' H1 CS01', None),
+               (TB + ' ' + TB + ' ' + TB + ' CS01', ['H2']),
+               ('CS01 ' + TB + ' ' + TB + ' ' + TB, ['tBc⁼']),
+               ('CS01 H1 ' + B3 + ' H1', ['H2'])])
+T('BR0⁼', 2, [('H1 CS01 H1 CS01 H1 ' + C3 + ' H1', None),
+              ('H1 CS01 H1 ' + TB + ' H1 ' + B3 + ' H1 CS01 H1 ' + C3 + ' H1', ['TT⁼']),
+              ('H1 CS01 H1 ' + TB + ' CS01 H1 ' + B3 + ' H1 H1 ' + C3 + ' H1', ['t3Bc⁼']),
+              ('H1 CS01 H1 ' + TB + ' CS01 H1 ' + C3 + ' ' + B3 + ' H1', ['H2', 'B3C3⁼']),
+              ('H1 CS01 ' + B + ' H1 CS01 H1 ' + C3 + ' ' + B3 + ' H1', ['tBc⁼', 'H2']),
+              ('H1 S1 H1 CS01 H1 S1 S1 S1 H1', ['SB⁼', 'E3⁼', 'E2⁼', 'S4']),
+              ('w S1 S1 S1 H1 S1 S1 S1 CS01 wd S1 H1 S1', ['E', 'Ed⁼']),
+              ('S1 S1 S1 H1 CS01 H1 S1', ['E3⁼', 'S4', 'w8']),
+              (C3 + ' ' + B3 + ' H1 CS01 H1 CS01 ' + B, ['S13⁼', 'SB⁼']),
+              (C3 + ' H1 CS01 H1 ' + B3 + ' CS01 ' + B, ['AB⁼']),
+              (C3 + ' H1 CS01 H1 CS01 ' + B3 + ' ' + B, ['Bc⁼']),
+              (C3 + ' H1 CS01 H1 CS01', ['B4⁼'])], maxstates=40000)
+T('braid⁼', 2, [('CS01 H1 CS01 H1 CS01', None),
+                ('CS01 H1 CS01 H1 CS01 H1 ' + C3 + ' H1 H1 CS01 H1', ['H2', 'E2⁼']),
+                ('CS01 ' + C3 + ' H1 CS01 H1 CS01 H1 CS01 H1', ['BR0⁼']),
+                ('H1 CS01 H1 CS01 H1 CS01 H1', ['E2⁼'])])
 
 # Only the new equations go into the module.
 del OUT[:first]
