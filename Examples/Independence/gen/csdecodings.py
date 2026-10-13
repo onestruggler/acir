@@ -120,5 +120,8 @@ SW = cs3.w('K0 K1 CS01 CS01') * 3 + ['iI'] * 3
 D('Dσ⁼', 2, chain(text(SW), 'SW01', 'H0 H1 CS01 CS01 H0 H1 CS01 CS01 H0 H1 CS01 CS01',
                   'SW01', ['E13⁼']), mirror=False)
 
+# Lemma 19: H, encoded as K and read with the ω the encoding dropped.
+D('L19H⁼', 1, [('w wd H0', None), ('H0', ['w8'])], mirror=False)
+
 # Only the new equations go into the module.
 del OUT[:first]

@@ -29,7 +29,11 @@
 -- up to two qubits, from Bian and Selinger's 2-qubit presentation and,
 -- on one wire, Greylyn's two-level one (Clifford+T.Completeness, through
 -- Appendices D and G.4), so that it is complete up to two qubits and
--- minimal up to one.
+-- minimal up to one; and for CliffCS₂ on zero, one and three wires,
+-- from Bian and Selinger's 3-qubit presentation (Clifford+CS.
+-- Completeness, through Appendices E and G.5: ω is not in its ring
+-- 𝔻[i], so the encoding drops it and the decoding restores it, by
+-- parity) and on at most one wire from Cliff₂ (Clifford+CS.Low).
 --
 -- Two departures from the paper.  The scalar of the qutrit axiom (E)
 -- is printed ω₁₂⁷ in Figure 4, which is unsound for the semantics of
@@ -46,6 +50,8 @@ module Examples.Independence.Theorems where
 
 open import Data.Nat.Base using (ℕ ; _+_ ; _≤_)
 open import Data.Product.Base using (_×_ ; _,_)
+open import Data.Sum.Base using (_⊎_)
+open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Relation.Nullary.Negation using (¬_)
 
 import Examples.Independence.Necessity as Necessity
@@ -74,6 +80,7 @@ import Examples.Independence.CNOT-Dihedral.Minimality   as CNOTdihe-Min
 import Examples.Independence.Clifford.Completeness      as Cliff-Cpl
 import Examples.Independence.Real-Clifford.Completeness as RCliff-Cpl
 import Examples.Independence.Clifford+T.Completeness   as CliffT-Cpl
+import Examples.Independence.Clifford+CS.Completeness  as CliffCS-Cpl
 import Examples.Independence.CNOT-Dihedral.Completeness as CNOTdihe-Cpl
 
 private
@@ -234,6 +241,24 @@ CliffT₂-minimal-complete :
      CliffT-Sem.⟦ w ⟧ CliffT-Sem.≈ CliffT-Sem.⟦ v ⟧ → n CliffT.⊢ w ≈ v) ×
   (∀ ρ → CliffT.arity ρ ≤ 1 → ¬ CliffT-M.Complete-without ρ (CliffT.arity ρ + 0))
 CliffT₂-minimal-complete = CliffT₂-complete , CliffT₂-necessary
+
+-- 5. CliffCS₂ is complete on zero, one and three wires: on three its
+-- axioms derive Bian and Selinger's 3-qubit relations, decoded
+-- (Appendices E and G.5), whose presentation is complete, and the
+-- powers of ω the encoding drops come back by parity; on at most one
+-- wire its rules are Cliff₂'s.  Two wires are not covered.
+CliffCS₂-complete : n ≤ 1 ⊎ n ≡ 3 → {w v : CliffCS.Circuit n} →
+                    CliffCS-Sem.⟦ w ⟧ CliffCS-Sem.≈ CliffCS-Sem.⟦ v ⟧ → n CliffCS.⊢ w ≈ v
+CliffCS₂-complete = CliffCS-Cpl.complete
+
+-- So CliffCS₂ is complete on those widths and minimal up to two wires:
+-- each axiom on at most two wires is needed for completeness on its
+-- own width.
+CliffCS₂-minimal-complete :
+  (∀ {n} → n ≤ 1 ⊎ n ≡ 3 → {w v : CliffCS.Circuit n} →
+     CliffCS-Sem.⟦ w ⟧ CliffCS-Sem.≈ CliffCS-Sem.⟦ v ⟧ → n CliffCS.⊢ w ≈ v) ×
+  (∀ ρ → CliffCS.arity ρ ≤ 2 → ¬ CliffCS-M.Complete-without ρ (CliffCS.arity ρ + 0))
+CliffCS₂-minimal-complete = CliffCS₂-complete , CliffCS₂-necessary
 
 -- 6. CNOTdihe₂ is complete, at every width: its axioms derive Amy,
 -- Chen and Ross's, whose presentation is complete.
