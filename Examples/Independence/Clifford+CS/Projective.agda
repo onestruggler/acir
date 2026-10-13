@@ -24,7 +24,7 @@ open import Word.Base using (_•_)
 open import Examples.Independence.Clifford+CS.Syntactics
 import Examples.Independence.Clifford+CS.Semantics as Std
 open import Examples.Independence.Semantics.Qubit
-  using (Sc ; ωᵍ ; Hᵍ ; Sᵍ ; SWᵍ ; module Circuits)
+  using (Sc ; ωᵍ ; Hᵍ ; Sᵍ ; SWᵍ ; SWᵍ-ok ; module Circuits)
 
 ------------------------------------------------------------------------
 -- (CSr): [CS := CS • Z]~, Z on wire 0
@@ -41,11 +41,7 @@ module Sep-CSr where
   open Circuits val using (module Projective)
   open Projective using (check-some ; apart ; module Symmetry)
 
-  open Symmetry
-    (check-some (λ _ → tt) _ _ tt)
-    (λ { H-gate → check-some (λ _ → tt) _ _ tt ; S-gate → check-some (λ _ → tt) _ _ tt })
-    (λ { ⌈ CS-gate ⌉ → check-some (λ _ → tt) _ _ tt ; swap → check-some (λ _ → tt) _ _ tt })
-    (λ ())
+  open Symmetry refl SWᵍ-ok
     using (module Separate)
 
   open Separate arity lhs rhs CSr 2
@@ -79,11 +75,7 @@ module Sep-CE where
   open Circuits val using (module Projective)
   open Projective using (check-some ; apart ; module Symmetry)
 
-  open Symmetry
-    (check-some (λ _ → tt) _ _ tt)
-    (λ { H-gate → check-some (λ _ → tt) _ _ tt ; S-gate → check-some (λ _ → tt) _ _ tt })
-    (λ { ⌈ CS-gate ⌉ → check-some (λ _ → tt) _ _ tt ; swap → check-some (λ _ → tt) _ _ tt })
-    (λ ())
+  open Symmetry refl SWᵍ-ok
     using (module Separate)
 
   open Separate arity lhs rhs CE 2

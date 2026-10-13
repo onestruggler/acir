@@ -25,7 +25,7 @@ open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Examples.Independence.Real-Clifford.Syntactics
 open import Examples.Independence.Semantics.Qubit
-  using (Sc ; −1ᵍ ; Hᵍ ; Zᵍ ; CXᵍ ; SWᵍ ; idM ; module Circuits)
+  using (Sc ; −1ᵍ ; Hᵍ ; Zᵍ ; CXᵍ ; SWᵍ ; SWᵍ-ok ; idM ; module Circuits)
 
 ------------------------------------------------------------------------
 -- (CF): [Z := id]~
@@ -42,11 +42,7 @@ module Sep-CF where
   open Circuits val using (module Projective)
   open Projective using (check-some ; apart ; module Symmetry)
 
-  open Symmetry
-    (check-some (λ _ → tt) _ _ tt)
-    (λ { H-gate → check-some (λ _ → tt) _ _ tt ; Z-gate → check-some (λ _ → tt) _ _ tt })
-    (λ { ⌈ CX-gate ⌉ → check-some (λ _ → tt) _ _ tt ; swap → check-some (λ _ → tt) _ _ tt })
-    (λ ())
+  open Symmetry refl SWᵍ-ok
     using (module Separate)
 
   open Separate arity lhs rhs CF 2
@@ -79,11 +75,7 @@ module Sep-CZr where
   open Circuits val using (module Projective)
   open Projective using (check-some ; apart ; module Symmetry)
 
-  open Symmetry
-    (check-some (λ _ → tt) _ _ tt)
-    (λ { H-gate → check-some (λ _ → tt) _ _ tt ; Z-gate → check-some (λ _ → tt) _ _ tt })
-    (λ { ⌈ CX-gate ⌉ → check-some (λ _ → tt) _ _ tt ; swap → check-some (λ _ → tt) _ _ tt })
-    (λ ())
+  open Symmetry refl SWᵍ-ok
     using (module Separate)
 
   open Separate arity lhs rhs CZr 2

@@ -58,9 +58,16 @@ open import Relation.Nullary using (does ; yes ; no)
 open import Relation.Nullary.Negation using (¬_)
 
 open Quartic p q public
-  using (Q ; x ; 1q ; _^_ ; _≟_ ; isCommutativeRing ; commutativeRing ; ⟨_,_,_,_⟩)
+  using (Q ; x ; 0q ; 1q ; _^_ ; _≟_ ; isCommutativeRing ; commutativeRing ; ⟨_,_,_,_⟩)
 
-open import Examples.Independence.Semantics.Operators d isCommutativeRing public
+-- The zero test that lets a stored product skip a vanishing term.
+private
+  zero-sound : (a : Q) → T (does (a ≟ 0q)) → a ≡ 0q
+  zero-sound a t with a ≟ 0q
+  ... | yes e = e
+
+open import Examples.Independence.Semantics.Operators d isCommutativeRing
+  (λ a → does (a ≟ 0q)) zero-sound public
 
 open CommutativeRing R using (*-assoc ; *-comm ; *-identityˡ ; *-identityʳ)
 

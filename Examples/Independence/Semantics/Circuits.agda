@@ -14,8 +14,10 @@
 --   (⟦↑⟧), so cong↑ is sound;
 -- * the comm rules and ω↑=ω are the tensor calculus, so they hold for
 --   every valuation;
--- * the symmetry rules are owed for the swap and each gate, on two,
---   three or four wires.
+-- * the symmetry rules hold as soon as the swap reads as the swap
+--   (Symmetry): σ[ k ] is then a permutation of the basis vectors, and
+--   a gate on k wires followed by it is it followed by the gate one
+--   wire up, whatever the gate's matrix — so nothing is owed per gate.
 --
 -- Theory turns this into soundness of a fragment: given its axioms on
 -- their own wires, every derivable equation holds, at every width.
@@ -47,6 +49,7 @@ import Data.Nat.Properties as ℕP
 open import Algebra.Bundles using (Monoid)
 open import Data.Product.Base using (_,_ ; proj₁ ; proj₂)
 open import Data.Unit using (⊤ ; tt)
+open import Function.Base using (_∘′_)
 open import Relation.Binary.PropositionalEquality as Eq using (refl)
 open import Relation.Nullary.Negation using (¬_)
 
@@ -240,19 +243,149 @@ module Laws
     where c = entries (proj₂ (val h))
 
   ----------------------------------------------------------------------
-  -- The symmetry rules, from their instances on two and three wires
+  -- The symmetry rules, from the swap's matrix
+  --
+  -- Given that the swap reads as the swap, with no phase, the swap rules
+  -- hold for every valuation of the other gates.  A swap on the bottom
+  -- wires, or shifted up, is a permutation both by rows and by columns
+  -- (Operators' permˡ, permʳ), and so is a product of them: σ[ k ]
+  -- after a gate reads the gate's matrix at rotated rows, and a gate
+  -- after σ[ k ] at rotated columns, and the two agree entry by entry
+  -- (cross₁, cross₂, cross₃).  Nothing is evaluated: the gates of a
+  -- fragment used to be checked here one by one, on three and four
+  -- wires, and those checks were the slowest of the whole development.
 
   module Symmetry
-    (σσ-ok  : ⟦ σ {0} • σ {0} ⟧ ≈ ⟦ ε {X = Gen 2} ⟧)
-    (nat₁-ok : (h : Gate 1) →
-               ⟦ [ gate₁ {1} ⌈ h ⌉ ]ʷ • σ {0} ⟧ ≈ ⟦ σ {0} • [ gate₁ {0} ⌈ h ⌉ ]ʷ ↑ ⟧)
-    (nat₂-ok : (h : PGate 2) →
-               ⟦ [ gate₂ {1} h ]ʷ • σ[_] {0} 2 ⟧ ≈
-               ⟦ σ[_] {0} 2 • [ gate₂ {0} h ]ʷ ↑ ⟧)
-    (nat₃-ok : (h : Gate 3) →
-               ⟦ [ gate₃ {1} ⌈ h ⌉ ]ʷ • σ[_] {0} 3 ⟧ ≈
-               ⟦ σ[_] {0} 3 • [ gate₃ {0} ⌈ h ⌉ ]ʷ ↑ ⟧)
+    (swap-h  : proj₁ (val swap) ≡ 0)
+    (swap-ok : ix (proj₂ (val swap)) ≐ swapₒ)
     where
+
+    private
+      Sw : Mat 2
+      Sw = proj₂ (val swap)
+
+      -- The swap on the bottom two wires of 2 + n, and one and two
+      -- wires up.
+      S₀ : (n : ℕ) → Mat (suc (suc n))
+      S₀ n = tenM Sw (idM {n})
+
+      S₁ : (n : ℕ) → Mat (suc (suc (suc n)))
+      S₁ n = tenM (idM {1}) (S₀ n)
+
+      S₂ : (n : ℕ) → Mat (suc (suc (suc (suc n))))
+      S₂ n = tenM (idM {1}) (S₁ n)
+
+      -- σ[ 2 ] and σ[ 3 ], the later swap on the left.
+      S[2] : (n : ℕ) → Mat (suc (suc (suc n)))
+      S[2] n = mulM (S₀ (suc n)) (S₁ n)
+
+      S[3] : (n : ℕ) → Mat (suc (suc (suc (suc n))))
+      S[3] n = mulM (S₀ (suc (suc n))) (mulM (S₁ (suc n)) (S₂ n))
+
+      σ₀ˡ : ix (S₀ n) ≐ permˡ sw
+      σ₀ˡ {n} = ≐-trans (ix-emb {2} {n} Sw) (≐-trans (emb-cong {2} {n} swap-ok) emb-swapˡ)
+
+      σ₀ʳ : ix (S₀ n) ≐ permʳ sw
+      σ₀ʳ {n} = ≐-trans (ix-emb {2} {n} Sw) (≐-trans (emb-cong {2} {n} swap-ok) emb-swapʳ)
+
+      σ₁ˡ : ix (S₁ n) ≐ permˡ (tl sw)
+      σ₁ˡ {n} = ≐-trans (ix-up (S₀ n)) (≐-trans (up-cong (σ₀ˡ {n})) (up-permˡ sw))
+
+      σ₁ʳ : ix (S₁ n) ≐ permʳ (tl sw)
+      σ₁ʳ {n} = ≐-trans (ix-up (S₀ n)) (≐-trans (up-cong (σ₀ʳ {n})) (up-permʳ sw))
+
+      σ₂ˡ : ix (S₂ n) ≐ permˡ (tl (tl sw))
+      σ₂ˡ {n} = ≐-trans (ix-up (S₁ n)) (≐-trans (up-cong (σ₁ˡ {n})) (up-permˡ (tl sw)))
+
+      σ₂ʳ : ix (S₂ n) ≐ permʳ (tl (tl sw))
+      σ₂ʳ {n} = ≐-trans (ix-up (S₁ n)) (≐-trans (up-cong (σ₁ʳ {n})) (up-permʳ (tl sw)))
+
+      σ[2]ˡ : ix (S[2] n) ≐ permˡ (tl sw ∘′ sw)
+      σ[2]ˡ {n} =
+        ≐-trans (ix-mul (S₀ (suc n)) (S₁ n))
+          (≐-trans (⊙-cong (σ₀ˡ {suc n}) (σ₁ˡ {n})) (permˡ-⊙ sw (permˡ (tl sw))))
+
+      σ[2]ʳ : ix (S[2] n) ≐ permʳ (sw ∘′ tl sw)
+      σ[2]ʳ {n} =
+        ≐-trans (ix-mul (S₀ (suc n)) (S₁ n))
+          (≐-trans (⊙-cong (σ₀ʳ {suc n}) (σ₁ʳ {n})) (⊙-permʳ (permʳ sw) (tl sw)))
+
+      σ[3]ˡ : ix (S[3] n) ≐ permˡ (tl (tl sw) ∘′ tl sw ∘′ sw)
+      σ[3]ˡ {n} =
+        ≐-trans (ix-mul (S₀ (suc (suc n))) (mulM (S₁ (suc n)) (S₂ n)))
+          (≐-trans (⊙-cong (σ₀ˡ {suc (suc n)})
+                     (≐-trans (ix-mul (S₁ (suc n)) (S₂ n))
+                       (≐-trans (⊙-cong (σ₁ˡ {suc n}) (σ₂ˡ {n}))
+                                (permˡ-⊙ (tl sw) (permˡ (tl (tl sw)))))))
+                   (permˡ-⊙ sw (permˡ (tl (tl sw) ∘′ tl sw))))
+
+      σ[3]ʳ : ix (S[3] n) ≐ permʳ (sw ∘′ tl sw ∘′ tl (tl sw))
+      σ[3]ʳ {n} =
+        ≐-trans (ix-mul (S₀ (suc (suc n))) (mulM (S₁ (suc n)) (S₂ n)))
+          (≐-trans (⊙-cong (σ₀ʳ {suc (suc n)})
+                     (≐-trans (ix-mul (S₁ (suc n)) (S₂ n))
+                       (≐-trans (⊙-cong (σ₁ʳ {suc n}) (σ₂ʳ {n}))
+                                (⊙-permʳ (permʳ (tl sw)) (tl (tl sw))))))
+                   (⊙-permʳ (permʳ sw) (tl sw ∘′ tl (tl sw))))
+
+      -- A gate one wire up.
+      ix-up↓ : ∀ {k n} (M : Mat k) →
+               ix (tenM (idM {1}) (tenM M (idM {n}))) ≐ up (emb {k} {n} (ix M))
+      ix-up↓ {k} {n} M = ≐-trans (ix-up (tenM M (idM {n}))) (up-cong (ix-emb {k} {n} M))
+
+    -- The swap is an involution ...
+    σσ : ⟦ σ {0} • σ {0} ⟧ ≈ ⟦ ε {X = Gen 2} ⟧
+    σσ = ≐→≈ {s = ⟦ σ {0} • σ {0} ⟧} {⟦ ε {X = Gen 2} ⟧}
+           (Eq.cong₂ _+ℕ_ swap-h swap-h)
+           (≐-trans (ix-mul (S₀ 0) (S₀ 0))
+           (≐-trans (⊙-cong (σ₀ˡ {0}) (σ₀ˡ {0}))
+           (≐-trans (permˡ-⊙ sw (permˡ sw))
+           (≐-trans sw-invol (≐-sym ix-id)))))
+
+    -- ... and natural in every gate.
+    nat₁ : (h : PGate 1) →
+           ⟦ [ gate₁ {1} h ]ʷ • σ {0} ⟧ ≈ ⟦ σ {0} • [ gate₁ {0} h ]ʷ ↑ ⟧
+    nat₁ h =
+      ≐→≈ {s = ⟦ [ gate₁ {1} h ]ʷ • σ {0} ⟧} {⟦ σ {0} • [ gate₁ {0} h ]ʷ ↑ ⟧}
+          (ℕP.+-comm (proj₁ (val h)) (proj₁ (val swap)))
+        (≐-trans (ix-mul (S₀ 0) (tenM V (idM {1})))
+        (≐-trans (⊙-cong (σ₀ˡ {0}) (ix-emb {1} {1} V))
+        (≐-trans (permˡ-⊙ sw (emb {1} {1} (ix V)))
+        (≐-trans (cross₁ (ix V))
+        (≐-sym (≐-trans (ix-mul (tenM (idM {1}) (tenM V (idM {0}))) (S₀ 0))
+               (≐-trans (⊙-cong (ix-up↓ {1} {0} V) (σ₀ʳ {0}))
+                        (⊙-permʳ (up (emb {1} {0} (ix V))) sw))))))))
+      where V = proj₂ (val h)
+
+    nat₂ : (h : PGate 2) →
+           ⟦ [ gate₂ {1} h ]ʷ • σ[_] {0} 2 ⟧ ≈ ⟦ σ[_] {0} 2 • [ gate₂ {0} h ]ʷ ↑ ⟧
+    nat₂ h =
+      ≐→≈ {s = ⟦ [ gate₂ {1} h ]ʷ • σ[_] {0} 2 ⟧} {⟦ σ[_] {0} 2 • [ gate₂ {0} h ]ʷ ↑ ⟧}
+          (ℕP.+-comm (proj₁ (val h)) (proj₁ (val swap) +ℕ proj₁ (val swap)))
+        (≐-trans (ix-mul (S[2] 0) (tenM V (idM {1})))
+        (≐-trans (⊙-cong (σ[2]ˡ {0}) (ix-emb {2} {1} V))
+        (≐-trans (permˡ-⊙ (tl sw ∘′ sw) (emb {2} {1} (ix V)))
+        (≐-trans (cross₂ (ix V))
+        (≐-sym (≐-trans (ix-mul (tenM (idM {1}) (tenM V (idM {0}))) (S[2] 0))
+               (≐-trans (⊙-cong (ix-up↓ {2} {0} V) (σ[2]ʳ {0}))
+                        (⊙-permʳ (up (emb {2} {0} (ix V))) (sw ∘′ tl sw)))))))))
+      where V = proj₂ (val h)
+
+    nat₃ : (h : PGate 3) →
+           ⟦ [ gate₃ {1} h ]ʷ • σ[_] {0} 3 ⟧ ≈ ⟦ σ[_] {0} 3 • [ gate₃ {0} h ]ʷ ↑ ⟧
+    nat₃ h =
+      ≐→≈ {s = ⟦ [ gate₃ {1} h ]ʷ • σ[_] {0} 3 ⟧} {⟦ σ[_] {0} 3 • [ gate₃ {0} h ]ʷ ↑ ⟧}
+          (ℕP.+-comm (proj₁ (val h))
+                     ((proj₁ (val swap) +ℕ proj₁ (val swap)) +ℕ proj₁ (val swap)))
+        (≐-trans (ix-mul (S[3] 0) (tenM V (idM {1})))
+        (≐-trans (⊙-cong (σ[3]ˡ {0}) (ix-emb {3} {1} V))
+        (≐-trans (permˡ-⊙ (tl (tl sw) ∘′ tl sw ∘′ sw) (emb {3} {1} (ix V)))
+        (≐-trans (cross₃ (ix V))
+        (≐-sym (≐-trans (ix-mul (tenM (idM {1}) (tenM V (idM {0}))) (S[3] 0))
+               (≐-trans (⊙-cong (ix-up↓ {3} {0} V) (σ[3]ʳ {0}))
+                        (⊙-permʳ (up (emb {3} {0} (ix V)))
+                                 (sw ∘′ tl sw ∘′ tl (tl sw))))))))))
+      where V = proj₂ (val h)
 
     private
       -- An equation on k wires, read on the bottom wires of k + n.
@@ -265,13 +398,12 @@ module Laws
             (≈-sym' {s = ⟦ v ⟧} {embs {k} {n} ⟦ r ⟧} (⟦↓≡⟧ r er)))
 
     sym-sound : n Sym, w === v → ⟦ w ⟧ ≈ ⟦ v ⟧
-    sym-sound σ-inv          = lift (σ • σ) ε refl refl σσ-ok
-    sym-sound (σ-nat₁ ⌈ h ⌉) = lift ([ gate₁ ⌈ h ⌉ ]ʷ • σ) (σ • [ gate₁ ⌈ h ⌉ ]ʷ ↑)
-                                    refl refl (nat₁-ok h)
-    sym-sound (σ-nat₂ h)     = lift ([ gate₂ h ]ʷ • σ[ 2 ]) (σ[ 2 ] • [ gate₂ h ]ʷ ↑)
-                                    refl refl (nat₂-ok h)
-    sym-sound (σ-nat₃ ⌈ h ⌉) = lift ([ gate₃ ⌈ h ⌉ ]ʷ • σ[ 3 ]) (σ[ 3 ] • [ gate₃ ⌈ h ⌉ ]ʷ ↑)
-                                    refl refl (nat₃-ok h)
+    sym-sound σ-inv      = lift (σ • σ) ε refl refl σσ
+    sym-sound (σ-nat₁ h) = lift ([ gate₁ h ]ʷ • σ) (σ • [ gate₁ h ]ʷ ↑) refl refl (nat₁ h)
+    sym-sound (σ-nat₂ h) = lift ([ gate₂ h ]ʷ • σ[ 2 ]) (σ[ 2 ] • [ gate₂ h ]ʷ ↑)
+                                refl refl (nat₂ h)
+    sym-sound (σ-nat₃ h) = lift ([ gate₃ h ]ʷ • σ[ 3 ]) (σ[ 3 ] • [ gate₃ h ]ʷ ↑)
+                                refl refl (nat₃ h)
 
     --------------------------------------------------------------------
     -- Soundness of a fragment

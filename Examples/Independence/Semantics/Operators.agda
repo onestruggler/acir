@@ -12,17 +12,26 @@
 -- obey the laws the vector sums need.  Operators are compared
 -- pointwise (_≐_).  Tries (Mat) store an operator as data, so that a
 -- long product is computed once when a relation is checked.
+--
+-- The stored product skips a term whose left factor is zero, by the
+-- module's zero test, without computing the right factor or the
+-- product (_*?_): the matrices of most gates are sparse — a
+-- permutation has one non-zero entry in each row — and Agda's
+-- evaluator pays for every multiplication.  It is the same value
+-- (*?-*), so ix-mul still reads a stored product as _⊙_.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 open import Algebra.Structures using (IsCommutativeRing)
+open import Data.Bool.Base using (Bool ; true ; false ; T)
 open import Data.Nat.Base using (ℕ)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
 module Examples.Independence.Semantics.Operators
   (d : ℕ) {A : Set} {_⊕_ _⊛_ : A → A → A} {⊖_ : A → A} {0r 1r : A}
   (isCR : IsCommutativeRing (_≡_ {A = A}) _⊕_ _⊛_ ⊖_ 0r 1r)
+  (zero? : A → Bool) (zero?-sound : ∀ a → T (zero? a) → a ≡ 0r)
   where
 
 open import Algebra.Bundles using (CommutativeRing)
@@ -169,8 +178,25 @@ ix-matOf {k} M x y =
   Eq.trans (Eq.cong (λ t → get t y) (get-tab k (λ u → tab k (λ v → M u v)) x))
            (get-tab k (λ v → M x v) y)
 
+-- a * b, skipping the product when a is zero.
+private
+  pick : Bool → A → A → A
+  pick true  a b = 0#
+  pick false a b = a * b
+
+  pick-* : (t : Bool) (a b : A) → (T t → a ≡ 0#) → pick t a b ≡ a * b
+  pick-* true  a b z = Eq.trans (Eq.sym (zeroˡ b)) (Eq.cong (_* b) (Eq.sym (z _)))
+  pick-* false a b z = refl
+
+infixl 7 _*?_
+_*?_ : A → A → A
+a *? b = pick (zero? a) a b
+
+*?-* : (a b : A) → a *? b ≡ a * b
+*?-* a b = pick-* (zero? a) a b (zero?-sound a)
+
 mulM : Mat k → Mat k → Mat k
-mulM M N = matOf (ix M ⊙ ix N)
+mulM M N = matOf λ x y → Σv (λ z → ix M x z *? ix N z y)
 
 idM : Mat k
 idM = matOf Idₒ
@@ -448,7 +474,9 @@ tensor-assoc₃ P B C (a ∷ a' ∷ a'' ∷ x) (b ∷ b' ∷ b'' ∷ y) =
 -- Tries
 
 ix-mul : (M N : Mat k) → ix (mulM M N) ≐ (ix M ⊙ ix N)
-ix-mul M N = ix-matOf (ix M ⊙ ix N)
+ix-mul M N x y =
+  Eq.trans (ix-matOf (λ u v → Σv (λ z → ix M u z *? ix N z v)) x y)
+           (Σ-cong (λ z → *?-* (ix M x z) (ix N z y)))
 
 ix-id : ix (idM {k}) ≐ Idₒ
 ix-id = ix-matOf Idₒ
@@ -551,3 +579,84 @@ up-emb {k} {n} M = ≐-sym (tensor-assoc₁ (Idₒ {1}) M (Idₒ {n}))
 
 scal-emb : (c : A) → scal {k +ℕ n} c ≐ emb {k} {n} (scal c)
 scal-emb {k} {n} c = ≐-sym (tensor-scal {k} {n} c)
+
+------------------------------------------------------------------------
+-- Permutations
+--
+-- A permutation of the basis vectors as an operator, in the two forms a
+-- product needs: by its rows, permˡ f x y = δ (f x) y, which a product
+-- on the left reads off (permˡ-⊙), and by its columns, permʳ g x y =
+-- δ x (g y), which a product on the right reads off (⊙-permʳ).  Both
+-- forms survive products of their own kind and the shift (tl: the
+-- bottom digit stays), so a word of swaps is a permutation in each
+-- form without an inverse ever being computed.  The swap of the bottom
+-- two wires is both, with the same function (emb-swapˡ, emb-swapʳ).
+
+permˡ permʳ : (Digits n → Digits n) → Op n
+permˡ f x y = δv (f x) y
+permʳ g x y = δv x (g y)
+
+permˡ-⊙ : (f : Digits n → Digits n) (M : Op n) →
+          (permˡ f ⊙ M) ≐ λ x y → M (f x) y
+permˡ-⊙ f M x y = Σ-δˡ (f x) (λ z → M z y)
+
+⊙-permʳ : (M : Op n) (g : Digits n → Digits n) →
+          (M ⊙ permʳ g) ≐ λ x y → M x (g y)
+⊙-permʳ M g x y = Σ-δʳ (g y) (λ z → M x z)
+
+-- A function on the digits above the bottom one.
+tl : (Digits n → Digits n) → Digits (suc n) → Digits (suc n)
+tl f (a ∷ x) = a ∷ f x
+
+up-permˡ : (f : Digits n → Digits n) → up (permˡ f) ≐ permˡ (tl f)
+up-permˡ f (a ∷ x) (b ∷ y) = Eq.cong (_* δv (f x) y) (*-identityʳ (δ₁ a b))
+
+up-permʳ : (g : Digits n → Digits n) → up (permʳ g) ≐ permʳ (tl g)
+up-permʳ g (a ∷ x) (b ∷ y) = Eq.cong (_* δv x (g y)) (*-identityʳ (δ₁ a b))
+
+-- The swap of the bottom two digits, and its operator on two wires.
+sw : Digits (suc (suc n)) → Digits (suc (suc n))
+sw (a ∷ b ∷ x) = b ∷ a ∷ x
+
+swapₒ : Op 2
+swapₒ = permˡ sw
+
+emb-swapˡ : emb {2} {n} swapₒ ≐ permˡ sw
+emb-swapˡ (a ∷ b ∷ x) (c ∷ e ∷ y) =
+  Eq.trans (*-assoc (δ₁ b c) (δ₁ a e * 1#) (δv x y))
+           (Eq.cong (δ₁ b c *_) (Eq.cong (_* δv x y) (*-identityʳ (δ₁ a e))))
+
+emb-swapʳ : emb {2} {n} swapₒ ≐ permʳ sw
+emb-swapʳ (a ∷ b ∷ x) (c ∷ e ∷ y) =
+  Eq.trans (emb-swapˡ (a ∷ b ∷ x) (c ∷ e ∷ y))
+    (Eq.trans (Eq.sym (*-assoc (δ₁ b c) (δ₁ a e) (δv x y)))
+      (Eq.trans (Eq.cong (_* δv x y) (*-comm (δ₁ b c) (δ₁ a e)))
+                (*-assoc (δ₁ a e) (δ₁ b c) (δv x y))))
+
+-- The swap is an involution.
+sw-invol : (λ x y → permˡ sw (sw x) y) ≐ Idₒ {suc (suc n)}
+sw-invol (a ∷ b ∷ x) y = refl
+
+-- A gate on the bottom k wires followed by the cycle σ[ k ], read by
+-- rows, and the cycle followed by the gate one wire up, read by
+-- columns (k = 1, 2, 3): both are the gate's entry on the digits it
+-- acts on times δ on the digit it crosses.
+private
+  δ-cross : (P q : A) → P * q ≡ q * (P * 1#)
+  δ-cross P q = Eq.trans (*-comm P q) (Eq.cong (q *_) (Eq.sym (*-identityʳ P)))
+
+cross₁ : (M : Op 1) →
+         (λ x y → emb {1} {1} M (sw x) y) ≐ (λ x y → up (emb {1} {0} M) x (sw y))
+cross₁ M (a ∷ b ∷ []) (c ∷ e ∷ []) = δ-cross (M (b ∷ []) (c ∷ [])) (δ₁ a e * 1#)
+
+cross₂ : (M : Op 2) →
+         (λ x y → emb {2} {1} M (tl sw (sw x)) y) ≐
+         (λ x y → up (emb {2} {0} M) x (sw (tl sw y)))
+cross₂ M (a ∷ b ∷ c ∷ []) (y₀ ∷ y₁ ∷ y₂ ∷ []) =
+  δ-cross (M (b ∷ c ∷ []) (y₀ ∷ y₁ ∷ [])) (δ₁ a y₂ * 1#)
+
+cross₃ : (M : Op 3) →
+         (λ x y → emb {3} {1} M (tl (tl sw) (tl sw (sw x))) y) ≐
+         (λ x y → up (emb {3} {0} M) x (sw (tl sw (tl (tl sw) y))))
+cross₃ M (a ∷ b ∷ c ∷ e ∷ []) (y₀ ∷ y₁ ∷ y₂ ∷ y₃ ∷ []) =
+  δ-cross (M (b ∷ c ∷ e ∷ []) (y₀ ∷ y₁ ∷ y₂ ∷ [])) (δ₁ a y₃ * 1#)

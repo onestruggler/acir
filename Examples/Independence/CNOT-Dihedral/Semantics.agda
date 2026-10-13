@@ -28,6 +28,7 @@ open import Examples.Independence.CNOT-Dihedral.Syntactics
 open import Examples.Independence.CNOT-Dihedral.Reading public
   using (val ; ⟦_⟧₀ ; ⟦_⟧ ; _≈_)
 open import Examples.Independence.CNOT-Dihedral.Reading using (module Exact)
+open import Examples.Independence.Semantics.Qubit using (SWᵍ-ok)
 open import Examples.Independence.CNOT-Dihedral.Bridge using (ι⁻ ; same-matrix)
 import Examples.Groups.CNOT+Dihedral.Interpretation as AI
 
@@ -42,11 +43,7 @@ C³T-ok : ⟦ lhs C³T ⟧ ≈ ⟦ rhs C³T ⟧
 C³T-ok = same-matrix (lhs C³T) (rhs C³T)
   (AI.by-relator (wmap ι⁻ (lhs C³T)) (wmap ι⁻ (rhs C³T)) refl refl refl)
 
-open Symmetry
-  (check 0 refl _ _ tt)
-  (λ { X-gate → check 0 refl _ _ tt ; T-gate → check 0 refl _ _ tt })
-  (λ { ⌈ CX-gate ⌉ → check 0 refl _ _ tt ; swap → check 0 refl _ _ tt })
-  (λ ())
+open Symmetry refl SWᵍ-ok
   using (module Theory)
 
 open Theory arity lhs rhs

@@ -32,7 +32,7 @@ open import Data.Product.Base using (_,_)
 open import Data.Vec.Base using ([] ; _∷_)
 
 open import Examples.Independence.Semantics.Qutrit
-  using (Sc ; ωᵍ ; Hᵍ ; CXᵍ ; SWᵍ ; module Circuits ; matOf ; δ₁ ; x ; _^_ ; _*_ ; 1#)
+  using (Sc ; ωᵍ ; Hᵍ ; CXᵍ ; SWᵍ ; SWᵍ-ok ; module Circuits ; matOf ; δ₁ ; x ; _^_ ; _*_ ; 1#)
 
 -- S • X: |b⟩ ↦ s(b) |b + 1⟩, s(2) = ω₃ = ζ⁴.
 SXᵍ : Sc 1
@@ -62,11 +62,7 @@ module Sep-SS′ where
   open Circuits val using (module Projective)
   open Projective using (check-some ; apart ; module Symmetry)
 
-  open Symmetry
-    (check-some (λ _ → tt) _ _ tt)
-    (λ { H-gate → check-some (λ _ → tt) _ _ tt ; S-gate → check-some (λ _ → tt) _ _ tt })
-    (λ { ⌈ CX-gate ⌉ → check-some (λ _ → tt) _ _ tt ; swap → check-some (λ _ → tt) _ _ tt })
-    (λ ())
+  open Symmetry refl SWᵍ-ok
     using (module Separate)
 
   open Separate arity lhs rhs SS′ 1

@@ -17,7 +17,7 @@ module Examples.Independence.Semantics.Qubit where
 open import Data.Fin.Base using (Fin ; zero ; suc)
 open import Data.Integer.Base using (+_ ; -[1+_])
 open import Data.Nat.Base using (ℕ)
-open import Data.Product.Base using (_,_)
+open import Data.Product.Base using (_,_ ; proj₂)
 open import Data.Vec.Base using ([] ; _∷_)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
 
@@ -97,4 +97,9 @@ CXᵍ CSᵍ SWᵍ : Sc 2
 CXᵍ = 0 , matOf λ { (a₀ ∷ a₁ ∷ []) (b₀ ∷ b₁ ∷ []) → δ a₁ b₁ * δ a₀ (xor b₀ b₁) }
 CSᵍ = 0 , matOf λ { (a₀ ∷ a₁ ∷ []) (b₀ ∷ b₁ ∷ []) →
                       (δ a₀ b₀ * δ a₁ b₁) * phase 2 (and b₀ b₁) }
-SWᵍ = 0 , matOf λ { (a₀ ∷ a₁ ∷ []) (b₀ ∷ b₁ ∷ []) → δ a₀ b₁ * δ a₁ b₀ }
+SWᵍ = 0 , matOf swapₒ
+
+-- The swap reads as the swap, which is all the swap rules need
+-- (Circuits' Symmetry).
+SWᵍ-ok : ix (proj₂ SWᵍ) ≐ swapₒ
+SWᵍ-ok = ix-matOf swapₒ

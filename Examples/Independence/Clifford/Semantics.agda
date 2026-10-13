@@ -18,7 +18,7 @@ open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Examples.Independence.Clifford.Syntactics
 open import Examples.Independence.Semantics.Qubit
-  using (Sc ; ωᵍ ; Hᵍ ; Sᵍ ; CXᵍ ; SWᵍ ; module Circuits)
+  using (Sc ; ωᵍ ; Hᵍ ; Sᵍ ; CXᵍ ; SWᵍ ; SWᵍ-ok ; module Circuits)
 
 -- The gates.
 val : ∀ {k} → PGate k → Sc k
@@ -33,11 +33,7 @@ open Circuits val using (module Exact)
 open Exact public using (_≈_)
 open Exact using (check ; module Symmetry)
 
-open Symmetry
-  (check 0 refl _ _ tt)
-  (λ { H-gate → check 0 refl _ _ tt ; S-gate → check 0 refl _ _ tt })
-  (λ { ⌈ CX-gate ⌉ → check 0 refl _ _ tt ; swap → check 0 refl _ _ tt })
-  (λ ())
+open Symmetry refl SWᵍ-ok
   using (module Theory)
 
 open Theory arity lhs rhs
