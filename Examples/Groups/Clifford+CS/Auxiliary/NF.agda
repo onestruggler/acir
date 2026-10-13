@@ -79,39 +79,38 @@ x <ᶠ y = toℕ x < toℕ y
 -- indexed by naturals, since the normal form's indices are arithmetic
 -- on a symbolic N.
 
-private
-  fin : (j : ℕ) → j < N → Fin N
-  fin j p = fromℕ< p
+fin : (j : ℕ) → j < N → Fin N
+fin j p = fromℕ< p
 
-  fin-toℕ : ∀ (j : ℕ) (p : j < N) → toℕ (fin j p) ≡ j
-  fin-toℕ j p = toℕ-fromℕ< p
+fin-toℕ : ∀ (j : ℕ) (p : j < N) → toℕ (fin j p) ≡ j
+fin-toℕ j p = toℕ-fromℕ< p
 
-  fin-irr : ∀ (j : ℕ) (p q : j < N) → fin j p ≡ fin j q
-  fin-irr j p q = toℕ-injective (Eq.trans (fin-toℕ j p) (Eq.sym (fin-toℕ j q)))
+fin-irr : ∀ (j : ℕ) (p q : j < N) → fin j p ≡ fin j q
+fin-irr j p q = toℕ-injective (Eq.trans (fin-toℕ j p) (Eq.sym (fin-toℕ j q)))
 
-  fin-succ : ∀ (j : ℕ) (q : j < N) (p : suc j < N) →
-             Succ (fin j q) (fin (suc j) p)
-  fin-succ j q p = Eq.trans (fin-toℕ (suc j) p) (Eq.cong suc (Eq.sym (fin-toℕ j q)))
+fin-succ : ∀ (j : ℕ) (q : j < N) (p : suc j < N) →
+           Succ (fin j q) (fin (suc j) p)
+fin-succ j q p = Eq.trans (fin-toℕ (suc j) p) (Eq.cong suc (Eq.sym (fin-toℕ j q)))
 
-  fin≢ : ∀ {j k : ℕ} (q : j < N) (p : k < N) → j ≢ k → fin j q ≢ fin k p
-  fin≢ {j} {k} q p ne e =
-    ne (Eq.trans (Eq.sym (fin-toℕ j q)) (Eq.trans (Eq.cong toℕ e) (fin-toℕ k p)))
+fin≢ : ∀ {j k : ℕ} (q : j < N) (p : k < N) → j ≢ k → fin j q ≢ fin k p
+fin≢ {j} {k} q p ne e =
+  ne (Eq.trans (Eq.sym (fin-toℕ j q)) (Eq.trans (Eq.cong toℕ e) (fin-toℕ k p)))
 
-  fin<⇒≢ : ∀ {a b : Fin N} → toℕ a < toℕ b → a ≢ b
-  fin<⇒≢ {a} lt e =
-    n≮n (toℕ a) (Eq.subst (toℕ a <_) (Eq.cong toℕ (Eq.sym e)) lt)
+fin<⇒≢ : ∀ {a b : Fin N} → toℕ a < toℕ b → a ≢ b
+fin<⇒≢ {a} lt e =
+  n≮n (toℕ a) (Eq.subst (toℕ a <_) (Eq.cong toℕ (Eq.sym e)) lt)
 
-  n≢sn : ∀ (j : ℕ) → j ≢ suc j
-  n≢sn zero    ()
-  n≢sn (suc j) e = n≢sn j (suc-injective e)
+n≢sn : ∀ (j : ℕ) → j ≢ suc j
+n≢sn zero    ()
+n≢sn (suc j) e = n≢sn j (suc-injective e)
 
-  j<sj<N : ∀ {j : ℕ} → suc j < N → j < N
-  j<sj<N p = <-trans (n<1+n _) p
+j<sj<N : ∀ {j : ℕ} → suc j < N → j < N
+j<sj<N p = <-trans (n<1+n _) p
 
-    -- Two letters with the same indices are the same letter.
-  xw-cong : ∀ {c c′ x x′ y y′ : Fin N} .{q : x <ᶠ y} .{q′ : x′ <ᶠ y′} →
-            c ≡ c′ → x ≡ x′ → y ≡ y′ → xw c x y q ≡ xw c′ x′ y′ q′
-  xw-cong Eq.refl Eq.refl Eq.refl = Eq.refl
+  -- Two letters with the same indices are the same letter.
+xw-cong : ∀ {c c′ x x′ y y′ : Fin N} .{q : x <ᶠ y} .{q′ : x′ <ᶠ y′} →
+          c ≡ c′ → x ≡ x′ → y ≡ y′ → xw c x y q ≡ xw c′ x′ y′ q′
+xw-cong Eq.refl Eq.refl Eq.refl = Eq.refl
 
 sx : ℕ → W
 sx j with suc j <? N
@@ -120,10 +119,10 @@ sx j with suc j <? N
 
 -- The wrapper on an index known to be in range.
 sx-letter : ∀ (j : ℕ) (p : suc j < N) →
-            sx j ≡ sxF (fin j (j<sj<N p)) (fin (suc j) p) (fin-succ j (j<sj<N p) p)
+          sx j ≡ sxF (fin j (j<sj<N p)) (fin (suc j) p) (fin-succ j (j<sj<N p) p)
 sx-letter j p with suc j <? N
 ... | yes q = xw-cong (fin-irr j (j<sj<N q) (j<sj<N p))
-                      (fin-irr j (j<sj<N q) (j<sj<N p)) (fin-irr (suc j) q p)
+                    (fin-irr j (j<sj<N q) (j<sj<N p)) (fin-irr (suc j) q p)
 ... | no ¬q = ⊥-elim (¬q p)
 
 ------------------------------------------------------------------------
