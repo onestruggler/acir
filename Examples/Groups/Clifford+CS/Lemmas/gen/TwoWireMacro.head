@@ -1,0 +1,96 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- The decoded relations on two wires, over macro letters
+-- (machine-generated)
+--
+-- The decoding of the two-level generators on four indices is a word
+-- in a few circuits: the Paulis X and X↑, the CNOTs CX₀₁ and CX₁₀, CS,
+-- the controlled K gates CK₀₁ and CK₁₀, and the one-wire gates.  Read
+-- as letters (M, read back by μ), the decoded relations are short
+-- words, and a Knuth–Bendix completion derives them from some eighty
+-- equations between those letters, each an equation of circuits:
+-- derived on the gates in Lemmas.TwoWire, or from the others here.
+-- An equation of macro words is an equation of their circuits (_∼_),
+-- so a derivation over the letters is one of circuits (lift); `inst`
+-- turns it into an equation of any two circuits with the same letters.
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+module Examples.Groups.Clifford+CS.Lemmas.TwoWireMacro where
+
+open import Data.List using (List ; [] ; _∷_)
+open import Data.Nat using (ℕ)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl)
+open import Word.Base using (Word ; WRel ; _•_ ; _ʷ)
+
+import Presentation.Base as PB
+import Presentation.Properties as PP
+open import Presentation.Tactic.AssociativitySolver using (module Assoc)
+
+open import Examples.Groups.Clifford+CS.Syntactics
+import Examples.Groups.Clifford+CS.Engine as Engine
+import Examples.Groups.Clifford+CS.Lemmas.TwoWire as TW
+
+private
+  module B = Assoc (2 VRel,_===_)
+
+------------------------------------------------------------------------
+-- The macro letters
+
+data M : Set where
+  ι s₀ s₁ cs x₀ x₁ cx cx′ ck ck′ k₀ k₁ : M
+
+μ : M → Circuit 2
+μ ι   = iI
+μ s₀  = S
+μ s₁  = S ↑
+μ cs  = CS
+μ x₀  = X
+μ x₁  = K ↑ • S ↑ • S ↑ • K ↑ • iI
+μ cx  = CX₀₁
+μ cx′ = CX₁₀
+μ ck  = CS • K ↑ • CS • K ↑ • CS • S • S • S • iI
+μ ck′ = CS • K • CS • K • CS • S ↑ • S ↑ • S ↑ • iI
+μ k₀  = K
+μ k₁  = K ↑
+
+private
+  code : M → ℕ
+  code ι = 0 ; code s₀ = 1 ; code s₁ = 2 ; code cs = 3 ; code x₀ = 4 ; code x₁ = 5
+  code cx = 6 ; code cx′ = 7 ; code ck = 8 ; code ck′ = 9 ; code k₀ = 10 ; code k₁ = 11
+
+  decode : ℕ → M
+  decode 1 = s₀ ; decode 2 = s₁ ; decode 3 = cs ; decode 4 = x₀ ; decode 5 = x₁
+  decode 6 = cx ; decode 7 = cx′ ; decode 8 = ck ; decode 9 = ck′ ; decode 10 = k₀
+  decode 11 = k₁ ; decode _ = ι
+
+  decode-code : ∀ x → decode (code x) ≡ x
+  decode-code ι = refl ; decode-code s₀ = refl ; decode-code s₁ = refl
+  decode-code cs = refl ; decode-code x₀ = refl ; decode-code x₁ = refl
+  decode-code cx = refl ; decode-code cx′ = refl ; decode-code ck = refl
+  decode-code ck′ = refl ; decode-code k₀ = refl ; decode-code k₁ = refl
+
+-- An equation of macro words is one of their circuits.
+_∼_ : WRel M
+u ∼ v = 2 ⊢ (μ ʷ) u ≈ (μ ʷ) v
+
+module EM = Engine _∼_ code decode decode-code
+open EM public using (Eqn ; lhs ; rhs ; prf ; from-list)
+open EM using (eqn ; sym⁼ ; derive ; rw ; rw⁻)
+
+-- So a derivation over the letters is one of circuits.
+lift : (e : Eqn) → 2 ⊢ (μ ʷ) (from-list (lhs e)) ≈ (μ ʷ) (from-list (rhs e))
+lift e = fʷ-cong (prf e)
+  where open PP.StarCongruence _∼_ (2 VRel,_===_) μ (λ e → e) using (fʷ-cong)
+
+-- Two circuits whose letters are those of the two sides.
+inst : ∀ {w v : Circuit 2} (e : Eqn) →
+       B.to-list w ≡ B.to-list ((μ ʷ) (from-list (lhs e))) →
+       B.to-list v ≡ B.to-list ((μ ʷ) (from-list (rhs e))) → 2 ⊢ w ≈ v
+inst e p q = PB.trans (B.by-assoc p) (PB.trans (lift e) (B.by-assoc (Eq.sym q)))
+
+------------------------------------------------------------------------
+-- The equations between the letters, from Lemmas.TwoWire
+

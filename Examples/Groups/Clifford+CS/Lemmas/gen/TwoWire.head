@@ -1,0 +1,104 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- Equations on two wires, derived from the rules (machine-generated)
+--
+-- The equations between the macro letters of Lemmas.TwoWireMacro, on
+-- the gates they stand for: how the Paulis, the CNOTs and the swap
+-- conjugate one another and CS, and the relations of the controlled K
+-- gates CK₀₁ and CK₁₀.  Each is derived by a Knuth–Bendix completion of
+-- the rules, written for Engine (a list of rewrites checked by running
+-- it), in three stages:
+--
+--   * the relations of Selinger's presentation of the two-qubit
+--     Clifford group, C1–C11 read with H = ω K and CZ = CS² — C8–C11
+--     being the only ones that take work;
+--   * from those, the Clifford equations, by a completion over the
+--     Clifford gates with CZ as one letter (the group is finite), each
+--     step replayed on the gates by writing CZ as CS CS;
+--   * the equations involving CS and the controlled K gates, from the
+--     rules and the Clifford equations.
+--
+-- The completions run on the letters with wire 1's scalar read as the
+-- scalar, which makes the rules symmetric under exchanging the wires
+-- (the three rules that differ are restated below, ω↑=ω joining the
+-- two readings): an equation a completion missed is the mirror image
+-- of one it found, replayed with the wires exchanged (the rules named
+-- m…).
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+module Examples.Groups.Clifford+CS.Lemmas.TwoWire where
+
+open import Data.List using ([] ; _∷_)
+open import Data.Nat using (ℕ)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl)
+
+import Presentation.Base as PB
+
+open import Examples.Groups.Clifford+CS.Syntactics
+import Examples.Groups.Clifford+CS.Engine as Engine
+open PB (2 VRel,_===_) using (axiom)
+
+------------------------------------------------------------------------
+-- The letters
+
+ι s₀ k₀ s₁ k₁ cs : Gen 2
+ι  = I-gen
+s₀ = S-gen
+k₀ = K-gen
+s₁ = S-gen ↥
+k₁ = K-gen ↥
+cs = CS-gen
+
+-- Every letter of two wires has a code.
+code : Gen 2 → ℕ
+code (gate₀ I-gate)      = 0
+code (gate₁ S-gate)      = 1
+code (gate₁ K-gate)      = 2
+code (gate₂ CS-gate)     = 3
+code (gate₀ I-gate ↥)    = 4
+code (gate₁ S-gate ↥)    = 5
+code (gate₁ K-gate ↥)    = 6
+code (gate₀ I-gate ↥ ↥)  = 7
+
+decode : ℕ → Gen 2
+decode 1 = gate₁ S-gate
+decode 2 = gate₁ K-gate
+decode 3 = gate₂ CS-gate
+decode 4 = gate₀ I-gate ↥
+decode 5 = gate₁ S-gate ↥
+decode 6 = gate₁ K-gate ↥
+decode 7 = gate₀ I-gate ↥ ↥
+decode _ = gate₀ I-gate
+
+decode-code : ∀ x → decode (code x) ≡ x
+decode-code (gate₀ I-gate)     = refl
+decode-code (gate₁ S-gate)     = refl
+decode-code (gate₁ K-gate)     = refl
+decode-code (gate₂ CS-gate)    = refl
+decode-code (gate₀ I-gate ↥)   = refl
+decode-code (gate₁ S-gate ↥)   = refl
+decode-code (gate₁ K-gate ↥)   = refl
+decode-code (gate₀ I-gate ↥ ↥) = refl
+
+module E = Engine (2 VRel,_===_) code decode decode-code
+open E public using (Eqn ; lhs ; rhs ; prf)
+open E using (⌊_⌋⁼ ; sym⁼ ; derive ; rw ; rw⁻)
+
+-- The rules on wire 1 that mention the scalar, with the scalar.
+private
+  ι↑ : Gen 2
+  ι↑ = I-gen ↥
+
+  ω↑ K²₁ SK³₁ X-CS₁′ : Eqn
+  ω↑ = ⌊ axiom (ω↑=ω I-gate) ⌋⁼
+  K²₁ = derive (k₁ ∷ k₁ ∷ []) (ι ∷ ι ∷ ι ∷ [])
+    (rw 0 ⌊ lemma-cong↑ _ _ (PB.axiom (srel order-K)) ⌋⁼ ∷ rw 0 ω↑ ∷ rw 1 ω↑ ∷ rw 2 ω↑ ∷ []) refl
+  SK³₁ = derive (s₁ ∷ k₁ ∷ s₁ ∷ k₁ ∷ s₁ ∷ k₁ ∷ []) (ι ∷ ι ∷ ι ∷ [])
+    (rw 0 ⌊ lemma-cong↑ _ _ (PB.axiom (srel order-SK)) ⌋⁼ ∷ rw 0 ω↑ ∷ rw 1 ω↑ ∷ rw 2 ω↑ ∷ []) refl
+  X-CS₁′ = derive (k₁ ∷ s₁ ∷ s₁ ∷ k₁ ∷ ι ∷ cs ∷ [])
+    (cs ∷ cs ∷ cs ∷ k₁ ∷ s₁ ∷ s₁ ∷ k₁ ∷ ι ∷ s₀ ∷ [])
+    (rw⁻ 4 ω↑ ∷ rw 0 ⌊ axiom (srel X-CS₁) ⌋⁼ ∷ rw 7 ω↑ ∷ []) refl
+

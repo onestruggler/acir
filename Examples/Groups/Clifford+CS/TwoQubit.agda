@@ -21,7 +21,8 @@
 --   * completeness, from the completeness of the two-level relations
 --     and the two lemmas that the paper proves in its Appendix C for
 --     the real case: D respects the relations (Lemma 7.5) and inverts E
---     (Lemma 7.4).  They are the parameters of Lemma-7-6 below.
+--     (Lemma 7.4).  They are the parameters of Lemma-7-6 below, and are
+--     proved in TwoQubit.Decoding, which needs D.
 --
 -- Basis vectors are indexed 0 … 3 with wire 0 the most significant bit:
 -- k = 2 x₀ + x₁.
@@ -96,9 +97,11 @@ e-sem g = ~-sym {s = ⟦ [ g ]ʷ ⟧} {T.⟦ e g ⟧Y} (TT.by-same [ g ]ʷ (e g)
 
 -- X on wire 1, and the controlled K gates of Bian and Selinger: K on
 -- wire 1 controlled by wire 0 (CK₀₁, the two-level K_[2,3]), and on
--- wire 0 controlled by wire 1 (CK₁₀, K_[1,3]).
+-- wire 0 controlled by wire 1 (CK₁₀, K_[1,3]).  X↑ is X ↑ with its
+-- scalar written unshifted, so that every scalar of the decoding is
+-- the one letter iI (the derivations of Lemmas.TwoWire are over it).
 X↑ : Circuit 2
-X↑ = X ↑
+X↑ = K ↑ • S ↑ • S ↑ • K ↑ • iI
 
 CK₀₁ CK₁₀ : Circuit 2
 CK₀₁ = CS • K ↑ • CS • K ↑ • CS • S • S • S • iI
