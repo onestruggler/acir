@@ -21,7 +21,7 @@ module Examples.Groups.Clifford+CS.Auxiliary.SoundBase (N : ℕ) where
 
 open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin ; toℕ)
-open import Data.Nat using (zero ; suc)
+open import Data.Nat using (zero ; suc ; _+_)
 open import Data.Fin.Properties using (_≟_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Relation.Nullary using (Dec ; yes ; no)
@@ -163,6 +163,27 @@ module _ (a b : Fin N) .(ab : Data.Fin._<_ a b) where
       ≈⟨ assoc ⟩
     Xab • (i (swapF a b x) • i (swapF a b x) ^ suc n) ∎
 
+  crossʳ-pow : ∀ (x : Fin N) (n : ℕ) →
+               Xab • i x ^ n ≈ i (swapF a b x) ^ n • Xab
+  crossʳ-pow x n = conj-flip X² (cross-pow x n)
+
+  -- The crossings with the image named.
+  cross-at : ∀ {x y : Fin N} → swapF a b x ≡ y → i x • Xab ≈ Xab • i y
+  cross-at {x} e = trans (cross x) (back Xab (refl≡ (Eq.cong i e)))
+
+  crossʳ-at : ∀ {x y : Fin N} → swapF a b x ≡ y → Xab • i x ≈ i y • Xab
+  crossʳ-at {x} e = trans (crossʳ x) (front Xab (refl≡ (Eq.cong i e)))
+
+  cross-pow-at : ∀ {x y : Fin N} (n : ℕ) → swapF a b x ≡ y →
+                 i x ^ n • Xab ≈ Xab • i y ^ n
+  cross-pow-at {x} n e =
+    trans (cross-pow x n) (back Xab (refl≡ (Eq.cong (λ z → i z ^ n) e)))
+
+  crossʳ-pow-at : ∀ {x y : Fin N} (n : ℕ) → swapF a b x ≡ y →
+                  Xab • i x ^ n ≈ i y ^ n • Xab
+  crossʳ-pow-at {x} n e =
+    trans (crossʳ-pow x n) (front Xab (refl≡ (Eq.cong (λ z → i z ^ n) e)))
+
 ------------------------------------------------------------------------
 -- The pair of a K's own phases
 
@@ -175,3 +196,11 @@ iiK c d cd = trans assoc (sym (axiom (TL.rel-15 cd)))
 K²ii : ∀ (c d : Fin N) .(cd : Data.Fin._<_ c d) →
        K c d cd • (K c d cd • (i c • i d)) ≈ ε
 K²ii c d cd = trans (sym assoc) (axiom (TL.rel-16 cd))
+
+-- A fifth phase cancels.
+i-mod4 : ∀ (x : Fin N) (t : ℕ) → i x ^ (4 + t) ≈ i x ^ t
+i-mod4 x t = begin
+  i x ^ (4 + t)         ≈⟨ ^-+ (i x) 4 t ⟩
+  i x ^ 4 • i x ^ t     ≈⟨ front _ (i⁴ x) ⟩
+  ε • i x ^ t           ≈⟨ left-unit ⟩
+  i x ^ t ∎
