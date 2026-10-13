@@ -338,6 +338,10 @@ def occurrences(c, pat):
                     break
             if ok:
                 yield from extend(sel + [p], j + 1)
+                # a scalar commutes with everything: which one is taken
+                # does not matter up to commutation, so take the first
+                if ARITY[pat[j][0]] == 0:
+                    break
 
     seen = set()
     for sel in extend([], 0):
