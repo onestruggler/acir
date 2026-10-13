@@ -1,4 +1,4 @@
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible --safe --lossy-unification #-}
 
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_) renaming ([_] to [_]')
 import Relation.Binary.Reasoning.Setoid as SR
@@ -113,6 +113,11 @@ d'-of (a , b) (gate₀ () ↥ ↥) neq
 dir-of : ∀ (d : D) (g : Gen 2) (neq : g ≢ H-gen ↥) → ℤ ₚ × Word (Gen 1)
 
 dir-of d (gate₀ () ↥ ↥) neq
+-- The S clauses come before the H ones so that the case tree tests the
+-- gate before b: dir-of (a , b) S-gen then reduces for a variable b,
+-- which lets lemma-D-br treat both shapes of b in one clause.
+dir-of (₀ , b)               S-gen neq = ₀ , S
+dir-of (₁₊ _ , b)            S-gen neq = ₀ , ε
 dir-of (₀ , ₀)               H-gen neq = ₀ , H
 dir-of (₀ , ₁₊ _)            H-gen neq = ₀ , ε
 dir-of (₁₊ _ , ₀)            H-gen neq = ₀ , HH
@@ -121,8 +126,6 @@ dir-of (a@(₁₊ _) , b@(₁₊ _)) H-gen neq = ₀ , ZM a/b • S^ b/a
   a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
   b/a = b * a⁻¹
   a/b = (a , λ ()) *' (b , λ ()) ⁻¹
-dir-of (₀ , b)               S-gen neq = ₀ , S
-dir-of (₁₊ _ , b)            S-gen neq = ₀ , ε
 dir-of (a , b)           (S-gen ↥) neq = ₁ , ε
 
 dir-of (₀ , b)              CZ-gen neq = ₀ , ε
@@ -144,7 +147,7 @@ lemma-D-br : ∀ (d : D) (g : Gen 2) (neq : g ≢ H-gen ↥) →
 lemma-D-br d@(a , b) g@(H-gen ↥) neq = ⊥-elim (neq auto)
 lemma-D-br d (gate₀ () ↥ ↥) neq
 
-lemma-D-br d@(a@(₁₊ _) , b@₀) g@CZ-gen neq = begin
+lemma-D-br d@(a@(₁₊ _) , b) g@CZ-gen neq = begin
   (Ex • CZ^ (- a) • (H • S^ -b/a)) • CZ ≈⟨ by-passoc (□ ^ 4 • □) (□ ^ 2 • □ ^ 3) auto ⟩
   (Ex • CZ^ (- a)) • H • S^ -b/a • CZ ≈⟨ cright cright  (comm⇒pow-comm (toℕ (-b/a)) 1 (sym (axiom comm-CZ-S↓))) ⟩
   (Ex • CZ^ (- a)) • H • CZ • S^ -b/a ≈⟨  by-passoc (□ ^ 2 • □ ^ 3) (□ • □ ^ 3 • □) auto ⟩
@@ -175,39 +178,7 @@ lemma-D-br d@(a@(₁₊ _) , b@₀) g@CZ-gen neq = begin
   aux : a⁻¹ + -b/a ≡ - (b + - ₁) * a⁻¹
   aux = Eq.trans (Eq.cong (_+ -b/a) (Eq.sym (*-identityˡ a⁻¹))) (Eq.trans (Eq.sym (*-distribʳ-+ a⁻¹ ₁ (- b))) (Eq.trans (Eq.cong (_* a⁻¹) (+-comm ₁ (- b))) (Eq.trans (Eq.cong (_* a⁻¹) (Eq.cong (- b +_) (Eq.sym (-‿involutive ₁)))) (Eq.cong (_* a⁻¹) ( (-‿+-comm b (- ₁)))))))
 
-lemma-D-br d@(a@(₁₊ _) , b@(₁₊ _)) g@CZ-gen neq = begin
-  (Ex • CZ^ (- a) • (H • S^ -b/a)) • CZ ≈⟨ by-passoc (□ ^ 4 • □) (□ ^ 2 • □ ^ 3) auto ⟩
-  (Ex • CZ^ (- a)) • H • S^ -b/a • CZ ≈⟨ cright cright  (comm⇒pow-comm (toℕ (-b/a)) 1 (sym (axiom comm-CZ-S↓))) ⟩
-  (Ex • CZ^ (- a)) • H • CZ • S^ -b/a ≈⟨  by-passoc (□ ^ 2 • □ ^ 3) (□ • □ ^ 3 • □) auto ⟩
-  Ex • (CZ^ (- a) • H • CZ) • S^ -b/a ≈⟨ cright cleft aux-CZ^-k-H-CZ (a , (λ ())) ⟩
-  Ex • (H • S^ a ↑ • S^ (- a⁻¹) • CX^ (- a) • S^ a⁻¹) • S^ -b/a ≈⟨ by-passoc (□ • □ ^ 5 • □) (□ ^ 2 • □ ^ 3 • □ ^ 2) auto ⟩
-  (Ex • H) • (S^ a ↑ • S^ (- a⁻¹) • CX^ (- a)) • S^ a⁻¹ • S^ -b/a ≈⟨ cong (rewrite-swap 100 auto) (cright L01.lemma-S^k+l a⁻¹ -b/a) ⟩
-  (H ↑ • Ex) • (S^ a ↑ • S^ (- a⁻¹) • CX^ (- a)) • S^ (a⁻¹ + -b/a) ≈⟨ cright cong (cright cright aux-CX^-CX'^ (- a)) refl ⟩
-  (H ↑ • Ex) • (S^ a ↑ • S^ (- a⁻¹) • CX'^ (- a)) • S^ (a⁻¹ + -b/a) ≈⟨ cright by-passoc (□ ^ 5 • □) (□ ^ 4 • □ ^ 2) auto ⟩
-  (H ↑ • Ex) • (S^ a ↑ • S^ (- a⁻¹) • H ^ 3 • CZ^ (- a)) • H • S^ (a⁻¹ + -b/a) ≈⟨ by-passoc (□ ^ 2 • □ ^ 4 • □ ^ 2) (□ • □ ^ 2 • □ ^ 3 • □ ^ 2) auto ⟩
-  H ↑ • (Ex • S^ a ↑) • (S^ (- a⁻¹) • H ^ 3 • CZ^ (- a)) • H • S^ (a⁻¹ + -b/a) ≈⟨ cright cong (lemma-Ex-S^ᵏ↑ a) refl ⟩
-  H ↑ • (S^ a • Ex) • (S^ (- a⁻¹) • H ^ 3 • CZ^ (- a)) • H • S^ (a⁻¹ + -b/a) ≈⟨  by-passoc (□ • □ ^ 2 • □ ^ 3 • □) (□ ^ 2 • □ ^ 2 • □ ^ 2 • □) auto ⟩
-  (H ↑ • S^ a) • (Ex • S^ (- a⁻¹)) • (H ^ 3 • CZ^ (- a)) • H • S^ (a⁻¹ + -b/a) ≈⟨ cright cong (lemma-Ex-S^ᵏ (- a⁻¹)) (cright (cright refl' (Eq.cong S^ aux))) ⟩
-  (H ↑ • S^ a) • (S^ (- a⁻¹) ↑ • Ex) • (H ^ 3 • CZ^ (- a)) • H • S^ (- (b + - ₁) * a⁻¹) ≈⟨ cright by-passoc (□ ^ 2 • □ ^ 2 • □) (□ • □ ^ 2 • □ ^ 2) auto ⟩
-  (H ↑ • S^ a) • S^ (- a⁻¹) ↑ • (Ex • H ^ 3) • CZ^ (- a) • H • S^ (- (b + - ₁) * a⁻¹) ≈⟨ cright cright cleft rewrite-swap 100 auto ⟩
-  (H ↑ • S^ a) • S^ (- a⁻¹) ↑ • (H ↑ ^ 3 • Ex) • CZ^ (- a) • H • S^ (- (b + - ₁) * a⁻¹) ≈⟨ cleft sym (lemma-comm-Sᵏ-w↑ (toℕ a) H) ⟩
-  (S^ a • H ↑) • S^ (- a⁻¹) ↑ • (H ↑ ^ 3 • Ex) • CZ^ (- a) • H • S^ (- (b + - ₁) * a⁻¹) ≈⟨ by-passoc (□ ^ 2 • □ • □ ^ 2 • □ ^ 3) (□ • □ ^ 3 • □ ^ 4) auto ⟩
-  S^ a • (H ↑ • S^ (- a⁻¹) ↑ • H ↑ ^ 3) • Ex • CZ^ (- a) • H • S^ (- (b + - ₁) * a⁻¹) ≈⟨ refl ⟩
-
-  S^ a • (H ↑ • S^ (- a⁻¹) ↑ • H ↑ ^ 3) • [ a , b + - ₁ ]ᵈ ≈⟨  cright refl ⟩
-  S^ e • dir ↑ • [ d' ]ᵈ ∎
-  where
-  ed = dir-of d g neq
-  e = ed .proj₁
-  dir = ed .proj₂
-  d' = d'-of d g neq
-  a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
-  -b/a = - b * a⁻¹
-  aux : a⁻¹ + -b/a ≡ - (b + - ₁) * a⁻¹
-  aux = Eq.trans (Eq.cong (_+ -b/a) (Eq.sym (*-identityˡ a⁻¹))) (Eq.trans (Eq.sym (*-distribʳ-+ a⁻¹ ₁ (- b))) (Eq.trans (Eq.cong (_* a⁻¹) (+-comm ₁ (- b))) (Eq.trans (Eq.cong (_* a⁻¹) (Eq.cong (- b +_) (Eq.sym (-‿involutive ₁)))) (Eq.cong (_* a⁻¹) ( (-‿+-comm b (- ₁)))))))
-
-
-lemma-D-br d@(a@₀ , b@₀) g@CZ-gen neq = begin
+lemma-D-br d@(a@₀ , b) g@CZ-gen neq = begin
   (Ex • CZ^ (- b)) • CZ ≈⟨ assoc ⟩
   Ex • CZ^ (- b) • CZ ≈⟨ cright lemma-CZ^k+l (- b) ₁ ⟩
   Ex • CZ^ (- b + ₁) ≈⟨ cright refl' (Eq.cong CZ^ (Eq.sym (Eq.trans (Eq.sym (-‿+-comm b (- ₁))) (Eq.trans (Eq.cong (- b +_) (-‿involutive ₁)) auto)))) ⟩
@@ -219,20 +190,7 @@ lemma-D-br d@(a@₀ , b@₀) g@CZ-gen neq = begin
   dir = ed .proj₂
   d' = d'-of d g neq
 
-lemma-D-br d@(a@₀ , b@(₁₊ _)) g@CZ-gen neq = begin
-  (Ex • CZ^ (- b)) • CZ ≈⟨ assoc ⟩
-  Ex • CZ^ (- b) • CZ ≈⟨ cright lemma-CZ^k+l (- b) ₁ ⟩
-  Ex • CZ^ (- b + ₁) ≈⟨ cright refl' (Eq.cong CZ^ (Eq.sym (Eq.trans (Eq.sym (-‿+-comm b (- ₁))) (Eq.trans (Eq.cong (- b +_) (-‿involutive ₁)) auto)))) ⟩
-  Ex • CZ^ (- (b + - ₁)) ≈⟨ sym (trans left-unit left-unit) ⟩
-  S^ e • dir ↑ • [ d' ]ᵈ ∎
-  where
-  ed = dir-of d g neq
-  e = ed .proj₁
-  dir = ed .proj₂
-  d' = d'-of d g neq
-
-
-lemma-D-br d@(a@₀ , b@₀) g@(S-gen ↥) neq = begin
+lemma-D-br d@(a@₀ , b) g@(S-gen ↥) neq = begin
   (Ex • CZ^ (- b)) • S ↑ ≈⟨ assoc ⟩
   Ex • CZ^ (- b) • S ↑ ≈⟨ cright comm⇒pow-comm (toℕ (- b)) 1 (axiom comm-CZ-S↑) ⟩
   Ex • S ↑ • CZ^ (- b) ≈⟨ sym assoc ⟩
@@ -246,22 +204,7 @@ lemma-D-br d@(a@₀ , b@₀) g@(S-gen ↥) neq = begin
   dir = ed .proj₂
   d' = d'-of d g neq
 
-lemma-D-br d@(a@₀ , b@(₁₊ _)) g@(S-gen ↥) neq = begin
-  (Ex • CZ^ (- b)) • S ↑ ≈⟨ assoc ⟩
-  Ex • CZ^ (- b) • S ↑ ≈⟨ cright comm⇒pow-comm (toℕ (- b)) 1 (axiom comm-CZ-S↑) ⟩
-  Ex • S ↑ • CZ^ (- b) ≈⟨ sym assoc ⟩
-  (Ex • S ↑) • CZ^ (- b) ≈⟨ cleft lemma-Ex-S↑ ⟩
-  (S • Ex) • CZ^ (- b) ≈⟨ assoc ⟩
-  S • Ex • CZ^ (- b) ≈⟨ sym (cong refl left-unit) ⟩
-  S^ e • dir ↑ • [ d' ]ᵈ ∎
-  where
-  ed = dir-of d g neq
-  e = ed .proj₁
-  dir = ed .proj₂
-  d' = d'-of d g neq
-
-
-lemma-D-br d@(a@(₁₊ _) , b@₀) g@(S-gen ↥) neq = begin
+lemma-D-br d@(a@(₁₊ _) , b) g@(S-gen ↥) neq = begin
   (Ex • CZ^ (- a) • (H • S^ -b/a)) • S ↑ ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 2 • □ ^ 2) auto ⟩
   (Ex • CZ^ (- a)) • (H • S^ -b/a) • S ↑ ≈⟨ cright comm-hs-w↑ -b/a S ⟩
   (Ex • CZ^ (- a)) • S ↑ • (H • S^ -b/a) ≈⟨ by-passoc (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
@@ -279,27 +222,7 @@ lemma-D-br d@(a@(₁₊ _) , b@₀) g@(S-gen ↥) neq = begin
   a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
   -b/a = - b * a⁻¹
 
-lemma-D-br d@(a@(₁₊ _) , b@(₁₊ _)) g@(S-gen ↥) neq = begin
-  (Ex • CZ^ (- a) • (H • S^ -b/a)) • S ↑ ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 2 • □ ^ 2) auto ⟩
-  (Ex • CZ^ (- a)) • (H • S^ -b/a) • S ↑ ≈⟨ cright comm-hs-w↑ -b/a S ⟩
-  (Ex • CZ^ (- a)) • S ↑ • (H • S^ -b/a) ≈⟨ by-passoc (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto ⟩
-  Ex • (CZ^ (- a) • S ↑) • (H • S^ -b/a) ≈⟨ cright cleft comm⇒pow-comm (toℕ (- a)) 1 (axiom comm-CZ-S↑) ⟩
-  Ex • (S ↑ • CZ^ (- a)) • (H • S^ -b/a) ≈⟨ sym (by-passoc (□ ^ 2 • □ ^ 2) (□ • □ ^ 2 • □) auto) ⟩
-  (Ex • S ↑) • CZ^ (- a) • (H • S^ -b/a) ≈⟨ cleft lemma-Ex-S↑ ⟩
-  (S • Ex) • CZ^ (- a) • (H • S^ -b/a) ≈⟨ assoc ⟩
-  S • Ex • CZ^ (- a) • (H • S^ -b/a) ≈⟨ sym (cong refl left-unit) ⟩
-  S^ e • dir ↑ • [ d' ]ᵈ ∎
-  where
-  ed = dir-of d g neq
-  e = ed .proj₁
-  dir = ed .proj₂
-  d' = d'-of d g neq
-  a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
-  -b/a = - b * a⁻¹
-
-
-
-lemma-D-br d@(a@₀ , b@₀) g@S-gen neq = begin
+lemma-D-br d@(a@₀ , b) g@S-gen neq = begin
   (Ex • CZ^ (- b)) • S  ≈⟨ assoc ⟩
   Ex • CZ^ (- b) • S  ≈⟨ cright comm⇒pow-comm (toℕ (- b)) 1 (axiom comm-CZ-S↓) ⟩
   Ex • S  • CZ^ (- b) ≈⟨ sym assoc ⟩
@@ -314,23 +237,7 @@ lemma-D-br d@(a@₀ , b@₀) g@S-gen neq = begin
   dir = ed .proj₂
   d' = d'-of d g neq
 
-lemma-D-br d@(a@₀ , b@(₁₊ _)) g@S-gen neq = begin
-  (Ex • CZ^ (- b)) • S  ≈⟨ assoc ⟩
-  Ex • CZ^ (- b) • S  ≈⟨ cright comm⇒pow-comm (toℕ (- b)) 1 (axiom comm-CZ-S↓) ⟩
-  Ex • S  • CZ^ (- b) ≈⟨ sym assoc ⟩
-  (Ex • S ) • CZ^ (- b) ≈⟨ cleft lemma-Ex-S ⟩
-  (S ↑ • Ex) • CZ^ (- b) ≈⟨ assoc ⟩
-  S ↑ • Ex • CZ^ (- b) ≈⟨ sym left-unit ⟩
-  S^ e • dir ↑ • [ a , b ]ᵈ ≈⟨ cright cright refl' (Eq.cong (\ xx → [ a , xx ]ᵈ) (Eq.sym (Eq.trans (Eq.cong (b +_) -0#≈0#) (+-identityʳ b)))) ⟩
-  S^ e • dir ↑ • [ d' ]ᵈ ∎
-  where
-  ed = dir-of d g neq
-  e = ed .proj₁
-  dir = ed .proj₂
-  d' = d'-of d g neq
-
-
-lemma-D-br d@(a@(₁₊ _) , b@₀) g@(S-gen) neq = begin
+lemma-D-br d@(a@(₁₊ _) , b) g@(S-gen) neq = begin
   (Ex • CZ^ (- a) • (H • S^ -b/a)) • S ≈⟨ by-passoc (□ ^ 4 • □) (□ ^ 3 • □ ^ 2) auto ⟩
   (Ex • CZ^ (- a) • H) • S^ -b/a • S ≈⟨ cright L01.lemma-S^k+l -b/a ₁ ⟩
   (Ex • CZ^ (- a) • H) • S^ (-b/a + ₁) ≈⟨ cright refl' (Eq.cong S^ (aux--b/a+₁ (a , (λ ())) b)) ⟩
@@ -345,23 +252,6 @@ lemma-D-br d@(a@(₁₊ _) , b@₀) g@(S-gen) neq = begin
   nz' = aux-a≠0⇒ab≠0 a (b + - a) λ ()
   a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
   -b/a = - b * a⁻¹
-
-lemma-D-br d@(a@(₁₊ _) , b@(₁₊ _)) g@(S-gen) neq = begin
-  (Ex • CZ^ (- a) • (H • S^ -b/a)) • S ≈⟨ by-passoc (□ ^ 4 • □) (□ ^ 3 • □ ^ 2) auto ⟩
-  (Ex • CZ^ (- a) • H) • S^ -b/a • S ≈⟨ cright L01.lemma-S^k+l -b/a ₁ ⟩
-  (Ex • CZ^ (- a) • H) • S^ (-b/a + ₁) ≈⟨ cright refl' (Eq.cong S^ (aux--b/a+₁ (a , (λ ())) b)) ⟩
-  (Ex • CZ^ (- a) • H) • S^ (- (b + - a) * a⁻¹) ≈⟨ by-passoc (□ ^ 3 • □) (□ ^ 4) auto ⟩
-  Ex • CZ^ (- a) • H • S^ (- (b + - a) * a⁻¹) ≈⟨ sym (trans left-unit left-unit) ⟩
-  S^ e • dir ↑ • [ d' ]ᵈ ∎
-  where
-  ed = dir-of d g neq
-  e = ed .proj₁
-  dir = ed .proj₂
-  d' = d'-of d g neq
-  nz' = aux-a≠0⇒ab≠0 a (b + - a) λ ()
-  a⁻¹ = ((a , λ ()) ⁻¹) .proj₁
-  -b/a = - b * a⁻¹
-
 
 lemma-D-br d@(a@₀ , b@₀) g@(H-gen) neq = begin
   (Ex • CZ^ (- b)) • H ≈⟨ assoc ⟩
