@@ -136,3 +136,36 @@ The full action table checks exactly: 256/256 cases at N = 8 and
 are the four tabulated MITM words (c = 0..3, all length 5, each a
 phase pair around a KKb-commutator); every other row is uniform in the
 coset.
+
+## The K-free fragment (tNFcs.py, tF.py)
+
+The closure of the K-free letters is the group of det-1 phased
+permutations: 96 at N = 3 and 1536 at N = 4, i.e. 4^(N-1) . N!
+(tNFcs.py), so NF's Lehmer-code normal form ports with a Z/4 phase
+vector (one global det constraint per permutation) for the Z/2 sign
+list.  The rule set is Figure8Free's (20)-(34) transcribed to phases
+(tF.py; every instance sound at N = 5 and 6, 896 and 1912 cases):
+letters pp a b = i_a i_b^-1, px s a b = i_s^2 X_ab, dx = XX; phases
+conjugate under exchanges without inversion, so (24)-(29) and
+(31)-(34) keep their shapes with zz c a replaced by (pp c a)^2 in
+(30); new are only the pp-algebra rules (20') pp a a = eps,
+(20'') pp^4 = eps, (21') pp a b . pp b a = eps, (21'') pp's commute,
+(22') pp a b . pp b c = pp a c, and (23') (pp a a')^2 = (px a a a')^2.
+
+## The KKb-letter local algebra (tK.py, 13/13 at N = 8)
+
+The raw-index analogues of Figure 8's K-rules: inverses
+(kk[ab,cd] kk[cd,ab] = eps), the square is a phase word
+(kk^2 = pp c a . pp d b, the (41)-analogue), bridging
+(kk[ab,cd] = kk[ab,ef] kk[ef,cd], the (42)-analogue, no side
+condition needed at raw indices), disjoint commutation, the phases
+that pass (the -1-1 pair on the K-pair's own indices, and
+i_a i_b i_e^-2 as pp(a,e) pp(b,e), from rel-15), rel-13 lifted --
+kk . (pp b e)^2 = px(e;a,b) . kk, the -1 moved to a fresh index e
+where it becomes the sign of the px; the sign on the first index
+costs a further (pp a b)^2, which passes -- the pair exchange
+(px(b;a,b) kk px(a;a,b) = (pp a b)^2 kk), XX renaming a K-pair, and
+rel-17 bridged through two fresh pairs.  What remains for the rule
+set is only the Gray-code layer: the encoded-letter rules
+((35)-(37), (40), (43)-(46) analogues), which depend on the
+encoding's pairing and come with the decoding design.
