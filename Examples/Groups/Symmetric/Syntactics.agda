@@ -61,9 +61,9 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
   yang-baxter : 3 SRel, σ • σ ↑ • σ === σ ↑ • σ • σ ↑
 
 ------------------------------------------------------------------------
--- Full relation via Top-Pad: each rule on the bottom wires of every
--- wider circuit (srel (pad₂ order), srel (pad₃ yang-baxter)), and the
--- structural rules cong↑, comm₁, comm₂ on top
+-- Full relation via Top-Pad: each rule closed under an idle wire on
+-- top (cong↓), and the structural rules cong↑, comm₁, comm₂ on top of
+-- that
 
 private module LR = SC.Top-Pad _SRel,_===_
 -- ω↑=ω is the 0-ary gate's structural rule.  This gate set has no
@@ -71,13 +71,24 @@ private module LR = SC.Top-Pad _SRel,_===_
 -- re-exported, or a client cannot name it to discharge it when it
 -- cases on the relation.
 open LR public
-  using ( pad ; pad₂ ; pad₃ ; srel ; cong↑ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
-        ; comm-gate₂-w↑↑ ; _TopPad,_===_ ; _VRel,_===_ )
+  using ( base ; cong↓ ; srel ; cong↑ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
+        ; comm-gate₂-w↑↑ ; _TopPad,_===_ ; _VRel,_===_
+        ; Padded ; padded ; padded₂ ; padded₃ ; top-view )
+
+-- Each rule on the bottom wires of every wider circuit: a closed word
+-- one wire wider is the same word (σ ⇓ is σ).
+order↓ : (₂₊ n) TopPad, σ • σ === ε
+order↓ {0}     = base order
+order↓ {₁₊ n}  = cong↓ order↓
+
+yang-baxter↓ : (₃₊ n) TopPad, σ • σ ↑ • σ === σ ↑ • σ • σ ↑
+yang-baxter↓ {0}     = base yang-baxter
+yang-baxter↓ {₁₊ n}  = cong↓ yang-baxter↓
 
 ------------------------------------------------------------------------
 -- Grouplike (each generator has a two-sided inverse)
 
 grouplike : Grouplike (_VRel,_===_ n)
-grouplike {₂₊ k} (gate₂ σ-gate) = σ , PB.axiom (srel (pad₂ order))
+grouplike {₂₊ k} (gate₂ σ-gate) = σ , PB.axiom (srel order↓)
 grouplike {₁₊ n} (g ↥) with grouplike {n} g
 ... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf
