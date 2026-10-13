@@ -25,7 +25,7 @@ import Presentation.Base as PB
 
 open import Examples.Independence.CNOT-Dihedral.Syntactics
 open import Examples.Independence.Reasoning Gate
-open Theory arity lhs rhs
+open Theory _SRel,_===_
 
 private
   variable

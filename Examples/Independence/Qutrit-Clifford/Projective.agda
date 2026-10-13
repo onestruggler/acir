@@ -26,6 +26,7 @@ open import Relation.Binary.PropositionalEquality using (refl)
 open import Word.Base using (_•_)
 
 open import Examples.Independence.Qutrit-Clifford.Syntactics
+open Axioms _SRel,_===_ using (Independent-axiom)
 import Examples.Independence.Qutrit-Clifford.Semantics as Std
 open import Data.Fin.Base using (Fin ; zero ; suc)
 open import Data.Product.Base using (_,_)
@@ -65,7 +66,7 @@ module Sep-SS′ where
   open Symmetry refl SWᵍ-ok
     using (module Separate)
 
-  open Separate arity lhs rhs SS′ 1
+  open Separate _SRel,_===_ SS′ 1
     (λ { ω¹² _ _ → check-some (λ _ → tt) _ _ tt
        ; H⁴ _ _ → check-some (λ _ → tt) _ _ tt
        ; S³ _ _ → check-some (λ _ → tt) _ _ tt

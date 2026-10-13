@@ -16,22 +16,26 @@
 -- at σ itself is the Yang–Baxter equation.  With Circuit.Base's rules
 -- these present the free PROP on the fragment's gates.
 --
--- A fragment (Section 3) is given by its axioms: for each name r an
--- arity and the two sides, circuits on that many wires.  The axiom
--- holds on the bottom wires of every wider circuit (ax r k), and
--- Lift-Relation's cong↑ moves it up.  Circuit.Prop's Lift-To-Prop adds
--- the swap rules to them: an axiom instance is srel (srel (ax r k)),
--- a swap rule srel (σrel s).  The swap rules are structural, and a
--- selection never removes one.
+-- A fragment (Section 3) is given by its axioms, a relation
+-- _SRel,_===_ with one constructor for each, between circuits on its
+-- own wires: n SRel, w === v says the axiom has arity n.  The fragment
+-- opens Circuit.Prop's Lift-To-Prop over it, which adds the swap rules
+-- and the structural ones: an axiom instance is srel (srel a), a swap
+-- rule srel (σrel s).  Lift-Relation's cong↑ moves an axiom up and the
+-- symmetry moves it down, so it holds on the bottom wires of every
+-- wider circuit too (Circuit.Prop's pad).
 --
 -- Independence of an axiom ρ (Definition 23) is that of
 -- Presentation.Independence at the selection Without ρ of every axiom
--- instance not using ρ.  Every generator has as many outputs as
--- inputs (Remark 14), so a derivation between n-wire circuits uses
--- only axioms of arity at most n (truncate): an n-wire axiom can be
--- tested inside the subsystem of arity at most n, which is what the
--- paper's bounded separators rely on (Section 5.1).  Keep ρ b is that
--- subsystem, without ρ.
+-- instance other than ρ (Axioms, over the fragment's relation): the
+-- axioms are the constructors themselves, so there is nothing to name
+-- them by.  Every generator has as many outputs as inputs (Remark 14),
+-- so a derivation between n-wire circuits uses only axioms of arity at
+-- most n (truncate): an n-wire axiom can be tested inside the
+-- subsystem of arity at most n, which is what the paper's bounded
+-- separators rely on (Section 5.1).  Keep ρ b is that subsystem,
+-- without ρ.  The swap rules are structural, and a selection never
+-- removes one.
 --
 -- Wire 0 is the bottom wire, the paper's last.  Words are in diagram
 -- order: w • v is w followed by v, as the paper's figures read.
@@ -44,15 +48,13 @@ open import Data.Nat using (ℕ)
 module Examples.Independence.Prop (Gate : ℕ → Set) where
 
 open import Data.Empty using (⊥)
-open import Data.Nat using (_+_ ; _≤_)
-open import Data.Nat.Properties using (≤-trans ; m≤m+n ; n≤1+n ; +-identityʳ)
+open import Data.Nat using (_≤_)
+open import Data.Nat.Properties using (≤-refl ; ≤-trans ; n≤1+n)
 open import Data.Product using (_×_ ; _,_)
 open import Data.Unit using (⊤ ; tt)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Relation.Nullary.Negation using (¬_)
 
-open import Notations
-open import Word.Base using ([_]ʷ ; ε ; _•_)
 import Presentation.Base as PB
 open import Presentation.Independence
 
@@ -79,30 +81,30 @@ private
     w v : Circuit n
 
 ------------------------------------------------------------------------
--- A fragment: named axioms, each with an arity and two sides
+-- The axioms of a fragment, one at a time
 
-module Fragment
-  {Rule : Set} (arity : Rule → ℕ)
-  (lhs rhs : (r : Rule) → Circuit (arity r))
-  where
+module Axioms (_SRel,_===_ : (n : ℕ) → CRel n) where
 
-  infix 4 _SRel,_===_
-  data _SRel,_===_ : (n : ℕ) → CRel n where
-    ax : (r : Rule) (k : ℕ) →
-         (arity r + k) SRel, lhs r ↓ᵏ k === rhs r ↓ᵏ k
+  open Lift-To-Prop _SRel,_===_
 
-  -- The swap rules and the structural rules on top; n ⊢ w ≈ v is
-  -- derivability at width n.
-  open Lift-To-Prop _SRel,_===_ public
+  private
+    variable
+      m : ℕ
+      w′ v′ : Circuit m
+
+  -- The axioms as one type, so that two can be compared whatever their
+  -- arities and sides.
+  data Axiom : Set where
+    ⟨_⟩ : n SRel, w === v → Axiom
 
   ----------------------------------------------------------------------
   -- Selections
 
   -- Uses ρ a: the axiom ρ occurs in the instance a.  Removing ρ
   -- removes its shifts as well.
-  Uses : Rule → n VRel, w === v → Set
-  Uses ρ (srel (σrel _))  = ⊥
-  Uses ρ (srel (srel (ax r _))) = r ≡ ρ
+  Uses : m SRel, w′ === v′ → n VRel, w === v → Set
+  Uses ρ (srel (σrel _)) = ⊥
+  Uses ρ (srel (srel a)) = ⟨ a ⟩ ≡ ⟨ ρ ⟩
   Uses ρ (cong↑ a)       = Uses ρ a
   Uses ρ (comm₁ _ _)     = ⊥
   Uses ρ (comm₂ _ _)     = ⊥
@@ -110,28 +112,27 @@ module Fragment
   Uses ρ (ω↑=ω _)        = ⊥
 
   -- Every axiom instance not using ρ: "the other axioms".
-  Without : Rule → Select (n VRel,_===_)
+  Without : m SRel, w′ === v′ → Select (n VRel,_===_)
   Without ρ a = ¬ Uses ρ a
 
-  -- Within b a: every axiom of the fragment occurring in a has arity
-  -- at most b.
+  -- Within b a: every axiom occurring in a has arity at most b.
   Within : ℕ → n VRel, w === v → Set
-  Within b (srel (σrel _))  = ⊤
-  Within b (srel (srel (ax r _))) = arity r ≤ b
-  Within b (cong↑ a)       = Within b a
-  Within b (comm₁ _ _)     = ⊤
-  Within b (comm₂ _ _)     = ⊤
-  Within b (comm₃ _ _)     = ⊤
-  Within b (ω↑=ω _)        = ⊤
+  Within     b (srel (σrel _)) = ⊤
+  Within {n} b (srel (srel _)) = n ≤ b
+  Within     b (cong↑ a)       = Within b a
+  Within     b (comm₁ _ _)     = ⊤
+  Within     b (comm₂ _ _)     = ⊤
+  Within     b (comm₃ _ _)     = ⊤
+  Within     b (ω↑=ω _)        = ⊤
 
   -- The other axioms of arity at most b (C_{•,b} \ {ρ}, Definition 24).
-  Keep : Rule → ℕ → Select (n VRel,_===_)
+  Keep : m SRel, w′ === v′ → ℕ → Select (n VRel,_===_)
   Keep ρ b a = Without ρ a × Within b a
 
   Within-mono : ∀ {b b'} → b ≤ b' → (a : n VRel, w === v) →
                 Within b a → Within b' a
-  Within-mono b≤b' (srel (σrel _))  _ = tt
-  Within-mono b≤b' (srel (srel (ax r _))) p = ≤-trans p b≤b'
+  Within-mono b≤b' (srel (σrel _)) _ = tt
+  Within-mono b≤b' (srel (srel _)) p = ≤-trans p b≤b'
   Within-mono b≤b' (cong↑ a)       p = Within-mono b≤b' a p
   Within-mono b≤b' (comm₁ _ _)     _ = tt
   Within-mono b≤b' (comm₂ _ _)     _ = tt
@@ -140,8 +141,8 @@ module Fragment
 
   -- Remark 14: an instance at width n has arity at most n.
   within : (a : n VRel, w === v) → Within n a
-  within (srel (σrel _))  = tt
-  within (srel (srel (ax r k))) = m≤m+n (arity r) k
+  within (srel (σrel _)) = tt
+  within (srel (srel _)) = ≤-refl
   within (cong↑ a)       = Within-mono (n≤1+n _) a (within a)
   within (comm₁ _ _)     = tt
   within (comm₂ _ _)     = tt
@@ -150,39 +151,39 @@ module Fragment
 
   -- So a derivation at width n ≤ b from the other axioms is one from
   -- the other axioms of arity at most b.
-  truncate : ∀ {ρ b} → n ≤ b →
+  truncate : ∀ {ρ : m SRel, w′ === v′} {b} → n ≤ b →
              let open PB ((n VRel,_===_) ∣ Without ρ) using (_≈_)
                  open PB ((n VRel,_===_) ∣ Keep ρ b) using ()
                    renaming (_≈_ to _≈ₖ_)
              in w ≈ v → w ≈ₖ v
-  truncate {n} n≤b =
+  truncate {n = n} n≤b =
     ≈-mono (n VRel,_===_) (λ {_} {_} {a} p → p , Within-mono n≤b a (within a))
 
   ----------------------------------------------------------------------
   -- Independence and minimality (Definitions 23 and 24)
 
-  -- The axiom ρ, at its own arity, is not derivable from the others.
-  Independent-axiom : Rule → Set
-  Independent-axiom ρ =
-    Independent ((arity ρ + 0) VRel,_===_) (Without ρ) (srel (srel (ax ρ 0)))
+  -- The axiom ρ, on its own wires, is not derivable from the others.
+  Independent-axiom : n SRel, w === v → Set
+  Independent-axiom {n} ρ =
+    Independent (n VRel,_===_) (Without ρ) (srel (srel ρ))
 
   -- So is it from the others of arity at most b; for b at least the
   -- arity of ρ, the two say the same (truncate).
-  Independent-axiom-upto : ℕ → Rule → Set
-  Independent-axiom-upto b ρ =
-    Independent ((arity ρ + 0) VRel,_===_) (Keep ρ b) (srel (srel (ax ρ 0)))
+  Independent-axiom-upto : ℕ → n SRel, w === v → Set
+  Independent-axiom-upto {n} b ρ =
+    Independent (n VRel,_===_) (Keep ρ b) (srel (srel ρ))
 
-  upto⇒independent : ∀ {ρ b} → arity ρ ≤ b →
+  upto⇒independent : ∀ {ρ : n SRel, w === v} {b} → n ≤ b →
                      Independent-axiom-upto b ρ → Independent-axiom ρ
-  upto⇒independent {ρ} ar≤b ind d =
-    ind (truncate (Eq.subst (_≤ _) (Eq.sym (+-identityʳ (arity ρ))) ar≤b) d)
+  upto⇒independent n≤b ind d = ind (truncate n≤b d)
 
   -- Every axiom is independent.
   Minimal : Set
-  Minimal = ∀ ρ → Independent-axiom ρ
+  Minimal = ∀ {n} {w v : Circuit n} (ρ : n SRel, w === v) → Independent-axiom ρ
 
   -- Every axiom of arity at most b is independent (of all the others:
   -- by truncate, this is Definition 24's independence relative to the
   -- axioms of arity at most b).
   Minimal-upto : ℕ → Set
-  Minimal-upto b = ∀ ρ → arity ρ ≤ b → Independent-axiom ρ
+  Minimal-upto b =
+    ∀ {n} {w v : Circuit n} (ρ : n SRel, w === v) → n ≤ b → Independent-axiom ρ

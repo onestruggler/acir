@@ -43,9 +43,12 @@
 --   swap under σ σ = ε and Yang–Baxter presents the PRO of permutations
 --   (Lafont 2003, §2.1, Theorem 1; Examples.Groups.Symmetric is its
 --   circuit form, Sₙ presented by the swaps);
--- * naturality at a generator gives naturality at a circuit: nat₁,
---   nat₂ and nat₃ below, for a circuit on the bottom one, two or three
---   wires, and nat₁⁻, nat₂⁻ and nat₃⁻ for the inverse cycles σ⁻[ k ].
+-- * naturality at a generator gives naturality at a circuit: nat₀ …
+--   nat₄ below, for a circuit on the bottom k ≤ 4 wires, and nat₁⁻,
+--   nat₂⁻ and nat₃⁻ for the inverse cycles σ⁻[ k ];
+-- * so an equation between k-wire circuits holds on the bottom k wires
+--   of every wider circuit (pad): a relation need only state its rules
+--   on their own wires, cong↑ moving them up and the symmetry down.
 --
 -- A 0-ary gate needs no rule: ω↑=ω and comm₂ carry a scalar past any
 -- swap (ω-σ[_]).
@@ -99,10 +102,11 @@ open import Data.Nat using (ℕ)
 
 module Circuit.Prop (Gate : ℕ → Set) (Ex-gate : Gate 2) where
 
-open import Data.Nat using (zero ; suc ; _+_)
+open import Data.Nat using (zero ; suc ; _+_ ; _≤_ ; z≤n ; s≤s)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Notations
-open import Word.Base using (wmap ; [_]ʷ ; ε ; _•_)
+open import Word.Base using (Word ; wmap ; [_]ʷ ; ε ; _•_)
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Relation.Binary.Reasoning.Setoid as SR
@@ -420,3 +424,148 @@ module Lift-To-Prop (_SRel,_===_ : (n : ℕ) → CRel n) where
   nat₃⁻ : (w : Circuit 3) →
           (₄₊ n) ⊢ σ⁻[ 3 ] • (w ↓ᵏ ₁₊ n) ≈ (w ↓ᵏ n) ↑ • σ⁻[ 3 ]
   nat₃⁻ w = turn (σ⁻σ 3) (σσ⁻ 3) (nat₃ w)
+
+  ----------------------------------------------------------------------
+  -- Naturality on none and on four wires
+  --
+  -- On no wires a circuit is a word of scalars, and σ[ 0 ] = ε; on four
+  -- (the widest rule of the fragments of Examples.Independence) a gate
+  -- passes the top swaps of σ[ 4 ] by the comm rules and meets its own
+  -- rule at the rest, as on three.
+
+  natg₀ : (x : Gen 0) →
+          (₁₊ n) ⊢ [ x ↧ᵏ ₁₊ n ]ʷ • σ[ 0 ] ≈ σ[ 0 ] • [ x ↧ᵏ n ]ʷ ↑
+  natg₀ (gate₀ h) = gate₀-σ 0 h
+
+  natg₄ : (x : Gen 4) →
+          (₁₊ (₄₊ n)) ⊢ [ x ↧ᵏ ₁₊ n ]ʷ • σ[ 4 ] ≈ σ[ 4 ] • [ x ↧ᵏ n ]ʷ ↑
+  natg₄ (gate₀ h) = gate₀-σ 4 h
+  natg₄ (gate₁ h) = gate₁-σ σ[ 3 ] h
+  natg₄ {n} (gate₂ h) = begin
+    [ gate₂ h ]ʷ • σ[ 4 ]                    ≈⟨ by-assoc Eq.refl ⟩
+    ([ gate₂ h ]ʷ • σ[ 2 ] ↑ ↑) • σ[ 2 ]     ≈⟨ cong (sym (comm-gate₂-w↑↑ h σ[ 2 ])) refl ⟩
+    (σ[ 2 ] ↑ ↑ • [ gate₂ h ]ʷ) • σ[ 2 ]     ≈⟨ assoc ⟩
+    σ[ 2 ] ↑ ↑ • [ gate₂ h ]ʷ • σ[ 2 ]       ≈⟨ cong refl (sym-rule (σ-nat₂ h)) ⟩
+    σ[ 2 ] ↑ ↑ • σ[ 2 ] • [ gate₂ h ]ʷ ↑     ≈⟨ by-assoc Eq.refl ⟩
+    σ[ 4 ] • [ gate₂ h ]ʷ ↑                  ∎
+    where open Reasoning (₁₊ (₄₊ n))
+          open PP ((₁₊ (₄₊ n)) VRel,_===_) using (by-assoc)
+  natg₄ {n} (gate₃ h) = begin
+    [ gate₃ h ]ʷ • σ[ 4 ]                    ≈⟨ by-assoc Eq.refl ⟩
+    ([ gate₃ h ]ʷ • σ ↑ ↑ ↑) • σ[ 3 ]        ≈⟨ cong (sym (axiom (comm₃ h (gate₂ Ex-gate)))) refl ⟩
+    (σ ↑ ↑ ↑ • [ gate₃ h ]ʷ) • σ[ 3 ]        ≈⟨ assoc ⟩
+    σ ↑ ↑ ↑ • [ gate₃ h ]ʷ • σ[ 3 ]          ≈⟨ cong refl (sym-rule (σ-nat₃ h)) ⟩
+    σ ↑ ↑ ↑ • σ[ 3 ] • [ gate₃ h ]ʷ ↑        ≈⟨ by-assoc Eq.refl ⟩
+    σ[ 4 ] • [ gate₃ h ]ʷ ↑                  ∎
+    where open Reasoning (₁₊ (₄₊ n))
+          open PP ((₁₊ (₄₊ n)) VRel,_===_) using (by-assoc)
+  natg₄ (x ↥) = σ-shift σ[ 3 ] _ _ (natg₃ x)
+
+  nat₀ : (w : Circuit 0) →
+         (₁₊ n) ⊢ (w ↓ᵏ ₁₊ n) • σ[ 0 ] ≈ σ[ 0 ] • (w ↓ᵏ n) ↑
+  nat₀ {n} = slide σ[ 0 ] (_↧ᵏ ₁₊ n) (_↧ᵏ n) natg₀
+
+  nat₄ : (w : Circuit 4) →
+         (₁₊ (₄₊ n)) ⊢ (w ↓ᵏ ₁₊ n) • σ[ 4 ] ≈ σ[ 4 ] • (w ↓ᵏ n) ↑
+  nat₄ {n} = slide σ[ 4 ] (_↧ᵏ ₁₊ n) (_↧ᵏ n) natg₄
+
+  ----------------------------------------------------------------------
+  -- An equation on the bottom wires of a wider circuit
+  --
+  -- A circuit on the bottom k wires of a wider one is the circuit one
+  -- wire up, conjugated by σ[ k ] (nat_k), so an equation between
+  -- k-wire circuits, moved up by cong↑ and conjugated back, holds on
+  -- the bottom k wires of every wider circuit.  It is stated for each
+  -- k ≤ 4: σ[ k ] lives on ₁₊ k + n wires and the widened circuit on
+  -- k + ₁₊ n, which agree only at a numeral k.
+
+  private
+    -- Widening by no wires changes nothing, at each numeral width.
+    ↧0₀ : (x : Gen 0) → x ↧ᵏ 0 ≡ x
+    ↧0₀ (gate₀ h) = Eq.refl
+
+    ↧0₁ : (x : Gen 1) → x ↧ᵏ 0 ≡ x
+    ↧0₁ (gate₀ h) = Eq.refl
+    ↧0₁ (gate₁ h) = Eq.refl
+    ↧0₁ (x ↥)     = Eq.cong _↥ (↧0₀ x)
+
+    ↧0₂ : (x : Gen 2) → x ↧ᵏ 0 ≡ x
+    ↧0₂ (gate₀ h) = Eq.refl
+    ↧0₂ (gate₁ h) = Eq.refl
+    ↧0₂ (gate₂ h) = Eq.refl
+    ↧0₂ (x ↥)     = Eq.cong _↥ (↧0₁ x)
+
+    ↧0₃ : (x : Gen 3) → x ↧ᵏ 0 ≡ x
+    ↧0₃ (gate₀ h) = Eq.refl
+    ↧0₃ (gate₁ h) = Eq.refl
+    ↧0₃ (gate₂ h) = Eq.refl
+    ↧0₃ (gate₃ h) = Eq.refl
+    ↧0₃ (x ↥)     = Eq.cong _↥ (↧0₂ x)
+
+    ↧0₄ : (x : Gen 4) → x ↧ᵏ 0 ≡ x
+    ↧0₄ (gate₀ h) = Eq.refl
+    ↧0₄ (gate₁ h) = Eq.refl
+    ↧0₄ (gate₂ h) = Eq.refl
+    ↧0₄ (gate₃ h) = Eq.refl
+    ↧0₄ (x ↥)     = Eq.cong _↥ (↧0₃ x)
+
+    wmap-id : {X : Set} {f : X → X} → (∀ x → f x ≡ x) → (u : Word X) → wmap f u ≡ u
+    wmap-id p [ x ]ʷ  = Eq.cong [_]ʷ (p x)
+    wmap-id p ε       = Eq.refl
+    wmap-id p (u • t) = Eq.cong₂ _•_ (wmap-id p u) (wmap-id p t)
+
+    -- a ≈ b from a and b each passing c to a′ and b′, a′ ≈ b′, and a
+    -- right inverse of c.
+    conj-back : {a b a′ b′ c c⁻ : Circuit n} →
+                n ⊢ a • c ≈ c • a′ → n ⊢ b • c ≈ c • b′ →
+                n ⊢ c • c⁻ ≈ ε → n ⊢ a′ ≈ b′ → n ⊢ a ≈ b
+    conj-back {n} {a} {b} {a′} {b′} {c} {c⁻} pa pb cc⁻ e = begin
+      a              ≈⟨ sym right-unit ⟩
+      a • ε          ≈⟨ cong refl (sym cc⁻) ⟩
+      a • c • c⁻     ≈⟨ sym assoc ⟩
+      (a • c) • c⁻   ≈⟨ cong pa refl ⟩
+      (c • a′) • c⁻  ≈⟨ cong (cong refl e) refl ⟩
+      (c • b′) • c⁻  ≈⟨ cong (sym pb) refl ⟩
+      (b • c) • c⁻   ≈⟨ assoc ⟩
+      b • c • c⁻     ≈⟨ cong refl cc⁻ ⟩
+      b • ε          ≈⟨ right-unit ⟩
+      b              ∎
+      where open Reasoning n
+
+  pad₀ : {w v : Circuit 0} → 0 ⊢ w ≈ v → (n : ℕ) → n ⊢ w ↓ᵏ n ≈ v ↓ᵏ n
+  pad₀ {w} {v} p zero    =
+    Eq.subst₂ (0 ⊢_≈_) (Eq.sym (wmap-id ↧0₀ w)) (Eq.sym (wmap-id ↧0₀ v)) p
+  pad₀ {w} {v} p (suc n) =
+    conj-back (nat₀ w) (nat₀ v) (σσ⁻ 0) (lemma-cong↑ _ _ (pad₀ p n))
+
+  pad₁ : {w v : Circuit 1} → 1 ⊢ w ≈ v → (n : ℕ) → (₁₊ n) ⊢ w ↓ᵏ n ≈ v ↓ᵏ n
+  pad₁ {w} {v} p zero    =
+    Eq.subst₂ (1 ⊢_≈_) (Eq.sym (wmap-id ↧0₁ w)) (Eq.sym (wmap-id ↧0₁ v)) p
+  pad₁ {w} {v} p (suc n) =
+    conj-back (nat₁ w) (nat₁ v) (σσ⁻ 1) (lemma-cong↑ _ _ (pad₁ p n))
+
+  pad₂ : {w v : Circuit 2} → 2 ⊢ w ≈ v → (n : ℕ) → (₂₊ n) ⊢ w ↓ᵏ n ≈ v ↓ᵏ n
+  pad₂ {w} {v} p zero    =
+    Eq.subst₂ (2 ⊢_≈_) (Eq.sym (wmap-id ↧0₂ w)) (Eq.sym (wmap-id ↧0₂ v)) p
+  pad₂ {w} {v} p (suc n) =
+    conj-back (nat₂ w) (nat₂ v) (σσ⁻ 2) (lemma-cong↑ _ _ (pad₂ p n))
+
+  pad₃ : {w v : Circuit 3} → 3 ⊢ w ≈ v → (n : ℕ) → (₃₊ n) ⊢ w ↓ᵏ n ≈ v ↓ᵏ n
+  pad₃ {w} {v} p zero    =
+    Eq.subst₂ (3 ⊢_≈_) (Eq.sym (wmap-id ↧0₃ w)) (Eq.sym (wmap-id ↧0₃ v)) p
+  pad₃ {w} {v} p (suc n) =
+    conj-back (nat₃ w) (nat₃ v) (σσ⁻ 3) (lemma-cong↑ _ _ (pad₃ p n))
+
+  pad₄ : {w v : Circuit 4} → 4 ⊢ w ≈ v → (n : ℕ) → (₄₊ n) ⊢ w ↓ᵏ n ≈ v ↓ᵏ n
+  pad₄ {w} {v} p zero    =
+    Eq.subst₂ (4 ⊢_≈_) (Eq.sym (wmap-id ↧0₄ w)) (Eq.sym (wmap-id ↧0₄ v)) p
+  pad₄ {w} {v} p (suc n) =
+    conj-back (nat₄ w) (nat₄ v) (σσ⁻ 4) (lemma-cong↑ _ _ (pad₄ p n))
+
+  -- All five at once.
+  pad : {w v : Circuit k} → k ≤ 4 → k ⊢ w ≈ v → (n : ℕ) → (k + n) ⊢ w ↓ᵏ n ≈ v ↓ᵏ n
+  pad z≤n                                 = pad₀
+  pad (s≤s z≤n)                           = pad₁
+  pad (s≤s (s≤s z≤n))                     = pad₂
+  pad (s≤s (s≤s (s≤s z≤n)))               = pad₃
+  pad (s≤s (s≤s (s≤s (s≤s z≤n))))         = pad₄

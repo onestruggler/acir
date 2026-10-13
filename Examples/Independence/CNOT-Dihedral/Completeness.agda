@@ -42,7 +42,7 @@ import Examples.Independence.CNOT-Dihedral.Semantics as Sem
 import Examples.Independence.CNOT-Dihedral.Derived as Der
 open import Examples.Independence.CNOT-Dihedral.Bridge using (ι⁻ ; same-operator)
 open import Examples.Independence.Reasoning Gate
-open Theory arity lhs rhs using (ax-at ; lift)
+open Theory _SRel,_===_ using (ax-at ; lift)
 
 private
   variable

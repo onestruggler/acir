@@ -19,8 +19,9 @@
 --   a gate on k wires followed by it is it followed by the gate one
 --   wire up, whatever the gate's matrix — so nothing is owed per gate.
 --
--- Theory turns this into soundness of a fragment: given its axioms on
--- their own wires, every derivable equation holds, at every width.
+-- Theory turns this into soundness of a fragment: given its axioms,
+-- each on its own wires, every derivable equation holds, at every
+-- width.
 -- Separate is Lemma 25 for the same semantics: given the axioms of
 -- Keep ρ b, it separates ρ (Examples.Independence.Model).
 ------------------------------------------------------------------------
@@ -409,16 +410,15 @@ module Laws
     -- Soundness of a fragment
 
     module Theory
-      {Rule : Set} (arity : Rule → ℕ)
-      (lhs rhs : (r : Rule) → Circuit (arity r))
-      (ax-ok : ∀ r → ⟦ lhs r ⟧ ≈ ⟦ rhs r ⟧)
+      (_SRel,_===_ : (n : ℕ) → CRel n)
+      (ax-ok : ∀ {n} {w v : Circuit n} → n SRel, w === v → ⟦ w ⟧ ≈ ⟦ v ⟧)
       where
 
-      open Fragment arity lhs rhs
+      open Lift-To-Prop _SRel,_===_
 
       vrel-sound : n VRel, w === v → ⟦ w ⟧ ≈ ⟦ v ⟧
-      vrel-sound (srel (σrel s))         = sym-sound s
-      vrel-sound (srel (srel (ax r k))) = lift (lhs r) (rhs r) refl refl (ax-ok r)
+      vrel-sound (srel (σrel s))   = sym-sound s
+      vrel-sound (srel (srel a))   = ax-ok a
       vrel-sound (cong↑ {w = w} {v = v} a) = cong↑-sound {w = w} {v} (vrel-sound a)
       vrel-sound (comm₁ h g)     = comm₁-sound h g
       vrel-sound (comm₂ h g)     = comm₂-sound h g
@@ -443,14 +443,13 @@ module Laws
     -- Lemma 25, with this semantics as the model
 
     module Separate
-      {Rule : Set} (arity : Rule → ℕ)
-      (lhs rhs : (r : Rule) → Circuit (arity r))
-      (ρ : Rule) (b : ℕ)
-      (ax-ok : ∀ r → ¬ r ≡ ρ → arity r ≤ b → ⟦ lhs r ⟧ ≈ ⟦ rhs r ⟧)
+      (_SRel,_===_ : (n : ℕ) → CRel n)
+      (let open Model.Separators _SRel,_===_)
+      {m : ℕ} {wρ vρ : Circuit m} (ρ : m SRel, wρ === vρ) (b : ℕ)
+      (ax-ok : ∀ {n} {w v : Circuit n} (a : n SRel, w === v) →
+               ¬ ⟨ a ⟩ ≡ ⟨ ρ ⟩ → n ≤ b → ⟦ w ⟧ ≈ ⟦ v ⟧)
       where
 
-      open Fragment arity lhs rhs
-      open Model.Separators arity lhs rhs
       open Separator ρ b monoid ⟦_⟧₀
         using (module Separates) renaming (⟦_⟧ to ⟦_⟧ᴹ)
 
@@ -467,22 +466,19 @@ module Laws
         ᴹ : {w v : Circuit n} → ⟦ w ⟧ ≈ ⟦ v ⟧ → ⟦ w ⟧ᴹ ≈ ⟦ v ⟧ᴹ
         ᴹ {w = w} {v} = ≈-subst (Eq.sym (ᴹ≡ w)) (Eq.sym (ᴹ≡ v))
 
-      -- The separation is read on ρ ↓ᵏ 0: for a given ρ, that is ρ on
-      -- its own wires, by computation.
-      separates : arity ρ ≤ b → ¬ (⟦ lhs ρ ↓ᵏ 0 ⟧ ≈ ⟦ rhs ρ ↓ᵏ 0 ⟧) →
-                  Independent-axiom ρ
-      separates ar≤b sep =
+      separates : m ≤ b → ¬ (⟦ wρ ⟧ ≈ ⟦ vρ ⟧) → Independent-axiom ρ
+      separates m≤b sep =
         Separates.separates
           (λ {_} {w} {v} s → ᴹ {w = w} {v} (sym-sound s))
-          (λ r k r≢ρ ar≤b' → ᴹ {w = lhs r ↓ᵏ k} {rhs r ↓ᵏ k} (lift (lhs r) (rhs r) refl refl (ax-ok r r≢ρ ar≤b')))
+          (λ {_} {w} {v} a a≢ρ n≤b → ᴹ {w = w} {v} (ax-ok a a≢ρ n≤b))
           (λ {_} {w} {v} _ _ e →
              ᴹ {w = w ↑} {v ↑}
                (cong↑-sound {w = w} {v} (≈-subst (ᴹ≡ w) (ᴹ≡ v) e)))
           (λ h g → comm₁-sound h g) (λ h g → comm₂-sound h g)
           (λ h g → comm₃-sound h g)
           (λ {n} h → ᴹ {w = [ gate₀ {n} h ]ʷ ↑} {[ gate₀ h ]ʷ} (ω↑=ω-sound h))
-          ar≤b
-          (λ e → sep (≈-subst (ᴹ≡ (lhs ρ ↓ᵏ 0)) (ᴹ≡ (rhs ρ ↓ᵏ 0)) e))
+          m≤b
+          (λ e → sep (≈-subst (ᴹ≡ wρ) (ᴹ≡ vρ) e))
 
 ------------------------------------------------------------------------
 -- The exact semantics, and its quotient by global phases

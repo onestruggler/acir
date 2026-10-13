@@ -22,6 +22,7 @@ open import Relation.Binary.PropositionalEquality using (refl)
 open import Word.Base using (_•_)
 
 open import Examples.Independence.Clifford+CS.Syntactics
+open Axioms _SRel,_===_ using (Independent-axiom)
 import Examples.Independence.Clifford+CS.Semantics as Std
 open import Examples.Independence.Semantics.Qubit
   using (Sc ; ωᵍ ; Hᵍ ; Sᵍ ; SWᵍ ; SWᵍ-ok ; module Circuits)
@@ -44,7 +45,7 @@ module Sep-CSr where
   open Symmetry refl SWᵍ-ok
     using (module Separate)
 
-  open Separate arity lhs rhs CSr 2
+  open Separate _SRel,_===_ CSr 2
     (λ { ω⁸ _ _ → check-some (λ _ → tt) _ _ tt
        ; H² _ _ → check-some (λ _ → tt) _ _ tt
        ; S⁴ _ _ → check-some (λ _ → tt) _ _ tt
@@ -78,7 +79,7 @@ module Sep-CE where
   open Symmetry refl SWᵍ-ok
     using (module Separate)
 
-  open Separate arity lhs rhs CE 2
+  open Separate _SRel,_===_ CE 2
     (λ { ω⁸ _ _ → check-some (λ _ → tt) _ _ tt
        ; H² _ _ → check-some (λ _ → tt) _ _ tt
        ; S⁴ _ _ → check-some (λ _ → tt) _ _ tt

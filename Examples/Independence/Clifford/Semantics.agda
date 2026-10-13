@@ -36,7 +36,7 @@ open Exact using (check ; module Symmetry)
 open Symmetry refl SWᵍ-ok
   using (module Theory)
 
-open Theory arity lhs rhs
+open Theory _SRel,_===_
   (λ { ω⁸  → check 0 refl _ _ tt
      ; H²  → check 0 refl _ _ tt
      ; S⁴  → check 0 refl _ _ tt

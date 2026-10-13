@@ -21,7 +21,6 @@
 module Examples.Independence.CNOT-Dihedral.Syntactics where
 
 open import Data.Nat using (ℕ)
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Word.Base using ([_]ʷ ; ε ; _•_ ; _^_)
 
 open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
@@ -94,41 +93,21 @@ T⁴ʷ k = T ^ k • (T ^ k) ↑ • (T ^ k) ↑ ↑ • (T ^ k) ↑ ↑ ↑
 ------------------------------------------------------------------------
 -- The rule set CNOTdihe₂ (Figure 7)
 
-data Rule : Set where
-  ω⁸ X² T⁸ TX XC B ZC CPh I C²T C³T : Rule
+infix 4 _SRel,_===_
+data _SRel,_===_ : (n : ℕ) → CRel n where
+  ω⁸  : 0 SRel, ω ^ 8                 === ε
+  X²  : 1 SRel, X • X                 === ε
+  T⁸  : 1 SRel, T ^ 8                 === ε
+  TX  : 1 SRel, ω • T† • X            === X • T
+  XC  : 2 SRel, CX • X                === X ↑ • CX • X ↑
+  B   : 2 SRel, CX • CX↓              === σ • CX
+  ZC  : 2 SRel, CX • Z ↑              === Z • CX • Z
+  CPh : 2 SRel, CX • T ↑ • CX         === T ↑
+  I   : 3 SRel, CX₂₀                  === CX • CX ↑ • CX • CX ↑
+  C²T : 3 SRel, CCT • CCT ===
+                T³ʷ 6 • CT₂₁ ^ 2 • CT₂₀ ^ 2 • CT₁₀ ^ 2
+  C³T : 4 SRel, CX ↑ ↑ • CCT • CX ↑ ↑ ===
+                T⁴ʷ 5 • CT₃₂ ^ 3 • CT₃₁ ^ 3 • CT₃₀ ^ 3 • CT₂₁ ^ 3 •
+                CT₂₀ ^ 3 • CT₁₀ ^ 3 • CCT₃₂₁ • CCT₃₂₀ • CCT₃₁₀ • CCT₂₁₀
 
-arity : Rule → ℕ
-arity ω⁸  = 0
-arity X²  = 1
-arity T⁸  = 1
-arity TX  = 1
-arity XC  = 2
-arity B   = 2
-arity ZC  = 2
-arity CPh = 2
-arity I   = 3
-arity C²T = 3
-arity C³T = 4
-
-axiom : (r : Rule) → Circuit (arity r) × Circuit (arity r)
-axiom ω⁸  = ω ^ 8               , ε
-axiom X²  = X • X               , ε
-axiom T⁸  = T ^ 8               , ε
-axiom TX  = ω • T† • X          , X • T
-axiom XC  = CX • X              , X ↑ • CX • X ↑
-axiom B   = CX • CX↓            , σ • CX
-axiom ZC  = CX • Z ↑            , Z • CX • Z
-axiom CPh = CX • T ↑ • CX       , T ↑
-axiom I   = CX₂₀                , CX • CX ↑ • CX • CX ↑
-axiom C²T = CCT • CCT           ,
-            T³ʷ 6 • CT₂₁ ^ 2 • CT₂₀ ^ 2 • CT₁₀ ^ 2
-axiom C³T = CX ↑ ↑ • CCT • CX ↑ ↑ ,
-            T⁴ʷ 5 • CT₃₂ ^ 3 • CT₃₁ ^ 3 • CT₃₀ ^ 3 •
-            CT₂₁ ^ 3 • CT₂₀ ^ 3 • CT₁₀ ^ 3 •
-            CCT₃₂₁ • CCT₃₂₀ • CCT₃₁₀ • CCT₂₁₀
-
-lhs rhs : (r : Rule) → Circuit (arity r)
-lhs r = proj₁ (axiom r)
-rhs r = proj₂ (axiom r)
-
-open Fragment arity lhs rhs public
+open Lift-To-Prop _SRel,_===_ public

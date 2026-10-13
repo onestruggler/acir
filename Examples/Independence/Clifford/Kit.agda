@@ -23,7 +23,7 @@ open import Notations using (₁₊ ; ₂₊ ; ₃₊)
 
 open import Examples.Independence.Clifford.Syntactics
 import Examples.Independence.Reasoning Gate as R
-open R.Theory arity lhs rhs using (ax-at)
+open R.Theory _SRel,_===_ using (ax-at)
 
 private
   variable
@@ -55,7 +55,7 @@ private
   one ω-gate ω-gate = refl
 
 open import Examples.Independence.Engine Gate gate-eq gate-eq-sound code one public
-open Kit arity lhs rhs public
+open Kit _SRel,_===_ public
 
 ------------------------------------------------------------------------
 -- Letters

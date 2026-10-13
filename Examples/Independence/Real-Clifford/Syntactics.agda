@@ -14,7 +14,6 @@
 module Examples.Independence.Real-Clifford.Syntactics where
 
 open import Data.Nat using (ℕ)
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Word.Base using ([_]ʷ ; ε ; _•_ ; _^_)
 
 open import Notations using (₁₊ ; ₂₊ ; ₃₊)
@@ -59,35 +58,17 @@ CX₂₀ = σ • CX ↑ • σ
 ------------------------------------------------------------------------
 -- The rule set RCliff₂ (Figure 3)
 
-data Rule : Set where
-  −² H² Z² F CX² B ZC CZr CF I : Rule
+infix 4 _SRel,_===_
+data _SRel,_===_ : (n : ℕ) → CRel n where
+  −²  : 0 SRel, neg ^ 2                === ε
+  H²  : 1 SRel, H • H                  === ε
+  Z²  : 1 SRel, Z • Z                  === ε
+  F   : 1 SRel, Z • H • Z • H          === neg • H • Z • H • Z
+  CX² : 2 SRel, CX • CX                === ε
+  B   : 2 SRel, CX • CX↓               === σ • CX
+  ZC  : 2 SRel, Z • CX • Z             === CX • Z ↑
+  CZr : 2 SRel, H ↑ • H • CX • H ↑ • H === CX↓
+  CF  : 2 SRel, CX • H • CX • Z • H    === H • Z • CX • H • CX
+  I   : 3 SRel, CX • CX ↑ • CX₂₀       === CX ↑ • CX
 
-arity : Rule → ℕ
-arity −²  = 0
-arity H²  = 1
-arity Z²  = 1
-arity F   = 1
-arity CX² = 2
-arity B   = 2
-arity ZC  = 2
-arity CZr = 2
-arity CF  = 2
-arity I   = 3
-
-axiom : (r : Rule) → Circuit (arity r) × Circuit (arity r)
-axiom −²  = neg ^ 2                , ε
-axiom H²  = H • H                  , ε
-axiom Z²  = Z • Z                  , ε
-axiom F   = Z • H • Z • H          , neg • H • Z • H • Z
-axiom CX² = CX • CX                , ε
-axiom B   = CX • CX↓               , σ • CX
-axiom ZC  = Z • CX • Z             , CX • Z ↑
-axiom CZr = H ↑ • H • CX • H ↑ • H , CX↓
-axiom CF  = CX • H • CX • Z • H    , H • Z • CX • H • CX
-axiom I   = CX • CX ↑ • CX₂₀       , CX ↑ • CX
-
-lhs rhs : (r : Rule) → Circuit (arity r)
-lhs r = proj₁ (axiom r)
-rhs r = proj₂ (axiom r)
-
-open Fragment arity lhs rhs public
+open Lift-To-Prop _SRel,_===_ public

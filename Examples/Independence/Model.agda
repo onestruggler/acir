@@ -17,7 +17,8 @@
 -- a circuit as the sum of its letters.  Commutativity validates every
 -- comm rule and every naturality square at once, so of the structural
 -- rules only σ σ = ε is owed (Remark 27), and the kept axioms are
--- checked once each, at their own arity.  count m is (ℕ, +) modulo m
+-- checked once each, on their own wires, which is all the relation
+-- states.  count m is (ℕ, +) modulo m
 -- (Count_m, Definition 28), and has is (Bool, ∨) (Has).
 ------------------------------------------------------------------------
 
@@ -99,12 +100,10 @@ argdet     k ad swap  = 2 ^ (k ∸ 2) * 4
 ------------------------------------------------------------------------
 -- Separators for a fragment
 
-module Separators
-  {Rule : Set} (arity : Rule → ℕ)
-  (lhs rhs : (r : Rule) → Circuit (arity r))
-  where
+module Separators (_SRel,_===_ : (n : ℕ) → CRel n) where
 
-  open Fragment arity lhs rhs
+  open Lift-To-Prop _SRel,_===_
+  open Axioms _SRel,_===_ public
 
   private
     variable
@@ -112,7 +111,7 @@ module Separators
 
   -- Lemma 25, for a model of the other axioms of arity at most b.
   module Separator
-    (ρ : Rule) (b : ℕ)
+    {m : ℕ} {wρ vρ : Circuit m} (ρ : m SRel, wρ === vρ) (b : ℕ)
     (mon : ℕ → Monoid 0ℓ 0ℓ)
     (⟦_⟧₀ : ∀ {n} → Gen n → Monoid.Carrier (mon n))
     where
@@ -120,11 +119,15 @@ module Separators
     open CI.Structural _Prop,_===_ using (module Soundness)
     open Soundness (Keep ρ b) (λ p → p) mon ⟦_⟧₀ public
 
+    -- The model respects the axiom a.
+    Respects : n SRel, w === v → Set
+    Respects {w = w} {v} _ = ⟦ w ⟧ ≈ₘ ⟦ v ⟧
+
     module Separates
       (sound-sym : ∀ {n} {w v : Circuit n} (s : n Sym, w === v) →
                    ⟦ w ⟧ ≈ₘ ⟦ v ⟧)
-      (sound-ax : ∀ r k → ¬ r ≡ ρ → arity r ≤ b →
-                  ⟦ lhs r ↓ᵏ k ⟧ ≈ₘ ⟦ rhs r ↓ᵏ k ⟧)
+      (sound-ax : ∀ {n} {w v : Circuit n} (a : n SRel, w === v) →
+                  ¬ ⟨ a ⟩ ≡ ⟨ ρ ⟩ → n ≤ b → ⟦ w ⟧ ≈ₘ ⟦ v ⟧)
       (sound-cong↑ : Sound-cong↑)
       (sound-comm₁ : ∀ {n} (h : PGate 1) (g : Gen n) →
                      ⟦ [ g ↥ ]ʷ • [ gate₁ h ]ʷ ⟧ ≈ₘ
@@ -142,8 +145,8 @@ module Separators
       private
         sound-srel : (s : n Prop, w === v) → Keep ρ b (srel s) →
                      ⟦ w ⟧ ≈ₘ ⟦ v ⟧
-        sound-srel (σrel s)         _             = sound-sym s
-        sound-srel (srel (ax r k)) (r≢ρ , ar≤b) = sound-ax r k r≢ρ ar≤b
+        sound-srel (σrel s) _           = sound-sym s
+        sound-srel (srel a) (a≢ρ , n≤b) = sound-ax a a≢ρ n≤b
 
       open Rules sound-srel sound-cong↑
         (λ h g _ → sound-comm₁ h g) (λ h g _ → sound-comm₂ h g)
@@ -152,11 +155,9 @@ module Separators
         public
 
       -- The model separates ρ, so ρ is independent.
-      separates : arity ρ ≤ b →
-                  ¬ (⟦ lhs ρ ↓ᵏ 0 ⟧ ≈ₘ ⟦ rhs ρ ↓ᵏ 0 ⟧) →
-                  Independent-axiom ρ
-      separates ar≤b sep =
-        upto⇒independent ar≤b (independent (srel (srel (ax ρ 0))) sep)
+      separates : m ≤ b → ¬ (⟦ wρ ⟧ ≈ₘ ⟦ vρ ⟧) → Independent-axiom ρ
+      separates m≤b sep =
+        upto⇒independent m≤b (independent (srel (srel ρ)) sep)
 
   ----------------------------------------------------------------------
   -- Weighted models: one commutative monoid at every width
@@ -178,27 +179,15 @@ module Separators
     ⟦ gate₃ g ⟧₀ = wt g
     ⟦ g ↥ ⟧₀     = ⟦ g ⟧₀
 
-    module Sep (ρ : Rule) (b : ℕ) where
+    module Sep {m : ℕ} {wρ vρ : Circuit m} (ρ : m SRel, wρ === vρ) (b : ℕ) where
 
       open Separator ρ b (λ _ → monoid) ⟦_⟧₀ public
 
-      -- A weight does not see where its letters are.
-      ⟦↧⟧₀ : (g : Gen n) (k : ℕ) → ⟦ g ↧ᵏ k ⟧₀ ≡ ⟦ g ⟧₀
-      ⟦↧⟧₀ (gate₀ g) k = refl
-      ⟦↧⟧₀ (gate₁ g) k = refl
-      ⟦↧⟧₀ (gate₂ g) k = refl
-      ⟦↧⟧₀ (gate₃ g) k = refl
-      ⟦↧⟧₀ (g ↥)     k = ⟦↧⟧₀ g k
-
-      ⟦↓⟧ : (w : Circuit n) (k : ℕ) → ⟦ w ↓ᵏ k ⟧ ≡ ⟦ w ⟧
-      ⟦↓⟧ [ g ]ʷ    k = ⟦↧⟧₀ g k
-      ⟦↓⟧ ε         k = refl
-      ⟦↓⟧ (w • w')  k = Eq.cong₂ _∙_ (⟦↓⟧ w k) (⟦↓⟧ w' k)
-
-      -- The checks: every other axiom of arity at most b, at its arity.
+      -- The checks: every other axiom of arity at most b, on its own
+      -- wires.
       module Check
-        (sound-rule : ∀ r → ¬ r ≡ ρ → arity r ≤ b →
-                      ⟦ lhs r ⟧ ≈ ⟦ rhs r ⟧)
+        (sound-rule : ∀ {n} {w v : Circuit n} (a : n SRel, w === v) →
+                      ¬ ⟨ a ⟩ ≡ ⟨ ρ ⟩ → n ≤ b → ⟦ w ⟧ ≈ ⟦ v ⟧)
         where
 
         private
@@ -208,12 +197,6 @@ module Separators
           sound-sym (σ-nat₂ h) = comm _ _
           sound-sym (σ-nat₃ h) = comm _ _
 
-          sound-ax : ∀ r k → ¬ r ≡ ρ → arity r ≤ b →
-                     ⟦ lhs r ↓ᵏ k ⟧ ≈ ⟦ rhs r ↓ᵏ k ⟧
-          sound-ax r k r≢ρ ar≤b =
-            Eq.subst₂ _≈_ (Eq.sym (⟦↓⟧ (lhs r) k)) (Eq.sym (⟦↓⟧ (rhs r) k))
-                      (sound-rule r r≢ρ ar≤b)
-
           open Shift (λ x → x)
             (record { isMagmaHomomorphism = record
                         { isRelHomomorphism = record { cong = λ e → e }
@@ -222,10 +205,8 @@ module Separators
             (λ _ → ≈-refl)
 
         -- ρ is independent when the model tells its sides apart.
-        separates : arity ρ ≤ b → ¬ (⟦ lhs ρ ⟧ ≈ ⟦ rhs ρ ⟧) →
-                    Independent-axiom ρ
-        separates ar≤b sep =
-          Separates.separates sound-sym sound-ax sound-cong↑
+        separates : m ≤ b → ¬ (⟦ wρ ⟧ ≈ ⟦ vρ ⟧) → Independent-axiom ρ
+        separates =
+          Separates.separates sound-sym sound-rule sound-cong↑
             (λ h g → comm _ _) (λ h g → comm _ _) (λ h g → comm _ _)
-            (λ ω → ≈-refl) ar≤b
-            (λ e → sep (Eq.subst₂ _≈_ (⟦↓⟧ (lhs ρ) 0) (⟦↓⟧ (rhs ρ) 0) e))
+            (λ ω → ≈-refl)

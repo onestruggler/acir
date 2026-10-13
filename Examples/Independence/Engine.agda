@@ -182,12 +182,9 @@ less (gate₃ a) _         = false
 ------------------------------------------------------------------------
 -- The fragment
 
-module Kit
-  {Rule : Set} (arity : Rule → ℕ)
-  (lhs rhs : (r : Rule) → Circuit (arity r))
-  where
+module Kit (_SRel,_===_ : (n : ℕ) → CRel n) where
 
-  open Fragment arity lhs rhs
+  open Lift-To-Prop _SRel,_===_
 
   private
     one′ : (h h' : PGate 0) → h ≡ h'

@@ -34,21 +34,24 @@ import Examples.Groups.CNOT+Dihedral.Interpretation as AI
 
 open Exact using (check ; module Symmetry)
 
--- (C²T) and (C³T), on their operators' tables.
-C²T-ok : ⟦ lhs C²T ⟧ ≈ ⟦ rhs C²T ⟧
-C²T-ok = same-matrix (lhs C²T) (rhs C²T)
-  (AI.by-relator (wmap ι⁻ (lhs C²T)) (wmap ι⁻ (rhs C²T)) refl refl refl)
-
-C³T-ok : ⟦ lhs C³T ⟧ ≈ ⟦ rhs C³T ⟧
-C³T-ok = same-matrix (lhs C³T) (rhs C³T)
-  (AI.by-relator (wmap ι⁻ (lhs C³T)) (wmap ι⁻ (rhs C³T)) refl refl refl)
+-- Every axiom, on its own wires: (C²T) and (C³T) on their operators'
+-- tables, the others as matrices.
+ax-ok : ∀ {n} {w v : Circuit n} → n SRel, w === v → ⟦ w ⟧ ≈ ⟦ v ⟧
+ax-ok ω⁸  = check 0 refl _ _ tt
+ax-ok X²  = check 0 refl _ _ tt
+ax-ok T⁸  = check 0 refl _ _ tt
+ax-ok TX  = check 0 refl _ _ tt
+ax-ok XC  = check 0 refl _ _ tt
+ax-ok B   = check 0 refl _ _ tt
+ax-ok ZC  = check 0 refl _ _ tt
+ax-ok CPh = check 0 refl _ _ tt
+ax-ok I   = check 0 refl _ _ tt
+ax-ok {w = w} {v} C²T =
+  same-matrix w v (AI.by-relator (wmap ι⁻ w) (wmap ι⁻ v) refl refl refl)
+ax-ok {w = w} {v} C³T =
+  same-matrix w v (AI.by-relator (wmap ι⁻ w) (wmap ι⁻ v) refl refl refl)
 
 open Symmetry refl SWᵍ-ok
   using (module Theory)
 
-open Theory arity lhs rhs
-  (λ { ω⁸ → check 0 refl _ _ tt ; X² → check 0 refl _ _ tt ; T⁸ → check 0 refl _ _ tt
-     ; TX → check 0 refl _ _ tt ; XC → check 0 refl _ _ tt ; B → check 0 refl _ _ tt
-     ; ZC → check 0 refl _ _ tt ; CPh → check 0 refl _ _ tt ; I → check 0 refl _ _ tt
-     ; C²T → C²T-ok ; C³T → C³T-ok })
-  public using (sound)
+open Theory _SRel,_===_ ax-ok public using (sound)

@@ -16,7 +16,6 @@
 module Examples.Independence.Clifford+CS.Syntactics where
 
 open import Data.Nat using (ℕ)
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Word.Base using ([_]ʷ ; ε ; _•_ ; _^_)
 
 open import Notations using (₁₊ ; ₂₊ ; ₃₊)
@@ -71,43 +70,21 @@ SHʳ k = CS ↑ • H ↑ • (CS ↑) ^ k • H ↑ • CS • H ↑ • CS ^ k
 ------------------------------------------------------------------------
 -- The rule set CliffCS₂ (Figure 6)
 
-data Rule : Set where
-  ω⁸ H² S⁴ E CPh CSr B XCS CE I SH₀ SH₁ SH₂ SH₃ : Rule
+infix 4 _SRel,_===_
+data _SRel,_===_ : (n : ℕ) → CRel n where
+  ω⁸  : 0 SRel, ω ^ 8                     === ε
+  H²  : 1 SRel, H • H                     === ε
+  S⁴  : 1 SRel, S ^ 4                     === ε
+  E   : 1 SRel, H • S • H                 === ω • S ^ 3 • H • S ^ 3
+  CPh : 2 SRel, CS • S ↑ • CS • CS • CS   === S ↑
+  CSr : 2 SRel, CS                        === σ • CS • σ
+  B   : 2 SRel, CX • CX↓                  === σ • CX
+  XCS : 2 SRel, X ↑ • CS                  === CS • CS • CS • X ↑ • S
+  CE  : 2 SRel, S ↑ • H ↑ • CS • H ↑ • CS === CS • H ↑ • CS • H ↑ • S ↑
+  I   : 3 SRel, CX • CX ↑ • CX₂₀          === CX ↑ • CX
+  SH₀ : 3 SRel, SHˡ 0                     === SHʳ 0
+  SH₁ : 3 SRel, SHˡ 1                     === SHʳ 1
+  SH₂ : 3 SRel, SHˡ 2                     === SHʳ 2
+  SH₃ : 3 SRel, SHˡ 3                     === SHʳ 3
 
-arity : Rule → ℕ
-arity ω⁸  = 0
-arity H²  = 1
-arity S⁴  = 1
-arity E   = 1
-arity CPh = 2
-arity CSr = 2
-arity B   = 2
-arity XCS = 2
-arity CE  = 2
-arity I   = 3
-arity SH₀ = 3
-arity SH₁ = 3
-arity SH₂ = 3
-arity SH₃ = 3
-
-axiom : (r : Rule) → Circuit (arity r) × Circuit (arity r)
-axiom ω⁸  = ω ^ 8                     , ε
-axiom H²  = H • H                     , ε
-axiom S⁴  = S ^ 4                     , ε
-axiom E   = H • S • H                 , ω • S ^ 3 • H • S ^ 3
-axiom CPh = CS • S ↑ • CS • CS • CS   , S ↑
-axiom CSr = CS                        , σ • CS • σ
-axiom B   = CX • CX↓                  , σ • CX
-axiom XCS = X ↑ • CS                  , CS • CS • CS • X ↑ • S
-axiom CE  = S ↑ • H ↑ • CS • H ↑ • CS , CS • H ↑ • CS • H ↑ • S ↑
-axiom I   = CX • CX ↑ • CX₂₀          , CX ↑ • CX
-axiom SH₀ = SHˡ 0                     , SHʳ 0
-axiom SH₁ = SHˡ 1                     , SHʳ 1
-axiom SH₂ = SHˡ 2                     , SHʳ 2
-axiom SH₃ = SHˡ 3                     , SHʳ 3
-
-lhs rhs : (r : Rule) → Circuit (arity r)
-lhs r = proj₁ (axiom r)
-rhs r = proj₂ (axiom r)
-
-open Fragment arity lhs rhs public
+open Lift-To-Prop _SRel,_===_ public

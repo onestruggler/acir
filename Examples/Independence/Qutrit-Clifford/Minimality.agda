@@ -20,7 +20,7 @@ open import Relation.Binary.PropositionalEquality using (refl)
 open import Examples.Independence.Qutrit-Clifford.Syntactics
 import Examples.Independence.Qutrit-Clifford.Projective as Projective
 open import Examples.Independence.Model Gate
-open Separators arity lhs rhs
+open Separators _SRel,_===_
 
 private
   variable

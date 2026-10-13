@@ -24,6 +24,7 @@ open import Data.Unit using (tt)
 open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Examples.Independence.Real-Clifford.Syntactics
+open Axioms _SRel,_===_ using (Independent-axiom)
 open import Examples.Independence.Semantics.Qubit
   using (Sc ; −1ᵍ ; Hᵍ ; Zᵍ ; CXᵍ ; SWᵍ ; SWᵍ-ok ; idM ; module Circuits)
 
@@ -45,7 +46,7 @@ module Sep-CF where
   open Symmetry refl SWᵍ-ok
     using (module Separate)
 
-  open Separate arity lhs rhs CF 2
+  open Separate _SRel,_===_ CF 2
     (λ { −² _ _ → check-some (λ _ → tt) _ _ tt
        ; H² _ _ → check-some (λ _ → tt) _ _ tt
        ; Z² _ _ → check-some (λ _ → tt) _ _ tt
@@ -78,7 +79,7 @@ module Sep-CZr where
   open Symmetry refl SWᵍ-ok
     using (module Separate)
 
-  open Separate arity lhs rhs CZr 2
+  open Separate _SRel,_===_ CZr 2
     (λ { −² _ _ → check-some (λ _ → tt) _ _ tt
        ; H² _ _ → check-some (λ _ → tt) _ _ tt
        ; Z² _ _ → check-some (λ _ → tt) _ _ tt
