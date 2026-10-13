@@ -158,24 +158,24 @@ r-step {n} (cx e₀) swap = begin
   where open Width n
 r-step {n} (sw e₀) cnot = begin
   (SWAP • ε) • CNOT          ≈⟨ by-assoc Eq.refl ⟩
-  SWAP • CNOT                ≈⟨ sym (Involution.cancelʳ (ax swap-order) (SWAP • CNOT)) ⟩
+  SWAP • CNOT                ≈⟨ sym (Involution.cancelʳ swap-order (SWAP • CNOT)) ⟩
   (SWAP • CNOT) • SWAP • SWAP ≈⟨ by-assoc Eq.refl ⟩
   CX01 • SWAP • ε            ∎
   where open Width n
 r-step {n} (sw e₀) swap = begin
   (SWAP • ε) • SWAP    ≈⟨ by-assoc Eq.refl ⟩
-  SWAP • SWAP          ≈⟨ ax swap-order ⟩
+  SWAP • SWAP          ≈⟨ swap-order ⟩
   ε                    ≈⟨ by-assoc Eq.refl ⟩
   ε • ε                ∎
   where open Width n
 r-step (cx (cx ℓ)) cnot = glue (r ℓ) (comm-gate₂-w↑↑ CNOT-gate (r ℓ)) R1g
 r-step (cx (cx ℓ)) swap = glue (r ℓ) (comm-gate₂-w↑↑ SWAP-gate (r ℓ)) R1h
 r-step (cx (sw ℓ)) cnot = glue (r ℓ) (comm-gate₂-w↑↑ CNOT-gate (r ℓ)) R1e
-r-step (cx (sw ℓ)) swap = glue (r ℓ) (comm-gate₂-w↑↑ SWAP-gate (r ℓ)) (ax swap-CNOT)
+r-step (cx (sw ℓ)) swap = glue (r ℓ) (comm-gate₂-w↑↑ SWAP-gate (r ℓ)) swap-CNOT
 r-step (sw (cx ℓ)) cnot = glue (r ℓ) (comm-gate₂-w↑↑ CNOT-gate (r ℓ)) R1c
 r-step (sw (cx ℓ)) swap = glue (r ℓ) (comm-gate₂-w↑↑ SWAP-gate (r ℓ)) R1d
 r-step (sw (sw ℓ)) cnot = glue (r ℓ) (comm-gate₂-w↑↑ CNOT-gate (r ℓ)) R1a
-r-step (sw (sw ℓ)) swap = glue (r ℓ) (comm-gate₂-w↑↑ SWAP-gate (r ℓ)) (ax swap-braid)
+r-step (sw (sw ℓ)) swap = glue (r ℓ) (comm-gate₂-w↑↑ SWAP-gate (r ℓ)) swap-braid
 
 s-step : (u : NZ n) (y : LGen n) → n ⊢ s u • [ ι y ]ʷ ≈ ⟪ sk u y ⟫' • s (u ⋆' y)
 s-step {n} e₀ (y ↥ₗ) = trans left-unit (sym right-unit)
@@ -206,7 +206,7 @@ s-step {n} (sw e₀) cnot = begin
   where open Width n
 s-step {n} (sw e₀) swap = begin
   (SWAP • ε) • SWAP    ≈⟨ by-assoc Eq.refl ⟩
-  SWAP • SWAP          ≈⟨ ax swap-order ⟩
+  SWAP • SWAP          ≈⟨ swap-order ⟩
   ε                    ≈⟨ by-assoc Eq.refl ⟩
   ε • ε                ∎
   where open Width n
@@ -217,7 +217,7 @@ s-step (cx (sw u)) swap = glue (s u) (comm-gate₂-w↑↑ SWAP-gate (s u)) C1f
 s-step (sw (cx u)) cnot = glue (s u) (comm-gate₂-w↑↑ CNOT-gate (s u)) C1c
 s-step (sw (cx u)) swap = glue (s u) (comm-gate₂-w↑↑ SWAP-gate (s u)) C1d
 s-step (sw (sw u)) cnot = glue (s u) (comm-gate₂-w↑↑ CNOT-gate (s u)) R1a
-s-step (sw (sw u)) swap = glue (s u) (comm-gate₂-w↑↑ SWAP-gate (s u)) (ax swap-braid)
+s-step (sw (sw u)) swap = glue (s u) (comm-gate₂-w↑↑ SWAP-gate (s u)) swap-braid
 
 ------------------------------------------------------------------------
 -- The column part absorbs the row's letters

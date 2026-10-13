@@ -86,15 +86,15 @@ SWAP-X {n} = begin
   SWAP • X
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP • X • (ε)
-    ≈⟨ back (SWAP) (back (X) (sym (ax swap-order))) ⟩
+    ≈⟨ back (SWAP) (back (X) (sym swap-order)) ⟩
   SWAP • X • (SWAP • SWAP)
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP • (X • SWAP) • SWAP
-    ≈⟨ back (SWAP) (front (SWAP) (ax swap-X)) ⟩
+    ≈⟨ back (SWAP) (front (SWAP) swap-X) ⟩
   SWAP • (SWAP • X ↑) • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   (SWAP • SWAP) • X ↑ • SWAP
-    ≈⟨ front (X ↑ • SWAP) (ax swap-order) ⟩
+    ≈⟨ front (X ↑ • SWAP) swap-order ⟩
   (ε) • X ↑ • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   X ↑ • SWAP ∎
@@ -105,7 +105,7 @@ SWAP-X↑ {n} = begin
   SWAP • X ↑
     ≈⟨ by-assoc Eq.refl ⟩
   (SWAP • X ↑)
-    ≈⟨ sym (ax swap-X) ⟩
+    ≈⟨ sym swap-X ⟩
   (X • SWAP)
     ≈⟨ by-assoc Eq.refl ⟩
   X • SWAP ∎
@@ -120,7 +120,7 @@ SWAP-XX↑ {n} = begin
   SWAP • (X ↑ • X)
     ≈⟨ by-assoc Eq.refl ⟩
   (SWAP • X ↑) • X
-    ≈⟨ front (X) (sym (ax swap-X)) ⟩
+    ≈⟨ front (X) (sym swap-X) ⟩
   (X • SWAP) • X
     ≈⟨ by-assoc Eq.refl ⟩
   X • (SWAP • X)

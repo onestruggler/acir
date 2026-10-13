@@ -35,7 +35,7 @@ private
 -- Axioms, and derivations one wire up
 
 ax : n SRel, w === v → n ⊢ w ≈ v
-ax r = PB.axiom (srel r)
+ax r = PB.axiom (srel (srel r))
 
 -- A structural rule.
 ax' : n VRel, w === v → n ⊢ w ≈ v

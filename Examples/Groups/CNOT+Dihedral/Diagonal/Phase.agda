@@ -74,7 +74,7 @@ revL (w • v) = revL v • revL w
 
 ι-invol : (y : LGen n) → n ⊢ [ ι y ]ʷ • [ ι y ]ʷ ≈ ε
 ι-invol cnot     = ax R₄
-ι-invol swap     = ax swap-order
+ι-invol swap     = swap-order
 ι-invol (y ↥ₗ)   = lift (ι-invol y)
 
 rev-right : (L : Word (LGen n)) → n ⊢ ⌊ L ⌋ • ⌊ revL L ⌋ ≈ ε

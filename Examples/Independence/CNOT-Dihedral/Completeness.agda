@@ -108,19 +108,28 @@ D-rel ACR.R₁₁           = Der.R₁₁
 D-rel (ACR.R₁₂ {n = m}) = ax-at CPh m
 D-rel (ACR.R₁₃ {n = m}) =
   PB.trans (ax-at C³T m) (PP.by-assoc ((₄₊ m) VRel,_===_) refl)
-D-rel ACR.swap-order    = sym-rule σ-inv
-D-rel ACR.swap-braid    = sym-rule (σ-nat₂ swap)
-D-rel ACR.swap-X        = sym-rule (σ-nat₁ X-gate)
-D-rel ACR.swap-T        = sym-rule (σ-nat₁ T-gate)
-D-rel ACR.swap-CNOT     = sym-rule (σ-nat₂ ⌈ CX-gate ⌉)
+
+-- Their laws of the symmetry (Circuit.Prop's) are ours, up to the
+-- bracketing of σ-nat₂'s right side.
+D-prop : n ACR.Prop, w === v → n ⊢ D w ≈ D v
+D-prop ACR.σ-inv                    = sym-rule σ-inv
+D-prop (ACR.σ-nat₁ ACR.X-gate)      = sym-rule (σ-nat₁ X-gate)
+D-prop (ACR.σ-nat₁ ACR.T-gate)      = sym-rule (σ-nat₁ T-gate)
+D-prop (ACR.σ-nat₂ ACR.CNOT-gate)   =
+  PB.trans (sym-rule (σ-nat₂ ⌈ CX-gate ⌉)) (PB.sym PB.assoc)
+D-prop (ACR.σ-nat₂ ACR.SWAP-gate)   =
+  PB.trans (sym-rule (σ-nat₂ swap)) (PB.sym PB.assoc)
+D-prop (ACR.σ-nat₃ ())
+D-prop (ACR.srel r)                 = D-rel r
 
 -- With the structural rules.
 D-ax : n ACR.VRel, w === v → n ⊢ D w ≈ D v
-D-ax (ACR.srel r)              = D-rel r
+D-ax (ACR.srel r)              = D-prop r
 D-ax (ACR.cong↑ {w = w} {v} r) =
   Eq.subst₂ (_ ⊢_≈_) (Eq.sym (D-↑ w)) (Eq.sym (D-↑ v)) (lift (D-ax r))
 D-ax (ACR.comm₁ h g)           = PB.axiom (comm₁ (ιg h) (ι g))
 D-ax (ACR.comm₂ h g)           = PB.axiom (comm₂ (ιg h) (ι g))
+D-ax (ACR.comm₃ () g)
 D-ax (ACR.ω↑=ω h)              = PB.axiom (ω↑=ω (ιg h))
 
 -- So every derivation of theirs.
