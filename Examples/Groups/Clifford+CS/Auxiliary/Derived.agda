@@ -37,7 +37,8 @@ open import Examples.Groups.Clifford+CS.Auxiliary.Fragment
 open PB (N F,_===_) public
   using (_≈_ ; refl ; sym ; trans ; cong ; assoc ; left-unit ; right-unit ; axiom)
 open import Presentation.Properties (N F,_===_) public
-  using (word-setoid ; ^-suc ; ^-+ ; pow-comm ; ^-cong ; by-assoc)
+  using (word-setoid ; ^-suc ; ^-+ ; pow-comm ; comm⇒pow-comm ; ^-• ; ^^ ;
+         ^-cong ; ε^k=ε ; by-assoc)
 open SR word-setoid public
 
 private
