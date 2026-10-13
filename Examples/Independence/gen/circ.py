@@ -22,6 +22,14 @@ ARITY = {'w': 0, 'm': 0, 'H': 1, 'S': 1, 'Z': 1, 'T': 1, 'X': 1, 'CX': 2, 'SW': 
 # Real Clifford has Z as a gate, where Clifford spells it S S.
 PRIMITIVE_Z = False
 
+# Clifford+T has T as its only phase gate: S, S†, Z, X and T† are
+# spelled over T (S = T², S† = T⁶, Z = T⁴, X = H T⁴ H, T† = T⁷).
+T_SPELL = False
+
+# Named subcircuits, expanded when a line is parsed (a fragment fills
+# this in: Clifford+T's controlled gates).
+MACROS = {}
+
 
 def wires(l):
     k, w = l
@@ -117,7 +125,30 @@ def gname(g):
 def gparse(s):
     out = []
     for tok in s.split():
-        if tok == 'w':
+        if tok in MACROS:
+            out += gparse(MACROS[tok])
+        elif '^' in tok:                        # a token repeated: T0^3
+            base, m = tok.split('^')
+            out += gparse(base) * int(m)
+        elif T_SPELL and tok[0] in 'SZXT' and tok[-1].isdigit() and not tok.startswith('SW'):
+            k = int(tok[-1])
+            t = ('T', k)
+            body = tok[:-1]
+            if body == 'S':
+                out += [t] * 2
+            elif body == 'Sd':
+                out += [t] * 6
+            elif body == 'Z':
+                out += [t] * 4
+            elif body == 'X':
+                out += [('H', k)] + [t] * 4 + [('H', k)]
+            elif body == 'Td':
+                out += [t] * 7
+            elif body == 'T':
+                out.append(t)
+            else:
+                raise ValueError(tok)
+        elif tok == 'w':
             out.append(('w',))
         elif tok == 'm':
             out.append(('m',))
@@ -263,6 +294,15 @@ def occurrences(c, pat):
             ok = True
             for jj in range(j):
                 if (not commute(pat[jj], pat[j]) or pat[jj] == pat[j]) and sel[jj] > p:
+                    ok = False
+                    break
+                # a letter between two dependent pattern letters that
+                # depends on both breaks convexity (checked below anyway;
+                # pruning here keeps runs of one gate from being chosen
+                # in every combination)
+                if not commute(pat[jj], pat[j]) and sel[jj] < p and any(
+                        q not in sel and not commute(c[q], c[sel[jj]]) and not commute(c[q], c[p])
+                        for q in range(sel[jj] + 1, p)):
                     ok = False
                     break
             if ok:
