@@ -91,10 +91,14 @@ data _R,_===_ (N : ℕ) : WRel (GenP N) where
   dx-split : ∀ a b c d .(ab : a < b) .(cd : c < d) →
              N R, dw a b c d ab cd === xw a a b ab • xw b c d cd
 
-  -- The K pairs: inverses, the square, and bridging.
+  -- The K pairs: inverses, the square, and bridging.  Inverses and
+  -- bridging cancel whatever the pairs share (relations (17), (18) of
+  -- the two-level presentation); the square and everything after it
+  -- need the two pairs of the letter disjoint.
   kk-inv : ∀ a b c d .(ab : a < b) .(cd : c < d) →
            N R, kw a b c d ab cd • kw c d a b cd ab === ε
   kk-sq : ∀ a b c d .(ab : a < b) .(cd : c < d) →
+          c ≢ a → c ≢ b → d ≢ a → d ≢ b →
           N R, kw a b c d ab cd • kw a b c d ab cd === pw c a • pw d b
   kk-bridge : ∀ a b c d e f .(ab : a < b) .(cd : c < d) .(ef : e < f) →
               N R, kw a b c d ab cd === kw a b e f ab ef • kw e f c d ef cd
@@ -116,9 +120,11 @@ data _R,_===_ (N : ℕ) : WRel (GenP N) where
   -- The phases that pass a K pair: the −1−1 on its own indices, and
   -- i_a i_b through a fresh balance.
   kk-mm : ∀ a b c d .(ab : a < b) .(cd : c < d) →
+          c ≢ a → c ≢ b → d ≢ a → d ≢ b →
           N R, (pw a b • pw a b) • kw a b c d ab cd
           === kw a b c d ab cd • (pw a b • pw a b)
   kk-ii : ∀ a b c d e .(ab : a < b) .(cd : c < d) →
+          c ≢ a → c ≢ b → d ≢ a → d ≢ b →
           e ≢ a → e ≢ b → e ≢ c → e ≢ d →
           N R, (pw a e • pw b e) • kw a b c d ab cd
           === kw a b c d ab cd • (pw a e • pw b e)
@@ -126,18 +132,22 @@ data _R,_===_ (N : ℕ) : WRel (GenP N) where
   -- Relation (15) of the two-level presentation, lifted: the −1 moves
   -- to a fresh index, where it becomes the sign of the exchange.
   kk-x : ∀ a b c d e .(ab : a < b) .(cd : c < d) →
+         c ≢ a → c ≢ b → d ≢ a → d ≢ b →
          e ≢ a → e ≢ b → e ≢ c → e ≢ d →
          N R, kw a b c d ab cd • (pw b e • pw b e)
          === xw e a b ab • kw a b c d ab cd
 
   -- The pair's own exchange conjugates it to its −1−1 multiple.
   kk-conj : ∀ a b c d .(ab : a < b) .(cd : c < d) →
+            c ≢ a → c ≢ b → d ≢ a → d ≢ b →
             N R, xw b a b ab • kw a b c d ab cd • xw a a b ab
             === (pw a b • pw a b) • kw a b c d ab cd
 
   -- A double exchange renames a K pair.
   kk-ren : ∀ a b c d e f .(ab : a < b) .(cd : c < d)
              .(ae : a < e) .(bf : b < f) .(ef : e < f) →
+           c ≢ a → c ≢ b → c ≢ e → c ≢ f → d ≢ a → d ≢ b → d ≢ e → d ≢ f →
+           e ≢ a → e ≢ b → f ≢ a → f ≢ b →
            N R, dw a e b f ae bf • kw a b c d ab cd • dw a e b f ae bf
            === kw e f c d ef cd
 
@@ -145,6 +155,10 @@ data _R,_===_ (N : ℕ) : WRel (GenP N) where
   kk-yb : ∀ a b c d e f g h
             .(ab : a < b) .(cd : c < d) .(ac : a < c) .(bd : b < d)
             .(ef : e < f) .(gh : g < h) →
+          b ≢ c →
+          e ≢ a → e ≢ b → e ≢ c → e ≢ d → f ≢ a → f ≢ b → f ≢ c → f ≢ d →
+          g ≢ a → g ≢ b → g ≢ c → g ≢ d → h ≢ a → h ≢ b → h ≢ c → h ≢ d →
+          g ≢ e → g ≢ f → h ≢ e → h ≢ f →
           N R, kw a b e f ab ef • kw c d g h cd gh
                • kw a c e f ac ef • kw b d g h bd gh
           === kw a c e f ac ef • kw b d g h bd gh
