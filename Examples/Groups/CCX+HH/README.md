@@ -91,6 +91,9 @@ these kernel-checked proofs.
   1080 transition equations and 105 signed-permutation base equations.
   The base, its physical circuit decoders, the transition table, and
   separation of the 135 representatives are all proved in Agda.
+- `Structural.agda` derives preservation of circuit equality under
+  adding idle wires at either end, including arbitrary bottom shifts.
+  These are consequences of the complete relation, not extra axioms.
 - `Translation.agda` is the direct Clément translation used by `CCX+H`:
   decode the auxiliary axioms and add generator recovery equations.
 - `Schreier.agda` gives the corresponding stateful subgroup translation,

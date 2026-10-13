@@ -77,9 +77,32 @@ decoders. Together with the 1080 cells in `finite_cosets.json`, it specifies
 all 1185 concrete circuit equations. `compact_relations.py` expands and
 checks every equation using independent exact physical matrix arithmetic.
 
+## Executable normalization
+
+`normalize.py` reads a circuit in **matrix-product order** and returns its
+even signed permutation, coset number, and a deterministic physical word
+for that normal form. The permutation maps input basis indices to output
+indices; the eight signs are indexed by output row. Global signs are
+retained. The physical word is a deterministic spelling of the normal
+form, not necessarily the shortest circuit or the literal symmetric-group
+word chosen by Agda's section.
+
+```sh
+python3 -B Examples/Groups/CCX+HH/ThreeQubit/normalize.py X0 HH01 CX10 HH12
+python3 -B Examples/Groups/CCX+HH/ThreeQubit/normalize.py --json 'X0 HH01 CX10 HH12'
+python3 -B Examples/Groups/CCX+HH/ThreeQubit/normalize.py --self-test
+```
+
+The CLI uses all 1080 stored factorizations and the 14 stored base
+decoders. Its deterministic self-test compares independent exact physical
+matrices for every cell, all eight generators, and 84 random words; it
+also checks normalization of canonical words and even signed-permutation
+sections. The CLI is an executable companion to `NormalForm.agda`.
+
 ## Word order
 
-Python physical word lists act from left to right. Agda words use the
+The original diagnostic's physical word lists act from left to right.
+The normalization CLI and Agda words use the
 repository's matrix multiplication order. A stored representative list
 is read in that matrix order in `Cosets.agda`. A cell has the equation
 
