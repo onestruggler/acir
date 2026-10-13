@@ -15,6 +15,23 @@ of `O(2^n, ℤ[1/√2])` at every width.
 (`comm₁`, `comm₂`, `comm₃`) from this complete theory. These proofs use
 independent tensor semantics and introduce no further circuit axioms.
 
+`Normalization.agda` gives a canonical circuit normalizer at every width.
+Its output is an actual circuit: equal physical matrices produce literally
+equal output words, normalization preserves the matrix, and applying it
+twice gives the same word. On one through three wires it canonically
+normalizes the scaled auxiliary word before decoding. At larger widths it
+normalizes an HH component and appends the remaining H parity bit. This
+construction is not claimed to minimize circuit length or run efficiently.
+`GeneralN/HadamardParity.agda` separately proves that matrix equality
+preserves the number of H gates modulo two, at every width; expansions of
+HH circuits always have even parity.
+
+`Decision.agda` decides circuit equality at every width by exact matrix
+comparison and returns either a derivation in the complete theory or a
+proof of inequality. `DecisionExamples.agda` checks cancellation,
+noncommutation, and retention of a nontrivial global sign through this
+decision procedure.
+
 ## Encoding
 
 `Syntactics.agda` uses exactly `X`, `CX`, `CCX`, and `H` on
@@ -114,6 +131,23 @@ completeness at every width at least four. `GeneralN/Generation.agda`
 also gives explicit synthesis for every source word fixing `00`, and
 proves that this condition is necessary for physical realizability.
 
+`GeneralN/HadamardDecomposition.agda` strengthens this description at
+widths at least four: every H circuit is an embedded HH circuit followed
+by either identity or `H0`. Both components are unique, with the HH
+component compared in its complete circuit theory. Consequently the HH
+image is exactly the circuits with even H count. This statement is
+specific to widths at least four; the smaller widths use their separate
+complete presentations above.
+
+`GeneralN/HadamardAction.agda` constructs the involutive automorphism
+`α(u) = H0 u H0` of the HH group and proves its product and unit laws.
+Together with the unique decomposition, its multiplication theorem
+identifies the H group as `HH ⋊ C₂`, with
+`(u,b)(v,c) = (u α^b(v), b xor c)`. The ambient scaled two-level group is
+larger: `GeneralN/NonNormal.agda` proves that conjugating its realizable
+`IH` by a single basis-state sign gives a nonrealizable matrix. Thus the
+physical H image is not normal in that ambient group.
+
 These are finite translated presentations at each fixed width. They
 are not a short width-independent list of local circuit identities.
 For `N=2^w`, let `g=N+C(N,2)+C(N,4)` and let `R` be the number of
@@ -138,7 +172,14 @@ the repository root:
 agda Examples/Groups/CCX+H/Presentation.agda
 agda Examples/Groups/CCX+H/Orthogonal.agda
 agda Examples/Groups/CCX+H/Structural.agda
+agda Examples/Groups/CCX+H/Decision.agda
+agda Examples/Groups/CCX+H/DecisionExamples.agda
+agda Examples/Groups/CCX+H/Normalization.agda
+agda Examples/Groups/CCX+H/GeneralN/HadamardParity.agda
 agda Examples/Groups/CCX+H/GeneralN/Generation.agda
+agda Examples/Groups/CCX+H/GeneralN/HadamardDecomposition.agda
+agda Examples/Groups/CCX+H/GeneralN/HadamardAction.agda
+agda Examples/Groups/CCX+H/GeneralN/NonNormal.agda
 agda Examples/Groups/CCX+H/OneQubit.agda
 agda Examples/Groups/CCX+H/TwoQubit.agda
 agda Examples/Groups/CCX+H/ThreeQubit/Presentation.agda

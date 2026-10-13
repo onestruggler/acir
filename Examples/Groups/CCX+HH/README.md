@@ -30,6 +30,16 @@ dyadic presentation has Klein-four abelianization in dimension at least
 two; `GeneralN/Commutator.agda` combines this with the explicit physical
 decoder to prove both inclusions and provide circuit synthesis.
 
+`Normalization.agda` gives canonical actual circuit words at every width:
+`nf`, a derivation `normalize`, exact-matrix preservation `correct`, and
+literal `idempotent`. Two circuits have equal matrices exactly when their
+normal words are equal. The two-wire and general-width normalizers compose
+the source's Algorithm 1 with the proved Clément decoders; the three-wire
+case uses its finite frame normal form. `Decision.agda` decides the circuit
+relation by exact matrix comparison, returning a derivation or a proof of
+inequality. These constructions prioritize correctness and do not claim
+minimal circuit length.
+
 ## Conventions and encoding
 
 `Syntactics.agda` uses `Circuit.Base` with exactly `X`, `CX`, `CCX`, and
@@ -169,6 +179,10 @@ agda Examples/Groups/CCX+HH/GeneralN/Presentation.agda
 agda Examples/Groups/CCX+HH/Orthogonal.agda
 agda Examples/Groups/CCX+HH/Structural.agda
 agda Examples/Groups/CCX+HH/Embedding.agda
+agda Examples/Groups/CCX+HH/GeneralN/Commutator.agda
+agda Examples/Groups/CCX+HH/Normalization.agda
+agda Examples/Groups/CCX+HH/Decision.agda
+agda Examples/Groups/CCX+HH/DecisionExamples.agda
 python3 -B Examples/Groups/CCX+HH/check_encoding.py --max-width 6
 python3 -B Examples/Groups/CCX+HH/check_subgroup.py
 python3 -B Examples/Groups/CCX+HH/GeneralN/construct.py --wires 4

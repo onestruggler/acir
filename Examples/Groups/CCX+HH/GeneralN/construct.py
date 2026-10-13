@@ -8,9 +8,11 @@ with controls before target for CX/CCX.  Public constructors initially
 allow arbitrary distinct wire placements; to_adjacent expands these to
 the shifted adjacent primitives of Circuit.Base.
 
-This executable construction is accompanied by exact checks, not yet a
-symbolic-width Agda proof.  The identities used come from auxiliary
-Table 1 and elementary reversible Boolean algebra.
+This executable construction is independently checked with exact
+arithmetic.  The accompanying Agda modules prove the physical primitive
+constructions at symbolic width; the Python and Agda output words are
+not asserted to be literally identical.  The identities used come from
+auxiliary Table 1 and elementary reversible Boolean algebra.
 """
 
 from __future__ import annotations

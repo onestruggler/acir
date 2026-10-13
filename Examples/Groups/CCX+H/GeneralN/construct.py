@@ -6,10 +6,11 @@ four representatives are 1, M_0, X_01, M_0 X_01.  A Schreier edge is
 rep(c) g inverse(rep(c.g)).  This script constructs a circuit over
 X, CX, CCX and H for each such edge, without adding wires.
 
-The generic auxiliary subgroup presentation and the four IH formulas
-are Agda theorems in this directory.  The physical constructions here
-have exact executable checks; their symbolic-width Agda verification
-is a separate obligation.  No numerical approximation is used.
+The auxiliary presentation, the four IH formulas and the physical
+constructions have symbolic-width Agda proofs in the adjacent modules.
+This script independently audits their executable counterparts with
+exact arithmetic; it is not extracted Agda code.  No numerical
+approximation is used.
 """
 
 from __future__ import annotations
