@@ -1,4 +1,4 @@
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible --safe --lossy-unification #-}
 
 
 open import Relation.Binary.PropositionalEquality using (module ≡-Reasoning) renaming ([_] to [_]')
