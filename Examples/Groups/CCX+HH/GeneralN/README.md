@@ -155,3 +155,41 @@ Every Agda module uses `--safe`; the decoder has no postulates.
 The executable `construct.py` is an independent exact-dyadic circuit
 probe. Its checks at widths four, five, and six complement the symbolic
 proofs; the presentation theorem uses the Agda constructions.
+
+## Executable normalization
+
+`normalize.py` normalizes either gate set on at least four wires. It uses
+deterministic exact dyadic column reduction followed by the four-state
+Clément decoder, and checks the reconstructed matrix independently.
+Words are in matrix-product order: the rightmost gate acts first. Wire
+0 is the least significant bit, and controlled gates list their controls
+before their target. For example, from the repository root:
+
+```sh
+python3 -B Examples/Groups/CCX+HH/GeneralN/normalize.py --wires 4 --gate-set HH X:0 HH:0,1 CX:1,0 --output normal.json
+python3 -B Examples/Groups/CCX+HH/GeneralN/normalize.py --wires 5 --gate-set H H:0 CCX:2,1,0 --source-only --json
+```
+
+Full output contains the canonical physical circuit, using only shifted
+adjacent gates on the same wires. `--simplify` additionally cancels equal
+gates separated only by gates on disjoint wires. These constructions can
+produce large words: normalizing one HH gate on five wires gives 366,574
+gates, or 322,358 with that simplification. They are not length optimizers.
+
+`--source-only` skips physical expansion and returns the canonical
+two-level word and H parity. Its indices denote basis levels, not wires.
+The source matrix followed by `H0` when the parity is one reconstructs
+the input exactly. At a fixed width, equality of this word and parity is
+an exact equality fingerprint. The executable's deterministic choices
+are not asserted to match the literal output of Agda's normalizer.
+
+```sh
+python3 -B Examples/Groups/CCX+HH/GeneralN/normalize.py --self-test
+python3 -B Examples/Groups/CCX+HH/GeneralN/normalize.py --self-test --simplify
+python3 -B Examples/Groups/CCX+HH/GeneralN/normalize.py --self-test --source-only
+```
+
+The physical suites check four- and five-wire reconstruction, idempotence,
+equivalent inputs, and exclusion of auxiliary generators outside the
+circuit subgroup. The source-only suite also checks six wires and verifies
+that no physical decoder is called.

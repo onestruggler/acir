@@ -22,6 +22,11 @@ twice gives the same word. On one through three wires it canonically
 normalizes the scaled auxiliary word before decoding. At larger widths it
 normalizes an HH component and appends the remaining H parity bit. This
 construction is not claimed to minimize circuit length or run efficiently.
+An executable companion for widths at least four is
+[`CCX+HH/GeneralN/normalize.py`](../CCX+HH/GeneralN/normalize.py), used with
+`--gate-set H`. Its `--source-only` option returns the exact canonical
+auxiliary word and H parity without expanding a long physical circuit;
+see the [normalization commands](../CCX+HH/GeneralN/README.md#executable-normalization).
 `GeneralN/HadamardParity.agda` separately proves that matrix equality
 preserves the number of H gates modulo two, at every width; expansions of
 HH circuits always have even parity.
@@ -31,6 +36,11 @@ comparison and returns either a derivation in the complete theory or a
 proof of inequality. `DecisionExamples.agda` checks cancellation,
 noncommutation, and retention of a nontrivial global sign through this
 decision procedure.
+For an executable exact comparison without normal-form expansion, use
+[`CCX+HH/compare_circuits.py`](../CCX+HH/compare_circuits.py) with
+`--gate-set H --wires N --left "..." --right "..."`. It keeps global
+signs and reports a differing exact matrix entry when unequal; it does
+not emit an Agda derivation.
 
 ## Encoding
 
@@ -143,10 +153,31 @@ complete presentations above.
 `α(u) = H0 u H0` of the HH group and proves its product and unit laws.
 Together with the unique decomposition, its multiplication theorem
 identifies the H group as `HH ⋊ C₂`, with
-`(u,b)(v,c) = (u α^b(v), b xor c)`. The ambient scaled two-level group is
-larger: `GeneralN/NonNormal.agda` proves that conjugating its realizable
+`(u,b)(v,c) = (u α^b(v), b xor c)`.
+`GeneralN/SemidirectProduct.agda` packages this multiplication as
+a standard `Group` and the realization map as an `IsGroupIsomorphism`.
+The ambient scaled two-level group is larger:
+`GeneralN/NonNormal.agda` proves that conjugating its realizable
 `IH` by a single basis-state sign gives a nonrealizable matrix. Thus the
 physical H image is not normal in that ambient group.
+
+`GeneralN/DihedralQuotient.agda` identifies the complete eight-element
+image of the ambient four-state action with the dihedral group `D₈`.
+It supplies a group homomorphism, a faithful action, and representatives
+of all eight values. `GeneralN/DihedralKernel.agda` proves that the HH
+image is exactly its kernel at widths at least four, including synthesis
+of every kernel element and of every ambient conjugate. Every ambient
+word factors as an HH circuit times one of eight representatives, with
+unique coset value. The H image is precisely the preimage of the
+two-element reflection subgroup.
+
+`Abelianization.agda` defines the universal commutative quotient by
+adding commutation of arbitrary words. At widths at least four,
+`GeneralN/Abelianization.agda` proves that this quotient is exactly
+`C₂`, with a standard group isomorphism given by H parity. It also
+identifies the derived subgroup with the embedded HH group, including
+an HH circuit witness for every member. These added commutations
+describe the quotient; they are not physical circuit identities.
 
 These are finite translated presentations at each fixed width. They
 are not a short width-independent list of local circuit identities.
@@ -179,7 +210,10 @@ agda Examples/Groups/CCX+H/GeneralN/HadamardParity.agda
 agda Examples/Groups/CCX+H/GeneralN/Generation.agda
 agda Examples/Groups/CCX+H/GeneralN/HadamardDecomposition.agda
 agda Examples/Groups/CCX+H/GeneralN/HadamardAction.agda
+agda Examples/Groups/CCX+H/GeneralN/SemidirectProduct.agda
 agda Examples/Groups/CCX+H/GeneralN/NonNormal.agda
+agda Examples/Groups/CCX+H/GeneralN/DihedralKernel.agda
+agda Examples/Groups/CCX+H/GeneralN/Abelianization.agda
 agda Examples/Groups/CCX+H/OneQubit.agda
 agda Examples/Groups/CCX+H/TwoQubit.agda
 agda Examples/Groups/CCX+H/ThreeQubit/Presentation.agda

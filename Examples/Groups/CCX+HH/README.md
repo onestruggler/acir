@@ -30,6 +30,25 @@ dyadic presentation has Klein-four abelianization in dimension at least
 two; `GeneralN/Commutator.agda` combines this with the explicit physical
 decoder to prove both inclusions and provide circuit synthesis.
 
+The HH group is itself perfect at every width at least four:
+`GeneralN/Perfect.agda` proves that its universal commutative quotient
+(`Abelianization.agda`) is trivial. `GeneralN/Commutators.agda` gives
+explicit commutator witnesses for every primitive, obtained from twelve
+checked four-wire cases and the derived idle-wire rules. In named-wire
+notation the identities are
+
+| Primitive | Commutator witness |
+| --- | --- |
+| `X(t)` | `[X(a), CX(a;t)]` |
+| `CX(a;t)` | `[CX(a;b), CX(b;t)]` |
+| `CCX(a,b;t)` | `[CCX(a,b;c), CX(c;t)]` |
+| `HH(a,b)` | `[HH(a,c), SWAP(a,b)]` |
+
+Here `[u,v] = u v u⁻¹ v⁻¹`, distinct letters name distinct wires, and
+controls precede the semicolon. Both factors in each displayed
+commutator are involutions. The extra wires already belong to the
+circuit; their initial states are arbitrary and they are restored.
+
 `Normalization.agda` gives canonical actual circuit words at every width:
 `nf`, a derivation `normalize`, exact-matrix preservation `correct`, and
 literal `idempotent`. Two circuits have equal matrices exactly when their
@@ -39,6 +58,27 @@ case uses its finite frame normal form. `Decision.agda` decides the circuit
 relation by exact matrix comparison, returning a derivation or a proof of
 inequality. These constructions prioritize correctness and do not claim
 minimal circuit length.
+An independently checked executable counterpart for widths at least four
+is [`GeneralN/normalize.py`](GeneralN/normalize.py); its compact
+`--source-only` mode avoids expanding large physical circuit words.
+See the [commands and conventions](GeneralN/README.md#executable-normalization).
+
+`compare_circuits.py` provides an exact equality command for both gate
+sets at every width, without constructing normal forms. It returns exit
+status 0 for equality, 1 for inequality, and 2 for invalid input. Unequal
+circuits include an exact differing matrix entry; global signs are kept.
+This Python command stores dense matrices and does not emit an Agda
+derivation. For example:
+
+```sh
+python3 -B Examples/Groups/CCX+HH/compare_circuits.py --wires 4 --gate-set HH --left "HH:0,1 HH:0,1" --right ""
+python3 -B Examples/Groups/CCX+HH/compare_circuits.py --wires 1 --gate-set H --left "X:0 H:0" --right "H:0 X:0" --json
+python3 -B Examples/Groups/CCX+HH/compare_circuits.py --self-test
+```
+
+For actual canonical circuit output on at least four wires, or its
+compact source-word fingerprint, see the
+[executable normalizer](GeneralN/README.md#executable-normalization).
 
 ## Conventions and encoding
 
@@ -180,6 +220,7 @@ agda Examples/Groups/CCX+HH/Orthogonal.agda
 agda Examples/Groups/CCX+HH/Structural.agda
 agda Examples/Groups/CCX+HH/Embedding.agda
 agda Examples/Groups/CCX+HH/GeneralN/Commutator.agda
+agda Examples/Groups/CCX+HH/GeneralN/Perfect.agda
 agda Examples/Groups/CCX+HH/Normalization.agda
 agda Examples/Groups/CCX+HH/Decision.agda
 agda Examples/Groups/CCX+HH/DecisionExamples.agda
