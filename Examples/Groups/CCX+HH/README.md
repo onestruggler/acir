@@ -24,6 +24,12 @@ count, with no hypotheses, against ordinary circuit matrices.**
 `LowWidth.agda` gives the common physical semantic bridge for the first
 three rows. `ThreeQubit/` and `GeneralN/` contain the remaining cases.
 
+At every width `n >= 4`, the image is exactly the commutator subgroup of
+`O_(2^n)(Z[1/2])`. `Subgroup/Abelianization.agda` proves that the ambient
+dyadic presentation has Klein-four abelianization in dimension at least
+two; `GeneralN/Commutator.agda` combines this with the explicit physical
+decoder to prove both inclusions and provide circuit synthesis.
+
 ## Conventions and encoding
 
 `Syntactics.agda` uses `Circuit.Base` with exactly `X`, `CX`, `CCX`, and
@@ -93,7 +99,13 @@ these kernel-checked proofs.
   separation of the 135 representatives are all proved in Agda.
 - `Structural.agda` derives preservation of circuit equality under
   adding idle wires at either end, including arbitrary bottom shifts.
+  Its `comm₁`, `comm₂` and `comm₃` also commute disjoint gates past
+  arbitrary circuits on the remaining wires.
   These are consequences of the complete relation, not extra axioms.
+- `Embedding.agda` expands each `HH` into two `H` gates and proves that
+  this preserves and reflects the complete circuit relations at every
+  width. Its `At n.monomorphism` packages the inclusion as a group
+  monomorphism into the `CCX+H` theory.
 - `Translation.agda` is the direct Clément translation used by `CCX+H`:
   decode the auxiliary axioms and add generator recovery equations.
 - `Schreier.agda` gives the corresponding stateful subgroup translation,
@@ -155,6 +167,8 @@ agda Examples/Groups/CCX+HH/Subgroup/Presentation.agda
 agda Examples/Groups/CCX+HH/GeneralN/ControlledX.agda
 agda Examples/Groups/CCX+HH/GeneralN/Presentation.agda
 agda Examples/Groups/CCX+HH/Orthogonal.agda
+agda Examples/Groups/CCX+HH/Structural.agda
+agda Examples/Groups/CCX+HH/Embedding.agda
 python3 -B Examples/Groups/CCX+HH/check_encoding.py --max-width 6
 python3 -B Examples/Groups/CCX+HH/check_subgroup.py
 python3 -B Examples/Groups/CCX+HH/GeneralN/construct.py --wires 4

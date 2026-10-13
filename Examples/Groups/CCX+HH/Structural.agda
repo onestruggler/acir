@@ -16,6 +16,7 @@ import Presentation.Base as PB
 open import Examples.Groups.CCX+HH.Syntactics
 import Examples.Groups.CCX+HH.Presentation as P
 import Examples.Groups.CCX+HH.GeneralN.ShiftSemantics as Shift
+import Examples.Groups.CCX+HH.GeneralN.TensorCommutation as Tensor
 
 cong↑ : ∀ {n} {u v : Circuit n} → u P.≈ v → (u ↑) P.≈ (v ↑)
 cong↑ {n} {u} {v} eq = P.completeness {u = u ↑} {v = v ↑}
@@ -44,3 +45,21 @@ cong↑ᵏ {n} (suc k) {u} {v} eq =
   PB.trans (PB.refl' (P._===_ {suc (k + n)}) (shift-suc u k))
     (PB.trans (cong↑ (cong↑ᵏ k eq))
       (PB.refl' (P._===_ {suc (k + n)}) (Eq.sym (shift-suc v k))))
+
+-- Any upper circuit commutes with a disjoint primitive on the bottom
+-- one, two, or three wires.  These are consequences of the translated
+-- presentation, not additional axioms.
+comm₁ : ∀ {n} (w : Circuit n) (h : Gate 1) →
+  ((w ↑) • [ gate₁ h ]ʷ) P.≈ ([ gate₁ h ]ʷ • (w ↑))
+comm₁ w h = P.completeness
+  {u = (w ↑) • [ gate₁ h ]ʷ} {v = [ gate₁ h ]ʷ • (w ↑)} (Tensor.comm₁ w h)
+
+comm₂ : ∀ {n} (w : Circuit n) (h : Gate 2) →
+  (((w ↑) ↑) • [ gate₂ h ]ʷ) P.≈ ([ gate₂ h ]ʷ • ((w ↑) ↑))
+comm₂ w h = P.completeness
+  {u = ((w ↑) ↑) • [ gate₂ h ]ʷ} {v = [ gate₂ h ]ʷ • ((w ↑) ↑)} (Tensor.comm₂ w h)
+
+comm₃ : ∀ {n} (w : Circuit n) (h : Gate 3) →
+  ((((w ↑) ↑) ↑) • [ gate₃ h ]ʷ) P.≈ ([ gate₃ h ]ʷ • (((w ↑) ↑) ↑))
+comm₃ w h = P.completeness
+  {u = (((w ↑) ↑) ↑) • [ gate₃ h ]ʷ} {v = [ gate₃ h ]ʷ • (((w ↑) ↑) ↑)} (Tensor.comm₃ w h)

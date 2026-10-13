@@ -10,6 +10,10 @@ semantic-correctness hypotheses; `Presentation.agda` combines it with
 the existing zero-, one-, two-, and three-wire results.
 `Orthogonal.agda` packages the same theorem as a group sub-presentation
 of `O(2^n, ℤ[1/√2])` at every width.
+`Structural.agda` derives addition of idle wires (`cong↑`, `cong⇓`,
+`cong↑ᵏ`) and commutation with disjoint one-, two-, and three-wire gates
+(`comm₁`, `comm₂`, `comm₃`) from this complete theory. These proofs use
+independent tensor semantics and introduce no further circuit axioms.
 
 ## Encoding
 
@@ -133,6 +137,7 @@ the repository root:
 ```sh
 agda Examples/Groups/CCX+H/Presentation.agda
 agda Examples/Groups/CCX+H/Orthogonal.agda
+agda Examples/Groups/CCX+H/Structural.agda
 agda Examples/Groups/CCX+H/GeneralN/Generation.agda
 agda Examples/Groups/CCX+H/OneQubit.agda
 agda Examples/Groups/CCX+H/TwoQubit.agda

@@ -63,12 +63,32 @@ equations. These formulas count ordinary index instances, ignoring
 proof arguments. For example, `r(4)=58`, matching the independently
 enumerated Table 1 instances used by the two-qubit experiment.
 
-Identifying this auxiliary subgroup with the physical gate image at
-four or more qubits requires a constructive circuit interpretation of
-the edge generators. That is a separate decoding obligation; the
-auxiliary presentation does not claim it by definition.
+The physical decoding obligation is now discharged in
+`../GeneralN/Decoding.agda`. Its sign-pair, double-exchange and mixed
+primitives are actual circuits with independently proved matrix semantics.
+`../GeneralN/Generation.agda` proves that the circuit image on at least
+four wires is exactly this charge-zero subgroup.
 
-All six modules, including `Charge` and `CircuitCharge`, passed
-Agda 2.8 with `--safe`. `CircuitCharge.image-closed` proves membership
-of every structurally encoded circuit on at least four wires, at
-every starting coset.
+`AbelianizationCore.agda` defines the universal commutative quotient of
+Table 1: it adds word commutation, and proves the universal factorization
+property, triviality of commutators, and closure of the identity class
+under products, inverses and conjugation. `Abelianization.agda` proves
+that this quotient has exactly four classes in every dimension at least
+two. Every class squares to the identity, so the quotient is the Klein
+four group. The proof uses Table 1 directly: all signs become equal,
+all exchanges become equal, and relation (4b) identifies every `K` with
+the product of the sign and exchange classes. A sixteen-cell product
+table then normalizes all words. `AbelianizationAt.agda` exposes the result
+without fixing a syntactic form for the dimension.
+
+Consequently the physical image is precisely the **commutator subgroup
+of `O_(2^n)(Z[1/2])` for every `n >= 4`**. The direct formal interface is
+`../GeneralN/Commutator.agda`: `circuit-derived`, `generated`, and
+`necessary` prove both inclusions, with an actual circuit synthesizer.
+Here `Derived` is defined as the identity class of the universal
+commutative quotient. The extra commutation equations are used only for
+this group characterization; they are not circuit relations.
+
+All modules passed Agda 2.8 with `--safe`. `CircuitCharge.image-closed`
+proves membership of every structurally encoded circuit on at least
+four wires, at every starting coset.
