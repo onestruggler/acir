@@ -16,14 +16,18 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (_•_)
 
 open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (Evaluated ; evaluated)
+open import Examples.Groups.Real-Clifford+CH.CommEval
+  using (allComm ; reads ; comm-family ; bools ; ∈-bools ; bools₂ ; ∈-bools₂ ; bools₃ ; ∈-bools₃)
+open import Data.List using (List ; [] ; _∷_)
+open import Data.List.Relation.Unary.Any using (here ; there)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Base322 using (AᴾF ; P322)
 
+-- The family is decided by one boolean, each factor read once
+-- (CommEval).
+private
+  all322b : allComm (reads (bools (λ α → AᴾF α false))) (reads (bools₂ P322)) ≡ true
+  all322b = Eq.refl
+
 d322b : ∀ (α γ v : Bool) → Evaluated (AᴾF α false • P322 v γ) (P322 v γ • AᴾF α false)
-d322b true  true  true  = evaluated Eq.refl
-d322b true  true  false = evaluated Eq.refl
-d322b true  false true  = evaluated Eq.refl
-d322b true  false false = evaluated Eq.refl
-d322b false true  true  = evaluated Eq.refl
-d322b false true  false = evaluated Eq.refl
-d322b false false true  = evaluated Eq.refl
-d322b false false false = evaluated Eq.refl
+d322b α γ v = comm-family (bools (λ α → AᴾF α false)) (bools₂ P322) all322b
+                          (∈-bools (λ α → AᴾF α false) α) (∈-bools₂ P322 v γ)

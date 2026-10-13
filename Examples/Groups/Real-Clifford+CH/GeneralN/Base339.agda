@@ -24,14 +24,27 @@ open import Word.Base using (_•_)
 
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (Evaluated ; evaluated)
+open import Examples.Groups.Real-Clifford+CH.CommEval using (allComm ; reads ; comm-family ; bools ; ∈-bools)
+open import Data.List using (List ; [] ; _∷_)
+open import Data.List.Membership.Propositional using (_∈_)
+open import Data.List.Relation.Unary.Any using (here ; there)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (col ; Hg₃ ; P₁₃)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Base322 using (N3F)
+
+private
+  B339 : Bool → Circuit 4
+  B339 a = col (true ∷ true ∷ true ∷ a ∷ []) (Λ□ 3)
+
+  H339 : Circuit 4
+  H339 = col (true ∷ true ∷ false ∷ true ∷ []) (Hg₃ 0)
+
+  all339 : allComm (reads (bools B339)) (reads (H339 ∷ [])) ≡ true
+  all339 = Eq.refl
 
 d339 : ∀ (a : Bool) →
        Evaluated (col (true ∷ true ∷ true ∷ a ∷ []) (Λ□ 3) • col (true ∷ true ∷ false ∷ true ∷ []) (Hg₃ 0))
                  (col (true ∷ true ∷ false ∷ true ∷ []) (Hg₃ 0) • col (true ∷ true ∷ true ∷ a ∷ []) (Λ□ 3))
-d339 true  = evaluated Eq.refl
-d339 false = evaluated Eq.refl
+d339 a = comm-family (bools B339) (H339 ∷ []) all339 (∈-bools B339 a) (here Eq.refl)
 
 -- The triply controlled ZX on wire 0 (true) or on wire 1 (false).
 L₄ : Bool → Circuit 4
@@ -47,12 +60,24 @@ G1r a b = N3F a (L₄ b)
 G2r : Bool → Circuit 4
 G2r c = X ↑ ↑ • (P₁₃ • (Ex ↓ • L₄ c • Ex ↓) • P₁₃) • X ↑ ↑
 
+-- The family is decided by one boolean, each factor read once.
+private
+  G1s G2s : List (Circuit 4)
+  G1s = G1r true true ∷ G1r true false ∷ G1r false true ∷ G1r false false ∷ []
+  G2s = G2r true ∷ G2r false ∷ []
+
+  all339r : allComm (reads G1s) (reads G2s) ≡ true
+  all339r = Eq.refl
+
+  i1 : (a b : Bool) → G1r a b ∈ G1s
+  i1 true  true  = here Eq.refl
+  i1 true  false = there (here Eq.refl)
+  i1 false true  = there (there (here Eq.refl))
+  i1 false false = there (there (there (here Eq.refl)))
+
+  i2 : (c : Bool) → G2r c ∈ G2s
+  i2 true  = here Eq.refl
+  i2 false = there (here Eq.refl)
+
 d339r : ∀ (a b c : Bool) → Evaluated (G1r a b • G2r c) (G2r c • G1r a b)
-d339r true  true  true  = evaluated Eq.refl
-d339r true  true  false = evaluated Eq.refl
-d339r true  false true  = evaluated Eq.refl
-d339r true  false false = evaluated Eq.refl
-d339r false true  true  = evaluated Eq.refl
-d339r false true  false = evaluated Eq.refl
-d339r false false true  = evaluated Eq.refl
-d339r false false false = evaluated Eq.refl
+d339r a b c = comm-family G1s G2s all339r (i1 a b) (i2 c)

@@ -20,6 +20,10 @@ open import Word.Base using (_•_)
 
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (Evaluated ; evaluated)
+open import Examples.Groups.Real-Clifford+CH.CommEval
+  using (allComm ; reads ; comm-family ; bools ; ∈-bools ; bools₂ ; ∈-bools₂ ; bools₃ ; ∈-bools₃)
+open import Data.List using (List ; [] ; _∷_)
+open import Data.List.Relation.Unary.Any using (here ; there)
 
 -- The triply controlled ZX on wire 0 (true) or on wire 1 (false).
 U₄ : Bool → Circuit 4
@@ -30,8 +34,11 @@ U₄ false = Ex ↓ • ΛZX 3 • Ex ↓
 G2 : Bool → Circuit 4
 G2 c = X ↑ ↑ • (PP ↓ • U₄ c • PP ↓) • X ↑ ↑
 
+-- The family is decided by one boolean, each factor read once
+-- (CommEval).
+private
+  all337 : allComm (reads (bools U₄)) (reads (bools G2)) ≡ true
+  all337 = Eq.refl
+
 d337r : ∀ (b c : Bool) → Evaluated (U₄ b • G2 c) (G2 c • U₄ b)
-d337r true  true  = evaluated Eq.refl
-d337r true  false = evaluated Eq.refl
-d337r false true  = evaluated Eq.refl
-d337r false false = evaluated Eq.refl
+d337r b c = comm-family (bools U₄) (bools G2) all337 (∈-bools U₄ b) (∈-bools G2 c)

@@ -14,7 +14,7 @@
 
 module Examples.Groups.Real-Clifford+CH.GeneralN.Base335 where
 
-open import Data.Bool using (true ; false)
+open import Data.Bool using (Bool ; true ; false)
 open import Data.Vec using ([] ; _∷_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (_•_)
@@ -22,14 +22,20 @@ open import Word.Base using (_•_)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Algebra using (Bits)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (Evaluated ; evaluated)
+open import Examples.Groups.Real-Clifford+CH.CommEval
+  using (allComm ; reads ; comm-family ; bools ; ∈-bools ; bools₂ ; ∈-bools₂ ; bools₃ ; ∈-bools₃)
+open import Data.List using (List ; [] ; _∷_)
+open import Data.List.Relation.Unary.Any using (here ; there)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (col)
 
+-- The family is decided by one boolean, each factor read once
+-- (CommEval).
+private
+  C335 : Bool → Bool → Bool → Circuit 4
+  C335 a b c = col (true ∷ a ∷ b ∷ c ∷ []) (Λ□ 3)
+
+  all335 : allComm (reads (Λ□ 3 ∷ [])) (reads (bools₃ C335)) ≡ true
+  all335 = Eq.refl
+
 d335 : ∀ (r : Bits 3) → Evaluated (Λ□ 3 • col (true ∷ r) (Λ□ 3)) (col (true ∷ r) (Λ□ 3) • Λ□ 3)
-d335 (true  ∷ true  ∷ true  ∷ []) = evaluated Eq.refl
-d335 (true  ∷ true  ∷ false ∷ []) = evaluated Eq.refl
-d335 (true  ∷ false ∷ true  ∷ []) = evaluated Eq.refl
-d335 (true  ∷ false ∷ false ∷ []) = evaluated Eq.refl
-d335 (false ∷ true  ∷ true  ∷ []) = evaluated Eq.refl
-d335 (false ∷ true  ∷ false ∷ []) = evaluated Eq.refl
-d335 (false ∷ false ∷ true  ∷ []) = evaluated Eq.refl
-d335 (false ∷ false ∷ false ∷ []) = evaluated Eq.refl
+d335 (a ∷ b ∷ c ∷ []) = comm-family (Λ□ 3 ∷ []) (bools₃ C335) all335 (here Eq.refl) (∈-bools₃ C335 a b c)
