@@ -106,8 +106,8 @@ private
     where open Tools ((₂₊ n) VRel,_===_)
 
 φ-ax : ∀ {u v : Word (S.Gen n)} → S._VRel,_===_ n u v → n ⊢ net u ≈ net v
-φ-ax (S.srel S.order)                = Ex²
-φ-ax {₃₊ n} (S.srel S.yang-baxter)   = braid
+φ-ax (S.srel (S.pad₂ S.order))              = Ex²
+φ-ax {₃₊ n} (S.srel (S.pad₃ S.yang-baxter)) = braid
 φ-ax {₁₊ n} (S.cong↑ {w = w} {v = v} r) =
   Eq.subst₂ (λ a b → (₁₊ n) ⊢ a ≈ b) (Eq.sym (net-↑ w)) (Eq.sym (net-↑ v))
             (lemma-cong↑ (net w) (net v) (φ-ax r))

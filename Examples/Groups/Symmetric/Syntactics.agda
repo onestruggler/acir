@@ -52,30 +52,32 @@ pattern σ-gen = gate₂ σ-gate
 σ = [ σ-gen ]ʷ
 
 ------------------------------------------------------------------------
--- Group-specific relations: order and braid only; no structural rules
+-- Group-specific relations: order and braid only, each on its own
+-- wires; no structural rules
 
 infix 4 _SRel,_===_
 data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
-  order       : (₂₊ n) SRel, σ • σ === ε
-  yang-baxter : (₃₊ n) SRel, σ • σ ↑ • σ === σ ↑ • σ • σ ↑
+  order       : 2 SRel, σ • σ === ε
+  yang-baxter : 3 SRel, σ • σ ↑ • σ === σ ↑ • σ • σ ↑
 
 ------------------------------------------------------------------------
--- Full relation via Lift-Relation (adds structure rules cong↑, comm₁,
--- comm₂)
+-- Full relation via Top-Pad: each rule on the bottom wires of every
+-- wider circuit (srel (pad₂ order), srel (pad₃ yang-baxter)), and the
+-- structural rules cong↑, comm₁, comm₂ on top
 
-private module LR = SC.Lift-Relation _SRel,_===_
+private module LR = SC.Top-Pad _SRel,_===_
 -- ω↑=ω is the 0-ary gate's structural rule.  This gate set has no
 -- 0-ary gate, so it is never inhabited here — but it still has to be
 -- re-exported, or a client cannot name it to discharge it when it
 -- cases on the relation.
 open LR public
-  using ( srel ; cong↑ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
-        ; comm-gate₂-w↑↑ ; _VRel,_===_ )
+  using ( pad ; pad₂ ; pad₃ ; srel ; cong↑ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
+        ; comm-gate₂-w↑↑ ; _TopPad,_===_ ; _VRel,_===_ )
 
 ------------------------------------------------------------------------
 -- Grouplike (each generator has a two-sided inverse)
 
 grouplike : Grouplike (_VRel,_===_ n)
-grouplike {₂₊ k} (gate₂ σ-gate) = σ , (PB.axiom (_VRel,_===_.srel order)) -- σ , PB.axiom (srel order)
+grouplike {₂₊ k} (gate₂ σ-gate) = σ , PB.axiom (srel (pad₂ order))
 grouplike {₁₊ n} (g ↥) with grouplike {n} g
 ... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf

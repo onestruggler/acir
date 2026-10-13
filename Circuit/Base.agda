@@ -6,7 +6,7 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Nat using (ℕ ; zero ; suc ; _+_)
+open import Data.Nat using (ℕ ; zero ; suc ; _+_ ; _≤_ ; z≤n ; s≤s)
 
 module Circuit.Base (Gate : ℕ → Set) where
 
@@ -321,3 +321,55 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
                           ([ gate₀ x ]ʷ • [ gate₀ h ]ʷ)
                           ([ gate₀ h ]ʷ • [ gate₀ x ]ʷ))
                  (one h h') PB.refl)
+
+
+------------------------------------------------------------------------
+-- Top-Pad
+--
+-- A relation on exact widths: each rule between circuits on its own
+-- wires, m Base, w === v, with no parameter for wider circuits.
+-- _TopPad,_===_ puts a rule on the bottom m wires of any n ≥ m (pad),
+-- and Lift-Relation over _TopPad,_===_ adds the structural rules.
+--
+-- The padding is given by the witness p : m ≤ n, not by a sum m + k:
+-- the index of pad is then n itself, and the width a rule is used at
+-- is fixed by p's constructors, which unify, where a sum m + k against
+-- ₂₊ n is stuck until the rule is known — and a function on the
+-- relation at width ₂₊ n could not split pad at all.  A rule on its
+-- own wires reads, padded, as the same closed word wider: with
+-- p = s≤s (s≤s (s≤s z≤n)), the rule
+-- 3 Base, σ • σ ↑ • σ === σ ↑ • σ • σ ↑ is
+-- (₃₊ k) TopPad, σ • σ ↑ • σ === σ ↑ • σ • σ ↑, at every k.
+-- pad₀ … pad₄ name those witnesses; a rule instance is srel (pad₃ r).
+--
+-- Usage: state the group-specific relation on exact widths and open
+-- Top-Pad in place of Lift-Relation.
+
+-- A generator, and a circuit, on the bottom m of n ≥ m wires.
+infixl 8 _↧≤_
+_↧≤_ : {m : ℕ} → Gen m → m ≤ n → Gen n
+gate₀ h ↧≤ p                     = gate₀ h
+gate₁ h ↧≤ s≤s p                 = gate₁ h
+gate₂ h ↧≤ s≤s (s≤s p)           = gate₂ h
+gate₃ h ↧≤ s≤s (s≤s (s≤s p))     = gate₃ h
+(g ↥)   ↧≤ s≤s p                 = (g ↧≤ p) ↥
+
+infixl 7 _↓≤_
+_↓≤_ : {m : ℕ} → Circuit m → m ≤ n → Circuit n
+w ↓≤ p = wmap (_↧≤ p) w
+
+module Top-Pad (_Base,_===_ : (n : ℕ) → CRel n) where
+
+  infix 4 _TopPad,_===_
+  data _TopPad,_===_ : (n : ℕ) → CRel n where
+    pad : {m : ℕ} {w v : Circuit m} (p : m ≤ n) → m Base, w === v →
+          n TopPad, w ↓≤ p === v ↓≤ p
+
+  -- A rule on 0 … 4 wires, on the bottom wires of a wider circuit.
+  pattern pad₀ r = pad z≤n r
+  pattern pad₁ r = pad (s≤s z≤n) r
+  pattern pad₂ r = pad (s≤s (s≤s z≤n)) r
+  pattern pad₃ r = pad (s≤s (s≤s (s≤s z≤n))) r
+  pattern pad₄ r = pad (s≤s (s≤s (s≤s (s≤s z≤n)))) r
+
+  open Lift-Relation _TopPad,_===_ public

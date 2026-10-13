@@ -52,8 +52,8 @@ sound-comm2 f (₂₊ k)    = refl
 -- Soundness of the raw relation _VRel,_===_
 
 sound-ax : ∀ {n} {w v : Circuit n} → n VRel, w === v → ⟦ w ⟧ ≗ ⟦ v ⟧
-sound-ax (srel order)            k = sound-order k
-sound-ax (srel yang-baxter)      k = sound-yb k
+sound-ax (srel (pad₂ order))            k = sound-order k
+sound-ax (srel (pad₃ yang-baxter))      k = sound-yb k
 sound-ax (cong↑ {_} {w₀} {v₀} p) k =
   Eq.trans (⟦↑⟧ w₀ k)
   (Eq.trans (shift-cong (sound-ax p) k) (Eq.sym (⟦↑⟧ v₀ k)))

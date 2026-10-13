@@ -244,7 +244,7 @@ mhomo n = record
 
 module Uniq =
   CU C εᶜ Gate [_]ᶜ (λ n → Group.monoid (Permutation′-group n))
-     _SRel,_===_ ⟦_⟧ mhomo Ob act head-fix
+     _TopPad,_===_ ⟦_⟧ mhomo Ob act head-fix
                  (λ {n} {c1} {c2} → c-inj {n} {c1} {c2}) c-surj
 
 open CosetNF C εᶜ Gate [_]ᶜ using (NF ; inv-nf)

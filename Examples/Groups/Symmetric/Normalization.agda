@@ -83,7 +83,7 @@ ract-sound {n} ε σ-gen = cong refl (sym right-unit)
   open PB P
 ract-sound {n} (σ• ε) σ-gen =
   trans (cong right-unit refl)
-        (trans (axiom (srel order)) (sym right-unit))
+        (trans (axiom (srel (pad₂ order))) (sym right-unit))
   where
   P = _VRel,_===_ (₂₊ n)
   open PB P
@@ -101,7 +101,7 @@ ract-sound {₁₊ n} (σ• σ• c) σ-gen = begin
     ≈⟨ cong refl (cong refl (comm-gate₂-w↑↑ σ-gate ([ c ]ᶜ))) ⟩
   σ • σ ↑ • σ • [ c ]ᶜ ↑ ↑ ≈⟨ sym (cong refl assoc) ⟩
   σ • (σ ↑ • σ) • [ c ]ᶜ ↑ ↑ ≈⟨ sym assoc ⟩
-  (σ • (σ ↑ • σ)) • [ c ]ᶜ ↑ ↑ ≈⟨ cong (axiom (srel yang-baxter)) refl ⟩
+  (σ • (σ ↑ • σ)) • [ c ]ᶜ ↑ ↑ ≈⟨ cong (axiom (srel (pad₃ yang-baxter))) refl ⟩
   (σ ↑ • σ • σ ↑) • [ c ]ᶜ ↑ ↑ ≈⟨ trans assoc (cong refl assoc) ⟩
   σ ↑ • σ • σ ↑ • [ c ]ᶜ ↑ ↑ ≡⟨ Eq.refl ⟩
   σ ↑ • σ • [ σ• c ]ᶜ ↑ ∎
@@ -319,12 +319,12 @@ ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
     u === t → c ⊛ u ≋ c ⊛ t
 
 -- ε coset
-⁻¹[⇑]-wd'' {n} ε (srel order)
+⁻¹[⇑]-wd'' {n} ε (srel (pad₂ order))
   = PB.left-unit , Eq.refl
 ⁻¹[⇑]-wd'' {n} ε (comm₂ σ-gate g)
   rewrite ract-σ•ε-gg↥ g
   = PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
-⁻¹[⇑]-wd'' {n} ε (srel yang-baxter)
+⁻¹[⇑]-wd'' {n} ε (srel (pad₃ yang-baxter))
   = PB.trans PB.left-unit
       (PB.trans PB.left-unit
         (PB.trans (PB.sym PB.right-unit)
@@ -335,47 +335,47 @@ ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
   = PB.axiom eq , Eq.refl
 
 -- σ• ε coset
-⁻¹[⇑]-wd'' {n} (σ• ε) (srel order)
+⁻¹[⇑]-wd'' {n} (σ• ε) (srel (pad₂ order))
   = PB.left-unit , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (comm₂ σ-gate g)
   rewrite ract-σ•ε-gg↥ g
   = PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (srel yang-baxter)
+⁻¹[⇑]-wd'' {n} (σ• ε) (srel (pad₃ yang-baxter))
   = PB.refl , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (srel order))
+⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (srel (pad₂ order)))
   = PB.left-unit , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (comm₂ σ-gate g))
   rewrite ract-σ•ε-gg↥ g
   = PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (srel yang-baxter))
+⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (srel (pad₃ yang-baxter)))
   = PB.trans PB.left-unit
       (PB.trans PB.left-unit
         (PB.trans (PB.sym PB.right-unit)
           (PB.cong PB.refl (PB.sym PB.left-unit))))
   , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (srel order)))
+⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (srel (pad₂ order))))
   rewrite ract-σ•1 {₁₊ n} ε σ-gen
-  = PB.axiom (cong↑ (srel order)) , Eq.refl
+  = PB.axiom (cong↑ (srel (pad₂ order))) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (comm₂ σ-gate g)))
   = PB.axiom (cong↑ (comm₂ σ-gate g)) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (srel yang-baxter)))
+⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (srel (pad₃ yang-baxter))))
   rewrite ract-σ•1 {₁₊ n} ε σ-gen
-  = PB.axiom (cong↑ (srel yang-baxter)) , Eq.refl
+  = PB.axiom (cong↑ (srel (pad₃ yang-baxter))) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (cong↑ {w = w} {v} eq)))
   rewrite ract-suc''' w | ract-suc''' v
   = PB.axiom (cong↑ (cong↑ eq)) , Eq.refl
 
 -- σ• σ• c coset
-⁻¹[⇑]-wd'' {n} (σ• σ• c) (srel order)
-  = PB.axiom (srel order) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} ε) (srel yang-baxter)
+⁻¹[⇑]-wd'' {n} (σ• σ• c) (srel (pad₂ order))
+  = PB.axiom (srel (pad₂ order)) , Eq.refl
+⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} ε) (srel (pad₃ yang-baxter))
   = PB.trans (PB.cong PB.refl PB.right-unit)
       (PB.trans PB.right-unit
         (PB.trans (PB.sym PB.left-unit)
           (PB.cong PB.refl (PB.sym PB.left-unit))))
   , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} (σ• c)) (srel yang-baxter)
-  = PB.axiom (srel yang-baxter) , Eq.refl
+⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} (σ• c)) (srel (pad₃ yang-baxter))
+  = PB.axiom (srel (pad₃ yang-baxter)) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (gate₁ ()))
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (gate₀ () ↥))
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {₁₊ m} c) (comm₂ σ-gate g)

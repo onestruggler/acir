@@ -36,10 +36,10 @@ private
 -- Each relation's rules, in the other's congruence
 
 prop⇒pro-ax : n VRel, w === v → PB._≈_ (n PRO.VRel,_===_) w v
-prop⇒pro-ax (srel (σrel σ-inv))              = PB.axiom (PRO.srel PRO.order)
+prop⇒pro-ax (srel (σrel σ-inv))              = PB.axiom (PRO.srel (PRO.pad₂ PRO.order))
 prop⇒pro-ax (srel (σrel (σ-nat₁ ())))
 prop⇒pro-ax (srel (σrel (σ-nat₂ σ-gate)))    =
-  PB.trans (PB.axiom (PRO.srel PRO.yang-baxter)) (PB.sym PB.assoc)
+  PB.trans (PB.axiom (PRO.srel (PRO.pad₃ PRO.yang-baxter))) (PB.sym PB.assoc)
 prop⇒pro-ax (srel (σrel (σ-nat₃ ())))
 prop⇒pro-ax (srel (srel ()))
 prop⇒pro-ax (cong↑ r)                       = PRO.lemma-cong↑ _ _ (prop⇒pro-ax r)
@@ -49,8 +49,8 @@ prop⇒pro-ax (comm₃ () g)
 prop⇒pro-ax (ω↑=ω ())
 
 pro⇒prop-ax : n PRO.VRel, w === v → n ⊢ w ≈ v
-pro⇒prop-ax (PRO.srel PRO.order)       = order
-pro⇒prop-ax (PRO.srel PRO.yang-baxter) = yang-baxter
+pro⇒prop-ax (PRO.srel (PRO.pad₂ PRO.order))       = order
+pro⇒prop-ax (PRO.srel (PRO.pad₃ PRO.yang-baxter)) = yang-baxter
 pro⇒prop-ax (PRO.cong↑ r)              = lemma-cong↑ _ _ (pro⇒prop-ax r)
 pro⇒prop-ax (PRO.comm₁ () g)
 pro⇒prop-ax (PRO.comm₂ σ-gate g)       = PB.axiom (comm₂ σ-gate g)

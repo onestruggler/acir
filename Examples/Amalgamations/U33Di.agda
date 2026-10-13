@@ -15,7 +15,7 @@ import Presentation.Construct.Properties.SugarProduct as SP
 open import Data.Unit using (⊤ ; tt)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_])
 open import Relation.Binary.PropositionalEquality as Eq renaming ([_] to [_]') using ( _≡_ ; inspect)
-open import Data.Nat using (ℕ ; zero)
+open import Data.Nat using (ℕ ; zero ; z≤n ; s≤s)
 open import Data.Product using (_,_ ; _×_ ; proj₁ ; proj₂ ; ∃)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as PW
 open import Function using (_∘_)
@@ -57,9 +57,9 @@ module Examples.Amalgamations.U33Di where
 -- Gen n generates Sₙ.
 module Sn where
   open SymS public
-    using (Gen ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; srel ; cong↑
+    using (Gen ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; pad ; srel ; cong↑
           ; comm₁ ; comm₂ ; _VRel,_===_)
-  open SymS using (σ-gate)
+  open SymS using (σ-gate ; pad₂ ; pad₃)
     renaming (order to order-ax ; yang-baxter to yb-ax)
 
   X : ℕ → Set
@@ -67,8 +67,8 @@ module Sn where
 
   pattern swap        = gate₂ σ-gate
   pattern _ₛ x        = x ↥
-  pattern order       = srel order-ax
-  pattern yang-baxter = srel yb-ax
+  pattern order       = srel (pad₂ order-ax)
+  pattern yang-baxter = srel (pad₃ yb-ax)
   pattern congₛ r     = cong↑ r
 
   -- The old [_⇑] was ([_]ʷ ∘ _ₛ) ʷ; the circuit framework's _↑ is the
@@ -788,8 +788,9 @@ module TwoLevel-Simplified-Amal where
       -- against a shifted generator, and deeper cong↑ towers.  Below
       -- width 2 there are neither generators nor relations, so every one
       -- of these bottoms out absurd.
-      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.srel ()))))
-      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.srel ())))))
+      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.pad z≤n ())))))
+      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.pad (s≤s z≤n) ())))))
+      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.pad z≤n ()))))))
       h-wd-ax _ (right (Sn.cong↑ (Sn.comm₂ _ (Sn.gate₀ ()))))
       h-wd-ax _ (right (Sn.comm₂ _ ((Sn.gate₀ ()) Sn.ₛ)))
       h-wd-ax _ (mid (comm _ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ)))
@@ -807,8 +808,9 @@ module TwoLevel-Simplified-Amal where
       f-wd-ax {.([ [ inj₂ Sn.swap ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₂ Sn.swap ]ʷ ]ₗ)} (mid (comm (inj₂ Sn.swap) tt)) = by-equal-nf Eq.refl
 
       -- Same story one level down, at Sn.X 1 = Gen 2.
-      f-wd-ax (left (right (Sn.cong↑ (Sn.srel ()))))
-      f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel ())))))
+      f-wd-ax (left (right (Sn.cong↑ (Sn.srel (Sn.pad z≤n ())))))
+      f-wd-ax (left (right (Sn.cong↑ (Sn.srel (Sn.pad (s≤s z≤n) ())))))
+      f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.pad z≤n ()))))))
       f-wd-ax (left (right (Sn.comm₂ _ (Sn.gate₀ ()))))
       f-wd-ax (left (mid (comm _ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ))))
       f-wd-ax (mid (comm (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)) _))
@@ -1021,8 +1023,9 @@ module TwoLevel-Simplified-Amal where
       f-wd-ax {.([ [ inj₁ I ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₁ I ]ʷ ]ₗ)} (mid (comm (inj₁ I) tt)) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ inj₂ Sn.swap ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₂ Sn.swap ]ʷ ]ₗ)} (mid (comm (inj₂ Sn.swap) tt)) = by-equal-nf Eq.refl
       
-      f-wd-ax (left (right (Sn.cong↑ (Sn.srel ()))))
-      f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel ())))))
+      f-wd-ax (left (right (Sn.cong↑ (Sn.srel (Sn.pad z≤n ())))))
+      f-wd-ax (left (right (Sn.cong↑ (Sn.srel (Sn.pad (s≤s z≤n) ())))))
+      f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.pad z≤n ()))))))
       f-wd-ax (left (right (Sn.comm₂ _ (Sn.gate₀ ()))))
       f-wd-ax (left (mid (comm _ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ))))
       f-wd-ax (mid (comm (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)) _))
@@ -1448,8 +1451,9 @@ module TwoLevel-Simplified-Amal where
     g-well-defined {w} {v} (mid (amal {inj₂ tt})) = _≈₁_.refl
     -- The Sₙ factor's shift tower and its structural rules, all absurd
     -- below width 2 (see the identical block in CA1/CA2 above).
-    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel ())))))
-    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.srel ()))))))
+    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.pad z≤n ()))))))
+    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.pad (s≤s z≤n) ()))))))
+    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.pad z≤n ())))))))
     g-well-defined (left (right (Sn.cong↑ (Sn.comm₂ _ (Sn.gate₀ ())))))
     g-well-defined (left (right (Sn.comm₂ _ ((Sn.gate₀ ()) Sn.ₛ))))
     g-well-defined (left (mid (comm _ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ))))
