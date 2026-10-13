@@ -14,11 +14,11 @@
 --     (Clifford+CS-TwoLevel); the decodings of their relations are
 --     derived from the rules (ZeroQubit, OneQubit, Lemmas.OneWire) —
 --     proved;
---   * two wires: the same on four indices (TwoQubit); the encoding, the
---     decoding and the semantics of the encoding are in place, and the
---     two lemmas of the argument — the decoding respects the relations,
---     and inverts the encoding (the analogues of Clément's Lemmas 7.5
---     and 7.4) — are hypotheses here;
+--   * two wires: the same on four indices (TwoQubit), the decoding
+--     respecting the relations and inverting the encoding (the
+--     analogues of Clément's Lemmas 7.5 and 7.4) by derivations on two
+--     wires (TwoQubit.Decoding, Lemmas.TwoWire, Lemmas.TwoWireMacro) —
+--     proved;
 --   * three wires: Bian and Selinger's 3-qubit Clifford+CS circuits,
 --     whose relations are the rules here (ThreeQubit), with their
 --     completeness theorem (Clifford+CS-3qubit) — proved;
@@ -42,6 +42,7 @@ module Examples.Groups.Clifford+CS.Completeness where
 
 open import Algebra.Bundles using (Monoid)
 open import Data.Nat using (ℕ)
+import Data.Nat as ℕ
 open import Data.Product using (_,_)
 
 open import Notations using (₀ ; ₁ ; ₂ ; ₃ ; ₄₊)
@@ -57,7 +58,9 @@ open import Examples.Groups.Clifford+CS.Soundness using (axiom-soundᴱ)
 import Examples.Groups.Clifford+CS.ZeroQubit as ZeroQubit
 import Examples.Groups.Clifford+CS.OneQubit as OneQubit
 import Examples.Groups.Clifford+CS.TwoQubit as TwoQubit
+import Examples.Groups.Clifford+CS.TwoQubit.Decoding as Decoding
 import Examples.Groups.Clifford+CS.ThreeQubit as ThreeQubit
+import Examples.Groups.Clifford+CS.Weakening as Weakening
 
 ------------------------------------------------------------------------
 -- Completeness at a width
@@ -72,12 +75,23 @@ complete₀ = ZeroQubit.complete
 complete₁ : Complete 1
 complete₁ = OneQubit.complete
 
+complete₂ : Complete 2
+complete₂ = TwoQubit.Lemma-7-6.complete Decoding.lemma-7-4 Decoding.lemma-7-5
+
 complete₃ : Complete 3
 complete₃ = ThreeQubit.complete
 
--- Two wires, given the two lemmas of the back-and-forth argument.
-complete₂ : TwoQubit.Lemma-7-4 → TwoQubit.Lemma-7-5 → Complete 2
-complete₂ l74 l75 = TwoQubit.Lemma-7-6.complete l74 l75
+-- Every width up to three.
+complete≤₃ : ∀ {n} → n ℕ.≤ 3 → Complete n
+complete≤₃ ℕ.z≤n                         = complete₀
+complete≤₃ (ℕ.s≤s ℕ.z≤n)                 = complete₁
+complete≤₃ (ℕ.s≤s (ℕ.s≤s ℕ.z≤n))         = complete₂
+complete≤₃ (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ℕ.z≤n))) = complete₃
+
+-- And on the bottom wires of any wider circuit.
+complete≤₃↓ : ∀ {n} k → n ℕ.≤ 3 → ∀ {w v : Circuit n} →
+              ⟦ w ⟧ ~ ⟦ v ⟧ → (n ℕ.+ k) ⊢ w ↓ᵏ k ≈ v ↓ᵏ k
+complete≤₃↓ k le e = Weakening.weaken k (complete≤₃ le e)
 
 ------------------------------------------------------------------------
 -- The theorem
@@ -96,17 +110,16 @@ subpresentation n complete = record
   module MS = MonoidSem (n VRel,_===_) (Monoid.setoid (Scaled-monoid n))
                         (Scaled-monoid n) (λ g → 1 , ⟦ g ⟧ᵍ)
 
--- Every width, given the two-qubit lemmas and completeness from four
--- wires on.
-module Theorem
-  (lemma-7-4 : TwoQubit.Lemma-7-4)
-  (lemma-7-5 : TwoQubit.Lemma-7-5)
-  (above     : ∀ k → Complete (₄₊ k))
-  where
+-- So up to three wires the rules present their image.
+subpresentation≤₃ : ∀ {n} → n ℕ.≤ 3 → (n VRel,_===_) IsSubMonoidPresentationOf Scaled-monoid n
+subpresentation≤₃ {n} n≤3 = subpresentation n (complete≤₃ n≤3)
+
+-- Every width, given completeness from four wires on.
+module Theorem (above : ∀ k → Complete (₄₊ k)) where
 
   completeness : ∀ n → Complete n
   completeness ₀      = complete₀
   completeness ₁      = complete₁
-  completeness ₂      = complete₂ lemma-7-4 lemma-7-5
+  completeness ₂      = complete₂
   completeness ₃      = complete₃
   completeness (₄₊ k) = above k
