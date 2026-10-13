@@ -1,0 +1,13 @@
+{-# OPTIONS --without-K --safe #-}
+
+module Examples.Groups.CCX+HH-3qubit.TransportCases.r2a_ij3602 where
+
+import Relation.Binary.PropositionalEquality as Eq
+open import Examples.Groups.CCX+HH-3qubit.Syntactics
+open import Examples.Groups.CCX+HH-3qubit.Frames
+open import Examples.Groups.CCX+HH-3qubit.FrameWords
+open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.FramePermutations.PE01225 as E
+
+proved : X36 • X02 ≈ X02 • X36
+proved = by-assoc-and E.proved Eq.refl Eq.refl

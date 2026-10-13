@@ -1,0 +1,26 @@
+{-# OPTIONS --without-K --safe #-}
+
+module Examples.Groups.CCX+HH-3qubit.PermProofs.KB0215 where
+
+import Relation.Binary.PropositionalEquality as Eq
+open import Examples.Groups.CCX+HH-3qubit.Syntactics
+open import Examples.Groups.CCX+HH-3qubit.Engine
+
+import Examples.Groups.CCX+HH-3qubit.Tietze.cadd6 as Tcadd6
+p0 : CX10 • CCX02 • CX10 ≈ CCX12 • CCX02 • CCX12
+p0 = Tcadd6.proved
+
+p1 : CX10 • CCX02 • CX10 ≈ CX10 • CCX02 • CX10
+p1 = refl
+
+p2 : CCX12 • CCX02 • CCX12 ≈ CCX12 • CCX02 • CCX12
+p2 = refl
+
+p3 : CX10 • CCX02 • CX10 ≈ CCX12 • CCX02 • CCX12
+p3 = trans (sym p1) (trans p0 p2)
+
+p4 : CCX12 • CCX02 • CCX12 ≈ CX10 • CCX02 • CX10
+p4 = sym p3
+
+proved : CCX12 • CCX02 • CCX12 ≈ CX10 • CCX02 • CX10
+proved = p4

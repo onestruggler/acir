@@ -1,0 +1,231 @@
+-- *******************************************************************
+-- Swap Orders
+-- *******************************************************************
+
+@name elim_SWAP01
+@type order
+SWAP01.SWAP01
+expand_SWAP01 → 1
+expand_SWAP01 → 0
+elim_CX01 → 2
+!apply elim_CX10 → 1
+elim_CX01 → 0
+ε
+
+@name elim_SWAP12
+@type order
+SWAP12.SWAP12
+expand_SWAP12 → 1
+expand_SWAP12 → 0
+!apply elim_CX12 → 2
+!apply elim_CX21 → 1
+!apply elim_CX12 → 0
+ε
+
+@name elim_SWAP02
+@type order
+SWAP02.SWAP02
+expand_SWAP02 → 1
+expand_SWAP02 → 0
+!apply elim_CX02 → 2
+!apply elim_CX20 → 1
+!apply elim_CX02 → 0
+ε
+
+
+-- *******************************************************************
+-- Pauli-X Orders
+-- *******************************************************************
+
+@name elim_X1
+@type order
+X1.X1
+expand_X1 → 1
+expand_X1 → 0
+!apply drel162 → 5
+elim_X0 → 7
+elim_CX01 → 4
+bifunct_X_a → 3
+!apply drel162 ← 2
+elim_X0 → 1
+elim_CX01 → 0
+ε
+
+@name elim_X2
+@type order
+X2.X2
+expand_X2 → 1
+expand_X2 → 0
+!apply elim_SWAP02 → 2
+elim_X0 → 1
+!apply elim_SWAP02 → 0
+ε
+
+
+-- *******************************************************************
+-- CX Orders
+-- *******************************************************************
+
+@name elim_CX10
+@type order
+CX10.CX10
+expand_CX10 → 1
+expand_CX10 → 0
+elim_K01 → 2
+elim_CX01 → 1
+elim_K01 → 0
+ε
+
+@name elim_CX12_lemma
+K12.X0.CCX1.X0.CCX1.K12
+expand_CCX1 → 4
+expand_CCX1 → 2
+symmetry_X_a ← 4
+!apply elim_SWAP01 ← 1
+symmetry_X_a ← 2
+expand_CX20 ← 2
+symmetry_CX_l ← 1
+expand_CX12 ← 0
+CX12
+
+@name elim_CX12
+@type order
+CX12.CX12
+!apply elim_CX12_lemma ← 1
+!apply elim_CX12_lemma ← 0
+elim_K12 → 5
+!apply drel127 → 7
+!apply elim_CCX1 → 6
+!apply bifunct_X_CX_b ← 5
+!apply drel127 ← 4
+elim_X0 → 3
+!apply elim_CCX1 → 2
+elim_X0 → 1
+elim_K12 → 0
+ε
+
+@name elim_CX21
+@type order
+CX21.CX21
+elim_K12 ← 0
+!apply drel46 → 1
+!apply drel46 → 2
+!apply elim_CX12 → 1
+elim_K12 → 0
+ε
+
+@name elim_CX02
+@type order
+CX02.CX02
+expand_CX02 → 1
+expand_CX02 → 0
+!apply elim_SWAP12 → 2
+elim_CX01 → 1
+!apply elim_SWAP12 → 0
+ε
+
+@name elim_CX20
+@type order
+CX20.CX20
+expand_CX20 → 0
+!apply elim_X1 ← 5
+!apply drel131 ← 3
+!apply elim_X1 → 2
+elim_CCX0 → 1
+!apply elim_X1 → 0
+ε
+
+
+-- *******************************************************************
+-- CCX Orders
+-- *******************************************************************
+
+@name elim_CCX1
+@type order
+CCX1.CCX1
+expand_CCX1 → 1
+expand_CCX1 → 0
+!apply elim_SWAP01 → 2
+elim_CCX0 → 1
+!apply elim_SWAP01 → 0
+ε
+
+@name elim_CCX2
+@type order
+CCX2.CCX2
+symmetry_CCX_a → 1
+symmetry_CCX_a → 0
+!apply elim_SWAP02 → 2
+elim_CCX0 → 1
+!apply elim_SWAP02 → 0
+ε
+
+
+-- *******************************************************************
+-- Pauli-Z Orders
+-- *******************************************************************
+
+@name elim_Z0
+@type order
+Z0.Z0
+elim_K01 ← 0
+r2 → 1
+r2 → 2
+elim_X0 → 1
+elim_K01 → 0
+ε
+
+@name elim_Z1
+@type order
+Z1.Z1
+symmetry_Z_d → 1
+symmetry_Z_d → 0
+!apply elim_SWAP01 → 2
+!apply elim_Z0 → 1
+!apply elim_SWAP01 → 0
+ε
+
+@name elim_Z2
+@type order
+Z2.Z2
+expand_Z2 → 1
+expand_Z2 → 0
+!apply elim_SWAP02 → 2
+!apply elim_Z0 → 1
+!apply elim_SWAP02 → 0
+ε
+
+
+-- *******************************************************************
+-- CZ Orders
+-- *******************************************************************
+
+@name elim_CZ01
+@type order
+CZ01.CZ01
+expand_CZ01 → 1
+expand_CZ01 → 0
+elim_K12 → 2
+elim_CX01 → 1
+elim_K12 → 0
+ε
+
+@name elim_CZ02
+@type order
+CZ02.CZ02
+expand_CZ02 → 1
+expand_CZ02 → 0
+!apply elim_SWAP12 → 2
+!apply elim_CZ01 → 1
+!apply elim_SWAP12 → 0
+ε
+
+@name elim_CZ12
+@type order
+CZ12.CZ12
+expand_CZ12 → 1
+expand_CZ12 → 0
+!apply elim_SWAP01 → 2
+!apply elim_CZ02 → 1
+!apply elim_SWAP01 → 0
+ε

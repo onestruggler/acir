@@ -1,0 +1,23 @@
+{-# OPTIONS --without-K --safe #-}
+
+module Examples.Groups.CCX+HH-3qubit.PermProofs.KB0020 where
+
+import Relation.Binary.PropositionalEquality as Eq
+open import Examples.Groups.CCX+HH-3qubit.Syntactics
+open import Examples.Groups.CCX+HH-3qubit.Engine
+
+import Examples.Groups.CCX+HH-3qubit.Tietze.bifunct_X_CX_b as Tbifunct_X_CX_b
+p0 : CX21 • X0 ≈ X0 • CX21
+p0 = Tbifunct_X_CX_b.proved
+
+p1 : CX21 • X0 ≈ CX21 • X0
+p1 = refl
+
+p2 : X0 • CX21 ≈ X0 • CX21
+p2 = refl
+
+p3 : CX21 • X0 ≈ X0 • CX21
+p3 = trans (sym p1) (trans p0 p2)
+
+proved : CX21 • X0 ≈ X0 • CX21
+proved = p3

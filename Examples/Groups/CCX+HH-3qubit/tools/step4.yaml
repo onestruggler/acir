@@ -1,0 +1,10 @@
+# Establishes that the spatial lemmas can be removed.
+generators: generators.gens
+relations:
+- dyadic.rels
+derivations:
+- aux/bifunct.derivs
+- aux/symmetry.derivs
+- aux/orders.derivs
+- aux/commutators.derivs
+obligations: []

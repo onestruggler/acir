@@ -1,0 +1,163 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- The syntax of n-qutrit Clifford circuits (Li, Mosca, Ross, van de
+-- Wetering and Zhao, "A Complete and Natural Rule Set for Multi-Qutrit
+-- Clifford Circuits", QPL 2025, arXiv:2508.14670): the generators −ω,
+-- H, S and CZ, the derived generators of Figure 5, and the eighteen
+-- rules C1 … C18 of Figure 1
+--
+-- The paper numbers qutrits from the top; here wire 0 is the bottom
+-- wire, and CZ sits on wires 0 and 1.  Words are in operator order,
+-- the rightmost letter acting first, so a circuit drawn left to right
+-- as "A then B" is the word B • A, and every rule below is its figure
+-- read backwards.  Gates drawn in one column are written lower wire
+-- first.  The scalar −ω is a gate on no wires, ν; the structural rules
+-- of Circuit.Base make it the same on every wire and central (it is
+-- the only scalar), which the paper takes for granted of a global
+-- phase, and they let gates on disjoint wires commute, the paper's
+-- "standard spatial relations".
+------------------------------------------------------------------------
+
+{-# OPTIONS --cubical-compatible --safe #-}
+
+module Examples.Groups.Qutrit-Clifford.Syntactics where
+
+open import Data.Nat using (ℕ)
+open import Data.Product using (_,_)
+open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_ ; _^_)
+
+open import Notations using (₁₊ ; ₂₊ ; ₃₊)
+open import Presentation.GroupLike using (Grouplike)
+
+import Circuit.Base
+import Presentation.Base as PB
+import Presentation.Properties as PP
+import Relation.Binary.PropositionalEquality as Eq
+
+private
+  variable
+    n : ℕ
+
+------------------------------------------------------------------------
+-- Gates
+
+-- The scalar −ω = e^{−iπ/3}, ω = e^{2πi/3}, is a gate on no wires.
+data Gate : ℕ → Set where
+  ν-gate           : Gate 0
+  H-gate S-gate    : Gate 1
+  CZ-gate          : Gate 2
+
+private module SC = Circuit.Base Gate
+
+open SC public
+  using ( Gen ; gate₀ ; gate₁ ; gate₂ ; Circuit
+        ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_ ; _↓ᵏ_ ; _↧ᵏ_ )
+
+pattern ν-gen  = gate₀ ν-gate
+pattern H-gen  = gate₁ H-gate
+pattern S-gen  = gate₁ S-gate
+pattern CZ-gen = gate₂ CZ-gate
+
+-- The generators as one-letter circuits.
+ν : Circuit n
+ν = [ ν-gen ]ʷ
+
+H S : Circuit (₁₊ n)
+H = [ H-gen ]ʷ
+S = [ S-gen ]ʷ
+
+CZ : Circuit (₂₊ n)
+CZ = [ CZ-gen ]ʷ
+
+------------------------------------------------------------------------
+-- The derived generators (Figure 5)
+
+-- (D1) −1 = (−ω)³ and (D2) ω = (−ω)⁴.
+-1ˢ ωˢ : Circuit n
+-1ˢ = ν ^ 3
+ωˢ  = ν ^ 4
+
+-- (D3) S′ = H² S H², and the Paulis (D4) X and (D5) Z.
+S′ X Z : Circuit (₁₊ n)
+S′ = H • H • S • H • H
+X  = H • S • S • H • H • S • H
+Z  = S • H • H • S • S • H • H
+
+-- (D6) the swap, (D7) CNOT with its control on the upper wire, and
+-- (D8) with its control on the lower wire.
+SWAP CX XC : Circuit (₂₊ n)
+SWAP = CZ • H • H ↑ • CZ • H • H ↑ • CZ • H • H ↑
+CX   = H • H • H • CZ • H
+XC   = H ↑ • H ↑ • H ↑ • CZ • H ↑
+
+-- (D9)–(D11) the remote CZ, CX and XC between wires 0 and 2.
+CZ₀₂ CX₂₀ XC₂₀ : Circuit (₃₊ n)
+CZ₀₂ = SWAP • CZ ↑ • SWAP
+CX₂₀ = SWAP • CX ↑ • SWAP
+XC₂₀ = SWAP ↑ • XC • SWAP ↑
+
+------------------------------------------------------------------------
+-- The relations (Figure 1)
+--
+-- Each is stated at the width it is drawn on; the structural rules lift
+-- it to every width.
+
+infix 4 _QRel,_===_
+data _QRel,_===_ : (n : ℕ) → WRel (Gen n) where
+
+  -- n ≥ 0.
+  C₁  : n QRel, ν ^ 6 === ε
+
+  -- n ≥ 1.
+  C₂  : (₁₊ n) QRel, H ^ 4 === ε
+  C₃  : (₁₊ n) QRel, S ^ 3 === ε
+  C₄  : (₁₊ n) QRel, H • S • S • H • S • S • H • S • S === ν
+  C₅  : (₁₊ n) QRel, S′ • S === S • S′
+
+  -- n ≥ 2.
+  C₆  : (₂₊ n) QRel, CZ ^ 3 === ε
+  C₇  : (₂₊ n) QRel, SWAP • SWAP === ε
+  C₈  : (₂₊ n) QRel, CZ • S ↑ === S ↑ • CZ
+  C₉  : (₂₊ n) QRel, CZ • CZ • H ↑ • H ↑ === H ↑ • H ↑ • CZ
+  C₁₀ : (₂₊ n) QRel, SWAP • S ↑ === S • SWAP
+  C₁₁ : (₂₊ n) QRel, SWAP • H ↑ === H • SWAP
+  C₁₂ : (₂₊ n) QRel, SWAP • CZ === CZ • SWAP
+  C₁₃ : (₂₊ n) QRel, XC • S ↑ === ωˢ • ωˢ • S′ • S ↑ • CZ • XC
+  C₁₄ : (₂₊ n) QRel, XC • CZ === ωˢ • S • S′ • CZ • XC
+
+  -- n ≥ 3.
+  C₁₅ : (₃₊ n) QRel, CZ ↑ • CZ === CZ • CZ ↑
+  C₁₆ : (₃₊ n) QRel, SWAP ↑ • SWAP • SWAP ↑ === SWAP • SWAP ↑ • SWAP
+  C₁₇ : (₃₊ n) QRel, SWAP • SWAP ↑ • CZ === CZ ↑ • SWAP • SWAP ↑
+  C₁₈ : (₃₊ n) QRel, CZ • CX ↑ === CZ₀₂ • CX ↑ • CZ
+
+------------------------------------------------------------------------
+-- The full relation: the structural rules of Circuit.Base on top
+
+private module LR = SC.Lift-Relation _QRel,_===_
+
+open LR public
+  using ( srel ; cong↑ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
+        ; comm-gate₁-w↑ ; comm-gate₂-w↑↑ ; _VRel,_===_ )
+
+-- The scalar is central: not a rule but a theorem of the others
+-- (Circuit.Base), there being a single scalar.
+open LR.Single-Scalar (λ { ν-gate ν-gate → Eq.refl }) public using (comm₀ ; comm-gate₀-w)
+
+-- The monoid congruence generated by the relations at width n: the
+-- paper's equality of circuits.
+infix 4 _⊢_≈_
+_⊢_≈_ : (n : ℕ) → Circuit n → Circuit n → Set
+n ⊢ w ≈ v = PB._≈_ (n VRel,_===_) w v
+
+------------------------------------------------------------------------
+-- Every generator is invertible, so the presented monoid is a group
+
+grouplike : Grouplike (_VRel,_===_ n)
+grouplike {n} ν-gen  = ν ^ 5 , PB.trans (PP.by-assoc (n VRel,_===_) Eq.refl) (PB.axiom (srel C₁))
+grouplike {n} H-gen  = H ^ 3 , PB.trans (PP.by-assoc ((₁₊ _) VRel,_===_) Eq.refl) (PB.axiom (srel C₂))
+grouplike {n} S-gen  = S ^ 2 , PB.trans (PP.by-assoc ((₁₊ _) VRel,_===_) Eq.refl) (PB.axiom (srel C₃))
+grouplike {n} CZ-gen = CZ ^ 2 , PB.trans (PP.by-assoc ((₂₊ _) VRel,_===_) Eq.refl) (PB.axiom (srel C₆))
+grouplike (g ↥) with grouplike g
+... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf

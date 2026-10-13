@@ -1,0 +1,33 @@
+{-# OPTIONS --without-K --safe #-}
+
+module Examples.Groups.CCX+HH-3qubit.PermProofs.KB1361 where
+
+import Relation.Binary.PropositionalEquality as Eq
+open import Examples.Groups.CCX+HH-3qubit.Syntactics
+open import Examples.Groups.CCX+HH-3qubit.Engine
+import Examples.Groups.CCX+HH-3qubit.PermProofs.KB0008 as B8
+import Examples.Groups.CCX+HH-3qubit.PermProofs.KB1360 as B1360
+
+p0 : CX02 • CX02 • CCX12 • CX02 • CX12 • CCX12 ≈ CX02 • CX10 • CCX12 • CCX01
+p0 = by-assoc-and (under (CX02) (ε) B1360.proved) Eq.refl Eq.refl
+
+p1 : CX02 • CX02 • CCX12 • CX02 • CX12 • CCX12 ≈ CCX12 • CX02 • CX12 • CCX12
+p1 = by-assoc-and (under (ε) (CCX12 • CX02 • CX12 • CCX12) B8.proved) Eq.refl Eq.refl
+
+p2 : CX02 • CX10 • CCX12 • CCX01 ≈ CCX12 • CX02 • CX12 • CCX12
+p2 = trans (sym p0) p1
+
+p3 : CX02 • CX10 • CCX12 • CCX01 ≈ CX02 • CX10 • CCX12 • CCX01
+p3 = refl
+
+p4 : CCX12 • CX02 • CX12 • CCX12 ≈ CCX12 • CX02 • CX12 • CCX12
+p4 = refl
+
+p5 : CX02 • CX10 • CCX12 • CCX01 ≈ CCX12 • CX02 • CX12 • CCX12
+p5 = trans (sym p3) (trans p2 p4)
+
+p6 : CCX12 • CX02 • CX12 • CCX12 ≈ CX02 • CX10 • CCX12 • CCX01
+p6 = sym p5
+
+proved : CCX12 • CX02 • CX12 • CCX12 ≈ CX02 • CX10 • CCX12 • CCX01
+proved = p6
