@@ -76,6 +76,18 @@ conj-flip {x} {a} {b} ii e = begin
   (ε • b) • x          ≈⟨ front x left-unit ⟩
   b • x ∎
 
+-- An equation crosses a power.
+pass-pow : ∀ {x p q : WT} → x • p ≈ q • x → ∀ k → x • p ^ k ≈ q ^ k • x
+pass-pow {x} {p} {q} E zero = trans right-unit (sym left-unit)
+pass-pow {x} {p} {q} E (suc zero) = E
+pass-pow {x} {p} {q} E (suc (suc k)) = begin
+  x • (p • p ^ suc k)        ≈⟨ sym assoc ⟩
+  (x • p) • p ^ suc k        ≈⟨ front _ E ⟩
+  (q • x) • p ^ suc k        ≈⟨ assoc ⟩
+  q • (x • p ^ suc k)        ≈⟨ back q (pass-pow E (suc k)) ⟩
+  q • (q ^ suc k • x)        ≈⟨ sym assoc ⟩
+  (q • q ^ suc k) • x ∎
+
 -- Two two-factor words commute once every factor of one commutes with
 -- every factor of the other.
 comm-pair : ∀ (u v x y : WT) →

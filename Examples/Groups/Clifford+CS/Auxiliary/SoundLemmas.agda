@@ -586,3 +586,214 @@ sd-px-shrink₄ a c′ c lt q = sym (begin
   c∉₂ : Y₂ • (i c • i c) ≈ (i c • i c) • Y₂
   c∉₂ = crossʳ-pow-at a c′ lt 2
           (swapF-o a c′ c (≢sym (<⇒≢ (<F-trans lt q))) (≢sym (<⇒≢ q)))
+
+
+------------------------------------------------------------------------
+-- The K pairs against disjoint letters
+--
+-- A K-pair image is four factors; against a disjoint letter each
+-- factor commutes by its own axiom, and `comm-two`/`comm-quad` stitch
+-- the factors back together.  The phases of the first pair's own
+-- indices pass as one through relation (17), and the mixed balanced
+-- pairs reduce to that by the phase algebra.
+
+private
+  comm-two : ∀ (W x y : WT) → W • x ≈ x • W → W • y ≈ y • W →
+             W • (x • y) ≈ (x • y) • W
+  comm-two W x y wx wy = begin
+    W • (x • y)    ≈⟨ sym assoc ⟩
+    (W • x) • y    ≈⟨ front y wx ⟩
+    (x • W) • y    ≈⟨ assoc ⟩
+    x • (W • y)    ≈⟨ back x wy ⟩
+    x • (y • W)    ≈⟨ sym assoc ⟩
+    (x • y) • W ∎
+
+  comm-quad : ∀ (u v x y L : WT) →
+              u • L ≈ L • u → v • L ≈ L • v → x • L ≈ L • x → y • L ≈ L • y →
+              (u • (v • (x • y))) • L ≈ L • (u • (v • (x • y)))
+  comm-quad u v x y L uL vL xL yL = begin
+    (u • (v • (x • y))) • L    ≈⟨ assoc ⟩
+    u • ((v • (x • y)) • L)    ≈⟨ back u assoc ⟩
+    u • (v • ((x • y) • L))
+      ≈⟨ back u (back v (sym (comm-two L x y (sym xL) (sym yL)))) ⟩
+    u • (v • (L • (x • y)))    ≈⟨ back u (sym assoc) ⟩
+    u • ((v • L) • (x • y))    ≈⟨ back u (front _ vL) ⟩
+    u • ((L • v) • (x • y))    ≈⟨ back u assoc ⟩
+    u • (L • (v • (x • y)))    ≈⟨ sym assoc ⟩
+    (u • L) • (v • (x • y))    ≈⟨ front _ uL ⟩
+    (L • u) • (v • (x • y))    ≈⟨ assoc ⟩
+    L • (u • (v • (x • y))) ∎
+
+  -- A phase at an index off both pairs passes the K-pair image.
+  i-pass : ∀ (a b c d x : Fin N) .(ab : a <F b) .(cd : c <F d) →
+           x ≢ a → x ≢ b → x ≢ c → x ≢ d →
+           (K a b ab • (K c d cd • (i c • i d))) • i x
+           ≈ i x • (K a b ab • (K c d cd • (i c • i d)))
+  i-pass a b c d x ab cd xa xb xc xd =
+    comm-quad (K a b ab) (K c d cd) (i c) (i d) (i x)
+      (sym (axiom (TL.comm-iK ab xa xb)))
+      (sym (axiom (TL.comm-iK cd xc xd)))
+      (icomm c x) (icomm d x)
+
+  i-pass-pow : ∀ (a b c d x : Fin N) .(ab : a <F b) .(cd : c <F d) →
+               x ≢ a → x ≢ b → x ≢ c → x ≢ d → ∀ (n : ℕ) →
+               (K a b ab • (K c d cd • (i c • i d))) • i x ^ n
+               ≈ i x ^ n • (K a b ab • (K c d cd • (i c • i d)))
+  i-pass-pow a b c d x ab cd xa xb xc xd n =
+    pass-pow (i-pass a b c d x ab cd xa xb xc xd) n
+
+  -- The first pair's own phases pass as one, relation (17).
+  pair-pass : ∀ (a b c d : Fin N) .(ab : a <F b) .(cd : c <F d) →
+              c ≢ a → c ≢ b → d ≢ a → d ≢ b →
+              (K a b ab • (K c d cd • (i c • i d))) • (i a • i b)
+              ≈ (i a • i b) • (K a b ab • (K c d cd • (i c • i d)))
+  pair-pass a b c d ab cd ca cb da db =
+    comm-quad (K a b ab) (K c d cd) (i c) (i d) (i a • i b)
+      (sym (iiK a b ab))
+      (comm-two (K c d cd) (i a) (i b)
+        (sym (axiom (TL.comm-iK cd (≢sym ca) (≢sym da))))
+        (sym (axiom (TL.comm-iK cd (≢sym cb) (≢sym db)))))
+      (comm-two (i c) (i a) (i b) (icomm c a) (icomm c b))
+      (comm-two (i d) (i a) (i b) (icomm d a) (icomm d b))
+
+  -- The canonical form of a balanced pair squared.
+  pair²-can : ∀ (x y : Fin N) →
+              (i x • i y) • (i x • i y) ≈ i x ^ 2 • i y ^ 2
+  pair²-can x y = begin
+    (i x • i y) • (i x • i y)
+      ≈⟨ by-assoc Eq.refl ⟩
+    i x • ((i y • i x) • i y)
+      ≈⟨ back (i x) (front _ (icomm y x)) ⟩
+    i x • ((i x • i y) • i y)
+      ≈⟨ by-assoc Eq.refl ⟩
+    (i x • i x) • (i y • i y) ∎
+
+sd-kk-pp : ∀ (a b c d x y : Fin N) .(ab : a <F b) .(cd : c <F d) →
+           x ≢ a → x ≢ b → x ≢ c → x ≢ d → y ≢ a → y ≢ b → y ≢ c → y ≢ d →
+           (K a b ab • (K c d cd • (i c • i d))) • (i x • i y ^ 3)
+           ≈ (i x • i y ^ 3) • (K a b ab • (K c d cd • (i c • i d)))
+sd-kk-pp a b c d x y ab cd xa xb xc xd ya yb yc yd =
+  comm-two W (i x) (i y ^ 3)
+    (i-pass a b c d x ab cd xa xb xc xd)
+    (i-pass-pow a b c d y ab cd ya yb yc yd 3)
+  where
+  W = K a b ab • (K c d cd • (i c • i d))
+
+sd-kk-px : ∀ (a b c d s x y : Fin N) .(ab : a <F b) .(cd : c <F d)
+             .(xy : x <F y) →
+           s ≢ a → s ≢ b → s ≢ c → s ≢ d →
+           x ≢ a → x ≢ b → x ≢ c → x ≢ d → y ≢ a → y ≢ b → y ≢ c → y ≢ d →
+           (K a b ab • (K c d cd • (i c • i d))) • (i s • (i s • X x y xy))
+           ≈ (i s • (i s • X x y xy)) • (K a b ab • (K c d cd • (i c • i d)))
+sd-kk-px a b c d s x y ab cd xy sa sb sc sd xa xb xc xd ya yb yc yd =
+  comm-two W (i s) (i s • X x y xy)
+    (i-pass a b c d s ab cd sa sb sc sd)
+    (comm-two W (i s) (X x y xy)
+      (i-pass a b c d s ab cd sa sb sc sd)
+      X-pass)
+  where
+  W = K a b ab • (K c d cd • (i c • i d))
+
+  X-pass : W • X x y xy ≈ X x y xy • W
+  X-pass =
+    comm-quad (K a b ab) (K c d cd) (i c) (i d) (X x y xy)
+      (sym (axiom (TL.comm-XK xy ab xa xb ya yb)))
+      (sym (axiom (TL.comm-XK xy cd xc xd yc yd)))
+      (cross-at x y xy (swapF-o x y c (≢sym xc) (≢sym yc)))
+      (cross-at x y xy (swapF-o x y d (≢sym xd) (≢sym yd)))
+
+sd-kk-kk : ∀ (a b c d e f g h : Fin N)
+             .(ab : a <F b) .(cd : c <F d) .(ef : e <F f) .(gh : g <F h) →
+           e ≢ a → e ≢ b → e ≢ c → e ≢ d → f ≢ a → f ≢ b → f ≢ c → f ≢ d →
+           g ≢ a → g ≢ b → g ≢ c → g ≢ d → h ≢ a → h ≢ b → h ≢ c → h ≢ d →
+           (K a b ab • (K c d cd • (i c • i d)))
+           • (K e f ef • (K g h gh • (i g • i h)))
+           ≈ (K e f ef • (K g h gh • (i g • i h)))
+             • (K a b ab • (K c d cd • (i c • i d)))
+sd-kk-kk a b c d e f g h ab cd ef gh
+         ea eb ec ed fa fb fc fd ga gb gc gd ha hb hc hd =
+  sym (comm-quad (K e f ef) (K g h gh) (i g) (i h) W
+        (sym Kef-pass) (sym Kgh-pass)
+        (sym (i-pass a b c d g ab cd ga gb gc gd))
+        (sym (i-pass a b c d h ab cd ha hb hc hd)))
+  where
+  W = K a b ab • (K c d cd • (i c • i d))
+
+  Kef-pass : W • K e f ef ≈ K e f ef • W
+  Kef-pass =
+    comm-quad (K a b ab) (K c d cd) (i c) (i d) (K e f ef)
+      (axiom (TL.comm-KK ab ef (≢sym ea) (≢sym fa) (≢sym eb) (≢sym fb)))
+      (axiom (TL.comm-KK cd ef (≢sym ec) (≢sym fc) (≢sym ed) (≢sym fd)))
+      (axiom (TL.comm-iK ef (≢sym ec) (≢sym fc)))
+      (axiom (TL.comm-iK ef (≢sym ed) (≢sym fd)))
+
+  Kgh-pass : W • K g h gh ≈ K g h gh • W
+  Kgh-pass =
+    comm-quad (K a b ab) (K c d cd) (i c) (i d) (K g h gh)
+      (axiom (TL.comm-KK ab gh (≢sym ga) (≢sym ha) (≢sym gb) (≢sym hb)))
+      (axiom (TL.comm-KK cd gh (≢sym gc) (≢sym hc) (≢sym gd) (≢sym hd)))
+      (axiom (TL.comm-iK gh (≢sym gc) (≢sym hc)))
+      (axiom (TL.comm-iK gh (≢sym gd) (≢sym hd)))
+
+sd-kk-mm : ∀ (a b c d : Fin N) .(ab : a <F b) .(cd : c <F d) →
+           c ≢ a → c ≢ b → d ≢ a → d ≢ b →
+           ((i a • i b ^ 3) • (i a • i b ^ 3))
+           • (K a b ab • (K c d cd • (i c • i d)))
+           ≈ (K a b ab • (K c d cd • (i c • i d)))
+             • ((i a • i b ^ 3) • (i a • i b ^ 3))
+sd-kk-mm a b c d ab cd ca cb da db = begin
+  ((i a • i b ^ 3) • (i a • i b ^ 3)) • W
+    ≈⟨ front W (trans (pp²-can a b) (sym (pair²-can a b))) ⟩
+  ((i a • i b) • (i a • i b)) • W
+    ≈⟨ assoc ⟩
+  (i a • i b) • ((i a • i b) • W)
+    ≈⟨ back _ (sym (pair-pass a b c d ab cd ca cb da db)) ⟩
+  (i a • i b) • (W • (i a • i b))
+    ≈⟨ sym assoc ⟩
+  ((i a • i b) • W) • (i a • i b)
+    ≈⟨ front _ (sym (pair-pass a b c d ab cd ca cb da db)) ⟩
+  (W • (i a • i b)) • (i a • i b)
+    ≈⟨ assoc ⟩
+  W • ((i a • i b) • (i a • i b))
+    ≈⟨ back W (trans (pair²-can a b) (sym (pp²-can a b))) ⟩
+  W • ((i a • i b ^ 3) • (i a • i b ^ 3)) ∎
+  where
+  W = K a b ab • (K c d cd • (i c • i d))
+
+sd-kk-ii : ∀ (a b c d e : Fin N) .(ab : a <F b) .(cd : c <F d) →
+           c ≢ a → c ≢ b → d ≢ a → d ≢ b →
+           e ≢ a → e ≢ b → e ≢ c → e ≢ d →
+           ((i a • i e ^ 3) • (i b • i e ^ 3))
+           • (K a b ab • (K c d cd • (i c • i d)))
+           ≈ (K a b ab • (K c d cd • (i c • i d)))
+             • ((i a • i e ^ 3) • (i b • i e ^ 3))
+sd-kk-ii a b c d e ab cd ca cb da db ea eb ec ed = begin
+  ((i a • i e ^ 3) • (i b • i e ^ 3)) • W
+    ≈⟨ front W mix-can ⟩
+  ((i a • i b) • i e ^ 2) • W
+    ≈⟨ assoc ⟩
+  (i a • i b) • (i e ^ 2 • W)
+    ≈⟨ back _ (sym (i-pass-pow a b c d e ab cd ea eb ec ed 2)) ⟩
+  (i a • i b) • (W • i e ^ 2)
+    ≈⟨ sym assoc ⟩
+  ((i a • i b) • W) • i e ^ 2
+    ≈⟨ front _ (sym (pair-pass a b c d ab cd ca cb da db)) ⟩
+  (W • (i a • i b)) • i e ^ 2
+    ≈⟨ assoc ⟩
+  W • ((i a • i b) • i e ^ 2)
+    ≈⟨ back W (sym mix-can) ⟩
+  W • ((i a • i e ^ 3) • (i b • i e ^ 3)) ∎
+  where
+  W = K a b ab • (K c d cd • (i c • i d))
+
+  mix-can : (i a • i e ^ 3) • (i b • i e ^ 3) ≈ (i a • i b) • i e ^ 2
+  mix-can = begin
+    (i a • i e ^ 3) • (i b • i e ^ 3)
+      ≈⟨ by-assoc Eq.refl ⟩
+    i a • ((i e ^ 3 • i b) • i e ^ 3)
+      ≈⟨ back (i a) (front _ (ipow-comm e b 3 1)) ⟩
+    i a • ((i b • i e ^ 3) • i e ^ 3)
+      ≈⟨ by-assoc Eq.refl ⟩
+    (i a • i b) • (i e ^ 3 • i e ^ 3)
+      ≈⟨ back _ (trans (sym (^-+ (i e) 3 3)) (i-mod4 e 2)) ⟩
+    (i a • i b) • i e ^ 2 ∎
