@@ -3,13 +3,26 @@
 This development translates the existing presentation in
 [`CCX+HH-TwoLevel`](../CCX+HH-TwoLevel/) into circuit relations, following
 the encode/decode and subgroup steps in
-[`Real-Clifford+CH`](../Real-Clifford+CH/). It does not use a Coxeter
-presentation or the method of arXiv:2407.11152.
+[`Real-Clifford+CH`](../Real-Clifford+CH/). It does not use the method or
+presentation of arXiv:2407.11152. The three-wire auxiliary signed-permutation
+base uses the repository's ordinary symmetric-group presentation; no
+presentation of an exceptional finite circuit group is imported.
 
-The general-width completeness theorem is **not yet established**.
-The concrete circuit presentations cover one and two wires. At arbitrary
-width we now have a checked structural encoder and a complete four-state
-auxiliary subgroup presentation. The physical decoder is being proved.
+**`Presentation.agda` proves soundness and completeness at every wire
+count, with no hypotheses, against ordinary circuit matrices.**
+`Orthogonal.agda` packages this as a group sub-presentation of
+`O_(2^n)(Z[1/2])`. Every theorem uses `--safe --without-K`.
+
+| Wires | Complete circuit relation |
+| --- | --- |
+| 0 | Empty relation; all words are the identity |
+| 1 | `XX = 1` |
+| 2 | 178 equations from the three-state translation |
+| 3 | 1185 equations from a finite frame normal form |
+| At least 4 | The four-state Clément translation, with an explicit circuit decoder |
+
+`LowWidth.agda` gives the common physical semantic bridge for the first
+three rows. `ThreeQubit/` and `GeneralN/` contain the remaining cases.
 
 ## Conventions and encoding
 
@@ -71,9 +84,13 @@ of the 178 equations for ordinary two-wire circuit matrices, with no
 hypotheses.** The JSON is a readable computational artifact alongside
 these kernel-checked proofs.
 
-## Shared proofs and remaining work
+## Proof organization
 
 - `OneQubit.agda` proves that `XX = 1` is sound and complete on one wire.
+- `ThreeQubit/Presentation.agda` proves the 1185-equation finite case:
+  1080 transition equations and 105 signed-permutation base equations.
+  The base, its physical circuit decoders, the transition table, and
+  separation of the 135 representatives are all proved in Agda.
 - `Translation.agda` is the direct Clément translation used by `CCX+H`:
   decode the auxiliary axioms and add generator recovery equations.
 - `Schreier.agda` gives the corresponding stateful subgroup translation,
@@ -94,12 +111,17 @@ these kernel-checked proofs.
   relation and under exact matrix equality. The subgroup consists
   exactly of charge-00 matrices. `CircuitCharge.agda` proves every
   structurally encoded circuit on at least four wires has charge 00.
-- `CircuitTranslation.agda` gives the exact remaining interface: a
+- `CircuitTranslation.agda` gives the translation interface: a
   circuit decoder for the auxiliary edge generators, with a matrix
   correctness proof, yields sound and complete circuit relations at
   every width at least four. The relations are decoded auxiliary
   equations and primitive-gate recovery equations. The decoder parameter
-  is explicit; this is not an unconditional general-width theorem.
+  is explicit in that reusable theorem. `GeneralN/Decoding.agda` supplies
+  the actual circuit decoder and its symbolic-width matrix proof, and
+  `GeneralN/Presentation.agda` instantiates the theorem unconditionally.
+- `GeneralN/Generation.agda` identifies the image at these widths:
+  every charge-00 auxiliary matrix is realized by a circuit, and every
+  circuit matrix has charge 00. Its `synthesize` function is constructive.
 - `GeneralN/construct.py` constructs the needed sign pairs, even
   permutations, paired K blocks, and mixed `M_a X_bc K_abcd` operators
   using actual circuit gates. Exact tests cover widths four through six.
@@ -107,10 +129,12 @@ these kernel-checked proofs.
   construction on every Boolean input. It restores all non-target wires
   and assumes no initialized ancilla.
 
-The next step is the complete physical correctness proof for these
-general-width constructions. The three-wire finite case needs its own
-subgroup translation; its 135-frame diagnostic is in `ThreeQubit/`.
-The 178 two-wire equations do not constitute an all-width circuit calculus.
+The physical correctness proofs cover arbitrary width, every input state,
+and restoration of every borrowed wire. The resulting relations are a
+finite, effectively constructed family at each width: decoded auxiliary
+relations and circuit-generator recovery equations. They are not claimed
+to be a short, width-independent collection of local circuit identities.
+The separate three-wire finite translation uses 135 frame representatives.
 
 ## Reproduction
 
@@ -126,6 +150,8 @@ agda Examples/Groups/CCX+HH/TwoQubit/Presentation.agda
 agda Examples/Groups/CCX+HH/CircuitTranslation.agda
 agda Examples/Groups/CCX+HH/Subgroup/Presentation.agda
 agda Examples/Groups/CCX+HH/GeneralN/ControlledX.agda
+agda Examples/Groups/CCX+HH/GeneralN/Presentation.agda
+agda Examples/Groups/CCX+HH/Orthogonal.agda
 python3 -B Examples/Groups/CCX+HH/check_encoding.py --max-width 6
 python3 -B Examples/Groups/CCX+HH/check_subgroup.py
 python3 -B Examples/Groups/CCX+HH/GeneralN/construct.py --wires 4

@@ -9,6 +9,7 @@
 module Examples.Groups.CCX+HH.EncodingSemantics.Partition where
 
 open import Data.Fin.Base using (Fin)
+open import Data.Bool.Base using (Bool ; false ; true)
 open import Data.Nat.Base using (ℕ)
 open import Data.Sum.Base using (_⊎_ ; inj₁ ; inj₂ ; [_,_]′)
 open import Relation.Binary.PropositionalEquality
@@ -29,3 +30,7 @@ record Partition (m n : ℕ) : Set where
   ... | ()
 
 open Partition public
+
+select : ∀ {m n} → Partition m n → Bool → Emb m n
+select p false = left p
+select p true = right p

@@ -1,10 +1,15 @@
-# X, CX, CCX and H: Clément translation experiment
+# X, CX, CCX and H: complete Clément translations
 
 This development uses the scaled presentation in
 [`CCX+HH-TwoLevel/Scaled`](../CCX+HH-TwoLevel/Scaled/) and Clément's
 encode/decode argument from [`Real-Clifford+CH`](../Real-Clifford+CH/).
 No relations or presentation method from arXiv:2407.11152 are imported.
-The general-width completeness theorem is **still open**.
+The circuit theory is sound and complete at every width. The general
+case is `GeneralN/CircuitPresentation.agda`, with no decoder or
+semantic-correctness hypotheses; `Presentation.agda` combines it with
+the existing zero-, one-, two-, and three-wire results.
+`Orthogonal.agda` packages the same theorem as a group sub-presentation
+of `O(2^n, ℤ[1/√2])` at every width.
 
 ## Encoding
 
@@ -65,11 +70,14 @@ existing scaled two-level theorem and the shared `CCX+HH/Translation`.
 `ThreeQubit/Semantics.agda` provides independent gate-matrix semantics and
 the bridge from the encoder.
 
-The top-level soundness/completeness results use the direct matrix
-semantics in `Semantics.agda`; their statements have no outstanding
-decoding or semantic-correctness hypotheses at these fixed widths.
+The fixed-width soundness/completeness results use the direct matrix
+semantics in `Semantics.agda`. The uniform `Presentation.agda` interface
+uses `GeneralN/PhysicalSemantics.agda`: ordinary `2^n × 2^n` matrices
+defined by independent Boolean and Hadamard tensor actions.
+`GeneralN/SmallPhysicalSemantics.agda` identifies these with the direct
+basis-entry matrices on one, two and three wires.
 
-## Scope
+## The all-width construction
 
 `GeneralN/Action.agda` and `GeneralN/Presentation.agda` now prove the
 required four-state auxiliary subgroup presentation from Tables 1 and 2.
@@ -85,9 +93,31 @@ as physical circuits, reusing the borrowed-bit constructions in `CCX+HH`.
 At four wires the exact audit checks all 7,828 source plans and sampled
 fully expanded circuits. `GeneralN/Decoding.md` gives the derivation.
 
-The all-width physical decoder proof and semantic bridge are still being
-completed. The checked auxiliary presentation and executable decoder
-are not yet an unconditional general-width circuit completeness theorem.
+`GeneralN/EdgePlans.agda` proves every dyadic edge factorization, including
+coincident indices in the signed part. The physical constructions in
+`CCX+HH/GeneralN` realize sign pairs, double exchanges, paired K blocks
+and mixed atoms on the same wires. `GeneralN/HadamardEmbedding.agda`
+expands each physical `HH` into two `H` gates and proves preservation
+of the independently defined physical matrices at every positive width.
+`GeneralN/DecoderLift.agda` combines this with the four `IH` reductions;
+`GeneralN/Decoding.agda` supplies the unconditional decoder.
+
+`CircuitTranslation.agda` carries out the two Clément translations:
+first from the scaled source to its four-state stabilizer, then from
+that auxiliary theory to actual circuits. Instantiating it in
+`GeneralN/CircuitPresentation.agda` proves exact matrix soundness and
+completeness at every width at least four. `GeneralN/Generation.agda`
+also gives explicit synthesis for every source word fixing `00`, and
+proves that this condition is necessary for physical realizability.
+
+These are finite translated presentations at each fixed width. They
+are not a short width-independent list of local circuit identities.
+For `N=2^w`, let `g=N+C(N,2)+C(N,4)` and let `R` be the number of
+Table 1 instances. The raw rule count is
+`4(R + N + 2 + g + 1) + 4w - 3`: four-state translations and recovery
+equations, followed by the physical gate recovery equations. It is
+4,418,737 at four wires, before removing trivial or repeated equations.
+See `CCX+HH/GeneralN/relation_counts.py` for the source counting formula.
 
 `Certificates.agda` is only an auxiliary proof-certificate interface:
 its relation wraps derivations between encodings, and its denotation is
@@ -101,6 +131,9 @@ With Agda 2.8.0, standard-library 2.4 and EucDomain registered, run from
 the repository root:
 
 ```sh
+agda Examples/Groups/CCX+H/Presentation.agda
+agda Examples/Groups/CCX+H/Orthogonal.agda
+agda Examples/Groups/CCX+H/GeneralN/Generation.agda
 agda Examples/Groups/CCX+H/OneQubit.agda
 agda Examples/Groups/CCX+H/TwoQubit.agda
 agda Examples/Groups/CCX+H/ThreeQubit/Presentation.agda

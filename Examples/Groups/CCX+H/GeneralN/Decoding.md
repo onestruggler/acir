@@ -31,8 +31,8 @@ these data. Its relations are the stateful translations of source
 Tables 1 and 2, together with the Schreier-letter recovery equations.
 It proves soundness and completeness for the exact source matrices,
 and that the image consists exactly of source words fixing `00`.
-Thus this intermediate presentation is unconditional. The physical
-circuit realization of its generators is an additional step.
+The intermediate presentation and the physical circuit realization of
+every generator are now unconditional safe Agda proofs.
 
 ## Reducing every dyadic edge
 
@@ -137,14 +137,31 @@ wires. All these requirements hold for `n≥4` (`N≥16`). Unspecified basis
 states are routing space, not initialized ancillas; every claimed
 matrix acts correctly on the entire `2^n`-dimensional space.
 
-## Verification boundary
+## Formal verification
 
-The auxiliary presentation, four-state action, four `IH` reductions,
-generic factorization, and Table 1 support argument are safe Agda proofs.
-The physical all-width construction currently has executable exact
-checks in addition to the proved component lemmas under development.
-It is not yet packaged as an unconditional all-width physical circuit
-completeness theorem.
+The complete physical construction is proved in safe Agda. The key
+modules are `SignedEdges`, `EdgePlans`, `MixedAtom`, `SignPair`, `KPair`,
+and the physical constructions under `CCX+HH/GeneralN`. Matrix
+conjugation by a routed classical circuit is proved in
+`PermutationConjugation` and `PhysicalConjugation`; these proofs account
+for every spectator basis state.
+
+`HadamardEmbedding` proves that replacing physical `HH` by two physical
+`H` gates preserves the independent tensor semantics. `DecoderLift`
+then handles the dyadic edges and the four `IH` edges, and `Decoding`
+instantiates the decoder with no hypotheses. `CircuitPresentation`
+proves circuit soundness and completeness at every width at least four.
+`Generation` characterizes the physical image exactly as the source
+words fixing `00`, and returns circuits on the original wires.
+
+`PhysicalSemantics` exposes ordinary `2^n × 2^n` matrices and proves its
+bridge to the source's even-size representation. The transport changes
+only the spelling of the matrix dimension; it does not permute basis
+states. The top-level `CCX+H/Presentation.agda` combines this theorem
+with the previously proved small-width cases.
+
+The Python construction remains an independent exact audit of the
+formulas. It is not an input hypothesis to any of these theorems.
 
 Run the independent exact checks with:
 

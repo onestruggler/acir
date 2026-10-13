@@ -17,8 +17,8 @@ are involutions.  This file is a finite diagnostic, not an Agda proof or
 a complete circuit presentation.
 """
 
-from collections import deque
 from functools import lru_cache
+from heapq import heappop, heappush
 from itertools import combinations
 from math import factorial
 from pathlib import Path
@@ -113,15 +113,17 @@ def classical_macros():
 def exchange_words():
     """Conjugate the native (6,7) exchange to every pair of basis levels."""
     routes = {(6, 7): ()}
-    queue = deque([(6, 7)])
+    queue = [(0, (6, 7))]
     macros = classical_macros()
     while queue:
-        pair = queue.popleft()
+        cost, pair = heappop(queue)
+        if cost != len(routes[pair]):
+            continue
         for word, action in macros:
             image = tuple(sorted(action(i) for i in pair))
-            if image not in routes:
+            if image not in routes or cost + len(word) < len(routes[image]):
                 routes[image] = routes[pair] + word
-                queue.append(image)
+                heappush(queue, (cost + len(word), image))
     assert len(routes) == 28
     result = {}
     for pair, route in routes.items():
@@ -134,39 +136,19 @@ def exchange_words():
     return result
 
 
-def permutation_word(permutation, exchanges):
-    current = list(range(8))
-    word = ()
-    for i, target in enumerate(permutation):
-        if current[i] == target:
-            continue
-        a, b = current[i], target
-        word += exchanges[tuple(sorted((a, b)))]
-        current = [b if x == a else a if x == b else x for x in current]
-    assert tuple(current) == tuple(permutation)
-    return word
-
-
-def sign_four_word(support, exchanges):
-    support = tuple(sorted(support))
-    complement = tuple(i for i in range(8) if i not in support)
-    permutation = [None] * 8
-    for i, j in zip((1, 3, 5, 7), support):
-        permutation[i] = j
-    for i, j in zip((0, 2, 4, 6), complement):
-        permutation[i] = j
-    route = permutation_word(permutation, exchanges)
-    return tuple(reversed(route)) + ("HH01", "X0", "HH01") + route
-
-
 def stabilizer_generators():
     exchanges = exchange_words()
     witnesses = {}
     for i in range(7):
         witnesses[f"X[{i},{i + 1}]"] = exchanges[i, i + 1]
     for i in range(1, 8):
-        common = tuple(j for j in range(8) if j not in (0, i))[:3]
-        word = sign_four_word((0,) + common, exchanges) + sign_four_word((i,) + common, exchanges)
+        # Z_k and the exchange (0,i) disagree at exactly those two
+        # coordinates.  Their commutator is therefore M[0] M[i].
+        k = next(k for k in range(3) if i & (1 << k))
+        pair = "HH01" if k < 2 else "HH12"
+        z = (pair, f"X{k}", pair)
+        exchange = exchanges[0, i]
+        word = z + exchange + z + exchange
         for j, vector in enumerate(BASIS):
             expected = tuple(-x for x in vector) if j in (0, i) else vector
             assert apply_word(vector, word) == expected
