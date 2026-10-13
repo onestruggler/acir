@@ -9,18 +9,20 @@
 -- only the equations specific to its fragment.  Circuit.Base is a PRO:
 -- gates sit on the bottom wires and are shifted up, gates on disjoint
 -- wires commute, and a 0-ary gate is the same on every wire.  The
--- symmetry is added here as one more two-wire generator, the swap σ,
--- with the rules that make the PRO a PROP (Definition 2): σ is an
--- involution and is natural in every generator — σ-nat₂ at σ itself is
--- the Yang–Baxter equation.  With Circuit.Base's rules these present
--- the free PROP on the fragment's gates, as long as they have at most
--- two wires: Circuit.Base admits three-wire gates too, but there is no
--- σ-nat₃ here yet.
+-- symmetry is added here as one more two-wire generator, the swap,
+-- beside the fragment's gates, and Circuit.Prop supplies the rules
+-- that make the PRO a PROP (Definition 2): σ is an involution and is
+-- natural in every generator (σ-inv, σ-nat₁, σ-nat₂, σ-nat₃) — σ-nat₂
+-- at σ itself is the Yang–Baxter equation.  With Circuit.Base's rules
+-- these present the free PROP on the fragment's gates.
 --
 -- A fragment (Section 3) is given by its axioms: for each name r an
 -- arity and the two sides, circuits on that many wires.  The axiom
 -- holds on the bottom wires of every wider circuit (ax r k), and
--- Lift-Relation's cong↑ moves it up.
+-- Lift-Relation's cong↑ moves it up.  Circuit.Prop's Lift-To-Prop adds
+-- the swap rules to them: an axiom instance is srel (srel (ax r k)),
+-- a swap rule srel (σrel s).  The swap rules are structural, and a
+-- selection never removes one.
 --
 -- Independence of an axiom ρ (Definition 23) is that of
 -- Presentation.Independence at the selection Without ρ of every axiom
@@ -65,32 +67,16 @@ data PGate : ℕ → Set where
   ⌈_⌉  : Gate n → PGate n
   swap : PGate 2
 
-open import Circuit.Base PGate public
+-- The swap σ, its cycles σ[ k ], and the symmetry rules _Sym,_===_:
+-- read in diagram order, a k-wire gate on wires 0 … k − 1 followed by
+-- σ[ k ] (wire k moved down to wire 0) is σ[ k ] followed by the gate
+-- on wires 1 … k.  A 0-ary gate needs no naturality: ω↑=ω of
+-- Circuit.Base already makes it central.
+open import Circuit.Prop PGate swap public
 
 private
   variable
     w v : Circuit n
-
--- The swap of the bottom two wires.
-σ : Circuit (₂₊ n)
-σ = [ gate₂ swap ]ʷ
-
-------------------------------------------------------------------------
--- The symmetry rules
---
--- Read in diagram order: a one-wire gate on wire 0 followed by σ is σ
--- followed by the gate on wire 1, and a two-wire gate on wires 0–1
--- followed by σ ↑ • σ (wire 2 moved down to wire 0) is that
--- permutation followed by the gate on wires 1–2.  A 0-ary gate needs
--- no naturality: ω↑=ω of Circuit.Base already makes it central.
-
-infix 4 _Sym,_===_
-data _Sym,_===_ : (n : ℕ) → CRel n where
-  σ-inv  : (₂₊ n) Sym, σ • σ === ε
-  σ-nat₁ : (h : Gate 1) →
-           (₂₊ n) Sym, [ gate₁ ⌈ h ⌉ ]ʷ • σ === σ • [ gate₁ ⌈ h ⌉ ]ʷ ↑
-  σ-nat₂ : (h : PGate 2) →
-           (₃₊ n) Sym, [ gate₂ h ]ʷ • σ ↑ • σ === σ ↑ • σ • [ gate₂ h ]ʷ ↑
 
 ------------------------------------------------------------------------
 -- A fragment: named axioms, each with an arity and two sides
@@ -102,16 +88,12 @@ module Fragment
 
   infix 4 _SRel,_===_
   data _SRel,_===_ : (n : ℕ) → CRel n where
-    sym : {w v : Circuit n} → n Sym, w === v → n SRel, w === v
-    ax  : (r : Rule) (k : ℕ) →
-          (arity r + k) SRel, lhs r ↓ᵏ k === rhs r ↓ᵏ k
+    ax : (r : Rule) (k : ℕ) →
+         (arity r + k) SRel, lhs r ↓ᵏ k === rhs r ↓ᵏ k
 
-  open Lift-Relation _SRel,_===_ public
-
-  -- Derivability at width n.
-  infix 4 _⊢_≈_
-  _⊢_≈_ : (n : ℕ) → CRel n
-  n ⊢ w ≈ v = PB._≈_ (n VRel,_===_) w v
+  -- The swap rules and the structural rules on top; n ⊢ w ≈ v is
+  -- derivability at width n.
+  open Lift-To-Prop _SRel,_===_ public
 
   ----------------------------------------------------------------------
   -- Selections
@@ -119,8 +101,8 @@ module Fragment
   -- Uses ρ a: the axiom ρ occurs in the instance a.  Removing ρ
   -- removes its shifts as well.
   Uses : Rule → n VRel, w === v → Set
-  Uses ρ (srel (sym _))  = ⊥
-  Uses ρ (srel (ax r _)) = r ≡ ρ
+  Uses ρ (srel (σrel _))  = ⊥
+  Uses ρ (srel (srel (ax r _))) = r ≡ ρ
   Uses ρ (cong↑ a)       = Uses ρ a
   Uses ρ (comm₁ _ _)     = ⊥
   Uses ρ (comm₂ _ _)     = ⊥
@@ -134,8 +116,8 @@ module Fragment
   -- Within b a: every axiom of the fragment occurring in a has arity
   -- at most b.
   Within : ℕ → n VRel, w === v → Set
-  Within b (srel (sym _))  = ⊤
-  Within b (srel (ax r _)) = arity r ≤ b
+  Within b (srel (σrel _))  = ⊤
+  Within b (srel (srel (ax r _))) = arity r ≤ b
   Within b (cong↑ a)       = Within b a
   Within b (comm₁ _ _)     = ⊤
   Within b (comm₂ _ _)     = ⊤
@@ -148,8 +130,8 @@ module Fragment
 
   Within-mono : ∀ {b b'} → b ≤ b' → (a : n VRel, w === v) →
                 Within b a → Within b' a
-  Within-mono b≤b' (srel (sym _))  _ = tt
-  Within-mono b≤b' (srel (ax r _)) p = ≤-trans p b≤b'
+  Within-mono b≤b' (srel (σrel _))  _ = tt
+  Within-mono b≤b' (srel (srel (ax r _))) p = ≤-trans p b≤b'
   Within-mono b≤b' (cong↑ a)       p = Within-mono b≤b' a p
   Within-mono b≤b' (comm₁ _ _)     _ = tt
   Within-mono b≤b' (comm₂ _ _)     _ = tt
@@ -158,8 +140,8 @@ module Fragment
 
   -- Remark 14: an instance at width n has arity at most n.
   within : (a : n VRel, w === v) → Within n a
-  within (srel (sym _))  = tt
-  within (srel (ax r k)) = m≤m+n (arity r) k
+  within (srel (σrel _))  = tt
+  within (srel (srel (ax r k))) = m≤m+n (arity r) k
   within (cong↑ a)       = Within-mono (n≤1+n _) a (within a)
   within (comm₁ _ _)     = tt
   within (comm₂ _ _)     = tt
@@ -182,13 +164,13 @@ module Fragment
   -- The axiom ρ, at its own arity, is not derivable from the others.
   Independent-axiom : Rule → Set
   Independent-axiom ρ =
-    Independent ((arity ρ + 0) VRel,_===_) (Without ρ) (srel (ax ρ 0))
+    Independent ((arity ρ + 0) VRel,_===_) (Without ρ) (srel (srel (ax ρ 0)))
 
   -- So is it from the others of arity at most b; for b at least the
   -- arity of ρ, the two say the same (truncate).
   Independent-axiom-upto : ℕ → Rule → Set
   Independent-axiom-upto b ρ =
-    Independent ((arity ρ + 0) VRel,_===_) (Keep ρ b) (srel (ax ρ 0))
+    Independent ((arity ρ + 0) VRel,_===_) (Keep ρ b) (srel (srel (ax ρ 0)))
 
   upto⇒independent : ∀ {ρ b} → arity ρ ≤ b →
                      Independent-axiom-upto b ρ → Independent-axiom ρ

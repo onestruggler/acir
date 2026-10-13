@@ -26,11 +26,13 @@
 -- adjacent wires.
 --
 -- This module makes it a PROP.  One two-wire gate of the family,
--- Ex-gate, is designated the swap σ, and Lift-To-Prop adds to a
--- gate-specific relation the rules that make σ a symmetry, in the shape
--- of Clément's Remark 1: σ is an involution (σ-inv, his (g)), and it is
--- natural in every generator (σ-nat₁, σ-nat₂ and σ-nat₃, his (f) at a
--- generator).  A k-wire gate followed by σ[ k ], the cycle that carries
+-- Ex-gate, is designated the swap σ, and _Sym,_===_ states the rules
+-- that make σ a symmetry, in the shape of Clément's Remark 1: σ is an
+-- involution (σ-inv, his (g)), and it is natural in every generator
+-- (σ-nat₁, σ-nat₂ and σ-nat₃, his (f) at a generator).  They depend on
+-- the gates and the swap alone, so a model checks them once for every
+-- relation it is a model of; Lift-To-Prop adds them to a gate-specific
+-- relation.  A k-wire gate followed by σ[ k ], the cycle that carries
 -- wire k down past the bottom k wires, is σ[ k ] followed by the gate
 -- one wire up: σ[ k ] is Mac Lane's τ(k,1), and σ-nat_k his axiom (4)
 -- at f a generator and f′ the identity on one wire.  These are the
@@ -63,9 +65,10 @@
 -- Usage: open Circuit.Prop Gate Ex-gate in place of Circuit.Base Gate,
 -- state the family's relation _SRel,_===_ with no swap rule in it, and
 -- open Lift-To-Prop _SRel,_===_.  Its _VRel,_===_ is Circuit.Base's
--- Lift-Relation over _Prop,_===_, the swap rules together with
--- _SRel,_===_: an instance r of the family's relation is srel (srel r),
--- and a swap rule srel σ-inv, srel (σ-nat₁ h), and so on.
+-- Lift-Relation over _Prop,_===_, the swap rules (σrel) together with
+-- _SRel,_===_ (srel): an instance r of the family's relation is
+-- srel (srel r), and a swap rule s is srel (σrel s) — sym-rule s as an
+-- equation.
 --
 -- References
 --
@@ -135,26 +138,31 @@ private
 ------------------------------------------------------------------------
 -- The swap rules
 
+infix 4 _Sym,_===_
+data _Sym,_===_ : (n : ℕ) → CRel n where
+
+  -- The swap is an involution (Clément's (g)).
+  σ-inv  : (₂₊ n) Sym, σ • σ === ε
+
+  -- ... natural in every generator (his (f) at a generator): a k-wire
+  -- gate followed by σ[ k ] is σ[ k ] followed by the gate one wire
+  -- up.  At the swap itself, σ-nat₂ is the Yang–Baxter equation.
+  σ-nat₁ : (h : Gate 1) → (₂₊ n) Sym,
+           [ gate₁ h ]ʷ • σ[ 1 ] === σ[ 1 ] • [ gate₁ h ]ʷ ↑
+  σ-nat₂ : (h : Gate 2) → (₃₊ n) Sym,
+           [ gate₂ h ]ʷ • σ[ 2 ] === σ[ 2 ] • [ gate₂ h ]ʷ ↑
+  σ-nat₃ : (h : Gate 3) → (₄₊ n) Sym,
+           [ gate₃ h ]ʷ • σ[ 3 ] === σ[ 3 ] • [ gate₃ h ]ʷ ↑
+
+------------------------------------------------------------------------
+-- A family's relation, with the swap rules and the structural rules
+
 module Lift-To-Prop (_SRel,_===_ : (n : ℕ) → CRel n) where
 
   infix 4 _Prop,_===_
   data _Prop,_===_ : (n : ℕ) → CRel n where
-
-    -- The swap is an involution (Clément's (g)).
-    σ-inv  : (₂₊ n) Prop, σ • σ === ε
-
-    -- ... natural in every generator (his (f) at a generator): a k-wire
-    -- gate followed by σ[ k ] is σ[ k ] followed by the gate one wire
-    -- up.  At the swap itself, σ-nat₂ is the Yang–Baxter equation.
-    σ-nat₁ : (h : Gate 1) → (₂₊ n) Prop,
-             [ gate₁ h ]ʷ • σ[ 1 ] === σ[ 1 ] • [ gate₁ h ]ʷ ↑
-    σ-nat₂ : (h : Gate 2) → (₃₊ n) Prop,
-             [ gate₂ h ]ʷ • σ[ 2 ] === σ[ 2 ] • [ gate₂ h ]ʷ ↑
-    σ-nat₃ : (h : Gate 3) → (₄₊ n) Prop,
-             [ gate₃ h ]ʷ • σ[ 3 ] === σ[ 3 ] • [ gate₃ h ]ʷ ↑
-
-    -- ... and the family's own relation.
-    srel   : n SRel, w === v → n Prop, w === v
+    σrel : n Sym, w === v → n Prop, w === v
+    srel : n SRel, w === v → n Prop, w === v
 
   -- The structural rules of the PRO on top: cong↑, comm₁, comm₂, comm₃
   -- and ω↑=ω.  Its srel embeds _Prop,_===_; Agda tells the two srels
@@ -169,6 +177,10 @@ module Lift-To-Prop (_SRel,_===_ : (n : ℕ) → CRel n) where
   open PB using (refl ; sym ; trans ; cong ; assoc ; left-unit ; right-unit
                 ; axiom)
 
+  -- A swap rule, as an equation.
+  sym-rule : n Sym, w === v → n ⊢ w ≈ v
+  sym-rule s = axiom (srel (σrel s))
+
   private
     module Reasoning (n : ℕ) = SR (PP.word-setoid (n VRel,_===_))
 
@@ -176,10 +188,10 @@ module Lift-To-Prop (_SRel,_===_ : (n : ℕ) → CRel n) where
   -- The swap
 
   σ-invol : (₂₊ n) ⊢ σ • σ ≈ ε
-  σ-invol = axiom (srel σ-inv)
+  σ-invol = sym-rule σ-inv
 
   yang-baxter : (₃₊ n) ⊢ σ • σ ↑ • σ ≈ σ ↑ • σ • σ ↑
-  yang-baxter = trans (axiom (srel (σ-nat₂ Ex-gate))) assoc
+  yang-baxter = trans (sym-rule (σ-nat₂ Ex-gate)) assoc
 
   ----------------------------------------------------------------------
   -- Scalars
@@ -254,7 +266,7 @@ module Lift-To-Prop (_SRel,_===_ : (n : ℕ) → CRel n) where
       [ gate₁ h ]ʷ • c ↑ • σ      ≈⟨ sym assoc ⟩
       ([ gate₁ h ]ʷ • c ↑) • σ    ≈⟨ cong (sym (comm-gate₁-w↑ h c)) refl ⟩
       (c ↑ • [ gate₁ h ]ʷ) • σ    ≈⟨ assoc ⟩
-      c ↑ • [ gate₁ h ]ʷ • σ      ≈⟨ cong refl (axiom (srel (σ-nat₁ h))) ⟩
+      c ↑ • [ gate₁ h ]ʷ • σ      ≈⟨ cong refl (sym-rule (σ-nat₁ h)) ⟩
       c ↑ • σ • [ gate₁ h ]ʷ ↑    ≈⟨ sym assoc ⟩
       (c ↑ • σ) • [ gate₁ h ]ʷ ↑  ∎
       where open Reasoning (₂₊ m)
@@ -267,7 +279,7 @@ module Lift-To-Prop (_SRel,_===_ : (n : ℕ) → CRel n) where
   natg₁ : (x : Gen 1) →
           (₂₊ n) ⊢ [ x ↧ᵏ ₁₊ n ]ʷ • σ[ 1 ] ≈ σ[ 1 ] • [ x ↧ᵏ n ]ʷ ↑
   natg₁ (gate₀ h)   = gate₀-σ 1 h
-  natg₁ (gate₁ h)   = axiom (srel (σ-nat₁ h))
+  natg₁ (gate₁ h)   = sym-rule (σ-nat₁ h)
   natg₁ (gate₀ h ↥) =
     trans (cong (ω-up h 1) refl)
     (trans (ω-σ h) (cong refl (sym (ω-up h 2))))
@@ -276,7 +288,7 @@ module Lift-To-Prop (_SRel,_===_ : (n : ℕ) → CRel n) where
           (₃₊ n) ⊢ [ x ↧ᵏ ₁₊ n ]ʷ • σ[ 2 ] ≈ σ[ 2 ] • [ x ↧ᵏ n ]ʷ ↑
   natg₂ (gate₀ h) = gate₀-σ 2 h
   natg₂ (gate₁ h) = gate₁-σ σ[ 1 ] h
-  natg₂ (gate₂ h) = axiom (srel (σ-nat₂ h))
+  natg₂ (gate₂ h) = sym-rule (σ-nat₂ h)
   natg₂ (x ↥)     = σ-shift σ[ 1 ] _ _ (natg₁ x)
 
   natg₃ : (x : Gen 3) →
@@ -295,14 +307,14 @@ module Lift-To-Prop (_SRel,_===_ : (n : ℕ) → CRel n) where
     (σ ↑ ↑ • [ gate₂ h ]ʷ) • σ ↑ • σ
       ≈⟨ assoc ⟩
     σ ↑ ↑ • [ gate₂ h ]ʷ • σ ↑ • σ
-      ≈⟨ cong refl (axiom (srel (σ-nat₂ h))) ⟩
+      ≈⟨ cong refl (sym-rule (σ-nat₂ h)) ⟩
     σ ↑ ↑ • (σ ↑ • σ) • [ gate₂ h ]ʷ ↑
       ≈⟨ sym assoc ⟩
     (σ ↑ ↑ • σ ↑ • σ) • [ gate₂ h ]ʷ ↑
       ≈⟨ cong (sym assoc) refl ⟩
     ((σ ↑ ↑ • σ ↑) • σ) • [ gate₂ h ]ʷ ↑ ∎
     where open Reasoning (₄₊ n)
-  natg₃ (gate₃ h) = axiom (srel (σ-nat₃ h))
+  natg₃ (gate₃ h) = sym-rule (σ-nat₃ h)
   natg₃ (x ↥)     = σ-shift σ[ 2 ] _ _ (natg₂ x)
 
   ----------------------------------------------------------------------

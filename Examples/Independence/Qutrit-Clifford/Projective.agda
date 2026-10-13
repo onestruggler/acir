@@ -66,6 +66,7 @@ module Sep-SS′ where
     (check-some (λ _ → tt) _ _ tt)
     (λ { H-gate → check-some (λ _ → tt) _ _ tt ; S-gate → check-some (λ _ → tt) _ _ tt })
     (λ { ⌈ CX-gate ⌉ → check-some (λ _ → tt) _ _ tt ; swap → check-some (λ _ → tt) _ _ tt })
+    (λ ())
     using (module Separate)
 
   open Separate arity lhs rhs SS′ 1

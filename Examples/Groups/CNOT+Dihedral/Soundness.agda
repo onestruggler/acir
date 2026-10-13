@@ -112,12 +112,12 @@ axiom-sound (srel (srel R₁₂)) = by-relator r12ˡ r12ʳ p12ˡ p12ʳ m12
 axiom-sound (srel (srel R₁₃)) = by-relator r13ˡ r13ʳ p13ˡ p13ʳ m13
 -- The laws of the symmetry (Circuit.Prop): σ-nat₂ at SWAP is the
 -- braid relation.
-axiom-sound (srel σ-inv)                = by-relator soˡ soʳ psoˡ p4ʳ  mso
-axiom-sound (srel (σ-nat₂ SWAP-gate))   = by-relator sbˡ sbʳ psbˡ psbʳ msb
-axiom-sound (srel (σ-nat₁ X-gate))      = by-relator sXˡ sXʳ psXˡ psXʳ msX
-axiom-sound (srel (σ-nat₁ T-gate))      = by-relator sTˡ sTʳ psTˡ psTʳ msT
-axiom-sound (srel (σ-nat₂ CNOT-gate))   = by-relator sCˡ sCʳ psCˡ psCʳ msC
-axiom-sound (srel (σ-nat₃ ()))
+axiom-sound (srel (σrel σ-inv))                = by-relator soˡ soʳ psoˡ p4ʳ  mso
+axiom-sound (srel (σrel (σ-nat₂ SWAP-gate)))   = by-relator sbˡ sbʳ psbˡ psbʳ msb
+axiom-sound (srel (σrel (σ-nat₁ X-gate)))      = by-relator sXˡ sXʳ psXˡ psXʳ msX
+axiom-sound (srel (σrel (σ-nat₁ T-gate)))      = by-relator sTˡ sTʳ psTˡ psTʳ msT
+axiom-sound (srel (σrel (σ-nat₂ CNOT-gate)))   = by-relator sCˡ sCʳ psCˡ psCʳ msC
+axiom-sound (srel (σrel (σ-nat₃ ())))
 -- The structural rules.
 axiom-sound (cong↑ r)          = cong↑-sound (axiom-sound r)
 axiom-sound (comm₁ h g)        = comm₁-sound h g

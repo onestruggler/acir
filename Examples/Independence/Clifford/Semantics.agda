@@ -37,6 +37,7 @@ open Symmetry
   (check 0 refl _ _ tt)
   (λ { H-gate → check 0 refl _ _ tt ; S-gate → check 0 refl _ _ tt })
   (λ { ⌈ CX-gate ⌉ → check 0 refl _ _ tt ; swap → check 0 refl _ _ tt })
+  (λ ())
   using (module Theory)
 
 open Theory arity lhs rhs

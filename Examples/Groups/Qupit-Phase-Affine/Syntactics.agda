@@ -89,7 +89,8 @@ private module C = Circuit.Prop Gate SWAP-gate
 
 open C public
   using ( Gen ; gate₀ ; gate₁ ; gate₂ ; Circuit
-        ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_ ; _↓ᵏ_ ; _↧ᵏ_ )
+        ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_ ; _↓ᵏ_ ; _↧ᵏ_
+        ; _Sym,_===_ ; σ-inv ; σ-nat₁ ; σ-nat₂ ; σ-nat₃ )
 
 ------------------------------------------------------------------------
 -- The generators as circuits
@@ -234,14 +235,15 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
 -- The full relation: the laws of the symmetry (Circuit.Prop) and the
 -- structural rules (Circuit.Base) on top
 --
--- An instance r of the rules above is srel (srel r); one of the laws
--- of the symmetry srel σ-inv, srel (σ-nat₁ X-gate), and so on.  Agda
+-- An instance r of the rules above is srel (srel r); one s of the
+-- laws of the symmetry is srel (σrel s) — srel (σrel σ-inv), srel (sym
+-- (σ-nat₁ X-gate)), and so on — and sym-rule s as an equation.  Agda
 -- tells the two srels apart by type.
 
 private module LP = C.Lift-To-Prop _SRel,_===_
 
 open LP public
-  using ( _Prop,_===_ ; σ-inv ; σ-nat₁ ; σ-nat₂ ; σ-nat₃
+  using ( _Prop,_===_ ; σrel ; sym-rule
         ; srel ; cong↑ ; comm₁ ; comm₂ ; comm₃ ; ω↑=ω ; lemma-cong↑
         ; comm-gate₁-w↑ ; comm-gate₂-w↑↑ ; _VRel,_===_ )
 
@@ -268,19 +270,19 @@ swap-braid : (₃₊ n) ⊢ SWAP • SWAP ↑ • SWAP ≈ SWAP ↑ • SWAP •
 swap-braid = LP.yang-baxter
 
 swap-X : (₂₊ n) ⊢ X • SWAP ≈ SWAP • X ↑
-swap-X = PB.axiom (srel (σ-nat₁ X-gate))
+swap-X = sym-rule (σ-nat₁ X-gate)
 
 swap-M : (a : F) .(nz : a ≢ 0F) → (₂₊ n) ⊢ M a nz • SWAP ≈ SWAP • M a nz ↑
-swap-M a nz = PB.axiom (srel (σ-nat₁ (M-gate a nz)))
+swap-M a nz = sym-rule (σ-nat₁ (M-gate a nz))
 
 swap-Z : .(h : 1 ≤ lv) → (₂₊ n) ⊢ Z h • SWAP ≈ SWAP • Z h ↑
-swap-Z h = PB.axiom (srel (σ-nat₁ (Z-gate h)))
+swap-Z h = sym-rule (σ-nat₁ (Z-gate h))
 
 swap-S : .(h : 2 ≤ lv) → (₂₊ n) ⊢ S h • SWAP ≈ SWAP • S h ↑
-swap-S h = PB.axiom (srel (σ-nat₁ (S-gate h)))
+swap-S h = sym-rule (σ-nat₁ (S-gate h))
 
 swap-T : .(h : 3 ≤ lv) → (₂₊ n) ⊢ T h • SWAP ≈ SWAP • T h ↑
-swap-T h = PB.axiom (srel (σ-nat₁ (T-gate h)))
+swap-T h = sym-rule (σ-nat₁ (T-gate h))
 
 swap-CX : (₃₊ n) ⊢ CX • SWAP ↑ • SWAP ≈ SWAP ↑ • SWAP • CX ↑
-swap-CX = PB.trans (PB.axiom (srel (σ-nat₂ CX-gate))) PB.assoc
+swap-CX = PB.trans (sym-rule (σ-nat₂ CX-gate)) PB.assoc

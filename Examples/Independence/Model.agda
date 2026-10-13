@@ -117,7 +117,7 @@ module Separators
     (⟦_⟧₀ : ∀ {n} → Gen n → Monoid.Carrier (mon n))
     where
 
-    open CI.Structural _SRel,_===_ using (module Soundness)
+    open CI.Structural _Prop,_===_ using (module Soundness)
     open Soundness (Keep ρ b) (λ p → p) mon ⟦_⟧₀ public
 
     module Separates
@@ -140,10 +140,10 @@ module Separators
       where
 
       private
-        sound-srel : (s : n SRel, w === v) → Keep ρ b (srel s) →
+        sound-srel : (s : n Prop, w === v) → Keep ρ b (srel s) →
                      ⟦ w ⟧ ≈ₘ ⟦ v ⟧
-        sound-srel (sym s)  _               = sound-sym s
-        sound-srel (ax r k) (r≢ρ , ar≤b)   = sound-ax r k r≢ρ ar≤b
+        sound-srel (σrel s)         _             = sound-sym s
+        sound-srel (srel (ax r k)) (r≢ρ , ar≤b) = sound-ax r k r≢ρ ar≤b
 
       open Rules sound-srel sound-cong↑
         (λ h g _ → sound-comm₁ h g) (λ h g _ → sound-comm₂ h g)
@@ -156,7 +156,7 @@ module Separators
                   ¬ (⟦ lhs ρ ↓ᵏ 0 ⟧ ≈ₘ ⟦ rhs ρ ↓ᵏ 0 ⟧) →
                   Independent-axiom ρ
       separates ar≤b sep =
-        upto⇒independent ar≤b (independent (srel (ax ρ 0)) sep)
+        upto⇒independent ar≤b (independent (srel (srel (ax ρ 0))) sep)
 
   ----------------------------------------------------------------------
   -- Weighted models: one commutative monoid at every width
@@ -205,7 +205,8 @@ module Separators
           sound-sym : (s : n Sym, w === v) → ⟦ w ⟧ ≈ ⟦ v ⟧
           sound-sym σ-inv      = wt-σ
           sound-sym (σ-nat₁ h) = comm _ _
-          sound-sym (σ-nat₂ h) = ≈-trans (comm _ _) (assoc _ _ _)
+          sound-sym (σ-nat₂ h) = comm _ _
+          sound-sym (σ-nat₃ h) = comm _ _
 
           sound-ax : ∀ r k → ¬ r ≡ ρ → arity r ≤ b →
                      ⟦ lhs r ↓ᵏ k ⟧ ≈ ⟦ rhs r ↓ᵏ k ⟧

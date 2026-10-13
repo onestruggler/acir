@@ -63,7 +63,7 @@ private
   σσ = sym-rule σ-inv
 
   Tσ : (₂₊ n) ⊢ T • σ ≈ σ • T ↑
-  Tσ = sym-rule (σ-nat₁ T-gate)
+  Tσ = sym-rule (σ-nat₁ ⌈ T-gate ⌉)
 
   X↑X : (₂₊ n) ⊢ X ↑ • X ≈ X • X ↑
   X↑X = PB.axiom (comm₁ ⌈ X-gate ⌉ (gate₁ ⌈ X-gate ⌉))

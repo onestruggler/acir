@@ -354,26 +354,28 @@ module Functor
   ctrl-srel (Src.ax42 h')   = ⊥-elim-irr (no3 h')
 
   -- The laws of the symmetry (Circuit.Prop's) hold of the images.
-  ctrl-prop : {w v : Src.Circuit n} → n Src.Prop, w === v → (₁₊ n) ⊢ ctrl* w ≈ ctrl* v
-  ctrl-prop Src.σ-inv = lift swap-order
-  ctrl-prop {₃₊ n} (Src.σ-nat₂ Src.SWAP-gate) =
+  ctrl-sym : {w v : Src.Circuit n} → n Src.Sym, w === v → (₁₊ n) ⊢ ctrl* w ≈ ctrl* v
+  ctrl-sym Src.σ-inv = lift swap-order
+  ctrl-sym {₃₊ n} (Src.σ-nat₂ Src.SWAP-gate) =
     trans (trans (back _ (front _ (c↑ SWAP)))
       (trans (lift swap-braid) (sym (cong (c↑ SWAP) (back _ (c↑ SWAP))))))
       (sym assoc)
     where open Width (₄₊ n)
-  ctrl-prop {₂₊ n} (Src.σ-nat₁ Src.X-gate) = trans (lift swap-X) (back _ (sym (c↑ X)))
+  ctrl-sym {₂₊ n} (Src.σ-nat₁ Src.X-gate) = trans (lift swap-X) (back _ (sym (c↑ X)))
     where open Width (₃₊ n)
-  ctrl-prop {₂₊ n} (Src.σ-nat₁ (Src.M-gate a nz)) = trans (lift (swap-M a nz)) (back _ (sym (c↑ (M a nz))))
+  ctrl-sym {₂₊ n} (Src.σ-nat₁ (Src.M-gate a nz)) = trans (lift (swap-M a nz)) (back _ (sym (c↑ (M a nz))))
     where open Width (₃₊ n)
-  ctrl-prop (Src.σ-nat₁ (Src.Z-gate _)) = Z-sw
-  ctrl-prop (Src.σ-nat₁ (Src.S-gate h')) = S-sw h'
-  ctrl-prop (Src.σ-nat₁ (Src.T-gate h')) = ⊥-elim-irr (no3 h')
-  ctrl-prop {₃₊ n} (Src.σ-nat₂ Src.CX-gate) =
+  ctrl-sym (Src.σ-nat₁ (Src.Z-gate _)) = Z-sw
+  ctrl-sym (Src.σ-nat₁ (Src.S-gate h')) = S-sw h'
+  ctrl-sym (Src.σ-nat₁ (Src.T-gate h')) = ⊥-elim-irr (no3 h')
+  ctrl-sym {₃₊ n} (Src.σ-nat₂ Src.CX-gate) =
     trans (trans (back _ (front _ (c↑ SWAP)))
       (trans (lift swap-CX) (sym (cong (c↑ SWAP) (back _ (c↑ CX))))))
       (sym assoc)
     where open Width (₄₊ n)
-  ctrl-prop (Src.σ-nat₃ ())
+  ctrl-sym (Src.σ-nat₃ ())
+  ctrl-prop : {w v : Src.Circuit n} → n Src.Prop, w === v → (₁₊ n) ⊢ ctrl* w ≈ ctrl* v
+  ctrl-prop (Src.σrel s)  = ctrl-sym s
   ctrl-prop (Src.srel r) = ctrl-srel r
 
   ctrl-ax : {w v : Src.Circuit n} → n Src.VRel, w === v → (₁₊ n) ⊢ ctrl* w ≈ ctrl* v

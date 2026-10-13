@@ -14,8 +14,8 @@
 --   (⟦↑⟧), so cong↑ is sound;
 -- * the comm rules and ω↑=ω are the tensor calculus, so they hold for
 --   every valuation;
--- * the symmetry rules are owed for the swap and each gate, on two or
---   three wires.
+-- * the symmetry rules are owed for the swap and each gate, on two,
+--   three or four wires.
 --
 -- Theory turns this into soundness of a fragment: given its axioms on
 -- their own wires, every derivable equation holds, at every width.
@@ -247,8 +247,11 @@ module Laws
     (nat₁-ok : (h : Gate 1) →
                ⟦ [ gate₁ {1} ⌈ h ⌉ ]ʷ • σ {0} ⟧ ≈ ⟦ σ {0} • [ gate₁ {0} ⌈ h ⌉ ]ʷ ↑ ⟧)
     (nat₂-ok : (h : PGate 2) →
-               ⟦ [ gate₂ {1} h ]ʷ • σ {0} ↑ • σ {1} ⟧ ≈
-               ⟦ σ {0} ↑ • σ {1} • [ gate₂ {0} h ]ʷ ↑ ⟧)
+               ⟦ [ gate₂ {1} h ]ʷ • σ[_] {0} 2 ⟧ ≈
+               ⟦ σ[_] {0} 2 • [ gate₂ {0} h ]ʷ ↑ ⟧)
+    (nat₃-ok : (h : Gate 3) →
+               ⟦ [ gate₃ {1} ⌈ h ⌉ ]ʷ • σ[_] {0} 3 ⟧ ≈
+               ⟦ σ[_] {0} 3 • [ gate₃ {0} ⌈ h ⌉ ]ʷ ↑ ⟧)
     where
 
     private
@@ -262,11 +265,13 @@ module Laws
             (≈-sym' {s = ⟦ v ⟧} {embs {k} {n} ⟦ r ⟧} (⟦↓≡⟧ r er)))
 
     sym-sound : n Sym, w === v → ⟦ w ⟧ ≈ ⟦ v ⟧
-    sym-sound σ-inv      = lift (σ • σ) ε refl refl σσ-ok
-    sym-sound (σ-nat₁ h) = lift ([ gate₁ ⌈ h ⌉ ]ʷ • σ) (σ • [ gate₁ ⌈ h ⌉ ]ʷ ↑)
-                                refl refl (nat₁-ok h)
-    sym-sound (σ-nat₂ h) = lift ([ gate₂ h ]ʷ • σ ↑ • σ) (σ ↑ • σ • [ gate₂ h ]ʷ ↑)
-                                refl refl (nat₂-ok h)
+    sym-sound σ-inv          = lift (σ • σ) ε refl refl σσ-ok
+    sym-sound (σ-nat₁ ⌈ h ⌉) = lift ([ gate₁ ⌈ h ⌉ ]ʷ • σ) (σ • [ gate₁ ⌈ h ⌉ ]ʷ ↑)
+                                    refl refl (nat₁-ok h)
+    sym-sound (σ-nat₂ h)     = lift ([ gate₂ h ]ʷ • σ[ 2 ]) (σ[ 2 ] • [ gate₂ h ]ʷ ↑)
+                                    refl refl (nat₂-ok h)
+    sym-sound (σ-nat₃ ⌈ h ⌉) = lift ([ gate₃ ⌈ h ⌉ ]ʷ • σ[ 3 ]) (σ[ 3 ] • [ gate₃ ⌈ h ⌉ ]ʷ ↑)
+                                    refl refl (nat₃-ok h)
 
     --------------------------------------------------------------------
     -- Soundness of a fragment
@@ -280,8 +285,8 @@ module Laws
       open Fragment arity lhs rhs
 
       vrel-sound : n VRel, w === v → ⟦ w ⟧ ≈ ⟦ v ⟧
-      vrel-sound (srel (sym s))  = sym-sound s
-      vrel-sound (srel (ax r k)) = lift (lhs r) (rhs r) refl refl (ax-ok r)
+      vrel-sound (srel (σrel s))         = sym-sound s
+      vrel-sound (srel (srel (ax r k))) = lift (lhs r) (rhs r) refl refl (ax-ok r)
       vrel-sound (cong↑ {w = w} {v = v} a) = cong↑-sound {w = w} {v} (vrel-sound a)
       vrel-sound (comm₁ h g)     = comm₁-sound h g
       vrel-sound (comm₂ h g)     = comm₂-sound h g

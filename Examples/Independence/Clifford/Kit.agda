@@ -23,7 +23,7 @@ open import Notations using (₁₊ ; ₂₊ ; ₃₊)
 
 open import Examples.Independence.Clifford.Syntactics
 import Examples.Independence.Reasoning Gate as R
-open R.Theory arity lhs rhs using (ax-at ; sym-rule)
+open R.Theory arity lhs rhs using (ax-at)
 
 private
   variable
@@ -102,8 +102,8 @@ I⁼ {n} = eqnʷ (CXₗ ∷ CXₗ ↥ ∷ σₗ ∷ CXₗ ↥ ∷ σₗ ∷ []) 
 σσ⁼ = eqnʷ (σₗ ∷ σₗ ∷ []) [] (sym-rule σ-inv) refl refl
 
 σH⁼ σS⁼ : Eqn (₂₊ n)
-σH⁼ = eqnʷ (Hₗ ∷ σₗ ∷ []) (σₗ ∷ Hₗ ↥ ∷ []) (sym-rule (σ-nat₁ H-gate)) refl refl
-σS⁼ = eqnʷ (Sₗ ∷ σₗ ∷ []) (σₗ ∷ Sₗ ↥ ∷ []) (sym-rule (σ-nat₁ S-gate)) refl refl
+σH⁼ = eqnʷ (Hₗ ∷ σₗ ∷ []) (σₗ ∷ Hₗ ↥ ∷ []) (sym-rule (σ-nat₁ ⌈ H-gate ⌉)) refl refl
+σS⁼ = eqnʷ (Sₗ ∷ σₗ ∷ []) (σₗ ∷ Sₗ ↥ ∷ []) (sym-rule (σ-nat₁ ⌈ S-gate ⌉)) refl refl
 
 σCX⁼ σσσ⁼ : Eqn (₃₊ n)
 σCX⁼ = eqnʷ (CXₗ ∷ σₗ ↥ ∷ σₗ ∷ []) (σₗ ↥ ∷ σₗ ∷ CXₗ ↥ ∷ [])

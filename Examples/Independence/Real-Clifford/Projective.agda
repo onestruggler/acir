@@ -46,6 +46,7 @@ module Sep-CF where
     (check-some (λ _ → tt) _ _ tt)
     (λ { H-gate → check-some (λ _ → tt) _ _ tt ; Z-gate → check-some (λ _ → tt) _ _ tt })
     (λ { ⌈ CX-gate ⌉ → check-some (λ _ → tt) _ _ tt ; swap → check-some (λ _ → tt) _ _ tt })
+    (λ ())
     using (module Separate)
 
   open Separate arity lhs rhs CF 2
@@ -82,6 +83,7 @@ module Sep-CZr where
     (check-some (λ _ → tt) _ _ tt)
     (λ { H-gate → check-some (λ _ → tt) _ _ tt ; Z-gate → check-some (λ _ → tt) _ _ tt })
     (λ { ⌈ CX-gate ⌉ → check-some (λ _ → tt) _ _ tt ; swap → check-some (λ _ → tt) _ _ tt })
+    (λ ())
     using (module Separate)
 
   open Separate arity lhs rhs CZr 2

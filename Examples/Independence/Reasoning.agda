@@ -4,10 +4,11 @@
 -- Equational reasoning in a fragment's theory
 --
 -- After Examples.Groups.CNOT+Dihedral.Reasoning: an axiom on the bottom
--- wires of a circuit of any width, the symmetry rules, lifting a
--- derivation one wire up, and at a fixed width the setoid reasoning of
--- the congruence with rewriting at the front, the back or in the middle
--- of a word, and re-bracketing by the associativity solver.
+-- wires of a circuit of any width, lifting a derivation one wire up,
+-- and at a fixed width the setoid reasoning of the congruence with
+-- rewriting at the front, the back or in the middle of a word, and
+-- re-bracketing by the associativity solver.  A symmetry rule is
+-- Circuit.Prop's sym-rule, which every fragment exports.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -41,11 +42,7 @@ module Theory
 
   -- The axiom r on the bottom wires of a circuit of arity r + n.
   ax-at : (r : Rule) (n : ℕ) → (arity r + n) ⊢ lhs r ↓ᵏ n ≈ rhs r ↓ᵏ n
-  ax-at r n = PB.axiom (srel (ax r n))
-
-  -- A symmetry rule.
-  sym-rule : n Sym, w === v → n ⊢ w ≈ v
-  sym-rule s = PB.axiom (srel (sym s))
+  ax-at r n = PB.axiom (srel (srel (ax r n)))
 
   -- A derivation, one wire up.
   lift : n ⊢ w ≈ v → (₁₊ n) ⊢ w ↑ ≈ v ↑

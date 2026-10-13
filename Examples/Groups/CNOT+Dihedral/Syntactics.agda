@@ -63,7 +63,8 @@ private module SC = Circuit.Prop Gate SWAP-gate
 
 open SC public
   using ( Gen ; gate₀ ; gate₁ ; gate₂ ; Circuit
-        ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_ ; _↓ᵏ_ ; _↧ᵏ_ )
+        ; _↥ ; _↑ ; _↓ ; _↥ᵏ_ ; _↑ᵏ_ ; _↓ᵏ_ ; _↧ᵏ_
+        ; _Sym,_===_ ; σ-inv ; σ-nat₁ ; σ-nat₂ ; σ-nat₃ )
 
 pattern ω-gen    = gate₀ ω-gate
 pattern X-gen    = gate₁ X-gate
@@ -154,14 +155,15 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
 -- The full relation: the laws of the symmetry (Circuit.Prop) and the
 -- structural rules (Circuit.Base) on top
 --
--- An instance r of Figure 1 is srel (srel r); one of the laws of the
--- symmetry srel σ-inv, srel (σ-nat₁ X-gate), and so on.  Agda tells
+-- An instance r of Figure 1 is srel (srel r); one s of the laws of
+-- the symmetry is srel (σrel s) — srel (σrel σ-inv), srel (σrel (σ-nat₁
+-- X-gate)), and so on — and sym-rule s as an equation.  Agda tells
 -- the two srels apart by type.
 
 private module LP = SC.Lift-To-Prop _SRel,_===_
 
 open LP public
-  using ( _Prop,_===_ ; σ-inv ; σ-nat₁ ; σ-nat₂ ; σ-nat₃
+  using ( _Prop,_===_ ; σrel ; sym-rule
         ; srel ; cong↑ ; comm₁ ; comm₂ ; comm₃ ; ω↑=ω ; lemma-cong↑
         ; comm-gate₁-w↑ ; comm-gate₂-w↑↑ ; _VRel,_===_ )
 
@@ -191,13 +193,13 @@ swap-braid : (₃₊ n) ⊢ SWAP • SWAP ↑ • SWAP ≈ SWAP ↑ • SWAP •
 swap-braid = LP.yang-baxter
 
 swap-X : (₂₊ n) ⊢ X • SWAP ≈ SWAP • X ↑
-swap-X = PB.axiom (srel (σ-nat₁ X-gate))
+swap-X = sym-rule (σ-nat₁ X-gate)
 
 swap-T : (₂₊ n) ⊢ T • SWAP ≈ SWAP • T ↑
-swap-T = PB.axiom (srel (σ-nat₁ T-gate))
+swap-T = sym-rule (σ-nat₁ T-gate)
 
 swap-CNOT : (₃₊ n) ⊢ CNOT • SWAP ↑ • SWAP ≈ SWAP ↑ • SWAP • CNOT ↑
-swap-CNOT = PB.trans (PB.axiom (srel (σ-nat₂ CNOT-gate))) PB.assoc
+swap-CNOT = PB.trans (sym-rule (σ-nat₂ CNOT-gate)) PB.assoc
 
 ------------------------------------------------------------------------
 -- Every generator is invertible, so the presented monoid is a group

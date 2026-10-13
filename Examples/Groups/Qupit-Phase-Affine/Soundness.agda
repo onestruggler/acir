@@ -144,17 +144,17 @@ axiom-sound adm (srel (srel ax7))       = r7
 axiom-sound adm (srel (srel ax8))       = r8
 -- The symmetry (Circuit.Prop's laws): σ-nat₂'s right side is
 -- bracketed as σ[ 2 ] is.
-axiom-sound adm (srel σ-inv)                    = s-order
-axiom-sound adm (srel (σ-nat₂ SWAP-gate))       =
+axiom-sound adm (srel (σrel σ-inv))                    = s-order
+axiom-sound adm (srel (σrel (σ-nat₂ SWAP-gate)))       =
   ≐-trans s-braid (⟦⟧-assoc (SWAP ↑) SWAP (SWAP ↑))
-axiom-sound adm (srel (σ-nat₁ X-gate))          = s-X
-axiom-sound adm (srel (σ-nat₁ (M-gate a nz)))   = s-M a nz
-axiom-sound adm (srel (σ-nat₁ (Z-gate h)))      = s-Z h
-axiom-sound adm (srel (σ-nat₁ (S-gate h)))      = s-S h
-axiom-sound adm (srel (σ-nat₁ (T-gate h)))      = s-T h
-axiom-sound adm (srel (σ-nat₂ CX-gate))         =
+axiom-sound adm (srel (σrel (σ-nat₁ X-gate)))          = s-X
+axiom-sound adm (srel (σrel (σ-nat₁ (M-gate a nz))))   = s-M a nz
+axiom-sound adm (srel (σrel (σ-nat₁ (Z-gate h))))      = s-Z h
+axiom-sound adm (srel (σrel (σ-nat₁ (S-gate h))))      = s-S h
+axiom-sound adm (srel (σrel (σ-nat₁ (T-gate h))))      = s-T h
+axiom-sound adm (srel (σrel (σ-nat₂ CX-gate)))         =
   ≐-trans s-CX (⟦⟧-assoc (SWAP ↑) SWAP (CX ↑))
-axiom-sound adm (srel (σ-nat₃ ()))
+axiom-sound adm (srel (σrel (σ-nat₃ ())))
 -- LinPhase_d.
 axiom-sound adm (srel (srel (ax19 h)))   = r19 h
 axiom-sound adm (srel (srel (ax20 h)))   = r20 h

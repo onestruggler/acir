@@ -43,4 +43,4 @@ module Fragment-Semantics
 
   -- An independent axiom is necessary for completeness on its own wires.
   necessary : ∀ ρ → Independent-axiom ρ → ¬ Complete-without ρ (arity ρ + 0)
-  necessary ρ ind complete = ind (complete (sound (PB.axiom (srel (ax ρ 0)))))
+  necessary ρ ind complete = ind (complete (sound (PB.axiom (srel (srel (ax ρ 0))))))
