@@ -9,11 +9,6 @@ the others' left as holes: for timing."""
 import os, sys
 
 base = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..') + os.sep
-tb = open(base + 'Clifford+T/Bridge.agda', encoding='utf-8').read()
-
-# exact and its helpers (φ-^, cancel, unscale), from Clifford+T.Bridge.
-k = tb.index('private\n  φ-^')
-exact_part = tb[k:]
 
 GENS = ['S0-gen', 'S1-gen', 'S2-gen', 'CS01-gen', 'CS12-gen', 'iI-gen', 'K0-gen', 'K1-gen',
         'K2-gen']
@@ -47,7 +42,7 @@ head = r'''---------------------------------------------------------------------
 -- K0–K2, CS01 and CS12 as 8 × 8 matrices over 𝔻[i] = ℤ[½, i], in
 -- operator order, through the two-level generators of
 -- Examples.Groups.Clifford+CS-TwoLevel.  CliffCS₂'s matrices are read
--- in 𝔻[ω] (⟪_⟫, from Clifford+T.Bridge), and 𝔻[i] maps into 𝔻[ω] by
+-- in 𝔻[ω] (⟪_⟫, from Semantics.Reading), and 𝔻[i] maps into 𝔻[ω] by
 -- ι (a + b i ↦ a + b ω², a ring map: ι-+, ι-*), so that ιM, entry by
 -- entry, is a monoid map of matrices.  The decoding Dʷ reads their
 -- words letter for letter (qubit k on wire k, K as ω⁷ H, iI as ω²):
@@ -100,10 +95,10 @@ open import Examples.Independence.Clifford+CS.Syntactics
 import Examples.Independence.Clifford+CS.Semantics as Sem
 import Examples.Independence.Semantics.Qubit as O
 open O using (module ZΩ ; √2)
-open import Examples.Independence.Clifford.Ring using (φ ; φ-* ; φ-1 ; √½-√2)
-open import Examples.Independence.Clifford+T.Bridge
-  using (module QI ; module QM ; module MA ; digs ; Φ ; Φ-cong ; Φ-scal ; ⟪_⟫ ; ⟪∙⟫ ; ⟪ε⟫
-        ; _ᵀ ; ᵀ-cong ; ᵀ-⊙ ; ᵀ-Id)
+open import Examples.Independence.Clifford.Ring using (φ)
+open import Examples.Independence.Semantics.Reading
+  using (module QI ; module QM ; module MA ; Φ-cong ; Φ-scal ; ⟪_⟫ ; ⟪∙⟫ ; ⟪ε⟫
+        ; _ᵀ ; ᵀ-cong ; ᵀ-⊙ ; ᵀ-Id ; module Exactness)
 
 module CS = CliffordCS
 
@@ -456,9 +451,10 @@ no-odd a b e = nonzero Ma (proj₂ BS.⟦ a ⟧) zeros
 ------------------------------------------------------------------------
 -- Equal matrices, equal readings
 
+open Exactness Sem.val public using (exact)
 '''
 
-out = head + '\n'.join(entries) + '\n' + tail + exact_part
+out = head + '\n'.join(entries) + '\n' + tail
 path = os.path.join(base, 'Clifford+CS', 'Bridge.agda')
 open(path, 'w', encoding='utf-8').write(out)
 print(len(entries), 'entries')

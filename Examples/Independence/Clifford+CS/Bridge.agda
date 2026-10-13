@@ -8,7 +8,7 @@
 -- K0–K2, CS01 and CS12 as 8 × 8 matrices over 𝔻[i] = ℤ[½, i], in
 -- operator order, through the two-level generators of
 -- Examples.Groups.Clifford+CS-TwoLevel.  CliffCS₂'s matrices are read
--- in 𝔻[ω] (⟪_⟫, from Clifford+T.Bridge), and 𝔻[i] maps into 𝔻[ω] by
+-- in 𝔻[ω] (⟪_⟫, from Semantics.Reading), and 𝔻[i] maps into 𝔻[ω] by
 -- ι (a + b i ↦ a + b ω², a ring map: ι-+, ι-*), so that ιM, entry by
 -- entry, is a monoid map of matrices.  The decoding Dʷ reads their
 -- words letter for letter (qubit k on wire k, K as ω⁷ H, iI as ω²):
@@ -61,10 +61,10 @@ open import Examples.Independence.Clifford+CS.Syntactics
 import Examples.Independence.Clifford+CS.Semantics as Sem
 import Examples.Independence.Semantics.Qubit as O
 open O using (module ZΩ ; √2)
-open import Examples.Independence.Clifford.Ring using (φ ; φ-* ; φ-1 ; √½-√2)
-open import Examples.Independence.Clifford+T.Bridge
-  using (module QI ; module QM ; module MA ; digs ; Φ ; Φ-cong ; Φ-scal ; ⟪_⟫ ; ⟪∙⟫ ; ⟪ε⟫
-        ; _ᵀ ; ᵀ-cong ; ᵀ-⊙ ; ᵀ-Id)
+open import Examples.Independence.Clifford.Ring using (φ)
+open import Examples.Independence.Semantics.Reading
+  using (module QI ; module QM ; module MA ; Φ-cong ; Φ-scal ; ⟪_⟫ ; ⟪∙⟫ ; ⟪ε⟫
+        ; _ᵀ ; ᵀ-cong ; ᵀ-⊙ ; ᵀ-Id ; module Exactness)
 
 module CS = CliffordCS
 
@@ -991,72 +991,4 @@ no-odd a b e = nonzero Ma (proj₂ BS.⟦ a ⟧) zeros
 ------------------------------------------------------------------------
 -- Equal matrices, equal readings
 
-private
-  φ-^ : (a : ZΩ.Q) (k : ℕ) → φ (a O.^ k) ≡ φ a QI.^ k
-  φ-^ a zero    = φ-1
-  φ-^ a (suc k) = Eq.trans (φ-* a (a O.^ k)) (Eq.cong (φ a *_) (φ-^ a k))
-
-  r = φ √2
-
-  -- (1/√2)^k √2^k = 1.
-  cancel : (k : ℕ) → (√½ QI.^ k) * (r QI.^ k) ≡ 1#
-  cancel zero    = *-identityˡ 1#
-  cancel (suc k) = Eq.trans (swap4 √½ (√½ QI.^ k) r (r QI.^ k))
-                     (Eq.trans (Eq.cong₂ _*_ √½-√2 (cancel k)) (*-identityˡ 1#))
-    where
-    swap4 : (a b c d : D) → (a * b) * (c * d) ≡ (a * c) * (b * d)
-    swap4 a b c d =
-      Eq.trans (*-assoc a b (c * d))
-      (Eq.trans (Eq.cong (a *_) (Eq.trans (Eq.sym (*-assoc b c d))
-                (Eq.trans (Eq.cong (_* d) (*-comm b c)) (*-assoc c b d))))
-                (Eq.sym (*-assoc a c (b * d))))
-
-  -- From r^a F = r^b G, (1/√2)^b F = (1/√2)^a G.
-  unscale : (a b : ℕ) {F G : D} → (r QI.^ a) * F ≡ (r QI.^ b) * G →
-            (√½ QI.^ b) * F ≡ (√½ QI.^ a) * G
-  unscale a b {F} {G} e = begin
-    (√½ QI.^ b) * F
-      ≡⟨ Eq.sym (*-identityˡ _) ⟩
-    1# * ((√½ QI.^ b) * F)
-      ≡⟨ Eq.cong (_* ((√½ QI.^ b) * F)) (Eq.sym (cancel a)) ⟩
-    ((√½ QI.^ a) * (r QI.^ a)) * ((√½ QI.^ b) * F)
-      ≡⟨ shuffle (√½ QI.^ a) (r QI.^ a) (√½ QI.^ b) F ⟩
-    ((√½ QI.^ a) * (√½ QI.^ b)) * ((r QI.^ a) * F)
-      ≡⟨ Eq.cong (((√½ QI.^ a) * (√½ QI.^ b)) *_) e ⟩
-    ((√½ QI.^ a) * (√½ QI.^ b)) * ((r QI.^ b) * G)
-      ≡⟨ shuffle′ (√½ QI.^ a) (√½ QI.^ b) (r QI.^ b) G ⟩
-    ((√½ QI.^ b) * (r QI.^ b)) * ((√½ QI.^ a) * G)
-      ≡⟨ Eq.cong (_* ((√½ QI.^ a) * G)) (cancel b) ⟩
-    1# * ((√½ QI.^ a) * G)
-      ≡⟨ *-identityˡ _ ⟩
-    (√½ QI.^ a) * G ∎
-    where
-    open Eq.≡-Reasoning
-    shuffle : (a b c d : D) → (a * b) * (c * d) ≡ (a * c) * (b * d)
-    shuffle a b c d =
-      Eq.trans (*-assoc a b (c * d))
-      (Eq.trans (Eq.cong (a *_) (Eq.trans (Eq.sym (*-assoc b c d))
-                (Eq.trans (Eq.cong (_* d) (*-comm b c)) (*-assoc c b d))))
-                (Eq.sym (*-assoc a c (b * d))))
-    shuffle′ : (a b c d : D) → (a * b) * (c * d) ≡ (b * c) * (a * d)
-    shuffle′ a b c d =
-      Eq.trans (Eq.cong (_* (c * d)) (*-comm a b)) (shuffle b a c d)
-
-open O.Circuits Sem.val using (module Exact)
-
-exact : {w v : Circuit n} → Sem.⟦ w ⟧ Sem.≈ Sem.⟦ v ⟧ → ⟪ Sem.⟦ w ⟧ ⟫ QI.≐ ⟪ Sem.⟦ v ⟧ ⟫
-exact {w = w} {v} (Exact.phased _ refl agree) x y =
-  unscale hv hw (Eq.trans (Eq.sym L) (Eq.trans (Eq.cong φ (agree (digs x) (digs y))) R))
-  where
-  hw = proj₁ Sem.⟦ w ⟧
-  hv = proj₁ Sem.⟦ v ⟧
-  Fw = O.ix (proj₂ Sem.⟦ w ⟧) (digs x) (digs y)
-  Fv = O.ix (proj₂ Sem.⟦ v ⟧) (digs x) (digs y)
-
-  L : φ ((√2 O.^ hv) ZΩ.* Fw) ≡ (r QI.^ hv) * φ Fw
-  L = Eq.trans (φ-* (√2 O.^ hv) Fw) (Eq.cong (_* φ Fw) (φ-^ √2 hv))
-
-  R : φ (((O.x O.^ 0) ZΩ.* (√2 O.^ hw)) ZΩ.* Fv) ≡ (r QI.^ hw) * φ Fv
-  R = Eq.trans (φ-* ((O.x O.^ 0) ZΩ.* (√2 O.^ hw)) Fv)
-        (Eq.cong (_* φ Fv) (Eq.trans (φ-* (O.x O.^ 0) (√2 O.^ hw))
-          (Eq.trans (Eq.cong₂ _*_ φ-1 (φ-^ √2 hw)) (*-identityˡ _))))
+open Exactness Sem.val public using (exact)

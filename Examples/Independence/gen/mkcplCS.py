@@ -62,7 +62,7 @@ open import Examples.Independence.Clifford+CS.Kit using (Eqn ; ⟪_⟫ ; lhs⁼ 
 open import Examples.Independence.Clifford+CS.Decodings
 open import Examples.Independence.Clifford+CS.Bridge
   using (ℰ ; ℰʷ ; Dʷ ; ωs ; SW01 ; SW12 ; ⟪ωs•⟫ ; exact ; same ; no-odd)
-open import Examples.Independence.Clifford+T.Bridge using (module QI) renaming (⟪_⟫ to ⟪_⟫ᴰ)
+open import Examples.Independence.Semantics.Reading using (module QI) renaming (⟪_⟫ to ⟪_⟫ᴰ)
 open import Examples.Independence.Clifford+CS.Low using (complete₀ ; complete₁)
 import Examples.Independence.Reasoning Gate as R
 open R.Theory arity lhs rhs using (lift)
