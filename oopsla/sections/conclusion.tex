@@ -11,8 +11,8 @@ not formalized. The qudit Clifford theorems are stated against an
 algebraic model of the Clifford group (Section~\ref{sec:qupit}), the
 Weyl representation being left out. Blake's simpler
 presentations~\cite{blake2026simpler} are formalized for soundness,
-minimality and necessity, and for completeness only in the
-CNOT-dihedral fragment. For Hadamard-$\Pi$ we
+minimality and necessity, and for completeness in the Clifford and
+CNOT-dihedral fragments only. For Hadamard-$\Pi$ we
 replaced the case that uses Lemma~A.19 by Cl\'ement's argument;
 whether its diagrams can be fixed in place is open. And some semantic
 statements are proved over abstract rings with stated properties,
@@ -28,12 +28,11 @@ postulates; everything is constructive (Section~\ref{sec:why-agda}).
 What Agda cannot check is that our definitions mean what the papers
 mean. We wrote the semantics of each development separately, from the
 paper, and except in the qudit Clifford development checked it against
-the paper's matrices by computation. In three places two developments
-are connected, and the connection is a check on both: the real
-stabilizer group inside Hadamard-$\Pi$'s orthogonal group
-(Section~\ref{sec:theorem-form}), Bian and Selinger's ports against the
-two-level presentations, and Cl\'ement's real Clifford+$CH$ paper
-against Hadamard-$\Pi$ (Section~\ref{sec:encoding}).
+the paper's matrices by computation. Where two developments are
+connected, the connection checks both: the real stabilizer group
+inside Hadamard-$\Pi$'s orthogonal group, the ports against the
+two-level presentations, and real Clifford+$CH$ against
+Hadamard-$\Pi$.
 
 We checked fourteen papers on the completeness and minimality of
 equations for quantum circuits and related matrix groups. One proof
