@@ -13,7 +13,9 @@
 -- products into ours the other way round (matT-⊙), and a circuit's
 -- matrix is matT of their operator for the same word (bridge), with no
 -- factor 1/√2.  matT is injective, so two circuits with the same matrix
--- have the same operator in their sense (same-operator).
+-- have the same operator in their sense (same-operator), and conversely
+-- (same-matrix): Semantics checks its largest axioms that way, on their
+-- operators' sixteen-entry tables rather than on 16 × 16 matrices.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -40,7 +42,7 @@ import Examples.Groups.CNOT+Dihedral.Semantics as A
 import Examples.Groups.CNOT+Dihedral.Interpretation as AI
 
 open import Examples.Independence.CNOT-Dihedral.Syntactics
-import Examples.Independence.CNOT-Dihedral.Semantics as Sem
+import Examples.Independence.CNOT-Dihedral.Reading as Sem
 open import Examples.Independence.Semantics.Qubit
   using ( Q ; Op ; Digits ; R ; δ₁ ; δv ; Σv ; Σ-cong ; Σ-δˡ ; _⊙_ ; _≐_ ; Idₒ ; up
         ; ix ; ix-mul ; ix-id ; ix-up ; ix-emb ; ix-scalM ; ⊙-cong
@@ -388,6 +390,12 @@ private
     Eq.trans (Eq.sym (*-identityˡ a))
       (Eq.trans e (Eq.trans (Eq.cong (_* b) (*-identityˡ 1#)) (*-identityˡ b)))
 
+  rescale : {hw hv : ℕ} {a b : Q} → hw ≡ 0 → hv ≡ 0 → a ≡ b →
+            √2 ^ hv * a ≡ (ω̂ ^ 0 * √2 ^ hw) * b
+  rescale {a = a} {b} refl refl e =
+    Eq.trans (*-identityˡ a)
+      (Eq.trans e (Eq.sym (Eq.trans (Eq.cong (_* b) (*-identityˡ 1#)) (*-identityˡ b))))
+
 same-operator : (w v : Circuit n) → Sem.⟦ w ⟧ Sem.≈ Sem.⟦ v ⟧ →
                 AI.⟦ wmap ι⁻ w ⟧ A.≐ AI.⟦ wmap ι⁻ v ⟧
 same-operator w v (Exact.phased _ refl agree) =
@@ -395,3 +403,11 @@ same-operator w v (Exact.phased _ refl agree) =
     Eq.trans (Eq.sym (proj₂ (bridge w) i j))
       (Eq.trans (unscale (proj₁ (bridge w)) (proj₁ (bridge v)) (agree i j))
                 (proj₂ (bridge v) i j))
+
+-- Two circuits with the same operator have the same matrix.
+same-matrix : (w v : Circuit n) → AI.⟦ wmap ι⁻ w ⟧ A.≐ AI.⟦ wmap ι⁻ v ⟧ →
+              Sem.⟦ w ⟧ Sem.≈ Sem.⟦ v ⟧
+same-matrix w v e = Exact.phased 0 refl λ i j →
+  rescale (proj₁ (bridge w)) (proj₁ (bridge v))
+    (Eq.trans (proj₂ (bridge w) i j)
+      (Eq.trans (matT-cong e i j) (Eq.sym (proj₂ (bridge v) i j))))
