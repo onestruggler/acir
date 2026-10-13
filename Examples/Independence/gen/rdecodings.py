@@ -4,7 +4,7 @@ derived in RCliff₂.
 The decoding reads a word of theirs (operator order) backwards and
 spells CZ on wires a, a+1 as H_a CX(a+1, a) H_a (mrs.py), so that each
 decoded relation is a drawing in time order.  (R1)–(R3) are axioms and
-(R4)–(R12) are B.2–B.10 exactly (appendixB.py); the paper leaves
+(R4)–(R12) are B.2–B.10 up to commuting letters (appendixB.py); the paper leaves
 (R13)–(R16) to be mimicked from the Clifford ones, and they are derived
 here: (R13) is (A.25) backwards; (R14) and (R15) come down, after the
 H gates cancel and each decoded CZ next to a CNOT is absorbed by (CZr),
@@ -17,7 +17,7 @@ Agda decoding function produces its sides."""
 from appendixB import D, LIB, OUT
 from frag import placed, nat
 from circ import gwires, permute
-from mrs import R, D as decode, text
+from mrs import R, ARITY, D as decode, text
 
 first = len(OUT)
 
@@ -63,6 +63,14 @@ CT2 = placed('A14⁼', [0, 1, 0])         # CX02 CX12 = CX12 CX02
 n10 = nat(1, ('CX', 1, 0)).name         # SW12 CX10 = CX20 SW12
 n21 = nat(1, ('CX', 2, 1)).name
 n01 = nat(1, ('CX', 0, 1)).name
+
+# (R4)–(R12): B.2–B.10, up to commuting letters.
+CITE = {'R₄': 'B2⁼', 'R₅': 'B3⁼', 'R₆': 'B4⁼', 'R₇': 'B5⁼', 'R₈': 'B6⁼',
+        'R₉': 'B7⁼', 'R₁₀': 'B8⁼', 'R₁₁': 'B9⁼', 'R₁₂': 'B10⁼'}
+for k, lemma in CITE.items():
+    l, r = R[k]
+    D('D' + k + '⁼', ARITY[k], [(text(decode(l)), None), (text(decode(r)), [lemma])],
+      mirror=False)
 
 # (R13): (A.25) backwards.
 l, r = R['R₁₃']

@@ -296,25 +296,25 @@ private
                 (Eq.trans (Eq.cong (_* d) (*-comm b c)) (*-assoc c b d))))
                 (Eq.sym (*-assoc a c (b * d))))
 
-  -- From r^a F = r^b G, (1/√2)^b F = (1/√2)^a G.
-  unscale : (a b : ℕ) {F G : D} → (r QI.^ a) * F ≡ (r QI.^ b) * G →
-            (√½ QI.^ b) * F ≡ (√½ QI.^ a) * G
-  unscale a b {F} {G} e = begin
-    (√½ QI.^ b) * F
+  -- From r^a p₁ = r^b p₂, (1/√2)^b p₁ = (1/√2)^a p₂.
+  unscale : (a b : ℕ) {p₁ p₂ : D} → (r QI.^ a) * p₁ ≡ (r QI.^ b) * p₂ →
+            (√½ QI.^ b) * p₁ ≡ (√½ QI.^ a) * p₂
+  unscale a b {p₁} {p₂} e = begin
+    (√½ QI.^ b) * p₁
       ≡⟨ Eq.sym (*-identityˡ _) ⟩
-    1# * ((√½ QI.^ b) * F)
-      ≡⟨ Eq.cong (_* ((√½ QI.^ b) * F)) (Eq.sym (cancel a)) ⟩
-    ((√½ QI.^ a) * (r QI.^ a)) * ((√½ QI.^ b) * F)
-      ≡⟨ shuffle (√½ QI.^ a) (r QI.^ a) (√½ QI.^ b) F ⟩
-    ((√½ QI.^ a) * (√½ QI.^ b)) * ((r QI.^ a) * F)
+    1# * ((√½ QI.^ b) * p₁)
+      ≡⟨ Eq.cong (_* ((√½ QI.^ b) * p₁)) (Eq.sym (cancel a)) ⟩
+    ((√½ QI.^ a) * (r QI.^ a)) * ((√½ QI.^ b) * p₁)
+      ≡⟨ shuffle (√½ QI.^ a) (r QI.^ a) (√½ QI.^ b) p₁ ⟩
+    ((√½ QI.^ a) * (√½ QI.^ b)) * ((r QI.^ a) * p₁)
       ≡⟨ Eq.cong (((√½ QI.^ a) * (√½ QI.^ b)) *_) e ⟩
-    ((√½ QI.^ a) * (√½ QI.^ b)) * ((r QI.^ b) * G)
-      ≡⟨ shuffle′ (√½ QI.^ a) (√½ QI.^ b) (r QI.^ b) G ⟩
-    ((√½ QI.^ b) * (r QI.^ b)) * ((√½ QI.^ a) * G)
-      ≡⟨ Eq.cong (_* ((√½ QI.^ a) * G)) (cancel b) ⟩
-    1# * ((√½ QI.^ a) * G)
+    ((√½ QI.^ a) * (√½ QI.^ b)) * ((r QI.^ b) * p₂)
+      ≡⟨ shuffle′ (√½ QI.^ a) (√½ QI.^ b) (r QI.^ b) p₂ ⟩
+    ((√½ QI.^ b) * (r QI.^ b)) * ((√½ QI.^ a) * p₂)
+      ≡⟨ Eq.cong (_* ((√½ QI.^ a) * p₂)) (cancel b) ⟩
+    1# * ((√½ QI.^ a) * p₂)
       ≡⟨ *-identityˡ _ ⟩
-    (√½ QI.^ a) * G ∎
+    (√½ QI.^ a) * p₂ ∎
     where
     open Eq.≡-Reasoning
     shuffle : (a b c d : D) → (a * b) * (c * d) ≡ (a * c) * (b * d)

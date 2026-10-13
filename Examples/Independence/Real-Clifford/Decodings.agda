@@ -82,6 +82,75 @@ A13ˢ⁰¹⁰⁼ = derive
    ∷ rw 9 σσ⁼ ∷ [])
   refl
 
+DR₄⁼ : Eqn (₁₊ n)
+DR₄⁼ = derive
+  (Zₗ ∷ Hₗ ∷ Zₗ ∷ Hₗ ∷ Zₗ ∷ Hₗ ∷ Zₗ ∷ Hₗ ∷ [])
+  (mₗ ∷ [])
+  (rw 0 B2⁼ ∷ [])
+  refl
+
+DR₅⁼ : Eqn (₂₊ n)
+DR₅⁼ = derive
+  (Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ [])
+  ([])
+  (rw 0 B3⁼ ∷ [])
+  refl
+
+DR₆⁼ : Eqn (₂₊ n)
+DR₆⁼ = derive
+  (Zₗ ↥ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ [])
+  (Hₗ ∷ CXₗ ∷ Hₗ ∷ Zₗ ↥ ∷ [])
+  (rw 0 B4⁼ ∷ [])
+  refl
+
+DR₇⁼ : Eqn (₂₊ n)
+DR₇⁼ = derive
+  (Zₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ [])
+  (Hₗ ∷ CXₗ ∷ Hₗ ∷ Zₗ ∷ [])
+  (rw 0 B5⁼ ∷ [])
+  refl
+
+DR₈⁼ : Eqn (₂₊ n)
+DR₈⁼ = derive
+  (Hₗ ↥ ∷ Zₗ ↥ ∷ Hₗ ↥ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ [])
+  (Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ Zₗ ↥ ∷ Zₗ ∷ Hₗ ↥ ∷ [])
+  (rw 0 B6⁼
+   ∷ perm (Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ Zₗ ↥ ∷ Zₗ ∷ Hₗ ↥ ∷ []) ∷ [])
+  refl
+
+DR₉⁼ : Eqn (₂₊ n)
+DR₉⁼ = derive
+  (Hₗ ∷ Zₗ ∷ Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ [])
+  (Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ∷ Zₗ ↥ ∷ Zₗ ∷ Hₗ ∷ [])
+  (rw 0 B7⁼
+   ∷ perm (Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ∷ Zₗ ↥ ∷ Zₗ ∷ Hₗ ∷ []) ∷ [])
+  refl
+
+DR₁₀⁼ : Eqn (₂₊ n)
+DR₁₀⁼ = derive
+  (Hₗ ↥ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ [])
+  (Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ Zₗ ∷ [])
+  (perm (Hₗ ↥ ∷ Hₗ ∷ CXₗ ∷ Hₗ ↥ ∷ Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ [])
+   ∷ rw 0 B8⁼ ∷ [])
+  refl
+
+DR₁₁⁼ : Eqn (₂₊ n)
+DR₁₁⁼ = derive
+  (Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ [])
+  (Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ Zₗ ↥ ∷ Hₗ ∷ [])
+  (rw 0 B9⁼
+   ∷ perm (Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ Zₗ ↥ ∷ Hₗ ∷ []) ∷ [])
+  refl
+
+DR₁₂⁼ : Eqn (₂₊ n)
+DR₁₂⁼ = derive
+  (Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ [])
+  (Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ [])
+  (perm (Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ∷ Hₗ ∷ Hₗ ↥ ∷ CXₗ ∷ Hₗ ∷ Hₗ ∷ Hₗ ∷ Hₗ ↥ ∷ CXₗ ∷ Hₗ ∷ [])
+   ∷ rw 0 B10⁼
+   ∷ perm (Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ Hₗ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ Hₗ ↥ ∷ []) ∷ [])
+  refl
+
 DR₁₃⁼ : Eqn (₃₊ n)
 DR₁₃⁼ = derive
   (Hₗ ↥ ∷ CXₗ ↥ ∷ Hₗ ↥ ∷ Hₗ ∷ CXₗ ∷ Hₗ ∷ [])
