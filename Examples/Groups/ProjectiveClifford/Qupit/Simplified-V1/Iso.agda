@@ -1,4 +1,4 @@
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible --safe --lossy-unification #-}
 
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; setoid) renaming ([_] to [_]')
@@ -218,7 +218,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     sp' : SemiDirect.S • SemiDirect.S ^ (p-1) ≈ ε
     sp' = trans (sym (^-+ SemiDirect.S 1 (p-1))) sp
     H⁴' : (SemiDirect.H • SemiDirect.H) • (SemiDirect.H • SemiDirect.H) ≈ ε
-    H⁴' = trans (by-assoc Eq.refl) lemma-H⁴
+    H⁴' = trans (by-assoc {v = SemiDirect.H ^ 4} Eq.refl) lemma-H⁴
     cZS : SemiDirect.Z ^ k • SemiDirect.S ≈ SemiDirect.S • SemiDirect.Z ^ k
     cZS = comm⇒pow-comm k 1 (sym (axiom (mid (comm XZ.Z-gen Sym.S-gen))))
     cSZkp : SemiDirect.S • SemiDirect.Z ^ (k Nat.* (p-1)) ≈ SemiDirect.Z ^ (k Nat.* (p-1)) • SemiDirect.S
@@ -670,7 +670,7 @@ module Iso-Inverse-Direction (n : ℕ) where
     zp : SemiDirect.Z ^ p ≈ ε
     zp = trans (refl' (Eq.sym (SemiDirect.lemma-[]ₗ^k XZ.Z p))) (axiom (left XZ.order-Z))
     H⁴' : (SemiDirect.H • SemiDirect.H) • (SemiDirect.H • SemiDirect.H) ≈ ε
-    H⁴' = trans (by-assoc Eq.refl) lemma-H⁴
+    H⁴' = trans (by-assoc {v = SemiDirect.H ^ 4} Eq.refl) lemma-H⁴
     ZZ : (SemiDirect.Z ^ p-1) ^ k • SemiDirect.Z ^ k ≈ ε
     ZZ = begin
       (SemiDirect.Z ^ p-1) ^ k • SemiDirect.Z ^ k  ≈⟨ cleft (^^ SemiDirect.Z p-1 k) ⟩
