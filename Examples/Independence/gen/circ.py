@@ -17,7 +17,7 @@ the engine's perm and rw steps.  Every line is also checked numerically
 import cmath, math, itertools
 from collections import deque
 
-ARITY = {'w': 0, 'm': 0, 'H': 1, 'S': 1, 'Z': 1, 'T': 1, 'X': 1, 'CX': 2, 'SW': 2}
+ARITY = {'w': 0, 'm': 0, 'H': 1, 'S': 1, 'Z': 1, 'T': 1, 'X': 1, 'CX': 2, 'SW': 2, 'CS': 2}
 
 # Real Clifford has Z as a gate, where Clifford spells it S S.
 PRIMITIVE_Z = False
@@ -25,6 +25,11 @@ PRIMITIVE_Z = False
 # Clifford+T has T as its only phase gate: S, S†, Z, X and T† are
 # spelled over T (S = T², S† = T⁶, Z = T⁴, X = H T⁴ H, T† = T⁷).
 T_SPELL = False
+
+# Clifford+CS has the controlled S as a gate and no CNOT: a CX token is
+# H CS CS H on its target, and CS between any two wires is an abstract
+# gate (symmetric), spelt with swaps across a middle wire.
+CS_MODE = False
 
 # Named subcircuits, expanded when a line is parsed (a fragment fills
 # this in: Clifford+T's controlled gates).
@@ -62,6 +67,15 @@ def cx(c, t):
     raise ValueError((c, t))
 
 
+def cs(a, b):
+    a, b = min(a, b), max(a, b)
+    if b == a + 1:
+        return [('CS', a)]
+    if b == a + 2:
+        return [('SW', a), ('CS', a + 1), ('SW', a)]
+    raise ValueError((a, b))
+
+
 def sw(a, b):
     a, b = min(a, b), max(a, b)
     if b == a + 1:
@@ -80,6 +94,8 @@ def spell1(g):
         return cx(g[1], g[2])
     if g[0] == 'SW':
         return sw(g[1], g[2])
+    if g[0] == 'CS':
+        return cs(g[1], g[2])
     raise ValueError(g)
 
 
@@ -102,6 +118,9 @@ def permute(g, pi):
         return (g[0], pi(g[1]))
     if g[0] == 'CX':
         return ('CX', pi(g[1]), pi(g[2]))
+    if g[0] == 'CS':
+        a, b = pi(g[1]), pi(g[2])
+        return ('CS', min(a, b), max(a, b))
     a, b = pi(g[1]), pi(g[2])
     return ('SW', min(a, b), max(a, b))
 
@@ -170,6 +189,16 @@ def gparse(s):
             out += [('H', k), ('S', k), ('S', k), ('H', k)]
         elif tok[0] in 'HST' and tok[1:].isdigit():
             out.append((tok[0], int(tok[1:])))
+        elif CS_MODE and tok.startswith('CX'):
+            c, t = int(tok[2]), int(tok[3])
+            z = ('CS', min(c, t), max(c, t))
+            out += [('H', t), z, z, ('H', t)]
+        elif CS_MODE and tok.startswith('CZ'):
+            a, b = int(tok[2]), int(tok[3])
+            out += [('CS', min(a, b), max(a, b))] * 2
+        elif tok.startswith('CS'):
+            a, b = int(tok[2]), int(tok[3])
+            out.append(('CS', min(a, b), max(a, b)))
         elif tok.startswith('CX'):
             out.append(('CX', int(tok[2]), int(tok[3])))
         elif tok.startswith('CZ'):
@@ -218,6 +247,8 @@ def gate_matrix(l, n):
         elif k == 'CX':
             y = x ^ (1 << w) if (x >> (w + 1)) & 1 else x
             M[y][x] = 1
+        elif k == 'CS':
+            M[x][x] = 1j if ((x >> w) & 1) and ((x >> (w + 1)) & 1) else 1
         elif k == 'SW':
             b0, b1 = (x >> w) & 1, (x >> (w + 1)) & 1
             y = x & ~(3 << w) | (b1 << w) | (b0 << (w + 1))
@@ -468,7 +499,7 @@ def find_steps(a, b, eqs, width, depth=4, maxstates=300000, inserting=None):
 def letter(l):
     k, w = l
     base = {'w': 'ωₗ', 'm': 'mₗ', 'H': 'Hₗ', 'S': 'Sₗ', 'Z': 'Zₗ', 'T': 'Tₗ', 'CX': 'CXₗ',
-            'SW': 'σₗ'}[k]
+            'SW': 'σₗ', 'CS': 'CSₗ'}[k]
     return base if w is None else base + ' ↥' * w
 
 
