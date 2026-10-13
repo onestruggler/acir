@@ -97,7 +97,7 @@ module _ {n : ℕ} where
 
   private
     ss : (₂₊ n) ⊢ SWAP • SWAP ≈ ε
-    ss = ax swap-order
+    ss = swap-order
 
   -- A gate on wire 1 conjugated by SWAP is the gate on wire 0, and back.
   sw-down : (g : Gate 1) → (₂₊ n) ⊢ SWAP • [ gate₁ g ↥ ]ʷ • SWAP ≈ [ gate₁ g ]ʷ
@@ -123,7 +123,7 @@ module _ {n : ℕ} where
   -- A two-wire word passes SWAP ↑ into its placement by SWAP.
   place-sw : (c : Two) → (₃₊ n) ⊢ ⟦ c ⟧² • SWAP ↑ ≈ SWAP ↑ • SWAP • ⟦ c ⟧² ↑ • SWAP
   place-sw c = begin
-    ⟦ c ⟧² • SWAP ↑                     ≈⟨ sym (cancel-in (lift (ax swap-order)) _) ⟩
+    ⟦ c ⟧² • SWAP ↑                     ≈⟨ sym (cancel-in (lift swap-order) _) ⟩
     SWAP ↑ • SWAP ↑ • ⟦ c ⟧² • SWAP ↑   ≈⟨ back _ (two-place c) ⟩
     SWAP ↑ • SWAP • ⟦ c ⟧² ↑ • SWAP     ∎
 
@@ -174,12 +174,12 @@ private
       Z h₁ • X ↑ • CZ h₂ ∎
       where
       CZ≈ : (₂₊ n) ⊢ SWAP • CZ h₂ • SWAP ≈ CZ h₂
-      CZ≈ = trans (trans (sym assoc) (front _ CZ-sym)) (trans assoc (cancel-at (ax swap-order) _))
+      CZ≈ = trans (trans (sym assoc) (front _ CZ-sym)) (trans assoc (cancel-at swap-order _))
 
     SC-M₁ : (x : F*) → (₂₊ n) ⊢ SC • M⟨ x ⟩ ↑ ≈ M⟨ x ⟩ ↑ • CZ h₂ ^ toℕ (binom2 (proj₁ x)) • SC ^ toℕ (proj₁ x * proj₁ x)
     SC-M₁ x = begin
       (SWAP • CS h • SWAP) • M⟨ x ⟩ ↑
-        ≈⟨ trans assoc (back _ (trans assoc (back _ (sym (ax (swap-M (proj₁ x) (proj₂ x))))))) ⟩
+        ≈⟨ trans assoc (back _ (trans assoc (back _ (sym (swap-M (proj₁ x) (proj₂ x)))))) ⟩
       SWAP • CS h • M⟨ x ⟩ • SWAP
         ≈⟨ back _ (trans (sym assoc) (front _ (sym (ax (ax35 h x))))) ⟩
       SWAP • (M⟨ x ⟩ • CZ h₂ ^ᶠ binom2 (proj₁ x) • CS h ^ᶠ (proj₁ x * proj₁ x)) • SWAP
@@ -189,7 +189,7 @@ private
       M⟨ x ⟩ ↑ • CZ h₂ ^ toℕ (binom2 (proj₁ x)) • SC ^ toℕ (proj₁ x * proj₁ x) ∎
       where
       CZ≈ : (₂₊ n) ⊢ SWAP • CZ h₂ • SWAP ≈ CZ h₂
-      CZ≈ = trans (trans (sym assoc) (front _ CZ-sym)) (trans assoc (cancel-at (ax swap-order) _))
+      CZ≈ = trans (trans (sym assoc) (front _ CZ-sym)) (trans assoc (cancel-at swap-order _))
 
   module _ {n : ℕ} where
 

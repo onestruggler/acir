@@ -180,7 +180,7 @@ module _ {n : ℕ} where
     CZ-CX↑ = trans (back _ (ax (ax30 h))) (trans (sym assoc) (trans (front _ (Inv.inverseˡ (₃₊ n))) left-unit))
 
     CZ₂₀≈ : (₃₊ n) ⊢ CZ₂₀ h ≈ ⌊ L' ⌋ ⁻¹ • CZ h • ⌊ L' ⌋
-    CZ₂₀≈ = front _ (Inv.inverseʳ-unique (₃₊ n) (lift (ax swap-order)))
+    CZ₂₀≈ = front _ (Inv.inverseʳ-unique (₃₊ n) (lift swap-order))
 
     EQ : (₃₊ n) ⊢ a0 ᵃ⁻ • a12 ᵃ⁻ • atom a012 ≈ (a0 ᵃ⁻ • a1 ᵃ⁻ • atom a01) • (a0 ᵃ⁻ • a2 ᵃ⁻ • atom a02)
     EQ = begin
@@ -343,7 +343,7 @@ A-01 {n} c = begin
   r₀ = r (big 1* (c ∷ 0ᵛ {n}))
   r≈ : (₂₊ n) ⊢ r₀ ≈ CX ^ᶠ c
   r≈ = trans (back _ (ax ax1)) (trans right-unit
-         (trans (front _ (trans (back _ (trans (front _ (lift R-zero)) left-unit)) (ax swap-order))) left-unit))
+         (trans (front _ (trans (back _ (trans (front _ (lift R-zero)) left-unit)) swap-order)) left-unit))
 
 -- The same with the atom of c e₁ for the S's on wire 1.
 A-01′ : (c : F*) → (₂₊ n) ⊢ atom (big 1* (proj₁ c ∷ 0ᵛ {n})) ≈ atom e0 • atom (small (big c 0ᵛ)) • CZ h ^ᶠ proj₁ c
@@ -364,7 +364,7 @@ Q-dec-0 : (w : Vec F n) → (₁₊ n) ⊢ atom (big 1* w) ≈ S h • atomᵛ w
           (₂₊ n) ⊢ atom (big 1* (0F ∷ w)) ≈ S h • atomᵛ w ↑ ↑ • K₀ w
 Q-dec-0 {n} w IH = begin
   atom (small (big 1* w) ⋆ sw)
-    ≈⟨ sym (trans (back _ (A-step (small (big 1* w)) sw)) (trans (sym assoc) (trans (front _ (ax swap-order)) left-unit))) ⟩
+    ≈⟨ sym (trans (back _ (A-step (small (big 1* w)) sw)) (trans (sym assoc) (trans (front _ swap-order) left-unit))) ⟩
   SWAP • A (small (big 1* w)) • SWAP
     ≈⟨ back _ (front _ (trans (A-small (big 1* w)) (lift IH))) ⟩
   SWAP • (S h ↑ • atomᵛ w ↑ ↑ • K w ↑) • SWAP
@@ -448,7 +448,7 @@ Q-dec {suc n} (c ∷ w) with c ≟ 0F
       ≈⟨ A-01 c ⟩
     S h • SZ (c * c) (binom2 c) ↑ • CZ h ^ᶠ c
       ≈⟨ back _ (cong (lift (Width.sym (Width.trans (A-scale (c , nc)) (SZ-≡ (FR.*-identityˡ _) (FR.*-identityˡ _)))))
-                      (sym (trans (back _ (trans (back _ (trans (front _ (lift K-zero)) left-unit)) (ax swap-order))) right-unit))) ⟩
+                      (sym (trans (back _ (trans (back _ (trans (front _ (lift K-zero)) left-unit)) swap-order)) right-unit))) ⟩
     S h • atom (big (c , nc) 0ᵛ) ↑ • K (c ∷ 0ᵛ) ∎
 ...   | inj₂ (ℓ , e) =
   Eq.subst (λ v → (₂₊ n) ⊢ atom (big 1* (c ∷ v)) ≈ S h • atom (big (c , nc) v) ↑ • K (c ∷ v)) e

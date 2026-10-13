@@ -123,52 +123,65 @@ comm₂-sound h g =
 ------------------------------------------------------------------------
 -- Soundness of the rules
 
+-- The reading does not see how a product is bracketed.
+⟦⟧-assoc : ∀ {n} (a b c : Circuit n) → ⟦ a • b • c ⟧ ≐ ⟦ (a • b) • c ⟧
+⟦⟧-assoc a b c =
+  ≐-trans (⟦⟧-• a (b • c))
+  (≐-trans (⊙-cong (≐-refl ⟦ a ⟧) (⟦⟧-• b c))
+  (≐-trans (≐-sym (⊙-assoc ⟦ a ⟧ ⟦ b ⟧ ⟦ c ⟧))
+  (≐-trans (⊙-cong (≐-sym (⟦⟧-• a b)) (≐-refl ⟦ c ⟧))
+           (≐-sym (⟦⟧-• (a • b) c)))))
+
 axiom-sound : Admissible → {w v : Circuit n} → n VRel, w === v → ⟦ w ⟧ ≐ ⟦ v ⟧
 -- Aff_d.
-axiom-sound adm (srel ax1)       = r1
-axiom-sound adm (srel (ax2 x y)) = r2 x y
-axiom-sound adm (srel (ax3 x))   = r3 x
-axiom-sound adm (srel (ax4 x))   = r4 x
-axiom-sound adm (srel (ax5 x))   = r5 x
-axiom-sound adm (srel ax6)       = r6
-axiom-sound adm (srel ax7)       = r7
-axiom-sound adm (srel ax8)       = r8
--- The symmetry.
-axiom-sound adm (srel swap-order)    = s-order
-axiom-sound adm (srel swap-braid)    = s-braid
-axiom-sound adm (srel swap-X)        = s-X
-axiom-sound adm (srel (swap-M a nz)) = s-M a nz
-axiom-sound adm (srel (swap-Z h))    = s-Z h
-axiom-sound adm (srel (swap-S h))    = s-S h
-axiom-sound adm (srel (swap-T h))    = s-T h
-axiom-sound adm (srel swap-CX)       = s-CX
+axiom-sound adm (srel (srel ax1))       = r1
+axiom-sound adm (srel (srel (ax2 x y))) = r2 x y
+axiom-sound adm (srel (srel (ax3 x)))   = r3 x
+axiom-sound adm (srel (srel (ax4 x)))   = r4 x
+axiom-sound adm (srel (srel (ax5 x)))   = r5 x
+axiom-sound adm (srel (srel ax6))       = r6
+axiom-sound adm (srel (srel ax7))       = r7
+axiom-sound adm (srel (srel ax8))       = r8
+-- The symmetry (Circuit.Prop's laws): σ-nat₂'s right side is
+-- bracketed as σ[ 2 ] is.
+axiom-sound adm (srel σ-inv)                    = s-order
+axiom-sound adm (srel (σ-nat₂ SWAP-gate))       =
+  ≐-trans s-braid (⟦⟧-assoc (SWAP ↑) SWAP (SWAP ↑))
+axiom-sound adm (srel (σ-nat₁ X-gate))          = s-X
+axiom-sound adm (srel (σ-nat₁ (M-gate a nz)))   = s-M a nz
+axiom-sound adm (srel (σ-nat₁ (Z-gate h)))      = s-Z h
+axiom-sound adm (srel (σ-nat₁ (S-gate h)))      = s-S h
+axiom-sound adm (srel (σ-nat₁ (T-gate h)))      = s-T h
+axiom-sound adm (srel (σ-nat₂ CX-gate))         =
+  ≐-trans s-CX (⟦⟧-assoc (SWAP ↑) SWAP (CX ↑))
+axiom-sound adm (srel (σ-nat₃ ()))
 -- LinPhase_d.
-axiom-sound adm (srel (ax19 h))   = r19 h
-axiom-sound adm (srel (ax20 h))   = r20 h
-axiom-sound adm (srel (ax21 h))   = r21 h
-axiom-sound adm (srel (ax22 h x)) = r22 h x
-axiom-sound adm (srel (ax23 h))   = r23 h
+axiom-sound adm (srel (srel (ax19 h)))   = r19 h
+axiom-sound adm (srel (srel (ax20 h)))   = r20 h
+axiom-sound adm (srel (srel (ax21 h)))   = r21 h
+axiom-sound adm (srel (srel (ax22 h x))) = r22 h x
+axiom-sound adm (srel (srel (ax23 h)))   = r23 h
 -- QuadPhase_d.
-axiom-sound adm (srel (ax24 h))   = Quad.r24 (odd adm h) h
-axiom-sound adm (srel (ax25 h))   = Quad.r25 (odd adm h) h
-axiom-sound adm (srel (ax26 h))   = Quad.r26 (odd adm h) h
-axiom-sound adm (srel (ax27 h x)) = Quad.r27 (odd adm h) h x
-axiom-sound adm (srel (ax28 h))   = Quad.r28 (odd adm h) h
-axiom-sound adm (srel (ax29 h))   = Quad.r29 (odd adm h) h
-axiom-sound adm (srel (ax30 h))   = Quad.r30 (odd adm h) h
+axiom-sound adm (srel (srel (ax24 h)))   = Quad.r24 (odd adm h) h
+axiom-sound adm (srel (srel (ax25 h)))   = Quad.r25 (odd adm h) h
+axiom-sound adm (srel (srel (ax26 h)))   = Quad.r26 (odd adm h) h
+axiom-sound adm (srel (srel (ax27 h x))) = Quad.r27 (odd adm h) h x
+axiom-sound adm (srel (srel (ax28 h)))   = Quad.r28 (odd adm h) h
+axiom-sound adm (srel (srel (ax29 h)))   = Quad.r29 (odd adm h) h
+axiom-sound adm (srel (srel (ax30 h)))   = Quad.r30 (odd adm h) h
 -- CubicPhase_d.
-axiom-sound adm (srel (ax31 h))   = Cube.r31 (big adm h) h
-axiom-sound adm (srel (ax32 h x)) = Cube.r32 (big adm h) h x
-axiom-sound adm (srel (ax33 h))   = Cube.r33 (big adm h) h
-axiom-sound adm (srel (ax34 h))   = Cube.r34 (big adm h) h
-axiom-sound adm (srel (ax35 h x)) = Cube.r35 (big adm h) h x
-axiom-sound adm (srel (ax36 h))   = Cube.r36 (big adm h) h
-axiom-sound adm (srel (ax37 h x)) = Cube.r37 (big adm h) h x
-axiom-sound adm (srel (ax38 h))   = Cube.r38 (big adm h) h
-axiom-sound adm (srel (ax39 h))   = Cube.r39 (big adm h) h
-axiom-sound adm (srel (ax40 h x)) = Cube.r40 (big adm h) h x
-axiom-sound adm (srel (ax41 h))   = Cube.r41 (big adm h) h
-axiom-sound adm (srel (ax42 h))   = Cube.r42 (big adm h) h
+axiom-sound adm (srel (srel (ax31 h)))   = Cube.r31 (big adm h) h
+axiom-sound adm (srel (srel (ax32 h x))) = Cube.r32 (big adm h) h x
+axiom-sound adm (srel (srel (ax33 h)))   = Cube.r33 (big adm h) h
+axiom-sound adm (srel (srel (ax34 h)))   = Cube.r34 (big adm h) h
+axiom-sound adm (srel (srel (ax35 h x))) = Cube.r35 (big adm h) h x
+axiom-sound adm (srel (srel (ax36 h)))   = Cube.r36 (big adm h) h
+axiom-sound adm (srel (srel (ax37 h x))) = Cube.r37 (big adm h) h x
+axiom-sound adm (srel (srel (ax38 h)))   = Cube.r38 (big adm h) h
+axiom-sound adm (srel (srel (ax39 h)))   = Cube.r39 (big adm h) h
+axiom-sound adm (srel (srel (ax40 h x))) = Cube.r40 (big adm h) h x
+axiom-sound adm (srel (srel (ax41 h)))   = Cube.r41 (big adm h) h
+axiom-sound adm (srel (srel (ax42 h)))   = Cube.r42 (big adm h) h
 -- The structural rules.
 axiom-sound adm (cong↑ r)   = cong↑-sound (axiom-sound adm r)
 axiom-sound adm (comm₁ h g) = comm₁-sound h g

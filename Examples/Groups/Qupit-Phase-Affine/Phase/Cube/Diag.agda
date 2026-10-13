@@ -353,7 +353,7 @@ Diag₃-↑ : {w : Circuit n} → Diag₃ n w → Diag₃ (₁₊ n) (w ↑)
 Diag₃-↑ (d , e) = lift-d₃ d , Width.trans (lift e) (lift₃-sound d)
 
 Diag₃-SWAP : {w : Circuit (₂₊ n)} → Diag₃ (₂₊ n) w → Diag₃ (₂₊ n) (SWAP • w • SWAP)
-Diag₃-SWAP {n} D = Diag₃-conj D [ sw ]ʷ (ax swap-order)
+Diag₃-SWAP {n} D = Diag₃-conj D [ sw ]ʷ swap-order
 
 Diag₃-T : Diag₃ (₁₊ n) (T h)
 Diag₃-T = Diag₃-≈ (T-e zero) (Diag₃-atomᵀ (eᴺ zero))

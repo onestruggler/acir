@@ -102,7 +102,7 @@ module _ {n : ℕ} where
 
   private
     ss : (₂₊ n) ⊢ SWAP • SWAP ≈ ε
-    ss = ax swap-order
+    ss = swap-order
 
   sCX : (₂₊ n) ⊢ SWAP • CX ≈ CXʳ • SWAP
   sCX = conj-slide ss
@@ -111,7 +111,7 @@ module _ {n : ℕ} where
   sCXʳ = unslide ss sCX
 
   sM↑ : (x : F*) → (₂₊ n) ⊢ SWAP • M⟨ x ⟩ ↑ ≈ M⟨ x ⟩ • SWAP
-  sM↑ x = sym (ax (swap-M (proj₁ x) (proj₂ x)))
+  sM↑ x = sym (swap-M (proj₁ x) (proj₂ x))
 
   sM : (x : F*) → (₂₊ n) ⊢ SWAP • M⟨ x ⟩ ≈ M⟨ x ⟩ ↑ • SWAP
   sM x = unslide ss (sM↑ x)
@@ -140,7 +140,7 @@ module _ {n : ℕ} where
     tt = SWAP↑²
 
     braid : (₃₊ n) ⊢ SWAP • SWAP ↑ • SWAP ≈ SWAP ↑ • SWAP • SWAP ↑
-    braid = ax swap-braid
+    braid = swap-braid
 
   -- SWAP ↑ exchanges wires 1 and 2.
   tCX : (₃₊ n) ⊢ SWAP ↑ • CX ≈ CX₂₀ • SWAP ↑
@@ -165,12 +165,12 @@ module _ {n : ℕ} where
   sCX↑ : (₃₊ n) ⊢ SWAP • CX ↑ ≈ CX₂₀ • SWAP
   sCX↑ = begin
     SWAP • CX ↑                      ≈⟨ sym (cancel-in tt _) ⟩
-    SWAP ↑ • SWAP ↑ • SWAP • CX ↑    ≈⟨ back _ (sym (ax swap-CX)) ⟩
+    SWAP ↑ • SWAP ↑ • SWAP • CX ↑    ≈⟨ back _ (sym swap-CX) ⟩
     SWAP ↑ • CX • SWAP ↑ • SWAP      ≈⟨ by-passoc (□ • □ • □ • □) ((□ • □ • □) • □) Eq.refl ⟩
     CX₂₀ • SWAP                      ∎
 
   sCX₂₀ : (₃₊ n) ⊢ SWAP • CX₂₀ ≈ CX ↑ • SWAP
-  sCX₂₀ = unslide (ax swap-order) sCX↑
+  sCX₂₀ = unslide swap-order sCX↑
 
   sCXʳ↑ : (₃₊ n) ⊢ SWAP • CXʳ ↑ ≈ CX₀₂ • SWAP
   sCXʳ↑ = begin
@@ -191,10 +191,10 @@ module _ {n : ℕ} where
     SWAP ↑ • SWAP • CX • (SWAP • SWAP ↑ • SWAP)
       ≈⟨ by-passoc (□ • □ • □ • (□ • □ • □)) ((□ • (□ • □ • □) • □) • □) Eq.refl ⟩
     CX₀₂ • SWAP ∎
-    where module I = Involution (ax {₃₊ n} swap-order)
+    where module I = Involution (swap-order {₁₊ n})
 
   sCX₀₂ : (₃₊ n) ⊢ SWAP • CX₀₂ ≈ CXʳ ↑ • SWAP
-  sCX₀₂ = unslide (ax swap-order) sCXʳ↑
+  sCX₀₂ = unslide swap-order sCXʳ↑
 
   -- σ = SWAP • SWAP ↑ moves wire 0 to 1, 1 to 2 and 2 to 0.
   σCX : (₃₊ n) ⊢ (SWAP • SWAP ↑) • CX ≈ CX ↑ • SWAP • SWAP ↑

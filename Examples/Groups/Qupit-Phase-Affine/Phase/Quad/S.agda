@@ -110,7 +110,7 @@ module _ {n : ℕ} where
 
   private
     ss : (₂₊ n) ⊢ SWAP • SWAP ≈ ε
-    ss = ax swap-order
+    ss = swap-order
 
   -- Rule (29): S on the control of CX.
   S↑-CX : (₂₊ n) ⊢ CX • S h ↑ ≈ S h ↑ • CX
@@ -118,10 +118,10 @@ module _ {n : ℕ} where
 
   -- SWAP moves S a wire.
   sS : (₂₊ n) ⊢ SWAP • S h ≈ S h ↑ • SWAP
-  sS = unslide ss (sym (ax (swap-S h)))
+  sS = unslide ss (sym (swap-S h))
 
   sS↑ : (₂₊ n) ⊢ SWAP • S h ↑ ≈ S h • SWAP
-  sS↑ = sym (ax (swap-S h))
+  sS↑ = sym (swap-S h)
 
   sSᶠ : (d : F) → (₂₊ n) ⊢ SWAP • S h ^ᶠ d ≈ (S h ^ᶠ d) ↑ • SWAP
   sSᶠ d = trans (slideᶠ d sS) (front _ (refl' (Eq.sym (↑ᶠ (S h) d))))
@@ -137,7 +137,7 @@ module _ {n : ℕ} where
   Z∥CXʳ = across (slide sZ↑ sCX) (slide sCX sZ↑) (sym Z↑-CX)
     where
     sZ↑ : (₂₊ n) ⊢ SWAP • Z h₁ ↑ ≈ Z h₁ • SWAP
-    sZ↑ = sym (ax (swap-Z h₁))
+    sZ↑ = sym (swap-Z h₁)
 
   -- The gadget: S on x₀ + x₁, with either wire as target.
   P : Circuit (₂₊ n)
@@ -148,7 +148,7 @@ module _ {n : ℕ} where
 
   P≈P′ : (₂₊ n) ⊢ P ≈ P′
   P≈P′ = begin
-    CX ^ᶠ (- 1F) • S h • CX           ≈⟨ back _ (gadget S∥CXʳ (sym (comm-gate₁-w↑ (S-gate h) M⟨ -1* ⟩)) (ax (swap-S h))) ⟩
+    CX ^ᶠ (- 1F) • S h • CX           ≈⟨ back _ (gadget S∥CXʳ (sym (comm-gate₁-w↑ (S-gate h) M⟨ -1* ⟩)) (swap-S h)) ⟩
     CX ^ᶠ (- 1F) • CX • P′            ≈⟨ cancel-in (CX-invˡ 1F) _ ⟩
     P′                                ∎
 

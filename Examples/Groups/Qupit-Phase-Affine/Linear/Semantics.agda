@@ -82,7 +82,7 @@ R-at (c ∷ w) a (b ∷ x) =
 
 CXʳᶠ-at : (c a b : F) (x : Labels n) → ⟦ CXʳ ^ᶠ c ⟧ (a ∷ b ∷ x) ≡ (a ∷ b + c * a ∷ x , 0F)
 CXʳᶠ-at c a b x =
-  trans (sound (Width.sym (conjᶠ (ax swap-order) sCX c)) (a ∷ b ∷ x))
+  trans (sound (Width.sym (conjᶠ swap-order sCX c)) (a ∷ b ∷ x))
     (at-≡ (•-at (•-at (SWAP-at a b x) (CXᶠ-at c b a x)) (SWAP-at (b + c * a) a x)) refl zeros₂)
   where open import Examples.Groups.Qupit-Phase-Affine.Reasoning p-2 p-prime lv using (module Width)
 

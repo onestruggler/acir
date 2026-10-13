@@ -199,7 +199,7 @@ SC-atoms {n} = begin
     S h₂ ^ᶠ (- 1F) • T h ^ᶠ (- 1F) • SWAP • (Z h₁ ^ᶠ (- half)) ↑ • SWAP • CZ h₂ ^ᶠ half
       ≈⟨ back _ (back _ (trans (sym assoc) (trans (front _ (sym (Zᶠ-SWAP (- half)))) assoc))) ⟩
     S h₂ ^ᶠ (- 1F) • T h ^ᶠ (- 1F) • Z h₁ ^ᶠ (- half) • SWAP • SWAP • CZ h₂ ^ᶠ half
-      ≈⟨ back _ (back _ (back _ (trans (sym assoc) (trans (front _ (ax swap-order)) left-unit)))) ⟩
+      ≈⟨ back _ (back _ (back _ (trans (sym assoc) (trans (front _ swap-order) left-unit)))) ⟩
     S h₂ ^ᶠ (- 1F) • T h ^ᶠ (- 1F) • Z h₁ ^ᶠ (- half) • CZ h₂ ^ᶠ half ∎
     where
     -- SWAP fixes iterates of CZ.

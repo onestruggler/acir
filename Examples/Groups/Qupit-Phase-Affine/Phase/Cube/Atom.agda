@@ -163,10 +163,10 @@ module _ {n : ℕ} where
 ------------------------------------------------------------------------
 -- Atoms of T, and all commutations
 
-module AT = Atoms (T-gate h) T∥CXʳ (ax (swap-T h))
+module AT = Atoms (T-gate h) T∥CXʳ (swap-T h)
 
-module FS = FanConj (S-gate h₂) S∥CXʳ (ax (swap-S h₂)) STZ∥S STZ∥P
-module FT = FanConj (T-gate h) T∥CXʳ (ax (swap-T h)) STZ∥T STZ∥PT
+module FS = FanConj (S-gate h₂) S∥CXʳ (swap-S h₂) STZ∥S STZ∥P
+module FT = FanConj (T-gate h) T∥CXʳ (swap-T h) STZ∥T STZ∥PT
 
 -- The atom of T at any width.
 atomᵀ : NZ n → Circuit n

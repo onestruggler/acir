@@ -24,8 +24,11 @@
 --
 -- The symmetry is a generator, SWAP, with the laws of a symmetric
 -- monoidal category: an involution, coherent (braid), and natural for
--- every generator.  A gate drawn on non-adjacent or reordered wires is
--- its placement by swaps.
+-- every generator.  They are Circuit.Prop's, with SWAP the designated
+-- swap (σ-inv, and σ-nat₁, σ-nat₂ at each generator, at SWAP itself the
+-- braid relation); swap-order … swap-CX state them as the paper does.
+-- A gate drawn on non-adjacent or reordered wires is its placement by
+-- swaps.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -45,7 +48,7 @@ open import Word.Base
 
 open import Notations using (₀ ; ₁ ; ₁₊ ; ₃₊ ; ₄₊)
 
-import Circuit.Base
+import Circuit.Prop
 import Presentation.Base as PB
 
 open import Examples.Groups.Qupit-Phase-Affine.Field p-2 p-prime
@@ -82,7 +85,7 @@ data Gate : ℕ → Set where
   CX-gate   : Gate 2
   SWAP-gate : Gate 2
 
-private module C = Circuit.Base Gate
+private module C = Circuit.Prop Gate SWAP-gate
 
 open C public
   using ( Gen ; gate₀ ; gate₁ ; gate₂ ; Circuit
@@ -176,7 +179,8 @@ CCZ₃₁₀ h = SWAP ↑ ↑ • CCZ h • SWAP ↑ ↑
 --
 -- Each rule is stated at the width it is drawn on; the structural
 -- rules of Circuit.Base lift it to every width.  Numbers are the
--- paper's equation numbers.
+-- paper's equation numbers.  The laws of the symmetry are not here:
+-- they are Circuit.Prop's.
 
 infix 4 _SRel,_===_
 data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
@@ -191,16 +195,6 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
   ax7 : (₂₊ n) SRel,
         SWAP === M⟨ -1* ⟩ ↑ • (SWAP • CX ^ᶠ (- 1F) • SWAP) • CX • (SWAP • CX ^ᶠ (- 1F) • SWAP)
   ax8 : (₃₊ n) SRel, CX ↑ • CX • CX₂₀ === CX • CX ↑
-
-  -- The symmetry: an involution, coherent, and natural.
-  swap-order : (₂₊ n) SRel, SWAP • SWAP === ε
-  swap-braid : (₃₊ n) SRel, SWAP • SWAP ↑ • SWAP === SWAP ↑ • SWAP • SWAP ↑
-  swap-X     : (₂₊ n) SRel, X • SWAP === SWAP • X ↑
-  swap-M     : (a : F) .(nz : a ≢ 0F) → (₂₊ n) SRel, M a nz • SWAP === SWAP • M a nz ↑
-  swap-Z     : .(h : 1 ≤ lv) → (₂₊ n) SRel, Z h • SWAP === SWAP • Z h ↑
-  swap-S     : .(h : 2 ≤ lv) → (₂₊ n) SRel, S h • SWAP === SWAP • S h ↑
-  swap-T     : .(h : 3 ≤ lv) → (₂₊ n) SRel, T h • SWAP === SWAP • T h ↑
-  swap-CX    : (₃₊ n) SRel, CX • SWAP ↑ • SWAP === SWAP ↑ • SWAP • CX ↑
 
   -- LinPhase_d (Figure 3).
   ax19 : .(h : 1 ≤ lv) → n SRel, ω h ^ p === ε
@@ -237,20 +231,56 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
   ax42 : .(h : 3 ≤ lv) → (₃₊ n) SRel, CX ↑ • CS h • CS₂₀ h === CS h • CX ↑
 
 ------------------------------------------------------------------------
--- The full relation: the structural rules of Circuit.Base on top
+-- The full relation: the laws of the symmetry (Circuit.Prop) and the
+-- structural rules (Circuit.Base) on top
+--
+-- An instance r of the rules above is srel (srel r); one of the laws
+-- of the symmetry srel σ-inv, srel (σ-nat₁ X-gate), and so on.  Agda
+-- tells the two srels apart by type.
 
-private module LR = C.Lift-Relation _SRel,_===_
+private module LP = C.Lift-To-Prop _SRel,_===_
 
-open LR public
-  using ( srel ; cong↑ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
+open LP public
+  using ( _Prop,_===_ ; σ-inv ; σ-nat₁ ; σ-nat₂ ; σ-nat₃
+        ; srel ; cong↑ ; comm₁ ; comm₂ ; comm₃ ; ω↑=ω ; lemma-cong↑
         ; comm-gate₁-w↑ ; comm-gate₂-w↑↑ ; _VRel,_===_ )
 
 -- The scalar is central: not a rule but a theorem of the others
 -- (Circuit.Base), there being a single scalar.
-open LR.Single-Scalar (λ { (ω-gate _) (ω-gate _) → refl }) public using (comm₀ ; comm-gate₀-w)
+open LP.Single-Scalar (λ { (ω-gate _) (ω-gate _) → refl }) public using (comm₀ ; comm-gate₀-w)
 
 -- The monoid congruence the relations generate at width n: the
 -- equality of circuits of the fragment.
 infix 4 _⊢_≈_
 _⊢_≈_ : (n : ℕ) → Circuit n → Circuit n → Set
 n ⊢ w ≈ v = PB._≈_ (n VRel,_===_) w v
+
+------------------------------------------------------------------------
+-- The laws of the symmetry, as the paper states them
+--
+-- Circuit.Prop's rules at SWAP: an involution, coherent (the braid
+-- relation, σ-nat₂ at SWAP), and natural for every generator.
+
+swap-order : (₂₊ n) ⊢ SWAP • SWAP ≈ ε
+swap-order = LP.σ-invol
+
+swap-braid : (₃₊ n) ⊢ SWAP • SWAP ↑ • SWAP ≈ SWAP ↑ • SWAP • SWAP ↑
+swap-braid = LP.yang-baxter
+
+swap-X : (₂₊ n) ⊢ X • SWAP ≈ SWAP • X ↑
+swap-X = PB.axiom (srel (σ-nat₁ X-gate))
+
+swap-M : (a : F) .(nz : a ≢ 0F) → (₂₊ n) ⊢ M a nz • SWAP ≈ SWAP • M a nz ↑
+swap-M a nz = PB.axiom (srel (σ-nat₁ (M-gate a nz)))
+
+swap-Z : .(h : 1 ≤ lv) → (₂₊ n) ⊢ Z h • SWAP ≈ SWAP • Z h ↑
+swap-Z h = PB.axiom (srel (σ-nat₁ (Z-gate h)))
+
+swap-S : .(h : 2 ≤ lv) → (₂₊ n) ⊢ S h • SWAP ≈ SWAP • S h ↑
+swap-S h = PB.axiom (srel (σ-nat₁ (S-gate h)))
+
+swap-T : .(h : 3 ≤ lv) → (₂₊ n) ⊢ T h • SWAP ≈ SWAP • T h ↑
+swap-T h = PB.axiom (srel (σ-nat₁ (T-gate h)))
+
+swap-CX : (₃₊ n) ⊢ CX • SWAP ↑ • SWAP ≈ SWAP ↑ • SWAP • CX ↑
+swap-CX = PB.trans (PB.axiom (srel (σ-nat₂ CX-gate))) PB.assoc

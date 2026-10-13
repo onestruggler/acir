@@ -101,7 +101,7 @@ module _ {n : ℕ} where
 
   private
     ss : (₂₊ n) ⊢ SWAP • SWAP ≈ ε
-    ss = ax swap-order
+    ss = swap-order
 
   -- Conjugating by SWAP something one wire up: it misses the
   -- multipliers on wire 1 and anything two wires up.
@@ -160,13 +160,13 @@ module _ {n : ℕ} where
 R-zero : (₁₊ n) ⊢ R (0ᵛ {n}) ≈ ε
 R-zero {zero}  = Width.refl
 R-zero {suc n} =
-  trans right-unit (trans (back _ (front _ (lift R-zero))) (trans (back _ left-unit) (ax swap-order)))
+  trans right-unit (trans (back _ (front _ (lift R-zero))) (trans (back _ left-unit) swap-order))
   where open Width (₂₊ n)
 
 col-zero : (₁₊ n) ⊢ col (0ᵛ {n}) ≈ ε
 col-zero {zero}  = Width.refl
 col-zero {suc n} =
-  trans right-unit (trans (back _ (front _ (lift col-zero))) (trans (back _ left-unit) (ax swap-order)))
+  trans right-unit (trans (back _ (front _ (lift col-zero))) (trans (back _ left-unit) swap-order))
   where open Width (₂₊ n)
 
 ------------------------------------------------------------------------
@@ -178,7 +178,7 @@ module _ {n : ℕ} where
 
   private
     ss : (₃₊ n) ⊢ SWAP • SWAP ≈ ε
-    ss = ax swap-order
+    ss = swap-order
 
   -- Additions one wire up, conjugated by SWAP.
   sw-up-sw : (k : F) → (₃₊ n) ⊢ SWAP • (CX ^ᶠ k) ↑ • SWAP ≈ CX₂₀ ^ᶠ k
@@ -230,7 +230,7 @@ R-up-CX : (w : Vec F n) (c : F) → (₂₊ n) ⊢ R w ↑ • CX ^ᶠ c ≈ CX 
 R-up-CX {n} [] c = begin
   ε • CX ^ᶠ c                          ≈⟨ left-unit ⟩
   CX ^ᶠ c                              ≈⟨ sym right-unit ⟩
-  CX ^ᶠ c • ε                          ≈⟨ back _ (sym (trans right-unit (trans (back _ left-unit) (ax swap-order)))) ⟩
+  CX ^ᶠ c • ε                          ≈⟨ back _ (sym (trans right-unit (trans (back _ left-unit) swap-order))) ⟩
   CX ^ᶠ c • (SWAP • ε • SWAP) • ε      ∎
   where open Width (₂₊ n)
 R-up-CX {suc n} (e ∷ w) c = begin
@@ -261,7 +261,7 @@ R-up-CX {suc n} (e ∷ w) c = begin
   Y = SWAP • SWAP ↑ • R u ↑ ↑ • SWAP ↑ • SWAP
 
   ss : (₃₊ n) ⊢ SWAP • SWAP ≈ ε
-  ss = ax swap-order
+  ss = swap-order
 
   -- R₀ (k ∷ u) = Y • CX₂₀ ^ᶠ k.
   R₀-cons : (₃₊ n) ⊢ R₀ (k ∷ u) ≈ Y • CX₂₀ ^ᶠ k

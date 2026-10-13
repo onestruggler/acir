@@ -106,7 +106,7 @@ grouplike (gate₁ (Z-gate h)) = Z h ^ᶠ (- 1F) , Pow.Order.inverseˡ _ (ax (ax
 grouplike (gate₁ (S-gate h)) = S h ^ᶠ (- 1F) , Pow.Order.inverseˡ _ (ax (ax24 h))
 grouplike (gate₁ (T-gate h)) = T h ^ᶠ (- 1F) , Pow.Order.inverseˡ _ (ax (ax31 h))
 grouplike (gate₂ CX-gate)    = CX ^ᶠ (- 1F) , CX-inverseˡ
-grouplike (gate₂ SWAP-gate)  = SWAP , ax swap-order
+grouplike (gate₂ SWAP-gate)  = SWAP , swap-order
 grouplike (g ↥) with grouplike g
 ... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf
 

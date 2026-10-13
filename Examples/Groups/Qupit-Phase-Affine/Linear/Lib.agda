@@ -286,7 +286,7 @@ module _ {n : ℕ} where
   open Width (₃₊ n)
 
   SWAP↑² : (₃₊ n) ⊢ SWAP ↑ • SWAP ↑ ≈ ε
-  SWAP↑² = lift (ax swap-order)
+  SWAP↑² = lift swap-order
 
   CX₂₀ᶠ : (k : F) → (₃₊ n) ⊢ CX₂₀ ^ᶠ k ≈ SWAP ↑ • CX ^ᶠ k • SWAP ↑
   CX₂₀ᶠ k = conj-^ SWAP↑² (toℕ k)
@@ -310,7 +310,7 @@ module _ {n : ℕ} where
 
   -- M on wire 1 past SWAP ↑ (rule swap-M one wire up), both ways.
   SWAP↑-M↑↑ : (x : F*) → (₃₊ n) ⊢ SWAP ↑ • M⟨ x ⟩ ↑ ↑ ≈ M⟨ x ⟩ ↑ • SWAP ↑
-  SWAP↑-M↑↑ x = sym (lift (ax (swap-M (proj₁ x) (proj₂ x))))
+  SWAP↑-M↑↑ x = sym (lift (swap-M (proj₁ x) (proj₂ x)))
 
   SWAP↑-M↑ : (x : F*) → (₃₊ n) ⊢ SWAP ↑ • M⟨ x ⟩ ↑ ≈ M⟨ x ⟩ ↑ ↑ • SWAP ↑
   SWAP↑-M↑ x = sym (I.conj→' (I.conj← (SWAP↑-M↑↑ x)))

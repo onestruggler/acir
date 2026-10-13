@@ -200,13 +200,13 @@ module _ {n : ℕ} where
 
   -- SWAP exchanges translations.
   sX : (₂₊ n) ⊢ SWAP • X ≈ X ↑ • SWAP
-  sX = unslide (ax swap-order) (sym (ax swap-X))
+  sX = unslide swap-order (sym swap-X)
 
   sXᶠ : (c : F) → (₂₊ n) ⊢ SWAP • X ^ᶠ c ≈ (X ^ᶠ c) ↑ • SWAP
   sXᶠ c = trans (slideᶠ c sX) (front _ (refl' (Eq.sym (↑ᶠ X c))))
 
   sX↑ᶠ : (c : F) → (₂₊ n) ⊢ SWAP • (X ^ᶠ c) ↑ ≈ X ^ᶠ c • SWAP
-  sX↑ᶠ c = trans (back _ (refl' (↑ᶠ X c))) (slideᶠ c (sym (ax swap-X)))
+  sX↑ᶠ c = trans (back _ (refl' (↑ᶠ X c))) (slideᶠ c (sym swap-X))
 
   Xᶠ∥X↑ᶠ : (c d : F) → (₂₊ n) ⊢ X ^ᶠ c • (X ^ᶠ d) ↑ ≈ (X ^ᶠ d) ↑ • X ^ᶠ c
   Xᶠ∥X↑ᶠ c d = trans (back _ (refl' (↑ᶠ X d)))

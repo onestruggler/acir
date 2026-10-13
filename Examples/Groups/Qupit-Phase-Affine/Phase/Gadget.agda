@@ -85,8 +85,8 @@ module _ {n : ℕ} where
       m • m • (SWAP • CX ^ᶠ (- 1F) • SWAP) • CX • (SWAP • CX ^ᶠ (- 1F) • SWAP)
                                          ≈⟨ cancel-in mm _ ⟩
       (SWAP • CX ^ᶠ (- 1F) • SWAP) • CX • (SWAP • CX ^ᶠ (- 1F) • SWAP)
-                                         ≈⟨ cong (conjᶠ (ax swap-order) sCX (- 1F))
-                                                 (back _ (conjᶠ (ax swap-order) sCX (- 1F))) ⟩
+                                         ≈⟨ cong (conjᶠ swap-order sCX (- 1F))
+                                                 (back _ (conjᶠ swap-order sCX (- 1F))) ⟩
       R⁻ • CX • R⁻                       ∎
 
   -- A gate on wire 0 that commutes with CXʳ and with M₋₁ on wire 1,

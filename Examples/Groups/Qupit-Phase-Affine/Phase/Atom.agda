@@ -185,7 +185,7 @@ module Atoms
     where
     open Width (₂₊ n)
     sGs : (₂₊ n) ⊢ SWAP • G • SWAP ≈ G ↑
-    sGs = trans (back _ G-swap) (trans (sym assoc) (trans (front _ (ax swap-order)) left-unit))
+    sGs = trans (back _ G-swap) (trans (sym assoc) (trans (front _ swap-order) left-unit))
 
   -- Iterates conjugate the iterate of G.
   A-^ : (ℓ : NZ (₁₊ n)) (k : ℕ) → (₁₊ n) ⊢ A ℓ ^ k ≈ r ℓ ⁻¹ • G ^ k • r ℓ

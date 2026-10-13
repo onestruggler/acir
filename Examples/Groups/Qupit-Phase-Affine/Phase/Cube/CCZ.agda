@@ -220,10 +220,10 @@ module _ {n : ℕ} where
     SC₀₂ = SWAP • SC ↑ • SWAP
 
     ss : (₃₊ n) ⊢ SWAP • SWAP ≈ ε
-    ss = ax swap-order
+    ss = swap-order
 
     tt : (₃₊ n) ⊢ SWAP ↑ • SWAP ↑ ≈ ε
-    tt = lift (ax swap-order)
+    tt = lift swap-order
 
     σ-CS₂₀ : (₃₊ n) ⊢ σ • CS₂₀ h ≈ SC • σ
     σ-CS₂₀ = begin
@@ -308,4 +308,4 @@ W-CX {n} = begin
   where
   open Width (₄₊ n)
   D310 : Diag₃ (₄₊ n) (CCZ₃₁₀ h)
-  D310 = Diag₃-conj Diag₃-CCZ [ sw ↥ₗ ↥ₗ ]ʷ (lift (lift (ax swap-order)))
+  D310 = Diag₃-conj Diag₃-CCZ [ sw ↥ₗ ↥ₗ ]ʷ (lift (lift swap-order))

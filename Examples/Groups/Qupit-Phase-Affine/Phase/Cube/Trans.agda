@@ -276,11 +276,11 @@ module _ {n : ℕ} where
 
   private
     ss : (₂₊ n) ⊢ SWAP • SWAP ≈ ε
-    ss = ax swap-order
+    ss = swap-order
 
   SC-X₁ : (₂₊ n) ⊢ SC • X ↑ ≈ X ↑ • CZ h₂ • SC
   SC-X₁ = begin
-    (SWAP • CS h • SWAP) • X ↑         ≈⟨ trans assoc (back _ (trans assoc (back _ (sym (ax swap-X))))) ⟩
+    (SWAP • CS h • SWAP) • X ↑         ≈⟨ trans assoc (back _ (trans assoc (back _ (sym swap-X)))) ⟩
     SWAP • CS h • X • SWAP             ≈⟨ back _ (trans (sym assoc) (trans (front _ CS-X₀) assoc)) ⟩
     SWAP • X • (CZ h₂ • CS h) • SWAP   ≈⟨ trans (sym assoc) (trans (front _ sX) assoc) ⟩
     X ↑ • SWAP • (CZ h₂ • CS h) • SWAP ≈⟨ back _ (trans (back _ assoc) (trans (sym assoc) (front _ CZ-sym))) ⟩
