@@ -77,9 +77,9 @@ w4 x y = x • y • x • y
 
 -- (333)/(334) at width 4 + k.
 rot₁ : ∀ k → Below (₁₊ (₄₊ k)) → ∀ α → (₄₊ k) ⊢ w4 (letter₁ k α) (letter₁ k (not α)) ≈ rot {₁₊ k} α
-rot₁ zero    below true  = SS.Below.by-sem₀ 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ (Hg 1 • K₄ • Hg 1 • K₄) (ΛZX 3) (Evaluated.same e-333)
+rot₁ zero    below true  = SS.Below.by-ev₀ 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ e-333
   where c₄ = below (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))
-rot₁ zero    below false = SS.Below.by-sem₀ 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ (K₄ • Hg 1 • K₄ • Hg 1) (ΛXZ 3) (Evaluated.same e-334)
+rot₁ zero    below false = SS.Below.by-ev₀ 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ e-334
   where c₄ = below (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))
 rot₁ (suc k) below true  = sym (letters k (below-suc below) true)
   where open Tools ((₄₊ (suc k)) VRel,_===_)

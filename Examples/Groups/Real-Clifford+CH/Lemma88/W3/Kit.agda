@@ -78,9 +78,9 @@ private
 
 tm₃ : ∀ β K → K < 2 → TopMerge β K
 tm₃ true  zero          _ =
-  SS.Below.by-sem₀ 2 (s≤s (s≤s z≤n)) complete₂ ((Xat 1 • ΛZX 1 • Xat 1) • ΛZX 1) (placeAt 1 (ΛZX 0)) (Evaluated.same e-zx1)
+  SS.Below.by-ev₀ 2 (s≤s (s≤s z≤n)) complete₂ e-zx1
 tm₃ false zero          _ =
-  SS.Below.by-sem₀ 2 (s≤s (s≤s z≤n)) complete₂ ((Xat 1 • ΛXZ 1 • Xat 1) • ΛXZ 1) (placeAt 1 (ΛXZ 0)) (Evaluated.same e-xz1)
+  SS.Below.by-ev₀ 2 (s≤s (s≤s z≤n)) complete₂ e-xz1
 tm₃ true  (suc zero)    _ = trans eq136 (sym (top₂ true))
 tm₃ false (suc zero)    _ = trans eq138′ (sym (top₂ false))
 tm₃ β     (suc (suc K)) (s≤s (s≤s ()))

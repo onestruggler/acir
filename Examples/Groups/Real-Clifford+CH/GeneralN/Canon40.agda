@@ -190,7 +190,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     canon = canonN k completes
 
   open Tools (N VRel,_===_)
-  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem)
+  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem ; by-ev)
   open MergeAll (₃₊ k) (mergesₙ k completes) using (merge-top₂)
 
   Λ B K Bt CH₂ HG D B₂ : Circuit N
@@ -314,7 +314,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     CH₂-∏ : CH₂ ≈ ∏ (allBits m) Hc
     CH₂-∏ = begin
       CH₂
-        ≈⟨ by-sem (Ex ↑ • CH • Ex ↑) (PP ↓ • (Ex ↓ • (Λ□ 2 ↓ᵏ 1) • Ex ↓) • PP ↓) (Evaluated.same e-CH₂) {m′} ⟩
+        ≈⟨ by-ev e-CH₂ {m′} ⟩
       PP ↓ • (Ex ↓ • (Λ□ 2 ↓ᵏ m) • Ex ↓) • PP ↓
         ≈⟨ mid _ _ (mid _ _ (sym (merge-top₂ m ≤-refl))) ⟩
       PP ↓ • (Ex ↓ • ∏ (allBits m) Lc • Ex ↓) • PP ↓
@@ -376,14 +376,14 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       S₁₂-Λ′ = trans (sym assoc) (trans (front _ (symAt 0)) (trans assoc (trans (back _ (trans (sym assoc) (trans (front _ Ex↑²) left-unit))) refl)))
 
     trX₃ : tr (X ↑ ↑ ↑) ≈ X
-    trX₃ = trans (Tτ.⟪⟫-cong (by-sem (Ex ↑ ↑ • X ↑ ↑ ↑ • Ex ↑ ↑) (X ↑ ↑) (Evaluated.same e-X₃) {m′}))
-                 (by-sem (τ₀₂ • X ↑ ↑ • τ₀₂) X (Evaluated.same e-τX) {m′})
+    trX₃ = trans (Tτ.⟪⟫-cong (by-ev e-X₃ {m′}))
+                 (by-ev e-τX {m′})
 
     trX₂ : tr (X ↑ ↑) ≈ X ↑ ↑ ↑
-    trX₂ = by-sem (τ₀₂ • (Ex ↑ ↑ • X ↑ ↑ • Ex ↑ ↑) • τ₀₂) (X ↑ ↑ ↑) (Evaluated.same e-trX) {m′}
+    trX₂ = by-ev e-trX {m′}
 
     trP : tr P₁₃ ≈ PP ↓
-    trP = by-sem (τ₀₂ • (Ex ↑ ↑ • P₁₃ • Ex ↑ ↑) • τ₀₂) (PP ↓) (Evaluated.same e-trP) {m′}
+    trP = by-ev e-trP {m′}
 
     trU : ∀ (y : Bits m′) → tr (negsB y ↑ ↑ ↑ ↑) ≈ negsB y ↑ ↑ ↑ ↑
     trU y = trans (Tτ.⟪⟫-cong (fix (local-comm (Ex {0} ↑ ↑) (negsB y)) Ex↑↑²))

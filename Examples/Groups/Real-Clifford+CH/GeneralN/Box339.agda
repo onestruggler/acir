@@ -56,7 +56,7 @@ open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 
 open import Examples.Groups.Real-Clifford+CH.Semantics.Algebra using (Bits)
 open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools ; module Conj ; X² ; Ex²)
-open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (same-sem ; Evaluated)
+open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (same-sem ; Evaluated ; same-ev)
 import Examples.Groups.Real-Clifford+CH.SemanticSteps as SS
 open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Auxiliary complete₂ using (module N₂)
 open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Figure13 complete₂ using (eq111 ; eq112)
@@ -137,13 +137,13 @@ module _ {r : ℕ} where
 
 -- (130) on the wires 0 1 3.
 module _ (c₄ : Comp 4) {r : ℕ} where
-  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem)
+  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem ; by-ev)
 
   klein : (₄₊ r) ⊢ P₁₃ ≈ P₀₃ • PP ↓
-  klein = by-sem (P₁₃ {0}) (P₀₃ • PP ↓) (Evaluated.same dK) {r}
+  klein = by-ev dK {r}
 
   klein′ : (₄₊ r) ⊢ P₁₃ ≈ PP ↓ • P₀₃
-  klein′ = by-sem (P₁₃ {0}) (PP ↓ • P₀₃) (Evaluated.same dK′) {r}
+  klein′ = by-ev dK′ {r}
 
 ------------------------------------------------------------------------
 -- Colours
@@ -183,17 +183,17 @@ U₂ true  = P₁₃ • (Ex • ΛZX 3 • Ex) • P₁₃
 U₂ false = P₁₃ • (Ex • (Ex • ΛZX 3 • Ex) • Ex) • P₁₃
 
 module _ (c₄ : Comp 4) {n : ℕ} where
-  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem)
+  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem ; by-ev)
 
   rr : ∀ a b c → (₄₊ n) ⊢ N₃ᵇ a (U₁ b ↓ᵏ n) • N₂.⟪ U₂ c ↓ᵏ n ⟫ ≈ N₂.⟪ U₂ c ↓ᵏ n ⟫ • N₃ᵇ a (U₁ b ↓ᵏ n)
-  rr true  true  true  = by-sem (G1r true  true  • G2r true ) (G2r true  • G1r true  true ) (Evaluated.same (d339r true  true  true )) {n}
-  rr true  true  false = by-sem (G1r true  true  • G2r false) (G2r false • G1r true  true ) (Evaluated.same (d339r true  true  false)) {n}
-  rr true  false true  = by-sem (G1r true  false • G2r true ) (G2r true  • G1r true  false) (Evaluated.same (d339r true  false true )) {n}
-  rr true  false false = by-sem (G1r true  false • G2r false) (G2r false • G1r true  false) (Evaluated.same (d339r true  false false)) {n}
-  rr false true  true  = by-sem (G1r false true  • G2r true ) (G2r true  • G1r false true ) (Evaluated.same (d339r false true  true )) {n}
-  rr false true  false = by-sem (G1r false true  • G2r false) (G2r false • G1r false true ) (Evaluated.same (d339r false true  false)) {n}
-  rr false false true  = by-sem (G1r false false • G2r true ) (G2r true  • G1r false false) (Evaluated.same (d339r false false true )) {n}
-  rr false false false = by-sem (G1r false false • G2r false) (G2r false • G1r false false) (Evaluated.same (d339r false false false)) {n}
+  rr true  true  true  = by-ev (d339r true  true  true ) {n}
+  rr true  true  false = by-ev (d339r true  true  false) {n}
+  rr true  false true  = by-ev (d339r true  false true ) {n}
+  rr true  false false = by-ev (d339r true  false false) {n}
+  rr false true  true  = by-ev (d339r false true  true ) {n}
+  rr false true  false = by-ev (d339r false true  false) {n}
+  rr false false true  = by-ev (d339r false false true ) {n}
+  rr false false false = by-ev (d339r false false false) {n}
 
 ------------------------------------------------------------------------
 -- (336) one width down
@@ -454,13 +454,9 @@ module Step (k : ℕ) (below : Below (₁₊ (₄₊ k))) (a : Bool) (x y : Bits
 -- On four wires, decided.
 eq339₀ : Comp 4 → C339 0
 eq339₀ c₄ true  [] [] =
-  c₄ (same-sem (col (true ∷ true ∷ true ∷ true ∷ []) (Λ□ 3) • col (true ∷ true ∷ false ∷ true ∷ []) (Hg₃ 0))
-               (col (true ∷ true ∷ false ∷ true ∷ []) (Hg₃ 0) • col (true ∷ true ∷ true ∷ true ∷ []) (Λ□ 3))
-               (Evaluated.same (d339 true)))
+  c₄ (same-ev (d339 true))
 eq339₀ c₄ false [] [] =
-  c₄ (same-sem (col (true ∷ true ∷ true ∷ false ∷ []) (Λ□ 3) • col (true ∷ true ∷ false ∷ true ∷ []) (Hg₃ 0))
-               (col (true ∷ true ∷ false ∷ true ∷ []) (Hg₃ 0) • col (true ∷ true ∷ true ∷ false ∷ []) (Λ□ 3))
-               (Evaluated.same (d339 false)))
+  c₄ (same-ev (d339 false))
 
 -- At every width from five on.
 eq339 : ∀ k → Below (₁₊ (₄₊ k)) → C339 (₁₊ k)

@@ -49,7 +49,7 @@ import Examples.Groups.Symmetric.Syntactics as S
 open import Examples.Groups.Real-Clifford+CH.Semantics.Algebra using (Bits)
 open import Examples.Groups.Real-Clifford+CH.MultiControlled using (swapAt)
 open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools ; module Conj ; X² ; Ex²)
-open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (same-sem ; Evaluated)
+open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (same-sem ; Evaluated ; same-ev)
 open import Examples.Groups.Real-Clifford+CH.PermCalc using (perm-≈)
 open import Examples.Groups.Real-Clifford+CH.TopWeakening using (top)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Blocks complete₂ complete₃ using (module S₀₁)
@@ -267,7 +267,7 @@ module _ {r : ℕ} (z : Circuit (₃₊ r)) where
 -- (320) at width 4 + j
 
 E320 : Comp 4 → ∀ j → Below (₄₊ j) → (₄₊ j) ⊢ Λ□ (₃₊ j) ≈ word (lt j) es
-E320 c₄ zero    _ = c₄ (same-sem (Λ□ 3) W320 (Evaluated.same d320))
+E320 c₄ zero    _ = c₄ (same-ev d320)
 E320 c₄ (suc j) b = begin
   Λ□ (₄₊ j)
     ≈⟨ eq320 j b ⟩
@@ -325,13 +325,13 @@ module _ {n : ℕ} where
 private
   gd₀⁺ : Comp 4 → ∀ α β γ v → 4 ⊢ Aᴾ α β true • P322 v γ ≈ P322 v γ • Aᴾ α β true
   gd₀⁺ c₄ true  true  γ v =
-    c₄ (same-sem (AᴾF true true • P322 v γ) (P322 v γ • AᴾF true true) (Evaluated.same (d322 true γ v)))
+    c₄ (same-ev (d322 true γ v))
   gd₀⁺ c₄ false true  γ v =
-    c₄ (same-sem (AᴾF false true • P322 v γ) (P322 v γ • AᴾF false true) (Evaluated.same (d322 false γ v)))
+    c₄ (same-ev (d322 false γ v))
   gd₀⁺ c₄ true  false γ v =
-    c₄ (same-sem (AᴾF true false • P322 v γ) (P322 v γ • AᴾF true false) (Evaluated.same (d322b true γ v)))
+    c₄ (same-ev (d322b true γ v))
   gd₀⁺ c₄ false false γ v =
-    c₄ (same-sem (AᴾF false false • P322 v γ) (P322 v γ • AᴾF false false) (Evaluated.same (d322b false γ v)))
+    c₄ (same-ev (d322b false γ v))
 
 gd₀ : Comp 4 → Gd 0
 gd₀ c₄ α β true  γ [] v = gd₀⁺ c₄ α β γ v

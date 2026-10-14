@@ -101,7 +101,7 @@ private
   module I = Invol C complete₂
 
 open Tools (N VRel,_===_)
-open SS.Below 2 (s≤s (s≤s z≤n)) complete₂ using (by-sem)
+open SS.Below 2 (s≤s (s≤s z≤n)) complete₂ using (by-sem ; by-ev)
 
 private
   ZXn XZn a b bi XZ₂ ZX₂ : Circuit N
@@ -246,10 +246,10 @@ private
 
   -- Their inverses, through the two-wire gates.
   zx₂-xz₂ : ZX₂ • XZ₂ ≈ ε
-  zx₂-xz₂ = by-sem (ΛZX 1 • ΛXZ 1) ε (Evaluated.same e-zxxz) {₁₊ m}
+  zx₂-xz₂ = by-ev e-zxxz {₁₊ m}
 
   xz₂-zx₂ : XZ₂ • ZX₂ ≈ ε
-  xz₂-zx₂ = by-sem (ΛXZ 1 • ΛZX 1) ε (Evaluated.same e-xzzx) {₁₊ m}
+  xz₂-zx₂ = by-ev e-xzzx {₁₊ m}
 
   Dai Dbi : Circuit N
   Dai = a • ZX₂
@@ -312,7 +312,7 @@ private
   -- e e′ e is CZ • Ex, which conjugates b to a ((357)).
   eee-CZ : ea • eb • ea ≈ CZ ↓ • Ex ↓
   eee-CZ = trans (cong ea-2 (cong eb-2 ea-2))
-                 (by-sem (ΛXZ 1 • (Ex • ΛZX 1 • Ex) • ΛXZ 1) (CZ • Ex) (Evaluated.same e-ebe) {₁₊ m})
+                 (by-ev e-ebe {₁₊ m})
 
   CZEx-b : (CZ ↓ • Ex ↓) • b ≈ a • (CZ ↓ • Ex ↓)
   CZEx-b = begin
