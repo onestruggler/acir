@@ -9,137 +9,145 @@
 
 module Examples.Groups.CCX+HH.ThreeQubit.Checks.Rows063 where
 
-open import Relation.Binary.PropositionalEquality using (refl)
+open import Data.Unit.Base using (tt)
 open import Examples.Groups.CCX+HH.Syntactics
 open import Examples.Groups.CCX+HH.ThreeQubit.Cosets
 open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Base
-open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_)
+open import Examples.Groups.CCX+HH.Decide using (by-eq)
+open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Assemble using (assemble)
+open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Matrices
+open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Matrices000
+open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Matrices027
+open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Matrices054
+open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Matrices081
+open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Matrices108
+open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_ ; adjᴰ)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 
 opaque
-  unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_
+  unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_ adjᴰ
 
   checked063 : ∀ g → Checked c063 g
-  checked063 X-gen = refl
-  checked063 (X-gen ↥) = refl
-  checked063 (X-gen ↥ ↥) = refl
-  checked063 CX-gen = refl
-  checked063 (CX-gen ↥) = refl
-  checked063 CCX-gen = refl
-  checked063 HH-gen = refl
-  checked063 (HH-gen ↥) = refl
+  checked063 X-gen = assemble c063 X-gen m063 m092 ok063 ok092 (by-eq tt)
+  checked063 (X-gen ↥) = assemble c063 (X-gen ↥) m063 m043 ok063 ok043 (by-eq tt)
+  checked063 (X-gen ↥ ↥) = assemble c063 (X-gen ↥ ↥) m063 m063 ok063 ok063 (by-eq tt)
+  checked063 CX-gen = assemble c063 CX-gen m063 m092 ok063 ok092 (by-eq tt)
+  checked063 (CX-gen ↥) = assemble c063 (CX-gen ↥) m063 m093 ok063 ok093 (by-eq tt)
+  checked063 CCX-gen = assemble c063 CCX-gen m063 m094 ok063 ok094 (by-eq tt)
+  checked063 HH-gen = assemble c063 HH-gen m063 m082 ok063 ok082 (by-eq tt)
+  checked063 (HH-gen ↥) = assemble c063 (HH-gen ↥) m063 m038 ok063 ok038 (by-eq tt)
   checked063 (gate₀ ())
   checked063 ((gate₀ ()) ↥)
   checked063 ((gate₀ ()) ↥ ↥)
   checked063 ((gate₀ ()) ↥ ↥ ↥)
 
   checked064 : ∀ g → Checked c064 g
-  checked064 X-gen = refl
-  checked064 (X-gen ↥) = refl
-  checked064 (X-gen ↥ ↥) = refl
-  checked064 CX-gen = refl
-  checked064 (CX-gen ↥) = refl
-  checked064 CCX-gen = refl
-  checked064 HH-gen = refl
-  checked064 (HH-gen ↥) = refl
+  checked064 X-gen = assemble c064 X-gen m064 m087 ok064 ok087 (by-eq tt)
+  checked064 (X-gen ↥) = assemble c064 (X-gen ↥) m064 m044 ok064 ok044 (by-eq tt)
+  checked064 (X-gen ↥ ↥) = assemble c064 (X-gen ↥ ↥) m064 m044 ok064 ok044 (by-eq tt)
+  checked064 CX-gen = assemble c064 CX-gen m064 m095 ok064 ok095 (by-eq tt)
+  checked064 (CX-gen ↥) = assemble c064 (CX-gen ↥) m064 m039 ok064 ok039 (by-eq tt)
+  checked064 CCX-gen = assemble c064 CCX-gen m064 m095 ok064 ok095 (by-eq tt)
+  checked064 HH-gen = assemble c064 HH-gen m064 m040 ok064 ok040 (by-eq tt)
+  checked064 (HH-gen ↥) = assemble c064 (HH-gen ↥) m064 m083 ok064 ok083 (by-eq tt)
   checked064 (gate₀ ())
   checked064 ((gate₀ ()) ↥)
   checked064 ((gate₀ ()) ↥ ↥)
   checked064 ((gate₀ ()) ↥ ↥ ↥)
 
   checked065 : ∀ g → Checked c065 g
-  checked065 X-gen = refl
-  checked065 (X-gen ↥) = refl
-  checked065 (X-gen ↥ ↥) = refl
-  checked065 CX-gen = refl
-  checked065 (CX-gen ↥) = refl
-  checked065 CCX-gen = refl
-  checked065 HH-gen = refl
-  checked065 (HH-gen ↥) = refl
+  checked065 X-gen = assemble c065 X-gen m065 m065 ok065 ok065 (by-eq tt)
+  checked065 (X-gen ↥) = assemble c065 (X-gen ↥) m065 m046 ok065 ok046 (by-eq tt)
+  checked065 (X-gen ↥ ↥) = assemble c065 (X-gen ↥ ↥) m065 m080 ok065 ok080 (by-eq tt)
+  checked065 CX-gen = assemble c065 CX-gen m065 m065 ok065 ok065 (by-eq tt)
+  checked065 (CX-gen ↥) = assemble c065 (CX-gen ↥) m065 m065 ok065 ok065 (by-eq tt)
+  checked065 CCX-gen = assemble c065 CCX-gen m065 m065 ok065 ok065 (by-eq tt)
+  checked065 HH-gen = assemble c065 HH-gen m065 m083 ok065 ok083 (by-eq tt)
+  checked065 (HH-gen ↥) = assemble c065 (HH-gen ↥) m065 m040 ok065 ok040 (by-eq tt)
   checked065 (gate₀ ())
   checked065 ((gate₀ ()) ↥)
   checked065 ((gate₀ ()) ↥ ↥)
   checked065 ((gate₀ ()) ↥ ↥ ↥)
 
   checked066 : ∀ g → Checked c066 g
-  checked066 X-gen = refl
-  checked066 (X-gen ↥) = refl
-  checked066 (X-gen ↥ ↥) = refl
-  checked066 CX-gen = refl
-  checked066 (CX-gen ↥) = refl
-  checked066 CCX-gen = refl
-  checked066 HH-gen = refl
-  checked066 (HH-gen ↥) = refl
+  checked066 X-gen = assemble c066 X-gen m066 m043 ok066 ok043 (by-eq tt)
+  checked066 (X-gen ↥) = assemble c066 (X-gen ↥) m066 m092 ok066 ok092 (by-eq tt)
+  checked066 (X-gen ↥ ↥) = assemble c066 (X-gen ↥ ↥) m066 m066 ok066 ok066 (by-eq tt)
+  checked066 CX-gen = assemble c066 CX-gen m066 m066 ok066 ok066 (by-eq tt)
+  checked066 (CX-gen ↥) = assemble c066 (CX-gen ↥) m066 m096 ok066 ok096 (by-eq tt)
+  checked066 CCX-gen = assemble c066 CCX-gen m066 m066 ok066 ok066 (by-eq tt)
+  checked066 HH-gen = assemble c066 HH-gen m066 m078 ok066 ok078 (by-eq tt)
+  checked066 (HH-gen ↥) = assemble c066 (HH-gen ↥) m066 m041 ok066 ok041 (by-eq tt)
   checked066 (gate₀ ())
   checked066 ((gate₀ ()) ↥)
   checked066 ((gate₀ ()) ↥ ↥)
   checked066 ((gate₀ ()) ↥ ↥ ↥)
 
   checked067 : ∀ g → Checked c067 g
-  checked067 X-gen = refl
-  checked067 (X-gen ↥) = refl
-  checked067 (X-gen ↥ ↥) = refl
-  checked067 CX-gen = refl
-  checked067 (CX-gen ↥) = refl
-  checked067 CCX-gen = refl
-  checked067 HH-gen = refl
-  checked067 (HH-gen ↥) = refl
+  checked067 X-gen = assemble c067 X-gen m067 m044 ok067 ok044 (by-eq tt)
+  checked067 (X-gen ↥) = assemble c067 (X-gen ↥) m067 m087 ok067 ok087 (by-eq tt)
+  checked067 (X-gen ↥ ↥) = assemble c067 (X-gen ↥ ↥) m067 m087 ok067 ok087 (by-eq tt)
+  checked067 CX-gen = assemble c067 CX-gen m067 m072 ok067 ok072 (by-eq tt)
+  checked067 (CX-gen ↥) = assemble c067 (CX-gen ↥) m067 m042 ok067 ok042 (by-eq tt)
+  checked067 CCX-gen = assemble c067 CCX-gen m067 m067 ok067 ok067 (by-eq tt)
+  checked067 HH-gen = assemble c067 HH-gen m067 m046 ok067 ok046 (by-eq tt)
+  checked067 (HH-gen ↥) = assemble c067 (HH-gen ↥) m067 m044 ok067 ok044 (by-eq tt)
   checked067 (gate₀ ())
   checked067 ((gate₀ ()) ↥)
   checked067 ((gate₀ ()) ↥ ↥)
   checked067 ((gate₀ ()) ↥ ↥ ↥)
 
   checked068 : ∀ g → Checked c068 g
-  checked068 X-gen = refl
-  checked068 (X-gen ↥) = refl
-  checked068 (X-gen ↥ ↥) = refl
-  checked068 CX-gen = refl
-  checked068 (CX-gen ↥) = refl
-  checked068 CCX-gen = refl
-  checked068 HH-gen = refl
-  checked068 (HH-gen ↥) = refl
+  checked068 X-gen = assemble c068 X-gen m068 m045 ok068 ok045 (by-eq tt)
+  checked068 (X-gen ↥) = assemble c068 (X-gen ↥) m068 m097 ok068 ok097 (by-eq tt)
+  checked068 (X-gen ↥ ↥) = assemble c068 (X-gen ↥ ↥) m068 m045 ok068 ok045 (by-eq tt)
+  checked068 CX-gen = assemble c068 CX-gen m068 m045 ok068 ok045 (by-eq tt)
+  checked068 (CX-gen ↥) = assemble c068 (CX-gen ↥) m068 m070 ok068 ok070 (by-eq tt)
+  checked068 CCX-gen = assemble c068 CCX-gen m068 m042 ok068 ok042 (by-eq tt)
+  checked068 HH-gen = assemble c068 HH-gen m068 m098 ok068 ok098 (by-eq tt)
+  checked068 (HH-gen ↥) = assemble c068 (HH-gen ↥) m068 m099 ok068 ok099 (by-eq tt)
   checked068 (gate₀ ())
   checked068 ((gate₀ ()) ↥)
   checked068 ((gate₀ ()) ↥ ↥)
   checked068 ((gate₀ ()) ↥ ↥ ↥)
 
   checked069 : ∀ g → Checked c069 g
-  checked069 X-gen = refl
-  checked069 (X-gen ↥) = refl
-  checked069 (X-gen ↥ ↥) = refl
-  checked069 CX-gen = refl
-  checked069 (CX-gen ↥) = refl
-  checked069 CCX-gen = refl
-  checked069 HH-gen = refl
-  checked069 (HH-gen ↥) = refl
+  checked069 X-gen = assemble c069 X-gen m069 m096 ok069 ok096 (by-eq tt)
+  checked069 (X-gen ↥) = assemble c069 (X-gen ↥) m069 m093 ok069 ok093 (by-eq tt)
+  checked069 (X-gen ↥ ↥) = assemble c069 (X-gen ↥ ↥) m069 m093 ok069 ok093 (by-eq tt)
+  checked069 CX-gen = assemble c069 CX-gen m069 m100 ok069 ok100 (by-eq tt)
+  checked069 (CX-gen ↥) = assemble c069 (CX-gen ↥) m069 m043 ok069 ok043 (by-eq tt)
+  checked069 CCX-gen = assemble c069 CCX-gen m069 m100 ok069 ok100 (by-eq tt)
+  checked069 HH-gen = assemble c069 HH-gen m069 m101 ok069 ok101 (by-eq tt)
+  checked069 (HH-gen ↥) = assemble c069 (HH-gen ↥) m069 m072 ok069 ok072 (by-eq tt)
   checked069 (gate₀ ())
   checked069 ((gate₀ ()) ↥)
   checked069 ((gate₀ ()) ↥ ↥)
   checked069 ((gate₀ ()) ↥ ↥ ↥)
 
   checked070 : ∀ g → Checked c070 g
-  checked070 X-gen = refl
-  checked070 (X-gen ↥) = refl
-  checked070 (X-gen ↥ ↥) = refl
-  checked070 CX-gen = refl
-  checked070 (CX-gen ↥) = refl
-  checked070 CCX-gen = refl
-  checked070 HH-gen = refl
-  checked070 (HH-gen ↥) = refl
+  checked070 X-gen = assemble c070 X-gen m070 m072 ok070 ok072 (by-eq tt)
+  checked070 (X-gen ↥) = assemble c070 (X-gen ↥) m070 m102 ok070 ok102 (by-eq tt)
+  checked070 (X-gen ↥ ↥) = assemble c070 (X-gen ↥ ↥) m070 m095 ok070 ok095 (by-eq tt)
+  checked070 CX-gen = assemble c070 CX-gen m070 m044 ok070 ok044 (by-eq tt)
+  checked070 (CX-gen ↥) = assemble c070 (CX-gen ↥) m070 m068 ok070 ok068 (by-eq tt)
+  checked070 CCX-gen = assemble c070 CCX-gen m070 m070 ok070 ok070 (by-eq tt)
+  checked070 HH-gen = assemble c070 HH-gen m070 m103 ok070 ok103 (by-eq tt)
+  checked070 (HH-gen ↥) = assemble c070 (HH-gen ↥) m070 m096 ok070 ok096 (by-eq tt)
   checked070 (gate₀ ())
   checked070 ((gate₀ ()) ↥)
   checked070 ((gate₀ ()) ↥ ↥)
   checked070 ((gate₀ ()) ↥ ↥ ↥)
 
   checked071 : ∀ g → Checked c071 g
-  checked071 X-gen = refl
-  checked071 (X-gen ↥) = refl
-  checked071 (X-gen ↥ ↥) = refl
-  checked071 CX-gen = refl
-  checked071 (CX-gen ↥) = refl
-  checked071 CCX-gen = refl
-  checked071 HH-gen = refl
-  checked071 (HH-gen ↥) = refl
+  checked071 X-gen = assemble c071 X-gen m071 m097 ok071 ok097 (by-eq tt)
+  checked071 (X-gen ↥) = assemble c071 (X-gen ↥) m071 m045 ok071 ok045 (by-eq tt)
+  checked071 (X-gen ↥ ↥) = assemble c071 (X-gen ↥ ↥) m071 m097 ok071 ok097 (by-eq tt)
+  checked071 CX-gen = assemble c071 CX-gen m071 m071 ok071 ok071 (by-eq tt)
+  checked071 (CX-gen ↥) = assemble c071 (CX-gen ↥) m071 m095 ok071 ok095 (by-eq tt)
+  checked071 CCX-gen = assemble c071 CCX-gen m071 m071 ok071 ok071 (by-eq tt)
+  checked071 HH-gen = assemble c071 HH-gen m071 m074 ok071 ok074 (by-eq tt)
+  checked071 (HH-gen ↥) = assemble c071 (HH-gen ↥) m071 m073 ok071 ok073 (by-eq tt)
   checked071 (gate₀ ())
   checked071 ((gate₀ ()) ↥)
   checked071 ((gate₀ ()) ↥ ↥)

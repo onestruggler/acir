@@ -1,7 +1,8 @@
 """Generate small Agda computation modules for the three-wire decoder.
 
-The output contains proof terms (`refl`), not unchecked assumptions.
-Agda must check every generated matrix identity.  Split modules bound
+The output contains proof terms (`by-eq√ tt`, which Agda checks by
+evaluating one boolean), not unchecked assumptions.  Agda must check
+every generated matrix identity.  Split modules bound
 the conversion checker's retained evaluation memory.
 """
 
@@ -34,7 +35,8 @@ module {ROOT}.{name} where
 
 open import Data.Fin.Base using (Fin ; zero ; suc ; _<_)
 open import Data.Nat.Base using (s≤s ; z≤n)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+open import Data.Unit.Base using (tt)
+open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; _ʷ)
 open import Examples.Groups.CCX+H.Encoding using (encode)
 open import {ROOT}.Decoding
@@ -43,6 +45,7 @@ import Examples.Groups.CCX+HH-TwoLevel.Syntactics as U
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as T
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as S
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring as R
+open import Examples.Groups.CCX+HH.Decide using (by-eq√)
 {imports}
 private module M = S.Dim 4
 
@@ -65,17 +68,17 @@ for a in range(8):
     body = banner(f"Checks.X{a}") + UNFOLD
     body += f"  check : ∀ b → M.⟦ encode (realise (exchange {fin(a)} b)) ⟧ᴸ ≡ M.⟦ aux (exchange {fin(a)} b) ⟧ᴸ\n"
     for b in range(8):
-        body += f"  check {fin(b)} = refl\n"
+        body += f"  check {fin(b)} = by-eq√ tt\n"
     write(f"Checks.X{a}", body)
 
 body = banner("Checks.Signs") + UNFOLD
 body += "  check : ∀ a → M.⟦ encode (realise (sign a)) ⟧ᴸ ≡ M.⟦ aux (sign a) ⟧ᴸ\n"
 for a in range(8):
-    body += f"  check {fin(a)} = refl\n"
+    body += f"  check {fin(a)} = by-eq√ tt\n"
 write("Checks.Signs", body)
 
 body = banner("Checks.K0") + UNFOLD
-body += "  check : M.⟦ encode (realise k0) ⟧ᴸ ≡ M.⟦ aux k0 ⟧ᴸ\n  check = refl\n"
+body += "  check : M.⟦ encode (realise k0) ⟧ᴸ ≡ M.⟦ aux k0 ⟧ᴸ\n  check = by-eq√ tt\n"
 write("Checks.K0", body)
 
 # Ordered quadruples.  The invalid patterns consume the proof of the
@@ -98,5 +101,5 @@ for a in range(8):
                 if c >= d:
                     body += f"  check {fin(a)} {fin(b)} {fin(c)} {fin(d)} p q {absurd(d)}\n"
                 else:
-                    body += f"  check {fin(a)} {fin(b)} {fin(c)} {fin(d)} p q r = refl\n"
+                    body += f"  check {fin(a)} {fin(b)} {fin(c)} {fin(d)} p q r = by-eq√ tt\n"
 write("Checks.PlanK", body)

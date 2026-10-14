@@ -11,7 +11,8 @@ module Examples.Groups.CCX+H.ThreeQubit.Checks.PlanK where
 
 open import Data.Fin.Base using (Fin ; zero ; suc ; _<_)
 open import Data.Nat.Base using (s≤s ; z≤n)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+open import Data.Unit.Base using (tt)
+open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; _ʷ)
 open import Examples.Groups.CCX+H.Encoding using (encode)
 open import Examples.Groups.CCX+H.ThreeQubit.Decoding
@@ -20,6 +21,7 @@ import Examples.Groups.CCX+HH-TwoLevel.Syntactics as U
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as T
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as S
 import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring as R
+open import Examples.Groups.CCX+HH.Decide using (by-eq√)
 
 private module M = S.Dim 4
 
@@ -35,35 +37,35 @@ opaque
   check (zero) (suc (zero)) (suc (suc (zero))) (zero) p q ()
   check (zero) (suc (zero)) (suc (suc (zero))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (zero))) p q (s≤s (s≤s ()))
-  check (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) p q r = refl
-  check (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) p q r = refl
-  check (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) p q r = refl
-  check (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) p q r = by-eq√ tt
+  check (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) p q r = by-eq√ tt
+  check (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) p q r = by-eq√ tt
+  check (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (zero) (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (zero)) (suc (suc (suc (zero)))) (zero) p q ()
   check (zero) (suc (zero)) (suc (suc (suc (zero)))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (zero) (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
-  check (zero) (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) p q r = refl
-  check (zero) (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) p q r = refl
-  check (zero) (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (zero) (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) p q r = by-eq√ tt
+  check (zero) (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) p q r = by-eq√ tt
+  check (zero) (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (zero) (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (zero)) (suc (suc (suc (suc (zero))))) (zero) p q ()
   check (zero) (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (zero) (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (zero) (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
-  check (zero) (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) p q r = refl
-  check (zero) (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (zero) (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) p q r = by-eq√ tt
+  check (zero) (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (zero) (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (zero) p q ()
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
-  check (zero) (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (zero) (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (zero) (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (suc (zero))))))) (zero) p q ()
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -71,7 +73,7 @@ opaque
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (zero) (suc (zero)) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (zero)) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (zero)) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -87,26 +89,26 @@ opaque
   check (zero) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (zero) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
-  check (zero) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) p q r = refl
-  check (zero) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) p q r = refl
-  check (zero) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (zero) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) p q r = by-eq√ tt
+  check (zero) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) p q r = by-eq√ tt
+  check (zero) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (zero) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (zero) p q ()
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
-  check (zero) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) p q r = refl
-  check (zero) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (zero) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) p q r = by-eq√ tt
+  check (zero) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (zero) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (zero) p q ()
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
-  check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (zero) p q ()
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -114,7 +116,7 @@ opaque
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -132,17 +134,17 @@ opaque
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
-  check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) p q r = refl
-  check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) p q r = by-eq√ tt
+  check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (zero) p q ()
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
-  check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (zero) p q ()
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -150,7 +152,7 @@ opaque
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -170,8 +172,8 @@ opaque
   check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
-  check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (zero) p q ()
   check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -179,7 +181,7 @@ opaque
   check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -201,7 +203,7 @@ opaque
   check (zero) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (zero) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (zero) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (zero) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (zero) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (zero) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (zero) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (zero) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -242,26 +244,26 @@ opaque
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (zero)) p q (s≤s ())
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
-  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) p q r = refl
-  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) p q r = refl
-  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) p q r = by-eq√ tt
+  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) p q r = by-eq√ tt
+  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (zero) p q ()
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (zero)) p q (s≤s ())
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
-  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) p q r = refl
-  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) p q r = by-eq√ tt
+  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (zero) p q ()
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (zero)) p q (s≤s ())
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
-  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (zero) p q ()
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (zero)) p q (s≤s ())
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -269,7 +271,7 @@ opaque
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (suc (zero)) (suc (suc (zero))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -287,17 +289,17 @@ opaque
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
-  check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) p q r = refl
-  check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) p q r = by-eq√ tt
+  check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (zero) p q ()
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (zero)) p q (s≤s ())
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
-  check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (zero) p q ()
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (zero)) p q (s≤s ())
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -305,7 +307,7 @@ opaque
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (suc (zero)) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -325,8 +327,8 @@ opaque
   check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
-  check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (zero) p q ()
   check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (zero)) p q (s≤s ())
   check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -334,7 +336,7 @@ opaque
   check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (suc (zero)) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -356,7 +358,7 @@ opaque
   check (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (suc (zero)) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -400,17 +402,17 @@ opaque
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
-  check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) p q r = refl
-  check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) p q r = by-eq√ tt
+  check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (zero) p q ()
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (zero)) p q (s≤s ())
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
-  check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (zero) p q ()
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (zero)) p q (s≤s ())
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -418,7 +420,7 @@ opaque
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (suc (suc (zero))) (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -438,8 +440,8 @@ opaque
   check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
-  check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (zero) p q ()
   check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (zero)) p q (s≤s ())
   check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -447,7 +449,7 @@ opaque
   check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (suc (suc (zero))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -469,7 +471,7 @@ opaque
   check (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (suc (suc (zero))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -516,8 +518,8 @@ opaque
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (zero)))) p q (s≤s (s≤s (s≤s ())))
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
-  check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = refl
-  check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q r = by-eq√ tt
+  check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (zero) p q ()
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (zero)) p q (s≤s ())
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -525,7 +527,7 @@ opaque
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -547,7 +549,7 @@ opaque
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (suc (suc (suc (zero)))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))
@@ -597,7 +599,7 @@ opaque
   check (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (zero))))) p q (s≤s (s≤s (s≤s (s≤s ()))))
   check (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (zero)))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s ())))))
   check (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (zero))))))) p q (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))
-  check (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = refl
+  check (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (zero))))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) p q r = by-eq√ tt
   check (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (zero) p q ()
   check (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (zero)) p q (s≤s ())
   check (suc (suc (suc (suc (zero))))) (suc (suc (suc (suc (suc (zero)))))) (suc (suc (suc (suc (suc (suc (suc (zero)))))))) (suc (suc (zero))) p q (s≤s (s≤s ()))

@@ -5,6 +5,7 @@ Use --check to verify that all generated modules match the stored exact data
 without writing any files.  Typechecking the modules is a separate check.
 """
 
+from fractions import Fraction
 from pathlib import Path
 import argparse
 import json
@@ -71,7 +72,9 @@ open import Data.Integer.Base using (+_ ; -[1+_])
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
 open import Data.Nat.Base using (ℕ ; _≡ᵇ_)
 open import Data.Vec.Base using (Vec ; [] ; _∷_)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl)
+open import Examples.Groups.CCX+HH.Decide using (by-eqᵛ)
 open import Examples.Groups.CCX+HH.ThreeQubit.Cosets
 open import Examples.Groups.CCX+HH.ThreeQubit.QuarticInvariant
 import Examples.Groups.CCX+HH.StructuralEncoding as E
@@ -91,7 +94,7 @@ expected-vector : Coset → Vec D 8
     s += "\nopaque\n  unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_\n\n"
     s += "  checked-vector : ∀ c → S.actVʷ (E.encode (rep c)) probe ≡ expected-vector c\n"
     for i in range(135):
-        s += f"  checked-vector c{i:03d} = refl\n"
+        s += f"  checked-vector c{i:03d} = by-eqᵛ tt\n"
     s += "\n  checked-value : ∀ c → quartic (expected-vector c) ≡ ι (+ value c)\n"
     for i in range(135):
         s += f"  checked-value c{i:03d} = refl\n"
@@ -235,8 +238,101 @@ d-correct g = A.trans (realise-correct (plan g)) (Main.completeness (checked-pla
     write("StabilizerGenerators", s)
 
 
+# Representative matrices are proved in groups of 27, so that no one
+# module evaluates more than 27 of them.
+MATRIX_GROUPS = range(0, 135, 27)
+
+
+def physical_matrix(name):
+    """The 8 × 8 matrix of a gate, entry [y][x] = ⟨y|G|x⟩, wire 0 the low bit."""
+    def flip(target, controls=()):
+        return lambda x: x ^ (1 << target) if all(x >> c & 1 for c in controls) else x
+
+    def permutation(f):
+        return [[Fraction(int(y == f(x))) for x in range(8)] for y in range(8)]
+
+    def hh(a, b):
+        mask = (1 << a) | (1 << b)
+        return [[Fraction((-1) ** bin(y & x & mask).count("1"), 2) if (y & ~mask) == (x & ~mask)
+                 else Fraction(0) for x in range(8)] for y in range(8)]
+
+    gates = {"X0": lambda: permutation(flip(0)), "X1": lambda: permutation(flip(1)),
+             "X2": lambda: permutation(flip(2)), "CX10": lambda: permutation(flip(0, (1,))),
+             "CX21": lambda: permutation(flip(1, (2,))),
+             "CCX210": lambda: permutation(flip(0, (1, 2))),
+             "HH01": lambda: hh(0, 1), "HH12": lambda: hh(1, 2)}
+    return gates[name]()
+
+
+def representative_matrix(route):
+    """The matrix of rep c: the product of its gates in written order."""
+    m = [[Fraction(int(i == j)) for j in range(8)] for i in range(8)]
+    for name in route:
+        g = physical_matrix(name)
+        m = [[sum(m[i][k] * g[k][j] for k in range(8)) for j in range(8)] for i in range(8)]
+    return m
+
+
+def dyadic_name(v):
+    """A name for the canonical dyadic a / 2^k: p (or m for negative) a x k."""
+    k = v.denominator.bit_length() - 1
+    assert v.denominator == 1 << k
+    return ("p" if v >= 0 else "m") + f"{abs(v.numerator)}x{k}"
+
+
+def dyadic_literal(v):
+    k = v.denominator.bit_length() - 1
+    a = v.numerator
+    numerator = f"(+ {a})" if a >= 0 else f"-[1+ {-a - 1} ]"
+    return f"Dyadic' {numerator} {k} _"
+
+
+def matrices():
+    ms = [representative_matrix(route) for route in DATA["representative_words"]]
+    values = sorted({v for m in ms for row in m for v in row})
+    s = header("Checks.Matrices", "The matrices of the 135 coset representatives, as literals.")
+    s += """open import Data.Integer.Base using (+_ ; -[1+_])
+open import Data.Vec.Base using ([] ; _∷_)
+open import Quantum.Synthesis.Ring using (Dyadic')
+open import Quantum.Synthesis.Matrix using (Matrix ; Matrix')
+open import Examples.Groups.CCX+HH-TwoLevel.Ring using (D)
+
+-- The entries: pAxK is A / 2^K and mAxK is -A / 2^K.
+private
+"""
+    s += "  " + " ".join(dyadic_name(v) for v in values) + " : D\n"
+    for v in values:
+        s += f"  {dyadic_name(v)} = {dyadic_literal(v)}\n"
+    s += "\n-- A matrix is listed by columns.\n"
+    for c, m in enumerate(ms):
+        columns = [" ∷ ".join(dyadic_name(m[r][x]) for r in range(8)) + " ∷ []" for x in range(8)]
+        s += f"\nm{c:03d} : Matrix 8 8 D\nm{c:03d} = Matrix'\n  ( "
+        s += "\n  ∷ ".join(f"({col})" for col in columns) + "\n  ∷ [])\n"
+    write("Checks/Matrices", s)
+    for first in MATRIX_GROUPS:
+        last = min(first + 27, 135) - 1
+        s = header(f"Checks.Matrices{first:03d}",
+                   f"The stored matrices of representatives {first} through {last} are theirs.")
+        s += """open import Data.Unit.Base using (tt)
+open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Examples.Groups.CCX+HH.ThreeQubit.Cosets
+open import Examples.Groups.CCX+HH.Decide using (by-eq)
+open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Matrices
+import Examples.Groups.CCX+HH.StructuralEncoding as E
+import Examples.Groups.CCX+HH-TwoLevel.Semantics as S
+open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_)
+open S using (actV ; set₁ ; set₂)
+
+opaque
+  unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_
+"""
+        for c in range(first, last + 1):
+            s += f"\n  ok{c:03d} : S.⟦ E.encode (rep c{c:03d}) ⟧ᵐ ≡ m{c:03d}\n  ok{c:03d} = by-eq tt\n"
+        write(f"Checks/Matrices{first:03d}", s)
+
+
 def table():
-    s = header("Table", "The exact 135-state factorization table over fourteen stabilizer generators.")
+    s = header("Table","The exact 135-state factorization table over fourteen stabilizer generators.")
     s += """open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Notations
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
@@ -272,21 +368,29 @@ Checked c g = S.⟦ E.encode (rep c) • E.e g ⟧ᵐ ≡
     write("Checks/Base", s)
     for start in range(0, 135, 9):
         s = header(f"Checks.Rows{start:03d}", f"Exact source factorizations for cosets {start} through {start+8}.")
-        s += """open import Relation.Binary.PropositionalEquality using (refl)
+        s += """open import Data.Unit.Base using (tt)
 open import Examples.Groups.CCX+HH.Syntactics
 open import Examples.Groups.CCX+HH.ThreeQubit.Cosets
 open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Base
-open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_)
+open import Examples.Groups.CCX+HH.Decide using (by-eq)
+open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Assemble using (assemble)
+open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Matrices
+"""
+        for first in MATRIX_GROUPS:
+            s += f"open import Examples.Groups.CCX+HH.ThreeQubit.Checks.Matrices{first:03d}\n"
+        s += """open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_ ; adjᴰ)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 
 opaque
-  unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_
+  unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_ adjᴰ
 
 """
         for c in range(start, start+9):
             s += f"  checked{c:03d} : ∀ g → Checked c{c:03d} g\n"
-            for g in DATA["generators"]:
-                s += f"  checked{c:03d} {PATTERN[g]} = refl\n"
+            for g, cell in zip(DATA["generators"], DATA["factorizations"][c]):
+                n = cell["next"]
+                s += (f"  checked{c:03d} {PATTERN[g]} = assemble c{c:03d} {PATTERN[g]}"
+                      f" m{c:03d} m{n:03d} ok{c:03d} ok{n:03d} (by-eq tt)\n")
             for pattern in ABSURD:
                 s += f"  checked{c:03d} {pattern}\n"
             s += "\n"
@@ -322,6 +426,8 @@ if __name__ == "__main__":
     cosets()
     signature()
     stabilizer()
+    matrices()
     table()
     print(("Verified" if CHECK else "Generated") +
-          " cosets, 135 signatures, 14 stabilizer decoders, and 1080 factorization obligations.")
+          " cosets, 135 signatures, 14 stabilizer decoders, 135 representative matrices,"
+          " and 1080 factorization obligations.")

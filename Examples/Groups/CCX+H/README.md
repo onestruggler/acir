@@ -95,7 +95,10 @@ images independently with exact arithmetic.
 
 `ThreeQubit/DecodingSoundness.agda` verifies the section
 `matrix(E(D(y))) = matrix(y)` in Agda. It factors long decodings through
-short checked atoms so matrix computations need not be repeated.
+short checked atoms so matrix computations need not be repeated. Each
+atom's identity is decided by one boolean (`by-eq√` of
+`CCX+HH/Decide.agda`) rather than by `refl`, which would make Agda
+compare the two matrices entry by entry.
 `ThreeQubit/Presentation.agda` then obtains circuit completeness from the
 existing scaled two-level theorem and the shared `CCX+HH/Translation`.
 `ThreeQubit/Semantics.agda` provides independent gate-matrix semantics and

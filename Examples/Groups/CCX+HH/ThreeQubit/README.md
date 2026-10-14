@@ -47,7 +47,18 @@ mode checks `finite_cosets.json`; `--write` regenerates that artifact.
   short circuit macros are checked once before composing the 14 plans.
 - `Checks/Rows*.agda` checks each factorization as an exact dyadic matrix
   identity. `Factorizations.agda` applies the already proved completeness
-  of Table 1 to turn these identities into source derivations.
+  of Table 1 to turn these identities into source derivations. The
+  checks do not evaluate whole representatives: `Checks/Matrices.agda`
+  stores the matrix of each of the 135 representatives as a literal,
+  `Checks/Matrices000.agda` … `Matrices108.agda` prove each one equal to
+  the matrix of its encoded circuit, and `Checks/Assemble.agda` turns a
+  cell into a comparison of stored matrices. The left side is the stored
+  matrix of `rep c` times that of `e g`, which, every encoded generator
+  being symmetric, is `e g` acting on its transpose; the right side is
+  the base word acting on the stored matrix of the next representative.
+  Every identity is decided by one boolean (`by-eq` of
+  `CCX+HH/Decide.agda`) rather than by `refl`, which would make Agda
+  compare the two matrices entry by entry.
 - `QuarticInvariant.agda` proves that the sum of fourth powers is
   invariant under signs and exchanges. `Signature.agda` checks its value
   on a fixed probe for each representative; the 135 values are distinct.
@@ -133,10 +144,9 @@ agda Examples/Groups/CCX+HH/ThreeQubit/NormalForm.agda
 writing any file. The Agda proofs use `--safe --without-K` and rely on
 ordinary kernel checking; Python output is not accepted as a proof.
 
-For a fresh build with a bounded heap, check the 15 files
-`Checks/Rows000.agda`, `Rows009.agda`, ..., `Rows126.agda` in separate
-Agda processes before checking `Orthogonal.agda`. Each batch contains
-72 exact matrix identities. This avoids retaining every batch's
-evaluation workspace in one process. The checks used heap limits of
-3 or 6 GB. `+RTS -M6G -c -RTS` gives a 6 GB limit with the compacting
-collector for the final assembled interface.
+The 1080 cells check in about three minutes in one Agda process, after
+the five `Checks/Matrices*.agda` modules (about ten seconds each) have
+checked the stored representatives. From scratch, `../Presentation.agda`
+(with all of `CCX+HH-TwoLevel`) checks in under nine minutes with a peak
+heap near 3.4 GB; it took about 45 minutes when every cell evaluated
+both of its representatives and compared the matrices by `refl`.
