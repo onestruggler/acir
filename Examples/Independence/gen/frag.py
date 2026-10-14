@@ -61,6 +61,9 @@ def log(*a):
     print(*a, file=sys.stderr, flush=True)
 
 
+BUSY = set()        # the equations being placed on outer wires (resolve)
+
+
 def resolve(labels, width):
     names = []
     for x in labels:
@@ -69,9 +72,16 @@ def resolve(labels, width):
         names += group
         if width >= 3:
             for g in group:
-                if LIB[g].arity == 2 and not g.startswith('σ') and not g.startswith('ν'):
-                    names.append(outer(g).name)
-                    names.append(outer2(g).name)
+                # (Placing an equation can need a naturality lemma whose
+                # search cites the equation itself: CliffCS₂'s (CSr).)
+                if (LIB[g].arity == 2 and not g.startswith('σ') and not g.startswith('ν')
+                        and g not in BUSY):
+                    BUSY.add(g)
+                    try:
+                        names.append(outer(g).name)
+                        names.append(outer2(g).name)
+                    finally:
+                        BUSY.discard(g)
     return names
 
 

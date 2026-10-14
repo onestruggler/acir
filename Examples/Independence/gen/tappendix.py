@@ -17,6 +17,7 @@ writes the Agda module.  Run as a script, `tappendix.py MODE [CHAIN]`
 runs a part (chains, tl, bs, probe), stopping after CHAIN; with $TCKPT a
 file, each chain checkpoints the state there, and with $TRESUME set a
 run starts after the last chain checkpointed."""
+import os
 import sys
 import tcliff
 from tcliff import LIB, OUT, derive, add_mirror, placed, nat
@@ -222,8 +223,7 @@ D('A24⁼', 2, [('H0 CX10 H0 H0 H0 CX10 H0', None),
 # LaTeX source (paper.py), each figure read by figparse.py.  A label of
 # the paper's names an axiom, a shortcut's definition (already spelled
 # out: it cites nothing), or one of these chains, named after it.
-import paper
-from circ import parse
+import chains
 
 TL = {'t-w8': 'w8', 't-Tpow8': 'T8', 't-H2': 'H2', 't-E': 'E', 't-TX': ['TX', 'XTX⁼', 'XTdX⁼', 'A2⁼', 'w8'], 't-Ct': 'Ct',
       't-B': 'B', 't-CZ': 'CZ', 't-CsCh': 'CsCh', 't-HTHT': 'HTHT', 't-C20': 'HTH',
@@ -243,14 +243,6 @@ def lname(l):
     if l.startswith('lem:t-') and l.endswith('-dec-eq'):
         return 'D' + l[6:-7] + '⁼'
     return l + '⁼'
-
-
-def width(lines):
-    ws = [w for t, _ in lines for (k, w) in parse(t) if w is not None]
-    return 1 + max(w + (1 if k in ('CX', 'SW') else 0) for k, w in zip(
-        [k for t, _ in lines for (k, w) in parse(t) if w is not None], ws)) if ws else 1
-
-
 
 
 def tdagger_C():
@@ -372,14 +364,6 @@ def gadget_CS():
 BEFORE = {'lem:t-C19-dec-eq': gadget_CS}
 
 
-def fixed(l, ls):
-    out = []
-    for i, (t, labs) in enumerate(ls):
-        out += [x if isinstance(x, tuple) else (x, labs) for x in FIX.get((l, i), [])]
-        out.append((t, labs if labs is None else labs + XL.get((l, i), [])))
-    return out
-
-
 # What a chain's label cites besides the chain itself.
 AFTER = {'t-C': tdagger_C, 't-phasegadgetCS': tdagger_gadget,
          # X-conjugations: X X = ε cancels what they leave.
@@ -394,48 +378,10 @@ MAIN = __name__ == '__main__'
 MODE = sys.argv[1] if MAIN and len(sys.argv) > 1 else 'all'
 UPTO = sys.argv[2] if MAIN and len(sys.argv) > 2 else None
 
-# A checkpoint after each chain (the file named by $TCKPT), from which a
-# later run resumes when $TRESUME is set: for working on a chain without
-# rederiving the ones before it.
-import os
-import pickle
-CKPT = os.environ.get('TCKPT')
-STATE = ['LIB', 'OUT', 'MIRROR', 'NATS', 'LABEL', 'CORE', 'SWAPS2', 'SWAPS3', 'NATLABELS']
-
-
-def save(last):
-    with open(CKPT, 'wb') as f:
-        pickle.dump({'last': last, 'TL': TL, **{k: getattr(frag, k) for k in STATE}}, f)
-
-
-def restore():
-    with open(CKPT, 'rb') as f:
-        st = pickle.load(f)
-    for k in STATE:
-        x = getattr(frag, k)
-        if isinstance(x, dict):
-            x.clear()
-            x.update(st[k])
-        else:
-            x[:] = st[k]
-    TL.clear()
-    TL.update(st['TL'])
-    return CHAINS.index(st['last']) + 1
-
-
+CH = chains.Chains('appendix_cliffordplust.tex', CHAINS, TL, 'tpaper.py', lname,
+                   FIX, XL, AFTER, BEFORE)
 if MODE in ('all', 'chains', 'bs'):
-    ds = paper.transcribed('appendix_cliffordplust.tex', CHAINS, 'tpaper.py')
-    start = restore() if CKPT and os.environ.get('TRESUME') else 0
-    for l in CHAINS[start:]:
-        if l in BEFORE:
-            BEFORE[l]()
-        ls = fixed(l, paper.lines(ds[l], TL))
-        D(lname(l), width(ls), ls)
-        TL[l] = [lname(l)] + (AFTER[l]() if l in AFTER else [])
-        if CKPT:
-            save(l)
-        if l == UPTO:
-            break
+    CH.run(D, UPTO)
 
 
 # Lemma 20 on one wire: the two-level relations of Table 3.1 in

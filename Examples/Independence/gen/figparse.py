@@ -122,14 +122,34 @@ def parse(path):
             continue
         col = [j for j in range(i, len(parts))
                if not used[j] and abs(parts[j][0] - p[0]) < TOL and parts[j][1] != 'swapcurve']
-        joined = any(abs(v[0] - p[0]) < TOL for v in vlines)
-        if not joined or len(col) == 1:
-            used[i] = True
-            gates.append((p[0], single(p)))
-            continue
+        # The parts each vertical stroke at this abscissa joins make one
+        # gate; the others are gates of their own.
+        # (A stroke may stop at the rim of a target or a box.)
+        spans = [set(wires_in(min(v[1], v[2]) - 6, max(v[1], v[2]) + 6))
+                 for v in vlines if abs(v[0] - p[0]) < TOL]
+        groups = []
+        for sp in spans:
+            g = [j for j in col if set(parts[j][2]) & sp]
+            for h in groups:
+                if set(h) & set(g):
+                    h.extend(x for x in g if x not in h)
+                    break
+            else:
+                if g:
+                    groups.append(g)
+        # A control or target left on its own means a stroke that did not
+        # reach: join the whole column, as one gate.
+        alone = [g[0] for g in groups if len(g) == 1] +                 [j for j in col if not any(j in g for g in groups)]
+        if spans and any(parts[j][1] in ('dot', 'hollow', 'target') for j in alone):
+            groups = [list(col)]
         for j in col:
             used[j] = True
-        gates.append((p[0], multi([parts[j] for j in col])))
+        joined = set(j for g in groups for j in g)
+        for j in col:
+            if j not in joined:
+                gates.append((parts[j][0], single(parts[j])))
+        for g in groups:
+            gates.append((p[0], single(parts[g[0]]) if len(g) == 1 else multi([parts[j] for j in g])))
     gates.sort(key=lambda g: g[0])
     return ' '.join(t for _, t in gates if t)
 
