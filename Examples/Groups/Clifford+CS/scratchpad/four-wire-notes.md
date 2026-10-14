@@ -466,3 +466,50 @@ decomposition of T leaves corrections Lambda_13(M_0) with
 M = V^-1 S V S^-1 never diagonal (barenco.py), and reduces to the CCZ
 control-XOR identity above, so the schema is where its derivation will
 have to start.
+
+## The schema is in: cx-ccz, and the first four-wire derivations (deriv.py, lemmas4.py, 2026-10-14)
+
+Syntactics now has the one four-wire rule
+
+    cx-ccz : CX10 ^^ . CCZ . CX10 ^^  ===  CCZ . Swap ^^ . CCZ . Swap ^^
+
+over the shortcuts CS02 = Swap^ CS Swap^ and
+CCZ = CS^ CX01 CS^ CS^ CS^ CX01 CS02 (Barenco, with the CNOTs between the
+controls 0, 1).  Soundness is one four-wire evaluation (Relators.mD)
+through by-relator; Weakening replays it (every rule has at most four
+wires, so weakening is still unbounded); Parity is restated as the
+independence of cx-ccz from the three-qubit rules (Circuit.Independence
+at the selection noD of the instances not using it, Z/2 as Bool under
+xor): cx-ccz-independent.  Everything through CompletenessInduction
+rechecked green (DecodingChecks/KI1 279 s, Section8 163 s).
+
+CS counts: CCZ has 21 CS gates in the Agda spelling (CS02's two swaps
+are 12 of them), so the rule's sides have 25 and 54; the 42 of the
+previous section counts two CCZs without the swaps that place the
+second.
+
+deriv.py checks a derivation step by step:
+  win(i, j, rep)     rewrite the window cur[i:j], on <= 3 wires, to any
+                     word on the same wires with the same operator (one
+                     Lemma 5.1 step, given completeness on three wires)
+  comm(i)            exchange adjacent gates on disjoint wires
+  delta(i, forward)  the schema at any placement, either way
+  lemma(name, i, fw) an earlier identity
+Every step is checked semantically (fingerprints over F_p), so a
+finished derivation is one of the circuit theory with the schema.
+lemmas4.py has the first three (all ok):
+
+  CCZ312-CCZ012  7 steps  two CCZs sharing two wires commute: with
+                          c = CX_30 the schema reads c b c = b a; insert
+                          c c, b b, c c and apply it twice
+  CCZ123-CX30    7 steps  CCZ_123 passes CX_30, Barenco piece by piece
+                          in three-wire windows
+  T-CZ03-T      11 steps  Toff(0;1,2) CZ_03 Toff(0;1,2) = CCZ_123 CZ_03:
+                          K D K^-1, K^-1 CZ_03 K = CX_30, the schema,
+                          the two lemmas
+
+Open: R0 = (T C)^2 = (C T)^2 with T = Toff(0;1,2), C = CS_03, the phase
+gadget's identity.  By the quotient argument (grpTC.py) it does not
+follow from the macro relations D^2 = 1, G^4 = 1, G^2 D G^2 = D E,
+E central alone, so its derivation must open the gates; T-CZ03-T is
+the first ingredient (it is the CZ_03-conjugation of T).

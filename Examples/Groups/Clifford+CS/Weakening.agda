@@ -8,7 +8,8 @@
 -- idle on top: each rule of Syntactics is stated at every width above
 -- its own, and the structural rules are natural in the width.  Unlike
 -- Real-Clifford+CH's, whose schema (19) holds every wire of its width,
--- every rule here has at most three wires, so there is no bound on n.
+-- every rule here has at most four wires and is stated at its own, so
+-- there is no bound on n.
 -- With Completeness.complete≤₃ this makes completeness on up to three
 -- wires available inside wider circuits.
 ------------------------------------------------------------------------
@@ -56,6 +57,7 @@ private
   weaken-srel k rel-268     = PB.axiom (srel rel-268)
   weaken-srel k rel-269     = PB.axiom (srel rel-269)
   weaken-srel k rel-272     = PB.axiom (srel rel-272)
+  weaken-srel k cx-ccz      = PB.axiom (srel cx-ccz)
 
   -- With the structural rules.
   weaken-ax : ∀ {n w v} k → n VRel, w === v → (n + k) ⊢ w ↓ᵏ k ≈ v ↓ᵏ k

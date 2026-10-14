@@ -1,26 +1,24 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The three-qubit rules are incomplete at four qubits: the CS parity
+-- The four-wire rule is independent of the three-qubit rules: the CS
+-- parity
 --
 -- The number of CS gates mod 2 is invariant under every rule of
--- Syntactics — each has an even difference of CS gates between its
--- sides — and under the structural rules; on three qubits it is the
--- determinant, which is why it survives completeness there.  On four
--- qubits every generator has determinant 1 and the parity is no longer
--- semantic: a CNOT carries a CCZ on its target to the product of two
--- CCZs,
---
---     CX₃₂ • CCZ₀₁₂ • CX₃₂  =  CCZ₀₁₂ • CCZ₀₁₃
---
--- (the phase polynomial (−1)^{x₀x₁(x₂⊕x₃)}), with 25 CS gates on one
--- side and 54 on the other.  So that true equation is underivable, the
--- rules of Syntactics are not complete on four qubits, and any complete
--- rule set has a rule with an odd difference of CS gates — of which
--- this equation is the shortest (scratchpad/parity.py).
+-- Syntactics but cx-ccz — each has an even difference of CS gates
+-- between its sides — and under the structural rules; on three qubits
+-- it is the determinant, which is why it survives completeness there.
+-- On four qubits every generator has determinant 1 and the parity is
+-- no longer semantic: cx-ccz, a CNOT carrying a CCZ on its target to
+-- the product of two CCZs (the phase polynomial (−1)^{x₀x₁(x₂⊕x₃)}),
+-- has 25 CS gates on one side and 54 on the other.  So the three-qubit
+-- rules are not complete on four qubits, cx-ccz is not derivable from
+-- them, and any complete rule set has a rule with an odd difference of
+-- CS gates — of which cx-ccz is the shortest (scratchpad/parity.py).
 --
 -- The model is Circuit.Independence's soundness engine at the
--- selection of every axiom, with the monoid ℤ/2 as Bool under xor.
+-- selection of the instances not using cx-ccz, with ℤ/2 as Bool under
+-- xor.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -32,20 +30,19 @@ open import Algebra.Morphism.Structures using (module MonoidMorphisms)
 open import Data.Bool using (Bool ; true ; false ; _xor_)
 open import Data.Bool.Properties using (xor-assoc ; xor-identityˡ ; xor-identityʳ ; xor-comm)
 open import Data.Nat using (ℕ)
-open import Data.Product using (Σ-syntax ; _×_ ; _,_)
-open import Data.Unit using (tt)
+open import Data.Product using (_,_)
+open import Data.Empty using (⊥ ; ⊥-elim)
+open import Data.Unit using (⊤ ; tt)
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
-open import Relation.Nullary.Negation using (¬_)
 open import Word.Base using ([_]ʷ ; ε ; _•_)
 
-open import Presentation.Independence using (all ; ≈-all)
+open import Presentation.Independence using (Independent)
 import Circuit.Independence
 
 open import Examples.Groups.Clifford+CS.Semantics using (_~_)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧)
-open import Examples.Groups.Clifford+CS.MultiControlled using (CCZ)
 open import Examples.Groups.Clifford+CS.SemanticSteps using (same-sem)
 
 ------------------------------------------------------------------------
@@ -70,10 +67,19 @@ cs (gate₁ _)       = false
 cs (gate₂ CS-gate) = true
 cs (g ↥)           = cs g
 
+-- The axiom instances not using the four-wire rule.
+noΔ : ∀ {n} {w v : Circuit n} → n VRel, w === v → Set
+noΔ (srel cx-ccz) = ⊥
+noΔ (srel _)      = ⊤
+noΔ (cong↑ a)     = noΔ a
+noΔ (comm₁ _ _)   = ⊤
+noΔ (comm₂ _ _)   = ⊤
+noΔ (ω↑=ω _)      = ⊤
+
 private
   module CI = Circuit.Independence Gate
   open CI.Structural _SRel,_===_ using (module Soundness)
-  open Soundness (λ {n} → all (n VRel,_===_)) (λ _ → tt) (λ _ → xor-monoid) cs
+  open Soundness (λ {n} → noΔ {n}) (λ p → p) (λ _ → xor-monoid) cs
     renaming (⟦_⟧ to par)
 
   -- Shifting a circuit up does not change its count.
@@ -87,9 +93,9 @@ private
 
   open Shift (λ b → b) id-hom (λ g → Eq.refl) using (sound-cong↑)
 
-  -- Every rule has an even difference of CS gates.
-  sound-srel : ∀ {n} {w v : Circuit n} (s : n SRel, w === v) →
-               all (n VRel,_===_) (srel s) → par w ≡ par v
+  -- Every three-qubit rule has an even difference of CS gates; the
+  -- four-wire rule is not selected.
+  sound-srel : ∀ {n} {w v : Circuit n} (s : n SRel, w === v) → noΔ (srel s) → par w ≡ par v
   sound-srel order-I     _ = Eq.refl
   sound-srel order-S     _ = Eq.refl
   sound-srel order-K     _ = Eq.refl
@@ -107,36 +113,31 @@ private
   sound-srel rel-268     _ = Eq.refl
   sound-srel rel-269     _ = Eq.refl
   sound-srel rel-272     _ = Eq.refl
+  sound-srel cx-ccz      p = ⊥-elim p
 
   open Rules sound-srel sound-cong↑
     (λ h g _ → xor-identityʳ (cs g))
     (λ h g _ → xor-comm (cs g) (cs (gate₂ h)))
     (λ ω _ → Eq.refl)
-    using (sound)
-
--- The parity of CS gates is invariant under the congruence.
-parity : ∀ {n} {w v : Circuit n} → n ⊢ w ≈ v → par w ≡ par v
-parity {n} e = sound (≈-all (n VRel,_===_) e)
+    using (independent)
 
 ------------------------------------------------------------------------
--- A true equation with an odd difference
+-- The four-wire rule is independent, and the three-qubit rules
+-- incomplete on four qubits
 
--- CX₃₂ • CCZ₀₁₂ • CX₃₂ and CCZ₀₁₂ • CCZ₀₁₃, on four wires.
+-- The two sides of cx-ccz: CX₃₂ • CCZ₀₁₂ • CX₃₂ and CCZ₀₁₂ • CCZ₀₁₃.
 Δˡ Δʳ : Circuit 4
 Δˡ = CX₁₀ ↑ ↑ • CCZ • CX₁₀ ↑ ↑
 Δʳ = CCZ • Swap ↑ ↑ • CCZ • Swap ↑ ↑
 
--- They denote the same matrix.
+-- They denote the same matrix (also Soundness, through the rule).
 Δ-sound : ⟦ Δˡ ⟧ ~ ⟦ Δʳ ⟧
 Δ-sound = same-sem Δˡ Δʳ Eq.refl
 
--- But their CS parities differ, so no derivation relates them.
-Δ-underivable : ¬ (4 ⊢ Δˡ ≈ Δʳ)
-Δ-underivable e = true≢false (parity e)
+-- Their CS parities differ, so the other rules do not relate them: the
+-- rule is independent of them.
+cx-ccz-independent : Independent (4 VRel,_===_) noΔ (srel cx-ccz)
+cx-ccz-independent = independent (srel cx-ccz) true≢false
   where
   true≢false : true ≢ false
   true≢false ()
-
--- The rules of Syntactics are not complete on four qubits.
-incomplete₄ : Σ[ w ∈ Circuit 4 ] Σ[ v ∈ Circuit 4 ] (⟦ w ⟧ ~ ⟦ v ⟧) × ¬ (4 ⊢ w ≈ v)
-incomplete₄ = Δˡ , Δʳ , Δ-sound , Δ-underivable

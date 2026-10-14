@@ -116,6 +116,7 @@ axiom-sound (srel rel-267)     = by-relator r267ˡ r267ʳ p267ˡ p267ʳ (same-�
 axiom-sound (srel rel-268)     = by-relator r268ˡ r268ʳ p268ˡ p268ʳ (same-≡ r268ˡ r268ʳ m268)
 axiom-sound (srel rel-269)     = by-relator r269ˡ r269ʳ p269ˡ p269ʳ (same-≡ r269ˡ r269ʳ m269)
 axiom-sound (srel rel-272)     = by-relator r272ˡ r272ʳ p272ˡ p272ʳ (same-≡ r272ˡ r272ʳ m272)
+axiom-sound (srel cx-ccz)      = by-relator rΔˡ rΔʳ pΔˡ pΔʳ (same-≡ rΔˡ rΔʳ mΔ)
 -- The structural rules.
 axiom-sound (cong↑ r)          = cong↑-sound (axiom-sound r)
 axiom-sound (comm₁ h g)        = comm₁-sound h g

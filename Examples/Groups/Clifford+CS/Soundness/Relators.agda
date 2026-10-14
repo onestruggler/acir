@@ -22,7 +22,7 @@ open import Data.Bool using (true)
 open import Data.Nat using (ℕ)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (ε ; _•_)
-open import Notations using (₁₊ ; ₂₊ ; ₃₊)
+open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_)
 open import Examples.Groups.Clifford+CS.Syntactics
@@ -78,6 +78,11 @@ r269ˡ = CS ↑ • K ↑ • CS ↑ • K ↑ • CS • K ↑ • CS
 r269ʳ = CS • K ↑ • CS • K ↑ • CS ↑ • K ↑ • CS ↑
 r272ˡ = CS ↑ • K ↑ • CS ↑ • CS ↑ • CS ↑ • K ↑ • CS • K ↑ • CS ↑
 r272ʳ = CS • K ↑ • CS • CS • CS • K ↑ • CS ↑ • K ↑ • CS
+
+-- Four wires.
+rΔˡ rΔʳ : Circuit 4
+rΔˡ = CX₁₀ ↑ ↑ • CCZ • CX₁₀ ↑ ↑
+rΔʳ = CCZ • Swap ↑ ↑ • CCZ • Swap ↑ ↑
 
 ------------------------------------------------------------------------
 -- The identities
@@ -150,6 +155,9 @@ m269 = Eq.refl
 
 m272 : Same r272ˡ r272ʳ
 m272 = Eq.refl
+
+mΔ : Same rΔˡ rΔʳ
+mΔ = Eq.refl
 
 ------------------------------------------------------------------------
 -- The relators, padded to any width, are the axioms' words
@@ -227,3 +235,8 @@ p272ˡ : r272ˡ ↓ᵏ n ≡ CS ↑ • K ↑ • CS ↑ • CS ↑ • CS ↑ �
 p272ˡ = Eq.refl
 p272ʳ : r272ʳ ↓ᵏ n ≡ CS • K ↑ • CS • CS • CS • K ↑ • CS ↑ • K ↑ • CS
 p272ʳ = Eq.refl
+
+pΔˡ : rΔˡ ↓ᵏ n ≡ CX₁₀ ↑ ↑ • CCZ • CX₁₀ ↑ ↑
+pΔˡ = Eq.refl
+pΔʳ : rΔʳ ↓ᵏ n ≡ CCZ • Swap ↑ ↑ • CCZ • Swap ↑ ↑
+pΔʳ = Eq.refl

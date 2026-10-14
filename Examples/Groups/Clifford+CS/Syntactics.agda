@@ -34,6 +34,10 @@
 -- three qubits, stated once each at the width it is drawn on and lifted
 -- by Lift-Relation; the commutations of gates on disjoint wires and the
 -- centrality of iI are the structural rules, so they are not repeated.
+-- On four qubits those rules are not complete (Parity): the number of
+-- CS gates mod 2 is invariant under them, and the true equation
+-- cx-ccz — a CNOT carries a CCZ on its target to the product of two
+-- CCZs — breaks it.  It is the one rule on four wires.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -44,7 +48,7 @@ open import Data.List using ([])
 open import Data.Nat using (ℕ)
 open import Data.Product using (_,_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import Notations using (₁₊ ; ₂₊ ; ₃₊)
+open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 open import Presentation.GroupLike using (Grouplike)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_)
 
@@ -116,6 +120,13 @@ CX₁₂ CX₂₁ : Circuit (₃₊ n)
 CX₁₂ = CX₀₁ ↑
 CX₂₁ = CX₁₀ ↑
 
+-- CS on wires 0 and 2, through the swap of wires 1 and 2, and the doubly
+-- controlled Z on wires 0, 1, 2, by Barenco's decomposition with the
+-- CNOTs between the controls 0, 1: CS₁₂ CX₀₁ CS₁₂⁻¹ CX₀₁ CS₀₂.
+CS₀₂ CCZ : Circuit (₃₊ n)
+CS₀₂ = Swap ↑ • CS • Swap ↑
+CCZ  = CS ↑ • CX₀₁ • CS ↑ • CS ↑ • CS ↑ • CX₀₁ • CS₀₂
+
 ------------------------------------------------------------------------
 -- Group-specific relations: Figure 2 of Bian and Selinger
 --
@@ -156,6 +167,12 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
                          === CS • K ↑ • CS • K ↑ • CS ↑ • K ↑ • CS ↑
   rel-272 : (₃₊ n) SRel, CS ↑ • K ↑ • CS ↑ • CS ↑ • CS ↑ • K ↑ • CS • K ↑ • CS ↑
                          === CS • K ↑ • CS • CS • CS • K ↑ • CS ↑ • K ↑ • CS
+
+  -- Four wires: the CNOT from wire 3 onto wire 2 carries the CCZ on
+  -- wires 0, 1, 2 to the product of the CCZs on 0, 1, 2 and on 0, 1, 3 —
+  -- the phase polynomial (−1)^{x₀x₁(x₂⊕x₃)}.  Not a consequence of the
+  -- rules above (Parity).
+  cx-ccz : (₄₊ n) SRel, CX₁₀ ↑ ↑ • CCZ • CX₁₀ ↑ ↑ === CCZ • Swap ↑ ↑ • CCZ • Swap ↑ ↑
 
 ------------------------------------------------------------------------
 -- Full relation via Lift-Relation (adds the structural rules cong↑,
