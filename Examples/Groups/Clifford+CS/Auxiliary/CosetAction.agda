@@ -46,9 +46,9 @@ open import Data.List using (List ; [] ; _∷_)
 open import Data.List.Relation.Unary.All using (_∷_)
 open import Data.Nat using (z≤n ; s≤s)
 open import Data.Nat.Properties using (n≢0⇒n>0)
-open import Data.Product using (_×_ ; _,_)
-open import Relation.Binary.PropositionalEquality using (_≢_)
-open import Word.Base using (Word ; ε ; _•_)
+open import Data.Product using (_×_ ; _,_ ; proj₂)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
+open import Word.Base using (Word ; ε ; _•_ ; [_]ʷ ; _ᵗ)
 
 import Examples.Groups.Clifford+CS-TwoLevel.Syntactics as TL
 open TL using (i-gen ; X-gen ; K-gen)
@@ -151,3 +151,33 @@ act c (X-gen zero b p)    = xw b zero b p • pows c (pw b zero) , inc² c
 act c (X-gen (suc a) b p) = xw zero (suc a) b p , inc² c
 act c (K-gen zero e p)    = K0row c e p , inc c
 act c (K-gen (suc d) e p) = Krow (suc d) e p , inc c
+
+------------------------------------------------------------------------
+-- The coset reached
+--
+-- The degree of a generator decides the coset it moves to, whatever
+-- its indices; `run-cos` follows that along a word.
+
+dstep : TL.Gen N → Coset → Coset
+dstep (i-gen _)     = inc
+dstep (X-gen _ _ _) = inc²
+dstep (K-gen _ _ _) = inc
+
+nxt : ∀ (c : Coset) (y : TL.Gen N) → proj₂ (act c y) ≡ dstep y c
+nxt c (i-gen a)           = Eq.refl
+nxt c (X-gen zero b p)    = Eq.refl
+nxt c (X-gen (suc a) b p) = Eq.refl
+nxt c (K-gen zero e p)    = Eq.refl
+nxt c (K-gen (suc d) e p) = Eq.refl
+
+cos : Coset → Word (TL.Gen N) → Coset
+cos c [ y ]ʷ  = dstep y c
+cos c ε       = c
+cos c (u • v) = cos (cos c u) v
+
+run-cos : ∀ (c : Coset) (u : Word (TL.Gen N)) → proj₂ ((act ᵗ) c u) ≡ cos c u
+run-cos c [ y ]ʷ  = nxt c y
+run-cos c ε       = Eq.refl
+run-cos c (u • v) =
+  Eq.trans (run-cos (proj₂ ((act ᵗ) c u)) v)
+           (Eq.cong (λ d → cos d v) (run-cos c u))
