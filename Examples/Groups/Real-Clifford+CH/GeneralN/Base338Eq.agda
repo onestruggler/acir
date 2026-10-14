@@ -18,10 +18,17 @@
 module Examples.Groups.Real-Clifford+CH.GeneralN.Base338Eq where
 
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import Word.Base using (_•_)
+open import Data.Bool using (true)
+open import Data.List using (List ; [] ; _∷_ ; map)
+open import Data.Nat using (ℕ)
+open import Data.Product using (_×_ ; _,_)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (Evaluated ; evaluated)
+open import Examples.Groups.Real-Clifford+CH.Interpretation using (len)
+open import Examples.Groups.Real-Clifford+CH.Evaluation using (⟦_⟧R)
+open import Examples.Groups.Real-Clifford+CH.ProdEval using (allOK ; fam-eval)
 
 -- CCZX between P ⊗ P.
 RW₄ : Circuit 4
@@ -36,11 +43,26 @@ Dw₄  = SN (Λ□ 3)
 L-zx = SN (ΛZX 3 ↓ᵏ 0)
 L-kb = SN (Ex ↓ • (ΛZX 3 ↓ᵏ 0) • Ex ↓)
 
+-- The three commutations, one family over RW₄ and the three gates, each
+-- read once (ProdEval).
+private
+  F : List (Circuit 4)
+  F = RW₄ ∷ Dw₄ ∷ L-zx ∷ L-kb ∷ []
+
+  comm : ℕ → Word ℕ × Word ℕ
+  comm i = [ 0 ]ʷ • [ i ]ʷ , [ i ]ʷ • [ 0 ]ʷ
+
+  E : List (Word ℕ × Word ℕ)
+  E = comm 1 ∷ comm 2 ∷ comm 3 ∷ []
+
+  all338Eq : allOK (map ⟦_⟧R F) (map len F) E ≡ true
+  all338Eq = Eq.refl
+
 d-base : Evaluated (RW₄ • Dw₄) (Dw₄ • RW₄)
-d-base = evaluated Eq.refl
+d-base = fam-eval F E all338Eq 0
 
 d-zx : Evaluated (RW₄ • L-zx) (L-zx • RW₄)
-d-zx = evaluated Eq.refl
+d-zx = fam-eval F E all338Eq 1
 
 d-kb : Evaluated (RW₄ • L-kb) (L-kb • RW₄)
-d-kb = evaluated Eq.refl
+d-kb = fam-eval F E all338Eq 2

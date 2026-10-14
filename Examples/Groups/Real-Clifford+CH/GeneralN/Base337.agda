@@ -15,15 +15,17 @@
 module Examples.Groups.Real-Clifford+CH.GeneralN.Base337 where
 
 open import Data.Bool using (Bool ; true ; false)
+open import Data.List using (List ; [] ; _∷_ ; map)
+open import Data.Nat using (ℕ)
+open import Data.Product using (_×_ ; _,_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import Word.Base using (_•_)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (Evaluated ; evaluated)
-open import Examples.Groups.Real-Clifford+CH.CommEval
-  using (allComm ; reads ; comm-family ; bools ; ∈-bools ; bools₂ ; ∈-bools₂ ; bools₃ ; ∈-bools₃)
-open import Data.List using (List ; [] ; _∷_)
-open import Data.List.Relation.Unary.Any using (here ; there)
+open import Examples.Groups.Real-Clifford+CH.Interpretation using (len)
+open import Examples.Groups.Real-Clifford+CH.Evaluation using (⟦_⟧R)
+open import Examples.Groups.Real-Clifford+CH.ProdEval using (allOK ; fam-eval)
 
 -- The triply controlled ZX on wire 0 (true) or on wire 1 (false).
 U₄ : Bool → Circuit 4
@@ -34,11 +36,31 @@ U₄ false = Ex ↓ • ΛZX 3 • Ex ↓
 G2 : Bool → Circuit 4
 G2 c = X ↑ ↑ • (PP ↓ • U₄ c • PP ↓) • X ↑ ↑
 
--- The family is decided by one boolean, each factor read once
--- (CommEval).
+-- The four commutations are one family over ΛZX 3, the swap, X and
+-- P ⊗ P, each read once (ProdEval).
 private
-  all337 : allComm (reads (bools U₄)) (reads (bools G2)) ≡ true
+  F : List (Circuit 4)
+  F = ΛZX 3
+    ∷ Ex ↓
+    ∷ X ↑ ↑
+    ∷ PP ↓
+    ∷ []
+
+  comm : Word ℕ → Word ℕ → Word ℕ × Word ℕ
+  comm a b = a • b , b • a
+
+  E : List (Word ℕ × Word ℕ)
+  E = comm [ 0 ]ʷ ([ 2 ]ʷ • ([ 3 ]ʷ • [ 0 ]ʷ • [ 3 ]ʷ) • [ 2 ]ʷ)
+    ∷ comm [ 0 ]ʷ ([ 2 ]ʷ • ([ 3 ]ʷ • ([ 1 ]ʷ • [ 0 ]ʷ • [ 1 ]ʷ) • [ 3 ]ʷ) • [ 2 ]ʷ)
+    ∷ comm ([ 1 ]ʷ • [ 0 ]ʷ • [ 1 ]ʷ) ([ 2 ]ʷ • ([ 3 ]ʷ • [ 0 ]ʷ • [ 3 ]ʷ) • [ 2 ]ʷ)
+    ∷ comm ([ 1 ]ʷ • [ 0 ]ʷ • [ 1 ]ʷ) ([ 2 ]ʷ • ([ 3 ]ʷ • ([ 1 ]ʷ • [ 0 ]ʷ • [ 1 ]ʷ) • [ 3 ]ʷ) • [ 2 ]ʷ)
+    ∷ []
+
+  all337 : allOK (map ⟦_⟧R F) (map len F) E ≡ true
   all337 = Eq.refl
 
 d337r : ∀ (b c : Bool) → Evaluated (U₄ b • G2 c) (G2 c • U₄ b)
-d337r b c = comm-family (bools U₄) (bools G2) all337 (∈-bools U₄ b) (∈-bools G2 c)
+d337r true true = fam-eval F E all337 0
+d337r true false = fam-eval F E all337 1
+d337r false true = fam-eval F E all337 2
+d337r false false = fam-eval F E all337 3
