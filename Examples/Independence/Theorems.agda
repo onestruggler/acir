@@ -25,9 +25,13 @@
 -- from Makary, Ross and Selinger's (Real-Clifford.Completeness, the
 -- same way), and for CNOTdihe₂, from Amy, Chen and Ross's
 -- (CNOT-Dihedral.Completeness), so that all three are minimal complete
--- presentations of their semantics; and for CliffT₂ up to two wires,
+-- presentations of their semantics; for CliffT₂ up to two wires,
 -- from Bian and Selinger's two-qubit presentation and the two-level
--- presentations of U₂ and U₁ over ℤ[1/√2,i] (Clifford+T.Completeness).
+-- presentations of U₂ and U₁ over ℤ[1/√2,i] (Clifford+T.Completeness);
+-- and for CliffCS₂ up to three wires, from Bian and Selinger's
+-- three-qubit presentation and the two-level presentations of U₄, U₂
+-- and U₁ over ℤ[½,i], with the sources' scalars i refined to ω
+-- (Clifford+CS.Completeness).
 --
 -- Two departures from the paper.  The scalar of the qutrit axiom (E)
 -- is printed ω₁₂⁷ in Figure 4, which is unsound for the semantics of
@@ -72,6 +76,7 @@ import Examples.Independence.CNOT-Dihedral.Minimality   as CNOTdihe-Min
 import Examples.Independence.Clifford.Completeness      as Cliff-Cpl
 import Examples.Independence.Real-Clifford.Completeness as RCliff-Cpl
 import Examples.Independence.Clifford+T.Completeness     as CliffT-Cpl
+import Examples.Independence.Clifford+CS.Completeness    as CliffCS-Cpl
 import Examples.Independence.CNOT-Dihedral.Completeness as CNOTdihe-Cpl
 
 private
@@ -247,6 +252,27 @@ CliffT₂-minimal-complete-upto-1 :
   (∀ {n} {w v : CliffT.Circuit n} (ρ : CliffT._SRel,_===_ n w v) →
      n ≤ 1 → ¬ CliffT-M.Complete-without ρ n)
 CliffT₂-minimal-complete-upto-1 = CliffT₂-complete , CliffT₂-necessary
+
+-- 5. CliffCS₂ is complete up to three qubit wires: on three, its axioms
+-- derive Bian and Selinger's, decoded (Appendices D.5 and G.5), whose
+-- presentation is complete; on two, one and none, the two-level
+-- relations in dimensions 4, 2 and 1, decoded.  On two wires only the
+-- axioms of arity at most two are available, and every instance of a
+-- relation is a relabelling of one (Clifford+CS.TwoWire).  The sources'
+-- scalars are the powers of i, CliffCS₂'s those of ω (Clifford+CS.
+-- Assemble).
+CliffCS₂-complete : {w v : CliffCS.Circuit n} → n ≤ 3 →
+                    CliffCS-Sem.⟦ w ⟧ CliffCS-Sem.≈ CliffCS-Sem.⟦ v ⟧ → n CliffCS.⊢ w ≈ v
+CliffCS₂-complete n≤3 = CliffCS-Cpl.complete n≤3
+
+-- So CliffCS₂ is a minimal complete presentation on two wires, and
+-- complete on three.
+CliffCS₂-minimal-complete-upto-2 :
+  (∀ {n} {w v : CliffCS.Circuit n} → n ≤ 3 →
+     CliffCS-Sem.⟦ w ⟧ CliffCS-Sem.≈ CliffCS-Sem.⟦ v ⟧ → n CliffCS.⊢ w ≈ v) ×
+  (∀ {n} {w v : CliffCS.Circuit n} (ρ : CliffCS._SRel,_===_ n w v) →
+     n ≤ 2 → ¬ CliffCS-M.Complete-without ρ n)
+CliffCS₂-minimal-complete-upto-2 = CliffCS₂-complete , CliffCS₂-necessary
 
 -- 6. CNOTdihe₂ is complete, at every width: its axioms derive Amy,
 -- Chen and Ross's, whose presentation is complete.

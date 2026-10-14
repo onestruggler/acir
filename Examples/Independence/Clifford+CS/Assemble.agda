@@ -10,7 +10,7 @@
 -- the decodings; and with i decoding to ω ω and every gate g equal to
 -- ω^(c g) times the decoding of its encoding, the circuits are equal:
 -- w ≈ ω^a D(ℰ w), v ≈ ω^b D(ℰ v) ≈ ω^(b + 2k) D(ℰ w), and b + 2k ≡ a
--- mod 8.  The decoding reads a source word as written (Dʷ).
+-- mod 8.  The decoding reads a source word as written (Decode.Dʷ).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -97,6 +97,16 @@ module Powers {n : ℕ} where
 open Powers public using (ωᵏ ; ωᵏ-central ; ωᵏ-+ ; ωᵏ⁸ ; ωᵏ-8)
 
 ------------------------------------------------------------------------
+-- The decoding of a source word, read as written
+
+module Decode {n : ℕ} {G : Set} (d : G → Circuit n) where
+
+  Dʷ : Word G → Circuit n
+  Dʷ [ g ]ʷ  = d g
+  Dʷ ε       = ε
+  Dʷ (u • v) = Dʷ u • Dʷ v
+
+------------------------------------------------------------------------
 -- The assembly
 
 module Assemble {n : ℕ} {G : Set}
@@ -117,15 +127,11 @@ module Assemble {n : ℕ} {G : Set}
   where
 
   open ViaS F F-ε F-• F-u J F-J ℰ c gen public
+  open Decode d public
 
   open PB (n VRel,_===_)
   open PP (n VRel,_===_) using (word-setoid)
   open import Relation.Binary.Reasoning.Setoid word-setoid
-
-  Dʷ : Word G → Circuit n
-  Dʷ [ g ]ʷ  = d g
-  Dʷ ε       = ε
-  Dʷ (u • v) = Dʷ u • Dʷ v
 
   module _
     (D-rel    : ∀ {u v} → Γ u v → n ⊢ Dʷ u ≈ Dʷ v)

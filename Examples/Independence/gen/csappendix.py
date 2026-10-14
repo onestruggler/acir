@@ -276,12 +276,15 @@ if MODE in ('all', 'tl'):
     # The scalar i, on every index, decoded: ω ω S† S on one wire.
     D('DJ1⁼', 1, [('w w Sd0 S0', None), ('w w', ['S4'])], mirror=False)
     widths = [int(x) for x in os.environ.get('TLWIDTHS', '1,2').split(',')]
-    for w, n, table in [(1, 2, tlcs.D1), (2, 4, tlcs.D2)]:
-        if w not in widths:
-            continue
-        for k, l, r in tlcs.relations(n):
+    if 1 in widths:
+        for k, l, r in tlcs.relations(2):
             if only and k not in only.split(','):
                 continue
-            D('DTL%d-%s⁼' % (w, k), w,
-              normalised(tlcs.decode(table, l), tlcs.decode(table, r), TL_LABELS),
+            D('DTL1-%s⁼' % k, 1,
+              normalised(tlcs.decode(tlcs.D1, l), tlcs.decode(tlcs.D1, r), TL_LABELS),
               mirror=False)
+    # On two wires, one standard instance of each relation, the others
+    # by transport along the permutations of the indices (tl2.py).
+    if 2 in widths:
+        import tl2
+        tl2.run(D)

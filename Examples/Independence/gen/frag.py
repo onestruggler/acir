@@ -93,8 +93,8 @@ def search_lines(name, width, cs, labels_list, depth, extra, maxstates):
         labels = labels_list[k]
         if isinstance(labels, tuple) and labels[0] == 'direct':
             # one known rewrite: the equation (forwards or not) at a position
-            _, ename, i, fwd = labels
-            ins = Inst(LIB[ename], fwd, 0)
+            _, ename, i, fwd = labels[:4]
+            ins = Inst(LIB[ename], fwd, labels[4] if len(labels) > 4 else 0)
             a, b = cs[k - 1], cs[k]
             assert a[i:i + len(ins.l)] == ins.l, (name, k, 'lhs not at', i)
             assert a[:i] + ins.r + a[i + len(ins.l):] == b, (name, k, 'not the rewrite')

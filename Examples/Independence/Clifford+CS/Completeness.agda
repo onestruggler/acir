@@ -6,18 +6,24 @@
 --
 -- Section 4 of Blake's paper.  On three wires the transfer is from Bian
 -- and Selinger's presentation of the 3-qubit Clifford+CS group
--- (Examples.Groups.Clifford+CS-3qubit); on one wire and on none, from
--- the two-level presentation of U₂ and U₁ over 𝔻[i] = ℤ[½,i]
+-- (Examples.Groups.Clifford+CS-3qubit); on two wires, one and none,
+-- from the two-level presentation of U₄, U₂ and U₁ over 𝔻[i] = ℤ[½,i]
 -- (Examples.Groups.Clifford+CS-TwoLevel).  Their scalars are the
 -- powers of i, ours those of ω: the encodings (Clifford+CS.Encodings)
 -- count the ω of a circuit (H = ω K), and Clifford+CS.Assemble does the
 -- rest.  The decodings read the source words as written: iI, resp. the
--- scalar i on an index, as ω ω, K as ω† H, S and CS as themselves; the
--- two-level i_[1] as S, i_[0] as ω ω S†, X_[0,1] as X (a generator on
--- equal indices, which the relations never meet, as ε).  Every relation
--- decodes to a derivation of CliffCS₂'s (Lemma 20:
--- Clifford+CS.Derivations), and every gate is ω^c times the decoding of
--- its encoding (Lemma 19).
+-- scalar i on an index, as ω ω, K as ω† H, S and CS as themselves; on
+-- one wire the two-level i_[1] as S, i_[0] as ω ω S†, X_[0,1] as X (a
+-- generator on equal indices, which the relations never meet, as ε);
+-- on two wires each two-level generator as a conjugate of CS, of a
+-- controlled K or of a CNOT by X, the swap and the CNOT
+-- (Clifford+CS.TwoWire).  Every relation decodes to a derivation of
+-- CliffCS₂'s (Lemma 20: Clifford+CS.Derivations, and on two wires one
+-- instance of each relation, the others by transport along the
+-- permutations of the indices), and every gate is ω^c times the
+-- decoding of its encoding (Lemma 19).  Two-wire derivations use the
+-- axioms of arity at most two only, so the two-wire case is not a
+-- consequence of the three-wire one.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -30,6 +36,7 @@ open import Data.Fin.Base using (Fin ; zero ; suc ; _<_)
 open import Data.Nat.Base using (ℕ ; z≤n ; s≤s ; _≤_)
 import Data.Nat.Base as ℕ
 open import Data.Product.Base using (_×_ ; _,_)
+open import Function.Bundles using (_⇔_ ; mk⇔)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_ ; refl)
 open import Relation.Nullary.Negation using (¬_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
@@ -55,6 +62,7 @@ open import Examples.Independence.Clifford+CS.Derivations
 open import Examples.Independence.Clifford+CS.Bridge using (mapι ; ωs ; scalar-word)
 open import Examples.Independence.Clifford+CS.Encodings
 open import Examples.Independence.Clifford+CS.Assemble
+import Examples.Independence.Clifford+CS.TwoWire as TW
 import Examples.Independence.Reasoning Gate as R
 open R.Theory _SRel,_===_ using (lift)
 
@@ -224,6 +232,27 @@ complete₁ : {w v : Circuit 1} → Sem.⟦ w ⟧ Sem.≈ Sem.⟦ v ⟧ → 1 �
 complete₁ = W₁.complete D₁-rel (via DJ1⁼ refl refl) back₁
 
 ------------------------------------------------------------------------
+-- Two wires: the two-level presentation in dimension 4
+
+module W₂ = Assemble CSS.⟦_⟧ᵐ refl CSS.⟦•⟧ᵐ CSS.Unitary-⟦⟧ᵐ J₂
+  (FJ CSS.⟦_⟧ᵐ CSS.⟦•⟧ᵐ J₂ J₂-i) ℰ₂ c₂ gen₂
+  TL._===_ (TLM.relations-complete {n = 4}) TW.d₂
+
+back₂ : (g : Gen 2) → 2 ⊢ [ g ]ʷ ≈ ωᵏ (c₂ g) • W₂.Dʷ (ℰ₂ g)
+back₂ (gate₀ ⌈ ω-gate ⌉)     = PB.sym PB.right-unit
+back₂ (gate₁ ⌈ H-gate ⌉)     = via DH2⁼ refl refl
+back₂ (gate₁ ⌈ S-gate ⌉)     = PB.trans (via DS2⁼ refl refl) (PB.sym PB.left-unit)
+back₂ (gate₂ ⌈ CS-gate ⌉)    = PP.by-assoc (2 VRel,_===_) refl
+back₂ (gate₂ swap)           = PB.trans (via DSW2⁼ refl refl) (PB.sym PB.left-unit)
+back₂ (gate₀ ⌈ ω-gate ⌉ ↥)   = PB.trans ω↑ (PB.sym PB.right-unit)
+back₂ (gate₁ ⌈ H-gate ⌉ ↥)   = via DH2↑⁼ refl refl
+back₂ (gate₁ ⌈ S-gate ⌉ ↥)   = PB.trans (via DS2↑⁼ refl refl) (PB.sym PB.left-unit)
+back₂ (gate₀ ⌈ ω-gate ⌉ ↥ ↥) = PB.trans (lift ω↑) (PB.trans ω↑ (PB.sym PB.right-unit))
+
+complete₂ : {w v : Circuit 2} → Sem.⟦ w ⟧ Sem.≈ Sem.⟦ v ⟧ → 2 ⊢ w ≈ v
+complete₂ = W₂.complete TW.D₂-rel (via DJ2⁼ refl refl) back₂
+
+------------------------------------------------------------------------
 -- Three wires: Bian and Selinger's presentation
 
 d₃ : BS.Gen → Circuit 3
@@ -321,3 +350,18 @@ back₃ (gate₃ ⌈ () ⌉)
 
 complete₃ : {w v : Circuit 3} → Sem.⟦ w ⟧ Sem.≈ Sem.⟦ v ⟧ → 3 ⊢ w ≈ v
 complete₃ = W₃.complete D₃-rel PB.refl back₃
+
+------------------------------------------------------------------------
+-- Completeness
+
+-- Circuits on at most three wires with the same matrix are equal by
+-- CliffCS₂.
+complete : n ≤ 3 → {w v : Circuit n} → Sem.⟦ w ⟧ Sem.≈ Sem.⟦ v ⟧ → n ⊢ w ≈ v
+complete z≤n                   = complete₀
+complete (s≤s z≤n)             = complete₁
+complete (s≤s (s≤s z≤n))       = complete₂
+complete (s≤s (s≤s (s≤s z≤n))) = complete₃
+
+-- So on at most three wires the rule set presents the semantics.
+sound-complete : n ≤ 3 → {w v : Circuit n} → (n ⊢ w ≈ v) ⇔ (Sem.⟦ w ⟧ Sem.≈ Sem.⟦ v ⟧)
+sound-complete n≤3 = mk⇔ Sem.sound (complete n≤3)
