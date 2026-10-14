@@ -169,6 +169,14 @@ private
 ωs-8* q t M = TS.mat-ext λ r c →
   trans (ent-ωs (q * 8 + t) M r c) (trans (cong (DR._* TS.ent M r c) (ωp-8* q t)) (sym (ent-ωs t M r c)))
 
+-- A word whose matrix reads as ω² times the identity multiplies by ω².
+scalar-word : (Fj Fu : Matrix m m CSR.D) → mapι Fj ≡ ωs 2 (mapι CSS.𝕀) →
+              mapι (Fj ·*· Fu) ≡ ωs 2 (mapι Fu)
+scalar-word Fj Fu h =
+  trans (mapι-·*· Fj Fu)
+  (trans (Eq.cong₂ _·ω·_ (trans h (cong (ωs 2) mapι-𝕀)) (sym (ωs-0 (mapι Fu))))
+  (trans (ωs-· 2 0 TS.𝕀 (mapι Fu)) (cong (ωs 2) (TS.·*·-identityˡ (mapι Fu)))))
+
 ------------------------------------------------------------------------
 -- A unitary matrix is not 0
 

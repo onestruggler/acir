@@ -255,6 +255,11 @@ if MODE in ('all', 'bs'):
             continue
         D('DBS-' + k[3:] + '⁼', 3, normalised(bforward(l), bforward(r), bs_labels(k)),
           mirror=False)
+    # Lemma 19 on three wires: the swap, encoded as their Swap01 (three
+    # CNOTs), decoded.
+    from bscs import expand
+    D('DSwap⁼', 2, normalised(bforward(expand(['Swap01'])), 'SW01',
+                              ['B', 'CXd⁼', 'CX2⁼', 'Dσu⁼', 'H2']), mirror=False)
 
 
 # ---------------------------------------------------------------------
@@ -268,7 +273,12 @@ TL_LABELS = ['w8', 'H2', 'S4', 'E', 'Ct', 'CSr', 'B', 'XCS', 'CE', 'CXd⁼', 'CX
 
 if MODE in ('all', 'tl'):
     only = os.environ.get('TONLY')
+    # The scalar i, on every index, decoded: ω ω S† S on one wire.
+    D('DJ1⁼', 1, [('w w Sd0 S0', None), ('w w', ['S4'])], mirror=False)
+    widths = [int(x) for x in os.environ.get('TLWIDTHS', '1,2').split(',')]
     for w, n, table in [(1, 2, tlcs.D1), (2, 4, tlcs.D2)]:
+        if w not in widths:
+            continue
         for k, l, r in tlcs.relations(n):
             if only and k not in only.split(','):
                 continue

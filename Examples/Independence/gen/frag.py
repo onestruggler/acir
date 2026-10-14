@@ -162,6 +162,8 @@ def nat(k, h):
     labels = list(NATLABELS) + list(NATS)
     labels = [x for x in labels if LABEL.get(x, x) in LIB and LIB[LABEL.get(x, x)].arity <= ar]
     steps = search_lines(name, ar, [l, r], [None, labels], 8, (), 30000)
+    if name in LIB:                 # derived meanwhile, by a search this one started
+        return LIB[name]
     add(Eq(name, ar, l, r), lg, rg)
     OUT.append((name, ar, l, r, steps))
     NATS.append(name)

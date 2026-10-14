@@ -18,6 +18,9 @@ def CS(a, b): return [('CS', min(a, b), max(a, b))]
 def CX(c, t): return H(t) + CS(c, t) + CS(c, t) + H(t)
 
 
+circ.GREEDY_SCALARS = True
+
+
 def mac(rx, fn):
     circ.MACROS.append((re.compile(rx), fn))
 

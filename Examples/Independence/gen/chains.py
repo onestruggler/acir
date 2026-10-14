@@ -73,6 +73,9 @@ class Chains:
             else:
                 new = [a for a in x if a not in st[k]]
                 x[:] = st[k] + new
+        # (an equation derived twice, by a search started within another)
+        seen = set()
+        frag.OUT[:] = [d for d in frag.OUT if not (d[0] in seen or seen.add(d[0]))]
         self.rename.clear()
         self.rename.update(st['rename'])
         return self.names.index(st['last']) + 1

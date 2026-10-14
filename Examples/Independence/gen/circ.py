@@ -24,6 +24,12 @@ ARITY = {'w': 0, 'm': 0, 'H': 1, 'S': 1, 'Z': 1, 'T': 1, 'X': 1, 'CX': 2, 'SW': 
 SCALARS = ('w', 'm')
 PRIMITIVE = set()
 
+# Match the scalars of a pattern greedily, the leftmost copies: every
+# choice gives the same result, and with many copies (CliffCS₂'s words
+# carry dozens of ω) trying them all is too slow.  Off by default, which
+# keeps the other fragments' generated modules as they were.
+GREEDY_SCALARS = False
+
 
 def wires(l):
     k, w = l
@@ -293,6 +299,15 @@ def occurrences(c, pat):
     def extend(sel, j):
         if j == m:
             yield list(sel)
+            return
+        if GREEDY_SCALARS and not wires(pat[j]):
+            # a scalar of the pattern: the next copy of it (any would do)
+            prev = [sel[jj] for jj in range(j) if pat[jj] == pat[j]]
+            start = max(prev) + 1 if prev else 0
+            for p in range(start, n):
+                if p not in sel and c[p] == pat[j]:
+                    yield from extend(sel + [p], j + 1)
+                    return
             return
         for p in range(n):
             if p in sel or c[p] != pat[j]:
