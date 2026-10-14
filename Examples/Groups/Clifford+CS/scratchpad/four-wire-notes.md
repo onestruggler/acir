@@ -287,3 +287,42 @@ holds for every generator, coset and sink g off 0 and the generator
 1372/1372 transport cases at N = 8).  For the encoding, E(K_w) is now a
 plain product of ki letters (2^(n-1) of them, the phases i_s^(2^(n-1))
 vanishing from n = 3).
+
+## The decoding constructions: what replaces the box (tDec.py, 2026-10-14)
+
+No multi-controlled phase or K gate with every other wire controlling
+is a circuit on its own (det i); the det-1 combinations the letters
+denote are.  Two commutator identities and a borrowed-wire recursion
+build them, all checked exactly at n = 4 and 5 (tDec.py):
+
+    [X, S] = X S X S^-1 = iZ            [K, Z] = K Z K^-1 Z = X Z
+    [L_{C2+a}(S_t), L_{C1}(X_a)] = L_C(S_t^3 . CZ_{a t})        (C = C1 + C2)
+    [L_{C2+a}(K_t), L_{C1}(X_a)] = L_C(K_t) . L_C(i on a = 0)
+
+With the split-control trick L_{C1+C2}([V,W]) = L_{C1}V L_{C2}W L_{C1}V^-1
+L_{C2}W^-1 (Clement's box recursion is its instance [ZX, Z] = -I):
+
+  (1) L^m(S_t)^3 = [L_{C2+a}(S_t), L_{C1}(X_a)] . L_{C+a}(Z_t), |C1| = 2:
+      multi-controlled S with >= 2 idle wires, from fewer controls, a
+      multi-controlled X (= K box K^-1) and a box.  Base CS.
+  (2) L^m(K_t) = [L_{C2+a}(K_t), L_{C1}(X_a)] . X_a L^m(S_a)^3 X_a:
+      multi-controlled K with >= 2 idle wires, likewise.  Base CK.
+  (3) L^{n-1}(iZ_t) = L_{C1}(X_t) L_{C2}(S_t) L_{C1}(X_t) L_{C2}(S_t)^3,
+      |C1| = 2: the consecutive phase pair pp a b (its C2-part has the
+      two idle wires C1).
+  (4) L^{n-1}(XZ_t) = [CK_{c->t}, L_{rest}(Z_t)]: the rotation, i.e.
+      (-1)_a X_ab for consecutive a b -- Clement's CH B CH B with CK.
+  (5) [L_{C2+a}(K_t), L_{C1}(X_a)] with C = all but t, a is
+      K_(pair at a=1) K_(pair at a=0)^-1: a K pair.
+  (6) ki a b s with s one wire-flip from a: L^{n-2}(G) for the 2-qubit
+      G = L_u(K_w) . (-i at u=0, w=0) (det 1), by [V,W] = G with
+      V = S1 K1 X0, W = S0 X1 S1 CS.  CAVEAT: at n = 4 the controlled
+      V, W have det -1 (one idle wire each); valid from n = 5, or with
+      V, W of det +-1 (tDec6.py searches).  Alternatively ki = K pair
+      times one hybrid, and the sink moves by pp.
+
+The box itself (L^j(Z) with an idle wire) is Clement's recursion with
+CCZX = L^2(ZX) a 3-qubit Clifford+CS circuit (det 1 on three wires).
+Open: a uniform recursive definition (Definition 2.4's analogue) with
+the idle-wire bookkeeping, the quads i_a i_b i_c i_d, and the Lemma
+8.7/8.8 analogues on top.
