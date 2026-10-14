@@ -17,6 +17,7 @@ open import Presentation.GroupLike using (Grouplike)
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_)
 
 import Circuit.Base
+import Circuit.TopPad
 import Presentation.Base as PB
 import Presentation.Properties as PP
 import Relation.Binary.Reasoning.Setoid as SR
@@ -65,7 +66,7 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
 -- top (cong↓), and the structural rules cong↑, comm₁, comm₂ on top of
 -- that
 
-private module LR = SC.Top-Pad _SRel,_===_
+private module LR = Circuit.TopPad.Top-Pad Gate _SRel,_===_
 -- ω↑=ω is the 0-ary gate's structural rule.  This gate set has no
 -- 0-ary gate, so it is never inhabited here — but it still has to be
 -- re-exported, or a client cannot name it to discharge it when it
