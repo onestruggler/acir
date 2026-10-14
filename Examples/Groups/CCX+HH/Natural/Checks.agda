@@ -2,26 +2,34 @@
 -- Presentations of groups
 --
 -- Finite checks by one boolean, for the generated coset tables of the
--- natural calculus: a property of every state, and distinctness of
--- representatives from a table of their matrices.
+-- natural calculus: a property of every state or of a range of indices,
+-- and distinctness of representatives from a table of their matrices.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Examples.Groups.CCX+HH.Natural.Checks where
 
-open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; _∨_ ; not ; T)
-open import Data.Empty using (⊥-elim)
+open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; not ; T)
+open import Data.Empty using (⊥ ; ⊥-elim)
 open import Data.Fin.Base using (Fin ; zero ; suc ; toℕ)
 import Data.Fin.Properties as FP
-open import Data.Nat.Base using (ℕ ; zero ; suc ; _≡ᵇ_)
-open import Data.Nat.Properties using (≡ᵇ⇒≡)
+open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_ ; _∸_ ; _≤_ ; _<_ ; z≤n)
+open import Data.Nat.Properties
+  using (<-cmp ; m+[n∸m]≡n ; +-suc ; +-identityʳ ; <-trans ; <-irrefl ; <-≤-trans ; _<?_ ; ≮⇒≥)
+open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Unit.Base using (tt)
+open import Relation.Binary.Definitions using (tri< ; tri≈ ; tri>)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Relation.Nullary using (yes ; no)
 
 open import Quantum.Synthesis.Ring using (Dyadic)
 open import Quantum.Synthesis.Matrix using (Matrix)
-open import Examples.Groups.CCX+HH.Decide using (eqMat ; eqD ; eqMat-sound ; eqMat-refl ; eqD-sound ; eqD-refl)
+open import Examples.Groups.CCX+HH.Decide using (eqMat ; eqD ; eqMat-refl ; eqD-refl)
+
+private
+  T-∧ : ∀ {x y} → T (x ∧ y) → T x × T y
+  T-∧ {true} {true} _ = tt , tt
 
 allF : ∀ {K} → (Fin K → Bool) → Bool
 allF {zero} p = true
@@ -35,27 +43,61 @@ allF-sound {suc K} p h (suc c) with p zero
 allF-sound {suc K} p h (suc c) | true = allF-sound (λ c → p (suc c)) h c
 allF-sound {suc K} p () (suc c) | false
 
--- A table of matrices, checked against the representatives and checked
--- pairwise distinct, makes the representatives' matrices distinct.
-module Distinct {K m : ℕ} (sem : Fin K → Matrix m m Dyadic) (table : Fin K → Matrix m m Dyadic)
-  (agree : T (allF (λ c → eqMat eqD (sem c) (table c))))
-  (apart : T (allF (λ c → allF (λ d → (toℕ c ≡ᵇ toℕ d) ∨ not (eqMat eqD (table c) (table d))))))
+------------------------------------------------------------------------
+-- Checks over a range of naturals
+
+-- allR lo k p: p holds at lo, lo + 1, …, lo + k - 1.  A large table is
+-- checked in chunks, one module each, since Agda frees the memory of an
+-- evaluation only when its module is done.
+allR : ℕ → ℕ → (ℕ → Bool) → Bool
+allR lo zero p = true
+allR lo (suc k) p = p lo ∧ allR (suc lo) k p
+
+allR-sound : ∀ lo k (p : ℕ → Bool) → T (allR lo k p) → ∀ i → lo ≤ i → i < lo + k → T (p i)
+allR-sound lo zero p h i lo≤i i<lo =
+  ⊥-elim (<-irrefl Eq.refl (<-≤-trans (Eq.subst (i <_) (+-identityʳ lo) i<lo) lo≤i))
+allR-sound lo (suc k) p h i lo≤i i<lo+k with <-cmp lo i
+... | tri< lo<i _ _ = allR-sound (suc lo) k p (proj₂ (T-∧ {p lo} h)) i lo<i
+        (Eq.subst (i <_) (+-suc lo k) i<lo+k)
+... | tri≈ _ Eq.refl _ = proj₁ (T-∧ {p lo} h)
+... | tri> _ _ i<lo = ⊥-elim (<-irrefl Eq.refl (<-≤-trans i<lo lo≤i))
+
+-- Two adjacent ranges make one.
+join : ∀ (P : ℕ → Set) lo a b → (∀ i → lo ≤ i → i < lo + a → P i) →
+  (∀ i → lo + a ≤ i → i < lo + a + b → P i) → ∀ i → lo ≤ i → i < lo + a + b → P i
+join P lo a b f g i lo≤i i<s with i <? lo + a
+... | yes i<m = f i lo≤i i<m
+... | no i≮m = g i (≮⇒≥ i≮m) i<s
+
+-- The matrices of N representatives, given by a function on their
+-- indices, checked against a stored table (chunk by chunk: `agree`) and
+-- the stored table checked free of repeats (`apart`).
+apartR : ∀ {m} → ℕ → (ℕ → Matrix m m Dyadic) → Bool
+apartR N t = allR 0 N (λ i → allR (suc i) (N ∸ suc i) (λ j → not (eqMat eqD (t i) (t j))))
+
+module DistinctR {N m : ℕ} (sem table : ℕ → Matrix m m Dyadic)
+  (agree : ∀ i → i < N → sem i ≡ table i)
+  (apart : T (apartR N table))
   where
 
   private
-    agree′ : ∀ c → sem c ≡ table c
-    agree′ c = eqMat-sound eqD eqD-sound _ _ (allF-sound _ agree c)
+    refuted : ∀ b → T b → T (not b) → ⊥
+    refuted true _ ()
 
-    same-table : ∀ c d → table c ≡ table d → c ≡ d
-    same-table c d e = FP.toℕ-injective (≡ᵇ⇒≡ _ _ (lemma (allF-sound _ (allF-sound _ apart c) d)))
-      where
-      eqT : T (eqMat eqD (table c) (table d))
-      eqT = Eq.subst (λ M → T (eqMat eqD (table c) M)) e (eqMat-refl eqD eqD-refl (table c))
-      lemma : T ((toℕ c ≡ᵇ toℕ d) ∨ not (eqMat eqD (table c) (table d))) → T (toℕ c ≡ᵇ toℕ d)
-      lemma h with toℕ c ≡ᵇ toℕ d | eqMat eqD (table c) (table d) | eqT
-      ... | true | _ | _ = tt
-      ... | false | true | _ = h
-      ... | false | false | ()
+    -- Below the upper index, two stored matrices differ.
+    differ : ∀ i j → i < j → j < N → table i ≡ table j → ⊥
+    differ i j i<j j<N e = refuted (eqMat eqD (table i) (table i))
+      (eqMat-refl eqD eqD-refl (table i))
+      (Eq.subst (λ M → T (not (eqMat eqD (table i) M))) (Eq.sym e)
+        (allR-sound (suc i) (N ∸ suc i) _ (allR-sound 0 N _ apart i z≤n (<-trans i<j j<N))
+          j i<j (Eq.subst (j <_) (Eq.sym (m+[n∸m]≡n (<-trans i<j j<N))) j<N)))
 
-  distinct : ∀ c d → sem c ≡ sem d → c ≡ d
-  distinct c d e = same-table c d (Eq.trans (Eq.sym (agree′ c)) (Eq.trans e (agree′ d)))
+  distinct : ∀ (c d : Fin N) → sem (toℕ c) ≡ sem (toℕ d) → c ≡ d
+  distinct c d e with <-cmp (toℕ c) (toℕ d)
+  ... | tri< c<d _ _ = ⊥-elim (differ (toℕ c) (toℕ d) c<d (FP.toℕ<n d) e′)
+    where
+    e′ = Eq.trans (Eq.sym (agree _ (FP.toℕ<n c))) (Eq.trans e (agree _ (FP.toℕ<n d)))
+  ... | tri≈ _ c≡d _ = FP.toℕ-injective c≡d
+  ... | tri> _ _ d<c = ⊥-elim (differ (toℕ d) (toℕ c) d<c (FP.toℕ<n c) (Eq.sym e′))
+    where
+    e′ = Eq.trans (Eq.sym (agree _ (FP.toℕ<n c))) (Eq.trans e (agree _ (FP.toℕ<n d)))

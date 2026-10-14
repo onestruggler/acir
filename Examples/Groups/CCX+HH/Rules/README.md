@@ -6,8 +6,8 @@ relations (millions of raw equations at four wires), not a short list of
 natural circuit identities. This directory is the research tooling for
 finding such a list, in the spirit of Clément's theory for
 Real-Clifford+CH: a few small rules, plus whatever schemas over the
-width turn out to be needed. It contains no proofs; a rule set found here
-still has to be derived in Agda.
+width turn out to be needed. The proofs are in `../Natural/` (see In
+Agda below); the scripts here also write their generated parts.
 
 ## Tools
 
@@ -25,6 +25,8 @@ still has to be derived in Agda.
   `CXr i = HH i CX i HH i`), rules at every placement, and completeness
   bounds through a chain of subgroups.
 - `stage3.py`: the three-wire experiments.
+- `proofs.py`, `natproof.py`, `gen_axioms.py`, `gen_width.py`: the
+  proof-producing enumeration and the Agda it writes (see In Agda).
 - `selftest.py`: known orders (S₃ … S₈, and the gate groups on one and
   two wires, from complete Schreier presentations).
 
@@ -163,6 +165,31 @@ the seed first missed, found by the search and rewritten in natural form.
 From three wires on the CCX+H group is infinite, so completeness there
 (where Amy, Ross and Wesley's 3-qubit theory lives) needs a proof, not an
 enumeration.
+
+## In Agda
+
+`../Natural/` states the rules as a circuit calculus (`Syntactics`, the
+twelve rules and the two four-wire ones) and proves them sound at every
+width (`Soundness`: each rule on its own wires by the completeness of the
+translated calculus, then on more wires by adding idle ones).
+
+Completeness is proved on one and two wires (`Width1.agda`,
+`Width2.agda`) from a coset enumeration that proves its own table:
+`proofs.py` enumerates the cosets of the trivial subgroup and records, for
+every entry c·y = d, a derivation of `rep c ++ [y] = rep d` as rewrite
+steps by the rules (`natproof.py` supplies the rules at every placement,
+the involutions and the commutations of disjoint gates, and replays every
+derivation). `gen_width.py` writes those derivations as equations of
+`Natural/Engine`, each checked by `derive`, together with the tables and
+two checks by one boolean each: the stored matrices of the
+representatives are theirs (`Natural/Prefix`, one gate at a time from a
+parent word) and are pairwise distinct. `Natural/Automaton` then
+concludes: every circuit is derivably equal to the representative its
+letters lead to, and two circuits with one matrix lead to the same one.
+On two wires that is 384 representatives and 3528 derivations in
+nineteen modules, about ten minutes in all and none over 2 GB.
+`gen_axioms.py` writes `Natural/Axioms`; `python3 -B gen_width.py N
+--check` compares the modules with the generator.
 
 ## Beyond three wires
 
