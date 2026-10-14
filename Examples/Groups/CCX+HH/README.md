@@ -92,7 +92,9 @@ Words are read in matrix-product order, and equality includes global sign.
 two-level exchanges and `HH` as disjoint four-level `K` blocks. It defines
 the compiler at every width. `check_encoding.py` compares these blocks with
 independent tensor/basis semantics at all placements through a selected
-finite width. A symbolic-width semantic preservation proof remains open.
+finite width, and `EncodingSemantics/Enumeration.agda` proves at every
+width that they preserve the ordinary circuit matrices
+(`enumeration-correct`).
 
 `StructuralEncoding.agda` gives a second, recursive spelling of the same
 block construction. `EncodingSemantics/` proves its correctness at every
@@ -100,8 +102,14 @@ width: an idle top wire uses two contiguous blocks, and an idle bottom
 wire uses the even and odd coordinates. `Semantics.agda` independently
 specifies the Boolean gate actions and the four Hadamard rows, then forms
 their ordinary matrices. The theorem `encoding-correct` identifies these
-matrices with the recursive encoder. The relationship with the original
-enumeration-based compiler has not yet been proved at symbolic width.
+matrices with the recursive encoder, and `enumeration-correct` with the
+original enumeration-based compiler, so the two encoders give every
+circuit the same matrix (`encoders-agree`). The second proof follows the
+first's recursion: one width up, the enumeration over `[0, 2 · 2^m)` splits
+into its two halves (a gate on wire 0, contiguous blocks) or into its even
+and odd indices (a shifted gate, alternating blocks), the letters of each
+part being those one width down embedded (`EncodingSemantics/EnumerationArith.agda`),
+and interleaved letters on the two sides act as the two copies in parallel.
 
 ## The two-wire translation
 
