@@ -84,6 +84,10 @@ rΔˡ rΔʳ : Circuit 4
 rΔˡ = CX₁₀ ↑ ↑ • CCZ • CX₁₀ ↑ ↑
 rΔʳ = CCZ • Swap ↑ ↑ • CCZ • Swap ↑ ↑
 
+rΛˡ rΛʳ : Circuit 4
+rΛˡ = Toff • CCZ₀₁₃ • Toff
+rΛʳ = CCZ₀₁₃ • CCZ ↑
+
 ------------------------------------------------------------------------
 -- The identities
 
@@ -158,6 +162,9 @@ m272 = Eq.refl
 
 mΔ : Same rΔˡ rΔʳ
 mΔ = Eq.refl
+
+mΛ : Same rΛˡ rΛʳ
+mΛ = Eq.refl
 
 ------------------------------------------------------------------------
 -- The relators, padded to any width, are the axioms' words
@@ -240,3 +247,8 @@ pΔˡ : rΔˡ ↓ᵏ n ≡ CX₁₀ ↑ ↑ • CCZ • CX₁₀ ↑ ↑
 pΔˡ = Eq.refl
 pΔʳ : rΔʳ ↓ᵏ n ≡ CCZ • Swap ↑ ↑ • CCZ • Swap ↑ ↑
 pΔʳ = Eq.refl
+
+pΛˡ : rΛˡ ↓ᵏ n ≡ Toff • CCZ₀₁₃ • Toff
+pΛˡ = Eq.refl
+pΛʳ : rΛʳ ↓ᵏ n ≡ CCZ₀₁₃ • CCZ ↑
+pΛʳ = Eq.refl

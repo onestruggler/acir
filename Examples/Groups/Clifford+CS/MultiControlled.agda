@@ -74,10 +74,10 @@ CK₁₀ = CS • K • CS • K • CS • S ↑ • S ↑ • S ↑ • iI
 ------------------------------------------------------------------------
 -- Three-wire gates, on wires 0, 1, 2
 
--- The Toffoli with its target on wire 0 (Toff) or on wire 2 (Toffᵗ):
+-- The Toffoli with its target on wire 2 (Toffᵗ; Toff, on wire 0, is
+-- Syntactics'):
 -- K on the target around Syntactics' CCZ.
-Toff Toffᵗ CCZX CCXZ : Circuit (₃₊ n)
-Toff  = K • CCZ • K • iI
+Toffᵗ CCZX CCXZ : Circuit (₃₊ n)
 Toffᵗ = K ↑ ↑ • CCZ • K ↑ ↑ • iI
 CCZX  = CCZ • Toff
 CCXZ  = Toff • CCZ

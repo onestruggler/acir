@@ -1,24 +1,27 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The four-wire rule is independent of the three-qubit rules: the CS
+-- The four-wire rules are independent of the three-qubit rules: the CS
 -- parity
 --
 -- The number of CS gates mod 2 is invariant under every rule of
--- Syntactics but cx-ccz — each has an even difference of CS gates
--- between its sides — and under the structural rules; on three qubits
--- it is the determinant, which is why it survives completeness there.
--- On four qubits every generator has determinant 1 and the parity is
--- no longer semantic: cx-ccz, a CNOT carrying a CCZ on its target to
--- the product of two CCZs (the phase polynomial (−1)^{x₀x₁(x₂⊕x₃)}),
--- has 25 CS gates on one side and 54 on the other.  So the three-qubit
--- rules are not complete on four qubits, cx-ccz is not derivable from
--- them, and any complete rule set has a rule with an odd difference of
--- CS gates — of which cx-ccz is the shortest (scratchpad/parity.py).
+-- Syntactics but cx-ccz and toff-ccz — each has an even difference of
+-- CS gates between its sides — and under the structural rules; on three
+-- qubits it is the determinant, which is why it survives completeness
+-- there.  On four qubits every generator has determinant 1 and the
+-- parity is no longer semantic: cx-ccz, a CNOT carrying a CCZ on its
+-- target to the product of two CCZs (the phase polynomial
+-- (−1)^{x₀x₁(x₂⊕x₃)}), has 25 CS gates on one side and 54 on the other,
+-- and toff-ccz, its Toffoli analogue, 75 and 54.  So the three-qubit
+-- rules are not complete on four qubits, neither four-wire rule is
+-- derivable from them, and any complete rule set has a rule with an odd
+-- difference of CS gates — of which cx-ccz is the shortest
+-- (scratchpad/parity.py).  Whether either four-wire rule follows from
+-- the other with the three-qubit rules is open.
 --
 -- The model is Circuit.Independence's soundness engine at the
--- selection of the instances not using cx-ccz, with ℤ/2 as Bool under
--- xor.
+-- selection of the instances using no four-wire rule, with ℤ/2 as Bool
+-- under xor.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -67,9 +70,10 @@ cs (gate₁ _)       = false
 cs (gate₂ CS-gate) = true
 cs (g ↥)           = cs g
 
--- The axiom instances not using the four-wire rule.
+-- The axiom instances using no four-wire rule.
 noΔ : ∀ {n} {w v : Circuit n} → n VRel, w === v → Set
-noΔ (srel cx-ccz) = ⊥
+noΔ (srel cx-ccz)   = ⊥
+noΔ (srel toff-ccz) = ⊥
 noΔ (srel _)      = ⊤
 noΔ (cong↑ a)     = noΔ a
 noΔ (comm₁ _ _)   = ⊤
@@ -94,7 +98,7 @@ private
   open Shift (λ b → b) id-hom (λ g → Eq.refl) using (sound-cong↑)
 
   -- Every three-qubit rule has an even difference of CS gates; the
-  -- four-wire rule is not selected.
+  -- four-wire rules are not selected.
   sound-srel : ∀ {n} {w v : Circuit n} (s : n SRel, w === v) → noΔ (srel s) → par w ≡ par v
   sound-srel order-I     _ = Eq.refl
   sound-srel order-S     _ = Eq.refl
@@ -114,6 +118,7 @@ private
   sound-srel rel-269     _ = Eq.refl
   sound-srel rel-272     _ = Eq.refl
   sound-srel cx-ccz      p = ⊥-elim p
+  sound-srel toff-ccz    p = ⊥-elim p
 
   open Rules sound-srel sound-cong↑
     (λ h g _ → xor-identityʳ (cs g))
@@ -122,8 +127,12 @@ private
     using (independent)
 
 ------------------------------------------------------------------------
--- The four-wire rule is independent, and the three-qubit rules
--- incomplete on four qubits
+-- The four-wire rules are independent of the three-qubit rules, which
+-- are therefore incomplete on four qubits
+
+private
+  true≢false : true ≢ false
+  true≢false ()
 
 -- The two sides of cx-ccz: CX₃₂ • CCZ₀₁₂ • CX₃₂ and CCZ₀₁₂ • CCZ₀₁₃.
 Δˡ Δʳ : Circuit 4
@@ -138,6 +147,14 @@ private
 -- rule is independent of them.
 cx-ccz-independent : Independent (4 VRel,_===_) noΔ (srel cx-ccz)
 cx-ccz-independent = independent (srel cx-ccz) true≢false
-  where
-  true≢false : true ≢ false
-  true≢false ()
+
+-- The two sides of toff-ccz: Toff • CCZ₀₁₃ • Toff and CCZ₀₁₃ • CCZ₁₂₃.
+Λˡ Λʳ : Circuit 4
+Λˡ = Toff • CCZ₀₁₃ • Toff
+Λʳ = CCZ₀₁₃ • CCZ ↑
+
+Λ-sound : ⟦ Λˡ ⟧ ~ ⟦ Λʳ ⟧
+Λ-sound = same-sem Λˡ Λʳ Eq.refl
+
+toff-ccz-independent : Independent (4 VRel,_===_) noΔ (srel toff-ccz)
+toff-ccz-independent = independent (srel toff-ccz) true≢false

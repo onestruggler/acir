@@ -513,3 +513,67 @@ gadget's identity.  By the quotient argument (grpTC.py) it does not
 follow from the macro relations D^2 = 1, G^4 = 1, G^2 D G^2 = D E,
 E central alone, so its derivation must open the gates; T-CZ03-T is
 the first ingredient (it is the CZ_03-conjugation of T).
+
+## R0 is derivable, from one more four-wire rule (lemmas5.py, 2026-10-14)
+
+Every reduction of R0 = (T C)^2 = (C T)^2 (T = Toff(0;1,2), C = CS_03)
+by three-wire windows and the schema led back to an equivalent
+four-wire statement: C commutes with T C T; G = K0^-1 C K0 and
+D = CCZ_012 satisfy (G D)^2 = (D G)^2; the commutator [D, G] = L_123(iX)
+squares to E = CCZ_123; the swap of the controls 2, 3 fixes
+PP = [T, C]; the Toffoli acting on a CCZ that shares one of its
+controls substitutes, T CCZ_013 T = CCZ_013 CCZ_123 (L2).  The last is
+the Toffoli analogue of cx-ccz (x0 -> x0 xor x1 x2 in (-1)^{x0 x1 x3})
+and is now the second four-wire rule, toff-ccz.  The macro-level
+quotient argument (grpTC.py) shows the macro relations alone do not
+give R0; whether toff-ccz follows from cx-ccz with the three-qubit rules
+is open (it is equivalent, given cx-ccz, to "the Toffoli white on wire 1
+passes CCZ_012", a Clement (335)-type fact).
+
+From the two rules R0 follows (lemmas5.py, 40 lemmas, every step
+checked):
+  - diagonal named gates (CS, CZ, CCZ on any wires) commute across four
+    wires by re-spelling a CCZ with its CNOT's target off the other gate
+    (ensure_comm), and two CCZs sharing two wires by the schema (lemma
+    0's pattern); a product of named diagonal gates that is semantically
+    trivial cancels after sorting (sort_diag);
+  - T T13 = T13 T (under K0, the CCZs commute), CS13 passes T (the CCZ
+    of T spelled with its CNOT's target 2), CCZ_013 T = T CCZ_013 E
+    (toff-ccz), every named diagonal gate passes PP;
+  - CX32 PP CX32 = CS13 CCZ_013 E PP and CX23 PP CX23 = PP CS12 CCZ_012 E
+    (the schema under K0 gives CX32 T CX32 = T T13, and T13 C T13 = m C
+    with m = L_13(iZ) = CS13 CCZ_013 is a window);
+  - S3: Swap23 PP Swap23 = PP (64 steps: the two CX-conjugates, PP moved
+    past the diagonal junk, which cancels);
+  - S2: PP = [Toff(0;1,3), CS_02] (the swap conjugates letter by letter);
+  - C commutes with [Toff(0;1,3), CS_02] by windows on {0,1,3} (C T13 =
+    T13 m C, m diagonal passes everything, m T13 = T13 m^-1), hence with
+    PP: R0.
+
+Consequences (given Lemma 1 and R0): PP^2 = E, PP^4 = 1, PP . PP' = eps
+(the flipped gadget is the inverse), and the CX from a control onto the
+target maps PP to PP E = PP^-1.
+
+The same analysis for the rotation ROT = [CK10, CCZ_023] = L_123(XZ):
+F ROT F = ROT^-1 and CK10 ROT CK10^-1 = ROT^-1 are free (word algebra,
+CK10^2 = S1^-1), X0 ROT X0 = ROT E is derivable (the schema under
+CX10 on CCZ_023), and everything else reduces to ROT^2 = E, the 2T
+torsion relation, which is open: the swap of the single control with a
+control of F is the analogue of S3, and its CX-conjugates involve
+K0 ROT K0^-1 (semantically ROT^-1).  The gadgets are L_123(P) for P in
+the det-1 Cliffords 2T (PP: iZ, ROT: XZ, KI: X K X diag(1,-i)); the
+core of Lemma 8.8 at n = 4 is the relations of L_123(2T) as words, plus
+how three-wire gates act on them (colours, swaps of controls, gates on
+the target) and the commutation of gadgets with different targets.
+
+ROT^2 = E is derived after all (lemmas6.py, 16 more lemmas): the box
+B = CCZ T1 CZ13 T1 CCZ CZ13 is the gate CCZ_023 (Lemma 1 at target 1),
+so ROT = CK10 F CK10^-1 F = [CK10, F]; under K0 it is [CK10, Toff(0;2,3)]
+(windows); under the swap of wires 1, 3 -- conjugating the four letters
+by the three adjacent swaps, 139 steps -- it is [CK30, T]^-1; and
+U0 PP U0^-1 = [T, CK30] by windows (U0 CS03 U0^-1 = CK30 CX30 S3 since
+V = U S U^-1 = K X i, and CX30, S3 pass T, the Toffoli split with
+V = U).  So ROT = K0 Swap13 U0 PP^-1 U0^-1 Swap13 K0^-1 and
+ROT^2 = E from PP^-2 = E (R0 and Lemma 1).  The same mechanism should
+give the hybrid's 2T relations: every gadget is a conjugate of PP by a
+Clifford on the target and swaps of the controls.

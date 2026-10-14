@@ -37,7 +37,10 @@
 -- On four qubits those rules are not complete (Parity): the number of
 -- CS gates mod 2 is invariant under them, and the true equation
 -- cx-ccz — a CNOT carries a CCZ on its target to the product of two
--- CCZs — breaks it.  It is the one rule on four wires.
+-- CCZs — breaks it.  There are two rules on four wires, cx-ccz and its
+-- Toffoli analogue toff-ccz, both instances of the substitution of a
+-- permutation gate in a phase polynomial; with them the decoding's
+-- gadget identities are derivable (scratchpad/lemmas5.py).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -127,6 +130,14 @@ CS₀₂ CCZ : Circuit (₃₊ n)
 CS₀₂ = Swap ↑ • CS • Swap ↑
 CCZ  = CS ↑ • CX₀₁ • CS ↑ • CS ↑ • CS ↑ • CX₀₁ • CS₀₂
 
+-- The Toffoli with its target on wire 0 and its controls on wires 1, 2,
+-- and the CCZ on wires 0, 1, 3.
+Toff : Circuit (₃₊ n)
+Toff = K • CCZ • K • iI
+
+CCZ₀₁₃ : Circuit (₄₊ n)
+CCZ₀₁₃ = Swap ↑ ↑ • CCZ • Swap ↑ ↑
+
 ------------------------------------------------------------------------
 -- Group-specific relations: Figure 2 of Bian and Selinger
 --
@@ -173,6 +184,13 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
   -- the phase polynomial (−1)^{x₀x₁(x₂⊕x₃)}.  Not a consequence of the
   -- rules above (Parity).
   cx-ccz : (₄₊ n) SRel, CX₁₀ ↑ ↑ • CCZ • CX₁₀ ↑ ↑ === CCZ • Swap ↑ ↑ • CCZ • Swap ↑ ↑
+
+  -- Four wires: the Toffoli with its target on wire 0 carries the CCZ on
+  -- wires 0, 1, 3 — its target and one of its controls — to the product
+  -- with the CCZ on wires 1, 2, 3: the substitution x₀ ↦ x₀ ⊕ x₁x₂ in
+  -- (−1)^{x₀x₁x₃}.  Independent of the rules above (Parity); whether it
+  -- follows from them with cx-ccz is open.
+  toff-ccz : (₄₊ n) SRel, Toff • CCZ₀₁₃ • Toff === CCZ₀₁₃ • CCZ ↑
 
 ------------------------------------------------------------------------
 -- Full relation via Lift-Relation (adds the structural rules cong↑,

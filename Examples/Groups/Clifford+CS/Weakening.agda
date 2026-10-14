@@ -58,6 +58,7 @@ private
   weaken-srel k rel-269     = PB.axiom (srel rel-269)
   weaken-srel k rel-272     = PB.axiom (srel rel-272)
   weaken-srel k cx-ccz      = PB.axiom (srel cx-ccz)
+  weaken-srel k toff-ccz    = PB.axiom (srel toff-ccz)
 
   -- With the structural rules.
   weaken-ax : ∀ {n w v} k → n VRel, w === v → (n + k) ⊢ w ↓ᵏ k ≈ v ↓ᵏ k
