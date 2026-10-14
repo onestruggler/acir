@@ -1,14 +1,19 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- The two-level derivations of the P′ rules, first part
+-- The two-level derivations of the P′ rules
 --
 -- Each lemma is one rule of `Rules` read through `asG`: its sides as
 -- words over the two-level generators, equal by Bian and Selinger's
--- relations.  This part has the phase-pair rules — pure phase algebra,
--- the phases commuting totally and i⁴ vanishing — and the two
+-- relations.  In order: the phase-pair rules — pure phase algebra,
+-- the phases commuting totally and i⁴ vanishing; the two
 -- unconditional K rules, whose proofs are the cancellations through
--- relations (17) and (18) that make them need no disjointness.
+-- relations (17) and (18) that make them need no disjointness; the
+-- exchange letters; the braid and the shrinking rules; the K pairs
+-- against disjoint letters; and the K pairs' own algebra — the square
+-- (18), the exchange (15), conjugation by the pair's exchange ((15)
+-- read both ways), renaming by the swap relations of K against X, and
+-- (19) bridged.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -18,7 +23,9 @@ open import Data.Nat using (ℕ)
 module Examples.Groups.Clifford+CS.Auxiliary.SoundLemmas (N : ℕ) where
 
 open import Data.Fin using (Fin ; toℕ)
+open import Data.Fin.Properties using (_<?_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
+open import Relation.Nullary.Decidable using (recompute)
 open import Word.Base using (Word ; ε ; _•_ ; [_]ʷ ; _^_)
 
 import Examples.Groups.Clifford+CS-TwoLevel.Syntactics as TL
@@ -797,3 +804,428 @@ sd-kk-ii a b c d e ab cd ca cb da db ea eb ec ed = begin
     (i a • i b) • (i e ^ 3 • i e ^ 3)
       ≈⟨ back _ (trans (sym (^-+ (i e) 3 3)) (i-mod4 e 2)) ⟩
     (i a • i b) • i e ^ 2 ∎
+
+------------------------------------------------------------------------
+-- The K pairs' own algebra
+--
+-- The square is relation (18) on each factor, the factors passing
+-- each other; the exchange rule is relation (15), Z on the second
+-- index becoming the pair's exchange; conjugation by that exchange is
+-- (15) used twice, once read backwards as K X = Z K (`KX`, by
+-- inverting both sides); the renaming is the two swap relations of K
+-- against X, one per exchange of the double exchange; and in the
+-- bridged (19) the fresh factors collect at the end, where both sides
+-- leave them in the same order.
+
+private
+  rec< : ∀ {x y : Fin N} → .(x <F y) → x <F y
+  rec< {x} {y} p = recompute (x <? y) p
+
+  -- What passes the second factor K c d • i c • i d.
+  iV : ∀ (z c d : Fin N) .(cd : c <F d) → z ≢ c → z ≢ d →
+       i z • (K c d cd • (i c • i d)) ≈ (K c d cd • (i c • i d)) • i z
+  iV z c d cd zc zd =
+    comm-two (i z) (K c d cd) (i c • i d)
+      (axiom (TL.comm-iK cd zc zd))
+      (comm-two (i z) (i c) (i d) (icomm z c) (icomm z d))
+
+  KV : ∀ (x y c d : Fin N) .(xy : x <F y) .(cd : c <F d) →
+       x ≢ c → x ≢ d → y ≢ c → y ≢ d →
+       K x y xy • (K c d cd • (i c • i d))
+       ≈ (K c d cd • (i c • i d)) • K x y xy
+  KV x y c d xy cd xc xd yc yd =
+    comm-two (K x y xy) (K c d cd) (i c • i d)
+      (axiom (TL.comm-KK xy cd xc xd yc yd))
+      (comm-two (K x y xy) (i c) (i d)
+        (sym (axiom (TL.comm-iK xy (≢sym xc) (≢sym yc))))
+        (sym (axiom (TL.comm-iK xy (≢sym xd) (≢sym yd)))))
+
+  XV : ∀ (x y c d : Fin N) .(xy : x <F y) .(cd : c <F d) →
+       x ≢ c → x ≢ d → y ≢ c → y ≢ d →
+       X x y xy • (K c d cd • (i c • i d))
+       ≈ (K c d cd • (i c • i d)) • X x y xy
+  XV x y c d xy cd xc xd yc yd =
+    comm-two (X x y xy) (K c d cd) (i c • i d)
+      (axiom (TL.comm-XK xy cd xc xd yc yd))
+      (comm-two (X x y xy) (i c) (i d)
+        (sym (cross-at x y xy (swapF-o x y c (≢sym xc) (≢sym yc))))
+        (sym (cross-at x y xy (swapF-o x y d (≢sym xd) (≢sym yd)))))
+
+  -- The phase pair of a K's indices and its inverse, both ways round.
+  ii-inv : ∀ (x y : Fin N) → (i x • i y) • (i x ^ 3 • i y ^ 3) ≈ ε
+  ii-inv x y = begin
+    (i x • i y) • (i x ^ 3 • i y ^ 3)
+      ≈⟨ by-assoc Eq.refl ⟩
+    i x • ((i y • i x ^ 3) • i y ^ 3)
+      ≈⟨ back (i x) (front (i y ^ 3) (ipow-comm y x 1 3)) ⟩
+    i x • ((i x ^ 3 • i y) • i y ^ 3)
+      ≈⟨ by-assoc Eq.refl ⟩
+    i x ^ 4 • i y ^ 4
+      ≈⟨ cong (i⁴ x) (i⁴ y) ⟩
+    ε • ε
+      ≈⟨ left-unit ⟩
+    ε ∎
+
+  ii-inv′ : ∀ (x y : Fin N) → (i x ^ 3 • i y ^ 3) • (i x • i y) ≈ ε
+  ii-inv′ x y = begin
+    (i x ^ 3 • i y ^ 3) • (i x • i y)
+      ≈⟨ by-assoc Eq.refl ⟩
+    i x ^ 3 • ((i y ^ 3 • i x) • i y)
+      ≈⟨ back (i x ^ 3) (front (i y) (ipow-comm y x 3 1)) ⟩
+    i x ^ 3 • ((i x • i y ^ 3) • i y)
+      ≈⟨ by-assoc Eq.refl ⟩
+    i x ^ 4 • i y ^ 4
+      ≈⟨ cong (i⁴ x) (i⁴ y) ⟩
+    ε • ε
+      ≈⟨ left-unit ⟩
+    ε ∎
+
+  -- The pair cancels on the right.
+  cancel-ii : ∀ (x y : Fin N) {u v : WT} →
+              u • (i x • i y) ≈ v • (i x • i y) → u ≈ v
+  cancel-ii x y {u} {v} e = begin
+    u                                          ≈⟨ sym right-unit ⟩
+    u • ε                                      ≈⟨ back u (sym (ii-inv x y)) ⟩
+    u • ((i x • i y) • (i x ^ 3 • i y ^ 3))    ≈⟨ sym assoc ⟩
+    (u • (i x • i y)) • (i x ^ 3 • i y ^ 3)    ≈⟨ front _ e ⟩
+    (v • (i x • i y)) • (i x ^ 3 • i y ^ 3)    ≈⟨ assoc ⟩
+    v • ((i x • i y) • (i x ^ 3 • i y ^ 3))    ≈⟨ back v (ii-inv x y) ⟩
+    v • ε                                      ≈⟨ right-unit ⟩
+    v ∎
+
+  -- Relation (18) solved for the square.
+  K² : ∀ (x y : Fin N) .(xy : x <F y) →
+       K x y xy • K x y xy ≈ i x ^ 3 • i y ^ 3
+  K² x y xy = cancel-ii x y (begin
+    (Kxy • Kxy) • (i x • i y)            ≈⟨ assoc ⟩
+    Kxy • (Kxy • (i x • i y))            ≈⟨ K²ii x y xy ⟩
+    ε                                    ≈⟨ sym (ii-inv′ x y) ⟩
+    (i x ^ 3 • i y ^ 3) • (i x • i y) ∎)
+    where
+    Kxy = K x y xy
+
+  -- The second factor squares to the pair's phases.
+  V² : ∀ (c d : Fin N) .(cd : c <F d) →
+       (K c d cd • (i c • i d)) • (K c d cd • (i c • i d)) ≈ i c • i d
+  V² c d cd = begin
+    (Kcd • P) • (Kcd • P)    ≈⟨ by-assoc Eq.refl ⟩
+    Kcd • ((P • Kcd) • P)    ≈⟨ back Kcd (front P (iiK c d cd)) ⟩
+    Kcd • ((Kcd • P) • P)    ≈⟨ by-assoc Eq.refl ⟩
+    (Kcd • (Kcd • P)) • P    ≈⟨ front P (K²ii c d cd) ⟩
+    ε • P                    ≈⟨ left-unit ⟩
+    P ∎
+    where
+    Kcd = K c d cd
+    P = i c • i d
+
+  -- Relation (15) read backwards: K X = Z K.  Inverted, (15) says
+  -- K⁻¹ X = Z K⁻¹, and K⁻¹ is K times the pair's phases, which pass X.
+  KX : ∀ (x y : Fin N) .(xy : x <F y) →
+       K x y xy • X x y xy ≈ i y ^ 2 • K x y xy
+  KX x y xy = cancel-ii x y (begin
+    (Kxy • Xxy) • P
+      ≈⟨ assoc ⟩
+    Kxy • (Xxy • P)
+      ≈⟨ back Kxy (sym PX) ⟩
+    Kxy • (P • Xxy)
+      ≈⟨ sym right-unit ⟩
+    (Kxy • (P • Xxy)) • ε
+      ≈⟨ back _ (sym (K²ii x y xy)) ⟩
+    (Kxy • (P • Xxy)) • (Kxy • (Kxy • P))
+      ≈⟨ by-assoc Eq.refl ⟩
+    (Kxy • P) • ((Xxy • Kxy) • (Kxy • P))
+      ≈⟨ back _ (front _ (sym (axiom (TL.rel-13 xy)))) ⟩
+    (Kxy • P) • ((Kxy • i y ^ 2) • (Kxy • P))
+      ≈⟨ by-assoc Eq.refl ⟩
+    Kxy • ((P • Kxy) • (i y ^ 2 • (Kxy • P)))
+      ≈⟨ back Kxy (front _ (iiK x y xy)) ⟩
+    Kxy • ((Kxy • P) • (i y ^ 2 • (Kxy • P)))
+      ≈⟨ by-assoc Eq.refl ⟩
+    (Kxy • (Kxy • P)) • (i y ^ 2 • (Kxy • P))
+      ≈⟨ front _ (K²ii x y xy) ⟩
+    ε • (i y ^ 2 • (Kxy • P))
+      ≈⟨ left-unit ⟩
+    i y ^ 2 • (Kxy • P)
+      ≈⟨ sym assoc ⟩
+    (i y ^ 2 • Kxy) • P ∎)
+    where
+    Kxy = K x y xy
+    Xxy = X x y xy
+    P = i x • i y
+
+    PX : P • Xxy ≈ Xxy • P
+    PX = begin
+      (i x • i y) • Xxy    ≈⟨ assoc ⟩
+      i x • (i y • Xxy)    ≈⟨ back (i x) (cross-at x y xy (swapF-b x y)) ⟩
+      i x • (Xxy • i x)    ≈⟨ sym assoc ⟩
+      (i x • Xxy) • i x    ≈⟨ front (i x) (cross-at x y xy (swapF-a x y)) ⟩
+      (Xxy • i y) • i x    ≈⟨ assoc ⟩
+      Xxy • (i y • i x)    ≈⟨ back Xxy (icomm y x) ⟩
+      Xxy • (i x • i y) ∎
+
+sd-kk-sq : ∀ (a b c d : Fin N) .(ab : a <F b) .(cd : c <F d) →
+           c ≢ a → c ≢ b → d ≢ a → d ≢ b →
+           (K a b ab • (K c d cd • (i c • i d)))
+           • (K a b ab • (K c d cd • (i c • i d)))
+           ≈ (i c • i a ^ 3) • (i d • i b ^ 3)
+sd-kk-sq a b c d ab cd ca cb da db = begin
+  (Kab • V) • (Kab • V)
+    ≈⟨ by-assoc Eq.refl ⟩
+  Kab • ((V • Kab) • V)
+    ≈⟨ back Kab (front V (sym (KV a b c d ab cd
+                                 (≢sym ca) (≢sym da) (≢sym cb) (≢sym db)))) ⟩
+  Kab • ((Kab • V) • V)
+    ≈⟨ by-assoc Eq.refl ⟩
+  (Kab • Kab) • (V • V)
+    ≈⟨ cong (K² a b ab) (V² c d cd) ⟩
+  (i a ^ 3 • i b ^ 3) • (i c • i d)
+    ≈⟨ by-assoc Eq.refl ⟩
+  i a ^ 3 • ((i b ^ 3 • i c) • i d)
+    ≈⟨ back (i a ^ 3) (front (i d) (ipow-comm b c 3 1)) ⟩
+  i a ^ 3 • ((i c • i b ^ 3) • i d)
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i a ^ 3 • i c) • (i b ^ 3 • i d)
+    ≈⟨ cong (ipow-comm a c 3 1) (ipow-comm b d 3 1) ⟩
+  (i c • i a ^ 3) • (i d • i b ^ 3) ∎
+  where
+  Kab = K a b ab
+  V = K c d cd • (i c • i d)
+
+sd-kk-x : ∀ (a b c d e : Fin N) .(ab : a <F b) .(cd : c <F d) →
+          c ≢ a → c ≢ b → d ≢ a → d ≢ b →
+          e ≢ a → e ≢ b → e ≢ c → e ≢ d →
+          (K a b ab • (K c d cd • (i c • i d)))
+          • ((i b • i e ^ 3) • (i b • i e ^ 3))
+          ≈ (i e • (i e • X a b ab)) • (K a b ab • (K c d cd • (i c • i d)))
+sd-kk-x a b c d e ab cd ca cb da db ea eb ec ed = begin
+  (Kab • V) • ((i b • i e ^ 3) • (i b • i e ^ 3))
+    ≈⟨ back _ (pp²-can b e) ⟩
+  (Kab • V) • (i b ^ 2 • i e ^ 2)
+    ≈⟨ by-assoc Eq.refl ⟩
+  Kab • ((V • i b ^ 2) • i e ^ 2)
+    ≈⟨ back Kab (front _ (pass-pow (sym (iV b c d cd (≢sym cb) (≢sym db))) 2)) ⟩
+  Kab • ((i b ^ 2 • V) • i e ^ 2)
+    ≈⟨ by-assoc Eq.refl ⟩
+  ((Kab • i b ^ 2) • V) • i e ^ 2
+    ≈⟨ front _ (front V (axiom (TL.rel-13 ab))) ⟩
+  ((Xab • Kab) • V) • i e ^ 2
+    ≈⟨ by-assoc Eq.refl ⟩
+  Xab • (W • i e ^ 2)
+    ≈⟨ back Xab (i-pass-pow a b c d e ab cd ea eb ec ed 2) ⟩
+  Xab • (i e ^ 2 • W)
+    ≈⟨ sym assoc ⟩
+  (Xab • i e ^ 2) • W
+    ≈⟨ front W (crossʳ-pow-at a b ab 2 (swapF-o a b e ea eb)) ⟩
+  (i e ^ 2 • Xab) • W
+    ≈⟨ front W assoc ⟩
+  (i e • (i e • Xab)) • W ∎
+  where
+  Kab = K a b ab
+  Xab = X a b ab
+  V = K c d cd • (i c • i d)
+  W = Kab • V
+
+sd-kk-conj : ∀ (a b c d : Fin N) .(ab : a <F b) .(cd : c <F d) →
+             c ≢ a → c ≢ b → d ≢ a → d ≢ b →
+             (i b • (i b • X a b ab))
+             • ((K a b ab • (K c d cd • (i c • i d)))
+                • (i a • (i a • X a b ab)))
+             ≈ ((i a • i b ^ 3) • (i a • i b ^ 3))
+               • (K a b ab • (K c d cd • (i c • i d)))
+sd-kk-conj a b c d ab cd ca cb da db = begin
+  (i b • (i b • Xab)) • ((Kab • V) • (i a • (i a • Xab)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i b ^ 2 • Xab) • (Kab • (V • (i a ^ 2 • Xab)))
+    ≈⟨ back _ (back Kab (comm-two V (i a ^ 2) Xab Va² VX)) ⟩
+  (i b ^ 2 • Xab) • (Kab • ((i a ^ 2 • Xab) • V))
+    ≈⟨ by-assoc Eq.refl ⟩
+  i b ^ 2 • (Xab • (Kab • ((i a ^ 2 • Xab) • V)))
+    ≈⟨ back _ (back Xab (back Kab (front V
+         (cross-pow-at a b ab 2 (swapF-a a b))))) ⟩
+  i b ^ 2 • (Xab • (Kab • ((Xab • i b ^ 2) • V)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  i b ^ 2 • (Xab • ((Kab • Xab) • (i b ^ 2 • V)))
+    ≈⟨ back _ (back Xab (front _ (KX a b ab))) ⟩
+  i b ^ 2 • (Xab • ((i b ^ 2 • Kab) • (i b ^ 2 • V)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  i b ^ 2 • ((Xab • i b ^ 2) • (Kab • (i b ^ 2 • V)))
+    ≈⟨ back _ (front _ (crossʳ-pow-at a b ab 2 (swapF-b a b))) ⟩
+  i b ^ 2 • ((i a ^ 2 • Xab) • (Kab • (i b ^ 2 • V)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i b ^ 2 • i a ^ 2) • ((Xab • Kab) • (i b ^ 2 • V))
+    ≈⟨ back _ (front _ (sym (axiom (TL.rel-13 ab)))) ⟩
+  (i b ^ 2 • i a ^ 2) • ((Kab • i b ^ 2) • (i b ^ 2 • V))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i b ^ 2 • i a ^ 2) • (Kab • ((i b ^ 2 • i b ^ 2) • V))
+    ≈⟨ back _ (back Kab (front V (trans (by-assoc Eq.refl) (i⁴ b)))) ⟩
+  (i b ^ 2 • i a ^ 2) • (Kab • (ε • V))
+    ≈⟨ back _ (back Kab left-unit) ⟩
+  (i b ^ 2 • i a ^ 2) • (Kab • V)
+    ≈⟨ front _ (trans (ipow-comm b a 2 2) (sym (pp²-can a b))) ⟩
+  ((i a • i b ^ 3) • (i a • i b ^ 3)) • (Kab • V) ∎
+  where
+  Kab = K a b ab
+  Xab = X a b ab
+  V = K c d cd • (i c • i d)
+
+  Va² : V • i a ^ 2 ≈ i a ^ 2 • V
+  Va² = pass-pow (sym (iV a c d cd (≢sym ca) (≢sym da))) 2
+
+  VX : V • Xab ≈ Xab • V
+  VX = sym (XV a b c d ab cd (≢sym ca) (≢sym da) (≢sym cb) (≢sym db))
+
+sd-kk-ren : ∀ (a b c d e f : Fin N) .(ab : a <F b) .(cd : c <F d)
+              .(ae : a <F e) .(bf : b <F f) .(ef : e <F f) →
+            c ≢ a → c ≢ b → c ≢ e → c ≢ f → d ≢ a → d ≢ b → d ≢ e → d ≢ f →
+            e ≢ a → e ≢ b → f ≢ a → f ≢ b →
+            (X a e ae • X b f bf)
+            • ((K a b ab • (K c d cd • (i c • i d))) • (X a e ae • X b f bf))
+            ≈ K e f ef • (K c d cd • (i c • i d))
+sd-kk-ren a b c d e f ab cd ae bf ef ca cb ce cf da db de df ea eb fa fb =
+  begin
+  D • ((Kab • V) • D)
+    ≈⟨ by-assoc Eq.refl ⟩
+  D • (Kab • (V • D))
+    ≈⟨ back D (back Kab (sym DV)) ⟩
+  D • (Kab • (D • V))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (D • (Kab • D)) • V
+    ≈⟨ front V core ⟩
+  Kef • V ∎
+  where
+  ab′ = rec< ab
+  ae′ = rec< ae
+  bf′ = rec< bf
+  ef′ = rec< ef
+
+  Xae = X a e ae
+  Xbf = X b f bf
+  D = Xae • Xbf
+  Kab = K a b ab
+  Kaf = K a f (<F-trans ab′ bf′)
+  Kef = K e f ef
+  V = K c d cd • (i c • i d)
+
+  DV : D • V ≈ V • D
+  DV = sym (comm-two V Xae Xbf
+         (sym (XV a e c d ae cd (≢sym ca) (≢sym da) (≢sym ce) (≢sym de)))
+         (sym (XV b f c d bf cd (≢sym cb) (≢sym db) (≢sym cf) (≢sym df))))
+
+  XX : Xae • Xbf ≈ Xbf • Xae
+  XX = axiom (TL.comm-XX ae bf (<⇒≢ ab′) (<⇒≢ (<F-trans ab′ bf′))
+                         eb (<⇒≢ ef′))
+
+  -- X_bf renames b to f: K_ab becomes K_af (swap-KX′) ...
+  c₁ : Xbf • (Kab • Xbf) ≈ Kaf
+  c₁ = begin
+    Xbf • (Kab • Xbf)    ≈⟨ sym assoc ⟩
+    (Xbf • Kab) • Xbf    ≈⟨ front Xbf (sym (axiom (TL.swap-KX′ ab′ bf′))) ⟩
+    (Kaf • Xbf) • Xbf    ≈⟨ assoc ⟩
+    Kaf • (Xbf • Xbf)    ≈⟨ back Kaf (X² b f bf) ⟩
+    Kaf • ε              ≈⟨ right-unit ⟩
+    Kaf ∎
+
+  -- ... and X_ae renames a to e: K_af becomes K_ef (swap-KX).
+  c₂ : Xae • (Kaf • Xae) ≈ Kef
+  c₂ = begin
+    Xae • (Kaf • Xae)    ≈⟨ sym assoc ⟩
+    (Xae • Kaf) • Xae    ≈⟨ front Xae (sym (axiom (TL.swap-KX ae′ ef′))) ⟩
+    (Kef • Xae) • Xae    ≈⟨ assoc ⟩
+    Kef • (Xae • Xae)    ≈⟨ back Kef (X² a e ae) ⟩
+    Kef • ε              ≈⟨ right-unit ⟩
+    Kef ∎
+
+  core : D • (Kab • D) ≈ Kef
+  core = begin
+    (Xae • Xbf) • (Kab • (Xae • Xbf))
+      ≈⟨ back _ (back Kab XX) ⟩
+    (Xae • Xbf) • (Kab • (Xbf • Xae))
+      ≈⟨ by-assoc Eq.refl ⟩
+    Xae • ((Xbf • (Kab • Xbf)) • Xae)
+      ≈⟨ back Xae (front Xae c₁) ⟩
+    Xae • (Kaf • Xae)
+      ≈⟨ c₂ ⟩
+    Kef ∎
+
+-- The bridged (19): each side is a K-word followed by the fresh
+-- factors V₁ V₂ V₁ V₂, the K-words being the two sides of (19).
+private
+  module Collect (e f g h : Fin N) .(ef : e <F f) .(gh : g <F h) where
+
+    V₁ V₂ : WT
+    V₁ = K e f ef • (i e • i f)
+    V₂ = K g h gh • (i g • i h)
+
+    collect : ∀ (A B C D : TL.Gen N) →
+              V₁ • [ B ]ʷ ≈ [ B ]ʷ • V₁ → V₁ • [ C ]ʷ ≈ [ C ]ʷ • V₁ →
+              V₁ • [ D ]ʷ ≈ [ D ]ʷ • V₁ →
+              V₂ • [ C ]ʷ ≈ [ C ]ʷ • V₂ → V₂ • [ D ]ʷ ≈ [ D ]ʷ • V₂ →
+              ([ A ]ʷ • V₁)
+              • (([ B ]ʷ • V₂) • (([ C ]ʷ • V₁) • ([ D ]ʷ • V₂)))
+              ≈ ([ A ]ʷ • ([ B ]ʷ • ([ C ]ʷ • [ D ]ʷ)))
+                • (V₁ • (V₂ • (V₁ • V₂)))
+    collect A B C D VB VC VD WC WD = begin
+      (wa • V₁) • ((wb • V₂) • ((wc • V₁) • (wd • V₂)))
+        ≈⟨ by-assoc Eq.refl ⟩
+      wa • ((V₁ • wb) • (V₂ • (wc • (V₁ • (wd • V₂)))))
+        ≈⟨ back wa (front _ VB) ⟩
+      wa • ((wb • V₁) • (V₂ • (wc • (V₁ • (wd • V₂)))))
+        ≈⟨ by-assoc Eq.refl ⟩
+      wa • (wb • (((V₁ • V₂) • wc) • (V₁ • (wd • V₂))))
+        ≈⟨ back wa (back wb (front _
+             (sym (comm-two wc V₁ V₂ (sym VC) (sym WC))))) ⟩
+      wa • (wb • ((wc • (V₁ • V₂)) • (V₁ • (wd • V₂))))
+        ≈⟨ by-assoc Eq.refl ⟩
+      wa • (wb • (wc • (((V₁ • (V₂ • V₁)) • wd) • V₂)))
+        ≈⟨ back wa (back wb (back wc (front V₂
+             (sym (comm-two wd V₁ (V₂ • V₁) (sym VD)
+                    (comm-two wd V₂ V₁ (sym WD) (sym VD))))))) ⟩
+      wa • (wb • (wc • ((wd • (V₁ • (V₂ • V₁))) • V₂)))
+        ≈⟨ by-assoc Eq.refl ⟩
+      (wa • (wb • (wc • wd))) • (V₁ • (V₂ • (V₁ • V₂))) ∎
+      where
+      wa = [ A ]ʷ
+      wb = [ B ]ʷ
+      wc = [ C ]ʷ
+      wd = [ D ]ʷ
+
+sd-kk-yb : ∀ (a b c d e f g h : Fin N)
+             .(ab : a <F b) .(cd : c <F d) .(ac : a <F c) .(bd : b <F d)
+             .(ef : e <F f) .(gh : g <F h) →
+           b ≢ c →
+           e ≢ a → e ≢ b → e ≢ c → e ≢ d → f ≢ a → f ≢ b → f ≢ c → f ≢ d →
+           g ≢ a → g ≢ b → g ≢ c → g ≢ d → h ≢ a → h ≢ b → h ≢ c → h ≢ d →
+           g ≢ e → g ≢ f → h ≢ e → h ≢ f →
+           (K a b ab • (K e f ef • (i e • i f)))
+           • ((K c d cd • (K g h gh • (i g • i h)))
+              • ((K a c ac • (K e f ef • (i e • i f)))
+                 • (K b d bd • (K g h gh • (i g • i h)))))
+           ≈ (K a c ac • (K e f ef • (i e • i f)))
+             • ((K b d bd • (K g h gh • (i g • i h)))
+                • ((K a b ab • (K e f ef • (i e • i f)))
+                   • (K c d cd • (K g h gh • (i g • i h)))))
+sd-kk-yb a b c d e f g h ab cd ac bd ef gh bc
+         ea eb ec ed fa fb fc fd ga gb gc gd ha hb hc hd ge gf he hf =
+  trans (collect (TL.K-gen a b ab) (TL.K-gen c d cd)
+                 (TL.K-gen a c ac) (TL.K-gen b d bd)
+                 (Pe c d cd ec fc ed fd) (Pe a c ac ea fa ec fc)
+                 (Pe b d bd eb fb ed fd)
+                 (Pg a c ac ga ha gc hc) (Pg b d bd gb hb gd hd))
+  (trans (front _ (axiom (TL.rel-17 ab cd ac bd bc)))
+  (sym (collect (TL.K-gen a c ac) (TL.K-gen b d bd)
+                (TL.K-gen a b ab) (TL.K-gen c d cd)
+                (Pe b d bd eb fb ed fd) (Pe a b ab ea fa eb fb)
+                (Pe c d cd ec fc ed fd)
+                (Pg a b ab ga ha gb hb) (Pg c d cd gc hc gd hd))))
+  where
+  open Collect e f g h ef gh
+
+  Pe : ∀ (x y : Fin N) .(xy : x <F y) → e ≢ x → f ≢ x → e ≢ y → f ≢ y →
+       V₁ • K x y xy ≈ K x y xy • V₁
+  Pe x y xy ex fx ey fy =
+    sym (KV x y e f xy ef (≢sym ex) (≢sym fx) (≢sym ey) (≢sym fy))
+
+  Pg : ∀ (x y : Fin N) .(xy : x <F y) → g ≢ x → h ≢ x → g ≢ y → h ≢ y →
+       V₂ • K x y xy ≈ K x y xy • V₂
+  Pg x y xy gx hx gy hy =
+    sym (KV x y g h xy gh (≢sym gx) (≢sym hx) (≢sym gy) (≢sym hy))
