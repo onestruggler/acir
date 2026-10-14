@@ -21,9 +21,11 @@
 -- presentations, several of which this library proves complete in
 -- their own developments.  It is formalised for Cliff₂, from Selinger's
 -- presentation (Clifford.Completeness, through the paper's Appendices A
--- and G.1 and a bridge between the two matrix semantics), and for
--- CNOTdihe₂, from Amy, Chen and Ross's (CNOT-Dihedral.Completeness), so
--- that both are minimal complete presentations of their semantics.
+-- and G.1 and a bridge between the two matrix semantics), for RCliff₂,
+-- from Makary, Ross and Selinger's (Real-Clifford.Completeness, the
+-- same way), and for CNOTdihe₂, from Amy, Chen and Ross's
+-- (CNOT-Dihedral.Completeness), so that all three are minimal complete
+-- presentations of their semantics.
 --
 -- Two departures from the paper.  The scalar of the qutrit axiom (E)
 -- is printed ω₁₂⁷ in Figure 4, which is unsound for the semantics of
@@ -66,6 +68,7 @@ import Examples.Independence.Clifford+CS.Minimality     as CliffCS-Min
 import Examples.Independence.CNOT-Dihedral.Minimality   as CNOTdihe-Min
 
 import Examples.Independence.Clifford.Completeness      as Cliff-Cpl
+import Examples.Independence.Real-Clifford.Completeness as RCliff-Cpl
 import Examples.Independence.CNOT-Dihedral.Completeness as CNOTdihe-Cpl
 
 private
@@ -208,6 +211,22 @@ Cliff₂-minimal-complete :
   (∀ {n} {w v : Cliff.Circuit n} (ρ : Cliff._SRel,_===_ n w v) →
      ¬ Cliff-M.Complete-without ρ n)
 Cliff₂-minimal-complete = Cliff₂-complete , Cliff₂-necessary
+
+-- 2. RCliff₂ is complete, at every width: its axioms derive Makary, Ross
+-- and Selinger's, decoded (Appendices D.2 and G.2; (R14)–(R16) from the
+-- decoded (C13)–(C15), whose relators theirs rotate), whose
+-- presentation is complete.
+RCliff₂-complete : {w v : RCliff.Circuit n} →
+                   RCliff-Sem.⟦ w ⟧ RCliff-Sem.≈ RCliff-Sem.⟦ v ⟧ → n RCliff.⊢ w ≈ v
+RCliff₂-complete = RCliff-Cpl.complete
+
+-- So RCliff₂ is a minimal complete presentation.
+RCliff₂-minimal-complete :
+  (∀ {n} {w v : RCliff.Circuit n} →
+     RCliff-Sem.⟦ w ⟧ RCliff-Sem.≈ RCliff-Sem.⟦ v ⟧ → n RCliff.⊢ w ≈ v) ×
+  (∀ {n} {w v : RCliff.Circuit n} (ρ : RCliff._SRel,_===_ n w v) →
+     ¬ RCliff-M.Complete-without ρ n)
+RCliff₂-minimal-complete = RCliff₂-complete , RCliff₂-necessary
 
 -- 6. CNOTdihe₂ is complete, at every width: its axioms derive Amy,
 -- Chen and Ross's, whose presentation is complete.
