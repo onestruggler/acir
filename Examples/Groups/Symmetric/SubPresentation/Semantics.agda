@@ -15,7 +15,7 @@
 
 module Examples.Groups.Symmetric.SubPresentation.Semantics where
 
-open import Data.Fin using (Fin ; zero ; suc ; inject₁ ; fromℕ)
+open import Data.Fin using (Fin ; zero ; suc)
 open import Data.Nat using (ℕ)
 open import Function using (_∘_ ; id)
 open import Notations using (₁₊ ; ₂₊)
@@ -25,7 +25,7 @@ open import Relation.Binary.PropositionalEquality as Eq
 open import Word.Base using (Word ; ε ; [_]ʷ ; _•_)
 
 open import Examples.Groups.Symmetric.Syntactics
-  using (Gen ; gate₁ ; gate₂ ; σ-gate ; _↥ ; _↑ ; _↧ ; _⇓)
+  using (Gen ; gate₁ ; gate₂ ; σ-gate ; _↥ ; _↑)
 
 
 ------------------------------------------------------------------------
@@ -102,31 +102,3 @@ shift-cong eq (₁₊ k) = Eq.cong suc (eq k)
 ⟦↑⟧ (w • v) k =
   Eq.trans (Eq.cong (⟦ v ↑ ⟧) (⟦↑⟧ w k))
   (Eq.trans (⟦↑⟧ v _) (Eq.sym (shift-hom _ _ k)))
-
-------------------------------------------------------------------------
--- An idle wire on top
-
--- ⟦ w ⇓ ⟧ acts as ⟦ w ⟧ on the wires below the new one ...
-⟦⇓⟧ᵍ : ∀ {n} (g : Gen n) (k : Fin n) →
-       ⟦ g ↧ ⟧ᵍ (inject₁ k) ≡ inject₁ (⟦ g ⟧ᵍ k)
-⟦⇓⟧ᵍ (gate₂ σ-gate) zero      = refl
-⟦⇓⟧ᵍ (gate₂ σ-gate) (₁₊ zero) = refl
-⟦⇓⟧ᵍ (gate₂ σ-gate) (₂₊ k)    = refl
-⟦⇓⟧ᵍ (g ↥)          zero      = refl
-⟦⇓⟧ᵍ (g ↥)          (suc k)   = Eq.cong suc (⟦⇓⟧ᵍ g k)
-
-⟦⇓⟧ : ∀ {n} (w : Word (Gen n)) (k : Fin n) →
-      ⟦ w ⇓ ⟧ (inject₁ k) ≡ inject₁ (⟦ w ⟧ k)
-⟦⇓⟧ ε       k = refl
-⟦⇓⟧ [ g ]ʷ  k = ⟦⇓⟧ᵍ g k
-⟦⇓⟧ (w • v) k = Eq.trans (Eq.cong ⟦ v ⇓ ⟧ (⟦⇓⟧ w k)) (⟦⇓⟧ v _)
-
--- ... and fixes it.
-⟦⇓⟧ᵍ-top : ∀ {n} (g : Gen n) → ⟦ g ↧ ⟧ᵍ (fromℕ n) ≡ fromℕ n
-⟦⇓⟧ᵍ-top (gate₂ σ-gate) = refl
-⟦⇓⟧ᵍ-top (g ↥)          = Eq.cong suc (⟦⇓⟧ᵍ-top g)
-
-⟦⇓⟧-top : ∀ {n} (w : Word (Gen n)) → ⟦ w ⇓ ⟧ (fromℕ n) ≡ fromℕ n
-⟦⇓⟧-top ε       = refl
-⟦⇓⟧-top [ g ]ʷ  = ⟦⇓⟧ᵍ-top g
-⟦⇓⟧-top (w • v) = Eq.trans (Eq.cong ⟦ v ⇓ ⟧ (⟦⇓⟧-top w)) (⟦⇓⟧-top v)

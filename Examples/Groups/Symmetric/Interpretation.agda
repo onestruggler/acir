@@ -19,9 +19,9 @@
 module Examples.Groups.Symmetric.Interpretation where
 
 open import Algebra.Bundles using (Group)
-open import Data.Fin using (Fin ; zero ; suc ; inject₁ ; fromℕ)
+open import Data.Fin using (Fin)
 open import Data.Fin.Permutation using (_⟨$⟩ʳ_ ; lift₀-id ; lift₀-comp)
-open import Notations using (₁₊ ; ₂₊)
+open import Notations using (₁₊)
 open import Word.Base using (Word ; ε ; [_]ʷ ; _•_)
 
 import Relation.Binary.PropositionalEquality as Eq
@@ -56,32 +56,3 @@ open import Examples.Groups.Symmetric.Syntactics
 ⟦↑⟧ (w • v) k =
   Eq.trans (Eq.cong (⟦ v ↑ ⟧ ⟨$⟩ʳ_) (⟦↑⟧ w k))
   (Eq.trans (⟦↑⟧ v _) (lift₀-comp ⟦ w ⟧ ⟦ v ⟧ k))
-
-------------------------------------------------------------------------
--- An idle wire on top
-
--- ⟦ w ⇓ ⟧ acts as ⟦ w ⟧ on the wires below the new one ...
-⟦⇓⟧ᵍ : ∀ {n} (g : Gen n) (k : Fin n) →
-       ⟦ g ↧ ⟧ᵍ ⟨$⟩ʳ inject₁ k ≡ inject₁ (⟦ g ⟧ᵍ ⟨$⟩ʳ k)
-⟦⇓⟧ᵍ (gate₂ σ-gate) zero      = refl
-⟦⇓⟧ᵍ (gate₂ σ-gate) (₁₊ zero) = refl
-⟦⇓⟧ᵍ (gate₂ σ-gate) (₂₊ k)    = refl
-⟦⇓⟧ᵍ (g ↥)          zero      = refl
-⟦⇓⟧ᵍ (g ↥)          (suc k)   = Eq.cong suc (⟦⇓⟧ᵍ g k)
-
-⟦⇓⟧ : ∀ {n} (w : Word (Gen n)) (k : Fin n) →
-      ⟦ w ⇓ ⟧ ⟨$⟩ʳ inject₁ k ≡ inject₁ (⟦ w ⟧ ⟨$⟩ʳ k)
-⟦⇓⟧ ε       k = refl
-⟦⇓⟧ [ g ]ʷ  k = ⟦⇓⟧ᵍ g k
-⟦⇓⟧ (w • v) k = Eq.trans (Eq.cong (⟦ v ⇓ ⟧ ⟨$⟩ʳ_) (⟦⇓⟧ w k)) (⟦⇓⟧ v _)
-
--- ... and fixes it.
-⟦⇓⟧ᵍ-top : ∀ {n} (g : Gen n) → ⟦ g ↧ ⟧ᵍ ⟨$⟩ʳ fromℕ n ≡ fromℕ n
-⟦⇓⟧ᵍ-top (gate₂ σ-gate) = refl
-⟦⇓⟧ᵍ-top (g ↥)          = Eq.cong suc (⟦⇓⟧ᵍ-top g)
-
-⟦⇓⟧-top : ∀ {n} (w : Word (Gen n)) → ⟦ w ⇓ ⟧ ⟨$⟩ʳ fromℕ n ≡ fromℕ n
-⟦⇓⟧-top ε       = refl
-⟦⇓⟧-top [ g ]ʷ  = ⟦⇓⟧ᵍ-top g
-⟦⇓⟧-top (w • v) =
-  Eq.trans (Eq.cong (⟦ v ⇓ ⟧ ⟨$⟩ʳ_) (⟦⇓⟧-top w)) (⟦⇓⟧-top v)

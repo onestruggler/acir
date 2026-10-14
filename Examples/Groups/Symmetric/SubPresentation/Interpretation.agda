@@ -13,7 +13,7 @@
 
 module Examples.Groups.Symmetric.SubPresentation.Interpretation where
 
-open import Data.Fin using (Fin ; zero ; inject₁)
+open import Data.Fin using (Fin ; zero)
 open import Function using (_∘_)
 open import Notations using (₁₊ ; ₂₊ ; ₃₊)
 open import Relation.Binary.PropositionalEquality as Eq
@@ -52,13 +52,8 @@ sound-comm2 f (₂₊ k)    = refl
 -- Soundness of the raw relation _VRel,_===_
 
 sound-ax : ∀ {n} {w v : Circuit n} → n VRel, w === v → ⟦ w ⟧ ≗ ⟦ v ⟧
-sound-ax (srel order)       k = sound-order k
-sound-ax (srel yang-baxter) k = sound-yb k
-sound-ax (cong↓ {_} {w₀} {v₀} p) k with top-wire k
-... | below j =
-  Eq.trans (⟦⇓⟧ w₀ j)
-  (Eq.trans (Eq.cong inject₁ (sound-ax p j)) (Eq.sym (⟦⇓⟧ v₀ j)))
-... | top     = Eq.trans (⟦⇓⟧-top w₀) (Eq.sym (⟦⇓⟧-top v₀))
+sound-ax (srel order)            k = sound-order k
+sound-ax (srel yang-baxter)      k = sound-yb k
 sound-ax (cong↑ {_} {w₀} {v₀} p) k =
   Eq.trans (⟦↑⟧ w₀ k)
   (Eq.trans (shift-cong (sound-ax p) k) (Eq.sym (⟦↑⟧ v₀ k)))
