@@ -22,7 +22,7 @@ TOL = 1.2
 
 def _labels(page):
     """Text spans as (x0, y0, x1, y1, text), a dagger glyph appended as
-    '†' to the span before it."""
+    '†' (a prime as '′') to the span before it."""
     out = []
     for b in page.get_text('rawdict')['blocks']:
         for l in b.get('lines', []):
@@ -33,13 +33,13 @@ def _labels(page):
                 font = s['font']
                 x0, y0, x1, y1 = s['bbox']
                 if font.startswith('CMSY') and len(txt) == 1 and ord(txt) not in (0x2212,):
-                    txt = '†' if txt not in '−-' else '-'
+                    txt = '-' if txt in '−-' else '′' if txt == '′' else '†'
                 out.append([x0, y0, x1, y1, txt])
-    # glue a dagger onto the label it follows
+    # glue a dagger or a prime onto the label it follows
     glued = []
     for sp in out:
-        if sp[4] == '†' and glued and abs(glued[-1][2] - sp[0]) < 2.5:
-            glued[-1][4] += '†'
+        if sp[4] in ('†', '′') and glued and abs(glued[-1][2] - sp[0]) < 2.5:
+            glued[-1][4] += sp[4]
             glued[-1][2] = sp[2]
         else:
             glued.append(sp)
@@ -155,7 +155,7 @@ def parse(path):
 
 
 NAMES = {'H': 'H', 'T': 'T', 'T†': 'Td', 'S': 'S', 'S†': 'Sd', 'Z': 'Z', 'X': 'X',
-         'K': 'K'}
+         'K': 'K', 'S′': 'Sp', 'H†': 'Hd'}
 
 
 def single(p):
@@ -165,7 +165,7 @@ def single(p):
     if kind == 'box':
         if len(ws) != 1:
             return 'BOX[%s]%s' % (lab, ''.join(map(str, ws)))
-        m = re.fullmatch(r'([A-Za-z]†?)(\d+)', lab)       # a power, as H²
+        m = re.fullmatch(r'([A-Za-z][†′]?)(\d+)', lab)    # a power, as H²
         if m and m.group(1) in NAMES:
             return ' '.join([NAMES[m.group(1)] + str(ws[0])] * int(m.group(2)))
         return NAMES.get(lab, 'BOX[%s]' % lab) + str(ws[0])
