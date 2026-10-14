@@ -25,18 +25,15 @@ open import Data.Nat using (suc ; _<_ ; _≤_ ; s≤s)
 open import Data.Nat.Properties using (≤-pred ; ≤-refl ; n≤1+n ; ≤-trans)
 open import Data.Product using (proj₁ ; proj₂ ; _,_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
-open import Relation.Nullary using (Dec ; yes ; no)
 open import Word.Base using (Word)
-
-import Data.Fin.Properties as FinP
 
 open import Notations using (₂₊ ; ₃₊)
 
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_)
 open import Examples.Groups.Clifford+CS.Encoding m
-open import Examples.Groups.Clifford+CS.BridgeGray n
-  using (⟦_⟧Y ; coefℤ ; δᶠ ; δᶠ-refl ; δᶠ-≢ ; ci-a ; ci-≢)
+open import Examples.Groups.Clifford+CS.BridgeGray n using (⟦_⟧Y)
 open import Examples.Groups.Clifford+CS.EncodingSemantics.Diag
+open import Examples.Groups.Clifford+CS.EncodingSemantics.Letters m
 open import Examples.Groups.Clifford+CS.EncodingSemantics.Products n
 open import Examples.Groups.Clifford+CS.EncodingSemantics.WireForms m using (sph ; csph)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Matrices using (eqB)
@@ -49,58 +46,9 @@ private
   true≢false ()
 
 ------------------------------------------------------------------------
--- The phase letters
-
--- The phase i at the basis vector s.
-phs : Bits n → Bits n → 𝔽
-phs s x = if eqB x s then ⅈ else 1#
+-- Products of phase letters
 
 private
-  phs-hit : ∀ s x → x ≡ s → phs s x ≡ ⅈ
-  phs-hit s x e = Eq.cong (λ b → if b then ⅈ else 1#) (eqB-complete x s e)
-
-  phs-miss : ∀ s x → x ≢ s → phs s x ≡ 1#
-  phs-miss s x ne = Eq.cong (λ b → if b then ⅈ else 1#) (eqB-false x s ne)
-
-  -- δ at two indices is δ at their vectors.
-  δᶠ-idx : ∀ (x y : Bits n) → δᶠ (idx x) (idx y) ≡ δb x y
-  δᶠ-idx x y = go (idx x FinP.≟ idx y)
-    where
-    go : Dec (idx x ≡ idx y) → δᶠ (idx x) (idx y) ≡ δb x y
-    go (yes e) = Eq.subst (λ y → δᶠ (idx x) (idx y) ≡ δb x y) (idx-inj e)
-                   (Eq.trans (δᶠ-refl (idx x)) (Eq.sym (δb-refl x)))
-    go (no ne) = Eq.trans (δᶠ-≢ ne) (Eq.sym (δb-≢ x y (λ e → ne (Eq.cong idx e))))
-
-  -- The letter i_[s], read on bit vectors.
-  i-M : ∀ (s : Bits n) → proj₂ ⟦ TL.i (idx s) ⟧Y ≐ diag (phs s)
-  i-M s x y = go (idx x FinP.≟ idx s)
-    where
-    go : Dec (idx x ≡ idx s) → coefℤ (TL.i-gen (idx s)) (idx x) (idx y) ≡ phs s x * δb x y
-    go (yes e) = begin
-      coefℤ (TL.i-gen (idx s)) (idx x) (idx y)
-        ≡⟨ Eq.cong (λ a → coefℤ (TL.i-gen a) (idx x) (idx y)) (Eq.sym e) ⟩
-      coefℤ (TL.i-gen (idx x)) (idx x) (idx y)
-        ≡⟨ ci-a (idx x) (idx y) ⟩
-      δᶠ (idx x) (idx y) * ⅈ
-        ≡⟨ Eq.cong (_* ⅈ) (δᶠ-idx x y) ⟩
-      δb x y * ⅈ
-        ≡⟨ *-comm (δb x y) ⅈ ⟩
-      ⅈ * δb x y
-        ≡⟨ Eq.cong (_* δb x y) (Eq.sym (phs-hit s x (idx-inj e))) ⟩
-      phs s x * δb x y ∎
-      where open Eq.≡-Reasoning
-    go (no ne) = begin
-      coefℤ (TL.i-gen (idx s)) (idx x) (idx y)
-        ≡⟨ ci-≢ (idx s) ne (idx y) ⟩
-      δᶠ (idx x) (idx y)
-        ≡⟨ δᶠ-idx x y ⟩
-      δb x y
-        ≡⟨ Eq.sym (*-identityˡ (δb x y)) ⟩
-      1# * δb x y
-        ≡⟨ Eq.cong (_* δb x y) (Eq.sym (phs-miss s x (λ e → ne (Eq.cong idx e)))) ⟩
-      phs s x * δb x y ∎
-      where open Eq.≡-Reasoning
-
   -- The diagonal reading of a product of phase letters over contexts.
   diag-letters : ∀ {j} (cs : List (Bits j)) (s : Bits j → Bits n) →
                  proj₂ ⟦ ∏ cs (λ c → TL.i (idx (s c))) ⟧Y ≐ diag (∏ᶠ cs (λ c x → phs (s c) x))

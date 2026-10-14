@@ -318,8 +318,10 @@ L_{C2}W^-1 (Clement's box recursion is its instance [ZX, Z] = -I):
       G = L_u(K_w) . (-i at u=0, w=0) (det 1), by [V,W] = G with
       V = S1 K1 X0, W = S0 X1 S1 CS.  CAVEAT: at n = 4 the controlled
       V, W have det -1 (one idle wire each); valid from n = 5, or with
-      V, W of det +-1 (tDec6.py searches).  Alternatively ki = K pair
-      times one hybrid, and the sink moves by pp.
+      V, W of det +-1 (tDec6.py: among the 4858 two-qubit words of
+      length <= 5 with det +-1, the pairwise search did not finish in
+      50 minutes of pure Python; inconclusive).  Alternatively ki = K
+      pair times one hybrid, and the sink moves by pp.
 
 The box itself (L^j(Z) with an idle wire) is Clement's recursion with
 CCZX = L^2(ZX) a 3-qubit Clifford+CS circuit (det 1 on three wires).

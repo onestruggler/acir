@@ -32,9 +32,11 @@ open import Data.Nat using (ℕ)
 module Examples.Groups.Clifford+CS.Encoding (m : ℕ) where
 
 open import Data.Bool using (Bool ; true ; false)
-open import Data.Fin using (Fin)
+open import Data.Empty using (⊥-elim)
+open import Data.Fin using (Fin) renaming (_<_ to _<ᶠ_)
 open import Data.Fin.Properties using (_<?_)
-open import Data.Nat using (suc ; _≤_)
+open import Data.Nat using (suc ; _≤_ ; _<_ ; s≤s ; z≤n)
+open import Data.Nat.Properties using (<-asym)
 open import Data.Product using (proj₁)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Relation.Nullary using (yes ; no)
@@ -106,6 +108,18 @@ Kp a b with a <? b | b <? a
 ... | no _  | yes q = TL.i a • TL.i a • TL.K b a q • TL.i b • TL.i b
 ... | no _  | no _  = ε
 
+-- Its two cases.
+Kp-< : ∀ a b (p : a <ᶠ b) → Kp a b ≡ TL.K a b p
+Kp-< a b p with a <? b | b <? a
+... | yes _ | _     = Eq.refl
+... | no ¬p | _     = ⊥-elim (¬p p)
+
+Kp-> : ∀ a b (q : b <ᶠ a) → Kp a b ≡ TL.i a • TL.i a • TL.K b a q • TL.i b • TL.i b
+Kp-> a b q with a <? b | b <? a
+... | yes p | _     = ⊥-elim (<-asym p q)
+... | no _  | yes _ = Eq.refl
+... | no _  | no ¬q = ⊥-elim (¬q q)
+
 E-I : Word (TL.Gen N)
 E-I = ∏ (allBits n) λ x → TL.i (idx x)
 
@@ -116,13 +130,37 @@ E-K p = ∏ (allBits (₃₊ m)) λ c → Kp (idx (str₁ p c false)) (idx (str�
 E-CS : ℕ → Word (TL.Gen N)
 E-CS p = ∏ (allBits (₂₊ m)) λ c → TL.i (idx (str₂ p c true true))
 
--- The two-level encoding of a generator.
+-- The two-level encoding of a gate at its position, and of a
+-- generator.
+eTL′ : View → Word (TL.Gen N)
+eTL′ (scalar I-gate) = E-I
+eTL′ (one p S-gate)  = E-S p
+eTL′ (one p K-gate)  = E-K p
+eTL′ (two p CS-gate) = E-CS p
+
 eTL : Gen n → Word (TL.Gen N)
-eTL g with view g
-... | scalar I-gate = E-I
-... | one p S-gate  = E-S p
-... | one p K-gate  = E-K p
-... | two p CS-gate = E-CS p
+eTL g = eTL′ (view g)
+
+------------------------------------------------------------------------
+-- The wire of a generator is within the width
+
+view-bound₁ : ∀ {k} (g : Gen k) {p h} → view g ≡ one p h → p < k
+view-bound₁ (gate₀ h) ()
+view-bound₁ (gate₁ h) Eq.refl = s≤s z≤n
+view-bound₁ (gate₂ h) ()
+view-bound₁ (g ↥) e with view g in eq
+view-bound₁ (g ↥) ()      | scalar h
+view-bound₁ (g ↥) Eq.refl | one p h = s≤s (view-bound₁ g eq)
+view-bound₁ (g ↥) ()      | two p h
+
+view-bound₂ : ∀ {k} (g : Gen k) {p h} → view g ≡ two p h → suc p < k
+view-bound₂ (gate₀ h) ()
+view-bound₂ (gate₁ h) ()
+view-bound₂ (gate₂ h) Eq.refl = s≤s (s≤s z≤n)
+view-bound₂ (g ↥) e with view g in eq
+view-bound₂ (g ↥) ()      | scalar h
+view-bound₂ (g ↥) ()      | one p h
+view-bound₂ (g ↥) Eq.refl | two p h = s≤s (view-bound₂ g eq)
 
 ------------------------------------------------------------------------
 -- The encoding into P′
