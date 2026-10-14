@@ -178,7 +178,9 @@ swapAt {₀}    _       = ε
 swapAt {₁}    zero    = ε
 
 -- The cycle of the bottom k + 1 wires that carries wire 0 up to wire k,
--- the wires 1 … k each down one, and its inverse (Clément's cyc).
+-- the wires 1 … k each down one, and its inverse (Clément's cyc):
+-- conjugating by cyc k … cyc⁻¹ k carries a gate's wires 0 … k − 1 up
+-- one and its wire k down to 0.
 cyc cyc⁻¹ : (k : ℕ) → Circuit (₁₊ k)
 cyc zero      = ε
 cyc (suc k)   = Swap • cyc k ↑
@@ -205,15 +207,15 @@ Bar⁻¹ = C₁₀V⁻¹ • CX₁₂ • (Swap ↑ • C₁₀V • Swap ↑) �
 -- its frame [0, 1, 2 … m + 1, m + 2] goes to [1, 0, 3 … m + 2, 2], the
 -- swap of wires 0, 1 and the cycle of the wires 2 … m + 2.
 reS reS⁻¹ : (m : ℕ) → Circuit (₃₊ m)
-reS   m = (Swap • cyc⁻¹ m ↑ ↑) • Sbox m • (cyc m ↑ ↑ • Swap)
-reS⁻¹ m = (Swap • cyc⁻¹ m ↑ ↑) • Sbox⁻¹ m • (cyc m ↑ ↑ • Swap)
+reS   m = (Swap • cyc m ↑ ↑) • Sbox m • (cyc⁻¹ m ↑ ↑ • Swap)
+reS⁻¹ m = (Swap • cyc m ↑ ↑) • Sbox⁻¹ m • (cyc⁻¹ m ↑ ↑ • Swap)
 
 -- The K-box re-framed to target 0, controls 3 … m + 2, idle wires 1, 2:
 -- its frame [0, 1, 2 … m + 1, m + 2] goes to [1, 2, 3 … m + 2, 0], the
 -- cycle of all the wires.
 reK reK⁻¹ : (m : ℕ) → Circuit (₃₊ m)
-reK   m = cyc⁻¹ (₂₊ m) • Kbox m • cyc (₂₊ m)
-reK⁻¹ m = cyc⁻¹ (₂₊ m) • Kbox⁻¹ m • cyc (₂₊ m)
+reK   m = cyc (₂₊ m) • Kbox m • cyc⁻¹ (₂₊ m)
+reK⁻¹ m = cyc (₂₊ m) • Kbox⁻¹ m • cyc⁻¹ (₂₊ m)
 
 -- The phase gadget L^{m+2}(iZ) (i at bit 0 of the target), the rotation
 -- L^{m+2}(XZ), and the hybrid gadget L^{m+2}(X K X · diag(1, −i)).
