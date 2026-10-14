@@ -107,6 +107,52 @@ every placement, with the structural rules, `CXr i = HH i CX i HH i` and
 The classical rules present S8 (index 5040 of ⟨X0, X1, X2⟩), and all of
 them present W(E8) (index 17280 of S8). The last classical rule cannot be
 replaced by `(CCX0 CXr0)⁶ = ε`, its order relation: with it the classical
-rules no longer present S8. `final3.py` checks which of the rules are
-redundant and certifies the result through the adjacent classical
-subgroup as well.
+rules no longer present S8.
+
+**Twelve rules, complete on one, two and three wires** (`final.py`). A
+rule only applies where it fits, so completeness is checked at each width
+with that width's rules: on two wires by enumeration (order 384), on
+three through S8 as above. Eight of the twenty are redundant, which
+leaves, with the abbreviations `CXr = HH CX HH` and `SW = CX CXr CX`:
+
+| | Rule |
+| --- | --- |
+| 1 | `X1 CX0 X1 = CX0 X0` |
+| 2 | `CXr0 X0 CXr0 = X0 X1` |
+| 3 | `(CX0 CXr0)³ = ε` |
+| 4 | `X0 · HH0 X1 HH0 = HH0 X1 HH0 · X0` |
+| 5 | `SW0 SW1 SW0 = SW1 SW0 SW1` |
+| 6 | `SW0 SW1 CX0 SW1 SW0 = CX1` |
+| 7 | `SW1 CCX0 SW1 = CCX0` |
+| 8 | `X1 CCX0 X1 = CCX0 · SW1 CX0 SW1` |
+| 9 | `CCX0 CXr0 CCX0 CXr0 = SW0 CCX0 SW0 · CCX0` |
+| 10 | `SW0 HH1 SW0 = HH0 HH1` |
+| 11 | `SW1 HH0 SW1 = HH0 HH1` |
+| 12 | `CCX0 · CXr0 HH0 CXr0 = CXr0 HH0 CXr0 · CCX0` |
+
+Rules 1–4 are two-wire rules and 5–12 three-wire rules. (`final.py` also
+lists `SW0 = CX0 CXr0 CX0`, which only links the abstract swap letter of
+the classical check to the CNOTs; for circuits it holds by definition.)
+Each rule is irredundant: without it the rules are incomplete on two or
+on three wires. Which rules are redundant depends on the order of removal;
+this is one irredundant choice, made by removing from the end of the list.
+
+The certificate is |G_R| ≤ 17280 · 5040 · 8 = 696 729 600 = |W(E8)|, from
+coset enumerations (`tc.c`) that are not themselves formally verified.
+
+## Beyond three wires
+
+From four wires on the group is infinite (the commutator subgroup of
+O₂ⁿ(ℤ[1/2]), `GeneralN/Commutator.agda`), so coset enumeration can refute
+completeness through finite quotients but never establish it. Completeness
+at every width is a proof, along Clément's lines: assume completeness one
+width down (`Structural.agda` already gives the idle-wire rules for any
+complete theory), decode the complete presentation of `GeneralN/` at
+width n, and derive each of its relations — the decoded Table 1 relations
+of the four-state translation and the recovery equations `g = D(E(g))` —
+from the rules. The open question that decides the shape of the answer is
+whether the relations of the n-wire group follow from those of its
+(n−1)-wire subgroups placed on every set of n−1 wires: if so, bounded-width
+rules such as the twelve above can be complete at every width, as for
+Selinger's Clifford theory; if not, a schema at every width is needed, as
+Clément's (19) is for Real-Clifford+CH.
