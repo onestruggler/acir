@@ -108,6 +108,9 @@ eqVec-refl eq r (x ∷ xs) = T-∧-intro (r x) (eqVec-refl eq r xs)
 eqMat-refl : (eq : A → A → Bool) → (∀ x → T (eq x x)) → (M : Matrix m n A) → T (eqMat eq M M)
 eqMat-refl eq r (Matrix' a) = eqVec-refl (eqVec eq) (eqVec-refl eq r) a
 
+eqD√-refl : ∀ x → T (eqD√ x x)
+eqD√-refl (RootTwo a b) = T-∧-intro (eqD-refl a) (eqD-refl b)
+
 ------------------------------------------------------------------------
 -- Identities by evaluation
 

@@ -10,7 +10,8 @@
 
 module Examples.Groups.CCX+HH.Natural.Width1.Family where
 
-open import Examples.Groups.CCX+HH.Natural.Width1.Tables using (repℕ ; parentℕ ; lastℕ)
+open import Examples.Groups.CCX+HH.Natural.Width1.Words using (repℕ ; parentℕ ; lastℕ)
 open import Examples.Groups.CCX+HH.Natural.Width1.Matrices using (tableℕ)
+open import Examples.Groups.CCX+HH.Natural.Width1.Gates using (gateM)
 
-open import Examples.Groups.CCX+HH.Natural.Prefix 2 repℕ parentℕ lastℕ tableℕ public using (ok ; module Agree)
+open import Examples.Groups.CCX+HH.Natural.Prefix 2 repℕ parentℕ lastℕ tableℕ gateM public using (ok ; module Agree)

@@ -14,7 +14,8 @@ open import Data.Bool.Base using (T)
 open import Data.Unit.Base using (tt)
 
 open import Examples.Groups.CCX+HH.Natural.Checks using (apartR)
+open import Examples.Groups.CCX+HH.Decide using (eqD)
 open import Examples.Groups.CCX+HH.Natural.Width2.Matrices using (tableℕ)
 
-apart : T (apartR 384 tableℕ)
+apart : T (apartR eqD 384 tableℕ)
 apart = tt

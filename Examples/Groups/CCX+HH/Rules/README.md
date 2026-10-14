@@ -26,7 +26,10 @@ Agda below); the scripts here also write their generated parts.
   bounds through a chain of subgroups.
 - `stage3.py`: the three-wire experiments.
 - `proofs.py`, `natproof.py`, `gen_axioms.py`, `gen_width.py`: the
-  proof-producing enumeration and the Agda it writes (see In Agda).
+  proof-producing enumeration and the Agda it writes (see In Agda);
+  `natproofH.py`, `gen_axiomsH.py` the same for CCX+H, and `labelled.py`
+  the enumeration with Felsch's strategy, which also carries labels in
+  the generators of a subgroup.
 - `selftest.py`: known orders (S₃ … S₈, and the gate groups on one and
   two wires, from complete Schreier presentations).
 
@@ -187,9 +190,44 @@ parent word) and are pairwise distinct. `Natural/Automaton` then
 concludes: every circuit is derivably equal to the representative its
 letters lead to, and two circuits with one matrix lead to the same one.
 On two wires that is 384 representatives and 3528 derivations in
-nineteen modules, about ten minutes in all and none over 2 GB.
-`gen_axioms.py` writes `Natural/Axioms`; `python3 -B gen_width.py N
+21 modules, about ten minutes in all and none over 2 GB.
+`gen_axioms.py` writes `Natural/Axioms`; `python3 -B gen_width.py HH N
 --check` compares the modules with the generator.
+
+The four CCX+H rules above are proved the same way in `../../CCX+H/Natural/`:
+sound at every width, complete on one and two wires (`natproofH.py`,
+`gen_axiomsH.py`, `gen_width.py H N`). There the enumeration follows
+Felsch's strategy (`labelled.py` with no subgroup), which defines 5788
+cosets for the 2304 elements where HLT defines 22042, and needs 35519
+derivations where HLT needs 107180. The CCX+H gate matrices are costly
+to evaluate (through the general level action), so every module stores
+the matrices of the letters too (`Gates`), each checked once. Its
+two-wire proof is 87 modules and about 1¾ hours; the three that load
+every derivation (`Tables`, `Sides`, the assembly) need up to 5.5 GB.
+
+### Three wires
+
+Three wires is not formalised yet. The group there is the Weyl group
+W(E8): it has order 696729600 and preserves the 240 vectors listed in
+`../ThreeQubit/README.md`, which are the roots of E8 up to scale; CCX is
+the reflection in e₆ − e₇ and `HH1 CCX0 HH1` the reflection in a root with
+eight entries ±1. That is too large to enumerate with proofs, and the
+obvious towers fail the same way: no subgroup tried — ⟨X, CX, HH⟩, the
+classical S₈, the affine group, the even signed permutations — is
+presented by the rules that use only its letters (the enumerations
+overflow), so each level down needs relations derived through letters
+outside it. Over the 135 frames of `../ThreeQubit/` with labels in the
+stabilizer's generators (`labelled.py`), the labels grow without bound
+(over 5000 letters by 6000 cosets); over the classical S₈, Felsch's
+strategy defines 244103 cosets for 17280. The promising route is the
+Coxeter presentation of W(E8): its tower of parabolic subgroups needs no
+derived relations, every level being presented by the Coxeter relations
+of the level above that use only its generators. It leaves the
+derivation from the natural rules of the decoded Coxeter relations (28
+pairs, for a base of reflections with short circuits `w CCX0 rev(w)`,
+`w` at most seven letters) and of each gate as a word in the
+reflections — a few dozen three-wire identities, for which no derivation
+engine is built yet.
 
 ## Beyond three wires
 

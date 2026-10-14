@@ -8,8 +8,9 @@
 -- evaluator recompute shared subproducts, which exhausted a 4.5 GB heap
 -- on two-wire words of twenty letters.  Here every word k > 0 is a
 -- parent word followed by one letter, and its stored matrix is checked
--- against the parent's stored matrix times that letter's: one product
--- of a literal with a gate matrix per word, decided by one boolean.
+-- against the parent's stored matrix times that letter's, also stored
+-- (gate, checked once per letter: gate-ok): one product of two
+-- literals per word, decided by one boolean.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -29,6 +30,7 @@ module Examples.Groups.CCX+HH.Natural.Prefix
   {W : ℕ} (K : ℕ)
   (word : ℕ → List (Gen W)) (parent : ℕ → ℕ) (last : ℕ → Gen W)
   (stored : ℕ → Matrix (2 ^ℕ W) (2 ^ℕ W) Dyadic)
+  (gate : Gen W → Matrix (2 ^ℕ W) (2 ^ℕ W) Dyadic)
   where
 
 open import Data.List.Properties using (length-++)
@@ -57,7 +59,7 @@ ok : ℕ → Bool
 ok zero = eqL (word zero) [] ∧ eqMat eqD (stored zero) (Sem.interpret {W} ε)
 ok (suc k) = eqL (word (suc k)) (word (parent (suc k)) ++ last (suc k) ∷ [])
   ∧ (parent (suc k) <ᵇ K)
-  ∧ eqMat eqD (stored (suc k)) (stored (parent (suc k)) ∙ Sem.interpret ⟪ last (suc k) ∷ [] ⟫)
+  ∧ eqMat eqD (stored (suc k)) (stored (parent (suc k)) ∙ gate (last (suc k)))
 
 private
   T-∧ : ∀ {x y} → T (x ∧ y) → T x × T y
@@ -66,7 +68,10 @@ private
   true≡ : ∀ {b} → T b → b ≡ true
   true≡ {true} _ = Eq.refl
 
-module Agree (checked : ∀ k → k < K → T (ok k)) where
+module Agree
+  (gate-ok : ∀ y → Sem.interpret ⟪ y ∷ [] ⟫ ≡ gate y)
+  (checked : ∀ k → k < K → T (ok k))
+  where
 
   private
     shorter : ∀ k → T (ok (suc k)) → suc (length (word (parent (suc k)))) ≤ length (word (suc k))
@@ -97,6 +102,8 @@ module Agree (checked : ∀ k → k < K → T (ok k)) where
         Sem.interpret ⟪ word p ⟫ ∙ Sem.interpret ⟪ y ∷ [] ⟫
           ≡⟨ Eq.cong (_∙ Sem.interpret ⟪ y ∷ [] ⟫) (go′ f len) ⟩
         stored p ∙ Sem.interpret ⟪ y ∷ [] ⟫
+          ≡⟨ Eq.cong (stored p ∙_) (gate-ok y) ⟩
+        stored p ∙ gate y
           ≡⟨ Eq.sym (eqMat-sound eqD eqD-sound _ _ m) ⟩
         stored (suc k) ∎
       where

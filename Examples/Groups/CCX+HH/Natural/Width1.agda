@@ -24,10 +24,12 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Examples.Groups.CCX+HH.Natural.Engine using (⟪_⟫)
 open import Examples.Groups.CCX+HH.Natural.Checks using (module DistinctR ; join)
+open import Examples.Groups.CCX+HH.Decide using (eqD ; eqD-refl)
 open import Examples.Groups.CCX+HH.Natural.Width1.Tables
 open import Examples.Groups.CCX+HH.Natural.Width1.Sides
 open import Examples.Groups.CCX+HH.Natural.Width1.Matrices using (tableℕ)
 open import Examples.Groups.CCX+HH.Natural.Width1.Family using (ok ; module Agree)
+open import Examples.Groups.CCX+HH.Natural.Width1.Gates using (gate-ok)
 open import Examples.Groups.CCX+HH.Natural.Width1.Apart using (apart)
 import Examples.Groups.CCX+HH.Natural.Width1.Agree0 as A0
 import Examples.Groups.CCX+HH.Semantics as Sem
@@ -39,12 +41,12 @@ private
   checked0 : ∀ i → 0 ≤ i → i < 2 → Ok i
   checked0 = A0.checked
 
-  module G = Agree (λ i → checked0 i z≤n)
+  module G = Agree gate-ok (λ i → checked0 i z≤n)
 
   agree : ∀ i → i < 2 → Sem.interpret ⟪ repℕ i ⟫ ≡ tableℕ i
   agree i i<N = G.agree i (<-≤-trans i<N (m≤m+n 2 0))
 
-  module D = DistinctR {2} (λ i → Sem.interpret ⟪ repℕ i ⟫) tableℕ agree apart
+  module D = DistinctR eqD eqD-refl {2} (λ i → Sem.interpret ⟪ repℕ i ⟫) tableℕ agree apart
 
 open import Examples.Groups.CCX+HH.Natural.Automaton 1 2 rep δ zero Eq.refl fact fact-lhs fact-rhs D.distinct
   public using (complete ; nf ; nf-sound)

@@ -23,9 +23,8 @@ open import Relation.Binary.Definitions using (tri< ; tri≈ ; tri>)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Relation.Nullary using (yes ; no)
 
-open import Quantum.Synthesis.Ring using (Dyadic)
 open import Quantum.Synthesis.Matrix using (Matrix)
-open import Examples.Groups.CCX+HH.Decide using (eqMat ; eqD ; eqMat-refl ; eqD-refl)
+open import Examples.Groups.CCX+HH.Decide using (eqMat ; eqMat-refl)
 
 private
   T-∧ : ∀ {x y} → T (x ∧ y) → T x × T y
@@ -71,13 +70,15 @@ join P lo a b f g i lo≤i i<s with i <? lo + a
 
 -- The matrices of N representatives, given by a function on their
 -- indices, checked against a stored table (chunk by chunk: `agree`) and
--- the stored table checked free of repeats (`apart`).
-apartR : ∀ {m} → ℕ → (ℕ → Matrix m m Dyadic) → Bool
-apartR N t = allR 0 N (λ i → allR (suc i) (N ∸ suc i) (λ j → not (eqMat eqD (t i) (t j))))
+-- the stored table checked free of repeats (`apart`), over any type of
+-- entries with a boolean equality that is reflexive.
+apartR : ∀ {A : Set} {m} → (A → A → Bool) → ℕ → (ℕ → Matrix m m A) → Bool
+apartR eq N t = allR 0 N (λ i → allR (suc i) (N ∸ suc i) (λ j → not (eqMat eq (t i) (t j))))
 
-module DistinctR {N m : ℕ} (sem table : ℕ → Matrix m m Dyadic)
+module DistinctR {A : Set} (eq : A → A → Bool) (eq-refl : ∀ x → T (eq x x))
+  {N m : ℕ} (sem table : ℕ → Matrix m m A)
   (agree : ∀ i → i < N → sem i ≡ table i)
-  (apart : T (apartR N table))
+  (apart : T (apartR eq N table))
   where
 
   private
@@ -86,9 +87,9 @@ module DistinctR {N m : ℕ} (sem table : ℕ → Matrix m m Dyadic)
 
     -- Below the upper index, two stored matrices differ.
     differ : ∀ i j → i < j → j < N → table i ≡ table j → ⊥
-    differ i j i<j j<N e = refuted (eqMat eqD (table i) (table i))
-      (eqMat-refl eqD eqD-refl (table i))
-      (Eq.subst (λ M → T (not (eqMat eqD (table i) M))) (Eq.sym e)
+    differ i j i<j j<N e = refuted (eqMat eq (table i) (table i))
+      (eqMat-refl eq eq-refl (table i))
+      (Eq.subst (λ M → T (not (eqMat eq (table i) M))) (Eq.sym e)
         (allR-sound (suc i) (N ∸ suc i) _ (allR-sound 0 N _ apart i z≤n (<-trans i<j j<N))
           j i<j (Eq.subst (j <_) (Eq.sym (m+[n∸m]≡n (<-trans i<j j<N))) j<N)))
 
