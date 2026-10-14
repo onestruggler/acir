@@ -140,6 +140,30 @@ this is one irredundant choice, made by removing from the end of the list.
 The certificate is |G_R| ≤ 17280 · 5040 · 8 = 696 729 600 = |W(E8)|, from
 coset enumerations (`tc.c`) that are not themselves formally verified.
 
+## CCX+H on one and two wires
+
+With the single Hadamard (`coreH.py`: entries in ℤ[1/√2], exact) the group
+is the dihedral group of order 16 on one wire and the real Clifford group
+of order 2304 on two; on three wires it is infinite. Four rules, with
+`CXr = H0 H1 CX H0 H1`, `SW = CX CXr CX`, `CZ = H1 CXr H1` and `Z = H X H`,
+present both exactly (`naturalH2.py`):
+
+| | Rule | |
+| --- | --- | --- |
+| 1 | `(X0 H0)⁸ = ε` | one wire: dihedral of order 16 |
+| 2 | `CXr0 X0 CXr0 = X0 X1` | an X on the control propagates |
+| 3 | `SW0 H0 SW0 = H1` | the swap moves H |
+| 4 | `CZ0 CXr0 CZ0 CXr0 = Z0` | a CZ and a CNOT anticommute up to Z on the control |
+
+Rule 1 is redundant on two wires but needed on one. The natural seed
+`naturalH2.SEED` (also the CCX+HH two-wire rules, the symmetry of CZ and
+how Z passes a CNOT) is complete on two wires too; rules 3 and 4 are what
+the seed first missed, found by the search and rewritten in natural form.
+
+From three wires on the CCX+H group is infinite, so completeness there
+(where Amy, Ross and Wesley's 3-qubit theory lives) needs a proof, not an
+enumeration.
+
 ## Beyond three wires
 
 From four wires on the group is infinite (the commutator subgroup of
