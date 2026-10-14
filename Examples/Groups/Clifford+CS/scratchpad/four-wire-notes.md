@@ -328,3 +328,30 @@ CCZX = L^2(ZX) a 3-qubit Clifford+CS circuit (det 1 on three wires).
 Open: a uniform recursive definition (Definition 2.4's analogue) with
 the idle-wire bookkeeping, the quads i_a i_b i_c i_d, and the Lemma
 8.7/8.8 analogues on top.
+
+## The hybrid at every width, and the n = 4 case closed (gadgets.py, hyb1.py, hyb2.py)
+
+The sink can always be put on the pair: ki[a,b;s] = ki[a,b;a] . pp[a,s]
+(the rule ki-sink).  With the sink on the pair the letter is a
+1-qubit gate under n - 1 controls, G1 = K . diag(-i, 1) (a at t = 0) or
+X K X . diag(1, -i) (a at t = 1), both of determinant 1 and order 3.
+G1 is not a commutator of two "cheap" elements (reflections U Z U^-1
+and rotations U XZ U^-1 of the 1-qubit Clifford group; gadgets.py), but
+it is a commutator [A, B] with A a SQUARE in the 1-qubit Clifford group
+(hyb2.py, 24 pairs each):
+
+    a at t = 1:  A = (S S K S)^2,  B = K
+    a at t = 0:  A = (K S)^2,      B = S S K S S  (= Z K Z)
+
+so L^{n-1}(G1) = L_{C1}(A) L_{C2}(B) L_{C1}(A)^-1 L_{C2}(B)^-1 with
+|C1| = 2, |C2| = n - 3, where L_{C1}(V^2) is Barenco's word of two-wire
+gates C_{c1}(V) CX_{c1 c2} C_{c2}(V^-1) CX_{c1 c2} C_{c2}(V) (operator
+order) under the controlled functor C(S) = CS, C(K) = CK, C(i) = S_c,
+and L_{C2}(B) is the K-box (B = K) or a word of S- and K-boxes, each
+with the two idle wires C1.  Checked at n = 4 against the letter's
+matrix (hyb2.py).  So the n = 4 caveat of construction (6) is gone: no
+2-qubit V, W and no det -1 factor.
+
+gadgets.py also checks the recursions as circuits: Clement's box
+Lambda-box k (W B V B), the rotation [CK, Ex box] = L^k(XZ), and the
+Toffoli K box K^-1, at every k <= 5.
