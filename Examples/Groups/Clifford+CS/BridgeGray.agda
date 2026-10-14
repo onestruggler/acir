@@ -230,23 +230,22 @@ private
 ... | yes _ = C.1#
 ... | no  _ = C.0#
 
-private
-  δᶠ-refl : ∀ x → δᶠ x x ≡ C.1#
-  δᶠ-refl x with x FinP.≟ x
-  ... | yes _   = refl
-  ... | no  x≢x = ⊥-elim (x≢x refl)
+δᶠ-refl : ∀ x → δᶠ x x ≡ C.1#
+δᶠ-refl x with x FinP.≟ x
+... | yes _   = refl
+... | no  x≢x = ⊥-elim (x≢x refl)
 
-  δᶠ-≢ : ∀ {x y} → x ≢ y → δᶠ x y ≡ C.0#
-  δᶠ-≢ {x} {y} x≢y with x FinP.≟ y
-  ... | yes x≡y = ⊥-elim (x≢y x≡y)
-  ... | no  _   = refl
+δᶠ-≢ : ∀ {x y} → x ≢ y → δᶠ x y ≡ C.0#
+δᶠ-≢ {x} {y} x≢y with x FinP.≟ y
+... | yes x≡y = ⊥-elim (x≢y x≡y)
+... | no  _   = refl
 
-  ι-δᶠ : ∀ x y → ι (δᶠ x y) ≡ δ x y
-  ι-δᶠ x y = go (x FinP.≟ y)
-    where
-    go : Dec (x ≡ y) → ι (δᶠ x y) ≡ δ x y
-    go (yes refl) = Eq.trans (Eq.cong ι (δᶠ-refl x)) (Eq.sym (δ-refl x))
-    go (no x≢y)   = Eq.trans (Eq.cong ι (δᶠ-≢ x≢y)) (Eq.sym (δ-≢ x≢y))
+ι-δᶠ : ∀ x y → ι (δᶠ x y) ≡ δ x y
+ι-δᶠ x y = go (x FinP.≟ y)
+  where
+  go : Dec (x ≡ y) → ι (δᶠ x y) ≡ δ x y
+  go (yes refl) = Eq.trans (Eq.cong ι (δᶠ-refl x)) (Eq.sym (δ-refl x))
+  go (no x≢y)   = Eq.trans (Eq.cong ι (δᶠ-≢ x≢y)) (Eq.sym (δ-≢ x≢y))
 
 -- The power of γ⁻¹ a generator carries: one for K, none otherwise.
 scale : TL.Gen N → ℕ
@@ -269,8 +268,8 @@ coefℤ (TL.i-gen a) r x with r FinP.≟ a
 ... | yes _ = δᶠ r x C.* C.ⅈ
 ... | no  _ = δᶠ r x
 
-private
-  module _ {a b : Fin N} .(p : a < b) where
+-- The rows of the coefficient tables.
+module _ {a b : Fin N} .(p : a < b) where
     private
       a≢b : a ≢ b
       a≢b = <⇒≢ p
@@ -309,15 +308,15 @@ private
     ... | no  _   | yes r≡b = ⊥-elim (r≢b r≡b)
     ... | no  _   | no  _   = refl
 
-  ci-a : ∀ a x → coefℤ (TL.i-gen a) a x ≡ δᶠ a x C.* C.ⅈ
-  ci-a a x with a FinP.≟ a
-  ... | yes _   = refl
-  ... | no  a≢a = ⊥-elim (a≢a refl)
+ci-a : ∀ a x → coefℤ (TL.i-gen a) a x ≡ δᶠ a x C.* C.ⅈ
+ci-a a x with a FinP.≟ a
+... | yes _   = refl
+... | no  a≢a = ⊥-elim (a≢a refl)
 
-  ci-≢ : ∀ a {r} → r ≢ a → ∀ x → coefℤ (TL.i-gen a) r x ≡ δᶠ r x
-  ci-≢ a {r} r≢a x with r FinP.≟ a
-  ... | yes r≡a = ⊥-elim (r≢a r≡a)
-  ... | no  _   = refl
+ci-≢ : ∀ a {r} → r ≢ a → ∀ x → coefℤ (TL.i-gen a) r x ≡ δᶠ r x
+ci-≢ a {r} r≢a x with r FinP.≟ a
+... | yes r≡a = ⊥-elim (r≢a r≡a)
+... | no  _   = refl
 
 -- The scaled operator of a generator, at the Gray numbering.
 ⟦_⟧ʸ : TL.Gen N → Scaled n
