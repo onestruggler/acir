@@ -8,6 +8,11 @@
  *   nsub  then nsub lines: length g1 g2 ...
  * Output: the index of the subgroup, or "overflow" past `limit` cosets.
  *
+ * When the table nears `limit`, a lookahead pass scans every relator at
+ * every live coset without defining new ones (deducing single gaps and
+ * merging coincidences), and the table is compacted; enumeration resumes
+ * if that freed enough room.
+ *
  * Build: gcc -O2 -o tc tc.c
  */
 #include <stdio.h>
@@ -82,6 +87,45 @@ static void scan_fill(int c, const int *w, int n) {
     }
 }
 
+/* Scan without defining: deduce a single gap, merge a coincidence. */
+static void scan_only(int c, const int *w, int n) {
+    c = find(c);
+    int f = c, i = 0;
+    while (i < n && table[f * ngens + w[i]] >= 0) { f = find(table[f * ngens + w[i]]); i++; }
+    if (i == n) { if (f != c) coincidence(f, c); return; }
+    int b = c, j = n - 1;
+    while (j >= i && table[b * ngens + w[j]] >= 0) { b = find(table[b * ngens + w[j]]); j--; }
+    if (j < i) coincidence(f, b);
+    else if (j == i) set(f, w[i], b);
+}
+
+/* Renumber the live cosets 0 .. alive-1 in order; return the new index
+ * of coset `keep` (the main loop's position). */
+static int compact(int keep) {
+    int *map = malloc((size_t)ncos * sizeof(int));
+    int k = 0;
+    for (int c = 0; c < ncos; c++) map[c] = (find(c) == c) ? k++ : -1;
+    for (int c = 0; c < ncos; c++) {
+        if (map[c] < 0) continue;
+        for (int g = 0; g < ngens; g++) {
+            int d = table[c * ngens + g];
+            table[map[c] * ngens + g] = d < 0 ? -1 : map[find(d)];
+        }
+    }
+    int newkeep = map[find(keep)];
+    /* the main loop resumes at the first live coset at or after keep */
+    if (find(keep) != keep) {
+        int c = keep;
+        while (c < ncos && map[c] < 0) c++;
+        newkeep = c < ncos ? map[c] : k;
+    }
+    for (int c = 0; c < k; c++) parent[c] = c;
+    ncos = k;
+    alive = k;
+    free(map);
+    return newkeep;
+}
+
 static int **read_words(int *count, int **lens) {
     if (scanf("%d", count) != 1) exit(2);
     int **ws = malloc((*count + 1) * sizeof(int *));
@@ -106,7 +150,20 @@ int main(void) {
     if (!table || !parent) { printf("nomem\n"); return 1; }
     int start = new_coset();
     for (int k = 0; k < nsub; k++) scan_fill(start, sub[k], slen[k]);
+    long margin = ngens;
+    for (int k = 0; k < nrel; k++) margin += rlen[k];
+    if (margin > limit / 4) margin = limit / 4;
     for (int c = 0; c < ncos; c++) {
+        if (ncos + margin > limit) {
+            for (int x = 0; x < ncos; x++) {
+                if (find(x) != x) continue;
+                for (int k = 0; k < nrel; k++) { scan_only(x, rel[k], rlen[k]); if (find(x) != x) break; }
+            }
+            c = compact(c);
+            fprintf(stderr, "lookahead: %d live cosets\n", ncos);
+            if (ncos + margin > limit) { printf("overflow\n"); return 0; }
+            if (c >= ncos) break;
+        }
         if (find(c) != c) continue;
         for (int k = 0; k < nrel; k++) {
             scan_fill(c, rel[k], rlen[k]);

@@ -57,3 +57,21 @@ the 384-element group exactly:
 | `(CX HH)⁶ = ε`, i.e. `(CX · CXr)³ = ε` | the CNOTs on two wires generate S₃ |
 
 `python3 -B search.py --width 2 --half 6` finds them (about 40 s).
+
+**Three wires.** Short relators in the primitive gates do not suffice —
+every relator of length at most 10 that spans the three wires, 9077 of
+them, still leaves the coset enumeration unbounded — because the natural
+three-wire rules mention swaps and reversed CNOTs, which are words of
+length 5 and 3. With those as derived letters (`CXr i = HH i CX i HH i`,
+`SW i = CX i HH i CX i HH i CX i`), the 5898 relators of length at most 8
+that span the three wires, together with the two-wire rules at both
+placements and the structural rules, are **complete on three wires**,
+certified twice:
+
+| Subgroup K | Bound on K from its own rules | Index of K | Product |
+| --- | --- | --- | --- |
+| `X i`, `CX i`, `CCX 0` | 128 (enumeration over 1) | 5 443 200 | 696 729 600 |
+| the classical letters, S8 | 5040 · 8 = 40 320 | 17 280 | 696 729 600 |
+
+Both products are |W(E8)|. `minimise3.py` shrinks the set while both
+enumerations through S8 still pass (about 12 s per check).
