@@ -18,6 +18,7 @@ module Examples.Construct.SemiDirectProduct.SnD where
 open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Product using (_×_)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂)
+open import Data.Empty using (⊥-elim)
 open import Data.Unit using (⊤ ; tt)
 open import Function using (id ; _∘_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
@@ -51,7 +52,8 @@ private
   Γ₀ m = suc m Cn,_===_
 open import Examples.Groups.Symmetric.Syntactics
   using (Gate ; σ-gate ; Gen ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; σ ; _SRel,_===_
-        ; order ; yang-baxter ; padded₂ ; padded₃ ; top-view ; srel ; cong↑ ; comm₁ ; comm₂ ; _VRel,_===_)
+        ; order ; yang-baxter ; srel ; cong↓ ; cong↑ ; comm₁ ; comm₂ ; _VRel,_===_
+        ; _↧ ; _⇓ ; no-rel₀)
 
 ------------------------------------------------------------------------
 -- The coordinate action of Sₙ on (ℤ/Nℤ)ⁿ
@@ -177,13 +179,77 @@ actw-↑-inj₂ (w • w') y =
            (actw-↑-inj₂ w (actw w' y))
 
 ------------------------------------------------------------------------
+-- An idle wire on top (matches: cong↓)
+
+-- The coordinates of the wires below a new top one ...
+lo : ∀ {n} → ⊤ ⊎^ (₁₊ n) → ⊤ ⊎^ (₂₊ n)
+lo {zero} tt        = inj₁ tt
+lo {₁₊ n} (inj₁ tt) = inj₁ tt
+lo {₁₊ n} (inj₂ y)  = inj₂ (lo y)
+
+-- ... and the top one.
+hi : ∀ {n} → ⊤ ⊎^ (₂₊ n)
+hi {zero} = inj₂ tt
+hi {₁₊ n} = inj₂ hi
+
+data Coord {n} : ⊤ ⊎^ (₂₊ n) → Set where
+  low  : (y : ⊤ ⊎^ (₁₊ n)) → Coord (lo y)
+  high : Coord hi
+
+coord : ∀ {n} (x : ⊤ ⊎^ (₂₊ n)) → Coord x
+coord {zero} (inj₁ tt) = low tt
+coord {zero} (inj₂ tt) = high
+coord {₁₊ n} (inj₁ tt) = low (inj₁ tt)
+coord {₁₊ n} (inj₂ y) with coord y
+... | low y' = low (inj₂ y')
+... | high   = high
+
+-- A generator with an idle wire on top acts below it as before ...
+act-lo : ∀ {n} (g : Gen (₁₊ n)) (y : ⊤ ⊎^ (₁₊ n)) →
+         act (g ↧) (lo y) ≡ lo (act g y)
+act-lo {₁₊ zero}   (gate₂ σ-gate) (inj₁ tt)        = Eq.refl
+act-lo {₁₊ zero}   (gate₂ σ-gate) (inj₂ tt)        = Eq.refl
+act-lo {₂₊ n}      (gate₂ σ-gate) (inj₁ tt)        = Eq.refl
+act-lo {₂₊ n}      (gate₂ σ-gate) (inj₂ (inj₁ tt)) = Eq.refl
+act-lo {₂₊ n}      (gate₂ σ-gate) (inj₂ (inj₂ z))  = Eq.refl
+act-lo {₁₊ n}      (g ↥)          (inj₁ tt)        = Eq.refl
+act-lo {₁₊ n}      (g ↥)          (inj₂ y)         = Eq.cong inj₂ (act-lo g y)
+act-lo             (gate₀ ())     _
+act-lo             (gate₀ () ↥)   _
+
+-- ... and leaves the top coordinate alone.
+act-hi : ∀ {n} (g : Gen (₁₊ n)) → act (g ↧) (hi {n}) ≡ hi
+act-hi {₁₊ zero} (gate₂ σ-gate) = Eq.refl
+act-hi {₂₊ n}    (gate₂ σ-gate) = Eq.refl
+act-hi {₁₊ n}    (g ↥)          = Eq.cong inj₂ (act-hi g)
+act-hi           (gate₀ ())
+act-hi           (gate₀ () ↥)
+
+actw-lo : ∀ {n} (w : Word (Gen (₁₊ n))) (y : ⊤ ⊎^ (₁₊ n)) →
+          actw (w ⇓) (lo y) ≡ lo (actw w y)
+actw-lo [ g ]ʷ   y = act-lo g y
+actw-lo ε        y = Eq.refl
+actw-lo (c • c') y =
+  Eq.trans (Eq.cong (actw (c ⇓)) (actw-lo c' y)) (actw-lo c (actw c' y))
+
+actw-hi : ∀ {n} (w : Word (Gen (₁₊ n))) → actw (w ⇓) (hi {n}) ≡ hi
+actw-hi [ g ]ʷ   = act-hi g
+actw-hi ε        = Eq.refl
+actw-hi (c • c') = Eq.trans (Eq.cong (actw (c ⇓)) (actw-hi c')) (actw-hi c)
+
+------------------------------------------------------------------------
 -- The action respects the Coxeter relations, pointwise on coordinates
 
 actw-eq : ∀ {n} {c d : Word (Gen n)} → (n VRel, c === d)
         → ∀ x → actw c x ≡ actw d x
-actw-eq (srel r) x with top-view r
-... | padded₂ order       = sw₂-invol x
-... | padded₃ yang-baxter = braid x
+actw-eq (srel order)       x = sw₂-invol x
+actw-eq (srel yang-baxter) x = braid x
+actw-eq (cong↓ {n = zero} e) x = ⊥-elim (no-rel₀ e)
+actw-eq (cong↓ {n = ₁₊ m} {w = w} {v} e) x with coord x
+... | low y =
+  Eq.trans (actw-lo w y)
+    (Eq.trans (Eq.cong lo (actw-eq e y)) (Eq.sym (actw-lo v y)))
+... | high  = Eq.trans (actw-hi w) (Eq.sym (actw-hi v))
 actw-eq (cong↑ {n = zero}  e) x = Eq.refl
 actw-eq (cong↑ {n = ₁₊ m} {w = w} {v} e) (inj₁ tt) =
   Eq.trans (actw-↑-inj₁ w) (Eq.sym (actw-↑-inj₁ v))

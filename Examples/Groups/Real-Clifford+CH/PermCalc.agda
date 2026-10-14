@@ -37,7 +37,7 @@ open import Presentation.Definitions using (module _IsPresentationOf_)
 
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools ; Ex²)
-open import Examples.Groups.Real-Clifford+CH.TopWeakening using (nat)
+open import Examples.Groups.Real-Clifford+CH.TopWeakening using (nat ; top ; top-cong)
 open import Examples.Groups.Real-Clifford+CH.Weakening using (weaken)
 
 import Examples.Groups.Symmetric.Syntactics as S
@@ -65,6 +65,22 @@ net-↑ : (w : Word (S.Gen n)) → net (w S.↑) ≡ net w ↑
 net-↑ [ g ]ʷ  = Eq.refl
 net-↑ ε       = Eq.refl
 net-↑ (u • v) = Eq.cong₂ _•_ (net-↑ u) (net-↑ v)
+
+-- An idle wire on top of the permutation is one on top of its network.
+private
+  top-↑ : (w : Circuit n) → top (w ↑) ≡ top w ↑
+  top-↑ [ g ]ʷ  = Eq.refl
+  top-↑ ε       = Eq.refl
+  top-↑ (u • v) = Eq.cong₂ _•_ (top-↑ u) (top-↑ v)
+
+  φ-↧ : (g : S.Gen n) → φ (g S.↧) ≡ top (φ g)
+  φ-↧ (S.gate₂ S.σ-gate) = Eq.refl
+  φ-↧ (g S.↥)           = Eq.trans (Eq.cong _↑ (φ-↧ g)) (Eq.sym (top-↑ (φ g)))
+
+net-⇓ : (w : Word (S.Gen n)) → net (w S.⇓) ≡ top (net w)
+net-⇓ [ g ]ʷ  = φ-↧ g
+net-⇓ ε       = Eq.refl
+net-⇓ (u • v) = Eq.cong₂ _•_ (net-⇓ u) (net-⇓ v)
 
 ------------------------------------------------------------------------
 -- It respects the relations
@@ -106,9 +122,11 @@ private
     where open Tools ((₂₊ n) VRel,_===_)
 
 φ-ax : ∀ {u v : Word (S.Gen n)} → S._VRel,_===_ n u v → n ⊢ net u ≈ net v
-φ-ax (S.srel x) with S.top-view x
-... | S.padded₂ S.order       = Ex²
-... | S.padded₃ S.yang-baxter = braid
+φ-ax (S.srel S.order)       = Ex²
+φ-ax (S.srel S.yang-baxter) = braid
+φ-ax {₁₊ n} (S.cong↓ {w = w} {v = v} r) =
+  Eq.subst₂ (λ a b → (₁₊ n) ⊢ a ≈ b) (Eq.sym (net-⇓ w)) (Eq.sym (net-⇓ v))
+            (top-cong (φ-ax r))
 φ-ax {₁₊ n} (S.cong↑ {w = w} {v = v} r) =
   Eq.subst₂ (λ a b → (₁₊ n) ⊢ a ≈ b) (Eq.sym (net-↑ w)) (Eq.sym (net-↑ v))
             (lemma-cong↑ (net w) (net v) (φ-ax r))

@@ -12,6 +12,7 @@ import Relation.Binary.Reasoning.Setoid as SR
 import Examples.Groups.Cyclic.Normalization as Cyclic
 open import Presentation.Construct.Base
 import Presentation.Construct.Properties.SugarProduct as SP
+open import Data.Empty using (⊥-elim)
 open import Data.Unit using (⊤ ; tt)
 open import Data.Sum using (_⊎_ ; inj₁ ; inj₂ ; [_,_])
 open import Relation.Binary.PropositionalEquality as Eq renaming ([_] to [_]') using ( _≡_ ; inspect)
@@ -57,8 +58,8 @@ module Examples.Amalgamations.U33Di where
 -- Gen n generates Sₙ.
 module Sn where
   open SymS public
-    using (Gen ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; base ; cong↓ ; srel ; cong↑
-          ; comm₁ ; comm₂ ; _VRel,_===_)
+    using (Gen ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; cong↓ ; srel ; cong↑
+          ; comm₁ ; comm₂ ; _VRel,_===_ ; no-rel₁)
   open SymS using (σ-gate)
     renaming (order to order-ax ; yang-baxter to yb-ax)
 
@@ -69,9 +70,9 @@ module Sn where
   pattern _ₛ x        = x ↥
   -- The rules on their own wires, and order on the bottom two of
   -- three.
-  pattern order       = srel (base order-ax)
-  pattern order₃      = srel (cong↓ (base order-ax))
-  pattern yang-baxter = srel (base yb-ax)
+  pattern order       = srel order-ax
+  pattern order₃      = cong↓ (srel order-ax)
+  pattern yang-baxter = srel yb-ax
   pattern congₛ r     = cong↑ r
 
   -- The old [_⇑] was ([_]ʷ ∘ _ₛ) ʷ; the circuit framework's _↑ is the
@@ -791,13 +792,11 @@ module TwoLevel-Simplified-Amal where
       -- against a shifted generator, and deeper cong↑ towers.  Below
       -- width 2 there are neither generators nor relations, so every one
       -- of these bottoms out absurd.
-      h-wd-ax _ (right (Sn.srel (Sn.cong↓ (Sn.cong↓ (Sn.base ())))))
-      h-wd-ax _ (right (Sn.cong↑ (Sn.srel (Sn.cong↓ (Sn.base ())))))
-      h-wd-ax _ (right (Sn.srel (Sn.cong↓ (Sn.cong↓ (Sn.cong↓ (Sn.base ()))))))
-      h-wd-ax _ (right (Sn.cong↑ (Sn.srel (Sn.cong↓ (Sn.cong↓ (Sn.base ()))))))
-      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.base ())))))
-      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.cong↓ (Sn.base ()))))))
-      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.base ()))))))
+      h-wd-ax _ (right (Sn.cong↓ (Sn.cong↓ x))) = ⊥-elim (Sn.no-rel₁ x)
+      h-wd-ax _ (right (Sn.cong↓ (Sn.cong↑ x))) = ⊥-elim (Sn.no-rel₁ x)
+      h-wd-ax _ (right (Sn.cong↓ (Sn.comm₂ _ (Sn.gate₀ ()))))
+      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↓ x))) = ⊥-elim (Sn.no-rel₁ x)
+      h-wd-ax _ (right (Sn.cong↑ (Sn.cong↑ x))) = ⊥-elim (Sn.no-rel₁ x)
       h-wd-ax _ (right (Sn.cong↑ (Sn.comm₂ _ (Sn.gate₀ ()))))
       h-wd-ax _ (right (Sn.comm₂ _ ((Sn.gate₀ ()) Sn.ₛ)))
       h-wd-ax _ (mid (comm _ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ)))
@@ -815,11 +814,8 @@ module TwoLevel-Simplified-Amal where
       f-wd-ax {.([ [ inj₂ Sn.swap ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₂ Sn.swap ]ʷ ]ₗ)} (mid (comm (inj₂ Sn.swap) tt)) = by-equal-nf Eq.refl
 
       -- Same story one level down, at Sn.X 1 = Gen 2.
-      f-wd-ax (left (right (Sn.srel (Sn.cong↓ (Sn.base ())))))
-      f-wd-ax (left (right (Sn.srel (Sn.cong↓ (Sn.cong↓ (Sn.base ()))))))
-      f-wd-ax (left (right (Sn.cong↑ (Sn.srel (Sn.base ())))))
-      f-wd-ax (left (right (Sn.cong↑ (Sn.srel (Sn.cong↓ (Sn.base ()))))))
-      f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.base ()))))))
+      f-wd-ax (left (right (Sn.cong↓ x))) = ⊥-elim (Sn.no-rel₁ x)
+      f-wd-ax (left (right (Sn.cong↑ x))) = ⊥-elim (Sn.no-rel₁ x)
       f-wd-ax (left (right (Sn.comm₂ _ (Sn.gate₀ ()))))
       f-wd-ax (left (mid (comm _ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ))))
       f-wd-ax (mid (comm (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)) _))
@@ -1032,11 +1028,8 @@ module TwoLevel-Simplified-Amal where
       f-wd-ax {.([ [ inj₁ I ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₁ I ]ʷ ]ₗ)} (mid (comm (inj₁ I) tt)) = by-equal-nf Eq.refl
       f-wd-ax {.([ [ inj₂ Sn.swap ]ʷ ]ₗ • [ [ tt ]ʷ ]ᵣ)} {.([ [ tt ]ʷ ]ᵣ • [ [ inj₂ Sn.swap ]ʷ ]ₗ)} (mid (comm (inj₂ Sn.swap) tt)) = by-equal-nf Eq.refl
       
-      f-wd-ax (left (right (Sn.srel (Sn.cong↓ (Sn.base ())))))
-      f-wd-ax (left (right (Sn.srel (Sn.cong↓ (Sn.cong↓ (Sn.base ()))))))
-      f-wd-ax (left (right (Sn.cong↑ (Sn.srel (Sn.base ())))))
-      f-wd-ax (left (right (Sn.cong↑ (Sn.srel (Sn.cong↓ (Sn.base ()))))))
-      f-wd-ax (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.base ()))))))
+      f-wd-ax (left (right (Sn.cong↓ x))) = ⊥-elim (Sn.no-rel₁ x)
+      f-wd-ax (left (right (Sn.cong↑ x))) = ⊥-elim (Sn.no-rel₁ x)
       f-wd-ax (left (right (Sn.comm₂ _ (Sn.gate₀ ()))))
       f-wd-ax (left (mid (comm _ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ))))
       f-wd-ax (mid (comm (inj₂ ((Sn.gate₀ () Sn.ₛ) Sn.ₛ)) _))
@@ -1462,13 +1455,11 @@ module TwoLevel-Simplified-Amal where
     g-well-defined {w} {v} (mid (amal {inj₂ tt})) = _≈₁_.refl
     -- The Sₙ factor's shift tower and its structural rules, all absurd
     -- below width 2 (see the identical block in CA1/CA2 above).
-    g-well-defined (left (right (Sn.srel (Sn.cong↓ (Sn.cong↓ (Sn.base ()))))))
-    g-well-defined (left (right (Sn.cong↑ (Sn.srel (Sn.cong↓ (Sn.base ()))))))
-    g-well-defined (left (right (Sn.srel (Sn.cong↓ (Sn.cong↓ (Sn.cong↓ (Sn.base ())))))))
-    g-well-defined (left (right (Sn.cong↑ (Sn.srel (Sn.cong↓ (Sn.cong↓ (Sn.base ())))))))
-    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.base ()))))))
-    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.cong↓ (Sn.base ())))))))
-    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ (Sn.cong↑ (Sn.srel (Sn.base ())))))))
+    g-well-defined (left (right (Sn.cong↓ (Sn.cong↓ x)))) = ⊥-elim (Sn.no-rel₁ x)
+    g-well-defined (left (right (Sn.cong↓ (Sn.cong↑ x)))) = ⊥-elim (Sn.no-rel₁ x)
+    g-well-defined (left (right (Sn.cong↓ (Sn.comm₂ _ (Sn.gate₀ ())))))
+    g-well-defined (left (right (Sn.cong↑ (Sn.cong↓ x)))) = ⊥-elim (Sn.no-rel₁ x)
+    g-well-defined (left (right (Sn.cong↑ (Sn.cong↑ x)))) = ⊥-elim (Sn.no-rel₁ x)
     g-well-defined (left (right (Sn.cong↑ (Sn.comm₂ _ (Sn.gate₀ ())))))
     g-well-defined (left (right (Sn.comm₂ _ ((Sn.gate₀ ()) Sn.ₛ))))
     g-well-defined (left (mid (comm _ (((Sn.gate₀ () Sn.ₛ) Sn.ₛ) Sn.ₛ))))

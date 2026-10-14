@@ -13,6 +13,7 @@ open import Data.Nat using (ℕ ; zero ; suc)
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using (≡×≡⇒≡ ; Pointwise ; ≡⇒≡×≡)
+open import Data.Empty using (⊥-elim)
 open import Data.Unit using (⊤ ; tt)
 open import Function using (_∘_)
 open import Level using (0ℓ)
@@ -83,7 +84,7 @@ ract-sound {n} ε σ-gen = cong refl (sym right-unit)
   open PB P
 ract-sound {n} (σ• ε) σ-gen =
   trans (cong right-unit refl)
-        (trans (axiom (srel order↓)) (sym right-unit))
+        (trans (axiom order↓) (sym right-unit))
   where
   P = _VRel,_===_ (₂₊ n)
   open PB P
@@ -101,7 +102,7 @@ ract-sound {₁₊ n} (σ• σ• c) σ-gen = begin
     ≈⟨ cong refl (cong refl (comm-gate₂-w↑↑ σ-gate ([ c ]ᶜ))) ⟩
   σ • σ ↑ • σ • [ c ]ᶜ ↑ ↑ ≈⟨ sym (cong refl assoc) ⟩
   σ • (σ ↑ • σ) • [ c ]ᶜ ↑ ↑ ≈⟨ sym assoc ⟩
-  (σ • (σ ↑ • σ)) • [ c ]ᶜ ↑ ↑ ≈⟨ cong (axiom (srel yang-baxter↓)) refl ⟩
+  (σ • (σ ↑ • σ)) • [ c ]ᶜ ↑ ↑ ≈⟨ cong (axiom yang-baxter↓) refl ⟩
   (σ ↑ • σ • σ ↑) • [ c ]ᶜ ↑ ↑ ≈⟨ trans assoc (cong refl assoc) ⟩
   σ ↑ • σ • σ ↑ • [ c ]ᶜ ↑ ↑ ≡⟨ Eq.refl ⟩
   σ ↑ • σ • [ σ• c ]ᶜ ↑ ∎
@@ -307,6 +308,84 @@ ract-σ•ε-gg↥ {zero}  (gate₀ ())
 ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
 
 ------------------------------------------------------------------------
+-- The coset action with an idle wire on top
+
+-- The cosets of Sₙ in S_{n+1}, read one wire wider: the same
+-- transpositions, which leave the top wire alone ...
+_↓ᶜ : C n → C (₁₊ n)
+ε      ↓ᶜ = ε
+(σ• c) ↓ᶜ = σ• (c ↓ᶜ)
+
+-- ... and the one coset they miss, the transpositions all the way up.
+topᶜ : ∀ n → C n
+topᶜ ₀      = ε
+topᶜ (₁₊ n) = σ• topᶜ n
+
+data CView : C (₁₊ n) → Set where
+  low : (c : C n) → CView (c ↓ᶜ)
+  hi  : CView (topᶜ (₁₊ n))
+
+cview : (c : C (₁₊ n)) → CView c
+cview          ε      = low ε
+cview {₀}      (σ• ε) = hi
+cview {₁₊ n}   (σ• c) with cview c
+... | low c' = low (σ• c')
+... | hi     = hi
+
+-- Below the top coset a generator with an idle top wire acts as it
+-- does one width down ...
+ract-low : ∀ {n} (c : C (₁₊ n)) (g : Gen (₂₊ n)) →
+  ract {₁₊ n} (c ↓ᶜ) (g ↧) ≡
+  (proj₁ (ract {n} c g) ⇓ , proj₂ (ract {n} c g) ↓ᶜ)
+ract-low          ε          σ-gen = Eq.refl
+ract-low          (σ• ε)     σ-gen = Eq.refl
+ract-low {₁₊ n}   (σ• σ• c)  σ-gen = Eq.refl
+ract-low          ε          (g ↥) = Eq.refl
+ract-low {₀}      (σ• ε)     (gate₁ () ↥)
+ract-low {₀}      (σ• ε)     (gate₀ () ↥ ↥)
+-- (ract splits the inner coset too, so it is split here.)
+ract-low {₁₊ n}   (σ• ε)     (g ↥) =
+  Eq.trans (Eq.cong (λ p → proj₁ p ↑ , σ• proj₂ p) (ract-low ε g))
+           (Eq.cong₂ _,_ (Eq.sym (↑⇓ (proj₁ (ract ε g)))) Eq.refl)
+ract-low {₁₊ n}   (σ• σ• c)  (g ↥) =
+  Eq.trans (Eq.cong (λ p → proj₁ p ↑ , σ• proj₂ p) (ract-low (σ• c) g))
+           (Eq.cong₂ _,_ (Eq.sym (↑⇓ (proj₁ (ract (σ• c) g)))) Eq.refl)
+
+-- ... and the top coset carries it, unchanged, to the residual circuit.
+ract-top : ∀ {n} (g : Gen (₁₊ n)) →
+  ract {n} (topᶜ (₁₊ n)) (g ↧) ≡ ([ g ]ʷ , topᶜ (₁₊ n))
+ract-top {₀}    (gate₁ ())
+ract-top {₀}    (gate₀ () ↥)
+ract-top {₁₊ n} σ-gen = Eq.refl
+ract-top {₁₊ n} (g ↥) =
+  Eq.cong (λ p → proj₁ p ↑ , σ• proj₂ p) (ract-top g)
+
+-- The same for circuits.
+racts-low : ∀ {n} (c : C (₁₊ n)) (w : Circuit (₂₊ n)) →
+  let (w' , c') = (ract {n} ᵗ) c w
+  in (ract {₁₊ n} ᵗ) (c ↓ᶜ) (w ⇓) ≡ (w' ⇓ , c' ↓ᶜ)
+racts-low {n} c [ x ]ʷ = ract-low c x
+racts-low {n} c ε       = Eq.refl
+racts-low {n} c (w • v)
+  with racts-low c w | (ract ᵗ) c w | inspect ((ract ᵗ) c) w
+... | ih1 | w' , c0 | [ eq1 ]ₑ rewrite ih1 | eq1
+  with racts-low c0 v | (ract ᵗ) c0 v | inspect ((ract ᵗ) c0) v
+... | ih2 | v' , c1 | [ eq2 ]ₑ
+  rewrite eq2 | Eq.cong proj₁ ih2 | Eq.cong proj₂ ih2 = Eq.refl
+
+racts-top : ∀ {n} (w : Circuit (₁₊ n)) →
+  (ract {n} ᵗ) (topᶜ (₁₊ n)) (w ⇓) ≡ (w , topᶜ (₁₊ n))
+racts-top {n} [ x ]ʷ = ract-top x
+racts-top {n} ε       = Eq.refl
+racts-top {n} (w • v) with racts-top {n} w
+... | ih with racts-top {n} v
+... | ih' with racts (topᶜ (₁₊ n)) (w ⇓)
+... | (w' , ew) rewrite Eq.cong proj₁ ih | Eq.cong proj₂ ih
+                       | Eq.cong proj₁ ih' | Eq.cong proj₂ ih'
+              with racts (topᶜ (₁₊ n)) (v ⇓)
+... | (v' , ev) = Eq.refl
+
+------------------------------------------------------------------------
 -- Well-definedness of the coset action
 
 -- The coset action respects the raw relations: acting on a coset by
@@ -318,13 +397,21 @@ ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
 
     u === t → c ⊛ u ≋ c ⊛ t
 
--- A rule instance is matched through top-view, which reads it as the
--- rule on the bottom wires of the width it is used at.
+-- An idle wire on top: below the top coset the action is the one a
+-- width down, and the top coset strips the wire.
+⁻¹[⇑]-wd'' {₀}    c (cong↓ x) = ⊥-elim (no-rel₁ x)
+⁻¹[⇑]-wd'' {₁₊ n} c (cong↓ {w = w} {v} x) with cview c
+... | hi rewrite racts-top {₁₊ n} w | racts-top {₁₊ n} v = PB.axiom x , Eq.refl
+... | low c' with ⁻¹[⇑]-wd'' c' x
+... | (wv , eq0) rewrite racts-low c' w | racts-low c' v =
+  lemma-cong↓ _ _ wv , Eq.cong _↓ᶜ eq0
+
+-- A rule is matched at its own width: order on two wires, so at the
+-- cosets ε and σ• ε, yang-baxter on three, so also at σ• σ• ε.
 
 -- ε coset
-⁻¹[⇑]-wd'' {n} ε (srel x) with top-view x
-... | padded₂ order       = PB.left-unit , Eq.refl
-... | padded₃ yang-baxter =
+⁻¹[⇑]-wd'' ε (srel order) = PB.left-unit , Eq.refl
+⁻¹[⇑]-wd'' ε (srel yang-baxter) =
   PB.trans PB.left-unit
         (PB.trans PB.left-unit
           (PB.trans (PB.sym PB.right-unit)
@@ -338,55 +425,31 @@ ract-σ•ε-gg↥ {₁₊ n} g = Eq.refl
   = PB.axiom eq , Eq.refl
 
 -- σ• ε coset
-⁻¹[⇑]-wd'' {n} (σ• ε) (srel x) with top-view x
-... | padded₂ order       = PB.left-unit , Eq.refl
-... | padded₃ yang-baxter = PB.refl , Eq.refl
+⁻¹[⇑]-wd'' (σ• ε) (srel order)       = PB.left-unit , Eq.refl
+⁻¹[⇑]-wd'' (σ• ε) (srel yang-baxter) = PB.refl , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• ε) (comm₂ σ-gate g)
   rewrite ract-σ•ε-gg↥ g
   = PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (srel x)) with top-view x
-... | padded₂ order       = PB.left-unit , Eq.refl
-... | padded₃ yang-baxter =
-  PB.trans PB.left-unit
-        (PB.trans PB.left-unit
-          (PB.trans (PB.sym PB.right-unit)
-            (PB.cong PB.refl (PB.sym PB.left-unit))))
-    , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (comm₂ σ-gate g))
-  rewrite ract-σ•ε-gg↥ g
-  = PB.trans PB.right-unit (PB.sym PB.left-unit) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (srel x))) with top-view x
-... | padded₂ order rewrite ract-σ•1 {₁₊ n} ε σ-gen
-  = PB.axiom (cong↑ (srel order↓)) , Eq.refl
-... | padded₃ yang-baxter rewrite ract-σ•1 {₁₊ n} ε σ-gen
-  = PB.axiom (cong↑ (srel yang-baxter↓)) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (comm₂ σ-gate g)))
-  = PB.axiom (cong↑ (comm₂ σ-gate g)) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• ε) (cong↑ (cong↑ (cong↑ {w = w} {v} eq)))
-  rewrite ract-suc''' w | ract-suc''' v
-  = PB.axiom (cong↑ (cong↑ eq)) , Eq.refl
 
 -- σ• σ• c coset
-⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} ε) (srel x) with top-view x
-... | padded₂ order       = PB.axiom (srel order↓) , Eq.refl
-... | padded₃ yang-baxter =
+⁻¹[⇑]-wd'' (σ• σ• ε) (srel yang-baxter) =
   PB.trans (PB.cong PB.refl PB.right-unit)
       (PB.trans PB.right-unit
         (PB.trans (PB.sym PB.left-unit)
           (PB.cong PB.refl (PB.sym PB.left-unit))))
   , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} (σ• c)) (srel x) with top-view x
-... | padded₂ order       = PB.axiom (srel order↓) , Eq.refl
-... | padded₃ yang-baxter = PB.axiom (srel yang-baxter↓) , Eq.refl
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (gate₁ ()))
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {zero}   c) (comm₂ σ-gate (gate₀ () ↥))
 ⁻¹[⇑]-wd'' {n} (σ• σ•_ {₁₊ m} c) (comm₂ σ-gate g)
   rewrite ract-σ•1 c g
   = comm-gate₂-w↑↑ σ-gate (proj₁ (ract c g)) , Eq.refl
-⁻¹[⇑]-wd'' {n} (σ• σ•_ {n₁} c) (cong↑ {w = w} {v} eq)
-  with ⁻¹[⇑]-wd'' (σ• c) eq
+
+-- cong↑ at every coset but ε: one coset down, one wire down.
+⁻¹[⇑]-wd'' {₀}    (σ• ε) (cong↑ eq) = ⊥-elim (no-rel₁ eq)
+⁻¹[⇑]-wd'' {₁₊ n} (σ• c) (cong↑ {w = w} {v} eq)
+  with ⁻¹[⇑]-wd'' c eq
 ... | (wv , eq0)
-  rewrite ract-σ•1s (σ• c) w | ract-σ•1s (σ• c) v
+  rewrite ract-σ•1s c w | ract-σ•1s c v
   = lemma-cong↑ _ _ wv , Eq.cong σ•_ eq0
 
 ------------------------------------------------------------------------

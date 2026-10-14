@@ -7,7 +7,7 @@
 --
 -- Two steps.  sound-ax handles the RAW relation, one clause per rule --
 -- the two group-specific axioms by case analysis on Fin, comm₂ likewise,
--- and cong↑ by ⟦↑⟧ plus the induction hypothesis.  sound then closes it
+-- and cong↑ and cong↓ by ⟦↑⟧ and ⟦⇓⟧ plus the induction hypothesis.  sound then closes it
 -- under the monoid congruence, which is routine: every constructor of
 -- _≈_ maps to the corresponding fact about permutations.
 --
@@ -19,7 +19,7 @@
 
 module Examples.Groups.Symmetric.Soundness where
 
-open import Data.Fin using (Fin ; zero)
+open import Data.Fin using (Fin ; zero ; inject₁)
 open import Data.Fin.Permutation
   using (_⟨$⟩ʳ_ ; _∘ₚ_ ; lift₀-cong) renaming (id to idP)
 open import Notations using (₁₊ ; ₂₊ ; ₃₊)
@@ -62,9 +62,13 @@ sound-comm2 π (₂₊ k)    = refl
 
 sound-ax : ∀ {n} {w v : Circuit n} → n VRel, w === v →
            ∀ k → ⟦ w ⟧ ⟨$⟩ʳ k ≡ ⟦ v ⟧ ⟨$⟩ʳ k
-sound-ax (srel x) k with top-view x
-... | padded₂ order       = sound-order k
-... | padded₃ yang-baxter = sound-yb k
+sound-ax (srel order)       k = sound-order k
+sound-ax (srel yang-baxter) k = sound-yb k
+sound-ax (cong↓ {_} {w₀} {v₀} p) k with top-wire k
+... | below j =
+  Eq.trans (⟦⇓⟧ w₀ j)
+  (Eq.trans (Eq.cong inject₁ (sound-ax p j)) (Eq.sym (⟦⇓⟧ v₀ j)))
+... | top     = Eq.trans (⟦⇓⟧-top w₀) (Eq.sym (⟦⇓⟧-top v₀))
 sound-ax (cong↑ {_} {w₀} {v₀} p) k =
   Eq.trans (⟦↑⟧ w₀ k)
   (Eq.trans (lift₀-cong ⟦ w₀ ⟧ ⟦ v₀ ⟧ (sound-ax p) k)
