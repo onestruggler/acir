@@ -51,10 +51,11 @@ def norm(word):
     for g in word:
         if g[0] == 'CCZ': out.append(cczs(*g[1:]))
         elif g[0] == 'TOFF': out.append(('TOFF', g[1]) + tuple(sorted(g[2:])))
+        elif g[0] in ('CS', 'CSd', 'CZ', 'SWAP'): out.append((g[0],) + tuple(sorted(g[1:])))
         else: out.append(g)
     return out
 
-def support(g): return frozenset(g[1:])
+def support(g): return frozenset() if g[0] in ('iI', 'iIi') else frozenset(g[1:])
 def supp(word): return frozenset().union(*(support(g) for g in word)) if word else frozenset()
 
 INV = {'iI': 'iIi', 'iIi': 'iI', 'S': 'Sd', 'Sd': 'S', 'K': 'Kd', 'Kd': 'K', 'CS': 'CSd', 'CSd': 'CS',
@@ -64,27 +65,32 @@ def inv(word): return [(INV[g[0]],) + g[1:] for g in reversed(word)]
 
 def show(word): return ' '.join(g[0] + ''.join(str(w) for w in g[1:]) for g in word)
 
+DERIVATIONS = []
+
 class Derivation:
     def __init__(self, name, lhs, rhs, lemmas=None):
         self.name, self.lhs, self.rhs = name, norm(lhs), norm(rhs)
         self.cur = list(self.lhs); self.steps = []; self.lemmas = lemmas or {}
         assert fp(self.lhs) == fp(self.rhs), f'{name}: not semantically valid'
 
-    def _set(self, new, kind, info):
+    def _set(self, new, kind, info, k=None, n=None):
         new = norm(new)
         assert fp(new) == fp(self.cur), f'{self.name}: step {kind} {info} changes the operator'
-        self.steps.append((kind, info, list(self.cur), list(new))); self.cur = new
+        if k is not None:
+            seg = self.cur[k:k + n]; rep = new[k:len(new) - (len(self.cur) - k - n)]
+            self.steps.append((kind, k, n, list(seg), list(rep), info))
+        self.cur = new
 
     def win(self, i, j, rep):
         w = self.cur[i:j]; s = supp(w) | supp(rep)
         assert len(s) <= 3, f'{self.name}: window {show(w)} -> {show(rep)} on {sorted(s)} is not on three wires'
         assert fp(w) == fp(rep), f'{self.name}: window {show(w)} and {show(rep)} differ'
-        self._set(self.cur[:i] + list(rep) + self.cur[j:], 'win', (i, j, show(w), show(rep)))
+        self._set(self.cur[:i] + list(rep) + self.cur[j:], 'win', None, i, j - i)
 
     def comm(self, i):
         g, h = self.cur[i], self.cur[i + 1]
         assert not (support(g) & support(h)), f'{self.name}: {show([g])} and {show([h])} are not disjoint'
-        self._set(self.cur[:i] + [h, g] + self.cur[i + 2:], 'comm', i)
+        self._set(self.cur[:i] + [h, g] + self.cur[i + 2:], 'comm', None, i, 2)
 
     def delta(self, i, forward=True):
         """forward: CX_ab CCZ_buv CX_ab  ->  CCZ_buv CCZ_auv at position i; backward the reverse."""
@@ -95,7 +101,7 @@ class Derivation:
             assert b in ccz[1:] and a not in ccz[1:], f'{self.name}: delta needs the target in the CCZ, the control off it'
             u, v = [w for w in ccz[1:] if w != b]
             rep = [cczs(b, u, v), cczs(a, u, v)]
-            self._set(self.cur[:i] + rep + self.cur[i + 3:], 'delta', (i, show(self.cur[i:i + 3]), show(rep)))
+            self._set(self.cur[:i] + rep + self.cur[i + 3:], 'delta', True, i, 3)
         else:
             c1, c2 = self.cur[i:i + 2]
             assert c1[0] == 'CCZ' and c2[0] == 'CCZ', f'{self.name}: no CCZ CCZ at {i}'
@@ -104,7 +110,7 @@ class Derivation:
             assert len(common) == 2, f'{self.name}: the two CCZs must share two wires'
             (b,) = tuple(s1 - common); (a,) = tuple(s2 - common); u, v = sorted(common)
             rep = [('CX', a, b), ('CCZ', b, u, v), ('CX', a, b)]
-            self._set(self.cur[:i] + rep + self.cur[i + 2:], 'delta⁻¹', (i, show(self.cur[i:i + 2]), show(rep)))
+            self._set(self.cur[:i] + rep + self.cur[i + 2:], 'delta', False, i, 2)
 
     def l2(self, i, forward=True, a=None):
         """the Toffoli rule: TOFF(t;a,b) CCZ(t,a,c) TOFF(t;a,b) -> CCZ(t,a,c) CCZ(a,b,c)
@@ -120,7 +126,7 @@ class Derivation:
             a_ = ctrl[0]; b_ = c1 + c2 - a_
             (c_,) = [w for w in cz[1:] if w not in (t, a_)]
             rep = [cczs(t, a_, c_), cczs(a_, b_, c_)]
-            self._set(self.cur[:i] + rep + self.cur[i + 3:], 'l2', (i, show(self.cur[i:i + 3]), show(rep)))
+            self._set(self.cur[:i] + rep + self.cur[i + 3:], 'l2', True, i, 3)
         else:
             z1, z2 = self.cur[i:i + 2]
             assert z1[0] == 'CCZ' and z2[0] == 'CCZ', f'{self.name}: no CCZ CCZ at {i}'
@@ -128,18 +134,19 @@ class Derivation:
             assert len(common) == 2 and a in common, f'{self.name}: l2 backward needs two shared wires including a'
             (t,) = tuple(s1 - common); (b_,) = tuple(s2 - common); (c_,) = tuple(common - {a})
             rep = [('TOFF', t, a, b_), cczs(t, a, c_), ('TOFF', t, a, b_)]
-            self._set(self.cur[:i] + rep + self.cur[i + 2:], 'l2⁻¹', (i, show(self.cur[i:i + 2]), show(rep)))
+            self._set(self.cur[:i] + rep + self.cur[i + 2:], 'l2', False, i, 2)
 
     def lemma(self, name, i, forward=True):
         l, r = self.lemmas[name]
         src, dst = (norm(l), norm(r)) if forward else (norm(r), norm(l))
         assert self.cur[i:i + len(src)] == list(src), f'{self.name}: lemma {name} does not match at {i}: {show(self.cur[i:i+len(src)])}'
-        self._set(self.cur[:i] + list(dst) + self.cur[i + len(src):], 'lemma', (name, i, forward))
+        self._set(self.cur[:i] + list(dst) + self.cur[i + len(src):], 'lemma', (name, forward), i, len(src))
 
     def done(self):
         assert self.cur == self.rhs, f'{self.name}: not finished: at {show(self.cur)}, want {show(self.rhs)}'
         print(f'ok   {self.name}: {len(self.steps)} steps', flush=True)
         self.lemmas[self.name] = (self.lhs, self.rhs)
+        DERIVATIONS.append(self)
         return self.lemmas
 
 def ccz_sym(a, b, c, a2, b2, c2):

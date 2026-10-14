@@ -58,12 +58,9 @@ insʷ : (i : ℕ) → Circuit k → Circuit (₁₊ k)
 insʷ i = wmap (ins i)
 
 -- Whether a gate lies entirely below or entirely above wire i (so that
--- `ins i` is its placement).
+-- `ins i` is its placement); at i = 0 every gate does.
 avoids : (i : ℕ) → Gen k → Bool
-avoids zero          (gate₀ h) = true
-avoids zero          (gate₁ h) = false
-avoids zero          (gate₂ h) = false
-avoids zero          (g ↥)     = true
+avoids zero          _         = true
 avoids (suc i)       (gate₀ h) = true
 avoids (suc i)       (gate₁ h) = true
 avoids (suc zero)    (gate₂ h) = false

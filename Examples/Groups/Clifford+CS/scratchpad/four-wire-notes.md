@@ -577,3 +577,59 @@ V = U).  So ROT = K0 Swap13 U0 PP^-1 U0^-1 Swap13 K0^-1 and
 ROT^2 = E from PP^-2 = E (R0 and Lemma 1).  The same mechanism should
 give the hybrid's 2T relations: every gadget is a conjugate of PP by a
 Clifford on the target and swaps of the controls.
+
+## The derivations into Agda (scratchpad/four/, Four/, 2026-10-14)
+
+A deriv.py derivation is lowered to primitive steps (four/prim.py,
+four/lower.py) and written as an Agda module (four/emit.py), one per
+derivation (Four/D/Dnnn.agda, INDEX.txt maps the names), a chain of
+segment replacements over macro letters (Four/Chain.agda, Eq80's engine)
+in blocks of eight steps between explicit lines.  The macro letters
+(Four/Letters.agda, 99 of them) have canonical spellings: a gate on
+adjacent wires is the lifted basic word, a gate on wires further apart
+the gate one wire closer conjugated by the adjacent swap at its top
+(stacked swaps), a three-wire gate on 0 1 2 or 1 2 3 literal and the
+other two conjugates by one swap; mac.py checks every spelling against
+its operator.  The primitive steps and their Agda:
+
+  W  a literal window: the letters of the segment and the replacement are
+     spelled off one wire m, Windows.win at the width-3 words with wire m
+     deleted (tt tt for the avoidance, one Same evaluation);
+  C  a structural commutation, wires 0..i-1 against i..3: low1-comm,
+     low-comm, low3-comm (the last new, in Chain);
+  R  a re-bracketing, by-assoc Eq.refl (unfolding or folding a stack);
+  A  cx-ccz or toff-ccz at its canonical placement, Tools.ax;
+  L  an earlier lemma.
+
+A window whose letters are not spelled off one wire (a letter on wires
+0 3 is spelled through 1 2) is conjugated by the adjacent swap bringing
+its wires to 0 1 2 or 1 2 3, the swap pushed through every letter, and
+the window taken literally there; a rule at another placement is the
+canonical instance wrapped in the swaps of a word for the wire
+permutation (breadth-first search over permutations, the words tried in
+turn).  Pushing a swap through a letter: off the swap's wires it is a C
+or a W; a stack with that swap outside unfolds and cancels; a letter
+whose renaming is such a stack folds; a letter fitting with the swap in
+three wires is a W; a stack whose outer swap commutes with the pushed
+one is handled inside; the braid cases are found by a search over words
+of atoms (adjacent swaps and literal gates) with cancellations, the
+braid relation (a W on the top or bottom three wires), far
+commutations, a swap against a gate in a window, and one window on a
+whole word within three wires.  A three-wire letter is pushed through
+piece by piece (its stack distributed over its Barenco pieces, the
+renamed pieces collected again in the renamed letter's frame).  Two
+letters on disjoint wires covering all four commute by unfolding one
+and moving the other through its atoms.
+
+Sizes: 56 derivations, 599 high-level steps, 6175 primitive ones
+(2886 W, 1972 R, 1209 C, 23 A, 85 L); the longest, the swap
+conjugation of the rotation's K-form, 743.
+
+Two lessons from typechecking the generated modules: Windows.avoids was
+false for a gate at the bottom of a word inserted below wire 0 (place-gen
+zero never needed it), now true; and a lifted scalar iI ^ is a different
+generator from iI (only the structural rule omega^=omega relates them),
+so the scalar letters carry their lift (iota, iota1, ...), the basic-word
+builders of mac.py lift it with the gate, and a scalar's lift counts as
+its wire for the frame of a literal window.  Modules D001-D046 typecheck
+in about 40 s each (S3, 252 steps, in 222 s).
