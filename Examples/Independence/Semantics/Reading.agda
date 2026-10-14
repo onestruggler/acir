@@ -150,6 +150,16 @@ private
 Idₒ-ᵀ : RL.Idₒ {n} ᵀ RL.≐ RL.Idₒ
 Idₒ-ᵀ x y = δb-sym y x
 
+-- The transposed reading as a matrix: the empty value is the identity,
+-- and a product of values the product of the matrices, in order.
+matᵀ-ε : Mat.mat (⟪ O.εs {n} ⟫ ᵀ) ≡ 𝕀
+matᵀ-ε {n} = Eq.trans (Mat.mat-≐ {n} (RL.≐-trans (ᵀ-cong (⟪⟫-ε {n})) Idₒ-ᵀ)) (Mat.mat-Id {n})
+
+matᵀ-∙ : (s t : O.Sc n) → Mat.mat (⟪ s O.∙ t ⟫ ᵀ) ≡ Mat.mat (⟪ s ⟫ ᵀ) ·*· Mat.mat (⟪ t ⟫ ᵀ)
+matᵀ-∙ s t =
+  Eq.trans (Eq.sym (Mat.mat-≐ (RL.≐-trans (RL.≐-sym (ᵀ-⊙ ⟪ t ⟫ ⟪ s ⟫)) (ᵀ-cong (⟪⟫-∙ s t)))))
+           (Mat.mat-⊙ (⟪ s ⟫ ᵀ) (⟪ t ⟫ ᵀ))
+
 ------------------------------------------------------------------------
 -- Equal values, equal readings
 
@@ -271,15 +281,10 @@ module Transfer {Gate : ℕ → Set} (val : ∀ {k} → Prop.PGate Gate k → O.
 
     bridge : (w : Circuit n) → F (ℰʷ w) ≡ Mat.mat (⟪ ⟦ w ⟧ ⟫ ᵀ)
     bridge [ g ]ʷ  = gen g
-    bridge ε       =
-      Eq.trans F-ε (Eq.sym (Eq.trans (Mat.mat-≐ {n} (RL.≐-trans (ᵀ-cong (⟪⟫-ε {n})) Idₒ-ᵀ))
-                                     (Mat.mat-Id {n})))
+    bridge ε       = Eq.trans F-ε (Eq.sym (matᵀ-ε {n}))
     bridge (w • v) =
       Eq.trans (F-• (ℰʷ w) (ℰʷ v))
-      (Eq.trans (Eq.cong₂ _·*·_ (bridge w) (bridge v))
-      (Eq.trans (Eq.sym (Mat.mat-⊙ (⟪ ⟦ w ⟧ ⟫ ᵀ) (⟪ ⟦ v ⟧ ⟫ ᵀ)))
-                (Mat.mat-≐ (RL.≐-trans (RL.≐-sym (ᵀ-⊙ ⟪ ⟦ v ⟧ ⟫ ⟪ ⟦ w ⟧ ⟫))
-                                       (ᵀ-cong (⟪⟫-∙ ⟦ w ⟧ ⟦ v ⟧))))))
+      (Eq.trans (Eq.cong₂ _·*·_ (bridge w) (bridge v)) (Eq.sym (matᵀ-∙ ⟦ w ⟧ ⟦ v ⟧)))
 
     transfer : {w v : Circuit n} → ⟦ w ⟧ Exact.≈ ⟦ v ⟧ → F (ℰʷ w) ≡ F (ℰʷ v)
     transfer {w} {v} e =

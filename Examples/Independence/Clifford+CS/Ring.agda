@@ -19,7 +19,7 @@ module Examples.Independence.Clifford+CS.Ring where
 
 open import Algebra.Bundles using (CommutativeRing)
 open import Data.Integer.Base using (+_)
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl ; cong ; sym)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl ; cong ; sym ; trans)
 
 open import Quantum.Synthesis.Ring using (Omega ; Cplx ; Dyadic)
 open import Quantum.Synthesis.Ring.Properties using (commutativeRing-𝔻)
@@ -86,6 +86,24 @@ opaque
   -- i is ω².
   ι-i : ι CSR.ⅈ ≡ ωᴰ DR.* ωᴰ
   ι-i = refl
+
+  -- ω ∉ ℚ(i): ω x is in 𝔻[i] only for x = 0 (ω (x + iy) = xω + yω³).
+  odd-ι : (x y : CSR.D) → ωᴰ DR.* ι x ≡ ι y → x ≡ CSR.DR.0#
+  odd-ι (Cplx x y) (Cplx u v) e = Eq.cong₂ Cplx (trans (sym ec) (cong pc e)) (trans (sym ea) (cong pa e))
+    where
+    pa pc : D → Dyadic
+    pa (Omega a _ _ _) = a
+    pc (Omega _ _ c _) = c
+    ea : pa (ωᴰ DR.* ι (Cplx x y)) ≡ y
+    ea = solve 2 (λ x y →
+           (((con (+ 0) :* x) :+ (con (+ 0) :* con (+ 0))) :+ (con (+ 1) :* y)) :+
+             (con (+ 0) :* con (+ 0))
+           := y) refl x y
+    ec : pc (ωᴰ DR.* ι (Cplx x y)) ≡ x
+    ec = solve 2 (λ x y →
+           (((con (+ 1) :* x) :+ (con (+ 0) :* con (+ 0))) :- (con (+ 0) :* y)) :-
+             (con (+ 0) :* con (+ 0))
+           := x) refl x y
 
 ι-0 : ι CSR.DR.0# ≡ DR.0#
 ι-0 = refl
