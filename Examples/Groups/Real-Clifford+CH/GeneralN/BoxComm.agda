@@ -56,7 +56,7 @@ open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Algebra using (Bits)
 open import Examples.Groups.Real-Clifford+CH.MultiControlled using (swapAt ; Xat)
 open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools ; module Conj ; X² ; Ex²)
-open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (same-sem ; Evaluated)
+open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (same-sem ; Evaluated ; same-ev)
 open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Auxiliary complete₂ using (module N₁ ; module N₂)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Blocks complete₂ complete₃ using (module S₀₁)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Rotations3 complete₂ complete₃
@@ -113,14 +113,14 @@ module Base (comp₄ : Comp 4) where
 
   c335₁ : C335 1
   -- The words of the stored evaluation exactly: `Same` is never compared.
-  c335₁ (true ∷ r)  = comp₄ (same-sem (Λ□ 3 • col (true ∷ r) (Λ□ 3)) (col (true ∷ r) (Λ□ 3) • Λ□ 3) (Evaluated.same (d335 r)))
+  c335₁ (true ∷ r)  = comp₄ (same-ev (d335 r))
   c335₁ (false ∷ r) = trans (back _ e) (trans (c335₁ (true ∷ r)) (front _ (sym e)))
     where
     e : col (false ∷ r) (Λ□ 3) ≈ col (true ∷ r) (Λ□ 3)
     e = col-flip 0F (true ∷ r) xb
 
   c336₁ : C336 1
-  c336₁ (a ∷ true ∷ r)  = comp₄ (same-sem (Λ□ 3 • col (a ∷ true ∷ r) (B₁ 1)) (col (a ∷ true ∷ r) (B₁ 1) • Λ□ 3) (Evaluated.same (d336 a r)))
+  c336₁ (a ∷ true ∷ r)  = comp₄ (same-ev (d336 a r))
   c336₁ (a ∷ false ∷ r) = trans (back _ e) (trans (c336₁ (a ∷ true ∷ r)) (front _ (sym e)))
     where
     e : col (a ∷ false ∷ r) (B₁ 1) ≈ col (a ∷ true ∷ r) (B₁ 1)

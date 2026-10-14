@@ -51,6 +51,10 @@ record Evaluated {k : ℕ} (u v : Circuit k) : Set where
   field
     same : Same u v
 
+-- Its semantic equation, the words read off its type (see by-ev below).
+same-ev : ∀ {k} {u v : Circuit k} → Evaluated u v → ⟦ u ⟧ ~ ⟦ v ⟧
+same-ev {u = u} {v} e = same-sem u v (Evaluated.same e)
+
 -- Given completeness on k ≤ 4 wires.
 module Below (k : ℕ) (k≤4 : k ≤ 4)
              (complete : ∀ {u v : Circuit k} → ⟦ u ⟧ ~ ⟦ v ⟧ → k ⊢ u ≈ v) where
@@ -66,3 +70,19 @@ module Below (k : ℕ) (k≤4 : k ≤ 4)
   -- One wire up.
   by-sem↑ : (u v : Circuit k) → Same u v → ∀ {n} → (₁₊ (k +ℕ n)) ⊢ (u ↓ᵏ n) ↑ ≈ (v ↓ᵏ n) ↑
   by-sem↑ u v eq {n} = lemma-cong↑ (u ↓ᵏ n) (v ↓ᵏ n) (by-sem u v eq)
+
+  -- The same from an evaluation, its words read off its type.  Prefer
+  -- these to by-sem u v (Evaluated.same e): there u and v are
+  -- elaborated afresh, and where they differ from the evaluation's own
+  -- spelling at all (an implicit width, say) the two `Same`s are
+  -- compared by unfolding them, which runs the evaluation again (ZX353,
+  -- 7 s a step).  Here the words are compared as words.
+  by-ev₀ : ∀ {u v : Circuit k} → Evaluated u v → k ⊢ u ≈ v
+  by-ev₀ {u} {v} e = by-sem₀ u v (Evaluated.same e)
+
+  by-ev : ∀ {u v : Circuit k} → Evaluated u v → ∀ {n} → (k +ℕ n) ⊢ u ↓ᵏ n ≈ v ↓ᵏ n
+  by-ev {u} {v} e {n} = by-sem u v (Evaluated.same e) {n}
+
+  by-ev↑ : ∀ {u v : Circuit k} → Evaluated u v → ∀ {n} →
+           (₁₊ (k +ℕ n)) ⊢ (u ↓ᵏ n) ↑ ≈ (v ↓ᵏ n) ↑
+  by-ev↑ {u} {v} e {n} = by-sem↑ u v (Evaluated.same e) {n}
