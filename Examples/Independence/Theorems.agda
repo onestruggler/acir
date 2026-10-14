@@ -28,10 +28,13 @@
 -- presentations of their semantics; for CliffT₂ up to two wires,
 -- from Bian and Selinger's two-qubit presentation and the two-level
 -- presentations of U₂ and U₁ over ℤ[1/√2,i] (Clifford+T.Completeness);
--- and for CliffCS₂ up to three wires, from Bian and Selinger's
+-- for CliffCS₂ up to three wires, from Bian and Selinger's
 -- three-qubit presentation and the two-level presentations of U₄, U₂
 -- and U₁ over ℤ[½,i], with the sources' scalars i refined to ω
--- (Clifford+CS.Completeness).
+-- (Clifford+CS.Completeness); and for Cliff₃ at every width, from the
+-- presentation of the qutrit Clifford group modulo scalars by the rules
+-- of Paper-V0 at p = 3, whose decodings hold up to powers of ω, which
+-- the matrices then pin down (Qutrit-Clifford.Completeness).
 --
 -- Two departures from the paper.  The scalar of the qutrit axiom (E)
 -- is printed ω₁₂⁷ in Figure 4, which is unsound for the semantics of
@@ -75,6 +78,7 @@ import Examples.Independence.CNOT-Dihedral.Minimality   as CNOTdihe-Min
 
 import Examples.Independence.Clifford.Completeness      as Cliff-Cpl
 import Examples.Independence.Real-Clifford.Completeness as RCliff-Cpl
+import Examples.Independence.Qutrit-Clifford.Completeness as Cliff3-Cpl
 import Examples.Independence.Clifford+T.Completeness     as CliffT-Cpl
 import Examples.Independence.Clifford+CS.Completeness    as CliffCS-Cpl
 import Examples.Independence.CNOT-Dihedral.Completeness as CNOTdihe-Cpl
@@ -235,6 +239,26 @@ RCliff₂-minimal-complete :
   (∀ {n} {w v : RCliff.Circuit n} (ρ : RCliff._SRel,_===_ n w v) →
      ¬ RCliff-M.Complete-without ρ n)
 RCliff₂-minimal-complete = RCliff₂-complete , RCliff₂-necessary
+
+-- 3. Cliff₃ is complete, at every width: Paper-V0's rules at p = 3
+-- present the qutrit Clifford group modulo scalars (ProjectiveClifford.
+-- Qupit), and its axioms derive them, decoded, up to powers of ω (the
+-- paper's Appendix on qutrit Clifford circuits, and Knuth–Bendix
+-- completion on one wire); two circuits with equal matrices are then
+-- equal up to a power of ω, which has the identity's matrix and so is
+-- ε.
+Cliff₃-complete : {w v : Cliff3.Circuit n} →
+                  Cliff3-Sem.⟦ w ⟧ Cliff3-Sem.≈ Cliff3-Sem.⟦ v ⟧ → n Cliff3.⊢ w ≈ v
+Cliff₃-complete = Cliff3-Cpl.complete
+
+-- So Cliff₃ is complete, and a minimal complete presentation on two
+-- wires.
+Cliff₃-minimal-complete-upto-2 :
+  (∀ {n} {w v : Cliff3.Circuit n} →
+     Cliff3-Sem.⟦ w ⟧ Cliff3-Sem.≈ Cliff3-Sem.⟦ v ⟧ → n Cliff3.⊢ w ≈ v) ×
+  (∀ {n} {w v : Cliff3.Circuit n} (ρ : Cliff3._SRel,_===_ n w v) →
+     n ≤ 2 → ¬ Cliff3-M.Complete-without ρ n)
+Cliff₃-minimal-complete-upto-2 = Cliff₃-complete , Cliff₃-necessary
 
 -- 4. CliffT₂ is complete up to two qubit wires: on two, its axioms
 -- derive Bian and Selinger's, decoded (Appendices D.3 and G.4), whose
