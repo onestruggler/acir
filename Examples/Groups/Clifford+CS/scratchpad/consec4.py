@@ -551,3 +551,22 @@ if __name__ == '__main__':
 def all_facts():
     """the K-free consecutive facts at the canonical configurations."""
     return [F6(), F7a(), F7b(), F10()]
+
+# ------------------------------------------------------------ bridges to the decoding's gadgets
+SW01_, SW23_, CS12_ = ('SWAP', 0, 1), ('SWAP', 2, 3), ('CS', 1, 2)
+GPP_MACRO = norm([('TOFF', 0, 1, 2), SW01_, SW23_, CS12_, SW23_, SW01_,
+                  ('TOFF', 0, 1, 2), SW01_, SW23_, CS12_, CS12_, CS12_, SW23_, SW01_])
+
+def bridge_gpp():
+    """MultiControlled.G-pp 1 (unfolded to macro letters) -> the gadget's spelling."""
+    name = 'bridge G-pp'
+    if name in L: return name
+    d = Derivation(name, GPP_MACRO, G.core(0, 1), L)
+    d.swapconj(2, 1, 2); d.swapconj(1, 1, 0)            # Sw01 Sw23 CS12 Sw23 Sw01 -> CS03
+    d.swapconj(4, 3, 2); d.swapconj(3, 3, 0)            # ... CS12^3 ... -> CS03^3
+    d.win(3, 6, [('CSd', 0, 3)])
+    d.done(); return name
+
+def all_facts():
+    """the K-free consecutive facts at the canonical configurations, and the bridges."""
+    return [F6(), F7a(), F7b(), F10(), bridge_gpp()]
