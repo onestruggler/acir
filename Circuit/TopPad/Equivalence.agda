@@ -71,6 +71,18 @@ module Lift≅Top-Pad
   n ⊢ᴸ w ≈ v = PB._≈_ (n LRel,_===_) w v
   n ⊢ᵀ w ≈ v = PB._≈_ (n TRel,_===_) w v
 
+  -- For a rule whose words do not compute under ⇓ (a power with an
+  -- exponent that is not a numeral), the padded rule and the rule ⇓'d
+  -- go through equations between words, which Circuit.TopPad.Closed's
+  -- ⇓-same proves.
+  cong↓≡ : {w v : Circuit n} {w′ v′ : Circuit (₁₊ n)} →
+           w ⇓ ≡ w′ → v ⇓ ≡ v′ → n TRel, w === v → (₁₊ n) TRel, w′ === v′
+  cong↓≡ Eq.refl Eq.refl r = T.cong↓ r
+
+  axiom≡ : {x y w′ v′ : Circuit n} →
+           x ≡ w′ → y ≡ v′ → n LRel, w′ === v′ → n ⊢ᴸ x ≈ y
+  axiom≡ Eq.refl Eq.refl r = PB.axiom r
+
   record SameRules : Set where
     field
       pad    : ∀ {n} {w v : Circuit n} → n SRel, w === v → n ⊢ᵀ w ≈ v
