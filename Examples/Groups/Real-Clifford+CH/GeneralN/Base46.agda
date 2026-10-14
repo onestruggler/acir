@@ -19,10 +19,17 @@
 module Examples.Groups.Real-Clifford+CH.GeneralN.Base46 where
 
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import Word.Base using (ε ; _•_)
+open import Data.Bool using (true)
+open import Data.List using (List ; [] ; _∷_ ; map)
+open import Data.Nat using (ℕ)
+open import Data.Product using (_×_ ; _,_)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (Evaluated ; evaluated)
+open import Examples.Groups.Real-Clifford+CH.Interpretation using (len)
+open import Examples.Groups.Real-Clifford+CH.Evaluation using (⟦_⟧R)
+open import Examples.Groups.Real-Clifford+CH.ProdEval using (allOK ; fam-eval)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (P₁₃)
 
 ------------------------------------------------------------------------
@@ -50,11 +57,52 @@ Vo′ = (PP ↑ • b₀₁ • PP ↑) • b₀₀
 ------------------------------------------------------------------------
 -- The splitting over wire 0
 
+-- The four equations with the box are one family over shared factors,
+-- each read once (ProdEval); bb reads the box once for all of them.
+private
+  F : List (Circuit 4)
+  F = Ex ↑ ∷ Ex ∷ Ex ↑ ↑ ∷ bb ∷ X ↑ ↑ ∷ X ∷ CZ ↑ ∷ PP ↑ ∷ Λ□ 3 ∷ []
+
+  ex₁ ex ex₂ bbᵉ x₂ x cz pp box : Word ℕ
+  ex₁ = [ 0 ]ʷ
+  ex  = [ 1 ]ʷ
+  ex₂ = [ 2 ]ʷ
+  bbᵉ = [ 3 ]ʷ
+  x₂  = [ 4 ]ʷ
+  x   = [ 5 ]ʷ
+  cz  = [ 6 ]ʷ
+  pp  = [ 7 ]ʷ
+  box = [ 8 ]ʷ
+
+  πaᵉ πa′ᵉ πbᵉ πb′ᵉ b₁₀ᵉ b₀₁ᵉ b₀₀ᵉ ζᵉ ηᵉ Voᵉ Vcᵉ Vo′ᵉ : Word ℕ
+  πaᵉ  = ex₁ • ex • ex₂ • ex₁ • ex₂
+  πa′ᵉ = ex₂ • ex₁ • ex₂ • ex • ex₁
+  πbᵉ  = ex₁ • ex • ex₁ • ex₂
+  πb′ᵉ = ex₂ • ex₁ • ex • ex₁
+  b₁₀ᵉ = x₂ • bbᵉ • x₂
+  b₀₁ᵉ = x • bbᵉ • x
+  b₀₀ᵉ = x • b₁₀ᵉ • x
+  ζᵉ   = x₂ • cz • x₂
+  ηᵉ   = pp • cz • pp
+  Voᵉ  = b₀₀ᵉ • (pp • b₀₁ᵉ • pp)
+  Vcᵉ  = b₁₀ᵉ • (pp • bbᵉ • pp)
+  Vo′ᵉ = (pp • b₀₁ᵉ • pp) • b₀₀ᵉ
+
+  E : List (Word ℕ × Word ℕ)
+  E = (ζᵉ • ηᵉ , Voᵉ • Vcᵉ)
+    ∷ (Vcᵉ • ηᵉ • ζᵉ , Vo′ᵉ)
+    ∷ (πaᵉ • bbᵉ • πa′ᵉ , box)
+    ∷ (πbᵉ • bbᵉ • πb′ᵉ , box)
+    ∷ []
+
+  all46 : allOK (map ⟦_⟧R F) (map len F) E ≡ true
+  all46 = Eq.refl
+
 e-ζη : Evaluated (ζ • η) (Vo • Vc)
-e-ζη = evaluated Eq.refl
+e-ζη = fam-eval F E all46 0
 
 e-Vc : Evaluated (Vc • η • ζ) Vo′
-e-Vc = evaluated Eq.refl
+e-Vc = fam-eval F E all46 1
 
 ------------------------------------------------------------------------
 -- The two relabellings
@@ -72,10 +120,10 @@ eb₂ : Evaluated (πb′ • πb) ε
 eb₂ = evaluated Eq.refl
 
 ea-bb : Evaluated (πa • bb • πa′) (Λ□ 3)
-ea-bb = evaluated Eq.refl
+ea-bb = fam-eval F E all46 2
 
 eb-bb : Evaluated (πb • bb • πb′) (Λ□ 3)
-eb-bb = evaluated Eq.refl
+eb-bb = fam-eval F E all46 3
 
 ea-X : Evaluated (πa • X • πa′) (X ↑ ↑)
 ea-X = evaluated Eq.refl

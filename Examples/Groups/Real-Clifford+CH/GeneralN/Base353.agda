@@ -21,10 +21,17 @@
 module Examples.Groups.Real-Clifford+CH.GeneralN.Base353 where
 
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
-open import Word.Base using (ε ; _•_)
+open import Data.Bool using (true)
+open import Data.List using (List ; [] ; _∷_ ; map)
+open import Data.Nat using (ℕ)
+open import Data.Product using (_×_ ; _,_)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (Evaluated ; evaluated)
+open import Examples.Groups.Real-Clifford+CH.Interpretation using (len)
+open import Examples.Groups.Real-Clifford+CH.Evaluation using (⟦_⟧R)
+open import Examples.Groups.Real-Clifford+CH.ProdEval using (allOK ; fam-eval)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (P₁₃)
 
 -- The transposition of the wires 1 3.
@@ -41,17 +48,39 @@ Lm = X ↑ ↑ • (P₁₃ • (Ex ↓ • Λ□ 3 • Ex ↓) • P₁₃) •
 H○ = φ Lm
 H● = X ↑ ↑ • H○ • X ↑ ↑
 
+-- The five equations are one family over the factors H○, X ↑ ↑, CH ↓
+-- and Ex ↑ (H● being X ↑ ↑ • H○ • X ↑ ↑), decided by one boolean that
+-- reads the box in H○ once (ProdEval).
+private
+  F : List (Circuit 4)
+  F = H○ ∷ X ↑ ↑ ∷ CH ↓ ∷ Ex ↑ ∷ []
+
+  h○ h● : Word ℕ
+  h○ = [ 0 ]ʷ
+  h● = [ 1 ]ʷ • [ 0 ]ʷ • [ 1 ]ʷ
+
+  E : List (Word ℕ × Word ℕ)
+  E = ([ 2 ]ʷ , h● • h○)
+    ∷ (h○ • h● , h● • h○)
+    ∷ (h○ • h○ , ε)
+    ∷ (h● • h● , ε)
+    ∷ ([ 3 ]ʷ • h● • [ 3 ]ʷ , h●)
+    ∷ []
+
+  all353 : allOK (map ⟦_⟧R F) (map len F) E ≡ true
+  all353 = Eq.refl
+
 e-CH : Evaluated (CH ↓) (H● • H○)
-e-CH = evaluated Eq.refl
+e-CH = fam-eval F E all353 0
 
 e-comm : Evaluated (H○ • H●) (H● • H○)
-e-comm = evaluated Eq.refl
+e-comm = fam-eval F E all353 1
 
 e-○² : Evaluated (H○ • H○) ε
-e-○² = evaluated Eq.refl
+e-○² = fam-eval F E all353 2
 
 e-●² : Evaluated (H● • H●) ε
-e-●² = evaluated Eq.refl
+e-●² = fam-eval F E all353 3
 
 e-S : Evaluated (Ex ↑ • H● • Ex ↑) H●
-e-S = evaluated Eq.refl
+e-S = fam-eval F E all353 4

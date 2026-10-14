@@ -31,6 +31,7 @@ open import Word.Base using (_•_)
 
 open import Examples.Groups.Real-Clifford+CH.Semantics hiding (_^_ ; ^-+)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Decide using (eqM ; eqM-sound)
+open import Examples.Groups.Real-Clifford+CH.Semantics.Sparse using (mulS ; mulS-ok)
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.Interpretation using (⟦_⟧M ; len)
 open import Examples.Groups.Real-Clifford+CH.Evaluation using (⟦_⟧R ; ⟦⟧R≡⟦⟧M)
@@ -41,9 +42,10 @@ private
   variable
     k : ℕ
 
--- Two stored matrices commute.
+-- Two stored matrices commute (the products by Semantics.Sparse.mulS,
+-- which skips zero entries).
 Comm : Mat k → Mat k → Bool
-Comm A B = eqM (mulM A B) (mulM B A)
+Comm A B = eqM (mulS A B) (mulS B A)
 
 -- A commutation of words, from its factors' matrices.
 comm-evaluated : (A B : Circuit k) → Comm ⟦ A ⟧R ⟦ B ⟧R ≡ true →
@@ -52,7 +54,9 @@ comm-evaluated A B h = evaluated (≡-same (A • B) (B • A) e)
   where
   p : mulM ⟦ A ⟧M ⟦ B ⟧M ≡ mulM ⟦ B ⟧M ⟦ A ⟧M
   p = Eq.subst₂ (λ X Y → mulM X Y ≡ mulM Y X) (⟦⟧R≡⟦⟧M A) (⟦⟧R≡⟦⟧M B)
-                (eqM-sound (mulM ⟦ A ⟧R ⟦ B ⟧R) (mulM ⟦ B ⟧R ⟦ A ⟧R) h)
+                (Eq.trans (Eq.sym (mulS-ok ⟦ A ⟧R ⟦ B ⟧R))
+                  (Eq.trans (eqM-sound (mulS ⟦ A ⟧R ⟦ B ⟧R) (mulS ⟦ B ⟧R ⟦ A ⟧R) h)
+                            (mulS-ok ⟦ B ⟧R ⟦ A ⟧R)))
 
   e : scaleM (√2^ len (B • A)) ⟦ A • B ⟧M ≡ scaleM (√2^ len (A • B)) ⟦ B • A ⟧M
   e = Eq.cong₂ (λ n M → scaleM (√2^ n) M) (+ℕ-comm (len B) (len A)) p
