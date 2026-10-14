@@ -434,3 +434,35 @@ is derivable from the three-qubit rules) would need a model, as in
 Independence/; soundness of any schema is one evaluation per width
 (Soundness.Relators) only if stated at a fixed width, otherwise a proof
 on controlled forms as Clement's box-Z.
+
+## The three-qubit rules are incomplete at four qubits: the CS parity (parity.py, grpTC.py)
+
+The number of CS gates mod 2 is invariant under every rule of
+Syntactics (each has an even difference of CS gates between its sides,
+in the Agda spellings CX = K^ CS CS K^ i, Swap = CX^3, X = K S S K i),
+and under the structural rules; at width 3 it is the determinant, which
+is why it survives completeness there.  At width 4 the determinant of
+every generator is 1 and the parity is no longer semantic: the true
+identity
+
+    CX_32 . CCZ_012 . CX_32  =  CCZ_012 . CCZ_013
+
+(a CNOT carries the CCZ on its target to the product of two CCZs; the
+phase polynomial (-1)^{x0 x1 (x2 xor x3)}) has 25 CS gates on one side
+and 42 on the other, so it is underivable: the three-qubit rules are
+provably incomplete at four qubits, and any complete rule set needs a
+rule with an odd CS difference.  Among all true identities of at most
+three macro gates on four wires (CX, CS, Swap, S, K, X, CCZ, Toffoli),
+the ones with odd parity are exactly the 276 placements of that
+equation (CCZ_abc CCZ_abd CX_cd = CX_cd CCZ_abd and its variants), which
+makes it the natural candidate schema.  The Toffoli form
+CX_31 Toff(0;1,2) CX_31 = Toff(0;1,2) Toff(0;3,2) is its K-conjugate.
+
+The phase gadget's own identity (TC)^2 = (CT)^2 (T = Toff(0;1,2),
+C = CS_03) has even parity and is not touched by this invariant;
+<T, C> has order 32 with that identity as its only defining relation
+beyond T^2 = C^4 = 1 (grpTC.py).  Pushing C through Barenco's
+decomposition of T leaves corrections Lambda_13(M_0) with
+M = V^-1 S V S^-1 never diagonal (barenco.py), and reduces to the CCZ
+control-XOR identity above, so the schema is where its derivation will
+have to start.
