@@ -185,6 +185,15 @@ CXd↓⁼ = derive
    ∷ rw 4 σσ⁼ ∷ [])
   refl
 
+CX20s⁼ : Eqn (₃₊ n)
+CX20s⁼ = derive
+  (σₗ ∷ Hₗ ↥ ∷ CSₗ ↥ ∷ CSₗ ↥ ∷ Hₗ ↥ ∷ σₗ ∷ [])
+  (Hₗ ∷ σₗ ∷ CSₗ ↥ ∷ σₗ ∷ σₗ ∷ CSₗ ↥ ∷ σₗ ∷ Hₗ ∷ [])
+  (rw 4 (sym⁼ σH′⁼)
+   ∷ rw 0 (sym⁼ σH⁼)
+   ∷ rw 3 (sym⁼ σσ⁼) ∷ [])
+  refl
+
 DC4⁼ : Eqn (₁₊ n)
 DC4⁼ = derive
   (Sₗ ∷ Hₗ ∷ Sₗ ∷ Hₗ ∷ Sₗ ∷ Hₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ ωₗ ∷ [])
@@ -1141,15 +1150,6 @@ DC14⁼ = derive
    ∷ rw 2 DC12ˢ¹⁼
    ∷ rw 1 (sym⁼ CZcxˢ⁰¹⁰⁼)
    ∷ rw 7 CX2↓⁼ ∷ [])
-  refl
-
-CX20s⁼ : Eqn (₃₊ n)
-CX20s⁼ = derive
-  (σₗ ∷ Hₗ ↥ ∷ CSₗ ↥ ∷ CSₗ ↥ ∷ Hₗ ↥ ∷ σₗ ∷ [])
-  (Hₗ ∷ σₗ ∷ CSₗ ↥ ∷ σₗ ∷ σₗ ∷ CSₗ ↥ ∷ σₗ ∷ Hₗ ∷ [])
-  (rw 4 (sym⁼ σH′⁼)
-   ∷ rw 0 (sym⁼ σH⁼)
-   ∷ rw 3 (sym⁼ σσ⁼) ∷ [])
   refl
 
 CZcxˢ¹⁼ : Eqn (₃₊ n)
