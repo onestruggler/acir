@@ -403,3 +403,34 @@ two orientations of the rotation.  The shrink rules px-shrink_3/_4
 (from the top) are then genuine obligations of Lemma 8.8, unlike in
 Clement's theory where the parity conditions make exactly one shrink
 rule apply.
+
+## Lemma 8.8 at n = 4: local search does not reach the identities (prover.py, prover2.py)
+
+A prover by 3-wire window rewrites — every step a Lemma 5.1 step at
+width 3 (commute two gates on disjoint wires, delete or canonicalise a
+window on three wires through a dictionary of shortest words, pass a
+gate through a neighbour) — explored 100k–250k words for each of the
+first canonical identities (the phase gadget times its flip, its fourth
+power, two adjacent phase gadgets commuting, the rotation times its
+flip, PP^2 = ROT^2) without reaching them (prover2.py, fingerprints over
+F_p; 13 minutes).  The identities are genuinely 4-wire: with
+T = Toff(0;1,2) and C = CS_03, PP = [T, C], and PP . PP' = eps reduces by
+3-wire steps to "C commutes with T C T", i.e. (conjugating by K_0, with
+G = Lambda_3(U_0), U = K^-1 S K, U^2 = X, and D = CCZ) to "G commutes
+with [D, G]" — a 2-wire gate against a commutator of a 3-wire gate with
+itself, with no idle wire anywhere.  This is the shape of Clement's
+schema (19) (Z on the box wire passes the box, equivalently the box
+passes the CZ of its box wire and a fifth wire, (249)/(272)), which he
+needs as an axiom from five wires on; here it appears at four.
+
+So the next design question is the schema: which identities of that
+shape to add to Syntactics at every width n >= 4 (candidates: a gate on
+the box wire U passes the Z-box, as Clement's (19); or directly the
+phase gadget commuting with the CS of its target and its S-box's idle
+wire), chosen so that the rest of Lemma 8.8 follows by his method —
+the box recursions expanded, all pairs of letters commuting by Lemma
+5.1 or by the statement one width down.  Independence (that no schema
+is derivable from the three-qubit rules) would need a model, as in
+Independence/; soundness of any schema is one evaluation per width
+(Soundness.Relators) only if stated at a fixed width, otherwise a proof
+on controlled forms as Clement's box-Z.
