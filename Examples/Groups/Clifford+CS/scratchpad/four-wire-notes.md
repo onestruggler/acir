@@ -355,3 +355,51 @@ matrix (hyb2.py).  So the n = 4 caveat of construction (6) is gone: no
 gadgets.py also checks the recursions as circuits: Clement's box
 Lambda-box k (W B V B), the rotation [CK, Ex box] = L^k(XZ), and the
 Toffoli K box K^-1, at every k <= 5.
+
+## The decoding, defined and checked (dec.py, 2026-10-14)
+
+dec.py is the blueprint of the Agda decoding: every letter at n = 4
+(pp 256, px 1920, dx 120 sampled, ki 1920 cases) and samples at n = 5
+decode to the letter's matrix at the Gray numbering.  Frames (width
+m + 3; U the box wire of the Z-box, A the borrowed wire, T the target):
+
+    Sbox m  [U=0, T=1, c=2..m+1, A=m+2]
+            = box(m+2) . [Toff(A; m, m+1), tau(m,m+2)(Sbox(m-1) with an idle wire on top)]
+    Kbox m  [U=0, A=1, c=2..m+1, T=m+2]
+            = Sbox(m)^3 . [Toff(A; 2, 3), tau(1,3)(Kbox(m-1) one wire up)]
+
+from L^m(S) = Zbox . [L_{C1}X_A, L_{C2+A}S_T] and L^m(K) = L_C(S_A)^3 .
+[L_{C1}X_A, L_{C2+A}K_T] (the general identity [L_{C2+a}G_t, L_{C1}X_a]
+= L_C(G_t)^-1 . L_{C+a}(G^2_t)); the K recursion's correction is the
+S-box in its own frame exactly, each recursion's child is placed by one
+transposition at distance two (Clement's tau_02 pattern), and the
+Toffolis are adjacent.  Base gadgets at width n, target 0, controls
+1..n-1 (the S-/K-box re-framed by one cycle of the control wires):
+
+    G_pp  = [Toff(0;1,2), L_{3..}(S_0)]                 i at bit 0 of the target
+    G_rot = CK(1->0) B S_1 CK(1->0) B, B = Ex-conj(box(n-1))      = L^{n-1}(XZ)
+    G_ki  = [Barenco(V = S^2 K S; 0; 1, 2), L_{3..}(K_0)]   = K_[a,b] i_a^-1, a at bit 1
+
+A letter on a consecutive pair is the gadget placed by the layout of
+the pair's codes (target where they differ, X on the white controls)
+and oriented by the bit of the first index at the target (X on the
+target): pp a (a+1) wants bit 0, the rotation (-1)_a X is XZ at bit 0,
+the hybrid wants bit 1.  Then, in written order:
+
+    pp a b    = the consecutive gadgets from a up to b, or the flipped
+                ones from b up to a
+    px a a b  = hi1 a . px (a+1) (a+1) b . lo1 a        (px-shrink_1, no parity)
+    px b a b  = hi1 a . px (a+1) b (a+1)... i.e. hi1 a . hi(a+1) . lo1 a   (px-shrink_2)
+    px c a b  = pp c a . pp c a . px a a b               (px-sign)
+    dx a b c d = px a a b . px b c d                      (dx-split)
+    ki a b a  = hi1 a . ki (a+1) b (a+1) . lo1 a   for b > a + 1: the rotation
+                (-1)_{a+1} X_{a,a+1} carries K_[a+1,b] i_{a+1}^-1 to
+                K_[a,b] i_a^-1, the sink travelling with the pair, so no
+                fresh index is needed; consecutive: the hybrid gadget
+    ki a b s  = ki a b a . pp a s                          (ki-sink)
+
+where lo1 a = (-1)_a X_{a,a+1} and hi1 a = (-1)_{a+1} X_{a,a+1} are the
+two orientations of the rotation.  The shrink rules px-shrink_3/_4
+(from the top) are then genuine obligations of Lemma 8.8, unlike in
+Clement's theory where the parity conditions make exactly one shrink
+rule apply.
