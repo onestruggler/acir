@@ -23,15 +23,15 @@
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
-open import Data.Nat using (ℕ ; suc)
+open import Data.Nat using (ℕ ; suc ; _∸_)
 
 module Circuit.TopPad.Closed (Gate : ℕ → Set) where
 
 open import Agda.Builtin.Reflection using (withReduceDefs)
 open import Data.Bool using (Bool ; true ; false)
-open import Data.List using (List ; [] ; _∷_)
+open import Data.List using (List ; [] ; _∷_ ; map ; drop ; length)
 open import Data.Maybe using (Maybe ; just ; nothing)
-open import Data.Product using (_,_)
+open import Data.Product using (_×_ ; _,_)
 open import Data.Unit using (⊤)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Relation.Nullary using (does)
@@ -111,7 +111,12 @@ private
   -- yet known waits until it is.
   whnf     : ℕ → Term → TC Term
   whnf-def : ℕ → Name → List (Arg Term) → Bool → Bool → TC Term
-  whnf-go  : ℕ → Name → Term → Bool → TC Term
+  -- t, f unfolded, if that got past f; otherwise u, f not unfolded.
+  whnf-go  : ℕ → Name → Term → Term → Bool → TC Term
+  -- Restricted unfolding does not take a record pattern apart (a case
+  -- split on a decision): failing it, plain weak head reduction, kept
+  -- only if it gets past f.
+  whnf-or  : ℕ → Name → Term → Term → Bool → TC Term
 
   whnf 0       t          = pure t
   whnf (suc k) (meta m _) = blockOnMeta m
@@ -123,19 +128,24 @@ private
     unfold f (def f (set-last as u))
   whnf-def k f as false true = do
     t ← unfold f (def f as)
-    whnf-go k f t (unfolded f t)
+    whnf-go k f t (def f as) (unfolded f t)
   whnf-def k f as false false = do
     ty ← inferType (def f as) >>= reduce
-    whnf-word k f as (word-type ty)
+    whnf-word (word-type ty)
     where
-    whnf-word : ℕ → Name → List (Arg Term) → Bool → TC Term
-    whnf-word k f as true  = do
+    whnf-word : Bool → TC Term
+    whnf-word true  = do
       t ← unfold f (def f as)
-      whnf-go k f t (unfolded f t)
-    whnf-word k f as false = pure (def f as)
+      whnf-or k f t (def f as) (unfolded f t)
+    whnf-word false = pure (def f as)
 
-  whnf-go k f t true  = whnf k t
-  whnf-go k f t false = pure t
+  whnf-go k f t u true  = whnf k t
+  whnf-go k f t u false = pure u
+
+  whnf-or k f t u true  = whnf k t
+  whnf-or k f t u false = do
+    t′ ← reduce u
+    whnf-go k f t′ u (unfolded f t′)
 
   -- The shapes a word can take, in weak head normal form.
   data Shape : Set where
@@ -172,44 +182,66 @@ private
     just (def (quote Eq.cong₂) (vArg (con (quote _•_) []) ∷
                                 vArg (refl-or p) ∷ vArg (refl-or q) ∷ []))
 
+  -- A word chosen by a case split on a label is stuck for good: a lemma
+  -- (f , f-⇓ , k) says that f-⇓, applied to the last k visible
+  -- arguments of f, proves (f …) ⇓ ≡ f ….
+  Lemma : Set
+  Lemma = Name × Name × ℕ
+
+  lemma-for : Name → List Lemma → Maybe (Name × ℕ)
+  lemma-for f []                = nothing
+  lemma-for f ((g , l , k) ∷ T) with f is g
+  ... | true  = just (l , k)
+  ... | false = lemma-for f T
+
+  last : ℕ → List Term → List Term
+  last k ts = drop (length ts ∸ k) ts
+
   -- A proof of x ≡ y, x a word ⇓'d and y the same word one wire wider;
   -- nothing for Eq.refl.  G is Gate quoted: outside this module, its
   -- definitions take it first.  The fuel bounds the depth.
-  same  : Term → ℕ → Term → Term → TC (Maybe Term)
-  step  : Term → ℕ → Shape → Shape → Term → Term → TC (Maybe Term)
-  stuck : Term → ℕ → Shape → Shape → Term → Term → TC (Maybe Term)
+  same  : Term → List Lemma → ℕ → Term → Term → TC (Maybe Term)
+  step  : Term → List Lemma → ℕ → Shape → Shape → Term → Term →
+          TC (Maybe Term)
+  stuck : Term → List Lemma → ℕ → Shape → Shape → Term → Term →
+          TC (Maybe Term)
 
-  same G 0       x y = failure x y
-  same G (suc k) x y = do
+  same G T 0       x y = failure x y
+  same G T (suc k) x y = do
     x ← whnf k x
     y ← whnf k y
-    step G k (shape x) (shape y) x y
+    step G T k (shape x) (shape y) x y
 
-  step G k (dot a b) (dot a′ b′) _ _ = do
-    p ← same G k a a′
-    q ← same G k b b′
+  step G T k (dot a b) (dot a′ b′) _ _ = do
+    p ← same G T k a a′
+    q ← same G T k b b′
     pure (dots p q)
-  step G k (mapped u) _ _ y = stuck G k (shape u) (shape y) u y
-  step G k (dot _ _)  _ x y = failure x y
-  step G k _ _ _ _          = pure nothing
+  step G T k (mapped u) _ _ y = stuck G T k (shape u) (shape y) u y
+  step G T k (dot _ _)  _ x y = failure x y
+  step G T k _ _ _ _          = pure nothing
 
   -- x is wmap _↧ u, stuck on u.
-  stuck G k (pow w e) (pow w′ _) _ _ = do
-    p ← same G k (def (quote _⇓) (vArg G ∷ vArg w ∷ [])) w′
+  stuck G T k (pow w e) (pow w′ _) _ _ = do
+    p ← same G T k (def (quote _⇓) (vArg G ∷ vArg w ∷ [])) w′
     pure (just (def (quote ⇓-^≡)
                     (vArg G ∷ vArg w ∷ vArg e ∷ vArg (refl-or p) ∷ [])))
-  stuck G k (mapped s) (mapped s′) _ _ = do
-    p ← same G k (def (quote _⇓) (vArg G ∷ vArg s ∷ [])) s′
+  stuck G T k (mapped s) (mapped s′) _ _ = do
+    p ← same G T k (def (quote _⇓) (vArg G ∷ vArg s ∷ [])) s′
     pure (just (def (quote ↑⇓≡) (vArg G ∷ vArg s ∷ vArg (refl-or p) ∷ [])))
-  stuck G k _ _ u y = failure (def (quote _⇓) (vArg G ∷ vArg u ∷ [])) y
+  stuck G T k other _ u@(def f as) y = use (lemma-for f T)
+    where
+    use : Maybe (Name × ℕ) → TC (Maybe Term)
+    use (just (l , j)) = pure (just (def l (map vArg (last j (visibles as)))))
+    use nothing        = failure (def (quote _⇓) (vArg G ∷ vArg u ∷ [])) y
+  stuck G T k _ _ u y = failure (def (quote _⇓) (vArg G ∷ vArg u ∷ [])) y
 
-  equation : Term → TC Term
-  equation hole = inferType hole >>= reduce >>= go
+  equation : List Lemma → Term → TC Term
+  equation T hole = inferType hole >>= reduce >>= go
     where
     go-≡ : Term → Bool → List Term → TC Term
     go-≡ t true (x ∷ y ∷ []) = do
       G ← quoteTC Gate
-      p ← same G 100000 x y
+      p ← same G T 100000 x y
       pure (refl-or p)
     go-≡ t _ _ = typeError (strErr "⇓-same: not an equation" ∷ termErr t ∷ [])
 
@@ -218,7 +250,12 @@ private
     go t@(def f as) = go-≡ t (f is quote _≡_) (visibles as)
     go t            = typeError (strErr "⇓-same: not an equation" ∷ termErr t ∷ [])
 
--- w ⇓ ≡ w′, for two readings of one word at consecutive widths.
+-- w ⇓ ≡ w′, for two readings of one word at consecutive widths; with
+-- lemmas for the words a case split on a label chooses, (f , f-⇓ , k),
+-- f-⇓ taking the last k visible arguments of f.
 macro
   ⇓-same : Term → TC ⊤
-  ⇓-same hole = equation hole >>= unify hole
+  ⇓-same hole = equation [] hole >>= unify hole
+
+  ⇓-same-by : List (Name × Name × ℕ) → Term → TC ⊤
+  ⇓-same-by T hole = equation T hole >>= unify hole
