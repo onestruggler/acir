@@ -22,7 +22,7 @@ module Examples.Groups.CCX+HH.Decide where
 open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; T)
 open import Data.Integer.Base using (ℤ ; +_ ; -[1+_])
 open import Data.Nat.Base using (ℕ ; _≡ᵇ_)
-open import Data.Nat.Properties using (≡ᵇ⇒≡)
+open import Data.Nat.Properties using (≡ᵇ⇒≡ ; ≡⇒≡ᵇ)
 open import Data.Product.Base using (_×_ ; _,_)
 open import Data.Unit.Base using (tt)
 open import Data.Vec.Base using (Vec ; [] ; _∷_)
@@ -86,6 +86,27 @@ eqMat-sound : (eq : A → A → Bool) → (∀ x y → T (eq x y) → x ≡ y) �
   (M N : Matrix m n A) → T (eqMat eq M N) → M ≡ N
 eqMat-sound eq ok (Matrix' a) (Matrix' b) p =
   cong Matrix' (eqVec-sound (eqVec eq) (eqVec-sound eq ok) a b p)
+
+------------------------------------------------------------------------
+-- Reflexivity
+
+private
+  T-∧-intro : ∀ {x y} → T x → T y → T (x ∧ y)
+  T-∧-intro {true} _ q = q
+
+eqℤ-refl : ∀ a → T (eqℤ a a)
+eqℤ-refl (+ m) = ≡⇒≡ᵇ m m refl
+eqℤ-refl -[1+ m ] = ≡⇒≡ᵇ m m refl
+
+eqD-refl : ∀ x → T (eqD x x)
+eqD-refl (Dyadic' a m _) = T-∧-intro (eqℤ-refl a) (≡⇒≡ᵇ m m refl)
+
+eqVec-refl : (eq : A → A → Bool) → (∀ x → T (eq x x)) → (xs : Vec A n) → T (eqVec eq xs xs)
+eqVec-refl eq r [] = tt
+eqVec-refl eq r (x ∷ xs) = T-∧-intro (r x) (eqVec-refl eq r xs)
+
+eqMat-refl : (eq : A → A → Bool) → (∀ x → T (eq x x)) → (M : Matrix m n A) → T (eqMat eq M M)
+eqMat-refl eq r (Matrix' a) = eqVec-refl (eqVec eq) (eqVec-refl eq r) a
 
 ------------------------------------------------------------------------
 -- Identities by evaluation
