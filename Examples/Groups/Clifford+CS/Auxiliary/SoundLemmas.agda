@@ -1229,3 +1229,152 @@ sd-kk-yb a b c d e f g h ab cd ac bd ef gh bc
        V₂ • K x y xy ≈ K x y xy • V₂
   Pg x y xy gx hx gy hy =
     sym (KV x y g h xy gh (≢sym gx) (≢sym hx) (≢sym gy) (≢sym hy))
+
+------------------------------------------------------------------------
+-- The braid: relation (16)
+--
+-- On a pair, K i_[a] K = i_[b] K i_[b]: relation (16), K i_b³ =
+-- i_b K i_b K, closed by a K⁻¹ = K i_a i_b on the right ((18)), the
+-- pair's phases passing K ((17)).  The second factor K⁻¹ satisfies the
+-- inverse statement, which is (16) multiplied by i_b³ on the left.
+
+private
+  -- i_y³ i_x i_y and i_x i_y i_y³ are i_x.
+  ph-x : ∀ (x y : Fin N) → i y ^ 3 • (i x • i y) ≈ i x
+  ph-x x y = begin
+    i y ^ 3 • (i x • i y)    ≈⟨ by-assoc Eq.refl ⟩
+    (i y ^ 3 • i x) • i y    ≈⟨ front (i y) (ipow-comm y x 3 1) ⟩
+    (i x • i y ^ 3) • i y    ≈⟨ by-assoc Eq.refl ⟩
+    i x • i y ^ 4            ≈⟨ back (i x) (i⁴ y) ⟩
+    i x • ε                  ≈⟨ right-unit ⟩
+    i x ∎
+
+  ph-x′ : ∀ (x y : Fin N) → (i x • i y) • i y ^ 3 ≈ i x
+  ph-x′ x y = begin
+    (i x • i y) • i y ^ 3    ≈⟨ by-assoc Eq.refl ⟩
+    i x • i y ^ 4            ≈⟨ back (i x) (i⁴ y) ⟩
+    i x • ε                  ≈⟨ right-unit ⟩
+    i x ∎
+
+  ph-y : ∀ (x y : Fin N) → (i x • i y) • i x ^ 3 ≈ i y
+  ph-y x y = begin
+    (i x • i y) • i x ^ 3    ≈⟨ by-assoc Eq.refl ⟩
+    i x • (i y • i x ^ 3)    ≈⟨ back (i x) (ipow-comm y x 1 3) ⟩
+    i x • (i x ^ 3 • i y)    ≈⟨ by-assoc Eq.refl ⟩
+    i x ^ 4 • i y            ≈⟨ front (i y) (i⁴ x) ⟩
+    ε • i y                  ≈⟨ left-unit ⟩
+    i y ∎
+
+  -- K i_x K = i_y K i_y.
+  KiK : ∀ (x y : Fin N) .(xy : x <F y) →
+        K x y xy • (i x • K x y xy) ≈ i y • (K x y xy • i y)
+  KiK x y xy = sym (begin
+    i y • (Kxy • i y)
+      ≈⟨ sym right-unit ⟩
+    (i y • (Kxy • i y)) • ε
+      ≈⟨ back _ (sym (K²ii x y xy)) ⟩
+    (i y • (Kxy • i y)) • (Kxy • (Kxy • P))
+      ≈⟨ by-assoc Eq.refl ⟩
+    (i y • (Kxy • (i y • Kxy))) • (Kxy • P)
+      ≈⟨ front _ (sym (axiom (TL.rel-14 xy))) ⟩
+    (Kxy • i y ^ 3) • (Kxy • P)
+      ≈⟨ back _ (sym (iiK x y xy)) ⟩
+    (Kxy • i y ^ 3) • (P • Kxy)
+      ≈⟨ by-assoc Eq.refl ⟩
+    Kxy • ((i y ^ 3 • P) • Kxy)
+      ≈⟨ back Kxy (front Kxy (ph-x x y)) ⟩
+    Kxy • (i x • Kxy) ∎)
+    where
+    Kxy = K x y xy
+    P = i x • i y
+
+  -- (16) multiplied by i_y³: K i_y K = i_y³ K i_y³.
+  KiK′ : ∀ (x y : Fin N) .(xy : x <F y) →
+         K x y xy • (i y • K x y xy) ≈ i y ^ 3 • (K x y xy • i y ^ 3)
+  KiK′ x y xy = begin
+    Kxy • (i y • Kxy)
+      ≈⟨ sym left-unit ⟩
+    ε • (Kxy • (i y • Kxy))
+      ≈⟨ front _ (sym (trans (by-assoc Eq.refl) (i⁴ y))) ⟩
+    (i y ^ 3 • i y) • (Kxy • (i y • Kxy))
+      ≈⟨ assoc ⟩
+    i y ^ 3 • (i y • (Kxy • (i y • Kxy)))
+      ≈⟨ back _ (sym (axiom (TL.rel-14 xy))) ⟩
+    i y ^ 3 • (Kxy • i y ^ 3) ∎
+    where
+    Kxy = K x y xy
+
+  -- The inverse statement for K⁻¹ = K i_x i_y.
+  KiK⁻ : ∀ (x y : Fin N) .(xy : x <F y) →
+         (K x y xy • (i x • i y)) • (i x ^ 3 • (K x y xy • (i x • i y)))
+         ≈ i y ^ 3 • ((K x y xy • (i x • i y)) • i y ^ 3)
+  KiK⁻ x y xy = trans lhs (sym rhs)
+    where
+    Kxy = K x y xy
+    P = i x • i y
+
+    lhs : (Kxy • P) • (i x ^ 3 • (Kxy • P)) ≈ i y ^ 3 • (Kxy • i x)
+    lhs = begin
+      (Kxy • P) • (i x ^ 3 • (Kxy • P))
+        ≈⟨ by-assoc Eq.refl ⟩
+      Kxy • ((P • i x ^ 3) • (Kxy • P))
+        ≈⟨ back Kxy (front _ (ph-y x y)) ⟩
+      Kxy • (i y • (Kxy • P))
+        ≈⟨ by-assoc Eq.refl ⟩
+      (Kxy • (i y • Kxy)) • P
+        ≈⟨ front P (KiK′ x y xy) ⟩
+      (i y ^ 3 • (Kxy • i y ^ 3)) • P
+        ≈⟨ by-assoc Eq.refl ⟩
+      i y ^ 3 • (Kxy • (i y ^ 3 • P))
+        ≈⟨ back _ (back Kxy (ph-x x y)) ⟩
+      i y ^ 3 • (Kxy • i x) ∎
+
+    rhs : i y ^ 3 • ((Kxy • P) • i y ^ 3) ≈ i y ^ 3 • (Kxy • i x)
+    rhs = begin
+      i y ^ 3 • ((Kxy • P) • i y ^ 3)
+        ≈⟨ back _ assoc ⟩
+      i y ^ 3 • (Kxy • (P • i y ^ 3))
+        ≈⟨ back _ (back Kxy (ph-x′ x y)) ⟩
+      i y ^ 3 • (Kxy • i x) ∎
+
+sd-kk-braid : ∀ (a b c d : Fin N) .(ab : a <F b) .(cd : c <F d) →
+              c ≢ a → c ≢ b → d ≢ a → d ≢ b →
+              (K a b ab • (K c d cd • (i c • i d)))
+              • ((i a • i c ^ 3) • (K a b ab • (K c d cd • (i c • i d))))
+              ≈ (i b • i d ^ 3)
+                • ((K a b ab • (K c d cd • (i c • i d))) • (i b • i d ^ 3))
+sd-kk-braid a b c d ab cd ca cb da db = begin
+  (Kab • V) • ((i a • i c ^ 3) • (Kab • V))
+    ≈⟨ by-assoc Eq.refl ⟩
+  Kab • ((V • i a) • ((i c ^ 3 • Kab) • V))
+    ≈⟨ back Kab (cong (sym (iV a c d cd (≢sym ca) (≢sym da))) (front V c³K)) ⟩
+  Kab • ((i a • V) • ((Kab • i c ^ 3) • V))
+    ≈⟨ by-assoc Eq.refl ⟩
+  Kab • (i a • ((V • Kab) • (i c ^ 3 • V)))
+    ≈⟨ back Kab (back (i a) (front _ (sym (KV a b c d ab cd
+                              (≢sym ca) (≢sym da) (≢sym cb) (≢sym db))))) ⟩
+  Kab • (i a • ((Kab • V) • (i c ^ 3 • V)))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (Kab • (i a • Kab)) • (V • (i c ^ 3 • V))
+    ≈⟨ cong (KiK a b ab) (KiK⁻ c d cd) ⟩
+  (i b • (Kab • i b)) • (i d ^ 3 • (V • i d ^ 3))
+    ≈⟨ by-assoc Eq.refl ⟩
+  i b • (((Kab • i b) • i d ^ 3) • (V • i d ^ 3))
+    ≈⟨ back (i b) (front _ (sym (comm-two (i d ^ 3) Kab (i b) d³K
+                                          (ipow-comm d b 3 1)))) ⟩
+  i b • ((i d ^ 3 • (Kab • i b)) • (V • i d ^ 3))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i b • i d ^ 3) • (Kab • ((i b • V) • i d ^ 3))
+    ≈⟨ back _ (back Kab (front _ (iV b c d cd (≢sym cb) (≢sym db)))) ⟩
+  (i b • i d ^ 3) • (Kab • ((V • i b) • i d ^ 3))
+    ≈⟨ by-assoc Eq.refl ⟩
+  (i b • i d ^ 3) • ((Kab • V) • (i b • i d ^ 3)) ∎
+  where
+  Kab = K a b ab
+  V = K c d cd • (i c • i d)
+
+  c³K : i c ^ 3 • Kab ≈ Kab • i c ^ 3
+  c³K = sym (pass-pow (sym (axiom (TL.comm-iK ab ca cb))) 3)
+
+  d³K : i d ^ 3 • Kab ≈ Kab • i d ^ 3
+  d³K = sym (pass-pow (sym (axiom (TL.comm-iK ab da db))) 3)

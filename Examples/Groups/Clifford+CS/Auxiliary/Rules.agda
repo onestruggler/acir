@@ -11,9 +11,17 @@
 -- cancellation), disjoint commutation, the phases that pass a K pair,
 -- relation (15) of the two-level presentation lifted — the −1 moved to
 -- a fresh index, where it becomes the sign of the exchange letter —
--- the pair exchange conjugating a K pair to its −1−1 multiple, the
--- double exchange renaming a K pair, and (19) bridged through two
--- fresh pairs.
+-- relation (16) as the braid K i_[a] K = i_[b] K i_[b], the pair
+-- exchange conjugating a K pair to its −1−1 multiple, the double
+-- exchange renaming a K pair, and (19) bridged through two fresh
+-- pairs.  The braid was missing at first: no other rule's two-level
+-- derivation uses (16), and K′ = −K on its block satisfies every
+-- two-level relation but (16) while failing item (b) of the
+-- Reidemeister–Schreier method for it (scratchpad/tM16.py), so no
+-- complete rule set can do without such a rule.  The braid is the
+-- shortest found by search (scratchpad/tR16.py: no P′ equation of four
+-- letters carries (16), and among phase and K pairs none of five): six
+-- letters on four indices, with no fresh index.
 --
 -- What is still missing is the Gray-code layer: the rules relating a
 -- K pair to the encoded letters of a width, which come with the
@@ -136,6 +144,13 @@ data _R,_===_ (N : ℕ) : WRel (GenP N) where
          e ≢ a → e ≢ b → e ≢ c → e ≢ d →
          N R, kw a b c d ab cd • (pw b e • pw b e)
          === xw e a b ab • kw a b c d ab cd
+
+  -- Relation (16) of the two-level presentation, as K i_[a] K =
+  -- i_[b] K i_[b] on the first pair and its inverse on the second.
+  kk-braid : ∀ a b c d .(ab : a < b) .(cd : c < d) →
+             c ≢ a → c ≢ b → d ≢ a → d ≢ b →
+             N R, kw a b c d ab cd • pw a c • kw a b c d ab cd
+             === pw b d • kw a b c d ab cd • pw b d
 
   -- The pair's own exchange conjugates it to its −1−1 multiple.
   kk-conj : ∀ a b c d .(ab : a < b) .(cd : c < d) →

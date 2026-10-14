@@ -75,6 +75,8 @@ sound-ax (kk-ii a b c d e ab cd ca cb da db ea eb ec ed) =
   sd-kk-ii a b c d e ab cd ca cb da db ea eb ec ed
 sound-ax (kk-x a b c d e ab cd ca cb da db ea eb ec ed) =
   sd-kk-x a b c d e ab cd ca cb da db ea eb ec ed
+sound-ax (kk-braid a b c d ab cd ca cb da db) =
+  sd-kk-braid a b c d ab cd ca cb da db
 sound-ax (kk-conj a b c d ab cd ca cb da db) =
   sd-kk-conj a b c d ab cd ca cb da db
 sound-ax (kk-ren a b c d e f ab cd ae bf ef

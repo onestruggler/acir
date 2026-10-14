@@ -85,28 +85,29 @@ def gmat(g):
     if g[0] == 'i': return csP.two_level(N, 'i', g[1])
     return csP.two_level(N, g[0], g[1], g[2])
 
-i0 = csP.two_level(N, 'i', 0)
-i0i = csP.minv('i', N, 0)
-reps = [csP.ident(N)]
-repsi = [csP.ident(N)]
-for _ in range(4):
-    reps.append(csP.matmul(reps[-1], i0))
-    repsi.append(csP.matmul(repsi[-1], i0i))
+if __name__ == '__main__':
+    i0 = csP.two_level(N, 'i', 0)
+    i0i = csP.minv('i', N, 0)
+    reps = [csP.ident(N)]
+    repsi = [csP.ident(N)]
+    for _ in range(4):
+        reps.append(csP.matmul(reps[-1], i0))
+        repsi.append(csP.matmul(repsi[-1], i0i))
 
-gens = [('i', a) for a in range(N)]
-gens += [('X', a, b) for a, b in combinations(range(N), 2)]
-gens += [('K', a, b) for a, b in combinations(range(N), 2)]
+    gens = [('i', a) for a in range(N)]
+    gens += [('X', a, b) for a, b in combinations(range(N), 2)]
+    gens += [('K', a, b) for a, b in combinations(range(N), 2)]
 
-bad = 0; tot = 0
-for g in gens:
-    Mg = gmat(g)
-    for c in range(4):
-        c2 = (c + deg(g)) % 4
-        # r_c . g . r_c2^-1 == word
-        T = csP.matmul(reps[c], csP.matmul(Mg, repsi[c2]))
-        W = wordmat(act_word(c, g))
-        tot += 1
-        if csP.key(T) != csP.key(W):
-            bad += 1
-            if bad <= 6: print('FAIL', c, g, act_word(c, g), flush=True)
-print(f'N={N}: {tot - bad}/{tot} action-table cases check', flush=True)
+    bad = 0; tot = 0
+    for g in gens:
+        Mg = gmat(g)
+        for c in range(4):
+            c2 = (c + deg(g)) % 4
+            # r_c . g . r_c2^-1 == word
+            T = csP.matmul(reps[c], csP.matmul(Mg, repsi[c2]))
+            W = wordmat(act_word(c, g))
+            tot += 1
+            if csP.key(T) != csP.key(W):
+                bad += 1
+                if bad <= 6: print('FAIL', c, g, act_word(c, g), flush=True)
+    print(f'N={N}: {tot - bad}/{tot} action-table cases check', flush=True)
