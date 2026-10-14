@@ -198,8 +198,15 @@ def parse(s):
 R2 = 1 / math.sqrt(2)
 OMEGA = cmath.exp(1j * math.pi / 4)
 
+# A fragment on qudits of another dimension sets DIM and its own
+# GATE_MATRIX(letter, wires) (Cliff₃: cliff3.py).
+DIM = 2
+GATE_MATRIX = None
+
 
 def gate_matrix(l, n):
+    if GATE_MATRIX is not None:
+        return GATE_MATRIX(l, n)
     k, w = l
     N = 1 << n
     M = [[0j] * N for _ in range(N)]
@@ -237,7 +244,7 @@ def mul(A, B):
 
 
 def unitary(c, n):
-    N = 1 << n
+    N = DIM ** n
     U = [[1 + 0j if i == j else 0j for j in range(N)] for i in range(N)]
     for l in c:
         U = mul(gate_matrix(l, n), U)       # diagram order: later gates on the left
