@@ -3,9 +3,10 @@
 A derivation environment is a chain of figures joined by equalities,
 each citing the rules of its step (\\eqeqref{a}, \\eqdeuxeqref{a}{b},
 \\eqtroiseqref{a}{b}{c}, or a bare = for a rearrangement).  derivations
-returns, for each label, the chain as [(figure, [cited labels])]; lines
-turns one into derive's lines, reading each figure with figparse and
-renaming the cited labels by a fragment's map (a label mapped to None
+returns, for each label, the chain as [(figure, [cited labels])];
+transcribed reads the figures of the chains named with figparse (or
+from a cache of an earlier reading); lines turns one into derive's
+lines, renaming the cited labels by a fragment's map (a label mapped to None
 is a definition of a shortcut, already spelled out, and cites nothing;
 one mapped to a list cites each of its names).
 
@@ -13,7 +14,6 @@ The source is the paper's arXiv source unpacked (arXiv:2602.09874);
 its directory is SRC below or the environment variable BLAKE_SRC."""
 import os
 import re
-import figparse
 
 SRC = os.environ.get('BLAKE_SRC', '')
 
@@ -47,15 +47,42 @@ def derivations(texfile):
 
 
 def figure(name):
+    import figparse                  # needs PyMuPDF; the cache does not
     return figparse.parse(os.path.join(SRC, 'figures', name + '.pdf'))
 
 
+def transcribed(texfile, labels, cache):
+    """{label: [(text, [cited labels])]} for the chains named, each
+    figure read by figparse: from the source when SRC is set, writing
+    the cache file (a Python module of one dict, TRANSCRIBED), and from
+    the cache otherwise, so that the derivations can be regenerated
+    without the source or PyMuPDF."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), cache)
+    if not SRC:
+        ns = {}
+        exec(open(path, encoding='utf-8').read(), ns)
+        return ns['TRANSCRIBED']
+    ds = derivations(texfile)
+    out = {l: [(figure(fig), labs) for fig, labs in ds[l]] for l in labels}
+    with open(path, 'w', encoding='utf-8', newline='\n') as f:
+        f.write('"""The chains of %s, read by paper.py: generated."""\n' % texfile)
+        f.write('TRANSCRIBED = {\n')
+        for l in labels:
+            f.write('    %r: [\n' % l)
+            for t, labs in out[l]:
+                f.write('        (%r, %r),\n' % (t, labs))
+            f.write('    ],\n')
+        f.write('}\n')
+    return out
+
+
 def lines(chain, rename):
-    """derive's lines for a chain, labels renamed (None: definitional)."""
+    """derive's lines for a transcribed chain, labels renamed (None:
+    definitional)."""
     out = []
-    for fig, labs in chain:
+    for text, labs in chain:
         if labs is None:
-            out.append((figure(fig), None))
+            out.append((text, None))
             continue
         names = []
         for l in labs:
@@ -64,5 +91,5 @@ def lines(chain, rename):
                 names += r
             elif r is not None:
                 names.append(r)
-        out.append((figure(fig), names))
+        out.append((text, names))
     return out

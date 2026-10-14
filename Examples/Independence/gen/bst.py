@@ -1,9 +1,9 @@
 """Bian and Selinger's relations for 2-qubit Clifford+T operators
 (Examples.Groups.Clifford+T-2qubit.Generator, Clifford+T.Rel), words in
-operator order over W, H0, H1, S0, S1, T0, T1, CZ, and the decoding D
-into CliffT₂ on two wires: the word reversed (time order), qubit 0 on
-wire 0 (the high bit of their numbering, as of Real-Clifford's), S as
-T T, CZ as H CNOT H on wire 0."""
+operator order over W, H0, H1, S0, S1, T0, T1, CZ, and the decodings
+into CliffT₂ on two wires: qubit 0 on wire 0 (the high bit of their
+numbering, as of Real-Clifford's), S as T T, CZ as H CNOT H on wire 0,
+and the word read backwards (D, time order) or as written (F)."""
 
 G = ['W', 'H0', 'H1', 'S0', 'S1', 'T0', 'T1', 'CZ']
 
@@ -68,8 +68,15 @@ SPELL = {'W': 'w', 'H0': 'H0', 'H1': 'H1', 'S0': 'S0', 'S1': 'S1', 'T0': 'T0', '
 
 
 def D(word):
-    """The decoding, in the transcription notation (tcliff's spellings)."""
+    """The decoding, read backwards, in the transcription notation
+    (tcliff's spellings)."""
     return ' '.join(SPELL[g] for g in reversed(word))
+
+
+def F(word):
+    """The decoding in the order written: their words read as circuits,
+    as the paper reads them (every gate's matrix being symmetric)."""
+    return ' '.join(SPELL[g] for g in word)
 
 
 if __name__ == '__main__':

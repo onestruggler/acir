@@ -19,7 +19,8 @@
 -- readings, the encoding of a circuit (its gates' encodings in the
 -- reverse order, ℰʷ) has the circuit's reading as its matrix
 -- (bridge), so circuits with equal values have encodings with equal
--- matrices (transfer).
+-- matrices (transfer).  Transfer.ViaT is the same for an encoding that
+-- keeps the order of the gates, whose matrix is then the transpose.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -123,6 +124,33 @@ private
   (RI.scale-cong (RL.≐-sym (RL.≐-trans (Φ-cong (O.ix-mul Mt Ms)) (Φ-⊙ (O.ix Mt) (O.ix Ms))))))
 
 ------------------------------------------------------------------------
+-- Transposition
+--
+-- Every qubit gate here is a symmetric matrix, so a circuit read in
+-- the other order has the transposed matrix: what a source that reads
+-- its words in diagram order, without reversing them, sees (ViaT).
+
+_ᵀ : RL.Op n → RL.Op n
+(M ᵀ) x y = M y x
+
+ᵀ-cong : {M N : RL.Op n} → M RL.≐ N → M ᵀ RL.≐ N ᵀ
+ᵀ-cong e x y = e y x
+
+ᵀ-⊙ : (M N : RL.Op n) → (M RL.⊙ N) ᵀ RL.≐ (N ᵀ RL.⊙ M ᵀ)
+ᵀ-⊙ M N x y = RL.Σ-cong (λ z → *-comm (M y z) (N z x))
+
+private
+  δb-sym : (x y : RL.Bits n) → RL.δb x y ≡ RL.δb y x
+  δb-sym []          []          = refl
+  δb-sym (true ∷ x)  (true ∷ y)  = δb-sym x y
+  δb-sym (false ∷ x) (false ∷ y) = δb-sym x y
+  δb-sym (true ∷ x)  (false ∷ y) = refl
+  δb-sym (false ∷ x) (true ∷ y)  = refl
+
+Idₒ-ᵀ : RL.Idₒ {n} ᵀ RL.≐ RL.Idₒ
+Idₒ-ᵀ x y = δb-sym y x
+
+------------------------------------------------------------------------
 -- Equal values, equal readings
 
 private
@@ -224,3 +252,35 @@ module Transfer {Gate : ℕ → Set} (val : ∀ {k} → Prop.PGate Gate k → O.
     transfer : {w v : Circuit n} → ⟦ w ⟧ Exact.≈ ⟦ v ⟧ → F (ℰʷ w) ≡ F (ℰʷ v)
     transfer {w} {v} e =
       Eq.trans (bridge w) (Eq.trans (Mat.mat-≐ (exact e)) (Eq.sym (bridge v)))
+
+  -- The same for an encoding that keeps the order of the gates, into
+  -- a presentation whose words are read in operator order: the
+  -- encoding of a circuit has its transposed matrix, given the gates'.
+  module ViaT {n : ℕ} {G : Set}
+    (F   : Word G → Matrix (2 ^ n) (2 ^ n) D)
+    (F-ε : F ε ≡ 𝕀)
+    (F-• : ∀ u v → F (u • v) ≡ F u ·*· F v)
+    (ℰ   : Gen n → Word G)
+    (gen : ∀ g → F (ℰ g) ≡ Mat.mat (⟪ ⟦ g ⟧₀ ⟫ ᵀ))
+    where
+
+    ℰʷ : Circuit n → Word G
+    ℰʷ [ g ]ʷ  = ℰ g
+    ℰʷ ε       = ε
+    ℰʷ (w • v) = ℰʷ w • ℰʷ v
+
+    bridge : (w : Circuit n) → F (ℰʷ w) ≡ Mat.mat (⟪ ⟦ w ⟧ ⟫ ᵀ)
+    bridge [ g ]ʷ  = gen g
+    bridge ε       =
+      Eq.trans F-ε (Eq.sym (Eq.trans (Mat.mat-≐ {n} (RL.≐-trans (ᵀ-cong (⟪⟫-ε {n})) Idₒ-ᵀ))
+                                     (Mat.mat-Id {n})))
+    bridge (w • v) =
+      Eq.trans (F-• (ℰʷ w) (ℰʷ v))
+      (Eq.trans (Eq.cong₂ _·*·_ (bridge w) (bridge v))
+      (Eq.trans (Eq.sym (Mat.mat-⊙ (⟪ ⟦ w ⟧ ⟫ ᵀ) (⟪ ⟦ v ⟧ ⟫ ᵀ)))
+                (Mat.mat-≐ (RL.≐-trans (RL.≐-sym (ᵀ-⊙ ⟪ ⟦ v ⟧ ⟫ ⟪ ⟦ w ⟧ ⟫))
+                                       (ᵀ-cong (⟪⟫-∙ ⟦ w ⟧ ⟦ v ⟧))))))
+
+    transfer : {w v : Circuit n} → ⟦ w ⟧ Exact.≈ ⟦ v ⟧ → F (ℰʷ w) ≡ F (ℰʷ v)
+    transfer {w} {v} e =
+      Eq.trans (bridge w) (Eq.trans (Mat.mat-≐ (ᵀ-cong (exact e))) (Eq.sym (bridge v)))

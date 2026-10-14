@@ -18,7 +18,12 @@
 --
 -- Each encoding sends a gate to a word with the gate's matrix, read
 -- in 𝔻[ω] (Semantics.Reading); the gates are compared as closed
--- matrices, and Reading.Transfer does the rest.
+-- matrices, and Reading.Transfer does the rest.  Into the two-level
+-- words a circuit is encoded backwards (Via), their words being read
+-- in operator order; into Bian and Selinger's it is encoded forwards
+-- (ViaT), as the paper does, its matrix being then the transpose of
+-- the circuit's — every gate's matrix is symmetric — so that each of
+-- their relations decodes to the paper's own reading of it.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -38,12 +43,12 @@ open import Examples.Groups.Clifford+T-2qubit.Presentation using (tl)
 
 open import Examples.Independence.Clifford+T.Syntactics
 import Examples.Independence.Clifford+T.Semantics as Sem
-open import Examples.Independence.Semantics.Reading using (⟪_⟫ ; module Mat ; module Transfer)
+open import Examples.Independence.Semantics.Reading using (⟪_⟫ ; _ᵀ ; module Mat ; module Transfer)
 
 module BS = Clifford+T
 
 open Transfer Sem.val public using (exact)
-open Transfer Sem.val using (module Via)
+open Transfer Sem.val using (module Via ; module ViaT)
 
 ------------------------------------------------------------------------
 -- The encodings
@@ -82,7 +87,7 @@ open Transfer Sem.val using (module Via)
 opaque
   unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_
 
-  gen₂ : (g : Gen 2) → ⟦ ℰ₂ g ⟧ᴮ ≡ Mat.mat ⟪ Sem.⟦ g ⟧₀ ⟫
+  gen₂ : (g : Gen 2) → ⟦ ℰ₂ g ⟧ᴮ ≡ Mat.mat (⟪ Sem.⟦ g ⟧₀ ⟫ ᵀ)
   gen₂ (gate₀ ⌈ ω-gate ⌉)     = refl
   gen₂ (gate₁ ⌈ H-gate ⌉)     = refl
   gen₂ (gate₁ ⌈ T-gate ⌉)     = refl
@@ -105,6 +110,6 @@ opaque
 ------------------------------------------------------------------------
 -- Every circuit
 
-module V₂ = Via ⟦_⟧ᴮ refl (λ u v → ⟦•⟧ᵐ ((tl ʷ) u) ((tl ʷ) v)) ℰ₂ gen₂
+module V₂ = ViaT ⟦_⟧ᴮ refl (λ u v → ⟦•⟧ᵐ ((tl ʷ) u) ((tl ʷ) v)) ℰ₂ gen₂
 module V₁ = Via ⟦_⟧ᵐ refl ⟦•⟧ᵐ ℰ₁ gen₁
 module V₀ = Via ⟦_⟧ᵐ refl ⟦•⟧ᵐ ℰ₀ gen₀

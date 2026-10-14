@@ -10,7 +10,18 @@ Every equation keeps its two sides as abstract gates (ga, gb) as well as
 letters, so that it can be moved to other wires by conjugating with a
 swap: the swap passes each spelled gate by a naturality lemma (nat),
 and the moved equation comes out in canonical spelling."""
-import sys, time
+import os, sys, time
+
+# The searches visit sets of strings, whose order Python's hash
+# randomisation changes from run to run, and with it which steps are
+# found within the search's bounds: run with a fixed seed, so that the
+# generated modules are reproducible.
+# (A subprocess rather than exec, which on Windows does not wait.)
+if os.environ.get('PYTHONHASHSEED') != '0':
+    import subprocess
+    sys.exit(subprocess.call([sys.executable] + sys.orig_argv[1:],
+                             env={**os.environ, 'PYTHONHASHSEED': '0'}))
+
 from circ import (Eq, Inst, parse, gparse, spell, permute, gshift, gname, gwires,
                   same, canon, find_steps, agda_list, agda_steps)
 

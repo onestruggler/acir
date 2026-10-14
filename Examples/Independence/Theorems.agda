@@ -25,7 +25,9 @@
 -- from Makary, Ross and Selinger's (Real-Clifford.Completeness, the
 -- same way), and for CNOTdihe₂, from Amy, Chen and Ross's
 -- (CNOT-Dihedral.Completeness), so that all three are minimal complete
--- presentations of their semantics.
+-- presentations of their semantics; and for CliffT₂ up to two wires,
+-- from Bian and Selinger's two-qubit presentation and the two-level
+-- presentations of U₂ and U₁ over ℤ[1/√2,i] (Clifford+T.Completeness).
 --
 -- Two departures from the paper.  The scalar of the qutrit axiom (E)
 -- is printed ω₁₂⁷ in Figure 4, which is unsound for the semantics of
@@ -69,6 +71,7 @@ import Examples.Independence.CNOT-Dihedral.Minimality   as CNOTdihe-Min
 
 import Examples.Independence.Clifford.Completeness      as Cliff-Cpl
 import Examples.Independence.Real-Clifford.Completeness as RCliff-Cpl
+import Examples.Independence.Clifford+T.Completeness     as CliffT-Cpl
 import Examples.Independence.CNOT-Dihedral.Completeness as CNOTdihe-Cpl
 
 private
@@ -227,6 +230,23 @@ RCliff₂-minimal-complete :
   (∀ {n} {w v : RCliff.Circuit n} (ρ : RCliff._SRel,_===_ n w v) →
      ¬ RCliff-M.Complete-without ρ n)
 RCliff₂-minimal-complete = RCliff₂-complete , RCliff₂-necessary
+
+-- 4. CliffT₂ is complete up to two qubit wires: on two, its axioms
+-- derive Bian and Selinger's, decoded (Appendices D.3 and G.4), whose
+-- presentation is complete; on one and on none, the two-level
+-- relations in dimensions 2 and 1, decoded.
+CliffT₂-complete : {w v : CliffT.Circuit n} → n ≤ 2 →
+                   CliffT-Sem.⟦ w ⟧ CliffT-Sem.≈ CliffT-Sem.⟦ v ⟧ → n CliffT.⊢ w ≈ v
+CliffT₂-complete n≤2 = CliffT-Cpl.complete n≤2
+
+-- So CliffT₂ is a minimal complete presentation on one wire, and
+-- complete on two.
+CliffT₂-minimal-complete-upto-1 :
+  (∀ {n} {w v : CliffT.Circuit n} → n ≤ 2 →
+     CliffT-Sem.⟦ w ⟧ CliffT-Sem.≈ CliffT-Sem.⟦ v ⟧ → n CliffT.⊢ w ≈ v) ×
+  (∀ {n} {w v : CliffT.Circuit n} (ρ : CliffT._SRel,_===_ n w v) →
+     n ≤ 1 → ¬ CliffT-M.Complete-without ρ n)
+CliffT₂-minimal-complete-upto-1 = CliffT₂-complete , CliffT₂-necessary
 
 -- 6. CNOTdihe₂ is complete, at every width: its axioms derive Amy,
 -- Chen and Ross's, whose presentation is complete.
