@@ -65,6 +65,8 @@ def inv(word): return [(INV[g[0]],) + g[1:] for g in reversed(word)]
 
 def show(word): return ' '.join(g[0] + ''.join(str(w) for w in g[1:]) for g in word)
 
+import os as _os
+QUIET = bool(_os.environ.get('DERIV_QUIET'))
 DERIVATIONS = []
 
 class Derivation:
@@ -136,6 +138,24 @@ class Derivation:
             rep = [('TOFF', t, a, b_), cczs(t, a, c_), ('TOFF', t, a, b_)]
             self._set(self.cur[:i] + rep + self.cur[i + 2:], 'l2', False, i, 2)
 
+    def ckt(self, i):
+        """the rule ck-tct at any placement: X_a CK(a,t) X_a and
+        Toff(t;b,c) CS(a,t) Toff(t;b,c) commute; at i either order."""
+        w = self.cur[i:i + 6]
+        def xck(u):
+            return (len(u) == 3 and u[0][0] == 'X' and u[2] == u[0] and u[1][0] == 'CK' and u[1][1] == u[0][1])
+        def tct(u, a, t):
+            return (len(u) == 3 and u[0][0] == 'TOFF' and u[2] == u[0] and u[0][1] == t and a not in u[0][2:]
+                    and u[1] == norm([('CS', a, t)])[0])
+        if xck(w[:3]) and tct(w[3:], w[1][1], w[1][2]):
+            a, t = w[1][1], w[1][2]; rep = w[3:] + w[:3]; fwd = True
+        elif xck(w[3:]) and tct(w[:3], w[4][1], w[4][2]):
+            a, t = w[4][1], w[4][2]; rep = w[3:] + w[:3]; fwd = False
+        else:
+            raise AssertionError(f'{self.name}: no ck-tct pattern at {i}: {show(w)}')
+        b, c = [x for x in (w[3] if fwd else w[0])[2:]]
+        self._set(self.cur[:i] + rep + self.cur[i + 6:], 'ckt', (a, t, b, c, fwd), i, 6)
+
     def swapconj(self, k, n, j, forward=True):
         """forward: SWAP_j, then the n letters w, then SWAP_j  ->  w with the
         wires j, j+1 exchanged; backward: the n letters at k -> SWAP_j w' SWAP_j."""
@@ -159,7 +179,7 @@ class Derivation:
 
     def done(self):
         assert self.cur == self.rhs, f'{self.name}: not finished: at {show(self.cur)}, want {show(self.rhs)}'
-        if ' @' not in self.name and not self.name.startswith('pass ') and not self.name.startswith('scratch'): print(f'ok   {self.name}: {len(self.steps)} steps', flush=True)
+        if not QUIET and ' @' not in self.name and not self.name.startswith('pass ') and not self.name.startswith('scratch'): print(f'ok   {self.name}: {len(self.steps)} steps', flush=True)
         self.lemmas[self.name] = (self.lhs, self.rhs)
         DERIVATIONS.append(self); BY_NAME[self.name] = self
         return self.lemmas

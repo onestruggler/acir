@@ -701,3 +701,99 @@ commutators with the same value, and Q8's relations among them (Q1
 among them) are not consequences.  Any derivation of Q1 must leave Gamma
 — use gates on the control wires, as S3 did (CNOTs between controls) —
 or use a new rule.
+
+## The third four-wire rule, ck-tct (lemmas11.py, 2026-10-14)
+
+    ck-tct : X0 CK(0->1) X0 . Toff(1;2,3) CS01 Toff(1;2,3)
+           = Toff(1;2,3) CS01 Toff(1;2,3) . X0 CK(0->1) X0
+
+K on wire 1 when x0 = 0 commutes with i^{x0 (x1 xor x2 x3)}, which acts
+only where x0 = 1.  It is a commutation, so it changes no gate count:
+neither the CS parity nor any other count invariant can separate it
+(the per-wire count lattice of the other rules already has index 1,
+invariants2.py).
+
+With it the first same-pair relation follows (Q1, 141 primitive steps
+with its lemmas): PP . b = b^-1 . PP for b = K0^-1 PP K0, i.e.
+L(iZ) L(iX) L(iZ)^-1 = L(iX)^-1.  The route: the rule at the gadget
+(X3 CK30 X3 passes PP: the rule at a = 3, t = 0 is exactly X3 CK30 X3
+against T C T, and C^-1 is a window), its inverse, hence every
+Lambda_not3(u) for u in <S, K> passes PP; K0 PPw3 K0^-1 is
+[CCZ012, Lambda_not3(K S K^-1)], whose letters pass PP, so PPw3 passes
+b; the merge writes PP = g . PPw3^-1 (g = CS12 CCZ012); and g b = b^-1 g
+by windows (CCZ012 = Lambda_12(Z) is K0 Toff K0^-1, and the Toffoli turns
+PP over: T PP T = PP^-1 letter for letter).
+
+The hybrid gadget's relations need the rule with CK(a,t) in place of
+CS(a,t) in the middle; that instance follows from the rule, because
+K = i S (K S K^-1) S and K S K^-1 commutes with X, so
+T Lambda_a(K) T = S_a (T Lambda_a(S) T) Lambda_a(K S K^-1) (T Lambda_a(S) T),
+each factor commuting with Lambda_not_a(u).
+
+Independence of ck-tct from the other rules is open.  No count
+invariant can show it (it is a commutation; the count lattices are
+full).  A model would have to be non-abelian, satisfy every
+three-qubit relation on both windows, the two other four-wire rules and
+the commutation of wire-0 and wire-3 gates, and fail the rule; models
+built from the true semantics twisted by automorphisms of the
+three-qubit groups are globally inner (the twist on a window must be a
+conjugation by a gate on its outer wire), so they satisfy everything.
+What remains is a central extension of the four-qubit group that splits
+on both three-wire windows compatibly and has the rule's two sides not
+commuting — a Schur-multiplier-type obstruction, not computed.  The same
+is true of toff-ccz relative to cx-ccz.
+
+## The gadget layer: separated, same-pair and adjacent facts (gadgetlib.py, samepair.py, consec4.py, 2026-10-14)
+
+A gadget Gad(t, W, d, e) is X_W . d . PP_t^e . d^-1 . X_W: the phase gadget
+on target t, conjugated by a target word d in <S, K> (96 elements with
+phases, `W1`), inverted when e = -1, white on the controls W.  The
+rotation is Gad(0, (), S K, -1) (`consec4.rot_gad`, from ROT-form and the
+swap of wires 1 3).
+
+**The controlled action, both ways.**  With a separating control c (the
+gadget black on c), a gate controlled white by c passes the gadget
+whether it acts on the target (`nc_pass`, the rule ck-tct) or on another
+control w (`opp_pass`): spell the core with its CS from the third control
+z, [Toff(t; c, w), CS(z, t)]; the Toffoli is then controlled by c and
+the unit commutes with it on three wires, and with CS(z, t) on disjoint
+wires.  (An earlier diagonal-span argument suggested this needed a new
+rule; it overlooked conjugation by black-controlled Toffolis.)  The
+colour-flipped version (`blk_pass`) is the same under X_c.
+
+**Separated gadgets commute** (`sep_pass`), whatever their targets and
+target words: split each gadget's target word off as gates controlled by
+the separating wire (`ca_split`: d = Lambda_c(d) Lambda_not-c(d), and the
+opposite half passes the core), so each gadget is controlled gates of its
+own colour around a diagonal core; every controlled gate of one passes
+the other gadget (the unit passes above), and the two diagonal cores
+commute by the engine (its Col format).  So px-comm and the far cases of
+px-conj hold at every placement at n = 4.
+
+**The same-pair calculus** (samepair.py).  With T = Toff(0;1,2) and
+C(w) = [T, Lambda_3(w_0)] for a target word w: C(S) is the gadget
+literally, C(U') = eps for U' = K^-1 S K (T and Lambda_3(U') commute: K
+turns T into CCZ012, which is diagonal), and the cocycle
+C(v w) = C(v) . Lambda(v) C(w) Lambda(v)^-1 is two inserted cancelling
+pairs; the controlled action identifies Lambda(v) g Lambda(v)^-1 with
+g on its target conjugated by v (`caw`).  The braid S U' S = U' S U' is
+exact, and computing C of both sides gives the core product relation
+REL0: PP . Gad(S U') = Gad(U'), that is L(iZ) L(iX) = L(-iY).
+Conjugated by any target word (`REL`) and with re-spelling (`spell`:
+Gad(d, e) = Gad(d', e') when the gates agree, through S passing the core
+and X0 PP X0 = PP^-1) every product of two gadgets on one pair is a
+third (`prod`), so the gadgets on one pair satisfy Q8's relations.
+
+**Derived so far at the canonical pair (target 0, black, orientation 0)
+and the canonical adjacent pair (targets 0 and 1, all black, orientations
+0 and 1):** px-conj2, p l = l p' (`F6`); px-conj on adjacent pairs,
+p_{k+1} l_k = l_k p_k p_{k+1} (`F7a`).  The adjacent one merges the
+rotation over wire 3 and the phase gadget over wire 2, so that the white
+copies are separated from everything else, and what is left is one
+identity of two three-wire gates, MB^-1 MA = MA MB^-1 a0, from the
+definition of PP and the rule toff-ccz.  Next: the other adjacent case
+of px-conj (the transposed configuration; relabelling F7a and F6), the
+braid (Clement's (358) argument: merge each rotation over every
+colouring of the two common controls into a two-wire rotation, the
+two-wire braid word conjugates one rotation into the other), and the
+hybrid gadget's facts.

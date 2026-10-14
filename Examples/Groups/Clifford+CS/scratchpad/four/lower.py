@@ -338,7 +338,7 @@ def placement(kind, forward, seg, extra):
 def lower_axiom(P, k, name, forward, seg, rep, extra=None):
     src, dst = AXIOMS[name] if forward else AXIOMS[name][::-1]
     if list(seg) == src: P.A(k, name, forward); return
-    pi = placement('delta' if name == 'cx-ccz' else 'l2', forward, seg, extra)
+    pi = extra if name == 'ck-tct' else placement('delta' if name == 'cx-ccz' else 'l2', forward, seg, extra)
     words = perm_words(pi); errs = []
     for word in words:
         saved = (list(P.cur), list(P.steps))
@@ -367,6 +367,9 @@ def lower(d, PL):
             if not extra:
                 z1, z2 = seg; a = [w for w in rep[0][2:] if w in z1[1:] and w in z2[1:]][0]
             lower_axiom(P, k, 'toff-ccz', extra, seg, rep, a)
+        elif kind == 'ckt':
+            a, t, b, c, fwd = extra
+            lower_axiom(P, k, 'ck-tct', fwd, seg, rep, (a, t, b, c))
         elif kind == 'swapconj':
             j, fwd = extra
             if fwd: unwrap(P, k, n - 2, j)

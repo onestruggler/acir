@@ -68,7 +68,7 @@ top = wmap _↧
 -- 1 (CK₁₀), Bian and Selinger's words (TwoQubit).
 CZ CK₀₁ CK₁₀ : Circuit (₂₊ n)
 CZ   = CS • CS
-CK₀₁ = CS • K ↑ • CS • K ↑ • CS • S • S • S • iI
+CK₀₁ = CK
 CK₁₀ = CS • K • CS • K • CS • S ↑ • S ↑ • S ↑ • iI
 
 ------------------------------------------------------------------------

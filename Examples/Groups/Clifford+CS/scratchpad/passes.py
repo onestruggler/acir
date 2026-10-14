@@ -589,3 +589,32 @@ def target_conj(name, A, B, t):
         pos += len(fu)
     d.win(pos, pos + 2, [])
     d.done(); return name
+
+# ------------------------------------------------------------ inverses
+from deriv import inv as _inv
+
+def insert_inverse(d, k, w):
+    """at k insert w inv(w), pair by pair from the outside in."""
+    iw = _inv(w)
+    for j, g in enumerate(w):
+        d.win(k + j, k + j, [g, iw[len(w) - 1 - j]])
+
+def cancel_inverse(d, k, w):
+    """at k: w then inv(w); cancel from the middle out."""
+    n = len(w)
+    for j in range(n):
+        m = k + n - 1 - j
+        d.win(m, m + 2, [])
+
+def inverse_pass(A, B):
+    """A passes B from inv(A) passes B: A B -> A B inv(A) A -> A inv(A) B A -> B A."""
+    fA, fB = flat(A), flat(B)
+    Ai = [tuple(_inv(fA))]
+    n0, fwd = lookup(Ai, B)
+    if n0 is None: n0, fwd = prove(Ai, B), True
+    name = pname(A, B)
+    d = Derivation(name, fA + fB, fB + fA, L)
+    insert_inverse(d, len(fA) + len(fB), _inv(fA))           # A B inv(A) A
+    d.lemma(n0, len(fA), forward=not fwd)                    # A inv(A) B A
+    cancel_inverse(d, 0, fA)
+    d.done(); return name

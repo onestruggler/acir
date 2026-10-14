@@ -88,6 +88,10 @@ rΛˡ rΛʳ : Circuit 4
 rΛˡ = Toff • CCZ₀₁₃ • Toff
 rΛʳ = CCZ₀₁₃ • CCZ ↑
 
+rΓˡ rΓʳ : Circuit 4
+rΓˡ = X • CK • X • Toff ↑ • CS • Toff ↑
+rΓʳ = Toff ↑ • CS • Toff ↑ • X • CK • X
+
 ------------------------------------------------------------------------
 -- The identities
 
@@ -165,6 +169,9 @@ mΔ = Eq.refl
 
 mΛ : Same rΛˡ rΛʳ
 mΛ = Eq.refl
+
+mΓ : Same rΓˡ rΓʳ
+mΓ = Eq.refl
 
 ------------------------------------------------------------------------
 -- The relators, padded to any width, are the axioms' words
@@ -252,3 +259,8 @@ pΛˡ : rΛˡ ↓ᵏ n ≡ Toff • CCZ₀₁₃ • Toff
 pΛˡ = Eq.refl
 pΛʳ : rΛʳ ↓ᵏ n ≡ CCZ₀₁₃ • CCZ ↑
 pΛʳ = Eq.refl
+
+pΓˡ : rΓˡ ↓ᵏ n ≡ X • CK • X • Toff ↑ • CS • Toff ↑
+pΓˡ = Eq.refl
+pΓʳ : rΓʳ ↓ᵏ n ≡ Toff ↑ • CS • Toff ↑ • X • CK • X
+pΓʳ = Eq.refl

@@ -37,10 +37,13 @@
 -- On four qubits those rules are not complete (Parity): the number of
 -- CS gates mod 2 is invariant under them, and the true equation
 -- cx-ccz — a CNOT carries a CCZ on its target to the product of two
--- CCZs — breaks it.  There are two rules on four wires, cx-ccz and its
+-- CCZs — breaks it.  There are three rules on four wires: cx-ccz and its
 -- Toffoli analogue toff-ccz, both instances of the substitution of a
--- permutation gate in a phase polynomial; with them the decoding's
--- gadget identities are derivable (scratchpad/lemmas5.py).
+-- permutation gate in a phase polynomial (with them the phase gadget's
+-- identities are derivable, scratchpad/lemmas5.py), and ck-tct, a gate
+-- controlled white by a wire commuting with one that acts only where the
+-- wire is 1 (with it the relations between different gadgets on one pair
+-- of basis states, scratchpad/lemmas11.py).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -138,6 +141,10 @@ Toff = K • CCZ • K • iI
 CCZ₀₁₃ : Circuit (₄₊ n)
 CCZ₀₁₃ = Swap ↑ ↑ • CCZ • Swap ↑ ↑
 
+-- K on wire 1 controlled by wire 0 (Bian and Selinger's word).
+CK : Circuit (₂₊ n)
+CK = CS • K ↑ • CS • K ↑ • CS • S • S • S • iI
+
 ------------------------------------------------------------------------
 -- Group-specific relations: Figure 2 of Bian and Selinger
 --
@@ -191,6 +198,12 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
   -- (−1)^{x₀x₁x₃}.  Independent of the rules above (Parity); whether it
   -- follows from them with cx-ccz is open.
   toff-ccz : (₄₊ n) SRel, Toff • CCZ₀₁₃ • Toff === CCZ₀₁₃ • CCZ ↑
+
+  -- Four wires: K on wire 1 controlled white by wire 0 commutes with the CS
+  -- of wires 0 1 conjugated by the Toffoli onto wire 1 from wires 2 3 —
+  -- the one acts where x₀ = 0, the other, i^{x₀(x₁ ⊕ x₂x₃)}, only where
+  -- x₀ = 1.  A commutation, so the CS parity does not see it.
+  ck-tct : (₄₊ n) SRel, X • CK • X • Toff ↑ • CS • Toff ↑ === Toff ↑ • CS • Toff ↑ • X • CK • X
 
 ------------------------------------------------------------------------
 -- Full relation via Lift-Relation (adds the structural rules cong↑,

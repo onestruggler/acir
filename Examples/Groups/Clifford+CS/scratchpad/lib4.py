@@ -21,3 +21,6 @@ for A, B in [(G[0], [P.Col([3], G[1])]), (G[0], [P.Col([2, 3], G[1])]),
     FACTS.append(P.prove(A, B))
 import lemmas10
 FACTS += ['merge3', 'adj01']
+# the same-pair relation Q1 from the rule ck-tct
+import lemmas11
+FACTS += ['Q1']

@@ -24,7 +24,9 @@ def fpw(word): return fp_basic(basic(word))
 
 AX_CX = ([('CX', 3, 2), ('CCZ', 0, 1, 2), ('CX', 3, 2)], [('CCZ', 0, 1, 2), ('CCZ', 0, 1, 3)])
 AX_TOFF = ([('TOFF', 0, 1, 2), ('CCZ', 0, 1, 3), ('TOFF', 0, 1, 2)], [('CCZ', 0, 1, 3), ('CCZ', 1, 2, 3)])
-AXIOMS = {'cx-ccz': AX_CX, 'toff-ccz': AX_TOFF}
+AX_CKT = ([('X', 0), ('CK', 0, 1), ('X', 0), ('TOFF', 1, 2, 3), ('CS', 0, 1), ('TOFF', 1, 2, 3)],
+          [('TOFF', 1, 2, 3), ('CS', 0, 1), ('TOFF', 1, 2, 3), ('X', 0), ('CK', 0, 1), ('X', 0)])
+AXIOMS = {'cx-ccz': AX_CX, 'toff-ccz': AX_TOFF, 'ck-tct': AX_CKT}
 
 def split(g, h):
     """(i, bottom-first?) when g, h are spelled within the bottom i wires
