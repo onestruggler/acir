@@ -56,7 +56,7 @@ open import Word.Base using (Word ; ε ; _•_ ; [_]ʷ ; _^_)
 
 import Presentation.Base as PB
 
-open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; pp ; px ; dx ; kk)
+open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; pp ; px ; dx ; ki)
 open import Examples.Groups.Clifford+CS.Auxiliary.Fragment
 open import Examples.Groups.Clifford+CS.Auxiliary.Derived N
 open import Examples.Groups.Clifford+CS.Auxiliary.Atoms N′

@@ -55,7 +55,7 @@ open import Word.Base using (Word ; ε ; _•_ ; [_]ʷ ; _^_)
 
 import Presentation.Base as PB
 
-open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; pp ; px ; dx ; kk)
+open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; pp ; px ; dx ; ki)
 open import Examples.Groups.Clifford+CS.Auxiliary.Fragment
   using (_F,_===_ ; pw ; xw ; dw ; Succ ; s<)
 open import Examples.Groups.Clifford+CS.Auxiliary.Atoms N′
@@ -254,7 +254,7 @@ gen-prm-inj : ∀ (g : GenP N) {i j : Fin N} →
 gen-prm-inj (pp a b)         e = e
 gen-prm-inj (px c a b _)     e = swapF-inj a b e
 gen-prm-inj (dx a b c d _ _) e = swapF-inj a b (swapF-inj c d e)
-gen-prm-inj (kk a b c d _ _) e = e
+gen-prm-inj (ki a b s _) e = e
 
 prm-inj : ∀ (w : W) {i j : Fin N} → prm (sp w) i ≡ prm (sp w) j → i ≡ j
 prm-inj [ g ]ʷ  e = gen-prm-inj g e

@@ -31,7 +31,7 @@ open import Word.Base using (Word ; ε ; _•_ ; [_]ʷ ; _^_)
 
 import Presentation.Base as PB
 
-open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; pp ; px ; dx ; kk)
+open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; pp ; px ; dx ; ki)
 open import Examples.Groups.Clifford+CS.Auxiliary.Fragment
 
 open PB (N F,_===_) public

@@ -262,3 +262,28 @@ iZ-box must be defined by a recursion through K, with semantics a
 (1/gamma)^l-scaled phase, and the letters decoded as combinations
 where the scales cancel.  That design — Definition 2.4's analogue —
 is the next piece, with the FiveQubit/GeneralN sources as templates.
+
+## The K letter: the hybrid ki in place of KKb (2026-10-14)
+
+Running the Reidemeister-Schreier proof showed two things.  (1) No
+rule over {iib, mX, XX, KKb} used relation (16), and the model
+K' = -K of every other two-level relation fails item (b) for (16)
+(tM16.py): a (16)-carrying rule is unavoidable.  (2) With cosets
+Z/4 by determinant and i, K both of degree 1, the action needs
+K_[a,b] i_[0]^-1, which over KKb is the five-letter Q word on three
+fresh indices, and every K obligation would go through a calculus of
+Q words.  So the K letter is now the hybrid
+
+    ki[a,b;s] = K_[a,b] i_[s]^-1        (det 1; KKb = ki . ki^-1),
+
+and its rules are the two-level K relations read through the frame
+embedding i_a -> i_a i_s^-1, X -> (-1)_s X, K -> K i_s^-1 at a sink s
+off their indices ((4)-(9), (13), (14), (15)-(19) verbatim), plus the
+sink move ki[a,b;s] . iib[s,t] = ki[a,b;t].  The action's K row is
+(i_0 i_t^-1)^k . ki[d,e;t] . (i_t i_0^-1)^(k+1) for one fresh t, and the
+frame transport act c y = T c . Phi_g y . T^- c' (T c = (i_0 i_g^-1)^c)
+holds for every generator, coset and sink g off 0 and the generator
+(tKI.py: rules at every admissible instance, 256/256 action cases,
+1372/1372 transport cases at N = 8).  For the encoding, E(K_w) is now a
+plain product of ki letters (2^(n-1) of them, the phases i_s^(2^(n-1))
+vanishing from n = 3).

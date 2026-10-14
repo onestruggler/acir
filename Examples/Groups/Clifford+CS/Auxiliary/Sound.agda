@@ -55,39 +55,20 @@ sound-ax (px-comm a a′ b b′ s s′ lt) =
     (<⇒≢ (<-trans (s< s) lt)) (<⇒≢ (<-trans (<-trans (s< s) lt) (s< s′)))
     (<⇒≢ lt) (<⇒≢ (<-trans lt (s< s′)))
 sound-ax (dx-split a b c d ab cd)  = sd-dx-split a b c d ab cd
-sound-ax (kk-inv a b c d ab cd)    = sd-kk-inv a b c d ab cd
-sound-ax (kk-sq a b c d ab cd ca cb da db) =
-  sd-kk-sq a b c d ab cd ca cb da db
-sound-ax (kk-bridge a b c d e f ab cd ef) =
-  sd-kk-bridge a b c d e f ab cd ef
-sound-ax (kk-pp a b c d x y ab cd xa xb xc xd ya yb yc yd) =
-  sd-kk-pp a b c d x y ab cd xa xb xc xd ya yb yc yd
-sound-ax (kk-px a b c d s x y ab cd xy sa sb sc sd
-                xa xb xc xd ya yb yc yd) =
-  sd-kk-px a b c d s x y ab cd xy sa sb sc sd xa xb xc xd ya yb yc yd
-sound-ax (kk-kk a b c d e f g h ab cd ef gh
-                ea eb ec ed fa fb fc fd ga gb gc gd ha hb hc hd) =
-  sd-kk-kk a b c d e f g h ab cd ef gh
-           ea eb ec ed fa fb fc fd ga gb gc gd ha hb hc hd
-sound-ax (kk-mm a b c d ab cd ca cb da db) =
-  sd-kk-mm a b c d ab cd ca cb da db
-sound-ax (kk-ii a b c d e ab cd ca cb da db ea eb ec ed) =
-  sd-kk-ii a b c d e ab cd ca cb da db ea eb ec ed
-sound-ax (kk-x a b c d e ab cd ca cb da db ea eb ec ed) =
-  sd-kk-x a b c d e ab cd ca cb da db ea eb ec ed
-sound-ax (kk-braid a b c d ab cd ca cb da db) =
-  sd-kk-braid a b c d ab cd ca cb da db
-sound-ax (kk-conj a b c d ab cd ca cb da db) =
-  sd-kk-conj a b c d ab cd ca cb da db
-sound-ax (kk-ren a b c d e f ab cd ae bf ef
-                 ca cb ce cf da db de df ea eb fa fb) =
-  sd-kk-ren a b c d e f ab cd ae bf ef
-            ca cb ce cf da db de df ea eb fa fb
-sound-ax (kk-yb a b c d e f g h ab cd ac bd ef gh bc
-                ea eb ec ed fa fb fc fd ga gb gc gd ha hb hc hd
-                ge gf he hf) =
-  sd-kk-yb a b c d e f g h ab cd ac bd ef gh bc
-           ea eb ec ed fa fb fc fd ga gb gc gd ha hb hc hd ge gf he hf
+sound-ax (ki-sink a b s t ab)       = sd-ki-sink a b s t ab
+sound-ax (ki-pp a b s x ab xa xb sa sb) = sd-ki-pp a b s x ab xa xb sa sb
+sound-ax (ki-px a b s x y ab xy xa xb ya yb sa sb sx sy) =
+  sd-ki-px a b s x y ab xy xa xb ya yb sa sb sx sy
+sound-ax (ki-ki a b c d s ab cd ca cb da db sa sb sc sd) =
+  sd-ki-ki a b c d s ab cd ca cb da db sa sb sc sd
+sound-ax (ki-swap j k l s p q sj sk sl)  = sd-ki-swap j k l s p q sj sk sl
+sound-ax (ki-swap′ j k l s p q sj sk sl) = sd-ki-swap′ j k l s p q sj sk sl
+sound-ax (ki-x a b s ab sa sb)       = sd-ki-x a b s ab sa sb
+sound-ax (ki-16 a b s ab sa sb)      = sd-ki-16 a b s ab sa sb
+sound-ax (ki-ii a b s ab sa sb)      = sd-ki-ii a b s ab sa sb
+sound-ax (ki-sq a b s ab sa sb)      = sd-ki-sq a b s ab sa sb
+sound-ax (ki-yb j k l m s jk lm jl km kl sj sk sl sm) =
+  sd-ki-yb j k l m s jk lm jl km kl sj sk sl sm
 
 ------------------------------------------------------------------------
 -- The congruence

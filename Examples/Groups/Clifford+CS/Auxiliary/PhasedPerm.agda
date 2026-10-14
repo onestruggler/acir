@@ -43,7 +43,7 @@ open import Word.Base using (Word ; ε ; _•_ ; [_]ʷ)
 
 import Presentation.Base as PB
 
-open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; pp ; px ; dx ; kk)
+open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; pp ; px ; dx ; ki)
 open import Examples.Groups.Clifford+CS.Auxiliary.Fragment
 
 private
@@ -446,7 +446,7 @@ spg : GenP N → PP
 spg (pp a b)         = P₂ a b
 spg (px c a b _)     = L c a b
 spg (dx a b c d _ _) = SWP a b ⊙ SWP c d
-spg (kk a b c d _ _) = idPP
+spg (ki a b s _)     = idPP
 
 sp : W → PP
 sp [ g ]ʷ  = spg g
@@ -905,7 +905,7 @@ spg-inj : ∀ (g : GenP N) → Inj (spg g)
 spg-inj (pp a b)         = ⊙-inj (PH a p1) (PH b p3) (PH-inj a p1) (PH-inj b p3)
 spg-inj (px c a b _)     = ⊙-inj (PH c p2) (SWP a b) (PH-inj c p2) (SWP-inj a b)
 spg-inj (dx a b c d _ _) = ⊙-inj (SWP a b) (SWP c d) (SWP-inj a b) (SWP-inj c d)
-spg-inj (kk a b c d _ _) = idPP-inj
+spg-inj (ki a b s _) = idPP-inj
 
 sp-inj : ∀ (w : W) → Inj (sp w)
 sp-inj [ g ]ʷ  = spg-inj g
