@@ -10,6 +10,7 @@ import deriv
 from prim import show
 import lower as LW
 
+NL = chr(10)
 ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'Four')
 
 SUB = {'0': '0', '1': '1', '2': '2', '3': '3'}
@@ -57,7 +58,7 @@ def downk(g, i): return deriv.norm([(g[0],) + tuple(w - i for w in g[1:])])[0]
 def lst(letters): return '(' + ' ∷ '.join(mname(g) for g in letters) + ' ∷ [])' if letters else '[]'
 
 def lemname(name):
-    s = name.replace(' ', '-').replace('=', '≡').replace('[', '').replace(']', '').replace(',', '')
+    s = name.replace('] [', '-vs-').replace(' ', '-').replace('=', '≡').replace('[', '').replace(']', '').replace(',', '').replace('@', 'at').replace('^', 'ᵖ')
     return 'lem-' + s
 
 # ------------------------------------------------------------ letters
@@ -127,23 +128,19 @@ open import Examples.Groups.Clifford+CS.Four.Chain
 {deps}
 '''
 
-def derivation_module(P, index, modof, block=8):
-    """the Agda module of the primitive derivation P."""
-    mod = f'D{index:03d}'
-    deps = sorted({extra[0] for (kind, k, n, seg, ys, extra) in P.steps if kind == 'L'})
-    dep_lines = '\n'.join(f'open import Examples.Groups.Clifford+CS.Four.D.{modof[d]} using ({lemname(d)})' for d in deps)
+def lemma_text(P, block=8):
+    """the Agda definition of the lemma of the primitive derivation P."""
     lines = [list(P.lhs)]
     cur = list(P.lhs)
     for (kind, k, n, seg, ys, extra) in P.steps:
         cur = cur[:k] + list(ys) + cur[k + n:]; lines.append(cur)
     assert lines[-1] == list(P.rhs)
-    out = [HEADER.format(mod=mod, deps=dep_lines)]
-    out.append(f'-- {P.name}: {len(P.steps)} steps (scratchpad/four/lower.py)')
+    out = [f'-- {P.name}: {len(P.steps)} steps']
     nm = lemname(P.name)
     nblocks = (len(P.steps) + block - 1) // block
     out.append(f'{nm} : ⟪ {lst(P.lhs)} ⟫ʷ ≈ ⟪ {lst(P.rhs)} ⟫ʷ')
     if nblocks == 0:
-        out.append(f'{nm} = refl'); return mod, '\n'.join(out) + '\n'
+        out.append(f'{nm} = refl'); return NL.join(out) + NL
     runs = [f'run b{b}' for b in range(nblocks)]
     body = runs[-1]
     for r in reversed(runs[:-1]): body = f'trans ({r}) ({body})'
@@ -156,24 +153,44 @@ def derivation_module(P, index, modof, block=8):
         for i in range(s0, s1):
             kind, k, n, seg, ys, extra = P.steps[i]
             parts.append(f'at {k} {n} {lst(ys)} ({step_proof(P.steps[i])})')
-        out.append(f'  b{b} = ' + ' ▸\n       '.join(parts) + ' ▸ done')
+        out.append(f'  b{b} = ' + (' ▸' + NL + '       ').join(parts) + ' ▸ done')
         out.append('')
-    return mod, '\n'.join(out) + '\n'
+    return NL.join(out) + NL
+
+def chunks(prims, max_steps=500, max_lemmas=16):
+    out = []; cur = []; steps = 0
+    for P in prims:
+        if cur and (steps + len(P.steps) > max_steps or len(cur) >= max_lemmas):
+            out.append(cur); cur = []; steps = 0
+        cur.append(P); steps += len(P.steps)
+    if cur: out.append(cur)
+    return out
 
 def write_all(prims):
     os.makedirs(os.path.join(ROOT, 'D'), exist_ok=True)
-    io.open(os.path.join(ROOT, 'Letters.agda'), 'w', encoding='utf-8', newline='\n').write(letters_module())
+    for f in os.listdir(os.path.join(ROOT, 'D')):
+        if f.endswith('.agda'): os.remove(os.path.join(ROOT, 'D', f))
+    io.open(os.path.join(ROOT, 'Letters.agda'), 'w', encoding='utf-8', newline=NL).write(letters_module())
     modof = {}; mods = []
-    for i, P in enumerate(prims, 1):
-        mod, text = derivation_module(P, i, modof)
-        modof[P.name] = mod; mods.append(mod)
-        io.open(os.path.join(ROOT, 'D', mod + '.agda'), 'w', encoding='utf-8', newline='\n').write(text)
-    io.open(os.path.join(ROOT, 'D', 'INDEX.txt'), 'w', encoding='utf-8', newline='\n').write(
-        '\n'.join(f'{modof[P.name]} {P.name} {len(P.steps)}' for P in prims) + '\n')
+    for i, group in enumerate(chunks(prims), 1):
+        mod = f'D{i:03d}'
+        names = {P.name for P in group}
+        deps = sorted({extra[0] for P in group for (kind, k, n, seg, ys, extra) in P.steps
+                       if kind == 'L' and extra[0] not in names})
+        bymod = {}
+        for dname in deps: bymod.setdefault(modof[dname], []).append(lemname(dname))
+        dep_lines = NL.join(f'open import Examples.Groups.Clifford+CS.Four.D.{m} using ({" ; ".join(ns)})'
+                               for m, ns in sorted(bymod.items()))
+        text = HEADER.format(mod=mod, deps=dep_lines) + NL.join(lemma_text(P) for P in group)
+        for P in group: modof[P.name] = mod
+        mods.append(mod)
+        io.open(os.path.join(ROOT, 'D', mod + '.agda'), 'w', encoding='utf-8', newline=NL).write(text)
+    io.open(os.path.join(ROOT, 'D', 'INDEX.txt'), 'w', encoding='utf-8', newline=NL).write(
+        NL.join(f'{modof[P.name]} {len(P.steps)} {P.name}' for P in prims) + NL)
     return mods
 
 if __name__ == '__main__':
-    import lemmas8
+    import lib4
     prims = LW.lower_all(deriv.DERIVATIONS)
     mods = write_all(prims)
     print(len(mods), 'modules written to', ROOT)

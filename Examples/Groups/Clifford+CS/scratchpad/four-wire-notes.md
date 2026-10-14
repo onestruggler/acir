@@ -633,3 +633,54 @@ so the scalar letters carry their lift (iota, iota1, ...), the basic-word
 builders of mac.py lift it with the gate, and a scalar's lift counts as
 its wire for the frame of a literal window.  Modules D001-D046 typecheck
 in about 40 s each (S3, 252 steps, in 222 s).
+
+## The commutation engine and the phase gadget's commutation facts (passes.py, lemmas10.py, lib4.py)
+
+passes.py derives "A passes B" (A B = B A) for words of units (a macro
+letter, or a coloured gadget X_S core X_S kept whole), checked
+semantically before each attempt, by the first strategy that applies:
+a window (three wires), structural commutation, re-spelling of two named
+diagonals (ensure_comm), two coloured Toffolis on one target (diagonal
+under K on the target), a diagonal word conjugated through permutation
+letters (diag_through: windows, cx-ccz for a CNOT on a CCZ, toff-ccz for
+a Toffoli sharing one control with a CCZ, T-CZ03-T for a Toffoli on a
+CZ, K-conjugation when the target is off the diagonal; the result put in
+canonical form by its phase polynomial, Moebius inversion), a
+permutation letter whose target is off the other word (diagonal under
+K), a coloured unit (its X's moved through the other word unit by unit,
+each unit X-conjugated), unit by unit, and forms (a gadget rewritten
+into another spelling by a lemma).  deriv.relabel moves a lemma to other
+wires by conjugating it with adjacent swaps (a new swapconj step, which
+the lowering implements by pushing the swap through the word), so a
+fact proved once holds at every placement at the cost of the pushes.
+
+Proved for the phase gadget PP (target 0, controls 1 2 3): the copies
+white on {3}, {2,3}, {1,2,3} commute with it (same target, separated);
+on targets 0 and 1 the copies separated on wire 3 (or 2 and 3), with
+either colour at the other's target, commute; and the adjacent pair, all
+black, sharing the basis state 1111 (not separated) commutes by a merge:
+PP . X3 PP X3 = L_12(iZ_0) = CS12 CCZ012 (merge3: a black and a white
+control merge into the gadget with one control less, a named diagonal),
+so PP_1 = Q1 . X3 PP_1^-1 X3 with Q1 = CS02 CCZ012 named, which passes
+PP_0, while X3 PP_1^-1 X3 is separated from PP_0 (adj01).  With
+X-conjugation and relabelling this is every commutation of phase
+gadgets at four wires: two placed phase gadgets either act on disjoint
+pairs of basis states (then they are separated on a common control) or
+share one (adjacent, as above).
+
+Open, and the next obstacle: relations between different gadgets on the
+same pair, the 2T relations.  The decoded px-conj2 is
+PP . ROT = ROT . PP^-1; with ROT = (S0 K0) PP^-1 (S0 K0)^-1 it is
+a b a^-1 = b^-1 for a = L_123(iZ), b = K0^-1 a K0 = L_123(iX) — an
+identity in the block group of target-0 gates controlled by functions of
+x1 x2 x3.  Letter by letter it fails: a = [Toff(0;1,2), CS03] and
+b = [CCZ012, L_3(U_0)] (U = K^-1 S K) share no form whose letters pass
+the other gadget.  The merge reduces it to "the controlled-on-3 version
+of a three-wire identity", which would follow from a functor
+Lambda_3 on three-wire circuits — but Lambda_3 of a generator is not a
+circuit (CCS has determinant -1 at four wires).  The hybrid gadget's
+relations (ki-x, ki-16, ki-ii, ki-sq at one pair) are of the same kind.
+Separated commutations of non-diagonal gadgets (ROT or KI against a
+coloured copy) need the engine to keep K-conjugated letters such as
+L_3(U_0) = K0^-1 CS03 K0 as units (then the form [CCZ012, L_3(U_0)] of
+K0^-1 PP K0 passes a white-on-3 diagonal letter by windows).

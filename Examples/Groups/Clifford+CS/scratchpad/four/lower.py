@@ -367,6 +367,10 @@ def lower(d, PL):
             if not extra:
                 z1, z2 = seg; a = [w for w in rep[0][2:] if w in z1[1:] and w in z2[1:]][0]
             lower_axiom(P, k, 'toff-ccz', extra, seg, rep, a)
+        elif kind == 'swapconj':
+            j, fwd = extra
+            if fwd: unwrap(P, k, n - 2, j)
+            else: wrap(P, k, n, j)
         elif kind == 'lemma':
             nm, fwd = extra; P.L(nm, k, fwd)
         else: raise ValueError(kind)

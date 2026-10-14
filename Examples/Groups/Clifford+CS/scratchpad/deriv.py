@@ -136,6 +136,21 @@ class Derivation:
             rep = [('TOFF', t, a, b_), cczs(t, a, c_), ('TOFF', t, a, b_)]
             self._set(self.cur[:i] + rep + self.cur[i + 2:], 'l2', False, i, 2)
 
+    def swapconj(self, k, n, j, forward=True):
+        """forward: SWAP_j, then the n letters w, then SWAP_j  ->  w with the
+        wires j, j+1 exchanged; backward: the n letters at k -> SWAP_j w' SWAP_j."""
+        tau = {w: w for w in range(4)}; tau[j], tau[j + 1] = j + 1, j
+        s = ('SWAP', j, j + 1)
+        if forward:
+            assert self.cur[k] == s and self.cur[k + n + 1] == s, f'{self.name}: no swap pair at {k}'
+            inner = self.cur[k + 1:k + 1 + n]
+            rep = [rename_letter(g, tau) for g in inner]
+            self._set(self.cur[:k] + rep + self.cur[k + n + 2:], 'swapconj', (j, True), k, n + 2)
+        else:
+            inner = self.cur[k:k + n]
+            rep = [s] + [rename_letter(g, tau) for g in inner] + [s]
+            self._set(self.cur[:k] + rep + self.cur[k + n:], 'swapconj', (j, False), k, n)
+
     def lemma(self, name, i, forward=True):
         l, r = self.lemmas[name]
         src, dst = (norm(l), norm(r)) if forward else (norm(r), norm(l))
@@ -144,9 +159,9 @@ class Derivation:
 
     def done(self):
         assert self.cur == self.rhs, f'{self.name}: not finished: at {show(self.cur)}, want {show(self.rhs)}'
-        print(f'ok   {self.name}: {len(self.steps)} steps', flush=True)
+        if ' @' not in self.name and not self.name.startswith('pass ') and not self.name.startswith('scratch'): print(f'ok   {self.name}: {len(self.steps)} steps', flush=True)
         self.lemmas[self.name] = (self.lhs, self.rhs)
-        DERIVATIONS.append(self)
+        DERIVATIONS.append(self); BY_NAME[self.name] = self
         return self.lemmas
 
 def ccz_sym(a, b, c, a2, b2, c2):
@@ -174,3 +189,57 @@ if __name__ == '__main__':
     # now K0 CX30 CCZ012 CCZ123 CCZ012 Kd0 ; CCZ123 commutes with CCZ012 (diagonals): 4 wires! — move CCZ123 right past CCZ012:
     # CCZ123 and CCZ012 share wires 1,2: delta backwards on [CCZ012, CCZ123]? that needs the pair order CCZ_buv CCZ_auv: b=0,a=3: CCZ012 CCZ312 -> CX30 CCZ012 CX30
     print('   at:', show(d.cur))
+
+# ------------------------------------------------------------ relabelling
+def rename_letter(g, pi):
+    """g with its wires mapped by pi (a dict or tuple wire -> wire)."""
+    if g[0] in ('iI', 'iIi'): return g
+    return norm([(g[0],) + tuple(pi[w] for w in g[1:])])[0]
+
+def adjacent_word(pi):
+    """adjacent transpositions j1 .. jk with pi = t_j1 o ... o t_jk (bubble sort)."""
+    p = list(pi); out = []
+    # find a sequence that sorts p: applying t_j on the left of p swaps the
+    # values j, j+1 in p
+    while p != sorted(p):
+        for i in range(3):
+            if p[i] > p[i + 1]:
+                a, b = p[i], p[i + 1]
+                # swap positions i, i+1 = compose on the right with t_i
+                p[i], p[i + 1] = b, a; out.append(('R', i)); break
+    return out
+
+def relabel(name, pi, lemmas):
+    """the lemma `name` with its wires renamed by pi (a tuple of the images
+    of 0 1 2 3): the lemma conjugated by swaps, the swaps pushed through."""
+    pi = tuple(pi)
+    if pi == (0, 1, 2, 3): return name
+    new = f'{name} @{"".join(map(str, pi))}'
+    if new in lemmas: return new
+    lhs, rhs = lemmas[name]
+    pd = {w: pi[w] for w in range(4)}
+    rn = lambda word: [rename_letter(g, pd) for g in word]
+    # decompose pi^-1 as a product of adjacent transpositions acting on
+    # wire labels: repeatedly exchange labels j, j+1 in the current map
+    cur = dict(pd); seq = []
+    while any(cur[w] != w for w in range(4)):
+        # find j with labels j, j+1 'out of order' in the image of the identity
+        inv = {v: w for w, v in cur.items()}
+        for j in range(3):
+            if inv[j] > inv[j + 1]:
+                seq.append(j)
+                cur = {w: (j + 1 if v == j else j if v == j + 1 else v) for w, v in cur.items()}
+                break
+    d = Derivation(new, rn(lhs), rn(rhs), lemmas)
+    n = len(lhs); k = 0
+    for j in seq:                           # wrap: the inner word loses one transposition
+        d.swapconj(k, n, j, forward=False); k += 1
+    assert d.cur[k:k + n] == norm(lhs), (name, pi, show(d.cur), seq)
+    d.lemma(name, k)
+    n = len(rhs)
+    for j in reversed(seq):
+        k -= 1; d.swapconj(k, n, j, forward=True)
+    d.done()
+    return new
+
+BY_NAME = {}
