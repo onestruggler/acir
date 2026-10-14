@@ -115,4 +115,7 @@ def restricted_index(alpha: Alphabet, rels, letters, subgroup_letters=(), limit=
     letters = list(letters)
     pos = {g: k for k, g in enumerate(letters)}
     own = [tuple(pos[g] for g in r) for r in rels if all(g in pos for g in r)]
-    return C.index(len(letters), own, [(pos[g],) for g in subgroup_letters], limit)
+    sub = [(pos[g],) for g in subgroup_letters]
+    if (Path(__file__).resolve().parent / "tc").exists():
+        return C.index_c(len(letters), own, sub, limit)
+    return C.index(len(letters), own, sub, limit)

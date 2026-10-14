@@ -74,4 +74,39 @@ certified twice:
 | the classical letters, S8 | 5040 · 8 = 40 320 | 17 280 | 696 729 600 |
 
 Both products are |W(E8)|. `minimise3.py` shrinks the set while both
-enumerations through S8 still pass (about 12 s per check).
+enumerations through S8 still pass (about 12 s per check); it leaves 12
+relators, irredundant but not readable.
+
+**A natural complete rule set on three wires** (`natural3.py`,
+`classical3.py`). Each rule is stated on the bottom wires and used at
+every placement, with the structural rules, `CXr i = HH i CX i HH i` and
+`SW i = CX i CXr i CX i`:
+
+| Classical rules | |
+| --- | --- |
+| `SW0 = CX0 CXr0 CX0` | a swap is three CNOTs |
+| `X1 CX0 X1 = CX0 X0`, `CXr0 X0 CXr0 = X0 X1` | an X on a control propagates |
+| `(CX0 CXr0)³ = ε` | the CNOTs on two wires: S3 |
+| `SW0 X0 SW0 = X1`, `SW0 CX0 SW0 = CXr0` | naturality of the swap |
+| `SW0 SW1 SW0 = SW1 SW0 SW1` | braid |
+| `SW0 SW1 CX0 SW1 SW0 = CX1` | a two-wire gate moved up a wire |
+| `X0 CCX0 = CCX0 X0`, `CX0 CCX0 = CCX0 CX0` | gates on the Toffoli's target |
+| `SW1 CCX0 SW1 = CCX0` | the Toffoli's controls are symmetric |
+| `X1 CCX0 X1 = CCX0 SW1 CX0 SW1` | a negated control |
+| `CX1 CCX0 CX1 = X1 CCX0 X1` | a CNOT between the controls |
+| `CCX0 CXr0 CCX0 CXr0 = SW0 CCX0 SW0 CCX0` | a CNOT from the target to a control |
+
+| Hadamard rules | |
+| --- | --- |
+| `X0 (HH0 X1 HH0) = (HH0 X1 HH0) X0` | X commutes with Z on the other wire |
+| `SW0 HH0 SW0 = HH0` | HH is symmetric |
+| `HH0 HH1 = HH1 HH0` | the two HH commute |
+| `SW0 HH1 SW0 = HH0 HH1`, `SW1 HH0 SW1 = HH0 HH1` | H₁H₂ and H₀H₁ swapped are H₀H₂ |
+| `CCX0 (CXr0 HH0 CXr0) = (CXr0 HH0 CXr0) CCX0` | the Toffoli commutes with HH under a CNOT |
+
+The classical rules present S8 (index 5040 of ⟨X0, X1, X2⟩), and all of
+them present W(E8) (index 17280 of S8). The last classical rule cannot be
+replaced by `(CCX0 CXr0)⁶ = ε`, its order relation: with it the classical
+rules no longer present S8. `final3.py` checks which of the rules are
+redundant and certifies the result through the adjacent classical
+subgroup as well.
