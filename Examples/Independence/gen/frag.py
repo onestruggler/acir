@@ -70,6 +70,16 @@ def search_lines(name, width, cs, labels_list, depth, extra, maxstates):
         [m for m in NATS if LIB[m].arity <= width]
     for k in range(1, len(cs)):
         labels = labels_list[k]
+        if isinstance(labels, tuple) and labels[0] == 'direct':
+            # one known rewrite: the equation (forwards or not) at a position
+            _, ename, i, fwd = labels
+            ins = Inst(LIB[ename], fwd, 0)
+            a, b = cs[k - 1], cs[k]
+            assert a[i:i + len(ins.l)] == ins.l, (name, k, 'lhs not at', i)
+            assert a[:i] + ins.r + a[i + len(ins.l):] == b, (name, k, 'not the rewrite')
+            steps += agda_steps(a, b, [(ins, list(a), i, list(b))])
+            log('   %s line %d: direct' % (name, k))
+            continue
         names = list(LIB) if labels is None else resolve(labels, width) + list(extra)
         named = None if labels is None else set(names)
         stages = [(CORE, named), (CORE + swaps, named), (CORE + swaps, None)]
@@ -228,6 +238,129 @@ def emit(d):
     body = '  (' + '\n   ∷ '.join(steps) + ' ∷ [])' if steps else '  []'
     return '\n'.join(['%s : %s' % (name, ty), '%s = derive' % name,
                       '  ' + agda_list(l), '  ' + agda_list(r), body, '  refl'])
+
+
+# ---------------------------------------------------------------------
+# An equation from another whose relator is a rotation of its own
+#
+# For letters that are their own inverses (SELFINV), an equation L = R
+# is the relator L R⁻¹ = ε.  If that relator, its inverse pairs
+# cancelled, is (up to commuting letters) a rotation of the relator of
+# an equation P = Q already derived, then L = R follows by inserting
+# and cancelling inverse pairs around one use of P = Q.  relator_chain
+# writes that chain as lines for derive, one pair or one permutation
+# per line.
+
+SELFINV = set()
+
+
+def ltext(c):
+    """A letter list in the transcription notation."""
+    out = []
+    for k, w in c:
+        if w is None:
+            out.append(k)
+        elif k == 'CX':
+            out.append('CX%d%d' % (w + 1, w))
+        elif k == 'SW':
+            out.append('SW%d%d' % (w, w + 1))
+        else:
+            out.append('%s%d' % (k, w))
+    return ' '.join(out)
+
+
+def _rev(c):
+    return list(reversed(c))
+
+
+def ins_lines(pre, w, post):
+    """From pre + post to pre + w + w⁻¹ + post, one pair at a time."""
+    return [pre + w[:i] + _rev(w[:i]) + post for i in range(1, len(w) + 1)]
+
+
+def cancel_lines(c):
+    """Cancel equal self-inverse letters with nothing between them on
+    their wires, one pair at a time: the lists after each, and the end."""
+    from circ import commute
+    c = list(c)
+    out = []
+    while True:
+        hit = None
+        for i in range(len(c)):
+            if c[i][0] not in SELFINV:
+                continue
+            for j in range(i + 1, len(c)):
+                if c[j] == c[i]:
+                    hit = (i, j)
+                    break
+                if not commute(c[i], c[j]):
+                    break
+            if hit:
+                break
+        if not hit:
+            return out, c
+        i, j = hit
+        del c[j]
+        del c[i]
+        out.append(list(c))
+
+
+def _rotation(rho, sig):
+    """i, j with ρ[i:] ρ[:i] equal to σ[j:] σ[:j] up to commuting letters."""
+    for a in (rho, list(canon(rho))):
+        for b in (sig, list(canon(sig))):
+            if canon(a) != canon(rho) or canon(b) != canon(sig):
+                continue
+            for i in range(len(a)):
+                ka = canon(a[i:] + a[:i])
+                for j in range(len(b)):
+                    if ka == canon(b[j:] + b[:j]):
+                        return a, i, b, j
+    return None
+
+
+def relator_chain(L, R, P, Q, ename, pairs):
+    """Lines from L to R (letter lists) through the equation ename : P = Q,
+    for derive; pairs labels the inverse-pair steps."""
+    sig_full = P + _rev(Q)
+    _, sig = cancel_lines(sig_full)
+    lam = L + _rev(R)
+    lsteps, rho = cancel_lines(lam)
+    found = _rotation(rho, sig)
+    fwd = True
+    if found is None:                       # the relator the other way round
+        P, Q = Q, P
+        fwd = False
+        sig_full = P + _rev(Q)
+        _, sig = cancel_lines(sig_full)
+        found = _rotation(rho, sig)
+    if found is None:
+        raise SystemExit('relator_chain: no rotation matches')
+    rho2, i, sig2, j = found
+    u, v = rho2[:i], rho2[i:]
+    x, y = sig2[:j], sig2[j:]
+    lines = [(L, None)]
+    lines += [(c, pairs) for c in ins_lines(L, _rev(R), [])]
+    lines += [(s + R, pairs) for s in lsteps]
+    lines.append((rho2 + R, []))
+    lines += [(c, pairs) for c in ins_lines(u + v, u, R)]
+    lines.append((u + y + x + _rev(u) + R, []))
+    lines += [(c, pairs) for c in ins_lines(u + y + x, y, _rev(u) + R)]
+    mid = lambda s: u + y + s + _rev(y) + _rev(u) + R
+    lines.append((mid(sig), []))
+    ssteps, _ = cancel_lines(sig_full)
+    seq = [sig_full] + ssteps
+    lines += [(mid(s), pairs) for s in reversed(seq[:-1])]
+    lines.append((mid(Q + _rev(Q)), ('direct', ename, len(u) + len(y), fwd)))
+    lines += [(mid(Q[:k] + _rev(Q[:k])), pairs) for k in range(len(Q) - 1, -1, -1)]
+    lines += [(u + y[:k] + _rev(y[:k]) + _rev(u) + R, pairs) for k in range(len(y) - 1, -1, -1)]
+    lines += [(u[:k] + _rev(u[:k]) + R, pairs) for k in range(len(u) - 1, -1, -1)]
+    # drop repeated lines
+    out = [lines[0]]
+    for c, lab in lines[1:]:
+        if c != out[-1][0]:
+            out.append((c, lab))
+    return [(ltext(c), lab) for c, lab in out]
 
 
 def outer2(name):

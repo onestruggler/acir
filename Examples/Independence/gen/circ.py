@@ -17,7 +17,12 @@ the engine's perm and rw steps.  Every line is also checked numerically
 import cmath, math, itertools
 from collections import deque
 
-ARITY = {'w': 0, 'H': 1, 'S': 1, 'Z': 1, 'T': 1, 'X': 1, 'CX': 2, 'SW': 2}
+ARITY = {'w': 0, 'm': 0, 'H': 1, 'S': 1, 'Z': 1, 'T': 1, 'X': 1, 'CX': 2, 'SW': 2}
+
+# The scalars (ω and −1), and the gates a fragment takes as primitive
+# that another spells: Cliff₂ spells Z as S S, RCliff₂ has Z itself.
+SCALARS = ('w', 'm')
+PRIMITIVE = set()
 
 
 def wires(l):
@@ -61,9 +66,9 @@ def sw(a, b):
 
 
 def spell1(g):
-    if g[0] == 'w':
-        return [('w', None)]
-    if g[0] in ('H', 'S', 'T'):
+    if g[0] in SCALARS:
+        return [(g[0], None)]
+    if g[0] in ('H', 'S', 'T', 'Z'):
         return [(g[0], g[1])]
     if g[0] == 'CX':
         return cx(g[1], g[2])
@@ -85,9 +90,9 @@ def gwires(g):
 
 def permute(g, pi):
     """The gate g with its wires renamed by pi (a function)."""
-    if g[0] == 'w':
+    if g[0] in SCALARS:
         return g
-    if g[0] in ('H', 'S', 'T'):
+    if g[0] in ('H', 'S', 'T', 'Z'):
         return (g[0], pi(g[1]))
     if g[0] == 'CX':
         return ('CX', pi(g[1]), pi(g[2]))
@@ -102,6 +107,8 @@ def gshift(gs, s):
 def gname(g):
     if g[0] == 'w':
         return 'ω'
+    if g[0] == 'm':
+        return 'm'
     return g[0] + ''.join(str(x) for x in g[1:])
 
 
@@ -114,6 +121,8 @@ def gparse(s):
     for tok in s.split():
         if tok == 'w':
             out.append(('w',))
+        elif tok == 'm':
+            out.append(('m',))
         elif tok.startswith('w') and tok[1:].isdigit():
             out += [('w',)] * int(tok[1:])
         elif tok == 'wd':
@@ -121,10 +130,16 @@ def gparse(s):
         elif tok.startswith('Sd'):
             out += [('S', int(tok[2:]))] * 3
         elif tok[0] == 'Z' and tok[1:].isdigit():
-            out += [('S', int(tok[1:]))] * 2
+            if 'Z' in PRIMITIVE:
+                out.append(('Z', int(tok[1:])))
+            else:
+                out += [('S', int(tok[1:]))] * 2
         elif tok[0] == 'X' and tok[1:].isdigit():
             k = int(tok[1:])
-            out += [('H', k), ('S', k), ('S', k), ('H', k)]
+            if 'Z' in PRIMITIVE:
+                out += [('H', k), ('Z', k), ('H', k)]
+            else:
+                out += [('H', k), ('S', k), ('S', k), ('H', k)]
         elif tok[0] in 'HST' and tok[1:].isdigit():
             out.append((tok[0], int(tok[1:])))
         elif tok.startswith('CX'):
@@ -159,6 +174,8 @@ def gate_matrix(l, n):
     for x in range(N):
         if k == 'w':
             M[x][x] = OMEGA
+        elif k == 'm':
+            M[x][x] = -1
         elif k == 'H':
             b = (x >> w) & 1
             y = x ^ (1 << w)
@@ -413,7 +430,8 @@ def find_steps(a, b, eqs, width, depth=4, maxstates=300000, inserting=None):
 
 def letter(l):
     k, w = l
-    base = {'w': 'ωₗ', 'H': 'Hₗ', 'S': 'Sₗ', 'T': 'Tₗ', 'CX': 'CXₗ', 'SW': 'σₗ'}[k]
+    base = {'w': 'ωₗ', 'm': 'mₗ', 'H': 'Hₗ', 'S': 'Sₗ', 'Z': 'Zₗ', 'T': 'Tₗ', 'CX': 'CXₗ',
+            'SW': 'σₗ'}[k]
     return base if w is None else base + ' ↥' * w
 
 
