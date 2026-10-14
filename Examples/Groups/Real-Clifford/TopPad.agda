@@ -1,9 +1,10 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Makary, Ross and Selinger's real Clifford relations (R1–R16): the rules on their own wires, padded by
--- Circuit.TopPad, give the same congruence as Syntactics' rules at every
--- width, lifted by Circuit.Base's Lift-Relation
+-- Makary, Ross and Selinger's real Clifford relations (R1–R16): the
+-- rules on their own wires, padded by Circuit.TopPad, give the same
+-- congruence as Syntactics' rules at every width, lifted by
+-- Circuit.Base's Lift-Relation
 --
 -- An instance of Circuit.TopPad.Equivalence, as Symmetric.TopPad is:
 -- each rule that Syntactics states at every width is here stated on its
@@ -53,12 +54,12 @@ data _Base,_===_ : (n : ℕ) → WRel (Gen n) where
   R₁₃ᴮ : 3 Base, CZ • CZ ↑ === CZ ↑ • CZ
   R₁₄ᴮ : 3 Base,
         H • CZ • HH • CZ • H ↑ • CZ ↑ • H ↑ • CZ • HH • CZ • H ===
-        H ↑ ↑ • CZ ↑ • HH ↑ • CZ ↑ • H ↑ • CZ • H ↑ • CZ ↑ • HH ↑ • CZ ↑ • H ↑ ↑
+        H ↑ ↑ • CZ ↑ • HH ↑ • CZ ↑ • H ↑ • CZ • H ↑ • CZ ↑ • HH ↑ • CZ ↑ •
+        H ↑ ↑
   R₁₅ᴮ : 3 Base,
         CZ • HH ↑ • CZ ↑ • HH ↑ • CZ ↑ • CZ • HH ↑ • CZ ↑ • HH ↑ • CZ ↑ ===
         CZ ↑ • HH ↑ • CZ ↑ • HH ↑ • CZ
-  R₁₆ᴮ : 3 Base,
-        CZ ↑ • HH • CZ • HH • CZ • CZ ↑ • HH • CZ • HH • CZ ===
+  R₁₆ᴮ : 3 Base, CZ ↑ • HH • CZ • HH • CZ • CZ ↑ • HH • CZ • HH • CZ ===
         CZ • HH • CZ • HH • CZ ↑
 
 module TP = Circuit.TopPad.Top-Pad Gate _Base,_===_
@@ -113,7 +114,8 @@ R₁₁↓ : (₂₊ n) TRel, CZ • H • CZ • H === H • Z ↑ • CZ • H
 R₁₁↓ {0}    = TP.srel R₁₁ᴮ
 R₁₁↓ {₁₊ n} = TP.cong↓ R₁₁↓
 
-R₁₂↓ : (₂₊ n) TRel, CZ • HH • CZ • HH • CZ • H === H ↑ • CZ • HH • CZ • HH • CZ
+R₁₂↓ : (₂₊ n) TRel, CZ • HH • CZ • HH • CZ • H ===
+      H ↑ • CZ • HH • CZ • HH • CZ
 R₁₂↓ {0}    = TP.srel R₁₂ᴮ
 R₁₂↓ {₁₊ n} = TP.cong↓ R₁₂↓
 
@@ -123,7 +125,8 @@ R₁₃↓ {₁₊ n} = TP.cong↓ R₁₃↓
 
 R₁₄↓ : (₃₊ n) TRel,
       H • CZ • HH • CZ • H ↑ • CZ ↑ • H ↑ • CZ • HH • CZ • H ===
-      H ↑ ↑ • CZ ↑ • HH ↑ • CZ ↑ • H ↑ • CZ • H ↑ • CZ ↑ • HH ↑ • CZ ↑ • H ↑ ↑
+      H ↑ ↑ • CZ ↑ • HH ↑ • CZ ↑ • H ↑ • CZ • H ↑ • CZ ↑ • HH ↑ • CZ ↑ •
+      H ↑ ↑
 R₁₄↓ {0}    = TP.srel R₁₄ᴮ
 R₁₄↓ {₁₊ n} = TP.cong↓ R₁₄↓
 
@@ -133,8 +136,7 @@ R₁₅↓ : (₃₊ n) TRel,
 R₁₅↓ {0}    = TP.srel R₁₅ᴮ
 R₁₅↓ {₁₊ n} = TP.cong↓ R₁₅↓
 
-R₁₆↓ : (₃₊ n) TRel,
-      CZ ↑ • HH • CZ • HH • CZ • CZ ↑ • HH • CZ • HH • CZ ===
+R₁₆↓ : (₃₊ n) TRel, CZ ↑ • HH • CZ • HH • CZ • CZ ↑ • HH • CZ • HH • CZ ===
       CZ • HH • CZ • HH • CZ ↑
 R₁₆↓ {0}    = TP.srel R₁₆ᴮ
 R₁₆↓ {₁₊ n} = TP.cong↓ R₁₆↓

@@ -2,8 +2,8 @@
 -- Presentations of groups
 --
 -- Selinger's Figure 8, C1–C15: the rules on their own wires, padded by
--- Circuit.TopPad, give the same congruence as Syntactics' rules at every
--- width, lifted by Circuit.Base's Lift-Relation
+-- Circuit.TopPad, give the same congruence as Syntactics' rules at
+-- every width, lifted by Circuit.Base's Lift-Relation
 --
 -- An instance of Circuit.TopPad.Equivalence, as Symmetric.TopPad is:
 -- each rule that Syntactics states at every width is here stated on its

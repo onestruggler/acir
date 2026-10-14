@@ -1,9 +1,10 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Bian and Selinger's Clifford+CS relations: the rules on their own wires, padded by
--- Circuit.TopPad, give the same congruence as Syntactics' rules at every
--- width, lifted by Circuit.Base's Lift-Relation
+-- Bian and Selinger's Clifford+CS relations: the rules on their own
+-- wires, padded by Circuit.TopPad, give the same congruence as
+-- Syntactics' rules at every width, lifted by Circuit.Base's
+-- Lift-Relation
 --
 -- An instance of Circuit.TopPad.Equivalence, as Symmetric.TopPad is:
 -- each rule that Syntactics states at every width is here stated on its
@@ -50,15 +51,13 @@ data _Base,_===_ : (n : ℕ) → WRel (Gen n) where
   CS-K₀ᴮ : 2 Base, CS • K • CS • K • S === S • K • CS • K • CS
   CS-K₁ᴮ : 2 Base, CS • K ↑ • CS • K ↑ • S ↑ === S ↑ • K ↑ • CS • K ↑ • CS
   comm-CS↑-CSᴮ : 3 Base, CS ↑ • CS === CS • CS ↑
-  rel-266ᴮ : 3 Base, CX₁₀ • CX₀₁ • CS ↑ • CX₀₁ • CX₁₀ === CX₁₂ • CX₂₁ • CS • CX₂₁ • CX₁₂
-  rel-267ᴮ : 3 Base,
-        CX₁₀ • CX₀₁ • CS ↑ • CS ↑ • CX₀₁ • CX₁₀ ===
+  rel-266ᴮ : 3 Base, CX₁₀ • CX₀₁ • CS ↑ • CX₀₁ • CX₁₀ ===
+        CX₁₂ • CX₂₁ • CS • CX₂₁ • CX₁₂
+  rel-267ᴮ : 3 Base, CX₁₀ • CX₀₁ • CS ↑ • CS ↑ • CX₀₁ • CX₁₀ ===
         CX₀₁ • CS ↑ • CS ↑ • CX₀₁ • CS ↑ • CS ↑
-  rel-268ᴮ : 3 Base,
-        CS ↑ • CX₀₁ • CS ↑ • CS ↑ • CS ↑ • CX₀₁ ===
+  rel-268ᴮ : 3 Base, CS ↑ • CX₀₁ • CS ↑ • CS ↑ • CS ↑ • CX₀₁ ===
         CS • CX₂₁ • CS • CS • CS • CX₂₁
-  rel-269ᴮ : 3 Base,
-        CS ↑ • K ↑ • CS ↑ • K ↑ • CS • K ↑ • CS ===
+  rel-269ᴮ : 3 Base, CS ↑ • K ↑ • CS ↑ • K ↑ • CS • K ↑ • CS ===
         CS • K ↑ • CS • K ↑ • CS ↑ • K ↑ • CS ↑
   rel-272ᴮ : 3 Base,
         CS ↑ • K ↑ • CS ↑ • CS ↑ • CS ↑ • K ↑ • CS • K ↑ • CS ↑ ===
@@ -120,26 +119,22 @@ comm-CS↑-CS↓ : (₃₊ n) TRel, CS ↑ • CS === CS • CS ↑
 comm-CS↑-CS↓ {0}    = TP.srel comm-CS↑-CSᴮ
 comm-CS↑-CS↓ {₁₊ n} = TP.cong↓ comm-CS↑-CS↓
 
-rel-266↓ : (₃₊ n) TRel,
-      CX₁₀ • CX₀₁ • CS ↑ • CX₀₁ • CX₁₀ ===
+rel-266↓ : (₃₊ n) TRel, CX₁₀ • CX₀₁ • CS ↑ • CX₀₁ • CX₁₀ ===
       CX₁₂ • CX₂₁ • CS • CX₂₁ • CX₁₂
 rel-266↓ {0}    = TP.srel rel-266ᴮ
 rel-266↓ {₁₊ n} = TP.cong↓ rel-266↓
 
-rel-267↓ : (₃₊ n) TRel,
-      CX₁₀ • CX₀₁ • CS ↑ • CS ↑ • CX₀₁ • CX₁₀ ===
+rel-267↓ : (₃₊ n) TRel, CX₁₀ • CX₀₁ • CS ↑ • CS ↑ • CX₀₁ • CX₁₀ ===
       CX₀₁ • CS ↑ • CS ↑ • CX₀₁ • CS ↑ • CS ↑
 rel-267↓ {0}    = TP.srel rel-267ᴮ
 rel-267↓ {₁₊ n} = TP.cong↓ rel-267↓
 
-rel-268↓ : (₃₊ n) TRel,
-      CS ↑ • CX₀₁ • CS ↑ • CS ↑ • CS ↑ • CX₀₁ ===
+rel-268↓ : (₃₊ n) TRel, CS ↑ • CX₀₁ • CS ↑ • CS ↑ • CS ↑ • CX₀₁ ===
       CS • CX₂₁ • CS • CS • CS • CX₂₁
 rel-268↓ {0}    = TP.srel rel-268ᴮ
 rel-268↓ {₁₊ n} = TP.cong↓ rel-268↓
 
-rel-269↓ : (₃₊ n) TRel,
-      CS ↑ • K ↑ • CS ↑ • K ↑ • CS • K ↑ • CS ===
+rel-269↓ : (₃₊ n) TRel, CS ↑ • K ↑ • CS ↑ • K ↑ • CS • K ↑ • CS ===
       CS • K ↑ • CS • K ↑ • CS ↑ • K ↑ • CS ↑
 rel-269↓ {0}    = TP.srel rel-269ᴮ
 rel-269↓ {₁₊ n} = TP.cong↓ rel-269↓

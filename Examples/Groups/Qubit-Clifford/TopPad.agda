@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Selinger's Clifford relations (C1–C15): the rules on their own wires, padded by
--- Circuit.TopPad, give the same congruence as Syntactics' rules at every
--- width, lifted by Circuit.Base's Lift-Relation
+-- Selinger's Clifford relations (C1–C15): the rules on their own wires,
+-- padded by Circuit.TopPad, give the same congruence as Syntactics'
+-- rules at every width, lifted by Circuit.Base's Lift-Relation
 --
 -- An instance of Circuit.TopPad.Equivalence, as Symmetric.TopPad is:
 -- each rule that Syntactics states at every width is here stated on its
@@ -45,19 +45,26 @@ data _Base,_===_ : (n : ℕ) → WRel (Gen n) where
   C₅ᴮ : 2 Base, CZ • CZ === ε
   C₆ᴮ : 2 Base, CZ • S ↑ === S ↑ • CZ
   C₇ᴮ : 2 Base, CZ • S === S • CZ
-  C₈ᴮ : 2 Base, CZ • H ↑ • S ↑ • S ↑ • H ↑ === H ↑ • S ↑ • S ↑ • H ↑ • S • S • CZ
+  C₈ᴮ : 2 Base, CZ • H ↑ • S ↑ • S ↑ • H ↑ ===
+        H ↑ • S ↑ • S ↑ • H ↑ • S • S • CZ
   C₉ᴮ : 2 Base, CZ • H • S • S • H === H • S • S • H • S ↑ • S ↑ • CZ
-  C₁₀ᴮ : 2 Base, CZ • H ↑ • CZ === ω ^ 7 • S ↑ • H ↑ • S ↑ • S • CZ • H ↑ • S ↑
+  C₁₀ᴮ : 2 Base, CZ • H ↑ • CZ ===
+        ω ^ 7 • S ↑ • H ↑ • S ↑ • S • CZ • H ↑ • S ↑
   C₁₁ᴮ : 2 Base, CZ • H • CZ === ω ^ 7 • S • H • S • S ↑ • CZ • H • S
   C₁₂ᴮ : 3 Base, CZ • CZ ↑ === CZ ↑ • CZ
   C₁₃ᴮ : 3 Base,
-        CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ • H • H ↑ • CZ • H • H ↑ • CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ ===
-        CZ • H ↑ • H • CZ • H ↑ ↑ • H ↑ • CZ ↑ • H ↑ ↑ • H ↑ • CZ • H ↑ • H • CZ
+        CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ • H • H ↑ • CZ • H • H ↑ • CZ ↑ • H ↑ •
+        H ↑ ↑ • CZ ↑ ===
+        CZ • H ↑ • H • CZ • H ↑ ↑ • H ↑ • CZ ↑ • H ↑ ↑ • H ↑ • CZ • H ↑ •
+        H • CZ
   C₁₄ᴮ : 3 Base,
-        CZ • H ↑ ↑ • H ↑ • CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ • CZ • H ↑ • H ↑ ↑ • CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ • CZ • H ↑ • H ↑ ↑ • CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ ===
+        CZ • H ↑ ↑ • H ↑ • CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ • CZ • H ↑ • H ↑ ↑ •
+        CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ • CZ • H ↑ • H ↑ ↑ • CZ ↑ • H ↑ • H ↑ ↑ •
+        CZ ↑ ===
         ε
   C₁₅ᴮ : 3 Base,
-        CZ ↑ • H • H ↑ • CZ • H ↑ • H • CZ • CZ ↑ • H ↑ • H • CZ • H ↑ • H • CZ • CZ ↑ • H ↑ • H • CZ • H ↑ • H • CZ ===
+        CZ ↑ • H • H ↑ • CZ • H ↑ • H • CZ • CZ ↑ • H ↑ • H • CZ • H ↑ • H •
+        CZ • CZ ↑ • H ↑ • H • CZ • H ↑ • H • CZ ===
         ε
 
 module TP = Circuit.TopPad.Top-Pad Gate _Base,_===_
@@ -96,7 +103,8 @@ C₇↓ : (₂₊ n) TRel, CZ • S === S • CZ
 C₇↓ {0}    = TP.srel C₇ᴮ
 C₇↓ {₁₊ n} = TP.cong↓ C₇↓
 
-C₈↓ : (₂₊ n) TRel, CZ • H ↑ • S ↑ • S ↑ • H ↑ === H ↑ • S ↑ • S ↑ • H ↑ • S • S • CZ
+C₈↓ : (₂₊ n) TRel, CZ • H ↑ • S ↑ • S ↑ • H ↑ ===
+      H ↑ • S ↑ • S ↑ • H ↑ • S • S • CZ
 C₈↓ {0}    = TP.srel C₈ᴮ
 C₈↓ {₁₊ n} = TP.cong↓ C₈↓
 
@@ -104,7 +112,8 @@ C₉↓ : (₂₊ n) TRel, CZ • H • S • S • H === H • S • S • H �
 C₉↓ {0}    = TP.srel C₉ᴮ
 C₉↓ {₁₊ n} = TP.cong↓ C₉↓
 
-C₁₀↓ : (₂₊ n) TRel, CZ • H ↑ • CZ === ω ^ 7 • S ↑ • H ↑ • S ↑ • S • CZ • H ↑ • S ↑
+C₁₀↓ : (₂₊ n) TRel, CZ • H ↑ • CZ ===
+      ω ^ 7 • S ↑ • H ↑ • S ↑ • S • CZ • H ↑ • S ↑
 C₁₀↓ {0}    = TP.srel C₁₀ᴮ
 C₁₀↓ {₁₊ n} = TP.cong↓ C₁₀↓
 
@@ -117,19 +126,24 @@ C₁₂↓ {0}    = TP.srel C₁₂ᴮ
 C₁₂↓ {₁₊ n} = TP.cong↓ C₁₂↓
 
 C₁₃↓ : (₃₊ n) TRel,
-      CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ • H • H ↑ • CZ • H • H ↑ • CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ ===
-      CZ • H ↑ • H • CZ • H ↑ ↑ • H ↑ • CZ ↑ • H ↑ ↑ • H ↑ • CZ • H ↑ • H • CZ
+      CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ • H • H ↑ • CZ • H • H ↑ • CZ ↑ • H ↑ •
+      H ↑ ↑ • CZ ↑ ===
+      CZ • H ↑ • H • CZ • H ↑ ↑ • H ↑ • CZ ↑ • H ↑ ↑ • H ↑ • CZ • H ↑ • H •
+      CZ
 C₁₃↓ {0}    = TP.srel C₁₃ᴮ
 C₁₃↓ {₁₊ n} = TP.cong↓ C₁₃↓
 
 C₁₄↓ : (₃₊ n) TRel,
-      CZ • H ↑ ↑ • H ↑ • CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ • CZ • H ↑ • H ↑ ↑ • CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ • CZ • H ↑ • H ↑ ↑ • CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ ===
+      CZ • H ↑ ↑ • H ↑ • CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ • CZ • H ↑ • H ↑ ↑ •
+      CZ ↑ • H ↑ • H ↑ ↑ • CZ ↑ • CZ • H ↑ • H ↑ ↑ • CZ ↑ • H ↑ • H ↑ ↑ •
+      CZ ↑ ===
       ε
 C₁₄↓ {0}    = TP.srel C₁₄ᴮ
 C₁₄↓ {₁₊ n} = TP.cong↓ C₁₄↓
 
 C₁₅↓ : (₃₊ n) TRel,
-      CZ ↑ • H • H ↑ • CZ • H ↑ • H • CZ • CZ ↑ • H ↑ • H • CZ • H ↑ • H • CZ • CZ ↑ • H ↑ • H • CZ • H ↑ • H • CZ ===
+      CZ ↑ • H • H ↑ • CZ • H ↑ • H • CZ • CZ ↑ • H ↑ • H • CZ • H ↑ • H •
+      CZ • CZ ↑ • H ↑ • H • CZ • H ↑ • H • CZ ===
       ε
 C₁₅↓ {0}    = TP.srel C₁₅ᴮ
 C₁₅↓ {₁₊ n} = TP.cong↓ C₁₅↓
