@@ -195,6 +195,14 @@ def spell(g, g2):
         d.lemma(lem, q)
     d.done(); return name
 
+def phase_free(g, g2):
+    """spell(g, g2) needs no scalar letter."""
+    s = wnorm(winv(list(g2.d)) + list(g.d))
+    flip = not close(qof(s, 1), IZ)
+    zs = wnorm((['K', 'S', 'S', 'Kd'] if flip else []) + s)
+    tgt = fp([(x, 0) for x in zs])
+    return any(fp([('S', 0)] * j) == tgt for j in range(4))
+
 # ------------------------------------------------------------ products on one pair
 def REL(u):
     """Gad(u) Gad(u S U') -> Gad(u U')."""

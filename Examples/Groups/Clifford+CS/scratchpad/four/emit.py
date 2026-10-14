@@ -57,8 +57,10 @@ def downk(g, i): return deriv.norm([(g[0],) + tuple(w - i for w in g[1:])])[0]
 
 def lst(letters): return '(' + ' ∷ '.join(mname(g) for g in letters) + ' ∷ [])' if letters else '[]'
 
+TR = {'(': '⟨', ')': '⟩', '.': '·', '>': '⟶', '|': '∣', ';': '', '{': '', '}': '', '"': ''}
 def lemname(name):
     s = name.replace('] [', '-vs-').replace(' ', '-').replace('=', '≡').replace('[', '').replace(']', '').replace(',', '').replace('@', 'at').replace('^', 'ᵖ')
+    s = ''.join(TR.get(ch, ch) for ch in s)
     return 'lem-' + s
 
 # ------------------------------------------------------------ letters
@@ -166,7 +168,22 @@ def chunks(prims, max_steps=500, max_lemmas=16):
     if cur: out.append(cur)
     return out
 
+def dedupe(prims):
+    """one derivation per name (a lemma derived twice keeps its first derivation)."""
+    out = []; byname = {}
+    for P in prims:
+        if P.name in byname:
+            Q = byname[P.name]
+            assert list(Q.lhs) == list(P.lhs) and list(Q.rhs) == list(P.rhs), ('two statements', P.name)
+            continue
+        byname[P.name] = P; out.append(P)
+    return out
+
 def write_all(prims):
+    prims = dedupe(prims)
+    seen = {}
+    for P in prims:
+        n = lemname(P.name); assert n not in seen, ('name clash', P.name, seen.get(n)); seen[n] = P.name
     os.makedirs(os.path.join(ROOT, 'D'), exist_ok=True)
     for f in os.listdir(os.path.join(ROOT, 'D')):
         if f.endswith('.agda'): os.remove(os.path.join(ROOT, 'D', f))
@@ -191,6 +208,8 @@ def write_all(prims):
 
 if __name__ == '__main__':
     import lib4
+    import consec4
+    consec4.all_facts()
     prims = LW.lower_all(deriv.DERIVATIONS)
     mods = write_all(prims)
     print(len(mods), 'modules written to', ROOT)

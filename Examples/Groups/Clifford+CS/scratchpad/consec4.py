@@ -245,3 +245,309 @@ def F7a():
 
 if __name__ == '__main__':
     print(F7a())
+
+# ------------------------------------------------------------ the transposed adjacent case
+PI01 = (1, 0, 2, 3)
+ai0 = Gad(0, (), (), -1)
+
+def core_E():
+    """core -> core^-1 E  (on the canonical pair)."""
+    name = 'c -> ci E'
+    if name in L: return name
+    bd = BD(name, [PP], G.core(0, -1) + [E])
+    bd.ins(0, G.core(0, -1))                             # ci c c   (ins puts ci, inv(ci) = c)
+    bd.lem(1, 2, [[E]], 'PP2=E')
+    return bd.done()
+
+def Ri_RE():
+    """Ri -> R E."""
+    name = 'Ri = R E'
+    if name in L: return name
+    d = Derivation(name, Ri.letters(), R.letters() + [E], L)
+    d.lemma(core_E(), 2)                                 # S K ci E Kd Sd
+    d.comm(6); d.comm(7)
+    d.done(); return name
+
+def F7a_inv():
+    """b Ri -> Ri a0 b."""
+    name = 'F7a gad inv'
+    if name in L: return name
+    bd = BD(name, [b.letters(), Ri.letters()], Ri.letters() + a0.letters() + b.letters())
+    bd.lem(1, 1, [R.letters(), [E]], Ri_RE())
+    bd.lem(0, 2, [R.letters(), a0.letters(), b.letters()], F7a_gad())
+    bd.swap(2, P.prove(P.units(b.letters()), [(E,)]))   # b E -> E b
+    bd.swap(1, P.prove(P.units(PP), [(E,)]))            # a0 E -> E a0
+    bd.lem(0, 2, [Ri.letters()], Ri_RE(), fwd=False)
+    return bd.done()
+
+def same_pair_rel(name, lhs_g, rhs_g):
+    """two products of gadgets on the canonical pair with the same gate, by normalising both."""
+    if name in L: return name
+    def norm_side(gs):
+        steps = []; cur = gs[0]
+        for g in gs[1:]:
+            nm, cur = SP.prod(cur, g); steps.append(nm)
+        return steps, cur
+    sl, gl_ = norm_side(lhs_g); sr, gr = norm_side(rhs_g)
+    bd = BD(name, [g.letters() for g in lhs_g], [x for g in rhs_g for x in g.letters()])
+    for nm in sl: bd.lem(0, 2, [None], nm) if False else None
+    cur = lhs_g[0]
+    for g, nm in zip(lhs_g[1:], sl):
+        _, nxt = SP.prod(cur, g); bd.lem(0, 2, [nxt.letters()], nm); cur = nxt
+    s = SP.spell(gl_, gr)
+    if s: bd.lem(0, 1, [gr.letters()], s)
+    # unfold the right side's products in reverse
+    prods = []; cur = rhs_g[0]
+    for g in rhs_g[1:]:
+        nm, nxt = SP.prod(cur, g); prods.append((nm, cur, g, nxt)); cur = nxt
+    for nm, c0, g, nxt in reversed(prods):
+        bd.lem(0, 1, [c0.letters(), g.letters()], nm, fwd=False)
+        bd.join(0, 1) if False else None
+        bd.b = [c0.letters(), g.letters()] + bd.b[2:]
+        bd.join(0, len(bd.b) - 1) if False else None
+    return bd.done()
+
+def h_gad():
+    """X0 ROT X0 -> Ri."""
+    name = 'h-gad'
+    if name in L: return name
+    bd = BD(name, [[X0], ROT, [X0]], Ri.letters())
+    bd.lem(1, 1, [R.letters()], rot_gad())
+    g = Gad(0, (), G.XW + ['S', 'K'], -1)
+    xsk = [(x, 0) for x in g.d]
+    bd.join(0, 3)
+    d = bd.d
+    d.win(0, 3, xsk)
+    n = len(xsk) + 4
+    d.win(n, n + 3, [(x, 0) for x in G.winv(list(g.d))])
+    bd.b = [g.letters()]
+    bd.lem(0, 1, [Ri.letters()], SP.spell(g, Ri))
+    return bd.done()
+
+def F7b():
+    """decoded: p'_k p'_{k+1} l_{k+1} = l_{k+1} p'_k  at the canonical adjacent pair."""
+    name = 'F7b'
+    if name in L: return name
+    f7 = relabel(F7a_inv(), PI01, L)                      # a0^-1 Q -> Q a1 a0^-1   (Q = R1^-1)
+    a0Ri = same_pair_rel("a0 Ri = Ri a0^-1", [a0, Ri], [Ri, ai0])
+    sp1 = relabel(a0Ri, PI01, L)                          # a1 Q -> Q a1^-1
+    hq = relabel(h_gad(), PI01, L)                        # X1 ROT1 X1 -> Q
+    Q = L[hq][1]; qdec = L[hq][0]
+    a1l, a1il = a1.letters(), norm(inv(a1.letters()))
+    p0 = [X0] + PP + [X0]
+    bd = BD(name, [p0, a1l, qdec], qdec + p0)
+    bd.lem(0, 1, [ai0.letters()], 'PP-flip')
+    bd.lem(2, 1, [Q], hq)
+    bd.lem(1, 2, [Q, a1il], sp1)                          # a0i Q a1i
+    bd.lem(0, 2, [Q, a1l, ai0.letters()], f7)             # Q a1 a0i a1i
+    adj = G.pass_inv_B(P.units(a1l), [tuple(ai0.letters())]) if False else None
+    sw = P.lookup([tuple(a1l)], [tuple(ai0.letters())])[0]
+    bd.swap(1, adj_pass())                                # Q a0i a1 a1i
+    bd.cancel(2)
+    bd.lem(1, 1, [p0], 'PP-flip', fwd=False)
+    bd.lem(0, 1, [qdec], hq, fwd=False)
+    return bd.done()
+
+def adj_pass():
+    """a1 a0^-1 -> a0^-1 a1 (adjacent phase gadgets commute, adj01)."""
+    name = 'a1 a0i'
+    if name in L: return name
+    a1l = a1.letters(); ail = ai0.letters()
+    # adj01: PP_0 PP_1 -> PP_1 PP_0
+    bd = BD(name, [a1l, ail], ail + a1l)
+    bd.ins(0, ail)                                       # a0i a0 a1 a0i
+    bd.swap(1, 'adj01')
+    bd.cancel(2)
+    return bd.done()
+
+if __name__ == '__main__':
+    print(F7b())
+
+# ------------------------------------------------------------ the braid (Clement's (358))
+CZ01, SW01 = ('CZ', 0, 1), ('SWAP', 0, 1)
+CS01, CSd01 = ('CS', 0, 1), ('CSd', 0, 1)
+F0 = norm([CZ01, SW01])
+Qg = Gad(1, (), ['S', 'K'], 1)                           # the decoded l_{k+1} as a gadget
+
+def copies(g): return [Gad(g.t, W, g.d, g.e) for W in [(3,), (2,), (2, 3)]]
+def gl(gs): return [x for g in gs for x in g.letters()]
+
+def merge_all(g, out):
+    """g . (its copies white on 3, 2, 2 3) -> out (two wires {t, other}), g on the canonical pair."""
+    name = f'merge-all {g!r}'
+    if name in L: return name
+    c3, c2, c23 = copies(g)
+    d = Derivation(name, g.letters() + gl([c3, c2, c23]), out, L)
+    # g c3 -> M (three wires): the merge over wire 3 is g . X3 g X3
+    m1 = merge3_of(g)
+    d.lemma(m1, 0)
+    M = L[m1][1]
+    # c2 c23 = X2 g X2 X2 X3 g X3 X2 ... put it as X2 (g c3) X2
+    p = len(M)
+    c2l, c23l = c2.letters(), c23.letters()
+    # c2 = X2 core.. X2 ; c23 = X2 X3 .. X2 X3 ; want X2 [g][X3 g X3] X2
+    q = p + len(c2l)                                     # start of c23
+    d.win(q - 1, q + 1, []) if False else None
+    # c2's last X2 and c23's first X2 cancel; c23's last letters X2 X3 -> X3 X2
+    d.win(q - 1, q + 1, [])                              # X2 X2
+    n = len(d.cur); d.comm(n - 2)                        # ... X3 X2
+    d.lemma(m1, p + 1)                                   # X2 M X2
+    d.win(0, len(d.cur), out)                            # three wires {t, 1, 2}
+    d.done(); return name
+
+def merge3_of(g):
+    """g . X3 g X3 -> three-wire word, g = Gad(0, (), d, e)."""
+    if g.letters() == R.letters(): return mergeR3()
+    name = f'merge3 {g!r}'
+    if name in L: return name
+    c3 = Gad(g.t, (3,), g.d, g.e)
+    d = Derivation(name, g.letters() + c3.letters(), [], L) if False else None
+    # g X3 g X3 = d (core X3 core X3) d^-1 ... (core^e)
+    dl = [(x, 0) for x in g.d]; idl = [(x, 0) for x in G.winv(list(g.d))]
+    cl = G.core(0, g.e)
+    lhs = g.letters() + c3.letters()
+    tmp = Derivation(name + ' tmp', lhs, lhs, L)
+    n = len(dl) + len(cl) + len(idl)
+    for j in range(len(dl)): tmp.comm(n + j)              # X3 past d
+    tmp.win(n - len(idl), n + len(dl), [])               # d^-1 d
+    m = len(tmp.cur)
+    for j in range(len(idl)): tmp.comm(m - 2 - j)        # last X3 past d^-1
+    # d [cl X3 cl X3] d^-1
+    if g.e == 1: tmp.lemma('merge3', len(dl))
+    else:
+        sp = G.sep_pass(Gad(0, (3,)), Gad(0), 3)
+        tmp.lemma(G.inv_lemma(sp), len(dl)); tmp.lemma(G.inv_lemma('merge3'), len(dl))
+    out = list(tmp.cur)
+    d = Derivation(name, lhs, out, L)
+    for st in tmp.steps: pass
+    # redo the same steps on d
+    for j in range(len(dl)): d.comm(n + j)
+    d.win(n - len(idl), n + len(dl), [])
+    m = len(d.cur)
+    for j in range(len(idl)): d.comm(m - 2 - j)
+    if g.e == 1: d.lemma('merge3', len(dl))
+    else:
+        d.lemma(G.inv_lemma(sp), len(dl)); d.lemma(G.inv_lemma('merge3'), len(dl))
+    d.done(); return name
+
+def caw_at(c, v, g):
+    """Lambda_c(v) g Lambda_c(v)^-1 -> g with v on its target."""
+    out = Gad(g.t, g.W, list(v) + list(g.d), g.e)
+    name = f'CAw{c} {"".join(v)} {g!r}'
+    if name in L: return name, out
+    lw = [G.lam(c, g.t, x)[0] for x in v]; lwi = [G.lam(c, g.t, x)[0] for x in G.winv(list(v))]
+    d = Derivation(name, lw + g.letters() + lwi, out.letters(), L)
+    cur = g
+    for i in range(len(v) - 1, -1, -1):
+        nm, g2 = G.ca(c, v[i], cur); d.lemma(nm, i)
+        p = i + len(g2.letters()); d.win(p, p + 2, []); cur = g2
+    d.done(); return name, out
+
+def conjF():
+    """R0 F0 -> F0 Q."""
+    name = 'conjF'
+    if name in L: return name
+    bd = BD(name, [R.letters(), F0], F0 + Qg.letters())
+    bd.ins(0, F0)                                        # F0 F0^-1 R0 F0
+    bd.split(1, [1, 1]); bd.split(4, [1, 1])             # F0 [SW] [CZ] R0 [CZ] [SW]
+    bd.win(2, 1, [[CS01, CS01]]); bd.win(4, 1, [[CSd01, CSd01]])
+    nm, g2 = caw_at(1, ['S', 'S'], R)
+    bd.lem(2, 3, [g2.letters()], nm)                     # F0 SW g2 SW
+    bd.join(1, 3)
+    o = bd.off(1)
+    bd.d.swapconj(o, len(g2.letters()), 0)
+    g3 = Gad(1, (), g2.d, g2.e)
+    bd.b = [F0, g3.letters()]; bd._check()
+    sp = SP.spell(Gad(0, (), g2.d, g2.e), Ri)
+    bd.lem(1, 1, [Qg.letters()], relabel(sp, PI01, L))
+    return bd.done()
+
+if __name__ == '__main__':
+    print(merge_all(R, norm([('CX', 1, 0), CZ01])))
+    print(conjF())
+
+def merge_all_Q():
+    """Qg . (copies) -> CZ01 CX01, from the merge of Ri at target 0 relabelled."""
+    out0 = norm([CZ01, ('CX', 1, 0)])
+    m = merge_all(Ri, out0)
+    return relabel(m, PI01, L)
+
+def sep_wire(A, B):
+    for c in range(4):
+        if c not in (A.t, B.t) and ((c in A.W) != (c in B.W)): return c
+    raise ValueError(('not separated', A, B))
+
+def pass_lemma(A, B):
+    """A B -> B A for separated gadgets."""
+    return G.sep_pass(A, B, sep_wire(A, B))
+
+def P_krk():
+    """R0 Q R0 rho kappa rho -> F0."""
+    name = 'P krk'
+    if name in L: return name
+    rho, kap = copies(R), copies(Qg)
+    blocks = [R, Qg, R] + rho + kap + rho
+    bd = BD(name, [g.letters() for g in blocks], F0)
+    gs = list(blocks)
+    def mv_left(i, j):
+        """move block i left to position j by passes."""
+        while i > j:
+            A, B = gs[i - 1], gs[i]                     # A B -> B A, i.e. B passes A backwards
+            bd.swap(i - 1, pass_lemma(B, A), fwd=False)
+            gs[i - 1], gs[i] = B, A; i -= 1
+    for k in range(3): mv_left(3 + k, 1 + k)              # rho after the first R0
+    for k in range(3): mv_left(6 + k, 5 + k)              # kappa past the second R0
+    bd.join(0, 4); bd.join(1, 4); bd.join(2, 4)
+    bd.lem(0, 1, [norm([('CX', 1, 0), CZ01])], merge_all(R, norm([('CX', 1, 0), CZ01])))
+    bd.lem(1, 1, [L[merge_all_Q()][1]], merge_all_Q())
+    bd.lem(2, 1, [norm([('CX', 1, 0), CZ01])], merge_all(R, norm([('CX', 1, 0), CZ01])))
+    bd.win(0, 3, [F0])
+    return bd.done()
+
+def R0_P():
+    """R0 . R0 Q R0 -> R0 Q R0 . Q."""
+    name = 'R0 P -> P Q'
+    if name in L: return name
+    rho, kap = copies(R), copies(Qg)
+    X = gl(rho + kap + rho)
+    Xi = norm(inv(X))
+    bd = BD(name, [R.letters(), R.letters(), Qg.letters(), R.letters()], gl([R, Qg, R, Qg]))
+    bd.ins(4, X)
+    bd.join(1, 4)
+    bd.lem(1, 1, [F0], P_krk())
+    bd.lem(0, 2, [F0, Qg.letters()], conjF())
+    # Q passes Xi
+    qx = P.pname([tuple(Qg.letters())], [tuple(X)])
+    if qx not in L:
+        d2 = BD(qx, [Qg.letters()] + [g.letters() for g in rho + kap + rho], X + Qg.letters())
+        gs = rho + kap + rho
+        for i, g in enumerate(gs):
+            d2.swap(i, pass_lemma(Qg, g))
+        d2.done()
+    bd.swap(1, G.pass_inv_B([tuple(Qg.letters())], [tuple(X)]))
+    bd.lem(0, 1, [gl([R, Qg, R]), X], P_krk(), fwd=False)
+    bd.cancel(1)
+    bd.split(0, [len(R.letters()), len(Qg.letters()), len(R.letters())])
+    return bd.done()
+
+def F10():
+    """decoded braid: l_k l_{k+1} l_k = l_{k+1} l_k l_{k+1}."""
+    name = 'F10'
+    if name in L: return name
+    hq = relabel(h_gad(), PI01, L); qdec = L[hq][0]
+    bd = BD(name, [ROT, qdec, ROT], list(qdec) + ROT + list(qdec))
+    bd.lem(0, 1, [R.letters()], rot_gad()); bd.lem(2, 1, [R.letters()], rot_gad())
+    bd.lem(1, 1, [Qg.letters()], hq)
+    bd.ins(0, Ri.letters())                              # Ri R R Q R
+    bd.lem(1, 4, [R.letters(), Qg.letters(), R.letters(), Qg.letters()], R0_P())
+    bd.cancel(0)
+    bd.lem(0, 1, [qdec], hq, fwd=False); bd.lem(1, 1, [ROT], rot_gad(), fwd=False)
+    bd.lem(2, 1, [qdec], hq, fwd=False)
+    return bd.done()
+
+if __name__ == '__main__':
+    print(F10())
+
+def all_facts():
+    """the K-free consecutive facts at the canonical configurations."""
+    return [F6(), F7a(), F7b(), F10()]

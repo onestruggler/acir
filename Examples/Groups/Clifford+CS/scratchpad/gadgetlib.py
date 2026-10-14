@@ -354,19 +354,39 @@ def diag_pass(A0, B0):
         return P.done_as(name, a, b, lambda d: _inv_right(d, m, A0, B0))
     raise P.Fail(('diag_pass', repr(A0), repr(B0)))
 
+def ins_gad(d, k, g):
+    """at k insert g . g^-1 (g^-1 = the gadget with e negated), X letters sorted."""
+    gl_ = g.letters(); n = len(g.W)
+    P.insert_inverse(d, k, gl_)
+    q = k + len(gl_)                                      # inv(gl_) starts here, its X's reversed
+    sort_xs(d, q, list(reversed(xs(g.W))), xs(g.W))
+    m = q + len(gl_) - n
+    sort_xs(d, m, list(reversed(xs(g.W))), xs(g.W))
+
+def cancel_gad(d, k, g):
+    """at k: g . g^-1 -> eps."""
+    gl_ = g.letters(); n = len(g.W)
+    q = k + len(gl_)
+    sort_xs(d, q, xs(g.W), list(reversed(xs(g.W))))
+    m = q + len(gl_) - n
+    sort_xs(d, m, xs(g.W), list(reversed(xs(g.W))))
+    P.cancel_inverse(d, k, gl_)
+
+def ginv(g): return Gad(g.t, g.W, g.d, -g.e)
+
 def _inv_left(d, m, A0, B0):
-    """A0 = inv(A1), m: A1 B0 -> B0 A1; show A0 B0 -> B0 A0."""
-    a0 = A0.letters(); a1 = inv(a0); b0 = B0.letters()
-    P.insert_inverse(d, len(a0) + len(b0), a1)          # A0 B0 A1 A0
+    """A0 = A1^-1, m: A1 B0 -> B0 A1; show A0 B0 -> B0 A0."""
+    A1 = ginv(A0); a0 = A0.letters(); b0 = B0.letters()
+    ins_gad(d, len(a0) + len(b0), A1)                    # A0 B0 A1 A0
     d.lemma(m, len(a0), forward=False)                  # A0 A1 B0 A0
-    P.cancel_inverse(d, 0, a0)
+    cancel_gad(d, 0, A0)
 
 def _inv_right(d, m, A0, B0):
-    """B0 = inv(B1), m: A0 B1 -> B1 A0; show A0 B0 -> B0 A0."""
-    a0 = A0.letters(); b0 = B0.letters(); b1 = inv(b0)
-    P.insert_inverse(d, 0, b0)                           # B0 B1 A0 B0
+    """B0 = B1^-1, m: A0 B1 -> B1 A0; show A0 B0 -> B0 A0."""
+    B1 = ginv(B0); a0 = A0.letters(); b0 = B0.letters()
+    ins_gad(d, 0, B0)                                    # B0 B1 A0 B0
     d.lemma(m, len(b0), forward=False)                  # B0 A0 B1 B0
-    P.cancel_inverse(d, len(b0) + len(a0), b1)
+    cancel_gad(d, len(b0) + len(a0), B1)
 
 def sep_pass(A, B, c):
     """A passes B, the two gadgets of opposite colours on c."""

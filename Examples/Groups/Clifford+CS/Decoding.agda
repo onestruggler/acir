@@ -45,7 +45,8 @@ open import Examples.Groups.Clifford+CS.Semantics.Algebra using (Bits)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.MultiControlled
 open import Examples.Groups.Clifford+CS.Numbering (₄₊ m) using (N)
-open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; pp ; px ; dx ; ki)
+open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP)
+import Examples.Groups.Clifford+CS.Lemma88.Chains as Ch
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Gray using (gray ; toBits)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Bitstrings using (lookupℕ)
 
@@ -90,63 +91,14 @@ dKI₁ : ℕ → Circuit n
 dKI₁ a = mc (not (βof a)) (layout□ a) (G-ki (₁₊ m))
 
 ------------------------------------------------------------------------
--- i_a i_b⁻¹
+-- The other letters: chains of consecutive ones (Lemma88.Chains, where
+-- the rules of P′ are derived from facts about the consecutive letters)
 
--- The chain from a up d steps, and the inverse chain.
-dPP-up dPP-dn : ℕ → ℕ → Circuit n
-dPP-up a zero    = ε
-dPP-up a (suc d) = dPP₁ a • dPP-up (suc a) d
-dPP-dn a zero    = ε
-dPP-dn a (suc d) = dPP₁′ a • dPP-dn (suc a) d
-
-dPP : ℕ → ℕ → Circuit n
-dPP a b = if a <ᵇ b then dPP-up a (b ∸ a) else dPP-dn b (a ∸ b)
-
-------------------------------------------------------------------------
--- (−1)_c X_[a,b]
-
--- (−1)_a X_{a,a+d} and (−1)_{a+d} X_{a,a+d}, shrinking from the bottom.
-dLo dHi : ℕ → ℕ → Circuit n
-dLo a zero       = ε
-dLo a (suc zero) = lo₁ a
-dLo a (₂₊ d)     = hi₁ a • dLo (suc a) (suc d) • lo₁ a
-dHi a zero       = ε
-dHi a (suc zero) = hi₁ a
-dHi a (₂₊ d)     = hi₁ a • dHi (suc a) (suc d) • lo₁ a
-
--- (−1)_c X_[a,b] for a < b, its tests passed as arguments so that proofs
--- can rewrite them: whether c is a, b, or neither.
-dPXs : Bool → Bool → ℕ → ℕ → ℕ → Circuit n
-dPXs true  _     c a b = dLo a (b ∸ a)
-dPXs false true  c a b = dHi a (b ∸ a)
-dPXs false false c a b = dPP c a • dPP c a • dLo a (b ∸ a)
-
-dPX : ℕ → ℕ → ℕ → Circuit n
-dPX c a b = dPXs (c ≡ᵇ a) (c ≡ᵇ b) c a b
-
-------------------------------------------------------------------------
--- X_[a,b] X_[c,d]
-
-dDX : ℕ → ℕ → ℕ → ℕ → Circuit n
-dDX a b c d = dPX a a b • dPX b c d
-
-------------------------------------------------------------------------
--- K_[a,b] i_s⁻¹
-
--- K_[a,a+d] i_a⁻¹: the pair closed by consecutive rotations.
-dKIa : ℕ → ℕ → Circuit n
-dKIa a zero       = ε
-dKIa a (suc zero) = dKI₁ a
-dKIa a (₂₊ d)     = hi₁ a • dKIa (suc a) (suc d) • lo₁ a
-
-dKI : ℕ → ℕ → ℕ → Circuit n
-dKI a b s = dKIa a (b ∸ a) • dPP a s
+open Ch dPP₁ dPP₁′ lo₁ hi₁ dKI₁ public
+  using (pp-up ; pp-dn ; dPP ; dLo ; dHi ; dPXs ; dPX ; dDX ; dKIa ; dKI)
 
 ------------------------------------------------------------------------
 -- The decoding
 
 d : GenP N → Circuit n
-d (pp a b)         = dPP (toℕ a) (toℕ b)
-d (px c a b _)     = dPX (toℕ c) (toℕ a) (toℕ b)
-d (dx a b c e _ _) = dDX (toℕ a) (toℕ b) (toℕ c) (toℕ e)
-d (ki a b s _)     = dKI (toℕ a) (toℕ b) (toℕ s)
+d = Ch.d dPP₁ dPP₁′ lo₁ hi₁ dKI₁

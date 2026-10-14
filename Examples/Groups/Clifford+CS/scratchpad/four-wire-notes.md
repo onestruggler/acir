@@ -797,3 +797,55 @@ braid (Clement's (358) argument: merge each rotation over every
 colouring of the two common controls into a two-wire rotation, the
 two-wire braid word conjugates one rotation into the other), and the
 hybrid gadget's facts.
+
+**Update (same day):** px-conj in the transposed adjacent configuration
+(`F7b`, from F7a with the rotation inverted, relabelled 0 <-> 1, and the
+one-pair relation `a0 Ri = Ri a0^-1`) and the braid (`F10`, Clement's
+(358): merged over every colouring of the two common controls the
+rotations are CX10 CZ01 and CZ01 CX01, the two-wire braid word is
+CZ01 SWAP01, which conjugates one rotation into the other by the swap
+and the controlled action of CZ) are derived too, so every K-free
+consecutive fact has a derivation at its canonical configuration.  They
+are emitted as Four/D/D041-D091.
+
+## The generic half of Lemma 8.8 (Agda, Lemma88/, 2026-10-14)
+
+`Lemma88/Chains` holds the decoding's chain definitions over any five
+families of consecutive letters, and Decoding instantiates it.
+`Lemma88/Fragment` derives every rule of the K-free fragment from a
+record `Facts` (13 fields: p-inv, p'-inv, p-ord, p-comm, sq, l-inv,
+h-inv, conj2, conj-up, conj-dn, far-pl, far-ll, braid), over any
+presentation; `Lemma88/KFree` states it at width 4 + m for the circuits.
+The derivations: chains telescope by splitting and cancelling (six
+orders), commute and have order four because their letters do; the
+shrinks from the top by induction on the gap through the braid
+(h_a l_{a+1} l_a = l_{a+1} l_a h_{a+1}) and the far commutations, the Hi
+shrink as the inverse of the Lo one; the sign on the upper index by
+conjugation with a rotation (cj a w = h_a w l_a carries the dn chain
+from a + 1 to the one from a, by conj-up and the far facts).
+
+What is left for the K-free rules at n = 4 is `Facts` at N = 16, i.e. the
+fifteen positions: one-pair facts are conjugates of the canonical ones
+by the position's own frame (the decoded letter is literally
+negs . shiftDown . (X^b G X^b) . shiftUp . negs), adjacent facts need the
+second letter re-placed in the first letter's frame (14 bridgings per
+letter kind), and separated facts are `sep_pass` at the actual
+placements (about 360 instances, the bulk of the Agda time).  Then the
+hybrid: the KI gadget is L(kappa) with kappa in the binary octahedral
+group, outside Q8, so its same-pair relations need a commutator
+calculus with Barenco's V in place of the Toffoli.
+
+**Bridging (checked numerically).**  At every one of the fifteen
+positions the decoded phase gadget and rotation, in both orientations,
+equal Gad(t, W, X^b d, e) with t the pair's target, W its white controls
+and b the orientation (`t_place`-style check, 60 cases); the canonical
+pieces unfold to swap pushes: G-pp 1 = Toff . reS 1 . Toff . reS^-1 1
+with reS 1 = Swap01 Swap23 CS12 Swap23 Swap01 is canon(0) in five
+steps, and the rotation's box Swap . Lambda-box 3 . Swap is the
+scratchpad's CCZ012 TOFF102 CZ13 TOFF102 CCZ012 CZ13.  The relabelling
+by shiftDown carries canon(0) to canon(t) exactly.  **Known issue**: at
+real positions `samepair.spell` can introduce scalar letters (iI), and
+the lowering spells a scalar on wire 0, so a window step that must avoid
+wire 0 fails (`pass [TOFF023] [iI]`); either keep scalars out of the
+re-spellings (absorb phases into S powers on the target) or let the
+lowering move scalars by comm0.
