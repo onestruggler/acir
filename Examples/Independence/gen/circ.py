@@ -116,9 +116,23 @@ def gname(g):
 # H0 S1 Z0 X0 Sd0 T0  CX10 (control 1 target 0) CX01 CX20 CX02 CX21 CX12
 # SW01 SW12 SW02  CZ10 (the source's CZ: H on the lower wire around CX)
 
+# A fragment's own spellings: (compiled regex, function of the match
+# giving abstract gates), tried before the tokens below.
+MACROS = []
+
+
 def gparse(s):
     out = []
     for tok in s.split():
+        hit = None
+        for rx, fn in MACROS:
+            m = rx.fullmatch(tok)
+            if m:
+                hit = fn(m)
+                break
+        if hit is not None:
+            out += hit
+            continue
         if tok == 'w':
             out.append(('w',))
         elif tok == 'm':
@@ -253,6 +267,14 @@ def occurrences(c, pat):
             yield list(c), i
         return
     n = len(c)
+    # the next letter after position p touching wire w (n if none)
+    nxt = {}
+    for w in set(x for l in c for x in wires(l)):
+        q = n
+        for p in range(n - 1, -2, -1):
+            nxt[(p, w)] = q
+            if p >= 0 and w in wires(c[p]):
+                q = p
 
     def extend(sel, j):
         if j == m:
@@ -268,6 +290,14 @@ def occurrences(c, pat):
                 if (not commute(pat[jj], pat[j]) or pat[jj] == pat[j]) and sel[jj] > p:
                     ok = False
                     break
+            # convexity: on each of its wires, a pattern letter is the
+            # next letter after the pattern's last letter on that wire
+            if ok:
+                for w in wires(pat[j]):
+                    last = [sel[jj] for jj in range(j) if w in wires(pat[jj])]
+                    if last and nxt[(max(last), w)] != p:
+                        ok = False
+                        break
             if ok:
                 yield from extend(sel + [p], j + 1)
 
