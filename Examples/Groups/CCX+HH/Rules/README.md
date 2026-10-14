@@ -166,6 +166,28 @@ enumeration.
 
 ## Beyond three wires
 
+**The twelve rules are not complete on four wires**, and a parity
+argument shows why (`abelian.py`). Every generator is an involution, so a
+character of a presented group is a set of gates whose total count every
+relator preserves mod 2. The Toffoli occurs an even number of times in
+each of the twelve rules, and no rule carries a Toffoli from one triple of
+wires to another, so the count of `CCX i`, for each placement i, is a
+character of the presented group at every width. On three wires that is
+the determinant (a Toffoli there is a transposition of basis states), but
+from four wires on the true group is perfect (`GeneralN/Perfect.agda`), so
+it has no such character. Two four-wire rules, both sound (checked exactly
+on basis vectors, `abelian.sound`), remove every character on four, five
+and six wires:
+
+| Rule | |
+| --- | --- |
+| `CCX1 CX0 CCX1 CX0 = SW0 CCX1 SW0` | a Toffoli is the commutator of a Toffoli and a CNOT |
+| `SW0 SW1 SW2 CCX0 SW2 SW1 SW0 = CCX1` | a Toffoli moved up a wire |
+
+Neither fits on three wires, so they leave the small widths unchanged.
+A trivial abelianization is only a necessary condition: whether these
+fourteen rules are complete on four wires is open.
+
 From four wires on the group is infinite (the commutator subgroup of
 O₂ⁿ(ℤ[1/2]), `GeneralN/Commutator.agda`), so coset enumeration can refute
 completeness through finite quotients but never establish it. Completeness
