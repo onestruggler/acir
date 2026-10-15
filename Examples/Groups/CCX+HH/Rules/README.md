@@ -253,6 +253,67 @@ Neither fits on three wires, so they leave the small widths unchanged.
 A trivial abelianization is only a necessary condition: whether these
 fourteen rules are complete on four wires is open.
 
+### Rules on boundedly many wires never suffice
+
+**No complete theory has all its rules on boundedly many wires**: from
+seven wires on, every width needs a rule on all of its wires. So a
+schema like Clément's (19) is necessary here (Clément leaves this
+question open for Real-Clifford+CH). The witness is the spin double
+cover, and `spin/` computes it.
+
+From four wires on every gate is a rotation of R^(2^n): X, CX and CCX
+are products of 2^(n−1), 2^(n−2) and 2^(n−3) disjoint transpositions,
+and HH and H have determinant 1. So the gates lift to Spin(2^n). Let G
+be the circuit group on n wires and G̃ its preimage there. G̃ is a
+non-split double cover, because G contains the even permutations of
+the 2^n basis states, and the spin cover restricted to them is Schur's
+non-split cover 2·A_m.
+
+Take any rules, each on at most n − 1 wires, together with the
+structural rules of `Circuit.Base`, and let n ≥ 7:
+
+- **The circuits avoiding a wire j lift.** They form the group on n − 1
+  wires, acting as U ⊗ I. The cover restricted to them is split, since
+  w₂(V ⊕ V) = w₁(V)² = 0 on SO(V). The splitting is unique, since that
+  group is perfect from four wires on (`GeneralN/Perfect.agda`).
+- **Each gate gets one lift.** Two such splittings, for wires j and k,
+  agree on the circuits avoiding both, again by perfectness, now on
+  n − 2 ≥ 5 wires. So every gate g has one lift g̃. Every equation
+  between circuits that avoid a common wire lifts to +1, in particular
+  every instance of every rule.
+- **The structural rules lift to +1.** A commutation rule moves a gate
+  on k ≤ 3 wires past a circuit on the other n − k ≥ 4 wires, whose
+  matrix is a rotation. The cover pulled back to O(2^k) × SO(2^(n−k)) is
+  split, because w₂ = C(2^(n−k), 2)·w₁² = 0. So the two lifts commute.
+
+The group the rules present on n wires therefore maps onto G̃ ≠ G. The
+true equations that lift to −1 are not derivable, so the rules are
+incomplete on n wires. The argument is written for X, CX and CCX with
+or without HH. For CCX+H the group on four or more wires has the
+H-parity character, and the lifts of the H gates have to be chosen
+compatibly; that is expected but not checked.
+
+Below seven wires the argument does not apply. There the commutation of
+two odd gates covering every wire lifts to −1, so the structural rules
+themselves can kill the obstruction. `spin/test_n.py` evaluates the
+lifts on the spinor space, for n ≤ 5 only (its dimension is 2^(2^(n−1))):
+
+| n | Relation | Lift |
+| --- | --- | --- |
+| 4 | `CCX²` (two transpositions) | −1 |
+| 5 | `CCX²`, `X²`, `CX²`, `HH²`, `H²` | +1 |
+| 5 | `(C³X)²`, with `C³X = A B A B`, `A = CCX(a,b;w)`, `B = CCX(w,c;t)` | −1 |
+| 5 | `[C³X, X_w]`, X on the borrowed wire w | +1 |
+| 5 | `[CCX(2,3,4), CX(0,1)]` | −1 |
+| 5 | `[X₀, CCX(2,3,4)]`, `[HH₀₁, CCX(2,3,4)]` | +1 |
+
+So a schema must contain, at each large width, an equation that lifts
+to −1. "The multi-controlled Toffoli, built from Toffolis with one
+borrowed wire, is an involution" does. "It commutes with X on its
+borrowed wire" does not.
+
+### Completeness at every width
+
 From four wires on the group is infinite (the commutator subgroup of
 O₂ⁿ(ℤ[1/2]), `GeneralN/Commutator.agda`), so coset enumeration can refute
 completeness through finite quotients but never establish it. Completeness
