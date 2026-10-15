@@ -254,3 +254,16 @@ again), and does rel-269/272 and ck-tct by de-borrowing (Lemma
 de-borrowing: lambda of a two-wire w block diagonal in y with det W =
 +-1 is a three-wire circuit), which needs transport of two-wire
 equations, i.e. CS-K0/1 first.  Open.
+
+- `f1big.py`: the controlled images of the shortcuts compacted by lemmas
+  (`L-<piece>-<o>`: CX to a Toffoli, CCZ to one box, Toff to Barenco's
+  C3X, CCZ013 to a box); cx-ccz then goes to normal form (derived).
+  toff-ccz reaches matching boxes, but its remainder is a five-wire
+  identity of Barenco letters (TOFF(3;1,2), TOFF(0;3,4)) and CCZ
+  corrections: the borrowed wire of the Toffoli's C3X is a wire of the
+  rule.  Open.
+- `boxck.py`: a controlled K between two controls of a box passes it,
+  BOX CK(c->x) = C CK C BOX with C = CCZ(a,b,x) (the box is the box
+  negated on c times C, Xb-box, and CK passes the negated box); the box
+  movers use it.  With it the remainder of CS-K0/1 and rel-269/272 stays
+  on the box's four controls.

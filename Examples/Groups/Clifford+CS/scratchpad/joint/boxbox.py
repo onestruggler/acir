@@ -222,9 +222,22 @@ def box_left(d, k, target):
             _spawn_left(d, k, sp)
             k -= 1
             continue
+        ck = _ckc(g, d.cur[k])
+        if ck is not None and ck[0] + 'L' in d.lemmas:
+            bx = d.cur[k]
+            reorder(d, k, ck[2])
+            d.lemma(ck[0] + 'L', k - 1, pi=ck[1])      # box C g C
+            reorder(d, k - 1, bx[2:])
+            k -= 1
+            continue
         cross._cross_box_right(d, k - 1, 1)
         k -= 1
     return k
+
+
+def _ckc(g, bx):
+    import boxck
+    return boxck.ckc(g, bx)
 
 
 def box_right(d, k, target):
@@ -248,6 +261,15 @@ def box_right(d, k, target):
             box_box(d, k + 1)               # g new box
             k += 2
             target += 1
+            continue
+        ck = _ckc(g, d.cur[k])
+        if ck is not None and ck[0] in d.lemmas:
+            bx = d.cur[k]
+            reorder(d, k, ck[2])
+            d.lemma(ck[0], k, pi=ck[1])               # C g C box
+            reorder(d, k + 3, bx[2:])
+            k += 3
+            target += 2
             continue
         _, m = cross._cross_box_left(d, k + 1, 1)
         k += m

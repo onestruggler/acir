@@ -164,5 +164,5 @@ if __name__ == '__main__':
     derivn.QUIET = True
     L = box.build({})
     boxsym.build(L); boxsym.build_perms(L); boxdash.build(L); boxbox.build(L); f0.build(L)
-    import boxtoff; boxtoff.build(L)
+    import boxtoff, boxck, f5; boxtoff.build(L); f5.build(L); boxck.build(L)
     build(L, only=sys.argv[1:] or None)
