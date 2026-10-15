@@ -20,12 +20,17 @@ open import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation public
   using (ToffoliHadamard)
 open import Presentation.Definitions using (_IsPresentationOf_)
 import Examples.Groups.CCX+HH-3qubit.Repaired.Presentation as P
+import Examples.Groups.CCX+HH-3qubit.Repaired.Soundness as RS
 import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics as Repaired
 import Examples.Groups.CCX+HH-3qubit.Errata as Errata
 import Examples.Groups.CCX+HH-3qubit.Semantics as Semantics
 
--- The relation in these two results includes K-definition. The
+-- The relation in these results includes K-definition. The
 -- soundness and normalization results above use the paper rules alone.
+repaired-soundness : ∀ {w v} → Repaired._≈_ w v →
+                     ⟦ w ⟧ ~ ⟦ v ⟧
+repaired-soundness {w} {v} = RS.sound {w} {v}
+
 repaired-completeness : ∀ {w v} → ⟦ w ⟧ ~ ⟦ v ⟧ →
                         Repaired._≈_ w v
 repaired-completeness {w} {v} = P.completeness {w} {v}

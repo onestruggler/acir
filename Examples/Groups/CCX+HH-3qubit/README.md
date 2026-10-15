@@ -33,8 +33,8 @@ equality and gives a full group presentation of L₈, the orthogonal
 scaled dyadic matrices: matrices over ℤ[1/√2] with a common power of
 1/√2 multiplying an integer matrix. Its interpretation is proved to
 agree with the circuit's gate matrices, including global scalars.
-`Theorems.agda` exports these results as `repaired-completeness` and
-`repaired-presentation`. The relation includes the controlled-K
+`Theorems.agda` exports `repaired-soundness`, `repaired-completeness`
+and `repaired-presentation`. The relation includes the controlled-K
 definition described below; completeness of the original 72 equations
 alone is not asserted.
 
