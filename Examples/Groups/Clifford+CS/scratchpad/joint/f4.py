@@ -51,12 +51,14 @@ def build(L, verbose=True):
     ok, bad = [], []
     for g in GENS:
         for h in GENS:
+            if g[0] == "CS" and h[0] == "CS":
+                continue                  # f4cs.py
             try:
                 f4(L, g, h); ok.append((g, h))
             except (Stuck, AssertionError) as e:
                 bad.append((g, h, str(e)[:160]))
     if verbose:
-        print(len(ok), 'F4 items derived,', len(bad), 'not')
+        print(len(ok), "F4 items derived (the S-box pairs in f4cs.py),", len(bad), "not")
         for g, h, e in bad[:40]:
             print('  ', gname(g), gname(h), e)
     return L

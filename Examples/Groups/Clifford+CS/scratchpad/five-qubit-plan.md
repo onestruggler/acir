@@ -194,3 +194,35 @@ hyb-sq, hyb-yb); then λ maps every rule instance to a rule instance
 (λ(cong↑ r) = cong↑ λ(r), λ(ω↑=ω) is refl, λ of a schema instance is
 the next one), and only the structural commutations comm₁/comm₂ need
 (iv) — a weaker theorem (more axioms) but a much shorter proof.
+
+## Progress (2026-10-16): the box calculus, (F0), (F4)
+
+The joint scripts were rebuilt here (`joint/`), and everything below is
+derived from four-wire windows only (`python3 run_all.py`: 242
+derivations, 4,869 steps, about ten minutes):
+
+- `box.py` (involution, forms box-tQ, box-cP), `boxsym.py` (CNOT and
+  swap conjugations, all 24 orders of the controls, `box-perm-<o>`),
+  `boxdash.py` (the box passes every gate on its dashed wire, alone or
+  controlled by a control: K_u, S_u, CS/CSd/CZ/CX/CK/CKd(c, u), and
+  X_c G(c,u) X_c; CK through K = S^-1 K^-1 S^-1 K S^-1), `boxbox.py`
+  (two boxes commute; `box_left`/`box_right` move a box across a word,
+  `collect` cancels the CCZ corrections).
+- `f0.py`: (F0), Sigma(x;t,y|u,A) = Sigma(x;t,y|A,u).  SWAP(u,A) passes
+  Sigma: CX(A->u) letter by letter, and CX(u->A) conjugates the box to
+  beta_u beta_A (F0-B) and the rest R_A to R_A beta_A (F0-R), where
+  beta_A is the box T_A C T_A C with the same C = CCZ(x,u,A) as beta_u's
+  form T_u C T_u C.
+- `f4.py`, `f4cs.py`: all 144 items of (F4).  `cross.py` moves a block
+  across a word with boxes and S-boxes (a box crossed whole by a
+  dashed-wire lemma, or in a four-letter form after any pairing of its
+  controls; S-boxes unfolded whole).  The nine S-box pairs move the
+  letters of lambda1(CS_j) left one at a time, the box by `box_left`;
+  each letter commutes with lambda0(CS_i) as an operator.  The pairs
+  01-12 and 01-23 cannot both work with one choice of borrowed wires
+  (both S-boxes target their Toffolis at wire 3, which the other's CS
+  touches), so (F0) switches one of them first.
+
+Next: (F2) and (F1) (the controlled rules), (F6), then the Agda side
+(load5/emit5 for the new derivations; how big the lowering gets is
+being measured).
