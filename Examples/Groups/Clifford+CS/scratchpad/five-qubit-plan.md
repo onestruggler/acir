@@ -70,3 +70,27 @@ set: its window steps are now backed by complete4), then 4-6 at n = 5,
 then the step n >= 6, then 2 (once Syntactics may change), then the
 Agda emission of the five-wire derivations (an emitter like four/emit.py
 with four-wire windows = SemanticSteps.Below 4 complete4).
+
+## Checks and refinements (2026-10-15)
+
+- Every rule of P' (Auxiliary/Rules) has at most five indices: ki-ki,
+  ki-px and ki-yb have five, the rest four or fewer.  So the decoded
+  sides of a rule instance lie in an affine hyperplane from n = 5 on.
+- P' is not closed under the affine maps of the indices (K_[a,b] is not
+  K_[b,a]), so the hyperplane argument must not map letters to letters.
+  It does not need to: decode every P' letter as a fixed product of at
+  most three two-level SU(2) gadgets, each alpha G_n(V) alpha^-1
+  (pp a b = (iZ)_(a,b); px c a b = (-I)_(c,a) (ZX)_(a,b) when c is not
+  a, b; dx a b c d = three factors; ki a b s = (K D)_(a,b) (iZ-type)_(a,s)),
+  and conjugate decoded circuits only: tau alpha G alpha^-1 tau^-1 =
+  (tau alpha) G (tau alpha)^-1, independence of alpha replaces tau alpha by
+  one fixing the hyperplane, and G_n(V) = lambda^0_t(G_{n-1}(V)).
+- The paper's F-items at n = 5 rest on four-wire windows and the F1 of
+  QCA's rules; our rules contain QCA's and are complete on four qubits,
+  so they hold for us unchanged (no Python rerun needed); the F1 of lf,
+  hyb-sq, hyb-yb are the new rules.
+- What has to be built in Agda first is a five-wire derivation pipeline
+  like Four/ (macro letters at width 5 with canonical spellings, the
+  window step through complete4, an emitter from joint/derivn.py's
+  derivation format), since the F-items, the representation lemma and
+  F6 all arrive as five-wire derivations.
