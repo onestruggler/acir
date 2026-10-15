@@ -169,6 +169,14 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   returned 1–3 GB at a time and kept it up; the lasting fixes are
   `autoMemoryReclaim=dropcache` under `[experimental]` in `.wslconfig`,
   or a `memory=` below what Windows can commit.
+- **`--lossy-unification` can lower the peak too.** `SrelWDM` went from
+  overflowing a 3 GB heap (1.5 GB peak residency at 8 GB) to 0.7 GB,
+  and the `Derived` modules of `Clifford+MinusOne/Qupit/Figure1` and
+  `Figure1-MS`, which overflowed it, now fit (1.59 → 1.44 GB peak, 7.3 →
+  6.2 s). It did nothing for `Clifford/Qupit/SemRealises`. A module's
+  own peak can be far below what a batch reaches: `Selinger/Translation`
+  overflowed 3 GB in a batch that also rechecked other modules, and
+  peaks under 1 GB alone.
 - **Fewer with-functions, smaller interfaces.** Each `with` creates an
   auxiliary function whose type carries the abstracted goal; deep chains
   of them are serialised into the interface and loaded by every
