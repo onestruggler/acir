@@ -10,8 +10,8 @@
 -- the shifts, the core facts k p = p h k and k³ = ε at the top pair,
 -- and ki-sq at the canonical position — by
 -- HybridPair (ki-sink, ki-pp, ki-px, ki-swap, ki-swap′), HybridOne (the
--- one-pair rules) and HybridKK (ki-ki).  ki-yb is still a hypothesis,
--- at every instance.
+-- one-pair rules), HybridKK (ki-ki) and HybridYB (ki-yb from its
+-- canonical instance).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -22,7 +22,8 @@ open import Word.Base using (Word ; WRel ; ε ; _•_ ; _ʷ)
 import Presentation.Base as PB
 
 module Examples.Groups.Clifford+CS.Lemma88.HybridRules
-  {X : Set} (Γ : WRel X) (m : ℕ) (p p′ l h k : ℕ → Word X) where
+  {X : Set} (Γ : WRel X) (m : ℕ) (p p′ l h k : ℕ → Word X)
+  (big : 16 ≤ suc (suc (suc (suc m)))) where
 
 open import Data.Fin using (Fin) renaming (_<_ to _<ᶠ_)
 open import Relation.Binary.PropositionalEquality using (_≢_)
@@ -37,6 +38,7 @@ import Examples.Groups.Clifford+CS.Lemma88.HybridCen as HCen
 import Examples.Groups.Clifford+CS.Lemma88.HybridPair as HP
 import Examples.Groups.Clifford+CS.Lemma88.HybridOne as HO
 import Examples.Groups.Clifford+CS.Lemma88.HybridKK as HK
+import Examples.Groups.Clifford+CS.Lemma88.HybridYB as HY
 
 open _R,_===_
 
@@ -51,12 +53,8 @@ open HTop Γ N p p′ l h k using (top ; TopFar)
 open HCen Γ m p p′ l h k using (tT ; tT1 ; tB)
 open HO Γ m p p′ l h k using (tT<tT1)
 
--- ki-yb, decoded, at every instance.
-YB : Set
-YB = ∀ (jj kk ll mm s : Fin N) .(jk : jj <ᶠ kk) .(lm : ll <ᶠ mm) .(jl : jj <ᶠ ll) .(km : kk <ᶠ mm) →
-     kk ≢ ll → s ≢ jj → s ≢ kk → s ≢ ll → s ≢ mm →
-     (d ʷ) (kiw jj kk s jk • (kiw ll mm s lm • (kiw jj ll s jl • kiw kk mm s km)))
-     ≈ (d ʷ) (kiw jj ll s jl • (kiw kk mm s km • (kiw jj kk s jk • kiw ll mm s lm)))
+private
+  module HYm = HY Γ m p p′ l h k big
 
 module Proofs (F : FrN.Facts) (T : TopFar)
   (sc : (p′ (suc m) • p′ (suc m) • p′ (suc (suc m))) • k top
@@ -68,7 +66,7 @@ module Proofs (F : FrN.Facts) (T : TopFar)
   (c3 : k top • (k top • k top) ≈ ε)
   (sq₀ : (d ʷ) ((kiw tT tT1 tB tT<tT1 • kiw tT tT1 tB tT<tT1) • (pw tT tB • pw tT1 tB))
          ≈ ε)
-  (yb : YB) where
+  (yb₀ : HYm.YB₀) where
 
   open FrN.Proofs F using (fragment)
   open HP.Proofs Γ m p p′ l h k F T sc shift
@@ -76,6 +74,7 @@ module Proofs (F : FrN.Facts) (T : TopFar)
   open HO.Proofs Γ m p p′ l h k F T sc shift cp c3 sq₀
     using (d-ki-x ; d-ki-16 ; d-ki-ii ; d-ki-sq)
   open HK.Proofs Γ m p p′ l h k F T sc shift far-k using (d-ki-ki)
+  open HYm.Proofs F T sc shift yb₀ using (d-ki-yb)
 
   rules : ∀ {u t : Word (GenP N)} → N R, u === t → (d ʷ) u ≈ (d ʷ) t
   rules (pp-id a)                  = fragment (_F,_===_.pp-id a)
@@ -107,4 +106,4 @@ module Proofs (F : FrN.Facts) (T : TopFar)
   rules (ki-ii a b s ab sa sb)     = d-ki-ii a b s ab sa sb
   rules (ki-sq a b s ab sa sb)     = d-ki-sq a b s ab sa sb
   rules (ki-yb jj kk ll mm s jk lm jl km kl sj sk sl sm) =
-    yb jj kk ll mm s jk lm jl km kl sj sk sl sm
+    d-ki-yb jj kk ll mm s jk lm jl km kl sj sk sl sm

@@ -40,9 +40,10 @@ def off(wires):
     return None
 
 def frame_of(letters):
-    """a wire off the spelled supports of all letters, or None."""
+    """a wire off the spelled supports of all letters, or None (scalar
+    letters do not count: the window primitive lifts them off the wire)."""
     for m in (3, 0, 1, 2):
-        if all(m not in spelled(g) for g in letters): return m
+        if all(m not in spelled(g) for g in letters if g[0] not in ('iI', 'iIi')): return m
     return None
 
 def separable(g, h): return split(g, h) is not None
@@ -375,7 +376,11 @@ def lower(d, PL):
             if fwd: unwrap(P, k, n - 2, j)
             else: wrap(P, k, n, j)
         elif kind == 'lemma':
-            nm, fwd = extra; P.L(nm, k, fwd)
+            nm, fwd = extra
+            if nm == 'AXIOM LF': P.A(k, 'lf', fwd)
+            elif nm == 'AXIOM HSQ': P.A(k, 'hyb-sq', fwd)
+            elif nm == 'AXIOM HYB': P.A(k, 'hyb-yb', fwd)
+            else: P.L(nm, k, fwd)
         else: raise ValueError(kind)
         assert P.cur == before[:k] + list(rep) + before[k + n:], (d.name, kind, show(P.cur))
     return P.done()

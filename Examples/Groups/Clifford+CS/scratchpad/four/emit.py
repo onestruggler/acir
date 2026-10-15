@@ -11,7 +11,7 @@ from prim import show
 import lower as LW
 
 NL = chr(10)
-ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'Four')
+ROOT = os.environ.get('EMIT_ROOT') or os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'Four')
 
 SUB = {'0': '0', '1': '1', '2': '2', '3': '3'}
 def mname(g):
@@ -106,6 +106,7 @@ def step_proof(st):
         return f'trans (can-≈ ({word_expr(seg)})) (sym (can-≈ ({word_expr(ys)})))'
     if kind == 'A':
         name, fwd = extra; t = 'ax ' + name
+        if name in ('lf', 'hyb-sq', 'hyb-yb'): t = f'trans (by-assoc Eq.refl) (trans (ax {name}) (by-assoc Eq.refl))'
         return t if fwd else f'sym ({t})'
     if kind == 'L':
         name, fwd = extra; t = lemname(name)

@@ -30,6 +30,23 @@ AX_CKT = ([('X', 0), ('CK', 0, 1), ('X', 0), ('TOFF', 1, 2, 3), ('CS', 0, 1), ('
           [('TOFF', 1, 2, 3), ('CS', 0, 1), ('TOFF', 1, 2, 3), ('X', 0), ('CK', 0, 1), ('X', 0)])
 AXIOMS = {'cx-ccz': AX_CX, 'toff-ccz': AX_TOFF, 'ck-tct': AX_CKT}
 
+def _ax_lf():
+    # Barenco's decomposition of the hybrid gadget (Syntactics.lf), as macro letters
+    import deriv as _d
+    from t_lf import HD, LF
+    return (_d.norm(HD), _d.norm(LF(1, 2, 3, 0)))
+AXIOMS['lf'] = _ax_lf()
+
+def _ax_hsq():
+    # the hybrid letter squared (Syntactics.hyb-sq), as macro letters
+    import deriv as _d
+    from t_lf import HD
+    PP0 = [('TOFF', 0, 1, 2), ('CS', 0, 3), ('TOFF', 0, 1, 2), ('CSd', 0, 3)]
+    PP1 = [('TOFF', 1, 0, 2), ('CS', 1, 3), ('TOFF', 1, 0, 2), ('CSd', 1, 3)]
+    D = [('X', 1)] + PP1 + [('X', 1)]
+    return (_d.norm(HD + D + HD + D + D + D + PP0), [])
+AXIOMS['hyb-sq'] = _ax_hsq()
+
 def split(g, h):
     """(i, bottom-first?) when g, h are spelled within the bottom i wires
     and the top 4 - i wires in some order, else None."""

@@ -18,6 +18,7 @@ import hyb_classes as HC
 import hybsep2 as H
 import samepair as SP
 from t_lf import HD
+from dec import barenco
 from blocks import BD
 
 def frame_top():
@@ -345,3 +346,101 @@ def C_sc():
 
 if __name__ == '__main__' and 'scalar' in sys.argv:
     n = C_sc(); print('derived:', n, len(BY_NAME[n].steps), 'steps')
+
+def make_all():
+    return [C_l(), C_p(), C_3(), C_sc()]
+
+# ------------------------------------------------------------ the decoding's hybrid gadget
+def _cw(c, word):
+    """MultiControlled's controlled one-wire word (control 1, target 0), relabelled 1 -> c."""
+    out = []
+    for g in word:
+        out.append({'S': ('CS', 0, 1), 'K': ('CK', 1, 0), 'i': ('S', 1)}[g])
+    return norm([rename_letter(g, {0: 0, 1: c, 2: 2, 3: 3} if c != 1 else {0: 0, 1: 1, 2: 2, 3: 3}) for g in out])
+
+def gki_macro():
+    """MultiControlled.G-ki 1 unfolded to macro letters."""
+    V_ = ['S', 'S', 'K', 'S']
+    Vi = ['S', 'S', 'S', 'K', 'i', 'S', 'S', 'S', 'S', 'S', 'S']
+    C = lambda w: _cw(1, w)
+    SW = lambda j: ('SWAP', j, j + 1)
+    CX12 = ('CX', 1, 2)
+    bar = C(V_) + [CX12, SW(1)] + C(Vi) + [SW(1), CX12, SW(1)] + C(V_) + [SW(1)]
+    bari = C(Vi) + [CX12, SW(1)] + C(V_) + [SW(1), CX12, SW(1)] + C(Vi) + [SW(1)]
+    cyc = [SW(0), SW(1), SW(2)]; cyci = [SW(2), SW(1), SW(0)]
+    return norm(bar + cyc + [('CK', 2, 3)] + cyci + bari + cyc + [('S', 2), ('CK', 2, 3)] + cyci)
+
+def bridge_gki():
+    """MultiControlled.G-ki 1 (unfolded to macro letters) -> the canonical hybrid HD."""
+    name = 'bridge G-ki'
+    if name in L: return name
+    src = gki_macro(); hd = norm(HD)
+    d = Derivation(name, src, hd, L)
+    def conj_runs():
+        # every SW(1) pair around a run of letters on {0,1}, and the cycles around CK23 / S2 CK23
+        cur = d.cur; i = 0
+        while i < len(d.cur):
+            g = d.cur[i]
+            if g == ('SWAP', 1, 2) and ('SWAP', 1, 2) in d.cur[i + 1:]:
+                j = d.cur.index(('SWAP', 1, 2), i + 1)
+                if j - i - 1 > 0 and all(set(x[1:]) <= {0, 1} for x in d.cur[i + 1:j]):
+                    d.swapconj(i, j - i - 1, 1); continue
+            i += 1
+    conj_runs()
+    # the cycles: SW01 SW12 SW23 w SW23 SW12 SW01, innermost first
+    i = 0
+    while True:
+        try: i = next(k for k in range(len(d.cur) - 2) if d.cur[k:k + 3] == [('SWAP', 0, 1), ('SWAP', 1, 2), ('SWAP', 2, 3)])
+        except StopIteration: break
+        j = next(k for k in range(i + 3, len(d.cur) - 2) if d.cur[k:k + 3] == [('SWAP', 2, 3), ('SWAP', 1, 2), ('SWAP', 0, 1)])
+        n = j - (i + 3)
+        d.swapconj(i + 2, n, 2); d.swapconj(i + 1, n, 1); d.swapconj(i, n, 0)
+    # MultiControlled's Bar^-1 (Barenco's word for V^-2) -> the literal inverse of Bar (one window)
+    nb = len(norm(barenco('SSKS', 1, 2, 0)))
+    p = nb + 1
+    q = next(k for k in range(p, len(d.cur)) if d.cur[k] == ('S', 3))
+    d.win(p, q, hd[p:len(hd) - 2])
+    d.done(); return name
+
+if __name__ == '__main__' and 'bridge' in sys.argv:
+    n = bridge_gki(); print('bridge:', n, len(BY_NAME[n].steps), 'steps')
+
+# ------------------------------------------------------------ (C-sq) the hybrid letter squared: rule hyb-sq
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'four'))
+from prim import AXIOMS as _AXIOMS
+AXSQ = 'AXIOM HSQ'
+L[AXSQ] = (list(_AXIOMS['hyb-sq'][0]), [])
+assert fp(L[AXSQ][0]) == fp([])
+
+def C_sq():
+    """k q13 k q13 q13 q13 q14 -> eps at the top frame: X0 (rule hyb-sq) X0."""
+    name = 'top ki-sq'
+    if name in L: return name
+    ops = frame_top()
+    bl = F.TF(ops, [F.decoded(14, 'k'), F.decoded(13, "p'"), F.decoded(14, 'k'), F.decoded(13, "p'"),
+                    F.decoded(13, "p'"), F.decoded(13, "p'"), F.decoded(14, "p'")])
+    lhs = norm(F.flat(bl))
+    tgt = [X0] + list(L[AXSQ][0]) + [X0]
+    d = Derivation(name, lhs, [], L)
+    # every run of X letters between two middle words -> the target's run
+    def runs(w):
+        out = []; i = 0
+        while i < len(w):
+            if w[i][0] == 'X':
+                j = i
+                while j < len(w) and w[j][0] == 'X': j += 1
+                out.append((i, j)); i = j
+            else: i += 1
+        return out
+    rc, rt = runs(d.cur), runs(tgt)
+    assert len(rc) == len(rt)
+    for (i, j), (a, b) in reversed(list(zip(rc, rt))):
+        if d.cur[i:j] != tgt[a:b]: d.win(i, j, tgt[a:b])
+    assert d.cur == tgt, show(d.cur)
+    d.lemma(AXSQ, 1)
+    d.win(0, 2, [])
+    d.done(); return name
+
+if __name__ == '__main__' and 'sq' in sys.argv:
+    n = C_sq(); print('derived:', n, len(BY_NAME[n].steps), 'steps')
