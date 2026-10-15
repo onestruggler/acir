@@ -92,6 +92,10 @@ rΓˡ rΓʳ : Circuit 4
 rΓˡ = X • CK • X • Toff ↑ • CS • Toff ↑
 rΓʳ = Toff ↑ • CS • Toff ↑ • X • CK • X
 
+rLFˡ rLFʳ : Circuit 4
+rLFˡ = LF.Hyb
+rLFʳ = LF.Dec
+
 ------------------------------------------------------------------------
 -- The identities
 
@@ -172,6 +176,9 @@ mΛ = Eq.refl
 
 mΓ : Same rΓˡ rΓʳ
 mΓ = Eq.refl
+
+mLF : Same rLFˡ rLFʳ
+mLF = Eq.refl
 
 ------------------------------------------------------------------------
 -- The relators, padded to any width, are the axioms' words
@@ -264,3 +271,8 @@ pΓˡ : rΓˡ ↓ᵏ n ≡ X • CK • X • Toff ↑ • CS • Toff ↑
 pΓˡ = Eq.refl
 pΓʳ : rΓʳ ↓ᵏ n ≡ Toff ↑ • CS • Toff ↑ • X • CK • X
 pΓʳ = Eq.refl
+
+pLFˡ : rLFˡ ↓ᵏ n ≡ LF.Hyb
+pLFˡ = Eq.refl
+pLFʳ : rLFʳ ↓ᵏ n ≡ LF.Dec
+pLFʳ = Eq.refl

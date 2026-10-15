@@ -37,20 +37,22 @@
 -- On four qubits those rules are not complete (Parity): the number of
 -- CS gates mod 2 is invariant under them, and the true equation
 -- cx-ccz — a CNOT carries a CCZ on its target to the product of two
--- CCZs — breaks it.  There are three rules on four wires: cx-ccz and its
+-- CCZs — breaks it.  There are four rules on four wires: cx-ccz and its
 -- Toffoli analogue toff-ccz, both instances of the substitution of a
 -- permutation gate in a phase polynomial (with them the phase gadget's
 -- identities are derivable, scratchpad/lemmas5.py), and ck-tct, a gate
 -- controlled white by a wire commuting with one that acts only where the
 -- wire is 1 (with it the relations between different gadgets on one pair
--- of basis states, scratchpad/lemmas11.py).
+-- of basis states, scratchpad/lemmas11.py), and lf, Barenco's
+-- decomposition of the decoding's hybrid gadget with one control pulled
+-- out (with it the hybrid's facts, scratchpad/hybfar.py and after).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
 
 module Examples.Groups.Clifford+CS.Syntactics where
 
-open import Data.List using ([])
+open import Data.List using (List ; [] ; _∷_ ; _++_)
 open import Data.Nat using (ℕ)
 open import Data.Product using (_,_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
@@ -146,6 +148,84 @@ CK : Circuit (₂₊ n)
 CK = CS • K ↑ • CS • K ↑ • CS • S • S • S • iI
 
 ------------------------------------------------------------------------
+-- The hybrid gadget and Barenco's decomposition of it (four wires)
+--
+-- The decoding's K letter is a hybrid gadget: at its canonical place
+-- the commutator [L₁₂(V²), CK(3 → 0)] of Barenco's word for the doubly
+-- controlled V² (controls 1, 2, target 0) and K on wire 0 controlled by
+-- wire 3, where V = S² K S has order six and K V K⁻¹ = V⁻¹, so that the
+-- gadget is the triply controlled V⁻², of order three.  The rule lf
+-- below says that it is also Λ₁ of Barenco's word for L₂₃(V⁻²), with
+-- the root V⁻¹ of V⁻²: L₁₂(V⁻¹) Toff(3; 1, 2) L₁₃(V) Toff(3; 1, 2)
+-- L₁₃(V⁻¹), every factor a three-wire gate controlled by wire 1.  The
+-- words are spelled letter by letter as the four-wire derivations spell
+-- them (scratchpad/four/gen_lf.py), inverses with positive letters
+-- (S⁻¹ = S³, K⁻¹ = K i), as in the decoding.
+
+module LF where
+
+  -- One-wire letters under the controlled functor: S ↦ CS, K ↦ CK, and
+  -- the phase i ↦ S on the control.
+  data One : Set where
+    𝕤 𝕜 𝕚 : One
+
+  -- K on wire 0 controlled by wire 1, 2 or 3; CS on wires 0, 3; the CNOT
+  -- from wire 1 onto wire 3; the Toffoli onto wire 3 from wires 1, 2.
+  CK₁₀ CK₂₀ CK₃₀ CS₀₃ CX₁₃ Toff₃₁₂ : Circuit (₄₊ n)
+  CK₁₀    = CS • K • CS • K • CS • S ↑ • S ↑ • S ↑ • iI
+  CK₂₀    = Swap ↑ • CK₁₀ • Swap ↑
+  CK₃₀    = Swap ↑ ↑ • CK₂₀ • Swap ↑ ↑
+  CS₀₃    = Swap ↑ ↑ • CS₀₂ • Swap ↑ ↑
+  CX₁₃    = Swap ↑ ↑ • CX₁₂ • Swap ↑ ↑
+  Toff₃₁₂ = (K ↑ ↑ • CCZ • K ↑ ↑ • iI) ↑
+
+  -- The one-wire word w on wire 0, controlled by wire 1, 2 or 3.
+  C₁ C₂ C₃ : List One → Circuit (₄₊ n)
+  C₁ []      = ε
+  C₁ (𝕤 ∷ w) = CS • C₁ w
+  C₁ (𝕜 ∷ w) = CK₁₀ • C₁ w
+  C₁ (𝕚 ∷ w) = S ↑ • C₁ w
+  C₂ []      = ε
+  C₂ (𝕤 ∷ w) = CS₀₂ • C₂ w
+  C₂ (𝕜 ∷ w) = CK₂₀ • C₂ w
+  C₂ (𝕚 ∷ w) = S ↑ ↑ • C₂ w
+  C₃ []      = ε
+  C₃ (𝕤 ∷ w) = CS₀₃ • C₃ w
+  C₃ (𝕜 ∷ w) = CK₃₀ • C₃ w
+  C₃ (𝕚 ∷ w) = S ↑ ↑ ↑ • C₃ w
+
+  -- The positive inverses: rev w with S ↦ S³ and K ↦ K i (inv₁, inside
+  -- Barenco's words) or K ↦ i K (inv₂, the decoding's inverse gadget).
+  inv₁ inv₂ : List One → List One
+  inv₁ []      = []
+  inv₁ (𝕤 ∷ w) = inv₁ w ++ (𝕤 ∷ 𝕤 ∷ 𝕤 ∷ [])
+  inv₁ (𝕜 ∷ w) = inv₁ w ++ (𝕜 ∷ 𝕚 ∷ [])
+  inv₁ (𝕚 ∷ w) = inv₁ w ++ (𝕚 ∷ 𝕚 ∷ 𝕚 ∷ [])
+  inv₂ []      = []
+  inv₂ (𝕤 ∷ w) = inv₂ w ++ (𝕤 ∷ 𝕤 ∷ 𝕤 ∷ [])
+  inv₂ (𝕜 ∷ w) = inv₂ w ++ (𝕚 ∷ 𝕜 ∷ [])
+  inv₂ (𝕚 ∷ w) = inv₂ w ++ (𝕚 ∷ 𝕚 ∷ 𝕚 ∷ [])
+
+  -- V = S² K S, a square root W = S³ K S² of V, and W⁻ = S² K S K²,
+  -- a square root of V⁻¹.
+  V W W⁻ : List One
+  V  = 𝕤 ∷ 𝕤 ∷ 𝕜 ∷ 𝕤 ∷ []
+  W  = 𝕤 ∷ 𝕤 ∷ 𝕤 ∷ 𝕜 ∷ 𝕤 ∷ 𝕤 ∷ []
+  W⁻ = 𝕤 ∷ 𝕤 ∷ 𝕜 ∷ 𝕤 ∷ 𝕜 ∷ 𝕜 ∷ []
+
+  -- Barenco's word for the doubly controlled r² from wires 1, c onto
+  -- wire 0, C₁(r) CX₁c C_c(r⁻¹) CX₁c C_c(r), and its inverse.
+  Bar₁₂ Bar₁₂⁻ Bar₁₃ : List One → Circuit (₄₊ n)
+  Bar₁₂  r = C₁ r • CX₁₂ • C₂ (inv₁ r) • CX₁₂ • C₂ r
+  Bar₁₂⁻ r = C₂ (inv₂ r) • CX₁₂ • C₂ (inv₂ (inv₁ r)) • CX₁₂ • C₁ (inv₂ r)
+  Bar₁₃  r = C₁ r • CX₁₃ • C₃ (inv₁ r) • CX₁₃ • C₃ r
+
+  -- The hybrid gadget [L₁₂(V²), CK(3 → 0)], and its decomposition.
+  Hyb Dec : Circuit (₄₊ n)
+  Hyb = Bar₁₂ V • C₃ (𝕜 ∷ []) • Bar₁₂⁻ V • C₃ (inv₂ (𝕜 ∷ []))
+  Dec = Bar₁₂ W⁻ • Toff₃₁₂ • Bar₁₃ W • Toff₃₁₂ • Bar₁₃ W⁻
+
+------------------------------------------------------------------------
 -- Group-specific relations: Figure 2 of Bian and Selinger
 --
 -- Their relations between generators on disjoint wires, and between iI
@@ -204,6 +284,19 @@ data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
   -- the one acts where x₀ = 0, the other, i^{x₀(x₁ ⊕ x₂x₃)}, only where
   -- x₀ = 1.  A commutation, so the CS parity does not see it.
   ck-tct : (₄₊ n) SRel, X • CK • X • Toff ↑ • CS • Toff ↑ === Toff ↑ • CS • Toff ↑ • X • CK • X
+
+  -- Four wires: Barenco's decomposition of the hybrid gadget with its
+  -- control 1 pulled out (LF above).  Equivalently the V-analogue of
+  -- toff-ccz: the Toffoli onto wire 3 from wires 1, 2 carries L₁₃(V) to
+  -- L₁₂(V) L₁₃(V) times the triply controlled V⁻², the substitution
+  -- x₃ ↦ x₃ ⊕ x₁x₂ in V^{x₁x₃}.  A Toffoli conjugating a controlled
+  -- non-Pauli makes a triply controlled one, which no word in units
+  -- controlled by wire 1, Paulis controlled by wire 3 and gates on
+  -- wire 0 can (scratchpad/four-wire-notes.md); with lf the hybrid's
+  -- facts at four wires follow (hybfar.py, hybsym.py, hybshift.py,
+  -- hybtop.py).  Even CS counts on both sides (764 and 1396), so the
+  -- parity does not see it.
+  lf : (₄₊ n) SRel, LF.Hyb === LF.Dec
 
 ------------------------------------------------------------------------
 -- Full relation via Lift-Relation (adds the structural rules cong↑,
