@@ -1073,3 +1073,30 @@ products of things it passes (diagonals on its controls, separated phase
 gadgets, the global phase) for every pair and some bridge per pair, the
 canonical bridge dPP(c-1, c+2) not always (c = 6, 8: an index off the
 pair only on the single control).
+
+## The hybrid's reduction to the top pair, and the shifts (hybshift.py, 2026-10-15)
+
+The generic layer for the hybrid rules needs fewer facts than planned:
+every decoded hybrid is carried to the top pair (N-2, N-1) by shifts,
+and there its stabiliser among the phased permutations (those fixing
+N-2, N-1 with equal phase) is a pair scalar times a word in letters
+below N-2 (Lemma A.4's normal form: a permutation fixing the top two
+indices has empty top runs), all far from the top pair.  So no bridge
+facts: the facts at n = 4 are the far ones (done), one pair scalar at
+the top, the shift l_c l_{c+1} k_c = k_{c+1} l_c l_{c+1} for every c
+(the shortest K-free word carrying k_c to k_{c+1}, t_shift.py), the
+rules ki-x, ki-16, ki-ii, ki-sq at the top pair with a fixed sink, and one
+instance of ki-yb.  Transport T (any K-free word carrying K_c to K_c' as
+matrices carries k_c to k_c') follows: move both to the top by shifts,
+the rest is in the stabiliser.
+
+The 14 shifts form 3 transport classes, differing only in the hybrids'
+roles (t_shiftcls.py), all derived (hybshift.py, 158 top-level steps
+each): at the representative with the targets on wires 0 and 1 the two
+rotations merged over the common controls 2, 3 are the permutation F =
+SWAP01 X0 Lambda_not-1(X0) of the target pair (consec4.merge_all and its
+relabelling), their copies white on 2 or 3 pass the hybrid (any
+colouring: `hblock_pass_gad`, the X letters conjugated onto the gadget,
+the symmetry when the separating wire is the hybrid's single control),
+and F conjugates one hybrid into the other: the white CNOT passes it,
+SWAP01 X0 relabels it, the roles matched by `respell_hyb`.
