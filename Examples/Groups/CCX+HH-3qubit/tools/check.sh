@@ -8,6 +8,7 @@ development=Examples/Groups/CCX+HH-3qubit
 check_logs=local/ccxhh-3qubit-checks
 mkdir -p -- "$check_logs"
 agda_program=${AGDA:-agda}
+agda_heap=${AGDA_HEAP:-3G}
 library_options=()
 if [[ -f "$script_dir/libraries-wsl" ]]; then
   library_options=("--library-file=$script_dir/libraries-wsl")
@@ -16,7 +17,7 @@ check() {
   local relative=$1
   local log_name=${relative//\//-}
   printf 'Checking %s\n' "$relative"
-  if "$agda_program" "${library_options[@]}" "$relative" +RTS -M3G -c -RTS \
+  if "$agda_program" "${library_options[@]}" "$relative" +RTS "-M$agda_heap" -c -RTS \
       > "$check_logs/$log_name.log" 2>&1; then
     printf 'Passed %s\n' "$relative" >> "$check_logs/passed.log"
   else

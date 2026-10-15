@@ -127,6 +127,10 @@ It writes durable logs under `local/ccxhh-3qubit-checks/`. A local
 Agda's `--library-file` option when the WSL user has no global list;
 the file is ignored because its paths depend on the machine.
 From PowerShell, use `tools/check-wsl.ps1`, which invokes WSL directly.
+Its `-Heap 8G` option, or `AGDA_HEAP=8G` for `check.sh`, changes the
+bounded heap when checking several large dependencies in one process.
+The PowerShell supervisor retries interrupted runs from the interfaces
+already saved on the Windows filesystem.
 The repository instructions' `/home/bonest/.local/bin/agda` path is not
 present on this machine; `/usr/bin/agda` supplies Agda 2.8.0 here.
 

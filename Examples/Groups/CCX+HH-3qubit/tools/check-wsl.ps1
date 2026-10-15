@@ -1,4 +1,4 @@
-param([string[]]$Targets)
+param([string[]]$Targets, [string]$Heap = '3G')
 
 $ErrorActionPreference = 'Stop'
 $taskRepo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../../..'))
@@ -41,7 +41,7 @@ foreach ($target in $Targets) {
         # the compiler, but it must not kill the rest of the check list.
         $ErrorActionPreference = 'Continue'
         & wsl --exec /usr/bin/agda "--library-file=$libraryList" $target `
-            '+RTS' '-M3G' '-c' '-RTS' 2>&1 | Out-File -LiteralPath $logPath -Encoding utf8
+            '+RTS' "-M$Heap" '-c' '-RTS' 2>&1 | Out-File -LiteralPath $logPath -Encoding utf8
         $checkExit = $LASTEXITCODE
         $ErrorActionPreference = 'Stop'
         if ($checkExit -eq 0) {
