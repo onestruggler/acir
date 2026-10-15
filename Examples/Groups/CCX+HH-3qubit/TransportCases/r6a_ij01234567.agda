@@ -22,7 +22,7 @@ step1 : X04 • M4 • M0 • X04 • M0 • M4 ≈ M0 • M4 • X04 • X04 �
 step1 = by-assoc-and (cong step0 (refl {w = X04 • M0 • M4})) Eq.refl Eq.refl
 
 step2 : M0 • M4 • X04 • X04 • M0 • M4 ≈ M0 • M4 • M0 • M4
-step2 = by-assoc-and (under (M0 • M4) (M0 • M4) (by-assoc-and XX.proved Eq.refl Eq.refl)) Eq.refl Eq.refl
+step2 = by-assoc-and (under (M0 • M4) (M0 • M4) (by-assoc-and {w = X04 • X04} {v = ε} XX.proved Eq.refl Eq.refl)) Eq.refl Eq.refl
 
 step3 : M0 • M4 • M0 • M4 ≈ M0 • M0 • M4 • M4
 step3 = by-assoc-and (under M0 M4 (sym MM.proved)) Eq.refl Eq.refl

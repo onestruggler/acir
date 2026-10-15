@@ -38,7 +38,7 @@ axiom-decode (TL.r2a {a = a} {b = b} {c = c} {d = d} p0 p1 ne0 ne1 ne2 ne3) = Tr
 axiom-decode (TL.r2b {a = a} {b = b} {c = c} p0 ne0 ne1) = Tr2b.translate a b c p0 ne0 ne1
 axiom-decode (TL.r2c {a = a} {b = b} {c = c} {d = d} {e = e} {f = f} p0 p1 p2 p3 ne0 ne1 ne2 ne3 ne4 ne5 ne6 ne7) = Tr2c.translate a b c d e f p0 p1 p2 p3 ne0 ne1 ne2 ne3 ne4 ne5 ne6 ne7
 axiom-decode (TL.r2d {a = a} {b = b} ne0) = Tr2d.translate a b ne0
-axiom-decode (TL.r2e {a = a} {b = b} {c = c} {d = d} {e = e} p0 p1 p2 ne0 ne1 ne2 ne3) = Tr2e.translate a b c d e p0 p1 p2 ne0 ne1 ne2 ne3
+axiom-decode (TL.r2e {b = b} {c = c} {d = d} {e = e} {a = a} p0 p1 p2 ne0 ne1 ne2 ne3) = Tr2e.translate a b c d e p0 p1 p2 ne0 ne1 ne2 ne3
 axiom-decode (TL.r2f {a = a} {b = b} {c = c} {d = d} {e = e} {f = f} {g = g} {h = h} p0 p1 p2 p3 p4 p5 ne0 ne1 ne2 ne3 ne4 ne5 ne6 ne7 ne8 ne9 ne10 ne11 ne12 ne13 ne14 ne15) = Tr2f.translate a b c d e f g h p0 p1 p2 p3 p4 p5 ne0 ne1 ne2 ne3 ne4 ne5 ne6 ne7 ne8 ne9 ne10 ne11 ne12 ne13 ne14 ne15
 axiom-decode (TL.r3a {a = a} {a′ = x} {b = b} p0 p1 p2) = Tr3a.translate a x b p0 p1 p2
 axiom-decode (TL.r3b {a = a} {b = b} {b′ = y} p0 p1 p2) = Tr3b.translate a b y p0 p1 p2

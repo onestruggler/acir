@@ -15,6 +15,9 @@ def finpat(i):return f.finpat(i)
 def dynword(atoms):
     return ' • '.join('(d'+a[0]+' '+' '.join(str(x) for x in a[1:])+')' for a in atoms) or 'ε'
 SOURCE_RENAME={'r3a':{'x':'a′'},'r3b':{'y':'b′'},'r3d':{'x':'a′'},'r3e':{'y':'b′'},'r3f':{'z':'c′'},'r3g':{'t':'d′'}}
+# Generalized implicits follow their first occurrence in the source
+# constructor's type; r2e mentions the K indices before the M index.
+SOURCE_ORDER={'r2e':['b','c','d','e','a']}
 def imports(module):
     return g.header(module)+f'''open import Data.Empty using (⊥-elim)
 open import Data.Empty.Irrelevant renaming (⊥-elim to ⊥-elim-irr)
@@ -103,7 +106,7 @@ for rule in t.SCHEMAS:s+=f'import {P}.Transport.{rule} as T{rule}\n'
 s+='\naxiom-decode : ∀ {w v} → TL._===_ {8} w v → (decode ʷ) w ≈ (decode ʷ) v\n'
 for rule,(vs,orders,nes,*_) in t.SCHEMAS.items():
     ren=SOURCE_RENAME.get(rule,{})
-    pats=' '.join('{'+ren.get(v,v)+' = '+v+'}' for v in vs)
+    pats=' '.join('{'+ren.get(v,v)+' = '+v+'}' for v in SOURCE_ORDER.get(rule,vs))
     args=['p'+str(i) for i in range(len(orders))]+['ne'+str(i) for i in range(len(nes))]
     s+=f'axiom-decode (TL.{rule} {pats} '+' '.join(args)+f') = T{rule}.translate '+' '.join(vs+args)+'\n'
 s+='\ndecode-cong : ∀ {w v} → PB._≈_ (TL._===_ {8}) w v → (decode ʷ) w ≈ (decode ʷ) v\ndecode-cong = PP.StarCongruence.fʷ-cong (TL._===_ {8}) Examples.Groups.CCX+HH-3qubit.Syntactics._===_ decode axiom-decode\n'

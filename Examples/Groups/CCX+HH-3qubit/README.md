@@ -98,7 +98,9 @@ This includes all 32 shared evaluation modules and all 106 decoding
 certificates. The assembled presentation and the newly exported
 results are being checked. The six-index `Transport/r2c.agda`
 dispatcher, including its 420 cases, also passes with a compacting
-3 GB heap after splitting the generated coverage checks.
+3 GB heap after splitting the generated coverage checks. The complete
+`TwoLevel.agda` map now passes all 21 relation families and their
+2,123 finite instances.
 
 Use Agda 2.8.0 and standard-library 2.4, with the registered EucDomain
 dependency. Check separate entry points sequentially; do not run

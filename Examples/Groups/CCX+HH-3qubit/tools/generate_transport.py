@@ -87,7 +87,7 @@ def case(rule,values):
         s0=b.step(tail,'M0 • M4 • X04 • X04 • M0 • M4',
             f'by-assoc-and (cong {move} (refl {{w = X04 • M0 • M4}})) Eq.refl Eq.refl')
         s1=b.step('M0 • M4 • X04 • X04 • M0 • M4','M0 • M4 • M0 • M4',
-            f'by-assoc-and (under (M0 • M4) (M0 • M4) (by-assoc-and {xx} Eq.refl Eq.refl)) Eq.refl Eq.refl')
+            f'by-assoc-and (under (M0 • M4) (M0 • M4) (by-assoc-and {{w = X04 • X04}} {{v = ε}} {xx} Eq.refl Eq.refl)) Eq.refl Eq.refl')
         s2=b.step('M0 • M4 • M0 • M4','M0 • M0 • M4 • M4',
             f'by-assoc-and (under M0 M4 (sym {mm})) Eq.refl Eq.refl')
         s3=b.step('M0 • M0 • M4 • M4','ε',
