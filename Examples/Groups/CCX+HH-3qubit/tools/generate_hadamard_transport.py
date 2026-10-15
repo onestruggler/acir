@@ -84,7 +84,7 @@ open PB _===_ hiding (_===_ ; _≈_)
 clauses='''axiom-decode : ∀ {w v} → L._===ᴸ_ {8} w v → (decode ʷ) w ≈ (decode ʷ) v
 axiom-decode (L.table1 {w} {v} proof) = trans
   (refl' (dyadic-decoding w))
-  (trans (lift (T.decode-cong {w} {v} proof)) (sym (refl' (dyadic-decoding v))))
+  (trans (lift (T.axiom-decode {w} {v} proof)) (sym (refl' (dyadic-decoding v))))
 axiom-decode L.r7a = axiom (paper r108)
 '''
 count=0
