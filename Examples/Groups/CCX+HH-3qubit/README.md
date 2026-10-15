@@ -26,7 +26,9 @@ from the existing presentation of S₈. `CircuitLemmas.agda` replays
 two- and four-level generators on eight basis states. `TwoLevel.agda`
 translates the relations of the existing dyadic two-level development
 into the circuit theory; its finite instances are in `Transport/`
-and `TransportCases/`.
+and `TransportCases/`. Wide dispatchers use `TransportChunks/` to
+split the index choices into modules with at most four remaining
+indices; the public `translate` functions retain their original types.
 
 `Repaired/Presentation.agda` proves completeness for exact matrix
 equality and gives a full group presentation of L₈, the orthogonal
@@ -94,7 +96,9 @@ derivations, the missing-K countermodel, the repaired encoding and
 repaired soundness, and both matrix bridges have passed Agda 2.8.0.
 This includes all 32 shared evaluation modules and all 106 decoding
 certificates. The assembled presentation and the newly exported
-results are being checked.
+results are being checked. The six-index `Transport/r2c.agda`
+dispatcher, including its 420 cases, also passes with a compacting
+3 GB heap after splitting the generated coverage checks.
 
 Use Agda 2.8.0 and standard-library 2.4, with the registered EucDomain
 dependency. Check separate entry points sequentially; do not run
@@ -112,6 +116,9 @@ agda Examples/Groups/CCX+HH-3qubit/Repaired/Presentation.agda
 For the large finite translation, first check `Transport/r1a.agda`,
 …, `Transport/r6a.agda` in separate processes, then `TwoLevel.agda`.
 This frees each process's heap between relation families.
+The prefix modules bound the size of each coverage check as well:
+the six- and eight-index tables are not checked as one large case
+analysis.
 
 `bash Examples/Groups/CCX+HH-3qubit/tools/check.sh` runs the checks
 sequentially with a compacting 3 GB heap, followed by `MainTheorems.agda`.
