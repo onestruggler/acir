@@ -92,6 +92,12 @@ tB  = fin (suc m) qB
 tT  = fin (suc (suc m)) qT
 tT1 = fin (suc (suc (suc m))) qT1
 
+toT : toℕ tT ≡ top
+toT = fin-toℕ _ qT
+
+toT1 : toℕ tT1 ≡ suc top
+toT1 = fin-toℕ _ qT1
+
 private
   topT : top ≤ toℕ tT
   topT = Eq.subst (top ≤_) (Eq.sym (fin-toℕ _ qT)) NP.≤-refl
