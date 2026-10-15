@@ -366,3 +366,71 @@ def _cross_box_left(d, i, m):
         except (Stuck, AssertionError):
             _restore(d, s)
     return _forms_left(d, i, m)
+
+
+# ------------------------------------------------------------ S-boxes unfolded whole
+def deep_unfold(d, k):
+    """the S-box at k unfolded, its one-control S-boxes (CS letters) too;
+    returns the number of letters."""
+    g = d.cur[k]
+    us = unfold1(g)
+    d.unfold(k)
+    for q, h in enumerate(us):
+        if h[0] in ('SBOX', 'SBOXd') and len(h[3]) == 1:
+            d.unfold(k + q)
+    return len(us)
+
+
+def deep_fold(d, k, g):
+    us = derivn.norm(unfold1(g))
+    for q, h in enumerate(us):
+        if h[0] in ('SBOX', 'SBOXd') and len(h[3]) == 1:
+            d.fold(k + q, h)
+    d.fold(k, g)
+
+
+def pass_right(d, i, m, j):
+    count = j - (i + m)
+    while count > 0:
+        g = d.cur[i + m]
+        if g[0] in ('SBOX', 'SBOXd'):
+            n = deep_unfold(d, i + m)
+            i, m = pass_right(d, i, m, i + m + n)
+            deep_fold(d, i - n, g)
+            i -= n - 1; count -= 1
+            continue
+        if g[0] in ('BOX', 'BOXd'):
+            assert g[0] == 'BOX'
+            i, m = _cross_box_right(d, i, m)
+            count -= 1
+            continue
+        r = _seg_right(d, i, m, count)
+        if r is not None:
+            i, m, c = r
+            count -= c
+            continue
+        i, m = engine.block_right(d, i, m, i + m + 1)
+        count -= 1
+    return i, m
+
+
+def pass_left(d, i, m, j):
+    while i > j:
+        g = d.cur[i - 1]
+        if g[0] in ('SBOX', 'SBOXd'):
+            n = deep_unfold(d, i - 1)
+            i += n - 1
+            i, m = pass_left(d, i, m, i - n)
+            deep_fold(d, i + m, g)
+            continue
+        if g[0] in ('BOX', 'BOXd'):
+            assert g[0] == 'BOX'
+            i, m = _cross_box_left(d, i, m)
+            continue
+        r = _seg_left(d, i, m, j)
+        if r is not None:
+            i, m, c = r
+            continue
+        m = engine.block_left(d, i, m, i - 1)
+        i -= 1
+    return i, m

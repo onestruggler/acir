@@ -79,8 +79,13 @@ def box_left(d, k, target):
             d.unfold(k - 1)
             k += n - 1
             continue
-        if g[0] == 'BOX':
-            box_box(d, k - 1)
+        if g[0] == "BOX":
+            if g[1] != d.cur[k][1]:
+                box_box(d, k - 1)
+            elif g != d.cur[k]:
+                h = d.cur[k]
+                reorder(d, k - 1, h[2:])
+                reorder(d, k, g[2:])
             k -= 1
             continue
         assert not is_box(g), show([g])
