@@ -21,12 +21,15 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   reloading the interfaces it imports. Checking about twenty consecutive
   modules (in dependency order) through one generated root that imports
   them halves a whole-library timing run.
-- **Find the cost inside a module by prefixes.** Cut the file before
-  successive top-level declarations (before clauses also works: coverage
-  fails only at the end) and time each prefix; the increments locate the
-  expensive definitions. `--profile=internal` gives the phases (typing,
-  coverage, positivity, serialisation); `--profile=definitions` gives
-  nothing per definition in Agda 2.8.
+- **Find the cost inside a module per definition.** `agda
+  --profile=definitions M.agda` (on its own: it cannot be combined with
+  `modules`) prints the time of every definition, where-block
+  definitions included (`M.Descent._.low`), after deleting `M.agdai`;
+  that found both hotspots below at once. Timing successive prefixes —
+  cut the file before top-level declarations (before clauses also
+  works: coverage fails only at the end) — is the fallback, and is
+  coarser. `--profile=internal` gives the phases (typing, coverage,
+  positivity, serialisation).
 - **Do not probe with holes.** Replacing proofs by `?` makes Agda
   postpone constraints and can make a module *slower* (30 s against
   21 s), so it does not measure what the replaced proofs cost.
@@ -43,6 +46,7 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 | `--lossy-unification` | `BR/Calculations`, `BR/Two/D`, `L2-CZ/Left`, `Simplified-V1/Iso` | 15.3 → 1.1 s, 20.7 → 2.7 s, −40 %, −17 % |
 | Apply reasoning modules once, not per clause | `Simplified-V1/Forward`, `Simplified-V1/Iso` | 23.0 → 10.8 s, −20 % |
 | Share duplicated rewrite rules through `then` | `Ex-Sym3n/Swap` | 21.0 → 15.4 s |
+| Split only on what blocks reduction, not on every intermediate result | `Construct/Properties/Amalgamation` | 54.6 → 25.1 s (profile total) |
 
 - **A `with` normalises the goal before abstracting.** `with b ≟ c`
   where `b` is a successor and `c` is zero is `no` by computation, so the
@@ -85,12 +89,55 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   (`Pattern-Assoc`'s `□`) leaves the width unsolved (open it at the
   width: `open Pattern-Assoc {₁₊ m}`). Where the blocks are few or the
   modules small (`Powers`) the gain is within noise.
+- **A `with` chain splits only on what blocks reduction.** A proof about
+  functions defined by `with` tends to repeat their whole chain — `with
+  f x | inspect f x`, then `with g y | inspect g y` on the pieces, seven
+  levels deep, in every combination of cases. But a `with` whose pattern
+  is a pair (`… | (w′ , c′)`) is a record pattern, translated to
+  projections, so a function defined that way (`_ᵗ`, the traversals
+  built on it, `hcmw`) reduces at any argument; only a split on a
+  constructor that is not a record (`inj₁`/`inj₂`) blocks. So abstract
+  just those scrutinees, let the rest reduce, and finish with the
+  lemma that is really needed (`rewrite lemma-hcxds-m …`); `inspect` is
+  unnecessary when nothing uses its equation. Where two traversals must
+  agree, abstract the proof that they do together with them (`with h u
+  | h v | h-wd u v p … | (c₁ , refl)`): the `refl` identifies their
+  results and the impossible mixed cases disappear. `lemma-hcd-mb-•`
+  went from ~60 deep clauses to 12 two-level ones (15.1 → 0.7 s), two
+  claims of `hhh-wd-ax` from 3.3 and 2.7 s to under 0.4, and the
+  module's unattributed `Miscellaneous` time (which includes writing the
+  interface) from 18.3 to 12.3 s.
 - **One step function, not two copies.** `step-swap` restated
   `step-swap0`'s sixteen rules verbatim; it is now
   `step-swap-extra then step-swap0`. With `then` the extra rules are
   tried first, which reorders rules only where their patterns are
   disjoint, so every word rewrites to the same list and the
   `rewrite-swap … auto` proofs of its importers are unchanged.
+
+## Memory
+
+- **Cap every Agda process** (`+RTS -M…`) and record its peak with
+  `+RTS -s` ("bytes maximum residency"). A module that overflows a 3 GB
+  heap on its own is a target in itself; see `CLAUDE.md` for the known
+  ones and for what fixed others (`ItemB`'s module application
+  re-exporting all of `Frame`: 3.3 GB → 1 GB).
+- **On Windows the limit is the host's commit, not the VM's RAM.** WSL's
+  VM counts against Windows' commit limit, and so does the page cache
+  Linux keeps; `.wslconfig` may allow the VM more memory than Windows
+  can commit, in which case running out crashes the whole VM (every job
+  in it) instead of letting Linux kill one process. Several sessions
+  each running Agda with an 8 GB heap did that every two minutes here.
+  Dropping the VM's clean page cache (`echo 1 >
+  /proc/sys/vm/drop_caches`, as root) when Windows' free commit runs low
+  returned 1–3 GB at a time and kept it up; the lasting fixes are
+  `autoMemoryReclaim=dropcache` under `[experimental]` in `.wslconfig`,
+  or a `memory=` below what Windows can commit.
+- **Fewer with-functions, smaller interfaces.** Each `with` creates an
+  auxiliary function whose type carries the abstracted goal; deep chains
+  of them are serialised into the interface and loaded by every
+  importer. Compacting `Amalgamation`'s chains (above) cut the time its
+  profile attributes to no definition, writing the interface included,
+  by a third.
 
 ## What did not help
 
