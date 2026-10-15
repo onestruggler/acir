@@ -10,8 +10,10 @@ from gadgetlib import Gad
 
 PPMID = norm(G.core(0, 1))                                  # TOFF012 CS03 TOFF012 CSd03
 RMID = norm(Gad(0, (), ['S', 'K'], -1).letters())           # S0 K0 core^-1 Kd0 Sd0
-MID = {'p': PPMID, "p'": PPMID, 'l': RMID, 'h': RMID}
-FLIP = {'p': 0, "p'": 1, 'l': 0, 'h': 1}
+from dec import G_ki as _G_ki
+KIMID = norm(_G_ki(4))                                      # [Bar(V^2; 1,2 -> 0), CK(3 -> 0)]
+MID = {'p': PPMID, "p'": PPMID, 'l': RMID, 'h': RMID, 'k': KIMID}
+FLIP = {'p': 0, "p'": 1, 'l': 0, 'h': 1, 'k': 1}
 
 def tau(j):
     p = {w: w for w in range(4)}; p[j], p[j + 1] = j + 1, j

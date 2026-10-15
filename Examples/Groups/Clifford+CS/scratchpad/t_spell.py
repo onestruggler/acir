@@ -110,3 +110,51 @@ for name, P in (('X', Xm), ('Z', Zm), ('XZ', mm(Xm, Zm))):
                 if key(C) not in J: J[key(C)] = C; nf.append(C)
         fr = nf
     print(f'|<H_B, {name}>| =', len(J))
+
+def gen_size(base, extra):
+    J = dict(base); fr = list(base.values()); gs = list(base.values()) + extra
+    while fr:
+        nf = []
+        for A in fr:
+            for D in gs:
+                C = mm(A, D)
+                if key(C) not in J: J[key(C)] = C; nf.append(C)
+        fr = nf
+    return len(J)
+best = {}
+for u in els:
+    best.setdefault(gen_size(HB, [u]), []).append(u)
+print('single role: |<H_B, u>| ->', {k: len(v) for k, v in sorted(best.items())})
+bestp = {}
+for u in els:
+    bestp.setdefault(gen_size(H, [u]), []).append(u)
+print('pair role:   |<H, u>|   ->', {k: len(v) for k, v in sorted(bestp.items())})
+for nm, u in (('K', K), ('S', S), ('X', Xm), ('Z', Zm)):
+    print(nm, 'single:', gen_size(HB, [u]), ' pair:', gen_size(H, [u]))
+
+# iX (and X up to a phase on the control) as a product of conjugates of V^{+-2}
+V2 = sq(V0); V2i = inv(V2)
+conjs = {}
+for u in els:
+    for e, M in (('+', V2), ('-', V2i)):
+        conjs.setdefault(key(mm(mm(u, M), inv(u))), (key(u), e))
+print('conjugates of V^+-2:', len(conjs))
+target = key(((0, I), (I, 0)))
+cl = list(conjs.items())
+found = None
+for (k1, d1) in cl:
+    if k1 == target: found = [d1]; break
+if not found:
+    for (k1, d1) in cl:
+        for (k2, d2) in cl:
+            if key(mm(byk[k1], byk[k2])) == target: found = [d1, d2]; break
+        if found: break
+if not found:
+    for (k1, d1) in cl:
+        for (k2, d2) in cl:
+            p = mm(byk[k1], byk[k2])
+            for (k3, d3) in cl:
+                if key(mm(p, byk[k3])) == target: found = [d1, d2, d3]; break
+            if found: break
+        if found: break
+print('iX as product of', len(found) if found else None, 'conjugates:', [(W[u], e) for (u, e) in found] if found else None)
