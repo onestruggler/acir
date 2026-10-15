@@ -24,7 +24,8 @@
 
 module Examples.Groups.CCX+HH-3qubit-opus.Gates where
 
-open import Data.Nat.Base using (ℕ ; zero ; suc)
+open import Data.Nat.Base using (ℕ ; zero ; suc ; _∸_)
+open import Relation.Binary.PropositionalEquality using (_≡_ ; refl ; sym ; trans ; cong)
 
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; wmap)
 
@@ -82,6 +83,102 @@ up H₂ = H₂
 
 ↑ʷ : Word (Gate k) → Word (Gate (suc k))
 ↑ʷ = wmap up
+
+------------------------------------------------------------------------
+-- Codes
+
+-- An injective code, for comparing letters by computation.
+code : Gate k → ℕ
+code X₀    = 0
+code X₁    = 1
+code X₂    = 2
+code Z₀    = 3
+code Z₁    = 4
+code Z₂    = 5
+code CX₀₁  = 6
+code CX₀₂  = 7
+code CX₁₀  = 8
+code CX₁₂  = 9
+code CX₂₀  = 10
+code CX₂₁  = 11
+code CZ₀₁  = 12
+code CZ₀₂  = 13
+code CZ₁₂  = 14
+code CCX₀₁ = 15
+code CCX₀₂ = 16
+code CCX₁₂ = 17
+code K₀₁   = 18
+code K₁₂   = 19
+code SW₀₁  = 20
+code SW₀₂  = 21
+code SW₁₂  = 22
+code NK    = 23
+code CCZ   = 24
+code H₂    = 25
+
+decode : (k : ℕ) → ℕ → Gate k
+decode′ : (k : ℕ) → ℕ → Gate k
+
+decode _ 0 = X₀
+decode _ 1 = X₁
+decode _ 2 = X₂
+decode _ 3 = Z₀
+decode _ 4 = Z₁
+decode _ 5 = Z₂
+decode _ 6 = CX₀₁
+decode _ 7 = CX₀₂
+decode _ 8 = CX₁₀
+decode _ 9 = CX₁₂
+decode _ 10 = CX₂₀
+decode _ 11 = CX₂₁
+decode _ 12 = CZ₀₁
+decode _ 13 = CZ₀₂
+decode _ 14 = CZ₁₂
+decode _ 15 = CCX₀₁
+decode _ 16 = CCX₀₂
+decode _ 17 = CCX₁₂
+decode _ 18 = K₀₁
+decode _ 19 = K₁₂
+decode k n = decode′ k (n ∸ 20)
+
+decode′ _ 0 = SW₀₁
+decode′ _ 1 = SW₀₂
+decode′ _ 2 = SW₁₂
+decode′ (suc _) 3 = NK
+decode′ (suc _) 4 = CCZ
+decode′ (suc (suc _)) 5 = H₂
+decode′ _ _ = X₀
+
+decode-code : (g : Gate k) → decode k (code g) ≡ g
+decode-code X₀ = refl
+decode-code X₁ = refl
+decode-code X₂ = refl
+decode-code Z₀ = refl
+decode-code Z₁ = refl
+decode-code Z₂ = refl
+decode-code CX₀₁ = refl
+decode-code CX₀₂ = refl
+decode-code CX₁₀ = refl
+decode-code CX₁₂ = refl
+decode-code CX₂₀ = refl
+decode-code CX₂₁ = refl
+decode-code CZ₀₁ = refl
+decode-code CZ₀₂ = refl
+decode-code CZ₁₂ = refl
+decode-code CCX₀₁ = refl
+decode-code CCX₀₂ = refl
+decode-code CCX₁₂ = refl
+decode-code K₀₁ = refl
+decode-code K₁₂ = refl
+decode-code SW₀₁ = refl
+decode-code SW₀₂ = refl
+decode-code SW₁₂ = refl
+decode-code NK = refl
+decode-code CCZ = refl
+decode-code H₂ = refl
+
+code-inj : {x y : Gate k} → code x ≡ code y → x ≡ y
+code-inj {k} {x} {y} e = trans (sym (decode-code x)) (trans (cong (decode k) e) (decode-code y))
 
 ------------------------------------------------------------------------
 -- One-letter words
