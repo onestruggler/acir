@@ -52,7 +52,7 @@ proves complete:
 ## Checking
 
 Agda 2.8.0, standard-library 2.4, and EucDomain registered. Check
-`Theorems.agda`; it reaches every module of the development (and
-`CCX+HH-TwoLevel`, `Symmetric`). From the interfaces of those, each module
-takes under three minutes and 2 GB, except `Decode` and `Independence`, at
-about 2.5 GB.
+`Theorems.agda` and `GateMatrices.agda`; together they reach all 30 modules
+of the development (and `CCX+HH-TwoLevel`, `Symmetric`). Given the interfaces
+of those, `Theorems.agda` takes about 4.5 minutes from scratch in one process,
+with a peak of 3.1 GB (`+RTS -M4G`), and `GateMatrices.agda` half a minute.
