@@ -339,10 +339,10 @@ module Complete {Γ : WRel (Gate k)} (cox : Coxeter Γ) where
            (Eq.trans (liftN-cong j SymI.⟦ w′ ⟧ (stripN j π) (proj₂ gw) i) (strip-ok j π fixʳ i)))
 
   -- Frames: b conjugated by two Coxeter words that agree below j.
-  frame : (j m : ℕ) → j + m ≤ 8 → (b : Word (Gate k)) → Comm≥ j b → (p q : Word (SG (j + m))) →
+  frame≈ : (j m : ℕ) → j + m ≤ 8 → (b : Word (Gate k)) → Comm≥ j b → (p q : Word (SG (j + m))) →
           (∀ x → toℕ x < j → actₙ p x ≡ actₙ q x) →
           Pc 0 p • b • Pc 0 (inv p) ≈ Pc 0 q • b • Pc 0 (inv q)
-  frame j m bd b cb p q h = begin
+  frame≈ j m bd b cb p q h = begin
     Pc 0 p • b • Pc 0 (inv p)                                    ≈⟨ cong p≈ refl ⟩
     (Pc 0 q • Pc 0 r) • b • Pc 0 (inv p)                         ≈⟨ assoc ⟩
     Pc 0 q • (Pc 0 r • b • Pc 0 (inv p))                         ≈⟨ cong refl (sym assoc) ⟩
