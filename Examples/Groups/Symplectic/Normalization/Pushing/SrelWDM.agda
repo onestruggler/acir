@@ -7,7 +7,7 @@
 -- (ract ᵗ) c u ≋ (ract ᵗ) c t.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible --safe --lossy-unification #-}
 
 open import Data.Nat using (ℕ)
 open import Data.Nat.Primality using (Prime)
