@@ -226,3 +226,31 @@ derivations, 4,869 steps, about ten minutes):
 Next: (F2) and (F1) (the controlled rules), (F6), then the Agda side
 (load5/emit5 for the new derivations; how big the lowering gets is
 being measured).
+
+### (F2) and (F1) (2026-10-16, later)
+
+- `f2.py`: all 48 items of (F2).  A K on a borrowed wire of an S-box is
+  moved onto its dashed wire first (F0); the one disjoint CS pair
+  (Sigma01, Sigma23) goes through (F5), (AX) for CS(0,1) = CS(u,A) of
+  Sigma23, and (F4), as in the paper.
+- `f1rules.py`: the 49 (F1) items (every rule at every placement in the
+  domain 0..3, controlled by wire 4); `f1.py` derives 36 of them by
+  normal forms: S-boxes onto the rule's idle domain wire (F0), adjacent
+  equal S-boxes squared to CCZ (`S2-*`), the rest unfolded, boxes pushed
+  to the right end and cancelled, the remainder on four wires.  Every
+  rule but CS-K0/1, rel-269/272, cx-ccz, toff-ccz, ck-tct.
+- `boxtoff.py`: Tu-box, TOFF(c;u,a) BOX_u TOFF(c;u,a) = BOX_u BOX_c;
+  `boxbox.spawn` uses it and F0-B (CX(u->c)) when a box crosses such a
+  letter, leaving the second box behind (cx-ccz needs both).
+
+The rest all have a controlled K on a control of a box (the CCS target
+of an S-box is always a control of its box, whatever the borrowed
+wires).  CK(4,x)^-1 BOX CK(4,x) is Barenco's C3X t T'' t T''
+(t = TOFF(u;y,A), T'' = TOFF(x;u,4)), box-free, but the boxes then no
+longer cancel.  The paper splits the controlled K along the CS's other
+wire y with (F4)-(F5) for y (needing a doubly controlled K macro, whose
+own construction T CK(A,x) T CKd(A,x) Sigma(A;c1,c2|u,x)^-1 has a K on x
+again), and does rel-269/272 and ck-tct by de-borrowing (Lemma
+de-borrowing: lambda of a two-wire w block diagonal in y with det W =
++-1 is a three-wire circuit), which needs transport of two-wire
+equations, i.e. CS-K0/1 first.  Open.
