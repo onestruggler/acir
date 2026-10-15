@@ -200,3 +200,20 @@ if __name__ == '__main__' and 'kk' in sys.argv:
             import traceback; traceback.print_exc(limit=3)
             print('FAIL', HC.hyb_roles(Ab[1]), Bw[0], HC.hyb_roles(Bw[1]), 'sep', seps, repr(e)[:400])
     print('good', good, 'bad', bad)
+
+def make_all():
+    """every far class fact of the hybrid (kp, kl, kk)."""
+    cl = HC.classify(); out = []
+    for k, insts in sorted(cl.items()):
+        c0, j0, A, B = insts[0]
+        tA, sA, pA = HC.hyb_roles(A[1])
+        if k[0] in ('kp', 'kl'):
+            tB = F.tgt_of(B[1])
+            seps = [w for w in range(4) if w not in (tA, tB) and A[0][w] != B[0][w] and w in pA]
+            out.append(far_fact(A, B, seps[0]))
+        else:
+            tB, sB, pB = HC.hyb_roles(B[1])
+            seps = [w for w in range(4) if w not in (tA, tB) and A[0][w] != B[0][w] and w in pA and w in pB]
+            Ab, Bw = (A, B) if not any(A[0]) else (B, A)
+            out.append(kk_fact(Ab, Bw, seps[0]))
+    return out

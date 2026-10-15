@@ -314,3 +314,11 @@ if __name__ == '__main__' and 'shift' in sys.argv:
         except Exception as ex:
             import traceback; traceback.print_exc(limit=4)
             print(c, 'FAIL', key, repr(ex)[:300])
+
+def make_all():
+    done = {}; out = []
+    for c in range(14):
+        key, ops, bt = rep01(c)
+        if key in done: continue
+        done[key] = c; out.append(shift_fact(bt))
+    return out

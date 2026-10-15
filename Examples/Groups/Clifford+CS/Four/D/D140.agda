@@ -10,6 +10,7 @@ open import Word.Base using (ε ; _•_)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
 open import Examples.Groups.Clifford+CS.Tools using (ax)
+open import Examples.Groups.Clifford+CS.Canonical using (can-≈)
 open import Examples.Groups.Clifford+CS.Windows using (win)
 open import Examples.Groups.Clifford+CS.Completeness using (complete₃)
 open import Examples.Groups.Clifford+CS.TopWeakening using (low-comm)
@@ -19,9 +20,9 @@ open import Examples.Groups.Clifford+CS.Four.D.D125 using (lem-pass-CS23-vs-CSd0
 open import Examples.Groups.Clifford+CS.Four.D.D126 using (lem-pass-CS23-vs-CS02 ; lem-pass-CS23-vs-CS03 ; lem-pass-CS23-vs-CSd02 ; lem-pass-CS23-vs-Sd0 ; lem-pass-CS23-vs-TOFF013)
 open import Examples.Groups.Clifford+CS.Four.D.D138 using (lem-pass-CS23-vs-S3 ; lem-pass-CS23-vs-Sd3 ; lem-pass-CS23-vs-iI)
 open import Examples.Groups.Clifford+CS.Four.D.D139 using (lem-pass-CS23-TOFF201-CSd23-TOFF201-vs-iI-Sd0-Sd3-CS03)
--- pass [X0 X3 CS23 TOFF201 CSd23 TOFF201 X0 X3] [CS03]: 71 steps
+-- pass [X0 X3 CS23 TOFF201 CSd23 TOFF201 X0 X3] [CS03]: 76 steps
 lem-pass-X0-X3-CS23-TOFF201-CSd23-TOFF201-X0-X3-vs-CS03 : ⟪ (X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ CS03 ∷ []) ⟫ʷ ≈ ⟪ (CS03 ∷ X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) ⟫ʷ
-lem-pass-X0-X3-CS23-TOFF201-CSd23-TOFF201-X0-X3-vs-CS03 = trans (run b0) (trans (run b1) (trans (run b2) (trans (run b3) (trans (run b4) (trans (run b5) (trans (run b6) (trans (run b7) (run b8))))))))
+lem-pass-X0-X3-CS23-TOFF201-CSd23-TOFF201-X0-X3-vs-CS03 = trans (run b0) (trans (run b1) (trans (run b2) (trans (run b3) (trans (run b4) (trans (run b5) (trans (run b6) (trans (run b7) (trans (run b8) (run b9)))))))))
   where
   b0 : Chain (X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ CS03 ∷ []) (X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ S0 ∷ CS03⁻ ∷ Sw23 ∷ X2 ∷ Sw23 ∷ [])
   b0 = at 9 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
@@ -43,71 +44,78 @@ lem-pass-X0-X3-CS23-TOFF201-CSd23-TOFF201-X0-X3-vs-CS03 = trans (run b0) (trans 
        at 8 2 (Sw23 ∷ X0 ∷ []) (low₁-comm (X) ((Swap ↑))) ▸
        at 9 2 (S2⁻ ∷ CS02 ∷ X0 ∷ []) (win 3 0 complete₃ (X • (Swap ↑ • (CS • CS • CS) • Swap ↑)) (((S • S • S) ↑ ↑) • (Swap ↑ • CS • Swap ↑) • X) tt tt Eq.refl) ▸ done
 
-  b2 : Chain (X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ ι ∷ S0⁻ ∷ Sw23 ∷ S2⁻ ∷ CS02 ∷ X0 ∷ Sw23 ∷ X3 ∷ []) (X0 ∷ ι ∷ S0⁻ ∷ X3 ∷ S3⁻ ∷ CS03 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
+  b2 : Chain (X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ ι ∷ S0⁻ ∷ Sw23 ∷ S2⁻ ∷ CS02 ∷ X0 ∷ Sw23 ∷ X3 ∷ []) (X0 ∷ ι3 ∷ X3 ∷ S0⁻ ∷ S3⁻ ∷ CS03 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
   b2 = at 8 2 (S3⁻ ∷ Sw23 ∷ []) (win 0 3 complete₃ ((Swap ↑) • ((S • S • S) ↑)) (((S • S • S) ↑ ↑) • (Swap ↑)) tt tt Eq.refl) ▸
        at 11 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
        at 9 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
        at 10 2 (X0 ∷ Sw23 ∷ []) (sym (low₁-comm (X) ((Swap ↑)))) ▸
        at 11 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
        at 2 8 (ι ∷ S0⁻ ∷ S3⁻ ∷ CS03 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ []) (lem-pass-CS23-TOFF201-CSd23-TOFF201-vs-iI-Sd0-Sd3-CS03) ▸
-       at 1 2 (ι ∷ X3 ∷ []) (win 1 2 complete₃ ((X ↑ ↑) • iI) (iI • (X ↑ ↑)) tt tt Eq.refl) ▸
-       at 2 2 (S0⁻ ∷ X3 ∷ []) (sym (low₁-comm ((S • S • S)) ((X ↑ ↑)))) ▸ done
+       at 2 1 (ι3 ∷ []) (trans (can-≈ (iI)) (sym (can-≈ ((iI ↑ ↑ ↑))))) ▸
+       at 1 2 (ι3 ∷ X3 ∷ []) (win 0 3 complete₃ ((X ↑ ↑) • (iI ↑ ↑)) ((iI ↑ ↑) • (X ↑ ↑)) tt tt Eq.refl) ▸ done
 
-  b3 : Chain (X0 ∷ ι ∷ S0⁻ ∷ X3 ∷ S3⁻ ∷ CS03 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (X0 ∷ ι ∷ S0⁻ ∷ ι ∷ ι ∷ ι ∷ S3 ∷ S0 ∷ Sw23 ∷ CS02⁻ ∷ Sw23 ∷ Sw23 ∷ X2 ∷ Sw23 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
-  b3 = at 3 2 (ι ∷ ι ∷ ι ∷ S3 ∷ X3 ∷ []) (win 1 2 complete₃ ((X ↑ ↑) • ((S • S • S) ↑ ↑)) (iI • iI • iI • (S ↑ ↑) • (X ↑ ↑)) tt tt Eq.refl) ▸
+  b3 : Chain (X0 ∷ ι3 ∷ X3 ∷ S0⁻ ∷ S3⁻ ∷ CS03 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (X0 ∷ ι ∷ S0⁻ ∷ ι ∷ ι ∷ ι ∷ S3 ∷ X3 ∷ Sw23 ∷ CS02 ∷ Sw23 ∷ Sw23 ∷ Sw23 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
+  b3 = at 1 1 (ι ∷ []) (trans (can-≈ ((iI ↑ ↑ ↑))) (sym (can-≈ (iI)))) ▸
+       at 2 2 (S0⁻ ∷ X3 ∷ []) (sym (low₁-comm ((S • S • S)) ((X ↑ ↑)))) ▸
+       at 3 2 (ι3 ∷ ι3 ∷ ι3 ∷ S3 ∷ X3 ∷ []) (win 0 3 complete₃ ((X ↑ ↑) • ((S • S • S) ↑ ↑)) ((iI ↑ ↑) • (iI ↑ ↑) • (iI ↑ ↑) • (S ↑ ↑) • (X ↑ ↑)) tt tt Eq.refl) ▸
+       at 3 1 (ι ∷ []) (trans (can-≈ ((iI ↑ ↑ ↑))) (sym (can-≈ (iI)))) ▸
+       at 4 1 (ι ∷ []) (trans (can-≈ ((iI ↑ ↑ ↑))) (sym (can-≈ (iI)))) ▸
+       at 5 1 (ι ∷ []) (trans (can-≈ ((iI ↑ ↑ ↑))) (sym (can-≈ (iI)))) ▸
        at 9 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 8 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 10 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
+       at 8 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸ done
+
+  b4 : Chain (X0 ∷ ι ∷ S0⁻ ∷ ι ∷ ι ∷ ι ∷ S3 ∷ X3 ∷ Sw23 ∷ CS02 ∷ Sw23 ∷ Sw23 ∷ Sw23 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (X0 ∷ ι ∷ S0⁻ ∷ ι ∷ ι ∷ ι ∷ S3 ∷ S0 ∷ CS03⁻ ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
+  b4 = at 10 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
        at 7 2 (Sw23 ∷ X2 ∷ []) (win 0 3 complete₃ ((X ↑ ↑) • (Swap ↑)) ((Swap ↑) • (X ↑)) tt tt Eq.refl) ▸
        at 8 2 (S0 ∷ CS02⁻ ∷ X2 ∷ []) (win 3 0 complete₃ ((X ↑ ↑) • (Swap ↑ • CS • Swap ↑)) (S • (Swap ↑ • (CS • CS • CS) • Swap ↑) • (X ↑ ↑)) tt tt Eq.refl) ▸
        at 7 2 (S0 ∷ Sw23 ∷ []) (sym (low₁-comm (S) ((Swap ↑)))) ▸
-       at 10 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸ done
-
-  b4 : Chain (X0 ∷ ι ∷ S0⁻ ∷ ι ∷ ι ∷ ι ∷ S3 ∷ S0 ∷ Sw23 ∷ CS02⁻ ∷ Sw23 ∷ Sw23 ∷ X2 ∷ Sw23 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ X0 ∷ S3 ∷ S0 ∷ CS03⁻ ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
-  b4 = at 8 3 (CS03⁻ ∷ []) (by-assoc Eq.refl) ▸
+       at 10 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
+       at 8 3 (CS03⁻ ∷ []) (by-assoc Eq.refl) ▸
        at 9 2 (X3 ∷ Sw23 ∷ []) (win 0 3 complete₃ ((Swap ↑) • (X ↑)) ((X ↑ ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 10 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 0 2 (ι ∷ X0 ∷ []) (win 3 0 complete₃ (X • iI) (iI • X) tt tt Eq.refl) ▸
+       at 10 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸ done
+
+  b5 : Chain (X0 ∷ ι ∷ S0⁻ ∷ ι ∷ ι ∷ ι ∷ S3 ∷ S0 ∷ CS03⁻ ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ S3 ∷ ι ∷ S0⁻ ∷ X0 ∷ CS03⁻ ∷ Sw23 ∷ Sw23 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
+  b5 = at 0 2 (ι ∷ X0 ∷ []) (win 3 0 complete₃ (X • iI) (iI • X) tt tt Eq.refl) ▸
        at 1 2 (ι ∷ ι ∷ ι ∷ S0 ∷ X0 ∷ []) (win 3 0 complete₃ (X • (S • S • S)) (iI • iI • iI • S • X) tt tt Eq.refl) ▸
        at 5 2 (ι ∷ X0 ∷ []) (win 3 0 complete₃ (X • iI) (iI • X) tt tt Eq.refl) ▸
        at 6 2 (ι ∷ X0 ∷ []) (win 3 0 complete₃ (X • iI) (iI • X) tt tt Eq.refl) ▸
-       at 7 2 (ι ∷ X0 ∷ []) (win 3 0 complete₃ (X • iI) (iI • X) tt tt Eq.refl) ▸ done
-
-  b5 : Chain (ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ X0 ∷ S3 ∷ S0 ∷ CS03⁻ ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ S3 ∷ ι ∷ S0⁻ ∷ S3⁻ ∷ Sw23 ∷ CS02 ∷ X0 ∷ Sw23 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
-  b5 = at 8 2 (S3 ∷ X0 ∷ []) (low₁-comm (X) ((S ↑ ↑))) ▸
+       at 7 2 (ι ∷ X0 ∷ []) (win 3 0 complete₃ (X • iI) (iI • X) tt tt Eq.refl) ▸
+       at 8 2 (S3 ∷ X0 ∷ []) (low₁-comm (X) ((S ↑ ↑))) ▸
        at 9 2 (ι ∷ S0⁻ ∷ X0 ∷ []) (win 3 0 complete₃ (X • S) (iI • (S • S • S) • X) tt tt Eq.refl) ▸
-       at 13 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 12 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
+       at 13 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸ done
+
+  b6 : Chain (ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ S3 ∷ ι ∷ S0⁻ ∷ X0 ∷ CS03⁻ ∷ Sw23 ∷ Sw23 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ S3 ∷ ι ∷ S0⁻ ∷ S3⁻ ∷ CS03 ∷ X0 ∷ Sw23 ∷ Sw23 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
+  b6 = at 12 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
        at 14 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
        at 11 2 (Sw23 ∷ X0 ∷ []) (low₁-comm (X) ((Swap ↑))) ▸
        at 12 2 (S2⁻ ∷ CS02 ∷ X0 ∷ []) (win 3 0 complete₃ (X • (Swap ↑ • (CS • CS • CS) • Swap ↑)) (((S • S • S) ↑ ↑) • (Swap ↑ • CS • Swap ↑) • X) tt tt Eq.refl) ▸
-       at 11 2 (S3⁻ ∷ Sw23 ∷ []) (win 0 3 complete₃ ((Swap ↑) • ((S • S • S) ↑)) (((S • S • S) ↑ ↑) • (Swap ↑)) tt tt Eq.refl) ▸ done
-
-  b6 : Chain (ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ S3 ∷ ι ∷ S0⁻ ∷ S3⁻ ∷ Sw23 ∷ CS02 ∷ X0 ∷ Sw23 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ S3 ∷ ι ∷ S0⁻ ∷ Sw23 ∷ S2⁻ ∷ CS02 ∷ Sw23 ∷ X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
-  b6 = at 14 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
+       at 11 2 (S3⁻ ∷ Sw23 ∷ []) (win 0 3 complete₃ ((Swap ↑) • ((S • S • S) ↑)) (((S • S • S) ↑ ↑) • (Swap ↑)) tt tt Eq.refl) ▸
+       at 14 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
        at 12 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 13 2 (X0 ∷ Sw23 ∷ []) (sym (low₁-comm (X) ((Swap ↑)))) ▸
-       at 14 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
+       at 13 2 (X0 ∷ Sw23 ∷ []) (sym (low₁-comm (X) ((Swap ↑)))) ▸ done
+
+  b7 : Chain (ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ S3 ∷ ι ∷ S0⁻ ∷ S3⁻ ∷ CS03 ∷ X0 ∷ Sw23 ∷ Sw23 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ Sw23 ∷ S2 ∷ ι ∷ S0⁻ ∷ S2⁻ ∷ CS02 ∷ Sw23 ∷ X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
+  b7 = at 14 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
        at 13 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
        at 12 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
        at 14 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 11 2 (Sw23 ∷ S2⁻ ∷ []) (win 0 3 complete₃ (((S • S • S) ↑ ↑) • (Swap ↑)) ((Swap ↑) • ((S • S • S) ↑)) tt tt Eq.refl) ▸ done
-
-  b7 : Chain (ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ S3 ∷ ι ∷ S0⁻ ∷ Sw23 ∷ S2⁻ ∷ CS02 ∷ Sw23 ∷ X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (ι ∷ ι ∷ ι ∷ Sw23 ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ S2 ∷ ι ∷ S0⁻ ∷ S2⁻ ∷ CS02 ∷ Sw23 ∷ X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
-  b7 = at 10 2 (Sw23 ∷ S0⁻ ∷ []) (low₁-comm ((S • S • S)) ((Swap ↑))) ▸
+       at 11 2 (Sw23 ∷ S2⁻ ∷ []) (win 0 3 complete₃ (((S • S • S) ↑ ↑) • (Swap ↑)) ((Swap ↑) • ((S • S • S) ↑)) tt tt Eq.refl) ▸
+       at 10 2 (Sw23 ∷ S0⁻ ∷ []) (low₁-comm ((S • S • S)) ((Swap ↑))) ▸
        at 9 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸
-       at 8 2 (Sw23 ∷ S2 ∷ []) (win 0 3 complete₃ ((S ↑ ↑) • (Swap ↑)) ((Swap ↑) • (S ↑)) tt tt Eq.refl) ▸
-       at 7 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸
+       at 8 2 (Sw23 ∷ S2 ∷ []) (win 0 3 complete₃ ((S ↑ ↑) • (Swap ↑)) ((Swap ↑) • (S ↑)) tt tt Eq.refl) ▸ done
+
+  b8 : Chain (ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ Sw23 ∷ S2 ∷ ι ∷ S0⁻ ∷ S2⁻ ∷ CS02 ∷ Sw23 ∷ X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (Sw23 ∷ ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ S2 ∷ ι ∷ S0⁻ ∷ S2⁻ ∷ CS02 ∷ Sw23 ∷ X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
+  b8 = at 7 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸
        at 6 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸
        at 5 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸
        at 4 2 (Sw23 ∷ S0 ∷ []) (low₁-comm (S) ((Swap ↑))) ▸
-       at 3 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸ done
-
-  b8 : Chain (ι ∷ ι ∷ ι ∷ Sw23 ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ S2 ∷ ι ∷ S0⁻ ∷ S2⁻ ∷ CS02 ∷ Sw23 ∷ X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (CS03 ∷ X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
-  b8 = at 2 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸
+       at 3 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸
+       at 2 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸
        at 1 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸
-       at 0 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸
-       at 1 13 (CS02 ∷ []) (win 3 0 complete₃ (iI • iI • iI • iI • S • iI • iI • iI • (S ↑ ↑) • iI • (S • S • S) • ((S • S • S) ↑ ↑) • (Swap ↑ • CS • Swap ↑)) ((Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
+       at 0 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸ done
+
+  b9 : Chain (Sw23 ∷ ι ∷ ι ∷ ι ∷ ι ∷ S0 ∷ ι ∷ ι ∷ ι ∷ S2 ∷ ι ∷ S0⁻ ∷ S2⁻ ∷ CS02 ∷ Sw23 ∷ X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ []) (CS03 ∷ X0 ∷ X3 ∷ CS23 ∷ Toff201 ∷ CS23⁻ ∷ Toff201 ∷ X0 ∷ X3 ∷ [])
+  b9 = at 1 13 (CS02 ∷ []) (win 3 0 complete₃ (iI • iI • iI • iI • S • iI • iI • iI • (S ↑ ↑) • iI • (S • S • S) • ((S • S • S) ↑ ↑) • (Swap ↑ • CS • Swap ↑)) ((Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
        at 2 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
        at 0 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
        at 1 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸ done

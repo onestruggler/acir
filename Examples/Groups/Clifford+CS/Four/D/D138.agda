@@ -10,6 +10,7 @@ open import Word.Base using (ε ; _•_)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
 open import Examples.Groups.Clifford+CS.Tools using (ax)
+open import Examples.Groups.Clifford+CS.Canonical using (can-≈)
 open import Examples.Groups.Clifford+CS.Windows using (win)
 open import Examples.Groups.Clifford+CS.Completeness using (complete₃)
 open import Examples.Groups.Clifford+CS.TopWeakening using (low-comm)
@@ -129,12 +130,14 @@ lem-pass-X3-CS32-X3-vs-CS03-TOFF012-CSd03-TOFF012 = run b0
        at 0 4 (CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ []) (sym lem-S2-at0213-ᵖ-1) ▸ done
 
 
--- pass [CS23] [iI]: 1 steps
+-- pass [CS23] [iI]: 3 steps
 lem-pass-CS23-vs-iI : ⟪ (CS23 ∷ ι ∷ []) ⟫ʷ ≈ ⟪ (ι ∷ CS23 ∷ []) ⟫ʷ
 lem-pass-CS23-vs-iI = run b0
   where
   b0 : Chain (CS23 ∷ ι ∷ []) (ι ∷ CS23 ∷ [])
-  b0 = at 0 2 (ι ∷ CS23 ∷ []) (win 1 2 complete₃ ((CS ↑) • iI) (iI • (CS ↑)) tt tt Eq.refl) ▸ done
+  b0 = at 1 1 (ι3 ∷ []) (trans (can-≈ (iI)) (sym (can-≈ ((iI ↑ ↑ ↑))))) ▸
+       at 0 2 (ι3 ∷ CS23 ∷ []) (win 0 3 complete₃ ((CS ↑) • (iI ↑ ↑)) ((iI ↑ ↑) • (CS ↑)) tt tt Eq.refl) ▸
+       at 0 1 (ι ∷ []) (trans (can-≈ ((iI ↑ ↑ ↑))) (sym (can-≈ (iI)))) ▸ done
 
 
 -- pass [CS23] [Sd3]: 1 steps
@@ -182,12 +185,14 @@ lem-pass-TOFF201-vs-iI = run b0
   b0 = at 0 2 (ι ∷ Toff201 ∷ []) (win 3 0 complete₃ (Toffᵗ • iI) (iI • Toffᵗ) tt tt Eq.refl) ▸ done
 
 
--- pass [CSd23] [iI]: 1 steps
+-- pass [CSd23] [iI]: 3 steps
 lem-pass-CSd23-vs-iI : ⟪ (CS23⁻ ∷ ι ∷ []) ⟫ʷ ≈ ⟪ (ι ∷ CS23⁻ ∷ []) ⟫ʷ
 lem-pass-CSd23-vs-iI = run b0
   where
   b0 : Chain (CS23⁻ ∷ ι ∷ []) (ι ∷ CS23⁻ ∷ [])
-  b0 = at 0 2 (ι ∷ CS23⁻ ∷ []) (win 1 2 complete₃ (((CS • CS • CS) ↑) • iI) (iI • ((CS • CS • CS) ↑)) tt tt Eq.refl) ▸ done
+  b0 = at 1 1 (ι3 ∷ []) (trans (can-≈ (iI)) (sym (can-≈ ((iI ↑ ↑ ↑))))) ▸
+       at 0 2 (ι3 ∷ CS23⁻ ∷ []) (win 0 3 complete₃ (((CS • CS • CS) ↑) • (iI ↑ ↑)) ((iI ↑ ↑) • ((CS • CS • CS) ↑)) tt tt Eq.refl) ▸
+       at 0 1 (ι ∷ []) (trans (can-≈ ((iI ↑ ↑ ↑))) (sym (can-≈ (iI)))) ▸ done
 
 
 -- pass [CS23 TOFF201 CSd23 TOFF201] [iI]: 4 steps

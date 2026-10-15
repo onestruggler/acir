@@ -72,6 +72,17 @@ def agda_words():
     out.append('  Yr = ' + NL.join(['(' + e + ')' for e in rexprs]).replace(NL, '\n       • '))
     return '\n'.join(out) + '\n', len(mids)
 
+def C_yb():
+    """the decoded ki-yb at the canonical instance, at the top frame: the axiom."""
+    from deriv import Derivation
+    name = 'top ki-yb'
+    if name in L: return name
+    if 'AXIOM HYB' not in L: register()
+    lw, rw = L['AXIOM HYB']
+    d = Derivation(name, lw, rw, L)
+    d.lemma('AXIOM HYB', 0)
+    d.done(); return name
+
 NL = '\n'
 if __name__ == '__main__':
     text, nm = agda_words()

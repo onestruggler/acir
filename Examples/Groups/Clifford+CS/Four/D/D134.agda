@@ -10,6 +10,7 @@ open import Word.Base using (ε ; _•_)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
 open import Examples.Groups.Clifford+CS.Tools using (ax)
+open import Examples.Groups.Clifford+CS.Canonical using (can-≈)
 open import Examples.Groups.Clifford+CS.Windows using (win)
 open import Examples.Groups.Clifford+CS.Completeness using (complete₃)
 open import Examples.Groups.Clifford+CS.TopWeakening using (low-comm)
@@ -43,22 +44,14 @@ lem-pass-X3-CK31-X3-vs-TOFF012-CS03-TOFF012-CSd03 = run b0
        at 0 4 (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) (sym lem-S2) ▸ done
 
 
--- pass [CS13] [iI]: 9 steps
+-- pass [CS13] [iI]: 3 steps
 lem-pass-CS13-vs-iI : ⟪ (CS13 ∷ ι ∷ []) ⟫ʷ ≈ ⟪ (ι ∷ CS13 ∷ []) ⟫ʷ
-lem-pass-CS13-vs-iI = trans (run b0) (run b1)
+lem-pass-CS13-vs-iI = run b0
   where
-  b0 : Chain (CS13 ∷ ι ∷ []) (ι ∷ CS13 ∷ Sw23 ∷ Sw23 ∷ [])
-  b0 = at 2 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 1 2 (Sw23 ∷ ι ∷ []) (low₁-comm (iI) ((Swap ↑))) ▸
-       at 0 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 1 2 (ι ∷ CS12 ∷ []) (win 3 0 complete₃ ((CS ↑) • iI) (iI • (CS ↑)) tt tt Eq.refl) ▸
-       at 0 2 (ι ∷ Sw23 ∷ []) (sym (low₁-comm (iI) ((Swap ↑)))) ▸
-       at 3 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 1 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸ done
-
-  b1 : Chain (ι ∷ CS13 ∷ Sw23 ∷ Sw23 ∷ []) (ι ∷ CS13 ∷ [])
-  b1 = at 2 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸ done
+  b0 : Chain (CS13 ∷ ι ∷ []) (ι ∷ CS13 ∷ [])
+  b0 = at 1 1 (ι3 ∷ []) (trans (can-≈ (iI)) (sym (can-≈ ((iI ↑ ↑ ↑))))) ▸
+       at 0 2 (ι3 ∷ CS13 ∷ []) (win 0 3 complete₃ ((Swap ↑ • CS • Swap ↑) • (iI ↑ ↑)) ((iI ↑ ↑) • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
+       at 0 1 (ι ∷ []) (trans (can-≈ ((iI ↑ ↑ ↑))) (sym (can-≈ (iI)))) ▸ done
 
 
 -- pass [CS13] [Sd3]: 1 steps
