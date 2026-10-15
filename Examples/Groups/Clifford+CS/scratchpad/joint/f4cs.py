@@ -7,18 +7,20 @@
 # box_left (box-box, Toffoli and X corrections, collected afterwards), the
 # others by cross.pass_left.  An item that does not go through this way is
 # the conjugate by X4 of the reversed item.
-import derivn, engine, cross, boxbox, f4
+import derivn, engine, cross, boxbox, f4, f0
 from derivn import Derivation, show, unfold1
 from engine import Stuck
 
 X4 = ('X', 4)
 
 
-def direct(L, i, j):
+def direct(L, i, j, swi=False, swj=False):
     a, b = f4.lam0(('CS', i)), f4.lam1(('CS', j))
     name = f'F4-CS{i}-CS{j}'
     d = Derivation(name, a + b, b + a, L)
-    Si, Sj = a[1], b[0]
+    if swi: f0.switch(d, 1)
+    if swj: f0.switch(d, 3)
+    Si, Sj = d.cur[1], d.cur[3]
     cross.deep_unfold(d, 3)
     k = boxbox.box_left(d, 3, 0)                 # the box of Sigma_j at 0
     hi = boxbox.collect(d, 1, len(d.cur) - 4)
@@ -37,6 +39,8 @@ def direct(L, i, j):
             m = engine.simplify(d, i2, m)
         assert d.cur[i2:i2 + m] == [g], f'{name}: {show([g])} came out as {show(d.cur[i2:i2 + m])}'
     cross.deep_fold(d, 0, Sj)
+    if swj: f0.switch(d, 0, fwd=False)
+    if swi: f0.switch(d, 2, fwd=False)
     d.done()
 
 
@@ -54,10 +58,14 @@ def build(L, verbose=True):
     for i in range(3):
         for j in range(3):
             s = cross._save(None) if False else None
-            try:
-                direct(L, i, j)
-            except (Stuck, AssertionError) as e:
-                bad.append((i, j, str(e)[:300]))
+            err = None
+            for swi, swj in ((False, False), (True, False), (False, True), (True, True)):
+                try:
+                    direct(L, i, j, swi, swj); err = None; break
+                except (Stuck, AssertionError) as e:
+                    err = err or str(e)[:300]
+            if err:
+                bad.append((i, j, err))
     left = []
     for i, j, e in bad:
         if f'F4-CS{j}-CS{i}' in L:
@@ -75,5 +83,5 @@ if __name__ == '__main__':
     import box, boxsym, boxdash
     derivn.QUIET = True
     L = box.build({})
-    boxsym.build(L); boxsym.build_perms(L); boxdash.build(L); boxbox.build(L)
+    boxsym.build(L); boxsym.build_perms(L); boxdash.build(L); boxbox.build(L); f0.build(L)
     build(L)
