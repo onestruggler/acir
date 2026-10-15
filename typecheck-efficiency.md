@@ -16,7 +16,9 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   survive a back-to-back comparison of the old and new file.
 - **Measure from scratch.** Agda skips a module whose interface is
   current, so time in a fresh export (`git archive HEAD`) or after
-  deleting the module's `.agdai`.
+  deleting the module's `.agdai`. Not in a copy another Agda process is
+  using: it may rebuild the interface between the deletion and the
+  check, and the module then shows no time at all.
 - **Batch the modules.** One Agda process per module spends 8–10 s
   reloading the interfaces it imports. Checking about twenty consecutive
   modules (in dependency order) through one generated root that imports
@@ -47,6 +49,8 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 | Apply reasoning modules once, not per clause | `Simplified-V1/Forward`, `Simplified-V1/Iso` | 23.0 → 10.8 s, −20 % |
 | Share duplicated rewrite rules through `then` | `Ex-Sym3n/Swap` | 21.0 → 15.4 s |
 | Split only on what blocks reduction, not on every intermediate result | `Construct/Properties/Amalgamation` | 54.6 → 25.1 s (profile total) |
+| Decide a matrix identity as one boolean, not `refl` on tries | `Clifford/Qubit/Model/Gates` | 71 → 2.9 s |
+| Pass the axiom's own words; compare readings as words | `Clifford/Qubit/Model/Faithful` | 1436 → 1.5 s |
 
 - **A `with` normalises the goal before abstracting.** `with b ≟ c`
   where `b` is a successor and `c` is zero is `no` by computation, so the
@@ -119,6 +123,27 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   claims of `hhh-wd-ax` from 3.3 and 2.7 s to under 0.4, and the
   module's unattributed `Miscellaneous` time (which includes writing the
   interface) from 18.3 to 12.3 s.
+- **Decide a stored-matrix identity as one boolean.** `Eq.refl : A ≡ B`
+  on two tries makes the conversion checker compare them entry by
+  entry, re-evaluating the stored product for every entry. `eqM A B ≡
+  true` by `Eq.refl` is one evaluation, and `eqM-sound A B` turns it
+  into the equation (`Clifford/Qubit/Model/Decide`, after
+  Real-Clifford+CH's `Semantics/Decide`; give both matrices, `eqM` being
+  a function). Model.Gates' fifteen relations: 71 → 2.9 s.
+- **Compare readings as words, never as operators.** An operator is a
+  function, so two readings `⟦ w ⟧`, `⟦ w′ ⟧` that are not syntactically
+  identical are compared by applying them and normalising — a sum over
+  every intermediate index, exponential in the word. `Model/Faithful`
+  proved each axiom by `by-matrix u v eq : ⟦ u ↓ᵏ n ⟧ ≐ ⟦ v ↓ᵏ n ⟧`
+  against the expected `⟦ w ⟧ ≐ ⟦ v ⟧`, Figure 8's spelling of the
+  same words at width `₃₊ n`: 24 minutes. Now each clause binds the
+  axiom's own words (`axiom-sound {w = w} {v} (srel c12)`) and hands
+  them to a lemma whose result is `⟦ w ⟧ ≐ ⟦ w′ ⟧` on the nose, with
+  the respelling `u ↓ᵏ n ≡ w` checked as words by `Eq.refl`; one lemma
+  per arity, so that the width is the axiom's `₃₊ n` rather than `3 +
+  n` — a hidden width spelled differently also defeats the syntactic
+  check. 1436 → 1.5 s. (The other cure, `CLAUDE.md`'s for
+  Real-Clifford+CH, is to make the reading `abstract`.)
 - **One step function, not two copies.** `step-swap` restated
   `step-swap0`'s sixteen rules verbatim; it is now
   `step-swap-extra then step-swap0`. With `then` the extra rules are

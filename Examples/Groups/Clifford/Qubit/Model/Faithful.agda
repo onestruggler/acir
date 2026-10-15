@@ -55,7 +55,7 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 -- Only the numerals ForStdlib.Data.Fin.Mod does not already re-export
 -- (it gives ₀ to ₄); the rest name residues of 17 and exponents mod 8.
-open import Notations using (₁₊ ; ₂₊ ; ₅ ; ₆ ; ₇ ; ₈ ; ₉ ; ₁₃ ; ₁₅)
+open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₅ ; ₆ ; ₇ ; ₈ ; ₉ ; ₁₃ ; ₁₅)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
 
 import Presentation.Base as PB
@@ -97,6 +97,29 @@ private
   by-matrix u v eq =
     ≐-trans (localise u) (≐-trans (emb-≡ eq) (≐-sym (localise v)))
 
+  -- by-matrix with the relator as the axiom spells it.  Each clause of
+  -- axiom-sound binds the axiom's own two words and passes them in, so
+  -- the result has the expected type on the nose, and the respelling
+  -- u ↓ᵏ n ≡ w is checked on words.  One lemma per arity, so that the
+  -- width is the axiom's `₃₊ n` and not `3 + n`: two readings of a word
+  -- that differ in that hidden width are compared as operators, a sum
+  -- over every intermediate index (this module took 24 minutes so).
+  by-matrix₀ : (u v : Circuit 0) → ⟦ u ⟧M ≡ ⟦ v ⟧M → (w w′ : Circuit n) →
+               u ↓ᵏ n ≡ w → v ↓ᵏ n ≡ w′ → ⟦ w ⟧ ≐ ⟦ w′ ⟧
+  by-matrix₀ {n} u v eq _ _ Eq.refl Eq.refl = by-matrix {n = n} u v eq
+
+  by-matrix₁ : (u v : Circuit 1) → ⟦ u ⟧M ≡ ⟦ v ⟧M → (w w′ : Circuit (₁₊ n)) →
+               u ↓ᵏ n ≡ w → v ↓ᵏ n ≡ w′ → ⟦ w ⟧ ≐ ⟦ w′ ⟧
+  by-matrix₁ {n} u v eq _ _ Eq.refl Eq.refl = by-matrix {n = n} u v eq
+
+  by-matrix₂ : (u v : Circuit 2) → ⟦ u ⟧M ≡ ⟦ v ⟧M → (w w′ : Circuit (₂₊ n)) →
+               u ↓ᵏ n ≡ w → v ↓ᵏ n ≡ w′ → ⟦ w ⟧ ≐ ⟦ w′ ⟧
+  by-matrix₂ {n} u v eq _ _ Eq.refl Eq.refl = by-matrix {n = n} u v eq
+
+  by-matrix₃ : (u v : Circuit 3) → ⟦ u ⟧M ≡ ⟦ v ⟧M → (w w′ : Circuit (₃₊ n)) →
+               u ↓ᵏ n ≡ w → v ↓ᵏ n ≡ w′ → ⟦ w ⟧ ≐ ⟦ w′ ⟧
+  by-matrix₃ {n} u v eq _ _ Eq.refl Eq.refl = by-matrix {n = n} u v eq
+
   -- Shifting a circuit is tensoring with I₂ on the new wire.
   up-word : (w : Circuit n) → ⟦ w ↑ ⟧ ≐ up ⟦ w ⟧
   up-word [ g ]ʷ  = ≐-refl (up (valOp g))
@@ -111,21 +134,21 @@ private
 -- the tensor lemmas of Model.Local.
 
 axiom-sound : {w v : Circuit n} → n CRel, w === v → ⟦ w ⟧ ≐ ⟦ v ⟧
-axiom-sound (srel c1)  = by-matrix c1ˡ  c1ʳ  r1
-axiom-sound (srel c2)  = by-matrix c2ˡ  c2ʳ  r2
-axiom-sound (srel c3)  = by-matrix c3ˡ  c3ʳ  r3
-axiom-sound (srel c4)  = by-matrix c4ˡ  c4ʳ  r4
-axiom-sound (srel c5)  = by-matrix c5ˡ  c5ʳ  r5
-axiom-sound (srel c6)  = by-matrix c6ˡ  c6ʳ  r6
-axiom-sound (srel c7)  = by-matrix c7ˡ  c7ʳ  r7
-axiom-sound (srel c8)  = by-matrix c8ˡ  c8ʳ  r8
-axiom-sound (srel c9)  = by-matrix c9ˡ  c9ʳ  r9
-axiom-sound (srel c10) = by-matrix c10ˡ c10ʳ r10
-axiom-sound (srel c11) = by-matrix c11ˡ c11ʳ r11
-axiom-sound (srel c12) = by-matrix c12ˡ c12ʳ r12
-axiom-sound (srel c13) = by-matrix c13ˡ c13ʳ r13
-axiom-sound (srel c14) = by-matrix c14ˡ c14ʳ r14
-axiom-sound (srel c15) = by-matrix c15ˡ c15ʳ r15
+axiom-sound {w = w} {v} (srel c1)  = by-matrix₀ c1ˡ  c1ʳ  r1  w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c2)  = by-matrix₁ c2ˡ  c2ʳ  r2  w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c3)  = by-matrix₁ c3ˡ  c3ʳ  r3  w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c4)  = by-matrix₁ c4ˡ  c4ʳ  r4  w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c5)  = by-matrix₂ c5ˡ  c5ʳ  r5  w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c6)  = by-matrix₂ c6ˡ  c6ʳ  r6  w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c7)  = by-matrix₂ c7ˡ  c7ʳ  r7  w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c8)  = by-matrix₂ c8ˡ  c8ʳ  r8  w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c9)  = by-matrix₂ c9ˡ  c9ʳ  r9  w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c10) = by-matrix₂ c10ˡ c10ʳ r10 w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c11) = by-matrix₂ c11ˡ c11ʳ r11 w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c12) = by-matrix₃ c12ˡ c12ʳ r12 w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c13) = by-matrix₃ c13ˡ c13ʳ r13 w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c14) = by-matrix₃ c14ˡ c14ʳ r14 w v Eq.refl Eq.refl
+axiom-sound {w = w} {v} (srel c15) = by-matrix₃ c15ˡ c15ʳ r15 w v Eq.refl Eq.refl
 
 -- The derivation moves up a wire, and so does its operator.
 axiom-sound (cong↑ {w = w} {v = v} r) =

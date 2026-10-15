@@ -53,6 +53,7 @@ open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime)
 
 open import Examples.Groups.Clifford.Qubit.Model.Algebra
 open import Examples.Groups.Clifford.Qubit.Model.Local
+open import Examples.Groups.Clifford.Qubit.Model.Decide using (eqM-sound)
 
 import Examples.Groups.Clifford.Qubit.Selinger.Figure8 p-2 p-prime as F8
 open F8
@@ -194,46 +195,46 @@ c15ʳ = ε
 -- The fifteen relations, as matrix identities
 
 r1 : ⟦ c1ˡ ⟧M ≡ ⟦ c1ʳ ⟧M
-r1 = Eq.refl
+r1 = eqM-sound ⟦ c1ˡ ⟧M ⟦ c1ʳ ⟧M Eq.refl
 
 r2 : ⟦ c2ˡ ⟧M ≡ ⟦ c2ʳ ⟧M
-r2 = Eq.refl
+r2 = eqM-sound ⟦ c2ˡ ⟧M ⟦ c2ʳ ⟧M Eq.refl
 
 r3 : ⟦ c3ˡ ⟧M ≡ ⟦ c3ʳ ⟧M
-r3 = Eq.refl
+r3 = eqM-sound ⟦ c3ˡ ⟧M ⟦ c3ʳ ⟧M Eq.refl
 
 r4 : ⟦ c4ˡ ⟧M ≡ ⟦ c4ʳ ⟧M
-r4 = Eq.refl
+r4 = eqM-sound ⟦ c4ˡ ⟧M ⟦ c4ʳ ⟧M Eq.refl
 
 r5 : ⟦ c5ˡ ⟧M ≡ ⟦ c5ʳ ⟧M
-r5 = Eq.refl
+r5 = eqM-sound ⟦ c5ˡ ⟧M ⟦ c5ʳ ⟧M Eq.refl
 
 r6 : ⟦ c6ˡ ⟧M ≡ ⟦ c6ʳ ⟧M
-r6 = Eq.refl
+r6 = eqM-sound ⟦ c6ˡ ⟧M ⟦ c6ʳ ⟧M Eq.refl
 
 r7 : ⟦ c7ˡ ⟧M ≡ ⟦ c7ʳ ⟧M
-r7 = Eq.refl
+r7 = eqM-sound ⟦ c7ˡ ⟧M ⟦ c7ʳ ⟧M Eq.refl
 
 r8 : ⟦ c8ˡ ⟧M ≡ ⟦ c8ʳ ⟧M
-r8 = Eq.refl
+r8 = eqM-sound ⟦ c8ˡ ⟧M ⟦ c8ʳ ⟧M Eq.refl
 
 r9 : ⟦ c9ˡ ⟧M ≡ ⟦ c9ʳ ⟧M
-r9 = Eq.refl
+r9 = eqM-sound ⟦ c9ˡ ⟧M ⟦ c9ʳ ⟧M Eq.refl
 
 r10 : ⟦ c10ˡ ⟧M ≡ ⟦ c10ʳ ⟧M
-r10 = Eq.refl
+r10 = eqM-sound ⟦ c10ˡ ⟧M ⟦ c10ʳ ⟧M Eq.refl
 
 r11 : ⟦ c11ˡ ⟧M ≡ ⟦ c11ʳ ⟧M
-r11 = Eq.refl
+r11 = eqM-sound ⟦ c11ˡ ⟧M ⟦ c11ʳ ⟧M Eq.refl
 
 r12 : ⟦ c12ˡ ⟧M ≡ ⟦ c12ʳ ⟧M
-r12 = Eq.refl
+r12 = eqM-sound ⟦ c12ˡ ⟧M ⟦ c12ʳ ⟧M Eq.refl
 
 r13 : ⟦ c13ˡ ⟧M ≡ ⟦ c13ʳ ⟧M
-r13 = Eq.refl
+r13 = eqM-sound ⟦ c13ˡ ⟧M ⟦ c13ʳ ⟧M Eq.refl
 
 r14 : ⟦ c14ˡ ⟧M ≡ ⟦ c14ʳ ⟧M
-r14 = Eq.refl
+r14 = eqM-sound ⟦ c14ˡ ⟧M ⟦ c14ʳ ⟧M Eq.refl
 
 r15 : ⟦ c15ˡ ⟧M ≡ ⟦ c15ʳ ⟧M
-r15 = Eq.refl
+r15 = eqM-sound ⟦ c15ˡ ⟧M ⟦ c15ʳ ⟧M Eq.refl
