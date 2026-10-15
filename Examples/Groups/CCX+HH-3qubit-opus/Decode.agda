@@ -294,7 +294,7 @@ aliasX p q h = perm-complete p q (everywhere (act p) (act q) h)
 
 -- The letters of the standard instances, and Figure 7's names for them.
 data Std : Set where
-  m0ˢ m1ˢ m3ˢ m4ˢ x01 x12 x13 x23 x34 x45 x04 k0123 k4567 k1345 k2345 k0124 : Std
+  m0ˢ m1ˢ m3ˢ m4ˢ x01 x12 x13 x23 x34 x45 x56 x67 x04 k0123 k4567 k1345 k2345 k0124 : Std
 
 std : Std → Gen 8
 std m0ˢ   = M-gen (# 0)
@@ -307,6 +307,8 @@ std x13   = X-gen (# 1) (# 3) (lt (# 1) (# 3))
 std x23   = X-gen (# 2) (# 3) (lt (# 2) (# 3))
 std x34   = X-gen (# 3) (# 4) (lt (# 3) (# 4))
 std x45   = X-gen (# 4) (# 5) (lt (# 4) (# 5))
+std x56   = X-gen (# 5) (# 6) (lt (# 5) (# 6))
+std x67   = X-gen (# 6) (# 7) (lt (# 6) (# 7))
 std x04   = X-gen (# 0) (# 4) (lt (# 0) (# 4))
 std k0123 = K-gen (# 0) (# 1) (# 2) (# 3) (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
 std k4567 = K-gen (# 4) (# 5) (# 6) (# 7) (lt (# 4) (# 5)) (lt (# 5) (# 6)) (lt (# 6) (# 7))
@@ -325,6 +327,8 @@ al x13   = Xab 1 3
 al x23   = T 2
 al x34   = T 3
 al x45   = T 4
+al x56   = T 5
+al x67   = T 6
 al x04   = Xab 0 4
 al k0123 = NKw
 al k4567 = Kq 4 5 6 7
@@ -343,6 +347,8 @@ al-ok x13   = aliasX (xcw (# 1) (# 3) (lt (# 1) (# 3))) (xw 1 3) Eq.refl
 al-ok x23   = aliasX (xcw (# 2) (# 3) (lt (# 2) (# 3))) (xw 2 3) Eq.refl
 al-ok x34   = aliasX (xcw (# 3) (# 4) (lt (# 3) (# 4))) (xw 3 4) Eq.refl
 al-ok x45   = aliasX (xcw (# 4) (# 5) (lt (# 4) (# 5))) (xw 4 5) Eq.refl
+al-ok x56   = aliasX (xcw (# 5) (# 6) (lt (# 5) (# 6))) (xw 5 6) Eq.refl
+al-ok x67   = aliasX (xcw (# 6) (# 7) (lt (# 6) (# 7))) (xw 6 7) Eq.refl
 al-ok x04   = aliasX (xcw (# 0) (# 4) (lt (# 0) (# 4))) (xw 0 4) Eq.refl
 al-ok k0123 = by-assoc Eq.refl
 al-ok k4567 = trans (alias₄ (frame (# 4 ∷ # 5 ∷ # 6 ∷ # 7 ∷ []) (dist4 (lt (# 4) (# 5)) (lt (# 5) (# 6)) (lt (# 6) (# 7))))
