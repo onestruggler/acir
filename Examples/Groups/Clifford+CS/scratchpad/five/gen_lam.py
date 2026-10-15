@@ -39,10 +39,10 @@ def lem(name):
     return 'lem-' + name
 
 
-def imports(names, idx):
+def imports(names, idx, lemf=None):
     mods = {}
     for n in names:
-        mods.setdefault(idx[n], set()).add(lem(n))
+        mods.setdefault(idx[n], set()).add((lemf or lem)(n))
     return [f'open import {MOD}.D.{m} using ({" ; ".join(sorted(mods[m]))})' for m in sorted(mods)]
 
 
@@ -126,8 +126,76 @@ def write(path, s):
         f.write(s)
 
 
+# ------------------------------------------------------------ (F1)
+# (joint name, Agda constructor, arity); lf, hyb-sq, hyb-yb are the schema
+RULES = [('order-I', 'order-I', 0), ('order-S', 'order-S', 1), ('order-K', 'order-K', 1),
+         ('order-SK', 'order-SK', 1), ('order-CS', 'order-CS', 2),
+         ('comm-CS-S0', 'comm-CS-S₀', 2), ('comm-CS-S1', 'comm-CS-S₁', 2),
+         ('X-CS0', 'X-CS₀', 2), ('X-CS1', 'X-CS₁', 2), ('CS-K0', 'CS-K₀', 2), ('CS-K1', 'CS-K₁', 2),
+         ('comm-CSu-CS', 'comm-CS↑-CS', 3), ('rel-266', 'rel-266', 3), ('rel-267', 'rel-267', 3),
+         ('rel-268', 'rel-268', 3), ('rel-269', 'rel-269', 3), ('rel-272', 'rel-272', 3),
+         ('cx-ccz', 'cx-ccz', 4), ('toff-ccz', 'toff-ccz', 4), ('ck-tct', 'ck-tct', 4)]
+SCHEMA = [('lf', 'ctl-lf'), ('hyb-sq', 'ctl-hsq'), ('hyb-yb', 'ctl-hyb')]
+TR = {'(': '⟨', ')': '⟩', '.': '·', '>': '⟶', '|': '∣', ';': '·', '{': '', '}': '', '"': '', ',': '', '@': 'at',
+      '^': 'ᵖ', '[': '', ']': '', '=': '≡', ':': '∶'}
+
+
+def lemname(name):                       # as emit5.lemname
+    s = name.replace(' ', '-')
+    s = ''.join(TR.get(ch, ch) for ch in s)
+    while '--' in s:
+        s = s.replace('--', '-')
+    return 'lem-' + s
+
+
+def f1(idx):
+    names, out = [], []
+    ups = lambda o: ''.join(' ↑' for _ in range(o))
+    for o in range(5):
+        width = 4 - o
+        sig = (f'f1{SUB[o]} : Complete 4 → {width} SRel, w === v → '
+               f'5 ⊢ₓ λ¹ʷ (w{ups(o)}) ≈ λ¹ʷ (v{ups(o)})' if o else
+               'f1₀ : Complete 4 → 4 SRel, w === v → 5 ⊢ₓ λ¹ʷ w ≈ λ¹ʷ v')
+        out.append(sig)
+        for jn, an, ar in RULES:
+            if ar > width:
+                continue
+            n = f'F1-{jn}@{0 if ar == 0 else o}'
+            if n not in idx:
+                out.append(f'f1{SUB[o]} c4 {an} = {{!!}}   -- {n} not derived')
+                continue
+            names.append(n)
+            out.append(f'f1{SUB[o]} c4 {an} = {conv(lemname(n) + " c4")}')
+        if o == 0:
+            for jn, ctl in SCHEMA:
+                out.append(f'f1₀ c4 {jn} = PB.axiom (srelₓ ({ctl} 0))')
+        out.append('')
+    s = head('(F1): the rules of the four-wire theory, controlled',
+             ['λ¹ of both sides of every rule of Syntactics at every placement',
+              'in the four-wire domain (f1ᵒ: the rule at offset o) are equal on',
+              'five wires (the paper\'s (F1)): the derivations Five.D',
+              '(scratchpad/joint/f1.py, f1big.py) from four-wire windows; the',
+              'controlled lf, hyb-sq, hyb-yb are rules of the schema.'],
+             f'{MOD}.F1', extra='open import Data.Nat using (ℕ)' + NL + 'import Presentation.Base as PB' + NL)
+    s = s.replace('open import Word.Base using (_•_)', 'open import Word.Base using (Word ; _•_)')
+    s = s.replace('open import Examples.Groups.Clifford+CS.Lambda using (λ⁰ ; λ¹)',
+                  'open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)')
+    s = s.replace('open import Examples.Groups.Clifford+CS.Five.Rules using (_⊢ₓ_≈_)',
+                  'open import Examples.Groups.Clifford+CS.Five.Rules\n'
+                  '  using (_⊢ₓ_≈_ ; srelₓ ; ctl-lf ; ctl-hsq ; ctl-hyb)')
+    s += NL.join(imports(sorted(set(names)), idx, lemname)) + NL + NL
+    s += 'private\n  variable\n    n : ℕ\n    w v : Word (Gen n)\n\n'
+    s += NL.join(out)
+    return s
+
+
+SUB = '₀₁₂₃₄'
+
 if __name__ == '__main__':
     idx = index()
     write(os.path.join(FIVE, 'F4.agda'), f4(idx))
     write(os.path.join(FIVE, 'F2.agda'), f2(idx))
     print('F4.agda, F2.agda written')
+    if 'f1' in __import__('sys').argv:
+        write(os.path.join(FIVE, 'F1.agda'), f1(idx))
+        print('F1.agda written')

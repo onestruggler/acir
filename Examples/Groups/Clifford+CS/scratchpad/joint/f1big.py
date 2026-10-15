@@ -40,6 +40,8 @@ EXPAND = {
                       P('CX01', o), P('CS02', o)],
     'Toff': lambda o: [P('K', o), P('CCZ', o), P('K', o), P('iI')],
     'CCZ013': lambda o: [P('Swap', o + 2), P('CCZ', o), P('Swap', o + 2)],
+    'CK': lambda o: [P('CS', o), P('K', o + 1), P('CS', o), P('K', o + 1), P('CS', o),
+                     P('S', o), P('S', o), P('S', o), P('iI')],
 }
 
 
@@ -170,6 +172,8 @@ RULES = {
                  [P('CCZ', 0), P('Swap', 2), P('CCZ', 0), P('Swap', 2)]),
     'toff-ccz@0': ([P('Toff', 0), P('CCZ013', 0), P('Toff', 0)],
                    [P('CCZ013', 0), P('CCZ', 1)]),
+    'ck-tct@0': ([P('X', 0), P('CK', 0), P('X', 0), P('Toff', 1), P('CS', 0), P('Toff', 1)],
+                 [P('Toff', 1), P('CS', 0), P('Toff', 1), P('X', 0), P('CK', 0), P('X', 0)]),
 }
 
 
