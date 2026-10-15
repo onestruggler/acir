@@ -194,6 +194,12 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   can reuse them: each function pays its own coverage and case-tree cost,
   which ate the saving (+2 s on `Powers` for −4 s on `Swap`).
 - **Hoisting only the cheap module applications** (`Powers`: 6 %).
+- **A boolean that builds proofs.** Comparing the coset normal forms of
+  `Clifford+CS-3qubit/Step4/Main` by `isJust (nf w =m? nf v) ≡ true`
+  rather than `auto : nf w ≡ nf v` made it slower, 55 → 101 s: `_=m?_`
+  returns `Maybe (x ≡ y)` and builds an equality proof per element. The
+  boolean trick pays only when the boolean is cheap (`eqM`'s `_≡ᵇ_` on
+  residues).
 
 ## Known costs without a cheap fix
 
@@ -203,6 +209,23 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   7 s under `--without-K` and 14 s under `--cubical-compatible`; its
   importers need the latter). Removing it would mean step functions over
   a non-indexed representation of the generators.
+- **The TopPad equivalences** (`*/TopPad.agda`, generated; nothing
+  imports them) spend their time in the reflection macro `⇓-same` of
+  `Circuit/TopPad/Closed`: in Figure1's, `Typing.Reflection` is 43 of
+  56 s, about 0.7 s per call. Not the final `unify` of the generated
+  proof (dropping it saves nothing), and not much the per-node
+  `inferType` that checks a definition is a word (dropping it: −16 %);
+  `--lossy-unification` does nothing, and `Eq.refl` in place of the
+  macro fails at the first power with a symbolic exponent. The likely
+  cost is the traversal's fallback to unrestricted `reduce` on word
+  definitions the restricted unfolding cannot open; not pursued.
+- **Tactic-generated proofs and `--lossy-unification`.** Bian and
+  Selinger's ports (`Clifford+CS-3qubit`, `Clifford+T-2qubit`) fail
+  under the flag: their tactics take `auto : nf w ≡ nf v` with `w`, `v`
+  implicit, and lossy unification solves `w := v`. Binding the words
+  (`hypB {u} {t} ax = … {simple-of-gen-star u} {simple-of-gen-star t}
+  auto`) makes `Step4/Main` check with the flag, but no faster (52 s):
+  their time is the normal-form computation itself.
 - **Diffuse cost.** `Paper-V0/Lemmas` (≈21 s) spends its time over
   hundreds of explicit reasoning steps, no definition more than 2.5 s.
   Splitting such a file at its natural module boundaries, with the old
