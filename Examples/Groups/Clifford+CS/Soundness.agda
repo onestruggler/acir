@@ -120,6 +120,8 @@ axiom-sound (srel cx-ccz)      = by-relator rΔˡ rΔʳ pΔˡ pΔʳ (same-≡ r�
 axiom-sound (srel toff-ccz)    = by-relator rΛˡ rΛʳ pΛˡ pΛʳ (same-≡ rΛˡ rΛʳ mΛ)
 axiom-sound (srel ck-tct)      = by-relator rΓˡ rΓʳ pΓˡ pΓʳ (same-≡ rΓˡ rΓʳ mΓ)
 axiom-sound (srel lf)          = by-relator rLFˡ rLFʳ pLFˡ pLFʳ (same-≡ rLFˡ rLFʳ mLF)
+axiom-sound (srel hyb-sq)      = by-relator rHSQˡ rHSQʳ pHSQˡ pHSQʳ (same-≡ rHSQˡ rHSQʳ mHSQ)
+axiom-sound (srel hyb-yb)      = by-relator rHYBˡ rHYBʳ pHYBˡ pHYBʳ (same-≡ rHYBˡ rHYBʳ mHYB)
 -- The structural rules.
 axiom-sound (cong↑ r)          = cong↑-sound (axiom-sound r)
 axiom-sound (comm₁ h g)        = comm₁-sound h g

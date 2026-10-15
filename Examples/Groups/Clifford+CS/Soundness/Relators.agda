@@ -96,6 +96,12 @@ rLFˡ rLFʳ : Circuit 4
 rLFˡ = LF.Hyb
 rLFʳ = LF.Dec
 
+rHSQˡ rHSQʳ rHYBˡ rHYBʳ : Circuit 4
+rHSQˡ = HSQ.Sq
+rHSQʳ = ε
+rHYBˡ = HYB.Yl
+rHYBʳ = HYB.Yr
+
 ------------------------------------------------------------------------
 -- The identities
 
@@ -179,6 +185,12 @@ mΓ = Eq.refl
 
 mLF : Same rLFˡ rLFʳ
 mLF = Eq.refl
+
+mHSQ : Same rHSQˡ rHSQʳ
+mHSQ = Eq.refl
+
+mHYB : Same rHYBˡ rHYBʳ
+mHYB = Eq.refl
 
 ------------------------------------------------------------------------
 -- The relators, padded to any width, are the axioms' words
@@ -276,3 +288,12 @@ pLFˡ : rLFˡ ↓ᵏ n ≡ LF.Hyb
 pLFˡ = Eq.refl
 pLFʳ : rLFʳ ↓ᵏ n ≡ LF.Dec
 pLFʳ = Eq.refl
+
+pHSQˡ : rHSQˡ ↓ᵏ n ≡ HSQ.Sq
+pHSQˡ = Eq.refl
+pHSQʳ : rHSQʳ ↓ᵏ n ≡ ε
+pHSQʳ = Eq.refl
+pHYBˡ : rHYBˡ ↓ᵏ n ≡ HYB.Yl
+pHYBˡ = Eq.refl
+pHYBʳ : rHYBʳ ↓ᵏ n ≡ HYB.Yr
+pHYBʳ = Eq.refl

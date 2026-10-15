@@ -121,6 +121,8 @@ private
   sound-srel toff-ccz    p = ⊥-elim p
   sound-srel ck-tct      _ = Eq.refl
   sound-srel lf          _ = Eq.refl
+  sound-srel hyb-sq      _ = Eq.refl
+  sound-srel hyb-yb      _ = Eq.refl
 
   open Rules sound-srel sound-cong↑
     (λ h g _ → xor-identityʳ (cs g))
