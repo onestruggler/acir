@@ -79,9 +79,73 @@ def build(L):
     return L
 
 
+
+# ------------------------------------------------------------ all orders
+import itertools
+
+
+def build_perms(L):
+    """box-perm-<order>: BOX(0;1,2,3,4) = BOX(0; order) for all 24 orders of
+    the controls, from sym-bc (exchange 2, 3), sym-ab (exchange 1, 2) and
+    pairs (exchange the pairs 12 and 34), at renamings."""
+    B0 = box.BOX
+    # sym-ab: exchanging the controls of the first pair (the sub-box's
+    # dashed wire changes; both sub-boxes are CCZ(u,c,e) on four wires).
+    d = Derivation('sym-ab', [B0], [('BOX', 0, 2, 1, 3, 4)], L)
+    d.unfold(0)
+    for k in (2, 5):
+        d.win(k, 1, [('CCZ', 0, 3, 4)]); d.win(k, 1, [('BOX', 2, 0, 3, 4)])
+    d.fold(0, ('BOX', 0, 2, 1, 3, 4))
+    d.done()
+    # P-box: P = TOFF(u;c,e) passes the box (t Q t Q: P passes t, and
+    # P Q P = Q CZ(c,e), the CZs cancel).
+    c1, P, t, Q = box.c1, box.P, box.t, box.Q
+    cz = ('CZ', 3, 4)
+    d = Derivation('P-box', [P, B0, P], [B0], L)
+    d.lemma('box-tQ', 1)                         # P t Q t Q P
+    d.lemma('tP', 0, fwd=False)                  # t P Q t Q P
+    d.win(1, 2, [Q, cz, P])                       # t Q CZ P t Q P
+    d.lemma('tP', 3, fwd=False)                  # t Q CZ t P Q P
+    d.win(4, 3, [Q, cz])                          # t Q CZ t Q CZ
+    d.comm(2)                                     # t Q t CZ Q CZ
+    d.win(3, 3, [Q])
+    d.lemma('box-tQ', 0, fwd=False)
+    d.done()
+    # pairs: BOX(0;1,2,3,4) = BOX(0;3,4,1,2) = P c1 P c1 (its tQ form).
+    pp = {0: 0, 1: 3, 2: 4, 3: 1, 4: 2}
+    d = Derivation('pairs', [B0], [('BOX', 0, 3, 4, 1, 2)], L)
+    d.lemma('P-box', 0, fwd=False)               # P BOX P
+    d.lemma('box-cP', 1)                         # P c1 P c1 P P
+    d.win(4, 2, [])                               # P c1 P c1
+    d.lemma('box-tQ', 0, fwd=False, pi=pp)
+    d.done()
+    # every order, by breadth-first search over the three generators
+    gens = {'sym-ab': (1, 0, 2, 3), 'sym-bc': (0, 2, 1, 3), 'pairs': (2, 3, 0, 1)}
+    start = (1, 2, 3, 4)
+    seen = {start: []}; frontier = [start]
+    while frontier:
+        nxt = []
+        for o in frontier:
+            for name, p in gens.items():
+                o2 = tuple(o[p[k]] for k in range(4))
+                if o2 not in seen:
+                    seen[o2] = seen[o] + [(name, o)]; nxt.append(o2)
+        frontier = nxt
+    for o, path in seen.items():
+        if o == start: continue
+        nm = 'box-perm-' + ''.join(map(str, o))
+        d = Derivation(nm, [B0], [('BOX', 0) + o], L)
+        for name, src in path:
+            pi = {0: 0, 1: src[0], 2: src[1], 3: src[2], 4: src[3]}
+            d.lemma(name, 0, pi=pi)
+        d.done()
+    return L
+
+
 if __name__ == '__main__':
     L = box.build({})
     import f5
     f5.build(L)
     build(L)
+    build_perms(L)
     print(len(L), 'lemmas')
