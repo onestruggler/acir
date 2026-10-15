@@ -9,7 +9,7 @@ $checkLogs = Join-Path $taskRepo 'local/ccxhh-3qubit-checks'
 New-Item -ItemType Directory -Path $checkLogs -Force | Out-Null
 
 if (-not $Targets) {
-    $Targets = @("$development/Theorems.agda", "$development/CircuitLemmas.agda")
+    $Targets = @("$development/CircuitLemmas.agda")
     $Targets += @(Get-ChildItem "$development/MissingK/Evaluations/E*.agda" |
         ForEach-Object { $_.FullName.Substring($taskRepo.Length + 1).Replace('\', '/') })
     $Targets += @("$development/MissingK.agda", "$development/Repaired/Encoding.agda",
@@ -27,7 +27,8 @@ if (-not $Targets) {
     $Targets += @(Get-ChildItem "$development/HadamardRelations/*.agda" |
         ForEach-Object { $_.FullName.Substring($taskRepo.Length + 1).Replace('\', '/') })
     $Targets += @("$development/Repaired/TwoLevelScaled.agda",
-        "$development/Repaired/Presentation.agda", 'MainTheorems.agda')
+        "$development/Repaired/Presentation.agda", "$development/Theorems.agda",
+        'MainTheorems.agda')
 }
 
 foreach ($target in $Targets) {

@@ -51,10 +51,16 @@ target-complete {w} {v} eq = trans (sym (E.word-back w))
   (trans (T.decode-cong {w = (E.e ʷ) w} {v = (E.e ʷ) v}
     (C.completeness {u = (E.e ʷ) w} {v = (E.e ʷ) v} eq)) (E.word-back v))
 
-completeness : ∀ {w v} → I.⟦ w ⟧ I.~ I.⟦ v ⟧ → w ≈ v
-completeness {w} {v} eq = target-complete {w} {v}
+-- Completeness is stated for the circuit's matrix interpretation,
+-- independently of the encoding used to construct the group element.
+matrix-complete : ∀ {w v} → ⟦ w ⟧ᴹ ≡ ⟦ v ⟧ᴹ → w ≈ v
+matrix-complete {w} {v} eq = target-complete {w} {v}
   (Eq.trans (EM.encode-matrix w)
-    (Eq.trans (BM.Φ-~ {I.⟦ w ⟧} {I.⟦ v ⟧} eq) (Eq.sym (EM.encode-matrix v))))
+    (Eq.trans eq (Eq.sym (EM.encode-matrix v))))
+
+completeness : ∀ {w v} → I.⟦ w ⟧ I.~ I.⟦ v ⟧ → w ≈ v
+completeness {w} {v} eq = matrix-complete {w} {v}
+  (BM.Φ-~ {I.⟦ w ⟧} {I.⟦ v ⟧} eq)
 
 private
   module Base = _IsMonoidPresentationOf_ P.monoidPresentation

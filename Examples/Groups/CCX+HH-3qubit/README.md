@@ -14,7 +14,8 @@ are exact, including global scalars, over ℤ[1/√2].
 
 `Theorems.agda` is the entry point for the circuit transcription,
 matrix interpretation, soundness, generator inverses and the normal
-form of Lemmas 6.1 and 6.2. Every corrected equation in Figures 4, 7
+form of Lemmas 6.1 and 6.2, together with the repaired completeness and
+group-presentation theorems below. Every corrected equation in Figures 4, 7
 and 8 has an Agda matrix certificate. The relation contains 72
 equations: 46 in Figure 4, 19 in Figure 7 and 7 in Figure 8.
 
@@ -27,8 +28,15 @@ translates the relations of the existing dyadic two-level development
 into the circuit theory; its finite instances are in `Transport/`
 and `TransportCases/`.
 
-The final circuit completeness and group-presentation theorem are
-still being assembled. `Theorems.agda` does not assert them.
+`Repaired/Presentation.agda` proves completeness for exact matrix
+equality and gives a full group presentation of L₈, the orthogonal
+scaled dyadic matrices: matrices over ℤ[1/√2] with a common power of
+1/√2 multiplying an integer matrix. Its interpretation is proved to
+agree with the circuit's gate matrices, including global scalars.
+`Theorems.agda` exports these results as `repaired-completeness` and
+`repaired-presentation`. The relation includes the controlled-K
+definition described below; completeness of the original 72 equations
+alone is not asserted.
 
 ## Corrections and the retained K definition
 
@@ -68,7 +76,23 @@ gives the primitive encoding into the scaled two-level alphabet and
 a syntactic proof that decoding an encoded circuit returns the
 original circuit modulo these repaired relations.
 
+The completeness proof first transfers the presentation of O₈(ℤ[1/2])
+to the dyadic circuit fragment (`Repaired/DyadicCompleteness.agda`).
+The nine remaining instances of the scaled two-level relations are
+proved by normalizing their decoded circuits to even H₂ parity and
+applying dyadic completeness (`HadamardRelations/`). This avoids using
+the final circuit completeness theorem to prove its own premises.
+`Repaired/TwoLevelScaled.agda` then lifts arbitrary two-level
+derivations. Encoding, this lift, and the syntactic retraction prove
+completeness; decoding and the existing surjectivity theorem for L₈
+give the full presentation.
+
 ## Checking
+
+Verification checkpoint: the original entry point, the imported
+derivations, the missing-K countermodel, the repaired encoding and
+repaired soundness have passed Agda 2.8.0. The assembled presentation
+and the newly exported results are being checked.
 
 Use Agda 2.8.0 and standard-library 2.4, with the registered EucDomain
 dependency. Check separate entry points sequentially; do not run
@@ -80,6 +104,7 @@ agda Examples/Groups/CCX+HH-3qubit/CircuitLemmas.agda
 agda Examples/Groups/CCX+HH-3qubit/MissingK.agda
 agda Examples/Groups/CCX+HH-3qubit/Repaired/Encoding.agda
 agda Examples/Groups/CCX+HH-3qubit/Repaired/Soundness.agda
+agda Examples/Groups/CCX+HH-3qubit/Repaired/Presentation.agda
 ```
 
 For the large finite translation, first check `Transport/r1a.agda`,
@@ -92,6 +117,9 @@ It writes durable logs under `local/ccxhh-3qubit-checks/`. A local
 `tools/libraries-wsl` file can supply the library locations through
 Agda's `--library-file` option when the WSL user has no global list;
 the file is ignored because its paths depend on the machine.
+From PowerShell, use `tools/check-wsl.ps1`, which invokes WSL directly.
+The repository instructions' `/home/bonest/.local/bin/agda` path is not
+present on this machine; `/usr/bin/agda` supplies Agda 2.8.0 here.
 
 ## Generated certificates and provenance
 
@@ -115,6 +143,10 @@ saved search results; `generate_transport.py` builds the frame
 relations and their finite instances; `generate_dispatchers.py`
 assembles them into the two-level relation map;
 `generate_encoding.py` emits the encoding retraction;
+`generate_matrix_bridge.py` and `generate_decode_matrices.py` check
+the matrix meanings of encoding and decoding;
+`generate_hadamard_transport.py` emits the nine even-parity proofs
+and their exhaustive dispatcher;
 `generate_missing_k.py` and `generate_k_check.py` emit the two matrix
 checks for the retained K equation.
 

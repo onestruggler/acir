@@ -24,7 +24,6 @@ check() {
     return 1
   fi
 }
-check "$development/Theorems.agda"
 check "$development/CircuitLemmas.agda"
 for part in "$development"/MissingK/Evaluations/E*.agda; do check "$part"; done
 check "$development/MissingK.agda"
@@ -42,4 +41,5 @@ check "$development/Repaired/DyadicCompleteness.agda"
 for part in "$development"/HadamardRelations/*.agda; do check "$part"; done
 check "$development/Repaired/TwoLevelScaled.agda"
 check "$development/Repaired/Presentation.agda"
+check "$development/Theorems.agda"
 check MainTheorems.agda
