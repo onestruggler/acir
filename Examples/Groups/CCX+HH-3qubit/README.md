@@ -96,13 +96,15 @@ standard-library 2.4, including the assembled presentation, its public
 exports, the original circuit lemmas, the missing-K countermodel and
 the standalone audits. This includes all 32 shared evaluation modules,
 all 106 decoding certificates and both matrix bridges.
-The six-index `Transport/r2c.agda`
-dispatcher, including its 420 cases, also passes with a compacting
-3 GB heap after splitting the generated coverage checks. The complete
-`TwoLevel.agda` map now passes all 21 relation families and their
-2,123 finite instances. Dyadic completeness and the scaled two-level
-map also pass, including the nine Hadamard certificates.
-The repository-wide `MainTheorems.agda` regression check is running.
+The six-index `Transport/r2c.agda` dispatcher, including its 420 cases,
+passes with a compacting 3 GB heap. The complete `TwoLevel.agda` map
+covers all 21 relation families and their 2,123 finite instances.
+Dyadic completeness, the scaled two-level map and its nine Hadamard
+certificates all pass. The repository-wide `MainTheorems.agda`
+regression check also passes.
+
+Regenerating the finite transports, dispatchers, decoding matrices
+and Hadamard relations reproduces all 2,648 corresponding files exactly.
 
 Use Agda 2.8.0 and standard-library 2.4, with the registered EucDomain
 dependency. Check separate entry points sequentially; do not run
