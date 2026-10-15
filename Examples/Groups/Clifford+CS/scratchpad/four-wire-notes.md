@@ -1113,3 +1113,21 @@ is X0 (CCZ023 PP) X0 (PP^2 = CCZ), and CCZ023 PP = (PP white on 1)(CCZ123
 CS23^-1) by the merge over wire 1 -- a gadget the hybrid passes
 (separated) times a diagonal on its controls, which passes HD = [B, C]
 letter by letter.  All derived.
+
+**ki-yb: open (t_yb.py).**  The rule's four K-elements K_[j,k], K_[l,m],
+K_[j,l], K_[k,m] live on one 2-subcube of the 16 states (at the top,
+positions 12..15: the block x2 = x3 = 1 at the top frame), and the rule
+is the doubly controlled two-qubit fact (I x M)(M x I) = (M x I)(I x M)
+in abstract coordinates.  In wire coordinates one abstract direction is
+always a diagonal of the square (the Gray reflection reverses one of
+each pair of parallel edges, so j<k, l<m, j<l, k<m never holds for an
+aligned square): with b = x0 xor x1 (conjugation by CX10) both products
+become three-wire gates, L23(XMX) on {0,2,3} and L23(M) on {1,2,3}, which
+commute by units -- but the decoded chains for K_[j,l], K_[k,m] then
+contain a hybrid on a diagonal, CX(t -> c) H CX(t -> c) with the CNOT's
+control on the hybrid's target.  A route: that conjugate is a product of
+three-wire pieces (Barenco's decomposition at c: the pieces through t
+and c are windows, Toff(z; c, w) becomes Toff(z;c,w) Toff(z;t,w) by
+cx-ccz), and the K-free conjugators merge over the common controls into
+two-wire gates (merge_all) with separated copies.  Not yet carried out;
+the generic layer takes ki-yb at one instance as a hypothesis meanwhile.
