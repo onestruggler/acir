@@ -1100,3 +1100,16 @@ colouring: `hblock_pass_gad`, the X letters conjugated onto the gadget,
 the symmetry when the separating wire is the hybrid's single control),
 and F conjugates one hybrid into the other: the white CNOT passes it,
 SWAP01 X0 relabels it, the roles matched by `respell_hyb`.
+
+**The top pair (hybtop.py).**  The one-pair rules ki-x, ki-16, ki-ii, ki-sq
+at the top pair follow by K-free algebra from four core facts about
+k = k_14 (at the frame where k is the canonical X0 HD X0, p = PP, l = ROT,
+h = X0 ROT X0): k l = p k and k p = p h k (t_top.py: K acts on Q8; the
+hybrid's units act on the gadget by `ca`, then `samepair.spell`/`prod`; no
+decomposition needed), k^3 = eps (HD = P1 X P3 by the decomposition, the
+three factors commute, P1^3 = CZ12, P3^3 = CZ13, X^3 = T Q^3 T = T CZ13 T =
+CZ13 CZ12), and k commutes with the pair scalar p'_13 p'_13 p'_14: that word
+is X0 (CCZ023 PP) X0 (PP^2 = CCZ), and CCZ023 PP = (PP white on 1)(CCZ123
+CS23^-1) by the merge over wire 1 -- a gadget the hybrid passes
+(separated) times a diagonal on its controls, which passes HD = [B, C]
+letter by letter.  All derived.
