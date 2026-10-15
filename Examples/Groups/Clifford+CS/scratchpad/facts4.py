@@ -386,3 +386,69 @@ if __name__ == '__main__' and 'plan' in sys.argv:
     out, facts = plan()
     print('instances', len(out), 'facts', len(facts))
     for f in facts: print('  ', f, len(BY_NAME[f].d.steps) if hasattr(BY_NAME.get(f), 'd') else (len(BY_NAME[f].steps) if f in BY_NAME else ''))
+
+# ------------------------------------------------------------ respellings and the rotation's bridge
+def respell(mid):
+    """the derivation mid -> the canonical spelling of its kind and target (None when equal)."""
+    mid = tuple(norm(list(mid)))
+    kind = 'PP' if len(mid) == 4 else 'R'; t = tgt_of(mid)
+    c = cmid(kind, t)
+    if mid == c: return None
+    name = f'resp {show(list(mid))}'
+    if name in L: return name
+    d = Derivation(name, list(mid), list(c), L)
+    if kind == 'PP':
+        z = [g for g in mid if g[0] == 'CS'][0]; z = z[1] if z[2] == t else z[2]
+        lem, f = G.form_lemma(t, z, 1)
+        assert norm(f) == list(mid), (mid, f)
+        d.lemma(lem, 0, forward=False)
+    else:
+        core = list(mid[2:6])
+        z = [g for g in core if g[0] == 'CS'][0]; z = z[1] if z[2] == t else z[2]
+        lem, f = G.form_lemma(t, z, -1)
+        assert norm(f) == core, (mid, f)
+        d.lemma(lem, 2, forward=False)
+    d.done(); return name
+
+SW01, SW12 = ('SWAP', 0, 1), ('SWAP', 1, 2)
+TAU02 = [SW01, SW12, SW01]
+BOX3 = ([('CCZ', 0, 1, 2), ('TOFF', 0, 1, 2)] + TAU02 + [('CZ', 2, 3)] + TAU02
+        + [('TOFF', 0, 1, 2), ('CCZ', 0, 1, 2)] + TAU02 + [('CZ', 2, 3)] + TAU02)
+GBOX = [SW01] + BOX3 + [SW01]
+GROT_MACRO = norm([('CK', 1, 0)] + GBOX + [('S', 1), ('CK', 1, 0)] + GBOX)
+
+def bridge_grot():
+    """MultiControlled.G-rot 1 (unfolded to macro letters) -> the canonical rotation."""
+    name = 'bridge G-rot'
+    if name in L: return name
+    d = Derivation(name, GROT_MACRO, RMID, L)
+    def box(o):
+        # at o: Sw01 CCZ TOFF tau CZ23 tau TOFF CCZ tau CZ23 tau Sw01
+        # the two tau-conjugates of CZ23, each inside out
+        p = o + 3                                            # first tau starts here
+        d.swapconj(p + 2, 1, 0); d.swapconj(p + 1, 1, 1); d.swapconj(p, 1, 0)     # tau CZ23 tau -> CZ03
+        p = o + 3 + 1 + 2                                    # second tau
+        d.swapconj(p + 2, 1, 0); d.swapconj(p + 1, 1, 1); d.swapconj(p, 1, 0)
+        d.swapconj(o, 6, 0)                                  # Sw01 [6 letters] Sw01
+    box(1)
+    box(1 + 6 + 2)
+    assert d.cur == norm(C4.ROT), show(d.cur)
+    d.lemma(C4.rot_gad(), 0)
+    d.done(); return name
+
+def make_all():
+    """every derivation the Agda assembly needs: class facts, respellings, the rotation's bridge."""
+    out, facts = plan()
+    resp = set()
+    for (inst, ops, sw, fn, kl, kr) in out:
+        name, a, b, l, r = inst
+        for side in (l, r):
+            for blk_ in TF(ops, blocks(a, side)):
+                n = respell(blk_[1])
+                if n: resp.add(n)
+    bridge_grot()
+    return out, facts, resp
+
+if __name__ == '__main__' and 'make' in sys.argv:
+    out, facts, resp = make_all()
+    print('instances', len(out), 'facts', len(facts), 'respellings', len(resp))

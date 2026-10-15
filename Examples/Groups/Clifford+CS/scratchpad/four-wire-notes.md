@@ -849,3 +849,126 @@ the lowering spells a scalar on wire 0, so a window step that must avoid
 wire 0 fails (`pass [TOFF023] [iI]`); either keep scalars out of the
 re-spellings (absorb phases into S powers on the target) or let the
 lowering move scalars by comm0.
+
+## The K-free facts at n = 4 by transport (facts4.py, Four/Transport, Four/Facts, 2026-10-15)
+
+A decoded consecutive letter is a *block*: a middle word (the phase
+gadget's core, or the rotation S K core^-1 K^-1 S^-1, on its target)
+between two copies of a set of X letters, and the block of position a is
+the canonical block (target 0, no X) carried by the frame of a: X on the
+white controls, the swaps that bring the target down, X on the target
+for the orientation (`facts4.frame`, checked against the Gad spelling
+at all 60 letters).  Conjugating a word of blocks by an adjacent swap
+renames its letters and keeps the blocks; by an X letter it toggles that
+wire in every block's set (Four/Transport: `rel-blocks`, `col-blocks`,
+from the tables of Four/TransportTables, which are 900-odd small
+derivations in Four/D/D092-D120).  So an equation between words of
+blocks holds at every placement reached by such conjugations
+(`transport`).
+
+The 384 transports (X on any wire, the swaps; `facts4.group`) cut the
+278 instances of `Facts` at N = 16 into 21 classes, once the spelling of
+a gadget's core is ignored (which wire its CS comes from: `respell`,
+nine lemmas from the S2 forms) and the sides of the symmetric facts may
+be exchanged.  The consecutive classes are the facts consec4 already has
+(F6, F7a, F7b, F10, the a1 a0^-1 commutation, PP-flip, ROT-inv, PP4,
+PP2=E/ROT2=E) at their own configurations, wrapped by `b2g`-free
+conversions (`rot_gad`, its relabelling to target 1); the twelve far
+classes are `sep_pass` at the class representative, between the block
+and gadget spellings (`b2g`).  Emitted as Four/D/D121-D163 (with the
+bridge of the decoding's rotation G-rot 1 to the canonical block, 139
+steps).  `four/factsgen.py` writes the Agda assembly: Four/Facts/Bridges
+(the decoded letters as blocks: `mc-cong`, the X letters of `negs`
+reversed by `negs-F`, `F-blocks`), Four/Facts/Classes (the class facts in
+block form and `Resp`, respelling a word of blocks block by block),
+Four/Facts/I1-I4 (each instance: bridges, `transport` of its class fact
+by the inverse frame, dispatchers over the positions with the
+out-of-range bounds refuted), and Four/Facts (`facts : KFree.Facts 0`,
+hence `k-free₄`: every K-free rule of P' decodes to an equation of
+four-wire circuits).
+
+## The hybrid rules: the plan
+
+Every decoded hybrid letter is a K-free conjugate of a consecutive one:
+dKI a b s = (h_a ... h_{b-2}) k_{b-1} (l_{b-2} ... l_a) . dPP a s.  So the
+hybrid rules at arbitrary indices should reduce, as Fragment's did, to
+facts about k_c at consecutive positions: (A) k_c commutes with the
+decoded K-free letters that commute with ki c (c+1) c (far p and l,
+the bridging dPP (c-1) (c+2) and rotation across the pair, and the
+phase words on the pair that commute with K i_c^-1); (B) the adjacent
+rotations carry k_c to the decoded K on the neighbouring pairs
+(l_{c+1} k_c h_{c+1} against h_c k_{c+1} l_c, and the swap on the pair
+itself, ki-swap'); (C) the one-pair rules ki-x, ki-16, ki-ii, ki-sq; (D)
+k_c against k_{c'} far and against the bridging K, for ki-ki; (E) one
+canonical instance of ki-yb.  At n = 4 each is a finite set of instances
+for the transport, once the hybrid gadget G_ki has a block form (its
+core is not a conjugate of PP's: it lies in the binary octahedral group,
+so the same-pair calculus needs Barenco's V in place of the Toffoli).
+
+## The hybrid gadget: why its facts need more than ck-tct (t_ki.py, 2026-10-15)
+
+The hybrid core at four wires is L_123(kappa_0) = [Bar, CK(3->0)], Bar =
+L_12(V^2) Barenco's word (V = S S K S; V^2 has trace -1 and det 1, order
+3).  kappa has order 3, outside Q8, so no hybrid gadget is a product of
+phase gadgets and target-conjugations (those stay in Q8), and the passes
+engine finds no derivation that a white-controlled unit on the target
+or a control passes it (t_ki.py: X_c CK(c,0) X_c and X_c CS(c,0) X_c for
+c = 1, 2, 3, all "no strategy").  The reason is structural: kappa is a
+commutator [alpha, beta] of one-qubit Cliffords only when neither is a
+Pauli, so one factor of any split-control spelling is a doubly
+controlled non-Pauli, and ck-tct speaks only of the doubly controlled X
+(the Toffoli).  Equivalently, conjugating Lambda_c(K_t) by Bar gives
+Lambda_c(K_t) . L_{c12}(kappa''): the hybrid's pass of a white unit is
+exactly "Lambda_not-c(u) passes L_12(V^2) Lambda_c(K) L_12(V^2)^-1", the
+rule's statement with Barenco's L_12(V^2) in place of the Toffoli.
+Unless a derivation through the control wires is found (as S3 found the
+phase gadget's control symmetry through CNOTs between controls), the
+hybrid facts need a fourth four-wire rule of that shape.
+
+**Partial way round (t_spell.py).**  With the separating wire c in
+Barenco's control pair {c, w}, a unit white on c passes the whole factor
+L_cw(V^2) in one three-wire window (it acts only where c = 1), so a unit
+on w passes the gadget, and a unit on the target passes it when it
+commutes with beta (the single-controlled factor Lambda_z(beta)).  The
+spelling [L_bc(V^2), Lambda_a(beta)] of one gadget can be changed by
+moves that windows prove — V^2 -> V^2 W^2 with W in C(beta) (three-wire
+identity L(V^2 W^2) = L(V^2) L(W^2), and L(W^2)'s letters pass
+Lambda_a(beta)), beta -> beta delta with delta in C(V) — and over the 48
+spellings these reach, the centralizers C(beta) generate a subgroup of
+order 24 of <S, K> (96 elements with phases) containing K but not S.
+So K-units pass the hybrid without a new rule, S-units not by these
+moves; what is missing is the hybrid's symmetry under exchanging a
+control of the pair with the single control (the analogue of S3 for the
+phase gadget), which would let the single control's role move too.
+Both roles together still give only that subgroup of order 24 (the
+single-control role gives the centralizers C(V), a subgroup of order 12
+inside it), and it contains no Pauli, while any Pauli with it generates
+all 96: one Pauli-type unit passing the hybrid would settle every target
+unit.  Splitting the white unit as Lambda_not-c(P) = P_t . Lambda_c(P)^-1
+moves the problem, it does not solve it: conjugation by P_t gives the
+hybrid of P kappa P^-1, and undoing it by Lambda_c(P) leaves a doubly
+controlled Pauli white on c, Lambda_{not-c, z}([K^-1, P]), to be carried
+across Barenco's L_cw(V^2), black on c — a separated commutation of the
+same kind, letterwise blocked where both act on the target (X V against
+V X where c = 0, z = w = 1).
+With a Pauli added, the pair role reaches all 96 (|<H, X>| = |<H, Z>| =
+96) but the single-control role only 48 (|<H_B, P>| = 48): a fourth
+rule, if one is wanted, should give a Pauli unit white on a control of
+Barenco's pair, e.g. X_c CZ(c,t) X_c passing [L_cw(V^2), Lambda_z(K)];
+the transport can always bring the separating wire into the pair, and
+the other gadget's target to the pair's other control.
+
+## Tools for the generic hybrid layer (Lemma88/FreeA5, Auxiliary/Template, 2026-10-15)
+
+`Lemma88/FreeA5` decodes the fragment's congruence and Corollary A.5 at
+any width given the facts (`d-≈`, `dA5`), and `Auxiliary/Template` is
+Real-Clifford+CH's template decision of A.5 for phased permutations
+(K-free words on k distinct symbolic indices compared by their tables,
+`A5-tmpl`; deciding wrappers `xd`, `dd` for the ordered letters).  The
+plan for the hybrid rules at arbitrary indices: every decoded hybrid is
+a K-free conjugate of a consecutive one (the chains), so with dA5 and
+templates each rule should reduce to finitely many facts about k_c —
+its centralizer (far p, l, k; the bridging P(c-1, c+2), Lo(c-1, c+2),
+Ka(c-1, c+2); the pair scalar P(c, x) P(c+1, x)), the adjacent shifts,
+the one-pair rules and one instance of ki-yb (all checked at N = 8 by
+thyb.py).

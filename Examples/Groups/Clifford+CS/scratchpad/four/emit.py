@@ -181,8 +181,32 @@ def dedupe(prims):
         byname[P.name] = P; out.append(P)
     return out
 
+class Part:
+    """a derivation cut out of a longer one, or the chain of its parts."""
+    def __init__(self, name, lhs, rhs, steps):
+        self.name, self.lhs, self.rhs, self.steps = name, list(lhs), list(rhs), steps
+
+def split_long(prims, limit=1000, size=500):
+    """a derivation of more than `limit` steps as parts of `size` steps and
+    a lemma chaining them: one Agda term of 1466 steps exhausted 3 GB."""
+    out = []
+    for P in prims:
+        if len(P.steps) <= limit: out.append(P); continue
+        lines = [list(P.lhs)]; cur = list(P.lhs)
+        for (kind, k, n, seg, ys, extra) in P.steps:
+            cur = cur[:k] + list(ys) + cur[k + n:]; lines.append(cur)
+        parts = []
+        for i, s0 in enumerate(range(0, len(P.steps), size)):
+            s1 = min(s0 + size, len(P.steps))
+            parts.append(Part(f'{P.name} part{i}', lines[s0], lines[s1], P.steps[s0:s1]))
+        main = []; cur = list(P.lhs)
+        for Q in parts:
+            main.append(('L', 0, len(cur), list(cur), list(Q.rhs), (Q.name, True))); cur = list(Q.rhs)
+        out += parts + [Part(P.name, P.lhs, P.rhs, main)]
+    return out
+
 def write_all(prims):
-    prims = dedupe(prims)
+    prims = split_long(dedupe(prims))
     seen = {}
     for P in prims:
         n = lemname(P.name); assert n not in seen, ('name clash', P.name, seen.get(n)); seen[n] = P.name
@@ -216,6 +240,8 @@ if __name__ == '__main__':
     consec4.all_facts()
     import table
     table.make()
+    import facts4
+    facts4.make_all()
     prims = LW.lower_all(deriv.DERIVATIONS)
     mods = write_all(prims)
     print(len(mods), 'modules written to', ROOT)
