@@ -33,13 +33,11 @@ open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Relation.Nullary using (¬_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 
-import Quantum.Synthesis.Ring as QR
 open import Quantum.Synthesis.Matrix using (Matrix ; _·*·_)
 
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 import Presentation.Base as PB
 
-open import Data.Vec.Base using (head)
 open import Examples.Groups.CCX+HH-TwoLevel.Ring using (D ; RingD ; _+ᴰ_ ; _*ᴰ_ ; -ᴰ_)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 import Examples.Groups.CCX+HH-TwoLevel.Semantics as S1
@@ -49,6 +47,7 @@ open import Examples.Groups.CCX+HH-3qubit-opus.Syntactics
 open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
 open import Examples.Groups.CCX+HH-3qubit-opus.Soundness using (sound₀ ; sound₇ ; soundᴷ)
 import Examples.Groups.CCX+HH-3qubit-opus.Congruence as C
+open import Examples.Groups.CCX+HH-3qubit-opus.Entry00 using (exp00)
 
 ------------------------------------------------------------------------
 -- The model
@@ -86,10 +85,6 @@ private
 
 ⟦_⟧₁ : Word G₁ → Matrix 8 8 D
 ⟦_⟧₁ = ⟦_⟧
-
--- The exponent of 1/2 in the entry at (0, 0).
-exp00 : Matrix 8 8 D → ℕ
-exp00 A = QR.Dyadic.exponent (head (head (Matrix.unMatrix A)))
 
 opaque
   unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_
@@ -206,11 +201,12 @@ sound′ = M.sound
 -- r_K is independent of R₁
 
 rK-independent : ¬ (PB._≈_ _===₁_ K12 (X0 • NKw • X0 • NKw))
-rK-independent e = separates (Eq.trans (Eq.sym (⟦⟧ₐ-def _)) (Eq.trans (sound′ e) (⟦⟧ₐ-def _)))
+rK-independent e = separates (Eq.trans (Eq.sym (⟦⟧ₐ-def ((σ ʷ) K12)))
+  (Eq.trans (sound′ e) (⟦⟧ₐ-def ((σ ʷ) (X0 • NKw • X0 • NKw)))))
 
 -- So R₁ is not complete for O(8, 𝔻): r_K holds of the matrices.
-R₁-incomplete : ⟦ K12 ⟧ ≡ ⟦ X0 • NKw • X0 • NKw ⟧ × ¬ (PB._≈_ _===₁_ K12 (X0 • NKw • X0 • NKw))
-R₁-incomplete = soundᴷ rK , rK-independent
+R₁-incomplete : ⟦ K12 ⟧₁ ≡ ⟦ X0 • NKw • X0 • NKw ⟧₁ × ¬ (PB._≈_ _===₁_ K12 (X0 • NKw • X0 • NKw))
+R₁-incomplete = soundᴷ {k = 0} rK , rK-independent
 ''')
 open(OUT, 'w', encoding='utf-8', newline='\n').write('\n'.join(L))
 print('ok')

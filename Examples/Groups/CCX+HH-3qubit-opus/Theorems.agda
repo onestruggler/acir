@@ -63,6 +63,6 @@ theorem-6-3 = H.presentation
 -- r_K is needed
 
 -- It holds of the matrices but is not derivable from R₁ = R₀ ∪ R₈₄.
-r_K-independent : ⟦ K12 ⟧ ≡ ⟦ X0 • NKw • X0 • NKw ⟧ ×
+r_K-independent : ⟦ K12 {1} ⟧ ≡ ⟦ X0 • NKw {0} • X0 • NKw ⟧ ×
                   ¬ PB._≈_ _===₁_ K12 (X0 • NKw • X0 • NKw)
 r_K-independent = I.R₁-incomplete
