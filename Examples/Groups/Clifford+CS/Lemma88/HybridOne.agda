@@ -14,10 +14,13 @@
 -- wherever those send it to s (`Canon`): u carries every letter of the
 -- rule to the canonical one (HybridPair.hyb-conj, sink-conj, `px-conj`)
 -- and has a left inverse.  At the canonical position ki-ii is the pair
--- scalar commuting with the hybrid (HybridCen.cz); ki-x, ki-16 and ki-sq
--- there are hypotheses, since they need a fact about the hybrid and the
--- phase pair i_[N−2] i_[N−3]⁻¹ that the scalar and the conjugations by
--- the letters on the pair do not give (scratchpad/four-wire-notes.md).
+-- scalar commuting with the hybrid (HybridCen.cz), and ki-x is the core
+-- fact k p = p h k (the hypothesis `cp`) with the scalar, the rest being
+-- K-free identities decided on a template of the three top indices;
+-- ki-16 and ki-sq there are hypotheses, since they need a fact about the
+-- hybrid and the phase pair i_[N−2] i_[N−3]⁻¹ that the scalar and the
+-- conjugations by the letters on the pair do not give
+-- (scratchpad/four-wire-notes.md).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -30,10 +33,11 @@ module Examples.Groups.Clifford+CS.Lemma88.HybridOne
 
 open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin ; toℕ ; zero) renaming (_<_ to _<ᶠ_ ; suc to fsuc)
-open import Data.Fin.Properties using (toℕ-injective ; toℕ<n ; _≟_)
+open import Data.Fin.Properties using (toℕ-injective ; toℕ<n ; _≟_ ; <-cmp ; <-irrefl ; <-asym)
 open import Data.Nat using (zero ; _+_ ; _∸_ ; _<_ ; _≤_ ; z≤n ; s≤s)
 open import Data.Nat.Properties as NP using ()
 open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
+open import Relation.Binary.Definitions using (tri< ; tri≈ ; tri>)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Relation.Nullary using (Dec ; yes ; no)
 open import Relation.Nullary.Decidable using (recompute)
@@ -50,10 +54,10 @@ open import Examples.Groups.Clifford+CS.Auxiliary.PhasedPerm (suc (suc (suc (suc
   using (Ph ; p0 ; p2 ; p3 ; _+ᵖ_ ; +ᵖ-comm ; sp ; ph ; prm ; prm≡ ; ph≡ ; δ ; δ-≢ ; phif
        ; swapF ; swapF-a ; swapF-b ; swapF-o ; _≐_ ; eqv ; idPP ; ≐-trans ; ⊙-cong ; ⊙-idˡ)
 open import Examples.Groups.Clifford+CS.Auxiliary.Template (suc (suc (suc m)))
-  using (xd ; kf-xd ; xd-prm ; xd-ph ; xd-same ; tx ; emp ; ⌜_⌝ ; _•ᵗ_ ; module At)
+  using (xd ; kf-xd ; xd-prm ; xd-ph ; xd-same ; tp ; tx ; emp ; ⌜_⌝ ; _•ᵗ_ ; TW ; module At)
 open import Examples.Groups.Clifford+CS.Auxiliary.Unique (suc (suc (suc m)))
   using (A5 ; prm-inj)
-open import Examples.Groups.Clifford+CS.Lemma88.Chains p p′ l h k using (d ; dPP ; dKIa)
+open import Examples.Groups.Clifford+CS.Lemma88.Chains p p′ l h k using (d ; dPP ; dPX ; dKIa ; pp-up ; pp-dn)
 import Examples.Groups.Clifford+CS.Lemma88.Fragment as Fr
 import Examples.Groups.Clifford+CS.Lemma88.HybridTop as HTop
 import Examples.Groups.Clifford+CS.Lemma88.HybridCen as HCen
@@ -144,6 +148,59 @@ private
       module TA = At ι inj
 
 ------------------------------------------------------------------------
+-- The deciding letter on ordered indices is the letter
+
+xd-< : ∀ c a b (lt : a <ᶠ b) → xd c a b ≡ [ px c a b lt ]ʷ
+xd-< c a b lt with <-cmp a b
+... | tri< _ _ _  = Eq.refl
+... | tri≈ _ e _  = ⊥-elim (<-irrefl e lt)
+... | tri> _ _ gt = ⊥-elim (<-asym lt gt)
+
+------------------------------------------------------------------------
+-- The three top indices as a template
+
+private
+  tT≢tT1 : tT ≢ tT1
+  tT≢tT1 e = NP.<⇒≢ (NP.n<1+n top) (Eq.trans (Eq.sym toT) (Eq.trans (Eq.cong toℕ e) toT1))
+
+  ι3 : Fin 3 → Fin N
+  ι3 zero               = tB
+  ι3 (fsuc zero)        = tT
+  ι3 (fsuc (fsuc zero)) = tT1
+
+  ι3inj : ∀ {x y : Fin 3} → ι3 x ≡ ι3 y → x ≡ y
+  ι3inj {zero}             {zero}             e = Eq.refl
+  ι3inj {zero}             {fsuc zero}        e = ⊥-elim (tB≢tT e)
+  ι3inj {zero}             {fsuc (fsuc zero)} e = ⊥-elim (tB≢tT1 e)
+  ι3inj {fsuc zero}        {zero}             e = ⊥-elim (tB≢tT (Eq.sym e))
+  ι3inj {fsuc zero}        {fsuc zero}        e = Eq.refl
+  ι3inj {fsuc zero}        {fsuc (fsuc zero)} e = ⊥-elim (tT≢tT1 e)
+  ι3inj {fsuc (fsuc zero)} {zero}             e = ⊥-elim (tB≢tT1 (Eq.sym e))
+  ι3inj {fsuc (fsuc zero)} {fsuc zero}        e = ⊥-elim (tT≢tT1 (Eq.sym e))
+  ι3inj {fsuc (fsuc zero)} {fsuc (fsuc zero)} e = Eq.refl
+
+  module T3 = At ι3 ι3inj
+
+  i0 i1 i2 : Fin 3
+  i0 = zero
+  i1 = fsuc zero
+  i2 = fsuc (fsuc zero)
+
+  -- D (E E) = (D E) (P̄ D) and (D E) (L P̄) = (−1)_B X_[T,T1], with
+  -- D = i_T i_B⁻¹, E = i_T1 i_B⁻¹, P̄ = i_T1 i_T⁻¹, L = (−1)_T X_[T,T1].
+  kfA : PB._≈_ (N F,_===_) (pw tT tB • (pw tT1 tB • pw tT1 tB))
+                           ((pw tT tB • pw tT1 tB) • (pw tT1 tT • pw tT tB))
+  kfA = T3.A5-tmpl (⌜ tp i1 i0 ⌝ •ᵗ (⌜ tp i2 i0 ⌝ •ᵗ ⌜ tp i2 i0 ⌝))
+                   ((⌜ tp i1 i0 ⌝ •ᵗ ⌜ tp i2 i0 ⌝) •ᵗ (⌜ tp i2 i1 ⌝ •ᵗ ⌜ tp i1 i0 ⌝)) Eq.refl
+
+  kfB : PB._≈_ (N F,_===_) ((pw tT tB • pw tT1 tB) • (xw tT tT tT1 tT<tT1 • pw tT1 tT))
+                           (xw tB tT tT1 tT<tT1)
+  kfB = Eq.subst₂ (λ x y → PB._≈_ (N F,_===_) ((pw tT tB • pw tT1 tB) • (x • pw tT1 tT)) y)
+          (xd-< tT tT tT1 tT<tT1) (xd-< tB tT tT1 tT<tT1)
+          (T3.A5-tmpl ((⌜ tp i1 i0 ⌝ •ᵗ ⌜ tp i2 i0 ⌝) •ᵗ (⌜ tx i1 i1 i2 ⌝ •ᵗ ⌜ tp i2 i1 ⌝))
+                      ⌜ tx i0 i1 i2 ⌝ Eq.refl)
+
+------------------------------------------------------------------------
 -- The decoded statements
 
 module Proofs (F : FrN.Facts) (T : TopFar)
@@ -151,9 +208,9 @@ module Proofs (F : FrN.Facts) (T : TopFar)
         ≈ k top • (p′ (suc m) • p′ (suc m) • p′ (suc (suc m))))
   (shift : ∀ {j} → suc (suc j) < N →
            (l j • l (suc j)) • k j ≈ k (suc j) • (l j • l (suc j)))
-  -- ki-x, ki-16 and ki-sq at the canonical position.
-  (x₀ : (d ʷ) (kiw tT tT1 tB tT<tT1 • (pw tT1 tB • pw tT1 tB))
-        ≈ (d ʷ) (xw tB tT tT1 tT<tT1 • kiw tT tT1 tB tT<tT1))
+  -- The hybrid against the phase pair on its own pair, and ki-16 and
+  -- ki-sq at the canonical position.
+  (cp : k top • p top ≈ p top • (h top • k top))
   (16₀ : (d ʷ) (kiw tT tT1 tB tT<tT1 • (pw tT1 tB • (pw tT1 tB • pw tT1 tB)))
          ≈ (d ʷ) (pw tT1 tB • (kiw tT tT1 tB tT<tT1 • (pw tT1 tB • kiw tT tT1 tB tT<tT1))))
   (sq₀ : (d ʷ) ((kiw tT tT1 tB tT<tT1 • kiw tT tT1 tB tT<tT1) • (pw tT tB • pw tT1 tB))
@@ -381,6 +438,78 @@ module Proofs (F : FrN.Facts) (T : TopFar)
     where
     D = dPP (toℕ tT) (toℕ tB)
     E = dPP (toℕ tT1) (toℕ tB)
+
+  ----------------------------------------------------------------------
+  -- ki-x at the canonical position: the core fact and the pair scalar
+
+  private
+    qtop : suc top < N
+    qtop = NP.n<1+n (suc top)
+
+    -- k p′ = l p′ k, from k p = p h k.
+    cpp : k top • p′ top ≈ l top • (p′ top • k top)
+    cpp = begin
+      K • p′ top                                ≈⟨ sym left-unit ⟩
+      ε • (K • p′ top)                          ≈⟨ front _ (sym (l-inv qtop)) ⟩
+      (l top • h top) • (K • p′ top)            ≈⟨ assoc ⟩
+      l top • (h top • (K • p′ top))            ≈⟨ back (l top) (sym assoc) ⟩
+      l top • ((h top • K) • p′ top)            ≈⟨ back (l top) (front (p′ top) (sym hk)) ⟩
+      l top • ((p′ top • (K • p top)) • p′ top) ≈⟨ back (l top) assoc ⟩
+      l top • (p′ top • ((K • p top) • p′ top)) ≈⟨ back (l top) (back (p′ top) assoc) ⟩
+      l top • (p′ top • (K • (p top • p′ top))) ≈⟨ back (l top) (back (p′ top) (back K (p-inv qtop))) ⟩
+      l top • (p′ top • (K • ε))                ≈⟨ back (l top) (back (p′ top) right-unit) ⟩
+      l top • (p′ top • K)                      ∎
+      where
+      K = k top
+
+      -- p′ (k p) = h k
+      hk : p′ top • (K • p top) ≈ h top • K
+      hk = begin
+        p′ top • (K • p top)               ≈⟨ back (p′ top) cp ⟩
+        p′ top • (p top • (h top • K))     ≈⟨ sym assoc ⟩
+        (p′ top • p top) • (h top • K)     ≈⟨ front _ (p′-inv qtop) ⟩
+        ε • (h top • K)                    ≈⟨ left-unit ⟩
+        h top • K                          ∎
+
+    dP̄ : dPP (toℕ tT1) (toℕ tT) ≡ p′ top • ε
+    dP̄ = Eq.trans (Eq.cong₂ dPP toT1 toT)
+                  (Eq.trans (dPP-dn (NP.n≤1+n top)) (Eq.cong (pp-dn top) (sA∸A top)))
+
+    dL : dPX (toℕ tT) (toℕ tT) (toℕ tT1) ≡ l top
+    dL = Eq.trans (Eq.cong₂ (λ x y → dPX x x y) toT toT1) (lo1 top)
+
+  x₀ : (d ʷ) (kiw tT tT1 tB tT<tT1 • (pw tT1 tB • pw tT1 tB))
+       ≈ (d ʷ) (xw tB tT tT1 tT<tT1 • kiw tT tT1 tB tT<tT1)
+  x₀ = Eq.subst (λ K → (K • D) • (E • E) ≈ Xs • (K • D)) (Eq.sym kh≡) (begin
+    (k top • D) • (E • E)                      ≈⟨ assoc ⟩
+    k top • (D • (E • E))                      ≈⟨ back (k top) (d-≈ kfA) ⟩
+    k top • (Z • (P̄ • D))                      ≈⟨ sym assoc ⟩
+    (k top • Z) • (P̄ • D)                      ≈⟨ front _ (sym (cz p3)) ⟩
+    (Z • k top) • (P̄ • D)                      ≈⟨ assoc ⟩
+    Z • (k top • (P̄ • D))                      ≈⟨ back Z (sym assoc) ⟩
+    Z • ((k top • P̄) • D)                      ≈⟨ back Z (front D kP̄) ⟩
+    Z • ((Lt • (P̄ • k top)) • D)               ≈⟨ back Z assoc ⟩
+    Z • (Lt • ((P̄ • k top) • D))               ≈⟨ back Z (back Lt assoc) ⟩
+    Z • (Lt • (P̄ • (k top • D)))               ≈⟨ back Z (sym assoc) ⟩
+    Z • ((Lt • P̄) • (k top • D))               ≈⟨ sym assoc ⟩
+    (Z • (Lt • P̄)) • (k top • D)               ≈⟨ front _ (d-≈ kfB) ⟩
+    Xs • (k top • D)                           ∎)
+    where
+    D  = dPP (toℕ tT) (toℕ tB)
+    E  = dPP (toℕ tT1) (toℕ tB)
+    Z  = D • E
+    P̄  = dPP (toℕ tT1) (toℕ tT)
+    Lt = dPX (toℕ tT) (toℕ tT) (toℕ tT1)
+    Xs = dPX (toℕ tB) (toℕ tT) (toℕ tT1)
+
+    -- k P̄ = Lt P̄ k, in the decoded spelling.
+    kP̄ : k top • P̄ ≈ Lt • (P̄ • k top)
+    kP̄ = Eq.subst₂ (λ x y → k top • x ≈ y • (x • k top)) (Eq.sym dP̄) (Eq.sym dL)
+           (begin
+             k top • (p′ top • ε)            ≈⟨ back (k top) right-unit ⟩
+             k top • p′ top                  ≈⟨ cpp ⟩
+             l top • (p′ top • k top)        ≈⟨ back (l top) (front (k top) (sym right-unit)) ⟩
+             l top • ((p′ top • ε) • k top)  ∎)
 
   ----------------------------------------------------------------------
   -- The rules at every pair

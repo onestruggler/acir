@@ -7,7 +7,8 @@
 -- (Lemma88.Fragment), and the hybrid rules from the facts about the
 -- hybrid at the top pair N − 2, N − 1 — the far facts (`TopFar`, and
 -- `far-k` against the hybrid two or more below), the pair scalar `sc`,
--- the shifts, and ki-x, ki-16, ki-sq at the canonical position — by
+-- the shifts, the core fact k p = p h k at the top pair, and ki-16,
+-- ki-sq at the canonical position — by
 -- HybridPair (ki-sink, ki-pp, ki-px, ki-swap, ki-swap′), HybridOne (the
 -- one-pair rules) and HybridKK (ki-ki).  ki-yb is still a hypothesis,
 -- at every instance.
@@ -63,8 +64,7 @@ module Proofs (F : FrN.Facts) (T : TopFar)
   (shift : ∀ {j} → suc (suc j) < N →
            (l j • l (suc j)) • k j ≈ k (suc j) • (l j • l (suc j)))
   (far-k : ∀ {j} → suc (suc j) ≤ top → k top • k j ≈ k j • k top)
-  (x₀ : (d ʷ) (kiw tT tT1 tB tT<tT1 • (pw tT1 tB • pw tT1 tB))
-        ≈ (d ʷ) (xw tB tT tT1 tT<tT1 • kiw tT tT1 tB tT<tT1))
+  (cp : k top • p top ≈ p top • (h top • k top))
   (16₀ : (d ʷ) (kiw tT tT1 tB tT<tT1 • (pw tT1 tB • (pw tT1 tB • pw tT1 tB)))
          ≈ (d ʷ) (pw tT1 tB • (kiw tT tT1 tB tT<tT1 • (pw tT1 tB • kiw tT tT1 tB tT<tT1))))
   (sq₀ : (d ʷ) ((kiw tT tT1 tB tT<tT1 • kiw tT tT1 tB tT<tT1) • (pw tT tB • pw tT1 tB))
@@ -74,7 +74,7 @@ module Proofs (F : FrN.Facts) (T : TopFar)
   open FrN.Proofs F using (fragment)
   open HP.Proofs Γ m p p′ l h k F T sc shift
     using (d-ki-sink ; d-ki-pp ; d-ki-px ; d-ki-swap ; d-ki-swap′)
-  open HO.Proofs Γ m p p′ l h k F T sc shift x₀ 16₀ sq₀
+  open HO.Proofs Γ m p p′ l h k F T sc shift cp 16₀ sq₀
     using (d-ki-x ; d-ki-16 ; d-ki-ii ; d-ki-sq)
   open HK.Proofs Γ m p p′ l h k F T sc shift far-k using (d-ki-ki)
 
