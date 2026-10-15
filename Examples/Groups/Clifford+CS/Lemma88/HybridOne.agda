@@ -17,10 +17,11 @@
 -- scalar commuting with the hybrid (HybridCen.cz), and ki-x is the core
 -- fact k p = p h k (the hypothesis `cp`) with the scalar, the rest being
 -- K-free identities decided on a template of the three top indices;
--- ki-16 and ki-sq there are hypotheses, since they need a fact about the
--- hybrid and the phase pair i_[N−2] i_[N−3]⁻¹ that the scalar and the
--- conjugations by the letters on the pair do not give
--- (scratchpad/four-wire-notes.md).
+-- ki-16 is ki-sq with the order of the hybrid (the letter times the
+-- other phase pair is k z, whose cube is z³).  ki-sq there is a
+-- hypothesis, since it needs a fact about the hybrid and the phase pair
+-- i_[N−2] i_[N−3]⁻¹ that the scalar and the conjugations by the letters
+-- on the pair do not give (scratchpad/four-wire-notes.md).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -200,6 +201,18 @@ private
           (T3.A5-tmpl ((⌜ tp i1 i0 ⌝ •ᵗ ⌜ tp i2 i0 ⌝) •ᵗ (⌜ tx i1 i1 i2 ⌝ •ᵗ ⌜ tp i2 i1 ⌝))
                       ⌜ tx i0 i1 i2 ⌝ Eq.refl)
 
+  -- E⁴ = ε and (D E)⁴ = ε.
+  kfE4 : PB._≈_ (N F,_===_) (pw tT1 tB • (pw tT1 tB • (pw tT1 tB • pw tT1 tB))) ε
+  kfE4 = T3.A5-tmpl (⌜ tp i2 i0 ⌝ •ᵗ (⌜ tp i2 i0 ⌝ •ᵗ (⌜ tp i2 i0 ⌝ •ᵗ ⌜ tp i2 i0 ⌝))) emp Eq.refl
+
+  kfZ4 : PB._≈_ (N F,_===_)
+           ((pw tT tB • pw tT1 tB) • ((pw tT tB • pw tT1 tB) • ((pw tT tB • pw tT1 tB) • (pw tT tB • pw tT1 tB))))
+           ε
+  kfZ4 = T3.A5-tmpl (zt •ᵗ (zt •ᵗ (zt •ᵗ zt))) emp Eq.refl
+    where
+    zt : TW 3
+    zt = ⌜ tp i1 i0 ⌝ •ᵗ ⌜ tp i2 i0 ⌝
+
 ------------------------------------------------------------------------
 -- The decoded statements
 
@@ -208,11 +221,10 @@ module Proofs (F : FrN.Facts) (T : TopFar)
         ≈ k top • (p′ (suc m) • p′ (suc m) • p′ (suc (suc m))))
   (shift : ∀ {j} → suc (suc j) < N →
            (l j • l (suc j)) • k j ≈ k (suc j) • (l j • l (suc j)))
-  -- The hybrid against the phase pair on its own pair, and ki-16 and
-  -- ki-sq at the canonical position.
+  -- The core facts at the top pair: the hybrid against the phase pair on
+  -- its own pair, and its order; and ki-sq at the canonical position.
   (cp : k top • p top ≈ p top • (h top • k top))
-  (16₀ : (d ʷ) (kiw tT tT1 tB tT<tT1 • (pw tT1 tB • (pw tT1 tB • pw tT1 tB)))
-         ≈ (d ʷ) (pw tT1 tB • (kiw tT tT1 tB tT<tT1 • (pw tT1 tB • kiw tT tT1 tB tT<tT1))))
+  (c3 : k top • (k top • k top) ≈ ε)
   (sq₀ : (d ʷ) ((kiw tT tT1 tB tT<tT1 • kiw tT tT1 tB tT<tT1) • (pw tT tB • pw tT1 tB))
          ≈ ε) where
 
@@ -510,6 +522,103 @@ module Proofs (F : FrN.Facts) (T : TopFar)
              k top • p′ top                  ≈⟨ cpp ⟩
              l top • (p′ top • k top)        ≈⟨ back (l top) (front (k top) (sym right-unit)) ⟩
              l top • ((p′ top • ε) • k top)  ∎)
+
+  ----------------------------------------------------------------------
+  -- ki-16 at the canonical position: ki-sq and the order of the hybrid
+
+  16₀ : (d ʷ) (kiw tT tT1 tB tT<tT1 • (pw tT1 tB • (pw tT1 tB • pw tT1 tB)))
+        ≈ (d ʷ) (pw tT1 tB • (kiw tT tT1 tB tT<tT1 • (pw tT1 tB • kiw tT tT1 tB tT<tT1)))
+  16₀ = sym (begin
+    E • (K • (E • K))                              ≈⟨ sym right-unit ⟩
+    (E • (K • (E • K))) • ε                        ≈⟨ back _ (sym (d-≈ kfE4)) ⟩
+    (E • (K • (E • K))) • (E • E3)                  ≈⟨ assoc ⟩
+    E • ((K • (E • K)) • (E • E3))                  ≈⟨ back E assoc ⟩
+    E • (K • ((E • K) • (E • E3)))                  ≈⟨ back E (back K assoc) ⟩
+    E • (K • (E • (K • (E • E3))))                  ≈⟨ back E (back K (back E (sym assoc))) ⟩
+    E • (K • (E • ((K • E) • E3)))                  ≈⟨ back E (back K (sym assoc)) ⟩
+    E • (K • ((E • (K • E)) • E3))                  ≈⟨ back E (sym assoc) ⟩
+    E • ((K • (E • (K • E))) • E3)                  ≈⟨ sym assoc ⟩
+    (E • (K • (E • (K • E)))) • E3                  ≈⟨ front E3 ekeke ⟩
+    K • E3                                          ∎)
+    where
+    D  = dPP (toℕ tT) (toℕ tB)
+    E  = dPP (toℕ tT1) (toℕ tB)
+    Z  = D • E
+    E3 = E • (E • E)
+    KH = dKIa (toℕ tT) (toℕ tT1 ∸ toℕ tT)
+    K  = KH • D
+
+    -- the canonical letter commutes with the scalar
+    cZ : Z • K ≈ K • Z
+    cZ = begin
+      Z • (KH • D)       ≈⟨ sym assoc ⟩
+      (Z • KH) • D       ≈⟨ front D (Eq.subst (λ x → Z • x ≈ x • Z) (Eq.sym kh≡) (cz p3)) ⟩
+      (KH • Z) • D       ≈⟨ assoc ⟩
+      KH • (Z • D)       ≈⟨ back KH zD ⟩
+      KH • (D • Z)       ≈⟨ sym assoc ⟩
+      (KH • D) • Z       ∎
+      where
+      zD : Z • D ≈ D • Z
+      zD = comm-sym (comm-•ʳ refl (fragment (pp-comm tT tB tT1 tB)))
+
+    -- K E = k Z, so (K E)³ = Z³
+    KE : K • E ≈ KH • Z
+    KE = assoc
+
+    cube : (K • E) • ((K • E) • (K • E)) ≈ Z • (Z • Z)
+    cube = begin
+      (K • E) • ((K • E) • (K • E))       ≈⟨ cong KE (cong KE KE) ⟩
+      (KH • Z) • ((KH • Z) • (KH • Z))    ≈⟨ kz3 ⟩
+      Z • (Z • Z)                         ∎
+      where
+      kz : KH • Z ≈ Z • KH
+      kz = Eq.subst (λ x → x • Z ≈ Z • x) (Eq.sym kh≡) (sym (cz p3))
+      kz3 : (KH • Z) • ((KH • Z) • (KH • Z)) ≈ Z • (Z • Z)
+      kz3 = begin
+        (KH • Z) • ((KH • Z) • (KH • Z))   ≈⟨ cong kz (cong kz refl) ⟩
+        (Z • KH) • ((Z • KH) • (KH • Z))   ≈⟨ assoc ⟩
+        Z • (KH • ((Z • KH) • (KH • Z)))    ≈⟨ back Z (back KH assoc) ⟩
+        Z • (KH • (Z • (KH • (KH • Z))))    ≈⟨ back Z (back KH (back Z (sym assoc))) ⟩
+        Z • (KH • (Z • ((KH • KH) • Z)))    ≈⟨ back Z (back KH (back Z (comm-• kz kz))) ⟩
+        Z • (KH • (Z • (Z • (KH • KH))))    ≈⟨ back Z (back KH (sym assoc)) ⟩
+        Z • (KH • ((Z • Z) • (KH • KH)))    ≈⟨ back Z (sym assoc) ⟩
+        Z • ((KH • (Z • Z)) • (KH • KH))    ≈⟨ back Z (front _ (comm-•ʳ kz kz)) ⟩
+        Z • (((Z • Z) • KH) • (KH • KH))    ≈⟨ back Z assoc ⟩
+        Z • ((Z • Z) • (KH • (KH • KH)))    ≈⟨ back Z (back _ k3) ⟩
+        Z • ((Z • Z) • ε)                   ≈⟨ back Z right-unit ⟩
+        Z • (Z • Z)                         ∎
+        where
+        k3 : KH • (KH • KH) ≈ ε
+        k3 = Eq.subst (λ x → x • (x • x) ≈ ε) (Eq.sym kh≡) c3
+
+    -- K K Z = ε (ki-sq), so K Z is a two-sided inverse of K
+    kkz : (K • K) • Z ≈ ε
+    kkz = sq₀
+
+    z4 : Z • (Z • (Z • Z)) ≈ ε
+    z4 = d-≈ kfZ4
+
+    -- E K E K E = K
+    ekeke : E • (K • (E • (K • E))) ≈ K
+    ekeke = begin
+      E • (K • (E • (K • E)))                      ≈⟨ sym left-unit ⟩
+      ε • (E • (K • (E • (K • E))))                ≈⟨ front _ (sym inv-l) ⟩
+      ((K • Z) • K) • (E • (K • (E • (K • E))))    ≈⟨ assoc ⟩
+      (K • Z) • (K • (E • (K • (E • (K • E)))))    ≈⟨ back _ (sym assoc) ⟩
+      (K • Z) • ((K • E) • (K • (E • (K • E))))    ≈⟨ back _ (back _ (sym assoc)) ⟩
+      (K • Z) • ((K • E) • ((K • E) • (K • E)))    ≈⟨ back _ cube ⟩
+      (K • Z) • (Z • (Z • Z))                      ≈⟨ assoc ⟩
+      K • (Z • (Z • (Z • Z)))                      ≈⟨ back K z4 ⟩
+      K • ε                                        ≈⟨ right-unit ⟩
+      K                                            ∎
+      where
+      inv-l : (K • Z) • K ≈ ε
+      inv-l = begin
+        (K • Z) • K    ≈⟨ assoc ⟩
+        K • (Z • K)    ≈⟨ back K cZ ⟩
+        K • (K • Z)    ≈⟨ sym assoc ⟩
+        (K • K) • Z    ≈⟨ kkz ⟩
+        ε              ∎
 
   ----------------------------------------------------------------------
   -- The rules at every pair
