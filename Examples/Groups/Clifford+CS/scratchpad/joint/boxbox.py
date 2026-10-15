@@ -155,3 +155,101 @@ if __name__ == '__main__':
     boxsym.build(L); boxsym.build_perms(L); boxdash.build(L)
     build(L)
     print(len(L), 'lemmas')
+
+
+# ------------------------------------------------------------ boxes that make boxes
+def spawn(g, bx):
+    """a lemma by which the letter g, crossing the box bx, leaves a second
+    box behind: (name, pi, controls of bx in the lemma's order), or None.
+      Tu-box  TOFF(c; u, a) BOX_u TOFF(c; u, a) = BOX_u BOX_c
+      F0-B    CX(u -> c) BOX_u CX(u -> c) = BOX_u BOX_c"""
+    if bx[0] != 'BOX' or len(bx) != 6:
+        return None
+    u, ctrls = bx[1], bx[2:]
+    if g[0] == 'TOFF' and u in g[2:] and g[1] in ctrls:
+        c = g[1]; a = g[2] if g[3] == u else g[3]
+        if a not in ctrls:
+            return None
+        b, e = [x for x in ctrls if x not in (a, c)]
+        return ('Tu-box', {0: u, 1: a, 2: b, 3: c, 4: e}, (a, b, c, e))
+    if g[0] == 'CX' and g[1] == u and g[2] in ctrls:
+        c = g[2]
+        a, b, x = [y for y in ctrls if y != c]
+        return ('F0-B', {3: u, 1: a, 2: b, 0: x, 4: c}, (a, b, x, c))
+    return None
+
+
+def _spawn_right(d, k, sp):
+    """[box, g] at k -> [g, box, new box]."""
+    name, pi, order = sp
+    g, bx = d.cur[k + 1], d.cur[k]
+    d.win(k, 0, [g, g])
+    reorder(d, k + 2, order)
+    d.lemma(name, k + 1, pi=pi)
+    reorder(d, k + 1, bx[2:])
+
+
+def _spawn_left(d, k, sp):
+    """[g, box] at k - 1 -> [box, new box, g]."""
+    name, pi, order = sp
+    g, bx = d.cur[k - 1], d.cur[k]
+    d.win(k + 1, 0, [g, g])
+    reorder(d, k, order)
+    d.lemma(name, k - 1, pi=pi)
+    reorder(d, k - 1, bx[2:])
+
+
+def box_left(d, k, target):
+    while k > target:
+        g = d.cur[k - 1]
+        if g[0] in ('SBOX', 'SBOXd'):
+            n = len(unfold1(g))
+            d.unfold(k - 1)
+            k += n - 1
+            continue
+        if g[0] == "BOX":
+            if g[1] != d.cur[k][1]:
+                box_box(d, k - 1)
+            elif g != d.cur[k]:
+                h = d.cur[k]
+                reorder(d, k - 1, h[2:])
+                reorder(d, k, g[2:])
+            k -= 1
+            continue
+        assert not is_box(g), show([g])
+        sp = spawn(g, d.cur[k])
+        if sp is not None:
+            _spawn_left(d, k, sp)
+            k -= 1
+            continue
+        cross._cross_box_right(d, k - 1, 1)
+        k -= 1
+    return k
+
+
+def box_right(d, k, target):
+    """the box at k moves right until it sits at target (boxes it leaves
+    behind on the way count towards target)."""
+    while k < target:
+        g = d.cur[k + 1]
+        if g[0] in ('SBOX', 'SBOXd'):
+            n = len(unfold1(g))
+            d.unfold(k + 1)
+            target += n - 1
+            continue
+        if g[0] == 'BOX':
+            box_box(d, k)
+            k += 1
+            continue
+        assert not is_box(g), show([g])
+        sp = spawn(g, d.cur[k])
+        if sp is not None:
+            _spawn_right(d, k, sp)          # g box new
+            box_box(d, k + 1)               # g new box
+            k += 2
+            target += 1
+            continue
+        _, m = cross._cross_box_left(d, k + 1, 1)
+        k += m
+        target += m - 1
+    return k

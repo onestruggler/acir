@@ -62,9 +62,7 @@ def nf(d, idle, L):
     # S-boxes onto the idle wire
     if idle is not None:
         for k, g in enumerate(d.cur):
-            if g[0] in ('SBOX', 'SBOXd') and len(g[3]) == 2 and g[1] != idle:
-                assert g[4] == idle, show([g])
-                assert g[0] == 'SBOX'
+            if g[0] == "SBOX" and len(g[3]) == 2 and g[1] != idle and g[4] == idle:
                 f0.switch(d, k)
     # squares
     changed = True
@@ -86,23 +84,25 @@ def nf(d, idle, L):
             k += 1
     compact(d, 0, len(d.cur))
     # boxes to the right end, cancelling
-    nb = 0                        # boxes collected at the right end
-    k = len(d.cur) - 1
-    while k >= 0:
-        g = d.cur[k]
-        assert g[0] != 'BOXd', show([g])
-        if g[0] == 'BOX':
-            target = len(d.cur) - nb - 1
-            if k < target:
-                boxbox.box_right(d, k, target)
-            pos = len(d.cur) - nb - 1
-            if nb and d.cur[pos + 1][1] == d.cur[pos][1]:
-                boxbox.reorder(d, pos, d.cur[pos + 1][2:])
-                d.lemma('box2', pos, pi=cross.box_pi(d.cur[pos]))
-                nb -= 1
-            else:
-                nb += 1
-        k -= 1
+    nb = 0                        # boxes collected at the right end, sorted
+    while True:                   # by dashed wire
+        k = next((p for p in range(len(d.cur) - nb - 1, -1, -1) if d.cur[p][0] == 'BOX'), None)
+        if k is None:
+            break
+        assert all(g[0] != 'BOXd' for g in d.cur), show(d.cur)
+        target = len(d.cur) - nb - 1
+        if k < target:
+            boxbox.box_right(d, k, target)
+        pos = len(d.cur) - nb - 1
+        while pos + 1 < len(d.cur) and d.cur[pos + 1][1] < d.cur[pos][1]:
+            boxbox.box_box(d, pos)
+            pos += 1
+        if pos + 1 < len(d.cur) and d.cur[pos + 1][1] == d.cur[pos][1]:
+            boxbox.reorder(d, pos, d.cur[pos + 1][2:])
+            d.lemma('box2', pos, pi=cross.box_pi(d.cur[pos]))
+            nb -= 1
+        else:
+            nb += 1
     hi = boxbox.collect(d, 0, len(d.cur) - nb)
     return hi
 
@@ -130,6 +130,7 @@ def item(L, name, l, r, idle):
 
 
 IDLE3 = {0: 3, 1: 0}          # a three-wire rule at offset o leaves this domain wire idle
+PREF4 = 3                     # the dashed wire preferred in the four-wire rules
 
 
 def build(L, verbose=True, only=None):
@@ -139,7 +140,7 @@ def build(L, verbose=True, only=None):
             continue
         rule, o = name.split('@')
         ar = [a for (n, a, _, _) in f1rules.RULES if n == rule][0]
-        idle = IDLE3[int(o)] if ar == 3 else None
+        idle = IDLE3[int(o)] if ar == 3 else (PREF4 if ar == 4 else None)
         L1, R1 = f1rules.lam1(l), f1rules.lam1(r)
         try:
             if len(supp(L1 + R1)) <= N - 1:
@@ -163,4 +164,5 @@ if __name__ == '__main__':
     derivn.QUIET = True
     L = box.build({})
     boxsym.build(L); boxsym.build_perms(L); boxdash.build(L); boxbox.build(L); f0.build(L)
+    import boxtoff; boxtoff.build(L)
     build(L, only=sys.argv[1:] or None)
