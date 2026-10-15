@@ -8,7 +8,7 @@ development=Examples/Groups/CCX+HH-3qubit
 check_logs=local/ccxhh-3qubit-checks
 mkdir -p -- "$check_logs"
 agda_program=${AGDA:-agda}
-agda_heap=${AGDA_HEAP:-3G}
+agda_heap=${AGDA_HEAP:-8G}
 library_options=()
 if [[ -f "$script_dir/libraries-wsl" ]]; then
   library_options=("--library-file=$script_dir/libraries-wsl")
@@ -43,4 +43,8 @@ for part in "$development"/HadamardRelations/*.agda; do check "$part"; done
 check "$development/Repaired/TwoLevelScaled.agda"
 check "$development/Repaired/Presentation.agda"
 check "$development/Theorems.agda"
+for audit in FrameChecks RepresentativeChecks StrictMatrix TransportCaseChecks; do
+  check "$development/$audit.agda"
+done
+for part in "$development"/TransportCases/Check_*.agda; do check "$part"; done
 check MainTheorems.agda

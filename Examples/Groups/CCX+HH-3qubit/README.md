@@ -95,8 +95,8 @@ Verification checkpoint: the original entry point, the imported
 derivations, the missing-K countermodel, the repaired encoding and
 repaired soundness, and both matrix bridges have passed Agda 2.8.0.
 This includes all 32 shared evaluation modules and all 106 decoding
-certificates. The assembled presentation and the newly exported
-results are being checked. The six-index `Transport/r2c.agda`
+certificates. The assembled presentation also passes; the public
+exports and standalone audits are being checked. The six-index `Transport/r2c.agda`
 dispatcher, including its 420 cases, also passes with a compacting
 3 GB heap after splitting the generated coverage checks. The complete
 `TwoLevel.agda` map now passes all 21 relation families and their
@@ -123,15 +123,17 @@ The prefix modules bound the size of each coverage check as well:
 the six- and eight-index tables are not checked as one large case
 analysis.
 
-`bash Examples/Groups/CCX+HH-3qubit/tools/check.sh` runs the checks
-sequentially with a compacting 3 GB heap, followed by `MainTheorems.agda`.
+`bash Examples/Groups/CCX+HH-3qubit/tools/check.sh` runs the checks,
+including the standalone audits, sequentially with a compacting 8 GB
+heap, followed by `MainTheorems.agda`.
 It writes durable logs under `local/ccxhh-3qubit-checks/`. A local
 `tools/libraries-wsl` file can supply the library locations through
 Agda's `--library-file` option when the WSL user has no global list;
 the file is ignored because its paths depend on the machine.
 From PowerShell, use `tools/check-wsl.ps1`, which invokes WSL directly.
-Its `-Heap 8G` option, or `AGDA_HEAP=8G` for `check.sh`, changes the
-bounded heap when checking several large dependencies in one process.
+Its `-Heap` option, or `AGDA_HEAP` for `check.sh`, changes the bounded
+heap. Individual relation families can be checked with 3 GB; the
+assembled presentation imports all families in one process.
 The PowerShell supervisor retries interrupted runs from the interfaces
 already saved on the Windows filesystem.
 The repository instructions' `/home/bonest/.local/bin/agda` path is not

@@ -1,4 +1,4 @@
-param([string[]]$Targets, [string]$Heap = '3G')
+param([string[]]$Targets, [string]$Heap = '8G')
 
 $ErrorActionPreference = 'Stop'
 $taskRepo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../../..'))
@@ -27,8 +27,12 @@ if (-not $Targets) {
     $Targets += @(Get-ChildItem "$development/HadamardRelations/*.agda" |
         ForEach-Object { $_.FullName.Substring($taskRepo.Length + 1).Replace('\', '/') })
     $Targets += @("$development/Repaired/TwoLevelScaled.agda",
-        "$development/Repaired/Presentation.agda", "$development/Theorems.agda",
-        'MainTheorems.agda')
+        "$development/Repaired/Presentation.agda", "$development/Theorems.agda")
+    $Targets += @('FrameChecks', 'RepresentativeChecks', 'StrictMatrix', 'TransportCaseChecks') |
+        ForEach-Object { "$development/$_.agda" }
+    $Targets += @(Get-ChildItem "$development/TransportCases/Check_*.agda" |
+        ForEach-Object { $_.FullName.Substring($taskRepo.Length + 1).Replace('\', '/') })
+    $Targets += 'MainTheorems.agda'
 }
 
 foreach ($target in $Targets) {

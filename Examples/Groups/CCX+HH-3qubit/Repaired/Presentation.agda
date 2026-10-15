@@ -17,6 +17,7 @@ open Eq using (_≡_)
 open import Presentation.Definitions
   using (_IsMonoidPresentationOf_ ; _IsPresentationOf_ ; monoidPresentation⇒presentation)
 import Presentation.Properties as PP
+import Presentation.Base as PB
 open import Examples.Groups.CCX+HH-3qubit.Repaired.Syntactics
 open import Examples.Groups.CCX+HH-3qubit.Repaired.GroupLike using (grouplike)
 open import Examples.Groups.CCX+HH-3qubit.Matrix using (⟦_⟧ᴹ ; module BM)
@@ -64,6 +65,7 @@ completeness {w} {v} eq = matrix-complete {w} {v}
 
 private
   module Base = _IsMonoidPresentationOf_ P.monoidPresentation
+  module Source = PB (L._===ᴸ_ {8})
   module Morph = MonoidMorphisms
     (Monoid.rawMonoid (PP.•-ε-monoid (L._===ᴸ_ {8})))
     (Monoid.rawMonoid (Group.monoid P.L))
@@ -87,7 +89,7 @@ monoidPresentation = record
         let witness = Morph.IsMonoidIsomorphism.surjective Base.iso A
             w = proj₁ witness
         in (E.decode ʷ) w , λ proof → Eq.trans (target-sound proof)
-          (Eq.trans (semantic-back w) (proj₂ witness Presentation.Base.refl)) }
+          (Eq.trans (semantic-back w) (proj₂ witness Source.refl)) }
   }
 
 presentation : _===_ IsPresentationOf ToffoliHadamard
