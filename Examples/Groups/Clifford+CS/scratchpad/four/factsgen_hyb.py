@@ -50,8 +50,8 @@ G-ki-≈ = trans (by-assoc Eq.refl) lem-bridge-G-ki
         t, x = F4.layout(4, a)
         beta = x[t] ^ F4.FLIP['k']
         ws = [w for w in range(4) if w != t and x[w] == 0]
-        rels = [('rel', j) for j in range(t - 1, -1, -1)]
-        frame = [('col', w) for w in ws] + rels + ([('col', 0)] if beta else [])
+        rels = [('rel', j) for j in range(t - 1, -1, -1)] + ([('col', 0)] if beta else [])
+        frame = [('col', w) for w in ws] + rels
         assert frame == F4.frame(a, 'k')
         wl = '(' + ' ∷ '.join(WIS[w] for w in ws) + ' ∷ [])' if ws else '[]'
         out.append(f'{brname(a, "k")} : dKI₁ {a} ≈ ⟪ flatB {bname(a, "k")} ⟫ʷ')
