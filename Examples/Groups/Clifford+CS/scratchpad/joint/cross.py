@@ -229,8 +229,11 @@ def _sig(bx, blk):
     return tuple(one(g) for g in blk)
 
 
+USE_MEMO = False          # on for (F1) only, so that earlier derivations stay as emitted
+
+
 def _tries(key):
-    first = _MEMO.get(key)
+    first = _MEMO.get(key) if USE_MEMO else None
     allt = [(o, f) for o in ORDERS for f in FORMS]
     return ([first] if first else []) + [t for t in allt if t != first]
 

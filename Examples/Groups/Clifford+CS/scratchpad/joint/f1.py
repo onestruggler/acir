@@ -134,6 +134,7 @@ PREF4 = 3                     # the dashed wire preferred in the four-wire rules
 
 
 def build(L, verbose=True, only=None):
+    boxbox.SPAWN = True; cross.USE_MEMO = True
     ok, bad = [], []
     for name, l, r in f1rules.items():
         if only and not any(name.startswith(p) for p in only):

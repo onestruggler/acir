@@ -208,6 +208,7 @@ def item(L, name):
 
 
 def build(L, verbose=True, only=None):
+    boxbox.SPAWN = True; cross.USE_MEMO = True
     ck_box(L)
     bad = []
     for name in RULES:

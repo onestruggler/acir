@@ -158,6 +158,9 @@ if __name__ == '__main__':
 
 
 # ------------------------------------------------------------ boxes that make boxes
+SPAWN = False            # on for (F1) only, so that earlier derivations stay as emitted
+
+
 def spawn(g, bx):
     """a lemma by which the letter g, crossing the box bx, leaves a second
     box behind: (name, pi, controls of bx in the lemma's order), or None.
@@ -217,12 +220,12 @@ def box_left(d, k, target):
             k -= 1
             continue
         assert not is_box(g), show([g])
-        sp = spawn(g, d.cur[k])
+        sp = spawn(g, d.cur[k]) if SPAWN else None
         if sp is not None:
             _spawn_left(d, k, sp)
             k -= 1
             continue
-        ck = _ckc(g, d.cur[k])
+        ck = _ckc(g, d.cur[k]) if SPAWN else None
         if ck is not None and ck[0] + 'L' in d.lemmas:
             bx = d.cur[k]
             reorder(d, k, ck[2])
@@ -255,14 +258,14 @@ def box_right(d, k, target):
             k += 1
             continue
         assert not is_box(g), show([g])
-        sp = spawn(g, d.cur[k])
+        sp = spawn(g, d.cur[k]) if SPAWN else None
         if sp is not None:
             _spawn_right(d, k, sp)          # g box new
             box_box(d, k + 1)               # g new box
             k += 2
             target += 1
             continue
-        ck = _ckc(g, d.cur[k])
+        ck = _ckc(g, d.cur[k]) if SPAWN else None
         if ck is not None and ck[0] in d.lemmas:
             bx = d.cur[k]
             reorder(d, k, ck[2])
