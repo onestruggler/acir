@@ -1,0 +1,1566 @@
+{
+  "format": "clement-involutory-relator-reduction-v1",
+  "wires": 2,
+  "gate_set": "H",
+  "word_order": "matrix product order",
+  "circuit_generators": [
+    {
+      "gate": "X",
+      "wires": [
+        0
+      ]
+    },
+    {
+      "gate": "X",
+      "wires": [
+        1
+      ]
+    },
+    {
+      "gate": "CX",
+      "wires": [
+        1,
+        0
+      ]
+    },
+    {
+      "gate": "H",
+      "wires": [
+        0
+      ]
+    },
+    {
+      "gate": "H",
+      "wires": [
+        1
+      ]
+    }
+  ],
+  "source": "two_qubit_relations.json",
+  "source_relation_count": 69,
+  "formal_entrypoint": "TwoQubit/ReducedPresentation.agda",
+  "relations": [
+    {
+      "kind": "involution",
+      "left": [
+        0,
+        0
+      ],
+      "right": []
+    },
+    {
+      "kind": "involution",
+      "left": [
+        1,
+        1
+      ],
+      "right": []
+    },
+    {
+      "kind": "involution",
+      "left": [
+        2,
+        2
+      ],
+      "right": []
+    },
+    {
+      "kind": "involution",
+      "left": [
+        3,
+        3
+      ],
+      "right": []
+    },
+    {
+      "kind": "involution",
+      "left": [
+        4,
+        4
+      ],
+      "right": []
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        2,
+        1,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        3,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        3,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1
+      ],
+      "right": [],
+      "source_relation": 60
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        2,
+        1,
+        0,
+        3,
+        2,
+        3,
+        0,
+        1,
+        2,
+        1,
+        0,
+        3,
+        2,
+        3
+      ],
+      "right": [],
+      "source_relation": 17
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        2,
+        1,
+        2
+      ],
+      "right": [],
+      "source_relation": 64
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        2,
+        1,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        2,
+        1,
+        2,
+        1,
+        0,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 41
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        2,
+        1,
+        3,
+        4,
+        2,
+        3,
+        4,
+        1,
+        2,
+        1,
+        0,
+        3,
+        2,
+        3,
+        0,
+        1,
+        2,
+        1,
+        4,
+        3,
+        2,
+        4,
+        3,
+        1,
+        2,
+        1,
+        0,
+        3,
+        2,
+        3
+      ],
+      "right": [],
+      "source_relation": 22
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        2,
+        1,
+        3,
+        4,
+        2,
+        3,
+        4,
+        1,
+        2,
+        1,
+        0,
+        4,
+        3,
+        2,
+        4,
+        3,
+        0,
+        2,
+        0,
+        3,
+        4,
+        2,
+        3,
+        4
+      ],
+      "right": [],
+      "source_relation": 45
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        2,
+        1,
+        3,
+        4,
+        2,
+        3,
+        4,
+        1,
+        2,
+        1,
+        3,
+        2,
+        3,
+        1,
+        2,
+        1,
+        4,
+        3,
+        2,
+        4,
+        3,
+        1,
+        2,
+        1,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1
+      ],
+      "right": [],
+      "source_relation": 51
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        2,
+        3,
+        2,
+        3,
+        2,
+        1,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1
+      ],
+      "right": [],
+      "source_relation": 49
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1
+      ],
+      "right": [],
+      "source_relation": 29
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        2,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        2
+      ],
+      "right": [],
+      "source_relation": 27
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        2,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        2,
+        4,
+        3,
+        2,
+        4,
+        3,
+        2
+      ],
+      "right": [],
+      "source_relation": 23
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        4,
+        3,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 56
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        3,
+        2,
+        3,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        3,
+        2,
+        3
+      ],
+      "right": [],
+      "source_relation": 31
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        3,
+        4,
+        2,
+        3,
+        4,
+        0,
+        1,
+        3,
+        2,
+        3,
+        1,
+        0,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 19
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        1,
+        4,
+        3,
+        2,
+        4,
+        3,
+        0,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 65
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        2,
+        1,
+        2,
+        1,
+        3,
+        4,
+        2,
+        3,
+        4,
+        1,
+        2,
+        1,
+        2,
+        0,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 46
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        2,
+        3,
+        2,
+        3,
+        2,
+        0,
+        3,
+        2,
+        3
+      ],
+      "right": [],
+      "source_relation": 54
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        2,
+        1,
+        2,
+        1,
+        2,
+        4,
+        3,
+        2,
+        4,
+        3,
+        2,
+        0,
+        3,
+        4,
+        2,
+        3,
+        4
+      ],
+      "right": [],
+      "source_relation": 42
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        2,
+        4,
+        3,
+        2,
+        4,
+        3,
+        2,
+        1,
+        3,
+        2,
+        3,
+        1,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        2,
+        0,
+        3,
+        2,
+        3
+      ],
+      "right": [],
+      "source_relation": 52
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        3,
+        2,
+        3,
+        0,
+        3,
+        2,
+        3,
+        0,
+        3,
+        2,
+        3,
+        0,
+        3,
+        2,
+        3
+      ],
+      "right": [],
+      "source_relation": 37
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        3,
+        2,
+        3,
+        0,
+        3,
+        4,
+        2,
+        3,
+        4,
+        0,
+        3,
+        2,
+        3,
+        0,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 20
+    },
+    {
+      "kind": "relator",
+      "left": [
+        0,
+        3,
+        4,
+        2,
+        3,
+        4,
+        0,
+        3,
+        4,
+        2,
+        3,
+        4,
+        0,
+        4,
+        3,
+        2,
+        4,
+        3,
+        0,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 12
+    },
+    {
+      "kind": "relator",
+      "left": [
+        1,
+        2,
+        1,
+        2,
+        1,
+        2,
+        1,
+        2
+      ],
+      "right": [],
+      "source_relation": 11
+    },
+    {
+      "kind": "relator",
+      "left": [
+        1,
+        2,
+        1,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        2,
+        1,
+        2,
+        1,
+        3,
+        4,
+        2,
+        3,
+        4,
+        1,
+        2,
+        1,
+        2,
+        4,
+        3,
+        2,
+        4,
+        3,
+        2,
+        1,
+        2,
+        1,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 13
+    },
+    {
+      "kind": "relator",
+      "left": [
+        1,
+        2,
+        1,
+        3,
+        1,
+        3,
+        2,
+        3,
+        1,
+        3
+      ],
+      "right": [],
+      "source_relation": 61
+    },
+    {
+      "kind": "relator",
+      "left": [
+        1,
+        2,
+        1,
+        3,
+        2,
+        3,
+        1,
+        2,
+        1,
+        3,
+        2,
+        3
+      ],
+      "right": [],
+      "source_relation": 18
+    },
+    {
+      "kind": "relator",
+      "left": [
+        1,
+        2,
+        1,
+        3,
+        4,
+        2,
+        3,
+        4,
+        1,
+        2,
+        1,
+        3,
+        4,
+        2,
+        3,
+        4,
+        1,
+        2,
+        1,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 44
+    },
+    {
+      "kind": "relator",
+      "left": [
+        1,
+        2,
+        1,
+        3,
+        4,
+        3,
+        2,
+        3,
+        1,
+        3,
+        2,
+        3,
+        1,
+        4,
+        3,
+        2,
+        4,
+        3,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 55
+    },
+    {
+      "kind": "relator",
+      "left": [
+        1,
+        2,
+        3,
+        2,
+        3,
+        2,
+        1,
+        3,
+        4,
+        2,
+        3,
+        4,
+        1,
+        2,
+        3,
+        2,
+        3,
+        2,
+        1,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 21
+    },
+    {
+      "kind": "relator",
+      "left": [
+        1,
+        3,
+        2,
+        3,
+        1,
+        3,
+        2,
+        3,
+        1,
+        3,
+        2,
+        3,
+        1,
+        3,
+        2,
+        3
+      ],
+      "right": [],
+      "source_relation": 30
+    },
+    {
+      "kind": "relator",
+      "left": [
+        1,
+        3,
+        2,
+        3,
+        1,
+        3,
+        4,
+        2,
+        3,
+        4,
+        3,
+        2,
+        3,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 50
+    },
+    {
+      "kind": "relator",
+      "left": [
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        2,
+        3,
+        2,
+        3,
+        2,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 24
+    },
+    {
+      "kind": "relator",
+      "left": [
+        2,
+        3,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        3,
+        2,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 62
+    },
+    {
+      "kind": "relator",
+      "left": [
+        2,
+        3,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        2,
+        4,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4
+      ],
+      "right": [],
+      "source_relation": 68
+    },
+    {
+      "kind": "relator",
+      "left": [
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        2,
+        3,
+        4,
+        2,
+        4,
+        3,
+        2,
+        4,
+        3
+      ],
+      "right": [],
+      "source_relation": 47
+    },
+    {
+      "kind": "relator",
+      "left": [
+        2,
+        3,
+        4,
+        3,
+        4,
+        2,
+        3,
+        4,
+        3,
+        4
+      ],
+      "right": [],
+      "source_relation": 1
+    },
+    {
+      "kind": "relator",
+      "left": [
+        3,
+        4,
+        3,
+        4
+      ],
+      "right": [],
+      "source_relation": 10
+    }
+  ],
+  "certificates": [
+    {
+      "source_relation": 0,
+      "selected_relator": null,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 1,
+      "selected_relator": 35,
+      "conjugating_prefix": [
+        0
+      ],
+      "rotations": 3,
+      "reversed": false
+    },
+    {
+      "source_relation": 2,
+      "selected_relator": 35,
+      "conjugating_prefix": [
+        1,
+        2,
+        1
+      ],
+      "rotations": 3,
+      "reversed": false
+    },
+    {
+      "source_relation": 3,
+      "selected_relator": 35,
+      "conjugating_prefix": [
+        2
+      ],
+      "rotations": 3,
+      "reversed": false
+    },
+    {
+      "source_relation": 4,
+      "selected_relator": 35,
+      "conjugating_prefix": [],
+      "rotations": 3,
+      "reversed": false
+    },
+    {
+      "source_relation": 5,
+      "selected_relator": null,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 6,
+      "selected_relator": null,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 7,
+      "selected_relator": null,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 8,
+      "selected_relator": null,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 9,
+      "selected_relator": null,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 10,
+      "selected_relator": 36,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 11,
+      "selected_relator": 22,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 12,
+      "selected_relator": 21,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 13,
+      "selected_relator": 23,
+      "conjugating_prefix": [],
+      "rotations": 33,
+      "reversed": true
+    },
+    {
+      "source_relation": 14,
+      "selected_relator": 23,
+      "conjugating_prefix": [],
+      "rotations": 3,
+      "reversed": false
+    },
+    {
+      "source_relation": 15,
+      "selected_relator": 21,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 16,
+      "selected_relator": 22,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 17,
+      "selected_relator": 1,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 18,
+      "selected_relator": 25,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 19,
+      "selected_relator": 13,
+      "conjugating_prefix": [],
+      "rotations": 6,
+      "reversed": false
+    },
+    {
+      "source_relation": 20,
+      "selected_relator": 20,
+      "conjugating_prefix": [],
+      "rotations": 4,
+      "reversed": false
+    },
+    {
+      "source_relation": 21,
+      "selected_relator": 28,
+      "conjugating_prefix": [
+        1
+      ],
+      "rotations": 5,
+      "reversed": false
+    },
+    {
+      "source_relation": 22,
+      "selected_relator": 4,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 23,
+      "selected_relator": 10,
+      "conjugating_prefix": [],
+      "rotations": 7,
+      "reversed": false
+    },
+    {
+      "source_relation": 24,
+      "selected_relator": 31,
+      "conjugating_prefix": [],
+      "rotations": 4,
+      "reversed": false
+    },
+    {
+      "source_relation": 25,
+      "selected_relator": 13,
+      "conjugating_prefix": [],
+      "rotations": 7,
+      "reversed": false
+    },
+    {
+      "source_relation": 26,
+      "selected_relator": 20,
+      "conjugating_prefix": [],
+      "rotations": 5,
+      "reversed": false
+    },
+    {
+      "source_relation": 27,
+      "selected_relator": 9,
+      "conjugating_prefix": [],
+      "rotations": 7,
+      "reversed": false
+    },
+    {
+      "source_relation": 28,
+      "selected_relator": 25,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 29,
+      "selected_relator": 8,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 30,
+      "selected_relator": 29,
+      "conjugating_prefix": [
+        0
+      ],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 31,
+      "selected_relator": 12,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 32,
+      "selected_relator": 8,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 33,
+      "selected_relator": 12,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 34,
+      "selected_relator": 29,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 35,
+      "selected_relator": 29,
+      "conjugating_prefix": [
+        0
+      ],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 36,
+      "selected_relator": 12,
+      "conjugating_prefix": [],
+      "rotations": 6,
+      "reversed": false
+    },
+    {
+      "source_relation": 37,
+      "selected_relator": 19,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 38,
+      "selected_relator": 12,
+      "conjugating_prefix": [],
+      "rotations": 7,
+      "reversed": false
+    },
+    {
+      "source_relation": 39,
+      "selected_relator": 29,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 40,
+      "selected_relator": 19,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 41,
+      "selected_relator": 3,
+      "conjugating_prefix": [],
+      "rotations": 16,
+      "reversed": true
+    },
+    {
+      "source_relation": 42,
+      "selected_relator": 17,
+      "conjugating_prefix": [],
+      "rotations": 6,
+      "reversed": true
+    },
+    {
+      "source_relation": 43,
+      "selected_relator": null,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 44,
+      "selected_relator": 26,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": true
+    },
+    {
+      "source_relation": 45,
+      "selected_relator": 5,
+      "conjugating_prefix": [],
+      "rotations": 20,
+      "reversed": false
+    },
+    {
+      "source_relation": 46,
+      "selected_relator": 15,
+      "conjugating_prefix": [],
+      "rotations": 18,
+      "reversed": true
+    },
+    {
+      "source_relation": 47,
+      "selected_relator": 34,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 48,
+      "selected_relator": null,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 49,
+      "selected_relator": 7,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 50,
+      "selected_relator": 30,
+      "conjugating_prefix": [
+        0
+      ],
+      "rotations": 5,
+      "reversed": false
+    },
+    {
+      "source_relation": 51,
+      "selected_relator": 6,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 52,
+      "selected_relator": 18,
+      "conjugating_prefix": [],
+      "rotations": 13,
+      "reversed": false
+    },
+    {
+      "source_relation": 53,
+      "selected_relator": 30,
+      "conjugating_prefix": [],
+      "rotations": 5,
+      "reversed": false
+    },
+    {
+      "source_relation": 54,
+      "selected_relator": 16,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 55,
+      "selected_relator": 27,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 56,
+      "selected_relator": 11,
+      "conjugating_prefix": [],
+      "rotations": 7,
+      "reversed": false
+    },
+    {
+      "source_relation": 57,
+      "selected_relator": 36,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 58,
+      "selected_relator": null,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 59,
+      "selected_relator": 36,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 60,
+      "selected_relator": 0,
+      "conjugating_prefix": [],
+      "rotations": 11,
+      "reversed": false
+    },
+    {
+      "source_relation": 61,
+      "selected_relator": 24,
+      "conjugating_prefix": [],
+      "rotations": 9,
+      "reversed": false
+    },
+    {
+      "source_relation": 62,
+      "selected_relator": 32,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 63,
+      "selected_relator": null,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 64,
+      "selected_relator": 2,
+      "conjugating_prefix": [],
+      "rotations": 4,
+      "reversed": true
+    },
+    {
+      "source_relation": 65,
+      "selected_relator": 14,
+      "conjugating_prefix": [],
+      "rotations": 1,
+      "reversed": false
+    },
+    {
+      "source_relation": 66,
+      "selected_relator": null,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 67,
+      "selected_relator": null,
+      "conjugating_prefix": [],
+      "rotations": 0,
+      "reversed": false
+    },
+    {
+      "source_relation": 68,
+      "selected_relator": 33,
+      "conjugating_prefix": [],
+      "rotations": 6,
+      "reversed": true
+    }
+  ]
+}

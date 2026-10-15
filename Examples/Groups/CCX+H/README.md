@@ -73,11 +73,29 @@ There are respectively two, five and nine generator recovery equations.
 
 `OneQubit.agda` directly decodes the two signs, exchange and global `IH`
 on two levels. It uses the same translated-source/recovery construction.
+`OneQubitReduced.agda` then derives an equivalent three-rule theory:
+`X² = H² = (XH)⁸ = 1`. Its completeness follows by deriving all eleven
+translated equations using the checked involutory relator reducer in
+`CCX+HH/RelatorReduction.agda`.
 
 `TwoQubit/Decoding.agda` realizes all 12 auxiliary generators on four
 levels. Signs are conjugates of `CZ = H0 CX10 H0`, exchanges are short
 classical circuits, `K` is `H0 H1`, and `IH` is `H0`.
 `TwoQubit.agda` assembles the corresponding soundness/completeness proof.
+`TwoQubit/ReducedPresentation.agda` proves an equivalent **42-equation**
+theory: five gate involutions and 37 cyclic relators. The reduction uses
+the same checked cancellation, conjugation, rotation, and reversal
+certificates as the HH two-wire reduction. The explicit words and
+certificates are in `two_qubit_reduced.json`; reproduce them with
+`python3 -B Examples/Groups/CCX+H/scripts/build_reduced_relations.py --check`
+and typecheck `Examples/Groups/CCX+H/TwoQubit/ReducedPresentation.agda`.
+`TwoQubit/ShortPresentation.agda` reduces this further to **19 equations**
+(five involutions and fourteen relators). Every shortening step is a
+proved consequence of other current Clément relators, with proofs in both
+directions. The explicit equations and rewrite certificates are in
+`two_qubit_short.json`. Reproduce them with
+`python3 -B Examples/Groups/CCX+HH/scripts/build_short_relations.py --gate-set H --check`
+and typecheck `Examples/Groups/CCX+H/TwoQubit/ShortPresentation.agda`.
 
 `ThreeQubit/Decoding.agda` realizes all 107 auxiliary generators on eight
 levels: eight signs, 28 exchanges, 70 four-level K gates, and `IH`.
@@ -174,6 +192,18 @@ word factors as an HH circuit times one of eight representatives, with
 unique coset value. The H image is precisely the preimage of the
 two-element reflection subgroup.
 
+`GeneralN/ScaledAbelianization.agda` computes the ambient scaled
+presentation's abelianization as `C₂ × C₂`, already with two levels.
+The two characters are the first charge bit and H parity, with
+representatives `1`, `M0`, `IH`, and `M0 IH`. It proves the universal
+commutative quotient and a standard group isomorphism. Its derived
+subgroup consists exactly of the two D₈ values `q00` and `q01`; this
+differs from the physical H and HH derived-subgroup statements above.
+`GeneralN/AmbientCosets.agda` gives its four cosets explicitly: every
+ambient word is an H circuit times a representative indexed by the
+four-state action, and equality of two such products forces the same
+state. Thus H has index four, while HH has index eight.
+
 `Abelianization.agda` defines the universal commutative quotient by
 adding commutation of arbitrary words. At widths at least four,
 `GeneralN/Abelianization.agda` proves that this quotient is exactly
@@ -181,6 +211,21 @@ adding commutation of arbitrary words. At widths at least four,
 identifies the derived subgroup with the embedded HH group, including
 an HH circuit witness for every member. These added commutations
 describe the quotient; they are not physical circuit identities.
+`LowWidthAbelianization.agda` transports the full scaled source result
+through the verified decoders on one, two and three wires.
+`AbelianizationClassification.agda` assembles standard group
+isomorphisms at every width:
+
+| Wires | Abelianization | Characters |
+|---|---|---|
+| 0 | Trivial | None |
+| 1 | `C₂ × C₂` | X count and H count modulo two |
+| 2 | `C₂ × C₂` | CX count and H count modulo two |
+| 3 | `C₂ × C₂` | CCX count and H count modulo two |
+| At least 4 | `C₂` | H count modulo two |
+
+`LowWidthCharacters.agda` proves the displayed gate-count description
+of the first three nontrivial rows.
 
 These are finite translated presentations at each fixed width. They
 are not a short width-independent list of local circuit identities.
@@ -246,8 +291,13 @@ agda Examples/Groups/CCX+H/GeneralN/HadamardAction.agda
 agda Examples/Groups/CCX+H/GeneralN/SemidirectProduct.agda
 agda Examples/Groups/CCX+H/GeneralN/NonNormal.agda
 agda Examples/Groups/CCX+H/GeneralN/DihedralKernel.agda
+agda Examples/Groups/CCX+H/GeneralN/ScaledAbelianization.agda
+agda Examples/Groups/CCX+H/GeneralN/AmbientCosets.agda
 agda Examples/Groups/CCX+H/GeneralN/Abelianization.agda
+agda Examples/Groups/CCX+H/AbelianizationClassification.agda
+agda Examples/Groups/CCX+H/LowWidthCharacters.agda
 agda Examples/Groups/CCX+H/OneQubit.agda
+agda Examples/Groups/CCX+H/OneQubitReduced.agda
 agda Examples/Groups/CCX+H/TwoQubit.agda
 agda Examples/Groups/CCX+H/ThreeQubit/Presentation.agda
 agda Examples/Groups/CCX+H/ThreeQubit/Semantics.agda

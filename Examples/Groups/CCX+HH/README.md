@@ -17,12 +17,45 @@ count, with no hypotheses, against ordinary circuit matrices.**
 | --- | --- |
 | 0 | Empty relation; all words are the identity |
 | 1 | `XX = 1` |
-| 2 | 178 equations from the three-state translation |
+| 2 | 178 translated equations, reduced to 12 checked equations |
 | 3 | 1185 equations from a finite frame normal form |
 | At least 4 | The four-state Clément translation, with an explicit circuit decoder |
 
 `LowWidth.agda` gives the common physical semantic bridge for the first
 three rows. `ThreeQubit/` and `GeneralN/` contain the remaining cases.
+
+`TwoQubit/ReducedPresentation.agda` gives a smaller complete two-wire
+theory with **69 equations**: four gate involutions and 65 cyclic
+relators. `RelatorReduction.agda` proves the cancellation, rotation,
+reversal, and conjugation steps used to derive every original translated
+equation and recover every retained equation. The explicit circuit words
+and their certificates are in `two_qubit_reduced.json`; reproduce them
+with `python3 -B Examples/Groups/CCX+HH/scripts/build_reduced_relations.py --check`
+and typecheck `Examples/Groups/CCX+HH/TwoQubit/ReducedPresentation.agda`.
+This is a proved reduction of the Clément translation, not a claim of
+minimality.
+
+`TwoQubit/ShortPresentation.agda` further reduces the theory to **12
+equations**, proving all intermediate replacements in both directions.
+Write `x = X0`, `y = X1`, `c = CX10`, and `h = HH01`. In matrix-product
+order, the complete list is
+
+```text
+x² = y² = c² = h² = 1
+(xy)² = (xc)² = 1
+xycyc = 1
+(xyh)⁴ = 1
+xyhchxhch = 1
+(xhyh)² = (yhch)² = 1
+(ch)⁶ = 1
+```
+
+`two_qubit_short.json` contains these words and the complete rewrite
+certificates. Run `python3 -B Examples/Groups/CCX+HH/scripts/build_short_relations.py --gate-set HH --check`
+to reproduce the data and independently verify its matrices, then
+typecheck `Examples/Groups/CCX+HH/TwoQubit/ShortPresentation.agda`.
+The generated `TwoQubit/Short/` batches keep the proof checks within a
+3 GB heap. No ancillary wires or auxiliary circuit generators occur.
 
 At every width `n >= 4`, the image is exactly the commutator subgroup of
 `O_(2^n)(Z[1/2])`. `Subgroup/Abelianization.agda` proves that the ambient
@@ -48,6 +81,20 @@ Here `[u,v] = u v u⁻¹ v⁻¹`, distinct letters name distinct wires, and
 controls precede the semicolon. Both factors in each displayed
 commutator are involutions. The extra wires already belong to the
 circuit; their initial states are arbitrary and they are restored.
+
+`LowWidthAbelianization.agda` proves the remaining cases by the same
+commutator identities on two and three wires, with dyadic charge
+distinguishing the surviving representatives.
+`AbelianizationClassification.agda` gives standard group isomorphisms
+uniformly at every width:
+
+| Wires | Abelianization | Characters |
+|---|---|---|
+| 0 | Trivial | None |
+| 1 | `C₂` | X count modulo two |
+| 2 | `C₂ × C₂` | CX count and HH count modulo two |
+| 3 | `C₂` | CCX count modulo two |
+| At least 4 | Trivial | None |
 
 `Normalization.agda` gives canonical actual circuit words at every width:
 `nf`, a derivation `normalize`, exact-matrix preservation `correct`, and
@@ -229,6 +276,7 @@ agda Examples/Groups/CCX+HH/Structural.agda
 agda Examples/Groups/CCX+HH/Embedding.agda
 agda Examples/Groups/CCX+HH/GeneralN/Commutator.agda
 agda Examples/Groups/CCX+HH/GeneralN/Perfect.agda
+agda Examples/Groups/CCX+HH/AbelianizationClassification.agda
 agda Examples/Groups/CCX+HH/Normalization.agda
 agda Examples/Groups/CCX+HH/Decision.agda
 agda Examples/Groups/CCX+HH/DecisionExamples.agda
