@@ -385,3 +385,46 @@ there. Two attempts at a derivation oracle on three wires did not work:
 So the three-wire case needs either the Coxeter presentation of W(E8)
 with hand-derived (or better searched) decoded Coxeter relations, or a
 cheaper certificate.
+
+### The controlled-circuit machinery, so far
+
+`../NaturalP/` restates the natural rules with the swap as a gate
+(`Circuit.Prop`), so that wire permutations are free. In Agda:
+
+- `NaturalP/Bridge`: every NaturalP derivation is a Natural one, and
+  completeness transfers back (`complete⇒`).
+- `NaturalP/Pad`: a derivation on k wires holds on the bottom k wires of
+  any wider circuit.
+- `NaturalP/Ctrl`: `ctrl`, gate by gate. X, CX and the swap become XC,
+  a Toffoli and the Fredkin gate. HH and CCX become CHHa and C3Xa, each
+  borrowing the wire above. A gate one wire up is the gadget with the
+  control moved up by swaps, borrowing wire 1 (`CTRL₁`).
+- `NaturalP/CtrlSem.ctrl-sem`: for C on four or more wires, `ctrl C`
+  acts on vectors as C on the coordinates with wire 0 set and as the
+  identity on the others. The gadgets are checked on their own wires
+  (`CtrlBase`, `CtrlBase5`) and carried up by idle wires, which commute
+  with the control (`Blocks2.top-ctrl`). The swap of wires 0 1
+  transposes the four low-bit blocks (`SwapBlocks`), so it moves a
+  control from wire 1 to wire 0. Checking a gadget column by column
+  costs about a millisecond per letter, column and entry
+  (`Columns`). So the classical five-wire gadgets are compared by their
+  permutations of the indices instead (`ClassicalWords`, `PermCheck`).
+- `../../Symmetric-Prop/Networks`: in any PROP, two swap networks with
+  the same permutation are equal. `../../Symmetric-Prop/Placement`: in
+  any PROP, a circuit on the bottom k wires commutes with one shifted k
+  wires up (`apart`). A placement by a network is also unchanged when
+  the network changes above those k wires (`frame`).
+
+**What the ctrl lemma still needs.** The lemma says that `ctrl`
+respects the rules. The rule instances and the swap rules are bounded,
+so their controlled versions are closed equations on at most six wires.
+The structural commutation rules are not bounded: in
+`[g ↥ⁱ] • [h] = [h] • [g ↥ⁱ]`, the gate g can sit anywhere above h. The
+two controlled versions share wire 0, and when both gates are HH or
+CCX they also share the borrowed wire. Their letters then do not
+commute one by one: a Toffoli of C3X targets the borrowed wire that the
+other gadget uses as a control. So that case needs the placement
+calculus, to bring both gadgets next to each other, and then closed
+equations on up to about nine wires. Proving those by completeness one
+width down covers only widths from ten on. Smaller widths need explicit
+derivations, or a design in which no two gadgets share a borrowed wire.
