@@ -215,11 +215,32 @@ def _reorder(d, k, o):
     return ('box-perm-' + ''.join(map(str, o)), pi)
 
 
+_MEMO = {}
+
+
+def _sig(bx, blk):
+    """the block's letters with their wires as positions in the box."""
+    pos = {w: j for j, w in enumerate(bx[1:])}
+
+    def one(g):
+        if g[0] in ('SBOX', 'SBOXd'):
+            return (g[0], pos[g[1]], pos[g[2]], tuple(pos[c] for c in g[3]), pos[g[4]])
+        return (g[0],) + tuple(pos.get(w, -1) for w in g[1:])
+    return tuple(one(g) for g in blk)
+
+
+def _tries(key):
+    first = _MEMO.get(key)
+    allt = [(o, f) for o in ORDERS for f in FORMS]
+    return ([first] if first else []) + [t for t in allt if t != first]
+
+
 def _cross_box_right(d, i, m):
     g = d.cur[i + m]
     s = _save(d)
-    for o in ORDERS:
-        for form in FORMS:
+    key = ('R', _sig(g, d.cur[i:i + m]))
+    for o, form in _tries(key):
+        if True:
             try:
                 undo = _reorder(d, i + m, o)
                 g2 = d.cur[i + m]
@@ -228,6 +249,7 @@ def _cross_box_right(d, i, m):
                 i2, m2 = pass_right(d, i, m, i + m + 4)
                 d.lemma(form, i2 - 4, fwd=False, pi=pi)
                 if undo: d.lemma(undo[0], i2 - 4, fwd=False, pi=undo[1])
+                _MEMO[key] = (o, form)
                 return i2 - 3, m2
             except (Stuck, AssertionError):
                 _restore(d, s)
@@ -237,8 +259,9 @@ def _cross_box_right(d, i, m):
 def _cross_box_left(d, i, m):
     g = d.cur[i - 1]
     s = _save(d)
-    for o in ORDERS:
-        for form in FORMS:
+    key = ('L', _sig(g, d.cur[i:i + m]))
+    for o, form in _tries(key):
+        if True:
             try:
                 undo = _reorder(d, i - 1, o)
                 g2 = d.cur[i - 1]
@@ -247,6 +270,7 @@ def _cross_box_left(d, i, m):
                 i2, m2 = pass_left(d, i + 3, m, i - 1)
                 d.lemma(form, i2 + m2, fwd=False, pi=pi)
                 if undo: d.lemma(undo[0], i2 + m2, fwd=False, pi=undo[1])
+                _MEMO[key] = (o, form)
                 return i2, m2
             except (Stuck, AssertionError):
                 _restore(d, s)
