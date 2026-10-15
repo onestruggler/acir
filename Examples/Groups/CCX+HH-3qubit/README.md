@@ -94,7 +94,9 @@ give the full presentation.
 All 8,229 Agda modules in this directory pass Agda 2.8.0 with
 standard-library 2.4, including the assembled presentation, its public
 exports, the original circuit lemmas, the missing-K countermodel and
-the standalone audits. This includes all 32 shared evaluation modules,
+the standalone audits. The public entry point, full-directory audit
+and `MainTheorems.agda` also pass through WSL from the Windows working
+tree. This includes all 32 shared evaluation modules,
 all 106 decoding certificates and both matrix bridges.
 The six-index `Transport/r2c.agda` dispatcher, including its 420 cases,
 passes with a compacting 3 GB heap. The complete `TwoLevel.agda` map
