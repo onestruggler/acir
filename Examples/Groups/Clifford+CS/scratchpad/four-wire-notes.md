@@ -996,3 +996,62 @@ an element of 2T).  The letterwise analysis above (the subgroup of order
 closure.  Open: whether everything the hybrid's facts need follows the
 same way (the single-control role, and partners whose target is a
 control of the hybrid).
+
+## The hybrid's far facts, from Barenco's three-control decomposition (hybsep2/3.py, hybfar.py, 2026-10-15)
+
+All 31 far classes of the hybrid letter (22 against the K-free letters, 9
+against another hybrid) derive once one four-wire identity is granted:
+Barenco's three-control decomposition of the decoded hybrid with a
+control c of its Barenco pair pulled out (t_lf.LF, `AXIOM LF` in
+hybfar.py, at its canonical placement c, w, z, t = 1, 2, 3, 0 and moved
+by relabelling; the other pair member by two windows exchanging
+Barenco's controls):
+
+    [L_cw(V^2_t), CK(z -> t)] = L_cw(V^-1) Toff(z; c, w) L_cz(V) Toff(z; c, w) L_cz(V^-1),
+
+every piece a three-wire gate black on c (L_cx(W) Barenco's word with root
+sqrt(W)).  Every class has a separating wire in Barenco's pair of each
+hybrid it involves (t_kk.py), so each hybrid becomes five such pieces and
+the fact is pieces against the other letter:
+
+- a piece passes any white unit by a spelling it meets only in windows
+  (`spell_pass`: the c-spelling of Barenco's word, c the CNOT's control,
+  for units off the piece; the x-spelling for gates diagonal on x);
+- a Barenco piece passes the four white Toffolis it does not hold
+  (configurations): I, Toff(t; not-c, u), by the white Barenco of V group
+  by group (hybsep.bar_tof, for any root of a power of V); III, Toff(u;
+  not-c, t), as I conjugated by white K's on u and t; II and IV,
+  Toff(x; not-c, u) and Toff(u; not-c, x), as a white CCZ between white
+  K's, the CCZ spelled CS(c,x) CS(c,u) CX CS(c,u)^-1 CX;
+- a Barenco piece passes any white K-free gadget (648/648 checked): the
+  target word split off (ca_split), the diagonal core spelled [Toff, CS]
+  with the CS on a wire the piece sees diagonally; when the gadget's
+  target is the piece's, the piece is a commutator [Lambda_c(alpha_t),
+  Lambda_x(beta_t)] of units (V = [S, K], V^-1 = [K, S]), and the
+  controlled action `ca` carries the gadget across Lambda_x(beta);
+- a Toffoli piece passes it as CK(c,z) CCZ CK(c,z)^-1 (216/216);
+- against a white piece of the other hybrid: the white piece is one window
+  from white units and one plain white Barenco or Toffoli; a white
+  Barenco on the piece's target off its control passes group by group
+  (powers of one root of V commute), on the fourth wire controlled by the
+  piece's control as a commutator of units, elsewhere conjugated there by
+  a white Fredkin (three white Toffolis); black Toffoli pieces by the
+  duality X_c (the white piece with its colour exchanged passes the white
+  Toffoli), with both sides respelled jointly (`pass_spelled`).
+
+Why the decomposition and not less: when the partner's target is a
+control of the hybrid, every split-control spelling of the hybrid has a
+factor that is not controlled by the separating wire and acts on the
+partner's control; the decomposition is the one statement that makes the
+hybrid a product of gates all controlled by c.  It is equivalent to the
+V-analogue of toff-ccz, Toff(z; c, w) L_cz(V_t) Toff(z; c, w) =
+L_cz(V) L_cw(V) L_czw(V^-2): conjugating by a Toffoli produces a triply
+controlled non-Pauli, which no word in units controlled by c, Paulis
+controlled by z and target units can (modulo the Paulis the z-branch looks
+like the 0-branch, so the doubly controlled part stays Pauli).  When the
+partner shares the hybrid's target the decomposition is not needed (the
+commutator trick on [B, CK]), but using it uniformly is simpler.
+
+Still to do before proposing it as the fourth rule: the hybrid's bridge
+and pair-scalar facts, the adjacent shifts, the one-pair rules and ki-yb
+(thyb.py's list), which mix the hybrid with gadgets on the same pair.
