@@ -28,6 +28,11 @@ names.append(hybtop.C_sq())
 import gen_yb
 names.append(gen_yb.C_yb())
 print('hybrid facts:', len(names), 'new derivations:', len(deriv.DERIVATIONS) - n0, flush=True)
+# Lemma 8.7: the base cases (l87d.py)
+import l87d
+n1 = len(deriv.DERIVATIONS)
+l87 = l87d.make_all()
+print('lemma 8.7 bases:', len(l87), 'new derivations:', len(deriv.DERIVATIONS) - n1, flush=True)
 prims = LW.lower_all(deriv.DERIVATIONS)
 print('lowered', len(prims), sum(len(p.steps) for p in prims), flush=True)
 mods = emit.write_all(prims)

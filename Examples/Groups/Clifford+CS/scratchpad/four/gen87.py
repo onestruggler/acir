@@ -128,7 +128,7 @@ def main():
         out.append('')
         done_gates.add(gn)
     deps = {}
-    for ((name, lhs), items) in bases: deps.setdefault(INDEX[name], []).append(lemname(name))
+    for ((name, lhs), items) in bases: deps.setdefault(INDEX.get(name, 'MISSING'), []).append(lemname(name))
     dep_lines = NL.join(f'open import Examples.Groups.Clifford+CS.Four.D.{m} using ({" ; ".join(ns)})'
                         for m, ns in sorted(deps.items()))
     sem_lines = {}
