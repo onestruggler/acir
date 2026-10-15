@@ -33,7 +33,7 @@
 -- are the λ_p² of the swap, which pair off.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --cubical-compatible --safe #-}
+{-# OPTIONS --cubical-compatible --safe --lossy-unification #-}
 
 open import Data.Fin using (toℕ)
 open import Data.Nat using (ℕ ; suc)
