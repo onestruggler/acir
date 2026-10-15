@@ -91,8 +91,10 @@ give the full presentation.
 
 Verification checkpoint: the original entry point, the imported
 derivations, the missing-K countermodel, the repaired encoding and
-repaired soundness have passed Agda 2.8.0. The assembled presentation
-and the newly exported results are being checked.
+repaired soundness, and both matrix bridges have passed Agda 2.8.0.
+This includes all 32 shared evaluation modules and all 106 decoding
+certificates. The assembled presentation and the newly exported
+results are being checked.
 
 Use Agda 2.8.0 and standard-library 2.4, with the registered EucDomain
 dependency. Check separate entry points sequentially; do not run

@@ -16,6 +16,7 @@ import Examples.Groups.CCX+HH-3qubit.Repaired.EncodingMatrices as EM
 import Examples.Groups.CCX+HH-TwoLevel.Syntactics as T
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
+import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring as R
 module Dim = SS.Dim 4
 import Examples.Groups.CCX+HH-3qubit.DecodeMatrices.M0 as CM0
 import Examples.Groups.CCX+HH-3qubit.DecodeMatrices.M1 as CM1
@@ -859,5 +860,6 @@ decode-matrix : ∀ w → Dim.⟦ w ⟧ᴸ ≡ ⟦ (decode ʷ) w ⟧ᴹ
 decode-matrix [ g ]ʷ = letter-matrix g
 decode-matrix ε = Eq.sym matrix-ε
 decode-matrix (w • v) = Eq.trans (Dim.⟦•⟧ᴸ w v)
-  (Eq.trans (Eq.cong₂ _·*·_ (decode-matrix w) (decode-matrix v))
+  (Eq.trans (Eq.cong₂ (_·*·_ {{R.RingD}})
+    (decode-matrix w) (decode-matrix v))
     (Eq.sym (matrix-• ((decode ʷ) w) ((decode ʷ) v))))

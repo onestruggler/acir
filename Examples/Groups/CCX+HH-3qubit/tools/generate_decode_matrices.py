@@ -113,6 +113,7 @@ import {P}.Repaired.EncodingMatrices as EM
 import Examples.Groups.CCX+HH-TwoLevel.Syntactics as T
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Syntactics as L
 import Examples.Groups.CCX+HH-TwoLevel.Scaled.Semantics as SS
+import Examples.Groups.Real-Clifford+CH-TwoLevel.Ring as R
 module Dim = SS.Dim 4
 '''
 for atom in f.atoms:s+=f'import {P}.DecodeMatrices.{f.name(atom)} as C{f.name(atom)}\n'
@@ -143,7 +144,8 @@ decode-matrix : ∀ w → Dim.⟦ w ⟧ᴸ ≡ ⟦ (decode ʷ) w ⟧ᴹ
 decode-matrix [ g ]ʷ = letter-matrix g
 decode-matrix ε = Eq.sym matrix-ε
 decode-matrix (w • v) = Eq.trans (Dim.⟦•⟧ᴸ w v)
-  (Eq.trans (Eq.cong₂ _·*·_ (decode-matrix w) (decode-matrix v))
+  (Eq.trans (Eq.cong₂ (_·*·_ {{R.RingD}})
+    (decode-matrix w) (decode-matrix v))
     (Eq.sym (matrix-• ((decode ʷ) w) ((decode ʷ) v))))
 '''
 (ROOT/'Repaired'/'DecodingMatrices.agda').write_text(s,encoding='utf-8')
