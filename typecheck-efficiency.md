@@ -43,7 +43,7 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 |---|---|---|
 | Remove a `with` whose test computes anyway | `BR/Two/L2-CZ/Left`, `Pushing/Push2` | 51.7 → 5.8 s, 19.1 → 2.1 s |
 | Merge clauses that differ only in an argument nothing splits on | `BR/Two/D`, `L2-CZ/Left` | part of 20.7 → 2.7 s |
-| `--lossy-unification` | `BR/Calculations`, `BR/Two/D`, `L2-CZ/Left`, `Simplified-V1/Iso` | 15.3 → 1.1 s, 20.7 → 2.7 s, −40 %, −17 % |
+| `--lossy-unification` | `BR/Calculations`, `BR/Two/D`, `L2-CZ/Left`, `Simplified-V1/Iso`, `CCX+HH-TwoLevel/QuadXEBase` | 15.3 → 1.1 s, 20.7 → 2.7 s, −40 %, −17 %, 126 → 11.7 s |
 | Apply reasoning modules once, not per clause | `Simplified-V1/Forward`, `Simplified-V1/Iso` | 23.0 → 10.8 s, −20 % |
 | Share duplicated rewrite rules through `then` | `Ex-Sym3n/Swap` | 21.0 → 15.4 s |
 | Split only on what blocks reduction, not on every intermediate result | `Construct/Properties/Amalgamation` | 54.6 → 25.1 s (profile total) |
@@ -75,7 +75,16 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   13×). It can pick a wrong solution where a constraint has several; name
   the implicit argument there (`Iso`: `by-assoc {v = SemiDirect.H ^ 4}`).
   It gave nothing measurable on `Paper-V0/Lemmas`, `Powers` or
-  `Forward`, so measure it back to back before adding it.
+  `Forward`, so measure it back to back before adding it. **Try it
+  first** where the time sits in conversion checks between terms headed
+  by defined functions — levels of matrices, `Low`/`Path` over words,
+  `actMʷ w M`. In `QuadXEBase` (profile total 146 s, one where-definition
+  82 s) several rounds of restructuring found that a right-hand side cost a
+  minute when its expected type spelled the state as `actMʷ T1w σ` and
+  nothing behind a type alias, and that inlining `bridge` and giving
+  the pieces alias types brought the total to 58 s; the flag alone, on
+  the unchanged file, brought it to 22 s, and with it the restructuring
+  was unnecessary.
 - **Module applications cost, per application.** `open M args` copies
   every definition `M` exports into the current module, and those copies
   then go through positivity, dead-code analysis and serialisation.
