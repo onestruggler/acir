@@ -8,10 +8,16 @@
 -- AX below, has a parity invariant of the four-wire theory against it),
 -- and the rule set for every width adds equations on five wires:
 -- AX, the commutation of the doubly controlled S Σ(x; t, y | u, A) with
--- the CS of its two borrowed wires u, A.  They are kept in a relation of
--- their own, the rules of Syntactics included through `old`, so that
--- nothing built on Syntactics changes; `embed` carries a derivation in
--- the old theory to the new one.
+-- the CS of its two borrowed wires u, A, and the control schema: the
+-- controlled versions (Lambda), any number of times, of AX and of the
+-- four-wire rules lf, hyb-sq and hyb-yb, whose controlled versions the
+-- joint paper's box calculus does not reach (box normal forms stick on a
+-- controlled K next to a box; scratchpad/five-qubit-plan.md).  The
+-- controls are the top wires; the schema is sound (Five.Soundness)
+-- because the functor denotes the controlled matrix (Lambda.Semantics).
+-- They are kept in a relation of their own, the rules of Syntactics
+-- included through `old`, so that nothing built on Syntactics changes;
+-- `embed` carries a derivation in the old theory to the new one.
 --
 -- AX at its canonical placement: u = 0, A = 1, t = 3, y = 4, x = 2; the
 -- commutator [Toff(1; 3, 4), CS(2, 1)] with the Toffoli onto wire 1,
@@ -22,7 +28,7 @@
 
 module Examples.Groups.Clifford+CS.Five.Rules where
 
-open import Data.Nat using (ℕ ; suc)
+open import Data.Nat using (ℕ ; suc) renaming (_+_ to _+ℕ_)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (Word ; WRel ; [_]ʷ ; ε ; _•_)
 open import Notations using (₄₊)
@@ -31,6 +37,7 @@ import Circuit.Base
 import Presentation.Base as PB
 
 open import Examples.Groups.Clifford+CS.Syntactics
+open import Examples.Groups.Clifford+CS.Lambda using (λ¹ᵏ)
 
 private
   variable
@@ -64,6 +71,12 @@ data _XRel,_===_ : (n : ℕ) → WRel (Gen n) where
 
   -- Five wires.
   ax : (suc (₄₊ n)) XRel, AX.l === AX.r
+
+  -- The control schema, k + 1 controls on the top wires.
+  ctl-ax  : ∀ k → (₄₊ (suc k +ℕ suc n)) XRel, λ¹ᵏ (suc k) (AX.l {n}) === λ¹ᵏ (suc k) (AX.r {n})
+  ctl-lf  : ∀ k → (₄₊ (suc k +ℕ n)) XRel, λ¹ᵏ (suc k) (LF.Hyb {n}) === λ¹ᵏ (suc k) (LF.Dec {n})
+  ctl-hsq : ∀ k → (₄₊ (suc k +ℕ n)) XRel, λ¹ᵏ (suc k) (HSQ.Sq {n}) === λ¹ᵏ (suc k) ε
+  ctl-hyb : ∀ k → (₄₊ (suc k +ℕ n)) XRel, λ¹ᵏ (suc k) (HYB.Yl {n}) === λ¹ᵏ (suc k) (HYB.Yr {n})
 
 private module LX = SC.Lift-Relation _XRel,_===_
 

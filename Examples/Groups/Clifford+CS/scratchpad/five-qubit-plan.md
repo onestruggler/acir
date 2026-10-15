@@ -111,3 +111,86 @@ swap-spelling crosses every idle wire of the window and need re-framing;
 14,725 lemma uses include 1,218 distinct (lemma, wire renaming) pairs,
 to be emitted either by replaying the renamed derivation or by
 swap-conjugation tables as in Four/TransportTables.
+
+## Progress (2026-10-15, second session)
+
+The paper's LaTeX is in `cs-clement/` at the repo root; its derivation
+scripts (`scratchpad/joint/*.py`: derivn, run_all, w5lib, cs, deb_all,
+...) are NOT on the office machine, so `five/load5.py`/`lower5.py`/
+`emit5.py` cannot be rerun here.  Done instead, all typechecked:
+
+- Ingredient 1, the controlled functor (`Lambda.agda`): λ¹ : Circuit
+  (4 + n) -> Circuit (5 + n), control on the new top wire, letterwise:
+  i -> S_t, S_v -> CS(v,t), K_v -> CK(t->v), CS(v,v+1) -> the S-box
+  Σ(v; t, v+1 | u, A) of Five.Letters (Sb2-0-41-3 at the bottom pair,
+  borrowing the two wires above; near the top of a four-wire domain
+  Sb0-1-42-3 and Sb0-2-43-1, borrowing below).  Defined by λ¹(g ↥) =
+  λ¹(g) ↑ and `stretch` (an idle wire inserted just below the top wire:
+  Swᵗ • top c • Swᵗ), so at width 5 its letters are Five.Letters'
+  spellings.  λ⁰ = Xᵗ λ¹ Xᵗ letter by letter; λ¹ᵏ iterates.
+- Semantics (`Semantics/Control.agda`, `Lambda/Checks.agda`,
+  `Lambda/Semantics.agda`): ⟦λ¹ʷ w⟧ ~ ctrl ⟦w⟧, ⟦λ⁰ʷ w⟧ ~ ctrl⁰ ⟦w⟧ at
+  every width; ctrl (l , M) = (l , blk (γ^l) M), `blk P M` the operator
+  block-diagonal on the top wire, defined by peeling bits like tensor.
+  Eight evaluations (the three S-boxes on five wires) in about a minute.
+- Ingredient 2 (without touching Syntactics): `Five/Rules` has the
+  schema ctl-ax, ctl-lf, ctl-hsq, ctl-hyb (λ¹ᵏ (suc k) of AX, lf, hyb-sq,
+  hyb-yb); `Five/Soundness.soundₓ`; `Five/Weakening.top-congₓ`.
+- λ-calculus (ii) / (F5) at every width (`Lambda/Split.agda`): g ≡
+  λ⁰(g) λ¹(g) for every generator, from three five-wire equations
+  (record F5; `F5-from` gets them from completeness on five wires, so
+  for n >= 6 they are free; at n = 5 they are joint derivations).
+- `PermCalc.agda`, `LocalPlace.agda`: Real-Clifford+CH's swap-network
+  calculus ported (two networks with one permutation are equal;
+  `place-eq`: a placement depends only on where the network sends the
+  significant wires).
+
+Next, in order:
+1. (iii)/(iv) at every width.  The letters' fixed borrowed wires make
+   two letters span up to nine wires, so (as in the paper) the
+   borrowed-wire switch (i) is needed first: Σ(x; t, y | u, A) placed at
+   arbitrary distinct wires (`pl σ (Σ₅ ↓ᵏ r)` with a network σ), each
+   λ letter shown ≈ such a placement (induction on ↑/stretch), and (i)
+   from completeness on six wires (n >= 7) or the joint six-wire
+   derivations (n = 6).  Then (iii)/(iv) by one frame each.
+2. Transport (Lemma transport) by induction on derivations: cong↑ by
+   λ¹(g ↥) = λ¹(g) ↑, rule instances through (i) and completeness below
+   (the semantics of the images is Lambda.Semantics), schema instances
+   by the schema.
+3. The decoding by affine conjugation, its semantics at symbolic width
+   (G_n(V) = λ⁰(G_{n-1}(V)) gives ⟦G_n⟧ from λ⁰-sem), Lemmas 8.7/8.8,
+   assembly in a CompletenessInduction for the new theory.
+
+### How far `↑` and `stretch` reach (analysis, 2026-10-15)
+
+With the fixed borrowed wires of Lambda, a CS at domain position p has
+the window [p, p+3] when p <= D-4 (borrowing p+2, p+3) and [D-4, D-1]
+otherwise (the three top positions borrow from below); S, K have the
+window {p}, the scalar none.  Two reductions are syntactic:
+
+- a circuit avoiding wire 0 is w ↑, and λ¹ʷ (w ↑) = (λ¹ʷ w) ↑ (λ¹(g ↥)
+  = λ¹(g) ↑, from domain 5 on);
+- a circuit whose letters all borrow above and avoid the domain's top
+  wire is `top w`, and λ¹ʷ (top w) ≈ stretch (λ¹ʷ w) (λ¹ of a bottom
+  letter is a stretch, and stretch commutes with ↑).
+
+Neither reaches a configuration touching wire 0 and the top three
+domain positions (a fringe CS borrows below, so its window moves when
+the domain grows).  For transport of a rule instance (window <= 6
+domain wires) that leaves base instances up to about eight wires; for
+(iii)/(iv) (two letters, windows up to 4 + 4) up to about ten.  So
+either (a) the paper's borrowed-wire switch (i) — Σ(x; t, y | u, A)
+placed at arbitrary wires by networks (PermCalc/LocalPlace), two six-
+wire equations moving u or A to an idle wire plus (F0), and each letter
+re-borrowed into the other letters' support so that every base
+equation is on five wires — or (b) more base equations, at widths up
+to ten, each needing its own machine derivation below the width where
+completeness is available.  (a) is the paper's route and keeps the
+base at five and six wires; it needs `place-eq` at symbolic positions
+(networks with computed permutations, as Real-Clifford+CH's
+NetWires/BoxFrames).  A third option, a design decision for the user:
+(c) take the control schema over all the rules (not only AX, lf,
+hyb-sq, hyb-yb); then λ maps every rule instance to a rule instance
+(λ(cong↑ r) = cong↑ λ(r), λ(ω↑=ω) is refl, λ of a schema instance is
+the next one), and only the structural commutations comm₁/comm₂ need
+(iv) — a weaker theorem (more axioms) but a much shorter proof.
