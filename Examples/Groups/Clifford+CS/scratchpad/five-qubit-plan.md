@@ -94,3 +94,20 @@ with four-wire windows = SemanticSteps.Below 4 complete4).
   window step through complete4, an emitter from joint/derivn.py's
   derivation format), since the F-items, the representation lemma and
   F6 all arrive as five-wire derivations.
+
+## The paper's five-wire derivations, measured (2026-10-15)
+
+joint/run_all.py: 825 derivations, 87,752 steps (57,353 window steps,
+11,564 commutations, 14,725 lemma uses, 4,109 macro folds/unfolds, one
+swap naturality), the longest 15,982 steps; Clement's schema and the
+box involution axiom are never used.  Letters: boxes (BOX/SBOX/KBOX and
+inverses, all five-wire, so never inside a window) and gates on at most
+three wires.  scratchpad/five/mac5.py spells every five-wire letter at
+width 5 (165 basic letters checked against joint's semantics; boxes by
+their one-level unfolding, so fold/unfold are definitional).
+
+Lowering: 10,021 of the window steps (17%) have a letter whose
+swap-spelling crosses every idle wire of the window and need re-framing;
+14,725 lemma uses include 1,218 distinct (lemma, wire renaming) pairs,
+to be emitted either by replaying the renamed derivation or by
+swap-conjugation tables as in Four/TransportTables.
