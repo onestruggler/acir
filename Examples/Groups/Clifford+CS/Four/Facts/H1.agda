@@ -31,6 +31,7 @@ open import Examples.Groups.Clifford+CS.Four.Facts.Classes using (Resp ; []ʳ ; 
 open import Examples.Groups.Clifford+CS.Four.Facts.HClasses
 open import Examples.Groups.Clifford+CS.Four.D.D164 using (lem-resp-S0-K0-CS01-TOFF023-CSd01-TOFF023-Kd0-Sd0 ; lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 ; lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1 ; lem-resp-S2-K2-CS12-TOFF203-CSd12-TOFF203-Kd2-Sd2 ; lem-resp-TOFF013-CS02-TOFF013-CSd02 ; lem-resp-TOFF023-CS01-TOFF023-CSd01)
 open import Examples.Groups.Clifford+CS.Four.D.D165 using (lem-resp-S1-K1-CS12-TOFF103-CSd12-TOFF103-Kd1-Sd1)
+open import Examples.Groups.Clifford+CS.Four.D.D739 using (lem-respell-hyb-CS13-CS13-CK31-CS13-CX32-CS12-CS12-CS12---⟶-CS01-CS01-CK01-CS01-CX03-CS13-CS13-CS13-)
 open import Examples.Groups.Clifford+CS.Four.D.D767 using (lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS03-CS03-CK30-CS03-CX31-CS01-CS01-CS01-)
 open import Examples.Groups.Clifford+CS.Four.D.D769 using (lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS01-CS01-CK10-CS01-CX13-CS03-CS03-CS03- ; lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS03-CS03-CK30-CS03-CX32-CS02-CS02-CS02-)
 open import Examples.Groups.Clifford+CS.Four.D.D771 using (lem-respell-hyb-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12---⟶-CS13-CS13-CK31-CS13-CX30-CS01-CS01-CS01- ; lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01- ; lem-respell-hyb-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02---⟶-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03- ; lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS01-CS01-CK10-CS01-CX12-CS02-CS02-CS02- ; lem-respell-hyb-CS02-CS02-CK20-CS02-CX21-CS01-CS01-CS01---⟶-CS02-CS02-CK20-CS02-CX23-CS03-CS03-CS03- ; lem-respell-hyb-CS12-CS12-CK21-CS12-CX20-CS01-CS01-CS01---⟶-CS01-CS01-CK01-CS01-CX02-CS12-CS12-CS12-)
@@ -461,7 +462,7 @@ i-shift-7 = trans (trans (cong br-l-7 (trans (cong br-l-8 br-k-7) (sym (++≈ (f
   where
   e : ⟪ flat (TF (col w₃ ∷ col w₁ ∷ rel s₀ ∷ rel s₁ ∷ rel s₂ ∷ rel s₁ ∷ []) (B-l-7 ∷ B-l-8 ∷ B-k-7 ∷ [])) ⟫ʷ ≈ ⟪ flat (TF (col w₃ ∷ col w₁ ∷ rel s₀ ∷ rel s₁ ∷ rel s₂ ∷ rel s₁ ∷ []) (B-k-8 ∷ B-l-7 ∷ B-l-8 ∷ [])) ⟫ʷ
   e = trans (resp {TF (col w₃ ∷ col w₁ ∷ rel s₀ ∷ rel s₁ ∷ rel s₂ ∷ rel s₁ ∷ []) (B-l-7 ∷ B-l-8 ∷ B-k-7 ∷ [])} {(HC20-0 ∷ HC20-1 ∷ HC20-2 ∷ [])} (re lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 (re lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1 (same ([]ʳ)))))
-      (trans hcls-20 (sym (resp {TF (col w₃ ∷ col w₁ ∷ rel s₀ ∷ rel s₁ ∷ rel s₂ ∷ rel s₁ ∷ []) (B-k-8 ∷ B-l-7 ∷ B-l-8 ∷ [])} {(HC20-3 ∷ HC20-4 ∷ HC20-5 ∷ [])} (same (re lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 (re lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1 ([]ʳ)))))))
+      (trans hcls-20 (sym (resp {TF (col w₃ ∷ col w₁ ∷ rel s₀ ∷ rel s₁ ∷ rel s₂ ∷ rel s₁ ∷ []) (B-k-8 ∷ B-l-7 ∷ B-l-8 ∷ [])} {(HC20-3 ∷ HC20-4 ∷ HC20-5 ∷ [])} (re lem-respell-hyb-CS13-CS13-CK31-CS13-CX32-CS12-CS12-CS12---⟶-CS01-CS01-CK01-CS01-CX03-CS13-CS13-CS13- (re lem-resp-S0-K0-CS02-TOFF013-CSd02-TOFF013-Kd0-Sd0 (re lem-resp-S1-K1-CS01-TOFF123-CSd01-TOFF123-Kd1-Sd1 ([]ʳ)))))))
 
 i-shift-8 : lo₁ 8 • lo₁ 9 • dKI₁ 8 ≈ dKI₁ 9 • lo₁ 8 • lo₁ 9
 i-shift-8 = trans (trans (cong br-l-8 (trans (cong br-l-9 br-k-8) (sym (++≈ (flatB B-l-9) (flat (B-k-8 ∷ [])))))) (sym (++≈ (flatB B-l-8) (flat (B-l-9 ∷ B-k-8 ∷ [])))))

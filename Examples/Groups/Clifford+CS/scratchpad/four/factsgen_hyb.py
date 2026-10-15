@@ -82,6 +82,7 @@ def hclasses(plan):
         i = len(names); names[fn] = (f'hcls-{i}', [f'HC{i}-{j}' for j in range(len(kl))],
                                      [f'HC{i}-{j}' for j in range(len(kl), len(kl) + len(kr))])
         used.append((fn, kl, kr))
+        REPS[fn] = (kl, kr)                 # the blocks printed for the class
     for fn, kl, kr in used:
         cn, ln, rn = names[fn]
         lhs, rhs = L[fn]
@@ -105,6 +106,7 @@ def hclasses(plan):
 
 # ------------------------------------------------------------ instances
 RESP_USED = set()
+REPS = {}          # fn -> the class blocks HClasses prints (the first instance's)
 
 def resp_term(Lt, Lc):
     parts = []
@@ -141,6 +143,9 @@ def instance(entry, cls):
     Lt = F4.TF(ops_, HPL.blocks(l)); Rt = F4.TF(ops_, HPL.blocks(r))
     cn, ln, rn = cls[fn]
     LC, RC = blist(ln), blist(rn)
+    # respell against the class blocks as printed, which another instance
+    # of the same class may have spelled differently
+    kl, kr = REPS[fn]
     G, GI = ops(ops_), ops(list(reversed(ops_)))
     if not sw:
         e = (f'trans (resp {{TF {G} {Lb}}} {{{LC}}} ({resp_term(Lt, kl)}))' + NL +
