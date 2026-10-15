@@ -564,3 +564,32 @@ lem-comm-CZ24-TOFF013 c4 = run b0
        at 2 2 (Sw23 ∷ CZ24 ∷ []) (lw0 c4 (CZ34 ∷ Sw23 ∷ []) (Sw23 ∷ CZ24 ∷ []) tt tt Eq.refl) ▸
        at 0 3 (Toff013 ∷ []) (by-assoc Eq.refl) ▸ done
 
+
+-- comm SWAP23 BOX(0;14): 11 steps
+lem-comm-SWAP23-BOX⟨0·14⟩ : Complete 4 → ⟪ (Sw23 ∷ Bx0-14 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-14 ∷ Sw23 ∷ []) ⟫ʷ
+lem-comm-SWAP23-BOX⟨0·14⟩ c4 = trans (run b0) (run b1)
+  where
+  b0 : Chain (Sw23 ∷ Bx0-14 ∷ []) (Sw34 ∷ Sw23 ∷ CZ12 ∷ Sw23 ∷ Sw34 ∷ Sw23 ∷ Sw34 ∷ Sw34 ∷ [])
+  b0 = at 1 1 (CZ14 ∷ []) (refl) ▸
+       at 1 1 (Sw34 ∷ Sw23 ∷ CZ12 ∷ Sw23 ∷ Sw34 ∷ []) (by-assoc Eq.refl) ▸
+       at 0 0 (Sw34 ∷ Sw34 ∷ []) (lw0 c4 [] (Sw34 ∷ Sw34 ∷ []) tt tt Eq.refl) ▸
+       at 1 3 (Sw24 ∷ []) (by-assoc Eq.refl) ▸
+       at 1 2 (Sw23 ∷ Sw34 ∷ []) (lw0 c4 (Sw24 ∷ Sw23 ∷ []) (Sw23 ∷ Sw34 ∷ []) tt tt Eq.refl) ▸
+       at 2 2 (CZ12 ∷ Sw34 ∷ []) (sym (c₃ (CZ ↑) (Swap))) ▸
+       at 3 2 (Sw23 ∷ Sw24 ∷ []) (lw0 c4 (Sw34 ∷ Sw23 ∷ []) (Sw23 ∷ Sw24 ∷ []) tt tt Eq.refl) ▸
+       at 4 1 (Sw34 ∷ Sw23 ∷ Sw34 ∷ []) (by-assoc Eq.refl) ▸ done
+
+  b1 : Chain (Sw34 ∷ Sw23 ∷ CZ12 ∷ Sw23 ∷ Sw34 ∷ Sw23 ∷ Sw34 ∷ Sw34 ∷ []) (Bx0-14 ∷ Sw23 ∷ [])
+  b1 = at 6 2 [] (lw0 c4 (Sw34 ∷ Sw34 ∷ []) [] tt tt Eq.refl) ▸
+       at 0 5 (CZ14 ∷ []) (by-assoc Eq.refl) ▸
+       at 0 1 (Bx0-14 ∷ []) (refl) ▸ done
+
+
+-- resp TOFF203 at 1: 2 steps
+lem-resp-TOFF203-at-1 : Complete 4 → ⟪ (Toff203 ∷ []) ⟫ʷ ≈ ⟪ (Sw01 ∷ Toff213 ∷ Sw01 ∷ []) ⟫ʷ
+lem-resp-TOFF203-at-1 c4 = run b0
+  where
+  b0 : Chain (Toff203 ∷ []) (Sw01 ∷ Toff213 ∷ Sw01 ∷ [])
+  b0 = at 1 0 (Sw01 ∷ Sw01 ∷ []) (lw4 c4 [] (Sw01 ∷ Sw01 ∷ []) tt tt Eq.refl) ▸
+       at 0 2 (Sw01 ∷ Toff213 ∷ []) (lw4 c4 (Toff203 ∷ Sw01 ∷ []) (Sw01 ∷ Toff213 ∷ []) tt tt Eq.refl) ▸ done
+
