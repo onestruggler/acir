@@ -229,3 +229,163 @@ def refold_boxes(d, lo, hi, boxes):
                     d.fold(k, g); hi -= len(us) - 1; changed = True
                     break
     return hi
+
+
+# ------------------------------------------------------------ splitting
+def pieces(b):
+    """decompositions of a letter into letters on at most two wires (for
+    crossing a letter it commutes with but spans five wires with)."""
+    k = b[0]
+    out = []
+    if k == 'CCZ':
+        for x, y, w in itertools.permutations(b[1:]):
+            out.append([norm1(('CS', y, w)), ('CX', x, y), norm1(('CSd', y, w)), ('CX', x, y),
+                        norm1(('CS', x, w))])
+    elif k == 'TOFF':
+        tg = b[1]
+        for ps in pieces(norm1(('CCZ',) + b[1:])):
+            out.append([('K', tg)] + ps + [('Kd', tg)])
+    return out
+
+
+def _commutes(x, y):
+    return fp([x, y]) == fp([y, x])
+
+
+def pass_right(d, k):
+    """x y at k -> y x', x' = y^-1 x y (y unchanged); returns len(x')."""
+    x, y = d.cur[k], d.cur[k + 1]
+    if not (support(x) & support(y)):
+        d.comm(k); return 1
+    if len(support(x) | support(y)) <= N - 1:
+        return conj_left(d, k)
+    # five wires: split x when it commutes with y
+    if not _commutes(x, y):
+        raise Stuck(('pass_right', show([x]), show([y])))
+    for ps in pieces(x):
+        if all(not (support(p) & support(y)) or
+               (len(support(p) | support(y)) <= N - 1 and _commutes(p, y)) for p in ps):
+            d.win(k, 1, ps)
+            for j in range(len(ps) - 1, -1, -1):        # each piece right past y
+                pos = k + j
+                p = d.cur[pos]
+                if not (support(p) & support(y)): d.comm(pos)
+                else: d.win(pos, 2, [y, p])
+                # y moved left by one: it now sits at pos
+                assert d.cur[pos] == y
+            # y at k, pieces at k+1 .. k+len(ps)
+            d.win(k + 1, len(ps), [x])
+            return 1
+    raise Stuck(('no split', show([x]), show([y])))
+
+
+def pass_left(d, k):
+    """x y at k -> y' x, y' = x y x^-1 (x unchanged); returns len(y')."""
+    x, y = d.cur[k], d.cur[k + 1]
+    if not (support(x) & support(y)):
+        d.comm(k); return 1
+    if len(support(x) | support(y)) <= N - 1:
+        return conj_right(d, k)
+    if not _commutes(x, y):
+        raise Stuck(('pass_left', show([x]), show([y])))
+    for ps in pieces(y):
+        if all(not (support(p) & support(x)) or
+               (len(support(p) | support(x)) <= N - 1 and _commutes(p, x)) for p in ps):
+            d.win(k + 1, 1, ps)
+            for j in range(len(ps)):                   # each piece left past x
+                pos = k + j
+                p = d.cur[pos + 1]
+                if not (support(p) & support(x)): d.comm(pos)
+                else: d.win(pos, 2, [p, x])
+                assert d.cur[pos + 1] == x
+            d.win(k, len(ps), [y])
+            return 1
+    raise Stuck(('no split', show([x]), show([y])))
+
+
+def block_right(d, i, m, j):
+    """the block of m letters at i moves right past the n = j - (i+m) letters
+    after it (each of those unchanged), the block conjugated; returns the
+    block's new start and length."""
+    n = j - (i + m)
+    for _ in range(n):
+        g_pos = i + m
+        # the block letters, from the last, pass g
+        k = g_pos - 1; newlen = 0
+        for _ in range(m):
+            l = pass_right(d, k)
+            newlen += l
+            k -= 1
+        i += 1; m = newlen
+        if m > 1:
+            m = simplify(d, i, m)
+    return i, m
+
+
+def block_left(d, i, m, target):
+    """the block of m letters at i moves left until it starts at target."""
+    while i > target:
+        k = i - 1; newlen = 0
+        for _ in range(m):
+            l = pass_left(d, k)
+            k += l; newlen += l
+        i -= 1; m = newlen
+        if m > 1:
+            m = simplify(d, i, m)
+    return m
+
+
+def simplify(d, i, m):
+    """re-spell, greedily, every sub-segment of [i, i+m) on at most four
+    wires that has a shorter spelling, longest first; returns the new m."""
+    changed = True
+    while changed:
+        changed = False
+        for n in range(m, 1, -1):
+            for k in range(i, i + m - n + 1):
+                seg = d.cur[k:k + n]
+                if len(supp(seg)) > N - 1:
+                    continue
+                r = spell(seg)
+                if r is not None and len(r) < n:
+                    d.win(k, n, r); m -= n - len(r); changed = True
+                    break
+            if changed:
+                break
+    return m
+
+
+# ------------------------------------------------------------ two-letter spellings
+_PROBE = [0, 7, 21, 30]
+
+
+def _maybe_diag(word):
+    """a quick necessary test for diagonality on a few basis vectors."""
+    for x in _PROBE:
+        col = _column(word, x)
+        if any(col[y] for y in range(SEM.dim) if y != x):
+            return False
+    return True
+
+
+_spell1 = spell
+
+
+def spell(word, ws=None):
+    r = _spell1(word, ws)
+    if r is not None:
+        return r
+    ws = set(ws) if ws is not None else set(supp(word))
+    if len(ws) > N - 1:
+        return None
+    cands = candidates(ws)
+    for c1 in cands:
+        w1 = inv([c1]) + list(word)
+        for c2 in cands:
+            rest = inv([c2]) + w1
+            if not _maybe_diag(rest):
+                continue
+            dd = diag_spell(rest)
+            if dd is not None:
+                return [c1, c2] + dd
+    return None
