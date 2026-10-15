@@ -42,7 +42,12 @@ class Bar:
     def word(self, sp='c'):
         a, b = (self.c, self.x) if sp == 'c' else (self.x, self.c)
         return norm(barenco(self.wv, a, b, self.t))
-    def spellings(self): return [self.word('c'), self.word('x')]
+    def spellings(self):
+        out = [self.word('c'), self.word('x')]
+        try:
+            out.append(norm(comm_units(self)))
+        except Exception: pass
+        return out
     def wires(self): return {self.c, self.x, self.t}
     def __repr__(self): return f'Bar({self.wv};{self.c},{self.x}->{self.t})'
 

@@ -299,8 +299,11 @@ class TofG:
     def gsp(self):
         z, c, w = self.z, self.c, self.w
         out = [[self.word()]]
-        for (a, b) in ((w, z), (z, w)):
-            out.append([[l] for l in norm([('CK', c, z)] + H.ccz_sp(c, a, b) + [('CKd', c, z)])])
+        for e in (c, w, z):
+            o = [v for v in (c, w, z) if v != e]
+            for (a, b) in ((o[0], o[1]), (o[1], o[0])):
+                out.append([[l] for l in norm([('CK', c, z)] + H.ccz_sp(e, a, b) + [('CKd', c, z)])])
+                out.append([[l] for l in norm([('K', z)] + H.ccz_sp(e, a, b) + [('Kd', z)])])
         return out
 
 def tof_wtof(Q, y, v):

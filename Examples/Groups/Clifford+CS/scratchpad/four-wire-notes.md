@@ -1055,3 +1055,21 @@ commutator trick on [B, CK]), but using it uniformly is simpler.
 Still to do before proposing it as the fourth rule: the hybrid's bridge
 and pair-scalar facts, the adjacent shifts, the one-pair rules and ki-yb
 (thyb.py's list), which mix the hybrid with gadgets on the same pair.
+
+**The control symmetry follows (hybsym.py).**  The decomposition also
+gives the hybrid's symmetry under exchanging its single control with a
+control of Barenco's pair, so it holds with any control pulled out:
+with P = L_12(V^-1), R = L_13(V^-1), X3 = Toff(3;1,2) L_13(V) Toff(3;1,2),
+the decomposition reads HD = P X3 R and at the relabelled hybrid H' = R X2 P.
+X3 = CX23 L_13(V) CX23 (the Toffoli's white half passes, configuration II)
+= CX23 CX32 L_13(V) CX32 CX23 (CX32 passes: its control is L_13's) =
+CX32 SWAP L_13(V) SWAP CX32 = X2.  Then P and R pass X2 = L_13(V) H'
+L_12(V): the doubly controlled V's group by group; R passes H' through
+its pieces; P, controlled by H''s single control 2, passes H' = [B', C']
+because C' = CK(2,0) carries L_12(V^-1) to L_12(V) on its own three wires.
+18 top-level steps.  Two numerical findings for the remaining facts
+(t_bridge.py): the pair scalars and phase bridges of the hybrid are
+products of things it passes (diagonals on its controls, separated phase
+gadgets, the global phase) for every pair and some bridge per pair, the
+canonical bridge dPP(c-1, c+2) not always (c = 6, 8: an index off the
+pair only on the single control).
