@@ -150,8 +150,10 @@ def build(L, verbose=True, only=None):
             else:
                 item(L, name, l, r, idle)
             ok.append(name)
+            if verbose: print("ok", name, flush=True)
         except (Stuck, AssertionError) as e:
             bad.append((name, str(e)[:240]))
+            if verbose: print("FAIL", name, str(e)[:240], flush=True)
     if verbose:
         print(len(ok), 'F1 items derived,', len(bad), 'not')
         for n, e in bad:

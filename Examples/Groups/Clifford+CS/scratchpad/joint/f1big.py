@@ -21,6 +21,7 @@ from derivn import Derivation, show, norm1, supp
 from engine import Stuck
 
 N = derivn.N
+TOFF_BOX = False          # lambda1(Toff) as CK BOX CKd (else Barenco's C3X)
 
 
 def P(name, o=0):
@@ -73,7 +74,8 @@ COMPACT = {
     'CX01': lambda o: [norm1(('TOFF', o + 1, o, 4))],
     'CX10': lambda o: [norm1(('TOFF', o, o + 1, 4))],
     'CCZ': lambda o: [('BOX', idle3(o), o, o + 1, o + 2, 4)],
-    'Toff': lambda o: barenco(4, o, idle3(o), (o + 1, o + 2)),
+    'Toff': lambda o: ([('CK', 4, o), ('BOX', idle3(o), o, o + 1, o + 2, 4), ('CKd', 4, o)] if TOFF_BOX
+                       else barenco(4, o, idle3(o), (o + 1, o + 2))),
     'CCZ013': lambda o: [('BOX', o + 2, o, o + 1, o + 3, 4)],
 }
 
@@ -142,9 +144,12 @@ def piece_lemma(L, p):
         d.win(0, hi, [])
         boxbox.reorder(d, 0, target[0][2:])
     elif name == 'Toff':
-        # CK BOX CK S4 -> CK BOX CKd -> Barenco
+        # CK BOX CK S4 -> CK BOX CKd (-> Barenco)
         assert d.cur[3] == ('S', 4), show(d.cur)
         d.win(2, 2, [('CKd', 4, o)])
+        if TOFF_BOX:
+            d.done()
+            return nm
         bx = d.cur[1]
         u = bx[1]
         others = (o + 1, o + 2)
@@ -190,16 +195,20 @@ def item(L, name):
     assert [g[1] for g in bl] == [g[1] for g in br], f'{name}: boxes {show(bl)} vs {show(br)}'
     for q in range(len(bl)):
         boxbox.reorder(d, pl + q, br[q][2:])
+    if name in FINISH:
+        pl = FINISH[name](d, pl, L)
     assert len(supp(d.cur[:pl] + nfr[:pr])) <= N - 1, f'{name}: {show(d.cur[:pl])} vs {show(nfr[:pr])}'
     d.win(0, pl, nfr[:pr])
     d.lemma(f'nf-{name}', 0, fwd=False)
     d.done()
 
 
-def build(L, verbose=True):
+def build(L, verbose=True, only=None):
     ck_box(L)
     bad = []
     for name in RULES:
+        if only and name not in only:
+            continue
         try:
             item(L, name)
         except (Stuck, AssertionError) as e:
@@ -211,10 +220,37 @@ def build(L, verbose=True):
     return L
 
 
+
+# ------------------------------------------------------------ finishing touches
+def _finish_toff_ccz(d, pl, L):
+    """the remainder t T t T t T C134 C124 t T C134 (t = TOFF(3;1,2),
+    T = TOFF(0;3,4)) is the identity: C134 C124 = t C134 t, the t's cancel,
+    C134 passes T, and the two Barenco blocks t T t T are CK BOX CKd
+    (CK-box), which cancel by box2."""
+    t, T = norm1(('TOFF', 3, 1, 2)), norm1(('TOFF', 0, 3, 4))
+    C134, C124 = norm1(('CCZ', 1, 3, 4)), norm1(('CCZ', 1, 2, 4))
+    want = [t, T, t, T, t, T, C134, C124, t, T, C134]
+    assert d.cur[:pl] == want, f'toff-ccz remainder {show(d.cur[:pl])}'
+    d.win(6, 2, [t, C134, t])                 # t T t T t T t C134 t t T C134
+    d.win(8, 2, [])                           # t T t T t T t C134 T C134
+    d.win(7, 3, [T])                          # t T t T t T t T
+    pi = {0: 3, 1: 1, 2: 2, 3: 4, 4: 0}
+    d.lemma('CK-box', 4, fwd=False, pi=pi)
+    d.lemma('CK-box', 0, fwd=False, pi=pi)    # CK B CKd CK B CKd
+    d.win(2, 2, [])
+    d.lemma('box2', 1, pi=cross.box_pi(d.cur[1]))
+    d.win(0, 2, [])
+    return pl - 11
+
+
+FINISH = {'toff-ccz@0': _finish_toff_ccz}
+
+
 if __name__ == '__main__':
-    import box, boxsym, boxdash, boxtoff
+    import box, boxsym, boxdash, boxtoff, f5
     derivn.QUIET = True
     L = box.build({})
     boxsym.build(L); boxsym.build_perms(L); boxdash.build(L); boxbox.build(L); f0.build(L)
-    boxtoff.build(L)
-    build(L)
+    boxtoff.build(L); import boxck; f5.build(L); boxck.build(L)
+    import sys
+    build(L, only=sys.argv[1:] or None)
