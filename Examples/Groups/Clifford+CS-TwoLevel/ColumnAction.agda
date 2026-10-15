@@ -7,7 +7,7 @@
 -- synthesis algorithm and of the Main Lemma into arithmetic in ℤ[i].
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --lossy-unification #-}
 
 module Examples.Groups.Clifford+CS-TwoLevel.ColumnAction where
 
