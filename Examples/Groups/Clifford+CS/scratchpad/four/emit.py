@@ -102,6 +102,8 @@ def step_proof(st):
         t = f'{name} ({word_expr([bot])}) ({word_expr([downk(top, i)])})'
         return t if botfirst else f'sym ({t})'
     if kind == 'R': return 'by-assoc Eq.refl'
+    if kind == 'U':
+        return f'trans (can-≈ ({word_expr(seg)})) (sym (can-≈ ({word_expr(ys)})))'
     if kind == 'A':
         name, fwd = extra; t = 'ax ' + name
         return t if fwd else f'sym ({t})'
@@ -122,7 +124,7 @@ open import Word.Base using (ε ; _•_)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
 open import Examples.Groups.Clifford+CS.Tools using (ax)
-open import Examples.Groups.Clifford+CS.Windows using (win)
+{canon}open import Examples.Groups.Clifford+CS.Windows using (win)
 open import Examples.Groups.Clifford+CS.Completeness using (complete₃)
 open import Examples.Groups.Clifford+CS.TopWeakening using (low-comm)
 open import Examples.Groups.Clifford+CS.Idle using (low₁-comm)
@@ -198,7 +200,9 @@ def write_all(prims):
         for dname in deps: bymod.setdefault(modof[dname], []).append(lemname(dname))
         dep_lines = NL.join(f'open import Examples.Groups.Clifford+CS.Four.D.{m} using ({" ; ".join(ns)})'
                                for m, ns in sorted(bymod.items()))
-        text = HEADER.format(mod=mod, deps=dep_lines) + NL.join(lemma_text(P) for P in group)
+        uses_U = any(st[0] == 'U' for P in group for st in P.steps)
+        canon = 'open import Examples.Groups.Clifford+CS.Canonical using (can-≈)' + NL if uses_U else ''
+        text = HEADER.format(mod=mod, deps=dep_lines, canon=canon) + NL.join(lemma_text(P) for P in group)
         for P in group: modof[P.name] = mod
         mods.append(mod)
         io.open(os.path.join(ROOT, 'D', mod + '.agda'), 'w', encoding='utf-8', newline=NL).write(text)
@@ -210,6 +214,8 @@ if __name__ == '__main__':
     import lib4
     import consec4
     consec4.all_facts()
+    import table
+    table.make()
     prims = LW.lower_all(deriv.DERIVATIONS)
     mods = write_all(prims)
     print(len(mods), 'modules written to', ROOT)

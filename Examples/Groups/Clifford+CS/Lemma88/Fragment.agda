@@ -56,15 +56,15 @@ record Facts : Set where
     p-inv   : ∀ {i} → suc i < N → p i • p′ i ≈ ε
     p′-inv  : ∀ {i} → suc i < N → p′ i • p i ≈ ε
     p-ord   : ∀ {i} → suc i < N → p i ^ 4 ≈ ε
-    p-comm  : ∀ {i j} → suc i < N → suc j < N → p i • p j ≈ p j • p i
+    p-adj   : ∀ {i} → suc (suc i) < N → p i • p (suc i) ≈ p (suc i) • p i
     sq      : ∀ {i} → suc i < N → p i • p i ≈ l i • l i
     l-inv   : ∀ {i} → suc i < N → l i • h i ≈ ε
     h-inv   : ∀ {i} → suc i < N → h i • l i ≈ ε
     conj₂   : ∀ {i} → suc i < N → p i • l i ≈ l i • p′ i
     conj-up : ∀ {i} → suc (suc i) < N → p (suc i) • l i ≈ l i • p i • p (suc i)
     conj-dn : ∀ {i} → suc (suc i) < N → p′ i • p′ (suc i) • l (suc i) ≈ l (suc i) • p′ i
-    far-pl  : ∀ {i j} → suc i < N → suc j < N → suc (suc i) ≤ j ⊎ suc (suc j) ≤ i →
-              p i • l j ≈ l j • p i
+    far-pl⁺ : ∀ {i} → suc (suc (suc i)) < N → p i • l (suc (suc i)) ≈ l (suc (suc i)) • p i
+    far-pl⁻ : ∀ {i} → suc (suc (suc i)) < N → p (suc (suc i)) • l i ≈ l i • p (suc (suc i))
     far-ll  : ∀ {i j} → suc j < N → suc (suc i) ≤ j → l i • l j ≈ l j • l i
     braid   : ∀ {i} → suc (suc i) < N → l i • l (suc i) • l i ≈ l (suc i) • l i • l (suc i)
 
@@ -150,6 +150,126 @@ module Proofs (F : Facts) where
     w • (x • y)    ≈⟨ back w r ⟩
     w • ε          ≈⟨ right-unit ⟩
     w              ∎
+
+  ----------------------------------------------------------------------
+  -- Far phase pairs and rotations, and the phase pairs' commutation, from
+  -- the facts at distance two and one: by px-conj, p i is a word in
+  -- p (i + 1) and l i, and p′ (i + 1) one in p i and l (i + 1).
+
+  comm-respʳ : Comm z x → x ≈ y → Comm z y
+  comm-respʳ {z} {x} {y} c e = trans (back z (sym e)) (trans c (front z e))
+
+  comm-respˡ : Comm x z → x ≈ y → Comm y z
+  comm-respˡ c e = comm-sym (comm-respʳ (comm-sym c) e)
+
+  vlo : ∀ {i} → suc (suc i) < N → suc i < N
+  vlo v = NP.<-trans (NP.n<1+n _) v
+
+  p-via : ∀ {i} → suc (suc i) < N → p i ≈ h i • p (suc i) • l i • p′ (suc i)
+  p-via {i} v = sym (begin
+    h i • (p (suc i) • (l i • p′ (suc i)))        ≈⟨ back (h i) (sym assoc) ⟩
+    h i • ((p (suc i) • l i) • p′ (suc i))        ≈⟨ back (h i) (front _ (conj-up v)) ⟩
+    h i • ((l i • (p i • p (suc i))) • p′ (suc i)) ≈⟨ back (h i) assoc ⟩
+    h i • (l i • ((p i • p (suc i)) • p′ (suc i))) ≈⟨ sym assoc ⟩
+    (h i • l i) • ((p i • p (suc i)) • p′ (suc i)) ≈⟨ front _ (h-inv (vlo v)) ⟩
+    ε • ((p i • p (suc i)) • p′ (suc i))           ≈⟨ left-unit ⟩
+    (p i • p (suc i)) • p′ (suc i)                 ≈⟨ assoc ⟩
+    p i • (p (suc i) • p′ (suc i))                 ≈⟨ back (p i) (p-inv v) ⟩
+    p i • ε                                        ≈⟨ right-unit ⟩
+    p i                                            ∎)
+
+  p′-via : ∀ {i} → suc (suc i) < N → p′ (suc i) ≈ p i • l (suc i) • p′ i • h (suc i)
+  p′-via {i} v = sym (begin
+    p i • (l (suc i) • (p′ i • h (suc i)))              ≈⟨ back (p i) (sym assoc) ⟩
+    p i • ((l (suc i) • p′ i) • h (suc i))              ≈⟨ back (p i) (front _ (sym (conj-dn v))) ⟩
+    p i • ((p′ i • (p′ (suc i) • l (suc i))) • h (suc i)) ≈⟨ back (p i) assoc ⟩
+    p i • (p′ i • ((p′ (suc i) • l (suc i)) • h (suc i))) ≈⟨ sym assoc ⟩
+    (p i • p′ i) • ((p′ (suc i) • l (suc i)) • h (suc i)) ≈⟨ front _ (p-inv (vlo v)) ⟩
+    ε • ((p′ (suc i) • l (suc i)) • h (suc i))           ≈⟨ left-unit ⟩
+    (p′ (suc i) • l (suc i)) • h (suc i)                 ≈⟨ assoc ⟩
+    p′ (suc i) • (l (suc i) • h (suc i))                 ≈⟨ back _ (l-inv v) ⟩
+    p′ (suc i) • ε                                       ≈⟨ right-unit ⟩
+    p′ (suc i)                                           ∎)
+
+  -- p i against l j for j = i + 2 + g.
+  far-up : ∀ g {i j} → j ≡ suc (suc (g + i)) → suc j < N → Comm (p i) (l j)
+  far-up zero {i} Eq.refl v = far-pl⁺ v
+  far-up (suc g) {i} Eq.refl v =
+    comm-respˡ (comm-• chi (comm-• cp (comm-• cl cp′))) (sym (p-via vi2))
+    where
+      j = suc (suc (suc (g + i)))
+      le : suc (suc i) ≤ j
+      le = s≤s (s≤s (NP.≤-trans (NP.m≤n+m i g) (NP.n≤1+n _)))
+      vi2 : suc (suc i) < N
+      vi2 = NP.<-trans (s≤s le) v
+      cl : Comm (l i) (l j)
+      cl = far-ll v le
+      chi : Comm (h i) (l j)
+      chi = comm-inv (l-inv (vlo vi2)) (h-inv (vlo vi2)) cl
+      cp : Comm (p (suc i)) (l j)
+      cp = far-up g (Eq.cong (λ u → suc (suc u)) (Eq.sym (NP.+-suc g i))) v
+      cp′ : Comm (p′ (suc i)) (l j)
+      cp′ = comm-inv (p-inv vi2) (p′-inv vi2) cp
+
+  -- p i against l j for i = j + 2 + g.
+  far-dn : ∀ g {i j} → i ≡ suc (suc (g + j)) → suc i < N → Comm (p i) (l j)
+  far-dn zero {i} {j} Eq.refl v = far-pl⁻ v
+  far-dn (suc g) {i} {j} Eq.refl v =
+    comm-inv (p′-inv v) (p-inv v)
+      (comm-respˡ (comm-• cp (comm-• cli (comm-• cp′ chi))) (sym (p′-via v)))
+    where
+      q = suc (suc (g + j))
+      vk : suc q < N
+      vk = vlo v
+      le : suc (suc j) ≤ suc q
+      le = s≤s (s≤s (NP.≤-trans (NP.m≤n+m j g) (NP.n≤1+n _)))
+      cp : Comm (p q) (l j)
+      cp = far-dn g Eq.refl vk
+      cp′ : Comm (p′ q) (l j)
+      cp′ = comm-inv (p-inv vk) (p′-inv vk) cp
+      cli : Comm (l (suc q)) (l j)
+      cli = comm-sym (far-ll v le)
+      chi : Comm (h (suc q)) (l j)
+      chi = comm-inv (l-inv v) (h-inv v) cli
+
+  far-pl : ∀ {i j} → suc i < N → suc j < N → suc (suc i) ≤ j ⊎ suc (suc j) ≤ i → Comm (p i) (l j)
+  far-pl {i} {j} vi vj (inj₁ le) =
+    far-up (j ∸ suc (suc i))
+      (Eq.trans (Eq.sym (NP.m+[n∸m]≡n le)) (Eq.cong (λ u → suc (suc u)) (NP.+-comm i _))) vj
+  far-pl {i} {j} vi vj (inj₂ le) =
+    far-dn (i ∸ suc (suc j))
+      (Eq.trans (Eq.sym (NP.m+[n∸m]≡n le)) (Eq.cong (λ u → suc (suc u)) (NP.+-comm j _))) vi
+
+  -- p i against p j for j = i + 1 + g.
+  pp-up′ : ∀ g {i j} → j ≡ suc (g + i) → suc j < N → Comm (p i) (p j)
+  pp-up′ zero {i} Eq.refl v = p-adj v
+  pp-up′ (suc g) {i} Eq.refl v =
+    comm-sym (comm-inv (p′-inv v) (p-inv v) (comm-sym
+      (comm-respʳ (comm-•ʳ cp (comm-•ʳ cl (comm-•ʳ cp′ ch))) (sym (p′-via v)))))
+    where
+      q = suc (g + i)
+      vk : suc q < N
+      vk = vlo v
+      vi : suc i < N
+      vi = NP.≤-<-trans (s≤s (NP.≤-trans (NP.m≤n+m i g) (NP.n≤1+n _))) vk
+      le : suc (suc i) ≤ suc q
+      le = s≤s (s≤s (NP.m≤n+m i g))
+      cp : Comm (p i) (p q)
+      cp = pp-up′ g Eq.refl vk
+      cp′ : Comm (p i) (p′ q)
+      cp′ = comm-sym (comm-inv (p-inv vk) (p′-inv vk) (comm-sym cp))
+      cl : Comm (p i) (l (suc q))
+      cl = far-pl vi v (inj₁ le)
+      ch : Comm (p i) (h (suc q))
+      ch = comm-sym (comm-inv (l-inv v) (h-inv v) (comm-sym cl))
+
+  p-comm : ∀ {i j} → suc i < N → suc j < N → Comm (p i) (p j)
+  p-comm {i} {j} vi vj with NP.<-cmp i j
+  ... | tri≈ _ Eq.refl _ = refl
+  ... | tri< lt _ _ =
+    pp-up′ (j ∸ suc i) (Eq.trans (Eq.sym (NP.m+[n∸m]≡n lt)) (Eq.cong suc (NP.+-comm i _))) vj
+  ... | tri> _ _ gt =
+    comm-sym (pp-up′ (i ∸ suc j) (Eq.trans (Eq.sym (NP.m+[n∸m]≡n gt)) (Eq.cong suc (NP.+-comm j _))) vi)
 
   ----------------------------------------------------------------------
   -- The phase pairs

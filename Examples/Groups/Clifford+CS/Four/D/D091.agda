@@ -574,3 +574,120 @@ lem-bridge-G-pp = trans (run b0) (trans (run b1) (trans (run b2) (trans (run b3)
        at 3 3 (CS03⁻ ∷ []) (by-assoc Eq.refl) ▸
        at 4 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸ done
 
+
+-- sw0 S0: 2 steps
+lem-sw0-S0 : ⟪ (Sw01 ∷ S0 ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (S1 ∷ []) ⟫ʷ
+lem-sw0-S0 = run b0
+  where
+  b0 : Chain (Sw01 ∷ S0 ∷ Sw01 ∷ []) (S1 ∷ [])
+  b0 = at 0 2 (S1 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • S) ((S ↑) • Swap) tt tt Eq.refl) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+
+
+-- sw0 Sd0: 2 steps
+lem-sw0-Sd0 : ⟪ (Sw01 ∷ S0⁻ ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (S1⁻ ∷ []) ⟫ʷ
+lem-sw0-Sd0 = run b0
+  where
+  b0 : Chain (Sw01 ∷ S0⁻ ∷ Sw01 ∷ []) (S1⁻ ∷ [])
+  b0 = at 0 2 (S1⁻ ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (S • S • S)) (((S • S • S) ↑) • Swap) tt tt Eq.refl) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+
+
+-- sw0 K0: 2 steps
+lem-sw0-K0 : ⟪ (Sw01 ∷ K0 ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (K1 ∷ []) ⟫ʷ
+lem-sw0-K0 = run b0
+  where
+  b0 : Chain (Sw01 ∷ K0 ∷ Sw01 ∷ []) (K1 ∷ [])
+  b0 = at 0 2 (K1 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • K) ((K ↑) • Swap) tt tt Eq.refl) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+
+
+-- sw0 Kd0: 2 steps
+lem-sw0-Kd0 : ⟪ (Sw01 ∷ K0⁻ ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (K1⁻ ∷ []) ⟫ʷ
+lem-sw0-Kd0 = run b0
+  where
+  b0 : Chain (Sw01 ∷ K0⁻ ∷ Sw01 ∷ []) (K1⁻ ∷ [])
+  b0 = at 0 2 (K1⁻ ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (K • iI)) (((K • iI) ↑) • Swap) tt tt Eq.refl) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+
+
+-- sw0 X0: 2 steps
+lem-sw0-X0 : ⟪ (Sw01 ∷ X0 ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (X1 ∷ []) ⟫ʷ
+lem-sw0-X0 = run b0
+  where
+  b0 : Chain (Sw01 ∷ X0 ∷ Sw01 ∷ []) (X1 ∷ [])
+  b0 = at 0 2 (X1 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • X) ((X ↑) • Swap) tt tt Eq.refl) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+
+
+-- sw0 Z0: 2 steps
+lem-sw0-Z0 : ⟪ (Sw01 ∷ Z0 ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (Z1 ∷ []) ⟫ʷ
+lem-sw0-Z0 = run b0
+  where
+  b0 : Chain (Sw01 ∷ Z0 ∷ Sw01 ∷ []) (Z1 ∷ [])
+  b0 = at 0 2 (Z1 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • Z) ((Z ↑) • Swap) tt tt Eq.refl) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+
+
+-- sw0 S1: 2 steps
+lem-sw0-S1 : ⟪ (Sw01 ∷ S1 ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (S0 ∷ []) ⟫ʷ
+lem-sw0-S1 = run b0
+  where
+  b0 : Chain (Sw01 ∷ S1 ∷ Sw01 ∷ []) (S0 ∷ [])
+  b0 = at 0 2 (S0 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (S ↑)) (S • Swap) tt tt Eq.refl) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+
+
+-- sw0 Sd1: 2 steps
+lem-sw0-Sd1 : ⟪ (Sw01 ∷ S1⁻ ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (S0⁻ ∷ []) ⟫ʷ
+lem-sw0-Sd1 = run b0
+  where
+  b0 : Chain (Sw01 ∷ S1⁻ ∷ Sw01 ∷ []) (S0⁻ ∷ [])
+  b0 = at 0 2 (S0⁻ ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • ((S • S • S) ↑)) ((S • S • S) • Swap) tt tt Eq.refl) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+
+
+-- sw0 K1: 2 steps
+lem-sw0-K1 : ⟪ (Sw01 ∷ K1 ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (K0 ∷ []) ⟫ʷ
+lem-sw0-K1 = run b0
+  where
+  b0 : Chain (Sw01 ∷ K1 ∷ Sw01 ∷ []) (K0 ∷ [])
+  b0 = at 0 2 (K0 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (K ↑)) (K • Swap) tt tt Eq.refl) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+
+
+-- sw0 Kd1: 2 steps
+lem-sw0-Kd1 : ⟪ (Sw01 ∷ K1⁻ ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (K0⁻ ∷ []) ⟫ʷ
+lem-sw0-Kd1 = run b0
+  where
+  b0 : Chain (Sw01 ∷ K1⁻ ∷ Sw01 ∷ []) (K0⁻ ∷ [])
+  b0 = at 0 2 (K0⁻ ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • ((K • iI) ↑)) ((K • iI) • Swap) tt tt Eq.refl) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+
+
+-- sw0 X1: 2 steps
+lem-sw0-X1 : ⟪ (Sw01 ∷ X1 ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (X0 ∷ []) ⟫ʷ
+lem-sw0-X1 = run b0
+  where
+  b0 : Chain (Sw01 ∷ X1 ∷ Sw01 ∷ []) (X0 ∷ [])
+  b0 = at 0 2 (X0 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (X ↑)) (X • Swap) tt tt Eq.refl) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+
+
+-- sw0 Z1: 2 steps
+lem-sw0-Z1 : ⟪ (Sw01 ∷ Z1 ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (Z0 ∷ []) ⟫ʷ
+lem-sw0-Z1 = run b0
+  where
+  b0 : Chain (Sw01 ∷ Z1 ∷ Sw01 ∷ []) (Z0 ∷ [])
+  b0 = at 0 2 (Z0 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Z ↑)) (Z • Swap) tt tt Eq.refl) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+
+
+-- sw0 S2: 2 steps
+lem-sw0-S2 : ⟪ (Sw01 ∷ S2 ∷ Sw01 ∷ []) ⟫ʷ ≈ ⟪ (S2 ∷ []) ⟫ʷ
+lem-sw0-S2 = run b0
+  where
+  b0 : Chain (Sw01 ∷ S2 ∷ Sw01 ∷ []) (S2 ∷ [])
+  b0 = at 0 2 (S2 ∷ Sw01 ∷ []) (low-comm (Swap) (S)) ▸
+       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+

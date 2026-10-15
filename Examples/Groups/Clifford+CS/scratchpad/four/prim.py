@@ -21,6 +21,8 @@ def tree(g): return mac_tree(g)
 def basic(word): return [b for g in word for b in word_of(tree(g))]
 def spelled(g): return supp_of(word_of(tree(g)))
 def fpw(word): return fp_basic(basic(word))
+def is_scalar(g): return g[0] in ('iI', 'iIi')
+def shift(g): return g[1] if len(g) > 1 else 0
 
 AX_CX = ([('CX', 3, 2), ('CCZ', 0, 1, 2), ('CX', 3, 2)], [('CCZ', 0, 1, 2), ('CCZ', 0, 1, 3)])
 AX_TOFF = ([('TOFF', 0, 1, 2), ('CCZ', 0, 1, 3), ('TOFF', 0, 1, 2)], [('CCZ', 0, 1, 3), ('CCZ', 1, 2, 3)])
@@ -53,13 +55,29 @@ class Prim:
         self.steps.append((kind, k, n, list(seg), list(ys), info))
         self.cur = self.cur[:k] + list(ys) + self.cur[k + n:]
 
-    # a literal window missing wire m
+    # a literal window missing wire m; a scalar spelled on m is lifted to
+    # another wire first (U) and put back afterwards
     def W(self, k, n, ys, m):
         assert m is not None, f'{self.name}: window with no frame'
+        alt = 3 if m != 3 else 2
+        for i in range(n):
+            g = self.cur[k + i]
+            if is_scalar(g) and shift(g) == m: self.U(k + i, (g[0], alt))
+        ys0 = list(ys)
+        ys = [(g[0], alt) if is_scalar(g) and shift(g) == m else g for g in ys0]
         seg = self.cur[k:k + n]
         for g in seg + list(ys):
             assert m not in spelled(g), f'{self.name}: {show([g])} is spelled on wire {m}'
         self._set(k, n, ys, 'W', m)
+        for i, (g, g2) in enumerate(zip(ys0, ys)):
+            if g != g2: self.U(k + i, g)
+
+    # a scalar letter respelled at another lift (the structural rule
+    # omega-up = omega, through Canonical.can-≈)
+    def U(self, k, g2):
+        g = self.cur[k]
+        assert is_scalar(g) and is_scalar(g2) and g[0] == g2[0], f'{self.name}: U on {show([g])}'
+        self._set(k, 1, [g2], 'U', None)
 
     # the structural commutation at k: a letter spelled within the bottom
     # i wires against one within the top 4 - i, in either order
