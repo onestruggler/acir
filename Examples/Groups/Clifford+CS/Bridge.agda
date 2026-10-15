@@ -24,7 +24,7 @@
 --     completeness hypothesis of BackAndForth, discharged.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --lossy-unification #-}
 
 module Examples.Groups.Clifford+CS.Bridge where
 
