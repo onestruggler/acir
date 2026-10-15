@@ -140,7 +140,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     comp₄ = below (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))
 
   open Tools (N VRel,_===_)
-  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) comp₄ using (by-sem)
+  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) comp₄ using (by-sem ; by-ev)
   open XY k below using (X-Hg)
 
   -- The H gate, the box on wire 2, the CH from wire 2 onto wire 3, and
@@ -308,18 +308,16 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
     -- The four rotations of (320), by evaluation.
     eZX : c₂₃ • (Q • ZX₃ • Q) ≈ (Q • ZX₃ • Q) • c₂₃
-    eZX = by-sem (c₄ • (Q₄ • ΛZX 3 • Q₄)) ((Q₄ • ΛZX 3 • Q₄) • c₄) (Evaluated.same e-ZX) {₁₊ k}
+    eZX = by-ev e-ZX {₁₊ k}
 
     eXZ : c₂₃ • (Q • XZ₃ • Q) ≈ (Q • XZ₃ • Q) • c₂₃
-    eXZ = by-sem (c₄ • (Q₄ • ΛXZ 3 • Q₄)) ((Q₄ • ΛXZ 3 • Q₄) • c₄) (Evaluated.same e-XZ) {₁₊ k}
+    eXZ = by-ev e-XZ {₁₊ k}
 
     eKb : c₂₃ • (Q • Kᵇ k below • Q) ≈ (Q • Kᵇ k below • Q) • c₂₃
-    eKb = by-sem (c₄ • (Q₄ • (Ex • ΛZX 3 • Ex) • Q₄)) ((Q₄ • (Ex • ΛZX 3 • Ex) • Q₄) • c₄)
-                 (Evaluated.same e-Kb) {₁₊ k}
+    eKb = by-ev e-Kb {₁₊ k}
 
     eKb′ : c₂₃ • (Q • Kᵇ′ k below • Q) ≈ (Q • Kᵇ′ k below • Q) • c₂₃
-    eKb′ = by-sem (c₄ • (Q₄ • (Ex • ΛXZ 3 • Ex) • Q₄)) ((Q₄ • (Ex • ΛXZ 3 • Ex) • Q₄) • c₄)
-                  (Evaluated.same e-Kb′) {₁₊ k}
+    eKb′ = by-ev e-Kb′ {₁₊ k}
 
     -- The box with wire 3 idle: its box wire moved onto wire 3 ((274)),
     -- the CH with its control negated is the CH from a control onto the
@@ -356,8 +354,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     e297′ = conj-pass (symₖ 0) (eq297 k completeₖ)
 
     oc-P : oc ≈ P • oc31 • Pi
-    oc-P = by-sem (X ↑ ↑ • c₄ • X ↑ ↑) ((Ex ↑ ↑ • Ex ↑) • (Ex ↑ • °CH • Ex ↑) ↑ • (Ex ↑ • Ex ↑ ↑))
-                  (Evaluated.same e-°c) {₁₊ k}
+    oc-P = by-ev e-°c {₁₊ k}
 
     oc-box : oc • Box₃ k ≈ Box₃ k • oc
     oc-box = both (sym oc-P) (sym box-P) (tcomm Pi-P (lemma-cong↑ _ _ e297′))
@@ -464,8 +461,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
     -- It carries the CH from wire 2 onto wire 0 to c.
     pc : pl t03 CH₂ ≈ c₂₃
-    pc = by-sem ((Ex • (Ex ↑ • (Ex ↑ ↑ • (Ex ↑ • Ex)))) • (Ex ↑ • CH • Ex ↑) • ((((Ex • Ex ↑) • Ex ↑ ↑) • Ex ↑) • Ex))
-                c₄ (Evaluated.same e-pc) {₁₊ k}
+    pc = by-ev e-pc {₁₊ k}
 
     pl4 : ∀ x y → pl t03 (w4 x y) ≈ w4 (pl t03 x) (pl t03 y)
     pl4 x y = trans (pl-• t03 x _) (back _ (trans (pl-• t03 y _) (back _ (pl-• t03 x y))))

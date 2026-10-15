@@ -62,9 +62,8 @@ sound-comm2 π (₂₊ k)    = refl
 
 sound-ax : ∀ {n} {w v : Circuit n} → n VRel, w === v →
            ∀ k → ⟦ w ⟧ ⟨$⟩ʳ k ≡ ⟦ v ⟧ ⟨$⟩ʳ k
-sound-ax (srel x) k with top-view x
-... | padded₂ order       = sound-order k
-... | padded₃ yang-baxter = sound-yb k
+sound-ax (srel order)            k = sound-order k
+sound-ax (srel yang-baxter)      k = sound-yb k
 sound-ax (cong↑ {_} {w₀} {v₀} p) k =
   Eq.trans (⟦↑⟧ w₀ k)
   (Eq.trans (lift₀-cong ⟦ w₀ ⟧ ⟦ v₀ ⟧ (sound-ax p) k)

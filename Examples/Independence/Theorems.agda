@@ -21,9 +21,20 @@
 -- presentations, several of which this library proves complete in
 -- their own developments.  It is formalised for Cliff₂, from Selinger's
 -- presentation (Clifford.Completeness, through the paper's Appendices A
--- and G.1 and a bridge between the two matrix semantics), and for
--- CNOTdihe₂, from Amy, Chen and Ross's (CNOT-Dihedral.Completeness), so
--- that both are minimal complete presentations of their semantics.
+-- and G.1 and a bridge between the two matrix semantics), for RCliff₂,
+-- from Makary, Ross and Selinger's (Real-Clifford.Completeness, the
+-- same way), and for CNOTdihe₂, from Amy, Chen and Ross's
+-- (CNOT-Dihedral.Completeness), so that all three are minimal complete
+-- presentations of their semantics; for CliffT₂ up to two wires,
+-- from Bian and Selinger's two-qubit presentation and the two-level
+-- presentations of U₂ and U₁ over ℤ[1/√2,i] (Clifford+T.Completeness);
+-- for CliffCS₂ up to three wires, from Bian and Selinger's
+-- three-qubit presentation and the two-level presentations of U₄, U₂
+-- and U₁ over ℤ[½,i], with the sources' scalars i refined to ω
+-- (Clifford+CS.Completeness); and for Cliff₃ at every width, from the
+-- presentation of the qutrit Clifford group modulo scalars by the rules
+-- of Paper-V0 at p = 3, whose decodings hold up to powers of ω, which
+-- the matrices then pin down (Qutrit-Clifford.Completeness).
 --
 -- Two departures from the paper.  The scalar of the qutrit axiom (E)
 -- is printed ω₁₂⁷ in Figure 4, which is unsound for the semantics of
@@ -66,6 +77,10 @@ import Examples.Independence.Clifford+CS.Minimality     as CliffCS-Min
 import Examples.Independence.CNOT-Dihedral.Minimality   as CNOTdihe-Min
 
 import Examples.Independence.Clifford.Completeness      as Cliff-Cpl
+import Examples.Independence.Real-Clifford.Completeness as RCliff-Cpl
+import Examples.Independence.Qutrit-Clifford.Completeness as Cliff3-Cpl
+import Examples.Independence.Clifford+T.Completeness     as CliffT-Cpl
+import Examples.Independence.Clifford+CS.Completeness    as CliffCS-Cpl
 import Examples.Independence.CNOT-Dihedral.Completeness as CNOTdihe-Cpl
 
 private
@@ -208,6 +223,80 @@ Cliff₂-minimal-complete :
   (∀ {n} {w v : Cliff.Circuit n} (ρ : Cliff._SRel,_===_ n w v) →
      ¬ Cliff-M.Complete-without ρ n)
 Cliff₂-minimal-complete = Cliff₂-complete , Cliff₂-necessary
+
+-- 2. RCliff₂ is complete, at every width: its axioms derive Makary, Ross
+-- and Selinger's, decoded (Appendices D.2 and G.2; (R14)–(R16) from the
+-- decoded (C13)–(C15), whose relators theirs rotate), whose
+-- presentation is complete.
+RCliff₂-complete : {w v : RCliff.Circuit n} →
+                   RCliff-Sem.⟦ w ⟧ RCliff-Sem.≈ RCliff-Sem.⟦ v ⟧ → n RCliff.⊢ w ≈ v
+RCliff₂-complete = RCliff-Cpl.complete
+
+-- So RCliff₂ is a minimal complete presentation.
+RCliff₂-minimal-complete :
+  (∀ {n} {w v : RCliff.Circuit n} →
+     RCliff-Sem.⟦ w ⟧ RCliff-Sem.≈ RCliff-Sem.⟦ v ⟧ → n RCliff.⊢ w ≈ v) ×
+  (∀ {n} {w v : RCliff.Circuit n} (ρ : RCliff._SRel,_===_ n w v) →
+     ¬ RCliff-M.Complete-without ρ n)
+RCliff₂-minimal-complete = RCliff₂-complete , RCliff₂-necessary
+
+-- 3. Cliff₃ is complete, at every width: Paper-V0's rules at p = 3
+-- present the qutrit Clifford group modulo scalars (ProjectiveClifford.
+-- Qupit), and its axioms derive them, decoded, up to powers of ω (the
+-- paper's Appendix on qutrit Clifford circuits, and Knuth–Bendix
+-- completion on one wire); two circuits with equal matrices are then
+-- equal up to a power of ω, which has the identity's matrix and so is
+-- ε.
+Cliff₃-complete : {w v : Cliff3.Circuit n} →
+                  Cliff3-Sem.⟦ w ⟧ Cliff3-Sem.≈ Cliff3-Sem.⟦ v ⟧ → n Cliff3.⊢ w ≈ v
+Cliff₃-complete = Cliff3-Cpl.complete
+
+-- So Cliff₃ is complete, and a minimal complete presentation on two
+-- wires.
+Cliff₃-minimal-complete-upto-2 :
+  (∀ {n} {w v : Cliff3.Circuit n} →
+     Cliff3-Sem.⟦ w ⟧ Cliff3-Sem.≈ Cliff3-Sem.⟦ v ⟧ → n Cliff3.⊢ w ≈ v) ×
+  (∀ {n} {w v : Cliff3.Circuit n} (ρ : Cliff3._SRel,_===_ n w v) →
+     n ≤ 2 → ¬ Cliff3-M.Complete-without ρ n)
+Cliff₃-minimal-complete-upto-2 = Cliff₃-complete , Cliff₃-necessary
+
+-- 4. CliffT₂ is complete up to two qubit wires: on two, its axioms
+-- derive Bian and Selinger's, decoded (Appendices D.3 and G.4), whose
+-- presentation is complete; on one and on none, the two-level
+-- relations in dimensions 2 and 1, decoded.
+CliffT₂-complete : {w v : CliffT.Circuit n} → n ≤ 2 →
+                   CliffT-Sem.⟦ w ⟧ CliffT-Sem.≈ CliffT-Sem.⟦ v ⟧ → n CliffT.⊢ w ≈ v
+CliffT₂-complete n≤2 = CliffT-Cpl.complete n≤2
+
+-- So CliffT₂ is a minimal complete presentation on one wire, and
+-- complete on two.
+CliffT₂-minimal-complete-upto-1 :
+  (∀ {n} {w v : CliffT.Circuit n} → n ≤ 2 →
+     CliffT-Sem.⟦ w ⟧ CliffT-Sem.≈ CliffT-Sem.⟦ v ⟧ → n CliffT.⊢ w ≈ v) ×
+  (∀ {n} {w v : CliffT.Circuit n} (ρ : CliffT._SRel,_===_ n w v) →
+     n ≤ 1 → ¬ CliffT-M.Complete-without ρ n)
+CliffT₂-minimal-complete-upto-1 = CliffT₂-complete , CliffT₂-necessary
+
+-- 5. CliffCS₂ is complete up to three qubit wires: on three, its axioms
+-- derive Bian and Selinger's, decoded (Appendices D.5 and G.5), whose
+-- presentation is complete; on two, one and none, the two-level
+-- relations in dimensions 4, 2 and 1, decoded.  On two wires only the
+-- axioms of arity at most two are available, and every instance of a
+-- relation is a relabelling of one (Clifford+CS.TwoWire).  The sources'
+-- scalars are the powers of i, CliffCS₂'s those of ω (Clifford+CS.
+-- Assemble).
+CliffCS₂-complete : {w v : CliffCS.Circuit n} → n ≤ 3 →
+                    CliffCS-Sem.⟦ w ⟧ CliffCS-Sem.≈ CliffCS-Sem.⟦ v ⟧ → n CliffCS.⊢ w ≈ v
+CliffCS₂-complete n≤3 = CliffCS-Cpl.complete n≤3
+
+-- So CliffCS₂ is a minimal complete presentation on two wires, and
+-- complete on three.
+CliffCS₂-minimal-complete-upto-2 :
+  (∀ {n} {w v : CliffCS.Circuit n} → n ≤ 3 →
+     CliffCS-Sem.⟦ w ⟧ CliffCS-Sem.≈ CliffCS-Sem.⟦ v ⟧ → n CliffCS.⊢ w ≈ v) ×
+  (∀ {n} {w v : CliffCS.Circuit n} (ρ : CliffCS._SRel,_===_ n w v) →
+     n ≤ 2 → ¬ CliffCS-M.Complete-without ρ n)
+CliffCS₂-minimal-complete-upto-2 = CliffCS₂-complete , CliffCS₂-necessary
 
 -- 6. CNOTdihe₂ is complete, at every width: its axioms derive Amy,
 -- Chen and Ross's, whose presentation is complete.

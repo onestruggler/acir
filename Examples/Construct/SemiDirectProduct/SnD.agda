@@ -51,7 +51,7 @@ private
   Γ₀ m = suc m Cn,_===_
 open import Examples.Groups.Symmetric.Syntactics
   using (Gate ; σ-gate ; Gen ; gate₀ ; gate₁ ; gate₂ ; _↥ ; _↑ ; σ ; _SRel,_===_
-        ; order ; yang-baxter ; padded₂ ; padded₃ ; top-view ; srel ; cong↑ ; comm₁ ; comm₂ ; _VRel,_===_)
+        ; order ; yang-baxter ; srel ; cong↑ ; comm₁ ; comm₂ ; _VRel,_===_)
 
 ------------------------------------------------------------------------
 -- The coordinate action of Sₙ on (ℤ/Nℤ)ⁿ
@@ -181,9 +181,8 @@ actw-↑-inj₂ (w • w') y =
 
 actw-eq : ∀ {n} {c d : Word (Gen n)} → (n VRel, c === d)
         → ∀ x → actw c x ≡ actw d x
-actw-eq (srel r) x with top-view r
-... | padded₂ order       = sw₂-invol x
-... | padded₃ yang-baxter = braid x
+actw-eq (srel order)       x = sw₂-invol x
+actw-eq (srel yang-baxter) x = braid x
 actw-eq (cong↑ {n = zero}  e) x = Eq.refl
 actw-eq (cong↑ {n = ₁₊ m} {w = w} {v} e) (inj₁ tt) =
   Eq.trans (actw-↑-inj₁ w) (Eq.sym (actw-↑-inj₁ v))

@@ -108,7 +108,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     symAt = eqSymAt (₁₊ k) completes
 
   open Tools (N VRel,_===_)
-  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem)
+  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem ; by-ev)
   open MergeAll (₃₊ k) (mergesₙ k completes) using (merge-top₃)
 
   private
@@ -142,19 +142,19 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     -- The four-wire facts, weakened
 
     e₁ : CH ≈ h • o
-    e₁ = by-sem (CH ↓) (H● • H○) (Evaluated.same e-CH) {m′}
+    e₁ = by-ev e-CH {m′}
 
     e₂ : o • h ≈ h • o
-    e₂ = by-sem (H○ • H●) (H● • H○) (Evaluated.same e-comm) {m′}
+    e₂ = by-ev e-comm {m′}
 
     e₃ : o • o ≈ ε
-    e₃ = by-sem (H○ • H○) ε (Evaluated.same e-○²) {m′}
+    e₃ = by-ev e-○² {m′}
 
     e₃′ : h • h ≈ ε
-    e₃′ = by-sem (H● • H●) ε (Evaluated.same e-●²) {m′}
+    e₃′ = by-ev e-●² {m′}
 
     e₄ : Ex ↑ • h • Ex ↑ ≈ h
-    e₄ = by-sem (Ex ↑ • H● • Ex ↑) H● (Evaluated.same e-S) {m′}
+    e₄ = by-ev e-S {m′}
 
     --------------------------------------------------------------------
     -- C339's box passes its H gate merged over the wires 4 …

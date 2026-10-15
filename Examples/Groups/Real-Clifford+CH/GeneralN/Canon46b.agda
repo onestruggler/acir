@@ -90,7 +90,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
   open Tools (N VRel,_===_)
   open At k below using (canon ; HG ; S-ΛH ; X-Hg ; eq338xy ; s12Λ₀ ; mt ; sepΛ ; eq339c′ ; PYo′)
-  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem)
+  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem ; by-ev)
   open MergeAll (₃₊ k) (mergesₙ k completes) using (merge-top₃)
 
   private
@@ -101,7 +101,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     via′ e p = trans (front _ e) (trans p (back _ (sym e)))
 
     ev : ∀ {u v : Circuit 4} → Evaluated u v → (u ↓ᵏ m′) ≈ (v ↓ᵏ m′)
-    ev {u} {v} e = by-sem u v (Evaluated.same e) {m′}
+    ev {u} {v} e = by-ev e {m′}
 
     -- The four-wire steps, evaluated.
     b46 : Base46At m′

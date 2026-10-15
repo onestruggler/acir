@@ -42,7 +42,8 @@ open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation
 open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Blocks complete₂ public
 
 open Below 3 (s≤s (s≤s (s≤s z≤n))) complete₃ public
-  renaming (by-sem₀ to by-sem₃₀ ; by-sem to by-sem₃ ; by-sem↑ to by-sem₃↑)
+  renaming (by-sem₀ to by-sem₃₀ ; by-sem to by-sem₃ ; by-sem↑ to by-sem₃↑
+          ; by-ev₀ to by-ev₃₀ ; by-ev to by-ev₃ ; by-ev↑ to by-ev₃↑)
 
 private
   variable

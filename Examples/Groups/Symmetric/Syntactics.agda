@@ -52,43 +52,30 @@ pattern σ-gen = gate₂ σ-gate
 σ = [ σ-gen ]ʷ
 
 ------------------------------------------------------------------------
--- Group-specific relations: order and braid only, each on its own
--- wires; no structural rules
+-- Group-specific relations: order and braid only; no structural rules
 
 infix 4 _SRel,_===_
 data _SRel,_===_ : (n : ℕ) → WRel (Gen n) where
-  order       : 2 SRel, σ • σ === ε
-  yang-baxter : 3 SRel, σ • σ ↑ • σ === σ ↑ • σ • σ ↑
+  order       : (₂₊ n) SRel, σ • σ === ε
+  yang-baxter : (₃₊ n) SRel, σ • σ ↑ • σ === σ ↑ • σ • σ ↑
 
 ------------------------------------------------------------------------
--- Full relation via Top-Pad: each rule closed under an idle wire on
--- top (cong↓), and the structural rules cong↑, comm₁, comm₂ on top of
--- that
+-- Full relation via Lift-Relation (adds structure rules cong↑, comm₁,
+-- comm₂)
 
-private module LR = SC.Top-Pad _SRel,_===_
+private module LR = SC.Lift-Relation _SRel,_===_
 -- ω↑=ω is the 0-ary gate's structural rule.  This gate set has no
 -- 0-ary gate, so it is never inhabited here — but it still has to be
 -- re-exported, or a client cannot name it to discharge it when it
 -- cases on the relation.
 open LR public
-  using ( base ; cong↓ ; srel ; cong↑ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
-        ; comm-gate₂-w↑↑ ; _TopPad,_===_ ; _VRel,_===_
-        ; Padded ; padded ; padded₂ ; padded₃ ; top-view )
-
--- Each rule on the bottom wires of every wider circuit: a closed word
--- one wire wider is the same word (σ ⇓ is σ).
-order↓ : (₂₊ n) TopPad, σ • σ === ε
-order↓ {0}     = base order
-order↓ {₁₊ n}  = cong↓ order↓
-
-yang-baxter↓ : (₃₊ n) TopPad, σ • σ ↑ • σ === σ ↑ • σ • σ ↑
-yang-baxter↓ {0}     = base yang-baxter
-yang-baxter↓ {₁₊ n}  = cong↓ yang-baxter↓
+  using ( srel ; cong↑ ; comm₁ ; comm₂ ; ω↑=ω ; lemma-cong↑
+        ; comm-gate₂-w↑↑ ; _VRel,_===_ )
 
 ------------------------------------------------------------------------
 -- Grouplike (each generator has a two-sided inverse)
 
 grouplike : Grouplike (_VRel,_===_ n)
-grouplike {₂₊ k} (gate₂ σ-gate) = σ , PB.axiom (srel order↓)
+grouplike {₂₊ k} (gate₂ σ-gate) = σ , (PB.axiom (_VRel,_===_.srel order)) -- σ , PB.axiom (srel order)
 grouplike {₁₊ n} (g ↥) with grouplike {n} g
 ... | ig , prf = ig ↑ , lemma-cong↑ (ig • [ g ]ʷ) ε prf

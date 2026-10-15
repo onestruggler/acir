@@ -107,7 +107,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     canon = canonN k completes
 
   open Tools (N VRel,_===_)
-  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem)
+  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem ; by-ev)
   open MergeAll (₃₊ k) (mergesₙ k completes) using (merge-top₁)
 
   private
@@ -192,13 +192,13 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     -- ΛZX in its form h E h E ((353))
 
     e₁ : CH ≈ h • o
-    e₁ = by-sem (CH ↓) (H● • H○) (Evaluated.same e-CH) {m′}
+    e₁ = by-ev e-CH {m′}
 
     e₂ : o • h ≈ h • o
-    e₂ = by-sem (H○ • H●) (H● • H○) (Evaluated.same e-comm) {m′}
+    e₂ = by-ev e-comm {m′}
 
     e₃ : o • o ≈ ε
-    e₃ = by-sem (H○ • H○) ε (Evaluated.same e-○²) {m′}
+    e₃ = by-ev e-○² {m′}
 
     ZX-hE : ΛZX (₄₊ k) ≈ h • E • h • E
     ZX-hE = begin
@@ -247,7 +247,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
       where
       hX : h • X ↑ ↑ ↑ ≈ X ↑ ↑ ↑ • h
       hX = conj-comm (lemma-cong↑ _ _ (lemma-cong↑ _ _ (lemma-cong↑ _ _ X²)))
-                     (by-sem (X ↑ ↑ ↑ • H● • X ↑ ↑ ↑) H● (Evaluated.same e-X₃●) {m′})
+                     (by-ev e-X₃● {m′})
 
     -- E passes every colouring of itself ((335) under the swap of the
     -- wires 0 1).

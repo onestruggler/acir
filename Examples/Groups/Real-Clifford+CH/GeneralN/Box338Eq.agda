@@ -56,7 +56,7 @@ open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 
 open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools ; module Conj ; X² ; Ex² ; ax)
 open import Examples.Groups.Real-Clifford+CH.MultiControlled using (ΛH)
-open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (same-sem ; Evaluated)
+open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (same-sem ; Evaluated ; same-ev)
 import Examples.Groups.Real-Clifford+CH.SemanticSteps as SS
 open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Auxiliary complete₂ using (module N₂ ; eq117 ; eq118)
 open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Figure13 complete₂ using (eq111 ; eq112)
@@ -127,12 +127,12 @@ RW-place : ∀ {r} → (₁₊ (₄₊ r)) ⊢ place 3 (RW {r}) ≈ RW
 RW-place = place-low 3 (PP {1} • CCZX {0} • PP {1})
 
 g292 : Comp 4 → ∀ j → Below (₄₊ j) → G292 j
-g292 c₄ zero    _ = c₄ (same-sem (RW₄ • Dw₄) (Dw₄ • RW₄) (Evaluated.same d-base))
+g292 c₄ zero    _ = c₄ (same-ev d-base)
 g292 c₄ (suc j) b = via Dw-word (pass-word _ es letter)
   where
   open Tools ((₄₊ (suc j)) VRel,_===_)
   open WordAlgebra ((₄₊ (suc j)) VRel,_===_) using (comm-inv)
-  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem)
+  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem ; by-ev)
 
   f : L → Circuit (₄₊ (suc j))
   f l = S₀₁.⟪ N₂.⟪ lt (suc j) l ⟫ ⟫
@@ -145,10 +145,10 @@ g292 c₄ (suc j) b = via Dw-word (pass-word _ es letter)
 
   -- The rotations: decided on four wires and weakened.
   rZ : RW • f zx ≈ f zx • RW
-  rZ = by-sem (RW₄ • L-zx) (L-zx • RW₄) (Evaluated.same d-zx) {suc j}
+  rZ = by-ev d-zx {suc j}
 
   rK : RW • f kb ≈ f kb • RW
-  rK = by-sem (RW₄ • L-kb) (L-kb • RW₄) (Evaluated.same d-kb) {suc j}
+  rK = by-ev d-kb {suc j}
 
   -- The smaller box: the statement one width down, placed around wire 3.
   pl : f bb ≈ place 3 (Dw j)
@@ -313,7 +313,7 @@ module XY (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
   -- swap of the wires 0 1 against the box negated on wire 1
 
   private
-    open SS.Below 2 (s≤s (s≤s z≤n)) complete₂ using (by-sem)
+    open SS.Below 2 (s≤s (s≤s z≤n)) complete₂ using (by-sem ; by-ev)
 
     module X₁ = Conj {N} (X ↑) (lemma-cong↑ _ _ X²)
 
