@@ -114,6 +114,25 @@ rev-inv (u • v) = begin
   u • rev u                     ≈⟨ rev-inv u ⟩
   ε ∎
 
+rev-rev : ∀ (w : Word Lt) → rev (rev w) ≡ w
+rev-rev [ a ]ʷ  = Eq.refl
+rev-rev ε       = Eq.refl
+rev-rev (u • v) = Eq.cong₂ _•_ (rev-rev u) (rev-rev v)
+
+rev-inv′ : ∀ (w : Word Lt) → rev w • w ≈ ε
+rev-inv′ w = Eq.subst (λ x → rev w • x ≈ ε) (rev-rev w) (rev-inv (rev w))
+
+-- Inverses respect the congruence.
+rev-cong : ∀ {u v : Word Lt} → u ≈ v → rev u ≈ rev v
+rev-cong {u} {v} e = begin
+  rev u                       ≈⟨ sym right-unit ⟩
+  rev u • ε                   ≈⟨ back _ (sym (rev-inv v)) ⟩
+  rev u • (v • rev v)         ≈⟨ back _ (front _ (sym e)) ⟩
+  rev u • (u • rev v)         ≈⟨ sym assoc ⟩
+  (rev u • u) • rev v         ≈⟨ front _ (rev-inv′ u) ⟩
+  ε • rev v                   ≈⟨ left-unit ⟩
+  rev v ∎
+
 ------------------------------------------------------------------------
 -- Toggling a bit
 
