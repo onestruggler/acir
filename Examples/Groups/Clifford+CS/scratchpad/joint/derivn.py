@@ -31,7 +31,7 @@
 import os
 import cs
 
-N = 5
+N = int(os.environ.get("DERIVN_N", "5"))   # the width; windows have at most N - 1 wires
 SCALARS = ('iI', 'iIi')
 BOXES = ('BOX', 'BOXd', 'SBOX', 'SBOXd')
 SYM = ('CS', 'CSd', 'CZ', 'SWAP', 'CCZ')
