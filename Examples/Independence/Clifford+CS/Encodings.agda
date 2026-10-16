@@ -21,10 +21,14 @@
 
 module Examples.Independence.Clifford+CS.Encodings where
 
+open import Data.Bool.Base using (Bool ; true ; false ; _∧_ ; T)
 open import Data.Fin.Base using (Fin ; zero ; suc ; _<_)
 open import Data.Nat.Base using (ℕ ; z≤n ; s≤s)
+import Data.Nat.Base as ℕ
 open import Data.Product.Base using (proj₁)
+open import Data.Unit.Base using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl ; trans ; sym ; cong)
+open import Relation.Nullary using (does ; yes)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 
 open import Quantum.Synthesis.Ring
@@ -32,7 +36,9 @@ open import Quantum.Synthesis.Ring
 
 open import Notations using (₀ ; ₁ ; ₂ ; ₃)
 
-open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_)
+open import Quantum.Synthesis.Matrix using (Matrix)
+open import Examples.Groups.Clifford+T-2qubit-TwoLevel.Ring using (D ; _+ᴰ_ ; _*ᴰ_ ; -ᴰ_ ; _≟ᴰ_)
+import Examples.Groups.Clifford+T-2qubit-TwoLevel.Semantics as TS
 import Examples.Groups.Clifford+CS-TwoLevel.Syntactics as TL
 import Examples.Groups.Clifford+CS-TwoLevel.Semantics as CSS
 open CSS using (actV ; set₁ ; set₂)
@@ -142,6 +148,43 @@ J₀ : Word (TL.Gen 1)
 J₀ = TL.i ₀
 
 ------------------------------------------------------------------------
+-- Matrices decided entry by entry, as one boolean
+--
+-- Eq.refl between two matrices makes the conversion checker compare them
+-- entry by entry, reducing each entry afresh, so that the matrix of an
+-- encoded word is computed again for every entry; the boolean is one
+-- evaluation.
+
+private
+  ∧-l : (x y : Bool) → T (x ∧ y) → T x
+  ∧-l true y t = tt
+
+  ∧-r : (x y : Bool) → T (x ∧ y) → T y
+  ∧-r true y t = t
+
+  allF : (k : ℕ) → (Fin k → Bool) → Bool
+  allF ℕ.zero    f = true
+  allF (ℕ.suc k) f = f zero ∧ allF k (λ i → f (suc i))
+
+  allF-sound : (k : ℕ) (f : Fin k → Bool) → T (allF k f) → (i : Fin k) → T (f i)
+  allF-sound (ℕ.suc k) f t zero    = ∧-l (f zero) (allF k (λ i → f (suc i))) t
+  allF-sound (ℕ.suc k) f t (suc i) =
+    allF-sound k (λ j → f (suc j)) (∧-r (f zero) (allF k (λ i → f (suc i))) t) i
+
+  dec-sound : (a b : D) → T (does (a ≟ᴰ b)) → a ≡ b
+  dec-sound a b t with a ≟ᴰ b
+  ... | yes e = e
+
+  eqMat : {m n : ℕ} → Matrix m n D → Matrix m n D → Bool
+  eqMat {m} {n} M N = allF m (λ r → allF n (λ c → does (TS.ent M r c ≟ᴰ TS.ent N r c)))
+
+  eqMat-sound : {m n : ℕ} (M N : Matrix m n D) → T (eqMat M N) → M ≡ N
+  eqMat-sound {m} {n} M N t = TS.mat-ext λ r c →
+    dec-sound (TS.ent M r c) (TS.ent N r c)
+      (allF-sound n (λ c → does (TS.ent M r c ≟ᴰ TS.ent N r c))
+        (allF-sound m (λ r → allF n (λ c → does (TS.ent M r c ≟ᴰ TS.ent N r c))) t r) c)
+
+------------------------------------------------------------------------
 -- The matrices
 
 F₃ : Word BS.Gen → _
@@ -151,51 +194,51 @@ opaque
   unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_
 
   gen₃ : (g : Gen 3) → Mat.mat (⟪ Sem.⟦ g ⟧₀ ⟫ ᵀ) ≡ ωs (c₃ g) (mapι (F₃ (ℰ₃ g)))
-  gen₃ (gate₀ ⌈ ω-gate ⌉)       = refl
-  gen₃ (gate₁ ⌈ H-gate ⌉)       = refl
-  gen₃ (gate₁ ⌈ S-gate ⌉)       = refl
-  gen₃ (gate₂ ⌈ CS-gate ⌉)      = refl
-  gen₃ (gate₂ swap)             = refl
-  gen₃ (gate₀ ⌈ ω-gate ⌉ ↥)     = refl
-  gen₃ (gate₁ ⌈ H-gate ⌉ ↥)     = refl
-  gen₃ (gate₁ ⌈ S-gate ⌉ ↥)     = refl
-  gen₃ (gate₂ ⌈ CS-gate ⌉ ↥)    = refl
-  gen₃ (gate₂ swap ↥)           = refl
-  gen₃ (gate₀ ⌈ ω-gate ⌉ ↥ ↥)   = refl
-  gen₃ (gate₁ ⌈ H-gate ⌉ ↥ ↥)   = refl
-  gen₃ (gate₁ ⌈ S-gate ⌉ ↥ ↥)   = refl
-  gen₃ (gate₀ ⌈ ω-gate ⌉ ↥ ↥ ↥) = refl
+  gen₃ (gate₀ ⌈ ω-gate ⌉) = eqMat-sound _ _ tt
+  gen₃ (gate₁ ⌈ H-gate ⌉) = eqMat-sound _ _ tt
+  gen₃ (gate₁ ⌈ S-gate ⌉) = eqMat-sound _ _ tt
+  gen₃ (gate₂ ⌈ CS-gate ⌉) = eqMat-sound _ _ tt
+  gen₃ (gate₂ swap) = eqMat-sound _ _ tt
+  gen₃ (gate₀ ⌈ ω-gate ⌉ ↥) = eqMat-sound _ _ tt
+  gen₃ (gate₁ ⌈ H-gate ⌉ ↥) = eqMat-sound _ _ tt
+  gen₃ (gate₁ ⌈ S-gate ⌉ ↥) = eqMat-sound _ _ tt
+  gen₃ (gate₂ ⌈ CS-gate ⌉ ↥) = eqMat-sound _ _ tt
+  gen₃ (gate₂ swap ↥) = eqMat-sound _ _ tt
+  gen₃ (gate₀ ⌈ ω-gate ⌉ ↥ ↥) = eqMat-sound _ _ tt
+  gen₃ (gate₁ ⌈ H-gate ⌉ ↥ ↥) = eqMat-sound _ _ tt
+  gen₃ (gate₁ ⌈ S-gate ⌉ ↥ ↥) = eqMat-sound _ _ tt
+  gen₃ (gate₀ ⌈ ω-gate ⌉ ↥ ↥ ↥) = eqMat-sound _ _ tt
   gen₃ (gate₃ ⌈ () ⌉)
 
   gen₂ : (g : Gen 2) → Mat.mat (⟪ Sem.⟦ g ⟧₀ ⟫ ᵀ) ≡ ωs (c₂ g) (mapι (CSS.⟦ ℰ₂ g ⟧ᵐ))
-  gen₂ (gate₀ ⌈ ω-gate ⌉)     = refl
-  gen₂ (gate₁ ⌈ H-gate ⌉)     = refl
-  gen₂ (gate₁ ⌈ S-gate ⌉)     = refl
-  gen₂ (gate₂ ⌈ CS-gate ⌉)    = refl
-  gen₂ (gate₂ swap)           = refl
-  gen₂ (gate₀ ⌈ ω-gate ⌉ ↥)   = refl
-  gen₂ (gate₁ ⌈ H-gate ⌉ ↥)   = refl
-  gen₂ (gate₁ ⌈ S-gate ⌉ ↥)   = refl
-  gen₂ (gate₀ ⌈ ω-gate ⌉ ↥ ↥) = refl
+  gen₂ (gate₀ ⌈ ω-gate ⌉) = eqMat-sound _ _ tt
+  gen₂ (gate₁ ⌈ H-gate ⌉) = eqMat-sound _ _ tt
+  gen₂ (gate₁ ⌈ S-gate ⌉) = eqMat-sound _ _ tt
+  gen₂ (gate₂ ⌈ CS-gate ⌉) = eqMat-sound _ _ tt
+  gen₂ (gate₂ swap) = eqMat-sound _ _ tt
+  gen₂ (gate₀ ⌈ ω-gate ⌉ ↥) = eqMat-sound _ _ tt
+  gen₂ (gate₁ ⌈ H-gate ⌉ ↥) = eqMat-sound _ _ tt
+  gen₂ (gate₁ ⌈ S-gate ⌉ ↥) = eqMat-sound _ _ tt
+  gen₂ (gate₀ ⌈ ω-gate ⌉ ↥ ↥) = eqMat-sound _ _ tt
 
   gen₁ : (g : Gen 1) → Mat.mat (⟪ Sem.⟦ g ⟧₀ ⟫ ᵀ) ≡ ωs (c₁ g) (mapι (CSS.⟦ ℰ₁ g ⟧ᵐ))
-  gen₁ (gate₀ ⌈ ω-gate ⌉)   = refl
-  gen₁ (gate₁ ⌈ H-gate ⌉)   = refl
-  gen₁ (gate₁ ⌈ S-gate ⌉)   = refl
-  gen₁ (gate₀ ⌈ ω-gate ⌉ ↥) = refl
+  gen₁ (gate₀ ⌈ ω-gate ⌉) = eqMat-sound _ _ tt
+  gen₁ (gate₁ ⌈ H-gate ⌉) = eqMat-sound _ _ tt
+  gen₁ (gate₁ ⌈ S-gate ⌉) = eqMat-sound _ _ tt
+  gen₁ (gate₀ ⌈ ω-gate ⌉ ↥) = eqMat-sound _ _ tt
 
   gen₀ : (g : Gen 0) → Mat.mat (⟪ Sem.⟦ g ⟧₀ ⟫ ᵀ) ≡ ωs (c₀ g) (mapι (CSS.⟦ ℰ₀ g ⟧ᵐ))
-  gen₀ (gate₀ ⌈ ω-gate ⌉) = refl
+  gen₀ (gate₀ ⌈ ω-gate ⌉) = eqMat-sound _ _ tt
 
   -- The scalar words are i times the identity.
   J₃-i : mapι (F₃ J₃) ≡ ωs 2 (mapι (CSS.𝕀 {8}))
-  J₃-i = refl
+  J₃-i = eqMat-sound _ _ tt
 
   J₂-i : mapι (CSS.⟦ J₂ ⟧ᵐ) ≡ ωs 2 (mapι (CSS.𝕀 {4}))
-  J₂-i = refl
+  J₂-i = eqMat-sound _ _ tt
 
   J₁-i : mapι (CSS.⟦ J₁ ⟧ᵐ) ≡ ωs 2 (mapι (CSS.𝕀 {2}))
-  J₁-i = refl
+  J₁-i = eqMat-sound _ _ tt
 
   J₀-i : mapι (CSS.⟦ J₀ ⟧ᵐ) ≡ ωs 2 (mapι (CSS.𝕀 {1}))
-  J₀-i = refl
+  J₀-i = eqMat-sound _ _ tt
