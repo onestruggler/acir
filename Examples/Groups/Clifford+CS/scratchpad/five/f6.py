@@ -25,6 +25,10 @@ OBL = {
     'f6 w2': ([A] + C * 3 + [A], C * 3 + [('CS', 0, 1), CCZ]),
     'f6 aa': ([A, A], []),
     'f6 ee': ([('CS', 0, 1), CCZ, ('CSd', 0, 1), CCZ], []),
+    # the letters touching wire 4 for the independence
+    'f6 cx43': ([('CX', 4, 3)], [('CK', 4, 3), ('CS', 3, 4), ('CS', 3, 4), ('CK', 4, 3), ('S', 4)]),
+    'f6 cx34': ([('CX', 3, 4)], [('SWAP', 2, 3), ('SWAP', 1, 2), A, ('SWAP', 1, 2), ('SWAP', 2, 3)]),
+    'f6 sw34': ([('SWAP', 3, 4)], [('CX', 3, 4), ('CX', 4, 3), ('CX', 3, 4)]),
 }
 
 def all_obligations():
@@ -47,7 +51,8 @@ def agda_module(res, modof, lemname, mname, MOD):
         deps.setdefault(modof[name], set()).add(lemname(name)); return f'{lemname(name)} c4'
     NL = chr(10)
     defs = []
-    for key, name in (('cx14', 'f6 cx14'), ('w1', 'f6 w1'), ('w2', 'f6 w2'), ('aa', 'f6 aa'), ('ee', 'f6 ee'), ('sb2', res['sb2'])):
+    for key, name in (('cx14', 'f6 cx14'), ('w1', 'f6 w1'), ('w2', 'f6 w2'), ('aa', 'f6 aa'), ('ee', 'f6 ee'),
+                      ('cx43', 'f6 cx43'), ('cx34', 'f6 cx34'), ('sw34', 'f6 sw34'), ('sb2', res['sb2'])):
         l, r = L5.LEMMAS[name]
         defs.append(f'{key} : Complete 4 → ⟪ {lst(l, mname)} ⟫ʷ ≈ ⟪ {lst(r, mname)} ⟫ʷ')
         defs.append(f'{key} c4 = {use(name)}')

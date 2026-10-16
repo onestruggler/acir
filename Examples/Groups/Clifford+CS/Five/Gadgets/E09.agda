@@ -1,0 +1,36 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- Four-wire facts about the gadgets (rot-s₁, rot-cs)
+--
+-- Each is one evaluation, turned into a derivation by completeness on
+-- four wires; a module holds a few, since Agda frees the memory of an
+-- evaluation only when its module is done.  Written by
+-- `scratchpad/five/gadgets5.py`.
+------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
+open import Examples.Groups.Clifford+CS.Completeness using (Complete)
+
+module Examples.Groups.Clifford+CS.Five.Gadgets.E09 (c4 : Complete 4) where
+
+open import Relation.Binary.PropositionalEquality as Eq using ()
+open import Presentation.GroupLike using (module Group-Lemmas)
+open import Word.Base using (_•_)
+
+open import Examples.Groups.Clifford+CS.Syntactics
+open import Examples.Groups.Clifford+CS.SemanticSteps using (Same ; same-sem)
+open import Examples.Groups.Clifford+CS.Five.Gadgets.Words
+
+open Group-Lemmas (_VRel,_===_ 4) grouplike using (_⁻¹)
+
+private
+  by : (u v : Circuit 4) → Same u v → 4 ⊢ u ≈ v
+  by u v e = c4 (same-sem u v e)
+
+rot-s₁ : 4 ⊢ S ↑ • G-rot ≈ G-rot • S ↑
+rot-s₁ = by (S ↑ • G-rot) (G-rot • S ↑) Eq.refl
+
+rot-cs : 4 ⊢ CS • G-rot ≈ G-rot • CS
+rot-cs = by (CS • G-rot) (G-rot • CS) Eq.refl
