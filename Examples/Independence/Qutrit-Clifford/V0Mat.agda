@@ -103,6 +103,13 @@ private
                       proj₂ ⟦ x ⟧ˢᵈ ∘ˢ proj₂ ⟦ y ⟧ˢᵈ)
   ∙ˢᵈ {n} x y = SDn.∙-agrees n ⟦ x ⟧ˢᵈ ⟦ y ⟧ˢᵈ
 
+  -- Its Pauli component, over variable words: `Eq.cong proj₁ (∙ˢᵈ x y)`
+  -- at particular words has its endpoints matched against the goal at
+  -- the pair type, comparing the two readings symplectic part and all.
+  ∙ˢᵈ₁ : (x y : Word (SD.Gen n)) →
+         proj₁ ⟦ x • y ⟧ˢᵈ ≡ proj₁ ⟦ x ⟧ˢᵈ +ₚ ap (proj₂ ⟦ x ⟧ˢᵈ) (proj₁ ⟦ y ⟧ˢᵈ)
+  ∙ˢᵈ₁ x y = Eq.cong proj₁ (∙ˢᵈ x y)
+
   pI-+ : (v : Pauli n) → pIₙ +ₚ v ≡ v
   pI-+ []            = refl
   pI-+ ((a , b) ∷ v) = Eq.cong₂ _∷_ (Eq.cong₂ _,_ (F3.+-identityˡ a) (F3.+-identityˡ b)) (pI-+ v)
@@ -123,13 +130,13 @@ shift-P [ inj₂ y ]ʷ = refl
 shift-P ε           = refl
 shift-P {n} (w • w') = begin
   proj₁ ⟦ (w • w') SD.↑ ⟧ˢᵈ
-    ≡⟨ Eq.cong proj₁ (∙ˢᵈ (w SD.↑) (w' SD.↑)) ⟩
+    ≡⟨ ∙ˢᵈ₁ (w SD.↑) (w' SD.↑) ⟩
   proj₁ ⟦ w SD.↑ ⟧ˢᵈ +ₚ ap (proj₂ ⟦ w SD.↑ ⟧ˢᵈ) (proj₁ ⟦ w' SD.↑ ⟧ˢᵈ)
     ≡⟨ Eq.cong₂ (λ a b → a +ₚ ap (proj₂ ⟦ w SD.↑ ⟧ˢᵈ) b) (shift-P w) (shift-P w') ⟩
   (PS.pI ∷ proj₁ ⟦ w ⟧ˢᵈ) +ₚ ap (proj₂ ⟦ w SD.↑ ⟧ˢᵈ) (PS.pI ∷ proj₁ ⟦ w' ⟧ˢᵈ)
     ≡⟨ Eq.cong ((PS.pI ∷ proj₁ ⟦ w ⟧ˢᵈ) +ₚ_) (shift-S w PS.pI (proj₁ ⟦ w' ⟧ˢᵈ)) ⟩
   PS.pI ∷ (proj₁ ⟦ w ⟧ˢᵈ +ₚ ap (proj₂ ⟦ w ⟧ˢᵈ) (proj₁ ⟦ w' ⟧ˢᵈ))
-    ≡⟨ Eq.cong (PS.pI ∷_) (Eq.sym (Eq.cong proj₁ (∙ˢᵈ w w'))) ⟩
+    ≡⟨ Eq.cong (PS.pI ∷_) (Eq.sym (∙ˢᵈ₁ w w')) ⟩
   PS.pI ∷ proj₁ ⟦ w • w' ⟧ˢᵈ ∎
   where open Eq.≡-Reasoning
 
@@ -169,7 +176,7 @@ lawᵐ {ℕ.suc n} m (gate₁ S-gate)  =
     (law-P (Eq.sym P-S) (law-emb₁ local-S _ (λ p v → refl)))
   where
   P-S : proj₁ ⟦ Fwd.Iso.h m (gate₁ {n} S-gate) ⟧ˢᵈ ≡ (zero , suc zero) ∷ pIₙ
-  P-S = Eq.trans (Eq.cong proj₁ (∙ˢᵈ (SD.Z^ V1S.-1/2) SD.S)) (+-pI _)
+  P-S = Eq.trans (∙ˢᵈ₁ (SD.Z^ V1S.-1/2) SD.S) (+-pI _)
 lawᵐ m (gate₂ CZ-gate) =
   law-cong (≐-sym (ix-emb (proj₂ CZᵍ))) (law-emb₂ local-CZ _ (λ p q v → refl))
 lawᵐ m (g ↥) =
@@ -188,5 +195,5 @@ law [ g ]ʷ  = law₀ g
 law ε       = ε-law
 law (u • v) =
   law-cong (≐-sym (ix-mul (proj₂ (M u)) (proj₂ (M v))))
-    (law-P (Eq.sym (Eq.cong proj₁ (∙ˢᵈ ((Fwd.Iso.h _ ʷ′) u) ((Fwd.Iso.h _ ʷ′) v))))
+    (law-P (Eq.sym (∙ˢᵈ₁ ((Fwd.Iso.h _ ʷ′) u) ((Fwd.Iso.h _ ʷ′) v)))
       (law-⊙ (law u) (law v)))
