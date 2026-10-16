@@ -1,0 +1,249 @@
+%% ERRATA.tex -- ERRATA.md typeset: the errata of Amy, Ross and Wesley
+%% (arXiv:2407.11152v3) found by the formalisation in this directory.
+%% Keep the two in step.
+%%
+%% Build: latexmk -pdf ERRATA.tex
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\Xa}[1]{X_{[#1]}}
+\newcommand{\Ma}[1]{(-1)_{[#1]}}
+\newcommand{\Ka}[1]{K_{[#1]}}
+\newcommand{\CX}{\mathit{CX}}
+\newcommand{\CZ}{\mathit{CZ}}
+\newcommand{\CCX}{\mathit{CCX}}
+\newcommand{\CCZ}{\mathit{CCZ}}
+\newcommand{\rK}{r_K}
+\newcommand{\rCX}{r_{\mathit{CX}}}
+\newcommand{\agda}[1]{\texttt{#1}}
+\newcommand{\file}[1]{\path{#1}}
+\newcommand{\pc}[2]{\par\smallskip\noindent
+  \begin{tabular}{@{\hspace{1.5em}}l@{\quad}l@{}}
+    Printed: & $#1$ \\
+    Correct: & $#2$
+  \end{tabular}\par\smallskip\noindent\ignorespaces}
+
+\title{Errata for Amy, Ross and Wesley,\\
+\large ``A Sound and Complete Equational Theory for 3-Qubit
+Toffoli-Hadamard Circuits''\\
+(QPL 2024, EPTCS 406, arXiv:2407.11152v3)}
+\author{Found by the Agda formalisation in
+\file{Examples/Groups/CCX+HH-3qubit-opus}}
+\date{October 2026}
+
+\begin{document}
+\sloppy
+\maketitle
+
+Page numbers are those of the arXiv version. One relation is missing from
+the presentation of Theorem~5.2, which makes that theorem false as stated
+and leaves a gap in the proof of Theorem~6.3. Seven printed equations are
+false, two of them in four places each. One paragraph contradicts the
+paper's own formulas, one proof step is incomplete, and there are a few
+small slips.
+
+Every false equation below is refuted in \file{Errata.agda} by one entry at
+which its two sides differ, and every correction is checked there or
+elsewhere in the development, as noted. The script \file{gen/errata.py}
+repeats every check in exact rational arithmetic, and checks the schemas
+(63) and (66) at every choice of indices. File names are relative to
+\file{Examples/Groups/CCX+HH-3qubit-opus/}.
+
+\paragraph{Conventions.} These are the paper's own (Section~2):
+\begin{itemize}
+\item $M_0 = M\otimes I\otimes I$, so qubit~0 is the most significant and
+  $\ket{x_0x_1x_2}$ is basis state $4x_0+2x_1+x_2$.
+\item $CM_{j,k}$ applies $M$ to qubit $k$ when qubit $j$ is $\ket1$, and
+  $CCM_{j,k}$ applies $M$ to the third qubit when qubits $j$ and $k$ are
+  both $\ket1$.
+\item Products, written $\cdot$ or $\circ$, are matrix products, so the
+  rightmost factor acts first.
+\item Matrix entries are given as (row, column), counted from~0.
+\end{itemize}
+
+\section{The relation \texorpdfstring{$r_K$}{r\_K} is missing from
+\texorpdfstring{$R_1$}{R1} (Theorem 5.2)}
+
+Section~5.5 (p.~12) introduces the true relation
+\[
+(\rK)\qquad K_{1,2} \approx \Ka{4,5,6,7}\cdot X_0\cdot\Ka{4,5,6,7}\cdot X_0,
+\]
+but $R_1 = R_0\cup R_8^4$ (Section~5.6, p.~12) consists of Figures~4 and~7
+only, and neither contains it. Figure~4 never mentions $\Ka{0,1,2,3}$ or
+$\CCZ$, and Figure~7 never mentions $K_{1,2}$, so no relation of $R_1$
+involves both $K_{1,2}$ and $\Ka{0,1,2,3}$.
+
+\paragraph{$\rK$ does not follow from $R_1$.} Here $R_1$ means Figures~4
+and~7 with the corrections of Section~\ref{sec:false} below. Let $J$ be the
+$8\times8$ all-ones matrix and $R = I - J/4$. Then $R^2 = I$, and $R$
+commutes with every permutation matrix. Read each gate $g$ of Figure~4 as
+$RgR$, and read $\Ka{0,1,2,3}$ and $\CCZ$ as themselves:
+\begin{itemize}
+\item Every relation of Figure~4 holds, since it is conjugated by $R$.
+\item Every relation of Figure~7 holds unchanged. Its gates are
+  $\Ka{0,1,2,3}$, $\CCZ$ and circuits of permutation gates, and $R$
+  commutes with those circuits.
+\item $\rK$ fails: its left side has entry $(0,0)$ equal to $-1/4$, its
+  right side $1/2$.
+\end{itemize}
+So $\langle\Sigma_1\mid R_1\rangle$ is not $O(8,\D)$, and Theorem~5.2 is
+false as stated.
+
+\paragraph{Correction.} With $\rK$ added, $R_1^+ = R_1\cup\{\rK\}$
+presents $O(8,\D)$; this is \agda{theorem-5-2} in \file{Theorems.agda},
+and the countermodel is \agda{r\_K-independent} (\file{Independence.agda}).
+There $\rK$ is stated as
+$K_{1,2}\approx X_0\,\Ka{0,1,2,3}\,X_0\,\Ka{0,1,2,3}$. That is the same
+relation, because the printed right-hand side is
+$\Ka{4,5,6,7}\Ka{0,1,2,3}$, this one is $\Ka{0,1,2,3}\Ka{4,5,6,7}$, and
+(96) equates the two.
+
+\paragraph{Effect on Theorem 6.3.} Its proof (p.~14) uses Theorem~5.2
+(``$O(8,\D)\cong\langle\Sigma_1, R_1\rangle$ with $R_1\subseteq R_2$'').
+With $\rK$ added, $R_2^+ = R_2\cup\{\rK\}$ presents $\mathrm{TofH}(3)$:
+this is \agda{theorem-6-3}. We do not know whether $\rK$ follows from
+$R_2$, that is, whether Figure~8 makes up for the missing relation. The
+countermodel above does not extend to $H_2$ directly: the only $8\times8$
+matrix that satisfies (102)--(107) with $H_2$ read as it is $0$, which
+fails (108).
+
+\paragraph{Counts.} The presentations have 66 and 73 relations, not the 65
+of the Introduction (p.~1) and the Conclusion (p.~14).
+
+\section{False equations}\label{sec:false}
+
+Each item gives the printed equation, its correction, and an entry at which
+the two printed sides differ; the name in brackets is the refutation in
+\file{Errata.agda}. Write $K$ for $\Ka{0,1,2,3}$.
+
+\paragraph{(33), Figure 4, p.~8} [\agda{r033-false}]
+\pc{\CCX_{0,1}\approx\sigma_{1,2}\cdot\CCX_{0,2}\cdot\sigma_{0,2}}
+   {\CCX_{0,1}\approx\sigma_{1,2}\cdot\CCX_{0,2}\cdot\sigma_{1,2}}
+Entry $(1,1)$: $1$ against $0$. As printed, $R_0$ is unsound. The
+correction is relation \agda{r33} of \file{Syntactics.agda}, checked by
+\file{Soundness.agda}.
+
+\paragraph{Section 5.5, p.~11} [\agda{x67-false}]
+\pc{\CCX_{1,2} = \Xa{6,7}}{\CCX_{0,1} = \Xa{6,7}}
+Entry $(3,3)$: $0$ against $1$. The paper uses this to replace $\Xa{6,7}$
+in $R_8^3$ by $\CCX_{1,2}$. In fact $\CCX_{1,2} = \Xa{3,7}$
+(\agda{ccx12}), and $\Xa{6,7}$ is $\CCX_{0,1}$, as the paper itself says on
+p.~9. So $\Xa{6,7}$ in Figure~7, in (90) and (93), must be read as
+$\CCX_{0,1}$. Section~5.6 lists circuits only up to $\Xa{5,6}$.
+$\CCX_{0,1} = \Xa{6,7}$ is \agda{StdMatrices.mT6}.
+
+\paragraph{$(\rCX)$, Section 5.5, p.~11} [\agda{rCX-false}]
+\pc{\CX_{0,1}\approx\Xa{2,6}\cdot\Xa{3,7}}
+   {\CX_{0,1}\approx\Xa{4,6}\cdot\Xa{5,7}}
+Entry $(2,2)$: $1$ against $0$. $\Xa{2,6}\Xa{3,7}$ is $\CX_{1,0}$
+(\agda{cx10}), and the correction is \agda{rCX}. $\rCX$ is a step of the
+Tietze sequence only and does not reach Figure~7.
+
+\paragraph{The alias of $\Ma{0}$, Section 5.6, p.~12} [\agda{m0-false}]
+\pc{\Ma{0} = X_0X_1\,\CCZ\,X_1X_0}{\Ma{0} = X_0X_1X_2\,\CCZ\,X_2X_1X_0}
+Entry $(0,0)$: $-1$ against $1$. The printed word is $\Ma{1}$ (\agda{m1}).
+The corrected alias is \agda{m0} in \file{Syntactics.agda}, checked by
+\agda{StdMatrices.mm0}.
+
+\paragraph{(97), Figure 7, p.~12} [\agda{r097-false}]
+\pc{\Xa{0,1}\,K\approx K\,\Xa{0,1}\,\Ma{1}\,\Ma{3}}
+   {\Xa{0,1}\,K\approx K\,\Xa{1,3}\,\Ma{1}\,\Ma{3}}
+Entry $(1,1)$: $1/2$ against $-1/2$. The correction is Li, Ross and
+Selinger's (4a). The same misprint is in (78) (Figure~6, p.~11) and (125)
+(Figure~10, p.~41), which are (97) on the two-level generators, and in the
+schema (63) (Figure~5, p.~9), where the correct right-hand side is
+$\Ka{a,b,c,d}\,\Xa{b,d}\,\Ma{b}\,\Ma{d}$. As printed, (63) fails at all 70
+choices of $a<b<c<d<8$, and the corrected schema holds at all of them
+(\file{gen/errata.py}). The correction is relation \agda{r97}, checked by
+\file{Soundness.agda}.
+
+\paragraph{(100), Figure 7, p.~12} [\agda{r100-false}]
+\pc{K\,\Ka{1,3,4,5}\approx\Ka{1,3,4,5}\,K}
+   {K\,\Ka{1,3,4,5}\approx\Ka{2,3,4,5}\,\Ka{0,1,2,4}}
+Entry $(0,3)$: $0$ against $1/2$. The correction is Li, Ross and Selinger's
+(5a). The same misprint is in (81) (Figure~6) and (128) (Figure~10), and in
+the schema (66) (Figure~5), whose correct form is
+$\Ka{a,b,c,d}\,\Ka{b,d,e,f}\approx\Ka{c,d,e,f}\,\Ka{a,b,c,e}$. As printed,
+(66) fails at all 28 choices of six indices, and the corrected schema holds
+at all of them. The correction is relation \agda{r100}.
+
+\paragraph{The CCZ decomposition, Section 5.7, p.~13} [\agda{ccz-false}]
+\pc{\CCZ = K_{1,2}\circ\CZ_{1,2}\circ X_0\circ K\circ X_0\circ\CZ_{1,2}
+     \circ K\circ\Xa{5,6}}
+   {\CCZ = K_{1,2}\circ\CZ_{1,2}\circ X_0\circ K\circ X_0\circ\CZ_{1,2}
+     \circ K_{1,2}\circ\Xa{5,6}}
+Entry $(4,4)$: $1$ against $1/2$. The printed equation is false in either
+reading of $\circ$. The correction replaces the second $K$ by $K_{1,2}$
+(\agda{ccz}); by $\rK$, that factor is $\Ka{0,1,2,3}\,\Ka{4,5,6,7}$. The
+other decomposition, $K = (K_{1,2}\circ\CCZ)^3\circ\Xa{5,6}$, is right as
+printed (\agda{nk}). Neither presentation uses these decompositions.
+
+\section{The control states of \texorpdfstring{$K_{[0,1,2,3]}$}{K[0,1,2,3]}
+(Section 5.5, pp.~11--12)}
+
+The paper says that $\Ka{0,1,2,3}$ is a $K_{1,2}$ gate applied when qubit~0
+is in state $\ket1$, and $X_0\circ\Ka{0,1,2,3}\circ X_0$ one applied when
+qubit~0 is in state $\ket0$. It is the other way round: $\Ka{0,1,2,3}$ acts
+on states 0--3, where qubit~0 is $\ket0$. The paper says so itself at the
+end of Section~5.6, where $\Ka{0,1,2,3}$ is ``a negatively controlled K
+gate'', and on p.~9, where $\Ka{4,5,6,7}$, which is
+$X_0\,\Ka{0,1,2,3}\,X_0$, is ``a controlled K-gate''. The relation $\rK$
+itself is right.
+
+\section{A gap in the proof of Lemma 6.1 (pp.~13--14)}
+
+The inductive step moves $H_2$ past the first letter $x$ of $w$ ``by one of
+Relations (102), (103), (104), (105), (106) and (107)''. Those relations
+cover only six letters of $\Sigma_1$: $X_0$, $\CX_{0,1}$, $\CCX_{1,2}$,
+$\CCZ$, $K_{1,2}$ and $\Ka{0,1,2,3}$. $\Sigma_1$ has 25 letters. For the
+other 19 ($X_1$, $Z_0$, $\CZ_{0,1}$, $\sigma_{0,1}$, \dots), $x$ must first be
+rewritten by its defining relation, (1)--(19) of Figure~4. These define each
+derived gate of $\Sigma_D$ in terms of earlier ones, and $H_2$ is then moved
+past the result letter by letter: an induction on the order of the
+definitions. The lemma is true: \file{Push.agda} proves it this way.
+
+\section{Small slips}
+
+\begin{itemize}
+\item \textbf{p.~3, the definition of $CCM_{j,k}$:}
+  $l\in\{1,2,3\}\setminus\{j,k\}$ should be
+  $l\in\{0,1,2\}\setminus\{j,k\}$.
+\item \textbf{p.~13, Section 5.7:} ``the set $\Sigma_D\cup\{\CCZ\}$ is
+  minimal, whereas the set $\Sigma_D\cup\{\Ka{0,1,2,3}\}$ is not''.
+  $\Sigma_D$ itself is not minimal, since it contains the 19 derived gates.
+  Presumably $\Sigma_0$ is meant: $\Sigma_0\cup\{\CCZ\}$ is $\Sigma_Z$ of
+  Theorem~5.3, and in $\Sigma_0\cup\{\Ka{0,1,2,3}\}$ the gate $K_{1,2}$ is
+  redundant, by $\rK$.
+\item \textbf{p.~14, proof of Lemma 6.1:} in ``Then
+  $H_2\cdot u\sim_{R_2}u'\cdot w'\cdot H_2$ by the transitivity of
+  $(\sim_{R_2})$'', $H_2\cdot u$ should be $H_2\cdot w$.
+\item \textbf{p.~31, Appendix C:} ``$\CX_{1,2}$ is a reflection about the
+  normal vector $\ket{-}\otimes\ket1\otimes\ket1$''. That reflection is
+  $\CCX_{1,2}$. $\CX_{1,2}$ is not a reflection: its $-1$-eigenspace has
+  dimension~2.
+\item \textbf{p.~41, Figure 10:} $\rho$ ends in an extra $\Xa{0,4}$ that
+  it does not have in Figures~5--7. This is harmless, because (129) holds
+  with either $\rho$.
+\end{itemize}
+
+\section*{Checking}
+
+\file{Errata.agda} typechecks in about half a minute given the interfaces
+of this directory (Agda 2.8.0, standard-library 2.4,
+\texttt{--safe --without-K}). \file{gen/errata.py} needs only Python~3:
+run \texttt{python3 errata.py} in \file{gen/}.
+
+An independent formalisation of the same paper, in
+\file{Examples/Groups/CCX+HH-3qubit/}, records the same corrections for
+Sections 1--3, except $\rCX$ and the CCZ decomposition. Those two, and
+Sections 4 and 5, are new here.
+
+\end{document}

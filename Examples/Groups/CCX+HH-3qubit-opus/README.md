@@ -15,7 +15,8 @@ formalised on this repository's `Word` and `Presentation` framework.
 
 Gates are numbered with qubit 0 the most significant (basis state
 `4 x₀ + 2 x₁ + x₂`), and words are in operator order. The misprints of the
-paper are corrected; [`ERRATA.md`](ERRATA.md) lists every error found, and
+paper are corrected; [`ERRATA.md`](ERRATA.md) (typeset as
+[`ERRATA.pdf`](ERRATA.pdf)) lists every error found, and
 `Errata.agda` refutes each printed equation that is false.
 
 ## The proof

@@ -4,6 +4,8 @@ Matthew Amy, Neil J. Ross and Scott Wesley, [*A Sound and Complete
 Equational Theory for 3-Qubit Toffoli-Hadamard
 Circuits*](https://arxiv.org/abs/2407.11152v3), QPL 2024, EPTCS 406
 (arXiv:2407.11152v3). Page numbers are those of the arXiv version.
+[`ERRATA.pdf`](ERRATA.pdf) is the same text typeset (source
+[`ERRATA.tex`](ERRATA.tex)).
 
 These were found while formalising the paper in this directory. One relation
 is missing from the presentation of Theorem 5.2, which makes that theorem false
