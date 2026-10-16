@@ -52,6 +52,7 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 | Decide a matrix identity as one boolean, not `refl` on tries | `Clifford/Qubit/Model/Gates` | 71 → 2.9 s |
 | Pass the axiom's own words; compare readings as words | `Clifford/Qubit/Model/Faithful` | 1436 → 1.5 s |
 | Bundle many module parameters into one record | `Qupit-Phase-Affine/Phase/Control` | 26.9 → 5.3 s |
+| Decide an action's instances by one boolean on closed data, not `Eq.refl` per instance | `ProjectiveClifford/Qubit/Selinger/Soundness` | 344 → 3.3 s (+ 1.7 s in the new `LongRelations`) |
 | Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived`, `Qubit-Clifford/Relations/Rules/Figure5`, `Figure7` | 44.6 → 14.7 s (0.8 GB), 22.5 → 7.9 s, 22.8 → 9.2 s |
 
 - **A `with` normalises the goal before abstracting.** `with b ≟ c`
@@ -179,6 +180,31 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   types are unchanged, so nothing downstream changed. (The rewrap is a
   script: indent each run of equations of one width under the block that
   opens its letters.)
+- **`Eq.refl` between two computed values is not one evaluation.** The
+  conversion checker reduces each side to weak head normal form, then
+  compares the components one by one, and each component is reduced
+  afresh from the term the previous step left behind; shared work is
+  lost in between. `Selinger/Soundness` proved C10, C11 (and C1, C14,
+  C15) by `Eq.refl` between the Clifford action of the two sides on
+  each concrete Pauli, 16 or 64 cases: a word of 24 letters took 40 ms,
+  one of 48 took 3.6 s, and the module 344 s. The same comparison as one
+  boolean — `T (agree k u v)`, all 4ᵏ Paulis at width k compared by an
+  equality test returning `Bool`, discharged by `tt` — is one reduction:
+  96 letters in under 30 ms. To reach width k from the relation's
+  arbitrary width, `LongRelations` proves once that a word on the
+  bottom k wires, widened, acts on the first k entries as at width k and
+  leaves the rest (`local`, letter by letter, every case `refl`).
+  Three traps, each of which exhausted a 3 GB heap or left a constraint:
+  a lemma stated at width `k ℕ.+ n` gives `cact` a hidden width that is
+  not syntactically the goal's `₁₊ n`, and comparing the two evaluates
+  the action on a symbolic Pauli — one wrapper per arity, stated at
+  `₁₊ n`/`₂₊ n`/`₃₊ n`, fixes it, the width being converted inside the
+  wrapper where the word is a variable; `T` is not injective, so `T-∧₁
+  _ _ t` cannot find its conjuncts (give them); and `every k _ t P` in a
+  where-clause cannot solve `_ P`, `P` being in the metavariable's
+  context (give the predicate). `--call-by-name`, which the module
+  needed for its assembly, made the old proofs 2.4 times slower still;
+  the new ones live in their own module without it.
 - **One step function, not two copies.** `step-swap` restated
   `step-swap0`'s sixteen rules verbatim; it is now
   `step-swap-extra then step-swap0`. With `then` the extra rules are
