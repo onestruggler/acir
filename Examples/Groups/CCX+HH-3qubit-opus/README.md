@@ -14,8 +14,9 @@ formalised on this repository's `Word` and `Presentation` framework.
   and 7, so R₁ alone is not complete.
 
 Gates are numbered with qubit 0 the most significant (basis state
-`4 x₀ + 2 x₁ + x₂`), and words are in operator order. Five misprints of the
-paper are corrected; `Syntactics.agda` lists them.
+`4 x₀ + 2 x₁ + x₂`), and words are in operator order. The misprints of the
+paper are corrected; [`ERRATA.md`](ERRATA.md) lists every error found, and
+`Errata.agda` refutes each printed equation that is false.
 
 ## The proof
 
@@ -52,7 +53,8 @@ proves complete:
 ## Checking
 
 Agda 2.8.0, standard-library 2.4, and EucDomain registered. Check
-`Theorems.agda` and `GateMatrices.agda`; together they reach all 30 modules
-of the development (and `CCX+HH-TwoLevel`, `Symmetric`). Given the interfaces
-of those, `Theorems.agda` takes about 4.5 minutes from scratch in one process,
-with a peak of 3.1 GB (`+RTS -M4G`), and `GateMatrices.agda` half a minute.
+`Theorems.agda`, `GateMatrices.agda` and `Errata.agda`; together they reach
+all 31 modules of the development (and `CCX+HH-TwoLevel`, `Symmetric`). Given
+the interfaces of those, `Theorems.agda` takes about 4.5 minutes from scratch
+in one process, with a peak of 3.1 GB (`+RTS -M4G`), and the other two half a
+minute each.

@@ -9,6 +9,7 @@ Python 3 (no dependencies) and a C++17 compiler. Run from this directory.
 | `mk_derived.py` | `../Derived.agda` |
 | `mk_push.py` | `../Push.agda`, `../PushMatrices.agda` |
 | `mk_indep.py` | `../Independence.agda` |
+| `errata.py` | nothing: it checks every claim of `../ERRATA.md` on the matrices |
 
 ```sh
 g++ -O2 -std=c++17 -o fbfs fbfs.cpp
