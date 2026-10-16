@@ -30,27 +30,13 @@ import Presentation.Base as PB
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.Syntactics as Syn using (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.Five.Chain
+open import Examples.Groups.Clifford+CS.Five.Lambda using (λ₁)
 
 ------------------------------------------------------------------------
 -- The functor
 
 λᵍ : Gen 4 → List Mac
-λᵍ (gate₀ h)                = S4 ∷ []
-λᵍ (gate₁ S-gate)           = CS04 ∷ []
-λᵍ (gate₁ K-gate)           = CK40 ∷ []
-λᵍ (gate₂ CS-gate)          = Sb2-0-41-3 ∷ []
-λᵍ (gate₀ h ↥)              = S4 ∷ []
-λᵍ (gate₁ S-gate ↥)         = CS14 ∷ []
-λᵍ (gate₁ K-gate ↥)         = CK41 ∷ []
-λᵍ (gate₂ CS-gate ↥)        = Sb0-1-42-3 ∷ []
-λᵍ (gate₀ h ↥ ↥)            = S4 ∷ []
-λᵍ (gate₁ S-gate ↥ ↥)       = CS24 ∷ []
-λᵍ (gate₁ K-gate ↥ ↥)       = CK42 ∷ []
-λᵍ (gate₂ CS-gate ↥ ↥)      = Sb0-2-43-1 ∷ []
-λᵍ (gate₀ h ↥ ↥ ↥)          = S4 ∷ []
-λᵍ (gate₁ S-gate ↥ ↥ ↥)     = CS34 ∷ []
-λᵍ (gate₁ K-gate ↥ ↥ ↥)     = CK43 ∷ []
-λᵍ (gate₀ h ↥ ↥ ↥ ↥)        = S4 ∷ []
+λᵍ g = λ₁ g ∷ []
 
 λʷ : Circuit 4 → List Mac
 λʷ [ g ]ʷ   = λᵍ g
