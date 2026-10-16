@@ -15,24 +15,34 @@ module Examples.Groups.Clifford+CS.Five.F6Ax where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Examples.Groups.Clifford+CS.Completeness using (Complete)
+open import Examples.Groups.Clifford+CS.Five.WinInst using (ws)
 open import Examples.Groups.Clifford+CS.Five.Chain
-open import Examples.Groups.Clifford+CS.Five.D.D005 using (lem-SB2)
-open import Examples.Groups.Clifford+CS.Five.D.D235 using (lem-f6-aa ; lem-f6-cx14 ; lem-f6-ee ; lem-f6-w1 ; lem-f6-w2)
+open import Examples.Groups.Clifford+CS.Five.D.D002 using (lem-SB2)
+open import Examples.Groups.Clifford+CS.Five.D.D202 using (lem-f6-aa ; lem-f6-cx14 ; lem-f6-cx34 ; lem-f6-cx43 ; lem-f6-ee ; lem-f6-sw34 ; lem-f6-w1 ; lem-f6-w2)
 
 cx14 : Complete 4 → ⟪ (CX14 ∷ []) ⟫ʷ ≈ ⟪ (K4 ∷ CS14 ∷ CS14 ∷ K4 ∷ ι ∷ []) ⟫ʷ
-cx14 c4 = lem-f6-cx14 c4
+cx14 c4 = lem-f6-cx14 (ws c4)
 
 w1 : Complete 4 → ⟪ (CX14 ∷ X4 ∷ CS04 ∷ X4 ∷ CX14 ∷ []) ⟫ʷ ≈ ⟪ (CS01⁻ ∷ CCZ014 ∷ X4 ∷ CS04 ∷ X4 ∷ []) ⟫ʷ
-w1 c4 = lem-f6-w1 c4
+w1 c4 = lem-f6-w1 (ws c4)
 
 w2 : Complete 4 → ⟪ (CX14 ∷ X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ CX14 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ CS01 ∷ CCZ014 ∷ []) ⟫ʷ
-w2 c4 = lem-f6-w2 c4
+w2 c4 = lem-f6-w2 (ws c4)
 
 aa : Complete 4 → ⟪ (CX14 ∷ CX14 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-aa c4 = lem-f6-aa c4
+aa c4 = lem-f6-aa (ws c4)
 
 ee : Complete 4 → ⟪ (CS01 ∷ CCZ014 ∷ CS01⁻ ∷ CCZ014 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
-ee c4 = lem-f6-ee c4
+ee c4 = lem-f6-ee (ws c4)
+
+cx43 : Complete 4 → ⟪ (CX43 ∷ []) ⟫ʷ ≈ ⟪ (CK43 ∷ CS34 ∷ CS34 ∷ CK43 ∷ S4 ∷ []) ⟫ʷ
+cx43 c4 = lem-f6-cx43 (ws c4)
+
+cx34 : Complete 4 → ⟪ (CX34 ∷ []) ⟫ʷ ≈ ⟪ (Sw23 ∷ Sw12 ∷ CX14 ∷ Sw12 ∷ Sw23 ∷ []) ⟫ʷ
+cx34 c4 = lem-f6-cx34 (ws c4)
+
+sw34 : Complete 4 → ⟪ (Sw34 ∷ []) ⟫ʷ ≈ ⟪ (CX34 ∷ CX43 ∷ CX34 ∷ []) ⟫ʷ
+sw34 c4 = lem-f6-sw34 (ws c4)
 
 sb2 : Complete 4 → ⟪ (Sb2-0-41-3 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (CCZ014 ∷ []) ⟫ʷ
-sb2 c4 = lem-SB2 c4
+sb2 c4 = lem-SB2 (ws c4)

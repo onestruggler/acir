@@ -16,6 +16,13 @@
 -- AX at its canonical placement: u = 0, A = 1, t = 3, y = 4, x = 2; the
 -- commutator [Toff(1; 3, 4), CS(2, 1)] with the Toffoli onto wire 1,
 -- spelled as Five.Letters spells it (scratchpad/five/spell5.py).
+--
+-- And the controlled versions λ¹ of the four-wire rules lf, hyb-sq,
+-- hyb-yb and ck-tct (control wire 4, Five.Lambda.λc): rules on five
+-- wires.  The joint paper's tools do not reach the first three
+-- (scratchpad/five-qubit-plan.md).  For ck-tct the de-borrowing derives
+-- only the variant with Toff⁻¹ in its second Toffoli, spelled with the
+-- joint paper's Toffoli, whose CS on the wires 1 3 has no generator here.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -31,6 +38,7 @@ import Circuit.Base
 import Presentation.Base as PB
 
 open import Examples.Groups.Clifford+CS.Syntactics
+open import Examples.Groups.Clifford+CS.Five.Lambda using (λc)
 
 private
   variable
@@ -53,6 +61,13 @@ module AX where
   l = CS • T₁₃₄ • (CS ↑) • T₁₃₄ • ((CS • CS • CS) ↑)
   r = T₁₃₄ • (CS ↑) • T₁₃₄ • ((CS • CS • CS) ↑) • CS
 
+-- The two sides of ck-tct, named so that its λ-image is stated once.
+module CKT where
+
+  l r : Circuit (₄₊ n)
+  l = X • CK • X • Toff ↑ • CS • Toff ↑
+  r = Toff ↑ • CS • Toff ↑ • X • CK • X
+
 ------------------------------------------------------------------------
 -- The relation
 
@@ -64,6 +79,12 @@ data _XRel,_===_ : (n : ℕ) → WRel (Gen n) where
 
   -- Five wires.
   ax : (suc (₄₊ n)) XRel, AX.l === AX.r
+
+  -- The controlled four-wire rules.
+  λ-lf     : 5 XRel, λc LF.Hyb === λc LF.Dec
+  λ-hyb-sq : 5 XRel, λc HSQ.Sq === λc ε
+  λ-hyb-yb : 5 XRel, λc HYB.Yl === λc HYB.Yr
+  λ-ck-tct : 5 XRel, λc CKT.l === λc CKT.r
 
 private module LX = SC.Lift-Relation _XRel,_===_
 

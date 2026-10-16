@@ -27,6 +27,9 @@ def lst(letters): return '(' + ' ∷ '.join(mname(g) for g in letters) + ' ∷ [
 
 TR = {'(': '⟨', ')': '⟩', '.': '·', '>': '⟶', '|': '∣', ';': '·', '{': '', '}': '', '"': '', ',': '', '@': 'at',
       '^': 'ᵖ', '[': '', ']': '', '=': '≡', ':': '∶'}
+def trname(name):
+    return 'tr' + name.split(' ')[1].zfill(2)
+
 def lemname(name):
     s = name.replace(' ', '-')
     s = ''.join(TR.get(ch, ch) for ch in s)
@@ -188,8 +191,11 @@ def step_proof(st):
     if kind == 'R': return 'refl' if info in ('unfold', 'fold') else 'by-assoc Eq.refl'
     if kind == 'U': return f'uₛ ({word_expr(seg)}) ({word_expr(ys)}) Eq.refl'
     if kind == 'A':
-        name, fwd = info; assert name == 'AX'
-        return 'axAX' if fwd else 'sym axAX'
+        name, fwd = info
+        if name == 'AX': return 'axAX' if fwd else 'sym axAX'
+        assert name.startswith('TR '), name
+        t = f'{trname(name)} c4'
+        return t if fwd else f'sym ({t})'
     if kind == 'L':
         name, fwd = info; t = f'{lemname(name)} c4'
         return t if fwd else f'sym ({t})'
@@ -243,35 +249,67 @@ class Part:
     def __init__(self, name, lhs, rhs, steps):
         self.name, self.lhs, self.rhs, self.steps = name, list(lhs), list(rhs), steps
 
+# The heap a derivation needs follows its letter-steps, the length of the
+# word each step rewrites summed over its steps, since Agda keeps every
+# intermediate word of a module's chains: 45k of them peaked at 4.3 GB,
+# and 89k, over the long words of the de-borrowing, went past 7.7 GB.  So
+# a derivation is cut into parts of at most COST letter-steps (as well as
+# at most `size` steps), and a module holds at most COST of them.
+COST = int(os.environ.get('COST', 30_000))
+
+def letter_steps(P):
+    cur = list(P.lhs); c = 0
+    for (kind, k, n, seg, ys, extra) in P.steps:
+        c += len(cur); cur = cur[:k] + list(ys) + cur[k + n:]
+    return c
+
 def split_long(prims, limit=1000, size=500):
     out = []
     for P in prims:
-        if len(P.steps) <= limit: out.append(P); continue
+        if len(P.steps) <= limit and letter_steps(P) <= COST: out.append(P); continue
         lines = [list(P.lhs)]; cur = list(P.lhs)
         for (kind, k, n, seg, ys, extra) in P.steps:
             cur = cur[:k] + list(ys) + cur[k + n:]; lines.append(cur)
-        parts = []
-        for i, s0 in enumerate(range(0, len(P.steps), size)):
-            s1 = min(s0 + size, len(P.steps))
-            parts.append(Part(f'{P.name} part{i}', lines[s0], lines[s1], P.steps[s0:s1]))
+        cuts, c = [0], 0
+        for i in range(len(P.steps)):
+            w = len(lines[i])
+            if i > cuts[-1] and (i - cuts[-1] >= size or c + w > COST):
+                cuts.append(i); c = 0
+            c += w
+        cuts.append(len(P.steps))
+        parts = [Part(f'{P.name} part{i}', lines[s0], lines[s1], P.steps[s0:s1])
+                 for i, (s0, s1) in enumerate(zip(cuts, cuts[1:]))]
         main = []; cur = list(P.lhs)
         for Q in parts:
             main.append(('L', 0, len(cur), list(cur), list(Q.rhs), (Q.name, True))); cur = list(Q.rhs)
         out += parts + [Part(P.name, P.lhs, P.rhs, main)]
     return out
 
-def chunks(prims, max_steps=500, max_lemmas=64):
-    out = []; cur = []; steps = 0
+# The size of a module.  Loading the letters, tables and earlier modules
+# costs some 40 s per module, so modules are large; but Agda keeps the
+# elaborated chains of a module until it is done, some 4-8 MB of heap per
+# KB of source on top of 2.5 GB for the imports, so a module is cut at a
+# number of bytes of its text (a 5 GB heap): smaller for the R modules,
+# whose respellings are denser.  The windows have gone to Five/Wins
+# (winlib5.py), so the text measured here overestimates.  At 250 KB the D
+# modules peaked at 4.3-5.4 GB, which left room for two Agda processes
+# at a time, not three; D_BYTES sets the cut (default 120 KB).
+MOD_BYTES = {'R': 100_000, 'D': int(os.environ.get('D_BYTES', 120_000))}
+
+def chunks(prims, prefix):
+    budget = MOD_BYTES[prefix]
+    out = []; cur = []; size = 0; cost = 0
     for P in prims:
-        if cur and (steps + len(P.steps) > max_steps or len(cur) >= max_lemmas):
-            out.append(cur); cur = []; steps = 0
-        cur.append(P); steps += len(P.steps)
+        n = len(lemma_text(P)); c = letter_steps(P)
+        if cur and (size + n > budget or cost + c > COST):
+            out.append(cur); cur = []; size = 0; cost = 0
+        cur.append(P); size += n; cost += c
     if cur: out.append(cur)
     return out
 
 def write_group(prims, prefix, modof, start, uses_resps):
     mods = []
-    for i, group in enumerate(chunks(prims), start):
+    for i, group in enumerate(chunks(prims, prefix), start):
         mod = f'{prefix}{i:03d}'
         names = {P.name for P in group}
         deps = sorted({extra[0] for P in group for (kind, k, n, seg, ys, extra) in P.steps
@@ -279,6 +317,9 @@ def write_group(prims, prefix, modof, start, uses_resps):
         bymod = {}
         for dname in deps: bymod.setdefault(modof[dname], []).append(lemname(dname))
         dep_lines = NL.join(f'open import {MOD}.D.{m} using ({" ; ".join(ns)})' for m, ns in sorted(bymod.items()))
+        trs = sorted({trname(extra[0]) for P in group for (kind, k, n, seg, ys, extra) in P.steps
+                      if kind == 'A' and extra[0].startswith('TR ')})
+        if trs: dep_lines += NL + f'open import {MOD}.D.TR using ({" ; ".join(trs)})'
         resps = f'open import {MOD}.Resps using (pw0 ; pw1 ; pw2 ; pw3 ; pw4)' + NL if uses_resps else ''
         text = HEADER.format(mod=f'{MOD}.D.{mod}', MOD=MOD, deps=dep_lines, resps=resps) + NL.join(lemma_text(P) for P in group)
         for P in group: modof[P.name] = mod
@@ -286,15 +327,30 @@ def write_group(prims, prefix, modof, start, uses_resps):
         io.open(os.path.join(ROOT, 'D', mod + '.agda'), 'w', encoding='utf-8', newline=NL).write(text)
     return mods
 
-def write_all(prims, respell, root=None):
+def reachable(prims, roots):
+    """the derivations the roots use, through their lemma steps."""
+    by = {P.name: P for P in prims}
+    seen, todo = set(), [r for r in roots if r in by]
+    while todo:
+        n = todo.pop()
+        if n in seen: continue
+        seen.add(n)
+        todo += [st[5][0] for st in by[n].steps if st[0] == 'L']
+    return seen
+
+def write_all(prims, respell, root=None, keep=None):
+    """the modules of the derivations in keep (all if None); the letters
+    are those of all the derivations, so that Letters does not depend on
+    which are kept."""
     global ROOT
     if root: ROOT = root
     os.makedirs(os.path.join(ROOT, 'D'), exist_ok=True)
     for f in os.listdir(os.path.join(ROOT, 'D')):
         if f.endswith('.agda'): os.remove(os.path.join(ROOT, 'D', f))
     early = lambda P: P.name.split(' ')[0] in ('resp', 'comm', 'nat')
-    pre = [P for P in prims if early(P)]
-    main = [P for P in prims if not early(P)]
+    kept = [P for P in prims if keep is None or P.name in keep]
+    pre = [P for P in kept if early(P)]
+    main = [P for P in kept if not early(P)]
     for P in pre:
         assert all(st[0] != 'P' for st in P.steps), P.name
     pre, main = split_long(pre), split_long(main)
@@ -314,7 +370,14 @@ def write_all(prims, respell, root=None):
     modof = {}
     rmods = write_group(pre, 'R', modof, 1, False)
     io.open(os.path.join(ROOT, 'Resps.agda'), 'w', encoding='utf-8', newline=NL).write(resps_module(prims_l, respell, modof))
-    dmods = write_group(main, 'D', modof, 1, True)
+    # The derivations that use the transports of the de-borrowing import
+    # Five.D.TR, which imports earlier ones: they start a module of their
+    # own.  TR's own lemmas come after them here; trsplit5 moves them to
+    # Five/D/TRL.agda once everything is written.
+    cut = next((i for i, P in enumerate(main)
+                if any(st[0] == 'A' and st[5][0].startswith('TR ') for st in P.steps)), len(main))
+    dmods = write_group(main[:cut], 'D', modof, 1, True)
+    dmods += write_group(main[cut:], 'D', modof, len(dmods) + 1, True)
     io.open(os.path.join(ROOT, 'D', 'INDEX.txt'), 'w', encoding='utf-8', newline=NL).write(
         NL.join(f'{modof[P.name]} {len(P.steps)} {P.name}' for P in pre + main) + NL)
     return rmods, dmods, len(boxes), modof
@@ -329,11 +392,39 @@ if __name__ == '__main__':
     import f6 as F6
     fres = F6.all_obligations()
     root = sys.argv[2] if len(sys.argv) > 2 else None
-    rmods, dmods, nb, modof = write_all(L5.PRIMS, L5.RESPELL, root)
-    io.open(os.path.join(ROOT, 'TransportAx.agda'), 'w', encoding='utf-8', newline=NL).write(
-        T5.agda_module(res, modof, lemname, MOD))
+    # Only the derivations something uses.  The roots are what TransportAx,
+    # CalcAx, F6Ax, TR and Resps refer to, read off by running their
+    # writers against a table that records what is looked up in it; about
+    # a third of the joint run's derivations (F4 items, `auto` lemmas, the
+    # de-borrowing of ck-tct', whose controlled version is a rule) are
+    # not, and are left out.
+    class Uses(dict):
+        def __init__(self, names): super().__init__((n, 'D000') for n in names); self.used = set()
+        def __getitem__(self, k): self.used.add(k); return 'D000'
+    uses = Uses(P.name for P in L5.PRIMS)
+    T5.agda_module(res, uses, lemname, MOD)
+    C5.agda_module(cres, uses, lemname, MOD)
+    F6.agda_module(fres, uses, lemname, mname, MOD)
+    if L5.TRANSPORTS: T5.tr_module(res, uses, lemname, MOD, mname, trname)
+    keep = reachable(L5.PRIMS, uses.used | set(L5.RESPELL.values()))
+    rmods, dmods, nb, modof = write_all(L5.PRIMS, L5.RESPELL, root, keep)
+    for rel, text in T5.agda_module(res, modof, lemname, MOD):
+        p = os.path.join(ROOT, rel)
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        io.open(p, 'w', encoding='utf-8', newline=NL).write(text)
     io.open(os.path.join(ROOT, 'CalcAx.agda'), 'w', encoding='utf-8', newline=NL).write(
         C5.agda_module(cres, modof, lemname, MOD))
     io.open(os.path.join(ROOT, 'F6Ax.agda'), 'w', encoding='utf-8', newline=NL).write(
         F6.agda_module(fres, modof, lemname, mname, MOD))
-    print(len(rmods), 'R modules,', len(dmods), 'D modules,', nb, 'boxes, written to', root or ROOT)
+    if L5.TRANSPORTS:
+        io.open(os.path.join(ROOT, 'D', 'TR.agda'), 'w', encoding='utf-8', newline=NL).write(
+            T5.tr_module(res, modof, lemname, MOD, mname, trname))
+    import winlib5
+    e2s = [('e2-' + trname(n)[2:], T5.agda2(el), T5.agda2(er)) for n, (el, er, b) in L5.TRANSPORTS.items()]
+    libs, nw = winlib5.main(ROOT, e2s)
+    if L5.TRANSPORTS:
+        # TR's own lemmas apart from the de-borrowing, which imports TR.
+        import trsplit5
+        trsplit5.split(ROOT)
+    print(len(rmods), 'R modules,', len(dmods), 'D modules,', nb, 'boxes,', nw, 'windows in',
+          len(libs), 'library modules, written to', root or ROOT)

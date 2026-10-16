@@ -9,529 +9,1064 @@ open import Word.Base using (ε ; _•_)
 
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
-open import Examples.Groups.Clifford+CS.Completeness using (Complete)
+open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl0283 ; wl0885 ; wl0886 ; wl0887 ; wl0888 ; wl0892 ; wl0893 ; wl0895 ; wl0896 ; wl0897 ; wl0898 ; wl0899 ; wl0930 ; wl0931 ; wl0932 ; wl0933 ; wl0934 ; wl0935 ; wl0936 ; wl0937 ; wl0938 ; wl0939 ; wl0940 ; wl0941 ; wl0942 ; wl0943 ; wl0944 ; wl0945 ; wl0946 ; wl0947 ; wl0948 ; wl0949 ; wl0950 ; wl0951 ; wl0952 ; wl0953 ; wl0954 ; wl0955 ; wl0956 ; wl0957 ; wl0958 ; wl0959 ; wl0960 ; wl0961 ; wl0962 ; wl0963 ; wl0964 ; wl0965 ; wl0966 ; wl0967 ; wl0968 ; wl0969 ; wl0970 ; wl0971 ; wl0972 ; wl0973 ; wl0974 ; wp0461 ; wp0465 ; wp0502 ; wp0503 ; wp0504 ; wp0505 ; wp0506 ; wp0507 ; wp0508 ; wp0509 ; wp0510 ; wp0511 ; wp0512 ; wp0513 ; wp0514 ; wp0515 ; wp0516 ; wp0517)
 open import Examples.Groups.Clifford+CS.Five.Chain
-open import Examples.Groups.Clifford+CS.Five.Lits using (lw0 ; lw1 ; lw2 ; lw3 ; lw4)
-open import Examples.Groups.Clifford+CS.Five.Resps using (pw0 ; pw1 ; pw2 ; pw3 ; pw4)
-open import Examples.Groups.Clifford+CS.Five.D.D001 using (lem-beta-T-at13243142 ; lem-sym12 ; lem-sym34)
-open import Examples.Groups.Clifford+CS.Five.D.D002 using (lem-sym12-at1221 ; lem-sym23-at1221)
-open import Examples.Groups.Clifford+CS.Five.D.D003 using (lem-Cz-beta-at243243 ; lem-sym23-at122331 ; lem-sym23-at243243 ; lem-sym23-at3443 ; lem-sym34-at3443)
-open import Examples.Groups.Clifford+CS.Five.D.D005 using (lem-auto-SBOX⟨0·1·23·4⟩-∣-CS21-at2332)
-open import Examples.Groups.Clifford+CS.Five.D.D007 using (lem-SBsym-at0113203442)
-open import Examples.Groups.Clifford+CS.Five.D.D009 using (lem-auto-SBOX⟨0·1·23·4⟩-∣-K0-at2332 ; lem-auto-SBOX⟨0·1·23·4⟩-∣-Kd0-at2332)
-open import Examples.Groups.Clifford+CS.Five.D.D010 using (lem-auto-SBOX⟨0·1·23·4⟩-∣-CCZ032)
-open import Examples.Groups.Clifford+CS.Five.D.D142 using (lem-T-beta-at2332)
-open import Examples.Groups.Clifford+CS.Five.D.D143 using (lem-sym23-at0312203441 ; lem-sym23-at0312243041)
-open import Examples.Groups.Clifford+CS.Five.D.D152 using (lem-auto-BOX⟨0·1234⟩-∣-CSd21)
-open import Examples.Groups.Clifford+CS.Five.D.D153 using (lem-T312-beta-at133441)
-open import Examples.Groups.Clifford+CS.Five.D.D167 using (lem-beta-T-at133441)
-open import Examples.Groups.Clifford+CS.Five.D.D191 using (lem-c124-beta-at0312203441)
-open import Examples.Groups.Clifford+CS.Five.D.R002 using (lem-nat-1-CCZ023 ; lem-nat-2-CCZ012 ; lem-nat-2-CCZ013)
-open import Examples.Groups.Clifford+CS.Five.D.R003 using (lem-nat-1-CCZ013)
-open import Examples.Groups.Clifford+CS.Five.D.R009 using (lem-nat-1-BOX⟨0·1324⟩ ; lem-nat-1-TOFF013)
-open import Examples.Groups.Clifford+CS.Five.D.R010 using (lem-nat-1-TOFF023)
-open import Examples.Groups.Clifford+CS.Five.D.R011 using (lem-nat-1-BOX⟨0·2314⟩)
-open import Examples.Groups.Clifford+CS.Five.D.R013 using (lem-nat-2-CSd12 ; lem-nat-2-CSd13)
-open import Examples.Groups.Clifford+CS.Five.D.R014 using (lem-nat-0-SBOX⟨0·1·42·3⟩ ; lem-nat-0-SBOX⟨1·0·42·3⟩ ; lem-nat-1-SBOX⟨1·0·42·3⟩ ; lem-nat-1-SBOX⟨2·0·41·3⟩ ; lem-nat-2-SBOX⟨0·1·23·4⟩ ; lem-nat-2-SBOX⟨0·1·32·4⟩ ; lem-nat-2-SBOX⟨0·1·4·2⟩ ; lem-nat-2-SBOX⟨0·1·4·3⟩ ; lem-nat-2-SBOXd⟨0·1·4·2⟩ ; lem-nat-2-SBOXd⟨0·1·4·3⟩ ; lem-nat-3-SBOX⟨0·1·32·4⟩ ; lem-nat-3-SBOX⟨0·1·3·2⟩ ; lem-nat-3-SBOX⟨0·1·42·3⟩ ; lem-nat-3-SBOX⟨0·1·4·2⟩ ; lem-nat-3-SBOXd⟨0·1·3·2⟩ ; lem-nat-3-SBOXd⟨0·1·4·2⟩)
-open import Examples.Groups.Clifford+CS.Five.D.R015 using (lem-nat-1-TOFF034)
-open import Examples.Groups.Clifford+CS.Five.D.R019 using (lem-nat-2-SBOX⟨0·1·2·3⟩ ; lem-nat-2-SBOX⟨0·1·3·2⟩ ; lem-nat-2-SBOXd⟨0·1·2·3⟩ ; lem-nat-2-SBOXd⟨0·1·3·2⟩)
-open import Examples.Groups.Clifford+CS.Five.D.R024 using (lem-nat-0-SBOX⟨2·1·40·3⟩ ; lem-nat-1-SBOX⟨3·1·40·2⟩)
-open import Examples.Groups.Clifford+CS.Five.D.R027 using (lem-nat-0-SBOX⟨2·0·41·3⟩)
-open import Examples.Groups.Clifford+CS.Five.D.R033 using (lem-nat-1-BOX⟨0·3421⟩)
-open import Examples.Groups.Clifford+CS.Five.D.R034 using (lem-nat-2-BOX⟨0·2431⟩ ; lem-nat-2-BOX⟨0·3241⟩ ; lem-nat-2-SBOX⟨0·3·1·4⟩ ; lem-nat-2-SBOXd⟨0·3·1·4⟩)
-open import Examples.Groups.Clifford+CS.Five.D.R037 using (lem-nat-2-BOX⟨0·3421⟩ ; lem-nat-3-BOX⟨0·2341⟩ ; lem-nat-3-BOX⟨0·2431⟩)
-open import Examples.Groups.Clifford+CS.Five.D.R041 using (lem-comm-SBOX⟨0·1·2·3⟩-TOFF034 ; lem-comm-SBOXd⟨0·1·2·3⟩-TOFF034 ; lem-nat-1-SBOX⟨3·2·40·1⟩ ; lem-nat-2-BOX⟨0·2341⟩ ; lem-nat-2-SBOX⟨0·2·1·4⟩ ; lem-nat-2-SBOX⟨2·1·40·3⟩ ; lem-nat-2-SBOX⟨3·1·40·2⟩ ; lem-nat-2-SBOXd⟨0·2·1·4⟩ ; lem-nat-3-SBOX⟨0·2·1·3⟩ ; lem-nat-3-SBOX⟨0·2·1·4⟩ ; lem-nat-3-SBOXd⟨0·2·1·3⟩ ; lem-nat-3-SBOXd⟨0·2·1·4⟩)
--- auto SBOX(0;1;23;4) | CCZ032 @2332: 7 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-CCZ032-at2332 : Complete 4 → ⟪ (Sb0-1-32-4 ∷ CCZ023 ∷ []) ⟫ʷ ≈ ⟪ (CCZ023 ∷ Sb0-1-32-4 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-CCZ032-at2332 c4 = run b0
+open import Examples.Groups.Clifford+CS.Five.D.D003 using (lem-F5-CS01)
+open import Examples.Groups.Clifford+CS.Five.D.D172 using (lem-F4-CS01ᵖ0∣iIᵖ1 ; lem-F4-K1ᵖ0∣CS01ᵖ1 ; lem-F4-K1ᵖ0∣CS12ᵖ1 ; lem-F4-K1ᵖ0∣CS23ᵖ1 ; lem-F4-K2ᵖ0∣CS01ᵖ1 ; lem-F4-K2ᵖ0∣CS12ᵖ1 ; lem-F4-K2ᵖ0∣CS23ᵖ1 ; lem-F4-K3ᵖ0∣CS01ᵖ1 ; lem-F4-K3ᵖ0∣CS12ᵖ1 ; lem-F4-K3ᵖ0∣CS23ᵖ1 ; lem-F4-S1ᵖ0∣CS01ᵖ1 ; lem-F4-S1ᵖ0∣CS12ᵖ1 ; lem-F4-S1ᵖ0∣CS23ᵖ1 ; lem-F4-S2ᵖ0∣CS01ᵖ1 ; lem-F4-S2ᵖ0∣CS12ᵖ1 ; lem-F4-S2ᵖ0∣CS23ᵖ1 ; lem-F4-S3ᵖ0∣CS01ᵖ1 ; lem-F4-S3ᵖ0∣CS12ᵖ1 ; lem-F4-S3ᵖ0∣CS23ᵖ1)
+open import Examples.Groups.Clifford+CS.Five.D.D173 using (lem-F4-CS01ᵖ0∣CS01ᵖ1 ; lem-F4-CS01ᵖ0∣K0ᵖ1 ; lem-F4-CS01ᵖ0∣K1ᵖ1 ; lem-F4-CS01ᵖ0∣K2ᵖ1 ; lem-F4-CS01ᵖ0∣K3ᵖ1 ; lem-F4-CS01ᵖ0∣S0ᵖ1 ; lem-F4-CS01ᵖ0∣S1ᵖ1 ; lem-F4-CS01ᵖ0∣S2ᵖ1 ; lem-F4-CS01ᵖ0∣S3ᵖ1)
+open import Examples.Groups.Clifford+CS.Five.D.D175 using (lem-F4-CS01ᵖ0∣CS12ᵖ1)
+open import Examples.Groups.Clifford+CS.Five.D.D177 using (lem-F4-CS01ᵖ0∣CS23ᵖ1 ; lem-F4-CS12ᵖ0∣S0ᵖ1 ; lem-F4-CS12ᵖ0∣S1ᵖ1 ; lem-F4-CS12ᵖ0∣S2ᵖ1 ; lem-F4-CS12ᵖ0∣S3ᵖ1 ; lem-F4-CS12ᵖ0∣iIᵖ1)
+open import Examples.Groups.Clifford+CS.Five.D.D178 using (lem-F4-CS12ᵖ0∣K0ᵖ1 ; lem-F4-CS12ᵖ0∣K1ᵖ1 ; lem-F4-CS12ᵖ0∣K2ᵖ1 ; lem-F4-CS12ᵖ0∣K3ᵖ1)
+open import Examples.Groups.Clifford+CS.Five.D.D179 using (lem-F4-CS12ᵖ0∣CS01ᵖ1 ; lem-F4-CS12ᵖ0∣CS12ᵖ1 ; lem-F5-CS12)
+open import Examples.Groups.Clifford+CS.Five.D.D180 using (lem-F4-CS12ᵖ0∣CS23ᵖ1 ; lem-F4-CS23ᵖ0∣K0ᵖ1 ; lem-F4-CS23ᵖ0∣S0ᵖ1 ; lem-F4-CS23ᵖ0∣S1ᵖ1 ; lem-F4-CS23ᵖ0∣S2ᵖ1 ; lem-F4-CS23ᵖ0∣S3ᵖ1 ; lem-F4-CS23ᵖ0∣iIᵖ1)
+open import Examples.Groups.Clifford+CS.Five.D.D181 using (lem-F4-CS23ᵖ0∣K1ᵖ1 ; lem-F4-CS23ᵖ0∣K2ᵖ1 ; lem-F4-CS23ᵖ0∣K3ᵖ1)
+open import Examples.Groups.Clifford+CS.Five.D.D183 using (lem-F4-CS23ᵖ0∣CS01ᵖ1)
+open import Examples.Groups.Clifford+CS.Five.D.D184 using (lem-F4-CS23ᵖ0∣CS12ᵖ1 ; lem-F4-CS23ᵖ0∣CS23ᵖ1 ; lem-F5-CS23)
+-- calc F4 S1 S0: 1 steps
+lem-calc-F4-S1-S0 : Ws → ⟪ (X4 ∷ CS14 ∷ X4 ∷ CS04 ∷ []) ⟫ʷ ≈ ⟪ (CS04 ∷ X4 ∷ CS14 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S1-S0 c4 = run b0
   where
-  b0 : Chain (Sb0-1-32-4 ∷ CCZ023 ∷ []) (CCZ023 ∷ Sb0-1-32-4 ∷ [])
-  b0 = at 0 0 (Sw23 ∷ Sw23 ∷ []) (lw4 c4 [] (Sw23 ∷ Sw23 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb0-1-23-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·32·4⟩ c4) ▸
-       at 2 2 (CCZ023 ∷ Sw23 ∷ []) (lw4 c4 (Sw23 ∷ CCZ023 ∷ []) (CCZ023 ∷ Sw23 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (CCZ023 ∷ Sb0-1-23-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-CCZ032 c4) ▸
-       at 0 2 (CCZ023 ∷ Sw23 ∷ []) (lw4 c4 (Sw23 ∷ CCZ023 ∷ []) (CCZ023 ∷ Sw23 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb0-1-32-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·23·4⟩ c4) ▸
-       at 2 2 [] (lw4 c4 (Sw23 ∷ Sw23 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS14 ∷ X4 ∷ CS04 ∷ []) (CS04 ∷ X4 ∷ CS14 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS04 ∷ X4 ∷ CS14 ∷ X4 ∷ []) (sym (wp0502 c4)) ▸ done
 
 
--- auto SBOX(0;1;23;4) | TOFF023: 7 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-TOFF023 : Complete 4 → ⟪ (Sb0-1-23-4 ∷ Toff023 ∷ []) ⟫ʷ ≈ ⟪ (Toff023 ∷ Sb0-1-23-4 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-TOFF023 c4 = run b0
+-- calc F4 S1 K0: 1 steps
+lem-calc-F4-S1-K0 : Ws → ⟪ (X4 ∷ CS14 ∷ X4 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CK40 ∷ X4 ∷ CS14 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S1-K0 c4 = run b0
   where
-  b0 : Chain (Sb0-1-23-4 ∷ Toff023 ∷ []) (Toff023 ∷ Sb0-1-23-4 ∷ [])
-  b0 = at 1 1 (K0 ∷ CCZ023 ∷ K0⁻ ∷ []) (lw4 c4 (Toff023 ∷ []) (K0 ∷ CCZ023 ∷ K0⁻ ∷ []) tt tt Eq.refl) ▸
-       at 0 1 (Sb0-1-32-4 ∷ []) (lem-SBsym-at0113203442 c4) ▸
-       at 0 2 (K0 ∷ Sb0-1-32-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-K0-at2332 c4) ▸
-       at 1 2 (CCZ023 ∷ Sb0-1-32-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-CCZ032-at2332 c4) ▸
-       at 2 2 (K0⁻ ∷ Sb0-1-32-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-Kd0-at2332 c4) ▸
-       at 3 1 (Sb0-1-23-4 ∷ []) (sym (lem-SBsym-at0113203442 c4)) ▸
-       at 0 3 (Toff023 ∷ []) (lw4 c4 (K0 ∷ CCZ023 ∷ K0⁻ ∷ []) (Toff023 ∷ []) tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS14 ∷ X4 ∷ CK40 ∷ []) (CK40 ∷ X4 ∷ CS14 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK40 ∷ X4 ∷ CS14 ∷ X4 ∷ []) (sym (wp0503 c4)) ▸ done
 
 
--- beta-T @13243241: 8 steps
-lem-beta-T-at13243241 : Complete 4 → ⟪ (Bx0-3421 ∷ []) ⟫ʷ ≈ ⟪ (Toff034 ∷ CCZ012 ∷ Toff034 ∷ CCZ012 ∷ []) ⟫ʷ
-lem-beta-T-at13243241 c4 = run b0
+-- calc F4 S1 S1: 1 steps
+lem-calc-F4-S1-S1 : Ws → ⟪ (X4 ∷ CS14 ∷ X4 ∷ CS14 ∷ []) ⟫ʷ ≈ ⟪ (CS14 ∷ X4 ∷ CS14 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S1-S1 c4 = run b0
   where
-  b0 : Chain (Bx0-3421 ∷ []) (Toff034 ∷ CCZ012 ∷ Toff034 ∷ CCZ012 ∷ [])
-  b0 = at 0 0 (Sw12 ∷ Sw12 ∷ []) (lw4 c4 [] (Sw12 ∷ Sw12 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Bx0-3412 ∷ Sw12 ∷ []) (lem-nat-1-BOX⟨0·3421⟩ c4) ▸
-       at 1 1 (Toff034 ∷ CCZ012 ∷ Toff034 ∷ CCZ012 ∷ []) (lem-beta-T-at13243142 c4) ▸
-       at 0 2 (Toff034 ∷ Sw12 ∷ []) (lem-nat-1-TOFF034 c4) ▸
-       at 1 2 (CCZ012 ∷ Sw12 ∷ []) (lw4 c4 (Sw12 ∷ CCZ012 ∷ []) (CCZ012 ∷ Sw12 ∷ []) tt tt Eq.refl) ▸
-       at 2 2 (Toff034 ∷ Sw12 ∷ []) (lem-nat-1-TOFF034 c4) ▸
-       at 3 2 (CCZ012 ∷ Sw12 ∷ []) (lw4 c4 (Sw12 ∷ CCZ012 ∷ []) (CCZ012 ∷ Sw12 ∷ []) tt tt Eq.refl) ▸
-       at 4 2 [] (lw4 c4 (Sw12 ∷ Sw12 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS14 ∷ X4 ∷ CS14 ∷ []) (CS14 ∷ X4 ∷ CS14 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS14 ∷ X4 ∷ CS14 ∷ X4 ∷ []) (sym (wl0930 (lit c4))) ▸ done
 
 
--- auto SBOXd(0;1;2;3) | BOX(0;3421): 10 steps
-lem-auto-SBOXd⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩ : Complete 4 → ⟪ (Sb⁻0-1-2-3 ∷ Bx0-3421 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-3421 ∷ Sb⁻0-1-2-3 ∷ []) ⟫ʷ
-lem-auto-SBOXd⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩ c4 = trans (run b0) (run b1)
+-- calc F4 S1 K1: 1 steps
+lem-calc-F4-S1-K1 : Ws → ⟪ (X4 ∷ CS14 ∷ X4 ∷ CK41 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ X4 ∷ CS14 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S1-K1 c4 = run b0
   where
-  b0 : Chain (Sb⁻0-1-2-3 ∷ Bx0-3421 ∷ []) (Toff034 ∷ CCZ012 ∷ Toff034 ∷ CCZ012 ∷ CS12⁻ ∷ [])
-  b0 = at 1 1 (Toff034 ∷ CCZ012 ∷ Toff034 ∷ CCZ012 ∷ []) (lem-beta-T-at13243241 c4) ▸
-       at 0 2 (Toff034 ∷ Sb⁻0-1-2-3 ∷ []) (lem-comm-SBOXd⟨0·1·2·3⟩-TOFF034 c4) ▸
-       at 1 1 (CS12⁻ ∷ []) (refl) ▸
-       at 1 2 (CCZ012 ∷ CS12⁻ ∷ []) (lw4 c4 (CS12⁻ ∷ CCZ012 ∷ []) (CCZ012 ∷ CS12⁻ ∷ []) tt tt Eq.refl) ▸
-       at 2 1 (Sb⁻0-1-2-3 ∷ []) (refl) ▸
-       at 2 2 (Toff034 ∷ Sb⁻0-1-2-3 ∷ []) (lem-comm-SBOXd⟨0·1·2·3⟩-TOFF034 c4) ▸
-       at 3 1 (CS12⁻ ∷ []) (refl) ▸
-       at 3 2 (CCZ012 ∷ CS12⁻ ∷ []) (lw4 c4 (CS12⁻ ∷ CCZ012 ∷ []) (CCZ012 ∷ CS12⁻ ∷ []) tt tt Eq.refl) ▸ done
-
-  b1 : Chain (Toff034 ∷ CCZ012 ∷ Toff034 ∷ CCZ012 ∷ CS12⁻ ∷ []) (Bx0-3421 ∷ Sb⁻0-1-2-3 ∷ [])
-  b1 = at 4 1 (Sb⁻0-1-2-3 ∷ []) (refl) ▸
-       at 0 4 (Bx0-3421 ∷ []) (sym (lem-beta-T-at13243241 c4)) ▸ done
+  b0 : Chain (X4 ∷ CS14 ∷ X4 ∷ CK41 ∷ []) (CK41 ∷ X4 ∷ CS14 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK41 ∷ X4 ∷ CS14 ∷ X4 ∷ []) (sym (wl0931 (lit c4))) ▸ done
 
 
--- auto SBOX(0;1;2;3) | BOX(0;3421): 10 steps
-lem-auto-SBOX⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩ : Complete 4 → ⟪ (Sb0-1-2-3 ∷ Bx0-3421 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-3421 ∷ Sb0-1-2-3 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩ c4 = trans (run b0) (run b1)
+-- calc F4 S1 S2: 1 steps
+lem-calc-F4-S1-S2 : Ws → ⟪ (X4 ∷ CS14 ∷ X4 ∷ CS24 ∷ []) ⟫ʷ ≈ ⟪ (CS24 ∷ X4 ∷ CS14 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S1-S2 c4 = run b0
   where
-  b0 : Chain (Sb0-1-2-3 ∷ Bx0-3421 ∷ []) (Toff034 ∷ CCZ012 ∷ Toff034 ∷ CCZ012 ∷ CS12 ∷ [])
-  b0 = at 1 1 (Toff034 ∷ CCZ012 ∷ Toff034 ∷ CCZ012 ∷ []) (lem-beta-T-at13243241 c4) ▸
-       at 0 2 (Toff034 ∷ Sb0-1-2-3 ∷ []) (lem-comm-SBOX⟨0·1·2·3⟩-TOFF034 c4) ▸
-       at 1 1 (CS12 ∷ []) (refl) ▸
-       at 1 2 (CCZ012 ∷ CS12 ∷ []) (lw4 c4 (CS12 ∷ CCZ012 ∷ []) (CCZ012 ∷ CS12 ∷ []) tt tt Eq.refl) ▸
-       at 2 1 (Sb0-1-2-3 ∷ []) (refl) ▸
-       at 2 2 (Toff034 ∷ Sb0-1-2-3 ∷ []) (lem-comm-SBOX⟨0·1·2·3⟩-TOFF034 c4) ▸
-       at 3 1 (CS12 ∷ []) (refl) ▸
-       at 3 2 (CCZ012 ∷ CS12 ∷ []) (lw4 c4 (CS12 ∷ CCZ012 ∷ []) (CCZ012 ∷ CS12 ∷ []) tt tt Eq.refl) ▸ done
-
-  b1 : Chain (Toff034 ∷ CCZ012 ∷ Toff034 ∷ CCZ012 ∷ CS12 ∷ []) (Bx0-3421 ∷ Sb0-1-2-3 ∷ [])
-  b1 = at 4 1 (Sb0-1-2-3 ∷ []) (refl) ▸
-       at 0 4 (Bx0-3421 ∷ []) (sym (lem-beta-T-at13243241 c4)) ▸ done
+  b0 : Chain (X4 ∷ CS14 ∷ X4 ∷ CS24 ∷ []) (CS24 ∷ X4 ∷ CS14 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS24 ∷ X4 ∷ CS14 ∷ X4 ∷ []) (sym (wl0932 (lit c4))) ▸ done
 
 
--- T-beta @122331: 7 steps
-lem-T-beta-at122331 : Complete 4 → ⟪ (Toff023 ∷ Bx0-2314 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2314 ∷ Toff023 ∷ []) ⟫ʷ
-lem-T-beta-at122331 c4 = run b0
+-- calc F4 S1 K2: 1 steps
+lem-calc-F4-S1-K2 : Ws → ⟪ (X4 ∷ CS14 ∷ X4 ∷ CK42 ∷ []) ⟫ʷ ≈ ⟪ (CK42 ∷ X4 ∷ CS14 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S1-K2 c4 = run b0
   where
-  b0 : Chain (Toff023 ∷ Bx0-2314 ∷ []) (Bx0-2314 ∷ Toff023 ∷ [])
-  b0 = at 0 0 (Sw12 ∷ Sw12 ∷ []) (lw4 c4 [] (Sw12 ∷ Sw12 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Toff013 ∷ Sw12 ∷ []) (lem-nat-1-TOFF023 c4) ▸
-       at 2 2 (Bx0-1324 ∷ Sw12 ∷ []) (lem-nat-1-BOX⟨0·2314⟩ c4) ▸
-       at 1 2 (Bx0-1324 ∷ Toff013 ∷ []) (lem-T-beta-at2332 c4) ▸
-       at 0 2 (Bx0-2314 ∷ Sw12 ∷ []) (lem-nat-1-BOX⟨0·1324⟩ c4) ▸
-       at 1 2 (Toff023 ∷ Sw12 ∷ []) (lem-nat-1-TOFF013 c4) ▸
-       at 2 2 [] (lw4 c4 (Sw12 ∷ Sw12 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS14 ∷ X4 ∷ CK42 ∷ []) (CK42 ∷ X4 ∷ CS14 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK42 ∷ X4 ∷ CS14 ∷ X4 ∷ []) (sym (wl0933 (lit c4))) ▸ done
 
 
--- auto BOX(0;1234) | TOFF032: 7 steps
-lem-auto-BOX⟨0·1234⟩-∣-TOFF032 : Complete 4 → ⟪ (Bx0-1234 ∷ Toff023 ∷ []) ⟫ʷ ≈ ⟪ (Toff023 ∷ Bx0-1234 ∷ []) ⟫ʷ
-lem-auto-BOX⟨0·1234⟩-∣-TOFF032 c4 = run b0
+-- calc F4 S1 S3: 1 steps
+lem-calc-F4-S1-S3 : Ws → ⟪ (X4 ∷ CS14 ∷ X4 ∷ CS34 ∷ []) ⟫ʷ ≈ ⟪ (CS34 ∷ X4 ∷ CS14 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S1-S3 c4 = run b0
   where
-  b0 : Chain (Bx0-1234 ∷ Toff023 ∷ []) (Toff023 ∷ Bx0-1234 ∷ [])
-  b0 = at 1 1 (Toff023 ∷ []) (lw4 c4 (Toff023 ∷ []) (Toff023 ∷ []) tt tt Eq.refl) ▸
-       at 0 1 (Bx0-2134 ∷ []) (lem-sym12 c4) ▸
-       at 0 1 (Bx0-2314 ∷ []) (lem-sym23-at1221 c4) ▸
-       at 0 2 (Toff023 ∷ Bx0-2314 ∷ []) (sym (lem-T-beta-at122331 c4)) ▸
-       at 1 1 (Bx0-2134 ∷ []) (lem-sym23-at122331 c4) ▸
-       at 1 1 (Bx0-1234 ∷ []) (lem-sym12-at1221 c4) ▸
-       at 0 1 (Toff023 ∷ []) (lw4 c4 (Toff023 ∷ []) (Toff023 ∷ []) tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS14 ∷ X4 ∷ CS34 ∷ []) (CS34 ∷ X4 ∷ CS14 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS34 ∷ X4 ∷ CS14 ∷ X4 ∷ []) (sym (wl0934 (lit c4))) ▸ done
 
 
--- auto BOX(0;1234) | CCZ041: 7 steps
-lem-auto-BOX⟨0·1234⟩-∣-CCZ041 : Complete 4 → ⟪ (Bx0-1234 ∷ CCZ014 ∷ []) ⟫ʷ ≈ ⟪ (CCZ014 ∷ Bx0-1234 ∷ []) ⟫ʷ
-lem-auto-BOX⟨0·1234⟩-∣-CCZ041 c4 = run b0
+-- calc F4 S1 K3: 1 steps
+lem-calc-F4-S1-K3 : Ws → ⟪ (X4 ∷ CS14 ∷ X4 ∷ CK43 ∷ []) ⟫ʷ ≈ ⟪ (CK43 ∷ X4 ∷ CS14 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S1-K3 c4 = run b0
   where
-  b0 : Chain (Bx0-1234 ∷ CCZ014 ∷ []) (CCZ014 ∷ Bx0-1234 ∷ [])
-  b0 = at 1 1 (CCZ014 ∷ []) (pw2 c4 (CCZ014 ∷ []) (CCZ014 ∷ []) tt tt Eq.refl) ▸
-       at 0 1 (Bx0-1243 ∷ []) (lem-sym34 c4) ▸
-       at 0 1 (Bx0-1423 ∷ []) (lem-sym23-at3443 c4) ▸
-       at 0 2 (CCZ014 ∷ Bx0-1423 ∷ []) (sym (lem-Cz-beta-at243243 c4)) ▸
-       at 1 1 (Bx0-1243 ∷ []) (lem-sym23-at243243 c4) ▸
-       at 1 1 (Bx0-1234 ∷ []) (lem-sym34-at3443 c4) ▸
-       at 0 1 (CCZ014 ∷ []) (pw2 c4 (CCZ014 ∷ []) (CCZ014 ∷ []) tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS14 ∷ X4 ∷ CK43 ∷ []) (CK43 ∷ X4 ∷ CS14 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK43 ∷ X4 ∷ CS14 ∷ X4 ∷ []) (sym (wl0935 (lit c4))) ▸ done
 
 
--- auto BOX(0;1234) | BOX(0;3241): 6 steps
-lem-auto-BOX⟨0·1234⟩-∣-BOX⟨0·3241⟩ : Complete 4 → ⟪ (Bx0-1234 ∷ Bx0-3241 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-3241 ∷ Bx0-1234 ∷ []) ⟫ʷ
-lem-auto-BOX⟨0·1234⟩-∣-BOX⟨0·3241⟩ c4 = run b0
+-- calc F4 S1 CS01: 1 steps
+lem-calc-F4-S1-CS01 : Ws → ⟪ (X4 ∷ CS14 ∷ X4 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-0-41-3 ∷ X4 ∷ CS14 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S1-CS01 c4 = run b0
   where
-  b0 : Chain (Bx0-1234 ∷ Bx0-3241 ∷ []) (Bx0-3241 ∷ Bx0-1234 ∷ [])
-  b0 = at 1 1 (Toff023 ∷ CCZ014 ∷ Toff023 ∷ CCZ014 ∷ []) (lem-beta-T-at133441 c4) ▸
-       at 0 2 (Toff023 ∷ Bx0-1234 ∷ []) (lem-auto-BOX⟨0·1234⟩-∣-TOFF032 c4) ▸
-       at 1 2 (CCZ014 ∷ Bx0-1234 ∷ []) (lem-auto-BOX⟨0·1234⟩-∣-CCZ041 c4) ▸
-       at 2 2 (Toff023 ∷ Bx0-1234 ∷ []) (lem-auto-BOX⟨0·1234⟩-∣-TOFF032 c4) ▸
-       at 3 2 (CCZ014 ∷ Bx0-1234 ∷ []) (lem-auto-BOX⟨0·1234⟩-∣-CCZ041 c4) ▸
-       at 0 4 (Bx0-3241 ∷ []) (sym (lem-beta-T-at133441 c4)) ▸ done
+  b0 : Chain (X4 ∷ CS14 ∷ X4 ∷ Sb2-0-41-3 ∷ []) (Sb2-0-41-3 ∷ X4 ∷ CS14 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb2-0-41-3 ∷ X4 ∷ CS14 ∷ X4 ∷ []) (lem-F4-S1ᵖ0∣CS01ᵖ1 c4) ▸ done
 
 
--- auto SBOXd(0;1;2;3) | BOX(0;3421) @2332: 7 steps
-lem-auto-SBOXd⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at2332 : Complete 4 → ⟪ (Sb⁻0-1-3-2 ∷ Bx0-2431 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2431 ∷ Sb⁻0-1-3-2 ∷ []) ⟫ʷ
-lem-auto-SBOXd⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at2332 c4 = run b0
+-- calc F4 S1 CS12: 1 steps
+lem-calc-F4-S1-CS12 : Ws → ⟪ (X4 ∷ CS14 ∷ X4 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-1-42-3 ∷ X4 ∷ CS14 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S1-CS12 c4 = run b0
   where
-  b0 : Chain (Sb⁻0-1-3-2 ∷ Bx0-2431 ∷ []) (Bx0-2431 ∷ Sb⁻0-1-3-2 ∷ [])
-  b0 = at 0 0 (Sw23 ∷ Sw23 ∷ []) (lw4 c4 [] (Sw23 ∷ Sw23 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb⁻0-1-2-3 ∷ Sw23 ∷ []) (lem-nat-2-SBOXd⟨0·1·3·2⟩ c4) ▸
-       at 2 2 (Bx0-3421 ∷ Sw23 ∷ []) (lem-nat-2-BOX⟨0·2431⟩ c4) ▸
-       at 1 2 (Bx0-3421 ∷ Sb⁻0-1-2-3 ∷ []) (lem-auto-SBOXd⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩ c4) ▸
-       at 0 2 (Bx0-2431 ∷ Sw23 ∷ []) (lem-nat-2-BOX⟨0·3421⟩ c4) ▸
-       at 1 2 (Sb⁻0-1-3-2 ∷ Sw23 ∷ []) (lem-nat-2-SBOXd⟨0·1·2·3⟩ c4) ▸
-       at 2 2 [] (lw4 c4 (Sw23 ∷ Sw23 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS14 ∷ X4 ∷ Sb0-1-42-3 ∷ []) (Sb0-1-42-3 ∷ X4 ∷ CS14 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-1-42-3 ∷ X4 ∷ CS14 ∷ X4 ∷ []) (lem-F4-S1ᵖ0∣CS12ᵖ1 c4) ▸ done
 
 
--- auto SBOXd(0;1;2;3) | BOX(0;3421) @243243: 7 steps
-lem-auto-SBOXd⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at243243 : Complete 4 → ⟪ (Sb⁻0-1-4-2 ∷ Bx0-2341 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2341 ∷ Sb⁻0-1-4-2 ∷ []) ⟫ʷ
-lem-auto-SBOXd⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at243243 c4 = run b0
+-- calc F4 S1 CS23: 1 steps
+lem-calc-F4-S1-CS23 : Ws → ⟪ (X4 ∷ CS14 ∷ X4 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-2-43-1 ∷ X4 ∷ CS14 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S1-CS23 c4 = run b0
   where
-  b0 : Chain (Sb⁻0-1-4-2 ∷ Bx0-2341 ∷ []) (Bx0-2341 ∷ Sb⁻0-1-4-2 ∷ [])
-  b0 = at 0 0 (Sw34 ∷ Sw34 ∷ []) (lw0 c4 [] (Sw34 ∷ Sw34 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb⁻0-1-3-2 ∷ Sw34 ∷ []) (lem-nat-3-SBOXd⟨0·1·4·2⟩ c4) ▸
-       at 2 2 (Bx0-2431 ∷ Sw34 ∷ []) (lem-nat-3-BOX⟨0·2341⟩ c4) ▸
-       at 1 2 (Bx0-2431 ∷ Sb⁻0-1-3-2 ∷ []) (lem-auto-SBOXd⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at2332 c4) ▸
-       at 0 2 (Bx0-2341 ∷ Sw34 ∷ []) (lem-nat-3-BOX⟨0·2431⟩ c4) ▸
-       at 1 2 (Sb⁻0-1-4-2 ∷ Sw34 ∷ []) (lem-nat-3-SBOXd⟨0·1·3·2⟩ c4) ▸
-       at 2 2 [] (lw0 c4 (Sw34 ∷ Sw34 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS14 ∷ X4 ∷ Sb0-2-43-1 ∷ []) (Sb0-2-43-1 ∷ X4 ∷ CS14 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-2-43-1 ∷ X4 ∷ CS14 ∷ X4 ∷ []) (lem-F4-S1ᵖ0∣CS23ᵖ1 c4) ▸ done
 
 
--- auto SBOXd(0;1;2;3) | BOX(0;3421) @2442: 7 steps
-lem-auto-SBOXd⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at2442 : Complete 4 → ⟪ (Sb⁻0-1-4-3 ∷ Bx0-3241 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-3241 ∷ Sb⁻0-1-4-3 ∷ []) ⟫ʷ
-lem-auto-SBOXd⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at2442 c4 = run b0
+-- calc F4 K1 I: 1 steps
+lem-calc-F4-K1-I : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (S4 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K1-I c4 = run b0
   where
-  b0 : Chain (Sb⁻0-1-4-3 ∷ Bx0-3241 ∷ []) (Bx0-3241 ∷ Sb⁻0-1-4-3 ∷ [])
-  b0 = at 0 0 (Sw23 ∷ Sw23 ∷ []) (lw4 c4 [] (Sw23 ∷ Sw23 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb⁻0-1-4-2 ∷ Sw23 ∷ []) (lem-nat-2-SBOXd⟨0·1·4·3⟩ c4) ▸
-       at 2 2 (Bx0-2341 ∷ Sw23 ∷ []) (lem-nat-2-BOX⟨0·3241⟩ c4) ▸
-       at 1 2 (Bx0-2341 ∷ Sb⁻0-1-4-2 ∷ []) (lem-auto-SBOXd⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at243243 c4) ▸
-       at 0 2 (Bx0-3241 ∷ Sw23 ∷ []) (lem-nat-2-BOX⟨0·2341⟩ c4) ▸
-       at 1 2 (Sb⁻0-1-4-3 ∷ Sw23 ∷ []) (lem-nat-2-SBOXd⟨0·1·4·2⟩ c4) ▸
-       at 2 2 [] (lw4 c4 (Sw23 ∷ Sw23 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ S4 ∷ []) (S4 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b0 = at 0 4 (S4 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (sym (wl0887 (lit c4))) ▸ done
 
 
--- auto SBOX(0;1;2;3) | BOX(0;3421) @2332: 7 steps
-lem-auto-SBOX⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at2332 : Complete 4 → ⟪ (Sb0-1-3-2 ∷ Bx0-2431 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2431 ∷ Sb0-1-3-2 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at2332 c4 = run b0
+-- calc F4 K1 S0: 1 steps
+lem-calc-F4-K1-S0 : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ CS04 ∷ []) ⟫ʷ ≈ ⟪ (CS04 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K1-S0 c4 = run b0
   where
-  b0 : Chain (Sb0-1-3-2 ∷ Bx0-2431 ∷ []) (Bx0-2431 ∷ Sb0-1-3-2 ∷ [])
-  b0 = at 0 0 (Sw23 ∷ Sw23 ∷ []) (lw4 c4 [] (Sw23 ∷ Sw23 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb0-1-2-3 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·3·2⟩ c4) ▸
-       at 2 2 (Bx0-3421 ∷ Sw23 ∷ []) (lem-nat-2-BOX⟨0·2431⟩ c4) ▸
-       at 1 2 (Bx0-3421 ∷ Sb0-1-2-3 ∷ []) (lem-auto-SBOX⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩ c4) ▸
-       at 0 2 (Bx0-2431 ∷ Sw23 ∷ []) (lem-nat-2-BOX⟨0·3421⟩ c4) ▸
-       at 1 2 (Sb0-1-3-2 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·2·3⟩ c4) ▸
-       at 2 2 [] (lw4 c4 (Sw23 ∷ Sw23 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ CS04 ∷ []) (CS04 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS04 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (sym (wp0465 c4)) ▸ done
 
 
--- auto SBOX(0;1;2;3) | BOX(0;3421) @243243: 7 steps
-lem-auto-SBOX⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at243243 : Complete 4 → ⟪ (Sb0-1-4-2 ∷ Bx0-2341 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2341 ∷ Sb0-1-4-2 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at243243 c4 = run b0
+-- calc F4 K1 K0: 1 steps
+lem-calc-F4-K1-K0 : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CK40 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K1-K0 c4 = run b0
   where
-  b0 : Chain (Sb0-1-4-2 ∷ Bx0-2341 ∷ []) (Bx0-2341 ∷ Sb0-1-4-2 ∷ [])
-  b0 = at 0 0 (Sw34 ∷ Sw34 ∷ []) (lw0 c4 [] (Sw34 ∷ Sw34 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb0-1-3-2 ∷ Sw34 ∷ []) (lem-nat-3-SBOX⟨0·1·4·2⟩ c4) ▸
-       at 2 2 (Bx0-2431 ∷ Sw34 ∷ []) (lem-nat-3-BOX⟨0·2341⟩ c4) ▸
-       at 1 2 (Bx0-2431 ∷ Sb0-1-3-2 ∷ []) (lem-auto-SBOX⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at2332 c4) ▸
-       at 0 2 (Bx0-2341 ∷ Sw34 ∷ []) (lem-nat-3-BOX⟨0·2431⟩ c4) ▸
-       at 1 2 (Sb0-1-4-2 ∷ Sw34 ∷ []) (lem-nat-3-SBOX⟨0·1·3·2⟩ c4) ▸
-       at 2 2 [] (lw0 c4 (Sw34 ∷ Sw34 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ CK40 ∷ []) (CK40 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK40 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (sym (wp0504 c4)) ▸ done
 
 
--- auto SBOX(0;1;2;3) | BOX(0;3421) @2442: 7 steps
-lem-auto-SBOX⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at2442 : Complete 4 → ⟪ (Sb0-1-4-3 ∷ Bx0-3241 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-3241 ∷ Sb0-1-4-3 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at2442 c4 = run b0
+-- calc F4 K1 S1: 1 steps
+lem-calc-F4-K1-S1 : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ CS14 ∷ []) ⟫ʷ ≈ ⟪ (CS14 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K1-S1 c4 = run b0
   where
-  b0 : Chain (Sb0-1-4-3 ∷ Bx0-3241 ∷ []) (Bx0-3241 ∷ Sb0-1-4-3 ∷ [])
-  b0 = at 0 0 (Sw23 ∷ Sw23 ∷ []) (lw4 c4 [] (Sw23 ∷ Sw23 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb0-1-4-2 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·4·3⟩ c4) ▸
-       at 2 2 (Bx0-2341 ∷ Sw23 ∷ []) (lem-nat-2-BOX⟨0·3241⟩ c4) ▸
-       at 1 2 (Bx0-2341 ∷ Sb0-1-4-2 ∷ []) (lem-auto-SBOX⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at243243 c4) ▸
-       at 0 2 (Bx0-3241 ∷ Sw23 ∷ []) (lem-nat-2-BOX⟨0·2341⟩ c4) ▸
-       at 1 2 (Sb0-1-4-3 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·4·2⟩ c4) ▸
-       at 2 2 [] (lw4 c4 (Sw23 ∷ Sw23 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ CS14 ∷ []) (CS14 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS14 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (sym (wl0892 (lit c4))) ▸ done
 
 
--- auto SBOX(0;1;23;4) | BOX(0;3241): 22 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-BOX⟨0·3241⟩ : Complete 4 → ⟪ (Sb0-1-23-4 ∷ Bx0-3241 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-3241 ∷ Sb0-1-23-4 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-BOX⟨0·3241⟩ c4 = trans (run b0) (trans (run b1) (run b2))
+-- calc F4 K1 K1: 1 steps
+lem-calc-F4-K1-K1 : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ CK41 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K1-K1 c4 = run b0
   where
-  b0 : Chain (Sb0-1-23-4 ∷ Bx0-3241 ∷ []) (Bx0-1234 ∷ Toff423 ∷ Bx0-3241 ∷ Toff423 ∷ Toff423 ∷ Sb0-1-4-3 ∷ CCZ123 ∷ Toff423 ∷ Sb⁻0-1-4-3 ∷ [])
-  b0 = at 0 1 (Bx0-1234 ∷ Toff423 ∷ Sb0-1-4-3 ∷ Toff423 ∷ Sb⁻0-1-4-3 ∷ []) (refl) ▸
-       at 4 2 (Bx0-3241 ∷ Sb⁻0-1-4-3 ∷ []) (lem-auto-SBOXd⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at2442 c4) ▸
-       at 5 0 (Toff423 ∷ Toff423 ∷ []) (lw0 c4 [] (Toff423 ∷ Toff423 ∷ []) tt tt Eq.refl) ▸
-       at 3 1 (Toff423 ∷ []) (lw0 c4 (Toff423 ∷ []) (Toff423 ∷ []) tt tt Eq.refl) ▸
-       at 5 1 (Toff423 ∷ []) (lw0 c4 (Toff423 ∷ []) (Toff423 ∷ []) tt tt Eq.refl) ▸
-       at 3 3 (Bx0-3241 ∷ CCZ123 ∷ []) (lem-T312-beta-at133441 c4) ▸
-       at 2 2 (Bx0-3241 ∷ Sb0-1-4-3 ∷ []) (lem-auto-SBOX⟨0·1·2·3⟩-∣-BOX⟨0·3421⟩-at2442 c4) ▸
-       at 3 0 (Toff423 ∷ Toff423 ∷ []) (lw0 c4 [] (Toff423 ∷ Toff423 ∷ []) tt tt Eq.refl) ▸ done
-
-  b1 : Chain (Bx0-1234 ∷ Toff423 ∷ Bx0-3241 ∷ Toff423 ∷ Toff423 ∷ Sb0-1-4-3 ∷ CCZ123 ∷ Toff423 ∷ Sb⁻0-1-4-3 ∷ []) (Bx0-3241 ∷ Bx0-1234 ∷ CCZ123 ∷ Toff423 ∷ CS14 ∷ Toff423 ∷ Sb⁻0-1-4-3 ∷ CCZ123 ∷ [])
-  b1 = at 1 1 (Toff423 ∷ []) (lw0 c4 (Toff423 ∷ []) (Toff423 ∷ []) tt tt Eq.refl) ▸
-       at 3 1 (Toff423 ∷ []) (lw0 c4 (Toff423 ∷ []) (Toff423 ∷ []) tt tt Eq.refl) ▸
-       at 1 3 (Bx0-3241 ∷ CCZ123 ∷ []) (lem-T312-beta-at133441 c4) ▸
-       at 0 2 (Bx0-3241 ∷ Bx0-1234 ∷ []) (lem-auto-BOX⟨0·1234⟩-∣-BOX⟨0·3241⟩ c4) ▸
-       at 7 1 (CS14⁻ ∷ []) (refl) ▸
-       at 5 3 (Toff423 ∷ CS14⁻ ∷ CCZ123 ∷ []) (lw0 c4 (CCZ123 ∷ Toff423 ∷ CS14⁻ ∷ []) (Toff423 ∷ CS14⁻ ∷ CCZ123 ∷ []) tt tt Eq.refl) ▸
-       at 6 1 (Sb⁻0-1-4-3 ∷ []) (refl) ▸
-       at 4 1 (CS14 ∷ []) (refl) ▸ done
-
-  b2 : Chain (Bx0-3241 ∷ Bx0-1234 ∷ CCZ123 ∷ Toff423 ∷ CS14 ∷ Toff423 ∷ Sb⁻0-1-4-3 ∷ CCZ123 ∷ []) (Bx0-3241 ∷ Sb0-1-23-4 ∷ [])
-  b2 = at 6 1 (CS14⁻ ∷ []) (refl) ▸
-       at 2 5 (Toff423 ∷ CS14 ∷ Toff423 ∷ CS14⁻ ∷ CCZ123 ∷ []) (lw0 c4 (CCZ123 ∷ Toff423 ∷ CS14 ∷ Toff423 ∷ CS14⁻ ∷ []) (Toff423 ∷ CS14 ∷ Toff423 ∷ CS14⁻ ∷ CCZ123 ∷ []) tt tt Eq.refl) ▸
-       at 3 1 (Sb0-1-4-3 ∷ []) (refl) ▸
-       at 5 1 (Sb⁻0-1-4-3 ∷ []) (refl) ▸
-       at 6 2 [] (lw4 c4 (CCZ123 ∷ CCZ123 ∷ []) [] tt tt Eq.refl) ▸
-       at 1 5 (Sb0-1-23-4 ∷ []) (refl) ▸ done
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ CK41 ∷ []) (CK41 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK41 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (sym (wl0888 (lit c4))) ▸ done
 
 
--- auto CCZ012 | BOX(3;2401): 5 steps
-lem-auto-CCZ012-∣-BOX⟨3·2401⟩ : Complete 4 → ⟪ (CCZ012 ∷ Bx3-2401 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-2401 ∷ CCZ012 ∷ []) ⟫ʷ
-lem-auto-CCZ012-∣-BOX⟨3·2401⟩ c4 = run b0
+-- calc F4 K1 S2: 1 steps
+lem-calc-F4-K1-S2 : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ CS24 ∷ []) ⟫ʷ ≈ ⟪ (CS24 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K1-S2 c4 = run b0
   where
-  b0 : Chain (CCZ012 ∷ Bx3-2401 ∷ []) (Bx3-2401 ∷ CCZ012 ∷ [])
-  b0 = at 0 1 (CCZ012 ∷ []) (lw4 c4 (CCZ012 ∷ []) (CCZ012 ∷ []) tt tt Eq.refl) ▸
-       at 1 1 (Bx3-2041 ∷ []) (lem-sym23-at0312243041 c4) ▸
-       at 0 2 (Bx3-2041 ∷ CCZ012 ∷ []) (lem-c124-beta-at0312203441 c4) ▸
-       at 0 1 (Bx3-2401 ∷ []) (lem-sym23-at0312203441 c4) ▸
-       at 1 1 (CCZ012 ∷ []) (lw4 c4 (CCZ012 ∷ []) (CCZ012 ∷ []) tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ CS24 ∷ []) (CS24 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS24 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (sym (wl0897 (lit c4))) ▸ done
 
 
--- auto CCZ012 | SBOX(3;2;40;1): 9 steps
-lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩ : Complete 4 → ⟪ (CCZ012 ∷ Sb3-2-40-1 ∷ []) ⟫ʷ ≈ ⟪ (Sb3-2-40-1 ∷ CCZ012 ∷ []) ⟫ʷ
-lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩ c4 = trans (run b0) (run b1)
+-- calc F4 K1 K2: 1 steps
+lem-calc-F4-K1-K2 : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ CK42 ∷ []) ⟫ʷ ≈ ⟪ (CK42 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K1-K2 c4 = run b0
   where
-  b0 : Chain (CCZ012 ∷ Sb3-2-40-1 ∷ []) (Bx3-2401 ∷ Toff104 ∷ Sb3-2-1-0 ∷ Toff104 ∷ Sb⁻3-2-1-0 ∷ CCZ012 ∷ [])
-  b0 = at 1 1 (Bx3-2401 ∷ Toff104 ∷ Sb3-2-1-0 ∷ Toff104 ∷ Sb⁻3-2-1-0 ∷ []) (refl) ▸
-       at 0 2 (Bx3-2401 ∷ CCZ012 ∷ []) (lem-auto-CCZ012-∣-BOX⟨3·2401⟩ c4) ▸
-       at 3 1 (CS12 ∷ []) (refl) ▸
-       at 1 4 (Toff104 ∷ CS12 ∷ Toff104 ∷ CCZ012 ∷ []) (pw3 c4 (CCZ012 ∷ Toff104 ∷ CS12 ∷ Toff104 ∷ []) (Toff104 ∷ CS12 ∷ Toff104 ∷ CCZ012 ∷ []) tt tt Eq.refl) ▸
-       at 2 1 (Sb3-2-1-0 ∷ []) (refl) ▸
-       at 5 1 (CS12⁻ ∷ []) (refl) ▸
-       at 4 2 (CS12⁻ ∷ CCZ012 ∷ []) (lw4 c4 (CCZ012 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CCZ012 ∷ []) tt tt Eq.refl) ▸
-       at 4 1 (Sb⁻3-2-1-0 ∷ []) (refl) ▸ done
-
-  b1 : Chain (Bx3-2401 ∷ Toff104 ∷ Sb3-2-1-0 ∷ Toff104 ∷ Sb⁻3-2-1-0 ∷ CCZ012 ∷ []) (Sb3-2-40-1 ∷ CCZ012 ∷ [])
-  b1 = at 0 5 (Sb3-2-40-1 ∷ []) (refl) ▸ done
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ CK42 ∷ []) (CK42 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK42 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (sym (wl0936 (lit c4))) ▸ done
 
 
--- auto SBOX(0;1;23;4) | SBOX(0;3;1;4): 5 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOX⟨0·3·1·4⟩ : Complete 4 → ⟪ (Sb0-1-23-4 ∷ Sb0-3-1-4 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-3-1-4 ∷ Sb0-1-23-4 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOX⟨0·3·1·4⟩ c4 = run b0
+-- calc F4 K1 S3: 1 steps
+lem-calc-F4-K1-S3 : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ CS34 ∷ []) ⟫ʷ ≈ ⟪ (CS34 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K1-S3 c4 = run b0
   where
-  b0 : Chain (Sb0-1-23-4 ∷ Sb0-3-1-4 ∷ []) (Sb0-3-1-4 ∷ Sb0-1-23-4 ∷ [])
-  b0 = at 1 1 (CS13 ∷ []) (refl) ▸
-       at 0 1 (Sb0-1-32-4 ∷ []) (lem-SBsym-at0113203442 c4) ▸
-       at 0 2 (CS13 ∷ Sb0-1-32-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-CS21-at2332 c4) ▸
-       at 1 1 (Sb0-1-23-4 ∷ []) (sym (lem-SBsym-at0113203442 c4)) ▸
-       at 0 1 (Sb0-3-1-4 ∷ []) (refl) ▸ done
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ CS34 ∷ []) (CS34 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS34 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (sym (wl0937 (lit c4))) ▸ done
 
 
--- auto SBOX(0;1;23;4) | CSd21: 11 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-CSd21 : Complete 4 → ⟪ (Sb0-1-23-4 ∷ CS12⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS12⁻ ∷ Sb0-1-23-4 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-CSd21 c4 = trans (run b0) (run b1)
+-- calc F4 K1 K3: 1 steps
+lem-calc-F4-K1-K3 : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ CK43 ∷ []) ⟫ʷ ≈ ⟪ (CK43 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K1-K3 c4 = run b0
   where
-  b0 : Chain (Sb0-1-23-4 ∷ CS12⁻ ∷ []) (Bx0-1234 ∷ Toff423 ∷ CS12⁻ ∷ Sb0-1-4-3 ∷ Toff423 ∷ Sb⁻0-1-4-3 ∷ [])
-  b0 = at 0 1 (Bx0-1234 ∷ Toff423 ∷ Sb0-1-4-3 ∷ Toff423 ∷ Sb⁻0-1-4-3 ∷ []) (refl) ▸
-       at 4 1 (CS14⁻ ∷ []) (refl) ▸
-       at 4 2 (CS12⁻ ∷ CS14⁻ ∷ []) (lw0 c4 (CS14⁻ ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CS14⁻ ∷ []) tt tt Eq.refl) ▸
-       at 5 1 (Sb⁻0-1-4-3 ∷ []) (refl) ▸
-       at 3 2 (CS12⁻ ∷ Toff423 ∷ []) (lw0 c4 (Toff423 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ Toff423 ∷ []) tt tt Eq.refl) ▸
-       at 2 1 (CS14 ∷ []) (refl) ▸
-       at 2 2 (CS12⁻ ∷ CS14 ∷ []) (lw0 c4 (CS14 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CS14 ∷ []) tt tt Eq.refl) ▸
-       at 3 1 (Sb0-1-4-3 ∷ []) (refl) ▸ done
-
-  b1 : Chain (Bx0-1234 ∷ Toff423 ∷ CS12⁻ ∷ Sb0-1-4-3 ∷ Toff423 ∷ Sb⁻0-1-4-3 ∷ []) (CS12⁻ ∷ Sb0-1-23-4 ∷ [])
-  b1 = at 1 2 (CS12⁻ ∷ Toff423 ∷ []) (lw0 c4 (Toff423 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ Toff423 ∷ []) tt tt Eq.refl) ▸
-       at 0 2 (CS12⁻ ∷ Bx0-1234 ∷ []) (lem-auto-BOX⟨0·1234⟩-∣-CSd21 c4) ▸
-       at 1 5 (Sb0-1-23-4 ∷ []) (refl) ▸ done
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ CK43 ∷ []) (CK43 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK43 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (sym (wl0938 (lit c4))) ▸ done
 
 
--- auto SBOX(0;1;23;4) | CSd21 @2332: 7 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-CSd21-at2332 : Complete 4 → ⟪ (Sb0-1-32-4 ∷ CS13⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS13⁻ ∷ Sb0-1-32-4 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-CSd21-at2332 c4 = run b0
+-- calc F4 K1 CS01: 1 steps
+lem-calc-F4-K1-CS01 : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-0-41-3 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K1-CS01 c4 = run b0
   where
-  b0 : Chain (Sb0-1-32-4 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ Sb0-1-32-4 ∷ [])
-  b0 = at 0 0 (Sw23 ∷ Sw23 ∷ []) (lw4 c4 [] (Sw23 ∷ Sw23 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb0-1-23-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·32·4⟩ c4) ▸
-       at 2 2 (CS12⁻ ∷ Sw23 ∷ []) (lem-nat-2-CSd13 c4) ▸
-       at 1 2 (CS12⁻ ∷ Sb0-1-23-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-CSd21 c4) ▸
-       at 0 2 (CS13⁻ ∷ Sw23 ∷ []) (lem-nat-2-CSd12 c4) ▸
-       at 1 2 (Sb0-1-32-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·23·4⟩ c4) ▸
-       at 2 2 [] (lw4 c4 (Sw23 ∷ Sw23 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ Sb2-0-41-3 ∷ []) (Sb2-0-41-3 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb2-0-41-3 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (lem-F4-K1ᵖ0∣CS01ᵖ1 c4) ▸ done
 
 
--- auto SBOX(0;1;23;4) | SBOXd(0;3;1;4): 5 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOXd⟨0·3·1·4⟩ : Complete 4 → ⟪ (Sb0-1-23-4 ∷ Sb⁻0-3-1-4 ∷ []) ⟫ʷ ≈ ⟪ (Sb⁻0-3-1-4 ∷ Sb0-1-23-4 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOXd⟨0·3·1·4⟩ c4 = run b0
+-- calc F4 K1 CS12: 1 steps
+lem-calc-F4-K1-CS12 : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-1-42-3 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K1-CS12 c4 = run b0
   where
-  b0 : Chain (Sb0-1-23-4 ∷ Sb⁻0-3-1-4 ∷ []) (Sb⁻0-3-1-4 ∷ Sb0-1-23-4 ∷ [])
-  b0 = at 1 1 (CS13⁻ ∷ []) (refl) ▸
-       at 0 1 (Sb0-1-32-4 ∷ []) (lem-SBsym-at0113203442 c4) ▸
-       at 0 2 (CS13⁻ ∷ Sb0-1-32-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-CSd21-at2332 c4) ▸
-       at 1 1 (Sb0-1-23-4 ∷ []) (sym (lem-SBsym-at0113203442 c4)) ▸
-       at 0 1 (Sb⁻0-3-1-4 ∷ []) (refl) ▸ done
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ Sb0-1-42-3 ∷ []) (Sb0-1-42-3 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-1-42-3 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (lem-F4-K1ᵖ0∣CS12ᵖ1 c4) ▸ done
 
 
--- auto SBOX(0;1;23;4) | BOX(0;3241) @2332: 7 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-BOX⟨0·3241⟩-at2332 : Complete 4 → ⟪ (Sb0-1-32-4 ∷ Bx0-2341 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2341 ∷ Sb0-1-32-4 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-BOX⟨0·3241⟩-at2332 c4 = run b0
+-- calc F4 K1 CS23: 1 steps
+lem-calc-F4-K1-CS23 : Ws → ⟪ (X4 ∷ CK41 ∷ X4 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-2-43-1 ∷ X4 ∷ CK41 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K1-CS23 c4 = run b0
   where
-  b0 : Chain (Sb0-1-32-4 ∷ Bx0-2341 ∷ []) (Bx0-2341 ∷ Sb0-1-32-4 ∷ [])
-  b0 = at 0 0 (Sw23 ∷ Sw23 ∷ []) (lw4 c4 [] (Sw23 ∷ Sw23 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb0-1-23-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·32·4⟩ c4) ▸
-       at 2 2 (Bx0-3241 ∷ Sw23 ∷ []) (lem-nat-2-BOX⟨0·2341⟩ c4) ▸
-       at 1 2 (Bx0-3241 ∷ Sb0-1-23-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-BOX⟨0·3241⟩ c4) ▸
-       at 0 2 (Bx0-2341 ∷ Sw23 ∷ []) (lem-nat-2-BOX⟨0·3241⟩ c4) ▸
-       at 1 2 (Sb0-1-32-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·23·4⟩ c4) ▸
-       at 2 2 [] (lw4 c4 (Sw23 ∷ Sw23 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CK41 ∷ X4 ∷ Sb0-2-43-1 ∷ []) (Sb0-2-43-1 ∷ X4 ∷ CK41 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-2-43-1 ∷ X4 ∷ CK41 ∷ X4 ∷ []) (lem-F4-K1ᵖ0∣CS23ᵖ1 c4) ▸ done
 
 
--- auto SBOX(0;1;23;4) | BOX(0;3241) @243243: 7 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-BOX⟨0·3241⟩-at243243 : Complete 4 → ⟪ (Sb0-1-42-3 ∷ Bx0-2431 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2431 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-BOX⟨0·3241⟩-at243243 c4 = run b0
+-- calc F4 S2 I: 1 steps
+lem-calc-F4-S2-I : Ws → ⟪ (X4 ∷ CS24 ∷ X4 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (S4 ∷ X4 ∷ CS24 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S2-I c4 = run b0
   where
-  b0 : Chain (Sb0-1-42-3 ∷ Bx0-2431 ∷ []) (Bx0-2431 ∷ Sb0-1-42-3 ∷ [])
-  b0 = at 0 0 (Sw34 ∷ Sw34 ∷ []) (lw0 c4 [] (Sw34 ∷ Sw34 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb0-1-32-4 ∷ Sw34 ∷ []) (lem-nat-3-SBOX⟨0·1·42·3⟩ c4) ▸
-       at 2 2 (Bx0-2341 ∷ Sw34 ∷ []) (lem-nat-3-BOX⟨0·2431⟩ c4) ▸
-       at 1 2 (Bx0-2341 ∷ Sb0-1-32-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-BOX⟨0·3241⟩-at2332 c4) ▸
-       at 0 2 (Bx0-2431 ∷ Sw34 ∷ []) (lem-nat-3-BOX⟨0·2341⟩ c4) ▸
-       at 1 2 (Sb0-1-42-3 ∷ Sw34 ∷ []) (lem-nat-3-SBOX⟨0·1·32·4⟩ c4) ▸
-       at 2 2 [] (lw0 c4 (Sw34 ∷ Sw34 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS24 ∷ X4 ∷ S4 ∷ []) (S4 ∷ X4 ∷ CS24 ∷ X4 ∷ [])
+  b0 = at 0 4 (S4 ∷ X4 ∷ CS24 ∷ X4 ∷ []) (sym (wl0895 (lit c4))) ▸ done
 
 
--- auto CCZ012 | SBOX(3;2;40;1) @1221: 7 steps
-lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at1221 : Complete 4 → ⟪ (CCZ012 ∷ Sb3-1-40-2 ∷ []) ⟫ʷ ≈ ⟪ (Sb3-1-40-2 ∷ CCZ012 ∷ []) ⟫ʷ
-lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at1221 c4 = run b0
+-- calc F4 S2 S0: 1 steps
+lem-calc-F4-S2-S0 : Ws → ⟪ (X4 ∷ CS24 ∷ X4 ∷ CS04 ∷ []) ⟫ʷ ≈ ⟪ (CS04 ∷ X4 ∷ CS24 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S2-S0 c4 = run b0
   where
-  b0 : Chain (CCZ012 ∷ Sb3-1-40-2 ∷ []) (Sb3-1-40-2 ∷ CCZ012 ∷ [])
-  b0 = at 0 0 (Sw12 ∷ Sw12 ∷ []) (lw4 c4 [] (Sw12 ∷ Sw12 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (CCZ012 ∷ Sw12 ∷ []) (lw4 c4 (Sw12 ∷ CCZ012 ∷ []) (CCZ012 ∷ Sw12 ∷ []) tt tt Eq.refl) ▸
-       at 2 2 (Sb3-2-40-1 ∷ Sw12 ∷ []) (lem-nat-1-SBOX⟨3·1·40·2⟩ c4) ▸
-       at 1 2 (Sb3-2-40-1 ∷ CCZ012 ∷ []) (lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩ c4) ▸
-       at 0 2 (Sb3-1-40-2 ∷ Sw12 ∷ []) (lem-nat-1-SBOX⟨3·2·40·1⟩ c4) ▸
-       at 1 2 (CCZ012 ∷ Sw12 ∷ []) (lw4 c4 (Sw12 ∷ CCZ012 ∷ []) (CCZ012 ∷ Sw12 ∷ []) tt tt Eq.refl) ▸
-       at 2 2 [] (lw4 c4 (Sw12 ∷ Sw12 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS24 ∷ X4 ∷ CS04 ∷ []) (CS04 ∷ X4 ∷ CS24 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS04 ∷ X4 ∷ CS24 ∷ X4 ∷ []) (sym (wp0505 c4)) ▸ done
 
 
--- auto CCZ012 | SBOX(3;2;40;1) @132132: 7 steps
-lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at132132 : Complete 4 → ⟪ (CCZ013 ∷ Sb2-1-40-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-1-40-3 ∷ CCZ013 ∷ []) ⟫ʷ
-lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at132132 c4 = run b0
+-- calc F4 S2 K0: 1 steps
+lem-calc-F4-S2-K0 : Ws → ⟪ (X4 ∷ CS24 ∷ X4 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CK40 ∷ X4 ∷ CS24 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S2-K0 c4 = run b0
   where
-  b0 : Chain (CCZ013 ∷ Sb2-1-40-3 ∷ []) (Sb2-1-40-3 ∷ CCZ013 ∷ [])
-  b0 = at 0 0 (Sw23 ∷ Sw23 ∷ []) (lw4 c4 [] (Sw23 ∷ Sw23 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (CCZ012 ∷ Sw23 ∷ []) (lem-nat-2-CCZ013 c4) ▸
-       at 2 2 (Sb3-1-40-2 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨2·1·40·3⟩ c4) ▸
-       at 1 2 (Sb3-1-40-2 ∷ CCZ012 ∷ []) (lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at1221 c4) ▸
-       at 0 2 (Sb2-1-40-3 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨3·1·40·2⟩ c4) ▸
-       at 1 2 (CCZ013 ∷ Sw23 ∷ []) (lem-nat-2-CCZ012 c4) ▸
-       at 2 2 [] (lw4 c4 (Sw23 ∷ Sw23 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS24 ∷ X4 ∷ CK40 ∷ []) (CK40 ∷ X4 ∷ CS24 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK40 ∷ X4 ∷ CS24 ∷ X4 ∷ []) (sym (wp0506 c4)) ▸ done
 
 
--- auto CCZ012 | SBOX(3;2;40;1) @01132032: 7 steps
-lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at01132032 : Complete 4 → ⟪ (CCZ013 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-0-41-3 ∷ CCZ013 ∷ []) ⟫ʷ
-lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at01132032 c4 = run b0
+-- calc F4 S2 S1: 1 steps
+lem-calc-F4-S2-S1 : Ws → ⟪ (X4 ∷ CS24 ∷ X4 ∷ CS14 ∷ []) ⟫ʷ ≈ ⟪ (CS14 ∷ X4 ∷ CS24 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S2-S1 c4 = run b0
   where
-  b0 : Chain (CCZ013 ∷ Sb2-0-41-3 ∷ []) (Sb2-0-41-3 ∷ CCZ013 ∷ [])
-  b0 = at 0 0 (Sw01 ∷ Sw01 ∷ []) (lw4 c4 [] (Sw01 ∷ Sw01 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (CCZ013 ∷ Sw01 ∷ []) (lw4 c4 (Sw01 ∷ CCZ013 ∷ []) (CCZ013 ∷ Sw01 ∷ []) tt tt Eq.refl) ▸
-       at 2 2 (Sb2-1-40-3 ∷ Sw01 ∷ []) (lem-nat-0-SBOX⟨2·0·41·3⟩ c4) ▸
-       at 1 2 (Sb2-1-40-3 ∷ CCZ013 ∷ []) (lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at132132 c4) ▸
-       at 0 2 (Sb2-0-41-3 ∷ Sw01 ∷ []) (lem-nat-0-SBOX⟨2·1·40·3⟩ c4) ▸
-       at 1 2 (CCZ013 ∷ Sw01 ∷ []) (lw4 c4 (Sw01 ∷ CCZ013 ∷ []) (CCZ013 ∷ Sw01 ∷ []) tt tt Eq.refl) ▸
-       at 2 2 [] (lw4 c4 (Sw01 ∷ Sw01 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS24 ∷ X4 ∷ CS14 ∷ []) (CS14 ∷ X4 ∷ CS24 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS14 ∷ X4 ∷ CS24 ∷ X4 ∷ []) (sym (wl0898 (lit c4))) ▸ done
 
 
--- auto CCZ012 | SBOX(3;2;40;1) @02132031: 7 steps
-lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at02132031 : Complete 4 → ⟪ (CCZ023 ∷ Sb1-0-42-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb1-0-42-3 ∷ CCZ023 ∷ []) ⟫ʷ
-lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at02132031 c4 = run b0
+-- calc F4 S2 K1: 1 steps
+lem-calc-F4-S2-K1 : Ws → ⟪ (X4 ∷ CS24 ∷ X4 ∷ CK41 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ X4 ∷ CS24 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S2-K1 c4 = run b0
   where
-  b0 : Chain (CCZ023 ∷ Sb1-0-42-3 ∷ []) (Sb1-0-42-3 ∷ CCZ023 ∷ [])
-  b0 = at 0 0 (Sw12 ∷ Sw12 ∷ []) (lw4 c4 [] (Sw12 ∷ Sw12 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (CCZ013 ∷ Sw12 ∷ []) (lem-nat-1-CCZ023 c4) ▸
-       at 2 2 (Sb2-0-41-3 ∷ Sw12 ∷ []) (lem-nat-1-SBOX⟨1·0·42·3⟩ c4) ▸
-       at 1 2 (Sb2-0-41-3 ∷ CCZ013 ∷ []) (lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at01132032 c4) ▸
-       at 0 2 (Sb1-0-42-3 ∷ Sw12 ∷ []) (lem-nat-1-SBOX⟨2·0·41·3⟩ c4) ▸
-       at 1 2 (CCZ023 ∷ Sw12 ∷ []) (lem-nat-1-CCZ013 c4) ▸
-       at 2 2 [] (lw4 c4 (Sw12 ∷ Sw12 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS24 ∷ X4 ∷ CK41 ∷ []) (CK41 ∷ X4 ∷ CS24 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK41 ∷ X4 ∷ CS24 ∷ X4 ∷ []) (sym (wl0899 (lit c4))) ▸ done
 
 
--- auto CCZ012 | SBOX(3;2;40;1) @02132130: 7 steps
-lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at02132130 : Complete 4 → ⟪ (CCZ123 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-1-42-3 ∷ CCZ123 ∷ []) ⟫ʷ
-lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at02132130 c4 = run b0
+-- calc F4 S2 S2: 1 steps
+lem-calc-F4-S2-S2 : Ws → ⟪ (X4 ∷ CS24 ∷ X4 ∷ CS24 ∷ []) ⟫ʷ ≈ ⟪ (CS24 ∷ X4 ∷ CS24 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S2-S2 c4 = run b0
   where
-  b0 : Chain (CCZ123 ∷ Sb0-1-42-3 ∷ []) (Sb0-1-42-3 ∷ CCZ123 ∷ [])
-  b0 = at 0 0 (Sw01 ∷ Sw01 ∷ []) (lw4 c4 [] (Sw01 ∷ Sw01 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (CCZ023 ∷ Sw01 ∷ []) (lw4 c4 (Sw01 ∷ CCZ123 ∷ []) (CCZ023 ∷ Sw01 ∷ []) tt tt Eq.refl) ▸
-       at 2 2 (Sb1-0-42-3 ∷ Sw01 ∷ []) (lem-nat-0-SBOX⟨0·1·42·3⟩ c4) ▸
-       at 1 2 (Sb1-0-42-3 ∷ CCZ023 ∷ []) (lem-auto-CCZ012-∣-SBOX⟨3·2·40·1⟩-at02132031 c4) ▸
-       at 0 2 (Sb0-1-42-3 ∷ Sw01 ∷ []) (lem-nat-0-SBOX⟨1·0·42·3⟩ c4) ▸
-       at 1 2 (CCZ123 ∷ Sw01 ∷ []) (lw4 c4 (Sw01 ∷ CCZ023 ∷ []) (CCZ123 ∷ Sw01 ∷ []) tt tt Eq.refl) ▸
-       at 2 2 [] (lw4 c4 (Sw01 ∷ Sw01 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS24 ∷ X4 ∷ CS24 ∷ []) (CS24 ∷ X4 ∷ CS24 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS24 ∷ X4 ∷ CS24 ∷ X4 ∷ []) (sym (wl0896 (lit c4))) ▸ done
 
 
--- auto SBOX(0;1;23;4) | SBOX(0;3;1;4) @2332: 7 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOX⟨0·3·1·4⟩-at2332 : Complete 4 → ⟪ (Sb0-1-32-4 ∷ Sb0-2-1-4 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-2-1-4 ∷ Sb0-1-32-4 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOX⟨0·3·1·4⟩-at2332 c4 = run b0
+-- calc F4 S2 K2: 1 steps
+lem-calc-F4-S2-K2 : Ws → ⟪ (X4 ∷ CS24 ∷ X4 ∷ CK42 ∷ []) ⟫ʷ ≈ ⟪ (CK42 ∷ X4 ∷ CS24 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S2-K2 c4 = run b0
   where
-  b0 : Chain (Sb0-1-32-4 ∷ Sb0-2-1-4 ∷ []) (Sb0-2-1-4 ∷ Sb0-1-32-4 ∷ [])
-  b0 = at 0 0 (Sw23 ∷ Sw23 ∷ []) (lw4 c4 [] (Sw23 ∷ Sw23 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb0-1-23-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·32·4⟩ c4) ▸
-       at 2 2 (Sb0-3-1-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·2·1·4⟩ c4) ▸
-       at 1 2 (Sb0-3-1-4 ∷ Sb0-1-23-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOX⟨0·3·1·4⟩ c4) ▸
-       at 0 2 (Sb0-2-1-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·3·1·4⟩ c4) ▸
-       at 1 2 (Sb0-1-32-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·23·4⟩ c4) ▸
-       at 2 2 [] (lw4 c4 (Sw23 ∷ Sw23 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS24 ∷ X4 ∷ CK42 ∷ []) (CK42 ∷ X4 ∷ CS24 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK42 ∷ X4 ∷ CS24 ∷ X4 ∷ []) (sym (wl0939 (lit c4))) ▸ done
 
 
--- auto SBOX(0;1;23;4) | SBOX(0;3;1;4) @243243: 7 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOX⟨0·3·1·4⟩-at243243 : Complete 4 → ⟪ (Sb0-1-42-3 ∷ Sb0-2-1-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-2-1-3 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOX⟨0·3·1·4⟩-at243243 c4 = run b0
+-- calc F4 S2 S3: 1 steps
+lem-calc-F4-S2-S3 : Ws → ⟪ (X4 ∷ CS24 ∷ X4 ∷ CS34 ∷ []) ⟫ʷ ≈ ⟪ (CS34 ∷ X4 ∷ CS24 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S2-S3 c4 = run b0
   where
-  b0 : Chain (Sb0-1-42-3 ∷ Sb0-2-1-3 ∷ []) (Sb0-2-1-3 ∷ Sb0-1-42-3 ∷ [])
-  b0 = at 0 0 (Sw34 ∷ Sw34 ∷ []) (lw0 c4 [] (Sw34 ∷ Sw34 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb0-1-32-4 ∷ Sw34 ∷ []) (lem-nat-3-SBOX⟨0·1·42·3⟩ c4) ▸
-       at 2 2 (Sb0-2-1-4 ∷ Sw34 ∷ []) (lem-nat-3-SBOX⟨0·2·1·3⟩ c4) ▸
-       at 1 2 (Sb0-2-1-4 ∷ Sb0-1-32-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOX⟨0·3·1·4⟩-at2332 c4) ▸
-       at 0 2 (Sb0-2-1-3 ∷ Sw34 ∷ []) (lem-nat-3-SBOX⟨0·2·1·4⟩ c4) ▸
-       at 1 2 (Sb0-1-42-3 ∷ Sw34 ∷ []) (lem-nat-3-SBOX⟨0·1·32·4⟩ c4) ▸
-       at 2 2 [] (lw0 c4 (Sw34 ∷ Sw34 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS24 ∷ X4 ∷ CS34 ∷ []) (CS34 ∷ X4 ∷ CS24 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS34 ∷ X4 ∷ CS24 ∷ X4 ∷ []) (sym (wl0940 (lit c4))) ▸ done
 
 
--- auto SBOX(0;1;23;4) | SBOXd(0;3;1;4) @2332: 7 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOXd⟨0·3·1·4⟩-at2332 : Complete 4 → ⟪ (Sb0-1-32-4 ∷ Sb⁻0-2-1-4 ∷ []) ⟫ʷ ≈ ⟪ (Sb⁻0-2-1-4 ∷ Sb0-1-32-4 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOXd⟨0·3·1·4⟩-at2332 c4 = run b0
+-- calc F4 S2 K3: 1 steps
+lem-calc-F4-S2-K3 : Ws → ⟪ (X4 ∷ CS24 ∷ X4 ∷ CK43 ∷ []) ⟫ʷ ≈ ⟪ (CK43 ∷ X4 ∷ CS24 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S2-K3 c4 = run b0
   where
-  b0 : Chain (Sb0-1-32-4 ∷ Sb⁻0-2-1-4 ∷ []) (Sb⁻0-2-1-4 ∷ Sb0-1-32-4 ∷ [])
-  b0 = at 0 0 (Sw23 ∷ Sw23 ∷ []) (lw4 c4 [] (Sw23 ∷ Sw23 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb0-1-23-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·32·4⟩ c4) ▸
-       at 2 2 (Sb⁻0-3-1-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOXd⟨0·2·1·4⟩ c4) ▸
-       at 1 2 (Sb⁻0-3-1-4 ∷ Sb0-1-23-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOXd⟨0·3·1·4⟩ c4) ▸
-       at 0 2 (Sb⁻0-2-1-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOXd⟨0·3·1·4⟩ c4) ▸
-       at 1 2 (Sb0-1-32-4 ∷ Sw23 ∷ []) (lem-nat-2-SBOX⟨0·1·23·4⟩ c4) ▸
-       at 2 2 [] (lw4 c4 (Sw23 ∷ Sw23 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS24 ∷ X4 ∷ CK43 ∷ []) (CK43 ∷ X4 ∷ CS24 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK43 ∷ X4 ∷ CS24 ∷ X4 ∷ []) (sym (wl0941 (lit c4))) ▸ done
 
 
--- auto SBOX(0;1;23;4) | SBOXd(0;3;1;4) @243243: 7 steps
-lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOXd⟨0·3·1·4⟩-at243243 : Complete 4 → ⟪ (Sb0-1-42-3 ∷ Sb⁻0-2-1-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb⁻0-2-1-3 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ
-lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOXd⟨0·3·1·4⟩-at243243 c4 = run b0
+-- calc F4 S2 CS01: 1 steps
+lem-calc-F4-S2-CS01 : Ws → ⟪ (X4 ∷ CS24 ∷ X4 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-0-41-3 ∷ X4 ∷ CS24 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S2-CS01 c4 = run b0
   where
-  b0 : Chain (Sb0-1-42-3 ∷ Sb⁻0-2-1-3 ∷ []) (Sb⁻0-2-1-3 ∷ Sb0-1-42-3 ∷ [])
-  b0 = at 0 0 (Sw34 ∷ Sw34 ∷ []) (lw0 c4 [] (Sw34 ∷ Sw34 ∷ []) tt tt Eq.refl) ▸
-       at 1 2 (Sb0-1-32-4 ∷ Sw34 ∷ []) (lem-nat-3-SBOX⟨0·1·42·3⟩ c4) ▸
-       at 2 2 (Sb⁻0-2-1-4 ∷ Sw34 ∷ []) (lem-nat-3-SBOXd⟨0·2·1·3⟩ c4) ▸
-       at 1 2 (Sb⁻0-2-1-4 ∷ Sb0-1-32-4 ∷ []) (lem-auto-SBOX⟨0·1·23·4⟩-∣-SBOXd⟨0·3·1·4⟩-at2332 c4) ▸
-       at 0 2 (Sb⁻0-2-1-3 ∷ Sw34 ∷ []) (lem-nat-3-SBOXd⟨0·2·1·4⟩ c4) ▸
-       at 1 2 (Sb0-1-42-3 ∷ Sw34 ∷ []) (lem-nat-3-SBOX⟨0·1·32·4⟩ c4) ▸
-       at 2 2 [] (lw0 c4 (Sw34 ∷ Sw34 ∷ []) [] tt tt Eq.refl) ▸ done
+  b0 : Chain (X4 ∷ CS24 ∷ X4 ∷ Sb2-0-41-3 ∷ []) (Sb2-0-41-3 ∷ X4 ∷ CS24 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb2-0-41-3 ∷ X4 ∷ CS24 ∷ X4 ∷ []) (lem-F4-S2ᵖ0∣CS01ᵖ1 c4) ▸ done
+
+
+-- calc F4 S2 CS12: 1 steps
+lem-calc-F4-S2-CS12 : Ws → ⟪ (X4 ∷ CS24 ∷ X4 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-1-42-3 ∷ X4 ∷ CS24 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S2-CS12 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS24 ∷ X4 ∷ Sb0-1-42-3 ∷ []) (Sb0-1-42-3 ∷ X4 ∷ CS24 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-1-42-3 ∷ X4 ∷ CS24 ∷ X4 ∷ []) (lem-F4-S2ᵖ0∣CS12ᵖ1 c4) ▸ done
+
+
+-- calc F4 S2 CS23: 1 steps
+lem-calc-F4-S2-CS23 : Ws → ⟪ (X4 ∷ CS24 ∷ X4 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-2-43-1 ∷ X4 ∷ CS24 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S2-CS23 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS24 ∷ X4 ∷ Sb0-2-43-1 ∷ []) (Sb0-2-43-1 ∷ X4 ∷ CS24 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-2-43-1 ∷ X4 ∷ CS24 ∷ X4 ∷ []) (lem-F4-S2ᵖ0∣CS23ᵖ1 c4) ▸ done
+
+
+-- calc F4 K2 I: 1 steps
+lem-calc-F4-K2-I : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (S4 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K2-I c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ S4 ∷ []) (S4 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 4 (S4 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (sym (wl0942 (lit c4))) ▸ done
+
+
+-- calc F4 K2 S0: 1 steps
+lem-calc-F4-K2-S0 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ CS04 ∷ []) ⟫ʷ ≈ ⟪ (CS04 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K2-S0 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ CS04 ∷ []) (CS04 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS04 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (sym (wp0507 c4)) ▸ done
+
+
+-- calc F4 K2 K0: 1 steps
+lem-calc-F4-K2-K0 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CK40 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K2-K0 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ CK40 ∷ []) (CK40 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK40 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (sym (wp0508 c4)) ▸ done
+
+
+-- calc F4 K2 S1: 1 steps
+lem-calc-F4-K2-S1 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ CS14 ∷ []) ⟫ʷ ≈ ⟪ (CS14 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K2-S1 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ CS14 ∷ []) (CS14 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS14 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (sym (wl0943 (lit c4))) ▸ done
+
+
+-- calc F4 K2 K1: 1 steps
+lem-calc-F4-K2-K1 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ CK41 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K2-K1 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ CK41 ∷ []) (CK41 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK41 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (sym (wl0944 (lit c4))) ▸ done
+
+
+-- calc F4 K2 S2: 1 steps
+lem-calc-F4-K2-S2 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ CS24 ∷ []) ⟫ʷ ≈ ⟪ (CS24 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K2-S2 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ CS24 ∷ []) (CS24 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS24 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (sym (wl0945 (lit c4))) ▸ done
+
+
+-- calc F4 K2 K2: 1 steps
+lem-calc-F4-K2-K2 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ CK42 ∷ []) ⟫ʷ ≈ ⟪ (CK42 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K2-K2 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ CK42 ∷ []) (CK42 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK42 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (sym (wl0946 (lit c4))) ▸ done
+
+
+-- calc F4 K2 S3: 1 steps
+lem-calc-F4-K2-S3 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ CS34 ∷ []) ⟫ʷ ≈ ⟪ (CS34 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K2-S3 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ CS34 ∷ []) (CS34 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS34 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (sym (wl0947 (lit c4))) ▸ done
+
+
+-- calc F4 K2 K3: 1 steps
+lem-calc-F4-K2-K3 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ CK43 ∷ []) ⟫ʷ ≈ ⟪ (CK43 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K2-K3 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ CK43 ∷ []) (CK43 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK43 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (sym (wl0948 (lit c4))) ▸ done
+
+
+-- calc F4 K2 CS01: 1 steps
+lem-calc-F4-K2-CS01 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-0-41-3 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K2-CS01 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ Sb2-0-41-3 ∷ []) (Sb2-0-41-3 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb2-0-41-3 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (lem-F4-K2ᵖ0∣CS01ᵖ1 c4) ▸ done
+
+
+-- calc F4 K2 CS12: 1 steps
+lem-calc-F4-K2-CS12 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-1-42-3 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K2-CS12 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ Sb0-1-42-3 ∷ []) (Sb0-1-42-3 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-1-42-3 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (lem-F4-K2ᵖ0∣CS12ᵖ1 c4) ▸ done
+
+
+-- calc F4 K2 CS23: 1 steps
+lem-calc-F4-K2-CS23 : Ws → ⟪ (X4 ∷ CK42 ∷ X4 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-2-43-1 ∷ X4 ∷ CK42 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K2-CS23 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK42 ∷ X4 ∷ Sb0-2-43-1 ∷ []) (Sb0-2-43-1 ∷ X4 ∷ CK42 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-2-43-1 ∷ X4 ∷ CK42 ∷ X4 ∷ []) (lem-F4-K2ᵖ0∣CS23ᵖ1 c4) ▸ done
+
+
+-- calc F4 S3 I: 1 steps
+lem-calc-F4-S3-I : Ws → ⟪ (X4 ∷ CS34 ∷ X4 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (S4 ∷ X4 ∷ CS34 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S3-I c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS34 ∷ X4 ∷ S4 ∷ []) (S4 ∷ X4 ∷ CS34 ∷ X4 ∷ [])
+  b0 = at 0 4 (S4 ∷ X4 ∷ CS34 ∷ X4 ∷ []) (sym (wl0949 (lit c4))) ▸ done
+
+
+-- calc F4 S3 S0: 1 steps
+lem-calc-F4-S3-S0 : Ws → ⟪ (X4 ∷ CS34 ∷ X4 ∷ CS04 ∷ []) ⟫ʷ ≈ ⟪ (CS04 ∷ X4 ∷ CS34 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S3-S0 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS34 ∷ X4 ∷ CS04 ∷ []) (CS04 ∷ X4 ∷ CS34 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS04 ∷ X4 ∷ CS34 ∷ X4 ∷ []) (sym (wp0509 c4)) ▸ done
+
+
+-- calc F4 S3 K0: 1 steps
+lem-calc-F4-S3-K0 : Ws → ⟪ (X4 ∷ CS34 ∷ X4 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CK40 ∷ X4 ∷ CS34 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S3-K0 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS34 ∷ X4 ∷ CK40 ∷ []) (CK40 ∷ X4 ∷ CS34 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK40 ∷ X4 ∷ CS34 ∷ X4 ∷ []) (sym (wp0510 c4)) ▸ done
+
+
+-- calc F4 S3 S1: 1 steps
+lem-calc-F4-S3-S1 : Ws → ⟪ (X4 ∷ CS34 ∷ X4 ∷ CS14 ∷ []) ⟫ʷ ≈ ⟪ (CS14 ∷ X4 ∷ CS34 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S3-S1 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS34 ∷ X4 ∷ CS14 ∷ []) (CS14 ∷ X4 ∷ CS34 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS14 ∷ X4 ∷ CS34 ∷ X4 ∷ []) (sym (wl0950 (lit c4))) ▸ done
+
+
+-- calc F4 S3 K1: 1 steps
+lem-calc-F4-S3-K1 : Ws → ⟪ (X4 ∷ CS34 ∷ X4 ∷ CK41 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ X4 ∷ CS34 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S3-K1 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS34 ∷ X4 ∷ CK41 ∷ []) (CK41 ∷ X4 ∷ CS34 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK41 ∷ X4 ∷ CS34 ∷ X4 ∷ []) (sym (wl0951 (lit c4))) ▸ done
+
+
+-- calc F4 S3 S2: 1 steps
+lem-calc-F4-S3-S2 : Ws → ⟪ (X4 ∷ CS34 ∷ X4 ∷ CS24 ∷ []) ⟫ʷ ≈ ⟪ (CS24 ∷ X4 ∷ CS34 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S3-S2 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS34 ∷ X4 ∷ CS24 ∷ []) (CS24 ∷ X4 ∷ CS34 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS24 ∷ X4 ∷ CS34 ∷ X4 ∷ []) (sym (wl0952 (lit c4))) ▸ done
+
+
+-- calc F4 S3 K2: 1 steps
+lem-calc-F4-S3-K2 : Ws → ⟪ (X4 ∷ CS34 ∷ X4 ∷ CK42 ∷ []) ⟫ʷ ≈ ⟪ (CK42 ∷ X4 ∷ CS34 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S3-K2 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS34 ∷ X4 ∷ CK42 ∷ []) (CK42 ∷ X4 ∷ CS34 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK42 ∷ X4 ∷ CS34 ∷ X4 ∷ []) (sym (wl0953 (lit c4))) ▸ done
+
+
+-- calc F4 S3 S3: 1 steps
+lem-calc-F4-S3-S3 : Ws → ⟪ (X4 ∷ CS34 ∷ X4 ∷ CS34 ∷ []) ⟫ʷ ≈ ⟪ (CS34 ∷ X4 ∷ CS34 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S3-S3 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS34 ∷ X4 ∷ CS34 ∷ []) (CS34 ∷ X4 ∷ CS34 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS34 ∷ X4 ∷ CS34 ∷ X4 ∷ []) (sym (wl0954 (lit c4))) ▸ done
+
+
+-- calc F4 S3 K3: 1 steps
+lem-calc-F4-S3-K3 : Ws → ⟪ (X4 ∷ CS34 ∷ X4 ∷ CK43 ∷ []) ⟫ʷ ≈ ⟪ (CK43 ∷ X4 ∷ CS34 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S3-K3 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS34 ∷ X4 ∷ CK43 ∷ []) (CK43 ∷ X4 ∷ CS34 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK43 ∷ X4 ∷ CS34 ∷ X4 ∷ []) (sym (wl0955 (lit c4))) ▸ done
+
+
+-- calc F4 S3 CS01: 1 steps
+lem-calc-F4-S3-CS01 : Ws → ⟪ (X4 ∷ CS34 ∷ X4 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-0-41-3 ∷ X4 ∷ CS34 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S3-CS01 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS34 ∷ X4 ∷ Sb2-0-41-3 ∷ []) (Sb2-0-41-3 ∷ X4 ∷ CS34 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb2-0-41-3 ∷ X4 ∷ CS34 ∷ X4 ∷ []) (lem-F4-S3ᵖ0∣CS01ᵖ1 c4) ▸ done
+
+
+-- calc F4 S3 CS12: 1 steps
+lem-calc-F4-S3-CS12 : Ws → ⟪ (X4 ∷ CS34 ∷ X4 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-1-42-3 ∷ X4 ∷ CS34 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S3-CS12 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS34 ∷ X4 ∷ Sb0-1-42-3 ∷ []) (Sb0-1-42-3 ∷ X4 ∷ CS34 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-1-42-3 ∷ X4 ∷ CS34 ∷ X4 ∷ []) (lem-F4-S3ᵖ0∣CS12ᵖ1 c4) ▸ done
+
+
+-- calc F4 S3 CS23: 1 steps
+lem-calc-F4-S3-CS23 : Ws → ⟪ (X4 ∷ CS34 ∷ X4 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-2-43-1 ∷ X4 ∷ CS34 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-S3-CS23 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CS34 ∷ X4 ∷ Sb0-2-43-1 ∷ []) (Sb0-2-43-1 ∷ X4 ∷ CS34 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-2-43-1 ∷ X4 ∷ CS34 ∷ X4 ∷ []) (lem-F4-S3ᵖ0∣CS23ᵖ1 c4) ▸ done
+
+
+-- calc F4 K3 I: 1 steps
+lem-calc-F4-K3-I : Ws → ⟪ (X4 ∷ CK43 ∷ X4 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (S4 ∷ X4 ∷ CK43 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K3-I c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK43 ∷ X4 ∷ S4 ∷ []) (S4 ∷ X4 ∷ CK43 ∷ X4 ∷ [])
+  b0 = at 0 4 (S4 ∷ X4 ∷ CK43 ∷ X4 ∷ []) (sym (wl0956 (lit c4))) ▸ done
+
+
+-- calc F4 K3 S0: 1 steps
+lem-calc-F4-K3-S0 : Ws → ⟪ (X4 ∷ CK43 ∷ X4 ∷ CS04 ∷ []) ⟫ʷ ≈ ⟪ (CS04 ∷ X4 ∷ CK43 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K3-S0 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK43 ∷ X4 ∷ CS04 ∷ []) (CS04 ∷ X4 ∷ CK43 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS04 ∷ X4 ∷ CK43 ∷ X4 ∷ []) (sym (wp0511 c4)) ▸ done
+
+
+-- calc F4 K3 K0: 1 steps
+lem-calc-F4-K3-K0 : Ws → ⟪ (X4 ∷ CK43 ∷ X4 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CK40 ∷ X4 ∷ CK43 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K3-K0 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK43 ∷ X4 ∷ CK40 ∷ []) (CK40 ∷ X4 ∷ CK43 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK40 ∷ X4 ∷ CK43 ∷ X4 ∷ []) (sym (wp0512 c4)) ▸ done
+
+
+-- calc F4 K3 S1: 1 steps
+lem-calc-F4-K3-S1 : Ws → ⟪ (X4 ∷ CK43 ∷ X4 ∷ CS14 ∷ []) ⟫ʷ ≈ ⟪ (CS14 ∷ X4 ∷ CK43 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K3-S1 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK43 ∷ X4 ∷ CS14 ∷ []) (CS14 ∷ X4 ∷ CK43 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS14 ∷ X4 ∷ CK43 ∷ X4 ∷ []) (sym (wl0957 (lit c4))) ▸ done
+
+
+-- calc F4 K3 K1: 1 steps
+lem-calc-F4-K3-K1 : Ws → ⟪ (X4 ∷ CK43 ∷ X4 ∷ CK41 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ X4 ∷ CK43 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K3-K1 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK43 ∷ X4 ∷ CK41 ∷ []) (CK41 ∷ X4 ∷ CK43 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK41 ∷ X4 ∷ CK43 ∷ X4 ∷ []) (sym (wl0958 (lit c4))) ▸ done
+
+
+-- calc F4 K3 S2: 1 steps
+lem-calc-F4-K3-S2 : Ws → ⟪ (X4 ∷ CK43 ∷ X4 ∷ CS24 ∷ []) ⟫ʷ ≈ ⟪ (CS24 ∷ X4 ∷ CK43 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K3-S2 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK43 ∷ X4 ∷ CS24 ∷ []) (CS24 ∷ X4 ∷ CK43 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS24 ∷ X4 ∷ CK43 ∷ X4 ∷ []) (sym (wl0959 (lit c4))) ▸ done
+
+
+-- calc F4 K3 K2: 1 steps
+lem-calc-F4-K3-K2 : Ws → ⟪ (X4 ∷ CK43 ∷ X4 ∷ CK42 ∷ []) ⟫ʷ ≈ ⟪ (CK42 ∷ X4 ∷ CK43 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K3-K2 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK43 ∷ X4 ∷ CK42 ∷ []) (CK42 ∷ X4 ∷ CK43 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK42 ∷ X4 ∷ CK43 ∷ X4 ∷ []) (sym (wl0960 (lit c4))) ▸ done
+
+
+-- calc F4 K3 S3: 1 steps
+lem-calc-F4-K3-S3 : Ws → ⟪ (X4 ∷ CK43 ∷ X4 ∷ CS34 ∷ []) ⟫ʷ ≈ ⟪ (CS34 ∷ X4 ∷ CK43 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K3-S3 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK43 ∷ X4 ∷ CS34 ∷ []) (CS34 ∷ X4 ∷ CK43 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS34 ∷ X4 ∷ CK43 ∷ X4 ∷ []) (sym (wl0961 (lit c4))) ▸ done
+
+
+-- calc F4 K3 K3: 1 steps
+lem-calc-F4-K3-K3 : Ws → ⟪ (X4 ∷ CK43 ∷ X4 ∷ CK43 ∷ []) ⟫ʷ ≈ ⟪ (CK43 ∷ X4 ∷ CK43 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K3-K3 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK43 ∷ X4 ∷ CK43 ∷ []) (CK43 ∷ X4 ∷ CK43 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK43 ∷ X4 ∷ CK43 ∷ X4 ∷ []) (sym (wl0962 (lit c4))) ▸ done
+
+
+-- calc F4 K3 CS01: 1 steps
+lem-calc-F4-K3-CS01 : Ws → ⟪ (X4 ∷ CK43 ∷ X4 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-0-41-3 ∷ X4 ∷ CK43 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K3-CS01 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK43 ∷ X4 ∷ Sb2-0-41-3 ∷ []) (Sb2-0-41-3 ∷ X4 ∷ CK43 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb2-0-41-3 ∷ X4 ∷ CK43 ∷ X4 ∷ []) (lem-F4-K3ᵖ0∣CS01ᵖ1 c4) ▸ done
+
+
+-- calc F4 K3 CS12: 1 steps
+lem-calc-F4-K3-CS12 : Ws → ⟪ (X4 ∷ CK43 ∷ X4 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-1-42-3 ∷ X4 ∷ CK43 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K3-CS12 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK43 ∷ X4 ∷ Sb0-1-42-3 ∷ []) (Sb0-1-42-3 ∷ X4 ∷ CK43 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-1-42-3 ∷ X4 ∷ CK43 ∷ X4 ∷ []) (lem-F4-K3ᵖ0∣CS12ᵖ1 c4) ▸ done
+
+
+-- calc F4 K3 CS23: 1 steps
+lem-calc-F4-K3-CS23 : Ws → ⟪ (X4 ∷ CK43 ∷ X4 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-2-43-1 ∷ X4 ∷ CK43 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-K3-CS23 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ CK43 ∷ X4 ∷ Sb0-2-43-1 ∷ []) (Sb0-2-43-1 ∷ X4 ∷ CK43 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-2-43-1 ∷ X4 ∷ CK43 ∷ X4 ∷ []) (lem-F4-K3ᵖ0∣CS23ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS01 I: 1 steps
+lem-calc-F4-CS01-I : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (S4 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS01-I c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ S4 ∷ []) (S4 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (S4 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) (lem-F4-CS01ᵖ0∣iIᵖ1 c4) ▸ done
+
+
+-- calc F4 CS01 S0: 1 steps
+lem-calc-F4-CS01-S0 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CS04 ∷ []) ⟫ʷ ≈ ⟪ (CS04 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS01-S0 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CS04 ∷ []) (CS04 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS04 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) (lem-F4-CS01ᵖ0∣S0ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS01 K0: 1 steps
+lem-calc-F4-CS01-K0 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CK40 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS01-K0 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CK40 ∷ []) (CK40 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK40 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) (lem-F4-CS01ᵖ0∣K0ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS01 S1: 1 steps
+lem-calc-F4-CS01-S1 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CS14 ∷ []) ⟫ʷ ≈ ⟪ (CS14 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS01-S1 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CS14 ∷ []) (CS14 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS14 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) (lem-F4-CS01ᵖ0∣S1ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS01 K1: 1 steps
+lem-calc-F4-CS01-K1 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CK41 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS01-K1 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CK41 ∷ []) (CK41 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK41 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) (lem-F4-CS01ᵖ0∣K1ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS01 S2: 1 steps
+lem-calc-F4-CS01-S2 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CS24 ∷ []) ⟫ʷ ≈ ⟪ (CS24 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS01-S2 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CS24 ∷ []) (CS24 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS24 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) (lem-F4-CS01ᵖ0∣S2ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS01 K2: 1 steps
+lem-calc-F4-CS01-K2 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CK42 ∷ []) ⟫ʷ ≈ ⟪ (CK42 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS01-K2 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CK42 ∷ []) (CK42 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK42 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) (lem-F4-CS01ᵖ0∣K2ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS01 S3: 1 steps
+lem-calc-F4-CS01-S3 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CS34 ∷ []) ⟫ʷ ≈ ⟪ (CS34 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS01-S3 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CS34 ∷ []) (CS34 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS34 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) (lem-F4-CS01ᵖ0∣S3ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS01 K3: 1 steps
+lem-calc-F4-CS01-K3 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CK43 ∷ []) ⟫ʷ ≈ ⟪ (CK43 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS01-K3 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ CK43 ∷ []) (CK43 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK43 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) (lem-F4-CS01ᵖ0∣K3ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS01 CS01: 1 steps
+lem-calc-F4-CS01-CS01 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-0-41-3 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS01-CS01 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ Sb2-0-41-3 ∷ []) (Sb2-0-41-3 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb2-0-41-3 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) (lem-F4-CS01ᵖ0∣CS01ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS01 CS12: 1 steps
+lem-calc-F4-CS01-CS12 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-1-42-3 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS01-CS12 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ Sb0-1-42-3 ∷ []) (Sb0-1-42-3 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-1-42-3 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) (lem-F4-CS01ᵖ0∣CS12ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS01 CS23: 1 steps
+lem-calc-F4-CS01-CS23 : Ws → ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-2-43-1 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS01-CS23 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ Sb0-2-43-1 ∷ []) (Sb0-2-43-1 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-2-43-1 ∷ X4 ∷ Sb2-0-41-3 ∷ X4 ∷ []) (lem-F4-CS01ᵖ0∣CS23ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS12 I: 1 steps
+lem-calc-F4-CS12-I : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (S4 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS12-I c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ S4 ∷ []) (S4 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (S4 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) (lem-F4-CS12ᵖ0∣iIᵖ1 c4) ▸ done
+
+
+-- calc F4 CS12 S0: 1 steps
+lem-calc-F4-CS12-S0 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CS04 ∷ []) ⟫ʷ ≈ ⟪ (CS04 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS12-S0 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CS04 ∷ []) (CS04 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS04 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) (lem-F4-CS12ᵖ0∣S0ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS12 K0: 1 steps
+lem-calc-F4-CS12-K0 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CK40 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS12-K0 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CK40 ∷ []) (CK40 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK40 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) (lem-F4-CS12ᵖ0∣K0ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS12 S1: 1 steps
+lem-calc-F4-CS12-S1 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CS14 ∷ []) ⟫ʷ ≈ ⟪ (CS14 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS12-S1 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CS14 ∷ []) (CS14 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS14 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) (lem-F4-CS12ᵖ0∣S1ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS12 K1: 1 steps
+lem-calc-F4-CS12-K1 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CK41 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS12-K1 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CK41 ∷ []) (CK41 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK41 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) (lem-F4-CS12ᵖ0∣K1ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS12 S2: 1 steps
+lem-calc-F4-CS12-S2 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CS24 ∷ []) ⟫ʷ ≈ ⟪ (CS24 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS12-S2 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CS24 ∷ []) (CS24 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS24 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) (lem-F4-CS12ᵖ0∣S2ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS12 K2: 1 steps
+lem-calc-F4-CS12-K2 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CK42 ∷ []) ⟫ʷ ≈ ⟪ (CK42 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS12-K2 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CK42 ∷ []) (CK42 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK42 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) (lem-F4-CS12ᵖ0∣K2ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS12 S3: 1 steps
+lem-calc-F4-CS12-S3 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CS34 ∷ []) ⟫ʷ ≈ ⟪ (CS34 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS12-S3 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CS34 ∷ []) (CS34 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS34 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) (lem-F4-CS12ᵖ0∣S3ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS12 K3: 1 steps
+lem-calc-F4-CS12-K3 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CK43 ∷ []) ⟫ʷ ≈ ⟪ (CK43 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS12-K3 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ CK43 ∷ []) (CK43 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK43 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) (lem-F4-CS12ᵖ0∣K3ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS12 CS01: 1 steps
+lem-calc-F4-CS12-CS01 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-0-41-3 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS12-CS01 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ Sb2-0-41-3 ∷ []) (Sb2-0-41-3 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb2-0-41-3 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) (lem-F4-CS12ᵖ0∣CS01ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS12 CS12: 1 steps
+lem-calc-F4-CS12-CS12 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-1-42-3 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS12-CS12 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ Sb0-1-42-3 ∷ []) (Sb0-1-42-3 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-1-42-3 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) (lem-F4-CS12ᵖ0∣CS12ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS12 CS23: 1 steps
+lem-calc-F4-CS12-CS23 : Ws → ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-2-43-1 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS12-CS23 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ Sb0-2-43-1 ∷ []) (Sb0-2-43-1 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-2-43-1 ∷ X4 ∷ Sb0-1-42-3 ∷ X4 ∷ []) (lem-F4-CS12ᵖ0∣CS23ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS23 I: 1 steps
+lem-calc-F4-CS23-I : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ S4 ∷ []) ⟫ʷ ≈ ⟪ (S4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS23-I c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ S4 ∷ []) (S4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b0 = at 0 4 (S4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) (lem-F4-CS23ᵖ0∣iIᵖ1 c4) ▸ done
+
+
+-- calc F4 CS23 S0: 1 steps
+lem-calc-F4-CS23-S0 : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CS04 ∷ []) ⟫ʷ ≈ ⟪ (CS04 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS23-S0 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CS04 ∷ []) (CS04 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS04 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) (lem-F4-CS23ᵖ0∣S0ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS23 K0: 1 steps
+lem-calc-F4-CS23-K0 : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CK40 ∷ []) ⟫ʷ ≈ ⟪ (CK40 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS23-K0 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CK40 ∷ []) (CK40 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK40 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) (lem-F4-CS23ᵖ0∣K0ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS23 S1: 1 steps
+lem-calc-F4-CS23-S1 : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CS14 ∷ []) ⟫ʷ ≈ ⟪ (CS14 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS23-S1 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CS14 ∷ []) (CS14 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS14 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) (lem-F4-CS23ᵖ0∣S1ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS23 K1: 1 steps
+lem-calc-F4-CS23-K1 : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CK41 ∷ []) ⟫ʷ ≈ ⟪ (CK41 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS23-K1 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CK41 ∷ []) (CK41 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK41 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) (lem-F4-CS23ᵖ0∣K1ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS23 S2: 1 steps
+lem-calc-F4-CS23-S2 : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CS24 ∷ []) ⟫ʷ ≈ ⟪ (CS24 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS23-S2 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CS24 ∷ []) (CS24 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS24 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) (lem-F4-CS23ᵖ0∣S2ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS23 K2: 1 steps
+lem-calc-F4-CS23-K2 : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CK42 ∷ []) ⟫ʷ ≈ ⟪ (CK42 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS23-K2 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CK42 ∷ []) (CK42 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK42 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) (lem-F4-CS23ᵖ0∣K2ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS23 S3: 1 steps
+lem-calc-F4-CS23-S3 : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CS34 ∷ []) ⟫ʷ ≈ ⟪ (CS34 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS23-S3 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CS34 ∷ []) (CS34 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b0 = at 0 4 (CS34 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) (lem-F4-CS23ᵖ0∣S3ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS23 K3: 1 steps
+lem-calc-F4-CS23-K3 : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CK43 ∷ []) ⟫ʷ ≈ ⟪ (CK43 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS23-K3 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ CK43 ∷ []) (CK43 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b0 = at 0 4 (CK43 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) (lem-F4-CS23ᵖ0∣K3ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS23 CS01: 1 steps
+lem-calc-F4-CS23-CS01 : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb2-0-41-3 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS23-CS01 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ Sb2-0-41-3 ∷ []) (Sb2-0-41-3 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb2-0-41-3 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) (lem-F4-CS23ᵖ0∣CS01ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS23 CS12: 1 steps
+lem-calc-F4-CS23-CS12 : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-1-42-3 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS23-CS12 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ Sb0-1-42-3 ∷ []) (Sb0-1-42-3 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-1-42-3 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) (lem-F4-CS23ᵖ0∣CS12ᵖ1 c4) ▸ done
+
+
+-- calc F4 CS23 CS23: 1 steps
+lem-calc-F4-CS23-CS23 : Ws → ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ ≈ ⟪ (Sb0-2-43-1 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) ⟫ʷ
+lem-calc-F4-CS23-CS23 c4 = run b0
+  where
+  b0 : Chain (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ Sb0-2-43-1 ∷ []) (Sb0-2-43-1 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ [])
+  b0 = at 0 4 (Sb0-2-43-1 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 ∷ []) (lem-F4-CS23ᵖ0∣CS23ᵖ1 c4) ▸ done
+
+
+-- calc F5 I 0: 1 steps
+lem-calc-F5-I-0 : Ws → ⟪ (ι ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ S4 ∷ X4 ∷ S4 ∷ []) ⟫ʷ
+lem-calc-F5-I-0 c4 = run b0
+  where
+  b0 : Chain (ι ∷ []) (X4 ∷ S4 ∷ X4 ∷ S4 ∷ [])
+  b0 = at 0 1 (X4 ∷ S4 ∷ X4 ∷ S4 ∷ []) (sym (wl0886 (lit c4))) ▸ done
+
+
+-- calc F5 I 1: 1 steps
+lem-calc-F5-I-1 : Ws → ⟪ (ι1 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ S4 ∷ X4 ∷ S4 ∷ []) ⟫ʷ
+lem-calc-F5-I-1 c4 = run b0
+  where
+  b0 : Chain (ι1 ∷ []) (X4 ∷ S4 ∷ X4 ∷ S4 ∷ [])
+  b0 = at 0 1 (X4 ∷ S4 ∷ X4 ∷ S4 ∷ []) (sym (wl0963 (lit c4))) ▸ done
+
+
+-- calc F5 I 2: 1 steps
+lem-calc-F5-I-2 : Ws → ⟪ (ι2 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ S4 ∷ X4 ∷ S4 ∷ []) ⟫ʷ
+lem-calc-F5-I-2 c4 = run b0
+  where
+  b0 : Chain (ι2 ∷ []) (X4 ∷ S4 ∷ X4 ∷ S4 ∷ [])
+  b0 = at 0 1 (X4 ∷ S4 ∷ X4 ∷ S4 ∷ []) (sym (wl0964 (lit c4))) ▸ done
+
+
+-- calc F5 I 3: 1 steps
+lem-calc-F5-I-3 : Ws → ⟪ (ι3 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ S4 ∷ X4 ∷ S4 ∷ []) ⟫ʷ
+lem-calc-F5-I-3 c4 = run b0
+  where
+  b0 : Chain (ι3 ∷ []) (X4 ∷ S4 ∷ X4 ∷ S4 ∷ [])
+  b0 = at 0 1 (X4 ∷ S4 ∷ X4 ∷ S4 ∷ []) (sym (wl0965 (lit c4))) ▸ done
+
+
+-- calc F5 I 4: 1 steps
+lem-calc-F5-I-4 : Ws → ⟪ (ι4 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ S4 ∷ X4 ∷ S4 ∷ []) ⟫ʷ
+lem-calc-F5-I-4 c4 = run b0
+  where
+  b0 : Chain (ι4 ∷ []) (X4 ∷ S4 ∷ X4 ∷ S4 ∷ [])
+  b0 = at 0 1 (X4 ∷ S4 ∷ X4 ∷ S4 ∷ []) (sym (wl0966 (lit c4))) ▸ done
+
+
+-- calc F5 S0: 1 steps
+lem-calc-F5-S0 : Ws → ⟪ (S0 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CS04 ∷ X4 ∷ CS04 ∷ []) ⟫ʷ
+lem-calc-F5-S0 c4 = run b0
+  where
+  b0 : Chain (S0 ∷ []) (X4 ∷ CS04 ∷ X4 ∷ CS04 ∷ [])
+  b0 = at 0 1 (X4 ∷ CS04 ∷ X4 ∷ CS04 ∷ []) (wp0461 c4) ▸ done
+
+
+-- calc F5 K0: 1 steps
+lem-calc-F5-K0 : Ws → ⟪ (K0 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CK40 ∷ X4 ∷ CK40 ∷ []) ⟫ʷ
+lem-calc-F5-K0 c4 = run b0
+  where
+  b0 : Chain (K0 ∷ []) (X4 ∷ CK40 ∷ X4 ∷ CK40 ∷ [])
+  b0 = at 0 1 (X4 ∷ CK40 ∷ X4 ∷ CK40 ∷ []) (wp0513 c4) ▸ done
+
+
+-- calc F5 S1: 1 steps
+lem-calc-F5-S1 : Ws → ⟪ (S1 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CS14 ∷ X4 ∷ CS14 ∷ []) ⟫ʷ
+lem-calc-F5-S1 c4 = run b0
+  where
+  b0 : Chain (S1 ∷ []) (X4 ∷ CS14 ∷ X4 ∷ CS14 ∷ [])
+  b0 = at 0 1 (X4 ∷ CS14 ∷ X4 ∷ CS14 ∷ []) (wl0967 (lit c4)) ▸ done
+
+
+-- calc F5 K1: 1 steps
+lem-calc-F5-K1 : Ws → ⟪ (K1 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CK41 ∷ X4 ∷ CK41 ∷ []) ⟫ʷ
+lem-calc-F5-K1 c4 = run b0
+  where
+  b0 : Chain (K1 ∷ []) (X4 ∷ CK41 ∷ X4 ∷ CK41 ∷ [])
+  b0 = at 0 1 (X4 ∷ CK41 ∷ X4 ∷ CK41 ∷ []) (wl0885 (lit c4)) ▸ done
+
+
+-- calc F5 S2: 1 steps
+lem-calc-F5-S2 : Ws → ⟪ (S2 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CS24 ∷ X4 ∷ CS24 ∷ []) ⟫ʷ
+lem-calc-F5-S2 c4 = run b0
+  where
+  b0 : Chain (S2 ∷ []) (X4 ∷ CS24 ∷ X4 ∷ CS24 ∷ [])
+  b0 = at 0 1 (X4 ∷ CS24 ∷ X4 ∷ CS24 ∷ []) (wl0893 (lit c4)) ▸ done
+
+
+-- calc F5 K2: 1 steps
+lem-calc-F5-K2 : Ws → ⟪ (K2 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CK42 ∷ X4 ∷ CK42 ∷ []) ⟫ʷ
+lem-calc-F5-K2 c4 = run b0
+  where
+  b0 : Chain (K2 ∷ []) (X4 ∷ CK42 ∷ X4 ∷ CK42 ∷ [])
+  b0 = at 0 1 (X4 ∷ CK42 ∷ X4 ∷ CK42 ∷ []) (wl0968 (lit c4)) ▸ done
+
+
+-- calc F5 S3: 1 steps
+lem-calc-F5-S3 : Ws → ⟪ (S3 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CS34 ∷ X4 ∷ CS34 ∷ []) ⟫ʷ
+lem-calc-F5-S3 c4 = run b0
+  where
+  b0 : Chain (S3 ∷ []) (X4 ∷ CS34 ∷ X4 ∷ CS34 ∷ [])
+  b0 = at 0 1 (X4 ∷ CS34 ∷ X4 ∷ CS34 ∷ []) (wl0969 (lit c4)) ▸ done
+
+
+-- calc F5 K3: 1 steps
+lem-calc-F5-K3 : Ws → ⟪ (K3 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CK43 ∷ X4 ∷ CK43 ∷ []) ⟫ʷ
+lem-calc-F5-K3 c4 = run b0
+  where
+  b0 : Chain (K3 ∷ []) (X4 ∷ CK43 ∷ X4 ∷ CK43 ∷ [])
+  b0 = at 0 1 (X4 ∷ CK43 ∷ X4 ∷ CK43 ∷ []) (wl0970 (lit c4)) ▸ done
+
+
+-- calc F5 CS01: 1 steps
+lem-calc-F5-CS01 : Ws → ⟪ (CS01 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ Sb2-0-41-3 ∷ []) ⟫ʷ
+lem-calc-F5-CS01 c4 = run b0
+  where
+  b0 : Chain (CS01 ∷ []) (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ Sb2-0-41-3 ∷ [])
+  b0 = at 0 1 (X4 ∷ Sb2-0-41-3 ∷ X4 ∷ Sb2-0-41-3 ∷ []) (sym (lem-F5-CS01 c4)) ▸ done
+
+
+-- calc F5 CS12: 1 steps
+lem-calc-F5-CS12 : Ws → ⟪ (CS12 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ Sb0-1-42-3 ∷ []) ⟫ʷ
+lem-calc-F5-CS12 c4 = run b0
+  where
+  b0 : Chain (CS12 ∷ []) (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ Sb0-1-42-3 ∷ [])
+  b0 = at 0 1 (X4 ∷ Sb0-1-42-3 ∷ X4 ∷ Sb0-1-42-3 ∷ []) (sym (lem-F5-CS12 c4)) ▸ done
+
+
+-- calc F5 CS23: 1 steps
+lem-calc-F5-CS23 : Ws → ⟪ (CS23 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ Sb0-2-43-1 ∷ []) ⟫ʷ
+lem-calc-F5-CS23 c4 = run b0
+  where
+  b0 : Chain (CS23 ∷ []) (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ Sb0-2-43-1 ∷ [])
+  b0 = at 0 1 (X4 ∷ Sb0-2-43-1 ∷ X4 ∷ Sb0-2-43-1 ∷ []) (sym (lem-F5-CS23 c4)) ▸ done
+
+
+-- f6 cx14: 2 steps
+lem-f6-cx14 : Ws → ⟪ (CX14 ∷ []) ⟫ʷ ≈ ⟪ (K4 ∷ CS14 ∷ CS14 ∷ K4 ∷ ι ∷ []) ⟫ʷ
+lem-f6-cx14 c4 = run b0
+  where
+  b0 : Chain (CX14 ∷ []) (K4 ∷ CS14 ∷ CS14 ∷ K4 ∷ ι ∷ [])
+  b0 = at 0 1 (K4 ∷ CS14 ∷ CS14 ∷ K4 ∷ ι1 ∷ []) (wp0514 c4) ▸
+       at 4 1 (ι ∷ []) (uₛ (iI ↑) (iI) Eq.refl) ▸ done
+
+
+-- f6 w1: 1 steps
+lem-f6-w1 : Ws → ⟪ (CX14 ∷ X4 ∷ CS04 ∷ X4 ∷ CX14 ∷ []) ⟫ʷ ≈ ⟪ (CS01⁻ ∷ CCZ014 ∷ X4 ∷ CS04 ∷ X4 ∷ []) ⟫ʷ
+lem-f6-w1 c4 = run b0
+  where
+  b0 : Chain (CX14 ∷ X4 ∷ CS04 ∷ X4 ∷ CX14 ∷ []) (CS01⁻ ∷ CCZ014 ∷ X4 ∷ CS04 ∷ X4 ∷ [])
+  b0 = at 0 5 (CS01⁻ ∷ CCZ014 ∷ X4 ∷ CS04 ∷ X4 ∷ []) (sym (wp0515 c4)) ▸ done
+
+
+-- f6 w2: 1 steps
+lem-f6-w2 : Ws → ⟪ (CX14 ∷ X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ CX14 ∷ []) ⟫ʷ ≈ ⟪ (X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ CS01 ∷ CCZ014 ∷ []) ⟫ʷ
+lem-f6-w2 c4 = run b0
+  where
+  b0 : Chain (CX14 ∷ X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ CX14 ∷ []) (X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ CS01 ∷ CCZ014 ∷ [])
+  b0 = at 0 11 (X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ X4 ∷ CS04 ∷ X4 ∷ CS01 ∷ CCZ014 ∷ []) (wp0516 c4) ▸ done
+
+
+-- f6 aa: 1 steps
+lem-f6-aa : Ws → ⟪ (CX14 ∷ CX14 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
+lem-f6-aa c4 = run b0
+  where
+  b0 : Chain (CX14 ∷ CX14 ∷ []) []
+  b0 = at 0 2 [] (wl0971 (lit c4)) ▸ done
+
+
+-- f6 ee: 1 steps
+lem-f6-ee : Ws → ⟪ (CS01 ∷ CCZ014 ∷ CS01⁻ ∷ CCZ014 ∷ []) ⟫ʷ ≈ ⟪ [] ⟫ʷ
+lem-f6-ee c4 = run b0
+  where
+  b0 : Chain (CS01 ∷ CCZ014 ∷ CS01⁻ ∷ CCZ014 ∷ []) []
+  b0 = at 0 4 [] (wp0517 c4) ▸ done
+
+
+-- f6 cx43: 1 steps
+lem-f6-cx43 : Ws → ⟪ (CX43 ∷ []) ⟫ʷ ≈ ⟪ (CK43 ∷ CS34 ∷ CS34 ∷ CK43 ∷ S4 ∷ []) ⟫ʷ
+lem-f6-cx43 c4 = run b0
+  where
+  b0 : Chain (CX43 ∷ []) (CK43 ∷ CS34 ∷ CS34 ∷ CK43 ∷ S4 ∷ [])
+  b0 = at 0 1 (CK43 ∷ CS34 ∷ CS34 ∷ CK43 ∷ S4 ∷ []) (sym (wl0972 (lit c4))) ▸ done
+
+
+-- f6 cx34: 1 steps
+lem-f6-cx34 : Ws → ⟪ (CX34 ∷ []) ⟫ʷ ≈ ⟪ (Sw23 ∷ Sw12 ∷ CX14 ∷ Sw12 ∷ Sw23 ∷ []) ⟫ʷ
+lem-f6-cx34 c4 = run b0
+  where
+  b0 : Chain (CX34 ∷ []) (Sw23 ∷ Sw12 ∷ CX14 ∷ Sw12 ∷ Sw23 ∷ [])
+  b0 = at 0 1 (Sw23 ∷ Sw12 ∷ CX14 ∷ Sw12 ∷ Sw23 ∷ []) (wl0973 (lit c4)) ▸ done
+
+
+-- f6 sw34: 1 steps
+lem-f6-sw34 : Ws → ⟪ (Sw34 ∷ []) ⟫ʷ ≈ ⟪ (CX34 ∷ CX43 ∷ CX34 ∷ []) ⟫ʷ
+lem-f6-sw34 c4 = run b0
+  where
+  b0 : Chain (Sw34 ∷ []) (CX34 ∷ CX43 ∷ CX34 ∷ [])
+  b0 = at 0 1 (CX34 ∷ CX43 ∷ CX34 ∷ []) (sym (wl0974 (lit c4))) ▸ done
 

@@ -111,6 +111,7 @@ def agda_module(res, modof, lemname, MOD):
 module {MOD}.CalcAx where
 
 open import Data.List using (List ; [] ; _∷_)
+open import Word.Base using (ε)
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.Completeness using (Complete)
 open import {MOD}.Chain

@@ -546,6 +546,9 @@ def lower(key, lhs, rhs, steps, pi):
             P.R(k, n, rep, check=False, tag=kind)
         elif kind == 'nat':
             a, b = info; nat_step(P, k, n, pi.get(a, a), pi.get(b, b))
+        elif kind == 'transport':
+            name, ren = transport_axiom(*info)
+            lower_axiom(P, k, name, True, compose(ren, pi))
         else: raise ValueError(kind)
         assert P.cur == before[:k] + rep + before[k + n:], (key, kind, show(P.cur[k:k + len(rep) + 2]), show(rep))
     P.done(); PRIMS.append(P)
@@ -574,6 +577,34 @@ def lower_axiom(P, k, name, fwd, pi):
     P.A(kk, name, src, dst, fwd); n = len(dst)
     for s in word: kk -= 1; unwrap(P, kk, n, s)
     assert P.cur[k:k + n] == relabel_word(dst, pi)
+
+# The de-borrowing (joint/deb5.py) replaces lambda^b_t(el) by
+# lambda^b_t(er) for an equation el = er on at most two wires off t: a
+# transport of a two-wire derivation.  Each is the canonical one --
+# control wire 4, the wires of el, er sent to 0, 1 in order and the other
+# domain wires (the borrowed ones of the S-boxes) after them in order --
+# at a renaming, which lower_axiom wraps in swaps.  TRANSPORTS[name] is
+# (el, er, beta) on the wires 0, 1.
+TRANSPORTS = {}
+_TR_KEY = {}
+
+def transport_axiom(el, er, t, b):
+    import flist
+    p = {4: t, t: 4} if t != 4 else {}
+    el4 = relabel_word(norm(list(el)), p); er4 = relabel_word(norm(list(er)), p)
+    supp = sorted(gsupp(el4 + er4))
+    assert len(supp) <= 2 and all(w < 4 for w in supp), (el, er, t)
+    order = supp + [w for w in range(4) if w not in supp]
+    sigma = {w: i for i, w in enumerate(order) if w != i}
+    elc, erc = relabel_word(el4, sigma), relabel_word(er4, sigma)
+    key = (tuple(elc), tuple(erc), b)
+    if key not in _TR_KEY:
+        name = f'TR {len(_TR_KEY) + 1}'
+        _TR_KEY[key] = name
+        TRANSPORTS[name] = (elc, erc, b)
+        AXIOMS[name] = (norm(flist.lam(elc, b)), norm(flist.lam(erc, b)))
+    inv = {v: k for k, v in sigma.items()}
+    return _TR_KEY[key], compose(inv, p)
 
 def load(path):
     import pickle
