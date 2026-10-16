@@ -260,7 +260,7 @@ def split_long(prims, limit=1000, size=500):
         out += parts + [Part(P.name, P.lhs, P.rhs, main)]
     return out
 
-def chunks(prims, max_steps=500, max_lemmas=16):
+def chunks(prims, max_steps=500, max_lemmas=64):
     out = []; cur = []; steps = 0
     for P in prims:
         if cur and (steps + len(P.steps) > max_steps or len(cur) >= max_lemmas):
@@ -292,8 +292,9 @@ def write_all(prims, respell, root=None):
     os.makedirs(os.path.join(ROOT, 'D'), exist_ok=True)
     for f in os.listdir(os.path.join(ROOT, 'D')):
         if f.endswith('.agda'): os.remove(os.path.join(ROOT, 'D', f))
-    pre = [P for P in prims if P.name.startswith('resp ') or P.name.startswith('comm ')]
-    main = [P for P in prims if not (P.name.startswith('resp ') or P.name.startswith('comm '))]
+    early = lambda P: P.name.split(' ')[0] in ('resp', 'comm', 'nat')
+    pre = [P for P in prims if early(P)]
+    main = [P for P in prims if not early(P)]
     for P in pre:
         assert all(st[0] != 'P' for st in P.steps), P.name
     pre, main = split_long(pre), split_long(main)
@@ -316,11 +317,15 @@ def write_all(prims, respell, root=None):
     dmods = write_group(main, 'D', modof, 1, True)
     io.open(os.path.join(ROOT, 'D', 'INDEX.txt'), 'w', encoding='utf-8', newline=NL).write(
         NL.join(f'{modof[P.name]} {len(P.steps)} {P.name}' for P in pre + main) + NL)
-    return rmods, dmods, len(boxes)
+    return rmods, dmods, len(boxes), modof
 
 if __name__ == '__main__':
+    import transport5 as T5
     names = L5.load(sys.argv[1])
     for nm in names: L5.instance(nm, {})
+    res = T5.all_obligations()
     root = sys.argv[2] if len(sys.argv) > 2 else None
-    rmods, dmods, nb = write_all(L5.PRIMS, L5.RESPELL, root)
+    rmods, dmods, nb, modof = write_all(L5.PRIMS, L5.RESPELL, root)
+    io.open(os.path.join(ROOT, 'TransportAx.agda'), 'w', encoding='utf-8', newline=NL).write(
+        T5.agda_module(res, modof, lemname, MOD))
     print(len(rmods), 'R modules,', len(dmods), 'D modules,', nb, 'boxes, written to', root or ROOT)

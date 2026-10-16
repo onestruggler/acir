@@ -174,6 +174,8 @@ def push(P, p, k, left):
     if not (sl & {k, k + 1}):
         if separable(l, s): P.C(lo)
         else: P.W(lo, 2, [s, l] if left else [l, s], off(sl | {k, k + 1}))
+        if lp != l:                                    # a box whose label moves, its spelling not
+            P.R(lo + 1 if left else lo, 1, [lp])
         return
     if is_box(l):
         push_box(P, p, k, left); return
@@ -221,12 +223,55 @@ def push_box(P, p, k, left):
     n = len(us)
     if left:
         P.R(p - 1, 1, us, check=False, tag='unfold')   # pieces at p-1 .. p+n-2, s at p+n-1
-        for i in range(n): push(P, p + n - 1 - i, k, True)
+        for i in range(n): nat_push(P, p + n - 2 - i, k, left=True)
         P.R(p, n, [lp], check=False, tag='fold')
     else:
         P.R(p + 1, 1, us, check=False, tag='unfold')   # s at p, pieces at p+1 .. p+n
-        for i in range(n): push(P, p + i, k, False)
+        for i in range(n): nat_push(P, p + i, k)
         P.R(p, n, [lp], check=False, tag='fold')
+
+# ------------------------------------------------------------ naturality
+NAT = {}             # (k, g) -> the lemma [sw k, g] = [g', sw k]
+
+def nat(k, g):
+    key = (k, g)
+    if key in NAT: return NAT[key]
+    name = f'nat {k} {show([g])}'
+    P = Prim(name, [sw(k), g], [rename(g, k), sw(k)], LEMMAS, check=False)
+    push(P, 0, k, False)
+    P.done(); NAT[key] = name
+    if len(P.steps) > 1: PRIMS.append(P)          # a one-step one is always inlined
+    return name
+
+def nat_push(P, pos, k, left=False):
+    """right: [sw k, g] at pos -> [g', sw k]; left: [g, sw k] at pos ->
+    [sw k, g'], by the naturality lemma (inline when it is one step)."""
+    if left:
+        g = P.cur[pos]; gp = rename(g, k)
+        name = nat(k, gp)
+        if len(LEMMA_STEPS[name]) <= 1: push(P, pos + 1, k, True)
+        else: P.L(name, pos, False)
+    else:
+        g = P.cur[pos + 1]
+        name = nat(k, g)
+        if len(LEMMA_STEPS[name]) <= 1: push(P, pos, k, False)
+        else: P.L(name, pos, True)
+
+LEMMA_STEPS = prim5.STEPS
+
+def ren(base, k, key):
+    """the lemma base with its wires renamed by the swap k: conjugate by
+    the swap and carry it through each letter by naturality."""
+    xs, ys = LEMMAS[base]
+    xk, yk = relabel_word(xs, {k: k + 1, k + 1: k}), relabel_word(ys, {k: k + 1, k + 1: k})
+    P = Prim(key, xk, yk, LEMMAS, check=False)
+    P.W(0, 0, [sw(k), sw(k)], off({k, k + 1}))
+    for i in range(len(xk)): nat_push(P, 1 + i, k)
+    P.L(base, 1, True)
+    for i in range(len(ys)): nat_push(P, i, k)
+    P.W(len(yk), 2, [], off({k, k + 1}))
+    P.done(); PRIMS.append(P)
+    return key
 
 def distribute(P, p):
     """the three-wire letter at p (a literal or a stack over one) to its
@@ -471,9 +516,17 @@ def instance(name, pi):
     if key in LEMMAS: return key
     if name in AXIOMS:
         raise ValueError(('axiom at a renaming', name, pi))
+    if pi and RENAME_BY_NAT:
+        t1 = perm_word(pi)[0]
+        pi1 = {w: (t1 + 1 if v == t1 else t1 if v == t1 + 1 else v) for w, v in
+               ((w, pi.get(w, w)) for w in range(N))}
+        pi1 = {a: b for a, b in pi1.items() if a != b}
+        return ren(instance(name, pi1), t1, key)
     lhs, rhs, steps = JOINT[name]
     lower(key, relabel_word(lhs, pi), relabel_word(rhs, pi), steps, pi)
     return key
+
+RENAME_BY_NAT = True
 
 def lower(key, lhs, rhs, steps, pi):
     P = Prim(key, lhs, rhs, LEMMAS, check=False)

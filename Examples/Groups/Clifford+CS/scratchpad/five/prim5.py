@@ -122,6 +122,9 @@ def split(g, h):
 # filled by respell.py
 RESPELL = {}
 
+# the steps of every finished derivation, by name
+STEPS = {}
+
 def resp_ok(g, m):
     """whether g has a respelling at m: it avoids m semantically, and its
     spelling avoids m or a respelling lemma exists."""
@@ -192,4 +195,5 @@ class Prim:
     def done(self):
         assert self.cur == self.rhs, f'{self.name}: not finished: at {show(self.cur)}, want {show(self.rhs)}'
         self.lemmas[self.name] = (self.lhs, self.rhs)
+        STEPS[self.name] = self.steps
         return self

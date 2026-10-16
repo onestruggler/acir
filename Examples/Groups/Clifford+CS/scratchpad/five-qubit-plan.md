@@ -111,3 +111,50 @@ swap-spelling crosses every idle wire of the window and need re-framing;
 14,725 lemma uses include 1,218 distinct (lemma, wire renaming) pairs,
 to be emitted either by replaying the renamed derivation or by
 swap-conjugation tables as in Four/TransportTables.
+
+## The Agda pipeline and the route to n = 5 (2026-10-16)
+
+Pipeline (scratchpad/five: prim5, lower5, spell5, emit5, transport5;
+Agda Five/): the joint derivations lowered to chains over macro letters
+in the theory of Five/Rules (Syntactics' rules through `old`, plus AX;
+nothing in Syntactics changes).  Windows are one Lemma 5.1 step each,
+literal (Five.Lits.lwᵢ) or placed (Five.Resps.pwᵢ, a letter spelled
+across the idle wire respelled as `place i u`); every lemma takes
+complete₄ as an argument.  A lemma used at a renaming is its conjugate by
+the swaps of the renaming, carried through each letter by a naturality
+lemma `Sw k · g ≈ g' · Sw k` (replaying renamed derivations cost 255k of
+359k steps; now 129k steps, 275 modules).
+
+Transport at t = 4 (Five.Transport: λ¹₄ letterwise, `transport` from
+equations for the axiom instances; Five.TransportAx: 101 instances, 96
+derived from F1/F2/F0 and windows).  Missing: λ of rel-269, rel-272,
+ck-tct (the paper's de-borrowing, which transports two-wire equations at
+control wires 4 and 0: needs a transport for two-wire derivations at
+several placements) and of lf, hyb-sq, hyb-yb (five-wire rules to add).
+
+n = 5 completeness = BackAndForth in the new theory (a copy; it needs no
+soundness) with the existing encoding, complete-P (Theorem410 at N = 32)
+and e-sem, plus a decoding d, DWD and D∘E:
+* d: a P′ letter as at most three two-level SU(2) gadgets (pp = iZ;
+  px with its sign on a pair index = [[0,-1],[1,0]]; dx = two of those and
+  −I; ki a b s = (K D)(a,b) · pp(s,b)), each α G α⁻¹ with α_{p,q} = X^p ·
+  L_{p⊕q} (fan-out from wire 0, or from the lowest wire of p⊕q after a
+  swap) and G = λ⁰₄(G₄(V)), G₄(V) the four-wire decoding of a P′ word for
+  V at indices 0 1 (Gray code 0 and e₀).
+* Independence (any α with the same action on 0, e₀): affine circuits
+  with equal semantics are equal by Blake's Aff presentation at p = 2
+  (Qupit-Phase-Affine, rules on ≤ 3 wires, each a window here); the
+  normal form of an affine map fixing 0 and e₀ is h↑ · R w (Linear.Base:
+  row 0 big, column part trivial, no translation), every letter of which
+  fixes 0 and e₀: CX_{u→v} with u ≠ 0, which commutes with G (u, v ≠ 4:
+  transport of a four-wire equation; u = 4: F4; v = 4: F6).
+* DWD: per P′ rule, the ≤ 5 indices lie in an affine hyperplane c·x =
+  const, c from the pigeonhole (32 vectors into 16 values);
+  τ = X₄^b · ∏ CX_{j→4} (· SWAP_{k,4} when c₄ = 0) sends it to x₄ = 0; by
+  independence each gadget becomes α' G α'⁻¹ with α' on wires 0..3, which
+  is λ⁰₄(α' G₄ α'⁻¹); the four-wire products have equal semantics
+  (soundness of P′ at N = 16, conjugation of two-level matrices),
+  complete₄ and transport finish.
+* D∘E: by-decodes (Lemma87.Decodes in the new theory) with w_g = ι₀(w')
+  ι₁(w'), w' the four-wire encoding of g off wire 4 (SWAP-conjugated for
+  gates on wire 4), d(ι_b w') ≈ λ^b₄(d₄ w'), and F5 for words.

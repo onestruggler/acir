@@ -39,18 +39,18 @@ private
 ⟪ ℓ ∷ [] ⟫ʷ       = ⟪ ℓ ⟫
 ⟪ ℓ ∷ (m ∷ ls) ⟫ʷ = ⟪ ℓ ⟫ • ⟪ m ∷ ls ⟫ʷ
 
+⟪⟫-∷ : ∀ ℓ ls → ⟪ ℓ ∷ ls ⟫ʷ ≈ ⟪ ℓ ⟫ • ⟪ ls ⟫ʷ
+⟪⟫-∷ ℓ []       = sym right-unit
+⟪⟫-∷ ℓ (m ∷ ls) = refl
+
+⟪⟫-++ : ∀ xs ys → ⟪ xs ++ ys ⟫ʷ ≈ ⟪ xs ⟫ʷ • ⟪ ys ⟫ʷ
+⟪⟫-++ []       ys = sym left-unit
+⟪⟫-++ (x ∷ xs) ys =
+  trans (⟪⟫-∷ x (xs ++ ys))
+  (trans (back ⟪ x ⟫ (⟪⟫-++ xs ys))
+  (trans (sym assoc) (front ⟪ ys ⟫ʷ (sym (⟪⟫-∷ x xs)))))
+
 private
-  ⟪⟫-∷ : ∀ ℓ ls → ⟪ ℓ ∷ ls ⟫ʷ ≈ ⟪ ℓ ⟫ • ⟪ ls ⟫ʷ
-  ⟪⟫-∷ ℓ []       = sym right-unit
-  ⟪⟫-∷ ℓ (m ∷ ls) = refl
-
-  ⟪⟫-++ : ∀ xs ys → ⟪ xs ++ ys ⟫ʷ ≈ ⟪ xs ⟫ʷ • ⟪ ys ⟫ʷ
-  ⟪⟫-++ []       ys = sym left-unit
-  ⟪⟫-++ (x ∷ xs) ys =
-    trans (⟪⟫-∷ x (xs ++ ys))
-    (trans (back ⟪ x ⟫ (⟪⟫-++ xs ys))
-    (trans (sym assoc) (front ⟪ ys ⟫ʷ (sym (⟪⟫-∷ x xs)))))
-
   seg : ∀ p x y s → ⟪ x ⟫ʷ ≈ ⟪ y ⟫ʷ → ⟪ p ++ x ++ s ⟫ʷ ≈ ⟪ p ++ y ++ s ⟫ʷ
   seg p x y s e =
     trans (⟪⟫-++ p (x ++ s))
