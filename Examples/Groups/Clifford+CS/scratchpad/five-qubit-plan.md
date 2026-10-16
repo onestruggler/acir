@@ -433,3 +433,41 @@ go by the joint paper's de-borrowing (`joint/tr.py`, `deb.py`,
   joins them; `emit5.py` puts the first TR2-using derivation in a new
   module, so that Five.TR2 → F1Low → Five.D has no cycle; `gen_lam.py f1`
   writes Five/F1.agda with the record `f1 : Complete 4 → F1`.
+
+## The λ-calculus at every width: what is new at each width (2026-10-16)
+
+Width N = 5 + n, domain 4 + n, n ≥ 1.  Lambda's letters satisfy
+λ¹ (g ↥) = λ¹ g ↑ (one width down, lifted) for every generator, so the
+transport at width N, by induction on a `(4+n) ⊢` derivation, meets at
+an axiom `cong↑ a` the transport one width down of a, lifted
+(lemma-cong↑ₓ).  The new items at width N are only:
+
+- (F1) at offset 0: the rules of at most four wires on the domain
+  wires 0 … 3 (and the schema).  Their letters: S, K on wire v are
+  CSᵗ (3+n−v) ↑ᵛ, CKᵗ … (one formula at every n); CS on v, v+1 is
+  Σᵗ (n − v) ↑ᵛ when v ≤ n (borrowing v+2, v+3) and the near-top form
+  otherwise.  So for n ≥ 3 the item at width N is the `stretch` of the
+  item at width N − 1 (stretch (c ↑) ≡ (stretch c) ↑, Σᵗ (suc k) =
+  stretch (Σᵗ k); the scalar needs Swap • S • Swap ≈ S ↑ on the top two
+  wires) — no new derivation from eight wires on.  At N = 6 and 7 the
+  CS letters on 1, 2 (N = 6) and 2, 3 (N = 6, 7) borrow from above
+  instead of the canonical five-wire choice, so these items need the
+  switch.
+- The top-level structural commutations: gate₁ h on wire 0 (S or K)
+  against g ↥ anywhere above, gate₂ (CS on 0, 1) against g ↥ ↥.  The
+  far gate's position is symbolic, so these are placements: the two
+  letters have disjoint domain wires (an S-box never borrows wire 0 when
+  n ≥ 1), and after switching the S-box's borrowed wire onto the other
+  letter's wire (as the canonical five-wire (F2) item has it) they are a
+  canonical five-wire item placed by a network (bring₅).
+
+The tools, at symbolic width: Lambda/Placed (every letter is any network
+bringing its wires to the canonical ones applied to the canonical
+letter); frames as in Affine/Circuits (a network σ bringing the item's
+wires to the bottom, each letter σ composed with a small closed network
+ρ, place-eq); the canonical five-wire items (Five/D, from complete₄);
+and the switch — Σ(x; t, y | u, A) = Σ(x; t, y | z, A) and the same for
+A — as a closed six-wire equation (joint/b6.py) placed.  b6's windows
+are four-wire ones once the boxes are unfolded, except the box lemma
+box-tQ and (F0), five-wire lemmas weakened; so the switch rests on
+complete₄ too.
