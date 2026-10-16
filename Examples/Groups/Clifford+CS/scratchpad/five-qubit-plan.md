@@ -186,3 +186,38 @@ DWD: d(u) ≈ τ⁻¹ Λ⁰(W_u) τ syntactically (Indep, Calc); ⟦W_u⟧ = ⟦
 because ctrl⁰ ⟦W_u⟧ = perm(τ) ⟦u⟧ perm(τ)⁻¹ (T1, T2, T3) and P′
 soundness at N = 32; complete₄ and transport⁰ finish.  D∘E: d(ι_b x) ≈
 λ^b(d₄ x) syntactically, d₄(w') ≈ g' by complete₄ and T2, F5ʷ.
+
+## DWD built, D∘E designed (2026-10-16)
+
+Built (typechecked unless noted): the gadgets' four-wire facts
+(Five/Gadgets, E01–E14; decompositions iZ⁻¹ = T(XZ), hybrid⁻¹ =
+T(hybrid⁻¹) iZ⁻¹, XZ = hybrid⁻¹ iZ hybrid), the record Five/Facts4 of
+what the five-wire modules need of them (Five/Facts4Inst fills it), and
+the semantic toolkit Five/Sem/ (TL, Eval, Aff, Blocks, G4, Gad4, PGad,
+Build, Hyper, Core).  Five/Decode: every letter of P′ is at most four
+gadgets by a P′ derivation, its reading their two-level product.
+Five/Dec5: the decoding d, and red-D (β · d(gadgets) · β⁻¹ ≈ λ⁰ of a
+four-wire product when β sends their points into x₄ = 0).  Five/DWD:
+the 27 rules, each by its ≤ 5 indices (checking).  Five/Gadget5 (the
+independence `cind`): generic in Facts4 — concrete gadgets under λ⁰
+blow the heap on any non-syntactic conversion.
+
+D∘E (Lemma 8.7 at five wires), by Lemma87.Decodes' argument: P′ is
+complete and d respects it, so it suffices to give, for each generator
+g, some word w over P′ with ⟦w⟧ = ⟦g⟧ and d(w) ≈ g.
+* g = h ↓ on the wires 0–3: w = ι₀(e₄ h) · ι₁′(e₄ʷ (X₃ h X₃)), ι₀ a = a
+  and ι₁′ a = 16 + a (order-preserving, so letters stay letters).  The
+  reflected Gray code gives cod₅ (ι₀ a) = cod₄ a ++ [0] and
+  cod₅ (16 + a) = (cod₄ a ⊕ e₃) ++ [1] (32 cases, refl).  red-D with
+  β = 1 and β = X₃X₄ gives d(w) ≈ Λ⁰ W · X₄ Λ⁰ (X₃ W′ X₃) X₄ ≈ Λ⁰ h · Λ¹ h
+  ≈ h ↓ (F5), with W ≈ h and W′ ≈ X₃ h X₃ by complete₄ (their readings
+  are e₄'s: Decode 0's sem-w and Section8 0's e-sem).  Semantics:
+  ⟦h ↓⟧ = ctrl⁰⟦h⟧ ∙ ctrl¹⟦h⟧ (needs ctrl¹ beside ctrl⁰).
+* S₄ = λ¹(iI), CS(3,4) = λ¹(S₃): the upper half alone.
+* K₄ (no λ image, and every circuit for it uses K₄): K₄ ≈ τπ K₀ τπ⁻¹
+  for the affine wire swap π = (0 4) in the old theory; affine
+  conjugation of gadget lists is per-gadget `cind`; hybrid gadgets whose
+  orientation π reverses are respelled on their two points: the block
+  on (p , q) is iZ on (q , p) times the block on (q , p) (scratch
+  respell.py), by the ≤ 5-point argument of DWD;
+  semantics through T1 at five wires (aff4's argument at width 5).
