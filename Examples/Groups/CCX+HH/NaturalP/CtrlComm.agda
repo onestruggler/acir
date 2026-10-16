@@ -39,8 +39,8 @@ import Presentation.Base as PB
 
 open import Examples.Groups.CCX+HH.NaturalP.Syntactics
 open import Examples.Groups.CCX+HH.NaturalP.Ctrl using (CTRL ; CTRL₁ ; ctrl ; XC)
-open import Examples.Groups.CCX+HH.NaturalP.CtrlPad using (ctrl₁ ; ctrl₁-pad)
-open import Examples.Groups.CCX+HH.NaturalP.CtrlSame using (soundᴾ ; ctrl₁-same)
+open import Examples.Groups.CCX+HH.NaturalP.CtrlPad using (ctrl₁ ; ctrl₁-pad ; ctrl-pad)
+open import Examples.Groups.CCX+HH.NaturalP.CtrlSame using (soundᴾ ; ctrl₁-same ; ctrl-same)
 open import Examples.Groups.CCX+HH.NaturalP.CtrlMove using (Z ; Z⁻ ; move)
 open import Examples.Groups.CCX+HH.NaturalP.Pad using (widen)
 import Examples.Groups.Symmetric-Prop.Placement as Placement
@@ -233,3 +233,110 @@ pass₁-CCX {suc n} (g ↥) =
     (PB.cong PB.refl (PB.sym (move (g ↥ ↥ ↥)))))
   where
   B₀ = CTRL₁ (gate₃ {0} CCX-gate)
+
+------------------------------------------------------------------------
+-- Under ctrl
+--
+-- The same with h's gadget at the bottom under ctrl, which holds wires
+-- 0 … a, and wire a + 1 too where it borrows one (HH and CCX).  On at
+-- most eight wires the whole instance is decided by completeness
+-- (`direct`); with g at the bottom of what is above h, or for HH and
+-- CCX just above, it is a closed core widened (`coreC`); otherwise the
+-- cycle that `move` conjugates by lies above h's gadget.
+
+private
+  -- An equation on at most eight wires under ctrl, by completeness.
+  direct : ∀ {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ u ≈ v → T (suc (₄₊ m) ≤ᵇ 8) →
+    suc (₄₊ m) ⊢ ctrl u ≈ ctrl v
+  direct {m = m} {u = u} {v} e le8 =
+    complete≤ (le (suc (₄₊ m)) le8) (ctrl-same u v (soundᴾ e))
+
+  -- A closed core under ctrl, widened.
+  coreC : ∀ c {u₀ v₀ : Circuit (₄₊ c)} → (₄₊ c) ⊢ u₀ ≈ v₀ → T (suc (₄₊ c) ≤ᵇ 8) →
+    ∀ j → (suc (₄₊ c) + j) ⊢ ctrl (u₀ ↓ᵏ j) ≈ ctrl (v₀ ↓ᵏ j)
+  coreC c {u₀} {v₀} e le8 j =
+    Eq.subst₂ (λ x y → _ ⊢ x ≈ y) (Eq.sym (ctrl-pad u₀ j)) (Eq.sym (ctrl-pad v₀ j))
+      (widen j (direct e le8))
+
+  apart₂ : (B₀ : Circuit 2) (X : Circuit n) →
+    (₂₊ n) ⊢ X ↑ ↑ • (B₀ ↓ᵏ n) ≈ (B₀ ↓ᵏ n) • X ↑ ↑
+  apart₂ B₀ X = Eq.subst (λ x → _ ⊢ x • (B₀ ↓ᵏ _) ≈ (B₀ ↓ᵏ _) • x) (PL.↑ᵏ-suc X 1)
+    (PB.sym (PL.apart no-scalar B₀ X))
+
+pass-X : (g : Gen (₃₊ m)) → suc (₄₊ m) ⊢
+  CTRL₁ g • CTRL (gate₁ {₃₊ m} X-gate) ≈ CTRL (gate₁ {₃₊ m} X-gate) • CTRL₁ g
+pass-X (gate₀ ())
+pass-X (gate₁ {₂₊ j} h) = coreC 0 (PB.axiom (comm₁ X-gate (gate₁ {2} h))) tt j
+pass-X (gate₂ {₁₊ j} h) = coreC 0 (PB.axiom (comm₁ X-gate (gate₂ {1} h))) tt j
+pass-X (gate₃ {j} h)    = coreC 0 (PB.axiom (comm₁ X-gate (gate₃ {0} h))) tt j
+pass-X {zero} (g ↥) = direct (PB.axiom (comm₁ X-gate (g ↥))) tt
+pass-X {suc m} (g ↥) =
+  PB.trans (PB.cong (move g) PB.refl)
+  (PB.trans (conj-pass (apart₂ B₀ (Z g)) (top-cong (pass-X g)) (apart₂ B₀ (Z⁻ g)))
+    (PB.cong PB.refl (PB.sym (move g))))
+  where
+  B₀ = CTRL (gate₁ {0} X-gate)
+
+pass-CX : (g : Gen (₂₊ m)) → suc (₄₊ m) ⊢
+  CTRL₁ (g ↥) • CTRL (gate₂ {₂₊ m} CX-gate) ≈ CTRL (gate₂ {₂₊ m} CX-gate) • CTRL₁ (g ↥)
+pass-CX (gate₀ ())
+pass-CX (gate₁ {₁₊ j} h) = coreC 0 (PB.axiom (comm₂ CX-gate (gate₁ {1} h))) tt j
+pass-CX (gate₂ {j} h)    = coreC 0 (PB.axiom (comm₂ CX-gate (gate₂ {0} h))) tt j
+pass-CX (gate₃ {j} h)    = coreC 1 (PB.axiom (comm₂ CX-gate (gate₃ {0} h))) tt j
+pass-CX {zero} (g ↥) = direct (PB.axiom (comm₂ CX-gate (g ↥))) tt
+pass-CX {suc m} (g ↥) =
+  PB.trans (PB.cong (move (g ↥)) PB.refl)
+  (PB.trans (conj-pass (apart₃ B₀ (Z g)) (top-cong (pass-CX g)) (apart₃ B₀ (Z⁻ g)))
+    (PB.cong PB.refl (PB.sym (move (g ↥)))))
+  where
+  B₀ = CTRL (gate₂ {0} CX-gate)
+
+pass-SW : (g : Gen (₂₊ m)) → suc (₄₊ m) ⊢
+  CTRL₁ (g ↥) • CTRL (gate₂ {₂₊ m} SW-gate) ≈ CTRL (gate₂ {₂₊ m} SW-gate) • CTRL₁ (g ↥)
+pass-SW (gate₀ ())
+pass-SW (gate₁ {₁₊ j} h) = coreC 0 (PB.axiom (comm₂ SW-gate (gate₁ {1} h))) tt j
+pass-SW (gate₂ {j} h)    = coreC 0 (PB.axiom (comm₂ SW-gate (gate₂ {0} h))) tt j
+pass-SW (gate₃ {j} h)    = coreC 1 (PB.axiom (comm₂ SW-gate (gate₃ {0} h))) tt j
+pass-SW {zero} (g ↥) = direct (PB.axiom (comm₂ SW-gate (g ↥))) tt
+pass-SW {suc m} (g ↥) =
+  PB.trans (PB.cong (move (g ↥)) PB.refl)
+  (PB.trans (conj-pass (apart₃ B₀ (Z g)) (top-cong (pass-SW g)) (apart₃ B₀ (Z⁻ g)))
+    (PB.cong PB.refl (PB.sym (move (g ↥)))))
+  where
+  B₀ = CTRL (gate₂ {0} SW-gate)
+
+pass-HH : (g : Gen (₂₊ m)) → suc (₄₊ m) ⊢
+  CTRL₁ (g ↥) • CTRL (gate₂ {₂₊ m} HH-gate) ≈ CTRL (gate₂ {₂₊ m} HH-gate) • CTRL₁ (g ↥)
+pass-HH (gate₀ ())
+pass-HH (gate₁ {₁₊ j} h) = coreC 0 (PB.axiom (comm₂ HH-gate (gate₁ {1} h))) tt j
+pass-HH (gate₂ {j} h)    = coreC 0 (PB.axiom (comm₂ HH-gate (gate₂ {0} h))) tt j
+pass-HH (gate₃ {j} h)    = coreC 1 (PB.axiom (comm₂ HH-gate (gate₃ {0} h))) tt j
+pass-HH (gate₀ () ↥)
+pass-HH (gate₁ {j} h ↥) = coreC 0 (PB.axiom (comm₂ HH-gate (gate₁ {0} h ↥))) tt j
+pass-HH (gate₂ {j} h ↥) = coreC 1 (PB.axiom (comm₂ HH-gate (gate₂ {0} h ↥))) tt j
+pass-HH (gate₃ {j} h ↥) = coreC 2 (PB.axiom (comm₂ HH-gate (gate₃ {0} h ↥))) tt j
+pass-HH {zero} (g ↥ ↥) = direct (PB.axiom (comm₂ HH-gate (g ↥ ↥))) tt
+pass-HH {suc m} (g ↥ ↥) =
+  PB.trans (PB.cong (move (g ↥ ↥)) PB.refl)
+  (PB.trans (conj-pass (apart₄ B₀ (Z g)) (top-cong (pass-HH (g ↥))) (apart₄ B₀ (Z⁻ g)))
+    (PB.cong PB.refl (PB.sym (move (g ↥ ↥)))))
+  where
+  B₀ = CTRL (gate₂ {1} HH-gate)
+
+pass-CCX : (g : Gen (₁₊ m)) → suc (₄₊ m) ⊢
+  CTRL₁ (g ↥ ↥) • CTRL (gate₃ {₁₊ m} CCX-gate) ≈
+  CTRL (gate₃ {₁₊ m} CCX-gate) • CTRL₁ (g ↥ ↥)
+pass-CCX (gate₀ ())
+pass-CCX (gate₁ {j} h) = coreC 0 (PB.axiom (comm₃ CCX-gate (gate₁ {0} h))) tt j
+pass-CCX (gate₂ {j} h) = coreC 1 (PB.axiom (comm₃ CCX-gate (gate₂ {0} h))) tt j
+pass-CCX (gate₃ {j} h) = coreC 2 (PB.axiom (comm₃ CCX-gate (gate₃ {0} h))) tt j
+pass-CCX (gate₀ () ↥)
+pass-CCX (gate₁ {j} h ↥) = coreC 1 (PB.axiom (comm₃ CCX-gate (gate₁ {0} h ↥))) tt j
+pass-CCX (gate₂ {j} h ↥) = coreC 2 (PB.axiom (comm₃ CCX-gate (gate₂ {0} h ↥))) tt j
+pass-CCX (gate₃ {j} h ↥) = coreC 3 (PB.axiom (comm₃ CCX-gate (gate₃ {0} h ↥))) tt j
+pass-CCX (g ↥ ↥) =
+  PB.trans (PB.cong (move (g ↥ ↥ ↥)) PB.refl)
+  (PB.trans (conj-pass (apart₅ B₀ (Z g)) (top-cong (pass-CCX (g ↥))) (apart₅ B₀ (Z⁻ g)))
+    (PB.cong PB.refl (PB.sym (move (g ↥ ↥ ↥)))))
+  where
+  B₀ = CTRL (gate₃ {1} CCX-gate)

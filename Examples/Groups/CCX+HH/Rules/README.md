@@ -415,16 +415,42 @@ cheaper certificate.
   wires up (`apart`). A placement by a network is also unchanged when
   the network changes above those k wires (`frame`).
 
-**What the ctrl lemma still needs.** The lemma says that `ctrl`
-respects the rules. The rule instances and the swap rules are bounded,
-so their controlled versions are closed equations on at most six wires.
-The structural commutation rules are not bounded: in
-`[g ↥ⁱ] • [h] = [h] • [g ↥ⁱ]`, the gate g can sit anywhere above h. The
-two controlled versions share wire 0, and when both gates are HH or
-CCX they also share the borrowed wire. Their letters then do not
-commute one by one: a Toffoli of C3X targets the borrowed wire that the
-other gadget uses as a control. So that case needs the placement
-calculus, to bring both gadgets next to each other, and then closed
-equations on up to about nine wires. Proving those by completeness one
-width down covers only widths from ten on. Smaller widths need explicit
-derivations, or a design in which no two gadgets share a borrowed wire.
+- `NaturalP/CtrlPad`: `ctrl` and `ctrl₁` (the control with an idle spare
+  wire above it) commute with idle wires on top, and `ctrl (w ↑)` is
+  `ctrl₁ w`. `NaturalP/CtrlSame`: both send circuits with the same
+  matrix to circuits with the same matrix.
+- `../../Symmetric-Prop/Frame`, `Cycle`: in any PROP, a placement depends
+  only on where the network sends the placed wires (`frame-perm`), and an
+  idle wire on top is an idle wire at the bottom moved by a cycle
+  (`top-is-bottom`).
+- `NaturalP/CtrlMove`: a controlled gate one wire higher is the controlled
+  gate with an idle wire on top, conjugated by a cycle of the wires above
+  the spare (`move`).
+
+**The ctrl lemma, given completeness on at most eight wires**
+(`NaturalP/CtrlLemma`: `ctrl-cong` from four wires on, `ctrl₁-cong` at
+every width). The rule instances and the swap rules are bounded, so
+their controlled versions are closed equations on at most six wires,
+widened (`CtrlBounded`). In a commutation rule
+`[g ↥ⁱ] • [h] = [h] • [g ↥ⁱ]` the gate g can sit anywhere above h, and
+the two gadgets share wire 0 and, for HH and CCX, the borrowed wire, so
+their letters do not commute one by one. But if g is at the bottom of
+what is above h's gadget, the controlled equation is again a closed one,
+on at most eight wires. Otherwise `move` conjugates g's gadget by a cycle
+that lies above h's gadget, and the equation is the same one with g one
+wire lower, under an idle wire on top (`CtrlComm`).
+
+**The hypothesis cannot hold for these rules.** By the spin-cover
+argument above, rules on at most four wires are incomplete from seven
+wires on, so "complete on at most eight wires" is false for NaturalP.
+The ctrl lemma is a step of the induction on the width, where it uses
+only completeness below the width once that is nine or more. The
+induction itself needs the schema, so the lemma has to be restated for
+NaturalP with the schema added, and the schema's own instances must be
+closed under `ctrl`. One way to arrange this is to make the schema the
+controlled versions of one base relation: every equation
+`F l = F r`, for `l = r` the base relation and `F` any composite of
+`ctrl`, `_↑` and idle wires on top. Then `ctrl` of an instance is again
+an instance, and `ctrl₁ = ctrl ∘ _↑`. It remains to choose a base whose
+fully controlled versions `ctrlʲ l = ctrlʲ r` lift to −1 at every width;
+`(C3Xa)²` does on five wires, and wider widths are not computed.
