@@ -5,8 +5,9 @@
 -- Qubit.Selinger.Action are sound for the P4 action.
 --
 -- Action proves C1, C2, C3, C5-C9, C12 and C13 (C4 is an identity, ω
--- being the derived word (SH)³).  This module adds the four that were
--- left — C10, C11, C14, C15 — and the structural rules of Lift-Relation
+-- being the derived word (SH)³).  The four that were left — C10, C11,
+-- C14, C15 — and C1 again are LongRelations', which decides each by one
+-- boolean; this module adds the structural rules of Lift-Relation
 -- (cong↑, comm₁, comm₂).  Together with Action's lemmas these are all the
 -- axiom cases of
 --
@@ -17,38 +18,23 @@
 -- faithfulness of ω — are about the datum the P4 action discards, and
 -- cannot come from here at all.)
 --
--- THE ASSEMBLY, once open, is now closed — see axiom-soundᶠ and sound at
--- the end.  It had resisted every workaround tried (naming the word
--- behind a definition, rewriting through Eq.subst, re-proving C1 by case
--- analysis, sharing Action's p-2 / p-prime so the two ω's are one term);
--- each pushed the failure later without removing it.  The fix was none
--- of those: it is the module's --call-by-name flag.  Call-by-NEED is what
--- duplicates the Pauli once per letter, so the C1 clause over ω⁸ never
--- finished; under call-by-name the whole induction checks in ~310 s.
--- (The heavy symplectic files carry the same flag for the same reason.)
---
--- The shape of the four proofs is forced by how `cact` computes.  Only
--- the phase depends on the incoming phase, and additively, so `lift-eq`
--- (Action) reduces a relation to phase 0.  But `cact` must be applied to
--- a CONCRETE Pauli: cact1 g (s , P) = (s + δ g P , actg g P) mentions P
--- twice, so with a symbolic P the argument is duplicated once per letter
--- — for the 49 letters of C10's right-hand side that is 2⁴⁹ copies, and
--- the check does not terminate.  With the bits concrete every step
--- evaluates to a value and the phase grows linearly.  So each relation is
--- case-split on the Pauli FIRST (16 cases on two qubits, 64 on three) and
--- lift-eq is applied inside each case, where its phase-0 premise is refl.
--- The same reason keeps the ω⁻¹ tail of C10/C11 inside the case analysis
--- rather than being peeled off by cact-ω^ beforehand.
---
--- Everything here is green, in about 310 s.  `sound` at the end is the
--- `sound` field of ExactData; the record's other two fields —
--- completeness on the scalars, and faithfulness of ω — are about the
--- datum the P4 action discards, and cannot come from this module.
+-- THE ASSEMBLY — axiom-soundᶠ and sound, at the end — resisted every
+-- workaround tried (naming the word behind a definition, rewriting
+-- through Eq.subst, re-proving C1 by case analysis, sharing Action's
+-- p-2 / p-prime so the two ω's are one term); each pushed the failure
+-- later without removing it.  The fix was none of those: it is the
+-- module's --call-by-name flag.  Call-by-NEED is what duplicates the
+-- Pauli once per letter, so the C1 clause over ω⁸ never finished.  (The
+-- heavy symplectic files carry the same flag for the same reason.)  The
+-- long relations used to be proved here too, by Eq.refl on each concrete
+-- Pauli, which took 310 s under that flag; in LongRelations, without it,
+-- they take 2 s, and this module 3 s.
 ------------------------------------------------------------------------
 
 -- --call-by-name: this is what makes the final assembly (axiom-soundᶠ /
--- sound, at the end) typecheck.  Call-by-need duplicates the Pauli once
--- per letter of the word being normalised; call-by-name does not.
+-- sound, at the end) typecheck; without it the module exhausts a 3 GB
+-- heap.  Call-by-need duplicates the Pauli once per letter of the word
+-- being normalised; call-by-name does not.
 {-# OPTIONS --cubical-compatible --safe --call-by-name #-}
 
 module Examples.Groups.ProjectiveClifford.Qubit.Selinger.Soundness where
@@ -60,7 +46,7 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 open import Notations
 open import ForStdlib.Data.Fin.Mod
-open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _^_)
+open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
 import Presentation.Base as PB
 
@@ -73,7 +59,7 @@ import Presentation.Base as PB
 open import ForStdlib.Data.Fin.Mod.Prime.Two using (p-2 ; p-prime)
 
 open import Examples.Groups.ProjectiveClifford.Qubit.Selinger.Action
-  using ( swap-add ; lift-eq ; cact-ω
+  using ( swap-add ; cact-ω
         ; c2-sound ; c3-sound ; c5-sound ; c6-sound ; c7-sound
         ; c8-sound ; c9-sound ; c12-sound ; c13-sound )
 
@@ -82,10 +68,10 @@ open PrimeModulus p-2 p-prime
 import Examples.Groups.Symplectic.Syntactics p-2 p-prime as Syn
 open Syn.Symplectic
   using ( Gen ; SympGate ; gate₁ ; gate₂ ; H-gate ; S-gate ; CZ-gate
-        ; S ; H ; CZ ; ⊤⊥ ; ⊥⊤ ; _↥ ; _↑ ; _↓)
+        ; S ; H ; CZ ; _↥ ; _↑ ; _↓)
 
 open import Examples.Groups.ProjectivePauli.Semantics p-2 p-prime using (Pauli)
-open import Examples.Groups.Pauli.Qubit.SignedPauli using (Φ ; P4Carrier ; ι)
+open import Examples.Groups.Pauli.Qubit.SignedPauli using (Φ ; ι)
 open import Examples.Groups.ProjectiveClifford.Qubit.CliffordAction using (cact ; δ ; incl)
 open import Examples.Groups.ProjectiveClifford.Qubit.CliffordGroup
   using (_≈ᶜ_ ; cact-↑ ; ≈ᶜ-refl ; ≈ᶜ-sym ; ≈ᶜ-trans ; ∙-congᶜ)
@@ -101,6 +87,11 @@ open F8
 open import Examples.Groups.Clifford.Qubit.Selinger.Relabel p-2 p-prime
   using (D ; D-↑ ; ex→sym)
 
+-- The scalar as a symplectic word, and the long relations C1, C10, C11,
+-- C14, C15, each decided by one boolean there.
+open import Examples.Groups.ProjectiveClifford.Qubit.Selinger.LongRelations public
+  using (SH ; ω ; ω⁻¹ ; c1-sound' ; c10-sound ; c11-sound ; c14-sound ; c15-sound)
+
 private
   variable
     n : ℕ
@@ -109,69 +100,6 @@ private
 infix 4 _≈ᶠ_
 _≈ᶠ_ : {n : ℕ} → F8.Circuit n → F8.Circuit n → Set
 _≈ᶠ_ {n} = PB._≈_ (n CRel,_===_)
-
--- The scalar and its friends as SYMPLECTIC words.  Figure 8 names ω
--- with a generator; the action computes with the word that names.  These
--- used to be imported from Figure 8, back when it shared this alphabet.
-SH : Word (Gen (₁₊ n))
-SH = S • H
-
-ω : Word (Gen (₁₊ n))
-ω = SH ^ 3
-
-ω⁻¹ : Word (Gen (₁₊ n))
-ω⁻¹ = ω ^ 7
-
-------------------------------------------------------------------------
--- The four words, named
---
--- Naming them is not cosmetic: a name blocks unfolding.  Conversion
--- checking a goal that mentions the 49 letters of C10's right-hand side
--- literally unfolds cact along all of them, with the blow-up described
--- above; behind a definition the same goals go through.  The equations
--- R10≡ … W15≡ convert back to the literal words of Figure 8, and are
--- cheap because they compare WORDS, never their action.
-
-private
-
-  L10 R10 L11 R11 : Word (Gen (₂₊ n))
-  L10 = CZ • H ↑ • CZ
-  R10 = SH ↑ • CZ • (S • H • S) ↑ • S ↓ • ω⁻¹
-  L11 = CZ • H ↓ • CZ
-  R11 = SH ↓ • CZ • (S • H • S) ↓ • S ↑ • ω⁻¹
-
-  W1 : Word (Gen (₁₊ n))
-  W1 = ω ^ 8
-
-  W14 W15 : Word (Gen (₃₊ n))
-  W14 = (⊤⊥ ↑ • CZ ↓) ^ 3
-  W15 = (⊥⊤ ↓ • CZ ↑) ^ 3
-
-  W1≡ : W1 {n} ≡ ω ^ 8
-  W1≡ = Eq.refl
-
-  R10≡ : R10 {n} ≡ SH ↑ • CZ • (S • H • S) ↑ • S ↓ • ω⁻¹
-  R10≡ = Eq.refl
-
-  R11≡ : R11 {n} ≡ SH ↓ • CZ • (S • H • S) ↓ • S ↑ • ω⁻¹
-  R11≡ = Eq.refl
-
-  W14≡ : W14 {n} ≡ (⊤⊥ ↑ • CZ ↓) ^ 3
-  W14≡ = Eq.refl
-
-  W15≡ : W15 {n} ≡ (⊥⊤ ↓ • CZ ↑) ^ 3
-  W15≡ = Eq.refl
-
-  -- The empty word acts as the identity.  Rewriting with this, rather
-  -- than letting the conversion checker discover it, is what keeps the
-  -- C1 clause of axiom-sound from unfolding cact along ω⁸'s 48 letters.
-  cact-ε : (x : P4Carrier n) → cact ε x ≡ x
-  cact-ε x = Eq.refl
-
-  -- C4 is an identity: ω is the derived word (SH)³.  Again a word
-  -- equation, so that the C4 clause never compares the two actions.
-  ω≡SH^3 : ω {n} ≡ SH ^ 3
-  ω≡SH^3 = Eq.refl
 
 ------------------------------------------------------------------------
 -- The structural rules
@@ -254,232 +182,6 @@ cω↑-sound (s , q ∷ qs) =
   Eq.trans (cact-↑ ω s q qs)
     (Eq.trans (Eq.cong (λ y → proj₁ y , q ∷ proj₂ y) (cact-ω (s , qs)))
               (Eq.sym (cact-ω (s , q ∷ qs))))
-
-------------------------------------------------------------------------
--- C1
---
--- Action.c1-sound proves cact ω⁸ = id, but *using* it here would compare
--- its statement against this clause's goal and unfold cact along the 48
--- letters of ω⁸ with a symbolic argument.  Re-proving it by the case
--- analysis below costs four concrete evaluations instead.
-
-c1-sound' : (x : P4Carrier (₁₊ n)) → cact W1 x ≡ cact ε x
-c1-sound' (s , P@((₀ , ₀) ∷ ps)) = lift-eq W1 ε s P Eq.refl
-c1-sound' (s , P@((₀ , ₁) ∷ ps)) = lift-eq W1 ε s P Eq.refl
-c1-sound' (s , P@((₁ , ₀) ∷ ps)) = lift-eq W1 ε s P Eq.refl
-c1-sound' (s , P@((₁ , ₁) ∷ ps)) = lift-eq W1 ε s P Eq.refl
-
-------------------------------------------------------------------------
--- C10 and C11
---
--- 16 two-qubit cases each, ω⁻¹ tail included.
-
-c10-sound : (x : P4Carrier (₂₊ n)) → cact L10 x ≡ cact R10 x
-c10-sound (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-c10-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ ps)) =
-  lift-eq L10 R10 s P Eq.refl
-
-c11-sound : (x : P4Carrier (₂₊ n)) → cact L11 x ≡ cact R11 x
-c11-sound (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-c11-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ ps)) =
-  lift-eq L11 R11 s P Eq.refl
-
-------------------------------------------------------------------------
--- C14 and C15
---
--- Order-3 relations on three wires, in the H/CZ words ⊤⊥ and ⊥⊤: 64
--- three-qubit cases each.
-
-c14-sound : (x : P4Carrier (₃₊ n)) → cact W14 x ≡ cact ε x
-c14-sound (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-c14-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W14 ε s P Eq.refl
-
-c15-sound : (x : P4Carrier (₃₊ n)) → cact W15 x ≡ cact ε x
-c15-sound (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₀) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₀ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₀) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₀ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₀ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₁ , ₀) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ (₀ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₀) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-c15-sound (s , P@((₁ , ₁) ∷ (₁ , ₁) ∷ (₁ , ₁) ∷ ps)) = lift-eq W15 ε s P Eq.refl
-
 
 ------------------------------------------------------------------------
 -- Closing the induction: Figure 8 is sound for the P4 action
