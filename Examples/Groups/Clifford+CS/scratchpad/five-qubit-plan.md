@@ -158,3 +158,31 @@ and e-sem, plus a decoding d, DWD and D∘E:
 * D∘E: by-decodes (Lemma87.Decodes in the new theory) with w_g = ι₀(w')
   ι₁(w'), w' the four-wire encoding of g off wire 4 (SWAP-conjugated for
   gates on wire 4), d(ι_b w') ≈ λ^b₄(d₄ w'), and F5 for words.
+
+## Progress and design (2026-10-16, branch clifford-cs)
+
+Done, all typechecked: Five/Affine (affine completeness at every width,
+Blake's Aff at p = 2), Five/Stab (an affine circuit fixing 0, e₀ is a
+linear word above wire 0 then a fan-in), Five/Calc + CalcAx (F4, F5 for
+words, transport of λ⁰, `pass⁰`, `pass¹`), Five/F6 + F6Ax ((F6) for a
+twisted commutator, with control wire 4 only: CX(1→4) = K₄ λ¹(Z₁) K₄ i),
+Five/Indep (G passing seven letters ⇒ τα G τα⁻¹ depends only on α(0),
+α(e₀)).  The gadget matrices iZ, XZ, K·i⁻¹ (joint gad.G_pp/G_rot/G_ki at
+four wires conjugated by X₁X₂X₃: exactly these blocks at (0, e₀))
+generate a 24-element group; iZ⁻¹ = [XZ] commutator, XZ and K·i⁻¹ are
+products of two commutators g⁻¹S⁻¹gS — so (F6) covers them.
+
+Semantic toolkit still to build (all at four wires or by algebra, no
+soundness of the five-wire theory needed):
+* T1 permutations: perm π on Bits n; ⟦τα⟧ ~ perm(fn α) (per letter by
+  evaluation, then induction); conjugating by perm.
+* T2 two-level ops twolevel V p q; ⟦a G₄(V) a⁻¹⟧ ~ twolevel V (a 0)
+  (a e₀) at four wires (⟦G₄⟧ by one evaluation each); P′ letters as
+  products of two-level ops (⟦x⟧PY).
+* T3 ctrl⁰ : Op 4 → Op 5 (block on x₄ = 0), multiplicative, injective;
+  two-level ops on the half x₄ = 0 are ctrl⁰ of four-wire ones; P′
+  words on a half (ι_b, Gray numbering reflected on the upper half).
+DWD: d(u) ≈ τ⁻¹ Λ⁰(W_u) τ syntactically (Indep, Calc); ⟦W_u⟧ = ⟦W_t⟧
+because ctrl⁰ ⟦W_u⟧ = perm(τ) ⟦u⟧ perm(τ)⁻¹ (T1, T2, T3) and P′
+soundness at N = 32; complete₄ and transport⁰ finish.  D∘E: d(ι_b x) ≈
+λ^b(d₄ x) syntactically, d₄(w') ≈ g' by complete₄ and T2, F5ʷ.
