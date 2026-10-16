@@ -154,10 +154,10 @@ head-col v (a ∷ t) = cong (λ q → head (proj₁ q)) (col-at v a t)
 ------------------------------------------------------------------------
 -- The fan-in onto wire 0, through SWAPs above it
 
-private
-  pw : F → Circuit 5 → Circuit 5
-  pw zero          w = ε
-  pw (suc zero)    w = w
+-- One factor of the fan-in: present or not.
+pw : F → Circuit 5 → Circuit 5
+pw zero          w = ε
+pw (suc zero)    w = w
 
 CXin₁ CXin₂ CXin₃ CXin₄ : Circuit 5
 CXin₁ = CX
