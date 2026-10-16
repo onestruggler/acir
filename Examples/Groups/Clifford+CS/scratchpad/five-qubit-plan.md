@@ -335,3 +335,28 @@ computation is a closed one on four wires:
   decoding's own semantics is never needed.
 - BackAndForth and Section8.Complete′ are hard-wired to the old theory;
   they get a copy over the relation `_XVRel,_===_`.
+
+### Refinement (2026-10-17): degenerate-safe gadgets, 86 checks
+
+Built and checked: Affine/Theory (the abstract affine theory and the
+fan-out calculus), Affine/Equivariance (every CX passes the canonical L
+up to CX with controls off wire 0), Affine/Alpha (α p q and eqv-α),
+Affine/Circuits (the interpretation; every relation is a placed
+evaluation on at most four wires), Affine/Decoding (d p q = α G α⁻¹ and
+its equivariance under every affine word, given G passes CX with
+controls off wire 0), Networks (bring₁…bring₄), Five/Transport,
+Five/LamWords (f4ʷ, splitʷ, λ⁰-conj).
+
+If a gadget on two equal states decodes to ε (d′), every P' letter has
+one gadget skeleton with no index tests: pp a b = iZ(a,b),
+px c a b = iZ(c,a)² XZ(a,b) (right also for c = a and c = b),
+dx a b c d = px a a b · px b c d, ki a b s = KI(a,b) iZ(a,s).  Then a
+rule's decoding is that skeleton at the indices, and after the affine
+canonicalisation the tests inside d′ are on closed vectors.  The
+canonicalisation processes the points in order (`Steps r k`: each point
+`new` — a basis vector e_r — or `old c`, c ∈ F_2^r its image in the
+span), so a rule with k indices has Count(k) = 1, 2, 5, 16, 67 cases for
+k = 1 … 5: 382 clauses over the 26 rules, of which 86 are consistent with
+the rules' distinctness conditions (scratchpad/five/patterns.py) and need
+a closed four-wire check; the rest are refuted by the injectivity of the
+bit map and of the Gray numbering.
