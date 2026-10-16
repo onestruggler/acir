@@ -151,7 +151,7 @@ def lemname(name):                       # as emit5.lemname
 def f1(idx):
     names, out = [], []
     ups = lambda o: ''.join(' ↑' for _ in range(o))
-    for o in range(5):
+    for o in (0, 1):
         width = 4 - o
         sig = (f'f1{SUB[o]} : Complete 4 → {width} SRel, w === v → '
                f'5 ⊢ₓ λ¹ʷ (w{ups(o)}) ≈ λ¹ʷ (v{ups(o)})' if o else
@@ -161,30 +161,45 @@ def f1(idx):
             if ar > width:
                 continue
             n = f'F1-{jn}@{0 if ar == 0 else o}'
-            if n not in idx:
-                out.append(f'f1{SUB[o]} c4 {an} = {{!!}}   -- {n} not derived')
-                continue
+            assert n in idx, f'{n} not derived'
             names.append(n)
             out.append(f'f1{SUB[o]} c4 {an} = {conv(lemname(n) + " c4")}')
         if o == 0:
             for jn, ctl in SCHEMA:
                 out.append(f'f1₀ c4 {jn} = PB.axiom (srelₓ ({ctl} 0))')
         out.append('')
+    out += ['-- The record Five.Transport takes.',
+            'f1 : Complete 4 → F1',
+            'f1 c4 = record { f1₀ = f1₀ c4 ; f1₁ = f1₁ c4 ; f1₂ = F1Low.f1₂ c4',
+            '               ; f1₃ = F1Low.f1₃ c4 ; f1₄ = F1Low.f1₄ c4 }', '']
     s = head('(F1): the rules of the four-wire theory, controlled',
              ['λ¹ of both sides of every rule of Syntactics at every placement',
               'in the four-wire domain (f1ᵒ: the rule at offset o) are equal on',
-              'five wires (the paper\'s (F1)): the derivations Five.D',
-              '(scratchpad/joint/f1.py, f1big.py) from four-wire windows; the',
-              'controlled lf, hyb-sq, hyb-yb are rules of the schema.'],
+              'five wires (the paper's (F1)): the derivations Five.D',
+              '(scratchpad/joint/f1.py, f1big.py, deb.py, ckt2.py) from four-wire',
+              'windows and, for the items whose controlled K sits on the target of',
+              'an S-box, the transports of two-wire equations (Five.TR2); the items',
+              'at the offsets 2-4 are Five.F1Low's; the controlled lf, hyb-sq,',
+              'hyb-yb are rules of the schema.'],
              f'{MOD}.F1', extra='open import Data.Nat using (ℕ)' + NL + 'import Presentation.Base as PB' + NL)
     s = s.replace('open import Word.Base using (_•_)', 'open import Word.Base using (Word ; _•_)')
     s = s.replace('open import Examples.Groups.Clifford+CS.Lambda using (λ⁰ ; λ¹)',
                   'open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)')
     s = s.replace('open import Examples.Groups.Clifford+CS.Five.Rules using (_⊢ₓ_≈_)',
-                  'open import Examples.Groups.Clifford+CS.Five.Rules\n'
-                  '  using (_⊢ₓ_≈_ ; srelₓ ; ctl-lf ; ctl-hsq ; ctl-hyb)')
+                  'open import Examples.Groups.Clifford+CS.Five.Rules
+'
+                  '  using (_⊢ₓ_≈_ ; srelₓ ; ctl-lf ; ctl-hsq ; ctl-hyb)
+'
+                  'open import Examples.Groups.Clifford+CS.Five.Transport using (F1)
+'
+                  f'import {MOD}.F1Low as F1Low')
     s += NL.join(imports(sorted(set(names)), idx, lemname)) + NL + NL
-    s += 'private\n  variable\n    n : ℕ\n    w v : Word (Gen n)\n\n'
+    s += 'private
+  variable
+    n : ℕ
+    w v : Word (Gen n)
+
+'
     s += NL.join(out)
     return s
 

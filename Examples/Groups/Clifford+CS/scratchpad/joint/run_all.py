@@ -18,9 +18,7 @@ import os
 import box, f5, boxsym, boxdash, boxbox, f0, f4, f4cs, f2
 from w5lib import L
 
-DEB = ['CS-K0@0', 'CS-K0@1', 'CS-K1@0', 'CS-K1@1', 'rel-269@0', 'rel-269@1', 'rel-272@0', 'rel-272@1']
-F1_NF = [n for n, _, _ in __import__('f1rules').items()
-         if not n.startswith(('cx-ccz', 'toff-ccz', 'ck-tct')) and n not in DEB]
+from run_all_names import DEB, F1_NF
 
 box.build(L)
 f5.build(L)

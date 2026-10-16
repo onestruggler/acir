@@ -398,3 +398,38 @@ given completeness at every width below:
    checks, as at five wires) and transport n − 4 times; Lemma 8.7: the
    paper's w_g with completeness one width down; BackAndForth in the
    new theory; the induction.
+
+## (F1) complete, by de-borrowing (2026-10-16, late)
+
+Every (F1) item is derived, and none is assumed.  The items whose
+controlled K sits on the target of an S-box (CS-K0/1, rel-269, rel-272
+at the offsets 0, 1, and ck-tct) do not need the box normal forms: they
+go by the joint paper's de-borrowing (`joint/tr.py`, `deb.py`,
+`ckt2.py`), and take seconds where the normal forms took 15-60 minutes
+(and ck-tct's did not finish in hours).
+
+- TR2 (`tr.py`): for u, v on the domain wires 2, 3 with the same matrix,
+  λ¹(u) = λ¹(v) is an axiom of the derivations, named by its content
+  (`TR2-<md5>`).  In Agda it is `Five.Transport.Low.transport²` applied
+  to completeness on two wires (`Five/TR2.agda`, by `five/gen_tr.py`):
+  the induction meets only the (F1) items at the offsets 2-4 (rules of at
+  most two wires on the wires 2, 3; `Five/F1Low.agda`), so TR2 rests on
+  nothing that uses it.  That is why CS-K0/1@2 stay with the normal
+  forms.  `Transport.Mid.transport³` does three wires (offsets 1-4).
+- De-borrowing (`tr.deborrow`): a two-wire w block diagonal in y with
+  det W = ±1, Z^e W = g⁻¹ U⁻¹ g U found by search over the one-wire
+  group, is λ¹(w) = Λ on three wires: TR2 to P CZ^e a U⁻¹ b U, the
+  S-box square to the CCZ, λ⁰(a) λ⁰(b) = ε (TR2 between X4's) inserted,
+  bubbled and split back.
+- ck-tct (`ckt2.py`, Proposition three): λ¹₄(A) = λ⁰₀(CK(4→1)) with
+  A = X0 CK01 X0: TR2 gives λ¹(A D) λ¹(D⁻¹) (D = X0 CS01 X0), de-borrowing
+  makes the first a circuit on 0, 1, 4; the other side is
+  X0 λ¹₀(CK·CS) Σ'³ X0 by TR2 and de-borrowing in the frame of the
+  control 0; a window joins them.  T T = ε controlled is the CCZ's box
+  (f1big's L-CCZ-1), CK S4 CK = ε and box2 — no transport of a three-wire
+  equation is needed.  6 TR2 instances; F1-ck-tct@0 877 steps.
+- The pipeline: `run_all.py` takes RUN_PARTS (f1:<items>, f1big, deb,
+  ckt2); five parts run in parallel through `load5.py`, `merge5.py`
+  joins them; `emit5.py` puts the first TR2-using derivation in a new
+  module, so that Five.TR2 → F1Low → Five.D has no cycle; `gen_lam.py f1`
+  writes Five/F1.agda with the record `f1 : Complete 4 → F1`.
