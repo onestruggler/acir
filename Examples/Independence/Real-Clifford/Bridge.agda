@@ -236,6 +236,15 @@ private
     RL.≐-trans (RI.scale-cong (Φ-cong (O.ix-up M)))
     (RL.≐-trans (RI.scale-cong (Φ-up (O.ix M))) (scale-up (√½ RI.^ h) (Φ (O.ix M))))
 
+-- RI.localise at width ₂₊ n, given the localised word as a word
+-- equation.  Its own statement is at width 2 + n and over w ↓ᵏ n, and
+-- matching that against the goal's reading of the word made Agda
+-- evaluate both readings: 41 s for the swap's nine letters.
+private
+  localise₂ : (w : Q.Circuit 2) {w′ : Q.Circuit (₂₊ n)} → w Q.↓ᵏ n ≡ w′ →
+              RI.⟦ w′ ⟧ᴬ RL.≐ RL.emb {2} {n} RI.⟦ w ⟧ᴬ
+  localise₂ {n} w refl = RI.localise {2} {n} w
+
 gen : (g : Gen n) → RI.⟦ ℰ g ⟧ᴬ RL.≐ ⟪ Sem.⟦ g ⟧₀ ⟫
 gen {n} (gate₀ ⌈ m-gate ⌉) x y = Eq.sym (
   Eq.trans (*-identityˡ _)
@@ -246,11 +255,11 @@ gen {suc n} (gate₁ ⌈ H-gate ⌉) =
 gen {suc n} (gate₁ ⌈ Z-gate ⌉) =
   RL.≐-sym (placed {1} {n} O.Zᵍ _ closedZ)
 gen {suc (suc n)} (gate₂ ⌈ CX-gate ⌉) =
-  RL.≐-trans (RI.localise {2} {n} uCX)
+  RL.≐-trans (localise₂ {n} uCX {uCX} refl)
     (RL.≐-trans (RL.emb-cong (RI.bridge uCX))
       (RL.≐-sym (placed {2} {n} O.CXᵍ _ closedCX)))
 gen {suc (suc n)} (gate₂ swap) =
-  RL.≐-trans (RI.localise {2} {n} uσ)
+  RL.≐-trans (localise₂ {n} uσ {uσ} refl)
     (RL.≐-trans (RL.emb-cong (RI.bridge uσ))
       (RL.≐-sym (placed {2} {n} O.SWᵍ _ closedσ)))
 gen (gate₃ ⌈ () ⌉)
