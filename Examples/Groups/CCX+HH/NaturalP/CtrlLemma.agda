@@ -2,14 +2,17 @@
 -- Presentations of groups
 --
 -- The ctrl lemma, given completeness on at most eight wires: ctrl and
--- ctrl₁ carry derivations to derivations.
+-- ctrl₁ carry derivations to derivations, in the calculus with the
+-- schema (NaturalP.Schema).  Without the schema the hypothesis is false
+-- from seven wires on (Rules/README.md).
 --
 -- A derivation is built from axiom instances by the monoid congruence,
 -- which ctrl and ctrl₁ respect on the nose, being homomorphisms.  An
--- axiom instance is a bounded rule (CtrlBounded); a rule one wire up,
--- which under ctrl is the rule under ctrl₁ (CtrlPad.ctrl-↑) and under
--- ctrl₁ the rule under ctrl₁ one wire up, conjugated by the swaps of
--- wires 0 1 2 (CtrlPad.ctrl₁-↑); or a commutation (CtrlComm).
+-- axiom instance is a bounded rule or a schema instance (CtrlBounded);
+-- a rule one wire up, which under ctrl is the rule under ctrl₁
+-- (CtrlPad.ctrl-↑) and under ctrl₁ the rule under ctrl₁ one wire up,
+-- conjugated by the swaps of wires 0 1 2 (CtrlPad.ctrl₁-↑); or a
+-- commutation (CtrlComm).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -17,11 +20,12 @@
 open import Data.Nat.Base using (ℕ ; _≤_)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 import Examples.Groups.CCX+HH.NaturalP.Syntactics as P
+import Examples.Groups.CCX+HH.NaturalP.Schema as S
 open import Examples.Groups.CCX+HH.NaturalP.Bridge using (interpret)
 
 module Examples.Groups.CCX+HH.NaturalP.CtrlLemma
   (complete≤ : ∀ {k} → k ≤ 8 → ∀ {u v : P.Circuit k} → interpret u ≡ interpret v →
-     k P.⊢ u ≈ v)
+     k S.⊢ u ≈ v)
   where
 
 open import Data.Nat.Base using (suc)
@@ -29,7 +33,7 @@ open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 import Presentation.Base as PB
 
-open import Examples.Groups.CCX+HH.NaturalP.Syntactics
+open import Examples.Groups.CCX+HH.NaturalP.Schema
 open import Examples.Groups.CCX+HH.NaturalP.Ctrl using (ctrl)
 open import Examples.Groups.CCX+HH.NaturalP.CtrlPad using (ctrl₁ ; ctrl-↑ ; ctrl₁-↑)
 open import Examples.Groups.CCX+HH.NaturalP.CtrlBounded complete≤
@@ -49,10 +53,10 @@ private
 ctrl₁-axiom : m VRel, u === v → (₂₊ m) ⊢ ctrl₁ u ≈ ctrl₁ v
 ctrl₁-axiom (srel x) = bounded-ctrl₁ x
 ctrl₁-axiom (cong↑ {w = w} {v = v} y) =
-  PB.trans (ctrl₁-↑ w)
+  PB.trans (emb (ctrl₁-↑ w))
   (PB.trans (PB.cong PB.refl
               (PB.cong (lemma-cong↑ (ctrl₁ w) (ctrl₁ v) (ctrl₁-axiom y)) PB.refl))
-    (PB.sym (ctrl₁-↑ v)))
+    (PB.sym (emb (ctrl₁-↑ v))))
 ctrl₁-axiom (comm₁ X-gate g)   = pass₁-X g
 ctrl₁-axiom (comm₂ CX-gate g)  = pass₁-CX g
 ctrl₁-axiom (comm₂ HH-gate g)  = pass₁-HH g

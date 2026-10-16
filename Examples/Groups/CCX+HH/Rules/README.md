@@ -440,17 +440,25 @@ on at most eight wires. Otherwise `move` conjugates g's gadget by a cycle
 that lies above h's gadget, and the equation is the same one with g one
 wire lower, under an idle wire on top (`CtrlComm`).
 
-**The hypothesis cannot hold for these rules.** By the spin-cover
-argument above, rules on at most four wires are incomplete from seven
-wires on, so "complete on at most eight wires" is false for NaturalP.
-The ctrl lemma is a step of the induction on the width, where it uses
-only completeness below the width once that is nine or more. The
-induction itself needs the schema, so the lemma has to be restated for
-NaturalP with the schema added, and the schema's own instances must be
-closed under `ctrl`. One way to arrange this is to make the schema the
-controlled versions of one base relation: every equation
-`F l = F r`, for `l = r` the base relation and `F` any composite of
-`ctrl`, `_↑` and idle wires on top. Then `ctrl` of an instance is again
-an instance, and `ctrl₁ = ctrl ∘ _↑`. It remains to choose a base whose
-fully controlled versions `ctrlʲ l = ctrlʲ r` lift to −1 at every width;
-`(C3Xa)²` does on five wires, and wider widths are not computed.
+**The schema.** By the spin-cover argument above, rules on at most four
+wires are incomplete from seven wires on, so "complete on at most eight
+wires" is false for NaturalP alone. `NaturalP/Schema` adds a schema:
+every controlled version of `CCX • CCX = ε`, that is, every word built
+from `CCX • CCX` on four wires (with idle wires on top) by `ctrl` and
+`_↑` is the identity (`CtrlCCX`). This is what the spin cover asks for.
+`ctrl` lifts to the inclusion of the spin group of the controlled half,
+which sends −1 to −1, and the square of a lifted involution does not
+depend on the lift. So `(ctrl C)²` lifts to the same sign as `C²` one
+width down. `(ctrl CCX)² = C3Xa²` lifts to −1 on five wires (the table
+above), so `(ctrlʲ⁺¹ CCX)²` lifts to −1 at every width from five on.
+The schema is closed under `ctrl`, `ctrl₁ = ctrl ∘ _↑` and idle wires on
+top (`padC`), so the ctrl lemma holds for its instances by definition.
+`CtrlBounded`, `CtrlComm` and `CtrlLemma` are stated in the calculus with
+the schema. NaturalP's own lemmas (`move`, `ctrl₁-↑`) enter through
+`emb`. The shifted instances (`up`) are derivable by `cong↑`, but `ctrl`
+of a shifted instance would need a lemma moving the spare wire of
+`ctrl₁`, so they are kept as instances for now.
+
+The ctrl lemma is a step of the induction on the width. Once the width
+is nine or more, it uses only completeness below the width. Below nine,
+its closed cores can fill all the wires.
