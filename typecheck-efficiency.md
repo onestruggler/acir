@@ -45,12 +45,13 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 |---|---|---|
 | Remove a `with` whose test computes anyway | `BR/Two/L2-CZ/Left`, `Pushing/Push2` | 51.7 → 5.8 s, 19.1 → 2.1 s |
 | Merge clauses that differ only in an argument nothing splits on | `BR/Two/D`, `L2-CZ/Left` | part of 20.7 → 2.7 s |
-| `--lossy-unification` | `BR/Calculations`, `BR/Two/D`, `L2-CZ/Left`, `Simplified-V1/Iso`, `CCX+HH-TwoLevel/QuadXEBase`, `Normalization/Pushing/SrelWDM`, `Clifford+CS-TwoLevel/ColumnAction`, `Clifford+CS/Bridge` | 15.3 → 1.1 s, 20.7 → 2.7 s, −40 %, −17 %, 126 → 11.7 s, 31.7 s (over 3 GB) → under 1 s (0.7 GB), 27.2 → 0.4 s, 22.8 → 2.7 s |
+| `--lossy-unification` | `BR/Calculations`, `BR/Two/D`, `L2-CZ/Left`, `Simplified-V1/Iso`, `CCX+HH-TwoLevel/QuadXEBase`, `Normalization/Pushing/SrelWDM`, `Clifford+CS-TwoLevel/ColumnAction`, `Clifford+CS/Bridge`, `Clifford+T-2qubit-TwoLevel/FourOdd` | 15.3 → 1.1 s, 20.7 → 2.7 s, −40 %, −17 %, 126 → 11.7 s, 31.7 s (over 3 GB) → under 1 s (0.7 GB), 27.2 → 0.4 s, 22.8 → 2.7 s, 24.9 → 7.5 s |
 | Apply reasoning modules once, not per clause | `Simplified-V1/Forward`, `Simplified-V1/Iso` | 23.0 → 10.8 s, −20 % |
 | Share duplicated rewrite rules through `then` | `Ex-Sym3n/Swap` | 21.0 → 15.4 s |
 | Split only on what blocks reduction, not on every intermediate result | `Construct/Properties/Amalgamation` | 54.6 → 25.1 s (profile total) |
 | Decide a matrix identity as one boolean, not `refl` on tries | `Clifford/Qubit/Model/Gates` | 71 → 2.9 s |
 | Pass the axiom's own words; compare readings as words | `Clifford/Qubit/Model/Faithful` | 1436 → 1.5 s |
+| Bundle many module parameters into one record | `Qupit-Phase-Affine/Phase/Control` | 26.9 → 5.3 s |
 
 - **A `with` normalises the goal before abstracting.** `with b ≟ c`
   where `b` is a successor and `c` is zero is `no` by computation, so the
@@ -144,6 +145,22 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   n` — a hidden width spelled differently also defeats the syntactic
   check. 1436 → 1.5 s. (The other cure, `CLAUDE.md`'s for
   Real-Clifford+CH, is to make the reading `abstract`.)
+- **A long module telescope costs everywhere inside the module.** Every
+  metavariable is applied to the whole context, module parameters
+  included, so a module with thirty parameters makes every implicit
+  argument, every unification and every occurs check thirty arguments
+  wider. `Phase/Control`'s `Functor` took the images of the phase
+  generators and of nineteen rules as 25 parameters on top of eight
+  others; its profile showed the time spread over every definition, with
+  the occurs check the largest phase (5.6 s). The same `ctrl-gen` and
+  `ctrl-sem`, copied into a module with only the nine parameters they
+  use, took 0.9 s against about 10 s in place. Bundling the 25 into a
+  record (`Images`, with a constructor, so that the one client wraps its
+  arguments in `images (…)`), opened inside the module, took the module
+  from 26.9 to 5.3 s; projections of the constructor reduce, so nothing
+  downstream changed. Ten per-clause `open Width (₂₊ n)` applications,
+  by contrast, cost 0.2 s in all: a module application is cheap when the
+  module is small and the context short.
 - **One step function, not two copies.** `step-swap` restated
   `step-swap0`'s sixteen rules verbatim; it is now
   `step-swap-extra then step-swap0`. With `then` the extra rules are
