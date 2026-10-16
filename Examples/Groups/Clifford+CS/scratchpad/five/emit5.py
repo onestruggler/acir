@@ -324,8 +324,16 @@ if __name__ == '__main__':
     names = L5.load(sys.argv[1])
     for nm in names: L5.instance(nm, {})
     res = T5.all_obligations()
+    import calc5 as C5
+    cres = C5.all_obligations()
+    import f6 as F6
+    fres = F6.all_obligations()
     root = sys.argv[2] if len(sys.argv) > 2 else None
     rmods, dmods, nb, modof = write_all(L5.PRIMS, L5.RESPELL, root)
     io.open(os.path.join(ROOT, 'TransportAx.agda'), 'w', encoding='utf-8', newline=NL).write(
         T5.agda_module(res, modof, lemname, MOD))
+    io.open(os.path.join(ROOT, 'CalcAx.agda'), 'w', encoding='utf-8', newline=NL).write(
+        C5.agda_module(cres, modof, lemname, MOD))
+    io.open(os.path.join(ROOT, 'F6Ax.agda'), 'w', encoding='utf-8', newline=NL).write(
+        F6.agda_module(fres, modof, lemname, mname, MOD))
     print(len(rmods), 'R modules,', len(dmods), 'D modules,', nb, 'boxes, written to', root or ROOT)
