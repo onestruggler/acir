@@ -134,15 +134,14 @@ lookup-toggle′ (b ∷ w) (sF i) (sF j) ne = lookup-toggle′ w i j (λ e → n
 ------------------------------------------------------------------------
 -- The fan-out from wire 0
 
-private
-  0≢s : ∀ {i : Fin n} → _≢_ {A = Wire} 0F (sF i)
-  0≢s ()
+0≢s : ∀ {i : Fin n} → _≢_ {A = Wire} 0F (sF i)
+0≢s ()
 
-  s≢0 : ∀ {i : Fin n} → _≢_ {A = Wire} (sF i) 0F
-  s≢0 ()
+s≢0 : ∀ {i : Fin n} → _≢_ {A = Wire} (sF i) 0F
+s≢0 ()
 
-  s≢s : ∀ {i j : Fin n} → i ≢ j → _≢_ {A = Wire} (sF i) (sF j)
-  s≢s ne e = ne (sF-inj e)
+s≢s : ∀ {i j : Fin n} → i ≢ j → _≢_ {A = Wire} (sF i) (sF j)
+s≢s ne e = ne (sF-inj e)
 
 -- CX from wire 0 onto 1 + x.
 T0 : Fin n → Word Lt
