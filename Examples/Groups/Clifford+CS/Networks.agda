@@ -1,0 +1,179 @@
+------------------------------------------------------------------------
+-- Presentations of groups
+--
+-- Swap networks bringing given wires to the bottom
+--
+-- The words of the symmetric presentation that move wires about, and
+-- where they send them: `σAt i` exchanges the wires i and i + 1,
+-- `sdS t` brings wire t to wire 0 (`sd-target`), and `bring k` brings
+-- k given distinct wires to the wires 0 … k − 1, for k ≤ 4.  Nothing
+-- here mentions a gate; these are Real-Clifford+CH's NetWires and
+-- GeneralN.Placed for the permutations of Clifford+CS's PermCalc, with
+-- bring₄ added.  A permutation is read with the left factor acting
+-- first, perm (u • v) ⟨$⟩ʳ k = perm v ⟨$⟩ʳ (perm u ⟨$⟩ʳ k), and in
+-- `pl u g = net u • g • net (revS u)` the wire 0 of g is the wire t
+-- with `perm u ⟨$⟩ʳ t ≡ 0F`.
+------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
+module Examples.Groups.Clifford+CS.Networks where
+
+open import Data.Empty using (⊥-elim)
+open import Data.Fin using (Fin ; toℕ ; inject₁) renaming (zero to 0F ; suc to sF)
+open import Data.Fin.Properties using (toℕ-inject₁)
+open import Data.Fin.Permutation using (_⟨$⟩ʳ_)
+open import Data.Nat using (ℕ ; zero ; suc)
+open import Data.Nat.Properties using (suc-injective)
+open import Data.Product using (Σ ; _×_ ; _,_)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
+open import Word.Base using (Word ; ε ; _•_)
+
+open import Notations using (₀ ; ₁ ; ₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
+
+import Examples.Groups.Symmetric.Syntactics as S
+open import Examples.Groups.Symmetric.Interpretation using (⟦↑⟧)
+
+open import Examples.Groups.Clifford+CS.PermCalc using (perm ; perm-inj)
+
+private
+  variable
+    n : ℕ
+
+------------------------------------------------------------------------
+-- The words
+
+-- The exchange of the wires i, i + 1 (nothing beyond the top).
+σAt : ℕ → Word (S.Gen n)
+σAt {₂₊ n} zero    = S.σ
+σAt {₁₊ n} (suc i) = σAt i S.↑
+σAt {₀}    _       = ε
+σAt {₁}    zero    = ε
+
+-- Wire t down to wire 0, the wires below it one up.
+sdS : ℕ → Word (S.Gen n)
+sdS zero    = ε
+sdS (suc j) = σAt j • sdS j
+
+------------------------------------------------------------------------
+-- Where they send wires
+
+perm-• : ∀ (u v : Word (S.Gen n)) k → perm (u • v) ⟨$⟩ʳ k ≡ perm v ⟨$⟩ʳ (perm u ⟨$⟩ʳ k)
+perm-• u v k = Eq.refl
+
+perm-↑0 : ∀ (u : Word (S.Gen n)) → perm (u S.↑) ⟨$⟩ʳ 0F ≡ 0F
+perm-↑0 u = ⟦↑⟧ u 0F
+
+perm-↑s : ∀ (u : Word (S.Gen n)) (x : Fin n) → perm (u S.↑) ⟨$⟩ʳ sF x ≡ sF (perm u ⟨$⟩ʳ x)
+perm-↑s u x = ⟦↑⟧ u (sF x)
+
+-- The exchange of i, i + 1 sends i + 1 to i.
+σAt-hi : (i : Fin n) → perm (σAt {₁₊ n} (toℕ i)) ⟨$⟩ʳ sF i ≡ inject₁ i
+σAt-hi {suc n} 0F     = Eq.refl
+σAt-hi {suc n} (sF i) = Eq.trans (⟦↑⟧ (σAt (toℕ i)) (sF (sF i))) (Eq.cong sF (σAt-hi i))
+
+private
+  sd-target′ : ∀ j (t : Fin (₁₊ n)) → toℕ t ≡ j → perm (sdS {₁₊ n} j) ⟨$⟩ʳ t ≡ 0F
+  sd-target′ zero    0F     _ = Eq.refl
+  sd-target′ zero    (sF t) ()
+  sd-target′ (suc j) 0F     ()
+  sd-target′ {n} (suc j) (sF t) e =
+    Eq.trans (Eq.cong (perm (sdS j) ⟨$⟩ʳ_) hi)
+             (sd-target′ j (inject₁ t) (Eq.trans (toℕ-inject₁ t) e′))
+    where
+    e′ : toℕ t ≡ j
+    e′ = suc-injective e
+    hi : perm (σAt {suc n} j) ⟨$⟩ʳ sF t ≡ inject₁ t
+    hi = Eq.subst (λ i → perm (σAt {suc n} i) ⟨$⟩ʳ sF t ≡ inject₁ t) e′ (σAt-hi t)
+
+-- sdS t brings wire t to wire 0.
+sd-target : (t : Fin (₁₊ n)) → perm (sdS {₁₊ n} (toℕ t)) ⟨$⟩ʳ t ≡ 0F
+sd-target t = sd-target′ (toℕ t) t Eq.refl
+
+------------------------------------------------------------------------
+-- Networks bringing up to four wires to the bottom
+
+-- Abstract: clients use only the equations.
+abstract
+  bring₁ : (a : Fin (₁₊ n)) → Σ (Word (S.Gen (₁₊ n))) λ σ → perm σ ⟨$⟩ʳ a ≡ 0F
+  bring₁ a = sdS (toℕ a) , sd-target a
+
+  -- a to wire 0 and b to wire 1.
+  bring₂ : (a b : Fin (₂₊ n)) → b ≢ a →
+           Σ (Word (S.Gen (₂₊ n))) λ σ → (perm σ ⟨$⟩ʳ a ≡ 0F) × (perm σ ⟨$⟩ʳ b ≡ sF 0F)
+  bring₂ {n} a b ne = go (perm u ⟨$⟩ʳ b) Eq.refl
+    where
+    u : Word (S.Gen (₂₊ n))
+    u = sdS (toℕ a)
+    go : ∀ x → perm u ⟨$⟩ʳ b ≡ x →
+         Σ (Word (S.Gen (₂₊ n))) λ σ → (perm σ ⟨$⟩ʳ a ≡ 0F) × (perm σ ⟨$⟩ʳ b ≡ sF 0F)
+    go 0F     e = ⊥-elim (ne (perm-inj u (Eq.trans e (Eq.sym (sd-target a)))))
+    go (sF x) e = u • (sdS (toℕ x) S.↑) , σa , σb
+      where
+      σa : perm (u • (sdS (toℕ x) S.↑)) ⟨$⟩ʳ a ≡ 0F
+      σa = Eq.trans (Eq.cong (perm (sdS (toℕ x) S.↑) ⟨$⟩ʳ_) (sd-target a)) (perm-↑0 (sdS (toℕ x)))
+      σb : perm (u • (sdS (toℕ x) S.↑)) ⟨$⟩ʳ b ≡ sF 0F
+      σb = Eq.trans (Eq.cong (perm (sdS (toℕ x) S.↑) ⟨$⟩ʳ_) e)
+                    (Eq.trans (perm-↑s (sdS (toℕ x)) x) (Eq.cong sF (sd-target x)))
+
+  -- a, b, c to the wires 0, 1, 2.
+  bring₃ : (a b c : Fin (₃₊ n)) → b ≢ a → c ≢ a → c ≢ b →
+           Σ (Word (S.Gen (₃₊ n))) λ σ →
+             (perm σ ⟨$⟩ʳ a ≡ 0F) × (perm σ ⟨$⟩ʳ b ≡ sF 0F) × (perm σ ⟨$⟩ʳ c ≡ sF (sF 0F))
+  bring₃ {n} a b c ba ca cb with bring₂ a b ba
+  ... | σ , σa , σb = go (perm σ ⟨$⟩ʳ c) Eq.refl
+    where
+    go : ∀ x → perm σ ⟨$⟩ʳ c ≡ x →
+         Σ (Word (S.Gen (₃₊ n))) λ ρ →
+           (perm ρ ⟨$⟩ʳ a ≡ 0F) × (perm ρ ⟨$⟩ʳ b ≡ sF 0F) × (perm ρ ⟨$⟩ʳ c ≡ sF (sF 0F))
+    go 0F          e = ⊥-elim (ca (perm-inj σ (Eq.trans e (Eq.sym σa))))
+    go (sF 0F)     e = ⊥-elim (cb (perm-inj σ (Eq.trans e (Eq.sym σb))))
+    go (sF (sF x)) e = σ • v , ρa , ρb , ρc
+      where
+      v : Word (S.Gen (₃₊ n))
+      v = (sdS (toℕ x) S.↑) S.↑
+      ρa : perm (σ • v) ⟨$⟩ʳ a ≡ 0F
+      ρa = Eq.trans (Eq.cong (perm v ⟨$⟩ʳ_) σa) (perm-↑0 (sdS (toℕ x) S.↑))
+      ρb : perm (σ • v) ⟨$⟩ʳ b ≡ sF 0F
+      ρb = Eq.trans (Eq.cong (perm v ⟨$⟩ʳ_) σb)
+                    (Eq.trans (perm-↑s (sdS (toℕ x) S.↑) 0F) (Eq.cong sF (perm-↑0 (sdS (toℕ x)))))
+      ρc : perm (σ • v) ⟨$⟩ʳ c ≡ sF (sF 0F)
+      ρc = Eq.trans (Eq.cong (perm v ⟨$⟩ʳ_) e)
+                    (Eq.trans (perm-↑s (sdS (toℕ x) S.↑) (sF x))
+                              (Eq.cong sF (Eq.trans (perm-↑s (sdS (toℕ x)) x) (Eq.cong sF (sd-target x)))))
+
+  -- a, b, c, d to the wires 0, 1, 2, 3.
+  bring₄ : (a b c d : Fin (₄₊ n)) → b ≢ a → c ≢ a → c ≢ b → d ≢ a → d ≢ b → d ≢ c →
+           Σ (Word (S.Gen (₄₊ n))) λ σ →
+             (perm σ ⟨$⟩ʳ a ≡ 0F) × (perm σ ⟨$⟩ʳ b ≡ sF 0F) ×
+             (perm σ ⟨$⟩ʳ c ≡ sF (sF 0F)) × (perm σ ⟨$⟩ʳ d ≡ sF (sF (sF 0F)))
+  bring₄ {n} a b c d ba ca cb da db dc with bring₃ a b c ba ca cb
+  ... | σ , σa , σb , σc = go (perm σ ⟨$⟩ʳ d) Eq.refl
+    where
+    go : ∀ x → perm σ ⟨$⟩ʳ d ≡ x →
+         Σ (Word (S.Gen (₄₊ n))) λ ρ →
+           (perm ρ ⟨$⟩ʳ a ≡ 0F) × (perm ρ ⟨$⟩ʳ b ≡ sF 0F) ×
+           (perm ρ ⟨$⟩ʳ c ≡ sF (sF 0F)) × (perm ρ ⟨$⟩ʳ d ≡ sF (sF (sF 0F)))
+    go 0F               e = ⊥-elim (da (perm-inj σ (Eq.trans e (Eq.sym σa))))
+    go (sF 0F)          e = ⊥-elim (db (perm-inj σ (Eq.trans e (Eq.sym σb))))
+    go (sF (sF 0F))     e = ⊥-elim (dc (perm-inj σ (Eq.trans e (Eq.sym σc))))
+    go (sF (sF (sF x))) e = σ • v , ρa , ρb , ρc , ρd
+      where
+      w : Word (S.Gen (₂₊ n))
+      w = sdS (toℕ x) S.↑
+      v : Word (S.Gen (₄₊ n))
+      v = (w S.↑) S.↑
+      ρa : perm (σ • v) ⟨$⟩ʳ a ≡ 0F
+      ρa = Eq.trans (Eq.cong (perm v ⟨$⟩ʳ_) σa) (perm-↑0 (w S.↑))
+      ρb : perm (σ • v) ⟨$⟩ʳ b ≡ sF 0F
+      ρb = Eq.trans (Eq.cong (perm v ⟨$⟩ʳ_) σb)
+                    (Eq.trans (perm-↑s (w S.↑) 0F) (Eq.cong sF (perm-↑0 w)))
+      ρc : perm (σ • v) ⟨$⟩ʳ c ≡ sF (sF 0F)
+      ρc = Eq.trans (Eq.cong (perm v ⟨$⟩ʳ_) σc)
+                    (Eq.trans (perm-↑s (w S.↑) (sF 0F))
+                              (Eq.cong sF (Eq.trans (perm-↑s w 0F) (Eq.cong sF (perm-↑0 (sdS (toℕ x)))))))
+      ρd : perm (σ • v) ⟨$⟩ʳ d ≡ sF (sF (sF 0F))
+      ρd = Eq.trans (Eq.cong (perm v ⟨$⟩ʳ_) e)
+                    (Eq.trans (perm-↑s (w S.↑) (sF (sF x)))
+                      (Eq.cong sF (Eq.trans (perm-↑s w (sF x))
+                        (Eq.cong sF (Eq.trans (perm-↑s (sdS (toℕ x)) x) (Eq.cong sF (sd-target x)))))))
