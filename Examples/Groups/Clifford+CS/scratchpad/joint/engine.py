@@ -389,3 +389,18 @@ def spell(word, ws=None):
             if dd is not None:
                 return [c1, c2] + dd
     return None
+
+
+# ------------------------------------------------------------ memo
+# spell is deterministic; the box crossings of (F1) call it on the same
+# runs many times.
+_spell2 = spell
+_SPELL_MEMO = {}
+
+
+def spell(word, ws=None):
+    key = (tuple(norm(word)), None if ws is None else frozenset(ws))
+    if key not in _SPELL_MEMO:
+        _SPELL_MEMO[key] = _spell2(word, ws)
+    r = _SPELL_MEMO[key]
+    return None if r is None else list(r)
