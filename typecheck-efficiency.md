@@ -52,6 +52,7 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 | Decide a matrix identity as one boolean, not `refl` on tries | `Clifford/Qubit/Model/Gates` | 71 → 2.9 s |
 | Pass the axiom's own words; compare readings as words | `Clifford/Qubit/Model/Faithful` | 1436 → 1.5 s |
 | Bundle many module parameters into one record | `Qupit-Phase-Affine/Phase/Control` | 26.9 → 5.3 s |
+| Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived` | 44.6 → 14.7 s, 0.8 GB |
 
 - **A `with` normalises the goal before abstracting.** `with b ≟ c`
   where `b` is a successor and `c` is zero is `no` by computation, so the
@@ -161,6 +162,23 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   downstream changed. Ten per-clause `open Width (₂₊ n)` applications,
   by contrast, cost 0.2 s in all: a module application is cheap when the
   module is small and the context short.
+- **In a generated derivation, elaborating the letters is the cost, not
+  checking the steps.** `Relations/Derived`'s `derive l r steps refl`
+  lists the whole word at every `perm` step, 69 000 letters in all, each
+  a pattern synonym (`h₁ = gate₁ H-gate ↥`) whose constructors carry an
+  implicit width, so two or three metavariables per letter. For its
+  largest equation (341 steps, 11 000 letters) the step list took 3.3 s
+  to elaborate and the evaluation by `refl` 0.5 s; a cheaper `perm`
+  check (matching letter by letter before sorting into canonical form)
+  gained only 20 %. The same cells as ℕ literals took 0.75 s, and as
+  definitions opened at a fixed width (`module _ {n : ℕ} where open
+  Letters₃ n`, each letter `Gen (₃₊ n)` with nothing left to solve) 1.1 s
+  against 4.2 s. `Letters` cannot live beside the patterns: a definition
+  in a submodule may not reuse a name its parent defines, so it is its own
+  module and `Derived` hides the patterns from `Axioms`. The equations'
+  types are unchanged, so nothing downstream changed. (The rewrap is a
+  script: indent each run of equations of one width under the block that
+  opens its letters.)
 - **One step function, not two copies.** `step-swap` restated
   `step-swap0`'s sixteen rules verbatim; it is now
   `step-swap-extra then step-swap0`. With `then` the extra rules are
