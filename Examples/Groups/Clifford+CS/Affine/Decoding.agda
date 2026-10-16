@@ -43,7 +43,7 @@ open import Examples.Groups.Clifford+CS.Tools using (module Tools)
 import Examples.Groups.Clifford+CS.Affine.Theory (₃₊ m) as A
 open A using (Lt ; xL ; tL ; Wire ; toggle)
 open import Examples.Groups.Clifford+CS.Affine.Equivariance (₃₊ m) using (Ctl ; tmap)
-open import Examples.Groups.Clifford+CS.Affine.Alpha (₃₊ m) using (α ; amap ; eqv-α ; toggle-invol)
+open import Examples.Groups.Clifford+CS.Affine.Alpha (₃₊ m) using (α ; amap ; eqv-α ; amapʷ ; amapʷ-inj)
 open import Examples.Groups.Clifford+CS.Affine.Circuits m c4 using (⟪_⟫ ; ⟪_⟫ʷ ; ⟪⟫-cong)
 
 open Tools Γ
@@ -54,40 +54,6 @@ private
 
   St : Set
   St = Vec Bool W
-
-------------------------------------------------------------------------
--- Bit maps of words, and their injectivity
-
-amapʷ : Word Lt → St → St
-amapʷ [ a ]ʷ  p = amap a p
-amapʷ ε       p = p
-amapʷ (u • v) p = amapʷ u (amapʷ v p)
-
-private
-  lookup-tog : ∀ (p : St) (u v : Wire) → u ≢ v → lookup (toggle p v) u ≡ lookup p u
-  lookup-tog p u v uv = A.lookup-toggle′ p v u uv
-
-  tmap-invol : ∀ (u v : Wire) → u ≢ v → ∀ p → tmap u v (tmap u v p) ≡ p
-  tmap-invol u v uv p = go (lookup p u) Eq.refl
-    where
-    go : ∀ b → lookup p u ≡ b → tmap u v (if b then toggle p v else p) ≡ p
-    go true e =
-      Eq.trans (Eq.cong (λ c → if c then toggle (toggle p v) v else toggle p v)
-                        (Eq.trans (lookup-tog p u v uv) e))
-               (toggle-invol p v)
-    go false e = Eq.cong (λ c → if c then toggle p v else p) e
-
-  amap-invol : ∀ (a : Lt) p → amap a (amap a p) ≡ p
-  amap-invol (xL v)     p = toggle-invol p v
-  amap-invol (tL u v r) p = tmap-invol u v (λ e → Irr.⊥-elim (r e)) p
-
-amap-inj : ∀ (a : Lt) {p q : St} → amap a p ≡ amap a q → p ≡ q
-amap-inj a {p} {q} e = Eq.trans (Eq.sym (amap-invol a p)) (Eq.trans (Eq.cong (amap a) e) (amap-invol a q))
-
-amapʷ-inj : ∀ (τ : Word Lt) {p q : St} → amapʷ τ p ≡ amapʷ τ q → p ≡ q
-amapʷ-inj [ a ]ʷ  e = amap-inj a e
-amapʷ-inj ε       e = e
-amapʷ-inj (u • v) e = amapʷ-inj v (amapʷ-inj u e)
 
 ------------------------------------------------------------------------
 -- The decoding of a gate

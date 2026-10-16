@@ -85,3 +85,48 @@ def count():
 
 if __name__ == '__main__':
     count()
+
+
+# The elimination as affine words (letters ('X', v), ('CX', u, v)), checked:
+# each pattern's images are what the word's bit map gives.
+def elim_word(points, n):
+    import affine
+    a0 = points[0]
+    word = [('X', i) for i in range(n) if a0[i]]          # applied first
+    cur = lambda p: affine.act(list(reversed(word)), p)    # word in time order
+    r = 0
+    pat = []
+    imgs = []
+    for p in points:
+        b = cur(p)
+        if not any(b[r:]):
+            pat.append(('old', b[:r]))
+            continue
+        j = next(i for i in range(r, n) if b[i])
+        for i in range(n):
+            if i != j and b[i]:
+                word.append(('CX', j, i))
+        if j != r:
+            word += [('CX', j, r), ('CX', r, j), ('CX', j, r)]
+        pat.append(('new',))
+        r += 1
+    return list(reversed(word)), pat, r
+
+
+def check_elim(n=6, trials=20000):
+    import random, affine
+    rnd = random.Random(3)
+    for _ in range(trials):
+        k = rnd.randint(1, 5)
+        pts = [tuple(rnd.randint(0, 1) for _ in range(n)) for _ in range(k)]
+        w, pat, r = elim_word(pts, n)
+        assert r <= 4
+        rr = 0
+        for p, s in zip(pts, pat):
+            img = affine.act(w, p)
+            if s[0] == 'new':
+                assert img == tuple(1 if i == rr else 0 for i in range(n)), (pts, pat)
+                rr += 1
+            else:
+                assert img == tuple(s[1]) + (0,) * (n - len(s[1])), (pts, pat)
+    print('elimination ok on', n, 'wires,', trials, 'random tuples')
