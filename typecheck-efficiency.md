@@ -52,7 +52,7 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 | Decide a matrix identity as one boolean, not `refl` on tries | `Clifford/Qubit/Model/Gates` | 71 → 2.9 s |
 | Pass the axiom's own words; compare readings as words | `Clifford/Qubit/Model/Faithful` | 1436 → 1.5 s |
 | Bundle many module parameters into one record | `Qupit-Phase-Affine/Phase/Control` | 26.9 → 5.3 s |
-| Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived` | 44.6 → 14.7 s, 0.8 GB |
+| Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived`, `Qubit-Clifford/Relations/Rules/Figure5`, `Figure7` | 44.6 → 14.7 s (0.8 GB), 22.5 → 7.9 s, 22.8 → 9.2 s |
 
 - **A `with` normalises the goal before abstracting.** `with b ≟ c`
   where `b` is a successor and `c` is zero is `no` by computation, so the
