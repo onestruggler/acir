@@ -277,8 +277,32 @@ def check_beta(n):
     print(f'beta on {n} wires: {covered} cases as claimed, {missing} not yet covered')
 
 
+# ---------------------------------------------------------------- the axioms
+def check_axioms(n=5):
+    from itertools import permutations as P
+    def same(l, r):
+        return all(act(l, x) == act(r, x) for x in product((0, 1), repeat=n))
+    X_ = lambda v: ('X', v)
+    for u, v in P(range(n), 2):
+        assert same([T(u, v), T(u, v)], [])
+        assert same([T(u, v), X_(u)], [X_(u), X_(v), T(u, v)])          # x-ctl
+        assert same([T(u, v), X_(v)], [X_(v), T(u, v)])                 # x-tgt
+        assert same([T(u, v), T(v, u), T(u, v)], [T(v, u), T(u, v), T(v, u)])   # t-sw
+    for x, y, z in P(range(n), 3):
+        assert same([T(x, y), T(y, z), T(x, y)], [T(y, z), T(x, z)])    # t-ts
+        assert same([T(y, z), T(x, y), T(y, z)], [T(x, y), T(x, z)])    # t-st
+        assert same([T(x, y), T(x, z)], [T(x, z), T(x, y)])             # t-cc
+        assert same([T(x, z), T(y, z)], [T(y, z), T(x, z)])             # t-tt
+        assert same([T(x, y), X_(z)], [X_(z), T(x, y)])                 # x-far
+        o, u, j = x, y, z                                               # t-pv
+        assert same([T(j, o), T(u, o), T(o, u), T(o, j)],
+                    [T(o, u), T(o, j)] + SW(u, j) + [T(u, o), T(j, o)])
+    for a, b, c, d in P(range(n), 4):
+        assert same([T(a, b), T(c, d)], [T(c, d), T(a, b)])             # t-dd
+    print('axioms ok on', n, 'wires')
 if __name__ == '__main__':
-    what = sys.argv[1:] or ['gadgets', 'alpha', 'letters', 'beta']
+    what = sys.argv[1:] or ["gadgets", "alpha", "letters", "beta", "axioms"]
+    if "axioms" in what: check_axioms(5)
     if 'gadgets' in what:
         check_gadgets(4); check_gadgets(5)
     if 'alpha' in what:
@@ -287,3 +311,5 @@ if __name__ == '__main__':
         check_letters(4, sample=3000)
     if 'beta' in what:
         check_beta(4); check_beta(5); check_beta(6)
+
+
