@@ -5,6 +5,9 @@ This development follows Matthew Amy, Neil J. Ross and Scott Wesley,
 Circuits*](https://arxiv.org/abs/2407.11152), using this repository's
 `Word` and `Presentation` framework.
 
+[ERRATA.md](ERRATA.md) records the corrections, repeated occurrences,
+matrix witnesses and the completeness issue caused by omitting `r_K`.
+
 Words are in matrix-product order: the rightmost gate acts first.
 The paper's wires 0, 1 and 2 are the most significant, middle and least
 significant bits of the computational basis, respectively. Matrices
@@ -51,6 +54,9 @@ expressions, with the intended matrices:
   on both sides of CCZ, as well as X₀ and X₁.
 - Section 5.5: under the paper's control-wire convention, the
   exchange of basis states 6 and 7 is CCX₀₁. CCX₁₂ exchanges 3 and 7.
+- Section 5.5: the prose reverses the control states of
+  K_[0,1,2,3] and its conjugate by X₀; they act when qubit 0 is 0
+  and 1, respectively.
 - Equation (97): the exchange on its right side is X₁₃, rather than
   X₀₁.
 - Equation (100): the matrices satisfy
