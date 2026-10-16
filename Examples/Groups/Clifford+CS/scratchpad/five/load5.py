@@ -1,6 +1,8 @@
 # Run the joint paper's five-wire derivations (joint/run_all.py, and with
 # --deb the de-borrowing ones of joint/deb_all.py) recording each step's
-# replacement segment, and pickle them for the lowering (lower5.py).
+# replacement segment, and pickle them for the lowering (lower5.py),
+# with the TR2 axioms the derivations use (joint/tr.py).  RUN_PARTS
+# selects the parts of run_all (merge5.py joins separate runs).
 #   python3 load5.py OUT.pkl [--deb]
 import sys, os, io, contextlib, pickle
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -23,7 +25,8 @@ with contextlib.redirect_stdout(buf):
         runpy.run_path('deb_all.py', run_name='deb_all')
 from derivn import DERIVATIONS
 from w5lib import L
+import tr
 out = {'derivs': [dict(name=d.name, lhs=d.lhs, rhs=d.rhs, steps=d.steps) for d in DERIVATIONS],
-       'L': dict(L)}
+       'L': dict(L), 'TRS': list(tr.TRS), 'parts': os.environ.get('RUN_PARTS')}
 pickle.dump(out, open(sys.argv[1], 'wb'))
 print(len(out['derivs']), 'derivations,', sum(len(d['steps']) for d in out['derivs']), 'steps')

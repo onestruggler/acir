@@ -188,8 +188,12 @@ def step_proof(st):
     if kind == 'R': return 'refl' if info in ('unfold', 'fold') else 'by-assoc Eq.refl'
     if kind == 'U': return f'uₛ ({word_expr(seg)}) ({word_expr(ys)}) Eq.refl'
     if kind == 'A':
-        name, fwd = info; assert name == 'AX'
-        return 'axAX' if fwd else 'sym axAX'
+        name, fwd = info
+        if name == 'AX':
+            return 'axAX' if fwd else 'sym axAX'
+        assert name.startswith('TR2-'), name
+        t = f'{lemname(name)} c4'
+        return t if fwd else f'sym ({t})'
     if kind == 'L':
         name, fwd = info; t = f'{lemname(name)} c4'
         return t if fwd else f'sym ({t})'
@@ -260,10 +264,17 @@ def split_long(prims, limit=1000, size=500):
         out += parts + [Part(P.name, P.lhs, P.rhs, main)]
     return out
 
+def uses_tr(P):
+    return any(st[0] == 'A' and st[5][0].startswith('TR2-') for st in P.steps)
+
 def chunks(prims, max_steps=500, max_lemmas=16):
-    out = []; cur = []; steps = 0
+    # a module that uses the transports (Five.TR2) starts a new module:
+    # Five.TR2 rests on the (F1) items derived before the first of them
+    out = []; cur = []; steps = 0; tr_seen = False
     for P in prims:
-        if cur and (steps + len(P.steps) > max_steps or len(cur) >= max_lemmas):
+        brk = uses_tr(P) and not tr_seen
+        if brk: tr_seen = True
+        if cur and (brk or steps + len(P.steps) > max_steps or len(cur) >= max_lemmas):
             out.append(cur); cur = []; steps = 0
         cur.append(P); steps += len(P.steps)
     if cur: out.append(cur)
@@ -279,6 +290,10 @@ def write_group(prims, prefix, modof, start, uses_resps):
         bymod = {}
         for dname in deps: bymod.setdefault(modof[dname], []).append(lemname(dname))
         dep_lines = NL.join(f'open import {MOD}.D.{m} using ({" ; ".join(ns)})' for m, ns in sorted(bymod.items()))
+        trs = sorted({lemname(extra[0]) for P in group for (kind, k, n, seg, ys, extra) in P.steps
+                      if kind == 'A' and extra[0].startswith('TR2-')})
+        if trs:
+            dep_lines += NL + f'open import {MOD}.TR2 using ({" ; ".join(trs)})'
         resps = f'open import {MOD}.Resps using (pw0 ; pw1 ; pw2 ; pw3 ; pw4)' + NL if uses_resps else ''
         text = HEADER.format(mod=f'{MOD}.D.{mod}', MOD=MOD, deps=dep_lines, resps=resps) + NL.join(lemma_text(P) for P in group)
         for P in group: modof[P.name] = mod
