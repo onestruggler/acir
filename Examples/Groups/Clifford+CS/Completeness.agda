@@ -33,20 +33,25 @@
 --
 -- With soundness, the rules present their image, a sub-monoid of the
 -- 2ⁿ × 2ⁿ matrices over ℤ[½,i], at every width where completeness
--- holds.
+-- holds.  Every gate has an inverse word, so the image is a group, the
+-- Clifford+CS operators on n qubits, and the rules present it as one
+-- (presentationᴳ; outright on 0, 1 and 3 qubits).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Examples.Groups.Clifford+CS.Completeness where
 
-open import Algebra.Bundles using (Monoid)
+open import Algebra.Bundles using (Group ; Monoid)
 open import Data.Nat using (ℕ)
 open import Data.Product using (_,_)
+open import Level using (0ℓ)
 
 open import Notations using (₀ ; ₁ ; ₂ ; ₃ ; ₄₊)
 
-open import Presentation.Definitions using (_IsSubMonoidPresentationOf_)
+open import Presentation.Definitions
+  using (_IsSubMonoidPresentationOf_ ; _IsSubPresentationOf_ ; _IsPresentationOf_)
+open import Presentation.Units using (module Generated ; Units ; units-subpresentation)
 open import Normalization.StarPresentation using (module MonoidSem)
 
 open import Examples.Groups.Clifford+CS.Semantics using (Scaled-monoid ; _~_)
@@ -82,19 +87,56 @@ complete₂ l74 l75 = TwoQubit.Lemma-7-6.complete l74 l75
 ------------------------------------------------------------------------
 -- The theorem
 
+private
+  -- The reading as a monoid homomorphism, at each width.
+  module MS (n : ℕ) = MonoidSem (n VRel,_===_) (Monoid.setoid (Scaled-monoid n))
+                                (Scaled-monoid n) (λ g → 1 , ⟦ g ⟧ᵍ)
+
+  -- The group it generates (Presentation.Units).
+  module G (n : ℕ) = Generated (grouplike {n}) {M = Scaled-monoid n} (MS.⟦_⟧ n)
+                               (MS.Cong.isMonoidHomomorphism n axiom-soundᴱ)
+
+  injective : ∀ n → Complete n → ∀ {w v} → MS.⟦ n ⟧ w ~ MS.⟦ n ⟧ v → n ⊢ w ≈ v
+  injective n complete {w} {v} e = complete {w} {v} (~-⟦⟧ᴱ {w = w} {v} e)
+
 -- With soundness, completeness at a width makes the rules a
 -- presentation of their image there.
 subpresentation : ∀ n → Complete n → (n VRel,_===_) IsSubMonoidPresentationOf Scaled-monoid n
 subpresentation n complete = record
-  { ⟦_⟧  = MS.⟦_⟧
+  { ⟦_⟧  = MS.⟦_⟧ n
   ; mono = record
-    { isMonoidHomomorphism = MS.Cong.isMonoidHomomorphism axiom-soundᴱ
-    ; injective            = λ {w} {v} e → complete {w} {v} (~-⟦⟧ᴱ {w = w} {v} e)
+    { isMonoidHomomorphism = MS.Cong.isMonoidHomomorphism n axiom-soundᴱ
+    ; injective            = injective n complete
     }
   }
-  where
-  module MS = MonoidSem (n VRel,_===_) (Monoid.setoid (Scaled-monoid n))
-                        (Scaled-monoid n) (λ g → 1 , ⟦ g ⟧ᵍ)
+
+------------------------------------------------------------------------
+-- The group versions
+
+-- Every gate has an inverse word (Syntactics.grouplike), so the image is
+-- a group: the Clifford+CS operators on n qubits, the circuits compared
+-- by their matrices.  Soundness alone makes it a group.
+CliffordCS : ℕ → Group 0ℓ 0ℓ
+CliffordCS n = G.group n
+
+-- Completeness at a width makes the rules a presentation of it there,
+presentationᴳ : ∀ n → Complete n → (n VRel,_===_) IsPresentationOf CliffordCS n
+presentationᴳ n complete = G.presentation n (injective n complete)
+
+-- The widths proved.
+presentation₀ : (0 VRel,_===_) IsPresentationOf CliffordCS 0
+presentation₀ = presentationᴳ 0 complete₀
+
+presentation₁ : (1 VRel,_===_) IsPresentationOf CliffordCS 1
+presentation₁ = presentationᴳ 1 complete₁
+
+presentation₃ : (3 VRel,_===_) IsPresentationOf CliffordCS 3
+presentation₃ = presentationᴳ 3 complete₃
+
+-- and a sub-presentation of the group of invertible scaled operators.
+subpresentationᵁ : ∀ n → Complete n → (n VRel,_===_) IsSubPresentationOf Units (Scaled-monoid n)
+subpresentationᵁ n complete =
+  units-subpresentation {M = Scaled-monoid n} (subpresentation n complete) grouplike
 
 -- Every width, given the two-qubit lemmas and completeness from four
 -- wires on.
@@ -110,3 +152,6 @@ module Theorem
   completeness ₂      = complete₂ lemma-7-4 lemma-7-5
   completeness ₃      = complete₃
   completeness (₄₊ k) = above k
+
+  presentation : ∀ n → (n VRel,_===_) IsPresentationOf CliffordCS n
+  presentation n = presentationᴳ n (completeness n)
