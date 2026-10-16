@@ -13,12 +13,15 @@
 -- pointwise (_≐_).  Tries (Mat) store an operator as data, so that a
 -- long product is computed once when a relation is checked.
 --
--- The stored product skips a term whose left factor is zero, by the
--- module's zero test, without computing the right factor or the
--- product (_*?_): the matrices of most gates are sparse — a
--- permutation has one non-zero entry in each row — and Agda's
--- evaluator pays for every multiplication.  It is the same value
--- (*?-*), so ix-mul still reads a stored product as _⊙_.
+-- The stored product builds each row of M N as a combination of the
+-- rows of N, the entries of M's row being the coefficients: a zero
+-- coefficient costs one zero test, by the module's zero test, and
+-- nothing else, and a coefficient 1 no multiplication.  The matrices of
+-- most gates are sparse — a permutation has one non-zero entry, 1, in
+-- each row — and Agda's evaluator pays for every ring operation: a
+-- product of two 27 × 27 permutation matrices summed entry by entry
+-- over the inner index makes some 20 000 additions, nearly all of
+-- zeros, and took 28 s over ℤ[ζ₁₂].  ix-mul reads it as _⊙_.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -38,8 +41,9 @@ open import Algebra.Bundles using (CommutativeRing)
 open import Data.Fin.Base using (Fin ; zero ; suc)
 open import Data.Nat.Base using (zero ; suc) renaming (_+_ to _+ℕ_)
 open import Data.Product.Base using (_,_)
-open import Data.Vec.Base using (Vec ; [] ; _∷_ ; lookup ; tabulate)
-open import Data.Vec.Properties using (lookup∘tabulate)
+open import Data.Maybe.Base using (Maybe ; just ; nothing)
+open import Data.Vec.Base using (Vec ; [] ; _∷_ ; lookup ; tabulate ; map ; zipWith)
+open import Data.Vec.Properties using (lookup∘tabulate ; lookup-map ; lookup-zipWith)
 open import Relation.Binary.PropositionalEquality as Eq using (refl)
 
 R : CommutativeRing _ _
@@ -49,7 +53,8 @@ open CommutativeRing R public
   using (_+_ ; _*_ ; -_ ; 0# ; 1#)
 open CommutativeRing R
   using (+-assoc ; +-comm ; *-assoc ; *-comm ; +-identityˡ ; +-identityʳ
-        ; *-identityˡ ; *-identityʳ ; zeroˡ ; zeroʳ ; distribˡ ; distribʳ)
+        ; *-identityˡ ; *-identityʳ ; zeroˡ ; zeroʳ ; distribˡ ; distribʳ
+        ; -‿inverseˡ)
 
 private
   variable
@@ -178,31 +183,75 @@ ix-matOf {k} M x y =
   Eq.trans (Eq.cong (λ t → get t y) (get-tab k (λ u → tab k (λ v → M u v)) x))
            (get-tab k (λ v → M x v) y)
 
--- a * b, skipping the product when a is zero.
+-- Rows, as tries, and their combinations.
 private
-  pick : Bool → A → A → A
-  pick true  a b = 0#
-  pick false a b = a * b
+  addT : Tab k A → Tab k A → Tab k A
+  addT {zero}  a b = a + b
+  addT {suc k} a b = zipWith addT a b
 
-  pick-* : (t : Bool) (a b : A) → (T t → a ≡ 0#) → pick t a b ≡ a * b
-  pick-* true  a b z = Eq.trans (Eq.sym (zeroˡ b)) (Eq.cong (_* b) (Eq.sym (z _)))
-  pick-* false a b z = refl
+  scaleT : A → Tab k A → Tab k A
+  scaleT {zero}  c a = c * a
+  scaleT {suc k} c a = map (scaleT c) a
 
-infixl 7 _*?_
-_*?_ : A → A → A
-a *? b = pick (zero? a) a b
+  -- c r, with no multiplication when c is 1.
+  pick1 : Bool → A → Tab k A → Tab k A
+  pick1 true  c r = r
+  pick1 false c r = scaleT c r
 
-*?-* : (a b : A) → a *? b ≡ a * b
-*?-* a b = pick-* (zero? a) a b (zero?-sound a)
+  scale1 : A → Tab k A → Tab k A
+  scale1 c r = pick1 (zero? (c + - 1#)) c r
+
+  -- c r, or nothing when c is 0.
+  pick0 : Bool → A → Tab k A → Maybe (Tab k A)
+  pick0 true  c r = nothing
+  pick0 false c r = just (scale1 c r)
+
+  term : A → Tab k A → Maybe (Tab k A)
+  term c r = pick0 (zero? c) c r
+
+  addM : Maybe (Tab k A) → Maybe (Tab k A) → Maybe (Tab k A)
+  addM nothing  m        = m
+  addM (just a) nothing  = just a
+  addM (just a) (just b) = just (addT a b)
+
+  comb₁ : (Fin m → Maybe (Tab k A)) → Maybe (Tab k A)
+  comb₁ {zero}  f = nothing
+  comb₁ {suc m} f = addM (f zero) (comb₁ (λ i → f (suc i)))
+
+  -- The sum over z of c z · r z, as Σv sums, without its zero terms.
+  combV : (Digits n → A) → (Digits n → Tab k A) → Maybe (Tab k A)
+  combV {zero}  c r = term (c []) (r [])
+  combV {suc n} c r = comb₁ (λ a → combV (λ xs → c (a ∷ xs)) (λ xs → r (a ∷ xs)))
+
+  fromM : Maybe (Tab k A) → Tab k A
+  fromM {k} nothing  = tab k (λ _ → 0#)
+  fromM     (just a) = a
 
 mulM : Mat k → Mat k → Mat k
-mulM M N = matOf λ x y → Σv (λ z → ix M x z *? ix N z y)
+mulM {k} M N = mat (tab k (λ x → fromM (combV (λ z → ix M x z) (λ z → get (entries N) z))))
 
 idM : Mat k
 idM = matOf Idₒ
 
+-- The Kronecker product, with no multiplication where the left factor
+-- is 0 or 1 (a gate beside an identity is mostly both).
+private
+  pickˣ : Bool → Bool → A → A → A
+  pickˣ true  _     a b = 0#
+  pickˣ false true  a b = b
+  pickˣ false false a b = a * b
+
+infixl 7 _*′_
+_*′_ : A → A → A
+a *′ b = pickˣ (zero? a) (zero? (a + - 1#)) a b
+
+private
+  tensor′ : Op m → Op n → Op (m +ℕ n)
+  tensor′ {zero}  M N x       y       = M [] [] *′ N x y
+  tensor′ {suc m} M N (a ∷ x) (b ∷ y) = tensor′ (λ u v → M (a ∷ u) (b ∷ v)) N x y
+
 tenM : Mat k → Mat l → Mat (k +ℕ l)
-tenM M N = matOf (tensor (ix M) (ix N))
+tenM M N = matOf (tensor′ (ix M) (ix N))
 
 scalM : A → Mat k
 scalM c = matOf (scal c)
@@ -473,16 +522,105 @@ tensor-assoc₃ P B C (a ∷ a' ∷ a'' ∷ x) (b ∷ b' ∷ b'' ∷ y) =
 ------------------------------------------------------------------------
 -- Tries
 
+private
+  get-addT : (a b : Tab k A) (y : Digits k) → get (addT a b) y ≡ get a y + get b y
+  get-addT {zero}  a b []      = refl
+  get-addT {suc k} a b (i ∷ y) =
+    Eq.trans (Eq.cong (λ t → get t y) (lookup-zipWith addT i a b))
+             (get-addT (lookup a i) (lookup b i) y)
+
+  get-scaleT : (c : A) (a : Tab k A) (y : Digits k) → get (scaleT c a) y ≡ c * get a y
+  get-scaleT {zero}  c a []      = refl
+  get-scaleT {suc k} c a (i ∷ y) =
+    Eq.trans (Eq.cong (λ t → get t y) (lookup-map i (scaleT c) a))
+             (get-scaleT c (lookup a i) y)
+
+  one-of : (c : A) → c + - 1# ≡ 0# → c ≡ 1#
+  one-of c e = begin
+    c                ≡⟨ Eq.sym (+-identityʳ c) ⟩
+    c + 0#           ≡⟨ Eq.cong (c +_) (Eq.sym (-‿inverseˡ 1#)) ⟩
+    c + (- 1# + 1#)  ≡⟨ Eq.sym (+-assoc c (- 1#) 1#) ⟩
+    (c + - 1#) + 1#  ≡⟨ Eq.cong (_+ 1#) e ⟩
+    0# + 1#          ≡⟨ +-identityˡ 1# ⟩
+    1#               ∎
+
+  get-pick1 : (t : Bool) (c : A) (r : Tab k A) (y : Digits k) → (T t → c + - 1# ≡ 0#) →
+              get (pick1 t c r) y ≡ c * get r y
+  get-pick1 true  c r y e = begin
+    get r y       ≡⟨ Eq.sym (*-identityˡ (get r y)) ⟩
+    1# * get r y  ≡⟨ Eq.cong (_* get r y) (Eq.sym (one-of c (e _))) ⟩
+    c * get r y   ∎
+  get-pick1 false c r y e = get-scaleT c r y
+
+  get-scale1 : (c : A) (r : Tab k A) (y : Digits k) → get (scale1 c r) y ≡ c * get r y
+  get-scale1 c r y = get-pick1 (zero? (c + - 1#)) c r y (zero?-sound (c + - 1#))
+
+  getM : Maybe (Tab k A) → Digits k → A
+  getM m y = get (fromM m) y
+
+  getM-nothing : (y : Digits k) → getM nothing y ≡ 0#
+  getM-nothing {k} y = get-tab k (λ _ → 0#) y
+
+  get-pick0 : (t : Bool) (c : A) (r : Tab k A) (y : Digits k) → (T t → c ≡ 0#) →
+              getM (pick0 t c r) y ≡ c * get r y
+  get-pick0 true  c r y z = begin
+    getM nothing y  ≡⟨ getM-nothing y ⟩
+    0#              ≡⟨ Eq.sym (zeroˡ (get r y)) ⟩
+    0# * get r y    ≡⟨ Eq.cong (_* get r y) (Eq.sym (z _)) ⟩
+    c * get r y     ∎
+  get-pick0 false c r y z = get-scale1 c r y
+
+  get-term : (c : A) (r : Tab k A) (y : Digits k) → getM (term c r) y ≡ c * get r y
+  get-term c r y = get-pick0 (zero? c) c r y (zero?-sound c)
+
+  get-addM : (m m′ : Maybe (Tab k A)) (y : Digits k) → getM (addM m m′) y ≡ getM m y + getM m′ y
+  get-addM nothing  m′       y =
+    Eq.sym (Eq.trans (Eq.cong (_+ getM m′ y) (getM-nothing y)) (+-identityˡ (getM m′ y)))
+  get-addM (just a) nothing  y =
+    Eq.sym (Eq.trans (Eq.cong (get a y +_) (getM-nothing y)) (+-identityʳ (get a y)))
+  get-addM (just a) (just b) y = get-addT a b y
+
+  get-comb₁ : (f : Fin m → Maybe (Tab k A)) (y : Digits k) →
+              getM (comb₁ f) y ≡ Σ₁ (λ i → getM (f i) y)
+  get-comb₁ {zero}  f y = getM-nothing y
+  get-comb₁ {suc m} f y =
+    Eq.trans (get-addM (f zero) (comb₁ (λ i → f (suc i))) y)
+             (Eq.cong (getM (f zero) y +_) (get-comb₁ (λ i → f (suc i)) y))
+
+  get-combV : (c : Digits n → A) (r : Digits n → Tab k A) (y : Digits k) →
+              getM (combV c r) y ≡ Σv (λ z → c z * get (r z) y)
+  get-combV {zero}  c r y = get-term (c []) (r []) y
+  get-combV {suc n} c r y =
+    Eq.trans (get-comb₁ (λ a → combV (λ xs → c (a ∷ xs)) (λ xs → r (a ∷ xs))) y)
+             (Σ₁-cong (λ a → get-combV (λ xs → c (a ∷ xs)) (λ xs → r (a ∷ xs)) y))
+
 ix-mul : (M N : Mat k) → ix (mulM M N) ≐ (ix M ⊙ ix N)
-ix-mul M N x y =
-  Eq.trans (ix-matOf (λ u v → Σv (λ z → ix M u z *? ix N z v)) x y)
-           (Σ-cong (λ z → *?-* (ix M x z) (ix N z y)))
+ix-mul {k} M N x y =
+  Eq.trans (Eq.cong (λ t → get t y)
+             (get-tab k (λ u → fromM (combV (λ z → ix M u z) (λ z → get (entries N) z))) x))
+           (get-combV (λ z → ix M x z) (λ z → get (entries N) z) y)
 
 ix-id : ix (idM {k}) ≐ Idₒ
 ix-id = ix-matOf Idₒ
 
+private
+  pickˣ-* : (t u : Bool) (a b : A) → (T t → a ≡ 0#) → (T u → a + - 1# ≡ 0#) →
+            pickˣ t u a b ≡ a * b
+  pickˣ-* true  u     a b z o = Eq.trans (Eq.sym (zeroˡ b)) (Eq.cong (_* b) (Eq.sym (z _)))
+  pickˣ-* false true  a b z o =
+    Eq.trans (Eq.sym (*-identityˡ b)) (Eq.cong (_* b) (Eq.sym (one-of a (o _))))
+  pickˣ-* false false a b z o = refl
+
+*′-* : (a b : A) → a *′ b ≡ a * b
+*′-* a b = pickˣ-* (zero? a) (zero? (a + - 1#)) a b (zero?-sound a) (zero?-sound (a + - 1#))
+
+private
+  tensor′-ok : (M : Op m) (N : Op n) → tensor′ M N ≐ tensor M N
+  tensor′-ok {zero}  M N x       y       = *′-* (M [] []) (N x y)
+  tensor′-ok {suc m} M N (a ∷ x) (b ∷ y) = tensor′-ok (λ u v → M (a ∷ u) (b ∷ v)) N x y
+
 ix-tenM : (M : Mat k) (N : Mat l) → ix (tenM M N) ≐ tensor (ix M) (ix N)
-ix-tenM M N = ix-matOf (tensor (ix M) (ix N))
+ix-tenM M N = ≐-trans (ix-matOf (tensor′ (ix M) (ix N))) (tensor′-ok (ix M) (ix N))
 
 ix-scalM : (c : A) → ix (scalM {k} c) ≐ scal c
 ix-scalM c = ix-matOf (scal c)

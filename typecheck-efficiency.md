@@ -52,6 +52,8 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 | Decide a matrix identity as one boolean, not `refl` on tries | `Clifford/Qubit/Model/Gates` | 71 → 2.9 s |
 | Pass the axiom's own words; compare readings as words | `Clifford/Qubit/Model/Faithful` | 1436 → 1.5 s |
 | Bundle many module parameters into one record | `Qupit-Phase-Affine/Phase/Control` | 26.9 → 5.3 s |
+| Sparse stored products: rows as combinations of rows, no ring operation on 0 or 1 | `Independence/Semantics/Operators`, `Scaled` (all fragments): `Qutrit-Clifford/Semantics`, `Clifford+CS/Semantics`, `Clifford+T/Semantics`, `Clifford+CS/Projective`, `Clifford+CS/Encodings` | 139 → 18.4 s, 63.8 → 22.9 s, 35.2 → 15.8 s, 23.4 → 14.1 s, 46.7 → 33.4 s |
+| A lemma restated at the goal's width, over a word given by an equation | `Independence/Clifford/Bridge`, `Real-Clifford/Bridge` | 51.3 → 6.4 s, 45.5 → 5.4 s |
 | Decide an action's instances by one boolean on closed data, not `Eq.refl` per instance | `ProjectiveClifford/Qubit/Selinger/Soundness` | 344 → 3.3 s (+ 1.7 s in the new `LongRelations`) |
 | Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived`, `Qubit-Clifford/Relations/Rules/Figure5`, `Figure7` | 44.6 → 14.7 s (0.8 GB), 22.5 → 7.9 s, 22.8 → 9.2 s |
 
@@ -205,6 +207,39 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   context (give the predicate). `--call-by-name`, which the module
   needed for its assembly, made the old proofs 2.4 times slower still;
   the new ones live in their own module without it.
+- **Count the ring operations an evaluation makes.** Independence's
+  qutrit semantics checks each axiom as one boolean already, yet
+  `Qutrit-Clifford/Semantics` took 134 s, 101 of them on the
+  three-wire (I): five products of 27 × 27 matrices over ℤ[ζ₁₂], whose
+  every addition and multiplication is a few integer operations on four
+  coefficients. Timing pieces separately (one gate built and compared,
+  then one, two and four products) put a product at 28 s: summed entry
+  by entry over the inner index it makes 27³ zero tests and as many
+  additions, nearly all of zeros, for matrices with one non-zero entry
+  per row. `mulM` now builds each row of M N as a combination of the
+  rows of N with M's row as coefficients, a sum kept as `Maybe` so
+  that a zero coefficient costs one zero test and nothing else, and a
+  coefficient 1 no multiplication (`term`, `combV`, mirroring `Σv` so
+  that `ix-mul` is a short induction): 134 → 24 s. Skipping
+  multiplications by 0 and 1 in the Kronecker product of a gate with
+  an identity (`tenM`, `_*′_`) and in the final comparison, with the
+  two scale factors passed as arguments so that they are computed once
+  rather than per entry (`eqWith`), took it to 20 s. Everything goes
+  through `ix-mul`/`ix-tenM`/`eqₖ-sound`, whose statements did not
+  change, so no client changed.
+- **Find the clause, then the spelling.** `Independence/Clifford/Bridge`'s
+  `gen` took 40 s; splitting its clauses into named definitions put 41.7
+  s on the swap and 0.4 s on the CNOT, two clauses of the same shape —
+  `localise {2} {n} u` composed with `bridge u` and the gate's table. The
+  difference is the word: the swap's encoding has nine letters, the
+  CNOT's three. `localise`'s statement reads the word as `u ↓ᵏ n` at
+  width `2 + n`, the goal as `ℰ (gate₂ swap)`, which is `u` itself at
+  width `₂₊ n`; equal, but not the same term, so the conversion checker
+  compared the two readings by evaluating them. `localise₂` states the
+  same at `₂₊ n` over a word `w′` with `w ↓ᵏ n ≡ w′`, checked by `Eq.refl`
+  on words: 51.3 → 6.4 s, and the same edit in `Real-Clifford/Bridge`
+  45.5 → 5.4 s. The width lemma's own body compares the two spellings
+  with the word a variable, which is cheap.
 - **One step function, not two copies.** `step-swap` restated
   `step-swap0`'s sixteen rules verbatim; it is now
   `step-swap-extra then step-swap0`. With `then` the extra rules are
@@ -247,6 +282,36 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 
 ## What did not help
 
+- **Matching the indices of Clément's tree checks.**
+  `Real-Clifford+CH-TwoLevel-Clement/Hard` (48 s) spends 32 s in
+  `nf38-thm` and 8 s in `top-thm`, each passing a generated check
+  (`TreeNF38.t38-ok`, `TreeTop.top-ok`, decided there by `refl` in 18 s
+  and 8.5 s) to `Main.sound`: the check is run again. Leaving the two
+  indices to inference, and then writing them identically on both sides
+  (the generator stating `-ok` at `NFData.ic (nfData nf38)` and at
+  `zero (suc zero)`, `Hard`'s `g0`…`g3` made patterns), changed nothing
+  (48.8 → 48.2 s). The remaining difference is `checkT` itself: each
+  tree module writes `open Checker nfData (λ _ → false) using (checkT)`,
+  and `Main.sound`'s type names `Main`'s own `open Checker nfData allow`
+  — two module-application copies, unfolded and then evaluated to
+  compare. The fix would state `sound` and the `-ok` lemmas over the
+  original `Checker.checkT` applied to its arguments, or make `checkT`
+  opaque with `unfolding` where it must compute; not attempted.
+- **One shared width for Real-Clifford+CH's Appendix A modules.**
+  `Auxiliary/Move`'s `conj` takes 21 s, and splitting it into four steps
+  with explicit types put the cost in the steps whose two sides spell
+  the hidden width of `_⊙_` differently — nineteen modules each define
+  their own `n = ₃₊ m` (`Move`'s, `A6`'s for `Mpair`, `SPMatrix`'s for
+  `spOp`, `Eq65`'s for `Pair`), and `_≐_` unfolds to a Π-type, so two
+  products are compared by expanding their sums. Writing the where-module
+  copies `T.x` as `E65.Tuple.x args` changed nothing (21.9 → 20.8 s).
+  Taking `n` from `SPMatrix` in `Move` alone made `pull-pair` 1.1 → 13 s
+  and left `conj` as it was. A module `Auxiliary/Width` that all nineteen
+  imported made `Eq65` 19.6 → 595 s: the modules below them (`SigmaPerm`,
+  `SignedPerm`, …) spell the width yet otherwise, and the new spelling
+  mismatched those in more places than the old ones did. Reverted. A
+  spelling has to be shared by everything a comparison reaches, down to
+  the bottom of the development, or the change can only move the cost.
 - **Returning the rebuilt list from `Rewriting.Step.multistep`.** The fix
   that made `Presentation/Tactics/Words`' loops linear (see `CLAUDE.md`)
   made no measurable difference to `Presentation/Tactic/Rewriting`'s
