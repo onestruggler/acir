@@ -198,6 +198,15 @@ private
   all-ok₁ : T (allP1 λ p → allP1 λ p' → all3 λ k → all3 λ k' → ok₁ p p' k k')
   all-ok₁ = tt
 
+  -- Read back over variables: under core₁'s patterns p@(a , b) the
+  -- lambdas are instantiated at pairs, where ok₁ unfolds.
+  ok₁-all : ∀ p p' k k' → T (ok₁ p p' k k')
+  ok₁-all p p' k k' =
+    allFin-sound (ok₁ p p' k)
+      (allFin-sound (λ k → all3 λ k' → ok₁ p p' k k')
+        (allP1-sound (λ p' → all3 λ k → all3 λ k' → ok₁ p p' k k')
+          (allP1-sound (λ p → allP1 λ p' → all3 λ k → all3 λ k' → ok₁ p p' k k') all-ok₁ p) p') k) k'
+
   ∨-l : ∀ {x y} → T (x ∨ not y) → T y → T x
   ∨-l {true}          _ _ = tt
   ∨-l {false} {true}  () _
@@ -213,10 +222,7 @@ core₁ p@(a , b) p'@(a' , b') k k' h =
   Eq.cong₂ _,_ (eqF-sound a a' ta) (eqF-sound b b' tb) , eqF-sound k k' tk
   where
   t : T (ok₁ p p' k k')
-  t = allFin-sound (ok₁ p p' k)
-        (allFin-sound (λ k → all3 λ k' → ok₁ p p' k k')
-          (allP1-sound (λ p' → all3 λ k → all3 λ k' → ok₁ p p' k k')
-            (allP1-sound (λ p → allP1 λ p' → all3 λ k → all3 λ k' → ok₁ p p' k k') all-ok₁ p) p') k) k'
+  t = ok₁-all p p' k k'
   s : T (same₁ p p' k k')
   s = allFin-complete (λ r → all3 λ c → does (ω^ k * D₁ p (r ∷ []) (c ∷ []) ≟ ω^ k' * D₁ p' (r ∷ []) (c ∷ [])))
         λ r → allFin-complete (λ c → does (ω^ k * D₁ p (r ∷ []) (c ∷ []) ≟ ω^ k' * D₁ p' (r ∷ []) (c ∷ [])))
@@ -444,28 +450,27 @@ private
     (≐-trans (emb-cong {k = k} {n = n} e)
     (≐-trans (emb-scale {k = k} {n = n} c Idₒ) (scale-cong {c = c} (emb-id {k = k} {n = n})))))
 
-  -- On their own wires, by evaluation.
-  Hm Sm CZm : Op _
-  Hm  = ix (proj₂ Hᵍ)
-  Sm  = ix (proj₂ Sᵍ)
-  CZm = ix (proj₂ CZᵍ)
-
-  local-pow : {k : ℕ} (G : Mat k) (c : Q) → mulM G (mulM G (mulM G G)) ≡ scalM c →
+  -- On their own wires, by evaluation, decided by one boolean (eqWith).
+  local-pow : {k : ℕ} (G : Mat k) (c : Q) →
+              T (eqWith 1# c (mulM G (mulM G (mulM G G))) idM) →
               (ix G ⊙ (ix G ⊙ (ix G ⊙ ix G))) ≐ scale c Idₒ
-  local-pow G c e =
+  local-pow G c t =
     ≐-trans (⊙-cong (≐-refl (ix G)) (⊙-cong (≐-refl (ix G)) (≐-sym (ix-mul G G))))
     (≐-trans (⊙-cong (≐-refl (ix G)) (≐-sym (ix-mul G (mulM G G))))
     (≐-trans (≐-sym (ix-mul G (mulM G (mulM G G))))
-    (≐-trans (λ i j → Eq.cong (λ t → ix t i j) e)
-    (≐-trans (ix-scalM c) (λ i j → refl)))))
+    (≐-trans (≐-sym (scale-1 (ix (mulM G (mulM G (mulM G G))))))
+    (≐-trans (eqWith-sound 1# c (mulM G (mulM G (mulM G G))) idM t)
+      (scale-cong {c = c} ix-id)))))
 
-  local-pow₃ : {k : ℕ} (G : Mat k) (c : Q) → mulM G (mulM G G) ≡ scalM c →
+  local-pow₃ : {k : ℕ} (G : Mat k) (c : Q) →
+               T (eqWith 1# c (mulM G (mulM G G)) idM) →
                (ix G ⊙ (ix G ⊙ ix G)) ≐ scale c Idₒ
-  local-pow₃ G c e =
+  local-pow₃ G c t =
     ≐-trans (⊙-cong (≐-refl (ix G)) (≐-sym (ix-mul G G)))
     (≐-trans (≐-sym (ix-mul G (mulM G G)))
-    (≐-trans (λ i j → Eq.cong (λ t → ix t i j) e)
-    (≐-trans (ix-scalM c) (λ i j → refl))))
+    (≐-trans (≐-sym (scale-1 (ix (mulM G (mulM G G)))))
+    (≐-trans (eqWith-sound 1# c (mulM G (mulM G G)) idM t)
+      (scale-cong {c = c} ix-id))))
 
 inv-right₀ : (g : Gen n) → RightInv (ix (proj₂ (M₀ g))) (ix (proj₂ (M (inv₀ g))))
 inv-right₀ {ℕ.suc n} (gate₁ H-gate) = 4 ,
@@ -474,17 +479,17 @@ inv-right₀ {ℕ.suc n} (gate₁ H-gate) = 4 ,
               (⊙-cong (ix-emb (proj₂ Hᵍ))
                 (≐-trans (ix-M [ gate₁ H-gate ]ʷ [ gate₁ H-gate ]ʷ)
                   (⊙-cong (ix-emb (proj₂ Hᵍ)) (ix-emb (proj₂ Hᵍ)))))))
-    (emb-pow {n = n} {k = 1} Hm (√3 ^ 4) (local-pow (proj₂ Hᵍ) (√3 ^ 4) refl))
+    (emb-pow {n = n} {k = 1} (ix (proj₂ Hᵍ)) (√3 ^ 4) (local-pow (proj₂ Hᵍ) (√3 ^ 4) tt))
 inv-right₀ {ℕ.suc n} (gate₁ S-gate) = 0 ,
   ≐-trans (⊙-cong (ix-emb (proj₂ Sᵍ))
             (≐-trans (ix-M [ gate₁ S-gate ]ʷ [ gate₁ S-gate ]ʷ)
               (⊙-cong (ix-emb (proj₂ Sᵍ)) (ix-emb (proj₂ Sᵍ)))))
-    (emb-pow₃ {n = n} {k = 1} Sm (√3 ^ 0) (local-pow₃ (proj₂ Sᵍ) (√3 ^ 0) refl))
+    (emb-pow₃ {n = n} {k = 1} (ix (proj₂ Sᵍ)) (√3 ^ 0) (local-pow₃ (proj₂ Sᵍ) (√3 ^ 0) tt))
 inv-right₀ {ℕ.suc (ℕ.suc n)} (gate₂ CZ-gate) = 0 ,
   ≐-trans (⊙-cong (ix-emb (proj₂ CZᵍ))
             (≐-trans (ix-M [ gate₂ CZ-gate ]ʷ [ gate₂ CZ-gate ]ʷ)
               (⊙-cong (ix-emb (proj₂ CZᵍ)) (ix-emb (proj₂ CZᵍ)))))
-    (emb-pow₃ {n = n} {k = 2} CZm (√3 ^ 0) (local-pow₃ (proj₂ CZᵍ) (√3 ^ 0) refl))
+    (emb-pow₃ {n = n} {k = 2} (ix (proj₂ CZᵍ)) (√3 ^ 0) (local-pow₃ (proj₂ CZᵍ) (√3 ^ 0) tt))
 inv-right₀ (g ↥) with inv-right₀ g
 ... | k , e = k ,
   ≐-trans (⊙-cong (ix-up (proj₂ (M₀ g))) (M-↥ (inv₀ g)))

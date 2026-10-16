@@ -31,6 +31,7 @@ module Examples.Independence.Qutrit-Clifford.Weyl where
 
 open import Data.Bool.Base using (Bool ; T)
 open import Data.Fin.Base using (Fin ; zero ; suc ; toℕ)
+open import Data.Integer.Base using (+_ ; -[1+_])
 open import Data.Nat.Base using (ℕ) renaming (_+_ to _+ℕ_ ; _*_ to _*ℕ_)
 open import Data.Product.Base using (_,_ ; proj₁ ; proj₂)
 open import Data.Unit using (tt)
@@ -60,9 +61,17 @@ private
 ------------------------------------------------------------------------
 -- Powers of ω₃
 
--- ω₃ = ζ⁴.
+-- ω₃ = ζ⁴, as the table of its three values (ζ⁴ = ζ² − 1, ζ⁸ = −ζ²):
+-- read as x ^ (4 * a), every use multiplied out up to eight products.
 ω^ : ℤ ₚ → Q
-ω^ a = x ^ (4 *ℕ toℕ a)
+ω^ zero             = Zζ.⟨ + 1 , + 0 , + 0 , + 0 ⟩
+ω^ (suc zero)       = Zζ.⟨ -[1+ 0 ] , + 0 , + 1 , + 0 ⟩
+ω^ (suc (suc zero)) = Zζ.⟨ + 0 , + 0 , -[1+ 0 ] , + 0 ⟩
+
+ω^-x : (a : ℤ ₚ) → x ^ (4 *ℕ toℕ a) ≡ ω^ a
+ω^-x zero             = refl
+ω^-x (suc zero)       = refl
+ω^-x (suc (suc zero)) = refl
 
 ω^-+ : (a b : ℤ ₚ) → ω^ (a F3.+ b) ≡ ω^ a * ω^ b
 ω^-+ zero                 zero                 = refl
@@ -133,6 +142,8 @@ module Decide₁ (U : Mat 1) (s : Pauli1 → Pauli1) (P : Pauli1) where
     (ix U ⊙ D₁ p) i j                    ≡⟨ Eq.sym (ix-⊙ U (D₁ p) i j) ⟩
     ix (mulM U (matOf (D₁ p))) i j       ≡⟨ Eq.sym (*-identityˡ _) ⟩
     1# * ix (mulM U (matOf (D₁ p))) i j  ≡⟨ e i j ⟩
+    (x ^ (4 *ℕ toℕ (φ p)) * 1#) * ix (mulM (matOf (D₁ (s p))) U) i j
+      ≡⟨ Eq.cong (λ c → (c * 1#) * ix (mulM (matOf (D₁ (s p))) U) i j) (ω^-x (φ p)) ⟩
     (ω^ (φ p) * 1#) * ix (mulM (matOf (D₁ (s p))) U) i j
       ≡⟨ Eq.cong₂ _*_ (*-identityʳ (ω^ (φ p))) (ix-⊙′ (D₁ (s p)) U i j) ⟩
     ω^ (φ p) * (D₁ (s p) ⊙ ix U) i j     ∎
@@ -158,6 +169,8 @@ module Decide₂ (U : Mat 2) (s t : Pauli1 → Pauli1 → Pauli1) (P Q : Pauli1)
     (ix U ⊙ D₂ p q) i j                    ≡⟨ Eq.sym (ix-⊙ U (D₂ p q) i j) ⟩
     ix (mulM U (matOf (D₂ p q))) i j       ≡⟨ Eq.sym (*-identityˡ _) ⟩
     1# * ix (mulM U (matOf (D₂ p q))) i j  ≡⟨ e i j ⟩
+    (x ^ (4 *ℕ toℕ (φ p q)) * 1#) * ix (mulM (matOf (D₂ (s p q) (t p q))) U) i j
+      ≡⟨ Eq.cong (λ c → (c * 1#) * ix (mulM (matOf (D₂ (s p q) (t p q))) U) i j) (ω^-x (φ p q)) ⟩
     (ω^ (φ p q) * 1#) * ix (mulM (matOf (D₂ (s p q) (t p q))) U) i j
       ≡⟨ Eq.cong₂ _*_ (*-identityʳ (ω^ (φ p q))) (ix-⊙′ (D₂ (s p q) (t p q)) U i j) ⟩
     ω^ (φ p q) * (D₂ (s p q) (t p q) ⊙ ix U) i j ∎
