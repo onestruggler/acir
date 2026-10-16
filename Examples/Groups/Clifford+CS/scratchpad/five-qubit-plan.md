@@ -360,3 +360,41 @@ k = 1 … 5: 382 clauses over the 26 rules, of which 86 are consistent with
 the rules' distinctness conditions (scratchpad/five/patterns.py) and need
 a closed four-wire check; the rest are refuted by the injectivity of the
 bit map and of the Gray numbering.
+
+## Every width from six on: design (2026-10-17, branch v-office)
+
+Division (user, 2026-10-17): clifford-cs has five wires (Five/Main,
+complete₅, with AX and λ(ck-tct), λ(lf), λ(hyb-sq), λ(hyb-yb) as rules at
+width 5); v-office derives λ(ck-tct) in our generators' spelling
+(joint/ckt.py, running) so that rule can go, and builds the step n ≥ 6.
+
+The theory for every width is Syntactics + AX + the schema (v-office's
+Five/Rules: ctl-ax, ctl-lf, ctl-hsq, ctl-hyb, λ¹ᵏ (k + 1) of AX, lf,
+hyb-sq, hyb-yb, at every width); clifford-cs's width-5 relation embeds in
+it (its λc rules are ctl-* 0 up to λʷ ≈ λc).  The step at width n ≥ 6,
+given completeness at every width below:
+
+1. Letters as placements.  Every λ¹ letter of Lambda (S on the top wire,
+   CS/CK between a domain wire and the top, the S-box of CS(p, p+1)
+   with its fixed borrowed wires) is `pl σ (c ↓ᵏ r)` for a canonical
+   five-wire letter c and a network σ with known images of c's wires.
+   Networks.bring₁ … bring₆ give frames for any ≤ 6 distinct wires.
+2. The switch (i): an S-box's dashed or borrowed wire moves to an idle
+   wire — placed six-wire equations b6-Su, b6-SA (joint/b6.py, 49 steps
+   of five-wire windows: valid at every width ≥ 6 from complete₅).
+3. (ii) is Lambda.Split at every width (Five.F5.split₅).  (iii), (iv)
+   and F1 at width n: re-borrow by (i) so that both sides lie on ≤ 5
+   wires, then the canonical five-wire equation (closed: complete₅)
+   placed.  The schema rules transport to the next schema instance
+   syntactically (λ¹ (g ↥) = λ¹ g ↑, λ¹ᵏ (suc k) = λ¹ʷ ∘ λ¹ᵏ k).
+4. Transport at width n by induction on derivations (as Five/Transport).
+5. Decoding at width n: G_n(V) = λ⁰ʷ^(n-4) G₄(V); the affine layer
+   Affine/ (symbolic width) gives α, d, equivariance; independence needs
+   G_n to commute with CX(u → v), u ≠ 0: the representation lemma
+   G_n ≡ λ⁰_u(G_{n-1}) for u ≠ top (completeness at n − 1 on the wires ≠
+   A, and the λ-calculus at control u = conjugation by a swap network of
+   the control-top one).
+6. Lemma 8.8: canonicalisation into F_2^4 × 0 (86 closed four-wire
+   checks, as at five wires) and transport n − 4 times; Lemma 8.7: the
+   paper's w_g with completeness one width down; BackAndForth in the
+   new theory; the induction.
