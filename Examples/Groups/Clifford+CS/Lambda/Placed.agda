@@ -23,6 +23,7 @@ open import Data.Fin using (Fin ; toℕ ; inject₁ ; fromℕ) renaming (zero to
 open import Data.Fin.Permutation using (_⟨$⟩ʳ_)
 open import Data.Nat using (ℕ ; zero ; suc ; _+_ ; _<_ ; s≤s ; z≤n)
 open import Data.Product using (proj₁ ; proj₂)
+open import Data.Fin.Properties using () renaming (suc-injective to Fin-suc-inj)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
@@ -39,7 +40,7 @@ open import Examples.Groups.Clifford+CS.PermCalc using (net ; net-↑ ; perm ; r
 open import Examples.Groups.Clifford+CS.LocalPlace using (pl ; pl-pl ; place-eq)
 open import Examples.Groups.Clifford+CS.Networks using (perm-↑0 ; perm-↑s ; bring₁ ; bring₂ ; bring₅)
 open import Examples.Groups.Clifford+CS.NetTop using (topS ; perm-top ; pl-top)
-open import Examples.Groups.Clifford+CS.Lambda using (Swᵗ ; stretch ; Sᵗ ; CSᵗ ; CKᵗ ; Σᵗ)
+open import Examples.Groups.Clifford+CS.Lambda using (Swᵗ ; stretch ; Sᵗ ; CSᵗ ; CKᵗ ; Σᵗ ; λ¹)
 open import Examples.Groups.Clifford+CS.Five.Letters using (b-Sb2-0-41-3 ; b-Sb0-1-42-3 ; b-Sb0-2-43-1)
 
 private
@@ -352,8 +353,8 @@ private
       (PB.trans (≡→≈ (Eq.cong (pl ε) (Eq.sym (↓0₂ κ))))
                 (place-eq {k = 2} (can2 κ) ε τ (agree2 ε τ Eq.refl Eq.refl τa τt)))
 
-  H5-base : ∀ κ → H5 0 κ 0F (sF 0F) (sF (sF 0F)) (sF (sF (sF 0F))) (sF (sF (sF (sF 0F)))) (can5 κ)
-  H5-base κ τ τa τb τc τd τf =
+H5-base : ∀ κ → H5 0 κ 0F (sF 0F) (sF (sF 0F)) (sF (sF (sF 0F))) (sF (sF (sF (sF 0F)))) (can5 κ)
+H5-base κ τ τa τb τc τd τf =
     PB.trans (PB.sym (pl-ε (can5 κ)))
       (PB.trans (≡→≈ (Eq.cong (pl ε) (Eq.sym (↓0₅ κ))))
                 (place-eq {k = 5} (can5 κ) ε τ (agree5 ε τ Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl τa τb τc τd τf)))
@@ -376,3 +377,107 @@ CKᵗ-placed (suc k) = H2-stretch k cCK (CKᵗ k) (CKᵗ-placed k)
 Σᵗ-placed : ∀ k → H5 k cΣ0 0F (sF 0F) (sF (sF 0F)) (sF (sF (sF 0F))) (fromℕ (₄₊ k)) (Σᵗ k)
 Σᵗ-placed zero    = H5-base cΣ0
 Σᵗ-placed (suc k) = H5-stretch k (Σᵗ k) (Σᵗ-placed k)
+
+------------------------------------------------------------------------
+-- Every letter of λ¹
+
+-- Five distinct wires.
+record D5 {w : ℕ} (a b c d f : Fin w) : Set where
+  field
+    ba : b ≢ a
+    ca : c ≢ a
+    cb : c ≢ b
+    da : d ≢ a
+    db : d ≢ b
+    dc : d ≢ c
+    fa : f ≢ a
+    fb : f ≢ b
+    fc : f ≢ c
+    fd : f ≢ d
+
+private
+  sF≢ : ∀ {w} {a b : Fin w} → a ≢ b → _≢_ {A = Fin (suc w)} (sF a) (sF b)
+  sF≢ ne e = ne (Fin-suc-inj e)
+
+  D5-sF : ∀ {w} {a b c d f : Fin w} → D5 a b c d f → D5 (sF a) (sF b) (sF c) (sF d) (sF f)
+  D5-sF D = record
+    { ba = sF≢ (D5.ba D) ; ca = sF≢ (D5.ca D) ; cb = sF≢ (D5.cb D) ; da = sF≢ (D5.da D)
+    ; db = sF≢ (D5.db D) ; dc = sF≢ (D5.dc D) ; fa = sF≢ (D5.fa D) ; fb = sF≢ (D5.fb D)
+    ; fc = sF≢ (D5.fc D) ; fd = sF≢ (D5.fd D) }
+
+  -- The canonical positions, the top fourth.
+  D5-low : ∀ {r} (t : Fin (5 + r)) → t ≢ 0F → t ≢ sF 0F → t ≢ sF (sF 0F) → t ≢ sF (sF (sF 0F)) →
+           D5 {5 + r} 0F (sF 0F) (sF (sF 0F)) (sF (sF (sF 0F))) t
+  D5-low t t0 t1 t2 t3 = record
+    { ba = λ () ; ca = λ () ; cb = λ () ; da = λ () ; db = λ () ; dc = λ ()
+    ; fa = t0 ; fb = t1 ; fc = t2 ; fd = t3 }
+
+-- Where a letter's wires go: the control is always the top wire.
+data Placement (n : ℕ) (L : Circuit (suc (₄₊ n))) : Set where
+  onS : HS (₄₊ n) (fromℕ (₄₊ n)) L → Placement n L
+  on2 : ∀ κ (a : Fin (suc (₄₊ n))) → fromℕ (₄₊ n) ≢ a → H2 (₃₊ n) κ a (fromℕ (₄₊ n)) L → Placement n L
+  on5 : ∀ κ (a b c d : Fin (suc (₄₊ n))) → D5 a b c d (fromℕ (₄₊ n)) →
+        H5 n κ a b c d (fromℕ (₄₊ n)) L → Placement n L
+
+up-placement : ∀ {n} {L : Circuit (suc (₄₊ n))} → Placement n L → Placement (suc n) (L ↑)
+up-placement {n} {L} (onS h) = onS (HS-up (₄₊ n) (fromℕ (₄₊ n)) L h)
+up-placement {n} {L} (on2 κ a ta h) = on2 κ (sF a) (sF≢ ta) (H2-up (₃₊ n) κ a (fromℕ (₄₊ n)) ta L h)
+up-placement {n} {L} (on5 κ a b c d D h) =
+  on5 κ (sF a) (sF b) (sF c) (sF d) (D5-sF D)
+      (H5-up n κ a b c d (fromℕ (₄₊ n)) (D5.ba D) (D5.ca D) (D5.cb D) (D5.da D) (D5.db D)
+             (D5.dc D) (D5.fa D) (D5.fb D) (D5.fc D) (D5.fd D) L h)
+
+private
+  top≢ : ∀ {r} → D5 {5 + r} 0F (sF 0F) (sF (sF 0F)) (sF (sF (sF 0F))) (fromℕ (₄₊ r))
+  top≢ = D5-low _ (λ ()) (λ ()) (λ ()) (λ ())
+
+  -- CS or CK between wire 0 and the top of a w-wire circuit, lifted to
+  -- the wires 4 − w and 4 of five.
+  two₃ : ∀ κ {L : Circuit 2} → H2 0 κ 0F (sF 0F) L → Placement 0 (L ↑ ↑ ↑)
+  two₃ κ {L} h =
+    on2 κ (sF (sF (sF 0F))) (λ ())
+      (H2-up 2 κ (sF (sF 0F)) (sF (sF (sF 0F))) (λ ()) (L ↑ ↑)
+        (H2-up 1 κ (sF 0F) (sF (sF 0F)) (λ ()) (L ↑)
+          (H2-up 0 κ 0F (sF 0F) (λ ()) L h)))
+
+  two₂ : ∀ κ {L : Circuit 3} → H2 1 κ 0F (sF (sF 0F)) L → Placement 0 (L ↑ ↑)
+  two₂ κ {L} h =
+    on2 κ (sF (sF 0F)) (λ ())
+      (H2-up 2 κ (sF 0F) (sF (sF (sF 0F))) (λ ()) (L ↑)
+        (H2-up 1 κ 0F (sF (sF 0F)) (λ ()) L h))
+
+  two₁ : ∀ κ {L : Circuit 4} → H2 2 κ 0F (sF (sF (sF 0F))) L → Placement 0 (L ↑)
+  two₁ κ {L} h = on2 κ (sF 0F) (λ ()) (H2-up 2 κ 0F (sF (sF (sF 0F))) (λ ()) L h)
+
+  ident : ∀ κ → Placement 0 (can5 κ)
+  ident κ = on5 κ 0F (sF 0F) (sF (sF 0F)) (sF (sF (sF 0F))) top≢ (H5-base κ)
+
+  -- The letters of a four-wire domain above wire 0 (Lambda's λ₁, λ₂, λ₃).
+  pl₁ : (g : Gen 1) → Placement 0 (λ¹ {0} (g ↥ ↥ ↥))
+  pl₁ I-gen     = onS (Sᵗ-placed 4)
+  pl₁ S-gen     = two₃ cCS (CSᵗ-placed 0)
+  pl₁ K-gen     = two₃ cCK (CKᵗ-placed 0)
+  pl₁ (I-gen ↥) = onS (Sᵗ-placed 4)
+
+  pl₂ : (g : Gen 2) → Placement 0 (λ¹ {0} (g ↥ ↥))
+  pl₂ I-gen  = onS (Sᵗ-placed 4)
+  pl₂ S-gen  = two₂ cCS (CSᵗ-placed 1)
+  pl₂ K-gen  = two₂ cCK (CKᵗ-placed 1)
+  pl₂ CS-gen = ident cΣ2
+  pl₂ (g ↥)  = pl₁ g
+
+  pl₃ : (g : Gen 3) → Placement 0 (λ¹ {0} (g ↥))
+  pl₃ I-gen  = onS (Sᵗ-placed 4)
+  pl₃ S-gen  = two₁ cCS (CSᵗ-placed 2)
+  pl₃ K-gen  = two₁ cCK (CKᵗ-placed 2)
+  pl₃ CS-gen = ident cΣ1
+  pl₃ (g ↥)  = pl₂ g
+
+-- Every letter.
+placement : ∀ {n} (g : Gen (₄₊ n)) → Placement n (λ¹ g)
+placement {n}     I-gen  = onS (Sᵗ-placed (₄₊ n))
+placement {n}     S-gen  = on2 cCS 0F (λ ()) (CSᵗ-placed (₃₊ n))
+placement {n}     K-gen  = on2 cCK 0F (λ ()) (CKᵗ-placed (₃₊ n))
+placement {n}     CS-gen = on5 cΣ0 0F (sF 0F) (sF (sF 0F)) (sF (sF (sF 0F))) top≢ (Σᵗ-placed n)
+placement {suc n} (g ↥)  = up-placement (placement g)
+placement {zero}  (g ↥)  = pl₃ g
