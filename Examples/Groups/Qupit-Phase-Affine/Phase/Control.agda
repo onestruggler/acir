@@ -109,40 +109,50 @@ W G = G ^ᶠ (- 1F) • (SWAP • G ↑ • SWAP) ^ᶠ (- 1F) • (CX ↑) ^ᶠ 
 ------------------------------------------------------------------------
 -- The functor
 
-module Functor
-  (lv' : ℕ) (no3 : 3 ≤ lv' → ⊥) (κ : F → F)
-  (Ωg : ∀ {n} → Circuit (₁₊ n))
-  (Zg : ∀ {n} → Circuit (₂₊ n))
-  (Sg : ∀ {n} → .(2 ≤ lv') → Circuit (₂₊ n))
-  -- The images are diagonal; Ω is on wire 0, Zg and Sg on wires 0, 1.
-  (Ω-D    : ∀ {n} → Diag₃ (₁₊ n) Ωg)
-  (Z-D    : ∀ {n} → Diag₃ (₂₊ n) Zg)
-  (S-D    : ∀ {n} .(h' : 2 ≤ lv') → Diag₃ (₂₊ n) (Sg h'))
-  (Ω-up   : ∀ {n} (w : Circuit n) → (₁₊ n) ⊢ Ωg ∥ (w ↑))
-  (Z-two  : ∀ {n} (w : Circuit n) → (₂₊ n) ⊢ Zg ∥ (w ↑ ↑))
-  (S-two  : ∀ {n} .(h' : 2 ≤ lv') (w : Circuit n) → (₂₊ n) ⊢ Sg h' ∥ (w ↑ ↑))
-  -- The images of the rules with phases.
-  (Ω-sw   : ∀ {n} → (₂₊ n) ⊢ SWAP • Ωg ↑ • SWAP ≈ Ωg)
-  (Z-sw   : ∀ {n} → (₃₊ n) ⊢ Zg • SWAP ↑ ≈ SWAP ↑ • SWAP • Zg ↑ • SWAP)
-  (S-sw   : ∀ {n} .(h' : 2 ≤ lv') → (₃₊ n) ⊢ Sg h' • SWAP ↑ ≈ SWAP ↑ • SWAP • Sg h' ↑ • SWAP)
-  (Ω-ord  : ∀ {n} → (₁₊ n) ⊢ Ωg ^ p ≈ ε)
-  (Z-ord  : ∀ {n} → (₂₊ n) ⊢ Zg ^ p ≈ ε)
-  (Z-CX   : ∀ {n} → (₃₊ n) ⊢ CX ↑ • Zg • SWAP • Zg ↑ • SWAP ≈ Zg • CX ↑)
-  (Z-M    : ∀ {n} (x : F*) → (₂₊ n) ⊢ Zg • M⟨ x ⟩ ↑ ≈ M⟨ x ⟩ ↑ • Zg ^ toℕ (proj₁ x))
-  (Z-X    : ∀ {n} → (₂₊ n) ⊢ Zg • X ↑ ≈ Ωg • X ↑ • Zg)
-  (S-ord  : ∀ {n} .(h' : 2 ≤ lv') → (₂₊ n) ⊢ Sg h' ^ p ≈ ε)
-  (S-X    : ∀ {n} .(h' : 2 ≤ lv') → (₂₊ n) ⊢ Sg h' • X ↑ ≈ X ↑ • Zg • Sg h')
-  (S-M    : ∀ {n} .(h' : 2 ≤ lv') (x : F*) → (₂₊ n) ⊢ Sg h' • M⟨ x ⟩ ↑ ≈
-              M⟨ x ⟩ ↑ • Zg ^ toℕ (binom2 (proj₁ x)) • Sg h' ^ toℕ (proj₁ x * proj₁ x))
-  (S-CX   : ∀ {n} .(h' : 2 ≤ lv') → (₃₊ n) ⊢ CX ↑ • SWAP • Sg h' ↑ • SWAP ≈ (SWAP • Sg h' ↑ • SWAP) • CX ↑)
-  (W-M    : ∀ {n} .(h' : 2 ≤ lv') → (₃₊ n) ⊢ (SWAP • M⟨ -1* ⟩ ↑ ↑ • SWAP) • W (Sg h') ^ toℕ (- 1F) • SWAP • M⟨ -1* ⟩ ↑ ↑ • SWAP ≈ W (Sg h'))
-  (W-CX   : ∀ {n} .(h' : 2 ≤ lv') → (₄₊ n) ⊢ W (Sg h') • SWAP • CX ↑ ↑ • SWAP ≈
-              (SWAP • CX ↑ ↑ • SWAP) • W (Sg h') • (SWAP • SWAP ↑ ↑ • SWAP) • W (Sg h') • SWAP • SWAP ↑ ↑ • SWAP)
-  -- Their phases.
-  (Ω-sem  : ∀ {n} → DiagC {₁₊ n} Ωg (λ y → κ (head y)))
-  (Z-sem  : ∀ {n} → DiagC {₂₊ n} Zg (λ y → κ (head y) * head (tail y)))
-  (S-sem  : ∀ {n} .(h' : 2 ≤ lv') → DiagC {₂₊ n} (Sg h') (λ y → κ (head y) * binom2 (head (tail y))))
-  where
+-- What the functor is given: the images of the phase generators, and
+-- of the rules involving phases.  They are a record rather than module
+-- parameters, so that the functor is checked in a short context: every
+-- metavariable is applied to the whole context, and with these as
+-- twenty-five more parameters the module took 27 s to check, not 5 s.
+
+record Images (lv' : ℕ) (κ : F → F) : Set where
+  constructor images
+  field
+    Ωg : ∀ {n} → Circuit (₁₊ n)
+    Zg : ∀ {n} → Circuit (₂₊ n)
+    Sg : ∀ {n} → .(2 ≤ lv') → Circuit (₂₊ n)
+    -- The images are diagonal; Ω is on wire 0, Zg and Sg on wires 0, 1.
+    Ω-D    : ∀ {n} → Diag₃ (₁₊ n) Ωg
+    Z-D    : ∀ {n} → Diag₃ (₂₊ n) Zg
+    S-D    : ∀ {n} .(h' : 2 ≤ lv') → Diag₃ (₂₊ n) (Sg h')
+    Ω-up   : ∀ {n} (w : Circuit n) → (₁₊ n) ⊢ Ωg ∥ (w ↑)
+    Z-two  : ∀ {n} (w : Circuit n) → (₂₊ n) ⊢ Zg ∥ (w ↑ ↑)
+    S-two  : ∀ {n} .(h' : 2 ≤ lv') (w : Circuit n) → (₂₊ n) ⊢ Sg h' ∥ (w ↑ ↑)
+    -- The images of the rules with phases.
+    Ω-sw   : ∀ {n} → (₂₊ n) ⊢ SWAP • Ωg ↑ • SWAP ≈ Ωg
+    Z-sw   : ∀ {n} → (₃₊ n) ⊢ Zg • SWAP ↑ ≈ SWAP ↑ • SWAP • Zg ↑ • SWAP
+    S-sw   : ∀ {n} .(h' : 2 ≤ lv') → (₃₊ n) ⊢ Sg h' • SWAP ↑ ≈ SWAP ↑ • SWAP • Sg h' ↑ • SWAP
+    Ω-ord  : ∀ {n} → (₁₊ n) ⊢ Ωg ^ p ≈ ε
+    Z-ord  : ∀ {n} → (₂₊ n) ⊢ Zg ^ p ≈ ε
+    Z-CX   : ∀ {n} → (₃₊ n) ⊢ CX ↑ • Zg • SWAP • Zg ↑ • SWAP ≈ Zg • CX ↑
+    Z-M    : ∀ {n} (x : F*) → (₂₊ n) ⊢ Zg • M⟨ x ⟩ ↑ ≈ M⟨ x ⟩ ↑ • Zg ^ toℕ (proj₁ x)
+    Z-X    : ∀ {n} → (₂₊ n) ⊢ Zg • X ↑ ≈ Ωg • X ↑ • Zg
+    S-ord  : ∀ {n} .(h' : 2 ≤ lv') → (₂₊ n) ⊢ Sg h' ^ p ≈ ε
+    S-X    : ∀ {n} .(h' : 2 ≤ lv') → (₂₊ n) ⊢ Sg h' • X ↑ ≈ X ↑ • Zg • Sg h'
+    S-M    : ∀ {n} .(h' : 2 ≤ lv') (x : F*) → (₂₊ n) ⊢ Sg h' • M⟨ x ⟩ ↑ ≈
+               M⟨ x ⟩ ↑ • Zg ^ toℕ (binom2 (proj₁ x)) • Sg h' ^ toℕ (proj₁ x * proj₁ x)
+    S-CX   : ∀ {n} .(h' : 2 ≤ lv') → (₃₊ n) ⊢ CX ↑ • SWAP • Sg h' ↑ • SWAP ≈ (SWAP • Sg h' ↑ • SWAP) • CX ↑
+    W-M    : ∀ {n} .(h' : 2 ≤ lv') → (₃₊ n) ⊢ (SWAP • M⟨ -1* ⟩ ↑ ↑ • SWAP) • W (Sg h') ^ toℕ (- 1F) • SWAP • M⟨ -1* ⟩ ↑ ↑ • SWAP ≈ W (Sg h')
+    W-CX   : ∀ {n} .(h' : 2 ≤ lv') → (₄₊ n) ⊢ W (Sg h') • SWAP • CX ↑ ↑ • SWAP ≈
+               (SWAP • CX ↑ ↑ • SWAP) • W (Sg h') • (SWAP • SWAP ↑ ↑ • SWAP) • W (Sg h') • SWAP • SWAP ↑ ↑ • SWAP
+    -- Their phases.
+    Ω-sem  : ∀ {n} → DiagC {₁₊ n} Ωg (λ y → κ (head y))
+    Z-sem  : ∀ {n} → DiagC {₂₊ n} Zg (λ y → κ (head y) * head (tail y))
+    S-sem  : ∀ {n} .(h' : 2 ≤ lv') → DiagC {₂₊ n} (Sg h') (λ y → κ (head y) * binom2 (head (tail y)))
+
+module Functor (lv' : ℕ) (no3 : 3 ≤ lv' → ⊥) (κ : F → F) (I : Images lv' κ) where
+
+  open Images I
 
   private
     module Src = Syntactics′ p-2 p-prime lv'
