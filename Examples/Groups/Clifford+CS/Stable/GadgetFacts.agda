@@ -8,8 +8,9 @@
 -- controls from six wires on; for Five.Facts4's gadgets that is
 -- Stable.GadgetSym.ss-gad₅, from completeness on five wires (`sym`).
 -- So their independence of the affine circuit holds at every width
--- (`indep`), and Lemma 8.8 for decoded words over the three kinds
--- reduces to closed four-wire checks (`lemma`, Stable.HyperCanon).
+-- (`indep`), the affine decoding is equivariant at every width (`Dec`),
+-- and Lemma 8.8 for decoded words over the three kinds reduces to closed
+-- four-wire checks (`lemma`, Stable.HyperCanon).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -76,3 +77,6 @@ indep V = GA.indep (G V) (ind₄ V) (f6 V) (sym V)
 
 -- Lemma 8.8 for decoded words over the three kinds.
 open HyperCanon c4 f4 f5 tr Kind G ind₄ f6 sym public using (IW ; inst ; NeW ; lemma ; at-pattern)
+
+-- The affine decoding of a gadget on 4 + m wires, and its equivariance.
+module Dec (V : Kind) (m : ℕ) = GA.Dec (G V) (ind₄ V) (f6 V) (sym V) m
