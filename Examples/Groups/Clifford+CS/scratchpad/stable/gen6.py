@@ -199,16 +199,22 @@ class Deriv:
         rs, rt = [re(g) for g in seg], [re(g) for g in ys]
         assert SEM[5].eq(pword(seg, rs), pword(ys, rt))
         fx, fy = frames(tau, seg, rs), frames(tau, ys, rt)
-        if any(g.lit.name in SBOX_GEN for g in seg + ys):
-            cx, dx = ctrl_line(seg, rs)
-            cy, dy = ctrl_line(ys, rt)
+        sbox = any(g.lit.name in SBOX_GEN for g in seg + ys)
+        ctl = None
+        if sbox:
+            try:
+                ctl = (ctrl_line(seg, rs), ctrl_line(ys, rt))
+            except (ValueError, AssertionError):
+                ctl = None
+        if ctl is not None:
+            (cx, dx), (cy, dy) = ctl
             assert SEM[4].eq(to_cs(dx), to_cs(dy))
             self.steps.append(f'at {k} {n} {agda_list(ys)}\n      (winC {nl(tau)} {fx}\n         {fy}\n'
                               f'         Eq.refl Eq.refl\n         {cx}\n         {cy}\n         Eq.refl)')
         else:
             self.steps.append(f'at {k} {n} {agda_list(ys)}\n      (win {nl(tau)} {fx}\n         {fy}\n         Eq.refl Eq.refl Eq.refl)')
         self.cur = self.cur[:k] + ys + self.cur[k + n:]
-        self.lines.append(list(self.cur)); self.heavy.append(any(g.k == 5 for g in seg + ys))
+        self.lines.append(list(self.cur)); self.heavy.append(sbox and ctl is None)
 
     def lemma(self, k, L, pi, backwards=False):
         """L transported by the wire map pi (canonical wire -> wire)."""

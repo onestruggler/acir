@@ -49,7 +49,7 @@ open import Examples.Groups.Clifford+CS.SemanticSteps using (same-sem)
 open import Examples.Groups.Clifford+CS.TopWeakening using (σ ; σ⁻¹ ; σσ⁻¹ ; nat ; top-cong)
 open import Examples.Groups.Clifford+CS.PermCalc using (net ; perm ; revS)
 open import Examples.Groups.Clifford+CS.LocalPlace using (pl ; pl-• ; pl-pl ; place-eq)
-open import Examples.Groups.Clifford+CS.Lambda using (Σᵗ ; λ¹)
+open import Examples.Groups.Clifford+CS.Lambda using (Σᵗ ; λ¹ ; λ⁰ ; Xᵗ)
 open import Examples.Groups.Clifford+CS.Lambda.Semantics using (λ¹-~ ; λ¹-gen ; ⟦gen⟧)
 open import Examples.Groups.Clifford+CS.Stable.Rules
 open import Examples.Groups.Clifford+CS.Stable.Soundness using (axiom-soundᵧ)
@@ -57,6 +57,8 @@ open import Examples.Groups.Clifford+CS.Stable.Weakening using (top-congᵧ)
 open import Examples.Groups.Clifford+CS.Stable.Insert4 using (top2)
 open import Examples.Groups.Clifford+CS.Stable.Nets7 using (Σ₀ ; Σ₂)
 open import Examples.Groups.Clifford+CS.Stable.Windows6 using (win-sem)
+open import Examples.Groups.Clifford+CS.Stable.CalcSem using (F4-sem)
+open import Examples.Groups.Clifford+CS.Stable.XPlace using (Xᵗ-placed)
 
 private
   variable
@@ -361,3 +363,63 @@ comm₂-base₂-8 = begin
   PW N Σ₀ • PW N Σ₂          ≈⟨ sym (cong P-moved Q-moved) ⟩
   Σᵗ 3 • Σ₂ ↑ ↑ ↑ ∎
   where open Tools (8 YVRel,_===_)
+
+------------------------------------------------------------------------
+-- The same with the first letter white (Stable.Mixed.MixBase): X on the
+-- control is X on the moved S-box's control (Stable.XPlace), and on five
+-- wires the white and the black S-box commute by (F4) there.
+
+private
+  sw5 : ℕ → Word (S.Gen 5)
+  sw5 0 = [ S.gate₂ S.σ-gate ]ʷ
+  sw5 1 = [ S.gate₂ S.σ-gate S.↥ ]ʷ
+  sw5 2 = [ S.gate₂ S.σ-gate S.↥ S.↥ ]ʷ
+  sw5 3 = [ S.gate₂ S.σ-gate S.↥ S.↥ S.↥ ]ʷ
+  sw5 _ = ε
+
+  ns5 : List ℕ → Word (S.Gen 5)
+  ns5 []       = ε
+  ns5 (p ∷ ps) = sw5 p • ns5 ps
+
+  comm⁰₅ : 5 ⊢ᵧ (Xᵗ 4 • Σ₂ • Xᵗ 4) • Σ₀ ≈ Σ₀ • (Xᵗ 4 • Σ₂ • Xᵗ 4)
+  comm⁰₅ = c₅ {(Xᵗ 4 • Σ₂ • Xᵗ 4) • Σ₀} {Σ₀ • (Xᵗ 4 • Σ₂ • Xᵗ 4)}
+             (F4-sem {0} (gate₂ CS-gate ↥ ↥) (gate₂ CS-gate))
+
+  X-moved : 8 ⊢ Xᵗ 7 ≈ PW N (Xᵗ 4)
+  X-moved = begin
+    Xᵗ 7                                       ≈⟨ Xᵗ-placed 7 (N • nsW (3 ∷ 2 ∷ 1 ∷ 0 ∷ [])) Eq.refl ⟩
+    pl (N • nsW (3 ∷ 2 ∷ 1 ∷ 0 ∷ [])) (X {0} ↓ᵏ 7)          ≈⟨ sym (pl-pl N (nsW (3 ∷ 2 ∷ 1 ∷ 0 ∷ [])) (X {0} ↓ᵏ 7)) ⟩
+    pl N (pl (nsW (3 ∷ 2 ∷ 1 ∷ 0 ∷ [])) (X {0} ↓ᵏ 7))       ≈⟨ sym (cong refl (cong (top-cong (top-cong (top-cong (Xᵗ-placed 4 (ns5 (3 ∷ 2 ∷ 1 ∷ 0 ∷ [])) Eq.refl)))) refl)) ⟩
+    PW N (Xᵗ 4) ∎
+    where open Tools (8 VRel,_===_)
+
+  moved-comm⁰ : 8 ⊢ᵧ (PW N (Xᵗ 4) • PW N Σ₂ • PW N (Xᵗ 4)) • PW N Σ₀
+                    ≈ PW N Σ₀ • (PW N (Xᵗ 4) • PW N Σ₂ • PW N (Xᵗ 4))
+  moved-comm⁰ = begin
+    (PW N x • PW N Σ₂ • PW N x) • PW N Σ₀
+      ≈⟨ cong (trans (back _ (sym (embed (pl-• N (Σ₂ ↓ᵏ 3) (x ↓ᵏ 3)))))
+                     (sym (embed (pl-• N (x ↓ᵏ 3) ((Σ₂ • x) ↓ᵏ 3))))) refl ⟩
+    PW N (x • Σ₂ • x) • PW N Σ₀
+      ≈⟨ sym (embed (pl-• N ((x • Σ₂ • x) ↓ᵏ 3) (Σ₀ ↓ᵏ 3))) ⟩
+    pl N (((x • Σ₂ • x) • Σ₀) ↓ᵏ 3)
+      ≈⟨ cong refl (cong ((top-congᵧ (top-congᵧ (top-congᵧ comm⁰₅)))) refl) ⟩
+    pl N ((Σ₀ • (x • Σ₂ • x)) ↓ᵏ 3)
+      ≈⟨ embed (pl-• N (Σ₀ ↓ᵏ 3) ((x • Σ₂ • x) ↓ᵏ 3)) ⟩
+    PW N Σ₀ • PW N (x • Σ₂ • x)
+      ≈⟨ cong refl (trans (embed (pl-• N (x ↓ᵏ 3) ((Σ₂ • x) ↓ᵏ 3)))
+                          (back _ (embed (pl-• N (Σ₂ ↓ᵏ 3) (x ↓ᵏ 3))))) ⟩
+    PW N Σ₀ • (PW N x • PW N Σ₂ • PW N x) ∎
+    where
+    x = Xᵗ 4
+    open Tools (8 YVRel,_===_)
+
+mix-base-8 : (₂₊ (₄₊ (suc (suc (zero))))) ⊢ᵧ λ⁰ {suc (suc (suc (zero)))} (top2 (₃₊ (suc (suc (zero)))) CS-gate) • λ¹ {suc (suc (suc (zero)))} (gate₂ CS-gate)
+                                ≈ λ¹ {suc (suc (suc (zero)))} (gate₂ CS-gate) • λ⁰ {suc (suc (suc (zero)))} (top2 (₃₊ (suc (suc (zero)))) CS-gate)
+mix-base-8 = begin
+  (Xᵗ 7 • Σ₂ ↑ ↑ ↑ • Xᵗ 7) • Σᵗ 3       ≈⟨ cong (cong xm (cong Q-moved xm)) P-moved ⟩
+  (PW N (Xᵗ 4) • PW N Σ₂ • PW N (Xᵗ 4)) • PW N Σ₀       ≈⟨ moved-comm⁰ ⟩
+  PW N Σ₀ • (PW N (Xᵗ 4) • PW N Σ₂ • PW N (Xᵗ 4))       ≈⟨ sym (cong P-moved (cong xm (cong Q-moved xm))) ⟩
+  Σᵗ 3 • (Xᵗ 7 • Σ₂ ↑ ↑ ↑ • Xᵗ 7) ∎
+  where
+  xm = embed X-moved
+  open Tools (8 YVRel,_===_)

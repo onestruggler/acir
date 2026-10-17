@@ -62,7 +62,7 @@ open import Examples.Groups.Clifford+CS.SemanticSteps using (same-sem)
 open import Examples.Groups.Clifford+CS.TopWeakening using (σ ; σ⁻¹ ; σσ⁻¹ ; nat ; top-cong)
 open import Examples.Groups.Clifford+CS.PermCalc using (net ; perm ; revS)
 open import Examples.Groups.Clifford+CS.LocalPlace using (pl ; pl-• ; pl-pl ; place-eq)
-open import Examples.Groups.Clifford+CS.Lambda using (Σᵗ ; λ¹ ; λ¹ʷ)
+open import Examples.Groups.Clifford+CS.Lambda using (Σᵗ ; λ¹ ; λ¹ʷ ; λ⁰ ; Xᵗ)
 open import Examples.Groups.Clifford+CS.Lambda.Semantics using (λ¹-~)
 open import Examples.Groups.Clifford+CS.Five.Letters using (b-Sb2-0-41-3 ; b-Sb0-2-43-1)
 open import Examples.Groups.Clifford+CS.Stable.Rules
@@ -71,6 +71,8 @@ open import Examples.Groups.Clifford+CS.Stable.Weakening using (top-congᵧ)
 open import Examples.Groups.Clifford+CS.Stable.Insert4 using (top2)
 open import Examples.Groups.Clifford+CS.Stable.Nets7
 open import Examples.Groups.Clifford+CS.Stable.Windows6 using (windows₆)
+open import Examples.Groups.Clifford+CS.Stable.CalcSem using (F4-sem)
+open import Examples.Groups.Clifford+CS.Stable.XPlace using (Xᵗ-placed)
 
 private
   variable
@@ -228,6 +230,71 @@ module _ (W₆ : Windows₆) where
    P₇ N Σ₀ • P₇ N Σ₂          ≈⟨ sym (cong P-moved Q-moved) ⟩
    Σᵗ 2 • Σ₂ ↑ ↑ ∎
    where open Tools (7 YVRel,_===_)
+
+------------------------------------------------------------------------
+ -- The same with the first letter white (Stable.Mixed.MixBase): X on the
+ -- control is X on the moved S-box's control (Stable.XPlace), and on five
+ -- wires the white and the black S-box commute by (F4) there.
+
+ private
+   sw5 : ℕ → Word (S.Gen 5)
+   sw5 0 = [ S.gate₂ S.σ-gate ]ʷ
+   sw5 1 = [ S.gate₂ S.σ-gate S.↥ ]ʷ
+   sw5 2 = [ S.gate₂ S.σ-gate S.↥ S.↥ ]ʷ
+   sw5 3 = [ S.gate₂ S.σ-gate S.↥ S.↥ S.↥ ]ʷ
+   sw5 _ = ε
+
+   ns5 : List ℕ → Word (S.Gen 5)
+   ns5 []       = ε
+   ns5 (p ∷ ps) = sw5 p • ns5 ps
+
+   comm⁰₅ : 5 ⊢ᵧ (Xᵗ 4 • Σ₂ • Xᵗ 4) • Σ₀ ≈ Σ₀ • (Xᵗ 4 • Σ₂ • Xᵗ 4)
+   comm⁰₅ = c₅ {(Xᵗ 4 • Σ₂ • Xᵗ 4) • Σ₀} {Σ₀ • (Xᵗ 4 • Σ₂ • Xᵗ 4)}
+              (F4-sem {0} (gate₂ CS-gate ↥ ↥) (gate₂ CS-gate))
+
+   X-moved : 7 ⊢ Xᵗ 6 ≈ P₇ N (Xᵗ 4)
+   X-moved = begin
+     Xᵗ 6                                                 ≈⟨ Xᵗ-placed 6 (N • ns₇ (3 ∷ 2 ∷ 1 ∷ 0 ∷ [])) Eq.refl ⟩
+     pl (N • ns₇ (3 ∷ 2 ∷ 1 ∷ 0 ∷ [])) (X {0} ↓ᵏ 6)        ≈⟨ sym (pl-pl N (ns₇ (3 ∷ 2 ∷ 1 ∷ 0 ∷ [])) (X {0} ↓ᵏ 6)) ⟩
+     pl N (pl (ns₇ (3 ∷ 2 ∷ 1 ∷ 0 ∷ [])) (X {0} ↓ᵏ 6))     ≈⟨ sym (cong refl (cong (top-cong (top-cong (Xᵗ-placed 4 (ns5 (3 ∷ 2 ∷ 1 ∷ 0 ∷ [])) Eq.refl))) refl)) ⟩
+     P₇ N (Xᵗ 4) ∎
+     where open Tools (7 VRel,_===_)
+
+   moved-comm⁰ : 7 ⊢ᵧ (P₇ N (Xᵗ 4) • P₇ N Σ₂ • P₇ N (Xᵗ 4)) • P₇ N Σ₀
+                    ≈ P₇ N Σ₀ • (P₇ N (Xᵗ 4) • P₇ N Σ₂ • P₇ N (Xᵗ 4))
+   moved-comm⁰ = begin
+     (P₇ N x • P₇ N Σ₂ • P₇ N x) • P₇ N Σ₀
+       ≈⟨ cong (trans (back _ (sym (embed (pl-• N (Σ₂ ↓ᵏ 2) (x ↓ᵏ 2)))))
+                      (sym (embed (pl-• N (x ↓ᵏ 2) ((Σ₂ • x) ↓ᵏ 2))))) refl ⟩
+     P₇ N (x • Σ₂ • x) • P₇ N Σ₀
+       ≈⟨ sym (embed (pl-• N ((x • Σ₂ • x) ↓ᵏ 2) (Σ₀ ↓ᵏ 2))) ⟩
+     pl N (((x • Σ₂ • x) • Σ₀) ↓ᵏ 2)
+       ≈⟨ cong refl (cong (top-congᵧ (top-congᵧ comm⁰₅)) refl) ⟩
+     pl N ((Σ₀ • (x • Σ₂ • x)) ↓ᵏ 2)
+       ≈⟨ embed (pl-• N (Σ₀ ↓ᵏ 2) ((x • Σ₂ • x) ↓ᵏ 2)) ⟩
+     P₇ N Σ₀ • P₇ N (x • Σ₂ • x)
+       ≈⟨ cong refl (trans (embed (pl-• N (x ↓ᵏ 2) ((Σ₂ • x) ↓ᵏ 2)))
+                           (back _ (embed (pl-• N (Σ₂ ↓ᵏ 2) (x ↓ᵏ 2))))) ⟩
+     P₇ N Σ₀ • (P₇ N x • P₇ N Σ₂ • P₇ N x) ∎
+     where
+     x = Xᵗ 4
+     open Tools (7 YVRel,_===_)
+
+ mix-base₁ : (₂₊ (₄₊ (suc zero))) ⊢ᵧ λ⁰ {suc (suc zero)} (top2 (₃₊ (suc zero)) CS-gate) • λ¹ {suc (suc zero)} (gate₂ CS-gate)
+                                 ≈ λ¹ {suc (suc zero)} (gate₂ CS-gate) • λ⁰ {suc (suc zero)} (top2 (₃₊ (suc zero)) CS-gate)
+ mix-base₁ = begin
+   (Xᵗ 6 • Σ₂ ↑ ↑ • Xᵗ 6) • Σᵗ 2                     ≈⟨ cong (cong xm (cong Q-moved xm)) P-moved ⟩
+   (P₇ N (Xᵗ 4) • P₇ N Σ₂ • P₇ N (Xᵗ 4)) • P₇ N Σ₀    ≈⟨ moved-comm⁰ ⟩
+   P₇ N Σ₀ • (P₇ N (Xᵗ 4) • P₇ N Σ₂ • P₇ N (Xᵗ 4))    ≈⟨ sym (cong P-moved (cong xm (cong Q-moved xm))) ⟩
+   Σᵗ 2 • (Xᵗ 6 • Σ₂ ↑ ↑ • Xᵗ 6) ∎
+   where
+   xm = embed X-moved
+   open Tools (7 YVRel,_===_)
+
+-- From completeness on five and six wires alone.
+mix-base-7 : (₂₊ (₄₊ (suc zero))) ⊢ᵧ λ⁰ {suc (suc zero)} (top2 (₃₊ (suc zero)) CS-gate) • λ¹ {suc (suc zero)} (gate₂ CS-gate)
+                                ≈ λ¹ {suc (suc zero)} (gate₂ CS-gate) • λ⁰ {suc (suc zero)} (top2 (₃₊ (suc zero)) CS-gate)
+mix-base-7 = mix-base₁ windows₆
 
 -- From completeness on five and six wires alone.
 comm₂-base₂₇ : (₂₊ (₄₊ (suc zero))) ⊢ᵧ λ¹ {suc (suc zero)} (top2 (₃₊ (suc zero)) CS-gate) • λ¹ {suc (suc zero)} (gate₂ CS-gate)
