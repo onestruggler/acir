@@ -78,6 +78,10 @@ D m ((κ , p , q) ∷ ℓ)   = d κ m p q • D m ℓ
 Ne : ∀ {m} → List (Lit m) → Set
 Ne = All λ { (κ , p , q) → p ≢ q }
 
+-- A map on the states of a letter.
+trip : ∀ {a b} → (Vec Bool a → Vec Bool b) → K × Vec Bool a × Vec Bool a → K × Vec Bool b × Vec Bool b
+trip f (κ , p , q) = κ , f p , f q
+
 ------------------------------------------------------------------------
 -- One width up
 
@@ -95,10 +99,10 @@ module _ (m : ℕ) where
 
   -- The states moved by an affine word, and put below a new top wire.
   ren : Word A₁.Lt → List (Lit (suc m)) → List (Lit (suc m))
-  ren τ = map λ { (κ , p , q) → κ , Al₁.amapʷ τ p , Al₁.amapʷ τ q }
+  ren τ = map (trip (Al₁.amapʷ τ))
 
   up : List (Lit m) → List (Lit (suc m))
-  up = map λ { (κ , p , q) → κ , p Wd.⁺ , q Wd.⁺ }
+  up = map (trip Wd._⁺)
 
   -- With the top bit 0, a decoded word is λ⁰ of the one a width down.
   D-top : ∀ (ℓ : List (Lit m)) → (suc (₄₊ m)) ⊢ᵧ D (suc m) (up ℓ) ≈ λ⁰ʷ (D m ℓ)
