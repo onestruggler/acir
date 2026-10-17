@@ -15,7 +15,10 @@
 -- images on four wires.  `lemma`: if two index words decode equally at
 -- the images of every pattern on four wires — closed equations, decided
 -- with completeness there — they decode equally at every assignment of
--- distinct states on every width from five on.
+-- distinct states on every width from five on; and, in the induction
+-- on the width, with no closed check at all: equal semantics on 5 + m
+-- wires and completeness on 4 + m suffice (`lemma-sem`, through
+-- Stable.HyperSem).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -54,6 +57,10 @@ import Examples.Groups.Clifford+CS.Affine.Alpha as Alpha
 import Examples.Groups.Clifford+CS.Affine.Canon as Canon
 import Examples.Groups.Clifford+CS.Affine.Widen as Widen
 open import Examples.Groups.Clifford+CS.Stable.Hyper c4 f4 f5 tr K G₄ ind₄ f6 ssym
+open import Examples.Groups.Clifford+CS.Stable.HyperSem c4 f4 f5 tr K G₄ ind₄ f6 ssym using (hyper-sem)
+open import Examples.Groups.Clifford+CS.Stable.HypFrom using (Completeᵧ)
+open import Examples.Groups.Clifford+CS.Semantics using (_~_)
+open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧)
 
 private
   variable
@@ -203,3 +210,31 @@ module _ {j : ℕ} (w₁ w₂ : IW (suc j))
     ne₀ : ∀ w → NeW (p₀ ∷ ps) w → NeW I₀ w
     ne₀ w n = ne-map (Widen._⁺ m c4) I₀ I₁ (imgs-up m pat) w
                 (ne-inj (Al.amapʷ τ) (p₀ ∷ ps) I₁ (Al.amapʷ-inj τ) img w n)
+
+------------------------------------------------------------------------
+-- Lemma 8.8 for decoded words from their semantics
+
+-- At any distinct states on 5 + m wires, equal semantics make the two
+-- decoded words equal, given completeness on 4 + m wires
+-- (Stable.HyperSem): no closed check is needed.
+lemma-sem : ∀ m → Completeᵧ (₄₊ m) → ∀ {j} (w₁ w₂ : IW (suc j)) (ps : Vec (Vec Bool (₄₊ (suc m))) (suc j)) →
+            j ≤ 4 → NeW ps w₁ → NeW ps w₂ →
+            ⟦ D (suc m) (inst ps w₁) ⟧ ~ ⟦ D (suc m) (inst ps w₂) ⟧ →
+            (₄₊ (suc m)) ⊢ᵧ D (suc m) (inst ps w₁) ≈ D (suc m) (inst ps w₂)
+lemma-sem m c {j} w₁ w₂ (p₀ ∷ ps) j≤ n₁ n₂ s =
+  hyper-sem m c τ (inst (p₀ ∷ ps) w₁) (inst (p₀ ∷ ps) w₂) (inst I₀ w₁) (inst I₀ w₂)
+    (ne-inst (p₀ ∷ ps) w₁ n₁) (ne-inst (p₀ ∷ ps) w₂ n₂) (eq w₁) (eq w₂) s
+  where
+  module C₁ = Canon (suc m)
+  module Al = Alpha (₄₊ m)
+  c′  = C₁.canon p₀ ps j≤
+  τ   = C₁.Canon.τ c′
+  pat : Canon.Pat 0 0 (suc j)
+  pat = cp (C₁.Canon.pat c′)
+  I₀ = Canon.imgs m (cp pat)
+  I₁ = Canon.imgs (suc m) (cp pat)
+  img : ∀ i → Al.amapʷ τ (lookup (p₀ ∷ ps) i) ≡ lookup I₁ i
+  img i = Eq.trans (C₁.Canon.img c′ i) (Eq.sym (imgs-cpcp (C₁.Canon.pat c′) i))
+  eq : ∀ w → ren m τ (inst (p₀ ∷ ps) w) ≡ up m (inst I₀ w)
+  eq w = Eq.trans (inst-map (Al.amapʷ τ) (p₀ ∷ ps) I₁ img w)
+                  (Eq.sym (inst-map (Widen._⁺ m c4) I₀ I₁ (imgs-up m pat) w))

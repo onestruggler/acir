@@ -76,7 +76,7 @@ indep : ∀ V m → Gadget.Indep₀ m c4 (f4 m) (f5 m) (tr m) (gad V m)
 indep V = GA.indep (G V) (ind₄ V) (f6 V) (sym V)
 
 -- Lemma 8.8 for decoded words over the three kinds.
-open HyperCanon c4 f4 f5 tr Kind G ind₄ f6 sym public using (IW ; inst ; NeW ; lemma ; at-pattern)
+open HyperCanon c4 f4 f5 tr Kind G ind₄ f6 sym public using (IW ; inst ; NeW ; lemma ; lemma-sem ; at-pattern)
 
 -- The affine decoding of a gadget on 4 + m wires, and its equivariance.
 module Dec (V : Kind) (m : ℕ) = GA.Dec (G V) (ind₄ V) (f6 V) (sym V) m
