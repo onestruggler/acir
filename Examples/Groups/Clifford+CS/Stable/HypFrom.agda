@@ -13,8 +13,9 @@
 -- or K on wire 0, S or K on its top wire against the CS on the wires
 -- 0 1, and the CS on its top two wires against the CS on the wires 0 1.
 -- On six wires no borrowed-wire switch leaves a wire idle, so these are
--- the joint paper's derivations over the five-wire boxes (b6.py), still
--- to be written.
+-- the joint paper's derivations over the five-wire boxes (b6.py), which
+-- Stable.Six derives from completeness on five wires (Stable.Six.All.six,
+-- and hyp′ there: the transport from completeness alone).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

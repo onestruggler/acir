@@ -20,7 +20,9 @@
 -- n = 6", b6.py), which `Switch₆` takes as hypotheses:
 --
 --     Σ(1; 5, 2 | 3, 4) = Σ(1; 5, 2 | 0, 3),
---     Σ(2; 5, 3 | 1, 4) = Σ(2; 5, 3 | 0, 1).
+--     Σ(2; 5, 3 | 1, 4) = Σ(2; 5, 3 | 0, 1),
+--
+-- and Stable.Six.Switch derives from completeness on five wires.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
