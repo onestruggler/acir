@@ -23,12 +23,12 @@
 -- in six wires.  The networks are computed and checked by
 -- scratchpad/stable/nets.py.
 --
--- What is not yet proved is that the two six-wire circuits of each
--- window have the same semantics (`Windows₆`, four equations): deciding
--- it by evaluation exhausts 8 GB, the S-boxes being long, and the
--- semantic argument — a controlled CS conjugated by swaps of wires the
--- control does not see is the same controlled CS, through
--- ⟦top S⟧ ~ ctrl⁰ ⟦S⟧ ∙ ctrl ⟦S⟧ and blk-⊙ — is still to be written.
+-- That the two six-wire circuits of each window have the same semantics
+-- (`Nets7.Windows₆`) is Stable.Windows6: deciding it by evaluation
+-- exhausts 8 GB, the S-boxes being long, but each is a controlled CS
+-- conjugated by a swap the control does not see.  The derivation is
+-- stated over the record (`comm₂-base₂₁`) and instantiated with it
+-- (`comm₂-base₂₇`).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -69,50 +69,12 @@ open import Examples.Groups.Clifford+CS.Stable.Rules
 open import Examples.Groups.Clifford+CS.Stable.Soundness using (axiom-soundᵧ)
 open import Examples.Groups.Clifford+CS.Stable.Weakening using (top-congᵧ)
 open import Examples.Groups.Clifford+CS.Stable.Insert4 using (top2)
+open import Examples.Groups.Clifford+CS.Stable.Nets7
+open import Examples.Groups.Clifford+CS.Stable.Windows6 using (windows₆)
 
 private
   variable
     n : ℕ
-
-------------------------------------------------------------------------
--- Networks
-
--- The swap of the wires p, p + 1.
-sw₇ : ℕ → Word (S.Gen 7)
-sw₇ 0 = [ S.gate₂ S.σ-gate ]ʷ
-sw₇ 1 = [ S.gate₂ S.σ-gate S.↥ ]ʷ
-sw₇ 2 = [ S.gate₂ S.σ-gate S.↥ S.↥ ]ʷ
-sw₇ 3 = [ S.gate₂ S.σ-gate S.↥ S.↥ S.↥ ]ʷ
-sw₇ 4 = [ S.gate₂ S.σ-gate S.↥ S.↥ S.↥ S.↥ ]ʷ
-sw₇ 5 = [ S.gate₂ S.σ-gate S.↥ S.↥ S.↥ S.↥ S.↥ ]ʷ
-sw₇ _ = ε
-
-sw₆ : ℕ → Word (S.Gen 6)
-sw₆ 0 = [ S.gate₂ S.σ-gate ]ʷ
-sw₆ 1 = [ S.gate₂ S.σ-gate S.↥ ]ʷ
-sw₆ 2 = [ S.gate₂ S.σ-gate S.↥ S.↥ ]ʷ
-sw₆ 3 = [ S.gate₂ S.σ-gate S.↥ S.↥ S.↥ ]ʷ
-sw₆ 4 = [ S.gate₂ S.σ-gate S.↥ S.↥ S.↥ S.↥ ]ʷ
-sw₆ _ = ε
-
--- A network from its swaps, in time order.
-ns₇ : List ℕ → Word (S.Gen 7)
-ns₇ []       = ε
-ns₇ (p ∷ ps) = sw₇ p • ns₇ ps
-
-ns₆ : List ℕ → Word (S.Gen 6)
-ns₆ []       = ε
-ns₆ (p ∷ ps) = sw₆ p • ns₆ ps
-
-------------------------------------------------------------------------
--- Placements and windows
-
--- A five-wire circuit placed on seven wires, and on six.
-P₇ : Word (S.Gen 7) → Circuit 5 → Circuit 7
-P₇ s u = pl s (u ↓ᵏ 2)
-
-P₆ : Word (S.Gen 6) → Circuit 5 → Circuit 6
-P₆ s u = pl s (u ↓ᵏ 1)
 
 private
   refl≡ᵧ : ∀ {n} {a b : Circuit n} → a ≡ b → n ⊢ᵧ a ≈ b
@@ -160,24 +122,6 @@ private
     P₇ (t • ns₇ ρ′) u                   ≈⟨ f₂ ⟩
     P₇ s′ u ∎
     where open Tools (7 YVRel,_===_)
-
-------------------------------------------------------------------------
--- The two S-boxes
-
-Σ₀ Σ₂ : Circuit 5
-Σ₀ = b-Sb2-0-41-3
-Σ₂ = b-Sb0-2-43-1
-
--- The four windows' equalities of semantics on six wires.  Deciding them
--- by evaluation exhausts 8 GB (the S-boxes placed on six wires); each
--- is a controlled CS conjugated by swaps of wires the control does not
--- see, which a semantic lemma will give (scratchpad/five-qubit-plan.md).
-record Windows₆ : Set where
-  field
-    w₁ : ⟦ P₆ (ns₆ (4 ∷ [])) Σ₀ ⟧ ~ ⟦ P₆ (ns₆ (3 ∷ 4 ∷ [])) Σ₀ ⟧
-    w₂ : ⟦ P₆ (ns₆ (3 ∷ 4 ∷ [])) Σ₀ ⟧ ~ ⟦ P₆ (ns₆ (2 ∷ 3 ∷ 4 ∷ [])) Σ₀ ⟧
-    w₃ : ⟦ P₆ (ns₆ (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ [])) Σ₂ ⟧ ~ ⟦ P₆ (ns₆ (1 ∷ 2 ∷ 3 ∷ 4 ∷ [])) Σ₂ ⟧
-    w₄ : ⟦ P₆ (ns₆ (1 ∷ 2 ∷ 3 ∷ 4 ∷ [])) Σ₂ ⟧ ~ ⟦ P₆ (ns₆ (2 ∷ 3 ∷ 4 ∷ [])) Σ₂ ⟧
 
 module _ (W₆ : Windows₆) where
  open Windows₆ W₆
@@ -284,3 +228,8 @@ module _ (W₆ : Windows₆) where
    P₇ N Σ₀ • P₇ N Σ₂          ≈⟨ sym (cong P-moved Q-moved) ⟩
    Σᵗ 2 • Σ₂ ↑ ↑ ∎
    where open Tools (7 YVRel,_===_)
+
+-- From completeness on five and six wires alone.
+comm₂-base₂₇ : (₂₊ (₄₊ (suc zero))) ⊢ᵧ λ¹ {suc (suc zero)} (top2 (₃₊ (suc zero)) CS-gate) • λ¹ {suc (suc zero)} (gate₂ CS-gate)
+                                   ≈ λ¹ {suc (suc zero)} (gate₂ CS-gate) • λ¹ {suc (suc zero)} (top2 (₃₊ (suc zero)) CS-gate)
+comm₂-base₂₇ = comm₂-base₂₁ windows₆
