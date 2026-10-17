@@ -11,7 +11,8 @@
 -- passes λ⁰ G (`pass⁰`), and so does every λ¹-image (`pass¹`) — what the
 -- gadgets of the affine decoding, λ⁰ of the gadgets one width down,
 -- need; and conjugating λ⁰ or λ¹ of a circuit by a domain circuit
--- (`conj⁰`, `conj¹`).
+-- (`conj⁰`, `conj¹`); and in a twisted commutator under λ⁰ a pair of
+-- inverse factors may lose its control (`tw-top`, `tw-top′`).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -169,3 +170,62 @@ conj¹ a a′ G e = begin
   ε • (λ¹ʷ a • λ¹ʷ G • λ¹ʷ a′)
     ≈⟨ left-unit ⟩
   λ¹ʷ a • λ¹ʷ G • λ¹ʷ a′ ∎
+
+------------------------------------------------------------------------
+-- λ⁰ against the circuit with an idle wire on top
+
+-- λ⁰ X is the circuit X with an idle top wire, its black half undone.
+λ⁰-top : (X X⁻ : Circuit D) → D ⊢ᵧ X • X⁻ ≈ ε → λ⁰ʷ X ≈ top X • λ¹ʷ X⁻
+λ⁰-top X X⁻ e = sym (begin
+  top X • λ¹ʷ X⁻                    ≈⟨ front _ (F5ʷ X) ⟩
+  (λ⁰ʷ X • λ¹ʷ X) • λ¹ʷ X⁻          ≈⟨ assoc ⟩
+  λ⁰ʷ X • (λ¹ʷ X • λ¹ʷ X⁻)          ≈⟨ back _ (tr e) ⟩
+  λ⁰ʷ X • ε                         ≈⟨ right-unit ⟩
+  λ⁰ʷ X                             ∎)
+
+λ¹-top-comm : (X : Circuit D) → λ¹ʷ X • top X ≈ top X • λ¹ʷ X
+λ¹-top-comm X = begin
+  λ¹ʷ X • top X                     ≈⟨ back _ (F5ʷ X) ⟩
+  λ¹ʷ X • (λ⁰ʷ X • λ¹ʷ X)           ≈⟨ sym assoc ⟩
+  (λ¹ʷ X • λ⁰ʷ X) • λ¹ʷ X           ≈⟨ front _ (sym (F4ʷ X X)) ⟩
+  (λ⁰ʷ X • λ¹ʷ X) • λ¹ʷ X           ≈⟨ front _ (sym (F5ʷ X)) ⟩
+  top X • λ¹ʷ X                     ∎
+
+-- In a twisted commutator X⁻ Y′ X Y under λ⁰, the outer pair may lose
+-- its control: the black halves cancel across λ⁰ Y′.
+tw-top : (X X⁻ Y Y′ : Circuit D) → D ⊢ᵧ X • X⁻ ≈ ε → D ⊢ᵧ X⁻ • X ≈ ε →
+         λ⁰ʷ X⁻ • λ⁰ʷ Y′ • λ⁰ʷ X • λ⁰ʷ Y ≈ top X⁻ • λ⁰ʷ Y′ • top X • λ⁰ʷ Y
+tw-top X X⁻ Y Y′ e e′ = begin
+  λ⁰ʷ X⁻ • λ⁰ʷ Y′ • λ⁰ʷ X • λ⁰ʷ Y
+    ≈⟨ cong (λ⁰-top X⁻ X e′) (back _ (front _ (λ⁰-top X X⁻ e))) ⟩
+  (top X⁻ • λ¹ʷ X) • λ⁰ʷ Y′ • (top X • λ¹ʷ X⁻) • λ⁰ʷ Y
+    ≈⟨ by-passoc ((□ • □) • □ • (□ • □) • □) (□ • (□ • □) • □ • □ • □) Eq.refl ⟩
+  top X⁻ • (λ¹ʷ X • λ⁰ʷ Y′) • top X • λ¹ʷ X⁻ • λ⁰ʷ Y
+    ≈⟨ back _ (front _ (sym (F4ʷ Y′ X))) ⟩
+  top X⁻ • (λ⁰ʷ Y′ • λ¹ʷ X) • top X • λ¹ʷ X⁻ • λ⁰ʷ Y
+    ≈⟨ by-passoc (□ • (□ • □) • □ • □ • □) (□ • □ • (□ • □) • □ • □) Eq.refl ⟩
+  top X⁻ • λ⁰ʷ Y′ • (λ¹ʷ X • top X) • λ¹ʷ X⁻ • λ⁰ʷ Y
+    ≈⟨ back _ (back _ (front _ (λ¹-top-comm X))) ⟩
+  top X⁻ • λ⁰ʷ Y′ • (top X • λ¹ʷ X) • λ¹ʷ X⁻ • λ⁰ʷ Y
+    ≈⟨ by-passoc (□ • □ • (□ • □) • □ • □) (□ • □ • □ • (□ • □) • □) Eq.refl ⟩
+  top X⁻ • λ⁰ʷ Y′ • top X • (λ¹ʷ X • λ¹ʷ X⁻) • λ⁰ʷ Y
+    ≈⟨ back _ (back _ (back _ (trans (front _ (tr e)) left-unit))) ⟩
+  top X⁻ • λ⁰ʷ Y′ • top X • λ⁰ʷ Y ∎
+
+-- The same for the inner pair.
+tw-top′ : (G G′ U U⁻ : Circuit D) → D ⊢ᵧ U • U⁻ ≈ ε → D ⊢ᵧ U⁻ • U ≈ ε →
+          λ⁰ʷ G′ • λ⁰ʷ U⁻ • λ⁰ʷ G • λ⁰ʷ U ≈ λ⁰ʷ G′ • top U⁻ • λ⁰ʷ G • top U
+tw-top′ G G′ U U⁻ e e′ = begin
+  λ⁰ʷ G′ • λ⁰ʷ U⁻ • λ⁰ʷ G • λ⁰ʷ U
+    ≈⟨ back _ (cong (λ⁰-top U⁻ U e′) (back _ (λ⁰-top U U⁻ e))) ⟩
+  λ⁰ʷ G′ • (top U⁻ • λ¹ʷ U) • λ⁰ʷ G • (top U • λ¹ʷ U⁻)
+    ≈⟨ by-passoc (□ • (□ • □) • □ • (□ • □)) (□ • □ • (□ • □) • (□ • □)) Eq.refl ⟩
+  λ⁰ʷ G′ • top U⁻ • (λ¹ʷ U • λ⁰ʷ G) • (top U • λ¹ʷ U⁻)
+    ≈⟨ back _ (back _ (front _ (sym (F4ʷ G U)))) ⟩
+  λ⁰ʷ G′ • top U⁻ • (λ⁰ʷ G • λ¹ʷ U) • (top U • λ¹ʷ U⁻)
+    ≈⟨ by-passoc (□ • □ • (□ • □) • (□ • □)) (□ • □ • □ • (□ • □) • □) Eq.refl ⟩
+  λ⁰ʷ G′ • top U⁻ • λ⁰ʷ G • (λ¹ʷ U • top U) • λ¹ʷ U⁻
+    ≈⟨ back _ (back _ (back _ (front _ (λ¹-top-comm U)))) ⟩
+  λ⁰ʷ G′ • top U⁻ • λ⁰ʷ G • (top U • λ¹ʷ U) • λ¹ʷ U⁻
+    ≈⟨ back _ (back _ (back _ (trans assoc (trans (back _ (tr e)) right-unit)))) ⟩
+  λ⁰ʷ G′ • top U⁻ • λ⁰ʷ G • top U ∎
