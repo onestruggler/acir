@@ -21,9 +21,10 @@
 
 module Examples.Groups.Clifford+CS.Stable.HypFrom where
 
-open import Data.Nat using (ℕ ; zero ; suc ; s≤s)
+open import Data.Nat using (ℕ ; zero ; suc ; s≤s ; z≤n)
 open import Word.Base using (_•_)
 import Data.Nat as ℕ
+import Data.Nat.Properties as NP
 
 open import Notations using (₂₊ ; ₃₊ ; ₄₊)
 
@@ -56,8 +57,10 @@ record Six : Set where
     comm₂-base₂ : (₂₊ (₄₊ zero)) ⊢ᵧ λ¹ {suc zero} (top2 (₃₊ zero) CS-gate) • λ¹ {suc zero} (gate₂ CS-gate)
                                   ≈ λ¹ {suc zero} (gate₂ CS-gate) • λ¹ {suc zero} (top2 (₃₊ zero) CS-gate)
 
-hyp : Completeᵧ 5 → Completeᵧ 6 → Completeᵧ 7 → Completeᵧ 8 → Six → Hyp
-hyp c₅ c₆ c₇ c₈ six = record
+-- Transport into at most N wires, from completeness on five wires and on
+-- every width from six to below N.
+hyp : ∀ N → Completeᵧ 5 → (∀ k → 6 ℕ.≤ k → k ℕ.< N → Completeᵧ k) → Six → Hyp N
+hyp N c₅ below six = record
   { complete₅   = c₅
   ; switch      = Six.switch six
   ; comm₁-base  = Six.comm₁-base six
@@ -65,11 +68,14 @@ hyp c₅ c₆ c₇ c₈ six = record
   ; comm₂-base₂ = base₂
   }
   where
-  base₂ : ∀ m → m ℕ.≤ 3 →
+  6≤6 : 6 ℕ.≤ 6
+  6≤6 = s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))
+
+  base₂ : ∀ m → m ℕ.≤ 3 → ₂₊ (₄₊ m) ℕ.≤ N →
           (₂₊ (₄₊ m)) ⊢ᵧ λ¹ {suc m} (top2 (₃₊ m) CS-gate) • λ¹ {suc m} (gate₂ CS-gate)
                        ≈ λ¹ {suc m} (gate₂ CS-gate) • λ¹ {suc m} (top2 (₃₊ m) CS-gate)
-  base₂ zero                      _ = Six.comm₂-base₂ six
-  base₂ (suc zero)                _ = B7.comm₂-base₂₇ c₅ c₆
-  base₂ (suc (suc zero))          _ = B8.comm₂-base₂-8 c₅ c₇
-  base₂ (suc (suc (suc zero)))    _ = B9.comm₂-base₂-9 c₅ c₈
-  base₂ (suc (suc (suc (suc m)))) (s≤s (s≤s (s≤s ())))
+  base₂ zero                      _ _ = Six.comm₂-base₂ six
+  base₂ (suc zero)                _ q = B7.comm₂-base₂₇ c₅ (below 6 6≤6 q)
+  base₂ (suc (suc zero))          _ q = B8.comm₂-base₂-8 c₅ (below 7 (NP.m≤n⇒m≤1+n 6≤6) q)
+  base₂ (suc (suc (suc zero)))    _ q = B9.comm₂-base₂-9 c₅ (below 8 (NP.m≤n⇒m≤1+n (NP.m≤n⇒m≤1+n 6≤6)) q)
+  base₂ (suc (suc (suc (suc m)))) (s≤s (s≤s (s≤s ()))) _

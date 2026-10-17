@@ -32,8 +32,8 @@
 --     the wires 2 3, it is wire 4 (Stable.Insert4), once g's image is
 --     clear of the wires 0 … 3.
 --
--- So transport at every width rests on completeness on five wires and
--- ten closed equations on six to nine wires (`Hyp`): the two
+-- So transport into at most N wires rests on completeness on five wires
+-- and the closed equations on six to N of nine wires (`Hyp N`): the two
 -- borrowed-wire switches on six wires (Switch₆), and the commutations
 -- where the images of the two letters cover every wire, so that no wire
 -- can be inserted — the CS on the top two wires of a five-wire domain
@@ -53,6 +53,7 @@ module Examples.Groups.Clifford+CS.Stable.Transport where
 
 open import Data.Nat using (ℕ ; zero ; suc) renaming (_+_ to _+ℕ_)
 import Data.Nat as ℕ
+import Data.Nat.Properties as NP
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
@@ -152,7 +153,8 @@ high-shape {suc k}       (g ↥) e = up-shape (high-shape g (up-inv (view g) e))
 ------------------------------------------------------------------------
 -- The hypotheses
 
-record Hyp : Set where
+-- What transport into at most N wires needs.
+record Hyp (N : ℕ) : Set where
   field
     complete₅ : ∀ {u v : Circuit 5} → ⟦ u ⟧ ~ ⟦ v ⟧ → 5 ⊢ᵧ u ≈ v
     switch    : Switch₆
@@ -165,7 +167,7 @@ record Hyp : Set where
     comm₂-base₁ : (h : Gate 1) →
                   (₂₊ (₄₊ zero)) ⊢ᵧ λ¹ {suc zero} (top1 4 h) • λ¹ {suc zero} (gate₂ CS-gate)
                                   ≈ λ¹ {suc zero} (gate₂ CS-gate) • λ¹ {suc zero} (top1 4 h)
-    comm₂-base₂ : ∀ m → m ℕ.≤ 3 →
+    comm₂-base₂ : ∀ m → m ℕ.≤ 3 → ₂₊ (₄₊ m) ℕ.≤ N →
                   (₂₊ (₄₊ m)) ⊢ᵧ λ¹ {suc m} (top2 (₃₊ m) CS-gate) • λ¹ {suc m} (gate₂ CS-gate)
                                ≈ λ¹ {suc m} (gate₂ CS-gate) • λ¹ {suc m} (top2 (₃₊ m) CS-gate)
 
@@ -178,7 +180,7 @@ record Hyp : Set where
 λ¹ʷ-↑ ε       = Eq.refl
 λ¹ʷ-↑ (u • v) = Eq.cong₂ _•_ (λ¹ʷ-↑ u) (λ¹ʷ-↑ v)
 
-module _ (H : Hyp) where
+module _ {N : ℕ} (H : Hyp N) where
   open Hyp H
 
   private
@@ -254,54 +256,55 @@ module _ (H : Hyp) where
     -- The CS on the wires 0 1 against a gate reaching the top wire: wire 4
     -- is idle, from six wires on for the scalar and S or K, from ten on
     -- for the CS on the top two wires.
-    high₂ : ∀ m → AxOk m → (h : Gate 2) (g : Gen (₂₊ (suc m))) → Shape g →
+    high₂ : ∀ m → ₂₊ (₄₊ m) ℕ.≤ N → AxOk m → (h : Gate 2) (g : Gen (₂₊ (suc m))) → Shape g →
             (₂₊ (₄₊ m)) ⊢ᵧ λ¹ (g ↥ ↥) • λ¹ (gate₂ h) ≈ λ¹ (gate₂ h) • λ¹ (g ↥ ↥)
-    high₂ m ok CS-gate _ sS =
+    high₂ m q ok CS-gate _ sS =
       via-place 4
         (Eq.subst₂ (λ x y → _ ⊢ᵧ x ≈ place 4 y) (Eq.sym (λ¹-topS (suc m))) (Eq.sym (λ¹-topS m))
           (PB.sym (embed (place₄-↑ (Sᵗ m)))))
         (embed (Σᵗ-place m)) (ok (comm₂ᵧ CS-gate (topS (₁₊ m))))
-    high₂ zero    ok CS-gate _ (s1 h) = comm₂-base₁ h
-    high₂ (suc m) ok CS-gate _ (s1 h) =
+    high₂ zero    q ok CS-gate _ (s1 h) = comm₂-base₁ h
+    high₂ (suc m) q ok CS-gate _ (s1 h) =
       via-place 4
         (Eq.subst₂ (λ x y → _ ⊢ᵧ x ≈ place 4 y) (Eq.sym (λ¹-top1 (₂₊ m) h)) (Eq.sym (λ¹-top1 (suc m) h))
           (PB.sym (embed (place₄-↑ (Zᵗ m h)))))
         (embed (Σᵗ-place (suc m))) (ok (comm₂ᵧ CS-gate (top1 (₂₊ m) h)))
-    high₂ zero                      ok CS-gate _ (s2 CS-gate) = comm₂-base₂ zero ℕ.z≤n
-    high₂ (suc zero)                ok CS-gate _ (s2 CS-gate) = comm₂-base₂ (suc zero) (ℕ.s≤s ℕ.z≤n)
-    high₂ (suc (suc zero))          ok CS-gate _ (s2 CS-gate) =
-      comm₂-base₂ (suc (suc zero)) (ℕ.s≤s (ℕ.s≤s ℕ.z≤n))
-    high₂ (suc (suc (suc zero)))    ok CS-gate _ (s2 CS-gate) =
-      comm₂-base₂ (suc (suc (suc zero))) (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ℕ.z≤n)))
-    high₂ (suc (suc (suc (suc m)))) ok CS-gate _ (s2 CS-gate) =
+    high₂ zero                      q ok CS-gate _ (s2 CS-gate) = comm₂-base₂ zero ℕ.z≤n q
+    high₂ (suc zero)                q ok CS-gate _ (s2 CS-gate) = comm₂-base₂ (suc zero) (ℕ.s≤s ℕ.z≤n) q
+    high₂ (suc (suc zero))          q ok CS-gate _ (s2 CS-gate) =
+      comm₂-base₂ (suc (suc zero)) (ℕ.s≤s (ℕ.s≤s ℕ.z≤n)) q
+    high₂ (suc (suc (suc zero)))    q ok CS-gate _ (s2 CS-gate) =
+      comm₂-base₂ (suc (suc (suc zero))) (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ℕ.z≤n))) q
+    high₂ (suc (suc (suc (suc m)))) q ok CS-gate _ (s2 CS-gate) =
       via-place 4
         (Eq.subst₂ (λ x y → _ ⊢ᵧ x ≈ place 4 y) (Eq.sym (λ¹-top2 (suc (₄₊ m)))) (Eq.sym (λ¹-top2 (₄₊ m)))
           (PB.sym (embed (place₄-↑ (W m)))))
         (embed (Σᵗ-place (₄₊ m))) (ok (comm₂ᵧ CS-gate (top2 (₄₊ m) CS-gate)))
 
-    comm₂-case : ∀ m → AxOk m → (h : Gate 2) (g : Gen (₂₊ (suc m))) (c : View g) → view g ≡ c →
+    comm₂-case : ∀ m → ₂₊ (₄₊ m) ℕ.≤ N → AxOk m → (h : Gate 2) (g : Gen (₂₊ (suc m))) (c : View g) → view g ≡ c →
                  (₂₊ (₄₊ m)) ⊢ᵧ λ¹ (g ↥ ↥) • λ¹ (gate₂ h) ≈ λ¹ (gate₂ h) • λ¹ (g ↥ ↥)
-    comm₂-case m ok h .(g ↧) (low g)   _ = via-top m ok (comm₂ᵧ h g)
-    comm₂-case m ok h g      (high .g) e = high₂ m ok h g (high-shape g e)
+    comm₂-case m q ok h .(g ↧) (low g)   _ = via-top m ok (comm₂ᵧ h g)
+    comm₂-case m q ok h g      (high .g) e = high₂ m q ok h g (high-shape g e)
 
-  ok : ∀ m → AxOk m
+  -- Transport into at most N wires.
+  ok : ∀ m → suc (₄₊ m) ℕ.≤ N → AxOk m
   -- Four wires: completeness on five.
-  ok zero {w} {v} a = complete₅ {λ¹ʷ w} {λ¹ʷ v} (λ¹-~ {0} {w} {v} (axiom-soundᵧ a))
+  ok zero _ {w} {v} a = complete₅ {λ¹ʷ w} {λ¹ʷ v} (λ¹-~ {0} {w} {v} (axiom-soundᵧ a))
   -- Five wires and more.
-  ok (suc m) (srelᵧ (five (old r)))  = rule m (ok m) r
-  ok (suc m) (srelᵧ (five ax))       = wide-ok {suc m} w-ax
-  ok (suc m) (srelᵧ (five λ-lf))     = wide-ok {suc m} w-lf
-  ok (suc m) (srelᵧ (five λ-hyb-sq)) = wide-ok {suc m} w-hyb-sq
-  ok (suc m) (srelᵧ (five λ-hyb-yb)) = wide-ok {suc m} w-hyb-yb
-  ok (suc m) (srelᵧ (five λ-ck-tct)) = wide-ok {suc m} w-ck-tct
-  ok (suc m) (srelᵧ (ctl k p))       = PB.axiom (srelᵧ (ctl (suc k) p))
-  ok (suc m) (cong↑ᵧ {w = w} {v} a)  =
+  ok (suc m) b (srelᵧ (five (old r)))  = rule m (ok m (NP.<⇒≤ b)) r
+  ok (suc m) b (srelᵧ (five ax))       = wide-ok {suc m} w-ax
+  ok (suc m) b (srelᵧ (five λ-lf))     = wide-ok {suc m} w-lf
+  ok (suc m) b (srelᵧ (five λ-hyb-sq)) = wide-ok {suc m} w-hyb-sq
+  ok (suc m) b (srelᵧ (five λ-hyb-yb)) = wide-ok {suc m} w-hyb-yb
+  ok (suc m) b (srelᵧ (five λ-ck-tct)) = wide-ok {suc m} w-ck-tct
+  ok (suc m) b (srelᵧ (ctl k p))       = PB.axiom (srelᵧ (ctl (suc k) p))
+  ok (suc m) b (cong↑ᵧ {w = w} {v} a)  =
     Eq.subst₂ (λ x y → _ ⊢ᵧ x ≈ y) (Eq.sym (λ¹ʷ-↑ w)) (Eq.sym (λ¹ʷ-↑ v))
-      (lemma-cong↑ᵧ (λ¹ʷ w) (λ¹ʷ v) (ok m a))
-  ok (suc m) (comm₁ᵧ h g)            = comm₁-case m (ok m) h g (view g) Eq.refl
-  ok (suc m) (comm₂ᵧ h g)            = comm₂-case m (ok m) h g (view g) Eq.refl
-  ok (suc m) (ω↑=ωᵧ I-gate)          = PB.refl
+      (lemma-cong↑ᵧ (λ¹ʷ w) (λ¹ʷ v) (ok m (NP.<⇒≤ b) a))
+  ok (suc m) b (comm₁ᵧ h g)            = comm₁-case m (ok m (NP.<⇒≤ b)) h g (view g) Eq.refl
+  ok (suc m) b (comm₂ᵧ h g)            = comm₂-case m b (ok m (NP.<⇒≤ b)) h g (view g) Eq.refl
+  ok (suc m) b (ω↑=ωᵧ I-gate)          = PB.refl
 
   -- Transport at every width.
-  transportᵧ : ∀ m {u v} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v
-  transportᵧ m = transport (ok m)
+  transportᵧ : ∀ m → suc (₄₊ m) ℕ.≤ N → ∀ {u v} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v
+  transportᵧ m b = transport (ok m b)
