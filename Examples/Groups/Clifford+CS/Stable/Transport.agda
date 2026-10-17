@@ -39,14 +39,16 @@ open import Data.Nat using (ℕ ; zero ; suc)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
-open import Notations using (₂₊ ; ₃₊ ; ₄₊)
+open import Notations using (₀ ; ₃ ; ₂₊ ; ₃₊ ; ₄₊)
 
 import Presentation.Base as PB
 
 open import Examples.Groups.Clifford+CS.Semantics using (_~_)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧)
+open import Examples.Groups.Clifford+CS.Tools using (module Tools)
 open import Examples.Groups.Clifford+CS.MultiControlled using (top ; _↧)
+open import Examples.Groups.Clifford+CS.Place using (place)
 open import Examples.Groups.Clifford+CS.Five.Rules using (old ; ax ; λ-lf ; λ-hyb-sq ; λ-hyb-yb ; λ-ck-tct)
 open import Examples.Groups.Clifford+CS.Lambda
 open import Examples.Groups.Clifford+CS.Lambda.Semantics using (λ¹-~)
@@ -55,6 +57,7 @@ open import Examples.Groups.Clifford+CS.Stable.Soundness using (axiom-soundᵧ)
 open import Examples.Groups.Clifford+CS.Stable.Weakening using (stretch-congᵧ)
 open import Examples.Groups.Clifford+CS.Stable.Coherence using (Switch₆ ; λ¹-top)
 open import Examples.Groups.Clifford+CS.Stable.Untop using (Untop ; mk ; untop)
+open import Examples.Groups.Clifford+CS.Stable.Insert using (place-congᵧ ; place-•ᵧ ; place₁-↑ ; λ¹₁-place)
 
 private
   variable
@@ -107,8 +110,10 @@ record Hyp : Set where
   field
     complete₅ : ∀ {u v : Circuit 5} → ⟦ u ⟧ ~ ⟦ v ⟧ → 5 ⊢ᵧ u ≈ v
     switch    : Switch₆
-    comm₁-high : ∀ m (h : Gate 1) (g : Gen (₃₊ (suc m))) → IsHigh g →
-                 (₂₊ (₄₊ m)) ⊢ᵧ λ¹ (g ↥) • λ¹ (gate₁ h) ≈ λ¹ (gate₁ h) • λ¹ (g ↥)
+    -- The CS on the top two wires of five against S or K on wire 0.
+    comm₁-base : (h : Gate 1) →
+                 (₂₊ (₄₊ zero)) ⊢ᵧ λ¹ {suc zero} (gate₂ CS-gate ↥ ↥ ↥) • λ¹ {suc zero} (gate₁ h)
+                                 ≈ λ¹ {suc zero} (gate₁ h) • λ¹ {suc zero} (gate₂ CS-gate ↥ ↥ ↥)
     comm₂-high : ∀ m (h : Gate 2) (g : Gen (₂₊ (suc m))) → IsHigh g →
                  (₂₊ (₄₊ m)) ⊢ᵧ λ¹ (g ↥ ↥) • λ¹ (gate₂ h) ≈ λ¹ (gate₂ h) • λ¹ (g ↥ ↥)
 
@@ -145,10 +150,54 @@ module _ (H : Hyp) where
     rule m ok r with untop r
     ... | mk r′ Eq.refl Eq.refl = via-top m ok (srelᵧ (five (old r′)))
 
+    -- Both letters one width down with wire 1 inserted.
+    via-place : ∀ {r} {A B : Circuit (suc r)} {A′ B′ : Circuit (₂₊ r)} →
+                (₂₊ r) ⊢ᵧ A′ ≈ place 1 A → (₂₊ r) ⊢ᵧ B′ ≈ place 1 B →
+                (suc r) ⊢ᵧ A • B ≈ B • A → (₂₊ r) ⊢ᵧ A′ • B′ ≈ B′ • A′
+    via-place {r} {A} {B} {A′} {B′} a b e = begin
+      A′ • B′                 ≈⟨ cong a b ⟩
+      place 1 A • place 1 B   ≈⟨ sym (place-•ᵧ 1 A B) ⟩
+      place 1 (A • B)         ≈⟨ place-congᵧ 1 e ⟩
+      place 1 (B • A)         ≈⟨ place-•ᵧ 1 B A ⟩
+      place 1 B • place 1 A   ≈⟨ sym (cong b a) ⟩
+      B′ • A′ ∎
+      where open Tools ((₂₊ r) YVRel,_===_)
+
+    -- A letter on wire 0 against one reaching the top wire: wire 1 is idle.
+    high₁′ : ∀ m → AxOk (suc m) → (h : Gate 1) (g : Gen (₃₊ (suc (suc m)))) → IsHigh g →
+             (₂₊ (₄₊ (suc m))) ⊢ᵧ λ¹ (g ↥) • λ¹ (gate₁ h) ≈ λ¹ (gate₁ h) • λ¹ (g ↥)
+    high₁′ m ok h (g ↥) _ =
+      via-place (PB.sym (embed (place₁-↑ (λ¹ {m} g)))) (λ¹₁-place (suc m) h) (ok (comm₁ᵧ h g))
+    high₁′ m ok h (gate₀ x) ()
+    high₁′ m ok h (gate₁ x) ()
+    high₁′ m ok h (gate₂ x) ()
+
+    -- The same on five wires, where λ¹ of a letter one wire up is not the
+    -- image one wire up but the four-wire domain's own.
+    high₁ : AxOk 0 → (h : Gate 1) (g : Gen 4) → IsHigh g →
+            (₂₊ (₄₊ zero)) ⊢ᵧ λ¹ {suc zero} (g ↥) • λ¹ (gate₁ h) ≈ λ¹ (gate₁ h) • λ¹ {suc zero} (g ↥)
+    high₁ ok h (gate₂ CS-gate ↥ ↥) _ = comm₁-base h
+    high₁ ok h (gate₁ S-gate ↥ ↥ ↥) _ =
+      via-place (PB.sym (embed (place₁-↑ (CSᵗ ₀ ↑ ↑)))) (λ¹₁-place 0 h) (ok (comm₁ᵧ h (gate₁ S-gate ↥ ↥)))
+    high₁ ok h (gate₁ K-gate ↥ ↥ ↥) _ =
+      via-place (PB.sym (embed (place₁-↑ (CKᵗ ₀ ↑ ↑)))) (λ¹₁-place 0 h) (ok (comm₁ᵧ h (gate₁ K-gate ↥ ↥)))
+    high₁ ok h (gate₀ I-gate ↥ ↥ ↥ ↥) _ =
+      via-place (PB.sym (embed (place₁-↑ (Sᵗ ₃)))) (λ¹₁-place 0 h) (ok (comm₁ᵧ h (gate₀ I-gate ↥ ↥ ↥)))
+    high₁ ok h (gate₀ x) ()
+    high₁ ok h (gate₁ x) ()
+    high₁ ok h (gate₂ x) ()
+    high₁ ok h (gate₀ x ↥) ()
+    high₁ ok h (gate₁ x ↥) ()
+    high₁ ok h (gate₂ x ↥) ()
+    high₁ ok h (gate₀ x ↥ ↥) ()
+    high₁ ok h (gate₁ x ↥ ↥) ()
+    high₁ ok h (gate₀ x ↥ ↥ ↥) ()
+
     comm₁-case : ∀ m → AxOk m → (h : Gate 1) (g : Gen (₃₊ (suc m))) (c : View g) → view g ≡ c →
                  (₂₊ (₄₊ m)) ⊢ᵧ λ¹ (g ↥) • λ¹ (gate₁ h) ≈ λ¹ (gate₁ h) • λ¹ (g ↥)
-    comm₁-case m ok h .(g ↧) (low g) _  = via-top m ok (comm₁ᵧ h g)
-    comm₁-case m ok h g      (high .g) e = comm₁-high m h g e
+    comm₁-case m       ok h .(g ↧) (low g) _  = via-top m ok (comm₁ᵧ h g)
+    comm₁-case zero    ok h g      (high .g) e = high₁ ok h g e
+    comm₁-case (suc m) ok h g      (high .g) e = high₁′ m ok h g e
 
     comm₂-case : ∀ m → AxOk m → (h : Gate 2) (g : Gen (₂₊ (suc m))) (c : View g) → view g ≡ c →
                  (₂₊ (₄₊ m)) ⊢ᵧ λ¹ (g ↥ ↥) • λ¹ (gate₂ h) ≈ λ¹ (gate₂ h) • λ¹ (g ↥ ↥)
