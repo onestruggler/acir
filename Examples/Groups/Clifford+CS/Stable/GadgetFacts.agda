@@ -4,8 +4,8 @@
 -- The decoding's gadgets at every width, for Five.Facts4's gadgets
 --
 -- Stable.GadgetAll needs the four-wire independence (Stable.Gadget4),
--- (F6) on five wires (a module parameter) and the symmetry of the two
--- top controls from six wires on; for Five.Facts4's gadgets that is
+-- (F6) on five wires (Stable.F6) and the symmetry of the two top
+-- controls from six wires on; for Five.Facts4's gadgets that is
 -- Stable.GadgetSym.ss-gad₅, from completeness on five wires (`sym`).
 -- So their independence of the affine circuit holds at every width
 -- (`indep`), and Lemma 8.8 for decoded words over the three kinds
@@ -30,7 +30,6 @@ module Examples.Groups.Clifford+CS.Stable.GadgetFacts
   (f4 : ∀ m → F4ᵗ m) (f5 : ∀ m → F5ᵗ m)
   (tr : ∀ m {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v)
   (F : Facts4)
-  (f6 : ∀ V → Gadget.TopTarget 0 c4 (f4 0) (f5 0) (tr 0) (Facts4.G F V))
   where
 
 open import Data.Nat using (zero)
@@ -42,12 +41,17 @@ import Examples.Groups.Clifford+CS.Stable.GadgetAll as GadgetAll
 import Examples.Groups.Clifford+CS.Stable.GadgetSym as GadgetSym
 import Examples.Groups.Clifford+CS.Stable.HyperCanon as HyperCanon
 import Examples.Groups.Clifford+CS.Stable.Gadget4 as Gadget4
+import Examples.Groups.Clifford+CS.Stable.F6 as F6
 
 open Facts4 F using (G)
 
 -- The four-wire input, Stable.Gadget4.
 ind₄ : ∀ V → Gadget.Indep₀ 0 c4 (f4 0) (f5 0) (tr 0) (G V)
 ind₄ = Gadget4.ind₄ c4 F
+
+-- The five-wire input, Stable.F6.
+f6 : ∀ V → Gadget.TopTarget 0 c4 (f4 0) (f5 0) (tr 0) (G V)
+f6 = F6.f6 c4 c₅ (f4 0) (f5 0) (tr 0) F
 
 private
   module GA = GadgetAll c4 f4 f5 tr
