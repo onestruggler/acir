@@ -269,3 +269,20 @@ Next, to discharge the ten facts:
 After that, Theorem S proper: the decoding at width n (G_n = λ⁰(G_{n-1}),
 independence of α, the affine-hyperplane argument for Lemma 8.8, Lemma
 8.7 by ι0/ι1 halves), i.e. Five's Complete5 generalised to n >= 6.
+
+### Progress (later on 2026-10-17)
+
+* Windows work: Stable.Base7 derives comm2-base2 at width 7 from
+  completeness on 5 and 6 wires (moves: Sigma0 (0,1,2,3,6) -> A to 5
+  (idle 4) -> u to 4 (idle 3); Sigma2 (2,3,4,5,6) -> u to 0 (idle 1) ->
+  A to 1 (idle 2); both then on 0 1 4 5 6).  Placements by
+  LocalPlace.pl and place-eq; networks from scratchpad/stable/nets.py.
+* Six-wire evaluations of placed S-boxes are out (8 GB was not enough).
+  Stable.Windows6.win-sem gives each window's semantic equality from a
+  lambda-image and a conjugation by a swap the control does not see.
+* Next: Base8, Base9 the same way (choose each move as an adjacent swap
+  with an idle neighbour, so each window's second placement is literally
+  top S . Y . top S); restructure Transport.Hyp per target width so that
+  the facts at widths 7..9 come from completeness one width down; the
+  seven six-wire facts (Switch6 x2, comm1-base x2, comm2-base1 x2,
+  comm2-base2 at m = 0) by b6.py's box derivations.
