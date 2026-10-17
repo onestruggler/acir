@@ -9,8 +9,10 @@
 -- Stable.GadgetSym.ss-gad₅, from completeness on five wires (`sym`).
 -- So their independence of the affine circuit holds at every width
 -- (`indep`), the affine decoding is equivariant at every width (`Dec`),
--- and Lemma 8.8 for decoded words over the three kinds reduces to closed
--- four-wire checks (`lemma`, Stable.HyperCanon).
+-- and Lemma 8.8 for decoded words over the three kinds reduces to their
+-- semantics and completeness one width down (`lemma-sem`, Stable.
+-- HyperCanon) — a decoded word denoting the product of its gadgets'
+-- two-level blocks (`D-sem`, Stable.DecGad).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -43,6 +45,20 @@ import Examples.Groups.Clifford+CS.Stable.GadgetSym as GadgetSym
 import Examples.Groups.Clifford+CS.Stable.HyperCanon as HyperCanon
 import Examples.Groups.Clifford+CS.Stable.Gadget4 as Gadget4
 import Examples.Groups.Clifford+CS.Stable.F6 as F6
+import Examples.Groups.Clifford+CS.Stable.DecGad c4 f4 f5 tr F as DecGad
+import Examples.Groups.Clifford+CS.Affine.Theory as Theory
+import Examples.Groups.Clifford+CS.Affine.Alpha as Alpha
+import Examples.Groups.Clifford+CS.Affine.Circuits as Circuits
+open import Data.List using (List ; [] ; _∷_)
+open import Data.List.Relation.Unary.All using ([] ; _∷_)
+open import Data.Product using (_,_)
+open import Word.Base using (_•_)
+open import Notations using (₃₊)
+open import Examples.Groups.Clifford+CS.Semantics using (Scaled ; _~_ ; _∙_ ; ε∙ ; ~-trans)
+open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧)
+open import Examples.Groups.Clifford+CS.Lambda.Semantics using (⟦•⟧ ; ⟦ε⟧ ; ∙-cong′)
+open import Examples.Groups.Clifford+CS.Five.Sem.Blocks using (blkOf)
+open import Examples.Groups.Clifford+CS.Five.Sem.TL using (tl)
 
 open Facts4 F using (G)
 
@@ -77,6 +93,31 @@ indep V = GA.indep (G V) (ind₄ V) (f6 V) (sym V)
 
 -- Lemma 8.8 for decoded words over the three kinds.
 open HyperCanon c4 f4 f5 tr Kind G ind₄ f6 sym public using (IW ; inst ; NeW ; lemma ; lemma-sem ; at-pattern)
+open import Examples.Groups.Clifford+CS.Stable.Hyper c4 f4 f5 tr Kind G ind₄ f6 sym public using (Lit ; D ; d ; Ne)
 
 -- The affine decoding of a gadget on 4 + m wires, and its equivariance.
 module Dec (V : Kind) (m : ℕ) = GA.Dec (G V) (ind₄ V) (f6 V) (sym V) m
+
+------------------------------------------------------------------------
+-- The semantics of decoded words
+
+-- The product of the gadgets' blocks.
+Πtl : ∀ {m} → List (Lit m) → Scaled (₄₊ m)
+Πtl []                = ε∙
+Πtl ((κ , p , q) ∷ ℓ) = tl (blkOf κ) p q ∙ Πtl ℓ
+
+-- A decoded word on 4 + m wires denotes the product of its gadgets'
+-- two-level blocks on their states (Stable.DecGad).
+D-sem : ∀ m (ℓ : List (Lit m)) → Ne ℓ → ⟦ D m ℓ ⟧ ~ Πtl ℓ
+D-sem m []                []         = ⟦ε⟧
+D-sem m ((κ , p , q) ∷ ℓ) (ne ∷ nes) =
+  ~-trans {s = ⟦ D m ((κ , p , q) ∷ ℓ) ⟧} {⟦ d κ m p q ⟧ ∙ ⟦ D m ℓ ⟧} {Πtl ((κ , p , q) ∷ ℓ)}
+    (⟦•⟧ (d κ m p q) (D m ℓ))
+    (∙-cong′ ⟦ d κ m p q ⟧ (tl (blkOf κ) p q) ⟦ D m ℓ ⟧ (Πtl ℓ) dκ (D-sem m ℓ nes))
+  where
+  module A′  = Theory (₃₊ m)
+  module Al′ = Alpha (₃₊ m)
+  module C′  = Circuits m c4
+  dκ : ⟦ d κ m p q ⟧ ~ tl (blkOf κ) p q
+  dκ = Eq.subst (λ g → ⟦ C′.⟪ Al′.α p q ⟫ʷ • g • C′.⟪ A′.rev (Al′.α p q) ⟫ʷ ⟧ ~ tl (blkOf κ) p q)
+                (Eq.sym (gad≡ κ m)) (DecGad.gad-dec-sem m κ p q ne)
