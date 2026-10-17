@@ -15,7 +15,8 @@
 -- doubly controlled S, white (`sS`) or black (`ss-gad¹`, through
 -- SwapSym.ss-λ⁰λ⁰): the twisted commutators by SwapSym.swapsym-tw, the
 -- rest by products and inverses — Five.Gadget5's proof of (F6), one
--- width up.
+-- width up.  The doubly controlled S itself is Stable.SwapSymS, from
+-- completeness on five wires (`ss-gad₅`).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -50,6 +51,8 @@ open import Examples.Groups.Clifford+CS.Stable.Rules using (embed)
 open import Examples.Groups.Clifford+CS.Five.Sem.Blocks using (Kind ; kpp ; krot ; kki)
 import Examples.Groups.Clifford+CS.Stable.CalcW as CalcW
 import Examples.Groups.Clifford+CS.Stable.SwapSym as SwapSym
+import Examples.Groups.Clifford+CS.Stable.SwapSymS as SwapSymS
+open import Examples.Groups.Clifford+CS.Stable.HypFrom using (Completeᵧ)
 
 open Facts4 F
 
@@ -153,3 +156,7 @@ module _ (sS : ∀ m → SY.SS m (λ⁰ʷ (λ⁰ʷ (S {₃₊ m})))) where
 -- The same from the black doubly controlled S.
 ss-gad¹ : (∀ m → SY.SS m (λ¹ʷ (λ¹ʷ (S {₃₊ m})))) → ∀ V m → SY.SS m (λ⁰ʷ (λ⁰ʷ (gad V m)))
 ss-gad¹ h = ss-gad (λ m → SY.ss-λ⁰λ⁰ m S (h m))
+
+-- And so from completeness on five wires (Stable.SwapSymS).
+ss-gad₅ : Completeᵧ 5 → ∀ V m → SY.SS m (λ⁰ʷ (λ⁰ʷ (gad V m)))
+ss-gad₅ c₅ = ss-gad¹ (λ m → SwapSymS.ss-S¹ m (f4 (suc m)) (f5 (suc m)) (tr (suc m)) c₅)
