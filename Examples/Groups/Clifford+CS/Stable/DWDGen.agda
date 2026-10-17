@@ -26,7 +26,7 @@ open import Notations using (₄₊)
 open import Examples.Groups.Clifford+CS.Completeness using (Complete)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)
-open import Examples.Groups.Clifford+CS.Stable.Rules using (_⊢ᵧ_≈_)
+open import Examples.Groups.Clifford+CS.Stable.Rules using (_⊢ᵧ_≈_ ; _YVRel,_===_)
 open import Examples.Groups.Clifford+CS.Stable.Calc using (F4ᵗ ; F5ᵗ)
 open import Examples.Groups.Clifford+CS.Stable.HypFrom using (Completeᵧ)
 open import Examples.Groups.Clifford+CS.Five.Facts4 using (Facts4)
@@ -54,6 +54,7 @@ open import Relation.Nullary using (yes ; no)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 
 import Presentation.Base as PB
+import Presentation.Properties as PP
 
 open import Examples.Groups.Clifford+CS.Semantics using (_~_ ; _∙_ ; ~-trans ; ~-sym)
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧)
@@ -303,3 +304,7 @@ module _ (m : ℕ) where
       PB.trans (dec-ʷ u)
         (PB.trans (engine c u t ix k≤ (GL-in ix u hu) (GL-in ix t ht) (from-rule (PB.axiom r)))
                   (PB.sym (dec-ʷ t)))
+
+  -- And so the congruence of P′.
+  d-≈ : Completeᵧ (₄₊ m) → ∀ {u t : Word (GenP N)} → PB._≈_ (N R,_===_) u t → (₄₊ (suc m)) ⊢ᵧ (dl ʷ) u ≈ (dl ʷ) t
+  d-≈ c = PP.StarCongruence.fʷ-cong (N R,_===_) (_YVRel,_===_ (₄₊ (suc m))) dl (dwd c)
