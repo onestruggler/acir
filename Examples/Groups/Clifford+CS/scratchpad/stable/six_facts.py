@@ -147,6 +147,16 @@ def comm3(su):
                 [('as', 'stretch b-Sb2-0-41-3'), ('up', 'b-Sb0-2-43-1')])
 
 
+def sa_deriv(su):
+    """b6-SA: Σ(1; 5, 2 | 3, 4) = Σ(1; 5, 2 | 3, 0), the borrowed wire moved
+    to the idle wire: F0, the box wire, F0."""
+    d = Deriv('sa', [PG(Sig0, cyc)])
+    d.win(0, 1, [sig(1, 2, 4, 3, 5)], idle=0)                       # F0
+    d.lemma(0, su, pi_of(1, 2, 4, 3, 5, 0))
+    d.win(0, 1, [sig(1, 2, 3, 0, 5)], idle=4)                       # F0
+    return d
+
+
 class Raw:
     def __init__(self, text): self.text = text
     def agda(self): return self.text
@@ -191,4 +201,10 @@ S-box moves to borrow wires the other uses — the first to Σ(3; 5, 4 |
 1, 0), by its box wire, an F0 window and its box wire again, the second
 to Σ(0; 5, 1 | 4, 3), by its box wire (Stable.Six.Su) — so that the two
 leave wire 2 idle and commute by a window, and back.""", [c3], imp)
+    module('Sa', "The S-box's borrowed wire moves to an idle wire",
+           """Σ(1; 5, 2 | 3, 4) = Σ(1; 5, 2 | 3, 0) on six wires (the joint paper's
+b6-SA): an F0 window exchanges the box wire and the borrowed wire, the
+box wire moves to wire 0 (Stable.Six.Su, transported), and an F0 window
+exchanges them back.""", [sa_deriv(su)], imports=imp, script='six_facts.py')
+    mods.append('Sa')
     print(' '.join(mods))
