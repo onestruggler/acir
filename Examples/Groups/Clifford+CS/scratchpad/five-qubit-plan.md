@@ -221,3 +221,51 @@ g, some word w over P′ with ⟦w⟧ = ⟦g⟧ and d(w) ≈ g.
   on (p , q) is iZ on (q , p) times the block on (q , p) (scratch
   respell.py), by the ≤ 5-point argument of DWD;
   semantics through T1 at five wires (aff4's argument at width 5).
+
+## Every width: the transport (2026-10-17, branch clifford-cs, Stable/)
+
+The schema is a layer of its own (Stable.Rules: Five.Rules through
+`five`, plus `ctl k p` over the index family `Wide` of the five-wire
+rules), so the 250 checked Five modules stay valid.  Stable.Transport
+proves transport at every width from completeness on five wires and ten
+closed equations (`Hyp`):
+
+* Switch₆ (2, six wires): Σ(1;5,2|3,4) = Σ(1;5,2|0,3) and
+  Σ(2;5,3|1,4) = Σ(2;5,3|0,1).  Unavoidable for any λ¹: with four domain
+  wires the CS on 1 2 and 2 3 must borrow below, one wire up they borrow
+  above, so `↑` and `top` cannot both commute with λ¹ on the nose.
+* comm₁-base (2, six wires): the CS on the top two wires of a five-wire
+  domain against S / K on wire 0.
+* comm₂-base₁ (2, six wires): S / K on the top wire of five against the
+  CS on wires 0 1.
+* comm₂-base₂ (4, six to nine wires): the CS on the top two wires of a
+  domain of 5..8 wires against the CS on wires 0 1 (their images borrow
+  the two wires below the top pair, and 2 3: together every wire).
+
+Everything else reduces a width down: rules by `top` (Untop, Coherence),
+the schema by definition, commutations with the upper gate below the
+top by `top`, with it at the top through `place 1` (S/K on wire 0) or
+`place 4` (CS on 0 1; from six wires for scalar/S/K on top, from ten for
+CS on top).
+
+Next, to discharge the ten facts:
+1. Placement calculus: place i (place j c) = place (j+1) (place i c) for
+   i <= j.  The networks N1 = (cyc j)^ . cyc i and N2 = (cyc i)^ .
+   cyc (j+1) satisfy N2 = Swap01 . N1 as permutations (checked, n <= 9),
+   and Swap01 passes c^^ (low-comm); PermCalc.perm-= turns the
+   permutation equation into one of networks.
+2. Windows in the new theory: two placed circuits `place j u`, `place j v`
+   with equal semantics are equal given completeness one width down
+   (place-cong-y and the completeness hypothesis; Place.lemma-5-1's
+   argument).
+3. From seven wires on: each fact is a chain of windows -- switch one
+   borrowed wire at a time (an equation on six wires: x, y, t, u, A and
+   the new wire), then commute on five.  E.g. comm2-base2 at width 7:
+   re-borrow CS01's image to {4,5} and CS45's to {0,1}; the union misses
+   wires 2, 3.
+4. Six wires: b6.py's derivations (SW-B via the lemma CZ12-B, Sbox-a),
+   over the five-wire boxes of Five.Letters placed at width six.
+
+After that, Theorem S proper: the decoding at width n (G_n = λ⁰(G_{n-1}),
+independence of α, the affine-hyperplane argument for Lemma 8.8, Lemma
+8.7 by ι0/ι1 halves), i.e. Five's Complete5 generalised to n >= 6.
