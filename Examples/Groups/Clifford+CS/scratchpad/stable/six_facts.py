@@ -40,10 +40,22 @@ class Fact:
     def __init__(self, name, lhs, rhs, d, lconv, rconv):
         self.name, self.lhs, self.rhs, self.d = name, lhs, rhs, d
         self.lconv, self.rconv = lconv, rconv
+        self.parts = None
+
+    def chain(self):
+        d = self.d
+        if self.parts is None:
+            return d.agda()
+        comp = self.parts[-1].name
+        for p in reversed(self.parts[:-1]):
+            comp = f'PB.trans {p.name} ({comp})'
+        nl_ = chr(10)
+        return (f'{d.name} : 6 ⊢ᵧ ⟪ {agda_list(d.start)} ⟫₆ ≈ ⟪ {agda_list(d.cur)} ⟫₆{nl_}'
+                f'{d.name} = {comp}{nl_}')
 
     def agda(self):
         d = self.d
-        chain = d.agda()
+        chain = self.chain()
         def conv(cs, gs, side):
             out = []
             names = []
@@ -140,35 +152,53 @@ class Raw:
     def agda(self): return self.text
 
 
+def group(modname, title, doc, facts, imp):
+    """each fact's chain cut into parts with one S-box window each, a
+    module per part (Agda frees an evaluation's memory only when its
+    module is done), and the facts in modname."""
+    allimp = list(imp)
+    for f in facts:
+        f.parts = f.d.parts(1)
+        for j, p in enumerate(f.parts):
+            mn = f'{modname}{f.tag}{j + 1}'
+            module(mn, f'{title}: part {j + 1} of {f.name}',
+                   f'Steps of `{f.d.name}` (Stable.Six.{modname}), cut so that each{chr(10)}module evaluates at most one S-box window.',
+                   [p], imports=imp, script='six_facts.py')
+            allimp.append(f'open import Examples.Groups.Clifford+CS.Stable.Six.{mn} c₅ using ({p.name})')
+    module(modname, title, doc, facts, imports=allimp, script='six_facts.py')
+    return [f'{modname}{f.tag}{j + 1}' for f in facts for j in range(len(f.parts))] + [modname]
+
+
 if __name__ == '__main__':
     _, su = six_su.build()
     imp = ['open import Examples.Groups.Clifford+CS.Lambda using (stretch ; CSᵗ ; CKᵗ)',
+           'open import Examples.Groups.Clifford+CS.MultiControlled using (CK₁₀)',
            'open import Examples.Groups.Clifford+CS.Stable.Rules using (embed)',
            'open import Examples.Groups.Clifford+CS.Stable.Six.Su c₅ using (su)']
-    module('Switch', 'The two borrowed-wire switches on six wires',
+    f12, f23 = sw12(su), sw23(su); f12.tag, f23.tag = 'A', 'B'
+    c1s, c1k = comm1(su, CSl, 'comm₁-S', 'CSᵗ 4'), comm1(su, CK10, 'comm₁-K', 'CKᵗ 4'); c1s.tag, c1k.tag = 'S', 'K'
+    c2s = comm2(su, CSup, CSl, 'comm₂-S', '(CS ↑ ↑ ↑)'); c2k = comm2(su, CKup, CK10, 'comm₂-K', '(CK₁₀ ↑ ↑ ↑)')
+    c2s.tag, c2k.tag = 'S', 'K'
+    c3 = comm3(su); c3.tag = 'P'
+    mods = []
+    mods += group('Switch', 'The two borrowed-wire switches on six wires',
            """Stable.Coherence.Switch₆: Σ(1; 5, 2 | 3, 4) = Σ(1; 5, 2 | 0, 3) and
 Σ(2; 5, 3 | 1, 4) = Σ(2; 5, 3 | 0, 1).  Each is the S-box with the roles
 of its box wire and its borrowed wire exchanged (a window, wire 0
 idle), its box wire moved to wire 0 (Stable.Six.Su, transported), and
-respelt (a window, wire 4 idle).""",
-           [sw12(su), sw23(su)], imports=imp, script='six_facts.py')
-    module('Comm1', 'The CS on the top two wires of a five-wire domain against S or K on wire 0',
+respelt (a window, wire 4 idle).""", [f12, f23], imp)
+    mods += group('Comm1', 'The CS on the top two wires of a five-wire domain against S or K on wire 0',
            """Under the control, Σ(3; 5, 4 | 1, 2) against CS(0, 5) or CK(5 → 0): the
 S-box's box wire moves to wire 0 (Stable.Six.Su), where the two gates
-leave wire 1 idle and commute by a window, and back.""",
-           [comm1(su, CSl, 'comm₁-S', 'CSᵗ 4'), comm1(su, CK10, 'comm₁-K', 'CKᵗ 4')],
-           imports=imp, script='six_facts.py')
-    module('Comm2', 'S or K on the top wire of a five-wire domain against the CS on the wires 0 1',
+leave wire 1 idle and commute by a window, and back.""", [c1s, c1k], imp)
+    mods += group('Comm2', 'S or K on the top wire of a five-wire domain against the CS on the wires 0 1',
            """Under the control, CS(4, 5) or CK(5 → 4) against Σ(0; 5, 1 | 2, 3): the
 S-box's box wire moves to wire 4 (Stable.Six.Su), where the two gates
-leave wire 2 idle and commute by a window, and back.""",
-           [comm2(su, CSup, CSl, 'comm₂-S', '(CS ↑ ↑ ↑)'), comm2(su, CKup, CK10, 'comm₂-K', '(CK₁₀ ↑ ↑ ↑)')],
-           imports=imp, script='six_facts.py')
-    module('Comm3', 'The CS on the top two wires of a five-wire domain against the CS on the wires 0 1',
+leave wire 2 idle and commute by a window, and back.""", [c2s, c2k], imp)
+    mods += group('Comm3', 'The CS on the top two wires of a five-wire domain against the CS on the wires 0 1',
            """Under the control, Σ(3; 5, 4 | 1, 2) against Σ(0; 5, 1 | 2, 3): each
 S-box moves to borrow wires the other uses — the first to Σ(3; 5, 4 |
 1, 0), by its box wire, an F0 window and its box wire again, the second
 to Σ(0; 5, 1 | 4, 3), by its box wire (Stable.Six.Su) — so that the two
-leave wire 2 idle and commute by a window, and back.""",
-           [comm3(su)], imports=imp, script='six_facts.py')
-    print('ok')
+leave wire 2 idle and commute by a window, and back.""", [c3], imp)
+    print(' '.join(mods))

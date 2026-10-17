@@ -142,6 +142,8 @@ class Deriv:
         self.start = list(start)
         self.cur = list(start)
         self.steps = []          # Agda expressions of Step values
+        self.lines = [list(start)]
+        self.heavy = []
 
     def check_line(self, new):
         assert SEM[6].eq(word(self.cur), word(new)), f'{self.name}: step {len(self.steps)} changes the operator'
@@ -167,6 +169,7 @@ class Deriv:
         fx, fy = frames(tau, seg, rs), frames(tau, ys, rt)
         self.steps.append(f'at {k} {n} {agda_list(ys)}\n      (win {nl(tau)} {fx}\n         {fy}\n         Eq.refl Eq.refl Eq.refl)')
         self.cur = self.cur[:k] + ys + self.cur[k + n:]
+        self.lines.append(list(self.cur)); self.heavy.append(any(g.k == 5 for g in seg + ys))
 
     def lemma(self, k, L, pi, backwards=False):
         """L transported by the wire map pi (canonical wire -> wire)."""
@@ -188,6 +191,7 @@ class Deriv:
             self.steps.append(f'at {k} {n} {agda_list(new)}\n      (transport {nl(Nw)} {fx}\n         {fy}\n         {e})')
         self.check_line(self.cur[:k] + new + self.cur[k + n:])
         self.cur = self.cur[:k] + new + self.cur[k + n:]
+        self.lines.append(list(self.cur)); self.heavy.append(False)
 
     def split(self, k, whole, a, b):
         g = self.cur[k]
@@ -196,6 +200,7 @@ class Deriv:
         new = [PG(a, g.rho), PG(b, g.rho)]
         self.steps.append(f'at {k} 1 {agda_list(new)} (split5 {nl(g.rho)} {a.expr} {b.expr})')
         self.cur = self.cur[:k] + new + self.cur[k + 1:]
+        self.lines.append(list(self.cur)); self.heavy.append(False)
 
     def merge(self, k, whole):
         a, b = self.cur[k], self.cur[k + 1]
@@ -203,6 +208,24 @@ class Deriv:
         new = [PG(whole, a.rho)]
         self.steps.append(f'at {k} 2 {agda_list(new)} (PB.sym (split5 {nl(a.rho)} {a.lit.expr} {b.lit.expr}))')
         self.cur = self.cur[:k] + new + self.cur[k + 2:]
+        self.lines.append(list(self.cur)); self.heavy.append(False)
+
+    def parts(self, max_heavy=1):
+        """cut the steps into parts with at most max_heavy heavy windows."""
+        cuts, h = [0], 0
+        for i, hv in enumerate(self.heavy):
+            if hv and h == max_heavy:
+                cuts.append(i); h = 0
+            h += hv
+        cuts.append(len(self.steps))
+        out = []
+        for j in range(len(cuts) - 1):
+            p = Deriv.__new__(Deriv)
+            p.name = f'{self.name}{j + 1}'
+            p.start, p.cur = self.lines[cuts[j]], self.lines[cuts[j + 1]]
+            p.steps = self.steps[cuts[j]:cuts[j + 1]]
+            out.append(p)
+        return out
 
     def agda(self, indent='  '):
         body = (f'\n{indent}▸ ').join(self.steps)
