@@ -11,7 +11,9 @@
 -- step′).  So the affine decoding — the gadget carried from the basis
 -- states 0, e₀ to p, q by the affine circuit α p q — is equivariant
 -- under every affine circuit at every width (`Dec.eqvʷ`, from
--- Affine.Decoding).
+-- Affine.Decoding); and at two states whose top bit is 0 the decoding
+-- is λ⁰ of the decoding one width down (`d-top`, from Affine.Widen and
+-- CalcW.conj⁰), the paper's hyperplane lemma for the top wire.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -30,8 +32,20 @@ module Examples.Groups.Clifford+CS.Stable.GadgetAll
   (tr : ∀ m {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v)
   where
 
+open import Data.Bool using (Bool)
+open import Data.Vec using (Vec)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Word.Base using (_•_)
+open import Notations using (₃₊)
+open import Examples.Groups.Clifford+CS.Tools using (module Tools)
+open import Examples.Groups.Clifford+CS.MultiControlled using (top)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_YVRel,_===_ ; embed)
+import Examples.Groups.Clifford+CS.Affine.Theory as Theory
+import Examples.Groups.Clifford+CS.Affine.Alpha as Alpha
+import Examples.Groups.Clifford+CS.Affine.Circuits as Circuits
+import Examples.Groups.Clifford+CS.Affine.Widen as Widen
 import Examples.Groups.Clifford+CS.Affine.Decoding as Decoding
+import Examples.Groups.Clifford+CS.Stable.CalcW as CalcW
 
 module Gd (m : ℕ) = Gadget m c4 (f4 m) (f5 m) (tr m)
 
@@ -57,3 +71,39 @@ module _
     -- The affine decoding of the gadget, and its equivariance.
     module Dec (m : ℕ) =
       Decoding.Gate m c4 ((₄₊ m) YVRel,_===_) embed (gad m) (indep m)
+
+    ----------------------------------------------------------------------
+    -- The hyperplane lemma for the top wire
+
+    module _ (m : ℕ) where
+      private
+        module A₀ = Theory (₃₊ m)
+        module A₁ = Theory (₄₊ m)
+        module Al₀ = Alpha (₃₊ m)
+        module Al₁ = Alpha (₄₊ m)
+        module C₀ = Circuits m c4
+        module C₁ = Circuits (suc m) c4
+        module Wd = Widen m c4
+        module CW = CalcW m (f4 m) (f5 m) (tr m)
+        open Tools ((suc (₄₊ m)) YVRel,_===_)
+
+        ≡→≈ : ∀ {a b : Circuit (suc (₄₊ m))} → a ≡ b → (suc (₄₊ m)) ⊢ᵧ a ≈ b
+        ≡→≈ Eq.refl = refl
+
+      -- At two states whose top bit is 0 the decoding is λ⁰ of the
+      -- decoding one width down.
+      d-top : ∀ (p q : Vec Bool (₄₊ m)) →
+              (suc (₄₊ m)) ⊢ᵧ Dec.d (suc m) (p Wd.⁺) (q Wd.⁺) ≈ λ⁰ʷ (Dec.d m p q)
+      d-top p q = begin
+        C₁.⟪ Al₁.α (p Wd.⁺) (q Wd.⁺) ⟫ʷ • λ⁰ʷ G • C₁.⟪ A₁.rev (Al₁.α (p Wd.⁺) (q Wd.⁺)) ⟫ʷ
+          ≈⟨ ≡→≈ (Eq.cong (λ a → C₁.⟪ a ⟫ʷ • λ⁰ʷ G • C₁.⟪ A₁.rev a ⟫ʷ) (Wd.α-⁺ p q)) ⟩
+        C₁.⟪ Wd.ι* a ⟫ʷ • λ⁰ʷ G • C₁.⟪ A₁.rev (Wd.ι* a) ⟫ʷ
+          ≈⟨ ≡→≈ (Eq.cong (λ b → C₁.⟪ Wd.ι* a ⟫ʷ • λ⁰ʷ G • C₁.⟪ b ⟫ʷ) (Eq.sym (Wd.ι*-rev a))) ⟩
+        C₁.⟪ Wd.ι* a ⟫ʷ • λ⁰ʷ G • C₁.⟪ Wd.ι* (A₀.rev a) ⟫ʷ
+          ≈⟨ cong (embed (Wd.ι*-top a)) (back _ (embed (Wd.ι*-top (A₀.rev a)))) ⟩
+        top C₀.⟪ a ⟫ʷ • λ⁰ʷ G • top C₀.⟪ A₀.rev a ⟫ʷ
+          ≈⟨ CW.conj⁰ C₀.⟪ a ⟫ʷ C₀.⟪ A₀.rev a ⟫ʷ G (embed (C₀.⟪⟫-cong (A₀.rev-inv a))) ⟩
+        λ⁰ʷ (C₀.⟪ a ⟫ʷ • G • C₀.⟪ A₀.rev a ⟫ʷ) ∎
+        where
+        G = gad m
+        a = Al₀.α p q
