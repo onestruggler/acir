@@ -24,22 +24,39 @@
 --     the shift, and ω↑=ω holds on the nose;
 --   - a commutation comm₁, comm₂ of a gate on the bottom wires with a
 --     gate g above it that leaves the top wire idle is `top` of the
---     commutation a width down, as for the rules; the ones where g
---     reaches the top wire (`IsHigh`) are left as hypotheses.
+--     commutation a width down, as for the rules;
+--   - one where g reaches the top wire (`IsHigh`, of three shapes) has an
+--     idle wire in the middle: for S or K on wire 0 it is wire 1, and
+--     the commutation is the one a width down with wire 1 inserted
+--     (Stable.Insert); for the CS on the wires 0 1, whose image borrows
+--     the wires 2 3, it is wire 4 (Stable.Insert4), once g's image is
+--     clear of the wires 0 … 3.
 --
--- So transport at every width rests on completeness on five wires, the
--- two six-wire switches, and those commutations (`Hyp`).
+-- So transport at every width rests on completeness on five wires and
+-- ten closed equations on six to nine wires (`Hyp`): the two
+-- borrowed-wire switches on six wires (Switch₆), and the commutations
+-- where the images of the two letters cover every wire, so that no wire
+-- can be inserted — the CS on the top two wires of a five-wire domain
+-- against S or K on wire 0 (`comm₁-base`) and S or K on its top wire
+-- against the CS on the wires 0 1 (`comm₂-base₁`), and the CS on the top
+-- two wires of a domain of five to eight wires against the CS on the
+-- wires 0 1 (`comm₂-base₂`), the image of the one borrowing the two
+-- wires below it and that of the other the wires 2 3.  Each is an
+-- equation of controlled gates with the same semantics, to be derived
+-- from equations one width down by switching borrowed wires, as the
+-- joint paper's b6.py does on six wires.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Examples.Groups.Clifford+CS.Stable.Transport where
 
-open import Data.Nat using (ℕ ; zero ; suc)
+open import Data.Nat using (ℕ ; zero ; suc) renaming (_+_ to _+ℕ_)
+import Data.Nat as ℕ
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
-open import Notations using (₀ ; ₃ ; ₂₊ ; ₃₊ ; ₄₊)
+open import Notations using (₀ ; ₃ ; ₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 
 import Presentation.Base as PB
 
@@ -58,6 +75,8 @@ open import Examples.Groups.Clifford+CS.Stable.Weakening using (stretch-congᵧ)
 open import Examples.Groups.Clifford+CS.Stable.Coherence using (Switch₆ ; λ¹-top)
 open import Examples.Groups.Clifford+CS.Stable.Untop using (Untop ; mk ; untop)
 open import Examples.Groups.Clifford+CS.Stable.Insert using (place-congᵧ ; place-•ᵧ ; place₁-↑ ; λ¹₁-place)
+open import Examples.Groups.Clifford+CS.Stable.Insert4
+  using (place₄-↑ ; Σᵗ-place ; topS ; top1 ; top2 ; λ¹-topS ; λ¹-top1 ; λ¹-top2 ; Zᵗ ; W)
 
 private
   variable
@@ -103,6 +122,33 @@ view {suc k} (g ↥) = up (view g)
 IsHigh : Gen (suc k) → Set
 IsHigh g = view g ≡ high g
 
+-- A gate reaching the top wire is the scalar shifted all the way up, S
+-- or K on the top wire, or the CS on the top two wires.
+data Shape : Gen (suc k) → Set where
+  sS : Shape (topS k)
+  s1 : (h : Gate 1) → Shape (top1 k h)
+  s2 : (h : Gate 2) → Shape {suc k} (top2 k h)
+
+private
+  up-inv : {g : Gen (suc k)} (c : View g) → up c ≡ high (g ↥) → c ≡ high g
+  up-inv (low g)  ()
+  up-inv (high g) _ = Eq.refl
+
+  up-shape : {g : Gen (suc k)} → Shape g → Shape (g ↥)
+  up-shape sS     = sS
+  up-shape (s1 h) = s1 h
+  up-shape (s2 h) = s2 h
+
+high-shape : (g : Gen (suc k)) → IsHigh g → Shape g
+high-shape {zero}        (gate₀ x) ()
+high-shape {zero}        (gate₁ h) _ = s1 h
+high-shape {zero}        (gate₀ I-gate ↥) _ = sS
+high-shape {suc k}       (gate₀ x) ()
+high-shape {suc k}       (gate₁ h) ()
+high-shape {suc zero}    (gate₂ h) _ = s2 h
+high-shape {suc (suc k)} (gate₂ h) ()
+high-shape {suc k}       (g ↥) e = up-shape (high-shape g (up-inv (view g) e))
+
 ------------------------------------------------------------------------
 -- The hypotheses
 
@@ -114,8 +160,14 @@ record Hyp : Set where
     comm₁-base : (h : Gate 1) →
                  (₂₊ (₄₊ zero)) ⊢ᵧ λ¹ {suc zero} (gate₂ CS-gate ↥ ↥ ↥) • λ¹ {suc zero} (gate₁ h)
                                  ≈ λ¹ {suc zero} (gate₁ h) • λ¹ {suc zero} (gate₂ CS-gate ↥ ↥ ↥)
-    comm₂-high : ∀ m (h : Gate 2) (g : Gen (₂₊ (suc m))) → IsHigh g →
-                 (₂₊ (₄₊ m)) ⊢ᵧ λ¹ (g ↥ ↥) • λ¹ (gate₂ h) ≈ λ¹ (gate₂ h) • λ¹ (g ↥ ↥)
+    -- S or K on the top wire of five, and the CS on the top two wires of
+    -- five to eight, against the CS on the wires 0 1.
+    comm₂-base₁ : (h : Gate 1) →
+                  (₂₊ (₄₊ zero)) ⊢ᵧ λ¹ {suc zero} (top1 4 h) • λ¹ {suc zero} (gate₂ CS-gate)
+                                  ≈ λ¹ {suc zero} (gate₂ CS-gate) • λ¹ {suc zero} (top1 4 h)
+    comm₂-base₂ : ∀ m → m ℕ.≤ 3 →
+                  (₂₊ (₄₊ m)) ⊢ᵧ λ¹ {suc m} (top2 (₃₊ m) CS-gate) • λ¹ {suc m} (gate₂ CS-gate)
+                               ≈ λ¹ {suc m} (gate₂ CS-gate) • λ¹ {suc m} (top2 (₃₊ m) CS-gate)
 
 ------------------------------------------------------------------------
 -- Transport
@@ -150,24 +202,24 @@ module _ (H : Hyp) where
     rule m ok r with untop r
     ... | mk r′ Eq.refl Eq.refl = via-top m ok (srelᵧ (five (old r′)))
 
-    -- Both letters one width down with wire 1 inserted.
-    via-place : ∀ {r} {A B : Circuit (suc r)} {A′ B′ : Circuit (₂₊ r)} →
-                (₂₊ r) ⊢ᵧ A′ ≈ place 1 A → (₂₊ r) ⊢ᵧ B′ ≈ place 1 B →
-                (suc r) ⊢ᵧ A • B ≈ B • A → (₂₊ r) ⊢ᵧ A′ • B′ ≈ B′ • A′
-    via-place {r} {A} {B} {A′} {B′} a b e = begin
+    -- Both letters one width down with wire i inserted.
+    via-place : ∀ i {r} {A B : Circuit (i +ℕ r)} {A′ B′ : Circuit (suc (i +ℕ r))} →
+                (suc (i +ℕ r)) ⊢ᵧ A′ ≈ place i A → (suc (i +ℕ r)) ⊢ᵧ B′ ≈ place i B →
+                (i +ℕ r) ⊢ᵧ A • B ≈ B • A → (suc (i +ℕ r)) ⊢ᵧ A′ • B′ ≈ B′ • A′
+    via-place i {r} {A} {B} {A′} {B′} a b e = begin
       A′ • B′                 ≈⟨ cong a b ⟩
-      place 1 A • place 1 B   ≈⟨ sym (place-•ᵧ 1 A B) ⟩
-      place 1 (A • B)         ≈⟨ place-congᵧ 1 e ⟩
-      place 1 (B • A)         ≈⟨ place-•ᵧ 1 B A ⟩
-      place 1 B • place 1 A   ≈⟨ sym (cong b a) ⟩
+      place i A • place i B   ≈⟨ sym (place-•ᵧ i A B) ⟩
+      place i (A • B)         ≈⟨ place-congᵧ i e ⟩
+      place i (B • A)         ≈⟨ place-•ᵧ i B A ⟩
+      place i B • place i A   ≈⟨ sym (cong b a) ⟩
       B′ • A′ ∎
-      where open Tools ((₂₊ r) YVRel,_===_)
+      where open Tools ((suc (i +ℕ r)) YVRel,_===_)
 
     -- A letter on wire 0 against one reaching the top wire: wire 1 is idle.
     high₁′ : ∀ m → AxOk (suc m) → (h : Gate 1) (g : Gen (₃₊ (suc (suc m)))) → IsHigh g →
              (₂₊ (₄₊ (suc m))) ⊢ᵧ λ¹ (g ↥) • λ¹ (gate₁ h) ≈ λ¹ (gate₁ h) • λ¹ (g ↥)
     high₁′ m ok h (g ↥) _ =
-      via-place (PB.sym (embed (place₁-↑ (λ¹ {m} g)))) (λ¹₁-place (suc m) h) (ok (comm₁ᵧ h g))
+      via-place 1 (PB.sym (embed (place₁-↑ (λ¹ {m} g)))) (λ¹₁-place (suc m) h) (ok (comm₁ᵧ h g))
     high₁′ m ok h (gate₀ x) ()
     high₁′ m ok h (gate₁ x) ()
     high₁′ m ok h (gate₂ x) ()
@@ -178,11 +230,11 @@ module _ (H : Hyp) where
             (₂₊ (₄₊ zero)) ⊢ᵧ λ¹ {suc zero} (g ↥) • λ¹ (gate₁ h) ≈ λ¹ (gate₁ h) • λ¹ {suc zero} (g ↥)
     high₁ ok h (gate₂ CS-gate ↥ ↥) _ = comm₁-base h
     high₁ ok h (gate₁ S-gate ↥ ↥ ↥) _ =
-      via-place (PB.sym (embed (place₁-↑ (CSᵗ ₀ ↑ ↑)))) (λ¹₁-place 0 h) (ok (comm₁ᵧ h (gate₁ S-gate ↥ ↥)))
+      via-place 1 (PB.sym (embed (place₁-↑ (CSᵗ ₀ ↑ ↑)))) (λ¹₁-place 0 h) (ok (comm₁ᵧ h (gate₁ S-gate ↥ ↥)))
     high₁ ok h (gate₁ K-gate ↥ ↥ ↥) _ =
-      via-place (PB.sym (embed (place₁-↑ (CKᵗ ₀ ↑ ↑)))) (λ¹₁-place 0 h) (ok (comm₁ᵧ h (gate₁ K-gate ↥ ↥)))
+      via-place 1 (PB.sym (embed (place₁-↑ (CKᵗ ₀ ↑ ↑)))) (λ¹₁-place 0 h) (ok (comm₁ᵧ h (gate₁ K-gate ↥ ↥)))
     high₁ ok h (gate₀ I-gate ↥ ↥ ↥ ↥) _ =
-      via-place (PB.sym (embed (place₁-↑ (Sᵗ ₃)))) (λ¹₁-place 0 h) (ok (comm₁ᵧ h (gate₀ I-gate ↥ ↥ ↥)))
+      via-place 1 (PB.sym (embed (place₁-↑ (Sᵗ ₃)))) (λ¹₁-place 0 h) (ok (comm₁ᵧ h (gate₀ I-gate ↥ ↥ ↥)))
     high₁ ok h (gate₀ x) ()
     high₁ ok h (gate₁ x) ()
     high₁ ok h (gate₂ x) ()
@@ -199,10 +251,38 @@ module _ (H : Hyp) where
     comm₁-case zero    ok h g      (high .g) e = high₁ ok h g e
     comm₁-case (suc m) ok h g      (high .g) e = high₁′ m ok h g e
 
+    -- The CS on the wires 0 1 against a gate reaching the top wire: wire 4
+    -- is idle, from six wires on for the scalar and S or K, from ten on
+    -- for the CS on the top two wires.
+    high₂ : ∀ m → AxOk m → (h : Gate 2) (g : Gen (₂₊ (suc m))) → Shape g →
+            (₂₊ (₄₊ m)) ⊢ᵧ λ¹ (g ↥ ↥) • λ¹ (gate₂ h) ≈ λ¹ (gate₂ h) • λ¹ (g ↥ ↥)
+    high₂ m ok CS-gate _ sS =
+      via-place 4
+        (Eq.subst₂ (λ x y → _ ⊢ᵧ x ≈ place 4 y) (Eq.sym (λ¹-topS (suc m))) (Eq.sym (λ¹-topS m))
+          (PB.sym (embed (place₄-↑ (Sᵗ m)))))
+        (embed (Σᵗ-place m)) (ok (comm₂ᵧ CS-gate (topS (₁₊ m))))
+    high₂ zero    ok CS-gate _ (s1 h) = comm₂-base₁ h
+    high₂ (suc m) ok CS-gate _ (s1 h) =
+      via-place 4
+        (Eq.subst₂ (λ x y → _ ⊢ᵧ x ≈ place 4 y) (Eq.sym (λ¹-top1 (₂₊ m) h)) (Eq.sym (λ¹-top1 (suc m) h))
+          (PB.sym (embed (place₄-↑ (Zᵗ m h)))))
+        (embed (Σᵗ-place (suc m))) (ok (comm₂ᵧ CS-gate (top1 (₂₊ m) h)))
+    high₂ zero                      ok CS-gate _ (s2 CS-gate) = comm₂-base₂ zero ℕ.z≤n
+    high₂ (suc zero)                ok CS-gate _ (s2 CS-gate) = comm₂-base₂ (suc zero) (ℕ.s≤s ℕ.z≤n)
+    high₂ (suc (suc zero))          ok CS-gate _ (s2 CS-gate) =
+      comm₂-base₂ (suc (suc zero)) (ℕ.s≤s (ℕ.s≤s ℕ.z≤n))
+    high₂ (suc (suc (suc zero)))    ok CS-gate _ (s2 CS-gate) =
+      comm₂-base₂ (suc (suc (suc zero))) (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ℕ.z≤n)))
+    high₂ (suc (suc (suc (suc m)))) ok CS-gate _ (s2 CS-gate) =
+      via-place 4
+        (Eq.subst₂ (λ x y → _ ⊢ᵧ x ≈ place 4 y) (Eq.sym (λ¹-top2 (suc (₄₊ m)))) (Eq.sym (λ¹-top2 (₄₊ m)))
+          (PB.sym (embed (place₄-↑ (W m)))))
+        (embed (Σᵗ-place (₄₊ m))) (ok (comm₂ᵧ CS-gate (top2 (₄₊ m) CS-gate)))
+
     comm₂-case : ∀ m → AxOk m → (h : Gate 2) (g : Gen (₂₊ (suc m))) (c : View g) → view g ≡ c →
                  (₂₊ (₄₊ m)) ⊢ᵧ λ¹ (g ↥ ↥) • λ¹ (gate₂ h) ≈ λ¹ (gate₂ h) • λ¹ (g ↥ ↥)
-    comm₂-case m ok h .(g ↧) (low g) _  = via-top m ok (comm₂ᵧ h g)
-    comm₂-case m ok h g      (high .g) e = comm₂-high m h g e
+    comm₂-case m ok h .(g ↧) (low g)   _ = via-top m ok (comm₂ᵧ h g)
+    comm₂-case m ok h g      (high .g) e = high₂ m ok h g (high-shape g e)
 
   ok : ∀ m → AxOk m
   -- Four wires: completeness on five.
