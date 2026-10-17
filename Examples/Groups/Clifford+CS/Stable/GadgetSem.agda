@@ -35,11 +35,11 @@ open import Data.Bool using (Bool ; true ; false ; if_then_else_ ; _∧_)
 open import Data.Bool.Properties using (∧-identityʳ ; ∧-assoc)
 open import Data.Nat using (zero)
 open import Data.Product using (_,_)
-open import Data.Vec using ([] ; _∷_ ; _∷ʳ_ ; initLast)
+open import Data.Vec using ([] ; _∷_ ; _∷ʳ_ ; initLast ; replicate)
 import Relation.Binary.Reasoning.Setoid as SetoidR
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
-open import Notations using (₀ ; ₁₊)
+open import Notations using (₀ ; ₁₊ ; ₃₊)
 
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_ ; up)
 open import Examples.Groups.Clifford+CS.Semantics.Control using (blk ; ctrl⁰ ; ctrl⁰-~ ; sel)
@@ -149,6 +149,20 @@ o zero    = o₄
 o (suc m) = o m ∷ʳ false
 e zero    = e₄
 e (suc m) = e m ∷ʳ false
+
+private
+  rep-snoc : ∀ k → (replicate k false ∷ʳ false) ≡ (false ∷ replicate k false)
+  rep-snoc zero    = Eq.refl
+  rep-snoc (suc k) = Eq.cong (false ∷_) (rep-snoc k)
+
+-- They are the all-zero vector and the first unit vector.
+o≡ : ∀ m → o m ≡ (false ∷ replicate (₃₊ m) false)
+o≡ zero    = Eq.refl
+o≡ (suc m) = Eq.trans (Eq.cong (_∷ʳ false) (o≡ m)) (Eq.cong (false ∷_) (rep-snoc (₃₊ m)))
+
+e≡ : ∀ m → e m ≡ (true ∷ replicate (₃₊ m) false)
+e≡ zero    = Eq.refl
+e≡ (suc m) = Eq.trans (Eq.cong (_∷ʳ false) (e≡ m)) (Eq.cong (true ∷_) (rep-snoc (₃₊ m)))
 
 -- The gadget on 4 + m wires denotes its block on 0 and e₀.
 gad-sem : ∀ V m → ⟦ GS.gad V m ⟧ ~ tl (blkOf V) (o m) (e m)

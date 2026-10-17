@@ -11,7 +11,8 @@
 -- two states by the word's bit map (`conj-sem`, through Five.Sem.TL's
 -- tl-pull): the decoding d p q = α p q • G • (α p q)⁻¹ of a gadget with
 -- block B on 0 and e₀ denotes the block B on the images of 0 and e₀
--- under α p q (`d-sem`).  With Stable.GadgetSem this is the decoding's
+-- under α p q (`d-sem`), which for p ≠ q are p and q (`d-sem-pq`,
+-- Stable.AlphaEnds).  With Stable.GadgetSem this is the decoding's
 -- semantics, which Lemma 8.8 at every width needs (Stable.HyperSem).
 ------------------------------------------------------------------------
 
@@ -49,6 +50,7 @@ import Examples.Groups.Clifford+CS.Affine.Theory (₃₊ m) as A
 import Examples.Groups.Clifford+CS.Affine.Alpha (₃₊ m) as Al
 import Examples.Groups.Clifford+CS.Affine.Equivariance (₃₊ m) as E
 import Examples.Groups.Clifford+CS.Affine.Circuits m c4 as C
+import Examples.Groups.Clifford+CS.Stable.AlphaEnds (₃₊ m) as AE
 
 open TL using (Blk ; tl ; tlOp)
 open A using (Lt ; xL ; tL ; Wire)
@@ -157,3 +159,12 @@ conj-sem w G B p q hG = begin
 d-sem : ∀ (G : Circuit W) (B : Blk) (o e : St) → ⟦ G ⟧ ~ tl B o e → ∀ (p q : St) →
         ⟦ C.⟪ Al.α p q ⟫ʷ • G • C.⟪ A.rev (Al.α p q) ⟫ʷ ⟧ ~ tl B (Al.amapʷ (Al.α p q) o) (Al.amapʷ (Al.α p q) e)
 d-sem G B o e hG p q = conj-sem (Al.α p q) G B o e hG
+
+-- With Stable.AlphaEnds: the decoding of a gadget with block B on 0
+-- and e₀ denotes B on p and q.
+d-sem-pq : ∀ (G : Circuit W) (B : Blk) → ⟦ G ⟧ ~ tl B AE.z AE.e₀ → ∀ (p q : St) → p ≢ q →
+           ⟦ C.⟪ Al.α p q ⟫ʷ • G • C.⟪ A.rev (Al.α p q) ⟫ʷ ⟧ ~ tl B p q
+d-sem-pq G B hG p q ne =
+  Eq.subst (λ s → ⟦ C.⟪ Al.α p q ⟫ʷ • G • C.⟪ A.rev (Al.α p q) ⟫ʷ ⟧ ~ s)
+           (Eq.cong₂ (tl B) (AE.α-0 p q) (AE.α-e p q ne))
+           (d-sem G B AE.z AE.e₀ hG p q)
