@@ -286,3 +286,30 @@ independence of α, the affine-hyperplane argument for Lemma 8.8, Lemma
   the facts at widths 7..9 come from completeness one width down; the
   seven six-wire facts (Switch6 x2, comm1-base x2, comm2-base1 x2,
   comm2-base2 at m = 0) by b6.py's box derivations.
+
+### The six-wire facts (2026-10-17, Stable/Six/)
+
+All seven six-wire equations of `Stable.HypFrom.Six` are derived from
+completeness on five wires (`Stable.Six.All.six`), so transport into at
+most N wires needs completeness on five wires and on six to N − 1, and
+nothing else (`hyp′`, `transport′`).  The route is b6.py's:
+
+* Engine: gates `gk ρ c` placed by swap networks; a window re-places the
+  gates of a segment and of its replacement under a network carrying an
+  idle wire to the top and decides the five-wire lines by one
+  evaluation; `transport` places a lemma's lines again along a network.
+* Pass2/Pass1/Dance: the box with box wire 3, as t Q t Q, passes
+  CX(0→3) and CX(3→0) (copies on wire 0 commuted through the two-wire
+  pieces of a CCZ and cancelled), hence the swap; renamed letter by
+  letter, its box wire is on wire 0.  Su: Σ(1;5,2|3,4) = Σ(1;5,2|0,4).
+* Switch (Switch₆), Comm1 (comm₁-base), Comm2 (comm₂-base₁), Comm3
+  (comm₂-base₂ at six wires): F0 windows, respelling windows and Su
+  transported along wire maps; comm₂-base₂ moves the first S-box to
+  borrow {0, 1} and the second {3, 4}, which leaves wire 2 idle.
+
+Cost: a five-wire window with one S-box a side peaks near 6.3 GB (about
+85 s), with two a side 7.5 GB (140 s); one module per such window,
+checked one process at a time (chkall.sh).
+
+Next for Theorem S: the decoding, Lemmas 8.7/8.8 and the induction at
+width n ≥ 6 (v-office's division: Affine/, the representation lemma).
