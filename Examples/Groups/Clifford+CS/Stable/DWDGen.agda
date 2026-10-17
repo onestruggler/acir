@@ -69,35 +69,55 @@ import Examples.Groups.Clifford+CS.Five.Decode as Decode
 import Examples.Groups.Clifford+CS.Encoding as Encoding
 import Examples.Groups.Clifford+CS.BridgeGray as BridgeGray
 
+-- The gadgets of a word over P′ on 4 + k wires, read at the Gray codes.
+module Lits (k : ℕ) where
+  private
+    module Dk = Decode k
+    module BGk = BridgeGray (₄₊ k)
+  open Dk using (Gd ; gd ; kind ; i ; j ; GL ; Π ; Valid ; valid-GL ; sem-w)
+  open Encoding k using (N ; cod ; cod-inj)
+
+  -- A gadget at the Gray codes of its indices.
+  toLit : Gd → Lit k
+  toLit g = kind g , cod (i g) , cod (j g)
+
+  -- The decoding of a word over P′ on 4 + k wires.
+  decL : Word (GenP N) → Circuit (₄₊ k)
+  decL u = D k (map toLit (GL u))
+
+  Π-tl : ∀ (L : List Gd) → Πtl (map toLit L) ≡ Π L
+  Π-tl []      = Eq.refl
+  Π-tl (g ∷ L) = Eq.cong (tl (blkOf (kind g)) (cod (i g)) (cod (j g)) ∙_) (Π-tl L)
+
+  valid≢ : ∀ (g : Gd) → Valid g → i g ≢ j g
+  valid≢ (gd kpp a b)  ne = ne
+  valid≢ (gd krot a b) ne = ne
+  valid≢ (gd kki a b)  lt = λ e → <⇒≢ lt (Eq.sym e)
+
+  ne-lit : ∀ (L : List Gd) → All Valid L → Ne (map toLit L)
+  ne-lit []      []       = []
+  ne-lit (g ∷ L) (v ∷ vs) = (λ e → valid≢ g v (cod-inj e)) ∷ ne-lit L vs
+
+  -- The decoding has the word's reading.
+  decL-sem : ∀ (u : Word (GenP N)) → ⟦ decL u ⟧ ~ BGk.⟦ u ⟧PY
+  decL-sem u =
+    ~-trans {s = ⟦ decL u ⟧} {Π (GL u)} {BGk.⟦ u ⟧PY}
+      (Eq.subst (λ x → ⟦ decL u ⟧ ~ x) (Π-tl (GL u)) (D-sem k (map toLit (GL u)) (ne-lit (GL u) (valid-GL u))))
+      (~-sym {s = BGk.⟦ u ⟧PY} {Π (GL u)} (sem-w u))
+
 module _ (m : ℕ) where
   private
     module Dc = Decode (suc m)
   open Dc using (Gd ; gd ; kind ; i ; j ; gl ; GL ; Π ; Valid ; valid-GL ; sem-w ; ppL ; pxL ; kiL)
   open Encoding (suc m) using (N ; cod ; cod-inj)
+  open Lits (suc m) public using (toLit)
+  open Lits (suc m) using (Π-tl ; valid≢ ; ne-lit ; decL-sem)
   private
     module BG = BridgeGray (₄₊ (suc m))
-
-  -- A gadget at the Gray codes of its indices.
-  toLit : Gd → Lit (suc m)
-  toLit g = kind g , cod (i g) , cod (j g)
 
   -- The decoding of a word over P′ on 5 + m wires.
   dec : Word (GenP N) → Circuit (₄₊ (suc m))
   dec u = D (suc m) (map toLit (GL u))
-
-  private
-    Π-tl : ∀ (L : List Gd) → Πtl (map toLit L) ≡ Π L
-    Π-tl []      = Eq.refl
-    Π-tl (g ∷ L) = Eq.cong (tl (blkOf (kind g)) (cod (i g)) (cod (j g)) ∙_) (Π-tl L)
-
-    valid≢ : ∀ (g : Gd) → Valid g → i g ≢ j g
-    valid≢ (gd kpp a b)  ne = ne
-    valid≢ (gd krot a b) ne = ne
-    valid≢ (gd kki a b)  lt = λ e → <⇒≢ lt (Eq.sym e)
-
-    ne-lit : ∀ (L : List Gd) → All Valid L → Ne (map toLit L)
-    ne-lit []      []       = []
-    ne-lit (g ∷ L) (v ∷ vs) = (λ e → valid≢ g v (cod-inj e)) ∷ ne-lit L vs
 
   -- An index in a vector of indices, found by instance search.
   record In {k} (ix : Vec (Fin N) k) (a : Fin N) : Set where
@@ -312,8 +332,4 @@ module _ (m : ℕ) where
 
   -- The decoding of a word has the word's reading.
   dʷ-sem : ∀ (u : Word (GenP N)) → ⟦ (dl ʷ) u ⟧ ~ BG.⟦ u ⟧PY
-  dʷ-sem u =
-    ~-trans {s = ⟦ (dl ʷ) u ⟧} {⟦ dec u ⟧} {BG.⟦ u ⟧PY} (soundᵧ (dec-ʷ u))
-      (~-trans {s = ⟦ dec u ⟧} {Π (GL u)} {BG.⟦ u ⟧PY}
-        (Eq.subst (λ x → ⟦ dec u ⟧ ~ x) (Π-tl (GL u)) (D-sem (suc m) (map toLit (GL u)) (ne-lit (GL u) (valid-GL u))))
-        (~-sym {s = BG.⟦ u ⟧PY} {Π (GL u)} (sem-w u)))
+  dʷ-sem u = ~-trans {s = ⟦ (dl ʷ) u ⟧} {⟦ dec u ⟧} {BG.⟦ u ⟧PY} (soundᵧ (dec-ʷ u)) (decL-sem u)
