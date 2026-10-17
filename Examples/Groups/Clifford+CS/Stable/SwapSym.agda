@@ -16,11 +16,14 @@
 -- (`sw-tt`, by the structural rules).  So SwapSym for P follows from
 -- SwapSym for the doubly controlled gate U on wire 0 (`swapsym-tw`), and
 -- SwapSym is closed under products and inverses (`ss-•`, `ss-inv`).
+-- With X on both controls the white λ⁰ λ⁰ w is the black λ¹ λ¹ w
+-- (`λ⁰λ⁰-X`), and the exchange swaps the two X, so SwapSym for λ¹ λ¹ w
+-- gives it for λ⁰ λ⁰ w (`ss-λ⁰λ⁰`).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Data.Nat using (ℕ ; suc)
+open import Data.Nat using (ℕ ; zero ; suc)
 open import Notations using (₄₊)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)
@@ -45,8 +48,11 @@ import Presentation.Base as PB
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Tools using (module Tools)
 open import Examples.Groups.Clifford+CS.MultiControlled using (top ; _↧)
-open import Examples.Groups.Clifford+CS.Lambda using (λ⁰ʷ ; Swᵗ)
-open import Examples.Groups.Clifford+CS.Lambda.Split using (Sw²)
+open import Examples.Groups.Clifford+CS.Completeness using (complete₂)
+open import Examples.Groups.Clifford+CS.SemanticSteps using (module Below)
+open import Examples.Groups.Clifford+CS.Lambda using (λ⁰ʷ ; Swᵗ ; Xᵗ)
+open import Examples.Groups.Clifford+CS.Lambda.Split using (Sw² ; top-↑)
+open import Examples.Groups.Clifford+CS.Stable.Mixed using (Xᵗ²)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_YVRel,_===_ ; embed)
 open import Examples.Groups.Clifford+CS.Stable.Weakening using (top-congᵧ)
 import Examples.Groups.Clifford+CS.Stable.CalcW as CalcW
@@ -168,3 +174,93 @@ swapsym-tw P Gm Gp U Um eP pm mp sU sUm =
   pass→ss (pass≈ (sym (tw-tt P Gm Gp U Um eP pm mp))
     (pass-• (embed (sw-tt (₄₊ m) Gm))
       (pass-• (ss→pass sUm) (pass-• (embed (sw-tt (₄₊ m) Gp)) (ss→pass sU)))))
+
+------------------------------------------------------------------------
+-- White controls from black ones
+
+private
+  module S₂ = Below 2 complete₂
+
+  ≡→≈₀ : ∀ {n} {a b : Circuit n} → a ≡ b → n ⊢ a ≈ b
+  ≡→≈₀ Eq.refl = PB.refl
+
+  -- The exchange of the top two wires moves X from one to the other.
+  swX : ∀ k → (₂₊ k) ⊢ Swᵗ k • top (Xᵗ k) • Swᵗ k ≈ Xᵗ (suc k)
+  swX zero    = S₂.by-sem₀ (Swap • X • Swap) (X ↑) Eq.refl
+  swX (suc k) =
+    PB.trans (PB.cong PB.refl (PB.cong (≡→≈₀ (top-↑ (Xᵗ k))) PB.refl))
+             (lemma-cong↑ (Swᵗ k • top (Xᵗ k) • Swᵗ k) (Xᵗ (suc k)) (swX k))
+
+  -- X on the two top wires commute.
+  xx-comm : ∀ k → (₂₊ k) ⊢ top (Xᵗ k) • Xᵗ (suc k) ≈ Xᵗ (suc k) • top (Xᵗ k)
+  xx-comm zero    = S₂.by-sem₀ (X • X ↑) (X ↑ • X) Eq.refl
+  xx-comm (suc k) =
+    PB.trans (PB.cong (≡→≈₀ (top-↑ (Xᵗ k))) PB.refl)
+      (PB.trans (lemma-cong↑ (top (Xᵗ k) • Xᵗ (suc k)) (Xᵗ (suc k) • top (Xᵗ k)) (xx-comm k))
+                (PB.cong PB.refl (≡→≈₀ (Eq.sym (top-↑ (Xᵗ k))))))
+
+  x₁ : Circuit W
+  x₁ = Xᵗ (₄₊ m)
+
+  x₂ : Circuit W′
+  x₂ = Xᵗ (suc (₄₊ m))
+
+-- λ⁰ λ⁰ is λ¹ λ¹ between X on both controls.
+λ⁰λ⁰-X : ∀ (w : Circuit D) → W′ ⊢ᵧ λ⁰ʷ (λ⁰ʷ w) ≈ top x₁ • x₂ • λ¹ʷ (λ¹ʷ w) • x₂ • top x₁
+λ⁰λ⁰-X w = begin
+  λ⁰ʷ (λ⁰ʷ w)                                   ≈⟨ CW₁.transport⁰ (CW₀.λ⁰-X w) ⟩
+  λ⁰ʷ (x₁ • λ¹ʷ w • x₁)                         ≈⟨ sym (CW₁.conj⁰ x₁ x₁ (λ¹ʷ w) (embed (Xᵗ² (₄₊ m)))) ⟩
+  top x₁ • λ⁰ʷ (λ¹ʷ w) • top x₁                 ≈⟨ back _ (front _ (CW₁.λ⁰-X (λ¹ʷ w))) ⟩
+  top x₁ • (x₂ • λ¹ʷ (λ¹ʷ w) • x₂) • top x₁     ≈⟨ by-passoc (□ • (□ • □ • □) • □) (□ • □ • □ • □ • □) Eq.refl ⟩
+  top x₁ • x₂ • λ¹ʷ (λ¹ʷ w) • x₂ • top x₁       ∎
+
+private
+  -- x turns into y under the exchange.
+  Tw : Circuit W′ → Circuit W′ → Set
+  Tw x y = W′ ⊢ᵧ Sw • x ≈ y • Sw
+
+  tw : ∀ {x y} → W′ ⊢ᵧ Sw • x • Sw ≈ y → Tw x y
+  tw {x} {y} s = begin
+    Sw • x                  ≈⟨ sym right-unit ⟩
+    (Sw • x) • ε            ≈⟨ back _ (sym ss) ⟩
+    (Sw • x) • (Sw • Sw)    ≈⟨ by-passoc ((□ • □) • (□ • □)) ((□ • □ • □) • □) Eq.refl ⟩
+    (Sw • x • Sw) • Sw      ≈⟨ front _ s ⟩
+    y • Sw                  ∎
+
+  tw-• : ∀ {x y x′ y′} → Tw x y → Tw x′ y′ → Tw (x • x′) (y • y′)
+  tw-• {x} {y} {x′} {y′} p q = begin
+    Sw • (x • x′)           ≈⟨ sym assoc ⟩
+    (Sw • x) • x′           ≈⟨ front _ p ⟩
+    (y • Sw) • x′           ≈⟨ assoc ⟩
+    y • (Sw • x′)           ≈⟨ back _ q ⟩
+    y • (y′ • Sw)           ≈⟨ sym assoc ⟩
+    (y • y′) • Sw           ∎
+
+  -- And back.
+  unsw : ∀ {x y} → W′ ⊢ᵧ Sw • x • Sw ≈ y → W′ ⊢ᵧ Sw • y • Sw ≈ x
+  unsw {x} {y} s = begin
+    Sw • y • Sw                   ≈⟨ back _ (front _ (sym s)) ⟩
+    Sw • (Sw • x • Sw) • Sw       ≈⟨ by-passoc (□ • (□ • □ • □) • □) ((□ • □) • □ • (□ • □)) Eq.refl ⟩
+    (Sw • Sw) • x • (Sw • Sw)     ≈⟨ cong ss (back x ss) ⟩
+    ε • x • ε                     ≈⟨ trans left-unit right-unit ⟩
+    x                             ∎
+
+-- SwapSym for λ⁰ λ⁰ w from SwapSym for λ¹ λ¹ w.
+ss-λ⁰λ⁰ : ∀ (w : Circuit D) → SS (λ¹ʷ (λ¹ʷ w)) → SS (λ⁰ʷ (λ⁰ʷ w))
+ss-λ⁰λ⁰ w sc = pass→ss (pass≈ (sym (λ⁰λ⁰-X w)) (trans t (front Sw reorder)))
+  where
+  a = top x₁
+  b = x₂
+  c = λ¹ʷ (λ¹ʷ w)
+  ab : W′ ⊢ᵧ Sw • a • Sw ≈ b
+  ab = embed (swX (₄₊ m))
+  t : Tw (a • b • c • b • a) (b • a • c • a • b)
+  t = tw-• (tw ab) (tw-• (tw (unsw ab)) (tw-• (ss→pass sc) (tw-• (tw (unsw ab)) (tw ab))))
+  comm : W′ ⊢ᵧ a • b ≈ b • a
+  comm = embed (xx-comm (₄₊ m))
+  reorder : W′ ⊢ᵧ b • a • c • a • b ≈ a • b • c • b • a
+  reorder = begin
+    b • a • c • a • b             ≈⟨ by-passoc (□ • □ • □ • □ • □) ((□ • □) • □ • (□ • □)) Eq.refl ⟩
+    (b • a) • c • (a • b)         ≈⟨ cong (sym comm) (back c comm) ⟩
+    (a • b) • c • (b • a)         ≈⟨ by-passoc ((□ • □) • □ • (□ • □)) (□ • □ • □ • □ • □) Eq.refl ⟩
+    a • b • c • b • a             ∎
