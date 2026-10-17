@@ -29,14 +29,12 @@ open import Examples.Groups.Clifford+CS.Completeness using (Complete)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_⊢ᵧ_≈_)
-open import Examples.Groups.Clifford+CS.Stable.Calc using (F4ᵗ ; F5ᵗ)
+open import Examples.Groups.Clifford+CS.Stable.Inputs using (Inputs)
 open import Examples.Groups.Clifford+CS.Stable.HypFrom using (Completeᵧ)
 open import Examples.Groups.Clifford+CS.Five.Facts4 using (Facts4)
 
 module Examples.Groups.Clifford+CS.Stable.Lemma87
-  (c4 : Complete 4) (c₅ : Completeᵧ 5)
-  (f4 : ∀ m → F4ᵗ m) (f5 : ∀ m → F5ᵗ m)
-  (tr : ∀ m {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v)
+  (c4 : Complete 4) (c₅ : Completeᵧ 5) (I : Inputs)
   (F : Facts4)
   where
 
@@ -73,14 +71,12 @@ open import Examples.Groups.Clifford+CS.Stable.Transport using (View ; low ; hig
 open import Examples.Groups.Clifford+CS.Stable.Insert4 using (topS ; top1 ; top2 ; λ¹-topS ; λ¹-top1 ; Zᵗ)
 open import Examples.Groups.Clifford+CS.Five.Sem.Blocks using (Kind ; kpp ; krot ; kki)
 open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; pp)
-open import Examples.Groups.Clifford+CS.Stable.GadgetFacts c4 c₅ f4 f5 tr F
-  using (D ; Ne ; D-sem ; lemma-sem ; IW ; ind₄ ; f6) renaming (sym to gsym)
-open import Examples.Groups.Clifford+CS.Stable.Hyper c4 f4 f5 tr Kind (Facts4.G F) ind₄ f6 gsym
-  using (D-eqv ; ren)
-import Examples.Groups.Clifford+CS.Stable.DWDGen c4 c₅ f4 f5 tr F as W
-import Examples.Groups.Clifford+CS.Stable.Halves c4 c₅ f4 f5 tr F as H
-import Examples.Groups.Clifford+CS.Stable.CompleteStep c4 c₅ f4 f5 tr F as CSt
-import Examples.Groups.Clifford+CS.Stable.Respell c4 f4 f5 tr F as Rs
+open import Examples.Groups.Clifford+CS.Stable.GadgetFacts c4 c₅ I F
+  using (D ; Ne ; D-sem ; lemma-sem ; IW ; D-eqv ; ren)
+import Examples.Groups.Clifford+CS.Stable.DWDGen c4 c₅ I F as W
+import Examples.Groups.Clifford+CS.Stable.Halves c4 c₅ I F as H
+import Examples.Groups.Clifford+CS.Stable.CompleteStep c4 c₅ I F as CSt
+import Examples.Groups.Clifford+CS.Stable.Respell c4 I F as Rs
 import Examples.Groups.Clifford+CS.Stable.TopSwap as TopSwap
 import Examples.Groups.Clifford+CS.Stable.DecSem as DecSem
 import Examples.Groups.Clifford+CS.Five.Decode as Decode
@@ -123,7 +119,9 @@ Ktop (suc k) = lemma-cong↑ _ _ (Ktop k)
 ------------------------------------------------------------------------
 -- Lemma 8.7 on 5 + m wires
 
-module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
+open Inputs I using (Bnd)
+
+module _ (m : ℕ) (b : Bnd m) (c : Completeᵧ (₄₊ m)) where
   private
     n : ℕ
     n = suc (₄₊ m)
@@ -161,7 +159,7 @@ module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
     respell-D : ∀ (p q : Vec Bool n) → p ≢ q →
                 n ⊢ᵧ D (suc m) ((kpp , q , p) ∷ (kki , q , p) ∷ []) ≈ D (suc m) ((kki , p , q) ∷ [])
     respell-D p q ne =
-      lemma-sem m c w₁ w₂ (p ∷ q ∷ []) (s≤s z≤n) ((λ e → ne (Eq.sym e)) ∷ (λ e → ne (Eq.sym e)) ∷ []) (ne ∷ [])
+      lemma-sem m b c w₁ w₂ (p ∷ q ∷ []) (s≤s z≤n) ((λ e → ne (Eq.sym e)) ∷ (λ e → ne (Eq.sym e)) ∷ []) (ne ∷ [])
         (~-trans {s = ⟦ D (suc m) ℓ₁ ⟧} {Rs.Pp q p ∙ (Rs.Ki q p ∙ ε∙)} {⟦ D (suc m) ℓ₂ ⟧}
           (D-sem (suc m) ℓ₁ ((λ e → ne (Eq.sym e)) ∷ (λ e → ne (Eq.sym e)) ∷ []))
           (~-trans {s = Rs.Pp q p ∙ (Rs.Ki q p ∙ ε∙)} {(Rs.Pp q p ∙ Rs.Ki q p) ∙ ε∙} {⟦ D (suc m) ℓ₂ ⟧}
@@ -270,7 +268,7 @@ module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
     K₃ = [ top1 (₃₊ m) K-gate ]ʷ
 
     w₃ : Word (GenP E1.N)
-    w₃ = H.wd m c K₃
+    w₃ = H.wd m b c K₃
 
     Gs : List D1.Gd
     Gs = D1.GL w₃
@@ -311,11 +309,11 @@ module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
       [ top1 (₄₊ m) K-gate ]ʷ
         ≈⟨ embed (Ktop (₃₊ m)) ⟩
       Swᵗ (₃₊ m) • top K₃ • Swᵗ (₃₊ m)
-        ≈⟨ cong (embed TS.sw-aff) (cong (H.below m c K₃) (embed TS.sw-aff′)) ⟩
+        ≈⟨ cong (embed TS.sw-aff) (cong (H.below m b c K₃) (embed TS.sw-aff′)) ⟩
       C₁.⟪ TS.τsw ⟫ʷ • (W.dl m ʷ) w₃ • C₁.⟪ A₁.rev TS.τsw ⟫ʷ
         ≈⟨ back _ (front _ (W.dec-ʷ m w₃)) ⟩
       C₁.⟪ TS.τsw ⟫ʷ • D (suc m) (map toLit Gs) • C₁.⟪ A₁.rev TS.τsw ⟫ʷ
-        ≈⟨ D-eqv m TS.τsw (map toLit Gs) (L1.ne-lit Gs (D1.valid-GL w₃)) ⟩
+        ≈⟨ D-eqv m b TS.τsw (map toLit Gs) (L1.ne-lit Gs (D1.valid-GL w₃)) ⟩
       D (suc m) (ren m TS.τsw (map toLit Gs))
         ≈⟨ ≡→≈ (Eq.cong (D (suc m)) (lits-σ Gs)) ⟩
       D (suc m) (map toLit (map renσ Gs))
@@ -333,20 +331,20 @@ module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
 
     shape : ∀ (g : Gen n) → Shape g → Goal g
     shape .(topS (₄₊ m)) sS =
-      CSt.by-decodes m c (topS (₄₊ m)) (H.wd m c [ gate₀ I-gate ]ʷ)
-        (trans (embed (topS≈ (₄₊ m))) (H.below m c [ gate₀ I-gate ]ʷ))
+      CSt.by-decodes m b c (topS (₄₊ m)) (H.wd m b c [ gate₀ I-gate ]ʷ)
+        (trans (embed (topS≈ (₄₊ m))) (H.below m b c [ gate₀ I-gate ]ʷ))
     shape .(top1 (₄₊ m) S-gate) (s1 S-gate) =
-      CSt.by-decodes m c (top1 (₄₊ m) S-gate) (H.upw m c [ topS (₃₊ m) ]ʷ)
+      CSt.by-decodes m b c (top1 (₄₊ m) S-gate) (H.upw m b c [ topS (₃₊ m) ]ʷ)
         (trans (≡→≈ (Eq.trans (top1S≡ (₄₊ m)) (Eq.sym (λ¹-topS m))))
-               (sym (H.above m c [ topS (₃₊ m) ]ʷ)))
-    shape .(top1 (₄₊ m) K-gate) (s1 K-gate) = CSt.by-decodes m c (top1 (₄₊ m) K-gate) wK k-dec
+               (sym (H.above m b c [ topS (₃₊ m) ]ʷ)))
+    shape .(top1 (₄₊ m) K-gate) (s1 K-gate) = CSt.by-decodes m b c (top1 (₄₊ m) K-gate) wK k-dec
     shape .(top2 (₃₊ m) CS-gate) (s2 CS-gate) =
-      CSt.by-decodes m c (top2 (₃₊ m) CS-gate) (H.upw m c [ top1 (₃₊ m) S-gate ]ʷ)
+      CSt.by-decodes m b c (top2 (₃₊ m) CS-gate) (H.upw m b c [ top1 (₃₊ m) S-gate ]ʷ)
         (trans (≡→≈ (Eq.trans (top2≡ (₃₊ m)) (Eq.sym (λ¹-top1 m S-gate))))
-               (sym (H.above m c [ top1 (₃₊ m) S-gate ]ʷ)))
+               (sym (H.above m b c [ top1 (₃₊ m) S-gate ]ʷ)))
 
     cases : ∀ (g : Gen n) (v : View g) → view g ≡ v → Goal g
-    cases .(g′ ↧) (low g′) _ = CSt.by-decodes m c (g′ ↧) (H.wd m c [ g′ ]ʷ) (H.below m c [ g′ ]ʷ)
+    cases .(g′ ↧) (low g′) _ = CSt.by-decodes m b c (g′ ↧) (H.wd m b c [ g′ ]ʷ) (H.below m b c [ g′ ]ʷ)
     cases g       (high .g) e = shape g (high-shape g e)
 
   -- Lemma 8.7 on 5 + m wires.
@@ -355,5 +353,5 @@ module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
 
 -- The induction step on the width: completeness on 4 + m wires gives it
 -- on 5 + m.
-step : ∀ m → Completeᵧ (₄₊ m) → Completeᵧ (₄₊ (suc m))
-step m c = CSt.complete-step m c (d∘e m c)
+step : ∀ m → Bnd m → Completeᵧ (₄₊ m) → Completeᵧ (₄₊ (suc m))
+step m b c = CSt.complete-step m b c (d∘e m b c)

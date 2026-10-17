@@ -21,12 +21,11 @@ open import Examples.Groups.Clifford+CS.Completeness using (Complete)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_⊢ᵧ_≈_)
-open import Examples.Groups.Clifford+CS.Stable.Calc using (F4ᵗ ; F5ᵗ)
+open import Examples.Groups.Clifford+CS.Stable.Inputs using (Inputs)
 open import Examples.Groups.Clifford+CS.Five.Facts4 using (Facts4)
 
 module Examples.Groups.Clifford+CS.Stable.Respell
-  (c4 : Complete 4) (f4 : ∀ m → F4ᵗ m) (f5 : ∀ m → F5ᵗ m)
-  (tr : ∀ m {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v)
+  (c4 : Complete 4) (I : Inputs)
   (F : Facts4)
   where
 
@@ -43,7 +42,7 @@ open import Examples.Groups.Clifford+CS.Semantics.Decide using (eqM ; eqM-sound)
 open import Examples.Groups.Clifford+CS.Semantics.Control using (ctrl⁰ ; ctrl⁰-~ ; ctrl⁰-∙)
 open import Examples.Groups.Clifford+CS.Five.Sem.TL using (tl ; tlOp ; module Bij)
 open import Examples.Groups.Clifford+CS.Five.Sem.Blocks using (blkOf ; kpp ; kki ; o₄ ; e₄)
-open import Examples.Groups.Clifford+CS.Stable.GadgetSem f4 f5 tr F using (o ; e ; o≡ ; e≡ ; ctrl⁰-tl)
+open import Examples.Groups.Clifford+CS.Stable.GadgetSem I F using (o ; e ; o≡ ; e≡ ; ctrl⁰-tl)
 import Examples.Groups.Clifford+CS.Affine.Theory as Theory
 import Examples.Groups.Clifford+CS.Affine.Alpha as Alpha
 import Examples.Groups.Clifford+CS.Stable.AlphaEnds as AlphaEnds

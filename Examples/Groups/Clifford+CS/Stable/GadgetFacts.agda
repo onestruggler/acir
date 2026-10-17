@@ -23,15 +23,13 @@ open import Examples.Groups.Clifford+CS.Completeness using (Complete)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_⊢ᵧ_≈_)
-open import Examples.Groups.Clifford+CS.Stable.Calc using (F4ᵗ ; F5ᵗ)
+open import Examples.Groups.Clifford+CS.Stable.Inputs using (Inputs)
 open import Examples.Groups.Clifford+CS.Stable.HypFrom using (Completeᵧ)
 open import Examples.Groups.Clifford+CS.Five.Facts4 using (Facts4)
-import Examples.Groups.Clifford+CS.Stable.Gadget as Gadget
+import Examples.Groups.Clifford+CS.Stable.GadgetDefs as GadgetDefs
 
 module Examples.Groups.Clifford+CS.Stable.GadgetFacts
-  (c4 : Complete 4) (c₅ : Completeᵧ 5)
-  (f4 : ∀ m → F4ᵗ m) (f5 : ∀ m → F5ᵗ m)
-  (tr : ∀ m {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v)
+  (c4 : Complete 4) (c₅ : Completeᵧ 5) (I : Inputs)
   (F : Facts4)
   where
 
@@ -45,7 +43,7 @@ import Examples.Groups.Clifford+CS.Stable.GadgetSym as GadgetSym
 import Examples.Groups.Clifford+CS.Stable.HyperCanon as HyperCanon
 import Examples.Groups.Clifford+CS.Stable.Gadget4 as Gadget4
 import Examples.Groups.Clifford+CS.Stable.F6 as F6
-import Examples.Groups.Clifford+CS.Stable.DecGad c4 f4 f5 tr F as DecGad
+import Examples.Groups.Clifford+CS.Stable.DecGad c4 I F as DecGad
 import Examples.Groups.Clifford+CS.Affine.Theory as Theory
 import Examples.Groups.Clifford+CS.Affine.Alpha as Alpha
 import Examples.Groups.Clifford+CS.Affine.Circuits as Circuits
@@ -61,42 +59,40 @@ open import Examples.Groups.Clifford+CS.Five.Sem.Blocks using (blkOf)
 open import Examples.Groups.Clifford+CS.Five.Sem.TL using (tl)
 
 open Facts4 F using (G)
+open Inputs I
 
 -- The four-wire input, Stable.Gadget4.
-ind₄ : ∀ V → Gadget.Indep₀ 0 c4 (f4 0) (f5 0) (tr 0) (G V)
+ind₄ : ∀ V → GadgetDefs.Indep₀ 0 c4 (G V)
 ind₄ = Gadget4.ind₄ c4 F
 
 -- The five-wire input, Stable.F6.
-f6 : ∀ V → Gadget.TopTarget 0 c4 (f4 0) (f5 0) (tr 0) (G V)
-f6 = F6.f6 c4 c₅ (f4 0) (f5 0) (tr 0) F
+f6 : ∀ V → Bnd 0 → GadgetDefs.TopTarget 0 c4 (G V)
+f6 V b = F6.f6 c4 c₅ (f4 0 b) (f5 0) (tr 0 b) F V
 
 private
-  module GA = GadgetAll c4 f4 f5 tr
-  module GS = GadgetSym f4 f5 tr F
+  module GA = GadgetAll c4 I
+  module GS = GadgetSym I F
 
   gad≡ : ∀ V m → GA.gad (G V) (ind₄ V) (f6 V) m ≡ GS.gad V m
   gad≡ V zero    = Eq.refl
   gad≡ V (suc m) = Eq.cong λ⁰ʷ (gad≡ V m)
 
 -- The symmetry of the two top controls, from six wires on.
-sym : ∀ V m → Gadget.SwapSym (suc m) c4 (f4 (suc m)) (f5 (suc m)) (tr (suc m))
-                (GA.gad (G V) (ind₄ V) (f6 V) (suc m))
-sym V m = Eq.subst (λ x → Gadget.SwapSym (suc m) c4 (f4 (suc m)) (f5 (suc m)) (tr (suc m)) (λ⁰ʷ x))
-                   (Eq.sym (gad≡ V m)) (GS.ss-gad₅ c₅ V m)
+sym : ∀ V m → Bnd (suc m) → GadgetDefs.SwapSym (suc m) c4 (GA.gad (G V) (ind₄ V) (f6 V) (suc m))
+sym V m b = Eq.subst (λ x → GadgetDefs.SwapSym (suc m) c4 (λ⁰ʷ x))
+                     (Eq.sym (gad≡ V m)) (GS.ss-gad₅ c₅ V m b)
 
 -- The gadget on 4 + m wires, and its independence of the affine circuit.
 gad : Kind → ∀ m → Circuit (₄₊ m)
 gad V = GA.gad (G V) (ind₄ V) (f6 V)
 
-indep : ∀ V m → Gadget.Indep₀ m c4 (f4 m) (f5 m) (tr m) (gad V m)
-indep V = GA.indep (G V) (ind₄ V) (f6 V) (sym V)
+indepS : ∀ V m → Bnd m → GadgetDefs.Indep₀ (suc m) c4 (gad V (suc m))
+indepS V = GA.indepS (G V) (ind₄ V) (f6 V) (sym V)
 
 -- Lemma 8.8 for decoded words over the three kinds.
-open HyperCanon c4 f4 f5 tr Kind G ind₄ f6 sym public using (IW ; inst ; NeW ; lemma ; lemma-sem ; at-pattern)
-open import Examples.Groups.Clifford+CS.Stable.Hyper c4 f4 f5 tr Kind G ind₄ f6 sym public using (Lit ; D ; d ; Ne)
-
--- The affine decoding of a gadget on 4 + m wires, and its equivariance.
-module Dec (V : Kind) (m : ℕ) = GA.Dec (G V) (ind₄ V) (f6 V) (sym V) m
+open HyperCanon c4 I Kind G ind₄ f6 sym public using (IW ; inst ; NeW ; lemma ; lemma-sem ; at-pattern)
+open import Examples.Groups.Clifford+CS.Stable.Hyper c4 I Kind G ind₄ f6 sym public
+  using (Lit ; D ; d ; Ne ; D-top ; D-eqv ; ren ; up)
 
 ------------------------------------------------------------------------
 -- The semantics of decoded words

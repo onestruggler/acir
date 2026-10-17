@@ -23,14 +23,12 @@ open import Examples.Groups.Clifford+CS.Completeness using (Complete)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_⊢ᵧ_≈_)
-open import Examples.Groups.Clifford+CS.Stable.Calc using (F4ᵗ ; F5ᵗ)
+open import Examples.Groups.Clifford+CS.Stable.Inputs using (Inputs)
 open import Examples.Groups.Clifford+CS.Stable.HypFrom using (Completeᵧ)
 open import Examples.Groups.Clifford+CS.Five.Facts4 using (Facts4)
 
 module Examples.Groups.Clifford+CS.Stable.CompleteStep
-  (c4 : Complete 4) (c₅ : Completeᵧ 5)
-  (f4 : ∀ m → F4ᵗ m) (f5 : ∀ m → F5ᵗ m)
-  (tr : ∀ m {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v)
+  (c4 : Complete 4) (c₅ : Completeᵧ 5) (I : Inputs)
   (F : Facts4)
   where
 
@@ -53,8 +51,10 @@ import Examples.Groups.Clifford+CS.Section8 as Section8
 import Examples.Groups.Clifford+CS.BridgeGray as BridgeGray
 import Examples.Groups.Clifford+CS.Stable.DWDGen as DWDGen
 
+open Inputs I using (Bnd)
+
 private
-  module W = DWDGen c4 c₅ f4 f5 tr F
+  module W = DWDGen c4 c₅ I F
 
 module _ (m : ℕ) where
   private
@@ -79,9 +79,9 @@ module _ (m : ℕ) where
   -- A gate that is the decoding of some word over P′ is the decoding of
   -- its encoding: the two words have the same reading, so they are
   -- equal in P′.
-  by-decodes : Completeᵧ (₄₊ m) → ∀ (g : Gen n) (w : Word (GenP E.N)) →
+  by-decodes : Bnd m → Completeᵧ (₄₊ m) → ∀ (g : Gen n) (w : Word (GenP E.N)) →
                n ⊢ᵧ [ g ]ʷ ≈ (W.dl m ʷ) w → n ⊢ᵧ [ g ]ʷ ≈ (W.dl m ʷ) (E.e g)
-  by-decodes c g w h = PB.trans h (W.d-≈ m c (complete-P {w} {E.e g} same))
+  by-decodes b c g w h = PB.trans h (W.d-≈ m b c (complete-P {w} {E.e g} same))
     where
     same : ⟦ w ⟧PY ~ ⟦ E.e g ⟧PY
     same =
@@ -97,12 +97,12 @@ module _ (m : ℕ) where
 
   -- Completeness on 5 + m wires, from completeness on 4 + m and
   -- Lemma 8.7 on 5 + m.
-  complete-step : Completeᵧ (₄₊ m) → D∘E → Completeᵧ n
-  complete-step c d∘e {w} {v} eq =
+  complete-step : Bnd m → Completeᵧ (₄₊ m) → D∘E → Completeᵧ n
+  complete-step b c d∘e {w} {v} eq =
     R.fʷ-inj (complete-P {(E.e ʷ) w} {(E.e ʷ) v}
       (~-trans {s = ⟦ (E.e ʷ) w ⟧PY} {t = ⟦ w ⟧} {u = ⟦ (E.e ʷ) v ⟧PY} (eʷ-sem w)
         (~-trans {s = ⟦ w ⟧} {t = ⟦ v ⟧} {u = ⟦ (E.e ʷ) v ⟧PY} eq
           (~-sym {s = ⟦ (E.e ʷ) v ⟧PY} {t = ⟦ v ⟧} (eʷ-sem v)))))
     where
     module RS = Star-Injective-Simplified (_YVRel,_===_ n) (E.N R,_===_)
-    module R  = RS.Reidemeister-Schreier-Simplified E.e (W.dl m) (W.dwd m c) d∘e
+    module R  = RS.Reidemeister-Schreier-Simplified E.e (W.dl m) (W.dwd m b c) d∘e

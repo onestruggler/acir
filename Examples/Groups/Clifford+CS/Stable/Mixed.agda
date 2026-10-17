@@ -33,6 +33,7 @@ module Examples.Groups.Clifford+CS.Stable.Mixed where
 
 open import Data.Nat using (ℕ ; zero ; suc) renaming (_+_ to _+ℕ_)
 import Data.Nat as ℕ
+import Data.Nat.Properties as NP
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using ([_]ʷ ; ε ; _•_)
 
@@ -152,8 +153,21 @@ module Reduce (c₅ : Completeᵧ 5) where
     B′ • A′ ∎
     where open Tools ((suc (i +ℕ r)) YVRel,_===_)
 
-  module _ (base : MixBase) where
-    open MixBase base
+  -- (F4) up to an index M, from the base facts below it: the mixed pair
+  -- at index m (6 + m wires) uses the commutation of Base7/8/9 at m
+  -- only, so (F4) at index m needs b₃ below m.
+  module Upto
+    (b₁ : (h : Gate 1) →
+          (₂₊ (₄₊ zero)) ⊢ᵧ λ⁰ {suc zero} (gate₂ CS-gate ↥ ↥ ↥) • λ¹ {suc zero} (gate₁ h)
+                          ≈ λ¹ {suc zero} (gate₁ h) • λ⁰ {suc zero} (gate₂ CS-gate ↥ ↥ ↥))
+    (b₂ : (h : Gate 1) →
+          (₂₊ (₄₊ zero)) ⊢ᵧ λ⁰ {suc zero} (top1 4 h) • λ¹ {suc zero} (gate₂ CS-gate)
+                          ≈ λ¹ {suc zero} (gate₂ CS-gate) • λ⁰ {suc zero} (top1 4 h))
+    (M : ℕ)
+    (b₃ : ∀ m → m ℕ.≤ 3 → suc m ℕ.≤ M →
+          (₂₊ (₄₊ m)) ⊢ᵧ λ⁰ {suc m} (top2 (₃₊ m) CS-gate) • λ¹ {suc m} (gate₂ CS-gate)
+                       ≈ λ¹ {suc m} (gate₂ CS-gate) • λ⁰ {suc m} (top2 (₃₊ m) CS-gate))
+    where
 
     private
       -- A letter on wire 0 against a white letter reaching the top
@@ -198,29 +212,29 @@ module Reduce (c₅ : Completeᵧ 5) where
       -- The CS on the wires 0 1 against a white letter reaching the top
       -- domain wire: wire 4 is idle, from six wires on for the scalar,
       -- seven for S or K, ten for the CS.
-      high₂ : ∀ m → F4ᵗ m → (g : Gen (₄₊ m)) → Shape g →
+      high₂ : ∀ m → suc m ℕ.≤ M → F4ᵗ m → (g : Gen (₄₊ m)) → Shape g →
               (₂₊ (₄₊ m)) ⊢ᵧ λ⁰ (g ↥) • λ¹ (gate₂ CS-gate) ≈ λ¹ (gate₂ CS-gate) • λ⁰ (g ↥)
-      high₂ m F _ sS =
+      high₂ m lt F _ sS =
         via-place 4
           (Eq.subst₂ (λ x y → _ ⊢ᵧ x ≈ place 4 y)
              (Eq.sym (Eq.cong (λ x → Xᵗ (suc (₄₊ m)) • x • Xᵗ (suc (₄₊ m))) (λ¹-topS (suc m))))
              (Eq.sym (Eq.cong (λ x → Xᵗ (₄₊ m) • x • Xᵗ (₄₊ m)) (λ¹-topS m)))
              (PB.sym (embed (place₄-↑ (Xᵗ m • Sᵗ m • Xᵗ m)))))
           (embed (Σᵗ-place m)) (F (topS (₃₊ m)) (gate₂ CS-gate))
-      high₂ zero    F _ (s1 h) = b₂ h
-      high₂ (suc m) F _ (s1 h) =
+      high₂ zero    lt F _ (s1 h) = b₂ h
+      high₂ (suc m) lt F _ (s1 h) =
         via-place 4
           (Eq.subst₂ (λ x y → _ ⊢ᵧ x ≈ place 4 y)
              (Eq.sym (Eq.cong (λ x → Xᵗ (₂₊ (₄₊ m)) • x • Xᵗ (₂₊ (₄₊ m))) (λ¹-top1 (₂₊ m) h)))
              (Eq.sym (Eq.cong (λ x → Xᵗ (suc (₄₊ m)) • x • Xᵗ (suc (₄₊ m))) (λ¹-top1 (suc m) h)))
              (PB.sym (embed (place₄-↑ (Xᵗ (₁₊ m) • Zᵗ m h • Xᵗ (₁₊ m))))))
           (embed (Σᵗ-place (suc m))) (F (top1 (₄₊ m) h) (gate₂ CS-gate))
-      high₂ zero                      F _ (s2 CS-gate) = b₃ zero ℕ.z≤n
-      high₂ (suc zero)                F _ (s2 CS-gate) = b₃ (suc zero) (ℕ.s≤s ℕ.z≤n)
-      high₂ (suc (suc zero))          F _ (s2 CS-gate) = b₃ (suc (suc zero)) (ℕ.s≤s (ℕ.s≤s ℕ.z≤n))
-      high₂ (suc (suc (suc zero)))    F _ (s2 CS-gate) =
-        b₃ (suc (suc (suc zero))) (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ℕ.z≤n)))
-      high₂ (suc (suc (suc (suc m)))) F _ (s2 CS-gate) =
+      high₂ zero                      lt F _ (s2 CS-gate) = b₃ zero ℕ.z≤n lt
+      high₂ (suc zero)                lt F _ (s2 CS-gate) = b₃ (suc zero) (ℕ.s≤s ℕ.z≤n) lt
+      high₂ (suc (suc zero))          lt F _ (s2 CS-gate) = b₃ (suc (suc zero)) (ℕ.s≤s (ℕ.s≤s ℕ.z≤n)) lt
+      high₂ (suc (suc (suc zero)))    lt F _ (s2 CS-gate) =
+        b₃ (suc (suc (suc zero))) (ℕ.s≤s (ℕ.s≤s (ℕ.s≤s ℕ.z≤n))) lt
+      high₂ (suc (suc (suc (suc m)))) lt F _ (s2 CS-gate) =
         via-place 4
           (Eq.subst₂ (λ x y → _ ⊢ᵧ x ≈ place 4 y)
              (Eq.sym (Eq.cong (λ x → Xᵗ (suc (₄₊ (₄₊ m))) • x • Xᵗ (suc (₄₊ (₄₊ m)))) (λ¹-top2 (suc (₄₊ m)))))
@@ -228,44 +242,55 @@ module Reduce (c₅ : Completeᵧ 5) where
              (PB.sym (embed (place₄-↑ (Xᵗ (₄₊ m) • W m • Xᵗ (₄₊ m))))))
           (embed (Σᵗ-place (₄₊ m))) (F (top2 (₂₊ (₄₊ m)) CS-gate) (gate₂ CS-gate))
 
-      two : ∀ m → F4ᵗ m → (g : Gen (₃₊ (suc m))) (c : View g) → view g ≡ c →
+      two : ∀ m → suc m ℕ.≤ M → F4ᵗ m → (g : Gen (₃₊ (suc m))) (c : View g) → view g ≡ c →
             (₂₊ (₄₊ m)) ⊢ᵧ λ⁰ (g ↥) • λ¹ (gate₂ CS-gate) ≈ λ¹ (gate₂ CS-gate) • λ⁰ (g ↥)
-      two m F .(g ↧) (low g)   _ = via-top m (g ↥) (gate₂ CS-gate) (F (g ↥) (gate₂ CS-gate))
-      two m F g      (high .g) e = high₂ m F g (high-shape g e)
+      two m lt F .(g ↧) (low g)   _ = via-top m (g ↥) (gate₂ CS-gate) (F (g ↥) (gate₂ CS-gate))
+      two m lt F g      (high .g) e = high₂ m lt F g (high-shape g e)
 
     -- A white lifted generator against a black bottom one.
-    mixˡ : ∀ m → F4ᵗ m → (g : Gen (₄₊ m)) (b : B) →
+    mixˡ : ∀ m → suc m ℕ.≤ M → F4ᵗ m → (g : Gen (₄₊ m)) (b : B) →
            (₂₊ (₄₊ m)) ⊢ᵧ λ⁰ {suc m} (g ↥) • λ¹ (gB b) ≈ λ¹ (gB b) • λ⁰ {suc m} (g ↥)
-    mixˡ m F g bI = lemma-cong↑ᵧ (λ⁰ g • λ¹ (gate₀ I-gate)) (λ¹ (gate₀ I-gate) • λ⁰ g) (F g (gate₀ I-gate))
-    mixˡ m F g bS = one₁ m F S-gate g (view g) Eq.refl
-    mixˡ m F g bK = one₁ m F K-gate g (view g) Eq.refl
-    mixˡ m F g bC = two m F g (view g) Eq.refl
+    mixˡ m lt F g bI = lemma-cong↑ᵧ (λ⁰ g • λ¹ (gate₀ I-gate)) (λ¹ (gate₀ I-gate) • λ⁰ g) (F g (gate₀ I-gate))
+    mixˡ m lt F g bS = one₁ m F S-gate g (view g) Eq.refl
+    mixˡ m lt F g bK = one₁ m F K-gate g (view g) Eq.refl
+    mixˡ m lt F g bC = two m lt F g (view g) Eq.refl
 
-    -- (F4) at every width.
+    -- One index up.
+    step : ∀ m → suc m ℕ.≤ M → F4ᵗ m → F4ᵗ (suc m)
+    step m lt F (gate₀ I-gate)  (gate₀ I-gate)  = f4-bot m bI bI (F (gB bI) (gB bI))
+    step m lt F (gate₀ I-gate)  (gate₁ S-gate)  = f4-bot m bI bS (F (gB bI) (gB bS))
+    step m lt F (gate₀ I-gate)  (gate₁ K-gate)  = f4-bot m bI bK (F (gB bI) (gB bK))
+    step m lt F (gate₀ I-gate)  (gate₂ CS-gate) = f4-bot m bI bC (F (gB bI) (gB bC))
+    step m lt F (gate₁ S-gate)  (gate₀ I-gate)  = f4-bot m bS bI (F (gB bS) (gB bI))
+    step m lt F (gate₁ S-gate)  (gate₁ S-gate)  = f4-bot m bS bS (F (gB bS) (gB bS))
+    step m lt F (gate₁ S-gate)  (gate₁ K-gate)  = f4-bot m bS bK (F (gB bS) (gB bK))
+    step m lt F (gate₁ S-gate)  (gate₂ CS-gate) = f4-bot m bS bC (F (gB bS) (gB bC))
+    step m lt F (gate₁ K-gate)  (gate₀ I-gate)  = f4-bot m bK bI (F (gB bK) (gB bI))
+    step m lt F (gate₁ K-gate)  (gate₁ S-gate)  = f4-bot m bK bS (F (gB bK) (gB bS))
+    step m lt F (gate₁ K-gate)  (gate₁ K-gate)  = f4-bot m bK bK (F (gB bK) (gB bK))
+    step m lt F (gate₁ K-gate)  (gate₂ CS-gate) = f4-bot m bK bC (F (gB bK) (gB bC))
+    step m lt F (gate₂ CS-gate) (gate₀ I-gate)  = f4-bot m bC bI (F (gB bC) (gB bI))
+    step m lt F (gate₂ CS-gate) (gate₁ S-gate)  = f4-bot m bC bS (F (gB bC) (gB bS))
+    step m lt F (gate₂ CS-gate) (gate₁ K-gate)  = f4-bot m bC bK (F (gB bC) (gB bK))
+    step m lt F (gate₂ CS-gate) (gate₂ CS-gate) = f4-bot m bC bC (F (gB bC) (gB bC))
+    step m lt F (g ↥) (h ↥) = lemma-cong↑ᵧ (λ⁰ g • λ¹ h) (λ¹ h • λ⁰ g) (F g h)
+    step m lt F (g ↥) (gate₀ I-gate)  = mixˡ m lt F g bI
+    step m lt F (g ↥) (gate₁ S-gate)  = mixˡ m lt F g bS
+    step m lt F (g ↥) (gate₁ K-gate)  = mixˡ m lt F g bK
+    step m lt F (g ↥) (gate₂ CS-gate) = mixˡ m lt F g bC
+    step m lt F (gate₀ I-gate)  (h ↥) = sym-col (suc m) (h ↥) (gB bI) (mixˡ m lt F h bI)
+    step m lt F (gate₁ S-gate)  (h ↥) = sym-col (suc m) (h ↥) (gB bS) (mixˡ m lt F h bS)
+    step m lt F (gate₁ K-gate)  (h ↥) = sym-col (suc m) (h ↥) (gB bK) (mixˡ m lt F h bK)
+    step m lt F (gate₂ CS-gate) (h ↥) = sym-col (suc m) (h ↥) (gB bC) (mixˡ m lt F h bC)
+
+    -- (F4) up to M.
+    f4B : ∀ m → m ℕ.≤ M → F4ᵗ m
+    f4B zero    _  g h = c₅ (F4-sem g h)
+    f4B (suc m) le     = step m le (f4B m (NP.<⇒≤ le))
+
+  -- (F4) at every width, from all the base facts.
+  module _ (base : MixBase) where
+    open MixBase base
+
     f4 : ∀ m → F4ᵗ m
-    f4 zero    g h = c₅ (F4-sem g h)
-    f4 (suc m) (gate₀ I-gate)  (gate₀ I-gate)  = f4-bot m bI bI (f4 m (gB bI) (gB bI))
-    f4 (suc m) (gate₀ I-gate)  (gate₁ S-gate)  = f4-bot m bI bS (f4 m (gB bI) (gB bS))
-    f4 (suc m) (gate₀ I-gate)  (gate₁ K-gate)  = f4-bot m bI bK (f4 m (gB bI) (gB bK))
-    f4 (suc m) (gate₀ I-gate)  (gate₂ CS-gate) = f4-bot m bI bC (f4 m (gB bI) (gB bC))
-    f4 (suc m) (gate₁ S-gate)  (gate₀ I-gate)  = f4-bot m bS bI (f4 m (gB bS) (gB bI))
-    f4 (suc m) (gate₁ S-gate)  (gate₁ S-gate)  = f4-bot m bS bS (f4 m (gB bS) (gB bS))
-    f4 (suc m) (gate₁ S-gate)  (gate₁ K-gate)  = f4-bot m bS bK (f4 m (gB bS) (gB bK))
-    f4 (suc m) (gate₁ S-gate)  (gate₂ CS-gate) = f4-bot m bS bC (f4 m (gB bS) (gB bC))
-    f4 (suc m) (gate₁ K-gate)  (gate₀ I-gate)  = f4-bot m bK bI (f4 m (gB bK) (gB bI))
-    f4 (suc m) (gate₁ K-gate)  (gate₁ S-gate)  = f4-bot m bK bS (f4 m (gB bK) (gB bS))
-    f4 (suc m) (gate₁ K-gate)  (gate₁ K-gate)  = f4-bot m bK bK (f4 m (gB bK) (gB bK))
-    f4 (suc m) (gate₁ K-gate)  (gate₂ CS-gate) = f4-bot m bK bC (f4 m (gB bK) (gB bC))
-    f4 (suc m) (gate₂ CS-gate) (gate₀ I-gate)  = f4-bot m bC bI (f4 m (gB bC) (gB bI))
-    f4 (suc m) (gate₂ CS-gate) (gate₁ S-gate)  = f4-bot m bC bS (f4 m (gB bC) (gB bS))
-    f4 (suc m) (gate₂ CS-gate) (gate₁ K-gate)  = f4-bot m bC bK (f4 m (gB bC) (gB bK))
-    f4 (suc m) (gate₂ CS-gate) (gate₂ CS-gate) = f4-bot m bC bC (f4 m (gB bC) (gB bC))
-    f4 (suc m) (g ↥) (h ↥) = lemma-cong↑ᵧ (λ⁰ g • λ¹ h) (λ¹ h • λ⁰ g) (f4 m g h)
-    f4 (suc m) (g ↥) (gate₀ I-gate)  = mixˡ m (f4 m) g bI
-    f4 (suc m) (g ↥) (gate₁ S-gate)  = mixˡ m (f4 m) g bS
-    f4 (suc m) (g ↥) (gate₁ K-gate)  = mixˡ m (f4 m) g bK
-    f4 (suc m) (g ↥) (gate₂ CS-gate) = mixˡ m (f4 m) g bC
-    f4 (suc m) (gate₀ I-gate)  (h ↥) = sym-col (suc m) (h ↥) (gB bI) (mixˡ m (f4 m) h bI)
-    f4 (suc m) (gate₁ S-gate)  (h ↥) = sym-col (suc m) (h ↥) (gB bS) (mixˡ m (f4 m) h bS)
-    f4 (suc m) (gate₁ K-gate)  (h ↥) = sym-col (suc m) (h ↥) (gB bK) (mixˡ m (f4 m) h bK)
-    f4 (suc m) (gate₂ CS-gate) (h ↥) = sym-col (suc m) (h ↥) (gB bC) (mixˡ m (f4 m) h bC)
+    f4 m = Upto.f4B b₁ b₂ m (λ k k≤3 _ → b₃ k k≤3) m NP.≤-refl

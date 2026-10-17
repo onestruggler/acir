@@ -18,12 +18,11 @@ open import Examples.Groups.Clifford+CS.Completeness using (Complete)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_⊢ᵧ_≈_)
-open import Examples.Groups.Clifford+CS.Stable.Calc using (F4ᵗ ; F5ᵗ)
+open import Examples.Groups.Clifford+CS.Stable.Inputs using (Inputs)
 open import Examples.Groups.Clifford+CS.Five.Facts4 using (Facts4)
 
 module Examples.Groups.Clifford+CS.Stable.DecGad
-  (c4 : Complete 4) (f4 : ∀ m → F4ᵗ m) (f5 : ∀ m → F5ᵗ m)
-  (tr : ∀ m {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v)
+  (c4 : Complete 4) (I : Inputs)
   (F : Facts4)
   where
 
@@ -46,8 +45,8 @@ import Examples.Groups.Clifford+CS.Affine.Alpha as Alpha
 import Examples.Groups.Clifford+CS.Affine.Circuits as Circuits
 
 private
-  module GS = GadgetSym f4 f5 tr F
-  module SM = GadgetSem f4 f5 tr F
+  module GS = GadgetSym I F
+  module SM = GadgetSem I F
 
 module _ (m : ℕ) where
   private

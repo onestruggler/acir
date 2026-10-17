@@ -21,12 +21,11 @@ open import Notations using (₄₊)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_⊢ᵧ_≈_)
-open import Examples.Groups.Clifford+CS.Stable.Calc using (F4ᵗ ; F5ᵗ)
+open import Examples.Groups.Clifford+CS.Stable.Inputs using (Inputs)
 open import Examples.Groups.Clifford+CS.Five.Facts4 using (Facts4)
 
 module Examples.Groups.Clifford+CS.Stable.GadgetSem
-  (f4 : ∀ m → F4ᵗ m) (f5 : ∀ m → F5ᵗ m)
-  (tr : ∀ m {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v)
+  (I : Inputs)
   (F : Facts4)
   where
 
@@ -55,7 +54,7 @@ open TL using (Blk ; tl ; tlOp)
 open Facts4 F using (sem)
 
 private
-  module GS = GadgetSym f4 f5 tr F
+  module GS = GadgetSym I F
   module R (n : ℕ) = SetoidR (Monoid.setoid (Scaled-monoid n))
 
 ------------------------------------------------------------------------

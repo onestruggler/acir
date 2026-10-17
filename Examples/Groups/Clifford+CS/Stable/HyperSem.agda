@@ -24,18 +24,17 @@ open import Examples.Groups.Clifford+CS.Completeness using (Complete)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_⊢ᵧ_≈_)
-open import Examples.Groups.Clifford+CS.Stable.Calc using (F4ᵗ ; F5ᵗ)
-import Examples.Groups.Clifford+CS.Stable.Gadget as Gadget
+open import Examples.Groups.Clifford+CS.Stable.Inputs using (Inputs)
+import Examples.Groups.Clifford+CS.Stable.GadgetDefs as GadgetDefs
 import Examples.Groups.Clifford+CS.Stable.GadgetAll as GadgetAll
 
 module Examples.Groups.Clifford+CS.Stable.HyperSem
-  (c4 : Complete 4) (f4 : ∀ m → F4ᵗ m) (f5 : ∀ m → F5ᵗ m)
-  (tr : ∀ m {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v)
+  (c4 : Complete 4) (I : Inputs)
   (K : Set) (G₄ : K → Circuit 4)
-  (ind₄ : ∀ κ → Gadget.Indep₀ 0 c4 (f4 0) (f5 0) (tr 0) (G₄ κ))
-  (f6 : ∀ κ → Gadget.TopTarget 0 c4 (f4 0) (f5 0) (tr 0) (G₄ κ))
-  (ssym : ∀ κ m → Gadget.SwapSym (suc m) c4 (f4 (suc m)) (f5 (suc m)) (tr (suc m))
-                    (GadgetAll.gad c4 f4 f5 tr (G₄ κ) (ind₄ κ) (f6 κ) (suc m)))
+  (ind₄ : ∀ κ → GadgetDefs.Indep₀ 0 c4 (G₄ κ))
+  (f6 : ∀ κ → Inputs.Bnd I 0 → GadgetDefs.TopTarget 0 c4 (G₄ κ))
+  (ssym : ∀ κ m → Inputs.Bnd I (suc m) →
+          GadgetDefs.SwapSym (suc m) c4 (GadgetAll.gad c4 I (G₄ κ) (ind₄ κ) (f6 κ) (suc m)))
   where
 
 open import Algebra.Bundles using (Monoid)
@@ -60,7 +59,7 @@ open import Examples.Groups.Clifford+CS.Stable.Soundness using (soundᵧ)
 open import Examples.Groups.Clifford+CS.Stable.HypFrom using (Completeᵧ)
 import Examples.Groups.Clifford+CS.Affine.Theory as Theory
 import Examples.Groups.Clifford+CS.Affine.Circuits as Circuits
-open import Examples.Groups.Clifford+CS.Stable.Hyper c4 f4 f5 tr K G₄ ind₄ f6 ssym
+open import Examples.Groups.Clifford+CS.Stable.Hyper c4 I K G₄ ind₄ f6 ssym
 
 ------------------------------------------------------------------------
 -- The white control is injective
@@ -78,7 +77,9 @@ ctrl⁰-inj {s = l , M} {l′ , M′} e x y =
 ------------------------------------------------------------------------
 -- The step
 
-module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
+open Inputs I using (Bnd)
+
+module _ (m : ℕ) (b : Bnd m) (c : Completeᵧ (₄₊ m)) where
   private
     W : ℕ
     W = suc (₄₊ m)
@@ -91,9 +92,9 @@ module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
     conj : ∀ (τ : Word A₁.Lt) (ℓ : List (Lit (suc m))) (k : List (Lit m)) → Ne ℓ → ren m τ ℓ ≡ up m k →
            W ⊢ᵧ λ⁰ʷ (D m k) ≈ C₁.⟪ τ ⟫ʷ • D (suc m) ℓ • C₁.⟪ A₁.rev τ ⟫ʷ
     conj τ ℓ k n e =
-      PB.trans (PB.sym (D-top m k))
+      PB.trans (PB.sym (D-top m b k))
         (PB.trans (Eq.subst (λ x → W ⊢ᵧ D (suc m) (up m k) ≈ D (suc m) x) (Eq.sym e) PB.refl)
-                  (PB.sym (D-eqv m τ ℓ n)))
+                  (PB.sym (D-eqv m b τ ℓ n)))
 
     -- The semantics of a conjugate.
     ⟦conj⟧ : ∀ (a u b : Circuit W) → ⟦ a • u • b ⟧ ~ (⟦ a ⟧ ∙ (⟦ u ⟧ ∙ ⟦ b ⟧))
@@ -110,7 +111,7 @@ module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
               Ne ℓ₁ → Ne ℓ₂ → ren m τ ℓ₁ ≡ up m k₁ → ren m τ ℓ₂ ≡ up m k₂ →
               ⟦ D (suc m) ℓ₁ ⟧ ~ ⟦ D (suc m) ℓ₂ ⟧ → W ⊢ᵧ D (suc m) ℓ₁ ≈ D (suc m) ℓ₂
   hyper-sem τ ℓ₁ ℓ₂ k₁ k₂ n₁ n₂ e₁ e₂ s =
-    hyper m τ ℓ₁ ℓ₂ k₁ k₂ n₁ n₂ e₁ e₂ (c (ctrl⁰-inj {s = ⟦ D m k₁ ⟧} {⟦ D m k₂ ⟧} chain))
+    hyper m b τ ℓ₁ ℓ₂ k₁ k₂ n₁ n₂ e₁ e₂ (c (ctrl⁰-inj {s = ⟦ D m k₁ ⟧} {⟦ D m k₂ ⟧} chain))
     where
     t t′ : Circuit W
     t  = C₁.⟪ τ ⟫ʷ

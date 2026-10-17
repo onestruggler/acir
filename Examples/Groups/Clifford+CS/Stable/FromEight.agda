@@ -44,6 +44,8 @@ import Examples.Groups.Clifford+CS.Stable.Base7 as B7
 import Examples.Groups.Clifford+CS.Stable.Base8 as B8
 import Examples.Groups.Clifford+CS.Stable.Base9 as B9
 import Examples.Groups.Clifford+CS.Stable.Lemma87 as Lemma87
+open import Examples.Groups.Clifford+CS.Stable.Inputs using (total)
+open import Data.Unit using (tt)
 
 ------------------------------------------------------------------------
 -- The inputs
@@ -83,9 +85,9 @@ f5 = f5-all c₅
 -- Completeness at every width
 
 private
-  module L = Lemma87 c4 c₅ f4 f5 tr facts4
+  module L = Lemma87 c4 c₅ (total f4 f5 tr) facts4
 
 -- Completeness on 5 + m wires.
 complete : ∀ m → Completeᵧ (₄₊ (suc m))
 complete zero    = c₅
-complete (suc m) = L.step (suc m) (complete m)
+complete (suc m) = L.step (suc m) tt (complete m)

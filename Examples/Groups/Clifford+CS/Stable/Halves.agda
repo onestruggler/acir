@@ -26,14 +26,12 @@ open import Examples.Groups.Clifford+CS.Completeness using (Complete)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_⊢ᵧ_≈_)
-open import Examples.Groups.Clifford+CS.Stable.Calc using (F4ᵗ ; F5ᵗ)
+open import Examples.Groups.Clifford+CS.Stable.Inputs using (Inputs)
 open import Examples.Groups.Clifford+CS.Stable.HypFrom using (Completeᵧ)
 open import Examples.Groups.Clifford+CS.Five.Facts4 using (Facts4)
 
 module Examples.Groups.Clifford+CS.Stable.Halves
-  (c4 : Complete 4) (c₅ : Completeᵧ 5)
-  (f4 : ∀ m → F4ᵗ m) (f5 : ∀ m → F5ᵗ m)
-  (tr : ∀ m {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v)
+  (c4 : Complete 4) (c₅ : Completeᵧ 5) (I : Inputs)
   (F : Facts4)
   where
 
@@ -63,10 +61,8 @@ open import Examples.Groups.Clifford+CS.Stable.XPlace using (Xᵗ-placed)
 open import Examples.Groups.Clifford+CS.Five.Sem.Eval using (hom)
 open import Examples.Groups.Clifford+CS.Five.Sem.Blocks using (Kind)
 open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP)
-open import Examples.Groups.Clifford+CS.Stable.GadgetFacts c4 c₅ f4 f5 tr F using (D ; ind₄ ; f6) renaming (sym to gsym)
-open import Examples.Groups.Clifford+CS.Stable.Hyper c4 f4 f5 tr Kind (Facts4.G F) ind₄ f6 gsym
-  using (D-top ; D-eqv ; up ; ren)
-import Examples.Groups.Clifford+CS.Stable.DWDGen c4 c₅ f4 f5 tr F as W
+open import Examples.Groups.Clifford+CS.Stable.GadgetFacts c4 c₅ I F using (D ; D-top ; D-eqv ; up ; ren)
+import Examples.Groups.Clifford+CS.Stable.DWDGen c4 c₅ I F as W
 import Examples.Groups.Clifford+CS.Stable.GrayHalves as GrayHalves
 import Examples.Groups.Clifford+CS.Stable.Ren as Ren
 import Examples.Groups.Clifford+CS.Stable.CalcW as CalcW
@@ -79,7 +75,9 @@ import Examples.Groups.Clifford+CS.Affine.Alpha as Alpha
 import Examples.Groups.Clifford+CS.Affine.Circuits as Circuits
 import Examples.Groups.Clifford+CS.Affine.Widen as Widen
 
-module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
+open Inputs I using (Bnd ; f4 ; f5 ; tr)
+
+module _ (m : ℕ) (b : Bnd m) (c : Completeᵧ (₄₊ m)) where
   private
     module D0 = Decode m
     module D1 = Decode (suc m)
@@ -90,7 +88,7 @@ module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
     module GH = GrayHalves m
     module RL = Ren m GH.lo GH.lo-inj GH.lo-mono
     module RH = Ren m GH.hi GH.hi-inj GH.hi-mono
-    module CW = CalcW m (f4 m) (f5 m) (tr m)
+    module CW = CalcW m (f4 m b) (f5 m) (tr m b)
     module BG0 = BridgeGray (₄₊ m)
     module S8 = Section8 m
     module A₀ = Theory (₃₊ m)
@@ -141,7 +139,7 @@ module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
     D (suc m) (map L1.toLit (map RL.renG (D0.GL u)))
       ≈⟨ ≡→≈ (Eq.cong (D (suc m)) (lits-lo (D0.GL u))) ⟩
     D (suc m) (up m (map L0.toLit (D0.GL u)))
-      ≈⟨ D-top m (map L0.toLit (D0.GL u)) ⟩
+      ≈⟨ D-top m b (map L0.toLit (D0.GL u)) ⟩
     λ⁰ʷ (L0.decL u)
       ≈⟨ CW.transport⁰ (c {L0.decL u} {h} (~-trans {s = ⟦ L0.decL u ⟧} {BG0.⟦ u ⟧PY} {⟦ h ⟧} (L0.decL-sem u) e)) ⟩
     λ⁰ʷ h ∎
@@ -227,11 +225,11 @@ module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
     D (suc m) K
       ≈⟨ uncjβ (D (suc m) K) ⟩
     C₁.⟪ A₁.rev β ⟫ʷ • (C₁.⟪ β ⟫ʷ • D (suc m) K • C₁.⟪ A₁.rev β ⟫ʷ) • C₁.⟪ β ⟫ʷ
-      ≈⟨ back _ (front _ (D-eqv m β K ne)) ⟩
+      ≈⟨ back _ (front _ (D-eqv m b β K ne)) ⟩
     C₁.⟪ A₁.rev β ⟫ʷ • D (suc m) (ren m β K) • C₁.⟪ β ⟫ʷ
       ≈⟨ ≡→≈ (Eq.cong (λ L → C₁.⟪ A₁.rev β ⟫ʷ • D (suc m) L • C₁.⟪ β ⟫ʷ) (lits-hi (D0.GL u))) ⟩
     C₁.⟪ A₁.rev β ⟫ʷ • D (suc m) (up m (map L0.toLit (D0.GL u))) • C₁.⟪ β ⟫ʷ
-      ≈⟨ back _ (front _ (D-top m (map L0.toLit (D0.GL u)))) ⟩
+      ≈⟨ back _ (front _ (D-top m b (map L0.toLit (D0.GL u)))) ⟩
     (C₁.⟪ A₁.xL tp ⟫ • C₁.⟪ A₁.xL tq ⟫) • λ⁰ʷ G • (C₁.⟪ A₁.xL tq ⟫ • C₁.⟪ A₁.xL tp ⟫)
       ≈⟨ cong (cong Xtp Xtq) (back _ (cong Xtq Xtp)) ⟩
     (x • top a) • λ⁰ʷ G • (top a • x)
@@ -247,7 +245,7 @@ module _ (m : ℕ) (c : Completeᵧ (₄₊ m)) where
     ε • λ¹ʷ (a • G • a) • ε
       ≈⟨ trans left-unit right-unit ⟩
     λ¹ʷ (a • G • a)
-      ≈⟨ tr m aGa ⟩
+      ≈⟨ tr m b aGa ⟩
     λ¹ʷ h ∎
     where
     K : List _

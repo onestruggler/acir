@@ -89,19 +89,7 @@ open Tools (W YVRel,_===_)
 ------------------------------------------------------------------------
 -- The statements
 
--- G commutes with every CX whose control is off wire 0.
-Indep₀ : Circuit D → Set
-Indep₀ G = ∀ (u : Fin (₃₊ m)) (v : A₀.Wire) .(p : sF u ≢ v) →
-           D ⊢ᵧ C₀.⟪ A₀.tL (sF u) v p ⟫ • G ≈ G • C₀.⟪ A₀.tL (sF u) v p ⟫
-
-Indep₁ : Circuit W → Set
-Indep₁ G = ∀ (u : Fin (₄₊ m)) (v : A₁.Wire) .(p : sF u ≢ v) →
-           W ⊢ᵧ C₁.⟪ A₁.tL (sF u) v p ⟫ • G ≈ G • C₁.⟪ A₁.tL (sF u) v p ⟫
-
--- λ⁰ G commutes with every CX from a domain wire off wire 0 onto the top.
-TopTarget : Circuit D → Set
-TopTarget G = ∀ (u : Fin (₃₊ m)) .(p : sF (inject₁ u) ≢ tp) →
-              W ⊢ᵧ C₁.⟪ A₁.tL (sF (inject₁ u)) tp p ⟫ • λ⁰ʷ G ≈ λ⁰ʷ G • C₁.⟪ A₁.tL (sF (inject₁ u)) tp p ⟫
+open import Examples.Groups.Clifford+CS.Stable.GadgetDefs m c4 public using (Indep₀ ; Indep₁ ; TopTarget ; SwapSym)
 
 ------------------------------------------------------------------------
 -- Wires of the wider circuit: the top, or one of the old ones
@@ -267,11 +255,10 @@ step G ind tt u v p = go G ind tt (topView u) (topView v) p
 -- From six wires on: the CX onto the top from the symmetry of the two
 -- controls
 
--- λ⁰ G does not see the order of its two controls, when G is itself λ⁰
--- of a circuit (the paper's (F6) on five wires is the same statement one
--- width down, with G the four-wire gadget).
-SwapSym : Circuit D → Set
-SwapSym G = W ⊢ᵧ Swᵗ (₃₊ m) • λ⁰ʷ G • Swᵗ (₃₊ m) ≈ λ⁰ʷ G
+-- SwapSym (Stable.GadgetDefs): λ⁰ G does not see the order of its two
+-- controls, when G is itself λ⁰ of a circuit (the paper's (F6) on five
+-- wires is the same statement one width down, with G the four-wire
+-- gadget).
 
 private
   k₃ : ℕ

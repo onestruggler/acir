@@ -29,18 +29,17 @@ open import Examples.Groups.Clifford+CS.Completeness using (Complete)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_⊢ᵧ_≈_)
-open import Examples.Groups.Clifford+CS.Stable.Calc using (F4ᵗ ; F5ᵗ)
-import Examples.Groups.Clifford+CS.Stable.Gadget as Gadget
+open import Examples.Groups.Clifford+CS.Stable.Inputs using (Inputs)
+import Examples.Groups.Clifford+CS.Stable.GadgetDefs as GadgetDefs
 import Examples.Groups.Clifford+CS.Stable.GadgetAll as GadgetAll
 
 module Examples.Groups.Clifford+CS.Stable.HyperCanon
-  (c4 : Complete 4) (f4 : ∀ m → F4ᵗ m) (f5 : ∀ m → F5ᵗ m)
-  (tr : ∀ m {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v)
+  (c4 : Complete 4) (I : Inputs)
   (K : Set) (G₄ : K → Circuit 4)
-  (ind₄ : ∀ κ → Gadget.Indep₀ 0 c4 (f4 0) (f5 0) (tr 0) (G₄ κ))
-  (f6 : ∀ κ → Gadget.TopTarget 0 c4 (f4 0) (f5 0) (tr 0) (G₄ κ))
-  (ssym : ∀ κ m → Gadget.SwapSym (suc m) c4 (f4 (suc m)) (f5 (suc m)) (tr (suc m))
-                    (GadgetAll.gad c4 f4 f5 tr (G₄ κ) (ind₄ κ) (f6 κ) (suc m)))
+  (ind₄ : ∀ κ → GadgetDefs.Indep₀ 0 c4 (G₄ κ))
+  (f6 : ∀ κ → Inputs.Bnd I 0 → GadgetDefs.TopTarget 0 c4 (G₄ κ))
+  (ssym : ∀ κ m → Inputs.Bnd I (suc m) →
+          GadgetDefs.SwapSym (suc m) c4 (GadgetAll.gad c4 I (G₄ κ) (ind₄ κ) (f6 κ) (suc m)))
   where
 
 open import Data.Bool using (Bool ; false)
@@ -56,8 +55,9 @@ open import Word.Base using (ε)
 import Examples.Groups.Clifford+CS.Affine.Alpha as Alpha
 import Examples.Groups.Clifford+CS.Affine.Canon as Canon
 import Examples.Groups.Clifford+CS.Affine.Widen as Widen
-open import Examples.Groups.Clifford+CS.Stable.Hyper c4 f4 f5 tr K G₄ ind₄ f6 ssym
-open import Examples.Groups.Clifford+CS.Stable.HyperSem c4 f4 f5 tr K G₄ ind₄ f6 ssym using (hyper-sem)
+open Inputs I using (Bnd ; down)
+open import Examples.Groups.Clifford+CS.Stable.Hyper c4 I K G₄ ind₄ f6 ssym
+open import Examples.Groups.Clifford+CS.Stable.HyperSem c4 I K G₄ ind₄ f6 ssym using (hyper-sem)
 open import Examples.Groups.Clifford+CS.Stable.HypFrom using (Completeᵧ)
 open import Examples.Groups.Clifford+CS.Semantics using (_~_)
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧)
@@ -170,14 +170,14 @@ module _ {j : ℕ} (w₁ w₂ : IW (suc j))
   where
 
   -- At the images of a pattern, on every width from four on.
-  at-pattern : ∀ m (p : Canon.Pat 0 0 (suc j)) →
+  at-pattern : ∀ m → Bnd m → (p : Canon.Pat 0 0 (suc j)) →
                NeW (Canon.imgs m (cp p)) w₁ → NeW (Canon.imgs m (cp p)) w₂ →
                (₄₊ m) ⊢ᵧ D m (inst (Canon.imgs m (cp p)) w₁) ≈ D m (inst (Canon.imgs m (cp p)) w₂)
-  at-pattern zero    p n₁ n₂ = closed (cp p) n₁ n₂
-  at-pattern (suc m) p n₁ n₂ =
-    hyper m ε (inst I₁ w₁) (inst I₁ w₂) (inst I₀ w₁) (inst I₀ w₂)
+  at-pattern zero    _ p n₁ n₂ = closed (cp p) n₁ n₂
+  at-pattern (suc m) b p n₁ n₂ =
+    hyper m (down b) ε (inst I₁ w₁) (inst I₁ w₂) (inst I₀ w₁) (inst I₀ w₂)
       (ne-inst I₁ w₁ n₁) (ne-inst I₁ w₂ n₂) (eq w₁) (eq w₂)
-      (at-pattern m p (ne-map (Widen._⁺ m c4) I₀ I₁ (imgs-up m p) w₁ n₁)
+      (at-pattern m (down b) p (ne-map (Widen._⁺ m c4) I₀ I₁ (imgs-up m p) w₁ n₁)
                       (ne-map (Widen._⁺ m c4) I₀ I₁ (imgs-up m p) w₂ n₂))
     where
     I₀ = Canon.imgs m (cp p)
@@ -187,12 +187,12 @@ module _ {j : ℕ} (w₁ w₂ : IW (suc j))
                     (Eq.sym (inst-map (Widen._⁺ m c4) I₀ I₁ (imgs-up m p) w))
 
   -- At any distinct states, on every width from five on.
-  lemma : ∀ m (ps : Vec (Vec Bool (₄₊ (suc m))) (suc j)) → j ≤ 4 → NeW ps w₁ → NeW ps w₂ →
+  lemma : ∀ m → Bnd m → (ps : Vec (Vec Bool (₄₊ (suc m))) (suc j)) → j ≤ 4 → NeW ps w₁ → NeW ps w₂ →
           (₄₊ (suc m)) ⊢ᵧ D (suc m) (inst ps w₁) ≈ D (suc m) (inst ps w₂)
-  lemma m (p₀ ∷ ps) j≤ n₁ n₂ =
-    hyper m τ (inst (p₀ ∷ ps) w₁) (inst (p₀ ∷ ps) w₂) (inst I₀ w₁) (inst I₀ w₂)
+  lemma m b (p₀ ∷ ps) j≤ n₁ n₂ =
+    hyper m b τ (inst (p₀ ∷ ps) w₁) (inst (p₀ ∷ ps) w₂) (inst I₀ w₁) (inst I₀ w₂)
       (ne-inst (p₀ ∷ ps) w₁ n₁) (ne-inst (p₀ ∷ ps) w₂ n₂) (eq w₁) (eq w₂)
-      (at-pattern m pat (ne₀ w₁ n₁) (ne₀ w₂ n₂))
+      (at-pattern m b pat (ne₀ w₁ n₁) (ne₀ w₂ n₂))
     where
     module C₁ = Canon (suc m)
     module Al = Alpha (₄₊ m)
@@ -217,12 +217,12 @@ module _ {j : ℕ} (w₁ w₂ : IW (suc j))
 -- At any distinct states on 5 + m wires, equal semantics make the two
 -- decoded words equal, given completeness on 4 + m wires
 -- (Stable.HyperSem): no closed check is needed.
-lemma-sem : ∀ m → Completeᵧ (₄₊ m) → ∀ {j} (w₁ w₂ : IW (suc j)) (ps : Vec (Vec Bool (₄₊ (suc m))) (suc j)) →
+lemma-sem : ∀ m → Bnd m → Completeᵧ (₄₊ m) → ∀ {j} (w₁ w₂ : IW (suc j)) (ps : Vec (Vec Bool (₄₊ (suc m))) (suc j)) →
             j ≤ 4 → NeW ps w₁ → NeW ps w₂ →
             ⟦ D (suc m) (inst ps w₁) ⟧ ~ ⟦ D (suc m) (inst ps w₂) ⟧ →
             (₄₊ (suc m)) ⊢ᵧ D (suc m) (inst ps w₁) ≈ D (suc m) (inst ps w₂)
-lemma-sem m c {j} w₁ w₂ (p₀ ∷ ps) j≤ n₁ n₂ s =
-  hyper-sem m c τ (inst (p₀ ∷ ps) w₁) (inst (p₀ ∷ ps) w₂) (inst I₀ w₁) (inst I₀ w₂)
+lemma-sem m b c {j} w₁ w₂ (p₀ ∷ ps) j≤ n₁ n₂ s =
+  hyper-sem m b c τ (inst (p₀ ∷ ps) w₁) (inst (p₀ ∷ ps) w₂) (inst I₀ w₁) (inst I₀ w₂)
     (ne-inst (p₀ ∷ ps) w₁ n₁) (ne-inst (p₀ ∷ ps) w₂ n₂) (eq w₁) (eq w₂) s
   where
   module C₁ = Canon (suc m)

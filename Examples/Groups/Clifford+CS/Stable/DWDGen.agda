@@ -27,14 +27,12 @@ open import Examples.Groups.Clifford+CS.Completeness using (Complete)
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_⊢ᵧ_≈_ ; _YVRel,_===_)
-open import Examples.Groups.Clifford+CS.Stable.Calc using (F4ᵗ ; F5ᵗ)
+open import Examples.Groups.Clifford+CS.Stable.Inputs using (Inputs)
 open import Examples.Groups.Clifford+CS.Stable.HypFrom using (Completeᵧ)
 open import Examples.Groups.Clifford+CS.Five.Facts4 using (Facts4)
 
 module Examples.Groups.Clifford+CS.Stable.DWDGen
-  (c4 : Complete 4) (c₅ : Completeᵧ 5)
-  (f4 : ∀ m → F4ᵗ m) (f5 : ∀ m → F5ᵗ m)
-  (tr : ∀ m {u v : Circuit (₄₊ m)} → (₄₊ m) ⊢ᵧ u ≈ v → (suc (₄₊ m)) ⊢ᵧ λ¹ʷ u ≈ λ¹ʷ v)
+  (c4 : Complete 4) (c₅ : Completeᵧ 5) (I : Inputs)
   (F : Facts4)
   where
 
@@ -62,10 +60,12 @@ open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP ; pp ; px ; dx ;
 open import Examples.Groups.Clifford+CS.Auxiliary.Rules
 open import Examples.Groups.Clifford+CS.Five.Sem.Blocks using (Kind ; kpp ; krot ; kki ; blkOf)
 open import Examples.Groups.Clifford+CS.Five.Sem.TL using (tl)
-open import Examples.Groups.Clifford+CS.Stable.GadgetFacts c4 c₅ f4 f5 tr F
+open import Examples.Groups.Clifford+CS.Stable.GadgetFacts c4 c₅ I F
   using (IW ; inst ; NeW ; lemma-sem ; Lit ; D ; Ne ; Πtl ; D-sem)
 open import Examples.Groups.Clifford+CS.Stable.Soundness using (soundᵧ)
 import Examples.Groups.Clifford+CS.Five.Decode as Decode
+
+open Inputs I using (Bnd)
 import Examples.Groups.Clifford+CS.Encoding as Encoding
 import Examples.Groups.Clifford+CS.BridgeGray as BridgeGray
 
@@ -214,12 +214,12 @@ module _ (m : ℕ) where
 
   -- Equal products give equal decodings, given completeness one width
   -- down.
-  engine : Completeᵧ (₄₊ m) → ∀ {k} (u t : Word (GenP N)) (ix : Vec (Fin N) (suc k)) → k ≤ 4 →
+  engine : Bnd m → Completeᵧ (₄₊ m) → ∀ {k} (u t : Word (GenP N)) (ix : Vec (Fin N) (suc k)) → k ≤ 4 →
            AllIn ix (GL u) → AllIn ix (GL t) → Π (GL u) ~ Π (GL t) →
            (₄₊ (suc m)) ⊢ᵧ dec u ≈ dec t
-  engine c u t ix k≤ hu ht s =
+  engine b c u t ix k≤ hu ht s =
     Eq.subst₂ (λ a b → (₄₊ (suc m)) ⊢ᵧ D (suc m) a ≈ D (suc m) b) (inst-iw ix (GL u) hu) (inst-iw ix (GL t) ht)
-      (lemma-sem m c (iw ix (GL u) hu) (iw ix (GL t) ht) (vmap cod ix) k≤
+      (lemma-sem m b c (iw ix (GL u) hu) (iw ix (GL t) ht) (vmap cod ix) k≤
          (ne-iw ix (GL u) hu (valid-GL u)) (ne-iw ix (GL t) ht (valid-GL t))
          (Eq.subst₂ (λ a b → ⟦ D (suc m) a ⟧ ~ ⟦ D (suc m) b ⟧)
                     (Eq.sym (inst-iw ix (GL u) hu)) (Eq.sym (inst-iw ix (GL t) ht)) sem))
@@ -317,18 +317,18 @@ module _ (m : ℕ) where
 
   -- Lemma 8.8 on 5 + m wires: the decoding respects every rule of P′,
   -- given completeness on 4 + m.
-  dwd : Completeᵧ (₄₊ m) → ∀ {u t : Word (GenP N)} → N R, u === t → (₄₊ (suc m)) ⊢ᵧ (dl ʷ) u ≈ (dl ʷ) t
-  dwd c {u} {t} r = go (cover r)
+  dwd : Bnd m → Completeᵧ (₄₊ m) → ∀ {u t : Word (GenP N)} → N R, u === t → (₄₊ (suc m)) ⊢ᵧ (dl ʷ) u ≈ (dl ʷ) t
+  dwd b c {u} {t} r = go (cover r)
     where
     go : Cov u t → (₄₊ (suc m)) ⊢ᵧ (dl ʷ) u ≈ (dl ʷ) t
     go (cov ix k≤ hu ht) =
       PB.trans (dec-ʷ u)
-        (PB.trans (engine c u t ix k≤ (GL-in ix u hu) (GL-in ix t ht) (from-rule (PB.axiom r)))
+        (PB.trans (engine b c u t ix k≤ (GL-in ix u hu) (GL-in ix t ht) (from-rule (PB.axiom r)))
                   (PB.sym (dec-ʷ t)))
 
   -- And so the congruence of P′.
-  d-≈ : Completeᵧ (₄₊ m) → ∀ {u t : Word (GenP N)} → PB._≈_ (N R,_===_) u t → (₄₊ (suc m)) ⊢ᵧ (dl ʷ) u ≈ (dl ʷ) t
-  d-≈ c = PP.StarCongruence.fʷ-cong (N R,_===_) (_YVRel,_===_ (₄₊ (suc m))) dl (dwd c)
+  d-≈ : Bnd m → Completeᵧ (₄₊ m) → ∀ {u t : Word (GenP N)} → PB._≈_ (N R,_===_) u t → (₄₊ (suc m)) ⊢ᵧ (dl ʷ) u ≈ (dl ʷ) t
+  d-≈ b c = PP.StarCongruence.fʷ-cong (N R,_===_) (_YVRel,_===_ (₄₊ (suc m))) dl (dwd b c)
 
   -- The decoding of a word has the word's reading.
   dʷ-sem : ∀ (u : Word (GenP N)) → ⟦ (dl ʷ) u ⟧ ~ BG.⟦ u ⟧PY
