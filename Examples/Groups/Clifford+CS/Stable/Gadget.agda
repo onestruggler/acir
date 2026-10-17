@@ -39,13 +39,14 @@ module Examples.Groups.Clifford+CS.Stable.Gadget
 
 open import Data.Fin using (Fin ; toℕ ; inject₁ ; fromℕ) renaming (zero to 0F ; suc to sF)
 open import Data.Fin.Permutation using (_⟨$⟩ʳ_)
+open import Data.Fin.Properties using (inject₁-injective ; suc-injective ; fromℕ≢inject₁)
 open import Data.Nat using (zero ; _<_ ; s≤s)
 open import Data.Product using (proj₁ ; proj₂)
 import Data.Empty.Irrelevant as Irr
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
-open import Notations using (₃₊)
+open import Notations using (₁₊ ; ₃₊)
 
 import Presentation.Base as PB
 import Examples.Groups.Symmetric.Syntactics as S
@@ -59,8 +60,10 @@ open import Examples.Groups.Clifford+CS.PermCalc using (net ; perm ; revS ; perm
 open import Examples.Groups.Clifford+CS.LocalPlace using (pl ; pl-cong ; pl-• ; pl-pl ; place-eq)
 open import Examples.Groups.Clifford+CS.Networks using (bring₁ ; bring₂ ; perm-↑s)
 open import Examples.Groups.Clifford+CS.NetTop using (topS ; _↧S ; perm-top ; net-top ; revS-top)
-open import Examples.Groups.Clifford+CS.Lambda using (λ⁰ʷ ; Sᵗ ; CSᵗ ; CKᵗ)
-open import Examples.Groups.Clifford+CS.Lambda.Placed using (Sᵗ-placed ; CSᵗ-placed ; CKᵗ-placed)
+open import Examples.Groups.Clifford+CS.Lambda using (λ⁰ʷ ; Sᵗ ; CSᵗ ; CKᵗ ; Swᵗ)
+open import Examples.Groups.Clifford+CS.Lambda.Split using (Sw²)
+open import Examples.Groups.Clifford+CS.Lambda.Placed
+  using (Sᵗ-placed ; CSᵗ-placed ; CKᵗ-placed ; swT ; net-swT ; revS-swT ; perm-swT-top ; perm-swT-low)
 open import Examples.Groups.Clifford+CS.Stable.Rules
 
 import Examples.Groups.Clifford+CS.Affine.Theory (₃₊ m) as A₀
@@ -219,31 +222,159 @@ module _ (v : Fin D) where
     agree (sF (sF j)) (s≤s (s≤s ()))
 
 ------------------------------------------------------------------------
+-- The two kinds of CX that pass λ⁰ G whatever G is
+
+-- A CX inside the domain passes λ⁰ G when it passes G one width down.
+pass-low : ∀ (G : Circuit D) (u : Fin (₃₊ m)) (v : A₀.Wire) .(q : sF (inject₁ u) ≢ inject₁ v) →
+           D ⊢ᵧ C₀.⟪ A₀.tL (sF u) v (λ e → q (Eq.cong inject₁ e)) ⟫ • G ≈ G • C₀.⟪ A₀.tL (sF u) v (λ e → q (Eq.cong inject₁ e)) ⟫ →
+           W ⊢ᵧ C₁.⟪ A₁.tL (sF (inject₁ u)) (inject₁ v) q ⟫ • λ⁰ʷ G ≈ λ⁰ʷ G • C₁.⟪ A₁.tL (sF (inject₁ u)) (inject₁ v) q ⟫
+pass-low G u v q e = begin
+  C₁.⟪ Wd.ιL l ⟫ • λ⁰ʷ G      ≈⟨ front _ (embed (Wd.ιL-top l)) ⟩
+  top C₀.⟪ l ⟫ • λ⁰ʷ G         ≈⟨ CW.pass⁰ C₀.⟪ l ⟫ G e ⟩
+  λ⁰ʷ G • top C₀.⟪ l ⟫         ≈⟨ back _ (embed (TW.sym (Wd.ιL-top l))) ⟩
+  λ⁰ʷ G • C₁.⟪ Wd.ιL l ⟫ ∎
+  where
+  l = A₀.tL (sF u) v (λ e → q (Eq.cong inject₁ e))
+
+-- A CX from the top onto a domain wire passes every λ⁰ G.
+pass-top : ∀ (G : Circuit D) (v : Fin D) .(p : tp ≢ inject₁ v) →
+           W ⊢ᵧ C₁.⟪ A₁.tL tp (inject₁ v) p ⟫ • λ⁰ʷ G ≈ λ⁰ʷ G • C₁.⟪ A₁.tL tp (inject₁ v) p ⟫
+pass-top G v p = begin
+  C₁.⟪ A₁.tL tp (inject₁ v) p ⟫ • λ⁰ʷ G      ≈⟨ front _ (top-cx v p) ⟩
+  λ¹ʷ h • λ⁰ʷ G                                ≈⟨ CW.pass¹ h G ⟩
+  λ⁰ʷ G • λ¹ʷ h                                ≈⟨ back _ (sym (top-cx v p)) ⟩
+  λ⁰ʷ G • C₁.⟪ A₁.tL tp (inject₁ v) p ⟫ ∎
+  where
+  h = net (proj₁ (bring₁ v)) • X • net (revS (proj₁ (bring₁ v)))
+
+------------------------------------------------------------------------
 -- The step
 
 private
   go : ∀ (G : Circuit D) → Indep₀ G → TopTarget G →
        ∀ {u : Fin (₄₊ m)} {v : A₁.Wire} → TopView u → TopView v → .(p : sF u ≢ v) →
        W ⊢ᵧ C₁.⟪ A₁.tL (sF u) v p ⟫ • λ⁰ʷ G ≈ λ⁰ʷ G • C₁.⟪ A₁.tL (sF u) v p ⟫
-  go G ind tt (is-low u) (is-low v) p = begin
-    C₁.⟪ Wd.ιL l ⟫ • λ⁰ʷ G      ≈⟨ front _ (embed (Wd.ιL-top l)) ⟩
-    top C₀.⟪ l ⟫ • λ⁰ʷ G         ≈⟨ CW.pass⁰ C₀.⟪ l ⟫ G (ind u v p′) ⟩
-    λ⁰ʷ G • top C₀.⟪ l ⟫         ≈⟨ back _ (embed (TW.sym (Wd.ιL-top l))) ⟩
-    λ⁰ʷ G • C₁.⟪ Wd.ιL l ⟫ ∎
-    where
-    p′ : sF u ≢ v
-    p′ e = Irr.⊥-elim (p (Eq.cong inject₁ e))
-    l = A₀.tL (sF u) v p′
-  go G ind tt (is-low u) is-top p = tt u p
-  go G ind tt is-top (is-low v) p = begin
-    C₁.⟪ A₁.tL tp (inject₁ v) p ⟫ • λ⁰ʷ G      ≈⟨ front _ (top-cx v p) ⟩
-    λ¹ʷ h • λ⁰ʷ G                                ≈⟨ CW.pass¹ h G ⟩
-    λ⁰ʷ G • λ¹ʷ h                                ≈⟨ back _ (sym (top-cx v p)) ⟩
-    λ⁰ʷ G • C₁.⟪ A₁.tL tp (inject₁ v) p ⟫ ∎
-    where
-    h = net (proj₁ (bring₁ v)) • X • net (revS (proj₁ (bring₁ v)))
-  go G ind tt is-top is-top p = Irr.⊥-elim (p Eq.refl)
+  go G ind tt (is-low u) (is-low v) p = pass-low G u v p (ind u v (λ e → p (Eq.cong inject₁ e)))
+  go G ind tt (is-low u) is-top     p = tt u p
+  go G ind tt is-top     (is-low v) p = pass-top G v p
+  go G ind tt is-top     is-top     p = Irr.⊥-elim (p Eq.refl)
 
 -- Independence one wire up.
 step : ∀ (G : Circuit D) → Indep₀ G → TopTarget G → Indep₁ (λ⁰ʷ G)
 step G ind tt u v p = go G ind tt (topView u) (topView v) p
+
+------------------------------------------------------------------------
+-- From six wires on: the CX onto the top from the symmetry of the two
+-- controls
+
+-- λ⁰ G does not see the order of its two controls, when G is itself λ⁰
+-- of a circuit (the paper's (F6) on five wires is the same statement one
+-- width down, with G the four-wire gadget).
+SwapSym : Circuit D → Set
+SwapSym G = W ⊢ᵧ Swᵗ (₃₊ m) • λ⁰ʷ G • Swᵗ (₃₊ m) ≈ λ⁰ʷ G
+
+private
+  k₃ : ℕ
+  k₃ = ₃₊ m
+
+  Sw : Circuit W
+  Sw = Swᵗ k₃
+
+  -- The old top wire, the control of G when G is λ⁰ of a circuit.
+  tq : Fin W
+  tq = inject₁ (fromℕ (₃₊ m))
+
+  perm-swT-top′ : ∀ k → perm (swT k) ⟨$⟩ʳ inject₁ (fromℕ k) ≡ fromℕ (₁₊ k)
+  perm-swT-top′ zero    = Eq.refl
+  perm-swT-top′ (suc k) = Eq.trans (perm-↑s (swT k) (inject₁ (fromℕ k))) (Eq.cong sF (perm-swT-top′ k))
+
+  rev-sw : ∀ x → perm (revS (swT k₃)) ⟨$⟩ʳ x ≡ perm (swT k₃) ⟨$⟩ʳ x
+  rev-sw x = Eq.cong (λ σ → perm σ ⟨$⟩ʳ x) (revS-swT k₃)
+
+  sw-pl : ∀ (b : Word (S.Gen W)) (g : Circuit W) → W ⊢ Sw • pl b g • Sw ≈ pl (swT k₃ • b) g
+  sw-pl b g =
+    TW.trans (≡→≈ (Eq.sym (Eq.cong₂ (λ x y → x • pl b g • y) (net-swT k₃)
+                                    (Eq.trans (Eq.cong net (revS-swT k₃)) (net-swT k₃)))))
+             (pl-pl (swT k₃) b g)
+
+  -- Conjugating a CX by the swap of the two top wires.
+  sw-cx : ∀ (c c′ t t′ : Fin W) .(p : c ≢ t) .(p′ : c′ ≢ t′) →
+          perm (swT k₃) ⟨$⟩ʳ t ≡ t′ → perm (swT k₃) ⟨$⟩ʳ c ≡ c′ →
+          W ⊢ Sw • C₁.⟪ A₁.tL c t p ⟫ • Sw ≈ C₁.⟪ A₁.tL c′ t′ p′ ⟫
+  sw-cx c c′ t t′ p p′ et ec = TW.trans (sw-pl b CX₁₀) (place-eq {k = 2} CX₁₀ (swT k₃ • b) b′ agree)
+    where
+    B  = bring₂ t c (C₁.ne p)
+    b  = proj₁ B
+    B′ = bring₂ t′ c′ (C₁.ne p′)
+    b′ = proj₁ B′
+    agree : ∀ (j : Fin W) → toℕ j < 2 → perm b′ ⟨$⟩ʳ (perm (revS (swT k₃ • b)) ⟨$⟩ʳ j) ≡ j
+    agree 0F _ =
+      Eq.trans (Eq.cong (perm b′ ⟨$⟩ʳ_)
+                  (Eq.trans (Eq.cong (perm (revS (swT k₃)) ⟨$⟩ʳ_) (back-to b (proj₁ (proj₂ B))))
+                            (Eq.trans (rev-sw t) et)))
+               (proj₁ (proj₂ B′))
+    agree (sF 0F) _ =
+      Eq.trans (Eq.cong (perm b′ ⟨$⟩ʳ_)
+                  (Eq.trans (Eq.cong (perm (revS (swT k₃)) ⟨$⟩ʳ_) (back-to b (proj₂ (proj₂ B))))
+                            (Eq.trans (rev-sw c) ec)))
+               (proj₂ (proj₂ B′))
+    agree (sF (sF j)) (s≤s (s≤s ()))
+
+  -- x passes l if its conjugate by an involution s that l does not see
+  -- passes l.
+  conj-pass : ∀ (s x y l : Circuit W) → W ⊢ᵧ s • s ≈ ε → W ⊢ᵧ s • x • s ≈ y →
+              W ⊢ᵧ s • l • s ≈ l → W ⊢ᵧ y • l ≈ l • y → W ⊢ᵧ x • l ≈ l • x
+  conj-pass s x y l ss sx sl yl = begin
+    x • l                       ≈⟨ front l xs ⟩
+    (s • y • s) • l             ≈⟨ by-passoc ((□ • □ • □) • □) (□ • □ • (□ • □)) Eq.refl ⟩
+    s • y • (s • l)             ≈⟨ back s (back y ls) ⟩
+    s • y • (l • s)             ≈⟨ by-passoc (□ • □ • (□ • □)) (□ • (□ • □) • □) Eq.refl ⟩
+    s • (y • l) • s             ≈⟨ back s (front s yl) ⟩
+    s • (l • y) • s             ≈⟨ by-passoc (□ • (□ • □) • □) ((□ • □) • □ • □) Eq.refl ⟩
+    (s • l) • y • s             ≈⟨ front _ ls ⟩
+    (l • s) • y • s             ≈⟨ assoc ⟩
+    l • s • y • s               ≈⟨ back l (sym xs) ⟩
+    l • x ∎
+    where
+    xs : W ⊢ᵧ x ≈ s • y • s
+    xs = sym (begin
+      s • y • s                 ≈⟨ back s (front s (sym sx)) ⟩
+      s • (s • x • s) • s       ≈⟨ by-passoc (□ • (□ • □ • □) • □) ((□ • □) • □ • (□ • □)) Eq.refl ⟩
+      (s • s) • x • (s • s)     ≈⟨ cong ss (back x ss) ⟩
+      ε • x • ε                 ≈⟨ trans left-unit right-unit ⟩
+      x ∎)
+    ls : W ⊢ᵧ s • l ≈ l • s
+    ls = begin
+      s • l                     ≈⟨ sym right-unit ⟩
+      (s • l) • ε               ≈⟨ back _ (sym ss) ⟩
+      (s • l) • (s • s)         ≈⟨ by-passoc ((□ • □) • (□ • □)) ((□ • □ • □) • □) Eq.refl ⟩
+      (s • l • s) • s           ≈⟨ front s sl ⟩
+      l • s ∎
+
+  tt′ : ∀ (G : Circuit D) → Indep₀ G → SwapSym G →
+        ∀ {u : Fin (₃₊ m)} → TopView u → .(p : sF (inject₁ u) ≢ tp) →
+        W ⊢ᵧ C₁.⟪ A₁.tL (sF (inject₁ u)) tp p ⟫ • λ⁰ʷ G ≈ λ⁰ʷ G • C₁.⟪ A₁.tL (sF (inject₁ u)) tp p ⟫
+  tt′ G ind ss (is-low u) p =
+    conj-pass Sw _ _ (λ⁰ʷ G) (embed (Sw² k₃))
+      (embed (sw-cx c c tp tq p q (perm-swT-top k₃) (perm-swT-low k₃ (sF u))))
+      ss (pass-low G (inject₁ u) (fromℕ (₃₊ m)) q (ind (inject₁ u) (fromℕ (₃₊ m)) (λ e → q (Eq.cong inject₁ e))))
+    where
+    c : Fin W
+    c = sF (inject₁ (inject₁ u))
+    q : c ≢ tq
+    q e = fromℕ≢inject₁ (Eq.sym (inject₁-injective (suc-injective e)))
+  tt′ G ind ss is-top p =
+    conj-pass Sw _ _ (λ⁰ʷ G) (embed (Sw² k₃))
+      (embed (sw-cx tq tp tp tq p q (perm-swT-top k₃) (perm-swT-top′ k₃)))
+      ss (pass-top G (fromℕ (₃₊ m)) q)
+    where
+    q : tp ≢ tq
+    q e = fromℕ≢inject₁ (suc-injective e)
+
+-- The CX onto the top from the symmetry of the two controls.
+top-target : ∀ (G : Circuit D) → Indep₀ G → SwapSym G → TopTarget G
+top-target G ind ss u p = tt′ G ind ss (topView u) p
+
+-- Independence one wire up, from six wires on.
+step′ : ∀ (G : Circuit D) → Indep₀ G → SwapSym G → Indep₁ (λ⁰ʷ G)
+step′ G ind ss = step G ind (top-target G ind ss)
