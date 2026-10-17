@@ -53,6 +53,12 @@ open import Examples.Groups.Clifford+CS.LocalPlace using (pl ; pl-• ; pl-pl ; 
 open import Examples.Groups.Clifford+CS.Stable.Rules
 open import Examples.Groups.Clifford+CS.Stable.Weakening using (top-congᵧ)
 open import Examples.Groups.Clifford+CS.Stable.Nets7 using (sw₆ ; ns₆) public
+open import Examples.Groups.Clifford+CS.Soundness using (sound)
+open import Examples.Groups.Clifford+CS.Lambda using (λ¹)
+open import Examples.Groups.Clifford+CS.Lambda.Semantics using (λ¹-sem ; ⟦•⟧ ; ⟦ε⟧)
+open import Examples.Groups.Clifford+CS.Semantics.Control using (ctrl ; ctrl-~)
+open import Examples.Groups.Clifford+CS.Semantics using (~-trans ; ~-sym ; ~-refl ; ∙-cong ; ∙-identityʳ ; ε∙ ; _∙_)
+open import Examples.Groups.Clifford+CS.Stable.CtrlSem using (conj-ctrl ; ctrl-• ; ctrl-ε′)
 
 ------------------------------------------------------------------------
 -- Networks on five wires
@@ -67,6 +73,16 @@ sw₅ _ = ε
 ns₅ : List ℕ → Word (S.Gen 5)
 ns₅ []       = ε
 ns₅ (p ∷ ps) = sw₅ p • ns₅ ps
+
+sw₄ : ℕ → Word (S.Gen 4)
+sw₄ 0 = [ S.gate₂ S.σ-gate ]ʷ
+sw₄ 1 = [ S.gate₂ S.σ-gate S.↥ ]ʷ
+sw₄ 2 = [ S.gate₂ S.σ-gate S.↥ S.↥ ]ʷ
+sw₄ _ = ε
+
+ns₄ : List ℕ → Word (S.Gen 4)
+ns₄ []       = ε
+ns₄ (p ∷ ps) = sw₄ p • ns₄ ps
 
 ------------------------------------------------------------------------
 -- Placed gates and lines
@@ -206,6 +222,46 @@ transport τ fx fy e = PB.trans (frames fx) (PB.trans (plᵧ (ns₆ τ) e) (PB.s
 split5 : ∀ ρ (a b : Circuit 5) → 6 ⊢ᵧ ⟪ g5 ρ (a • b) ∷ [] ⟫₆ ≈ ⟪ g5 ρ a ∷ g5 ρ b ∷ [] ⟫₆
 split5 ρ a b = embed (pl-• (ns₆ ρ) (a ↓ᵏ 1) (b ↓ᵏ 1))
 
+-- Controlled lines: the five-wire reading of a gate denotes the
+-- controlled operator of a four-wire circuit (top wire the control), by
+-- a λ¹-image placed below the control (`sbox`) or by evaluating a small
+-- gate against one (`small`); a line of them, the controlled product.
+record CF (x : PG) (d : Circuit 4) : Set where
+  constructor cf
+  field
+    sem : ⟦ ⟦ x ⟧₅ ⟧ ~ ctrl ⟦ d ⟧
+
+sbox : ∀ ρ (g : Gen 4) →
+       pl (ns₅ ρ) (λ¹ g) ≡ top (net (ns₄ ρ)) • (λ¹ g • top (net (revS (ns₄ ρ)))) →
+       CF (g5 ρ (λ¹ g)) (pl (ns₄ ρ) [ g ]ʷ)
+sbox ρ g e = cf (Eq.subst (λ w → ⟦ w ⟧ ~ ctrl ⟦ pl (ns₄ ρ) [ g ]ʷ ⟧) (Eq.sym e)
+  (conj-ctrl (net (ns₄ ρ)) (net (revS (ns₄ ρ))) [ g ]ʷ (λ¹ g) (sound (net-inv (ns₄ ρ))) (λ¹-sem [ g ]ʷ)))
+
+small : ∀ (x : PG) (g : Gen 4) → Same ⟦ x ⟧₅ (λ¹ g) → CF x [ g ]ʷ
+small x g s = cf (~-trans {s = ⟦ ⟦ x ⟧₅ ⟧} {t = ⟦ λ¹ g ⟧} {u = ctrl ⟦ [ g ]ʷ ⟧}
+                     (same-sem ⟦ x ⟧₅ (λ¹ g) s) (λ¹-sem [ g ]ʷ))
+
+infixr 5 _∷ᶜ_
+data CtrlLine : List PG → Circuit 4 → Set where
+  []ᶜ  : CtrlLine [] ε
+  _∷ᶜ_ : ∀ {x xs d ds} → CF x d → CtrlLine xs ds → CtrlLine (x ∷ xs) (d • ds)
+
+ctrl-line : ∀ {xs ds} → CtrlLine xs ds → ⟦ ⟪ xs ⟫₅ ⟧ ~ ctrl ⟦ ds ⟧
+ctrl-line []ᶜ = ctrl-ε′
+ctrl-line (_∷ᶜ_ {x} {d = d} c []ᶜ) =
+  ~-trans {s = ⟦ ⟦ x ⟧₅ ⟧} {t = ctrl ⟦ d ⟧} {u = ctrl ⟦ d • ε ⟧} (CF.sem c)
+    (ctrl-~ {s = ⟦ d ⟧} {⟦ d • ε ⟧}
+      (~-sym {s = ⟦ d • ε ⟧} {t = ⟦ d ⟧}
+        (~-trans {s = ⟦ d • ε ⟧} {t = ⟦ d ⟧ ∙ ⟦ ε ⟧} {u = ⟦ d ⟧} (⟦•⟧ d ε)
+          (~-trans {s = ⟦ d ⟧ ∙ ⟦ ε ⟧} {t = ⟦ d ⟧ ∙ ε∙} {u = ⟦ d ⟧}
+            (∙-cong {s = ⟦ d ⟧} {⟦ d ⟧} {⟦ ε ⟧} {ε∙} (~-refl ⟦ d ⟧) ⟦ε⟧) (∙-identityʳ ⟦ d ⟧)))))
+ctrl-line (_∷ᶜ_ {x} {y ∷ ys} {d} {ds} c cs@(_ ∷ᶜ _)) =
+  ~-trans {s = ⟦ ⟦ x ⟧₅ • ⟪ y ∷ ys ⟫₅ ⟧} {t = ⟦ ⟦ x ⟧₅ ⟧ ∙ ⟦ ⟪ y ∷ ys ⟫₅ ⟧} {u = ctrl ⟦ d • ds ⟧}
+    (⟦•⟧ ⟦ x ⟧₅ ⟪ y ∷ ys ⟫₅)
+    (~-trans {s = ⟦ ⟦ x ⟧₅ ⟧ ∙ ⟦ ⟪ y ∷ ys ⟫₅ ⟧} {t = ctrl ⟦ d ⟧ ∙ ctrl ⟦ ds ⟧} {u = ctrl ⟦ d • ds ⟧}
+      (∙-cong {s = ⟦ ⟦ x ⟧₅ ⟧} {ctrl ⟦ d ⟧} {⟦ ⟪ y ∷ ys ⟫₅ ⟧} {ctrl ⟦ ds ⟧} (CF.sem c) (ctrl-line cs))
+      (ctrl-• d ds))
+
 module Window (c₅ : ∀ {u v : Circuit 5} → ⟦ u ⟧ ~ ⟦ v ⟧ → 5 ⊢ᵧ u ≈ v) where
 
   -- Lines that avoid the top wire are five-wire lines; compare them by
@@ -221,6 +277,17 @@ module Window (c₅ : ∀ {u v : Circuit 5} → ⟦ u ⟧ ~ ⟦ v ⟧ → 5 ⊢�
         Same ⟪ xs′ ⟫₅ ⟪ ys′ ⟫₅ → 6 ⊢ᵧ ⟪ xs ⟫₆ ≈ ⟪ ys ⟫₆
   win τ {xs′ = xs′} {ys′ = ys′} fx fy ex ey s =
     win′ τ fx fy ex ey (c₅ (same-sem ⟪ xs′ ⟫₅ ⟪ ys′ ⟫₅ s))
+
+  -- Controlled lines: compare the domain words instead.
+  winC : ∀ τ {xs xs′ ys ys′ ds es} → Frames τ xs xs′ → Frames τ ys ys′ →
+         ⟪ xs′ ⟫₆ ≡ top ⟪ xs′ ⟫₅ → ⟪ ys′ ⟫₆ ≡ top ⟪ ys′ ⟫₅ →
+         CtrlLine xs′ ds → CtrlLine ys′ es → Same ds es → 6 ⊢ᵧ ⟪ xs ⟫₆ ≈ ⟪ ys ⟫₆
+  winC τ {xs′ = xs′} {ys′ = ys′} {ds} {es} fx fy ex ey cx cy s =
+    win′ τ fx fy ex ey (c₅
+      (~-trans {s = ⟦ ⟪ xs′ ⟫₅ ⟧} {t = ctrl ⟦ ds ⟧} {u = ⟦ ⟪ ys′ ⟫₅ ⟧} (ctrl-line cx)
+        (~-trans {s = ctrl ⟦ ds ⟧} {t = ctrl ⟦ es ⟧} {u = ⟦ ⟪ ys′ ⟫₅ ⟧}
+          (ctrl-~ {s = ⟦ ds ⟧} {⟦ es ⟧} (same-sem ds es s))
+          (~-sym {s = ⟦ ⟪ ys′ ⟫₅ ⟧} {t = ctrl ⟦ es ⟧} (ctrl-line cy)))))
 
 ------------------------------------------------------------------------
 -- The ends of a derivation

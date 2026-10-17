@@ -33,17 +33,35 @@ open import Examples.Groups.Clifford+CS.Lambda using (stretch ; CSᵗ ; CKᵗ)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CK₁₀)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (embed)
 open import Examples.Groups.Clifford+CS.Stable.Six.Su c₅ using (su)
-open import Examples.Groups.Clifford+CS.Stable.Six.Comm2S1 c₅ using (comm₂-S-chain1)
-open import Examples.Groups.Clifford+CS.Stable.Six.Comm2S2 c₅ using (comm₂-S-chain2)
-open import Examples.Groups.Clifford+CS.Stable.Six.Comm2S3 c₅ using (comm₂-S-chain3)
-open import Examples.Groups.Clifford+CS.Stable.Six.Comm2K1 c₅ using (comm₂-K-chain1)
-open import Examples.Groups.Clifford+CS.Stable.Six.Comm2K2 c₅ using (comm₂-K-chain2)
-open import Examples.Groups.Clifford+CS.Stable.Six.Comm2K3 c₅ using (comm₂-K-chain3)
 
 open Window c₅
 
 comm₂-S-chain : 6 ⊢ᵧ ⟪ (g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (CS ↑ ↑ ↑) ∷ g5 (4 ∷ []) b-Sb2-0-41-3 ∷ []) ⟫₆ ≈ ⟪ (g5 (4 ∷ []) b-Sb2-0-41-3 ∷ g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (CS ↑ ↑ ↑) ∷ []) ⟫₆
-comm₂-S-chain = PB.trans comm₂-S-chain1 (PB.trans comm₂-S-chain2 (comm₂-S-chain3))
+comm₂-S-chain = run {(g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (CS ↑ ↑ ↑) ∷ g5 (4 ∷ []) b-Sb2-0-41-3 ∷ [])} {(g5 (4 ∷ []) b-Sb2-0-41-3 ∷ g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (CS ↑ ↑ ↑) ∷ [])}
+  ( at 0 1 (g2 (3 ∷ 2 ∷ 1 ∷ 0 ∷ 4 ∷ 3 ∷ 2 ∷ 1 ∷ []) CS ∷ [])
+      (win (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (fr5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) ([]) (CS ↑ ↑ ↑) Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr2 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (3 ∷ 2 ∷ 1 ∷ 0 ∷ 4 ∷ 3 ∷ 2 ∷ 1 ∷ []) (2 ∷ 1 ∷ 0 ∷ 3 ∷ 2 ∷ 1 ∷ []) CS Eq.refl Eq.refl ∷ [])
+         Eq.refl Eq.refl Eq.refl)
+  ▸ at 1 1 (g5 (3 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 ∷ [])
+      (transport (3 ∷ 2 ∷ 1 ∷ 0 ∷ []) (fr5 (3 ∷ 2 ∷ 1 ∷ 0 ∷ []) (4 ∷ []) (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr5 (3 ∷ 2 ∷ 1 ∷ 0 ∷ []) (3 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         su)
+  ▸ at 0 2 (g5 (3 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 ∷ g2 (3 ∷ 2 ∷ 1 ∷ 0 ∷ 4 ∷ 3 ∷ 2 ∷ 1 ∷ []) CS ∷ [])
+      (winC (2 ∷ 3 ∷ 4 ∷ []) (fr2 (2 ∷ 3 ∷ 4 ∷ []) (3 ∷ 2 ∷ 1 ∷ 0 ∷ 4 ∷ 3 ∷ 2 ∷ 1 ∷ []) (2 ∷ 1 ∷ 0 ∷ 3 ∷ 2 ∷ 1 ∷ []) CS Eq.refl Eq.refl ∷ fr5 (2 ∷ 3 ∷ 4 ∷ []) (3 ∷ 2 ∷ 3 ∷ 4 ∷ []) (2 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr5 (2 ∷ 3 ∷ 4 ∷ []) (3 ∷ 2 ∷ 3 ∷ 4 ∷ []) (2 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ fr2 (2 ∷ 3 ∷ 4 ∷ []) (3 ∷ 2 ∷ 1 ∷ 0 ∷ 4 ∷ 3 ∷ 2 ∷ 1 ∷ []) (2 ∷ 1 ∷ 0 ∷ 3 ∷ 2 ∷ 1 ∷ []) CS Eq.refl Eq.refl ∷ [])
+         Eq.refl Eq.refl
+         (small (g2 (2 ∷ 1 ∷ 0 ∷ 3 ∷ 2 ∷ 1 ∷ []) CS) (gate₁ S-gate ↥ ↥ ↥) Eq.refl ∷ᶜ sbox (2 ∷ []) (gate₂ CS-gate) Eq.refl ∷ᶜ []ᶜ)
+         (sbox (2 ∷ []) (gate₂ CS-gate) Eq.refl ∷ᶜ small (g2 (2 ∷ 1 ∷ 0 ∷ 3 ∷ 2 ∷ 1 ∷ []) CS) (gate₁ S-gate ↥ ↥ ↥) Eq.refl ∷ᶜ []ᶜ)
+         Eq.refl)
+  ▸ at 0 1 (g5 (4 ∷ []) b-Sb2-0-41-3 ∷ [])
+      (transport (3 ∷ 2 ∷ 1 ∷ 0 ∷ []) (fr5 (3 ∷ 2 ∷ 1 ∷ 0 ∷ []) (3 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr5 (3 ∷ 2 ∷ 1 ∷ 0 ∷ []) (4 ∷ []) (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (PB.sym su))
+  ▸ at 1 1 (g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (CS ↑ ↑ ↑) ∷ [])
+      (win (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (fr2 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (3 ∷ 2 ∷ 1 ∷ 0 ∷ 4 ∷ 3 ∷ 2 ∷ 1 ∷ []) (2 ∷ 1 ∷ 0 ∷ 3 ∷ 2 ∷ 1 ∷ []) CS Eq.refl Eq.refl ∷ [])
+         (fr5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) ([]) (CS ↑ ↑ ↑) Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         Eq.refl Eq.refl Eq.refl)
+  ▸ done)
 
 comm₂-S : 6 ⊢ᵧ (CS ↑ ↑ ↑) ↑ • stretch b-Sb2-0-41-3 ≈ stretch b-Sb2-0-41-3 • (CS ↑ ↑ ↑) ↑
 comm₂-S = PB.trans (PB.cong l0 l1) (PB.trans comm₂-S-chain (PB.sym (PB.cong r0 r1)))
@@ -58,7 +76,31 @@ comm₂-S = PB.trans (PB.cong l0 l1) (PB.trans comm₂-S-chain (PB.sym (PB.cong 
   r1 = embed (PB.trans (↑≈ (CS ↑ ↑ ↑)) (T₆.by-assoc Eq.refl))
 
 comm₂-K-chain : 6 ⊢ᵧ ⟪ (g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (CK₁₀ ↑ ↑ ↑) ∷ g5 (4 ∷ []) b-Sb2-0-41-3 ∷ []) ⟫₆ ≈ ⟪ (g5 (4 ∷ []) b-Sb2-0-41-3 ∷ g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (CK₁₀ ↑ ↑ ↑) ∷ []) ⟫₆
-comm₂-K-chain = PB.trans comm₂-K-chain1 (PB.trans comm₂-K-chain2 (comm₂-K-chain3))
+comm₂-K-chain = run {(g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (CK₁₀ ↑ ↑ ↑) ∷ g5 (4 ∷ []) b-Sb2-0-41-3 ∷ [])} {(g5 (4 ∷ []) b-Sb2-0-41-3 ∷ g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (CK₁₀ ↑ ↑ ↑) ∷ [])}
+  ( at 0 1 (g2 (3 ∷ 2 ∷ 1 ∷ 0 ∷ 4 ∷ 3 ∷ 2 ∷ 1 ∷ []) CK₁₀ ∷ [])
+      (win (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (fr5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) ([]) (CK₁₀ ↑ ↑ ↑) Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr2 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (3 ∷ 2 ∷ 1 ∷ 0 ∷ 4 ∷ 3 ∷ 2 ∷ 1 ∷ []) (2 ∷ 1 ∷ 0 ∷ 3 ∷ 2 ∷ 1 ∷ []) CK₁₀ Eq.refl Eq.refl ∷ [])
+         Eq.refl Eq.refl Eq.refl)
+  ▸ at 1 1 (g5 (3 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 ∷ [])
+      (transport (3 ∷ 2 ∷ 1 ∷ 0 ∷ []) (fr5 (3 ∷ 2 ∷ 1 ∷ 0 ∷ []) (4 ∷ []) (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr5 (3 ∷ 2 ∷ 1 ∷ 0 ∷ []) (3 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         su)
+  ▸ at 0 2 (g5 (3 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 ∷ g2 (3 ∷ 2 ∷ 1 ∷ 0 ∷ 4 ∷ 3 ∷ 2 ∷ 1 ∷ []) CK₁₀ ∷ [])
+      (winC (2 ∷ 3 ∷ 4 ∷ []) (fr2 (2 ∷ 3 ∷ 4 ∷ []) (3 ∷ 2 ∷ 1 ∷ 0 ∷ 4 ∷ 3 ∷ 2 ∷ 1 ∷ []) (2 ∷ 1 ∷ 0 ∷ 3 ∷ 2 ∷ 1 ∷ []) CK₁₀ Eq.refl Eq.refl ∷ fr5 (2 ∷ 3 ∷ 4 ∷ []) (3 ∷ 2 ∷ 3 ∷ 4 ∷ []) (2 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr5 (2 ∷ 3 ∷ 4 ∷ []) (3 ∷ 2 ∷ 3 ∷ 4 ∷ []) (2 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ fr2 (2 ∷ 3 ∷ 4 ∷ []) (3 ∷ 2 ∷ 1 ∷ 0 ∷ 4 ∷ 3 ∷ 2 ∷ 1 ∷ []) (2 ∷ 1 ∷ 0 ∷ 3 ∷ 2 ∷ 1 ∷ []) CK₁₀ Eq.refl Eq.refl ∷ [])
+         Eq.refl Eq.refl
+         (small (g2 (2 ∷ 1 ∷ 0 ∷ 3 ∷ 2 ∷ 1 ∷ []) CK₁₀) (gate₁ K-gate ↥ ↥ ↥) Eq.refl ∷ᶜ sbox (2 ∷ []) (gate₂ CS-gate) Eq.refl ∷ᶜ []ᶜ)
+         (sbox (2 ∷ []) (gate₂ CS-gate) Eq.refl ∷ᶜ small (g2 (2 ∷ 1 ∷ 0 ∷ 3 ∷ 2 ∷ 1 ∷ []) CK₁₀) (gate₁ K-gate ↥ ↥ ↥) Eq.refl ∷ᶜ []ᶜ)
+         Eq.refl)
+  ▸ at 0 1 (g5 (4 ∷ []) b-Sb2-0-41-3 ∷ [])
+      (transport (3 ∷ 2 ∷ 1 ∷ 0 ∷ []) (fr5 (3 ∷ 2 ∷ 1 ∷ 0 ∷ []) (3 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr5 (3 ∷ 2 ∷ 1 ∷ 0 ∷ []) (4 ∷ []) (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (PB.sym su))
+  ▸ at 1 1 (g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (CK₁₀ ↑ ↑ ↑) ∷ [])
+      (win (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (fr2 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (3 ∷ 2 ∷ 1 ∷ 0 ∷ 4 ∷ 3 ∷ 2 ∷ 1 ∷ []) (2 ∷ 1 ∷ 0 ∷ 3 ∷ 2 ∷ 1 ∷ []) CK₁₀ Eq.refl Eq.refl ∷ [])
+         (fr5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) ([]) (CK₁₀ ↑ ↑ ↑) Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         Eq.refl Eq.refl Eq.refl)
+  ▸ done)
 
 comm₂-K : 6 ⊢ᵧ (CK₁₀ ↑ ↑ ↑) ↑ • stretch b-Sb2-0-41-3 ≈ stretch b-Sb2-0-41-3 • (CK₁₀ ↑ ↑ ↑) ↑
 comm₂-K = PB.trans (PB.cong l0 l1) (PB.trans comm₂-K-chain (PB.sym (PB.cong r0 r1)))

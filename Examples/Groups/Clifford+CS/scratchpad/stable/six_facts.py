@@ -153,20 +153,10 @@ class Raw:
 
 
 def group(modname, title, doc, facts, imp):
-    """each fact's chain cut into parts with one S-box window each, a
-    module per part (Agda frees an evaluation's memory only when its
-    module is done), and the facts in modname."""
-    allimp = list(imp)
-    for f in facts:
-        f.parts = f.d.parts(1)
-        for j, p in enumerate(f.parts):
-            mn = f'{modname}{f.tag}{j + 1}'
-            module(mn, f'{title}: part {j + 1} of {f.name}',
-                   f'Steps of `{f.d.name}` (Stable.Six.{modname}), cut so that each{chr(10)}module evaluates at most one S-box window.',
-                   [p], imports=imp, script='six_facts.py')
-            allimp.append(f'open import Examples.Groups.Clifford+CS.Stable.Six.{mn} c₅ using ({p.name})')
-    module(modname, title, doc, facts, imports=allimp, script='six_facts.py')
-    return [f'{modname}{f.tag}{j + 1}' for f in facts for j in range(len(f.parts))] + [modname]
+    """the facts in modname: their S-box windows are decided on the
+    four-wire domain (Engine.winC), so one module holds them."""
+    module(modname, title, doc, facts, imports=imp, script='six_facts.py')
+    return [modname]
 
 
 if __name__ == '__main__':

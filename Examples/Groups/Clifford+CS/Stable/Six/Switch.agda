@@ -35,15 +35,30 @@ open import Examples.Groups.Clifford+CS.Lambda using (stretch ; CSᵗ ; CKᵗ)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CK₁₀)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (embed)
 open import Examples.Groups.Clifford+CS.Stable.Six.Su c₅ using (su)
-open import Examples.Groups.Clifford+CS.Stable.Six.SwitchA1 c₅ using (sw₁₂-chain1)
-open import Examples.Groups.Clifford+CS.Stable.Six.SwitchA2 c₅ using (sw₁₂-chain2)
-open import Examples.Groups.Clifford+CS.Stable.Six.SwitchB1 c₅ using (sw₂₃-chain1)
-open import Examples.Groups.Clifford+CS.Stable.Six.SwitchB2 c₅ using (sw₂₃-chain2)
 
 open Window c₅
 
 sw₁₂-chain : 6 ⊢ᵧ ⟪ (g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 ∷ []) ⟫₆ ≈ ⟪ (g5 (4 ∷ []) b-Sb0-1-42-3 ∷ []) ⟫₆
-sw₁₂-chain = PB.trans sw₁₂-chain1 (sw₁₂-chain2)
+sw₁₂-chain = run {(g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 ∷ [])} {(g5 (4 ∷ []) b-Sb0-1-42-3 ∷ [])}
+  ( at 0 1 (g5 (0 ∷ 1 ∷ 3 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 ∷ [])
+      (winC (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (fr5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) ([]) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 3 ∷ 2 ∷ 3 ∷ 4 ∷ []) (2 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         Eq.refl Eq.refl
+         (sbox ([]) (gate₂ CS-gate) Eq.refl ∷ᶜ []ᶜ)
+         (sbox (2 ∷ []) (gate₂ CS-gate) Eq.refl ∷ᶜ []ᶜ)
+         Eq.refl)
+  ▸ at 0 1 (g5 (0 ∷ 1 ∷ 4 ∷ []) b-Sb2-0-41-3 ∷ [])
+      (transport (3 ∷ []) (fr5 (3 ∷ []) (0 ∷ 1 ∷ 3 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr5 (3 ∷ []) (0 ∷ 1 ∷ 4 ∷ []) (0 ∷ 1 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         su)
+  ▸ at 0 1 (g5 (4 ∷ []) b-Sb0-1-42-3 ∷ [])
+      (winC (4 ∷ []) (fr5 (4 ∷ []) (0 ∷ 1 ∷ 4 ∷ []) (0 ∷ 1 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr5 (4 ∷ []) (4 ∷ []) ([]) b-Sb0-1-42-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         Eq.refl Eq.refl
+         (sbox (0 ∷ 1 ∷ []) (gate₂ CS-gate) Eq.refl ∷ᶜ []ᶜ)
+         (sbox ([]) (gate₂ CS-gate ↥) Eq.refl ∷ᶜ []ᶜ)
+         Eq.refl)
+  ▸ done)
 
 sw₁₂ : 6 ⊢ᵧ b-Sb2-0-41-3 ↑ ≈ stretch b-Sb0-1-42-3
 sw₁₂ = PB.trans (l0) (PB.trans sw₁₂-chain (PB.sym (r0)))
@@ -54,7 +69,26 @@ sw₁₂ = PB.trans (l0) (PB.trans sw₁₂-chain (PB.sym (r0)))
   r0 = embed (T₆.by-assoc Eq.refl)
 
 sw₂₃-chain : 6 ⊢ᵧ ⟪ (g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb0-1-42-3 ∷ []) ⟫₆ ≈ ⟪ (g5 (4 ∷ []) b-Sb0-2-43-1 ∷ []) ⟫₆
-sw₂₃-chain = PB.trans sw₂₃-chain1 (sw₂₃-chain2)
+sw₂₃-chain = run {(g5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb0-1-42-3 ∷ [])} {(g5 (4 ∷ []) b-Sb0-2-43-1 ∷ [])}
+  ( at 0 1 (g5 (1 ∷ 0 ∷ 2 ∷ 1 ∷ 3 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 ∷ [])
+      (winC (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (fr5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) ([]) b-Sb0-1-42-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr5 (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) (1 ∷ 0 ∷ 2 ∷ 1 ∷ 3 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 2 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         Eq.refl Eq.refl
+         (sbox ([]) (gate₂ CS-gate ↥) Eq.refl ∷ᶜ []ᶜ)
+         (sbox (0 ∷ 1 ∷ 2 ∷ []) (gate₂ CS-gate) Eq.refl ∷ᶜ []ᶜ)
+         Eq.refl)
+  ▸ at 0 1 (g5 (1 ∷ 0 ∷ 2 ∷ 1 ∷ 4 ∷ []) b-Sb2-0-41-3 ∷ [])
+      (transport (1 ∷ 2 ∷ 3 ∷ []) (fr5 (1 ∷ 2 ∷ 3 ∷ []) (1 ∷ 0 ∷ 2 ∷ 1 ∷ 3 ∷ 2 ∷ 3 ∷ 4 ∷ []) (0 ∷ 1 ∷ 2 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr5 (1 ∷ 2 ∷ 3 ∷ []) (1 ∷ 0 ∷ 2 ∷ 1 ∷ 4 ∷ []) (0 ∷ 1 ∷ 3 ∷ 4 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         su)
+  ▸ at 0 1 (g5 (4 ∷ []) b-Sb0-2-43-1 ∷ [])
+      (winC (4 ∷ []) (fr5 (4 ∷ []) (1 ∷ 0 ∷ 2 ∷ 1 ∷ 4 ∷ []) (1 ∷ 0 ∷ 2 ∷ 1 ∷ []) b-Sb2-0-41-3 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         (fr5 (4 ∷ []) (4 ∷ []) ([]) b-Sb0-2-43-1 Eq.refl Eq.refl Eq.refl Eq.refl Eq.refl ∷ [])
+         Eq.refl Eq.refl
+         (sbox (1 ∷ 0 ∷ 2 ∷ 1 ∷ []) (gate₂ CS-gate) Eq.refl ∷ᶜ []ᶜ)
+         (sbox ([]) (gate₂ CS-gate ↥ ↥) Eq.refl ∷ᶜ []ᶜ)
+         Eq.refl)
+  ▸ done)
 
 sw₂₃ : 6 ⊢ᵧ b-Sb0-1-42-3 ↑ ≈ stretch b-Sb0-2-43-1
 sw₂₃ = PB.trans (l0) (PB.trans sw₂₃-chain (PB.sym (r0)))

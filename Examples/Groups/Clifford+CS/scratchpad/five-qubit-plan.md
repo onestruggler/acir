@@ -307,9 +307,13 @@ nothing else (`hyp′`, `transport′`).  The route is b6.py's:
   transported along wire maps; comm₂-base₂ moves the first S-box to
   borrow {0, 1} and the second {3, 4}, which leaves wire 2 idle.
 
-Cost: a five-wire window with one S-box a side peaks near 6.3 GB (about
-85 s), with two a side 7.5 GB (140 s); one module per such window,
-checked one process at a time (chkall.sh).
+Cost: evaluating a five-wire window with one S-box a side peaks near
+6.3 GB (two a side, 7.5 GB).  Engine.winC avoids it: each gate of such a
+window denotes ctrl of a four-wire circuit (an S-box placed below the
+control by Stable.CtrlSem.conj-ctrl and λ¹-sem; a small gate through
+the control by evaluation against a small λ¹-image), so the window is
+decided on the domain words, about 30 s and 2 GB.  Windows on seven or
+more wires will need the same device.
 
 Next for Theorem S: the decoding, Lemmas 8.7/8.8 and the induction at
 width n ≥ 6 (v-office's division: Affine/, the representation lemma).

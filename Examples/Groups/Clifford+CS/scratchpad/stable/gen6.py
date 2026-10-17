@@ -135,6 +135,38 @@ def frames(tau, gs, rhos):
     return '(' + ' ∷ '.join(fs) + (' ∷ []' if fs else '[]') + ')'
 
 
+# ---------------------------------------------------------------- controlled lines
+SEM[4] = cs.Sem(4)
+# the S-boxes as λ¹-images of the four-wire domain's CS: (Agda generator, shift)
+SBOX_GEN = {'Sb2-0-41-3': ('(gate₂ CS-gate)', 0), 'Sb0-1-42-3': ('(gate₂ CS-gate ↥)', 1),
+            'Sb0-2-43-1': ('(gate₂ CS-gate ↥ ↥)', 2)}
+
+
+def ctrl_line(gs, rhos):
+    """Agda CtrlLine of gates placed on five wires by rhos (control on the
+    top wire 4), and the domain word (four wires) it denotes."""
+    facts, dom = [], []
+    for g, r in zip(gs, rhos):
+        if g.lit.name in SBOX_GEN:
+            gen, sh = SBOX_GEN[g.lit.name]
+            assert all(p <= 2 for p in r), (g, r)
+            facts.append(f'sbox {nl(r)} {gen} Eq.refl')
+            dom += swaps(r) + mac5.CS(sh) + swaps(list(reversed(r)))
+        else:
+            f = places(r, N - 1, g.k)
+            if g.lit is CSl:
+                i = [w for w in f if w != 4]; assert 4 in f and len(i) == 1; i = i[0]
+                gen, d = '(gate₁ S-gate' + ' ↥' * i + ')', mac5.S(i)
+            elif g.lit is CK10:
+                assert f[1] == 4; i = f[0]
+                gen, d = '(gate₁ K-gate' + ' ↥' * i + ')', mac5.K(i)
+            else:
+                raise ValueError(g)
+            facts.append(f'small (g{g.k} {nl(r)} {g.lit.expr}) {gen} Eq.refl')
+            dom += d
+    return '(' + ' ∷ᶜ '.join(facts + ['[]ᶜ']) + ')', dom
+
+
 # ---------------------------------------------------------------- derivations
 class Deriv:
     def __init__(self, name, start):
@@ -167,7 +199,14 @@ class Deriv:
         rs, rt = [re(g) for g in seg], [re(g) for g in ys]
         assert SEM[5].eq(pword(seg, rs), pword(ys, rt))
         fx, fy = frames(tau, seg, rs), frames(tau, ys, rt)
-        self.steps.append(f'at {k} {n} {agda_list(ys)}\n      (win {nl(tau)} {fx}\n         {fy}\n         Eq.refl Eq.refl Eq.refl)')
+        if any(g.lit.name in SBOX_GEN for g in seg + ys):
+            cx, dx = ctrl_line(seg, rs)
+            cy, dy = ctrl_line(ys, rt)
+            assert SEM[4].eq(to_cs(dx), to_cs(dy))
+            self.steps.append(f'at {k} {n} {agda_list(ys)}\n      (winC {nl(tau)} {fx}\n         {fy}\n'
+                              f'         Eq.refl Eq.refl\n         {cx}\n         {cy}\n         Eq.refl)')
+        else:
+            self.steps.append(f'at {k} {n} {agda_list(ys)}\n      (win {nl(tau)} {fx}\n         {fy}\n         Eq.refl Eq.refl Eq.refl)')
         self.cur = self.cur[:k] + ys + self.cur[k + n:]
         self.lines.append(list(self.cur)); self.heavy.append(any(g.k == 5 for g in seg + ys))
 
