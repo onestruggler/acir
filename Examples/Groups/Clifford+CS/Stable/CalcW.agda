@@ -10,7 +10,8 @@
 -- transport, a module parameter); hence a domain word commuting with G
 -- passes λ⁰ G (`pass⁰`), and so does every λ¹-image (`pass¹`) — what the
 -- gadgets of the affine decoding, λ⁰ of the gadgets one width down,
--- need.
+-- need; and conjugating λ⁰ or λ¹ of a circuit by a domain circuit
+-- (`conj⁰`, `conj¹`).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -151,3 +152,20 @@ conj⁰ a a′ G e = begin
   λ⁰ʷ a • λ⁰ʷ G • λ⁰ʷ a′ • ε
     ≈⟨ back (λ⁰ʷ a) (back (λ⁰ʷ G) right-unit) ⟩
   λ⁰ʷ a • λ⁰ʷ G • λ⁰ʷ a′ ∎
+
+-- The same for λ¹.
+conj¹ : (a a′ G : Circuit D) → D ⊢ᵧ a • a′ ≈ ε → top a • λ¹ʷ G • top a′ ≈ λ¹ʷ (a • G • a′)
+conj¹ a a′ G e = begin
+  top a • λ¹ʷ G • top a′
+    ≈⟨ cong (F5ʷ a) (back (λ¹ʷ G) (F5ʷ a′)) ⟩
+  (λ⁰ʷ a • λ¹ʷ a) • λ¹ʷ G • (λ⁰ʷ a′ • λ¹ʷ a′)
+    ≈⟨ by-passoc ((□ • □) • □ • (□ • □)) (□ • ((□ • □) • □) • □) Eq.refl ⟩
+  λ⁰ʷ a • ((λ¹ʷ a • λ¹ʷ G) • λ⁰ʷ a′) • λ¹ʷ a′
+    ≈⟨ back (λ⁰ʷ a) (front _ (sym (F4ʷ a′ (a • G)))) ⟩
+  λ⁰ʷ a • (λ⁰ʷ a′ • (λ¹ʷ a • λ¹ʷ G)) • λ¹ʷ a′
+    ≈⟨ by-passoc (□ • (□ • (□ • □)) • □) ((□ • □) • (□ • □ • □)) Eq.refl ⟩
+  (λ⁰ʷ a • λ⁰ʷ a′) • (λ¹ʷ a • λ¹ʷ G • λ¹ʷ a′)
+    ≈⟨ front _ (transport⁰ e) ⟩
+  ε • (λ¹ʷ a • λ¹ʷ G • λ¹ʷ a′)
+    ≈⟨ left-unit ⟩
+  λ¹ʷ a • λ¹ʷ G • λ¹ʷ a′ ∎
