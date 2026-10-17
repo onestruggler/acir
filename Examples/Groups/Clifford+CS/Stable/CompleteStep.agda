@@ -10,7 +10,9 @@
 -- completeness on 4 + m, and Lemma 8.7 — `[ g ]ʷ ≈ (dl ʷ) (e g)` on
 -- 5 + m wires, which cannot go by semantics at its own width — as a
 -- hypothesis, give completeness on 5 + m (`complete-step`), by
--- Reidemeister–Schreier.
+-- Reidemeister–Schreier.  For Lemma 8.7 it is enough that a gate be the
+-- decoding of some word over P′ (`by-decodes`, Five.Complete5's, with
+-- DWDGen.dʷ-sem and d-≈).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -35,13 +37,16 @@ module Examples.Groups.Clifford+CS.Stable.CompleteStep
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 
+import Presentation.Base as PB
 open import Normalization.Reidemeister-Schreier using (module Star-Injective-Simplified)
 
 open import Examples.Groups.Clifford+CS.Semantics hiding (_^_ ; up ; _≟_)
 open import Examples.Groups.Clifford+CS.Syntactics using (Gen)
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧ ; ⟦_⟧ₒ ; ⟦⟧ₒ-ε)
 open import Examples.Groups.Clifford+CS.Stable.Rules using (_YVRel,_===_)
+open import Examples.Groups.Clifford+CS.Stable.Soundness using (soundᵧ)
 open import Examples.Groups.Clifford+CS.Five.Sem.Eval using (hom)
+open import Examples.Groups.Clifford+CS.Auxiliary.P using (GenP)
 open import Examples.Groups.Clifford+CS.Auxiliary.Rules using (_R,_===_)
 import Examples.Groups.Clifford+CS.Encoding as Encoding
 import Examples.Groups.Clifford+CS.Section8 as Section8
@@ -70,6 +75,21 @@ module _ (m : ℕ) where
       ~-trans {s = ⟦ (E.e ʷ) u ⟧PY ∙ ⟦ (E.e ʷ) v ⟧PY} {t = ⟦ u ⟧ ∙ ⟦ v ⟧} {u = ⟦ u • v ⟧}
         (∙-cong {s = ⟦ (E.e ʷ) u ⟧PY} {s' = ⟦ u ⟧} {t = ⟦ (E.e ʷ) v ⟧PY} {t' = ⟦ v ⟧} (eʷ-sem u) (eʷ-sem v))
         (~-sym {s = ⟦ u • v ⟧} {t = ⟦ u ⟧ ∙ ⟦ v ⟧} (hom u v))
+
+  -- A gate that is the decoding of some word over P′ is the decoding of
+  -- its encoding: the two words have the same reading, so they are
+  -- equal in P′.
+  by-decodes : Completeᵧ (₄₊ m) → ∀ (g : Gen n) (w : Word (GenP E.N)) →
+               n ⊢ᵧ [ g ]ʷ ≈ (W.dl m ʷ) w → n ⊢ᵧ [ g ]ʷ ≈ (W.dl m ʷ) (E.e g)
+  by-decodes c g w h = PB.trans h (W.d-≈ m c (complete-P {w} {E.e g} same))
+    where
+    same : ⟦ w ⟧PY ~ ⟦ E.e g ⟧PY
+    same =
+      ~-trans {s = ⟦ w ⟧PY} {t = ⟦ (W.dl m ʷ) w ⟧} {u = ⟦ E.e g ⟧PY}
+        (~-sym {s = ⟦ (W.dl m ʷ) w ⟧} {t = ⟦ w ⟧PY} (W.dʷ-sem m w))
+        (~-trans {s = ⟦ (W.dl m ʷ) w ⟧} {t = ⟦ [ g ]ʷ ⟧} {u = ⟦ E.e g ⟧PY}
+          (soundᵧ (PB.sym h))
+          (~-sym {s = ⟦ E.e g ⟧PY} {t = ⟦ [ g ]ʷ ⟧} (S8.e-sem g)))
 
   -- Lemma 8.7 on 5 + m wires.
   D∘E : Set

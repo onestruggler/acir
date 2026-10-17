@@ -64,6 +64,7 @@ open import Examples.Groups.Clifford+CS.Five.Sem.Blocks using (Kind ; kpp ; krot
 open import Examples.Groups.Clifford+CS.Five.Sem.TL using (tl)
 open import Examples.Groups.Clifford+CS.Stable.GadgetFacts c4 c₅ f4 f5 tr F
   using (IW ; inst ; NeW ; lemma-sem ; Lit ; D ; Ne ; Πtl ; D-sem)
+open import Examples.Groups.Clifford+CS.Stable.Soundness using (soundᵧ)
 import Examples.Groups.Clifford+CS.Five.Decode as Decode
 import Examples.Groups.Clifford+CS.Encoding as Encoding
 import Examples.Groups.Clifford+CS.BridgeGray as BridgeGray
@@ -308,3 +309,11 @@ module _ (m : ℕ) where
   -- And so the congruence of P′.
   d-≈ : Completeᵧ (₄₊ m) → ∀ {u t : Word (GenP N)} → PB._≈_ (N R,_===_) u t → (₄₊ (suc m)) ⊢ᵧ (dl ʷ) u ≈ (dl ʷ) t
   d-≈ c = PP.StarCongruence.fʷ-cong (N R,_===_) (_YVRel,_===_ (₄₊ (suc m))) dl (dwd c)
+
+  -- The decoding of a word has the word's reading.
+  dʷ-sem : ∀ (u : Word (GenP N)) → ⟦ (dl ʷ) u ⟧ ~ BG.⟦ u ⟧PY
+  dʷ-sem u =
+    ~-trans {s = ⟦ (dl ʷ) u ⟧} {⟦ dec u ⟧} {BG.⟦ u ⟧PY} (soundᵧ (dec-ʷ u))
+      (~-trans {s = ⟦ dec u ⟧} {Π (GL u)} {BG.⟦ u ⟧PY}
+        (Eq.subst (λ x → ⟦ dec u ⟧ ~ x) (Π-tl (GL u)) (D-sem (suc m) (map toLit (GL u)) (ne-lit (GL u) (valid-GL u))))
+        (~-sym {s = BG.⟦ u ⟧PY} {Π (GL u)} (sem-w u)))
