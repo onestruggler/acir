@@ -53,31 +53,30 @@ module At (N : ℕ) (enough : 6 ≤ N) where
   module Auxiliary = Sub N a b a<b
   open Auxiliary public using (Edge) renaming (e to source)
 
-private
-  module Six (k : ℕ) where
-    module P = Plans k
-    module S = Signed (4 + k)
-    module A = PB (U._===_ {6 + k})
+module Six (k : ℕ) where
+  module P = Plans k
+  module S = Signed (4 + k)
+  module A = PB (U._===_ {6 + k})
 
-    atom : P.Primitive → Atom (6 + k)
-    atom (P.signed (S.MM a b)) = MM a b
-    atom (P.signed (S.XX a b c d ab cd)) = XX a b c d ab cd
-    atom (P.mixed a b c d ab bc cd) = J a b c d ab bc cd
+  atom : P.Primitive → Atom (6 + k)
+  atom (P.signed (S.MM a b)) = MM a b
+  atom (P.signed (S.XX a b c d ab cd)) = XX a b c d ab cd
+  atom (P.mixed a b c d ab bc cd) = J a b c d ab bc cd
 
-    word-correct : ∀ w → read (wmap atom w) ≡ P.read w
-    word-correct [ P.signed (S.MM a b) ]ʷ = Eq.refl
-    word-correct [ P.signed (S.XX a b c d ab cd) ]ʷ = Eq.refl
-    word-correct [ P.mixed a b c d ab bc cd ]ʷ = Eq.refl
-    word-correct ε = Eq.refl
-    word-correct (u • v) = Eq.cong₂ _•_ (word-correct u) (word-correct v)
+  word-correct : ∀ w → read (wmap atom w) ≡ P.read w
+  word-correct [ P.signed (S.MM a b) ]ʷ = Eq.refl
+  word-correct [ P.signed (S.XX a b c d ab cd) ]ʷ = Eq.refl
+  word-correct [ P.mixed a b c d ab bc cd ]ʷ = Eq.refl
+  word-correct ε = Eq.refl
+  word-correct (u • v) = Eq.cong₂ _•_ (word-correct u) (word-correct v)
 
-    plan : Coset × U.Gen (6 + k) → Word (Atom (6 + k))
-    plan y = wmap atom (P.plan y)
+  plan : Coset × U.Gen (6 + k) → Word (Atom (6 + k))
+  plan y = wmap atom (P.plan y)
 
-    correct : ∀ enough y → PB._≈_ (U._===_ {6 + k})
-      (At.source (6 + k) enough y) (read (plan y))
-    correct enough y = A.trans (P.correct y)
-      (A.refl' (Eq.sym (word-correct (P.plan y))))
+  correct : ∀ enough y → PB._≈_ (U._===_ {6 + k})
+    (At.source (6 + k) enough y) (read (plan y))
+  correct enough y = A.trans (P.correct y)
+    (A.refl' (Eq.sym (word-correct (P.plan y))))
 
 plan : (N : ℕ) → (enough : 6 ≤ N) → Coset × U.Gen N → Word (Atom N)
 plan 0 ()
