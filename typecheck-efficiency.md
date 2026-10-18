@@ -59,6 +59,7 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 | A pair equation's component proved once over variable words, not `Eq.cong proj₁ e` at particular words | `Independence/Qutrit-Clifford/V0Mat` | 149.6 → 8.2 s (1.57 → 1.06 GB) |
 | A function of a three-element type as the table of its values, not a computed power; an enumeration read back over variables, not under as-patterns | `Independence/Qutrit-Clifford/Weyl`, `Faithful` | 37.8 → 25.1 s (1.46 → 0.88 GB), 60.9 → 24.3 s |
 | A generated `refl` check stated over the original definition (not a module-application copy) at the very arguments its user passes | `Real-Clifford+CH-TwoLevel-Clement/Hard` | 48.8 → 9.2 s |
+| A `T b` proof left to a metavariable (`_`, solved by eta), not `tt` | `Independence/*/Semantics`, the three `Projective`s, `Clifford+CS/Encodings` | 21.0 → 3.9 s, 21.1 → 3.9 s, 15.2 → 3.3 s, 15.1 → 4.1 s, 14.2 → 3.2 s, … (133 → 52 s over eleven modules) |
 | Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived`, `Qubit-Clifford/Relations/Rules/Figure5`, `Figure7` | 44.6 → 14.7 s (0.8 GB), 22.5 → 7.9 s, 22.8 → 9.2 s |
 
 - **A `with` normalises the goal before abstracting.** `with b ≟ c`
@@ -266,6 +267,38 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   variables does it instead. With `emb-pow` given the operator as the
   terms around it spell it (`ix (proj₂ Hᵍ)`, not a private alias `Hm`),
   `Faithful` went 60.9 → 24.3 s.
+- **Prove a boolean check by `refl` on `≡ true` or by `_`, never by
+  `tt`.** The same evaluation — Weyl's two-qutrit check, 81 pairs of
+  9 × 9 products — cost, by how it was proved:
+
+  | Proof | Time |
+  |---|---|
+  | `Decide₂.sound … _` (a `T b` argument left to a metavariable) | 11.9 s |
+  | `Eq.refl : b ≡ true` | 14.9 s |
+  | `pM : T b ; pM = _` (a metavariable at the top level) | 69.8 s |
+  | `Decide₂.sound … tt` | 70.6 s |
+  | `pG : T b ; pG = tt` | 126.6 s |
+
+  So `tt` checked against `T b` is five to ten times dearer than the
+  same `b` evaluated as the type of a metavariable solved by eta for ⊤,
+  or compared with `true` for `refl`. Independence's semantics checked
+  every axiom as `check 0 refl _ _ tt`; as `check 0 refl _ _ _` the six
+  Semantics modules, three Projectives and `Encodings` went 133 → 52 s
+  (Qutrit-Clifford's 21.0 → 3.9 s). Where the proof is a whole
+  definition, `_` is the middle row; `T`-lemmas from an `≡ true` proved
+  by `refl` would be the faster form. The rest of the repo already
+  proves its evaluations by `refl` on `≡ true` (Real-Clifford+CH's
+  `Same`, `evaluated Eq.refl`).
+- **A cost that is neither the evaluation nor the boolean.**
+  `Faithful.inv-right₀`'s CZ clause (9.4 s, against 0.9 s for H) is not
+  the CZ³ check: split out as its own definition it does not register.
+  The goal spells the gate `ix (proj₂ (M₀ (gate₂ CZ-gate)))`, the chain
+  `ix (tenM (proj₂ CZᵍ) idM)`, and under `_≐_`, a Π-type, the products
+  are fully applied, so the two are compared by unfolding `⊙` into its
+  digit sums, ten times larger on 9 × 9 than on 3 × 3. Giving `ix-emb`
+  and `ix-M` their widths changed nothing; restating `_≐_` as a record,
+  so that operators are compared as arguments, would, at the cost of the
+  whole Operators layer.
 - **A proof by `refl` is passed on only as the same term.**
   `Real-Clifford+CH-TwoLevel-Clement/Hard` (48.8 s) spent 32 s in
   `nf38-thm` and 8 s in `top-thm`, each passing a generated check
