@@ -4,8 +4,9 @@
 -- Completeness for affine circuits, given completeness on at most
 -- eight wires, in the calculus with the schema.
 --
--- An affine circuit is a word in X, CX and the swap (`AGen`).  Two
--- affine circuits with the same matrix are equal (`affine-complete`).
+-- An affine circuit is a word in X, CX and the swap
+-- (`AffineWords.AGen`).  Two affine circuits with the same matrix are
+-- equal (`affine-complete`).
 -- The proof borrows the completeness of Amy, Chen and Ross's
 -- CNOT-dihedral relations (`CNOT+Dihedral.Completeness`): erasing T
 -- and ω (`E`) carries their derivations into this calculus, since every
@@ -65,6 +66,7 @@ import Examples.Groups.CNOT+Dihedral.Syntactics as CD
 import Examples.Groups.CNOT+Dihedral.Semantics as CDS
 import Examples.Groups.CNOT+Dihedral.Evaluation as CDE
 import Examples.Groups.CNOT+Dihedral.Interpretation as CDI
+open import Examples.Groups.CCX+HH.NaturalP.AffineWords public
 open import Examples.Groups.CNOT+Dihedral.Completeness using () renaming (complete to cd-complete)
 
 private
@@ -75,62 +77,7 @@ private
   le a p = ≤ᵇ⇒≤ a 8 p
 
 ------------------------------------------------------------------------
--- Affine words
-
-infixl 9 _↥ₐ
-data AGen : ℕ → Set where
-  ax      : AGen (₁₊ n)
-  acx asw : AGen (₂₊ n)
-  _↥ₐ     : AGen n → AGen (₁₊ n)
-
--- In this calculus, in CNOT+Dihedral's, and as a classical circuit.
-ιP : AGen n → Gen n
-ιP ax       = gate₁ X-gate
-ιP acx      = gate₂ CX-gate
-ιP asw      = gate₂ SW-gate
-ιP (g ↥ₐ)   = ιP g ↥
-
-ιD : AGen n → CD.Gen n
-ιD ax       = CD.gate₁ CD.X-gate
-ιD acx      = CD.gate₂ CD.CNOT-gate
-ιD asw      = CD.gate₂ CD.SWAP-gate
-ιD (g ↥ₐ)   = ιD g CD.↥
-
-ιC : AGen n → C.Gen n
-ιC ax       = C.gate₁ C.X-gate
-ιC acx      = C.gate₂ C.CX-gate
-ιC asw      = C.gate₂ C.SWAP-gate
-ιC (g ↥ₐ)   = ιC g C.↥
-
-⌈_⌉ : Word (AGen n) → Circuit n
-⌈_⌉ = wmap ιP
-
-------------------------------------------------------------------------
--- Erasing T and ω
-
-E : CD.Gen n → Circuit n
-E (CD.gate₀ CD.ω-gate)    = ε
-E (CD.gate₁ CD.X-gate)    = X
-E (CD.gate₁ CD.T-gate)    = ε
-E (CD.gate₂ CD.CNOT-gate) = CX
-E (CD.gate₂ CD.SWAP-gate) = σ
-E (g CD.↥)                = E g ↑
-
-E-↑ : (w : CD.Circuit n) → (E ʷ) (w CD.↑) ≡ (E ʷ) w ↑
-E-↑ [ g ]ʷ  = refl
-E-↑ ε       = refl
-E-↑ (u • v) = cong₂ _•_ (E-↑ u) (E-↑ v)
-
-E-ι : (a : Word (AGen n)) → (E ʷ) (wmap ιD a) ≡ ⌈ a ⌉
-E-ι [ g ]ʷ  = E-g g
-  where
-  E-g : (g : AGen n) → E (ιD g) ≡ [ ιP g ]ʷ
-  E-g ax     = refl
-  E-g acx    = refl
-  E-g asw    = refl
-  E-g (g ↥ₐ) = cong _↑ (E-g g)
-E-ι ε       = refl
-E-ι (u • v) = cong₂ _•_ (E-ι u) (E-ι v)
+-- The erased relations
 
 -- The relations of Amy, Chen and Ross, erased, on their own wires.
 private
@@ -188,15 +135,6 @@ private
         (CD.U CD.↑ CD.↑) ^ 3 • CD.U₁₃ ^ 3 • CD.U₀₃ ^ 3 • (CD.U CD.↑) ^ 3 • CD.U₀₂ ^ 3 •
         CD.U ^ 3 • CD.V CD.↑ • CD.V₀₂₃ • CD.V₀₁₃ • CD.V)} (by-eq tt)
 
-  XX : (₁₊ n) ⊢ X • X ≈ ε
-  XX = emb (PB.axiom (P.srel (P.srel P.X²)))
-
-  CXCX : (₂₊ n) ⊢ CX • CX ≈ ε
-  CXCX = emb (PB.axiom (P.srel (P.srel P.CX²)))
-
-  unit-comm : ∀ {w : Circuit n} → n ⊢ w • ε ≈ ε • w
-  unit-comm = PB.trans PB.right-unit (PB.sym PB.left-unit)
-
 erase-ax : ∀ {w v} → n CD.VRel, w === v → n ⊢ (E ʷ) w ≈ (E ʷ) v
 erase-ax (CD.srel (CD.σrel CD.σ-inv))                  = PB.axiom (srel (σrel σ-inv))
 erase-ax (CD.srel (CD.σrel (CD.σ-nat₁ CD.X-gate)))     = PB.axiom (srel (σrel (σ-nat₁ X-gate)))
@@ -233,101 +171,6 @@ erase PB.assoc       = PB.assoc
 erase PB.left-unit   = PB.left-unit
 erase PB.right-unit  = PB.right-unit
 erase (PB.axiom x)   = erase-ax x
-
-------------------------------------------------------------------------
--- The two semantics
-
--- The matrix of an affine word is that of its classical circuit.
-τ-aff : (a : Word (AGen n)) → τ ⌈ a ⌉ ≡ C.physical (wmap ιC a)
-τ-aff [ g ]ʷ  = τ-g g
-  where
-  τ-g : (g : AGen n) → τ [ ιP g ]ʷ ≡ C.physical₀ (ιC g)
-  τ-g ax     = refl
-  τ-g acx    = refl
-  τ-g asw    = refl
-  τ-g (g ↥ₐ) = cong H._↑ (τ-g g)
-τ-aff ε       = refl
-τ-aff (u • v) = cong₂ _•_ (τ-aff u) (τ-aff v)
-
-private
-  1≢0 : ∀ {m} {p q : Fin m} → p ≢ q → basis p ≢ basis q
-  1≢0 {p = p} {q} p≢q e
-    with trans (sym (δ-refl p)) (trans (sym (basis-! p p))
-           (trans (cong (_! p) e) (trans (basis-! q p) (δ-≢ p≢q))))
-  ... | ()
-
-  basis-inj : ∀ {m} {p q : Fin m} → basis p ≡ basis q → p ≡ q
-  basis-inj {p = p} {q} e with p ≟ q
-  ... | yes pq  = pq
-  ... | no p≢q  = ⊥-elim (1≢0 p≢q e)
-
--- Affine words with the same matrix have the same classical action.
-act-same : (a a′ : Word (AGen n)) → interpret ⌈ a ⌉ ≡ interpret ⌈ a′ ⌉ →
-  ∀ s → C.act (wmap ιC a) s C.≈s C.act (wmap ιC a′) s
-act-same {n} a a′ e s i =
-  trans (C.act-cong (wmap ιC a) (λ j → sym (bits-idx n s j)) i)
-  (trans (at (idx n s) i)
-    (C.act-cong (wmap ιC a′) (bits-idx n s) i))
-  where
-  e′ : Sem.interpret (C.physical (wmap ιC a)) ≡ Sem.interpret (C.physical (wmap ιC a′))
-  e′ = trans (cong Sem.interpret (sym (τ-aff a))) (trans e (cong Sem.interpret (τ-aff a′)))
-  at : ∀ k → C.act (wmap ιC a) (bits n k) C.≈s C.act (wmap ιC a′) (bits n k)
-  at k = idx-injective n (basis-inj
-    (trans (sym (physical-column (wmap ιC a) k))
-      (trans (cong (λ M → col M k) e′) (physical-column (wmap ιC a′) k))))
-
--- Read in CNOT+Dihedral's semantics: the classical action, no phase.
-private
-  xor-not : ∀ b → not b ≡ b xor true
-  xor-not true  = refl
-  xor-not false = refl
-
-  fn-g : (g : AGen n) (x : CDS.Bits n) (i : Fin n) →
-    lookup (CDE.fn [ ιD g ]ʷ x) i ≡ C.act₀ (ιC g) (lookup x) i
-  fn-g ax (b ∷ x) zero    = trans (cong (λ y → lookup y zero) (CDE.fn-X b x)) (xor-not b)
-  fn-g ax (b ∷ x) (suc i) = cong (λ y → lookup y (suc i)) (CDE.fn-X b x)
-  fn-g acx (t ∷ c ∷ x) zero =
-    trans (cong (λ y → lookup y zero) (CDE.fn-CNOT t c x)) (BoolP.xor-comm c t)
-  fn-g acx (t ∷ c ∷ x) (suc i) = cong (λ y → lookup y (suc i)) (CDE.fn-CNOT t c x)
-  fn-g asw (a ∷ b ∷ x) zero          = cong (λ y → lookup y zero) (CDE.fn-SWAP a b x)
-  fn-g asw (a ∷ b ∷ x) (suc zero)    = cong (λ y → lookup y (suc zero)) (CDE.fn-SWAP a b x)
-  fn-g asw (a ∷ b ∷ x) (suc (suc i)) = cong (λ y → lookup y (suc (suc i))) (CDE.fn-SWAP a b x)
-  fn-g (g ↥ₐ) (b ∷ x) zero    = cong (λ y → lookup y zero) (CDE.fn-↑ [ ιD g ]ʷ b x)
-  fn-g (g ↥ₐ) (b ∷ x) (suc i) =
-    trans (cong (λ y → lookup y (suc i)) (CDE.fn-↑ [ ιD g ]ʷ b x)) (fn-g g x i)
-
-  ph-g : (g : AGen n) (x : CDS.Bits n) → CDE.ph [ ιD g ]ʷ x ≡ CDS.0₈
-  ph-g ax (b ∷ x)          = CDE.ph-X b x
-  ph-g acx (t ∷ c ∷ x)     = CDE.ph-CNOT t c x
-  ph-g asw (a ∷ b ∷ x)     = CDE.ph-SWAP a b x
-  ph-g (g ↥ₐ) (b ∷ x)      = trans (CDE.ph-↑ [ ιD g ]ʷ b x) (ph-g g x)
-
-fn-aff : (a : Word (AGen n)) (x : CDS.Bits n) (i : Fin n) →
-  lookup (CDE.fn (wmap ιD a) x) i ≡ C.act (wmap ιC a) (lookup x) i
-fn-aff [ g ]ʷ x i = fn-g g x i
-fn-aff ε x i = cong (λ y → lookup y i) (CDE.fn-ε x)
-fn-aff (u • v) x i =
-  trans (cong (λ y → lookup y i) (CDE.fn-• (wmap ιD u) (wmap ιD v) x))
-  (trans (fn-aff u (CDE.fn (wmap ιD v) x) i)
-    (C.act-cong (wmap ιC u) (fn-aff v x) i))
-
-ph-aff : (a : Word (AGen n)) (x : CDS.Bits n) → CDE.ph (wmap ιD a) x ≡ CDS.0₈
-ph-aff [ g ]ʷ x = ph-g g x
-ph-aff ε x = CDE.ph-ε x
-ph-aff (u • v) x =
-  trans (CDE.ph-• (wmap ιD u) (wmap ιD v) x)
-  (trans (cong₂ CDS._+_ (ph-aff v x) (ph-aff u (CDE.fn (wmap ιD v) x)))
-    (CDS.+-identityʳ CDS.0₈))
-
-cd-same : (a a′ : Word (AGen n)) → interpret ⌈ a ⌉ ≡ interpret ⌈ a′ ⌉ →
-  CDI.⟦ wmap ιD a ⟧ CDS.≐ CDI.⟦ wmap ιD a′ ⟧
-cd-same a a′ e x = cong₂ _,_ fn-eq (trans (ph-aff a x) (sym (ph-aff a′ x)))
-  where
-  fn-eq : CDE.fn (wmap ιD a) x ≡ CDE.fn (wmap ιD a′) x
-  fn-eq = trans (sym (tabulate∘lookup _))
-    (trans (tabulate-cong (λ i → trans (fn-aff a x i)
-              (trans (act-same a a′ e (lookup x) i) (sym (fn-aff a′ x i)))))
-      (tabulate∘lookup _))
 
 ------------------------------------------------------------------------
 -- Completeness
