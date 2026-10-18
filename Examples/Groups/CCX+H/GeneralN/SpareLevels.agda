@@ -13,7 +13,7 @@ module Examples.Groups.CCX+H.GeneralN.SpareLevels where
 open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_ ; _≤_ ; s≤s ; z≤n)
 import Data.Nat.Properties as NP
 open import Data.Product.Base using (Σ ; _,_)
-open import Data.Fin.Base using (Fin ; zero ; suc ; _<_ ; punchIn ; punchOut)
+open import Data.Fin.Base using (Fin ; zero ; suc ; _<_ ; punchIn ; punchOut ; toℕ)
 import Data.Fin.Properties as FP
 open import Data.Vec.Base using (Vec ; [] ; _∷_ ; map ; lookup)
 open import Data.Vec.Properties using (lookup-map)
@@ -115,3 +115,26 @@ eight-spares {n} xs bound = choose (NP.m≤n⇒∃[o]m+o≡n bound)
 
   choose : (Σ ℕ λ m → 10 + m ≡ n) → TwoSpares xs
   choose (m , eq) = build m eq xs
+
+------------------------------------------------------------------------
+-- The spares are small
+
+private
+  punchIn-≤ : ∀ {n} (a : Fin (suc n)) (j : Fin n) → toℕ (punchIn a j) ≤ suc (toℕ j)
+  punchIn-≤ zero    j       = NP.≤-refl
+  punchIn-≤ (suc a) zero    = z≤n
+  punchIn-≤ (suc a) (suc j) = s≤s (punchIn-≤ a j)
+
+-- Removing k levels moves a level up by at most k.
+embed-bound : ∀ {k n} (xs : Vec (Fin (suc (k + n))) k) (i : Fin (suc n)) →
+  toℕ (Complement.embed (complement xs) i) ≤ toℕ i + k
+embed-bound []       i = NP.m≤m+n (toℕ i) 0
+embed-bound {suc k} {n} (a ∷ xs) i =
+  NP.≤-trans (punchIn-≤ a (Complement.embed (complement (map (lower a) xs)) i))
+    (NP.≤-trans (s≤s (embed-bound (map (lower a) xs) i)) (NP.≤-reflexive (sym (NP.+-suc (toℕ i) k))))
+
+two-spares-first : ∀ {n} (xs : Vec (Fin (6 + n)) 4) → toℕ (TwoSpares.first (two-spares xs)) ≤ 4
+two-spares-first xs = embed-bound xs zero
+
+two-spares-second : ∀ {n} (xs : Vec (Fin (6 + n)) 4) → toℕ (TwoSpares.second (two-spares xs)) ≤ 5
+two-spares-second xs = embed-bound xs (suc zero)
