@@ -14,7 +14,10 @@
 -- spare lemma (Spare.spare-w), and the other colours follow from those
 -- by X on the controls; further down, the swap passes into each control
 -- (Controls.conj-ctrl).  The mixed colours use four facts on two wires,
--- proved here by completeness and evaluating 4 × 4 matrices.
+-- proved here by completeness and evaluating 4 × 4 matrices.  X on a
+-- position exchanges the colours there (`Λ-flip`): at the top that is
+-- the definition of ctrl⁻, further down it passes into each control as
+-- the swap does (`under`).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -286,20 +289,40 @@ private
 σat-invol []       j c = σσ
 σat-invol (p ∷ s₁) j c = lemma-cong↑ (σat s₁ j c • σat s₁ j c) ε (σat-invol s₁ j c)
 
+-- A conjugation passes a position of a pattern into what is under it.
+under : ∀ p {x x⁻ Z Z′ : Circuit (₄₊ m)} → (₄₊ m) ⊢ x • x⁻ ≈ ε →
+  (₄₊ m) ⊢ x • (Z • x⁻) ≈ Z′ → suc (₄₊ m) ⊢ x ↑ • (ctrlᵖ p Z • x⁻ ↑) ≈ ctrlᵖ p Z′
+under (just true) {x} {x⁻} {Z} xx⁻ e = PB.trans (conj-ctrl x Z x⁻ xx⁻) (ctrl-cong e)
+under (just false) {x} {x⁻} {Z} xx⁻ e =
+  PB.trans (PB.sym (W.slide XT XT⁻))
+    (PB.cong PB.refl (PB.cong (PB.trans (conj-ctrl x Z x⁻ xx⁻) (ctrl-cong e)) PB.refl))
+  where
+  XT  = PB.sym (comm-gate₁-w↑ X-gate x)
+  XT⁻ = PB.sym (comm-gate₁-w↑ X-gate x⁻)
+under nothing {x} {x⁻} {Z} {Z′} xx⁻ e = lemma-cong↑ (x • (Z • x⁻)) Z′ e
+
 Λ-swap : ∀ (s₁ : Vec Pos i) a b (s : Vec Pos j) (u : Circuit (₄₊ c)) →
   (₄₊ ((i + ₂₊ j) + c)) ⊢
     σat s₁ j c • (Λ (s₁ ++ a ∷ b ∷ s) u • σat s₁ j c) ≈ Λ (s₁ ++ b ∷ a ∷ s) u
 Λ-swap []       a b s u = Λ-swap-top a b (Λ s u)
-Λ-swap {j = j} {c = c} (just true ∷ s₁) a b s u =
-  PB.trans (conj-ctrl (σat s₁ j c) (Λ (s₁ ++ a ∷ b ∷ s) u) (σat s₁ j c) (σat-invol s₁ j c))
-    (ctrl-cong (Λ-swap s₁ a b s u))
-Λ-swap {j = j} {c = c} (just false ∷ s₁) a b s u =
-  PB.trans (PB.sym (W.slide XT XT))
-    (PB.cong PB.refl (PB.cong
-      (PB.trans (conj-ctrl Sw (Λ (s₁ ++ a ∷ b ∷ s) u) Sw (σat-invol s₁ j c))
-        (ctrl-cong (Λ-swap s₁ a b s u))) PB.refl))
-  where
-  Sw = σat s₁ j c
-  XT = PB.sym (comm-gate₁-w↑ X-gate Sw)
-Λ-swap {j = j} {c = c} (nothing ∷ s₁) a b s u =
-  lemma-cong↑ (σat s₁ j c • (Λ (s₁ ++ a ∷ b ∷ s) u • σat s₁ j c)) _ (Λ-swap s₁ a b s u)
+Λ-swap {j = j} {c = c} (p ∷ s₁) a b s u = under p (σat-invol s₁ j c) (Λ-swap s₁ a b s u)
+
+------------------------------------------------------------------------
+-- X on a position exchanges its colours
+
+Xat-invol : ∀ (s₁ : Vec Pos i) j c → (₄₊ ((i + ₁₊ j) + c)) ⊢ Xat s₁ j c • Xat s₁ j c ≈ ε
+Xat-invol []       j c = XX
+Xat-invol (p ∷ s₁) j c = lemma-cong↑ (Xat s₁ j c • Xat s₁ j c) ε (Xat-invol s₁ j c)
+
+Λ-flip-top : ∀ a (Y : Circuit (₄₊ m)) → suc (₄₊ m) ⊢ X • (ctrlᵖ a Y • X) ≈ ctrlᵖ (flip a) Y
+Λ-flip-top (just true)  Y = PB.refl
+Λ-flip-top (just false) Y = W.cj-cj XX
+Λ-flip-top nothing      Y =
+  PB.trans (PB.cong PB.refl (comm-gate₁-w↑ X-gate Y))
+  (PB.trans (PB.sym PB.assoc) (PB.trans (PB.cong XX PB.refl) PB.left-unit))
+
+Λ-flip : ∀ (s₁ : Vec Pos i) a (s : Vec Pos j) (u : Circuit (₄₊ c)) →
+  (₄₊ ((i + ₁₊ j) + c)) ⊢
+    Xat s₁ j c • (Λ (s₁ ++ a ∷ s) u • Xat s₁ j c) ≈ Λ (s₁ ++ flip a ∷ s) u
+Λ-flip []       a s u = Λ-flip-top a (Λ s u)
+Λ-flip {j = j} {c = c} (p ∷ s₁) a s u = under p (Xat-invol s₁ j c) (Λ-flip s₁ a s u)
