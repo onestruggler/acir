@@ -553,3 +553,30 @@ auxiliary presentation (his Figure 8) Gray-local, so that every decoded
 rule compares controlled gates with a separating wire or a common
 subcube. Here that would mean a Gray-local presentation of the charge-00
 subgroup, proved by Reidemeister–Schreier as in his Appendix A.
+
+**Item 1 in detail, following Clément's construction.** In the repo
+his Section 8 is `../../Real-Clifford+CH/Auxiliary` and `Lemma88`.
+
+- *Auxiliary letters on arbitrary indices.* Indices are read as Gray
+  codes. A letter on two indices whose codes differ only at wire t is a
+  multi-controlled gate on t (a `Λ` here). Codes that differ at more
+  wires give his Lemma 8.5: the letter is that gate conjugated by
+  encoded CNOTs from t to the other differing wires. Swap networks and
+  X on the controls move and recolour the gate (`Λ-swap`, and the
+  colour lemma still to do).
+- *The Hadamard-free letters.* Here these are the sign pairs `MM` and
+  double exchanges `XX`. They need a unique normal form on the auxiliary
+  side (his Lemma A.4 and Corollary A.5: a sign part and a Lehmer code)
+  and the decoded rules of that fragment. Together these give his
+  `dA5`: two Hadamard-free words with the same signed permutation have
+  equal decodings. Most decoded rules reduce to it.
+- *The letters with a Hadamard block* (`J` here, his `HH` letters).
+  He handles these with a few rules proved by the box calculus, together
+  with his Corollaries A.7–A.10 (words with at most one or two Hadamard
+  letters).
+- *The presentation of the auxiliary subgroup.* He uses his Figure 8,
+  derived by Reidemeister–Schreier from the two-level presentation (his
+  Theorem 4.10, Appendix A). Here `../Subgroup/PresentationAt.agda`
+  already presents the charge-00 subgroup by edges and translated
+  Table 1 relations. The decoded relations would then be those, through
+  `../GeneralN/DecodingPlans.agda`.
