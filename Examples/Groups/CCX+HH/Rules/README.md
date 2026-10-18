@@ -580,3 +580,39 @@ his Section 8 is `../../Real-Clifford+CH/Auxiliary` and `Lemma88`.
   already presents the charge-00 subgroup by edges and translated
   Table 1 relations. The decoded relations would then be those, through
   `../GeneralN/DecodingPlans.agda`.
+
+**The route chosen: affine routing into a window.** One can avoid both
+a Gray-local presentation and the induction on the width, and reduce
+everything to completeness on at most eight wires. The plan:
+
+- *Affine circuits are complete* — done (`../NaturalP/Affine`). Two
+  circuits in X, CX and the swap with the same matrix are equal.
+  Erasing T and ω carries Amy, Chen and Ross's derivations
+  (`../../CNOT+Dihedral`) into the calculus.
+- *Affine routing.* An affine circuit sends any set of at most nine
+  basis states, which spans at most an 8-dimensional affine subspace,
+  into the window W₈: the states whose wires 8, 9, … are all 0. On W₈,
+  every gate is `Λ` with white controls on those wires. Conjugating a
+  window gate by an affine map that fixes the window pointwise changes
+  nothing. Such a map is a circuit on the control wires together with
+  CXs from control wires, each of which commutes with white controls.
+  Affine completeness makes this a derivation, once the map is
+  synthesised as such a word (Gaussian elimination at symbolic width).
+- *The decoder* sends a charge-00 element supported on at most six
+  basis states to K⁻¹ • Λ(c) • K. Here K routes the support into W₈,
+  and c is an 8-wire circuit for the routed element.
+- *Decoded relations.* Take a relation among such elements whose total
+  support spans at most 8 affine dimensions. Route it into W₈; each
+  letter becomes a window gate (routing plus the stabiliser argument),
+  and the product is ε by completeness on eight wires and `Λ-cong`.
+  The translated Table 1 relations of `../Subgroup/PresentationAt` have
+  at most ten points. For the few that span 9 dimensions, one 3-cycle,
+  which moves the tenth point into the span of the other nine,
+  conjugates the relation into one that spans 8. Each conjugation step
+  is itself a relation on at most nine points.
+- *Recovery.* Each gate is the product of its window pieces. These are
+  merged by `Λ-merge` over every colouring of the other wires.
+
+So completeness on at most eight wires gives completeness at every
+width. The schema enters only through `Λ-cong`, that is, through the
+ctrl lemma.
