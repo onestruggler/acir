@@ -524,13 +524,16 @@ route is Clément's (his Section 8), with the translated calculus of
    the other wires, in colours given by the atom's indices, placed by a
    swap network. An atom whose indices differ in more bits needs a
    classical routing circuit around it.
-2. **A calculus of multi-controlled gates.** This is the analogue of the
-   box lemmas of `../../Real-Clifford+CH/GeneralN`. It covers the order
-   of the controls (`dsym`, and its mixed-colour versions, which follow
-   from `dsym`, `opposite` and two-wire facts), opposite colours on a
-   common control (`opposite`), merging two colours (`split-w`), placement
-   by networks (`../../Symmetric-Prop/Frame`), and conjugation by an
-   uncontrolled circuit (`conj-ctrl`).
+2. **A calculus of multi-controlled gates** — done in its canonical
+   frame (`NaturalP/Lambda`, `LambdaLaws`, `LambdaSem`). `Λ s w` is w
+   under a control pattern `s` on the bottom wires. Each position is a
+   control of either colour or an idle wire. `Λ` respects derivations
+   and products. Patterns with opposite colours at some position commute
+   (`Λ-opp`). A black and a white control merge into an idle wire
+   (`Λ-merge`). The swap of any two adjacent positions exchanges them in
+   the pattern (`Λ-swap`). `Λ-sem` gives the operator. What remains is
+   placement on arbitrary wires by swap networks
+   (`../../Symmetric-Prop/Frame`) and X on a control flipping its colour.
 3. **Recovery.** The decoded encoding of each gate is the gate (his
    Lemma 8.7).
 4. **The decoded relations** (his Lemma 8.8), by induction on the width.
@@ -545,4 +548,8 @@ route is Clément's (his Section 8), with the translated calculus of
    hand. The analogue here would need completeness on three wires (the
    W(E8) case) and explicit derivations up to eight.
 
-Items 1, 3 and 4 are not started.
+Items 1, 3 and 4 are not started. Item 1 is the crux: Clément made his
+auxiliary presentation (his Figure 8) Gray-local, so that every decoded
+rule compares controlled gates with a separating wire or a common
+subcube. Here that would mean a Gray-local presentation of the charge-00
+subgroup, proved by Reidemeister–Schreier as in his Appendix A.
