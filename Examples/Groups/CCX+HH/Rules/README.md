@@ -616,3 +616,34 @@ everything to completeness on at most eight wires. The plan:
 So completeness on at most eight wires gives completeness at every
 width. The schema enters only through `Λ-cong`, that is, through the
 ctrl lemma.
+
+**The decoder, refined.** Pushed so far: `../NaturalP/AffineRoute`
+(Gaussian elimination as an affine word), `Window` and `Stab` (an affine
+word that fixes the window commutes with every window gate), and `Nest`
+(the same for a window inside a window). The decoder now works as
+follows. The hypothesis is completeness on at most twelve wires, and
+the width is 4 + k + 8.
+
+- *Atoms on a 4-wire window.* An atom (`MM`, `XX`, `J` of
+  `../GeneralN/DecodingPlans`) is routed by an affine word K. K sends
+  its sorted points to fixed positions of the 4-wire window W₄ (the top
+  4 wires): 0, 1, 2, then 4, or 3 when the four points are coplanar.
+  Since the order is kept, the routed atom is one of a few fixed atoms
+  at width 4. Its circuit c₄ is the physical decoder at width 4
+  (`../GeneralN/Decoding 0`), and the decoded atom is
+  `⌈K⁻¹⌉ • Λw k (Λw 8 c₄) • ⌈K⌉`. No synthesis and no relabelling of
+  Table 1 words is needed.
+- *Frames.* K's remaining window directions are taken from the unit
+  vectors e₀ … e₃, so `K⁻¹(W₄)` lies in the affine span of the atom's
+  points and R₀ = {0, e₀, e₁, e₂, e₃}. A pivot argument chooses them
+  independent of the atom's own directions. A translated Table 1
+  relation has at most ten points, including 0 and 1, so its frame
+  spans at most 12 dimensions. An affine word B routes the frame into
+  the 12-wire window. For each atom, B K⁻¹ restricted to W₄ is a 12-wire
+  affine word T after a correction that fixes W₄. The correction
+  disappears by `stab₂`. The relation becomes `Λw k` of a 12-wire
+  identity, which completeness on twelve wires derives.
+- *Correctness* of the decoder is a small calculus of "G applied at the
+  coordinates of an embedding". `../../CCX+HH-TwoLevel/EmbedAction`
+  supplies it for Table 1 words, and `Λ-sem` supplies it for window
+  gates. A routing word conjugates it to the atom's own embedding.
