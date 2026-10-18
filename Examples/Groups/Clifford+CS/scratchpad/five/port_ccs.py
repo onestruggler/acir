@@ -14,7 +14,8 @@ import sys, os, io, re, shutil
 SRC = sys.argv[1]      # v-office's Examples/Groups/Clifford+CS
 DST = sys.argv[2]      # clifford-cs's Examples/Groups/Clifford+CS
 NL = '\n'
-TOP = ['Rules', 'Weakening', 'Chain', 'Lines', 'Letters', 'Lits', 'Resps', 'Win', 'F2', 'F1Low', 'TR2', 'Transport']
+TOP = ['Rules', 'Weakening', 'Chain', 'Lines', 'Letters', 'Lits', 'Resps', 'Win', 'F2', 'F1Low', 'TR2', 'Transport',
+       'WinSig', 'WinInst', 'WinInstL']
 
 
 def ren(s):
@@ -33,6 +34,10 @@ for m in TOP:
     assert 'ctl-' not in s or m == 'Weakening', (m, 'uses the schema')
     io.open(os.path.join(DST, 'FiveV', m + '.agda'), 'w', encoding='utf-8', newline=NL).write(s)
 n = 0
+os.makedirs(os.path.join(DST, 'FiveV', 'Wins'), exist_ok=True)
+for f in sorted(os.listdir(os.path.join(SRC, 'Five', 'Wins'))):
+    s = io.open(os.path.join(SRC, 'Five', 'Wins', f), encoding='utf-8').read()
+    io.open(os.path.join(DST, 'FiveV', 'Wins', f), 'w', encoding='utf-8', newline=NL).write(ren(s))
 for f in sorted(os.listdir(os.path.join(SRC, 'Five', 'D'))):
     if not (f.endswith('.agda') or f == 'INDEX.txt'):
         continue
@@ -83,6 +88,7 @@ open import Examples.Groups.Clifford+CS.Five.Chain using (_≈_ ; trans ; by-ass
 open import Examples.Groups.Clifford+CS.Five.TransportAx.Base using (Inst)
 import Examples.Groups.Clifford+CS.FiveV.Rules as V
 import Examples.Groups.Clifford+CS.FiveV.D.{mod} as VD
+open import Examples.Groups.Clifford+CS.FiveV.WinInst using (ws)
 
 private
   variable
@@ -113,7 +119,7 @@ emb (PB.axiom a)     = PB.axiom (emb-ax a)
 
 -- λ(ck-tct), in the form Five.MissingInst gives it.
 ck-tct-derived : Complete 4 → Inst (srel ck-tct)
-ck-tct-derived c4 = trans (by-assoc Eq.refl) (trans (emb (VD.lem-F1-ck-tctat0 c4)) (by-assoc Eq.refl))
+ck-tct-derived c4 = trans (by-assoc Eq.refl) (trans (emb (VD.lem-F1-ck-tctat0 (ws c4))) (by-assoc Eq.refl))
 '''
 io.open(os.path.join(DST, 'Five', 'CKTDerived.agda'), 'w', encoding='utf-8', newline=NL).write(bridge)
 print(f'FiveV: {len(TOP)} modules and {n} files of D/; F1-ck-tct@0 in {mod}; Five/CKTDerived.agda written')

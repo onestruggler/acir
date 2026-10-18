@@ -42,7 +42,7 @@ def f1low(idx):
     ups = lambda o: ''.join(' ↑' for _ in range(o))
     for o in (2, 3, 4):
         width = 4 - o
-        out.append(f'f1{gen_lam.SUB[o]} : Complete 4 → ∀ {{w v}} → {width} SRel, w === v → '
+        out.append(f'f1{gen_lam.SUB[o]} : Ws → ∀ {{w v}} → {width} SRel, w === v → '
                    f'5 ⊢ₓ λ¹ʷ (w{ups(o)}) ≈ λ¹ʷ (v{ups(o)})')
         for jn, an, ar in gen_lam.RULES:
             if ar > width:
@@ -72,7 +72,7 @@ def tr2(trs, axioms):
         l, r = axioms[nm]
         assert (l, r) == (norm(tr.l1(u)), norm(tr.l1(v))), nm
         ln = gen_lam.lemname(nm)
-        out += [f'{ln} : Complete 4 → ⟪ {lst(l)} ⟫ʷ ≈ ⟪ {lst(r)} ⟫ʷ',
+        out += [f'{ln} : Ws → ⟪ {lst(l)} ⟫ʷ ≈ ⟪ {lst(r)} ⟫ʷ',
                 f'{ln} c4 = trans (by-assoc Eq.refl)',
                 f'  (trans (tr c4 ({word2(u)}) ({word2(v)}) Eq.refl) (by-assoc Eq.refl))', '']
     s = NL.join([
@@ -98,7 +98,8 @@ def tr2(trs, axioms):
         'open import Word.Base using ([_]ʷ ; ε ; _•_)',
         '',
         'open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)',
-        'open import Examples.Groups.Clifford+CS.Completeness using (Complete ; complete₂)',
+        'open import Examples.Groups.Clifford+CS.Completeness using (complete₂)',
+        'open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws)',
         'open import Examples.Groups.Clifford+CS.SemanticSteps using (Same ; module Below)',
         'open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)',
         'open import Examples.Groups.Clifford+CS.Five.Rules using (_⊢ₓ_≈_)',
@@ -109,7 +110,7 @@ def tr2(trs, axioms):
         'private',
         '  module S₂ = Below 2 complete₂',
         '',
-        '  tr : Complete 4 → (u v : Circuit 2) → Same u v → 5 ⊢ₓ λ¹ʷ (u ↑ ↑) ≈ λ¹ʷ (v ↑ ↑)',
+        '  tr : Ws → (u v : Circuit 2) → Same u v → 5 ⊢ₓ λ¹ʷ (u ↑ ↑) ≈ λ¹ʷ (v ↑ ↑)',
         '  tr c4 u v e = Low.transport² c4 (f1₂ c4) (f1₃ c4) (f1₄ c4) (S₂.by-sem₀ u v e)',
         ''] + out)
     return s

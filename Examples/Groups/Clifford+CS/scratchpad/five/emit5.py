@@ -247,17 +247,38 @@ class Part:
     def __init__(self, name, lhs, rhs, steps):
         self.name, self.lhs, self.rhs, self.steps = name, list(lhs), list(rhs), steps
 
+# The heap a derivation needs follows its letter-steps, the length of the
+# word each step rewrites summed over its steps, since Agda keeps every
+# intermediate word of a module's chains (branch clifford-cs: 45k of them
+# peaked at 4.3 GB, 89k over the long words of the de-borrowing went past
+# 7.7 GB).  So a derivation is cut into parts of at most COST letter-steps
+# (as well as at most `size` steps), and a module holds at most COST of
+# them and at most MOD_BYTES of text.
+COST = int(os.environ.get('COST', 30_000))
+MOD_BYTES = {'R': 100_000, 'D': int(os.environ.get('D_BYTES', 120_000))}
+
+def letter_steps(P):
+    cur = list(P.lhs); c = 0
+    for (kind, k, n, seg, ys, extra) in P.steps:
+        c += len(cur); cur = cur[:k] + list(ys) + cur[k + n:]
+    return c
+
 def split_long(prims, limit=1000, size=500):
     out = []
     for P in prims:
-        if len(P.steps) <= limit: out.append(P); continue
+        if len(P.steps) <= limit and letter_steps(P) <= COST: out.append(P); continue
         lines = [list(P.lhs)]; cur = list(P.lhs)
         for (kind, k, n, seg, ys, extra) in P.steps:
             cur = cur[:k] + list(ys) + cur[k + n:]; lines.append(cur)
-        parts = []
-        for i, s0 in enumerate(range(0, len(P.steps), size)):
-            s1 = min(s0 + size, len(P.steps))
-            parts.append(Part(f'{P.name} part{i}', lines[s0], lines[s1], P.steps[s0:s1]))
+        cuts, c = [0], 0
+        for i in range(len(P.steps)):
+            w = len(lines[i])
+            if i > cuts[-1] and (i - cuts[-1] >= size or c + w > COST):
+                cuts.append(i); c = 0
+            c += w
+        cuts.append(len(P.steps))
+        parts = [Part(f'{P.name} part{i}', lines[s0], lines[s1], P.steps[s0:s1])
+                 for i, (s0, s1) in enumerate(zip(cuts, cuts[1:]))]
         main = []; cur = list(P.lhs)
         for Q in parts:
             main.append(('L', 0, len(cur), list(cur), list(Q.rhs), (Q.name, True))); cur = list(Q.rhs)
@@ -267,22 +288,24 @@ def split_long(prims, limit=1000, size=500):
 def uses_tr(P):
     return any(st[0] == 'A' and st[5][0].startswith('TR2-') for st in P.steps)
 
-def chunks(prims, max_steps=500, max_lemmas=16):
+def chunks(prims, prefix):
     # a module that uses the transports (Five.TR2) starts a new module:
     # Five.TR2 rests on the (F1) items derived before the first of them
-    out = []; cur = []; steps = 0; tr_seen = False
+    budget = MOD_BYTES[prefix]
+    out = []; cur = []; size = 0; cost = 0; tr_seen = False
     for P in prims:
         brk = uses_tr(P) and not tr_seen
         if brk: tr_seen = True
-        if cur and (brk or steps + len(P.steps) > max_steps or len(cur) >= max_lemmas):
-            out.append(cur); cur = []; steps = 0
-        cur.append(P); steps += len(P.steps)
+        n = len(lemma_text(P)); c = letter_steps(P)
+        if cur and (brk or size + n > budget or cost + c > COST):
+            out.append(cur); cur = []; size = 0; cost = 0
+        cur.append(P); size += n; cost += c
     if cur: out.append(cur)
     return out
 
 def write_group(prims, prefix, modof, start, uses_resps):
     mods = []
-    for i, group in enumerate(chunks(prims), start):
+    for i, group in enumerate(chunks(prims, prefix), start):
         mod = f'{prefix}{i:03d}'
         names = {P.name for P in group}
         deps = sorted({extra[0] for P in group for (kind, k, n, seg, ys, extra) in P.steps
@@ -331,6 +354,10 @@ def write_all(prims, respell, root=None):
     dmods = write_group(main, 'D', modof, 1, True)
     io.open(os.path.join(ROOT, 'D', 'INDEX.txt'), 'w', encoding='utf-8', newline=NL).write(
         NL.join(f'{modof[P.name]} {len(P.steps)} {P.name}' for P in pre + main) + NL)
+    # each distinct window once, in Five/Wins (branch clifford-cs's winlib5.py)
+    import winlib5
+    libs, nw = winlib5.main(ROOT, [])
+    print(nw, 'distinct windows in', len(libs), 'library modules')
     return rmods, dmods, len(boxes)
 
 if __name__ == '__main__':

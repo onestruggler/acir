@@ -1,8 +1,8 @@
 # Agda statements of (F4) and (F2) over the generators of the four-wire
 # domain, from the lemmas Five/D/* emitted by emit5.py (their modules read
 # off Five/D/INDEX.txt):
-#   Five/F4.agda   f4 : Complete 4 → (g h : Gen 4) → λ⁰ g • λ¹ h ≈ λ¹ h • λ⁰ g
-#   Five/F2.agda   f2 : Complete 4 → (g h : Gen 4) → T (apart g h) →
+#   Five/F4.agda   f4 : Ws → (g h : Gen 4) → λ⁰ g • λ¹ h ≈ λ¹ h • λ⁰ g
+#   Five/F2.agda   f2 : Ws → (g h : Gen 4) → T (apart g h) →
 #                       λ¹ g • λ¹ h ≈ λ¹ h • λ¹ g
 #   python3 gen_lam.py
 import os
@@ -63,7 +63,7 @@ def head(title, body, mod, extra=''):
         extra + 'open import Word.Base using (_•_)',
         '',
         'open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)',
-        'open import Examples.Groups.Clifford+CS.Completeness using (Complete)',
+        'open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws)',
         'open import Examples.Groups.Clifford+CS.Lambda using (λ⁰ ; λ¹)',
         'open import Examples.Groups.Clifford+CS.Five.Rules using (_⊢ₓ_≈_)',
         'open import Examples.Groups.Clifford+CS.Five.Chain',
@@ -87,7 +87,7 @@ def f4(idx):
               '(scratchpad/joint/f4.py, f4cs.py), from four-wire windows only.'],
              f'{MOD}.F4')
     s += NL.join(imports(sorted(set(names)), idx)) + NL + NL
-    s += 'f4 : Complete 4 → (g h : Gen 4) → 5 ⊢ₓ λ⁰ g • λ¹ h ≈ λ¹ h • λ⁰ g' + NL
+    s += 'f4 : Ws → (g h : Gen 4) → 5 ⊢ₓ λ⁰ g • λ¹ h ≈ λ¹ h • λ⁰ g' + NL
     s += NL.join(clauses) + NL
     return s
 
@@ -116,7 +116,7 @@ def f2(idx):
     s += NL.join(imports(sorted(set(names)), idx)) + NL + NL
     s += '-- Two generators on disjoint wires (the scalar is disjoint from all).' + NL
     s += 'apart : Gen 4 → Gen 4 → Bool' + NL + NL.join(apart) + NL + NL
-    s += 'f2 : Complete 4 → (g h : Gen 4) → T (apart g h) → 5 ⊢ₓ λ¹ g • λ¹ h ≈ λ¹ h • λ¹ g' + NL
+    s += 'f2 : Ws → (g h : Gen 4) → T (apart g h) → 5 ⊢ₓ λ¹ g • λ¹ h ≈ λ¹ h • λ¹ g' + NL
     s += NL.join(clauses) + NL
     return s
 
@@ -153,9 +153,9 @@ def f1(idx):
     ups = lambda o: ''.join(' ↑' for _ in range(o))
     for o in (0, 1):
         width = 4 - o
-        sig = (f'f1{SUB[o]} : Complete 4 → {width} SRel, w === v → '
+        sig = (f'f1{SUB[o]} : Ws → {width} SRel, w === v → '
                f'5 ⊢ₓ λ¹ʷ (w{ups(o)}) ≈ λ¹ʷ (v{ups(o)})' if o else
-               'f1₀ : Complete 4 → 4 SRel, w === v → 5 ⊢ₓ λ¹ʷ w ≈ λ¹ʷ v')
+               'f1₀ : Ws → 4 SRel, w === v → 5 ⊢ₓ λ¹ʷ w ≈ λ¹ʷ v')
         out.append(sig)
         for jn, an, ar in RULES:
             if ar > width:
@@ -169,7 +169,7 @@ def f1(idx):
                 out.append(f'f1₀ c4 {jn} = PB.axiom (srelₓ ({ctl} 0))')
         out.append('')
     out += ['-- The record Five.Transport takes.',
-            'f1 : Complete 4 → F1',
+            'f1 : Ws → F1',
             'f1 c4 = record { f1₀ = f1₀ c4 ; f1₁ = f1₁ c4 ; f1₂ = F1Low.f1₂ c4',
             '               ; f1₃ = F1Low.f1₃ c4 ; f1₄ = F1Low.f1₄ c4 }', '']
     s = head('(F1): the rules of the four-wire theory, controlled',
