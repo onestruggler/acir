@@ -37,24 +37,43 @@ data Mac : Set where
   CCZ013 Toff013 Toff103 Toff301 CCZ014 Toff014 Toff104 Toff401 CCZ023 Toff023 Toff203 Toff302 : Mac
   CCZ024 Toff024 Toff204 Toff402 CCZ034 Toff034 Toff304 Toff403 CCZ123 Toff123 Toff213 Toff312 : Mac
   CCZ124 Toff124 Toff214 Toff412 CCZ134 Toff134 Toff314 Toff413 CCZ234 Toff234 Toff324 Toff423 : Mac
-  Bx0-12 Bx0-14 Bx1-034 Bx0-1234 Bx0-13 Bx1-043 Bx0-1243 Bx1-024 Bx0-1324 Bx1-04 Bx0-134 Bx1-042 : Mac
-  Bx0-1342 Bx1-023 Bx0-1423 Bx1-032 Bx0-1432 Bx0-21 Bx2-03 Bx0-213 Bx0-24 Bx2-034 Bx0-2134 Bx0-23 : Mac
-  Bx2-043 Bx0-2143 Bx2-014 Bx0-2314 Bx2-04 Bx0-234 Bx2-041 Bx0-2341 Bx2-01 Bx0-241 Bx2-013 Bx0-2413 : Mac
-  Bx0-243 Bx2-031 Bx0-2431 Bx0-31 Bx3-02 Bx0-312 Bx0-34 Bx3-024 Bx0-3124 Bx0-32 Bx3-042 Bx0-3142 : Mac
-  Bx3-014 Bx0-3214 Bx3-04 Bx0-324 Bx3-041 Bx0-3241 Bx3-012 Bx0-3412 Bx3-021 Bx0-3421 Bx0-41 Bx0-43 : Mac
-  Bx4-023 Bx0-4123 Bx0-42 Bx4-032 Bx0-4132 Bx4-013 Bx0-4213 Bx4-03 Bx0-423 Bx4-031 Bx0-4231 Bx4-012 : Mac
-  Bx0-4312 Bx4-021 Bx0-4321 Bx1-0234 Bx2-14 Bx1-204 Bx1-234 Bx2-10 Bx1-240 Bx3-14 Bx1-304 Bx1-324 : Mac
-  Bx3-10 Bx1-340 Bx4-13 Bx1-403 Bx1-423 Bx2-0134 Bx2-0143 Bx2-0341 Bx2-0413 Bx2-1034 Bx2-1304 Bx2-1340 : Mac
-  Bx2-30 Bx2-31 Bx3-241 Bx2-3041 Bx3-20 Bx2-310 Bx3-240 Bx2-3140 Bx2-340 Bx3-210 Bx2-3410 Bx2-43 : Mac
-  Bx4-213 Bx2-4013 Bx4-203 Bx2-4103 Bx3-0124 Bx3-0412 Bx3-1024 Bx3-1204 Bx3-1240 Bx3-2140 Bx3-2410 Bx3-42 : Mac
-  Bx4-312 Bx3-4012 Bx4-302 Bx3-4102 Bx4-0123 Bx4-1023 Bx4-1203 Bx⁻2-03 Bx⁻0-213 Bx⁻2-0413 Sb0-1-3-2 Sb⁻0-1-3-2 : Mac
-  Sb0-1-42-3 Sb0-2-1-3 Sb⁻0-2-1-3 Sb0-2-43-1 Sb2-0-3-1 Sb⁻2-0-3-1 Sb2-0-41-3 Sb3-0-4-2 Sb⁻3-0-4-2 Sb3-0-12-4 Sb3-0-2-1 Sb⁻3-0-2-1 : Mac
-  Sb3-0-41-2 Sb4-0-3-2 Sb⁻4-0-3-2 Sb4-0-12-3 Sb⁻2-0-41-3 : Mac
+  Bx0-12 Bx1-03 Bx0-123 Bx0-14 Bx1-034 Bx0-1234 Bx0-13 Bx1-043 Bx0-1243 Bx1-024 Bx0-1324 Bx1-04 : Mac
+  Bx0-134 Bx1-042 Bx0-1342 Bx1-023 Bx0-1423 Bx1-032 Bx0-1432 Bx0-21 Bx2-03 Bx0-213 Bx0-24 Bx2-034 : Mac
+  Bx0-2134 Bx2-04 Bx0-214 Bx0-23 Bx2-043 Bx0-2143 Bx2-01 Bx0-231 Bx2-014 Bx0-2314 Bx0-234 Bx2-041 : Mac
+  Bx0-2341 Bx0-241 Bx2-013 Bx0-2413 Bx0-243 Bx2-031 Bx0-2431 Bx0-31 Bx3-02 Bx0-312 Bx0-34 Bx3-024 : Mac
+  Bx0-3124 Bx3-04 Bx0-314 Bx0-32 Bx3-042 Bx0-3142 Bx3-01 Bx0-321 Bx3-014 Bx0-3214 Bx0-324 Bx3-041 : Mac
+  Bx0-3241 Bx0-341 Bx3-012 Bx0-3412 Bx0-342 Bx3-021 Bx0-3421 Bx0-41 Bx4-02 Bx0-412 Bx0-43 Bx4-023 : Mac
+  Bx0-4123 Bx4-03 Bx0-413 Bx0-42 Bx4-032 Bx0-4132 Bx4-01 Bx0-421 Bx4-013 Bx0-4213 Bx0-423 Bx4-031 : Mac
+  Bx0-4231 Bx0-431 Bx4-012 Bx0-4312 Bx4-021 Bx0-4321 Bx1-0234 Bx1-0423 Bx1-20 Bx2-14 Bx1-204 Bx2-10 : Mac
+  Bx1-230 Bx1-234 Bx1-240 Bx2-130 Bx1-2430 Bx3-12 Bx1-302 Bx3-14 Bx1-304 Bx3-10 Bx1-320 Bx1-324 : Mac
+  Bx1-340 Bx1-342 Bx4-12 Bx1-402 Bx4-13 Bx1-403 Bx4-10 Bx1-420 Bx1-43 Bx4-103 Bx1-4203 Bx1-423 : Mac
+  Bx1-430 Bx2-0134 Bx2-0143 Bx2-0314 Bx2-0341 Bx2-0413 Bx2-0431 Bx2-1034 Bx2-1304 Bx2-1340 Bx2-1430 Bx2-30 : Mac
+  Bx3-21 Bx2-301 Bx2-34 Bx3-214 Bx2-3014 Bx3-24 Bx2-304 Bx2-31 Bx3-241 Bx2-3041 Bx3-20 Bx2-310 : Mac
+  Bx3-204 Bx2-3104 Bx2-314 Bx3-240 Bx2-3140 Bx2-340 Bx3-201 Bx2-3401 Bx2-341 Bx3-210 Bx2-3410 Bx2-40 : Mac
+  Bx4-21 Bx2-401 Bx2-43 Bx4-213 Bx2-4013 Bx4-23 Bx2-403 Bx2-41 Bx4-231 Bx2-4031 Bx4-20 Bx2-410 : Mac
+  Bx4-203 Bx2-4103 Bx4-230 Bx2-4130 Bx2-430 Bx4-201 Bx2-4301 Bx2-431 Bx3-0124 Bx3-0142 Bx3-0214 Bx3-0241 : Mac
+  Bx3-0412 Bx3-0421 Bx3-1024 Bx3-1042 Bx3-1204 Bx3-1240 Bx3-1402 Bx3-1420 Bx3-2014 Bx3-2041 Bx3-2104 Bx3-2140 : Mac
+  Bx3-2401 Bx3-2410 Bx3-40 Bx3-42 Bx4-312 Bx3-4012 Bx4-32 Bx3-402 Bx3-41 Bx4-321 Bx3-4021 Bx4-30 : Mac
+  Bx3-410 Bx4-302 Bx3-4102 Bx3-412 Bx4-320 Bx3-4120 Bx3-420 Bx4-301 Bx3-4201 Bx4-31 Bx3-421 Bx4-310 : Mac
+  Bx3-4210 Bx4-0123 Bx4-0213 Bx4-0231 Bx4-0312 Bx4-0321 Bx4-1023 Bx4-1203 Bx4-1230 Bx4-1302 Bx4-1320 Bx4-2031 : Mac
+  Bx4-2103 Bx4-2130 Bx4-2301 Bx4-2310 Bx4-3012 Bx4-3021 Bx4-3102 Bx4-3120 Bx4-3210 Bx⁻2-03 Bx⁻0-213 Bx⁻2-0413 : Mac
+  Sb0-1-2-3 Sb0-1-3-2 Sb⁻0-1-3-2 Sb0-1-42-3 Sb⁻0-1-2-3 Sb0-1-43-2 Sb0-2-1-3 Sb⁻0-2-1-3 Sb0-2-43-1 Sb0-3-1-2 Sb⁻0-3-1-2 Sb0-3-42-1 : Mac
+  Sb0-4-1-2 Sb0-4-2-1 Sb0-4-3-1 Sb⁻0-4-3-1 Sb0-4-21-3 Sb⁻0-4-2-1 Sb0-4-31-2 Sb⁻0-4-1-2 Sb0-4-32-1 Sb1-0-3-2 Sb⁻1-0-3-2 Sb1-0-42-3 : Mac
+  Sb1-2-0-3 Sb⁻1-2-0-3 Sb1-2-43-0 Sb1-4-3-0 Sb⁻1-4-3-0 Sb1-4-20-3 Sb2-0-3-1 Sb⁻2-0-3-1 Sb2-0-41-3 Sb2-1-0-3 Sb⁻2-1-0-3 Sb2-1-43-0 : Mac
+  Sb2-4-3-1 Sb⁻2-4-3-1 Sb2-4-01-3 Sb2-4-3-0 Sb⁻2-4-3-0 Sb2-4-10-3 Sb3-0-4-2 Sb⁻3-0-4-2 Sb3-0-12-4 Sb3-0-2-1 Sb3-0-4-1 Sb⁻3-0-4-1 : Mac
+  Sb3-0-21-4 Sb⁻3-0-2-1 Sb3-0-41-2 Sb3-1-0-2 Sb3-1-4-2 Sb⁻3-1-4-2 Sb3-1-02-4 Sb⁻3-1-0-2 Sb3-1-42-0 Sb3-4-2-1 Sb⁻3-4-2-1 Sb3-4-01-2 : Mac
+  Sb4-0-3-2 Sb⁻4-0-3-2 Sb4-0-12-3 Sb4-0-2-1 Sb4-0-3-1 Sb⁻4-0-3-1 Sb4-0-21-3 Sb⁻4-0-2-1 Sb4-0-31-2 Sb4-1-0-2 Sb4-1-0-3 Sb4-1-3-2 : Mac
+  Sb⁻4-1-3-2 Sb4-1-02-3 Sb⁻4-1-0-3 Sb4-1-23-0 Sb⁻4-1-0-2 Sb4-1-32-0 Sb4-2-0-3 Sb4-2-1-3 Sb⁻4-2-1-3 Sb4-2-03-1 Sb⁻4-2-0-3 Sb4-2-13-0 : Mac
+  Sb⁻2-0-41-3 : Mac
 
 -- The boxes, each the concatenation of its one-level unfolding.
 
 b-Bx0-12 : Circuit 5
 b-Bx0-12 = (CZ ↑)
+b-Bx1-03 : Circuit 5
+b-Bx1-03 = (Swap ↑ ↑ • (Swap ↑ • CZ • Swap ↑) • Swap ↑ ↑)
+b-Bx0-123 : Circuit 5
+b-Bx0-123 = CCZ • Toff • b-Bx1-03 • Toff • CCZ • b-Bx1-03
 b-Bx0-14 : Circuit 5
 b-Bx0-14 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (CZ ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
 b-Bx1-034 : Circuit 5
@@ -99,26 +118,30 @@ b-Bx2-034 : Circuit 5
 b-Bx2-034 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) • b-Bx0-24 • (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx0-24
 b-Bx0-2134 : Circuit 5
 b-Bx0-2134 = CCZ • Toff • b-Bx2-034 • Toff • CCZ • b-Bx2-034
+b-Bx2-04 : Circuit 5
+b-Bx2-04 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (Swap ↑ • CZ • Swap ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
+b-Bx0-214 : Circuit 5
+b-Bx0-214 = CCZ • Toff • b-Bx2-04 • Toff • CCZ • b-Bx2-04
 b-Bx0-23 : Circuit 5
 b-Bx0-23 = (CZ ↑ ↑)
 b-Bx2-043 : Circuit 5
 b-Bx2-043 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-23 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-23
 b-Bx0-2143 : Circuit 5
 b-Bx0-2143 = CCZ • Toff • b-Bx2-043 • Toff • CCZ • b-Bx2-043
+b-Bx2-01 : Circuit 5
+b-Bx2-01 = CZ
+b-Bx0-231 : Circuit 5
+b-Bx0-231 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • b-Bx2-01 • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx2-01
 b-Bx2-014 : Circuit 5
 b-Bx2-014 = CCZ • Toffᵗ • b-Bx0-24 • Toffᵗ • CCZ • b-Bx0-24
 b-Bx0-2314 : Circuit 5
 b-Bx0-2314 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • b-Bx2-014 • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx2-014
-b-Bx2-04 : Circuit 5
-b-Bx2-04 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (Swap ↑ • CZ • Swap ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
 b-Bx0-234 : Circuit 5
 b-Bx0-234 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • b-Bx2-04 • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx2-04
 b-Bx2-041 : Circuit 5
 b-Bx2-041 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-21 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-21
 b-Bx0-2341 : Circuit 5
 b-Bx0-2341 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • b-Bx2-041 • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx2-041
-b-Bx2-01 : Circuit 5
-b-Bx2-01 = CZ
 b-Bx0-241 : Circuit 5
 b-Bx0-241 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx2-01 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx2-01
 b-Bx2-013 : Circuit 5
@@ -143,58 +166,80 @@ b-Bx3-024 : Circuit 5
 b-Bx3-024 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • b-Bx0-34 • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx0-34
 b-Bx0-3124 : Circuit 5
 b-Bx0-3124 = (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • b-Bx3-024 • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • b-Bx3-024
+b-Bx3-04 : Circuit 5
+b-Bx3-04 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (Swap ↑ • CZ • Swap ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
+b-Bx0-314 : Circuit 5
+b-Bx0-314 = (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • b-Bx3-04 • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • b-Bx3-04
 b-Bx0-32 : Circuit 5
 b-Bx0-32 = (CZ ↑ ↑)
 b-Bx3-042 : Circuit 5
 b-Bx3-042 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-32 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-32
 b-Bx0-3142 : Circuit 5
 b-Bx0-3142 = (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • b-Bx3-042 • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • b-Bx3-042
+b-Bx3-01 : Circuit 5
+b-Bx3-01 = CZ
+b-Bx0-321 : Circuit 5
+b-Bx0-321 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • b-Bx3-01 • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx3-01
 b-Bx3-014 : Circuit 5
 b-Bx3-014 = (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • b-Bx0-34 • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • b-Bx0-34
 b-Bx0-3214 : Circuit 5
 b-Bx0-3214 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • b-Bx3-014 • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx3-014
-b-Bx3-04 : Circuit 5
-b-Bx3-04 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (Swap ↑ • CZ • Swap ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
 b-Bx0-324 : Circuit 5
 b-Bx0-324 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • b-Bx3-04 • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx3-04
 b-Bx3-041 : Circuit 5
 b-Bx3-041 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-31 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-31
 b-Bx0-3241 : Circuit 5
 b-Bx0-3241 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • b-Bx3-041 • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx3-041
+b-Bx0-341 : Circuit 5
+b-Bx0-341 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-01 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-01
 b-Bx3-012 : Circuit 5
 b-Bx3-012 = (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • b-Bx0-32 • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • b-Bx0-32
 b-Bx0-3412 : Circuit 5
 b-Bx0-3412 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-012 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-012
+b-Bx0-342 : Circuit 5
+b-Bx0-342 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-02 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-02
 b-Bx3-021 : Circuit 5
 b-Bx3-021 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • b-Bx0-31 • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx0-31
 b-Bx0-3421 : Circuit 5
 b-Bx0-3421 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-021 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-021
 b-Bx0-41 : Circuit 5
 b-Bx0-41 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (CZ ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
+b-Bx4-02 : Circuit 5
+b-Bx4-02 = (Swap ↑ • CZ • Swap ↑)
+b-Bx0-412 : Circuit 5
+b-Bx0-412 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx4-02 • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx4-02
 b-Bx0-43 : Circuit 5
 b-Bx0-43 = (CZ ↑ ↑ ↑)
 b-Bx4-023 : Circuit 5
 b-Bx4-023 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-43 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-43
 b-Bx0-4123 : Circuit 5
 b-Bx0-4123 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx4-023 • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx4-023
+b-Bx4-03 : Circuit 5
+b-Bx4-03 = (Swap ↑ ↑ • (Swap ↑ • CZ • Swap ↑) • Swap ↑ ↑)
+b-Bx0-413 : Circuit 5
+b-Bx0-413 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx4-03 • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx4-03
 b-Bx0-42 : Circuit 5
 b-Bx0-42 = (Swap ↑ ↑ ↑ • (CZ ↑ ↑) • Swap ↑ ↑ ↑)
 b-Bx4-032 : Circuit 5
 b-Bx4-032 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-42 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-42
 b-Bx0-4132 : Circuit 5
 b-Bx0-4132 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx4-032 • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx4-032
+b-Bx4-01 : Circuit 5
+b-Bx4-01 = CZ
+b-Bx0-421 : Circuit 5
+b-Bx0-421 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-01 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-01
 b-Bx4-013 : Circuit 5
 b-Bx4-013 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx0-43 • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx0-43
 b-Bx0-4213 : Circuit 5
 b-Bx0-4213 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-013 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-013
-b-Bx4-03 : Circuit 5
-b-Bx4-03 = (Swap ↑ ↑ • (Swap ↑ • CZ • Swap ↑) • Swap ↑ ↑)
 b-Bx0-423 : Circuit 5
 b-Bx0-423 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-03 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-03
 b-Bx4-031 : Circuit 5
 b-Bx4-031 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-41 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-41
 b-Bx0-4231 : Circuit 5
 b-Bx0-4231 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-031 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-031
+b-Bx0-431 : Circuit 5
+b-Bx0-431 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx4-01 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx4-01
 b-Bx4-012 : Circuit 5
 b-Bx4-012 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx0-42 • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx0-42
 b-Bx0-4312 : Circuit 5
@@ -205,48 +250,102 @@ b-Bx0-4321 : Circuit 5
 b-Bx0-4321 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx4-021 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx4-021
 b-Bx1-0234 : Circuit 5
 b-Bx1-0234 = CCZ • (K ↑ • CCZ • K ↑ • iI) • b-Bx0-134 • (K ↑ • CCZ • K ↑ • iI) • CCZ • b-Bx0-134
+b-Bx1-0423 : Circuit 5
+b-Bx1-0423 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx0-123 • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx0-123
+b-Bx1-20 : Circuit 5
+b-Bx1-20 = (Swap ↑ • CZ • Swap ↑)
 b-Bx2-14 : Circuit 5
 b-Bx2-14 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (CZ ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
 b-Bx1-204 : Circuit 5
 b-Bx1-204 = CCZ • (K ↑ • CCZ • K ↑ • iI) • b-Bx2-14 • (K ↑ • CCZ • K ↑ • iI) • CCZ • b-Bx2-14
-b-Bx1-234 : Circuit 5
-b-Bx1-234 = (CCZ ↑) • (Toff ↑) • b-Bx2-14 • (Toff ↑) • (CCZ ↑) • b-Bx2-14
 b-Bx2-10 : Circuit 5
 b-Bx2-10 = CZ
+b-Bx1-230 : Circuit 5
+b-Bx1-230 = (CCZ ↑) • (Toff ↑) • b-Bx2-10 • (Toff ↑) • (CCZ ↑) • b-Bx2-10
+b-Bx1-234 : Circuit 5
+b-Bx1-234 = (CCZ ↑) • (Toff ↑) • b-Bx2-14 • (Toff ↑) • (CCZ ↑) • b-Bx2-14
 b-Bx1-240 : Circuit 5
 b-Bx1-240 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • b-Bx2-10 • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx2-10
+b-Bx2-130 : Circuit 5
+b-Bx2-130 = (CCZ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑) • b-Bx1-20 • ((K ↑ • CCZ • K ↑ • iI) ↑) • (CCZ ↑) • b-Bx1-20
+b-Bx1-2430 : Circuit 5
+b-Bx1-2430 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • b-Bx2-130 • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx2-130
+b-Bx3-12 : Circuit 5
+b-Bx3-12 = (CZ ↑)
+b-Bx1-302 : Circuit 5
+b-Bx1-302 = (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • b-Bx3-12 • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • b-Bx3-12
 b-Bx3-14 : Circuit 5
 b-Bx3-14 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (CZ ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
 b-Bx1-304 : Circuit 5
 b-Bx1-304 = (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • b-Bx3-14 • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • b-Bx3-14
-b-Bx1-324 : Circuit 5
-b-Bx1-324 = (CCZ ↑) • (Toff ↑) • b-Bx3-14 • (Toff ↑) • (CCZ ↑) • b-Bx3-14
 b-Bx3-10 : Circuit 5
 b-Bx3-10 = CZ
+b-Bx1-320 : Circuit 5
+b-Bx1-320 = (CCZ ↑) • (Toff ↑) • b-Bx3-10 • (Toff ↑) • (CCZ ↑) • b-Bx3-10
+b-Bx1-324 : Circuit 5
+b-Bx1-324 = (CCZ ↑) • (Toff ↑) • b-Bx3-14 • (Toff ↑) • (CCZ ↑) • b-Bx3-14
 b-Bx1-340 : Circuit 5
 b-Bx1-340 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx3-10 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx3-10
+b-Bx1-342 : Circuit 5
+b-Bx1-342 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx3-12 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx3-12
+b-Bx4-12 : Circuit 5
+b-Bx4-12 = (CZ ↑)
+b-Bx1-402 : Circuit 5
+b-Bx1-402 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx4-12 • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx4-12
 b-Bx4-13 : Circuit 5
 b-Bx4-13 = (Swap ↑ ↑ • (CZ ↑) • Swap ↑ ↑)
 b-Bx1-403 : Circuit 5
 b-Bx1-403 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx4-13 • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx4-13
+b-Bx4-10 : Circuit 5
+b-Bx4-10 = CZ
+b-Bx1-420 : Circuit 5
+b-Bx1-420 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • b-Bx4-10 • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx4-10
+b-Bx1-43 : Circuit 5
+b-Bx1-43 = (CZ ↑ ↑ ↑)
+b-Bx4-103 : Circuit 5
+b-Bx4-103 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx1-43 • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx1-43
+b-Bx1-4203 : Circuit 5
+b-Bx1-4203 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • b-Bx4-103 • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx4-103
 b-Bx1-423 : Circuit 5
 b-Bx1-423 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • b-Bx4-13 • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx4-13
+b-Bx1-430 : Circuit 5
+b-Bx1-430 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx4-10 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx4-10
 b-Bx2-0134 : Circuit 5
 b-Bx2-0134 = CCZ • Toffᵗ • b-Bx0-234 • Toffᵗ • CCZ • b-Bx0-234
 b-Bx2-0143 : Circuit 5
 b-Bx2-0143 = CCZ • Toffᵗ • b-Bx0-243 • Toffᵗ • CCZ • b-Bx0-243
+b-Bx2-0314 : Circuit 5
+b-Bx2-0314 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) • b-Bx0-214 • (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx0-214
 b-Bx2-0341 : Circuit 5
 b-Bx2-0341 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) • b-Bx0-241 • (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx0-241
 b-Bx2-0413 : Circuit 5
 b-Bx2-0413 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-213 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-213
+b-Bx2-0431 : Circuit 5
+b-Bx2-0431 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-231 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-231
 b-Bx2-1034 : Circuit 5
 b-Bx2-1034 = CCZ • Toffᵗ • b-Bx1-234 • Toffᵗ • CCZ • b-Bx1-234
 b-Bx2-1304 : Circuit 5
 b-Bx2-1304 = (CCZ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑) • b-Bx1-204 • ((K ↑ • CCZ • K ↑ • iI) ↑) • (CCZ ↑) • b-Bx1-204
 b-Bx2-1340 : Circuit 5
 b-Bx2-1340 = (CCZ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑) • b-Bx1-240 • ((K ↑ • CCZ • K ↑ • iI) ↑) • (CCZ ↑) • b-Bx1-240
+b-Bx2-1430 : Circuit 5
+b-Bx2-1430 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • b-Bx1-230 • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx1-230
 b-Bx2-30 : Circuit 5
 b-Bx2-30 = (Swap ↑ ↑ • (Swap ↑ • CZ • Swap ↑) • Swap ↑ ↑)
+b-Bx3-21 : Circuit 5
+b-Bx3-21 = (CZ ↑)
+b-Bx2-301 : Circuit 5
+b-Bx2-301 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) • b-Bx3-21 • (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx3-21
+b-Bx2-34 : Circuit 5
+b-Bx2-34 = (CZ ↑ ↑ ↑)
+b-Bx3-214 : Circuit 5
+b-Bx3-214 = (CCZ ↑) • (Toffᵗ ↑) • b-Bx2-34 • (Toffᵗ ↑) • (CCZ ↑) • b-Bx2-34
+b-Bx2-3014 : Circuit 5
+b-Bx2-3014 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) • b-Bx3-214 • (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx3-214
+b-Bx3-24 : Circuit 5
+b-Bx3-24 = (Swap ↑ ↑ ↑ • (CZ ↑ ↑) • Swap ↑ ↑ ↑)
+b-Bx2-304 : Circuit 5
+b-Bx2-304 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) • b-Bx3-24 • (Swap ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx3-24
 b-Bx2-31 : Circuit 5
 b-Bx2-31 = (Swap ↑ ↑ • (CZ ↑) • Swap ↑ ↑)
 b-Bx3-241 : Circuit 5
@@ -257,80 +356,282 @@ b-Bx3-20 : Circuit 5
 b-Bx3-20 = (Swap ↑ • CZ • Swap ↑)
 b-Bx2-310 : Circuit 5
 b-Bx2-310 = (CCZ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑) • b-Bx3-20 • ((K ↑ • CCZ • K ↑ • iI) ↑) • (CCZ ↑) • b-Bx3-20
+b-Bx3-204 : Circuit 5
+b-Bx3-204 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • b-Bx2-34 • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx2-34
+b-Bx2-3104 : Circuit 5
+b-Bx2-3104 = (CCZ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑) • b-Bx3-204 • ((K ↑ • CCZ • K ↑ • iI) ↑) • (CCZ ↑) • b-Bx3-204
+b-Bx2-314 : Circuit 5
+b-Bx2-314 = (CCZ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑) • b-Bx3-24 • ((K ↑ • CCZ • K ↑ • iI) ↑) • (CCZ ↑) • b-Bx3-24
 b-Bx3-240 : Circuit 5
 b-Bx3-240 = (CCZ ↑ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • b-Bx2-30 • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • (CCZ ↑ ↑) • b-Bx2-30
 b-Bx2-3140 : Circuit 5
 b-Bx2-3140 = (CCZ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑) • b-Bx3-240 • ((K ↑ • CCZ • K ↑ • iI) ↑) • (CCZ ↑) • b-Bx3-240
 b-Bx2-340 : Circuit 5
 b-Bx2-340 = (CCZ ↑ ↑) • (Toff ↑ ↑) • b-Bx3-20 • (Toff ↑ ↑) • (CCZ ↑ ↑) • b-Bx3-20
+b-Bx3-201 : Circuit 5
+b-Bx3-201 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • b-Bx2-31 • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx2-31
+b-Bx2-3401 : Circuit 5
+b-Bx2-3401 = (CCZ ↑ ↑) • (Toff ↑ ↑) • b-Bx3-201 • (Toff ↑ ↑) • (CCZ ↑ ↑) • b-Bx3-201
+b-Bx2-341 : Circuit 5
+b-Bx2-341 = (CCZ ↑ ↑) • (Toff ↑ ↑) • b-Bx3-21 • (Toff ↑ ↑) • (CCZ ↑ ↑) • b-Bx3-21
 b-Bx3-210 : Circuit 5
 b-Bx3-210 = (CCZ ↑) • (Toffᵗ ↑) • b-Bx2-30 • (Toffᵗ ↑) • (CCZ ↑) • b-Bx2-30
 b-Bx2-3410 : Circuit 5
 b-Bx2-3410 = (CCZ ↑ ↑) • (Toff ↑ ↑) • b-Bx3-210 • (Toff ↑ ↑) • (CCZ ↑ ↑) • b-Bx3-210
+b-Bx2-40 : Circuit 5
+b-Bx2-40 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (Swap ↑ • CZ • Swap ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
+b-Bx4-21 : Circuit 5
+b-Bx4-21 = (CZ ↑)
+b-Bx2-401 : Circuit 5
+b-Bx2-401 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-21 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-21
 b-Bx2-43 : Circuit 5
 b-Bx2-43 = (CZ ↑ ↑ ↑)
 b-Bx4-213 : Circuit 5
 b-Bx4-213 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • b-Bx2-43 • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx2-43
 b-Bx2-4013 : Circuit 5
 b-Bx2-4013 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-213 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-213
+b-Bx4-23 : Circuit 5
+b-Bx4-23 = (CZ ↑ ↑)
+b-Bx2-403 : Circuit 5
+b-Bx2-403 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-23 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-23
+b-Bx2-41 : Circuit 5
+b-Bx2-41 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (CZ ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
+b-Bx4-231 : Circuit 5
+b-Bx4-231 = (CCZ ↑ ↑) • (Toffᵗ ↑ ↑) • b-Bx2-41 • (Toffᵗ ↑ ↑) • (CCZ ↑ ↑) • b-Bx2-41
+b-Bx2-4031 : Circuit 5
+b-Bx2-4031 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-231 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx4-231
+b-Bx4-20 : Circuit 5
+b-Bx4-20 = (Swap ↑ • CZ • Swap ↑)
+b-Bx2-410 : Circuit 5
+b-Bx2-410 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • b-Bx4-20 • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx4-20
 b-Bx4-203 : Circuit 5
 b-Bx4-203 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx2-43 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx2-43
 b-Bx2-4103 : Circuit 5
 b-Bx2-4103 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • b-Bx4-203 • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx4-203
+b-Bx4-230 : Circuit 5
+b-Bx4-230 = (CCZ ↑ ↑) • (Toffᵗ ↑ ↑) • b-Bx2-40 • (Toffᵗ ↑ ↑) • (CCZ ↑ ↑) • b-Bx2-40
+b-Bx2-4130 : Circuit 5
+b-Bx2-4130 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • b-Bx4-230 • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx4-230
+b-Bx2-430 : Circuit 5
+b-Bx2-430 = (CCZ ↑ ↑) • (Toff ↑ ↑) • b-Bx4-20 • (Toff ↑ ↑) • (CCZ ↑ ↑) • b-Bx4-20
+b-Bx4-201 : Circuit 5
+b-Bx4-201 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx2-41 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx2-41
+b-Bx2-4301 : Circuit 5
+b-Bx2-4301 = (CCZ ↑ ↑) • (Toff ↑ ↑) • b-Bx4-201 • (Toff ↑ ↑) • (CCZ ↑ ↑) • b-Bx4-201
+b-Bx2-431 : Circuit 5
+b-Bx2-431 = (CCZ ↑ ↑) • (Toff ↑ ↑) • b-Bx4-21 • (Toff ↑ ↑) • (CCZ ↑ ↑) • b-Bx4-21
 b-Bx3-0124 : Circuit 5
 b-Bx3-0124 = (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • b-Bx0-324 • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • b-Bx0-324
+b-Bx3-0142 : Circuit 5
+b-Bx3-0142 = (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • b-Bx0-342 • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • b-Bx0-342
+b-Bx3-0214 : Circuit 5
+b-Bx3-0214 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • b-Bx0-314 • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx0-314
+b-Bx3-0241 : Circuit 5
+b-Bx3-0241 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • b-Bx0-341 • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx0-341
 b-Bx3-0412 : Circuit 5
 b-Bx3-0412 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-312 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-312
+b-Bx3-0421 : Circuit 5
+b-Bx3-0421 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-321 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-321
 b-Bx3-1024 : Circuit 5
 b-Bx3-1024 = (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • b-Bx1-324 • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • b-Bx1-324
+b-Bx3-1042 : Circuit 5
+b-Bx3-1042 = (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • b-Bx1-342 • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • b-Bx1-342
 b-Bx3-1204 : Circuit 5
 b-Bx3-1204 = (CCZ ↑) • (Toffᵗ ↑) • b-Bx1-304 • (Toffᵗ ↑) • (CCZ ↑) • b-Bx1-304
 b-Bx3-1240 : Circuit 5
 b-Bx3-1240 = (CCZ ↑) • (Toffᵗ ↑) • b-Bx1-340 • (Toffᵗ ↑) • (CCZ ↑) • b-Bx1-340
+b-Bx3-1402 : Circuit 5
+b-Bx3-1402 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx1-302 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx1-302
+b-Bx3-1420 : Circuit 5
+b-Bx3-1420 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx1-320 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx1-320
+b-Bx3-2014 : Circuit 5
+b-Bx3-2014 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • b-Bx2-314 • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx2-314
+b-Bx3-2041 : Circuit 5
+b-Bx3-2041 = (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • b-Bx2-341 • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑) • b-Bx2-341
+b-Bx3-2104 : Circuit 5
+b-Bx3-2104 = (CCZ ↑) • (Toffᵗ ↑) • b-Bx2-304 • (Toffᵗ ↑) • (CCZ ↑) • b-Bx2-304
 b-Bx3-2140 : Circuit 5
 b-Bx3-2140 = (CCZ ↑) • (Toffᵗ ↑) • b-Bx2-340 • (Toffᵗ ↑) • (CCZ ↑) • b-Bx2-340
+b-Bx3-2401 : Circuit 5
+b-Bx3-2401 = (CCZ ↑ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • b-Bx2-301 • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • (CCZ ↑ ↑) • b-Bx2-301
 b-Bx3-2410 : Circuit 5
 b-Bx3-2410 = (CCZ ↑ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • b-Bx2-310 • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • (CCZ ↑ ↑) • b-Bx2-310
+b-Bx3-40 : Circuit 5
+b-Bx3-40 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (Swap ↑ • CZ • Swap ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
 b-Bx3-42 : Circuit 5
 b-Bx3-42 = (Swap ↑ ↑ ↑ • (CZ ↑ ↑) • Swap ↑ ↑ ↑)
 b-Bx4-312 : Circuit 5
 b-Bx4-312 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx3-42 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx3-42
 b-Bx3-4012 : Circuit 5
 b-Bx3-4012 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx4-312 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx4-312
+b-Bx4-32 : Circuit 5
+b-Bx4-32 = (CZ ↑ ↑)
+b-Bx3-402 : Circuit 5
+b-Bx3-402 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx4-32 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx4-32
+b-Bx3-41 : Circuit 5
+b-Bx3-41 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (CZ ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
+b-Bx4-321 : Circuit 5
+b-Bx4-321 = (CCZ ↑ ↑) • (Toffᵗ ↑ ↑) • b-Bx3-41 • (Toffᵗ ↑ ↑) • (CCZ ↑ ↑) • b-Bx3-41
+b-Bx3-4021 : Circuit 5
+b-Bx3-4021 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx4-321 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx4-321
+b-Bx4-30 : Circuit 5
+b-Bx4-30 = (Swap ↑ ↑ • (Swap ↑ • CZ • Swap ↑) • Swap ↑ ↑)
+b-Bx3-410 : Circuit 5
+b-Bx3-410 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx4-30 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx4-30
 b-Bx4-302 : Circuit 5
 b-Bx4-302 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-42 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-42
 b-Bx3-4102 : Circuit 5
 b-Bx3-4102 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx4-302 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx4-302
+b-Bx3-412 : Circuit 5
+b-Bx3-412 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx4-32 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx4-32
+b-Bx4-320 : Circuit 5
+b-Bx4-320 = (CCZ ↑ ↑) • (Toffᵗ ↑ ↑) • b-Bx3-40 • (Toffᵗ ↑ ↑) • (CCZ ↑ ↑) • b-Bx3-40
+b-Bx3-4120 : Circuit 5
+b-Bx3-4120 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx4-320 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx4-320
+b-Bx3-420 : Circuit 5
+b-Bx3-420 = (CCZ ↑ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • b-Bx4-30 • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • (CCZ ↑ ↑) • b-Bx4-30
+b-Bx4-301 : Circuit 5
+b-Bx4-301 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-41 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-41
+b-Bx3-4201 : Circuit 5
+b-Bx3-4201 = (CCZ ↑ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • b-Bx4-301 • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • (CCZ ↑ ↑) • b-Bx4-301
+b-Bx4-31 : Circuit 5
+b-Bx4-31 = (Swap ↑ ↑ • (CZ ↑) • Swap ↑ ↑)
+b-Bx3-421 : Circuit 5
+b-Bx3-421 = (CCZ ↑ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • b-Bx4-31 • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • (CCZ ↑ ↑) • b-Bx4-31
+b-Bx4-310 : Circuit 5
+b-Bx4-310 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx3-40 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx3-40
+b-Bx3-4210 : Circuit 5
+b-Bx3-4210 = (CCZ ↑ ↑) • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • b-Bx4-310 • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • (CCZ ↑ ↑) • b-Bx4-310
 b-Bx4-0123 : Circuit 5
 b-Bx4-0123 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx0-423 • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx0-423
+b-Bx4-0213 : Circuit 5
+b-Bx4-0213 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-413 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-413
+b-Bx4-0231 : Circuit 5
+b-Bx4-0231 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-431 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx0-431
+b-Bx4-0312 : Circuit 5
+b-Bx4-0312 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-412 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-412
+b-Bx4-0321 : Circuit 5
+b-Bx4-0321 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-421 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx0-421
 b-Bx4-1023 : Circuit 5
 b-Bx4-1023 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx1-423 • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • b-Bx1-423
 b-Bx4-1203 : Circuit 5
 b-Bx4-1203 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • b-Bx1-403 • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx1-403
+b-Bx4-1230 : Circuit 5
+b-Bx4-1230 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • b-Bx1-430 • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx1-430
+b-Bx4-1302 : Circuit 5
+b-Bx4-1302 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx1-402 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx1-402
+b-Bx4-1320 : Circuit 5
+b-Bx4-1320 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx1-420 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx1-420
+b-Bx4-2031 : Circuit 5
+b-Bx4-2031 = (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx2-431 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx2-431
+b-Bx4-2103 : Circuit 5
+b-Bx4-2103 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • b-Bx2-403 • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx2-403
+b-Bx4-2130 : Circuit 5
+b-Bx4-2130 = (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • b-Bx2-430 • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • b-Bx2-430
+b-Bx4-2301 : Circuit 5
+b-Bx4-2301 = (CCZ ↑ ↑) • (Toffᵗ ↑ ↑) • b-Bx2-401 • (Toffᵗ ↑ ↑) • (CCZ ↑ ↑) • b-Bx2-401
+b-Bx4-2310 : Circuit 5
+b-Bx4-2310 = (CCZ ↑ ↑) • (Toffᵗ ↑ ↑) • b-Bx2-410 • (Toffᵗ ↑ ↑) • (CCZ ↑ ↑) • b-Bx2-410
+b-Bx4-3012 : Circuit 5
+b-Bx4-3012 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-412 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-412
+b-Bx4-3021 : Circuit 5
+b-Bx4-3021 = (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-421 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Bx3-421
+b-Bx4-3102 : Circuit 5
+b-Bx4-3102 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx3-402 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx3-402
+b-Bx4-3120 : Circuit 5
+b-Bx4-3120 = (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx3-420 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (CCZ ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx3-420
+b-Bx4-3210 : Circuit 5
+b-Bx4-3210 = (CCZ ↑ ↑) • (Toffᵗ ↑ ↑) • b-Bx3-410 • (Toffᵗ ↑ ↑) • (CCZ ↑ ↑) • b-Bx3-410
 b-Bx⁻2-03 : Circuit 5
 b-Bx⁻2-03 = (Swap ↑ ↑ • (Swap ↑ • CZ • Swap ↑) • Swap ↑ ↑)
 b-Bx⁻0-213 : Circuit 5
 b-Bx⁻0-213 = b-Bx⁻2-03 • CCZ • Toff • b-Bx⁻2-03 • Toff • CCZ
 b-Bx⁻2-0413 : Circuit 5
 b-Bx⁻2-0413 = b-Bx⁻0-213 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Bx⁻0-213 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑)
+b-Sb0-1-2-3 : Circuit 5
+b-Sb0-1-2-3 = (CS ↑)
 b-Sb0-1-3-2 : Circuit 5
 b-Sb0-1-3-2 = (Swap ↑ ↑ • (CS ↑) • Swap ↑ ↑)
 b-Sb⁻0-1-3-2 : Circuit 5
 b-Sb⁻0-1-3-2 = (Swap ↑ ↑ • ((CS • CS • CS) ↑) • Swap ↑ ↑)
 b-Sb0-1-42-3 : Circuit 5
 b-Sb0-1-42-3 = b-Bx0-1423 • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • b-Sb0-1-3-2 • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • b-Sb⁻0-1-3-2
+b-Sb⁻0-1-2-3 : Circuit 5
+b-Sb⁻0-1-2-3 = ((CS • CS • CS) ↑)
+b-Sb0-1-43-2 : Circuit 5
+b-Sb0-1-43-2 = b-Bx0-1432 • (Toff ↑ ↑) • b-Sb0-1-2-3 • (Toff ↑ ↑) • b-Sb⁻0-1-2-3
 b-Sb0-2-1-3 : Circuit 5
 b-Sb0-2-1-3 = (CS ↑)
 b-Sb⁻0-2-1-3 : Circuit 5
 b-Sb⁻0-2-1-3 = ((CS • CS • CS) ↑)
 b-Sb0-2-43-1 : Circuit 5
 b-Sb0-2-43-1 = b-Bx0-2431 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Sb0-2-1-3 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Sb⁻0-2-1-3
+b-Sb0-3-1-2 : Circuit 5
+b-Sb0-3-1-2 = (Swap ↑ ↑ • (CS ↑) • Swap ↑ ↑)
+b-Sb⁻0-3-1-2 : Circuit 5
+b-Sb⁻0-3-1-2 = (Swap ↑ ↑ • ((CS • CS • CS) ↑) • Swap ↑ ↑)
+b-Sb0-3-42-1 : Circuit 5
+b-Sb0-3-42-1 = b-Bx0-3421 • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • b-Sb0-3-1-2 • (Swap ↑ ↑ ↑ • (Toff ↑) • Swap ↑ ↑ ↑) • b-Sb⁻0-3-1-2
+b-Sb0-4-1-2 : Circuit 5
+b-Sb0-4-1-2 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (CS ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
+b-Sb0-4-2-1 : Circuit 5
+b-Sb0-4-2-1 = (Swap ↑ ↑ ↑ • (CS ↑ ↑) • Swap ↑ ↑ ↑)
+b-Sb0-4-3-1 : Circuit 5
+b-Sb0-4-3-1 = (CS ↑ ↑ ↑)
+b-Sb⁻0-4-3-1 : Circuit 5
+b-Sb⁻0-4-3-1 = ((CS • CS • CS) ↑ ↑ ↑)
+b-Sb0-4-21-3 : Circuit 5
+b-Sb0-4-21-3 = b-Bx0-4213 • (Toffᵗ ↑) • b-Sb0-4-3-1 • (Toffᵗ ↑) • b-Sb⁻0-4-3-1
+b-Sb⁻0-4-2-1 : Circuit 5
+b-Sb⁻0-4-2-1 = (Swap ↑ ↑ ↑ • ((CS • CS • CS) ↑ ↑) • Swap ↑ ↑ ↑)
+b-Sb0-4-31-2 : Circuit 5
+b-Sb0-4-31-2 = b-Bx0-4312 • ((K ↑ • CCZ • K ↑ • iI) ↑) • b-Sb0-4-2-1 • ((K ↑ • CCZ • K ↑ • iI) ↑) • b-Sb⁻0-4-2-1
+b-Sb⁻0-4-1-2 : Circuit 5
+b-Sb⁻0-4-1-2 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • ((CS • CS • CS) ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
+b-Sb0-4-32-1 : Circuit 5
+b-Sb0-4-32-1 = b-Bx0-4321 • (Toff ↑) • b-Sb0-4-1-2 • (Toff ↑) • b-Sb⁻0-4-1-2
+b-Sb1-0-3-2 : Circuit 5
+b-Sb1-0-3-2 = (Swap ↑ ↑ • (Swap ↑ • CS • Swap ↑) • Swap ↑ ↑)
+b-Sb⁻1-0-3-2 : Circuit 5
+b-Sb⁻1-0-3-2 = (Swap ↑ ↑ • (Swap ↑ • (CS • CS • CS) • Swap ↑) • Swap ↑ ↑)
+b-Sb1-0-42-3 : Circuit 5
+b-Sb1-0-42-3 = b-Bx1-0423 • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • b-Sb1-0-3-2 • ((K ↑ • CCZ • K ↑ • iI) ↑ ↑) • b-Sb⁻1-0-3-2
+b-Sb1-2-0-3 : Circuit 5
+b-Sb1-2-0-3 = (Swap ↑ • CS • Swap ↑)
+b-Sb⁻1-2-0-3 : Circuit 5
+b-Sb⁻1-2-0-3 = (Swap ↑ • (CS • CS • CS) • Swap ↑)
+b-Sb1-2-43-0 : Circuit 5
+b-Sb1-2-43-0 = b-Bx1-2430 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Sb1-2-0-3 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Sb⁻1-2-0-3
+b-Sb1-4-3-0 : Circuit 5
+b-Sb1-4-3-0 = (CS ↑ ↑ ↑)
+b-Sb⁻1-4-3-0 : Circuit 5
+b-Sb⁻1-4-3-0 = ((CS • CS • CS) ↑ ↑ ↑)
+b-Sb1-4-20-3 : Circuit 5
+b-Sb1-4-20-3 = b-Bx1-4203 • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • b-Sb1-4-3-0 • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • b-Sb⁻1-4-3-0
 b-Sb2-0-3-1 : Circuit 5
 b-Sb2-0-3-1 = (Swap ↑ ↑ • (Swap ↑ • CS • Swap ↑) • Swap ↑ ↑)
 b-Sb⁻2-0-3-1 : Circuit 5
 b-Sb⁻2-0-3-1 = (Swap ↑ ↑ • (Swap ↑ • (CS • CS • CS) • Swap ↑) • Swap ↑ ↑)
 b-Sb2-0-41-3 : Circuit 5
 b-Sb2-0-41-3 = b-Bx2-0413 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Sb2-0-3-1 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Sb⁻2-0-3-1
+b-Sb2-1-0-3 : Circuit 5
+b-Sb2-1-0-3 = CS
+b-Sb⁻2-1-0-3 : Circuit 5
+b-Sb⁻2-1-0-3 = (CS • CS • CS)
+b-Sb2-1-43-0 : Circuit 5
+b-Sb2-1-43-0 = b-Bx2-1430 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Sb2-1-0-3 • (Swap ↑ ↑ • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • Swap ↑ ↑) • b-Sb⁻2-1-0-3
+b-Sb2-4-3-1 : Circuit 5
+b-Sb2-4-3-1 = (CS ↑ ↑ ↑)
+b-Sb⁻2-4-3-1 : Circuit 5
+b-Sb⁻2-4-3-1 = ((CS • CS • CS) ↑ ↑ ↑)
+b-Sb2-4-01-3 : Circuit 5
+b-Sb2-4-01-3 = b-Bx2-4013 • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • b-Sb2-4-3-1 • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • b-Sb⁻2-4-3-1
+b-Sb2-4-3-0 : Circuit 5
+b-Sb2-4-3-0 = (CS ↑ ↑ ↑)
+b-Sb⁻2-4-3-0 : Circuit 5
+b-Sb⁻2-4-3-0 = ((CS • CS • CS) ↑ ↑ ↑)
+b-Sb2-4-10-3 : Circuit 5
+b-Sb2-4-10-3 = b-Bx2-4103 • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • b-Sb2-4-3-0 • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • b-Sb⁻2-4-3-0
 b-Sb3-0-4-2 : Circuit 5
 b-Sb3-0-4-2 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (Swap ↑ • CS • Swap ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
 b-Sb⁻3-0-4-2 : Circuit 5
@@ -339,16 +640,82 @@ b-Sb3-0-12-4 : Circuit 5
 b-Sb3-0-12-4 = b-Bx3-0124 • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • b-Sb3-0-4-2 • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • b-Sb⁻3-0-4-2
 b-Sb3-0-2-1 : Circuit 5
 b-Sb3-0-2-1 = (Swap ↑ • CS • Swap ↑)
+b-Sb3-0-4-1 : Circuit 5
+b-Sb3-0-4-1 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (Swap ↑ • CS • Swap ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
+b-Sb⁻3-0-4-1 : Circuit 5
+b-Sb⁻3-0-4-1 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (Swap ↑ • (CS • CS • CS) • Swap ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
+b-Sb3-0-21-4 : Circuit 5
+b-Sb3-0-21-4 = b-Bx3-0214 • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • b-Sb3-0-4-1 • (Swap ↑ ↑ ↑ • (Toffᵗ ↑) • Swap ↑ ↑ ↑) • b-Sb⁻3-0-4-1
 b-Sb⁻3-0-2-1 : Circuit 5
 b-Sb⁻3-0-2-1 = (Swap ↑ • (CS • CS • CS) • Swap ↑)
 b-Sb3-0-41-2 : Circuit 5
 b-Sb3-0-41-2 = b-Bx3-0412 • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • b-Sb3-0-2-1 • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • b-Sb⁻3-0-2-1
+b-Sb3-1-0-2 : Circuit 5
+b-Sb3-1-0-2 = CS
+b-Sb3-1-4-2 : Circuit 5
+b-Sb3-1-4-2 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • (CS ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
+b-Sb⁻3-1-4-2 : Circuit 5
+b-Sb⁻3-1-4-2 = (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • ((CS • CS • CS) ↑) • Swap ↑ ↑) • Swap ↑ ↑ ↑)
+b-Sb3-1-02-4 : Circuit 5
+b-Sb3-1-02-4 = b-Bx3-1024 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Sb3-1-4-2 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Sb⁻3-1-4-2
+b-Sb⁻3-1-0-2 : Circuit 5
+b-Sb⁻3-1-0-2 = (CS • CS • CS)
+b-Sb3-1-42-0 : Circuit 5
+b-Sb3-1-42-0 = b-Bx3-1420 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Sb3-1-0-2 • (Swap ↑ • (Swap ↑ ↑ ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑ ↑ ↑) • Swap ↑) • b-Sb⁻3-1-0-2
+b-Sb3-4-2-1 : Circuit 5
+b-Sb3-4-2-1 = (Swap ↑ ↑ ↑ • (CS ↑ ↑) • Swap ↑ ↑ ↑)
+b-Sb⁻3-4-2-1 : Circuit 5
+b-Sb⁻3-4-2-1 = (Swap ↑ ↑ ↑ • ((CS • CS • CS) ↑ ↑) • Swap ↑ ↑ ↑)
+b-Sb3-4-01-2 : Circuit 5
+b-Sb3-4-01-2 = b-Bx3-4012 • Toffᵗ • b-Sb3-4-2-1 • Toffᵗ • b-Sb⁻3-4-2-1
 b-Sb4-0-3-2 : Circuit 5
 b-Sb4-0-3-2 = (Swap ↑ ↑ • (Swap ↑ • CS • Swap ↑) • Swap ↑ ↑)
 b-Sb⁻4-0-3-2 : Circuit 5
 b-Sb⁻4-0-3-2 = (Swap ↑ ↑ • (Swap ↑ • (CS • CS • CS) • Swap ↑) • Swap ↑ ↑)
 b-Sb4-0-12-3 : Circuit 5
 b-Sb4-0-12-3 = b-Bx4-0123 • (Toffᵗ ↑) • b-Sb4-0-3-2 • (Toffᵗ ↑) • b-Sb⁻4-0-3-2
+b-Sb4-0-2-1 : Circuit 5
+b-Sb4-0-2-1 = (Swap ↑ • CS • Swap ↑)
+b-Sb4-0-3-1 : Circuit 5
+b-Sb4-0-3-1 = (Swap ↑ ↑ • (Swap ↑ • CS • Swap ↑) • Swap ↑ ↑)
+b-Sb⁻4-0-3-1 : Circuit 5
+b-Sb⁻4-0-3-1 = (Swap ↑ ↑ • (Swap ↑ • (CS • CS • CS) • Swap ↑) • Swap ↑ ↑)
+b-Sb4-0-21-3 : Circuit 5
+b-Sb4-0-21-3 = b-Bx4-0213 • (Toffᵗ ↑) • b-Sb4-0-3-1 • (Toffᵗ ↑) • b-Sb⁻4-0-3-1
+b-Sb⁻4-0-2-1 : Circuit 5
+b-Sb⁻4-0-2-1 = (Swap ↑ • (CS • CS • CS) • Swap ↑)
+b-Sb4-0-31-2 : Circuit 5
+b-Sb4-0-31-2 = b-Bx4-0312 • ((K ↑ • CCZ • K ↑ • iI) ↑) • b-Sb4-0-2-1 • ((K ↑ • CCZ • K ↑ • iI) ↑) • b-Sb⁻4-0-2-1
+b-Sb4-1-0-2 : Circuit 5
+b-Sb4-1-0-2 = CS
+b-Sb4-1-0-3 : Circuit 5
+b-Sb4-1-0-3 = CS
+b-Sb4-1-3-2 : Circuit 5
+b-Sb4-1-3-2 = (Swap ↑ ↑ • (CS ↑) • Swap ↑ ↑)
+b-Sb⁻4-1-3-2 : Circuit 5
+b-Sb⁻4-1-3-2 = (Swap ↑ ↑ • ((CS • CS • CS) ↑) • Swap ↑ ↑)
+b-Sb4-1-02-3 : Circuit 5
+b-Sb4-1-02-3 = b-Bx4-1023 • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • b-Sb4-1-3-2 • (Swap ↑ • (Swap ↑ ↑ • Toffᵗ • Swap ↑ ↑) • Swap ↑) • b-Sb⁻4-1-3-2
+b-Sb⁻4-1-0-3 : Circuit 5
+b-Sb⁻4-1-0-3 = (CS • CS • CS)
+b-Sb4-1-23-0 : Circuit 5
+b-Sb4-1-23-0 = b-Bx4-1230 • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • b-Sb4-1-0-3 • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • b-Sb⁻4-1-0-3
+b-Sb⁻4-1-0-2 : Circuit 5
+b-Sb⁻4-1-0-2 = (CS • CS • CS)
+b-Sb4-1-32-0 : Circuit 5
+b-Sb4-1-32-0 = b-Bx4-1320 • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • b-Sb4-1-0-2 • (Swap ↑ • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • Swap ↑) • b-Sb⁻4-1-0-2
+b-Sb4-2-0-3 : Circuit 5
+b-Sb4-2-0-3 = (Swap ↑ • CS • Swap ↑)
+b-Sb4-2-1-3 : Circuit 5
+b-Sb4-2-1-3 = (CS ↑)
+b-Sb⁻4-2-1-3 : Circuit 5
+b-Sb⁻4-2-1-3 = ((CS • CS • CS) ↑)
+b-Sb4-2-03-1 : Circuit 5
+b-Sb4-2-03-1 = b-Bx4-2031 • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • b-Sb4-2-1-3 • (Swap ↑ ↑ • (K ↑ • CCZ • K ↑ • iI) • Swap ↑ ↑) • b-Sb⁻4-2-1-3
+b-Sb⁻4-2-0-3 : Circuit 5
+b-Sb⁻4-2-0-3 = (Swap ↑ • (CS • CS • CS) • Swap ↑)
+b-Sb4-2-13-0 : Circuit 5
+b-Sb4-2-13-0 = b-Bx4-2130 • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • b-Sb4-2-0-3 • (Swap ↑ ↑ • Toff • Swap ↑ ↑) • b-Sb⁻4-2-0-3
 b-Sb⁻2-0-41-3 : Circuit 5
 b-Sb⁻2-0-41-3 = b-Sb2-0-3-1 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Sb⁻2-0-3-1 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K ↑ • CCZ • K ↑ • iI) ↑) • Swap ↑ ↑ ↑) • Swap ↑ ↑) • b-Bx⁻2-0413
 
@@ -534,6 +901,8 @@ b-Sb⁻2-0-41-3 = b-Sb2-0-3-1 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K �
 ⟪ Toff324 ⟫ = (K ↑ • CCZ • K ↑ • iI) ↑ ↑
 ⟪ Toff423 ⟫ = Toffᵗ ↑ ↑
 ⟪ Bx0-12 ⟫ = b-Bx0-12
+⟪ Bx1-03 ⟫ = b-Bx1-03
+⟪ Bx0-123 ⟫ = b-Bx0-123
 ⟪ Bx0-14 ⟫ = b-Bx0-14
 ⟪ Bx1-034 ⟫ = b-Bx1-034
 ⟪ Bx0-1234 ⟫ = b-Bx0-1234
@@ -556,16 +925,18 @@ b-Sb⁻2-0-41-3 = b-Sb2-0-3-1 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K �
 ⟪ Bx0-24 ⟫ = b-Bx0-24
 ⟪ Bx2-034 ⟫ = b-Bx2-034
 ⟪ Bx0-2134 ⟫ = b-Bx0-2134
+⟪ Bx2-04 ⟫ = b-Bx2-04
+⟪ Bx0-214 ⟫ = b-Bx0-214
 ⟪ Bx0-23 ⟫ = b-Bx0-23
 ⟪ Bx2-043 ⟫ = b-Bx2-043
 ⟪ Bx0-2143 ⟫ = b-Bx0-2143
+⟪ Bx2-01 ⟫ = b-Bx2-01
+⟪ Bx0-231 ⟫ = b-Bx0-231
 ⟪ Bx2-014 ⟫ = b-Bx2-014
 ⟪ Bx0-2314 ⟫ = b-Bx0-2314
-⟪ Bx2-04 ⟫ = b-Bx2-04
 ⟪ Bx0-234 ⟫ = b-Bx0-234
 ⟪ Bx2-041 ⟫ = b-Bx2-041
 ⟪ Bx0-2341 ⟫ = b-Bx0-2341
-⟪ Bx2-01 ⟫ = b-Bx2-01
 ⟪ Bx0-241 ⟫ = b-Bx0-241
 ⟪ Bx2-013 ⟫ = b-Bx2-013
 ⟪ Bx0-2413 ⟫ = b-Bx0-2413
@@ -578,107 +949,279 @@ b-Sb⁻2-0-41-3 = b-Sb2-0-3-1 • (Swap ↑ ↑ • (Swap ↑ ↑ ↑ • ((K �
 ⟪ Bx0-34 ⟫ = b-Bx0-34
 ⟪ Bx3-024 ⟫ = b-Bx3-024
 ⟪ Bx0-3124 ⟫ = b-Bx0-3124
+⟪ Bx3-04 ⟫ = b-Bx3-04
+⟪ Bx0-314 ⟫ = b-Bx0-314
 ⟪ Bx0-32 ⟫ = b-Bx0-32
 ⟪ Bx3-042 ⟫ = b-Bx3-042
 ⟪ Bx0-3142 ⟫ = b-Bx0-3142
+⟪ Bx3-01 ⟫ = b-Bx3-01
+⟪ Bx0-321 ⟫ = b-Bx0-321
 ⟪ Bx3-014 ⟫ = b-Bx3-014
 ⟪ Bx0-3214 ⟫ = b-Bx0-3214
-⟪ Bx3-04 ⟫ = b-Bx3-04
 ⟪ Bx0-324 ⟫ = b-Bx0-324
 ⟪ Bx3-041 ⟫ = b-Bx3-041
 ⟪ Bx0-3241 ⟫ = b-Bx0-3241
+⟪ Bx0-341 ⟫ = b-Bx0-341
 ⟪ Bx3-012 ⟫ = b-Bx3-012
 ⟪ Bx0-3412 ⟫ = b-Bx0-3412
+⟪ Bx0-342 ⟫ = b-Bx0-342
 ⟪ Bx3-021 ⟫ = b-Bx3-021
 ⟪ Bx0-3421 ⟫ = b-Bx0-3421
 ⟪ Bx0-41 ⟫ = b-Bx0-41
+⟪ Bx4-02 ⟫ = b-Bx4-02
+⟪ Bx0-412 ⟫ = b-Bx0-412
 ⟪ Bx0-43 ⟫ = b-Bx0-43
 ⟪ Bx4-023 ⟫ = b-Bx4-023
 ⟪ Bx0-4123 ⟫ = b-Bx0-4123
+⟪ Bx4-03 ⟫ = b-Bx4-03
+⟪ Bx0-413 ⟫ = b-Bx0-413
 ⟪ Bx0-42 ⟫ = b-Bx0-42
 ⟪ Bx4-032 ⟫ = b-Bx4-032
 ⟪ Bx0-4132 ⟫ = b-Bx0-4132
+⟪ Bx4-01 ⟫ = b-Bx4-01
+⟪ Bx0-421 ⟫ = b-Bx0-421
 ⟪ Bx4-013 ⟫ = b-Bx4-013
 ⟪ Bx0-4213 ⟫ = b-Bx0-4213
-⟪ Bx4-03 ⟫ = b-Bx4-03
 ⟪ Bx0-423 ⟫ = b-Bx0-423
 ⟪ Bx4-031 ⟫ = b-Bx4-031
 ⟪ Bx0-4231 ⟫ = b-Bx0-4231
+⟪ Bx0-431 ⟫ = b-Bx0-431
 ⟪ Bx4-012 ⟫ = b-Bx4-012
 ⟪ Bx0-4312 ⟫ = b-Bx0-4312
 ⟪ Bx4-021 ⟫ = b-Bx4-021
 ⟪ Bx0-4321 ⟫ = b-Bx0-4321
 ⟪ Bx1-0234 ⟫ = b-Bx1-0234
+⟪ Bx1-0423 ⟫ = b-Bx1-0423
+⟪ Bx1-20 ⟫ = b-Bx1-20
 ⟪ Bx2-14 ⟫ = b-Bx2-14
 ⟪ Bx1-204 ⟫ = b-Bx1-204
-⟪ Bx1-234 ⟫ = b-Bx1-234
 ⟪ Bx2-10 ⟫ = b-Bx2-10
+⟪ Bx1-230 ⟫ = b-Bx1-230
+⟪ Bx1-234 ⟫ = b-Bx1-234
 ⟪ Bx1-240 ⟫ = b-Bx1-240
+⟪ Bx2-130 ⟫ = b-Bx2-130
+⟪ Bx1-2430 ⟫ = b-Bx1-2430
+⟪ Bx3-12 ⟫ = b-Bx3-12
+⟪ Bx1-302 ⟫ = b-Bx1-302
 ⟪ Bx3-14 ⟫ = b-Bx3-14
 ⟪ Bx1-304 ⟫ = b-Bx1-304
-⟪ Bx1-324 ⟫ = b-Bx1-324
 ⟪ Bx3-10 ⟫ = b-Bx3-10
+⟪ Bx1-320 ⟫ = b-Bx1-320
+⟪ Bx1-324 ⟫ = b-Bx1-324
 ⟪ Bx1-340 ⟫ = b-Bx1-340
+⟪ Bx1-342 ⟫ = b-Bx1-342
+⟪ Bx4-12 ⟫ = b-Bx4-12
+⟪ Bx1-402 ⟫ = b-Bx1-402
 ⟪ Bx4-13 ⟫ = b-Bx4-13
 ⟪ Bx1-403 ⟫ = b-Bx1-403
+⟪ Bx4-10 ⟫ = b-Bx4-10
+⟪ Bx1-420 ⟫ = b-Bx1-420
+⟪ Bx1-43 ⟫ = b-Bx1-43
+⟪ Bx4-103 ⟫ = b-Bx4-103
+⟪ Bx1-4203 ⟫ = b-Bx1-4203
 ⟪ Bx1-423 ⟫ = b-Bx1-423
+⟪ Bx1-430 ⟫ = b-Bx1-430
 ⟪ Bx2-0134 ⟫ = b-Bx2-0134
 ⟪ Bx2-0143 ⟫ = b-Bx2-0143
+⟪ Bx2-0314 ⟫ = b-Bx2-0314
 ⟪ Bx2-0341 ⟫ = b-Bx2-0341
 ⟪ Bx2-0413 ⟫ = b-Bx2-0413
+⟪ Bx2-0431 ⟫ = b-Bx2-0431
 ⟪ Bx2-1034 ⟫ = b-Bx2-1034
 ⟪ Bx2-1304 ⟫ = b-Bx2-1304
 ⟪ Bx2-1340 ⟫ = b-Bx2-1340
+⟪ Bx2-1430 ⟫ = b-Bx2-1430
 ⟪ Bx2-30 ⟫ = b-Bx2-30
+⟪ Bx3-21 ⟫ = b-Bx3-21
+⟪ Bx2-301 ⟫ = b-Bx2-301
+⟪ Bx2-34 ⟫ = b-Bx2-34
+⟪ Bx3-214 ⟫ = b-Bx3-214
+⟪ Bx2-3014 ⟫ = b-Bx2-3014
+⟪ Bx3-24 ⟫ = b-Bx3-24
+⟪ Bx2-304 ⟫ = b-Bx2-304
 ⟪ Bx2-31 ⟫ = b-Bx2-31
 ⟪ Bx3-241 ⟫ = b-Bx3-241
 ⟪ Bx2-3041 ⟫ = b-Bx2-3041
 ⟪ Bx3-20 ⟫ = b-Bx3-20
 ⟪ Bx2-310 ⟫ = b-Bx2-310
+⟪ Bx3-204 ⟫ = b-Bx3-204
+⟪ Bx2-3104 ⟫ = b-Bx2-3104
+⟪ Bx2-314 ⟫ = b-Bx2-314
 ⟪ Bx3-240 ⟫ = b-Bx3-240
 ⟪ Bx2-3140 ⟫ = b-Bx2-3140
 ⟪ Bx2-340 ⟫ = b-Bx2-340
+⟪ Bx3-201 ⟫ = b-Bx3-201
+⟪ Bx2-3401 ⟫ = b-Bx2-3401
+⟪ Bx2-341 ⟫ = b-Bx2-341
 ⟪ Bx3-210 ⟫ = b-Bx3-210
 ⟪ Bx2-3410 ⟫ = b-Bx2-3410
+⟪ Bx2-40 ⟫ = b-Bx2-40
+⟪ Bx4-21 ⟫ = b-Bx4-21
+⟪ Bx2-401 ⟫ = b-Bx2-401
 ⟪ Bx2-43 ⟫ = b-Bx2-43
 ⟪ Bx4-213 ⟫ = b-Bx4-213
 ⟪ Bx2-4013 ⟫ = b-Bx2-4013
+⟪ Bx4-23 ⟫ = b-Bx4-23
+⟪ Bx2-403 ⟫ = b-Bx2-403
+⟪ Bx2-41 ⟫ = b-Bx2-41
+⟪ Bx4-231 ⟫ = b-Bx4-231
+⟪ Bx2-4031 ⟫ = b-Bx2-4031
+⟪ Bx4-20 ⟫ = b-Bx4-20
+⟪ Bx2-410 ⟫ = b-Bx2-410
 ⟪ Bx4-203 ⟫ = b-Bx4-203
 ⟪ Bx2-4103 ⟫ = b-Bx2-4103
+⟪ Bx4-230 ⟫ = b-Bx4-230
+⟪ Bx2-4130 ⟫ = b-Bx2-4130
+⟪ Bx2-430 ⟫ = b-Bx2-430
+⟪ Bx4-201 ⟫ = b-Bx4-201
+⟪ Bx2-4301 ⟫ = b-Bx2-4301
+⟪ Bx2-431 ⟫ = b-Bx2-431
 ⟪ Bx3-0124 ⟫ = b-Bx3-0124
+⟪ Bx3-0142 ⟫ = b-Bx3-0142
+⟪ Bx3-0214 ⟫ = b-Bx3-0214
+⟪ Bx3-0241 ⟫ = b-Bx3-0241
 ⟪ Bx3-0412 ⟫ = b-Bx3-0412
+⟪ Bx3-0421 ⟫ = b-Bx3-0421
 ⟪ Bx3-1024 ⟫ = b-Bx3-1024
+⟪ Bx3-1042 ⟫ = b-Bx3-1042
 ⟪ Bx3-1204 ⟫ = b-Bx3-1204
 ⟪ Bx3-1240 ⟫ = b-Bx3-1240
+⟪ Bx3-1402 ⟫ = b-Bx3-1402
+⟪ Bx3-1420 ⟫ = b-Bx3-1420
+⟪ Bx3-2014 ⟫ = b-Bx3-2014
+⟪ Bx3-2041 ⟫ = b-Bx3-2041
+⟪ Bx3-2104 ⟫ = b-Bx3-2104
 ⟪ Bx3-2140 ⟫ = b-Bx3-2140
+⟪ Bx3-2401 ⟫ = b-Bx3-2401
 ⟪ Bx3-2410 ⟫ = b-Bx3-2410
+⟪ Bx3-40 ⟫ = b-Bx3-40
 ⟪ Bx3-42 ⟫ = b-Bx3-42
 ⟪ Bx4-312 ⟫ = b-Bx4-312
 ⟪ Bx3-4012 ⟫ = b-Bx3-4012
+⟪ Bx4-32 ⟫ = b-Bx4-32
+⟪ Bx3-402 ⟫ = b-Bx3-402
+⟪ Bx3-41 ⟫ = b-Bx3-41
+⟪ Bx4-321 ⟫ = b-Bx4-321
+⟪ Bx3-4021 ⟫ = b-Bx3-4021
+⟪ Bx4-30 ⟫ = b-Bx4-30
+⟪ Bx3-410 ⟫ = b-Bx3-410
 ⟪ Bx4-302 ⟫ = b-Bx4-302
 ⟪ Bx3-4102 ⟫ = b-Bx3-4102
+⟪ Bx3-412 ⟫ = b-Bx3-412
+⟪ Bx4-320 ⟫ = b-Bx4-320
+⟪ Bx3-4120 ⟫ = b-Bx3-4120
+⟪ Bx3-420 ⟫ = b-Bx3-420
+⟪ Bx4-301 ⟫ = b-Bx4-301
+⟪ Bx3-4201 ⟫ = b-Bx3-4201
+⟪ Bx4-31 ⟫ = b-Bx4-31
+⟪ Bx3-421 ⟫ = b-Bx3-421
+⟪ Bx4-310 ⟫ = b-Bx4-310
+⟪ Bx3-4210 ⟫ = b-Bx3-4210
 ⟪ Bx4-0123 ⟫ = b-Bx4-0123
+⟪ Bx4-0213 ⟫ = b-Bx4-0213
+⟪ Bx4-0231 ⟫ = b-Bx4-0231
+⟪ Bx4-0312 ⟫ = b-Bx4-0312
+⟪ Bx4-0321 ⟫ = b-Bx4-0321
 ⟪ Bx4-1023 ⟫ = b-Bx4-1023
 ⟪ Bx4-1203 ⟫ = b-Bx4-1203
+⟪ Bx4-1230 ⟫ = b-Bx4-1230
+⟪ Bx4-1302 ⟫ = b-Bx4-1302
+⟪ Bx4-1320 ⟫ = b-Bx4-1320
+⟪ Bx4-2031 ⟫ = b-Bx4-2031
+⟪ Bx4-2103 ⟫ = b-Bx4-2103
+⟪ Bx4-2130 ⟫ = b-Bx4-2130
+⟪ Bx4-2301 ⟫ = b-Bx4-2301
+⟪ Bx4-2310 ⟫ = b-Bx4-2310
+⟪ Bx4-3012 ⟫ = b-Bx4-3012
+⟪ Bx4-3021 ⟫ = b-Bx4-3021
+⟪ Bx4-3102 ⟫ = b-Bx4-3102
+⟪ Bx4-3120 ⟫ = b-Bx4-3120
+⟪ Bx4-3210 ⟫ = b-Bx4-3210
 ⟪ Bx⁻2-03 ⟫ = b-Bx⁻2-03
 ⟪ Bx⁻0-213 ⟫ = b-Bx⁻0-213
 ⟪ Bx⁻2-0413 ⟫ = b-Bx⁻2-0413
+⟪ Sb0-1-2-3 ⟫ = b-Sb0-1-2-3
 ⟪ Sb0-1-3-2 ⟫ = b-Sb0-1-3-2
 ⟪ Sb⁻0-1-3-2 ⟫ = b-Sb⁻0-1-3-2
 ⟪ Sb0-1-42-3 ⟫ = b-Sb0-1-42-3
+⟪ Sb⁻0-1-2-3 ⟫ = b-Sb⁻0-1-2-3
+⟪ Sb0-1-43-2 ⟫ = b-Sb0-1-43-2
 ⟪ Sb0-2-1-3 ⟫ = b-Sb0-2-1-3
 ⟪ Sb⁻0-2-1-3 ⟫ = b-Sb⁻0-2-1-3
 ⟪ Sb0-2-43-1 ⟫ = b-Sb0-2-43-1
+⟪ Sb0-3-1-2 ⟫ = b-Sb0-3-1-2
+⟪ Sb⁻0-3-1-2 ⟫ = b-Sb⁻0-3-1-2
+⟪ Sb0-3-42-1 ⟫ = b-Sb0-3-42-1
+⟪ Sb0-4-1-2 ⟫ = b-Sb0-4-1-2
+⟪ Sb0-4-2-1 ⟫ = b-Sb0-4-2-1
+⟪ Sb0-4-3-1 ⟫ = b-Sb0-4-3-1
+⟪ Sb⁻0-4-3-1 ⟫ = b-Sb⁻0-4-3-1
+⟪ Sb0-4-21-3 ⟫ = b-Sb0-4-21-3
+⟪ Sb⁻0-4-2-1 ⟫ = b-Sb⁻0-4-2-1
+⟪ Sb0-4-31-2 ⟫ = b-Sb0-4-31-2
+⟪ Sb⁻0-4-1-2 ⟫ = b-Sb⁻0-4-1-2
+⟪ Sb0-4-32-1 ⟫ = b-Sb0-4-32-1
+⟪ Sb1-0-3-2 ⟫ = b-Sb1-0-3-2
+⟪ Sb⁻1-0-3-2 ⟫ = b-Sb⁻1-0-3-2
+⟪ Sb1-0-42-3 ⟫ = b-Sb1-0-42-3
+⟪ Sb1-2-0-3 ⟫ = b-Sb1-2-0-3
+⟪ Sb⁻1-2-0-3 ⟫ = b-Sb⁻1-2-0-3
+⟪ Sb1-2-43-0 ⟫ = b-Sb1-2-43-0
+⟪ Sb1-4-3-0 ⟫ = b-Sb1-4-3-0
+⟪ Sb⁻1-4-3-0 ⟫ = b-Sb⁻1-4-3-0
+⟪ Sb1-4-20-3 ⟫ = b-Sb1-4-20-3
 ⟪ Sb2-0-3-1 ⟫ = b-Sb2-0-3-1
 ⟪ Sb⁻2-0-3-1 ⟫ = b-Sb⁻2-0-3-1
 ⟪ Sb2-0-41-3 ⟫ = b-Sb2-0-41-3
+⟪ Sb2-1-0-3 ⟫ = b-Sb2-1-0-3
+⟪ Sb⁻2-1-0-3 ⟫ = b-Sb⁻2-1-0-3
+⟪ Sb2-1-43-0 ⟫ = b-Sb2-1-43-0
+⟪ Sb2-4-3-1 ⟫ = b-Sb2-4-3-1
+⟪ Sb⁻2-4-3-1 ⟫ = b-Sb⁻2-4-3-1
+⟪ Sb2-4-01-3 ⟫ = b-Sb2-4-01-3
+⟪ Sb2-4-3-0 ⟫ = b-Sb2-4-3-0
+⟪ Sb⁻2-4-3-0 ⟫ = b-Sb⁻2-4-3-0
+⟪ Sb2-4-10-3 ⟫ = b-Sb2-4-10-3
 ⟪ Sb3-0-4-2 ⟫ = b-Sb3-0-4-2
 ⟪ Sb⁻3-0-4-2 ⟫ = b-Sb⁻3-0-4-2
 ⟪ Sb3-0-12-4 ⟫ = b-Sb3-0-12-4
 ⟪ Sb3-0-2-1 ⟫ = b-Sb3-0-2-1
+⟪ Sb3-0-4-1 ⟫ = b-Sb3-0-4-1
+⟪ Sb⁻3-0-4-1 ⟫ = b-Sb⁻3-0-4-1
+⟪ Sb3-0-21-4 ⟫ = b-Sb3-0-21-4
 ⟪ Sb⁻3-0-2-1 ⟫ = b-Sb⁻3-0-2-1
 ⟪ Sb3-0-41-2 ⟫ = b-Sb3-0-41-2
+⟪ Sb3-1-0-2 ⟫ = b-Sb3-1-0-2
+⟪ Sb3-1-4-2 ⟫ = b-Sb3-1-4-2
+⟪ Sb⁻3-1-4-2 ⟫ = b-Sb⁻3-1-4-2
+⟪ Sb3-1-02-4 ⟫ = b-Sb3-1-02-4
+⟪ Sb⁻3-1-0-2 ⟫ = b-Sb⁻3-1-0-2
+⟪ Sb3-1-42-0 ⟫ = b-Sb3-1-42-0
+⟪ Sb3-4-2-1 ⟫ = b-Sb3-4-2-1
+⟪ Sb⁻3-4-2-1 ⟫ = b-Sb⁻3-4-2-1
+⟪ Sb3-4-01-2 ⟫ = b-Sb3-4-01-2
 ⟪ Sb4-0-3-2 ⟫ = b-Sb4-0-3-2
 ⟪ Sb⁻4-0-3-2 ⟫ = b-Sb⁻4-0-3-2
 ⟪ Sb4-0-12-3 ⟫ = b-Sb4-0-12-3
+⟪ Sb4-0-2-1 ⟫ = b-Sb4-0-2-1
+⟪ Sb4-0-3-1 ⟫ = b-Sb4-0-3-1
+⟪ Sb⁻4-0-3-1 ⟫ = b-Sb⁻4-0-3-1
+⟪ Sb4-0-21-3 ⟫ = b-Sb4-0-21-3
+⟪ Sb⁻4-0-2-1 ⟫ = b-Sb⁻4-0-2-1
+⟪ Sb4-0-31-2 ⟫ = b-Sb4-0-31-2
+⟪ Sb4-1-0-2 ⟫ = b-Sb4-1-0-2
+⟪ Sb4-1-0-3 ⟫ = b-Sb4-1-0-3
+⟪ Sb4-1-3-2 ⟫ = b-Sb4-1-3-2
+⟪ Sb⁻4-1-3-2 ⟫ = b-Sb⁻4-1-3-2
+⟪ Sb4-1-02-3 ⟫ = b-Sb4-1-02-3
+⟪ Sb⁻4-1-0-3 ⟫ = b-Sb⁻4-1-0-3
+⟪ Sb4-1-23-0 ⟫ = b-Sb4-1-23-0
+⟪ Sb⁻4-1-0-2 ⟫ = b-Sb⁻4-1-0-2
+⟪ Sb4-1-32-0 ⟫ = b-Sb4-1-32-0
+⟪ Sb4-2-0-3 ⟫ = b-Sb4-2-0-3
+⟪ Sb4-2-1-3 ⟫ = b-Sb4-2-1-3
+⟪ Sb⁻4-2-1-3 ⟫ = b-Sb⁻4-2-1-3
+⟪ Sb4-2-03-1 ⟫ = b-Sb4-2-03-1
+⟪ Sb⁻4-2-0-3 ⟫ = b-Sb⁻4-2-0-3
+⟪ Sb4-2-13-0 ⟫ = b-Sb4-2-13-0
 ⟪ Sb⁻2-0-41-3 ⟫ = b-Sb⁻2-0-41-3

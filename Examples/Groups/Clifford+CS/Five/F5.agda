@@ -24,16 +24,15 @@ open import Word.Base using ([_]ʷ ; _•_)
 open import Notations using (₄ ; ₄₊)
 
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
-open import Examples.Groups.Clifford+CS.Completeness using (Complete)
+open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws)
 open import Examples.Groups.Clifford+CS.MultiControlled using (top)
 open import Examples.Groups.Clifford+CS.Lambda using (Xᵗ ; λ⁰ ; λ¹)
 open import Examples.Groups.Clifford+CS.Lambda.Split using (F5 ; split)
 open import Examples.Groups.Clifford+CS.Five.Rules using (_⊢ₓ_≈_)
 open import Examples.Groups.Clifford+CS.Five.Chain
-open import Examples.Groups.Clifford+CS.Five.D.D002 using (lem-F5-01 ; lem-F5-12)
-open import Examples.Groups.Clifford+CS.Five.D.D003 using (lem-F5-23)
+open import Examples.Groups.Clifford+CS.Five.D.D001 using (lem-F5-01 ; lem-F5-12 ; lem-F5-23)
 
-f5 : Complete 4 → F5
+f5 : Ws → F5
 f5 c4 = record
   { cs₀₁ = sym (trans (by-assoc Eq.refl) (lem-F5-01 c4))
   ; cs₁₂ = sym (trans (by-assoc Eq.refl) (lem-F5-12 c4))
@@ -41,5 +40,5 @@ f5 c4 = record
   }
 
 -- The λ-calculus (ii) at every width from five on.
-split₅ : Complete 4 → ∀ {n} (g : Gen (₄₊ n)) → (suc (₄₊ n)) ⊢ₓ top [ g ]ʷ ≈ λ⁰ g • λ¹ g
+split₅ : Ws → ∀ {n} (g : Gen (₄₊ n)) → (suc (₄₊ n)) ⊢ₓ top [ g ]ʷ ≈ λ⁰ g • λ¹ g
 split₅ c4 = split (f5 c4)

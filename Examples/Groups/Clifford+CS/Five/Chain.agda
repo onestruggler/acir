@@ -31,7 +31,6 @@ import Presentation.Base as PB
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Tools using (module Tools)
 open import Examples.Groups.Clifford+CS.Canonical using (can ; can-≈)
-open import Examples.Groups.Clifford+CS.Place using (↑ᵏ-↑)
 open import Examples.Groups.Clifford+CS.Five.Rules
 
 open import Examples.Groups.Clifford+CS.Five.Letters public
@@ -39,6 +38,15 @@ open import Examples.Groups.Clifford+CS.Five.Lines 5 Mac ⟪_⟫ public
 private
   variable
     n : ℕ
+
+-- As Place.↑ᵏ-↑; proved here so that the derivations, which import this
+-- module, do not load Place and with it the development below four
+-- wires.
+private
+  ↑ᵏ-↑ : (v : Circuit n) (k : ℕ) → (v ↑ᵏ k) ↑ ≡ v ↑ᵏ (suc k)
+  ↑ᵏ-↑ [ g ]ʷ  k = Eq.refl
+  ↑ᵏ-↑ ε       k = Eq.refl
+  ↑ᵏ-↑ (u • v) k = Eq.cong₂ _•_ (↑ᵏ-↑ u k) (↑ᵏ-↑ v k)
 
 ------------------------------------------------------------------------
 -- The structural commutation at any split, in the old theory

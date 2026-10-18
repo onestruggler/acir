@@ -13,10 +13,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Examples.Groups.Clifford+CS.Completeness using (Complete)
+open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws)
 open import Examples.Groups.Clifford+CS.Five.Transport using (F1)
 
-module Examples.Groups.Clifford+CS.Five.LamWords (c4 : Complete 4) (F : F1) where
+module Examples.Groups.Clifford+CS.Five.LamWords (c4 : Ws) (F : F1) where
 
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using ([_]ʷ ; ε ; _•_)

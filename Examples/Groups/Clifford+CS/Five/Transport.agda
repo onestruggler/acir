@@ -32,7 +32,8 @@ import Presentation.Base as PB
 
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Tools using (module Tools)
-open import Examples.Groups.Clifford+CS.Completeness using (Complete ; complete₁)
+open import Examples.Groups.Clifford+CS.Completeness using (complete₁)
+open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws)
 open import Examples.Groups.Clifford+CS.SemanticSteps using (module Below)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ ; λ⁰ ; λ¹ʷ ; λ⁰ʷ ; Xᵗ)
 open import Examples.Groups.Clifford+CS.Five.Rules
@@ -144,7 +145,7 @@ ap₂₂ CS-gate (I-gen) = _
 -- rule of three or four wires, and that of a three-wire equation on no
 -- item of a four-wire rule.
 
-module Low (c4 : Complete 4)
+module Low (c4 : Ws)
   (f1₂ : ∀ {w v} → 2 SRel, w === v → 5 ⊢ₓ λ¹ʷ (w ↑ ↑) ≈ λ¹ʷ (v ↑ ↑))
   (f1₃ : ∀ {w v} → 1 SRel, w === v → 5 ⊢ₓ λ¹ʷ (w ↑ ↑ ↑) ≈ λ¹ʷ (v ↑ ↑ ↑))
   (f1₄ : ∀ {w v} → 0 SRel, w === v → 5 ⊢ₓ λ¹ʷ (w ↑ ↑ ↑ ↑) ≈ λ¹ʷ (v ↑ ↑ ↑ ↑)) where
@@ -175,7 +176,7 @@ module Low (c4 : Complete 4)
   transport² PB.right-unit    = PB.right-unit
   transport² (PB.axiom a)     = ax₂ a
 
-module Mid (c4 : Complete 4)
+module Mid (c4 : Ws)
   (f1₁ : ∀ {w v} → 3 SRel, w === v → 5 ⊢ₓ λ¹ʷ (w ↑) ≈ λ¹ʷ (v ↑))
   (f1₂ : ∀ {w v} → 2 SRel, w === v → 5 ⊢ₓ λ¹ʷ (w ↑ ↑) ≈ λ¹ʷ (v ↑ ↑))
   (f1₃ : ∀ {w v} → 1 SRel, w === v → 5 ⊢ₓ λ¹ʷ (w ↑ ↑ ↑) ≈ λ¹ʷ (v ↑ ↑ ↑))
@@ -200,7 +201,7 @@ module Mid (c4 : Complete 4)
   transport³ PB.right-unit    = PB.right-unit
   transport³ (PB.axiom a)     = ax₃ a
 
-module _ (c4 : Complete 4) (F : F1) where
+module _ (c4 : Ws) (F : F1) where
   open F1 F
 
   private
@@ -256,7 +257,7 @@ Xᵗ² (suc k) = lemma-cong↑ₓ (Xᵗ k • Xᵗ k) ε (Xᵗ² k)
   open Tools (5 XVRel,_===_)
   Xt = Xᵗ ₄
 
-module _ (c4 : Complete 4) (F : F1) where
+module _ (c4 : Ws) (F : F1) where
 
   transport⁰ : 4 ⊢ w ≈ v → 5 ⊢ₓ λ⁰ʷ w ≈ λ⁰ʷ v
   transport⁰ {w = w} {v} e = begin
