@@ -92,13 +92,17 @@ comb-unit : (L : Vec (State n) k) (i : Fin k) → comb L (tabulate (unit i)) ≈
 comb-unit (x ∷ L) zero    j = trans (cong (x j xor_) (comb-false L j)) (xor-identityʳ (x j))
 comb-unit (x ∷ L) (suc i) j = comb-unit L i j
 
+-- Coefficients to their combination is linear.
+comb-lin : (L : Vec (State m) k) → Lin (λ s → comb L (tabulate s))
+comb-lin L = record
+  { add  = λ s t i → trans (cong (λ c → comb L c i) (tab-⊕ s t))
+                       (comb-⊕ L (tabulate s) (tabulate t) i)
+  ; resp = λ e i → cong (λ c → comb L c i) (VecP.tabulate-cong e) }
+
 embL : (L : Vec (State m) k) → Indep L → Emb k m
 embL L ind = record
   { f   = λ s → comb L (tabulate s)
-  ; lin = record
-      { add  = λ s t i → trans (cong (λ c → comb L c i) (tab-⊕ s t))
-                           (comb-⊕ L (tabulate s) (tabulate t) i)
-      ; resp = λ e i → cong (λ c → comb L c i) (VecP.tabulate-cong e) }
+  ; lin = comb-lin L
   ; inj = λ s z i → trans (sym (VecP.lookup∘tabulate s i))
                      (trans (cong (λ c → lookup c i) (ind (tabulate s) z))
                        (VecP.lookup-replicate i false)) }
