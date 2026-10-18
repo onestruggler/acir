@@ -58,6 +58,7 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 | Decide an action's instances by one boolean on closed data, not `Eq.refl` per instance | `ProjectiveClifford/Qubit/Selinger/Soundness` | 344 → 3.3 s (+ 1.7 s in the new `LongRelations`) |
 | A pair equation's component proved once over variable words, not `Eq.cong proj₁ e` at particular words | `Independence/Qutrit-Clifford/V0Mat` | 149.6 → 8.2 s (1.57 → 1.06 GB) |
 | A function of a three-element type as the table of its values, not a computed power; an enumeration read back over variables, not under as-patterns | `Independence/Qutrit-Clifford/Weyl`, `Faithful` | 37.8 → 25.1 s (1.46 → 0.88 GB), 60.9 → 24.3 s |
+| A generated `refl` check stated over the original definition (not a module-application copy) at the very arguments its user passes | `Real-Clifford+CH-TwoLevel-Clement/Hard` | 48.8 → 9.2 s |
 | Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived`, `Qubit-Clifford/Relations/Rules/Figure5`, `Figure7` | 44.6 → 14.7 s (0.8 GB), 22.5 → 7.9 s, 22.8 → 9.2 s |
 
 - **A `with` normalises the goal before abstracting.** `with b ≟ c`
@@ -265,6 +266,24 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   variables does it instead. With `emb-pow` given the operator as the
   terms around it spell it (`ix (proj₂ Hᵍ)`, not a private alias `Hm`),
   `Faithful` went 60.9 → 24.3 s.
+- **A proof by `refl` is passed on only as the same term.**
+  `Real-Clifford+CH-TwoLevel-Clement/Hard` (48.8 s) spent 32 s in
+  `nf38-thm` and 8 s in `top-thm`, each passing a generated check
+  (`TreeNF38.t38-ok`, `TreeTop.top-ok`, decided by `refl` in 18 s and
+  8.5 s) to `Main.sound`, which ran it again. Two things differed. The
+  arguments: `Hard` passed `NFData.ic (nfData nf38)` and its own `g0`,
+  the trees their private `f2` and `f0`. And the head: each tree module
+  wrote `open Checker nfData (λ _ → false) using (checkT)`, `Main.sound`
+  named `Main`'s own `open Checker nfData allow`, and a module
+  application copies `checkT` under a new name each time. A first
+  attempt aligned the arguments only and changed nothing (48.8 → 48.2
+  s), since with different heads the syntactic check fails anyway and
+  both sides are evaluated. With both aligned it is 9.2 s: `sound` takes
+  its check over `Checker.checkT` itself, applied to its arguments (no
+  copy), the generator states each `-ok` at exactly the arguments `Hard`
+  passes (`NFData.ic (nfData nf38)`, `zero (suc zero)`, `Hard`'s
+  `g0`…`g3` made patterns), and the selections are named (`allowNone`,
+  `allowAll` in `Tree`) rather than written as a lambda in each place.
 - **One step function, not two copies.** `step-swap` restated
   `step-swap0`'s sixteen rules verbatim; it is now
   `step-swap-extra then step-swap0`. With `then` the extra rules are
@@ -314,22 +333,9 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   that definition at 7 s. `Clifford+CS/ThreeQubit` (27 s in the full
   run) profiles at 20.1 s, of which 17.9 s are miscellaneous (module
   applications, serialisation) and no definition over 0.7 s: nothing to
-  fix.
-- **Matching the indices of Clément's tree checks.**
-  `Real-Clifford+CH-TwoLevel-Clement/Hard` (48 s) spends 32 s in
-  `nf38-thm` and 8 s in `top-thm`, each passing a generated check
-  (`TreeNF38.t38-ok`, `TreeTop.top-ok`, decided there by `refl` in 18 s
-  and 8.5 s) to `Main.sound`: the check is run again. Leaving the two
-  indices to inference, and then writing them identically on both sides
-  (the generator stating `-ok` at `NFData.ic (nfData nf38)` and at
-  `zero (suc zero)`, `Hard`'s `g0`…`g3` made patterns), changed nothing
-  (48.8 → 48.2 s). The remaining difference is `checkT` itself: each
-  tree module writes `open Checker nfData (λ _ → false) using (checkT)`,
-  and `Main.sound`'s type names `Main`'s own `open Checker nfData allow`
-  — two module-application copies, unfolded and then evaluated to
-  compare. The fix would state `sound` and the `-ok` lemmas over the
-  original `Checker.checkT` applied to its arguments, or make `checkT`
-  opaque with `unfolding` where it must compute; not attempted.
+  fix. And `Faithful.inv-right₀` (10 s) is not its `with` on the
+  recursive call: projections instead measured the same back to back
+  (30.3/28.0 s against 29.8/28.0 s; reverted).
 - **One shared width for Real-Clifford+CH's Appendix A modules.**
   `Auxiliary/Move`'s `conj` takes 21 s, and splitting it into four steps
   with explicit types put the cost in the steps whose two sides spell
