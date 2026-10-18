@@ -471,3 +471,34 @@ A — as a closed six-wire equation (joint/b6.py) placed.  b6's windows
 are four-wire ones once the boxes are unfolded, except the box lemma
 box-tQ and (F0), five-wire lemmas weakened; so the switch rests on
 complete₄ too.
+
+## Branch clifford-cs has the step to every width (2026-10-18)
+
+clifford-cs proved Theorem S: `Stable.Theorem` (completeness of
+Stable.Rules at every width from completeness on four and five wires,
+both proved there) and `Stable.Presentation`.  Its rule set: Syntactics,
+AX, and the controlled versions λ(ck-tct), λ(lf), λ(hyb-sq), λ(hyb-yb) as
+five-wire rules (Five.Rules, used through Five.MissingInst's `missing`),
+plus the control schema over those (Stable.Rules).  The every-width
+design of the previous section is superseded there (its Stable/Transport
+inserts idle wires and settles the all-wire base facts on six to nine
+wires; Stable/Six derives b6).
+
+What v-office adds: **λ(ck-tct) derived** — joint/ckt2.py, by the
+paper's de-borrowing over TR2 transports, of the rule exactly as
+Syntactics states it (clifford-cs's notes: their de-borrowing reached
+only the Toff⁻¹ variant in the paper's spelling, so λ-ck-tct stayed a
+rule).  For clifford-cs to drop the rule, `m-ck-tct-0` of their Missing
+must be a derivation of `⟪ λʷ CKT.l ⟫ʷ ≈ ⟪ λʷ CKT.r ⟫ʷ` in Five.Rules
+without λ-ck-tct.  Two routes:
+- their pipeline: tr.py now records TR2 as the joint paper's `transport`
+  steps (el, er, t, b), which their lower5's transport_axiom canonicalises
+  onto the wires 0 1 to the same letters; but ckt2's other steps cite our
+  joint base's lemmas (F4-*, F5-*, S-sym-xt, box2, S2-*, L-CCZ-1), whose
+  names their joint base does not share — they would lower our whole
+  closure of F1-ck-tct@0 (our run_all, RUN_PARTS) or rename;
+- ours: Five/D (v-office) proves `lem-F1-ck-tctat0` in v-office's
+  Five.Rules (old rules, AX and the ctl schema; the ck-tct closure uses
+  no schema rule), so it embeds into their theory once the letters and
+  the AX statement agree (both come from the same Five/Letters spelling
+  scheme).
