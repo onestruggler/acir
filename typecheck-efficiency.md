@@ -7,6 +7,22 @@ own performance notes (Real-Clifford+CH's stored-matrix evaluations, the
 abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 `CLAUDE.md`; this file collects the general techniques.
 
+## Where things stand
+
+A from-scratch timing of every module at c93c2201 (188 minutes, with
+other Agda jobs on the machine) checked 1394 of 1405; the 11 failures
+are the files already failing (S3xC5's two, `Clifford/Qubit/Selinger/
+Placed` and the two modules it blocks, six stale `vqupit` slide files).
+Against the run at e56e9fbc the summed module time went 6718 → 4119 s
+and the modules over 20 s 53 → 32: the generated TopPad equivalences,
+the Bian–Selinger tactic ports (`Clifford+CS-3qubit` Step3/Step4 and
+Soundness, `Clifford+T-2qubit` Equations 43, 44, 46), `DecodingChecks`,
+the `Checks8` evaluation modules, and modules whose cost is spread
+(`Paper-V0/Lemmas`, `Lemma88/Easy`, LemmaA1's) or found below
+(`Auxiliary/Move`, `U33Di`, `Diamond`, `Weyl`, `Clifford+CS/Bridge`).
+Wall-clock figures from a chunk the watchdog killed are estimates only
+(marked approximate): rechecked alone, four of them were 2–8 s.
+
 ## Measuring
 
 - **Measure a module's own time, in CPU.** `agda --profile=modules`
@@ -411,6 +427,17 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   residues).
 
 ## Known costs without a cheap fix
+
+- **Positivity checking in `Real-Clifford+CH-TwoLevel/Diamond`.**
+  24 s of module time (the previous full run recorded 0, a measurement
+  artifact), of which `--profile=internal` puts 14.4 s in Positivity and
+  under 1 s in any one definition; `--lossy-unification` does nothing.
+  Bisected with truncated copies: the header and imports (11 s, all
+  loading) and everything before the final section — the record `Known`,
+  `stepH`, the `Route` module — cost no positivity time; it is all in
+  `diamond`'s where-block, which opens `Four` and applies `Route` twice,
+  its cases four times, `State` and `Trick`. Hiding `Known` from the
+  `open Four` takes 2.6 s of it; the rest was not pinned down.
 
 - **Rewrite-step functions over width-indexed generators.** Under
   `--cubical-compatible`, each clause of a step function matching long
