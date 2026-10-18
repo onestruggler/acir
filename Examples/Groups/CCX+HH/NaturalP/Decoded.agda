@@ -76,10 +76,9 @@ open import Examples.Groups.CCX+HH.NaturalP.AtomWin complete≤ k c complete-top
 
 module Aux = CT.Auxiliary (k + (c + 0))
 
-private
-  enough : 6 ≤ N
-  enough = NP.≤-trans (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n))))))
-    (NP.^-monoʳ-≤ 2 {4} {₄₊ (k + (c + 0))} (s≤s (s≤s (s≤s (s≤s z≤n)))))
+enough : 6 ≤ N
+enough = NP.≤-trans (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n))))))
+  (NP.^-monoʳ-≤ 2 {4} {₄₊ (k + (c + 0))} (s≤s (s≤s (s≤s (s≤s z≤n)))))
 
 ------------------------------------------------------------------------
 -- The decoder of edges
@@ -90,16 +89,15 @@ dE g = (atom ʷ) (plan N enough g)
 D : Word Aux.Edge → P.Circuit W
 D = dE ʷ
 
-private
-  D-atoms : ∀ u → D u ≡ (atom ʷ) ((plan N enough ʷ) u)
-  D-atoms [ g ]ʷ  = refl
-  D-atoms ε       = refl
-  D-atoms (u • v) = cong₂ _•_ (D-atoms u) (D-atoms v)
+D-atoms : ∀ u → D u ≡ (atom ʷ) ((plan N enough ʷ) u)
+D-atoms [ g ]ʷ  = refl
+D-atoms ε       = refl
+D-atoms (u • v) = cong₂ _•_ (D-atoms u) (D-atoms v)
 
-  atoms-act : ∀ w v → quantum (τ ((atom ʷ) w)) v ≡ actVʷ (read w) v
-  atoms-act [ p ]ʷ  v = decode-act (classify p) v
-  atoms-act ε       v = refl
-  atoms-act (u • w) v = trans (cong (quantum (τ ((atom ʷ) u))) (atoms-act w v)) (atoms-act u _)
+atoms-act : ∀ w v → quantum (τ ((atom ʷ) w)) v ≡ actVʷ (read w) v
+atoms-act [ p ]ʷ  v = decode-act (classify p) v
+atoms-act ε       v = refl
+atoms-act (u • w) v = trans (cong (quantum (τ ((atom ʷ) u))) (atoms-act w v)) (atoms-act u _)
 
 edge-act : ∀ g v → quantum (τ (dE g)) v ≡ actVʷ (Aux.e g) v
 edge-act g v = trans (atoms-act (plan N enough g) v)
@@ -114,68 +112,71 @@ D-act (u • w) v = trans (cong (quantum (τ (D u))) (D-act w v)) (D-act u _)
 ------------------------------------------------------------------------
 -- Frames of at most eight indices
 
-private
-  P : Fin N → State W
-  P = bits W
+P : Fin N → State W
+P = bits W
 
-  frameList : ∀ {r} → Vec (Fin N) r → Vec (State W) (r + 4)
-  frameList ix = map P ix ++ E4
+frameList : ∀ {r} → Vec (Fin N) r → Vec (State W) (r + 4)
+frameList ix = map P ix ++ E4
 
-  len-ok : ∀ {r} → r ≤ 8 → r + 4 ≤ ₄₊ (c + 0)
-  len-ok {r} le = NP.≤-trans (NP.+-monoˡ-≤ 4 (NP.≤-trans le (NP.≤-trans big (NP.≤-reflexive (sym (NP.+-identityʳ c))))))
-    (NP.≤-reflexive (NP.+-comm (c + 0) 4))
+len-ok : ∀ {r} → r ≤ 8 → r + 4 ≤ ₄₊ (c + 0)
+len-ok {r} le = NP.≤-trans (NP.+-monoˡ-≤ 4 (NP.≤-trans le (NP.≤-trans big (NP.≤-reflexive (sym (NP.+-identityʳ c))))))
+  (NP.≤-reflexive (NP.+-comm (c + 0) 4))
 
-  mkFrame : ∀ {r} (ix : Vec (Fin N) r) → r ≤ 8 → Σ (Word (AGen W)) λ B → Frame B (frameList ix)
-  mkFrame ix le = Framed.B fr , record { into = Framed.into fr ; e4-in = e4-span (map P ix) }
-    where
-    fr = frame k (c + 0) (frameList ix) (len-ok le)
+mkFrame : ∀ {r} (ix : Vec (Fin N) r) → r ≤ 8 → Σ (Word (AGen W)) λ B → Frame B (frameList ix)
+mkFrame ix le = Framed.B fr , record { into = Framed.into fr ; e4-in = e4-span (map P ix) }
+  where
+  fr = frame k (c + 0) (frameList ix) (len-ok le)
 
-  -- The property of an index: its state is in the span of the frame.
-  Q : ∀ {r} → Vec (Fin N) r → Fin N → Set
-  Q ix z = InSpan (frameList ix) (P z)
+-- The property of an index: its state is in the span of the frame.
+Q : ∀ {r} → Vec (Fin N) r → Fin N → Set
+Q ix z = InSpan (frameList ix) (P z)
 
-  small : ∀ {r} (ix : Vec (Fin N) r) → Small (Q ix)
-  small ix z lt = span-++ʳ (map P ix) (small-span (k + (c + 0)) z lt)
+small : ∀ {r} (ix : Vec (Fin N) r) → Small (Q ix)
+small ix z lt = span-++ʳ (map P ix) (small-span (k + (c + 0)) z lt)
 
-  in-ix : ∀ {r} (ix : Vec (Fin N) r) i → Q ix (lookup ix i)
-  in-ix ix i = span-++ˡ {xs = map P ix} E4
-    (subst (InSpan (map P ix)) (VecP.lookup-map i P ix) (elem-span (map P ix) i))
+in-ix : ∀ {r} (ix : Vec (Fin N) r) i → Q ix (lookup ix i)
+in-ix ix i = span-++ˡ {xs = map P ix} E4
+  (subst (InSpan (map P ix)) (VecP.lookup-map i P ix) (elem-span (map P ix) i))
 
-  -- Indices of edges, through the walk and the plans.
-  walk-all : ∀ (R : Fin N → Set) c w → AllW (GenQ R) w →
-    AllW (λ g → GenQ R (proj₂ g)) (proj₁ ((Aux.Theory.h ᵗ) c w))
-  walk-all R c [ y ]ʷ  q = q
-  walk-all R c ε       q = tt
-  walk-all R c (w • u) (qw , qu) with (Aux.Theory.h ᵗ) c w | walk-all R c w qw
-  ... | (w′ , c′) | iw with (Aux.Theory.h ᵗ) c′ u | walk-all R c′ u qu
-  ...   | (u′ , c″) | iu = iw , iu
+-- Indices of edges, through the walk and the plans.
+walk-all : ∀ (R : Fin N → Set) c w → AllW (GenQ R) w →
+  AllW (λ g → GenQ R (proj₂ g)) (proj₁ ((Aux.Theory.h ᵗ) c w))
+walk-all R c [ y ]ʷ  q = q
+walk-all R c ε       q = tt
+walk-all R c (w • u) (qw , qu) with (Aux.Theory.h ᵗ) c w | walk-all R c w qw
+... | (w′ , c′) | iw with (Aux.Theory.h ᵗ) c′ u | walk-all R c′ u qu
+...   | (u′ , c″) | iu = iw , iu
 
-  edges-atoms : ∀ (R : Fin N → Set) → Small R → (u : Word Aux.Edge) →
-    AllW (λ g → GenQ R (proj₂ g)) u → AllW (AtomQ R) ((plan N enough ʷ) u)
-  edges-atoms R sm [ g ]ʷ  q         = plan-args N enough R sm g q
-  edges-atoms R sm ε       q         = tt
-  edges-atoms R sm (u • v) (qu , qv) = edges-atoms R sm u qu , edges-atoms R sm v qv
+edges-atoms : ∀ (R : Fin N → Set) → Small R → (u : Word Aux.Edge) →
+  AllW (λ g → GenQ R (proj₂ g)) u → AllW (AtomQ R) ((plan N enough ʷ) u)
+edges-atoms R sm [ g ]ʷ  q         = plan-args N enough R sm g q
+edges-atoms R sm ε       q         = tt
+edges-atoms R sm (u • v) (qu , qv) = edges-atoms R sm u qu , edges-atoms R sm v qv
 
-  to-args : ∀ {r} (ix : Vec (Fin N) r) (w : Word (Atom N)) → AllW (AtomQ (Q ix)) w → AllArgsIn (frameList ix) w
-  to-args ix [ MM a b ]ʷ          q         = q
-  to-args ix [ XX a b x y _ _ ]ʷ  q         = q
-  to-args ix [ J a b x y _ _ _ ]ʷ q         = q
-  to-args ix ε                    q         = tt
-  to-args ix (u • v)              (qu , qv) = to-args ix u qu , to-args ix v qv
+to-args′ : ∀ {r} (xs : Vec (State W) r) (w : Word (Atom N)) →
+  AllW (AtomQ (λ z → InSpan xs (P z))) w → AllArgsIn xs w
+to-args′ xs [ MM a b ]ʷ          q         = q
+to-args′ xs [ XX a b x y _ _ ]ʷ  q         = q
+to-args′ xs [ J a b x y _ _ _ ]ʷ q         = q
+to-args′ xs ε                    q         = tt
+to-args′ xs (u • v)              (qu , qv) = to-args′ xs u qu , to-args′ xs v qv
 
-  -- Two edge words whose letters' indices lie in a frame, and which act
-  -- alike, decode to equal circuits.
-  in-frame : ∀ {r} (ix : Vec (Fin N) r) → r ≤ 8 → (u v : Word Aux.Edge) →
-    AllW (λ g → GenQ (Q ix) (proj₂ g)) u → AllW (λ g → GenQ (Q ix) (proj₂ g)) v →
-    TS.⟦ Aux.encode u ⟧ᵐ ≡ TS.⟦ Aux.encode v ⟧ᵐ → W ⊢ D u ≈ D v
-  in-frame ix le u v qu qv eq =
-    subst₂ (λ x y → W ⊢ x ≈ y) (sym (D-atoms u)) (sym (D-atoms v))
-      (atoms-complete (proj₂ (mkFrame ix le)) ((plan N enough ʷ) u) ((plan N enough ʷ) v)
-        (to-args ix ((plan N enough ʷ) u) (edges-atoms (Q ix) (small ix) u qu))
-        (to-args ix ((plan N enough ʷ) v) (edges-atoms (Q ix) (small ix) v qv))
-        (subst₂ (λ x y → interpret x ≡ interpret y) (D-atoms u) (D-atoms v)
-          (action⇒matrix {u = τ (D u)} {v = τ (D v)} λ x →
-            trans (D-act u x) (trans (same-action (Aux.encode u) (Aux.encode v) eq x) (sym (D-act v x))))))
+to-args : ∀ {r} (ix : Vec (Fin N) r) (w : Word (Atom N)) → AllW (AtomQ (Q ix)) w → AllArgsIn (frameList ix) w
+to-args ix = to-args′ (frameList ix)
+
+-- Two edge words whose letters' indices lie in a frame, and which act
+-- alike, decode to equal circuits.
+in-frame : ∀ {r} (ix : Vec (Fin N) r) → r ≤ 8 → (u v : Word Aux.Edge) →
+  AllW (λ g → GenQ (Q ix) (proj₂ g)) u → AllW (λ g → GenQ (Q ix) (proj₂ g)) v →
+  TS.⟦ Aux.encode u ⟧ᵐ ≡ TS.⟦ Aux.encode v ⟧ᵐ → W ⊢ D u ≈ D v
+in-frame ix le u v qu qv eq =
+  subst₂ (λ x y → W ⊢ x ≈ y) (sym (D-atoms u)) (sym (D-atoms v))
+    (atoms-complete (proj₂ (mkFrame ix le)) ((plan N enough ʷ) u) ((plan N enough ʷ) v)
+      (to-args ix ((plan N enough ʷ) u) (edges-atoms (Q ix) (small ix) u qu))
+      (to-args ix ((plan N enough ʷ) v) (edges-atoms (Q ix) (small ix) v qv))
+      (subst₂ (λ x y → interpret x ≡ interpret y) (D-atoms u) (D-atoms v)
+        (action⇒matrix {u = τ (D u)} {v = τ (D v)} λ x →
+          trans (D-act u x) (trans (same-action (Aux.encode u) (Aux.encode v) eq x) (sym (D-act v x))))))
 
 ------------------------------------------------------------------------
 -- The relations
