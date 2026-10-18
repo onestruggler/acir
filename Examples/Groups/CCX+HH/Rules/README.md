@@ -513,3 +513,36 @@ one width down, so it follows from completeness there and the ctrl
 lemma. The rest need the decoder to commute with the classical routing
 that brings indices together, as in Clément's Section 8. That is what
 remains.
+
+**What the induction step needs, as far as it is worked out.** The
+route is Clément's (his Section 8), with the translated calculus of
+`../Presentation.agda` in the role of his Theorem 4.10. Its pieces:
+
+1. **A decoder built from controlled gates.** Each auxiliary atom (a
+   sign pair `MM`, a double exchange `XX`, a mixed block `J`; see
+   `../GeneralN/DecodingPlans.agda`) becomes a gate under controls on
+   the other wires, in colours given by the atom's indices, placed by a
+   swap network. An atom whose indices differ in more bits needs a
+   classical routing circuit around it.
+2. **A calculus of multi-controlled gates.** This is the analogue of the
+   box lemmas of `../../Real-Clifford+CH/GeneralN`. It covers the order
+   of the controls (`dsym`, and its mixed-colour versions, which follow
+   from `dsym`, `opposite` and two-wire facts), opposite colours on a
+   common control (`opposite`), merging two colours (`split-w`), placement
+   by networks (`../../Symmetric-Prop/Frame`), and conjugation by an
+   uncontrolled circuit (`conj-ctrl`).
+3. **Recovery.** The decoded encoding of each gate is the gate (his
+   Lemma 8.7).
+4. **The decoded relations** (his Lemma 8.8), by induction on the width.
+   A relation whose indices share a wire value is a controlled relation
+   one width down; the rest need the decoder to commute with the
+   routing.
+5. **Base cases.** The ctrl lemma uses closed cores of up to eight
+   wires. So without explicit derivations of the cores that fill all
+   the wires, the step only starts at nine wires, and completeness on at
+   most eight wires stays a hypothesis. Clément's step starts at three
+   qubits because his Appendix D derives the small-width equations by
+   hand. The analogue here would need completeness on three wires (the
+   W(E8) case) and explicit derivations up to eight.
+
+Items 1, 3 and 4 are not started.
