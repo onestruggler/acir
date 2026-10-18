@@ -196,7 +196,7 @@ private
     (eqF a a' ∧ eqF b b' ∧ eqF k k') ∨ not (same₁ p p' k k')
 
   all-ok₁ : T (allP1 λ p → allP1 λ p' → all3 λ k → all3 λ k' → ok₁ p p' k k')
-  all-ok₁ = tt
+  all-ok₁ = _
 
   -- Read back over variables: under core₁'s patterns p@(a , b) the
   -- lambdas are instantiated at pairs, where ok₁ unfolds.
@@ -258,7 +258,7 @@ private
   cancel-ok a b u = eqF a b ∨ not (eqF (a F3.+ u) (b F3.+ u))
 
   all-cancel : T (all3 λ a → all3 λ b → all3 λ u → cancel-ok a b u)
-  all-cancel = tt
+  all-cancel = _
 
   +-cancelʳ : (a b u : ℤ ₚ) → a F3.+ u ≡ b F3.+ u → a ≡ b
   +-cancelʳ a b u e =
@@ -349,7 +349,7 @@ private
     (eqF a a' ∧ eqF b b') ∨ not (allP1 λ x → eqF (sform1 p x) (sform1 p' x))
 
   all-form : T (allP1 λ p → allP1 λ p' → form-ok p p')
-  all-form = tt
+  all-form = _
 
   ∧₂ : ∀ {x y} → T (x ∧ y) → T x × T y
   ∧₂ {true} {true} _ = tt , tt
@@ -479,17 +479,17 @@ inv-right₀ {ℕ.suc n} (gate₁ H-gate) = 4 ,
               (⊙-cong (ix-emb (proj₂ Hᵍ))
                 (≐-trans (ix-M [ gate₁ H-gate ]ʷ [ gate₁ H-gate ]ʷ)
                   (⊙-cong (ix-emb (proj₂ Hᵍ)) (ix-emb (proj₂ Hᵍ)))))))
-    (emb-pow {n = n} {k = 1} (ix (proj₂ Hᵍ)) (√3 ^ 4) (local-pow (proj₂ Hᵍ) (√3 ^ 4) tt))
+    (emb-pow {n = n} {k = 1} (ix (proj₂ Hᵍ)) (√3 ^ 4) (local-pow (proj₂ Hᵍ) (√3 ^ 4) _))
 inv-right₀ {ℕ.suc n} (gate₁ S-gate) = 0 ,
   ≐-trans (⊙-cong (ix-emb (proj₂ Sᵍ))
             (≐-trans (ix-M [ gate₁ S-gate ]ʷ [ gate₁ S-gate ]ʷ)
               (⊙-cong (ix-emb (proj₂ Sᵍ)) (ix-emb (proj₂ Sᵍ)))))
-    (emb-pow₃ {n = n} {k = 1} (ix (proj₂ Sᵍ)) (√3 ^ 0) (local-pow₃ (proj₂ Sᵍ) (√3 ^ 0) tt))
+    (emb-pow₃ {n = n} {k = 1} (ix (proj₂ Sᵍ)) (√3 ^ 0) (local-pow₃ (proj₂ Sᵍ) (√3 ^ 0) _))
 inv-right₀ {ℕ.suc (ℕ.suc n)} (gate₂ CZ-gate) = 0 ,
   ≐-trans (⊙-cong (ix-emb (proj₂ CZᵍ))
             (≐-trans (ix-M [ gate₂ CZ-gate ]ʷ [ gate₂ CZ-gate ]ʷ)
               (⊙-cong (ix-emb (proj₂ CZᵍ)) (ix-emb (proj₂ CZᵍ)))))
-    (emb-pow₃ {n = n} {k = 2} (ix (proj₂ CZᵍ)) (√3 ^ 0) (local-pow₃ (proj₂ CZᵍ) (√3 ^ 0) tt))
+    (emb-pow₃ {n = n} {k = 2} (ix (proj₂ CZᵍ)) (√3 ^ 0) (local-pow₃ (proj₂ CZᵍ) (√3 ^ 0) _))
 inv-right₀ (g ↥) with inv-right₀ g
 ... | k , e = k ,
   ≐-trans (⊙-cong (ix-up (proj₂ (M₀ g))) (M-↥ (inv₀ g)))

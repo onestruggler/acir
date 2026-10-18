@@ -47,19 +47,19 @@ module Sep-CF where
     using (module Separate)
 
   open Separate _SRel,_===_ CF 2
-    (λ { −² _ _ → check-some (λ _ → tt) _ _ tt
-       ; H² _ _ → check-some (λ _ → tt) _ _ tt
-       ; Z² _ _ → check-some (λ _ → tt) _ _ tt
-       ; F _ _ → check-some (λ _ → tt) _ _ tt
-       ; CX² _ _ → check-some (λ _ → tt) _ _ tt
-       ; B _ _ → check-some (λ _ → tt) _ _ tt
-       ; ZC _ _ → check-some (λ _ → tt) _ _ tt
-       ; CZr _ _ → check-some (λ _ → tt) _ _ tt
+    (λ { −² _ _ → check-some (λ _ → tt) _ _ _
+       ; H² _ _ → check-some (λ _ → tt) _ _ _
+       ; Z² _ _ → check-some (λ _ → tt) _ _ _
+       ; F _ _ → check-some (λ _ → tt) _ _ _
+       ; CX² _ _ → check-some (λ _ → tt) _ _ _
+       ; B _ _ → check-some (λ _ → tt) _ _ _
+       ; ZC _ _ → check-some (λ _ → tt) _ _ _
+       ; CZr _ _ → check-some (λ _ → tt) _ _ _
        ; CF ne _ → ⊥-elim (ne refl)
        ; I _ (s≤s (s≤s ())) })
 
   independent : Independent-axiom CF
-  independent = separates (s≤s (s≤s z≤n)) (apart _ _ tt)
+  independent = separates (s≤s (s≤s z≤n)) (apart _ _ _)
 
 ------------------------------------------------------------------------
 -- (CZr): [H := id]~
@@ -80,16 +80,16 @@ module Sep-CZr where
     using (module Separate)
 
   open Separate _SRel,_===_ CZr 2
-    (λ { −² _ _ → check-some (λ _ → tt) _ _ tt
-       ; H² _ _ → check-some (λ _ → tt) _ _ tt
-       ; Z² _ _ → check-some (λ _ → tt) _ _ tt
-       ; F _ _ → check-some (λ _ → tt) _ _ tt
-       ; CX² _ _ → check-some (λ _ → tt) _ _ tt
-       ; B _ _ → check-some (λ _ → tt) _ _ tt
-       ; ZC _ _ → check-some (λ _ → tt) _ _ tt
+    (λ { −² _ _ → check-some (λ _ → tt) _ _ _
+       ; H² _ _ → check-some (λ _ → tt) _ _ _
+       ; Z² _ _ → check-some (λ _ → tt) _ _ _
+       ; F _ _ → check-some (λ _ → tt) _ _ _
+       ; CX² _ _ → check-some (λ _ → tt) _ _ _
+       ; B _ _ → check-some (λ _ → tt) _ _ _
+       ; ZC _ _ → check-some (λ _ → tt) _ _ _
        ; CZr ne _ → ⊥-elim (ne refl)
-       ; CF _ _ → check-some (λ _ → tt) _ _ tt
+       ; CF _ _ → check-some (λ _ → tt) _ _ _
        ; I _ (s≤s (s≤s ())) })
 
   independent : Independent-axiom CZr
-  independent = separates (s≤s (s≤s z≤n)) (apart _ _ tt)
+  independent = separates (s≤s (s≤s z≤n)) (apart _ _ _)

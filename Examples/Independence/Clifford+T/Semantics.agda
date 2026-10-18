@@ -37,8 +37,8 @@ open Symmetry refl SWᵍ-ok
   using (module Theory)
 
 open Theory _SRel,_===_
-  (λ { ω⁸ → check 0 refl _ _ tt ; T⁸ → check 0 refl _ _ tt ; H² → check 0 refl _ _ tt
-     ; E → check 0 refl _ _ tt ; TX → check 0 refl _ _ tt ; CPh → check 0 refl _ _ tt
-     ; B → check 0 refl _ _ tt ; CZ → check 0 refl _ _ tt ; CSH → check 0 refl _ _ tt
-     ; HT² → check 0 refl _ _ tt ; HTH → check 0 refl _ _ tt })
+  (λ { ω⁸ → check 0 refl _ _ _ ; T⁸ → check 0 refl _ _ _ ; H² → check 0 refl _ _ _
+     ; E → check 0 refl _ _ _ ; TX → check 0 refl _ _ _ ; CPh → check 0 refl _ _ _
+     ; B → check 0 refl _ _ _ ; CZ → check 0 refl _ _ _ ; CSH → check 0 refl _ _ _
+     ; HT² → check 0 refl _ _ _ ; HTH → check 0 refl _ _ _ })
   public using (sound)

@@ -37,15 +37,15 @@ open Exact using (check ; module Symmetry)
 -- Every axiom, on its own wires: (C²T) and (C³T) on their operators'
 -- tables, the others as matrices.
 ax-ok : ∀ {n} {w v : Circuit n} → n SRel, w === v → ⟦ w ⟧ ≈ ⟦ v ⟧
-ax-ok ω⁸  = check 0 refl _ _ tt
-ax-ok X²  = check 0 refl _ _ tt
-ax-ok T⁸  = check 0 refl _ _ tt
-ax-ok TX  = check 0 refl _ _ tt
-ax-ok XC  = check 0 refl _ _ tt
-ax-ok B   = check 0 refl _ _ tt
-ax-ok ZC  = check 0 refl _ _ tt
-ax-ok CPh = check 0 refl _ _ tt
-ax-ok I   = check 0 refl _ _ tt
+ax-ok ω⁸  = check 0 refl _ _ _
+ax-ok X²  = check 0 refl _ _ _
+ax-ok T⁸  = check 0 refl _ _ _
+ax-ok TX  = check 0 refl _ _ _
+ax-ok XC  = check 0 refl _ _ _
+ax-ok B   = check 0 refl _ _ _
+ax-ok ZC  = check 0 refl _ _ _
+ax-ok CPh = check 0 refl _ _ _
+ax-ok I   = check 0 refl _ _ _
 ax-ok {w = w} {v} C²T =
   same-matrix w v (AI.by-relator (wmap ι⁻ w) (wmap ι⁻ v) refl refl refl)
 ax-ok {w = w} {v} C³T =

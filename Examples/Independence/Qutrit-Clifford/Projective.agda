@@ -49,7 +49,7 @@ SXᵍ = 0 , matOf λ { (a ∷ []) (b ∷ []) → δ₁ a (next b) * s b }
   s _                = 1#
 
 SXᵍ-value : Std.⟦ S • X ⟧ Std.≈ SXᵍ
-SXᵍ-value = Circuits.Exact.check Std.val 0 refl _ _ tt
+SXᵍ-value = Circuits.Exact.check Std.val 0 refl _ _ _
 
 module Sep-SS′ where
 
@@ -67,13 +67,13 @@ module Sep-SS′ where
     using (module Separate)
 
   open Separate _SRel,_===_ SS′ 1
-    (λ { ω¹² _ _ → check-some (λ _ → tt) _ _ tt
-       ; H⁴ _ _ → check-some (λ _ → tt) _ _ tt
-       ; S³ _ _ → check-some (λ _ → tt) _ _ tt
-       ; E _ _ → check-some (λ _ → tt) _ _ tt
+    (λ { ω¹² _ _ → check-some (λ _ → tt) _ _ _
+       ; H⁴ _ _ → check-some (λ _ → tt) _ _ _
+       ; S³ _ _ → check-some (λ _ → tt) _ _ _
+       ; E _ _ → check-some (λ _ → tt) _ _ _
        ; SS′ ne _ → ⊥-elim (ne refl)
        ; CPh _ (s≤s ()) ; KC _ (s≤s ()) ; CZ _ (s≤s ()) ; B _ (s≤s ())
        ; I _ (s≤s ()) })
 
   independent : Independent-axiom SS′
-  independent = separates (s≤s z≤n) (apart _ _ tt)
+  independent = separates (s≤s z≤n) (apart _ _ _)

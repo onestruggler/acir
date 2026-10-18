@@ -46,20 +46,20 @@ module Sep-CSr where
     using (module Separate)
 
   open Separate _SRel,_===_ CSr 2
-    (λ { ω⁸ _ _ → check-some (λ _ → tt) _ _ tt
-       ; H² _ _ → check-some (λ _ → tt) _ _ tt
-       ; S⁴ _ _ → check-some (λ _ → tt) _ _ tt
-       ; E _ _ → check-some (λ _ → tt) _ _ tt
-       ; CPh _ _ → check-some (λ _ → tt) _ _ tt
+    (λ { ω⁸ _ _ → check-some (λ _ → tt) _ _ _
+       ; H² _ _ → check-some (λ _ → tt) _ _ _
+       ; S⁴ _ _ → check-some (λ _ → tt) _ _ _
+       ; E _ _ → check-some (λ _ → tt) _ _ _
+       ; CPh _ _ → check-some (λ _ → tt) _ _ _
        ; CSr ne _ → ⊥-elim (ne refl)
-       ; B _ _ → check-some (λ _ → tt) _ _ tt
-       ; XCS _ _ → check-some (λ _ → tt) _ _ tt
-       ; CE _ _ → check-some (λ _ → tt) _ _ tt
+       ; B _ _ → check-some (λ _ → tt) _ _ _
+       ; XCS _ _ → check-some (λ _ → tt) _ _ _
+       ; CE _ _ → check-some (λ _ → tt) _ _ _
        ; I _ (s≤s (s≤s ())) ; SH₀ _ (s≤s (s≤s ())) ; SH₁ _ (s≤s (s≤s ()))
        ; SH₂ _ (s≤s (s≤s ())) ; SH₃ _ (s≤s (s≤s ())) })
 
   independent : Independent-axiom CSr
-  independent = separates (s≤s (s≤s z≤n)) (apart _ _ tt)
+  independent = separates (s≤s (s≤s z≤n)) (apart _ _ _)
 
 ------------------------------------------------------------------------
 -- (CE): [CS := CS • Z • Z ↑]~, Z on both wires
@@ -80,17 +80,17 @@ module Sep-CE where
     using (module Separate)
 
   open Separate _SRel,_===_ CE 2
-    (λ { ω⁸ _ _ → check-some (λ _ → tt) _ _ tt
-       ; H² _ _ → check-some (λ _ → tt) _ _ tt
-       ; S⁴ _ _ → check-some (λ _ → tt) _ _ tt
-       ; E _ _ → check-some (λ _ → tt) _ _ tt
-       ; CPh _ _ → check-some (λ _ → tt) _ _ tt
-       ; CSr _ _ → check-some (λ _ → tt) _ _ tt
-       ; B _ _ → check-some (λ _ → tt) _ _ tt
-       ; XCS _ _ → check-some (λ _ → tt) _ _ tt
+    (λ { ω⁸ _ _ → check-some (λ _ → tt) _ _ _
+       ; H² _ _ → check-some (λ _ → tt) _ _ _
+       ; S⁴ _ _ → check-some (λ _ → tt) _ _ _
+       ; E _ _ → check-some (λ _ → tt) _ _ _
+       ; CPh _ _ → check-some (λ _ → tt) _ _ _
+       ; CSr _ _ → check-some (λ _ → tt) _ _ _
+       ; B _ _ → check-some (λ _ → tt) _ _ _
+       ; XCS _ _ → check-some (λ _ → tt) _ _ _
        ; CE ne _ → ⊥-elim (ne refl)
        ; I _ (s≤s (s≤s ())) ; SH₀ _ (s≤s (s≤s ())) ; SH₁ _ (s≤s (s≤s ()))
        ; SH₂ _ (s≤s (s≤s ())) ; SH₃ _ (s≤s (s≤s ())) })
 
   independent : Independent-axiom CE
-  independent = separates (s≤s (s≤s z≤n)) (apart _ _ tt)
+  independent = separates (s≤s (s≤s z≤n)) (apart _ _ _)

@@ -194,51 +194,51 @@ opaque
   unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_
 
   gen₃ : (g : Gen 3) → Mat.mat (⟪ Sem.⟦ g ⟧₀ ⟫ ᵀ) ≡ ωs (c₃ g) (mapι (F₃ (ℰ₃ g)))
-  gen₃ (gate₀ ⌈ ω-gate ⌉) = eqMat-sound _ _ tt
-  gen₃ (gate₁ ⌈ H-gate ⌉) = eqMat-sound _ _ tt
-  gen₃ (gate₁ ⌈ S-gate ⌉) = eqMat-sound _ _ tt
-  gen₃ (gate₂ ⌈ CS-gate ⌉) = eqMat-sound _ _ tt
-  gen₃ (gate₂ swap) = eqMat-sound _ _ tt
-  gen₃ (gate₀ ⌈ ω-gate ⌉ ↥) = eqMat-sound _ _ tt
-  gen₃ (gate₁ ⌈ H-gate ⌉ ↥) = eqMat-sound _ _ tt
-  gen₃ (gate₁ ⌈ S-gate ⌉ ↥) = eqMat-sound _ _ tt
-  gen₃ (gate₂ ⌈ CS-gate ⌉ ↥) = eqMat-sound _ _ tt
-  gen₃ (gate₂ swap ↥) = eqMat-sound _ _ tt
-  gen₃ (gate₀ ⌈ ω-gate ⌉ ↥ ↥) = eqMat-sound _ _ tt
-  gen₃ (gate₁ ⌈ H-gate ⌉ ↥ ↥) = eqMat-sound _ _ tt
-  gen₃ (gate₁ ⌈ S-gate ⌉ ↥ ↥) = eqMat-sound _ _ tt
-  gen₃ (gate₀ ⌈ ω-gate ⌉ ↥ ↥ ↥) = eqMat-sound _ _ tt
+  gen₃ (gate₀ ⌈ ω-gate ⌉) = eqMat-sound _ _ _
+  gen₃ (gate₁ ⌈ H-gate ⌉) = eqMat-sound _ _ _
+  gen₃ (gate₁ ⌈ S-gate ⌉) = eqMat-sound _ _ _
+  gen₃ (gate₂ ⌈ CS-gate ⌉) = eqMat-sound _ _ _
+  gen₃ (gate₂ swap) = eqMat-sound _ _ _
+  gen₃ (gate₀ ⌈ ω-gate ⌉ ↥) = eqMat-sound _ _ _
+  gen₃ (gate₁ ⌈ H-gate ⌉ ↥) = eqMat-sound _ _ _
+  gen₃ (gate₁ ⌈ S-gate ⌉ ↥) = eqMat-sound _ _ _
+  gen₃ (gate₂ ⌈ CS-gate ⌉ ↥) = eqMat-sound _ _ _
+  gen₃ (gate₂ swap ↥) = eqMat-sound _ _ _
+  gen₃ (gate₀ ⌈ ω-gate ⌉ ↥ ↥) = eqMat-sound _ _ _
+  gen₃ (gate₁ ⌈ H-gate ⌉ ↥ ↥) = eqMat-sound _ _ _
+  gen₃ (gate₁ ⌈ S-gate ⌉ ↥ ↥) = eqMat-sound _ _ _
+  gen₃ (gate₀ ⌈ ω-gate ⌉ ↥ ↥ ↥) = eqMat-sound _ _ _
   gen₃ (gate₃ ⌈ () ⌉)
 
   gen₂ : (g : Gen 2) → Mat.mat (⟪ Sem.⟦ g ⟧₀ ⟫ ᵀ) ≡ ωs (c₂ g) (mapι (CSS.⟦ ℰ₂ g ⟧ᵐ))
-  gen₂ (gate₀ ⌈ ω-gate ⌉) = eqMat-sound _ _ tt
-  gen₂ (gate₁ ⌈ H-gate ⌉) = eqMat-sound _ _ tt
-  gen₂ (gate₁ ⌈ S-gate ⌉) = eqMat-sound _ _ tt
-  gen₂ (gate₂ ⌈ CS-gate ⌉) = eqMat-sound _ _ tt
-  gen₂ (gate₂ swap) = eqMat-sound _ _ tt
-  gen₂ (gate₀ ⌈ ω-gate ⌉ ↥) = eqMat-sound _ _ tt
-  gen₂ (gate₁ ⌈ H-gate ⌉ ↥) = eqMat-sound _ _ tt
-  gen₂ (gate₁ ⌈ S-gate ⌉ ↥) = eqMat-sound _ _ tt
-  gen₂ (gate₀ ⌈ ω-gate ⌉ ↥ ↥) = eqMat-sound _ _ tt
+  gen₂ (gate₀ ⌈ ω-gate ⌉) = eqMat-sound _ _ _
+  gen₂ (gate₁ ⌈ H-gate ⌉) = eqMat-sound _ _ _
+  gen₂ (gate₁ ⌈ S-gate ⌉) = eqMat-sound _ _ _
+  gen₂ (gate₂ ⌈ CS-gate ⌉) = eqMat-sound _ _ _
+  gen₂ (gate₂ swap) = eqMat-sound _ _ _
+  gen₂ (gate₀ ⌈ ω-gate ⌉ ↥) = eqMat-sound _ _ _
+  gen₂ (gate₁ ⌈ H-gate ⌉ ↥) = eqMat-sound _ _ _
+  gen₂ (gate₁ ⌈ S-gate ⌉ ↥) = eqMat-sound _ _ _
+  gen₂ (gate₀ ⌈ ω-gate ⌉ ↥ ↥) = eqMat-sound _ _ _
 
   gen₁ : (g : Gen 1) → Mat.mat (⟪ Sem.⟦ g ⟧₀ ⟫ ᵀ) ≡ ωs (c₁ g) (mapι (CSS.⟦ ℰ₁ g ⟧ᵐ))
-  gen₁ (gate₀ ⌈ ω-gate ⌉) = eqMat-sound _ _ tt
-  gen₁ (gate₁ ⌈ H-gate ⌉) = eqMat-sound _ _ tt
-  gen₁ (gate₁ ⌈ S-gate ⌉) = eqMat-sound _ _ tt
-  gen₁ (gate₀ ⌈ ω-gate ⌉ ↥) = eqMat-sound _ _ tt
+  gen₁ (gate₀ ⌈ ω-gate ⌉) = eqMat-sound _ _ _
+  gen₁ (gate₁ ⌈ H-gate ⌉) = eqMat-sound _ _ _
+  gen₁ (gate₁ ⌈ S-gate ⌉) = eqMat-sound _ _ _
+  gen₁ (gate₀ ⌈ ω-gate ⌉ ↥) = eqMat-sound _ _ _
 
   gen₀ : (g : Gen 0) → Mat.mat (⟪ Sem.⟦ g ⟧₀ ⟫ ᵀ) ≡ ωs (c₀ g) (mapι (CSS.⟦ ℰ₀ g ⟧ᵐ))
-  gen₀ (gate₀ ⌈ ω-gate ⌉) = eqMat-sound _ _ tt
+  gen₀ (gate₀ ⌈ ω-gate ⌉) = eqMat-sound _ _ _
 
   -- The scalar words are i times the identity.
   J₃-i : mapι (F₃ J₃) ≡ ωs 2 (mapι (CSS.𝕀 {8}))
-  J₃-i = eqMat-sound _ _ tt
+  J₃-i = eqMat-sound _ _ _
 
   J₂-i : mapι (CSS.⟦ J₂ ⟧ᵐ) ≡ ωs 2 (mapι (CSS.𝕀 {4}))
-  J₂-i = eqMat-sound _ _ tt
+  J₂-i = eqMat-sound _ _ _
 
   J₁-i : mapι (CSS.⟦ J₁ ⟧ᵐ) ≡ ωs 2 (mapι (CSS.𝕀 {2}))
-  J₁-i = eqMat-sound _ _ tt
+  J₁-i = eqMat-sound _ _ _
 
   J₀-i : mapι (CSS.⟦ J₀ ⟧ᵐ) ≡ ωs 2 (mapι (CSS.𝕀 {1}))
-  J₀-i = eqMat-sound _ _ tt
+  J₀-i = eqMat-sound _ _ _
