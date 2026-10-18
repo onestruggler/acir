@@ -195,17 +195,29 @@ private
   ok₁ p@(a , b) p'@(a' , b') k k' =
     (eqF a a' ∧ eqF b b' ∧ eqF k k') ∨ not (same₁ p p' k k')
 
-  all-ok₁ : T (allP1 λ p → allP1 λ p' → all3 λ k → all3 λ k' → ok₁ p p' k k')
-  all-ok₁ = _
+  -- Decided by refl on `≡ true`, which evaluates the boolean several
+  -- times faster than a T-proof as a whole definition (`tt` or `_`).
+  T-≡ : ∀ {b} → b ≡ true → T b
+  T-≡ refl = tt
 
-  -- Read back over variables: under core₁'s patterns p@(a , b) the
-  -- lambdas are instantiated at pairs, where ok₁ unfolds.
+  all-ok₁≡ : (allP1 λ p → allP1 λ p' → all3 λ k → all3 λ k' → ok₁ p p' k k') ≡ true
+  all-ok₁≡ = refl
+
+  -- Read back over a variable f, then applied to ok₁, from the `≡ true`
+  -- itself: with ok₁ in the lambdas Agda unfolds it to compare them, and
+  -- `T-≡ all-ok₁≡` at the call site would solve T-≡'s implicit through
+  -- `T ?b = T (…)`, evaluating the check again.
+  all4-sound : (f : Pauli1 → Pauli1 → ℤ ₚ → ℤ ₚ → Bool) →
+               (allP1 λ p → allP1 λ p' → all3 λ k → all3 λ k' → f p p' k k') ≡ true →
+               ∀ p p' k k' → T (f p p' k k')
+  all4-sound f e p p' k k' =
+    allFin-sound (f p p' k)
+      (allFin-sound (λ k → all3 λ k' → f p p' k k')
+        (allP1-sound (λ p' → all3 λ k → all3 λ k' → f p p' k k')
+          (allP1-sound (λ p → allP1 λ p' → all3 λ k → all3 λ k' → f p p' k k') (T-≡ e) p) p') k) k'
+
   ok₁-all : ∀ p p' k k' → T (ok₁ p p' k k')
-  ok₁-all p p' k k' =
-    allFin-sound (ok₁ p p' k)
-      (allFin-sound (λ k → all3 λ k' → ok₁ p p' k k')
-        (allP1-sound (λ p' → all3 λ k → all3 λ k' → ok₁ p p' k k')
-          (allP1-sound (λ p → allP1 λ p' → all3 λ k → all3 λ k' → ok₁ p p' k k') all-ok₁ p) p') k) k'
+  ok₁-all = all4-sound ok₁ all-ok₁≡
 
   ∨-l : ∀ {x y} → T (x ∨ not y) → T y → T x
   ∨-l {true}          _ _ = tt
