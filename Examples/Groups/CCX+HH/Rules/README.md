@@ -443,28 +443,29 @@ wire lower, under an idle wire on top (`CtrlComm`).
 **The schema.** By the spin-cover argument above, rules on at most four
 wires are incomplete from seven wires on, so "complete on at most eight
 wires" is false for NaturalP alone. `NaturalP/Schema` adds a schema:
-every controlled version of `CCX • CCX = ε`, that is, every word built
-from `CCX • CCX` on four wires (with idle wires on top) by `ctrl` and
-`_↑` is the identity (`CtrlCCX`). This is what the spin cover asks for.
-`ctrl` lifts to the inclusion of the spin group of the controlled half,
-which sends −1 to −1, and the square of a lifted involution does not
-depend on the lift. So `(ctrl C)²` lifts to the same sign as `C²` one
-width down. `(ctrl CCX)² = C3Xa²` lifts to −1 on five wires (the table
-above), so `(ctrlʲ⁺¹ CCX)²` lifts to −1 at every width from five on.
-The schema is closed under `ctrl`, `ctrl₁ = ctrl ∘ _↑` and idle wires on
-top (`padC`), so the ctrl lemma holds for its instances by definition.
-`CtrlBounded`, `CtrlComm` and `CtrlLemma` are stated in the calculus with
-the schema. NaturalP's own lemmas (`move`, `ctrl₁-↑`) enter through
-`emb`. The shifted instances (`up`) are derivable by `cong↑`, but `ctrl`
-of a shifted instance would need a lemma moving the spare wire of
-`ctrl₁`, so they are kept as instances for now.
+every controlled version of `CCX • CCX = ε`: `ctrlʲ (CCX • CCX) = ε` for
+every j, with CCX on four or more wires (`CtrlCCX`). This is what the
+spin cover asks for. `ctrl` lifts to the inclusion of the spin group of
+the controlled half, which sends −1 to −1, and the square of a lifted
+involution does not depend on the lift. So `(ctrl C)²` lifts to the same
+sign as `C²` one width down. `(ctrl CCX)² = C3Xa²` lifts to −1 on five
+wires (the table above), so `(ctrlʲ⁺¹ CCX)²` lifts to −1 at every width
+from five on. The schema is closed under `ctrl` and idle wires on top
+(`padC`). `CtrlBounded`, `CtrlComm` and `CtrlLemma` are stated in the
+calculus with the schema, and NaturalP's own lemmas (`move`, `ctrl₁-↑`)
+enter through `emb`. `ctrl₁` of an instance is handled by the spare-wire
+lemma (`NaturalP/Spare`, with the same hypothesis):
+`σ • (ctrl w ↑ • σ) ≈ ctrl₁ w` (`spare-w`). It says that the spare wire
+of `ctrl₁` can be exchanged with an idle one. For a gate at the bottom
+it is a closed core (`NaturalP/SpareSem`). Higher up it is that the
+gadget with an idle wire 0 below it is fixed by exchanging wires 0 and 2
+(`swap02`), which `move` carries up.
 
 The ctrl lemma is a step of the induction on the width. Once the width
 is nine or more, it uses only completeness below the width. Below nine,
 its closed cores can fill all the wires.
 `NaturalP/SchemaSound`: the rules with the schema are sound at every
-width (a schema instance is the identity, by `CCX²`, `ctrl-same` and the
-shift semantics).
+width (a schema instance is the identity, by `CCX²` and `ctrl-same`).
 
 **The two colours of a control** (`NaturalP/CtrlColour`, with the same
 hypothesis). A circuit controlled by wire 0 and one controlled by its
@@ -497,5 +498,5 @@ A relation whose indices all agree on some wire is `ctrl` of a relation
 one width down, so it follows from completeness there and the ctrl
 lemma. The rest need the decoder to commute with the classical routing
 that brings indices together, as in Clément's Section 8. That, and the
-quarter identification `ctrl (ctrl w) ≈ σ • ctrl (ctrl w) • σ` (which
-needs a lemma moving the spare wire of `ctrl₁`), is what remains.
+quarter identification `ctrl (ctrl w) ≈ σ • ctrl (ctrl w) • σ`, is what
+remains.

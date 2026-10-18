@@ -10,8 +10,9 @@
 -- instance is the controlled closed equation, widened: on at most six
 -- wires for ctrl₁ and on five for ctrl, which completeness proves since
 -- the two sides have the same matrix (CtrlSame), and Schema.widen
--- carries to every width.  A schema instance under ctrl or ctrl₁ is
--- again an instance.
+-- carries to every width.  A schema instance under ctrl is again an
+-- instance; under ctrl₁ it is one, one wire up, conjugated by the swap
+-- (Spare.spare-w).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -39,6 +40,7 @@ import Presentation.Base as PB
 open import Examples.Groups.CCX+HH.NaturalP.Ctrl using (ctrl)
 open import Examples.Groups.CCX+HH.NaturalP.CtrlPad using (ctrl₁ ; ctrl-pad ; ctrl₁-pad ; ctrl-↑)
 open import Examples.Groups.CCX+HH.NaturalP.CtrlSame using (soundᴾ ; ctrl-same ; ctrl₁-same)
+open import Examples.Groups.CCX+HH.NaturalP.Spare complete≤ using (spare-w)
 
 private
   variable
@@ -116,7 +118,10 @@ bounded-ctrl₁ (S.srel (S.np (P.HH-swap₀ {k}))) = core₁ {b = 3} (P.srel (P.
 bounded-ctrl₁ (S.srel (S.np (P.HH-swap₁ {k}))) = core₁ {b = 3} (P.srel (P.HH-swap₁ {0})) (le 5 tt) k
 bounded-ctrl₁ (S.srel (S.np (P.CCX-HH {k}))) = core₁ {b = 3} (P.srel (P.CCX-HH {0})) (le 5 tt) k
 bounded-ctrl₁ (S.srel (S.np (P.CCX-comm {k}))) = core₁ {b = 4} (P.srel (P.CCX-comm {0})) (le 6 tt) k
--- … and under ctrl₁ = ctrl ∘ _↑.
+-- … and under ctrl₁, which is ctrl one wire up conjugated by the swap.
 bounded-ctrl₁ (S.srel (S.sch {w = w} s)) =
-  Eq.subst (λ x → _ S.⊢ x ≈ ε) (ctrl-↑ w) (PB.axiom (S.srel (S.srel (S.sch (S.ctl (S.up s))))))
+  PB.trans (PB.sym (spare-w w))
+  (PB.trans (PB.cong PB.refl
+     (PB.cong (S.lemma-cong↑ (ctrl w) ε (PB.axiom (S.srel (S.srel (S.sch (S.ctl s)))))) PB.refl))
+  (PB.trans (PB.cong PB.refl PB.left-unit) (PB.axiom (S.srel (S.σrel S.σ-inv)))))
 

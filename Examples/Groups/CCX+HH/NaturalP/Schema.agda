@@ -15,13 +15,12 @@
 -- (ctrlʲ⁺¹ CCX)² lift to −1 at every width from five on: they supply
 -- what bounded rules cannot.
 --
--- An instance is built from CCX • CCX on four wires, with idle wires on
--- top, by ctrl and _↑ (`CtrlCCX`).  So ctrl and ctrl₁ = ctrl ∘ _↑ send
--- an instance to an instance, which is what the ctrl lemma needs, and
--- idle wires on top do too (`pad`), which is what widening needs.
--- Shifted instances are derivable from the others by cong↑, but ctrl of
--- a shifted one would need a lemma moving the spare wire of ctrl₁; they
--- are kept as instances.
+-- An instance is ctrlʲ (CCX • CCX), with CCX on four or more wires
+-- (`CtrlCCX`).  ctrl sends an instance to an instance, which is what the
+-- ctrl lemma needs, and so do idle wires on top (`padC`), which is what
+-- widening needs.  ctrl₁ = ctrl ∘ _↑ does not, but ctrl₁ w is ctrl w one
+-- wire up conjugated by a swap (Spare.spare-w), which the ctrl lemma uses
+-- instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -55,7 +54,6 @@ private
 data CtrlCCX : (k : ℕ) → Circuit (₄₊ k) → Set where
   base : CtrlCCX k (CCX • CCX)
   ctl  : ∀ {w} → CtrlCCX k w → CtrlCCX (suc k) (ctrl w)
-  up   : ∀ {w} → CtrlCCX k w → CtrlCCX (suc k) (w ↑)
 
 infix 4 _NPΣ,_===_
 data _NPΣ,_===_ : (n : ℕ) → CRel n where
@@ -68,7 +66,6 @@ open Lift-To-Prop _NPΣ,_===_ public
 padC : ∀ {w} → CtrlCCX k w → ∀ m → CtrlCCX (k + m) (w ↓ᵏ m)
 padC base            m = base
 padC (ctl {w = w} s) m = Eq.subst (CtrlCCX _) (ctrl-pad w m) (ctl (padC s m))
-padC (up {w = w} s)  m = Eq.subst (CtrlCCX _) (Eq.sym (Pad.↑↓ w m)) (up (padC s m))
 
 ------------------------------------------------------------------------
 -- NaturalP derivations

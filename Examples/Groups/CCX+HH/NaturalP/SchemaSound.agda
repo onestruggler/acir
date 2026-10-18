@@ -4,8 +4,7 @@
 -- The natural rules with the schema are sound at every width.
 --
 -- A schema instance is the identity: CCX • CCX is, by NaturalP's rule
--- CCX², and ctrl and _↑ preserve that (CtrlSame.ctrl-same, and
--- ShiftSemantics.cong↑ through Bridge.τ-↑).  A derivation is then read
+-- CCX², and ctrl preserves that (CtrlSame.ctrl-same).  A derivation is then read
 -- in the complete translated calculus of CCX+HH.Presentation, as
 -- Natural.Soundness reads a natural one: the rules of NaturalP through
 -- Bridge.τ-axiom, a schema instance by completeness there.
@@ -30,8 +29,6 @@ open import Examples.Groups.CCX+HH.NaturalP.Bridge using (τ ; τ-↑ ; τ-axiom
 import Examples.Groups.CCX+HH.Natural.Soundness as NS
 import Examples.Groups.CCX+HH.Presentation as Tr
 import Examples.Groups.CCX+HH.Structural as St
-import Examples.Groups.CCX+HH.Semantics as Sem
-import Examples.Groups.CCX+HH.GeneralN.ShiftSemantics as Shift
 
 private
   variable
@@ -45,9 +42,6 @@ sch-sem : ∀ {w : Circuit (₄₊ k)} → CtrlCCX k w → interpret w ≡ inter
 sch-sem {k = k} base =
   soundᴾ {u = CCX • CCX} {v = ε} (PB.axiom (NP.srel (NP.srel (NP.CCX² {suc k}))))
 sch-sem (ctl {w = w} s) = ctrl-same w ε (sch-sem s)
-sch-sem (up {w = w} s)  =
-  Eq.trans (Eq.cong Sem.interpret (τ-↑ w))
-    (Shift.cong↑ {u = τ w} {v = ε} (sch-sem s))
 
 ------------------------------------------------------------------------
 -- Derivations, in the translated calculus
