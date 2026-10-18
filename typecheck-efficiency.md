@@ -57,6 +57,7 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 | A lemma restated at the goal's width, over a word given by an equation | `Independence/Clifford/Bridge`, `Real-Clifford/Bridge` | 51.3 → 6.4 s, 45.5 → 5.4 s |
 | Decide an action's instances by one boolean on closed data, not `Eq.refl` per instance | `ProjectiveClifford/Qubit/Selinger/Soundness` | 344 → 3.3 s (+ 1.7 s in the new `LongRelations`) |
 | A pair equation's component proved once over variable words, not `Eq.cong proj₁ e` at particular words | `Independence/Qutrit-Clifford/V0Mat` | 149.6 → 8.2 s (1.57 → 1.06 GB) |
+| A function of a three-element type as the table of its values, not a computed power; an enumeration read back over variables, not under as-patterns | `Independence/Qutrit-Clifford/Weyl`, `Faithful` | 37.8 → 25.1 s (1.46 → 0.88 GB), 60.9 → 24.3 s |
 | Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived`, `Qubit-Clifford/Relations/Rules/Figure5`, `Figure7` | 44.6 → 14.7 s (0.8 GB), 22.5 → 7.9 s, 22.8 → 9.2 s |
 
 - **A `with` normalises the goal before abstracting.** `with b ≟ c`
@@ -242,6 +243,28 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   on words: 51.3 → 6.4 s, and the same edit in `Real-Clifford/Bridge`
   45.5 → 5.4 s. The width lemma's own body compares the two spellings
   with the word a variable, which is cheap.
+- **`Eq.cong proj₁` at a particular word compares the whole pair.**
+  `Independence/Qutrit-Clifford/V0Mat` (149.6 s) carried the Pauli
+  component of the semidirect product's law through `Eq.cong proj₁
+  (∙ˢᵈ x y)`, once at the particular words `Z^ -1/2` and `S`. The
+  endpoints are then solved against the goal at the pair type, so the
+  two readings of the word are compared symplectic part and all: the
+  pitfall `CLAUDE.md` records for `Clifford/Qupit/SemShift`. The same
+  fix works: `∙ˢᵈ₁ x y = Eq.cong proj₁ (∙ˢᵈ x y)` proved once over
+  variable words, used at the four places — 8.2 s.
+- **A small function as its table.** Qutrit-Clifford's `ω^ a` was
+  `x ^ (4 * toℕ a)`, up to eight products in ℤ[ζ₁₂] each time it is
+  evaluated, and `Faithful`'s `all-ok₁` evaluates it thousands of times
+  deciding that the one-qutrit Weyl operators are distinct (729 pairs).
+  As the table of its three values, with `ω^-x` for the one module
+  (`Weyl`'s `Decide₁`/`Decide₂`) that needs it as a power of x because
+  `eqₖ` reads phases so, `Weyl` went 37.8 → 25.1 s (1.46 → 0.88 GB). In
+  the same module `core₁` read `all-ok₁` back under the patterns
+  `p@(a , b)`, which instantiate the enumerator's lambdas at pairs, where
+  `ok₁` unfolds (16 s in the profile); one lemma `ok₁-all` over
+  variables does it instead. With `emb-pow` given the operator as the
+  terms around it spell it (`ix (proj₂ Hᵍ)`, not a private alias `Hm`),
+  `Faithful` went 60.9 → 24.3 s.
 - **One step function, not two copies.** `step-swap` restated
   `step-swap0`'s sixteen rules verbatim; it is now
   `step-swap-extra then step-swap0`. With `then` the extra rules are
@@ -284,6 +307,14 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 
 ## What did not help
 
+- **Two small things in Qutrit-Clifford.** Deciding `Faithful`'s three
+  gate powers by `eqWith` instead of `refl` on 3 × 3 tries changed
+  nothing measurable (61.3 → 60.9 s; kept, as the house style); naming
+  the module argument of `Fwd.Iso.h _` in `V0Mat.law` (it is `n`) left
+  that definition at 7 s. `Clifford+CS/ThreeQubit` (27 s in the full
+  run) profiles at 20.1 s, of which 17.9 s are miscellaneous (module
+  applications, serialisation) and no definition over 0.7 s: nothing to
+  fix.
 - **Matching the indices of Clément's tree checks.**
   `Real-Clifford+CH-TwoLevel-Clement/Hard` (48 s) spends 32 s in
   `nf38-thm` and 8 s in `top-thm`, each passing a generated check
