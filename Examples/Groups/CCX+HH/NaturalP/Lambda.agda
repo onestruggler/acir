@@ -17,7 +17,7 @@ module Examples.Groups.CCX+HH.NaturalP.Lambda where
 
 open import Data.Bool.Base using (Bool ; true ; false ; not)
 open import Data.Maybe.Base using (Maybe ; just ; nothing)
-open import Data.Nat.Base using (ℕ ; _+_)
+open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_)
 open import Data.Vec.Base using (Vec ; [] ; _∷_)
 open import Notations using (₁₊ ; ₂₊ ; ₄₊)
 
@@ -51,6 +51,16 @@ ctrlᵖ nothing      = _↑
 Xat : Vec Pos i → (j c : ℕ) → Circuit (₄₊ ((i + ₁₊ j) + c))
 Xat []      j c = X
 Xat (p ∷ s) j c = Xat s j c ↑
+
+-- Every position a white control.
+whites : ∀ k → Vec Pos k
+whites zero    = []
+whites (suc k) = just false ∷ whites k
+
+-- w under k white controls: a gate on the window, the states whose
+-- bottom k wires are 0.
+Λw : ∀ k → Circuit (₄₊ c) → Circuit (₄₊ (k + c))
+Λw k w = Λ (whites k) w
 
 -- The colour of a position exchanged.
 flip : Pos → Pos

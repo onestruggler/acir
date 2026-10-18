@@ -50,7 +50,7 @@ import Presentation.Base as PB
 
 open import Examples.Groups.CCX+HH.NaturalP.Schema
 open import Examples.Groups.CCX+HH.NaturalP.Ctrl using (ctrl ; ctrl⁻)
-open import Examples.Groups.CCX+HH.NaturalP.Lambda using (Pos ; Λ)
+open import Examples.Groups.CCX+HH.NaturalP.Lambda using (Pos ; Λ ; whites ; Λw) public
 open import Examples.Groups.CCX+HH.NaturalP.LambdaLaws complete≤ using (under ; Λ-swap-top)
 open import Examples.Groups.CCX+HH.NaturalP.CtrlColour complete≤ using (opposite)
 open import Examples.Groups.CCX+HH.NaturalP.Controls complete≤ using (conj-ctrl)
@@ -71,16 +71,6 @@ private
 
   le : ∀ a → T (a ≤ᵇ 8) → a ≤ 8
   le a p = ≤ᵇ⇒≤ a 8 p
-
-------------------------------------------------------------------------
--- Gates on the window
-
-whites : ∀ k → Vec Pos k
-whites zero    = []
-whites (suc k) = just false ∷ whites k
-
-Λw : ∀ k → Circuit (₄₊ c) → Circuit (₄₊ (k + c))
-Λw k w = Λ (whites k) w
 
 ------------------------------------------------------------------------
 -- Word algebra
