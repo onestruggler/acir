@@ -127,21 +127,21 @@ C3Xb-sem (suc k) =
 ------------------------------------------------------------------------
 -- The swaps
 
-private
-  -- Conjugating by the swap of wires 0 1 moves the control down.
-  conj₀ : ∀ k (w : H.Circuit (suc k)) (G : Op (2 ^ k)) →
-    (∀ v → quantum w v ≡ ctrlA (2 ^ k) G v) →
-    ∀ v → quantum (H.Ex {k} • w H.↑ • H.Ex {k}) v ≡ ctrlA (2 ^ suc k) (Q.bottom {k} G) v
-  conj₀ k w G h v =
-    trans (swap-correct k (quantum (w H.↑) (quantum (H.Ex {k}) v)))
-    (trans (cong (swap k)
-      (trans (quantum-shift w (quantum (H.Ex {k}) v))
-        (parallel-cong (alternating (2 ^ suc k))
-          {f = quantum w} {f′ = ctrlA (2 ^ k) G} {g = quantum w} {g′ = ctrlA (2 ^ k) G}
-          h h (quantum (H.Ex {k}) v))))
-    (trans (cong (λ y → swap k (Q.bottom {suc k} (ctrlA (2 ^ k) G) y)) (swap-correct k v))
-      (swap-ctrl k G v)))
+-- Conjugating by the swap of wires 0 1 moves the control down.
+conj₀ : ∀ k (w : H.Circuit (suc k)) (G : Op (2 ^ k)) →
+  (∀ v → quantum w v ≡ ctrlA (2 ^ k) G v) →
+  ∀ v → quantum (H.Ex {k} • w H.↑ • H.Ex {k}) v ≡ ctrlA (2 ^ suc k) (Q.bottom {k} G) v
+conj₀ k w G h v =
+  trans (swap-correct k (quantum (w H.↑) (quantum (H.Ex {k}) v)))
+  (trans (cong (swap k)
+    (trans (quantum-shift w (quantum (H.Ex {k}) v))
+      (parallel-cong (alternating (2 ^ suc k))
+        {f = quantum w} {f′ = ctrlA (2 ^ k) G} {g = quantum w} {g′ = ctrlA (2 ^ k) G}
+        h h (quantum (H.Ex {k}) v))))
+  (trans (cong (λ y → swap k (Q.bottom {suc k} (ctrlA (2 ^ k) G) y)) (swap-correct k v))
+    (swap-ctrl k G v)))
 
+private
   -- Conjugating by the swap of wires 1 2 passes the control and what is
   -- idle on wires 1 2.
   conj₁ : ∀ k (G : Op (2 ^ k)) v →
