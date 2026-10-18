@@ -502,3 +502,25 @@ without λ-ck-tct.  Two routes:
   no schema rule), so it embeds into their theory once the letters and
   the AX statement agree (both come from the same Five/Letters spelling
   scheme).
+
+## λ(ck-tct) checked in clifford-cs's theory (2026-10-19)
+
+Branch **clifford-cs-ckt** (= clifford-cs eef1e277 + one commit) adds
+`FiveV/` and `Five/CKTDerived.agda`: `ck-tct-derived : Complete 4 →
+Inst (srel ck-tct)`, λ(ck-tct) in Five.Rules from a derivation over
+Syntactics and AX alone (FiveV.Rules), embedded by `emb`.  All 255
+modules check (par5, two jobs, 7 GB heap, about three hours; the
+heaviest D modules peak near 7.7 GB).  Nothing of clifford-cs is
+changed; to drop the rule λ-ck-tct, Five.MissingInst's `missing` takes
+completeness on four wires and uses ck-tct-derived.
+
+The layout came from clifford-cs (`winlib5.py`: each of 3258 distinct
+windows evaluated once, the derivations taking the record `Ws`;
+`par5.py`; cuts by letter-steps and bytes; Chain without Place).  par5
+here: the work directory, namespace and lock from the environment
+(PAR5_REPO, PAR5_NS, PAR5_LOCK); prebuild the modules outside the
+namespace that several jobs need (Lambda, Completeness, Windows,
+SemanticSteps, Canonical, and Five/Letters before Lambda in v-office's
+tree, Lambda importing it), since par5 orders only the namespace's own
+modules; give heavy modules a 7 GB heap — at 5 GB the ones near 6 GB
+spent most of their time collecting (270-420 s against 130 s).
