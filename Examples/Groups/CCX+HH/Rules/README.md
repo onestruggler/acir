@@ -692,3 +692,32 @@ above, and every step is now an Agda module:
 What remains is the base: completeness on at most twelve wires. The
 calculus is already known complete on one and two wires (`Natural/`),
 and three wires (W(E8)) is not done.
+
+**CCX+H from CCX+HH** (`../../CCX+H/NaturalP/`). The CCX+H rules with
+the swap gate (`Syntactics`) are Natural's for H together with the
+NaturalP rules for HH, HH written out as `HHw = H • H ↑`, so that θ
+(HH ↦ HHw, `Theta`) sends every NaturalP rule to a rule of the same
+name; `Schema` adds the schema read through θ. Then:
+
+- `Transfer.θ-cong`: θ carries every derivation of NaturalP with the
+  schema to one here (HH • HH = ε, the swap's naturality at HH and HH
+  past a circuit two wires up are short derivations).
+- `Elim.elim`: on four or more wires every circuit is θ a • H^p, with
+  H^p on wire 0. H on a higher wire is HH on it and wire 0 followed by
+  H on wire 0, and H on wire 0 passes θ of any circuit, turning it into
+  θ of another: X, CX and CCX on the bottom wires become their
+  conjugates by HH on wire 0 and an idle wire (a fourth one for CCX).
+- `Soundness.sound`: the rules with the schema are sound at every width
+  for the ordinary matrices, the swap gate read as Natural's swap word.
+  A schema instance θ w reads as the expansion of the CCX+HH circuit
+  τ w, whose matrix is the identity by `NaturalP/SchemaSound`.
+- `Complete.from-twelve`: completeness at every width from four on,
+  given completeness of CCX+HH's NaturalP with the schema on at most
+  twelve wires. The parity of the number of H is a matrix invariant
+  (`GeneralN/HadamardParity`), so the two circuits have the same p;
+  cancelling H^p, the expansions of τ a and τ b have the same matrix,
+  so τ a and τ b do (`GeneralN/HadamardEmbedding.reflect`), hence
+  a ≈ b and θ a ≈ θ b. `Complete.every-width` adds the widths up to
+  three: `Bridge` derives Natural's rules and transfers its
+  completeness on one and two wires (`complete⇒`, and `complete₀` on
+  none); three wires, where the group is infinite, is not done.

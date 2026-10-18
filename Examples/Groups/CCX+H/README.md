@@ -272,6 +272,17 @@ assembly load every derivation: `Tables` needs about 5.5 GB, so give
 those `+RTS -M7G`. From three wires on the group is infinite, so an
 enumeration cannot certify completeness there.
 
+`NaturalP/` adds the swap as a gate and the rules of
+`CCX+HH/NaturalP` with HH written as H • H↑, together with its schema.
+The rules are sound at every width (`NaturalP/Soundness`), and
+complete at every width from four on given completeness of
+`CCX+HH/NaturalP` on at most twelve wires (`NaturalP/Complete`): on
+four or more wires every circuit is an HH circuit followed by H on
+wire 0 or not (`NaturalP/Elim`), and the parity of the number of H
+separates the two. On one and two wires completeness comes from
+`Natural/` (`NaturalP/Bridge`); three wires is open.
+`../CCX+HH/Rules/README.md` has the details.
+
 ## Reproduction
 
 With Agda 2.8.0, standard-library 2.4 and EucDomain registered, run from
