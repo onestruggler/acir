@@ -916,7 +916,8 @@ topForms = ((form 𝟏 ((RootTwo (+ 0) (+ 1)) ∷ 𝟎 ∷ 𝟎 ∷ 𝟎 ∷ [])
 topTags : Vec (Maybe ℕ) 4
 topTags = (nothing ∷ nothing ∷ nothing ∷ nothing ∷ [])
 
-open Checker nfData (λ _ → true) using (checkT)
-
-top-ok : checkT top topTags true f0 f1 topForms ≡ true
+-- Over Checker.checkT itself, at the arguments Hard passes: through an
+-- opened copy it would not be the same term as Main.sound's hypothesis,
+-- and Agda would compare the two by running the check again.
+top-ok : Checker.checkT nfData allowAll top topTags true zero (suc zero) topForms ≡ true
 top-ok = refl

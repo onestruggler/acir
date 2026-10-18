@@ -94,11 +94,11 @@ private
   f5 : ∀ {m} → Fin (suc (suc (suc (suc (suc (suc m))))))
   f5 = suc f4
 
-  g0 g1 g2 g3 : Fin 4
-  g0 = zero
-  g1 = suc zero
-  g2 = suc (suc zero)
-  g3 = suc (suc (suc zero))
+  -- Patterns, so that top-thm passes TreeTop.top-ok's own terms (below).
+  pattern g0 = zero
+  pattern g1 = suc zero
+  pattern g2 = suc (suc zero)
+  pattern g3 = suc (suc (suc zero))
 
   W : Matrix n n D → Vec Z n
   W N = num (col N p)
@@ -228,9 +228,15 @@ module Core (ℓ4 : ℓ ≡ 4) where
 
   ----------------------------------------------------------------------
   -- The trees' theorems
+  --
+  -- Each generated check is passed to Main.sound at exactly the terms it
+  -- is stated at (Checker.checkT, nfData, allowNone/allowAll, the tree,
+  -- its tags and forms, NFData.ic/id or the patterns g0 g1): any
+  -- difference, even a convertible one, makes Agda compare the two by
+  -- running the check (32 s for TreeNF38's, 8 s for TreeTop's).
 
   private
-    module M₀ = Main nfData (λ _ → false) (λ nf ())
+    module M₀ = Main nfData allowNone (λ nf ())
 
   nf38-thm : NFThm nfData nf38
   nf38-thm s o eq w ρ eqv tg mn icd =
@@ -244,7 +250,7 @@ module Core (ℓ4 : ℓ ≡ 4) where
   nfThms nf38 _ = nf38-thm
   nfThms nf341 _ = nf341-thm
 
-  module M₁ = Main nfData (λ _ → true) nfThms
+  module M₁ = Main nfData allowAll nfThms
 
   top-thm : ∀ s .(o : ColOrth s) (eq : level s ≡ L) (w : Win 4 s) ρ → ⟦ TT.topForms ⟧ᵛ ρ ≡ locW w → Minimal s →
             Path (Hs (ι w g0) (ι w g1)) s o
