@@ -550,3 +550,55 @@ realise-ok : (E : Emb m m) → ∀ s → A⟦ realise E ⟧ s ≈s Emb.f E s
 realise-ok E s i =
   trans (A-cong (inv (route ≤-refl E)) (λ j → sym (route-inv E s j)) i)
     (A-inv (route ≤-refl E) (Emb.f E s) i)
+
+------------------------------------------------------------------------
+-- Words without X
+
+data LinG : AGen n → Set where
+  lg-cx : LinG (acx {n})
+  lg-sw : LinG (asw {n})
+  lg-up : {g : AGen n} → LinG g → LinG (g ↥ₐ)
+
+data LinW : Word (AGen n) → Set where
+  lw-g : {g : AGen n} → LinG g → LinW [ g ]ʷ
+  lw-ε : LinW {n} ε
+  lw-• : {u v : Word (AGen n)} → LinW u → LinW v → LinW (u • v)
+
+LinW-↑ : {w : Word (AGen n)} → LinW w → LinW (w ↑ₐ)
+LinW-↑ (lw-g p)   = lw-g (lg-up p)
+LinW-↑ lw-ε       = lw-ε
+LinW-↑ (lw-• p q) = lw-• (LinW-↑ p) (LinW-↑ q)
+
+LinW-inv : {w : Word (AGen n)} → LinW w → LinW (inv w)
+LinW-inv (lw-g p)   = lw-g p
+LinW-inv lw-ε       = lw-ε
+LinW-inv (lw-• p q) = lw-• (LinW-inv q) (LinW-inv p)
+
+private
+  sw-lin : LinW ([ asw {n} ]ʷ)
+  sw-lin = lw-g lg-sw
+
+  cx01-lin : LinW (cx01 {n})
+  cx01-lin = lw-• sw-lin (lw-• (lw-g lg-cx) sw-lin)
+
+  reduceA-lin : (v : NZ n) → LinW (reduceA v)
+  reduceA-lin one      = lw-ε
+  reduceA-lin (both v) = lw-• cx01-lin (LinW-↑ (reduceA-lin v))
+  reduceA-lin (next v) = lw-• sw-lin (LinW-↑ (reduceA-lin v))
+
+  bit-cx-lin : (b : Bool) → LinW (bit-cx {n} b)
+  bit-cx-lin true  = lw-g lg-cx
+  bit-cx-lin false = lw-ε
+
+  clear-lin : (le : k ≤ m) (bs : Fin k → Bool) → LinW (clear le bs)
+  clear-lin z≤n      bs = lw-ε
+  clear-lin (s≤s le) bs =
+    lw-• (bit-cx-lin (bs zero)) (lw-• sw-lin (lw-• (LinW-↑ (clear-lin le (λ i → bs (suc i)))) sw-lin))
+
+route-lin : (le : k ≤ m) (E : Emb k m) → LinW (route le E)
+route-lin z≤n      E = lw-ε
+route-lin (s≤s le) E =
+  lw-• (clear-lin le (Step.bs E)) (lw-• (LinW-↑ (route-lin le (Step.E′ E))) (reduceA-lin (Step.v E)))
+
+realise-lin : (E : Emb m m) → LinW (realise E)
+realise-lin E = LinW-inv (route-lin ≤-refl E)

@@ -32,12 +32,12 @@ import Presentation.Base as PB
 
 open import Examples.Groups.CCX+HH.NaturalP.Schema
 open import Examples.Groups.CCX+HH.NaturalP.Bridge using (τ ; interpret)
-open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (col ; δ-refl ; δ-≢ ; _!_)
+open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (col ; col-ext ; δ-refl ; δ-≢ ; _!_)
 import Examples.Groups.CCX+HH.NaturalP.Syntactics as P
 import Examples.Groups.CCX+HH.Semantics as Sem
 import Examples.Groups.CCX+HH.Syntactics as H
 import Examples.Groups.CCX+HH.GeneralN.Classical as C
-open import Examples.Groups.CCX+HH.GeneralN.ClassicalSemantics using (ket ; physical-column)
+open import Examples.Groups.CCX+HH.GeneralN.ClassicalSemantics using (ket ; ket-cong ; physical-column)
 open import Examples.Groups.CCX+HH.GeneralN.BinaryBasis using (idx ; bits ; bits-idx ; idx-injective)
 open import Examples.Groups.CCX+HH.GeneralN.BasisVectors using (basis ; basis-!)
 
@@ -193,6 +193,16 @@ act-same {n} a a′ e s i =
   at k = idx-injective n (basis-inj
     (trans (sym (physical-column (wmap ιC a) k))
       (trans (cong (λ M → col M k) e′) (physical-column (wmap ιC a′) k))))
+
+-- Conversely, affine words with the same classical action have the same
+-- matrix.
+act⇒interpret : (a a′ : Word (AGen n)) →
+  (∀ s → C.act (wmap ιC a) s C.≈s C.act (wmap ιC a′) s) → interpret ⌈ a ⌉ ≡ interpret ⌈ a′ ⌉
+act⇒interpret {n} a a′ e =
+  trans (cong Sem.interpret (τ-aff a))
+  (trans (col-ext λ i → trans (physical-column (wmap ιC a) i)
+            (trans (ket-cong n (e (bits n i))) (sym (physical-column (wmap ιC a′) i))))
+    (sym (cong Sem.interpret (τ-aff a′))))
 
 -- Read in CNOT+Dihedral's semantics: the classical action, no phase.
 private
