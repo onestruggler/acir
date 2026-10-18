@@ -49,7 +49,8 @@ t341Forms = ((form (RootTwo (+ 1) (+ 1)) (𝟐 ∷ (RootTwo (+ 0) (+ 2)) ∷ (Ro
 t341Tags : Vec (Maybe ℕ) 4
 t341Tags = (nothing ∷ nothing ∷ nothing ∷ nothing ∷ [])
 
-open Checker nfData (λ _ → false) using (checkT)
-
-t341-ok : checkT t341 t341Tags false f0 f1 t341Forms ≡ true
+-- Over Checker.checkT itself, at the arguments Hard passes: through an
+-- opened copy it would not be the same term as Main.sound's hypothesis,
+-- and Agda would compare the two by running the check again.
+t341-ok : Checker.checkT nfData allowNone t341 t341Tags false (NFData.ic (nfData nf341)) (NFData.id (nfData nf341)) t341Forms ≡ true
 t341-ok = refl
