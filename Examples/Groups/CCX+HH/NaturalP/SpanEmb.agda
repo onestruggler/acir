@@ -25,13 +25,14 @@ open import Data.Vec.Base using (Vec ; [] ; _∷_ ; replicate ; _++_ ; tabulate 
 import Data.Vec.Properties as VecP
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (¬_)
+open import Notations using (₄₊)
 
 import Examples.Groups.CCX+HH.GeneralN.Classical as C
 open C using (State ; _≈s_)
 open import Examples.Groups.CCX+HH.GeneralN.ClassicalProperties using (zeros)
 open import Examples.Groups.CCX+HH.NaturalP.AffineRoute using (_⊕_ ; unit ; Lin ; Emb)
 open import Examples.Groups.CCX+HH.NaturalP.Span
-  using (comb ; Indep ; InSpan ; _⊕ᵥ_ ; comb-⊕ ; indep-extend)
+  using (comb ; Indep ; InSpan ; _⊕ᵥ_ ; comb-⊕ ; comb-zero ; indep-extend ; span-grow ; e4 ; E4)
 
 private
   variable
@@ -161,3 +162,38 @@ diff-nz {s = s} {t} ne z = ne λ i → xf (s i) (t i) (z i)
   xf true  true  e = refl
   xf false true  ()
   xf true  false ()
+
+------------------------------------------------------------------------
+-- Spans: elements, sums and concatenations
+
+elem-span : (xs : Vec (State n) k) (i : Fin k) → InSpan xs (lookup xs i)
+elem-span {k = suc k} (x ∷ xs) zero = (true ∷ replicate k false) ,
+  λ j → trans (cong (x j xor_) (comb-zero xs j)) (xor-identityʳ (x j))
+elem-span (x ∷ xs) (suc i) = (false ∷ proj₁ (elem-span xs i)) , proj₂ (elem-span xs i)
+
+span-⊕ : {xs : Vec (State n) k} {a b : State n} → InSpan xs a → InSpan xs b → InSpan xs (a ⊕ b)
+span-⊕ {xs = xs} (as , e) (bs , e′) = (as ⊕ᵥ bs) , λ i → trans (comb-⊕ xs as bs i) (cong₂ _xor_ (e i) (e′ i))
+
+span-++ˡ : {xs : Vec (State n) k} (ys : Vec (State n) j) {a : State n} → InSpan xs a → InSpan (xs ++ ys) a
+span-++ˡ {j = j} {xs = xs} ys (as , e) = (as ++ replicate j false) , λ i →
+  trans (comb-++ xs ys as (replicate j false) i)
+    (trans (cong (comb xs as i xor_) (comb-zero ys i)) (trans (xor-identityʳ _) (e i)))
+
+span-++ʳ : (xs : Vec (State n) k) {ys : Vec (State n) j} {a : State n} → InSpan ys a → InSpan (xs ++ ys) a
+span-++ʳ = span-grow
+
+lookup-++-all : (Q : State n → Set) (xs : Vec (State n) k) (ys : Vec (State n) j) →
+  (∀ t → Q (lookup xs t)) → (∀ t → Q (lookup ys t)) → ∀ i → Q (lookup (xs ++ ys) i)
+lookup-++-all Q []       ys px py i       = py i
+lookup-++-all Q (x ∷ xs) ys px py zero    = px zero
+lookup-++-all Q (x ∷ xs) ys px py (suc i) = lookup-++-all Q xs ys (λ t → px (suc t)) py i
+
+-- The unit vectors of the bottom four wires, at the end of a list.
+e4-span : ∀ {m} (zs : Vec (State (₄₊ m)) k) (p : Fin 4) → InSpan (zs ++ E4) (e4 p)
+e4-span zs p = span-++ʳ zs (subst (InSpan E4) (at p) (elem-span E4 p))
+  where
+  at : ∀ p → lookup (E4 {_}) p ≡ e4 p
+  at zero                   = refl
+  at (suc zero)             = refl
+  at (suc (suc zero))       = refl
+  at (suc (suc (suc zero))) = refl

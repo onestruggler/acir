@@ -24,8 +24,9 @@ open import Data.Bool.Base using (Bool ; true ; false ; _xor_)
 open import Data.Fin.Base using (Fin ; zero ; suc ; _<_)
 import Data.Fin.Properties as FP
 open import Data.Nat.Base using (z≤n ; s≤s)
-open import Data.Vec.Base using ([] ; _∷_)
-open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; refl ; sym ; trans ; cong₂)
+open import Data.Vec.Base using (Vec ; [] ; _∷_ ; _++_ ; lookup ; map ; tabulate)
+import Data.Vec.Properties as VecP
+open import Relation.Binary.PropositionalEquality using (_≡_ ; _≢_ ; refl ; sym ; trans ; cong₂ ; subst)
 open import Relation.Nullary using (¬_ ; Dec ; yes ; no)
 open import Notations using (₄₊)
 
@@ -37,8 +38,10 @@ open import Examples.Groups.CCX+HH.GeneralN.ClassicalProperties using (zeros)
 open import Examples.Groups.CCX+HH.GeneralN.BinaryBasis using (idx ; bits ; idx-cong ; idx-bits)
 open import Examples.Groups.CCX+HH.GeneralN.DecodingPlans using (Atom ; MM ; XX ; J ; e)
 open import Examples.Groups.CCX+HH.NaturalP.AffineRoute using (A⟦_⟧ ; _⊕_ ; unit)
-open import Examples.Groups.CCX+HH.NaturalP.Span using (≈s?)
-open import Examples.Groups.CCX+HH.NaturalP.SpanEmb using (NZ ; indep₁ ; indep₂ ; indep₃ ; diff-nz)
+open import Examples.Groups.CCX+HH.NaturalP.Span using (≈s? ; InSpan ; E4 ; e4 ; Fill)
+open import Examples.Groups.CCX+HH.NaturalP.SpanEmb
+  using (NZ ; indep₁ ; indep₂ ; indep₃ ; diff-nz ; elem-span ; span-⊕ ; span-++ˡ ; lookup-++-all ; e4-span)
+open import Examples.Groups.CCX+HH.NaturalP.RouteTo using (span-trans)
 import Examples.Groups.CCX+HH.NaturalP.Syntactics as P
 open import Examples.Groups.CCX+HH.NaturalP.AtCalc using (Op ; AtI ; Inj)
 open import Examples.Groups.CCX+HH.NaturalP.AtomAt
@@ -195,6 +198,28 @@ private
   ≢-sym ne e = ne (sym e)
 
 ------------------------------------------------------------------------
+-- The frames
+
+private
+  -- A list spanning q₀ and D spans the span of q₀, D and unit vectors
+  -- of the bottom four wires.
+  back-from : ∀ {m d j} (pl : Vec (State W) m) (q₀ : State W) (D : Vec (State W) d) (F : Vec (Fin 4) j) →
+    InSpan (pl ++ E4) q₀ → (∀ t → InSpan (pl ++ E4) (lookup D t)) →
+    ∀ {y} → InSpan (q₀ ∷ (D ++ map e4 F)) y → InSpan (pl ++ E4) y
+  back-from pl q₀ D F s0 sD = span-trans (pl ++ E4) (q₀ ∷ (D ++ map e4 F)) each
+    where
+    each : ∀ i → InSpan (pl ++ E4) (lookup (q₀ ∷ (D ++ map e4 F)) i)
+    each zero    = s0
+    each (suc i) = lookup-++-all (InSpan (pl ++ E4)) D (map e4 F) sD
+      (λ t → subst (InSpan (pl ++ E4)) (sym (VecP.lookup-map t e4 F)) (e4-span pl (lookup F t))) i
+
+  pt-span : ∀ {m} (pl : Vec (State W) m) (i : Fin m) → InSpan (pl ++ E4) (lookup pl i)
+  pt-span pl i = span-++ˡ {xs = pl} E4 (elem-span pl i)
+
+  dif-span : ∀ {m} (pl : Vec (State W) m) (i j : Fin m) → InSpan (pl ++ E4) (lookup pl i ⊕ lookup pl j)
+  dif-span pl i j = span-⊕ {xs = pl ++ E4} (pt-span pl i) (pt-span pl j)
+
+------------------------------------------------------------------------
 -- Routing two, three and four points
 
 module _ {p : Atom N} where
@@ -203,9 +228,13 @@ module _ {p : Atom N} where
     (q : Atom 16) → AtI (λ y → idx 4 (c2 y)) G (actVʷ (e q)) → Routed p
   routed2 a b ab G tbl q can = record
     { m = 2 ; pts = pt2 a b ; G = G ; tbl = tbl ; q = q ; cst = c2 ; can = can ; K = Rt.K
-    ; lands = lands }
+    ; lands = lands ; back = λ h → back-from pl (P a) D (Fill.F Rt.fl) (pt-span pl zero) sD (Rt.K-back h) }
     where
-    module Rt = Route k c (P a) ((P b ⊕ P a) ∷ []) (indep₁ (nz₁ (≢-sym ab))) (s≤s z≤n)
+    D = (P b ⊕ P a) ∷ []
+    module Rt = Route k c (P a) D (indep₁ (nz₁ (≢-sym ab))) (s≤s z≤n)
+    pl = tabulate (λ y → P (pt2 a b y))
+    sD : ∀ t → InSpan (pl ++ E4) (lookup D t)
+    sD zero = dif-span pl (suc zero) zero
     lands : ∀ y → A⟦ Rt.K ⟧ (P (pt2 a b y)) ≈s stack (k + (c + 0)) zeros (c2 y)
     lands zero       = Rt.K-q₀
     lands (suc zero) = Rt.K-at (P b) zero (unit zero) (λ _ → refl) ub0
@@ -214,10 +243,15 @@ module _ {p : Atom N} where
     (q : Atom 16) → AtI (λ y → idx 4 (c3 y)) G (actVʷ (e q)) → Routed p
   routed3 a b x ab ax bx G tbl q can = record
     { m = 3 ; pts = pt3 a b x ; G = G ; tbl = tbl ; q = q ; cst = c3 ; can = can ; K = Rt.K
-    ; lands = lands }
+    ; lands = lands ; back = λ h → back-from pl (P a) D (Fill.F Rt.fl) (pt-span pl zero) sD (Rt.K-back h) }
     where
-    module Rt = Route k c (P a) ((P b ⊕ P a) ∷ (P x ⊕ P a) ∷ [])
+    D = (P b ⊕ P a) ∷ (P x ⊕ P a) ∷ []
+    module Rt = Route k c (P a) D
       (indep₂ (nz₁ (≢-sym ab)) (nz₁ (≢-sym ax)) (nz₂ bx)) (s≤s (s≤s z≤n))
+    pl = tabulate (λ y → P (pt3 a b x y))
+    sD : ∀ t → InSpan (pl ++ E4) (lookup D t)
+    sD zero       = dif-span pl (suc zero) zero
+    sD (suc zero) = dif-span pl (suc (suc zero)) zero
     lands : ∀ y → A⟦ Rt.K ⟧ (P (pt3 a b x y)) ≈s stack (k + (c + 0)) zeros (c3 y)
     lands zero             = Rt.K-q₀
     lands (suc zero)       = Rt.K-at (P b) zero (unit zero) (λ _ → refl) ub0
@@ -234,11 +268,17 @@ module _ {p : Atom N} where
     d₂ = P x ⊕ P a
     d₃ = P y ⊕ P a
     by-plane : Dec (((d₁ ⊕ d₂) ⊕ d₃) ≈s zeros) → Routed p
+    pl = tabulate (λ z → P (pt4 a b x y z))
     by-plane (no gen) = record
       { m = 4 ; pts = pt4 a b x y ; G = G ; tbl = tbl ; q = q ; cst = c4 ; can = can ; K = Rt.K
-      ; lands = lands }
+      ; lands = lands ; back = λ h → back-from pl (P a) D (Fill.F Rt.fl) (pt-span pl zero) sD (Rt.K-back h) }
       where
-      module Rt = Route k c (P a) (d₁ ∷ d₂ ∷ d₃ ∷ [])
+      D = d₁ ∷ d₂ ∷ d₃ ∷ []
+      sD : ∀ t → InSpan (pl ++ E4) (lookup D t)
+      sD zero             = dif-span pl (suc zero) zero
+      sD (suc zero)       = dif-span pl (suc (suc zero)) zero
+      sD (suc (suc zero)) = dif-span pl (suc (suc (suc zero))) zero
+      module Rt = Route k c (P a) D
         (indep₃ (nz₁ (≢-sym ab)) (nz₁ (≢-sym ax)) (nz₁ (≢-sym ay)) (nz₂ bx) (nz₂ by) (nz₂ xy) gen)
         (s≤s (s≤s (s≤s z≤n)))
       lands : ∀ z → A⟦ Rt.K ⟧ (P (pt4 a b x y z)) ≈s stack (k + (c + 0)) zeros (c4 z)
@@ -247,11 +287,15 @@ module _ {p : Atom N} where
       lands (suc (suc zero))       = Rt.K-at (P x) (suc zero) (unit (suc zero)) (λ _ → refl) ub1
       lands (suc (suc (suc zero))) =
         Rt.K-at (P y) (suc (suc zero)) (unit (suc (suc zero))) (λ _ → refl) ub2
-    by-plane (yes pl) = record
+    by-plane (yes cpl) = record
       { m = 4 ; pts = pt4 a b x y ; G = G ; tbl = tbl ; q = q′ ; cst = c4′ ; can = can′ ; K = Rt.K
-      ; lands = lands }
+      ; lands = lands ; back = λ h → back-from pl (P a) D (Fill.F Rt.fl) (pt-span pl zero) sD (Rt.K-back h) }
       where
-      module Rt = Route k c (P a) (d₁ ∷ d₂ ∷ [])
+      D = d₁ ∷ d₂ ∷ []
+      sD : ∀ t → InSpan (pl ++ E4) (lookup D t)
+      sD zero       = dif-span pl (suc zero) zero
+      sD (suc zero) = dif-span pl (suc (suc zero)) zero
+      module Rt = Route k c (P a) D
         (indep₂ (nz₁ (≢-sym ab)) (nz₁ (≢-sym ax)) (nz₂ bx)) (s≤s (s≤s z≤n))
       lands : ∀ z → A⟦ Rt.K ⟧ (P (pt4 a b x y z)) ≈s stack (k + (c + 0)) zeros (c4′ z)
       lands zero                   = Rt.K-q₀
@@ -259,7 +303,7 @@ module _ {p : Atom N} where
       lands (suc (suc zero))       = Rt.K-at (P x) (suc zero) (unit (suc zero)) (λ _ → refl) ub1
       lands (suc (suc (suc zero))) =
         Rt.K-at₂ (P y) zero (suc zero) (unit zero ⊕ unit (suc zero))
-          (λ i → cop (d₁ i) (d₂ i) (d₃ i) (pl i)) ub01
+          (λ i → cop (d₁ i) (d₂ i) (d₃ i) (cpl i)) ub01
 
 ------------------------------------------------------------------------
 -- The cases

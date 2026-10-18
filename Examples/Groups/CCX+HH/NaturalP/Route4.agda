@@ -12,7 +12,8 @@
 -- those to the top: K = up4 • R • tr q₀ sends q₀ to 0 and a point x
 -- with x ⊕ q₀ = D[t] to the t-th unit vector of the top four wires
 -- (`K-q₀`, `K-at`), and a point whose difference is a sum of two of D
--- to the sum (`K-at₂`).  The width is 4 + k + c: a gate on the top
+-- to the sum (`K-at₂`); conversely K⁻¹ carries the whole window into
+-- the span of q₀, D and the completing unit vectors (`K-back`).  The width is 4 + k + c: a gate on the top
 -- four wires under c controls under k more, whose window coordinates
 -- `stack-ιW` identifies.
 ------------------------------------------------------------------------
@@ -21,13 +22,13 @@
 
 module Examples.Groups.CCX+HH.NaturalP.Route4 where
 
-open import Data.Bool.Base using (Bool ; true ; false ; _xor_)
-open import Data.Bool.Properties using (xor-identityʳ ; xor-same)
+open import Data.Bool.Base using (Bool ; true ; false ; _xor_ ; _∧_)
+open import Data.Bool.Properties using (xor-identityʳ ; xor-same ; xor-assoc ; xor-comm ; ∧-identityʳ ; ∧-zeroʳ)
 open import Data.Fin.Base using (Fin ; zero ; suc ; inject≤ ; _↑ˡ_)
 open import Data.Nat.Base using (ℕ ; zero ; suc ; _+_ ; _≤_ ; z≤n ; s≤s)
 open import Data.Nat.Properties using (≤-trans ; ≤-reflexive ; +-comm)
-open import Data.Product.Base using (proj₁ ; proj₂)
-open import Data.Vec.Base using (Vec ; _++_ ; lookup ; map)
+open import Data.Product.Base using (Σ ; _,_ ; proj₁ ; proj₂)
+open import Data.Vec.Base using (Vec ; [] ; _∷_ ; _++_ ; lookup ; map ; tabulate)
 import Data.Vec.Properties as VecP
 open import Relation.Binary.PropositionalEquality
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
@@ -38,11 +39,11 @@ open C using (State ; _≈s_ ; lower)
 open import Examples.Groups.CCX+HH.GeneralN.ClassicalProperties using (zeros ; cons-cong ; cons-view)
 open import Examples.Groups.CCX+HH.GeneralN.BinaryBasis using (cons ; idx ; idx-cong)
 open import Examples.Groups.CCX+HH-TwoLevel.Embedding using (ι)
-open import Examples.Groups.CCX+HH.NaturalP.AffineWords using (AGen ; ax ; asw ; _↥ₐ)
+open import Examples.Groups.CCX+HH.NaturalP.AffineWords using (AGen ; ax ; asw ; _↥ₐ ; inv)
 open import Examples.Groups.CCX+HH.NaturalP.AffineRoute
-  using (A⟦_⟧ ; A-cong ; A-↑ ; _↑ₐ ; _⊕_ ; unit ; flip0 ; Lin ; word-lin ; u′ ; route
+  using (A⟦_⟧ ; A-cong ; A-↑ ; A-inv ; _↑ₐ ; _⊕_ ; unit ; flip0 ; Lin ; lin-zero ; word-lin ; u′ ; route
         ; route-zero ; route-ok)
-open import Examples.Groups.CCX+HH.NaturalP.Span using (Indep ; e4 ; Fill ; Full ; complete4)
+open import Examples.Groups.CCX+HH.NaturalP.Span using (Indep ; InSpan ; comb ; scale ; e4 ; Fill ; Full ; complete4)
 open import Examples.Groups.CCX+HH.NaturalP.SpanEmb using (indep-swap ; embL ; embL-unit)
 open import Examples.Groups.CCX+HH.NaturalP.AtCalc using (ιW)
 
@@ -169,6 +170,66 @@ private
   bot-zeros (suc (suc (suc zero)))       = refl
   bot-zeros (suc (suc (suc (suc j))))    = refl
 
+------------------------------------------------------------------------
+-- Linear combinations through the routing
+
+private
+  lin-comb : ∀ {n m l} {F : State n → State m} → Lin F → (vs : Vec (State n) l) (as : Vec Bool l) →
+    F (comb vs as) ≈s comb (map F vs) as
+  lin-comb LF []       []       = lin-zero LF
+  lin-comb {F = F} LF (v ∷ vs) (a ∷ as) i =
+    trans (Lin.add LF (scale a v) (comb vs as) i) (cong₂ _xor_ (sc a i) (lin-comb LF vs as i))
+    where
+    sc : ∀ a → F (scale a v) ≈s scale a (F v)
+    sc true  j = Lin.resp LF (λ _ → refl) j
+    sc false j = trans (Lin.resp LF (λ _ → refl) j) (lin-zero LF j)
+
+  comb-resp : ∀ {n l} (vs ws : Vec (State n) l) → (∀ i → lookup vs i ≈s lookup ws i) →
+    ∀ as → comb vs as ≈s comb ws as
+  comb-resp []       []       e []       i = refl
+  comb-resp (v ∷ vs) (w ∷ ws) e (a ∷ as) i =
+    cong₂ _xor_ (cong (a ∧_) (e zero i)) (comb-resp vs ws (λ t → e (suc t)) as i)
+
+  q0 : ∀ a b c d → (a ∧ true) xor ((b ∧ false) xor ((c ∧ false) xor ((d ∧ false) xor false))) ≡ a
+  q0 a b c d rewrite ∧-identityʳ a | ∧-zeroʳ b | ∧-zeroʳ c | ∧-zeroʳ d = xor-identityʳ a
+  q1 : ∀ a b c d → (a ∧ false) xor ((b ∧ true) xor ((c ∧ false) xor ((d ∧ false) xor false))) ≡ b
+  q1 a b c d rewrite ∧-zeroʳ a | ∧-identityʳ b | ∧-zeroʳ c | ∧-zeroʳ d = xor-identityʳ b
+  q2 : ∀ a b c d → (a ∧ false) xor ((b ∧ false) xor ((c ∧ true) xor ((d ∧ false) xor false))) ≡ c
+  q2 a b c d rewrite ∧-zeroʳ a | ∧-zeroʳ b | ∧-identityʳ c | ∧-zeroʳ d = xor-identityʳ c
+  q3 : ∀ a b c d → (a ∧ false) xor ((b ∧ false) xor ((c ∧ false) xor ((d ∧ true) xor false))) ≡ d
+  q3 a b c d rewrite ∧-zeroʳ a | ∧-zeroʳ b | ∧-zeroʳ c | ∧-identityʳ d = xor-identityʳ d
+  qz : ∀ a b c d → (a ∧ false) xor ((b ∧ false) xor ((c ∧ false) xor ((d ∧ false) xor false))) ≡ false
+  qz a b c d rewrite ∧-zeroʳ a | ∧-zeroʳ b | ∧-zeroʳ c | ∧-zeroʳ d = refl
+
+  -- With exactly four of them, the unit vectors of the bottom wires span
+  -- every state there.
+  units-cover : ∀ {M} len → len ≡ 4 → (le : len ≤ ₄₊ M) (h : State 4) →
+    Σ (Vec Bool len) λ as → comb (tabulate (λ i → unit (inject≤ i le))) as ≈s bot h zeros
+  units-cover .4 refl le h = (h0 ∷ h1 ∷ h2 ∷ h3 ∷ []) , pt
+    where
+    h0 = h zero
+    h1 = h (suc zero)
+    h2 = h (suc (suc zero))
+    h3 = h (suc (suc (suc zero)))
+    pt : comb (tabulate (λ i → unit (inject≤ i le))) (h0 ∷ h1 ∷ h2 ∷ h3 ∷ []) ≈s bot h zeros
+    pt zero                      = q0 h0 h1 h2 h3
+    pt (suc zero)                = q1 h0 h1 h2 h3
+    pt (suc (suc zero))          = q2 h0 h1 h2 h3
+    pt (suc (suc (suc zero)))    = q3 h0 h1 h2 h3
+    pt (suc (suc (suc (suc i)))) = qz h0 h1 h2 h3
+
+  tr-inv-act : ∀ {n} (s x : State n) → A⟦ inv (tr s) ⟧ x ≈s x ⊕ s
+  tr-inv-act s x i =
+    trans (A-cong (inv (tr s)) (λ j → sym (trans (tr-act s (x ⊕ s) j) (back j))) i)
+      (A-inv (tr s) (x ⊕ s) i)
+    where
+    back : (x ⊕ s) ⊕ s ≈s x
+    back j = trans (xor-assoc (x j) (s j) (s j))
+      (trans (cong (x j xor_) (xor-same (s j))) (xor-identityʳ (x j)))
+
+  inv-zero : ∀ {n} (w : Word (AGen n)) → A⟦ w ⟧ zeros ≈s zeros → A⟦ inv w ⟧ zeros ≈s zeros
+  inv-zero w z i = trans (A-cong (inv w) (λ j → sym (z j)) i) (A-inv w zeros i)
+
 module Route (k c : ℕ) {d : ℕ} (q₀ : State (₄₊ (k + (c + 0))))
              (D : Vec (State (₄₊ (k + (c + 0)))) d) (ind : Indep D) (le : d ≤ 4) where
 
@@ -241,3 +302,31 @@ module Route (k c : ℕ) {d : ℕ} (q₀ : State (₄₊ (k + (c + 0))))
     trans (A-cong R (λ z → trans (tr-act q₀ x z) (e z)) y)
     (trans (Lin.add R-lin (lookup D t) (lookup D t′) y)
     (trans (cong₂ _xor_ (R-D t y) (R-D t′ y)) (eh y)))
+
+  private
+    dj4 : d + j ≡ 4
+    dj4 = trans (+-comm d j) full
+    Rinv-lin : Lin A⟦ inv R ⟧
+    Rinv-lin = word-lin (inv R) (inv-zero R (route-zero leL (embL L indL)))
+
+  -- The window comes back into the span of q₀ and L.
+  K-back : (h : State 4) → InSpan (q₀ ∷ L) (A⟦ inv K ⟧ (stack (k + (c + 0)) zeros h))
+  K-back h = (true ∷ as) , λ i → trans (xor-comm (q₀ i) (comb L as i)) (sym (chain i))
+    where
+    cv = units-cover (d + j) dj4 leL h
+    as = proj₁ cv
+    units = tabulate (λ i → unit (inject≤ i leL))
+    up-back : A⟦ inv (up4 (k + (c + 0))) ⟧ (stack (k + (c + 0)) zeros h) ≈s bot h zeros
+    up-back i = trans (A-cong (inv (up4 (k + (c + 0)))) (λ y → sym (up4-act (k + (c + 0)) h zeros y)) i)
+      (A-inv (up4 (k + (c + 0))) (bot h zeros) i)
+    inner : A⟦ inv R ⟧ (A⟦ inv (up4 (k + (c + 0))) ⟧ (stack (k + (c + 0)) zeros h)) ≈s comb L as
+    inner i =
+      trans (A-cong (inv R) (λ y → trans (up-back y) (sym (proj₂ cv y))) i)
+      (trans (lin-comb Rinv-lin units as i)
+        (comb-resp (map A⟦ inv R ⟧ units) L
+          (λ t y → trans (cong (λ v → v y) (VecP.lookup-map t A⟦ inv R ⟧ units))
+                   (trans (cong (λ u → A⟦ inv R ⟧ u y) (VecP.lookup∘tabulate (λ i → unit (inject≤ i leL)) t))
+                   (trans (A-cong (inv R) (λ z → sym (R-L t z)) y) (A-inv R (lookup L t) y))))
+          as i))
+    chain : A⟦ inv K ⟧ (stack (k + (c + 0)) zeros h) ≈s comb L as ⊕ q₀
+    chain i = trans (tr-inv-act q₀ _ i) (cong (_xor q₀ i) (inner i))

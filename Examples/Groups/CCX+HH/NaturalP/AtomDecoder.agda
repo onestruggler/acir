@@ -29,7 +29,7 @@ open import Data.Nat.Base using (ℕ ; _+_ ; _^_)
 module Examples.Groups.CCX+HH.NaturalP.AtomDecoder (k c : ℕ) where
 
 open import Data.Fin.Base using (Fin)
-open import Data.Vec.Base using (Vec)
+open import Data.Vec.Base using (Vec ; tabulate ; _++_)
 open import Relation.Binary.PropositionalEquality
 open import Word.Base using (Word ; ε ; _•_ ; wmap)
 open import Notations using (₄₊)
@@ -55,6 +55,7 @@ open import Examples.Groups.CCX+HH.NaturalP.AffineRoute using (A⟦_⟧ ; A-cong
 open import Examples.Groups.CCX+HH.NaturalP.AtCalc
   using (Op ; AtI ; at→I ; atI-ext ; atI-cong ; atI-∘ ; ιW ; Λ-at ; perm-! ; at-perm)
 open import Examples.Groups.CCX+HH.NaturalP.Route4 using (stack ; stack-ιW)
+open import Examples.Groups.CCX+HH.NaturalP.Span using (InSpan ; E4)
 
 private
   module Dec₀ = Decoding 0
@@ -79,6 +80,10 @@ record Routed (p : Atom N) : Set where
     can    : AtI (λ y → idx 4 (cst y)) G (actVʷ (e q))
     K      : Word (AGen W)
     lands  : ∀ y → A⟦ K ⟧ (bits W (pts y)) ≈s stack (k + (c + 0)) zeros (cst y)
+    -- The frame, A⁻¹ of the window, is spanned by the points and the unit
+    -- vectors of the bottom four wires.
+    back   : ∀ h → InSpan (tabulate (λ y → bits W (pts y)) ++ E4)
+                     (A⟦ inv K ⟧ (stack (k + (c + 0)) zeros h))
 
 data Decoded (p : Atom N) : Set where
   trivial : (∀ v → actVʷ (e p) v ≡ v) → Decoded p
