@@ -59,7 +59,7 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
 | A pair equation's component proved once over variable words, not `Eq.cong proj₁ e` at particular words | `Independence/Qutrit-Clifford/V0Mat` | 149.6 → 8.2 s (1.57 → 1.06 GB) |
 | A function of a three-element type as the table of its values, not a computed power; an enumeration read back over variables, not under as-patterns | `Independence/Qutrit-Clifford/Weyl`, `Faithful` | 37.8 → 25.1 s (1.46 → 0.88 GB), 60.9 → 24.3 s |
 | A generated `refl` check stated over the original definition (not a module-application copy) at the very arguments its user passes | `Real-Clifford+CH-TwoLevel-Clement/Hard` | 48.8 → 9.2 s |
-| A `T b` proof left to a metavariable (`_`, solved by eta), not `tt` | `Independence/*/Semantics`, the three `Projective`s, `Clifford+CS/Encodings` | 21.0 → 3.9 s, 21.1 → 3.9 s, 15.2 → 3.3 s, 15.1 → 4.1 s, 14.2 → 3.2 s, … (133 → 52 s over eleven modules) |
+| A `T b` proof left to a metavariable (`_`, solved by eta), or a check proved by `refl` on `≡ true`, not `tt` | `Independence/*/Semantics`, the three `Projective`s, `Clifford+CS/Encodings`; `Qutrit-Clifford/Faithful` | 21.0 → 3.9 s, 21.1 → 3.9 s, 15.2 → 3.3 s, 15.1 → 4.1 s, 14.2 → 3.2 s, … (133 → 52 s over eleven modules); 28.5 → 20.1 s |
 | Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived`, `Qubit-Clifford/Relations/Rules/Figure5`, `Figure7` | 44.6 → 14.7 s (0.8 GB), 22.5 → 7.9 s, 22.8 → 9.2 s |
 
 - **A `with` normalises the goal before abstracting.** `with b ≟ c`
@@ -286,9 +286,15 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   Semantics modules, three Projectives and `Encodings` went 133 → 52 s
   (Qutrit-Clifford's 21.0 → 3.9 s). Where the proof is a whole
   definition, `_` is the middle row; `T`-lemmas from an `≡ true` proved
-  by `refl` would be the faster form. The rest of the repo already
-  proves its evaluations by `refl` on `≡ true` (Real-Clifford+CH's
-  `Same`, `evaluated Eq.refl`).
+  by `refl` would be the faster form, and is: `Faithful.all-ok₁` (729
+  cases) took 7.5 s as `tt`, 3.6 s as `_` and 0.9 s as `refl` on
+  `≡ true`. Read such a check back from the `≡ true` itself, by a lemma
+  over an abstract predicate (`all4-sound f e`): written `T-≡ all-ok₁≡`
+  at the call site, `T-≡`'s implicit is solved through `T ?b = T (…)`,
+  and `T` being a function Agda evaluates the right side, the whole
+  check again (`ok₁-all` 5.3 s, then under 0.4 s; `Faithful` 28.5 →
+  20.1 s). The rest of the repo already proves its evaluations by
+  `refl` on `≡ true` (Real-Clifford+CH's `Same`, `evaluated Eq.refl`).
 - **A cost that is neither the evaluation nor the boolean.**
   `Faithful.inv-right₀`'s CZ clause (9.4 s, against 0.9 s for H) is not
   the CZ³ check: split out as its own definition it does not register.
@@ -368,7 +374,12 @@ abstract readings `⟦_⟧ₒ`, CNOT+Dihedral's tables, …) keep them in
   applications, serialisation) and no definition over 0.7 s: nothing to
   fix. And `Faithful.inv-right₀` (10 s) is not its `with` on the
   recursive call: projections instead measured the same back to back
-  (30.3/28.0 s against 29.8/28.0 s; reverted).
+  (30.3/28.0 s against 29.8/28.0 s; reverted). In `Weyl`, deciding
+  `Decide₁`/`Decide₂` by `eqWith 1# (ω^ φ)` instead of `eqₖ` (no power
+  of x) and building D₂'s table by `tenM` took `local-CZF` 11.2 → 8.8 s
+  but `Decide₂`'s where-bound `e` 6.6 → 8.0 s, the module the same
+  (reverted); writing the check out in `sound`'s hypothesis instead of
+  naming it `ok` made `Weyl` run for over six minutes (stopped).
 - **One shared width for Real-Clifford+CH's Appendix A modules.**
   `Auxiliary/Move`'s `conj` takes 21 s, and splitting it into four steps
   with explicit types put the cost in the steps whose two sides spell
