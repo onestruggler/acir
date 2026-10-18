@@ -21,6 +21,8 @@ open import Data.Nat.Base using (ℕ ; _+_ ; _^_)
 module Examples.Groups.CCX+HH.NaturalP.AtomCases (k c : ℕ) where
 
 open import Data.Bool.Base using (Bool ; true ; false ; _xor_)
+open import Data.Product.Base using (_×_ ; _,_)
+open import Data.Unit.Base using (⊤ ; tt)
 open import Data.Fin.Base using (Fin ; zero ; suc ; _<_)
 import Data.Fin.Properties as FP
 open import Data.Nat.Base using (z≤n ; s≤s)
@@ -164,6 +166,10 @@ private
   P : Fin N → State W
   P = bits W
 
+  -- Four points are coplanar when this vanishes.
+  plane : Fin N → Fin N → Fin N → Fin N → State W
+  plane a b x y = ((P b ⊕ P a) ⊕ (P x ⊕ P a)) ⊕ (P y ⊕ P a)
+
   P-ne : {a b : Fin N} → a ≢ b → ¬ (P a ≈s P b)
   P-ne {a} {b} ne e = ne (trans (sym (idx-bits W a)) (trans (idx-cong W e) (idx-bits W b)))
 
@@ -261,8 +267,9 @@ module _ {p : Atom N} where
   routed4 : (a b x y : Fin N) → a ≢ b → a ≢ x → a ≢ y → b ≢ x → b ≢ y → x ≢ y →
     (G : Op 4) → AtI (pt4 a b x y) G (actVʷ (e p)) →
     (q : Atom 16) → AtI (λ z → idx 4 (c4 z)) G (actVʷ (e q)) →
-    (q′ : Atom 16) → AtI (λ z → idx 4 (c4′ z)) G (actVʷ (e q′)) → Routed p
-  routed4 a b x y ab ax ay bx by xy G tbl q can q′ can′ = by-plane (≈s? ((d₁ ⊕ d₂) ⊕ d₃) zeros)
+    (q′ : Atom 16) → AtI (λ z → idx 4 (c4′ z)) G (actVʷ (e q′)) →
+    Dec (plane a b x y ≈s zeros) → Routed p
+  routed4 a b x y ab ax ay bx by xy G tbl q can q′ can′ = by-plane
     where
     d₁ = P b ⊕ P a
     d₂ = P x ⊕ P a
@@ -321,29 +328,30 @@ private
   three a b x ab ax bx G tbl q can = routed (routed3 a b x ab ax bx G (tbl (inj3 ab ax bx)) q can)
 
   xx : (a b x y : Fin N) .(ab : a < b) .(xy : x < y) →
-    Dec (a ≡ x) → Dec (b ≡ y) → Dec (a ≡ y) → Dec (b ≡ x) → Decoded (XX a b x y ab xy)
-  xx a b .a .b ab xy (yes refl) (yes refl) _ _ = trivial (actV-invol (X-gen a b ab))
-  xx a b .a y ab xy (yes refl) (no b≢y) _ _ =
+    Dec (a ≡ x) → Dec (b ≡ y) → Dec (a ≡ y) → Dec (b ≡ x) → Dec (plane a b x y ≈s zeros) →
+    Decoded (XX a b x y ab xy)
+  xx a b .a .b ab xy (yes refl) (yes refl) _ _ _ = trivial (actV-invol (X-gen a b ab))
+  xx a b .a y ab xy (yes refl) (no b≢y) _ _ _ =
     three a b y (<⇒≢ ab) (<⇒≢ xy) b≢y GXa (λ inj → atXa (pt3 a b y) inj ab xy)
       (XX (idx 4 (c3 zero)) (idx 4 (c3 (suc zero))) (idx 4 (c3 zero)) (idx 4 (c3 (suc (suc zero))))
         (s≤s z≤n) (s≤s z≤n))
       (atXa (λ z → idx 4 (c3 z)) inj-c3 (s≤s z≤n) (s≤s z≤n))
-  xx a b x .b ab xy (no a≢x) (yes refl) _ _ =
+  xx a b x .b ab xy (no a≢x) (yes refl) _ _ _ =
     three a x b a≢x (<⇒≢ ab) (<⇒≢ xy) GXb (λ inj → atXb (pt3 a x b) inj ab xy)
       (XX (idx 4 (c3 zero)) (idx 4 (c3 (suc (suc zero)))) (idx 4 (c3 (suc zero))) (idx 4 (c3 (suc (suc zero))))
         (s≤s z≤n) (s≤s (s≤s z≤n)))
       (atXb (λ z → idx 4 (c3 z)) inj-c3 (s≤s z≤n) (s≤s (s≤s z≤n)))
-  xx a b x .a ab xy (no a≢x) (no b≢y) (yes refl) _ =
+  xx a b x .a ab xy (no a≢x) (no b≢y) (yes refl) _ _ =
     three x a b (<⇒≢ xy) (<⇒≢ (FP.<-trans xy ab)) (<⇒≢ ab) GXc (λ inj → atXc (pt3 x a b) inj ab xy)
       (XX (idx 4 (c3 (suc zero))) (idx 4 (c3 (suc (suc zero)))) (idx 4 (c3 zero)) (idx 4 (c3 (suc zero)))
         (s≤s (s≤s z≤n)) (s≤s z≤n))
       (atXc (λ z → idx 4 (c3 z)) inj-c3 (s≤s (s≤s z≤n)) (s≤s z≤n))
-  xx a b .b y ab xy (no a≢x) (no b≢y) (no a≢y) (yes refl) =
+  xx a b .b y ab xy (no a≢x) (no b≢y) (no a≢y) (yes refl) _ =
     three a b y (<⇒≢ ab) (<⇒≢ (FP.<-trans ab xy)) (<⇒≢ xy) GXd (λ inj → atXd (pt3 a b y) inj ab xy)
       (XX (idx 4 (c3 zero)) (idx 4 (c3 (suc zero))) (idx 4 (c3 (suc zero))) (idx 4 (c3 (suc (suc zero))))
         (s≤s z≤n) (s≤s (s≤s z≤n)))
       (atXd (λ z → idx 4 (c3 z)) inj-c3 (s≤s z≤n) (s≤s (s≤s z≤n)))
-  xx a b x y ab xy (no a≢x) (no b≢y) (no a≢y) (no b≢x) =
+  xx a b x y ab xy (no a≢x) (no b≢y) (no a≢y) (no b≢x) pd =
     routed (routed4 a b x y (<⇒≢ ab) a≢x a≢y b≢x b≢y (<⇒≢ xy) GXX
       (atXX (pt4 a b x y) (inj4 (<⇒≢ ab) a≢x a≢y b≢x b≢y (<⇒≢ xy)) ab xy)
       (XX (idx 4 (c4 zero)) (idx 4 (c4 (suc zero))) (idx 4 (c4 (suc (suc zero))))
@@ -351,10 +359,11 @@ private
       (atXX (λ z → idx 4 (c4 z)) inj-c4 (s≤s z≤n) (s≤s (s≤s (s≤s z≤n))))
       (XX (idx 4 (c4′ zero)) (idx 4 (c4′ (suc zero))) (idx 4 (c4′ (suc (suc zero))))
           (idx 4 (c4′ (suc (suc (suc zero))))) (s≤s z≤n) (s≤s (s≤s (s≤s z≤n))))
-      (atXX (λ z → idx 4 (c4′ z)) inj-c4′ (s≤s z≤n) (s≤s (s≤s (s≤s z≤n)))))
+      (atXX (λ z → idx 4 (c4′ z)) inj-c4′ (s≤s z≤n) (s≤s (s≤s (s≤s z≤n)))) pd)
 
-  jj : (a b x y : Fin N) .(ab : a < b) .(bx : b < x) .(xy : x < y) → Decoded (J a b x y ab bx xy)
-  jj a b x y ab bx xy =
+  jj : (a b x y : Fin N) .(ab : a < b) .(bx : b < x) .(xy : x < y) →
+    Dec (plane a b x y ≈s zeros) → Decoded (J a b x y ab bx xy)
+  jj a b x y ab bx xy pd =
     routed (routed4 a b x y a≢b a≢x a≢y b≢x b≢y x≢y GJ
       (atJ (pt4 a b x y) (inj4 a≢b a≢x a≢y b≢x b≢y x≢y) ab bx xy)
       (J (idx 4 (c4 zero)) (idx 4 (c4 (suc zero))) (idx 4 (c4 (suc (suc zero))))
@@ -362,7 +371,7 @@ private
       (atJ (λ z → idx 4 (c4 z)) inj-c4 (s≤s z≤n) (s≤s (s≤s z≤n)) (s≤s (s≤s (s≤s z≤n))))
       (J (idx 4 (c4′ zero)) (idx 4 (c4′ (suc zero))) (idx 4 (c4′ (suc (suc zero))))
          (idx 4 (c4′ (suc (suc (suc zero))))) (s≤s z≤n) (s≤s (s≤s z≤n)) (s≤s (s≤s (s≤s z≤n))))
-      (atJ (λ z → idx 4 (c4′ z)) inj-c4′ (s≤s z≤n) (s≤s (s≤s z≤n)) (s≤s (s≤s (s≤s z≤n)))))
+      (atJ (λ z → idx 4 (c4′ z)) inj-c4′ (s≤s z≤n) (s≤s (s≤s z≤n)) (s≤s (s≤s (s≤s z≤n)))) pd)
     where
     a≢b = <⇒≢ ab
     a≢x = <⇒≢ (FP.<-trans ab bx)
@@ -373,9 +382,52 @@ private
 
 classify : (p : Atom N) → Decoded p
 classify (MM a b)             = mm a b (a FP.≟ b)
-classify (XX a b x y ab xy)   = xx a b x y ab xy (a FP.≟ x) (b FP.≟ y) (a FP.≟ y) (b FP.≟ x)
-classify (J a b x y ab bx xy) = jj a b x y ab bx xy
+classify (XX a b x y ab xy)   =
+  xx a b x y ab xy (a FP.≟ x) (b FP.≟ y) (a FP.≟ y) (b FP.≟ x) (≈s? (plane a b x y) zeros)
+classify (J a b x y ab bx xy) = jj a b x y ab bx xy (≈s? (plane a b x y) zeros)
 
 -- The decoder of atoms.
 atom : Atom N → P.Circuit W
 atom p = decode (classify p)
+
+------------------------------------------------------------------------
+-- The points of a decoded atom are among its indices
+
+ArgsIn : ∀ {r} → Vec (State W) r → Atom N → Set
+ArgsIn xs (MM a b)             = InSpan xs (P a) × InSpan xs (P b)
+ArgsIn xs (XX a b x y _ _)     = InSpan xs (P a) × InSpan xs (P b) × InSpan xs (P x) × InSpan xs (P y)
+ArgsIn xs (J a b x y _ _ _)    = InSpan xs (P a) × InSpan xs (P b) × InSpan xs (P x) × InSpan xs (P y)
+
+PtsIn : ∀ {r} → Vec (State W) r → {p : Atom N} → Decoded p → Set
+PtsIn xs (trivial _) = ⊤
+PtsIn xs (routed r)  = ∀ y → InSpan xs (P (Routed.pts r y))
+
+pts-in : ∀ {r} (xs : Vec (State W) r) p → ArgsIn xs p → PtsIn xs (classify p)
+pts-in xs (MM a b) (sa , sb) = mm-in (a FP.≟ b)
+  where
+  mm-in : (d : Dec (a ≡ b)) → PtsIn xs (mm a b d)
+  mm-in (yes refl) = tt
+  mm-in (no _)     = λ { zero → sa ; (suc zero) → sb }
+pts-in xs (XX a b x y ab xy) (sa , sb , sx , sy) =
+  xx-in (a FP.≟ x) (b FP.≟ y) (a FP.≟ y) (b FP.≟ x) (≈s? (plane a b x y) zeros)
+  where
+  xx-in : (d₁ : Dec (a ≡ x)) (d₂ : Dec (b ≡ y)) (d₃ : Dec (a ≡ y)) (d₄ : Dec (b ≡ x))
+    (d₅ : Dec (plane a b x y ≈s zeros)) → PtsIn xs (xx a b x y ab xy d₁ d₂ d₃ d₄ d₅)
+  xx-in (yes refl) (yes refl) _          _          _       = tt
+  xx-in (yes refl) (no _)     _          _          _       =
+    λ { zero → sa ; (suc zero) → sb ; (suc (suc zero)) → sy }
+  xx-in (no _)     (yes refl) _          _          _       =
+    λ { zero → sa ; (suc zero) → sx ; (suc (suc zero)) → sb }
+  xx-in (no _)     (no _)     (yes refl) _          _       =
+    λ { zero → sx ; (suc zero) → sa ; (suc (suc zero)) → sb }
+  xx-in (no _)     (no _)     (no _)     (yes refl) _       =
+    λ { zero → sa ; (suc zero) → sb ; (suc (suc zero)) → sy }
+  xx-in (no _)     (no _)     (no _)     (no _)     (yes _) =
+    λ { zero → sa ; (suc zero) → sb ; (suc (suc zero)) → sx ; (suc (suc (suc zero))) → sy }
+  xx-in (no _)     (no _)     (no _)     (no _)     (no _)  =
+    λ { zero → sa ; (suc zero) → sb ; (suc (suc zero)) → sx ; (suc (suc (suc zero))) → sy }
+pts-in xs (J a b x y ab bx xy) (sa , sb , sx , sy) = jj-in (≈s? (plane a b x y) zeros)
+  where
+  jj-in : (d : Dec (plane a b x y ≈s zeros)) → PtsIn xs (jj a b x y ab bx xy d)
+  jj-in (yes _) = λ { zero → sa ; (suc zero) → sb ; (suc (suc zero)) → sx ; (suc (suc (suc zero))) → sy }
+  jj-in (no _)  = λ { zero → sa ; (suc zero) → sb ; (suc (suc zero)) → sx ; (suc (suc (suc zero))) → sy }
