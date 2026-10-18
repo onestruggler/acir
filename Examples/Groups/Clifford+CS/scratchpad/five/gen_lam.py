@@ -175,31 +175,23 @@ def f1(idx):
     s = head('(F1): the rules of the four-wire theory, controlled',
              ['λ¹ of both sides of every rule of Syntactics at every placement',
               'in the four-wire domain (f1ᵒ: the rule at offset o) are equal on',
-              'five wires (the paper's (F1)): the derivations Five.D',
+              "five wires (the paper's (F1)): the derivations Five.D",
               '(scratchpad/joint/f1.py, f1big.py, deb.py, ckt2.py) from four-wire',
               'windows and, for the items whose controlled K sits on the target of',
               'an S-box, the transports of two-wire equations (Five.TR2); the items',
-              'at the offsets 2-4 are Five.F1Low's; the controlled lf, hyb-sq,',
+              "at the offsets 2-4 are Five.F1Low's; the controlled lf, hyb-sq,",
               'hyb-yb are rules of the schema.'],
              f'{MOD}.F1', extra='open import Data.Nat using (ℕ)' + NL + 'import Presentation.Base as PB' + NL)
     s = s.replace('open import Word.Base using (_•_)', 'open import Word.Base using (Word ; _•_)')
     s = s.replace('open import Examples.Groups.Clifford+CS.Lambda using (λ⁰ ; λ¹)',
                   'open import Examples.Groups.Clifford+CS.Lambda using (λ¹ʷ)')
     s = s.replace('open import Examples.Groups.Clifford+CS.Five.Rules using (_⊢ₓ_≈_)',
-                  'open import Examples.Groups.Clifford+CS.Five.Rules
-'
-                  '  using (_⊢ₓ_≈_ ; srelₓ ; ctl-lf ; ctl-hsq ; ctl-hyb)
-'
-                  'open import Examples.Groups.Clifford+CS.Five.Transport using (F1)
-'
+                  'open import Examples.Groups.Clifford+CS.Five.Rules\n'
+                  '  using (_⊢ₓ_≈_ ; srelₓ ; ctl-lf ; ctl-hsq ; ctl-hyb)\n'
+                  'open import Examples.Groups.Clifford+CS.Five.Transport using (F1)\n'
                   f'import {MOD}.F1Low as F1Low')
     s += NL.join(imports(sorted(set(names)), idx, lemname)) + NL + NL
-    s += 'private
-  variable
-    n : ℕ
-    w v : Word (Gen n)
-
-'
+    s += 'private\n  variable\n    n : ℕ\n    w v : Word (Gen n)\n\n'
     s += NL.join(out)
     return s
 

@@ -24,6 +24,8 @@
 #   comm   two adjacent letters on disjoint wires (structural);
 #   lemma  an earlier lemma, or an axiom of w5lib.L, at a renaming of
 #          its wires, either way;
+#   transport  the controlled image of one side of a two-wire equation
+#          to that of the other (joint/tr.py);
 #   unfold / fold   a box and its one-level unfolding.
 # Each step is checked semantically.  The recorded steps are what
 # five/load5.py and five/lower5.py read: (kind, k, n, info), k the
@@ -217,6 +219,15 @@ class Derivation:
             f'{self.name}: {name} does not match at {k}: {show(self.cur[k:k + len(src)])} vs {show(src)}'
         info = (name, dict(pi), fwd) if pi else (name, fwd)
         self._replace(k, len(src), dst, 'lemma', info, check=False)
+
+    def transport(self, k, src, dst, el, er, t, b=1):
+        """the controlled image src of el (control wire t, colour b) at k to
+        dst, that of er, for an equation el = er of letters on at most two
+        wires off t: a transport of a two-wire derivation (recorded as
+        (el, er, t, b), the joint paper's step, which five/lower5.py reads)."""
+        assert self.cur[k:k + len(src)] == list(src),             f'{self.name}: transport does not match at {k}: {show(self.cur[k:k + len(src)])} vs {show(src)}'
+        assert fp(el) == fp(er), f'{self.name}: transport of an unsound equation'
+        self._replace(k, len(src), dst, 'transport', (tuple(norm(el)), tuple(norm(er)), t, b), check=False)
 
     def unfold(self, k):
         g = self.cur[k]

@@ -164,7 +164,41 @@ def push_bfs(P, p, k, left):
         l = P.cur[p + 1]; bfs_rewrite(P, p, [s, l], [rename(l, k), s])
 
 # ------------------------------------------------------------ pushing
+# A push that is not one step (a box, a three-wire letter in pieces, a
+# stack carried inside, a search) is a lemma of its own, derived once per
+# letter, swap and side and then applied wherever that push recurs (a
+# lemma at a renaming wraps every letter of its sides in the swaps of the
+# renaming, and the same letters recur).  Named `comm push ...`, the
+# lemmas go with the commutations (Five/D/R*): they use no placed window.
+MEMO = True
+PUSHES = {}
+
+def push_cheap(l, k):
+    sl = spelled(l)
+    if not (sl & {k, k + 1}): return True
+    if is_box(l): return False
+    t = tree(l); lp = rename(l, k); tp = tree(lp)
+    if t[0] == 'conj' and t[1] == k: return True
+    if tp[0] == 'conj' and tp[1] == k and tp[2] == t: return True
+    m = off(sl | {k, k + 1})
+    return m is not None and m not in spelled(lp)
+
 def push(P, p, k, left):
+    l = P.cur[p - 1] if left else P.cur[p + 1]
+    if not MEMO or push_cheap(l, k):
+        return push_now(P, p, k, left)
+    key = (l, k, left)
+    if key not in PUSHES:
+        s = sw(k); lp = rename(l, k)
+        name = f'comm push {show([l])} sw{k} {"L" if left else "R"}'
+        lhs, rhs = ([l, s], [s, lp]) if left else ([s, l], [lp, s])
+        Q = Prim(name, lhs, rhs, LEMMAS)
+        push_now(Q, 1 if left else 0, k, left)
+        Q.done(); PRIMS.append(Q)
+        PUSHES[key] = name
+    P.L(PUSHES[key], p - 1 if left else p, True)
+
+def push_now(P, p, k, left):
     """left: [l, sw k] at p-1, p -> [sw k, l']; right: [sw k, l] at p, p+1
     -> [l', sw k]; l' the letter renamed by the swap."""
     s = sw(k); l = P.cur[p - 1] if left else P.cur[p + 1]
@@ -485,18 +519,70 @@ def lower(key, lhs, rhs, steps, pi):
         elif kind == 'lemma':
             if len(info) == 3: sub, spi, fwd = info
             else: (sub, fwd), spi = info, {}
+            ren = compose(spi, pi)
             if sub in AXIOMS:
-                lower_axiom(P, k, sub, fwd, compose(spi, pi))
+                lower_axiom(P, k, sub, fwd, ren)
+            elif wrap_instead(sub, ren):
+                lower_wrapped(P, k, sub, fwd, ren)
             else:
-                P.L(instance(sub, compose(spi, pi)), k, fwd)
+                P.L(instance(sub, ren), k, fwd)
         elif kind in ('unfold', 'fold'):
             P.R(k, n, rep, check=False, tag=kind)
         elif kind == 'nat':
             a, b = info; nat_step(P, k, n, pi.get(a, a), pi.get(b, b))
+        elif kind == 'transport':
+            name, ren = transport_axiom(*info)
+            lower_axiom(P, k, name, True, compose(ren, pi))
         else: raise ValueError(kind)
         assert P.cur == before[:k] + rep + before[k + n:], (key, kind, show(P.cur[k:k + len(rep) + 2]), show(rep))
     P.done(); PRIMS.append(P)
     return P
+
+# A transport (joint/tr.py) replaces lambda1_t(el) by lambda1_t(er) for an
+# equation el = er on at most two wires off the control t.  Each is the
+# canonical one -- control wire 4, the wires of el, er sent to 2, 3 in
+# order and the other domain wires to 0, 1 in order, as tr.py's TR2
+# axioms -- at a renaming, which lower_axiom wraps in swaps.
+# TRANSPORTS[name] is (cu, cv), the canonical generator words.
+TRANSPORTS = {}
+
+def transport_axiom(el, er, t, b):
+    import tr
+    assert b == 1, ('a white transport', el, er)
+    p = {4: t, t: 4} if t != 4 else {}
+    el4 = relabel_word(norm(list(el)), p); er4 = relabel_word(norm(list(er)), p)
+    supp = sorted(gsupp(el4 + er4))
+    assert len(supp) <= 2 and all(w < 4 for w in supp), (el, er, t)
+    supp = supp + [w for w in (2, 3) if w not in supp][:2 - len(supp)] if len(supp) < 2 else supp
+    order = [w for w in range(4) if w not in supp] + supp
+    sigma = {w: i for i, w in enumerate(order) if w != i}
+    cu = tr.gens_of(relabel_word(el4, sigma)); cv = tr.gens_of(relabel_word(er4, sigma))
+    name = tr.tr2_axiom({}, cu, cv)
+    if name not in TRANSPORTS:
+        TRANSPORTS[name] = (cu, cv)
+        AXIOMS[name] = (norm(tr.l1(cu)), norm(tr.l1(cv)))
+    inv = {v: k for k, v in sigma.items()}
+    return name, compose(inv, p)
+
+# (F5) at a renaming that moves the control wire, lowered afresh, has a
+# window that Agda checks in more than 8 GB (Five/D/D144, F5-23 with the
+# control on wire 0); such an instance is the canonical lemma wrapped in
+# the swaps of the renaming instead, as an axiom is.
+def wrap_instead(name, pi):
+    return name.startswith('F5-') and pi.get(4, 4) != 4
+
+def lower_wrapped(P, k, name, fwd, pi):
+    key = instance(name, {})
+    l, r = LEMMAS[key]
+    src, dst = (l, r) if fwd else (r, l)
+    word = list(reversed(perm_word(pi)))
+    n = len(src); kk = k
+    assert P.cur[k:k + n] == relabel_word(src, pi), (show(P.cur[k:k + n]), show(relabel_word(src, pi)))
+    for s in reversed(word): wrap(P, kk, n, s); kk += 1
+    assert P.cur[kk:kk + n] == src, (show(P.cur[kk:kk + n]), show(src), word)
+    P.L(key, kk, fwd); n = len(dst)
+    for s in word: kk -= 1; unwrap(P, kk, n, s)
+    assert P.cur[k:k + n] == relabel_word(dst, pi)
 
 def perm_word(pi):
     """adjacent transpositions t1 .. tr, applied to the wires in that order,

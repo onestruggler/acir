@@ -212,10 +212,12 @@ def tr2_axiom(L, u, v):
 
 
 def tr2(d, k, cu, cv, pi=ID):
-    """the axiom for the canonical words cu, cv, at the renaming pi, at k."""
+    """the transport for the canonical words cu, cv, at the renaming pi, at
+    k: a `transport` step of the frame's letters (control wire pi(4))."""
     nm = tr2_axiom(d.lemmas, cu, cv)
-    pp = {a: b for a, b in pi.items() if a != b}
-    d.lemma(nm, k, pi=pp or None)
+    src = derivn.relabel_word(l1(cu), pi); dst = derivn.relabel_word(l1(cv), pi)
+    el = derivn.relabel_word(letters(cu), pi); er = derivn.relabel_word(letters(cv), pi)
+    d.transport(k, src, dst, el, er, pi.get(4, 4), 1)
     return nm
 
 
