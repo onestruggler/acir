@@ -116,3 +116,135 @@ opaque
   s446 = by-eq tt
   s447 : Sem.interpret ⟪ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
   s447 = by-eq tt
+  s448 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s448 = by-eq tt
+  s449 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s449 = by-eq tt
+  s450 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s450 = by-eq tt
+  s451 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s451 = by-eq tt
+  s452 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s452 = by-eq tt
+  s453 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s453 = by-eq tt
+  s454 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s454 = by-eq tt
+  s455 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s455 = by-eq tt
+  s456 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s456 = by-eq tt
+  s457 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s457 = by-eq tt
+  s458 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s458 = by-eq tt
+  s459 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s459 = by-eq tt
+  s460 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s460 = by-eq tt
+  s461 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s461 = by-eq tt
+  s462 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s462 = by-eq tt
+  s463 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s463 = by-eq tt
+  s464 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s464 = by-eq tt
+  s465 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s465 = by-eq tt
+  s466 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s466 = by-eq tt
+  s467 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s467 = by-eq tt
+  s468 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s468 = by-eq tt
+  s469 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s469 = by-eq tt
+  s470 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s470 = by-eq tt
+  s471 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s471 = by-eq tt
+  s472 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s472 = by-eq tt
+  s473 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s473 = by-eq tt
+  s474 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s474 = by-eq tt
+  s475 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s475 = by-eq tt
+  s476 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s476 = by-eq tt
+  s477 : Sem.interpret ⟪ x₀ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s477 = by-eq tt
+  s478 : Sem.interpret ⟪ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s478 = by-eq tt
+  s479 : Sem.interpret ⟪ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s479 = by-eq tt
+  s480 : Sem.interpret ⟪ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s480 = by-eq tt
+  s481 : Sem.interpret ⟪ hh₀ ∷ x₀ ∷ x₁ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s481 = by-eq tt
+  s482 : Sem.interpret ⟪ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s482 = by-eq tt
+  s483 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s483 = by-eq tt
+  s484 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s484 = by-eq tt
+  s485 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s485 = by-eq tt
+  s486 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s486 = by-eq tt
+  s487 : Sem.interpret ⟪ x₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s487 = by-eq tt
+  s488 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s488 = by-eq tt
+  s489 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s489 = by-eq tt
+  s490 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s490 = by-eq tt
+  s491 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s491 = by-eq tt
+  s492 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s492 = by-eq tt
+  s493 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s493 = by-eq tt
+  s494 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s494 = by-eq tt
+  s495 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s495 = by-eq tt
+  s496 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s496 = by-eq tt
+  s497 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s497 = by-eq tt
+  s498 : Sem.interpret ⟪ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s498 = by-eq tt
+  s499 : Sem.interpret ⟪ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s499 = by-eq tt
+  s500 : Sem.interpret ⟪ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s500 = by-eq tt
+  s501 : Sem.interpret ⟪ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s501 = by-eq tt
+  s502 : Sem.interpret ⟪ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s502 = by-eq tt
+  s503 : Sem.interpret ⟪ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s503 = by-eq tt
+  s504 : Sem.interpret ⟪ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s504 = by-eq tt
+  s505 : Sem.interpret ⟪ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s505 = by-eq tt
+  s506 : Sem.interpret ⟪ cx₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s506 = by-eq tt
+  s507 : Sem.interpret ⟪ cx₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s507 = by-eq tt
+  s508 : Sem.interpret ⟪ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s508 = by-eq tt
+  s509 : Sem.interpret ⟪ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s509 = by-eq tt
+  s510 : Sem.interpret ⟪ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s510 = by-eq tt
+  s511 : Sem.interpret ⟪ hh₀ ∷ x₀ ∷ x₁ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s511 = by-eq tt
+  s512 : Sem.interpret ⟪ hh₀ ∷ x₀ ∷ x₁ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s512 = by-eq tt
+  s513 : Sem.interpret ⟪ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ [] ⟫₂ ≡ Sem.interpret ⟪ [] ⟫₂
+  s513 = by-eq tt

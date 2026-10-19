@@ -110,3 +110,135 @@ fr446 : Eqn 3
 fr446 = free01 (x₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ []) ([]) s446
 fr447 : Eqn 3
 fr447 = free01 (cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ []) ([]) s447
+fr448 : Eqn 3
+fr448 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ []) ([]) s448
+fr449 : Eqn 3
+fr449 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ []) ([]) s449
+fr450 : Eqn 3
+fr450 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ hh₀ ∷ []) ([]) s450
+fr451 : Eqn 3
+fr451 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ []) ([]) s451
+fr452 : Eqn 3
+fr452 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ []) ([]) s452
+fr453 : Eqn 3
+fr453 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ []) ([]) s453
+fr454 : Eqn 3
+fr454 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ []) ([]) s454
+fr455 : Eqn 3
+fr455 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ []) ([]) s455
+fr456 : Eqn 3
+fr456 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ []) ([]) s456
+fr457 : Eqn 3
+fr457 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ []) ([]) s457
+fr458 : Eqn 3
+fr458 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ []) ([]) s458
+fr459 : Eqn 3
+fr459 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ []) ([]) s459
+fr460 : Eqn 3
+fr460 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ []) ([]) s460
+fr461 : Eqn 3
+fr461 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ []) ([]) s461
+fr462 : Eqn 3
+fr462 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ []) ([]) s462
+fr463 : Eqn 3
+fr463 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ []) ([]) s463
+fr464 : Eqn 3
+fr464 = free01 (x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ []) ([]) s464
+fr465 : Eqn 3
+fr465 = free01 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ []) ([]) s465
+fr466 : Eqn 3
+fr466 = free01 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ []) ([]) s466
+fr467 : Eqn 3
+fr467 = free01 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ []) ([]) s467
+fr468 : Eqn 3
+fr468 = free01 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ []) ([]) s468
+fr469 : Eqn 3
+fr469 = free01 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ []) ([]) s469
+fr470 : Eqn 3
+fr470 = free01 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ []) ([]) s470
+fr471 : Eqn 3
+fr471 = free01 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ []) ([]) s471
+fr472 : Eqn 3
+fr472 = free01 (x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ []) ([]) s472
+fr473 : Eqn 3
+fr473 = free01 (x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ []) ([]) s473
+fr474 : Eqn 3
+fr474 = free01 (x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ []) ([]) s474
+fr475 : Eqn 3
+fr475 = free01 (x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ []) ([]) s475
+fr476 : Eqn 3
+fr476 = free01 (x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ []) ([]) s476
+fr477 : Eqn 3
+fr477 = free01 (x₀ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ []) ([]) s477
+fr478 : Eqn 3
+fr478 = free01 (x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ []) ([]) s478
+fr479 : Eqn 3
+fr479 = free01 (x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ []) ([]) s479
+fr480 : Eqn 3
+fr480 = free01 (x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ []) ([]) s480
+fr481 : Eqn 3
+fr481 = free01 (hh₀ ∷ x₀ ∷ x₁ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ []) ([]) s481
+fr482 : Eqn 3
+fr482 = free01 (hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ []) ([]) s482
+fr483 : Eqn 3
+fr483 = free12 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ []) ([]) s483
+fr484 : Eqn 3
+fr484 = free12 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ []) ([]) s484
+fr485 : Eqn 3
+fr485 = free12 (x₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ []) ([]) s485
+fr486 : Eqn 3
+fr486 = free12 (x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ []) ([]) s486
+fr487 : Eqn 3
+fr487 = free12 (x₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ []) ([]) s487
+fr488 : Eqn 3
+fr488 = free12 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ []) ([]) s488
+fr489 : Eqn 3
+fr489 = free12 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ []) ([]) s489
+fr490 : Eqn 3
+fr490 = free12 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ []) ([]) s490
+fr491 : Eqn 3
+fr491 = free12 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ []) ([]) s491
+fr492 : Eqn 3
+fr492 = free12 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ []) ([]) s492
+fr493 : Eqn 3
+fr493 = free12 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ []) ([]) s493
+fr494 : Eqn 3
+fr494 = free12 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ []) ([]) s494
+fr495 : Eqn 3
+fr495 = free12 (x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ []) ([]) s495
+fr496 : Eqn 3
+fr496 = free12 (x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ []) ([]) s496
+fr497 : Eqn 3
+fr497 = free12 (x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ []) ([]) s497
+fr498 : Eqn 3
+fr498 = free12 (x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ []) ([]) s498
+fr499 : Eqn 3
+fr499 = free12 (x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ []) ([]) s499
+fr500 : Eqn 3
+fr500 = free12 (x₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ []) ([]) s500
+fr501 : Eqn 3
+fr501 = free12 (x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ []) ([]) s501
+fr502 : Eqn 3
+fr502 = free12 (x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ []) ([]) s502
+fr503 : Eqn 3
+fr503 = free12 (x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ []) ([]) s503
+fr504 : Eqn 3
+fr504 = free12 (x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ []) ([]) s504
+fr505 : Eqn 3
+fr505 = free12 (x₁ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ []) ([]) s505
+fr506 : Eqn 3
+fr506 = free12 (cx₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ []) ([]) s506
+fr507 : Eqn 3
+fr507 = free12 (cx₀ ∷ x₁ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ []) ([]) s507
+fr508 : Eqn 3
+fr508 = free12 (cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ []) ([]) s508
+fr509 : Eqn 3
+fr509 = free12 (cx₀ ∷ hh₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ x₀ ∷ hh₀ ∷ cx₀ ∷ []) ([]) s509
+fr510 : Eqn 3
+fr510 = free12 (cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ cx₀ ∷ x₁ ∷ hh₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ cx₀ ∷ []) ([]) s510
+fr511 : Eqn 3
+fr511 = free12 (hh₀ ∷ x₀ ∷ x₁ ∷ x₀ ∷ x₁ ∷ hh₀ ∷ []) ([]) s511
+fr512 : Eqn 3
+fr512 = free12 (hh₀ ∷ x₀ ∷ x₁ ∷ cx₀ ∷ x₁ ∷ cx₀ ∷ hh₀ ∷ []) ([]) s512
+fr513 : Eqn 3
+fr513 = free12 (hh₀ ∷ x₀ ∷ cx₀ ∷ x₀ ∷ cx₀ ∷ hh₀ ∷ []) ([]) s513

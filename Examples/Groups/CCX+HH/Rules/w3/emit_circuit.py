@@ -298,13 +298,103 @@ def patch_free(paths):
         s = open(p, encoding='utf-8').read().replace('@FREE@', imp)
         open(p, 'w', encoding='utf-8').write(s)
 
-if __name__ == '__main__':
+
+# ---------------------------------------------------------------------
+# Stage 2: the top table, G over W(D8)
+
+def fin9(word):
+    return ' ∷ '.join(f'# {Pp.LET.index(x)}' for x in word) + ' ∷ []' if word else '[]'
+
+def emit_top():
+    import top as TP
+    rels, levels, tc, live, table, reps = TP.build()
+    cid = {c: k for k, c in enumerate(live)}
+    assert cid[0] == 0 and tc.rep[0] == ()
+    roots = [f for (_, _, f) in table.values()]
+    cl = sorted(Pp.closure(tc, roots))
+    num = {f: k for k, f in enumerate(cl)}
+    chunks = [cl[i:i + CHUNK] for i in range(0, len(cl), CHUNK)]
+    os.makedirs(f'{ROOT}/Top', exist_ok=True)
+
+    def eqn_of(kind, key):
+        if kind == 'ax':
+            a = tc.axioms[key]
+            return axiom_eqn(a.name, a.lhs, a.rhs, None)
+        if kind == 'inv':
+            return f'inv⁼ {G[key]}'
+        if kind == 'fact':
+            return f't{num[key]}'
+        raise ValueError(kind)
+
+    paths = []
+    for ci, ch in enumerate(chunks):
+        L = [HEADER.format(title=f'The top table of the three-wire proof: derivations, part {ci}.'),
+             f'module {MOD}.Top.Facts{ci} where\n',
+             'open import Data.Fin using (#_)',
+             'open import Data.List.Base using (List ; [] ; _∷_)',
+             'open import Relation.Binary.PropositionalEquality using (refl)',
+             f'open import {MOD}.Kit', f'open import {MOD}.Comm',
+             f'open import {MOD}.Decode using (d8nat)', '@FREE@']
+        L += [f'open import {MOD}.Top.Facts{j}' for j in range(ci)]
+        L.append('')
+        for f in ch:
+            fact = tc.facts[f]
+            st = fact.steps
+            L.append(f't{num[f]} : Eqn 3')
+            if len(st) == 1 and st[0][1][0] == 'norm':
+                lab, nf = st[0][1][1]
+                L.append(f't{num[f]} = d8nat ({fin9(lab)}) ({fin9(nf)}) refl')
+            else:
+                L.append(f't{num[f]} = derive ({glist(fact.lhs)}) ({glist(fact.rhs)})')
+                L.append(f'  {steps_text(st, eqn_of)} refl')
+        p = f'{ROOT}/Top/Facts{ci}.agda'
+        open(p, 'w', encoding='utf-8').write('\n'.join(L) + '\n')
+        paths.append(p)
+    T = [HEADER.format(title='The top table of the three-wire proof: the natural rules over W(D8).'),
+         f'module {MOD}.TopTable where\n',
+         'open import Data.Fin.Base using (Fin)',
+         'open import Data.Fin using (#_)',
+         'open import Data.List.Base using (List ; [] ; _∷_)',
+         'open import Data.Product.Base using (_×_ ; _,_)',
+         'open import Data.Vec.Base using (Vec ; [] ; _∷_)',
+         'open import Relation.Binary.PropositionalEquality using (refl)',
+         f'open import {MOD}.Kit']
+    T += [f'open import {MOD}.Top.Facts{ci}' for ci in range(len(chunks))]
+    T += ['', f'repT : Vec (List (Gen 3)) {len(live)}', 'repT =']
+    for c in live:
+        T.append(f'  ({glist(tc.rep[c])}) ∷')
+    T += ['  []', '', f'tabT : Vec (Vec (List (Fin 9) × Fin {len(live)}) 8) {len(live)}', 'tabT =']
+    frows = []
+    for c in live:
+        row, frow = [], []
+        for y in range(8):
+            d, lab, f = table[(c, y)]
+            row.append(f'(({fin9(lab)}) , # {cid[d]})')
+            frow.append(f't{num[f]}')
+        T.append('  (' + ' ∷ '.join(row) + ' ∷ []) ∷')
+        frows.append(frow)
+    T += ['  []', '', f'factT : Vec (Vec (Eqn 3) 8) {len(live)}', 'factT =']
+    for frow in frows:
+        T.append('  (' + ' ∷ '.join(frow) + ' ∷ []) ∷')
+    T += ['  []', '',
+          f'open import {MOD}.TableKit repT tabT factT public',
+          'open Checked (# 0) refl refl public']
+    open(f'{ROOT}/TopTable.agda', 'w', encoding='utf-8').write('\n'.join(T) + '\n')
+    print('top:', len(cl), 'facts in', len(chunks), 'chunks', flush=True)
+    return paths, (tc, live, cid)
+
+def main2():
     data = pickle.load(open('lemmas_data.pkl', 'rb'))
     os.makedirs(ROOT, exist_ok=True)
     emit_comm()
     order = emit_lemmas(data)
     emit_relators(data['roots'], order)
+    tpaths, topdata = emit_top()
     n = FREE.emit()
     paths = [os.path.join(dp, f) for dp, _, fs in os.walk(f'{ROOT}/Lemmas') for f in fs]
-    patch_free(paths + [f'{ROOT}/Relators.agda'])
+    patch_free(paths + [f'{ROOT}/Relators.agda'] + tpaths)
     print('free checks', len(FREE.order), 'in', n, 'chunks; lemmas', len(order))
+    return topdata
+
+if __name__ == '__main__':
+    main2()

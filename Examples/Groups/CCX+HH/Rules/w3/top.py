@@ -25,7 +25,7 @@ REN = {'X0': 'X0', 'X1': 'X1', 'X2': 'X2', 'CX10': 'CX0', 'CX21': 'CX1',
 
 def tq_reps():
     # stored lists apply left to right; the matrix order is reversed
-    return [tuple(GL[REN[t]] for t in reversed(w)) for w in TQ['representative_words']]
+    return [tuple(GL[REN[t]] for t in w) for w in TQ["representative_words"]]
 
 def two_relators():
     rels = []
