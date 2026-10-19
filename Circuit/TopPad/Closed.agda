@@ -39,7 +39,8 @@ open import Relation.Nullary using (does)
 open import Reflection
   using ( Term ; Name ; Arg ; arg ; arg-info ; visible ; vArg ; con ; def
         ; meta ; TC ; pure ; _>>=_ ; _>>_ ; reduce ; inferType ; unify
-        ; typeError ; strErr ; termErr ; blockOnMeta ; quoteTC )
+        ; typeError ; strErr ; termErr ; blockOnMeta ; quoteTC
+        ; catchTC ; noConstraints ; Meta ; var ; lam ; abs )
 import Reflection.AST.Name as Name
 
 open import Notations
@@ -243,9 +244,35 @@ private
 -- w ⇓ ≡ w′, for two readings of one word at consecutive widths; with
 -- lemmas for the words a case split on a label chooses, (f , f-⇓ , k),
 -- f-⇓ taking the last k visible arguments of f.
+--
+-- Eq.refl is tried first: it holds whenever no power is stuck, and
+-- then the traversal, which would end in Eq.refl too, is not needed
+-- (Paper-V0's TopPad 21.6 → 11.7 s).  Not before the goal is known,
+-- though: unifying with a meta in it could solve the meta.
+private
+  -- A meta in a term, if any.
+  metaIn  : Term → Maybe Meta
+  metaIns : List (Arg Term) → Maybe Meta
+  metaIn (meta m _)        = just m
+  metaIn (var _ as)        = metaIns as
+  metaIn (con _ as)        = metaIns as
+  metaIn (def _ as)        = metaIns as
+  metaIn (lam _ (abs _ t)) = metaIn t
+  metaIn _                 = nothing
+  metaIns []               = nothing
+  metaIns (arg _ t ∷ as) with metaIn t
+  ... | just m  = just m
+  ... | nothing = metaIns as
+
+  refl-first : List Lemma → Term → Maybe Meta → TC ⊤
+  refl-first T hole (just m) = blockOnMeta m
+  refl-first T hole nothing  =
+    catchTC (noConstraints (unify hole (con (quote Eq.refl) [])))
+            (equation T hole >>= unify hole)
+
 macro
   ⇓-same : Term → TC ⊤
-  ⇓-same hole = equation [] hole >>= unify hole
+  ⇓-same hole = inferType hole >>= λ ty → refl-first [] hole (metaIn ty)
 
   ⇓-same-by : List (Name × Name × ℕ) → Term → TC ⊤
-  ⇓-same-by T hole = equation T hole >>= unify hole
+  ⇓-same-by T hole = inferType hole >>= λ ty → refl-first T hole (metaIn ty)
