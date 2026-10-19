@@ -721,3 +721,44 @@ name; `Schema` adds the schema read through θ. Then:
   three: `Bridge` derives Natural's rules and transfers its
   completeness on one and two wires (`complete⇒`, and `complete₀` on
   none); three wires, where the group is infinite, is not done.
+
+### Three wires: a derivation finder and a tower (`w3/`)
+
+Two findings make the three-wire case look tractable.
+
+*A derivation finder.* `w3/partial.py` derives a three-wire identity from
+the natural rules by a **partial** proof-producing coset enumeration over
+the two-wire group P₂ on the wires 0, 1, whose relations are free
+(completeness on two wires): labels are kept as canonical words of P₂,
+the two-wire relators on the wires 1, 2 are added, cosets along the
+target are defined first, and the enumeration stops at a few thousand
+cosets; if the target then closes at coset 0 its trace is a derivation.
+`X0 CCX0 = CCX0 X0` closes after 5000 cosets (501 facts). Longer
+identities need **bootstrapping** (`w3/bootstrap.py`,
+`bootstrap2.py`): every identity that closes becomes an extra relator for
+the next. From 28 short classical lemmas (X0 and CX0 commute with CCX0,
+…) the affine identities `(CX0 CX1)⁴ = ε`, `(CXr0 CXr1)⁴ = ε` and the two
+commutator relations below all close at 20000 cosets.
+
+*A tower with short relators.* `w3/levels.py`, `levels_min.py` and
+`d8rels.py` find, for
+
+    W(E8) > W(D8) > S8 > AGL(3,2) > Z2³ > 1,   indices 135, 128, 30, 168, 8,
+
+relators in each level's own letters (X i, CX i, CXr i = HH CX HH, CCX0,
+Z1 = HH0 X1 HH0) that present the level over the next, besides the free
+two-wire relations and the commutations of disjoint letters:
+
+| Level | Three-wire relators |
+| --- | --- |
+| AGL(3,2) over Z2³ | `(CXr0 CXr1)⁴`, `CX0 CX1 CX0 CX1 · CXr0 · CX0 CX1 CX0 · CXr0`, the same with `CXr1` |
+| S8 over AGL(3,2) | the rules CCX-sym, CCX-neg, CCX-XC |
+| W(D8) over S8 | `Z1 CCX0 = CCX0 Z1`, `CX1 Z1 CX1 = Z1 · Ex1 Z1 Ex1` |
+| W(E8) over W(D8) | the natural rules |
+
+All five new relators are derived by the finder. The top level, with
+labels in W(D8) kept canonical (`w3/d8norm.py`), closes at 135 cosets
+with 15146 facts in the closure of its table. What remains is to emit
+all of this as Agda (planned: the W(D8) presentation as pure group
+theory over signed permutations, the relators' derivations, and the top
+table through ThreeQubit's `FiniteExtension` and `Separation`).
