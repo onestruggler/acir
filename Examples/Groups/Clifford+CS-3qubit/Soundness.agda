@@ -40,6 +40,9 @@ open CliffordCS hiding (Rel)
 
 open Monoid-Equational
 
+import Examples.Groups.Clifford+CS-3qubit.Soundness.Long1 as L1
+import Examples.Groups.Clifford+CS-3qubit.Soundness.Long2 as L2
+
 module Examples.Groups.Clifford+CS-3qubit.Soundness where
 
   -- Base case of the soundness theorem: The translation of every
@@ -95,11 +98,11 @@ module Examples.Groups.Clifford+CS-3qubit.Soundness where
   soundness-base CliffordCS.ax-CS01-K1-CS01-K1-S1=S1-K1-CS01-K1-CS01 = rewrite-twolevel 100 auto
   soundness-base CliffordCS.ax-CS12-K1-CS12-K1-S1=S1-K1-CS12-K1-CS12 = rewrite-twolevel 100 auto
   soundness-base CliffordCS.ax-CS12-K2-CS12-K2-S2=S2-K2-CS12-K2-CS12 = rewrite-twolevel 100 auto
-  soundness-base CliffordCS.ax-CX10-CX01-CS12-CX01-CX10=CX12-CX21-CS01-CX21-CX12 = lemma-one-sided (rewrite-twolevel 4000 auto)
-  soundness-base CliffordCS.ax-CX10-CX01-CS12-CS12-CX01-CX10=CX01-CS12-CS12-CX01-CS12-CS12 = lemma-one-sided (rewrite-twolevel 1000 auto)
+  soundness-base CliffordCS.ax-CX10-CX01-CS12-CX01-CX10=CX12-CX21-CS01-CX21-CX12 = L1.sb-long1
+  soundness-base CliffordCS.ax-CX10-CX01-CS12-CS12-CX01-CX10=CX01-CS12-CS12-CX01-CS12-CS12 = L2.sb-long2
   soundness-base CliffordCS.ax-CS12-CX01-CS12-CS12-CS12-CX01=CS01-CX21-CS01-CS01-CS01-CX21 = rewrite-twolevel 100 auto
-  soundness-base CliffordCS.ax-CS12-K1-CS12-K1-CS01-K1-CS01=CS01-K1-CS01-K1-CS12-K1-CS12 = lemma-one-sided (rewrite-twolevel 1000 auto)
-  soundness-base CliffordCS.ax-CS12-K1-CS12-CS12-CS12-K1-CS01-K1-CS12-K1=CS01-K1-CS01-CS01-CS01-K1-CS12-K1-CS01-K1 = lemma-one-sided (rewrite-twolevel 1000 auto)
+  soundness-base CliffordCS.ax-CS12-K1-CS12-K1-CS01-K1-CS01=CS01-K1-CS01-K1-CS12-K1-CS12 = L2.sb-long3
+  soundness-base CliffordCS.ax-CS12-K1-CS12-CS12-CS12-K1-CS01-K1-CS12-K1=CS01-K1-CS01-CS01-CS01-K1-CS12-K1-CS01-K1 = L2.sb-long4
   
   -- Proof of the soundness theorem: All the work was done in the base
   -- cases. The rest is just an obvious induction.
@@ -112,4 +115,5 @@ module Examples.Groups.Clifford+CS-3qubit.Soundness where
   soundness assoc = assoc
   soundness left-unit = left-unit
   soundness right-unit = right-unit
+
 
