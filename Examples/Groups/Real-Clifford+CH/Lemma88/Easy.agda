@@ -54,7 +54,7 @@ open import Examples.Groups.Real-Clifford+CH.Encoding
   using (zz ; zx ; xx ; hh ; hhℕ ; zxℕ ; Σ ; Σ′ ; τ ; distinct4 ; twoSmallest ; hpat ; toFin)
 open import Examples.Groups.Real-Clifford+CH.Decoding
   using (d ; dZZ ; dZZ-chain ; dZX ; dZXb ; dZXs ; dZXself ; dZXlo ; dZXhi ; dZXlo₁ ; dZXhi₁ ; dXX ;
-         dHH ; dHH₄ ; dHH₄-pat ; dHH₄-nopat ; dΣ ; gadget ; gcode ; layoutH)
+         dHH ; dHH₄ ; dHH₄-pat ; dHH₄-nopat ; dP ; dP-HH ; dΣ ; gadget ; gcode ; layoutH)
 open import Examples.Groups.Real-Clifford+CH.MultiControlled using (mcH)
 
 private
@@ -503,11 +503,18 @@ private
   cong-dHH : ∀ {a a′ b b′ c c′ e e′ : ℕ} → a ≡ a′ → b ≡ b′ → c ≡ c′ → e ≡ e′ → dHH {m} a b c e ≡ dHH a′ b′ c′ e′
   cong-dHH Eq.refl Eq.refl Eq.refl Eq.refl = Eq.refl
 
+  -- A letter decodes through `dP`, over a variable letter: stated at a
+  -- letter, the two sides are compared by reducing `dP`.
+  d-letter : ∀ (p : GenP N) → (d ʷ) [ p ]ʷ ≡ rev (dP {m} p)
+  d-letter p = Eq.refl
+
 -- The standard pair decodes to the gadget of Definition 8.3.
 d-hh0132 : (d ʷ) (hhℕ {N} 0 1 3 2) ≡ rev gadget
 d-hh0132 = Eq.trans (Eq.cong (d ʷ) (Eq.trans (cong-hhℕ (Eq.sym toℕ-i₀) (Eq.sym toℕ-i₁) (Eq.sym toℕ-i₃) (Eq.sym toℕ-i₂))
                                             (Eq.trans (hhℕ-hh i₀ i₁ i₃ i₂) (hh-letter i₀ i₁ i₃ i₂ i₀≢i₁ i₃≢i₂))))
-                    (Eq.cong rev (Eq.trans (cong-dHH toℕ-i₀ toℕ-i₁ toℕ-i₃ toℕ-i₂) (dHH₄-pat 0 1 3 2 0 1 pat0132)))
+                    (Eq.trans (d-letter (HH i₀ i₁ i₃ i₂ i₀≢i₁ i₃≢i₂))
+                    (Eq.cong rev (Eq.trans (dP-HH i₀ i₁ i₃ i₂ i₀≢i₁ i₃≢i₂ 0 1 3 2 toℕ-i₀ toℕ-i₁ toℕ-i₃ toℕ-i₂)
+                                 (Eq.trans (dHH-true 0 1 3 2 Eq.refl) (dHH₄-pat 0 1 3 2 0 1 pat0132)))))
   where
   i₀≢i₁ : i₀ ≢ i₁
   i₀≢i₁ e = ᵇ-ne {0} {1} Eq.refl (Eq.trans (Eq.sym toℕ-i₀) (Eq.trans (Eq.cong toℕ e) toℕ-i₁))
@@ -523,7 +530,7 @@ d-hh-pat : ∀ (x y z w : Fin 8) pb pc →
 d-hh-pat x y z w pb pc dist pat =
   Eq.trans (Eq.cong (d ʷ) (Eq.trans (cong-hhℕ (Eq.sym vx) (Eq.sym vy) (Eq.sym vz) (Eq.sym vw))
                                     (Eq.trans (hhℕ-hh a b c e) (hh-letter a b c e ab ce))))
-           (Eq.cong rev (Eq.trans (cong-dHH vx vy vz vw)
+           (Eq.cong rev (Eq.trans (dP-HH a b c e ab ce (toℕ x) (toℕ y) (toℕ z) (toℕ w) vx vy vz vw)
                                   (Eq.trans (dHH-true (toℕ x) (toℕ y) (toℕ z) (toℕ w) dist)
                                             (dHH₄-pat (toℕ x) (toℕ y) (toℕ z) (toℕ w) pb pc pat))))
   where
@@ -599,7 +606,8 @@ e35 : ∀ (a b c e : I) → distinct4 (toℕ a) (toℕ b) (toℕ c) (toℕ e) �
       (d ʷ) (Σ (toℕ a) (toℕ b) (toℕ c) (toℕ e) • hhℕ 0 1 3 2 • Σ′ (toℕ a) (toℕ b) (toℕ c) (toℕ e))
 e35 a b c e dist np = begin
   (d ʷ) (hh a b c e)
-    ≈⟨ ≡→≈ (Eq.cong (d ʷ) (hh-letter a b c e (ne-ℕ (dist-ab x y z w dist)) (ne-ℕ (dist-cd x y z w dist)))) ⟩
+    ≈⟨ ≡→≈ (Eq.trans (Eq.cong (d ʷ) (hh-letter a b c e ab ce))
+                      (Eq.cong rev (dP-HH a b c e ab ce x y z w Eq.refl Eq.refl Eq.refl Eq.refl))) ⟩
   rev (dHH x y z w)
     ≈⟨ ≡→≈ (Eq.cong rev (Eq.trans (dHH-true x y z w dist) (dHH₄-nopat x y z w np))) ⟩
   rev (dΣ (Σ′ x y z w) • gadget • dΣ (Σ x y z w))
@@ -613,6 +621,10 @@ e35 a b c e dist np = begin
   y = toℕ b
   z = toℕ c
   w = toℕ e
+  ab : a ≢ b
+  ab = ne-ℕ (dist-ab x y z w dist)
+  ce : c ≢ e
+  ce = ne-ℕ (dist-cd x y z w dist)
 
 private
   <8 : ∀ {k} → k < 8 → k < 2 ^ N
@@ -668,15 +680,19 @@ e42 a b c e ab ce nd = ≡→≈ (Eq.trans lhs (Eq.sym rhs))
         ≡ rev (dHH₄ {m} x y E F) • rev (dHH₄ E F z w)
   lhs = Eq.trans (Eq.cong₂ (λ u v → (d ʷ) (u • v)) (Eq.trans l₁ (hh-letter a b E′ F′ ab E′F′))
                                                   (Eq.trans l₂ (hh-letter E′ F′ c e E′F′ ce)))
+                 (Eq.trans (Eq.cong₂ _•_
+                   (Eq.cong rev (dP-HH a b E′ F′ ab E′F′ x y (toℕ E′) (toℕ F′) Eq.refl Eq.refl Eq.refl Eq.refl))
+                   (Eq.cong rev (dP-HH E′ F′ c e E′F′ ce (toℕ E′) (toℕ F′) z w Eq.refl Eq.refl Eq.refl Eq.refl)))
                  (Eq.cong₂ _•_ (Eq.cong rev (Eq.trans (Eq.cong₂ (dHH {m} x y) vE vF)
                                                       (dHH-true x y E F (dist4 x y E F xy (sym≢ S.ea) (sym≢ S.fa)
                                                                                        (sym≢ S.eb) (sym≢ S.fb) EF))))
                                (Eq.cong rev (Eq.trans (Eq.cong₂ (λ u v → dHH {m} u v z w) vE vF)
-                                                      (dHH-true E F z w (dist4 E F z w EF S.ec S.ed S.fc S.fd zw)))))
+                                                      (dHH-true E F z w (dist4 E F z w EF S.ec S.ed S.fc S.fd zw))))))
   rhs : (d ʷ) (hh {N} a b c e) ≡ rev (dHH₄ {m} x y E F) • rev (dHH₄ E F z w)
   rhs = Eq.trans (Eq.cong (d ʷ) (hh-letter a b c e ab ce))
-                 (Eq.cong rev (Eq.trans (dHH-false x y z w nd)
-                                        (Eq.cong₂ (λ u v → dHH₄ {m} u v z w • dHH₄ x y u v) ts₁ ts₂)))
+                 (Eq.cong rev (Eq.trans (dP-HH a b c e ab ce x y z w Eq.refl Eq.refl Eq.refl Eq.refl)
+                              (Eq.trans (dHH-false x y z w nd)
+                                        (Eq.cong₂ (λ u v → dHH₄ {m} u v z w • dHH₄ x y u v) ts₁ ts₂))))
 
 -- The exchanges of consecutive indices, for later use.
 dZX-lo₁ : ∀ x → dZX {m} x x (suc x) ≡ dZXlo₁ x

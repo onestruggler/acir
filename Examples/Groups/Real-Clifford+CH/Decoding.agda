@@ -27,9 +27,10 @@ open import Data.Fin using (Fin ; toℕ)
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Maybe using (Maybe ; just ; nothing)
 open import Data.Nat using (ℕ ; zero ; suc ; _+_ ; _∸_ ; _<ᵇ_ ; _≡ᵇ_)
+  renaming (_^_ to _^ℕ_)
 open import Data.Product using (_×_ ; _,_)
 open import Data.Vec using (Vec ; [] ; _∷_ ; zipWith)
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
 open import Notations using (₀ ; ₁ ; ₁₊ ; ₂₊ ; ₃₊)
@@ -193,6 +194,17 @@ module _ {m : ℕ} where
   dP (−1X c a b _)    = dZX (toℕ c) (toℕ a) (toℕ b)
   dP (XX a b c d _ _) = dXX (toℕ a) (toℕ b) (toℕ c) (toℕ d)
   dP (HH a b c d _ _) = dHH (toℕ a) (toℕ b) (toℕ c) (toℕ d)
+
+  -- The same at indices given as naturals, in this module's spelling of
+  -- their width.  A client's own `toℕ a` spells the width its own way,
+  -- and comparing it with the clause's unfolding reduces `dHH` — the
+  -- free-index search, `hpat` — on both sides, the two never being
+  -- syntactically equal (5 s a letter in Lemma88/Easy); through this
+  -- lemma only the two `toℕ a` are compared.
+  dP-HH : ∀ (a b c d : Fin (2 ^ℕ n)) .(p : a ≢ b) .(q : c ≢ d) (x y z w : ℕ) →
+          toℕ a ≡ x → toℕ b ≡ y → toℕ c ≡ z → toℕ d ≡ w →
+          dP (HH a b c d p q) ≡ dHH x y z w
+  dP-HH a b c d p q x y z w Eq.refl Eq.refl Eq.refl Eq.refl = Eq.refl
 
   -- On a word, the paper's homomorphism for ∘: the last letter first.
   dPʷ : Word (GenP n) → Circuit n

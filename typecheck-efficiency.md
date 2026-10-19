@@ -18,10 +18,11 @@ and the modules over 20 s 53 → 32: the generated TopPad equivalences,
 the Bian–Selinger tactic ports (`Clifford+CS-3qubit` Step3/Step4 and
 Soundness, `Clifford+T-2qubit` Equations 43, 44, 46), `DecodingChecks`,
 the `Checks8` evaluation modules, and modules whose cost is spread
-(`Paper-V0/Lemmas`, `Lemma88/Easy`, LemmaA1's) or found below
-(`U33Di`, `Weyl`; `Diamond`, `Auxiliary/Move`, `Auxiliary/Eq65` and
-`Independence/Clifford+CS/Bridge`, 23.6, 32.8, 23.1 and 24.0 s there,
-have since been brought under 10 s).
+(`Paper-V0/Lemmas`, LemmaA1's) or found below (`U33Di`, `Weyl`).
+`Diamond`, `Auxiliary/Move`, `Auxiliary/Eq65`,
+`Independence/Clifford+CS/Bridge` and `Lemma88/Easy`, 23.6, 32.8, 23.1,
+24.0 and 33.2 s there, have since been brought under 10 s — Easy, first
+counted as spread, by a per-definition profile that showed otherwise.
 Wall-clock figures from a chunk the watchdog killed are estimates only
 (marked approximate): rechecked alone, four of them were 2–8 s.
 
@@ -79,6 +80,7 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
 | A generated `refl` check stated over the original definition (not a module-application copy) at the very arguments its user passes | `Real-Clifford+CH-TwoLevel-Clement/Hard` | 48.8 → 9.2 s |
 | A `T b` proof left to a metavariable (`_`, solved by eta), or a check proved by `refl` on `≡ true`, not `tt` | `Independence/*/Semantics`, the three `Projective`s, `Clifford+CS/Encodings`; `Qutrit-Clifford/Faithful` | 21.0 → 3.9 s, 21.1 → 3.9 s, 15.2 → 3.3 s, 15.1 → 4.1 s, 14.2 → 3.2 s, … (133 → 52 s over eleven modules); 28.5 → 20.1 s |
 | A lemma about a concrete word's operator proved over a variable word, the word's facts as hypotheses, then instantiated | `Real-Clifford+CH/Auxiliary/Move`, `Eq65` | 32.8 → 6.8 s, 23.1 → 5.4 s (`conj` 26.5 → 2.8 s, `Σ-conj` 17.5 → 1.9 s) |
+| A definitional step stated as a lemma in the defining module's own spelling of a hidden width, and clients going through it | `Real-Clifford+CH/Decoding.dP-HH`, `Lemma88/Easy` | 33.2 → 8.8 s (profile total 47.0 → 19.8 s) |
 | A where-function's result type written out, not left as `_` | `Independence/Clifford+CS/Bridge` | 24.0 → 1.2 s (`split` 19.8 → 0.06 s) |
 | A where block full of module applications made a parameterised module, the function a one-line call into it | `Real-Clifford+CH-TwoLevel/Diamond` | 23.6 → 8.9 s (Positivity 12.1 → 0.15 s) |
 | Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived`, `Qubit-Clifford/Relations/Rules/Figure5`, `Figure7` | 44.6 → 14.7 s (0.8 GB), 22.5 → 7.9 s, 22.8 → 9.2 s |
@@ -307,6 +309,25 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   on words: 51.3 → 6.4 s, and the same edit in `Real-Clifford/Bridge`
   45.5 → 5.4 s. The width lemma's own body compares the two spellings
   with the word a variable, which is cheap.
+- **A definitional step, stated where it is defined.** `Lemma88/Easy`
+  proves its Hadamard rules through the decoding of a letter,
+  `dP (HH a b c d _ _) = dHH (toℕ a) …`. Unfolding that clause gives
+  `toℕ {2 ^ n} a` with Decoding's private `n`, while `toℕ a` written in
+  Easy is `toℕ {2 ^ N} a` with Easy's own `N`. Both are `₃₊ m`, but the
+  terms are never syntactically equal, so every comparison of the two
+  readings reduced `dHH` on both sides — the `if` on `distinct4`, the
+  free-index search, `hpat` on the Gray codes — and compared the results,
+  level after level. `dP (HH …) ≡ dHH (toℕ a) …` by `refl` took 4.7 s in
+  Easy, too little to measure in Decoding. `Decoding.dP-HH` states the
+  step there, for any naturals equal to the indices, and Easy goes
+  through it, so the only comparison across the two spellings is `toℕ a`
+  against `toℕ a`. In e42 the left side went 14.5 → 0.2 s, e35 7.0 →
+  0.4 s, and the module's profile total 47.0 → 19.8 s. The sign was that
+  splitting the slow proof into named steps left every step cheap: the
+  cost was in the joins between them. One join is left in `d-hh0132`
+  (4 s), between `HH {N}` and `HH {n}`; removing it would take one
+  definition of the width shared by both modules, which the shared-width
+  attempt below warns against.
 - **`Eq.cong proj₁` at a particular word compares the whole pair.**
   `Independence/Qutrit-Clifford/V0Mat` (149.6 s) carried the Pauli
   component of the semidirect product's law through `Eq.cong proj₁
