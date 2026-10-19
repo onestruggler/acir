@@ -207,7 +207,7 @@ every derivation (`Tables`, `Sides`, the assembly) need up to 5.5 GB.
 
 ### Three wires
 
-Three wires is not formalised yet. The group there is the Weyl group
+Three wires is now proved (see "Done: three wires" below). The group there is the Weyl group
 W(E8): it has order 696729600 and preserves the 240 vectors listed in
 `../ThreeQubit/README.md`, which are the roots of E8 up to scale; CCX is
 the reflection in e₆ − e₇ and `HH1 CCX0 HH1` the reflection in a root with
@@ -691,7 +691,7 @@ above, and every step is now an Agda module:
 
 What remains is the base: completeness on at most twelve wires. The
 calculus is already known complete on one and two wires (`Natural/`),
-and three wires (W(E8)) is not done.
+and on three wires (W(E8)) too (`Natural/ThreeWire`, below), so what remains is four to twelve wires.
 
 **CCX+H from CCX+HH** (`../../CCX+H/NaturalP/`). The CCX+H rules with
 the swap gate (`Syntactics`) are Natural's for H together with the
@@ -720,7 +720,7 @@ name; `Schema` adds the schema read through θ. Then:
   a ≈ b and θ a ≈ θ b. `Complete.every-width` adds the widths up to
   three: `Bridge` derives Natural's rules and transfers its
   completeness on one and two wires (`complete⇒`, and `complete₀` on
-  none); three wires, where the group is infinite, is not done.
+  none); three wires for CCX+H, where the group is infinite, is not done (unlike CCX+HH, whose three-wire group is finite and now done).
 
 ### Three wires: a derivation finder and a tower (`w3/`)
 
