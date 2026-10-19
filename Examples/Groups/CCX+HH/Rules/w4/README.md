@@ -91,6 +91,78 @@ So any proof, by translation and routing or by gluing halves, needs
 genuinely four-wire derivations. The ctrl lemma's cores are the other
 recurring need: controlled rules on five to nine wires.
 
+## Infinite vertex groups for free: the subgroups P_w
+
+The Hadamard embedding φ_w sends a three-wire CCX+H circuit to four
+wires, H_i to HH(i, w), and every other gate to itself on the wires
+other than w. Its image P_w is the group of circuits that use wire w
+only through HH gates. Each P_w is infinite (≅ the three-wire CCX+H
+group), and each is complete given R4.
+
+Every CCX+H rule on three wires is carried by φ_w to a consequence of
+the natural rules:
+
+- three-wire completeness on a triple, after HH(i,w) HH(j,w) = HH(i,j);
+- the structural rules;
+- R4, for the rule CCXH⁴, whose image is R4 itself.
+
+So `../../CCX+H/NaturalP/ThreeWire.complete₃` gives every true identity
+between words over the generators of P_w (the gates avoiding w, and
+every HH).
+
+Every four-wire rule of the natural theory lies in some P_w or is
+classical:
+
+- The rules on a triple lie in P_w for the fourth wire.
+- So do the commutations of an HH with anything.
+- The rest are classical: commutations of disjoint gates spanning four
+  wires, CCX-comm, and the swap rules across four wires.
+
+So with R4 the rules present at least the amalgam of P₀ … P₃ and A₁₆,
+and four-wire completeness is the statement that this amalgam is the
+four-wire group.
+
+Two checks by hand go through:
+
+- The decoder's sign-pair identity HH(0,1) · C̄C̄X(0; 2, 3) · HH(0,1) = M₁ M₃
+  lies in P₁. It needs R4: it is CCXH⁴'s shape, H on a Toffoli target.
+- r1c, with its two quadruples doubled along wire 2, lies in P₂.
+
+[CCX(0;1,2), Z₃] = 1 lies in no P_w (each word for Z₃ passes an HH
+through wire 0, 1 or 2). It still follows: write CCX(0;1,2) by CCX-comm
+as A′ CX(3→0) A′ CX(3→0), with A′ = CCX(3;1,2). Then Z₃ conjugates
+each factor inside one P_w.
+
+Single-K atoms (J = M_a X_bc K_abcd) lie in no P_w as matrices, so the
+relations that contain them need this gluing.
+
+## Classical completeness on four wires
+
+`check4.py classical`: the classical rules give index exactly 6435 for
+the subgroup P that preserves the partition by wire 3. That is
+|A₁₆| / |P|. `check4b.py`: P's own letters do not present P (overflow).
+S₈ on three wires is presented (index 5040). Whether the classical rules
+present A₁₆ needs a finer chain. A direct enumeration over S₈ has 2.6·10⁸
+cosets.
+
+## The decoded relations as they stand
+
+`dec4.py` decodes Table 1 relators at the four cosets with
+`../../GeneralN/normalize.decode_dyadic`. On four wires these are long:
+
+| Relation | Gates | HH | P_w-runs |
+| --- | --- | --- | --- |
+| r1c | about 1100–1340 | 40–48 | about 200 |
+| r2f, r5a | about 2500–3000 | 84–96 | about 450 |
+| r6a | about 5200–5800 | 178–190 | about 900 |
+
+The routes, classical circuits that place each atom, make them long. A
+four-wire proof would decode each atom as a classical conjugate of a few
+short canonical atoms (a sign pair, a K pair, J), with classical
+completeness absorbing the routes. The decoded relations would then
+become short canonical relations among those atoms, one per Table 1
+family and equality pattern.
+
 ## Scripts
 
 - `r4.py`: R4 holds exactly.
