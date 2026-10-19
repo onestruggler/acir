@@ -340,7 +340,9 @@ module TwoLevel-Simplified-Amal where
     import Normalization.CosetNF as CNF
     pres-KD = (_===_)
     
-    module DD = CNF.SingleLevel pres-D pres-KD C I f ract [_]
+    -- (Module applications copy only what is used: whole, they cost
+    -- U33Di a tenth of its time.)
+    module DD = CNF.SingleLevel pres-D pres-KD C I f ract [_] using (_~_ ; module Transfer)
     open DD using (_~_)
     open SNF.NormalFormInjective (pres-D-nfp) renaming (by-equal-nf to bef) using ()
     open PB pres-KD renaming (_===_ to _===₂_ ; _≈_ to _≈₂_ ; refl' to refl'₂) using ()
@@ -567,7 +569,7 @@ module TwoLevel-Simplified-Amal where
       i₀ • K₀₁ • i₀ • i₀ • K₀₁ ∎
 
 
-    module AAT = DD.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax (refl'₂ Eq.refl) h=ract
+    module AAT = DD.Transfer h=⁻¹f-gen h-wd-ax f-wd-ax (refl'₂ Eq.refl) h=ract using (nfp)
 
     -- pres-KD works on indices ₀ and ₁, the next component is i₂.
     pres-KI = pres-KD ⊕ (Cyclic.pres 4)
@@ -1078,7 +1080,7 @@ module TwoLevel-Simplified-Amal where
              ; h=ract = CA2.h=ract
              } }
     
-    module myANF = ANF PD.pres Ki.pres' ad
+    module myANF = ANF PD.pres Ki.pres' ad using (inv-nf ; nf ; nfp ; nfp' ; mypres)
 
     nf = myANF.inv-nf ∘ myANF.nf
 
