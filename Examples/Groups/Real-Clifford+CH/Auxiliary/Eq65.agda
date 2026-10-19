@@ -51,7 +51,8 @@ open import Examples.Groups.Real-Clifford+CH.Encoding using (hh ; hpat ; distinc
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.NF m
   using (HFreeʷ ; gen ; nil ; cat)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.SignedPerm m
-  using (sp ; sgn ; prm ; sp-inj ; ⊙-inverse)
+  using (sp ; sgn ; prm ; sp-inj ; ⊙-inverse ; idSP)
+  renaming (_⊙_ to _⊛_ ; _≐_ to _≗_)
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.SPMatrix m
   using (spOp ; word-op ; word-scale ; ⟦_⟧ʷ ; spOp-⊙ ; spOp-id ; spOp-cong
        ; A5-mat)
@@ -93,6 +94,63 @@ hh-op a b c d ab cd =
            (≐-refl (Pair a b c d))
 
 ------------------------------------------------------------------------
+-- The conjugate of the standard pair, over variable words
+--
+-- Stated at Definition E.1's words themselves, as `Tuple.Σ-conj` was,
+-- every comparison the conversion checker cannot settle syntactically
+-- evaluates their signed permutations (12 s); over variables `sp X` is
+-- stuck.
+
+private
+  module Std (X X′ : W) (inv : sp X ⊛ sp X′ ≗ idSP) (a b c d : Fin N)
+             (pa : toℕ (prm (sp X) a) ≡ 0) (pb : toℕ (prm (sp X) b) ≡ 1)
+             (pc : toℕ (prm (sp X) c) ≡ 3) (pd : toℕ (prm (sp X) d) ≡ 2)
+             (sa : sgn (sp X) a ≡ false) (sb : sgn (sp X) b ≡ false)
+             (sc : sgn (sp X) c ≡ false) (sd : sgn (sp X) d ≡ false)
+    where
+
+    open Conj (sp X) (sp X′) (sp-inj X′) inv using (π ; σ)
+    open Pull (sp X) (sp X′) (sp-inj X′) inv using (conj-pair)
+
+    -- Where the conjugation sends the pair's four indices.
+    img : ∀ (x : Fin N) (k : Fin N) → toℕ (prm (sp X) x) ≡ toℕ k →
+          π (code n x) ≡ code n k
+    img x k e =
+      Eq.cong (code n)
+        (Eq.trans (Eq.cong (prm (sp X)) (index-code n x)) (toℕ-injective e))
+
+    π-a : π (code n a) ≡ P₀
+    π-a = img a i₀ (Eq.trans pa (Eq.sym toℕ-i₀))
+
+    π-b : π (code n b) ≡ P₁
+    π-b = img b i₁ (Eq.trans pb (Eq.sym toℕ-i₁))
+
+    π-c : π (code n c) ≡ P₃
+    π-c = img c i₃ (Eq.trans pc (Eq.sym toℕ-i₃))
+
+    π-d : π (code n d) ≡ P₂
+    π-d = img d i₂ (Eq.trans pd (Eq.sym toℕ-i₂))
+
+    -- And that it signs none of them.
+    sg : ∀ (x : Fin N) → sgn (sp X) x ≡ false → σ (code n x) ≡ false
+    sg x e = Eq.trans (Eq.cong (sgn (sp X)) (index-code n x)) e
+
+    frame : (hadOp (π (code n a)) (π (code n b))
+             ⊙ hadOp (π (code n c)) (π (code n d))) ≡ Mpair
+    frame =
+      Eq.trans (Eq.cong₂ (λ u v → hadOp u v ⊙ hadOp (π (code n c)) (π (code n d)))
+                         π-a π-b)
+               (Eq.cong₂ (λ u v → hadOp P₀ P₁ ⊙ hadOp u v) π-c π-d)
+
+    conj : (spOp (sp X) ⊙ (Mpair ⊙ spOp (sp X′))) ≐ Pair a b c d
+    conj =
+      Eq.subst (λ M → (spOp (sp X) ⊙ (M ⊙ spOp (sp X′))) ≐ Pair a b c d)
+               frame
+               (conj-pair (code n a) (code n b) (code n c) (code n d)
+                          (Eq.trans (sg a sa) (Eq.sym (sg b sb)))
+                          (Eq.trans (sg c sc) (Eq.sym (sg d sd))))
+
+------------------------------------------------------------------------
 -- Equation (65) is sound
 
 module Tuple (a b c d : Fin N)
@@ -105,48 +163,10 @@ module Tuple (a b c d : Fin N)
          ; prm-Σ-a ; prm-Σ-b ; prm-Σ-c ; prm-Σ-d
          ; sgn-Σ-a ; sgn-Σ-b ; sgn-Σ-c ; sgn-Σ-d)
 
-  open Conj (sp Σw) (sp Σ′w) (sp-inj Σ′w) Σ-inv using (π ; σ)
-  open Pull (sp Σw) (sp Σ′w) (sp-inj Σ′w) Σ-inv using (conj-pair)
-
-  private
-    -- Where the conjugation sends the pair's four indices.
-    img : ∀ (x : Fin N) (k : Fin N) → toℕ (prm (sp Σw) x) ≡ toℕ k →
-          π (code n x) ≡ code n k
-    img x k e =
-      Eq.cong (code n)
-        (Eq.trans (Eq.cong (prm (sp Σw)) (index-code n x)) (toℕ-injective e))
-
-    π-a : π (code n a) ≡ P₀
-    π-a = img a i₀ (Eq.trans prm-Σ-a (Eq.sym toℕ-i₀))
-
-    π-b : π (code n b) ≡ P₁
-    π-b = img b i₁ (Eq.trans prm-Σ-b (Eq.sym toℕ-i₁))
-
-    π-c : π (code n c) ≡ P₃
-    π-c = img c i₃ (Eq.trans prm-Σ-c (Eq.sym toℕ-i₃))
-
-    π-d : π (code n d) ≡ P₂
-    π-d = img d i₂ (Eq.trans prm-Σ-d (Eq.sym toℕ-i₂))
-
-    -- And that it signs none of them.
-    sg : ∀ (x : Fin N) → sgn (sp Σw) x ≡ false → σ (code n x) ≡ false
-    sg x e = Eq.trans (Eq.cong (sgn (sp Σw)) (index-code n x)) e
-
   -- The conjugate of the standard pair is the pair on a, b, c and d.
   Σ-conj : (spOp (sp Σw) ⊙ (Mpair ⊙ spOp (sp Σ′w))) ≐ Pair a b c d
-  Σ-conj =
-    Eq.subst (λ M → (spOp (sp Σw) ⊙ (M ⊙ spOp (sp Σ′w))) ≐ Pair a b c d)
-             frame
-             (conj-pair (code n a) (code n b) (code n c) (code n d)
-                        (Eq.trans (sg a sgn-Σ-a) (Eq.sym (sg b sgn-Σ-b)))
-                        (Eq.trans (sg c sgn-Σ-c) (Eq.sym (sg d sgn-Σ-d))))
-    where
-    frame : (hadOp (π (code n a)) (π (code n b))
-             ⊙ hadOp (π (code n c)) (π (code n d))) ≡ Mpair
-    frame =
-      Eq.trans (Eq.cong₂ (λ u v → hadOp u v ⊙ hadOp (π (code n c)) (π (code n d)))
-                         π-a π-b)
-               (Eq.cong₂ (λ u v → hadOp P₀ P₁ ⊙ hadOp u v) π-c π-d)
+  Σ-conj = Std.conj Σw Σ′w Σ-inv a b c d prm-Σ-a prm-Σ-b prm-Σ-c prm-Σ-d
+                    sgn-Σ-a sgn-Σ-b sgn-Σ-c sgn-Σ-d
 
   -- The scale and the matrix of the right-hand side of (65), on their
   -- own: composing those is much cheaper than composing two `_~_`s,

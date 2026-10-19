@@ -19,8 +19,9 @@ the Bian–Selinger tactic ports (`Clifford+CS-3qubit` Step3/Step4 and
 Soundness, `Clifford+T-2qubit` Equations 43, 44, 46), `DecodingChecks`,
 the `Checks8` evaluation modules, and modules whose cost is spread
 (`Paper-V0/Lemmas`, `Lemma88/Easy`, LemmaA1's) or found below
-(`Auxiliary/Move`, `U33Di`, `Weyl`, `Clifford+CS/Bridge`; `Diamond`,
-23.6 s there, has since been brought to 8.9 s).
+(`U33Di`, `Weyl`, `Clifford+CS/Bridge`; `Diamond`, `Auxiliary/Move`
+and `Auxiliary/Eq65`, 23.6, 32.8 and 23.1 s there, have since been
+brought under 15 s).
 Wall-clock figures from a chunk the watchdog killed are estimates only
 (marked approximate): rechecked alone, four of them were 2–8 s.
 
@@ -77,6 +78,7 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
 | A function of a three-element type as the table of its values, not a computed power; an enumeration read back over variables, not under as-patterns | `Independence/Qutrit-Clifford/Weyl`, `Faithful` | 37.8 → 25.1 s (1.46 → 0.88 GB), 60.9 → 24.3 s |
 | A generated `refl` check stated over the original definition (not a module-application copy) at the very arguments its user passes | `Real-Clifford+CH-TwoLevel-Clement/Hard` | 48.8 → 9.2 s |
 | A `T b` proof left to a metavariable (`_`, solved by eta), or a check proved by `refl` on `≡ true`, not `tt` | `Independence/*/Semantics`, the three `Projective`s, `Clifford+CS/Encodings`; `Qutrit-Clifford/Faithful` | 21.0 → 3.9 s, 21.1 → 3.9 s, 15.2 → 3.3 s, 15.1 → 4.1 s, 14.2 → 3.2 s, … (133 → 52 s over eleven modules); 28.5 → 20.1 s |
+| A lemma about a concrete word's operator proved over a variable word, the word's facts as hypotheses, then instantiated | `Real-Clifford+CH/Auxiliary/Move`, `Eq65` | 32.8 → 6.8 s, 23.1 → 5.4 s (`conj` 26.5 → 2.8 s, `Σ-conj` 17.5 → 1.9 s) |
 | A where block full of module applications made a parameterised module, the function a one-line call into it | `Real-Clifford+CH-TwoLevel/Diamond` | 23.6 → 8.9 s (Positivity 12.1 → 0.15 s) |
 | Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived`, `Qubit-Clifford/Relations/Rules/Figure5`, `Figure7` | 44.6 → 14.7 s (0.8 GB), 22.5 → 7.9 s, 22.8 → 9.2 s |
 
@@ -133,6 +135,24 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   (`Pattern-Assoc`'s `□`) leaves the width unsolved (open it at the
   width: `open Pattern-Assoc {₁₊ m}`). Where the blocks are few or the
   modules small (`Powers`) the gain is within noise.
+- **A lemma over a variable word.** Operators are functions, so where
+  two operator terms are not syntactically equal the conversion checker
+  η-expands them and unfolds `⊙` into its sum. Over a variable word `X`
+  that stops at `sp X`. Over a concrete word, such as Definition E.1's
+  `T.Σw` from a module application in a where block, it goes on to
+  evaluate the word's signed permutation, letter by letter. In
+  `Real-Clifford+CH/Auxiliary/Move`, `hh-conj`'s matrix step `conj`
+  took 26.5 s at `T.Σw`, though the same chain of `≐-trans` steps with
+  a variable word took about 1.5 s. The source of the mismatch was never
+  found (pinning every hidden width did not remove it). It did not need
+  to be: the step is now a top-level `conj-gen` over variable words `S
+  S′`, taking the one fact about them it uses (`T.Σ-conj`) as a
+  hypothesis, and `conj` is `conj-gen u u′ T.Σw T.Σ′w … T.Σ-conj`
+  (2.0 + 0.75 s). `Eq65.Tuple.Σ-conj` was the same case (17.5 s); its
+  proof became a private module `Std` over words `X X′`, taking the
+  permutation's values and signs at the four indices as parameters,
+  and `Σ-conj` its instance (1.2 + 0.7 s). Abstract the term rather
+  than compute with it.
 - **Positivity checking of a where block.** A where block is checked with
   the clause it belongs to, and Agda runs the positivity checker once
   over everything that block defines, the copies its module applications
@@ -428,6 +448,8 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   mismatched those in more places than the old ones did. Reverted. A
   spelling has to be shared by everything a comparison reaches, down to
   the bottom of the development, or the change can only move the cost.
+  (What did fix `conj` was to keep the concrete words out of the
+  comparison altogether: see "A lemma over a variable word" above.)
 - **Returning the rebuilt list from `Rewriting.Step.multistep`.** The fix
   that made `Presentation/Tactics/Words`' loops linear (see `CLAUDE.md`)
   made no measurable difference to `Presentation/Tactic/Rewriting`'s
