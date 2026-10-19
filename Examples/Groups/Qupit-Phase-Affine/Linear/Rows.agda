@@ -202,7 +202,7 @@ R-push* {n} w (L • M) = begin
   where open Width (₁₊ n)
 
 R-e₀ : (₂₊ n) ⊢ R (1F ∷ 0ᵛ {n}) ≈ CX
-R-e₀ {n} = trans (front _ (trans (back _ (front _ (lift R-zero))) (trans (back _ left-unit) (ax swap-order)))) left-unit
+R-e₀ {n} = trans (front _ (trans (back _ (front _ (lift R-zero))) (trans (back _ left-unit) swap-order))) left-unit
   where open Width (₂₊ n)
 
 -- CX after the representative of w one wire up adds w to wire 0.
@@ -230,7 +230,7 @@ linv (L • M) = linv M • linv L
 
 linv₁-right : (y : LGen n) → n ⊢ [ ι y ]ʷ • ⌊ linv₁ y ⌋ ≈ ε
 linv₁-right cx      = Width.trans (Width.back _ _ (Width.refl' _ (⌊^⌋ [ cx ]ʷ (toℕ (- 1F))))) (CX-invʳ 1F)
-linv₁-right sw      = ax swap-order
+linv₁-right sw      = swap-order
 linv₁-right (mul a) = M-inverseʳ a
 linv₁-right (y ↥ₗ)  = Width.trans (Width.back _ _ (Width.refl' _ (⌊↑ₗ⌋ (linv₁ y)))) (lift (linv₁-right y))
 

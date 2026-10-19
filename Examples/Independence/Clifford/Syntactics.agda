@@ -20,7 +20,6 @@
 module Examples.Independence.Clifford.Syntactics where
 
 open import Data.Nat using (ℕ)
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Word.Base using ([_]ʷ ; ε ; _•_ ; _^_)
 
 open import Notations using (₁₊ ; ₂₊ ; ₃₊)
@@ -71,32 +70,15 @@ CX₂₀ = σ • CX ↑ • σ
 ------------------------------------------------------------------------
 -- The rule set Cliff₂ (Figure 2)
 
-data Rule : Set where
-  ω⁸ H² S⁴ E CPh B CZ I : Rule
+infix 4 _SRel,_===_
+data _SRel,_===_ : (n : ℕ) → CRel n where
+  ω⁸  : 0 SRel, ω ^ 8            === ε
+  H²  : 1 SRel, H • H            === ε
+  S⁴  : 1 SRel, S ^ 4            === ε
+  E   : 1 SRel, H • S • H        === ω • S ^ 3 • H • S ^ 3
+  CPh : 2 SRel, CX • S ↑ • CX    === S ↑
+  B   : 2 SRel, CX • CX↓         === σ • CX
+  CZ  : 2 SRel, H • CX • H       === S ↑ • S • CX • S ^ 3 • CX
+  I   : 3 SRel, CX • CX ↑ • CX₂₀ === CX ↑ • CX
 
-arity : Rule → ℕ
-arity ω⁸  = 0
-arity H²  = 1
-arity S⁴  = 1
-arity E   = 1
-arity CPh = 2
-arity B   = 2
-arity CZ  = 2
-arity I   = 3
-
--- Each axiom as its left and right side.
-axiom : (r : Rule) → Circuit (arity r) × Circuit (arity r)
-axiom ω⁸  = ω ^ 8           , ε
-axiom H²  = H • H           , ε
-axiom S⁴  = S ^ 4           , ε
-axiom E   = H • S • H       , ω • S ^ 3 • H • S ^ 3
-axiom CPh = CX • S ↑ • CX   , S ↑
-axiom B   = CX • CX↓        , σ • CX
-axiom CZ  = H • CX • H      , S ↑ • S • CX • S ^ 3 • CX
-axiom I   = CX • CX ↑ • CX₂₀ , CX ↑ • CX
-
-lhs rhs : (r : Rule) → Circuit (arity r)
-lhs r = proj₁ (axiom r)
-rhs r = proj₂ (axiom r)
-
-open Fragment arity lhs rhs public
+open Lift-To-Prop _SRel,_===_ public

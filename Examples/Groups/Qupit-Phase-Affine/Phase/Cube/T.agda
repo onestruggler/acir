@@ -205,17 +205,17 @@ module _ {n : ℕ} where
 
   private
     ss : (₂₊ n) ⊢ SWAP • SWAP ≈ ε
-    ss = ax swap-order
+    ss = swap-order
 
   -- Rule (39): T on the control of CX.
   T↑-CX : (₂₊ n) ⊢ CX • T h ↑ ≈ T h ↑ • CX
   T↑-CX = ax (ax39 h)
 
   sT : (₂₊ n) ⊢ SWAP • T h ≈ T h ↑ • SWAP
-  sT = unslide ss (sym (ax (swap-T h)))
+  sT = unslide ss (sym (swap-T h))
 
   sT↑ : (₂₊ n) ⊢ SWAP • T h ↑ ≈ T h • SWAP
-  sT↑ = sym (ax (swap-T h))
+  sT↑ = sym (swap-T h)
 
   T∥CXʳ : (₂₊ n) ⊢ T h • CXʳ ≈ CXʳ • T h
   T∥CXʳ = across (slide sT↑ sCX) (slide sCX sT↑) (sym T↑-CX)
@@ -232,7 +232,7 @@ module _ {n : ℕ} where
 
   PT≈PT′ : (₂₊ n) ⊢ PT ≈ PT′
   PT≈PT′ = begin
-    CX ^ᶠ (- 1F) • T h • CX           ≈⟨ back _ (gadget T∥CXʳ (sym (comm-gate₁-w↑ (T-gate h) M⟨ -1* ⟩)) (ax (swap-T h))) ⟩
+    CX ^ᶠ (- 1F) • T h • CX           ≈⟨ back _ (gadget T∥CXʳ (sym (comm-gate₁-w↑ (T-gate h) M⟨ -1* ⟩)) (swap-T h)) ⟩
     CX ^ᶠ (- 1F) • CX • PT′           ≈⟨ cancel-in (CX-invˡ 1F) _ ⟩
     PT′                               ∎
 

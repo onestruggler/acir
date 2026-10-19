@@ -687,8 +687,12 @@ module Main (nfData : (nf : NF) → NFData nf) (allow : NF → Bool) (nfThm : �
   ----------------------------------------------------------------------
   -- The induction
 
+  -- The check is stated over Checker.checkT itself, not this module's
+  -- opened copy: a generated tree's check (TreeNF38.t38-ok, …) is then the
+  -- same term as the hypothesis of every copy of this module, where two
+  -- copies would be compared by running the check again.
   sound : ∀ {m r} (t : Tree m r) (tags : Vec (Maybe ℕ) m) (mini : Bool) (ic id : Fin m) (fs : Vec (Form r) m) (ρ : Vec Z r) →
-          checkT t tags mini ic id fs ≡ true → ic ≢ id →
+          Checker.checkT nfData allow t tags mini ic id fs ≡ true → ic ≢ id →
           ∀ s .(o : ColOrth s) (eq : level s ≡ L) (w : Win m s) →
           ⟦ fs ⟧ᵛ ρ ≡ locW w → TagsOK s w tags → (mini ≡ true → Minimal s) → Goal s o w ic id
   sound (leaf ld) tags mini ic id fs ρ chk icd s o eq w eqv tg mn =

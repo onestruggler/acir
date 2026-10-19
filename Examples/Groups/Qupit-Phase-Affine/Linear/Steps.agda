@@ -118,7 +118,7 @@ private
     where
     open Width (₂₊ n)
     ss : (₂₊ n) ⊢ SWAP • SWAP ≈ ε
-    ss = ax swap-order
+    ss = swap-order
     undo : (₂₊ n) ⊢ SWAP • R₀ (negs i w) • SWAP ≈ R (negs i w) ↑
     undo = trans (by-passoc (□ • (□ • □ • □) • □) (□ • □ • □ • □ • □) Eq.refl)
                  (trans (cancel-in ss _) (cancel-at ss _))
@@ -169,7 +169,7 @@ r-step {₂₊ n} (small (big b w)) cx = begin
   i = proj₁ b ⁻¹ᶠ
   u = negs i w
   ss : (₂₊ n) ⊢ SWAP • SWAP ≈ ε
-  ss = ax swap-order
+  ss = swap-order
 r-step {₃₊ n} (small (small ℓ)) cx =
   pass sCX₂₀ (pass tCX (comm-gate₂-w↑↑ CX-gate (r ℓ)))
 r-step {₂₊ n} (big a (c ∷ w)) sw with c ≟ 0F
@@ -179,7 +179,7 @@ r-step {₂₊ n} (big a (c ∷ w)) sw with c ≟ 0F
   ((SWAP • R w ↑ • SWAP) • M⟨ a ⟩) • SWAP
     ≈⟨ by-passoc (((□ • □ • □) • □) • □) (□ • □ • (□ • □ • □)) Eq.refl ⟩
   SWAP • R w ↑ • (SWAP • M⟨ a ⟩ • SWAP)
-    ≈⟨ back _ (back _ (Involution.conj← (ax swap-order) (sM a))) ⟩
+    ≈⟨ back _ (back _ (Involution.conj← swap-order (sM a))) ⟩
   SWAP • R w ↑ • M⟨ a ⟩ ↑
     ≈⟨ sym left-unit ⟩
   ε • SWAP • R w ↑ • M⟨ a ⟩ ↑ ∎
@@ -225,7 +225,7 @@ r-step {₃₊ n} (small (small ℓ)) sw = begin
   SWAP • SWAP ↑ • r ℓ ↑ ↑ • SWAP
     ≈⟨ back _ (back _ (comm-gate₂-w↑↑ SWAP-gate (r ℓ))) ⟩
   SWAP • SWAP ↑ • SWAP • r ℓ ↑ ↑
-    ≈⟨ trans (by-passoc (□ • □ • □ • □) ((□ • □ • □) • □) Eq.refl) (front _ (ax swap-braid)) ⟩
+    ≈⟨ trans (by-passoc (□ • □ • □ • □) ((□ • □ • □) • □) Eq.refl) (front _ swap-braid) ⟩
   (SWAP ↑ • SWAP • SWAP ↑) • r ℓ ↑ ↑
     ≈⟨ by-passoc ((□ • □ • □) • □) (□ • □ • □ • □) Eq.refl ⟩
   SWAP ↑ • SWAP • SWAP ↑ • r ℓ ↑ ↑ ∎

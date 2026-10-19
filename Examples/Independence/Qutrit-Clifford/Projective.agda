@@ -26,13 +26,14 @@ open import Relation.Binary.PropositionalEquality using (refl)
 open import Word.Base using (_•_)
 
 open import Examples.Independence.Qutrit-Clifford.Syntactics
+open Axioms _SRel,_===_ using (Independent-axiom)
 import Examples.Independence.Qutrit-Clifford.Semantics as Std
 open import Data.Fin.Base using (Fin ; zero ; suc)
 open import Data.Product.Base using (_,_)
 open import Data.Vec.Base using ([] ; _∷_)
 
 open import Examples.Independence.Semantics.Qutrit
-  using (Sc ; ωᵍ ; Hᵍ ; CXᵍ ; SWᵍ ; module Circuits ; matOf ; δ₁ ; x ; _^_ ; _*_ ; 1#)
+  using (Sc ; ωᵍ ; Hᵍ ; CXᵍ ; SWᵍ ; SWᵍ-ok ; module Circuits ; matOf ; δ₁ ; x ; _^_ ; _*_ ; 1#)
 
 -- S • X: |b⟩ ↦ s(b) |b + 1⟩, s(2) = ω₃ = ζ⁴.
 SXᵍ : Sc 1
@@ -48,7 +49,7 @@ SXᵍ = 0 , matOf λ { (a ∷ []) (b ∷ []) → δ₁ a (next b) * s b }
   s _                = 1#
 
 SXᵍ-value : Std.⟦ S • X ⟧ Std.≈ SXᵍ
-SXᵍ-value = Circuits.Exact.check Std.val 0 refl _ _ tt
+SXᵍ-value = Circuits.Exact.check Std.val 0 refl _ _ _
 
 module Sep-SS′ where
 
@@ -62,20 +63,17 @@ module Sep-SS′ where
   open Circuits val using (module Projective)
   open Projective using (check-some ; apart ; module Symmetry)
 
-  open Symmetry
-    (check-some (λ _ → tt) _ _ tt)
-    (λ { H-gate → check-some (λ _ → tt) _ _ tt ; S-gate → check-some (λ _ → tt) _ _ tt })
-    (λ { ⌈ CX-gate ⌉ → check-some (λ _ → tt) _ _ tt ; swap → check-some (λ _ → tt) _ _ tt })
+  open Symmetry refl SWᵍ-ok
     using (module Separate)
 
-  open Separate arity lhs rhs SS′ 1
-    (λ { ω¹² _ _ → check-some (λ _ → tt) _ _ tt
-       ; H⁴ _ _ → check-some (λ _ → tt) _ _ tt
-       ; S³ _ _ → check-some (λ _ → tt) _ _ tt
-       ; E _ _ → check-some (λ _ → tt) _ _ tt
+  open Separate _SRel,_===_ SS′ 1
+    (λ { ω¹² _ _ → check-some (λ _ → tt) _ _ _
+       ; H⁴ _ _ → check-some (λ _ → tt) _ _ _
+       ; S³ _ _ → check-some (λ _ → tt) _ _ _
+       ; E _ _ → check-some (λ _ → tt) _ _ _
        ; SS′ ne _ → ⊥-elim (ne refl)
        ; CPh _ (s≤s ()) ; KC _ (s≤s ()) ; CZ _ (s≤s ()) ; B _ (s≤s ())
        ; I _ (s≤s ()) })
 
   independent : Independent-axiom SS′
-  independent = separates (s≤s z≤n) (apart _ _ tt)
+  independent = separates (s≤s z≤n) (apart _ _ _)

@@ -18,7 +18,7 @@ open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Examples.Independence.Clifford.Syntactics
 open import Examples.Independence.Semantics.Qubit
-  using (Sc ; ωᵍ ; Hᵍ ; Sᵍ ; CXᵍ ; SWᵍ ; module Circuits)
+  using (Sc ; ωᵍ ; Hᵍ ; Sᵍ ; CXᵍ ; SWᵍ ; SWᵍ-ok ; module Circuits)
 
 -- The gates.
 val : ∀ {k} → PGate k → Sc k
@@ -33,19 +33,16 @@ open Circuits val using (module Exact)
 open Exact public using (_≈_)
 open Exact using (check ; module Symmetry)
 
-open Symmetry
-  (check 0 refl _ _ tt)
-  (λ { H-gate → check 0 refl _ _ tt ; S-gate → check 0 refl _ _ tt })
-  (λ { ⌈ CX-gate ⌉ → check 0 refl _ _ tt ; swap → check 0 refl _ _ tt })
+open Symmetry refl SWᵍ-ok
   using (module Theory)
 
-open Theory arity lhs rhs
-  (λ { ω⁸  → check 0 refl _ _ tt
-     ; H²  → check 0 refl _ _ tt
-     ; S⁴  → check 0 refl _ _ tt
-     ; E   → check 0 refl _ _ tt
-     ; CPh → check 0 refl _ _ tt
-     ; B   → check 0 refl _ _ tt
-     ; CZ  → check 0 refl _ _ tt
-     ; I   → check 0 refl _ _ tt })
+open Theory _SRel,_===_
+  (λ { ω⁸  → check 0 refl _ _ _
+     ; H²  → check 0 refl _ _ _
+     ; S⁴  → check 0 refl _ _ _
+     ; E   → check 0 refl _ _ _
+     ; CPh → check 0 refl _ _ _
+     ; B   → check 0 refl _ _ _
+     ; CZ  → check 0 refl _ _ _
+     ; I   → check 0 refl _ _ _ })
   public using (sound)

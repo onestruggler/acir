@@ -53,7 +53,7 @@ CX01² {n} = begin
   CX01 • CX01
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP • CNOT • (SWAP • SWAP) • CNOT • SWAP
-    ≈⟨ back (SWAP) (back (CNOT) (front (CNOT • SWAP) (ax swap-order))) ⟩
+    ≈⟨ back (SWAP) (back (CNOT) (front (CNOT • SWAP) swap-order)) ⟩
   SWAP • CNOT • (ε) • CNOT • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP • (CNOT • CNOT) • SWAP
@@ -61,7 +61,7 @@ CX01² {n} = begin
   SWAP • (ε) • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   (SWAP • SWAP)
-    ≈⟨ ax swap-order ⟩
+    ≈⟨ swap-order ⟩
   (ε)
     ≈⟨ by-assoc Eq.refl ⟩
   ε ∎
@@ -118,7 +118,7 @@ C0f {n} = begin
   SWAP • (CX01 • CNOT) • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   (SWAP • SWAP) • CNOT • SWAP • CNOT • SWAP
-    ≈⟨ front (CNOT • SWAP • CNOT • SWAP) (ax swap-order) ⟩
+    ≈⟨ front (CNOT • SWAP • CNOT • SWAP) swap-order ⟩
   (ε) • CNOT • SWAP • CNOT • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT • CX01 ∎
@@ -130,15 +130,15 @@ N1 {n} = begin
   SWAP • CNOT ↑ • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   (ε) • SWAP • CNOT ↑ • SWAP
-    ≈⟨ front (SWAP • CNOT ↑ • SWAP) (sym (lift (ax swap-order))) ⟩
+    ≈⟨ front (SWAP • CNOT ↑ • SWAP) (sym (lift swap-order)) ⟩
   (SWAP ↑ • SWAP ↑) • SWAP • CNOT ↑ • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP ↑ • (SWAP ↑ • SWAP • CNOT ↑) • SWAP
-    ≈⟨ back (SWAP ↑) (front (SWAP) (sym (ax swap-CNOT))) ⟩
+    ≈⟨ back (SWAP ↑) (front (SWAP) (sym swap-CNOT)) ⟩
   SWAP ↑ • (CNOT • SWAP ↑ • SWAP) • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP ↑ • CNOT • SWAP ↑ • (SWAP • SWAP)
-    ≈⟨ back (SWAP ↑) (back (CNOT) (back (SWAP ↑) (ax swap-order))) ⟩
+    ≈⟨ back (SWAP ↑) (back (CNOT) (back (SWAP ↑) swap-order)) ⟩
   SWAP ↑ • CNOT • SWAP ↑ • (ε)
     ≈⟨ by-assoc Eq.refl ⟩
   CX20 ∎
@@ -150,23 +150,23 @@ N2 {n} = begin
   SWAP • CX12 • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP • SWAP ↑ • (ε) • CNOT ↑ • SWAP ↑ • SWAP
-    ≈⟨ back (SWAP) (back (SWAP ↑) (front (CNOT ↑ • SWAP ↑ • SWAP) (sym (ax swap-order)))) ⟩
+    ≈⟨ back (SWAP) (back (SWAP ↑) (front (CNOT ↑ • SWAP ↑ • SWAP) (sym swap-order))) ⟩
   SWAP • SWAP ↑ • (SWAP • SWAP) • CNOT ↑ • SWAP ↑ • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   (SWAP • SWAP ↑ • SWAP) • SWAP • CNOT ↑ • SWAP ↑ • SWAP
-    ≈⟨ front (SWAP • CNOT ↑ • SWAP ↑ • SWAP) (ax swap-braid) ⟩
+    ≈⟨ front (SWAP • CNOT ↑ • SWAP ↑ • SWAP) swap-braid ⟩
   (SWAP ↑ • SWAP • SWAP ↑) • SWAP • CNOT ↑ • SWAP ↑ • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP ↑ • SWAP • (SWAP ↑ • SWAP • CNOT ↑) • SWAP ↑ • SWAP
-    ≈⟨ back (SWAP ↑) (back (SWAP) (front (SWAP ↑ • SWAP) (sym (ax swap-CNOT)))) ⟩
+    ≈⟨ back (SWAP ↑) (back (SWAP) (front (SWAP ↑ • SWAP) (sym swap-CNOT))) ⟩
   SWAP ↑ • SWAP • (CNOT • SWAP ↑ • SWAP) • SWAP ↑ • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP ↑ • SWAP • CNOT • (SWAP ↑ • SWAP • SWAP ↑) • SWAP
-    ≈⟨ back (SWAP ↑) (back (SWAP) (back (CNOT) (front (SWAP) (sym (ax swap-braid))))) ⟩
+    ≈⟨ back (SWAP ↑) (back (SWAP) (back (CNOT) (front (SWAP) (sym swap-braid)))) ⟩
   SWAP ↑ • SWAP • CNOT • (SWAP • SWAP ↑ • SWAP) • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP ↑ • SWAP • CNOT • SWAP • SWAP ↑ • (SWAP • SWAP)
-    ≈⟨ back (SWAP ↑) (back (SWAP) (back (CNOT) (back (SWAP) (back (SWAP ↑) (ax swap-order))))) ⟩
+    ≈⟨ back (SWAP ↑) (back (SWAP) (back (CNOT) (back (SWAP) (back (SWAP ↑) swap-order)))) ⟩
   SWAP ↑ • SWAP • CNOT • SWAP • SWAP ↑ • (ε)
     ≈⟨ by-assoc Eq.refl ⟩
   CX02 ∎
@@ -196,7 +196,7 @@ U1 {n} = begin
   CNOT • SWAP ↑ • CNOT • CNOT ↑ • CNOT • (CX20) • SWAP ↑
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT • SWAP ↑ • CNOT • CNOT ↑ • CNOT • SWAP ↑ • CNOT • (SWAP ↑ • SWAP ↑)
-    ≈⟨ back (CNOT) (back (SWAP ↑) (back (CNOT) (back (CNOT ↑) (back (CNOT) (back (SWAP ↑) (back (CNOT) (lift (ax swap-order)))))))) ⟩
+    ≈⟨ back (CNOT) (back (SWAP ↑) (back (CNOT) (back (CNOT ↑) (back (CNOT) (back (SWAP ↑) (back (CNOT) (lift swap-order))))))) ⟩
   CNOT • SWAP ↑ • CNOT • CNOT ↑ • CNOT • SWAP ↑ • CNOT • (ε)
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT • SWAP ↑ • CNOT • CNOT ↑ • CNOT • (ε) • SWAP ↑ • CNOT
@@ -208,11 +208,11 @@ U1 {n} = begin
   CNOT • SWAP ↑ • (SWAP • CNOT ↑ • SWAP) • CNOT ↑ • SWAP ↑ • CNOT
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT • (SWAP ↑ • SWAP • CNOT ↑) • SWAP • CNOT ↑ • SWAP ↑ • CNOT
-    ≈⟨ back (CNOT) (front (SWAP • CNOT ↑ • SWAP ↑ • CNOT) (sym (ax swap-CNOT))) ⟩
+    ≈⟨ back (CNOT) (front (SWAP • CNOT ↑ • SWAP ↑ • CNOT) (sym swap-CNOT)) ⟩
   CNOT • (CNOT • SWAP ↑ • SWAP) • SWAP • CNOT ↑ • SWAP ↑ • CNOT
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT • CNOT • SWAP ↑ • (SWAP • SWAP) • CNOT ↑ • SWAP ↑ • CNOT
-    ≈⟨ back (CNOT) (back (CNOT) (back (SWAP ↑) (front (CNOT ↑ • SWAP ↑ • CNOT) (ax swap-order)))) ⟩
+    ≈⟨ back (CNOT) (back (CNOT) (back (SWAP ↑) (front (CNOT ↑ • SWAP ↑ • CNOT) swap-order))) ⟩
   CNOT • CNOT • SWAP ↑ • (ε) • CNOT ↑ • SWAP ↑ • CNOT
     ≈⟨ by-assoc Eq.refl ⟩
   (CNOT • CNOT) • SWAP ↑ • CNOT ↑ • SWAP ↑ • CNOT
@@ -227,7 +227,7 @@ U2 {n} = begin
   SWAP • CX12
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP • SWAP ↑ • CNOT ↑ • SWAP ↑ • (ε)
-    ≈⟨ back (SWAP) (back (SWAP ↑) (back (CNOT ↑) (back (SWAP ↑) (sym (ax swap-order))))) ⟩
+    ≈⟨ back (SWAP) (back (SWAP ↑) (back (CNOT ↑) (back (SWAP ↑) (sym swap-order)))) ⟩
   SWAP • SWAP ↑ • CNOT ↑ • SWAP ↑ • (SWAP • SWAP)
     ≈⟨ by-assoc Eq.refl ⟩
   (SWAP • CX12 • SWAP) • SWAP
@@ -247,7 +247,7 @@ U3 {n} = begin
   (CNOT ↑ • CNOT ↑) • SWAP • CNOT • SWAP • CNOT ↑
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT ↑ • CNOT ↑ • SWAP • CNOT • SWAP • CNOT ↑ • (ε)
-    ≈⟨ back (CNOT ↑) (back (CNOT ↑) (back (SWAP) (back (CNOT) (back (SWAP) (back (CNOT ↑) (sym (ax swap-order))))))) ⟩
+    ≈⟨ back (CNOT ↑) (back (CNOT ↑) (back (SWAP) (back (CNOT) (back (SWAP) (back (CNOT ↑) (sym swap-order)))))) ⟩
   CNOT ↑ • CNOT ↑ • SWAP • CNOT • SWAP • CNOT ↑ • (SWAP • SWAP)
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT ↑ • CNOT ↑ • SWAP • CNOT • (SWAP • CNOT ↑ • SWAP) • SWAP
@@ -259,7 +259,7 @@ U3 {n} = begin
   CNOT ↑ • CNOT ↑ • SWAP • (ε) • CNOT ↑ • CNOT • CNOT ↑ • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT ↑ • (ε) • CNOT ↑ • SWAP • CNOT ↑ • CNOT • CNOT ↑ • SWAP
-    ≈⟨ back (CNOT ↑) (front (CNOT ↑ • SWAP • CNOT ↑ • CNOT • CNOT ↑ • SWAP) (sym (ax swap-order))) ⟩
+    ≈⟨ back (CNOT ↑) (front (CNOT ↑ • SWAP • CNOT ↑ • CNOT • CNOT ↑ • SWAP) (sym swap-order)) ⟩
   CNOT ↑ • (SWAP • SWAP) • CNOT ↑ • SWAP • CNOT ↑ • CNOT • CNOT ↑ • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT ↑ • SWAP • (SWAP • CNOT ↑ • SWAP) • CNOT ↑ • CNOT • CNOT ↑ • SWAP
@@ -286,11 +286,11 @@ U4 {n} = begin
   SWAP • CNOT ↑
     ≈⟨ by-assoc Eq.refl ⟩
   (ε) • SWAP • CNOT ↑
-    ≈⟨ front (SWAP • CNOT ↑) (sym (lift (ax swap-order))) ⟩
+    ≈⟨ front (SWAP • CNOT ↑) (sym (lift swap-order)) ⟩
   (SWAP ↑ • SWAP ↑) • SWAP • CNOT ↑
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP ↑ • (SWAP ↑ • SWAP • CNOT ↑)
-    ≈⟨ back (SWAP ↑) (sym (ax swap-CNOT)) ⟩
+    ≈⟨ back (SWAP ↑) (sym swap-CNOT) ⟩
   SWAP ↑ • (CNOT • SWAP ↑ • SWAP)
     ≈⟨ by-assoc Eq.refl ⟩
   CX20 • SWAP ∎
@@ -302,7 +302,7 @@ R1a {n} = begin
   SWAP • SWAP ↑ • CNOT
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP • SWAP ↑ • CNOT • (ε)
-    ≈⟨ back (SWAP) (back (SWAP ↑) (back (CNOT) (sym (lift (ax swap-order))))) ⟩
+    ≈⟨ back (SWAP) (back (SWAP ↑) (back (CNOT) (sym (lift swap-order)))) ⟩
   SWAP • SWAP ↑ • CNOT • (SWAP ↑ • SWAP ↑)
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP • (CX20) • SWAP ↑
@@ -310,7 +310,7 @@ R1a {n} = begin
   SWAP • (SWAP • CNOT ↑ • SWAP) • SWAP ↑
     ≈⟨ by-assoc Eq.refl ⟩
   (SWAP • SWAP) • CNOT ↑ • SWAP • SWAP ↑
-    ≈⟨ front (CNOT ↑ • SWAP • SWAP ↑) (ax swap-order) ⟩
+    ≈⟨ front (CNOT ↑ • SWAP • SWAP ↑) swap-order ⟩
   (ε) • CNOT ↑ • SWAP • SWAP ↑
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT ↑ • SWAP • SWAP ↑ ∎
@@ -355,15 +355,15 @@ R1e {n} = begin
   CNOT • SWAP ↑ • CNOT
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT • SWAP ↑ • (ε) • CNOT
-    ≈⟨ back (CNOT) (back (SWAP ↑) (front (CNOT) (sym (ax swap-order)))) ⟩
+    ≈⟨ back (CNOT) (back (SWAP ↑) (front (CNOT) (sym swap-order))) ⟩
   CNOT • SWAP ↑ • (SWAP • SWAP) • CNOT
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT • SWAP ↑ • SWAP • SWAP • CNOT • (ε)
-    ≈⟨ back (CNOT) (back (SWAP ↑) (back (SWAP) (back (SWAP) (back (CNOT) (sym (ax swap-order)))))) ⟩
+    ≈⟨ back (CNOT) (back (SWAP ↑) (back (SWAP) (back (SWAP) (back (CNOT) (sym swap-order))))) ⟩
   CNOT • SWAP ↑ • SWAP • SWAP • CNOT • (SWAP • SWAP)
     ≈⟨ by-assoc Eq.refl ⟩
   (CNOT • SWAP ↑ • SWAP) • SWAP • CNOT • SWAP • SWAP
-    ≈⟨ front (SWAP • CNOT • SWAP • SWAP) (ax swap-CNOT) ⟩
+    ≈⟨ front (SWAP • CNOT • SWAP • SWAP) swap-CNOT ⟩
   (SWAP ↑ • SWAP • CNOT ↑) • SWAP • CNOT • SWAP • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP ↑ • SWAP • CNOT ↑ • SWAP • CNOT • SWAP • SWAP • (ε)
@@ -375,7 +375,7 @@ R1e {n} = begin
   SWAP ↑ • SWAP • (SWAP • CNOT ↑ • CNOT) • CNOT ↑
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP ↑ • (SWAP • SWAP) • CNOT ↑ • CNOT • CNOT ↑
-    ≈⟨ back (SWAP ↑) (front (CNOT ↑ • CNOT • CNOT ↑) (ax swap-order)) ⟩
+    ≈⟨ back (SWAP ↑) (front (CNOT ↑ • CNOT • CNOT ↑) swap-order) ⟩
   SWAP ↑ • (ε) • CNOT ↑ • CNOT • CNOT ↑
     ≈⟨ by-assoc Eq.refl ⟩
   (SWAP ↑ • CNOT ↑) • CNOT • CNOT ↑ ∎
@@ -390,7 +390,7 @@ R1g {n} = begin
   (CNOT ↑ • CNOT ↑) • CNOT • CNOT ↑ • CNOT
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT ↑ • (ε) • CNOT ↑ • CNOT • CNOT ↑ • CNOT
-    ≈⟨ back (CNOT ↑) (front (CNOT ↑ • CNOT • CNOT ↑ • CNOT) (sym (lift (ax swap-order)))) ⟩
+    ≈⟨ back (CNOT ↑) (front (CNOT ↑ • CNOT • CNOT ↑ • CNOT) (sym (lift swap-order))) ⟩
   CNOT ↑ • (SWAP ↑ • SWAP ↑) • CNOT ↑ • CNOT • CNOT ↑ • CNOT
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT ↑ • SWAP ↑ • ((SWAP ↑ • CNOT ↑) • CNOT • CNOT ↑) • CNOT
@@ -425,7 +425,7 @@ R1h {n} = begin
   CNOT ↑ • (CX01 • CNOT) • CNOT ↑ • SWAP • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT ↑ • SWAP • CNOT • SWAP • CNOT • CNOT ↑ • (SWAP • SWAP)
-    ≈⟨ back (CNOT ↑) (back (SWAP) (back (CNOT) (back (SWAP) (back (CNOT) (back (CNOT ↑) (ax swap-order)))))) ⟩
+    ≈⟨ back (CNOT ↑) (back (SWAP) (back (CNOT) (back (SWAP) (back (CNOT) (back (CNOT ↑) swap-order))))) ⟩
   CNOT ↑ • SWAP • CNOT • SWAP • CNOT • CNOT ↑ • (ε)
     ≈⟨ by-assoc Eq.refl ⟩
   (CNOT ↑ • CX01) • CNOT • CNOT ↑ ∎
@@ -485,7 +485,7 @@ C1f {n} = begin
   CX01 • SWAP ↑ • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   (ε) • SWAP • CNOT • SWAP • SWAP ↑ • SWAP
-    ≈⟨ front (SWAP • CNOT • SWAP • SWAP ↑ • SWAP) (sym (lift (ax swap-order))) ⟩
+    ≈⟨ front (SWAP • CNOT • SWAP • SWAP ↑ • SWAP) (sym (lift swap-order)) ⟩
   (SWAP ↑ • SWAP ↑) • SWAP • CNOT • SWAP • SWAP ↑ • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP ↑ • (CX02 • SWAP)
@@ -519,7 +519,7 @@ C1h {n} = begin
   SWAP • CNOT • (CX02)
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP • (CNOT • SWAP ↑ • SWAP) • CNOT • SWAP • SWAP ↑
-    ≈⟨ back (SWAP) (front (CNOT • SWAP • SWAP ↑) (ax swap-CNOT)) ⟩
+    ≈⟨ back (SWAP) (front (CNOT • SWAP • SWAP ↑) swap-CNOT) ⟩
   SWAP • (SWAP ↑ • SWAP • CNOT ↑) • CNOT • SWAP • SWAP ↑
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP • SWAP ↑ • (SWAP) • CNOT ↑ • CNOT • SWAP • SWAP ↑
@@ -543,7 +543,7 @@ C1h {n} = begin
   CNOT ↑ • SWAP • SWAP ↑ • SWAP • CNOT • (CX20) • CNOT ↑ • SWAP ↑
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT ↑ • (SWAP • SWAP ↑ • SWAP) • CNOT • SWAP ↑ • CNOT • SWAP ↑ • CNOT ↑ • SWAP ↑
-    ≈⟨ back (CNOT ↑) (front (CNOT • SWAP ↑ • CNOT • SWAP ↑ • CNOT ↑ • SWAP ↑) (ax swap-braid)) ⟩
+    ≈⟨ back (CNOT ↑) (front (CNOT • SWAP ↑ • CNOT • SWAP ↑ • CNOT ↑ • SWAP ↑) swap-braid) ⟩
   CNOT ↑ • (SWAP ↑ • SWAP • SWAP ↑) • CNOT • SWAP ↑ • CNOT • SWAP ↑ • CNOT ↑ • SWAP ↑
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT ↑ • SWAP ↑ • SWAP • (CX20) • CNOT • SWAP ↑ • CNOT ↑ • SWAP ↑
@@ -555,7 +555,7 @@ C1h {n} = begin
   CNOT ↑ • SWAP ↑ • SWAP • SWAP • CNOT ↑ • (CNOT • CX01) • SWAP ↑ • CNOT ↑ • SWAP ↑
     ≈⟨ by-assoc Eq.refl ⟩
   CNOT ↑ • SWAP ↑ • (SWAP • SWAP) • CNOT ↑ • CNOT • SWAP • CNOT • SWAP • SWAP ↑ • CNOT ↑ • SWAP ↑
-    ≈⟨ back (CNOT ↑) (back (SWAP ↑) (front (CNOT ↑ • CNOT • SWAP • CNOT • SWAP • SWAP ↑ • CNOT ↑ • SWAP ↑) (ax swap-order))) ⟩
+    ≈⟨ back (CNOT ↑) (back (SWAP ↑) (front (CNOT ↑ • CNOT • SWAP • CNOT • SWAP • SWAP ↑ • CNOT ↑ • SWAP ↑) swap-order)) ⟩
   CNOT ↑ • SWAP ↑ • (ε) • CNOT ↑ • CNOT • SWAP • CNOT • SWAP • SWAP ↑ • CNOT ↑ • SWAP ↑
     ≈⟨ by-assoc Eq.refl ⟩
   (CNOT ↑ • SWAP ↑ • CNOT ↑ • CNOT) • CX01 • CX12 ∎
@@ -601,7 +601,7 @@ N1b {n} = begin
   CX01 • CX12 • CX01
     ≈⟨ by-assoc Eq.refl ⟩
   (ε) • SWAP • CNOT • SWAP • SWAP ↑ • CNOT ↑ • SWAP ↑ • SWAP • CNOT • SWAP
-    ≈⟨ front (SWAP • CNOT • SWAP • SWAP ↑ • CNOT ↑ • SWAP ↑ • SWAP • CNOT • SWAP) (sym (lift (ax swap-order))) ⟩
+    ≈⟨ front (SWAP • CNOT • SWAP • SWAP ↑ • CNOT ↑ • SWAP ↑ • SWAP • CNOT • SWAP) (sym (lift swap-order)) ⟩
   (SWAP ↑ • SWAP ↑) • SWAP • CNOT • SWAP • SWAP ↑ • CNOT ↑ • SWAP ↑ • SWAP • CNOT • SWAP
     ≈⟨ by-assoc Eq.refl ⟩
   SWAP ↑ • (ε) • SWAP ↑ • SWAP • CNOT • SWAP • SWAP ↑ • CNOT ↑ • SWAP ↑ • SWAP • CNOT • SWAP

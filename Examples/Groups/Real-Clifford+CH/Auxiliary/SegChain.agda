@@ -80,21 +80,34 @@ step k n xs ys e =
                    (Eq.cong (take k xs ++_) (Eq.sym (take++drop≡id n (drop k xs))))
 
 -- A chain of replacements.
-record Step (xs : List W) : Set where
-  constructor at
-  field
-    k n : ℕ
-    ys  : List W
-    e   : ⟪ take n (drop k xs) ⟫ ≈ ⟪ ys ⟫
+--
+-- The word after a step is `next k n ys xs`, a function of its own that
+-- holds the word before it once, and not the step's proof.  Unfolded,
+-- `take k xs ++ ys ++ drop (k + n) xs` holds it twice, and so does a
+-- proof whose implicit arguments were solved from its type; with either
+-- in the index (`next` used to take the step record, proof included)
+-- the indices of a chain of k steps grow as 2^k, which positivity
+-- checking, dead-code analysis and the occurs check traverse without
+-- sharing (LemmaA1/More, one chain of 13 steps: 32.5 s, 6.0 of them
+-- positivity).
+next : ℕ → ℕ → List W → List W → List W
+next k n ys xs = take k xs ++ ys ++ drop (k + n) xs
 
-next : ∀ {xs : List W} → Step xs → List W
-next {xs} (at k n ys _) = take k xs ++ ys ++ drop (k + n) xs
+record Step (xs : List W) (k n : ℕ) (ys : List W) : Set where
+  constructor step′
+  field
+    e : ⟪ take n (drop k xs) ⟫ ≈ ⟪ ys ⟫
+
+at : ∀ {xs : List W} (k n : ℕ) (ys : List W) →
+     ⟪ take n (drop k xs) ⟫ ≈ ⟪ ys ⟫ → Step xs k n ys
+at k n ys e = step′ e
 
 infixr 4 _▸_
 data Chain : List W → List W → Set where
   done : ∀ {xs : List W} → Chain xs xs
-  _▸_  : ∀ {xs zs : List W} (s : Step xs) → Chain (next s) zs → Chain xs zs
+  _▸_  : ∀ {xs zs : List W} {k n : ℕ} {ys : List W} →
+         Step xs k n ys → Chain (next k n ys xs) zs → Chain xs zs
 
 run : ∀ {xs zs : List W} → Chain xs zs → ⟪ xs ⟫ ≈ ⟪ zs ⟫
-run done                   = refl
-run {xs} (at k n ys e ▸ c) = trans (step k n xs ys e) (run c)
+run done = refl
+run {xs} (_▸_ {k = k} {n} {ys} (step′ e) c) = trans (step k n xs ys e) (run c)

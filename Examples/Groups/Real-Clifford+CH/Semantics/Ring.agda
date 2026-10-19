@@ -172,6 +172,23 @@ private
   ⟨_,_⟩ : ∀ {x y : ℤ√2} → re x ≡ re y → im x ≡ im y → x ≡ y
   ⟨_,_⟩ {a +√2 b} {c +√2 d} refl refl = refl
 
+-- √2 and -√2 times a number, without the general product: that spends
+-- seven integer operations where one does.  The stored readings scale
+-- whole rows by them (Evaluation).
+√2* -√2* : ℤ√2 → ℤ√2
+√2*  (a +√2 b) = (b ℤ.+ b) +√2 a
+-√2* (a +√2 b) = (ℤ.- (b ℤ.+ b)) +√2 (ℤ.- a)
+
+√2*-ok : ∀ x → √2* x ≡ √2 * x
+√2*-ok (a +√2 b) =
+  ⟨ solve 2 (λ a b → b ⊕ b , Κ 0ℤ ⊗ a ⊕ Κ 2ℤ ⊗ (Κ 1ℤ ⊗ b)) (λ {_} {_} → refl) a b
+  , solve 2 (λ a b → a , Κ 0ℤ ⊗ b ⊕ Κ 1ℤ ⊗ a) (λ {_} {_} → refl) a b ⟩
+
+-√2*-ok : ∀ x → -√2* x ≡ -√2 * x
+-√2*-ok (a +√2 b) =
+  ⟨ solve 2 (λ a b → ⊝ (b ⊕ b) , Κ 0ℤ ⊗ a ⊕ Κ 2ℤ ⊗ (Κ -1ℤ ⊗ b)) (λ {_} {_} → refl) a b
+  , solve 2 (λ a b → ⊝ a , Κ 0ℤ ⊗ b ⊕ Κ -1ℤ ⊗ a) (λ {_} {_} → refl) a b ⟩
+
 +-assoc : ∀ x y z → (x + y) + z ≡ x + (y + z)
 +-assoc (a +√2 b) (c +√2 d) (e +√2 f) =
   ⟨ ℤP.+-assoc a c e , ℤP.+-assoc b d f ⟩

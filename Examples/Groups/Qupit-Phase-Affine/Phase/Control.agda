@@ -95,7 +95,7 @@ module _ {m : ℕ} where
 c↑ : (w : Circuit n) → (₂₊ n) ⊢ SWAP • w ↑ ↑ • SWAP ≈ w ↑ ↑
 c↑ {n} w = begin
   SWAP • w ↑ ↑ • SWAP      ≈⟨ trans (sym assoc) (front _ (sym (comm-gate₂-w↑↑ SWAP-gate w))) ⟩
-  (w ↑ ↑ • SWAP) • SWAP    ≈⟨ trans assoc (cancel-at (ax swap-order) _) ⟩
+  (w ↑ ↑ • SWAP) • SWAP    ≈⟨ trans assoc (cancel-at swap-order _) ⟩
   w ↑ ↑                    ∎
   where open Width (₂₊ n)
 
@@ -109,40 +109,50 @@ W G = G ^ᶠ (- 1F) • (SWAP • G ↑ • SWAP) ^ᶠ (- 1F) • (CX ↑) ^ᶠ 
 ------------------------------------------------------------------------
 -- The functor
 
-module Functor
-  (lv' : ℕ) (no3 : 3 ≤ lv' → ⊥) (κ : F → F)
-  (Ωg : ∀ {n} → Circuit (₁₊ n))
-  (Zg : ∀ {n} → Circuit (₂₊ n))
-  (Sg : ∀ {n} → .(2 ≤ lv') → Circuit (₂₊ n))
-  -- The images are diagonal; Ω is on wire 0, Zg and Sg on wires 0, 1.
-  (Ω-D    : ∀ {n} → Diag₃ (₁₊ n) Ωg)
-  (Z-D    : ∀ {n} → Diag₃ (₂₊ n) Zg)
-  (S-D    : ∀ {n} .(h' : 2 ≤ lv') → Diag₃ (₂₊ n) (Sg h'))
-  (Ω-up   : ∀ {n} (w : Circuit n) → (₁₊ n) ⊢ Ωg ∥ (w ↑))
-  (Z-two  : ∀ {n} (w : Circuit n) → (₂₊ n) ⊢ Zg ∥ (w ↑ ↑))
-  (S-two  : ∀ {n} .(h' : 2 ≤ lv') (w : Circuit n) → (₂₊ n) ⊢ Sg h' ∥ (w ↑ ↑))
-  -- The images of the rules with phases.
-  (Ω-sw   : ∀ {n} → (₂₊ n) ⊢ SWAP • Ωg ↑ • SWAP ≈ Ωg)
-  (Z-sw   : ∀ {n} → (₃₊ n) ⊢ Zg • SWAP ↑ ≈ SWAP ↑ • SWAP • Zg ↑ • SWAP)
-  (S-sw   : ∀ {n} .(h' : 2 ≤ lv') → (₃₊ n) ⊢ Sg h' • SWAP ↑ ≈ SWAP ↑ • SWAP • Sg h' ↑ • SWAP)
-  (Ω-ord  : ∀ {n} → (₁₊ n) ⊢ Ωg ^ p ≈ ε)
-  (Z-ord  : ∀ {n} → (₂₊ n) ⊢ Zg ^ p ≈ ε)
-  (Z-CX   : ∀ {n} → (₃₊ n) ⊢ CX ↑ • Zg • SWAP • Zg ↑ • SWAP ≈ Zg • CX ↑)
-  (Z-M    : ∀ {n} (x : F*) → (₂₊ n) ⊢ Zg • M⟨ x ⟩ ↑ ≈ M⟨ x ⟩ ↑ • Zg ^ toℕ (proj₁ x))
-  (Z-X    : ∀ {n} → (₂₊ n) ⊢ Zg • X ↑ ≈ Ωg • X ↑ • Zg)
-  (S-ord  : ∀ {n} .(h' : 2 ≤ lv') → (₂₊ n) ⊢ Sg h' ^ p ≈ ε)
-  (S-X    : ∀ {n} .(h' : 2 ≤ lv') → (₂₊ n) ⊢ Sg h' • X ↑ ≈ X ↑ • Zg • Sg h')
-  (S-M    : ∀ {n} .(h' : 2 ≤ lv') (x : F*) → (₂₊ n) ⊢ Sg h' • M⟨ x ⟩ ↑ ≈
-              M⟨ x ⟩ ↑ • Zg ^ toℕ (binom2 (proj₁ x)) • Sg h' ^ toℕ (proj₁ x * proj₁ x))
-  (S-CX   : ∀ {n} .(h' : 2 ≤ lv') → (₃₊ n) ⊢ CX ↑ • SWAP • Sg h' ↑ • SWAP ≈ (SWAP • Sg h' ↑ • SWAP) • CX ↑)
-  (W-M    : ∀ {n} .(h' : 2 ≤ lv') → (₃₊ n) ⊢ (SWAP • M⟨ -1* ⟩ ↑ ↑ • SWAP) • W (Sg h') ^ toℕ (- 1F) • SWAP • M⟨ -1* ⟩ ↑ ↑ • SWAP ≈ W (Sg h'))
-  (W-CX   : ∀ {n} .(h' : 2 ≤ lv') → (₄₊ n) ⊢ W (Sg h') • SWAP • CX ↑ ↑ • SWAP ≈
-              (SWAP • CX ↑ ↑ • SWAP) • W (Sg h') • (SWAP • SWAP ↑ ↑ • SWAP) • W (Sg h') • SWAP • SWAP ↑ ↑ • SWAP)
-  -- Their phases.
-  (Ω-sem  : ∀ {n} → DiagC {₁₊ n} Ωg (λ y → κ (head y)))
-  (Z-sem  : ∀ {n} → DiagC {₂₊ n} Zg (λ y → κ (head y) * head (tail y)))
-  (S-sem  : ∀ {n} .(h' : 2 ≤ lv') → DiagC {₂₊ n} (Sg h') (λ y → κ (head y) * binom2 (head (tail y))))
-  where
+-- What the functor is given: the images of the phase generators, and
+-- of the rules involving phases.  They are a record rather than module
+-- parameters, so that the functor is checked in a short context: every
+-- metavariable is applied to the whole context, and with these as
+-- twenty-five more parameters the module took 27 s to check, not 5 s.
+
+record Images (lv' : ℕ) (κ : F → F) : Set where
+  constructor images
+  field
+    Ωg : ∀ {n} → Circuit (₁₊ n)
+    Zg : ∀ {n} → Circuit (₂₊ n)
+    Sg : ∀ {n} → .(2 ≤ lv') → Circuit (₂₊ n)
+    -- The images are diagonal; Ω is on wire 0, Zg and Sg on wires 0, 1.
+    Ω-D    : ∀ {n} → Diag₃ (₁₊ n) Ωg
+    Z-D    : ∀ {n} → Diag₃ (₂₊ n) Zg
+    S-D    : ∀ {n} .(h' : 2 ≤ lv') → Diag₃ (₂₊ n) (Sg h')
+    Ω-up   : ∀ {n} (w : Circuit n) → (₁₊ n) ⊢ Ωg ∥ (w ↑)
+    Z-two  : ∀ {n} (w : Circuit n) → (₂₊ n) ⊢ Zg ∥ (w ↑ ↑)
+    S-two  : ∀ {n} .(h' : 2 ≤ lv') (w : Circuit n) → (₂₊ n) ⊢ Sg h' ∥ (w ↑ ↑)
+    -- The images of the rules with phases.
+    Ω-sw   : ∀ {n} → (₂₊ n) ⊢ SWAP • Ωg ↑ • SWAP ≈ Ωg
+    Z-sw   : ∀ {n} → (₃₊ n) ⊢ Zg • SWAP ↑ ≈ SWAP ↑ • SWAP • Zg ↑ • SWAP
+    S-sw   : ∀ {n} .(h' : 2 ≤ lv') → (₃₊ n) ⊢ Sg h' • SWAP ↑ ≈ SWAP ↑ • SWAP • Sg h' ↑ • SWAP
+    Ω-ord  : ∀ {n} → (₁₊ n) ⊢ Ωg ^ p ≈ ε
+    Z-ord  : ∀ {n} → (₂₊ n) ⊢ Zg ^ p ≈ ε
+    Z-CX   : ∀ {n} → (₃₊ n) ⊢ CX ↑ • Zg • SWAP • Zg ↑ • SWAP ≈ Zg • CX ↑
+    Z-M    : ∀ {n} (x : F*) → (₂₊ n) ⊢ Zg • M⟨ x ⟩ ↑ ≈ M⟨ x ⟩ ↑ • Zg ^ toℕ (proj₁ x)
+    Z-X    : ∀ {n} → (₂₊ n) ⊢ Zg • X ↑ ≈ Ωg • X ↑ • Zg
+    S-ord  : ∀ {n} .(h' : 2 ≤ lv') → (₂₊ n) ⊢ Sg h' ^ p ≈ ε
+    S-X    : ∀ {n} .(h' : 2 ≤ lv') → (₂₊ n) ⊢ Sg h' • X ↑ ≈ X ↑ • Zg • Sg h'
+    S-M    : ∀ {n} .(h' : 2 ≤ lv') (x : F*) → (₂₊ n) ⊢ Sg h' • M⟨ x ⟩ ↑ ≈
+               M⟨ x ⟩ ↑ • Zg ^ toℕ (binom2 (proj₁ x)) • Sg h' ^ toℕ (proj₁ x * proj₁ x)
+    S-CX   : ∀ {n} .(h' : 2 ≤ lv') → (₃₊ n) ⊢ CX ↑ • SWAP • Sg h' ↑ • SWAP ≈ (SWAP • Sg h' ↑ • SWAP) • CX ↑
+    W-M    : ∀ {n} .(h' : 2 ≤ lv') → (₃₊ n) ⊢ (SWAP • M⟨ -1* ⟩ ↑ ↑ • SWAP) • W (Sg h') ^ toℕ (- 1F) • SWAP • M⟨ -1* ⟩ ↑ ↑ • SWAP ≈ W (Sg h')
+    W-CX   : ∀ {n} .(h' : 2 ≤ lv') → (₄₊ n) ⊢ W (Sg h') • SWAP • CX ↑ ↑ • SWAP ≈
+               (SWAP • CX ↑ ↑ • SWAP) • W (Sg h') • (SWAP • SWAP ↑ ↑ • SWAP) • W (Sg h') • SWAP • SWAP ↑ ↑ • SWAP
+    -- Their phases.
+    Ω-sem  : ∀ {n} → DiagC {₁₊ n} Ωg (λ y → κ (head y))
+    Z-sem  : ∀ {n} → DiagC {₂₊ n} Zg (λ y → κ (head y) * head (tail y))
+    S-sem  : ∀ {n} .(h' : 2 ≤ lv') → DiagC {₂₊ n} (Sg h') (λ y → κ (head y) * binom2 (head (tail y)))
+
+module Functor (lv' : ℕ) (no3 : 3 ≤ lv' → ⊥) (κ : F → F) (I : Images lv' κ) where
+
+  open Images I
 
   private
     module Src = Syntactics′ p-2 p-prime lv'
@@ -180,14 +190,14 @@ module Functor
 
   ctrl*-↑ : (w : Src.Circuit n) → (₂₊ n) ⊢ ctrl* (w Src.↑) ≈ SWAP • ctrl* w ↑ • SWAP
   ctrl*-↑ {n} [ g ]ʷ  = Width.refl
-  ctrl*-↑ {n} ε       = Width.sym (Width.trans (Width.back (₂₊ n) _ Width.left-unit) (ax swap-order))
+  ctrl*-↑ {n} ε       = Width.sym (Width.trans (Width.back (₂₊ n) _ Width.left-unit) swap-order)
   ctrl*-↑ {n} (u • v) = begin
     ctrl* (u Src.↑) • ctrl* (v Src.↑)
       ≈⟨ cong (ctrl*-↑ u) (ctrl*-↑ v) ⟩
     (SWAP • ctrl* u ↑ • SWAP) • SWAP • ctrl* v ↑ • SWAP
       ≈⟨ by-passoc ((□ • □ • □) • □ • □ • □) (□ • □ • (□ • □) • □ • □) Eq.refl ⟩
     SWAP • ctrl* u ↑ • (SWAP • SWAP) • ctrl* v ↑ • SWAP
-      ≈⟨ back _ (back _ (trans (front _ (ax swap-order)) left-unit)) ⟩
+      ≈⟨ back _ (back _ (trans (front _ swap-order) left-unit)) ⟩
     SWAP • ctrl* u ↑ • ctrl* v ↑ • SWAP
       ≈⟨ back _ (sym assoc) ⟩
     SWAP • (ctrl* u • ctrl* v) ↑ • SWAP ∎
@@ -249,7 +259,7 @@ module Functor
   Ω∥ (Src.gate₁ (Src.T-gate h'))    = ⊥-elim-irr (no3 h')
   Ω∥ (Src.gate₂ Src.CX-gate)        = Ω-up CX
   Ω∥ (Src.gate₂ Src.SWAP-gate)      = Ω-up SWAP
-  Ω∥ {suc n} (g Src.↥) = ∥-≈ˡ (Width.sym Ω-sw) (conj∥ (ax swap-order) (lift (Ω∥ g)))
+  Ω∥ {suc n} (g Src.↥) = ∥-≈ˡ (Width.sym Ω-sw) (conj∥ swap-order (lift (Ω∥ g)))
 
   -- A two-wire diagonal on wires 0, 1 passes the image of a gate
   -- further up.
@@ -261,11 +271,11 @@ module Functor
 
   -- A gate on wire 1 passes the image of a gate further up.
   gate1∥ : (h₀ : Gate 1) (c : Circuit (₁₊ n)) → (₂₊ n) ⊢ (SWAP • c ↑ • SWAP) ∥ [ gate₁ h₀ ↥ ]ʷ
-  gate1∥ {n} h₀ c = ∥-≈ʳ (Width.sym s1) (conj∥ (ax swap-order) (comm-gate₁-w↑ h₀ c))
+  gate1∥ {n} h₀ c = ∥-≈ʳ (Width.sym s1) (conj∥ swap-order (comm-gate₁-w↑ h₀ c))
     where
     open Width (₂₊ n)
     s1 : (₂₊ n) ⊢ SWAP • [ gate₁ h₀ ]ʷ • SWAP ≈ [ gate₁ h₀ ↥ ]ʷ
-    s1 = trans (sym assoc) (trans (front _ (swap-gate₁ h₀)) (trans assoc (cancel-at (ax swap-order) _)))
+    s1 = trans (sym assoc) (trans (front _ (swap-gate₁ h₀)) (trans assoc (cancel-at swap-order _)))
 
   -- The image of a gate two wires up is a conjugate by σ.
   σ-up : (g : Src.Gen n) → (₃₊ n) ⊢ ctrl (g Src.↥ Src.↥) ≈ σ • ctrl g ↑ ↑ • σ⁻
@@ -315,22 +325,6 @@ module Functor
     trans (cong (c↑ CX) (back _ (cong (c↑ SWAP) (back _ (c↑ SWAP)))))
       (trans (lift (ax ax8)) (back _ (sym (c↑ CX))))
     where open Width (₄₊ n)
-  ctrl-srel Src.swap-order = lift (ax swap-order)
-  ctrl-srel {₃₊ n} Src.swap-braid =
-    trans (back _ (front _ (c↑ SWAP)))
-      (trans (lift (ax swap-braid)) (sym (cong (c↑ SWAP) (back _ (c↑ SWAP)))))
-    where open Width (₄₊ n)
-  ctrl-srel {₂₊ n} Src.swap-X = trans (lift (ax swap-X)) (back _ (sym (c↑ X)))
-    where open Width (₃₊ n)
-  ctrl-srel {₂₊ n} (Src.swap-M a nz) = trans (lift (ax (swap-M a nz))) (back _ (sym (c↑ (M a nz))))
-    where open Width (₃₊ n)
-  ctrl-srel (Src.swap-Z _) = Z-sw
-  ctrl-srel (Src.swap-S h') = S-sw h'
-  ctrl-srel (Src.swap-T h') = ⊥-elim-irr (no3 h')
-  ctrl-srel {₃₊ n} Src.swap-CX =
-    trans (back _ (front _ (c↑ SWAP)))
-      (trans (lift (ax swap-CX)) (sym (cong (c↑ SWAP) (back _ (c↑ CX)))))
-    where open Width (₄₊ n)
   ctrl-srel (Src.ax19 h') = Width.trans (pw (Src.ω h') p) Ω-ord
   ctrl-srel (Src.ax20 h') = Width.trans (pw (Src.Z h') p) Z-ord
   ctrl-srel (Src.ax21 _) = Z-CX
@@ -369,8 +363,33 @@ module Functor
   ctrl-srel (Src.ax41 h')   = ⊥-elim-irr (no3 h')
   ctrl-srel (Src.ax42 h')   = ⊥-elim-irr (no3 h')
 
+  -- The laws of the symmetry (Circuit.Prop's) hold of the images.
+  ctrl-sym : {w v : Src.Circuit n} → n Src.Sym, w === v → (₁₊ n) ⊢ ctrl* w ≈ ctrl* v
+  ctrl-sym Src.σ-inv = lift swap-order
+  ctrl-sym {₃₊ n} (Src.σ-nat₂ Src.SWAP-gate) =
+    trans (trans (back _ (front _ (c↑ SWAP)))
+      (trans (lift swap-braid) (sym (cong (c↑ SWAP) (back _ (c↑ SWAP))))))
+      (sym assoc)
+    where open Width (₄₊ n)
+  ctrl-sym {₂₊ n} (Src.σ-nat₁ Src.X-gate) = trans (lift swap-X) (back _ (sym (c↑ X)))
+    where open Width (₃₊ n)
+  ctrl-sym {₂₊ n} (Src.σ-nat₁ (Src.M-gate a nz)) = trans (lift (swap-M a nz)) (back _ (sym (c↑ (M a nz))))
+    where open Width (₃₊ n)
+  ctrl-sym (Src.σ-nat₁ (Src.Z-gate _)) = Z-sw
+  ctrl-sym (Src.σ-nat₁ (Src.S-gate h')) = S-sw h'
+  ctrl-sym (Src.σ-nat₁ (Src.T-gate h')) = ⊥-elim-irr (no3 h')
+  ctrl-sym {₃₊ n} (Src.σ-nat₂ Src.CX-gate) =
+    trans (trans (back _ (front _ (c↑ SWAP)))
+      (trans (lift swap-CX) (sym (cong (c↑ SWAP) (back _ (c↑ CX))))))
+      (sym assoc)
+    where open Width (₄₊ n)
+  ctrl-sym (Src.σ-nat₃ ())
+  ctrl-prop : {w v : Src.Circuit n} → n Src.Prop, w === v → (₁₊ n) ⊢ ctrl* w ≈ ctrl* v
+  ctrl-prop (Src.σrel s)  = ctrl-sym s
+  ctrl-prop (Src.srel r) = ctrl-srel r
+
   ctrl-ax : {w v : Src.Circuit n} → n Src.VRel, w === v → (₁₊ n) ⊢ ctrl* w ≈ ctrl* v
-  ctrl-ax (Src.srel r) = ctrl-srel r
+  ctrl-ax (Src.srel r) = ctrl-prop r
   ctrl-ax {suc n} (Src.cong↑ {w = w} {v = v} r) =
     Width.trans (ctrl*-↑ w) (Width.trans (Width.mid (₂₊ n) SWAP SWAP (lift (ctrl-ax r))) (Width.sym (ctrl*-↑ v)))
   ctrl-ax (Src.comm₁ Src.X-gate g)         = gate1∥ X-gate (ctrl g)
@@ -380,6 +399,7 @@ module Functor
   ctrl-ax (Src.comm₁ (Src.T-gate h') g)    = ⊥-elim-irr (no3 h')
   ctrl-ax (Src.comm₂ Src.CX-gate g)        = comm2 CX-gate g
   ctrl-ax (Src.comm₂ Src.SWAP-gate g)      = comm2 SWAP-gate g
+  ctrl-ax (Src.comm₃ () g)
   ctrl-ax (Src.ω↑=ω (Src.ω-gate _))        = Ω-sw
 
   -- Equal circuits of the lower level, controlled, are equal.

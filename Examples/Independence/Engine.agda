@@ -79,37 +79,55 @@ eqG : Gen n → Gen n → Bool
 eqG (gate₀ a) (gate₀ b) = eqP a b
 eqG (gate₀ a) (gate₁ b) = false
 eqG (gate₀ a) (gate₂ b) = false
+eqG (gate₀ a) (gate₃ b) = false
 eqG (gate₀ a) (y ↥)     = false
 eqG (gate₁ a) (gate₀ b) = false
 eqG (gate₁ a) (gate₁ b) = eqP a b
 eqG (gate₁ a) (gate₂ b) = false
+eqG (gate₁ a) (gate₃ b) = false
 eqG (gate₁ a) (y ↥)     = false
 eqG (gate₂ a) (gate₀ b) = false
 eqG (gate₂ a) (gate₁ b) = false
 eqG (gate₂ a) (gate₂ b) = eqP a b
+eqG (gate₂ a) (gate₃ b) = false
 eqG (gate₂ a) (y ↥)     = false
+eqG (gate₃ a) (gate₀ b) = false
+eqG (gate₃ a) (gate₁ b) = false
+eqG (gate₃ a) (gate₂ b) = false
+eqG (gate₃ a) (gate₃ b) = eqP a b
+eqG (gate₃ a) (y ↥)     = false
 eqG (x ↥)     (gate₀ b) = false
 eqG (x ↥)     (gate₁ b) = false
 eqG (x ↥)     (gate₂ b) = false
+eqG (x ↥)     (gate₃ b) = false
 eqG (x ↥)     (y ↥)     = eqG x y
 
 eqG-sound : (x y : Gen n) → eqG x y ≡ true → x ≡ y
 eqG-sound (gate₀ a) (gate₀ b) h = Eq.cong gate₀ (eqP-sound a b h)
 eqG-sound (gate₁ a) (gate₁ b) h = Eq.cong gate₁ (eqP-sound a b h)
 eqG-sound (gate₂ a) (gate₂ b) h = Eq.cong gate₂ (eqP-sound a b h)
+eqG-sound (gate₃ a) (gate₃ b) h = Eq.cong gate₃ (eqP-sound a b h)
 eqG-sound (x ↥)     (y ↥)     h = Eq.cong _↥ (eqG-sound x y h)
 eqG-sound (gate₀ a) (gate₁ b) ()
 eqG-sound (gate₀ a) (gate₂ b) ()
+eqG-sound (gate₀ a) (gate₃ b) ()
 eqG-sound (gate₀ a) (y ↥)     ()
 eqG-sound (gate₁ a) (gate₀ b) ()
 eqG-sound (gate₁ a) (gate₂ b) ()
+eqG-sound (gate₁ a) (gate₃ b) ()
 eqG-sound (gate₁ a) (y ↥)     ()
 eqG-sound (gate₂ a) (gate₀ b) ()
 eqG-sound (gate₂ a) (gate₁ b) ()
+eqG-sound (gate₂ a) (gate₃ b) ()
 eqG-sound (gate₂ a) (y ↥)     ()
+eqG-sound (gate₃ a) (gate₀ b) ()
+eqG-sound (gate₃ a) (gate₁ b) ()
+eqG-sound (gate₃ a) (gate₂ b) ()
+eqG-sound (gate₃ a) (y ↥)     ()
 eqG-sound (x ↥)     (gate₀ b) ()
 eqG-sound (x ↥)     (gate₁ b) ()
 eqG-sound (x ↥)     (gate₂ b) ()
+eqG-sound (x ↥)     (gate₃ b) ()
 
 eqL : List (Gen n) → List (Gen n) → Bool
 eqL []       []       = true
@@ -137,13 +155,18 @@ less (x ↥)     _         = false
 less (gate₀ a) (y ↥)     = true
 less (gate₁ a) (y ↥)     = true
 less (gate₂ a) (y ↥)     = true
+less (gate₃ a) (y ↥)     = true
 less (gate₀ a) (gate₀ b) = codeP a <ᵇ codeP b
 less (gate₀ a) _         = true
 less (gate₁ a) (gate₀ b) = false
 less (gate₁ a) (gate₁ b) = codeP a <ᵇ codeP b
 less (gate₁ a) (gate₂ b) = true
+less (gate₁ a) (gate₃ b) = true
 less (gate₂ a) (gate₂ b) = codeP a <ᵇ codeP b
+less (gate₂ a) (gate₃ b) = true
 less (gate₂ a) _         = false
+less (gate₃ a) (gate₃ b) = codeP a <ᵇ codeP b
+less (gate₃ a) _         = false
 
 ------------------------------------------------------------------------
 -- Letter lists as circuits
@@ -159,12 +182,9 @@ less (gate₂ a) _         = false
 ------------------------------------------------------------------------
 -- The fragment
 
-module Kit
-  {Rule : Set} (arity : Rule → ℕ)
-  (lhs rhs : (r : Rule) → Circuit (arity r))
-  where
+module Kit (_SRel,_===_ : (n : ℕ) → CRel n) where
 
-  open Fragment arity lhs rhs
+  open Lift-To-Prop _SRel,_===_
 
   private
     one′ : (h h' : PGate 0) → h ≡ h'
@@ -193,6 +213,8 @@ module Kit
   comm? (y ↥)         (gate₁ h)     = just (PB.axiom (comm₁ h y))
   comm? (gate₂ h)     ((y ↥) ↥)     = just (PB.sym (PB.axiom (comm₂ h y)))
   comm? ((y ↥) ↥)     (gate₂ h)     = just (PB.axiom (comm₂ h y))
+  comm? (gate₃ h)     (((y ↥) ↥) ↥) = just (PB.sym (PB.axiom (comm₃ h y)))
+  comm? (((y ↥) ↥) ↥) (gate₃ h)     = just (PB.axiom (comm₃ h y))
   comm? (x ↥)         (y ↥)         with comm? x y
   ... | just p  = just (lemma-cong↑ ([ x ]ʷ • [ y ]ʷ) ([ y ]ʷ • [ x ]ʷ) p)
   ... | nothing = nothing
@@ -239,6 +261,7 @@ module Kit
     ⟪map-lift⟫ (gate₀ h ∷ xs) = cong (sym (PB.axiom (ω↑=ω h))) (⟪map-lift⟫ xs)
     ⟪map-lift⟫ (gate₁ h ∷ xs) = cong refl (⟪map-lift⟫ xs)
     ⟪map-lift⟫ (gate₂ h ∷ xs) = cong refl (⟪map-lift⟫ xs)
+    ⟪map-lift⟫ (gate₃ h ∷ xs) = cong refl (⟪map-lift⟫ xs)
     ⟪map-lift⟫ ((g ↥) ∷ xs)   = cong refl (⟪map-lift⟫ xs)
 
   lift⁼ : Eqn n → Eqn (₁₊ n)

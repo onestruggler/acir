@@ -103,12 +103,10 @@ module _ where
   nt-ZM  x = nt-S^ _ •ⁿ nt-H •ⁿ nt-S^ _ •ⁿ nt-H •ⁿ nt-S^ _ •ⁿ nt-H
 
   dir-of₂-No-Top : (l : L' 2 ⊎ L' 1) → No-Top (LCZ2.dir-of l)
-  dir-of₂-No-Top (inj₁ (((c@₀ , d@₀) ∷ []) , ((a@₀ , b@(₁₊ _)) , nz))) with b ≟ c
-  ... | yes ()
-  ... | no neq = nt-CZ^ _
-  dir-of₂-No-Top (inj₁ (((c@₀ , d@(₁₊ _)) ∷ []) , ((a@₀ , b@(₁₊ _)) , nz))) with b ≟ c
-  ... | yes ()
-  ... | no neq = nt-S^ _ •ⁿ nt-CZ^ _
+  -- With c = ₀ and b a successor, b ≟ c is no by computation, so the
+  -- goal reduces as it stands; a with would first normalise it.
+  dir-of₂-No-Top (inj₁ (((c@₀ , d@₀) ∷ []) , ((a@₀ , b@(₁₊ _)) , nz))) = nt-CZ^ _
+  dir-of₂-No-Top (inj₁ (((c@₀ , d@(₁₊ _)) ∷ []) , ((a@₀ , b@(₁₊ _)) , nz))) = nt-S^ _ •ⁿ nt-CZ^ _
   dir-of₂-No-Top (inj₁ (((c@(₁₊ _) , d) ∷ []) , ((a@₀ , b@(₁₊ _)) , nz))) with b ≟ c
   ... | yes eq = nt-⁻¹ʷ (nt-H •ⁿ nt-CZ^ (((b , λ ()) ⁻¹) .proj₁) •ⁿ nt-^ nt-H 3) •ⁿ nt-HH
   ... | no neq = nt-ZM ((b + - c , λ eq → neq (b-c=0⇒b=c b c eq)) *' ((b , λ ()) ⁻¹))

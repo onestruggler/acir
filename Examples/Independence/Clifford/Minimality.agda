@@ -23,7 +23,7 @@ open import Relation.Nullary.Negation using (¬_)
 
 open import Examples.Independence.Clifford.Syntactics
 open import Examples.Independence.Model Gate
-open Separators arity lhs rhs
+open Separators _SRel,_===_
 
 private
   variable
@@ -141,7 +141,7 @@ module Sep-CZ where
   open Weighted (count 2) (counts #CX 1) refl
   open Sep CZ 2
 
-  not-a-model-of-I : ¬ (_≈ₘ_ {3} ⟦ lhs I ⟧ ⟦ rhs I ⟧)
+  not-a-model-of-I : ¬ Respects I
   not-a-model-of-I ()
   open Check (λ
     { ω⁸ _ _ → refl ; H² _ _ → refl ; S⁴ _ _ → refl ; E _ _ → refl

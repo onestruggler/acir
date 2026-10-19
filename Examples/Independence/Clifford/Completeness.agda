@@ -43,7 +43,7 @@ open import Examples.Independence.Clifford.Kit using (Eqn ; ⟪_⟫ ; lhs⁼ ; r
 open import Examples.Independence.Clifford.Decodings
 open import Examples.Independence.Clifford.Bridge using (ℰ ; ℰʷ ; bridge ; exact ; module QI)
 import Examples.Independence.Reasoning Gate as R
-open R.Theory arity lhs rhs using (lift)
+open R.Theory _SRel,_===_ using (lift)
 
 module QC = QComplete {A = D} {{RingD}} isCommutativeRing-D √½ √½-sq iᴰ iᴰ² 1≢0
 
@@ -156,6 +156,7 @@ back-gen (gate₁ ⌈ H-gate ⌉)  = PB.refl
 back-gen (gate₁ ⌈ S-gate ⌉)  = PB.refl
 back-gen (gate₂ ⌈ CX-gate ⌉) = via DCX⁼ refl refl
 back-gen (gate₂ swap)        = via Dσ⁼ refl refl
+back-gen (gate₃ ⌈ () ⌉)
 back-gen (g ↥)               =
   Eq.subst (λ x → _ ⊢ x ≈ [ g ↥ ]ʷ) (Eq.sym (D-↑ (ℰ g))) (lift (back-gen g))
 

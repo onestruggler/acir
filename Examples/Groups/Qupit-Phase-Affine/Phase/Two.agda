@@ -106,14 +106,14 @@ two∥ (a ^² m) w = ∥-^ m (two∥ a w)
 
 -- The naturality of SWAP for the gates on wire 0.
 swap-gate₁ : (g : Gate 1) → (₂₊ n) ⊢ SWAP • [ gate₁ g ]ʷ ≈ [ gate₁ g ↥ ]ʷ • SWAP
-swap-gate₁ {n} g = unslide (ax swap-order) (Width.sym (nat g))
+swap-gate₁ {n} g = unslide swap-order (Width.sym (nat g))
   where
   nat : (g : Gate 1) → (₂₊ n) ⊢ [ gate₁ g ]ʷ • SWAP ≈ SWAP • [ gate₁ g ↥ ]ʷ
-  nat X-gate       = ax swap-X
-  nat (M-gate a z) = ax (swap-M a z)
-  nat (Z-gate h)   = ax (swap-Z h)
-  nat (S-gate h)   = ax (swap-S h)
-  nat (T-gate h)   = ax (swap-T h)
+  nat X-gate       = swap-X
+  nat (M-gate a z) = (swap-M a z)
+  nat (Z-gate h)   = (swap-Z h)
+  nat (S-gate h)   = (swap-S h)
+  nat (T-gate h)   = (swap-T h)
 
 one-swap : (a : One) → (₂₊ n) ⊢ SWAP • ⟦ a ⟧¹ ≈ ⟦ a ⟧¹ ↑ • SWAP
 one-swap {n} (o0 g)   = Width.trans (comm-gate₀-w g SWAP) (Width.front (₂₊ n) SWAP (Width.sym (ax' (ω↑=ω g))))
@@ -135,16 +135,16 @@ module _ {n : ℕ} where
 
   σσ⁻ : (₃₊ n) ⊢ σ • σ⁻ ≈ ε
   σσ⁻ = trans (by-passoc ((□ • □) • □ • □) (□ • (□ • □) • □) Eq.refl)
-          (trans (back _ (trans (front _ SWAP↑²) left-unit)) (ax swap-order))
+          (trans (back _ (trans (front _ SWAP↑²) left-unit)) swap-order)
 
   σ⁻σ : (₃₊ n) ⊢ σ⁻ • σ ≈ ε
   σ⁻σ = trans (by-passoc ((□ • □) • □ • □) (□ • (□ • □) • □) Eq.refl)
-          (trans (back _ (trans (front _ (ax swap-order)) left-unit)) SWAP↑²)
+          (trans (back _ (trans (front _ swap-order) left-unit)) SWAP↑²)
 
   private
     σSWAP : (₃₊ n) ⊢ σ • SWAP ≈ SWAP ↑ • σ
     σSWAP = begin
-      (SWAP • SWAP ↑) • SWAP      ≈⟨ trans assoc (ax swap-braid) ⟩
+      (SWAP • SWAP ↑) • SWAP      ≈⟨ trans assoc swap-braid ⟩
       SWAP ↑ • SWAP • SWAP ↑      ∎
 
   two-σ : (c : Two) → (₃₊ n) ⊢ σ • ⟦ c ⟧² ≈ ⟦ c ⟧² ↑ • σ
@@ -168,9 +168,9 @@ module _ {n : ℕ} where
   two-place : (c : Two) → (₃₊ n) ⊢ SWAP ↑ • ⟦ c ⟧² • SWAP ↑ ≈ SWAP • ⟦ c ⟧² ↑ • SWAP
   two-place c = begin
     SWAP ↑ • ⟦ c ⟧² • SWAP ↑
-      ≈⟨ sym (cancel-in (ax swap-order) _) ⟩
+      ≈⟨ sym (cancel-in swap-order _) ⟩
     SWAP • SWAP • SWAP ↑ • ⟦ c ⟧² • SWAP ↑
-      ≈⟨ back _ (trans (sym (cancel-at (ax swap-order) _))
+      ≈⟨ back _ (trans (sym (cancel-at swap-order _))
                         (by-passoc ((□ • □ • □ • □) • □ • □) ((□ • □) • □ • □ • □ • □) Eq.refl)) ⟩
     SWAP • (SWAP • SWAP ↑) • ⟦ c ⟧² • SWAP ↑ • SWAP • SWAP
       ≈⟨ back _ (trans (sym assoc) (front _ (two-σ c))) ⟩
@@ -179,5 +179,5 @@ module _ {n : ℕ} where
     SWAP • ⟦ c ⟧² ↑ • SWAP • (SWAP ↑ • SWAP ↑) • SWAP • SWAP
       ≈⟨ back _ (back _ (back _ (trans (front _ SWAP↑²) left-unit))) ⟩
     SWAP • ⟦ c ⟧² ↑ • SWAP • SWAP • SWAP
-      ≈⟨ back _ (back _ (cancel-in (ax swap-order) _)) ⟩
+      ≈⟨ back _ (back _ (cancel-in swap-order _)) ⟩
     SWAP • ⟦ c ⟧² ↑ • SWAP ∎

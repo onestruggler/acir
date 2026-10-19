@@ -140,7 +140,7 @@ module _ {n : ℕ} where
   swap-xyx = across refl (slide (sM↑ -1*) (slide sY (slide sCX sY))) (ax ax7)
     where
     sY : (₂₊ n) ⊢ SWAP • (SWAP • CX ^ᶠ -1F • SWAP) ≈ CX ^ᶠ -1F • SWAP
-    sY = cancel-in (ax swap-order) _
+    sY = cancel-in swap-order _
 
   weyl : (c : F*) →
     (₂₊ n) ⊢ CX ^ᶠ proj₁ c • CXʳ ^ᶠ (- (proj₁ c ⁻¹ᶠ)) • CX ^ᶠ proj₁ c
@@ -199,7 +199,7 @@ module _ {n : ℕ} where
     CXʳ ^ᶠ i • CX ^ᶠ (- k) • (M⟨ c ⟩ • M⟨ v ⟩ ↑ • SWAP) • M⟨ a ⟩ • SWAP
       ≈⟨ back _ (back _ (by-passoc ((□ • □ • □) • □ • □) (□ • □ • (□ • □ • □)) Eq.refl)) ⟩
     CXʳ ^ᶠ i • CX ^ᶠ (- k) • M⟨ c ⟩ • M⟨ v ⟩ ↑ • (SWAP • M⟨ a ⟩ • SWAP)
-      ≈⟨ back _ (back _ (back _ (back _ (Involution.conj← (ax swap-order) (sM a))))) ⟩
+      ≈⟨ back _ (back _ (back _ (back _ (Involution.conj← swap-order (sM a))))) ⟩
     CXʳ ^ᶠ i • CX ^ᶠ (- k) • M⟨ c ⟩ • M⟨ v ⟩ ↑ • M⟨ a ⟩ ↑
       ≈⟨ back _ (back _ (back _ (M↑-M↑ a v))) ⟩
     CXʳ ^ᶠ i • CX ^ᶠ (- k) • M⟨ c ⟩ • M⟨ u ⟩ ↑

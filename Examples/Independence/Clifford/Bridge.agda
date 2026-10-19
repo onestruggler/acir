@@ -142,6 +142,7 @@ uσ  = Q.H • Q.CZ • Q.H • Q.H Q.↑ • Q.CZ • Q.H Q.↑ • Q.H • Q.C
 ℰ (gate₁ ⌈ S-gate ⌉)  = Q.S
 ℰ (gate₂ ⌈ CX-gate ⌉) = uCX
 ℰ (gate₂ swap)        = uσ
+ℰ (gate₃ ⌈ () ⌉)
 ℰ (g ↥)               = ℰ g Q.↑
 
 -- A circuit: its gates encoded, in the reverse order.
@@ -227,6 +228,15 @@ private
     QI.≐-trans (QI.scale-cong (Φ-cong (O.ix-up M)))
     (QI.≐-trans (QI.scale-cong (Φ-up (O.ix M))) (scale-up (√½ QI.^ h) (Φ (O.ix M))))
 
+-- QI.localise at width ₂₊ n, given the localised word as a word
+-- equation.  Its own statement is at width 2 + n and over w ↓ᵏ n, and
+-- matching that against the goal's reading of the word made Agda
+-- evaluate both readings: 41 s for the swap's nine letters.
+private
+  localise₂ : (w : Q.Circuit 2) {w′ : Q.Circuit (₂₊ n)} → w Q.↓ᵏ n ≡ w′ →
+              QI.⟦ w′ ⟧ᴬ QI.≐ QI.emb {2} {n} QI.⟦ w ⟧ᴬ
+  localise₂ {n} w refl = QI.localise {2} {n} w
+
 gen : (g : Gen n) → QI.⟦ ℰ g ⟧ᴬ QI.≐ ⟪ Sem.⟦ g ⟧₀ ⟫
 gen {n} (gate₀ ⌈ ω-gate ⌉) x y = Eq.sym (
   Eq.trans (*-identityˡ _)
@@ -237,13 +247,14 @@ gen {suc n} (gate₁ ⌈ H-gate ⌉) =
 gen {suc n} (gate₁ ⌈ S-gate ⌉) =
   QI.≐-sym (placed {1} {n} O.Sᵍ _ closedS)
 gen {suc (suc n)} (gate₂ ⌈ CX-gate ⌉) =
-  QI.≐-trans (QI.localise {2} {n} uCX)
+  QI.≐-trans (localise₂ {n} uCX {uCX} refl)
     (QI.≐-trans (QI.emb-cong (QI.bridge uCX))
       (QI.≐-sym (placed {2} {n} O.CXᵍ _ closedCX)))
 gen {suc (suc n)} (gate₂ swap) =
-  QI.≐-trans (QI.localise {2} {n} uσ)
+  QI.≐-trans (localise₂ {n} uσ {uσ} refl)
     (QI.≐-trans (QI.emb-cong (QI.bridge uσ))
       (QI.≐-sym (placed {2} {n} O.SWᵍ _ closedσ)))
+gen (gate₃ ⌈ () ⌉)
 gen (g ↥) =
   QI.≐-trans (QS.⟦↑⟧ (ℰ g))
     (QI.≐-trans (QI.up-cong (gen g)) (QI.≐-sym (lifted Sem.⟦ g ⟧₀)))

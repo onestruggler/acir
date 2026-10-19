@@ -25,7 +25,7 @@ import Presentation.Base as PB
 
 open import Examples.Independence.CNOT-Dihedral.Syntactics
 open import Examples.Independence.Reasoning Gate
-open Theory arity lhs rhs
+open Theory _SRel,_===_
 
 private
   variable
@@ -63,7 +63,7 @@ private
   σσ = sym-rule σ-inv
 
   Tσ : (₂₊ n) ⊢ T • σ ≈ σ • T ↑
-  Tσ = sym-rule (σ-nat₁ T-gate)
+  Tσ = sym-rule (σ-nat₁ ⌈ T-gate ⌉)
 
   X↑X : (₂₊ n) ⊢ X ↑ • X ≈ X • X ↑
   X↑X = PB.axiom (comm₁ ⌈ X-gate ⌉ (gate₁ ⌈ X-gate ⌉))

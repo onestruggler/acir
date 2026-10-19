@@ -58,9 +58,16 @@ open import Relation.Nullary using (does ; yes ; no)
 open import Relation.Nullary.Negation using (¬_)
 
 open Quartic p q public
-  using (Q ; x ; 1q ; _^_ ; _≟_ ; isCommutativeRing ; commutativeRing ; ⟨_,_,_,_⟩)
+  using (Q ; x ; 0q ; 1q ; _^_ ; _≟_ ; isCommutativeRing ; commutativeRing ; ⟨_,_,_,_⟩)
 
-open import Examples.Independence.Semantics.Operators d isCommutativeRing public
+-- The zero test that lets a stored product skip a vanishing term.
+private
+  zero-sound : (a : Q) → T (does (a ≟ 0q)) → a ≡ 0q
+  zero-sound a t with a ≟ 0q
+  ... | yes e = e
+
+open import Examples.Independence.Semantics.Operators d isCommutativeRing
+  (λ a → does (a ≟ 0q)) zero-sound public
 
 open CommutativeRing R using (*-assoc ; *-comm ; *-identityˡ ; *-identityʳ)
 
@@ -371,22 +378,31 @@ private
   ... | yes _ = tt
   ... | no ne = ne e
 
+-- a M and b M' agree, entry by entry.  The scalars are arguments, so
+-- that they are computed once, and _*′_ does not multiply by 0 or 1.
+eqWith : Q → Q → Mat n → Mat n → Bool
+eqWith {n} a b M M' = allD n λ i → allD n λ j → does (a *′ ix M i j ≟ b *′ ix M' i j)
+
+eqWith-sound : (a b : Q) (M M' : Mat n) → T (eqWith a b M M') → scale a (ix M) ≐ scale b (ix M')
+eqWith-sound {n} a b M M' t i j =
+  Eq.trans (Eq.sym (*′-* a (ix M i j)))
+    (Eq.trans (dec-sound _ _ (allD-sound n _ (allD-sound n _ t i) j)) (*′-* b (ix M' i j)))
+
 -- s and s' agree up to x^k, entry by entry.
 eqₖ : ℕ → Sc n → Sc n → Bool
-eqₖ {n} k (h , M) (h' , M') =
-  allD n λ i → allD n λ j →
-    does (r ^ h' * ix M i j ≟ (x ^ k * r ^ h) * ix M' i j)
+eqₖ k (h , M) (h' , M') = eqWith (r ^ h') (x ^ k * r ^ h) M M'
 
 eqₖ-sound : (k : ℕ) (s s' : Sc n) → T (eqₖ k s s') →
             scale (r ^ proj₁ s') (ix (proj₂ s)) ≐ scale (x ^ k * r ^ proj₁ s) (ix (proj₂ s'))
-eqₖ-sound {n} k (h , M) (h' , M') t i j =
-  dec-sound _ _ (allD-sound n _ (allD-sound n _ t i) j)
+eqₖ-sound k (h , M) (h' , M') = eqWith-sound (r ^ h') (x ^ k * r ^ h) M M'
 
 eqₖ-complete : (k : ℕ) (s s' : Sc n) →
                scale (r ^ proj₁ s') (ix (proj₂ s)) ≐ scale (x ^ k * r ^ proj₁ s) (ix (proj₂ s')) →
                T (eqₖ k s s')
 eqₖ-complete {n} k (h , M) (h' , M') e =
-  allD-complete n _ (λ i → allD-complete n _ (λ j → dec-complete _ _ (e i j)))
+  allD-complete n _ (λ i → allD-complete n _ (λ j → dec-complete _ _
+    (Eq.trans (*′-* (r ^ h') (ix M i j))
+      (Eq.trans (e i j) (Eq.sym (*′-* (x ^ k * r ^ h) (ix M' i j)))))))
 
 -- A digit on which f holds, if not all digits fail it.
 pick : {m : ℕ} (f : Fin m → Bool) → T (not (allFin (λ i → not (f i)))) →

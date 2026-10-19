@@ -100,17 +100,17 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
   top-merge : ∀ β K → K < ₃₊ k → TopMerge β K
   top-merge true  zero                _ =
-    SS.Below.by-sem₀ 2 (s≤s (s≤s z≤n)) c₂ ((Xat 1 • ΛZX 1 • Xat 1) • ΛZX 1) (placeAt 1 (ΛZX 0)) (Evaluated.same e-zx1)
+    SS.Below.by-ev₀ 2 (s≤s (s≤s z≤n)) c₂ e-zx1
   top-merge true  (suc zero)          _ =
-    SS.Below.by-sem₀ 3 (s≤s (s≤s (s≤s z≤n))) c₃ ((Xat 2 • ΛZX 2 • Xat 2) • ΛZX 2) (placeAt 2 (ΛZX 1)) (Evaluated.same e-zx2)
+    SS.Below.by-ev₀ 3 (s≤s (s≤s (s≤s z≤n))) c₃ e-zx2
   top-merge true  (suc (suc zero))    _ =
-    SS.Below.by-sem₀ 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ ((Xat 3 • ΛZX 3 • Xat 3) • ΛZX 3) (placeAt 3 (ΛZX 2)) (Evaluated.same e-zx3)
+    SS.Below.by-ev₀ 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ e-zx3
   top-merge false zero                _ =
-    SS.Below.by-sem₀ 2 (s≤s (s≤s z≤n)) c₂ ((Xat 1 • ΛXZ 1 • Xat 1) • ΛXZ 1) (placeAt 1 (ΛXZ 0)) (Evaluated.same e-xz1)
+    SS.Below.by-ev₀ 2 (s≤s (s≤s z≤n)) c₂ e-xz1
   top-merge false (suc zero)          _ =
-    SS.Below.by-sem₀ 3 (s≤s (s≤s (s≤s z≤n))) c₃ ((Xat 2 • ΛXZ 2 • Xat 2) • ΛXZ 2) (placeAt 2 (ΛXZ 1)) (Evaluated.same e-xz2)
+    SS.Below.by-ev₀ 3 (s≤s (s≤s (s≤s z≤n))) c₃ e-xz2
   top-merge false (suc (suc zero))    _ =
-    SS.Below.by-sem₀ 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ ((Xat 3 • ΛXZ 3 • Xat 3) • ΛXZ 3) (placeAt 3 (ΛXZ 2)) (Evaluated.same e-xz3)
+    SS.Below.by-ev₀ 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ e-xz3
   top-merge true  (suc (suc (suc k′))) (s≤s (s≤s (s≤s k′<k))) = rmerge-top k′ (below′ k′ k′<k) true
   top-merge false (suc (suc (suc k′))) (s≤s (s≤s (s≤s k′<k))) = rmerge-top k′ (below′ k′ k′<k) false
 

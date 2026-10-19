@@ -287,6 +287,12 @@ data Tree : ℕ → ℕ → Set where
   relabel : ∀ {m r} → Vec (Fin m) m → Bool → (ic′ id′ : Fin m) → Tree m r → Tree m r
   useNF   : ∀ {r} (nf : NF) → Vec (Form r) (nfVars nf) → Tree (nfRows nf) r
 
+-- Which normal forms a tree may end in, as names: the generated checks
+-- and Hard's applications of Sound.Main must spell them alike.
+allowNone allowAll : NF → Bool
+allowNone _ = false
+allowAll _ = true
+
 module Checker (nfData : (nf : NF) → NFData nf) (allow : NF → Bool) where
 
   checkT : Tree m r → Vec (Maybe ℕ) m → Bool → Fin m → Fin m → Vec (Form r) m → Bool

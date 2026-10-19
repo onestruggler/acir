@@ -106,7 +106,7 @@ Diag-↑ (d , e) = lift-d d , Width.trans (lift e) (lift-sound d)
 Diag-SWAP : {w : Circuit (₂₊ n)} → Diag (₂₊ n) w → Diag (₂₊ n) (SWAP • w • SWAP)
 Diag-SWAP {n} {w} (d , e) = d ⋆ˡ sw , (begin
   SWAP • w • SWAP                    ≈⟨ back _ (trans (front _ e) (⋆ˡ-sound d sw)) ⟩
-  SWAP • SWAP • ⟦ d ⋆ˡ sw ⟧ᴰ         ≈⟨ trans (sym assoc) (trans (front _ (ax swap-order)) left-unit) ⟩
+  SWAP • SWAP • ⟦ d ⋆ˡ sw ⟧ᴰ         ≈⟨ trans (sym assoc) (trans (front _ swap-order) left-unit) ⟩
   ⟦ d ⋆ˡ sw ⟧ᴰ                       ∎)
   where open Width (₂₊ n)
 
@@ -153,7 +153,7 @@ private
   module OCZ {n : ℕ} = Pow.Order (₂₊ n) {CZ h} CZ-order
 
   ss : (₂₊ n) ⊢ SWAP • SWAP ≈ ε
-  ss = ax swap-order
+  ss = swap-order
 
 K-zero : (₁₊ n) ⊢ K (0ᵛ {n}) ≈ ε
 K-zero {zero}  = Width.refl

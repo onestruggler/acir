@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Equation (42), a Hadamard pair through two fresh indices, decided on three qubits at every first index
+-- Equation (42), a Hadamard pair through two fresh indices, decided on three qubits at the first indices 0 … 3 (4 … 7: R42Hi)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -32,15 +32,3 @@ okR42₂ = all8₃-true (λ b c d → neqᵇ ₂ b ⇒ neqᵇ c d ⇒ not (disti
 
 okR42₃ : ∀ b c d → (neqᵇ ₃ b ⇒ neqᵇ c d ⇒ not (distinct4 (toℕ {8} ₃) (toℕ b) (toℕ c) (toℕ d)) ⇒ decide (hhℕ (toℕ {8} ₃) (toℕ b) (proj₁ (twoSmallest (toℕ {8} ₃) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₃) (toℕ b) (toℕ c) (toℕ d))) • hhℕ (proj₁ (twoSmallest (toℕ {8} ₃) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₃) (toℕ b) (toℕ c) (toℕ d))) (toℕ c) (toℕ d)) (hh ₃ b c d)) ≡ true
 okR42₃ = all8₃-true (λ b c d → neqᵇ ₃ b ⇒ neqᵇ c d ⇒ not (distinct4 (toℕ {8} ₃) (toℕ b) (toℕ c) (toℕ d)) ⇒ decide (hhℕ (toℕ {8} ₃) (toℕ b) (proj₁ (twoSmallest (toℕ {8} ₃) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₃) (toℕ b) (toℕ c) (toℕ d))) • hhℕ (proj₁ (twoSmallest (toℕ {8} ₃) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₃) (toℕ b) (toℕ c) (toℕ d))) (toℕ c) (toℕ d)) (hh ₃ b c d)) refl
-
-okR42₄ : ∀ b c d → (neqᵇ ₄ b ⇒ neqᵇ c d ⇒ not (distinct4 (toℕ {8} ₄) (toℕ b) (toℕ c) (toℕ d)) ⇒ decide (hhℕ (toℕ {8} ₄) (toℕ b) (proj₁ (twoSmallest (toℕ {8} ₄) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₄) (toℕ b) (toℕ c) (toℕ d))) • hhℕ (proj₁ (twoSmallest (toℕ {8} ₄) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₄) (toℕ b) (toℕ c) (toℕ d))) (toℕ c) (toℕ d)) (hh ₄ b c d)) ≡ true
-okR42₄ = all8₃-true (λ b c d → neqᵇ ₄ b ⇒ neqᵇ c d ⇒ not (distinct4 (toℕ {8} ₄) (toℕ b) (toℕ c) (toℕ d)) ⇒ decide (hhℕ (toℕ {8} ₄) (toℕ b) (proj₁ (twoSmallest (toℕ {8} ₄) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₄) (toℕ b) (toℕ c) (toℕ d))) • hhℕ (proj₁ (twoSmallest (toℕ {8} ₄) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₄) (toℕ b) (toℕ c) (toℕ d))) (toℕ c) (toℕ d)) (hh ₄ b c d)) refl
-
-okR42₅ : ∀ b c d → (neqᵇ ₅ b ⇒ neqᵇ c d ⇒ not (distinct4 (toℕ {8} ₅) (toℕ b) (toℕ c) (toℕ d)) ⇒ decide (hhℕ (toℕ {8} ₅) (toℕ b) (proj₁ (twoSmallest (toℕ {8} ₅) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₅) (toℕ b) (toℕ c) (toℕ d))) • hhℕ (proj₁ (twoSmallest (toℕ {8} ₅) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₅) (toℕ b) (toℕ c) (toℕ d))) (toℕ c) (toℕ d)) (hh ₅ b c d)) ≡ true
-okR42₅ = all8₃-true (λ b c d → neqᵇ ₅ b ⇒ neqᵇ c d ⇒ not (distinct4 (toℕ {8} ₅) (toℕ b) (toℕ c) (toℕ d)) ⇒ decide (hhℕ (toℕ {8} ₅) (toℕ b) (proj₁ (twoSmallest (toℕ {8} ₅) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₅) (toℕ b) (toℕ c) (toℕ d))) • hhℕ (proj₁ (twoSmallest (toℕ {8} ₅) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₅) (toℕ b) (toℕ c) (toℕ d))) (toℕ c) (toℕ d)) (hh ₅ b c d)) refl
-
-okR42₆ : ∀ b c d → (neqᵇ ₆ b ⇒ neqᵇ c d ⇒ not (distinct4 (toℕ {8} ₆) (toℕ b) (toℕ c) (toℕ d)) ⇒ decide (hhℕ (toℕ {8} ₆) (toℕ b) (proj₁ (twoSmallest (toℕ {8} ₆) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₆) (toℕ b) (toℕ c) (toℕ d))) • hhℕ (proj₁ (twoSmallest (toℕ {8} ₆) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₆) (toℕ b) (toℕ c) (toℕ d))) (toℕ c) (toℕ d)) (hh ₆ b c d)) ≡ true
-okR42₆ = all8₃-true (λ b c d → neqᵇ ₆ b ⇒ neqᵇ c d ⇒ not (distinct4 (toℕ {8} ₆) (toℕ b) (toℕ c) (toℕ d)) ⇒ decide (hhℕ (toℕ {8} ₆) (toℕ b) (proj₁ (twoSmallest (toℕ {8} ₆) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₆) (toℕ b) (toℕ c) (toℕ d))) • hhℕ (proj₁ (twoSmallest (toℕ {8} ₆) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₆) (toℕ b) (toℕ c) (toℕ d))) (toℕ c) (toℕ d)) (hh ₆ b c d)) refl
-
-okR42₇ : ∀ b c d → (neqᵇ ₇ b ⇒ neqᵇ c d ⇒ not (distinct4 (toℕ {8} ₇) (toℕ b) (toℕ c) (toℕ d)) ⇒ decide (hhℕ (toℕ {8} ₇) (toℕ b) (proj₁ (twoSmallest (toℕ {8} ₇) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₇) (toℕ b) (toℕ c) (toℕ d))) • hhℕ (proj₁ (twoSmallest (toℕ {8} ₇) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₇) (toℕ b) (toℕ c) (toℕ d))) (toℕ c) (toℕ d)) (hh ₇ b c d)) ≡ true
-okR42₇ = all8₃-true (λ b c d → neqᵇ ₇ b ⇒ neqᵇ c d ⇒ not (distinct4 (toℕ {8} ₇) (toℕ b) (toℕ c) (toℕ d)) ⇒ decide (hhℕ (toℕ {8} ₇) (toℕ b) (proj₁ (twoSmallest (toℕ {8} ₇) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₇) (toℕ b) (toℕ c) (toℕ d))) • hhℕ (proj₁ (twoSmallest (toℕ {8} ₇) (toℕ b) (toℕ c) (toℕ d))) (proj₂ (twoSmallest (toℕ {8} ₇) (toℕ b) (toℕ c) (toℕ d))) (toℕ c) (toℕ d)) (hh ₇ b c d)) refl

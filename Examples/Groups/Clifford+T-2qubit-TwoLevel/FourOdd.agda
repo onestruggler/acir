@@ -12,7 +12,7 @@
 -- In each of them the entry j is even.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --lossy-unification #-}
 
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 

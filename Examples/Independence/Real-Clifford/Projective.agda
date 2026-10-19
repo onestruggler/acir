@@ -24,8 +24,9 @@ open import Data.Unit using (tt)
 open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Examples.Independence.Real-Clifford.Syntactics
+open Axioms _SRel,_===_ using (Independent-axiom)
 open import Examples.Independence.Semantics.Qubit
-  using (Sc ; −1ᵍ ; Hᵍ ; Zᵍ ; CXᵍ ; SWᵍ ; idM ; module Circuits)
+  using (Sc ; −1ᵍ ; Hᵍ ; Zᵍ ; CXᵍ ; SWᵍ ; SWᵍ-ok ; idM ; module Circuits)
 
 ------------------------------------------------------------------------
 -- (CF): [Z := id]~
@@ -42,26 +43,23 @@ module Sep-CF where
   open Circuits val using (module Projective)
   open Projective using (check-some ; apart ; module Symmetry)
 
-  open Symmetry
-    (check-some (λ _ → tt) _ _ tt)
-    (λ { H-gate → check-some (λ _ → tt) _ _ tt ; Z-gate → check-some (λ _ → tt) _ _ tt })
-    (λ { ⌈ CX-gate ⌉ → check-some (λ _ → tt) _ _ tt ; swap → check-some (λ _ → tt) _ _ tt })
+  open Symmetry refl SWᵍ-ok
     using (module Separate)
 
-  open Separate arity lhs rhs CF 2
-    (λ { −² _ _ → check-some (λ _ → tt) _ _ tt
-       ; H² _ _ → check-some (λ _ → tt) _ _ tt
-       ; Z² _ _ → check-some (λ _ → tt) _ _ tt
-       ; F _ _ → check-some (λ _ → tt) _ _ tt
-       ; CX² _ _ → check-some (λ _ → tt) _ _ tt
-       ; B _ _ → check-some (λ _ → tt) _ _ tt
-       ; ZC _ _ → check-some (λ _ → tt) _ _ tt
-       ; CZr _ _ → check-some (λ _ → tt) _ _ tt
+  open Separate _SRel,_===_ CF 2
+    (λ { −² _ _ → check-some (λ _ → tt) _ _ _
+       ; H² _ _ → check-some (λ _ → tt) _ _ _
+       ; Z² _ _ → check-some (λ _ → tt) _ _ _
+       ; F _ _ → check-some (λ _ → tt) _ _ _
+       ; CX² _ _ → check-some (λ _ → tt) _ _ _
+       ; B _ _ → check-some (λ _ → tt) _ _ _
+       ; ZC _ _ → check-some (λ _ → tt) _ _ _
+       ; CZr _ _ → check-some (λ _ → tt) _ _ _
        ; CF ne _ → ⊥-elim (ne refl)
        ; I _ (s≤s (s≤s ())) })
 
   independent : Independent-axiom CF
-  independent = separates (s≤s (s≤s z≤n)) (apart _ _ tt)
+  independent = separates (s≤s (s≤s z≤n)) (apart _ _ _)
 
 ------------------------------------------------------------------------
 -- (CZr): [H := id]~
@@ -78,23 +76,20 @@ module Sep-CZr where
   open Circuits val using (module Projective)
   open Projective using (check-some ; apart ; module Symmetry)
 
-  open Symmetry
-    (check-some (λ _ → tt) _ _ tt)
-    (λ { H-gate → check-some (λ _ → tt) _ _ tt ; Z-gate → check-some (λ _ → tt) _ _ tt })
-    (λ { ⌈ CX-gate ⌉ → check-some (λ _ → tt) _ _ tt ; swap → check-some (λ _ → tt) _ _ tt })
+  open Symmetry refl SWᵍ-ok
     using (module Separate)
 
-  open Separate arity lhs rhs CZr 2
-    (λ { −² _ _ → check-some (λ _ → tt) _ _ tt
-       ; H² _ _ → check-some (λ _ → tt) _ _ tt
-       ; Z² _ _ → check-some (λ _ → tt) _ _ tt
-       ; F _ _ → check-some (λ _ → tt) _ _ tt
-       ; CX² _ _ → check-some (λ _ → tt) _ _ tt
-       ; B _ _ → check-some (λ _ → tt) _ _ tt
-       ; ZC _ _ → check-some (λ _ → tt) _ _ tt
+  open Separate _SRel,_===_ CZr 2
+    (λ { −² _ _ → check-some (λ _ → tt) _ _ _
+       ; H² _ _ → check-some (λ _ → tt) _ _ _
+       ; Z² _ _ → check-some (λ _ → tt) _ _ _
+       ; F _ _ → check-some (λ _ → tt) _ _ _
+       ; CX² _ _ → check-some (λ _ → tt) _ _ _
+       ; B _ _ → check-some (λ _ → tt) _ _ _
+       ; ZC _ _ → check-some (λ _ → tt) _ _ _
        ; CZr ne _ → ⊥-elim (ne refl)
-       ; CF _ _ → check-some (λ _ → tt) _ _ tt
+       ; CF _ _ → check-some (λ _ → tt) _ _ _
        ; I _ (s≤s (s≤s ())) })
 
   independent : Independent-axiom CZr
-  independent = separates (s≤s (s≤s z≤n)) (apart _ _ tt)
+  independent = separates (s≤s (s≤s z≤n)) (apart _ _ _)

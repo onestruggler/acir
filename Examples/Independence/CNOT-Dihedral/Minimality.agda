@@ -19,7 +19,7 @@ open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Examples.Independence.CNOT-Dihedral.Syntactics
 open import Examples.Independence.Model Gate
-open Separators arity lhs rhs
+open Separators _SRel,_===_
 
 private
   variable

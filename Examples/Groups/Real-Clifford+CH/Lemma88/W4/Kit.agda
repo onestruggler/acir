@@ -62,13 +62,13 @@ rig₄ = RotRigid.rot-rigid canon4 s12₄
 
 tm₄ : ∀ β K → K < 3 → TopMerge β K
 tm₄ true  zero                _ =
-  SS.Below.by-sem₀ 2 (s≤s (s≤s z≤n)) complete₂ ((Xat 1 • ΛZX 1 • Xat 1) • ΛZX 1) (placeAt 1 (ΛZX 0)) (Evaluated.same e-zx1)
+  SS.Below.by-ev₀ 2 (s≤s (s≤s z≤n)) complete₂ e-zx1
 tm₄ false zero                _ =
-  SS.Below.by-sem₀ 2 (s≤s (s≤s z≤n)) complete₂ ((Xat 1 • ΛXZ 1 • Xat 1) • ΛXZ 1) (placeAt 1 (ΛXZ 0)) (Evaluated.same e-xz1)
+  SS.Below.by-ev₀ 2 (s≤s (s≤s z≤n)) complete₂ e-xz1
 tm₄ true  (suc zero)          _ =
-  SS.Below.by-sem₀ 3 (s≤s (s≤s (s≤s z≤n))) complete₃ ((Xat 2 • ΛZX 2 • Xat 2) • ΛZX 2) (placeAt 2 (ΛZX 1)) (Evaluated.same e-zx2)
+  SS.Below.by-ev₀ 3 (s≤s (s≤s (s≤s z≤n))) complete₃ e-zx2
 tm₄ false (suc zero)          _ =
-  SS.Below.by-sem₀ 3 (s≤s (s≤s (s≤s z≤n))) complete₃ ((Xat 2 • ΛXZ 2 • Xat 2) • ΛXZ 2) (placeAt 2 (ΛXZ 1)) (Evaluated.same e-xz2)
+  SS.Below.by-ev₀ 3 (s≤s (s≤s (s≤s z≤n))) complete₃ e-xz2
 tm₄ true  (suc (suc zero))    _ = trans eq223 (sym (trans (placeAt-top (ΛZX 2)) (≡→≈ Eq.refl)))
 tm₄ false (suc (suc zero))    _ = trans eq224 (sym (trans (placeAt-top (ΛXZ 2)) (≡→≈ Eq.refl)))
 tm₄ β     (suc (suc (suc K))) (s≤s (s≤s (s≤s ())))

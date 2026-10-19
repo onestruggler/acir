@@ -4,10 +4,12 @@
 -- Equational reasoning in a fragment's theory
 --
 -- After Examples.Groups.CNOT+Dihedral.Reasoning: an axiom on the bottom
--- wires of a circuit of any width, the symmetry rules, lifting a
--- derivation one wire up, and at a fixed width the setoid reasoning of
--- the congruence with rewriting at the front, the back or in the middle
--- of a word, and re-bracketing by the associativity solver.
+-- wires of a circuit of any width (Circuit.Prop's pad, for the arities
+-- up to four that the fragments have), lifting a derivation one wire up,
+-- and at a fixed width the setoid reasoning of the congruence with
+-- rewriting at the front, the back or in the middle of a word, and
+-- re-bracketing by the associativity solver.  A symmetry rule is
+-- Circuit.Prop's sym-rule, which every fragment exports.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -16,7 +18,9 @@ open import Data.Nat using (ℕ)
 
 module Examples.Independence.Reasoning (Gate : ℕ → Set) where
 
-open import Data.Nat using (_+_)
+open import Data.Bool.Base using (T)
+open import Data.Nat using (_+_ ; _≤ᵇ_)
+open import Data.Nat.Properties using (≤ᵇ⇒≤)
 open import Word.Base using (ε ; _•_)
 
 open import Notations using (₁₊)
@@ -27,25 +31,20 @@ import Relation.Binary.Reasoning.Setoid as SR
 
 open import Examples.Independence.Prop Gate
 
-module Theory
-  {Rule : Set} (arity : Rule → ℕ)
-  (lhs rhs : (r : Rule) → Circuit (arity r))
-  where
+module Theory (_SRel,_===_ : (n : ℕ) → CRel n) where
 
-  open Fragment arity lhs rhs
+  open Lift-To-Prop _SRel,_===_
 
   private
     variable
       n : ℕ
       w v : Circuit n
 
-  -- The axiom r on the bottom wires of a circuit of arity r + n.
-  ax-at : (r : Rule) (n : ℕ) → (arity r + n) ⊢ lhs r ↓ᵏ n ≈ rhs r ↓ᵏ n
-  ax-at r n = PB.axiom (srel (ax r n))
-
-  -- A symmetry rule.
-  sym-rule : n Sym, w === v → n ⊢ w ≈ v
-  sym-rule s = PB.axiom (srel (sym s))
+  -- The axiom a, of arity n ≤ 4, on the bottom wires of a circuit of
+  -- n + k wires.
+  ax-at : (a : n SRel, w === v) {_ : T (n ≤ᵇ 4)} (k : ℕ) →
+          (n + k) ⊢ w ↓ᵏ k ≈ v ↓ᵏ k
+  ax-at {n} a {t} = pad (≤ᵇ⇒≤ n 4 t) (PB.axiom (srel (srel a)))
 
   -- A derivation, one wire up.
   lift : n ⊢ w ≈ v → (₁₊ n) ⊢ w ↑ ≈ v ↑

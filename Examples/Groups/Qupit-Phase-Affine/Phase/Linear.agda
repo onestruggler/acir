@@ -296,12 +296,12 @@ module _ {n : ℕ} where
 
   -- SWAP moves Z a wire.
   Zᶠ-SWAP : (c : F) → (₂₊ n) ⊢ Z h ^ᶠ c • SWAP ≈ SWAP • (Z h ^ᶠ c) ↑
-  Zᶠ-SWAP c = trans (slideʳ^ (toℕ c) (ax (swap-Z h))) (back _ (refl' (Eq.sym (↑ᶠ (Z h) c))))
+  Zᶠ-SWAP c = trans (slideʳ^ (toℕ c) (swap-Z h)) (back _ (refl' (Eq.sym (↑ᶠ (Z h) c))))
 
   Z↑ᶠ-SWAP : (c : F) → (₂₊ n) ⊢ (Z h ^ᶠ c) ↑ • SWAP ≈ SWAP • Z h ^ᶠ c
   Z↑ᶠ-SWAP c = trans (front _ (refl' (↑ᶠ (Z h) c)))
-                 (slideʳ^ (toℕ c) (Involution.conj→' (ax swap-order)
-                   (Involution.conj← (ax swap-order) (sym (ax (swap-Z h))))))
+                 (slideʳ^ (toℕ c) (Involution.conj→' swap-order
+                   (Involution.conj← swap-order (sym (swap-Z h)))))
 
   Zᶠ∥Z↑ᶠ : (c d : F) → (₂₊ n) ⊢ Z h ^ᶠ c • (Z h ^ᶠ d) ↑ ≈ (Z h ^ᶠ d) ↑ • Z h ^ᶠ c
   Zᶠ∥Z↑ᶠ c d = Pow.pow-comm (₂₊ n) (toℕ c) (sym (comm-gate₁-w↑ (Z-gate h) (Z h ^ᶠ d)))

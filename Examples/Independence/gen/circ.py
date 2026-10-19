@@ -1,10 +1,10 @@
 """Circuits of a PROP fragment as letter lists, for finding engine steps.
 
 A letter is (kind, wire): kind one of w (the scalar ω), H, S, T, CX, SW,
-wire the lowest wire it acts on (None for the scalar).  Lists are in
+CS, wire the lowest wire it acts on (None for the scalar).  Lists are in
 diagram order (time order), as Examples.Independence.Engine reads them.
 Wire 0 is the bottom wire; CX acts on (w, w+1) with control w+1 and
-target w; SW swaps w and w+1.
+target w; SW swaps w and w+1; CS is controlled S on w and w+1.
 
 The search: two letter lists are compared up to commuting letters (on
 disjoint wires) by a normal form of their traces (canon); an equation is
@@ -17,7 +17,18 @@ the engine's perm and rw steps.  Every line is also checked numerically
 import cmath, math, itertools
 from collections import deque
 
-ARITY = {'w': 0, 'H': 1, 'S': 1, 'Z': 1, 'T': 1, 'X': 1, 'CX': 2, 'SW': 2}
+ARITY = {'w': 0, 'm': 0, 'H': 1, 'S': 1, 'Z': 1, 'T': 1, 'X': 1, 'CX': 2, 'SW': 2, 'CS': 2}
+
+# The scalars (ω and −1), and the gates a fragment takes as primitive
+# that another spells: Cliff₂ spells Z as S S, RCliff₂ has Z itself.
+SCALARS = ('w', 'm')
+PRIMITIVE = set()
+
+# Match the scalars of a pattern greedily, the leftmost copies: every
+# choice gives the same result, and with many copies (CliffCS₂'s words
+# carry dozens of ω) trying them all is too slow.  Off by default, which
+# keeps the other fragments' generated modules as they were.
+GREEDY_SCALARS = False
 
 
 def wires(l):
@@ -51,6 +62,16 @@ def cx(c, t):
     raise ValueError((c, t))
 
 
+def cs(a, b):
+    """Controlled S on wires a and b (symmetric), with adjacent letters."""
+    a, b = min(a, b), max(a, b)
+    if b == a + 1:
+        return [('CS', a)]
+    if b == a + 2:
+        return [('SW', a), ('CS', a + 1), ('SW', a)]
+    raise ValueError((a, b))
+
+
 def sw(a, b):
     a, b = min(a, b), max(a, b)
     if b == a + 1:
@@ -61,14 +82,16 @@ def sw(a, b):
 
 
 def spell1(g):
-    if g[0] == 'w':
-        return [('w', None)]
-    if g[0] in ('H', 'S', 'T'):
+    if g[0] in SCALARS:
+        return [(g[0], None)]
+    if g[0] in ('H', 'S', 'T', 'Z'):
         return [(g[0], g[1])]
     if g[0] == 'CX':
         return cx(g[1], g[2])
     if g[0] == 'SW':
         return sw(g[1], g[2])
+    if g[0] == 'CS':
+        return cs(g[1], g[2])
     raise ValueError(g)
 
 
@@ -85,14 +108,14 @@ def gwires(g):
 
 def permute(g, pi):
     """The gate g with its wires renamed by pi (a function)."""
-    if g[0] == 'w':
+    if g[0] in SCALARS:
         return g
-    if g[0] in ('H', 'S', 'T'):
+    if g[0] in ('H', 'S', 'T', 'Z'):
         return (g[0], pi(g[1]))
     if g[0] == 'CX':
         return ('CX', pi(g[1]), pi(g[2]))
     a, b = pi(g[1]), pi(g[2])
-    return ('SW', min(a, b), max(a, b))
+    return (g[0], min(a, b), max(a, b))       # SW and CS are symmetric
 
 
 def gshift(gs, s):
@@ -102,6 +125,8 @@ def gshift(gs, s):
 def gname(g):
     if g[0] == 'w':
         return 'ω'
+    if g[0] == 'm':
+        return 'm'
     return g[0] + ''.join(str(x) for x in g[1:])
 
 
@@ -109,11 +134,27 @@ def gname(g):
 # H0 S1 Z0 X0 Sd0 T0  CX10 (control 1 target 0) CX01 CX20 CX02 CX21 CX12
 # SW01 SW12 SW02  CZ10 (the source's CZ: H on the lower wire around CX)
 
+# A fragment's own spellings: (compiled regex, function of the match
+# giving abstract gates), tried before the tokens below.
+MACROS = []
+
+
 def gparse(s):
     out = []
     for tok in s.split():
+        hit = None
+        for rx, fn in MACROS:
+            m = rx.fullmatch(tok)
+            if m:
+                hit = fn(m)
+                break
+        if hit is not None:
+            out += hit
+            continue
         if tok == 'w':
             out.append(('w',))
+        elif tok == 'm':
+            out.append(('m',))
         elif tok.startswith('w') and tok[1:].isdigit():
             out += [('w',)] * int(tok[1:])
         elif tok == 'wd':
@@ -121,10 +162,16 @@ def gparse(s):
         elif tok.startswith('Sd'):
             out += [('S', int(tok[2:]))] * 3
         elif tok[0] == 'Z' and tok[1:].isdigit():
-            out += [('S', int(tok[1:]))] * 2
+            if 'Z' in PRIMITIVE:
+                out.append(('Z', int(tok[1:])))
+            else:
+                out += [('S', int(tok[1:]))] * 2
         elif tok[0] == 'X' and tok[1:].isdigit():
             k = int(tok[1:])
-            out += [('H', k), ('S', k), ('S', k), ('H', k)]
+            if 'Z' in PRIMITIVE:
+                out += [('H', k), ('Z', k), ('H', k)]
+            else:
+                out += [('H', k), ('S', k), ('S', k), ('H', k)]
         elif tok[0] in 'HST' and tok[1:].isdigit():
             out.append((tok[0], int(tok[1:])))
         elif tok.startswith('CX'):
@@ -151,14 +198,23 @@ def parse(s):
 R2 = 1 / math.sqrt(2)
 OMEGA = cmath.exp(1j * math.pi / 4)
 
+# A fragment on qudits of another dimension sets DIM and its own
+# GATE_MATRIX(letter, wires) (Cliff₃: cliff3.py).
+DIM = 2
+GATE_MATRIX = None
+
 
 def gate_matrix(l, n):
+    if GATE_MATRIX is not None:
+        return GATE_MATRIX(l, n)
     k, w = l
     N = 1 << n
     M = [[0j] * N for _ in range(N)]
     for x in range(N):
         if k == 'w':
             M[x][x] = OMEGA
+        elif k == 'm':
+            M[x][x] = -1
         elif k == 'H':
             b = (x >> w) & 1
             y = x ^ (1 << w)
@@ -173,6 +229,8 @@ def gate_matrix(l, n):
         elif k == 'CX':
             y = x ^ (1 << w) if (x >> (w + 1)) & 1 else x
             M[y][x] = 1
+        elif k == 'CS':
+            M[x][x] = 1j if (x >> w) & 3 == 3 else 1
         elif k == 'SW':
             b0, b1 = (x >> w) & 1, (x >> (w + 1)) & 1
             y = x & ~(3 << w) | (b1 << w) | (b0 << (w + 1))
@@ -186,7 +244,7 @@ def mul(A, B):
 
 
 def unitary(c, n):
-    N = 1 << n
+    N = DIM ** n
     U = [[1 + 0j if i == j else 0j for j in range(N)] for i in range(N)]
     for l in c:
         U = mul(gate_matrix(l, n), U)       # diagram order: later gates on the left
@@ -236,10 +294,27 @@ def occurrences(c, pat):
             yield list(c), i
         return
     n = len(c)
+    # the next letter after position p touching wire w (n if none)
+    nxt = {}
+    for w in set(x for l in c for x in wires(l)):
+        q = n
+        for p in range(n - 1, -2, -1):
+            nxt[(p, w)] = q
+            if p >= 0 and w in wires(c[p]):
+                q = p
 
     def extend(sel, j):
         if j == m:
             yield list(sel)
+            return
+        if GREEDY_SCALARS and not wires(pat[j]):
+            # a scalar of the pattern: the next copy of it (any would do)
+            prev = [sel[jj] for jj in range(j) if pat[jj] == pat[j]]
+            start = max(prev) + 1 if prev else 0
+            for p in range(start, n):
+                if p not in sel and c[p] == pat[j]:
+                    yield from extend(sel + [p], j + 1)
+                    return
             return
         for p in range(n):
             if p in sel or c[p] != pat[j]:
@@ -251,6 +326,14 @@ def occurrences(c, pat):
                 if (not commute(pat[jj], pat[j]) or pat[jj] == pat[j]) and sel[jj] > p:
                     ok = False
                     break
+            # convexity: on each of its wires, a pattern letter is the
+            # next letter after the pattern's last letter on that wire
+            if ok:
+                for w in wires(pat[j]):
+                    last = [sel[jj] for jj in range(j) if w in wires(pat[jj])]
+                    if last and nxt[(max(last), w)] != p:
+                        ok = False
+                        break
             if ok:
                 yield from extend(sel + [p], j + 1)
 
@@ -413,7 +496,8 @@ def find_steps(a, b, eqs, width, depth=4, maxstates=300000, inserting=None):
 
 def letter(l):
     k, w = l
-    base = {'w': 'ωₗ', 'H': 'Hₗ', 'S': 'Sₗ', 'T': 'Tₗ', 'CX': 'CXₗ', 'SW': 'σₗ'}[k]
+    base = {'w': 'ωₗ', 'm': 'mₗ', 'H': 'Hₗ', 'S': 'Sₗ', 'Z': 'Zₗ', 'T': 'Tₗ', 'CX': 'CXₗ',
+            'SW': 'σₗ', 'CS': 'CSₗ'}[k]
     return base if w is None else base + ' ↥' * w
 
 

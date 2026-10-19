@@ -30,7 +30,11 @@ def write_nfs():
     out += nf_block()
     open(DIR + 'NFs.agda', 'w', encoding='utf-8').write(tidy(NL.join(out) + NL, HELPERS))
 
-def write_tree(modname, doc, tname, t, rows, vars_, fs, tags, mini, allow):
+def con(k):
+    """The k-th element of Fin in constructors, as Hard spells it (its g0 … g3 are patterns)."""
+    return 'zero' if k == 0 else '(suc %s)' % con(k - 1)
+
+def write_tree(modname, doc, tname, t, rows, vars_, fs, tags, mini, allow, ic, id_):
     out = [HEADER % (doc, modname), 'open import Examples.Groups.Real-Clifford+CH-TwoLevel-Clement.NFs using (nfData)', PRIV]
     term = emit(t, rows, vars_, [], tname)
     m, r = len(rows), len(vars_)
@@ -43,9 +47,10 @@ def write_tree(modname, doc, tname, t, rows, vars_, fs, tags, mini, allow):
     out.append('%sTags : Vec (Maybe ℕ) %d' % (tname, m))
     out.append('%sTags = %s' % (tname, vec(['(just %d)' % tags[x] if x in tags else 'nothing' for x in rows])))
     out.append('')
-    out.append('open Checker nfData (λ _ → %s) using (checkT)' % allow)
-    out.append('')
-    out.append('%s-ok : checkT %s %sTags %s %s %s %sForms ≡ true' % (tname, tname, tname, boolean(mini), fin(rows.index('c')), fin(rows.index('d')), tname))
+    out.append('-- Over Checker.checkT itself, at the arguments Hard passes: through an')
+    out.append("-- opened copy it would not be the same term as Main.sound's hypothesis,")
+    out.append('-- and Agda would compare the two by running the check again.')
+    out.append('%s-ok : Checker.checkT nfData %s %s %sTags %s %s %s %sForms ≡ true' % (tname, allow, tname, tname, boolean(mini), ic, id_, tname))
     out.append('%s-ok = refl' % tname)
     open(DIR + modname + '.agda', 'w', encoding='utf-8').write(tidy(NL.join(out) + NL, HELPERS))
 
@@ -55,8 +60,9 @@ if __name__ == '__main__':
     for nf, mini in ((trees.NF341, False), (trees.NF38, True)):
         name = 'TreeNF' + nf.name[2:]
         write_tree(name, 'The tree of the normal form %s (generated).' % nf.name, 't' + nf.name[2:], T[nf.name],
-                   nf.roles, nf.vars, nf.fs, nf.tags, mini, 'false')
+                   nf.roles, nf.vars, nf.fs, nf.tags, mini, 'allowNone',
+                   '(NFData.ic (nfData %s))' % nf.name, '(NFData.id (nfData %s))' % nf.name)
     rt = trees.root()
     write_tree('TreeTop', 'The tree from a hard state to the normal forms (generated).', 'top', T['top'],
-               rt.rows, rt.vars, rt.fs, {}, True, 'true')
+               rt.rows, rt.vars, rt.fs, {}, True, 'allowAll', con(rt.rows.index('c')), con(rt.rows.index('d')))
     print('written')

@@ -97,7 +97,7 @@ module _ {n : ℕ} where
 
   private
     ss : (₂₊ n) ⊢ SWAP • SWAP ≈ ε
-    ss = ax swap-order
+    ss = swap-order
 
   -- A gate on wire 1 conjugated by SWAP is the gate on wire 0, and back.
   sw-down : (g : Gate 1) → (₂₊ n) ⊢ SWAP • [ gate₁ g ↥ ]ʷ • SWAP ≈ [ gate₁ g ]ʷ
@@ -123,7 +123,7 @@ module _ {n : ℕ} where
   -- A two-wire word passes SWAP ↑ into its placement by SWAP.
   place-sw : (c : Two) → (₃₊ n) ⊢ ⟦ c ⟧² • SWAP ↑ ≈ SWAP ↑ • SWAP • ⟦ c ⟧² ↑ • SWAP
   place-sw c = begin
-    ⟦ c ⟧² • SWAP ↑                     ≈⟨ sym (cancel-in (lift (ax swap-order)) _) ⟩
+    ⟦ c ⟧² • SWAP ↑                     ≈⟨ sym (cancel-in (lift swap-order) _) ⟩
     SWAP ↑ • SWAP ↑ • ⟦ c ⟧² • SWAP ↑   ≈⟨ back _ (two-place c) ⟩
     SWAP ↑ • SWAP • ⟦ c ⟧² ↑ • SWAP     ∎
 
@@ -174,12 +174,12 @@ private
       Z h₁ • X ↑ • CZ h₂ ∎
       where
       CZ≈ : (₂₊ n) ⊢ SWAP • CZ h₂ • SWAP ≈ CZ h₂
-      CZ≈ = trans (trans (sym assoc) (front _ CZ-sym)) (trans assoc (cancel-at (ax swap-order) _))
+      CZ≈ = trans (trans (sym assoc) (front _ CZ-sym)) (trans assoc (cancel-at swap-order _))
 
     SC-M₁ : (x : F*) → (₂₊ n) ⊢ SC • M⟨ x ⟩ ↑ ≈ M⟨ x ⟩ ↑ • CZ h₂ ^ toℕ (binom2 (proj₁ x)) • SC ^ toℕ (proj₁ x * proj₁ x)
     SC-M₁ x = begin
       (SWAP • CS h • SWAP) • M⟨ x ⟩ ↑
-        ≈⟨ trans assoc (back _ (trans assoc (back _ (sym (ax (swap-M (proj₁ x) (proj₂ x))))))) ⟩
+        ≈⟨ trans assoc (back _ (trans assoc (back _ (sym (swap-M (proj₁ x) (proj₂ x)))))) ⟩
       SWAP • CS h • M⟨ x ⟩ • SWAP
         ≈⟨ back _ (trans (sym assoc) (front _ (sym (ax (ax35 h x))))) ⟩
       SWAP • (M⟨ x ⟩ • CZ h₂ ^ᶠ binom2 (proj₁ x) • CS h ^ᶠ (proj₁ x * proj₁ x)) • SWAP
@@ -189,7 +189,7 @@ private
       M⟨ x ⟩ ↑ • CZ h₂ ^ toℕ (binom2 (proj₁ x)) • SC ^ toℕ (proj₁ x * proj₁ x) ∎
       where
       CZ≈ : (₂₊ n) ⊢ SWAP • CZ h₂ • SWAP ≈ CZ h₂
-      CZ≈ = trans (trans (sym assoc) (front _ CZ-sym)) (trans assoc (cancel-at (ax swap-order) _))
+      CZ≈ = trans (trans (sym assoc) (front _ CZ-sym)) (trans assoc (cancel-at swap-order _))
 
   module _ {n : ℕ} where
 
@@ -203,14 +203,14 @@ private
                (∥-≈ʳ (by-passoc (□ • (□ • □ • □) • □) ((□ • □) • □ • □ • □) Eq.refl)
                  (conj∥ σ⁻σ (cx∥↑ Diag₃-CS)))
 
-module C1 = Functor 2 no3₂ (λ a → a) (Z h₁) (CZ h₂) (λ _ → SC)
+module C1 = Functor 2 no3₂ (λ a → a) (images (Z h₁) (CZ h₂) (λ _ → SC)
   (Diag₃-2 Diag-Z) (Diag₃-2 Diag-CZ) (λ _ → Diag₃-SC)
   (one∥ (o1 (Z-gate h₁))) (two∥ cCZ) (λ _ → two∥ cSC)
   (sw-down (Z-gate h₁)) (place-sw cCZ) (λ _ → place-sw cSC)
   Z-order CZ-order CZ-CX₁ CZ-M₁ CZ-X₁
   (λ _ → Diag₃-order Diag₃-SC) (λ _ → SC-X₁) (λ _ → SC-M₁) (λ _ → SC-CX₁)
   (λ _ → W-M) (λ _ → W-CX)
-  (Z-sem h₁) CZ-sem (λ _ → SC-sem)
+  (Z-sem h₁) CZ-sem (λ _ → SC-sem))
 
 ------------------------------------------------------------------------
 -- (x₀ choose 2) times a circuit of level 1
@@ -223,11 +223,11 @@ private
     CS-CX₁ : (₃₊ n) ⊢ CX ↑ • CS h • SWAP • CS h ↑ • SWAP ≈ CS h • CX ↑
     CS-CX₁ = trans (back _ (back _ (sym (two-place cCS)))) (ax (ax42 h))
 
-module C2 = Functor 1 no3₁ binom2 (S h₂) (CS h) (λ _ → ε)
+module C2 = Functor 1 no3₁ binom2 (images (S h₂) (CS h) (λ _ → ε)
   (Diag₃-2 Diag-S) Diag₃-CS (λ h' → ⊥-elim-irr (no2₁ h'))
   (one∥ (o1 (S-gate h₂))) (two∥ cCS) (λ h' → ⊥-elim-irr (no2₁ h'))
   (sw-down (S-gate h₂)) (place-sw cCS) (λ h' → ⊥-elim-irr (no2₁ h'))
   S-order (Diag₃-order Diag₃-CS) CS-CX₁ (λ x → Width.sym (ax (ax37 h x))) CS-X₁
   (λ h' → ⊥-elim-irr (no2₁ h')) (λ h' → ⊥-elim-irr (no2₁ h')) (λ h' → ⊥-elim-irr (no2₁ h'))
   (λ h' → ⊥-elim-irr (no2₁ h')) (λ h' → ⊥-elim-irr (no2₁ h')) (λ h' → ⊥-elim-irr (no2₁ h'))
-  (S-sem h₂) CS-sem (λ h' → ⊥-elim-irr (no2₁ h'))
+  (S-sem h₂) CS-sem (λ h' → ⊥-elim-irr (no2₁ h')))

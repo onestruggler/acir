@@ -207,7 +207,7 @@ Ic {₁₊ m} = inj₁ ((Vec.replicate (₁₊ m) (₀ , ₀) , ₀)
 
 module Uniq =
   CU (λ n → ML (₁₊ n)) (λ {n} → Ic {n}) SympGate [_]ᵐˡ
-     (λ n → Group.monoid (Sp-group n)) Symplectic.Base._SRel,_===_
+     (λ n → Group.monoid (Sp-group n)) _QRel,_===_
      ⟦_⟧ mhomo Ob act′ head-fix
      (λ {n} {c1} {c2} → c-inj {n} {c1} {c2}) c-surj
 

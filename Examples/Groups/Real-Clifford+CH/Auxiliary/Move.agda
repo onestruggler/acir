@@ -134,6 +134,27 @@ reassoc U S M S′ U′ =
                      (≐-sym (⊙-assoc S (M ⊙ S′) U′))))
 
 ------------------------------------------------------------------------
+-- The matrix step of `hh-conj`, over variable words
+--
+-- Stated at the words of Definition E.1 (`Tuple.Σw`), every comparison
+-- the conversion checker cannot settle syntactically evaluates their
+-- signed permutations (26.5 s); over variables `sp S` is stuck (2 s).
+
+conj-gen : ∀ (u u′ S S′ : W) → sp u ⊛ sp u′ ≗ idSP →
+           ∀ (p q r s p′ q′ r′ s′ : Fin N) →
+           prm (sp u) p ≡ p′ → prm (sp u) q ≡ q′ →
+           prm (sp u) r ≡ r′ → prm (sp u) s ≡ s′ →
+           sgn (sp u) p ≡ sgn (sp u) q → sgn (sp u) r ≡ sgn (sp u) s →
+           (spOp (sp S) ⊙ (Mpair ⊙ spOp (sp S′))) ≐ Pair p′ q′ r′ s′ →
+           (spOp (sp (u • S)) ⊙ (Mpair ⊙ spOp (sp (S′ • u′)))) ≐ Pair p q r s
+conj-gen u u′ S S′ inv p q r s p′ q′ r′ s′ ep eq er es spq srs eS =
+  ≐-trans (⊙-cong (spOp-⊙ (sp u) (sp S))
+                  (⊙-cong (≐-refl Mpair) (spOp-⊙ (sp S′) (sp u′))))
+  (≐-trans (reassoc (spOp (sp u)) (spOp (sp S)) Mpair (spOp (sp S′)) (spOp (sp u′)))
+  (≐-trans (⊙-cong (≐-refl (spOp (sp u))) (⊙-cong eS (≐-refl (spOp (sp u′)))))
+           (pull-pair u u′ (sp-inj u′) inv p q r s p′ q′ r′ s′ ep eq er es spq srs)))
+
+------------------------------------------------------------------------
 -- Moving a word across a pair
 
 module _ (e65 : Eq65) where
@@ -247,15 +268,8 @@ module _ (e65 : Eq65) where
 
     -- And the matrix it denotes is the pair on the pre-images.
     conj : (spOp (sp A) ⊙ (Mpair ⊙ spOp (sp A′))) ≐ Pair p q r s
-    conj =
-      ≐-trans (⊙-cong (spOp-⊙ (sp u) (sp T.Σw))
-                      (⊙-cong (≐-refl Mpair) (spOp-⊙ (sp T.Σ′w) (sp u′))))
-      (≐-trans (reassoc (spOp (sp u)) (spOp (sp T.Σw)) Mpair
-                        (spOp (sp T.Σ′w)) (spOp (sp u′)))
-      (≐-trans (⊙-cong (≐-refl (spOp (sp u)))
-                       (⊙-cong T.Σ-conj (≐-refl (spOp (sp u′)))))
-               (pull-pair u u′ (sp-inj u′) inv p q r s p′ q′ r′ s′
-                          ep eq er es spq srs)))
+    conj = conj-gen u u′ T.Σw T.Σ′w inv p q r s p′ q′ r′ s′
+                    ep eq er es spq srs T.Σ-conj
 
     sem : ⟦ A • (Λ • A′) ⟧ʷ ~ ⟦ T₂.Σw • (Λ • T₂.Σ′w) ⟧ʷ
     sem = same (Pair p q r s) hA hA′ T₂.hfree-Σ T₂.hfree-Σ′ conj T₂.Σ-conj

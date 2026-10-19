@@ -22,7 +22,6 @@
 module Examples.Independence.Qutrit-Clifford.Syntactics where
 
 open import Data.Nat using (ℕ)
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Word.Base using ([_]ʷ ; ε ; _•_ ; _^_)
 
 open import Notations using (₁₊ ; ₂₊ ; ₃₊)
@@ -71,35 +70,17 @@ CX₂₀ = σ • CX ↑ • σ
 ------------------------------------------------------------------------
 -- The rule set Cliff₃ (Figure 4)
 
-data Rule : Set where
-  ω¹² H⁴ S³ E SS′ CPh KC CZ B I : Rule
+infix 4 _SRel,_===_
+data _SRel,_===_ : (n : ℕ) → CRel n where
+  ω¹² : 0 SRel, ω ^ 12            === ε
+  H⁴  : 1 SRel, H ^ 4             === ε
+  S³  : 1 SRel, S ^ 3             === ε
+  E   : 1 SRel, S • H • S         === H ^ 3 • S ^ 2 • H ^ 3 • ω
+  SS′ : 1 SRel, S • K • S • K     === K • S • K • S
+  CPh : 2 SRel, CX • S ↑ • K • CX === S ↑ • K
+  KC  : 2 SRel, K ↑ • CX          === CX • CX • K ↑
+  CZ  : 2 SRel, H • CX • H ^ 3    === S ↑ • S • CX • S ^ 2 • CX • CX
+  B   : 2 SRel, σ • CX            === CX • CX↓ • CX↓ • K ↑
+  I   : 3 SRel, CX • CX ↑ • CX₂₀  === CX ↑ • CX
 
-arity : Rule → ℕ
-arity ω¹² = 0
-arity H⁴  = 1
-arity S³  = 1
-arity E   = 1
-arity SS′ = 1
-arity CPh = 2
-arity KC  = 2
-arity CZ  = 2
-arity B   = 2
-arity I   = 3
-
-axiom : (r : Rule) → Circuit (arity r) × Circuit (arity r)
-axiom ω¹² = ω ^ 12            , ε
-axiom H⁴  = H ^ 4             , ε
-axiom S³  = S ^ 3             , ε
-axiom E   = S • H • S         , H ^ 3 • S ^ 2 • H ^ 3 • ω
-axiom SS′ = S • K • S • K     , K • S • K • S
-axiom CPh = CX • S ↑ • K • CX , S ↑ • K
-axiom KC  = K ↑ • CX          , CX • CX • K ↑
-axiom CZ  = H • CX • H ^ 3    , S ↑ • S • CX • S ^ 2 • CX • CX
-axiom B   = σ • CX            , CX • CX↓ • CX↓ • K ↑
-axiom I   = CX • CX ↑ • CX₂₀  , CX ↑ • CX
-
-lhs rhs : (r : Rule) → Circuit (arity r)
-lhs r = proj₁ (axiom r)
-rhs r = proj₂ (axiom r)
-
-open Fragment arity lhs rhs public
+open Lift-To-Prop _SRel,_===_ public

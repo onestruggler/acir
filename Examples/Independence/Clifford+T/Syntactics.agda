@@ -17,7 +17,6 @@
 module Examples.Independence.Clifford+T.Syntactics where
 
 open import Data.Nat using (ℕ)
-open import Data.Product using (_×_ ; _,_ ; proj₁ ; proj₂)
 open import Word.Base using ([_]ʷ ; ε ; _•_ ; _^_)
 
 open import Notations using (₁₊ ; ₂₊)
@@ -73,38 +72,19 @@ CH₀↓ = σ • CH₀ • σ
 ------------------------------------------------------------------------
 -- The rule set CliffT₂ (Figure 5)
 
-data Rule : Set where
-  ω⁸ T⁸ H² E TX CPh B CZ CSH HT² HTH : Rule
+infix 4 _SRel,_===_
+data _SRel,_===_ : (n : ℕ) → CRel n where
+  ω⁸  : 0 SRel, ω ^ 8             === ε
+  T⁸  : 1 SRel, T ^ 8             === ε
+  H²  : 1 SRel, H • H             === ε
+  E   : 1 SRel, H • S • H         === ω • S ^ 3 • H • S ^ 3
+  TX  : 1 SRel, ω • T† • X        === X • T
+  CPh : 2 SRel, CX • T ↑ • CX     === T ↑
+  B   : 2 SRel, CX • CX↓          === σ • CX
+  CZ  : 2 SRel, H • CX • H        === S ↑ • S • CX • S ^ 3 • CX
+  CSH : 2 SRel, CS • CH₀          === CH₀ • CS
+  HT² : 2 SRel, CH • T • CH₀ • T† === T • CH₀ • T† • CH
+  HTH : 2 SRel, CH₀ • T • CH • CH₀↓ • T ↑ • CH↓ ===
+                CH₀↓ • T ↑ • CH↓ • CH₀ • T • CH
 
-arity : Rule → ℕ
-arity ω⁸  = 0
-arity T⁸  = 1
-arity H²  = 1
-arity E   = 1
-arity TX  = 1
-arity CPh = 2
-arity B   = 2
-arity CZ  = 2
-arity CSH = 2
-arity HT² = 2
-arity HTH = 2
-
-axiom : (r : Rule) → Circuit (arity r) × Circuit (arity r)
-axiom ω⁸  = ω ^ 8                , ε
-axiom T⁸  = T ^ 8                , ε
-axiom H²  = H • H                , ε
-axiom E   = H • S • H            , ω • S ^ 3 • H • S ^ 3
-axiom TX  = ω • T† • X           , X • T
-axiom CPh = CX • T ↑ • CX        , T ↑
-axiom B   = CX • CX↓             , σ • CX
-axiom CZ  = H • CX • H           , S ↑ • S • CX • S ^ 3 • CX
-axiom CSH = CS • CH₀             , CH₀ • CS
-axiom HT² = CH • T • CH₀ • T†    , T • CH₀ • T† • CH
-axiom HTH = CH₀ • T • CH • CH₀↓ • T ↑ • CH↓ ,
-            CH₀↓ • T ↑ • CH↓ • CH₀ • T • CH
-
-lhs rhs : (r : Rule) → Circuit (arity r)
-lhs r = proj₁ (axiom r)
-rhs r = proj₂ (axiom r)
-
-open Fragment arity lhs rhs public
+open Lift-To-Prop _SRel,_===_ public

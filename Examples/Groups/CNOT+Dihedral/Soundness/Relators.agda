@@ -74,9 +74,9 @@ r6ʳ = CNOT • CNOT ↑ • CNOT • CNOT ↑
 r9ˡ = V ^ 2
 r9ʳ = T ^ 6 • (T ↑) ^ 6 • (T ↑ ↑) ^ 6 • (U ↑) ^ 2 • U₀₂ ^ 2 • U ^ 2
 sbˡ = SWAP • SWAP ↑ • SWAP
-sbʳ = SWAP ↑ • SWAP • SWAP ↑
+sbʳ = (SWAP ↑ • SWAP) • SWAP ↑
 sCˡ = CNOT • SWAP ↑ • SWAP
-sCʳ = SWAP ↑ • SWAP • CNOT ↑
+sCʳ = (SWAP ↑ • SWAP) • CNOT ↑
 
 r13ˡ r13ʳ : Circuit 4
 r13ˡ = CNOT ↑ ↑ • V • CNOT ↑ ↑
@@ -204,11 +204,11 @@ p9ʳ : r9ʳ ↓ᵏ n ≡ T ^ 6 • (T ↑) ^ 6 • (T ↑ ↑) ^ 6 • (U ↑) ^
 p9ʳ = Eq.refl
 psbˡ : sbˡ ↓ᵏ n ≡ SWAP • SWAP ↑ • SWAP
 psbˡ = Eq.refl
-psbʳ : sbʳ ↓ᵏ n ≡ SWAP ↑ • SWAP • SWAP ↑
+psbʳ : sbʳ ↓ᵏ n ≡ (SWAP ↑ • SWAP) • SWAP ↑
 psbʳ = Eq.refl
 psCˡ : sCˡ ↓ᵏ n ≡ CNOT • SWAP ↑ • SWAP
 psCˡ = Eq.refl
-psCʳ : sCʳ ↓ᵏ n ≡ SWAP ↑ • SWAP • CNOT ↑
+psCʳ : sCʳ ↓ᵏ n ≡ (SWAP ↑ • SWAP) • CNOT ↑
 psCʳ = Eq.refl
 
 p13ˡ : r13ˡ ↓ᵏ n ≡ CNOT ↑ ↑ • V • CNOT ↑ ↑

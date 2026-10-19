@@ -27,6 +27,10 @@ open import Word.Base using (_•_)
 
 open import Examples.Groups.Real-Clifford+CH.Syntactics
 open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (Evaluated ; evaluated)
+open import Examples.Groups.Real-Clifford+CH.CommEval
+  using (allComm ; reads ; comm-family ; bools ; ∈-bools ; bools₂ ; ∈-bools₂ ; bools₃ ; ∈-bools₃)
+open import Data.List using (List ; [] ; _∷_)
+open import Data.List.Relation.Unary.Any using (here ; there)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Col using (col ; Vb ; bot)
 open import Examples.Groups.Real-Clifford+CH.GeneralN.Place using (place)
 
@@ -45,12 +49,12 @@ AᴾF α β = PP ↓ • N3F α (N1F β (ΛZX 3 ↓ᵏ 0)) • PP ↓
 P322 : Bool → Bool → Circuit 4
 P322 v γ = place 3 (col (bot v γ []) (Vb v 0))
 
+-- The family is decided by one boolean, each factor read once
+-- (CommEval).
+private
+  all322 : allComm (reads (bools (λ α → AᴾF α true))) (reads (bools₂ P322)) ≡ true
+  all322 = Eq.refl
+
 d322 : ∀ (α γ v : Bool) → Evaluated (AᴾF α true • P322 v γ) (P322 v γ • AᴾF α true)
-d322 true  true  true  = evaluated Eq.refl
-d322 true  true  false = evaluated Eq.refl
-d322 true  false true  = evaluated Eq.refl
-d322 true  false false = evaluated Eq.refl
-d322 false true  true  = evaluated Eq.refl
-d322 false true  false = evaluated Eq.refl
-d322 false false true  = evaluated Eq.refl
-d322 false false false = evaluated Eq.refl
+d322 α γ v = comm-family (bools (λ α → AᴾF α true)) (bools₂ P322) all322
+                         (∈-bools (λ α → AᴾF α true) α) (∈-bools₂ P322 v γ)

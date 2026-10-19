@@ -55,7 +55,7 @@ open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 open import Examples.Groups.Real-Clifford+CH.Semantics.Algebra using (Bits)
 open import Examples.Groups.Real-Clifford+CH.MultiControlled using (swapAt)
 open import Examples.Groups.Real-Clifford+CH.TwoQubit.Conjugation using (module Tools ; module Conj ; Ex²)
-open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (same-sem ; Evaluated)
+open import Examples.Groups.Real-Clifford+CH.SemanticSteps using (same-sem ; Evaluated ; same-ev)
 open import Examples.Groups.Real-Clifford+CH.ThreeQubit.Figure13 complete₂ using (eq111 ; eq112)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Blocks complete₂ complete₃ using (module S₀₁)
 open import Examples.Groups.Real-Clifford+CH.FourQubit.Rotations3 complete₂ complete₃
@@ -90,8 +90,7 @@ Sep m = ∀ (x : Bits m) →
 -- On four wires, decided.
 sep₁ : Comp 4 → Sep 1
 sep₁ c₄ (c ∷ []) =
-  c₄ (same-sem (Λ□ 3 • col (true ∷ true ∷ false ∷ c ∷ []) (Hg 1)) (col (true ∷ true ∷ false ∷ c ∷ []) (Hg 1) • Λ□ 3)
-               (Evaluated.same (d338 false c)))
+  c₄ (same-ev (d338 false c))
 
 ------------------------------------------------------------------------
 -- Word algebra

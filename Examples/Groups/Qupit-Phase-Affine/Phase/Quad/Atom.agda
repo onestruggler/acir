@@ -50,7 +50,7 @@ open import Examples.Groups.Qupit-Phase-Affine.Affine p-2 p-prime lv using (Xc ;
 open import Examples.Groups.Qupit-Phase-Affine.Phase.Atom p-2 p-prime lv
 open import Examples.Groups.Qupit-Phase-Affine.Phase.Quad.CZ p-2 p-prime lv h odd public
 
-open Atoms (S-gate h) S∥CXʳ (ax (swap-S h)) public
+open Atoms (S-gate h) S∥CXʳ (swap-S h) public
 
 private
   variable

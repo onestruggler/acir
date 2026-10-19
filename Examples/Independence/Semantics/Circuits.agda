@@ -14,11 +14,14 @@
 --   (⟦↑⟧), so cong↑ is sound;
 -- * the comm rules and ω↑=ω are the tensor calculus, so they hold for
 --   every valuation;
--- * the symmetry rules are owed for the swap and each gate, on two or
---   three wires.
+-- * the symmetry rules hold as soon as the swap reads as the swap
+--   (Symmetry): σ[ k ] is then a permutation of the basis vectors, and
+--   a gate on k wires followed by it is it followed by the gate one
+--   wire up, whatever the gate's matrix — so nothing is owed per gate.
 --
--- Theory turns this into soundness of a fragment: given its axioms on
--- their own wires, every derivable equation holds, at every width.
+-- Theory turns this into soundness of a fragment: given its axioms,
+-- each on its own wires, every derivable equation holds, at every
+-- width.
 -- Separate is Lemma 25 for the same semantics: given the axioms of
 -- Keep ρ b, it separates ρ (Examples.Independence.Model).
 ------------------------------------------------------------------------
@@ -47,6 +50,7 @@ import Data.Nat.Properties as ℕP
 open import Algebra.Bundles using (Monoid)
 open import Data.Product.Base using (_,_ ; proj₁ ; proj₂)
 open import Data.Unit using (⊤ ; tt)
+open import Function.Base using (_∘′_)
 open import Relation.Binary.PropositionalEquality as Eq using (refl)
 open import Relation.Nullary.Negation using (¬_)
 
@@ -69,6 +73,7 @@ private
 ⟦ gate₀ g ⟧₀ = proj₁ (val g) , scalM (entries (proj₂ (val g)))
 ⟦ gate₁ g ⟧₀ = embs (val g)
 ⟦ gate₂ g ⟧₀ = embs (val g)
+⟦ gate₃ g ⟧₀ = embs (val g)
 ⟦ g ↥ ⟧₀     = ↑s ⟦ g ⟧₀
 
 ⟦_⟧ : Circuit n → Sc n
@@ -119,6 +124,13 @@ module Laws
       (≐-trans (emb-pad₂ {k} {n} (ix M))
       (≐-trans (emb-cong {suc (suc k)} {n} (≐-sym (ix-emb {2} {k} M)))
                (≐-sym (ix-emb {suc (suc k)} {n} (tenM M (idM {k})))))))
+    where M = proj₂ (val g)
+  ⟦↧⟧₀ {suc (suc (suc k))} (gate₃ g) n =
+    ≐→≈ {s = ⟦ gate₃ {k +ℕ n} g ⟧₀} {embs {suc (suc (suc k))} {n} ⟦ gate₃ g ⟧₀} refl
+      (≐-trans (ix-emb {3} {k +ℕ n} M)
+      (≐-trans (emb-pad₃ {k} {n} (ix M))
+      (≐-trans (emb-cong {suc (suc (suc k))} {n} (≐-sym (ix-emb {3} {k} M)))
+               (≐-sym (ix-emb {suc (suc (suc k))} {n} (tenM M (idM {k})))))))
     where M = proj₂ (val g)
   ⟦↧⟧₀ {suc k} (g ↥) n =
     ≈-trans' {s₁ = ↑s ⟦ g ↧ᵏ n ⟧₀} {↑s (embs {k} {n} ⟦ g ⟧₀)} {embs {suc k} {n} (↑s ⟦ g ⟧₀)}
@@ -201,6 +213,28 @@ module Laws
     UU = ≐-trans (ix-up (tenM (idM {1}) G))
            (≐-trans (up-cong (ix-up G)) (up-up (ix G)))
 
+  comm₃-sound : (h : PGate 3) (g : Gen n) →
+                ⟦ [ g ↥ ↥ ↥ ]ʷ • [ gate₃ h ]ʷ ⟧ ≈ ⟦ [ gate₃ h ]ʷ • [ g ↥ ↥ ↥ ]ʷ ⟧
+  comm₃-sound {n} h g =
+    ≐→≈ {s = ↑s (↑s (↑s ⟦ g ⟧₀)) ∙ embs (val h)} {embs (val h) ∙ ↑s (↑s (↑s ⟦ g ⟧₀))}
+        (ℕP.+-comm (proj₁ ⟦ g ⟧₀) (proj₁ (val h)))
+      (≐-trans (ix-mul E U)
+      (≐-trans (⊙-cong (ix-emb {3} {n} V) UUU)
+      (≐-trans (emb-up-comm {3} {n} (ix V) (ix G))
+      (≐-trans (⊙-cong (≐-sym UUU) (≐-sym (ix-emb {3} {n} V)))
+               (≐-sym (ix-mul U E))))))
+    where
+    V = proj₂ (val h)
+    G = proj₂ ⟦ g ⟧₀
+    E = tenM V (idM {n})
+    U₂ = tenM (idM {1}) (tenM (idM {1}) G)
+    U = tenM (idM {1}) U₂
+    UU : ix U₂ ≐ upk 2 (ix G)
+    UU = ≐-trans (ix-up (tenM (idM {1}) G))
+           (≐-trans (up-cong (ix-up G)) (up-up (ix G)))
+    UUU : ix U ≐ upk 3 (ix G)
+    UUU = ≐-trans (ix-up U₂) (≐-trans (up-cong UU) (up-upk 2 (ix G)))
+
   ω↑=ω-sound : (h : PGate 0) → ⟦ [ gate₀ {n} h ]ʷ ↑ ⟧ ≈ ⟦ [ gate₀ h ]ʷ ⟧
   ω↑=ω-sound {n} h =
     ≐→≈ {s = ↑s ⟦ gate₀ {n} h ⟧₀} {⟦ gate₀ {suc n} h ⟧₀} refl
@@ -210,16 +244,149 @@ module Laws
     where c = entries (proj₂ (val h))
 
   ----------------------------------------------------------------------
-  -- The symmetry rules, from their instances on two and three wires
+  -- The symmetry rules, from the swap's matrix
+  --
+  -- Given that the swap reads as the swap, with no phase, the swap rules
+  -- hold for every valuation of the other gates.  A swap on the bottom
+  -- wires, or shifted up, is a permutation both by rows and by columns
+  -- (Operators' permˡ, permʳ), and so is a product of them: σ[ k ]
+  -- after a gate reads the gate's matrix at rotated rows, and a gate
+  -- after σ[ k ] at rotated columns, and the two agree entry by entry
+  -- (cross₁, cross₂, cross₃).  Nothing is evaluated: the gates of a
+  -- fragment used to be checked here one by one, on three and four
+  -- wires, and those checks were the slowest of the whole development.
 
   module Symmetry
-    (σσ-ok  : ⟦ σ {0} • σ {0} ⟧ ≈ ⟦ ε {X = Gen 2} ⟧)
-    (nat₁-ok : (h : Gate 1) →
-               ⟦ [ gate₁ {1} ⌈ h ⌉ ]ʷ • σ {0} ⟧ ≈ ⟦ σ {0} • [ gate₁ {0} ⌈ h ⌉ ]ʷ ↑ ⟧)
-    (nat₂-ok : (h : PGate 2) →
-               ⟦ [ gate₂ {1} h ]ʷ • σ {0} ↑ • σ {1} ⟧ ≈
-               ⟦ σ {0} ↑ • σ {1} • [ gate₂ {0} h ]ʷ ↑ ⟧)
+    (swap-h  : proj₁ (val swap) ≡ 0)
+    (swap-ok : ix (proj₂ (val swap)) ≐ swapₒ)
     where
+
+    private
+      Sw : Mat 2
+      Sw = proj₂ (val swap)
+
+      -- The swap on the bottom two wires of 2 + n, and one and two
+      -- wires up.
+      S₀ : (n : ℕ) → Mat (suc (suc n))
+      S₀ n = tenM Sw (idM {n})
+
+      S₁ : (n : ℕ) → Mat (suc (suc (suc n)))
+      S₁ n = tenM (idM {1}) (S₀ n)
+
+      S₂ : (n : ℕ) → Mat (suc (suc (suc (suc n))))
+      S₂ n = tenM (idM {1}) (S₁ n)
+
+      -- σ[ 2 ] and σ[ 3 ], the later swap on the left.
+      S[2] : (n : ℕ) → Mat (suc (suc (suc n)))
+      S[2] n = mulM (S₀ (suc n)) (S₁ n)
+
+      S[3] : (n : ℕ) → Mat (suc (suc (suc (suc n))))
+      S[3] n = mulM (S₀ (suc (suc n))) (mulM (S₁ (suc n)) (S₂ n))
+
+      σ₀ˡ : ix (S₀ n) ≐ permˡ sw
+      σ₀ˡ {n} = ≐-trans (ix-emb {2} {n} Sw) (≐-trans (emb-cong {2} {n} swap-ok) emb-swapˡ)
+
+      σ₀ʳ : ix (S₀ n) ≐ permʳ sw
+      σ₀ʳ {n} = ≐-trans (ix-emb {2} {n} Sw) (≐-trans (emb-cong {2} {n} swap-ok) emb-swapʳ)
+
+      σ₁ˡ : ix (S₁ n) ≐ permˡ (tl sw)
+      σ₁ˡ {n} = ≐-trans (ix-up (S₀ n)) (≐-trans (up-cong (σ₀ˡ {n})) (up-permˡ sw))
+
+      σ₁ʳ : ix (S₁ n) ≐ permʳ (tl sw)
+      σ₁ʳ {n} = ≐-trans (ix-up (S₀ n)) (≐-trans (up-cong (σ₀ʳ {n})) (up-permʳ sw))
+
+      σ₂ˡ : ix (S₂ n) ≐ permˡ (tl (tl sw))
+      σ₂ˡ {n} = ≐-trans (ix-up (S₁ n)) (≐-trans (up-cong (σ₁ˡ {n})) (up-permˡ (tl sw)))
+
+      σ₂ʳ : ix (S₂ n) ≐ permʳ (tl (tl sw))
+      σ₂ʳ {n} = ≐-trans (ix-up (S₁ n)) (≐-trans (up-cong (σ₁ʳ {n})) (up-permʳ (tl sw)))
+
+      σ[2]ˡ : ix (S[2] n) ≐ permˡ (tl sw ∘′ sw)
+      σ[2]ˡ {n} =
+        ≐-trans (ix-mul (S₀ (suc n)) (S₁ n))
+          (≐-trans (⊙-cong (σ₀ˡ {suc n}) (σ₁ˡ {n})) (permˡ-⊙ sw (permˡ (tl sw))))
+
+      σ[2]ʳ : ix (S[2] n) ≐ permʳ (sw ∘′ tl sw)
+      σ[2]ʳ {n} =
+        ≐-trans (ix-mul (S₀ (suc n)) (S₁ n))
+          (≐-trans (⊙-cong (σ₀ʳ {suc n}) (σ₁ʳ {n})) (⊙-permʳ (permʳ sw) (tl sw)))
+
+      σ[3]ˡ : ix (S[3] n) ≐ permˡ (tl (tl sw) ∘′ tl sw ∘′ sw)
+      σ[3]ˡ {n} =
+        ≐-trans (ix-mul (S₀ (suc (suc n))) (mulM (S₁ (suc n)) (S₂ n)))
+          (≐-trans (⊙-cong (σ₀ˡ {suc (suc n)})
+                     (≐-trans (ix-mul (S₁ (suc n)) (S₂ n))
+                       (≐-trans (⊙-cong (σ₁ˡ {suc n}) (σ₂ˡ {n}))
+                                (permˡ-⊙ (tl sw) (permˡ (tl (tl sw)))))))
+                   (permˡ-⊙ sw (permˡ (tl (tl sw) ∘′ tl sw))))
+
+      σ[3]ʳ : ix (S[3] n) ≐ permʳ (sw ∘′ tl sw ∘′ tl (tl sw))
+      σ[3]ʳ {n} =
+        ≐-trans (ix-mul (S₀ (suc (suc n))) (mulM (S₁ (suc n)) (S₂ n)))
+          (≐-trans (⊙-cong (σ₀ʳ {suc (suc n)})
+                     (≐-trans (ix-mul (S₁ (suc n)) (S₂ n))
+                       (≐-trans (⊙-cong (σ₁ʳ {suc n}) (σ₂ʳ {n}))
+                                (⊙-permʳ (permʳ (tl sw)) (tl (tl sw))))))
+                   (⊙-permʳ (permʳ sw) (tl sw ∘′ tl (tl sw))))
+
+      -- A gate one wire up.
+      ix-up↓ : ∀ {k n} (M : Mat k) →
+               ix (tenM (idM {1}) (tenM M (idM {n}))) ≐ up (emb {k} {n} (ix M))
+      ix-up↓ {k} {n} M = ≐-trans (ix-up (tenM M (idM {n}))) (up-cong (ix-emb {k} {n} M))
+
+    -- The swap is an involution ...
+    σσ : ⟦ σ {0} • σ {0} ⟧ ≈ ⟦ ε {X = Gen 2} ⟧
+    σσ = ≐→≈ {s = ⟦ σ {0} • σ {0} ⟧} {⟦ ε {X = Gen 2} ⟧}
+           (Eq.cong₂ _+ℕ_ swap-h swap-h)
+           (≐-trans (ix-mul (S₀ 0) (S₀ 0))
+           (≐-trans (⊙-cong (σ₀ˡ {0}) (σ₀ˡ {0}))
+           (≐-trans (permˡ-⊙ sw (permˡ sw))
+           (≐-trans sw-invol (≐-sym ix-id)))))
+
+    -- ... and natural in every gate.
+    nat₁ : (h : PGate 1) →
+           ⟦ [ gate₁ {1} h ]ʷ • σ {0} ⟧ ≈ ⟦ σ {0} • [ gate₁ {0} h ]ʷ ↑ ⟧
+    nat₁ h =
+      ≐→≈ {s = ⟦ [ gate₁ {1} h ]ʷ • σ {0} ⟧} {⟦ σ {0} • [ gate₁ {0} h ]ʷ ↑ ⟧}
+          (ℕP.+-comm (proj₁ (val h)) (proj₁ (val swap)))
+        (≐-trans (ix-mul (S₀ 0) (tenM V (idM {1})))
+        (≐-trans (⊙-cong (σ₀ˡ {0}) (ix-emb {1} {1} V))
+        (≐-trans (permˡ-⊙ sw (emb {1} {1} (ix V)))
+        (≐-trans (cross₁ (ix V))
+        (≐-sym (≐-trans (ix-mul (tenM (idM {1}) (tenM V (idM {0}))) (S₀ 0))
+               (≐-trans (⊙-cong (ix-up↓ {1} {0} V) (σ₀ʳ {0}))
+                        (⊙-permʳ (up (emb {1} {0} (ix V))) sw))))))))
+      where V = proj₂ (val h)
+
+    nat₂ : (h : PGate 2) →
+           ⟦ [ gate₂ {1} h ]ʷ • σ[_] {0} 2 ⟧ ≈ ⟦ σ[_] {0} 2 • [ gate₂ {0} h ]ʷ ↑ ⟧
+    nat₂ h =
+      ≐→≈ {s = ⟦ [ gate₂ {1} h ]ʷ • σ[_] {0} 2 ⟧} {⟦ σ[_] {0} 2 • [ gate₂ {0} h ]ʷ ↑ ⟧}
+          (ℕP.+-comm (proj₁ (val h)) (proj₁ (val swap) +ℕ proj₁ (val swap)))
+        (≐-trans (ix-mul (S[2] 0) (tenM V (idM {1})))
+        (≐-trans (⊙-cong (σ[2]ˡ {0}) (ix-emb {2} {1} V))
+        (≐-trans (permˡ-⊙ (tl sw ∘′ sw) (emb {2} {1} (ix V)))
+        (≐-trans (cross₂ (ix V))
+        (≐-sym (≐-trans (ix-mul (tenM (idM {1}) (tenM V (idM {0}))) (S[2] 0))
+               (≐-trans (⊙-cong (ix-up↓ {2} {0} V) (σ[2]ʳ {0}))
+                        (⊙-permʳ (up (emb {2} {0} (ix V))) (sw ∘′ tl sw)))))))))
+      where V = proj₂ (val h)
+
+    nat₃ : (h : PGate 3) →
+           ⟦ [ gate₃ {1} h ]ʷ • σ[_] {0} 3 ⟧ ≈ ⟦ σ[_] {0} 3 • [ gate₃ {0} h ]ʷ ↑ ⟧
+    nat₃ h =
+      ≐→≈ {s = ⟦ [ gate₃ {1} h ]ʷ • σ[_] {0} 3 ⟧} {⟦ σ[_] {0} 3 • [ gate₃ {0} h ]ʷ ↑ ⟧}
+          (ℕP.+-comm (proj₁ (val h))
+                     ((proj₁ (val swap) +ℕ proj₁ (val swap)) +ℕ proj₁ (val swap)))
+        (≐-trans (ix-mul (S[3] 0) (tenM V (idM {1})))
+        (≐-trans (⊙-cong (σ[3]ˡ {0}) (ix-emb {3} {1} V))
+        (≐-trans (permˡ-⊙ (tl (tl sw) ∘′ tl sw ∘′ sw) (emb {3} {1} (ix V)))
+        (≐-trans (cross₃ (ix V))
+        (≐-sym (≐-trans (ix-mul (tenM (idM {1}) (tenM V (idM {0}))) (S[3] 0))
+               (≐-trans (⊙-cong (ix-up↓ {3} {0} V) (σ[3]ʳ {0}))
+                        (⊙-permʳ (up (emb {3} {0} (ix V)))
+                                 (sw ∘′ tl sw ∘′ tl (tl sw))))))))))
+      where V = proj₂ (val h)
 
     private
       -- An equation on k wires, read on the bottom wires of k + n.
@@ -232,29 +399,30 @@ module Laws
             (≈-sym' {s = ⟦ v ⟧} {embs {k} {n} ⟦ r ⟧} (⟦↓≡⟧ r er)))
 
     sym-sound : n Sym, w === v → ⟦ w ⟧ ≈ ⟦ v ⟧
-    sym-sound σ-inv      = lift (σ • σ) ε refl refl σσ-ok
-    sym-sound (σ-nat₁ h) = lift ([ gate₁ ⌈ h ⌉ ]ʷ • σ) (σ • [ gate₁ ⌈ h ⌉ ]ʷ ↑)
-                                refl refl (nat₁-ok h)
-    sym-sound (σ-nat₂ h) = lift ([ gate₂ h ]ʷ • σ ↑ • σ) (σ ↑ • σ • [ gate₂ h ]ʷ ↑)
-                                refl refl (nat₂-ok h)
+    sym-sound σ-inv      = lift (σ • σ) ε refl refl σσ
+    sym-sound (σ-nat₁ h) = lift ([ gate₁ h ]ʷ • σ) (σ • [ gate₁ h ]ʷ ↑) refl refl (nat₁ h)
+    sym-sound (σ-nat₂ h) = lift ([ gate₂ h ]ʷ • σ[ 2 ]) (σ[ 2 ] • [ gate₂ h ]ʷ ↑)
+                                refl refl (nat₂ h)
+    sym-sound (σ-nat₃ h) = lift ([ gate₃ h ]ʷ • σ[ 3 ]) (σ[ 3 ] • [ gate₃ h ]ʷ ↑)
+                                refl refl (nat₃ h)
 
     --------------------------------------------------------------------
     -- Soundness of a fragment
 
     module Theory
-      {Rule : Set} (arity : Rule → ℕ)
-      (lhs rhs : (r : Rule) → Circuit (arity r))
-      (ax-ok : ∀ r → ⟦ lhs r ⟧ ≈ ⟦ rhs r ⟧)
+      (_SRel,_===_ : (n : ℕ) → CRel n)
+      (ax-ok : ∀ {n} {w v : Circuit n} → n SRel, w === v → ⟦ w ⟧ ≈ ⟦ v ⟧)
       where
 
-      open Fragment arity lhs rhs
+      open Lift-To-Prop _SRel,_===_
 
       vrel-sound : n VRel, w === v → ⟦ w ⟧ ≈ ⟦ v ⟧
-      vrel-sound (srel (sym s))  = sym-sound s
-      vrel-sound (srel (ax r k)) = lift (lhs r) (rhs r) refl refl (ax-ok r)
+      vrel-sound (srel (σrel s))   = sym-sound s
+      vrel-sound (srel (srel a))   = ax-ok a
       vrel-sound (cong↑ {w = w} {v = v} a) = cong↑-sound {w = w} {v} (vrel-sound a)
       vrel-sound (comm₁ h g)     = comm₁-sound h g
       vrel-sound (comm₂ h g)     = comm₂-sound h g
+      vrel-sound (comm₃ h g)     = comm₃-sound h g
       vrel-sound (ω↑=ω h)        = ω↑=ω-sound h
 
       -- Every derivable equation holds.
@@ -275,14 +443,13 @@ module Laws
     -- Lemma 25, with this semantics as the model
 
     module Separate
-      {Rule : Set} (arity : Rule → ℕ)
-      (lhs rhs : (r : Rule) → Circuit (arity r))
-      (ρ : Rule) (b : ℕ)
-      (ax-ok : ∀ r → ¬ r ≡ ρ → arity r ≤ b → ⟦ lhs r ⟧ ≈ ⟦ rhs r ⟧)
+      (_SRel,_===_ : (n : ℕ) → CRel n)
+      (let open Model.Separators _SRel,_===_)
+      {m : ℕ} {wρ vρ : Circuit m} (ρ : m SRel, wρ === vρ) (b : ℕ)
+      (ax-ok : ∀ {n} {w v : Circuit n} (a : n SRel, w === v) →
+               ¬ ⟨ a ⟩ ≡ ⟨ ρ ⟩ → n ≤ b → ⟦ w ⟧ ≈ ⟦ v ⟧)
       where
 
-      open Fragment arity lhs rhs
-      open Model.Separators arity lhs rhs
       open Separator ρ b monoid ⟦_⟧₀
         using (module Separates) renaming (⟦_⟧ to ⟦_⟧ᴹ)
 
@@ -299,21 +466,19 @@ module Laws
         ᴹ : {w v : Circuit n} → ⟦ w ⟧ ≈ ⟦ v ⟧ → ⟦ w ⟧ᴹ ≈ ⟦ v ⟧ᴹ
         ᴹ {w = w} {v} = ≈-subst (Eq.sym (ᴹ≡ w)) (Eq.sym (ᴹ≡ v))
 
-      -- The separation is read on ρ ↓ᵏ 0: for a given ρ, that is ρ on
-      -- its own wires, by computation.
-      separates : arity ρ ≤ b → ¬ (⟦ lhs ρ ↓ᵏ 0 ⟧ ≈ ⟦ rhs ρ ↓ᵏ 0 ⟧) →
-                  Independent-axiom ρ
-      separates ar≤b sep =
+      separates : m ≤ b → ¬ (⟦ wρ ⟧ ≈ ⟦ vρ ⟧) → Independent-axiom ρ
+      separates m≤b sep =
         Separates.separates
           (λ {_} {w} {v} s → ᴹ {w = w} {v} (sym-sound s))
-          (λ r k r≢ρ ar≤b' → ᴹ {w = lhs r ↓ᵏ k} {rhs r ↓ᵏ k} (lift (lhs r) (rhs r) refl refl (ax-ok r r≢ρ ar≤b')))
+          (λ {_} {w} {v} a a≢ρ n≤b → ᴹ {w = w} {v} (ax-ok a a≢ρ n≤b))
           (λ {_} {w} {v} _ _ e →
              ᴹ {w = w ↑} {v ↑}
                (cong↑-sound {w = w} {v} (≈-subst (ᴹ≡ w) (ᴹ≡ v) e)))
           (λ h g → comm₁-sound h g) (λ h g → comm₂-sound h g)
+          (λ h g → comm₃-sound h g)
           (λ {n} h → ᴹ {w = [ gate₀ {n} h ]ʷ ↑} {[ gate₀ h ]ʷ} (ω↑=ω-sound h))
-          ar≤b
-          (λ e → sep (≈-subst (ᴹ≡ (lhs ρ ↓ᵏ 0)) (ᴹ≡ (rhs ρ ↓ᵏ 0)) e))
+          m≤b
+          (λ e → sep (≈-subst (ᴹ≡ wρ) (ᴹ≡ vρ) e))
 
 ------------------------------------------------------------------------
 -- The exact semantics, and its quotient by global phases

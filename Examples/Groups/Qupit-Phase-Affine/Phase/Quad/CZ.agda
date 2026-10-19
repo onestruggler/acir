@@ -563,12 +563,12 @@ module _ {n : ℕ} where
   -- On wire 0, by the symmetry of CZ.
   CZ-M₀ : (x : F*) → (₂₊ n) ⊢ CZ h • M⟨ x ⟩ ≈ M⟨ x ⟩ • CZ h ^ᶠ proj₁ x
   CZ-M₀ x = begin
-    CZ h • M⟨ x ⟩                          ≈⟨ front _ (sym (conjᶠ (ax swap-order) CZ-sym 1F)) ⟩
+    CZ h • M⟨ x ⟩                          ≈⟨ front _ (sym (conjᶠ swap-order CZ-sym 1F)) ⟩
     (SWAP • CZ h • SWAP) • M⟨ x ⟩          ≈⟨ by-passoc ((□ • □ • □) • □) (□ • □ • □ • □) Eq.refl ⟩
     SWAP • CZ h • SWAP • M⟨ x ⟩            ≈⟨ back _ (back _ (sM x)) ⟩
     SWAP • CZ h • M⟨ x ⟩ ↑ • SWAP          ≈⟨ back _ (trans (sym assoc) (trans (front _ (CZ-M₁ x)) assoc)) ⟩
     SWAP • M⟨ x ⟩ ↑ • CZ h ^ᶠ a • SWAP      ≈⟨ trans (sym assoc) (trans (front _ (sM↑ x)) assoc) ⟩
-    M⟨ x ⟩ • SWAP • CZ h ^ᶠ a • SWAP       ≈⟨ back _ (conjᶠ (ax swap-order) CZ-sym a) ⟩
+    M⟨ x ⟩ • SWAP • CZ h ^ᶠ a • SWAP       ≈⟨ back _ (conjᶠ swap-order CZ-sym a) ⟩
     M⟨ x ⟩ • CZ h ^ᶠ a                     ∎
     where
     a = proj₁ x

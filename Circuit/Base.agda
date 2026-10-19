@@ -32,7 +32,8 @@ private
 --   as being the SAME gate at every width: _↑ still relabels it, and
 --   Lift-Relation's ω↑=ω is what identifies the two spellings;
 -- gate₁ h acts on the bottom 1 wire of a (₁₊ k)-wire circuit;
--- gate₂ h acts on the bottom 2 wires of a (₂₊ k)-wire circuit.
+-- gate₂ h acts on the bottom 2 wires of a (₂₊ k)-wire circuit;
+-- gate₃ h acts on the bottom 3 wires of a (₃₊ k)-wire circuit.
 -- _↥ shifts any generator up by one wire.
 --
 -- The wire-consuming constructors begin their index with suc (no
@@ -49,6 +50,7 @@ data Gen : ℕ → Set where
   gate₀ : Gate 0 → Gen n
   gate₁ : Gate 1 → Gen (₁₊ n)
   gate₂ : Gate 2 → Gen (₂₊ n)
+  gate₃ : Gate 3 → Gen (₃₊ n)
   _↥   : Gen n → Gen (₁₊ n)
 
 Circuit : ℕ → Set
@@ -93,6 +95,7 @@ _↧ᵏ_ : Gen n → (k : ℕ) → Gen (n + k)
 gate₀ h ↧ᵏ k = gate₀ h
 gate₁ h ↧ᵏ k = gate₁ h
 gate₂ h ↧ᵏ k = gate₂ h
+gate₃ h ↧ᵏ k = gate₃ h
 (g ↥)   ↧ᵏ k = (g ↧ᵏ k) ↥
 
 -- Widen a circuit by k extra wires on top (the _↧ᵏ_ map on every gate).
@@ -117,7 +120,7 @@ _↓ x = x
 --   cong↑  — equalities are preserved under _↑
 --   comm   — an m-ary gate at the bottom commutes with any generator
 --            that has been shifted up m wires.  One rule per
---            wire-consuming arity: comm₁, comm₂.
+--            wire-consuming arity: comm₁, comm₂, comm₃.
 --   ω↑=ω   — a 0-ary gate is the same gate on every wire, so shifting
 --            one leaves it unchanged.
 --
@@ -128,7 +131,7 @@ _↓ x = x
 -- rule (Central-Scalars.comm₀ below): the rules above already carry a
 -- scalar past every wire gate, and all that is left to say is how
 -- scalars commute with one another — nothing, when there is only one.
--- Circuit.Independence shows the four rules independent.
+-- Circuit.Independence shows the five rules independent.
 --
 -- Usage: define a group-specific CRel (order relations, braid
 -- relations, etc.), then open Lift-Relation CRel to obtain the full
@@ -149,6 +152,7 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
     --
     -- comm₁: a 1-ary gate at wire 0 commutes with g shifted up 1 wire.
     -- comm₂: a 2-ary gate at wires 0-1 commutes with g shifted up 2 wires.
+    -- comm₃: a 3-ary gate at wires 0-2 commutes with g shifted up 3 wires.
     --
     -- There is no comm₀: a 0-ary gate holds no wires, so there is
     -- nothing to shift, and its commuting with every generator is
@@ -157,6 +161,8 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
       [ g ↥ ]ʷ • [ gate₁ h ]ʷ === [ gate₁ h ]ʷ • [ g ↥ ]ʷ
     comm₂ : (h : Gate 2) (g : Gen n) → (₂₊ n) VRel,
       [ g ↥ ↥ ]ʷ • [ gate₂ h ]ʷ === [ gate₂ h ]ʷ • [ g ↥ ↥ ]ʷ
+    comm₃ : (h : Gate 3) (g : Gen n) → (₃₊ n) VRel,
+      [ g ↥ ↥ ↥ ]ʷ • [ gate₃ h ]ʷ === [ gate₃ h ]ʷ • [ g ↥ ↥ ↥ ]ʷ
 
     -- Structural: a global gate does not depend on the wire it is
     -- written on.
@@ -194,8 +200,8 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
   ------------------------------------------------------------------------
   -- The comm rules, extended from generators to whole circuits
   --
-  -- comm₁/comm₂ commute a gate past a single shifted GENERATOR.  Each
-  -- extends to a whole shifted CIRCUIT by the same three-case
+  -- comm₁/comm₂/comm₃ commute a gate past a single shifted GENERATOR.
+  -- Each extends to a whole shifted CIRCUIT by the same three-case
   -- induction: ε by the unit laws, a letter by the axiom itself, and a
   -- product by pushing the gate through each factor in turn.  The shift
   -- distributes over • definitionally ((u • t) ↑ is u ↑ • t ↑, since _↑
@@ -229,6 +235,19 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
     (PB.trans (PB.cong (comm-gate₂-w↑↑ g u) PB.refl)
               PB.assoc)))
 
+  comm-gate₃-w↑↑↑ : ∀ (g : Gate 3) (w : Circuit n) ->
+    let v = [ gate₃ g ]ʷ
+        open PB ( (₃₊ n) VRel,_===_ )
+    in  w ↑ ↑ ↑ • v ≈ v • w ↑ ↑ ↑
+  comm-gate₃-w↑↑↑ g ε       = PB.trans PB.left-unit (PB.sym PB.right-unit)
+  comm-gate₃-w↑↑↑ g [ x ]ʷ  = PB.axiom (comm₃ g x)
+  comm-gate₃-w↑↑↑ g (u • t) =
+    PB.trans PB.assoc
+    (PB.trans (PB.cong PB.refl (comm-gate₃-w↑↑↑ g t))
+    (PB.trans (PB.sym PB.assoc)
+    (PB.trans (PB.cong (comm-gate₃-w↑↑↑ g u) PB.refl)
+              PB.assoc)))
+
   ------------------------------------------------------------------------
   -- Centrality of a scalar
   --
@@ -236,13 +255,13 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
   -- structural rule, comm₀; it is a theorem of the other rules once
   -- scalars are known to commute with one another, which is the one
   -- hypothesis here.  A scalar meets three kinds of generator: another
-  -- scalar, which is the hypothesis; a wire gate, past which comm₁ or
-  -- comm₂ carries it once ω↑=ω has shifted it up out of the gate's
-  -- way; and a shifted generator, to which ω↑=ω and cong↑ carry the
-  -- claim one wire down.  With a single scalar the hypothesis is refl
-  -- (Single-Scalar); with several, how they commute is for the
+  -- scalar, which is the hypothesis; a wire gate, past which comm₁,
+  -- comm₂ or comm₃ carries it once ω↑=ω has shifted it up out of the
+  -- gate's way; and a shifted generator, to which ω↑=ω and cong↑ carry
+  -- the claim one wire down.  With a single scalar the hypothesis is
+  -- refl (Single-Scalar); with several, how they commute is for the
   -- gate-specific relation to say — Circuit.Independence shows the
-  -- four structural rules cannot derive it.
+  -- five structural rules cannot derive it.
 
   module Central-Scalars
     (scalars-comm : ∀ {n} (h h' : Gate 0) → let open PB (n VRel,_===_) in
@@ -264,6 +283,15 @@ module Lift-Relation (_SRel,_===_ : (n : ℕ) → CRel n) where
       ω↑↑=ω : ∀ {n} → let open PB ((₂₊ n) VRel,_===_) in
               [ gate₀ {n} h ]ʷ ↑ ↑ ≈ [ gate₀ h ]ʷ
       ω↑↑=ω = PB.trans (PB.axiom (cong↑ (ω↑=ω h))) (PB.axiom (ω↑=ω h))
+    comm₀ h (gate₃ h₃) =
+      PB.trans (PB.cong PB.refl (PB.sym ω↑↑↑=ω))
+      (PB.trans (PB.sym (PB.axiom (comm₃ h₃ (gate₀ h))))
+                (PB.cong ω↑↑↑=ω PB.refl))
+      where
+      ω↑↑↑=ω : ∀ {n} → let open PB ((₃₊ n) VRel,_===_) in
+               [ gate₀ {n} h ]ʷ ↑ ↑ ↑ ≈ [ gate₀ h ]ʷ
+      ω↑↑↑=ω = PB.trans (PB.axiom (cong↑ (cong↑ (ω↑=ω h))))
+               (PB.trans (PB.axiom (cong↑ (ω↑=ω h))) (PB.axiom (ω↑=ω h)))
     comm₀ h (g ↥) =
       PB.trans (PB.cong PB.refl (PB.sym (PB.axiom (ω↑=ω h))))
       (PB.trans (lemma-cong↑ _ _ (comm₀ h g))

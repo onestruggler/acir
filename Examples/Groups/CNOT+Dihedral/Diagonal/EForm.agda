@@ -136,18 +136,18 @@ private
   πLR : (₃₊ n) ⊢ πL • πR ≈ ε
   πLR {n} = begin
     (SWAP ↑ • SWAP) • SWAP • SWAP ↑     ≈⟨ by-assoc Eq.refl ⟩
-    SWAP ↑ • (SWAP • SWAP) • SWAP ↑     ≈⟨ back _ (front _ (ax swap-order)) ⟩
+    SWAP ↑ • (SWAP • SWAP) • SWAP ↑     ≈⟨ back _ (front _ swap-order) ⟩
     SWAP ↑ • ε • SWAP ↑                 ≈⟨ back _ left-unit ⟩
-    SWAP ↑ • SWAP ↑                     ≈⟨ lift (ax swap-order) ⟩
+    SWAP ↑ • SWAP ↑                     ≈⟨ lift swap-order ⟩
     ε                                   ∎
     where open Width (₃₊ n)
 
   πRL : (₃₊ n) ⊢ πR • πL ≈ ε
   πRL {n} = begin
     (SWAP • SWAP ↑) • SWAP ↑ • SWAP     ≈⟨ by-assoc Eq.refl ⟩
-    SWAP • (SWAP ↑ • SWAP ↑) • SWAP     ≈⟨ back _ (front _ (lift (ax swap-order))) ⟩
+    SWAP • (SWAP ↑ • SWAP ↑) • SWAP     ≈⟨ back _ (front _ (lift swap-order)) ⟩
     SWAP • ε • SWAP                     ≈⟨ back _ left-unit ⟩
-    SWAP • SWAP                         ≈⟨ ax swap-order ⟩
+    SWAP • SWAP                         ≈⟨ swap-order ⟩
     ε                                   ∎
     where open Width (₃₊ n)
 
@@ -158,7 +158,7 @@ private
 
   -- SWAP • X ↑ • SWAP with X ≈ ε.
   S-ε : ∀ {X : Circuit (₁₊ n)} → (₁₊ n) ⊢ X ≈ ε → (₂₊ n) ⊢ SWAP • X ↑ • SWAP ≈ ε
-  S-ε {n} e = trans (back _ (trans (front _ (lift e)) left-unit)) (ax swap-order)
+  S-ε {n} e = trans (back _ (trans (front _ (lift e)) left-unit)) swap-order
     where open Width (₂₊ n)
 
 C3B-zero : (m : ℕ) → (₂₊ m) ⊢ C3B (replicate m false) ≈ ε
@@ -323,7 +323,7 @@ F-• {suc k} (b ∷ bs) (b' ∷ bs') (c , cs) (c' , cs') = begin
     (SWAP • F bs cs ↑ • SWAP) • SWAP • F bs' cs' ↑ • SWAP
       ≈⟨ by-passoc ((□ • □ • □) • □ • □ • □) (□ • □ • (□ • □) • □ • □) Eq.refl ⟩
     SWAP • F bs cs ↑ • (SWAP • SWAP) • F bs' cs' ↑ • SWAP
-      ≈⟨ back _ (back _ (trans (front _ (ax swap-order)) left-unit)) ⟩
+      ≈⟨ back _ (back _ (trans (front _ swap-order) left-unit)) ⟩
     SWAP • F bs cs ↑ • F bs' cs' ↑ • SWAP
       ≈⟨ back _ (trans (sym assoc) (front _ (lift (F-• bs bs' cs cs')))) ⟩
     SWAP • F (zipWith _+₄_ bs bs') (triXor cs cs') ↑ • SWAP ∎

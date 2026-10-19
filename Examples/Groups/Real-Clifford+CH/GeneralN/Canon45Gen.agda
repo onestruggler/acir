@@ -100,7 +100,7 @@ module _ where
     N = ₄₊ n
 
   open Tools (N VRel,_===_)
-  open SS.Below 3 (s≤s (s≤s (s≤s z≤n))) complete₃ using () renaming (by-sem to by-sem₃)
+  open SS.Below 3 (s≤s (s≤s (s≤s z≤n))) complete₃ using () renaming (by-sem to by-sem₃ ; by-ev to by-ev₃)
 
   Λ A Zc Cw : Circuit N
   Λ  = Λ□ (₃₊ n)
@@ -306,19 +306,19 @@ module _ where
     XK-Mx = sym (trans (sym assoc) (trans (front _ K²) left-unit))
 
     P₀₂-P : PP ↓ • P₀₂ ≈ PP ↑
-    P₀₂-P = by-sem₃ (PP ↓ • (Ex ↑ • PP ↓ • Ex ↑)) (PP ↑) (Evaluated.same e-PP₁) {₁₊ n}
+    P₀₂-P = by-ev₃ e-PP₁ {₁₊ n}
 
     P-P₀₂ : P₀₂ • PP ↓ ≈ PP ↑
-    P-P₀₂ = by-sem₃ ((Ex ↑ • PP ↓ • Ex ↑) • PP ↓) (PP ↑) (Evaluated.same e-PP₂) {₁₊ n}
+    P-P₀₂ = by-ev₃ e-PP₂ {₁₊ n}
 
     ExP : E₀.⟪ P₀₂ ⟫ ≈ PP ↑
-    ExP = by-sem₃ (Ex ↓ • (Ex ↑ • PP ↓ • Ex ↑) • Ex ↓) (PP ↑) (Evaluated.same e-PP₃) {₁₊ n}
+    ExP = by-ev₃ e-PP₃ {₁₊ n}
 
     τP : Tτ.⟪ PP ↓ ⟫ ≈ PP ↑
-    τP = by-sem₃ (τ₀₂ • PP ↓ • τ₀₂) (PP ↑) (Evaluated.same e-τP) {₁₊ n}
+    τP = by-ev₃ e-τP {₁₊ n}
 
     τX : Tτ.⟪ X ↑ ⟫ ≈ X ↑
-    τX = by-sem₃ (τ₀₂ • X ↑ • τ₀₂) (X ↑) (Evaluated.same e-τX₁) {₁₊ n}
+    τX = by-ev₃ e-τX₁ {₁₊ n}
 
     -- Mx is the box on wire 2, wire 1 idle: M under τ₀₂.
     τM : Tτ.⟪ M ⟫ ≈ Mx

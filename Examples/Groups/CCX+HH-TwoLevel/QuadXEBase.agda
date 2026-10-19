@@ -17,7 +17,7 @@
 -- lies below the level of s (QuadXETail.level-under).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --lossy-unification #-}
 
 open import Data.Nat.Base as ℕ using (ℕ ; zero ; suc)
 open import Data.Fin.Base using (Fin ; _<_ ; _≤_ ; toℕ)

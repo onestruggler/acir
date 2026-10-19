@@ -127,7 +127,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
 
   open Tools (N VRel,_===_)
   open WordAlgebra (N VRel,_===_) using (comm-inv)
-  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem)
+  open SS.Below 4 (s≤s (s≤s (s≤s (s≤s z≤n)))) c₄ using (by-sem ; by-ev)
 
   private
     Λ′ : Circuit (₄₊ k)
@@ -229,7 +229,7 @@ module _ (k : ℕ) (below : Below (₁₊ (₄₊ k))) where
     -- Two rotations: decided on four wires
 
     rr : ∀ b c′ → (U₄ b ↓ᵏ (₁₊ k)) • (G2 c′ ↓ᵏ (₁₊ k)) ≈ (G2 c′ ↓ᵏ (₁₊ k)) • (U₄ b ↓ᵏ (₁₊ k))
-    rr b c′ = by-sem (U₄ b • G2 c′) (G2 c′ • U₄ b) (Evaluated.same (d337r b c′)) {₁₊ k}
+    rr b c′ = by-ev (d337r b c′) {₁₊ k}
 
     --------------------------------------------------------------------
     -- Inverses
