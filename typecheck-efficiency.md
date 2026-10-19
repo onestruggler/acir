@@ -83,6 +83,7 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
 | A `T b` proof left to a metavariable (`_`, solved by eta), or a check proved by `refl` on `≡ true`, not `tt` | `Independence/*/Semantics`, the three `Projective`s, `Clifford+CS/Encodings`; `Qutrit-Clifford/Faithful` | 21.0 → 3.9 s, 21.1 → 3.9 s, 15.2 → 3.3 s, 15.1 → 4.1 s, 14.2 → 3.2 s, … (133 → 52 s over eleven modules); 28.5 → 20.1 s |
 | A lemma about a concrete word's operator proved over a variable word, the word's facts as hypotheses, then instantiated | `Real-Clifford+CH/Auxiliary/Move`, `Eq65` | 32.8 → 6.8 s, 23.1 → 5.4 s (`conj` 26.5 → 2.8 s, `Σ-conj` 17.5 → 1.9 s) |
 | A definitional step stated as a lemma in the defining module's own spelling of a hidden width, and clients going through it | `Real-Clifford+CH/Decoding.dP-HH`, `Lemma88/Easy` | 33.2 → 8.8 s (profile total 47.0 → 19.8 s) |
+| A reflection macro that asks no more of the type checker than it needs (no `inferType` on terms whose type it knows) | `Circuit/TopPad/Closed`: the thirteen TopPad modules that use `⇓-same` | about 359 → 291 s in all; Qupit-Phase-Affine 49.0 → 35.0 s, Figure1 48.9 → 39.1 s, Figure1-MS 48.2 → 40.2 s, Simplified-V1 32.7 → 24.2 s |
 | A scaling by √2 as its own operation, not through the general ℤ[√2] product (one integer operation where that spends seven) | `Real-Clifford+CH/Evaluation`, through `Semantics/Ring`'s `√2*`: `Auxiliary/DecodingChecks` | 201 → 169.5 s (reading a decoded letter a fifth faster) |
 | A decision too long for one file split by its outermost quantifier, a module per instance | `Real-Clifford+CH/Auxiliary/DecodingChecks`: `DecodingChecks/ZX0`…`ZX7` | 169.5 s in one module → ten modules, 19.7 s at most |
 | A chain's index after a step is a function application holding the previous index once, not an expression holding it twice | `Real-Clifford+CH/Auxiliary/SegChain`: `LemmaA1/Base`, `LemmaA1/More` | 23.5 → 0.7 s, 26.4 → 0.1 s |
@@ -530,14 +531,17 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   a non-indexed representation of the generators.
 - **The TopPad equivalences** (`*/TopPad.agda`, generated; nothing
   imports them) spend their time in the reflection macro `⇓-same` of
-  `Circuit/TopPad/Closed`: in Figure1's, `Typing.Reflection` is 43 of
-  56 s, about 0.7 s per call. Not the final `unify` of the generated
-  proof (dropping it saves nothing), and not much the per-node
-  `inferType` that checks a definition is a word (dropping it: −16 %);
-  `--lossy-unification` does nothing, and `Eq.refl` in place of the
-  macro fails at the first power with a symbolic exponent. The likely
-  cost is the traversal's fallback to unrestricted `reduce` on word
-  definitions the restricted unfolding cannot open; not pursued.
+  `Circuit/TopPad/Closed`: in Paper-V0's, `Typing.Reflection` is 25.7
+  of 29.5 s, about 0.37 s per call. The per-node `inferType` that asked
+  whether a definition is a word is gone (it always is: the traversal
+  only visits words), which took a fifth off every module (Figure1's
+  48.9 → 39.1 s, Qupit-Phase-Affine's 49.0 → 35.0 s, the Symplectic ones
+  to about 10 s). What is left is spread over the reduce-and-quote
+  steps of the traversal. Not the final `unify` of the generated proof
+  (dropping it saves nothing), nor the fallback to unrestricted
+  `reduce` (dropping it saves nothing on Paper-V0, and Figure1's words
+  need it); `--lossy-unification` does nothing, and `Eq.refl` in place
+  of the macro fails at the first power with a symbolic exponent.
 - **Tactic-generated proofs and `--lossy-unification`.** Bian and
   Selinger's ports (`Clifford+CS-3qubit`, `Clifford+T-2qubit`) fail
   under the flag: their tactics take `auto : nf w ≡ nf v` with `w`, `v`

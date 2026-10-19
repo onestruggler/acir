@@ -89,12 +89,6 @@ private
   last-visible (arg (arg-info visible _) u ∷ as) t = last-visible as u
   last-visible (_ ∷ as)                          t = last-visible as t
 
-  -- A word: its type reduces to Word ….  (Not by the name Circuit:
-  -- every module application has its own copy of it.)
-  word-type : Term → Bool
-  word-type (def f _) = f is quote Word
-  word-type _         = false
-
   -- Did unfolding f make progress?
   unfolded : Name → Term → Bool
   unfolded f (def g _) with f is g
@@ -108,7 +102,9 @@ private
 
   -- The weak head normal form of a word, unfolding only the definitions
   -- of words, wmap (once its word is a constructor) and _^_; a word not
-  -- yet known waits until it is.
+  -- yet known waits until it is.  It is only ever applied to a word, so
+  -- the definition at its head is the definition of a word: asking its
+  -- type first (inferType, as this once did) cost a seventh of the time.
   whnf     : ℕ → Term → TC Term
   whnf-def : ℕ → Name → List (Arg Term) → Bool → Bool → TC Term
   -- t, f unfolded, if that got past f; otherwise u, f not unfolded.
@@ -130,14 +126,8 @@ private
     t ← unfold f (def f as)
     whnf-go k f t (def f as) (unfolded f t)
   whnf-def k f as false false = do
-    ty ← inferType (def f as) >>= reduce
-    whnf-word (word-type ty)
-    where
-    whnf-word : Bool → TC Term
-    whnf-word true  = do
-      t ← unfold f (def f as)
-      whnf-or k f t (def f as) (unfolded f t)
-    whnf-word false = pure (def f as)
+    t ← unfold f (def f as)
+    whnf-or k f t (def f as) (unfolded f t)
 
   whnf-go k f t u true  = whnf k t
   whnf-go k f t u false = pure u
