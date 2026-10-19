@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Presentations of groups
 --
--- Equation (34), a pair of exchanges as two signed exchanges, decided on three qubits at every first index
+-- Equation (34), a pair of exchanges as two signed exchanges, decided on three qubits at the first indices 0 … 3 (4 … 7: R34Hi)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --cubical-compatible --safe #-}
@@ -32,15 +32,3 @@ okR34₂ = all8₃-true (λ b c d → neqᵇ ₂ b ⇒ neqᵇ c d ⇒ decide (xx
 
 okR34₃ : ∀ b c d → (neqᵇ ₃ b ⇒ neqᵇ c d ⇒ decide (xx ₃ b c d) (zx ₃ ₃ b • zx b c d)) ≡ true
 okR34₃ = all8₃-true (λ b c d → neqᵇ ₃ b ⇒ neqᵇ c d ⇒ decide (xx ₃ b c d) (zx ₃ ₃ b • zx b c d)) refl
-
-okR34₄ : ∀ b c d → (neqᵇ ₄ b ⇒ neqᵇ c d ⇒ decide (xx ₄ b c d) (zx ₄ ₄ b • zx b c d)) ≡ true
-okR34₄ = all8₃-true (λ b c d → neqᵇ ₄ b ⇒ neqᵇ c d ⇒ decide (xx ₄ b c d) (zx ₄ ₄ b • zx b c d)) refl
-
-okR34₅ : ∀ b c d → (neqᵇ ₅ b ⇒ neqᵇ c d ⇒ decide (xx ₅ b c d) (zx ₅ ₅ b • zx b c d)) ≡ true
-okR34₅ = all8₃-true (λ b c d → neqᵇ ₅ b ⇒ neqᵇ c d ⇒ decide (xx ₅ b c d) (zx ₅ ₅ b • zx b c d)) refl
-
-okR34₆ : ∀ b c d → (neqᵇ ₆ b ⇒ neqᵇ c d ⇒ decide (xx ₆ b c d) (zx ₆ ₆ b • zx b c d)) ≡ true
-okR34₆ = all8₃-true (λ b c d → neqᵇ ₆ b ⇒ neqᵇ c d ⇒ decide (xx ₆ b c d) (zx ₆ ₆ b • zx b c d)) refl
-
-okR34₇ : ∀ b c d → (neqᵇ ₇ b ⇒ neqᵇ c d ⇒ decide (xx ₇ b c d) (zx ₇ ₇ b • zx b c d)) ≡ true
-okR34₇ = all8₃-true (λ b c d → neqᵇ ₇ b ⇒ neqᵇ c d ⇒ decide (xx ₇ b c d) (zx ₇ ₇ b • zx b c d)) refl
