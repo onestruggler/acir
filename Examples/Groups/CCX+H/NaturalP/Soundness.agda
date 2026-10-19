@@ -133,6 +133,9 @@ private
     CCX-HH₀ : 3 T.⊢ τH (CCX • XC • HHw • XC) ≈ τH (XC • HHw • XC • CCX)
     CCX-HH₀ = T.complete 3 (by-eq√ tt)
 
+    CCXH⁴₀ : 3 T.⊢ τH (CCX • H • CCX • H • CCX • H • CCX • H) ≈ τH (CZ ↑)
+    CCXH⁴₀ = T.complete 3 (by-eq√ tt)
+
     CCX-comm₀ : 4 T.⊢ τH (CCX ↑ • CX • CCX ↑ • CX) ≈ τH (σ • CCX ↑ • σ)
     CCX-comm₀ = T.complete 4 (by-eq√ tt)
 
@@ -225,6 +228,10 @@ private
   CCX-HHₙ : ∀ n → (₃₊ n) T.⊢ τH (CCX • XC • HHw • XC) ≈ τH (XC • HHw • XC • CCX)
   CCX-HHₙ zero    = CCX-HH₀
   CCX-HHₙ (suc n) = St.cong⇓ (CCX-HHₙ n)
+
+  CCXH⁴ₙ : ∀ n → (₃₊ n) T.⊢ τH (CCX • H • CCX • H • CCX • H • CCX • H) ≈ τH (CZ ↑)
+  CCXH⁴ₙ zero    = CCXH⁴₀
+  CCXH⁴ₙ (suc n) = St.cong⇓ (CCXH⁴ₙ n)
 
   CCX-commₙ : ∀ n → (₄₊ n) T.⊢ τH (CCX ↑ • CX • CCX ↑ • CX) ≈ τH (σ • CCX ↑ • σ)
   CCX-commₙ zero    = CCX-comm₀
@@ -320,6 +327,7 @@ axiom-T (srel (srel (nh (NH.CCX-XC {n})))) = CCX-XCₙ n
 axiom-T (srel (srel (nh (NH.HH-swap₀ {n})))) = HH-swap₀ₙ n
 axiom-T (srel (srel (nh (NH.HH-swap₁ {n})))) = HH-swap₁ₙ n
 axiom-T (srel (srel (nh (NH.CCX-HH {n})))) = CCX-HHₙ n
+axiom-T (srel (srel (nh (NH.CCXH⁴ {n})))) = CCXH⁴ₙ n
 axiom-T (srel (srel (nh (NH.CCX-comm {n})))) = CCX-commₙ n
 axiom-T (srel (σrel (σ-inv {n}))) = σ-invₙ n
 axiom-T (srel (σrel (σ-nat₁ {n} X-gate))) = σ-natXₙ n

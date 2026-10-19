@@ -167,7 +167,14 @@ the seed first missed, found by the search and rewritten in natural form.
 
 From three wires on the CCX+H group is infinite, so completeness there
 (where Amy, Ross and Wesley's 3-qubit theory lives) needs a proof, not an
-enumeration.
+enumeration. These rules, and CCX+HH's read through HH ↦ H H↑, are
+**incomplete on three wires**: there each of them holds in W(E8) or in
+the real Clifford group, so they present at most the amalgam of the two,
+in which `(CCX H)⁴ = CZ↑` (H on the target, CZ on the controls) is not
+derivable. That rule is now `CCXH⁴` of `../../CCX+H/NaturalP/`.
+[`../../CCX+H/Rules3/`](../../CCX+H/Rules3/) gives the argument and
+evidence that it suffices: the graph of E8 lattices, whose squares all
+come from it.
 
 ## In Agda
 

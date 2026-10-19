@@ -18,6 +18,7 @@ rules = [
  ("HH-swap₀", "srel (srel (nh (NH.HH-swap₀ {n})))", 3, "σ • HHw ↑ • σ", "HHw • HHw ↑"),
  ("HH-swap₁", "srel (srel (nh (NH.HH-swap₁ {n})))", 3, "σ ↑ • HHw • σ ↑", "HHw • HHw ↑"),
  ("CCX-HH", "srel (srel (nh (NH.CCX-HH {n})))", 3, "CCX • XC • HHw • XC", "XC • HHw • XC • CCX"),
+ ("CCXH⁴", "srel (srel (nh (NH.CCXH⁴ {n})))", 3, "CCX • H • CCX • H • CCX • H • CCX • H", "CZ ↑"),
  ("CCX-comm", "srel (srel (nh (NH.CCX-comm {n})))", 4, "CCX ↑ • CX • CCX ↑ • CX", "σ • CCX ↑ • σ"),
  ("σ-inv", "srel (σrel (σ-inv {n}))", 2, "σ • σ", "ε"),
  ("σ-natX", "srel (σrel (σ-nat₁ {n} X-gate))", 2, "[ gate₁ X-gate ]ʷ • σ[ 1 ]", "σ[ 1 ] • [ gate₁ X-gate ]ʷ ↑"),

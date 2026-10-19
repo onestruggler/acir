@@ -9,7 +9,15 @@
 -- rules on two, three and four wires with HH written out.  So the
 -- translation θ of NaturalP.Transfer sends every rule of NaturalP to a
 -- rule here, letter for letter.  The swap is a symmetry by
--- Circuit.Prop.  Wire 0 is the bottom wire and CX's control is wire 1.
+-- Circuit.Prop.
+--
+-- One rule has no CCX+HH counterpart: CCXH⁴, (X H)⁴ = −1 controlled by
+-- two wires, where the −1 becomes the CZ of the controls.  Without it
+-- the rules are incomplete on three wires: there every other rule holds
+-- in W(E8) (the CCX+HH group, no single H) or in the real Clifford group
+-- (no CCX), so they present at most the amalgam of the two over their
+-- intersection, in which CCXH⁴ is a reduced word of length eight and so
+-- not the identity (CCX+H/Rules3/README.md).  Wire 0 is the bottom wire and CX's control is wire 1.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -76,6 +84,8 @@ data _NH,_===_ : (n : ℕ) → CRel n where
   HH-swap₀   : (₃₊ n) NH, σ • HHw ↑ • σ === HHw • HHw ↑
   HH-swap₁   : (₃₊ n) NH, σ ↑ • HHw • σ ↑ === HHw • HHw ↑
   CCX-HH     : (₃₊ n) NH, CCX • XC • HHw • XC === XC • HHw • XC • CCX
+  -- three wires, with a single H: (X H)⁴ = −1 controlled by two wires
+  CCXH⁴      : (₃₊ n) NH, CCX • H • CCX • H • CCX • H • CCX • H === CZ ↑
   -- four wires
   CCX-comm   : (₄₊ n) NH, CCX ↑ • CX • CCX ↑ • CX === σ • CCX ↑ • σ
 
