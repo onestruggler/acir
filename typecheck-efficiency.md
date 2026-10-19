@@ -72,7 +72,7 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
 | Share duplicated rewrite rules through `then` | `Ex-Sym3n/Swap` | 21.0 → 15.4 s |
 | Split only on what blocks reduction, not on every intermediate result | `Construct/Properties/Amalgamation` | 54.6 → 25.1 s (profile total) |
 | Decide a matrix identity as one boolean, not `refl` on tries | `Clifford/Qubit/Model/Gates` | 71 → 2.9 s |
-| Pass the axiom's own words; compare readings as words | `Clifford/Qubit/Model/Faithful` | 1436 → 1.5 s |
+| Pass the axiom's own words; compare readings as words | `Clifford/Qubit/Model/Faithful`; `Real-Clifford+CH/Auxiliary/Soundness` (its literal rules, there with a boolean in place of `refl` on tries) | 1436 → 1.5 s; 20.1 → 2.2 s (`sound` 13 → 0.2 s) |
 | Bundle many module parameters into one record | `Qupit-Phase-Affine/Phase/Control` | 26.9 → 5.3 s |
 | Sparse stored products: rows as combinations of rows, no ring operation on 0 or 1 | `Independence/Semantics/Operators`, `Scaled` (all fragments): `Qutrit-Clifford/Semantics`, `Clifford+CS/Semantics`, `Clifford+T/Semantics`, `Clifford+CS/Projective`, `Clifford+CS/Encodings`, `Qutrit-Clifford/Encoding` | 139 → 18.4 s, 63.8 → 22.9 s, 35.2 → 15.8 s, 23.4 → 14.1 s, 46.7 → 33.4 s, 20.9 → 4.0 s |
 | Decide a matrix identity as one boolean, not `refl` on the matrices | `Independence/Clifford+CS/Encodings` (32 gate tables over 𝔻[ω]) | 33.4 → 14.4 s (and its client `Clifford+CS/Completeness` 31.6 → 1.8 s after this and the sparse products) |
