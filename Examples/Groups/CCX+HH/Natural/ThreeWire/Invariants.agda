@@ -26,7 +26,7 @@ open import Data.List.Base using (List ; [] ; _∷_)
 import Data.List.Base as List
 import Data.List.Properties as LP
 open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
-open import Data.Vec.Base using (Vec ; lookup ; map)
+open import Data.Vec.Base using (Vec ; [] ; _∷_ ; lookup ; map)
 import Data.Vec.Properties as VP
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; refl ; cong ; cong₂ ; sym ; trans)
 open import Notations using (₀ ; ₁ ; ₂ ; ₃ ; ₄ ; ₅ ; ₆ ; ₇)
@@ -264,3 +264,26 @@ private
   where
   step : ∀ p → proj₂ (act (spL (ιS b)) p) ≡ proj₂ p
   step (j , s) = trans (cong (s xor_) (unsigned b j)) (BP.xor-identityʳ s)
+
+------------------------------------------------------------------------
+-- Boolean equality of invariant values (for the coset lookup tables)
+
+eqB : Bool → Bool → Bool
+eqB true  true  = true
+eqB false false = true
+eqB _     _     = false
+
+eqVec : ∀ {A : Set} {n} → (A → A → Bool) → Vec A n → Vec A n → Bool
+eqVec eq []       []       = true
+eqVec eq (x ∷ xs) (y ∷ ys) = eq x y ∧ eqVec eq xs ys
+
+eqSP : SP → SP → Bool
+eqSP = eqVec (λ p q → eqF (proj₁ p) (proj₁ q) ∧ eqB (proj₂ p) (proj₂ q))
+
+eqVB : Vec Bool 8 → Vec Bool 8 → Bool
+eqVB = eqVec eqB
+
+eqLB : List Bool → List Bool → Bool
+eqLB []       []       = true
+eqLB (x ∷ xs) (y ∷ ys) = eqB x y ∧ eqLB xs ys
+eqLB _        _        = false
