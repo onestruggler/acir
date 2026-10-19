@@ -63,11 +63,10 @@ bridge = f'''-------------------------------------------------------------------
 -- scratchpad/joint/ckt2.py: the joint paper's Proposition three, by
 -- de-borrowing over transported two-wire equations, of the rule as
 -- Syntactics states it) lives in FiveV/, over FiveV.Rules — the rules of
--- Syntactics and AX, nothing else — so it does not use the rule
--- λ-ck-tct.  Its theory embeds in Five.Rules' (`emb`), and so the
--- instance of Five.TransportAx.Base that Five.MissingInst takes from
--- λ-ck-tct is a theorem given completeness on four wires
--- (`ck-tct-derived`).
+-- Syntactics and AX, nothing else.  Its theory embeds in Five.Rules'
+-- (`emb`), and so the instance of Five.TransportAx.Base for ck-tct is a
+-- theorem given completeness on four wires (`ck-tct-derived`), which
+-- Five.MissingInst uses: λ(ck-tct) is not a rule of Five.Rules.
 -- Written by v-office's scratchpad/five/port_ccs.py.
 ------------------------------------------------------------------------
 

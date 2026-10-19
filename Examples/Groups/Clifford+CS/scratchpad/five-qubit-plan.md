@@ -524,3 +524,33 @@ SemanticSteps, Canonical, and Five/Letters before Lambda in v-office's
 tree, Lambda importing it), since par5 orders only the namespace's own
 modules; give heavy modules a 7 GB heap — at 5 GB the ones near 6 GB
 spent most of their time collecting (270-420 s against 130 s).
+
+## λ(ck-tct) dropped from clifford-cs's rules (2026-10-19)
+
+Branch **clifford-cs-ckt** (cccc46f3, on clifford-cs eef1e277) now
+removes the rule: Five.Rules has no λ-ck-tct, Stable.Rules' schema (the
+family `Wide`) has no w-ck-tct, and Five.MissingInst.missing takes
+completeness on four wires and fills Missing's ck-tct component with
+Five.CKTDerived.ck-tct-derived (Five.Main and Stable.F6 pass complete₄
+and c4).  The higher controlled versions need nothing new: Stable's
+transport sends the rule λ-ck-tct to the schema instance, and with the
+rule gone neither is used; the old four-wire rule ck-tct reaches every
+width through Missing as before.  So the rule set of Theorem S is the
+plan's: Syntactics, AX, λ(lf), λ(hyb-sq), λ(hyb-yb), and the schema over
+those four.
+
+Checked here: the closure of Stable.Presentation and Five.Soundness, 701
+modules of Clifford+CS (all of Five/D and Stable/; FiveV's 254 reused),
+2.5 hours on two jobs within 10 GB (par5 generalised to schedule the
+whole development, PAR5_NS='*', with the modules outside Clifford+CS
+prebuilt in order).  Not rechecked: Five.Main, whose change is the one
+argument `missing complete₄`, since Four/D (854 modules) is not built on
+this machine.
+
+λ(lf), λ(hyb-sq), λ(hyb-yb) stay rules.  lf is Barenco's decomposition of
+the triply controlled V⁻² with the control re-viewed (its two sides are,
+at four wires, the gate controlled by wire 3 of a three-wire word and
+controlled by wire 1 of another); under λ the same re-viewing is needed
+one level up, so the transports of three-wire derivations and the
+letterwise commutation of two λ's do not reach it, and nothing here
+rules out its being independent at five wires.
