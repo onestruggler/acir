@@ -77,21 +77,43 @@ neighbours. Call this graph Γ.
   26, contracts using only backtracks and squares. So, empirically, G₃
   is presented by Θ, C₃ and CCXH⁴.
 
-## Toward a proof in Agda
+## The proof in Agda (`../NaturalP/ThreeWire/`)
 
-- **Three lemmas suffice for every step.**
-  - *L0*: Θ-words with one matrix are equal. This is completeness of
-    CCX+HH on three wires, through θ.
-  - *L1*: words θH₀θ′ with one matrix are equal. The edge stabiliser
-    is A, and H₀ conjugates each generator of A to a θ-word.
-  - *L30*: words θ₁H₀θ₂H₀θ₃ with one matrix that move E8 to position
-    (2, 0⁶) are equal. Each is φ·CCZ·ω after L1 moves, and "CCZ
-    normalises W(D8)" is nine letter lemmas, one of them CCXH⁴.
-- **Contraction gives the derivations.** A contraction step between a
-  and b, through x and a neighbour z, is a word identity that becomes
-  L30 when it is rotated around the 4-cycle.
-- **The target relations.** These are the decoded Tables 1 and 2 on
-  eight levels, plus recovery (`../ThreeQubit/Presentation.agda` and
-  `CCX+HH/Translation`). With a decoder that is equivariant under the
-  classical S₈, only one instance of each relation family needs a
-  derivation.
+Completeness on three wires is Clément's translation
+(`CCX+HH/Translation`, as in `../ThreeQubit/`) with a decoder of our
+own. The relations to derive are every relation of Tables 1 and 2 on
+eight levels, decoded (2133 instances), and the nine generators against
+the decodings of their encodings. Every one is derived from the rules by
+a contraction found here.
+
+- **Theta-words.** `Kit` has θ-words: CCX+HH circuits read through θ.
+  Two with one matrix are equal (`Θstep`), by completeness of CCX+HH on
+  three wires. The matrices are compared by integer row actions
+  (`CCX+HH/Natural/ThreeWire/Fast`), about 0.2 s per check, against 9 s
+  for the dyadic matrices. `Kit` also moves H past the Clifford letters
+  (`hc`).
+- **CCZ.** `Letters` moves CCZ past the nine letters of W(D8) (`zc`). The
+  CCX letter needs the new rule; every other letter goes through `hc`.
+- **The steps** (`Steps`):
+  - `CF`: the canonical form φ·CCZ·ω of a word θH θH θ at position
+    (2, 0⁶).
+  - `SQ`: a square, which is L30 on the two words obtained by rotating
+    it.
+  - `BT`: a backtrack.
+  - `MG` and `TH`: Θ‑steps.
+- **Chains.** A derivation is a chain of segment replacements on a list
+  of θ-words and H (`Chain`, after Real-Clifford+CH's SegChain).
+  `chain.py` contracts the loop of each instance, `deriv.py` and
+  `geo.py` supply the geometry, and `emit_family.py` writes the chains
+  (`Inst/`).
+- **Dispatch.** The dispatch (`Disp/`) is by cases on the indices, with
+  the impossible orders refuted.
+- **Decoder.** `decoder.py` writes the decoder: X[a,b] is a W(D8)
+  letter word, M[a] is k·CCZ·k⁻¹, K[s] is r·K₀·r⁻¹ with
+  K₀ = H·θ₂·H·θ₃, and IH is H (`DecTable`, `Decoder`, `Elements`).
+- **Assembly.** `Relations` and `Recovery` give the translated
+  relations, and `Complete` concludes `complete₃`.
+
+About 30 000 matrix checks in all. Regenerate with `gen_all.sh`
+(families), `emit_relations.py`, `emit_recovery.py`,
+`emit_dectable.py` and `emit_letters.py`.

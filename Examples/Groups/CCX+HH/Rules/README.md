@@ -173,8 +173,11 @@ the real Clifford group, so they present at most the amalgam of the two,
 in which `(CCX H)⁴ = CZ↑` (H on the target, CZ on the controls) is not
 derivable. That rule is now `CCXH⁴` of `../../CCX+H/NaturalP/`.
 [`../../CCX+H/Rules3/`](../../CCX+H/Rules3/) gives the argument and
-evidence that it suffices: the graph of E8 lattices, whose squares all
-come from it.
+the reason it suffices: the graph of E8 lattices, whose squares all
+come from it. With it the CCX+H rules are **complete on three wires**,
+proved in Agda (`../../CCX+H/NaturalP/ThreeWire/Complete.complete₃`),
+so CCX+H's completeness at every width now waits only on CCX+HH's on
+four to twelve wires (`../../CCX+H/NaturalP/Three.every-width₃`).
 
 ## In Agda
 
@@ -378,8 +381,9 @@ bounded fact. This is a statement about matrix groups only.
 on four wires, O₈(ℤ[1/2])'s charge-00 part, are much larger than the
 controlled three-wire circuits (W(E8)). So the base cases are three wires
 (W(E8), finite) and four wires (infinite) for HH. For CCX+H they are
-three wires (infinite); from four wires on CCX+H follows from CCX+HH by
-the decomposition H = HH ⋊ C₂ (`../../CCX+H/GeneralN/`). On three
+three wires (infinite, now proved: `../../CCX+H/Rules3/`); from four
+wires on CCX+H follows from CCX+HH by the decomposition H = HH ⋊ C₂
+(`../../CCX+H/GeneralN/`). On three
 wires the half subgroups of W(E8) are only the even signed permutations
 of a face (order 192, `w3/halfw3.py`), so this argument does not reach
 there. Two attempts at a derivation oracle on three wires did not work:

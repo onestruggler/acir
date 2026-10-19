@@ -273,15 +273,26 @@ those `+RTS -M7G`. From three wires on the group is infinite, so an
 enumeration cannot certify completeness there.
 
 `NaturalP/` adds the swap as a gate and the rules of
-`CCX+HH/NaturalP` with HH written as H • H↑, together with its schema.
-The rules are sound at every width (`NaturalP/Soundness`), and
+`CCX+HH/NaturalP` with HH written as H • H↑, together with its schema,
+and one rule of its own, `CCXH⁴ : (CCX H)⁴ = CZ↑` (H on the target, CZ
+on the controls), without which the rules are incomplete on three
+wires (`Rules3/README.md`). The rules are sound at every width
+(`NaturalP/Soundness`), and
 complete at every width from four on given completeness of
 `CCX+HH/NaturalP` on at most twelve wires (`NaturalP/Complete`): on
 four or more wires every circuit is an HH circuit followed by H on
 wire 0 or not (`NaturalP/Elim`), and the parity of the number of H
 separates the two. On one and two wires completeness comes from
-`Natural/` (`NaturalP/Bridge`); three wires is open.
-`../CCX+HH/Rules/README.md` has the details.
+`Natural/` (`NaturalP/Bridge`). On three wires they are complete
+(`NaturalP/ThreeWire/Complete.complete₃`): Clément's translation with a
+decoder of our own, every decoded relation of Tables 1 and 2 derived by
+a contraction in the graph of E8 lattices (`Rules3/`). So
+`NaturalP/Three.every-width₃` is completeness at every width given
+`CCX+HH/NaturalP`'s on four to twelve wires. Check
+`NaturalP/Three.agda` module by module: `ThreeWire/Inst/` and
+`ThreeWire/Disp/` are about 150 generated modules, each under five
+minutes. `Rules3/README.md` and `../CCX+HH/Rules/README.md` have the
+details.
 
 ## Reproduction
 
