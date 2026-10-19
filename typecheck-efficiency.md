@@ -18,11 +18,12 @@ and the modules over 20 s 53 → 32: the generated TopPad equivalences,
 the Bian–Selinger tactic ports (`Clifford+CS-3qubit` Step3/Step4 and
 Soundness, `Clifford+T-2qubit` Equations 43, 44, 46), `DecodingChecks`,
 the `Checks8` evaluation modules, and modules whose cost is spread
-(`Paper-V0/Lemmas`, LemmaA1's) or found below (`U33Di`, `Weyl`).
-`Diamond`, `Auxiliary/Move`, `Auxiliary/Eq65`,
-`Independence/Clifford+CS/Bridge` and `Lemma88/Easy`, 23.6, 32.8, 23.1,
-24.0 and 33.2 s there, have since been brought under 10 s — Easy, first
-counted as spread, by a per-definition profile that showed otherwise.
+(`Paper-V0/Lemmas`) or found below (`U33Di`, `Weyl`). `Diamond`,
+`Auxiliary/Move`, `Auxiliary/Eq65`, `Independence/Clifford+CS/Bridge`,
+`Lemma88/Easy` and `LemmaA1/Base` and `More`, 23.6, 32.8, 23.1, 24.0,
+33.2, 23.5 and 26.4 s there, have since been brought under 10 s. Easy
+and the two LemmaA1 modules were first counted as spread; a
+per-definition profile, then a phase profile, showed otherwise.
 Wall-clock figures from a chunk the watchdog killed are estimates only
 (marked approximate): rechecked alone, four of them were 2–8 s.
 
@@ -81,6 +82,7 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
 | A `T b` proof left to a metavariable (`_`, solved by eta), or a check proved by `refl` on `≡ true`, not `tt` | `Independence/*/Semantics`, the three `Projective`s, `Clifford+CS/Encodings`; `Qutrit-Clifford/Faithful` | 21.0 → 3.9 s, 21.1 → 3.9 s, 15.2 → 3.3 s, 15.1 → 4.1 s, 14.2 → 3.2 s, … (133 → 52 s over eleven modules); 28.5 → 20.1 s |
 | A lemma about a concrete word's operator proved over a variable word, the word's facts as hypotheses, then instantiated | `Real-Clifford+CH/Auxiliary/Move`, `Eq65` | 32.8 → 6.8 s, 23.1 → 5.4 s (`conj` 26.5 → 2.8 s, `Σ-conj` 17.5 → 1.9 s) |
 | A definitional step stated as a lemma in the defining module's own spelling of a hidden width, and clients going through it | `Real-Clifford+CH/Decoding.dP-HH`, `Lemma88/Easy` | 33.2 → 8.8 s (profile total 47.0 → 19.8 s) |
+| A chain's index after a step is a function application holding the previous index once, not an expression holding it twice | `Real-Clifford+CH/Auxiliary/SegChain`: `LemmaA1/Base`, `LemmaA1/More` | 23.5 → 0.7 s, 26.4 → 0.1 s |
 | A where-function's result type written out, not left as `_` | `Independence/Clifford+CS/Bridge` | 24.0 → 1.2 s (`split` 19.8 → 0.06 s) |
 | A where block full of module applications made a parameterised module, the function a one-line call into it | `Real-Clifford+CH-TwoLevel/Diamond` | 23.6 → 8.9 s (Positivity 12.1 → 0.15 s) |
 | Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived`, `Qubit-Clifford/Relations/Rules/Figure5`, `Figure7` | 44.6 → 14.7 s (0.8 GB), 22.5 → 7.9 s, 22.8 → 9.2 s |
@@ -309,6 +311,26 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   on words: 51.3 → 6.4 s, and the same edit in `Real-Clifford/Bridge`
   45.5 → 5.4 s. The width lemma's own body compares the two spellings
   with the word a variable, which is cheap.
+- **Indices that double.** `SegChain`'s chains of segment
+  replacements, `at k n ys e ▸ …`, typed each step's successor as
+  `Chain (next s) zs`, with `next` a function of the step record `s`.
+  So the index of the next step held the previous index twice: as
+  `next`'s implicit argument, and inside the proof `e`, whose implicit
+  arguments (`sym`'s endpoints, say) had been solved from its type
+  `⟪ take n (drop k xs) ⟫ ≈ ⟪ ys ⟫`. A chain of k steps then has
+  indices of size 2^k as trees. Agda keeps them shared in memory, but
+  positivity checking, dead-code analysis, projection-likeness and the
+  occurs check traverse them as trees. `LemmaA1/More`, two lemmas, one
+  of them a single chain of 13 steps, spent 6.0 s in Positivity, 3.5 s
+  in dead code and 2.9 s in coverage; cutting the chain in two by hand
+  took it from 32.5 s to 6.6 s. The fix is in SegChain: the successor
+  index is `next k n ys xs`, with `next` a function of the step's data
+  and the previous word, so it holds the previous word once and the
+  proof not at all (`Step xs k n ys` carries the data in its type, and
+  `at` builds it). The unfolded `take k xs ++ ys ++ drop (k + n) xs`
+  would hold it twice again. Base 23.5 → 0.7 s, More 26.4 → 0.1 s, with
+  the generated files unchanged. Look for this wherever a data type's
+  index after a step is computed from the step.
 - **A definitional step, stated where it is defined.** `Lemma88/Easy`
   proves its Hadamard rules through the decoding of a letter,
   `dP (HH a b c d _ _) = dHH (toℕ a) …`. Unfolding that clause gives
