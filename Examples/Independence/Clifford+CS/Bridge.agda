@@ -317,7 +317,11 @@ module ViaS {n : ℕ} {G : Set}
     o : Fin (2 ^ n)
     o = Mat.idx (replicate n false)
 
-    split : (Σ ℕ λ k → t ≡ k + k) ⊎ (Σ ℕ λ k → t ≡ suc (k + k)) → b * 7 + a ≡ t + q * 8 → _
+    -- (The result type written out: as `_` the two clauses were
+    -- elaborated against a metavariable, 19.8 s against 0.06 s.)
+    split : (Σ ℕ λ k → t ≡ k + k) ⊎ (Σ ℕ λ k → t ≡ suc (k + k)) → b * 7 + a ≡ t + q * 8 →
+            Σ ℕ λ k → Σ ℕ λ q →
+              (cʷ v + (k + k) + q * 8 ≡ cʷ w + cʷ v * 8) × (F (Jʷ k (ℰʷ w)) ≡ F (ℰʷ v))
     split (inj₁ (k , tk)) d =
       k , q , arith a b q (k + k) (trans d′ (cong (q * 8 +_) tk)) ,
       mapι-injective (trans (F-Jʷ k (ℰʷ w))
