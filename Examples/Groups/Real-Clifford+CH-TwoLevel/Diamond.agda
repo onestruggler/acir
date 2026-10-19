@@ -573,13 +573,14 @@ module _ (M : Matrix n n D) .(o : ColOrth M) (eq : level M ≡ L) where
 
   open State M o eq using (W ; odd≤ ; square ; canonical-at)
 
-  diamond : ∀ {a b c d : Fin n} (ab : a < b) (bc : b < c) (cd : c < d) →
-            firstOdd W ≡ just a → nextSame a W ≡ just b →
-            Odd (W ! c) → Odd (W ! d) → rbit (W ! c) ≡ rbit (W ! a) → rbit (W ! d) ≡ rbit (W ! a) →
-            (Path (H a c (FinP.<-trans ab bc)) M o × Path (H b d (FinP.<-trans bc cd)) M o) ×
-            (Path (H a d (FinP.<-trans ab (FinP.<-trans bc cd))) M o × Path (H b c bc) M o)
-  diamond {a} {b} {c} {d} ab bc cd fa nb oc od rc rd = result
-    where
+  -- A module rather than a where block under diamond: where-bound
+  -- definitions share their parent's mutual block, and positivity
+  -- checking of that block, with the copies its module applications
+  -- make, took 12 of the module's 24 s.
+  module Diamond-at {a b c d : Fin n} (ab : a < b) (bc : b < c) (cd : c < d)
+                    (fa : firstOdd W ≡ just a) (nb : nextSame a W ≡ just b)
+                    (oc : Odd (W ! c)) (od : Odd (W ! d))
+                    (rc : rbit (W ! c) ≡ rbit (W ! a)) (rd : rbit (W ! d) ≡ rbit (W ! a)) where
     d≤p : d ≤ p
     d≤p = odd≤ od
     open Four ab bc cd d≤p
@@ -729,3 +730,10 @@ module _ (M : Matrix n n D) .(o : ColOrth M) (eq : level M ≡ L) where
         pAC = Tac.from-Z CIZ.pAC
         pBD = square a c ac b d bd (R.valid ₀ ₂) (R.valid ₁ ₃) b≢a b≢c d≢a d≢c pAC
         module CII = R.CaseII e pAC pBD
+
+  diamond : ∀ {a b c d : Fin n} (ab : a < b) (bc : b < c) (cd : c < d) →
+            firstOdd W ≡ just a → nextSame a W ≡ just b →
+            Odd (W ! c) → Odd (W ! d) → rbit (W ! c) ≡ rbit (W ! a) → rbit (W ! d) ≡ rbit (W ! a) →
+            (Path (H a c (FinP.<-trans ab bc)) M o × Path (H b d (FinP.<-trans bc cd)) M o) ×
+            (Path (H a d (FinP.<-trans ab (FinP.<-trans bc cd))) M o × Path (H b c bc) M o)
+  diamond ab bc cd fa nb oc od rc rd = Diamond-at.result ab bc cd fa nb oc od rc rd
