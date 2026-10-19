@@ -84,7 +84,7 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
 | A `T b` proof left to a metavariable (`_`, solved by eta), or a check proved by `refl` on `≡ true`, not `tt` | `Independence/*/Semantics`, the three `Projective`s, `Clifford+CS/Encodings`; `Qutrit-Clifford/Faithful` | 21.0 → 3.9 s, 21.1 → 3.9 s, 15.2 → 3.3 s, 15.1 → 4.1 s, 14.2 → 3.2 s, … (133 → 52 s over eleven modules); 28.5 → 20.1 s |
 | A lemma about a concrete word's operator proved over a variable word, the word's facts as hypotheses, then instantiated | `Real-Clifford+CH/Auxiliary/Move`, `Eq65` | 32.8 → 6.8 s, 23.1 → 5.4 s (`conj` 26.5 → 2.8 s, `Σ-conj` 17.5 → 1.9 s) |
 | A definitional step stated as a lemma in the defining module's own spelling of a hidden width, and clients going through it | `Real-Clifford+CH/Decoding.dP-HH`, `Lemma88/Easy` | 33.2 → 8.8 s (profile total 47.0 → 19.8 s) |
-| A reflection macro that asks no more of the type checker than it needs (no `inferType` on terms whose type it knows), and tries `Eq.refl` before its traversal | `Circuit/TopPad/Closed`: the thirteen TopPad modules that use `⇓-same` | about 359 → 291 → 200 s in all; Qupit-Phase-Affine 49.0 → 32.3 s, Figure1 48.9 → 31.2 s, Figure1-MS 48.2 → 33.3 s, Simplified-V1 32.7 → 17.9 s, Paper-V0 26.5 → 10.1 s |
+| A reflection macro that asks no more of the type checker than it needs (no `inferType` on terms whose type it knows), tries `Eq.refl` before its traversal, and is called once per equation (a lemma whose type is computed from the rule, used twice) | `Circuit/TopPad/Closed`, `Circuit/TopPad/gen/gen_toppad.py`: the thirteen TopPad modules that use `⇓-same` | about 359 → 291 → 200 → 131 s in all; Qupit-Phase-Affine 49.0 → 21.0 s, Figure1 48.9 → 19.6 s, Figure1-MS 48.2 → 19.3 s, Simplified-V1 32.7 → 11.0 s, Paper-V0 26.5 → 7.8 s |
 | A scaling by √2 as its own operation, not through the general ℤ[√2] product (one integer operation where that spends seven) | `Real-Clifford+CH/Evaluation`, through `Semantics/Ring`'s `√2*`: `Auxiliary/DecodingChecks` | 201 → 169.5 s (reading a decoded letter a fifth faster) |
 | A decision too long for one file split by its outermost quantifier, a module per instance | `Real-Clifford+CH/Auxiliary/DecodingChecks`: `DecodingChecks/ZX0`…`ZX7`; `Checks8/R34`, `R42` (with `R34Hi`, `R42Hi`) | 169.5 s in one module → ten modules, 19.7 s at most; 23.6 s → 10.1 + 9.8 s, 21.0 s → 9.0 + 9.5 s |
 | A chain's index after a step is a function application holding the previous index once, not an expression holding it twice | `Real-Clifford+CH/Auxiliary/SegChain`: `LemmaA1/Base`, `LemmaA1/More` | 23.5 → 0.7 s, 26.4 → 0.1 s |
@@ -542,8 +542,14 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   (unifying with a meta in it could solve the meta): wherever no power
   is stuck the traversal ends in `Eq.refl` anyway, and unification gets
   there without quoting anything (Paper-V0's 21.6 → 10.1 s, all thirteen
-  291 → 200 s). Figure1's, Figure1-MS's and Qupit-Phase-Affine's
-  (31–33 s) are mostly rules with stuck powers, which still go through
+  291 → 200 s). And each equation is now proved once: a stuck rule's
+  padded form (`r↓`) and `srel-⇓` both needed, from the macro, that each
+  side of the rule ⇓'d is the same side one wire wider. The generator now
+  emits those as lemmas `r⇓ˡ`, `r⇓ʳ` used by both, their types computed
+  from the rule's constructor at the two widths (`⇓ˡ r r′ = w ⇓ ≡ w′`
+  for the left sides w, w′ of r and r′), so no word is written out
+  (all thirteen 200 → 131 s; Figure1's 31.2 → 19.6 s). What is left
+  (Qupit-Phase-Affine's 21.0 s) is rules with stuck powers going through
   the traversal, whose cost is spread over its reduce-and-quote steps. Not the final `unify` of the generated proof
   (dropping it saves nothing), nor the fallback to unrestricted
   `reduce` (dropping it saves nothing on Paper-V0, and Figure1's words

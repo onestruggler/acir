@@ -133,6 +133,31 @@ def generate(cfg):
     out.append('')
     out.append('open E public using (_TRel,_===_ ; _⊢ᵀ_≈_ ; _⊢ᴸ_≈_)')
     out.append('')
+    def relstr(n, w, v):
+        return (f"{cfg['rel-prefix']} {n} {w} {v}" if cfg.get('rel-prefix')
+                else f"{n} {cfg['rel-op']}, {w} === {v}")
+    if cfg.get('stuck'):
+        # Each side of each rule ⇓'d is that side one wire wider: proved
+        # once, by ⇓-same, and used by the padded rule and by srel-⇓,
+        # which used to call ⇓-same on the same equations each.
+        out.append('-- The equations ⇓-same proves for a rule: each side ⇓\'d is that side')
+        out.append('-- one wire wider.  Proved once per rule, for its padded form and for')
+        out.append('-- srel-⇓ below, which would otherwise each prove them.')
+        out.append('')
+        out.append('import Relation.Binary.PropositionalEquality as TopPad-≡')
+        out.append('')
+        out.append(f"⇓ˡ ⇓ʳ : ∀ {{n w v w′ v′}} → {relstr('n', 'w', 'v')} → {relstr('(₁₊ n)', 'w′', 'v′')} → Set")
+        out.append("⇓ˡ {w = w} {w′ = w′} _ _ = TopPad-≡._≡_ (w ⇓) w′")
+        out.append("⇓ʳ {v = v} {v′ = v′} _ _ = TopPad-≡._≡_ (v ⇓) v′")
+        for r in rules:
+            ps = (r['params'] + ' ') if r['params'] else ''
+            a = (' '.join(r['args']) + ' ') if r['args'] else ''
+            R = W(app(r['name'], r['args']))
+            for side in 'ˡʳ':
+                out.append('')
+                out.append(f"{r['name']}⇓{side} : {ps}⇓{side} {{{r['width']}}} {R} {R}")
+                out.append(f"{r['name']}⇓{side} {a}= {SB}")
+        out.append('')
     if cfg.get('stuck'):
         out.append('-- Each rule on the bottom wires of every wider circuit: one wire wider')
         out.append('-- its words are the same words, up to the powers ⇓ does not compute')
@@ -147,7 +172,8 @@ def generate(cfg):
         out += eqline(f"{r['name']}↓ : {ps}{r['width']} TRel,", r['l'], r['r'], 6)
         out.append(f"{r['name']}↓ {{0}}    {a}= {base(app(r['name'] + B, r['args']))}")
         if cfg.get('stuck'):
-            out.append(f"{r['name']}↓ {{₁₊ n}} {a}= {EE}.cong↓≡ {SB} {SB} {app(r['name'] + '↓', r['args'])}")
+            out.append(f"{r['name']}↓ {{₁₊ n}} {a}= {EE}.cong↓≡ {app(r['name'] + '⇓ˡ', r['args'])} "
+                       f"{app(r['name'] + '⇓ʳ', r['args'])} {app(r['name'] + '↓', r['args'])}")
         else:
             out.append(f"{r['name']}↓ {{₁₊ n}} {a}= TP.cong↓ {app(r['name'] + '↓', r['args'])}")
     for s in cfg.get('extra-defs', []):
@@ -179,7 +205,8 @@ def generate(cfg):
     out.append('')
     out.append(f"  srel-⇓ : {relnwv} → (₁₊ n) ⊢ᴸ w ⇓ ≈ v ⇓")
     for r in rules:
-        dflt = (f"{EE}.axiom≡ {SB} {SB} ({lift(W(app(r['name'], r['args'])))})" if cfg.get('stuck')
+        dflt = (f"{EE}.axiom≡ {app(r['name'] + '⇓ˡ', r['args'])} {app(r['name'] + '⇓ʳ', r['args'])} "
+                f"({lift(W(app(r['name'], r['args'])))})" if cfg.get('stuck')
                 else f"PB.axiom ({lift(W(app(r['name'], r['args'])))})")
         rhs = cfg.get('srel-⇓', {}).get(r['name']) or dflt
         out.append(f"  srel-⇓ {W(app(r['name'], r['args']))} = {rhs}")

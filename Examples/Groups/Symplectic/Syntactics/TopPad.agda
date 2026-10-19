@@ -73,79 +73,191 @@ module E  = Circuit.TopPad.Equivalence.Lift≅Top-Pad SympGate Base._SRel,_===_ 
 
 open E public using (_TRel,_===_ ; _⊢ᵀ_≈_ ; _⊢ᴸ_≈_)
 
+-- The equations ⇓-same proves for a rule: each side ⇓'d is that side
+-- one wire wider.  Proved once per rule, for its padded form and for
+-- srel-⇓ below, which would otherwise each prove them.
+
+import Relation.Binary.PropositionalEquality as TopPad-≡
+
+⇓ˡ ⇓ʳ : ∀ {n w v w′ v′} → Base._SRel,_===_ n w v → Base._SRel,_===_ (₁₊ n) w′ v′ → Set
+⇓ˡ {w = w} {w′ = w′} _ _ = TopPad-≡._≡_ (w ⇓) w′
+⇓ʳ {v = v} {v′ = v′} _ _ = TopPad-≡._≡_ (v ⇓) v′
+
+order-S⇓ˡ : ⇓ˡ {(₁₊ n)} Base.order-S Base.order-S
+order-S⇓ˡ = ⇓-same
+
+order-S⇓ʳ : ⇓ʳ {(₁₊ n)} Base.order-S Base.order-S
+order-S⇓ʳ = ⇓-same
+
+order-H⇓ˡ : ⇓ˡ {(₁₊ n)} Base.order-H Base.order-H
+order-H⇓ˡ = ⇓-same
+
+order-H⇓ʳ : ⇓ʳ {(₁₊ n)} Base.order-H Base.order-H
+order-H⇓ʳ = ⇓-same
+
+order-SH⇓ˡ : ⇓ˡ {(₁₊ n)} Base.order-SH Base.order-SH
+order-SH⇓ˡ = ⇓-same
+
+order-SH⇓ʳ : ⇓ʳ {(₁₊ n)} Base.order-SH Base.order-SH
+order-SH⇓ʳ = ⇓-same
+
+comm-HHS⇓ˡ : ⇓ˡ {(₁₊ n)} Base.comm-HHS Base.comm-HHS
+comm-HHS⇓ˡ = ⇓-same
+
+comm-HHS⇓ʳ : ⇓ʳ {(₁₊ n)} Base.comm-HHS Base.comm-HHS
+comm-HHS⇓ʳ = ⇓-same
+
+M-mul⇓ˡ : ∀ x y → ⇓ˡ {(₁₊ n)} (Base.M-mul x y) (Base.M-mul x y)
+M-mul⇓ˡ x y = ⇓-same
+
+M-mul⇓ʳ : ∀ x y → ⇓ʳ {(₁₊ n)} (Base.M-mul x y) (Base.M-mul x y)
+M-mul⇓ʳ x y = ⇓-same
+
+semi-MS⇓ˡ : ∀ x → ⇓ˡ {(₁₊ n)} (Base.semi-MS x) (Base.semi-MS x)
+semi-MS⇓ˡ x = ⇓-same
+
+semi-MS⇓ʳ : ∀ x → ⇓ʳ {(₁₊ n)} (Base.semi-MS x) (Base.semi-MS x)
+semi-MS⇓ʳ x = ⇓-same
+
+semi-M↑CZ⇓ˡ : ∀ x → ⇓ˡ {(₂₊ n)} (Base.semi-M↑CZ x) (Base.semi-M↑CZ x)
+semi-M↑CZ⇓ˡ x = ⇓-same
+
+semi-M↑CZ⇓ʳ : ∀ x → ⇓ʳ {(₂₊ n)} (Base.semi-M↑CZ x) (Base.semi-M↑CZ x)
+semi-M↑CZ⇓ʳ x = ⇓-same
+
+semi-M↓CZ⇓ˡ : ∀ x → ⇓ˡ {(₂₊ n)} (Base.semi-M↓CZ x) (Base.semi-M↓CZ x)
+semi-M↓CZ⇓ˡ x = ⇓-same
+
+semi-M↓CZ⇓ʳ : ∀ x → ⇓ʳ {(₂₊ n)} (Base.semi-M↓CZ x) (Base.semi-M↓CZ x)
+semi-M↓CZ⇓ʳ x = ⇓-same
+
+order-CZ⇓ˡ : ⇓ˡ {(₂₊ n)} Base.order-CZ Base.order-CZ
+order-CZ⇓ˡ = ⇓-same
+
+order-CZ⇓ʳ : ⇓ʳ {(₂₊ n)} Base.order-CZ Base.order-CZ
+order-CZ⇓ʳ = ⇓-same
+
+comm-CZ-S↓⇓ˡ : ⇓ˡ {(₂₊ n)} Base.comm-CZ-S↓ Base.comm-CZ-S↓
+comm-CZ-S↓⇓ˡ = ⇓-same
+
+comm-CZ-S↓⇓ʳ : ⇓ʳ {(₂₊ n)} Base.comm-CZ-S↓ Base.comm-CZ-S↓
+comm-CZ-S↓⇓ʳ = ⇓-same
+
+comm-CZ-S↑⇓ˡ : ⇓ˡ {(₂₊ n)} Base.comm-CZ-S↑ Base.comm-CZ-S↑
+comm-CZ-S↑⇓ˡ = ⇓-same
+
+comm-CZ-S↑⇓ʳ : ⇓ʳ {(₂₊ n)} Base.comm-CZ-S↑ Base.comm-CZ-S↑
+comm-CZ-S↑⇓ʳ = ⇓-same
+
+selinger-c10⇓ˡ : ⇓ˡ {(₂₊ n)} Base.selinger-c10 Base.selinger-c10
+selinger-c10⇓ˡ = ⇓-same
+
+selinger-c10⇓ʳ : ⇓ʳ {(₂₊ n)} Base.selinger-c10 Base.selinger-c10
+selinger-c10⇓ʳ = ⇓-same
+
+selinger-c11⇓ˡ : ⇓ˡ {(₂₊ n)} Base.selinger-c11 Base.selinger-c11
+selinger-c11⇓ˡ = ⇓-same
+
+selinger-c11⇓ʳ : ⇓ʳ {(₂₊ n)} Base.selinger-c11 Base.selinger-c11
+selinger-c11⇓ʳ = ⇓-same
+
+selinger-c12⇓ˡ : ⇓ˡ {(₃₊ n)} Base.selinger-c12 Base.selinger-c12
+selinger-c12⇓ˡ = ⇓-same
+
+selinger-c12⇓ʳ : ⇓ʳ {(₃₊ n)} Base.selinger-c12 Base.selinger-c12
+selinger-c12⇓ʳ = ⇓-same
+
+selinger-c13⇓ˡ : ⇓ˡ {(₃₊ n)} Base.selinger-c13 Base.selinger-c13
+selinger-c13⇓ˡ = ⇓-same
+
+selinger-c13⇓ʳ : ⇓ʳ {(₃₊ n)} Base.selinger-c13 Base.selinger-c13
+selinger-c13⇓ʳ = ⇓-same
+
+selinger-c14⇓ˡ : ⇓ˡ {(₃₊ n)} Base.selinger-c14 Base.selinger-c14
+selinger-c14⇓ˡ = ⇓-same
+
+selinger-c14⇓ʳ : ⇓ʳ {(₃₊ n)} Base.selinger-c14 Base.selinger-c14
+selinger-c14⇓ʳ = ⇓-same
+
+selinger-c15⇓ˡ : ⇓ˡ {(₃₊ n)} Base.selinger-c15 Base.selinger-c15
+selinger-c15⇓ˡ = ⇓-same
+
+selinger-c15⇓ʳ : ⇓ʳ {(₃₊ n)} Base.selinger-c15 Base.selinger-c15
+selinger-c15⇓ʳ = ⇓-same
+
 -- Each rule on the bottom wires of every wider circuit: one wire wider
 -- its words are the same words, up to the powers ⇓ does not compute
 -- through (⇓-same).
 
 order-S↓ : (₁₊ n) TRel, S ^ p === ε
 order-S↓ {0}    = TP.srel order-Sᴮ
-order-S↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same order-S↓
+order-S↓ {₁₊ n} = E.cong↓≡ order-S⇓ˡ order-S⇓ʳ order-S↓
 
 order-H↓ : (₁₊ n) TRel, H ^ 4 === ε
 order-H↓ {0}    = TP.srel order-Hᴮ
-order-H↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same order-H↓
+order-H↓ {₁₊ n} = E.cong↓≡ order-H⇓ˡ order-H⇓ʳ order-H↓
 
 order-SH↓ : (₁₊ n) TRel, (S • H) ^ 3 === ε
 order-SH↓ {0}    = TP.srel order-SHᴮ
-order-SH↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same order-SH↓
+order-SH↓ {₁₊ n} = E.cong↓≡ order-SH⇓ˡ order-SH⇓ʳ order-SH↓
 
 comm-HHS↓ : (₁₊ n) TRel, H • H • S === S • H • H
 comm-HHS↓ {0}    = TP.srel comm-HHSᴮ
-comm-HHS↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same comm-HHS↓
+comm-HHS↓ {₁₊ n} = E.cong↓≡ comm-HHS⇓ˡ comm-HHS⇓ʳ comm-HHS↓
 
 M-mul↓ : ∀ x y → (₁₊ n) TRel, M x • M y === M (x *' y)
 M-mul↓ {0}    x y = TP.srel (M-mulᴮ x y)
-M-mul↓ {₁₊ n} x y = E.cong↓≡ ⇓-same ⇓-same (M-mul↓ x y)
+M-mul↓ {₁₊ n} x y = E.cong↓≡ (M-mul⇓ˡ x y) (M-mul⇓ʳ x y) (M-mul↓ x y)
 
 semi-MS↓ : ∀ x → (₁₊ n) TRel, M x • S === S^ (x ^2) • M x
 semi-MS↓ {0}    x = TP.srel (semi-MSᴮ x)
-semi-MS↓ {₁₊ n} x = E.cong↓≡ ⇓-same ⇓-same (semi-MS↓ x)
+semi-MS↓ {₁₊ n} x = E.cong↓≡ (semi-MS⇓ˡ x) (semi-MS⇓ʳ x) (semi-MS↓ x)
 
 semi-M↑CZ↓ : ∀ x → (₂₊ n) TRel, M x ↑ • CZ === CZ^ (x ^1) • M x ↑
 semi-M↑CZ↓ {0}    x = TP.srel (semi-M↑CZᴮ x)
-semi-M↑CZ↓ {₁₊ n} x = E.cong↓≡ ⇓-same ⇓-same (semi-M↑CZ↓ x)
+semi-M↑CZ↓ {₁₊ n} x = E.cong↓≡ (semi-M↑CZ⇓ˡ x) (semi-M↑CZ⇓ʳ x) (semi-M↑CZ↓ x)
 
 semi-M↓CZ↓ : ∀ x → (₂₊ n) TRel, M x ↓ • CZ === CZ^ (x ^1) • M x ↓
 semi-M↓CZ↓ {0}    x = TP.srel (semi-M↓CZᴮ x)
-semi-M↓CZ↓ {₁₊ n} x = E.cong↓≡ ⇓-same ⇓-same (semi-M↓CZ↓ x)
+semi-M↓CZ↓ {₁₊ n} x = E.cong↓≡ (semi-M↓CZ⇓ˡ x) (semi-M↓CZ⇓ʳ x) (semi-M↓CZ↓ x)
 
 order-CZ↓ : (₂₊ n) TRel, CZ ^ p === ε
 order-CZ↓ {0}    = TP.srel order-CZᴮ
-order-CZ↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same order-CZ↓
+order-CZ↓ {₁₊ n} = E.cong↓≡ order-CZ⇓ˡ order-CZ⇓ʳ order-CZ↓
 
 comm-CZ-S↓↓ : (₂₊ n) TRel, CZ • S ↓ === S ↓ • CZ
 comm-CZ-S↓↓ {0}    = TP.srel comm-CZ-S↓ᴮ
-comm-CZ-S↓↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same comm-CZ-S↓↓
+comm-CZ-S↓↓ {₁₊ n} = E.cong↓≡ comm-CZ-S↓⇓ˡ comm-CZ-S↓⇓ʳ comm-CZ-S↓↓
 
 comm-CZ-S↑↓ : (₂₊ n) TRel, CZ • S ↑ === S ↑ • CZ
 comm-CZ-S↑↓ {0}    = TP.srel comm-CZ-S↑ᴮ
-comm-CZ-S↑↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same comm-CZ-S↑↓
+comm-CZ-S↑↓ {₁₊ n} = E.cong↓≡ comm-CZ-S↑⇓ˡ comm-CZ-S↑⇓ʳ comm-CZ-S↑↓
 
 selinger-c10↓ : (₂₊ n) TRel, CZ • H ↑ • CZ ===
       S⁻¹ ↑ • H ↑ • S⁻¹ ↑ • CZ • H ↑ • S⁻¹ ↑ • S⁻¹ ↓
 selinger-c10↓ {0}    = TP.srel selinger-c10ᴮ
-selinger-c10↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same selinger-c10↓
+selinger-c10↓ {₁₊ n} = E.cong↓≡ selinger-c10⇓ˡ selinger-c10⇓ʳ selinger-c10↓
 
 selinger-c11↓ : (₂₊ n) TRel, CZ • H ↓ • CZ ===
       S⁻¹ ↓ • H ↓ • S⁻¹ ↓ • CZ • H ↓ • S⁻¹ ↓ • S⁻¹ ↑
 selinger-c11↓ {0}    = TP.srel selinger-c11ᴮ
-selinger-c11↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same selinger-c11↓
+selinger-c11↓ {₁₊ n} = E.cong↓≡ selinger-c11⇓ˡ selinger-c11⇓ʳ selinger-c11↓
 
 selinger-c12↓ : (₃₊ n) TRel, CZ ↑ • CZ === CZ • CZ ↑
 selinger-c12↓ {0}    = TP.srel selinger-c12ᴮ
-selinger-c12↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same selinger-c12↓
+selinger-c12↓ {₁₊ n} = E.cong↓≡ selinger-c12⇓ˡ selinger-c12⇓ʳ selinger-c12↓
 
 selinger-c13↓ : (₃₊ n) TRel, ⊤⊥ ↑ • CZ ↓ • ⊥⊤ ↑ === ⊥⊤ ↓ • CZ ↑ • ⊤⊥ ↓
 selinger-c13↓ {0}    = TP.srel selinger-c13ᴮ
-selinger-c13↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same selinger-c13↓
+selinger-c13↓ {₁₊ n} = E.cong↓≡ selinger-c13⇓ˡ selinger-c13⇓ʳ selinger-c13↓
 
 selinger-c14↓ : (₃₊ n) TRel, (⊤⊥ ↑ • CZ ↓) ^ 3 === ε
 selinger-c14↓ {0}    = TP.srel selinger-c14ᴮ
-selinger-c14↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same selinger-c14↓
+selinger-c14↓ {₁₊ n} = E.cong↓≡ selinger-c14⇓ˡ selinger-c14⇓ʳ selinger-c14↓
 
 selinger-c15↓ : (₃₊ n) TRel, (⊥⊤ ↓ • CZ ↑) ^ 3 === ε
 selinger-c15↓ {0}    = TP.srel selinger-c15ᴮ
-selinger-c15↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same selinger-c15↓
+selinger-c15↓ {₁₊ n} = E.cong↓≡ selinger-c15⇓ˡ selinger-c15⇓ʳ selinger-c15↓
 
 ------------------------------------------------------------------------
 -- The two have the same rules
@@ -192,23 +304,23 @@ same = record { pad = pad ; unpad = unpad ; srel-⇓ = srel-⇓ }
   unpad selinger-c15ᴮ = PB.axiom (srel Base.selinger-c15)
 
   srel-⇓ : Base._SRel,_===_ n w v → (₁₊ n) ⊢ᴸ w ⇓ ≈ v ⇓
-  srel-⇓ Base.order-S = E.axiom≡ ⇓-same ⇓-same (srel Base.order-S)
-  srel-⇓ Base.order-H = E.axiom≡ ⇓-same ⇓-same (srel Base.order-H)
-  srel-⇓ Base.order-SH = E.axiom≡ ⇓-same ⇓-same (srel Base.order-SH)
-  srel-⇓ Base.comm-HHS = E.axiom≡ ⇓-same ⇓-same (srel Base.comm-HHS)
-  srel-⇓ (Base.M-mul x y) = E.axiom≡ ⇓-same ⇓-same (srel (Base.M-mul x y))
-  srel-⇓ (Base.semi-MS x) = E.axiom≡ ⇓-same ⇓-same (srel (Base.semi-MS x))
-  srel-⇓ (Base.semi-M↑CZ x) = E.axiom≡ ⇓-same ⇓-same (srel (Base.semi-M↑CZ x))
-  srel-⇓ (Base.semi-M↓CZ x) = E.axiom≡ ⇓-same ⇓-same (srel (Base.semi-M↓CZ x))
-  srel-⇓ Base.order-CZ = E.axiom≡ ⇓-same ⇓-same (srel Base.order-CZ)
-  srel-⇓ Base.comm-CZ-S↓ = E.axiom≡ ⇓-same ⇓-same (srel Base.comm-CZ-S↓)
-  srel-⇓ Base.comm-CZ-S↑ = E.axiom≡ ⇓-same ⇓-same (srel Base.comm-CZ-S↑)
-  srel-⇓ Base.selinger-c10 = E.axiom≡ ⇓-same ⇓-same (srel Base.selinger-c10)
-  srel-⇓ Base.selinger-c11 = E.axiom≡ ⇓-same ⇓-same (srel Base.selinger-c11)
-  srel-⇓ Base.selinger-c12 = E.axiom≡ ⇓-same ⇓-same (srel Base.selinger-c12)
-  srel-⇓ Base.selinger-c13 = E.axiom≡ ⇓-same ⇓-same (srel Base.selinger-c13)
-  srel-⇓ Base.selinger-c14 = E.axiom≡ ⇓-same ⇓-same (srel Base.selinger-c14)
-  srel-⇓ Base.selinger-c15 = E.axiom≡ ⇓-same ⇓-same (srel Base.selinger-c15)
+  srel-⇓ Base.order-S = E.axiom≡ order-S⇓ˡ order-S⇓ʳ (srel Base.order-S)
+  srel-⇓ Base.order-H = E.axiom≡ order-H⇓ˡ order-H⇓ʳ (srel Base.order-H)
+  srel-⇓ Base.order-SH = E.axiom≡ order-SH⇓ˡ order-SH⇓ʳ (srel Base.order-SH)
+  srel-⇓ Base.comm-HHS = E.axiom≡ comm-HHS⇓ˡ comm-HHS⇓ʳ (srel Base.comm-HHS)
+  srel-⇓ (Base.M-mul x y) = E.axiom≡ (M-mul⇓ˡ x y) (M-mul⇓ʳ x y) (srel (Base.M-mul x y))
+  srel-⇓ (Base.semi-MS x) = E.axiom≡ (semi-MS⇓ˡ x) (semi-MS⇓ʳ x) (srel (Base.semi-MS x))
+  srel-⇓ (Base.semi-M↑CZ x) = E.axiom≡ (semi-M↑CZ⇓ˡ x) (semi-M↑CZ⇓ʳ x) (srel (Base.semi-M↑CZ x))
+  srel-⇓ (Base.semi-M↓CZ x) = E.axiom≡ (semi-M↓CZ⇓ˡ x) (semi-M↓CZ⇓ʳ x) (srel (Base.semi-M↓CZ x))
+  srel-⇓ Base.order-CZ = E.axiom≡ order-CZ⇓ˡ order-CZ⇓ʳ (srel Base.order-CZ)
+  srel-⇓ Base.comm-CZ-S↓ = E.axiom≡ comm-CZ-S↓⇓ˡ comm-CZ-S↓⇓ʳ (srel Base.comm-CZ-S↓)
+  srel-⇓ Base.comm-CZ-S↑ = E.axiom≡ comm-CZ-S↑⇓ˡ comm-CZ-S↑⇓ʳ (srel Base.comm-CZ-S↑)
+  srel-⇓ Base.selinger-c10 = E.axiom≡ selinger-c10⇓ˡ selinger-c10⇓ʳ (srel Base.selinger-c10)
+  srel-⇓ Base.selinger-c11 = E.axiom≡ selinger-c11⇓ˡ selinger-c11⇓ʳ (srel Base.selinger-c11)
+  srel-⇓ Base.selinger-c12 = E.axiom≡ selinger-c12⇓ˡ selinger-c12⇓ʳ (srel Base.selinger-c12)
+  srel-⇓ Base.selinger-c13 = E.axiom≡ selinger-c13⇓ˡ selinger-c13⇓ʳ (srel Base.selinger-c13)
+  srel-⇓ Base.selinger-c14 = E.axiom≡ selinger-c14⇓ˡ selinger-c14⇓ʳ (srel Base.selinger-c14)
+  srel-⇓ Base.selinger-c15 = E.axiom≡ selinger-c15⇓ˡ selinger-c15⇓ʳ (srel Base.selinger-c15)
 
 ------------------------------------------------------------------------
 -- So the congruences coincide, and the identity is a group isomorphism

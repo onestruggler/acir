@@ -83,71 +83,171 @@ module E  = Circuit.TopPad.Equivalence.Lift≅Top-Pad SympGate Base._SRel,_===_ 
 
 open E public using (_TRel,_===_ ; _⊢ᵀ_≈_ ; _⊢ᴸ_≈_)
 
+-- The equations ⇓-same proves for a rule: each side ⇓'d is that side
+-- one wire wider.  Proved once per rule, for its padded form and for
+-- srel-⇓ below, which would otherwise each prove them.
+
+import Relation.Binary.PropositionalEquality as TopPad-≡
+
+⇓ˡ ⇓ʳ : ∀ {n w v w′ v′} → Base._SRel,_===_ n w v → Base._SRel,_===_ (₁₊ n) w′ v′ → Set
+⇓ˡ {w = w} {w′ = w′} _ _ = TopPad-≡._≡_ (w ⇓) w′
+⇓ʳ {v = v} {v′ = v′} _ _ = TopPad-≡._≡_ (v ⇓) v′
+
+order-S⇓ˡ : ⇓ˡ {(₁₊ n)} Base.order-S Base.order-S
+order-S⇓ˡ = ⇓-same
+
+order-S⇓ʳ : ⇓ʳ {(₁₊ n)} Base.order-S Base.order-S
+order-S⇓ʳ = ⇓-same
+
+order-H⇓ˡ : ⇓ˡ {(₁₊ n)} Base.order-H Base.order-H
+order-H⇓ˡ = ⇓-same
+
+order-H⇓ʳ : ⇓ʳ {(₁₊ n)} Base.order-H Base.order-H
+order-H⇓ʳ = ⇓-same
+
+M-power⇓ˡ : ∀ k → ⇓ˡ {(₁₊ n)} (Base.M-power k) (Base.M-power k)
+M-power⇓ˡ k = ⇓-same
+
+M-power⇓ʳ : ∀ k → ⇓ʳ {(₁₊ n)} (Base.M-power k) (Base.M-power k)
+M-power⇓ʳ k = ⇓-same
+
+semi-MS⇓ˡ : ⇓ˡ {(₁₊ n)} Base.semi-MS Base.semi-MS
+semi-MS⇓ˡ = ⇓-same
+
+semi-MS⇓ʳ : ⇓ʳ {(₁₊ n)} Base.semi-MS Base.semi-MS
+semi-MS⇓ʳ = ⇓-same
+
+comm-HHSHHS⇓ˡ : ⇓ˡ {(₁₊ n)} Base.comm-HHSHHS Base.comm-HHSHHS
+comm-HHSHHS⇓ˡ = ⇓-same
+
+comm-HHSHHS⇓ʳ : ⇓ʳ {(₁₊ n)} Base.comm-HHSHHS Base.comm-HHSHHS
+comm-HHSHHS⇓ʳ = ⇓-same
+
+order-CZ⇓ˡ : ⇓ˡ {(₂₊ n)} Base.order-CZ Base.order-CZ
+order-CZ⇓ˡ = ⇓-same
+
+order-CZ⇓ʳ : ⇓ʳ {(₂₊ n)} Base.order-CZ Base.order-CZ
+order-CZ⇓ʳ = ⇓-same
+
+order-Ex⇓ˡ : ⇓ˡ {(₂₊ n)} Base.order-Ex Base.order-Ex
+order-Ex⇓ˡ = ⇓-same
+
+order-Ex⇓ʳ : ⇓ʳ {(₂₊ n)} Base.order-Ex Base.order-Ex
+order-Ex⇓ʳ = ⇓-same
+
+comm-CZ-S↑⇓ˡ : ⇓ˡ {(₂₊ n)} Base.comm-CZ-S↑ Base.comm-CZ-S↑
+comm-CZ-S↑⇓ˡ = ⇓-same
+
+comm-CZ-S↑⇓ʳ : ⇓ʳ {(₂₊ n)} Base.comm-CZ-S↑ Base.comm-CZ-S↑
+comm-CZ-S↑⇓ʳ = ⇓-same
+
+semi-M↑CZ⇓ˡ : ⇓ˡ {(₂₊ n)} Base.semi-M↑CZ Base.semi-M↑CZ
+semi-M↑CZ⇓ˡ = ⇓-same
+
+semi-M↑CZ⇓ʳ : ⇓ʳ {(₂₊ n)} Base.semi-M↑CZ Base.semi-M↑CZ
+semi-M↑CZ⇓ʳ = ⇓-same
+
+semi-Ex-S↑⇓ˡ : ⇓ˡ {(₂₊ n)} Base.semi-Ex-S↑ Base.semi-Ex-S↑
+semi-Ex-S↑⇓ˡ = ⇓-same
+
+semi-Ex-S↑⇓ʳ : ⇓ʳ {(₂₊ n)} Base.semi-Ex-S↑ Base.semi-Ex-S↑
+semi-Ex-S↑⇓ʳ = ⇓-same
+
+semi-Ex-H↑⇓ˡ : ⇓ˡ {(₂₊ n)} Base.semi-Ex-H↑ Base.semi-Ex-H↑
+semi-Ex-H↑⇓ˡ = ⇓-same
+
+semi-Ex-H↑⇓ʳ : ⇓ʳ {(₂₊ n)} Base.semi-Ex-H↑ Base.semi-Ex-H↑
+semi-Ex-H↑⇓ʳ = ⇓-same
+
+blake-c12⇓ˡ : ⇓ˡ {(₂₊ n)} Base.blake-c12 Base.blake-c12
+blake-c12⇓ˡ = ⇓-same
+
+blake-c12⇓ʳ : ⇓ʳ {(₂₊ n)} Base.blake-c12 Base.blake-c12
+blake-c12⇓ʳ = ⇓-same
+
+yang-baxter⇓ˡ : ⇓ˡ {(₃₊ n)} Base.yang-baxter Base.yang-baxter
+yang-baxter⇓ˡ = ⇓-same
+
+yang-baxter⇓ʳ : ⇓ʳ {(₃₊ n)} Base.yang-baxter Base.yang-baxter
+yang-baxter⇓ʳ = ⇓-same
+
+cz-slide⇓ˡ : ⇓ˡ {(₃₊ n)} Base.cz-slide Base.cz-slide
+cz-slide⇓ˡ = ⇓-same
+
+cz-slide⇓ʳ : ⇓ʳ {(₃₊ n)} Base.cz-slide Base.cz-slide
+cz-slide⇓ʳ = ⇓-same
+
+semi-CX↑-CZ↓⇓ˡ : ⇓ˡ {(₃₊ n)} Base.semi-CX↑-CZ↓ Base.semi-CX↑-CZ↓
+semi-CX↑-CZ↓⇓ˡ = ⇓-same
+
+semi-CX↑-CZ↓⇓ʳ : ⇓ʳ {(₃₊ n)} Base.semi-CX↑-CZ↓ Base.semi-CX↑-CZ↓
+semi-CX↑-CZ↓⇓ʳ = ⇓-same
+
 -- Each rule on the bottom wires of every wider circuit: one wire wider
 -- its words are the same words, up to the powers ⇓ does not compute
 -- through (⇓-same).
 
 order-S↓ : (₁₊ n) TRel, S ^ p === ε
 order-S↓ {0}    = TP.srel order-Sᴮ
-order-S↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same order-S↓
+order-S↓ {₁₊ n} = E.cong↓≡ order-S⇓ˡ order-S⇓ʳ order-S↓
 
 order-H↓ : (₁₊ n) TRel, H ^ 2 === XM₋₁
 order-H↓ {0}    = TP.srel order-Hᴮ
-order-H↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same order-H↓
+order-H↓ {₁₊ n} = E.cong↓≡ order-H⇓ˡ order-H⇓ʳ order-H↓
 
 M-power↓ : ∀ k → (₁₊ n) TRel, XMg^ k === XM (g^ k)
 M-power↓ {0}    k = TP.srel (M-powerᴮ k)
-M-power↓ {₁₊ n} k = E.cong↓≡ ⇓-same ⇓-same (M-power↓ k)
+M-power↓ {₁₊ n} k = E.cong↓≡ (M-power⇓ˡ k) (M-power⇓ʳ k) (M-power↓ k)
 
 semi-MS↓ : (₁₊ n) TRel, XMg • S ===
       Z^ ((₁ + - g) * 1/2 * (g⁻¹ * g⁻¹)) • S^ (g⁻¹ * g⁻¹) • XMg
 semi-MS↓ {0}    = TP.srel semi-MSᴮ
-semi-MS↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same semi-MS↓
+semi-MS↓ {₁₊ n} = E.cong↓≡ semi-MS⇓ˡ semi-MS⇓ʳ semi-MS↓
 
 comm-HHSHHS↓ : (₁₊ n) TRel, H • H • S • H • H • S === S • H • H • S • H • H
 comm-HHSHHS↓ {0}    = TP.srel comm-HHSHHSᴮ
-comm-HHSHHS↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same comm-HHSHHS↓
+comm-HHSHHS↓ {₁₊ n} = E.cong↓≡ comm-HHSHHS⇓ˡ comm-HHSHHS⇓ʳ comm-HHSHHS↓
 
 order-CZ↓ : (₂₊ n) TRel, CZ ^ p === ε
 order-CZ↓ {0}    = TP.srel order-CZᴮ
-order-CZ↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same order-CZ↓
+order-CZ↓ {₁₊ n} = E.cong↓≡ order-CZ⇓ˡ order-CZ⇓ʳ order-CZ↓
 
 order-Ex↓ : (₂₊ n) TRel, Ex ^ 2 === ε
 order-Ex↓ {0}    = TP.srel order-Exᴮ
-order-Ex↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same order-Ex↓
+order-Ex↓ {₁₊ n} = E.cong↓≡ order-Ex⇓ˡ order-Ex⇓ʳ order-Ex↓
 
 comm-CZ-S↑↓ : (₂₊ n) TRel, CZ • S ↑ === S ↑ • CZ
 comm-CZ-S↑↓ {0}    = TP.srel comm-CZ-S↑ᴮ
-comm-CZ-S↑↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same comm-CZ-S↑↓
+comm-CZ-S↑↓ {₁₊ n} = E.cong↓≡ comm-CZ-S↑⇓ˡ comm-CZ-S↑⇓ʳ comm-CZ-S↑↓
 
 semi-M↑CZ↓ : (₂₊ n) TRel, XMg ↑ • CZ^ g === CZ • XMg ↑
 semi-M↑CZ↓ {0}    = TP.srel semi-M↑CZᴮ
-semi-M↑CZ↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same semi-M↑CZ↓
+semi-M↑CZ↓ {₁₊ n} = E.cong↓≡ semi-M↑CZ⇓ˡ semi-M↑CZ⇓ʳ semi-M↑CZ↓
 
 semi-Ex-S↑↓ : (₂₊ n) TRel, Ex • S ↑ === S ↓ • Ex
 semi-Ex-S↑↓ {0}    = TP.srel semi-Ex-S↑ᴮ
-semi-Ex-S↑↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same semi-Ex-S↑↓
+semi-Ex-S↑↓ {₁₊ n} = E.cong↓≡ semi-Ex-S↑⇓ˡ semi-Ex-S↑⇓ʳ semi-Ex-S↑↓
 
 semi-Ex-H↑↓ : (₂₊ n) TRel, Ex • H ↑ === H ↓ • Ex
 semi-Ex-H↑↓ {0}    = TP.srel semi-Ex-H↑ᴮ
-semi-Ex-H↑↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same semi-Ex-H↑↓
+semi-Ex-H↑↓ {₁₊ n} = E.cong↓≡ semi-Ex-H↑⇓ˡ semi-Ex-H↑⇓ʳ semi-Ex-H↑↓
 
 blake-c12↓ : (₂₊ n) TRel, (S ^ p-1) ↑ • (S ^ p-1) ↓ • CX ^ p-1 • S ↓ • CX ===
       CZ
 blake-c12↓ {0}    = TP.srel blake-c12ᴮ
-blake-c12↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same blake-c12↓
+blake-c12↓ {₁₊ n} = E.cong↓≡ blake-c12⇓ˡ blake-c12⇓ʳ blake-c12↓
 
 yang-baxter↓ : (₃₊ n) TRel, Ex ↑ • Ex ↓ • Ex ↑ === Ex ↓ • Ex ↑ • Ex ↓
 yang-baxter↓ {0}    = TP.srel yang-baxterᴮ
-yang-baxter↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same yang-baxter↓
+yang-baxter↓ {₁₊ n} = E.cong↓≡ yang-baxter⇓ˡ yang-baxter⇓ʳ yang-baxter↓
 
 cz-slide↓ : (₃₊ n) TRel, Ex ↓ • Ex ↑ • CZ === CZ ↑ • Ex ↓ • Ex ↑
 cz-slide↓ {0}    = TP.srel cz-slideᴮ
-cz-slide↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same cz-slide↓
+cz-slide↓ {₁₊ n} = E.cong↓≡ cz-slide⇓ˡ cz-slide⇓ʳ cz-slide↓
 
 semi-CX↑-CZ↓↓ : (₃₊ n) TRel, CZ ↓ • CX ↑ === CZ02 • CX ↑ • CZ ↓
 semi-CX↑-CZ↓↓ {0}    = TP.srel semi-CX↑-CZ↓ᴮ
-semi-CX↑-CZ↓↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same semi-CX↑-CZ↓↓
+semi-CX↑-CZ↓↓ {₁₊ n} = E.cong↓≡ semi-CX↑-CZ↓⇓ˡ semi-CX↑-CZ↓⇓ʳ semi-CX↑-CZ↓↓
 
 ------------------------------------------------------------------------
 -- The two have the same rules
@@ -190,21 +290,21 @@ same = record { pad = pad ; unpad = unpad ; srel-⇓ = srel-⇓ }
   unpad semi-CX↑-CZ↓ᴮ = PB.axiom (srel Base.semi-CX↑-CZ↓)
 
   srel-⇓ : Base._SRel,_===_ n w v → (₁₊ n) ⊢ᴸ w ⇓ ≈ v ⇓
-  srel-⇓ Base.order-S = E.axiom≡ ⇓-same ⇓-same (srel Base.order-S)
-  srel-⇓ Base.order-H = E.axiom≡ ⇓-same ⇓-same (srel Base.order-H)
-  srel-⇓ (Base.M-power k) = E.axiom≡ ⇓-same ⇓-same (srel (Base.M-power k))
-  srel-⇓ Base.semi-MS = E.axiom≡ ⇓-same ⇓-same (srel Base.semi-MS)
-  srel-⇓ Base.comm-HHSHHS = E.axiom≡ ⇓-same ⇓-same (srel Base.comm-HHSHHS)
-  srel-⇓ Base.order-CZ = E.axiom≡ ⇓-same ⇓-same (srel Base.order-CZ)
-  srel-⇓ Base.order-Ex = E.axiom≡ ⇓-same ⇓-same (srel Base.order-Ex)
-  srel-⇓ Base.comm-CZ-S↑ = E.axiom≡ ⇓-same ⇓-same (srel Base.comm-CZ-S↑)
-  srel-⇓ Base.semi-M↑CZ = E.axiom≡ ⇓-same ⇓-same (srel Base.semi-M↑CZ)
-  srel-⇓ Base.semi-Ex-S↑ = E.axiom≡ ⇓-same ⇓-same (srel Base.semi-Ex-S↑)
-  srel-⇓ Base.semi-Ex-H↑ = E.axiom≡ ⇓-same ⇓-same (srel Base.semi-Ex-H↑)
-  srel-⇓ Base.blake-c12 = E.axiom≡ ⇓-same ⇓-same (srel Base.blake-c12)
-  srel-⇓ Base.yang-baxter = E.axiom≡ ⇓-same ⇓-same (srel Base.yang-baxter)
-  srel-⇓ Base.cz-slide = E.axiom≡ ⇓-same ⇓-same (srel Base.cz-slide)
-  srel-⇓ Base.semi-CX↑-CZ↓ = E.axiom≡ ⇓-same ⇓-same (srel Base.semi-CX↑-CZ↓)
+  srel-⇓ Base.order-S = E.axiom≡ order-S⇓ˡ order-S⇓ʳ (srel Base.order-S)
+  srel-⇓ Base.order-H = E.axiom≡ order-H⇓ˡ order-H⇓ʳ (srel Base.order-H)
+  srel-⇓ (Base.M-power k) = E.axiom≡ (M-power⇓ˡ k) (M-power⇓ʳ k) (srel (Base.M-power k))
+  srel-⇓ Base.semi-MS = E.axiom≡ semi-MS⇓ˡ semi-MS⇓ʳ (srel Base.semi-MS)
+  srel-⇓ Base.comm-HHSHHS = E.axiom≡ comm-HHSHHS⇓ˡ comm-HHSHHS⇓ʳ (srel Base.comm-HHSHHS)
+  srel-⇓ Base.order-CZ = E.axiom≡ order-CZ⇓ˡ order-CZ⇓ʳ (srel Base.order-CZ)
+  srel-⇓ Base.order-Ex = E.axiom≡ order-Ex⇓ˡ order-Ex⇓ʳ (srel Base.order-Ex)
+  srel-⇓ Base.comm-CZ-S↑ = E.axiom≡ comm-CZ-S↑⇓ˡ comm-CZ-S↑⇓ʳ (srel Base.comm-CZ-S↑)
+  srel-⇓ Base.semi-M↑CZ = E.axiom≡ semi-M↑CZ⇓ˡ semi-M↑CZ⇓ʳ (srel Base.semi-M↑CZ)
+  srel-⇓ Base.semi-Ex-S↑ = E.axiom≡ semi-Ex-S↑⇓ˡ semi-Ex-S↑⇓ʳ (srel Base.semi-Ex-S↑)
+  srel-⇓ Base.semi-Ex-H↑ = E.axiom≡ semi-Ex-H↑⇓ˡ semi-Ex-H↑⇓ʳ (srel Base.semi-Ex-H↑)
+  srel-⇓ Base.blake-c12 = E.axiom≡ blake-c12⇓ˡ blake-c12⇓ʳ (srel Base.blake-c12)
+  srel-⇓ Base.yang-baxter = E.axiom≡ yang-baxter⇓ˡ yang-baxter⇓ʳ (srel Base.yang-baxter)
+  srel-⇓ Base.cz-slide = E.axiom≡ cz-slide⇓ˡ cz-slide⇓ʳ (srel Base.cz-slide)
+  srel-⇓ Base.semi-CX↑-CZ↓ = E.axiom≡ semi-CX↑-CZ↓⇓ˡ semi-CX↑-CZ↓⇓ʳ (srel Base.semi-CX↑-CZ↓)
 
 ------------------------------------------------------------------------
 -- So the congruences coincide, and the identity is a group isomorphism

@@ -57,21 +57,49 @@ module E  = Circuit.TopPad.Equivalence.Lift≅Top-Pad XZGate Base._SRel,_===_ _B
 
 open E public using (_TRel,_===_ ; _⊢ᵀ_≈_ ; _⊢ᴸ_≈_)
 
+-- The equations ⇓-same proves for a rule: each side ⇓'d is that side
+-- one wire wider.  Proved once per rule, for its padded form and for
+-- srel-⇓ below, which would otherwise each prove them.
+
+import Relation.Binary.PropositionalEquality as TopPad-≡
+
+⇓ˡ ⇓ʳ : ∀ {n w v w′ v′} → Base._SRel,_===_ n w v → Base._SRel,_===_ (₁₊ n) w′ v′ → Set
+⇓ˡ {w = w} {w′ = w′} _ _ = TopPad-≡._≡_ (w ⇓) w′
+⇓ʳ {v = v} {v′ = v′} _ _ = TopPad-≡._≡_ (v ⇓) v′
+
+order-X⇓ˡ : ⇓ˡ {(₁₊ n)} Base.order-X Base.order-X
+order-X⇓ˡ = ⇓-same
+
+order-X⇓ʳ : ⇓ʳ {(₁₊ n)} Base.order-X Base.order-X
+order-X⇓ʳ = ⇓-same
+
+order-Z⇓ˡ : ⇓ˡ {(₁₊ n)} Base.order-Z Base.order-Z
+order-Z⇓ˡ = ⇓-same
+
+order-Z⇓ʳ : ⇓ʳ {(₁₊ n)} Base.order-Z Base.order-Z
+order-Z⇓ʳ = ⇓-same
+
+comm-Z-X⇓ˡ : ⇓ˡ {(₁₊ n)} Base.comm-Z-X Base.comm-Z-X
+comm-Z-X⇓ˡ = ⇓-same
+
+comm-Z-X⇓ʳ : ⇓ʳ {(₁₊ n)} Base.comm-Z-X Base.comm-Z-X
+comm-Z-X⇓ʳ = ⇓-same
+
 -- Each rule on the bottom wires of every wider circuit: one wire wider
 -- its words are the same words, up to the powers ⇓ does not compute
 -- through (⇓-same).
 
 order-X↓ : (₁₊ n) TRel, X ^ p === ε
 order-X↓ {0}    = TP.srel order-Xᴮ
-order-X↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same order-X↓
+order-X↓ {₁₊ n} = E.cong↓≡ order-X⇓ˡ order-X⇓ʳ order-X↓
 
 order-Z↓ : (₁₊ n) TRel, Z ^ p === ε
 order-Z↓ {0}    = TP.srel order-Zᴮ
-order-Z↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same order-Z↓
+order-Z↓ {₁₊ n} = E.cong↓≡ order-Z⇓ˡ order-Z⇓ʳ order-Z↓
 
 comm-Z-X↓ : (₁₊ n) TRel, Z • X === X • Z
 comm-Z-X↓ {0}    = TP.srel comm-Z-Xᴮ
-comm-Z-X↓ {₁₊ n} = E.cong↓≡ ⇓-same ⇓-same comm-Z-X↓
+comm-Z-X↓ {₁₊ n} = E.cong↓≡ comm-Z-X⇓ˡ comm-Z-X⇓ʳ comm-Z-X↓
 
 ------------------------------------------------------------------------
 -- The two have the same rules
@@ -90,9 +118,9 @@ same = record { pad = pad ; unpad = unpad ; srel-⇓ = srel-⇓ }
   unpad comm-Z-Xᴮ = PB.axiom (srel Base.comm-Z-X)
 
   srel-⇓ : Base._SRel,_===_ n w v → (₁₊ n) ⊢ᴸ w ⇓ ≈ v ⇓
-  srel-⇓ Base.order-X = E.axiom≡ ⇓-same ⇓-same (srel Base.order-X)
-  srel-⇓ Base.order-Z = E.axiom≡ ⇓-same ⇓-same (srel Base.order-Z)
-  srel-⇓ Base.comm-Z-X = E.axiom≡ ⇓-same ⇓-same (srel Base.comm-Z-X)
+  srel-⇓ Base.order-X = E.axiom≡ order-X⇓ˡ order-X⇓ʳ (srel Base.order-X)
+  srel-⇓ Base.order-Z = E.axiom≡ order-Z⇓ˡ order-Z⇓ʳ (srel Base.order-Z)
+  srel-⇓ Base.comm-Z-X = E.axiom≡ comm-Z-X⇓ˡ comm-Z-X⇓ʳ (srel Base.comm-Z-X)
 
 ------------------------------------------------------------------------
 -- So the congruences coincide, and the identity is a group isomorphism
