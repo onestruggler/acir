@@ -46,8 +46,10 @@ open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.R24
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.R30
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.R32
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.R34
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.R34Hi
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.R38
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.R42
+open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.R42Hi
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.H01
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.H23
 open import Examples.Groups.Real-Clifford+CH.Auxiliary.Checks8.H45
