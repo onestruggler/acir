@@ -6,8 +6,8 @@
 -- `Inst a`, the equation of the λ¹₄-images of the two sides of an axiom
 -- instance a of the four-wire theory, and `Missing`, those the joint
 -- run does not derive: the controlled versions of the four-wire rules
--- ck-tct, lf, hyb-sq and hyb-yb, which are rules on five wires
--- (Five.Rules, Five.MissingInst).  Written by
+-- ck-tct, lf, hyb-sq and hyb-yb (rules on five wires, the first derived:
+-- Five.CKTDerived; Five.MissingInst).  Written by
 -- `scratchpad/five/transport5.py`.
 ------------------------------------------------------------------------
 

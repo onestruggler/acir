@@ -10,9 +10,9 @@
 -- the borrowed wires put in order by F0; the derivations are the lemmas
 -- `lem-tr-…` of Five.D, collected by depth in TransportAx/A0-A4.  What
 -- the joint run does not derive is a field of `Missing`: the controlled
--- versions of the four-wire rules ck-tct, lf, hyb-sq and hyb-yb, which
--- are rules on five wires (Five.Rules, Five.MissingInst).  Written by
--- `scratchpad/five/transport5.py`.
+-- versions of the four-wire rules ck-tct, lf, hyb-sq and hyb-yb (rules
+-- on five wires, the first derived: Five.CKTDerived; Five.MissingInst).
+-- Written by `scratchpad/five/transport5.py`.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

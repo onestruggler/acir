@@ -69,7 +69,7 @@ open Facts4 F using (G ; sw₁ ; sw₂)
 
 private
   I : Inputs
-  I = inputs c4 missing
+  I = inputs c4 (missing c4)
 
   module G5 = Gadget5 I F
   module FC = Calc5 (Inputs.F4ᵍ I) (Inputs.F5ᵍ I) (Inputs.x4x4 I)

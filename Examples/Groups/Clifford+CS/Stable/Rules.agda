@@ -39,7 +39,7 @@ import Presentation.Base as PB
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Five.Rules as F
   using ( _XRel,_===_ ; _XVRel,_===_ ; _⊢ₓ_≈_ ; srelₓ ; cong↑ₓ ; comm₁ₓ ; comm₂ₓ ; ω↑=ωₓ
-        ; module AX ; module CKT )
+        ; module AX )
 open import Examples.Groups.Clifford+CS.Five.Lambda using (λc)
 open import Examples.Groups.Clifford+CS.Lambda using (λ¹ᵏ)
 
@@ -60,7 +60,6 @@ data Wide : (n : ℕ) → Circuit n → Circuit n → Set where
   w-lf     : Wide 5 (λc LF.Hyb) (λc LF.Dec)
   w-hyb-sq : Wide 5 (λc HSQ.Sq) (λc ε)
   w-hyb-yb : Wide 5 (λc HYB.Yl) (λc HYB.Yr)
-  w-ck-tct : Wide 5 (λc CKT.l) (λc CKT.r)
 
 -- Each is a rule of Five.Rules.
 wide-rule : ∀ {w v : Circuit n} → Wide n w v → n XRel, w === v
@@ -68,7 +67,6 @@ wide-rule w-ax     = F.ax
 wide-rule w-lf     = F.λ-lf
 wide-rule w-hyb-sq = F.λ-hyb-sq
 wide-rule w-hyb-yb = F.λ-hyb-yb
-wide-rule w-ck-tct = F.λ-ck-tct
 
 infix 4 _YRel,_===_
 data _YRel,_===_ : (n : ℕ) → WRel (Gen n) where

@@ -52,8 +52,6 @@ axiom-soundₓ (srelₓ λ-hyb-sq) =
   λc-~ (HSQ.Sq {0}) ε (axiom-sound {n = 4} {w = HSQ.Sq {0}} {v = ε} (srel (hyb-sq {0})))
 axiom-soundₓ (srelₓ λ-hyb-yb) =
   λc-~ (HYB.Yl {0}) (HYB.Yr {0}) (axiom-sound {n = 4} {w = HYB.Yl {0}} {v = HYB.Yr {0}} (srel (hyb-yb {0})))
-axiom-soundₓ (srelₓ λ-ck-tct) =
-  λc-~ (CKT.l {0}) (CKT.r {0}) (axiom-sound {n = 4} {w = CKT.l {0}} {v = CKT.r {0}} (srel (ck-tct {0})))
 axiom-soundₓ (cong↑ₓ r)       = cong↑-sound (axiom-soundₓ r)
 axiom-soundₓ (comm₁ₓ h g)     = comm₁-sound h g
 axiom-soundₓ (comm₂ₓ h g)     = comm₂-sound h g

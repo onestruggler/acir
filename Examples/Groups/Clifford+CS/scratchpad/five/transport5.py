@@ -281,8 +281,8 @@ def agda_module(res, modof, lemname, MOD):
         '-- `Inst a`, the equation of the λ¹₄-images of the two sides of an axiom\n'
         '-- instance a of the four-wire theory, and `Missing`, those the joint\n'
         '-- run does not derive: the controlled versions of the four-wire rules\n'
-        '-- ck-tct, lf, hyb-sq and hyb-yb, which are rules on five wires\n'
-        '-- (Five.Rules, Five.MissingInst).  Written by\n'
+        '-- ck-tct, lf, hyb-sq and hyb-yb (rules on five wires, the first derived:\n'
+        '-- Five.CKTDerived; Five.MissingInst).  Written by\n'
         '-- `scratchpad/five/transport5.py`.') + f"""module {MOD}.TransportAx.Base where
 
 open import Data.Product using (_×_ ; proj₁ ; proj₂)
@@ -346,9 +346,9 @@ open import {MOD}.TransportAx.Base using ({' ; '.join(['Inst', 'Missing'] + [n f
         '-- the borrowed wires put in order by F0; the derivations are the lemmas\n'
         '-- `lem-tr-…` of Five.D, collected by depth in TransportAx/A0-A4.  What\n'
         '-- the joint run does not derive is a field of `Missing`: the controlled\n'
-        '-- versions of the four-wire rules ck-tct, lf, hyb-sq and hyb-yb, which\n'
-        '-- are rules on five wires (Five.Rules, Five.MissingInst).  Written by\n'
-        '-- `scratchpad/five/transport5.py`.') + f"""module {MOD}.TransportAx where
+        '-- versions of the four-wire rules ck-tct, lf, hyb-sq and hyb-yb (rules\n'
+        '-- on five wires, the first derived: Five.CKTDerived; Five.MissingInst).\n'
+        '-- Written by `scratchpad/five/transport5.py`.') + f"""module {MOD}.TransportAx where
 
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.Completeness using (Complete)

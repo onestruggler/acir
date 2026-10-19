@@ -17,12 +17,13 @@
 -- commutator [Toff(1; 3, 4), CS(2, 1)] with the Toffoli onto wire 1,
 -- spelled as Five.Letters spells it (scratchpad/five/spell5.py).
 --
--- And the controlled versions λ¹ of the four-wire rules lf, hyb-sq,
--- hyb-yb and ck-tct (control wire 4, Five.Lambda.λc): rules on five
--- wires.  The joint paper's tools do not reach the first three
--- (scratchpad/five-qubit-plan.md).  For ck-tct the de-borrowing derives
--- only the variant with Toff⁻¹ in its second Toffoli, spelled with the
--- joint paper's Toffoli, whose CS on the wires 1 3 has no generator here.
+-- And the controlled versions λ¹ of the four-wire rules lf, hyb-sq and
+-- hyb-yb (control wire 4, Five.Lambda.λc): rules on five wires, which
+-- the joint paper's tools do not reach (scratchpad/five-qubit-plan.md).
+-- The controlled ck-tct is not a rule: it is derived from the rules of
+-- Syntactics and AX given completeness on four wires
+-- (Five.CKTDerived.ck-tct-derived, the joint paper's de-borrowing over
+-- transported two-wire equations, by branch v-office).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -61,7 +62,8 @@ module AX where
   l = CS • T₁₃₄ • (CS ↑) • T₁₃₄ • ((CS • CS • CS) ↑)
   r = T₁₃₄ • (CS ↑) • T₁₃₄ • ((CS • CS • CS) ↑) • CS
 
--- The two sides of ck-tct, named so that its λ-image is stated once.
+-- The two sides of ck-tct, named so that its λ-image is stated once
+-- (Five.CKTDerived).
 module CKT where
 
   l r : Circuit (₄₊ n)
@@ -84,7 +86,6 @@ data _XRel,_===_ : (n : ℕ) → WRel (Gen n) where
   λ-lf     : 5 XRel, λc LF.Hyb === λc LF.Dec
   λ-hyb-sq : 5 XRel, λc HSQ.Sq === λc ε
   λ-hyb-yb : 5 XRel, λc HYB.Yl === λc HYB.Yr
-  λ-ck-tct : 5 XRel, λc CKT.l === λc CKT.r
 
 private module LX = SC.Lift-Relation _XRel,_===_
 

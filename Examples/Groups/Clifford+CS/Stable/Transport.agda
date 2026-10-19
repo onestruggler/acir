@@ -67,7 +67,7 @@ open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧)
 open import Examples.Groups.Clifford+CS.Tools using (module Tools)
 open import Examples.Groups.Clifford+CS.MultiControlled using (top ; _↧)
 open import Examples.Groups.Clifford+CS.Place using (place)
-open import Examples.Groups.Clifford+CS.Five.Rules using (old ; ax ; λ-lf ; λ-hyb-sq ; λ-hyb-yb ; λ-ck-tct)
+open import Examples.Groups.Clifford+CS.Five.Rules using (old ; ax ; λ-lf ; λ-hyb-sq ; λ-hyb-yb)
 open import Examples.Groups.Clifford+CS.Lambda
 open import Examples.Groups.Clifford+CS.Lambda.Semantics using (λ¹-~)
 open import Examples.Groups.Clifford+CS.Stable.Rules
@@ -296,7 +296,6 @@ module _ {N : ℕ} (H : Hyp N) where
   ok (suc m) b (srelᵧ (five λ-lf))     = wide-ok {suc m} w-lf
   ok (suc m) b (srelᵧ (five λ-hyb-sq)) = wide-ok {suc m} w-hyb-sq
   ok (suc m) b (srelᵧ (five λ-hyb-yb)) = wide-ok {suc m} w-hyb-yb
-  ok (suc m) b (srelᵧ (five λ-ck-tct)) = wide-ok {suc m} w-ck-tct
   ok (suc m) b (srelᵧ (ctl k p))       = PB.axiom (srelᵧ (ctl (suc k) p))
   ok (suc m) b (cong↑ᵧ {w = w} {v} a)  =
     Eq.subst₂ (λ x y → _ ⊢ᵧ x ≈ y) (Eq.sym (λ¹ʷ-↑ w)) (Eq.sym (λ¹ʷ-↑ v))

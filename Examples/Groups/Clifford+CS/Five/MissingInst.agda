@@ -5,8 +5,10 @@
 --
 -- Five.TransportAx takes the λ-images of the instances its derivations do
 -- not cover (`Missing`): those of the four-wire rules ck-tct, lf, hyb-sq
--- and hyb-yb.  They are the five-wire rules λ(ck-tct), λ(lf), λ(hyb-sq),
--- λ(hyb-yb) of Five.Rules, up to the bracketing of λ¹ (`λʷ≈λc`).
+-- and hyb-yb.  The last three are the five-wire rules λ(lf), λ(hyb-sq),
+-- λ(hyb-yb) of Five.Rules, up to the bracketing of λ¹ (`λʷ≈λc`); the
+-- first is derived from the rules of Syntactics and AX given
+-- completeness on four wires (Five.CKTDerived).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -21,12 +23,14 @@ import Presentation.Base as PB
 
 open import Examples.Groups.Clifford+CS.Syntactics
   using (Circuit ; module LF ; module HSQ ; module HYB)
+open import Examples.Groups.Clifford+CS.Completeness using (Complete)
 open import Examples.Groups.Clifford+CS.Five.Rules
-  using (_XRel,_===_ ; srelₓ ; λ-lf ; λ-hyb-sq ; λ-hyb-yb ; λ-ck-tct ; module CKT)
+  using (_XRel,_===_ ; srelₓ ; λ-lf ; λ-hyb-sq ; λ-hyb-yb)
 open import Examples.Groups.Clifford+CS.Five.Chain
 open import Examples.Groups.Clifford+CS.Five.Lambda using (λc)
 open import Examples.Groups.Clifford+CS.Five.Transport using (λʷ)
 open import Examples.Groups.Clifford+CS.Five.TransportAx using (Missing)
+open import Examples.Groups.Clifford+CS.Five.CKTDerived using (ck-tct-derived)
 
 -- λ¹ as a line of letters is λ¹ as a circuit.
 λʷ≈λc : ∀ w → ⟪ λʷ w ⟫ʷ ≈ λc w
@@ -39,8 +43,8 @@ private
   by-rule {u} {v} a = trans (λʷ≈λc u) (trans (PB.axiom (srelₓ a)) (sym (λʷ≈λc v)))
 
 -- In the order of Missing's components: ck-tct, lf, hyb-sq, hyb-yb.
-missing : Missing
-missing = by-rule {CKT.l} {CKT.r} λ-ck-tct
-        , by-rule {LF.Hyb} {LF.Dec} λ-lf
-        , by-rule {HSQ.Sq} {ε} λ-hyb-sq
-        , by-rule {HYB.Yl} {HYB.Yr} λ-hyb-yb
+missing : Complete 4 → Missing
+missing c4 = ck-tct-derived c4
+           , by-rule {LF.Hyb} {LF.Dec} λ-lf
+           , by-rule {HSQ.Sq} {ε} λ-hyb-sq
+           , by-rule {HYB.Yl} {HYB.Yr} λ-hyb-yb
