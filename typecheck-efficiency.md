@@ -19,7 +19,8 @@ the Bian–Selinger tactic ports (`Clifford+CS-3qubit` Step3/Step4 and
 Soundness, `Clifford+T-2qubit` Equations 43, 44, 46), `DecodingChecks`,
 the `Checks8` evaluation modules, and modules whose cost is spread
 (`Paper-V0/Lemmas`, `Lemma88/Easy`, LemmaA1's) or found below
-(`Auxiliary/Move`, `U33Di`, `Diamond`, `Weyl`, `Clifford+CS/Bridge`).
+(`Auxiliary/Move`, `U33Di`, `Weyl`, `Clifford+CS/Bridge`; `Diamond`,
+23.6 s there, has since been brought to 8.9 s).
 Wall-clock figures from a chunk the watchdog killed are estimates only
 (marked approximate): rechecked alone, four of them were 2–8 s.
 
@@ -76,6 +77,7 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
 | A function of a three-element type as the table of its values, not a computed power; an enumeration read back over variables, not under as-patterns | `Independence/Qutrit-Clifford/Weyl`, `Faithful` | 37.8 → 25.1 s (1.46 → 0.88 GB), 60.9 → 24.3 s |
 | A generated `refl` check stated over the original definition (not a module-application copy) at the very arguments its user passes | `Real-Clifford+CH-TwoLevel-Clement/Hard` | 48.8 → 9.2 s |
 | A `T b` proof left to a metavariable (`_`, solved by eta), or a check proved by `refl` on `≡ true`, not `tt` | `Independence/*/Semantics`, the three `Projective`s, `Clifford+CS/Encodings`; `Qutrit-Clifford/Faithful` | 21.0 → 3.9 s, 21.1 → 3.9 s, 15.2 → 3.3 s, 15.1 → 4.1 s, 14.2 → 3.2 s, … (133 → 52 s over eleven modules); 28.5 → 20.1 s |
+| A where block full of module applications made a parameterised module, the function a one-line call into it | `Real-Clifford+CH-TwoLevel/Diamond` | 23.6 → 8.9 s (Positivity 12.1 → 0.15 s) |
 | Letters of generated derivations as definitions at a fixed width, not patterns | `Real-Clifford/Relations/Derived`, `Qubit-Clifford/Relations/Rules/Figure5`, `Figure7` | 44.6 → 14.7 s (0.8 GB), 22.5 → 7.9 s, 22.8 → 9.2 s |
 
 - **A `with` normalises the goal before abstracting.** `with b ≟ c`
@@ -131,6 +133,21 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   (`Pattern-Assoc`'s `□`) leaves the width unsolved (open it at the
   width: `open Pattern-Assoc {₁₊ m}`). Where the blocks are few or the
   modules small (`Powers`) the gain is within noise.
+- **Positivity checking of a where block.** A where block is checked with
+  the clause it belongs to, and Agda runs the positivity checker once
+  over everything that block defines, the copies its module applications
+  make included. `Real-Clifford+CH-TwoLevel/Diamond`'s `diamond` had a
+  where block that opened one module and applied seven (`Route` twice
+  with cases of each, `State`, `Trick` three times), and
+  `--profile=internal` put 12–14 s of its 24 s in `Positivity`, no
+  definition over 1 s. Bisecting with truncated copies ruled out the rest
+  of the file, and hiding names from the `open` took only 2.6 s off.
+  Turning the block into a module parameterised by the function's
+  arguments (`module Diamond-at {a b c d} (ab : a < b) … where`, the body
+  unchanged) and defining the function as a call into it (`diamond ab …
+  = Diamond-at.result ab …`) took Positivity to 0.15 s and the module to
+  8.9 s, its importers unchanged. Look at `Positivity` in the phases
+  before restructuring anything else this way.
 - **A `with` chain splits only on what blocks reduction.** A proof about
   functions defined by `with` tends to repeat their whole chain — `with
   f x | inspect f x`, then `with g y | inspect g y` on the pieces, seven
@@ -427,17 +444,6 @@ Wall-clock figures from a chunk the watchdog killed are estimates only
   residues).
 
 ## Known costs without a cheap fix
-
-- **Positivity checking in `Real-Clifford+CH-TwoLevel/Diamond`.**
-  24 s of module time (the previous full run recorded 0, a measurement
-  artifact), of which `--profile=internal` puts 14.4 s in Positivity and
-  under 1 s in any one definition; `--lossy-unification` does nothing.
-  Bisected with truncated copies: the header and imports (11 s, all
-  loading) and everything before the final section — the record `Known`,
-  `stepH`, the `Route` module — cost no positivity time; it is all in
-  `diamond`'s where-block, which opens `Four` and applies `Route` twice,
-  its cases four times, `State` and `Trick`. Hiding `Known` from the
-  `open Four` takes 2.6 s of it; the rest was not pinned down.
 
 - **Rewrite-step functions over width-indexed generators.** Under
   `--cubical-compatible`, each clause of a step function matching long
