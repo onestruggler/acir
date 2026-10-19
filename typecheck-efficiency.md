@@ -14,7 +14,8 @@ other Agda jobs on the machine) checked 1394 of 1405; the 11 failures
 are the files already failing (S3xC5's two, `Clifford/Qubit/Selinger/
 Placed` and the two modules it blocks, six stale `vqupit` slide files).
 Against the run at e56e9fbc the summed module time went 6718 → 4119 s
-and the modules over 20 s 53 → 32: the generated TopPad equivalences,
+and the modules over 20 s 53 → 32: the generated TopPad equivalences
+(since a fifth faster, the slowest now 40 s),
 the Bian–Selinger tactic ports (`Clifford+CS-3qubit` Step3/Step4 and
 Soundness, `Clifford+T-2qubit` Equations 43, 44, 46), `DecodingChecks`
 (since split into modules of under 20 s each), the `Checks8`
