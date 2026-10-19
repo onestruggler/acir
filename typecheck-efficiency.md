@@ -14,18 +14,22 @@ other Agda jobs on the machine) checked 1394 of 1405; the 11 failures
 are the files already failing (S3xC5's two, `Clifford/Qubit/Selinger/
 Placed` and the two modules it blocks, six stale `vqupit` slide files).
 Against the run at e56e9fbc the summed module time went 6718 → 4119 s
-and the modules over 20 s 53 → 32: the generated TopPad equivalences
-(since a fifth faster, the slowest now 40 s),
-the Bian–Selinger tactic ports (`Clifford+CS-3qubit` Step3/Step4 and
-Soundness, `Clifford+T-2qubit` Equations 43, 44, 46), `DecodingChecks`
-(since split into modules of under 20 s each), the `Checks8`
-evaluation modules, and modules whose cost is spread
-(`Paper-V0/Lemmas`) or found below (`U33Di`, `Weyl`). `Diamond`,
-`Auxiliary/Move`, `Auxiliary/Eq65`, `Independence/Clifford+CS/Bridge`,
-`Lemma88/Easy` and `LemmaA1/Base` and `More`, 23.6, 32.8, 23.1, 24.0,
-33.2, 23.5 and 26.4 s there, have since been brought under 10 s. Easy
-and the two LemmaA1 modules were first counted as spread; a
-per-definition profile, then a phase profile, showed otherwise.
+and the modules over 20 s 53 → 32.
+
+Since then, every one of those 32 has been looked at again, per
+definition and per phase, and all but six are under 20 s: the TopPad
+equivalences (macro and generator, 359 → 131 s in all), the tactic
+ports (`Clifford+CS-3qubit` Step4's `hypB` and Soundness, Step3's
+PD4 and PD6, `Clifford+T-2qubit` Equations 43, 44 and 46, split into
+modules of 9–20 s), `DecodingChecks` and `Checks8`'s R34 and R42
+(split), and `Diamond`, `Auxiliary/Move`, `Eq65`, `Auxiliary/Soundness`,
+`Independence/Clifford+CS/Bridge`, `Lemma88/Easy` and `LemmaA1/Base`
+and `More` (one cause each, now under 10 s). Four of those last were
+first counted as spread. Left at 20–27 s: `Paper-V0/Lemmas` (spread
+over 4754 lines; a split would recheck `Clifford/Qupit` under the
+root), `Weyl` (evaluation), `TreeNF38` (one generated check),
+Qupit-Phase-Affine's TopPad (stuck powers through the macro's
+traversal), `U33Di` and `Amalgamation` (spread).
 Wall-clock figures from a chunk the watchdog killed are estimates only
 (marked approximate): rechecked alone, four of them were 2–8 s.
 
