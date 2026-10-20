@@ -554,3 +554,34 @@ controlled by wire 1 of another); under λ the same re-viewing is needed
 one level up, so the transports of three-wire derivations and the
 letterwise commutation of two λ's do not reach it, and nothing here
 rules out its being independent at five wires.
+
+## Completeness at every width, checked end to end (2026-10-20)
+
+Branch clifford-cs-ckt (75b0dc30) adds `Stable.Main`: Theorem S with its
+hypotheses proved — `complete : ∀ n → Completeᵧ n` (widths 0-3 and 4
+embedded, 5 and up from Stable.Presentation with Four.Complete.complete₄
+and Five.Main.complete₅), `sound`, and the presentations of the
+submonoid of U (2ⁿ) the gates generate (presentation₀ … presentation₃
+from Unitary, presentation₄₊ re-exported).  One family over every width
+does not work: `U (dim (₄₊ m))` against `U (Encoding.N m)` unfolds the
+group records (over fifteen minutes), so each presentation keeps the
+size as its proof spells it; and the small instances give `Low` its
+width so that `U (2 ^ ₀)` never meets `U (2 ^ 0)`.
+
+Its closure, 1624 Clifford+CS modules (854 of Four/D), checks on this
+machine end to end, for the first time here (Four/D had only been
+checked on the other machine).  Five.Main and Stable.Main need a 12 GB
+heap.  Four/D is the slow part and was never given Five/D's window
+library: about 136,000 inline window evaluations, of which some 2,600
+are distinct, each module one to two minutes at 3-7 GB (a few 12 GB).
+Porting the library to Four/D (scratchpad/four/emit.py) would make a
+from-scratch build several times faster.
+
+The checker used (session scratchpad, par5.py generalised): PAR5_NS='*'
+schedules the whole development; a module starts only if its estimated
+peak, plus those of jobs started in the last two minutes, fits in
+MemAvailable with 1.5 GB to spare (other sessions share the VM); a guard
+kills our youngest job below 1.2 GB available and the scheduler requeues
+it (exit 15) after a two-minute pause instead of failing its dependents;
+and every finished module is synced, since a VM restart (which happened
+once, at 1609 of 1624) loses unsynced writes.
