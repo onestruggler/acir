@@ -255,6 +255,25 @@ So a four-wire classical proof in Agda still needs a derivation finder
 for four-wire Toffoli identities. The extras are true and short, but
 their derivations pass through the affine letters.
 
+**Partial enumeration over the affine group is such a finder.** Affine
+completeness now holds at every width with no hypothesis
+(`../../NaturalP/AffineComplete`), so labels in AGL(4, 2) can be kept
+canonical. `partial4.py --affine` runs a proof-producing enumeration
+of A₁₆ over AGL(4, 2), seeded with the target's prefixes and stopped at
+a limit, and then traces the target. Results:
+
+- Level 7: all four extras are derived, in about 25 s each. The closed
+  derivations have 3 000–8 500 facts, a third of them norm steps.
+- Level 8: three of the five extras are derived.
+- Level 9: none of the length-15 and -16 extras is derived at 100 000
+  cosets.
+
+The same finder works with HH (`g4partial.py`). The letters gain the
+six placed HH, and the relators gain the HH rules of `../natural3.py`
+at adjacent placements. It derives that CCZ(0,1,2) and CCZ(1,2,3)
+commute, written through HH(0,3) and HH(0,1), in 14 s. It does not
+derive R4 unless R4 is a relator, as expected.
+
 ## The lattice graph g·ℤ¹⁶
 
 `gz.py`, `gz2.py`: the vertex group V_Z is the signed permutations in
