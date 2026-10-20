@@ -44,7 +44,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'test':
 
 if len(sys.argv) > 1 and sys.argv[1] == 'emit':
     import os
-    from emit2 import Emitter, HEADER, COMMS, alist
+    from emit2 import Emitter, HEADER, COMMS, word
     E = Emitter(S)
     gen = E.generated(need)
     size = int(sys.argv[2])
@@ -65,7 +65,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'emit':
         nm = 'b-%s-%s' % (f, '-'.join(a.strip('()').replace(' ', '') for a in args)) if args else 'b-%s' % f
         names[(f, args)] = nm
         steps = E.steps(l, st)
-        w('%s : Eqn (₂₊ n)\n%s = derive (%s)\n  (%s)\n  (%s) refl\n\n' % (nm, nm, alist(l), alist(r), steps))
+        w('%s : Eqn (₂₊ n)\n%s = deriveℓ %s\n  %s\n  (%s) refl\n\n' % (nm, nm, word(l), word(r), steps))
     def clauses(fam, fld, ty, pat):
         w('  %s : %s\n' % (fld, ty))
         for (f, args), nm in names.items():
@@ -91,7 +91,7 @@ br₂ = record
                          mod='Box2', imports='open import Examples.Groups.Qutrit-Clifford.Box2.Part%d\n' % len(parts))
     head = head.replace('open import Data.List.Base using (List ; [] ; _∷_)',
                         'open import Data.List.Base using (List ; [] ; _∷_ ; _++_ ; map)\nopen import Data.Product.Base using (proj₁ ; proj₂)')
-    head = head.replace('using (Eqn ; sym⁼ ; lift⁼ ; derive ; perm ; rw)', 'using (Eqn ; prf ; sym⁼ ; lift⁼ ; derive ; perm ; rw ; ⟪_⟫)')
+    head = head.replace('using (Eqn ; rw)', 'using (Eqn ; prf ; rw ; ⟪_⟫)')
     head = head.replace('open import Examples.Groups.Qutrit-Clifford.Axioms\n',
                         'open import Examples.Groups.Qutrit-Clifford.Axioms\nopen import Examples.Groups.Qutrit-Clifford.NormalForm\nopen import Examples.Groups.Qutrit-Clifford.Tables\n')
     open(base + 'Box2.agda', 'w', encoding='utf-8', newline='\n').write(head + ''.join(out))
