@@ -21,20 +21,22 @@ earlier run: their passes count as checked -- only for a rerun after
 changes that touched neither those modules nor what they import).
 
 Imports are followed anywhere in the repository, not only in Five/, and a
-module whose interface is up to date is not run: its interface exists, is
-newer than its source and than the interface of everything it imports in
-the repository, all of which are up to date in turn (modification times,
-a proxy for Agda's hashes that can only err towards running a module).
-A timestamp can move without the file changing (a checkout touches it):
-a module Agda then finds up to date -- its output has no "Checking" line
-for it -- has its interface's timestamp raised to its source's and its
-imports', and the modules waiting on it are looked at again, so that a
-touched file costs one load, not a recheck of everything above it.
+module whose interface is up to date is not run.  That is decided as Agda
+decides it, from the interface file and not from timestamps (a checkout
+touches files it does not change): after a 24-byte header -- the source
+hash, the interface hash, the interface version -- an interface is a gzip
+stream that holds the module's source text, line endings normalised to LF
+and preceded by its length in eight bytes, and the interface hash of every
+module it imports.  So a module is up to date when its interface holds its
+current source, and the current interface hash of each module it imports
+in the repository, each of which is up to date in turn.  A module that is
+rechecked with a new interface hash makes its importers stale; one Agda
+rechecks while checking another (an "Checking" line in its output) counts
+as checked.  Modules outside the repository (the standard library,
+EucDomain) are taken to be up to date.
 With DRY=1 the stale modules are listed and nothing is run.
 
-A module that has an interface is expected to be up to date, so it is
-estimated by the loads measured so far (PROBE_GB before the first); and
-whatever the estimates, a job starts only while the memory the system
+Whatever the estimates, a job starts only while the memory the system
 reports available exceeds its estimate plus PAR5_RESERVE_GB (1).
 
 The estimates: a D module peaks at about 1.6 GB plus 13.6 kB per byte
@@ -42,7 +44,7 @@ of source (emit5's letter-step cut keeps them near 4.5 GB, a few up to
 7.9 GB), one over 230 KB gets the big heap from the start; another
 module is estimated by the mean of its kind measured so far in the run.
 """
-import fcntl, os, re, subprocess, sys, time
+import fcntl, os, re, subprocess, sys, time, zlib
 
 JOBS = int(sys.argv[1]); LOG = sys.argv[2]
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), *(['..'] * 5)))
@@ -54,7 +56,6 @@ HEAP, BIG = os.environ.get('PAR5_HEAP', '5G'), os.environ.get('PAR5_BIG', '7G')
 BUDGET = float(os.environ.get('PAR5_BUDGET_GB', '11')) * 1e6     # kB
 DEFAULT = 3.5e6                                                  # kB
 BIGSRC = 230_000
-PROBE = float(os.environ.get('PROBE_GB', '1.5')) * 1e6           # kB
 RESERVE = float(os.environ.get('PAR5_RESERVE_GB', '1')) * 1e6    # kB
 os.makedirs(OUT, exist_ok=True)
 
@@ -88,36 +89,63 @@ order = {p: i for i, p in enumerate(TARGETS)}
 mods = sorted(deps, key=lambda p: (order.get(p, -1), p))
 
 sys.setrecursionlimit(100000)
-fresh = {}
 
 
 def iface(p): return os.path.join(BUILD, p[:-len('.agda')] + '.agdai')
 
 
+def ihash(p):
+    with open(iface(p), 'rb') as f:
+        return f.read(24)[8:16]
+
+
+def norm(s): return s.replace(b'\r\n', b'\n').replace(b'\r', b'\n')
+
+
+# What each interface records: its own source (srcok) and, for each
+# import, whether the import's current interface hash (match).
+hashes = {p: ihash(p) for p in mods if os.path.exists(iface(p))}
+srcok, match = {}, {}
+for p in mods:
+    if p not in hashes:
+        srcok[p], match[p] = False, {}
+        continue
+    try:
+        body = zlib.decompressobj(47).decompress(open(iface(p), 'rb').read()[24:])
+    except zlib.error:                    # being written, or truncated
+        srcok[p], match[p] = False, {}
+        continue
+    src = norm(open(os.path.join(REPO, p), 'rb').read())
+    srcok[p] = len(src).to_bytes(8, 'big') + src in body
+    match[p] = {d: d in hashes and hashes[d] in body for d in deps[p]}
+    del body
+importers = {p: [q for q in mods if p in deps[q]] for p in mods}
+fresh = {}
+running, failed, done = {}, set(), set()
+
+
 def is_fresh(p):
+    if p in done: return True
     if p in running or p in failed: return False
     if p not in fresh:
-        i = iface(p)
-        ok = os.path.exists(i) and os.path.getmtime(i) >= os.path.getmtime(os.path.join(REPO, p))
-        for d in deps[p]:
-            if not ok: break
-            ok = is_fresh(d) and os.path.getmtime(iface(d)) <= os.path.getmtime(i)
-        fresh[p] = ok
+        fresh[p] = srcok[p] and all(match[p][d] and is_fresh(d) for d in deps[p])
     return fresh[p]
 
 
 def modname(p): return p[:-len('.agda')].replace('/', '.')
 
 
-def settle(p):
-    # p's interface is up to date: make its timestamp say so.
-    i = iface(p)
-    ts = [os.path.getmtime(i), os.path.getmtime(os.path.join(REPO, p))]
-    ts += [os.path.getmtime(iface(d)) for d in deps[p] if os.path.exists(iface(d))]
-    os.utime(i, (max(ts), max(ts)))
+bypath = {modname(p): p for p in mods}
 
 
-running, failed = {}, set()
+def checked(p):
+    # p has a new interface: importers that recorded another hash are stale.
+    new = ihash(p)
+    if new != hashes.get(p):
+        for q in importers[p]: match[q][p] = False
+        hashes[p] = new
+
+
 stale = [p for p in mods if not is_fresh(p)]
 if os.environ.get('DRY'):
     for p in stale: print(p, os.path.getsize(os.path.join(REPO, p)))
@@ -140,9 +168,6 @@ def heap_for(p): return BIG if size(p) > BIGSRC else HEAP
 seen, force = {}, {}
 
 
-probes = []
-
-
 def available():
     for line in open('/proc/meminfo'):
         if line.startswith('MemAvailable:'): return int(line.split()[1])
@@ -151,8 +176,6 @@ def available():
 
 def peak(p):
     if p in force: return force[p]
-    if os.path.exists(iface(p)) and kind(p) != 'D':
-        return max(probes) * 1.3 if probes else PROBE
     if kind(p) == 'D': return 1.6e6 + 13.6 * size(p)
     xs = seen.get(kind(p))
     return sum(xs) / len(xs) if xs else DEFAULT
@@ -194,16 +217,22 @@ while True:
         log(f'{p} exit={rc} time={int(time.time() - t0)}s maxrss={rss}kB heap={heap} '
             f'elapsed={int(time.time() - t_start)}s')
         if rc == 0:
-            done.add(p)
-            if f'Checking {modname(p)} ' in txt:
+            names = re.findall(r'^\s*Checking (\S+) \(', txt, re.M)
+            if modname(p) in names:
                 if rss: seen.setdefault(kind(p), []).append(rss)
             else:
-                if rss: probes.append(rss)
-                settle(p)
-                fresh.clear()
-                now = [q for q in mods if q not in done and q not in running and is_fresh(q)]
-                done.update(now)
-                log(f'{p} was up to date; {len(now)} more now up to date')
+                log(f'{p} was up to date')
+            for n in names:
+                q = bypath.get(n)
+                if q and q not in running:
+                    checked(q)
+                    if q != p and q not in done: log(f'{q} checked by {p}')
+                    done.add(q)
+            done.add(p)
+            fresh.clear()
+            now = [q for q in mods if q not in done and is_fresh(q)]
+            done.update(now)
+            if now: log(f'{len(now)} more up to date')
         elif rc == 251 and heap != BIG:
             retry.append(p); force[p] = BUDGET
         else:
