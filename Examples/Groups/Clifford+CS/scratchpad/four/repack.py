@@ -33,7 +33,48 @@ USING = re.compile(r'^(open import \S+(?: [^u(]\S*)*) using \(([^)]*)\)\s*$')
 CUT = re.compile(r'^(wl|wp|lem-)')            # names kept only where mentioned
 
 mods = sorted(f[:-5] for f in os.listdir(D) if re.fullmatch(r'[A-Z]\d+\.agda', f))
-index = [l.rstrip('\n').split(' ', 2) for l in open(os.path.join(D, 'INDEX.txt'), encoding='utf-8') if l.strip()]
+
+
+# INDEX.txt lists each lemma by its derivation's name, not in the order of
+# the modules (Five/D's is in emission order), so a line goes with the
+# lemma the emitter named from it: four/emit.py's and five/emit5.py's
+# lemname, copied here; a line no name matches goes with the next lemma of
+# its module in order.
+def lemname(name, tree):
+    if tree == 'Four':
+        TR = {'(': '⟨', ')': '⟩', '.': '·', '>': '⟶', '|': '∣', ';': '', '{': '', '}': '', '"': ''}
+        s = (name.replace('] [', '-vs-').replace(' ', '-').replace('=', '≡').replace('[', '')
+             .replace(']', '').replace(',', '').replace('@', 'at').replace('^', 'ᵖ'))
+        return 'lem-' + ''.join(TR.get(ch, ch) for ch in s)
+    TR = {'(': '⟨', ')': '⟩', '.': '·', '>': '⟶', '|': '∣', ';': '·', '{': '', '}': '', '"': '', ',': '',
+          '@': 'at', '^': 'ᵖ', '[': '', ']': '', '=': '≡', ':': '∶'}
+    s = ''.join(TR.get(ch, ch) for ch in name.replace(' ', '-'))
+    while '--' in s: s = s.replace('--', '-')
+    return 'lem-' + s
+
+
+def index_entries(index, order, module_of, tree):
+    """lemma -> its INDEX line [module, steps, name]"""
+    byname, left = {}, collections.defaultdict(list)
+    for e in index:
+        byname.setdefault((e[0], lemname(e[2].strip(), tree)), e)
+        left[e[0]].append(e)
+    entry = {}
+    for n in order:
+        e = byname.get((module_of[n], n))
+        if e and e in left[module_of[n]]:
+            entry[n] = e; left[module_of[n]].remove(e)
+    for n in order:
+        if n not in entry:
+            entry[n] = left[module_of[n]].pop(0)
+    assert all(entry[n][0] == module_of[n] for n in order)
+    return entry
+# The numbered modules are repacked; others in the directory (clifford-cs's
+# Five/D/TR and TRL, written by trsplit5.py between levels) are kept as they
+# are and treated as outside modules, their INDEX lines kept too.
+allidx = [l.rstrip('\n').split(' ', 2) for l in open(os.path.join(D, 'INDEX.txt'), encoding='utf-8') if l.strip()]
+index = [e for e in allidx if e[0] in mods]
+kept_idx = [e for e in allidx if e[0] not in mods]
 
 
 def parse(m):
@@ -67,7 +108,7 @@ for m in mods:
         lemmas[name] = (NL.join(text), m)
         order.append(name)
 assert len(order) == len(index), (len(order), len(index))
-entry = dict(zip(order, index))            # lemma -> [module, steps, joint name]
+entry = index_entries(index, order, {n: lemmas[n][1] for n in order}, TREE)
 names = set(lemmas)
 uses = {n: set(re.findall(r'\blem-[^\s()]+', t)) & names - {n} for n, (t, _) in lemmas.items()}
 
@@ -86,7 +127,7 @@ ext_of = {}                                # name -> outside module it comes fro
 for m in mods:
     for line in heads[m]:
         o = OUT.match(line)
-        if o and not o.group(1).startswith(MOD) and os.path.exists(modpath(o.group(1))):
+        if o and o.group(1)[len(MOD):] not in mods and os.path.exists(modpath(o.group(1))):
             for x in o.group(2).split(';'):
                 if x.strip(): ext_of[x.strip()] = o.group(1)
 need = {}
@@ -102,7 +143,7 @@ def needs(x):
         seen.add(y)
         src = open(modpath(y), encoding='utf-8').read()
         for i in re.findall(r'^\s*(?:open\s+)?import\s+([A-Za-z][^\s(;]*)', src, re.M):
-            if i.startswith(MOD):
+            if i.startswith(MOD) and i[len(MOD):] in mods:
                 o = re.search(r'^open import ' + re.escape(i) + r' using \(([^)]*)\)', src, re.M)
                 if o: need[x] |= {z.strip() for z in o.group(1).split(';') if z.strip()} & names
             elif os.path.exists(modpath(i)):
@@ -173,8 +214,14 @@ def header(i, ms):
     out = []
     for line in lines:
         if line in keyed:
-            xs = [x for x in keyed[line] if not CUT.match(x) or x in words]
-            if xs or not keyed[line]:
+            # an outside module that needs lemmas of the tree (Five.TR2,
+            # clifford-cs's Five/D/TR) is imported only for names the
+            # lemmas mention: imported for another module's lemmas, it
+            # made an import cycle
+            x0 = line.split()[2]
+            dependent = os.path.exists(modpath(x0)) and bool(needs(x0))
+            xs = [x for x in keyed[line] if not (dependent or CUT.match(x)) or x in words]
+            if xs or (not keyed[line] and not dependent):
                 out.append(f'{line} using ({" ; ".join(xs)})')
         else:
             out.append(line)
@@ -187,8 +234,22 @@ def header(i, ms):
     return clean
 
 
+# Every file touched is remembered, so that a layout with an import cycle
+# (checked at the end) is undone.
+touched = {}
+
+
+def put(p, text):
+    if p not in touched:
+        touched[p] = open(p, encoding='utf-8').read() if os.path.exists(p) else None
+    with open(p, 'w', encoding='utf-8', newline=NL) as f:
+        f.write(text)
+
+
 for m in mods:
-    os.remove(os.path.join(D, m + '.agda'))
+    p = os.path.join(D, m + '.agda')
+    touched[p] = open(p, encoding='utf-8').read()
+    os.remove(p)
 for i, ms in enumerate(new):
     hd = header(i, ms)
     imp = collections.defaultdict(set)
@@ -197,19 +258,18 @@ for i, ms in enumerate(new):
             if where[u] != mname[i]: imp[where[u]].add(u)
     hd += [f'open import {MOD}{w} using ({" ; ".join(sorted(imp[w]))})' for w in sorted(imp)]
     body = (NL + NL).join(lemmas[n][0] for n in ms)
-    with open(os.path.join(D, mname[i] + '.agda'), 'w', encoding='utf-8', newline=NL) as f:
-        f.write(NL.join(hd) + NL + NL + body + NL)
-with open(os.path.join(D, 'INDEX.txt'), 'w', encoding='utf-8', newline=NL) as f:
-    for i, ms in enumerate(new):
-        for n in ms:
-            f.write(f'{mname[i]} {entry[n][1]} {entry[n][2]}' + NL)
+    put(os.path.join(D, mname[i] + '.agda'), NL.join(hd) + NL + NL + body + NL)
+put(os.path.join(D, 'INDEX.txt'),
+    ''.join(f'{mname[i]} {entry[n][1]} {entry[n][2]}' + NL for i, ms in enumerate(new) for n in ms)
+    + ''.join(' '.join(e) + NL for e in kept_idx))
 
 # The modules that use the lemmas: their imports of TREE/D, regrouped.
 users = 0
 for dirpath, _, files in os.walk(C):
-    if 'scratchpad' in dirpath or os.path.abspath(dirpath) == os.path.abspath(D): continue
+    if 'scratchpad' in dirpath: continue
     for fn in files:
         if not fn.endswith('.agda'): continue
+        if os.path.abspath(dirpath) == os.path.abspath(D) and fn[:-5] in mname: continue
         p = os.path.join(dirpath, fn)
         lines = open(p, encoding='utf-8').read().split(NL)
         got, first, keep = set(), None, []
@@ -224,8 +284,7 @@ for dirpath, _, files in os.walk(C):
         imp = collections.defaultdict(set)
         for n in got: imp[where[n]].add(n)
         keep[first:first] = [f'open import {MOD}{w} using ({" ; ".join(sorted(imp[w]))})' for w in sorted(imp)]
-        with open(p, 'w', encoding='utf-8', newline=NL) as f:
-            f.write(NL.join(keep))
+        put(p, NL.join(keep))
         users += 1
 lv = collections.Counter(depth.values())
 print(f'{TREE}/D: {len(order)} lemmas in {len(mods)} modules -> {len(new)} modules '
@@ -256,7 +315,12 @@ for start in [MOD + x for x in mname]:
             state[m] = 2; stack.pop(); continue
         if state.get(nxt) == 1:
             cyc = [x for x, _ in stack][[x for x, _ in stack].index(nxt):] + [nxt]
-            sys.exit('import cycle: ' + ' -> '.join(cyc))
+            for p, text in touched.items():          # undo
+                if text is None:
+                    os.remove(p)
+                else:
+                    with open(p, 'w', encoding='utf-8', newline=NL) as f: f.write(text)
+            sys.exit('import cycle, nothing changed: ' + ' -> '.join(cyc))
         if nxt not in state:
             state[nxt] = 1; stack.append((nxt, iter(imps(nxt))))
 print('no import cycle')
