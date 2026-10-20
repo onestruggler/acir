@@ -268,6 +268,16 @@ a limit, and then traces the target. Results:
 - Level 9: none of the length-15 and -16 extras is derived at 100 000
   cosets.
 
+The bottom of the tower is the obstacle, and the reason is the Schur
+multiplier of A₇, which has order 6. In its four Toffoli letters, A₇
+needs a relator of length 15 or 16: shorter ones present the triple
+cover 3·A₇. With four more double transpositions as letters, short
+relators present the double cover 2·A₇ (index 5040). So any short
+presentation of the bottom by double transpositions lands in a cover,
+and the relation that kills the centre has to be derived through
+letters outside the bottom. The affine finder does not reach it at
+300 000 cosets.
+
 The same finder works with HH (`g4partial.py`). The letters gain the
 six placed HH, and the relators gain the HH rules of `../natural3.py`
 at adjacent placements. It derives that CCZ(0,1,2) and CCZ(1,2,3)
