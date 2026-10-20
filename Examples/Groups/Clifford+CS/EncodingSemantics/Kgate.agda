@@ -17,7 +17,7 @@
 -- per context.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --lossy-unification #-}
 
 open import Data.Nat using (ℕ)
 

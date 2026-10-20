@@ -23,12 +23,14 @@ open import Word.Base using (ε ; _•_ ; _^_)
 
 open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Four.Chain
+open import Examples.Groups.Clifford+CS.Four.Flat using (by-flat)
 open import Examples.Groups.Clifford+CS.Four.TransportTables
 open import Examples.Groups.Clifford+CS.Four.Transport
 open import Examples.Groups.Clifford+CS.MultiControlled using (Layout ; mc ; G-pp ; G-rot)
 open import Examples.Groups.Clifford+CS.Decoding 0 using (layout□ ; dPP₁ ; dPP₁′ ; lo₁ ; hi₁)
 open import Examples.Groups.Clifford+CS.Four.Bridge using (G-pp-≈)
-open import Examples.Groups.Clifford+CS.Four.D.D165 using (lem-bridge-G-rot)
+import Examples.Groups.Clifford+CS.Four.WinInst as WI
+open import Examples.Groups.Clifford+CS.Four.D.D735 WI.ws using (lem-bridge-G-rot)
 
 ------------------------------------------------------------------------
 -- Generic lemmas
@@ -68,7 +70,7 @@ negs-F (v ∷ ws) w = begin
 
 -- The decoding's rotation in the spelling of the derivations.
 G-rot-≈ : G-rot 1 ≈ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ
-G-rot-≈ = trans (by-assoc Eq.refl) lem-bridge-G-rot
+G-rot-≈ = trans (by-flat Eq.refl) lem-bridge-G-rot
 
 ------------------------------------------------------------------------
 -- The decoded letters as blocks
@@ -256,420 +258,420 @@ B-h-14 = blk (xb false true true false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03
 br-p-0 : dPP₁ 0 ≈ ⟪ flatB B-p-0 ⟫ʷ
 br-p-0 =
   trans (mc-cong false (layout□ 0) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ w₂ ∷ w₃ ∷ []) (F⟪ [] ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₂ ∷ col w₃ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-0 : dPP₁′ 0 ≈ ⟪ flatB B-p′-0 ⟫ʷ
 br-p′-0 =
   trans (mc-cong true (layout□ 0) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ w₂ ∷ w₃ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₂ ∷ col w₃ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-0 : lo₁ 0 ≈ ⟪ flatB B-l-0 ⟫ʷ
 br-l-0 =
   trans (mc-cong false (layout□ 0) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ w₂ ∷ w₃ ∷ []) (F⟪ [] ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₂ ∷ col w₃ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-0 : hi₁ 0 ≈ ⟪ flatB B-h-0 ⟫ʷ
 br-h-0 =
   trans (mc-cong true (layout□ 0) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ w₂ ∷ w₃ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₂ ∷ col w₃ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-1 : dPP₁ 1 ≈ ⟪ flatB B-p-1 ⟫ʷ
 br-p-1 =
   trans (mc-cong false (layout□ 1) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ w₃ ∷ []) (F⟪ (rel s₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ col w₃ ∷ rel s₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-1 : dPP₁′ 1 ≈ ⟪ flatB B-p′-1 ⟫ʷ
 br-p′-1 =
   trans (mc-cong true (layout□ 1) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ w₃ ∷ []) (F⟪ (rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ col w₃ ∷ rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-1 : lo₁ 1 ≈ ⟪ flatB B-l-1 ⟫ʷ
 br-l-1 =
   trans (mc-cong false (layout□ 1) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ w₃ ∷ []) (F⟪ (rel s₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ col w₃ ∷ rel s₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-1 : hi₁ 1 ≈ ⟪ flatB B-h-1 ⟫ʷ
 br-h-1 =
   trans (mc-cong true (layout□ 1) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ w₃ ∷ []) (F⟪ (rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ col w₃ ∷ rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-2 : dPP₁ 2 ≈ ⟪ flatB B-p-2 ⟫ʷ
 br-p-2 =
   trans (mc-cong true (layout□ 2) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ w₃ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ col w₃ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-2 : dPP₁′ 2 ≈ ⟪ flatB B-p′-2 ⟫ʷ
 br-p′-2 =
   trans (mc-cong false (layout□ 2) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ w₃ ∷ []) (F⟪ [] ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ col w₃ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-2 : lo₁ 2 ≈ ⟪ flatB B-l-2 ⟫ʷ
 br-l-2 =
   trans (mc-cong true (layout□ 2) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ w₃ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ col w₃ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-2 : hi₁ 2 ≈ ⟪ flatB B-h-2 ⟫ʷ
 br-h-2 =
   trans (mc-cong false (layout□ 2) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ w₃ ∷ []) (F⟪ [] ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ col w₃ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-3 : dPP₁ 3 ≈ ⟪ flatB B-p-3 ⟫ʷ
 br-p-3 =
   trans (mc-cong false (layout□ 3) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₀ ∷ w₃ ∷ []) (F⟪ (rel s₁ ∷ rel s₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ col w₃ ∷ rel s₁ ∷ rel s₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-3 : dPP₁′ 3 ≈ ⟪ flatB B-p′-3 ⟫ʷ
 br-p′-3 =
   trans (mc-cong true (layout□ 3) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₀ ∷ w₃ ∷ []) (F⟪ (rel s₁ ∷ rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ col w₃ ∷ rel s₁ ∷ rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-3 : lo₁ 3 ≈ ⟪ flatB B-l-3 ⟫ʷ
 br-l-3 =
   trans (mc-cong false (layout□ 3) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₀ ∷ w₃ ∷ []) (F⟪ (rel s₁ ∷ rel s₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ col w₃ ∷ rel s₁ ∷ rel s₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-3 : hi₁ 3 ≈ ⟪ flatB B-h-3 ⟫ʷ
 br-h-3 =
   trans (mc-cong true (layout□ 3) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₀ ∷ w₃ ∷ []) (F⟪ (rel s₁ ∷ rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ col w₃ ∷ rel s₁ ∷ rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-4 : dPP₁ 4 ≈ ⟪ flatB B-p-4 ⟫ʷ
 br-p-4 =
   trans (mc-cong false (layout□ 4) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₃ ∷ []) (F⟪ [] ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₃ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-4 : dPP₁′ 4 ≈ ⟪ flatB B-p′-4 ⟫ʷ
 br-p′-4 =
   trans (mc-cong true (layout□ 4) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₃ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₃ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-4 : lo₁ 4 ≈ ⟪ flatB B-l-4 ⟫ʷ
 br-l-4 =
   trans (mc-cong false (layout□ 4) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₃ ∷ []) (F⟪ [] ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₃ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-4 : hi₁ 4 ≈ ⟪ flatB B-h-4 ⟫ʷ
 br-h-4 =
   trans (mc-cong true (layout□ 4) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₃ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₃ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-5 : dPP₁ 5 ≈ ⟪ flatB B-p-5 ⟫ʷ
 br-p-5 =
   trans (mc-cong true (layout□ 5) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₃ ∷ []) (F⟪ (rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₃ ∷ rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-5 : dPP₁′ 5 ≈ ⟪ flatB B-p′-5 ⟫ʷ
 br-p′-5 =
   trans (mc-cong false (layout□ 5) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₃ ∷ []) (F⟪ (rel s₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₃ ∷ rel s₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-5 : lo₁ 5 ≈ ⟪ flatB B-l-5 ⟫ʷ
 br-l-5 =
   trans (mc-cong true (layout□ 5) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₃ ∷ []) (F⟪ (rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₃ ∷ rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-5 : hi₁ 5 ≈ ⟪ flatB B-h-5 ⟫ʷ
 br-h-5 =
   trans (mc-cong false (layout□ 5) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₃ ∷ []) (F⟪ (rel s₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₃ ∷ rel s₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-6 : dPP₁ 6 ≈ ⟪ flatB B-p-6 ⟫ʷ
 br-p-6 =
   trans (mc-cong true (layout□ 6) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ w₃ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₃ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-6 : dPP₁′ 6 ≈ ⟪ flatB B-p′-6 ⟫ʷ
 br-p′-6 =
   trans (mc-cong false (layout□ 6) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ w₃ ∷ []) (F⟪ [] ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₃ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-6 : lo₁ 6 ≈ ⟪ flatB B-l-6 ⟫ʷ
 br-l-6 =
   trans (mc-cong true (layout□ 6) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ w₃ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₃ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-6 : hi₁ 6 ≈ ⟪ flatB B-h-6 ⟫ʷ
 br-h-6 =
   trans (mc-cong false (layout□ 6) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ w₃ ∷ []) (F⟪ [] ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₃ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-7 : dPP₁ 7 ≈ ⟪ flatB B-p-7 ⟫ʷ
 br-p-7 =
   trans (mc-cong false (layout□ 7) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₀ ∷ w₁ ∷ []) (F⟪ (rel s₂ ∷ rel s₁ ∷ rel s₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ col w₁ ∷ rel s₂ ∷ rel s₁ ∷ rel s₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-7 : dPP₁′ 7 ≈ ⟪ flatB B-p′-7 ⟫ʷ
 br-p′-7 =
   trans (mc-cong true (layout□ 7) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₀ ∷ w₁ ∷ []) (F⟪ (rel s₂ ∷ rel s₁ ∷ rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ col w₁ ∷ rel s₂ ∷ rel s₁ ∷ rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-7 : lo₁ 7 ≈ ⟪ flatB B-l-7 ⟫ʷ
 br-l-7 =
   trans (mc-cong false (layout□ 7) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₀ ∷ w₁ ∷ []) (F⟪ (rel s₂ ∷ rel s₁ ∷ rel s₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ col w₁ ∷ rel s₂ ∷ rel s₁ ∷ rel s₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-7 : hi₁ 7 ≈ ⟪ flatB B-h-7 ⟫ʷ
 br-h-7 =
   trans (mc-cong true (layout□ 7) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₀ ∷ w₁ ∷ []) (F⟪ (rel s₂ ∷ rel s₁ ∷ rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ col w₁ ∷ rel s₂ ∷ rel s₁ ∷ rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-8 : dPP₁ 8 ≈ ⟪ flatB B-p-8 ⟫ʷ
 br-p-8 =
   trans (mc-cong false (layout□ 8) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ []) (F⟪ [] ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-8 : dPP₁′ 8 ≈ ⟪ flatB B-p′-8 ⟫ʷ
 br-p′-8 =
   trans (mc-cong true (layout□ 8) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-8 : lo₁ 8 ≈ ⟪ flatB B-l-8 ⟫ʷ
 br-l-8 =
   trans (mc-cong false (layout□ 8) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ []) (F⟪ [] ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-8 : hi₁ 8 ≈ ⟪ flatB B-h-8 ⟫ʷ
 br-h-8 =
   trans (mc-cong true (layout□ 8) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-9 : dPP₁ 9 ≈ ⟪ flatB B-p-9 ⟫ʷ
 br-p-9 =
   trans (mc-cong false (layout□ 9) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F [] (F⟪ (rel s₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (rel s₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-9 : dPP₁′ 9 ≈ ⟪ flatB B-p′-9 ⟫ʷ
 br-p′-9 =
   trans (mc-cong true (layout□ 9) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F [] (F⟪ (rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-9 : lo₁ 9 ≈ ⟪ flatB B-l-9 ⟫ʷ
 br-l-9 =
   trans (mc-cong false (layout□ 9) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F [] (F⟪ (rel s₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (rel s₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-9 : hi₁ 9 ≈ ⟪ flatB B-h-9 ⟫ʷ
 br-h-9 =
   trans (mc-cong true (layout□ 9) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F [] (F⟪ (rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-10 : dPP₁ 10 ≈ ⟪ flatB B-p-10 ⟫ʷ
 br-p-10 =
   trans (mc-cong true (layout□ 10) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F [] (F⟪ (col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-10 : dPP₁′ 10 ≈ ⟪ flatB B-p′-10 ⟫ʷ
 br-p′-10 =
   trans (mc-cong false (layout□ 10) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F [] (F⟪ [] ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks [] (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-10 : lo₁ 10 ≈ ⟪ flatB B-l-10 ⟫ʷ
 br-l-10 =
   trans (mc-cong true (layout□ 10) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F [] (F⟪ (col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-10 : hi₁ 10 ≈ ⟪ flatB B-h-10 ⟫ʷ
 br-h-10 =
   trans (mc-cong false (layout□ 10) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F [] (F⟪ [] ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks [] (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-11 : dPP₁ 11 ≈ ⟪ flatB B-p-11 ⟫ʷ
 br-p-11 =
   trans (mc-cong true (layout□ 11) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₀ ∷ []) (F⟪ (rel s₁ ∷ rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ rel s₁ ∷ rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-11 : dPP₁′ 11 ≈ ⟪ flatB B-p′-11 ⟫ʷ
 br-p′-11 =
   trans (mc-cong false (layout□ 11) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₀ ∷ []) (F⟪ (rel s₁ ∷ rel s₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ rel s₁ ∷ rel s₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-11 : lo₁ 11 ≈ ⟪ flatB B-l-11 ⟫ʷ
 br-l-11 =
   trans (mc-cong true (layout□ 11) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₀ ∷ []) (F⟪ (rel s₁ ∷ rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ rel s₁ ∷ rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-11 : hi₁ 11 ≈ ⟪ flatB B-h-11 ⟫ʷ
 br-h-11 =
   trans (mc-cong false (layout□ 11) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₀ ∷ []) (F⟪ (rel s₁ ∷ rel s₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₀ ∷ rel s₁ ∷ rel s₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-12 : dPP₁ 12 ≈ ⟪ flatB B-p-12 ⟫ʷ
 br-p-12 =
   trans (mc-cong false (layout□ 12) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ []) (F⟪ [] ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-12 : dPP₁′ 12 ≈ ⟪ flatB B-p′-12 ⟫ʷ
 br-p′-12 =
   trans (mc-cong true (layout□ 12) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-12 : lo₁ 12 ≈ ⟪ flatB B-l-12 ⟫ʷ
 br-l-12 =
   trans (mc-cong false (layout□ 12) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ []) (F⟪ [] ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-12 : hi₁ 12 ≈ ⟪ flatB B-h-12 ⟫ʷ
 br-h-12 =
   trans (mc-cong true (layout□ 12) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-13 : dPP₁ 13 ≈ ⟪ flatB B-p-13 ⟫ʷ
 br-p-13 =
   trans (mc-cong true (layout□ 13) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ []) (F⟪ (rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-13 : dPP₁′ 13 ≈ ⟪ flatB B-p′-13 ⟫ʷ
 br-p′-13 =
   trans (mc-cong false (layout□ 13) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ []) (F⟪ (rel s₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ rel s₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-13 : lo₁ 13 ≈ ⟪ flatB B-l-13 ⟫ʷ
 br-l-13 =
   trans (mc-cong true (layout□ 13) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ []) (F⟪ (rel s₀ ∷ col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ rel s₀ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-13 : hi₁ 13 ≈ ⟪ flatB B-h-13 ⟫ʷ
 br-h-13 =
   trans (mc-cong false (layout□ 13) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₂ ∷ []) (F⟪ (rel s₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₂ ∷ rel s₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-p-14 : dPP₁ 14 ≈ ⟪ flatB B-p-14 ⟫ʷ
 br-p-14 =
   trans (mc-cong true (layout□ 14) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ w₂ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₂ ∷ col w₀ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-p′-14 : dPP₁′ 14 ≈ ⟪ flatB B-p′-14 ⟫ʷ
 br-p′-14 =
   trans (mc-cong false (layout□ 14) G-pp-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ w₂ ∷ []) (F⟪ [] ⟫ ⟪ (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₂ ∷ []) (blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ []) ∷ []) tt)))
 
 br-l-14 : lo₁ 14 ≈ ⟪ flatB B-l-14 ⟫ʷ
 br-l-14 =
   trans (mc-cong true (layout□ 14) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ w₂ ∷ []) (F⟪ (col w₀ ∷ []) ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₂ ∷ col w₀ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 
 br-h-14 : hi₁ 14 ≈ ⟪ flatB B-h-14 ⟫ʷ
 br-h-14 =
   trans (mc-cong false (layout□ 14) G-rot-≈)
-  (trans (by-assoc Eq.refl)
+  (trans (by-flat Eq.refl)
   (trans (negs-F (w₁ ∷ w₂ ∷ []) (F⟪ [] ⟫ ⟪ (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ⟫ʷ))
          (F-blocks (col w₁ ∷ col w₂ ∷ []) (blk (xb false false false false) (S0 ∷ K0 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ Toff012 ∷ K0⁻ ∷ S0⁻ ∷ []) ∷ []) tt)))
 

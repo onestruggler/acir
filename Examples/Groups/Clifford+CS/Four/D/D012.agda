@@ -1,554 +1,943 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Examples.Groups.Clifford+CS.Four.D.D012 where
+open import Examples.Groups.Clifford+CS.Four.WinSig using (Ws ; wn)
+
+module Examples.Groups.Clifford+CS.Four.D.D012 (W : Ws) where
 
 open import Data.List using (List ; [] ; _∷_)
 open import Data.Unit using (tt)
 open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Word.Base using (ε ; _•_)
-
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
 open import Examples.Groups.Clifford+CS.Tools using (ax)
-open import Examples.Groups.Clifford+CS.Windows using (win)
-open import Examples.Groups.Clifford+CS.Completeness using (complete₃)
-open import Examples.Groups.Clifford+CS.TopWeakening using (low-comm)
-open import Examples.Groups.Clifford+CS.Idle using (low₁-comm)
-open import Examples.Groups.Clifford+CS.Four.Chain
-open import Examples.Groups.Clifford+CS.Four.D.D008 using (lem-comm-CCZ012-CZ13)
-open import Examples.Groups.Clifford+CS.Four.D.D011 using (lem-T1-CZ13-T1)
--- comm CCZ012 CCZ023: 407 steps
-lem-comm-CCZ012-CCZ023 : ⟪ (CCZ012 ∷ CCZ023 ∷ []) ⟫ʷ ≈ ⟪ (CCZ023 ∷ CCZ012 ∷ []) ⟫ʷ
-lem-comm-CCZ012-CCZ023 = trans (run b0) (trans (run b1) (trans (run b2) (trans (run b3) (trans (run b4) (trans (run b5) (trans (run b6) (trans (run b7) (trans (run b8) (trans (run b9) (trans (run b10) (trans (run b11) (trans (run b12) (trans (run b13) (trans (run b14) (trans (run b15) (trans (run b16) (trans (run b17) (trans (run b18) (trans (run b19) (trans (run b20) (trans (run b21) (trans (run b22) (trans (run b23) (trans (run b24) (trans (run b25) (trans (run b26) (trans (run b27) (trans (run b28) (trans (run b29) (trans (run b30) (trans (run b31) (trans (run b32) (trans (run b33) (trans (run b34) (trans (run b35) (trans (run b36) (trans (run b37) (trans (run b38) (trans (run b39) (trans (run b40) (trans (run b41) (trans (run b42) (trans (run b43) (trans (run b44) (trans (run b45) (trans (run b46) (trans (run b47) (trans (run b48) (trans (run b49) (run b50))))))))))))))))))))))))))))))))))))))))))))))))))
-  where
-  b0 : Chain (CCZ012 ∷ CCZ023 ∷ []) (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ Sw01 ∷ CS13 ∷ CCZ123 ∷ Sw01 ∷ CX13 ∷ [])
-  b0 = at 2 0 (CX13 ∷ CX13 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑ • CX₀₁ • Swap ↑) • (Swap ↑ • CX₀₁ • Swap ↑)) tt tt Eq.refl) ▸
-       at 3 0 (Sw01 ∷ Sw01 ∷ []) (win 3 0 complete₃ (ε) (Swap • Swap) tt tt Eq.refl) ▸
-       at 4 0 (CCZ123 ∷ CCZ123 ∷ []) (win 0 3 complete₃ (ε) (CCZ • CCZ) tt tt Eq.refl) ▸
-       at 4 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 2 (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS)) ▸
-       at 4 2 (CX02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CX₀₁ ↑)) ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 5 2 (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS))) ▸
-       at 6 2 (CX02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CX₀₁ ↑)) ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) tt tt Eq.refl) ▸ done
+open import Examples.Groups.Clifford+CS.LowComm using (low-comm ; low₁-comm)
+open import Examples.Groups.Clifford+CS.Four.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
+open import Examples.Groups.Clifford+CS.Four.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
 
-  b1 : Chain (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ Sw01 ∷ CS13 ∷ CCZ123 ∷ Sw01 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CX13 ∷ Sw01 ∷ CS23 ∷ CX12 ∷ Sw01 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ Sw01 ∷ CCZ123 ∷ Sw01 ∷ CX13 ∷ [])
-  b1 = at 8 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 7 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 8 2 (CS02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CS ↑)) ((Swap ↑ • CS • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 9 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 7 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 0 (Sw01 ∷ Sw01 ∷ []) (win 3 0 complete₃ (ε) (Swap • Swap) tt tt Eq.refl) ▸
-       at 4 2 (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS)) ▸
-       at 5 2 (CX12 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Swap ↑ • CX₀₁ • Swap ↑)) ((CX₀₁ ↑) • Swap) tt tt Eq.refl) ▸ done
+private
+  q1 : Eqn
+  q1 = eqn [] (Sw23 ∷ Sw23 ∷ []) (wn 1 W)
+  q2 : Eqn
+  q2 = eqn [] (CX02 ∷ CX02 ∷ []) (wn 252 W)
+  q3 : Eqn
+  q3 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wn 3 W)
+  q4 : Eqn
+  q4 = eqn [] (CCZ123 ∷ CCZ123 ∷ []) (wn 70 W)
+  q5 : Eqn
+  q5 = eqn [] (Sw01 ∷ Sw01 ∷ []) (wn 5 W)
+  q6 : Eqn
+  q6 = eqn (Sw01 ∷ Sw23 ∷ []) (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap))
+  q7 : Eqn
+  q7 = eqn (CX02 ∷ Sw01 ∷ []) (Sw01 ∷ CX12 ∷ []) (wn 74 W)
+  q8 : Eqn
+  q8 = eqn (CS12 ∷ Sw01 ∷ []) (Sw01 ∷ CS02 ∷ []) (wn 10 W)
+  q9 : Eqn
+  q9 = eqn (CX12 ∷ Sw01 ∷ []) (Sw01 ∷ CX02 ∷ []) (wn 253 W)
+  q10 : Eqn
+  q10 = eqn (Sw01 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS)))
+  q11 : Eqn
+  q11 = eqn (Sw01 ∷ CS23 ∷ []) (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS))
+  q12 : Eqn
+  q12 = eqn (Sw01 ∷ CX02 ∷ []) (CX12 ∷ Sw01 ∷ []) (wn 24 W)
+  q13 : Eqn
+  q13 = eqn (Sw01 ∷ CS02 ∷ []) (CS12 ∷ Sw01 ∷ []) (wn 25 W)
+  q14 : Eqn
+  q14 = eqn (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (wn 26 W)
+  q15 : Eqn
+  q15 = eqn [] (Sw12 ∷ Sw12 ∷ []) (wn 12 W)
+  q16 : Eqn
+  q16 = eqn (CX13 ∷ Sw12 ∷ []) (Sw12 ∷ CX23 ∷ []) (wn 36 W)
+  q17 : Eqn
+  q17 = eqn (Sw01 ∷ CX12 ∷ []) (CX02 ∷ Sw01 ∷ []) (wn 30 W)
+  q18 : Eqn
+  q18 = eqn (Sw01 ∷ CS12 ∷ []) (CS02 ∷ Sw01 ∷ []) (wn 27 W)
+  q19 : Eqn
+  q19 = eqn (Sw01 ∷ Sw01 ∷ []) [] (wn 31 W)
+  q20 : Eqn
+  q20 = eqn (Sw12 ∷ Sw23 ∷ Sw12 ∷ []) (Sw23 ∷ Sw12 ∷ Sw23 ∷ []) (wn 22 W)
+  q21 : Eqn
+  q21 = eqn (CS01 ∷ Sw23 ∷ []) (Sw23 ∷ CS01 ∷ []) (low-comm (CS) (Swap))
+  q22 : Eqn
+  q22 = eqn (Sw23 ∷ Sw12 ∷ Sw23 ∷ []) (Sw12 ∷ Sw23 ∷ Sw12 ∷ []) (wn 23 W)
+  q23 : Eqn
+  q23 = eqn (Sw12 ∷ Sw12 ∷ []) [] (wn 14 W)
+  q24 : Eqn
+  q24 = eqn (CS23⁻ ∷ Sw12 ∷ []) (Sw12 ∷ CS13⁻ ∷ []) (wn 47 W)
+  q25 : Eqn
+  q25 = eqn (CS23 ∷ Sw12 ∷ []) (Sw12 ∷ CS13 ∷ []) (wn 48 W)
+  q26 : Eqn
+  q26 = eqn (CX01 ∷ Sw23 ∷ []) (Sw23 ∷ CX01 ∷ []) (low-comm (CX₀₁) (Swap))
+  q27 : Eqn
+  q27 = eqn (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (wn 43 W)
+  q28 : Eqn
+  q28 = eqn (CX23 ∷ Sw23 ∷ []) (Sw23 ∷ CX32 ∷ []) (wn 44 W)
+  q29 : Eqn
+  q29 = eqn (CX32 ∷ CCZ012 ∷ CX32 ∷ []) (CCZ012 ∷ CCZ013 ∷ []) (ax cx-ccz)
+  q30 : Eqn
+  q30 = eqn (Sw12 ∷ CS13 ∷ []) (CS23 ∷ Sw12 ∷ []) (wn 20 W)
+  q31 : Eqn
+  q31 = eqn (Sw12 ∷ CS13⁻ ∷ []) (CS23⁻ ∷ Sw12 ∷ []) (wn 21 W)
+  q32 : Eqn
+  q32 = eqn (Sw12 ∷ CS12 ∷ []) (CS12 ∷ Sw12 ∷ []) (wn 18 W)
+  q33 : Eqn
+  q33 = eqn (Sw12 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ Sw12 ∷ []) (wn 19 W)
+  q34 : Eqn
+  q34 = eqn (CS12 ∷ CX02 ∷ CS12⁻ ∷ CX02 ∷ CS01 ∷ []) (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (wn 17 W)
+  q35 : Eqn
+  q35 = eqn (Sw01 ∷ CX01 ∷ []) (CX10 ∷ Sw01 ∷ []) (wn 28 W)
+  q36 : Eqn
+  q36 = eqn (Sw01 ∷ CS12⁻ ∷ []) (CS02⁻ ∷ Sw01 ∷ []) (wn 29 W)
+  q37 : Eqn
+  q37 = eqn (CS02 ∷ CX10 ∷ CS02⁻ ∷ CX10 ∷ CS12 ∷ []) (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (wn 11 W)
+  q38 : Eqn
+  q38 = eqn (CCZ123 ∷ CCZ123 ∷ []) [] (wn 33 W)
+  q39 : Eqn
+  q39 = eqn (CCZ012 ∷ CCZ012 ∷ []) [] (wn 32 W)
 
-  b2 : Chain (CCZ012 ∷ CCZ023 ∷ CX13 ∷ Sw01 ∷ CS23 ∷ CX12 ∷ Sw01 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ Sw01 ∷ CCZ123 ∷ Sw01 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CX13 ∷ Sw01 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ Sw01 ∷ Sw01 ∷ CCZ123 ∷ Sw01 ∷ CX13 ∷ [])
-  b2 = at 6 2 (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS))) ▸
-       at 7 2 (CX12 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Swap ↑ • CX₀₁ • Swap ↑)) ((CX₀₁ ↑) • Swap) tt tt Eq.refl) ▸
-       at 9 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 8 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 9 2 (CS12 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • Swap) tt tt Eq.refl) ▸
-       at 10 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 8 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 5 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (win 0 3 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸ done
+-- comm CCZ012 CCZ123: 455 steps
+lem-comm-CCZ012-CCZ123 : ⟪ (CCZ012 ∷ CCZ123 ∷ []) ⟫ʷ ≈ ⟪ (CCZ123 ∷ CCZ012 ∷ []) ⟫ʷ
+lem-comm-CCZ012-CCZ123 = derive (CCZ012 ∷ CCZ123 ∷ []) (CCZ123 ∷ CCZ012 ∷ [])
+  (rw 2 q1 ∷
+   rw 3 q2 ∷
+   rw 4 q1 ∷
+   re 2 3 (CX03 ∷ []) ∷
+   rw 5 q1 ∷
+   re 3 3 (CX03 ∷ []) ∷
+   rw 4 q3 ∷
+   rw 3 q4 ∷
+   rw 4 q1 ∷
+   rw 5 q2 ∷
+   rw 6 q1 ∷
+   re 4 3 (CX03 ∷ []) ∷
+   rw 7 q1 ∷
+   re 5 3 (CX03 ∷ []) ∷
+   rw 6 q3 ∷
+   rw 5 q5 ∷
+   re 4 1 (Sw23 ∷ CX02 ∷ Sw23 ∷ []) ∷
+   rw⁻ 6 q6 ∷
+   rw 5 q7 ∷
+   rw⁻ 4 q6 ∷
+   re 5 3 (CX13 ∷ []) ∷
+   re 3 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) ∷
+   re 7 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw⁻ 9 q6 ∷
+   rw 8 q8 ∷
+   rw⁻ 7 q6 ∷
+   re 8 3 (CS03 ∷ []) ∷
+   rw 6 q9 ∷
+   rw⁻ 5 q10 ∷
+   rw 4 q9 ∷
+   rw⁻ 3 q11 ∷
+   rw 4 q5 ∷
+   rw 5 q11 ∷
+   rw 6 q12 ∷
+   rw 7 q10 ∷
+   rw 8 q12 ∷
+   re 10 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 9 q6 ∷
+   rw 10 q13 ∷
+   rw 11 q6 ∷
+   re 9 3 (CS13 ∷ []) ∷
+   rw 5 q14 ∷
+   re 5 5 (CCZ123 ∷ []) ∷
+   re 4 3 (CCZ023 ∷ []) ∷
+   re 2 1 (Sw23 ∷ CX02 ∷ Sw23 ∷ []) ∷
+   rw⁻ 4 q6 ∷
+   rw 3 q7 ∷
+   rw⁻ 2 q6 ∷
+   re 3 3 (CX13 ∷ []) ∷
+   rw 6 q15 ∷
+   rw 5 q16 ∷
+   re 4 1 (Sw01 ∷ CCZ123 ∷ Sw01 ∷ []) ∷
+   re 5 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) ∷
+   rw 4 q11 ∷
+   rw 5 q17 ∷
+   rw 6 q10 ∷
+   rw 7 q17 ∷
+   re 9 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 8 q6 ∷
+   rw 9 q18 ∷
+   rw 10 q6 ∷
+   re 8 3 (CS03 ∷ []) ∷
+   rw 9 q19 ∷
+   re 8 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   rw 11 q20 ∷
+   rw 10 q21 ∷
+   rw 8 q22 ∷
+   re 9 5 (CS03 ∷ []) ∷
+   re 7 1 (Sw12 ∷ CX01 ∷ Sw12 ∷ []) ∷
+   rw 9 q23 ∷
+   rw 6 q24 ∷
+   re 5 1 (Sw12 ∷ CX01 ∷ Sw12 ∷ []) ∷
+   rw 7 q23 ∷
+   rw 4 q25 ∷
+   rw 5 q1 ∷
+   re 7 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 6 q3 ∷
+   rw⁻ 7 q26 ∷
+   re 9 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 8 q3 ∷
+   rw⁻ 9 q26 ∷
+   re 11 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 10 q3 ∷
+   rw 6 q27 ∷
+   re 6 5 (CCZ012 ∷ []) ∷
+   re 5 3 (CCZ013 ∷ []) ∷
+   rw 3 q16 ∷
+   rw 7 q1 ∷
+   rw 6 q28 ∷
+   re 5 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) ∷
+   re 6 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 7 q1 ∷
+   re 5 3 (CS13 ∷ []) ∷
+   rw⁻ 6 q26 ∷
+   rw 9 q1 ∷
+   re 7 3 (CS13⁻ ∷ []) ∷
+   rw⁻ 8 q26 ∷
+   rw 11 q1 ∷
+   re 9 3 (CS03 ∷ []) ∷
+   rw 10 q3 ∷
+   re 9 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 11 q3 ∷
+   rw 8 q26 ∷
+   re 7 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 9 q3 ∷
+   rw 6 q26 ∷
+   re 5 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 7 q3 ∷
+   rw 6 q27 ∷
+   re 6 5 (CCZ012 ∷ []) ∷
+   rw 4 q28 ∷
+   rw 5 q29 ∷
+   re 5 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 6 q1 ∷
+   re 4 3 (CS13 ∷ []) ∷
+   rw⁻ 5 q26 ∷
+   rw 8 q1 ∷
+   re 6 3 (CS13⁻ ∷ []) ∷
+   rw⁻ 7 q26 ∷
+   rw 10 q1 ∷
+   re 8 3 (CS03 ∷ []) ∷
+   rw 4 q1 ∷
+   re 6 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   rw⁻ 6 q26 ∷
+   re 8 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 7 q3 ∷
+   rw⁻ 8 q26 ∷
+   re 10 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 9 q3 ∷
+   rw 5 q27 ∷
+   re 5 5 (CCZ012 ∷ []) ∷
+   re 4 3 (CCZ013 ∷ []) ∷
+   re 6 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) ∷
+   re 7 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 8 q1 ∷
+   re 6 3 (CS13 ∷ []) ∷
+   rw⁻ 7 q26 ∷
+   rw 10 q1 ∷
+   re 8 3 (CS13⁻ ∷ []) ∷
+   rw⁻ 9 q26 ∷
+   rw 12 q1 ∷
+   re 10 3 (CS03 ∷ []) ∷
+   rw 11 q3 ∷
+   re 6 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   rw⁻ 6 q26 ∷
+   re 8 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 7 q3 ∷
+   rw⁻ 8 q26 ∷
+   re 10 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 9 q3 ∷
+   rw 5 q27 ∷
+   re 5 5 (CCZ012 ∷ []) ∷
+   rw 6 q3 ∷
+   re 4 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) ∷
+   re 5 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 6 q1 ∷
+   re 4 3 (CS13 ∷ []) ∷
+   rw⁻ 5 q26 ∷
+   rw 8 q1 ∷
+   re 6 3 (CS13⁻ ∷ []) ∷
+   rw⁻ 7 q26 ∷
+   rw 10 q1 ∷
+   re 8 3 (CS03 ∷ []) ∷
+   rw 9 q3 ∷
+   rw 3 q30 ∷
+   rw 6 q15 ∷
+   re 4 3 (CX02 ∷ []) ∷
+   rw 5 q31 ∷
+   rw 8 q15 ∷
+   re 6 3 (CX02 ∷ []) ∷
+   re 8 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   rw 7 q20 ∷
+   rw⁻ 9 q21 ∷
+   rw 10 q22 ∷
+   re 7 5 (CS03 ∷ []) ∷
+   rw 3 q5 ∷
+   rw 4 q11 ∷
+   rw 5 q12 ∷
+   rw 6 q10 ∷
+   rw 7 q12 ∷
+   re 9 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 8 q6 ∷
+   rw 9 q13 ∷
+   rw 10 q6 ∷
+   re 8 3 (CS13 ∷ []) ∷
+   rw 4 q14 ∷
+   re 4 5 (CCZ123 ∷ []) ∷
+   re 3 3 (CCZ023 ∷ []) ∷
+   re 5 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 4 q32 ∷
+   rw 7 q15 ∷
+   re 5 3 (CX02 ∷ []) ∷
+   rw 6 q33 ∷
+   rw 9 q15 ∷
+   re 7 3 (CX02 ∷ []) ∷
+   re 9 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) ∷
+   rw 8 q23 ∷
+   rw 4 q34 ∷
+   re 4 5 (CCZ012 ∷ []) ∷
+   rw 5 q23 ∷
+   re 3 1 (Sw01 ∷ CCZ123 ∷ Sw01 ∷ []) ∷
+   re 4 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) ∷
+   rw 3 q11 ∷
+   rw 4 q17 ∷
+   rw 5 q10 ∷
+   rw 6 q17 ∷
+   re 8 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 7 q6 ∷
+   rw 8 q18 ∷
+   rw 9 q6 ∷
+   re 7 3 (CS03 ∷ []) ∷
+   rw 8 q19 ∷
+   rw 2 q11 ∷
+   rw 3 q12 ∷
+   rw 4 q10 ∷
+   rw 5 q12 ∷
+   re 7 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 6 q6 ∷
+   rw 7 q13 ∷
+   rw 8 q6 ∷
+   re 6 3 (CS13 ∷ []) ∷
+   rw 2 q14 ∷
+   re 2 5 (CCZ123 ∷ []) ∷
+   re 4 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 3 q18 ∷
+   rw 4 q35 ∷
+   rw 5 q36 ∷
+   rw 6 q35 ∷
+   rw 7 q13 ∷
+   rw 3 q37 ∷
+   re 3 5 (CCZ012 ∷ []) ∷
+   rw 4 q19 ∷
+   rw 1 q38 ∷
+   rw 0 q39 ∷
+   rw 3 q5 ∷
+   re 2 1 (Sw23 ∷ CX02 ∷ Sw23 ∷ []) ∷
+   rw⁻ 4 q6 ∷
+   rw 3 q7 ∷
+   rw⁻ 2 q6 ∷
+   re 3 3 (CX13 ∷ []) ∷
+   re 1 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) ∷
+   re 5 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw⁻ 7 q6 ∷
+   rw 6 q8 ∷
+   rw⁻ 5 q6 ∷
+   re 6 3 (CS03 ∷ []) ∷
+   rw 4 q9 ∷
+   rw⁻ 3 q10 ∷
+   rw 2 q9 ∷
+   rw⁻ 1 q11 ∷
+   rw 2 q5 ∷
+   rw 3 q11 ∷
+   rw 4 q12 ∷
+   rw 5 q10 ∷
+   rw 6 q12 ∷
+   re 8 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 7 q6 ∷
+   rw 8 q13 ∷
+   rw 9 q6 ∷
+   re 7 3 (CS13 ∷ []) ∷
+   rw 3 q14 ∷
+   re 3 5 (CCZ123 ∷ []) ∷
+   re 2 3 (CCZ023 ∷ []) ∷
+   re 0 1 (Sw23 ∷ CX02 ∷ Sw23 ∷ []) ∷
+   rw⁻ 2 q6 ∷
+   rw 1 q7 ∷
+   rw⁻ 0 q6 ∷
+   re 1 3 (CX13 ∷ []) ∷
+   rw 4 q15 ∷
+   rw 3 q16 ∷
+   re 2 1 (Sw01 ∷ CCZ123 ∷ Sw01 ∷ []) ∷
+   re 3 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) ∷
+   rw 2 q11 ∷
+   rw 3 q17 ∷
+   rw 4 q10 ∷
+   rw 5 q17 ∷
+   re 7 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 6 q6 ∷
+   rw 7 q18 ∷
+   rw 8 q6 ∷
+   re 6 3 (CS03 ∷ []) ∷
+   rw 7 q19 ∷
+   re 6 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   rw 9 q20 ∷
+   rw 8 q21 ∷
+   rw 6 q22 ∷
+   re 7 5 (CS03 ∷ []) ∷
+   re 5 1 (Sw12 ∷ CX01 ∷ Sw12 ∷ []) ∷
+   rw 7 q23 ∷
+   rw 4 q24 ∷
+   re 3 1 (Sw12 ∷ CX01 ∷ Sw12 ∷ []) ∷
+   rw 5 q23 ∷
+   rw 2 q25 ∷
+   rw 3 q1 ∷
+   re 5 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 4 q3 ∷
+   rw⁻ 5 q26 ∷
+   re 7 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 6 q3 ∷
+   rw⁻ 7 q26 ∷
+   re 9 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 8 q3 ∷
+   rw 4 q27 ∷
+   re 4 5 (CCZ012 ∷ []) ∷
+   re 3 3 (CCZ013 ∷ []) ∷
+   rw 1 q16 ∷
+   rw 5 q1 ∷
+   rw 4 q28 ∷
+   re 3 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) ∷
+   re 4 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 5 q1 ∷
+   re 3 3 (CS13 ∷ []) ∷
+   rw⁻ 4 q26 ∷
+   rw 7 q1 ∷
+   re 5 3 (CS13⁻ ∷ []) ∷
+   rw⁻ 6 q26 ∷
+   rw 9 q1 ∷
+   re 7 3 (CS03 ∷ []) ∷
+   rw 8 q3 ∷
+   re 7 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 9 q3 ∷
+   rw 6 q26 ∷
+   re 5 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 7 q3 ∷
+   rw 4 q26 ∷
+   re 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   rw 4 q27 ∷
+   re 4 5 (CCZ012 ∷ []) ∷
+   rw 2 q28 ∷
+   rw 3 q29 ∷
+   re 3 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 4 q1 ∷
+   re 2 3 (CS13 ∷ []) ∷
+   rw⁻ 3 q26 ∷
+   rw 6 q1 ∷
+   re 4 3 (CS13⁻ ∷ []) ∷
+   rw⁻ 5 q26 ∷
+   rw 8 q1 ∷
+   re 6 3 (CS03 ∷ []) ∷
+   rw 2 q1 ∷
+   re 4 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 3 q3 ∷
+   rw⁻ 4 q26 ∷
+   re 6 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   rw⁻ 6 q26 ∷
+   re 8 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 7 q3 ∷
+   rw 3 q27 ∷
+   re 3 5 (CCZ012 ∷ []) ∷
+   re 2 3 (CCZ013 ∷ []) ∷
+   re 4 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) ∷
+   re 5 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 6 q1 ∷
+   re 4 3 (CS13 ∷ []) ∷
+   rw⁻ 5 q26 ∷
+   rw 8 q1 ∷
+   re 6 3 (CS13⁻ ∷ []) ∷
+   rw⁻ 7 q26 ∷
+   rw 10 q1 ∷
+   re 8 3 (CS03 ∷ []) ∷
+   rw 9 q3 ∷
+   re 4 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 3 q3 ∷
+   rw⁻ 4 q26 ∷
+   re 6 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   rw⁻ 6 q26 ∷
+   re 8 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 7 q3 ∷
+   rw 3 q27 ∷
+   re 3 5 (CCZ012 ∷ []) ∷
+   rw 4 q3 ∷
+   re 2 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) ∷
+   re 3 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 4 q1 ∷
+   re 2 3 (CS13 ∷ []) ∷
+   rw⁻ 3 q26 ∷
+   rw 6 q1 ∷
+   re 4 3 (CS13⁻ ∷ []) ∷
+   rw⁻ 5 q26 ∷
+   rw 8 q1 ∷
+   re 6 3 (CS03 ∷ []) ∷
+   rw 7 q3 ∷
+   rw 1 q30 ∷
+   rw 4 q15 ∷
+   re 2 3 (CX02 ∷ []) ∷
+   rw 3 q31 ∷
+   rw 6 q15 ∷
+   re 4 3 (CX02 ∷ []) ∷
+   re 6 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   rw 5 q20 ∷
+   rw⁻ 7 q21 ∷
+   rw 8 q22 ∷
+   re 5 5 (CS03 ∷ []) ∷
+   rw 1 q5 ∷
+   rw 2 q11 ∷
+   rw 3 q12 ∷
+   rw 4 q10 ∷
+   rw 5 q12 ∷
+   re 7 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 6 q6 ∷
+   rw 7 q13 ∷
+   rw 8 q6 ∷
+   re 6 3 (CS13 ∷ []) ∷
+   rw 2 q14 ∷
+   re 2 5 (CCZ123 ∷ []) ∷
+   re 1 3 (CCZ023 ∷ []) ∷
+   re 3 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 2 q32 ∷
+   rw 5 q15 ∷
+   re 3 3 (CX02 ∷ []) ∷
+   rw 4 q33 ∷
+   rw 7 q15 ∷
+   re 5 3 (CX02 ∷ []) ∷
+   re 7 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) ∷
+   rw 6 q23 ∷
+   rw 2 q34 ∷
+   re 2 5 (CCZ012 ∷ []) ∷
+   rw 3 q23 ∷
+   re 1 1 (Sw01 ∷ CCZ123 ∷ Sw01 ∷ []) ∷
+   re 2 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) ∷
+   rw 1 q11 ∷
+   rw 2 q17 ∷
+   rw 3 q10 ∷
+   rw 4 q17 ∷
+   re 6 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 5 q6 ∷
+   rw 6 q18 ∷
+   rw 7 q6 ∷
+   re 5 3 (CS03 ∷ []) ∷
+   rw 6 q19 ∷
+   rw 0 q11 ∷
+   rw 1 q12 ∷
+   rw 2 q10 ∷
+   rw 3 q12 ∷
+   re 5 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 4 q6 ∷
+   rw 5 q13 ∷
+   rw 6 q6 ∷
+   re 4 3 (CS13 ∷ []) ∷
+   rw 0 q14 ∷
+   re 0 5 (CCZ123 ∷ []) ∷
+   re 2 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 1 q18 ∷
+   rw 2 q35 ∷
+   rw 3 q36 ∷
+   rw 4 q35 ∷
+   rw 5 q13 ∷
+   rw 1 q37 ∷
+   re 1 5 (CCZ012 ∷ []) ∷
+   rw 2 q19 ∷ []) Eq.refl
 
-  b3 : Chain (CCZ012 ∷ CCZ023 ∷ CX13 ∷ Sw01 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ Sw01 ∷ Sw01 ∷ CCZ123 ∷ Sw01 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CCZ023 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ Sw01 ∷ Sw23 ∷ CS12 ∷ Sw23 ∷ Sw01 ∷ CX13 ∷ [])
-  b3 = at 4 5 (CCZ123 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 3 (CCZ023 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS)) ▸
-       at 5 2 (CX02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CX₀₁ ↑)) ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 6 2 (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS))) ▸
-       at 7 2 (CX02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CX₀₁ ↑)) ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 9 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸ done
+private
+  q40 : Eqn
+  q40 = eqn (CCZ012 ∷ CS02⁻ ∷ []) (CS02⁻ ∷ CCZ012 ∷ []) (wn 254 W)
 
-  b4 : Chain (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CCZ023 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ Sw01 ∷ Sw23 ∷ CS12 ∷ Sw23 ∷ Sw01 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CCZ023 ∷ Sw01 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ Sw01 ∷ CX02 ∷ CS03 ∷ Sw01 ∷ Sw01 ∷ CX13 ∷ [])
-  b4 = at 8 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 9 2 (CS02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CS ↑)) ((Swap ↑ • CS • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 10 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 8 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 0 (Sw01 ∷ Sw01 ∷ []) (win 3 0 complete₃ (ε) (Swap • Swap) tt tt Eq.refl) ▸
-       at 5 2 (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS)) ▸
-       at 6 2 (CX12 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Swap ↑ • CX₀₁ • Swap ↑)) ((CX₀₁ ↑) • Swap) tt tt Eq.refl) ▸
-       at 7 2 (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS))) ▸ done
+-- pass [CCZ013] [CSd03]: 49 steps
+lem-pass-CCZ013-vs-CSd03 : ⟪ (CCZ013 ∷ CS03⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS03⁻ ∷ CCZ013 ∷ []) ⟫ʷ
+lem-pass-CCZ013-vs-CSd03 = derive (CCZ013 ∷ CS03⁻ ∷ []) (CS03⁻ ∷ CCZ013 ∷ [])
+  (rw 2 q1 ∷
+   re 1 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) ∷
+   rw 3 q3 ∷
+   re 0 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) ∷
+   re 1 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 2 q1 ∷
+   re 0 3 (CS13 ∷ []) ∷
+   rw⁻ 1 q26 ∷
+   rw 4 q1 ∷
+   re 2 3 (CS13⁻ ∷ []) ∷
+   rw⁻ 3 q26 ∷
+   rw 6 q1 ∷
+   re 4 3 (CS03 ∷ []) ∷
+   rw 5 q3 ∷
+   re 4 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 6 q3 ∷
+   rw 3 q26 ∷
+   re 2 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 4 q3 ∷
+   rw 1 q26 ∷
+   re 0 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 2 q3 ∷
+   rw 1 q27 ∷
+   re 1 5 (CCZ012 ∷ []) ∷
+   rw 1 q40 ∷
+   rw 2 q1 ∷
+   re 0 3 (CS03⁻ ∷ []) ∷
+   re 2 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) ∷
+   rw 3 q1 ∷
+   re 1 3 (CS13 ∷ []) ∷
+   rw⁻ 2 q26 ∷
+   rw 5 q1 ∷
+   re 3 3 (CS13⁻ ∷ []) ∷
+   rw⁻ 4 q26 ∷
+   rw 7 q1 ∷
+   re 5 3 (CS03 ∷ []) ∷
+   rw 1 q1 ∷
+   re 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 2 q3 ∷
+   rw⁻ 3 q26 ∷
+   re 5 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 4 q3 ∷
+   rw⁻ 5 q26 ∷
+   re 7 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 6 q3 ∷
+   rw 2 q27 ∷
+   re 2 5 (CCZ012 ∷ []) ∷
+   re 1 3 (CCZ013 ∷ []) ∷
+   rw 2 q3 ∷ []) Eq.refl
 
-  b5 : Chain (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CCZ023 ∷ Sw01 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ Sw01 ∷ CX02 ∷ CS03 ∷ Sw01 ∷ Sw01 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CCZ023 ∷ Sw01 ∷ CCZ123 ∷ Sw01 ∷ Sw01 ∷ Sw01 ∷ CX13 ∷ [])
-  b5 = at 8 2 (CX12 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Swap ↑ • CX₀₁ • Swap ↑)) ((CX₀₁ ↑) • Swap) tt tt Eq.refl) ▸
-       at 10 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 9 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 10 2 (CS12 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • Swap) tt tt Eq.refl) ▸
-       at 11 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 9 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 5 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (win 0 3 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 5 5 (CCZ123 ∷ []) (by-assoc Eq.refl) ▸ done
+private
+  q41 : Eqn
+  q41 = eqn (X2 ∷ CS02 ∷ X2 ∷ Toff012 ∷ []) (Toff012 ∷ X2 ∷ CS02 ∷ X2 ∷ []) (wn 233 W)
 
-  b6 : Chain (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CCZ023 ∷ Sw01 ∷ CCZ123 ∷ Sw01 ∷ Sw01 ∷ Sw01 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CS23 ∷ Sw01 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ Sw01 ∷ Sw12 ∷ CX23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b6 = at 4 3 (CCZ023 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸
-       at 4 0 (CX13 ∷ CX13 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑ • CX₀₁ • Swap ↑) • (Swap ↑ • CX₀₁ • Swap ↑)) tt tt Eq.refl) ▸
-       at 5 0 (Sw12 ∷ Sw12 ∷ []) (win 3 0 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 4 2 (Sw12 ∷ CX23 ∷ []) (win 0 3 complete₃ ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) (Swap • (CX₀₁ ↑)) tt tt Eq.refl) ▸
-       at 3 1 (Sw01 ∷ CCZ123 ∷ Sw01 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 2 (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS)) ▸ done
+-- pass [X2 CS20 X2] [TOFF012]: 1 steps
+lem-pass-X2-CS20-X2-vs-TOFF012 : ⟪ (X2 ∷ CS02 ∷ X2 ∷ Toff012 ∷ []) ⟫ʷ ≈ ⟪ (Toff012 ∷ X2 ∷ CS02 ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CS20-X2-vs-TOFF012 = derive (X2 ∷ CS02 ∷ X2 ∷ Toff012 ∷ []) (Toff012 ∷ X2 ∷ CS02 ∷ X2 ∷ [])
+  (rw 0 q41 ∷ []) Eq.refl
 
-  b7 : Chain (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CS23 ∷ Sw01 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ Sw01 ∷ Sw12 ∷ CX23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ Sw01 ∷ Sw01 ∷ Sw12 ∷ CX23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b7 = at 4 2 (CX02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CX₀₁ ↑)) ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 5 2 (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS))) ▸
-       at 6 2 (CX02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CX₀₁ ↑)) ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 8 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 7 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 8 2 (CS02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CS ↑)) ((Swap ↑ • CS • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 9 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 7 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸ done
+private
+  q42 : Eqn
+  q42 = eqn (CS02 ∷ Sw01 ∷ []) (Sw01 ∷ CS12 ∷ []) (wn 7 W)
+  q43 : Eqn
+  q43 = eqn (Sw01 ∷ X2 ∷ []) (X2 ∷ Sw01 ∷ []) (low-comm (Swap) (X))
+  q44 : Eqn
+  q44 = eqn (X2 ∷ CS12 ∷ X2 ∷ CS13 ∷ []) (CS13 ∷ X2 ∷ CS12 ∷ X2 ∷ []) (wn 255 W)
 
-  b8 : Chain (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ Sw01 ∷ Sw01 ∷ Sw12 ∷ CX23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ Sw12 ∷ CX01 ∷ CS03 ∷ CX23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b8 = at 8 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸
-       at 7 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 10 3 (Sw23 ∷ Sw12 ∷ Sw23 ∷ []) (win 0 3 complete₃ (Swap • (Swap ↑) • Swap) ((Swap ↑) • Swap • (Swap ↑)) tt tt Eq.refl) ▸
-       at 9 2 (Sw23 ∷ CS01 ∷ []) (low-comm (CS) (Swap)) ▸
-       at 7 3 (Sw12 ∷ Sw23 ∷ Sw12 ∷ []) (win 0 3 complete₃ ((Swap ↑) • Swap • (Swap ↑)) (Swap • (Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 8 5 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 1 (Sw12 ∷ CX01 ∷ Sw12 ∷ []) (by-assoc Eq.refl) ▸
-       at 8 2 [] (win 3 0 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸ done
+-- pass [X2 CS20 X2] [CS03]: 19 steps
+lem-pass-X2-CS20-X2-vs-CS03 : ⟪ (X2 ∷ CS02 ∷ X2 ∷ CS03 ∷ []) ⟫ʷ ≈ ⟪ (CS03 ∷ X2 ∷ CS02 ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CS20-X2-vs-CS03 = derive (X2 ∷ CS02 ∷ X2 ∷ CS03 ∷ []) (CS03 ∷ X2 ∷ CS02 ∷ X2 ∷ [])
+  (rw 4 q5 ∷
+   re 3 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw⁻ 5 q6 ∷
+   rw 4 q42 ∷
+   rw⁻ 3 q6 ∷
+   re 4 3 (CS13 ∷ []) ∷
+   rw⁻ 2 q43 ∷
+   rw 1 q42 ∷
+   rw⁻ 0 q43 ∷
+   rw 1 q44 ∷
+   re 1 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 0 q6 ∷
+   rw 1 q18 ∷
+   rw 2 q6 ∷
+   re 0 3 (CS03 ∷ []) ∷
+   rw 1 q43 ∷
+   rw 2 q18 ∷
+   rw 3 q43 ∷
+   rw 4 q19 ∷ []) Eq.refl
 
-  b9 : Chain (CCZ012 ∷ CCZ023 ∷ CX13 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ Sw12 ∷ CX01 ∷ CS03 ∷ CX23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CX13 ∷ Sw12 ∷ Sw23 ∷ CS12 ∷ CX01 ∷ Sw23 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ CX23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b9 = at 5 2 (Sw12 ∷ CS13⁻ ∷ []) (win 0 3 complete₃ (((CS • CS • CS) ↑) • Swap) (Swap • (Swap ↑ • (CS • CS • CS) • Swap ↑)) tt tt Eq.refl) ▸
-       at 4 1 (Sw12 ∷ CX01 ∷ Sw12 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 [] (win 3 0 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 3 2 (Sw12 ∷ CS13 ∷ []) (win 0 3 complete₃ ((CS ↑) • Swap) (Swap • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 4 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 6 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 6 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸ done
+private
+  q45 : Eqn
+  q45 = eqn (CS02⁻ ∷ Sw01 ∷ []) (Sw01 ∷ CS12⁻ ∷ []) (wn 76 W)
+  q46 : Eqn
+  q46 = eqn (X2 ∷ CS12 ∷ X2 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ X2 ∷ CS12 ∷ X2 ∷ []) (wn 256 W)
 
-  b10 : Chain (CCZ012 ∷ CCZ023 ∷ CX13 ∷ Sw12 ∷ Sw23 ∷ CS12 ∷ CX01 ∷ Sw23 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ CX23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CX13 ∷ Sw12 ∷ CCZ013 ∷ CX23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b10 = at 8 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 7 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 8 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 10 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 9 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 5 5 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (win 3 0 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 5 5 (CCZ012 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 3 (CCZ013 ∷ []) (by-assoc Eq.refl) ▸ done
+-- pass [X2 CS20 X2] [CSd03]: 19 steps
+lem-pass-X2-CS20-X2-vs-CSd03 : ⟪ (X2 ∷ CS02 ∷ X2 ∷ CS03⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS03⁻ ∷ X2 ∷ CS02 ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CS20-X2-vs-CSd03 = derive (X2 ∷ CS02 ∷ X2 ∷ CS03⁻ ∷ []) (CS03⁻ ∷ X2 ∷ CS02 ∷ X2 ∷ [])
+  (rw 4 q5 ∷
+   re 3 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) ∷
+   rw⁻ 5 q6 ∷
+   rw 4 q45 ∷
+   rw⁻ 3 q6 ∷
+   re 4 3 (CS13⁻ ∷ []) ∷
+   rw⁻ 2 q43 ∷
+   rw 1 q42 ∷
+   rw⁻ 0 q43 ∷
+   rw 1 q46 ∷
+   re 1 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 0 q6 ∷
+   rw 1 q36 ∷
+   rw 2 q6 ∷
+   re 0 3 (CS03⁻ ∷ []) ∷
+   rw 1 q43 ∷
+   rw 2 q18 ∷
+   rw 3 q43 ∷
+   rw 4 q19 ∷ []) Eq.refl
 
-  b11 : Chain (CCZ012 ∷ CCZ023 ∷ CX13 ∷ Sw12 ∷ CCZ013 ∷ CX23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CX23 ∷ CS13 ∷ CX01 ∷ Sw23 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ Sw23 ∷ Sw23 ∷ CX32 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b11 = at 2 2 (Sw12 ∷ CX23 ∷ []) (win 0 3 complete₃ ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) (Swap • (CX₀₁ ↑)) tt tt Eq.refl) ▸
-       at 6 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 5 2 (Sw23 ∷ CX32 ∷ []) (win 0 3 complete₃ ((CX₀₁ ↑) • (Swap ↑)) ((Swap ↑) • (CX₁₀ ↑)) tt tt Eq.refl) ▸
-       at 4 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 4 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸ done
+private
+  q47 : Eqn
+  q47 = eqn (X2 ∷ CS02 ∷ X2 ∷ Toff102 ∷ []) (Toff102 ∷ X2 ∷ CS02 ∷ X2 ∷ []) (wn 241 W)
 
-  b12 : Chain (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CX23 ∷ CS13 ∷ CX01 ∷ Sw23 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ Sw23 ∷ Sw23 ∷ CX32 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CX23 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ Sw23 ∷ CS02 ∷ CX32 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b12 = at 8 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 6 3 (CS13⁻ ∷ []) (by-assoc Eq.refl) ▸
-       at 7 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 10 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 8 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 9 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 8 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 10 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸ done
+-- pass [X2 CS20 X2] [TOFF102]: 1 steps
+lem-pass-X2-CS20-X2-vs-TOFF102 : ⟪ (X2 ∷ CS02 ∷ X2 ∷ Toff102 ∷ []) ⟫ʷ ≈ ⟪ (Toff102 ∷ X2 ∷ CS02 ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CS20-X2-vs-TOFF102 = derive (X2 ∷ CS02 ∷ X2 ∷ Toff102 ∷ []) (Toff102 ∷ X2 ∷ CS02 ∷ X2 ∷ [])
+  (rw 0 q47 ∷ []) Eq.refl
 
-  b13 : Chain (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CX23 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ Sw23 ∷ CS02 ∷ CX32 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CX23 ∷ Sw23 ∷ CCZ012 ∷ CX32 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b13 = at 7 2 (Sw23 ∷ CX01 ∷ []) (low-comm (CX₀₁) (Swap)) ▸
-       at 6 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 8 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 5 2 (Sw23 ∷ CX01 ∷ []) (low-comm (CX₀₁) (Swap)) ▸
-       at 4 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 5 5 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (win 3 0 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 5 5 (CCZ012 ∷ []) (by-assoc Eq.refl) ▸ done
+private
+  q48 : Eqn
+  q48 = eqn (X2 ∷ CS13 ∷ []) (CS13 ∷ X2 ∷ []) (wn 257 W)
+  q49 : Eqn
+  q49 = eqn (CS01 ∷ CS23 ∷ []) (CS23 ∷ CS01 ∷ []) (low-comm (CS) (CS))
+  q50 : Eqn
+  q50 = eqn (Sw12 ∷ CS23 ∷ []) (CS13 ∷ Sw12 ∷ []) (wn 49 W)
 
-  b14 : Chain (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CX23 ∷ Sw23 ∷ CCZ012 ∷ CX32 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ Sw23 ∷ CX01 ∷ CS02 ∷ CCZ013 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b14 = at 3 2 (Sw23 ∷ CX32 ∷ []) (win 0 3 complete₃ ((CX₀₁ ↑) • (Swap ↑)) ((Swap ↑) • (CX₁₀ ↑)) tt tt Eq.refl) ▸
-       at 4 3 (CCZ012 ∷ CCZ013 ∷ []) (ax cx-ccz) ▸
-       at 4 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 3 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 7 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 5 3 (CS13⁻ ∷ []) (by-assoc Eq.refl) ▸ done
+-- pass [X2 CS20 X2] [CS13]: 17 steps
+lem-pass-X2-CS20-X2-vs-CS13 : ⟪ (X2 ∷ CS02 ∷ X2 ∷ CS13 ∷ []) ⟫ʷ ≈ ⟪ (CS13 ∷ X2 ∷ CS02 ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CS20-X2-vs-CS13 = derive (X2 ∷ CS02 ∷ X2 ∷ CS13 ∷ []) (CS13 ∷ X2 ∷ CS02 ∷ X2 ∷ [])
+  (rw 2 q48 ∷
+   re 2 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 1 q1 ∷
+   re 2 3 (CS03 ∷ []) ∷
+   re 2 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   rw 8 q1 ∷
+   re 6 3 (CS13 ∷ []) ∷
+   rw 5 q30 ∷
+   rw 4 q49 ∷
+   rw 3 q50 ∷
+   re 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 2 q3 ∷
+   re 3 5 (CS03 ∷ []) ∷
+   re 3 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   re 1 3 (CS13 ∷ []) ∷
+   rw 0 q48 ∷ []) Eq.refl
 
-  b15 : Chain (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ Sw23 ∷ CX01 ∷ CS02 ∷ CCZ013 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ Sw23 ∷ CS12 ∷ CX01 ∷ Sw23 ∷ Sw23 ∷ CS12⁻ ∷ Sw23 ∷ CX01 ∷ CS03 ∷ Sw23 ∷ CCZ013 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b15 = at 6 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 9 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 7 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 5 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 5 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 7 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸ done
+private
+  q51 : Eqn
+  q51 = eqn (X2 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ X2 ∷ []) (wn 258 W)
+  q52 : Eqn
+  q52 = eqn (CS01 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CS01 ∷ []) (low-comm (CS) ((CS • CS • CS)))
+  q53 : Eqn
+  q53 = eqn (Sw12 ∷ CS23⁻ ∷ []) (CS13⁻ ∷ Sw12 ∷ []) (wn 51 W)
 
-  b16 : Chain (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ Sw23 ∷ CS12 ∷ CX01 ∷ Sw23 ∷ Sw23 ∷ CS12⁻ ∷ Sw23 ∷ CX01 ∷ CS03 ∷ Sw23 ∷ CCZ013 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CCZ013 ∷ Sw23 ∷ Sw23 ∷ CCZ012 ∷ Sw23 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b16 = at 6 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 7 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 9 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 8 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 4 5 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (win 3 0 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 4 5 (CCZ012 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 3 (CCZ013 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸ done
+-- pass [X2 CS20 X2] [CSd13]: 17 steps
+lem-pass-X2-CS20-X2-vs-CSd13 : ⟪ (X2 ∷ CS02 ∷ X2 ∷ CS13⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS13⁻ ∷ X2 ∷ CS02 ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CS20-X2-vs-CSd13 = derive (X2 ∷ CS02 ∷ X2 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ X2 ∷ CS02 ∷ X2 ∷ [])
+  (rw 2 q51 ∷
+   re 2 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 1 q1 ∷
+   re 2 3 (CS03 ∷ []) ∷
+   re 2 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   rw 8 q1 ∷
+   re 6 3 (CS13⁻ ∷ []) ∷
+   rw 5 q31 ∷
+   rw 4 q52 ∷
+   rw 3 q53 ∷
+   re 3 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 2 q3 ∷
+   re 3 5 (CS03 ∷ []) ∷
+   re 3 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   re 1 3 (CS13⁻ ∷ []) ∷
+   rw 0 q51 ∷ []) Eq.refl
 
-  b17 : Chain (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CCZ013 ∷ Sw23 ∷ Sw23 ∷ CCZ012 ∷ Sw23 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CCZ013 ∷ Sw23 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ Sw23 ∷ CS02 ∷ Sw23 ∷ Sw23 ∷ Sw23 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b17 = at 6 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (by-assoc Eq.refl) ▸
-       at 7 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 5 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 9 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 7 3 (CS13⁻ ∷ []) (by-assoc Eq.refl) ▸
-       at 8 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 11 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸ done
+private
+  q54 : Eqn
+  q54 = eqn (X2 ∷ CK20 ∷ X2 ∷ Toff102 ∷ []) (Toff102 ∷ X2 ∷ CK20 ∷ X2 ∷ []) (wn 240 W)
 
-  b18 : Chain (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CCZ013 ∷ Sw23 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ Sw23 ∷ CS02 ∷ Sw23 ∷ Sw23 ∷ Sw23 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CCZ013 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ Sw23 ∷ CS03 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b18 = at 9 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 10 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 5 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 5 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 7 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 7 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸ done
+-- pass [X2 CK20 X2] [TOFF102]: 1 steps
+lem-pass-X2-CK20-X2-vs-TOFF102 : ⟪ (X2 ∷ CK20 ∷ X2 ∷ Toff102 ∷ []) ⟫ʷ ≈ ⟪ (Toff102 ∷ X2 ∷ CK20 ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CK20-X2-vs-TOFF102 = derive (X2 ∷ CK20 ∷ X2 ∷ Toff102 ∷ []) (Toff102 ∷ X2 ∷ CK20 ∷ X2 ∷ [])
+  (rw 0 q54 ∷ []) Eq.refl
 
-  b19 : Chain (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CCZ013 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ Sw23 ∷ CS03 ∷ Sw23 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ Sw23 ∷ CS12 ∷ Sw23 ∷ Sw23 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ Sw23 ∷ CCZ012 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b19 = at 9 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 8 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 4 5 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (win 3 0 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 4 5 (CCZ012 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 3 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸ done
+private
+  q55 : Eqn
+  q55 = eqn (CK10 ∷ CS23 ∷ []) (CS23 ∷ CK10 ∷ []) (low-comm (CK₁₀) (CS))
 
-  b20 : Chain (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ Sw23 ∷ CS12 ∷ Sw23 ∷ Sw23 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ Sw23 ∷ CCZ012 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ CCZ012 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b20 = at 3 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 7 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 5 3 (CS13⁻ ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 9 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 7 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 8 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸ done
+-- pass [X2 CK20 X2] [CS13]: 17 steps
+lem-pass-X2-CK20-X2-vs-CS13 : ⟪ (X2 ∷ CK20 ∷ X2 ∷ CS13 ∷ []) ⟫ʷ ≈ ⟪ (CS13 ∷ X2 ∷ CK20 ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CK20-X2-vs-CS13 = derive (X2 ∷ CK20 ∷ X2 ∷ CS13 ∷ []) (CS13 ∷ X2 ∷ CK20 ∷ X2 ∷ [])
+  (rw 2 q48 ∷
+   re 2 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 1 q1 ∷
+   re 2 3 (CK30 ∷ []) ∷
+   re 2 1 (Sw23 ∷ Sw12 ∷ CK10 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   rw 8 q1 ∷
+   re 6 3 (CS13 ∷ []) ∷
+   rw 5 q30 ∷
+   rw 4 q55 ∷
+   rw 3 q50 ∷
+   re 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 2 q3 ∷
+   re 3 5 (CK30 ∷ []) ∷
+   re 3 1 (Sw23 ∷ CK20 ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   re 1 3 (CS13 ∷ []) ∷
+   rw 0 q48 ∷ []) Eq.refl
 
-  b21 : Chain (CCZ012 ∷ CCZ023 ∷ Sw12 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ CCZ012 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ Sw23 ∷ Sw12 ∷ Sw23 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ CCZ012 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b21 = at 2 2 (CS23 ∷ Sw12 ∷ []) (win 0 3 complete₃ (Swap • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • Swap) tt tt Eq.refl) ▸
-       at 5 0 (Sw12 ∷ Sw12 ∷ []) (win 3 0 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 3 3 (CX02 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 (CS23⁻ ∷ Sw12 ∷ []) (win 0 3 complete₃ (Swap • (Swap ↑ • (CS • CS • CS) • Swap ↑)) (((CS • CS • CS) ↑) • Swap) tt tt Eq.refl) ▸
-       at 7 0 (Sw12 ∷ Sw12 ∷ []) (win 3 0 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 5 3 (CX02 ∷ []) (by-assoc Eq.refl) ▸
-       at 7 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 3 (Sw23 ∷ Sw12 ∷ Sw23 ∷ []) (win 0 3 complete₃ (Swap • (Swap ↑) • Swap) ((Swap ↑) • Swap • (Swap ↑)) tt tt Eq.refl) ▸ done
+private
+  q56 : Eqn
+  q56 = eqn (CK10 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CK10 ∷ []) (low-comm (CK₁₀) ((CS • CS • CS)))
 
-  b22 : Chain (CCZ012 ∷ CCZ023 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ Sw23 ∷ Sw12 ∷ Sw23 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ CCZ012 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ Sw01 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ Sw01 ∷ CS03 ∷ Sw12 ∷ CCZ012 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b22 = at 8 2 (CS01 ∷ Sw23 ∷ []) (sym (low-comm (CS) (Swap))) ▸
-       at 9 3 (Sw12 ∷ Sw23 ∷ Sw12 ∷ []) (win 0 3 complete₃ ((Swap ↑) • Swap • (Swap ↑)) (Swap • (Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 6 5 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 0 (Sw01 ∷ Sw01 ∷ []) (win 3 0 complete₃ (ε) (Swap • Swap) tt tt Eq.refl) ▸
-       at 3 2 (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS)) ▸
-       at 4 2 (CX12 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Swap ↑ • CX₀₁ • Swap ↑)) ((CX₀₁ ↑) • Swap) tt tt Eq.refl) ▸
-       at 5 2 (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS))) ▸
-       at 6 2 (CX12 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Swap ↑ • CX₀₁ • Swap ↑)) ((CX₀₁ ↑) • Swap) tt tt Eq.refl) ▸ done
+-- pass [X2 CK20 X2] [CSd13]: 17 steps
+lem-pass-X2-CK20-X2-vs-CSd13 : ⟪ (X2 ∷ CK20 ∷ X2 ∷ CS13⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS13⁻ ∷ X2 ∷ CK20 ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CK20-X2-vs-CSd13 = derive (X2 ∷ CK20 ∷ X2 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ X2 ∷ CK20 ∷ X2 ∷ [])
+  (rw 2 q51 ∷
+   re 2 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 1 q1 ∷
+   re 2 3 (CK30 ∷ []) ∷
+   re 2 1 (Sw23 ∷ Sw12 ∷ CK10 ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   rw 8 q1 ∷
+   re 6 3 (CS13⁻ ∷ []) ∷
+   rw 5 q31 ∷
+   rw 4 q56 ∷
+   rw 3 q53 ∷
+   re 3 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 2 q3 ∷
+   re 3 5 (CK30 ∷ []) ∷
+   re 3 1 (Sw23 ∷ CK20 ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   re 1 3 (CS13⁻ ∷ []) ∷
+   rw 0 q51 ∷ []) Eq.refl
 
-  b23 : Chain (CCZ012 ∷ CCZ023 ∷ Sw01 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ Sw01 ∷ CS03 ∷ Sw12 ∷ CCZ012 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CCZ023 ∷ Sw12 ∷ CCZ012 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b23 = at 8 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 7 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 8 2 (CS12 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • Swap) tt tt Eq.refl) ▸
-       at 9 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 7 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 5 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (win 0 3 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 3 5 (CCZ123 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 3 (CCZ023 ∷ []) (by-assoc Eq.refl) ▸ done
+private
+  q57 : Eqn
+  q57 = eqn (X2 ∷ CK20⁻ ∷ X2 ∷ Toff102 ∷ []) (Toff102 ∷ X2 ∷ CK20⁻ ∷ X2 ∷ []) (wn 239 W)
 
-  b24 : Chain (CCZ012 ∷ CCZ023 ∷ CCZ023 ∷ Sw12 ∷ CCZ012 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CCZ023 ∷ CS12 ∷ CX02 ∷ CS12⁻ ∷ CX02 ∷ Sw12 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b24 = at 4 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 2 (CS12 ∷ Sw12 ∷ []) (win 3 0 complete₃ ((Swap ↑) • (CS ↑)) ((CS ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 6 0 (Sw12 ∷ Sw12 ∷ []) (win 3 0 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 4 3 (CX02 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 2 (CS12⁻ ∷ Sw12 ∷ []) (win 3 0 complete₃ ((Swap ↑) • ((CS • CS • CS) ↑)) (((CS • CS • CS) ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 8 0 (Sw12 ∷ Sw12 ∷ []) (win 3 0 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 6 3 (CX02 ∷ []) (by-assoc Eq.refl) ▸
-       at 8 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) (by-assoc Eq.refl) ▸ done
+-- pass [X2 CKd20 X2] [TOFF102]: 1 steps
+lem-pass-X2-CKd20-X2-vs-TOFF102 : ⟪ (X2 ∷ CK20⁻ ∷ X2 ∷ Toff102 ∷ []) ⟫ʷ ≈ ⟪ (Toff102 ∷ X2 ∷ CK20⁻ ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CKd20-X2-vs-TOFF102 = derive (X2 ∷ CK20⁻ ∷ X2 ∷ Toff102 ∷ []) (Toff102 ∷ X2 ∷ CK20⁻ ∷ X2 ∷ [])
+  (rw 0 q57 ∷ []) Eq.refl
 
-  b25 : Chain (CCZ012 ∷ CCZ023 ∷ CCZ023 ∷ CS12 ∷ CX02 ∷ CS12⁻ ∷ CX02 ∷ Sw12 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw12 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CS23 ∷ Sw01 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ Sw01 ∷ Sw01 ∷ Sw01 ∷ CCZ012 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b25 = at 7 2 [] (win 3 0 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 3 5 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (win 3 0 complete₃ ((CS ↑) • (Swap ↑ • CX₀₁ • Swap ↑) • ((CS • CS • CS) ↑) • (Swap ↑ • CX₀₁ • Swap ↑) • CS) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 3 5 (CCZ012 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 [] (win 3 0 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 3 0 (Sw01 ∷ Sw01 ∷ []) (win 3 0 complete₃ (ε) (Swap • Swap) tt tt Eq.refl) ▸
-       at 2 1 (Sw01 ∷ CCZ123 ∷ Sw01 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 2 (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS)) ▸ done
+private
+  q58 : Eqn
+  q58 = eqn (CK10⁻ ∷ CS23 ∷ []) (CS23 ∷ CK10⁻ ∷ []) (low-comm ((S ↑ • CK₁₀)) (CS))
 
-  b26 : Chain (CCZ012 ∷ CCZ023 ∷ CS23 ∷ Sw01 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ Sw01 ∷ Sw01 ∷ Sw01 ∷ CCZ012 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ Sw01 ∷ Sw01 ∷ Sw01 ∷ Sw01 ∷ CCZ012 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b26 = at 3 2 (CX02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CX₀₁ ↑)) ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 4 2 (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS))) ▸
-       at 5 2 (CX02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CX₀₁ ↑)) ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 7 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 7 2 (CS02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CS ↑)) ((Swap ↑ • CS • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 8 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 6 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸ done
+-- pass [X2 CKd20 X2] [CS13]: 17 steps
+lem-pass-X2-CKd20-X2-vs-CS13 : ⟪ (X2 ∷ CK20⁻ ∷ X2 ∷ CS13 ∷ []) ⟫ʷ ≈ ⟪ (CS13 ∷ X2 ∷ CK20⁻ ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CKd20-X2-vs-CS13 = derive (X2 ∷ CK20⁻ ∷ X2 ∷ CS13 ∷ []) (CS13 ∷ X2 ∷ CK20⁻ ∷ X2 ∷ [])
+  (rw 2 q48 ∷
+   re 2 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 1 q1 ∷
+   re 2 3 (CK30⁻ ∷ []) ∷
+   re 2 1 (Sw23 ∷ Sw12 ∷ CK10⁻ ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   rw 8 q1 ∷
+   re 6 3 (CS13 ∷ []) ∷
+   rw 5 q30 ∷
+   rw 4 q58 ∷
+   rw 3 q50 ∷
+   re 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 2 q3 ∷
+   re 3 5 (CK30⁻ ∷ []) ∷
+   re 3 1 (Sw23 ∷ CK20⁻ ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   re 1 3 (CS13 ∷ []) ∷
+   rw 0 q48 ∷ []) Eq.refl
 
-  b27 : Chain (CCZ012 ∷ CCZ023 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ Sw01 ∷ Sw01 ∷ Sw01 ∷ Sw01 ∷ CCZ012 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CCZ023 ∷ CS23 ∷ CX02 ∷ Sw01 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ Sw01 ∷ CCZ012 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b27 = at 7 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸
-       at 6 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 8 2 (Sw01 ∷ Sw23 ∷ []) (sym (low-comm (Swap) (Swap))) ▸
-       at 7 2 (Sw01 ∷ CS12 ∷ []) (win 3 0 complete₃ ((Swap ↑ • CS • Swap ↑) • Swap) (Swap • (CS ↑)) tt tt Eq.refl) ▸
-       at 6 2 (Sw01 ∷ Sw23 ∷ []) (sym (low-comm (Swap) (Swap))) ▸
-       at 7 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 2 (Sw01 ∷ CX12 ∷ []) (win 3 0 complete₃ ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) (Swap • (CX₀₁ ↑)) tt tt Eq.refl) ▸
-       at 4 2 (Sw01 ∷ CS23⁻ ∷ []) (sym (low-comm (Swap) ((CS • CS • CS)))) ▸ done
+private
+  q59 : Eqn
+  q59 = eqn (CK10⁻ ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CK10⁻ ∷ []) (low-comm ((S ↑ • CK₁₀)) ((CS • CS • CS)))
 
-  b28 : Chain (CCZ012 ∷ CCZ023 ∷ CS23 ∷ CX02 ∷ Sw01 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ Sw01 ∷ CCZ012 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CS23 ∷ CX02 ∷ Sw01 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ Sw01 ∷ Sw01 ∷ CCZ123 ∷ Sw01 ∷ CCZ012 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b28 = at 3 2 (Sw01 ∷ CX12 ∷ []) (win 3 0 complete₃ ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) (Swap • (CX₀₁ ↑)) tt tt Eq.refl) ▸
-       at 2 2 (Sw01 ∷ CS23 ∷ []) (sym (low-comm (Swap) (CS))) ▸
-       at 3 5 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (win 0 3 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 3 5 (CCZ123 ∷ []) (by-assoc Eq.refl) ▸
-       at 1 1 (Sw01 ∷ CCZ123 ∷ Sw01 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 1 2 (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS)) ▸
-       at 2 2 (CX02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CX₀₁ ↑)) ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) tt tt Eq.refl) ▸ done
+-- pass [X2 CKd20 X2] [CSd13]: 17 steps
+lem-pass-X2-CKd20-X2-vs-CSd13 : ⟪ (X2 ∷ CK20⁻ ∷ X2 ∷ CS13⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS13⁻ ∷ X2 ∷ CK20⁻ ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CKd20-X2-vs-CSd13 = derive (X2 ∷ CK20⁻ ∷ X2 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ X2 ∷ CK20⁻ ∷ X2 ∷ [])
+  (rw 2 q51 ∷
+   re 2 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 1 q1 ∷
+   re 2 3 (CK30⁻ ∷ []) ∷
+   re 2 1 (Sw23 ∷ Sw12 ∷ CK10⁻ ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   rw 8 q1 ∷
+   re 6 3 (CS13⁻ ∷ []) ∷
+   rw 5 q31 ∷
+   rw 4 q59 ∷
+   rw 3 q53 ∷
+   re 3 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 2 q3 ∷
+   re 3 5 (CK30⁻ ∷ []) ∷
+   re 3 1 (Sw23 ∷ CK20⁻ ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   re 1 3 (CS13⁻ ∷ []) ∷
+   rw 0 q51 ∷ []) Eq.refl
 
-  b29 : Chain (CCZ012 ∷ CS23 ∷ CX02 ∷ Sw01 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ Sw01 ∷ Sw01 ∷ CCZ123 ∷ Sw01 ∷ CCZ012 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ Sw01 ∷ CCZ123 ∷ Sw01 ∷ CCZ012 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b29 = at 3 2 (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS))) ▸
-       at 4 2 (CX02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CX₀₁ ↑)) ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 6 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 6 2 (CS02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CS ↑)) ((Swap ↑ • CS • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 7 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 5 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸ done
+private
+  q60 : Eqn
+  q60 = eqn (X2 ∷ CS02⁻ ∷ X2 ∷ Toff102 ∷ []) (Toff102 ∷ X2 ∷ CS02⁻ ∷ X2 ∷ []) (wn 238 W)
 
-  b30 : Chain (CCZ012 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ Sw01 ∷ CCZ123 ∷ Sw01 ∷ CCZ012 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CCZ012 ∷ CS23 ∷ Sw01 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ CCZ123 ∷ Sw01 ∷ CCZ012 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ [])
-  b30 = at 5 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 7 2 (Sw01 ∷ Sw23 ∷ []) (sym (low-comm (Swap) (Swap))) ▸
-       at 6 2 (Sw01 ∷ CS12 ∷ []) (win 3 0 complete₃ ((Swap ↑ • CS • Swap ↑) • Swap) (Swap • (CS ↑)) tt tt Eq.refl) ▸
-       at 5 2 (Sw01 ∷ Sw23 ∷ []) (sym (low-comm (Swap) (Swap))) ▸
-       at 6 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 (Sw01 ∷ CX12 ∷ []) (win 3 0 complete₃ ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) (Swap • (CX₀₁ ↑)) tt tt Eq.refl) ▸
-       at 3 2 (Sw01 ∷ CS23⁻ ∷ []) (sym (low-comm (Swap) ((CS • CS • CS)))) ▸
-       at 2 2 (Sw01 ∷ CX12 ∷ []) (win 3 0 complete₃ ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) (Swap • (CX₀₁ ↑)) tt tt Eq.refl) ▸ done
+-- pass [X2 CSd20 X2] [TOFF102]: 1 steps
+lem-pass-X2-CSd20-X2-vs-TOFF102 : ⟪ (X2 ∷ CS02⁻ ∷ X2 ∷ Toff102 ∷ []) ⟫ʷ ≈ ⟪ (Toff102 ∷ X2 ∷ CS02⁻ ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CSd20-X2-vs-TOFF102 = derive (X2 ∷ CS02⁻ ∷ X2 ∷ Toff102 ∷ []) (Toff102 ∷ X2 ∷ CS02⁻ ∷ X2 ∷ [])
+  (rw 0 q60 ∷ []) Eq.refl
 
-  b31 : Chain (CCZ012 ∷ CS23 ∷ Sw01 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ CCZ123 ∷ Sw01 ∷ CCZ012 ∷ CX13 ∷ CCZ023 ∷ CX13 ∷ []) (CX13 ∷ CCZ023 ∷ Sw12 ∷ CX23 ∷ Sw12 ∷ [])
-  b31 = at 1 2 (Sw01 ∷ CS23 ∷ []) (sym (low-comm (Swap) (CS))) ▸
-       at 2 5 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (win 0 3 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 2 5 (CCZ123 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 2 [] (win 0 3 complete₃ (CCZ • CCZ) (ε) tt tt Eq.refl) ▸
-       at 1 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸
-       at 0 2 [] (win 3 0 complete₃ (CCZ • CCZ) (ε) tt tt Eq.refl) ▸
-       at 3 0 (Sw12 ∷ Sw12 ∷ []) (win 3 0 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 2 2 (Sw12 ∷ CX23 ∷ []) (win 0 3 complete₃ ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) (Swap • (CX₀₁ ↑)) tt tt Eq.refl) ▸ done
+private
+  q61 : Eqn
+  q61 = eqn (CS01⁻ ∷ CS23 ∷ []) (CS23 ∷ CS01⁻ ∷ []) (low-comm ((CS • CS • CS)) (CS))
 
-  b32 : Chain (CX13 ∷ CCZ023 ∷ Sw12 ∷ CX23 ∷ Sw12 ∷ []) (CX13 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ Sw23 ∷ Sw01 ∷ CS12 ∷ Sw23 ∷ Sw01 ∷ Sw12 ∷ CX23 ∷ Sw12 ∷ [])
-  b32 = at 1 1 (Sw01 ∷ CCZ123 ∷ Sw01 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 1 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 1 2 (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS)) ▸
-       at 2 2 (CX02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CX₀₁ ↑)) ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 3 2 (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS))) ▸
-       at 4 2 (CX02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CX₀₁ ↑)) ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 6 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸ done
+-- pass [X2 CSd20 X2] [CS13]: 17 steps
+lem-pass-X2-CSd20-X2-vs-CS13 : ⟪ (X2 ∷ CS02⁻ ∷ X2 ∷ CS13 ∷ []) ⟫ʷ ≈ ⟪ (CS13 ∷ X2 ∷ CS02⁻ ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CSd20-X2-vs-CS13 = derive (X2 ∷ CS02⁻ ∷ X2 ∷ CS13 ∷ []) (CS13 ∷ X2 ∷ CS02⁻ ∷ X2 ∷ [])
+  (rw 2 q48 ∷
+   re 2 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 1 q1 ∷
+   re 2 3 (CS03⁻ ∷ []) ∷
+   re 2 1 (Sw23 ∷ Sw12 ∷ CS01⁻ ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   rw 8 q1 ∷
+   re 6 3 (CS13 ∷ []) ∷
+   rw 5 q30 ∷
+   rw 4 q61 ∷
+   rw 3 q50 ∷
+   re 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) ∷
+   rw 2 q3 ∷
+   re 3 5 (CS03⁻ ∷ []) ∷
+   re 3 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   re 1 3 (CS13 ∷ []) ∷
+   rw 0 q48 ∷ []) Eq.refl
 
-  b33 : Chain (CX13 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ Sw23 ∷ Sw01 ∷ CS12 ∷ Sw23 ∷ Sw01 ∷ Sw12 ∷ CX23 ∷ Sw12 ∷ []) (CX13 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ Sw12 ∷ Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ CX23 ∷ Sw12 ∷ [])
-  b33 = at 6 2 (CS02 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (CS ↑)) ((Swap ↑ • CS • Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 7 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 5 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 [] (win 3 0 complete₃ (Swap • Swap) (ε) tt tt Eq.refl) ▸
-       at 5 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 8 3 (Sw23 ∷ Sw12 ∷ Sw23 ∷ []) (win 0 3 complete₃ (Swap • (Swap ↑) • Swap) ((Swap ↑) • Swap • (Swap ↑)) tt tt Eq.refl) ▸
-       at 7 2 (Sw23 ∷ CS01 ∷ []) (low-comm (CS) (Swap)) ▸
-       at 5 3 (Sw12 ∷ Sw23 ∷ Sw12 ∷ []) (win 0 3 complete₃ ((Swap ↑) • Swap • (Swap ↑)) (Swap • (Swap ↑) • Swap) tt tt Eq.refl) ▸ done
+private
+  q62 : Eqn
+  q62 = eqn (CS01⁻ ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CS01⁻ ∷ []) (low-comm ((CS • CS • CS)) ((CS • CS • CS)))
 
-  b34 : Chain (CX13 ∷ CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ Sw12 ∷ Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ CX23 ∷ Sw12 ∷ []) (CX13 ∷ Sw12 ∷ Sw23 ∷ Sw23 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ CX23 ∷ Sw12 ∷ [])
-  b34 = at 6 5 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 1 (Sw12 ∷ CX01 ∷ Sw12 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 [] (win 3 0 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 3 2 (Sw12 ∷ CS13⁻ ∷ []) (win 0 3 complete₃ (((CS • CS • CS) ↑) • Swap) (Swap • (Swap ↑ • (CS • CS • CS) • Swap ↑)) tt tt Eq.refl) ▸
-       at 2 1 (Sw12 ∷ CX01 ∷ Sw12 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 [] (win 3 0 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 1 2 (Sw12 ∷ CS13 ∷ []) (win 0 3 complete₃ ((CS ↑) • Swap) (Swap • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 2 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸ done
+-- pass [X2 CSd20 X2] [CSd13]: 17 steps
+lem-pass-X2-CSd20-X2-vs-CSd13 : ⟪ (X2 ∷ CS02⁻ ∷ X2 ∷ CS13⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS13⁻ ∷ X2 ∷ CS02⁻ ∷ X2 ∷ []) ⟫ʷ
+lem-pass-X2-CSd20-X2-vs-CSd13 = derive (X2 ∷ CS02⁻ ∷ X2 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ X2 ∷ CS02⁻ ∷ X2 ∷ [])
+  (rw 2 q51 ∷
+   re 2 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 1 q1 ∷
+   re 2 3 (CS03⁻ ∷ []) ∷
+   re 2 1 (Sw23 ∷ Sw12 ∷ CS01⁻ ∷ Sw12 ∷ Sw23 ∷ []) ∷
+   rw 8 q1 ∷
+   re 6 3 (CS13⁻ ∷ []) ∷
+   rw 5 q31 ∷
+   rw 4 q62 ∷
+   rw 3 q53 ∷
+   re 3 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) ∷
+   rw 2 q3 ∷
+   re 3 5 (CS03⁻ ∷ []) ∷
+   re 3 1 (Sw23 ∷ CS02⁻ ∷ Sw23 ∷ []) ∷
+   rw 5 q3 ∷
+   re 1 3 (CS13⁻ ∷ []) ∷
+   rw 0 q51 ∷ []) Eq.refl
 
-  b35 : Chain (CX13 ∷ Sw12 ∷ Sw23 ∷ Sw23 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ CX23 ∷ Sw12 ∷ []) (CX13 ∷ Sw12 ∷ Sw23 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ Sw23 ∷ CX23 ∷ Sw12 ∷ [])
-  b35 = at 4 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 4 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 6 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 6 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 8 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 7 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸ done
+private
+  q63 : Eqn
+  q63 = eqn (CCZ123 ∷ CS13 ∷ []) (CS13 ∷ CCZ123 ∷ []) (wn 259 W)
 
-  b36 : Chain (CX13 ∷ Sw12 ∷ Sw23 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ Sw23 ∷ CX23 ∷ Sw12 ∷ []) (Sw12 ∷ CX23 ∷ Sw23 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ Sw23 ∷ Sw23 ∷ CX32 ∷ Sw23 ∷ Sw12 ∷ [])
-  b36 = at 3 5 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (win 3 0 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 3 5 (CCZ012 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 3 (CCZ013 ∷ []) (by-assoc Eq.refl) ▸
-       at 0 2 (Sw12 ∷ CX23 ∷ []) (win 0 3 complete₃ ((Swap ↑ • CX₀₁ • Swap ↑) • Swap) (Swap • (CX₀₁ ↑)) tt tt Eq.refl) ▸
-       at 4 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 3 2 (Sw23 ∷ CX32 ∷ []) (win 0 3 complete₃ ((CX₀₁ ↑) • (Swap ↑)) ((Swap ↑) • (CX₁₀ ↑)) tt tt Eq.refl) ▸
-       at 2 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (by-assoc Eq.refl) ▸ done
+-- pass [CCZ123] [CS13]: 1 steps
+lem-pass-CCZ123-vs-CS13 : ⟪ (CCZ123 ∷ CS13 ∷ []) ⟫ʷ ≈ ⟪ (CS13 ∷ CCZ123 ∷ []) ⟫ʷ
+lem-pass-CCZ123-vs-CS13 = derive (CCZ123 ∷ CS13 ∷ []) (CS13 ∷ CCZ123 ∷ [])
+  (rw 0 q63 ∷ []) Eq.refl
 
-  b37 : Chain (Sw12 ∷ CX23 ∷ Sw23 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ Sw23 ∷ Sw23 ∷ CX32 ∷ Sw23 ∷ Sw12 ∷ []) (Sw12 ∷ CX23 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ Sw23 ∷ Sw23 ∷ Sw23 ∷ CX32 ∷ Sw23 ∷ Sw12 ∷ [])
-  b37 = at 4 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 2 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 6 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 4 3 (CS13⁻ ∷ []) (by-assoc Eq.refl) ▸
-       at 5 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 8 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 6 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸ done
+private
+  q64 : Eqn
+  q64 = eqn (CCZ123 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ CCZ123 ∷ []) (wn 260 W)
 
-  b38 : Chain (Sw12 ∷ CX23 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ Sw23 ∷ Sw23 ∷ Sw23 ∷ CX32 ∷ Sw23 ∷ Sw12 ∷ []) (Sw12 ∷ CX23 ∷ Sw23 ∷ CS12 ∷ Sw23 ∷ Sw23 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ CX32 ∷ Sw23 ∷ Sw12 ∷ [])
-  b38 = at 7 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 6 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 8 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 5 2 (Sw23 ∷ CX01 ∷ []) (low-comm (CX₀₁) (Swap)) ▸
-       at 4 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 3 2 (Sw23 ∷ CX01 ∷ []) (low-comm (CX₀₁) (Swap)) ▸
-       at 2 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸ done
-
-  b39 : Chain (Sw12 ∷ CX23 ∷ Sw23 ∷ CS12 ∷ Sw23 ∷ Sw23 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ CX32 ∷ Sw23 ∷ Sw12 ∷ []) (Sw12 ∷ CS13 ∷ Sw23 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ CCZ013 ∷ Sw23 ∷ Sw12 ∷ [])
-  b39 = at 4 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 3 5 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (win 3 0 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 3 5 (CCZ012 ∷ []) (by-assoc Eq.refl) ▸
-       at 1 2 (Sw23 ∷ CX32 ∷ []) (win 0 3 complete₃ ((CX₀₁ ↑) • (Swap ↑)) ((Swap ↑) • (CX₁₀ ↑)) tt tt Eq.refl) ▸
-       at 2 3 (CCZ012 ∷ CCZ013 ∷ []) (ax cx-ccz) ▸
-       at 2 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 1 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸ done
-
-  b40 : Chain (Sw12 ∷ CS13 ∷ Sw23 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ CCZ013 ∷ Sw23 ∷ Sw12 ∷ []) (Sw12 ∷ Sw23 ∷ Sw23 ∷ Sw23 ∷ CS12 ∷ Sw23 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ Sw23 ∷ CCZ013 ∷ Sw23 ∷ Sw12 ∷ [])
-  b40 = at 2 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 5 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 3 3 (CS13⁻ ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 7 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 5 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 1 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸ done
-
-  b41 : Chain (Sw12 ∷ Sw23 ∷ Sw23 ∷ Sw23 ∷ CS12 ∷ Sw23 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ Sw23 ∷ CCZ013 ∷ Sw23 ∷ Sw12 ∷ []) (Sw12 ∷ Sw23 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ Sw23 ∷ Sw23 ∷ CCZ013 ∷ Sw23 ∷ Sw12 ∷ [])
-  b41 = at 2 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 3 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 5 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 5 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 7 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 2 5 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (win 3 0 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸ done
-
-  b42 : Chain (Sw12 ∷ Sw23 ∷ CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ Sw23 ∷ Sw23 ∷ CCZ013 ∷ Sw23 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ013 ∷ Sw23 ∷ CS13 ∷ CX01 ∷ Sw23 ∷ CS12⁻ ∷ Sw23 ∷ Sw23 ∷ CX01 ∷ CS02 ∷ Sw23 ∷ Sw23 ∷ Sw12 ∷ [])
-  b42 = at 2 5 (CCZ012 ∷ []) (by-assoc Eq.refl) ▸
-       at 1 3 (CCZ013 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 3 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 7 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸ done
-
-  b43 : Chain (Sw12 ∷ CCZ013 ∷ Sw23 ∷ CS13 ∷ CX01 ∷ Sw23 ∷ CS12⁻ ∷ Sw23 ∷ Sw23 ∷ CX01 ∷ CS02 ∷ Sw23 ∷ Sw23 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ013 ∷ CS12 ∷ CX01 ∷ Sw23 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ Sw23 ∷ Sw12 ∷ [])
-  b43 = at 5 3 (CS13⁻ ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 9 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 7 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 8 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 3 1 (Sw23 ∷ CS12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 3 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸ done
-
-  b44 : Chain (Sw12 ∷ CCZ013 ∷ CS12 ∷ CX01 ∷ Sw23 ∷ CS13⁻ ∷ CX01 ∷ CS03 ∷ Sw23 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ013 ∷ CCZ012 ∷ Sw12 ∷ [])
-  b44 = at 5 1 (Sw23 ∷ CS12⁻ ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 5 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 7 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 2 5 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (win 3 0 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 2 5 (CCZ012 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸ done
-
-  b45 : Chain (Sw12 ∷ CCZ013 ∷ CCZ012 ∷ Sw12 ∷ []) (Sw12 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ Sw23 ∷ CS02 ∷ Sw23 ∷ CCZ012 ∷ Sw12 ∷ [])
-  b45 = at 1 1 (Sw23 ∷ CCZ012 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 1 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸
-       at 5 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 3 3 (CS13⁻ ∷ []) (by-assoc Eq.refl) ▸
-       at 4 2 (CX01 ∷ Sw23 ∷ []) (sym (low-comm (CX₀₁) (Swap))) ▸ done
-
-  b46 : Chain (Sw12 ∷ CS13 ∷ CX01 ∷ CS13⁻ ∷ CX01 ∷ Sw23 ∷ CS02 ∷ Sw23 ∷ CCZ012 ∷ Sw12 ∷ []) (CS23 ∷ CX02 ∷ CS23⁻ ∷ Sw12 ∷ CX01 ∷ Sw12 ∷ Sw12 ∷ CS03 ∷ CCZ012 ∷ Sw12 ∷ [])
-  b46 = at 7 0 (Sw23 ∷ Sw23 ∷ []) (win 0 3 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 5 3 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 2 [] (win 0 3 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 0 2 (CS23 ∷ Sw12 ∷ []) (win 0 3 complete₃ (Swap • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • Swap) tt tt Eq.refl) ▸
-       at 3 0 (Sw12 ∷ Sw12 ∷ []) (win 3 0 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 1 3 (CX02 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 2 (CS23⁻ ∷ Sw12 ∷ []) (win 0 3 complete₃ (Swap • (Swap ↑ • (CS • CS • CS) • Swap ↑)) (((CS • CS • CS) ↑) • Swap) tt tt Eq.refl) ▸
-       at 5 0 (Sw12 ∷ Sw12 ∷ []) (win 3 0 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸ done
-
-  b47 : Chain (CS23 ∷ CX02 ∷ CS23⁻ ∷ Sw12 ∷ CX01 ∷ Sw12 ∷ Sw12 ∷ CS03 ∷ CCZ012 ∷ Sw12 ∷ []) (Sw01 ∷ CS23 ∷ Sw01 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ Sw12 ∷ CCZ012 ∷ Sw12 ∷ [])
-  b47 = at 3 3 (CX02 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 1 (Sw23 ∷ Sw12 ∷ CS01 ∷ Sw12 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 4 3 (Sw23 ∷ Sw12 ∷ Sw23 ∷ []) (win 0 3 complete₃ (Swap • (Swap ↑) • Swap) ((Swap ↑) • Swap • (Swap ↑)) tt tt Eq.refl) ▸
-       at 6 2 (CS01 ∷ Sw23 ∷ []) (sym (low-comm (CS) (Swap))) ▸
-       at 7 3 (Sw12 ∷ Sw23 ∷ Sw12 ∷ []) (win 0 3 complete₃ ((Swap ↑) • Swap • (Swap ↑)) (Swap • (Swap ↑) • Swap) tt tt Eq.refl) ▸
-       at 4 5 (CS03 ∷ []) (by-assoc Eq.refl) ▸
-       at 0 0 (Sw01 ∷ Sw01 ∷ []) (win 3 0 complete₃ (ε) (Swap • Swap) tt tt Eq.refl) ▸
-       at 1 2 (CS23 ∷ Sw01 ∷ []) (low-comm (Swap) (CS)) ▸ done
-
-  b48 : Chain (Sw01 ∷ CS23 ∷ Sw01 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ Sw12 ∷ CCZ012 ∷ Sw12 ∷ []) (Sw01 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ Sw01 ∷ Sw12 ∷ CCZ012 ∷ Sw12 ∷ [])
-  b48 = at 2 2 (CX12 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Swap ↑ • CX₀₁ • Swap ↑)) ((CX₀₁ ↑) • Swap) tt tt Eq.refl) ▸
-       at 3 2 (CS23⁻ ∷ Sw01 ∷ []) (low-comm (Swap) ((CS • CS • CS))) ▸
-       at 4 2 (CX12 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Swap ↑ • CX₀₁ • Swap ↑)) ((CX₀₁ ↑) • Swap) tt tt Eq.refl) ▸
-       at 6 1 (Sw23 ∷ CS02 ∷ Sw23 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 6 2 (CS12 ∷ Sw01 ∷ []) (win 3 0 complete₃ (Swap • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • Swap) tt tt Eq.refl) ▸
-       at 7 2 (Sw23 ∷ Sw01 ∷ []) (low-comm (Swap) (Swap)) ▸
-       at 5 3 (CS13 ∷ []) (by-assoc Eq.refl) ▸ done
-
-  b49 : Chain (Sw01 ∷ CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ Sw01 ∷ Sw12 ∷ CCZ012 ∷ Sw12 ∷ []) (CCZ023 ∷ CS12 ∷ CX02 ∷ CS12⁻ ∷ Sw12 ∷ CX01 ∷ CS02 ∷ Sw12 ∷ [])
-  b49 = at 1 5 (CS23 ∷ CX12 ∷ CS23⁻ ∷ CX12 ∷ CS13 ∷ []) (win 0 3 complete₃ ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 1 5 (CCZ123 ∷ []) (by-assoc Eq.refl) ▸
-       at 0 3 (CCZ023 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 1 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (by-assoc Eq.refl) ▸
-       at 1 2 (CS12 ∷ Sw12 ∷ []) (win 3 0 complete₃ ((Swap ↑) • (CS ↑)) ((CS ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 4 0 (Sw12 ∷ Sw12 ∷ []) (win 3 0 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 2 3 (CX02 ∷ []) (by-assoc Eq.refl) ▸
-       at 3 2 (CS12⁻ ∷ Sw12 ∷ []) (win 3 0 complete₃ ((Swap ↑) • ((CS • CS • CS) ↑)) (((CS • CS • CS) ↑) • (Swap ↑)) tt tt Eq.refl) ▸ done
-
-  b50 : Chain (CCZ023 ∷ CS12 ∷ CX02 ∷ CS12⁻ ∷ Sw12 ∷ CX01 ∷ CS02 ∷ Sw12 ∷ []) (CCZ023 ∷ CCZ012 ∷ [])
-  b50 = at 6 0 (Sw12 ∷ Sw12 ∷ []) (win 3 0 complete₃ (ε) ((Swap ↑) • (Swap ↑)) tt tt Eq.refl) ▸
-       at 4 3 (CX02 ∷ []) (by-assoc Eq.refl) ▸
-       at 6 1 (Sw12 ∷ CS01 ∷ Sw12 ∷ []) (by-assoc Eq.refl) ▸
-       at 5 2 [] (win 3 0 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸
-       at 1 5 (CS12 ∷ CX01 ∷ CS12⁻ ∷ CX01 ∷ CS02 ∷ []) (win 3 0 complete₃ ((CS ↑) • (Swap ↑ • CX₀₁ • Swap ↑) • ((CS • CS • CS) ↑) • (Swap ↑ • CX₀₁ • Swap ↑) • CS) ((CS ↑) • CX₀₁ • ((CS • CS • CS) ↑) • CX₀₁ • (Swap ↑ • CS • Swap ↑)) tt tt Eq.refl) ▸
-       at 1 5 (CCZ012 ∷ []) (by-assoc Eq.refl) ▸
-       at 2 2 [] (win 3 0 complete₃ ((Swap ↑) • (Swap ↑)) (ε) tt tt Eq.refl) ▸ done
-
-
--- B=F: 5 steps
-lem-B≡F : ⟪ (CCZ012 ∷ Toff102 ∷ CZ13 ∷ Toff102 ∷ CCZ012 ∷ CZ13 ∷ []) ⟫ʷ ≈ ⟪ (CCZ023 ∷ []) ⟫ʷ
-lem-B≡F = run b0
-  where
-  b0 : Chain (CCZ012 ∷ Toff102 ∷ CZ13 ∷ Toff102 ∷ CCZ012 ∷ CZ13 ∷ []) (CCZ023 ∷ [])
-  b0 = at 1 3 (CCZ023 ∷ CZ13 ∷ []) (lem-T1-CZ13-T1) ▸
-       at 0 2 (CCZ023 ∷ CCZ012 ∷ []) (lem-comm-CCZ012-CCZ023) ▸
-       at 1 2 (CZ13 ∷ CCZ012 ∷ []) (lem-comm-CCZ012-CZ13) ▸
-       at 2 2 [] (win 3 0 complete₃ (CCZ • CCZ) (ε) tt tt Eq.refl) ▸
-       at 1 2 [] (win 0 3 complete₃ ((Swap ↑ • CZ • Swap ↑) • (Swap ↑ • CZ • Swap ↑)) (ε) tt tt Eq.refl) ▸ done
-
-
--- ROT=[c,F]: 3 steps
-lem-ROT≡cF : ⟪ (CK10 ∷ CCZ012 ∷ Toff102 ∷ CZ13 ∷ Toff102 ∷ CCZ012 ∷ CZ13 ∷ S1 ∷ CK10 ∷ CCZ012 ∷ Toff102 ∷ CZ13 ∷ Toff102 ∷ CCZ012 ∷ CZ13 ∷ []) ⟫ʷ ≈ ⟪ (CK10 ∷ CCZ023 ∷ CK10⁻ ∷ CCZ023 ∷ []) ⟫ʷ
-lem-ROT≡cF = run b0
-  where
-  b0 : Chain (CK10 ∷ CCZ012 ∷ Toff102 ∷ CZ13 ∷ Toff102 ∷ CCZ012 ∷ CZ13 ∷ S1 ∷ CK10 ∷ CCZ012 ∷ Toff102 ∷ CZ13 ∷ Toff102 ∷ CCZ012 ∷ CZ13 ∷ []) (CK10 ∷ CCZ023 ∷ CK10⁻ ∷ CCZ023 ∷ [])
-  b0 = at 1 6 (CCZ023 ∷ []) (lem-B≡F) ▸
-       at 4 6 (CCZ023 ∷ []) (lem-B≡F) ▸
-       at 2 2 (CK10⁻ ∷ []) (win 3 0 complete₃ ((S ↑) • CK₁₀) ((S ↑ • CK₁₀)) tt tt Eq.refl) ▸ done
-
+-- pass [CCZ123] [CSd13]: 1 steps
+lem-pass-CCZ123-vs-CSd13 : ⟪ (CCZ123 ∷ CS13⁻ ∷ []) ⟫ʷ ≈ ⟪ (CS13⁻ ∷ CCZ123 ∷ []) ⟫ʷ
+lem-pass-CCZ123-vs-CSd13 = derive (CCZ123 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ CCZ123 ∷ [])
+  (rw 0 q64 ∷ []) Eq.refl

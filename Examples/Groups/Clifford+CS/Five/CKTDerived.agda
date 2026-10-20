@@ -30,7 +30,7 @@ open import Examples.Groups.Clifford+CS.Five.Rules
 open import Examples.Groups.Clifford+CS.Five.Chain using (_≈_ ; trans ; by-assoc)
 open import Examples.Groups.Clifford+CS.Five.TransportAx.Base using (Inst)
 import Examples.Groups.Clifford+CS.FiveV.Rules as V
-import Examples.Groups.Clifford+CS.FiveV.D.D219 as VD
+import Examples.Groups.Clifford+CS.FiveV.D.D229 as VD
 open import Examples.Groups.Clifford+CS.FiveV.WinInst using (ws)
 
 private

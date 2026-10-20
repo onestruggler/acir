@@ -164,20 +164,34 @@ private
   Eq.trans (ent-Φ (ε∙ {n}) r c)
     (Eq.trans (DR.*-identityˡ _) (Eq.trans (ι-δ r c) (Eq.sym (ent-𝕀 r c))))
 
+-- The steps are lemmas of their own, and the function summed in the
+-- third is left to unification: written out, its products were
+-- elaborated apart from the declared type's, and comparing the two took
+-- over four minutes.
+private
+  s1 : (s t : Scaled n) → ∀ r c → ent (Φ (s ∙ t)) r c ≡ op (s ∙ t) (cod r) (cod c)
+  s1 s t r c = ent-Φ (s ∙ t) r c
+
+  s2 : (s t : Scaled n) → ∀ r c →
+       op (s ∙ t) (cod r) (cod c) ≡ L.Σb (λ z → op s (cod r) z * op t z (cod c))
+  s2 s t r c = op-∙ s t (cod r) (cod c)
+
+  s3 : (s t : Scaled n) → ∀ r c →
+       L.Σb (λ z → op s (cod r) z * op t z (cod c)) ≡
+       sum (λ k → op s (cod r) (cod k) * op t (cod k) (cod c))
+  s3 s t r c = Eq.sym (sum-cod _)
+
+  s4 : (s t : Scaled n) → ∀ r c →
+       sum (λ k → op s (cod r) (cod k) * op t (cod k) (cod c)) ≡
+       sum (λ k → ent (Φ s) r k * ent (Φ t) k c)
+  s4 s t r c = Eq.sym (sum-cong-≗ (λ k → Eq.cong₂ _*_ (ent-Φ s r k) (ent-Φ t k c)))
+
+  s5 : (s t : Scaled n) → ∀ r c → sum (λ k → ent (Φ s) r k * ent (Φ t) k c) ≡ ent (Φ s ·*· Φ t) r c
+  s5 s t r c = Eq.sym (ent-·*· (Φ s) (Φ t) r c)
+
 Φ-∙ : (s t : Scaled n) → Φ (s ∙ t) ≡ Φ s ·*· Φ t
-Φ-∙ s t = mat-ext λ r c → begin
-  ent (Φ (s ∙ t)) r c
-    ≡⟨ ent-Φ (s ∙ t) r c ⟩
-  op (s ∙ t) (cod r) (cod c)
-    ≡⟨ op-∙ s t (cod r) (cod c) ⟩
-  L.Σb (λ z → op s (cod r) z * op t z (cod c))
-    ≡⟨ Eq.sym (sum-cod (λ z → op s (cod r) z * op t z (cod c))) ⟩
-  sum (λ k → op s (cod r) (cod k) * op t (cod k) (cod c))
-    ≡⟨ Eq.sym (sum-cong-≗ (λ k → Eq.cong₂ _*_ (ent-Φ s r k) (ent-Φ t k c))) ⟩
-  sum (λ k → ent (Φ s) r k * ent (Φ t) k c)
-    ≡⟨ Eq.sym (ent-·*· (Φ s) (Φ t) r c) ⟩
-  ent (Φ s ·*· Φ t) r c ∎
-  where open ≡-Reasoning
+Φ-∙ s t = mat-ext λ r c →
+  Eq.trans (s1 s t r c) (Eq.trans (s2 s t r c) (Eq.trans (s3 s t r c) (Eq.trans (s4 s t r c) (s5 s t r c))))
 
 -- Φ identifies no pairs _~_ does not.
 Φ-inj : {s t : Scaled n} → Φ s ≡ Φ t → s ~ t

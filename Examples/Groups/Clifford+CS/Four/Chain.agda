@@ -29,7 +29,7 @@ open import Word.Base using (Word ; [_]ʷ ; ε ; _•_)
 
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Tools using (module Tools)
-open import Examples.Groups.Clifford+CS.TopWeakening using (low-comm)
+open import Examples.Groups.Clifford+CS.LowComm using (low-comm)
 open import Examples.Groups.Clifford+CS.Four.Letters public
 
 open Tools (_VRel,_===_ 4) public
@@ -96,21 +96,33 @@ step k n xs ys e =
   split = Eq.trans (Eq.sym (take++drop≡id k xs))
                    (Eq.cong (take k xs ++_) (Eq.sym (take++drop≡id n (drop k xs))))
 
-record Step (xs : List Mac) : Set where
-  constructor at
-  field
-    k n : ℕ
-    ys  : List Mac
-    e   : ⟪ take n (drop k xs) ⟫ʷ ≈ ⟪ ys ⟫ʷ
+-- The line after a step is `next k n ys xs`, a function of the step's
+-- data and the line before, so that it holds the line before once.  With
+-- the step a record and the next line a function of the record, it held
+-- it twice (inside the step's proof as well, whose implicit arguments are
+-- solved from the line), the lines of a chain of k steps were trees of
+-- size 2ᵏ, and positivity, dead-code analysis and the occurs check
+-- traverse them as trees: Real-Clifford+CH's SegChain, where the same fix
+-- took LemmaA1/More 26.4 → 0.1 s; here a derivation module of 500 steps
+-- 43.7 → 16.3 s of its own time, its peak 5.3 → 2.7 GB.
+next : ℕ → ℕ → List Mac → List Mac → List Mac
+next k n ys xs = take k xs ++ ys ++ drop (k + n) xs
 
-next : ∀ {xs : List Mac} → Step xs → List Mac
-next {xs} (at k n ys _) = take k xs ++ ys ++ drop (k + n) xs
+record Step (xs : List Mac) (k n : ℕ) (ys : List Mac) : Set where
+  constructor step′
+  field
+    e : ⟪ take n (drop k xs) ⟫ʷ ≈ ⟪ ys ⟫ʷ
+
+at : ∀ {xs : List Mac} (k n : ℕ) (ys : List Mac) →
+     ⟪ take n (drop k xs) ⟫ʷ ≈ ⟪ ys ⟫ʷ → Step xs k n ys
+at k n ys e = step′ e
 
 infixr 4 _▸_
 data Chain : List Mac → List Mac → Set where
   done : ∀ {xs : List Mac} → Chain xs xs
-  _▸_  : ∀ {xs zs : List Mac} (s : Step xs) → Chain (next s) zs → Chain xs zs
+  _▸_  : ∀ {xs zs : List Mac} {k n : ℕ} {ys : List Mac} →
+         Step xs k n ys → Chain (next k n ys xs) zs → Chain xs zs
 
 run : ∀ {xs zs : List Mac} → Chain xs zs → ⟪ xs ⟫ʷ ≈ ⟪ zs ⟫ʷ
-run done                   = refl
-run {xs} (at k n ys e ▸ c) = trans (step k n xs ys e) (run c)
+run done = refl
+run {xs} (_▸_ {k = k} {n} {ys} (step′ e) c) = trans (step k n xs ys e) (run c)

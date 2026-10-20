@@ -25,7 +25,7 @@ open import Examples.Groups.Clifford+CS.Semantics.Control
 open import Examples.Groups.Clifford+CS.Semantics.Decide using (eqM ; eqM-sound)
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.Interpretation using (⟦_⟧ ; ⟦_⟧ₒ ; len)
-open import Examples.Groups.Clifford+CS.Evaluation using (⟦_⟧R ; ⟦⟧R-ix)
+open import Examples.Groups.Clifford+CS.FastEval using (⟦_⟧Q ; nK ; Q-sem)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CK₁₀)
 open import Examples.Groups.Clifford+CS.Five.Letters
   using (b-Sb2-0-41-3 ; b-Sb0-1-42-3 ; b-Sb0-2-43-1)
@@ -34,12 +34,10 @@ open import Examples.Groups.Clifford+CS.Five.Letters
 -- Deciding a circuit's semantics against an operator
 
 check : ∀ {k} (w : Circuit k) (l : ℕ) (T : Op k) →
-        eqM (scaleM (γ^ l) ⟦ w ⟧R) (matOf (γ^ len w · T)) ≡ true → ⟦ w ⟧ ~ (l , T)
-check w l T e x y =
-  Eq.trans (Eq.cong (γ^ l *_) (⟦⟧R-ix w x y))
-    (Eq.trans (Eq.sym (ix-scaleM (γ^ l) ⟦ w ⟧R x y))
-      (Eq.trans (Eq.cong (λ A → ix A x y) (eqM-sound _ _ e))
-                (ix-matOf (γ^ len w · T) x y)))
+        eqM (scaleM (γ^ l) ⟦ w ⟧Q) (matOf (γ^ nK w · T)) ≡ true → ⟦ w ⟧ ~ (l , T)
+check w l T e = Q-sem w l T (λ x y →
+  Eq.trans (Eq.sym (ix-scaleM (γ^ l) ⟦ w ⟧Q x y))
+    (Eq.trans (Eq.cong (λ A → ix A x y) (eqM-sound _ _ e)) (ix-matOf (γ^ nK w · T) x y)))
 
 ------------------------------------------------------------------------
 -- One and two wires

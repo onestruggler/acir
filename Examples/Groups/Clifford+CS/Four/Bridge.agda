@@ -21,7 +21,8 @@ open import Relation.Binary.PropositionalEquality as Eq using ()
 open import Examples.Groups.Clifford+CS.Syntactics
 open import Examples.Groups.Clifford+CS.MultiControlled using (G-pp)
 open import Examples.Groups.Clifford+CS.Four.Chain
-open import Examples.Groups.Clifford+CS.Four.D.D091 using (lem-bridge-G-pp)
+import Examples.Groups.Clifford+CS.Four.WinInst as WI
+open import Examples.Groups.Clifford+CS.Four.D.D016 WI.ws using (lem-bridge-G-pp)
 
 -- The phase gadget L₁₂₃(iZ₀) of the decoding, as the derivations spell it.
 G-pp-≈ : G-pp 1 ≈ ⟪ Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ [] ⟫ʷ

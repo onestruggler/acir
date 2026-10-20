@@ -16,7 +16,9 @@
 -- wire.  The equations for S, K and the scalar come down to one and two
 -- wires, where the rules are complete.  On five wires the three CS
 -- equations are among the joint paper's derivations; from six on they
--- follow from completeness on five (`F5-from`).
+-- follow from completeness on five (`Lambda.SplitFrom5.F5-from`, its
+-- own module: its three five-wire evaluations were most of this one's
+-- time, and nothing here needs them).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -38,7 +40,7 @@ open import Examples.Groups.Clifford+CS.Tools using (module Tools)
 open import Examples.Groups.Clifford+CS.MultiControlled using (top ; CK₁₀)
 open import Examples.Groups.Clifford+CS.Swaps using (Swap²)
 open import Examples.Groups.Clifford+CS.Completeness using (complete₁ ; complete₂)
-open import Examples.Groups.Clifford+CS.SemanticSteps using (module Below ; same-sem)
+open import Examples.Groups.Clifford+CS.SemanticSteps using (module Below)
 open import Examples.Groups.Clifford+CS.Lambda
 open import Examples.Groups.Clifford+CS.Five.Letters using (b-Sb2-0-41-3 ; b-Sb0-1-42-3 ; b-Sb0-2-43-1)
 open import Examples.Groups.Clifford+CS.Five.Rules
@@ -168,13 +170,6 @@ record F5 : Set where
     cs₂₃ : 5 ⊢ₓ CS ↑ ↑ ≈ (Xᵗ ₄ • b-Sb0-2-43-1 • Xᵗ ₄) • b-Sb0-2-43-1
 
 -- From completeness on five wires.
-F5-from : (∀ {u v : Circuit 5} → ⟦ u ⟧ ~ ⟦ v ⟧ → 5 ⊢ₓ u ≈ v) → F5
-F5-from c₅ = record
-  { cs₀₁ = c₅ (same-sem CS ((Xᵗ ₄ • b-Sb2-0-41-3 • Xᵗ ₄) • b-Sb2-0-41-3) Eq.refl)
-  ; cs₁₂ = c₅ (same-sem (CS ↑) ((Xᵗ ₄ • b-Sb0-1-42-3 • Xᵗ ₄) • b-Sb0-1-42-3) Eq.refl)
-  ; cs₂₃ = c₅ (same-sem (CS ↑ ↑) ((Xᵗ ₄ • b-Sb0-2-43-1 • Xᵗ ₄) • b-Sb0-2-43-1) Eq.refl)
-  }
-
 ------------------------------------------------------------------------
 -- Every generator, at every width
 

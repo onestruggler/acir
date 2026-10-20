@@ -127,14 +127,16 @@ private
       (Eq.trans (Eq.cong (lookupℕ p) (Eq.sym (idx-inj {str₁ p c false} {str₁ p c true} e))) (lookup-insert p false c q)))
 
 deg-E′ : ∀ (g : Gen n) → cos ⟨0⟩ (eTL′ (view g)) ≡ ⟨0⟩
-deg-E′ g with view g in eq
-... | scalar I-gate = deg-∏ {2 + m} (allBits n) (λ x → TL.i (idx x)) (length-allBits n) (λ _ _ → Eq.refl)
-... | one p S-gate  = deg-∏ {1 + m} (allBits (₃₊ m)) (λ c → TL.i (idx (str₁ p c true)))
-                        (length-allBits (₃₊ m)) (λ _ _ → Eq.refl)
-... | one p K-gate  = deg-∏ {1 + m} (allBits (₃₊ m)) (λ c → Kp (idx (str₁ p c false)) (idx (str₁ p c true)))
-                        (length-allBits (₃₊ m)) (λ c c′ → cos-Kp c′ (idx (str₁ p c false)) (idx (str₁ p c true)) (pair-≢ p c (view-bound₁ g eq)))
-... | two p CS-gate = deg-∏ {m} (allBits (₂₊ m)) (λ c → TL.i (idx (str₂ p c true true)))
-                        (length-allBits (₂₊ m)) (λ _ _ → Eq.refl)
+deg-E′ g = go (view g) Eq.refl
+  where
+  go : (v : View) → view g ≡ v → cos ⟨0⟩ (eTL′ v) ≡ ⟨0⟩
+  go (scalar I-gate) eq = deg-∏ {2 + m} (allBits n) (λ x → TL.i (idx x)) (length-allBits n) (λ _ _ → Eq.refl)
+  go (one p S-gate) eq  = deg-∏ {1 + m} (allBits (₃₊ m)) (λ c → TL.i (idx (str₁ p c true)))
+                          (length-allBits (₃₊ m)) (λ _ _ → Eq.refl)
+  go (one p K-gate) eq  = deg-∏ {1 + m} (allBits (₃₊ m)) (λ c → Kp (idx (str₁ p c false)) (idx (str₁ p c true)))
+                          (length-allBits (₃₊ m)) (λ c c′ → cos-Kp c′ (idx (str₁ p c false)) (idx (str₁ p c true)) (pair-≢ p c (view-bound₁ g eq)))
+  go (two p CS-gate) eq = deg-∏ {m} (allBits (₂₊ m)) (λ c → TL.i (idx (str₂ p c true true)))
+                          (length-allBits (₂₊ m)) (λ _ _ → Eq.refl)
 
 deg-E : ∀ (g : Gen n) → cos ⟨0⟩ (eTL g) ≡ ⟨0⟩
 deg-E = deg-E′

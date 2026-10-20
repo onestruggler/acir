@@ -23,17 +23,16 @@ open import Examples.Groups.Clifford+CS.Syntactics using (Circuit)
 open import Examples.Groups.Clifford+CS.Four.Chain
 open import Examples.Groups.Clifford+CS.Four.TransportTables
 open import Examples.Groups.Clifford+CS.Four.Transport
-open import Examples.Groups.Clifford+CS.Four.D.D121 using (lem-cls-0000PP0-0000PP0-0000PP0-0000PP0-≡-e ; lem-cls-0000PP0-0000PP0-≡-0000R0-0000R0 ; lem-cls-0000PP0-0000R0-≡-0000R0-1000PP0 ; lem-cls-0000PP0-1000PP0-≡-e ; lem-cls-0000PP0-1001R0-≡-1001R0-0000PP0 ; lem-cls-0000PP1-1000PP0-≡-1000PP0-0000PP1 ; lem-cls-0000R0-0100R1-0000R0-≡-0100R1-0000R0-0100R1 ; lem-cls-0000R0-1000R0-≡-e ; lem-cls-0100PP1-0000R0-≡-0000R0-0000PP0-0100PP1 ; lem-cls-1000PP0-0000PP1-0100R1-≡-0100R1-1000PP0)
-open import Examples.Groups.Clifford+CS.Four.D.D133 using (lem-cls-0000PP0-0011R2-≡-0011R2-0000PP0)
-open import Examples.Groups.Clifford+CS.Four.D.D136 using (lem-cls-0000PP0-1001R1-≡-1001R1-0000PP0)
-open import Examples.Groups.Clifford+CS.Four.D.D137 using (lem-cls-0000R0-1001R0-≡-1001R0-0000R0)
-open import Examples.Groups.Clifford+CS.Four.D.D146 using (lem-cls-0000R0-0011R0-≡-0011R0-0000R0 ; lem-cls-0000R0-1011R2-≡-1011R2-0000R0)
-open import Examples.Groups.Clifford+CS.Four.D.D149 using (lem-cls-0000R0-0001R1-≡-0001R1-0000R0)
-open import Examples.Groups.Clifford+CS.Four.D.D151 using (lem-cls-0000R0-0111R1-≡-0111R1-0000R0)
-open import Examples.Groups.Clifford+CS.Four.D.D159 using (lem-cls-0000R0-1111R0-≡-1111R0-0000R0)
-open import Examples.Groups.Clifford+CS.Four.D.D161 using (lem-cls-0000R0-0011R2-≡-0011R2-0000R0)
-open import Examples.Groups.Clifford+CS.Four.D.D163 using (lem-cls-0000R0-1111R1-≡-1111R1-0000R0)
-open import Examples.Groups.Clifford+CS.Four.D.D164 using (lem-cls-0000R0-0011R1-≡-0011R1-0000R0)
+import Examples.Groups.Clifford+CS.Four.WinInst as WI
+open import Examples.Groups.Clifford+CS.Four.D.D743 WI.ws using (lem-cls-0000PP0-1000PP0-≡-e)
+open import Examples.Groups.Clifford+CS.Four.D.D753 WI.ws using (lem-cls-0000PP0-0000PP0-0000PP0-0000PP0-≡-e ; lem-cls-0000PP0-0000PP0-≡-0000R0-0000R0 ; lem-cls-0000PP0-1001R0-≡-1001R0-0000PP0)
+open import Examples.Groups.Clifford+CS.Four.D.D760 WI.ws using (lem-cls-0000R0-1000R0-≡-e)
+open import Examples.Groups.Clifford+CS.Four.D.D766 WI.ws using (lem-cls-0000R0-0011R0-≡-0011R0-0000R0 ; lem-cls-0000R0-1001R0-≡-1001R0-0000R0)
+open import Examples.Groups.Clifford+CS.Four.D.D771 WI.ws using (lem-cls-0000PP0-0011R2-≡-0011R2-0000PP0 ; lem-cls-0000PP0-1001R1-≡-1001R1-0000PP0 ; lem-cls-0000R0-0011R1-≡-0011R1-0000R0)
+open import Examples.Groups.Clifford+CS.Four.D.D777 WI.ws using (lem-cls-0000PP0-0000R0-≡-0000R0-1000PP0 ; lem-cls-0000PP1-1000PP0-≡-1000PP0-0000PP1 ; lem-cls-0000R0-0111R1-≡-0111R1-0000R0 ; lem-cls-0000R0-1111R0-≡-1111R0-0000R0 ; lem-cls-0000R0-1111R1-≡-1111R1-0000R0)
+open import Examples.Groups.Clifford+CS.Four.D.D779 WI.ws using (lem-cls-0000R0-0001R1-≡-0001R1-0000R0 ; lem-cls-0000R0-0011R2-≡-0011R2-0000R0 ; lem-cls-0000R0-1011R2-≡-1011R2-0000R0)
+open import Examples.Groups.Clifford+CS.Four.D.D782 WI.ws using (lem-cls-0100PP1-0000R0-≡-0000R0-0000PP0-0100PP1)
+open import Examples.Groups.Clifford+CS.Four.D.D786 WI.ws using (lem-cls-0000R0-0100R1-0000R0-≡-0100R1-0000R0-0100R1 ; lem-cls-1000PP0-0000PP1-0100R1-≡-0100R1-1000PP0)
 
 C-0000PP0 : Blk
 C-0000PP0 = blk (xb false false false false) (Toff012 ∷ CS03 ∷ Toff012 ∷ CS03⁻ ∷ [])
