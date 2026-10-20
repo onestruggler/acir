@@ -15,7 +15,11 @@ polynomial).  This script lists those identities, splits them by the
 number of wires they touch (three wires: three-wire completeness;
 four: the finder), and runs the finder on the four-wire ones.
 
-    python3 -B diag4.py [limit]
+    python3 -B diag4.py [limit] [--coarse L] [--retry]
+
+--coarse L adds the short identities (words of at most L letters) inside
+each P_w and among the classical letters as relators; --retry runs only
+what diag4.log records as not derived.
 """
 import itertools
 import sys
@@ -88,8 +92,22 @@ def substitute(l, p):
 
 
 def main():
-    limit = int(sys.argv[1]) if len(sys.argv) > 1 else 30_000
+    args = [a for a in sys.argv[1:] if not a.startswith('--')]
+    limit = int(args[0]) if args else 30_000
     A = F.Alphabet(N, r4=True, placed=True)
+    coarse = int(sys.argv[sys.argv.index('--coarse') + 1]) if '--coarse' in sys.argv else 0
+    skip = set()
+    if '--retry' in sys.argv:
+        # only the identities a previous run (diag4.log) did not derive
+        for line in open(HERE / 'diag4.log'):
+            if 'NOT derived' in line:
+                skip.add(line.split('s  ', 1)[1].strip())
+    if coarse:
+        extra = set()
+        for kind in [('P', w) for w in range(N)] + [('C',)]:
+            extra |= A.short_identities(kind, coarse)
+        A = F.Alphabet(N, r4=True, placed=True, extra=sorted(extra, key=lambda r: (len(r), r)))
+        print(len(A.rels), 'relators with the short subgroup identities of length', coarse, flush=True)
     cls = [g for g, l in enumerate(A.LETTERS) if l[0] != 'HH']
     ids = []
     for g in cls:
@@ -114,6 +132,9 @@ def main():
     print({k: len(v) for k, v in sorted(by.items())})
     four = by.get(4, [])
     ok = 0
+    if skip:
+        four = [x for x in four if f'{x[0]} {x[1]} -> {x[2]}' in skip]
+        print('retrying', len(four), flush=True)
     for name, m, img, word, _ in four:
         t0 = time.time()
         res = A.derive(word, limit)

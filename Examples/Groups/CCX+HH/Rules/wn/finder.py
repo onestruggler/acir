@@ -65,6 +65,45 @@ class Alphabet:
         assert not bad, [' '.join(self.NAMES[g] for g in r) for r in bad[:3]]
 
     # -----------------------------------------------------------------
+    def subgroup_letters(self, kind):
+        """The letters of a subgroup whose completeness is known:
+        ('P', w): the gates avoiding wire w and every HH (P_w, complete
+        given R4); ('C',): the classical letters (complete on four wires);
+        ('T', W): the letters on the wires W (|W| = 3, complete on three)."""
+        if kind[0] == 'P':
+            w = kind[1]
+            return [g for g, l in enumerate(self.LETTERS) if l[0] == 'HH' or w not in l[1:]]
+        if kind[0] == 'C':
+            return [g for g, l in enumerate(self.LETTERS) if l[0] != 'HH']
+        W = set(kind[1])
+        return [g for g, l in enumerate(self.LETTERS) if set(l[1:]) <= W]
+
+    def short_identities(self, kind, length):
+        """Relators w1 · rev(w2) for distinct words of at most `length`
+        letters of the subgroup with one matrix (each class joined to its
+        first word), reduced (no letter twice in a row)."""
+        lets = self.subgroup_letters(kind)
+        classes = {}
+        layer = [()]
+        for _ in range(length):
+            nxt = []
+            for w in layer:
+                for g in lets:
+                    if w and w[-1] == g:
+                        continue
+                    nxt.append(w + (g,))
+            layer = nxt
+            for w in layer:
+                classes.setdefault(self.matrix(w), []).append(w)
+        ident = self.matrix(())
+        out = set()
+        for m, ws in classes.items():
+            base = () if m == ident else ws[0]
+            for w in ws:
+                if w != base:
+                    out.add(w + tuple(reversed(base)))
+        return out
+
     @staticmethod
     def _name(l):
         if l[0] == 'X':
