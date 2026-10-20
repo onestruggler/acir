@@ -632,3 +632,15 @@ Q_A · Q_B⁻¹ up to the conjugation of a K pair by a pivot edge, a
 finite set of lemmas at canonical positions. The K relations of
 Table 1 become relations among K pairs, which are controlled HH gates
 and their classical conjugates.
+
+**The pivot decoder works where the per-edge one did not**
+(`g4dec2.py`; P the plane x2 = x3 = 1, q = HH(0,1) under a black
+control on wire 3, the pivot edges decoded once). The V_Z finder
+derives the canonical r2f with all eight indices away from 0 and 1
+(598 letters, 70 s) and the canonical r1c with A = (0, 1, 2, 3) (294
+letters). It does not yet derive the patterns where the representatives'
+signs and exchange act on a K's quadruple. The lemmas those need are
+about controlled HH gates: `lam4.py` derives that two controlled HH on
+the same pair with controls on different wires commute (68 letters,
+63 s), and `lampairs.py` works through all 84 commuting pairs of the 24
+controlled HH (each about 80 s, bootstrapping the derived ones).
