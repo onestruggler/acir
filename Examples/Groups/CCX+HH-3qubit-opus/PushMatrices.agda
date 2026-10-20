@@ -16,11 +16,14 @@ open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
 open import Quantum.Synthesis.Matrix using (Matrix)
 
 open import Word.Base using (Word ; ε ; _•_)
-open import Examples.Groups.CCX+HH-TwoLevel.Ring using (D ; _+ᴰ_ ; _*ᴰ_ ; -ᴰ_)
+open import Examples.Groups.CCX+HH-TwoLevel.Ring using (D ; _+ᴰ_ ; _*ᴰ_ ; -ᴰ_ ; _≟ᴰ_)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 
 open import Examples.Groups.CCX+HH-3qubit-opus.Gates
 open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
+open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
+
+open Over _≟ᴰ_ using (eqM-sound)
 
 ⟦_⟧₁ : Word G₁ → Matrix 8 8 D
 ⟦_⟧₁ = ⟦_⟧
@@ -29,58 +32,58 @@ opaque
   unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_
 
   hX1 : ⟦ CX01 • (X0 • (CX01 • X0)) ⟧₁ ≡ ⟦ X1 ⟧₁
-  hX1 = refl
+  hX1 = eqM-sound _ _ refl
 
   hCX20 : ⟦ X1 • ((K01 • (K12 • (CCZw • (K12 • K01)))) • (X1 • (K01 • (K12 • (CCZw • (K12 • K01)))))) ⟧₁ ≡ ⟦ K01 • (CX02 • K01) ⟧₁
-  hCX20 = refl
+  hCX20 = eqM-sound _ _ refl
 
   hCX21 : ⟦ (K01 • (CX02 • K01)) • (CX01 • ((K01 • (CX02 • K01)) • CX01)) ⟧₁ ≡ ⟦ K01 • (CX12 • K01) ⟧₁
-  hCX21 = refl
+  hCX21 = eqM-sound _ _ refl
 
   hCX12 : ⟦ K12 • ((K01 • (CX12 • K01)) • K12) ⟧₁ ≡ ⟦ CZ12 ⟧₁
-  hCX12 = refl
+  hCX12 = eqM-sound _ _ refl
 
   hSW12 : ⟦ CZ12 • ((K01 • (CX12 • K01)) • CZ12) ⟧₁ ≡ ⟦ K12 • SW12 ⟧₁
-  hSW12 = refl
+  hSW12 = eqM-sound _ _ refl
 
   hCX02 : ⟦ (K12 • SW12) • (CX01 • (K12 • SW12)) ⟧₁ ≡ ⟦ CZ02 ⟧₁
-  hCX02 = refl
+  hCX02 = eqM-sound _ _ refl
 
   hSW02 : ⟦ CZ02 • ((K01 • (CX02 • K01)) • CZ02) ⟧₁ ≡ ⟦ K01 • (K12 • SW02) ⟧₁
-  hSW02 = refl
+  hSW02 = eqM-sound _ _ refl
 
   hK01 : ⟦ (K01 • (K12 • SW02)) • (K12 • (K01 • (K12 • SW02))) ⟧₁ ≡ ⟦ K01 ⟧₁
-  hK01 = refl
+  hK01 = eqM-sound _ _ refl
 
   hCX10 : ⟦ K01 • (CX01 • K01) ⟧₁ ≡ ⟦ CX10 ⟧₁
-  hCX10 = refl
+  hCX10 = eqM-sound _ _ refl
 
   hSW01 : ⟦ CX01 • (CX10 • CX01) ⟧₁ ≡ ⟦ SW01 ⟧₁
-  hSW01 = refl
+  hSW01 = eqM-sound _ _ refl
 
   hCCX02 : ⟦ SW01 • ((K01 • (K12 • (CCZw • (K12 • K01)))) • SW01) ⟧₁ ≡ ⟦ K12 • (CCZw • K12) ⟧₁
-  hCCX02 = refl
+  hCCX02 = eqM-sound _ _ refl
 
   hX2 : ⟦ (K01 • (K12 • SW02)) • (X0 • (K01 • (K12 • SW02))) ⟧₁ ≡ ⟦ Z2 ⟧₁
-  hX2 = refl
+  hX2 = eqM-sound _ _ refl
 
   hCZ01 : ⟦ K12 • (CX01 • K12) ⟧₁ ≡ ⟦ CZ01 ⟧₁
-  hCZ01 = refl
+  hCZ01 = eqM-sound _ _ refl
 
   hZ0 : ⟦ CZ01 • (CX01 • (CZ01 • CX01)) ⟧₁ ≡ ⟦ Z0 ⟧₁
-  hZ0 = refl
+  hZ0 = eqM-sound _ _ refl
 
   hZ2 : ⟦ (K01 • (K12 • SW02)) • (Z0 • (K01 • (K12 • SW02))) ⟧₁ ≡ ⟦ X2 ⟧₁
-  hZ2 = refl
+  hZ2 = eqM-sound _ _ refl
 
   hZ1 : ⟦ K12 • (X1 • K12) ⟧₁ ≡ ⟦ Z1 ⟧₁
-  hZ1 = refl
+  hZ1 = eqM-sound _ _ refl
 
   hCCX01 : ⟦ K12 • ((K12 • (CCZw • K12)) • K12) ⟧₁ ≡ ⟦ CCZw ⟧₁
-  hCCX01 = refl
+  hCCX01 = eqM-sound _ _ refl
 
   hCZ02 : ⟦ (K12 • SW12) • (CZ01 • (K12 • SW12)) ⟧₁ ≡ ⟦ CX02 ⟧₁
-  hCZ02 = refl
+  hCZ02 = eqM-sound _ _ refl
 
   hCZ12 : ⟦ SW01 • (CX02 • SW01) ⟧₁ ≡ ⟦ CX12 ⟧₁
-  hCZ12 = refl
+  hCZ12 = eqM-sound _ _ refl

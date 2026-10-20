@@ -33,8 +33,10 @@ open import Examples.Groups.CCX+HH-3qubit-opus.Encoding
 open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
 open import Examples.Groups.CCX+HH-3qubit-opus.Soundness
 import Examples.Groups.CCX+HH-3qubit-opus.Congruence as C
+open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
 
 open SL.Dim 4 using (⟦_⟧ᴸ)
+open Over R2._≟ᴰ_ using () renaming (eqM-sound to eqMᴴ-sound)
 
 private
   variable
@@ -188,13 +190,13 @@ opaque
   unfolding actV set₁ set₂ R2._+ᴰ_ R2._*ᴰ_ R2.-ᴰ_
 
   sound₈ : {w v : Word (Gate (suc (suc k)))} → w ===₈ v → ⟦ w ⟧ᴴ ≡ ⟦ v ⟧ᴴ
-  sound₈ r102 = refl
-  sound₈ r103 = refl
-  sound₈ r104 = refl
-  sound₈ r105 = refl
-  sound₈ r106 = refl
-  sound₈ r107 = refl
-  sound₈ r108 = refl
+  sound₈ r102 = eqMᴴ-sound _ _ refl
+  sound₈ r103 = eqMᴴ-sound _ _ refl
+  sound₈ r104 = eqMᴴ-sound _ _ refl
+  sound₈ r105 = eqMᴴ-sound _ _ refl
+  sound₈ r106 = eqMᴴ-sound _ _ refl
+  sound₈ r107 = eqMᴴ-sound _ _ refl
+  sound₈ r108 = eqMᴴ-sound _ _ refl
 
 ------------------------------------------------------------------------
 -- The congruences

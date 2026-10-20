@@ -38,7 +38,7 @@ open import Quantum.Synthesis.Matrix using (Matrix ; _·*·_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
 import Presentation.Base as PB
 
-open import Examples.Groups.CCX+HH-TwoLevel.Ring using (D ; RingD ; _+ᴰ_ ; _*ᴰ_ ; -ᴰ_)
+open import Examples.Groups.CCX+HH-TwoLevel.Ring using (D ; RingD ; _+ᴰ_ ; _*ᴰ_ ; -ᴰ_ ; _≟ᴰ_)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 import Examples.Groups.CCX+HH-TwoLevel.Semantics as S1
 
@@ -48,6 +48,9 @@ open import Examples.Groups.CCX+HH-3qubit-opus.Semantics
 open import Examples.Groups.CCX+HH-3qubit-opus.Soundness using (sound₀ ; sound₇ ; soundᴷ)
 import Examples.Groups.CCX+HH-3qubit-opus.Congruence as C
 open import Examples.Groups.CCX+HH-3qubit-opus.Entry00 using (exp00)
+open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
+
+open Over _≟ᴰ_ using (eqM-sound)
 
 ------------------------------------------------------------------------
 -- The model
@@ -90,10 +93,10 @@ opaque
   unfolding actV set₁ set₂ _+ᴰ_ _*ᴰ_ -ᴰ_
 
   RR : ⟦ Rw • Rw ⟧₁ ≡ ⟦ ε ⟧₁
-  RR = Eq.refl
+  RR = eqM-sound _ _ Eq.refl
 ''')
 for g in FIX:
-    L.append('  fix-%s : ⟦ Rw • [ %s ]ʷ • Rw ⟧₁ ≡ ⟦ [ %s ]ʷ ⟧₁\n  fix-%s = Eq.refl\n' % (g, g, g, g))
+    L.append('  fix-%s : ⟦ Rw • [ %s ]ʷ • Rw ⟧₁ ≡ ⟦ [ %s ]ʷ ⟧₁\n  fix-%s = eqM-sound _ _ Eq.refl\n' % (g, g, g, g))
 L.append('''  -- r_K fails: the entries at (0, 0) are -1/4 and 1/2.
   e₁ : exp00 ⟦ Rw • K12 • Rw ⟧ ≡ 2
   e₁ = Eq.refl

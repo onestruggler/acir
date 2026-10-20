@@ -16,7 +16,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
 
 open import Word.Base using (Word ; _•_ ; _ʷ)
 open import Examples.Groups.CCX+HH-TwoLevel.Syntactics using (Gen ; M-gen ; X-gen ; K-gen)
-open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_)
+open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_ ; _≟ᴰ_)
 open import Examples.Groups.CCX+HH-TwoLevel.Semantics using (actV ; set₁ ; set₂)
 
 open import Examples.Groups.CCX+HH-3qubit-opus.Gates
@@ -26,6 +26,9 @@ open import Examples.Groups.CCX+HH-3qubit-opus.Toffoli.Coxeter using (coxeter₁
 open import Examples.Groups.CCX+HH-3qubit-opus.Decode coxeter₁ using (dec)
 open import Examples.Groups.CCX+HH-3qubit-opus.Push using (conj)
 open import Examples.Groups.CCX+HH-3qubit-opus.PushMatrices using (⟦_⟧₁)
+open import Examples.Groups.CCX+HH-3qubit-opus.Decide using (module Over)
+
+open Over _≟ᴰ_ using (eqM-sound)
 
 -- The letters of Table 2, decoded.
 M0 M1 M3 M5 M7 X01 X12 X23 X34 X45 X56 X67 K0123 K2345 K4567 : Word G₁
@@ -50,26 +53,26 @@ opaque
 
   -- (7b)
   t7b : ⟦ (conj ʷ) K0123 ⟧₁ ≡ ⟦ K0123 ⟧₁
-  t7b = refl
+  t7b = eqM-sound _ _ refl
 
   -- (7c)
   t7c : ⟦ (conj ʷ) M0 ⟧₁ ≡ ⟦ M0 • X01 • M0 ⟧₁
-  t7c = refl
+  t7c = eqM-sound _ _ refl
 
   -- (7d), x even.
   t7d0 : ⟦ (conj ʷ) X01 ⟧₁ ≡ ⟦ M1 ⟧₁
-  t7d0 = refl
+  t7d0 = eqM-sound _ _ refl
   t7d2 : ⟦ (conj ʷ) X23 ⟧₁ ≡ ⟦ M3 ⟧₁
-  t7d2 = refl
+  t7d2 = eqM-sound _ _ refl
   t7d4 : ⟦ (conj ʷ) X45 ⟧₁ ≡ ⟦ M5 ⟧₁
-  t7d4 = refl
+  t7d4 = eqM-sound _ _ refl
   t7d6 : ⟦ (conj ʷ) X67 ⟧₁ ≡ ⟦ M7 ⟧₁
-  t7d6 = refl
+  t7d6 = eqM-sound _ _ refl
 
   -- (7d), x odd.
   t7d1 : ⟦ (conj ʷ) X12 ⟧₁ ≡ ⟦ X12 • K0123 ⟧₁
-  t7d1 = refl
+  t7d1 = eqM-sound _ _ refl
   t7d3 : ⟦ (conj ʷ) X34 ⟧₁ ≡ ⟦ X34 • K2345 ⟧₁
-  t7d3 = refl
+  t7d3 = eqM-sound _ _ refl
   t7d5 : ⟦ (conj ʷ) X56 ⟧₁ ≡ ⟦ X56 • K4567 ⟧₁
-  t7d5 = refl
+  t7d5 = eqM-sound _ _ refl
