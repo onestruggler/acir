@@ -448,6 +448,19 @@ against about 4.4 million translated equations over 7824 edges.
 
 R4 itself stays a hypothesis (as for P₀) unless it is derived.
 
+A first test of step 2 (`stabs4.py`): the canonical sign pair
+s = M₀M₁ is X1 X2 X3 · HH03 · CCX3;12 · HH03 · X1 X2 X3. The finder
+derives its commutation with the 12 affine letters fixing the levels
+0 and 1 and with X0, about 8 s each. It derives none of the 12
+Toffolis, even at 150 000 cosets: those are commutations of gates with
+controls of opposite colours on a shared wire. They come instead from
+P₀, which is complete given R4 and contains s (s uses wire 0 only
+through HH03). A Toffoli avoiding wire 0, such as CCX3;12, commutes
+with s in P₀. One on wire 0 is a commutator of such a Toffoli with a
+CNOT, CCX0;12 = [CCX3;12, CX3>0], and the CNOT commutes by the finder.
+So the decoder's identities should be found with coarse P_w steps as
+well as the finder's fine ones.
+
 **Beyond four wires.** `../../NaturalP/EveryWidth` needs completeness
 on up to twelve wires, because affine routing preserves the affine
 dimension of a relation's indices and that can reach twelve. Classical
