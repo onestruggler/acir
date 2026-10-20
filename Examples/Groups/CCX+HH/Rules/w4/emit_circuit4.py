@@ -127,6 +127,56 @@ def proof(r):
     raise ValueError(names)
 
 
+AFFX = [tuple(T.INDEX_N[x] for x in line.split())
+        for line in (HERE / 'aff4extra.txt').read_text().splitlines() if line.strip()]
+
+
+def aff_atom(g):
+    """The affine word of a primitive affine letter (AGen), and the name
+    of its conversion lemma (or None when refl)."""
+    l = T.LETTERS[g]
+    def up(e, k):
+        return e if k == 0 else '(' + e + ' ↥ₐ' * k + ')'
+    if l[0] == 'X':
+        return f'[ {up("ax", l[1])} ]ʷ', None
+    if l[0] == 'SW':
+        return f'[ {up("asw", l[1])} ]ʷ', None
+    c, t = l[1], l[2]
+    if c == t + 1:
+        return f'[ {up("acx", t)} ]ʷ', None
+    i = c
+    sw, cx = f'[ {up("asw", i)} ]ʷ', f'[ {up("acx", i)} ]ʷ'
+    return f'({sw} • ({cx} • {sw}))', f'xcσ{i}'
+
+
+def aff_word(g):
+    """(affine word, proof of φL g ≈ ⌈ word ⌉) for an affine letter."""
+    if g in DEFS:
+        parts = [aff_word(h) for h in DEFS[g]]
+        def tr(xs):
+            return xs[0] if len(xs) == 1 else f'{xs[0]} • ({tr(xs[1:])})' if len(xs) > 2 else f'{xs[0]} • {xs[1]}'
+        def pf(xs):
+            return xs[0] if len(xs) == 1 else f'PB.cong ({xs[0]}) ({pf(xs[1:])})'
+        return '(' + tr([w for w, _ in parts]) + ')', pf([p for _, p in parts])
+    w, lem = aff_atom(g)
+    return w, (lem if lem else 'PB.refl')
+
+
+def aff_proof(r):
+    """rel-φ for an affine relator: φ ⟪ r ⟫ ≈ ⌈ w ⌉ ≈ ε by affine completeness."""
+    ws, ps = [], []
+    for g in r:
+        w, p = aff_word(g)
+        ws.append(w)
+        ps.append(p)
+    word = 'ε'
+    pf = 'PB.refl'
+    for w, p in zip(reversed(ws), reversed(ps)):
+        word = f'{w} • ({word})'
+        pf = f'PB.cong ({p}) ({pf})'
+    return f'PB.trans ({pf}) (affine-complete ({word}) ε (by-eq tt))'
+
+
 def main():
     rels = T.relators_tower()
     out = ['''------------------------------------------------------------------------
@@ -157,6 +207,11 @@ import Examples.Groups.CCX+HH.NaturalP.Syntactics as NP
 import Examples.Groups.CCX+HH.NaturalP.Schema as S
 open import Examples.Groups.CCX+HH.NaturalP.FourWire.Kit
   using (fast₃ ; inv ; inv-right ; comm-close ; conj-close ; comm-•)
+open import Data.Unit.Base using (tt)
+open import Examples.Groups.CCX+HH.NaturalP.AffineWords using (AGen ; ax ; acx ; asw ; _↥ₐ ; ⌈_⌉)
+open import Examples.Groups.CCX+HH.NaturalP.AffineComplete using (affine-complete)
+open import Examples.Groups.CCX+HH.Decide using (by-eq)
+open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_)
 open import ''' + MOD + '''.Gamma
 ''']
     out.append('φL : L → S.Circuit 4')
@@ -171,9 +226,32 @@ private
        4 S.⊢ w ≈ v
   ba = PP.by-assoc (4 S.VRel,_===_)
 ''')
+    out.append('''-- The reversed CNOT is the CNOT between two swaps.
+private
+  xcσ0 : 4 S.⊢ S.XC ≈ S.σ • (S.CX • S.σ)
+  xcσ0 = S.widen 1 (fast₃ S.XC (S.σ • (S.CX • S.σ)) Eq.refl)
+
+  xcσ1 : 4 S.⊢ S.XC S.↑ ≈ S.σ S.↑ • (S.CX S.↑ • S.σ S.↑)
+  xcσ1 = S.lemma-cong↑ S.XC (S.σ • (S.CX • S.σ)) (fast₃ S.XC (S.σ • (S.CX • S.σ)) Eq.refl)
+
+  xcσ2 : 4 S.⊢ S.XC S.↑ S.↑ ≈ S.σ S.↑ S.↑ • (S.CX S.↑ S.↑ • S.σ S.↑ S.↑)
+  xcσ2 = S.lemma-cong↑ (S.XC S.↑) ((S.σ • (S.CX • S.σ)) S.↑)
+    (fast₃ (S.XC S.↑) ((S.σ • (S.CX • S.σ)) S.↑) Eq.refl)
+
+-- The affine extras, by affine completeness (matrices compared).
+private
+  opaque
+    unfolding _+ᴰ_ _*ᴰ_ -ᴰ_
+''')
+    for j, r in enumerate(AFFX):
+        out.append(f'    aff{j} : 4 S.⊢ φ ⟪ relator a{j} ⟫ ≈ ε')
+        out.append(f'    aff{j} = {aff_proof(r)}')
+    out.append('')
     out.append('rel-φ : ∀ r → 4 S.⊢ φ ⟪ relator r ⟫ ≈ ε')
     for j, r in enumerate(rels):
         out.append(f'rel-φ r{j} = {proof(r)}')
+    for j in range(len(AFFX)):
+        out.append(f'rel-φ a{j} = aff{j}')
     (ROOT / 'Circuit.agda').write_text('\n'.join(out) + '\n', encoding='utf-8')
     print('wrote', ROOT / 'Circuit.agda', len(rels), 'relators')
 

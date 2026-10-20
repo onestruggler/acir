@@ -27,6 +27,11 @@ import Examples.Groups.CCX+HH.NaturalP.Syntactics as NP
 import Examples.Groups.CCX+HH.NaturalP.Schema as S
 open import Examples.Groups.CCX+HH.NaturalP.FourWire.Kit
   using (fast₃ ; inv ; inv-right ; comm-close ; conj-close ; comm-•)
+open import Data.Unit.Base using (tt)
+open import Examples.Groups.CCX+HH.NaturalP.AffineWords using (AGen ; ax ; acx ; asw ; _↥ₐ ; ⌈_⌉)
+open import Examples.Groups.CCX+HH.NaturalP.AffineComplete using (affine-complete)
+open import Examples.Groups.CCX+HH.Decide using (by-eq)
+open import Examples.Groups.CCX+HH-TwoLevel.Ring using (_+ᴰ_ ; _*ᴰ_ ; -ᴰ_)
 open import Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.Gamma
 
 φL : L → S.Circuit 4
@@ -72,6 +77,42 @@ private
   ba : {w v : S.Circuit 4} → PP.to-list (4 S.VRel,_===_) w ≡ PP.to-list (4 S.VRel,_===_) v →
        4 S.⊢ w ≈ v
   ba = PP.by-assoc (4 S.VRel,_===_)
+
+-- The reversed CNOT is the CNOT between two swaps.
+private
+  xcσ0 : 4 S.⊢ S.XC ≈ S.σ • (S.CX • S.σ)
+  xcσ0 = S.widen 1 (fast₃ S.XC (S.σ • (S.CX • S.σ)) Eq.refl)
+
+  xcσ1 : 4 S.⊢ S.XC S.↑ ≈ S.σ S.↑ • (S.CX S.↑ • S.σ S.↑)
+  xcσ1 = S.lemma-cong↑ S.XC (S.σ • (S.CX • S.σ)) (fast₃ S.XC (S.σ • (S.CX • S.σ)) Eq.refl)
+
+  xcσ2 : 4 S.⊢ S.XC S.↑ S.↑ ≈ S.σ S.↑ S.↑ • (S.CX S.↑ S.↑ • S.σ S.↑ S.↑)
+  xcσ2 = S.lemma-cong↑ (S.XC S.↑) ((S.σ • (S.CX • S.σ)) S.↑)
+    (fast₃ (S.XC S.↑) ((S.σ • (S.CX • S.σ)) S.↑) Eq.refl)
+
+-- The affine extras, by affine completeness (matrices compared).
+private
+  opaque
+    unfolding _+ᴰ_ _*ᴰ_ -ᴰ_
+
+    aff0 : 4 S.⊢ φ ⟪ relator a0 ⟫ ≈ ε
+    aff0 = PB.trans (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))))) (PB.cong (PB.refl) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))))) (PB.cong (PB.refl) (PB.refl))))) (affine-complete (([ asw ]ʷ • ([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • ([ (asw ↥ₐ) ]ʷ • [ asw ]ʷ)))) • ([ (acx ↥ₐ ↥ₐ) ]ʷ • (([ asw ]ʷ • ([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • ([ (asw ↥ₐ) ]ʷ • [ asw ]ʷ)))) • ([ (acx ↥ₐ ↥ₐ) ]ʷ • (ε))))) ε (by-eq tt))
+    aff1 : 4 S.⊢ φ ⟪ relator a1 ⟫ ≈ ε
+    aff1 = PB.trans (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))))) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))))) (PB.refl))))) (affine-complete (([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • [ (asw ↥ₐ) ]ʷ)) • (([ asw ]ʷ • ([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • ([ (asw ↥ₐ) ]ʷ • [ asw ]ʷ)))) • (([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • [ (asw ↥ₐ) ]ʷ)) • (([ asw ]ʷ • ([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • ([ (asw ↥ₐ) ]ʷ • [ asw ]ʷ)))) • (ε))))) ε (by-eq tt))
+    aff2 : 4 S.⊢ φ ⟪ relator a2 ⟫ ≈ ε
+    aff2 = PB.trans (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.cong (PB.refl) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.cong (PB.refl) (PB.refl))))) (affine-complete (([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • [ (asw ↥ₐ) ]ʷ)) • ([ (acx ↥ₐ ↥ₐ) ]ʷ • (([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • [ (asw ↥ₐ) ]ʷ)) • ([ (acx ↥ₐ ↥ₐ) ]ʷ • (ε))))) ε (by-eq tt))
+    aff3 : 4 S.⊢ φ ⟪ relator a3 ⟫ ≈ ε
+    aff3 = PB.trans (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.refl))))) (affine-complete (([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • [ (asw ↥ₐ) ]ʷ)) • (([ asw ]ʷ • ([ (acx ↥ₐ) ]ʷ • [ asw ]ʷ)) • (([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • [ (asw ↥ₐ) ]ʷ)) • (([ asw ]ʷ • ([ (acx ↥ₐ) ]ʷ • [ asw ]ʷ)) • (ε))))) ε (by-eq tt))
+    aff4 : 4 S.⊢ φ ⟪ relator a4 ⟫ ≈ ε
+    aff4 = PB.trans (PB.cong (PB.refl) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))))) (PB.cong (PB.refl) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.refl))))) (affine-complete ([ (asw ↥ₐ ↥ₐ) ]ʷ • (([ asw ]ʷ • ([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • ([ (asw ↥ₐ) ]ʷ • [ asw ]ʷ)))) • ([ (asw ↥ₐ ↥ₐ) ]ʷ • (([ asw ]ʷ • ([ (acx ↥ₐ) ]ʷ • [ asw ]ʷ)) • (ε))))) ε (by-eq tt))
+    aff5 : 4 S.⊢ φ ⟪ relator a5 ⟫ ≈ ε
+    aff5 = PB.trans (PB.cong (PB.refl) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))))) (affine-complete ([ (asw ↥ₐ ↥ₐ) ]ʷ • (([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • [ (asw ↥ₐ) ]ʷ)) • ([ (asw ↥ₐ ↥ₐ) ]ʷ • ([ (acx ↥ₐ) ]ʷ • (ε))))) ε (by-eq tt))
+    aff6 : 4 S.⊢ φ ⟪ relator a6 ⟫ ≈ ε
+    aff6 = PB.trans (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.cong (PB.refl) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))))) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.cong (PB.refl) (PB.refl)))))) (affine-complete (([ asw ]ʷ • ([ (acx ↥ₐ) ]ʷ • [ asw ]ʷ)) • ([ (acx ↥ₐ ↥ₐ) ]ʷ • (([ asw ]ʷ • ([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • ([ (asw ↥ₐ) ]ʷ • [ asw ]ʷ)))) • (([ asw ]ʷ • ([ (acx ↥ₐ) ]ʷ • [ asw ]ʷ)) • ([ (acx ↥ₐ ↥ₐ) ]ʷ • (ε)))))) ε (by-eq tt))
+    aff7 : 4 S.⊢ φ ⟪ relator a7 ⟫ ≈ ε
+    aff7 = PB.trans (PB.cong (PB.refl) (PB.cong (xcσ2) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.cong (xcσ2) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.refl)))))) (affine-complete ([ (acx ↥ₐ) ]ʷ • (([ (asw ↥ₐ ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • [ (asw ↥ₐ ↥ₐ) ]ʷ)) • (([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • [ (asw ↥ₐ) ]ʷ)) • (([ (asw ↥ₐ ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • [ (asw ↥ₐ ↥ₐ) ]ʷ)) • (([ (asw ↥ₐ) ]ʷ • ([ (acx ↥ₐ ↥ₐ) ]ʷ • [ (asw ↥ₐ) ]ʷ)) • (ε)))))) ε (by-eq tt))
+    aff8 : 4 S.⊢ φ ⟪ relator a8 ⟫ ≈ ε
+    aff8 = PB.trans (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.cong (PB.cong (PB.refl) (PB.cong (PB.refl) (PB.refl))) (PB.cong (PB.refl) (PB.refl))))) (affine-complete ([ acx ]ʷ • ([ (asw ↥ₐ) ]ʷ • (([ asw ]ʷ • ([ (acx ↥ₐ) ]ʷ • [ asw ]ʷ)) • ([ (asw ↥ₐ) ]ʷ • (ε))))) ε (by-eq tt))
 
 rel-φ : ∀ r → 4 S.⊢ φ ⟪ relator r ⟫ ≈ ε
 rel-φ r0 = PB.trans (ba Eq.refl) (inv-right (φL x0))
@@ -201,3 +242,12 @@ rel-φ r122 = PB.trans (ba Eq.refl) (inv-right (φL ccx3-01))
 rel-φ r123 = PB.trans (ba Eq.refl) (inv-right (φL ccx3-02))
 rel-φ r124 = PB.trans (ba Eq.refl) (conj-close S.CCX S.σ[ 3 ] (S.CCX S.↑)
     (PB.axiom (S.srel (S.σrel (S.σ-nat₃ S.CCX-gate)))))
+rel-φ a0 = aff0
+rel-φ a1 = aff1
+rel-φ a2 = aff2
+rel-φ a3 = aff3
+rel-φ a4 = aff4
+rel-φ a5 = aff5
+rel-φ a6 = aff6
+rel-φ a7 = aff7
+rel-φ a8 = aff8
