@@ -118,7 +118,7 @@ def enumerate_level(k, rels):
     loc = {g: i for i, g in enumerate(lets)}
     axioms = [PR.Axiom(f'L{k}-{j}', tuple(loc[g] for g in r), ()) for j, r in enumerate(rels)]
     macros = {g: (loc[g],) for g in nxt}
-    tc = LB.LabelledTC(len(lets), axioms, macros, seed=seed(k), limit=200_000)
+    tc = LB.LabelledTC(len(lets), axioms, macros, limit=200_000)
     live = tc.run()
     cand = {}
     lens = []
@@ -157,31 +157,27 @@ def minimal(k, cands):
 
 def choose(k, cands):
     """Relators for level k among the candidates derived from level k-1:
-    they close level k, and (if k is not the bottom) the relators derived
-    from them close level k+1."""
+    the shortest ones (up to a bound, raised as needed) that close level
+    k, and (if k is not the bottom) whose derived relators close level
+    k+1."""
     words = sorted(cands, key=lambda r: (len(r), r))
-    keep = minimal(k, words)
-    if keep is None:
-        return None
-    if k + 1 == len(LEVELS) - 1:
-        return keep
-    n = 200
-    while True:
-        rels = sorted(set(keep) | set(words[:n]), key=lambda r: (len(r), r))
+    for bound in (6, 8, 10, 12, 16, 24, MAXLAB):
+        rels = [w for w in words if len(w) <= bound]
+        if index(k, rels) != want(k):
+            print(f'    level {k}: relators up to length {bound} ({len(rels)}) do not close', flush=True)
+            continue
+        if k + 1 == len(LEVELS) - 1:
+            return rels
         try:
             tc, live, nxt = enumerate_level(k, rels)
-            ahead = index(k + 1, list(nxt)) if len(live) == want(k) else None
-            ok = ahead == want(k + 1)
-            what = f'{len(live)} cosets, {len(nxt)} derived, next level closes at {ahead}'
+            ahead = index(k + 1, sorted(nxt, key=lambda r: (len(r), r))) if len(live) == want(k) else None
         except OverflowError:
-            ok, what = False, 'overflow'
-        print(f'    level {k}: {len(rels)} relators: {what}', flush=True)
-        if ok:
-            print(f'    level {k}: {len(keep)} minimal + {n} shortest = {len(rels)} relators look ahead', flush=True)
+            ahead = 'overflow'
+        print(f'    level {k}: relators up to length {bound} ({len(rels)}): next level closes at {ahead}',
+              flush=True)
+        if ahead == want(k + 1):
             return rels
-        if n >= len(words):
-            return None
-        n = 2 * n
+    return None
 
 
 def main():

@@ -77,7 +77,7 @@ def index(lets, rels, sub):
 
 def main():
     half = int(sys.argv[1]) if len(sys.argv) > 1 else 3
-    base = T.relators()
+    base = T.relators_tower()
     chain = T.CHAIN
     levels = []
     for k in range(len(chain) + 1):
