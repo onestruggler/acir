@@ -247,6 +247,16 @@ def glue():
     lets = list(range(len(A4.names)))
     rels += structural(A4, lets)
     aff = [g for g in lets if not A4.names[g].startswith('HH')]
+    # a complete presentation of AGL(4,2) on the affine letters: short
+    # relators, checked by the index of the translations (20160)
+    pa, na = A4.perm_rep(aff)
+    acand = short_relators(A4, pa, na, aff, 3)
+    arels = structural(A4, aff) + acand
+    pos = {g: k for k, g in enumerate(aff)}
+    xi = [(pos[A4.index[f'X{i}']],) for i in range(4)]
+    ai = C.index_c(len(aff), [tuple(pos[g] for g in r) for r in arels], xi, 20_000_000)
+    print('affine relators', len(acand), ' index of the translations (20160):', ai, flush=True)
+    rels += acand
     # affine relators: the classical rules on the affine letters, every placement
     for a, b in itertools.permutations(range(4), 2):
         rels.append(A4.word(f'X{a} CX{a}>{b} X{a}') + tuple(reversed(A4.word(f'CX{a}>{b} X{b}'))))
@@ -266,7 +276,7 @@ def glue():
     sub = [g for g in sub if not (A4.names[g].startswith(('X3', 'CX')) and '3' in A4.names[g] and not A4.names[g].startswith('HH'))]
     k = ss.order([perms[g] for g in sub])
     print('|Cl4| =', full, ' |φ3(C3)| =', k, ' index should be', full // k, flush=True)
-    idx = C.index_c(len(lets), rels, [(g,) for g in sub], 30_000_000)
+    idx = C.index_c(len(lets), rels, [(g,) for g in sub], 40_000_000)
     print('enumerated index:', idx, flush=True)
 
 
