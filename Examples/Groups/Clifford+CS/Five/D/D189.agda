@@ -9,7 +9,7 @@ open import Word.Base using (ε ; _•_)
 
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
-open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl0004 ; wl0003 ; wl0928)
+open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
 
@@ -31,7 +31,7 @@ open import Examples.Groups.Clifford+CS.Five.D.D147 using (lem-SW-S ; lem-SW-S-a
 
 private
   q1 : Ws → Eqn
-  q1 c4 = eqn (Sw34 ∷ Sw34 ∷ []) [] (wl0004 (lit c4))
+  q1 c4 = eqn (Sw34 ∷ Sw34 ∷ []) [] (wl 4 (lit c4))
   q2 : Ws → Eqn
   q2 c4 = eqn (Sw34 ∷ Sb3-0-12-4 ∷ []) (Sb3-0-12-4 ∷ Sw34 ∷ []) (lem-SW-S c4)
   q3 : Ws → Eqn
@@ -46,7 +46,7 @@ lem-F0 c4 = derive (Sb3-0-12-4 ∷ []) (Sb4-0-12-3 ∷ [])
 
 private
   q4 : Ws → Eqn
-  q4 c4 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wl0003 (lit c4))
+  q4 c4 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wl 3 (lit c4))
   q5 : Ws → Eqn
   q5 c4 = eqn (Sw23 ∷ Sb2-0-41-3 ∷ []) (Sb2-0-41-3 ∷ Sw23 ∷ []) (lem-SW-S-at14213243 c4)
   q6 : Ws → Eqn
@@ -61,7 +61,7 @@ lem-F0-at14213243 c4 = derive (Sb2-0-41-3 ∷ []) (Sb3-0-41-2 ∷ [])
 
 private
   q7 : Ws → Eqn
-  q7 c4 = eqn (Sw03 ∷ Sw03 ∷ []) [] (wl0928 (lit c4))
+  q7 c4 = eqn (Sw03 ∷ Sw03 ∷ []) [] (wl 928 (lit c4))
   q8 : Ws → Eqn
   q8 c4 = eqn (Sw03 ∷ Sb0-1-42-3 ∷ []) (Sb0-1-42-3 ∷ Sw03 ∷ []) (lem-SW-S-at01143043 c4)
   q9 : Ws → Eqn

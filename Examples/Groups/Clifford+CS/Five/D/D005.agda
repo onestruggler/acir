@@ -9,7 +9,7 @@ open import Word.Base using (ε ; _•_)
 
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
-open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl0006 ; wl0245 ; wl0306 ; wl0324 ; wl0326 ; wl0617 ; wl0621 ; wl0675 ; wl1167 ; wp0034 ; wp0035 ; wp0036 ; wp0062 ; wp0063 ; wp0064 ; wp0081 ; wp0092 ; wp0185 ; wp0194 ; wp0196 ; wp0312 ; wp0314 ; wp0513 ; wp0551 ; wp0553 ; wp0569 ; wp0570 ; wp0734 ; wp0972 ; wp0973 ; wl0003 ; wl0037 ; wl0038 ; wl0044 ; wl0045 ; wl0084 ; wl0085 ; wl0199 ; wl0434 ; wl0435 ; wl0436 ; wl0667 ; wl0669 ; wl0670 ; wl0698 ; wp0048 ; wp0087 ; wp0540 ; wp0543 ; wp0574 ; wp0594 ; wp0596 ; wp0986 ; wp0987 ; wp1003 ; wl0171 ; wl0173 ; wl0256 ; wl0322 ; wl0458 ; wl0490 ; wl0491 ; wl0492 ; wl0519 ; wl0520 ; wl0790 ; wl1220 ; wl1221 ; wl1237 ; wp0149 ; wp0151 ; wp0288 ; wp0289 ; wp0352 ; wp0706 ; wp1068 ; wl1270 ; wp0106 ; wp0107 ; wp0108 ; wp0150 ; wp0152 ; wp0184 ; wp0704 ; wp1089 ; wp1090 ; wp1091 ; wp1092 ; wp1093 ; wp1103 ; wp1104 ; wl0274 ; wp0582 ; wp0584 ; wp1116 ; wp1117 ; wl0838 ; wl0840 ; wl0876 ; wl0877 ; wp0296 ; wl0175 ; wl0288 ; wl0297 ; wl0416 ; wl0417 ; wl0485 ; wl0495 ; wl0611 ; wl0831 ; wl0928 ; wl0936 ; wl0937 ; wp0162 ; wp0195 ; wp0197 ; wp0320 ; wp0496 ; wp0746 ; wp1146 ; wp1147 ; wp1148 ; wp1149 ; wp1155 ; wp1156 ; wp1157 ; wp1158 ; wp1162 ; wp1163 ; wp1180 ; wp1181 ; wp1193 ; wl0271 ; wl0471 ; wl0639 ; wl0757 ; wl0930 ; wl0931 ; wp0123 ; wp0280 ; wp0318 ; wp0384 ; wp0450 ; wp0515 ; wp0679 ; wl0166 ; wl0283 ; wl0285 ; wl0287 ; wl0334 ; wl0620 ; wl0637 ; wl0638 ; wl0829 ; wl0989 ; wl0990 ; wl1379 ; wp0206 ; wp0208 ; wp0231 ; wp1237 ; wp1238 ; wl0284 ; wl0286 ; wl1399 ; wp1206 ; wl1669 ; wl1670 ; wl1671 ; wl1672 ; wl1680 ; wl1681 ; wp0722)
+open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
 open import Examples.Groups.Clifford+CS.Five.D.D001 using (lem-cQ-at021021 ; lem-sym-ab-at0210243143 ; lem-sym-ab-at032032 ; lem-sym-ab-at1221)
@@ -22,17 +22,17 @@ open import Examples.Groups.Clifford+CS.Five.D.R004 using (lem-comm-SWAP12-BOX�
 
 private
   q1 : Ws → Eqn
-  q1 c4 = eqn (CCZ024 ∷ Sw14 ∷ []) (Sw14 ∷ CCZ012 ∷ []) (wp0196 c4)
+  q1 c4 = eqn (CCZ024 ∷ Sw14 ∷ []) (Sw14 ∷ CCZ012 ∷ []) (wp 196 c4)
   q2 : Ws → Eqn
-  q2 c4 = eqn (Sw14 ∷ Toff012 ∷ []) (Toff024 ∷ Sw14 ∷ []) (wp0570 c4)
+  q2 c4 = eqn (Sw14 ∷ Toff012 ∷ []) (Toff024 ∷ Sw14 ∷ []) (wp 570 c4)
   q3 : Ws → Eqn
-  q3 c4 = eqn (CCZ012 ∷ Sw14 ∷ []) (Sw14 ∷ CCZ024 ∷ []) (wp0194 c4)
+  q3 c4 = eqn (CCZ012 ∷ Sw14 ∷ []) (Sw14 ∷ CCZ024 ∷ []) (wp 194 c4)
   q4 : Ws → Eqn
-  q4 c4 = eqn (Sw14 ∷ Toff204 ∷ []) (Toff201 ∷ Sw14 ∷ []) (wp0569 c4)
+  q4 c4 = eqn (Sw14 ∷ Toff204 ∷ []) (Toff201 ∷ Sw14 ∷ []) (wp 569 c4)
   q5 : Ws → Eqn
   q5 c4 = eqn (Sw14 ∷ Bx0-23 ∷ []) (Bx0-23 ∷ Sw14 ∷ []) (lem-comm-SWAP14-BOX⟨0·23⟩ (lit c4))
   q6 : Ws → Eqn
-  q6 c4 = eqn (Sw14 ∷ Sw14 ∷ []) [] (wl0306 (lit c4))
+  q6 c4 = eqn (Sw14 ∷ Sw14 ∷ []) [] (wl 306 (lit c4))
 
 -- nat-SWbc @12213443: 23 steps
 lem-nat-SWbc-at12213443 : Ws → ⟪ (Sw14 ∷ Bx0-2143 ∷ Sw14 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-2413 ∷ []) ⟫ʷ
@@ -63,17 +63,17 @@ lem-nat-SWbc-at12213443 c4 = derive (Sw14 ∷ Bx0-2143 ∷ Sw14 ∷ []) (Bx0-241
 
 private
   q7 : Ws → Eqn
-  q7 c4 = eqn (CCZ024 ∷ Sw23 ∷ []) (Sw23 ∷ CCZ034 ∷ []) (wp0596 c4)
+  q7 c4 = eqn (CCZ024 ∷ Sw23 ∷ []) (Sw23 ∷ CCZ034 ∷ []) (wp 596 c4)
   q8 : Ws → Eqn
-  q8 c4 = eqn (Sw23 ∷ Toff034 ∷ []) (Toff024 ∷ Sw23 ∷ []) (wp0986 c4)
+  q8 c4 = eqn (Sw23 ∷ Toff034 ∷ []) (Toff024 ∷ Sw23 ∷ []) (wp 986 c4)
   q9 : Ws → Eqn
-  q9 c4 = eqn (CCZ034 ∷ Sw23 ∷ []) (Sw23 ∷ CCZ024 ∷ []) (wp0594 c4)
+  q9 c4 = eqn (CCZ034 ∷ Sw23 ∷ []) (Sw23 ∷ CCZ024 ∷ []) (wp 594 c4)
   q10 : Ws → Eqn
-  q10 c4 = eqn (Sw23 ∷ Toff402 ∷ []) (Toff403 ∷ Sw23 ∷ []) (wp0987 c4)
+  q10 c4 = eqn (Sw23 ∷ Toff402 ∷ []) (Toff403 ∷ Sw23 ∷ []) (wp 987 c4)
   q11 : Ws → Eqn
   q11 c4 = eqn (Sw23 ∷ Bx0-41 ∷ []) (Bx0-41 ∷ Sw23 ∷ []) (lem-comm-SWAP23-BOX⟨0·41⟩ (lit c4))
   q12 : Ws → Eqn
-  q12 c4 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wl0003 (lit c4))
+  q12 c4 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wl 3 (lit c4))
 
 -- nat-SWbc @14233241: 23 steps
 lem-nat-SWbc-at14233241 : Ws → ⟪ (Sw23 ∷ Bx0-4321 ∷ Sw23 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-4231 ∷ []) ⟫ʷ
@@ -104,15 +104,15 @@ lem-nat-SWbc-at14233241 c4 = derive (Sw23 ∷ Bx0-4321 ∷ Sw23 ∷ []) (Bx0-423
 
 private
   q13 : Ws → Eqn
-  q13 c4 = eqn (CCZ234 ∷ []) (CS23 ∷ CX42 ∷ CS23⁻ ∷ CX42 ∷ CS34 ∷ []) (wl0675 (lit c4))
+  q13 c4 = eqn (CCZ234 ∷ []) (CS23 ∷ CX42 ∷ CS23⁻ ∷ CX42 ∷ CS34 ∷ []) (wl 675 (lit c4))
   q14 : Ws → Eqn
-  q14 c4 = eqn (CCZ013 ∷ CS34 ∷ []) (CS34 ∷ CCZ013 ∷ []) (wp0185 c4)
+  q14 c4 = eqn (CCZ013 ∷ CS34 ∷ []) (CS34 ∷ CCZ013 ∷ []) (wp 185 c4)
   q15 : Ws → Eqn
   q15 c4 = eqn (CX42 ∷ CCZ013 ∷ []) (CCZ013 ∷ CX42 ∷ []) (lem-comm-CX42-CCZ013 (lit c4))
   q16 : Ws → Eqn
-  q16 c4 = eqn (CCZ013 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CCZ013 ∷ []) (wl1167 (lit c4))
+  q16 c4 = eqn (CCZ013 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CCZ013 ∷ []) (wl 1167 (lit c4))
   q17 : Ws → Eqn
-  q17 c4 = eqn (CCZ013 ∷ CS23 ∷ []) (CS23 ∷ CCZ013 ∷ []) (wl0324 (lit c4))
+  q17 c4 = eqn (CCZ013 ∷ CS23 ∷ []) (CS23 ∷ CCZ013 ∷ []) (wl 324 (lit c4))
 
 -- cQ @03143140: 7 steps
 lem-cQ-at03143140 : Ws → ⟪ (CCZ234 ∷ CCZ013 ∷ []) ⟫ʷ ≈ ⟪ (CCZ013 ∷ CCZ234 ∷ []) ⟫ʷ
@@ -127,17 +127,17 @@ lem-cQ-at03143140 c4 = derive (CCZ234 ∷ CCZ013 ∷ []) (CCZ013 ∷ CCZ234 ∷ 
 
 private
   q18 : Ws → Eqn
-  q18 c4 = eqn (CCZ134 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ234 ∷ []) (wl0037 (lit c4))
+  q18 c4 = eqn (CCZ134 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ234 ∷ []) (wl 37 (lit c4))
   q19 : Ws → Eqn
-  q19 c4 = eqn (Sw12 ∷ Toff324 ∷ []) (Toff314 ∷ Sw12 ∷ []) (wl0038 (lit c4))
+  q19 c4 = eqn (Sw12 ∷ Toff324 ∷ []) (Toff314 ∷ Sw12 ∷ []) (wl 38 (lit c4))
   q20 : Ws → Eqn
-  q20 c4 = eqn (CCZ234 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ134 ∷ []) (wl0044 (lit c4))
+  q20 c4 = eqn (CCZ234 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ134 ∷ []) (wl 44 (lit c4))
   q21 : Ws → Eqn
-  q21 c4 = eqn (Sw12 ∷ Toff413 ∷ []) (Toff423 ∷ Sw12 ∷ []) (wl0084 (lit c4))
+  q21 c4 = eqn (Sw12 ∷ Toff413 ∷ []) (Toff423 ∷ Sw12 ∷ []) (wl 84 (lit c4))
   q22 : Ws → Eqn
   q22 c4 = eqn (Sw12 ∷ Bx3-40 ∷ []) (Bx3-40 ∷ Sw12 ∷ []) (lem-comm-SWAP12-BOX⟨3·40⟩ (lit c4))
   q23 : Ws → Eqn
-  q23 c4 = eqn (Sw12 ∷ Sw12 ∷ []) [] (wl0006 (lit c4))
+  q23 c4 = eqn (Sw12 ∷ Sw12 ∷ []) [] (wl 6 (lit c4))
 
 -- nat-SWbc @03143140: 23 steps
 lem-nat-SWbc-at03143140 : Ws → ⟪ (Sw12 ∷ Bx3-4210 ∷ Sw12 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4120 ∷ []) ⟫ʷ
@@ -168,15 +168,15 @@ lem-nat-SWbc-at03143140 c4 = derive (Sw12 ∷ Bx3-4210 ∷ Sw12 ∷ []) (Bx3-412
 
 private
   q24 : Ws → Eqn
-  q24 c4 = eqn (CCZ134 ∷ []) (CS13 ∷ CX41 ∷ CS13⁻ ∷ CX41 ∷ CS34 ∷ []) (wl0617 (lit c4))
+  q24 c4 = eqn (CCZ134 ∷ []) (CS13 ∷ CX41 ∷ CS13⁻ ∷ CX41 ∷ CS34 ∷ []) (wl 617 (lit c4))
   q25 : Ws → Eqn
-  q25 c4 = eqn (CCZ023 ∷ CS34 ∷ []) (CS34 ∷ CCZ023 ∷ []) (wp0543 c4)
+  q25 c4 = eqn (CCZ023 ∷ CS34 ∷ []) (CS34 ∷ CCZ023 ∷ []) (wp 543 c4)
   q26 : Ws → Eqn
   q26 c4 = eqn (CX41 ∷ CCZ023 ∷ []) (CCZ023 ∷ CX41 ∷ []) (lem-comm-CX41-CCZ023 (lit c4))
   q27 : Ws → Eqn
-  q27 c4 = eqn (CCZ023 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ CCZ023 ∷ []) (wl0669 (lit c4))
+  q27 c4 = eqn (CCZ023 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ CCZ023 ∷ []) (wl 669 (lit c4))
   q28 : Ws → Eqn
-  q28 c4 = eqn (CCZ023 ∷ CS13 ∷ []) (CS13 ∷ CCZ023 ∷ []) (wl0670 (lit c4))
+  q28 c4 = eqn (CCZ023 ∷ CS13 ∷ []) (CS13 ∷ CCZ023 ∷ []) (wl 670 (lit c4))
 
 -- cQ @0314213240: 7 steps
 lem-cQ-at0314213240 : Ws → ⟪ (CCZ134 ∷ CCZ023 ∷ []) ⟫ʷ ≈ ⟪ (CCZ023 ∷ CCZ134 ∷ []) ⟫ʷ
@@ -191,11 +191,11 @@ lem-cQ-at0314213240 c4 = derive (CCZ134 ∷ CCZ023 ∷ []) (CCZ023 ∷ CCZ134 �
 
 private
   q29 : Ws → Eqn
-  q29 c4 = eqn (CCZ134 ∷ []) (CS34 ∷ CX14 ∷ CS34⁻ ∷ CX14 ∷ CS13 ∷ []) (wl0698 (lit c4))
+  q29 c4 = eqn (CCZ134 ∷ []) (CS34 ∷ CX14 ∷ CS34⁻ ∷ CX14 ∷ CS13 ∷ []) (wl 698 (lit c4))
   q30 : Ws → Eqn
   q30 c4 = eqn (CX14 ∷ CCZ023 ∷ []) (CCZ023 ∷ CX14 ∷ []) (lem-comm-CX14-CCZ023 (lit c4))
   q31 : Ws → Eqn
-  q31 c4 = eqn (CCZ023 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ023 ∷ []) (wp0574 c4)
+  q31 c4 = eqn (CCZ023 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ023 ∷ []) (wp 574 c4)
 
 -- cQ @03243240: 7 steps
 lem-cQ-at03243240 : Ws → ⟪ (CCZ134 ∷ CCZ023 ∷ []) ⟫ʷ ≈ ⟪ (CCZ023 ∷ CCZ134 ∷ []) ⟫ʷ
@@ -210,9 +210,9 @@ lem-cQ-at03243240 c4 = derive (CCZ134 ∷ CCZ023 ∷ []) (CCZ023 ∷ CCZ134 ∷ 
 
 private
   q32 : Ws → Eqn
-  q32 c4 = eqn (Sw12 ∷ Toff314 ∷ []) (Toff324 ∷ Sw12 ∷ []) (wl0045 (lit c4))
+  q32 c4 = eqn (Sw12 ∷ Toff314 ∷ []) (Toff324 ∷ Sw12 ∷ []) (wl 45 (lit c4))
   q33 : Ws → Eqn
-  q33 c4 = eqn (Sw12 ∷ Toff423 ∷ []) (Toff413 ∷ Sw12 ∷ []) (wl0085 (lit c4))
+  q33 c4 = eqn (Sw12 ∷ Toff423 ∷ []) (Toff413 ∷ Sw12 ∷ []) (wl 85 (lit c4))
 
 -- nat-SWbc @0314213240: 23 steps
 lem-nat-SWbc-at0314213240 : Ws → ⟪ (Sw12 ∷ Bx3-4120 ∷ Sw12 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4210 ∷ []) ⟫ʷ
@@ -243,15 +243,15 @@ lem-nat-SWbc-at0314213240 c4 = derive (Sw12 ∷ Bx3-4120 ∷ Sw12 ∷ []) (Bx3-4
 
 private
   q34 : Ws → Eqn
-  q34 c4 = eqn (CCZ023 ∷ []) (CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ []) (wl0458 (lit c4))
+  q34 c4 = eqn (CCZ023 ∷ []) (CS23 ∷ CX02 ∷ CS23⁻ ∷ CX02 ∷ CS03 ∷ []) (wl 458 (lit c4))
   q35 : Ws → Eqn
-  q35 c4 = eqn (CCZ134 ∷ CS03 ∷ []) (CS03 ∷ CCZ134 ∷ []) (wp0706 c4)
+  q35 c4 = eqn (CCZ134 ∷ CS03 ∷ []) (CS03 ∷ CCZ134 ∷ []) (wp 706 c4)
   q36 : Ws → Eqn
   q36 c4 = eqn (CX02 ∷ CCZ134 ∷ []) (CCZ134 ∷ CX02 ∷ []) (lem-comm-CX02-CCZ134 (lit c4))
   q37 : Ws → Eqn
-  q37 c4 = eqn (CCZ134 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CCZ134 ∷ []) (wl1237 (lit c4))
+  q37 c4 = eqn (CCZ134 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CCZ134 ∷ []) (wl 1237 (lit c4))
   q38 : Ws → Eqn
-  q38 c4 = eqn (CCZ134 ∷ CS23 ∷ []) (CS23 ∷ CCZ134 ∷ []) (wl0790 (lit c4))
+  q38 c4 = eqn (CCZ134 ∷ CS23 ∷ []) (CS23 ∷ CCZ134 ∷ []) (wl 790 (lit c4))
 
 -- cQ @03103441: 7 steps
 lem-cQ-at03103441 : Ws → ⟪ (CCZ023 ∷ CCZ134 ∷ []) ⟫ʷ ≈ ⟪ (CCZ134 ∷ CCZ023 ∷ []) ⟫ʷ
@@ -266,15 +266,15 @@ lem-cQ-at03103441 c4 = derive (CCZ023 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ023 ∷ 
 
 private
   q39 : Ws → Eqn
-  q39 c4 = eqn (CCZ034 ∷ []) (CS34 ∷ CX04 ∷ CS34⁻ ∷ CX04 ∷ CS03 ∷ []) (wp0352 c4)
+  q39 c4 = eqn (CCZ034 ∷ []) (CS34 ∷ CX04 ∷ CS34⁻ ∷ CX04 ∷ CS03 ∷ []) (wp 352 c4)
   q40 : Ws → Eqn
-  q40 c4 = eqn (CCZ123 ∷ CS03 ∷ []) (CS03 ∷ CCZ123 ∷ []) (wl0490 (lit c4))
+  q40 c4 = eqn (CCZ123 ∷ CS03 ∷ []) (CS03 ∷ CCZ123 ∷ []) (wl 490 (lit c4))
   q41 : Ws → Eqn
   q41 c4 = eqn (CX04 ∷ CCZ123 ∷ []) (CCZ123 ∷ CX04 ∷ []) (lem-comm-CX04-CCZ123 (lit c4))
   q42 : Ws → Eqn
-  q42 c4 = eqn (CCZ123 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ123 ∷ []) (wl0491 (lit c4))
+  q42 c4 = eqn (CCZ123 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ123 ∷ []) (wl 491 (lit c4))
   q43 : Ws → Eqn
-  q43 c4 = eqn (CCZ123 ∷ CS34 ∷ []) (CS34 ∷ CCZ123 ∷ []) (wl0492 (lit c4))
+  q43 c4 = eqn (CCZ123 ∷ CS34 ∷ []) (CS34 ∷ CCZ123 ∷ []) (wl 492 (lit c4))
 
 -- cQ @0310243241: 7 steps
 lem-cQ-at0310243241 : Ws → ⟪ (CCZ034 ∷ CCZ123 ∷ []) ⟫ʷ ≈ ⟪ (CCZ123 ∷ CCZ034 ∷ []) ⟫ʷ
@@ -289,13 +289,13 @@ lem-cQ-at0310243241 c4 = derive (CCZ034 ∷ CCZ123 ∷ []) (CCZ123 ∷ CCZ034 �
 
 private
   q44 : Ws → Eqn
-  q44 c4 = eqn (CCZ013 ∷ Sw14 ∷ []) (Sw14 ∷ CCZ034 ∷ []) (wp0149 c4)
+  q44 c4 = eqn (CCZ013 ∷ Sw14 ∷ []) (Sw14 ∷ CCZ034 ∷ []) (wp 149 c4)
   q45 : Ws → Eqn
-  q45 c4 = eqn (Sw14 ∷ Toff304 ∷ []) (Toff301 ∷ Sw14 ∷ []) (wp0289 c4)
+  q45 c4 = eqn (Sw14 ∷ Toff304 ∷ []) (Toff301 ∷ Sw14 ∷ []) (wp 289 c4)
   q46 : Ws → Eqn
-  q46 c4 = eqn (CCZ034 ∷ Sw14 ∷ []) (Sw14 ∷ CCZ013 ∷ []) (wp0151 c4)
+  q46 c4 = eqn (CCZ034 ∷ Sw14 ∷ []) (Sw14 ∷ CCZ013 ∷ []) (wp 151 c4)
   q47 : Ws → Eqn
-  q47 c4 = eqn (Sw14 ∷ Toff013 ∷ []) (Toff034 ∷ Sw14 ∷ []) (wp0288 c4)
+  q47 c4 = eqn (Sw14 ∷ Toff013 ∷ []) (Toff034 ∷ Sw14 ∷ []) (wp 288 c4)
   q48 : Ws → Eqn
   q48 c4 = eqn (Sw14 ∷ Bx3-02 ∷ []) (Bx3-02 ∷ Sw14 ∷ []) (lem-comm-SWAP14-BOX⟨3·02⟩ (lit c4))
 
@@ -328,15 +328,15 @@ lem-nat-SWbc-at0310243142 c4 = derive (Sw14 ∷ Bx3-0412 ∷ Sw14 ∷ []) (Bx3-0
 
 private
   q49 : Ws → Eqn
-  q49 c4 = eqn (CCZ034 ∷ Toff034 ∷ CZ02 ∷ Toff034 ∷ CCZ034 ∷ CZ02 ∷ []) (CCZ234 ∷ []) (wp1068 c4)
+  q49 c4 = eqn (CCZ034 ∷ Toff034 ∷ CZ02 ∷ Toff034 ∷ CCZ034 ∷ CZ02 ∷ []) (CCZ234 ∷ []) (wp 1068 c4)
   q50 : Ws → Eqn
-  q50 c4 = eqn (CCZ013 ∷ Toff301 ∷ []) (Toff301 ∷ CCZ013 ∷ CZ01 ∷ []) (wl0519 (lit c4))
+  q50 c4 = eqn (CCZ013 ∷ Toff301 ∷ []) (Toff301 ∷ CCZ013 ∷ CZ01 ∷ []) (wl 519 (lit c4))
   q51 : Ws → Eqn
   q51 c4 = eqn (CZ01 ∷ CCZ234 ∷ []) (CCZ234 ∷ CZ01 ∷ []) (c₂ (CZ) (CCZ))
   q52 : Ws → Eqn
   q52 c4 = eqn (CCZ013 ∷ CCZ234 ∷ []) (CCZ234 ∷ CCZ013 ∷ []) (lem-cQ-at0310213442 c4)
   q53 : Ws → Eqn
-  q53 c4 = eqn (CCZ013 ∷ CZ01 ∷ Toff301 ∷ CCZ013 ∷ []) (Toff301 ∷ []) (wl0520 (lit c4))
+  q53 c4 = eqn (CCZ013 ∷ CZ01 ∷ Toff301 ∷ CCZ013 ∷ []) (Toff301 ∷ []) (wl 520 (lit c4))
 
 -- box-tQ @0310213442: 13 steps
 lem-box-tQ-at0310213442 : Ws → ⟪ (Bx3-0142 ∷ []) ⟫ʷ ≈ ⟪ (Toff301 ∷ CCZ234 ∷ Toff301 ∷ CCZ234 ∷ []) ⟫ʷ
@@ -357,9 +357,9 @@ lem-box-tQ-at0310213442 c4 = derive (Bx3-0142 ∷ []) (Toff301 ∷ CCZ234 ∷ To
 
 private
   q54 : Ws → Eqn
-  q54 c4 = eqn (Sw14 ∷ Toff301 ∷ []) (Toff304 ∷ Sw14 ∷ []) (wp0152 c4)
+  q54 c4 = eqn (Sw14 ∷ Toff301 ∷ []) (Toff304 ∷ Sw14 ∷ []) (wp 152 c4)
   q55 : Ws → Eqn
-  q55 c4 = eqn (Sw14 ∷ Toff034 ∷ []) (Toff013 ∷ Sw14 ∷ []) (wp0150 c4)
+  q55 c4 = eqn (Sw14 ∷ Toff034 ∷ []) (Toff013 ∷ Sw14 ∷ []) (wp 150 c4)
 
 -- nat-SWbc @0310213442: 23 steps
 lem-nat-SWbc-at0310213442 : Ws → ⟪ (Sw14 ∷ Bx3-0142 ∷ Sw14 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-0412 ∷ []) ⟫ʷ
@@ -390,11 +390,11 @@ lem-nat-SWbc-at0310213442 c4 = derive (Sw14 ∷ Bx3-0142 ∷ Sw14 ∷ []) (Bx3-0
 
 private
   q56 : Ws → Eqn
-  q56 c4 = eqn (CCZ023 ∷ []) (CS03 ∷ CX20 ∷ CS03⁻ ∷ CX20 ∷ CS23 ∷ []) (wl1270 (lit c4))
+  q56 c4 = eqn (CCZ023 ∷ []) (CS03 ∷ CX20 ∷ CS03⁻ ∷ CX20 ∷ CS23 ∷ []) (wl 1270 (lit c4))
   q57 : Ws → Eqn
   q57 c4 = eqn (CX20 ∷ CCZ134 ∷ []) (CCZ134 ∷ CX20 ∷ []) (lem-comm-CX20-CCZ134 (lit c4))
   q58 : Ws → Eqn
-  q58 c4 = eqn (CCZ134 ∷ CS03⁻ ∷ []) (CS03⁻ ∷ CCZ134 ∷ []) (wp0704 c4)
+  q58 c4 = eqn (CCZ134 ∷ CS03⁻ ∷ []) (CS03⁻ ∷ CCZ134 ∷ []) (wp 704 c4)
 
 -- cQ @0312203441: 7 steps
 lem-cQ-at0312203441 : Ws → ⟪ (CCZ023 ∷ CCZ134 ∷ []) ⟫ʷ ≈ ⟪ (CCZ134 ∷ CCZ023 ∷ []) ⟫ʷ
@@ -409,17 +409,17 @@ lem-cQ-at0312203441 c4 = derive (CCZ023 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ023 �
 
 private
   q59 : Ws → Eqn
-  q59 c4 = eqn (CCZ234 ∷ Sw04 ∷ []) (Sw04 ∷ CCZ023 ∷ []) (wp1089 c4)
+  q59 c4 = eqn (CCZ234 ∷ Sw04 ∷ []) (Sw04 ∷ CCZ023 ∷ []) (wp 1089 c4)
   q60 : Ws → Eqn
-  q60 c4 = eqn (Sw04 ∷ Toff302 ∷ []) (Toff324 ∷ Sw04 ∷ []) (wp1090 c4)
+  q60 c4 = eqn (Sw04 ∷ Toff302 ∷ []) (Toff324 ∷ Sw04 ∷ []) (wp 1090 c4)
   q61 : Ws → Eqn
-  q61 c4 = eqn (CCZ023 ∷ Sw04 ∷ []) (Sw04 ∷ CCZ234 ∷ []) (wp1091 c4)
+  q61 c4 = eqn (CCZ023 ∷ Sw04 ∷ []) (Sw04 ∷ CCZ234 ∷ []) (wp 1091 c4)
   q62 : Ws → Eqn
-  q62 c4 = eqn (Sw04 ∷ Toff234 ∷ []) (Toff203 ∷ Sw04 ∷ []) (wp1092 c4)
+  q62 c4 = eqn (Sw04 ∷ Toff234 ∷ []) (Toff203 ∷ Sw04 ∷ []) (wp 1092 c4)
   q63 : Ws → Eqn
   q63 c4 = eqn (Sw04 ∷ Bx3-21 ∷ []) (Bx3-21 ∷ Sw04 ∷ []) (lem-comm-SWAP04-BOX⟨3·21⟩ (lit c4))
   q64 : Ws → Eqn
-  q64 c4 = eqn (Sw04 ∷ Sw04 ∷ []) [] (wp1093 c4)
+  q64 c4 = eqn (Sw04 ∷ Sw04 ∷ []) [] (wp 1093 c4)
 
 -- nat-SWbc @0312203441: 23 steps
 lem-nat-SWbc-at0312203441 : Ws → ⟪ (Sw04 ∷ Bx3-2041 ∷ Sw04 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-2401 ∷ []) ⟫ʷ
@@ -450,11 +450,11 @@ lem-nat-SWbc-at0312203441 c4 = derive (Sw04 ∷ Bx3-2041 ∷ Sw04 ∷ []) (Bx3-2
 
 private
   q65 : Ws → Eqn
-  q65 c4 = eqn (CCZ234 ∷ []) (CS34 ∷ CX24 ∷ CS34⁻ ∷ CX24 ∷ CS23 ∷ []) (wl0245 (lit c4))
+  q65 c4 = eqn (CCZ234 ∷ []) (CS34 ∷ CX24 ∷ CS34⁻ ∷ CX24 ∷ CS23 ∷ []) (wl 245 (lit c4))
   q66 : Ws → Eqn
   q66 c4 = eqn (CX24 ∷ CCZ013 ∷ []) (CCZ013 ∷ CX24 ∷ []) (lem-comm-CX24-CCZ013 (lit c4))
   q67 : Ws → Eqn
-  q67 c4 = eqn (CCZ013 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ013 ∷ []) (wp0184 c4)
+  q67 c4 = eqn (CCZ013 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ013 ∷ []) (wp 184 c4)
 
 -- cQ @0312243041: 7 steps
 lem-cQ-at0312243041 : Ws → ⟪ (CCZ234 ∷ CCZ013 ∷ []) ⟫ʷ ≈ ⟪ (CCZ013 ∷ CCZ234 ∷ []) ⟫ʷ
@@ -469,9 +469,9 @@ lem-cQ-at0312243041 c4 = derive (CCZ234 ∷ CCZ013 ∷ []) (CCZ013 ∷ CCZ234 �
 
 private
   q68 : Ws → Eqn
-  q68 c4 = eqn (Sw04 ∷ Toff324 ∷ []) (Toff302 ∷ Sw04 ∷ []) (wp1103 c4)
+  q68 c4 = eqn (Sw04 ∷ Toff324 ∷ []) (Toff302 ∷ Sw04 ∷ []) (wp 1103 c4)
   q69 : Ws → Eqn
-  q69 c4 = eqn (Sw04 ∷ Toff203 ∷ []) (Toff234 ∷ Sw04 ∷ []) (wp1104 c4)
+  q69 c4 = eqn (Sw04 ∷ Toff203 ∷ []) (Toff234 ∷ Sw04 ∷ []) (wp 1104 c4)
 
 -- nat-SWbc @0312243041: 23 steps
 lem-nat-SWbc-at0312243041 : Ws → ⟪ (Sw04 ∷ Bx3-2401 ∷ Sw04 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-2041 ∷ []) ⟫ʷ
@@ -502,17 +502,17 @@ lem-nat-SWbc-at0312243041 c4 = derive (Sw04 ∷ Bx3-2401 ∷ Sw04 ∷ []) (Bx3-2
 
 private
   q70 : Ws → Eqn
-  q70 c4 = eqn (CCZ014 ∷ Sw24 ∷ []) (Sw24 ∷ CCZ012 ∷ []) (wp0584 c4)
+  q70 c4 = eqn (CCZ014 ∷ Sw24 ∷ []) (Sw24 ∷ CCZ012 ∷ []) (wp 584 c4)
   q71 : Ws → Eqn
-  q71 c4 = eqn (Sw24 ∷ Toff012 ∷ []) (Toff014 ∷ Sw24 ∷ []) (wp1116 c4)
+  q71 c4 = eqn (Sw24 ∷ Toff012 ∷ []) (Toff014 ∷ Sw24 ∷ []) (wp 1116 c4)
   q72 : Ws → Eqn
-  q72 c4 = eqn (CCZ012 ∷ Sw24 ∷ []) (Sw24 ∷ CCZ014 ∷ []) (wp0582 c4)
+  q72 c4 = eqn (CCZ012 ∷ Sw24 ∷ []) (Sw24 ∷ CCZ014 ∷ []) (wp 582 c4)
   q73 : Ws → Eqn
-  q73 c4 = eqn (Sw24 ∷ Toff104 ∷ []) (Toff102 ∷ Sw24 ∷ []) (wp1117 c4)
+  q73 c4 = eqn (Sw24 ∷ Toff104 ∷ []) (Toff102 ∷ Sw24 ∷ []) (wp 1117 c4)
   q74 : Ws → Eqn
   q74 c4 = eqn (Sw24 ∷ Bx0-13 ∷ []) (Bx0-13 ∷ Sw24 ∷ []) (lem-comm-SWAP24-BOX⟨0·13⟩ (lit c4))
   q75 : Ws → Eqn
-  q75 c4 = eqn (Sw24 ∷ Sw24 ∷ []) [] (wl0322 (lit c4))
+  q75 c4 = eqn (Sw24 ∷ Sw24 ∷ []) [] (wl 322 (lit c4))
 
 -- nat-SWbc @3443: 23 steps
 lem-nat-SWbc-at3443 : Ws → ⟪ (Sw24 ∷ Bx0-1243 ∷ Sw24 ∷ []) ⟫ʷ ≈ ⟪ (Bx0-1423 ∷ []) ⟫ʷ
@@ -565,13 +565,13 @@ lem-cQ-at031031 c4 = derive (CCZ023 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ023 ∷ []
 
 private
   q76 : Ws → Eqn
-  q76 c4 = eqn (CCZ013 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ023 ∷ []) (wl0838 (lit c4))
+  q76 c4 = eqn (CCZ013 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ023 ∷ []) (wl 838 (lit c4))
   q77 : Ws → Eqn
-  q77 c4 = eqn (Sw12 ∷ Toff302 ∷ []) (Toff301 ∷ Sw12 ∷ []) (wl0877 (lit c4))
+  q77 c4 = eqn (Sw12 ∷ Toff302 ∷ []) (Toff301 ∷ Sw12 ∷ []) (wl 877 (lit c4))
   q78 : Ws → Eqn
-  q78 c4 = eqn (CCZ023 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ013 ∷ []) (wl0840 (lit c4))
+  q78 c4 = eqn (CCZ023 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ013 ∷ []) (wl 840 (lit c4))
   q79 : Ws → Eqn
-  q79 c4 = eqn (Sw12 ∷ Toff013 ∷ []) (Toff023 ∷ Sw12 ∷ []) (wl0876 (lit c4))
+  q79 c4 = eqn (Sw12 ∷ Toff013 ∷ []) (Toff023 ∷ Sw12 ∷ []) (wl 876 (lit c4))
   q80 : Ws → Eqn
   q80 c4 = eqn (Sw12 ∷ Bx3-04 ∷ []) (Bx3-04 ∷ Sw12 ∷ []) (lem-comm-SWAP12-BOX⟨3·04⟩ (lit c4))
 
@@ -615,17 +615,17 @@ lem-cQ-at03143041 c4 = derive (CCZ234 ∷ CCZ013 ∷ []) (CCZ013 ∷ CCZ234 ∷ 
 
 private
   q81 : Ws → Eqn
-  q81 c4 = eqn (CCZ034 ∷ Sw02 ∷ []) (Sw02 ∷ CCZ234 ∷ []) (wp1146 c4)
+  q81 c4 = eqn (CCZ034 ∷ Sw02 ∷ []) (Sw02 ∷ CCZ234 ∷ []) (wp 1146 c4)
   q82 : Ws → Eqn
-  q82 c4 = eqn (Sw02 ∷ Toff324 ∷ []) (Toff304 ∷ Sw02 ∷ []) (wp1147 c4)
+  q82 c4 = eqn (Sw02 ∷ Toff324 ∷ []) (Toff304 ∷ Sw02 ∷ []) (wp 1147 c4)
   q83 : Ws → Eqn
-  q83 c4 = eqn (CCZ234 ∷ Sw02 ∷ []) (Sw02 ∷ CCZ034 ∷ []) (wp1148 c4)
+  q83 c4 = eqn (CCZ234 ∷ Sw02 ∷ []) (Sw02 ∷ CCZ034 ∷ []) (wp 1148 c4)
   q84 : Ws → Eqn
-  q84 c4 = eqn (Sw02 ∷ Toff403 ∷ []) (Toff423 ∷ Sw02 ∷ []) (wp1149 c4)
+  q84 c4 = eqn (Sw02 ∷ Toff403 ∷ []) (Toff423 ∷ Sw02 ∷ []) (wp 1149 c4)
   q85 : Ws → Eqn
   q85 c4 = eqn (Sw02 ∷ Bx3-41 ∷ []) (Bx3-41 ∷ Sw02 ∷ []) (lem-comm-SWAP02-BOX⟨3·41⟩ (lit c4))
   q86 : Ws → Eqn
-  q86 c4 = eqn (Sw02 ∷ Sw02 ∷ []) [] (wl0485 (lit c4))
+  q86 c4 = eqn (Sw02 ∷ Sw02 ∷ []) [] (wl 485 (lit c4))
 
 -- nat-SWbc @03143041: 23 steps
 lem-nat-SWbc-at03143041 : Ws → ⟪ (Sw02 ∷ Bx3-4201 ∷ Sw02 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4021 ∷ []) ⟫ʷ
@@ -656,11 +656,11 @@ lem-nat-SWbc-at03143041 c4 = derive (Sw02 ∷ Bx3-4201 ∷ Sw02 ∷ []) (Bx3-402
 
 private
   q87 : Ws → Eqn
-  q87 c4 = eqn (CCZ034 ∷ []) (CS03 ∷ CX40 ∷ CS03⁻ ∷ CX40 ∷ CS34 ∷ []) (wp0320 c4)
+  q87 c4 = eqn (CCZ034 ∷ []) (CS03 ∷ CX40 ∷ CS03⁻ ∷ CX40 ∷ CS34 ∷ []) (wp 320 c4)
   q88 : Ws → Eqn
   q88 c4 = eqn (CX40 ∷ CCZ123 ∷ []) (CCZ123 ∷ CX40 ∷ []) (lem-comm-CX40-CCZ123 (lit c4))
   q89 : Ws → Eqn
-  q89 c4 = eqn (CCZ123 ∷ CS03⁻ ∷ []) (CS03⁻ ∷ CCZ123 ∷ []) (wl0495 (lit c4))
+  q89 c4 = eqn (CCZ123 ∷ CS03⁻ ∷ []) (CS03⁻ ∷ CCZ123 ∷ []) (wl 495 (lit c4))
 
 -- cQ @0314203241: 7 steps
 lem-cQ-at0314203241 : Ws → ⟪ (CCZ034 ∷ CCZ123 ∷ []) ⟫ʷ ≈ ⟪ (CCZ123 ∷ CCZ034 ∷ []) ⟫ʷ
@@ -675,13 +675,13 @@ lem-cQ-at0314203241 c4 = derive (CCZ034 ∷ CCZ123 ∷ []) (CCZ123 ∷ CCZ034 �
 
 private
   q90 : Ws → Eqn
-  q90 c4 = eqn (CCZ024 ∷ []) (CS02 ∷ CX40 ∷ CS02⁻ ∷ CX40 ∷ CS24 ∷ []) (wp0496 c4)
+  q90 c4 = eqn (CCZ024 ∷ []) (CS02 ∷ CX40 ∷ CS02⁻ ∷ CX40 ∷ CS24 ∷ []) (wp 496 c4)
   q91 : Ws → Eqn
-  q91 c4 = eqn (CCZ123 ∷ CS24 ∷ []) (CS24 ∷ CCZ123 ∷ []) (wl0173 (lit c4))
+  q91 c4 = eqn (CCZ123 ∷ CS24 ∷ []) (CS24 ∷ CCZ123 ∷ []) (wl 173 (lit c4))
   q92 : Ws → Eqn
-  q92 c4 = eqn (CCZ123 ∷ CS02⁻ ∷ []) (CS02⁻ ∷ CCZ123 ∷ []) (wl0611 (lit c4))
+  q92 c4 = eqn (CCZ123 ∷ CS02⁻ ∷ []) (CS02⁻ ∷ CCZ123 ∷ []) (wl 611 (lit c4))
   q93 : Ws → Eqn
-  q93 c4 = eqn (CCZ123 ∷ CS02 ∷ []) (CS02 ∷ CCZ123 ∷ []) (wl0171 (lit c4))
+  q93 c4 = eqn (CCZ123 ∷ CS02 ∷ []) (CS02 ∷ CCZ123 ∷ []) (wl 171 (lit c4))
 
 -- cQ @02142041: 7 steps
 lem-cQ-at02142041 : Ws → ⟪ (CCZ024 ∷ CCZ123 ∷ []) ⟫ʷ ≈ ⟪ (CCZ123 ∷ CCZ024 ∷ []) ⟫ʷ
@@ -696,11 +696,11 @@ lem-cQ-at02142041 c4 = derive (CCZ024 ∷ CCZ123 ∷ []) (CCZ123 ∷ CCZ024 ∷ 
 
 private
   q94 : Ws → Eqn
-  q94 c4 = eqn (K2 ∷ CCZ234 ∷ K2⁻ ∷ []) (Toff234 ∷ []) (wl0417 (lit c4))
+  q94 c4 = eqn (K2 ∷ CCZ234 ∷ K2⁻ ∷ []) (Toff234 ∷ []) (wl 417 (lit c4))
   q95 : Ws → Eqn
-  q95 c4 = eqn (K2 ∷ CCZ012 ∷ K2⁻ ∷ []) (Toff201 ∷ []) (wl0416 (lit c4))
+  q95 c4 = eqn (K2 ∷ CCZ012 ∷ K2⁻ ∷ []) (Toff201 ∷ []) (wl 416 (lit c4))
   q96 : Ws → Eqn
-  q96 c4 = eqn (K2⁻ ∷ K2 ∷ []) [] (wl0175 (lit c4))
+  q96 c4 = eqn (K2⁻ ∷ K2 ∷ []) [] (wl 175 (lit c4))
   q97 : Ws → Eqn
   q97 c4 = eqn (CCZ234 ∷ CCZ012 ∷ []) (CCZ012 ∷ CCZ234 ∷ []) (lem-cQ-at0214233041 c4)
 
@@ -717,9 +717,9 @@ lem-tP-at0214233041 c4 = derive (Toff234 ∷ Toff201 ∷ []) (Toff201 ∷ Toff23
 
 private
   q98 : Ws → Eqn
-  q98 c4 = eqn (Sw02 ∷ Toff304 ∷ []) (Toff324 ∷ Sw02 ∷ []) (wp1162 c4)
+  q98 c4 = eqn (Sw02 ∷ Toff304 ∷ []) (Toff324 ∷ Sw02 ∷ []) (wp 1162 c4)
   q99 : Ws → Eqn
-  q99 c4 = eqn (Sw02 ∷ Toff423 ∷ []) (Toff403 ∷ Sw02 ∷ []) (wp1163 c4)
+  q99 c4 = eqn (Sw02 ∷ Toff423 ∷ []) (Toff403 ∷ Sw02 ∷ []) (wp 1163 c4)
 
 -- nat-SWbc @0314203241: 23 steps
 lem-nat-SWbc-at0314203241 : Ws → ⟪ (Sw02 ∷ Bx3-4021 ∷ Sw02 ∷ []) ⟫ʷ ≈ ⟪ (Bx3-4201 ∷ []) ⟫ʷ
@@ -750,13 +750,13 @@ lem-nat-SWbc-at0314203241 c4 = derive (Sw02 ∷ Bx3-4021 ∷ Sw02 ∷ []) (Bx3-4
 
 private
   q100 : Ws → Eqn
-  q100 c4 = eqn (CCZ012 ∷ []) (CCZ024 ∷ Toff402 ∷ CZ14 ∷ Toff402 ∷ CCZ024 ∷ CZ14 ∷ []) (wp0162 c4)
+  q100 c4 = eqn (CCZ012 ∷ []) (CCZ024 ∷ Toff402 ∷ CZ14 ∷ Toff402 ∷ CCZ024 ∷ CZ14 ∷ []) (wp 162 c4)
   q101 : Ws → Eqn
-  q101 c4 = eqn (CCZ234 ∷ Toff234 ∷ []) (Toff234 ∷ CCZ234 ∷ CZ34 ∷ []) (wl0936 (lit c4))
+  q101 c4 = eqn (CCZ234 ∷ Toff234 ∷ []) (Toff234 ∷ CCZ234 ∷ CZ34 ∷ []) (wl 936 (lit c4))
   q102 : Ws → Eqn
   q102 c4 = eqn (CCZ012 ∷ CZ34 ∷ []) (CZ34 ∷ CCZ012 ∷ []) (c₃ (CCZ) (CZ))
   q103 : Ws → Eqn
-  q103 c4 = eqn (CCZ234 ∷ CZ34 ∷ Toff234 ∷ CCZ234 ∷ []) (Toff234 ∷ []) (wl0937 (lit c4))
+  q103 c4 = eqn (CCZ234 ∷ CZ34 ∷ Toff234 ∷ CCZ234 ∷ []) (Toff234 ∷ []) (wl 937 (lit c4))
 
 -- box-tQ @0214233041: 13 steps
 lem-box-tQ-at0214233041 : Ws → ⟪ (Bx2-4301 ∷ []) ⟫ʷ ≈ ⟪ (Toff234 ∷ CCZ012 ∷ Toff234 ∷ CCZ012 ∷ []) ⟫ʷ
@@ -777,9 +777,9 @@ lem-box-tQ-at0214233041 c4 = derive (Bx2-4301 ∷ []) (Toff234 ∷ CCZ012 ∷ To
 
 private
   q104 : Ws → Eqn
-  q104 c4 = eqn (Sw14 ∷ Toff201 ∷ []) (Toff204 ∷ Sw14 ∷ []) (wp0197 c4)
+  q104 c4 = eqn (Sw14 ∷ Toff201 ∷ []) (Toff204 ∷ Sw14 ∷ []) (wp 197 c4)
   q105 : Ws → Eqn
-  q105 c4 = eqn (Sw14 ∷ Toff024 ∷ []) (Toff012 ∷ Sw14 ∷ []) (wp0195 c4)
+  q105 c4 = eqn (Sw14 ∷ Toff024 ∷ []) (Toff012 ∷ Sw14 ∷ []) (wp 195 c4)
   q106 : Ws → Eqn
   q106 c4 = eqn (Sw14 ∷ Bx2-03 ∷ []) (Bx2-03 ∷ Sw14 ∷ []) (lem-comm-SWAP14-BOX⟨2·03⟩ (lit c4))
 
@@ -812,15 +812,15 @@ lem-nat-SWbc-at0210213443 c4 = derive (Sw14 ∷ Bx2-0143 ∷ Sw14 ∷ []) (Bx2-0
 
 private
   q107 : Ws → Eqn
-  q107 c4 = eqn (CCZ123 ∷ []) (CS12 ∷ CX31 ∷ CS12⁻ ∷ CX31 ∷ CS23 ∷ []) (wl0297 (lit c4))
+  q107 c4 = eqn (CCZ123 ∷ []) (CS12 ∷ CX31 ∷ CS12⁻ ∷ CX31 ∷ CS23 ∷ []) (wl 297 (lit c4))
   q108 : Ws → Eqn
-  q108 c4 = eqn (CCZ024 ∷ CS23 ∷ []) (CS23 ∷ CCZ024 ∷ []) (wp0092 c4)
+  q108 c4 = eqn (CCZ024 ∷ CS23 ∷ []) (CS23 ∷ CCZ024 ∷ []) (wp 92 c4)
   q109 : Ws → Eqn
   q109 c4 = eqn (CX31 ∷ CCZ024 ∷ []) (CCZ024 ∷ CX31 ∷ []) (lem-comm-CX31-CCZ024 (lit c4))
   q110 : Ws → Eqn
-  q110 c4 = eqn (CCZ024 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CCZ024 ∷ []) (wp0087 c4)
+  q110 c4 = eqn (CCZ024 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CCZ024 ∷ []) (wp 87 c4)
   q111 : Ws → Eqn
-  q111 c4 = eqn (CCZ024 ∷ CS12 ∷ []) (CS12 ∷ CCZ024 ∷ []) (wp0081 c4)
+  q111 c4 = eqn (CCZ024 ∷ CS12 ∷ []) (CS12 ∷ CCZ024 ∷ []) (wp 81 c4)
 
 -- cQ @02132130: 7 steps
 lem-cQ-at02132130 : Ws → ⟪ (CCZ123 ∷ CCZ024 ∷ []) ⟫ʷ ≈ ⟪ (CCZ024 ∷ CCZ123 ∷ []) ⟫ʷ
@@ -835,15 +835,15 @@ lem-cQ-at02132130 c4 = derive (CCZ123 ∷ CCZ024 ∷ []) (CCZ024 ∷ CCZ123 ∷ 
 
 private
   q112 : Ws → Eqn
-  q112 c4 = eqn (CCZ023 ∷ []) (CS02 ∷ CX30 ∷ CS02⁻ ∷ CX30 ∷ CS23 ∷ []) (wl0757 (lit c4))
+  q112 c4 = eqn (CCZ023 ∷ []) (CS02 ∷ CX30 ∷ CS02⁻ ∷ CX30 ∷ CS23 ∷ []) (wl 757 (lit c4))
   q113 : Ws → Eqn
-  q113 c4 = eqn (CCZ124 ∷ CS23 ∷ []) (CS23 ∷ CCZ124 ∷ []) (wl0639 (lit c4))
+  q113 c4 = eqn (CCZ124 ∷ CS23 ∷ []) (CS23 ∷ CCZ124 ∷ []) (wl 639 (lit c4))
   q114 : Ws → Eqn
   q114 c4 = eqn (CX30 ∷ CCZ124 ∷ []) (CCZ124 ∷ CX30 ∷ []) (lem-comm-CX30-CCZ124 (lit c4))
   q115 : Ws → Eqn
-  q115 c4 = eqn (CCZ124 ∷ CS02⁻ ∷ []) (CS02⁻ ∷ CCZ124 ∷ []) (wp0679 c4)
+  q115 c4 = eqn (CCZ124 ∷ CS02⁻ ∷ []) (CS02⁻ ∷ CCZ124 ∷ []) (wp 679 c4)
   q116 : Ws → Eqn
-  q116 c4 = eqn (CCZ124 ∷ CS02 ∷ []) (CS02 ∷ CCZ124 ∷ []) (wp0515 c4)
+  q116 c4 = eqn (CCZ124 ∷ CS02 ∷ []) (CS02 ∷ CCZ124 ∷ []) (wp 515 c4)
 
 -- cQ @02132031: 7 steps
 lem-cQ-at02132031 : Ws → ⟪ (CCZ023 ∷ CCZ124 ∷ []) ⟫ʷ ≈ ⟪ (CCZ124 ∷ CCZ023 ∷ []) ⟫ʷ
@@ -858,11 +858,11 @@ lem-cQ-at02132031 c4 = derive (CCZ023 ∷ CCZ124 ∷ []) (CCZ124 ∷ CCZ023 ∷ 
 
 private
   q117 : Ws → Eqn
-  q117 c4 = eqn (K3 ∷ CCZ013 ∷ K3⁻ ∷ []) (Toff301 ∷ []) (wl0434 (lit c4))
+  q117 c4 = eqn (K3 ∷ CCZ013 ∷ K3⁻ ∷ []) (Toff301 ∷ []) (wl 434 (lit c4))
   q118 : Ws → Eqn
-  q118 c4 = eqn (K3 ∷ CCZ234 ∷ K3⁻ ∷ []) (Toff324 ∷ []) (wl0435 (lit c4))
+  q118 c4 = eqn (K3 ∷ CCZ234 ∷ K3⁻ ∷ []) (Toff324 ∷ []) (wl 435 (lit c4))
   q119 : Ws → Eqn
-  q119 c4 = eqn (K3⁻ ∷ K3 ∷ []) [] (wl0436 (lit c4))
+  q119 c4 = eqn (K3⁻ ∷ K3 ∷ []) [] (wl 436 (lit c4))
 
 -- tP @0310213442: 7 steps
 lem-tP-at0310213442 : Ws → ⟪ (Toff301 ∷ Toff324 ∷ []) ⟫ʷ ≈ ⟪ (Toff324 ∷ Toff301 ∷ []) ⟫ʷ
@@ -892,7 +892,7 @@ lem-tP-at0213243041 c4 = derive (Toff234 ∷ Toff201 ∷ []) (Toff201 ∷ Toff23
 
 private
   q121 : Ws → Eqn
-  q121 c4 = eqn (CCZ012 ∷ []) (CCZ023 ∷ Toff302 ∷ CZ13 ∷ Toff302 ∷ CCZ023 ∷ CZ13 ∷ []) (wl0288 (lit c4))
+  q121 c4 = eqn (CCZ012 ∷ []) (CCZ023 ∷ Toff302 ∷ CZ13 ∷ Toff302 ∷ CCZ023 ∷ CZ13 ∷ []) (wl 288 (lit c4))
 
 -- box-tQ @0213243041: 13 steps
 lem-box-tQ-at0213243041 : Ws → ⟪ (Bx2-3401 ∷ []) ⟫ʷ ≈ ⟪ (Toff234 ∷ CCZ012 ∷ Toff234 ∷ CCZ012 ∷ []) ⟫ʷ
@@ -913,13 +913,13 @@ lem-box-tQ-at0213243041 c4 = derive (Bx2-3401 ∷ []) (Toff234 ∷ CCZ012 ∷ To
 
 private
   q122 : Ws → Eqn
-  q122 c4 = eqn (CCZ023 ∷ Toff023 ∷ CZ04 ∷ Toff023 ∷ CCZ023 ∷ CZ04 ∷ []) (CCZ234 ∷ []) (wp0280 c4)
+  q122 c4 = eqn (CCZ023 ∷ Toff023 ∷ CZ04 ∷ Toff023 ∷ CCZ023 ∷ CZ04 ∷ []) (CCZ234 ∷ []) (wp 280 c4)
   q123 : Ws → Eqn
-  q123 c4 = eqn (CCZ012 ∷ Toff201 ∷ []) (Toff201 ∷ CCZ012 ∷ CZ01 ∷ []) (wl0930 (lit c4))
+  q123 c4 = eqn (CCZ012 ∷ Toff201 ∷ []) (Toff201 ∷ CCZ012 ∷ CZ01 ∷ []) (wl 930 (lit c4))
   q124 : Ws → Eqn
   q124 c4 = eqn (CCZ012 ∷ CCZ234 ∷ []) (CCZ234 ∷ CCZ012 ∷ []) (lem-cQ-at021021 c4)
   q125 : Ws → Eqn
-  q125 c4 = eqn (CCZ012 ∷ CZ01 ∷ Toff201 ∷ CCZ012 ∷ []) (Toff201 ∷ []) (wl0931 (lit c4))
+  q125 c4 = eqn (CCZ012 ∷ CZ01 ∷ Toff201 ∷ CCZ012 ∷ []) (Toff201 ∷ []) (wl 931 (lit c4))
 
 -- box-tQ @021021: 13 steps
 lem-box-tQ-at021021 : Ws → ⟪ (Bx2-0134 ∷ []) ⟫ʷ ≈ ⟪ (Toff201 ∷ CCZ234 ∷ Toff201 ∷ CCZ234 ∷ []) ⟫ʷ
@@ -940,15 +940,15 @@ lem-box-tQ-at021021 c4 = derive (Bx2-0134 ∷ []) (Toff201 ∷ CCZ234 ∷ Toff20
 
 private
   q126 : Ws → Eqn
-  q126 c4 = eqn (CCZ123 ∷ []) (CS13 ∷ CX21 ∷ CS13⁻ ∷ CX21 ∷ CS23 ∷ []) (wl0326 (lit c4))
+  q126 c4 = eqn (CCZ123 ∷ []) (CS13 ∷ CX21 ∷ CS13⁻ ∷ CX21 ∷ CS23 ∷ []) (wl 326 (lit c4))
   q127 : Ws → Eqn
-  q127 c4 = eqn (CCZ034 ∷ CS23 ∷ []) (CS23 ∷ CCZ034 ∷ []) (wp0314 c4)
+  q127 c4 = eqn (CCZ034 ∷ CS23 ∷ []) (CS23 ∷ CCZ034 ∷ []) (wp 314 c4)
   q128 : Ws → Eqn
   q128 c4 = eqn (CX21 ∷ CCZ034 ∷ []) (CCZ034 ∷ CX21 ∷ []) (lem-comm-CX21-CCZ034 (lit c4))
   q129 : Ws → Eqn
-  q129 c4 = eqn (CCZ034 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ CCZ034 ∷ []) (wp0734 c4)
+  q129 c4 = eqn (CCZ034 ∷ CS13⁻ ∷ []) (CS13⁻ ∷ CCZ034 ∷ []) (wp 734 c4)
   q130 : Ws → Eqn
-  q130 c4 = eqn (CCZ034 ∷ CS13 ∷ []) (CS13 ∷ CCZ034 ∷ []) (wp0312 c4)
+  q130 c4 = eqn (CCZ034 ∷ CS13 ∷ []) (CS13 ∷ CCZ034 ∷ []) (wp 312 c4)
 
 -- cQ @03122130: 7 steps
 lem-cQ-at03122130 : Ws → ⟪ (CCZ123 ∷ CCZ034 ∷ []) ⟫ʷ ≈ ⟪ (CCZ034 ∷ CCZ123 ∷ []) ⟫ʷ
@@ -981,7 +981,7 @@ lem-box-perm-2134-at021021 c4 = derive (Bx2-0134 ∷ []) (Bx2-1034 ∷ [])
 
 private
   q133 : Ws → Eqn
-  q133 c4 = eqn (CCZ134 ∷ Toff134 ∷ CZ12 ∷ Toff134 ∷ CCZ134 ∷ CZ12 ∷ []) (CCZ234 ∷ []) (wl1379 (lit c4))
+  q133 c4 = eqn (CCZ134 ∷ Toff134 ∷ CZ12 ∷ Toff134 ∷ CCZ134 ∷ CZ12 ∷ []) (CCZ234 ∷ []) (wl 1379 (lit c4))
   q134 : Ws → Eqn
   q134 c4 = eqn (CCZ013 ∷ CCZ234 ∷ []) (CCZ234 ∷ CCZ013 ∷ []) (lem-cQ-at03203442 c4)
 
@@ -1013,17 +1013,17 @@ lem-box-perm-2134-at0220 c4 = derive (Bx2-1034 ∷ []) (Bx2-0134 ∷ [])
 
 private
   q136 : Ws → Eqn
-  q136 c4 = eqn (CCZ023 ∷ Sw13 ∷ []) (Sw13 ∷ CCZ012 ∷ []) (wl0283 (lit c4))
+  q136 c4 = eqn (CCZ023 ∷ Sw13 ∷ []) (Sw13 ∷ CCZ012 ∷ []) (wl 283 (lit c4))
   q137 : Ws → Eqn
-  q137 c4 = eqn (Sw13 ∷ Toff201 ∷ []) (Toff203 ∷ Sw13 ∷ []) (wl0990 (lit c4))
+  q137 c4 = eqn (Sw13 ∷ Toff201 ∷ []) (Toff203 ∷ Sw13 ∷ []) (wl 990 (lit c4))
   q138 : Ws → Eqn
-  q138 c4 = eqn (CCZ012 ∷ Sw13 ∷ []) (Sw13 ∷ CCZ023 ∷ []) (wl0285 (lit c4))
+  q138 c4 = eqn (CCZ012 ∷ Sw13 ∷ []) (Sw13 ∷ CCZ023 ∷ []) (wl 285 (lit c4))
   q139 : Ws → Eqn
-  q139 c4 = eqn (Sw13 ∷ Toff023 ∷ []) (Toff012 ∷ Sw13 ∷ []) (wl0989 (lit c4))
+  q139 c4 = eqn (Sw13 ∷ Toff023 ∷ []) (Toff012 ∷ Sw13 ∷ []) (wl 989 (lit c4))
   q140 : Ws → Eqn
   q140 c4 = eqn (Sw13 ∷ Bx2-04 ∷ []) (Bx2-04 ∷ Sw13 ∷ []) (lem-comm-SWAP13-BOX⟨2·04⟩ (lit c4))
   q141 : Ws → Eqn
-  q141 c4 = eqn (Sw13 ∷ Sw13 ∷ []) [] (wl0287 (lit c4))
+  q141 c4 = eqn (Sw13 ∷ Sw13 ∷ []) [] (wl 287 (lit c4))
 
 -- nat-SWbc @021021: 23 steps
 lem-nat-SWbc-at021021 : Ws → ⟪ (Sw13 ∷ Bx2-0134 ∷ Sw13 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-0314 ∷ []) ⟫ʷ
@@ -1054,11 +1054,11 @@ lem-nat-SWbc-at021021 c4 = derive (Sw13 ∷ Bx2-0134 ∷ Sw13 ∷ []) (Bx2-0314 
 
 private
   q142 : Ws → Eqn
-  q142 c4 = eqn (CCZ023 ∷ []) (CS23 ∷ CX03 ∷ CS23⁻ ∷ CX03 ∷ CS02 ∷ []) (wl0637 (lit c4))
+  q142 c4 = eqn (CCZ023 ∷ []) (CS23 ∷ CX03 ∷ CS23⁻ ∷ CX03 ∷ CS02 ∷ []) (wl 637 (lit c4))
   q143 : Ws → Eqn
   q143 c4 = eqn (CX03 ∷ CCZ124 ∷ []) (CCZ124 ∷ CX03 ∷ []) (lem-comm-CX03-CCZ124 (lit c4))
   q144 : Ws → Eqn
-  q144 c4 = eqn (CCZ124 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CCZ124 ∷ []) (wl0638 (lit c4))
+  q144 c4 = eqn (CCZ124 ∷ CS23⁻ ∷ []) (CS23⁻ ∷ CCZ124 ∷ []) (wl 638 (lit c4))
 
 -- cQ @02102331: 7 steps
 lem-cQ-at02102331 : Ws → ⟪ (CCZ023 ∷ CCZ124 ∷ []) ⟫ʷ ≈ ⟪ (CCZ124 ∷ CCZ023 ∷ []) ⟫ʷ
@@ -1084,13 +1084,13 @@ lem-cQ-at03243042 c4 = derive (CCZ134 ∷ CCZ023 ∷ []) (CCZ023 ∷ CCZ134 ∷ 
 
 private
   q145 : Ws → Eqn
-  q145 c4 = eqn (CCZ014 ∷ []) (CS01 ∷ CX41 ∷ CS01⁻ ∷ CX41 ∷ CS04 ∷ []) (wp0540 c4)
+  q145 c4 = eqn (CCZ014 ∷ []) (CS01 ∷ CX41 ∷ CS01⁻ ∷ CX41 ∷ CS04 ∷ []) (wp 540 c4)
   q146 : Ws → Eqn
-  q146 c4 = eqn (CCZ023 ∷ CS04 ∷ []) (CS04 ∷ CCZ023 ∷ []) (wp0048 c4)
+  q146 c4 = eqn (CCZ023 ∷ CS04 ∷ []) (CS04 ∷ CCZ023 ∷ []) (wp 48 c4)
   q147 : Ws → Eqn
-  q147 c4 = eqn (CCZ023 ∷ CS01⁻ ∷ []) (CS01⁻ ∷ CCZ023 ∷ []) (wl0667 (lit c4))
+  q147 c4 = eqn (CCZ023 ∷ CS01⁻ ∷ []) (CS01⁻ ∷ CCZ023 ∷ []) (wl 667 (lit c4))
   q148 : Ws → Eqn
-  q148 c4 = eqn (CCZ023 ∷ CS01 ∷ []) (CS01 ∷ CCZ023 ∷ []) (wl0199 (lit c4))
+  q148 c4 = eqn (CCZ023 ∷ CS01 ∷ []) (CS01 ∷ CCZ023 ∷ []) (wl 199 (lit c4))
 
 -- cQ @142142: 7 steps
 lem-cQ-at142142 : Ws → ⟪ (CCZ014 ∷ CCZ023 ∷ []) ⟫ʷ ≈ ⟪ (CCZ023 ∷ CCZ014 ∷ []) ⟫ʷ
@@ -1105,13 +1105,13 @@ lem-cQ-at142142 c4 = derive (CCZ014 ∷ CCZ023 ∷ []) (CCZ023 ∷ CCZ014 ∷ []
 
 private
   q149 : Ws → Eqn
-  q149 c4 = eqn (CCZ034 ∷ Sw13 ∷ []) (Sw13 ∷ CCZ014 ∷ []) (wp0208 c4)
+  q149 c4 = eqn (CCZ034 ∷ Sw13 ∷ []) (Sw13 ∷ CCZ014 ∷ []) (wp 208 c4)
   q150 : Ws → Eqn
-  q150 c4 = eqn (Sw13 ∷ Toff014 ∷ []) (Toff034 ∷ Sw13 ∷ []) (wp1237 c4)
+  q150 c4 = eqn (Sw13 ∷ Toff014 ∷ []) (Toff034 ∷ Sw13 ∷ []) (wp 1237 c4)
   q151 : Ws → Eqn
-  q151 c4 = eqn (CCZ014 ∷ Sw13 ∷ []) (Sw13 ∷ CCZ034 ∷ []) (wp0206 c4)
+  q151 c4 = eqn (CCZ014 ∷ Sw13 ∷ []) (Sw13 ∷ CCZ034 ∷ []) (wp 206 c4)
   q152 : Ws → Eqn
-  q152 c4 = eqn (Sw13 ∷ Toff403 ∷ []) (Toff401 ∷ Sw13 ∷ []) (wp1238 c4)
+  q152 c4 = eqn (Sw13 ∷ Toff403 ∷ []) (Toff401 ∷ Sw13 ∷ []) (wp 1238 c4)
   q153 : Ws → Eqn
   q153 c4 = eqn (Sw13 ∷ Bx0-42 ∷ []) (Bx0-42 ∷ Sw13 ∷ []) (lem-comm-SWAP13-BOX⟨0·42⟩ (lit c4))
 
@@ -1153,9 +1153,9 @@ lem-box-perm-2134-at032032 c4 = derive (Bx3-1024 ∷ []) (Bx3-0124 ∷ [])
 
 private
   q155 : Ws → Eqn
-  q155 c4 = eqn (Sw13 ∷ Toff203 ∷ []) (Toff201 ∷ Sw13 ∷ []) (wl0286 (lit c4))
+  q155 c4 = eqn (Sw13 ∷ Toff203 ∷ []) (Toff201 ∷ Sw13 ∷ []) (wl 286 (lit c4))
   q156 : Ws → Eqn
-  q156 c4 = eqn (Sw13 ∷ Toff012 ∷ []) (Toff023 ∷ Sw13 ∷ []) (wl0284 (lit c4))
+  q156 c4 = eqn (Sw13 ∷ Toff012 ∷ []) (Toff023 ∷ Sw13 ∷ []) (wl 284 (lit c4))
 
 -- nat-SWbc @02102331: 23 steps
 lem-nat-SWbc-at02102331 : Ws → ⟪ (Sw13 ∷ Bx2-0314 ∷ Sw13 ∷ []) ⟫ʷ ≈ ⟪ (Bx2-0134 ∷ []) ⟫ʷ
@@ -1195,13 +1195,13 @@ lem-box-perm-2134-at0210243143 c4 = derive (Bx2-0413 ∷ []) (Bx2-4013 ∷ [])
 
 private
   q158 : Ws → Eqn
-  q158 c4 = eqn (CCZ024 ∷ []) (CS04 ∷ CX20 ∷ CS04⁻ ∷ CX20 ∷ CS24 ∷ []) (wp0450 c4)
+  q158 c4 = eqn (CCZ024 ∷ []) (CS04 ∷ CX20 ∷ CS04⁻ ∷ CX20 ∷ CS24 ∷ []) (wp 450 c4)
   q159 : Ws → Eqn
-  q159 c4 = eqn (CCZ134 ∷ CS24 ∷ []) (CS24 ∷ CCZ134 ∷ []) (wl1220 (lit c4))
+  q159 c4 = eqn (CCZ134 ∷ CS24 ∷ []) (CS24 ∷ CCZ134 ∷ []) (wl 1220 (lit c4))
   q160 : Ws → Eqn
-  q160 c4 = eqn (CCZ134 ∷ CS04⁻ ∷ []) (CS04⁻ ∷ CCZ134 ∷ []) (wp1206 c4)
+  q160 c4 = eqn (CCZ134 ∷ CS04⁻ ∷ []) (CS04⁻ ∷ CCZ134 ∷ []) (wp 1206 c4)
   q161 : Ws → Eqn
-  q161 c4 = eqn (CCZ134 ∷ CS04 ∷ []) (CS04 ∷ CCZ134 ∷ []) (wp1003 c4)
+  q161 c4 = eqn (CCZ134 ∷ CS04 ∷ []) (CS04 ∷ CCZ134 ∷ []) (wp 1003 c4)
 
 -- cQ @04122041: 7 steps
 lem-cQ-at04122041 : Ws → ⟪ (CCZ024 ∷ CCZ134 ∷ []) ⟫ʷ ≈ ⟪ (CCZ134 ∷ CCZ024 ∷ []) ⟫ʷ
@@ -1216,17 +1216,17 @@ lem-cQ-at04122041 c4 = derive (CCZ024 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ024 ∷ 
 
 private
   q162 : Ws → Eqn
-  q162 c4 = eqn (CCZ234 ∷ Sw03 ∷ []) (Sw03 ∷ CCZ024 ∷ []) (wp1155 c4)
+  q162 c4 = eqn (CCZ234 ∷ Sw03 ∷ []) (Sw03 ∷ CCZ024 ∷ []) (wp 1155 c4)
   q163 : Ws → Eqn
-  q163 c4 = eqn (Sw03 ∷ Toff402 ∷ []) (Toff423 ∷ Sw03 ∷ []) (wp1181 c4)
+  q163 c4 = eqn (Sw03 ∷ Toff402 ∷ []) (Toff423 ∷ Sw03 ∷ []) (wp 1181 c4)
   q164 : Ws → Eqn
-  q164 c4 = eqn (CCZ024 ∷ Sw03 ∷ []) (Sw03 ∷ CCZ234 ∷ []) (wp1157 c4)
+  q164 c4 = eqn (CCZ024 ∷ Sw03 ∷ []) (Sw03 ∷ CCZ234 ∷ []) (wp 1157 c4)
   q165 : Ws → Eqn
-  q165 c4 = eqn (Sw03 ∷ Toff234 ∷ []) (Toff204 ∷ Sw03 ∷ []) (wp1180 c4)
+  q165 c4 = eqn (Sw03 ∷ Toff234 ∷ []) (Toff204 ∷ Sw03 ∷ []) (wp 1180 c4)
   q166 : Ws → Eqn
   q166 c4 = eqn (Sw03 ∷ Bx4-21 ∷ []) (Bx4-21 ∷ Sw03 ∷ []) (lem-comm-SWAP03-BOX⟨4·21⟩ (lit c4))
   q167 : Ws → Eqn
-  q167 c4 = eqn (Sw03 ∷ Sw03 ∷ []) [] (wl0928 (lit c4))
+  q167 c4 = eqn (Sw03 ∷ Sw03 ∷ []) [] (wl 928 (lit c4))
 
 -- nat-SWbc @04122041: 23 steps
 lem-nat-SWbc-at04122041 : Ws → ⟪ (Sw03 ∷ Bx4-2031 ∷ Sw03 ∷ []) ⟫ʷ ≈ ⟪ (Bx4-2301 ∷ []) ⟫ʷ
@@ -1257,15 +1257,15 @@ lem-nat-SWbc-at04122041 c4 = derive (Sw03 ∷ Bx4-2031 ∷ Sw03 ∷ []) (Bx4-230
 
 private
   q168 : Ws → Eqn
-  q168 c4 = eqn (CCZ234 ∷ []) (CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ []) (wl0274 (lit c4))
+  q168 c4 = eqn (CCZ234 ∷ []) (CS34 ∷ CX23 ∷ CS34⁻ ∷ CX23 ∷ CS24 ∷ []) (wl 274 (lit c4))
   q169 : Ws → Eqn
-  q169 c4 = eqn (CCZ014 ∷ CS24 ∷ []) (CS24 ∷ CCZ014 ∷ []) (wp0062 c4)
+  q169 c4 = eqn (CCZ014 ∷ CS24 ∷ []) (CS24 ∷ CCZ014 ∷ []) (wp 62 c4)
   q170 : Ws → Eqn
   q170 c4 = eqn (CX23 ∷ CCZ014 ∷ []) (CCZ014 ∷ CX23 ∷ []) (lem-comm-CX23-CCZ014 (lit c4))
   q171 : Ws → Eqn
-  q171 c4 = eqn (CCZ014 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ014 ∷ []) (wp0063 c4)
+  q171 c4 = eqn (CCZ014 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ014 ∷ []) (wp 63 c4)
   q172 : Ws → Eqn
-  q172 c4 = eqn (CCZ014 ∷ CS34 ∷ []) (CS34 ∷ CCZ014 ∷ []) (wp0064 c4)
+  q172 c4 = eqn (CCZ014 ∷ CS34 ∷ []) (CS34 ∷ CCZ014 ∷ []) (wp 64 c4)
 
 -- cQ @0412233041: 7 steps
 lem-cQ-at0412233041 : Ws → ⟪ (CCZ234 ∷ CCZ014 ∷ []) ⟫ʷ ≈ ⟪ (CCZ014 ∷ CCZ234 ∷ []) ⟫ʷ
@@ -1280,13 +1280,13 @@ lem-cQ-at0412233041 c4 = derive (CCZ234 ∷ CCZ014 ∷ []) (CCZ014 ∷ CCZ234 �
 
 private
   q173 : Ws → Eqn
-  q173 c4 = eqn (CCZ024 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ014 ∷ []) (wp0551 c4)
+  q173 c4 = eqn (CCZ024 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ014 ∷ []) (wp 551 c4)
   q174 : Ws → Eqn
-  q174 c4 = eqn (Sw12 ∷ Toff401 ∷ []) (Toff402 ∷ Sw12 ∷ []) (wp0973 c4)
+  q174 c4 = eqn (Sw12 ∷ Toff401 ∷ []) (Toff402 ∷ Sw12 ∷ []) (wp 973 c4)
   q175 : Ws → Eqn
-  q175 c4 = eqn (CCZ014 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ024 ∷ []) (wp0553 c4)
+  q175 c4 = eqn (CCZ014 ∷ Sw12 ∷ []) (Sw12 ∷ CCZ024 ∷ []) (wp 553 c4)
   q176 : Ws → Eqn
-  q176 c4 = eqn (Sw12 ∷ Toff024 ∷ []) (Toff014 ∷ Sw12 ∷ []) (wp0972 c4)
+  q176 c4 = eqn (Sw12 ∷ Toff024 ∷ []) (Toff014 ∷ Sw12 ∷ []) (wp 972 c4)
   q177 : Ws → Eqn
   q177 c4 = eqn (Sw12 ∷ Bx4-03 ∷ []) (Bx4-03 ∷ Sw12 ∷ []) (lem-comm-SWAP12-BOX⟨4·03⟩ (lit c4))
 
@@ -1319,9 +1319,9 @@ lem-nat-SWbc-at0410213243 c4 = derive (Sw12 ∷ Bx4-0123 ∷ Sw12 ∷ []) (Bx4-0
 
 private
   q178 : Ws → Eqn
-  q178 c4 = eqn (CCZ024 ∷ []) (CS24 ∷ CX02 ∷ CS24⁻ ∷ CX02 ∷ CS04 ∷ []) (wp0296 c4)
+  q178 c4 = eqn (CCZ024 ∷ []) (CS24 ∷ CX02 ∷ CS24⁻ ∷ CX02 ∷ CS04 ∷ []) (wp 296 c4)
   q179 : Ws → Eqn
-  q179 c4 = eqn (CCZ134 ∷ CS24⁻ ∷ []) (CS24⁻ ∷ CCZ134 ∷ []) (wl1221 (lit c4))
+  q179 c4 = eqn (CCZ134 ∷ CS24⁻ ∷ []) (CS24⁻ ∷ CCZ134 ∷ []) (wl 1221 (lit c4))
 
 -- cQ @04103143: 7 steps
 lem-cQ-at04103143 : Ws → ⟪ (CCZ024 ∷ CCZ134 ∷ []) ⟫ʷ ≈ ⟪ (CCZ134 ∷ CCZ024 ∷ []) ⟫ʷ
@@ -1336,15 +1336,15 @@ lem-cQ-at04103143 c4 = derive (CCZ024 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ024 ∷ 
 
 private
   q180 : Ws → Eqn
-  q180 c4 = eqn (CCZ134 ∷ []) (CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ []) (wl0166 (lit c4))
+  q180 c4 = eqn (CCZ134 ∷ []) (CS34 ∷ CX13 ∷ CS34⁻ ∷ CX13 ∷ CS14 ∷ []) (wl 166 (lit c4))
   q181 : Ws → Eqn
-  q181 c4 = eqn (CCZ024 ∷ CS14 ∷ []) (CS14 ∷ CCZ024 ∷ []) (wp0034 c4)
+  q181 c4 = eqn (CCZ024 ∷ CS14 ∷ []) (CS14 ∷ CCZ024 ∷ []) (wp 34 c4)
   q182 : Ws → Eqn
   q182 c4 = eqn (CX13 ∷ CCZ024 ∷ []) (CCZ024 ∷ CX13 ∷ []) (lem-comm-CX13-CCZ024 (lit c4))
   q183 : Ws → Eqn
-  q183 c4 = eqn (CCZ024 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ024 ∷ []) (wp0035 c4)
+  q183 c4 = eqn (CCZ024 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ024 ∷ []) (wp 35 c4)
   q184 : Ws → Eqn
-  q184 c4 = eqn (CCZ024 ∷ CS34 ∷ []) (CS34 ∷ CCZ024 ∷ []) (wp0036 c4)
+  q184 c4 = eqn (CCZ024 ∷ CS34 ∷ []) (CS34 ∷ CCZ024 ∷ []) (wp 36 c4)
 
 -- cQ @04233042: 7 steps
 lem-cQ-at04233042 : Ws → ⟪ (CCZ134 ∷ CCZ024 ∷ []) ⟫ʷ ≈ ⟪ (CCZ024 ∷ CCZ134 ∷ []) ⟫ʷ
@@ -1359,9 +1359,9 @@ lem-cQ-at04233042 c4 = derive (CCZ134 ∷ CCZ024 ∷ []) (CCZ024 ∷ CCZ134 ∷ 
 
 private
   q185 : Ws → Eqn
-  q185 c4 = eqn (Sw03 ∷ Toff423 ∷ []) (Toff402 ∷ Sw03 ∷ []) (wp1158 c4)
+  q185 c4 = eqn (Sw03 ∷ Toff423 ∷ []) (Toff402 ∷ Sw03 ∷ []) (wp 1158 c4)
   q186 : Ws → Eqn
-  q186 c4 = eqn (Sw03 ∷ Toff204 ∷ []) (Toff234 ∷ Sw03 ∷ []) (wp1156 c4)
+  q186 c4 = eqn (Sw03 ∷ Toff204 ∷ []) (Toff234 ∷ Sw03 ∷ []) (wp 1156 c4)
 
 -- nat-SWbc @0412233041: 23 steps
 lem-nat-SWbc-at0412233041 : Ws → ⟪ (Sw03 ∷ Bx4-2301 ∷ Sw03 ∷ []) ⟫ʷ ≈ ⟪ (Bx4-2031 ∷ []) ⟫ʷ
@@ -1403,13 +1403,13 @@ lem-cQ-at041041 c4 = derive (CCZ024 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ024 ∷ []
 
 private
   q187 : Ws → Eqn
-  q187 c4 = eqn (CCZ034 ∷ []) (CS34 ∷ CX03 ∷ CS34⁻ ∷ CX03 ∷ CS04 ∷ []) (wp0231 c4)
+  q187 c4 = eqn (CCZ034 ∷ []) (CS34 ∷ CX03 ∷ CS34⁻ ∷ CX03 ∷ CS04 ∷ []) (wp 231 c4)
   q188 : Ws → Eqn
-  q188 c4 = eqn (CCZ124 ∷ CS04 ∷ []) (CS04 ∷ CCZ124 ∷ []) (wp0384 c4)
+  q188 c4 = eqn (CCZ124 ∷ CS04 ∷ []) (CS04 ∷ CCZ124 ∷ []) (wp 384 c4)
   q189 : Ws → Eqn
-  q189 c4 = eqn (CCZ124 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ124 ∷ []) (wl1399 (lit c4))
+  q189 c4 = eqn (CCZ124 ∷ CS34⁻ ∷ []) (CS34⁻ ∷ CCZ124 ∷ []) (wl 1399 (lit c4))
   q190 : Ws → Eqn
-  q190 c4 = eqn (CCZ124 ∷ CS34 ∷ []) (CS34 ∷ CCZ124 ∷ []) (wl0471 (lit c4))
+  q190 c4 = eqn (CCZ124 ∷ CS34 ∷ []) (CS34 ∷ CCZ124 ∷ []) (wl 471 (lit c4))
 
 -- cQ @0410233241: 7 steps
 lem-cQ-at0410233241 : Ws → ⟪ (CCZ034 ∷ CCZ124 ∷ []) ⟫ʷ ≈ ⟪ (CCZ124 ∷ CCZ034 ∷ []) ⟫ʷ
@@ -1424,13 +1424,13 @@ lem-cQ-at0410233241 c4 = derive (CCZ034 ∷ CCZ124 ∷ []) (CCZ124 ∷ CCZ034 �
 
 private
   q191 : Ws → Eqn
-  q191 c4 = eqn (CCZ124 ∷ []) (CS14 ∷ CX21 ∷ CS14⁻ ∷ CX21 ∷ CS24 ∷ []) (wl0271 (lit c4))
+  q191 c4 = eqn (CCZ124 ∷ []) (CS14 ∷ CX21 ∷ CS14⁻ ∷ CX21 ∷ CS24 ∷ []) (wl 271 (lit c4))
   q192 : Ws → Eqn
-  q192 c4 = eqn (CCZ034 ∷ CS24 ∷ []) (CS24 ∷ CCZ034 ∷ []) (wp0108 c4)
+  q192 c4 = eqn (CCZ034 ∷ CS24 ∷ []) (CS24 ∷ CCZ034 ∷ []) (wp 108 c4)
   q193 : Ws → Eqn
-  q193 c4 = eqn (CCZ034 ∷ CS14⁻ ∷ []) (CS14⁻ ∷ CCZ034 ∷ []) (wp0123 c4)
+  q193 c4 = eqn (CCZ034 ∷ CS14⁻ ∷ []) (CS14⁻ ∷ CCZ034 ∷ []) (wp 123 c4)
   q194 : Ws → Eqn
-  q194 c4 = eqn (CCZ034 ∷ CS14 ∷ []) (CS14 ∷ CCZ034 ∷ []) (wp0106 c4)
+  q194 c4 = eqn (CCZ034 ∷ CS14 ∷ []) (CS14 ∷ CCZ034 ∷ []) (wp 106 c4)
 
 -- cQ @0412213043: 7 steps
 lem-cQ-at0412213043 : Ws → ⟪ (CCZ124 ∷ CCZ034 ∷ []) ⟫ʷ ≈ ⟪ (CCZ034 ∷ CCZ124 ∷ []) ⟫ʷ
@@ -1445,9 +1445,9 @@ lem-cQ-at0412213043 c4 = derive (CCZ124 ∷ CCZ034 ∷ []) (CCZ034 ∷ CCZ124 �
 
 private
   q195 : Ws → Eqn
-  q195 c4 = eqn (CCZ134 ∷ []) (CS14 ∷ CX31 ∷ CS14⁻ ∷ CX31 ∷ CS34 ∷ []) (wl0831 (lit c4))
+  q195 c4 = eqn (CCZ134 ∷ []) (CS14 ∷ CX31 ∷ CS14⁻ ∷ CX31 ∷ CS34 ∷ []) (wl 831 (lit c4))
   q196 : Ws → Eqn
-  q196 c4 = eqn (CCZ024 ∷ CS14⁻ ∷ []) (CS14⁻ ∷ CCZ024 ∷ []) (wp0746 c4)
+  q196 c4 = eqn (CCZ024 ∷ CS14⁻ ∷ []) (CS14⁻ ∷ CCZ024 ∷ []) (wp 746 c4)
 
 -- cQ @0413213240: 7 steps
 lem-cQ-at0413213240 : Ws → ⟪ (CCZ134 ∷ CCZ024 ∷ []) ⟫ʷ ≈ ⟪ (CCZ024 ∷ CCZ134 ∷ []) ⟫ʷ
@@ -1473,11 +1473,11 @@ lem-cQ-at04233240 c4 = derive (CCZ134 ∷ CCZ024 ∷ []) (CCZ024 ∷ CCZ134 ∷ 
 
 private
   q197 : Ws → Eqn
-  q197 c4 = eqn (CCZ124 ∷ []) (CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ []) (wl0256 (lit c4))
+  q197 c4 = eqn (CCZ124 ∷ []) (CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ []) (wl 256 (lit c4))
   q198 : Ws → Eqn
   q198 c4 = eqn (CX12 ∷ CCZ034 ∷ []) (CCZ034 ∷ CX12 ∷ []) (lem-comm-CX12-CCZ034 (lit c4))
   q199 : Ws → Eqn
-  q199 c4 = eqn (CCZ034 ∷ CS24⁻ ∷ []) (CS24⁻ ∷ CCZ034 ∷ []) (wp0107 c4)
+  q199 c4 = eqn (CCZ034 ∷ CS24⁻ ∷ []) (CS24⁻ ∷ CCZ034 ∷ []) (wp 107 c4)
 
 -- cQ @0440: 7 steps
 lem-cQ-at0440 : Ws → ⟪ (CCZ124 ∷ CCZ034 ∷ []) ⟫ʷ ≈ ⟪ (CCZ034 ∷ CCZ124 ∷ []) ⟫ʷ
@@ -1492,9 +1492,9 @@ lem-cQ-at0440 c4 = derive (CCZ124 ∷ CCZ034 ∷ []) (CCZ034 ∷ CCZ124 ∷ [])
 
 private
   q200 : Ws → Eqn
-  q200 c4 = eqn (CCZ034 ∷ []) (CS04 ∷ CX30 ∷ CS04⁻ ∷ CX30 ∷ CS34 ∷ []) (wp1193 c4)
+  q200 c4 = eqn (CCZ034 ∷ []) (CS04 ∷ CX30 ∷ CS04⁻ ∷ CX30 ∷ CS34 ∷ []) (wp 1193 c4)
   q201 : Ws → Eqn
-  q201 c4 = eqn (CCZ124 ∷ CS04⁻ ∷ []) (CS04⁻ ∷ CCZ124 ∷ []) (wp0318 c4)
+  q201 c4 = eqn (CCZ124 ∷ CS04⁻ ∷ []) (CS04⁻ ∷ CCZ124 ∷ []) (wp 318 c4)
 
 -- cQ @0413203142: 7 steps
 lem-cQ-at0413203142 : Ws → ⟪ (CCZ034 ∷ CCZ124 ∷ []) ⟫ʷ ≈ ⟪ (CCZ124 ∷ CCZ034 ∷ []) ⟫ʷ
@@ -1509,13 +1509,13 @@ lem-cQ-at0413203142 c4 = derive (CCZ034 ∷ CCZ124 ∷ []) (CCZ124 ∷ CCZ034 �
 
 private
   q202 : Ws → Eqn
-  q202 c4 = eqn (CCZ124 ∷ []) (CS12 ∷ CX41 ∷ CS12⁻ ∷ CX41 ∷ CS24 ∷ []) (wl0334 (lit c4))
+  q202 c4 = eqn (CCZ124 ∷ []) (CS12 ∷ CX41 ∷ CS12⁻ ∷ CX41 ∷ CS24 ∷ []) (wl 334 (lit c4))
   q203 : Ws → Eqn
-  q203 c4 = eqn (CCZ023 ∷ CS24 ∷ []) (CS24 ∷ CCZ023 ∷ []) (wp0513 c4)
+  q203 c4 = eqn (CCZ023 ∷ CS24 ∷ []) (CS24 ∷ CCZ023 ∷ []) (wp 513 c4)
   q204 : Ws → Eqn
-  q204 c4 = eqn (CCZ023 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CCZ023 ∷ []) (wl0620 (lit c4))
+  q204 c4 = eqn (CCZ023 ∷ CS12⁻ ∷ []) (CS12⁻ ∷ CCZ023 ∷ []) (wl 620 (lit c4))
   q205 : Ws → Eqn
-  q205 c4 = eqn (CCZ023 ∷ CS12 ∷ []) (CS12 ∷ CCZ023 ∷ []) (wl0621 (lit c4))
+  q205 c4 = eqn (CCZ023 ∷ CS12 ∷ []) (CS12 ∷ CCZ023 ∷ []) (wl 621 (lit c4))
 
 -- cQ @02142140: 7 steps
 lem-cQ-at02142140 : Ws → ⟪ (CCZ124 ∷ CCZ023 ∷ []) ⟫ʷ ≈ ⟪ (CCZ023 ∷ CCZ124 ∷ []) ⟫ʷ
@@ -1552,13 +1552,13 @@ lem-cQ-at0412233140 c4 = derive (CCZ234 ∷ CCZ014 ∷ []) (CCZ014 ∷ CCZ234 �
 
 private
   q206 : Ws → Eqn
-  q206 c4 = eqn (CCZ124 ∷ Sw13 ∷ []) (Sw13 ∷ CCZ234 ∷ []) (wl1669 (lit c4))
+  q206 c4 = eqn (CCZ124 ∷ Sw13 ∷ []) (Sw13 ∷ CCZ234 ∷ []) (wl 1669 (lit c4))
   q207 : Ws → Eqn
-  q207 c4 = eqn (Sw13 ∷ Toff423 ∷ []) (Toff412 ∷ Sw13 ∷ []) (wl1670 (lit c4))
+  q207 c4 = eqn (Sw13 ∷ Toff423 ∷ []) (Toff412 ∷ Sw13 ∷ []) (wl 1670 (lit c4))
   q208 : Ws → Eqn
-  q208 c4 = eqn (CCZ234 ∷ Sw13 ∷ []) (Sw13 ∷ CCZ124 ∷ []) (wl1671 (lit c4))
+  q208 c4 = eqn (CCZ234 ∷ Sw13 ∷ []) (Sw13 ∷ CCZ124 ∷ []) (wl 1671 (lit c4))
   q209 : Ws → Eqn
-  q209 c4 = eqn (Sw13 ∷ Toff214 ∷ []) (Toff234 ∷ Sw13 ∷ []) (wl1672 (lit c4))
+  q209 c4 = eqn (Sw13 ∷ Toff214 ∷ []) (Toff234 ∷ Sw13 ∷ []) (wl 1672 (lit c4))
   q210 : Ws → Eqn
   q210 c4 = eqn (Sw13 ∷ Bx4-20 ∷ []) (Bx4-20 ∷ Sw13 ∷ []) (lem-comm-SWAP13-BOX⟨4·20⟩ (lit c4))
 
@@ -1613,9 +1613,9 @@ lem-cQ-at04122140 c4 = derive (CCZ124 ∷ CCZ034 ∷ []) (CCZ034 ∷ CCZ124 ∷ 
 
 private
   q211 : Ws → Eqn
-  q211 c4 = eqn (Sw13 ∷ Toff412 ∷ []) (Toff423 ∷ Sw13 ∷ []) (wl1680 (lit c4))
+  q211 c4 = eqn (Sw13 ∷ Toff412 ∷ []) (Toff423 ∷ Sw13 ∷ []) (wl 1680 (lit c4))
   q212 : Ws → Eqn
-  q212 c4 = eqn (Sw13 ∷ Toff234 ∷ []) (Toff214 ∷ Sw13 ∷ []) (wl1681 (lit c4))
+  q212 c4 = eqn (Sw13 ∷ Toff234 ∷ []) (Toff214 ∷ Sw13 ∷ []) (wl 1681 (lit c4))
 
 -- nat-SWbc @04122140: 23 steps
 lem-nat-SWbc-at04122140 : Ws → ⟪ (Sw13 ∷ Bx4-2130 ∷ Sw13 ∷ []) ⟫ʷ ≈ ⟪ (Bx4-2310 ∷ []) ⟫ʷ
@@ -1657,11 +1657,11 @@ lem-cQ-at0413203241 c4 = derive (CCZ034 ∷ CCZ124 ∷ []) (CCZ124 ∷ CCZ034 �
 
 private
   q213 : Ws → Eqn
-  q213 c4 = eqn (CCZ234 ∷ []) (CS24 ∷ CX32 ∷ CS24⁻ ∷ CX32 ∷ CS34 ∷ []) (wl0829 (lit c4))
+  q213 c4 = eqn (CCZ234 ∷ []) (CS24 ∷ CX32 ∷ CS24⁻ ∷ CX32 ∷ CS34 ∷ []) (wl 829 (lit c4))
   q214 : Ws → Eqn
   q214 c4 = eqn (CX32 ∷ CCZ014 ∷ []) (CCZ014 ∷ CX32 ∷ []) (lem-comm-CX32-CCZ014 (lit c4))
   q215 : Ws → Eqn
-  q215 c4 = eqn (CCZ014 ∷ CS24⁻ ∷ []) (CS24⁻ ∷ CCZ014 ∷ []) (wp0722 c4)
+  q215 c4 = eqn (CCZ014 ∷ CS24⁻ ∷ []) (CS24⁻ ∷ CCZ014 ∷ []) (wp 722 c4)
 
 -- cQ @04133140: 7 steps
 lem-cQ-at04133140 : Ws → ⟪ (CCZ234 ∷ CCZ014 ∷ []) ⟫ʷ ≈ ⟪ (CCZ014 ∷ CCZ234 ∷ []) ⟫ʷ

@@ -12,7 +12,8 @@
 module Examples.Groups.Clifford+CS.Five.WinInst where
 
 open import Examples.Groups.Clifford+CS.Completeness using (Complete)
-open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; Ws01 ; Ws02 ; Ws03 ; Ws04 ; Ws05 ; Ws06 ; Ws07 ; Ws08 ; Ws09 ; Ws10 ; Ws11 ; Ws12 ; Ws13 ; Ws14 ; Ws15 ; Ws16)
+open import Examples.Groups.Clifford+CS.Five.Chain using (refl)
+open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; WsL ; pleaf ; pnode)
 open import Examples.Groups.Clifford+CS.Five.WinInstL using (wsL)
 import Examples.Groups.Clifford+CS.Five.Wins.WP01 as WP01
 import Examples.Groups.Clifford+CS.Five.Wins.WP02 as WP02
@@ -23,1606 +24,6089 @@ import Examples.Groups.Clifford+CS.Five.Wins.WP06 as WP06
 import Examples.Groups.Clifford+CS.Five.Wins.WP07 as WP07
 import Examples.Groups.Clifford+CS.Five.Wins.WP08 as WP08
 
-ws01 : Complete 4 → Ws01
-ws01 c4 = record
-  { wp0001 = WP01.wp0001 c4
-  ; wp0002 = WP01.wp0002 c4
-  ; wp0003 = WP01.wp0003 c4
-  ; wp0004 = WP01.wp0004 c4
-  ; wp0005 = WP01.wp0005 c4
-  ; wp0006 = WP01.wp0006 c4
-  ; wp0007 = WP01.wp0007 c4
-  ; wp0008 = WP01.wp0008 c4
-  ; wp0009 = WP01.wp0009 c4
-  ; wp0010 = WP01.wp0010 c4
-  ; wp0011 = WP01.wp0011 c4
-  ; wp0012 = WP01.wp0012 c4
-  ; wp0013 = WP01.wp0013 c4
-  ; wp0014 = WP01.wp0014 c4
-  ; wp0015 = WP01.wp0015 c4
-  ; wp0016 = WP01.wp0016 c4
-  ; wp0017 = WP01.wp0017 c4
-  ; wp0018 = WP01.wp0018 c4
-  ; wp0019 = WP01.wp0019 c4
-  ; wp0020 = WP01.wp0020 c4
-  ; wp0021 = WP01.wp0021 c4
-  ; wp0022 = WP01.wp0022 c4
-  ; wp0023 = WP01.wp0023 c4
-  ; wp0024 = WP01.wp0024 c4
-  ; wp0025 = WP01.wp0025 c4
-  ; wp0026 = WP01.wp0026 c4
-  ; wp0027 = WP01.wp0027 c4
-  ; wp0028 = WP01.wp0028 c4
-  ; wp0029 = WP01.wp0029 c4
-  ; wp0030 = WP01.wp0030 c4
-  ; wp0031 = WP01.wp0031 c4
-  ; wp0032 = WP01.wp0032 c4
-  ; wp0033 = WP01.wp0033 c4
-  ; wp0034 = WP01.wp0034 c4
-  ; wp0035 = WP01.wp0035 c4
-  ; wp0036 = WP01.wp0036 c4
-  ; wp0037 = WP01.wp0037 c4
-  ; wp0038 = WP01.wp0038 c4
-  ; wp0039 = WP01.wp0039 c4
-  ; wp0040 = WP01.wp0040 c4
-  ; wp0041 = WP01.wp0041 c4
-  ; wp0042 = WP01.wp0042 c4
-  ; wp0043 = WP01.wp0043 c4
-  ; wp0044 = WP01.wp0044 c4
-  ; wp0045 = WP01.wp0045 c4
-  ; wp0046 = WP01.wp0046 c4
-  ; wp0047 = WP01.wp0047 c4
-  ; wp0048 = WP01.wp0048 c4
-  ; wp0049 = WP01.wp0049 c4
-  ; wp0050 = WP01.wp0050 c4
-  ; wp0051 = WP01.wp0051 c4
-  ; wp0052 = WP01.wp0052 c4
-  ; wp0053 = WP01.wp0053 c4
-  ; wp0054 = WP01.wp0054 c4
-  ; wp0055 = WP01.wp0055 c4
-  ; wp0056 = WP01.wp0056 c4
-  ; wp0057 = WP01.wp0057 c4
-  ; wp0058 = WP01.wp0058 c4
-  ; wp0059 = WP01.wp0059 c4
-  ; wp0060 = WP01.wp0060 c4
-  ; wp0061 = WP01.wp0061 c4
-  ; wp0062 = WP01.wp0062 c4
-  ; wp0063 = WP01.wp0063 c4
-  ; wp0064 = WP01.wp0064 c4
-  ; wp0065 = WP01.wp0065 c4
-  ; wp0066 = WP01.wp0066 c4
-  ; wp0067 = WP01.wp0067 c4
-  ; wp0068 = WP01.wp0068 c4
-  ; wp0069 = WP01.wp0069 c4
-  ; wp0070 = WP01.wp0070 c4
-  ; wp0071 = WP01.wp0071 c4
-  ; wp0072 = WP01.wp0072 c4
-  ; wp0073 = WP01.wp0073 c4
-  ; wp0074 = WP01.wp0074 c4
-  ; wp0075 = WP01.wp0075 c4
-  ; wp0076 = WP01.wp0076 c4
-  ; wp0077 = WP01.wp0077 c4
-  ; wp0078 = WP01.wp0078 c4
-  ; wp0079 = WP01.wp0079 c4
-  ; wp0080 = WP01.wp0080 c4
-  ; wp0081 = WP01.wp0081 c4
-  ; wp0082 = WP01.wp0082 c4
-  ; wp0083 = WP01.wp0083 c4
-  ; wp0084 = WP01.wp0084 c4
-  ; wp0085 = WP01.wp0085 c4
-  ; wp0086 = WP01.wp0086 c4
-  ; wp0087 = WP01.wp0087 c4
-  ; wp0088 = WP01.wp0088 c4
-  ; wp0089 = WP01.wp0089 c4
-  ; wp0090 = WP01.wp0090 c4
-  ; wp0091 = WP01.wp0091 c4
-  ; wp0092 = WP01.wp0092 c4
-  ; wp0093 = WP01.wp0093 c4
-  ; wp0094 = WP01.wp0094 c4
-  ; wp0095 = WP01.wp0095 c4
-  ; wp0096 = WP01.wp0096 c4
-  ; wp0097 = WP01.wp0097 c4
-  ; wp0098 = WP01.wp0098 c4
-  ; wp0099 = WP01.wp0099 c4
-  ; wp0100 = WP01.wp0100 c4
-  }
-
-ws02 : Complete 4 → Ws02
-ws02 c4 = record
-  { wp0101 = WP01.wp0101 c4
-  ; wp0102 = WP01.wp0102 c4
-  ; wp0103 = WP01.wp0103 c4
-  ; wp0104 = WP01.wp0104 c4
-  ; wp0105 = WP01.wp0105 c4
-  ; wp0106 = WP01.wp0106 c4
-  ; wp0107 = WP01.wp0107 c4
-  ; wp0108 = WP01.wp0108 c4
-  ; wp0109 = WP01.wp0109 c4
-  ; wp0110 = WP01.wp0110 c4
-  ; wp0111 = WP01.wp0111 c4
-  ; wp0112 = WP01.wp0112 c4
-  ; wp0113 = WP01.wp0113 c4
-  ; wp0114 = WP01.wp0114 c4
-  ; wp0115 = WP01.wp0115 c4
-  ; wp0116 = WP01.wp0116 c4
-  ; wp0117 = WP01.wp0117 c4
-  ; wp0118 = WP01.wp0118 c4
-  ; wp0119 = WP01.wp0119 c4
-  ; wp0120 = WP01.wp0120 c4
-  ; wp0121 = WP01.wp0121 c4
-  ; wp0122 = WP01.wp0122 c4
-  ; wp0123 = WP01.wp0123 c4
-  ; wp0124 = WP01.wp0124 c4
-  ; wp0125 = WP01.wp0125 c4
-  ; wp0126 = WP01.wp0126 c4
-  ; wp0127 = WP01.wp0127 c4
-  ; wp0128 = WP01.wp0128 c4
-  ; wp0129 = WP01.wp0129 c4
-  ; wp0130 = WP01.wp0130 c4
-  ; wp0131 = WP01.wp0131 c4
-  ; wp0132 = WP01.wp0132 c4
-  ; wp0133 = WP01.wp0133 c4
-  ; wp0134 = WP01.wp0134 c4
-  ; wp0135 = WP01.wp0135 c4
-  ; wp0136 = WP01.wp0136 c4
-  ; wp0137 = WP01.wp0137 c4
-  ; wp0138 = WP01.wp0138 c4
-  ; wp0139 = WP01.wp0139 c4
-  ; wp0140 = WP01.wp0140 c4
-  ; wp0141 = WP01.wp0141 c4
-  ; wp0142 = WP01.wp0142 c4
-  ; wp0143 = WP01.wp0143 c4
-  ; wp0144 = WP01.wp0144 c4
-  ; wp0145 = WP01.wp0145 c4
-  ; wp0146 = WP01.wp0146 c4
-  ; wp0147 = WP01.wp0147 c4
-  ; wp0148 = WP01.wp0148 c4
-  ; wp0149 = WP01.wp0149 c4
-  ; wp0150 = WP01.wp0150 c4
-  ; wp0151 = WP01.wp0151 c4
-  ; wp0152 = WP01.wp0152 c4
-  ; wp0153 = WP01.wp0153 c4
-  ; wp0154 = WP01.wp0154 c4
-  ; wp0155 = WP01.wp0155 c4
-  ; wp0156 = WP01.wp0156 c4
-  ; wp0157 = WP01.wp0157 c4
-  ; wp0158 = WP01.wp0158 c4
-  ; wp0159 = WP01.wp0159 c4
-  ; wp0160 = WP01.wp0160 c4
-  ; wp0161 = WP01.wp0161 c4
-  ; wp0162 = WP01.wp0162 c4
-  ; wp0163 = WP01.wp0163 c4
-  ; wp0164 = WP01.wp0164 c4
-  ; wp0165 = WP01.wp0165 c4
-  ; wp0166 = WP01.wp0166 c4
-  ; wp0167 = WP01.wp0167 c4
-  ; wp0168 = WP01.wp0168 c4
-  ; wp0169 = WP01.wp0169 c4
-  ; wp0170 = WP01.wp0170 c4
-  ; wp0171 = WP01.wp0171 c4
-  ; wp0172 = WP01.wp0172 c4
-  ; wp0173 = WP01.wp0173 c4
-  ; wp0174 = WP01.wp0174 c4
-  ; wp0175 = WP01.wp0175 c4
-  ; wp0176 = WP01.wp0176 c4
-  ; wp0177 = WP01.wp0177 c4
-  ; wp0178 = WP01.wp0178 c4
-  ; wp0179 = WP01.wp0179 c4
-  ; wp0180 = WP01.wp0180 c4
-  ; wp0181 = WP01.wp0181 c4
-  ; wp0182 = WP01.wp0182 c4
-  ; wp0183 = WP01.wp0183 c4
-  ; wp0184 = WP01.wp0184 c4
-  ; wp0185 = WP01.wp0185 c4
-  ; wp0186 = WP01.wp0186 c4
-  ; wp0187 = WP01.wp0187 c4
-  ; wp0188 = WP01.wp0188 c4
-  ; wp0189 = WP01.wp0189 c4
-  ; wp0190 = WP01.wp0190 c4
-  ; wp0191 = WP01.wp0191 c4
-  ; wp0192 = WP01.wp0192 c4
-  ; wp0193 = WP01.wp0193 c4
-  ; wp0194 = WP01.wp0194 c4
-  ; wp0195 = WP01.wp0195 c4
-  ; wp0196 = WP01.wp0196 c4
-  ; wp0197 = WP01.wp0197 c4
-  ; wp0198 = WP01.wp0198 c4
-  ; wp0199 = WP01.wp0199 c4
-  ; wp0200 = WP01.wp0200 c4
-  }
-
-ws03 : Complete 4 → Ws03
-ws03 c4 = record
-  { wp0201 = WP01.wp0201 c4
-  ; wp0202 = WP01.wp0202 c4
-  ; wp0203 = WP01.wp0203 c4
-  ; wp0204 = WP01.wp0204 c4
-  ; wp0205 = WP01.wp0205 c4
-  ; wp0206 = WP01.wp0206 c4
-  ; wp0207 = WP01.wp0207 c4
-  ; wp0208 = WP01.wp0208 c4
-  ; wp0209 = WP01.wp0209 c4
-  ; wp0210 = WP01.wp0210 c4
-  ; wp0211 = WP01.wp0211 c4
-  ; wp0212 = WP01.wp0212 c4
-  ; wp0213 = WP01.wp0213 c4
-  ; wp0214 = WP01.wp0214 c4
-  ; wp0215 = WP01.wp0215 c4
-  ; wp0216 = WP01.wp0216 c4
-  ; wp0217 = WP01.wp0217 c4
-  ; wp0218 = WP01.wp0218 c4
-  ; wp0219 = WP01.wp0219 c4
-  ; wp0220 = WP01.wp0220 c4
-  ; wp0221 = WP01.wp0221 c4
-  ; wp0222 = WP01.wp0222 c4
-  ; wp0223 = WP01.wp0223 c4
-  ; wp0224 = WP01.wp0224 c4
-  ; wp0225 = WP01.wp0225 c4
-  ; wp0226 = WP01.wp0226 c4
-  ; wp0227 = WP01.wp0227 c4
-  ; wp0228 = WP01.wp0228 c4
-  ; wp0229 = WP01.wp0229 c4
-  ; wp0230 = WP01.wp0230 c4
-  ; wp0231 = WP01.wp0231 c4
-  ; wp0232 = WP01.wp0232 c4
-  ; wp0233 = WP01.wp0233 c4
-  ; wp0234 = WP01.wp0234 c4
-  ; wp0235 = WP01.wp0235 c4
-  ; wp0236 = WP01.wp0236 c4
-  ; wp0237 = WP01.wp0237 c4
-  ; wp0238 = WP01.wp0238 c4
-  ; wp0239 = WP01.wp0239 c4
-  ; wp0240 = WP01.wp0240 c4
-  ; wp0241 = WP01.wp0241 c4
-  ; wp0242 = WP01.wp0242 c4
-  ; wp0243 = WP01.wp0243 c4
-  ; wp0244 = WP01.wp0244 c4
-  ; wp0245 = WP01.wp0245 c4
-  ; wp0246 = WP01.wp0246 c4
-  ; wp0247 = WP01.wp0247 c4
-  ; wp0248 = WP01.wp0248 c4
-  ; wp0249 = WP01.wp0249 c4
-  ; wp0250 = WP01.wp0250 c4
-  ; wp0251 = WP01.wp0251 c4
-  ; wp0252 = WP01.wp0252 c4
-  ; wp0253 = WP01.wp0253 c4
-  ; wp0254 = WP01.wp0254 c4
-  ; wp0255 = WP01.wp0255 c4
-  ; wp0256 = WP01.wp0256 c4
-  ; wp0257 = WP01.wp0257 c4
-  ; wp0258 = WP01.wp0258 c4
-  ; wp0259 = WP01.wp0259 c4
-  ; wp0260 = WP02.wp0260 c4
-  ; wp0261 = WP02.wp0261 c4
-  ; wp0262 = WP02.wp0262 c4
-  ; wp0263 = WP02.wp0263 c4
-  ; wp0264 = WP02.wp0264 c4
-  ; wp0265 = WP02.wp0265 c4
-  ; wp0266 = WP02.wp0266 c4
-  ; wp0267 = WP02.wp0267 c4
-  ; wp0268 = WP02.wp0268 c4
-  ; wp0269 = WP02.wp0269 c4
-  ; wp0270 = WP02.wp0270 c4
-  ; wp0271 = WP02.wp0271 c4
-  ; wp0272 = WP02.wp0272 c4
-  ; wp0273 = WP02.wp0273 c4
-  ; wp0274 = WP02.wp0274 c4
-  ; wp0275 = WP02.wp0275 c4
-  ; wp0276 = WP02.wp0276 c4
-  ; wp0277 = WP02.wp0277 c4
-  ; wp0278 = WP02.wp0278 c4
-  ; wp0279 = WP02.wp0279 c4
-  ; wp0280 = WP02.wp0280 c4
-  ; wp0281 = WP02.wp0281 c4
-  ; wp0282 = WP02.wp0282 c4
-  ; wp0283 = WP02.wp0283 c4
-  ; wp0284 = WP02.wp0284 c4
-  ; wp0285 = WP02.wp0285 c4
-  ; wp0286 = WP02.wp0286 c4
-  ; wp0287 = WP02.wp0287 c4
-  ; wp0288 = WP02.wp0288 c4
-  ; wp0289 = WP02.wp0289 c4
-  ; wp0290 = WP02.wp0290 c4
-  ; wp0291 = WP02.wp0291 c4
-  ; wp0292 = WP02.wp0292 c4
-  ; wp0293 = WP02.wp0293 c4
-  ; wp0294 = WP02.wp0294 c4
-  ; wp0295 = WP02.wp0295 c4
-  ; wp0296 = WP02.wp0296 c4
-  ; wp0297 = WP02.wp0297 c4
-  ; wp0298 = WP02.wp0298 c4
-  ; wp0299 = WP02.wp0299 c4
-  ; wp0300 = WP02.wp0300 c4
-  }
-
-ws04 : Complete 4 → Ws04
-ws04 c4 = record
-  { wp0301 = WP02.wp0301 c4
-  ; wp0302 = WP02.wp0302 c4
-  ; wp0303 = WP02.wp0303 c4
-  ; wp0304 = WP02.wp0304 c4
-  ; wp0305 = WP02.wp0305 c4
-  ; wp0306 = WP02.wp0306 c4
-  ; wp0307 = WP02.wp0307 c4
-  ; wp0308 = WP02.wp0308 c4
-  ; wp0309 = WP02.wp0309 c4
-  ; wp0310 = WP02.wp0310 c4
-  ; wp0311 = WP02.wp0311 c4
-  ; wp0312 = WP02.wp0312 c4
-  ; wp0313 = WP02.wp0313 c4
-  ; wp0314 = WP02.wp0314 c4
-  ; wp0315 = WP02.wp0315 c4
-  ; wp0316 = WP02.wp0316 c4
-  ; wp0317 = WP02.wp0317 c4
-  ; wp0318 = WP02.wp0318 c4
-  ; wp0319 = WP02.wp0319 c4
-  ; wp0320 = WP02.wp0320 c4
-  ; wp0321 = WP02.wp0321 c4
-  ; wp0322 = WP02.wp0322 c4
-  ; wp0323 = WP02.wp0323 c4
-  ; wp0324 = WP02.wp0324 c4
-  ; wp0325 = WP02.wp0325 c4
-  ; wp0326 = WP02.wp0326 c4
-  ; wp0327 = WP02.wp0327 c4
-  ; wp0328 = WP02.wp0328 c4
-  ; wp0329 = WP02.wp0329 c4
-  ; wp0330 = WP02.wp0330 c4
-  ; wp0331 = WP02.wp0331 c4
-  ; wp0332 = WP02.wp0332 c4
-  ; wp0333 = WP02.wp0333 c4
-  ; wp0334 = WP02.wp0334 c4
-  ; wp0335 = WP02.wp0335 c4
-  ; wp0336 = WP02.wp0336 c4
-  ; wp0337 = WP02.wp0337 c4
-  ; wp0338 = WP02.wp0338 c4
-  ; wp0339 = WP02.wp0339 c4
-  ; wp0340 = WP02.wp0340 c4
-  ; wp0341 = WP02.wp0341 c4
-  ; wp0342 = WP02.wp0342 c4
-  ; wp0343 = WP02.wp0343 c4
-  ; wp0344 = WP02.wp0344 c4
-  ; wp0345 = WP02.wp0345 c4
-  ; wp0346 = WP02.wp0346 c4
-  ; wp0347 = WP02.wp0347 c4
-  ; wp0348 = WP02.wp0348 c4
-  ; wp0349 = WP02.wp0349 c4
-  ; wp0350 = WP02.wp0350 c4
-  ; wp0351 = WP02.wp0351 c4
-  ; wp0352 = WP02.wp0352 c4
-  ; wp0353 = WP02.wp0353 c4
-  ; wp0354 = WP02.wp0354 c4
-  ; wp0355 = WP02.wp0355 c4
-  ; wp0356 = WP02.wp0356 c4
-  ; wp0357 = WP02.wp0357 c4
-  ; wp0358 = WP02.wp0358 c4
-  ; wp0359 = WP02.wp0359 c4
-  ; wp0360 = WP02.wp0360 c4
-  ; wp0361 = WP02.wp0361 c4
-  ; wp0362 = WP02.wp0362 c4
-  ; wp0363 = WP02.wp0363 c4
-  ; wp0364 = WP02.wp0364 c4
-  ; wp0365 = WP02.wp0365 c4
-  ; wp0366 = WP02.wp0366 c4
-  ; wp0367 = WP02.wp0367 c4
-  ; wp0368 = WP02.wp0368 c4
-  ; wp0369 = WP02.wp0369 c4
-  ; wp0370 = WP02.wp0370 c4
-  ; wp0371 = WP02.wp0371 c4
-  ; wp0372 = WP02.wp0372 c4
-  ; wp0373 = WP02.wp0373 c4
-  ; wp0374 = WP02.wp0374 c4
-  ; wp0375 = WP02.wp0375 c4
-  ; wp0376 = WP02.wp0376 c4
-  ; wp0377 = WP02.wp0377 c4
-  ; wp0378 = WP02.wp0378 c4
-  ; wp0379 = WP02.wp0379 c4
-  ; wp0380 = WP02.wp0380 c4
-  ; wp0381 = WP02.wp0381 c4
-  ; wp0382 = WP02.wp0382 c4
-  ; wp0383 = WP02.wp0383 c4
-  ; wp0384 = WP02.wp0384 c4
-  ; wp0385 = WP02.wp0385 c4
-  ; wp0386 = WP02.wp0386 c4
-  ; wp0387 = WP02.wp0387 c4
-  ; wp0388 = WP02.wp0388 c4
-  ; wp0389 = WP02.wp0389 c4
-  ; wp0390 = WP02.wp0390 c4
-  ; wp0391 = WP02.wp0391 c4
-  ; wp0392 = WP02.wp0392 c4
-  ; wp0393 = WP02.wp0393 c4
-  ; wp0394 = WP02.wp0394 c4
-  ; wp0395 = WP02.wp0395 c4
-  ; wp0396 = WP02.wp0396 c4
-  ; wp0397 = WP02.wp0397 c4
-  ; wp0398 = WP02.wp0398 c4
-  ; wp0399 = WP02.wp0399 c4
-  ; wp0400 = WP02.wp0400 c4
-  }
-
-ws05 : Complete 4 → Ws05
-ws05 c4 = record
-  { wp0401 = WP02.wp0401 c4
-  ; wp0402 = WP02.wp0402 c4
-  ; wp0403 = WP02.wp0403 c4
-  ; wp0404 = WP02.wp0404 c4
-  ; wp0405 = WP02.wp0405 c4
-  ; wp0406 = WP02.wp0406 c4
-  ; wp0407 = WP02.wp0407 c4
-  ; wp0408 = WP02.wp0408 c4
-  ; wp0409 = WP02.wp0409 c4
-  ; wp0410 = WP02.wp0410 c4
-  ; wp0411 = WP02.wp0411 c4
-  ; wp0412 = WP02.wp0412 c4
-  ; wp0413 = WP02.wp0413 c4
-  ; wp0414 = WP02.wp0414 c4
-  ; wp0415 = WP02.wp0415 c4
-  ; wp0416 = WP02.wp0416 c4
-  ; wp0417 = WP02.wp0417 c4
-  ; wp0418 = WP02.wp0418 c4
-  ; wp0419 = WP02.wp0419 c4
-  ; wp0420 = WP02.wp0420 c4
-  ; wp0421 = WP02.wp0421 c4
-  ; wp0422 = WP02.wp0422 c4
-  ; wp0423 = WP02.wp0423 c4
-  ; wp0424 = WP02.wp0424 c4
-  ; wp0425 = WP02.wp0425 c4
-  ; wp0426 = WP02.wp0426 c4
-  ; wp0427 = WP02.wp0427 c4
-  ; wp0428 = WP02.wp0428 c4
-  ; wp0429 = WP02.wp0429 c4
-  ; wp0430 = WP02.wp0430 c4
-  ; wp0431 = WP02.wp0431 c4
-  ; wp0432 = WP02.wp0432 c4
-  ; wp0433 = WP02.wp0433 c4
-  ; wp0434 = WP02.wp0434 c4
-  ; wp0435 = WP02.wp0435 c4
-  ; wp0436 = WP02.wp0436 c4
-  ; wp0437 = WP02.wp0437 c4
-  ; wp0438 = WP02.wp0438 c4
-  ; wp0439 = WP02.wp0439 c4
-  ; wp0440 = WP02.wp0440 c4
-  ; wp0441 = WP02.wp0441 c4
-  ; wp0442 = WP02.wp0442 c4
-  ; wp0443 = WP02.wp0443 c4
-  ; wp0444 = WP02.wp0444 c4
-  ; wp0445 = WP02.wp0445 c4
-  ; wp0446 = WP02.wp0446 c4
-  ; wp0447 = WP02.wp0447 c4
-  ; wp0448 = WP02.wp0448 c4
-  ; wp0449 = WP02.wp0449 c4
-  ; wp0450 = WP02.wp0450 c4
-  ; wp0451 = WP02.wp0451 c4
-  ; wp0452 = WP02.wp0452 c4
-  ; wp0453 = WP02.wp0453 c4
-  ; wp0454 = WP02.wp0454 c4
-  ; wp0455 = WP02.wp0455 c4
-  ; wp0456 = WP02.wp0456 c4
-  ; wp0457 = WP02.wp0457 c4
-  ; wp0458 = WP02.wp0458 c4
-  ; wp0459 = WP02.wp0459 c4
-  ; wp0460 = WP02.wp0460 c4
-  ; wp0461 = WP02.wp0461 c4
-  ; wp0462 = WP02.wp0462 c4
-  ; wp0463 = WP02.wp0463 c4
-  ; wp0464 = WP02.wp0464 c4
-  ; wp0465 = WP02.wp0465 c4
-  ; wp0466 = WP02.wp0466 c4
-  ; wp0467 = WP02.wp0467 c4
-  ; wp0468 = WP02.wp0468 c4
-  ; wp0469 = WP02.wp0469 c4
-  ; wp0470 = WP02.wp0470 c4
-  ; wp0471 = WP02.wp0471 c4
-  ; wp0472 = WP02.wp0472 c4
-  ; wp0473 = WP02.wp0473 c4
-  ; wp0474 = WP03.wp0474 c4
-  ; wp0475 = WP03.wp0475 c4
-  ; wp0476 = WP03.wp0476 c4
-  ; wp0477 = WP03.wp0477 c4
-  ; wp0478 = WP03.wp0478 c4
-  ; wp0479 = WP03.wp0479 c4
-  ; wp0480 = WP03.wp0480 c4
-  ; wp0481 = WP03.wp0481 c4
-  ; wp0482 = WP03.wp0482 c4
-  ; wp0483 = WP03.wp0483 c4
-  ; wp0484 = WP03.wp0484 c4
-  ; wp0485 = WP03.wp0485 c4
-  ; wp0486 = WP03.wp0486 c4
-  ; wp0487 = WP03.wp0487 c4
-  ; wp0488 = WP03.wp0488 c4
-  ; wp0489 = WP03.wp0489 c4
-  ; wp0490 = WP03.wp0490 c4
-  ; wp0491 = WP03.wp0491 c4
-  ; wp0492 = WP03.wp0492 c4
-  ; wp0493 = WP03.wp0493 c4
-  ; wp0494 = WP03.wp0494 c4
-  ; wp0495 = WP03.wp0495 c4
-  ; wp0496 = WP03.wp0496 c4
-  ; wp0497 = WP03.wp0497 c4
-  ; wp0498 = WP03.wp0498 c4
-  ; wp0499 = WP03.wp0499 c4
-  ; wp0500 = WP03.wp0500 c4
-  }
-
-ws06 : Complete 4 → Ws06
-ws06 c4 = record
-  { wp0501 = WP03.wp0501 c4
-  ; wp0502 = WP03.wp0502 c4
-  ; wp0503 = WP03.wp0503 c4
-  ; wp0504 = WP03.wp0504 c4
-  ; wp0505 = WP03.wp0505 c4
-  ; wp0506 = WP03.wp0506 c4
-  ; wp0507 = WP03.wp0507 c4
-  ; wp0508 = WP03.wp0508 c4
-  ; wp0509 = WP03.wp0509 c4
-  ; wp0510 = WP03.wp0510 c4
-  ; wp0511 = WP03.wp0511 c4
-  ; wp0512 = WP03.wp0512 c4
-  ; wp0513 = WP03.wp0513 c4
-  ; wp0514 = WP03.wp0514 c4
-  ; wp0515 = WP03.wp0515 c4
-  ; wp0516 = WP03.wp0516 c4
-  ; wp0517 = WP03.wp0517 c4
-  ; wp0518 = WP03.wp0518 c4
-  ; wp0519 = WP03.wp0519 c4
-  ; wp0520 = WP03.wp0520 c4
-  ; wp0521 = WP03.wp0521 c4
-  ; wp0522 = WP03.wp0522 c4
-  ; wp0523 = WP03.wp0523 c4
-  ; wp0524 = WP03.wp0524 c4
-  ; wp0525 = WP03.wp0525 c4
-  ; wp0526 = WP03.wp0526 c4
-  ; wp0527 = WP03.wp0527 c4
-  ; wp0528 = WP03.wp0528 c4
-  ; wp0529 = WP03.wp0529 c4
-  ; wp0530 = WP03.wp0530 c4
-  ; wp0531 = WP03.wp0531 c4
-  ; wp0532 = WP03.wp0532 c4
-  ; wp0533 = WP03.wp0533 c4
-  ; wp0534 = WP03.wp0534 c4
-  ; wp0535 = WP03.wp0535 c4
-  ; wp0536 = WP03.wp0536 c4
-  ; wp0537 = WP03.wp0537 c4
-  ; wp0538 = WP03.wp0538 c4
-  ; wp0539 = WP03.wp0539 c4
-  ; wp0540 = WP03.wp0540 c4
-  ; wp0541 = WP03.wp0541 c4
-  ; wp0542 = WP03.wp0542 c4
-  ; wp0543 = WP03.wp0543 c4
-  ; wp0544 = WP03.wp0544 c4
-  ; wp0545 = WP03.wp0545 c4
-  ; wp0546 = WP03.wp0546 c4
-  ; wp0547 = WP03.wp0547 c4
-  ; wp0548 = WP03.wp0548 c4
-  ; wp0549 = WP03.wp0549 c4
-  ; wp0550 = WP03.wp0550 c4
-  ; wp0551 = WP03.wp0551 c4
-  ; wp0552 = WP03.wp0552 c4
-  ; wp0553 = WP03.wp0553 c4
-  ; wp0554 = WP03.wp0554 c4
-  ; wp0555 = WP03.wp0555 c4
-  ; wp0556 = WP03.wp0556 c4
-  ; wp0557 = WP03.wp0557 c4
-  ; wp0558 = WP03.wp0558 c4
-  ; wp0559 = WP03.wp0559 c4
-  ; wp0560 = WP03.wp0560 c4
-  ; wp0561 = WP03.wp0561 c4
-  ; wp0562 = WP03.wp0562 c4
-  ; wp0563 = WP03.wp0563 c4
-  ; wp0564 = WP03.wp0564 c4
-  ; wp0565 = WP03.wp0565 c4
-  ; wp0566 = WP03.wp0566 c4
-  ; wp0567 = WP03.wp0567 c4
-  ; wp0568 = WP03.wp0568 c4
-  ; wp0569 = WP03.wp0569 c4
-  ; wp0570 = WP03.wp0570 c4
-  ; wp0571 = WP03.wp0571 c4
-  ; wp0572 = WP03.wp0572 c4
-  ; wp0573 = WP03.wp0573 c4
-  ; wp0574 = WP03.wp0574 c4
-  ; wp0575 = WP03.wp0575 c4
-  ; wp0576 = WP03.wp0576 c4
-  ; wp0577 = WP03.wp0577 c4
-  ; wp0578 = WP03.wp0578 c4
-  ; wp0579 = WP03.wp0579 c4
-  ; wp0580 = WP03.wp0580 c4
-  ; wp0581 = WP03.wp0581 c4
-  ; wp0582 = WP03.wp0582 c4
-  ; wp0583 = WP03.wp0583 c4
-  ; wp0584 = WP03.wp0584 c4
-  ; wp0585 = WP03.wp0585 c4
-  ; wp0586 = WP03.wp0586 c4
-  ; wp0587 = WP03.wp0587 c4
-  ; wp0588 = WP03.wp0588 c4
-  ; wp0589 = WP03.wp0589 c4
-  ; wp0590 = WP03.wp0590 c4
-  ; wp0591 = WP03.wp0591 c4
-  ; wp0592 = WP03.wp0592 c4
-  ; wp0593 = WP03.wp0593 c4
-  ; wp0594 = WP03.wp0594 c4
-  ; wp0595 = WP03.wp0595 c4
-  ; wp0596 = WP03.wp0596 c4
-  ; wp0597 = WP03.wp0597 c4
-  ; wp0598 = WP03.wp0598 c4
-  ; wp0599 = WP03.wp0599 c4
-  ; wp0600 = WP03.wp0600 c4
-  }
-
-ws07 : Complete 4 → Ws07
-ws07 c4 = record
-  { wp0601 = WP03.wp0601 c4
-  ; wp0602 = WP03.wp0602 c4
-  ; wp0603 = WP03.wp0603 c4
-  ; wp0604 = WP03.wp0604 c4
-  ; wp0605 = WP03.wp0605 c4
-  ; wp0606 = WP03.wp0606 c4
-  ; wp0607 = WP03.wp0607 c4
-  ; wp0608 = WP03.wp0608 c4
-  ; wp0609 = WP03.wp0609 c4
-  ; wp0610 = WP03.wp0610 c4
-  ; wp0611 = WP03.wp0611 c4
-  ; wp0612 = WP03.wp0612 c4
-  ; wp0613 = WP03.wp0613 c4
-  ; wp0614 = WP03.wp0614 c4
-  ; wp0615 = WP03.wp0615 c4
-  ; wp0616 = WP03.wp0616 c4
-  ; wp0617 = WP03.wp0617 c4
-  ; wp0618 = WP03.wp0618 c4
-  ; wp0619 = WP03.wp0619 c4
-  ; wp0620 = WP03.wp0620 c4
-  ; wp0621 = WP03.wp0621 c4
-  ; wp0622 = WP03.wp0622 c4
-  ; wp0623 = WP03.wp0623 c4
-  ; wp0624 = WP03.wp0624 c4
-  ; wp0625 = WP03.wp0625 c4
-  ; wp0626 = WP03.wp0626 c4
-  ; wp0627 = WP03.wp0627 c4
-  ; wp0628 = WP03.wp0628 c4
-  ; wp0629 = WP03.wp0629 c4
-  ; wp0630 = WP03.wp0630 c4
-  ; wp0631 = WP03.wp0631 c4
-  ; wp0632 = WP03.wp0632 c4
-  ; wp0633 = WP03.wp0633 c4
-  ; wp0634 = WP03.wp0634 c4
-  ; wp0635 = WP03.wp0635 c4
-  ; wp0636 = WP03.wp0636 c4
-  ; wp0637 = WP03.wp0637 c4
-  ; wp0638 = WP03.wp0638 c4
-  ; wp0639 = WP03.wp0639 c4
-  ; wp0640 = WP03.wp0640 c4
-  ; wp0641 = WP03.wp0641 c4
-  ; wp0642 = WP03.wp0642 c4
-  ; wp0643 = WP03.wp0643 c4
-  ; wp0644 = WP03.wp0644 c4
-  ; wp0645 = WP03.wp0645 c4
-  ; wp0646 = WP03.wp0646 c4
-  ; wp0647 = WP03.wp0647 c4
-  ; wp0648 = WP03.wp0648 c4
-  ; wp0649 = WP03.wp0649 c4
-  ; wp0650 = WP03.wp0650 c4
-  ; wp0651 = WP03.wp0651 c4
-  ; wp0652 = WP03.wp0652 c4
-  ; wp0653 = WP03.wp0653 c4
-  ; wp0654 = WP03.wp0654 c4
-  ; wp0655 = WP03.wp0655 c4
-  ; wp0656 = WP03.wp0656 c4
-  ; wp0657 = WP03.wp0657 c4
-  ; wp0658 = WP03.wp0658 c4
-  ; wp0659 = WP03.wp0659 c4
-  ; wp0660 = WP03.wp0660 c4
-  ; wp0661 = WP03.wp0661 c4
-  ; wp0662 = WP03.wp0662 c4
-  ; wp0663 = WP03.wp0663 c4
-  ; wp0664 = WP03.wp0664 c4
-  ; wp0665 = WP03.wp0665 c4
-  ; wp0666 = WP03.wp0666 c4
-  ; wp0667 = WP03.wp0667 c4
-  ; wp0668 = WP03.wp0668 c4
-  ; wp0669 = WP03.wp0669 c4
-  ; wp0670 = WP03.wp0670 c4
-  ; wp0671 = WP03.wp0671 c4
-  ; wp0672 = WP03.wp0672 c4
-  ; wp0673 = WP03.wp0673 c4
-  ; wp0674 = WP03.wp0674 c4
-  ; wp0675 = WP04.wp0675 c4
-  ; wp0676 = WP04.wp0676 c4
-  ; wp0677 = WP04.wp0677 c4
-  ; wp0678 = WP04.wp0678 c4
-  ; wp0679 = WP04.wp0679 c4
-  ; wp0680 = WP04.wp0680 c4
-  ; wp0681 = WP04.wp0681 c4
-  ; wp0682 = WP04.wp0682 c4
-  ; wp0683 = WP04.wp0683 c4
-  ; wp0684 = WP04.wp0684 c4
-  ; wp0685 = WP04.wp0685 c4
-  ; wp0686 = WP04.wp0686 c4
-  ; wp0687 = WP04.wp0687 c4
-  ; wp0688 = WP04.wp0688 c4
-  ; wp0689 = WP04.wp0689 c4
-  ; wp0690 = WP04.wp0690 c4
-  ; wp0691 = WP04.wp0691 c4
-  ; wp0692 = WP04.wp0692 c4
-  ; wp0693 = WP04.wp0693 c4
-  ; wp0694 = WP04.wp0694 c4
-  ; wp0695 = WP04.wp0695 c4
-  ; wp0696 = WP04.wp0696 c4
-  ; wp0697 = WP04.wp0697 c4
-  ; wp0698 = WP04.wp0698 c4
-  ; wp0699 = WP04.wp0699 c4
-  ; wp0700 = WP04.wp0700 c4
-  }
-
-ws08 : Complete 4 → Ws08
-ws08 c4 = record
-  { wp0701 = WP04.wp0701 c4
-  ; wp0702 = WP04.wp0702 c4
-  ; wp0703 = WP04.wp0703 c4
-  ; wp0704 = WP04.wp0704 c4
-  ; wp0705 = WP04.wp0705 c4
-  ; wp0706 = WP04.wp0706 c4
-  ; wp0707 = WP04.wp0707 c4
-  ; wp0708 = WP04.wp0708 c4
-  ; wp0709 = WP04.wp0709 c4
-  ; wp0710 = WP04.wp0710 c4
-  ; wp0711 = WP04.wp0711 c4
-  ; wp0712 = WP04.wp0712 c4
-  ; wp0713 = WP04.wp0713 c4
-  ; wp0714 = WP04.wp0714 c4
-  ; wp0715 = WP04.wp0715 c4
-  ; wp0716 = WP04.wp0716 c4
-  ; wp0717 = WP04.wp0717 c4
-  ; wp0718 = WP04.wp0718 c4
-  ; wp0719 = WP04.wp0719 c4
-  ; wp0720 = WP04.wp0720 c4
-  ; wp0721 = WP04.wp0721 c4
-  ; wp0722 = WP04.wp0722 c4
-  ; wp0723 = WP04.wp0723 c4
-  ; wp0724 = WP04.wp0724 c4
-  ; wp0725 = WP04.wp0725 c4
-  ; wp0726 = WP04.wp0726 c4
-  ; wp0727 = WP04.wp0727 c4
-  ; wp0728 = WP04.wp0728 c4
-  ; wp0729 = WP04.wp0729 c4
-  ; wp0730 = WP04.wp0730 c4
-  ; wp0731 = WP04.wp0731 c4
-  ; wp0732 = WP04.wp0732 c4
-  ; wp0733 = WP04.wp0733 c4
-  ; wp0734 = WP04.wp0734 c4
-  ; wp0735 = WP04.wp0735 c4
-  ; wp0736 = WP04.wp0736 c4
-  ; wp0737 = WP04.wp0737 c4
-  ; wp0738 = WP04.wp0738 c4
-  ; wp0739 = WP04.wp0739 c4
-  ; wp0740 = WP04.wp0740 c4
-  ; wp0741 = WP04.wp0741 c4
-  ; wp0742 = WP04.wp0742 c4
-  ; wp0743 = WP04.wp0743 c4
-  ; wp0744 = WP04.wp0744 c4
-  ; wp0745 = WP04.wp0745 c4
-  ; wp0746 = WP04.wp0746 c4
-  ; wp0747 = WP04.wp0747 c4
-  ; wp0748 = WP04.wp0748 c4
-  ; wp0749 = WP04.wp0749 c4
-  ; wp0750 = WP04.wp0750 c4
-  ; wp0751 = WP04.wp0751 c4
-  ; wp0752 = WP04.wp0752 c4
-  ; wp0753 = WP04.wp0753 c4
-  ; wp0754 = WP04.wp0754 c4
-  ; wp0755 = WP04.wp0755 c4
-  ; wp0756 = WP04.wp0756 c4
-  ; wp0757 = WP04.wp0757 c4
-  ; wp0758 = WP04.wp0758 c4
-  ; wp0759 = WP04.wp0759 c4
-  ; wp0760 = WP04.wp0760 c4
-  ; wp0761 = WP04.wp0761 c4
-  ; wp0762 = WP04.wp0762 c4
-  ; wp0763 = WP04.wp0763 c4
-  ; wp0764 = WP04.wp0764 c4
-  ; wp0765 = WP04.wp0765 c4
-  ; wp0766 = WP04.wp0766 c4
-  ; wp0767 = WP04.wp0767 c4
-  ; wp0768 = WP04.wp0768 c4
-  ; wp0769 = WP04.wp0769 c4
-  ; wp0770 = WP04.wp0770 c4
-  ; wp0771 = WP04.wp0771 c4
-  ; wp0772 = WP04.wp0772 c4
-  ; wp0773 = WP04.wp0773 c4
-  ; wp0774 = WP04.wp0774 c4
-  ; wp0775 = WP04.wp0775 c4
-  ; wp0776 = WP04.wp0776 c4
-  ; wp0777 = WP04.wp0777 c4
-  ; wp0778 = WP04.wp0778 c4
-  ; wp0779 = WP04.wp0779 c4
-  ; wp0780 = WP04.wp0780 c4
-  ; wp0781 = WP04.wp0781 c4
-  ; wp0782 = WP04.wp0782 c4
-  ; wp0783 = WP04.wp0783 c4
-  ; wp0784 = WP04.wp0784 c4
-  ; wp0785 = WP04.wp0785 c4
-  ; wp0786 = WP04.wp0786 c4
-  ; wp0787 = WP04.wp0787 c4
-  ; wp0788 = WP04.wp0788 c4
-  ; wp0789 = WP04.wp0789 c4
-  ; wp0790 = WP04.wp0790 c4
-  ; wp0791 = WP04.wp0791 c4
-  ; wp0792 = WP04.wp0792 c4
-  ; wp0793 = WP04.wp0793 c4
-  ; wp0794 = WP04.wp0794 c4
-  ; wp0795 = WP04.wp0795 c4
-  ; wp0796 = WP04.wp0796 c4
-  ; wp0797 = WP04.wp0797 c4
-  ; wp0798 = WP04.wp0798 c4
-  ; wp0799 = WP04.wp0799 c4
-  ; wp0800 = WP04.wp0800 c4
-  }
-
-ws09 : Complete 4 → Ws09
-ws09 c4 = record
-  { wp0801 = WP04.wp0801 c4
-  ; wp0802 = WP04.wp0802 c4
-  ; wp0803 = WP04.wp0803 c4
-  ; wp0804 = WP04.wp0804 c4
-  ; wp0805 = WP04.wp0805 c4
-  ; wp0806 = WP04.wp0806 c4
-  ; wp0807 = WP04.wp0807 c4
-  ; wp0808 = WP04.wp0808 c4
-  ; wp0809 = WP04.wp0809 c4
-  ; wp0810 = WP04.wp0810 c4
-  ; wp0811 = WP04.wp0811 c4
-  ; wp0812 = WP04.wp0812 c4
-  ; wp0813 = WP04.wp0813 c4
-  ; wp0814 = WP04.wp0814 c4
-  ; wp0815 = WP04.wp0815 c4
-  ; wp0816 = WP04.wp0816 c4
-  ; wp0817 = WP04.wp0817 c4
-  ; wp0818 = WP04.wp0818 c4
-  ; wp0819 = WP04.wp0819 c4
-  ; wp0820 = WP04.wp0820 c4
-  ; wp0821 = WP04.wp0821 c4
-  ; wp0822 = WP04.wp0822 c4
-  ; wp0823 = WP04.wp0823 c4
-  ; wp0824 = WP04.wp0824 c4
-  ; wp0825 = WP04.wp0825 c4
-  ; wp0826 = WP04.wp0826 c4
-  ; wp0827 = WP04.wp0827 c4
-  ; wp0828 = WP04.wp0828 c4
-  ; wp0829 = WP04.wp0829 c4
-  ; wp0830 = WP04.wp0830 c4
-  ; wp0831 = WP04.wp0831 c4
-  ; wp0832 = WP04.wp0832 c4
-  ; wp0833 = WP04.wp0833 c4
-  ; wp0834 = WP04.wp0834 c4
-  ; wp0835 = WP04.wp0835 c4
-  ; wp0836 = WP04.wp0836 c4
-  ; wp0837 = WP04.wp0837 c4
-  ; wp0838 = WP04.wp0838 c4
-  ; wp0839 = WP04.wp0839 c4
-  ; wp0840 = WP04.wp0840 c4
-  ; wp0841 = WP04.wp0841 c4
-  ; wp0842 = WP04.wp0842 c4
-  ; wp0843 = WP04.wp0843 c4
-  ; wp0844 = WP04.wp0844 c4
-  ; wp0845 = WP04.wp0845 c4
-  ; wp0846 = WP04.wp0846 c4
-  ; wp0847 = WP04.wp0847 c4
-  ; wp0848 = WP04.wp0848 c4
-  ; wp0849 = WP04.wp0849 c4
-  ; wp0850 = WP04.wp0850 c4
-  ; wp0851 = WP04.wp0851 c4
-  ; wp0852 = WP04.wp0852 c4
-  ; wp0853 = WP04.wp0853 c4
-  ; wp0854 = WP04.wp0854 c4
-  ; wp0855 = WP04.wp0855 c4
-  ; wp0856 = WP04.wp0856 c4
-  ; wp0857 = WP04.wp0857 c4
-  ; wp0858 = WP04.wp0858 c4
-  ; wp0859 = WP04.wp0859 c4
-  ; wp0860 = WP04.wp0860 c4
-  ; wp0861 = WP04.wp0861 c4
-  ; wp0862 = WP04.wp0862 c4
-  ; wp0863 = WP04.wp0863 c4
-  ; wp0864 = WP04.wp0864 c4
-  ; wp0865 = WP04.wp0865 c4
-  ; wp0866 = WP04.wp0866 c4
-  ; wp0867 = WP04.wp0867 c4
-  ; wp0868 = WP04.wp0868 c4
-  ; wp0869 = WP04.wp0869 c4
-  ; wp0870 = WP04.wp0870 c4
-  ; wp0871 = WP04.wp0871 c4
-  ; wp0872 = WP04.wp0872 c4
-  ; wp0873 = WP04.wp0873 c4
-  ; wp0874 = WP04.wp0874 c4
-  ; wp0875 = WP04.wp0875 c4
-  ; wp0876 = WP04.wp0876 c4
-  ; wp0877 = WP04.wp0877 c4
-  ; wp0878 = WP04.wp0878 c4
-  ; wp0879 = WP04.wp0879 c4
-  ; wp0880 = WP04.wp0880 c4
-  ; wp0881 = WP04.wp0881 c4
-  ; wp0882 = WP04.wp0882 c4
-  ; wp0883 = WP04.wp0883 c4
-  ; wp0884 = WP04.wp0884 c4
-  ; wp0885 = WP04.wp0885 c4
-  ; wp0886 = WP04.wp0886 c4
-  ; wp0887 = WP04.wp0887 c4
-  ; wp0888 = WP04.wp0888 c4
-  ; wp0889 = WP04.wp0889 c4
-  ; wp0890 = WP04.wp0890 c4
-  ; wp0891 = WP04.wp0891 c4
-  ; wp0892 = WP04.wp0892 c4
-  ; wp0893 = WP04.wp0893 c4
-  ; wp0894 = WP04.wp0894 c4
-  ; wp0895 = WP04.wp0895 c4
-  ; wp0896 = WP04.wp0896 c4
-  ; wp0897 = WP04.wp0897 c4
-  ; wp0898 = WP04.wp0898 c4
-  ; wp0899 = WP04.wp0899 c4
-  ; wp0900 = WP04.wp0900 c4
-  }
-
-ws10 : Complete 4 → Ws10
-ws10 c4 = record
-  { wp0901 = WP04.wp0901 c4
-  ; wp0902 = WP04.wp0902 c4
-  ; wp0903 = WP04.wp0903 c4
-  ; wp0904 = WP04.wp0904 c4
-  ; wp0905 = WP04.wp0905 c4
-  ; wp0906 = WP04.wp0906 c4
-  ; wp0907 = WP04.wp0907 c4
-  ; wp0908 = WP04.wp0908 c4
-  ; wp0909 = WP04.wp0909 c4
-  ; wp0910 = WP04.wp0910 c4
-  ; wp0911 = WP04.wp0911 c4
-  ; wp0912 = WP04.wp0912 c4
-  ; wp0913 = WP04.wp0913 c4
-  ; wp0914 = WP04.wp0914 c4
-  ; wp0915 = WP04.wp0915 c4
-  ; wp0916 = WP04.wp0916 c4
-  ; wp0917 = WP04.wp0917 c4
-  ; wp0918 = WP04.wp0918 c4
-  ; wp0919 = WP05.wp0919 c4
-  ; wp0920 = WP05.wp0920 c4
-  ; wp0921 = WP05.wp0921 c4
-  ; wp0922 = WP05.wp0922 c4
-  ; wp0923 = WP05.wp0923 c4
-  ; wp0924 = WP05.wp0924 c4
-  ; wp0925 = WP05.wp0925 c4
-  ; wp0926 = WP05.wp0926 c4
-  ; wp0927 = WP05.wp0927 c4
-  ; wp0928 = WP05.wp0928 c4
-  ; wp0929 = WP05.wp0929 c4
-  ; wp0930 = WP05.wp0930 c4
-  ; wp0931 = WP05.wp0931 c4
-  ; wp0932 = WP05.wp0932 c4
-  ; wp0933 = WP05.wp0933 c4
-  ; wp0934 = WP05.wp0934 c4
-  ; wp0935 = WP05.wp0935 c4
-  ; wp0936 = WP05.wp0936 c4
-  ; wp0937 = WP05.wp0937 c4
-  ; wp0938 = WP05.wp0938 c4
-  ; wp0939 = WP05.wp0939 c4
-  ; wp0940 = WP05.wp0940 c4
-  ; wp0941 = WP05.wp0941 c4
-  ; wp0942 = WP05.wp0942 c4
-  ; wp0943 = WP05.wp0943 c4
-  ; wp0944 = WP05.wp0944 c4
-  ; wp0945 = WP05.wp0945 c4
-  ; wp0946 = WP05.wp0946 c4
-  ; wp0947 = WP05.wp0947 c4
-  ; wp0948 = WP05.wp0948 c4
-  ; wp0949 = WP05.wp0949 c4
-  ; wp0950 = WP05.wp0950 c4
-  ; wp0951 = WP05.wp0951 c4
-  ; wp0952 = WP05.wp0952 c4
-  ; wp0953 = WP05.wp0953 c4
-  ; wp0954 = WP05.wp0954 c4
-  ; wp0955 = WP05.wp0955 c4
-  ; wp0956 = WP05.wp0956 c4
-  ; wp0957 = WP05.wp0957 c4
-  ; wp0958 = WP05.wp0958 c4
-  ; wp0959 = WP05.wp0959 c4
-  ; wp0960 = WP05.wp0960 c4
-  ; wp0961 = WP05.wp0961 c4
-  ; wp0962 = WP05.wp0962 c4
-  ; wp0963 = WP05.wp0963 c4
-  ; wp0964 = WP05.wp0964 c4
-  ; wp0965 = WP05.wp0965 c4
-  ; wp0966 = WP05.wp0966 c4
-  ; wp0967 = WP05.wp0967 c4
-  ; wp0968 = WP05.wp0968 c4
-  ; wp0969 = WP05.wp0969 c4
-  ; wp0970 = WP05.wp0970 c4
-  ; wp0971 = WP05.wp0971 c4
-  ; wp0972 = WP05.wp0972 c4
-  ; wp0973 = WP05.wp0973 c4
-  ; wp0974 = WP05.wp0974 c4
-  ; wp0975 = WP05.wp0975 c4
-  ; wp0976 = WP05.wp0976 c4
-  ; wp0977 = WP05.wp0977 c4
-  ; wp0978 = WP05.wp0978 c4
-  ; wp0979 = WP05.wp0979 c4
-  ; wp0980 = WP05.wp0980 c4
-  ; wp0981 = WP05.wp0981 c4
-  ; wp0982 = WP05.wp0982 c4
-  ; wp0983 = WP05.wp0983 c4
-  ; wp0984 = WP05.wp0984 c4
-  ; wp0985 = WP05.wp0985 c4
-  ; wp0986 = WP05.wp0986 c4
-  ; wp0987 = WP05.wp0987 c4
-  ; wp0988 = WP05.wp0988 c4
-  ; wp0989 = WP05.wp0989 c4
-  ; wp0990 = WP05.wp0990 c4
-  ; wp0991 = WP05.wp0991 c4
-  ; wp0992 = WP05.wp0992 c4
-  ; wp0993 = WP05.wp0993 c4
-  ; wp0994 = WP05.wp0994 c4
-  ; wp0995 = WP05.wp0995 c4
-  ; wp0996 = WP05.wp0996 c4
-  ; wp0997 = WP05.wp0997 c4
-  ; wp0998 = WP05.wp0998 c4
-  ; wp0999 = WP05.wp0999 c4
-  ; wp1000 = WP05.wp1000 c4
-  }
-
-ws11 : Complete 4 → Ws11
-ws11 c4 = record
-  { wp1001 = WP05.wp1001 c4
-  ; wp1002 = WP05.wp1002 c4
-  ; wp1003 = WP05.wp1003 c4
-  ; wp1004 = WP05.wp1004 c4
-  ; wp1005 = WP05.wp1005 c4
-  ; wp1006 = WP05.wp1006 c4
-  ; wp1007 = WP05.wp1007 c4
-  ; wp1008 = WP05.wp1008 c4
-  ; wp1009 = WP05.wp1009 c4
-  ; wp1010 = WP05.wp1010 c4
-  ; wp1011 = WP05.wp1011 c4
-  ; wp1012 = WP05.wp1012 c4
-  ; wp1013 = WP05.wp1013 c4
-  ; wp1014 = WP05.wp1014 c4
-  ; wp1015 = WP05.wp1015 c4
-  ; wp1016 = WP05.wp1016 c4
-  ; wp1017 = WP05.wp1017 c4
-  ; wp1018 = WP05.wp1018 c4
-  ; wp1019 = WP05.wp1019 c4
-  ; wp1020 = WP05.wp1020 c4
-  ; wp1021 = WP05.wp1021 c4
-  ; wp1022 = WP05.wp1022 c4
-  ; wp1023 = WP05.wp1023 c4
-  ; wp1024 = WP05.wp1024 c4
-  ; wp1025 = WP05.wp1025 c4
-  ; wp1026 = WP05.wp1026 c4
-  ; wp1027 = WP05.wp1027 c4
-  ; wp1028 = WP05.wp1028 c4
-  ; wp1029 = WP05.wp1029 c4
-  ; wp1030 = WP05.wp1030 c4
-  ; wp1031 = WP05.wp1031 c4
-  ; wp1032 = WP05.wp1032 c4
-  ; wp1033 = WP05.wp1033 c4
-  ; wp1034 = WP05.wp1034 c4
-  ; wp1035 = WP05.wp1035 c4
-  ; wp1036 = WP05.wp1036 c4
-  ; wp1037 = WP05.wp1037 c4
-  ; wp1038 = WP05.wp1038 c4
-  ; wp1039 = WP05.wp1039 c4
-  ; wp1040 = WP05.wp1040 c4
-  ; wp1041 = WP05.wp1041 c4
-  ; wp1042 = WP05.wp1042 c4
-  ; wp1043 = WP05.wp1043 c4
-  ; wp1044 = WP05.wp1044 c4
-  ; wp1045 = WP05.wp1045 c4
-  ; wp1046 = WP05.wp1046 c4
-  ; wp1047 = WP05.wp1047 c4
-  ; wp1048 = WP05.wp1048 c4
-  ; wp1049 = WP05.wp1049 c4
-  ; wp1050 = WP05.wp1050 c4
-  ; wp1051 = WP05.wp1051 c4
-  ; wp1052 = WP05.wp1052 c4
-  ; wp1053 = WP05.wp1053 c4
-  ; wp1054 = WP05.wp1054 c4
-  ; wp1055 = WP05.wp1055 c4
-  ; wp1056 = WP05.wp1056 c4
-  ; wp1057 = WP05.wp1057 c4
-  ; wp1058 = WP05.wp1058 c4
-  ; wp1059 = WP05.wp1059 c4
-  ; wp1060 = WP05.wp1060 c4
-  ; wp1061 = WP05.wp1061 c4
-  ; wp1062 = WP05.wp1062 c4
-  ; wp1063 = WP05.wp1063 c4
-  ; wp1064 = WP05.wp1064 c4
-  ; wp1065 = WP05.wp1065 c4
-  ; wp1066 = WP05.wp1066 c4
-  ; wp1067 = WP05.wp1067 c4
-  ; wp1068 = WP05.wp1068 c4
-  ; wp1069 = WP05.wp1069 c4
-  ; wp1070 = WP05.wp1070 c4
-  ; wp1071 = WP05.wp1071 c4
-  ; wp1072 = WP05.wp1072 c4
-  ; wp1073 = WP05.wp1073 c4
-  ; wp1074 = WP05.wp1074 c4
-  ; wp1075 = WP05.wp1075 c4
-  ; wp1076 = WP05.wp1076 c4
-  ; wp1077 = WP05.wp1077 c4
-  ; wp1078 = WP05.wp1078 c4
-  ; wp1079 = WP05.wp1079 c4
-  ; wp1080 = WP05.wp1080 c4
-  ; wp1081 = WP05.wp1081 c4
-  ; wp1082 = WP05.wp1082 c4
-  ; wp1083 = WP05.wp1083 c4
-  ; wp1084 = WP05.wp1084 c4
-  ; wp1085 = WP05.wp1085 c4
-  ; wp1086 = WP05.wp1086 c4
-  ; wp1087 = WP05.wp1087 c4
-  ; wp1088 = WP05.wp1088 c4
-  ; wp1089 = WP05.wp1089 c4
-  ; wp1090 = WP05.wp1090 c4
-  ; wp1091 = WP05.wp1091 c4
-  ; wp1092 = WP05.wp1092 c4
-  ; wp1093 = WP05.wp1093 c4
-  ; wp1094 = WP05.wp1094 c4
-  ; wp1095 = WP05.wp1095 c4
-  ; wp1096 = WP05.wp1096 c4
-  ; wp1097 = WP05.wp1097 c4
-  ; wp1098 = WP05.wp1098 c4
-  ; wp1099 = WP05.wp1099 c4
-  ; wp1100 = WP05.wp1100 c4
-  }
-
-ws12 : Complete 4 → Ws12
-ws12 c4 = record
-  { wp1101 = WP05.wp1101 c4
-  ; wp1102 = WP05.wp1102 c4
-  ; wp1103 = WP05.wp1103 c4
-  ; wp1104 = WP05.wp1104 c4
-  ; wp1105 = WP05.wp1105 c4
-  ; wp1106 = WP05.wp1106 c4
-  ; wp1107 = WP05.wp1107 c4
-  ; wp1108 = WP05.wp1108 c4
-  ; wp1109 = WP05.wp1109 c4
-  ; wp1110 = WP05.wp1110 c4
-  ; wp1111 = WP05.wp1111 c4
-  ; wp1112 = WP05.wp1112 c4
-  ; wp1113 = WP05.wp1113 c4
-  ; wp1114 = WP05.wp1114 c4
-  ; wp1115 = WP05.wp1115 c4
-  ; wp1116 = WP05.wp1116 c4
-  ; wp1117 = WP05.wp1117 c4
-  ; wp1118 = WP05.wp1118 c4
-  ; wp1119 = WP05.wp1119 c4
-  ; wp1120 = WP05.wp1120 c4
-  ; wp1121 = WP05.wp1121 c4
-  ; wp1122 = WP05.wp1122 c4
-  ; wp1123 = WP06.wp1123 c4
-  ; wp1124 = WP06.wp1124 c4
-  ; wp1125 = WP06.wp1125 c4
-  ; wp1126 = WP06.wp1126 c4
-  ; wp1127 = WP06.wp1127 c4
-  ; wp1128 = WP06.wp1128 c4
-  ; wp1129 = WP06.wp1129 c4
-  ; wp1130 = WP06.wp1130 c4
-  ; wp1131 = WP06.wp1131 c4
-  ; wp1132 = WP06.wp1132 c4
-  ; wp1133 = WP06.wp1133 c4
-  ; wp1134 = WP06.wp1134 c4
-  ; wp1135 = WP06.wp1135 c4
-  ; wp1136 = WP06.wp1136 c4
-  ; wp1137 = WP06.wp1137 c4
-  ; wp1138 = WP06.wp1138 c4
-  ; wp1139 = WP06.wp1139 c4
-  ; wp1140 = WP06.wp1140 c4
-  ; wp1141 = WP06.wp1141 c4
-  ; wp1142 = WP06.wp1142 c4
-  ; wp1143 = WP06.wp1143 c4
-  ; wp1144 = WP06.wp1144 c4
-  ; wp1145 = WP06.wp1145 c4
-  ; wp1146 = WP06.wp1146 c4
-  ; wp1147 = WP06.wp1147 c4
-  ; wp1148 = WP06.wp1148 c4
-  ; wp1149 = WP06.wp1149 c4
-  ; wp1150 = WP06.wp1150 c4
-  ; wp1151 = WP06.wp1151 c4
-  ; wp1152 = WP06.wp1152 c4
-  ; wp1153 = WP06.wp1153 c4
-  ; wp1154 = WP06.wp1154 c4
-  ; wp1155 = WP06.wp1155 c4
-  ; wp1156 = WP06.wp1156 c4
-  ; wp1157 = WP06.wp1157 c4
-  ; wp1158 = WP06.wp1158 c4
-  ; wp1159 = WP06.wp1159 c4
-  ; wp1160 = WP06.wp1160 c4
-  ; wp1161 = WP06.wp1161 c4
-  ; wp1162 = WP06.wp1162 c4
-  ; wp1163 = WP06.wp1163 c4
-  ; wp1164 = WP06.wp1164 c4
-  ; wp1165 = WP06.wp1165 c4
-  ; wp1166 = WP06.wp1166 c4
-  ; wp1167 = WP06.wp1167 c4
-  ; wp1168 = WP06.wp1168 c4
-  ; wp1169 = WP06.wp1169 c4
-  ; wp1170 = WP06.wp1170 c4
-  ; wp1171 = WP06.wp1171 c4
-  ; wp1172 = WP06.wp1172 c4
-  ; wp1173 = WP06.wp1173 c4
-  ; wp1174 = WP06.wp1174 c4
-  ; wp1175 = WP06.wp1175 c4
-  ; wp1176 = WP06.wp1176 c4
-  ; wp1177 = WP06.wp1177 c4
-  ; wp1178 = WP06.wp1178 c4
-  ; wp1179 = WP06.wp1179 c4
-  ; wp1180 = WP06.wp1180 c4
-  ; wp1181 = WP06.wp1181 c4
-  ; wp1182 = WP06.wp1182 c4
-  ; wp1183 = WP06.wp1183 c4
-  ; wp1184 = WP06.wp1184 c4
-  ; wp1185 = WP06.wp1185 c4
-  ; wp1186 = WP06.wp1186 c4
-  ; wp1187 = WP06.wp1187 c4
-  ; wp1188 = WP06.wp1188 c4
-  ; wp1189 = WP06.wp1189 c4
-  ; wp1190 = WP06.wp1190 c4
-  ; wp1191 = WP06.wp1191 c4
-  ; wp1192 = WP06.wp1192 c4
-  ; wp1193 = WP06.wp1193 c4
-  ; wp1194 = WP06.wp1194 c4
-  ; wp1195 = WP06.wp1195 c4
-  ; wp1196 = WP06.wp1196 c4
-  ; wp1197 = WP06.wp1197 c4
-  ; wp1198 = WP06.wp1198 c4
-  ; wp1199 = WP06.wp1199 c4
-  ; wp1200 = WP06.wp1200 c4
-  }
-
-ws13 : Complete 4 → Ws13
-ws13 c4 = record
-  { wp1201 = WP06.wp1201 c4
-  ; wp1202 = WP06.wp1202 c4
-  ; wp1203 = WP06.wp1203 c4
-  ; wp1204 = WP06.wp1204 c4
-  ; wp1205 = WP06.wp1205 c4
-  ; wp1206 = WP06.wp1206 c4
-  ; wp1207 = WP06.wp1207 c4
-  ; wp1208 = WP06.wp1208 c4
-  ; wp1209 = WP06.wp1209 c4
-  ; wp1210 = WP06.wp1210 c4
-  ; wp1211 = WP06.wp1211 c4
-  ; wp1212 = WP06.wp1212 c4
-  ; wp1213 = WP06.wp1213 c4
-  ; wp1214 = WP06.wp1214 c4
-  ; wp1215 = WP06.wp1215 c4
-  ; wp1216 = WP06.wp1216 c4
-  ; wp1217 = WP06.wp1217 c4
-  ; wp1218 = WP06.wp1218 c4
-  ; wp1219 = WP06.wp1219 c4
-  ; wp1220 = WP06.wp1220 c4
-  ; wp1221 = WP06.wp1221 c4
-  ; wp1222 = WP06.wp1222 c4
-  ; wp1223 = WP06.wp1223 c4
-  ; wp1224 = WP06.wp1224 c4
-  ; wp1225 = WP06.wp1225 c4
-  ; wp1226 = WP06.wp1226 c4
-  ; wp1227 = WP06.wp1227 c4
-  ; wp1228 = WP06.wp1228 c4
-  ; wp1229 = WP06.wp1229 c4
-  ; wp1230 = WP06.wp1230 c4
-  ; wp1231 = WP06.wp1231 c4
-  ; wp1232 = WP06.wp1232 c4
-  ; wp1233 = WP06.wp1233 c4
-  ; wp1234 = WP06.wp1234 c4
-  ; wp1235 = WP06.wp1235 c4
-  ; wp1236 = WP06.wp1236 c4
-  ; wp1237 = WP06.wp1237 c4
-  ; wp1238 = WP06.wp1238 c4
-  ; wp1239 = WP06.wp1239 c4
-  ; wp1240 = WP06.wp1240 c4
-  ; wp1241 = WP06.wp1241 c4
-  ; wp1242 = WP06.wp1242 c4
-  ; wp1243 = WP06.wp1243 c4
-  ; wp1244 = WP06.wp1244 c4
-  ; wp1245 = WP06.wp1245 c4
-  ; wp1246 = WP06.wp1246 c4
-  ; wp1247 = WP06.wp1247 c4
-  ; wp1248 = WP06.wp1248 c4
-  ; wp1249 = WP06.wp1249 c4
-  ; wp1250 = WP06.wp1250 c4
-  ; wp1251 = WP06.wp1251 c4
-  ; wp1252 = WP06.wp1252 c4
-  ; wp1253 = WP06.wp1253 c4
-  ; wp1254 = WP06.wp1254 c4
-  ; wp1255 = WP06.wp1255 c4
-  ; wp1256 = WP06.wp1256 c4
-  ; wp1257 = WP06.wp1257 c4
-  ; wp1258 = WP06.wp1258 c4
-  ; wp1259 = WP06.wp1259 c4
-  ; wp1260 = WP06.wp1260 c4
-  ; wp1261 = WP06.wp1261 c4
-  ; wp1262 = WP06.wp1262 c4
-  ; wp1263 = WP06.wp1263 c4
-  ; wp1264 = WP06.wp1264 c4
-  ; wp1265 = WP06.wp1265 c4
-  ; wp1266 = WP06.wp1266 c4
-  ; wp1267 = WP06.wp1267 c4
-  ; wp1268 = WP06.wp1268 c4
-  ; wp1269 = WP06.wp1269 c4
-  ; wp1270 = WP07.wp1270 c4
-  ; wp1271 = WP07.wp1271 c4
-  ; wp1272 = WP07.wp1272 c4
-  ; wp1273 = WP07.wp1273 c4
-  ; wp1274 = WP07.wp1274 c4
-  ; wp1275 = WP07.wp1275 c4
-  ; wp1276 = WP07.wp1276 c4
-  ; wp1277 = WP07.wp1277 c4
-  ; wp1278 = WP07.wp1278 c4
-  ; wp1279 = WP07.wp1279 c4
-  ; wp1280 = WP07.wp1280 c4
-  ; wp1281 = WP07.wp1281 c4
-  ; wp1282 = WP07.wp1282 c4
-  ; wp1283 = WP07.wp1283 c4
-  ; wp1284 = WP07.wp1284 c4
-  ; wp1285 = WP07.wp1285 c4
-  ; wp1286 = WP07.wp1286 c4
-  ; wp1287 = WP07.wp1287 c4
-  ; wp1288 = WP07.wp1288 c4
-  ; wp1289 = WP07.wp1289 c4
-  ; wp1290 = WP07.wp1290 c4
-  ; wp1291 = WP07.wp1291 c4
-  ; wp1292 = WP07.wp1292 c4
-  ; wp1293 = WP07.wp1293 c4
-  ; wp1294 = WP07.wp1294 c4
-  ; wp1295 = WP07.wp1295 c4
-  ; wp1296 = WP07.wp1296 c4
-  ; wp1297 = WP07.wp1297 c4
-  ; wp1298 = WP07.wp1298 c4
-  ; wp1299 = WP07.wp1299 c4
-  ; wp1300 = WP07.wp1300 c4
-  }
-
-ws14 : Complete 4 → Ws14
-ws14 c4 = record
-  { wp1301 = WP07.wp1301 c4
-  ; wp1302 = WP07.wp1302 c4
-  ; wp1303 = WP07.wp1303 c4
-  ; wp1304 = WP07.wp1304 c4
-  ; wp1305 = WP07.wp1305 c4
-  ; wp1306 = WP07.wp1306 c4
-  ; wp1307 = WP07.wp1307 c4
-  ; wp1308 = WP07.wp1308 c4
-  ; wp1309 = WP07.wp1309 c4
-  ; wp1310 = WP07.wp1310 c4
-  ; wp1311 = WP07.wp1311 c4
-  ; wp1312 = WP07.wp1312 c4
-  ; wp1313 = WP07.wp1313 c4
-  ; wp1314 = WP07.wp1314 c4
-  ; wp1315 = WP07.wp1315 c4
-  ; wp1316 = WP07.wp1316 c4
-  ; wp1317 = WP07.wp1317 c4
-  ; wp1318 = WP07.wp1318 c4
-  ; wp1319 = WP07.wp1319 c4
-  ; wp1320 = WP07.wp1320 c4
-  ; wp1321 = WP07.wp1321 c4
-  ; wp1322 = WP07.wp1322 c4
-  ; wp1323 = WP07.wp1323 c4
-  ; wp1324 = WP07.wp1324 c4
-  ; wp1325 = WP07.wp1325 c4
-  ; wp1326 = WP07.wp1326 c4
-  ; wp1327 = WP07.wp1327 c4
-  ; wp1328 = WP07.wp1328 c4
-  ; wp1329 = WP07.wp1329 c4
-  ; wp1330 = WP07.wp1330 c4
-  ; wp1331 = WP07.wp1331 c4
-  ; wp1332 = WP07.wp1332 c4
-  ; wp1333 = WP07.wp1333 c4
-  ; wp1334 = WP07.wp1334 c4
-  ; wp1335 = WP07.wp1335 c4
-  ; wp1336 = WP07.wp1336 c4
-  ; wp1337 = WP07.wp1337 c4
-  ; wp1338 = WP07.wp1338 c4
-  ; wp1339 = WP07.wp1339 c4
-  ; wp1340 = WP07.wp1340 c4
-  ; wp1341 = WP07.wp1341 c4
-  ; wp1342 = WP07.wp1342 c4
-  ; wp1343 = WP07.wp1343 c4
-  ; wp1344 = WP07.wp1344 c4
-  ; wp1345 = WP07.wp1345 c4
-  ; wp1346 = WP07.wp1346 c4
-  ; wp1347 = WP07.wp1347 c4
-  ; wp1348 = WP07.wp1348 c4
-  ; wp1349 = WP07.wp1349 c4
-  ; wp1350 = WP07.wp1350 c4
-  ; wp1351 = WP07.wp1351 c4
-  ; wp1352 = WP07.wp1352 c4
-  ; wp1353 = WP08.wp1353 c4
-  ; wp1354 = WP08.wp1354 c4
-  ; wp1355 = WP08.wp1355 c4
-  ; wp1356 = WP08.wp1356 c4
-  ; wp1357 = WP08.wp1357 c4
-  ; wp1358 = WP08.wp1358 c4
-  ; wp1359 = WP08.wp1359 c4
-  ; wp1360 = WP08.wp1360 c4
-  ; wp1361 = WP08.wp1361 c4
-  ; wp1362 = WP08.wp1362 c4
-  ; wp1363 = WP08.wp1363 c4
-  ; wp1364 = WP08.wp1364 c4
-  ; wp1365 = WP08.wp1365 c4
-  ; wp1366 = WP08.wp1366 c4
-  ; wp1367 = WP08.wp1367 c4
-  ; wp1368 = WP08.wp1368 c4
-  ; wp1369 = WP08.wp1369 c4
-  ; wp1370 = WP08.wp1370 c4
-  ; wp1371 = WP08.wp1371 c4
-  ; wp1372 = WP08.wp1372 c4
-  ; wp1373 = WP08.wp1373 c4
-  ; wp1374 = WP08.wp1374 c4
-  ; wp1375 = WP08.wp1375 c4
-  ; wp1376 = WP08.wp1376 c4
-  ; wp1377 = WP08.wp1377 c4
-  ; wp1378 = WP08.wp1378 c4
-  ; wp1379 = WP08.wp1379 c4
-  ; wp1380 = WP08.wp1380 c4
-  ; wp1381 = WP08.wp1381 c4
-  ; wp1382 = WP08.wp1382 c4
-  ; wp1383 = WP08.wp1383 c4
-  ; wp1384 = WP08.wp1384 c4
-  ; wp1385 = WP08.wp1385 c4
-  ; wp1386 = WP08.wp1386 c4
-  ; wp1387 = WP08.wp1387 c4
-  ; wp1388 = WP08.wp1388 c4
-  ; wp1389 = WP08.wp1389 c4
-  ; wp1390 = WP08.wp1390 c4
-  ; wp1391 = WP08.wp1391 c4
-  ; wp1392 = WP08.wp1392 c4
-  ; wp1393 = WP08.wp1393 c4
-  ; wp1394 = WP08.wp1394 c4
-  ; wp1395 = WP08.wp1395 c4
-  ; wp1396 = WP08.wp1396 c4
-  ; wp1397 = WP08.wp1397 c4
-  ; wp1398 = WP08.wp1398 c4
-  ; wp1399 = WP08.wp1399 c4
-  ; wp1400 = WP08.wp1400 c4
-  }
-
-ws15 : Complete 4 → Ws15
-ws15 c4 = record
-  { wp1401 = WP08.wp1401 c4
-  ; wp1402 = WP08.wp1402 c4
-  ; wp1403 = WP08.wp1403 c4
-  ; wp1404 = WP08.wp1404 c4
-  ; wp1405 = WP08.wp1405 c4
-  ; wp1406 = WP08.wp1406 c4
-  ; wp1407 = WP08.wp1407 c4
-  ; wp1408 = WP08.wp1408 c4
-  ; wp1409 = WP08.wp1409 c4
-  ; wp1410 = WP08.wp1410 c4
-  ; wp1411 = WP08.wp1411 c4
-  ; wp1412 = WP08.wp1412 c4
-  ; wp1413 = WP08.wp1413 c4
-  ; wp1414 = WP08.wp1414 c4
-  ; wp1415 = WP08.wp1415 c4
-  ; wp1416 = WP08.wp1416 c4
-  ; wp1417 = WP08.wp1417 c4
-  ; wp1418 = WP08.wp1418 c4
-  ; wp1419 = WP08.wp1419 c4
-  ; wp1420 = WP08.wp1420 c4
-  ; wp1421 = WP08.wp1421 c4
-  ; wp1422 = WP08.wp1422 c4
-  ; wp1423 = WP08.wp1423 c4
-  ; wp1424 = WP08.wp1424 c4
-  ; wp1425 = WP08.wp1425 c4
-  ; wp1426 = WP08.wp1426 c4
-  ; wp1427 = WP08.wp1427 c4
-  ; wp1428 = WP08.wp1428 c4
-  ; wp1429 = WP08.wp1429 c4
-  ; wp1430 = WP08.wp1430 c4
-  ; wp1431 = WP08.wp1431 c4
-  ; wp1432 = WP08.wp1432 c4
-  ; wp1433 = WP08.wp1433 c4
-  ; wp1434 = WP08.wp1434 c4
-  ; wp1435 = WP08.wp1435 c4
-  ; wp1436 = WP08.wp1436 c4
-  ; wp1437 = WP08.wp1437 c4
-  ; wp1438 = WP08.wp1438 c4
-  ; wp1439 = WP08.wp1439 c4
-  ; wp1440 = WP08.wp1440 c4
-  ; wp1441 = WP08.wp1441 c4
-  ; wp1442 = WP08.wp1442 c4
-  ; wp1443 = WP08.wp1443 c4
-  ; wp1444 = WP08.wp1444 c4
-  ; wp1445 = WP08.wp1445 c4
-  ; wp1446 = WP08.wp1446 c4
-  ; wp1447 = WP08.wp1447 c4
-  ; wp1448 = WP08.wp1448 c4
-  ; wp1449 = WP08.wp1449 c4
-  ; wp1450 = WP08.wp1450 c4
-  ; wp1451 = WP08.wp1451 c4
-  ; wp1452 = WP08.wp1452 c4
-  ; wp1453 = WP08.wp1453 c4
-  ; wp1454 = WP08.wp1454 c4
-  ; wp1455 = WP08.wp1455 c4
-  ; wp1456 = WP08.wp1456 c4
-  ; wp1457 = WP08.wp1457 c4
-  ; wp1458 = WP08.wp1458 c4
-  ; wp1459 = WP08.wp1459 c4
-  ; wp1460 = WP08.wp1460 c4
-  ; wp1461 = WP08.wp1461 c4
-  ; wp1462 = WP08.wp1462 c4
-  ; wp1463 = WP08.wp1463 c4
-  ; wp1464 = WP08.wp1464 c4
-  ; wp1465 = WP08.wp1465 c4
-  ; wp1466 = WP08.wp1466 c4
-  ; wp1467 = WP08.wp1467 c4
-  ; wp1468 = WP08.wp1468 c4
-  ; wp1469 = WP08.wp1469 c4
-  ; wp1470 = WP08.wp1470 c4
-  ; wp1471 = WP08.wp1471 c4
-  ; wp1472 = WP08.wp1472 c4
-  ; wp1473 = WP08.wp1473 c4
-  ; wp1474 = WP08.wp1474 c4
-  ; wp1475 = WP08.wp1475 c4
-  ; wp1476 = WP08.wp1476 c4
-  ; wp1477 = WP08.wp1477 c4
-  ; wp1478 = WP08.wp1478 c4
-  ; wp1479 = WP08.wp1479 c4
-  ; wp1480 = WP08.wp1480 c4
-  ; wp1481 = WP08.wp1481 c4
-  ; wp1482 = WP08.wp1482 c4
-  ; wp1483 = WP08.wp1483 c4
-  ; wp1484 = WP08.wp1484 c4
-  ; wp1485 = WP08.wp1485 c4
-  ; wp1486 = WP08.wp1486 c4
-  ; wp1487 = WP08.wp1487 c4
-  ; wp1488 = WP08.wp1488 c4
-  ; wp1489 = WP08.wp1489 c4
-  ; wp1490 = WP08.wp1490 c4
-  ; wp1491 = WP08.wp1491 c4
-  ; wp1492 = WP08.wp1492 c4
-  ; wp1493 = WP08.wp1493 c4
-  ; wp1494 = WP08.wp1494 c4
-  ; wp1495 = WP08.wp1495 c4
-  ; wp1496 = WP08.wp1496 c4
-  ; wp1497 = WP08.wp1497 c4
-  ; wp1498 = WP08.wp1498 c4
-  ; wp1499 = WP08.wp1499 c4
-  ; wp1500 = WP08.wp1500 c4
-  }
-
-ws16 : Complete 4 → Ws16
-ws16 c4 = record
-  { wp1501 = WP08.wp1501 c4
-  ; wp1502 = WP08.wp1502 c4
-  ; wp1503 = WP08.wp1503 c4
-  ; wp1504 = WP08.wp1504 c4
-  ; wp1505 = WP08.wp1505 c4
-  ; wp1506 = WP08.wp1506 c4
-  ; wp1507 = WP08.wp1507 c4
-  ; wp1508 = WP08.wp1508 c4
-  ; wp1509 = WP08.wp1509 c4
-  ; wp1510 = WP08.wp1510 c4
-  ; wp1511 = WP08.wp1511 c4
-  ; wp1512 = WP08.wp1512 c4
-  ; wp1513 = WP08.wp1513 c4
-  ; wp1514 = WP08.wp1514 c4
-  ; wp1515 = WP08.wp1515 c4
-  ; wp1516 = WP08.wp1516 c4
-  ; wp1517 = WP08.wp1517 c4
-  ; wp1518 = WP08.wp1518 c4
-  ; wp1519 = WP08.wp1519 c4
-  }
-
 ws : Complete 4 → Ws
 ws c4 = record
   { lit = wsL c4
-  ; p01 = ws01 c4
-  ; p02 = ws02 c4
-  ; p03 = ws03 c4
-  ; p04 = ws04 c4
-  ; p05 = ws05 c4
-  ; p06 = ws06 c4
-  ; p07 = ws07 c4
-  ; p08 = ws08 c4
-  ; p09 = ws09 c4
-  ; p10 = ws10 c4
-  ; p11 = ws11 c4
-  ; p12 = ws12 c4
-  ; p13 = ws13 c4
-  ; p14 = ws14 c4
-  ; p15 = ws15 c4
-  ; p16 = ws16 c4
+  ; pl  =
+      (pnode
+        (pnode
+          (pnode
+            (pnode
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1023 c4)
+                            pleaf
+                          )
+                          (WP03.wp0511 c4)
+                          pleaf
+                        )
+                        (WP01.wp0255 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1279 c4)
+                            pleaf
+                          )
+                          (WP04.wp0767 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0127 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1151 c4)
+                            pleaf
+                          )
+                          (WP03.wp0639 c4)
+                          pleaf
+                        )
+                        (WP02.wp0383 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1407 c4)
+                            pleaf
+                          )
+                          (WP04.wp0895 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0063 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1087 c4)
+                            pleaf
+                          )
+                          (WP03.wp0575 c4)
+                          pleaf
+                        )
+                        (WP02.wp0319 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1343 c4)
+                            pleaf
+                          )
+                          (WP04.wp0831 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0191 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1215 c4)
+                            pleaf
+                          )
+                          (WP04.wp0703 c4)
+                          pleaf
+                        )
+                        (WP02.wp0447 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1471 c4)
+                            pleaf
+                          )
+                          (WP05.wp0959 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0031 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1055 c4)
+                            pleaf
+                          )
+                          (WP03.wp0543 c4)
+                          pleaf
+                        )
+                        (WP02.wp0287 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1311 c4)
+                            pleaf
+                          )
+                          (WP04.wp0799 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0159 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1183 c4)
+                            pleaf
+                          )
+                          (WP03.wp0671 c4)
+                          pleaf
+                        )
+                        (WP02.wp0415 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1439 c4)
+                            pleaf
+                          )
+                          (WP05.wp0927 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0095 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1119 c4)
+                            pleaf
+                          )
+                          (WP03.wp0607 c4)
+                          pleaf
+                        )
+                        (WP02.wp0351 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1375 c4)
+                            pleaf
+                          )
+                          (WP04.wp0863 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0223 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1247 c4)
+                            pleaf
+                          )
+                          (WP04.wp0735 c4)
+                          pleaf
+                        )
+                        (WP03.wp0479 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1503 c4)
+                            pleaf
+                          )
+                          (WP05.wp0991 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0015 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1039 c4)
+                            pleaf
+                          )
+                          (WP03.wp0527 c4)
+                          pleaf
+                        )
+                        (WP02.wp0271 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1295 c4)
+                            pleaf
+                          )
+                          (WP04.wp0783 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0143 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1167 c4)
+                            pleaf
+                          )
+                          (WP03.wp0655 c4)
+                          pleaf
+                        )
+                        (WP02.wp0399 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1423 c4)
+                            pleaf
+                          )
+                          (WP04.wp0911 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0079 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1103 c4)
+                            pleaf
+                          )
+                          (WP03.wp0591 c4)
+                          pleaf
+                        )
+                        (WP02.wp0335 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1359 c4)
+                            pleaf
+                          )
+                          (WP04.wp0847 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0207 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1231 c4)
+                            pleaf
+                          )
+                          (WP04.wp0719 c4)
+                          pleaf
+                        )
+                        (WP02.wp0463 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1487 c4)
+                            pleaf
+                          )
+                          (WP05.wp0975 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0047 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1071 c4)
+                            pleaf
+                          )
+                          (WP03.wp0559 c4)
+                          pleaf
+                        )
+                        (WP02.wp0303 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1327 c4)
+                            pleaf
+                          )
+                          (WP04.wp0815 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0175 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1199 c4)
+                            pleaf
+                          )
+                          (WP04.wp0687 c4)
+                          pleaf
+                        )
+                        (WP02.wp0431 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1455 c4)
+                            pleaf
+                          )
+                          (WP05.wp0943 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0111 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1135 c4)
+                            pleaf
+                          )
+                          (WP03.wp0623 c4)
+                          pleaf
+                        )
+                        (WP02.wp0367 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1391 c4)
+                            pleaf
+                          )
+                          (WP04.wp0879 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0239 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1263 c4)
+                            pleaf
+                          )
+                          (WP04.wp0751 c4)
+                          pleaf
+                        )
+                        (WP03.wp0495 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1519 c4)
+                            pleaf
+                          )
+                          (WP05.wp1007 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+              (WP01.wp0007 c4)
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1031 c4)
+                            pleaf
+                          )
+                          (WP03.wp0519 c4)
+                          pleaf
+                        )
+                        (WP02.wp0263 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1287 c4)
+                            pleaf
+                          )
+                          (WP04.wp0775 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0135 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1159 c4)
+                            pleaf
+                          )
+                          (WP03.wp0647 c4)
+                          pleaf
+                        )
+                        (WP02.wp0391 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1415 c4)
+                            pleaf
+                          )
+                          (WP04.wp0903 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0071 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1095 c4)
+                            pleaf
+                          )
+                          (WP03.wp0583 c4)
+                          pleaf
+                        )
+                        (WP02.wp0327 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1351 c4)
+                            pleaf
+                          )
+                          (WP04.wp0839 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0199 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1223 c4)
+                            pleaf
+                          )
+                          (WP04.wp0711 c4)
+                          pleaf
+                        )
+                        (WP02.wp0455 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1479 c4)
+                            pleaf
+                          )
+                          (WP05.wp0967 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0039 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1063 c4)
+                            pleaf
+                          )
+                          (WP03.wp0551 c4)
+                          pleaf
+                        )
+                        (WP02.wp0295 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1319 c4)
+                            pleaf
+                          )
+                          (WP04.wp0807 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0167 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1191 c4)
+                            pleaf
+                          )
+                          (WP04.wp0679 c4)
+                          pleaf
+                        )
+                        (WP02.wp0423 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1447 c4)
+                            pleaf
+                          )
+                          (WP05.wp0935 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0103 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1127 c4)
+                            pleaf
+                          )
+                          (WP03.wp0615 c4)
+                          pleaf
+                        )
+                        (WP02.wp0359 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1383 c4)
+                            pleaf
+                          )
+                          (WP04.wp0871 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0231 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1255 c4)
+                            pleaf
+                          )
+                          (WP04.wp0743 c4)
+                          pleaf
+                        )
+                        (WP03.wp0487 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1511 c4)
+                            pleaf
+                          )
+                          (WP05.wp0999 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0023 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1047 c4)
+                            pleaf
+                          )
+                          (WP03.wp0535 c4)
+                          pleaf
+                        )
+                        (WP02.wp0279 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1303 c4)
+                            pleaf
+                          )
+                          (WP04.wp0791 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0151 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1175 c4)
+                            pleaf
+                          )
+                          (WP03.wp0663 c4)
+                          pleaf
+                        )
+                        (WP02.wp0407 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1431 c4)
+                            pleaf
+                          )
+                          (WP05.wp0919 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0087 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1111 c4)
+                            pleaf
+                          )
+                          (WP03.wp0599 c4)
+                          pleaf
+                        )
+                        (WP02.wp0343 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1367 c4)
+                            pleaf
+                          )
+                          (WP04.wp0855 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0215 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1239 c4)
+                            pleaf
+                          )
+                          (WP04.wp0727 c4)
+                          pleaf
+                        )
+                        (WP02.wp0471 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1495 c4)
+                            pleaf
+                          )
+                          (WP05.wp0983 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0055 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1079 c4)
+                            pleaf
+                          )
+                          (WP03.wp0567 c4)
+                          pleaf
+                        )
+                        (WP02.wp0311 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1335 c4)
+                            pleaf
+                          )
+                          (WP04.wp0823 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0183 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1207 c4)
+                            pleaf
+                          )
+                          (WP04.wp0695 c4)
+                          pleaf
+                        )
+                        (WP02.wp0439 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1463 c4)
+                            pleaf
+                          )
+                          (WP05.wp0951 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0119 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1143 c4)
+                            pleaf
+                          )
+                          (WP03.wp0631 c4)
+                          pleaf
+                        )
+                        (WP02.wp0375 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1399 c4)
+                            pleaf
+                          )
+                          (WP04.wp0887 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0247 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1271 c4)
+                            pleaf
+                          )
+                          (WP04.wp0759 c4)
+                          pleaf
+                        )
+                        (WP03.wp0503 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1015 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+            (WP01.wp0003 c4)
+            (pnode
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1027 c4)
+                            pleaf
+                          )
+                          (WP03.wp0515 c4)
+                          pleaf
+                        )
+                        (WP01.wp0259 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1283 c4)
+                            pleaf
+                          )
+                          (WP04.wp0771 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0131 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1155 c4)
+                            pleaf
+                          )
+                          (WP03.wp0643 c4)
+                          pleaf
+                        )
+                        (WP02.wp0387 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1411 c4)
+                            pleaf
+                          )
+                          (WP04.wp0899 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0067 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1091 c4)
+                            pleaf
+                          )
+                          (WP03.wp0579 c4)
+                          pleaf
+                        )
+                        (WP02.wp0323 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1347 c4)
+                            pleaf
+                          )
+                          (WP04.wp0835 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0195 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1219 c4)
+                            pleaf
+                          )
+                          (WP04.wp0707 c4)
+                          pleaf
+                        )
+                        (WP02.wp0451 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1475 c4)
+                            pleaf
+                          )
+                          (WP05.wp0963 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0035 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1059 c4)
+                            pleaf
+                          )
+                          (WP03.wp0547 c4)
+                          pleaf
+                        )
+                        (WP02.wp0291 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1315 c4)
+                            pleaf
+                          )
+                          (WP04.wp0803 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0163 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1187 c4)
+                            pleaf
+                          )
+                          (WP04.wp0675 c4)
+                          pleaf
+                        )
+                        (WP02.wp0419 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1443 c4)
+                            pleaf
+                          )
+                          (WP05.wp0931 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0099 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1123 c4)
+                            pleaf
+                          )
+                          (WP03.wp0611 c4)
+                          pleaf
+                        )
+                        (WP02.wp0355 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1379 c4)
+                            pleaf
+                          )
+                          (WP04.wp0867 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0227 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1251 c4)
+                            pleaf
+                          )
+                          (WP04.wp0739 c4)
+                          pleaf
+                        )
+                        (WP03.wp0483 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1507 c4)
+                            pleaf
+                          )
+                          (WP05.wp0995 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0019 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1043 c4)
+                            pleaf
+                          )
+                          (WP03.wp0531 c4)
+                          pleaf
+                        )
+                        (WP02.wp0275 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1299 c4)
+                            pleaf
+                          )
+                          (WP04.wp0787 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0147 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1171 c4)
+                            pleaf
+                          )
+                          (WP03.wp0659 c4)
+                          pleaf
+                        )
+                        (WP02.wp0403 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1427 c4)
+                            pleaf
+                          )
+                          (WP04.wp0915 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0083 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1107 c4)
+                            pleaf
+                          )
+                          (WP03.wp0595 c4)
+                          pleaf
+                        )
+                        (WP02.wp0339 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1363 c4)
+                            pleaf
+                          )
+                          (WP04.wp0851 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0211 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1235 c4)
+                            pleaf
+                          )
+                          (WP04.wp0723 c4)
+                          pleaf
+                        )
+                        (WP02.wp0467 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1491 c4)
+                            pleaf
+                          )
+                          (WP05.wp0979 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0051 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1075 c4)
+                            pleaf
+                          )
+                          (WP03.wp0563 c4)
+                          pleaf
+                        )
+                        (WP02.wp0307 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1331 c4)
+                            pleaf
+                          )
+                          (WP04.wp0819 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0179 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1203 c4)
+                            pleaf
+                          )
+                          (WP04.wp0691 c4)
+                          pleaf
+                        )
+                        (WP02.wp0435 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1459 c4)
+                            pleaf
+                          )
+                          (WP05.wp0947 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0115 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1139 c4)
+                            pleaf
+                          )
+                          (WP03.wp0627 c4)
+                          pleaf
+                        )
+                        (WP02.wp0371 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1395 c4)
+                            pleaf
+                          )
+                          (WP04.wp0883 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0243 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1267 c4)
+                            pleaf
+                          )
+                          (WP04.wp0755 c4)
+                          pleaf
+                        )
+                        (WP03.wp0499 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1011 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+              (WP01.wp0011 c4)
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1035 c4)
+                            pleaf
+                          )
+                          (WP03.wp0523 c4)
+                          pleaf
+                        )
+                        (WP02.wp0267 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1291 c4)
+                            pleaf
+                          )
+                          (WP04.wp0779 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0139 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1163 c4)
+                            pleaf
+                          )
+                          (WP03.wp0651 c4)
+                          pleaf
+                        )
+                        (WP02.wp0395 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1419 c4)
+                            pleaf
+                          )
+                          (WP04.wp0907 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0075 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1099 c4)
+                            pleaf
+                          )
+                          (WP03.wp0587 c4)
+                          pleaf
+                        )
+                        (WP02.wp0331 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1355 c4)
+                            pleaf
+                          )
+                          (WP04.wp0843 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0203 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1227 c4)
+                            pleaf
+                          )
+                          (WP04.wp0715 c4)
+                          pleaf
+                        )
+                        (WP02.wp0459 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1483 c4)
+                            pleaf
+                          )
+                          (WP05.wp0971 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0043 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1067 c4)
+                            pleaf
+                          )
+                          (WP03.wp0555 c4)
+                          pleaf
+                        )
+                        (WP02.wp0299 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1323 c4)
+                            pleaf
+                          )
+                          (WP04.wp0811 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0171 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1195 c4)
+                            pleaf
+                          )
+                          (WP04.wp0683 c4)
+                          pleaf
+                        )
+                        (WP02.wp0427 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1451 c4)
+                            pleaf
+                          )
+                          (WP05.wp0939 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0107 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1131 c4)
+                            pleaf
+                          )
+                          (WP03.wp0619 c4)
+                          pleaf
+                        )
+                        (WP02.wp0363 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1387 c4)
+                            pleaf
+                          )
+                          (WP04.wp0875 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0235 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1259 c4)
+                            pleaf
+                          )
+                          (WP04.wp0747 c4)
+                          pleaf
+                        )
+                        (WP03.wp0491 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1515 c4)
+                            pleaf
+                          )
+                          (WP05.wp1003 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0027 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1051 c4)
+                            pleaf
+                          )
+                          (WP03.wp0539 c4)
+                          pleaf
+                        )
+                        (WP02.wp0283 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1307 c4)
+                            pleaf
+                          )
+                          (WP04.wp0795 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0155 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1179 c4)
+                            pleaf
+                          )
+                          (WP03.wp0667 c4)
+                          pleaf
+                        )
+                        (WP02.wp0411 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1435 c4)
+                            pleaf
+                          )
+                          (WP05.wp0923 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0091 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1115 c4)
+                            pleaf
+                          )
+                          (WP03.wp0603 c4)
+                          pleaf
+                        )
+                        (WP02.wp0347 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1371 c4)
+                            pleaf
+                          )
+                          (WP04.wp0859 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0219 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1243 c4)
+                            pleaf
+                          )
+                          (WP04.wp0731 c4)
+                          pleaf
+                        )
+                        (WP03.wp0475 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1499 c4)
+                            pleaf
+                          )
+                          (WP05.wp0987 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0059 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1083 c4)
+                            pleaf
+                          )
+                          (WP03.wp0571 c4)
+                          pleaf
+                        )
+                        (WP02.wp0315 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1339 c4)
+                            pleaf
+                          )
+                          (WP04.wp0827 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0187 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1211 c4)
+                            pleaf
+                          )
+                          (WP04.wp0699 c4)
+                          pleaf
+                        )
+                        (WP02.wp0443 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1467 c4)
+                            pleaf
+                          )
+                          (WP05.wp0955 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0123 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1147 c4)
+                            pleaf
+                          )
+                          (WP03.wp0635 c4)
+                          pleaf
+                        )
+                        (WP02.wp0379 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1403 c4)
+                            pleaf
+                          )
+                          (WP04.wp0891 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0251 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1275 c4)
+                            pleaf
+                          )
+                          (WP04.wp0763 c4)
+                          pleaf
+                        )
+                        (WP03.wp0507 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1019 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+          (WP01.wp0001 c4)
+          (pnode
+            (pnode
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1025 c4)
+                            pleaf
+                          )
+                          (WP03.wp0513 c4)
+                          pleaf
+                        )
+                        (WP01.wp0257 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1281 c4)
+                            pleaf
+                          )
+                          (WP04.wp0769 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0129 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1153 c4)
+                            pleaf
+                          )
+                          (WP03.wp0641 c4)
+                          pleaf
+                        )
+                        (WP02.wp0385 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1409 c4)
+                            pleaf
+                          )
+                          (WP04.wp0897 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0065 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1089 c4)
+                            pleaf
+                          )
+                          (WP03.wp0577 c4)
+                          pleaf
+                        )
+                        (WP02.wp0321 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1345 c4)
+                            pleaf
+                          )
+                          (WP04.wp0833 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0193 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1217 c4)
+                            pleaf
+                          )
+                          (WP04.wp0705 c4)
+                          pleaf
+                        )
+                        (WP02.wp0449 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1473 c4)
+                            pleaf
+                          )
+                          (WP05.wp0961 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0033 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1057 c4)
+                            pleaf
+                          )
+                          (WP03.wp0545 c4)
+                          pleaf
+                        )
+                        (WP02.wp0289 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1313 c4)
+                            pleaf
+                          )
+                          (WP04.wp0801 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0161 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1185 c4)
+                            pleaf
+                          )
+                          (WP03.wp0673 c4)
+                          pleaf
+                        )
+                        (WP02.wp0417 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1441 c4)
+                            pleaf
+                          )
+                          (WP05.wp0929 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0097 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1121 c4)
+                            pleaf
+                          )
+                          (WP03.wp0609 c4)
+                          pleaf
+                        )
+                        (WP02.wp0353 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1377 c4)
+                            pleaf
+                          )
+                          (WP04.wp0865 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0225 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1249 c4)
+                            pleaf
+                          )
+                          (WP04.wp0737 c4)
+                          pleaf
+                        )
+                        (WP03.wp0481 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1505 c4)
+                            pleaf
+                          )
+                          (WP05.wp0993 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0017 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1041 c4)
+                            pleaf
+                          )
+                          (WP03.wp0529 c4)
+                          pleaf
+                        )
+                        (WP02.wp0273 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1297 c4)
+                            pleaf
+                          )
+                          (WP04.wp0785 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0145 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1169 c4)
+                            pleaf
+                          )
+                          (WP03.wp0657 c4)
+                          pleaf
+                        )
+                        (WP02.wp0401 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1425 c4)
+                            pleaf
+                          )
+                          (WP04.wp0913 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0081 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1105 c4)
+                            pleaf
+                          )
+                          (WP03.wp0593 c4)
+                          pleaf
+                        )
+                        (WP02.wp0337 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1361 c4)
+                            pleaf
+                          )
+                          (WP04.wp0849 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0209 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1233 c4)
+                            pleaf
+                          )
+                          (WP04.wp0721 c4)
+                          pleaf
+                        )
+                        (WP02.wp0465 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1489 c4)
+                            pleaf
+                          )
+                          (WP05.wp0977 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0049 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1073 c4)
+                            pleaf
+                          )
+                          (WP03.wp0561 c4)
+                          pleaf
+                        )
+                        (WP02.wp0305 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1329 c4)
+                            pleaf
+                          )
+                          (WP04.wp0817 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0177 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1201 c4)
+                            pleaf
+                          )
+                          (WP04.wp0689 c4)
+                          pleaf
+                        )
+                        (WP02.wp0433 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1457 c4)
+                            pleaf
+                          )
+                          (WP05.wp0945 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0113 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1137 c4)
+                            pleaf
+                          )
+                          (WP03.wp0625 c4)
+                          pleaf
+                        )
+                        (WP02.wp0369 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1393 c4)
+                            pleaf
+                          )
+                          (WP04.wp0881 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0241 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1265 c4)
+                            pleaf
+                          )
+                          (WP04.wp0753 c4)
+                          pleaf
+                        )
+                        (WP03.wp0497 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1009 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+              (WP01.wp0009 c4)
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1033 c4)
+                            pleaf
+                          )
+                          (WP03.wp0521 c4)
+                          pleaf
+                        )
+                        (WP02.wp0265 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1289 c4)
+                            pleaf
+                          )
+                          (WP04.wp0777 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0137 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1161 c4)
+                            pleaf
+                          )
+                          (WP03.wp0649 c4)
+                          pleaf
+                        )
+                        (WP02.wp0393 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1417 c4)
+                            pleaf
+                          )
+                          (WP04.wp0905 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0073 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1097 c4)
+                            pleaf
+                          )
+                          (WP03.wp0585 c4)
+                          pleaf
+                        )
+                        (WP02.wp0329 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1353 c4)
+                            pleaf
+                          )
+                          (WP04.wp0841 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0201 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1225 c4)
+                            pleaf
+                          )
+                          (WP04.wp0713 c4)
+                          pleaf
+                        )
+                        (WP02.wp0457 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1481 c4)
+                            pleaf
+                          )
+                          (WP05.wp0969 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0041 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1065 c4)
+                            pleaf
+                          )
+                          (WP03.wp0553 c4)
+                          pleaf
+                        )
+                        (WP02.wp0297 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1321 c4)
+                            pleaf
+                          )
+                          (WP04.wp0809 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0169 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1193 c4)
+                            pleaf
+                          )
+                          (WP04.wp0681 c4)
+                          pleaf
+                        )
+                        (WP02.wp0425 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1449 c4)
+                            pleaf
+                          )
+                          (WP05.wp0937 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0105 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1129 c4)
+                            pleaf
+                          )
+                          (WP03.wp0617 c4)
+                          pleaf
+                        )
+                        (WP02.wp0361 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1385 c4)
+                            pleaf
+                          )
+                          (WP04.wp0873 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0233 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1257 c4)
+                            pleaf
+                          )
+                          (WP04.wp0745 c4)
+                          pleaf
+                        )
+                        (WP03.wp0489 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1513 c4)
+                            pleaf
+                          )
+                          (WP05.wp1001 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0025 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1049 c4)
+                            pleaf
+                          )
+                          (WP03.wp0537 c4)
+                          pleaf
+                        )
+                        (WP02.wp0281 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1305 c4)
+                            pleaf
+                          )
+                          (WP04.wp0793 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0153 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1177 c4)
+                            pleaf
+                          )
+                          (WP03.wp0665 c4)
+                          pleaf
+                        )
+                        (WP02.wp0409 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1433 c4)
+                            pleaf
+                          )
+                          (WP05.wp0921 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0089 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1113 c4)
+                            pleaf
+                          )
+                          (WP03.wp0601 c4)
+                          pleaf
+                        )
+                        (WP02.wp0345 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1369 c4)
+                            pleaf
+                          )
+                          (WP04.wp0857 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0217 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1241 c4)
+                            pleaf
+                          )
+                          (WP04.wp0729 c4)
+                          pleaf
+                        )
+                        (WP02.wp0473 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1497 c4)
+                            pleaf
+                          )
+                          (WP05.wp0985 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0057 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1081 c4)
+                            pleaf
+                          )
+                          (WP03.wp0569 c4)
+                          pleaf
+                        )
+                        (WP02.wp0313 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1337 c4)
+                            pleaf
+                          )
+                          (WP04.wp0825 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0185 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1209 c4)
+                            pleaf
+                          )
+                          (WP04.wp0697 c4)
+                          pleaf
+                        )
+                        (WP02.wp0441 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1465 c4)
+                            pleaf
+                          )
+                          (WP05.wp0953 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0121 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1145 c4)
+                            pleaf
+                          )
+                          (WP03.wp0633 c4)
+                          pleaf
+                        )
+                        (WP02.wp0377 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1401 c4)
+                            pleaf
+                          )
+                          (WP04.wp0889 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0249 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1273 c4)
+                            pleaf
+                          )
+                          (WP04.wp0761 c4)
+                          pleaf
+                        )
+                        (WP03.wp0505 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1017 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+            (WP01.wp0005 c4)
+            (pnode
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1029 c4)
+                            pleaf
+                          )
+                          (WP03.wp0517 c4)
+                          pleaf
+                        )
+                        (WP02.wp0261 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1285 c4)
+                            pleaf
+                          )
+                          (WP04.wp0773 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0133 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1157 c4)
+                            pleaf
+                          )
+                          (WP03.wp0645 c4)
+                          pleaf
+                        )
+                        (WP02.wp0389 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1413 c4)
+                            pleaf
+                          )
+                          (WP04.wp0901 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0069 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1093 c4)
+                            pleaf
+                          )
+                          (WP03.wp0581 c4)
+                          pleaf
+                        )
+                        (WP02.wp0325 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1349 c4)
+                            pleaf
+                          )
+                          (WP04.wp0837 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0197 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1221 c4)
+                            pleaf
+                          )
+                          (WP04.wp0709 c4)
+                          pleaf
+                        )
+                        (WP02.wp0453 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1477 c4)
+                            pleaf
+                          )
+                          (WP05.wp0965 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0037 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1061 c4)
+                            pleaf
+                          )
+                          (WP03.wp0549 c4)
+                          pleaf
+                        )
+                        (WP02.wp0293 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1317 c4)
+                            pleaf
+                          )
+                          (WP04.wp0805 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0165 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1189 c4)
+                            pleaf
+                          )
+                          (WP04.wp0677 c4)
+                          pleaf
+                        )
+                        (WP02.wp0421 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1445 c4)
+                            pleaf
+                          )
+                          (WP05.wp0933 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0101 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1125 c4)
+                            pleaf
+                          )
+                          (WP03.wp0613 c4)
+                          pleaf
+                        )
+                        (WP02.wp0357 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1381 c4)
+                            pleaf
+                          )
+                          (WP04.wp0869 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0229 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1253 c4)
+                            pleaf
+                          )
+                          (WP04.wp0741 c4)
+                          pleaf
+                        )
+                        (WP03.wp0485 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1509 c4)
+                            pleaf
+                          )
+                          (WP05.wp0997 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0021 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1045 c4)
+                            pleaf
+                          )
+                          (WP03.wp0533 c4)
+                          pleaf
+                        )
+                        (WP02.wp0277 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1301 c4)
+                            pleaf
+                          )
+                          (WP04.wp0789 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0149 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1173 c4)
+                            pleaf
+                          )
+                          (WP03.wp0661 c4)
+                          pleaf
+                        )
+                        (WP02.wp0405 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1429 c4)
+                            pleaf
+                          )
+                          (WP04.wp0917 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0085 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1109 c4)
+                            pleaf
+                          )
+                          (WP03.wp0597 c4)
+                          pleaf
+                        )
+                        (WP02.wp0341 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1365 c4)
+                            pleaf
+                          )
+                          (WP04.wp0853 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0213 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1237 c4)
+                            pleaf
+                          )
+                          (WP04.wp0725 c4)
+                          pleaf
+                        )
+                        (WP02.wp0469 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1493 c4)
+                            pleaf
+                          )
+                          (WP05.wp0981 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0053 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1077 c4)
+                            pleaf
+                          )
+                          (WP03.wp0565 c4)
+                          pleaf
+                        )
+                        (WP02.wp0309 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1333 c4)
+                            pleaf
+                          )
+                          (WP04.wp0821 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0181 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1205 c4)
+                            pleaf
+                          )
+                          (WP04.wp0693 c4)
+                          pleaf
+                        )
+                        (WP02.wp0437 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1461 c4)
+                            pleaf
+                          )
+                          (WP05.wp0949 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0117 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1141 c4)
+                            pleaf
+                          )
+                          (WP03.wp0629 c4)
+                          pleaf
+                        )
+                        (WP02.wp0373 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1397 c4)
+                            pleaf
+                          )
+                          (WP04.wp0885 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0245 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1269 c4)
+                            pleaf
+                          )
+                          (WP04.wp0757 c4)
+                          pleaf
+                        )
+                        (WP03.wp0501 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1013 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+              (WP01.wp0013 c4)
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1037 c4)
+                            pleaf
+                          )
+                          (WP03.wp0525 c4)
+                          pleaf
+                        )
+                        (WP02.wp0269 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1293 c4)
+                            pleaf
+                          )
+                          (WP04.wp0781 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0141 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1165 c4)
+                            pleaf
+                          )
+                          (WP03.wp0653 c4)
+                          pleaf
+                        )
+                        (WP02.wp0397 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1421 c4)
+                            pleaf
+                          )
+                          (WP04.wp0909 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0077 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1101 c4)
+                            pleaf
+                          )
+                          (WP03.wp0589 c4)
+                          pleaf
+                        )
+                        (WP02.wp0333 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1357 c4)
+                            pleaf
+                          )
+                          (WP04.wp0845 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0205 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1229 c4)
+                            pleaf
+                          )
+                          (WP04.wp0717 c4)
+                          pleaf
+                        )
+                        (WP02.wp0461 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1485 c4)
+                            pleaf
+                          )
+                          (WP05.wp0973 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0045 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1069 c4)
+                            pleaf
+                          )
+                          (WP03.wp0557 c4)
+                          pleaf
+                        )
+                        (WP02.wp0301 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1325 c4)
+                            pleaf
+                          )
+                          (WP04.wp0813 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0173 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1197 c4)
+                            pleaf
+                          )
+                          (WP04.wp0685 c4)
+                          pleaf
+                        )
+                        (WP02.wp0429 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1453 c4)
+                            pleaf
+                          )
+                          (WP05.wp0941 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0109 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1133 c4)
+                            pleaf
+                          )
+                          (WP03.wp0621 c4)
+                          pleaf
+                        )
+                        (WP02.wp0365 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1389 c4)
+                            pleaf
+                          )
+                          (WP04.wp0877 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0237 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1261 c4)
+                            pleaf
+                          )
+                          (WP04.wp0749 c4)
+                          pleaf
+                        )
+                        (WP03.wp0493 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1517 c4)
+                            pleaf
+                          )
+                          (WP05.wp1005 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0029 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1053 c4)
+                            pleaf
+                          )
+                          (WP03.wp0541 c4)
+                          pleaf
+                        )
+                        (WP02.wp0285 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1309 c4)
+                            pleaf
+                          )
+                          (WP04.wp0797 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0157 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1181 c4)
+                            pleaf
+                          )
+                          (WP03.wp0669 c4)
+                          pleaf
+                        )
+                        (WP02.wp0413 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1437 c4)
+                            pleaf
+                          )
+                          (WP05.wp0925 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0093 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1117 c4)
+                            pleaf
+                          )
+                          (WP03.wp0605 c4)
+                          pleaf
+                        )
+                        (WP02.wp0349 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1373 c4)
+                            pleaf
+                          )
+                          (WP04.wp0861 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0221 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1245 c4)
+                            pleaf
+                          )
+                          (WP04.wp0733 c4)
+                          pleaf
+                        )
+                        (WP03.wp0477 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1501 c4)
+                            pleaf
+                          )
+                          (WP05.wp0989 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0061 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1085 c4)
+                            pleaf
+                          )
+                          (WP03.wp0573 c4)
+                          pleaf
+                        )
+                        (WP02.wp0317 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1341 c4)
+                            pleaf
+                          )
+                          (WP04.wp0829 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0189 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1213 c4)
+                            pleaf
+                          )
+                          (WP04.wp0701 c4)
+                          pleaf
+                        )
+                        (WP02.wp0445 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1469 c4)
+                            pleaf
+                          )
+                          (WP05.wp0957 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0125 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1149 c4)
+                            pleaf
+                          )
+                          (WP03.wp0637 c4)
+                          pleaf
+                        )
+                        (WP02.wp0381 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1405 c4)
+                            pleaf
+                          )
+                          (WP04.wp0893 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0253 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1277 c4)
+                            pleaf
+                          )
+                          (WP04.wp0765 c4)
+                          pleaf
+                        )
+                        (WP03.wp0509 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1021 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+        refl
+        (pnode
+          (pnode
+            (pnode
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1024 c4)
+                            pleaf
+                          )
+                          (WP03.wp0512 c4)
+                          pleaf
+                        )
+                        (WP01.wp0256 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1280 c4)
+                            pleaf
+                          )
+                          (WP04.wp0768 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0128 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1152 c4)
+                            pleaf
+                          )
+                          (WP03.wp0640 c4)
+                          pleaf
+                        )
+                        (WP02.wp0384 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1408 c4)
+                            pleaf
+                          )
+                          (WP04.wp0896 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0064 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1088 c4)
+                            pleaf
+                          )
+                          (WP03.wp0576 c4)
+                          pleaf
+                        )
+                        (WP02.wp0320 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1344 c4)
+                            pleaf
+                          )
+                          (WP04.wp0832 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0192 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1216 c4)
+                            pleaf
+                          )
+                          (WP04.wp0704 c4)
+                          pleaf
+                        )
+                        (WP02.wp0448 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1472 c4)
+                            pleaf
+                          )
+                          (WP05.wp0960 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0032 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1056 c4)
+                            pleaf
+                          )
+                          (WP03.wp0544 c4)
+                          pleaf
+                        )
+                        (WP02.wp0288 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1312 c4)
+                            pleaf
+                          )
+                          (WP04.wp0800 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0160 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1184 c4)
+                            pleaf
+                          )
+                          (WP03.wp0672 c4)
+                          pleaf
+                        )
+                        (WP02.wp0416 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1440 c4)
+                            pleaf
+                          )
+                          (WP05.wp0928 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0096 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1120 c4)
+                            pleaf
+                          )
+                          (WP03.wp0608 c4)
+                          pleaf
+                        )
+                        (WP02.wp0352 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1376 c4)
+                            pleaf
+                          )
+                          (WP04.wp0864 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0224 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1248 c4)
+                            pleaf
+                          )
+                          (WP04.wp0736 c4)
+                          pleaf
+                        )
+                        (WP03.wp0480 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1504 c4)
+                            pleaf
+                          )
+                          (WP05.wp0992 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0016 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1040 c4)
+                            pleaf
+                          )
+                          (WP03.wp0528 c4)
+                          pleaf
+                        )
+                        (WP02.wp0272 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1296 c4)
+                            pleaf
+                          )
+                          (WP04.wp0784 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0144 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1168 c4)
+                            pleaf
+                          )
+                          (WP03.wp0656 c4)
+                          pleaf
+                        )
+                        (WP02.wp0400 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1424 c4)
+                            pleaf
+                          )
+                          (WP04.wp0912 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0080 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1104 c4)
+                            pleaf
+                          )
+                          (WP03.wp0592 c4)
+                          pleaf
+                        )
+                        (WP02.wp0336 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1360 c4)
+                            pleaf
+                          )
+                          (WP04.wp0848 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0208 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1232 c4)
+                            pleaf
+                          )
+                          (WP04.wp0720 c4)
+                          pleaf
+                        )
+                        (WP02.wp0464 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1488 c4)
+                            pleaf
+                          )
+                          (WP05.wp0976 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0048 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1072 c4)
+                            pleaf
+                          )
+                          (WP03.wp0560 c4)
+                          pleaf
+                        )
+                        (WP02.wp0304 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1328 c4)
+                            pleaf
+                          )
+                          (WP04.wp0816 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0176 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1200 c4)
+                            pleaf
+                          )
+                          (WP04.wp0688 c4)
+                          pleaf
+                        )
+                        (WP02.wp0432 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1456 c4)
+                            pleaf
+                          )
+                          (WP05.wp0944 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0112 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1136 c4)
+                            pleaf
+                          )
+                          (WP03.wp0624 c4)
+                          pleaf
+                        )
+                        (WP02.wp0368 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1392 c4)
+                            pleaf
+                          )
+                          (WP04.wp0880 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0240 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1264 c4)
+                            pleaf
+                          )
+                          (WP04.wp0752 c4)
+                          pleaf
+                        )
+                        (WP03.wp0496 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1008 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+              (WP01.wp0008 c4)
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1032 c4)
+                            pleaf
+                          )
+                          (WP03.wp0520 c4)
+                          pleaf
+                        )
+                        (WP02.wp0264 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1288 c4)
+                            pleaf
+                          )
+                          (WP04.wp0776 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0136 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1160 c4)
+                            pleaf
+                          )
+                          (WP03.wp0648 c4)
+                          pleaf
+                        )
+                        (WP02.wp0392 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1416 c4)
+                            pleaf
+                          )
+                          (WP04.wp0904 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0072 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1096 c4)
+                            pleaf
+                          )
+                          (WP03.wp0584 c4)
+                          pleaf
+                        )
+                        (WP02.wp0328 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1352 c4)
+                            pleaf
+                          )
+                          (WP04.wp0840 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0200 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1224 c4)
+                            pleaf
+                          )
+                          (WP04.wp0712 c4)
+                          pleaf
+                        )
+                        (WP02.wp0456 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1480 c4)
+                            pleaf
+                          )
+                          (WP05.wp0968 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0040 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1064 c4)
+                            pleaf
+                          )
+                          (WP03.wp0552 c4)
+                          pleaf
+                        )
+                        (WP02.wp0296 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1320 c4)
+                            pleaf
+                          )
+                          (WP04.wp0808 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0168 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1192 c4)
+                            pleaf
+                          )
+                          (WP04.wp0680 c4)
+                          pleaf
+                        )
+                        (WP02.wp0424 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1448 c4)
+                            pleaf
+                          )
+                          (WP05.wp0936 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0104 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1128 c4)
+                            pleaf
+                          )
+                          (WP03.wp0616 c4)
+                          pleaf
+                        )
+                        (WP02.wp0360 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1384 c4)
+                            pleaf
+                          )
+                          (WP04.wp0872 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0232 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1256 c4)
+                            pleaf
+                          )
+                          (WP04.wp0744 c4)
+                          pleaf
+                        )
+                        (WP03.wp0488 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1512 c4)
+                            pleaf
+                          )
+                          (WP05.wp1000 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0024 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1048 c4)
+                            pleaf
+                          )
+                          (WP03.wp0536 c4)
+                          pleaf
+                        )
+                        (WP02.wp0280 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1304 c4)
+                            pleaf
+                          )
+                          (WP04.wp0792 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0152 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1176 c4)
+                            pleaf
+                          )
+                          (WP03.wp0664 c4)
+                          pleaf
+                        )
+                        (WP02.wp0408 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1432 c4)
+                            pleaf
+                          )
+                          (WP05.wp0920 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0088 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1112 c4)
+                            pleaf
+                          )
+                          (WP03.wp0600 c4)
+                          pleaf
+                        )
+                        (WP02.wp0344 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1368 c4)
+                            pleaf
+                          )
+                          (WP04.wp0856 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0216 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1240 c4)
+                            pleaf
+                          )
+                          (WP04.wp0728 c4)
+                          pleaf
+                        )
+                        (WP02.wp0472 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1496 c4)
+                            pleaf
+                          )
+                          (WP05.wp0984 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0056 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1080 c4)
+                            pleaf
+                          )
+                          (WP03.wp0568 c4)
+                          pleaf
+                        )
+                        (WP02.wp0312 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1336 c4)
+                            pleaf
+                          )
+                          (WP04.wp0824 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0184 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1208 c4)
+                            pleaf
+                          )
+                          (WP04.wp0696 c4)
+                          pleaf
+                        )
+                        (WP02.wp0440 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1464 c4)
+                            pleaf
+                          )
+                          (WP05.wp0952 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0120 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1144 c4)
+                            pleaf
+                          )
+                          (WP03.wp0632 c4)
+                          pleaf
+                        )
+                        (WP02.wp0376 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1400 c4)
+                            pleaf
+                          )
+                          (WP04.wp0888 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0248 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1272 c4)
+                            pleaf
+                          )
+                          (WP04.wp0760 c4)
+                          pleaf
+                        )
+                        (WP03.wp0504 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1016 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+            (WP01.wp0004 c4)
+            (pnode
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1028 c4)
+                            pleaf
+                          )
+                          (WP03.wp0516 c4)
+                          pleaf
+                        )
+                        (WP02.wp0260 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1284 c4)
+                            pleaf
+                          )
+                          (WP04.wp0772 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0132 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1156 c4)
+                            pleaf
+                          )
+                          (WP03.wp0644 c4)
+                          pleaf
+                        )
+                        (WP02.wp0388 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1412 c4)
+                            pleaf
+                          )
+                          (WP04.wp0900 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0068 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1092 c4)
+                            pleaf
+                          )
+                          (WP03.wp0580 c4)
+                          pleaf
+                        )
+                        (WP02.wp0324 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1348 c4)
+                            pleaf
+                          )
+                          (WP04.wp0836 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0196 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1220 c4)
+                            pleaf
+                          )
+                          (WP04.wp0708 c4)
+                          pleaf
+                        )
+                        (WP02.wp0452 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1476 c4)
+                            pleaf
+                          )
+                          (WP05.wp0964 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0036 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1060 c4)
+                            pleaf
+                          )
+                          (WP03.wp0548 c4)
+                          pleaf
+                        )
+                        (WP02.wp0292 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1316 c4)
+                            pleaf
+                          )
+                          (WP04.wp0804 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0164 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1188 c4)
+                            pleaf
+                          )
+                          (WP04.wp0676 c4)
+                          pleaf
+                        )
+                        (WP02.wp0420 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1444 c4)
+                            pleaf
+                          )
+                          (WP05.wp0932 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0100 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1124 c4)
+                            pleaf
+                          )
+                          (WP03.wp0612 c4)
+                          pleaf
+                        )
+                        (WP02.wp0356 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1380 c4)
+                            pleaf
+                          )
+                          (WP04.wp0868 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0228 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1252 c4)
+                            pleaf
+                          )
+                          (WP04.wp0740 c4)
+                          pleaf
+                        )
+                        (WP03.wp0484 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1508 c4)
+                            pleaf
+                          )
+                          (WP05.wp0996 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0020 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1044 c4)
+                            pleaf
+                          )
+                          (WP03.wp0532 c4)
+                          pleaf
+                        )
+                        (WP02.wp0276 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1300 c4)
+                            pleaf
+                          )
+                          (WP04.wp0788 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0148 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1172 c4)
+                            pleaf
+                          )
+                          (WP03.wp0660 c4)
+                          pleaf
+                        )
+                        (WP02.wp0404 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1428 c4)
+                            pleaf
+                          )
+                          (WP04.wp0916 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0084 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1108 c4)
+                            pleaf
+                          )
+                          (WP03.wp0596 c4)
+                          pleaf
+                        )
+                        (WP02.wp0340 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1364 c4)
+                            pleaf
+                          )
+                          (WP04.wp0852 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0212 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1236 c4)
+                            pleaf
+                          )
+                          (WP04.wp0724 c4)
+                          pleaf
+                        )
+                        (WP02.wp0468 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1492 c4)
+                            pleaf
+                          )
+                          (WP05.wp0980 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0052 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1076 c4)
+                            pleaf
+                          )
+                          (WP03.wp0564 c4)
+                          pleaf
+                        )
+                        (WP02.wp0308 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1332 c4)
+                            pleaf
+                          )
+                          (WP04.wp0820 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0180 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1204 c4)
+                            pleaf
+                          )
+                          (WP04.wp0692 c4)
+                          pleaf
+                        )
+                        (WP02.wp0436 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1460 c4)
+                            pleaf
+                          )
+                          (WP05.wp0948 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0116 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1140 c4)
+                            pleaf
+                          )
+                          (WP03.wp0628 c4)
+                          pleaf
+                        )
+                        (WP02.wp0372 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1396 c4)
+                            pleaf
+                          )
+                          (WP04.wp0884 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0244 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1268 c4)
+                            pleaf
+                          )
+                          (WP04.wp0756 c4)
+                          pleaf
+                        )
+                        (WP03.wp0500 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1012 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+              (WP01.wp0012 c4)
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1036 c4)
+                            pleaf
+                          )
+                          (WP03.wp0524 c4)
+                          pleaf
+                        )
+                        (WP02.wp0268 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1292 c4)
+                            pleaf
+                          )
+                          (WP04.wp0780 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0140 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1164 c4)
+                            pleaf
+                          )
+                          (WP03.wp0652 c4)
+                          pleaf
+                        )
+                        (WP02.wp0396 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1420 c4)
+                            pleaf
+                          )
+                          (WP04.wp0908 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0076 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1100 c4)
+                            pleaf
+                          )
+                          (WP03.wp0588 c4)
+                          pleaf
+                        )
+                        (WP02.wp0332 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1356 c4)
+                            pleaf
+                          )
+                          (WP04.wp0844 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0204 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1228 c4)
+                            pleaf
+                          )
+                          (WP04.wp0716 c4)
+                          pleaf
+                        )
+                        (WP02.wp0460 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1484 c4)
+                            pleaf
+                          )
+                          (WP05.wp0972 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0044 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1068 c4)
+                            pleaf
+                          )
+                          (WP03.wp0556 c4)
+                          pleaf
+                        )
+                        (WP02.wp0300 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1324 c4)
+                            pleaf
+                          )
+                          (WP04.wp0812 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0172 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1196 c4)
+                            pleaf
+                          )
+                          (WP04.wp0684 c4)
+                          pleaf
+                        )
+                        (WP02.wp0428 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1452 c4)
+                            pleaf
+                          )
+                          (WP05.wp0940 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0108 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1132 c4)
+                            pleaf
+                          )
+                          (WP03.wp0620 c4)
+                          pleaf
+                        )
+                        (WP02.wp0364 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1388 c4)
+                            pleaf
+                          )
+                          (WP04.wp0876 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0236 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1260 c4)
+                            pleaf
+                          )
+                          (WP04.wp0748 c4)
+                          pleaf
+                        )
+                        (WP03.wp0492 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1516 c4)
+                            pleaf
+                          )
+                          (WP05.wp1004 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0028 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1052 c4)
+                            pleaf
+                          )
+                          (WP03.wp0540 c4)
+                          pleaf
+                        )
+                        (WP02.wp0284 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1308 c4)
+                            pleaf
+                          )
+                          (WP04.wp0796 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0156 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1180 c4)
+                            pleaf
+                          )
+                          (WP03.wp0668 c4)
+                          pleaf
+                        )
+                        (WP02.wp0412 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1436 c4)
+                            pleaf
+                          )
+                          (WP05.wp0924 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0092 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1116 c4)
+                            pleaf
+                          )
+                          (WP03.wp0604 c4)
+                          pleaf
+                        )
+                        (WP02.wp0348 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1372 c4)
+                            pleaf
+                          )
+                          (WP04.wp0860 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0220 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1244 c4)
+                            pleaf
+                          )
+                          (WP04.wp0732 c4)
+                          pleaf
+                        )
+                        (WP03.wp0476 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1500 c4)
+                            pleaf
+                          )
+                          (WP05.wp0988 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0060 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1084 c4)
+                            pleaf
+                          )
+                          (WP03.wp0572 c4)
+                          pleaf
+                        )
+                        (WP02.wp0316 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1340 c4)
+                            pleaf
+                          )
+                          (WP04.wp0828 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0188 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1212 c4)
+                            pleaf
+                          )
+                          (WP04.wp0700 c4)
+                          pleaf
+                        )
+                        (WP02.wp0444 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1468 c4)
+                            pleaf
+                          )
+                          (WP05.wp0956 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0124 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1148 c4)
+                            pleaf
+                          )
+                          (WP03.wp0636 c4)
+                          pleaf
+                        )
+                        (WP02.wp0380 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1404 c4)
+                            pleaf
+                          )
+                          (WP04.wp0892 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0252 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1276 c4)
+                            pleaf
+                          )
+                          (WP04.wp0764 c4)
+                          pleaf
+                        )
+                        (WP03.wp0508 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1020 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+          (WP01.wp0002 c4)
+          (pnode
+            (pnode
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1026 c4)
+                            pleaf
+                          )
+                          (WP03.wp0514 c4)
+                          pleaf
+                        )
+                        (WP01.wp0258 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1282 c4)
+                            pleaf
+                          )
+                          (WP04.wp0770 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0130 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1154 c4)
+                            pleaf
+                          )
+                          (WP03.wp0642 c4)
+                          pleaf
+                        )
+                        (WP02.wp0386 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1410 c4)
+                            pleaf
+                          )
+                          (WP04.wp0898 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0066 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1090 c4)
+                            pleaf
+                          )
+                          (WP03.wp0578 c4)
+                          pleaf
+                        )
+                        (WP02.wp0322 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1346 c4)
+                            pleaf
+                          )
+                          (WP04.wp0834 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0194 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1218 c4)
+                            pleaf
+                          )
+                          (WP04.wp0706 c4)
+                          pleaf
+                        )
+                        (WP02.wp0450 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1474 c4)
+                            pleaf
+                          )
+                          (WP05.wp0962 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0034 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1058 c4)
+                            pleaf
+                          )
+                          (WP03.wp0546 c4)
+                          pleaf
+                        )
+                        (WP02.wp0290 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1314 c4)
+                            pleaf
+                          )
+                          (WP04.wp0802 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0162 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1186 c4)
+                            pleaf
+                          )
+                          (WP03.wp0674 c4)
+                          pleaf
+                        )
+                        (WP02.wp0418 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1442 c4)
+                            pleaf
+                          )
+                          (WP05.wp0930 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0098 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1122 c4)
+                            pleaf
+                          )
+                          (WP03.wp0610 c4)
+                          pleaf
+                        )
+                        (WP02.wp0354 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1378 c4)
+                            pleaf
+                          )
+                          (WP04.wp0866 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0226 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1250 c4)
+                            pleaf
+                          )
+                          (WP04.wp0738 c4)
+                          pleaf
+                        )
+                        (WP03.wp0482 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1506 c4)
+                            pleaf
+                          )
+                          (WP05.wp0994 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0018 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1042 c4)
+                            pleaf
+                          )
+                          (WP03.wp0530 c4)
+                          pleaf
+                        )
+                        (WP02.wp0274 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1298 c4)
+                            pleaf
+                          )
+                          (WP04.wp0786 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0146 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1170 c4)
+                            pleaf
+                          )
+                          (WP03.wp0658 c4)
+                          pleaf
+                        )
+                        (WP02.wp0402 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1426 c4)
+                            pleaf
+                          )
+                          (WP04.wp0914 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0082 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1106 c4)
+                            pleaf
+                          )
+                          (WP03.wp0594 c4)
+                          pleaf
+                        )
+                        (WP02.wp0338 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1362 c4)
+                            pleaf
+                          )
+                          (WP04.wp0850 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0210 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1234 c4)
+                            pleaf
+                          )
+                          (WP04.wp0722 c4)
+                          pleaf
+                        )
+                        (WP02.wp0466 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1490 c4)
+                            pleaf
+                          )
+                          (WP05.wp0978 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0050 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1074 c4)
+                            pleaf
+                          )
+                          (WP03.wp0562 c4)
+                          pleaf
+                        )
+                        (WP02.wp0306 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1330 c4)
+                            pleaf
+                          )
+                          (WP04.wp0818 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0178 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1202 c4)
+                            pleaf
+                          )
+                          (WP04.wp0690 c4)
+                          pleaf
+                        )
+                        (WP02.wp0434 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1458 c4)
+                            pleaf
+                          )
+                          (WP05.wp0946 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0114 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1138 c4)
+                            pleaf
+                          )
+                          (WP03.wp0626 c4)
+                          pleaf
+                        )
+                        (WP02.wp0370 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1394 c4)
+                            pleaf
+                          )
+                          (WP04.wp0882 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0242 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1266 c4)
+                            pleaf
+                          )
+                          (WP04.wp0754 c4)
+                          pleaf
+                        )
+                        (WP03.wp0498 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1010 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+              (WP01.wp0010 c4)
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1034 c4)
+                            pleaf
+                          )
+                          (WP03.wp0522 c4)
+                          pleaf
+                        )
+                        (WP02.wp0266 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1290 c4)
+                            pleaf
+                          )
+                          (WP04.wp0778 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0138 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1162 c4)
+                            pleaf
+                          )
+                          (WP03.wp0650 c4)
+                          pleaf
+                        )
+                        (WP02.wp0394 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1418 c4)
+                            pleaf
+                          )
+                          (WP04.wp0906 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0074 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1098 c4)
+                            pleaf
+                          )
+                          (WP03.wp0586 c4)
+                          pleaf
+                        )
+                        (WP02.wp0330 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1354 c4)
+                            pleaf
+                          )
+                          (WP04.wp0842 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0202 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1226 c4)
+                            pleaf
+                          )
+                          (WP04.wp0714 c4)
+                          pleaf
+                        )
+                        (WP02.wp0458 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1482 c4)
+                            pleaf
+                          )
+                          (WP05.wp0970 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0042 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1066 c4)
+                            pleaf
+                          )
+                          (WP03.wp0554 c4)
+                          pleaf
+                        )
+                        (WP02.wp0298 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1322 c4)
+                            pleaf
+                          )
+                          (WP04.wp0810 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0170 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1194 c4)
+                            pleaf
+                          )
+                          (WP04.wp0682 c4)
+                          pleaf
+                        )
+                        (WP02.wp0426 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1450 c4)
+                            pleaf
+                          )
+                          (WP05.wp0938 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0106 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1130 c4)
+                            pleaf
+                          )
+                          (WP03.wp0618 c4)
+                          pleaf
+                        )
+                        (WP02.wp0362 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1386 c4)
+                            pleaf
+                          )
+                          (WP04.wp0874 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0234 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1258 c4)
+                            pleaf
+                          )
+                          (WP04.wp0746 c4)
+                          pleaf
+                        )
+                        (WP03.wp0490 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1514 c4)
+                            pleaf
+                          )
+                          (WP05.wp1002 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0026 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1050 c4)
+                            pleaf
+                          )
+                          (WP03.wp0538 c4)
+                          pleaf
+                        )
+                        (WP02.wp0282 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1306 c4)
+                            pleaf
+                          )
+                          (WP04.wp0794 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0154 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1178 c4)
+                            pleaf
+                          )
+                          (WP03.wp0666 c4)
+                          pleaf
+                        )
+                        (WP02.wp0410 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1434 c4)
+                            pleaf
+                          )
+                          (WP05.wp0922 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0090 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1114 c4)
+                            pleaf
+                          )
+                          (WP03.wp0602 c4)
+                          pleaf
+                        )
+                        (WP02.wp0346 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1370 c4)
+                            pleaf
+                          )
+                          (WP04.wp0858 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0218 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1242 c4)
+                            pleaf
+                          )
+                          (WP04.wp0730 c4)
+                          pleaf
+                        )
+                        (WP03.wp0474 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1498 c4)
+                            pleaf
+                          )
+                          (WP05.wp0986 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0058 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1082 c4)
+                            pleaf
+                          )
+                          (WP03.wp0570 c4)
+                          pleaf
+                        )
+                        (WP02.wp0314 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1338 c4)
+                            pleaf
+                          )
+                          (WP04.wp0826 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0186 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1210 c4)
+                            pleaf
+                          )
+                          (WP04.wp0698 c4)
+                          pleaf
+                        )
+                        (WP02.wp0442 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1466 c4)
+                            pleaf
+                          )
+                          (WP05.wp0954 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0122 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1146 c4)
+                            pleaf
+                          )
+                          (WP03.wp0634 c4)
+                          pleaf
+                        )
+                        (WP02.wp0378 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1402 c4)
+                            pleaf
+                          )
+                          (WP04.wp0890 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0250 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1274 c4)
+                            pleaf
+                          )
+                          (WP04.wp0762 c4)
+                          pleaf
+                        )
+                        (WP03.wp0506 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1018 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+            (WP01.wp0006 c4)
+            (pnode
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1030 c4)
+                            pleaf
+                          )
+                          (WP03.wp0518 c4)
+                          pleaf
+                        )
+                        (WP02.wp0262 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1286 c4)
+                            pleaf
+                          )
+                          (WP04.wp0774 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0134 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1158 c4)
+                            pleaf
+                          )
+                          (WP03.wp0646 c4)
+                          pleaf
+                        )
+                        (WP02.wp0390 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1414 c4)
+                            pleaf
+                          )
+                          (WP04.wp0902 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0070 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1094 c4)
+                            pleaf
+                          )
+                          (WP03.wp0582 c4)
+                          pleaf
+                        )
+                        (WP02.wp0326 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1350 c4)
+                            pleaf
+                          )
+                          (WP04.wp0838 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0198 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1222 c4)
+                            pleaf
+                          )
+                          (WP04.wp0710 c4)
+                          pleaf
+                        )
+                        (WP02.wp0454 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1478 c4)
+                            pleaf
+                          )
+                          (WP05.wp0966 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0038 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1062 c4)
+                            pleaf
+                          )
+                          (WP03.wp0550 c4)
+                          pleaf
+                        )
+                        (WP02.wp0294 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1318 c4)
+                            pleaf
+                          )
+                          (WP04.wp0806 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0166 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1190 c4)
+                            pleaf
+                          )
+                          (WP04.wp0678 c4)
+                          pleaf
+                        )
+                        (WP02.wp0422 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1446 c4)
+                            pleaf
+                          )
+                          (WP05.wp0934 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0102 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1126 c4)
+                            pleaf
+                          )
+                          (WP03.wp0614 c4)
+                          pleaf
+                        )
+                        (WP02.wp0358 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1382 c4)
+                            pleaf
+                          )
+                          (WP04.wp0870 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0230 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1254 c4)
+                            pleaf
+                          )
+                          (WP04.wp0742 c4)
+                          pleaf
+                        )
+                        (WP03.wp0486 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1510 c4)
+                            pleaf
+                          )
+                          (WP05.wp0998 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0022 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1046 c4)
+                            pleaf
+                          )
+                          (WP03.wp0534 c4)
+                          pleaf
+                        )
+                        (WP02.wp0278 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1302 c4)
+                            pleaf
+                          )
+                          (WP04.wp0790 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0150 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1174 c4)
+                            pleaf
+                          )
+                          (WP03.wp0662 c4)
+                          pleaf
+                        )
+                        (WP02.wp0406 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1430 c4)
+                            pleaf
+                          )
+                          (WP04.wp0918 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0086 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1110 c4)
+                            pleaf
+                          )
+                          (WP03.wp0598 c4)
+                          pleaf
+                        )
+                        (WP02.wp0342 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1366 c4)
+                            pleaf
+                          )
+                          (WP04.wp0854 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0214 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1238 c4)
+                            pleaf
+                          )
+                          (WP04.wp0726 c4)
+                          pleaf
+                        )
+                        (WP02.wp0470 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1494 c4)
+                            pleaf
+                          )
+                          (WP05.wp0982 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0054 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1078 c4)
+                            pleaf
+                          )
+                          (WP03.wp0566 c4)
+                          pleaf
+                        )
+                        (WP02.wp0310 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1334 c4)
+                            pleaf
+                          )
+                          (WP04.wp0822 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0182 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1206 c4)
+                            pleaf
+                          )
+                          (WP04.wp0694 c4)
+                          pleaf
+                        )
+                        (WP02.wp0438 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1462 c4)
+                            pleaf
+                          )
+                          (WP05.wp0950 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0118 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1142 c4)
+                            pleaf
+                          )
+                          (WP03.wp0630 c4)
+                          pleaf
+                        )
+                        (WP02.wp0374 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1398 c4)
+                            pleaf
+                          )
+                          (WP04.wp0886 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0246 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1270 c4)
+                            pleaf
+                          )
+                          (WP04.wp0758 c4)
+                          pleaf
+                        )
+                        (WP03.wp0502 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1014 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+              (WP01.wp0014 c4)
+              (pnode
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1038 c4)
+                            pleaf
+                          )
+                          (WP03.wp0526 c4)
+                          pleaf
+                        )
+                        (WP02.wp0270 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1294 c4)
+                            pleaf
+                          )
+                          (WP04.wp0782 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0142 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1166 c4)
+                            pleaf
+                          )
+                          (WP03.wp0654 c4)
+                          pleaf
+                        )
+                        (WP02.wp0398 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1422 c4)
+                            pleaf
+                          )
+                          (WP04.wp0910 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0078 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1102 c4)
+                            pleaf
+                          )
+                          (WP03.wp0590 c4)
+                          pleaf
+                        )
+                        (WP02.wp0334 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1358 c4)
+                            pleaf
+                          )
+                          (WP04.wp0846 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0206 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1230 c4)
+                            pleaf
+                          )
+                          (WP04.wp0718 c4)
+                          pleaf
+                        )
+                        (WP02.wp0462 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1486 c4)
+                            pleaf
+                          )
+                          (WP05.wp0974 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0046 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1070 c4)
+                            pleaf
+                          )
+                          (WP03.wp0558 c4)
+                          pleaf
+                        )
+                        (WP02.wp0302 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1326 c4)
+                            pleaf
+                          )
+                          (WP04.wp0814 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0174 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1198 c4)
+                            pleaf
+                          )
+                          (WP04.wp0686 c4)
+                          pleaf
+                        )
+                        (WP02.wp0430 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1454 c4)
+                            pleaf
+                          )
+                          (WP05.wp0942 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0110 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1134 c4)
+                            pleaf
+                          )
+                          (WP03.wp0622 c4)
+                          pleaf
+                        )
+                        (WP02.wp0366 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1390 c4)
+                            pleaf
+                          )
+                          (WP04.wp0878 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0238 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1262 c4)
+                            pleaf
+                          )
+                          (WP04.wp0750 c4)
+                          pleaf
+                        )
+                        (WP03.wp0494 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1518 c4)
+                            pleaf
+                          )
+                          (WP05.wp1006 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+                (WP01.wp0030 c4)
+                (pnode
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1054 c4)
+                            pleaf
+                          )
+                          (WP03.wp0542 c4)
+                          pleaf
+                        )
+                        (WP02.wp0286 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1310 c4)
+                            pleaf
+                          )
+                          (WP04.wp0798 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0158 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1182 c4)
+                            pleaf
+                          )
+                          (WP03.wp0670 c4)
+                          pleaf
+                        )
+                        (WP02.wp0414 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1438 c4)
+                            pleaf
+                          )
+                          (WP05.wp0926 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0094 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1118 c4)
+                            pleaf
+                          )
+                          (WP03.wp0606 c4)
+                          pleaf
+                        )
+                        (WP02.wp0350 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1374 c4)
+                            pleaf
+                          )
+                          (WP04.wp0862 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0222 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1246 c4)
+                            pleaf
+                          )
+                          (WP04.wp0734 c4)
+                          pleaf
+                        )
+                        (WP03.wp0478 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1502 c4)
+                            pleaf
+                          )
+                          (WP05.wp0990 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                  (WP01.wp0062 c4)
+                  (pnode
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP05.wp1086 c4)
+                            pleaf
+                          )
+                          (WP03.wp0574 c4)
+                          pleaf
+                        )
+                        (WP02.wp0318 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1342 c4)
+                            pleaf
+                          )
+                          (WP04.wp0830 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0190 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1214 c4)
+                            pleaf
+                          )
+                          (WP04.wp0702 c4)
+                          pleaf
+                        )
+                        (WP02.wp0446 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1470 c4)
+                            pleaf
+                          )
+                          (WP05.wp0958 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                    (WP01.wp0126 c4)
+                    (pnode
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP06.wp1150 c4)
+                            pleaf
+                          )
+                          (WP03.wp0638 c4)
+                          pleaf
+                        )
+                        (WP02.wp0382 c4)
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP08.wp1406 c4)
+                            pleaf
+                          )
+                          (WP04.wp0894 c4)
+                          pleaf
+                        )
+                      )
+                      (WP01.wp0254 c4)
+                      (pnode
+                        (pnode
+                          (pnode
+                            pleaf
+                            (WP07.wp1278 c4)
+                            pleaf
+                          )
+                          (WP04.wp0766 c4)
+                          pleaf
+                        )
+                        (WP03.wp0510 c4)
+                        (pnode
+                          pleaf
+                          (WP05.wp1022 c4)
+                          pleaf
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
   }

@@ -9,7 +9,7 @@ open import Word.Base using (ε ; _•_)
 
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
-open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl0003 ; wl0006 ; wl0013 ; wl0017 ; wl0018 ; wl0087 ; wl0090 ; wl1083)
+open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
 open import Examples.Groups.Clifford+CS.Five.TR2 using (lem-TR2-4726ca8d)
@@ -181,9 +181,9 @@ lem-deb-CKS-at0213243140-part3 c4 = derive (CCZ014 ∷ X0 ∷ Sb2-4-01-3 ∷ X0 
 
 private
   q15 : Ws → Eqn
-  q15 c4 = eqn (X4 ∷ X4 ∷ []) [] (wl1083 (lit c4))
+  q15 c4 = eqn (X4 ∷ X4 ∷ []) [] (wl 1083 (lit c4))
   q16 : Ws → Eqn
-  q16 c4 = eqn (Sw12 ∷ Sw12 ∷ []) [] (wl0006 (lit c4))
+  q16 c4 = eqn (Sw12 ∷ Sw12 ∷ []) [] (wl 6 (lit c4))
   q17 : Ws → Eqn
   q17 c4 = eqn (Sb2-0-41-3 ∷ Sw12 ∷ []) (Sw12 ∷ Sb1-0-42-3 ∷ []) (lem-comm-push-SBOX⟨2·0·41·3⟩-sw1-L (lit c4))
   q18 : Ws → Eqn
@@ -191,9 +191,9 @@ private
   q19 : Ws → Eqn
   q19 c4 = eqn (CS04 ∷ Sw12 ∷ []) (Sw12 ∷ CS04 ∷ []) (lem-comm-push-CS04-sw1-L (lit c4))
   q20 : Ws → Eqn
-  q20 c4 = eqn (CK41 ∷ Sw12 ∷ []) (Sw12 ∷ CK42 ∷ []) (wl0087 (lit c4))
+  q20 c4 = eqn (CK41 ∷ Sw12 ∷ []) (Sw12 ∷ CK42 ∷ []) (wl 87 (lit c4))
   q21 : Ws → Eqn
-  q21 c4 = eqn (Sw01 ∷ Sw01 ∷ []) [] (wl0018 (lit c4))
+  q21 c4 = eqn (Sw01 ∷ Sw01 ∷ []) [] (wl 18 (lit c4))
   q22 : Ws → Eqn
   q22 c4 = eqn (Sb1-0-42-3 ∷ Sw01 ∷ []) (Sw01 ∷ Sb0-1-42-3 ∷ []) (lem-comm-push-SBOX⟨1·0·42·3⟩-sw0-L (lit c4))
   q23 : Ws → Eqn
@@ -203,19 +203,19 @@ private
   q25 : Ws → Eqn
   q25 c4 = eqn (Sw01 ∷ CK42 ∷ []) (CK42 ∷ Sw01 ∷ []) (c₂ (Swap) (Swap ↑ • CK₁₀ • Swap ↑))
   q26 : Ws → Eqn
-  q26 c4 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wl0003 (lit c4))
+  q26 c4 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wl 3 (lit c4))
   q27 : Ws → Eqn
   q27 c4 = eqn (Sb0-1-42-3 ∷ Sw23 ∷ []) (Sw23 ∷ Sb0-1-43-2 ∷ []) (lem-comm-push-SBOX⟨0·1·42·3⟩-sw2-L (lit c4))
   q28 : Ws → Eqn
   q28 c4 = eqn (Sw23 ∷ S4 ∷ []) (S4 ∷ Sw23 ∷ []) (c₄ (Swap ↑ ↑) (S))
   q29 : Ws → Eqn
-  q29 c4 = eqn (CS14 ∷ Sw23 ∷ []) (Sw23 ∷ CS14 ∷ []) (wl0017 (lit c4))
+  q29 c4 = eqn (CS14 ∷ Sw23 ∷ []) (Sw23 ∷ CS14 ∷ []) (wl 17 (lit c4))
   q30 : Ws → Eqn
-  q30 c4 = eqn (CK42 ∷ Sw23 ∷ []) (Sw23 ∷ CK43 ∷ []) (wl0090 (lit c4))
+  q30 c4 = eqn (CK42 ∷ Sw23 ∷ []) (Sw23 ∷ CK43 ∷ []) (wl 90 (lit c4))
   q31 : Ws → Eqn
   q31 c4 = eqn (Sb0-1-43-2 ∷ Sw12 ∷ []) (Sw12 ∷ Sb0-2-43-1 ∷ []) (lem-comm-push-SBOX⟨0·1·43·2⟩-sw1-L (lit c4))
   q32 : Ws → Eqn
-  q32 c4 = eqn (CS14 ∷ Sw12 ∷ []) (Sw12 ∷ CS24 ∷ []) (wl0013 (lit c4))
+  q32 c4 = eqn (CS14 ∷ Sw12 ∷ []) (Sw12 ∷ CS24 ∷ []) (wl 13 (lit c4))
   q33 : Ws → Eqn
   q33 c4 = eqn (Sw12 ∷ CK43 ∷ []) (CK43 ∷ Sw12 ∷ []) (c₃ (Swap ↑) (CK₁₀))
   q34 : Ws → Eqn

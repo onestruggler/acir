@@ -9,7 +9,7 @@ open import Word.Base using (ε ; _•_)
 
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
-open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl1487 ; wl1488 ; wl1489 ; wl1490 ; wp1332)
+open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
 open import Examples.Groups.Clifford+CS.Five.D.D001 using (lem-F4-I-I ; lem-F4-I-K1 ; lem-F4-I-K2 ; lem-F4-I-K3 ; lem-F4-K3-I ; lem-F4-K3-K1 ; lem-F4-K3-K2 ; lem-F4-K3-K3)
@@ -130,23 +130,23 @@ lem-ckt-TST-part49 c4 = derive (X4 ∷ CK41 ∷ X4 ∷ X4 ∷ Sb0-2-43-1 ∷ X4 
 
 private
   q14 : Ws → Eqn
-  q14 c4 = eqn (K2 ∷ CK02 ∷ S0 ∷ X0 ∷ []) (X0 ∷ CK02 ∷ []) (wl1487 (lit c4))
+  q14 c4 = eqn (K2 ∷ CK02 ∷ S0 ∷ X0 ∷ []) (X0 ∷ CK02 ∷ []) (wl 1487 (lit c4))
   q15 : Ws → Eqn
-  q15 c4 = eqn (K2 ∷ CK02 ∷ S0 ∷ Toff302 ∷ CS13 ∷ Toff302 ∷ CS13⁻ ∷ []) (Toff302 ∷ CS13 ∷ Toff302 ∷ CS13⁻ ∷ K2 ∷ CK02 ∷ S0 ∷ []) (wl1488 (lit c4))
+  q15 c4 = eqn (K2 ∷ CK02 ∷ S0 ∷ Toff302 ∷ CS13 ∷ Toff302 ∷ CS13⁻ ∷ []) (Toff302 ∷ CS13 ∷ Toff302 ∷ CS13⁻ ∷ K2 ∷ CK02 ∷ S0 ∷ []) (wl 1488 (lit c4))
   q16 : Ws → Eqn
   q16 c4 = eqn (Bx4-1023 ∷ []) (Bx4-1302 ∷ []) (lem-box-perm-1423-at04203243 c4)
   q17 : Ws → Eqn
   q17 c4 = eqn (Bx4-1302 ∷ []) (CCZ134 ∷ Toff402 ∷ CCZ134 ∷ Toff402 ∷ []) (lem-box-cP-at04233042 c4)
   q18 : Ws → Eqn
-  q18 c4 = eqn (K2 ∷ CK02 ∷ S0 ∷ Toff402 ∷ []) (Toff402 ∷ K2 ∷ CK02 ∷ S0 ∷ []) (wp1332 c4)
+  q18 c4 = eqn (K2 ∷ CK02 ∷ S0 ∷ Toff402 ∷ []) (Toff402 ∷ K2 ∷ CK02 ∷ S0 ∷ []) (wp 1332 c4)
   q19 : Ws → Eqn
-  q19 c4 = eqn (CCZ134 ∷ K2 ∷ []) (K2 ∷ CCZ134 ∷ []) (wl1489 (lit c4))
+  q19 c4 = eqn (CCZ134 ∷ K2 ∷ []) (K2 ∷ CCZ134 ∷ []) (wl 1489 (lit c4))
   q20 : Ws → Eqn
   q20 c4 = eqn (CCZ134 ∷ CK02 ∷ []) (CK02 ∷ CCZ134 ∷ []) (lem-comm-CCZ134-CK02 (lit c4))
   q21 : Ws → Eqn
   q21 c4 = eqn (S0 ∷ CCZ134 ∷ []) (CCZ134 ∷ S0 ∷ []) (c₁ (S) (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑))
   q22 : Ws → Eqn
-  q22 c4 = eqn (CK02 ∷ X0 ∷ []) (X0 ∷ K2 ∷ CK02 ∷ S0 ∷ []) (wl1490 (lit c4))
+  q22 c4 = eqn (CK02 ∷ X0 ∷ []) (X0 ∷ K2 ∷ CK02 ∷ S0 ∷ []) (wl 1490 (lit c4))
 
 -- F4-CS1-K2 @0440: 21 steps
 lem-F4-CS1-K2-at0440 : Ws → ⟪ (X0 ∷ Sb4-1-02-3 ∷ X0 ∷ CK02 ∷ []) ⟫ʷ ≈ ⟪ (CK02 ∷ X0 ∷ Sb4-1-02-3 ∷ X0 ∷ []) ⟫ʷ

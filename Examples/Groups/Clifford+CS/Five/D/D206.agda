@@ -9,7 +9,7 @@ open import Word.Base using (ε ; _•_)
 
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
-open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl0220 ; wl0499 ; wl0501 ; wl0618 ; wl0758 ; wl0763 ; wl0764 ; wl0765 ; wl0778 ; wl0779 ; wl0780 ; wl0801 ; wl0852 ; wl0861 ; wl0878 ; wl0879 ; wl0888 ; wl0960 ; wl1190 ; wl1206 ; wl1220 ; wl1221 ; wl1222 ; wl1223 ; wl1224 ; wl1225 ; wl1226 ; wl1233 ; wl1252 ; wl1309 ; wl1310 ; wl1311 ; wl1312 ; wl1313 ; wl1314 ; wp0002 ; wp0003 ; wp0013 ; wp0041 ; wp0103 ; wp0106 ; wp0107 ; wp0108 ; wp0109 ; wp0124 ; wp0261 ; wp0272 ; wp0295 ; wp0296 ; wp0301 ; wp0691 ; wp0700 ; wp0701 ; wp0716 ; wp1003 ; wp1005 ; wp1006 ; wp1007 ; wp1008 ; wp1025 ; wp1026 ; wp1027 ; wp1035 ; wp1036 ; wp1037 ; wp1038 ; wp1039 ; wp1040 ; wp1041 ; wp1130 ; wp1131 ; wp1132 ; wp1133 ; wp1134 ; wp1135 ; wp1136 ; wp1137)
+open import Examples.Groups.Clifford+CS.Five.WinSig using (Ws ; lit ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
 open import Examples.Groups.Clifford+CS.Five.D.D016 using (lem-box-cP-at0310243142 ; lem-box-cP-at03243240 ; lem-box-cP-at033440)
@@ -44,185 +44,185 @@ private
   q7 : Ws → Eqn
   q7 c4 = eqn (Bx3-0412 ∷ []) (CCZ034 ∷ Toff312 ∷ CCZ034 ∷ Toff312 ∷ []) (lem-box-cP-at0310243142 c4)
   q8 : Ws → Eqn
-  q8 c4 = eqn (Toff214 ∷ Toff314 ∷ Toff312 ∷ []) (Toff312 ∷ Toff214 ∷ []) (wl1225 (lit c4))
+  q8 c4 = eqn (Toff214 ∷ Toff314 ∷ Toff312 ∷ []) (Toff312 ∷ Toff214 ∷ []) (wl 1225 (lit c4))
   q9 : Ws → Eqn
-  q9 c4 = eqn (K2 ∷ CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ K2⁻ ∷ []) (Toff214 ∷ []) (wl0888 (lit c4))
+  q9 c4 = eqn (K2 ∷ CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ K2⁻ ∷ []) (Toff214 ∷ []) (wl 888 (lit c4))
   q10 : Ws → Eqn
-  q10 c4 = eqn (CCZ034 ∷ K2 ∷ []) (K2 ∷ CCZ034 ∷ []) (wp0701 c4)
+  q10 c4 = eqn (CCZ034 ∷ K2 ∷ []) (K2 ∷ CCZ034 ∷ []) (wp 701 c4)
   q11 : Ws → Eqn
-  q11 c4 = eqn (CCZ034 ∷ CS24 ∷ []) (CS24 ∷ CCZ034 ∷ []) (wp0108 c4)
+  q11 c4 = eqn (CCZ034 ∷ CS24 ∷ []) (CS24 ∷ CCZ034 ∷ []) (wp 108 c4)
   q12 : Ws → Eqn
   q12 c4 = eqn (CCZ034 ∷ CX12 ∷ []) (CX12 ∷ CCZ034 ∷ []) (lem-comm-CCZ034-CX12 (lit c4))
   q13 : Ws → Eqn
-  q13 c4 = eqn (CCZ034 ∷ CS24⁻ ∷ []) (CS24⁻ ∷ CCZ034 ∷ []) (wp0107 c4)
+  q13 c4 = eqn (CCZ034 ∷ CS24⁻ ∷ []) (CS24⁻ ∷ CCZ034 ∷ []) (wp 107 c4)
   q14 : Ws → Eqn
-  q14 c4 = eqn (CCZ034 ∷ CS14 ∷ []) (CS14 ∷ CCZ034 ∷ []) (wp0106 c4)
+  q14 c4 = eqn (CCZ034 ∷ CS14 ∷ []) (CS14 ∷ CCZ034 ∷ []) (wp 106 c4)
   q15 : Ws → Eqn
-  q15 c4 = eqn (CCZ034 ∷ K2⁻ ∷ []) (K2⁻ ∷ CCZ034 ∷ []) (wp0700 c4)
+  q15 c4 = eqn (CCZ034 ∷ K2⁻ ∷ []) (K2⁻ ∷ CCZ034 ∷ []) (wp 700 c4)
   q16 : Ws → Eqn
-  q16 c4 = eqn (CCZ034 ∷ Toff314 ∷ []) (Toff314 ∷ CCZ014 ∷ CCZ034 ∷ []) (wp0716 c4)
+  q16 c4 = eqn (CCZ034 ∷ Toff314 ∷ []) (Toff314 ∷ CCZ014 ∷ CCZ034 ∷ []) (wp 716 c4)
   q17 : Ws → Eqn
-  q17 c4 = eqn (Toff312 ∷ Toff314 ∷ []) (Toff314 ∷ Toff312 ∷ []) (wl0779 (lit c4))
+  q17 c4 = eqn (Toff312 ∷ Toff314 ∷ []) (Toff314 ∷ Toff312 ∷ []) (wl 779 (lit c4))
   q18 : Ws → Eqn
-  q18 c4 = eqn (CCZ014 ∷ []) (CS14 ∷ CX04 ∷ CS14⁻ ∷ CX04 ∷ CS01 ∷ []) (wp0041 c4)
+  q18 c4 = eqn (CCZ014 ∷ []) (CS14 ∷ CX04 ∷ CS14⁻ ∷ CX04 ∷ CS01 ∷ []) (wp 41 c4)
   q19 : Ws → Eqn
-  q19 c4 = eqn (CS14 ∷ Toff312 ∷ []) (Toff312 ∷ CS14 ∷ []) (wl0499 (lit c4))
+  q19 c4 = eqn (CS14 ∷ Toff312 ∷ []) (Toff312 ∷ CS14 ∷ []) (wl 499 (lit c4))
   q20 : Ws → Eqn
   q20 c4 = eqn (Toff312 ∷ CX04 ∷ []) (CX04 ∷ Toff312 ∷ []) (lem-comm-TOFF312-CX04 (lit c4))
   q21 : Ws → Eqn
-  q21 c4 = eqn (CS14⁻ ∷ Toff312 ∷ []) (Toff312 ∷ CS14⁻ ∷ []) (wl0778 (lit c4))
+  q21 c4 = eqn (CS14⁻ ∷ Toff312 ∷ []) (Toff312 ∷ CS14⁻ ∷ []) (wl 778 (lit c4))
   q22 : Ws → Eqn
-  q22 c4 = eqn (CS01 ∷ Toff312 ∷ []) (Toff312 ∷ CS01 ∷ []) (wl0501 (lit c4))
+  q22 c4 = eqn (CS01 ∷ Toff312 ∷ []) (Toff312 ∷ CS01 ∷ []) (wl 501 (lit c4))
   q23 : Ws → Eqn
-  q23 c4 = eqn (Toff214 ∷ Toff314 ∷ Toff314 ∷ []) (Toff214 ∷ []) (wl0780 (lit c4))
+  q23 c4 = eqn (Toff214 ∷ Toff314 ∷ Toff314 ∷ []) (Toff214 ∷ []) (wl 780 (lit c4))
   q24 : Ws → Eqn
-  q24 c4 = eqn (CCZ014 ∷ CCZ034 ∷ []) (CCZ034 ∷ CCZ014 ∷ []) (wp0124 c4)
+  q24 c4 = eqn (CCZ014 ∷ CCZ034 ∷ []) (CCZ034 ∷ CCZ014 ∷ []) (wp 124 c4)
   q25 : Ws → Eqn
-  q25 c4 = eqn (CS02 ∷ Toff312 ∷ []) (Toff312 ∷ CS02 ∷ []) (wl0861 (lit c4))
+  q25 c4 = eqn (CS02 ∷ Toff312 ∷ []) (Toff312 ∷ CS02 ∷ []) (wl 861 (lit c4))
   q26 : Ws → Eqn
-  q26 c4 = eqn (CCZ034 ∷ CS02 ∷ []) (CS02 ∷ CCZ034 ∷ []) (wp0003 c4)
+  q26 c4 = eqn (CCZ034 ∷ CS02 ∷ []) (CS02 ∷ CCZ034 ∷ []) (wp 3 c4)
   q27 : Ws → Eqn
-  q27 c4 = eqn (CS02⁻ ∷ Toff312 ∷ []) (Toff312 ∷ CS02⁻ ∷ []) (wl1226 (lit c4))
+  q27 c4 = eqn (CS02⁻ ∷ Toff312 ∷ []) (Toff312 ∷ CS02⁻ ∷ []) (wl 1226 (lit c4))
   q28 : Ws → Eqn
-  q28 c4 = eqn (CCZ034 ∷ CS02⁻ ∷ []) (CS02⁻ ∷ CCZ034 ∷ []) (wp0002 c4)
+  q28 c4 = eqn (CCZ034 ∷ CS02⁻ ∷ []) (CS02⁻ ∷ CCZ034 ∷ []) (wp 2 c4)
   q29 : Ws → Eqn
-  q29 c4 = eqn (Toff124 ∷ Toff324 ∷ Toff312 ∷ []) (Toff312 ∷ Toff124 ∷ []) (wl1309 (lit c4))
+  q29 c4 = eqn (Toff124 ∷ Toff324 ∷ Toff312 ∷ []) (Toff312 ∷ Toff124 ∷ []) (wl 1309 (lit c4))
   q30 : Ws → Eqn
-  q30 c4 = eqn (K1 ∷ CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ K1⁻ ∷ []) (Toff124 ∷ []) (wl1310 (lit c4))
+  q30 c4 = eqn (K1 ∷ CS24 ∷ CX12 ∷ CS24⁻ ∷ CX12 ∷ CS14 ∷ K1⁻ ∷ []) (Toff124 ∷ []) (wl 1310 (lit c4))
   q31 : Ws → Eqn
-  q31 c4 = eqn (CCZ034 ∷ K1 ∷ []) (K1 ∷ CCZ034 ∷ []) (wp1130 c4)
+  q31 c4 = eqn (CCZ034 ∷ K1 ∷ []) (K1 ∷ CCZ034 ∷ []) (wp 1130 c4)
   q32 : Ws → Eqn
-  q32 c4 = eqn (CCZ034 ∷ K1⁻ ∷ []) (K1⁻ ∷ CCZ034 ∷ []) (wp1131 c4)
+  q32 c4 = eqn (CCZ034 ∷ K1⁻ ∷ []) (K1⁻ ∷ CCZ034 ∷ []) (wp 1131 c4)
   q33 : Ws → Eqn
-  q33 c4 = eqn (CCZ034 ∷ Toff324 ∷ []) (Toff324 ∷ CCZ024 ∷ CCZ034 ∷ []) (wp0295 c4)
+  q33 c4 = eqn (CCZ034 ∷ Toff324 ∷ []) (Toff324 ∷ CCZ024 ∷ CCZ034 ∷ []) (wp 295 c4)
   q34 : Ws → Eqn
-  q34 c4 = eqn (Toff312 ∷ Toff324 ∷ []) (Toff324 ∷ Toff312 ∷ []) (wl0852 (lit c4))
+  q34 c4 = eqn (Toff312 ∷ Toff324 ∷ []) (Toff324 ∷ Toff312 ∷ []) (wl 852 (lit c4))
   q35 : Ws → Eqn
-  q35 c4 = eqn (CCZ024 ∷ []) (CS24 ∷ CX04 ∷ CS24⁻ ∷ CX04 ∷ CS02 ∷ []) (wp0013 c4)
+  q35 c4 = eqn (CCZ024 ∷ []) (CS24 ∷ CX04 ∷ CS24⁻ ∷ CX04 ∷ CS02 ∷ []) (wp 13 c4)
   q36 : Ws → Eqn
-  q36 c4 = eqn (CS24 ∷ Toff312 ∷ []) (Toff312 ∷ CS24 ∷ []) (wl0879 (lit c4))
+  q36 c4 = eqn (CS24 ∷ Toff312 ∷ []) (Toff312 ∷ CS24 ∷ []) (wl 879 (lit c4))
   q37 : Ws → Eqn
-  q37 c4 = eqn (CS24⁻ ∷ Toff312 ∷ []) (Toff312 ∷ CS24⁻ ∷ []) (wl0878 (lit c4))
+  q37 c4 = eqn (CS24⁻ ∷ Toff312 ∷ []) (Toff312 ∷ CS24⁻ ∷ []) (wl 878 (lit c4))
   q38 : Ws → Eqn
-  q38 c4 = eqn (Toff124 ∷ Toff324 ∷ Toff324 ∷ []) (Toff124 ∷ []) (wl1311 (lit c4))
+  q38 c4 = eqn (Toff124 ∷ Toff324 ∷ Toff324 ∷ []) (Toff124 ∷ []) (wl 1311 (lit c4))
   q39 : Ws → Eqn
-  q39 c4 = eqn (CCZ024 ∷ CCZ034 ∷ []) (CCZ034 ∷ CCZ024 ∷ []) (wp0109 c4)
+  q39 c4 = eqn (CCZ024 ∷ CCZ034 ∷ []) (CCZ034 ∷ CCZ024 ∷ []) (wp 109 c4)
   q40 : Ws → Eqn
   q40 c4 = eqn (Bx3-1420 ∷ []) (CCZ134 ∷ Toff302 ∷ CCZ134 ∷ Toff302 ∷ []) (lem-box-cP-at03243240 c4)
   q41 : Ws → Eqn
-  q41 c4 = eqn (Toff024 ∷ Toff324 ∷ Toff302 ∷ []) (Toff302 ∷ Toff024 ∷ []) (wp1025 c4)
+  q41 c4 = eqn (Toff024 ∷ Toff324 ∷ Toff302 ∷ []) (Toff302 ∷ Toff024 ∷ []) (wp 1025 c4)
   q42 : Ws → Eqn
-  q42 c4 = eqn (K0 ∷ CS24 ∷ CX02 ∷ CS24⁻ ∷ CX02 ∷ CS04 ∷ K0⁻ ∷ []) (Toff024 ∷ []) (wp1026 c4)
+  q42 c4 = eqn (K0 ∷ CS24 ∷ CX02 ∷ CS24⁻ ∷ CX02 ∷ CS04 ∷ K0⁻ ∷ []) (Toff024 ∷ []) (wp 1026 c4)
   q43 : Ws → Eqn
   q43 c4 = eqn (K0 ∷ CCZ134 ∷ []) (CCZ134 ∷ K0 ∷ []) (c₁ (K) (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑))
   q44 : Ws → Eqn
-  q44 c4 = eqn (CCZ134 ∷ CS24 ∷ []) (CS24 ∷ CCZ134 ∷ []) (wl1220 (lit c4))
+  q44 c4 = eqn (CCZ134 ∷ CS24 ∷ []) (CS24 ∷ CCZ134 ∷ []) (wl 1220 (lit c4))
   q45 : Ws → Eqn
   q45 c4 = eqn (CCZ134 ∷ CX02 ∷ []) (CX02 ∷ CCZ134 ∷ []) (lem-comm-CCZ134-CX02 (lit c4))
   q46 : Ws → Eqn
-  q46 c4 = eqn (CCZ134 ∷ CS24⁻ ∷ []) (CS24⁻ ∷ CCZ134 ∷ []) (wl1221 (lit c4))
+  q46 c4 = eqn (CCZ134 ∷ CS24⁻ ∷ []) (CS24⁻ ∷ CCZ134 ∷ []) (wl 1221 (lit c4))
   q47 : Ws → Eqn
-  q47 c4 = eqn (CCZ134 ∷ CS04 ∷ []) (CS04 ∷ CCZ134 ∷ []) (wp1003 c4)
+  q47 c4 = eqn (CCZ134 ∷ CS04 ∷ []) (CS04 ∷ CCZ134 ∷ []) (wp 1003 c4)
   q48 : Ws → Eqn
   q48 c4 = eqn (K0⁻ ∷ CCZ134 ∷ []) (CCZ134 ∷ K0⁻ ∷ []) (c₁ (K • iI) (Swap ↑ • (Swap ↑ ↑ • CCZ • Swap ↑ ↑) • Swap ↑))
   q49 : Ws → Eqn
-  q49 c4 = eqn (CCZ134 ∷ Toff324 ∷ []) (Toff324 ∷ CCZ124 ∷ CCZ134 ∷ []) (wl1206 (lit c4))
+  q49 c4 = eqn (CCZ134 ∷ Toff324 ∷ []) (Toff324 ∷ CCZ124 ∷ CCZ134 ∷ []) (wl 1206 (lit c4))
   q50 : Ws → Eqn
-  q50 c4 = eqn (Toff302 ∷ Toff324 ∷ []) (Toff324 ∷ Toff302 ∷ []) (wp1007 c4)
+  q50 c4 = eqn (Toff302 ∷ Toff324 ∷ []) (Toff324 ∷ Toff302 ∷ []) (wp 1007 c4)
   q51 : Ws → Eqn
-  q51 c4 = eqn (CCZ124 ∷ []) (CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ []) (wl0220 (lit c4))
+  q51 c4 = eqn (CCZ124 ∷ []) (CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ []) (wl 220 (lit c4))
   q52 : Ws → Eqn
-  q52 c4 = eqn (CS24 ∷ Toff302 ∷ []) (Toff302 ∷ CS24 ∷ []) (wp1006 c4)
+  q52 c4 = eqn (CS24 ∷ Toff302 ∷ []) (Toff302 ∷ CS24 ∷ []) (wp 1006 c4)
   q53 : Ws → Eqn
   q53 c4 = eqn (Toff302 ∷ CX14 ∷ []) (CX14 ∷ Toff302 ∷ []) (lem-comm-TOFF302-CX14 (lit c4))
   q54 : Ws → Eqn
-  q54 c4 = eqn (CS24⁻ ∷ Toff302 ∷ []) (Toff302 ∷ CS24⁻ ∷ []) (wp1005 c4)
+  q54 c4 = eqn (CS24⁻ ∷ Toff302 ∷ []) (Toff302 ∷ CS24⁻ ∷ []) (wp 1005 c4)
   q55 : Ws → Eqn
-  q55 c4 = eqn (CS12 ∷ Toff302 ∷ []) (Toff302 ∷ CS12 ∷ []) (wl1190 (lit c4))
+  q55 c4 = eqn (CS12 ∷ Toff302 ∷ []) (Toff302 ∷ CS12 ∷ []) (wl 1190 (lit c4))
   q56 : Ws → Eqn
-  q56 c4 = eqn (Toff024 ∷ Toff324 ∷ Toff324 ∷ []) (Toff024 ∷ []) (wp1008 c4)
+  q56 c4 = eqn (Toff024 ∷ Toff324 ∷ Toff324 ∷ []) (Toff024 ∷ []) (wp 1008 c4)
   q57 : Ws → Eqn
-  q57 c4 = eqn (CCZ124 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ124 ∷ []) (wl1222 (lit c4))
+  q57 c4 = eqn (CCZ124 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ124 ∷ []) (wl 1222 (lit c4))
   q58 : Ws → Eqn
-  q58 c4 = eqn (CS01 ∷ Toff302 ∷ []) (Toff302 ∷ CS01 ∷ []) (wl1223 (lit c4))
+  q58 c4 = eqn (CS01 ∷ Toff302 ∷ []) (Toff302 ∷ CS01 ∷ []) (wl 1223 (lit c4))
   q59 : Ws → Eqn
-  q59 c4 = eqn (CCZ134 ∷ CS01 ∷ []) (CS01 ∷ CCZ134 ∷ []) (wp0261 c4)
+  q59 c4 = eqn (CCZ134 ∷ CS01 ∷ []) (CS01 ∷ CCZ134 ∷ []) (wp 261 c4)
   q60 : Ws → Eqn
-  q60 c4 = eqn (CS01⁻ ∷ Toff302 ∷ []) (Toff302 ∷ CS01⁻ ∷ []) (wl1224 (lit c4))
+  q60 c4 = eqn (CS01⁻ ∷ Toff302 ∷ []) (Toff302 ∷ CS01⁻ ∷ []) (wl 1224 (lit c4))
   q61 : Ws → Eqn
-  q61 c4 = eqn (CCZ134 ∷ CS01⁻ ∷ []) (CS01⁻ ∷ CCZ134 ∷ []) (wp1027 c4)
+  q61 c4 = eqn (CCZ134 ∷ CS01⁻ ∷ []) (CS01⁻ ∷ CCZ134 ∷ []) (wp 1027 c4)
   q62 : Ws → Eqn
-  q62 c4 = eqn (K1 ∷ CS14 ∷ CX01 ∷ CS14⁻ ∷ CX01 ∷ CS04 ∷ K1⁻ ∷ []) (Toff104 ∷ []) (wp1132 c4)
+  q62 c4 = eqn (K1 ∷ CS14 ∷ CX01 ∷ CS14⁻ ∷ CX01 ∷ CS04 ∷ K1⁻ ∷ []) (Toff104 ∷ []) (wp 1132 c4)
   q63 : Ws → Eqn
-  q63 c4 = eqn (K1 ∷ Toff302 ∷ []) (Toff302 ∷ K1 ∷ []) (wl1252 (lit c4))
+  q63 c4 = eqn (K1 ∷ Toff302 ∷ []) (Toff302 ∷ K1 ∷ []) (wl 1252 (lit c4))
   q64 : Ws → Eqn
   q64 c4 = eqn (Toff302 ∷ CS14 ∷ []) (CS14 ∷ Toff302 ∷ []) (lem-comm-TOFF302-CS14 (lit c4))
   q65 : Ws → Eqn
-  q65 c4 = eqn (CX01 ∷ Toff302 ∷ []) (Toff302 ∷ CX01 ∷ []) (wl1233 (lit c4))
+  q65 c4 = eqn (CX01 ∷ Toff302 ∷ []) (Toff302 ∷ CX01 ∷ []) (wl 1233 (lit c4))
   q66 : Ws → Eqn
   q66 c4 = eqn (Toff302 ∷ CS14⁻ ∷ []) (CS14⁻ ∷ Toff302 ∷ []) (lem-comm-TOFF302-CSd14 (lit c4))
   q67 : Ws → Eqn
-  q67 c4 = eqn (CS04 ∷ Toff302 ∷ []) (Toff302 ∷ CS04 ∷ []) (wp1041 c4)
+  q67 c4 = eqn (CS04 ∷ Toff302 ∷ []) (Toff302 ∷ CS04 ∷ []) (wp 1041 c4)
   q68 : Ws → Eqn
-  q68 c4 = eqn (K1⁻ ∷ Toff302 ∷ []) (Toff302 ∷ K1⁻ ∷ []) (wl1312 (lit c4))
+  q68 c4 = eqn (K1⁻ ∷ Toff302 ∷ []) (Toff302 ∷ K1⁻ ∷ []) (wl 1312 (lit c4))
   q69 : Ws → Eqn
-  q69 c4 = eqn (CCZ134 ∷ Toff104 ∷ []) (Toff104 ∷ CCZ034 ∷ CCZ134 ∷ []) (wp1133 c4)
+  q69 c4 = eqn (CCZ134 ∷ Toff104 ∷ []) (Toff104 ∷ CCZ034 ∷ CCZ134 ∷ []) (wp 1133 c4)
   q70 : Ws → Eqn
-  q70 c4 = eqn (CCZ024 ∷ CCZ034 ∷ Toff302 ∷ []) (Toff302 ∷ CCZ034 ∷ []) (wp1134 c4)
+  q70 c4 = eqn (CCZ024 ∷ CCZ034 ∷ Toff302 ∷ []) (Toff302 ∷ CCZ034 ∷ []) (wp 1134 c4)
   q71 : Ws → Eqn
-  q71 c4 = eqn (CCZ024 ∷ []) (CS24 ∷ CX02 ∷ CS24⁻ ∷ CX02 ∷ CS04 ∷ []) (wp0296 c4)
+  q71 c4 = eqn (CCZ024 ∷ []) (CS24 ∷ CX02 ∷ CS24⁻ ∷ CX02 ∷ CS04 ∷ []) (wp 296 c4)
   q72 : Ws → Eqn
-  q72 c4 = eqn (CCZ034 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ034 ∷ []) (wp0103 c4)
+  q72 c4 = eqn (CCZ034 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ034 ∷ []) (wp 103 c4)
   q73 : Ws → Eqn
-  q73 c4 = eqn (CCZ024 ∷ []) (CCZ034 ∷ CCZ024 ∷ CCZ034 ∷ []) (wp1135 c4)
+  q73 c4 = eqn (CCZ024 ∷ []) (CCZ034 ∷ CCZ024 ∷ CCZ034 ∷ []) (wp 1135 c4)
   q74 : Ws → Eqn
   q74 c4 = eqn (Bx3-1420 ∷ []) (Bx3-1240 ∷ []) (lem-box-perm-1324-at03243240 c4)
   q75 : Ws → Eqn
   q75 c4 = eqn (Bx3-1240 ∷ []) (CCZ123 ∷ Toff304 ∷ CCZ123 ∷ Toff304 ∷ []) (lem-box-cP-at033440 c4)
   q76 : Ws → Eqn
-  q76 c4 = eqn (K2 ∷ Toff304 ∷ []) (Toff304 ∷ K2 ∷ []) (wp1035 c4)
+  q76 c4 = eqn (K2 ∷ Toff304 ∷ []) (Toff304 ∷ K2 ∷ []) (wp 1035 c4)
   q77 : Ws → Eqn
-  q77 c4 = eqn (CS24 ∷ Toff304 ∷ []) (Toff304 ∷ CS24 ∷ []) (wp0691 c4)
+  q77 c4 = eqn (CS24 ∷ Toff304 ∷ []) (Toff304 ∷ CS24 ∷ []) (wp 691 c4)
   q78 : Ws → Eqn
   q78 c4 = eqn (Toff304 ∷ CX12 ∷ []) (CX12 ∷ Toff304 ∷ []) (lem-comm-TOFF304-CX12 (lit c4))
   q79 : Ws → Eqn
-  q79 c4 = eqn (CS24⁻ ∷ Toff304 ∷ []) (Toff304 ∷ CS24⁻ ∷ []) (wp1036 c4)
+  q79 c4 = eqn (CS24⁻ ∷ Toff304 ∷ []) (Toff304 ∷ CS24⁻ ∷ []) (wp 1036 c4)
   q80 : Ws → Eqn
-  q80 c4 = eqn (CS14 ∷ Toff304 ∷ []) (Toff304 ∷ CS14 ∷ []) (wp1037 c4)
+  q80 c4 = eqn (CS14 ∷ Toff304 ∷ []) (Toff304 ∷ CS14 ∷ []) (wp 1037 c4)
   q81 : Ws → Eqn
-  q81 c4 = eqn (K2⁻ ∷ Toff304 ∷ []) (Toff304 ∷ K2⁻ ∷ []) (wp1038 c4)
+  q81 c4 = eqn (K2⁻ ∷ Toff304 ∷ []) (Toff304 ∷ K2⁻ ∷ []) (wp 1038 c4)
   q82 : Ws → Eqn
-  q82 c4 = eqn (CCZ123 ∷ Toff214 ∷ []) (Toff214 ∷ CCZ134 ∷ CCZ123 ∷ []) (wl0758 (lit c4))
+  q82 c4 = eqn (CCZ123 ∷ Toff214 ∷ []) (Toff214 ∷ CCZ134 ∷ CCZ123 ∷ []) (wl 758 (lit c4))
   q83 : Ws → Eqn
-  q83 c4 = eqn (CCZ014 ∷ CCZ134 ∷ Toff304 ∷ []) (Toff304 ∷ CCZ134 ∷ []) (wp1039 c4)
+  q83 c4 = eqn (CCZ014 ∷ CCZ134 ∷ Toff304 ∷ []) (Toff304 ∷ CCZ134 ∷ []) (wp 1039 c4)
   q84 : Ws → Eqn
-  q84 c4 = eqn (CCZ123 ∷ CS14 ∷ []) (CS14 ∷ CCZ123 ∷ []) (wl0765 (lit c4))
+  q84 c4 = eqn (CCZ123 ∷ CS14 ∷ []) (CS14 ∷ CCZ123 ∷ []) (wl 765 (lit c4))
   q85 : Ws → Eqn
   q85 c4 = eqn (CCZ123 ∷ CX04 ∷ []) (CX04 ∷ CCZ123 ∷ []) (lem-comm-CCZ123-CX04 (lit c4))
   q86 : Ws → Eqn
-  q86 c4 = eqn (CCZ123 ∷ CS14⁻ ∷ []) (CS14⁻ ∷ CCZ123 ∷ []) (wl0764 (lit c4))
+  q86 c4 = eqn (CCZ123 ∷ CS14⁻ ∷ []) (CS14⁻ ∷ CCZ123 ∷ []) (wl 764 (lit c4))
   q87 : Ws → Eqn
-  q87 c4 = eqn (CCZ123 ∷ CS01 ∷ []) (CS01 ∷ CCZ123 ∷ []) (wl0763 (lit c4))
+  q87 c4 = eqn (CCZ123 ∷ CS01 ∷ []) (CS01 ∷ CCZ123 ∷ []) (wl 763 (lit c4))
   q88 : Ws → Eqn
-  q88 c4 = eqn (CCZ123 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ123 ∷ []) (wl0618 (lit c4))
+  q88 c4 = eqn (CCZ123 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ123 ∷ []) (wl 618 (lit c4))
   q89 : Ws → Eqn
-  q89 c4 = eqn (CCZ014 ∷ []) (CCZ134 ∷ CCZ014 ∷ CCZ134 ∷ []) (wp1040 c4)
+  q89 c4 = eqn (CCZ014 ∷ []) (CCZ134 ∷ CCZ014 ∷ CCZ134 ∷ []) (wp 1040 c4)
   q90 : Ws → Eqn
-  q90 c4 = eqn (K1 ∷ CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ K1⁻ ∷ []) (Toff124 ∷ []) (wl1313 (lit c4))
+  q90 c4 = eqn (K1 ∷ CS24 ∷ CX14 ∷ CS24⁻ ∷ CX14 ∷ CS12 ∷ K1⁻ ∷ []) (Toff124 ∷ []) (wl 1313 (lit c4))
   q91 : Ws → Eqn
-  q91 c4 = eqn (CCZ134 ∷ Toff124 ∷ []) (Toff124 ∷ CCZ234 ∷ CCZ134 ∷ []) (wl1314 (lit c4))
+  q91 c4 = eqn (CCZ134 ∷ Toff124 ∷ []) (Toff124 ∷ CCZ234 ∷ CCZ134 ∷ []) (wl 1314 (lit c4))
   q92 : Ws → Eqn
-  q92 c4 = eqn (CCZ024 ∷ CCZ234 ∷ Toff302 ∷ []) (Toff302 ∷ CCZ234 ∷ []) (wp1136 c4)
+  q92 c4 = eqn (CCZ024 ∷ CCZ234 ∷ Toff302 ∷ []) (Toff302 ∷ CCZ234 ∷ []) (wp 1136 c4)
   q93 : Ws → Eqn
-  q93 c4 = eqn (CCZ134 ∷ CCZ234 ∷ []) (CCZ234 ∷ CCZ134 ∷ []) (wl0960 (lit c4))
+  q93 c4 = eqn (CCZ134 ∷ CCZ234 ∷ []) (CCZ234 ∷ CCZ134 ∷ []) (wl 960 (lit c4))
   q94 : Ws → Eqn
-  q94 c4 = eqn (CCZ024 ∷ []) (CCZ234 ∷ CCZ024 ∷ CCZ234 ∷ []) (wp1137 c4)
+  q94 c4 = eqn (CCZ024 ∷ []) (CCZ234 ∷ CCZ024 ∷ CCZ234 ∷ []) (wp 1137 c4)
   q95 : Ws → Eqn
-  q95 c4 = eqn (CCZ014 ∷ []) (CS14 ∷ CX01 ∷ CS14⁻ ∷ CX01 ∷ CS04 ∷ []) (wp0301 c4)
+  q95 c4 = eqn (CCZ014 ∷ []) (CS14 ∷ CX01 ∷ CS14⁻ ∷ CX01 ∷ CS04 ∷ []) (wp 301 c4)
   q96 : Ws → Eqn
-  q96 c4 = eqn (CCZ014 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ014 ∷ []) (wp0272 c4)
+  q96 c4 = eqn (CCZ014 ∷ CCZ134 ∷ []) (CCZ134 ∷ CCZ014 ∷ []) (wp 272 c4)
   q97 : Ws → Eqn
-  q97 c4 = eqn (CS02 ∷ Toff302 ∷ []) (Toff302 ∷ CS02 ∷ []) (wl0801 (lit c4))
+  q97 c4 = eqn (CS02 ∷ Toff302 ∷ []) (Toff302 ∷ CS02 ∷ []) (wl 801 (lit c4))
   q98 : Ws → Eqn
   q98 c4 = eqn (CCZ134 ∷ CS02 ∷ []) (CS02 ∷ CCZ134 ∷ []) (lem-comm-CCZ134-CS02 (lit c4))
 

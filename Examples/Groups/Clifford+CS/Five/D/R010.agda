@@ -9,7 +9,7 @@ open import Word.Base using (ε ; _•_)
 
 open import Examples.Groups.Clifford+CS.Syntactics hiding (_⊢_≈_)
 open import Examples.Groups.Clifford+CS.MultiControlled using (CZ ; CK₀₁ ; CK₁₀ ; Toffᵗ)
-open import Examples.Groups.Clifford+CS.Five.WinSig using (WsL ; wl0003 ; wl0004 ; wl0006 ; wl0038 ; wl0083 ; wl0111 ; wl0127 ; wl0148 ; wl0150)
+open import Examples.Groups.Clifford+CS.Five.WinSig using (WsL ; wl ; wp)
 open import Examples.Groups.Clifford+CS.Five.Chain hiding (Step ; step′ ; at ; Chain ; done ; _▸_ ; run)
 open import Examples.Groups.Clifford+CS.Five.Reflect using (Eqn ; eqn ; rw ; rw⁻ ; re ; derive)
 open import Examples.Groups.Clifford+CS.Five.D.R003 using (lem-comm-push-SBOXd⟨0·1·2·3⟩-sw1-L ; lem-comm-push-SBOXd⟨0·1·2·3⟩-sw2-R ; lem-comm-push-SBOXd⟨0·1·3·2⟩-sw0-R ; lem-comm-push-SBOXd⟨0·1·3·2⟩-sw2-L ; lem-comm-push-SBOXd⟨0·2·1·3⟩-sw0-R ; lem-comm-push-SBOXd⟨0·2·1·3⟩-sw1-R ; lem-comm-push-SBOXd⟨0·2·1·3⟩-sw2-R ; lem-comm-push-SBOXd⟨0·3·1·2⟩-sw2-L ; lem-comm-push-SBOXd⟨0·4·1·2⟩-sw1-R ; lem-comm-push-SBOXd⟨0·4·2·1⟩-sw1-L ; lem-comm-push-SBOXd⟨1·0·3·2⟩-sw0-L ; lem-comm-push-SBOXd⟨1·0·3·2⟩-sw1-R ; lem-comm-push-SBOXd⟨1·2·0·3⟩-sw1-R ; lem-comm-push-SBOXd⟨2·0·3·1⟩-sw1-L ; lem-comm-push-SBOXd⟨2·0·3·1⟩-sw2-R ; lem-comm-push-SBOXd⟨4·0·3·1⟩-sw1-R ; lem-comm-push-SBOXd⟨4·1·0·3⟩-sw1-R ; lem-comm-push-SBOXd⟨4·2·0·3⟩-sw0-R ; lem-comm-push-SBOX⟨0·1·2·3⟩-sw1-L ; lem-comm-push-SBOX⟨0·1·2·3⟩-sw2-R ; lem-comm-push-SBOX⟨0·1·3·2⟩-sw0-R ; lem-comm-push-SBOX⟨0·1·3·2⟩-sw2-L ; lem-comm-push-SBOX⟨0·2·1·3⟩-sw0-R ; lem-comm-push-SBOX⟨0·2·1·3⟩-sw1-R ; lem-comm-push-SBOX⟨0·2·1·3⟩-sw2-R ; lem-comm-push-SBOX⟨0·3·1·2⟩-sw2-L ; lem-comm-push-SBOX⟨0·4·1·2⟩-sw1-R ; lem-comm-push-SBOX⟨0·4·2·1⟩-sw1-L ; lem-comm-push-SBOX⟨1·0·3·2⟩-sw0-L ; lem-comm-push-SBOX⟨1·0·3·2⟩-sw1-R ; lem-comm-push-SBOX⟨1·2·0·3⟩-sw1-R ; lem-comm-push-SBOX⟨2·0·3·1⟩-sw1-L ; lem-comm-push-SBOX⟨2·0·3·1⟩-sw2-R ; lem-comm-push-SBOX⟨4·0·3·1⟩-sw1-R ; lem-comm-push-SBOX⟨4·1·0·3⟩-sw1-R ; lem-comm-push-SBOX⟨4·2·0·3⟩-sw0-R)
@@ -22,7 +22,7 @@ private
   q1 : WsL → Eqn
   q1 c4 = eqn (Sb⁻2-0-3-1 ∷ Sw12 ∷ []) (Sw12 ∷ Sb⁻1-0-3-2 ∷ []) (lem-comm-push-SBOXd⟨2·0·3·1⟩-sw1-L c4)
   q2 : WsL → Eqn
-  q2 c4 = eqn (Sw12 ∷ Toff324 ∷ []) (Toff314 ∷ Sw12 ∷ []) (wl0038 c4)
+  q2 c4 = eqn (Sw12 ∷ Toff324 ∷ []) (Toff314 ∷ Sw12 ∷ []) (wl 38 c4)
   q3 : WsL → Eqn
   q3 c4 = eqn (Sb2-0-3-1 ∷ Sw12 ∷ []) (Sw12 ∷ Sb1-0-3-2 ∷ []) (lem-comm-push-SBOX⟨2·0·3·1⟩-sw1-L c4)
   q4 : WsL → Eqn
@@ -64,7 +64,7 @@ private
   q9 : WsL → Eqn
   q9 c4 = eqn (Sb⁻0-1-3-2 ∷ Sw23 ∷ []) (Sw23 ∷ Sb⁻0-1-2-3 ∷ []) (lem-comm-push-SBOXd⟨0·1·3·2⟩-sw2-L c4)
   q10 : WsL → Eqn
-  q10 c4 = eqn (Sw23 ∷ Toff234 ∷ []) (Toff324 ∷ Sw23 ∷ []) (wl0111 c4)
+  q10 c4 = eqn (Sw23 ∷ Toff234 ∷ []) (Toff324 ∷ Sw23 ∷ []) (wl 111 c4)
   q11 : WsL → Eqn
   q11 c4 = eqn (Sb0-1-3-2 ∷ Sw23 ∷ []) (Sw23 ∷ Sb0-1-2-3 ∷ []) (lem-comm-push-SBOX⟨0·1·3·2⟩-sw2-L c4)
   q12 : WsL → Eqn
@@ -85,7 +85,7 @@ private
   q13 : WsL → Eqn
   q13 c4 = eqn (Sb⁻0-1-2-3 ∷ Sw12 ∷ []) (Sw12 ∷ Sb⁻0-2-1-3 ∷ []) (lem-comm-push-SBOXd⟨0·1·2·3⟩-sw1-L c4)
   q14 : WsL → Eqn
-  q14 c4 = eqn (Sw12 ∷ Toff134 ∷ []) (Toff234 ∷ Sw12 ∷ []) (wl0083 c4)
+  q14 c4 = eqn (Sw12 ∷ Toff134 ∷ []) (Toff234 ∷ Sw12 ∷ []) (wl 83 c4)
   q15 : WsL → Eqn
   q15 c4 = eqn (Sb0-1-2-3 ∷ Sw12 ∷ []) (Sw12 ∷ Sb0-2-1-3 ∷ []) (lem-comm-push-SBOX⟨0·1·2·3⟩-sw1-L c4)
   q16 : WsL → Eqn
@@ -222,7 +222,7 @@ private
   q35 : WsL → Eqn
   q35 c4 = eqn (Bx4-013 ∷ Sw23 ∷ []) (Sw23 ∷ Bx4-012 ∷ []) (lem-comm-push-BOX⟨4·013⟩-sw2-L c4)
   q36 : WsL → Eqn
-  q36 c4 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wl0003 c4)
+  q36 c4 = eqn (Sw23 ∷ Sw23 ∷ []) [] (wl 3 c4)
 
 -- comm push BOX(0;4213) sw2 L: 12 steps
 lem-comm-push-BOX⟨0·4213⟩-sw2-L : WsL → ⟪ (Bx0-4213 ∷ Sw23 ∷ []) ⟫ʷ ≈ ⟪ (Sw23 ∷ Bx0-4312 ∷ []) ⟫ʷ
@@ -244,7 +244,7 @@ private
   q37 : WsL → Eqn
   q37 c4 = eqn (Sb⁻0-4-2-1 ∷ Sw12 ∷ []) (Sw12 ∷ Sb⁻0-4-1-2 ∷ []) (lem-comm-push-SBOXd⟨0·4·2·1⟩-sw1-L c4)
   q38 : WsL → Eqn
-  q38 c4 = eqn (Sw12 ∷ Toff123 ∷ []) (Toff213 ∷ Sw12 ∷ []) (wl0127 c4)
+  q38 c4 = eqn (Sw12 ∷ Toff123 ∷ []) (Toff213 ∷ Sw12 ∷ []) (wl 127 c4)
   q39 : WsL → Eqn
   q39 c4 = eqn (Sb0-4-2-1 ∷ Sw12 ∷ []) (Sw12 ∷ Sb0-4-1-2 ∷ []) (lem-comm-push-SBOX⟨0·4·2·1⟩-sw1-L c4)
   q40 : WsL → Eqn
@@ -468,7 +468,7 @@ private
   q71 : WsL → Eqn
   q71 c4 = eqn (Sw12 ∷ Bx4-1230 ∷ []) (Bx4-2130 ∷ Sw12 ∷ []) (lem-comm-push-BOX⟨4·1230⟩-sw1-R c4)
   q72 : WsL → Eqn
-  q72 c4 = eqn (Sw12 ∷ Sw12 ∷ []) [] (wl0006 c4)
+  q72 c4 = eqn (Sw12 ∷ Sw12 ∷ []) [] (wl 6 c4)
   q73 : WsL → Eqn
   q73 c4 = eqn (Sw12 ∷ Sb4-1-0-3 ∷ []) (Sb4-2-0-3 ∷ Sw12 ∷ []) (lem-comm-push-SBOX⟨4·1·0·3⟩-sw1-R c4)
   q74 : WsL → Eqn
@@ -491,7 +491,7 @@ private
   q75 : WsL → Eqn
   q75 c4 = eqn (Sw01 ∷ Bx4-2130 ∷ []) (Bx4-2031 ∷ Sw01 ∷ []) (lem-comm-push-BOX⟨4·2130⟩-sw0-R c4)
   q76 : WsL → Eqn
-  q76 c4 = eqn (Sw01 ∷ Toff013 ∷ []) (Toff103 ∷ Sw01 ∷ []) (wl0148 c4)
+  q76 c4 = eqn (Sw01 ∷ Toff013 ∷ []) (Toff103 ∷ Sw01 ∷ []) (wl 148 c4)
   q77 : WsL → Eqn
   q77 c4 = eqn (Sw01 ∷ Sb4-2-0-3 ∷ []) (Sb4-2-1-3 ∷ Sw01 ∷ []) (lem-comm-push-SBOX⟨4·2·0·3⟩-sw0-R c4)
   q78 : WsL → Eqn
@@ -533,7 +533,7 @@ private
   q82 : WsL → Eqn
   q82 c4 = eqn (Sw34 ∷ Bx3-0412 ∷ []) (Bx4-0312 ∷ Sw34 ∷ []) (lem-comm-push-BOX⟨3·0412⟩-sw3-R c4)
   q83 : WsL → Eqn
-  q83 c4 = eqn (Sw34 ∷ Sw34 ∷ []) [] (wl0004 c4)
+  q83 c4 = eqn (Sw34 ∷ Sw34 ∷ []) [] (wl 4 c4)
   q84 : WsL → Eqn
   q84 c4 = eqn (Sb3-0-2-1 ∷ Sw34 ∷ []) (Sw34 ∷ Sb3-0-2-1 ∷ []) (c₃ (Swap ↑ • CS • Swap ↑) (Swap))
   q85 : WsL → Eqn
@@ -576,7 +576,7 @@ private
   q87 : WsL → Eqn
   q87 c4 = eqn (Sw12 ∷ Bx4-0213 ∷ []) (Bx4-0123 ∷ Sw12 ∷ []) (lem-comm-push-BOX⟨4·0213⟩-sw1-R c4)
   q88 : WsL → Eqn
-  q88 c4 = eqn (Sw12 ∷ Toff312 ∷ []) (Toff312 ∷ Sw12 ∷ []) (wl0150 c4)
+  q88 c4 = eqn (Sw12 ∷ Toff312 ∷ []) (Toff312 ∷ Sw12 ∷ []) (wl 150 c4)
   q89 : WsL → Eqn
   q89 c4 = eqn (Sw12 ∷ Sb4-0-3-1 ∷ []) (Sb4-0-3-2 ∷ Sw12 ∷ []) (lem-comm-push-SBOX⟨4·0·3·1⟩-sw1-R c4)
   q90 : WsL → Eqn
