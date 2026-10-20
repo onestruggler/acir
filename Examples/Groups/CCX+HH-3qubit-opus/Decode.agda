@@ -403,8 +403,8 @@ private
 
   -- The standard instance of (2d), from (95).
   base2d : decʷ (stdʷ (⟨ m0ˢ ⟩ • ⟨ m1ˢ ⟩)) ≈ decʷ (stdʷ (⟨ m1ˢ ⟩ • ⟨ m0ˢ ⟩))
-  base2d = transport G (tr• (trM (g (# 0) Eq.refl)) (trM (g (# 4) Eq.refl)))
-                       (tr• (trM (g (# 4) Eq.refl)) (trM (g (# 0) Eq.refl)))
+  base2d = transport G (tr• (trM {i = # 0} (g (# 0) Eq.refl)) (trM {i = # 4} (g (# 4) Eq.refl)))
+                       (tr• (trM {i = # 4} (g (# 4) Eq.refl)) (trM {i = # 0} (g (# 0) Eq.refl)))
                        (by-al (⟨ m0ˢ ⟩ • ⟨ m4ˢ ⟩) (⟨ m4ˢ ⟩ • ⟨ m0ˢ ⟩) (axiom (fig7 r95)))
     where
     gs = # 0 ∷ # 2 ∷ # 3 ∷ # 5 ∷ # 1 ∷ []
@@ -412,6 +412,10 @@ private
     G = frame gs Dg
     g = at gs Dg
 
+-- Each Tr letter is given its standard states ({i = # 0}, …): left to
+-- unification they are solved from `act (frame ts D) i`, and Agda
+-- reduces the frame of the symbolic states ts to compare (on eight
+-- states (2f) took 24 s, against 0.2 s).
 dec-ax : {u v : Word (Gen 8)} → u L.=== v → decʷ u ≈ decʷ v
 -- (1a)–(1c)
 dec-ax (L.r1a {a = a} {b = b} p) = Fr-sq (T 0) (order 0 z≤n) (frame (a ∷ b ∷ []) (dist2 p))
@@ -419,10 +423,10 @@ dec-ax (L.r1b {a = a}) = Fr-sq m0 (axiom (fig7 r83)) (frame (a ∷ []) ([] ∷ [
 dec-ax (L.r1c {a = a} {b = b} {c = c} {d = d} p q r) = Fr-sq NKw (axiom (fig7 r84)) (frame (a ∷ b ∷ c ∷ d ∷ []) (dist4 p q r))
 -- (2a)
 dec-ax (L.r2a {a = a} {b = b} {c = c} {d = d} p q ac ad bc bd) =
-  transport (frame ts D) (tr• (trX p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl))
-                              (trX q (lt (# 2) (# 3)) (f (# 2) Eq.refl) (f (# 3) Eq.refl)))
-                         (tr• (trX q (lt (# 2) (# 3)) (f (# 2) Eq.refl) (f (# 3) Eq.refl))
-                              (trX p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)))
+  transport (frame ts D) (tr• (trX {i = # 0} {j = # 1} p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl))
+                              (trX {i = # 2} {j = # 3} q (lt (# 2) (# 3)) (f (# 2) Eq.refl) (f (# 3) Eq.refl)))
+                         (tr• (trX {i = # 2} {j = # 3} q (lt (# 2) (# 3)) (f (# 2) Eq.refl) (f (# 3) Eq.refl))
+                              (trX {i = # 0} {j = # 1} p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)))
     (by-al (⟨ x01 ⟩ • ⟨ x23 ⟩) (⟨ x23 ⟩ • ⟨ x01 ⟩) (far 0 2 (le 2 2) (le 2 6)))
   where
   ts = a ∷ b ∷ c ∷ d ∷ []
@@ -430,8 +434,8 @@ dec-ax (L.r2a {a = a} {b = b} {c = c} {d = d} p q ac ad bc bd) =
   f = at ts D
 -- (2b)
 dec-ax (L.r2b {a = a} {b = b} {c = c} p ca cb) =
-  transport (frame ts D) (tr• (trX p (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl)) (trM (f (# 0) Eq.refl)))
-                         (tr• (trM (f (# 0) Eq.refl)) (trX p (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl)))
+  transport (frame ts D) (tr• (trX {i = # 1} {j = # 2} p (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl)) (trM {i = # 0} (f (# 0) Eq.refl)))
+                         (tr• (trM {i = # 0} (f (# 0) Eq.refl)) (trX {i = # 1} {j = # 2} p (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl)))
     (by-al (⟨ x12 ⟩ • ⟨ m0ˢ ⟩) (⟨ m0ˢ ⟩ • ⟨ x12 ⟩) (axiom (fig7 r85)))
   where
   ts = c ∷ a ∷ b ∷ []
@@ -439,8 +443,8 @@ dec-ax (L.r2b {a = a} {b = b} {c = c} p ca cb) =
   f = at ts D
 -- (2c)
 dec-ax (L.r2c {a = a} {b = b} {c = c} {d = d} {e = e} {f = f′} p q r s ac ad ae af bc bd be bf) =
-  transport (frame ts D) (tr• (trX p (lt (# 4) (# 5)) (f (# 4) Eq.refl) (f (# 5) Eq.refl)) K)
-                         (tr• K (trX p (lt (# 4) (# 5)) (f (# 4) Eq.refl) (f (# 5) Eq.refl)))
+  transport (frame ts D) (tr• (trX {i = # 4} {j = # 5} p (lt (# 4) (# 5)) (f (# 4) Eq.refl) (f (# 5) Eq.refl)) K)
+                         (tr• K (trX {i = # 4} {j = # 5} p (lt (# 4) (# 5)) (f (# 4) Eq.refl) (f (# 5) Eq.refl)))
     (by-al (⟨ x45 ⟩ • ⟨ k0123 ⟩) (⟨ k0123 ⟩ • ⟨ x45 ⟩) (axiom (fig7 r91)))
   where
   ts = c ∷ d ∷ e ∷ f′ ∷ a ∷ b ∷ []
@@ -448,26 +452,26 @@ dec-ax (L.r2c {a = a} {b = b} {c = c} {d = d} {e = e} {f = f′} p q r s ac ad a
     ∷ (<⇒≢ r ∷ <⇒≢ (<-trans r s) ∷ ≢-sym ad ∷ ≢-sym bd ∷ [])
     ∷ (<⇒≢ s ∷ ≢-sym ae ∷ ≢-sym be ∷ []) ∷ (≢-sym af ∷ ≢-sym bf ∷ []) ∷ (<⇒≢ p ∷ []) ∷ [] ∷ []
   f = at ts D
-  K = trK q r s (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
+  K = trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 2} {i₃ = # 3} q r s (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
           (f (# 0) Eq.refl) (f (# 1) Eq.refl) (f (# 2) Eq.refl) (f (# 3) Eq.refl)
 -- (2d)
 dec-ax (L.r2d {a = a} {b = b} ab) =
-  transport (frame ts D) (tr• (trM (f (# 0) Eq.refl)) (trM (f (# 1) Eq.refl)))
-                         (tr• (trM (f (# 1) Eq.refl)) (trM (f (# 0) Eq.refl))) base2d
+  transport (frame ts D) (tr• (trM {i = # 0} (f (# 0) Eq.refl)) (trM {i = # 1} (f (# 1) Eq.refl)))
+                         (tr• (trM {i = # 1} (f (# 1) Eq.refl)) (trM {i = # 0} (f (# 0) Eq.refl))) base2d
   where
   ts = a ∷ b ∷ []
   D = (ab ∷ []) ∷ [] ∷ []
   f = at ts D
 -- (2e)
 dec-ax (L.r2e {b = b} {c = c} {d = d} {e = e} {a = a} p q r ab ac ad ae) =
-  transport (frame ts D) (tr• (trM (f (# 4) Eq.refl)) K) (tr• K (trM (f (# 4) Eq.refl)))
+  transport (frame ts D) (tr• (trM {i = # 4} (f (# 4) Eq.refl)) K) (tr• K (trM {i = # 4} (f (# 4) Eq.refl)))
     (by-al (⟨ m4ˢ ⟩ • ⟨ k0123 ⟩) (⟨ k0123 ⟩ • ⟨ m4ˢ ⟩) (axiom (fig7 r94)))
   where
   ts = b ∷ c ∷ d ∷ e ∷ a ∷ []
   D = (<⇒≢ p ∷ <⇒≢ (<-trans p q) ∷ <⇒≢ (<-trans (<-trans p q) r) ∷ ≢-sym ab ∷ [])
     ∷ (<⇒≢ q ∷ <⇒≢ (<-trans q r) ∷ ≢-sym ac ∷ []) ∷ (<⇒≢ r ∷ ≢-sym ad ∷ []) ∷ (≢-sym ae ∷ []) ∷ [] ∷ []
   f = at ts D
-  K = trK p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
+  K = trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 2} {i₃ = # 3} p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
           (f (# 0) Eq.refl) (f (# 1) Eq.refl) (f (# 2) Eq.refl) (f (# 3) Eq.refl)
 -- (2f)
 dec-ax (L.r2f {a = a} {b = b} {c = c} {d = d} {e = e} {f = f′} {g = g} {h = h} p q r s t u
@@ -482,26 +486,26 @@ dec-ax (L.r2f {a = a} {b = b} {c = c} {d = d} {e = e} {f = f′} {g = g} {h = h}
     ∷ (<⇒≢ s ∷ <⇒≢ (<-trans s t) ∷ <⇒≢ (<-trans (<-trans s t) u) ∷ [])
     ∷ (<⇒≢ t ∷ <⇒≢ (<-trans t u) ∷ []) ∷ (<⇒≢ u ∷ []) ∷ [] ∷ []
   fr = at ts D
-  K₁ = trK p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
+  K₁ = trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 2} {i₃ = # 3} p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
            (fr (# 0) Eq.refl) (fr (# 1) Eq.refl) (fr (# 2) Eq.refl) (fr (# 3) Eq.refl)
-  K₂ = trK s t u (lt (# 4) (# 5)) (lt (# 5) (# 6)) (lt (# 6) (# 7))
+  K₂ = trK {i₀ = # 4} {i₁ = # 5} {i₂ = # 6} {i₃ = # 7} s t u (lt (# 4) (# 5)) (lt (# 5) (# 6)) (lt (# 6) (# 7))
            (fr (# 4) Eq.refl) (fr (# 5) Eq.refl) (fr (# 6) Eq.refl) (fr (# 7) Eq.refl)
 -- (3a), (3b): permutations only.
 dec-ax (L.r3a {a = a} {a′ = a′} {b = b} p q r) =
-  transport (frame ts D) (tr• (trX p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl))
-                              (trX r (lt (# 0) (# 2)) (f (# 0) Eq.refl) (f (# 2) Eq.refl)))
-                         (tr• (trX q (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl))
-                              (trX p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)))
+  transport (frame ts D) (tr• (trX {i = # 0} {j = # 1} p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl))
+                              (trX {i = # 0} {j = # 2} r (lt (# 0) (# 2)) (f (# 0) Eq.refl) (f (# 2) Eq.refl)))
+                         (tr• (trX {i = # 1} {j = # 2} q (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl))
+                              (trX {i = # 0} {j = # 1} p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)))
     (aliasX (xcw (# 0) (# 1) (lt (# 0) (# 1)) • xcw (# 0) (# 2) (lt (# 0) (# 2))) (xcw (# 1) (# 2) (lt (# 1) (# 2)) • xcw (# 0) (# 1) (lt (# 0) (# 1))) Eq.refl)
   where
   ts = a ∷ a′ ∷ b ∷ []
   D = chain (p <∷ q <∷ one)
   f = at ts D
 dec-ax (L.r3b {a = a} {b = b} {b′ = b′} p q r) =
-  transport (frame ts D) (tr• (trX q (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl))
-                              (trX p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)))
-                         (tr• (trX r (lt (# 0) (# 2)) (f (# 0) Eq.refl) (f (# 2) Eq.refl))
-                              (trX q (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl)))
+  transport (frame ts D) (tr• (trX {i = # 1} {j = # 2} q (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl))
+                              (trX {i = # 0} {j = # 1} p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)))
+                         (tr• (trX {i = # 0} {j = # 2} r (lt (# 0) (# 2)) (f (# 0) Eq.refl) (f (# 2) Eq.refl))
+                              (trX {i = # 1} {j = # 2} q (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl)))
     (aliasX (xcw (# 1) (# 2) (lt (# 1) (# 2)) • xcw (# 0) (# 1) (lt (# 0) (# 1))) (xcw (# 0) (# 2) (lt (# 0) (# 2)) • xcw (# 1) (# 2) (lt (# 1) (# 2))) Eq.refl)
   where
   ts = a ∷ b ∷ b′ ∷ []
@@ -509,8 +513,8 @@ dec-ax (L.r3b {a = a} {b = b} {b′ = b′} p q r) =
   f = at ts D
 -- (3c)
 dec-ax (L.r3c {a = a} {b = b} p) =
-  transport (frame ts D) (tr• (trX p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)) (trM (f (# 1) Eq.refl)))
-                         (tr• (trM (f (# 0) Eq.refl)) (trX p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)))
+  transport (frame ts D) (tr• (trX {i = # 0} {j = # 1} p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)) (trM {i = # 1} (f (# 1) Eq.refl)))
+                         (tr• (trM {i = # 0} (f (# 0) Eq.refl)) (trX {i = # 0} {j = # 1} p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)))
     (by-al (⟨ x01 ⟩ • ⟨ m1ˢ ⟩) (⟨ m0ˢ ⟩ • ⟨ x01 ⟩)
       (trans (sym assoc) (trans (cong (order 0 z≤n) refl) left-unit)))
   where
@@ -520,12 +524,12 @@ dec-ax (L.r3c {a = a} {b = b} p) =
 -- (3d)–(3g): an X renaming one index of a K.
 dec-ax (L.r3d {a = a} {a′ = a′} {b = b} {c = c} {d = d} p q r s t) =
   transport (frame ts D)
-    (tr• (trX p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl))
-         (trK t r s (lt (# 0) (# 2)) (lt (# 2) (# 3)) (lt (# 3) (# 4))
+    (tr• (trX {i = # 0} {j = # 1} p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl))
+         (trK {i₀ = # 0} {i₁ = # 2} {i₂ = # 3} {i₃ = # 4} t r s (lt (# 0) (# 2)) (lt (# 2) (# 3)) (lt (# 3) (# 4))
               (f (# 0) Eq.refl) (f (# 2) Eq.refl) (f (# 3) Eq.refl) (f (# 4) Eq.refl)))
-    (tr• (trK q r s (lt (# 1) (# 2)) (lt (# 2) (# 3)) (lt (# 3) (# 4))
+    (tr• (trK {i₀ = # 1} {i₁ = # 2} {i₂ = # 3} {i₃ = # 4} q r s (lt (# 1) (# 2)) (lt (# 2) (# 3)) (lt (# 3) (# 4))
               (f (# 1) Eq.refl) (f (# 2) Eq.refl) (f (# 3) Eq.refl) (f (# 4) Eq.refl))
-         (trX p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)))
+         (trX {i = # 0} {j = # 1} p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)))
     (xk-base (xcw (# 0) (# 1) (lt (# 0) (# 1)))
       (frame (# 0 ∷ # 2 ∷ # 3 ∷ # 4 ∷ []) (dist4 (lt (# 0) (# 2)) (lt (# 2) (# 3)) (lt (# 3) (# 4))))
       (frame (# 1 ∷ # 2 ∷ # 3 ∷ # 4 ∷ []) (dist4 (lt (# 1) (# 2)) (lt (# 2) (# 3)) (lt (# 3) (# 4)))) Eq.refl)
@@ -535,12 +539,12 @@ dec-ax (L.r3d {a = a} {a′ = a′} {b = b} {c = c} {d = d} p q r s t) =
   f = at ts D
 dec-ax (L.r3e {a = a} {b = b} {b′ = b′} {c = c} {d = d} p q r s t u) =
   transport (frame ts D)
-    (tr• (trX q (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl))
-         (trK p t s (lt (# 0) (# 1)) (lt (# 1) (# 3)) (lt (# 3) (# 4))
+    (tr• (trX {i = # 1} {j = # 2} q (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl))
+         (trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 3} {i₃ = # 4} p t s (lt (# 0) (# 1)) (lt (# 1) (# 3)) (lt (# 3) (# 4))
               (f (# 0) Eq.refl) (f (# 1) Eq.refl) (f (# 3) Eq.refl) (f (# 4) Eq.refl)))
-    (tr• (trK u r s (lt (# 0) (# 2)) (lt (# 2) (# 3)) (lt (# 3) (# 4))
+    (tr• (trK {i₀ = # 0} {i₁ = # 2} {i₂ = # 3} {i₃ = # 4} u r s (lt (# 0) (# 2)) (lt (# 2) (# 3)) (lt (# 3) (# 4))
               (f (# 0) Eq.refl) (f (# 2) Eq.refl) (f (# 3) Eq.refl) (f (# 4) Eq.refl))
-         (trX q (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl)))
+         (trX {i = # 1} {j = # 2} q (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl)))
     (xk-base (xcw (# 1) (# 2) (lt (# 1) (# 2)))
       (frame (# 0 ∷ # 1 ∷ # 3 ∷ # 4 ∷ []) (dist4 (lt (# 0) (# 1)) (lt (# 1) (# 3)) (lt (# 3) (# 4))))
       (frame (# 0 ∷ # 2 ∷ # 3 ∷ # 4 ∷ []) (dist4 (lt (# 0) (# 2)) (lt (# 2) (# 3)) (lt (# 3) (# 4)))) Eq.refl)
@@ -550,12 +554,12 @@ dec-ax (L.r3e {a = a} {b = b} {b′ = b′} {c = c} {d = d} p q r s t u) =
   f = at ts D
 dec-ax (L.r3f {a = a} {b = b} {c = c} {c′ = c′} {d = d} p q r s t u) =
   transport (frame ts D)
-    (tr• (trX r (lt (# 2) (# 3)) (f (# 2) Eq.refl) (f (# 3) Eq.refl))
-         (trK p q t (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 4))
+    (tr• (trX {i = # 2} {j = # 3} r (lt (# 2) (# 3)) (f (# 2) Eq.refl) (f (# 3) Eq.refl))
+         (trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 2} {i₃ = # 4} p q t (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 4))
               (f (# 0) Eq.refl) (f (# 1) Eq.refl) (f (# 2) Eq.refl) (f (# 4) Eq.refl)))
-    (tr• (trK p u s (lt (# 0) (# 1)) (lt (# 1) (# 3)) (lt (# 3) (# 4))
+    (tr• (trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 3} {i₃ = # 4} p u s (lt (# 0) (# 1)) (lt (# 1) (# 3)) (lt (# 3) (# 4))
               (f (# 0) Eq.refl) (f (# 1) Eq.refl) (f (# 3) Eq.refl) (f (# 4) Eq.refl))
-         (trX r (lt (# 2) (# 3)) (f (# 2) Eq.refl) (f (# 3) Eq.refl)))
+         (trX {i = # 2} {j = # 3} r (lt (# 2) (# 3)) (f (# 2) Eq.refl) (f (# 3) Eq.refl)))
     (xk-base (xcw (# 2) (# 3) (lt (# 2) (# 3)))
       (frame (# 0 ∷ # 1 ∷ # 2 ∷ # 4 ∷ []) (dist4 (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 4))))
       (frame (# 0 ∷ # 1 ∷ # 3 ∷ # 4 ∷ []) (dist4 (lt (# 0) (# 1)) (lt (# 1) (# 3)) (lt (# 3) (# 4)))) Eq.refl)
@@ -565,12 +569,12 @@ dec-ax (L.r3f {a = a} {b = b} {c = c} {c′ = c′} {d = d} p q r s t u) =
   f = at ts D
 dec-ax (L.r3g {a = a} {b = b} {c = c} {d = d} {d′ = d′} p q r s t) =
   transport (frame ts D)
-    (tr• (trX s (lt (# 3) (# 4)) (f (# 3) Eq.refl) (f (# 4) Eq.refl))
-         (trK p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
+    (tr• (trX {i = # 3} {j = # 4} s (lt (# 3) (# 4)) (f (# 3) Eq.refl) (f (# 4) Eq.refl))
+         (trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 2} {i₃ = # 3} p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
               (f (# 0) Eq.refl) (f (# 1) Eq.refl) (f (# 2) Eq.refl) (f (# 3) Eq.refl)))
-    (tr• (trK p q t (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 4))
+    (tr• (trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 2} {i₃ = # 4} p q t (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 4))
               (f (# 0) Eq.refl) (f (# 1) Eq.refl) (f (# 2) Eq.refl) (f (# 4) Eq.refl))
-         (trX s (lt (# 3) (# 4)) (f (# 3) Eq.refl) (f (# 4) Eq.refl)))
+         (trX {i = # 3} {j = # 4} s (lt (# 3) (# 4)) (f (# 3) Eq.refl) (f (# 4) Eq.refl)))
     (xk-base (xcw (# 3) (# 4) (lt (# 3) (# 4)))
       (frame (# 0 ∷ # 1 ∷ # 2 ∷ # 3 ∷ []) (dist4 (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))))
       (frame (# 0 ∷ # 1 ∷ # 2 ∷ # 4 ∷ []) (dist4 (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 4)))) Eq.refl)
@@ -580,47 +584,47 @@ dec-ax (L.r3g {a = a} {b = b} {c = c} {d = d} {d′ = d′} p q r s t) =
   f = at ts D
 -- (4a)–(4c): (97)–(99) of Figure 7.
 dec-ax (L.r4a {a = a} {b = b} {c = c} {d = d} p q r s) =
-  transport (frame ts D) (tr• (trX p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)) K)
-    (tr• K (tr• (trX s (lt (# 1) (# 3)) (f (# 1) Eq.refl) (f (# 3) Eq.refl))
-           (tr• (trM (f (# 1) Eq.refl)) (trM (f (# 3) Eq.refl)))))
+  transport (frame ts D) (tr• (trX {i = # 0} {j = # 1} p (lt (# 0) (# 1)) (f (# 0) Eq.refl) (f (# 1) Eq.refl)) K)
+    (tr• K (tr• (trX {i = # 1} {j = # 3} s (lt (# 1) (# 3)) (f (# 1) Eq.refl) (f (# 3) Eq.refl))
+           (tr• (trM {i = # 1} (f (# 1) Eq.refl)) (trM {i = # 3} (f (# 3) Eq.refl)))))
     (by-al (⟨ x01 ⟩ • ⟨ k0123 ⟩) (⟨ k0123 ⟩ • ⟨ x13 ⟩ • ⟨ m1ˢ ⟩ • ⟨ m3ˢ ⟩) (axiom (fig7 r97)))
   where
   ts = a ∷ b ∷ c ∷ d ∷ []
   D = dist4 p q r
   f = at ts D
-  K = trK p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
+  K = trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 2} {i₃ = # 3} p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
           (f (# 0) Eq.refl) (f (# 1) Eq.refl) (f (# 2) Eq.refl) (f (# 3) Eq.refl)
 dec-ax (L.r4b {a = a} {b = b} {c = c} {d = d} p q r) =
-  transport (frame ts D) (tr• (trX q (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl)) K)
+  transport (frame ts D) (tr• (trX {i = # 1} {j = # 2} q (lt (# 1) (# 2)) (f (# 1) Eq.refl) (f (# 2) Eq.refl)) K)
     (tr• M₀ (tr• K (tr• M₀ (tr• K M₀))))
     (by-al (⟨ x12 ⟩ • ⟨ k0123 ⟩) (⟨ m0ˢ ⟩ • ⟨ k0123 ⟩ • ⟨ m0ˢ ⟩ • ⟨ k0123 ⟩ • ⟨ m0ˢ ⟩) (axiom (fig7 r98)))
   where
   ts = a ∷ b ∷ c ∷ d ∷ []
   D = dist4 p q r
   f = at ts D
-  K = trK p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
+  K = trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 2} {i₃ = # 3} p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
           (f (# 0) Eq.refl) (f (# 1) Eq.refl) (f (# 2) Eq.refl) (f (# 3) Eq.refl)
-  M₀ = trM (f (# 0) Eq.refl)
+  M₀ = trM {i = # 0} (f (# 0) Eq.refl)
 dec-ax (L.r4c {a = a} {b = b} {c = c} {d = d} p q r s) =
-  transport (frame ts D) (tr• (trX r (lt (# 2) (# 3)) (f (# 2) Eq.refl) (f (# 3) Eq.refl)) K)
-    (tr• K (trX s (lt (# 1) (# 3)) (f (# 1) Eq.refl) (f (# 3) Eq.refl)))
+  transport (frame ts D) (tr• (trX {i = # 2} {j = # 3} r (lt (# 2) (# 3)) (f (# 2) Eq.refl) (f (# 3) Eq.refl)) K)
+    (tr• K (trX {i = # 1} {j = # 3} s (lt (# 1) (# 3)) (f (# 1) Eq.refl) (f (# 3) Eq.refl)))
     (by-al (⟨ x23 ⟩ • ⟨ k0123 ⟩) (⟨ k0123 ⟩ • ⟨ x13 ⟩) (axiom (fig7 r99)))
   where
   ts = a ∷ b ∷ c ∷ d ∷ []
   D = dist4 p q r
   f = at ts D
-  K = trK p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
+  K = trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 2} {i₃ = # 3} p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
           (f (# 0) Eq.refl) (f (# 1) Eq.refl) (f (# 2) Eq.refl) (f (# 3) Eq.refl)
 -- (5a): (100) of Figure 7.
 dec-ax (L.r5a {a = a} {b = b} {c = c} {d = d} {e = e} {f = f′} p q r s t u v) =
   transport (frame ts D)
-    (tr• (trK p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
+    (tr• (trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 2} {i₃ = # 3} p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
               (f (# 0) Eq.refl) (f (# 1) Eq.refl) (f (# 2) Eq.refl) (f (# 3) Eq.refl))
-         (trK u s t (lt (# 1) (# 3)) (lt (# 3) (# 4)) (lt (# 4) (# 5))
+         (trK {i₀ = # 1} {i₁ = # 3} {i₂ = # 4} {i₃ = # 5} u s t (lt (# 1) (# 3)) (lt (# 3) (# 4)) (lt (# 4) (# 5))
               (f (# 1) Eq.refl) (f (# 3) Eq.refl) (f (# 4) Eq.refl) (f (# 5) Eq.refl)))
-    (tr• (trK r s t (lt (# 2) (# 3)) (lt (# 3) (# 4)) (lt (# 4) (# 5))
+    (tr• (trK {i₀ = # 2} {i₁ = # 3} {i₂ = # 4} {i₃ = # 5} r s t (lt (# 2) (# 3)) (lt (# 3) (# 4)) (lt (# 4) (# 5))
               (f (# 2) Eq.refl) (f (# 3) Eq.refl) (f (# 4) Eq.refl) (f (# 5) Eq.refl))
-         (trK p q v (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 4))
+         (trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 2} {i₃ = # 4} p q v (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 4))
               (f (# 0) Eq.refl) (f (# 1) Eq.refl) (f (# 2) Eq.refl) (f (# 4) Eq.refl)))
     (by-al (⟨ k0123 ⟩ • ⟨ k1345 ⟩) (⟨ k2345 ⟩ • ⟨ k0124 ⟩) (axiom (fig7 r100)))
   where
@@ -641,13 +645,13 @@ dec-ax (L.r6a {a = a} {b = b} {c = c} {d = d} {e = e} {f = f′} {g = g} {h = h}
   ts = a ∷ b ∷ c ∷ d ∷ e ∷ f′ ∷ g ∷ h ∷ []
   D = chain (p <∷ q <∷ r <∷ s <∷ t <∷ u <∷ v <∷ one)
   fr = at ts D
-  M₀ = trM (fr (# 0) Eq.refl)
-  M₄ = trM (fr (# 4) Eq.refl)
-  X₀₄ = trX w (lt (# 0) (# 4)) (fr (# 0) Eq.refl) (fr (# 4) Eq.refl)
-  X₃₄ = trX s (lt (# 3) (# 4)) (fr (# 3) Eq.refl) (fr (# 4) Eq.refl)
-  K₁ = trK p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
+  M₀ = trM {i = # 0} (fr (# 0) Eq.refl)
+  M₄ = trM {i = # 4} (fr (# 4) Eq.refl)
+  X₀₄ = trX {i = # 0} {j = # 4} w (lt (# 0) (# 4)) (fr (# 0) Eq.refl) (fr (# 4) Eq.refl)
+  X₃₄ = trX {i = # 3} {j = # 4} s (lt (# 3) (# 4)) (fr (# 3) Eq.refl) (fr (# 4) Eq.refl)
+  K₁ = trK {i₀ = # 0} {i₁ = # 1} {i₂ = # 2} {i₃ = # 3} p q r (lt (# 0) (# 1)) (lt (# 1) (# 2)) (lt (# 2) (# 3))
            (fr (# 0) Eq.refl) (fr (# 1) Eq.refl) (fr (# 2) Eq.refl) (fr (# 3) Eq.refl)
-  K₂ = trK t u v (lt (# 4) (# 5)) (lt (# 5) (# 6)) (lt (# 6) (# 7))
+  K₂ = trK {i₀ = # 4} {i₁ = # 5} {i₂ = # 6} {i₃ = # 7} t u v (lt (# 4) (# 5)) (lt (# 5) (# 6)) (lt (# 6) (# 7))
            (fr (# 4) Eq.refl) (fr (# 5) Eq.refl) (fr (# 6) Eq.refl) (fr (# 7) Eq.refl)
 
 -- The decoding respects the relations of Table 1.
