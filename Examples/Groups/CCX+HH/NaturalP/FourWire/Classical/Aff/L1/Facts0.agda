@@ -14,7 +14,7 @@ open import Data.Fin using (#_)
 open import Data.List.Base using (List ; [] ; _∷_)
 open import Relation.Binary.PropositionalEquality using (refl)
 open import Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.Pure
-open import Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.Aff.L1.Base using (normE)
+open import Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.Aff.L1.Base using (normB)
 
 f0 : Eqn
 f0 = derive (cx0-1 ∷ cx2-3 ∷ cx0-1 ∷ cx2-3 ∷ []) ([])
@@ -455,30 +455,30 @@ f145 : Eqn
 f145 = derive (sw01 ∷ sw02 ∷ []) (sw12 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (f133)) ∷ rw 2 (sym⁼ (inv⁼ sw01)) ∷ rw 3 (sym⁼ (inv⁼ sw12)) ∷ rw 0 (f41) ∷ rw 0 (f121) ∷ rw 1 (f133) ∷ []) refl
 f146 : Eqn
-f146 = normE (# 9 ∷ # 5 ∷ []) (# 2 ∷ # 9 ∷ []) refl
+f146 = normB (# 9 ∷ # 5 ∷ []) (# 2 ∷ # 9 ∷ []) refl
 f147 : Eqn
-f147 = normE (# 2 ∷ # 9 ∷ # 9 ∷ []) (# 2 ∷ []) refl
+f147 = normB (# 2 ∷ # 9 ∷ # 9 ∷ []) (# 2 ∷ []) refl
 f148 : Eqn
 f148 = derive (sw01 ∷ cx0-3 ∷ []) (cx1-3 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (f133)) ∷ rw 2 (sym⁼ (inv⁼ sw01)) ∷ rw 3 (sym⁼ (inv⁼ sw12)) ∷ rw 4 (sym⁼ (inv⁼ cx2-3)) ∷ rw 5 (sym⁼ (inv⁼ sw12)) ∷ rw 0 (f66) ∷ rw 0 (f121) ∷ rw 1 (f117) ∷ rw 0 (f146) ∷ rw 2 (f121) ∷ rw 0 (f147) ∷ rw 1 (f133) ∷ []) refl
 f149 : Eqn
-f149 = normE (# 9 ∷ # 8 ∷ []) (# 7 ∷ # 9 ∷ []) refl
+f149 = normB (# 9 ∷ # 8 ∷ []) (# 7 ∷ # 9 ∷ []) refl
 f150 : Eqn
-f150 = normE (# 7 ∷ # 9 ∷ # 9 ∷ []) (# 7 ∷ []) refl
+f150 = normB (# 7 ∷ # 9 ∷ # 9 ∷ []) (# 7 ∷ []) refl
 f151 : Eqn
 f151 = derive (sw01 ∷ cx3-0 ∷ []) (cx3-1 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (f133)) ∷ rw 2 (sym⁼ (inv⁼ sw01)) ∷ rw 3 (sym⁼ (inv⁼ sw12)) ∷ rw 4 (sym⁼ (inv⁼ cx3-2)) ∷ rw 5 (sym⁼ (inv⁼ sw12)) ∷ rw 0 (f72) ∷ rw 0 (f121) ∷ rw 1 (f120) ∷ rw 0 (f149) ∷ rw 2 (f121) ∷ rw 0 (f150) ∷ rw 1 (f133) ∷ []) refl
 f152 : Eqn
-f152 = normE (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
+f152 = normB (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
 f153 : Eqn
-f153 = normE (# 11 ∷ # 10 ∷ # 9 ∷ []) (# 10 ∷ []) refl
+f153 = normB (# 11 ∷ # 10 ∷ # 9 ∷ []) (# 10 ∷ []) refl
 f154 : Eqn
 f154 = derive (sw01 ∷ sw03 ∷ []) (sw13 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (f133)) ∷ rw 2 (sym⁼ (inv⁼ sw01)) ∷ rw 3 (sym⁼ (inv⁼ sw12)) ∷ rw 4 (sym⁼ (inv⁼ sw23)) ∷ rw 5 (sym⁼ (inv⁼ sw12)) ∷ rw 0 (f84) ∷ rw 0 (f121) ∷ rw 1 (f123) ∷ rw 0 (f152) ∷ rw 2 (f121) ∷ rw 0 (f153) ∷ rw 1 (f133) ∷ []) refl
 f155 : Eqn
-f155 = normE (# 3 ∷ # 11 ∷ []) (# 11 ∷ # 6 ∷ []) refl
+f155 = normB (# 3 ∷ # 11 ∷ []) (# 11 ∷ # 6 ∷ []) refl
 f156 : Eqn
-f156 = normE (# 11 ∷ # 11 ∷ # 6 ∷ []) (# 6 ∷ []) refl
+f156 = normB (# 11 ∷ # 11 ∷ # 6 ∷ []) (# 6 ∷ []) refl
 f157 : Eqn
 f157 = derive (sw01 ∷ cx3-1 ∷ []) (cx3-0 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw23)) ∷ rw 1 (sym⁼ (f144)) ∷ rw 4 (sym⁼ (inv⁼ sw23)) ∷ rw 5 (sym⁼ (inv⁼ cx2-1)) ∷ rw 2 (f98) ∷ rw 1 (f136) ∷ rw 2 (f144) ∷ rw 1 (f155) ∷ rw 0 (f156) ∷ []) refl
@@ -507,12 +507,12 @@ f165 : Eqn
 f165 = derive (sw01 ∷ cx1-2 ∷ []) (cx0-2 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (f164)) ∷ rw 2 (inv⁼ cx1-2) ∷ []) refl
 f166 : Eqn
-f166 = normE (# 1 ∷ # 0 ∷ []) (# 0 ∷ # 1 ∷ []) refl
+f166 = normB (# 1 ∷ # 0 ∷ []) (# 0 ∷ # 1 ∷ []) refl
 f167 : Eqn
 f167 = derive (cx0-2 ∷ sw01 ∷ cx0-1 ∷ []) (cx1-0 ∷ cx1-2 ∷ cx0-2 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (f165)) ∷ rw 3 (sym⁼ (inv⁼ cx1-2)) ∷ rw 4 (sym⁼ (inv⁼ cx0-1)) ∷ rw 5 (sym⁼ (inv⁼ cx0-2)) ∷ rw 1 (f60) ∷ rw 0 (f135) ∷ rw 1 (f143) ∷ rw 0 (f166) ∷ rw 2 (f165) ∷ []) refl
 f168 : Eqn
-f168 = normE (# 1 ∷ # 0 ∷ # 0 ∷ []) (# 1 ∷ []) refl
+f168 = normB (# 1 ∷ # 0 ∷ # 0 ∷ []) (# 1 ∷ []) refl
 f169 : Eqn
 f169 = derive (cx0-2 ∷ sw01 ∷ cx0-2 ∷ []) (cx1-2 ∷ cx0-2 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 1 (sym⁼ (inv⁼ cx1-0)) ∷ rw 2 (sym⁼ (f167)) ∷ rw 2 (sym⁼ (f165)) ∷ rw 6 (sym⁼ (inv⁼ cx1-2)) ∷ rw 7 (sym⁼ (inv⁼ cx0-1)) ∷ rw 3 (f61) ∷ rw 2 (f143) ∷ rw 3 (f165) ∷ rw 0 (f168) ∷ []) refl
@@ -520,7 +520,7 @@ f170 : Eqn
 f170 = derive (cx0-2 ∷ cx1-2 ∷ []) (cx1-2 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 2 (sym⁼ (f163)) ∷ rw 1 (sym⁼ (f169)) ∷ rw 6 (sym⁼ (inv⁼ sw01)) ∷ rw 3 (f4) ∷ rw 1 (f163) ∷ []) refl
 f171 : Eqn
-f171 = normE (# 1 ∷ # 0 ∷ []) (# 0 ∷ # 1 ∷ []) refl
+f171 = normB (# 1 ∷ # 0 ∷ []) (# 0 ∷ # 1 ∷ []) refl
 f172 : Eqn
 f172 = derive (cx0-2 ∷ cx1-0 ∷ []) (cx1-0 ∷ cx1-2 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 1 (sym⁼ (inv⁼ cx1-0)) ∷ rw 4 (sym⁼ (f163)) ∷ rw 2 (sym⁼ (f167)) ∷ rw 7 (sym⁼ (inv⁼ sw01)) ∷ rw 4 (f35) ∷ rw 2 (f163) ∷ rw 0 (f171) ∷ []) refl
@@ -576,32 +576,32 @@ f189 : Eqn
 f189 = derive (sw02 ∷ sw01 ∷ []) (sw12 ∷ sw02 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f188)) ∷ []) refl
 f190 : Eqn
-f190 = normE (# 9 ∷ # 4 ∷ []) (# 4 ∷ # 1 ∷ []) refl
+f190 = normB (# 9 ∷ # 4 ∷ []) (# 4 ∷ # 1 ∷ []) refl
 f191 : Eqn
 f191 = derive (sw02 ∷ cx1-0 ∷ []) (cx2-1 ∷ cx1-2 ∷ sw02 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f189)) ∷ rw 1 (f187) ∷ rw 0 (f190) ∷ []) refl
 f192 : Eqn
-f192 = normE (# 9 ∷ # 3 ∷ []) (# 0 ∷ # 9 ∷ []) refl
+f192 = normB (# 9 ∷ # 3 ∷ []) (# 0 ∷ # 9 ∷ []) refl
 f193 : Eqn
 f193 = derive (sw02 ∷ cx1-2 ∷ []) (cx1-0 ∷ sw12 ∷ sw02 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f189)) ∷ rw 1 (f183) ∷ rw 0 (f192) ∷ []) refl
 f194 : Eqn
-f194 = normE (# 9 ∷ # 5 ∷ []) (# 2 ∷ # 9 ∷ []) refl
+f194 = normB (# 9 ∷ # 5 ∷ []) (# 2 ∷ # 9 ∷ []) refl
 f195 : Eqn
 f195 = derive (sw02 ∷ cx1-3 ∷ []) (cx1-3 ∷ sw12 ∷ sw02 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f189)) ∷ rw 1 (f177) ∷ rw 0 (f194) ∷ []) refl
 f196 : Eqn
-f196 = normE (# 9 ∷ # 3 ∷ []) (# 0 ∷ # 9 ∷ []) refl
+f196 = normB (# 9 ∷ # 3 ∷ []) (# 0 ∷ # 9 ∷ []) refl
 f197 : Eqn
 f197 = derive (sw02 ∷ cx2-1 ∷ []) (cx1-0 ∷ sw12 ∷ cx0-2 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f189)) ∷ rw 1 (f180) ∷ rw 0 (f196) ∷ []) refl
 f198 : Eqn
-f198 = normE (# 9 ∷ # 8 ∷ []) (# 7 ∷ # 9 ∷ []) refl
+f198 = normB (# 9 ∷ # 8 ∷ []) (# 7 ∷ # 9 ∷ []) refl
 f199 : Eqn
 f199 = derive (sw02 ∷ cx3-1 ∷ []) (cx3-1 ∷ sw12 ∷ sw02 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f189)) ∷ rw 1 (f179) ∷ rw 0 (f198) ∷ []) refl
 f200 : Eqn
-f200 = normE (# 9 ∷ # 6 ∷ []) (# 6 ∷ # 9 ∷ []) refl
+f200 = normB (# 9 ∷ # 6 ∷ []) (# 6 ∷ # 9 ∷ []) refl
 f201 : Eqn
 f201 = derive (sw02 ∷ cx3-2 ∷ []) (cx3-0 ∷ sw12 ∷ sw02 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f189)) ∷ rw 1 (f178) ∷ rw 0 (f200) ∷ []) refl
@@ -609,7 +609,7 @@ f202 : Eqn
 f202 = derive (sw02 ∷ sw12 ∷ []) (sw12 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f189)) ∷ rw 1 (f175) ∷ []) refl
 f203 : Eqn
-f203 = normE (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
+f203 = normB (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
 f204 : Eqn
 f204 = derive (sw02 ∷ sw13 ∷ []) (sw23 ∷ sw13 ∷ sw02 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f189)) ∷ rw 1 (f184) ∷ rw 0 (f203) ∷ []) refl
@@ -620,18 +620,18 @@ f206 : Eqn
 f206 = derive (sw02 ∷ sw01 ∷ []) (sw12 ∷ sw02 ∷ [])
   (rw 0 (f173) ∷ rw 0 (f189) ∷ []) refl
 f207 : Eqn
-f207 = normE (# 9 ∷ # 9 ∷ []) ([]) refl
+f207 = normB (# 9 ∷ # 9 ∷ []) ([]) refl
 f208 : Eqn
-f208 = normE (# 11 ∷ # 9 ∷ # 9 ∷ []) (# 11 ∷ []) refl
+f208 = normB (# 11 ∷ # 9 ∷ # 9 ∷ []) (# 11 ∷ []) refl
 f209 : Eqn
 f209 = derive (sw02 ∷ sw03 ∷ []) (sw23 ∷ sw02 ∷ [])
   (rw 0 (sym⁼ (f207)) ∷ rw 1 (sym⁼ (f206)) ∷ rw 0 (sym⁼ (f205)) ∷ rw 4 (sym⁼ (inv⁼ sw01)) ∷ rw 5 (sym⁼ (inv⁼ sw12)) ∷ rw 6 (sym⁼ (inv⁼ sw23)) ∷ rw 1 (f83) ∷ rw 0 (f144) ∷ rw 1 (f205) ∷ rw 2 (f206) ∷ rw 0 (f208) ∷ []) refl
 f210 : Eqn
-f210 = normE (# 9 ∷ # 0 ∷ []) (# 3 ∷ # 9 ∷ []) refl
+f210 = normB (# 9 ∷ # 0 ∷ []) (# 3 ∷ # 9 ∷ []) refl
 f211 : Eqn
-f211 = normE (# 9 ∷ # 0 ∷ # 9 ∷ []) (# 3 ∷ []) refl
+f211 = normB (# 9 ∷ # 0 ∷ # 9 ∷ []) (# 3 ∷ []) refl
 f212 : Eqn
-f212 = normE (# 9 ∷ # 3 ∷ # 3 ∷ []) (# 9 ∷ []) refl
+f212 = normB (# 9 ∷ # 3 ∷ # 3 ∷ []) (# 9 ∷ []) refl
 f213 : Eqn
 f213 = derive (cx0-1 ∷ sw12 ∷ []) (sw12 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (inv⁼ cx2-0)) ∷ rw 2 (sym⁼ (f210)) ∷ rw 3 (sym⁼ (f140)) ∷ rw 2 (sym⁼ (f202)) ∷ rw 6 (sym⁼ (inv⁼ sw01)) ∷ rw 7 (sym⁼ (inv⁼ cx2-1)) ∷ rw 8 (sym⁼ (inv⁼ sw01)) ∷ rw 3 (f74) ∷ rw 2 (f206) ∷ rw 3 (f197) ∷ rw 2 (f211) ∷ rw 3 (f163) ∷ rw 0 (f212) ∷ []) refl
@@ -639,9 +639,9 @@ f214 : Eqn
 f214 = derive (cx0-2 ∷ sw12 ∷ []) (sw12 ∷ cx0-1 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f213)) ∷ rw 2 (inv⁼ sw12) ∷ []) refl
 f215 : Eqn
-f215 = normE (# 9 ∷ # 0 ∷ []) (# 3 ∷ # 9 ∷ []) refl
+f215 = normB (# 9 ∷ # 0 ∷ []) (# 3 ∷ # 9 ∷ []) refl
 f216 : Eqn
-f216 = normE (# 3 ∷ # 9 ∷ # 9 ∷ []) (# 3 ∷ []) refl
+f216 = normB (# 3 ∷ # 9 ∷ # 9 ∷ []) (# 3 ∷ []) refl
 f217 : Eqn
 f217 = derive (cx0-2 ∷ cx2-0 ∷ []) (cx2-0 ∷ sw02 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx2-0)) ∷ rw 1 (sym⁼ (f216)) ∷ rw 3 (sym⁼ (f213)) ∷ rw 1 (sym⁼ (f215)) ∷ rw 2 (sym⁼ (f140)) ∷ rw 1 (sym⁼ (f202)) ∷ rw 2 (f111) ∷ []) refl
@@ -649,83 +649,83 @@ f218 : Eqn
 f218 = derive (sw02 ∷ cx2-0 ∷ []) (cx2-0 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx2-0)) ∷ rw 1 (sym⁼ (f217)) ∷ rw 2 (inv⁼ cx2-0) ∷ []) refl
 f219 : Eqn
-f219 = normE (# 7 ∷ # 9 ∷ # 9 ∷ []) (# 7 ∷ []) refl
+f219 = normB (# 7 ∷ # 9 ∷ # 9 ∷ []) (# 7 ∷ []) refl
 f220 : Eqn
 f220 = derive (sw02 ∷ cx3-1 ∷ []) (cx3-1 ∷ sw02 ∷ [])
   (rw 0 (f199) ∷ rw 2 (f189) ∷ rw 0 (f219) ∷ []) refl
 f221 : Eqn
-f221 = normE (# 3 ∷ # 7 ∷ # 3 ∷ []) (# 7 ∷ []) refl
+f221 = normB (# 3 ∷ # 7 ∷ # 3 ∷ []) (# 7 ∷ []) refl
 f222 : Eqn
 f222 = derive (cx0-2 ∷ cx3-1 ∷ []) (cx3-1 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx2-0)) ∷ rw 1 (sym⁼ (f218)) ∷ rw 4 (sym⁼ (inv⁼ cx2-0)) ∷ rw 5 (sym⁼ (inv⁼ cx3-1)) ∷ rw 2 (f93) ∷ rw 1 (f220) ∷ rw 2 (f218) ∷ rw 0 (f221) ∷ []) refl
 f223 : Eqn
-f223 = normE (# 6 ∷ # 9 ∷ # 9 ∷ []) (# 6 ∷ []) refl
+f223 = normB (# 6 ∷ # 9 ∷ # 9 ∷ []) (# 6 ∷ []) refl
 f224 : Eqn
 f224 = derive (sw02 ∷ cx3-2 ∷ []) (cx3-0 ∷ sw02 ∷ [])
   (rw 0 (f201) ∷ rw 2 (f189) ∷ rw 0 (f223) ∷ []) refl
 f225 : Eqn
-f225 = normE (# 8 ∷ # 6 ∷ []) (# 6 ∷ # 8 ∷ []) refl
+f225 = normB (# 8 ∷ # 6 ∷ []) (# 6 ∷ # 8 ∷ []) refl
 f226 : Eqn
-f226 = normE (# 3 ∷ # 6 ∷ # 8 ∷ # 3 ∷ []) (# 8 ∷ []) refl
+f226 = normB (# 3 ∷ # 6 ∷ # 8 ∷ # 3 ∷ []) (# 8 ∷ []) refl
 f227 : Eqn
 f227 = derive (cx0-2 ∷ cx3-2 ∷ []) (cx3-2 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx2-0)) ∷ rw 1 (sym⁼ (f218)) ∷ rw 4 (sym⁼ (inv⁼ cx2-0)) ∷ rw 5 (sym⁼ (inv⁼ cx3-2)) ∷ rw 6 (sym⁼ (inv⁼ cx3-0)) ∷ rw 2 (f102) ∷ rw 1 (f186) ∷ rw 2 (f224) ∷ rw 1 (f225) ∷ rw 3 (f218) ∷ rw 0 (f226) ∷ []) refl
 f228 : Eqn
-f228 = normE (# 6 ∷ # 3 ∷ # 8 ∷ []) (# 8 ∷ # 3 ∷ []) refl
+f228 = normB (# 6 ∷ # 3 ∷ # 8 ∷ []) (# 8 ∷ # 3 ∷ []) refl
 f229 : Eqn
-f229 = normE (# 3 ∷ # 8 ∷ # 3 ∷ []) (# 6 ∷ # 8 ∷ []) refl
+f229 = normB (# 3 ∷ # 8 ∷ # 3 ∷ []) (# 6 ∷ # 8 ∷ []) refl
 f230 : Eqn
 f230 = derive (cx0-2 ∷ cx3-0 ∷ []) (cx3-0 ∷ cx3-2 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx2-0)) ∷ rw 1 (sym⁼ (f218)) ∷ rw 4 (sym⁼ (inv⁼ cx3-2)) ∷ rw 5 (sym⁼ (inv⁼ cx2-0)) ∷ rw 6 (sym⁼ (inv⁼ cx3-2)) ∷ rw 2 (f103) ∷ rw 1 (f224) ∷ rw 2 (f218) ∷ rw 3 (f227) ∷ rw 1 (f228) ∷ rw 0 (f229) ∷ []) refl
 f231 : Eqn
-f231 = normE (# 3 ∷ # 8 ∷ # 6 ∷ # 3 ∷ []) (# 8 ∷ []) refl
+f231 = normB (# 3 ∷ # 8 ∷ # 6 ∷ # 3 ∷ []) (# 8 ∷ []) refl
 f232 : Eqn
 f232 = derive (cx0-2 ∷ sw01 ∷ cx3-2 ∷ []) (cx3-2 ∷ cx0-2 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx2-0)) ∷ rw 1 (sym⁼ (inv⁼ cx3-2)) ∷ rw 2 (sym⁼ (inv⁼ cx3-0)) ∷ rw 5 (sym⁼ (f182)) ∷ rw 5 (sym⁼ (f162)) ∷ rw 3 (sym⁼ (f230)) ∷ rw 8 (sym⁼ (inv⁼ sw12)) ∷ rw 9 (sym⁼ (inv⁼ sw01)) ∷ rw 4 (f67) ∷ rw 3 (f162) ∷ rw 3 (f182) ∷ rw 0 (f231) ∷ []) refl
 f233 : Eqn
-f233 = normE (# 3 ∷ # 8 ∷ # 3 ∷ []) (# 6 ∷ # 8 ∷ []) refl
+f233 = normB (# 3 ∷ # 8 ∷ # 3 ∷ []) (# 6 ∷ # 8 ∷ []) refl
 f234 : Eqn
 f234 = derive (cx0-2 ∷ sw01 ∷ cx3-1 ∷ []) (cx3-0 ∷ cx3-2 ∷ cx0-2 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx2-0)) ∷ rw 1 (sym⁼ (inv⁼ cx3-2)) ∷ rw 3 (sym⁼ (f182)) ∷ rw 2 (sym⁼ (f232)) ∷ rw 7 (sym⁼ (inv⁼ sw12)) ∷ rw 4 (f23) ∷ rw 2 (f182) ∷ rw 0 (f233) ∷ []) refl
 f235 : Eqn
-f235 = normE (# 9 ∷ # 8 ∷ # 9 ∷ []) (# 7 ∷ []) refl
+f235 = normB (# 9 ∷ # 8 ∷ # 9 ∷ []) (# 7 ∷ []) refl
 f236 : Eqn
 f236 = derive (cx0-1 ∷ cx3-1 ∷ []) (cx3-1 ∷ cx0-1 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (inv⁼ cx3-2)) ∷ rw 3 (sym⁼ (f214)) ∷ rw 2 (sym⁼ (f227)) ∷ rw 6 (sym⁼ (inv⁼ sw12)) ∷ rw 3 (f23) ∷ rw 2 (f214) ∷ rw 0 (f235) ∷ []) refl
 f237 : Eqn
-f237 = normE (# 8 ∷ # 9 ∷ # 0 ∷ []) (# 8 ∷ # 3 ∷ # 9 ∷ []) refl
+f237 = normB (# 8 ∷ # 9 ∷ # 0 ∷ []) (# 8 ∷ # 3 ∷ # 9 ∷ []) refl
 f238 : Eqn
-f238 = normE (# 9 ∷ # 0 ∷ []) (# 3 ∷ # 9 ∷ []) refl
+f238 = normB (# 9 ∷ # 0 ∷ []) (# 3 ∷ # 9 ∷ []) refl
 f239 : Eqn
-f239 = normE (# 9 ∷ # 3 ∷ # 8 ∷ # 3 ∷ # 9 ∷ []) (# 7 ∷ # 6 ∷ []) refl
+f239 = normB (# 9 ∷ # 3 ∷ # 8 ∷ # 3 ∷ # 9 ∷ []) (# 7 ∷ # 6 ∷ []) refl
 f240 : Eqn
 f240 = derive (cx0-1 ∷ cx3-0 ∷ []) (cx3-1 ∷ cx3-0 ∷ cx0-1 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (inv⁼ cx2-0)) ∷ rw 2 (sym⁼ (inv⁼ cx3-2)) ∷ rw 3 (sym⁼ (f237)) ∷ rw 5 (sym⁼ (f142)) ∷ rw 4 (sym⁼ (f214)) ∷ rw 3 (sym⁼ (f227)) ∷ rw 8 (sym⁼ (inv⁼ sw01)) ∷ rw 9 (sym⁼ (inv⁼ sw12)) ∷ rw 4 (f70) ∷ rw 3 (f214) ∷ rw 4 (f142) ∷ rw 3 (f238) ∷ rw 0 (f239) ∷ []) refl
 f241 : Eqn
-f241 = normE (# 8 ∷ # 9 ∷ # 11 ∷ []) (# 8 ∷ # 11 ∷ # 10 ∷ []) refl
+f241 = normB (# 8 ∷ # 9 ∷ # 11 ∷ []) (# 8 ∷ # 11 ∷ # 10 ∷ []) refl
 f242 : Eqn
-f242 = normE (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
+f242 = normB (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
 f243 : Eqn
-f243 = normE (# 10 ∷ # 11 ∷ # 8 ∷ # 11 ∷ # 10 ∷ []) (# 4 ∷ []) refl
+f243 = normB (# 10 ∷ # 11 ∷ # 8 ∷ # 11 ∷ # 10 ∷ []) (# 4 ∷ []) refl
 f244 : Eqn
 f244 = derive (cx0-1 ∷ cx2-1 ∷ []) (cx2-1 ∷ cx0-1 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw13)) ∷ rw 1 (sym⁼ (inv⁼ sw23)) ∷ rw 2 (sym⁼ (inv⁼ cx3-2)) ∷ rw 3 (sym⁼ (f241)) ∷ rw 5 (sym⁼ (f127)) ∷ rw 4 (sym⁼ (f214)) ∷ rw 3 (sym⁼ (f227)) ∷ rw 8 (sym⁼ (inv⁼ sw23)) ∷ rw 9 (sym⁼ (inv⁼ sw12)) ∷ rw 4 (f87) ∷ rw 3 (f214) ∷ rw 4 (f127) ∷ rw 3 (f242) ∷ rw 0 (f243) ∷ []) refl
 f245 : Eqn
-f245 = normE (# 0 ∷ # 4 ∷ # 0 ∷ []) (# 3 ∷ # 4 ∷ []) refl
+f245 = normB (# 0 ∷ # 4 ∷ # 0 ∷ []) (# 3 ∷ # 4 ∷ []) refl
 f246 : Eqn
 f246 = derive (cx0-1 ∷ cx2-0 ∷ []) (cx2-0 ∷ cx2-1 ∷ cx0-1 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-0)) ∷ rw 1 (sym⁼ (inv⁼ cx2-1)) ∷ rw 3 (sym⁼ (f142)) ∷ rw 2 (sym⁼ (f244)) ∷ rw 6 (sym⁼ (inv⁼ sw01)) ∷ rw 3 (f17) ∷ rw 2 (f142) ∷ rw 0 (f245) ∷ []) refl
 f247 : Eqn
-f247 = normE (# 9 ∷ # 5 ∷ []) (# 2 ∷ # 9 ∷ []) refl
+f247 = normB (# 9 ∷ # 5 ∷ []) (# 2 ∷ # 9 ∷ []) refl
 f248 : Eqn
-f248 = normE (# 2 ∷ # 9 ∷ # 9 ∷ []) (# 2 ∷ []) refl
+f248 = normB (# 2 ∷ # 9 ∷ # 9 ∷ []) (# 2 ∷ []) refl
 f249 : Eqn
 f249 = derive (cx0-2 ∷ cx1-3 ∷ []) (cx1-3 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-3)) ∷ rw 1 (sym⁼ (f248)) ∷ rw 3 (sym⁼ (f213)) ∷ rw 1 (sym⁼ (f247)) ∷ rw 2 (sym⁼ (f126)) ∷ rw 1 (sym⁼ (f214)) ∷ rw 2 (f12) ∷ []) refl
 f250 : Eqn
-f250 = normE (# 9 ∷ # 0 ∷ []) (# 3 ∷ # 9 ∷ []) refl
+f250 = normB (# 9 ∷ # 0 ∷ []) (# 3 ∷ # 9 ∷ []) refl
 f251 : Eqn
-f251 = normE (# 9 ∷ # 3 ∷ []) (# 0 ∷ # 9 ∷ []) refl
+f251 = normB (# 9 ∷ # 3 ∷ []) (# 0 ∷ # 9 ∷ []) refl
 f252 : Eqn
 f252 = derive (cx0-1 ∷ sw02 ∷ []) (cx1-0 ∷ sw12 ∷ cx0-2 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (inv⁼ cx2-0)) ∷ rw 2 (sym⁼ (f250)) ∷ rw 3 (sym⁼ (f142)) ∷ rw 2 (sym⁼ (f214)) ∷ rw 6 (sym⁼ (inv⁼ sw01)) ∷ rw 3 (f40) ∷ rw 2 (f162) ∷ rw 0 (f251) ∷ []) refl
@@ -733,52 +733,52 @@ f253 : Eqn
 f253 = derive (cx0-2 ∷ sw01 ∷ sw02 ∷ []) (sw12 ∷ cx1-0 ∷ cx0-1 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (inv⁼ cx1-0)) ∷ rw 2 (sym⁼ (f252)) ∷ rw 3 (inv⁼ sw02) ∷ []) refl
 f254 : Eqn
-f254 = normE (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
+f254 = normB (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
 f255 : Eqn
-f255 = normE (# 11 ∷ # 10 ∷ # 9 ∷ []) (# 10 ∷ []) refl
+f255 = normB (# 11 ∷ # 10 ∷ # 9 ∷ []) (# 10 ∷ []) refl
 f256 : Eqn
 f256 = derive (cx0-2 ∷ sw13 ∷ []) (sw13 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw13)) ∷ rw 1 (sym⁼ (f255)) ∷ rw 3 (sym⁼ (f213)) ∷ rw 1 (sym⁼ (f254)) ∷ rw 2 (sym⁼ (f127)) ∷ rw 1 (sym⁼ (f214)) ∷ rw 2 (f51) ∷ []) refl
 f257 : Eqn
-f257 = normE (# 9 ∷ # 5 ∷ []) (# 2 ∷ # 9 ∷ []) refl
+f257 = normB (# 9 ∷ # 5 ∷ []) (# 2 ∷ # 9 ∷ []) refl
 f258 : Eqn
-f258 = normE (# 2 ∷ # 9 ∷ # 9 ∷ []) (# 2 ∷ []) refl
+f258 = normB (# 2 ∷ # 9 ∷ # 9 ∷ []) (# 2 ∷ []) refl
 f259 : Eqn
 f259 = derive (cx0-2 ∷ sw01 ∷ cx0-3 ∷ []) (cx1-3 ∷ cx0-2 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-3)) ∷ rw 2 (sym⁼ (f162)) ∷ rw 1 (sym⁼ (f258)) ∷ rw 3 (sym⁼ (f213)) ∷ rw 1 (sym⁼ (f257)) ∷ rw 2 (sym⁼ (f126)) ∷ rw 1 (sym⁼ (f214)) ∷ rw 7 (sym⁼ (inv⁼ sw01)) ∷ rw 2 (f63) ∷ rw 1 (f162) ∷ []) refl
 f260 : Eqn
-f260 = normE (# 9 ∷ # 8 ∷ []) (# 7 ∷ # 9 ∷ []) refl
+f260 = normB (# 9 ∷ # 8 ∷ []) (# 7 ∷ # 9 ∷ []) refl
 f261 : Eqn
-f261 = normE (# 7 ∷ # 9 ∷ # 9 ∷ []) (# 7 ∷ []) refl
+f261 = normB (# 7 ∷ # 9 ∷ # 9 ∷ []) (# 7 ∷ []) refl
 f262 : Eqn
 f262 = derive (cx0-2 ∷ sw01 ∷ cx3-0 ∷ []) (cx3-1 ∷ cx0-2 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx3-1)) ∷ rw 2 (sym⁼ (f162)) ∷ rw 1 (sym⁼ (f261)) ∷ rw 3 (sym⁼ (f213)) ∷ rw 1 (sym⁼ (f260)) ∷ rw 2 (sym⁼ (f128)) ∷ rw 1 (sym⁼ (f214)) ∷ rw 7 (sym⁼ (inv⁼ sw01)) ∷ rw 2 (f69) ∷ rw 1 (f162) ∷ []) refl
 f263 : Eqn
-f263 = normE (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
+f263 = normB (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
 f264 : Eqn
-f264 = normE (# 11 ∷ # 10 ∷ # 9 ∷ []) (# 10 ∷ []) refl
+f264 = normB (# 11 ∷ # 10 ∷ # 9 ∷ []) (# 10 ∷ []) refl
 f265 : Eqn
 f265 = derive (cx0-2 ∷ sw01 ∷ sw03 ∷ []) (sw13 ∷ cx0-2 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw13)) ∷ rw 2 (sym⁼ (f162)) ∷ rw 1 (sym⁼ (f264)) ∷ rw 3 (sym⁼ (f213)) ∷ rw 1 (sym⁼ (f263)) ∷ rw 2 (sym⁼ (f127)) ∷ rw 1 (sym⁼ (f214)) ∷ rw 7 (sym⁼ (inv⁼ sw01)) ∷ rw 2 (f81) ∷ rw 1 (f162) ∷ []) refl
 f266 : Eqn
-f266 = normE (# 0 ∷ # 9 ∷ # 9 ∷ []) (# 0 ∷ []) refl
+f266 = normB (# 0 ∷ # 9 ∷ # 9 ∷ []) (# 0 ∷ []) refl
 f267 : Eqn
 f267 = derive (sw02 ∷ cx1-2 ∷ []) (cx1-0 ∷ sw02 ∷ [])
   (rw 0 (f193) ∷ rw 2 (f189) ∷ rw 0 (f266) ∷ []) refl
 f268 : Eqn
-f268 = normE (# 9 ∷ # 0 ∷ # 9 ∷ []) (# 3 ∷ []) refl
+f268 = normB (# 9 ∷ # 0 ∷ # 9 ∷ []) (# 3 ∷ []) refl
 f269 : Eqn
 f269 = derive (sw02 ∷ cx0-2 ∷ []) (cx2-0 ∷ sw02 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (inv⁼ cx1-0)) ∷ rw 3 (sym⁼ (f206)) ∷ rw 2 (sym⁼ (f267)) ∷ rw 6 (sym⁼ (inv⁼ sw01)) ∷ rw 3 (f5) ∷ rw 2 (f206) ∷ rw 0 (f268) ∷ []) refl
 f270 : Eqn
-f270 = normE (# 4 ∷ # 1 ∷ # 9 ∷ []) (# 1 ∷ []) refl
+f270 = normB (# 4 ∷ # 1 ∷ # 9 ∷ []) (# 1 ∷ []) refl
 f271 : Eqn
 f271 = derive (sw02 ∷ cx1-0 ∷ []) (cx1-2 ∷ sw02 ∷ [])
   (rw 0 (f191) ∷ rw 2 (f189) ∷ rw 0 (f270) ∷ []) refl
 f272 : Eqn
-f272 = normE (# 9 ∷ # 1 ∷ []) (# 4 ∷ # 9 ∷ []) refl
+f272 = normB (# 9 ∷ # 1 ∷ []) (# 4 ∷ # 9 ∷ []) refl
 f273 : Eqn
-f273 = normE (# 1 ∷ # 4 ∷ # 9 ∷ []) (# 4 ∷ []) refl
+f273 = normB (# 1 ∷ # 4 ∷ # 9 ∷ []) (# 4 ∷ []) refl
 f274 : Eqn
 f274 = derive (sw02 ∷ cx0-1 ∷ []) (cx2-1 ∷ sw02 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 1 (sym⁼ (f271)) ∷ rw 4 (sym⁼ (inv⁼ cx1-0)) ∷ rw 5 (sym⁼ (inv⁼ sw01)) ∷ rw 2 (f30) ∷ rw 1 (f206) ∷ rw 2 (f271) ∷ rw 1 (f272) ∷ rw 0 (f273) ∷ []) refl
@@ -798,12 +798,12 @@ f279 : Eqn
 f279 = derive (cx0-1 ∷ cx1-2 ∷ []) (cx1-2 ∷ cx0-1 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 1 (sym⁼ (f278)) ∷ rw 3 (inv⁼ cx1-2) ∷ []) refl
 f280 : Eqn
-f280 = normE (# 1 ∷ # 0 ∷ []) (# 0 ∷ # 1 ∷ []) refl
+f280 = normB (# 1 ∷ # 0 ∷ []) (# 0 ∷ # 1 ∷ []) refl
 f281 : Eqn
 f281 = derive (cx0-1 ∷ cx0-2 ∷ sw01 ∷ []) (cx1-0 ∷ cx1-2 ∷ cx0-1 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 1 (sym⁼ (f279)) ∷ rw 4 (sym⁼ (inv⁼ cx0-2)) ∷ rw 5 (sym⁼ (inv⁼ sw01)) ∷ rw 2 (f5) ∷ rw 1 (f142) ∷ rw 2 (f276) ∷ rw 0 (f280) ∷ []) refl
 f282 : Eqn
-f282 = normE (# 1 ∷ # 4 ∷ # 9 ∷ []) (# 4 ∷ []) refl
+f282 = normB (# 1 ∷ # 4 ∷ # 9 ∷ []) (# 4 ∷ []) refl
 f283 : Eqn
 f283 = derive (cx0-1 ∷ cx0-2 ∷ cx2-1 ∷ []) (cx2-1 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 1 (sym⁼ (f279)) ∷ rw 4 (sym⁼ (inv⁼ sw12)) ∷ rw 5 (sym⁼ (inv⁼ cx2-1)) ∷ rw 2 (f44) ∷ rw 1 (f244) ∷ rw 2 (f213) ∷ rw 0 (f282) ∷ []) refl
@@ -811,14 +811,14 @@ f284 : Eqn
 f284 = derive (cx0-2 ∷ cx2-1 ∷ []) (cx2-1 ∷ cx0-1 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx2-1)) ∷ rw 1 (sym⁼ (f283)) ∷ rw 3 (inv⁼ cx2-1) ∷ []) refl
 f285 : Eqn
-f285 = normE (# 9 ∷ # 4 ∷ []) (# 4 ∷ # 1 ∷ []) refl
+f285 = normB (# 9 ∷ # 4 ∷ []) (# 4 ∷ # 1 ∷ []) refl
 f286 : Eqn
-f286 = normE (# 1 ∷ # 4 ∷ # 1 ∷ []) (# 9 ∷ []) refl
+f286 = normB (# 1 ∷ # 4 ∷ # 1 ∷ []) (# 9 ∷ []) refl
 f287 : Eqn
 f287 = derive (cx0-1 ∷ cx0-2 ∷ sw12 ∷ []) (sw12 ∷ cx0-1 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 1 (sym⁼ (f279)) ∷ rw 4 (sym⁼ (inv⁼ cx2-1)) ∷ rw 5 (sym⁼ (inv⁼ sw12)) ∷ rw 2 (f49) ∷ rw 1 (f213) ∷ rw 2 (f284) ∷ rw 1 (f285) ∷ rw 0 (f286) ∷ []) refl
 f288 : Eqn
-f288 = normE (# 1 ∷ # 1 ∷ []) ([]) refl
+f288 = normB (# 1 ∷ # 1 ∷ []) ([]) refl
 f289 : Eqn
 f289 = derive (cx0-1 ∷ cx0-2 ∷ cx0-1 ∷ []) (cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 1 (sym⁼ (f279)) ∷ rw 4 (sym⁼ (inv⁼ cx0-2)) ∷ rw 5 (sym⁼ (inv⁼ cx1-2)) ∷ rw 6 (sym⁼ (inv⁼ cx0-1)) ∷ rw 2 (f61) ∷ rw 1 (f125) ∷ rw 1 (f113) ∷ rw 2 (f129) ∷ rw 0 (f288) ∷ []) refl
@@ -835,11 +835,11 @@ f293 : Eqn
 f293 = derive (cx0-2 ∷ sw01 ∷ cx1-0 ∷ []) (cx1-2 ∷ cx1-0 ∷ cx0-1 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 1 (sym⁼ (inv⁼ cx1-0)) ∷ rw 2 (sym⁼ (f292)) ∷ rw 4 (inv⁼ cx1-0) ∷ []) refl
 f294 : Eqn
-f294 = normE (# 1 ∷ # 0 ∷ []) (# 0 ∷ # 1 ∷ []) refl
+f294 = normB (# 1 ∷ # 0 ∷ []) (# 0 ∷ # 1 ∷ []) refl
 f295 : Eqn
-f295 = normE (# 0 ∷ # 1 ∷ # 9 ∷ []) (# 3 ∷ # 4 ∷ # 0 ∷ # 1 ∷ []) refl
+f295 = normB (# 0 ∷ # 1 ∷ # 9 ∷ []) (# 3 ∷ # 4 ∷ # 0 ∷ # 1 ∷ []) refl
 f296 : Eqn
-f296 = normE (# 1 ∷ # 0 ∷ # 4 ∷ # 3 ∷ # 3 ∷ []) (# 3 ∷ # 4 ∷ # 0 ∷ # 9 ∷ []) refl
+f296 = normB (# 1 ∷ # 0 ∷ # 4 ∷ # 3 ∷ # 3 ∷ []) (# 3 ∷ # 4 ∷ # 0 ∷ # 9 ∷ []) refl
 f297 : Eqn
 f297 = derive (cx0-1 ∷ cx0-2 ∷ cx2-0 ∷ []) (cx2-0 ∷ cx2-1 ∷ cx1-0 ∷ sw12 ∷ cx0-2 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 1 (sym⁼ (inv⁼ cx1-0)) ∷ rw 2 (sym⁼ (inv⁼ cx2-1)) ∷ rw 3 (sym⁼ (inv⁼ cx2-0)) ∷ rw 4 (sym⁼ (f295)) ∷ rw 6 (sym⁼ (f287)) ∷ rw 4 (sym⁼ (f294)) ∷ rw 4 (sym⁼ (f293)) ∷ rw 9 (sym⁼ (inv⁼ sw12)) ∷ rw 6 (f109) ∷ rw 4 (f182) ∷ rw 0 (f296) ∷ []) refl
@@ -847,29 +847,29 @@ f298 : Eqn
 f298 = derive (cx0-2 ∷ sw01 ∷ cx2-0 ∷ []) (sw12 ∷ cx1-0 ∷ cx2-1 ∷ cx2-0 ∷ cx0-1 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (inv⁼ cx1-0)) ∷ rw 2 (sym⁼ (inv⁼ cx2-1)) ∷ rw 3 (sym⁼ (inv⁼ cx2-0)) ∷ rw 4 (sym⁼ (f297)) ∷ rw 6 (inv⁼ cx2-0) ∷ []) refl
 f299 : Eqn
-f299 = normE (# 9 ∷ # 0 ∷ # 4 ∷ # 3 ∷ []) (# 4 ∷ # 0 ∷ # 1 ∷ []) refl
+f299 = normB (# 9 ∷ # 0 ∷ # 4 ∷ # 3 ∷ []) (# 4 ∷ # 0 ∷ # 1 ∷ []) refl
 f300 : Eqn
-f300 = normE (# 6 ∷ # 8 ∷ # 9 ∷ # 0 ∷ # 4 ∷ # 3 ∷ []) (# 6 ∷ # 8 ∷ # 4 ∷ # 0 ∷ # 1 ∷ []) refl
+f300 = normB (# 6 ∷ # 8 ∷ # 9 ∷ # 0 ∷ # 4 ∷ # 3 ∷ []) (# 6 ∷ # 8 ∷ # 4 ∷ # 0 ∷ # 1 ∷ []) refl
 f301 : Eqn
-f301 = normE (# 1 ∷ # 0 ∷ # 4 ∷ # 6 ∷ # 8 ∷ # 4 ∷ # 0 ∷ # 1 ∷ []) (# 7 ∷ []) refl
+f301 = normB (# 1 ∷ # 0 ∷ # 4 ∷ # 6 ∷ # 8 ∷ # 4 ∷ # 0 ∷ # 1 ∷ []) (# 7 ∷ []) refl
 f302 : Eqn
 f302 = derive (cx0-1 ∷ cx0-2 ∷ cx3-1 ∷ []) (cx3-1 ∷ cx0-1 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 1 (sym⁼ (inv⁼ cx1-0)) ∷ rw 2 (sym⁼ (inv⁼ cx2-1)) ∷ rw 3 (sym⁼ (f299)) ∷ rw 3 (sym⁼ (f298)) ∷ rw 7 (sym⁼ (inv⁼ cx2-0)) ∷ rw 8 (sym⁼ (inv⁼ cx3-1)) ∷ rw 5 (f93) ∷ rw 3 (f234) ∷ rw 5 (f298) ∷ rw 3 (f300) ∷ rw 0 (f301) ∷ []) refl
 f303 : Eqn
-f303 = normE (# 9 ∷ # 0 ∷ # 4 ∷ # 3 ∷ []) (# 4 ∷ # 0 ∷ # 1 ∷ []) refl
+f303 = normB (# 9 ∷ # 0 ∷ # 4 ∷ # 3 ∷ []) (# 4 ∷ # 0 ∷ # 1 ∷ []) refl
 f304 : Eqn
-f304 = normE (# 4 ∷ # 0 ∷ # 1 ∷ # 8 ∷ []) (# 7 ∷ # 8 ∷ # 4 ∷ # 0 ∷ # 1 ∷ []) refl
+f304 = normB (# 4 ∷ # 0 ∷ # 1 ∷ # 8 ∷ []) (# 7 ∷ # 8 ∷ # 4 ∷ # 0 ∷ # 1 ∷ []) refl
 f305 : Eqn
-f305 = normE (# 8 ∷ # 9 ∷ # 0 ∷ # 4 ∷ # 3 ∷ []) (# 8 ∷ # 4 ∷ # 0 ∷ # 1 ∷ []) refl
+f305 = normB (# 8 ∷ # 9 ∷ # 0 ∷ # 4 ∷ # 3 ∷ []) (# 8 ∷ # 4 ∷ # 0 ∷ # 1 ∷ []) refl
 f306 : Eqn
-f306 = normE (# 1 ∷ # 0 ∷ # 4 ∷ # 8 ∷ # 7 ∷ # 8 ∷ # 4 ∷ # 0 ∷ # 1 ∷ []) (# 6 ∷ # 8 ∷ # 7 ∷ []) refl
+f306 = normB (# 1 ∷ # 0 ∷ # 4 ∷ # 8 ∷ # 7 ∷ # 8 ∷ # 4 ∷ # 0 ∷ # 1 ∷ []) (# 6 ∷ # 8 ∷ # 7 ∷ []) refl
 f307 : Eqn
 f307 = derive (cx0-1 ∷ cx0-2 ∷ cx3-0 ∷ []) (cx3-0 ∷ cx3-2 ∷ cx3-1 ∷ cx0-1 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx1-2)) ∷ rw 1 (sym⁼ (inv⁼ cx1-0)) ∷ rw 2 (sym⁼ (inv⁼ cx2-1)) ∷ rw 3 (sym⁼ (inv⁼ cx3-2)) ∷ rw 4 (sym⁼ (inv⁼ cx3-1)) ∷ rw 5 (sym⁼ (f304)) ∷ rw 8 (sym⁼ (f291)) ∷ rw 5 (sym⁼ (f303)) ∷ rw 5 (sym⁼ (f298)) ∷ rw 10 (sym⁼ (inv⁼ cx2-0)) ∷ rw 11 (sym⁼ (inv⁼ cx3-2)) ∷ rw 7 (f100) ∷ rw 5 (f232) ∷ rw 6 (f298) ∷ rw 5 (f305) ∷ rw 0 (f306) ∷ []) refl
 f308 : Eqn
-f308 = normE (# 9 ∷ # 0 ∷ # 1 ∷ []) (# 3 ∷ # 4 ∷ # 9 ∷ []) refl
+f308 = normB (# 9 ∷ # 0 ∷ # 1 ∷ []) (# 3 ∷ # 4 ∷ # 9 ∷ []) refl
 f309 : Eqn
-f309 = normE (# 9 ∷ # 4 ∷ # 3 ∷ # 0 ∷ # 1 ∷ []) (# 3 ∷ # 4 ∷ []) refl
+f309 = normB (# 9 ∷ # 4 ∷ # 3 ∷ # 0 ∷ # 1 ∷ []) (# 3 ∷ # 4 ∷ []) refl
 f310 : Eqn
 f310 = derive (cx0-1 ∷ cx0-2 ∷ sw02 ∷ []) (cx2-0 ∷ cx2-1 ∷ cx0-1 ∷ cx0-2 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (inv⁼ cx2-1)) ∷ rw 2 (sym⁼ (inv⁼ cx2-0)) ∷ rw 3 (sym⁼ (f308)) ∷ rw 4 (sym⁼ (f281)) ∷ rw 3 (sym⁼ (f287)) ∷ rw 8 (sym⁼ (inv⁼ sw01)) ∷ rw 5 (f40) ∷ rw 3 (f281) ∷ rw 0 (f309) ∷ []) refl
@@ -892,19 +892,19 @@ f316 : Eqn
 f316 = derive (sw02 ∷ cx2-3 ∷ []) (sw12 ∷ cx0-3 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f315)) ∷ rw 4 (inv⁼ cx2-3) ∷ []) refl
 f317 : Eqn
-f317 = normE (# 9 ∷ # 4 ∷ # 9 ∷ []) (# 1 ∷ []) refl
+f317 = normB (# 9 ∷ # 4 ∷ # 9 ∷ []) (# 1 ∷ []) refl
 f318 : Eqn
 f318 = derive (cx0-3 ∷ sw01 ∷ sw12 ∷ cx0-1 ∷ []) (cx1-2 ∷ cx0-3 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f316)) ∷ rw 4 (sym⁼ (inv⁼ cx2-3)) ∷ rw 5 (sym⁼ (inv⁼ cx0-1)) ∷ rw 2 (f1) ∷ rw 1 (f274) ∷ rw 2 (f316) ∷ rw 0 (f317) ∷ []) refl
 f319 : Eqn
-f319 = normE (# 1 ∷ # 9 ∷ []) (# 4 ∷ # 1 ∷ []) refl
+f319 = normB (# 1 ∷ # 9 ∷ []) (# 4 ∷ # 1 ∷ []) refl
 f320 : Eqn
-f320 = normE (# 9 ∷ # 4 ∷ # 1 ∷ []) (# 4 ∷ []) refl
+f320 = normB (# 9 ∷ # 4 ∷ # 1 ∷ []) (# 4 ∷ []) refl
 f321 : Eqn
 f321 = derive (cx0-3 ∷ sw01 ∷ sw12 ∷ cx1-0 ∷ []) (cx2-1 ∷ cx0-3 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f316)) ∷ rw 4 (sym⁼ (inv⁼ cx2-3)) ∷ rw 5 (sym⁼ (inv⁼ cx1-0)) ∷ rw 2 (f8) ∷ rw 1 (f271) ∷ rw 2 (f316) ∷ rw 1 (f319) ∷ rw 0 (f320) ∷ []) refl
 f322 : Eqn
-f322 = normE (# 9 ∷ # 9 ∷ []) ([]) refl
+f322 = normB (# 9 ∷ # 9 ∷ []) ([]) refl
 f323 : Eqn
 f323 = derive (cx0-3 ∷ sw01 ∷ cx1-3 ∷ []) (sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 2 (sym⁼ (f314)) ∷ rw 1 (sym⁼ (f316)) ∷ rw 5 (sym⁼ (inv⁼ sw12)) ∷ rw 2 (f13) ∷ rw 1 (f202) ∷ rw 0 (f322) ∷ []) refl
@@ -912,7 +912,7 @@ f324 : Eqn
 f324 = derive (sw01 ∷ cx1-3 ∷ []) (cx0-3 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (f323)) ∷ rw 2 (inv⁼ cx1-3) ∷ []) refl
 f325 : Eqn
-f325 = normE (# 9 ∷ # 9 ∷ []) ([]) refl
+f325 = normB (# 9 ∷ # 9 ∷ []) ([]) refl
 f326 : Eqn
 f326 = derive (cx0-3 ∷ sw01 ∷ sw12 ∷ sw01 ∷ []) (sw12 ∷ cx0-3 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f316)) ∷ rw 4 (sym⁼ (inv⁼ cx2-3)) ∷ rw 5 (sym⁼ (inv⁼ sw01)) ∷ rw 2 (f19) ∷ rw 1 (f206) ∷ rw 2 (f316) ∷ rw 1 (f325) ∷ []) refl
@@ -935,9 +935,9 @@ f332 : Eqn
 f332 = derive (cx0-3 ∷ sw01 ∷ cx2-0 ∷ []) (cx2-1 ∷ cx0-3 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx2-1)) ∷ rw 2 (sym⁼ (f314)) ∷ rw 1 (sym⁼ (f321)) ∷ rw 7 (sym⁼ (inv⁼ sw12)) ∷ rw 4 (f109) ∷ rw 1 (f314) ∷ []) refl
 f333 : Eqn
-f333 = normE (# 9 ∷ # 4 ∷ []) (# 4 ∷ # 1 ∷ []) refl
+f333 = normB (# 9 ∷ # 4 ∷ []) (# 4 ∷ # 1 ∷ []) refl
 f334 : Eqn
-f334 = normE (# 4 ∷ # 4 ∷ # 1 ∷ []) (# 1 ∷ []) refl
+f334 = normB (# 4 ∷ # 4 ∷ # 1 ∷ []) (# 1 ∷ []) refl
 f335 : Eqn
 f335 = derive (cx0-3 ∷ cx1-2 ∷ []) (cx1-2 ∷ cx0-3 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx2-1)) ∷ rw 1 (sym⁼ (f331)) ∷ rw 4 (sym⁼ (inv⁼ cx2-1)) ∷ rw 5 (sym⁼ (inv⁼ sw12)) ∷ rw 2 (f43) ∷ rw 1 (f329) ∷ rw 2 (f331) ∷ rw 1 (f333) ∷ rw 0 (f334) ∷ []) refl
@@ -963,24 +963,24 @@ f342 : Eqn
 f342 = derive (sw02 ∷ sw23 ∷ []) (sw12 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f341)) ∷ rw 4 (inv⁼ sw23) ∷ []) refl
 f343 : Eqn
-f343 = normE (# 9 ∷ # 4 ∷ # 9 ∷ []) (# 1 ∷ []) refl
+f343 = normB (# 9 ∷ # 4 ∷ # 9 ∷ []) (# 1 ∷ []) refl
 f344 : Eqn
 f344 = derive (sw03 ∷ sw01 ∷ sw12 ∷ cx0-1 ∷ []) (cx1-2 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f342)) ∷ rw 4 (sym⁼ (inv⁼ sw23)) ∷ rw 5 (sym⁼ (inv⁼ cx0-1)) ∷ rw 2 (f3) ∷ rw 1 (f274) ∷ rw 2 (f342) ∷ rw 0 (f343) ∷ []) refl
 f345 : Eqn
-f345 = normE (# 1 ∷ # 9 ∷ []) (# 4 ∷ # 1 ∷ []) refl
+f345 = normB (# 1 ∷ # 9 ∷ []) (# 4 ∷ # 1 ∷ []) refl
 f346 : Eqn
-f346 = normE (# 9 ∷ # 4 ∷ # 1 ∷ []) (# 4 ∷ []) refl
+f346 = normB (# 9 ∷ # 4 ∷ # 1 ∷ []) (# 4 ∷ []) refl
 f347 : Eqn
 f347 = derive (sw03 ∷ sw01 ∷ sw12 ∷ cx1-0 ∷ []) (cx2-1 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f342)) ∷ rw 4 (sym⁼ (inv⁼ sw23)) ∷ rw 5 (sym⁼ (inv⁼ cx1-0)) ∷ rw 2 (f10) ∷ rw 1 (f271) ∷ rw 2 (f342) ∷ rw 1 (f345) ∷ rw 0 (f346) ∷ []) refl
 f348 : Eqn
-f348 = normE (# 9 ∷ # 9 ∷ []) ([]) refl
+f348 = normB (# 9 ∷ # 9 ∷ []) ([]) refl
 f349 : Eqn
 f349 = derive (sw03 ∷ sw01 ∷ sw12 ∷ sw01 ∷ []) (sw12 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f342)) ∷ rw 4 (sym⁼ (inv⁼ sw23)) ∷ rw 5 (sym⁼ (inv⁼ sw01)) ∷ rw 2 (f37) ∷ rw 1 (f206) ∷ rw 2 (f342) ∷ rw 1 (f348) ∷ []) refl
 f350 : Eqn
-f350 = normE (# 9 ∷ # 9 ∷ []) ([]) refl
+f350 = normB (# 9 ∷ # 9 ∷ []) ([]) refl
 f351 : Eqn
 f351 = derive (sw03 ∷ sw01 ∷ sw13 ∷ []) (sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 2 (sym⁼ (f340)) ∷ rw 1 (sym⁼ (f342)) ∷ rw 5 (sym⁼ (inv⁼ sw12)) ∷ rw 2 (f52) ∷ rw 1 (f202) ∷ rw 0 (f350) ∷ []) refl
@@ -988,7 +988,7 @@ f352 : Eqn
 f352 = derive (sw01 ∷ sw13 ∷ []) (sw03 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (f351)) ∷ rw 2 (inv⁼ sw13) ∷ []) refl
 f353 : Eqn
-f353 = normE (# 9 ∷ # 6 ∷ # 9 ∷ []) (# 6 ∷ []) refl
+f353 = normB (# 9 ∷ # 6 ∷ # 9 ∷ []) (# 6 ∷ []) refl
 f354 : Eqn
 f354 = derive (sw03 ∷ sw01 ∷ sw12 ∷ cx3-2 ∷ []) (cx3-0 ∷ cx0-3 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f342)) ∷ rw 4 (sym⁼ (inv⁼ cx2-3)) ∷ rw 5 (sym⁼ (inv⁼ cx3-2)) ∷ rw 2 (f54) ∷ rw 1 (f224) ∷ rw 2 (f316) ∷ rw 0 (f353) ∷ []) refl
@@ -996,34 +996,34 @@ f355 : Eqn
 f355 = derive (cx0-3 ∷ sw01 ∷ sw12 ∷ cx3-2 ∷ []) (cx3-0 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ cx3-0)) ∷ rw 1 (sym⁼ (f354)) ∷ rw 4 (inv⁼ cx3-2) ∷ []) refl
 f356 : Eqn
-f356 = normE (# 9 ∷ # 6 ∷ []) (# 6 ∷ # 9 ∷ []) refl
+f356 = normB (# 9 ∷ # 6 ∷ []) (# 6 ∷ # 9 ∷ []) refl
 f357 : Eqn
-f357 = normE (# 9 ∷ # 6 ∷ # 9 ∷ []) (# 6 ∷ []) refl
+f357 = normB (# 9 ∷ # 6 ∷ # 9 ∷ []) (# 6 ∷ []) refl
 f358 : Eqn
 f358 = derive (cx0-3 ∷ sw01 ∷ sw12 ∷ sw23 ∷ []) (cx3-0 ∷ cx0-3 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (inv⁼ cx3-0)) ∷ rw 2 (sym⁼ (f356)) ∷ rw 3 (sym⁼ (f354)) ∷ rw 2 (sym⁼ (f342)) ∷ rw 6 (sym⁼ (inv⁼ cx2-3)) ∷ rw 3 (f56) ∷ rw 2 (f316) ∷ rw 0 (f357) ∷ []) refl
 f359 : Eqn
-f359 = normE (# 9 ∷ # 6 ∷ # 9 ∷ []) (# 6 ∷ []) refl
+f359 = normB (# 9 ∷ # 6 ∷ # 9 ∷ []) (# 6 ∷ []) refl
 f360 : Eqn
 f360 = derive (sw03 ∷ sw01 ∷ sw12 ∷ cx2-3 ∷ []) (cx3-0 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f342)) ∷ rw 4 (sym⁼ (inv⁼ sw23)) ∷ rw 5 (sym⁼ (inv⁼ cx3-2)) ∷ rw 2 (f57) ∷ rw 1 (f224) ∷ rw 2 (f342) ∷ rw 0 (f359) ∷ []) refl
 f361 : Eqn
-f361 = normE (# 9 ∷ # 8 ∷ []) (# 7 ∷ # 9 ∷ []) refl
+f361 = normB (# 9 ∷ # 8 ∷ []) (# 7 ∷ # 9 ∷ []) refl
 f362 : Eqn
-f362 = normE (# 7 ∷ # 9 ∷ # 9 ∷ []) (# 7 ∷ []) refl
+f362 = normB (# 7 ∷ # 9 ∷ # 9 ∷ []) (# 7 ∷ []) refl
 f363 : Eqn
-f363 = normE (# 9 ∷ # 7 ∷ # 9 ∷ []) (# 8 ∷ []) refl
+f363 = normB (# 9 ∷ # 7 ∷ # 9 ∷ []) (# 8 ∷ []) refl
 f364 : Eqn
 f364 = derive (sw03 ∷ sw01 ∷ sw12 ∷ cx2-1 ∷ []) (cx3-2 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (f342)) ∷ rw 4 (sym⁼ (inv⁼ sw23)) ∷ rw 5 (sym⁼ (inv⁼ sw12)) ∷ rw 6 (sym⁼ (inv⁼ cx3-2)) ∷ rw 7 (sym⁼ (inv⁼ sw12)) ∷ rw 2 (f86) ∷ rw 1 (f202) ∷ rw 2 (f139) ∷ rw 1 (f361) ∷ rw 3 (f205) ∷ rw 1 (f362) ∷ rw 2 (f342) ∷ rw 0 (f363) ∷ []) refl
 f365 : Eqn
-f365 = normE (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
+f365 = normB (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
 f366 : Eqn
-f366 = normE (# 11 ∷ # 10 ∷ # 9 ∷ []) (# 10 ∷ []) refl
+f366 = normB (# 11 ∷ # 10 ∷ # 9 ∷ []) (# 10 ∷ []) refl
 f367 : Eqn
-f367 = normE (# 10 ∷ # 9 ∷ []) (# 11 ∷ # 10 ∷ []) refl
+f367 = normB (# 10 ∷ # 9 ∷ []) (# 11 ∷ # 10 ∷ []) refl
 f368 : Eqn
-f368 = normE (# 9 ∷ # 11 ∷ # 10 ∷ []) (# 11 ∷ []) refl
+f368 = normB (# 9 ∷ # 11 ∷ # 10 ∷ []) (# 11 ∷ []) refl
 f369 : Eqn
 f369 = derive (sw03 ∷ sw01 ∷ []) (sw23 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 2 (sym⁼ (f340)) ∷ rw 1 (sym⁼ (f342)) ∷ rw 4 (sym⁼ (inv⁼ sw23)) ∷ rw 5 (sym⁼ (inv⁼ sw12)) ∷ rw 6 (sym⁼ (inv⁼ sw23)) ∷ rw 7 (sym⁼ (inv⁼ sw12)) ∷ rw 2 (f89) ∷ rw 1 (f202) ∷ rw 2 (f144) ∷ rw 1 (f365) ∷ rw 3 (f205) ∷ rw 1 (f366) ∷ rw 2 (f342) ∷ rw 1 (f367) ∷ rw 0 (f368) ∷ []) refl
@@ -1034,12 +1034,12 @@ f371 : Eqn
 f371 = derive (sw03 ∷ sw01 ∷ cx0-1 ∷ []) (sw23 ∷ cx1-2 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw23)) ∷ rw 1 (sym⁼ (f370)) ∷ rw 1 (f344) ∷ []) refl
 f372 : Eqn
-f372 = normE (# 11 ∷ # 4 ∷ []) (# 7 ∷ # 11 ∷ []) refl
+f372 = normB (# 11 ∷ # 4 ∷ []) (# 7 ∷ # 11 ∷ []) refl
 f373 : Eqn
 f373 = derive (sw03 ∷ sw01 ∷ cx1-0 ∷ []) (cx3-1 ∷ sw23 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw23)) ∷ rw 1 (sym⁼ (f370)) ∷ rw 1 (f347) ∷ rw 0 (f372) ∷ []) refl
 f374 : Eqn
-f374 = normE (# 11 ∷ # 8 ∷ []) (# 8 ∷ # 5 ∷ []) refl
+f374 = normB (# 11 ∷ # 8 ∷ []) (# 8 ∷ # 5 ∷ []) refl
 f375 : Eqn
 f375 = derive (sw03 ∷ sw01 ∷ cx2-1 ∷ []) (cx3-2 ∷ cx2-3 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw23)) ∷ rw 1 (sym⁼ (f370)) ∷ rw 1 (f364) ∷ rw 0 (f374) ∷ []) refl
@@ -1053,7 +1053,7 @@ f378 : Eqn
 f378 = derive (sw03 ∷ sw01 ∷ sw01 ∷ []) (sw23 ∷ sw12 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw23)) ∷ rw 1 (sym⁼ (f370)) ∷ rw 1 (f349) ∷ []) refl
 f379 : Eqn
-f379 = normE (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
+f379 = normB (# 9 ∷ # 11 ∷ []) (# 11 ∷ # 10 ∷ []) refl
 f380 : Eqn
 f380 = derive (sw03 ∷ sw01 ∷ sw12 ∷ []) (sw23 ∷ sw13 ∷ sw03 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw12)) ∷ rw 1 (sym⁼ (inv⁼ sw23)) ∷ rw 2 (sym⁼ (f378)) ∷ rw 2 (f338) ∷ rw 0 (f379) ∷ []) refl
@@ -1061,32 +1061,32 @@ f381 : Eqn
 f381 = derive (sw03 ∷ sw01 ∷ sw23 ∷ []) (sw23 ∷ sw12 ∷ sw02 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw23)) ∷ rw 1 (sym⁼ (f370)) ∷ rw 1 (f341) ∷ []) refl
 f382 : Eqn
-f382 = normE (# 11 ∷ # 11 ∷ # 10 ∷ []) (# 10 ∷ []) refl
+f382 = normB (# 11 ∷ # 11 ∷ # 10 ∷ []) (# 10 ∷ []) refl
 f383 : Eqn
 f383 = derive (sw03 ∷ sw01 ∷ []) (sw13 ∷ sw03 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw23)) ∷ rw 1 (sym⁼ (f370)) ∷ rw 1 (f380) ∷ rw 0 (f382) ∷ []) refl
 f384 : Eqn
-f384 = normE (# 10 ∷ # 11 ∷ # 1 ∷ []) (# 7 ∷ # 11 ∷ # 9 ∷ []) refl
+f384 = normB (# 10 ∷ # 11 ∷ # 1 ∷ []) (# 7 ∷ # 11 ∷ # 9 ∷ []) refl
 f385 : Eqn
 f385 = derive (sw03 ∷ cx0-1 ∷ []) (cx3-1 ∷ sw23 ∷ sw12 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw13)) ∷ rw 1 (sym⁼ (f383)) ∷ rw 1 (f371) ∷ rw 0 (f384) ∷ []) refl
 f386 : Eqn
-f386 = normE (# 10 ∷ # 7 ∷ # 11 ∷ []) (# 7 ∷ # 11 ∷ # 1 ∷ []) refl
+f386 = normB (# 10 ∷ # 7 ∷ # 11 ∷ []) (# 7 ∷ # 11 ∷ # 1 ∷ []) refl
 f387 : Eqn
 f387 = derive (sw03 ∷ cx1-0 ∷ []) (cx3-1 ∷ sw23 ∷ cx1-2 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw13)) ∷ rw 1 (sym⁼ (f383)) ∷ rw 1 (f373) ∷ rw 0 (f386) ∷ []) refl
 f388 : Eqn
-f388 = normE (# 10 ∷ # 8 ∷ # 5 ∷ []) (# 11 ∷ # 7 ∷ # 9 ∷ []) refl
+f388 = normB (# 10 ∷ # 8 ∷ # 5 ∷ []) (# 11 ∷ # 7 ∷ # 9 ∷ []) refl
 f389 : Eqn
 f389 = derive (sw03 ∷ cx2-1 ∷ []) (sw23 ∷ cx3-1 ∷ sw12 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw13)) ∷ rw 1 (sym⁼ (f383)) ∷ rw 1 (f375) ∷ rw 0 (f388) ∷ []) refl
 f390 : Eqn
-f390 = normE (# 10 ∷ # 11 ∷ # 6 ∷ []) (# 11 ∷ # 6 ∷ # 9 ∷ []) refl
+f390 = normB (# 10 ∷ # 11 ∷ # 6 ∷ []) (# 11 ∷ # 6 ∷ # 9 ∷ []) refl
 f391 : Eqn
 f391 = derive (sw03 ∷ cx2-3 ∷ []) (sw23 ∷ cx3-0 ∷ sw12 ∷ sw03 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw13)) ∷ rw 1 (sym⁼ (f383)) ∷ rw 1 (f376) ∷ rw 0 (f390) ∷ []) refl
 f392 : Eqn
-f392 = normE (# 10 ∷ # 11 ∷ # 6 ∷ []) (# 11 ∷ # 6 ∷ # 9 ∷ []) refl
+f392 = normB (# 10 ∷ # 11 ∷ # 6 ∷ []) (# 11 ∷ # 6 ∷ # 9 ∷ []) refl
 f393 : Eqn
 f393 = derive (sw03 ∷ cx3-2 ∷ []) (sw23 ∷ cx3-0 ∷ sw12 ∷ cx0-3 ∷ sw01 ∷ sw12 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw13)) ∷ rw 1 (sym⁼ (f383)) ∷ rw 1 (f377) ∷ rw 0 (f392) ∷ []) refl
@@ -1097,7 +1097,7 @@ f395 : Eqn
 f395 = derive (sw03 ∷ sw13 ∷ []) (sw13 ∷ sw01 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw13)) ∷ rw 1 (sym⁼ (f383)) ∷ rw 1 (f351) ∷ []) refl
 f396 : Eqn
-f396 = normE (# 10 ∷ # 11 ∷ # 9 ∷ []) (# 11 ∷ []) refl
+f396 = normB (# 10 ∷ # 11 ∷ # 9 ∷ []) (# 11 ∷ []) refl
 f397 : Eqn
 f397 = derive (sw03 ∷ sw23 ∷ []) (sw23 ∷ sw02 ∷ [])
   (rw 0 (sym⁼ (inv⁼ sw13)) ∷ rw 1 (sym⁼ (f383)) ∷ rw 1 (f381) ∷ rw 0 (f396) ∷ []) refl
@@ -1105,4 +1105,4 @@ f398 : Eqn
 f398 = derive (sw03 ∷ sw01 ∷ sw12 ∷ []) (sw23 ∷ sw13 ∷ sw03 ∷ [])
   (rw 0 (f370) ∷ rw 1 (f383) ∷ []) refl
 f399 : Eqn
-f399 = normE (# 9 ∷ # 11 ∷ # 10 ∷ []) (# 11 ∷ []) refl
+f399 = normB (# 9 ∷ # 11 ∷ # 10 ∷ []) (# 11 ∷ []) refl

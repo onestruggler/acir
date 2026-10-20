@@ -14,7 +14,7 @@ open import Data.Fin using (#_)
 open import Data.List.Base using (List ; [] ; _∷_)
 open import Relation.Binary.PropositionalEquality using (refl)
 open import Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.Pure
-open import Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.Aff.L4.Base using (normE)
+open import Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.Aff.L4.Base using (normB)
 
 f0 : Eqn
 f0 = derive (cx3-0 ∷ cx3-2 ∷ cx3-0 ∷ cx3-2 ∷ []) ([])

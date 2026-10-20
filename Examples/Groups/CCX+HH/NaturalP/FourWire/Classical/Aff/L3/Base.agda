@@ -11,6 +11,7 @@
 module Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.Aff.L3.Base where
 
 open import Data.Fin.Base using (Fin)
+open import Data.List.Base using (List ; map)
 open import Data.Vec.Base using (_∷_ ; [] ; lookup)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)
@@ -26,3 +27,9 @@ open import Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.Pure
 import Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.Aff.L4 as Below
 
 open import Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.LevelKit ιX ιB Below.complete public
+
+-- Norm steps through a plain definition: a use of the module
+-- application's own normE carries its parameters, the whole
+-- tower below, into every term that mentions it.
+normB : (u v : List (Fin 3)) → sp ⟪ map ιB u ⟫ ≡ sp ⟪ map ιB v ⟫ → Eqn
+normB = normE

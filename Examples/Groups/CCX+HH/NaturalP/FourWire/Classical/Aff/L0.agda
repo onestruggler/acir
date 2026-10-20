@@ -17,6 +17,7 @@ open import Data.List.Base using (List ; [] ; _∷_)
 open import Data.Product.Base using (_×_ ; _,_)
 open import Data.Vec.Base using (Vec ; [] ; _∷_ ; lookup)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+open import Word.Base using (Word ; [_]ʷ ; _ʷ)
 open import Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.Pure
 open import Examples.Groups.CCX+HH.Natural.ThreeWire.Fin8 using (allFin ; allFin-sound ; eqF)
 open import Examples.Groups.CCX+HH.NaturalP.FourWire.Classical.Aff.L0.Base
@@ -110,4 +111,9 @@ cosets =
   []
 
 open Table repL tab factT ψ ψ-letter eqV cosets (# 0) refl
-open Checked refl refl public using (complete)
+open Checked refl refl using () renaming (complete to complete′)
+
+-- A plain definition, for the level above (see Base.normB).
+complete : ∀ (l m : Word (Fin 22)) → sp (((λ x → [ ιX x ]ʷ) ʷ) l) ≡ sp (((λ x → [ ιX x ]ʷ) ʷ) m) →
+           ((λ x → [ ιX x ]ʷ) ʷ) l ≈ ((λ x → [ ιX x ]ʷ) ʷ) m
+complete = complete′

@@ -80,6 +80,7 @@ def emit_level(tag, lev, title):
     base = [HEADER.format(title=f'{title}, level {k}: the kit.'),
             f'module {MOD}.{K}.Base where\n',
             'open import Data.Fin.Base using (Fin)',
+            'open import Data.List.Base using (List ; map)',
             'open import Data.Vec.Base using (_∷_ ; [] ; lookup)',
             'open import Relation.Binary.PropositionalEquality using (_≡_)',
             'open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ)',
@@ -104,6 +105,12 @@ def emit_level(tag, lev, title):
                  '  lower : ∀ (l m : Word (Fin 0)) → sp (F0 l) ≡ sp (F0 m) → F0 l ≈ F0 m',
                  '  lower l m _ = PB.trans (zero′ l) (PB.sym (zero′ m))', '',
                  f'open import {MOD}.LevelKit ιX ιB lower public']
+    base += ['',
+             '-- Norm steps through a plain definition: a use of the module',
+             "-- application's own normE carries its parameters, the whole",
+             '-- tower below, into every term that mentions it.',
+             f'normB : (u v : List (Fin {nB})) → sp ⟪ map ιB u ⟫ ≡ sp ⟪ map ιB v ⟫ → Eqn',
+             'normB = normE']
     (D / 'Base.agda').write_text('\n'.join(base) + '\n', encoding='utf-8')
     roots = [f for (_, _, f) in lev.table.values()]
     cl = sorted(P16.closure(tc, roots))
@@ -129,7 +136,7 @@ def emit_level(tag, lev, title):
                'open import Data.List.Base using (List ; [] ; _∷_)',
                'open import Relation.Binary.PropositionalEquality using (refl)',
                f'open import {MOD}.Pure',
-               f'open import {MOD}.{K}.Base using (normE)']
+               f'open import {MOD}.{K}.Base using (normB)']
         if uses_extras:
             out.append(f'open import {MOD}.Extras')
         out += [f'open import {MOD}.{K}.Facts{j}' for j in range(ci)]
@@ -140,7 +147,7 @@ def emit_level(tag, lev, title):
             out.append(f'f{num[f]} : Eqn')
             if len(st) == 1 and st[0][1][0] == 'norm':
                 lab, nf = st[0][1][1]
-                out.append(f'f{num[f]} = normE ({lst(fin(lower.index(x)) for x in lab)}) '
+                out.append(f'f{num[f]} = normB ({lst(fin(lower.index(x)) for x in lab)}) '
                            f'({lst(fin(lower.index(x)) for x in nf)}) refl')
             else:
                 steps = lst(f'rw {p} ({eqn(kk, key, fw)})' for p, (kk, key), fw in st)
@@ -156,6 +163,7 @@ def emit_level(tag, lev, title):
            'open import Data.Product.Base using (_×_ ; _,_)',
            'open import Data.Vec.Base using (Vec ; [] ; _∷_ ; lookup)',
            'open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)',
+           'open import Word.Base using (Word ; [_]ʷ ; _ʷ)',
            f'open import {MOD}.Pure',
            'open import Examples.Groups.CCX+HH.Natural.ThreeWire.Fin8 using (allFin ; allFin-sound ; eqF)',
            f'open import {MOD}.{K}.Base']
@@ -229,7 +237,11 @@ def emit_level(tag, lev, title):
             out.append(f'  (({lst(fin(x) for x in lev.repsp[c])}) , {fin(c)}) ∷')
         out.append('  []\n')
         out.append('open Table repL tab factT (λ g → g) (λ ()) eqP cosets (# 0) refl')
-    out.append('open Checked refl refl public using (complete)')
+    out.append('open Checked refl refl using () renaming (complete to complete′)\n')
+    out.append('-- A plain definition, for the level above (see Base.normB).')
+    out.append(f'complete : ∀ (l m : Word (Fin {nX})) → sp (((λ x → [ ιX x ]ʷ) ʷ) l) ≡ sp (((λ x → [ ιX x ]ʷ) ʷ) m) →')
+    out.append('           ((λ x → [ ιX x ]ʷ) ʷ) l ≈ ((λ x → [ ιX x ]ʷ) ʷ) m')
+    out.append('complete = complete′')
     (ROOT / tag / f'L{k}.agda').write_text('\n'.join(out) + '\n', encoding='utf-8')
     print(f'{tag} level {k}: {len(cl)} facts in {len(chunks)} chunks, {ck} cosets', flush=True)
 
@@ -242,14 +254,19 @@ def emit_extras(derivs):
     norm = [HEADER.format(title='Affine norm steps for the derivations of the extras.'),
             f'module {MOD}.Extras.Norm where\n',
             'open import Data.Fin.Base using (Fin)',
+            'open import Data.List.Base using (List ; map)',
             'open import Data.Vec.Base using (_∷_ ; [] ; lookup)',
+            'open import Relation.Binary.PropositionalEquality using (_≡_)',
             f'open import {MOD}.Pure',
             f'import {MOD}.Aff.L0 as Aff',
             f'open import {MOD}.Aff.L0.Base using () renaming (ιX to ιA)', '',
             '-- every letter; the affine letters below are those of Aff.L0',
             f'ιX : Fin {len(AG)} → L',
             f'ιX = lookup ({lst(AG)})', '',
-            f'open import {MOD}.LevelKit ιX ιA Aff.complete public using (normE)']
+            f'open import {MOD}.LevelKit ιX ιA Aff.complete using (normE)', '',
+            '-- a plain definition (see Aff/L0/Base.normB)',
+            f'normA : (u v : List (Fin {len(AFF)})) → sp ⟪ map ιA u ⟫ ≡ sp ⟪ map ιA v ⟫ → Eqn',
+            'normA = normE']
     (ROOT / 'Extras' / 'Norm.agda').write_text('\n'.join(norm) + '\n', encoding='utf-8')
     names = sorted(derivs, key=lambda n: int(n[1:]))
     for nm in names:
@@ -275,7 +292,7 @@ def emit_extras(derivs):
                'open import Data.List.Base using (List ; [] ; _∷_)',
                'open import Relation.Binary.PropositionalEquality using (refl)',
                f'open import {MOD}.Pure',
-               f'open import {MOD}.Extras.Norm using (normE)']
+               f'open import {MOD}.Extras.Norm using (normA)']
         used = sorted({axnames[key] for f in ids for _, (kk, key), _ in facts[f].steps
                        if kk == 'ax' and axnames[key][0] == 'e'}, key=lambda n: int(n[1:]))
         out += [f'open import {MOD}.Extras.{u.upper()} using ({u})' for u in used]
@@ -286,7 +303,7 @@ def emit_extras(derivs):
             out.append(f'{nm}-{num[f]} : Eqn')
             if len(st) == 1 and st[0][1][0] == 'norm':
                 lab, nf = st[0][1][1]
-                out.append(f'{nm}-{num[f]} = normE ({lst(fin(AFF.index(x)) for x in lab)}) '
+                out.append(f'{nm}-{num[f]} = normA ({lst(fin(AFF.index(x)) for x in lab)}) '
                            f'({lst(fin(AFF.index(x)) for x in nf)}) refl')
             else:
                 steps = lst(f'rw {p} ({eqn(kk, key, fw)})' for p, (kk, key), fw in st)
