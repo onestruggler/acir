@@ -278,6 +278,16 @@ and the relation that kills the centre has to be derived through
 letters outside the bottom. The affine finder does not reach it at
 300 000 cosets.
 
+**The rules derive the short four-wire Clifford relations.** The
+four-wire Clifford group is 512 times smaller than the gluing of its
+three-wire Clifford subgroups with AGL(4, 2) (above), so it has
+genuinely four-wire relations. `cl4derive.py` takes every relator
+w₁·w₂⁻¹ with words of at most three Clifford letters, spanning all four
+wires and not a plain commutation. There are 378 classes up to
+rotation, reversal and relabelling of the wires. All 378 are derived
+by the affine finder from the natural rules with R4, at 30 000 cosets
+each, in about an hour in all.
+
 The same finder works with HH (`g4partial.py`). The letters gain the
 six placed HH, and the relators gain the HH rules of `../natural3.py`
 at adjacent placements. It derives that CCZ(0,1,2) and CCZ(1,2,3)
