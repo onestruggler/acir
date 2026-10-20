@@ -577,8 +577,8 @@ are distinct, each module one to two minutes at 3-7 GB (a few 12 GB).
 Porting the library to Four/D (scratchpad/four/emit.py) would make a
 from-scratch build several times faster.
 
-The checker used (session scratchpad, par5.py generalised): PAR5_NS='*'
-schedules the whole development; a module starts only if its estimated
+The checker used (scratchpad/five/par5x.py, par5.py generalised, with
+scratchpad/five/memguard.sh): PAR5_NS='*' schedules the whole development; a module starts only if its estimated
 peak, plus those of jobs started in the last two minutes, fits in
 MemAvailable with 1.5 GB to spare (other sessions share the VM); a guard
 kills our youngest job below 1.2 GB available and the scheduler requeues
