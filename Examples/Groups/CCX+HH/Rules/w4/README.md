@@ -198,6 +198,15 @@ The transcribed rules miss three relators, stored in `c3_extra.txt`, and
 with them the index is 2240. `cl4glue.py glue` enumerates over φ₃(C3);
 the expected index is 17 280.
 
+**It is not.** With a complete presentation of the affine group (short
+relators, checked by the index 20 160 of the translations), the
+enumeration closes at index 8 847 360 = 2⁹ · 17 280: the group that the
+four φ_w(C3) and AGL(4, 2) present is 512 times larger than Cl4 (about
+70 minutes, 4.5 GB). So Cl4 needs four-wire relations beyond its
+three-wire Clifford subgroups and the affine group. Within the natural
+rules these must come from the Toffoli rules, or from the gluing of
+the P_w, which contain the φ_w(C3).
+
 ## The decoded relations as they stand
 
 `dec4.py` decodes Table 1 relators at the four cosets with

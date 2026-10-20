@@ -127,9 +127,12 @@ def main():
         if keep is None:
             print(f'  level {k + 1}: the derived relators do not close at {want2}!', flush=True)
             return
+        # the proof-producing enumeration collapses faster with the short
+        # derived relators too; every one of them comes with a derivation
+        short = sorted((w for w in words if len(w) <= 6), key=lambda r: (len(r), r))[:400]
+        rels = sorted(set(keep) | set(short), key=lambda r: (len(r), r))
         print(f'  level {k + 1}: kept {len(keep)} of {len(words)} (lengths {sorted(map(len, keep))[-5:]}), '
-              f'{round(time.time() - t0, 1)} s', flush=True)
-        rels = keep
+              f'{len(rels)} with the short ones, {round(time.time() - t0, 1)} s', flush=True)
     pickle.dump(out, open(HERE / 'rs4.pkl', 'wb'))
 
 
