@@ -8,11 +8,14 @@
 -- controls from six wires on; for Five.Facts4's gadgets that is
 -- Stable.GadgetSym.ss-gad₅, from completeness on five wires (`sym`).
 -- So their independence of the affine circuit holds at every width
--- (`indep`), the affine decoding is equivariant at every width (`Dec`),
--- and Lemma 8.8 for decoded words over the three kinds reduces to their
--- semantics and completeness one width down (`lemma-sem`, Stable.
--- HyperCanon) — a decoded word denoting the product of its gadgets'
--- two-level blocks (`D-sem`, Stable.DecGad).
+-- (`indepS`), the affine decoding is equivariant at every width (Hyper's
+-- `D-eqv`, re-exported with `D-top`, `ren`, `up`), and Lemma 8.8 for
+-- decoded words over the three kinds reduces to their semantics and
+-- completeness one width down (`lemma-sem`, Stable.HyperCanon) — a
+-- decoded word denoting the product of its gadgets' two-level blocks
+-- (`D-sem`, Stable.DecGad).  The λ-calculus comes under the bound of
+-- Stable.Inputs: `f6` takes `Bnd 0`, `sym` at index m `Bnd (suc m)`,
+-- and the lemmas at index m `Bnd m`.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
