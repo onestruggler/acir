@@ -54,7 +54,8 @@ open import Examples.Groups.CCX+HH.NaturalP.Lambda using (Pos ; Λ ; whites ; Λ
 open import Examples.Groups.CCX+HH.NaturalP.LambdaLaws complete≤ using (under ; Λ-swap-top)
 open import Examples.Groups.CCX+HH.NaturalP.CtrlColour complete≤ using (opposite)
 open import Examples.Groups.CCX+HH.NaturalP.Controls complete≤ using (conj-ctrl)
-open import Examples.Groups.CCX+HH.NaturalP.Affine complete≤
+import Data.Nat.Properties as ℕP₃
+open import Examples.Groups.CCX+HH.NaturalP.Affine (λ p → complete≤ (ℕP₃.≤-trans p (ℕP₃.m≤m+n 3 5)))
 open import Examples.Groups.CCX+HH.NaturalP.AffineRoute
 open import Examples.Groups.CCX+HH.NaturalP.Window
 open import Examples.Groups.CCX+HH.Decide using (by-eq)

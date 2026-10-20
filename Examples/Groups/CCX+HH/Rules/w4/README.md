@@ -158,8 +158,8 @@ relations that contain them need this gluing.
 enumerates the group they present over the affine subgroup (X, CX, SW).
 The index is exactly 32 432 400 = |A₁₆| / |AGL(4,2)|. The run takes
 12 minutes and 4 GB with `../tc`. The affine fragment is complete at
-every width (`../../NaturalP/Affine`), so the classical rules are
-complete on four wires.
+every width, unconditionally (`../../NaturalP/AffineComplete`), so the
+classical rules are complete on four wires.
 
 A certificate this size cannot go into Agda as a coset table. A proof
 there needs a chain with small indices instead. The coarser checks:

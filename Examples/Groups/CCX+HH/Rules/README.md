@@ -599,7 +599,11 @@ everything to completeness on at most eight wires. The plan:
 - *Affine circuits are complete* — done (`../NaturalP/Affine`). Two
   circuits in X, CX and the swap with the same matrix are equal.
   Erasing T and ω carries Amy, Chen and Ross's derivations
-  (`../../CNOT+Dihedral`) into the calculus.
+  (`../../CNOT+Dihedral`) into the calculus. Their relations erase to
+  equations on at most three wires, except (R13), whose erasure cancels
+  outright. So affine completeness needs completeness on three wires
+  only, and holds at every width unconditionally
+  (`../NaturalP/AffineComplete`).
 - *Affine routing.* An affine circuit sends any set of at most nine
   basis states, which spans at most an 8-dimensional affine subspace,
   into the window W₈: the states whose wires 8, 9, … are all 0. On W₈,

@@ -48,7 +48,8 @@ import Presentation.Base as PB
 open import Examples.Groups.CCX+HH.NaturalP.Schema
 open import Examples.Groups.CCX+HH.NaturalP.Lambda using (Λw)
 open import Examples.Groups.CCX+HH.NaturalP.LambdaLaws complete≤ using (under)
-open import Examples.Groups.CCX+HH.NaturalP.Affine complete≤
+import Data.Nat.Properties as ℕP₃
+open import Examples.Groups.CCX+HH.NaturalP.Affine (λ p → complete≤ (ℕP₃.≤-trans p (ℕP₃.m≤m+n 3 5)))
   using (AGen ; _↥ₐ ; ιP ; ⌈_⌉ ; inv ; inv-r ; affine-complete ; act⇒interpret)
 open import Examples.Groups.CCX+HH.NaturalP.AffineRoute
   using (A⟦_⟧ ; A-cong ; A-↑ ; A-inv ; A-injective ; _↑ₐ ; _⊕_ ; Lin ; Emb ; word-lin ; lin-∘)

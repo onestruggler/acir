@@ -2,7 +2,7 @@
 -- Presentations of groups
 --
 -- Completeness for affine circuits, given completeness on at most
--- eight wires, in the calculus with the schema.
+-- three wires, in the calculus with the schema.
 --
 -- An affine circuit is a word in X, CX and the swap
 -- (`AffineWords.AGen`).  Two affine circuits with the same matrix are
@@ -11,8 +11,10 @@
 -- CNOT-dihedral relations (`CNOT+Dihedral.Completeness`): erasing T
 -- and ω (`E`) carries their derivations into this calculus, since every
 -- one of their relations, erased, is an equation of affine circuits on
--- at most four wires (proved here by evaluation), a swap rule, or a
--- structural rule.  Their CNOT is our CX (control on wire 1), and both
+-- at most three wires (proved here by evaluation), a swap rule, or a
+-- structural rule; the one relation on four wires, (R13), erases to an
+-- equation between words that cancel (every gadget U, V erases to a
+-- palindrome of involutions, every T to nothing).  Their CNOT is our CX (control on wire 1), and both
 -- developments read wire 0 as the first bit.  An affine word read in
 -- their semantics picks up no phase, and its permutation is the
 -- classical action of GeneralN/Classical, which the matrix determines
@@ -28,7 +30,7 @@ import Examples.Groups.CCX+HH.NaturalP.Schema as S
 open import Examples.Groups.CCX+HH.NaturalP.Bridge using (interpret)
 
 module Examples.Groups.CCX+HH.NaturalP.Affine
-  (complete≤ : ∀ {k} → k ≤ 8 → ∀ {u v : P.Circuit k} → interpret u ≡ interpret v →
+  (complete≤ : ∀ {k} → k ≤ 3 → ∀ {u v : P.Circuit k} → interpret u ≡ interpret v →
      k S.⊢ u ≈ v)
   where
 
@@ -49,6 +51,7 @@ open import Relation.Nullary.Decidable using (yes ; no)
 open import Word.Base using (Word ; [_]ʷ ; ε ; _•_ ; _ʷ ; wmap ; _^_)
 open import Notations using (₁₊ ; ₂₊ ; ₃₊ ; ₄₊)
 import Presentation.Base as PB
+import Presentation.Properties as PP
 
 open import Examples.Groups.CCX+HH.NaturalP.Schema
 open import Examples.Groups.CCX+HH.NaturalP.Bridge using (τ)
@@ -73,8 +76,45 @@ private
   variable
     n : ℕ
 
-  le : ∀ a → T (a ≤ᵇ 8) → a ≤ 8
-  le a p = ≤ᵇ⇒≤ a 8 p
+  le : ∀ a → T (a ≤ᵇ 3) → a ≤ 3
+  le a p = ≤ᵇ⇒≤ a 3 p
+
+------------------------------------------------------------------------
+-- Cancelling words
+
+private
+  -- The reverse of a word: every generator is an involution.
+  rev : ∀ {k} → Circuit k → Circuit k
+  rev [ g ]ʷ  = [ g ]ʷ
+  rev ε       = ε
+  rev (u • v) = rev v • rev u
+
+  rev-r : ∀ {k} (w : Circuit k) → k ⊢ w • rev w ≈ ε
+  rev-r [ g ]ʷ  = invol g
+    where
+    invol : ∀ {k} (g : Gen k) → k ⊢ [ g ]ʷ • [ g ]ʷ ≈ ε
+    invol (gate₀ ())
+    invol (gate₁ X-gate)   = PB.axiom (srel (srel (np P.X²)))
+    invol (gate₂ CX-gate)  = PB.axiom (srel (srel (np P.CX²)))
+    invol (gate₂ HH-gate)  = PB.axiom (srel (srel (np P.HH²)))
+    invol (gate₂ SW-gate)  = PB.axiom (srel (σrel σ-inv))
+    invol (gate₃ CCX-gate) = PB.axiom (srel (srel (np P.CCX²)))
+    invol (g ↥)            = lemma-cong↑ _ _ (invol g)
+  rev-r ε       = PB.left-unit
+  rev-r (u • v) =
+    PB.trans PB.assoc (PB.trans (PB.cong PB.refl (PB.trans (PB.sym PB.assoc)
+      (PB.trans (PB.cong (rev-r v) PB.refl) PB.left-unit))) (rev-r u))
+
+  -- A word that reads a • rev a letter by letter cancels.
+  pal : ∀ {k} (w a : Circuit k) →
+        PP.to-list (k VRel,_===_) w ≡ PP.to-list (k VRel,_===_) (a • rev a) → k ⊢ w ≈ ε
+  pal {k} w a eq = PB.trans (PP.by-assoc (k VRel,_===_) eq) (rev-r a)
+
+  cat : ∀ {k} {u v : Circuit k} → k ⊢ u ≈ ε → k ⊢ v ≈ ε → k ⊢ u • v ≈ ε
+  cat p q = PB.trans (PB.cong p q) PB.left-unit
+
+  pow3 : ∀ {k} {w : Circuit k} → k ⊢ w ≈ ε → k ⊢ w ^ 3 ≈ ε
+  pow3 p = cat p (cat p p)
 
 ------------------------------------------------------------------------
 -- The erased relations
@@ -129,11 +169,18 @@ private
       (E ʷ) (CD.T ^ 5 • (CD.T CD.↑) ^ 5 • (CD.T CD.↑ CD.↑) ^ 5 • (CD.T CD.↑ CD.↑ CD.↑) ^ 5 •
         (CD.U CD.↑ CD.↑) ^ 3 • CD.U₁₃ ^ 3 • CD.U₀₃ ^ 3 • (CD.U CD.↑) ^ 3 • CD.U₀₂ ^ 3 •
         CD.U ^ 3 • CD.V CD.↑ • CD.V₀₂₃ • CD.V₀₁₃ • CD.V)
-    R₁₃₀ = complete≤ (le 4 tt)
-      {u = (E ʷ) (CD.CNOT CD.↑ CD.↑ • CD.V • CD.CNOT CD.↑ CD.↑)}
-      {v = (E ʷ) (CD.T ^ 5 • (CD.T CD.↑) ^ 5 • (CD.T CD.↑ CD.↑) ^ 5 • (CD.T CD.↑ CD.↑ CD.↑) ^ 5 •
-        (CD.U CD.↑ CD.↑) ^ 3 • CD.U₁₃ ^ 3 • CD.U₀₃ ^ 3 • (CD.U CD.↑) ^ 3 • CD.U₀₂ ^ 3 •
-        CD.U ^ 3 • CD.V CD.↑ • CD.V₀₂₃ • CD.V₀₁₃ • CD.V)} (by-eq tt)
+    R₁₃₀ = PB.trans (pal _ (CX ↑ ↑ • CX ↑ • CX) refl) (PB.sym rhs)
+      where
+      rhs : 4 ⊢ (E ʷ) (CD.T ^ 5 • (CD.T CD.↑) ^ 5 • (CD.T CD.↑ CD.↑) ^ 5 •
+              (CD.T CD.↑ CD.↑ CD.↑) ^ 5 • (CD.U CD.↑ CD.↑) ^ 3 • CD.U₁₃ ^ 3 • CD.U₀₃ ^ 3 •
+              (CD.U CD.↑) ^ 3 • CD.U₀₂ ^ 3 • CD.U ^ 3 • CD.V CD.↑ • CD.V₀₂₃ • CD.V₀₁₃ • CD.V)
+            ≈ ε
+      rhs = cat (pal _ ε refl) (cat (pal _ ε refl) (cat (pal _ ε refl) (cat (pal _ ε refl)
+        (cat (pow3 (pal _ (CX ↑ ↑) refl)) (cat (pow3 (pal _ (σ ↑ • CX ↑ ↑) refl))
+        (cat (pow3 (pal _ (σ • σ ↑ • CX ↑ ↑) refl)) (cat (pow3 (pal _ (CX ↑) refl))
+        (cat (pow3 (pal _ (σ • CX ↑) refl)) (cat (pow3 (pal _ CX refl))
+        (cat (pal _ (CX ↑ ↑ • CX ↑) refl) (cat (pal _ (σ • CX ↑ ↑ • CX ↑) refl)
+        (cat (pal _ (σ ↑ • σ • CX ↑ ↑ • CX ↑) refl) (pal _ (CX ↑ • CX) refl)))))))))))))
 
 erase-ax : ∀ {w v} → n CD.VRel, w === v → n ⊢ (E ʷ) w ≈ (E ʷ) v
 erase-ax (CD.srel (CD.σrel CD.σ-inv))                  = PB.axiom (srel (σrel σ-inv))

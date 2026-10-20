@@ -27,8 +27,13 @@ import tower4 as T
 
 DEFS = T.definitions()
 LETTERS = list(range(len(T.LETTERS)))
-# the letters whose circuits lie on the wires 0 1 2
-LOW = [g for g in LETTERS if T.image_support((g,), DEFS) <= {0, 1, 2}]
+# the norm subgroup: the letters whose circuits lie on the wires 0 1 2
+# (default), or every affine letter (--affine)
+if '--affine' in sys.argv:
+    sys.argv.remove('--affine')
+    LOW = [g for g in LETTERS if T.LETTERS[g][0] != 'CCX']
+else:
+    LOW = [g for g in LETTERS if T.image_support((g,), DEFS) <= {0, 1, 2}]
 
 
 def ev(word):
