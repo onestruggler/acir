@@ -42,6 +42,17 @@ open import Examples.Groups.Qutrit-Clifford.Box3.Part15
 open import Examples.Groups.Qutrit-Clifford.Box3.Part16
 open import Examples.Groups.Qutrit-Clifford.Box3.Part17
 open import Examples.Groups.Qutrit-Clifford.Box3.Part18
+open import Examples.Groups.Qutrit-Clifford.Box3.Part19
+open import Examples.Groups.Qutrit-Clifford.Box3.Part20
+open import Examples.Groups.Qutrit-Clifford.Box3.Part21
+open import Examples.Groups.Qutrit-Clifford.Box3.Part22
+open import Examples.Groups.Qutrit-Clifford.Box3.Part23
+open import Examples.Groups.Qutrit-Clifford.Box3.Part24
+open import Examples.Groups.Qutrit-Clifford.Box3.Part25
+open import Examples.Groups.Qutrit-Clifford.Box3.Part26
+open import Examples.Groups.Qutrit-Clifford.Box3.Part27
+open import Examples.Groups.Qutrit-Clifford.Box3.Part28
+open import Examples.Groups.Qutrit-Clifford.Box3.Part29
 
 br₃ : BoxRelations₃
 br₃ = record { ruleS-ok = S-ok ; ruleBB-ok = BB-ok ; ruleDD-ok = DD-ok }
