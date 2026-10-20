@@ -30,7 +30,6 @@ open import Data.Empty using (⊥ ; ⊥-elim)
 open import Data.Integer.Base using (+_ ; -[1+_])
 open import Data.Nat.Base using (ℕ ; zero ; suc)
 open import Data.Product.Base using (_×_ ; _,_ ; proj₁ ; proj₂)
-open import Data.Unit using (tt)
 open import Data.Vec.Base using (Vec ; [] ; _∷_ ; head ; tail)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_ ; _≢_ ; refl)
 
@@ -249,15 +248,15 @@ private
 
 H-loc : (p : Letter) → Conj Hₒ (lM p) (φ₁ H-gate p) (lM (ℓ₁ H-gate p))
 H-loc p = conj-sound Hₒ (lM p) (φ₁ H-gate p) (lM (ℓ₁ H-gate p))
-  (allL-sound (λ p → conj? Hₒ (lM p) (φ₁ H-gate p) (lM (ℓ₁ H-gate p))) tt p)
+  (allL-sound (λ p → conj? Hₒ (lM p) (φ₁ H-gate p) (lM (ℓ₁ H-gate p))) _ p)
 
 S-loc : (p : Letter) → Conj Sₒ (lM p) (φ₁ S-gate p) (lM (ℓ₁ S-gate p))
 S-loc p = DS.dconj-sound (lM p) (φ₁ S-gate p) (lM (ℓ₁ S-gate p))
-  (allL-sound (λ p → DS.dconj? (lM p) (φ₁ S-gate p) (lM (ℓ₁ S-gate p))) tt p)
+  (allL-sound (λ p → DS.dconj? (lM p) (φ₁ S-gate p) (lM (ℓ₁ S-gate p))) _ p)
 
 CZ-loc : (p q : Letter) →
          Conj CZₒ (tensor {1} (lM p) (lM q)) (φ₂ p q) (tensor {1} (lM (ℓ₂ p q)) (lM (ℓ₂′ p q)))
 CZ-loc p q = DCZ.dconj-sound (tensor {1} (lM p) (lM q)) (φ₂ p q)
   (tensor {1} (lM (ℓ₂ p q)) (lM (ℓ₂′ p q)))
   (allL₂-sound (λ p q → DCZ.dconj? (tensor {1} (lM p) (lM q)) (φ₂ p q)
-                                   (tensor {1} (lM (ℓ₂ p q)) (lM (ℓ₂′ p q)))) tt p q)
+                                   (tensor {1} (lM (ℓ₂ p q)) (lM (ℓ₂′ p q)))) _ p q)
