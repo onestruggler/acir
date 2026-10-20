@@ -39,8 +39,12 @@ R4_TEXT = 'CCX0 HH03 CCX0 HH03 CCX0 HH03 CCX0 HH03 HH02 CXr1 HH02'
 
 
 class Alphabet:
-    def __init__(self, n, r4=False, extra=()):
+    def __init__(self, n, r4=False, extra=(), placed=False):
+        """placed: every rule at every injective placement of its wires,
+        and every two letters on disjoint wires commuting (each a
+        swap conjugate of an adjacent instance in NaturalP)."""
         self.N = n
+        self.placed = placed
         self.D = 1 << n
         L = [('X', t) for t in range(n)]
         L += [('CX', c, t) for c in range(n) for t in range(n) if c != t]
@@ -126,6 +130,33 @@ class Alphabet:
                 break
         return out
 
+    def placements(self, text):
+        """A rule at every injective placement of its wires."""
+        base = self.instances(text)
+        if not base:
+            return set()
+        word = base[0]
+        used = sorted({x for g in word for x in self.LETTERS[g][1:]})
+        out = set()
+        for img in itertools.permutations(range(self.N), len(used)):
+            f = dict(zip(used, img))
+            w = []
+            for g in word:
+                l = self.LETTERS[g]
+                k = l[0]
+                if k in ('X',):
+                    w.append(self.INDEX[('X', f[l[1]])])
+                elif k == 'CX':
+                    w.append(self.INDEX[('CX', f[l[1]], f[l[2]])])
+                elif k == 'CCX':
+                    a, b = sorted((f[l[2]], f[l[3]]))
+                    w.append(self.INDEX[('CCX', f[l[1]], a, b)])
+                else:
+                    a, b = sorted((f[l[1]], f[l[2]]))
+                    w.append(self.INDEX[(k, a, b)])
+            out.add(tuple(w))
+        return out
+
     def _definitions(self):
         """Every non-adjacent letter as w · b · rev(w), b adjacent and w a
         word in the adjacent swaps: the shortest such."""
@@ -178,14 +209,27 @@ class Alphabet:
             texts = texts + [R4_TEXT]
         for t in texts:
             rels |= set(self.instances(t))
+            if self.placed:
+                rels |= self.placements(t)
+        # the schema's first instance, on five wires: Barenco's controlled
+        # Toffoli squared, (CCX(t; c, b) · CCX(b; d, e))⁴ = ε, at every
+        # placement (not a consequence of the bounded rules: it lifts to
+        # −1 in the spin cover)
+        if self.N >= 5:
+            for t, c, b, d, e in itertools.permutations(range(self.N), 5):
+                if d < e:
+                    t1 = self.INDEX[('CCX', t, min(c, b), max(c, b))]
+                    t2 = self.INDEX[('CCX', b, d, e)]
+                    rels.add((t1, t2) * 4)
         for i in range(self.N - 1):
             rels.add((self.adj(f'CXr{i}'), self.adj(f'HH{i}'), self.adj(f'CX{i}'), self.adj(f'HH{i}')))
         for g in range(len(self.LETTERS)):
             rels.add((g, g))
         prim, defs = self._definitions()
-        prim = sorted(prim)
-        for i, g in enumerate(prim):
-            for h in prim[i + 1:]:
+        pairs = range(len(self.LETTERS)) if self.placed else sorted(prim)
+        pairs = sorted(pairs)
+        for i, g in enumerate(pairs):
+            for h in pairs[i + 1:]:
                 if not self.WIRES[g] & self.WIRES[h]:
                     rels.add((g, h, g, h))
         for g, w in defs.items():
