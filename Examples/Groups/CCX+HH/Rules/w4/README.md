@@ -314,8 +314,13 @@ The cost, roughly:
 That is too much for Agda unless the derivations are coarse: whole
 steps inside one P_w (by `Partner.partner-complete`) or inside the
 classical group (by classical completeness), as the three-wire CCX+H
-proof used Θ-steps. A finder whose moves are such steps (a contraction
-over P₀ … P₃ and A₁₆) is the next tool to build.
+proof used Θ-steps. Every four-wire rule lies in some P_w or is affine,
+so a fine derivation is in principle a chain of such steps. But it
+cannot be compressed after the fact. A derivation of the affine finder
+is a tree of facts with heavy sharing, and replaying it as one sequence
+of rewrites (`compress4.py`) runs out of memory on the CCZ identity.
+So a finder whose moves are such steps (a contraction over P₀ … P₃ and
+the affine group, with normal forms in each) is the next tool to build.
 
 The same finder works with HH (`g4partial.py`). The letters gain the
 six placed HH, and the relators gain the HH rules of `../natural3.py`
