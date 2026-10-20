@@ -12,7 +12,7 @@ q s q s, q = K_(0123) K_(4567) (HH on wires 0 1 under a white control on
 wire 3, the controlled-HH gadget of NaturalP/Ctrl borrowing wire 2) and
 s = M_0 M_8 (a CCZ under negated controls).
 
-    python3 -B g4dec.py [family ...] [--limit L] [--max K] [--merge]
+    python3 -B g4dec.py [family ...] [--limit L] [--max K] [--merge] [--lemmas]
 """
 import sys
 import time
@@ -183,6 +183,9 @@ def main():
             xc = A0.INDEX[('X', perm[3])]
             hh = A0.INDEX[('HH', min(perm[0], perm[1]), max(perm[0], perm[1]))]
             extra.append((xc,) + chh + (xc,) + chh + (hh,))
+    if '--lemmas' in args:
+        import lemmas4
+        extra += lemmas4.load()
     V = G.VZFinder(extra=extra)
     Dc = Decoder(V)
     print(len(V.A.rels), 'relators; core j has', len(Dc.j), 'letters', flush=True)

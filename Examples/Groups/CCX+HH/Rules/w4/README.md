@@ -616,3 +616,19 @@ among the relators the V_Z finder still derives none of the decoded
 canonical r2f, r4b, r5a relations (418–500 letters, 40 000 cosets,
 `g4dec.py --merge`). They need a library of shorter lemmas about q and
 J₀, the four-wire counterpart of Clément's Appendix D.
+
+**The decoder hides what the relations say.** With 29 496 lemmas (every
+short four-wire relation at every placement, `lemmas4.py`) the V_Z
+finder still does not derive the decoded r2f. But r2f at the state 00
+is K₀₁₂₃ K₄₅₆₇ K₀₁₂₃ K₄₅₆₇ = ε, and its first two edges multiply to
+exactly the K pair q = K₀₁₂₃ K₄₅₆₇ (the representatives cancel), so
+r2f is q² = ε. Decoding each K-edge on its own as a conjugate of J₀
+turns that into a long statement about J₀. A decoder through a fixed
+pivot quadruple P keeps the products visible:
+K_A = (K_A K_P) · K_P, so the edge (c, K_A) is the K pair Q_A = K_A K_P
+conjugated by rep(c), times the pivot edge E_c = rep(c) K_P rep(cK)⁻¹,
+one of four fixed circuits. Two consecutive K-edges then multiply to
+Q_A · Q_B⁻¹ up to the conjugation of a K pair by a pivot edge, a
+finite set of lemmas at canonical positions. The K relations of
+Table 1 become relations among K pairs, which are controlled HH gates
+and their classical conjugates.
