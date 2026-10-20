@@ -102,12 +102,21 @@ def main():
         for line in open(HERE / 'diag4.log'):
             if 'NOT derived' in line:
                 skip.add(line.split('s  ', 1)[1].strip())
+        if '--log' in sys.argv:
+            skip = set()
+            for line in open(HERE / sys.argv[sys.argv.index('--log') + 1]):
+                if 'NOT derived' in line:
+                    skip.add(line.split('s  ', 1)[1].strip())
+    extra = set()
     if coarse:
-        extra = set()
         for kind in [('P', w) for w in range(N)] + [('C',)]:
             extra |= A.short_identities(kind, coarse)
-        A = F.Alphabet(N, r4=True, placed=True, extra=sorted(extra, key=lambda r: (len(r), r)))
-        print(len(A.rels), 'relators with the short subgroup identities of length', coarse, flush=True)
+    boot = '--bootstrap' in sys.argv
+    if coarse or boot:
+        A0 = A
+        if not boot:
+            A = F.Alphabet(N, r4=True, placed=True, extra=sorted(extra, key=lambda r: (len(r), r)))
+            print(len(A.rels), 'relators with the short subgroup identities of length', coarse, flush=True)
     cls = [g for g, l in enumerate(A.LETTERS) if l[0] != 'HH']
     ids = []
     for g in cls:
@@ -133,6 +142,13 @@ def main():
     four = by.get(4, [])
     ok = 0
     if skip:
+        if boot:
+            # every identity derived so far (all but the skipped) is a lemma
+            for x in ids:
+                if f'{x[0]} {x[1]} -> {x[2]}' not in skip:
+                    extra.add(x[3])
+            A = F.Alphabet(N, r4=True, placed=True, extra=sorted(extra, key=lambda r: (len(r), r)))
+            print(len(A.rels), 'relators with the derived identities as lemmas', flush=True)
         four = [x for x in four if f'{x[0]} {x[1]} -> {x[2]}' in skip]
         print('retrying', len(four), flush=True)
     for name, m, img, word, _ in four:

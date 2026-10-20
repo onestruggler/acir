@@ -470,6 +470,32 @@ relations between two or more K's. Those are r4b (the mixed atom),
 r2f (K's on disjoint quadruples commute), r5a and r6a, each with its
 equality patterns and four states.
 
+**The kickback, a rule stronger than R4.** Completeness for V_Z needs
+the conjugation of each monomial gate (−I, Z, CZ, CCZ) by each
+classical letter (`diag4.py`; 615 identities, 170 of them spanning four
+wires). The finder derives 134 of the 170, with rules at every placement,
+R4, and the short identities inside each P_w and among the classical
+letters as relators (`../wn/finder.py`, `--coarse 2`). The other 36 are
+all of one kind: a Toffoli kicking back a CCZ through its target,
+
+    K_CZ :  CCX(t;a,b) · CZ(t,c)    · CCX(t;a,b) = CZ(t,c)    · CCZ(a,b,c)
+    K_CCZ:  CCX(t;a,b) · CCZ(t,a,c) · CCX(t;a,b) = CCZ(t,a,c) · CCZ(a,b,c)
+
+on four distinct wires. R4 is the same kickback with c = b, where it
+gives CZ(a,b). With every other identity as a lemma the finder still
+derives none of them. Under ctrl they are the controlled forms of
+three-wire kickbacks, but the controlled Toffoli needs a fifth wire.
+`../wn/kick.py`, `kick2.py`:
+
+- with K_CCZ as a rule at every placement, all 12 K_CZ are derived;
+- with K_CZ as a rule, none of the K_CCZ is;
+- **with K_CCZ as a rule and without R4, R4 is derived** (40 s).
+
+So K_CCZ subsumes R4 and K_CZ. The natural rules with R4 are probably
+not complete on four wires, and the four-wire rule to add is K_CCZ:
+a Toffoli and a CCZ that share the target and one control commute up
+to the CCZ on the other three wires.
+
 A first test of step 2 (`stabs4.py`): the canonical sign pair
 s = M₀M₁ is X1 X2 X3 · HH03 · CCX3;12 · HH03 · X1 X2 X3. The finder
 derives its commutation with the 12 affine letters fixing the levels
