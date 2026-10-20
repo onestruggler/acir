@@ -7,7 +7,7 @@
 -- l inv(r) in the graph of hyperbolic planes, filled by translates of
 -- the loops of C₁₅–C₁₈; every step is an axiom, a cancellation, a
 -- reordering of letters on disjoint wires, or an equation on two
--- adjacent wires, true by completeness on two qutrits.
+-- adjacent wires, true by completeness on two qutrits (Box3/Steps*).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -33,6 +33,15 @@ open import Examples.Groups.Qutrit-Clifford.Box3.Part6
 open import Examples.Groups.Qutrit-Clifford.Box3.Part7
 open import Examples.Groups.Qutrit-Clifford.Box3.Part8
 open import Examples.Groups.Qutrit-Clifford.Box3.Part9
+open import Examples.Groups.Qutrit-Clifford.Box3.Part10
+open import Examples.Groups.Qutrit-Clifford.Box3.Part11
+open import Examples.Groups.Qutrit-Clifford.Box3.Part12
+open import Examples.Groups.Qutrit-Clifford.Box3.Part13
+open import Examples.Groups.Qutrit-Clifford.Box3.Part14
+open import Examples.Groups.Qutrit-Clifford.Box3.Part15
+open import Examples.Groups.Qutrit-Clifford.Box3.Part16
+open import Examples.Groups.Qutrit-Clifford.Box3.Part17
+open import Examples.Groups.Qutrit-Clifford.Box3.Part18
 
 br₃ : BoxRelations₃
 br₃ = record { ruleS-ok = S-ok ; ruleBB-ok = BB-ok ; ruleDD-ok = DD-ok }
